@@ -92,6 +92,8 @@ recognized:
 :On: "true", "yes", "on", "1"
 :Off: "false", "no", "off", "0", "" (no value)
 
+.. _list:
+
 List values can be comma- or colon-delimited.
 
 strip_classes_, strip_elements_with_classes_, stylesheet, and
@@ -192,495 +194,581 @@ Some knowledge of Python_ is assumed for some attributes.
 
 Settings in the "[general]" section are always applied.
 
-_`auto_id_prefix`
-    Prefix prepended to all auto-generated IDs generated within the
-    document, after id_prefix_.
+auto_id_prefix
+--------------
 
-    Default: "id".  Options: ``--auto-id-prefix`` (hidden, intended
-    mainly for programmatic use).
+Prefix prepended to all auto-generated IDs generated within the
+document, after id_prefix_.
 
-_`datestamp`
-    Include a time/datestamp in the document footer.  Contains a
-    format string for Python's ``time.strftime``.  See the `time
-    module documentation`__.
+Default: "id".
+Options: ``--auto-id-prefix`` (hidden, intended mainly for programmatic use).
 
-    Default: None.  Options: ``--date, -d, --time, -t,
-    --no-datestamp``.
+datestamp
+---------
 
-    Configuration file entry examples::
+Include a time/datestamp in the document footer.  Contains a
+format string for Python's ``time.strftime``.  See the `time
+module documentation`__.
 
-        # Equivalent to --date command-line option, results in
-        # ISO 8601 extended format datestamp, e.g. "2001-12-21":
-        datestamp: %Y-%m-%d
+Default: None.
+Options: ``--date, -d, --time, -t, --no-datestamp``.
 
-        # Equivalent to --time command-line option, results in
-        # date/timestamp like "2001-12-21 18:43 UTC":
-        datestamp: %Y-%m-%d %H:%M UTC
+Configuration file entry examples::
 
-        # Disables datestamp; equivalent to --no-datestamp:
-        datestamp:
+    # Equivalent to --date command-line option, results in
+    # ISO 8601 extended format datestamp, e.g. "2001-12-21":
+    datestamp: %Y-%m-%d
 
-    __ http://www.python.org/doc/current/lib/module-time.html
+    # Equivalent to --time command-line option, results in
+    # date/timestamp like "2001-12-21 18:43 UTC":
+    datestamp: %Y-%m-%d %H:%M UTC
 
-_`debug`
-    Report debug-level system messages.
+    # Disables datestamp; equivalent to --no-datestamp:
+    datestamp:
 
-    Default: don't (None).  Options: ``--debug, --no-debug``.
+__ http://www.python.org/doc/current/lib/module-time.html
 
-_`dump_internals`
-    At the end of processing, write all internal attributes of the
-    document (``document.__dict__``) to stderr.
+debug
+-----
 
-    Default: don't (None).  Options: ``--dump-internals`` (hidden, for
-    development use only).
+Report debug-level system messages.
 
-_`dump_pseudo_xml`
-    At the end of processing, write the pseudo-XML representation of
-    the document to stderr.
+Default: don't (None).  Options: ``--debug, --no-debug``.
 
-    Default: don't (None).  Options: ``--dump-pseudo-xml`` (hidden,
-    for development use only).
+dump_internals
+--------------
 
-_`dump_settings`
-    At the end of processing, write all Docutils settings to stderr.
+At the end of processing, write all internal attributes of the
+document (``document.__dict__``) to stderr.
 
-    Default: don't (None).  Options: ``--dump-settings`` (hidden, for
-    development use only).
+Default: don't (None).
+Options: ``--dump-internals`` (hidden, for development use only).
 
-_`dump_transforms`
-    At the end of processing, write a list of all transforms applied
-    to the document to stderr.
+dump_pseudo_xml
+---------------
 
-    Default: don't (None).  Options: ``--dump-transforms`` (hidden,
-    for development use only).
+At the end of processing, write the pseudo-XML representation of
+the document to stderr.
 
-_`error_encoding`
-    The text encoding for error output.
+Default: don't (None).
+Options: ``--dump-pseudo-xml`` (hidden, for development use only).
 
-    Default: "ascii".  Options: ``--error-encoding, -e``.
+dump_settings
+-------------
 
-_`error_encoding_error_handler`
-    The error handler for unencodable characters in error output.  See
-    output_encoding_error_handler_ for acceptable values.
+At the end of processing, write all Docutils settings to stderr.
 
-    Default: "backslashreplace"
-    Options: ``--error-encoding-error-handler,
-    --error-encoding, -e``.
+Default: don't (None).
+Options: ``--dump-settings`` (hidden, for development use only).
 
-_`exit_status_level`
-    A system message level threshold; non-halting system messages at
-    or above this level will produce a non-zero exit status at normal
-    exit.  Exit status is the maximum system message level plus 10 (11
-    for INFO, etc.).
+dump_transforms
+---------------
 
-    Default: disabled (5).  Options: ``--exit-status``.
+At the end of processing, write a list of all transforms applied
+to the document to stderr.
 
-_`expose_internals`
-    List of internal attribues to expose as external attributes (with
-    "internal:" namespace prefix).  To specify multiple attributes in
-    configuration files, use colons to separate names; on the command
-    line, the option may be used more than once.
+Default: don't (None).
+Options: ``--dump-transforms`` (hidden, for development use only).
 
-    Default: don't (None).  Options: ``--expose-internal-attribute``
-    (hidden, for development use only).
+error_encoding
+--------------
 
-_`footnote_backlinks`
-    Enable or disable backlinks from footnotes and citations to their
-    references.
+The text encoding for error output.
 
-    Default: enabled (1).  Options: ``--footnote-backlinks,
-    --no-footnote-backlinks``.
+Default: "ascii".  Options: ``--error-encoding, -e``.
 
-_`generator`
-    Include a "Generated by Docutils" credit and link in the document
-    footer.
-
-    Default: off (None).  Options: ``--generator, -g,
-    --no-generator``.
-
-_`halt_level`
-    The threshold at or above which system messages are converted to
-    exceptions, halting execution immediately.  If `traceback`_ is
-    set, the exception will propagate; otherwise, Docutils will exit.
+error_encoding_error_handler
+----------------------------
 
-    Default: severe (4).  Options: ``--halt, --strict``.
+The error handler for unencodable characters in error output.  See
+output_encoding_error_handler_ for acceptable values.
 
-_`id_prefix`
-    Prefix prepended to all IDs generated within the document.  See
-    also auto_id_prefix_.
+Default: "backslashreplace"
+Options: ``--error-encoding-error-handler, --error-encoding, -e``.
 
-    Default: "" (empty).  Options: ``--id-prefix`` (hidden, intended
-    mainly for programmatic use).
+exit_status_level
+-----------------
 
-_`input_encoding`
-    The text encoding for input.
+A system message level threshold; non-halting system messages at
+or above this level will produce a non-zero exit status at normal
+exit.  Exit status is the maximum system message level plus 10 (11
+for INFO, etc.).
 
-    Default: auto-detect (None).  Options: ``--input-encoding, -i``.
+Default: disabled (5).  Options: ``--exit-status``.
 
-_`input_encoding_error_handler`
-    The error handler for undecodable characters in the input.
-    Acceptable values include:
+expose_internals
+----------------
 
-    strict
-        Raise an exception in case of an encoding error.
-    replace
-        Replace malformed data with the official Unicode replacement
-        character, U+FFFD.
-    ignore
-        Ignore malformed data and continue without further notice.
+List_ of internal attribues to expose as external attributes (with
+"internal:" namespace prefix).  To specify multiple attributes in
+configuration files, use colons to separate names; on the command
+line, the option may be used more than once.
 
-    Acceptable values are the same as for the "error" parameter of
-    Python's ``unicode`` function; other values may be defined in
-    applications or in future versions of Python.
+Default: don't (None).
+Options: ``--expose-internal-attribute`` (hidden, for development use only).
 
-    Default: "strict".  Options: ``--input-encoding-error-handler,
-    --input-encoding, -i``.
+footnote_backlinks
+------------------
 
-_`language_code`
-    Case-insensitive `language tag`_ as defined in `BCP 47`_.
+Enable or disable backlinks from footnotes and citations to their
+references.
 
-    Sets the document language, also used for localized directive and
-    role names as well as Docutils-generated text.
+Default: enabled (1).
+Options: ``--footnote-backlinks, --no-footnote-backlinks``.
 
-    A typical language identifier consists of a 2-letter language code
-    from `ISO 639`_ (3-letter codes can be used if no 2-letter code
-    exists). The language identifier can have an optional subtag,
-    typically for variations based on country (from `ISO 3166`_
-    2-letter country codes).  Avoid subtags except where they add
-    useful distinguishing information. Examples of language tags
-    include "fr", "en-GB", "pt_br" (the same as "pt-BR"), and
-    "de-1901" (German with pre-1998 spelling).
+generator
+---------
 
-    The language of document parts can be specified with a
-    "language-<language tag>" `class attribute`_, e.g.
-    ``.. class:: language-el-polyton`` for a quote in polytonic Greek.
+Include a "Generated by Docutils" credit and link in the document footer.
 
-    Default: English ("en").  Options: ``--language, -l``.
+Default: off (None).  Options: ``--generator, -g, --no-generator``.
 
-    .. _class attribute: ../ref/doctree.html#classes
+halt_level
+----------
 
-_`output_encoding`
-    The text encoding for output.
+The threshold at or above which system messages are converted to
+exceptions, halting execution immediately.  If `traceback`_ is set, the
+exception will propagate; otherwise, Docutils will exit.
 
-    Default: "UTF-8".  Options: ``--output-encoding, -o``.
+Default: severe (4).  Options: ``--halt, --strict``.
 
-_`output_encoding_error_handler`
-    The error handler for unencodable characters in the output.
-    Acceptable values include:
+id_prefix
+---------
 
-    strict
-        Raise an exception in case of an encoding error.
-    replace
-        Replace malformed data with a suitable replacement marker,
-        such as "?".
-    ignore
-        Ignore malformed data and continue without further notice.
-    xmlcharrefreplace
-        Replace with the appropriate XML character reference, such as
-        "``&#8224;``".
-    backslashreplace
-        Replace with backslashed escape sequences, such as "``\u2020``".
+Prefix prepended to all IDs generated within the document.  See also
+auto_id_prefix_.
 
-    Acceptable values are the same as for the "error" parameter of
-    Python's ``encode`` string method; other values may be defined in
-    applications or in future versions of Python.
+Default: "" (empty).
+Options: ``--id-prefix`` (hidden, intended mainly for programmatic use).
 
-    Default: "strict".  Options: ``--output-encoding-error-handler,
-    --output-encoding, -o``.
+input_encoding
+--------------
 
-_`record_dependencies`
-    Path to a file where Docutils will write a list of files that were
-    required to generate the output, e.g. included files or embedded
-    stylesheets [#dependencies]_. [#pwd]_ The format is one path per
-    line with forward slashes as separator, the encoding is ``utf8``.
+The text encoding for input.
 
-    Set to ``-`` in order to write dependencies to stdout.
+Default: auto-detect (None).  Options: ``--input-encoding, -i``.
 
-    This option is particularly useful in conjunction with programs like
-    ``make`` using ``Makefile`` rules like::
+input_encoding_error_handler
+----------------------------
 
-      ham.html: ham.txt $(shell cat hamdeps.txt)
-        rst2html.py --record-dependencies=hamdeps.txt ham.txt ham.html
+The error handler for undecodable characters in the input. Acceptable
+values include:
 
-    If the filesystem encoding differs from utf8, replace the ``cat``
-    command with a call to a converter, e.g.::
+strict
+    Raise an exception in case of an encoding error.
+replace
+    Replace malformed data with the official Unicode replacement
+    character, U+FFFD.
+ignore
+    Ignore malformed data and continue without further notice.
 
-      $(shell iconv -f utf8 -t latin1 hamdeps.txt)
+Acceptable values are the same as for the "error" parameter of
+Python's ``unicode`` function; other values may be defined in
+applications or in future versions of Python.
 
-    Default: None.  Option: ``--record-dependencies``.
+Default: "strict".
+Options: ``--input-encoding-error-handler, --input-encoding, -i``.
 
-_`report_level`
-    Report system messages at or higher than <level>:
+language_code
+-------------
 
-    1  info
-    2  warning
-    3  error
-    4  severe
-    5  none
+Case-insensitive `language tag`_ as defined in `BCP 47`_.
 
-    Default: warning (2).  Options: ``--report, -r, --verbose, -v,
-    --quiet, -q``.
+Sets the document language, also used for localized directive and
+role names as well as Docutils-generated text.
 
-_`sectnum_xform`
-    Enable or disable automatic section numbering by Docutils
-    (docutils.transforms.parts.SectNum) associated with the `sectnum
-    directive`_.
+A typical language identifier consists of a 2-letter language code
+from `ISO 639`_ (3-letter codes can be used if no 2-letter code
+exists). The language identifier can have an optional subtag,
+typically for variations based on country (from `ISO 3166`_
+2-letter country codes).  Avoid subtags except where they add
+useful distinguishing information. Examples of language tags
+include "fr", "en-GB", "pt_br" (the same as "pt-BR"), and
+"de-1901" (German with pre-1998 spelling).
 
-    If disabled, section numbers might be added to the output by the
-    renderer (e.g. LaTeX or via a CSS style definition).
+The language of document parts can be specified with a
+"language-<language tag>" `class attribute`_, e.g.
+``.. class:: language-el-polyton`` for a quote in polytonic Greek.
 
-    Default: enabled (1).  Options: ``--section-numbering``,
-    ``--no-section-numbering``.
+Default: English ("en").  Options: ``--language, -l``.
 
-    .. _sectnum directive: ../ref/rst/directives.html#sectnum
+.. _class attribute: ../ref/doctree.html#classes
 
-_`source_link`
-    Include a "View document source" link in the document footer.  URL
-    will be relative to the destination.
+output_encoding
+---------------
 
-    Default: don't (None).  Options: ``--source-link, -s,
-    --no-source-link``.
+The text encoding for output.
 
-_`source_url`
-    An explicit URL for a "View document source" link, used verbatim.
+Default: "UTF-8".  Options: ``--output-encoding, -o``.
 
-    Default: compute if source_link (None).  Options: ``--source-url,
-    --no-source-link``.
+output_encoding_error_handler
+-----------------------------
 
-_`strict_visitor`
-    When processing a document tree with the Visitor pattern, raise an
-    error if a writer does not support a node type listed as optional.
-    For transitional development use.
+The error handler for unencodable characters in the output. Acceptable
+values include:
 
-    Default: disabled (None).  Option: ``--strict-visitor`` (hidden,
-    for development use only).
+strict
+    Raise an exception in case of an encoding error.
+replace
+    Replace malformed data with a suitable replacement marker,
+    such as "?".
+ignore
+    Ignore malformed data and continue without further notice.
+xmlcharrefreplace
+    Replace with the appropriate XML character reference, such as
+    "``&#8224;``".
+backslashreplace
+    Replace with backslashed escape sequences, such as "``\u2020``".
 
-_`strip_classes`
-    Comma-separated list of "classes" attribute values to remove from
-    all elements in the document tree.
-    The command line option may be used more than once.
+Acceptable values are the same as for the "error" parameter of
+Python's ``encode`` string method; other values may be defined in
+applications or in future versions of Python.
 
-    .. WARNING:: Potentially dangerous; use with caution.
+Default: "strict".
+Options: ``--output-encoding-error-handler, --output-encoding, -o``.
 
-    Default: disabled (None).  Option: ``--strip-class``.
+record_dependencies
+-------------------
 
-_`strip_comments`
-    Enable the removal of comment elements from the document tree.
+Path to a file where Docutils will write a list of files that were
+required to generate the output, e.g. included files or embedded
+stylesheets [#dependencies]_. [#pwd]_ The format is one path per
+line with forward slashes as separator, the encoding is ``utf8``.
 
-    Default: disabled (None).  Options: ``--strip-comments``,
-    ``--leave-comments``.
+Set to ``-`` in order to write dependencies to stdout.
 
-_`strip_elements_with_classes`
-    Comma-separated list of "classes" attribute values;
-    matching elements are removed from the document tree.
-    The command line option may be used more than once.
+This option is particularly useful in conjunction with programs like
+``make`` using ``Makefile`` rules like::
 
-    .. WARNING:: Potentially dangerous; use with caution.
+  ham.html: ham.txt $(shell cat hamdeps.txt)
+    rst2html.py --record-dependencies=hamdeps.txt ham.txt ham.html
 
-    Default: disabled (None).  Option: ``--strip-element-with-class``.
+If the filesystem encoding differs from utf8, replace the ``cat``
+command with a call to a converter, e.g.::
 
-_`title`
-    The document title as metadata, which does not become part of the
-    document body.  It overrides a document-supplied title.  For
-    example, in HTML output the metadata document title appears in the
-    title bar of the browser window.
+  $(shell iconv -f utf8 -t latin1 hamdeps.txt)
 
-    Default: none.  Option: ``--title``.
+Default: None.  Option: ``--record-dependencies``.
 
-_`toc_backlinks`
-    Enable backlinks from section titles to table of contents entries
-    ("entry"), to the top of the TOC ("top"), or disable ("none").
+report_level
+------------
 
-    Default: "entry".  Options: ``--toc-entry-backlinks,
-    --toc-top-backlinks, --no-toc-backlinks``.
+Report system messages at or higher than <level>:
 
-_`traceback`
-    Enable Python tracebacks when halt-level system messages and other
-    exceptions occur.  Useful for debugging, and essential for issue
-    reports.  Exceptions are allowed to propagate, instead of being
-    caught and reported (in a user-friendly way) by Docutils.
+1  info
+2  warning
+3  error
+4  severe
+5  none
 
-    Default: disabled (None) unless Docutils is run programmatically
-    using the `Publisher Interface`_.  Options: ``--traceback,
-    --no-traceback``.
+Default: warning (2).
+Options: ``--report, -r, --verbose, -v, --quiet, -q``.
 
-    .. _Publisher Interface: ../api/publisher.html
+sectnum_xform
+-------------
 
-_`warning_stream`
-    Path to a file for the output of system messages (warnings)
-    [#pwd]_.
+Enable or disable automatic section numbering by Docutils
+(docutils.transforms.parts.SectNum) associated with the `sectnum
+directive`_.
 
-    Default: stderr (None).  Options: ``--warnings``.
+If disabled, section numbers might be added to the output by the
+renderer (e.g. LaTeX or via a CSS style definition).
+
+Default: enabled (1).
+Options: ``--section-numbering``, ``--no-section-numbering``.
+
+.. _sectnum directive: ../ref/rst/directives.html#sectnum
+
+source_link
+-----------
+
+Include a "View document source" link in the document footer.  URL will
+be relative to the destination.
+
+Default: don't (None).
+Options: ``--source-link, -s, --no-source-link``.
+
+source_url
+----------
+
+An explicit URL for a "View document source" link, used verbatim.
+
+Default: compute if source_link (None).
+Options: ``--source-url, --no-source-link``.
+
+strict_visitor
+--------------
+
+When processing a document tree with the Visitor pattern, raise an
+error if a writer does not support a node type listed as optional. For
+transitional development use.
+
+Default: disabled (None).
+Option: ``--strict-visitor`` (hidden, for development use only).
+
+strip_classes
+-------------
+
+Comma-separated list_ of "classes" attribute values to remove from all
+elements in the document tree. The command line option may be used more
+than once.
+
+.. WARNING:: Potentially dangerous; use with caution.
+
+Default: disabled (None).  Option: ``--strip-class``.
+
+strip_comments
+--------------
+
+Enable the removal of comment elements from the document tree.
+
+Default: disabled (None).
+Options: ``--strip-comments``, ``--leave-comments``.
+
+strip_elements_with_classes
+---------------------------
+
+Comma-separated list_ of "classes" attribute values;
+matching elements are removed from the document tree.
+The command line option may be used more than once.
+
+.. WARNING:: Potentially dangerous; use with caution.
+
+Default: disabled (None).  Option: ``--strip-element-with-class``.
+
+title
+-----
+
+The document title as metadata, which does not become part of the
+document body.  It overrides a document-supplied title.  For
+example, in HTML output the metadata document title appears in the
+title bar of the browser window.
+
+Default: none.  Option: ``--title``.
+
+toc_backlinks
+-------------
+
+Enable backlinks from section titles to table of contents entries
+("entry"), to the top of the TOC ("top"), or disable ("none").
+
+Default: "entry".
+Options: ``--toc-entry-backlinks, --toc-top-backlinks, --no-toc-backlinks``.
+
+traceback
+---------
+
+Enable Python tracebacks when halt-level system messages and other
+exceptions occur.  Useful for debugging, and essential for issue
+reports.  Exceptions are allowed to propagate, instead of being
+caught and reported (in a user-friendly way) by Docutils.
+
+Default: disabled (None) unless Docutils is run programmatically
+using the `Publisher Interface`_.
+Options: ``--traceback, --no-traceback``.
+
+.. _Publisher Interface: ../api/publisher.html
+
+warning_stream
+--------------
+
+Path to a file for the output of system messages (warnings) [#pwd]_.
+
+Default: stderr (None).  Options: ``--warnings``.
 
 
 [parsers]
----------
+=========
 
 Docutils currently supports only one parser, for reStructuredText.
 
 
 [restructuredtext parser]
-`````````````````````````
+-------------------------
 
-_`file_insertion_enabled`
-    Enable or disable directives that insert the contents of external
-    files, such as the "include_" & "raw_".  A "warning" system
-    message (including the directive text) is inserted instead.  (See
-    also raw_enabled_ for another security-relevant setting.)
+file_insertion_enabled
+~~~~~~~~~~~~~~~~~~~~~~
 
-    Default: enabled (1).  Options: ``--file-insertion-enabled,
-    --no-file-insertion``.
+Enable or disable directives that insert the contents of external
+files, such as the "include_" & "raw_".  A "warning" system
+message (including the directive text) is inserted instead.  (See
+also raw_enabled_ for another security-relevant setting.)
 
-    .. _include: ../ref/rst/directives.html#include
-    .. _raw: ../ref/rst/directives.html#raw
+Default: enabled (1).
+Options: ``--file-insertion-enabled, --no-file-insertion``.
 
-_`pep_references`
-    Recognize and link to standalone PEP references (like "PEP 258").
+.. _include: ../ref/rst/directives.html#include
+.. _raw: ../ref/rst/directives.html#raw
 
-    Default: disabled (None); enabled (1) in PEP Reader.  Options:
-    ``--pep-references``.
+pep_references
+~~~~~~~~~~~~~~
 
-_`pep_base_url`
-    Base URL for PEP references.
+Recognize and link to standalone PEP references (like "PEP 258").
 
-    Default: "http://www.python.org/peps/".  Option:
-    ``--pep-base-url``.
+Default: disabled (None); enabled (1) in PEP Reader.
+Options: ``--pep-references``.
 
-_`pep_file_url_template`
-    Template for PEP file part of URL, interpolated with the PEP
-    number and appended to pep_base_url_.
+pep_base_url
+~~~~~~~~~~~~
+Base URL for PEP references.
 
-    Default: "pep-%04d".  Option: ``--pep-file-url``.
+Default: "http://www.python.org/peps/".
+Option: ``--pep-base-url``.
 
-_`raw_enabled`
-    Enable or disable the "raw_" directive.  A "warning" system
-    message (including the directive text) is inserted instead.  (See
-    also file_insertion_enabled_ for another security-relevant
-    setting.)
+pep_file_url_template
+~~~~~~~~~~~~~~~~~~~~~
 
-    Default: enabled (1).  Options: ``--raw-enabled, --no-raw``.
+Template for PEP file part of URL, interpolated with the PEP
+number and appended to pep_base_url_.
 
-_`rfc_references`
-    Recognize and link to standalone RFC references (like "RFC 822").
+Default: "pep-%04d".  Option: ``--pep-file-url``.
 
-    Default: disabled (None); enabled (1) in PEP Reader.  Options:
-    ``--rfc-references``.
+raw_enabled
+~~~~~~~~~~~
 
-_`rfc_base_url`
-    Base URL for RFC references.
+Enable or disable the "raw_" directive.  A "warning" system message
+(including the directive text) is inserted instead.  (See also
+file_insertion_enabled_ for another security-relevant setting.)
 
-    Default: "http://www.faqs.org/rfcs/".  Option: ``--rfc-base-url``.
+Default: enabled (1).  Options: ``--raw-enabled, --no-raw``.
 
-_`tab_width`
-    Number of spaces for hard tab expansion.
+rfc_references
+~~~~~~~~~~~~~~
 
-    Default: 8.  Options: ``--tab-width``.
+Recognize and link to standalone RFC references (like "RFC 822").
 
-_`trim_footnote_reference_space`
-    Remove spaces before footnote references.
+Default: disabled (None); enabled (1) in PEP Reader.
+Options: ``--rfc-references``.
 
-    Default: don't (None); may be overriden by a writer-specific
-    footnote_references__ default though.  Options:
-    ``--trim-footnote-reference-space,
-    --leave-footnote-reference-space``.
+rfc_base_url
+~~~~~~~~~~~~
 
-__ `footnote_references [latex2e writer]`_
+Base URL for RFC references.
 
+Default: "http://www.faqs.org/rfcs/".  Option: ``--rfc-base-url``.
 
-_`syntax_highlight`
-    Token type names used by Pygments_ when parsing contents of the code_
-    directive and role.
+smart_quotes
+~~~~~~~~~~~~
 
-    Supported values:
+Change straight quotation marks to typographic form. `Quote characters`_
+are selected according to the language of the current block element (see
+language_code_). Also changes consequtive runs of hyphen-minus and full
+stops (``---``, ``--``, ``...``) to em-dash, en-dash and ellipsis Unicode
+characters respectively.
 
-    long
-      Use hierarchy of long token type names.
-    short
-      Use short token type names. (For use with
-      `Pygments-generated stylesheets`_.)
-    none
-      No code parsing. Use this to avoid the "Pygments not
-      found" warning when Pygments is not installed.
+Supported values:
 
-    Default: "long".  Option: ``--syntax-highlight``.
+booleans_ (yes/no)
+  Use smart quotes?
 
-    New in Docutils 0.9.
+alt (or "alternative")
+  Use alternative quote set (if defined for the language).
+
+Default: "no". Option: ``--smart-quotes``.
+
+New in Docutils 0.10.
+
+.. _quote characters:
+   http://en.wikipedia.org/wiki/Non-English_usage_of_quotation_marks
+
+syntax_highlight
+~~~~~~~~~~~~~~~~
+
+Token type names used by Pygments_ when parsing contents of the code_
+directive and role.
+
+Supported values:
+
+long
+  Use hierarchy of long token type names.
+short
+  Use short token type names. (For use with
+  `Pygments-generated stylesheets`_.)
+none
+  No code parsing. Use this to avoid the "Pygments not
+  found" warning when Pygments is not installed.
+
+Default: "long".  Option: ``--syntax-highlight``.
+
+New in Docutils 0.9.
 
 .. _Pygments: http://pygments.org/
 .. _code: ../ref/rst/directives.html#code
 .. _Pygments-generated stylesheets:
    http://pygments.org/docs/cmdline/#generating-styles
 
-_`smart_quotes`
-    Change straight quotation marks to typographic form. `Quote characters`_
-    are selected according to the language of the current block element (see
-    language_code_). Also changes consequtive runs of hyphen-minus and full
-    stops (``---``, ``--``, ``...``) to em-dash, en-dash and ellipsis
-    Unicode characters respectively.
+tab_width
+~~~~~~~~~
 
-    Supported values:
+Number of spaces for hard tab expansion.
 
-    booleans_ (yes/no)
-      Use smart quotes?
+Default: 8.  Options: ``--tab-width``.
 
-    alt (or "alternative")
-      Use alternative quote set (if defined for the language).
+trim_footnote_reference_space
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    Default: "no". Option: ``--smart-quotes``.
+Remove spaces before footnote references.
 
-    New in Docutils 0.10.
+Default: don't (None); may be overriden by a writer-specific
+footnote_references__ default though.
 
-.. _quote characters:
-   http://en.wikipedia.org/wiki/Non-English_usage_of_quotation_marks
+Options: ``--trim-footnote-reference-space, --leave-footnote-reference-space``.
+
+__ `footnote_references [latex2e writer]`_
 
 
 [readers]
----------
+=========
 
 
 [standalone reader]
-```````````````````
+-------------------
 
-_`docinfo_xform`
-    Enable or disable the bibliographic field list transform
-    (docutils.transforms.frontmatter.DocInfo).
+docinfo_xform
+~~~~~~~~~~~~~
 
-    Default: enabled (1).  Options: ``--no-doc-info``.
+Enable or disable the bibliographic field list transform
+(docutils.transforms.frontmatter.DocInfo).
 
-_`doctitle_xform`
-    Enable or disable the promotion of a lone top-level section title
-    to document title (and subsequent section title to document
-    subtitle promotion; docutils.transforms.frontmatter.DocTitle).
+Default: enabled (1).  Options: ``--no-doc-info``.
 
-    Default: enabled (1).  Options: ``--no-doc-title``.
+doctitle_xform
+~~~~~~~~~~~~~~
 
-_`sectsubtitle_xform`
+Enable or disable the promotion of a lone top-level section title
+to document title (and subsequent section title to document
+subtitle promotion; docutils.transforms.frontmatter.DocTitle).
 
-    Enable or disable the promotion of the title of a lone subsection
-    to a subtitle (docutils.transforms.frontmatter.SectSubTitle).
+Default: enabled (1).  Options: ``--no-doc-title``.
 
-    Default: disabled (0).  Options: ``--section-subtitles,
-    --no-section-subtitles``.
+sectsubtitle_xform
+~~~~~~~~~~~~~~~~~~
+
+Enable or disable the promotion of the title of a lone subsection
+to a subtitle (docutils.transforms.frontmatter.SectSubTitle).
+
+Default: disabled (0).  Options: ``--section-subtitles,
+--no-section-subtitles``.
 
 
 [pep reader]
-````````````
+------------
 
 The `pep_references`_ and `rfc_references`_ settings
 (`[restructuredtext parser]`_) are set on by default.
 
 
 [python reader]
-```````````````
+---------------
 
-Under construction.
+Not implemented.
 
 
 [writers]
----------
+=========
 
 [docutils_xml writer]
-`````````````````````
+---------------------
 
 .. Caution::
 
@@ -691,300 +779,320 @@ Under construction.
    * The XML declaration carries text encoding information, without which
      standard tools may be unable to read the generated XML.
 
-_`doctype_declaration`
-    Generate XML with a DOCTYPE declaration.
+doctype_declaration
+~~~~~~~~~~~~~~~~~~~
 
-    Default: do (1).  Options: ``--no-doctype``.
+Generate XML with a DOCTYPE declaration.
 
-_`indents`
-    Generate XML with indents and newlines.
+Default: do (1).  Options: ``--no-doctype``.
 
-    Default: don't (None).  Options: ``--indents``.
+indents
+~~~~~~~
 
-_`newlines`
-    Generate XML with newlines before and after tags.
+Generate XML with indents and newlines.
 
-    Default: don't (None).  Options: ``--newlines``.
+Default: don't (None).  Options: ``--indents``.
+
+newlines
+~~~~~~~~
+
+Generate XML with newlines before and after tags.
+
+Default: don't (None).  Options: ``--newlines``.
 
 .. _xml_declaration [docutils_xml writer]:
 
 xml_declaration
-    Generate XML with an XML declaration.  Also defined for the
-    `HTML Writer`__.
+~~~~~~~~~~~~~~~
 
-    Default: do (1).  Options: ``--no-xml-declaration``.
+Generate XML with an XML declaration.  Also defined for the
+`HTML Writer`__.
 
-    __ `xml_declaration [html4css1 writer]`_
+Default: do (1).  Options: ``--no-xml-declaration``.
+
+__ `xml_declaration [html4css1 writer]`_
 
 
 [html4css1 writer]
-``````````````````
+------------------
 
 .. _attribution [html4css1 writer]:
 
 attribution
-    Format for block quote attributions: one of "dash" (em-dash
-    prefix), "parentheses"/"parens", or "none".  Also defined for the
-    `LaTeX Writer`__.
+~~~~~~~~~~~
 
-    Default: "dash".  Options: ``--attribution``.
+Format for block quote attributions: one of "dash" (em-dash
+prefix), "parentheses"/"parens", or "none".  Also defined for the
+`LaTeX Writer`__.
 
-    __ `attribution [latex2e writer]`_
+Default: "dash".  Options: ``--attribution``.
 
-_`cloak_email_addresses`
-    Scramble email addresses to confuse harvesters.  In the reference
-    URI, the "@" will be replaced by %-escapes (as of RFC 1738).  In
-    the visible text (link text) of an email reference, the "@" and
-    all periods (".") will be surrounded by ``<span>`` tags.
-    Furthermore, HTML entities are used to encode these characters in
-    order to further complicate decoding the email address.  For
-    example, "abc@example.org" will be output as::
+__ `attribution [latex2e writer]`_
 
-        <a class="reference" href="mailto:abc&#37;&#52;&#48;example&#46;org">
-        abc<span>&#64;</span>example<span>&#46;</span>org</a>
+cloak_email_addresses
+~~~~~~~~~~~~~~~~~~~~~
 
-    .. Note:: While cloaking email addresses will have little to no
-       impact on the rendering and usability of email links in most
-       browsers, some browsers (e.g. the ``links`` browser) may decode
-       cloaked email addresses incorrectly.
+Scramble email addresses to confuse harvesters.  In the reference
+URI, the "@" will be replaced by %-escapes (as of RFC 1738).  In
+the visible text (link text) of an email reference, the "@" and
+all periods (".") will be surrounded by ``<span>`` tags.
+Furthermore, HTML entities are used to encode these characters in
+order to further complicate decoding the email address.  For
+example, "abc@example.org" will be output as::
 
-    Default: don't cloak (None).  Option: ``--cloak-email-addresses``.
+    <a class="reference" href="mailto:abc&#37;&#52;&#48;example&#46;org">
+    abc<span>&#64;</span>example<span>&#46;</span>org</a>
 
-_`compact_lists`
-    Remove extra vertical whitespace between items of bullet lists and
-    enumerated lists, when list items are all "simple" (i.e., items
-    each contain one paragraph and/or one "simple" sublist only).  The
-    behaviour can be specified directly via "class" attributes (values
-    "compact" and "open") in the document.
+.. Note:: While cloaking email addresses will have little to no
+   impact on the rendering and usability of email links in most
+   browsers, some browsers (e.g. the ``links`` browser) may decode
+   cloaked email addresses incorrectly.
 
-    Default: enabled (1).  Options: ``--compact-lists,
-    --no-compact-lists``.
+Default: don't cloak (None).  Option: ``--cloak-email-addresses``.
 
-_`compact_field_lists`
-    Remove extra vertical whitespace between items of field lists that
-    are "simple" (i.e., all field bodies each contain at most one
-    paragraph).  The behaviour can be specified directly via "class"
-    attributes (values "compact" and "open") in the document.
+compact_lists
+~~~~~~~~~~~~~
 
-    Default: enabled (1).  Options: ``--compact-field-lists,
-    --no-compact-field-lists``.
+Remove extra vertical whitespace between items of bullet lists and
+enumerated lists, when list items are all "simple" (i.e., items
+each contain one paragraph and/or one "simple" sublist only).  The
+behaviour can be specified directly via "class" attributes (values
+"compact" and "open") in the document.
+
+Default: enabled (1).
+Options: ``--compact-lists, --no-compact-lists``.
+
+compact_field_lists
+~~~~~~~~~~~~~~~~~~~
+
+Remove extra vertical whitespace between items of field lists that
+are "simple" (i.e., all field bodies each contain at most one
+paragraph).  The behaviour can be specified directly via "class"
+attributes (values "compact" and "open") in the document.
+
+Default: enabled (1).
+Options: ``--compact-field-lists, --no-compact-field-lists``.
 
 .. _embed_stylesheet [html4css1 writer]:
 
 embed_stylesheet
-    Embed the stylesheet in the output HTML file.  The stylesheet file
-    must specified by the stylesheet_path__ setting and must be
-    accessible during processing.
-    Also defined for the `LaTeX Writer`__.
+~~~~~~~~~~~~~~~~
 
-    Default: enabled.  Options: ``--embed-stylesheet,
-    --link-stylesheet``.
+Embed the stylesheet in the output HTML file.  The stylesheet file
+must specified by the stylesheet_path__ setting and must be
+accessible during processing.
+Also defined for the `LaTeX Writer`__.
 
-    __ `stylesheet_path [html4css1 writer]`_
-    __ `embed_stylesheet [latex2e writer]`_
+Default: enabled.  Options: ``--embed-stylesheet,
+--link-stylesheet``.
 
-_`field_name_limit`
-    The maximum width (in characters) for one-column field names.
-    Longer field names will span an entire row of the table used to
-    render the field list.  0 indicates "no limit".  See also
-    option_limit_.
+__ `stylesheet_path [html4css1 writer]`_
+__ `embed_stylesheet [latex2e writer]`_
 
-    Default: 14 characters.  Option: ``--field-name-limit``.
+field_name_limit
+~~~~~~~~~~~~~~~~
+
+The maximum width (in characters) for one-column field names. Longer
+field names will span an entire row of the table used to render the field
+list.  0 indicates "no limit".  See also option_limit_.
+
+Default: 14 (i.e. 14 characters).  Option: ``--field-name-limit``.
 
 .. _footnote_references [html4css1 writer]:
 
 footnote_references
-    Format for footnote references, one of "superscript" or
-    "brackets".  Also defined for the `LaTeX Writer`__.
+~~~~~~~~~~~~~~~~~~~
 
-    Overrides [#override]_ trim_footnote_reference_space_, if
-    applicable. [#footnote_space]_
+Format for footnote references, one of "superscript" or
+"brackets".  Also defined for the `LaTeX Writer`__.
 
-    Default: "brackets".  Option: ``--footnote-references``.
+Overrides [#override]_ trim_footnote_reference_space_, if
+applicable. [#footnote_space]_
 
-    __ `footnote_references [latex2e writer]`_
+Default: "brackets".  Option: ``--footnote-references``.
 
-_`initial_header_level`
-    The initial level for header elements.  This does not affect the
-    document title & subtitle; see doctitle_xform_.
+__ `footnote_references [latex2e writer]`_
 
-    Default: 1 (for "<h1>").  Option: ``--initial-header-level``.
+initial_header_level
+~~~~~~~~~~~~~~~~~~~~
 
-_`math_output`
-    The format of mathematical content (`math directive`_ and role) in
-    the output document. Supported values are (case insensitive):
+The initial level for header elements.  This does not affect the
+document title & subtitle; see doctitle_xform_.
 
-    :MathJax:
-      Format math for display with MathJax_, a JavaScript-based math
-      rendering engine that uses HTML/CSS, JavaScript, and unicode
-      fonts for high-quality typesetting that is scalable and prints
-      at full resolution.
+Default: 1 (for "<h1>").  Option: ``--initial-header-level``.
 
-      Pro:
-        Works 'out of the box' across multiple browsers and platforms.
+math_output
+~~~~~~~~~~~
 
-        Supports a large subset of LaTeX math commands and constructs
-        (see http://www.mathjax.org/docs/1.1/tex.html).
+The format of mathematical content (`math directive`_ and role) in
+the output document. Supported values are (case insensitive):
 
-      Con:
-        Requires an Internet connection (or a local MathJax
-        installation and configuration).
+:MathJax:
+  Format math for display with MathJax_, a JavaScript-based math
+  rendering engine that uses HTML/CSS, JavaScript, and unicode
+  fonts for high-quality typesetting that is scalable and prints
+  at full resolution.
 
-        Downloads JavaScript code from a third-party site.
+  Pro:
+    Works 'out of the box' across multiple browsers and platforms.
 
-      A custom URI can be appended after whitespace,
-      for example a local installation ::
+    Supports a large subset of LaTeX math commands and constructs
+    (see http://www.mathjax.org/docs/1.1/tex.html).
 
-        math-output: MathJax file:/usr/share/javascript/mathjax/MathJax.js
+  Con:
+    Requires an Internet connection (or a local MathJax
+    installation and configuration).
 
-      or a URI to `access the MathJax CDN using a https secure
-      connection`__.
+    Downloads JavaScript code from a third-party site.
 
-      __ http://www.mathjax.org/resources/faqs/#problem-https
+  A custom URI can be appended after whitespace,
+  for example a local installation ::
 
-    :HTML:
-      Format math in standard HTML enhanced by CSS rules
+    math-output: MathJax file:/usr/share/javascript/mathjax/MathJax.js
 
-      Requires the ``math.css`` stylesheet (stored in the same
-      installation-dependent directory as the `default stylesheet`__).
+  or a URI to `access the MathJax CDN using a https secure
+  connection`__.
 
-      .. __: `stylesheet_path [html4css1 writer]`_
+  __ http://www.mathjax.org/resources/faqs/#problem-https
 
-    :MathML:
-      Embed math content as presentational MathML_.
+:HTML:
+  Format math in standard HTML enhanced by CSS rules
 
-      Pro:
-        The W3C recommendation for math on the web.
+  Requires the ``math.css`` stylesheet (stored in the same
+  installation-dependent directory as the `default stylesheet`__).
 
-        Self-contained documents (no JavaScript, no external downloads).
+  .. __: `stylesheet_path [html4css1 writer]`_
 
-      Con:
-        Docutil's latex2mathml converter supports only a small
-        subset of LaTeX syntax.
+:MathML:
+  Embed math content as presentational MathML_.
 
-        With the "html4css1" writer, the resulting HTML document does
-        not validate, as there is no DTD for MathML + XHTML
-        Transitional. However, MathML-enabled browsers will render it
-        fine.
+  Pro:
+    The W3C recommendation for math on the web.
 
-    :LaTeX:
-      Include literal LaTeX code.
+    Self-contained documents (no JavaScript, no external downloads).
 
-      The failsave fallback.
+  Con:
+    Docutil's latex2mathml converter supports only a small
+    subset of LaTeX syntax.
 
-    Default: MathJax  Option: ``--math-output``.
+    With the "html4css1" writer, the resulting HTML document does
+    not validate, as there is no DTD for MathML + XHTML
+    Transitional. However, MathML-enabled browsers will render it
+    fine.
 
-    New in Docutils 0.8.
+:LaTeX:
+  Include literal LaTeX code.
 
-    .. _math directive: ../ref/rst/directives.html#math
-    .. _MathJax: http://www.mathjax.org/
-    .. _MathPlayer: http://www.dessci.com/en/products/mathplayer/
-    .. _MathML: http://www.w3.org/TR/MathML/
+  The failsave fallback.
 
-_`option_limit`
-    The maximum width (in characters) for options in option lists.
-    Longer options will span an entire row of the table used to render
-    the option list.  0 indicates "no limit".  See also
-    field_name_limit_.
+Default: MathJax.  Option: ``--math-output``.
 
-    Default: 14 characters.  Option: ``--option-limit``.
+New in Docutils 0.8.
+
+.. _math directive: ../ref/rst/directives.html#math
+.. _MathJax: http://www.mathjax.org/
+.. _MathPlayer: http://www.dessci.com/en/products/mathplayer/
+.. _MathML: http://www.w3.org/TR/MathML/
+
+option_limit
+~~~~~~~~~~~~
+
+The maximum width (in characters) for options in option lists.
+Longer options will span an entire row of the table used to render
+the option list.  0 indicates "no limit".  See also
+field_name_limit_.
+
+Default: 14 (i.e. 14 characters).  Option: ``--option-limit``.
 
 .. _stylesheet [html4css1 writer]:
 
 stylesheet
-    A comma-separated list of CSS stylesheet URLs, used verbatim.
-    Also defined for the `LaTeX Writer`__.
+~~~~~~~~~~
 
-    Overrides also stylesheet-path__. [#override]_
+A comma-separated list of CSS stylesheet URLs, used verbatim.
+Also defined for the `LaTeX Writer`__.
 
-    Default: None.  Options: ``--stylesheet``.
+Overrides also stylesheet-path__. [#override]_
 
-    __ `stylesheet [latex2e writer]`_
-    __ `stylesheet_path [html4css1 writer]`_
+Default: None.  Options: ``--stylesheet``.
+
+__ `stylesheet [latex2e writer]`_
+__ `stylesheet_path [html4css1 writer]`_
 
 .. _stylesheet_path [html4css1 writer]:
 
 stylesheet_path
-    A comma-separated list of paths [#pwd]_ to CSS stylesheets.
-    If embed_stylesheet__ is False, paths are rewritten relative to the
-    output HTML file. Also defined for the `LaTeX Writer`__.
+~~~~~~~~~~~~~~~
 
-    Also overrides "stylesheet". [#override]_
-    Pass an empty string (to either "stylesheet" or "stylesheet_path") to
-    deactivate stylesheet inclusion.
+A comma-separated list of paths [#pwd]_ to CSS stylesheets.
+If embed_stylesheet__ is False, paths are rewritten relative to the
+output HTML file. Also defined for the `LaTeX Writer`__.
 
-    Default: "html4css1.css" in the docutils/writers/html4css1/
-    directory (installed automatically; for the exact machine-specific
-    path, use the ``--help`` option).  Options: ``--stylesheet-path``.
+Also overrides "stylesheet". [#override]_
+Pass an empty string (to either "stylesheet" or "stylesheet_path") to
+deactivate stylesheet inclusion.
 
-    __ `embed_stylesheet [html4css1 writer]`_
-    __ `stylesheet_path [latex2e writer]`_
+Default: "html4css1.css" in the docutils/writers/html4css1/
+directory (installed automatically; for the exact machine-specific
+path, use the ``--help`` option).  Options: ``--stylesheet-path``.
+
+__ `embed_stylesheet [html4css1 writer]`_
+__ `stylesheet_path [latex2e writer]`_
 
 .. _table_style [html4css1 writer]:
 
 table_style
-    Added to standard table classes to allow styling with CSS.
-    The default sylesheet defines:
+~~~~~~~~~~~
 
-    borderless
-      no borders around the table.
+Added to standard table classes to allow styling with CSS.
+The default sylesheet defines:
 
-    .. TODO: booktabs
-               a line above and below the table and one after the head.
+borderless
+  no borders around the table.
 
-    Default: "".  Option: ``--table-style``.
+.. TODO: booktabs
+           a line above and below the table and one after the head.
+
+Default: "".  Option: ``--table-style``.
 
 .. _template [html4css1 writer]:
 
 template
-    Path to template file, which must be encoded in UTF-8 [#pwd]_.
-    Also defined for the `LaTeX Writer`__.
+~~~~~~~~
 
-    Default: "template.txt" in the docutils/writers/html4css1/
-    directory (installed automatically; for the exact machine-specific
-    path, use the ``--help`` option).  Options: ``--template``.
+Path to template file, which must be encoded in UTF-8 [#pwd]_.
+Also defined for the `LaTeX Writer`__.
 
-    __ `template [latex2e writer]`_
+Default: "template.txt" in the docutils/writers/html4css1/
+directory (installed automatically; for the exact machine-specific
+path, use the ``--help`` option).  Options: ``--template``.
+
+__ `template [latex2e writer]`_
 
 .. _xml_declaration [html4css1 writer]:
 
 xml_declaration
-    Generate XML with an XML declaration.  Also defined for the
-    `Docutils XML Writer`__.
+~~~~~~~~~~~~~~~
 
-    .. Caution:: The XML declaration carries text encoding
-       information, without which standard tools may be unable to read
-       the generated XML.
+Generate XML with an XML declaration.  Also defined for the
+`Docutils XML Writer`__.
 
-    Default: do (1).  Options: ``--no-xml-declaration``.
+.. Caution:: The XML declaration carries text encoding
+   information, without which standard tools may be unable to read
+   the generated XML.
 
-    __ `xml_declaration [docutils_xml writer]`_
+Default: do (1).  Options: ``--no-xml-declaration``.
+
+__ `xml_declaration [docutils_xml writer]`_
 
 
 [pep_html writer]
-.................
+-----------------
 
 The PEP/HTML Writer derives from the standard HTML Writer, and shares
 all settings defined in the `[html4css1 writer]`_ section.  The
 "[html4css1 writer]" section of configuration files is processed
 before the "[pep_html writer]" section.
-
-_`no_random`
-    Do not use a random banner image.  Mainly used to get predictable
-    results when testing.
-
-    Default: random enabled (None).  Options: ``--no-random``
-    (hidden).
-
-_`pep_home`
-    Home URL prefix for PEPs.
-
-    Default: current directory (".").  Options: ``--pep-home``.
-
-_`python_home`
-    Python's home URL.
-
-    Default: parent directory ("..").  Options: ``--python-home``.
 
 The PEP/HTML Writer's default for the following settings differ from
 those of the standard HTML Writer:
@@ -998,56 +1106,34 @@ those of the standard HTML Writer:
   directory.  For the exact machine-specific path, use the ``--help``
   option.
 
+no_random
+~~~~~~~~~
+Do not use a random banner image.  Mainly used to get predictable
+results when testing.
+
+Default: random enabled (None).  Options: ``--no-random`` (hidden).
+
+pep_home
+~~~~~~~~
+
+Home URL prefix for PEPs.
+
+Default: current directory (".").  Options: ``--pep-home``.
+
+python_home
+~~~~~~~~~~~
+Python's home URL.
+
+Default: parent directory ("..").  Options: ``--python-home``.
+
 
 [s5_html writer]
-.................
+----------------
 
 The S5/HTML Writer derives from the standard HTML Writer, and shares
 all settings defined in the `[html4css1 writer]`_ section.  The
 "[html4css1 writer]" section of configuration files is processed
 before the "[s5_html writer]" section.
-
-_`hidden_controls`
-    Auto-hide the presentation controls in slideshow mode, or or keep
-    them visible at all times.
-
-    Default: auto-hide (1).  Options: ``--hidden-controls``,
-    ``--visible-controls``.
-
-_`current_slide`
-    Enable or disable the current slide indicator ("1/15").
-
-    Default: disabled (None).  Options: ``--current-slide``,
-    ``--no-current-slide``.
-
-_`overwrite_theme_files`
-    Allow or prevent the overwriting of existing theme files in the
-    ``ui/<theme>`` directory.  This has no effect if "theme_url_" is
-    used.
-
-    Default: keep existing theme files (None).  Options:
-    ``--keep-theme-files``, ``--overwrite-theme-files``.
-
-_`theme`
-    Name of an installed S5 theme, to be copied into a ``ui/<theme>``
-    subdirectory, beside the destination file (output HTML).  Note
-    that existing theme files will not be overwritten; the existing
-    theme directory must be deleted manually.
-    Also overrides the "theme_url_" setting. [#override]_
-
-    Default: "default".  Option: ``--theme``.
-
-_`theme_url`
-    The URL of an S5 theme directory.  The destination file (output
-    HTML) will link to this theme; nothing will be copied.  Also overrides
-    the "theme_" setting. [#override]_
-
-    Default: None.  Option: ``--theme-url``.
-
-_`view_mode`
-    The initial view mode, either "slideshow" or "outline".
-
-    Default: "slidewhow".  Option: ``--view-mode``.
 
 The S5/HTML Writer's default for the following settings differ
 from those of the standard HTML Writer:
@@ -1060,270 +1146,359 @@ from those of the standard HTML Writer:
   option.
 
 
+hidden_controls
+~~~~~~~~~~~~~~~
+
+Auto-hide the presentation controls in slideshow mode, or or keep
+them visible at all times.
+
+Default: auto-hide (1).  Options: ``--hidden-controls``,
+``--visible-controls``.
+
+current_slide
+~~~~~~~~~~~~~
+
+Enable or disable the current slide indicator ("1/15").
+
+Default: disabled (None).  Options: ``--current-slide``,
+``--no-current-slide``.
+
+overwrite_theme_files
+~~~~~~~~~~~~~~~~~~~~~
+
+Allow or prevent the overwriting of existing theme files in the
+``ui/<theme>`` directory.  This has no effect if "theme_url_" is
+used.
+
+Default: keep existing theme files (None).  Options:
+``--keep-theme-files``, ``--overwrite-theme-files``.
+
+theme
+~~~~~
+
+Name of an installed S5 theme, to be copied into a ``ui/<theme>``
+subdirectory, beside the destination file (output HTML).  Note
+that existing theme files will not be overwritten; the existing
+theme directory must be deleted manually.
+Also overrides the "theme_url_" setting. [#override]_
+
+Default: "default".  Option: ``--theme``.
+
+theme_url
+~~~~~~~~~
+The URL of an S5 theme directory.  The destination file (output
+HTML) will link to this theme; nothing will be copied.  Also overrides
+the "theme_" setting. [#override]_
+
+Default: None.  Option: ``--theme-url``.
+
+view_mode
+~~~~~~~~~
+
+The initial view mode, either "slideshow" or "outline".
+
+Default: "slidewhow".  Option: ``--view-mode``.
+
+
 [latex2e writer]
-````````````````
+----------------
 
-_`use_latex_toc`
-    To get pagenumbers in the table of contents the table of contents
-    must be generated by LaTeX. Usually latex must be run twice to get
-    numbers correct.
+use_latex_toc
+~~~~~~~~~~~~~
 
-    Default: on.  Options: ``--use-latex-toc, --use-docutils-toc``.
+To get pagenumbers in the table of contents the table of contents
+must be generated by LaTeX. Usually latex must be run twice to get
+numbers correct.
 
-_`use_latex_docinfo`
-    Attach author and date to the document title
-    instead of the document info table.
+Default: on.  Options: ``--use-latex-toc, --use-docutils-toc``.
 
-    Default: off.  Options: ``--use-latex-docinfo, --use-docutils-docinfo``
+use_latex_docinfo
+~~~~~~~~~~~~~~~~~
 
-_`docutils_footnotes`
-    Use the Docutils-specific macros ``\DUfootnote`` and
-    ``\DUfootnotetext`` for footnotes.
+Attach author and date to the document title
+instead of the document info table.
 
-    Default: on.  Option: ``--docutils-footnotes``.
+Default: off.  Options: ``--use-latex-docinfo, --use-docutils-docinfo``.
 
-_`use_latex_footnotes`
-    Backwards-compatibility alias for docutils_footnotes_ (deprecated).
+docutils_footnotes
+~~~~~~~~~~~~~~~~~~
+Use the Docutils-specific macros ``\DUfootnote`` and
+``\DUfootnotetext`` for footnotes.
 
-    *Note*: the planned new option _`latex_footnotes` will use the
-    ``\footnote`` command and footnote numbering by LaTeX.
+Default: on.  Option: ``--docutils-footnotes``.
 
-_`figure_footnotes`
-    Typeset footnote text in a figure float.
-    This may lead to footnotes, citations, and figures being
-    mixed at page foot.
+figure_footnotes
+~~~~~~~~~~~~~~~~
 
-    *Deprecated:* This setting will be removed in a future Docutils
-    version.
+Typeset footnote text in a figure float. This may lead to footnotes,
+citations, and figures being mixed at page foot.
 
-    Default: off.  Option: ``--figure-footnotes``.
+*Deprecated:* This setting will be removed in a future Docutils
+version.
 
-_`use_latex_citations`
-    Use \cite for citations instead of a simulation with figure-floats.
+Default: off.  Option: ``--figure-footnotes``.
 
-    Default: off.  Options: ``--use-latex-citations, --figure-citations``.
+use_latex_citations
+~~~~~~~~~~~~~~~~~~~
 
-_`use_latex_abstract`
-    Use LaTeX abstract environment for the document's abstract.
+Use \cite for citations instead of a simulation with figure-floats.
 
-    Default: off.  Options: ``--use-latex-abstract, --topic-abstract``.
+Default: off.  Options: ``--use-latex-citations, --figure-citations``.
 
-_`hyperlink_color`
-    Color of any hyperlinks embedded in text.
+use_latex_abstract
+~~~~~~~~~~~~~~~~~~
 
-    * "0" or "false" disable coloring of links. (Links will be marked
-      by red boxes that are not printed),
-    * "black" results in “invisible“ links,
+Use LaTeX abstract environment for the document's abstract.
 
-    Set hyperref_options_ to "draft" to completely disable
-    hyperlinking.
+Default: off.  Options: ``--use-latex-abstract, --topic-abstract``.
 
-    Default: "blue".  Option: ``--hyperlink-color``.
+hyperlink_color
+~~~~~~~~~~~~~~~
 
-_`hyperref_options`
-    Options for the `hyperref TeX package`_. If hyperlink_color_ is
-    not "false", the expansion of ::
+Color of any hyperlinks embedded in text.
 
-      'colorlinks=true,linkcolor=%s,urlcolor=%s' % (
-         hyperlink_color, self.hyperlink_color
+* "0" or "false" disable coloring of links. (Links will be marked
+  by red boxes that are not printed),
+* "black" results in “invisible“ links,
 
-    is prepended. For documents typeset in Cyrillic script,
-    ``--hyperref-options=unicode`` is recommended.
+Set hyperref_options_ to "draft" to completely disable hyperlinking.
 
-    Default: "".   Option: ``--hyperref-options``.
+Default: "blue".  Option: ``--hyperlink-color``.
 
-    .. _hyperref TeX package: http://tug.org/applications/hyperref/
+hyperref_options
+~~~~~~~~~~~~~~~~
 
-_`documentclass`
-    Specify latex documentclass.
+Options for the `hyperref TeX package`_. If hyperlink_color_ is
+not "false", the expansion of ::
 
-    Default: "article".  Option: ``--documentclass``.
+  'colorlinks=true,linkcolor=%s,urlcolor=%s' % (
+     hyperlink_color, self.hyperlink_color
 
-_`documentoptions`
-    Specify document options.  Multiple options can be given, separated by
-    commas.
+is prepended.
 
-    Default: "a4paper".  Option: ``--documentoptions``.
+Default: "".   Option: ``--hyperref-options``.
 
-_`font_encoding`
-    Specify LaTeX font encoding. Multiple options can be given, separated
-    by commas. Possible values are "", "T1", "OT1", "LGR,T1" or any other
-    combination of `LaTeX font encodings`_.
+.. _hyperref TeX package: http://tug.org/applications/hyperref/
 
-    Default: "T1".  Option: ``--font-encoding``.
+documentclass
+~~~~~~~~~~~~~
 
-    .. _LaTeX font encodings:
-       http://mirror.ctan.org/macros/latex/doc/encguide.pdf
+Specify latex documentclass.
+
+Default: "article".  Option: ``--documentclass``.
+
+documentoptions
+~~~~~~~~~~~~~~~
+
+Specify document options.  Multiple options can be given, separated by
+commas.
+
+Default: "a4paper".  Option: ``--documentoptions``.
+
+font_encoding
+~~~~~~~~~~~~~
+
+Specify LaTeX font encoding. Multiple options can be given, separated by
+commas. The last value becomes the document default.
+Possible values are "", "T1", "OT1", "LGR,T1" or any other combination of
+`LaTeX font encodings`_.
+
+Default: "T1".  Option: ``--font-encoding``.
+
+.. _LaTeX font encodings:
+   http://mirror.ctan.org/macros/latex/doc/encguide.pdf
 
 .. _embed_stylesheet [latex2e writer]:
 
 embed_stylesheet
-    Embed the stylesheet(s) in the header of the output file.  The
-    stylesheets must be accessible during processing.  Currently, this
-    fails if the file is not available via the given path (i.e. the
-    file is *not* searched in the `TeX input path`_).
-    Also defined for the `HTML Writer`__ (with default *on*).
+~~~~~~~~~~~~~~~~
 
-    Default: off.  Options: ``--embed-stylesheet, --link-stylesheet``.
+Embed the stylesheet(s) in the header of the output file.  The
+stylesheets must be accessible during processing.  Currently, this
+fails if the file is not available via the given path (i.e. the
+file is *not* searched in the `TeX input path`_).
+Also defined for the `HTML Writer`__ (with default *on*).
 
-    __ `embed_stylesheet [html4css1 writer]`_
+Default: off.  Options: ``--embed-stylesheet, --link-stylesheet``.
+
+__ `embed_stylesheet [html4css1 writer]`_
 
 .. _stylesheet [latex2e writer]:
 
 stylesheet
-    A comma-separated list of style files.
-    Also defined for the `HTML Writer`__.
+~~~~~~~~~~
 
-    Overrides also stylesheet_path__. [#override]_
+A comma-separated list_ of style files.
+Also defined for the `HTML Writer`__.
 
-    If `embed_stylesheet`__ is False (default), the stylesheet files are
-    referenced with ``\usepackage`` (extension ``.sty`` or no extension) or
-    ``\input`` (any other extension).
+Overrides also stylesheet_path__. [#override]_
 
-    LaTeX will search the specified files in the `TeX input path`_.
+If `embed_stylesheet`__ is False (default), the stylesheet files are
+referenced with ``\usepackage`` (extension ``.sty`` or no extension) or
+``\input`` (any other extension).
 
-    Default: no stylesheet ("").  Option: ``--stylesheet``.
+LaTeX will search the specified files in the `TeX input path`_.
 
-    __ `stylesheet_path [latex2e writer]`_
-    __ `embed_stylesheet [latex2e writer]`_
-    __ `stylesheet [html4css1 writer]`_
-    .. _TeX input path:
-       http://www.tex.ac.uk/cgi-bin/texfaq2html?label=what-TDS
+Default: no stylesheet ("").  Option: ``--stylesheet``.
+
+__ `stylesheet_path [latex2e writer]`_
+__ `embed_stylesheet [latex2e writer]`_
+__ `stylesheet [html4css1 writer]`_
+.. _TeX input path:
+   http://www.tex.ac.uk/cgi-bin/texfaq2html?label=what-TDS
 
 
 .. _stylesheet_path [latex2e writer]:
 
 stylesheet_path
-    Similar to stylesheet__, however paths [#pwd]_ are rewritten relative to
-    the output file (if there is a common part in the given path and the
-    output file path). Also defined for the `HTML Writer`__.
+~~~~~~~~~~~~~~~
 
-    Run ``latex`` from the directory containing the output file. Fails for
-    files in the TEXINPUTS path; use stylesheet__ in this case.
+Similar to stylesheet__, however paths [#pwd]_ are rewritten relative to
+the output file (if there is a common part in the given path and the
+output file path). Also defined for the `HTML Writer`__.
 
-    Also overrides stylesheet__. [#override]_
+Run ``latex`` from the directory containing the output file. Fails for
+files in the TEXINPUTS path; use stylesheet__ in this case.
 
-    Default: no stylesheet ("").  Option: ``--stylesheet-path``.
+Also overrides stylesheet__. [#override]_
 
-    __ `stylesheet [latex2e writer]`_
-    __ `stylesheet_path [html4css1 writer]`_
-    __
-    __ `stylesheet [latex2e writer]`_
+Default: no stylesheet ("").  Option: ``--stylesheet-path``.
+
+__ `stylesheet [latex2e writer]`_
+__ `stylesheet_path [html4css1 writer]`_
+__
+__ `stylesheet [latex2e writer]`_
 
 
-_`latex_preamble`
-    LaTeX code that will be inserted in the document preamble.
-    Can be used to load packages with options or (re-) define LaTeX
-    macros without writing a custom style file (new in Docutils 0.7).
+latex_preamble
+~~~~~~~~~~~~~~
 
-    Default: Load the "PDF standard fonts" (Times, Helvetica,
-    Courier)::
+LaTeX code that will be inserted in the document preamble.
+Can be used to load packages with options or (re-) define LaTeX
+macros without writing a custom style file (new in Docutils 0.7).
 
-      \usepackage{mathptmx} % Times
-      \usepackage[scaled=.90]{helvet}
-      \usepackage{courier}
+Default: Load the "PDF standard fonts" (Times, Helvetica,
+Courier)::
 
-    Option: ``--latex-preamble``
+  \usepackage{mathptmx} % Times
+  \usepackage[scaled=.90]{helvet}
+  \usepackage{courier}
+
+Option: ``--latex-preamble``.
 
 
 .. _template [latex2e writer]:
 
 template
-    Path to template file, which must be encoded in UTF-8 [#pwd]_.
-    Also defined for the `HTML Writer`__.
+~~~~~~~~
 
-    Default: "default.tex" in the docutils/writers/latex2e/
-    directory (installed automatically; for the exact machine-specific
-    path, use the ``--help`` option).  Options: ``--template``.
+Path to template file, which must be encoded in UTF-8 [#pwd]_.
+Also defined for the `HTML Writer`__.
 
-    __ `template [html4css1 writer]`_
+Default: "default.tex" in the docutils/writers/latex2e/
+directory (installed automatically; for the exact machine-specific
+path, use the ``--help`` option).  Options: ``--template``.
+
+__ `template [html4css1 writer]`_
 
 .. _footnote_references [latex2e writer]:
 
 footnote_references
-    Format for footnote references: one of "superscript" or
-    "brackets".  Also defined for the `HTML Writer`__.
+~~~~~~~~~~~~~~~~~~~
 
-    Overrides [#override]_ trim_footnote_reference_space_, if
-    applicable [#footnote_space]_.
+Format for footnote references: one of "superscript" or
+"brackets".  Also defined for the `HTML Writer`__.
 
-    Default: "superscript".  Option: ``--footnote-references``.
+Overrides [#override]_ trim_footnote_reference_space_, if
+applicable [#footnote_space]_.
 
-    __ `footnote_references [html4css1 writer]`_
+Default: "superscript".  Option: ``--footnote-references``.
+
+__ `footnote_references [html4css1 writer]`_
 
 .. _attribution [latex2e writer]:
 
 attribution
-    Format for block quote attributions, the same as for the
-    html-writer: one of "dash" (em-dash prefix),
-    "parentheses"/"parens" or "none".  Also defined for the `HTML
-    Writer`__.
+~~~~~~~~~~~
 
-    Default: "dash".  Option: ``--attribution``.
+Format for block quote attributions, the same as for the `HTML writer`__:
+one of "dash" (em-dash prefix), "parentheses"/"parens" or "none".
 
-    __ `attribution [html4css1 writer]`_
+Default: "dash".  Option: ``--attribution``.
 
-_`compound_enumerators`
-    Enable or disable compound enumerators for nested enumerated lists
-    (e.g. "1.2.a.ii").
+__ `attribution [html4css1 writer]`_
 
-    Default: disabled (None).  Options: ``--compound-enumerators``,
-    ``--no-compound-enumerators``.
+compound_enumerators
+~~~~~~~~~~~~~~~~~~~~
 
-_`literal_block_env`
-    When possibile\ [#]_, use the specified environment for literal-blocks.
+Enable or disable compound enumerators for nested enumerated lists
+(e.g. "1.2.a.ii").
 
-    Default: "" (quoting of whitespace and special chars)
-    Option: ``--literal-block-env``
+Default: disabled (None).
+Options: ``--compound-enumerators``, ``--no-compound-enumerators``.
 
-   .. [#] A literal-block element, when processed by a Docutils writer might
-      have it's origin in a markup with "::" syntax or a "..
-      parsed-literal::" directive.
+literal_block_env
+~~~~~~~~~~~~~~~~~
 
-      A LaTeX verbatim environment is only usable if there is no other
-      markup contained in the literal-block.
+When possibile\ [#]_, use the specified environment for literal-blocks.
+
+Default: "" (quoting of whitespace and special chars).
+Option: ``--literal-block-env``.
+
+.. [#] A literal-block element, when processed by a Docutils writer might
+   have it's origin in literal block following "::" or a 
+   ``.. parsed-literal::`` directive.
+
+   A LaTeX verbatim environment is only usable if there is no other
+   markup contained in the literal-block.
 
 
-_`section_prefix_for_enumerators`
-    Enable or disable section ("." subsection ...) prefixes for
-    compound enumerators.  This has no effect unless
-    `compound_enumerators`_ are enabled.
+section_prefix_for_enumerators
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    Default: disabled (None).  Options:
-    ``--section-prefix-for-enumerators``,
-    ``--no-section-prefix-for-enumerators``.
+Enable or disable section ("." subsection ...) prefixes for
+compound enumerators.  This has no effect unless
+`compound_enumerators`_ are enabled.
 
-_`section_enumerator_separator`
-    The separator between section number prefix and enumerator for
-    compound enumerated lists (see `compound_enumerators`_).
+Default: disabled (None).
+Options: ``--section-prefix-for-enumerators``, 
+``--no-section-prefix-for-enumerators``.
 
-    Generally it isn't recommended to use both sub-sections and nested
-    enumerated lists with compound enumerators.  This setting avoids
-    ambiguity in the situation where a section "1" has a list item
-    enumerated "1.1", and subsection "1.1" has list item "1".  With a
-    separator of ".", these both would translate into a final compound
-    enumerator of "1.1.1".  With a separator of "-", we get the
-    unambiguous "1-1.1" and "1.1-1".
+section_enumerator_separator
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    Default: "-".  Option: ``--section-enumerator-separator``.
+The separator between section number prefix and enumerator for
+compound enumerated lists (see `compound_enumerators`_).
+
+Generally it isn't recommended to use both sub-sections and nested
+enumerated lists with compound enumerators.  This setting avoids
+ambiguity in the situation where a section "1" has a list item
+enumerated "1.1", and subsection "1.1" has list item "1".  With a
+separator of ".", these both would translate into a final compound
+enumerator of "1.1.1".  With a separator of "-", we get the
+unambiguous "1-1.1" and "1.1-1".
+
+Default: "-".  Option: ``--section-enumerator-separator``.
 
 .. _table_style [latex2e writer]:
 
 table_style
-    Specify the drawing of separation lines.
-    Supported values:
+~~~~~~~~~~~
 
-    standard
-      lines around and between cells.
-    booktabs
-      a line above and below the table and one after the head.
-    borderless
-      no lines.
+Specify the drawing of separation lines.
+Supported values:
 
-    Default: "standard".  Option: ``--table-style``.
+standard
+  lines around and between cells.
+booktabs
+  a line above and below the table and one after the head.
+borderless
+  no lines.
+
+Default: "standard".  Option: ``--table-style``.
 
 [xetex writer]
-.................
+--------------
 
 The xetex writer derives from the latex2e writer, and shares
 all settings defined in the `[latex2e writer]`_ section.  The
@@ -1333,169 +1508,209 @@ before the "[xetex writer]" section.
 The following settings differ from those of the latex2e writer:
 
 font_encoding
-    Disabled as XeTeX uses Unicode-encoded fonts.
+    Disabled  (XeTeX uses Unicode-encoded fonts).
 
 .. _latex_preamble [xetex writer]:
 
 latex_preamble
-    LaTeX code that will be inserted in the document preamble.
+~~~~~~~~~~~~~~
 
-    Default:
-      Font setup for `Linux Libertine`_,::
+LaTeX code that will be inserted in the document preamble.
 
-        % Linux Libertine (free, wide coverage, not only for Linux)
-        \setmainfont{Linux Libertine O}
-        \setsansfont{Linux Biolinum O}
-        \setmonofont[HyphenChar=None]{DejaVu Sans Mono}
+Default:
+  Font setup for `Linux Libertine`_,::
 
-      The optional argument ``HyphenChar=None`` to the monospace font
-      prevents word hyphenation in literal text.
+    % Linux Libertine (free, wide coverage, not only for Linux)
+    \setmainfont{Linux Libertine O}
+    \setsansfont{Linux Biolinum O}
+    \setmonofont[HyphenChar=None]{DejaVu Sans Mono}
+
+  The optional argument ``HyphenChar=None`` to the monospace font
+  prevents word hyphenation in literal text.
 
 
-    Option: ``--latex-preamble``
+Option: ``--latex-preamble``.
 
-    .. _Linux Libertine: http://www.linuxlibertine.org/
+.. _Linux Libertine: http://www.linuxlibertine.org/
 
 .. _template [xetex writer]:
 
 template
-    Path to template file.
+~~~~~~~~
 
-    Default: "xelatex.tex" in the ``docutils/writers/latex2e/``
-    directory (installed automatically; for the exact machine-specific
-    path, use the ``--help`` option).  Options: ``--template``.
+Path to template file.
 
+Default: "xelatex.tex" in the ``docutils/writers/latex2e/``
+directory (installed automatically; for the exact machine-specific
+path, use the ``--help`` option).  Options: ``--template``.
 
 
 [odf_odt writer]
-``````````````````
+----------------
 
 The following command line options are specific to ``odtwriter``:
 
-_`stylesheet=<URL>`
-    Specify a stylesheet URL, used verbatim.  Default:
-    writers/odf_odt/styles.odt in the installation directory.
+stylesheet
+~~~~~~~~~~
 
-_`odf-config-file=<file>`
-    Specify a configuration/mapping file relative to the
-    current working directory for additional ODF options.
-    In particular, this file may contain a section named
-    "Formats" that maps default style names to names to be
-    used in the resulting output file allowing for
-    adhering to external standards. For more info and the
-    format of the configuration/mapping file, see the
-    `Odt Writer for Docutils`_ document.
+Specify a stylesheet URL, used verbatim.  
 
-_`cloak-email-addresses`
-    Obfuscate email addresses to confuse harvesters while still
-    keeping email links usable with standards-compliant browsers.
+Default: writers/odf_odt/styles.odt in the installation directory.
 
-_`no-cloak-email-addresses`
-    Do not obfuscate email addresses.
+odf-config-file
+~~~~~~~~~~~~~~~
 
-_`table-border-thickness=<TABLE_BORDER_THICKNESS>`
-    Specify the thickness of table borders in thousands of a cm.
-    Default is 35.
+Specify a configuration/mapping file relative to the current working
+directory for additional ODF options. In particular, this file may
+contain a section named "Formats" that maps default style names to names
+to be used in the resulting output file allowing for adhering to external
+standards. For more info and the format of the configuration/mapping
+file, see the `Odt Writer for Docutils`_ document.
 
-_`add-syntax-highlighting`
-    Add syntax highlighting in literal code blocks.
+cloak-email-addresses
+~~~~~~~~~~~~~~~~~~~~~
 
-_`no-syntax-highlighting`
-    Do not add syntax highlighting in literal code blocks.
-    (default)
+Obfuscate email addresses to confuse harvesters while still
+keeping email links usable with standards-compliant browsers.
 
-_`create-sections`
-    Create sections for headers.  (default)
+no-cloak-email-addresses
+~~~~~~~~~~~~~~~~~~~~~~~~
+Do not obfuscate email addresses.
 
-_`no-sections`
-    Do not create sections for headers.
+table-border-thickness
+~~~~~~~~~~~~~~~~~~~~~~
 
-_`create-links`
-    Create links.
+Specify the thickness of table borders in thousands of a cm.
+Default is 35.
 
-_`no-links`
-    Do not create links.  (default)
+add-syntax-highlighting
+~~~~~~~~~~~~~~~~~~~~~~~
 
-_`endnotes-end-doc`
-    Generate endnotes at end of document, not footnotes at bottom of
-    page.
+Add syntax highlighting in literal code blocks.
 
-_`no-endnotes-end-doc`
-    Generate footnotes at bottom of page, not endnotes at end of
-    document. (default)
+no-syntax-highlighting
+~~~~~~~~~~~~~~~~~~~~~~
 
-_`generate-list-toc`
-    Generate a bullet list table of contents, not an
-    ODF/``oowriter`` table of contents.
+Do not add syntax highlighting in literal code blocks.
+(default)
 
-_`generate-oowriter-toc`
-    Generate an ODF/``oowriter`` table of contents, not a bullet
-    list.  (default) **Note:** ``odtwriter`` is not able to
-    determine page numbers, so you will need to open the generated
-    document in ``oowriter``, then right-click on the table of
-    contents and select "Update" to insert page numbers.
+create-sections
+~~~~~~~~~~~~~~~
 
-_`custom-odt-header=<CUSTOM_HEADER>`
-    Specify the contents of a custom header line.  For details about
-    custom headers and about special field character sequences, see
-    section "Custom header/footers: inserting page numbers, date,
-    time, etc" in the `Odt Writer for Docutils`_ document for
-    details.
+Create sections for headers.  (default)
 
-_`custom-odt-footer=<CUSTOM_FOOTER>`
-    Specify the contents of a custom footer line.  For details about
-    custom footers and about special field character sequences, see
-    section "Custom header/footers: inserting page numbers, date,
-    time, etc" in the `Odt Writer for Docutils`_ document for
-    details.
+no-sections
+~~~~~~~~~~~
 
-.. _`Odt Writer for Docutils`: odt.html
+Do not create sections for headers.
+
+create-links
+~~~~~~~~~~~~
+Create links.
+
+no-links
+~~~~~~~~
+
+Do not create links.  (default)
+
+endnotes-end-doc
+~~~~~~~~~~~~~~~~
+
+Generate endnotes at end of document, not footnotes at bottom of page.
+
+no-endnotes-end-doc
+~~~~~~~~~~~~~~~~~~~
+
+Generate footnotes at bottom of page, not endnotes at end of
+document. (default)
+
+generate-list-toc
+~~~~~~~~~~~~~~~~~
+
+Generate a bullet list table of contents, not an
+ODF/``oowriter`` table of contents.
+
+generate-oowriter-toc
+~~~~~~~~~~~~~~~~~~~~~
+
+Generate an ODF/``oowriter`` table of contents, not a bullet
+list.  (default) **Note:** ``odtwriter`` is not able to
+determine page numbers, so you will need to open the generated
+document in ``oowriter``, then right-click on the table of
+contents and select "Update" to insert page numbers.
+
+custom-odt-header
+~~~~~~~~~~~~~~~~~
+
+Specify the contents of a custom header line.  For details about
+custom headers and about special field character sequences, see
+section "Custom header/footers: inserting page numbers, date,
+time, etc" in the `Odt Writer for Docutils`_ document for
+details.
+
+custom-odt-footer
+~~~~~~~~~~~~~~~~~
+
+Specify the contents of a custom footer line.  For details about
+custom footers and about special field character sequences, see
+section "Custom header/footers: inserting page numbers, date,
+time, etc" in the `Odt Writer for Docutils`_ document for
+details.
+
+.. _Odt Writer for Docutils: odt.html
 
 
 [pseudoxml writer]
-``````````````````
+------------------
 
-No settings are defined for this Writer.
+This writer does not define specific settings.
 
 
 [applications]
---------------
+==============
 
 [buildhtml application]
-```````````````````````
+-----------------------
 
-_`ignore`
-    List of wildcard (shell globing) patterns, specifying files to
-    silently ignore.  To specify multiple patterns, use
-    colon-separated patterns (in configuration files or on the command
-    line); on the command line, the option may also be used more than
-    once.
+ignore
+~~~~~~
 
-    Default: none ([]).  Options: ``--ignore``.
+List_ of wildcard (shell globing) patterns, specifying files to silently
+ignore.  To specify multiple patterns, use colon-separated patterns (in
+configuration files or on the command line); on the command line, the
+option may also be used more than once.
 
-_`prune`
-    List of directories not to process.  To specify multiple
-    directories, use colon-separated paths (in configuration files or
-    on the command line); on the command line, the option may also be
-    used more than once.
+Default: none.  Options: ``--ignore``.
 
-    Default: ['.hg', '.bzr', '.git', '.svn', 'CVS'].  Options:
-    ``--prune``.
+prune
+~~~~~
 
-_`recurse`
-    Recursively scan subdirectories, or ignore subdirectories.
+List_ of directories not to process.  To specify multiple
+directories, use colon-separated paths (in configuration files or
+on the command line); on the command line, the option may also be
+used more than once.
 
-    Default: recurse (1).  Options: ``--recurse, --local``.
+Default: ['.hg', '.bzr', '.git', '.svn', 'CVS'].  Options:
+``--prune``.
 
-_`silent`
-    Work silently (no progress messages).  Independent of
-    "report_level".
+recurse
+~~~~~~~
 
-    Default: show progress (None).  Options: ``--silent``.
+Recursively scan subdirectories, or ignore subdirectories.
+
+Default: recurse (1).  Options: ``--recurse, --local``.
+
+silent
+~~~~~~
+
+Work silently (no progress messages).  Independent of
+"report_level".
+
+Default: show progress (None).  Options: ``--silent``.
 
 
 [docfactory application]
-````````````````````````
+------------------------
 
 (To be completed.)
 
@@ -1509,17 +1724,19 @@ Command-Line Only
 These settings are only effective as command-line options; setting
 them in configuration files has no effect.
 
-_`config`
-    Path to a configuration file to read (if it exists) [#pwd]_.
-    Settings may override defaults and earlier settings.  The config
-    file is processed immediately.  Multiple ``--config`` options may
-    be specified; each will be processed in turn.
+config
+~~~~~~
 
-    Filesystem path settings contained within the config file will be
-    interpreted relative to the config file's location (*not* relative
-    to the current working directory).
+Path to a configuration file to read (if it exists) [#pwd]_.
+Settings may override defaults and earlier settings.  The config
+file is processed immediately.  Multiple ``--config`` options may
+be specified; each will be processed in turn.
 
-    Default: None.  Options: ``--config``.
+Filesystem path settings contained within the config file will be
+interpreted relative to the config file's location (*not* relative
+to the current working directory).
+
+Default: None.  Options: ``--config``.
 
 
 Internal Settings
@@ -1529,33 +1746,43 @@ These settings are for internal use only; setting them in
 configuration files has no effect, and there are no corresponding
 command-line options.
 
-_`_config_files`
-    List of paths of applied configuration files.
+_config_files
+~~~~~~~~~~~~~
 
-    Default: None.  No command-line options.
+List of paths of applied configuration files.
 
-_`_directories`
-    (``buildhtml.py`` front end.)  List of paths to source
-    directories, set from positional arguments.
+Default: None.  No command-line options.
 
-    Default: current working directory (None).  No command-line
-    options.
+_directories
+~~~~~~~~~~~~
 
-_`_disable_config`
-    Prevent standard configuration files from being read.  For
-    programmatic use only.
+(``buildhtml.py`` front end.)  List of paths to source
+directories, set from positional arguments.
 
-    Default: config files enabled (None).  No command-line options.
+Default: current working directory (None).  No command-line
+options.
 
-_`_destination`
-    Path to output destination, set from positional arguments.
+_disable_config
+~~~~~~~~~~~~~~~
 
-    Default: stdout (None).  No command-line options.
+Prevent standard configuration files from being read.  For
+programmatic use only.
 
-_`_source`
-    Path to input source, set from positional arguments.
+Default: config files enabled (None).  No command-line options.
 
-    Default: stdin (None).  No command-line options.
+_destination
+~~~~~~~~~~~~
+
+Path to output destination, set from positional arguments.
+
+Default: stdout (None).  No command-line options.
+
+_source
+~~~~~~~
+
+Path to input source, set from positional arguments.
+
+Default: stdin (None).  No command-line options.
 
 
 .. _language tag: http://www.w3.org/International/articles/language-tags/
