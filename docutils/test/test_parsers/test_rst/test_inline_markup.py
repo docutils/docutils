@@ -1037,6 +1037,91 @@ Relative URIs' reference text can be omitted:
         <reference name="anonymous" refuri="anonymous">
             anonymous
 """],
+["""\
+Escape trailing low-line char in URIs:
+
+`<reference\_>`_
+
+`<anonymous\_>`__
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        Escape trailing low-line char in URIs:
+    <paragraph>
+        <reference name="reference_" refuri="reference_">
+            reference_
+        <target ids="reference" names="reference_" refuri="reference_">
+    <paragraph>
+        <reference name="anonymous_" refuri="anonymous_">
+            anonymous_
+"""],
+]
+
+totest['embedded_aliases'] = [
+["""\
+`phrase reference <alias_>`_
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        <reference name="phrase reference" refname="alias">
+            phrase reference
+        <target names="phrase\ reference" refname="alias">
+"""],
+["""\
+`anonymous reference <alias_>`__
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        <reference name="anonymous reference" refname="alias">
+            anonymous reference
+"""],
+["""\
+`embedded alias on next line
+<alias_>`__
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        <reference name="embedded alias on next line" refname="alias">
+            embedded alias on next line
+"""],
+["""\
+`embedded alias across lines <alias
+phrase_>`__
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        <reference name="embedded alias across lines" refname="alias phrase">
+            embedded alias across lines
+"""],
+["""\
+`embedded alias with whitespace <alias 
+long  phrase_>`__
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        <reference name="embedded alias with whitespace" refname="alias long phrase">
+            embedded alias with whitespace
+"""],
+[r"""
+`embedded alias with too much whitespace < alias_ >`__
+
+`embedded alias with no preceding whitespace<alias_>`__
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        <reference anonymous="1" name="embedded alias with too much whitespace < alias_ >">
+            embedded alias with too much whitespace < alias_ >
+    <paragraph>
+        <reference anonymous="1" name="embedded alias with no preceding whitespace<alias_>">
+            embedded alias with no preceding whitespace<alias_>
+"""],
 ]
 
 totest['inline_targets'] = [

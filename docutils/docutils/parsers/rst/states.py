@@ -608,13 +608,14 @@ class Inliner:
               )
               %(end_string_suffix)s
               """ % locals(), re.VERBOSE | re.UNICODE),
-          embedded_uri=re.compile(
+          embedded_link=re.compile(
               r"""
               (
                 (?:[ \n]+|^)            # spaces or beginning of line/string
                 <                       # open bracket
                 %(non_whitespace_after)s
-                ([^<>\x00]+)            # anything but angle brackets & nulls
+                ([^<>\x00]+(\x00_)?)    # anything but angle brackets & nulls
+                                        # except escaped trailing low line
                 %(non_whitespace_before)s
                 >                       # close bracket w/o whitespace before
               )
@@ -787,40 +788,62 @@ class Inliner:
         return string[:matchstart], [prb], string[matchend:], [msg]
 
     def phrase_ref(self, before, after, rawsource, escaped, text):
-        match = self.patterns.embedded_uri.search(escaped)
-        if match:
+        match = self.patterns.embedded_link.search(escaped)
+        if match: # embedded <URI> or <alias_>
             text = unescape(escaped[:match.start(0)])
-            uri_text = match.group(2)
-            uri = ''.join(uri_text.split())
-            uri = self.adjust_uri(uri)
-            if uri:
-                target = nodes.target(match.group(1), refuri=uri)
-                target.referenced = 1
+            aliastext = unescape(match.group(2), restore_backslashes=True)
+            if aliastext.endswith('_') and not aliastext.endswith(r'\_'):
+                aliastype = 'name'
+                alias = normalize_name(aliastext[:-1])
+                target = nodes.target(match.group(1), refname=alias)
+                target.indirect_reference_name = aliastext[:-1]
             else:
-                raise ApplicationError('problem with URI: %r' % uri_text)
+                aliastype = 'uri'
+                alias = ''.join(aliastext.split())
+                alias = self.adjust_uri(alias)
+                if alias.endswith(r'\_'):
+                    alias = alias[:-2] + '_'
+                target = nodes.target(match.group(1), refuri=alias)
+                target.referenced = 1
+            if not aliastext:
+                raise ApplicationError('problem with embedded link: %r'
+                                       % aliastext)
             if not text:
-                text = uri
+                text = alias
         else:
             target = None
+
         refname = normalize_name(text)
         reference = nodes.reference(rawsource, text,
                                     name=whitespace_normalize_name(text))
         node_list = [reference]
+
         if rawsource[-2:] == '__':
-            if target:
-                reference['refuri'] = uri
+            if  target and (aliastype == 'name'):
+                reference['refname'] = alias
+                self.document.note_refname(reference)
+                # self.document.note_indirect_target(target) # required?
+            elif target and (aliastype == 'uri'):
+                reference['refuri'] = alias
             else:
                 reference['anonymous'] = 1
         else:
             if target:
-                reference['refuri'] = uri
                 target['names'].append(refname)
-                self.document.note_explicit_target(target, self.parent)
+                if aliastype == 'name':
+                    reference['refname'] = alias
+                    self.document.note_indirect_target(target)
+                    self.document.note_refname(reference)
+                else:
+                    reference['refuri'] = alias
+                    self.document.note_explicit_target(target, self.parent)
+                # target.note_referenced_by(name=refname)
                 node_list.append(target)
             else:
                 reference['refname'] = refname
                 self.document.note_refname(reference)
         return before, node_list, after, []
+
 
     def adjust_uri(self, uri):
         match = self.patterns.email.match(uri)
