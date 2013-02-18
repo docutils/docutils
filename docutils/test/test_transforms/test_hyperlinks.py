@@ -339,6 +339,42 @@ An `anonymous embedded uri <http://direct>`__.
         .
 """],
 ["""\
+An `embedded alias <alias_>`_.
+
+Another reference to the same `embedded alias`_.
+
+.. _alias: ham.py
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        An \n\
+        <reference name="embedded alias" refuri="ham.py">
+            embedded alias
+        <target names="embedded\ alias" refuri="ham.py">
+        .
+    <paragraph>
+        Another reference to the same \n\
+        <reference name="embedded alias" refuri="ham.py">
+            embedded alias
+        .
+    <target ids="alias" names="alias" refuri="ham.py">
+"""],
+["""\
+An `anonymous embedded alias <redirect_>`__.
+
+.. _redirect: spam.py
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        An \n\
+        <reference name="anonymous embedded alias" refuri="spam.py">
+            anonymous embedded alias
+        .
+    <target ids="redirect" names="redirect" refuri="spam.py">
+"""],
+["""\
 .. _target:
 
 .. [1] Footnote; target_

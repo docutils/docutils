@@ -19,6 +19,7 @@ Changes Since 0.10
 * General
 
   - Apply [ 2714873 ] Fix for the overwritting of document attributes.
+  - Support embedded aliases within hyperlink references.
 
 * docutils/nodes.py
 

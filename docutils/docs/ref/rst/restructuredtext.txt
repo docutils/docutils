@@ -1862,7 +1862,8 @@ indirect.
        .. _link: underscore\_
 
    It is possible (although not generally recommended) to include URIs
-   directly within hyperlink references.  See `Embedded URIs`_ below.
+   directly within hyperlink references.  See `Embedded URIs and Aliases`_
+   below.
 
 3. _`Indirect hyperlink targets` have a hyperlink reference in their
    link blocks.  In the following example, target "one" indirectly
@@ -1890,6 +1891,9 @@ indirect.
           `a    hyperlink`_
        .. _split: `A
           Hyperlink`_
+
+   It is possible to include an alias directly within hyperlink
+   references. See `Embedded URIs and Aliases`_ below.
 
 If the reference name contains any colons, either:
 
@@ -2649,24 +2653,30 @@ match references to targets, but otherwise behave similarly to named
 hyperlinks.
 
 
-Embedded URIs
-`````````````
+Embedded URIs and Aliases
+`````````````````````````
 
-A hyperlink reference may directly embed a target URI inline, within
-angle brackets ("<...>") as follows::
+A hyperlink reference may directly embed a target URI or a hyperlink
+reference within angle brackets ("<...>") as follows::
 
     See the `Python home page <http://www.python.org>`_ for info.
+
+    This `link <Python home page_>`_ is an alias to the link above.
 
 This is exactly equivalent to::
 
     See the `Python home page`_ for info.
 
+    This link_ is an alias to the link above.
+
     .. _Python home page: http://www.python.org
+    .. _link: `Python home page`_
 
 The bracketed URI must be preceded by whitespace and be the last text
-before the end string.  With a single trailing underscore, the
-reference is named and the same target URI may be referred to again.
+before the end string.
 
+With a single trailing underscore, the reference is named and the same
+target URI may be referred to again.
 With two trailing underscores, the reference and target are both
 anonymous, and the target cannot be referred to again.  These are
 "one-off" hyperlinks.  For example::
@@ -2682,9 +2692,18 @@ Equivalent to::
     __ http://www.rfc-editor.org/rfc/rfc2396.txt
     __ http://www.rfc-editor.org/rfc/rfc2732.txt
 
-If reference text happens to end with angle-bracketed text that is
-*not* a URI, the open-angle-bracket needs to be backslash-escaped.
-For example, here is a reference to a title describing a tag::
+If a target URI happens to end with an underscore, this needs to be
+backslash-escaped to avoid being parsed as hyperlink reference. For
+example ::
+
+    Use the `source <parrots.txt\_>`__.
+
+creates an anonymous reference to the file ``parrots.txt_``.
+
+If the reference text happens to end with angle-bracketed text that is
+*not* a URI or hyperlink reference, the open-angle-bracket needs to be
+backslash-escaped. For example, here is a reference to a title
+describing a tag::
 
     See `HTML Element: \<a>`_ below.
 
