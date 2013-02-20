@@ -7,6 +7,9 @@
 :Revision: $Revision$
 :Description: This is a "docinfo block", or bibliographic field list
 
+.. NOTE:: If you are reading this as HTML, please read
+   `<cheatsheet.txt>`_ instead to see the input syntax examples!
+
 Section Structure
 =================
 Section titles are underlined or overlined & underlined.
@@ -32,7 +35,7 @@ Grid table:
 Simple tables:
 
 ================  ============================================================
-List Type         Examples
+List Type         Examples (syntax in the `text source <cheatsheet.txt>`_)
 ================  ============================================================
 Bullet list       * items begin with "-", "+", or "*"
 Enumerated list   1. items use any variation of "1.", "A)", and "(i)"
@@ -44,7 +47,7 @@ Option list       -o  at least 2 spaces between option & description
 ================  ============================================================
 
 ================  ============================================================
-Explicit Markup   Examples (visible in the `text source <cheatsheet.txt>`_)
+Explicit Markup   Examples (visible in the `text source`_)
 ================  ============================================================
 Footnote          .. [1] Manually numbered or [#] auto-numbered
                      (even [#labelled]) or [*] auto-symbol
