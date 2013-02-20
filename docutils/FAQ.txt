@@ -178,6 +178,8 @@ reStructuredText's predecessors, with "re": "revised", "reworked", and
 For a detailed history of reStructuredText and the Docutils project,
 see `An Introduction to reStructuredText`_.
 
+"reStructuredText" is **ONE** word, *not two!*
+
 
 What's the standard abbreviation for "reStructuredText"?
 --------------------------------------------------------
