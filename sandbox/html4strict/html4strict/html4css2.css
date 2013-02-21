@@ -304,6 +304,7 @@ table.booktabs {
   border: 0;
   border-top: 2px solid;
   border-bottom: 2px solid;
+  border-collapse: collapse;
 }
 
 table.booktabs * {
@@ -311,6 +312,7 @@ table.booktabs * {
 }
 table.booktabs th {
   border-bottom: thin solid;
+  text-align: left;
 }
 
 table > caption {
