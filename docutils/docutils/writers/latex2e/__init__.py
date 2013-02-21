@@ -1972,6 +1972,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             count = node['morerows'] + 1
             self.active_table.set_rowspan(
                                 self.active_table.get_entry_number()-1,count)
+            # TODO why does multirow end on % ? needs to be checked for below
             self.out.append('\\multirow{%d}{%s}{%%' %
                             (count,self.active_table.get_column_width()))
             self.context.append('}')
@@ -1995,9 +1996,13 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
         # header / not header
         if isinstance(node.parent.parent, nodes.thead):
+            if self.out[-1].endswith("%"):
+                self.out.append("\n")
             self.out.append('\\textbf{%')
             self.context.append('}')
         elif self.active_table.is_stub_column():
+            if self.out[-1].endswith("%"):
+                self.out.append("\n")
             self.out.append('\\textbf{')
             self.context.append('}')
         else:
