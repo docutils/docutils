@@ -1776,6 +1776,47 @@ Short multicolumn 4
 \hline
 \end{longtable*}
 
+A table with multirow header
+%
+\begin{quote}
+
+\setlength{\DUtablewidth}{\linewidth}
+\begin{longtable*}[c]{|p{0.156\DUtablewidth}|p{0.238\DUtablewidth}|}
+\hline
+\multirow{2}{0.16\DUtablewidth}{%\textbf{%
+XXX
+}} & \textbf{%
+Variable Summary
+} \\
+\cline{2-2}
+ & \textbf{%
+Description
+} \\
+\hline
+\endfirsthead
+\hline
+\multirow{2}{0.16\DUtablewidth}{%\textbf{%
+XXX
+}} & \textbf{%
+Variable Summary
+} \\
+\cline{2-2}
+ & \textbf{%
+Description
+} \\
+\hline
+\endhead
+\multicolumn{2}{c}{\hfill ... continued on next page} \\
+\endfoot
+\endlastfoot
+\multicolumn{2}{|p{0.39\DUtablewidth}|}{
+multirow header breaks latex
+} \\
+\hline
+\end{longtable*}
+
+\end{quote}
+
 % This file is used by the standalone_rst_latex test.
 
 
