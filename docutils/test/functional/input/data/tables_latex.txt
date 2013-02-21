@@ -18,3 +18,16 @@ A multicolumn table with multi-paragraph rowspanning cells:
 +----------+--------------+--------------+--------+---------+-----------+
 | cell     | cell         | cell         | Short multicolumn 4          |
 +----------+--------------+--------------+------------------------------+
+
+A table with multirow header
+
+
+        +------------+-------------------+
+        | XXX        | Variable Summary  |
+        |            +-------------------+
+        |            | Description       |
+        +============+===================+
+        | multirow header breaks latex   |
+        +--------------------------------+
+
+
