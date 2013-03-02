@@ -25,14 +25,6 @@
 
 import sys
 
-if sys.version_info < (2,4):
-  def reversed(sequence):
-    i = len(sequence)
-    while i > 0:
-        i = i - 1
-        yield sequence[i]
-
-
 class Trace(object):
   "A tracing class"
 
@@ -638,6 +630,9 @@ class FormulaConfig(object):
       u'\\int':u'∫', u'\\intop':u'∫', u'\\lim':u'lim', u'\\prod':u'∏', 
       u'\\smallint':u'∫', u'\\sum':u'∑', 
       }
+  # TODO: setting for simple enlarged vs. piecewise  symbols
+  for key in (u'\\int', u'\\intop', u'\\prod', u'\\sum'):
+    limitcommands[key] = '<span class="symbol">%s</span>' % limitcommands[key]
 
   misccommands = {
       u'\\limits':u'LimitPreviousCommand', u'\\newcommand':u'MacroDefinition', 
