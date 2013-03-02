@@ -21,7 +21,7 @@
 /* Formulas */
 .formula {
 	text-align: center;
-	font-family: "DejaVu Serif", serif;
+	font-family: "Droid Serif", "DejaVu Serif", "STIX", serif;
 	margin: 1.2em 0;
 }
 span.formula {
@@ -113,9 +113,11 @@ span.root {
 	vertical-align: middle;
 }
 span.symbol {
+	line-height: 125%;
 	font-size: 125%;
 }
 span.bigsymbol {
+	line-height: 150%;
 	font-size: 150%;
 }
 span.largesymbol {
@@ -139,10 +141,10 @@ span.limits {
 }
 .limit {
 	display: table-row;
-	line-height: 95%;
+	line-height: 99%;
 }
 sup.limit, sub.limit {
-	line-height: 150%;
+	line-height: 100%;
 }
 span.symbolover {
 	display: inline-block;
