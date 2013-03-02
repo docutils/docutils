@@ -36,6 +36,9 @@ Changes Since 0.10
 * docutils/writers/html4css1/__init__.py
 
   - Fix [ 3600051 ] for tables in a list, table cells are not compacted.
+  - New setting `stylesheet_dirs`: Comma-separated list of directories
+    where stylesheets are found. Used by `stylesheet_path` when expanding
+    relative path arguments.
 
 * docutils/writers/latex2e/__init__.py
 
@@ -44,6 +47,7 @@ Changes Since 0.10
     Activate the SmartQuotes_ transform if you want this feature.
   - Fix literal use of babel shorthands (straight quote, tilde, ...).
   - Fix [ 3603246 ] Bug in option "--graphicx-option=auto".
+  - New setting `stylesheet_dirs`.
 
 .. _SmartQuotes: docs/user/config.html#smart-quotes
 

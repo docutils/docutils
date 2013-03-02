@@ -34,9 +34,8 @@ import docutils
 from docutils import frontend, nodes, utils, writers, languages, io
 from docutils.utils.error_reporting import SafeString
 from docutils.transforms import writer_aux
-from docutils.utils.math import unichar2tex, pick_math_environment
+from docutils.utils.math import unichar2tex, pick_math_environment, math2html
 from docutils.utils.math.latex2mathml import parse_latex_math
-from docutils.utils.math.math2html import math2html
 
 class Writer(writers.Writer):
 
@@ -44,10 +43,8 @@ class Writer(writers.Writer):
     """Formats this writer supports."""
 
     default_stylesheet = 'html4css1.css'
-
-    default_stylesheet_path = utils.relative_path(
-        os.path.join(os.getcwd(), 'dummy'),
-        os.path.join(os.path.dirname(__file__), default_stylesheet))
+    default_stylesheet_dirs = ['.', utils.relative_path(
+        os.path.join(os.getcwd(), 'dummy'), os.path.dirname(__file__))]
 
     default_template = 'template.txt'
 
@@ -62,19 +59,20 @@ class Writer(writers.Writer):
           % default_template_path,
           ['--template'],
           {'default': default_template_path, 'metavar': '<file>'}),
-        ('Specify comma separated list of stylesheet URLs. '
+         ('Comma separated list of stylesheet URLs. '
           'Overrides previous --stylesheet and --stylesheet-path settings.',
           ['--stylesheet'],
-          {'metavar': '<URL>', 'overrides': 'stylesheet_path',
+          {'metavar': '<URL[,URL,...]>', 'overrides': 'stylesheet_path',
            'validator': frontend.validate_comma_separated_list}),
-         ('Specify comma separated list of stylesheet paths. '
-          'With --link-stylesheet, '
+         ('Comma separated list of stylesheet paths. '
+          'Relative paths are expanded if a matching file is found in '
+          'the --stylesheet-dirs. With --link-stylesheet, '
           'the path is rewritten relative to the output HTML file. '
-          'Default: "%s"' % default_stylesheet_path,
+          'Default: "%s"' % default_stylesheet,
           ['--stylesheet-path'],
-          {'metavar': '<file>', 'overrides': 'stylesheet',
+          {'metavar': '<file[,file,...]>', 'overrides': 'stylesheet',
            'validator': frontend.validate_comma_separated_list,
-           'default': [default_stylesheet_path]}),
+           'default': [default_stylesheet]}),
          ('Embed the stylesheet(s) in the output HTML file.  The stylesheet '
           'files must be accessible during processing. This is the default.',
           ['--embed-stylesheet'],
@@ -84,6 +82,13 @@ class Writer(writers.Writer):
           'Default: embed stylesheets.',
           ['--link-stylesheet'],
           {'dest': 'embed_stylesheet', 'action': 'store_false'}),
+         ('Comma-separated list of directories where stylesheets are found. '
+          'Used by --stylesheet-path when expanding relative path arguments. '
+          'Default: "%s"' % default_stylesheet_dirs,
+          ['--stylesheet-dirs'],
+          {'metavar': '<dir[,dir,...]>',
+           'validator': frontend.validate_comma_separated_list,
+           'default': default_stylesheet_dirs}),
          ('Specify the initial header level.  Default is 1 for "<h1>".  '
           'Does not affect document title & subtitle (see --no-doc-title).',
           ['--initial-header-level'],
@@ -1207,7 +1212,9 @@ class HTMLTranslator(nodes.NodeVisitor):
                 self.mathjax_url = self.math_output_options[0]
             self.math_header = self.mathjax_script % self.mathjax_url
         elif self.math_output == 'html':
-            math_code = math2html(math_code)
+            # TODO: fix display mode in matrices and fractions
+            # math2html.DocumentParameters.displaymode = (math_env != '')
+            math_code = math2html.math2html(math_code)
         elif self.math_output == 'mathml':
             self.doctype = self.doctype_mathml
             self.content_type = self.content_type_mathml

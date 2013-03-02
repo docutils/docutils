@@ -87,13 +87,15 @@ class Writer(writers.Writer):
          '".sty" or omitted and with \\input else. '
           ' Overrides previous --stylesheet and --stylesheet-path settings.',
           ['--stylesheet'],
-          {'default': '', 'metavar': '<file>',
+          {'default': '', 'metavar': '<file[,file,...]>',
            'overrides': 'stylesheet_path',
            'validator': frontend.validate_comma_separated_list}),
-         ('Like --stylesheet, but the path is rewritten '
-          'relative to the output file. ',
+         ('Comma separated list of LaTeX packages/stylesheets. '
+          'Relative paths are expanded if a matching file is found in '
+          'the --stylesheet-dirs. With --link-stylesheet, '
+          'the path is rewritten relative to the output *.tex file. ',
           ['--stylesheet-path'],
-          {'metavar': '<file>', 'overrides': 'stylesheet',
+          {'metavar': '<file[,file,...]>', 'overrides': 'stylesheet',
            'validator': frontend.validate_comma_separated_list}),
          ('Link to the stylesheet(s) in the output file. (default)',
           ['--link-stylesheet'],
@@ -103,6 +105,13 @@ class Writer(writers.Writer):
           ['--embed-stylesheet'],
           {'default': 0, 'action': 'store_true',
            'validator': frontend.validate_boolean}),
+         ('Comma-separated list of directories where stylesheets are found. '
+          'Used by --stylesheet-path when expanding relative path arguments. '
+          'Default: "."',
+          ['--stylesheet-dirs'],
+          {'metavar': '<dir[,dir,...]>',
+           'validator': frontend.validate_comma_separated_list,
+           'default': ['.']}),
          ('Customization by LaTeX code in the preamble. '
           'Default: select PDF standard fonts (Times, Helvetica, Courier).',
           ['--latex-preamble'],
