@@ -513,8 +513,28 @@ def get_stylesheet_list(settings):
     stylesheets = settings.stylesheet_path or settings.stylesheet or []
     # programmatically set default can be string or unicode:
     if not isinstance(stylesheets, list):
-        stylesheets = [cls.strip() for cls in stylesheets.split(',')]
-    return stylesheets
+        stylesheets = [path.strip() for path in stylesheets.split(',')]
+    # expand relative paths if found in stylesheet-dirs:
+    return [find_file_in_dirs(path, settings.stylesheet_dirs)
+            for path in stylesheets]
+
+def find_file_in_dirs(path, dirs):
+    """
+    Search for `path` in the list of directories `dirs`.
+
+    Return the first expansion that matches an existing file.
+    """
+    if os.path.isabs(path):
+        return path
+    for d in dirs:
+        if d == '.':
+            f = path
+        else:
+            d = os.path.expanduser(d)
+            f = os.path.join(d, path)
+        if os.path.exists(f):
+            return f
+    return path
 
 def get_trim_footnote_ref_space(settings):
     """

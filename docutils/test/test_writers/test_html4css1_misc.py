@@ -30,12 +30,62 @@ class EncodingTestCase(DocutilsTestSupport.StandardTestCase):
         # xmlcharrefreplace handler is used.
         self.assertIn(b('EUR = &#8364;'), result)
 
+class SettingsTestCase(DocutilsTestSupport.StandardTestCase):
+    data = 'test'
+
+    def test_default_stylesheet(self):
+        # default style sheet, embedded
+        mysettings = {'_disable_config': True,}
+        styles = core.publish_parts(self.data, writer_name='html4css1',
+                                  settings_overrides=mysettings)['stylesheet']
+        self.assertIn('Default cascading style sheet '
+                      'for the HTML output of Docutils.', styles)
+
+    def test_default_stylesheet_linked(self):
+        # default style sheet, linked
+        mysettings = {'_disable_config': True,
+                      'embed_stylesheet': False}
+        styles = core.publish_parts(self.data, writer_name='html4css1',
+                                  settings_overrides=mysettings)['stylesheet']
+        self.assertIn('docutils/writers/html4css1/html4css1.css', styles)
+
+    def test_math_stylesheet_linked(self):
+        # default + math style sheet, linked
+        mysettings = {'_disable_config': True,
+                      'embed_stylesheet': False,
+                      'stylesheet_path': 'html4css1.css, math.css'}
+        styles = core.publish_parts(self.data, writer_name='html4css1',
+                                  settings_overrides=mysettings)['stylesheet']
+        self.assertIn('docutils/writers/html4css1/html4css1.css', styles)
+        self.assertIn('docutils/writers/html4css1/math.css', styles)
+
+    def test_custom_stylesheet_linked(self):
+        # default + custom style sheet, linked
+        mysettings = {'_disable_config': True,
+                      'embed_stylesheet': False,
+                      'stylesheet_path': 'html4css1.css, '
+                                         'data/ham.css'}
+        styles = core.publish_parts(self.data, writer_name='html4css1',
+                                  settings_overrides=mysettings)['stylesheet']
+        self.assertIn('docutils/writers/html4css1/html4css1.css', styles)
+        self.assertIn('href="data/ham.css"', styles)
+
+    def test_custom_stylesheet_dir(self):
+        mysettings = {'_disable_config': True,
+                      'embed_stylesheet': False,
+                      'stylesheet_dirs': ('../docutils/writers/html4css1/',
+                                          'data'),
+                      'stylesheet_path': 'html4css1.css, ham.css'}
+        styles = core.publish_parts(self.data, writer_name='html4css1',
+                                  settings_overrides=mysettings)['stylesheet']
+        self.assertIn('docutils/writers/html4css1/html4css1.css', styles)
+        self.assertIn('href="data/ham.css"', styles)
+
 class MathTestCase(DocutilsTestSupport.StandardTestCase):
-    
+
     """Attention: This class tests the current implementation of maths support
     which is open to change in future Docutils releases. """
 
-    settings_overrides={'_disable_config': True,}
     mathjax_script = '<script type="text/javascript" src="%s">'
     default_mathjax_url = ('http://cdn.mathjax.org/mathjax/latest/MathJax.js'
                            '?config=TeX-AMS-MML_HTMLorMML')
@@ -45,40 +95,40 @@ class MathTestCase(DocutilsTestSupport.StandardTestCase):
 
     def test_math_output_default(self):
         # Currently MathJax with default URL. Likely to change to HTML!
-        mysettings = self.settings_overrides
+        mysettings = {'_disable_config': True,}
         head = core.publish_parts(self.data, writer_name='html4css1',
                                   settings_overrides=mysettings)['head']
         self.assertIn(self.mathjax_script % self.default_mathjax_url, head)
-        
+
     def test_math_output_mathjax(self):
         # Explicitly specifying math_output=MathJax, case insensitively
         # use default MathJax URL
-        mysettings = self.settings_overrides.copy()
-        mysettings.update({'math_output': 'MathJax'})
+        mysettings = {'_disable_config': True,
+                      'math_output': 'MathJax'}
         head = core.publish_parts(self.data, writer_name='html4css1',
             settings_overrides=mysettings)['head']
         self.assertIn(self.mathjax_script % self.default_mathjax_url, head)
 
     def test_math_output_mathjax_custom(self):
         # Customizing MathJax URL
-        mysettings = self.settings_overrides.copy()
-        mysettings.update({'math_output': 
-                           'mathjax %s' % self.custom_mathjax_url})
+        mysettings = {'_disable_config': True,
+                      'math_output':
+                      'mathjax %s' % self.custom_mathjax_url}
         head = core.publish_parts(self.data, writer_name='html4css1',
             settings_overrides=mysettings)['head']
         self.assertIn(self.mathjax_script % self.custom_mathjax_url, head)
-        
+
     def test_math_output_html(self):
         # There should be no MathJax script when math_output is not MathJax
-        mysettings = self.settings_overrides.copy()
-        mysettings.update({'math_output': 'HTML'})
+        mysettings = {'_disable_config': True,
+                      'math_output': 'HTML'}
         head = core.publish_parts(self.data, writer_name='html4css1',
             settings_overrides=mysettings)['head']
         self.assertNotIn('MathJax.js', head)
-        
+
     def test_math_output_mathjax_no_math(self):
-        mysettings = self.settings_overrides.copy()
-        mysettings.update({'math_output': 'MathJax'})
+        mysettings = {'_disable_config': True,
+                      'math_output': 'MathJax'}
         # There should be no math script when text does not contain math
         head = core.publish_parts('No math.', writer_name='html4css1')['head']
         self.assertNotIn('MathJax', head)

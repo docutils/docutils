@@ -37,6 +37,20 @@ Changes Since 0.10
   - Drop the simple algorithm replacing straight double quotes with
     English typographic ones. Use the SmartQuotes transform
     (``--smart-quotes=True``) instead.
+  - New setting `stylesheet_dirs`: Comma-separated list of directories
+    where stylesheets are found. Used by `stylesheet_path` when expanding
+    relative path arguments.
+
+* docutils/writers/html4css1/__init__.py
+  - New setting `stylesheet_dirs` (see above).
+  
+    Now, it is easy to add a custom stylesheet to Docutils' default
+    stylesheet with, e.g., ``--stylesheet_path='html4css1.css, mystyle.css'``
+    
+    Changed behaviour of the default settings: 
+      if there is a file ``html4css1.css`` in the working directory of the
+      process at launch, it is used instead of the one provided by Docutils
+      in the writer source directory.
 
 
 Release 0.10 (2012-12-16)

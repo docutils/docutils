@@ -287,6 +287,19 @@ class HelperFunctionsTests(unittest.TestCase):
         target = os.path.join(u'eggs', u'fileB')
         self.assertEqual(utils.relative_path(None, target), u'eggs/fileB')
 
+    def test_find_file_in_dirs(self):
+        # Search for file `path` in the sequence of directories `dirs`.
+        # Return the first expansion that matches an existing file.
+        dirs = ('nonex', '.', '..')
+        self.assertEqual(utils.find_file_in_dirs('HISTORY.txt', dirs),
+                         '../HISTORY.txt')
+        # Return `path` if the file exists in the cwd or if there is no match
+        self.assertEqual(utils.find_file_in_dirs('alltests.py', dirs),
+                         'alltests.py')
+        self.assertEqual(utils.find_file_in_dirs('gibts/nicht.txt', dirs),
+                         'gibts/nicht.txt')
+
+
 
 if __name__ == '__main__':
     unittest.main()
