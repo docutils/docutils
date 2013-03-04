@@ -164,6 +164,22 @@ totest['images'] = [
 """],
 ["""\
 .. image:: picture.png
+   :width: 20mc
+""",
+"""\
+<document source="test data">
+    <system_message level="3" line="1" source="test data" type="ERROR">
+        <paragraph>
+            Error in "image" directive:
+            invalid option value: (option: "width"; value: \'20mc\')
+            not a positive measure of one of the following units:
+            "em" "ex" "px" "in" "cm" "mm" "pt" "pc" "%".
+        <literal_block xml:space="preserve">
+            .. image:: picture.png
+               :width: 20mc
+"""],
+["""\
+.. image:: picture.png
    :height: 100
    :width: 200
    :scale: 50
