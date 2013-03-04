@@ -232,9 +232,8 @@ def get_measure(argument, units):
     """
     match = re.match(r'^([0-9.]+) *(%s)$' % '|'.join(units), argument)
     try:
-        assert match is not None
         float(match.group(1))
-    except (AssertionError, ValueError):
+    except (AttributeError, ValueError):
         raise ValueError(
             'not a positive measure of one of the following units:\n%s'
             % ' '.join(['"%s"' % i for i in units]))
@@ -262,7 +261,11 @@ def length_or_percentage_or_unitless(argument, default=''):
     try:
         return get_measure(argument, length_units + ['%'])
     except ValueError:
-        return get_measure(argument, ['']) + default
+        try:
+            return get_measure(argument, ['']) + default
+        except ValueError:
+            # raise ValueError with list of valid units:
+            return get_measure(argument, length_units + ['%'])
 
 def class_option(argument):
     """
