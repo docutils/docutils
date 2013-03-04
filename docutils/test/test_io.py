@@ -119,10 +119,18 @@ print "hello world"
         if input.successful_encoding == 'latin-1':
             self.assertEqual(data, u'Gr\xfc\xdfe\n')
 
+    def test_decode_unicode(self):
+        # With the special value "unicode" or "Unicode":
+        uniinput = io.Input(encoding='unicode')
+        # keep unicode instances as-is
+        self.assertEqual(uniinput.decode(u'ja'), u'ja')
+        # raise AssertionError if data is not an unicode string
+        self.assertRaises(AssertionError, uniinput.decode, bytes('ja'))
+
 
 class OutputTests(unittest.TestCase):
 
-    bdata = b('\xfc')
+    bdata = bytes('\xfc')
     udata = u'\xfc'
 
     def setUp(self):
