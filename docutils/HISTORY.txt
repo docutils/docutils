@@ -43,6 +43,9 @@ Changes Since 0.10
   - New setting `stylesheet_dirs`: Comma-separated list of directories
     where stylesheets are found. Used by `stylesheet_path` when expanding
     relative path arguments.
+  - New default for math-output_: ``HTML math.css``.
+
+.. _math-output: docs/user/config.html#math-output
 
 * docutils/writers/latex2e/__init__.py
 

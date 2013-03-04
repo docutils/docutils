@@ -140,9 +140,9 @@ class Writer(writers.Writer):
           ['--table-style'],
           {'default': ''}),
          ('Math output format, one of "MathML", "HTML", "MathJax" '
-          'or "LaTeX". Default: "MathJax"',
+          'or "LaTeX". Default: "HTML math.css"',
           ['--math-output'],
-          {'default': 'MathJax'}),
+          {'default': 'HTML math.css'}),
          ('Omit the XML declaration.  Use with caution.',
           ['--no-xml-declaration'],
           {'dest': 'xml_declaration', 'default': 1, 'action': 'store_false',
@@ -328,7 +328,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.in_document_title = 0   # len(self.body) or 0
         self.in_mailto = False
         self.author_in_authors = False
-        self.math_header = ''
+        self.math_header = []
 
     def astext(self):
         return ''.join(self.head_prefix + self.head
@@ -773,7 +773,10 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.meta.insert(0, self.content_type % self.settings.output_encoding)
         self.head.insert(0, self.content_type % self.settings.output_encoding)
         if self.math_header:
-            self.head.append(self.math_header)
+            if self.math_output == 'mathjax':
+                self.head.extend(self.math_header)
+            else:
+                self.stylesheet.extend(self.math_header)
         # skip content-type meta tag with interpolated charset value:
         self.html_head.extend(self.head[1:])
         self.body_prefix.append(self.starttag(node, 'div', CLASS='document'))
@@ -1207,13 +1210,17 @@ class HTMLTranslator(nodes.NodeVisitor):
         # settings and conversion
         if self.math_output in ('latex', 'mathjax'):
             math_code = self.encode(math_code)
-        if self.math_output == 'mathjax':
+        if self.math_output == 'mathjax' and not self.math_header:
             if self.math_output_options:
                 self.mathjax_url = self.math_output_options[0]
-            self.math_header = self.mathjax_script % self.mathjax_url
+            self.math_header = [self.mathjax_script % self.mathjax_url]
         elif self.math_output == 'html':
+            if self.math_output_options and not self.math_header:
+                self.math_header = [self.stylesheet_call(
+                    utils.find_file_in_dirs(s, self.settings.stylesheet_dirs))
+                    for s in self.math_output_options[0].split(',')]
             # TODO: fix display mode in matrices and fractions
-            # math2html.DocumentParameters.displaymode = (math_env != '')
+            math2html.DocumentParameters.displaymode = (math_env != '')
             math_code = math2html.math2html(math_code)
         elif self.math_output == 'mathml':
             self.doctype = self.doctype_mathml

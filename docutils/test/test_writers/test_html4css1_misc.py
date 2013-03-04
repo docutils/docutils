@@ -94,11 +94,11 @@ class MathTestCase(DocutilsTestSupport.StandardTestCase):
     data = ':math:`42`'
 
     def test_math_output_default(self):
-        # Currently MathJax with default URL. Likely to change to HTML!
+        # HTML with math.css stylesheet (since 0.11)
         mysettings = {'_disable_config': True,}
-        head = core.publish_parts(self.data, writer_name='html4css1',
-                                  settings_overrides=mysettings)['head']
-        self.assertIn(self.mathjax_script % self.default_mathjax_url, head)
+        styles = core.publish_parts(self.data, writer_name='html4css1',
+                                  settings_overrides=mysettings)['stylesheet']
+        self.assertIn('convert LaTeX equations to HTML output.', styles)
 
     def test_math_output_mathjax(self):
         # Explicitly specifying math_output=MathJax, case insensitively
@@ -119,12 +119,25 @@ class MathTestCase(DocutilsTestSupport.StandardTestCase):
         self.assertIn(self.mathjax_script % self.custom_mathjax_url, head)
 
     def test_math_output_html(self):
-        # There should be no MathJax script when math_output is not MathJax
         mysettings = {'_disable_config': True,
                       'math_output': 'HTML'}
         head = core.publish_parts(self.data, writer_name='html4css1',
             settings_overrides=mysettings)['head']
+        # There should be no MathJax script when math_output is not MathJax
         self.assertNotIn('MathJax.js', head)
+
+    def test_math_output_html_stylesheet(self):
+        mysettings = {'_disable_config': True,
+                      'math_output': 'HTML math.css,custom/style.css',
+                      'stylesheet_dirs': ('.', 'functional/input/data'),
+                      'embed_stylesheet': False}
+        styles = core.publish_parts(self.data, writer_name='html4css1',
+            settings_overrides=mysettings)['stylesheet']
+        self.assertEqual(u"""\
+<link rel="stylesheet" href="functional/input/data/html4css1.css" type="text/css" />
+<link rel="stylesheet" href="functional/input/data/math.css" type="text/css" />
+<link rel="stylesheet" href="custom/style.css" type="text/css" />
+""", styles)
 
     def test_math_output_mathjax_no_math(self):
         mysettings = {'_disable_config': True,
