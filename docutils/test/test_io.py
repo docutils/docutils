@@ -125,12 +125,12 @@ print "hello world"
         # keep unicode instances as-is
         self.assertEqual(uniinput.decode(u'ja'), u'ja')
         # raise AssertionError if data is not an unicode string
-        self.assertRaises(AssertionError, uniinput.decode, bytes('ja'))
+        self.assertRaises(AssertionError, uniinput.decode, b('ja'))
 
 
 class OutputTests(unittest.TestCase):
 
-    bdata = bytes('\xfc')
+    bdata = b('\xfc')
     udata = u'\xfc'
 
     def setUp(self):
