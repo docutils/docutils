@@ -43,23 +43,27 @@ Changes Since 0.10
 
 * docutils/writers/html4css1/__init__.py
   - New setting `stylesheet_dirs` (see above).
-  
+
     Now, it is easy to add a custom stylesheet to Docutils' default
     stylesheet with, e.g., ``--stylesheet_path='html4css1.css, mystyle.css'``
-    
-    Changed behaviour of the default settings: 
+
+    Changed behaviour of the default settings:
       if there is a file ``html4css1.css`` in the working directory of the
       process at launch, it is used instead of the one provided by Docutils
       in the writer source directory.
+
+  - New default for `math-output` setting: "HTML math.css".
+    Secure and self-contained alternative to the old default
+    ("MathJax" requiring JavaScript from the MathJax server network).
 
 
 Release 0.10 (2012-12-16)
 =========================
 
-.. Note:: 
+.. Note::
 
    Docutils 0.9.x is the last version supporting Python 2.3.
-   
+
    Docutils 0.10 is compatible with Python versions from 2.4 to 3.2
    (cf. `Python 3 compatibility`_).
 
@@ -70,7 +74,7 @@ Release 0.10 (2012-12-16)
   - ``docutils/math``, ``docutils/error_reporting.py``, and
     ``docutils/urischemes.py`` moved to the utils package.
     Code importing these modules needs to adapt, e.g.::
-    
+
       try:
           import docutils.math as math
       except ImportError:
@@ -80,7 +84,7 @@ Release 0.10 (2012-12-16)
 
 * docutils/io.py
 
-  - FileInput/FileOutput: no system-exit on IOError. 
+  - FileInput/FileOutput: no system-exit on IOError.
     The `handle_io_errors` option is ignored.
 
 .. _Python 3 compatibility: README.html#python-3-compatibility

@@ -8,7 +8,6 @@ test_destination = "standalone_rst_html4css1.html"
 writer_name = "html4css1"
 
 # Settings:
-# local copy of default stylesheet:
+# local copy of stylesheets:
 # (Test runs in ``docutils/test/``, we need relative path from there.)
-settings_overrides['stylesheet_path'] = ( 
-    'functional/input/data/html4css1.css')
+settings_overrides['stylesheet_dirs'] = ('.', 'functional/input/data')

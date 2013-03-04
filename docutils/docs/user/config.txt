@@ -922,6 +922,16 @@ math_output
 The format of mathematical content (`math directive`_ and role) in
 the output document. Supported values are (case insensitive):
 
+:HTML:
+  Format math in standard HTML enhanced by CSS rules.
+  Requires the ``math.css`` stylesheet (in the system
+  `stylesheet directory <stylesheet_dirs [html4css1 writer]_>`_
+
+  A `stylesheet_path <stylesheet_path [html4css1 writer]_>`_
+  can be appended after whitespace, the specified
+  stylesheet(s) will only be referenced or embedded, if required
+  (i.e. if there is mathematical content in the document).
+
 :MathJax:
   Format math for display with MathJax_, a JavaScript-based math
   rendering engine that uses HTML/CSS, JavaScript, and unicode
@@ -950,12 +960,6 @@ the output document. Supported values are (case insensitive):
 
   __ http://www.mathjax.org/resources/faqs/#problem-https
 
-:HTML:
-  Format math in standard HTML enhanced by CSS rules
-
-  Requires the ``math.css`` stylesheet (in the system
-  `stylesheet directory <stylesheet_dirs [html4css1 writer]_>`_
-
 :MathML:
   Embed math content as presentational MathML_.
 
@@ -978,7 +982,7 @@ the output document. Supported values are (case insensitive):
 
   The failsave fallback.
 
-Default: MathJax.  Option: ``--math-output``.
+Default: "HTML math.css".  Option: ``--math-output``.
 
 New in Docutils 0.8.
 
@@ -1390,7 +1394,7 @@ A comma-separated list of style files. Relative paths are expanded if a
 matching file is found in the stylesheet_dirs__.
 If embed_stylesheet__ is False, paths are rewritten relative to the
 output file path. Run ``latex`` from the directory containing
-the output file. 
+the output file.
 
 The stylesheet__  option is preferred for files in the `TeX input path`_.
 
