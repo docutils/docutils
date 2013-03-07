@@ -33,6 +33,10 @@ Changes Since 0.10
 
   - Apply [ 3599485 ] node source/line information for sphinx translation.
 
+* docutils/transforms/references.py
+
+  - Fix [ 3607029 ] traceback with embedded alias pointing to missing target.
+
 * docutils/utils/__init__.py
 
   - Fix [ 3596884 ] exception importing ``docutils.io``.
