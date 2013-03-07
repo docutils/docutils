@@ -374,6 +374,28 @@ An `anonymous embedded alias <redirect_>`__.
         .
     <target ids="redirect" names="redirect" refuri="spam.py">
 """],
+# TODO: suppress the INFO message?                                                          
+["""\
+An `embedded alias <alias_>`_ with unknown reference.
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        An \n\
+        <problematic ids="id3" refid="id2">
+            `embedded alias <alias_>`_
+        <target names="embedded\ alias" refname="alias">
+         with unknown reference.
+    <system_message ids="id1" level="3" line="1" source="test data" type="ERROR">
+        <paragraph>
+            Indirect hyperlink target "embedded alias"  refers to target "alias", which does not exist.
+    <system_message backrefs="id3" ids="id2" level="3" line="1" source="test data" type="ERROR">
+        <paragraph>
+            Unknown target name: "alias".
+    <system_message level="1" line="1" source="test data" type="INFO">
+        <paragraph>
+            Hyperlink target "embedded alias" is not referenced.\
+"""],
 ["""\
 .. _target:
 

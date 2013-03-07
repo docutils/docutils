@@ -275,7 +275,8 @@ class IndirectHyperlinks(Transform):
             reflist.extend(self.document.refnames.get(name, []))
         for id in target['ids']:
             reflist.extend(self.document.refids.get(id, []))
-        naming += '(id="%s")' % target['ids'][0]
+        if target['ids']:
+            naming += '(id="%s")' % target['ids'][0]
         msg = self.document.reporter.error(
               'Indirect hyperlink target %s refers to target "%s", %s.'
               % (naming, target['refname'], explanation), base_node=target)
@@ -391,15 +392,16 @@ class InternalTargets(Transform):
             <target id="id1" name="direct internal">
         """
         for name in target['names']:
-            refid = self.document.nameids[name]
+            refid = self.document.nameids.get(name)
             reflist = self.document.refnames.get(name, [])
             if reflist:
                 target.note_referenced_by(name=name)
             for ref in reflist:
                 if ref.resolved:
                     continue
-                del ref['refname']
-                ref['refid'] = refid
+                if refid:
+                    del ref['refname']
+                    ref['refid'] = refid
                 ref.resolved = 1
 
 
