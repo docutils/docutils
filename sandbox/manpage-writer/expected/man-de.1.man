@@ -396,7 +396,7 @@ wieder ihren gewohnten Effekt.
 Ermoeglicht es, einen alternativen  Manualpfad  anzugeben.
 Normalerweise verwendet man dieselben Methoden wie in manpath, um
 den Suchpfad zu ermitteln. Diese Option ueberschreibt die
-Umgebungsvariable \fB$MANPATH\fP.
+Umgebungsvariable \fB$MANPATH\fP\&.
 .TP
 .BI \-P \ Pager\fP,\fB \ \-\-pager\fB= Pager
 Gibt an, welcher Pager verwendet wird. Die Normaleinstellung ist
@@ -444,7 +444,7 @@ Zeichenkette  zuerst  vom  Kommandointerpreter ausgewertet wird,
 muessen entsprechende Zeichen durch einen  Backslash  geschützt
 werden.  Weitere Optionen für less koennen nach einem
 geschützten \fB$\fP am Ende der Zeichenkette hinzugefügt werden.
-Der Default ist hier \fB\-ix8\fP.
+Der Default ist hier \fB\-ix8\fP\&.
 .TP
 .BI \-S \ Liste\fP,\fB \ \-\-sections\fB= Liste
 Eine   durch   Doppelpunkte   getrennte  Liste  von  Abschnitten
