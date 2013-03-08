@@ -42,6 +42,8 @@ EEXXAAMMPPLLEESS
 
        · quotes: ' "
 
+       .period ad line start.
+
    LLiissttss
        · bullet list
 
@@ -106,6 +108,9 @@ EEXXAAMMPPLLEESS
 
               Definition paragraph 2.
 
+       ..iinnii--ffiilleess
+              Term starting with period.
+
        TTeerrmm   Definition
 
    FFiieelldd lliissttss
@@ -131,7 +136,6 @@ EEXXAAMMPPLLEESS
                               +----------------+-------+
                               |single          | frame |
                               +----------------+-------+
-
                               |no table header |       |
                               +----------------+-------+
 

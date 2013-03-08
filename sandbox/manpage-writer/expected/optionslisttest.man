@@ -85,7 +85,7 @@ second point
 .UNINDENT
 .UNINDENT
 .sp
-For all other options see \fB\-\-help\fP. This line must be intented.
+For all other options see \fB\-\-help\fP\&. This line must be intented.
 .SH MORE OPTIONS
 .INDENT 0.0
 .TP

@@ -67,6 +67,8 @@ Special characters:
 * accents: ´ `
 * quotes: ' " 
 
+.period ad line start.
+
 Lists
 -----
 

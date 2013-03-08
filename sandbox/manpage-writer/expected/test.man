@@ -53,7 +53,7 @@ another
 really do it
 .UNINDENT
 .sp
-For all other options see \fB\-\-help\fP.
+For all other options see \fB\-\-help\fP\&.
 .SH EXAMPLES
 .INDENT 0.0
 .TP
@@ -80,6 +80,8 @@ accents: \' \(ga
 .IP \(bu 2
 quotes: \(aq "
 .UNINDENT
+.sp
+\&.period ad line start.
 .SS Lists
 .INDENT 0.0
 .IP \(bu 2
@@ -164,7 +166,7 @@ Definition paragraph 1.
 .sp
 Definition paragraph 2.
 .TP
-.B .ini\-files
+.B \&.ini\-files
 Term starting with period.
 .TP
 .B Term
