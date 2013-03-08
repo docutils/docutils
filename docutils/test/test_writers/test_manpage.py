@@ -138,6 +138,7 @@ With mixed case.
 
    something important
 
+. period at line start.
 """, 
         r""".\" Man page generated from reStructuredText.
 .
@@ -194,6 +195,8 @@ bull and list
 something important
 .UNINDENT
 .UNINDENT
+.sp
+\&. period at line start.
 .SH AUTHOR
 someone@somewhere.net
 
@@ -292,7 +295,7 @@ bla bla bla
 .UNINDENT
 .INDENT 0.0
 .TP
-.B .
+.B \&.
 bla bla bla
 .UNINDENT
 .INDENT 0.0

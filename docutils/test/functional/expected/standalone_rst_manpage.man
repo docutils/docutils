@@ -93,7 +93,7 @@ bullet lists
 .IP 3. 3
 number lists
 .IP 4. 3
-math: The LaTeX source is shown, e.g. \fBn! + \esin(x_n^2)\fP.
+math: The LaTeX source is shown, e.g. \fBn! + \esin(x_n^2)\fP\&.
 .UNINDENT
 .sp
 Discussion is still open.
