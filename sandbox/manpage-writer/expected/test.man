@@ -164,6 +164,9 @@ Definition paragraph 1.
 .sp
 Definition paragraph 2.
 .TP
+.B .ini\-files
+Term starting with period.
+.TP
 .B Term
 Definition
 .UNINDENT
