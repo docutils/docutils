@@ -123,6 +123,8 @@ Term : classifier
     Definition paragraph 1.
 
     Definition paragraph 2.
+.ini-files
+    Term starting with period.
 Term
     Definition
 
