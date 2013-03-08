@@ -289,10 +289,10 @@ class Translator(nodes.NodeVisitor):
             text = text.replace(in_char, out_markup)
         # unicode
         text = self.deunicode(text)
+        # prevent interpretation of "." at line start
+        if text[0] == '.':
+            text = '\\&' + text
         if self._in_literal:
-            # prevent interpretation of "." at line start
-            if text[0] == '.':
-                text = '\\&' + text
             text = text.replace('\n.', '\n\\&.')
         self.body.append(text)
 
