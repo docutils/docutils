@@ -290,7 +290,7 @@ class Translator(nodes.NodeVisitor):
         # unicode
         text = self.deunicode(text)
         # prevent interpretation of "." at line start
-        if text[0] == '.':
+        if text.startswith('.'):
             text = '\\&' + text
         if self._in_literal:
             text = text.replace('\n.', '\n\\&.')
