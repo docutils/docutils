@@ -2656,8 +2656,9 @@ hyperlinks.
 Embedded URIs and Aliases
 `````````````````````````
 
-A hyperlink reference may directly embed a target URI or a hyperlink
-reference within angle brackets ("<...>") as follows::
+A hyperlink reference may directly embed a target URI or (since
+Docutils 0.11) a hyperlink reference within angle brackets ("<...>")
+as follows::
 
     See the `Python home page <http://www.python.org>`_ for info.
 
@@ -2692,20 +2693,26 @@ Equivalent to::
     __ http://www.rfc-editor.org/rfc/rfc2396.txt
     __ http://www.rfc-editor.org/rfc/rfc2732.txt
 
-If a target URI happens to end with an underscore, this needs to be
-backslash-escaped to avoid being parsed as hyperlink reference. For
-example ::
+`Standalone hyperlinks`_ are treated as URIs, even if they end with an
+underscore like in the example of a Python function documentation::
+
+    `__init__ <http:example.py.html#__init__>`__
+
+If a target URI that is not recognized as `standalone hyperlink`_ happens
+to end with an underscore, this needs to be backslash-escaped to avoid
+being parsed as hyperlink reference. For example ::
 
     Use the `source <parrots.txt\_>`__.
 
 creates an anonymous reference to the file ``parrots.txt_``.
 
 If the reference text happens to end with angle-bracketed text that is
-*not* a URI or hyperlink reference, the open-angle-bracket needs to be
-backslash-escaped. For example, here is a reference to a title
-describing a tag::
+*not* a URI or hyperlink reference, at least one angle-bracket needs to
+be backslash-escaped or an escaped space should follow. For example, here
+are three references to titles describing a tag::
 
-    See `HTML Element: \<a>`_ below.
+    See `HTML Element: \<a>`_, `HTML Element: <b\> `_, and
+    `HTML Element: <c>\ `_.
 
 The reference text may also be omitted, in which case the URI will be
 duplicated for use as the reference text.  This is useful for relative
@@ -2820,6 +2827,7 @@ Examples::
     addition to being replaced, the replacement text or element will
     refer to the "substitution and hyperlink reference" target.
 
+.. _standalone hyperlink:
 
 Standalone Hyperlinks
 ---------------------

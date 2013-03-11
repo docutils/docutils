@@ -792,7 +792,8 @@ class Inliner:
         if match: # embedded <URI> or <alias_>
             text = unescape(escaped[:match.start(0)])
             aliastext = unescape(match.group(2), restore_backslashes=True)
-            if aliastext.endswith('_') and not aliastext.endswith(r'\_'):
+            if aliastext.endswith('_') and not (aliastext.endswith(r'\_')
+                                        or self.patterns.uri.match(aliastext)):
                 aliastype = 'name'
                 alias = normalize_name(aliastext[:-1])
                 target = nodes.target(match.group(1), refname=alias)
