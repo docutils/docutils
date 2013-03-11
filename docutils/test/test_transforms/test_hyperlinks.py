@@ -374,7 +374,6 @@ An `anonymous embedded alias <redirect_>`__.
         .
     <target ids="redirect" names="redirect" refuri="spam.py">
 """],
-# TODO: suppress the INFO message?                                                          
 ["""\
 An `embedded alias <alias_>`_ with unknown reference.
 """,
@@ -395,6 +394,46 @@ An `embedded alias <alias_>`_ with unknown reference.
     <system_message level="1" line="1" source="test data" type="INFO">
         <paragraph>
             Hyperlink target "embedded alias" is not referenced.\
+"""],
+["""\
+An embedded URI with trailing underline:
+`__init__ <http:example.py.html#__init__>`__.
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        An embedded URI with trailing underline:
+        <reference name="__init__" refuri="http:example.py.html#__init__">
+            __init__
+        .
+"""],
+["""\
+Hyperlinks with angle-bracketed text need escaping.
+
+See `Element \<a>`_, `Element <b\>`_, and `Element <c>\ `_.
+
+.. _`Element <a>`:
+.. _`Element <b>`:
+.. _`Element <c>`: elements.txt
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        Hyperlinks with angle-bracketed text need escaping.
+    <paragraph>
+        See \n\
+        <reference name="Element <a>" refuri="elements.txt">
+            Element <a>
+        , \n\
+        <reference name="Element <b>" refuri="elements.txt">
+            Element <b>
+        , and \n\
+        <reference name="Element <c>" refuri="elements.txt">
+            Element <c>
+        .
+    <target refid="element-a">
+    <target refid="element-b">
+    <target ids="element-c element-b element-a" names="element\ <c> element\ <b> element\ <a>" refuri="elements.txt">
 """],
 ["""\
 .. _target:
