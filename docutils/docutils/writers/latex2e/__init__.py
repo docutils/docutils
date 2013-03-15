@@ -217,8 +217,6 @@ class Writer(writers.Writer):
 
     settings_defaults = {'sectnum_depth': 0 # updated by SectNum transform
                         }
-    relative_path_settings = ('stylesheet_path',)
-
     config_section = 'latex2e writer'
     config_section_dependencies = ('writers',)
 
