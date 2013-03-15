@@ -81,6 +81,16 @@ class SettingsTestCase(DocutilsTestSupport.StandardTestCase):
         self.assertIn('docutils/writers/html4css1/html4css1.css', styles)
         self.assertIn('href="data/ham.css"', styles)
 
+    def test_custom_stylesheet_dir_embedded(self):
+        mysettings = {'_disable_config': True,
+                      'embed_stylesheet': True,
+                      'stylesheet_dirs': ('../docutils/writers/html4css1/',
+                                          'data'),
+                      'stylesheet_path': 'ham.css'}
+        styles = core.publish_parts(self.data, writer_name='html4css1',
+                                  settings_overrides=mysettings)['stylesheet']
+        self.assertIn('dl.docutils dd {\n  margin-bottom: 0.5em }', styles)
+
 class MathTestCase(DocutilsTestSupport.StandardTestCase):
 
     """Attention: This class tests the current implementation of maths support

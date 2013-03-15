@@ -154,8 +154,6 @@ class Writer(writers.Writer):
 
     settings_defaults = {'output_encoding_error_handler': 'xmlcharrefreplace'}
 
-    relative_path_settings = ('stylesheet_path',)
-
     config_section = 'html4css1 writer'
     config_section_dependencies = ('writers',)
 
