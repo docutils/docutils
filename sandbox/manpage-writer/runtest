@@ -16,7 +16,7 @@ if [ -z "`man -?|grep -- '^ *-T'`" ] ; then
     echo 'SKIPPING encoding tests'
     ENCS=""
 else
-    ENCS="latin1 utf8 ascii"
+    ENCS="latin1 utf8 ascii ps"
 fi
 
 if [ -z "$1" ] ; then
