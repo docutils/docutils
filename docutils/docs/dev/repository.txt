@@ -15,7 +15,8 @@
    To get a checkout of the Docutils source tree (without the
    sandboxes), type ::
 
-       svn checkout http://docutils.svn.sourceforge.net/svnroot/docutils/trunk/docutils
+       svn checkout http://svn.code.sf.net/p/docutils/code/trunk docutils-code
+
 
    If you are going to commit changes to the repository, please read
    the **whole document**, especially the section "`Information for
@@ -57,7 +58,7 @@ Web Access
 ~~~~~~~~~~
 
 The repository can be browsed and examined via the web at
-http://docutils.svn.sourceforge.net/viewvc/docutils/.
+http://sourceforge.net/p/docutils/code
 
 Alternatively, use the web interface of the git mirror at
 http://repo.or.cz/w/docutils.git.
@@ -69,10 +70,10 @@ To get a checkout of the Docutils repository, first determine the root
 of the repository depending on your preferred protocol:
 
 anonymous access: (read only)
-    ``https://docutils.svn.sourceforge.net/svnroot/docutils``
+    ``http://svn.code.sf.net/p/docutils/code/trunk``
     
 `developer access`_: (read and write)
-    ``https://<username>@docutils.svn.sourceforge.net/svnroot/docutils``
+    ``svn+ssh://grubert@svn.code.sf.net/p/docutils/code/trunk``
 
 git clone: (read only)
     ``git clone git://repo.or.cz/docutils.git``
