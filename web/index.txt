@@ -71,12 +71,6 @@ The Sandbox_ contains experimental, contributed code. You can download a
 complete `snapshot of the Sandbox`_ or `browse the Sandbox`_ to download a
 subset.
 
-.. attention:: The repository was moved on 2011-12-02 at revision 7232
-   from BerliOS to |SourceForge|_.
-
-   Subversion repository was hosted by |BerliOS|_ for years, 
-   *many thanks for the support*.
-
 .. class:: credits
 
 Web site, tracker and mailing lists and subversion repository hosted by |SourceForge|_.
