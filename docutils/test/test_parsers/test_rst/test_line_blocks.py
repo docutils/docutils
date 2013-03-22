@@ -300,6 +300,29 @@ This is not
         <line>
             * is not recognized.
 """],
+["""\
+System messages can appear in place of lines:
+
+| `uff <test1>`_
+| `uff <test2>`_
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        System messages can appear in place of lines:
+    <line_block>
+        <line>
+            <reference name="uff" refuri="test1">
+                uff
+            <target dupnames="uff" ids="uff" refuri="test1">
+        <system_message backrefs="id1" level="2" line="3" source="test data" type="WARNING">
+            <paragraph>
+                Duplicate explicit target name: "uff".
+        <line>
+            <reference name="uff" refuri="test2">
+                uff
+            <target dupnames="uff" ids="id1" refuri="test2">
+"""],
 ]
 
 
