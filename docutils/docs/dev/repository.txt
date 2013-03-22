@@ -22,6 +22,10 @@
    the **whole document**, especially the section "`Information for
    Developers`_"!
 
+.. Note::
+
+   As of 2013-03-13 the subversion urls have changed.
+
 Docutils uses a Subversion_ repository located at
 ``docutils.svn.sourceforge.net``. 
 Subversion is exhaustively documented in the `Subversion Book`_ (svnbook).
@@ -70,10 +74,10 @@ To get a checkout of the Docutils repository, first determine the root
 of the repository depending on your preferred protocol:
 
 anonymous access: (read only)
-    ``http://svn.code.sf.net/p/docutils/code/trunk``
+    ``http://svn.code.sf.net/p/docutils/code``
     
 `developer access`_: (read and write)
-    ``svn+ssh://grubert@svn.code.sf.net/p/docutils/code/trunk``
+    ``svn+ssh://<USERNAME>@svn.code.sf.net/p/docutils/code``
 
 git clone: (read only)
     ``git clone git://repo.or.cz/docutils.git``
@@ -135,7 +139,7 @@ changes to the repository.)
 
 Sourceforge subversion access is documented `here`__ 
 
-__ http://sourceforge.net/apps/trac/sourceforge/wiki/Subversion
+__ http://sourceforge.net/p/forge/documentation/svn/
 
 
 Setting Up Your Subversion Client For Development
