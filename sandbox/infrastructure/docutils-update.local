@@ -50,7 +50,7 @@ set -e
 umask 002
 
 # URL for SVN project checkout:
-svnurl=https://docutils.svn.sourceforge.net/svnroot/docutils/trunk
+svnurl=http://svn.code.sf.net/p/docutils/code/trunk
 
 on_sourceforge=0
 if [ -e "ON_SOURCEFORGE" ] ; then
