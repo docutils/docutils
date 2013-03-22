@@ -33,6 +33,10 @@ Changes Since 0.10
 
   - Apply [ 3599485 ] node source/line information for sphinx translation.
 
+* docutils/parsers/rst/states.py
+
+  - Fix [ 157 ] Line block parsing doesn't like system message.
+
 * docutils/transforms/references.py
 
   - Fix [ 3607029 ] traceback with embedded alias pointing to missing target.
