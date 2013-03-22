@@ -106,7 +106,7 @@ and `Docutils-checkins
 .. _Snapshot of the Sandbox:
    http://docutils.svn.sourceforge.net/viewvc/docutils/trunk/sandbox/?view=tar
 .. _browse the Sandbox:
-   http://sourceforge.net/p/docutils/code/
+   http://sourceforge.net/p/docutils/code/HEAD/tree/trunk/sandbox/
 
 .. _bug report: http://sourceforge.net/tracker/?group_id=38414&atid=422030
 .. _patch tracker: http://sourceforge.net/tracker/?group_id=38414&atid=422032
