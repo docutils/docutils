@@ -105,10 +105,6 @@ __docformat__ = 'reStructuredText'
 
 import sys
 import re
-try:
-    import roman
-except ImportError:
-    import docutils.utils.roman as roman
 from types import FunctionType, MethodType
 
 from docutils import nodes, statemachine, utils
@@ -120,7 +116,7 @@ import docutils.parsers.rst
 from docutils.parsers.rst import directives, languages, tableparser, roles
 from docutils.parsers.rst.languages import en as _fallback_language_module
 from docutils.utils import escape2null, unescape, column_width
-from docutils.utils import punctuation_chars, urischemes
+from docutils.utils import punctuation_chars, roman, urischemes
 
 class MarkupError(DataError): pass
 class UnknownInterpretedRoleError(DataError): pass

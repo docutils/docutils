@@ -36,6 +36,7 @@ Changes Since 0.10
 * docutils/parsers/rst/states.py
 
   - Fix [ 157 ] Line block parsing doesn't like system message.
+  - Always import our local copy of roman.py (report Larry Hastings).
 
 * docutils/transforms/references.py
 
