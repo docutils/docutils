@@ -38,8 +38,10 @@ filed in the `patch tracker`_ (preferred) or sent to Docutils-develop_
 We welcome all kinds of **contributions**.  There's a `To Do list`_
 full of interesting ideas awaiting a champion.  If you have any
 questions regarding how to extend Docutils, please feel free to ask on
-the Docutils-develop_ mailing list.  Please also consider **donating**
-to Docutils: |donate|.
+the Docutils-develop_ mailing list.
+
+.. NO DONATE on new sf platform
+   Please also consider **donating** to Docutils: |donate|.
 
 The only **requirement** for running Docutils is Python_ 2.4 or later.
 (For Docutils 0.5, Python 2.2.1+ is required.
@@ -61,7 +63,7 @@ Download
 
    This has to be fixxed. Sorry.
 
-We recommend that you use a BROKEN-snapshot_ from `Docutils' Subversion
+We recommend that you use a, *currently unavailable*, snapshot_ from `Docutils' Subversion
 repository`_. The snapshots usually contain *more features* and *fewer bugs*
 than the "official" releases |---| they're not only for developers!
 
@@ -74,7 +76,7 @@ __ http://prdownloads.sourceforge.net/docutils/docutils-0.10.tar.gz?download
 .. _release notes: RELEASE-NOTES.html#release-0-10-2012-12-16
 
 The Sandbox_ contains experimental, contributed code. You can download a
-complete `BROKEN-snapshot of the Sandbox`_ or `browse the Sandbox`_ to download a
+complete *currently unavailable* `snapshot of the Sandbox`_ or `browse the Sandbox`_ to download a
 subset.
 
 .. class:: credits
