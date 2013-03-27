@@ -16,6 +16,8 @@
 #             Support for digits in role names.
 #             ``\providecommand`` instead of ``\newcommand``.
 #             Renamed from makesty.py to pygments_css2sty.py.
+# 2013-03-27: Günter Milde:
+#             Implement bugfix from Juan Luis Cano Rodríguez for csnames.
 
 import sys
 import re
@@ -58,6 +60,7 @@ for l in sys.stdin:
         s = r'\colorbox{%s}{%s}' % (cname, s)
 
     if re.match(r'.*[0-9]', key) is None:
-        print r'\providecommand*\DUrole%s[1]{%s}' % (key, s)
+        print(r'\providecommand*\DUrole%s[1]{%s}' % (key, s))
     else:
-        print r'\providecommand\csname DUrole%s\endcsname[1]{%s}' % (key, s)
+        print(r'\expandafter\providecommand\csname DUrole%s\endcsname[1]{%s}'
+              % (key, s))
