@@ -61,7 +61,7 @@ mailing lists; use the one you feel most comfortable with.
 * If you prefer to use a newsreader, you can also use Gmane's `NNTP
   interface`__ (gmane.text.docutils.user on news.gmane.org).
 
-  __ nntp://news.gmane.org/gmane.text.docutils.user.
+  __ nntp://news.gmane.org/gmane.text.docutils.user
 
 **If you do not wish to subscribe,** you can also just send an email
 message with your question or comment to
