@@ -2015,21 +2015,27 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         elif self.citation_id is not None:
             el = self.append_p('textbody')
             self.set_current_element(el)
-            el.text = '['
             if self.settings.create_links:
+                el0 = SubElement(el, 'text:span')
+                el0.text = '['
                 el1 = self.append_child('text:reference-mark-start', attrib={
                         'text:name': '%s' % (self.citation_id, ),
                         })
+            else:
+                el.text = '['
 
     def depart_label(self, node):
         if isinstance(node.parent, docutils.nodes.footnote):
             pass
         elif self.citation_id is not None:
-            self.current_element.text += ']'
             if self.settings.create_links:
                 el = self.append_child('text:reference-mark-end', attrib={
                         'text:name': '%s' % (self.citation_id, ),
                         })
+                el0 = SubElement(self.current_element, 'text:span')
+                el0.text = ']'
+            else:
+                self.current_element.text += ']'
             self.set_to_parent()
 
     def visit_generated(self, node):
