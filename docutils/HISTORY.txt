@@ -25,6 +25,11 @@ Changes Since 0.10
 
   - Fix [ 3601607 ] node.__repr__() must return `str` instance.
 
+* docutils/parsers/rst/__init__.py
+
+  - Fix [ 228 ] search docutils components (reader, writer, parser)
+    first locally then globally.
+    
 * docutils/parsers/rst/directives/__init__.py
 
   - Fix [ 3606028 ] ``assert`` is skipped with ``python -O``.
