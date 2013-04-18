@@ -59,9 +59,9 @@ Download
 
 .. Note::
 
-   Since april, 18 sourceforge project snapshots are possible, 
+   Since april, 18 sourceforge project snapshots are possible::
 
-     `snapshot <http://sourceforge.net/p/docutils/code/7646/tarball>`_
+     http://sourceforge.net/p/docutils/code/7646/tarball
 
   BUT
 
