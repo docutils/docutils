@@ -20,16 +20,13 @@ Changes Since 0.10
 
   - Apply [ 2714873 ] Fix for the overwritting of document attributes.
   - Support embedded aliases within hyperlink references.
+  - Fix [ 228 ] try local import of docutils components (reader, writer, parser,
+    language module) before global search.
 
 * docutils/nodes.py
 
   - Fix [ 3601607 ] node.__repr__() must return `str` instance.
 
-* docutils/parsers/rst/__init__.py
-
-  - Fix [ 228 ] search docutils components (reader, writer, parser)
-    first locally then globally.
-    
 * docutils/parsers/rst/directives/__init__.py
 
   - Fix [ 3606028 ] ``assert`` is skipped with ``python -O``.
