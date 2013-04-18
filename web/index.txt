@@ -59,9 +59,18 @@ Download
 
 .. Note::
 
-   Since sourceforge project update snapshots no longer work.
+   Since april, 18 sourceforge project snapshots are possible, 
 
-   This has to be fixxed. Sorry.
+     `snapshot <http://sourceforge.net/p/docutils/code/7646/tarball>`_
+
+  BUT
+
+  1. take a long time
+  2. must be initiated from a browser, really ?
+  3. release HEAD does not work.
+  4. the whole repository, including trunk, tags and branches is packed together,
+     this explains, probably, the time it takes.
+     
 
 We recommend that you use a, *currently unavailable*, snapshot_ from `Docutils' Subversion
 repository`_. The snapshots usually contain *more features* and *fewer bugs*
