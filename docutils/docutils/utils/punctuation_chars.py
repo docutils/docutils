@@ -38,6 +38,33 @@ closers = ur"""\"\'\)\>\]\}༻༽᚜⁆⁾₎〉❩❫❭❯❱❳❵⟆⟧⟩�
 delimiters = ur"\-\/\:֊־᐀᠆‐‑‒–—―⸗⸚〜〰゠︱︲﹘﹣－¡·¿;·՚՛՜՝՞՟։׀׃׆׳״؉؊،؍؛؞؟٪٫٬٭۔܀܁܂܃܄܅܆܇܈܉܊܋܌܍߷߸߹࠰࠱࠲࠳࠴࠵࠶࠷࠸࠹࠺࠻࠼࠽࠾।॥॰෴๏๚๛༄༅༆༇༈༉༊་༌།༎༏༐༑༒྅࿐࿑࿒࿓࿔၊။၌၍၎၏჻፡።፣፤፥፦፧፨᙭᙮᛫᛬᛭᜵᜶។៕៖៘៙៚᠀᠁᠂᠃᠄᠅᠇᠈᠉᠊᥄᥅᧞᧟᨞᨟᪠᪡᪢᪣᪤᪥᪦᪨᪩᪪᪫᪬᪭᭚᭛᭜᭝᭞᭟᭠᰻᰼᰽᰾᰿᱾᱿᳓‖‗†‡•‣․‥…‧‰‱′″‴‵‶‷‸※‼‽‾⁁⁂⁃⁇⁈⁉⁊⁋⁌⁍⁎⁏⁐⁑⁓⁕⁖⁗⁘⁙⁚⁛⁜⁝⁞⳹⳺⳻⳼⳾⳿⸀⸁⸆⸇⸈⸋⸎⸏⸐⸑⸒⸓⸔⸕⸖⸘⸙⸛⸞⸟⸪⸫⸬⸭⸮⸰⸱、。〃〽・꓾꓿꘍꘎꘏꙳꙾꛲꛳꛴꛵꛶꛷꡴꡵꡶꡷꣎꣏꣸꣹꣺꤮꤯꥟꧁꧂꧃꧄꧅꧆꧇꧈꧉꧊꧋꧌꧍꧞꧟꩜꩝꩞꩟꫞꫟꯫︐︑︒︓︔︕︖︙︰﹅﹆﹉﹊﹋﹌﹐﹑﹒﹔﹕﹖﹗﹟﹠﹡﹨﹪﹫！＂＃％＆＇＊，．／：；？＠＼｡､･𐄀𐄁𐎟𐏐𐡗𐤟𐤿𐩐𐩑𐩒𐩓𐩔𐩕𐩖𐩗𐩘𐩿𐬹𐬺𐬻𐬼𐬽𐬾𐬿𑂻𑂼𑂾𑂿𑃀𑃁𒑰𒑱𒑲𒑳"
 closing_delimiters = ur"\.\,\;\!\?"
 
+
+
+# Matching open/close quotes
+# --------------------------
+
+# Rule (5) requires determination of matching open/close pairs. However,
+# the pairing of open/close quotes is ambigue due to  different typographic
+# conventions in different languages.
+
+quote_pairs = {u'\xbb': u'\xbb', # Swedish
+            u'\u2018': u'\u201a', # Greek
+            u'\u2019': u'\u2019', # Swedish
+            u'\u201a': u'\u2018\u2019', # German, Polish
+            u'\u201c': u'\u201e', # German
+            u'\u201e': u'\u201c\u201d',
+            u'\u201d': u'\u201d', # Swedish
+            u'\u203a': u'\u203a', # Swedish
+            }
+
+def match_chars(c1, c2):
+    try:
+        i = openers.index(c1)
+    except ValueError:  # c1 not in openers
+        return False
+    return c2 == closers[i] or c2 in quote_pairs.get(c1, '')
+
+
 # Running this file as a standalone module checks the definitions against a
 # re-calculation::
 
@@ -156,75 +183,50 @@ if __name__ == '__main__':
                 for chars in (openers, closers, delimiters, closing_delimiters)]
 
 
-# Matching open/close quotes
-# --------------------------
-
-# Rule (5) requires determination of matching open/close pairs. However,
-# the pairing of open/close quotes is ambigue due to  different typographic
-# conventions in different languages.
-
-    quote_pairs = {u'\xbb': u'\xbb', # Swedish
-                u'\u2018': u'\u201a', # Greek
-                u'\u2019': u'\u2019', # Swedish
-                u'\u201a': u'\u2018\u2019', # German, Polish
-                u'\u201c': u'\u201e', # German
-                u'\u201e': u'\u201c\u201d',
-                u'\u201d': u'\u201d', # Swedish
-                u'\u203a': u'\u203a', # Swedish
-                }
-
-    def match_chars(c1, c2):
-        try:
-            i = openers.index(c1)
-        except ValueError:  # c1 not in openers
-            return False
-        return c2 == closers[i] or c2 in quote_pairs.get(c1, '')
-
-
 # print results
 # =============
 
 # (re) create and compare the samples:
 
-        (o, c, d, cd) = punctuation_samples()
-        if o != openers:
-            print '- openers = ur"""%s"""' % openers.encode('utf8')
-            print '+ openers = ur"""%s"""' % o.encode('utf8')
-        if c != closers:
-            print '- closers = ur"""%s"""' % closers.encode('utf8')
-            print '+ closers = ur"""%s"""' % c.encode('utf8')
-        if d != delimiters:
-            print '- delimiters = ur"%s"' % delimiters.encode('utf8')
-            print '+ delimiters = ur"%s"' % d.encode('utf8')
-        if cd != closing_delimiters:
-            print '- closing_delimiters = ur"%s"' % closing_delimiters.encode('utf8')
-            print '+ closing_delimiters = ur"%s"' % cd.encode('utf8')
+    (o, c, d, cd) = punctuation_samples()
+    if o != openers:
+        print '- openers = ur"""%s"""' % openers.encode('utf8')
+        print '+ openers = ur"""%s"""' % o.encode('utf8')
+    if c != closers:
+        print '- closers = ur"""%s"""' % closers.encode('utf8')
+        print '+ closers = ur"""%s"""' % c.encode('utf8')
+    if d != delimiters:
+        print '- delimiters = ur"%s"' % delimiters.encode('utf8')
+        print '+ delimiters = ur"%s"' % d.encode('utf8')
+    if cd != closing_delimiters:
+        print '- closing_delimiters = ur"%s"' % closing_delimiters.encode('utf8')
+        print '+ closing_delimiters = ur"%s"' % cd.encode('utf8')
 
 # test prints
 
-        # print 'openers = ', repr(openers)
-        # print 'closers = ', repr(closers)
-        # print 'delimiters = ', repr(delimiters)
-        # print 'closing_delimiters = ', repr(closing_delimiters)
+    # print 'openers = ', repr(openers)
+    # print 'closers = ', repr(closers)
+    # print 'delimiters = ', repr(delimiters)
+    # print 'closing_delimiters = ', repr(closing_delimiters)
 
 
-        # ucharlists = unicode_charlists(unicode_punctuation_categories)
-        # for cat, chars in ucharlists.items():
-        #     # print cat, chars
-        #     # compact output (visible with a comprehensive font):
-        #     print (u":%s: %s" % (cat, u''.join(chars))).encode('utf8')
+    # ucharlists = unicode_charlists(unicode_punctuation_categories)
+    # for cat, chars in ucharlists.items():
+    #     # print cat, chars
+    #     # compact output (visible with a comprehensive font):
+    #     print (u":%s: %s" % (cat, u''.join(chars))).encode('utf8')
 
 # verbose print
 
-        print 'openers:'
-        for ch in openers:
-            print ch.encode('utf8'), unicodedata.name(ch)
-        print 'closers:'
-        for ch in closers:
-            print ch.encode('utf8'), unicodedata.name(ch)
-        print 'delimiters:'
-        for ch in delimiters:
-            print ch.encode('utf8'), unicodedata.name(ch)
-        print 'closing_delimiters:'
-        for ch in closing_delimiters:
-            print ch.encode('utf8'), unicodedata.name(ch)
+    print 'openers:'
+    for ch in openers:
+        print ch.encode('utf8'), unicodedata.name(ch)
+    print 'closers:'
+    for ch in closers:
+        print ch.encode('utf8'), unicodedata.name(ch)
+    print 'delimiters:'
+    for ch in delimiters:
+        print ch.encode('utf8'), unicodedata.name(ch)
+    print 'closing_delimiters:'
+    for ch in closing_delimiters:
+        print ch.encode('utf8'), unicodedata.name(ch)
