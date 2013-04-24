@@ -70,9 +70,10 @@ Download
   3. release HEAD does not work.
   4. the whole repository, including trunk, tags and branches is packed together,
      this explains, probably, the time it takes.
-     
 
-We recommend that you use a, *currently unavailable*, snapshot_ from `Docutils' Subversion
+  The provided snapshosts are created on website updates.     
+
+We recommend that you use a snapshot_ from `Docutils' Subversion
 repository`_. The snapshots usually contain *more features* and *fewer bugs*
 than the "official" releases |---| they're not only for developers!
 
@@ -85,7 +86,7 @@ __ http://prdownloads.sourceforge.net/docutils/docutils-0.10.tar.gz?download
 .. _release notes: RELEASE-NOTES.html#release-0-10-2012-12-16
 
 The Sandbox_ contains experimental, contributed code. You can download a
-complete *currently unavailable* `snapshot of the Sandbox`_ or `browse the Sandbox`_ to download a
+complete `snapshot of the Sandbox`_ or `browse the Sandbox`_ to download a
 subset.
 
 .. class:: credits
@@ -113,9 +114,9 @@ and `Docutils-checkins
    http://docutils.sourceforge.net/sandbox/latex_directive/
 
 .. _snapshot:
-   http://docutils.svn.sourceforge.net/viewvc/docutils/trunk/docutils/?view=tar
-.. _Snapshot of the Sandbox:
-   http://docutils.svn.sourceforge.net/viewvc/docutils/trunk/sandbox/?view=tar
+   http://docutils.sourceforge.net/docutils-snapshot.tgz
+.. _snapshot of the Sandbox:
+   http://docutils.sourceforge.net/docutils-sandbox-snapshot.tgz
 .. _browse the Sandbox:
    http://sourceforge.net/p/docutils/code/HEAD/tree/trunk/sandbox/
 
