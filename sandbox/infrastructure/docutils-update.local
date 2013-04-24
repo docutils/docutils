@@ -162,6 +162,11 @@ haschanges="`svn up docutils sandbox web | grep -v '^At revision '; true`"
 # (but change permissions for all subdirectories).
 find $basedir -name aux -o -type d -print0 | xargs -0 chmod ug+rwxs 2> /dev/null || true
 
+# create the snapshots
+exclude='--exclude=.svn'
+tar -cz $exclude -f $project-snapshot.tgz $project
+tar -cz $exclude -f $project-sandbox-snapshot.tgz sandbox
+
 # -------------------- htdocs: --------------------
 
 cd $snapshotdir
@@ -326,6 +331,9 @@ cd $htdocsdest
 if [ $on_sourceforge ] ; then
     print_feedback "rsync on sf"
     rsync -r -t ./ $remotehtdocs
+    cp ../snapshots/$project-snapshot.tgz $remotehtdocs
+    cp ../snapshots/$project-sandbox-snapshot.tgz $remotehtdocs
+
 else
     # do not use -a to avoid "failed to set permissions"
     # -t preserve modification times. But a new svn checkout has new modtime.
