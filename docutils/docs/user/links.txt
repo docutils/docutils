@@ -26,7 +26,7 @@ Editors
 
 Advanced text editors with reStructuredText support, IDEs, and docutils GUIs:
 
-* Emacs `rst mode <http://docutils.sf.net/docutils/tools/editors/emacs>`__.
+* Emacs `rst mode <http://docutils.sf.net/tools/editors/emacs>`__.
 
 * `Vim <http://www.vim.org/index.php>`__:
 
@@ -58,7 +58,7 @@ Advanced text editors with reStructuredText support, IDEs, and docutils GUIs:
   for literal programming, as a filing cabinet holding any kind of data and
   as `document editor`__ with outlines containing reStructuredText markup.
 
-  .. _Leo: http://webpages.charter.net/edreamleo/
+  .. _Leo: http://leoeditor.com/
   .. _outliner: http://en.wikipedia.org/wiki/Outliner
   __ http://webpages.charter.net/edreamleo/rstplugin3.html
 
