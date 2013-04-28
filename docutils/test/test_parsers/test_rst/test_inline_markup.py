@@ -78,12 +78,13 @@ across lines*
 [r"""some punctuation is allowed around inline markup, e.g.
 /*emphasis*/, -*emphasis*-, and :*emphasis*: (delimiters),
 (*emphasis*), [*emphasis*], <*emphasis*>, {*emphasis*} (open/close pairs)
+*emphasis*., *emphasis*,, *emphasis*!, and *emphasis*\ (closing delimiters),
 
 but not
-)*emphasis*(, ]*emphasis*[, >*emphasis*>, }*emphasis*{ (close/open pairs)
+)*emphasis*(, ]*emphasis*[, >*emphasis*>, }*emphasis*{ (close/open pairs),
 (*), [*], '*' or '"*"' ("quoted" start-string),
 x*2* or 2*x* (alphanumeric char before),
-\*args or * (escaped, whitespace behind start-string)
+\*args or * (escaped, whitespace behind start-string),
 or *the\* *stars\* *inside* (escaped, whitespace before end-string).
 
 However, '*args' will trigger a warning and may be problematic.
@@ -117,12 +118,24 @@ what about *this**?
         <emphasis>
             emphasis
         } (open/close pairs)
+        <emphasis>
+            emphasis
+        ., \n\
+        <emphasis>
+            emphasis
+        ,, \n\
+        <emphasis>
+            emphasis
+        !, and \n\
+        <emphasis>
+            emphasis
+        (closing delimiters),
     <paragraph>
         but not
-        )*emphasis*(, ]*emphasis*[, >*emphasis*>, }*emphasis*{ (close/open pairs)
+        )*emphasis*(, ]*emphasis*[, >*emphasis*>, }*emphasis*{ (close/open pairs),
         (*), [*], '*' or '"*"' ("quoted" start-string),
         x*2* or 2*x* (alphanumeric char before),
-        *args or * (escaped, whitespace behind start-string)
+        *args or * (escaped, whitespace behind start-string),
         or \n\
         <emphasis>
             the* *stars* *inside
@@ -132,7 +145,7 @@ what about *this**?
         <problematic ids="id2" refid="id1">
             *
         args' will trigger a warning and may be problematic.
-    <system_message backrefs="id2" ids="id1" level="2" line="12" source="test data" type="WARNING">
+    <system_message backrefs="id2" ids="id1" level="2" line="13" source="test data" type="WARNING">
         <paragraph>
             Inline emphasis start-string without end-string.
     <paragraph>
