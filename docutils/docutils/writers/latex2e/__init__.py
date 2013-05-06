@@ -349,13 +349,13 @@ class Babel(object):
         'ro':           'romanian',
         'ru':           'russian',
         'se':           'samin',     # North Sami
-        # sh-Cyrl:      Serbo-Croatian, Cyrillic script
-        'sh-Latn':      'serbian', # Serbo-Croatian, Latin script
+        'sh-Cyrl':      'serbianc',  # Serbo-Croatian, Cyrillic script
+        'sh-Latn':      'serbian',   # Serbo-Croatian, Latin script see also 'hr'
         'sk':           'slovak',
         'sl':           'slovene',
         'sq':           'albanian',
-        # 'sr-Cyrl':    Serbian, Cyrillic script (sr-cyrl)
-        'sr-Latn':      'serbian', # Serbian, Latin script
+        'sr':           'serbianc',  # Serbian, Cyrillic script (contributed)
+        'sr-Latn':      'serbian',   # Serbian, Latin script
         'sv':           'swedish',
         # 'th':           'thai',
         'tr':           'turkish',
