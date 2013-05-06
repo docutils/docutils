@@ -1528,7 +1528,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
     ##     return head + '\n' + body
 
     def is_inline(self, node):
-        """Check whether a node represents an inline element"""
+        """Check whether a node represents an inline or block-level element"""
         return isinstance(node.parent, nodes.TextElement)
 
     def append_hypertargets(self, node):
@@ -1656,7 +1656,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.out.append('}')
 
     def visit_caption(self, node):
-        self.out.append( '\\caption{' )
+        self.out.append('\n\\caption{')
 
     def depart_caption(self, node):
         self.out.append('}\n')
@@ -2131,21 +2131,18 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_figure(self, node):
         self.requirements['float_settings'] = PreambleCmds.float_settings
-        # ! the 'align' attribute should set "outer alignment" !
-        # For "inner alignment" use LaTeX default alignment (similar to HTML)
-        ## if ('align' not in node.attributes or
-        ##     node.attributes['align'] == 'center'):
-        ##     align = '\n\\centering'
-        ##     align_end = ''
-        ## else:
-        ##     # TODO non vertical space for other alignments.
-        ##     align = '\\begin{flush%s}' % node.attributes['align']
-        ##     align_end = '\\end{flush%s}' % node.attributes['align']
-        ## self.out.append( '\\begin{figure}%s\n' % align )
-        ## self.context.append( '%s\\end{figure}\n' % align_end )
-        self.out.append('\\begin{figure}')
+        # The 'align' attribute sets the "outer alignment",
+        # for "inner alignment" use LaTeX default alignment (similar to HTML)
+        alignment = node.attributes.get('align', 'center')
+        if alignment != 'center':
+            # The LaTeX "figure" environment always uses the full textwidth,
+            # so "outer alignment" is ignored. Just write a comment.
+            # TODO: use the wrapfigure environment?
+            self.out.append('\\begin{figure} %% align = "%s"\n' % alignment)
+        else:
+            self.out.append('\\begin{figure}\n')
         if node.get('ids'):
-            self.out += ['\n'] + self.ids_to_labels(node)
+            self.out += self.ids_to_labels(node) + ['\n']
 
     def depart_figure(self, node):
         self.out.append('\\end{figure}\n')
@@ -2299,7 +2296,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
         pre = []
         post = []
         include_graphics_options = []
-        display_style = ('block-', 'inline-')[self.is_inline(node)]
         align_codes = {
             # inline images: by default latex aligns the bottom.
             'bottom': ('', ''),
@@ -2310,6 +2306,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             'left':   (r'\noindent{', r'\hfill}'),
             'right':  (r'\noindent{\hfill', '}'),}
         if 'align' in attrs:
+            # TODO: warn or ignore non-applicable alignment settings?
             try:
                 align_code = align_codes[attrs['align']]
                 pre.append(align_code[0])
@@ -2325,7 +2322,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if 'width' in attrs:
             include_graphics_options.append('width=%s' %
                             self.to_latex_length(attrs['width']))
-        if not self.is_inline(node):
+        if not (self.is_inline(node) or
+                isinstance(node.parent, nodes.figure)):
             pre.append('\n')
             post.append('\n')
         pre.reverse()
