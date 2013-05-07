@@ -55,6 +55,8 @@ Changes Since 0.10
     where stylesheets are found. Used by `stylesheet_path` when expanding
     relative path arguments.
   - New default for math-output_: ``HTML math.css``.
+  - Avoid repeated class declarations in html4css1 writer
+    (modified version of patch [ 104 ]).
 
 .. _math-output: docs/user/config.html#math-output
 
