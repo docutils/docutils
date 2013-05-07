@@ -24,7 +24,6 @@ class GetWriterClassTestCase(DocutilsTestSupport.StandardTestCase):
                           get_writer_class, 'nope')
 
     def test_local_writer(self):
-        # TODO fails from 2.7 up
         # requires local-writer.py in test directory (testroot)
         wr = get_writer_class('local-writer')
 
