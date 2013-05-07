@@ -402,19 +402,19 @@ class HTMLTranslator(nodes.NodeVisitor):
         ids = []
         for (name, value) in attributes.items():
             atts[name.lower()] = value
-        classes = node.get('classes', [])
-        if 'class' in atts:
-            classes.append(atts.pop('class'))
-        # move language specification to 'lang' attribute
-        languages = [cls for cls in classes
-                     if cls.startswith('language-')]
+        classes = []
+        languages = []
+        # unify class arguments and move language specification
+        for cls in node.get('classes', []) + atts.pop('class', '').split() :
+            if cls.startswith('language-'):
+                languages.append(cls[9:])
+            elif cls.strip() and cls not in classes:
+                classes.append(cls)
         if languages:
             # attribute name is 'lang' in XHTML 1.0 but 'xml:lang' in 1.1
-            atts[self.lang_attribute] = languages[0][9:]
-            classes.pop(classes.index(languages[0]))
-        classes = ' '.join(classes).strip()
+            atts[self.lang_attribute] = languages[0]
         if classes:
-            atts['class'] = classes
+            atts['class'] = ' '.join(classes)
         assert 'id' not in atts
         ids.extend(node.get('ids', []))
         if 'ids' in atts:
@@ -906,7 +906,8 @@ class HTMLTranslator(nodes.NodeVisitor):
              and len(node.astext()) > self.settings.field_name_limit):
             atts['colspan'] = 2
             self.context.append('</tr>\n'
-                                + self.starttag(node.parent, 'tr', '')
+                                + self.starttag(node.parent, 'tr', '', 
+                                                CLASS='field')
                                 + '<td>&nbsp;</td>')
         else:
             self.context.append('')
