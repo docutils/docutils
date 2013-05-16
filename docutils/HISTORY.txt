@@ -35,6 +35,10 @@ Changes Since 0.10
 
   - Apply [ 3599485 ] node source/line information for sphinx translation.
 
+* docutils/parsers/rst/directives/tables.py
+
+  - Fix [ 210 ] Python 3.3 checks CVS syntax only if "strict" is True.
+
 * docutils/parsers/rst/states.py
 
   - Fix [ 157 ] Line block parsing doesn't like system message.

@@ -164,6 +164,7 @@ class CSVTable(Table):
         quotechar = '"'
         doublequote = True
         skipinitialspace = True
+        strict = True
         lineterminator = '\n'
         quoting = csv.QUOTE_MINIMAL
 
@@ -189,6 +190,7 @@ class CSVTable(Table):
         escapechar = '\\'
         doublequote = False
         skipinitialspace = True
+        strict = True
         lineterminator = '\n'
         quoting = csv.QUOTE_MINIMAL
 
