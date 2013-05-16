@@ -32,9 +32,13 @@ if isinstance(unichr_exception, OverflowError):
 else:
     unichr_exception_string = str(unichr_exception)
 
-csv_eod_error_str = "unexpected end of data"
+# some error messages changed in Python 3.3:
+csv_eod_error_str = 'unexpected end of data'
 if sys.version_info < (3,3):
-    csv_eod_error_str = "newline inside string"
+    csv_eod_error_str = 'newline inside string'
+csv_unknown_url = "'bogus.csv'"
+if sys.version_info < (3,3,2):
+    csv_unknown_url = "bogus.csv"
 
 def null_bytes():
     import csv
@@ -576,11 +580,11 @@ u"""\
     <system_message level="4" line="1" source="test data" type="SEVERE">
         <paragraph>
             Problems with "csv-table" directive URL "bogus.csv":
-            unknown url type: bogus.csv.
+            unknown url type: %s.
         <literal_block xml:space="preserve">
             .. csv-table:: bad URL
                :url: bogus.csv
-"""],
+""" % csv_unknown_url],
 ["""\
 .. csv-table:: column mismatch
    :widths: 10,20
