@@ -10,7 +10,7 @@ Tests for tables.py directives.
 
 from __init__ import DocutilsTestSupport
 
-import os
+import os, sys
 import csv
 from docutils.parsers.rst.directives import tables
 
@@ -31,6 +31,10 @@ if isinstance(unichr_exception, OverflowError):
     unichr_exception_string = 'code too large (%s)' % unichr_exception
 else:
     unichr_exception_string = str(unichr_exception)
+
+csv_eod_error_str = "unexpected end of data"
+if sys.version_info < (3,3):
+    csv_eod_error_str = "newline inside string"
 
 def null_bytes():
     import csv
@@ -760,12 +764,12 @@ u"""\
     <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
             Error with CSV data in "csv-table" directive:
-            newline inside string
+            %s
         <literal_block xml:space="preserve">
             .. csv-table:: bad CSV data
             \n\
                "bad", \"csv, data
-"""],
+""" % csv_eod_error_str],
 ["""\
 .. csv-table:: bad CSV header data
    :header: "bad", \"csv, data
@@ -777,13 +781,13 @@ u"""\
     <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
             Error with CSV data in "csv-table" directive:
-            newline inside string
+            %s
         <literal_block xml:space="preserve">
             .. csv-table:: bad CSV header data
                :header: "bad", \"csv, data
             \n\
                good, csv, data
-"""],
+""" % csv_eod_error_str],
 ["""\
 .. csv-table:: bad encoding
    :file: %s
