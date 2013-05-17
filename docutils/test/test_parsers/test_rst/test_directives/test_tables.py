@@ -34,7 +34,8 @@ else:
 
 # some error messages changed in Python 3.3:
 csv_eod_error_str = 'unexpected end of data'
-if sys.version_info < (3,3):
+if sys.version_info < (3,2,4) and not (# backport to 2.7.4
+    sys.version_info[:2] == (2,7) and sys.version_info[2] > 3):
     csv_eod_error_str = 'newline inside string'
 csv_unknown_url = "'bogus.csv'"
 if sys.version_info < (3,3,2):
