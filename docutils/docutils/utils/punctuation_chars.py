@@ -72,12 +72,14 @@ delimiters = (u'\\-/:\u058a\xa1\xb7\xbf\u037e\u0387\u055a-\u055f\u0589'
               u'\ufe10-\ufe16\ufe19\ufe30-\ufe32\ufe45\ufe46\ufe49-\ufe4c'
               u'\ufe50-\ufe52\ufe54-\ufe58\ufe5f-\ufe61\ufe63\ufe68\ufe6a'
               u'\ufe6b\uff01-\uff03\uff05-\uff07\uff0a\uff0c-\uff0f\uff1a'
-              u'\uff1b\uff1f\uff20\uff3c\uff61\uff64\uff65\U00010100'
-              u'\U00010101\U0001039f\U000103d0\U00010857\U0001091f\U0001093f'
-              u'\U00010a50-\U00010a58\U00010a7f\U00010b39-\U00010b3f'
-              u'\U000110bb\U000110bc\U000110be-\U000110c1\U00012470-'
-              u'\U00012473')
+              u'\uff1b\uff1f\uff20\uff3c\uff61\uff64\uff65')
+if sys.maxunicode >= 0x10FFFF: # "wide" build
+    delimiters += (u'\U00010100\U00010101\U0001039f\U000103d0\U00010857'
+                   u'\U0001091f\U0001093f\U00010a50-\U00010a58\U00010a7f'
+                   u'\U00010b39-\U00010b3f\U000110bb\U000110bc\U000110be-'
+                   u'\U000110c1\U00012470-\U00012473')
 closing_delimiters = u'\\\\.,;!?'
+
 
 # Matching open/close quotes
 # --------------------------
@@ -132,20 +134,24 @@ if __name__ == '__main__':
         """Return dictionary of Unicode character lists.
 
         For each of the `catagories`, an item contains a list with all Unicode
-        characters with `cp_min` <= code-point <= `cp_max` that belong to the
-        category. (The default values check every code-point supported by Python.)
+        characters with `cp_min` <= code-point <= `cp_max` that belong to
+        the category. 
+        
+        The default values check every code-point supported by Python
+        (`sys.maxint` is 0x10FFFF in a "wide" build and 0xFFFF in a "narrow"
+        build, i.e. ucs4 and ucs2 respectively).
         """
         # Determine highest code point with one of the given categories
         # (may shorten the search time considerably if there are many
         # categories with not too high characters):
         if cp_max is None:
-            cp_max = max(x for x in xrange(sys.maxunicode + 1)
+            cp_max = max(x for x in xrange(sys.maxunicode+1)
                         if unicodedata.category(unichr(x)) in categories)
             # print cp_max # => 74867 for unicode_punctuation_categories
         charlists = {}
         for cat in categories:
             charlists[cat] = [unichr(x) for x in xrange(cp_min, cp_max+1)
-                            if unicodedata.category(unichr(x)) == cat]
+                              if unicodedata.category(unichr(x)) == cat]
         return charlists
 
 
@@ -221,6 +227,12 @@ if __name__ == '__main__':
         return [u''.join(chars) for chars in (openers, closers, delimiters,
                                               closing_delimiters)]
 
+    def separate_wide_chars(s):
+        """Return (s1,s2) with characters above 0xFFFF in s2"""
+        maxunicode_narrow = 0xFFFF
+        l1 = [ch for ch in s if ord(ch) <= maxunicode_narrow]
+        l2 = [ch for ch in s if ord(ch) > maxunicode_narrow]
+        return ''.join(l1), ''.join(l2)
 
     def mark_intervals(s):
         """Return s with shortcut notation for runs of consecutive characters
@@ -270,32 +282,51 @@ if __name__ == '__main__':
 # (re) create and compare the samples:
 
     (o, c, d, cd) = punctuation_samples()
-    d_sorted = d[:5] + mark_intervals(d[5:])
+    o, o_wide = separate_wide_chars(o)
+    c, c_wide = separate_wide_chars(c)
+    d, d_wide = separate_wide_chars(d)
+    d = d[:5] + mark_intervals(d[5:])
+    d_wide = mark_intervals(d_wide)
+    if sys.maxunicode >= 0x10FFFF: # "wide" build
+        d += d_wide
     if o != openers:
         print '- openers = ur"""%s"""' % openers.encode('utf8')
         print '+ openers = ur"""%s"""' % o.encode('utf8')
+    if o_wide:
+        print '+ openers-wide = ur"""%s"""' % o_wide.encode('utf8')
     if c != closers:
         print '- closers = ur"""%s"""' % closers.encode('utf8')
         print '+ closers = ur"""%s"""' % c.encode('utf8')
-    if d_sorted != delimiters:
+    if c_wide:
+        print '+ closers-wide = ur"""%s"""' % c_wide.encode('utf8')
+    if d != delimiters:
         print '- delimiters = ur"%s"' % delimiters.encode('utf8')
         print '+ delimiters = ur"%s"' % d.encode('utf8')
     if cd != closing_delimiters:
         print '- closing_delimiters = ur"%s"' % closing_delimiters.encode('utf8')
         print '+ closing_delimiters = ur"%s"' % cd.encode('utf8')
-
+    # closing_delimiters are all ASCII characters
 
 # Print literal code to define the character sets:
 
     # `openers` and `closers` must be verbose and keep order because they are
     # also used in `match_chars()`.
-    print wrap_string(repr(o), startstring= "openers = (")
-    print wrap_string(repr(c), startstring= "closers = (")
+    print wrap_string(repr(o), startstring='openers = (')
+    print wrap_string(repr(c), startstring='closers = (')
     # delimiters: sort and use shortcut for intervals (saves ~150 characters):
-    print wrap_string(repr(d_sorted), startstring= "delimiters = (")
+    print wrap_string(repr(d), startstring='delimiters = (')
+    # add characters in the upper plane only in a "wide" build:
+    print 'if sys.maxunicode >= 0x10FFFF: # "wide" build'
+    print wrap_string(repr(d_wide), startstring='    delimiters += (')
     print 'closing_delimiters =', repr(cd)
 
 # test prints
+
+    # print "wide" Unicode characters:
+    # ucharlists = unicode_charlists(unicode_punctuation_categories)
+    # for key in ucharlists:
+    #     if key.endswith('wide'):
+    #         print key, ucharlists[key]
 
     # print 'openers = ', repr(openers)
     # print 'closers = ', repr(closers)
