@@ -202,9 +202,9 @@ The LaTeX code generation can be configured via
 
 * configuration options_ to the Docutils writer,
 * `LaTeX packages`_,
-* custom LaTeX code in
+* custom `LaTeX code`_ in
   + `style sheets`_,
-  + the `LaTeX preamble`_
+  + the `LaTeX preamble`_,
   + the document body (`raw LaTeX`_), or
   + custom templates_.
 
@@ -223,12 +223,17 @@ Options can be specified as
 .. _Docutils Configuration:
    config.html
 
+LaTeX code
+----------
+
+Custom LaTeX code can be placed in `style sheets`_, the `LaTeX
+ preamble`_, the document body (`raw LaTeX`_), or custom templates_.
 
 .. _style sheet:
 .. _custom style sheets:
 
 Style sheets
-------------
+````````````
 
 A common way of LaTeX customization is the preparation of custom style
 sheets, either as simple files with LaTeX code snippets or as home-made
@@ -278,7 +283,7 @@ Stylesheet Repository
 
 
 LaTeX preamble
---------------
+``````````````
 
 Configuration by LaTeX code in the document preamble is also possible
 without a separate stylesheet. This way, packages can be loaded with
@@ -308,7 +313,7 @@ Example:
 
 
 Templates
----------
+`````````
 
 Some customizations require commands at places other than the insertion
 point of stylesheets or depend on the deletion/replacement of parts of the
@@ -332,7 +337,7 @@ Example:
 
 
 Raw LaTeX
----------
+`````````
 
 By means of the `raw directive`_ or a derived `custom role`_, one can
 give commands directly to LaTeX. These can be both, styling as well as
@@ -764,7 +769,7 @@ LaTeX
      preamble`_ or `raw LaTeX`_.
 
   Example 1:
-    Use `Latin Modern`_. LaTeX code::
+    Use `Latin Modern`_. `LaTeX code`_::
 
       \usepackage{lmodern}
 
@@ -792,7 +797,7 @@ LaTeX
 
   Example 3:
     Use the teletype font from the txfonts_ package. As there is no
-    package for this, we re-define the font macro with the LaTeX code::
+    package for this, we re-define the font macro with the `LaTeX code`_::
 
       \renewcommand{\ttdefault}{txtt}
 
@@ -1145,7 +1150,7 @@ bundle.
 Option:
   ``--hyperref-options=draft``
 
-LaTeX code::
+`LaTeX code`_::
 
   \usepackage{nohyperref,url}
   \urlstyle{same}
@@ -1304,7 +1309,7 @@ Commands
 
 
 Example:
-  Define the transition command as page break with the LaTeX code::
+  Define the transition command as page break with the `LaTeX code`_::
 
     \newcommand*{\DUtransition}{\pagebreak[4]}
 
@@ -1340,7 +1345,7 @@ Example 1:
   expense of readability).
 
 Example 2:
-  LaTeX code to set margins with the geometry_ package::
+  `LaTeX code`_ to set margins with the geometry_ package::
 
     \usepackage{geometry}
     \geometry{hmargin={3cm,0.8in},height=8in}
@@ -1362,12 +1367,13 @@ page headers and footers
 With the fancyhdr_ package or the `KOMA-script`_ classes, you can define
 custom page head- and foot-lines.
 
-The "header" and "footer" directives save their content in the macros
+The `"header" and "footer" directives`_ save their content in the macros
 ``\DUheader`` rsp. ``\DUfooter``. The macros can be used in LaTeX code and
 will be replaced by LaTeX with the content of the directives.
 
 Example:
-  Place left-aligned "header" and "footer" on every page with fancyhdr_::
+  `LaTeX code`_ to place left-aligned "header" and "footer" on every
+  page with fancyhdr_::
 
     \usepackage{fancyhdr}
     \fancyhead[L]{\DUheader}
@@ -1375,7 +1381,9 @@ Example:
     \fancyfoot[L]{\DUfooter}
     \pagestyle{fancy}
 
+
 .. _fancyhdr: http://www.ctan.org/pkg/fancyhdr
+.. _"header" and "footer" directives: ../ref/rst/directives.html#header
 
 
 page numbering
@@ -1400,7 +1408,7 @@ paper size
 Paper geometry can be changed using ``--documentoptions`` or with the
 `geometry`_ package.
 
-LaTeX code::
+`LaTeX code`_::
 
   \usepackage{geometry}
   \geometry{OPTIONLIST}
@@ -1536,7 +1544,7 @@ Default:
   72 DPI, i.e. 1 px = 1/72 in.
 
 Example:
-  Set a resolution of 96 DPI with the LaTeX code::
+  Set a resolution of 96 DPI with the `LaTeX code`_::
 
     \pdfpxdimen=1in % 1 DPI
     \divide\pdfpxdimen by 96 % 96 DPI
@@ -1689,7 +1697,7 @@ Note:
   LaTeX comes with two options for UTF-8 support,
 
   :utf8:  by the standard `inputenc`_ package with only limited coverage
-          (mainly accented chars, no Greek).
+          (mainly accented characters).
 
   :utf8x: supported by the `ucs`_ package covers a wider range of Unicode
           characters than does "utf8".  It is, however, a non-standard
