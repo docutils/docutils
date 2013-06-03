@@ -1356,6 +1356,28 @@ Example 2:
    http://mirror.ctan.org/macros/latex/contrib/geometry/geometry.pdf
 
 
+page headers and footers
+------------------------
+
+With the fancyhdr_ package or the `KOMA-script`_ classes, you can define
+custom page head- and foot-lines.
+
+The "header" and "footer" directives save their content in the macros
+``\DUheader`` rsp. ``\DUfooter``. The macros can be used in LaTeX code and
+will be replaced by LaTeX with the content of the directives.
+
+Example:
+  Place left-aligned "header" and "footer" on every page with fancyhdr_::
+
+    \usepackage{fancyhdr}
+    \fancyhead[L]{\DUheader}
+    \fancyfoot{} % reset
+    \fancyfoot[L]{\DUfooter}
+    \pagestyle{fancy}
+
+.. _fancyhdr: http://www.ctan.org/pkg/fancyhdr
+
+
 page numbering
 --------------
 
