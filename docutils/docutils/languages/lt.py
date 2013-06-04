@@ -1,4 +1,4 @@
-# -*- coding: utf8 -*-
+# -*- coding: utf-8 -*-
 # $Id$
 # Author: Dalius Dobravolskas <dalius.do...@gmail.com>
 # Copyright: This module has been placed in the public domain.
@@ -59,7 +59,7 @@ bibliographic_fields = {
 author_separators = [';', ',']
 """List of separator strings for the 'Authors' bibliographic field. Tried in
 order."""
-# -*- coding: utf8 -*-
+# -*- coding: utf-8 -*-
 # $Id$
 # Author: David Goodger <goodger@python.org>
 # Copyright: This module has been placed in the public domain.

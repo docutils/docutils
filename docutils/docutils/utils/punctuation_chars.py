@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- coding: utf8 -*-
+# -*- coding: utf-8 -*-
 # :Copyright: © 2011 Günter Milde.
 # :License: Released under the terms of the `2-Clause BSD license`_, in short:
 #
@@ -135,8 +135,8 @@ if __name__ == '__main__':
 
         For each of the `catagories`, an item contains a list with all Unicode
         characters with `cp_min` <= code-point <= `cp_max` that belong to
-        the category. 
-        
+        the category.
+
         The default values check every code-point supported by Python
         (`sys.maxint` is 0x10FFFF in a "wide" build and 0xFFFF in a "narrow"
         build, i.e. ucs4 and ucs2 respectively).

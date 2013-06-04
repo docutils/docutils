@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- coding: utf8 -*-
+# -*- coding: utf-8 -*-
 
 # :Id: $Id$
 # :Copyright: © 2010 Günter Milde.
