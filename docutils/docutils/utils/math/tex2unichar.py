@@ -1,4 +1,4 @@
-# -*- coding: utf8 -*-
+# -*- coding: utf-8 -*-
 
 # LaTeX math to Unicode symbols translation dictionaries.
 # Generated with ``write_tex2unichar.py`` from the data in

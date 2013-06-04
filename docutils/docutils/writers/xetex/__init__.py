@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- coding: utf8 -*-
+# -*- coding: utf-8 -*-
 
 # :Author: Günter Milde <milde@users.sourceforge.net>
 # :Revision: $Revision$
