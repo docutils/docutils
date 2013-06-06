@@ -248,7 +248,7 @@ Development
 
 * Trac_, a project management and bug/issue tracking system, supports
   `using reStructuredText
-  <http://projects.edgewall.com/trac/wiki/WikiRestructuredText>`__ as an
+  <http://trac.edgewall.org/wiki/WikiRestructuredText>`__ as an
   alternative to wiki markup.
 
 * PyLit_ provides a bidirectional text <--> code converter for *literate

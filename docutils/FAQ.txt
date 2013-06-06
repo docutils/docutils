@@ -423,11 +423,11 @@ implied endorsement or recommendation, and in no particular order:
 
 * `StikiWiki <http://mithrandr.moria.org/code/stikiwiki/>`__
 
-* `Trac <http://projects.edgewall.com/trac/>`__ `supports using
+* `Trac <http://trac.edgewall.com//>`__ `supports using
   reStructuredText
-  <http://projects.edgewall.com/trac/wiki/WikiRestructuredText>`__ as
+  <http://trac.edgewall.com//wiki/WikiRestructuredText>`__ as
   an alternative to wiki markup. This includes support for `TracLinks
-  <http://projects.edgewall.com/trac/wiki/TracLinks>`__ from within
+  <http://trac.edgewall.com//wiki/TracLinks>`__ from within
   RST text via a custom RST reference-directive or, even easier, an
   interpreted text role 'trac'
 
