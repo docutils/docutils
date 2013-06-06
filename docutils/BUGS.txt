@@ -57,21 +57,24 @@ create a `minimal example`_ that demonstrates the bug.  The easier you
 make it to understand and track down the bug, the more likely a fix
 will be.
 
+.. _minimal example:
+
 .. sidebar:: minimal example
 
-  .. _minimal example:
+  A `minimal working example` is a complete example which is as as small and
+  simple as possible. It should be complete and working, so that
 
-  A minimal example is an example which is as small as possible. These
-  examples are much easier to understand than long examples.
+  * you cannot accidentally omit information important to diagnosing
+    the problem and
+  * the person responding can just copy-and-paste the code to try it out.
 
-  To construct an example which is as small as possible, the rule is
-  quite simple: *remove anything which is not necessary*.
+  To construct an example which is as small as possible, the rule
+  quite simple: *remove/leave out anything which is not necessary*.
 
-  See also: `LaTeX FAQ`__, `Lilypond Documentation`__, minimalbeispiel.de__
+  See also: `What is a minimal working example?`__, `LaTeX FAQ`__
 
-  __ http://www.tex.ac.uk/cgi-bin/texfaq2html?label=minxampl
-  __ http://lilypond.org/doc/v2.9/Documentation/user/lilypond/Minimal-examples
   __ http://www.minimalbeispiel.de/mini-en.html
+  __ http://www.tex.ac.uk/cgi-bin/texfaq2html?label=minxampl
 
 Now you're ready to write the bug report.  Please include:
 
