@@ -1,4 +1,313 @@
 **************************************
+Date: Fri Jun  7 19:37:35 CEST 2013
+Author: stefan
+Tag: rst2gxl_1_53
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl
+In directory theowa:/home/stefan/free/rst2gxl
+
+Modified Files:
+	Makefile 
+
+--------------------------------------
+Log Message:
+Debugging.
+**************************************
+Date: Fri Jun  7 19:27:46 CEST 2013
+Author: stefan
+Tag: rst2gxl_1_52
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl
+In directory theowa:/home/stefan/free/rst2gxl
+
+Modified Files:
+	rst2gxl.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl/tests/options/expected
+In directory theowa:/home/stefan/free/rst2gxl/tests/options/expected
+
+Modified Files:
+	multiedgeSections.gxl reverseTable.gxl selectTable.gxl 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl/tests/secretComplex/expected
+In directory theowa:/home/stefan/free/rst2gxl/tests/secretComplex/expected
+
+Modified Files:
+	Glossar.gxl 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl/tests/simple/expected
+In directory theowa:/home/stefan/free/rst2gxl/tests/simple/expected
+
+Modified Files:
+	sections.gxl table.gxl 
+
+--------------------------------------
+Log Message:
+`edge[@from]` and `edge[@to]` correctly refer to ids.
+
+Output is now valid against the DTD.
+**************************************
+Date: Fri Jun  7 19:13:57 CEST 2013
+Author: stefan
+Tag: rst2gxl_1_51
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl
+In directory theowa:/home/stefan/free/rst2gxl
+
+Modified Files:
+	rst2gxl.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl/tests/options/expected
+In directory theowa:/home/stefan/free/rst2gxl/tests/options/expected
+
+Modified Files:
+	multiedgeSections.gxl reverseTable.gxl selectTable.gxl 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl/tests/secretComplex/expected
+In directory theowa:/home/stefan/free/rst2gxl/tests/secretComplex/expected
+
+Modified Files:
+	Glossar.gxl 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl/tests/simple/expected
+In directory theowa:/home/stefan/free/rst2gxl/tests/simple/expected
+
+Modified Files:
+	invalid.gxl sections.gxl table.gxl textOnly.gxl 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl/tests/xmllint
+In directory theowa:/home/stefan/free/rst2gxl/tests/xmllint
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Log Message:
+`graph[@id]` is set correctly to an XML id.
+**************************************
+Date: Fri Jun  7 18:19:03 CEST 2013
+Author: stefan
+Tag: rst2gxl_1_50
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl
+In directory theowa:/home/stefan/free/rst2gxl
+
+Modified Files:
+	rst2gxl.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl/tests/options/expected
+In directory theowa:/home/stefan/free/rst2gxl/tests/options/expected
+
+Modified Files:
+	multiedgeSections.gxl reverseTable.gxl selectTable.gxl 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl/tests/secretComplex/expected
+In directory theowa:/home/stefan/free/rst2gxl/tests/secretComplex/expected
+
+Modified Files:
+	Glossar.gxl 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl/tests/simple/expected
+In directory theowa:/home/stefan/free/rst2gxl/tests/simple/expected
+
+Modified Files:
+	invalid.gxl sections.gxl table.gxl textOnly.gxl 
+
+--------------------------------------
+Log Message:
+GXL is output in V1.0 since this is what `gxl2gv` understands. Not
+complete yet.
+**************************************
+Date: Fri Jun  7 12:52:08 CEST 2013
+Author: stefan
+Tag: rst2gxl_1_49
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl/tests/xmllint
+In directory theowa:/home/stefan/free/rst2gxl/tests/xmllint
+
+Added Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl/tests/xmllint/expected
+In directory theowa:/home/stefan/free/rst2gxl/tests/xmllint/expected
+
+Added Files:
+	invalid.err invalid.ex invalid.out multiedgeSections.err 
+	multiedgeSections.ex multiedgeSections.out reverseTable.err 
+	reverseTable.ex reverseTable.out sections.err sections.ex 
+	sections.out selectTable.err selectTable.ex selectTable.out 
+	table.err table.ex table.out textOnly.err textOnly.ex 
+	textOnly.out 
+
+--------------------------------------
+Log Message:
+Added `xmllint` tests. Do not work yet.
+**************************************
+Date: Fri Jun  7 12:42:32 CEST 2013
+Author: stefan
+Tag: rst2gxl_1_48
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl
+In directory theowa:/home/stefan/free/rst2gxl
+
+Modified Files:
+	Makefile 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl/tests
+In directory theowa:/home/stefan/free/rst2gxl/tests
+
+Added Files:
+	Makefile 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl/tests/xmllint
+In directory theowa:/home/stefan/free/rst2gxl/tests/xmllint
+
+Added Files:
+	Makefile 
+
+--------------------------------------
+Log Message:
+Started support for using `xmllint` for tests.
+**************************************
+Date: Fri Jun  7 11:57:15 CEST 2013
+Author: stefan
+Tag: rst2gxl_1_47
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl/tests/options/expected
+In directory theowa:/home/stefan/free/rst2gxl/tests/options/expected
+
+Modified Files:
+	multiedgeSections.gxl reverseTable.gxl selectTable.gxl 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl/tests/secretComplex/expected
+In directory theowa:/home/stefan/free/rst2gxl/tests/secretComplex/expected
+
+Modified Files:
+	Glossar.gxl 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl/tests/simple/expected
+In directory theowa:/home/stefan/free/rst2gxl/tests/simple/expected
+
+Modified Files:
+	sections.gxl table.gxl 
+
+--------------------------------------
+Log Message:
+Adapted tests to changed `xml.dom.minidom` implementation: Single text
+nodes no longer get a separate line.
+**************************************
+Date: Sun Nov  7 19:58:34 CET 2010
+Author: stefan
+Tag: rst2gxl_1_46
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl/tests/complex
+In directory rosalu:/home/stefan/free/rst2gxl/tests/complex
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl/tests/options
+In directory rosalu:/home/stefan/free/rst2gxl/tests/options
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl/tests/options/input
+In directory rosalu:/home/stefan/free/rst2gxl/tests/options/input
+
+Modified Files:
+	multiedgeSections.opt reverseTable.opt selectTable.opt 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl/tests/secretComplex
+In directory rosalu:/home/stefan/free/rst2gxl/tests/secretComplex
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl/tests/simple
+In directory rosalu:/home/stefan/free/rst2gxl/tests/simple
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Log Message:
+Upgraded tests to filterunit V0.7.1.
+**************************************
+Date: Mon Nov  1 19:34:21 CET 2010
+Author: stefan
+Tag: rst2gxl_1_45
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl
+In directory rosalu:/home/stefan/free/rst2gxl
+
+Modified Files:
+	rst2gxl.pod 
+
+--------------------------------------
+Log Message:
+Minor improvement.
+**************************************
+Date: Mon Nov  1 19:27:22 CET 2010
+Author: stefan
+Tag: rst2gxl_1_44
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl
+In directory rosalu:/home/stefan/free/rst2gxl
+
+Modified Files:
+	Makefile 
+Added Files:
+	rst2gxl.pod 
+
+--------------------------------------
+Log Message:
+Added man page.
+**************************************
+Date: Sun Oct 31 20:52:17 CET 2010
+Author: stefan
+Tag: rst2gxl_1_43
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl
+In directory rosalu:/home/stefan/free/rst2gxl
+
+Removed Files:
+	.cvsignore 
+
+--------------------------------------
+Log Message:
+Removed created `.cvsignore`.
+**************************************
 Date: Sun Oct 31 20:02:16 CET 2010
 Author: stefan
 Tag: rst2gxl_1_42

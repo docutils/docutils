@@ -1,55 +1,43 @@
 <?xml version="1.0" ?>
 <!DOCTYPE gxl
-  SYSTEM 'http://www.gupro.de/GXL/gxl-1.1.dtd'>
+  SYSTEM 'http://www.gupro.de/GXL/gxl-1.0.dtd'>
 <gxl>
-  <graph edgemode="directed" id="input/selectTable.rst">
+  <graph edgemode="directed" id="input_selectTable.rst">
     <node id="one">
       <attr name="name">
-        <string>
-          One
-        </string>
+        <string>One</string>
       </attr>
     </node>
     <node id="two">
       <attr name="name">
-        <string>
-          Two
-        </string>
+        <string>Two</string>
       </attr>
     </node>
     <node id="three">
       <attr name="name">
-        <string>
-          Three
-        </string>
+        <string>Three</string>
       </attr>
     </node>
     <node id="first">
       <attr name="name">
-        <string>
-          First
-        </string>
+        <string>First</string>
       </attr>
     </node>
     <node id="second">
       <attr name="name">
-        <string>
-          Second
-        </string>
+        <string>Second</string>
       </attr>
     </node>
     <node id="third">
       <attr name="name">
-        <string>
-          Third
-        </string>
+        <string>Third</string>
       </attr>
     </node>
-    <edge from="Two" to="One"/>
-    <edge from="Three" to="One"/>
-    <edge from="Three" to="Two"/>
-    <edge from="First" to="One"/>
-    <edge from="Second" to="First"/>
-    <edge from="Second" to="Second"/>
+    <edge from="two" to="one"/>
+    <edge from="three" to="one"/>
+    <edge from="three" to="two"/>
+    <edge from="first" to="one"/>
+    <edge from="second" to="first"/>
+    <edge from="second" to="second"/>
   </graph>
 </gxl>
