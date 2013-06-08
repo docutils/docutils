@@ -39,10 +39,13 @@ from docutils.core import publish_cmdline, default_description
 
 from xml.dom import minidom
 
+import re
+
 description = ('Generates GXL from standalone reStructuredText sources.  '
                + default_description)
 
-GxlNamespace = "http://www.gupro.de/GXL/gxl-1.1.dtd"
+# `gxl2gv` supports V1.0 only
+GxlNamespace = "http://www.gupro.de/GXL/gxl-1.0.dtd"
 GxlTagRoot = "gxl"
 GxlTagGraph = "graph"
 GxlTagNode = "node"
@@ -64,6 +67,11 @@ DuAttrRefid = "refid"
 DuAttrRefuri = "refuri"
 DuAttrClasses = "classes"
 DuAttrClassesValToc = "contents"
+
+def string2XMLName(s):
+    """Return an XML Name similar to the string given."""
+    s = re.sub(r"(?u)[^-.:\w]", "_", s)
+    return re.sub("^(?u)[^:\w]", "_", s)
 
 class Writer(writers.Writer):
 
@@ -127,7 +135,7 @@ class Writer(writers.Writer):
         doctype = impl.createDocumentType(GxlTagRoot, None, GxlNamespace)
         doc = impl.createDocument(None, GxlTagRoot, doctype)
         graph = doc.createElement(GxlTagGraph)
-        graph.setAttribute(GxlAttrId, document[DuAttrSource])
+        graph.setAttribute(GxlAttrId, string2XMLName(document[DuAttrSource]))
         graph.setAttribute(GxlAttrEdgemode, GxlValEdgemode)
         doc.documentElement.appendChild(graph)
 
@@ -222,6 +230,9 @@ class Anchor(object):
     """The name of the node"""
     _name = None
 
+    """The id of the node"""
+    _id = None
+
     def __init__(self, node, document):
         self.node = node
         self.document = document
@@ -229,7 +240,7 @@ class Anchor(object):
     def renderGlx(self, doc, graph):
         eNode = doc.createElement(GxlTagNode)
         graph.appendChild(eNode)
-        eNode.setAttribute(GxlAttrId, self.ids()[0])
+        eNode.setAttribute(GxlAttrId, self.id())
 
         eAttr = doc.createElement(GxlTagAttr)
         eNode.appendChild(eAttr)
@@ -248,6 +259,11 @@ class Anchor(object):
             self.node.walkabout(visitor)
             self._name = visitor.text
         return self._name
+
+    def id(self):
+        if self._id is None:
+            self._id = self.node[DuAttrIds][0]
+        return self._id
 
     def ids(self):
         return self.node[DuAttrIds]
@@ -289,9 +305,9 @@ class Reference(object):
         toAttr = GxlAttrTo
         if doReverse:
             ( fromAttr, toAttr ) = ( toAttr, fromAttr )
-        eEdge.setAttribute(toAttr, self.toAnchor.name())
+        eEdge.setAttribute(toAttr, self.toAnchor.id())
         # TODO There should be several ways to identify the "from" node
-        eEdge.setAttribute(fromAttr, self.fromAnchor.name())
+        eEdge.setAttribute(fromAttr, self.fromAnchor.id())
 
     def resolve(self, anchors):
         """Resolve this reference against the anchors given."""

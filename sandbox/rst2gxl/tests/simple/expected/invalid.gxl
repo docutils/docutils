@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <!DOCTYPE gxl
-  SYSTEM 'http://www.gupro.de/GXL/gxl-1.1.dtd'>
+  SYSTEM 'http://www.gupro.de/GXL/gxl-1.0.dtd'>
 <gxl>
-  <graph edgemode="directed" id="input/invalid.rst"/>
+  <graph edgemode="directed" id="input_invalid.rst"/>
 </gxl>
