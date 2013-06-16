@@ -133,6 +133,10 @@ class Writer(writers.Writer):
           'once.',
           ['--select-table'],
           {'action': 'append'}),
+         ('Use the whole path of section titles up to a section as label for '
+          'a node. Default is to use only the section title.',
+          ['--title-path'],
+          {'action': 'store_true', 'validator': frontend.validate_boolean}),
          ),
         'Graph Writer GXL Options',
         'The following options are valid only for GXL format output.',
@@ -151,6 +155,7 @@ class Writer(writers.Writer):
                          'gxl': False,
                          'dot': False,
                          'connected_only': False,
+                         'title_path': False,
                          }
 
     config_section = 'graph writer'
@@ -209,6 +214,9 @@ class GraphTranslator(nodes.GenericNodeVisitor):
     """Selected tables."""
     _selectedTables = None
 
+    """Use title path for labels."""
+    _titlePath = None
+
     def __init__(self, document, settings):
         nodes.GenericNodeVisitor.__init__(self, document)
         self.sourceName = document[DuAttrSource]
@@ -217,6 +225,7 @@ class GraphTranslator(nodes.GenericNodeVisitor):
             self._inSelected.append(False)
         else:
             self._inSelected.append(True)
+        self._titlePath = settings.title_path
 
     def default_visit(self, node):
         if self.isSelected(node, True):
@@ -254,7 +263,8 @@ class GraphTranslator(nodes.GenericNodeVisitor):
 
     def processNode(self, node):
         if Anchor.isAnchor(node):
-            self._lastAnchor = anchor = Anchor(node, self.document)
+            self._lastAnchor = anchor = Anchor(node, self.document,
+                                               self._titlePath)
             self.anchors.append(anchor)
         if Reference.isReference(node):
             reference = Reference(node, self._lastAnchor)
@@ -271,7 +281,10 @@ class Anchor(object):
     """An anchor in the source."""
 
     """The source node."""
-    node = None
+    _node = None
+
+    """The document where the node is in."""
+    _document = None
 
     """The name of the node."""
     _name = None
@@ -279,31 +292,40 @@ class Anchor(object):
     """The id of the node."""
     _id = None
 
-    def __init__(self, node, document):
-        self.node = node
-        self.document = document
+    """Use title path for the name."""
+    _titlePath = None
+
+    def __init__(self, node, document, titlePath):
+        self._node = node
+        self._document = document
+        self._titlePath = titlePath
 
     def name(self):
         """Determine and return the user readable name of the anchor."""
         if self._name is None:
-            if isinstance(self.node, nodes.Structural):
-                visitor = FirstTitleGatherer(self.document)
+            root = self._node
+            if isinstance(self._node, nodes.Structural):
+                if self._titlePath:
+                    visitor = TitlePathGatherer(self._document, self._node)
+                    root = self._document
+                else:
+                    visitor = FirstTitleGatherer(self._document)
             else:
-                visitor = TextGatherer(self.document)
-            self.node.walkabout(visitor)
-            self._name = visitor.text
+                visitor = TextGatherer(self._document)
+            root.walkabout(visitor)
+            self._name = visitor.text.replace("\n", "\\n")
         return self._name
 
     def id(self):
         """Determine and return the canoncical id of the anchor."""
         if self._id is None:
-            self._id = self.node[DuAttrIds][0]
+            self._id = self._node[DuAttrIds][0]
         return self._id
 
     def ids(self):
         """Return all ids of the anchor."""
 
-        return self.node[DuAttrIds]
+        return self._node[DuAttrIds]
 
     @staticmethod
     def isAnchor(node):
@@ -320,7 +342,7 @@ class Reference(object):
     """A reference to an anchor in the source."""
 
     """The source node."""
-    node = None
+    _node = None
 
     """The last anchor seen before this reference."""
     fromAnchor = None
@@ -329,13 +351,13 @@ class Reference(object):
     toAnchor = None
 
     def __init__(self, node, fromAnchor):
-        self.node = node
+        self._node = node
         self.fromAnchor = fromAnchor
 
     def resolve(self, anchors):
         """Resolve this reference against the anchors given."""
         for anchor in anchors:
-            if self.node[DuAttrRefid] in anchor.ids():
+            if self._node[DuAttrRefid] in anchor.ids():
                 self.toAnchor = anchor
                 break
 
@@ -346,53 +368,68 @@ class Reference(object):
                     and node.get(DuAttrRefid, None))
 
 ##############################################################################
+##############################################################################
 
 class TextGatherer(nodes.SparseNodeVisitor):
-    """A visitor gathering text."""
+    """A visitor gathering text. This should be subclassed for more specialized
+    gatherers."""
 
-    """Gathered text."""
+    """Gathered text. May contain line feeds for several lines."""
     text = ""
 
-    gather = True
-
     def visit_generated(self, node):
-        self.gather = False
-
-    def depart_generated(self, node):
-        self.gather = True
+        raise nodes.SkipNode()
 
     def visit_Text(self, node):
-        if self.gather:
+        self.text += node.astext()
+
+##############################################################################
+
+class FirstTitleGatherer(TextGatherer):
+    """A visitor gathering text in first title."""
+
+    _gather = False
+
+    def visit_title(self, node):
+        self._gather = True
+
+    def depart_title(self, node):
+        raise nodes.StopTraversal()
+
+    def visit_Text(self, node):
+        if self._gather:
             self.text += node.astext()
 
 ##############################################################################
 
-class FirstTitleGatherer(nodes.SparseNodeVisitor):
-    """A visitor gathering text in first title."""
+class TitlePathGatherer(TextGatherer):
+    """A visitor gathering title text for all sections leading up to a certain
+    one."""
 
-    """Gathered text."""
-    text = ""
+    """Current title path."""
+    _titles = None
 
-    gather = False
-    found = False
-    skip = False
+    """The structural node we are looking for."""
+    _structuralNode = None
 
-    def visit_title(self, node):
-        self.gather = not self.found
+    def __init__(self, document, structuralNode):
+        nodes.SparseNodeVisitor.__init__(self, document)
+        self._titles = [ ]
+        if not isinstance(structuralNode, nodes.Structural):
+            raise TypeError("Node looked for in `TitlePathGatherer` must be a structural node")
+        self._structuralNode = structuralNode
 
-    def depart_title(self, node):
-        self.gather = False
-        self.found = True
+    def visit_section(self, node):
+        visitor = FirstTitleGatherer(self.document)
+        node.walkabout(visitor)
+        self._titles.append(visitor.text)
 
-    def visit_generated(self, node):
-        self.skip = True
-
-    def depart_generated(self, node):
-        self.skip = False
-
-    def visit_Text(self, node):
-        if self.gather and not self.skip:
-            self.text += node.astext()
+    def depart_section(self, node):
+        if node == self._structuralNode:
+            self.text = "\n".join(self._titles)
+            raise nodes.StopTraversal()
+        else:
+            self._titles.pop()
 
 ##############################################################################
 ##############################################################################
@@ -401,26 +438,26 @@ class GraphRenderer(object):
     """Abstract base class for graph renderers."""
 
     """Command line settings.""" 
-    settings = None
+    _settings = None
 
     """Reverse the direction of the edges."""
-    doReverse = None
+    _doReverse = None
 
     """Unify multiple edges to a single one."""
-    doUnify = None
+    _doUnify = None
 
     """Render only connected nodes."""
-    connectedOnly = None
+    _connectedOnly = None
 
     """The GraphTranslator currently rendered."""
-    visitor = None
+    _visitor = None
 
     def __init__(self, settings, reporter):
-        self.settings = settings
+        self._settings = settings
         self.reporter = reporter
-        self.doReverse = self.settings.reverse
-        self.doUnify = not self.settings.multiedge
-        self.connectedOnly = self.settings.connected_only
+        self._doReverse = self._settings.reverse
+        self._doUnify = not self._settings.multiedge
+        self._connectedOnly = self._settings.connected_only
 
     @staticmethod
     def getRenderer(settings, reporter):
@@ -435,17 +472,17 @@ class GraphRenderer(object):
     def render(self, visitor):
         """Translate nodes and edges to a GXL DOM and return it as a XML
         string."""
-        self.visitor = visitor
+        self._visitor = visitor
         self.prepare()
 
-        references = self.validReferences(self.visitor.references)
-        for anchor in self.validAnchors(self.visitor.anchors, references):
+        references = self.validReferences(self._visitor.references)
+        for anchor in self.validAnchors(self._visitor.anchors, references):
             self.renderAnchor(anchor)
         for reference in references:
             self.renderReference(reference)
 
         r = self.finish()
-        self.visitor = None
+        self._visitor = None
         return r
 
     def prepare(self):
@@ -469,7 +506,7 @@ class GraphRenderer(object):
         valids = [ ]
         for reference in references:
            add = reference.fromAnchor and reference.toAnchor
-           if add and self.doUnify:
+           if add and self._doUnify:
                for unique in valids:
                    if (reference.fromAnchor == unique.fromAnchor and
                        reference.toAnchor == unique.toAnchor):
@@ -481,7 +518,7 @@ class GraphRenderer(object):
 
     def validAnchors(self, anchors, references):
         """Checks anchors for valid ones and returns these."""
-        if not self.connectedOnly:
+        if not self._connectedOnly:
             return anchors
         usedAnchors = ([ reference.fromAnchor
                          for reference in references ]
@@ -510,7 +547,7 @@ class GxlRenderer(GraphRenderer):
 
     def __init__(self, settings, reporter):
         GraphRenderer.__init__(self, settings, reporter)
-        if self.settings.indents:
+        if self._settings.indents:
             self._indent = '  '
             self._newline = '\n'
 
@@ -520,7 +557,7 @@ class GxlRenderer(GraphRenderer):
         self._doc = impl.createDocument(None, GxlTagRoot, doctype)
         self._graph = self._doc.createElement(GxlTagGraph)
         self._doc.documentElement.appendChild(self._graph)
-        self._graph.setAttribute(GxlAttrId, string2XMLName(self.visitor.sourceName))
+        self._graph.setAttribute(GxlAttrId, string2XMLName(self._visitor.sourceName))
         self._graph.setAttribute(GxlAttrEdgemode, GxlValEdgemode)
 
     def finish(self):
@@ -553,7 +590,7 @@ class GxlRenderer(GraphRenderer):
         self._graph.appendChild(eEdge)
         fromAttr = GxlAttrFrom
         toAttr = GxlAttrTo
-        if self.doReverse:
+        if self._doReverse:
             (fromAttr, toAttr) = (toAttr, fromAttr)
         eEdge.setAttribute(toAttr, reference.toAnchor.id())
         # TODO There should be several ways to identify the "from" node
@@ -575,7 +612,7 @@ class DotRenderer(GraphRenderer):
 
     def prepare(self):
         self._graph = AGraph(strict=False, directed=True,
-                             name=self.visitor.sourceName)
+                             name=self._visitor.sourceName)
             
     def finish(self):
         # TODO The ordering of nodes seems to be rather random in the output;
@@ -597,7 +634,7 @@ class DotRenderer(GraphRenderer):
 
         fromId = reference.fromAnchor.id()
         toId = reference.toAnchor.id()
-        if self.doReverse:
+        if self._doReverse:
             (fromId, toId) = (toId, fromId)
         self._graph.add_edge(fromId, toId)
 

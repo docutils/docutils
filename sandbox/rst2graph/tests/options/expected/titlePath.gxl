@@ -1,0 +1,38 @@
+<?xml version="1.0" ?>
+<!DOCTYPE gxl
+  SYSTEM 'http://www.gupro.de/GXL/gxl-1.0.dtd'>
+<gxl>
+  <graph edgemode="directed" id="input_titlePath.rst">
+    <node id="first-section">
+      <attr name="name">
+        <string>First section</string>
+      </attr>
+    </node>
+    <node id="sub-1">
+      <attr name="name">
+        <string>First section\nSub 1</string>
+      </attr>
+    </node>
+    <node id="sub-2">
+      <attr name="name">
+        <string>First section\nSub 2</string>
+      </attr>
+    </node>
+    <node id="sub-3">
+      <attr name="name">
+        <string>First section\nSub 2\nSub 3</string>
+      </attr>
+    </node>
+    <node id="second-section">
+      <attr name="name">
+        <string>Second section</string>
+      </attr>
+    </node>
+    <edge from="sub-1" to="first-section"/>
+    <edge from="sub-2" to="sub-3"/>
+    <edge from="second-section" to="first-section"/>
+    <edge from="second-section" to="sub-1"/>
+    <edge from="second-section" to="sub-2"/>
+    <edge from="second-section" to="sub-3"/>
+  </graph>
+</gxl>
