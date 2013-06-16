@@ -99,24 +99,9 @@ class Writer(writers.Writer):
     supported = ('gxl', 'gv', 'dot')
 
     settings_spec = (
-        'Graph Writer Options',
-        None,
+        'Graph Writer Format Options',
+        'The following options determine the output format produced.',
         (
-         ('Create a reverse dependency graph. Default is a forward dependency '
-          'graph.',
-          ['--reverse'],
-          {'action': 'store_true', 'validator': frontend.validate_boolean}),
-         ('Create multiple edges between same node if they exist in the '
-          'original document. Default is to unify all edges between two nodes.',
-          ['--multiedge'],
-          {'action': 'store_true', 'validator': frontend.validate_boolean}),
-         ('Select a certain table and ignore the rest of the document. The '
-          'argument must be the name of the table as given in the document or '
-          ' the number of the table counting from 1. '
-          'Default is to consider the whole document. May be given more than '
-          'once.',
-          ['--select-table'],
-          {'action': 'append'}),
          ('Produce output in the dot language suitable for Graphviz. '
           'Default when called as rst2gv or rst2dot.',
           ['--dot', '--gv'],
@@ -125,11 +110,36 @@ class Writer(writers.Writer):
           'Default when called as rst2gxl.',
           ['--gxl'],
           {'action': 'store_true', 'validator': frontend.validate_boolean}),
-         ('Generate XML with indents and newlines. Use this for human '
-          'reading only. Valid only with --gxl',
+         ),
+        'Graph Writer Global Options',
+        'The following options affect the way the graph is produced.',
+        (
+         ('Put only nodes with connections to the graph. '
+          'Default is to put all nodes to the graph.',
+          ['--connected-only'],
+          {'action': 'store_true', 'validator': frontend.validate_boolean}),
+         ('Create multiple edges between same node if they exist in the '
+          'original document. Default is to unify all edges between two nodes.',
+          ['--multiedge'],
+          {'action': 'store_true', 'validator': frontend.validate_boolean}),
+         ('Create a reverse dependency graph. Default is a forward dependency '
+          'graph.',
+          ['--reverse'],
+          {'action': 'store_true', 'validator': frontend.validate_boolean}),
+         ('Select a certain table and ignore the rest of the document. The '
+          'argument must be the name of the table as given in the document or '
+          'the number of the table counting from 1. '
+          'Default is to consider the whole document. May be given more than '
+          'once.',
+          ['--select-table'],
+          {'action': 'append'}),
+         ),
+        'Graph Writer GXL Options',
+        'The following options are valid only for GXL format output.',
+        (
+         ('Generate XML with indents and newlines.',
           ['--indents'],
           {'action': 'store_true', 'validator': frontend.validate_boolean}),
-         # TODO The encoding must be specified somehow
          )
         )
 
@@ -139,7 +149,9 @@ class Writer(writers.Writer):
                          'select_table': [ ],
                          'indents': False,
                          'gxl': False,
-                         'dot': False}
+                         'dot': False,
+                         'connected_only': False,
+                         }
 
     config_section = 'graph writer'
     config_section_dependencies = ('writers',)
@@ -397,6 +409,9 @@ class GraphRenderer(object):
     """Unify multiple edges to a single one."""
     doUnify = None
 
+    """Render only connected nodes."""
+    connectedOnly = None
+
     """The GraphTranslator currently rendered."""
     visitor = None
 
@@ -405,6 +420,7 @@ class GraphRenderer(object):
         self.reporter = reporter
         self.doReverse = self.settings.reverse
         self.doUnify = not self.settings.multiedge
+        self.connectedOnly = self.settings.connected_only
 
     @staticmethod
     def getRenderer(settings, reporter):
@@ -422,9 +438,10 @@ class GraphRenderer(object):
         self.visitor = visitor
         self.prepare()
 
-        for anchor in self.visitor.anchors:
+        references = self.validReferences(self.visitor.references)
+        for anchor in self.validAnchors(self.visitor.anchors, references):
             self.renderAnchor(anchor)
-        for reference in self.validReferences(self.visitor.references):
+        for reference in references:
             self.renderReference(reference)
 
         r = self.finish()
@@ -461,6 +478,18 @@ class GraphRenderer(object):
            if add:
                valids.append(reference)
         return valids
+
+    def validAnchors(self, anchors, references):
+        """Checks anchors for valid ones and returns these."""
+        if not self.connectedOnly:
+            return anchors
+        usedAnchors = ([ reference.fromAnchor
+                         for reference in references ]
+                       + [ reference.toAnchor
+                           for reference in references ])
+        return [ anchor
+                 for anchor in anchors
+                 if anchor in usedAnchors ]
 
 ##############################################################################
 
@@ -549,6 +578,10 @@ class DotRenderer(GraphRenderer):
                              name=self.visitor.sourceName)
             
     def finish(self):
+        # TODO The ordering of nodes seems to be rather random in the output;
+        #      however, the node ordering is used for the layout of the graph
+        #      at least by `dot` and by `neato`; there should be a way to
+        #      determine the ordering
         r = self._graph.string()
         self._graph = None
         return r
