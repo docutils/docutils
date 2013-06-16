@@ -1,4 +1,207 @@
 **************************************
+Date: Sat Jun 15 21:23:01 CEST 2013
+Author: stefan
+Tag: rst2graph_1_51
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2graph/tests/xmllint/expected
+In directory theowa:/home/stefan/free/rst2graph/tests/xmllint/expected
+
+Added Files:
+	titlePath.err titlePath.ex titlePath.out 
+
+--------------------------------------
+Log Message:
+Added files for test.
+**************************************
+Date: Sat Jun 15 21:20:01 CEST 2013
+Author: stefan
+Tag: rst2graph_1_50
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2graph/tests/options/expected
+In directory theowa:/home/stefan/free/rst2graph/tests/options/expected
+
+Added Files:
+	titlePath.gxl 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2graph/tests/options/input
+In directory theowa:/home/stefan/free/rst2graph/tests/options/input
+
+Added Files:
+	titlePath.opt titlePath.rst 
+
+--------------------------------------
+Log Message:
+Added test.
+**************************************
+Date: Sat Jun 15 21:17:46 CEST 2013
+Author: stefan
+Tag: rst2graph_1_49
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2graph
+In directory theowa:/home/stefan/free/rst2graph
+
+Modified Files:
+	rst2gxl.py 
+
+--------------------------------------
+Log Message:
+Refactoring: Text gatherers are a subclass of `GenericTextGatherer`.
+**************************************
+Date: Sat Jun 15 21:11:07 CEST 2013
+Author: stefan
+Tag: rst2graph_1_48
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2graph
+In directory theowa:/home/stefan/free/rst2graph
+
+Modified Files:
+	rst2gxl.py 
+
+--------------------------------------
+Log Message:
+Refactoring: `FirstTitleGatherer` uses exceptions to control
+traversal.
+**************************************
+Date: Sat Jun 15 21:07:43 CEST 2013
+Author: stefan
+Tag: rst2graph_1_47
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2graph
+In directory theowa:/home/stefan/free/rst2graph
+
+Modified Files:
+	rst2gxl.py 
+
+--------------------------------------
+Log Message:
+Refactoring: `TextGatherer` uses exceptions to control traversal.
+**************************************
+Date: Sat Jun 15 21:06:25 CEST 2013
+Author: stefan
+Tag: rst2graph_1_46
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2graph
+In directory theowa:/home/stefan/free/rst2graph
+
+Modified Files:
+	rst2gxl.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2graph/tests/variantsDot/expected
+In directory theowa:/home/stefan/free/rst2graph/tests/variantsDot/expected
+
+Modified Files:
+	titlePath.gv 
+
+--------------------------------------
+Log Message:
+Implemented `--title-path`.
+**************************************
+Date: Sat Jun 15 20:25:12 CEST 2013
+Author: stefan
+Tag: rst2graph_1_45
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2graph
+In directory theowa:/home/stefan/free/rst2graph
+
+Modified Files:
+	rst2gxl.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2graph/tests/variantsDot/expected
+In directory theowa:/home/stefan/free/rst2graph/tests/variantsDot/expected
+
+Added Files:
+	titlePath.gv 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2graph/tests/variantsDot/input
+In directory theowa:/home/stefan/free/rst2graph/tests/variantsDot/input
+
+Added Files:
+	titlePath.opt titlePath.rst 
+
+--------------------------------------
+Log Message:
+Added tests. Fail since implementation is still missing.
+**************************************
+Date: Sat Jun 15 20:11:48 CEST 2013
+Author: stefan
+Tag: rst2graph_1_44
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2graph
+In directory theowa:/home/stefan/free/rst2graph
+
+Modified Files:
+	rst2gxl.py 
+
+--------------------------------------
+Log Message:
+Refactoring: Made some fields protected.
+
+Introduced new option `--title-path` but no implementation yet.
+**************************************
+Date: Sat Jun 15 19:55:59 CEST 2013
+Author: stefan
+Tag: rst2graph_1_43
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2graph
+In directory theowa:/home/stefan/free/rst2graph
+
+Modified Files:
+	rst2gxl.py 
+
+--------------------------------------
+Log Message:
+Refactoring: Made some fields protected.
+**************************************
+Date: Sat Jun 15 19:53:10 CEST 2013
+Author: stefan
+Tag: rst2graph_1_42
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2graph
+In directory theowa:/home/stefan/free/rst2graph
+
+Modified Files:
+	rst2gxl.py 
+
+--------------------------------------
+Log Message:
+Refactoring: Made some fields protected.
+**************************************
+Date: Sat Jun 15 19:47:22 CEST 2013
+Author: stefan
+Tag: rst2graph_1_41
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2graph/tests/simpleDot/expected
+In directory theowa:/home/stefan/free/rst2graph/tests/simpleDot/expected
+
+Added Files:
+	multiAnchor.gv 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2graph/tests/simpleDot/input
+In directory theowa:/home/stefan/free/rst2graph/tests/simpleDot/input
+
+Added Files:
+	multiAnchor.rst 
+
+--------------------------------------
+Log Message:
+Added a test.
+**************************************
 Date: Sat Jun 15 19:27:41 CEST 2013
 Author: stefan
 Tag: rst2graph_1_40

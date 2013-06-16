@@ -1,0 +1,7 @@
+digraph "input/multiAnchor.rst" {
+	node [label="\N"];
+	"first-section"	 [label="First section"];
+	"first-section" -> "first-section";
+	"sub-1"	 [label="Sub 1"];
+	"sub-1" -> "first-section";
+}
