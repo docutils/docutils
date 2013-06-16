@@ -1,0 +1,10 @@
+digraph "input/connectedOnly.rst" {
+	node [label="\N"];
+	"second-section"	 [label="Second section"];
+	"sub-1"	 [label="Sub 1"];
+	"sub-1" -> "second-section";
+	"sub-2"	 [label="Sub 2"];
+	"sub-2" -> "sub-3";
+	"sub-3"	 [label="Sub 3"];
+	"sub-3" -> "sub-3";
+}

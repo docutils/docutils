@@ -1,4 +1,95 @@
 **************************************
+Date: Sat Jun 15 19:27:41 CEST 2013
+Author: stefan
+Tag: rst2graph_1_40
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2graph
+In directory theowa:/home/stefan/free/rst2graph
+
+Modified Files:
+	rst2gxl.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2graph/tests/variantsDot/expected
+In directory theowa:/home/stefan/free/rst2graph/tests/variantsDot/expected
+
+Added Files:
+	connectedOnly.gv 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2graph/tests/variantsDot/input
+In directory theowa:/home/stefan/free/rst2graph/tests/variantsDot/input
+
+Added Files:
+	connectedOnly.opt connectedOnly.rst 
+
+--------------------------------------
+Log Message:
+Added option `--connected-only`.
+**************************************
+Date: Sat Jun 15 17:36:25 CEST 2013
+Author: stefan
+Tag: rst2graph_1_39
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2graph
+In directory theowa:/home/stefan/free/rst2graph
+
+Modified Files:
+	rst2gxl.py 
+
+--------------------------------------
+Log Message:
+Cleaned up the options.
+**************************************
+Date: Sat Jun 15 17:16:49 CEST 2013
+Author: stefan
+Tag: rst2graph_1_38
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2graph
+In directory theowa:/home/stefan/free/rst2graph
+
+Modified Files:
+	Makefile rst2graph.pod 
+
+--------------------------------------
+Log Message:
+Adapted POD documentation to package `rst2graph`.
+**************************************
+Date: Sat Jun 15 16:56:00 CEST 2013
+Author: stefan
+Tag: rst2graph_1_37
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2graph
+In directory theowa:/home/stefan/free/rst2graph
+
+Modified Files:
+	tag.log 
+
+--------------------------------------
+Log Message:
+Renamed module to `rst2graph`. Tags `rst2gxl_1_53` .. `rst2gxl_1_88`
+are supplemented by `rst2graph_1_1` .. `rst2graph_1_36`. Tags in
+`global.log` are not changed.
+**************************************
+Date: Sat Jun 15 12:38:11 CEST 2013
+Author: stefan
+Tag: rst2gxl_1_88
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl
+In directory theowa:/home/stefan/free/rst2gxl
+
+Modified Files:
+	rst2gxl.py 
+
+--------------------------------------
+Log Message:
+Added todo.
+**************************************
 Date: Thu Jun 13 20:59:47 CEST 2013
 Author: stefan
 Tag: rst2gxl_1_87
