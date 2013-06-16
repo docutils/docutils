@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
-# Copyright (C) 2010 Stefan Merten
+# Copyright (C) 2010, 2013 Stefan Merten
 
-# rst2gxl.py is free software; you can redistribute it and/or modify
+# rst2graph.py is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published
 # by the Free Software Foundation; either version 2 of the License,
 # or (at your option) any later version.
@@ -18,11 +18,12 @@
 # 02111-1307, USA.
 
 """
-Translates a reStructuredText document to GXL_. This can then be
-transformed to graphs for instance by dot_.
+Translates the links in a reStructuredText document to a graph. The graph can
+be output in various formats such as GXL_ or dot_. This graph can then be
+converted to a graphical representation of the link structure of the document.
 
 .. _GXL: http://www.gupro.de/GXL
-.. _dot: http://graphviz.org/
+.. _dot: http://www.graphviz.org/content/dot-language
 """
 
 __docformat__ = 'reStructuredText'
@@ -34,12 +35,20 @@ except:
     pass
 
 import docutils
-from docutils import frontend, writers, nodes
+from docutils import frontend, writers, nodes, utils
 from docutils.core import publish_cmdline, default_description
 
 from xml.dom import minidom
 
 import re
+import sys
+import os.path
+
+try:
+    from pygraphviz import AGraph
+    pygraphvizAvail = True
+except:
+    pygraphvizAvail = False
 
 description = ('Generates GXL from standalone reStructuredText sources.  '
                + default_description)
@@ -68,23 +77,31 @@ DuAttrRefuri = "refuri"
 DuAttrClasses = "classes"
 DuAttrClassesValToc = "contents"
 
+CmdRst2Gxl = "rst2gxl"
+CmdRst2Dot = "rst2dot"
+CmdRst2Gv = "rst2gv"
+
+##############################################################################
+##############################################################################
+# Functions
+
 def string2XMLName(s):
     """Return an XML Name similar to the string given."""
     s = re.sub(r"(?u)[^-.:\w]", "_", s)
     return re.sub("^(?u)[^:\w]", "_", s)
 
+##############################################################################
+##############################################################################
+
 class Writer(writers.Writer):
 
-    supported = ('gxl',)
     """Formats this writer supports."""
+    supported = ('gxl', 'gv', 'dot')
 
     settings_spec = (
-        'GXL Writer Options',
+        'Graph Writer Options',
         None,
-        (('Generate XML with indents and newlines. Use this for human '
-          'reading only.',
-          ['--indents'],
-          {'action': 'store_true', 'validator': frontend.validate_boolean}),
+        (
          ('Create a reverse dependency graph. Default is a forward dependency '
           'graph.',
           ['--reverse'],
@@ -100,108 +117,118 @@ class Writer(writers.Writer):
           'once.',
           ['--select-table'],
           {'action': 'append'}),
+         ('Produce output in the dot language suitable for Graphviz. '
+          'Default when called as rst2gv or rst2dot.',
+          ['--dot', '--gv'],
+          {'action': 'store_true', 'validator': frontend.validate_boolean}),
+         ('Produce GXL output. '
+          'Default when called as rst2gxl.',
+          ['--gxl'],
+          {'action': 'store_true', 'validator': frontend.validate_boolean}),
+         ('Generate XML with indents and newlines. Use this for human '
+          'reading only. Valid only with --gxl',
+          ['--indents'],
+          {'action': 'store_true', 'validator': frontend.validate_boolean}),
          # TODO The encoding must be specified somehow
          )
         )
 
     settings_defaults = {'output_encoding_error_handler': 'xmlcharrefreplace',
-                         'reverse': False, 'multiedge': False,
-                         'select_table': [ ]}
+                         'reverse': False,
+                         'multiedge': False,
+                         'select_table': [ ],
+                         'indents': False,
+                         'gxl': False,
+                         'dot': False}
 
-    config_section = 'gxl writer'
+    config_section = 'graph writer'
     config_section_dependencies = ('writers',)
 
-    output = None
     """Final translated form of `document`."""
+    output = None
 
     def translate(self):
         settings = self.document.settings
-        indent = newline = ''
-        if settings.indents:
-            indent = '  '
-            newline = '\n'
-        visitor = GXLTranslator(self.document)
+        if settings.gxl and settings.dot:
+            self.document.reporter.severe("Options --gxl and --dot/--gv are mutual exclusive")
+        elif not settings.gxl and not settings.dot:
+            if len(sys.argv):
+                cmd = os.path.basename(sys.argv[0]).lower()
+                if cmd.startswith(CmdRst2Gxl):
+                    settings.gxl = True
+                elif cmd.startswith(CmdRst2Dot) or cmd.startswith(CmdRst2Gv):
+                    settings.dot = True
+        if not settings.gxl and not settings.dot:
+            self.document.reporter.severe("One of --gxl and --dot/--gv must be given or implied")
+        if not settings.gxl and settings.indents:
+            self.document.reporter.severe("--indents may be given only with --gxl")
+
+        renderer = GraphRenderer.getRenderer(settings, self.document.reporter)
+        if not renderer:
+            self.document.reporter.severe("Internal error: No `GraphRenderer` found")
+        visitor = GraphTranslator(self.document, settings)
         self.document.walkabout(visitor)
-        doc = self.nodes2Glx(self.document, visitor.anchors,
-                             visitor.references, settings.reverse,
-                             not settings.multiedge)
-        self.output = doc.toprettyxml(indent, newline)
-        doc.unlink()
+        visitor.resolve()
+        self.output = renderer.render(visitor)
 
-    def nodes2Glx(self, document, anchors, references, doReverse, doUnify):
-        """Translate nodes and edges to a GXL DOM"""
+##############################################################################
+##############################################################################
 
-        impl = minidom.getDOMImplementation()
-        doctype = impl.createDocumentType(GxlTagRoot, None, GxlNamespace)
-        doc = impl.createDocument(None, GxlTagRoot, doctype)
-        graph = doc.createElement(GxlTagGraph)
-        graph.setAttribute(GxlAttrId, string2XMLName(document[DuAttrSource]))
-        graph.setAttribute(GxlAttrEdgemode, GxlValEdgemode)
-        doc.documentElement.appendChild(graph)
+class GraphTranslator(nodes.GenericNodeVisitor):
 
-        for anchor in anchors:
-            anchor.renderGlx(doc, graph)
+    """Name of the source file."""
+    sourceName = None
 
-        for reference in references:
-            reference.resolve(anchors)
-
-        valids = [ ]
-        for reference in references:
-            reference.gatherValids(valids, doUnify)
-        references = valids
-
-        for reference in references:
-            reference.renderGlx(doc, graph, doReverse)
-
-        return doc
-
-class GXLTranslator(nodes.GenericNodeVisitor):
-
-    """The list of anchors found by traversing"""
+    """The list of anchors found by traversing."""
     anchors = [ ]
 
-    """The last anchor found"""
-    lastAnchor = None
+    """The last anchor found."""
+    _lastAnchor = None
 
-    """The list of ``GEdge``\s found by traversing"""
+    """The list of ``GEdge``\s found by traversing."""
     references = [ ]
 
-    """Stack for being currently in a selected part"""
-    inSelected = [ ]
+    """Stack for being currently in a selected part."""
+    _inSelected = [ ]
 
-    """Counter for selecting a table by number"""
-    tablesSeen = 0
+    """Counter for selecting a table by number."""
+    _tablesSeen = 0
 
-    def __init__(self, document):
+    """Selected tables."""
+    _selectedTables = None
+
+    def __init__(self, document, settings):
         nodes.GenericNodeVisitor.__init__(self, document)
-        if document.settings.select_table:
-            self.inSelected.append(False)
+        self.sourceName = document[DuAttrSource]
+        self._selectedTables = settings.select_table
+        if self._selectedTables:
+            self._inSelected.append(False)
         else:
-            self.inSelected.append(True)
+            self._inSelected.append(True)
 
     def default_visit(self, node):
         if self.isSelected(node, True):
-            self.inSelected.append(True)
+            self._inSelected.append(True)
         elif self.unSelected(node):
-            self.inSelected.append(False)
-        if self.inSelected[-1]:
+            self._inSelected.append(False)
+        if self._inSelected[-1]:
             self.processNode(node)
 
     def default_departure(self, node):
         if self.isSelected(node, False) or self.unSelected(node):
-            self.inSelected.pop()
+            self._inSelected.pop()
 
     def isSelected(self, node, entering):
-        if (self.document.settings.select_table
+        if (self._selectedTables
             and isinstance(node, nodes.table)):
             if entering:
-                self.tablesSeen += 1
+                self._tablesSeen += 1
             visitor = FirstTitleGatherer(self.document)
             node.walkabout(visitor)
             title = visitor.text
-            for wantedTable in self.document.settings.select_table:
+            for wantedTable in self._selectedTables:
                 try:
-                    if int(wantedTable) == self.tablesSeen:
+                    if int(wantedTable) == self._tablesSeen:
                         return True
                 except:
                     if wantedTable == title:
@@ -215,42 +242,37 @@ class GXLTranslator(nodes.GenericNodeVisitor):
 
     def processNode(self, node):
         if Anchor.isAnchor(node):
-            self.lastAnchor = anchor = Anchor(node, self.document)
+            self._lastAnchor = anchor = Anchor(node, self.document)
             self.anchors.append(anchor)
         if Reference.isReference(node):
-            reference = Reference(node, self.lastAnchor)
+            reference = Reference(node, self._lastAnchor)
             self.references.append(reference)
 
-class Anchor(object):
-    """An anchor in the source"""
+    def resolve(self):
+        """Resolve anything necessary after visiting the document."""
+        for reference in self.references:
+            reference.resolve(self.anchors)
 
-    """The source node"""
+##############################################################################
+
+class Anchor(object):
+    """An anchor in the source."""
+
+    """The source node."""
     node = None
 
-    """The name of the node"""
+    """The name of the node."""
     _name = None
 
-    """The id of the node"""
+    """The id of the node."""
     _id = None
 
     def __init__(self, node, document):
         self.node = node
         self.document = document
 
-    def renderGlx(self, doc, graph):
-        eNode = doc.createElement(GxlTagNode)
-        graph.appendChild(eNode)
-        eNode.setAttribute(GxlAttrId, self.id())
-
-        eAttr = doc.createElement(GxlTagAttr)
-        eNode.appendChild(eAttr)
-        eAttr.setAttribute(GxlAttrName, GxlTagAttrTagName)
-
-        eContent = doc.createElement(GxlTagAttrTagNameTag)
-        eAttr.appendChild(eContent)
-        eContent.appendChild(doc.createTextNode(self.name()))
-
     def name(self):
+        """Determine and return the user readable name of the anchor."""
         if self._name is None:
             if isinstance(self.node, nodes.Structural):
                 visitor = FirstTitleGatherer(self.document)
@@ -261,85 +283,62 @@ class Anchor(object):
         return self._name
 
     def id(self):
+        """Determine and return the canoncical id of the anchor."""
         if self._id is None:
             self._id = self.node[DuAttrIds][0]
         return self._id
 
     def ids(self):
+        """Return all ids of the anchor."""
+
         return self.node[DuAttrIds]
 
     @staticmethod
     def isAnchor(node):
-        """``True`` if the node can be an ``Anchor``"""
+        """``True`` if the node can be an ``Anchor``."""
         # TODO What is considered an anchor needs to be subject to an option
         return bool((isinstance(node, nodes.target)
                      or isinstance(node, nodes.Structural))
                     and node[DuAttrIds]
                     and not node.get(DuAttrRefuri, None))
 
-class Reference(object):
-    """A reference in the source"""
+##############################################################################
 
-    """The source node"""
+class Reference(object):
+    """A reference to an anchor in the source."""
+
+    """The source node."""
     node = None
 
-    """The last anchor seen before this reference"""
+    """The last anchor seen before this reference."""
     fromAnchor = None
 
-    """The anchor this points to"""
+    """The anchor this reference points to."""
     toAnchor = None
 
     def __init__(self, node, fromAnchor):
         self.node = node
         self.fromAnchor = fromAnchor
 
-    def renderGlx(self, doc, graph, doReverse):
-        if self.fromAnchor is None:
-            # No anchor to start edge from
-            # TODO Should result in a warning
-            return
-
-        eEdge = doc.createElement(GxlTagEdge)
-        graph.appendChild(eEdge)
-        fromAttr = GxlAttrFrom
-        toAttr = GxlAttrTo
-        if doReverse:
-            ( fromAttr, toAttr ) = ( toAttr, fromAttr )
-        eEdge.setAttribute(toAttr, self.toAnchor.id())
-        # TODO There should be several ways to identify the "from" node
-        eEdge.setAttribute(fromAttr, self.fromAnchor.id())
-
     def resolve(self, anchors):
         """Resolve this reference against the anchors given."""
-
         for anchor in anchors:
             if self.node[DuAttrRefid] in anchor.ids():
                 self.toAnchor = anchor
                 break
 
-    def gatherValids(self, valids, doUnify):
-        """Checks whether the current reference appears in the list given. If
-        If not adds the current reference and returns ``True``"""
-
-        if not self.fromAnchor or not self.toAnchor:
-            return
-        if doUnify:
-            for unique in valids:
-                if (self.fromAnchor == unique.fromAnchor and
-                    self.toAnchor == unique.toAnchor):
-                    return
-        valids.append(self)
-
     @staticmethod
     def isReference(node):
-        """``True`` if the node can be a ``Reference``"""
+        """``True`` if the node can be a ``Reference``."""
         return bool(isinstance(node, nodes.Referential)
                     and node.get(DuAttrRefid, None))
+
+##############################################################################
 
 class TextGatherer(nodes.SparseNodeVisitor):
     """A visitor gathering text."""
 
-    """Gathered text"""
+    """Gathered text."""
     text = ""
 
     gather = True
@@ -354,10 +353,12 @@ class TextGatherer(nodes.SparseNodeVisitor):
         if self.gather:
             self.text += node.astext()
 
+##############################################################################
+
 class FirstTitleGatherer(nodes.SparseNodeVisitor):
     """A visitor gathering text in first title."""
 
-    """Gathered text"""
+    """Gathered text."""
     text = ""
 
     gather = False
@@ -380,5 +381,195 @@ class FirstTitleGatherer(nodes.SparseNodeVisitor):
     def visit_Text(self, node):
         if self.gather and not self.skip:
             self.text += node.astext()
+
+##############################################################################
+##############################################################################
+
+class GraphRenderer(object):
+    """Abstract base class for graph renderers."""
+
+    """Command line settings.""" 
+    settings = None
+
+    """Reverse the direction of the edges."""
+    doReverse = None
+
+    """Unify multiple edges to a single one."""
+    doUnify = None
+
+    """The GraphTranslator currently rendered."""
+    visitor = None
+
+    def __init__(self, settings, reporter):
+        self.settings = settings
+        self.reporter = reporter
+        self.doReverse = self.settings.reverse
+        self.doUnify = not self.settings.multiedge
+
+    @staticmethod
+    def getRenderer(settings, reporter):
+        """Factory method: Return the correct renderer according to the
+        settings."""
+        if settings.gxl:
+            return GxlRenderer(settings, reporter)
+        elif settings.dot:
+            return DotRenderer(settings, reporter)
+        return None
+
+    def render(self, visitor):
+        """Translate nodes and edges to a GXL DOM and return it as a XML
+        string."""
+        self.visitor = visitor
+        self.prepare()
+
+        for anchor in self.visitor.anchors:
+            self.renderAnchor(anchor)
+        for reference in self.validReferences(self.visitor.references):
+            self.renderReference(reference)
+
+        r = self.finish()
+        self.visitor = None
+        return r
+
+    def prepare(self):
+        """Prepare the rendering."""
+        pass
+
+    def finish(self):
+        """Finish the rendering and return the resulting string."""
+        raise NotImplementedError("Each subclass of `GraphRenderer` must implement `finish()`")
+
+    def renderAnchor(self, anchor):
+        """Render an anchor."""
+        raise NotImplementedError("Each subclass of `GraphRenderer` must implement `renderAnchor()`")
+
+    def renderReference(self, reference):
+        """Render a reference."""
+        raise NotImplementedError("Each subclass of `GraphRenderer` must implement `renderReference()`")
+
+    def validReferences(self, references):
+        """Checks references for valid ones and returns these."""
+        valids = [ ]
+        for reference in references:
+           add = reference.fromAnchor and reference.toAnchor
+           if add and self.doUnify:
+               for unique in valids:
+                   if (reference.fromAnchor == unique.fromAnchor and
+                       reference.toAnchor == unique.toAnchor):
+                       add = False
+                       break
+           if add:
+               valids.append(reference)
+        return valids
+
+##############################################################################
+
+class GxlRenderer(GraphRenderer):
+    """Renderer fox GXL."""
+
+    """Indentation to use for output."""
+    _indent = ''
+
+    """Newline to use for output."""
+    _newline = ''
+
+    """The DOM document where the result is build."""
+    _doc = None
+
+    """The top node in the DOM."""
+    _graph = None
+
+    def __init__(self, settings, reporter):
+        GraphRenderer.__init__(self, settings, reporter)
+        if self.settings.indents:
+            self._indent = '  '
+            self._newline = '\n'
+
+    def prepare(self):
+        impl = minidom.getDOMImplementation()
+        doctype = impl.createDocumentType(GxlTagRoot, None, GxlNamespace)
+        self._doc = impl.createDocument(None, GxlTagRoot, doctype)
+        self._graph = self._doc.createElement(GxlTagGraph)
+        self._doc.documentElement.appendChild(self._graph)
+        self._graph.setAttribute(GxlAttrId, string2XMLName(self.visitor.sourceName))
+        self._graph.setAttribute(GxlAttrEdgemode, GxlValEdgemode)
+
+    def finish(self):
+        r = self._doc.toprettyxml(self._indent, self._newline)
+        self._graph = None
+        self._doc.unlink()
+        self._doc = None
+        return r
+
+    def renderAnchor(self, anchor):
+        eNode = self._doc.createElement(GxlTagNode)
+        self._graph.appendChild(eNode)
+        eNode.setAttribute(GxlAttrId, anchor.id())
+
+        eAttr = self._doc.createElement(GxlTagAttr)
+        eNode.appendChild(eAttr)
+        eAttr.setAttribute(GxlAttrName, GxlTagAttrTagName)
+
+        eContent = self._doc.createElement(GxlTagAttrTagNameTag)
+        eAttr.appendChild(eContent)
+        eContent.appendChild(self._doc.createTextNode(anchor.name()))
+
+    def renderReference(self, reference):
+        if reference.fromAnchor is None:
+            # No anchor to start edge from
+            # TODO Should result in a warning
+            return
+
+        eEdge = self._doc.createElement(GxlTagEdge)
+        self._graph.appendChild(eEdge)
+        fromAttr = GxlAttrFrom
+        toAttr = GxlAttrTo
+        if self.doReverse:
+            (fromAttr, toAttr) = (toAttr, fromAttr)
+        eEdge.setAttribute(toAttr, reference.toAnchor.id())
+        # TODO There should be several ways to identify the "from" node
+        eEdge.setAttribute(fromAttr, reference.fromAnchor.id())
+
+##############################################################################
+
+class DotRenderer(GraphRenderer):
+    """Renderer fox dot."""
+
+    """The AGraph used for rendering."""
+    _graph = None
+
+    def __init__(self, settings, reporter):
+        GraphRenderer.__init__(self, settings, reporter)
+
+        if not pygraphvizAvail:
+            self.reporter.severe("Can not render dot format because module `pygraphviz` cannot be loaded")
+
+    def prepare(self):
+        self._graph = AGraph(strict=False, directed=True,
+                             name=self.visitor.sourceName)
+            
+    def finish(self):
+        r = self._graph.string()
+        self._graph = None
+        return r
+
+    def renderAnchor(self, anchor):
+        self._graph.add_node(anchor.id(), label=anchor.name())
+
+    def renderReference(self, reference):
+        if reference.fromAnchor is None:
+            # No anchor to start edge from
+            # TODO Should result in a warning
+            return
+
+        fromId = reference.fromAnchor.id()
+        toId = reference.toAnchor.id()
+        if self.doReverse:
+            (fromId, toId) = (toId, fromId)
+        self._graph.add_edge(fromId, toId)
+
+##############################################################################
+##############################################################################
+# Main
 
 publish_cmdline(writer=Writer(), description=description)

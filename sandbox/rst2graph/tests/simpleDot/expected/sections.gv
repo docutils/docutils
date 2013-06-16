@@ -1,0 +1,14 @@
+digraph "input/sections.rst" {
+	node [label="\N"];
+	"first-section"	 [label="First section"];
+	"second-section"	 [label="Second section"];
+	"second-section" -> "first-section";
+	"second-section" -> "sub-1";
+	"second-section" -> "sub-2";
+	"second-section" -> "sub-3";
+	"sub-1"	 [label="Sub 1"];
+	"sub-1" -> "first-section";
+	"sub-2"	 [label="Sub 2"];
+	"sub-2" -> "sub-3";
+	"sub-3"	 [label="Sub 3"];
+}

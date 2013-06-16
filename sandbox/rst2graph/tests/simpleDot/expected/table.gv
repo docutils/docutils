@@ -1,0 +1,16 @@
+digraph "input/table.rst" {
+	node [label="\N"];
+	bar	 [label=Bar];
+	bar -> foo;
+	bar1	 [label=Bar1];
+	bar1 -> bar;
+	ding	 [label=Ding];
+	ding -> bar;
+	ding -> foo;
+	ding1	 [label=Ding1];
+	ding1 -> ding;
+	foo	 [label=Foo];
+	foo -> bar;
+	foo1	 [label=Foo1];
+	foo1 -> foo;
+}

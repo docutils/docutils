@@ -1,0 +1,16 @@
+digraph "input/reverseTable.rst" {
+	node [label="\N"];
+	bar	 [label=Bar];
+	bar -> bar1;
+	bar -> ding;
+	bar -> foo;
+	bar1	 [label=Bar1];
+	ding	 [label=Ding];
+	ding -> ding1;
+	ding1	 [label=Ding1];
+	foo	 [label=Foo];
+	foo -> bar;
+	foo -> ding;
+	foo -> foo1;
+	foo1	 [label=Foo1];
+}
