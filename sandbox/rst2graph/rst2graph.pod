@@ -1,0 +1,52 @@
+=head1 NAME
+
+rst2gxl - Generate graphs from reStructuredText 
+
+=head1 SYNOPSIS
+
+B<rst2gxl.py> [I<options>]... [I<reST> [I<gxl>]]
+
+=head1 DESCRIPTION
+
+Translates a reStructuredText document to B<GXL>. This can then be
+transformed to graphs for instance by B<dot>.
+
+=head1 OPTIONS
+
+Try
+
+  rst2gxl.py --help
+
+for an explanation of all options.
+
+=head1 SEE ALSO
+
+=over 4
+
+=item Docutils
+
+http://docutils.sourceforge.net/
+
+=item reStructuredText
+
+http://docutils.sourceforge.net/rst.html
+
+=item GXL
+
+http://www.gupro.de/GXL
+
+=item dot
+
+http://graphviz.org/
+
+=back
+
+=head1 AVAILABILITY
+
+B<rst2gxl> is available from
+
+http://www.merten-home.de/FreeSoftware/rst2gxl/
+
+and the Docutils sandbox
+
+svn://svn.berlios.de/docutils/trunk/sandbox/rst2gxl

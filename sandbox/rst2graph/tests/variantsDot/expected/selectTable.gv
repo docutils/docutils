@@ -1,0 +1,15 @@
+digraph "input/selectTable.rst" {
+	node [label="\N"];
+	first	 [label=First];
+	first -> one;
+	one	 [label=One];
+	second	 [label=Second];
+	second -> first;
+	second -> second;
+	third	 [label=Third];
+	three	 [label=Three];
+	three -> one;
+	three -> two;
+	two	 [label=Two];
+	two -> one;
+}
