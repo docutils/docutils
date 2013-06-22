@@ -1,4 +1,38 @@
 **************************************
+Date: Sat Jun 22 13:20:35 CEST 2013
+Author: stefan
+Tag: rst2graph_1_53
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2graph
+In directory eskebo:/home/stefan/free/rst2graph
+
+Added Files:
+	README 
+
+--------------------------------------
+Log Message:
+Added README.
+**************************************
+Date: Sun Jun 16 15:52:33 CEST 2013
+Author: stefan
+Tag: rst2graph_1_52
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2graph
+In directory eskebo:/home/stefan/free/rst2graph
+
+Modified Files:
+	Makefile 
+Added Files:
+	rst2graph.rst 
+Removed Files:
+	rst2graph.pod 
+
+--------------------------------------
+Log Message:
+Replaced `rst2graph.pod` by `rst2graph.rst`.
+**************************************
 Date: Sat Jun 15 21:23:01 CEST 2013
 Author: stefan
 Tag: rst2graph_1_51

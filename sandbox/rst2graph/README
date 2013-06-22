@@ -1,0 +1,87 @@
+.. -*- rst -*-
+
+====================
+README for rst2graph
+====================
+
+Overview
+========
+
+**rst2graph** is a program to create a graph from the links contained
+in a reStructuredText file. This is useful if you use linking in your
+text and want to visualize the link structure in a graphical form.
+
+**rst2graph** supports various output formats describing the resulting
+graph in a certain formal syntax. So far Graphviz_ seems to be the
+best tool to render the output to a graphical form.
+
+**rst2graph** offers a number of options to select only certain
+portions from the reStructuredText file. Using these options you can
+create the subgraph you are interested in.
+
+Installation
+============
+
+After you obtained and unpacked the package run something like ::
+
+  python setup.py install
+
+After installation you have the following commands to render graphs
+from reStructuredText:
+
+**rst2graph.py**
+  The generic renderer. You must give an explicit output format to
+  this command.
+
+**rst2gv.py**, **rst2dot.py**
+  Two commands rendering to dot_ format.
+
+**rst2gxl.py**
+  A command to render GXL_ format.
+
+Requirements
+============
+
+Beyond the docutils_ package you may want to install the pygraphviz_
+to render into dot_ output.
+
+This runs on Python 2.7. Python 3 has not been tested.
+
+Documentation
+=============
+
+See http://www.merten-home.de/FreeSoftware/rst2graph/manual.html or
+use **--help** for options.
+
+Tests
+=====
+
+There are test suites in ``tests.tgz``. Use filterunit_ to run tests.
+
+Availability
+============
+
+**rst2graph** is available from
+
+http://www.merten-home.de/FreeSoftware/rst2graph/
+
+and the Docutils sandbox
+
+http://svn.code.sf.net/p/docutils/code/trunk/sandbox/rst2graph
+
+History
+=======
+
+**rst2graph** stems from **rst2gxl** which only supported the GXL_
+format. Because the **gxl2gv** converter malfunctioned too often and
+since pygraphviz_ is available **rst2gxl** became the foundation for
+**rst2graph** supporting the dot_ format directly.
+
+.. ###########################################################################
+
+.. _Graphviz: http://graphviz.org/
+.. _dot: http://www.graphviz.org/content/dot-language
+.. _pygraphviz: http://networkx.lanl.gov/pygraphviz/
+.. _filterunit: http://www.merten-home.de/FreeSoftware/filterunit/
+.. _docutils: http://docutils.sourceforge.net/
+.. _GXL: http://www.gupro.de/GXL
