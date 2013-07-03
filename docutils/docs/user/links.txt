@@ -113,8 +113,8 @@ HTML variants
   created to translate the Python_ documentation, and is now `used by
   <http://sphinx.pocoo.org/examples.html>`__ a wide choice of projects.
 
-  Generates web sites (interlinked and indexed HTML pages) and/or PDF
-  from a set of rst source files.
+  It can generate complete web sites (interlinked and indexed HTML pages)
+  and/or PDF from a set of rst source files.
 
 * rst2ht_ by Oliver Rutherfurd, converts reStructuredText to an .ht
   template, for use with ht2html_.
@@ -149,8 +149,10 @@ Others
 * restxsl_ by Michael Alyn Miller, lets you transform reStructuredText
   documents into XML/XHTML files using XSLT stylesheets.
 
-* An `XSLT script`_ by Ladislav Lhotka enables reStructuredText annotations
+* An `XSLT script`__ by Ladislav Lhotka enables reStructuredText annotations
   to be included in RELAG NG XML schemas.
+
+  __ http://www.cesnet.cz/doc/techzpravy/2006/rngrest/
 
 * `DocBook Writer`_ by Oliver Rutherfurd.
 
@@ -170,7 +172,10 @@ Others
 
 * For `confluence CMS`_ see https://github.com/cweiske/rst2confluence.
 
-* Deploying into wikis might be aided by https://github.com/netresearch/deploy-rst.
+* Deploying into wikis might be aided by deploy-rst__.
+
+  __ https://github.com/netresearch/deploy-rst
+
 
 Import
 ------
@@ -224,7 +229,7 @@ More extensions are in the `Docutils Sandbox`_.
 * zot4rst_ by Erik Hetzner is an extension that allows users to write reST
   documents using citations from a Zotero_ library.
 
-* Quick and easy publishing reStructuredText source files as blog posts 
+* Quick and easy publishing reStructuredText source files as blog posts
   on blogger.com is possible with `rst2blogger`_ .
 
 Related Applications
@@ -285,7 +290,6 @@ Presentations
 .. _PyLit: http://pylit.berlios.de
 .. _Pandoc: http://sophos.berkeley.edu/macfarlane/pandoc/
 .. _restxsl: http://www.strangeGizmo.com/products/restxsl/
-.. _XSLT script: http://www.cesnet.cz/doc/techzpravy/2006/rngrest/
 .. _ReSTedit: http://www.friday.com/bbum/index.php?s=restedit
 .. _ASCII art to SVG converter: http://docutils.sf.net/sandbox/cliechti/aafigure/
 .. _LaTeX math for reST:

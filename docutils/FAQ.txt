@@ -447,6 +447,8 @@ order:
 * `Firedrop <http://www.voidspace.org.uk/python/firedrop2/>`__
 * `PyBloxsom <http://pyblosxom.sourceforge.net/>`__
 * `Lino WebMan <http://lino.sourceforge.net/webman.html>`__
+* `Pelican <http://blog.getpelican.com/>`__
+  (also  listed `on PyPi <http://pypi.python.org/pypi/pelican>`__)
 
 Please `let us know`_ of any other reStructuredText Blogs.
 
