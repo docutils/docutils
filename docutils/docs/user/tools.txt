@@ -301,7 +301,10 @@ rst2xml.py
 
 The ``rst2xml.py`` front end produces Docutils-native XML output.
 This can be transformed with standard XML tools such as XSLT
-processors into arbitrary final forms.
+processors into arbitrary final forms. An example is the xml2rst_ processor
+in the Docutils sandbox.
+
+.. _xml2rst: ../../../sandbox/xml2rst
 
 
 ODF/OpenOffice-Generating Tools
@@ -324,7 +327,14 @@ about how to use ``rst2odt.py``, the styles used ``rst2odt.py``,
 etc from `Odt Writer for Docutils <odt.html>`_.
 
 
+reStructuredText-Generating Tools
+=================================
 
+Currently, there is no reStructuredText writer in Docutils and therefore
+an ``rst2rst.py`` tool is still missing.
+
+To generate reStructuredText documents with Docutils, you can use
+the XML (Docutils native) writer and the xml2rst_ processor.
 
 
 Testing/Debugging Tools
