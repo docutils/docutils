@@ -30,14 +30,15 @@ class BaseAdmonition(Directive):
         self.assert_has_content()
         text = '\n'.join(self.content)
         admonition_node = self.node_class(text, **self.options)
-        admonition_node.source, admonition_node.line = (
-            self.state_machine.get_source_and_line(self.lineno))
         self.add_name(admonition_node)
         if self.node_class is nodes.admonition:
             title_text = self.arguments[0]
             textnodes, messages = self.state.inline_text(title_text,
                                                          self.lineno)
-            admonition_node += nodes.title(title_text, '', *textnodes)
+            title = nodes.title(title_text, '', *textnodes)
+            title.source, title.line = (
+                    self.state_machine.get_source_and_line(self.lineno))
+            admonition_node += title
             admonition_node += messages
             if not 'classes' in self.options:
                 admonition_node['classes'] += ['admonition-' +
