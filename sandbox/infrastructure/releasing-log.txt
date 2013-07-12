@@ -11,6 +11,9 @@ Notes on what happend while releasing.
 Release 0.11
 ============
 
+Tests
+-----
+
 * ubuntu 8.04 2.4.5, 2.5.2, 2.6.7, 2.7.2 OK
 
   python 2.6.4rc1 6 failure due to change in error message: no such file ...  
@@ -22,6 +25,14 @@ Release 0.11
   python 2.6.1 6 failure due to change in error message: no such file ...  
 
   python 3.2: roman.py for py3 required.
+
+
+Release.sh
+----------
+
+release.sh does not work on MacOSX.
+
+
 
 Release 0.10
 ============

@@ -157,6 +157,7 @@ function initialize()
     echo "Subversion root URL: $svnroot"
     if test "$svnurl" = "$svnroot"; then
         echo 'Error: Subversion URL and Subversion root URL are the same.'
+        echo '  probably a MacOSX sed problem.'
         exit 1
     fi
     echo -n 'Detecting current Docutils version... '
