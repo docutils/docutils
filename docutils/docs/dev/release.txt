@@ -66,8 +66,6 @@ For details see the script.
 ``new_version`` is the current version, status will change from ``repository`` to 
 ``release``. ``svn_version`` is the version after release.
 
-.. Note:: *BUG* The script requires that all supported python2-versions are installed.
-
 .. Note:: *BUG* test tarball requires root password, but it is possible to skip
    this stage interactively, and testing should be done before release.
 
