@@ -26,11 +26,25 @@ Tests
 
   python 3.2: roman.py for py3 required.
 
-
 Release.sh
 ----------
 
 release.sh does not work on MacOSX.
+
+installation on ubuntu 10.04 breaks test script::
+
+  Working directory: /usr/local/lib/python2.6/site-packages/docutils-test
+  Docutils package: /usr/local/lib/python2.6/dist-packages/docutils
+
+  ======================================================================
+  FAIL: test_find_file_in_dirs (test_utils.HelperFunctionsTests)
+  ----------------------------------------------------------------------
+  Traceback (most recent call last):
+    File "/usr/local/lib/python2.6/site-packages/docutils-test/test_utils.py", line 295, in test_find_file_in_dirs
+      '../HISTORY.txt')
+  AssertionError: 'HISTORY.txt' != '../HISTORY.txt'
+
+Stopping for now.
 
 
 
