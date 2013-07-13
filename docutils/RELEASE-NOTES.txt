@@ -32,16 +32,19 @@ Future changes
 Changes Since 0.10
 ==================
 
-* docutils/writers/latex2e/__init__.py
+* General
 
-  - Drop the simple algorithm replacing straight double quotes with
-    English typographic ones. Use the SmartQuotes transform
-    (``--smart-quotes=True``) instead.
-  - New setting `stylesheet_dirs`: Comma-separated list of directories
-    where stylesheets are found. Used by `stylesheet_path` when expanding
-    relative path arguments.
+  - Apply [ 2714873 ] Fix for the overwritting of document attributes.
+  - Support embedded aliases within hyperlink references.
+  - Fix [ 228 ] try local import of docutils components (reader, writer, parser,
+    language module) before global search.
+
+* docutils/parsers/rst/directives/tables.py
+
+  - Fix [ 210 ] Python 3.3 checks CVS syntax only if "strict" is True.
 
 * docutils/writers/html4css1/__init__.py
+  - Fix [ 3600051 ] for tables in a list, table cells are not compacted.
   - New setting `stylesheet_dirs` (see above).
 
     Now, it is easy to add a custom stylesheet to Docutils' default
@@ -52,10 +55,27 @@ Changes Since 0.10
       process at launch, it is used instead of the one provided by Docutils
       in the writer source directory.
 
-  - New default for `math-output` setting: "HTML math.css".
-    Secure and self-contained alternative to the old default
-    ("MathJax" requiring JavaScript from the MathJax server network).
+  - New default for math-output_: ``HTML math.css``.
+  - Avoid repeated class declarations in html4css1 writer
+    (modified version of patch [ 104 ]).
 
+.. _math-output: docs/user/config.html#math-output
+
+* docutils/writers/latex2e/__init__.py
+
+  - Drop the simple algorithm replacing straight double quotes with
+    English typographic ones.
+    Activate the SmartQuotes_ transform if you want this feature.
+  - New setting `stylesheet_dirs`: Comma-separated list of directories
+    where stylesheets are found. Used by `stylesheet_path` when expanding
+    relative path arguments.
+
+.. _SmartQuotes: docs/user/config.html#smart-quotes
+
+* docutils/writers/manpage.py
+
+  - Fix [3607063] handle lines starting with a period.
+  - Fix option separating comma was bold (thanks to Bill Morris).
 
 Release 0.10 (2012-12-16)
 =========================
