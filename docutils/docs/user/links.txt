@@ -170,7 +170,7 @@ Others
   Emacs text editor.  Texinfo can be used to produce multiple output
   formats, including HTML, PDF, and Info.
 
-* For `confluence CMS`_ see https://github.com/cweiske/rst2confluence.
+* For `confluence CMS`_ see https://github.com/netresearch/rst2confluence.
 
 * Deploying into wikis might be aided by deploy-rst__.
 
