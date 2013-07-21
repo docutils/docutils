@@ -361,6 +361,7 @@ function stage_2()
         echo 'Tarball built.'
         run cp docutils/dist/"$tarball" .
         echo 'BETTER run release-test.sh manually for each installed python version.'
+        echo "DO: cd $working_area and call sandbox/infrastructure/release-test.sh py_ver docutils_ver"
         confirm test_tarball
         echo "Testing documentation and uploading htdocs of version $new_ver..."
         confirm upload_htdocs
