@@ -11,6 +11,43 @@ Notes on what happend while releasing.
 Release 0.11
 ============
 
+Summary
+-------
+
+``sandbox/infrastructure/release.sh`` tries running ``test/alltests.py`` after 
+installing the new release, this fails because
+
+* tests depends on e.g. ``../docs/user/rst/images/title.png`` or ``../HISTORY.txt``, 
+  but thess are neither in the test directory tree nor in the installed software. 
+
+* there is a lot of code trying to handle varying installation targets ``/usr/lib``
+  ``/usr/local/lib` and not yet ``/usr/lib/pymodules``.
+
+Change testing to:
+
+1. build and install
+2. extract docutils-<release>.tar.gz into tmp
+3. remove docutils/docutils directory, just to make shure it is not used.
+4. run test/alltest.py in this directory, so all files are where they are
+   while development.
+
+Following failure becuase docutils-library directory was removed, therefore 
+docutils/writers/html4css1/html4css1.css is not found::
+
+  ======================================================================
+  FAIL: test_custom_stylesheet_dir (test_writers.test_html4css1_misc.SettingsTestCase)
+  ----------------------------------------------------------------------
+  Traceback (most recent call last):
+    File "/... 0.11/test/test_writers/test_html4css1_misc.py", line 81, in test_custom_stylesheet_dir
+      self.assertIn('docutils/writers/html4css1/html4css1.css', styles)
+    File "/... 0.11/test/DocutilsTestSupport.py", line 138, in assertIn
+      msg or '%s not in %s' % _format_str(a, b))
+  AssertionError: 'docutils/writers/html4css1/html4css1.css' not in u'''\
+  <link rel="stylesheet" href="html4css1.css" type="text/css" />
+  <link rel="stylesheet" href="data/ham.css" type="text/css" />
+  '''
+
+
 Tests
 -----
 
