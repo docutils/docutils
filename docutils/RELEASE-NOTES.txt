@@ -29,8 +29,8 @@ Future changes
     element with class attribute and auto-generated title.
 
 
-Changes Since 0.10
-==================
+Release 0.11 (2013-07-22)
+=========================
 
 * General
 
