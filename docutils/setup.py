@@ -113,7 +113,7 @@ into useful formats, such as HTML, XML, and LaTeX.  For
 input Docutils supports reStructuredText, an easy-to-read,
 what-you-see-is-what-you-get plaintext markup syntax.""", # wrap at col 60
     'url': 'http://docutils.sourceforge.net/',
-    'version': '0.11',
+    'version': '0.12',
     'author': 'David Goodger',
     'author_email': 'goodger@python.org',
     'maintainer': 'docutils-develop list',
