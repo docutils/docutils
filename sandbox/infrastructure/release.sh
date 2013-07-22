@@ -330,6 +330,7 @@ function stage_1()
     echo "Now updating the following files: $history_files"
     old_string="Changes Since [0-9.]+"
     new_string="Release $new_ver (`date --utc --iso-8601`)"
+    echo 'Please change version number in README.txt'
     echo 'Press enter to replace "'"$old_string"'" with "'"$new_string"\",
     echo 'or enter anything to skip.'
     read
