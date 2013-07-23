@@ -398,6 +398,7 @@ function stage_2()
         pwd
         run tar xzvf "$tarball"
         run cd docutils-"$new_ver"
+    echo 'TODO upload to pypi'
         confirm ./setup.py register
     fi
 }
