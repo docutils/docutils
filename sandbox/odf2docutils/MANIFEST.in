@@ -1,0 +1,3 @@
+include tests.tgz
+include version.py
+include odf2docutilslib/odf2docutils.xsl

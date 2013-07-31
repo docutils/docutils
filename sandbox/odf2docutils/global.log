@@ -1,4 +1,69 @@
 **************************************
+Date: Wed Jul 31 22:09:11 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_30
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils
+In directory theowa:/home/stefan/free/odf2docutils
+
+Modified Files:
+	.cvsignore Makefile 
+Added Files:
+	odf2docutils.py setup.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/odf2docutilslib
+In directory theowa:/home/stefan/free/odf2docutils/odf2docutilslib
+
+Added Files:
+	__init__.py 
+
+--------------------------------------
+Log Message:
+Implemented first script support.
+**************************************
+Date: Wed Jul 31 21:14:56 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_29
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils
+In directory theowa:/home/stefan/free/odf2docutils
+
+Added Files:
+	Makefile 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/presentationSimple
+In directory theowa:/home/stefan/free/odf2docutils/tests/presentationSimple
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/textSimple
+In directory theowa:/home/stefan/free/odf2docutils/tests/textSimple
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Log Message:
+First steps to create a package.
+**************************************
+Date: Wed Jul 31 21:13:25 CEST 2013
+Author: stefan
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/odf2docutilslib
+In directory theowa:/home/stefan/free/odf2docutils/odf2docutilslib
+
+
+--------------------------------------
+Log Message:
+Directory /home/stefan/vault/sm/odf2docutils/odf2docutilslib put under version control
+**************************************
 Date: Wed Jul 31 19:04:12 CEST 2013
 Author: stefan
 Tag: odf2docutils_1_28
