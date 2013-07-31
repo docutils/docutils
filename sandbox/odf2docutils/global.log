@@ -1,4 +1,26 @@
 **************************************
+Date: Wed Jul 31 23:13:33 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_31
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/presentationSimple
+In directory theowa:/home/stefan/free/odf2docutils/tests/presentationSimple
+
+Modified Files:
+	.cvsignore Makefile filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/textSimple
+In directory theowa:/home/stefan/free/odf2docutils/tests/textSimple
+
+Modified Files:
+	.cvsignore Makefile filterunit.cfg 
+
+--------------------------------------
+Log Message:
+Rearranged tests to run with script.
+**************************************
 Date: Wed Jul 31 22:09:11 CEST 2013
 Author: stefan
 Tag: odf2docutils_1_30
