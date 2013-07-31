@@ -1859,11 +1859,15 @@ data: Data elements used by the stylesheet
       mode="bullet_list">
     <xsl:call-template
 	name="u:outputClass"/>
-    <xsl:call-template
-	name="u:BandI"/>
-    <xsl:value-of
-	select="../@bullet"/>    
-    &tSP;  <!-- space after bullet -->
+    <xsl:if
+	test="name(*[1]) != 'bullet_list'">
+      <!-- Start the list item only if the first child is not another list -->
+      <xsl:call-template
+	  name="u:BandI"/>
+      <xsl:value-of
+	  select="../@bullet"/>    
+      &tSP;  <!-- space after bullet -->
+    </xsl:if>
     <xsl:apply-templates/>
   </xsl:template>
 
