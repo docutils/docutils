@@ -1,0 +1,708 @@
+**************************************
+Date: Wed Jul 31 19:04:12 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_28
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils
+In directory theowa:/home/stefan/free/odf2docutils
+
+Modified Files:
+	odf2docutils.xsl 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/presentationSimple/expected
+In directory theowa:/home/stefan/free/odf2docutils/tests/presentationSimple/expected
+
+Modified Files:
+	wrongNesting.xml 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/presentationSimple/target
+In directory theowa:/home/stefan/free/odf2docutils/tests/presentationSimple/target
+
+Modified Files:
+	wrongNesting.rst 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/textSimple/expected
+In directory theowa:/home/stefan/free/odf2docutils/tests/textSimple/expected
+
+Modified Files:
+	wrongNesting.xml wrongerNesting.xml 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/textSimple/target
+In directory theowa:/home/stefan/free/odf2docutils/tests/textSimple/target
+
+Modified Files:
+	wrongNesting.rst wrongerNesting.rst 
+
+--------------------------------------
+Log Message:
+Wrong nesting of list items is not resolved here. Instead the wrong
+nesting is just output as found.
+**************************************
+Date: Tue Jul 30 19:55:10 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_27
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/textSimple/expected
+In directory theowa:/home/stefan/free/odf2docutils/tests/textSimple/expected
+
+Added Files:
+	wrongerNesting.xml 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/textSimple/source
+In directory theowa:/home/stefan/free/odf2docutils/tests/textSimple/source
+
+Modified Files:
+	wrongNesting.odt 
+Added Files:
+	wrongerNesting.odt 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/textSimple/target
+In directory theowa:/home/stefan/free/odf2docutils/tests/textSimple/target
+
+Added Files:
+	wrongerNesting.rst 
+
+--------------------------------------
+Log Message:
+Added another test with even wronger nesting.
+**************************************
+Date: Tue Jul 30 14:00:44 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_26
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils
+In directory theowa:/home/stefan/free/odf2docutils
+
+Modified Files:
+	odf2docutils.xsl 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/textSimple/expected
+In directory theowa:/home/stefan/free/odf2docutils/tests/textSimple/expected
+
+Added Files:
+	wrongNesting.xml 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/textSimple/source
+In directory theowa:/home/stefan/free/odf2docutils/tests/textSimple/source
+
+Added Files:
+	wrongNesting.odt 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/textSimple/target
+In directory theowa:/home/stefan/free/odf2docutils/tests/textSimple/target
+
+Added Files:
+	wrongNesting.rst 
+
+--------------------------------------
+Log Message:
+Added failing test with wrong list nesting in text document.
+**************************************
+Date: Tue Jul 30 13:48:43 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_25
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/textSimple/expected
+In directory theowa:/home/stefan/free/odf2docutils/tests/textSimple/expected
+
+Added Files:
+	nestedList.xml 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/textSimple/source
+In directory theowa:/home/stefan/free/odf2docutils/tests/textSimple/source
+
+Added Files:
+	nestedList.odt 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/textSimple/target
+In directory theowa:/home/stefan/free/odf2docutils/tests/textSimple/target
+
+Added Files:
+	nestedList.rst 
+
+--------------------------------------
+Log Message:
+Added test for nested lists.
+**************************************
+Date: Tue Jul 30 13:41:53 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_24
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils
+In directory theowa:/home/stefan/free/odf2docutils
+
+Modified Files:
+	odf2docutils.xsl 
+
+--------------------------------------
+Log Message:
+Added comments.
+**************************************
+Date: Tue Jul 30 13:32:29 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_23
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils
+In directory theowa:/home/stefan/free/odf2docutils
+
+Modified Files:
+	odf2docutils.xsl 
+
+--------------------------------------
+Log Message:
+Added comments.
+**************************************
+Date: Tue Jul 30 10:52:53 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_22
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils
+In directory theowa:/home/stefan/free/odf2docutils
+
+Modified Files:
+	odf2docutils.xsl 
+
+--------------------------------------
+Log Message:
+Adapted list processing so it works with lists in texts.
+**************************************
+Date: Tue Jul 30 10:39:26 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_21
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/textSimple/expected
+In directory theowa:/home/stefan/free/odf2docutils/tests/textSimple/expected
+
+Added Files:
+	oneLine.xml simpleList.xml twoParas.xml 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/textSimple/source
+In directory theowa:/home/stefan/free/odf2docutils/tests/textSimple/source
+
+Added Files:
+	simpleList.odt 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/textSimple/target
+In directory theowa:/home/stefan/free/odf2docutils/tests/textSimple/target
+
+Added Files:
+	simpleList.rst 
+
+--------------------------------------
+Log Message:
+Added failing test.
+**************************************
+Date: Tue Jul 30 10:08:48 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_20
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/textSimple/source
+In directory theowa:/home/stefan/free/odf2docutils/tests/textSimple/source
+
+Added Files:
+	twoParas.odt 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/textSimple/target
+In directory theowa:/home/stefan/free/odf2docutils/tests/textSimple/target
+
+Added Files:
+	twoParas.rst 
+
+--------------------------------------
+Log Message:
+One more test simply working.
+**************************************
+Date: Tue Jul 30 10:06:09 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_19
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/textSimple/source
+In directory theowa:/home/stefan/free/odf2docutils/tests/textSimple/source
+
+Added Files:
+	oneLine.odt 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/textSimple/target
+In directory theowa:/home/stefan/free/odf2docutils/tests/textSimple/target
+
+Added Files:
+	oneLine.rst 
+
+--------------------------------------
+Log Message:
+Added another test which simply works.
+**************************************
+Date: Tue Jul 30 10:03:26 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_18
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/textSimple/expected
+In directory theowa:/home/stefan/free/odf2docutils/tests/textSimple/expected
+
+Modified Files:
+	empty.xml 
+
+--------------------------------------
+Log Message:
+Adapted test to match input.
+**************************************
+Date: Tue Jul 30 10:00:31 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_17
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/textSimple
+In directory theowa:/home/stefan/free/odf2docutils/tests/textSimple
+
+Added Files:
+	.cvsignore Makefile filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/textSimple/expected
+In directory theowa:/home/stefan/free/odf2docutils/tests/textSimple/expected
+
+Added Files:
+	empty.xml 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/textSimple/source
+In directory theowa:/home/stefan/free/odf2docutils/tests/textSimple/source
+
+Added Files:
+	empty.odt 
+
+--------------------------------------
+Log Message:
+Added first test for converting a text document.
+**************************************
+Date: Thu Jul 18 20:53:03 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_16
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils
+In directory theowa:/home/stefan/free/odf2docutils
+
+Modified Files:
+	odf2docutils.xsl 
+
+--------------------------------------
+Log Message:
+Added comments.
+**************************************
+Date: Thu Jul 18 20:16:39 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_15
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils
+In directory theowa:/home/stefan/free/odf2docutils
+
+Modified Files:
+	odf2docutils.xsl 
+
+--------------------------------------
+Log Message:
+Implemented compensation of wrong nesting.
+**************************************
+Date: Thu Jul 18 18:10:42 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_14
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils
+In directory theowa:/home/stefan/free/odf2docutils
+
+Modified Files:
+	odf2docutils.xsl 
+
+--------------------------------------
+Log Message:
+First step to compensate for wrong nesting.
+**************************************
+Date: Thu Jul 18 17:34:43 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_13
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/presentationSimple/expected
+In directory theowa:/home/stefan/free/odf2docutils/tests/presentationSimple/expected
+
+Added Files:
+	wrongNesting.xml 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/presentationSimple/source
+In directory theowa:/home/stefan/free/odf2docutils/tests/presentationSimple/source
+
+Added Files:
+	wrongNesting.odp 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/presentationSimple/target
+In directory theowa:/home/stefan/free/odf2docutils/tests/presentationSimple/target
+
+Added Files:
+	wrongNesting.rst 
+
+--------------------------------------
+Log Message:
+Added real world test with bad behavior from Powerpoint. Not covered
+yet.
+**************************************
+Date: Thu Jul 18 17:07:06 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_12
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils
+In directory theowa:/home/stefan/free/odf2docutils
+
+Modified Files:
+	odf2docutils.xsl 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/presentationSimple
+In directory theowa:/home/stefan/free/odf2docutils/tests/presentationSimple
+
+Modified Files:
+	Makefile 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/presentationSimple/expected
+In directory theowa:/home/stefan/free/odf2docutils/tests/presentationSimple/expected
+
+Modified Files:
+	empty.xml nestedBullets.xml oneBullet.xml oneTitle.xml 
+	twoBullets.xml 
+
+--------------------------------------
+Log Message:
+Removed indendation because it confuses `xml2rst`.
+**************************************
+Date: Thu Jul 18 16:30:23 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_11
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils
+In directory theowa:/home/stefan/free/odf2docutils
+
+Modified Files:
+	odf2docutils.xsl 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/presentationSimple/expected
+In directory theowa:/home/stefan/free/odf2docutils/tests/presentationSimple/expected
+
+Modified Files:
+	empty.xml nestedBullets.xml oneBullet.xml oneTitle.xml 
+	twoBullets.xml 
+
+--------------------------------------
+Log Message:
+Namespace is not given since this confuses xml2rst.
+**************************************
+Date: Thu Jul 18 16:24:56 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_10
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils
+In directory theowa:/home/stefan/free/odf2docutils
+
+Modified Files:
+	odf2docutils.xsl 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/presentationSimple/expected
+In directory theowa:/home/stefan/free/odf2docutils/tests/presentationSimple/expected
+
+Modified Files:
+	nestedBullets.xml oneBullet.xml twoBullets.xml 
+
+--------------------------------------
+Log Message:
+Bullet type is added.
+**************************************
+Date: Thu Jul 18 16:16:20 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_9
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils
+In directory theowa:/home/stefan/free/odf2docutils
+
+Modified Files:
+	odf2docutils.xsl 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/presentationSimple/expected
+In directory theowa:/home/stefan/free/odf2docutils/tests/presentationSimple/expected
+
+Added Files:
+	nestedBullets.xml twoBullets.xml 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/presentationSimple/source
+In directory theowa:/home/stefan/free/odf2docutils/tests/presentationSimple/source
+
+Added Files:
+	nestedBullets.odp 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/presentationSimple/target
+In directory theowa:/home/stefan/free/odf2docutils/tests/presentationSimple/target
+
+Added Files:
+	nestedBullets.rst 
+
+--------------------------------------
+Log Message:
+Implemented nested lists.
+**************************************
+Date: Thu Jul 18 16:07:20 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_8
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/presentationSimple/source
+In directory theowa:/home/stefan/free/odf2docutils/tests/presentationSimple/source
+
+Added Files:
+	twoBullets.odp 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/presentationSimple/target
+In directory theowa:/home/stefan/free/odf2docutils/tests/presentationSimple/target
+
+Added Files:
+	twoBullets.rst 
+
+--------------------------------------
+Log Message:
+Added test.
+**************************************
+Date: Thu Jul 18 16:03:33 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_7
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils
+In directory theowa:/home/stefan/free/odf2docutils
+
+Modified Files:
+	odf2docutils.xsl 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/presentationSimple/expected
+In directory theowa:/home/stefan/free/odf2docutils/tests/presentationSimple/expected
+
+Modified Files:
+	empty.xml 
+Added Files:
+	oneBullet.xml 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/presentationSimple/target
+In directory theowa:/home/stefan/free/odf2docutils/tests/presentationSimple/target
+
+Added Files:
+	oneBullet.rst 
+
+--------------------------------------
+Log Message:
+Implemented a single bullet.
+**************************************
+Date: Thu Jul 18 15:44:39 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_6
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils
+In directory theowa:/home/stefan/free/odf2docutils
+
+Modified Files:
+	odf2docutils.xsl 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/presentationSimple/expected
+In directory theowa:/home/stefan/free/odf2docutils/tests/presentationSimple/expected
+
+Modified Files:
+	oneTitle.xml 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/presentationSimple/source
+In directory theowa:/home/stefan/free/odf2docutils/tests/presentationSimple/source
+
+Modified Files:
+	oneBullet.odp oneTitle.odp 
+
+--------------------------------------
+Log Message:
+Title is rendered.
+**************************************
+Date: Thu Jul 18 15:29:24 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_5
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/presentationSimple
+In directory theowa:/home/stefan/free/odf2docutils/tests/presentationSimple
+
+Modified Files:
+	Makefile 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/presentationSimple/expected
+In directory theowa:/home/stefan/free/odf2docutils/tests/presentationSimple/expected
+
+Modified Files:
+	oneTitle.xml 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/presentationSimple/target
+In directory theowa:/home/stefan/free/odf2docutils/tests/presentationSimple/target
+
+Modified Files:
+	oneTitle.rst 
+
+--------------------------------------
+Log Message:
+Corrected test.
+**************************************
+Date: Thu Jul 18 15:23:06 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_4
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils
+In directory theowa:/home/stefan/free/odf2docutils
+
+Modified Files:
+	odf2docutils.xsl 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/presentationSimple
+In directory theowa:/home/stefan/free/odf2docutils/tests/presentationSimple
+
+Modified Files:
+	Makefile 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/presentationSimple/expected
+In directory theowa:/home/stefan/free/odf2docutils/tests/presentationSimple/expected
+
+Modified Files:
+	empty.xml 
+Added Files:
+	oneTitle.xml 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/presentationSimple/source
+In directory theowa:/home/stefan/free/odf2docutils/tests/presentationSimple/source
+
+Added Files:
+	oneBullet.odp oneTitle.odp 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/presentationSimple/target
+In directory theowa:/home/stefan/free/odf2docutils/tests/presentationSimple/target
+
+Added Files:
+	oneTitle.rst 
+
+--------------------------------------
+Log Message:
+Added first test with content. Not yet implemented.
+**************************************
+Date: Thu Jul 18 15:08:26 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_3
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils
+In directory theowa:/home/stefan/free/odf2docutils
+
+Modified Files:
+	odf2docutils.xsl 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/presentationSimple
+In directory theowa:/home/stefan/free/odf2docutils/tests/presentationSimple
+
+Added Files:
+	.cvsignore Makefile filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/presentationSimple/expected
+In directory theowa:/home/stefan/free/odf2docutils/tests/presentationSimple/expected
+
+Added Files:
+	empty.xml 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/presentationSimple/source
+In directory theowa:/home/stefan/free/odf2docutils/tests/presentationSimple/source
+
+Added Files:
+	empty.odp 
+
+--------------------------------------
+Log Message:
+Added first test.
+**************************************
+Date: Thu Jul 18 14:47:49 CEST 2013
+Author: stefan
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests
+In directory theowa:/home/stefan/free/odf2docutils/tests
+
+
+--------------------------------------
+Log Message:
+Directory /home/stefan/vault/sm/odf2docutils/tests put under version control
+**************************************
+Date: Thu Jul 18 14:27:01 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_2
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils
+In directory theowa:/home/stefan/free/odf2docutils
+
+Added Files:
+	.cvsignore odf2docutils.xsl 
+
+--------------------------------------
+Log Message:
+Setup basic XSLT sheet.
+
