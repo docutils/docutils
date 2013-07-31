@@ -1,4 +1,41 @@
 **************************************
+Date: Wed Jul 31 18:29:19 CEST 2013
+Author: stefan
+Tag: xml2rst_1_228
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/xml2rstlib
+In directory theowa:/home/stefan/free/xml2rst/xml2rstlib
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Wrongly nested lists are treated in a sane way.
+**************************************
+Date: Wed Jul 31 18:21:03 CEST 2013
+Author: stefan
+Tag: xml2rst_1_227
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/simple/expected
+In directory theowa:/home/stefan/free/xml2rst/tests/simple/expected
+
+Added Files:
+	wrongNesting.rst 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/simple/original
+In directory theowa:/home/stefan/free/xml2rst/tests/simple/original
+
+Added Files:
+	wrongNesting.rst 
+
+--------------------------------------
+Log Message:
+Added test for wrong nesting of lists.
+**************************************
 Date: Mon Dec  3 12:24:00 CET 2012
 Author: stefan
 Tag: xml2rst_1_226
