@@ -1,4 +1,26 @@
 **************************************
+Date: Thu Aug  1 20:09:38 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_32
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils
+In directory theowa:/home/stefan/free/odf2docutils
+
+Modified Files:
+	odf2docutils.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/odf2docutilslib
+In directory theowa:/home/stefan/free/odf2docutils/odf2docutilslib
+
+Modified Files:
+	__init__.py 
+
+--------------------------------------
+Log Message:
+Corrected licence.
+**************************************
 Date: Wed Jul 31 23:13:33 CEST 2013
 Author: stefan
 Tag: odf2docutils_1_31
