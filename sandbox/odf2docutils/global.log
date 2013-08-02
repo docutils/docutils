@@ -1,4 +1,21 @@
 **************************************
+Date: Fri Aug  2 11:28:13 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_33
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils
+In directory theowa:/home/stefan/free/odf2docutils
+
+Modified Files:
+	setup.py 
+Added Files:
+	README 
+
+--------------------------------------
+Log Message:
+Added README.
+**************************************
 Date: Thu Aug  1 20:09:38 CEST 2013
 Author: stefan
 Tag: odf2docutils_1_32

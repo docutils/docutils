@@ -1,0 +1,88 @@
+============
+odf2docutils
+============
+
+.. contents::
+
+What is odf2docutils?
+=====================
+
+`odf2docutils` is a tool to generate `Docutils XML`_ from `Open
+Document Format`_ (ODF_). This way you can create a `Docutils XML`_
+file from ODF_ input and then transform the result to
+reStructuredText_ by using `xml2rst`_.
+
+Using odf2docutils
+==================
+
+Use `odf2docutils` by calling ``odf2docutils.py`` on an ODF_ file. Run
+``odf2docutils --help`` for more information.
+
+Availability
+============
+
+`odf2docutils` is available through the `Docutils Subversion repository`_
+as part of the Docutils sandbox in ``sandbox/odf2docutils``.
+
+Moreover you can fetch it directly from the current maintainer at
+http://www.merten-home.de/FreeSoftware/odf2docutils/
+
+Installation
+============
+
+`odf2docutils` depends on the lxml_ package [#deb-lxml]_. Make sure
+this package is installed before running `odf2docutils`.
+
+After you obtained the package run ``python setup.py install``.
+
+.. [#deb-lxml] Under Debian based operating systems try ``apt-get
+   install python-lxml``.
+
+Copyright and license
+=====================
+
+Copyright (C) 2013 by Stefan Merten
+
+License is GPL_ v2 or later.
+
+Development
+===========
+
+Tests
+-----
+
+There are test suites in ``tests``. Use filterunit_ to run tests.
+
+ToDos
+-----
+
+So far only a small subset of ODF_ is supported. This may change over
+time.
+
+Implementation
+--------------
+
+The core of `odf2docutils` is implemented as an XSLT_ stylesheet
+called ``odf2docutils.xsl``. So far the script ``odf2docutils.py`` is
+only needed for handling ODF_ files and run the XSLT_ processor.
+
+.. ############################################################################
+
+.. _reStructuredText: http://docutils.sourceforge.net/rst.html
+
+.. _Docutils XML: http://docutils.sourceforge.net/docs/ref/doctree.html
+
+.. _XSLT: http://www.w3.org/TR/1999/REC-xslt-19991116
+
+.. _Docutils Subversion repository: http://docutils.sourceforge.net/docs/dev/repository.html
+
+.. _GPL: http://www.gnu.org/copyleft/gpl.html
+
+.. _Open Document Format:
+.. _ODF: https://www.oasis-open.org/standards#opendocumentv1.2
+
+.. _lxml: http://codespeak.net/lxml/
+
+.. _filterunit: http://www.merten-home.de/FreeSoftware/filterunit/
+
+.. _xml2rst: http://www.merten-home.de/FreeSoftware/xml2rst/
