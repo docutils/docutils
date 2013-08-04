@@ -47,9 +47,9 @@
       doctype-system="http://docutils.sourceforge.net/docs/ref/docutils.dtd"
       encoding="utf-8"/>
 
-  <!-- Top level of some document -->
+  <!-- Top level of an ODF document besides text -->
   <xsl:template
-      match="office:text|office:drawing|office:presentation|office:spreadsheet">
+      match="office:drawing | office:presentation | office:spreadsheet">
     <xsl:element
     	name="document"
     	namespace="">
@@ -86,6 +86,211 @@
       match="draw:page/draw:frame[position() &gt; 1]/draw:text-box">
     <xsl:apply-templates
 	select="text:list"/>
+  </xsl:template>
+
+  <!-- ********************************************************************* -->
+  <!-- Text -->
+
+  <!-- Section headers in ODF are flat whereas in Docutils titled sections
+       build a structure. This is somewhat complicated to convert and uses some
+       modes.
+
+       topHeader
+         This mode is used for possible top level headers.
+  -->
+
+  <!-- Top level of an ODF text document. -->
+  <xsl:template
+      match="office:text">
+    <xsl:element
+    	name="document"
+    	namespace="">
+      <!-- All headers in the main document. -->
+      <xsl:variable
+	  name="allHeaders"
+	  select="text:h"/>
+      <!-- Generate context containing only the very first document node. -->
+      <xsl:for-each
+	  select="*[1]">
+	<!-- Output content before the first header. -->
+	<xsl:call-template
+	    name="generateSectionContent">
+	  <!-- Direct content before the first section ends with the first
+               header. -->
+	  <xsl:with-param
+	      name="sectionEndId"
+	      select="generate-id($allHeaders[1])"/>
+	</xsl:call-template>
+      </xsl:for-each>
+      <!-- Apply only to the section headers. They care for applying to
+           their content. -->
+      <xsl:apply-templates
+	  select="$allHeaders"
+	  mode="topHeader"/>
+    </xsl:element>
+  </xsl:template>
+
+  <!-- Section header called directly from top level. These section headers may
+       have a level > 1 so this needs to be checked. The reason for this is
+       that headers of higher levels are used for layout purposes sometimes.
+       -->
+  <xsl:template
+      match="text:h"
+      mode="topHeader">
+    <!-- Level of the current header. -->
+    <xsl:variable
+	name="level">
+      <xsl:call-template
+	  name="outlineLevel"/>
+    </xsl:variable>
+    <!-- Nodes which logically embed this header. -->
+    <xsl:variable
+	name="embedders"
+	select="preceding-sibling::text:h[@text:outline-level &lt; $level]"/>
+    <xsl:if
+	test="$level = 1 or not($embedders)">
+      <xsl:apply-templates
+	  select="."/>
+    </xsl:if>
+    <!-- If there are embedders do nothing because this node will be called by
+         its embedder. -->
+  </xsl:template>
+
+  <!-- Convert a header. -->
+  <xsl:template
+      match="text:h">
+    <!-- Level of the current header. -->
+    <xsl:variable
+	name="level">
+      <xsl:call-template
+	  name="outlineLevel"/>
+    </xsl:variable>
+    <!-- Enders of this section are all following headers with same or lower
+         level. -->
+    <xsl:variable
+	name="enders"
+	select="following-sibling::text:h[not(@text:outline-level) or @text:outline-level &lt;= $level]"/>
+    <!-- Emebdees are all following headers with higher level. -->
+    <xsl:variable
+	name="embeddees"
+	select="following-sibling::text:h[@text:outline-level &gt; $level]"/>
+    <xsl:element
+	name="section"
+    	namespace="">
+      <xsl:element
+	  name="title"
+	  namespace="">
+	<xsl:value-of
+	    select="."/>
+      </xsl:element>
+      <!-- Generate context containing the next node. -->
+      <xsl:for-each
+	  select="following-sibling::*[1]">
+	<xsl:call-template
+	    name="generateSectionContent">
+	  <xsl:with-param
+	      name="firstSubsectionId"
+	      select="generate-id($embeddees[1])"/>
+	  <xsl:with-param
+	      name="sectionEndId"
+	      select="generate-id($enders[1])"/>
+	  <xsl:with-param
+	      name="level"
+	      select="$level"/>
+	</xsl:call-template>
+      </xsl:for-each>
+    </xsl:element>
+  </xsl:template>
+
+  <!-- Output section content. Current node is first node of remaining section
+       content. -->
+  <xsl:template
+      name="generateSectionContent">
+    <!-- Id of first subsection node after the direct section content or empty
+         string for no subsection. Node may be after the one with
+         `sectionEndId` in which case it is synonymous to an empty string. -->
+    <xsl:param
+        name="firstSubsectionId"
+	select="''"/>
+    <!-- Id of first node after the section or empty string for end of
+         document. -->
+    <xsl:param
+        name="sectionEndId"
+	select="''"/>
+    <!-- Level of the section. -->
+    <xsl:param
+        name="level"
+	select="0"/>
+    <!-- All elements in section and after it. -->
+    <xsl:variable
+	name="allNodes"
+	select=". | following-sibling::*"/>
+    <xsl:variable
+	name="sectionEndPosition">
+      <xsl:call-template
+	  name="id2Position">
+	<xsl:with-param
+	    name="contextNodes"
+	    select="$allNodes"/>
+	<xsl:with-param
+	    name="id"
+	    select="$sectionEndId"/>
+      </xsl:call-template>
+    </xsl:variable>
+    <!-- Position of first subsection in all nodes. -->
+    <xsl:variable
+	name="firstSubsectionPositionAll">
+      <xsl:call-template
+	  name="id2Position">
+	<xsl:with-param
+	    name="contextNodes"
+	    select="$allNodes"/>
+	<xsl:with-param
+	    name="id"
+	    select="$firstSubsectionId"/>
+	<xsl:with-param
+	    name="isEndDefault"
+	    select="false()"/>
+      </xsl:call-template>
+    </xsl:variable>
+    <!-- Position of first subsection or <= 0 when no subsection exists. -->
+    <xsl:variable
+	name="firstSubsectionPosition">
+      <xsl:choose>
+	<xsl:when
+	    test="$firstSubsectionPositionAll &lt;= $sectionEndPosition">
+	  <xsl:value-of
+	      select="$firstSubsectionPositionAll"/>
+	</xsl:when>
+	<xsl:otherwise>
+	  <xsl:value-of
+	      select="0"/>
+	</xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    <!-- The position of the first node after the content. -->
+    <xsl:variable
+	name="contentEndPosition">
+      <xsl:choose>
+	<xsl:when
+	    test="$firstSubsectionPosition &gt; 0">
+	  <!-- Subsection exists - direct content reaches until there. -->
+	  <xsl:value-of
+	      select="$firstSubsectionPosition"/>
+	</xsl:when>
+	<xsl:otherwise>
+	  <!-- No subsection - direct content reaches until end. -->
+	  <xsl:value-of
+	      select="$sectionEndPosition"/>
+	</xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    <!-- Output direct content. -->
+    <xsl:apply-templates
+	select="$allNodes[position() &lt; $contentEndPosition]"/>
+    <!-- Output subsections by applying to all headers of subsections. -->
+    <xsl:apply-templates
+	select="$allNodes[position() &lt; $sectionEndPosition and name() = 'text:h' and @text:outline-level = $level + 1]"/>
   </xsl:template>
 
   <!-- ********************************************************************* -->
@@ -126,7 +331,7 @@
 	name="list_item"
     	namespace="">
       <xsl:apply-templates
-	  select="text:p|text:list"/>
+	  select="text:p | text:list"/>
     </xsl:element>
   </xsl:template>  
 
@@ -151,6 +356,82 @@
   <!-- Suppress all other text content -->
   <xsl:template
       match="text()">
+  </xsl:template>
+
+  <!--**********************************************************************-->
+  <!-- Common functions -->
+
+  <!-- Compute the outline level of the current node considering defaults. -->
+  <xsl:template
+      name="outlineLevel">
+    <xsl:choose>
+      <xsl:when
+	  test="@text:outline-level">
+	<xsl:value-of
+	    select="@text:outline-level"/>
+      </xsl:when>
+      <xsl:otherwise>
+	<!-- Outline level defaults to 1 according to ODF specification. -->
+	<xsl:value-of
+	    select="1"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <!-- Returns the position of a node in a given context. Returns -1 if
+       node is not contained in context. -->
+  <xsl:template
+      name="id2Position">
+    <!-- Context in which the position is to be determined. -->
+    <xsl:param
+	name="contextNodes"/>
+    <!-- Id of the node to get the position of. Must be created by
+         `generate-id()`. -->
+    <xsl:param
+	name="id"/>
+    <!-- If `id` is empty the first position after the context is returned
+         if this is true. Otherwise 0 will be returned. -->
+    <xsl:param
+	name="isEndDefault"
+	select="true()"/>
+    <xsl:choose>
+      <xsl:when
+	  test="$id != ''">
+	<xsl:variable
+	    name="position">
+	  <xsl:for-each
+	      select="$contextNodes">
+	    <xsl:if
+		test="generate-id(.) = $id">
+	      <!-- Node found - return its position. -->
+	      <xsl:value-of
+		  select="position()"/>
+	    </xsl:if>
+	  </xsl:for-each>
+	</xsl:variable>
+	<xsl:choose>
+	  <xsl:when
+	      test="$position != ''">
+	    <xsl:value-of
+		select="$position"/>
+	  </xsl:when>
+	  <xsl:otherwise>
+	    <!-- Node not found. -->
+	    <xsl:value-of
+		select="-1"/>
+	  </xsl:otherwise>
+	</xsl:choose>
+      </xsl:when>
+      <xsl:when
+	  test="$isEndDefault">
+	<xsl:value-of
+	    select="count($contextNodes) + 1"/>
+      </xsl:when>
+      <xsl:otherwise>
+	<xsl:value-of
+	    select="0"/>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
 </xsl:stylesheet>
