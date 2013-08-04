@@ -81,7 +81,7 @@ only needed for handling ODF_ files and run the XSLT_ processor.
 .. _Open Document Format:
 .. _ODF: https://www.oasis-open.org/standards#opendocumentv1.2
 
-.. _lxml: http://codespeak.net/lxml/
+.. _lxml: http://lxml.de/
 
 .. _filterunit: http://www.merten-home.de/FreeSoftware/filterunit/
 

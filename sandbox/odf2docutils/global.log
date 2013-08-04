@@ -1,4 +1,263 @@
 **************************************
+Date: Sun Aug  4 11:05:38 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_41
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils
+In directory eskebo:/home/stefan/free/odf2docutils
+
+Modified Files:
+	README odf2docutils.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/odf2docutilslib
+In directory eskebo:/home/stefan/free/odf2docutils/odf2docutilslib
+
+Modified Files:
+	__init__.py 
+
+--------------------------------------
+Log Message:
+Error log is output.
+**************************************
+Date: Sun Aug  4 10:45:04 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_40
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/odf2docutilslib
+In directory eskebo:/home/stefan/free/odf2docutils/odf2docutilslib
+
+Modified Files:
+	__init__.py odf2docutils.xsl 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/textSimple/expected
+In directory eskebo:/home/stefan/free/odf2docutils/tests/textSimple/expected
+
+Modified Files:
+	manyHeaders.xml 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/textSimple/input
+In directory eskebo:/home/stefan/free/odf2docutils/tests/textSimple/input
+
+Modified Files:
+	manyHeaders.odt 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/textSimple/target
+In directory eskebo:/home/stefan/free/odf2docutils/tests/textSimple/target
+
+Modified Files:
+	manyHeaders.rst 
+
+--------------------------------------
+Log Message:
+Debugging.
+
+Modified test.
+**************************************
+Date: Sat Aug  3 19:07:16 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_39
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/odf2docutilslib
+In directory eskebo:/home/stefan/free/odf2docutils/odf2docutilslib
+
+Modified Files:
+	odf2docutils.xsl 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/textSimple/expected
+In directory eskebo:/home/stefan/free/odf2docutils/tests/textSimple/expected
+
+Added Files:
+	manyHeaders.xml 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/textSimple/input
+In directory eskebo:/home/stefan/free/odf2docutils/tests/textSimple/input
+
+Added Files:
+	manyHeaders.odt 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/textSimple/target
+In directory eskebo:/home/stefan/free/odf2docutils/tests/textSimple/target
+
+Added Files:
+	manyHeaders.rst 
+
+--------------------------------------
+Log Message:
+Added a test exposing a bug.
+**************************************
+Date: Sat Aug  3 18:32:07 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_38
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/textSimple/expected
+In directory eskebo:/home/stefan/free/odf2docutils/tests/textSimple/expected
+
+Modified Files:
+	wrongNestedHeader.xml 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/textSimple/target
+In directory eskebo:/home/stefan/free/odf2docutils/tests/textSimple/target
+
+Modified Files:
+	wrongNestedHeader.rst 
+
+--------------------------------------
+Log Message:
+Corrected tests. All tests run.
+**************************************
+Date: Sat Aug  3 18:30:24 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_37
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/odf2docutilslib
+In directory eskebo:/home/stefan/free/odf2docutils/odf2docutilslib
+
+Modified Files:
+	odf2docutils.xsl 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/textSimple/expected
+In directory eskebo:/home/stefan/free/odf2docutils/tests/textSimple/expected
+
+Added Files:
+	twoHeaders.xml 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/textSimple/input
+In directory eskebo:/home/stefan/free/odf2docutils/tests/textSimple/input
+
+Added Files:
+	twoHeaders.odt 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/textSimple/target
+In directory eskebo:/home/stefan/free/odf2docutils/tests/textSimple/target
+
+Added Files:
+	twoHeaders.rst 
+
+--------------------------------------
+Log Message:
+Corrections. Some tests run.
+
+Added test.
+**************************************
+Date: Sat Aug  3 17:42:41 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_36
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/odf2docutilslib
+In directory eskebo:/home/stefan/free/odf2docutils/odf2docutilslib
+
+Modified Files:
+	odf2docutils.xsl 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/textSimple/expected
+In directory eskebo:/home/stefan/free/odf2docutils/tests/textSimple/expected
+
+Added Files:
+	wrongNestedHeader.xml 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/textSimple/input
+In directory eskebo:/home/stefan/free/odf2docutils/tests/textSimple/input
+
+Added Files:
+	wrongNestedHeader.odt 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/textSimple/target
+In directory eskebo:/home/stefan/free/odf2docutils/tests/textSimple/target
+
+Added Files:
+	wrongNestedHeader.rst 
+
+--------------------------------------
+Log Message:
+Implemented nested headers. Does not work yet.
+
+Added test with wrongly nested headers.
+**************************************
+Date: Fri Aug  2 19:16:24 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_35
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/textSimple/expected
+In directory eskebo:/home/stefan/free/odf2docutils/tests/textSimple/expected
+
+Added Files:
+	nestedHeader.xml 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/textSimple/input
+In directory eskebo:/home/stefan/free/odf2docutils/tests/textSimple/input
+
+Added Files:
+	nestedHeader.odt 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/textSimple/target
+In directory eskebo:/home/stefan/free/odf2docutils/tests/textSimple/target
+
+Added Files:
+	nestedHeader.rst 
+
+--------------------------------------
+Log Message:
+Added failing test with nested header.
+**************************************
+Date: Fri Aug  2 19:12:24 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_34
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/odf2docutilslib
+In directory eskebo:/home/stefan/free/odf2docutils/odf2docutilslib
+
+Modified Files:
+	odf2docutils.xsl 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/textSimple/expected
+In directory eskebo:/home/stefan/free/odf2docutils/tests/textSimple/expected
+
+Added Files:
+	oneHeader.xml 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/textSimple/input
+In directory eskebo:/home/stefan/free/odf2docutils/tests/textSimple/input
+
+Added Files:
+	oneHeader.odt 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/textSimple/target
+In directory eskebo:/home/stefan/free/odf2docutils/tests/textSimple/target
+
+Added Files:
+	oneHeader.rst 
+
+--------------------------------------
+Log Message:
+Added test and implementation converting a single header.
+**************************************
 Date: Fri Aug  2 11:28:13 CEST 2013
 Author: stefan
 Tag: odf2docutils_1_33

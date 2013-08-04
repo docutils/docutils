@@ -364,6 +364,8 @@ if __name__ == '__main__':
     else:
         outF = None
     try:
-        convert(inF, outF, options)
+        log = convert(inF, outF, options)
+        if log:
+            errorOut(log.split('\n'))
     except Exception, e:
         errorExit(1, e)

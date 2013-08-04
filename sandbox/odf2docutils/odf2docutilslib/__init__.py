@@ -73,6 +73,9 @@ def convert(inNm, outNm, settings):
 
     `settings`: ``optparse.Values``
       Options from command line.
+
+    return: ``str`` | None
+      The log created by XSLT or None if the log could not be get.
     """
     # Find XSLT
     modP = os.path.dirname(__file__)
@@ -112,8 +115,10 @@ def convert(inNm, outNm, settings):
     inXml.close()
 
     # Process input
+    log = None
     try:
         result = mainXslt(inDoc)
+        log = str(mainXslt.error_log)
     except Exception, e:
         raise Exception("Error transforming input file %r: %s" % ( inNm, e, ))
     outS = str(result)
@@ -126,3 +131,5 @@ def convert(inNm, outNm, settings):
         outF.close()
     else:
         sys.stdout.write(outS)
+
+    return log
