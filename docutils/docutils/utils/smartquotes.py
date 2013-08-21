@@ -388,6 +388,8 @@ class smartchars(object):
               'ca-x-altquot': u'“”‘’',
               'cs':           u'„“‚‘',
               'cs-x-altquot': u'»«›‹',
+              'da':           u'»«‘’',
+              'da-x-altquot': u'„“‚‘',
               'de':           u'„“‚‘',
               'de-x-altquot': u'»«›‹',
               'de-CH':        u'«»‹›',
