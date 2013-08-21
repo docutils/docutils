@@ -2339,27 +2339,18 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.out += self.ids_to_labels(node) + ['\n']
 
     def visit_inline(self, node): # <span>, i.e. custom roles
-        # Make a copy to keep  ``node['classes']`` True if a
-        # language argument is popped (used in conditional calls of
-        # depart_inline()):
-        classes = node['classes'][:]
-        self.context.append('}' * len(classes))
-    # handle language specification:
-        language_tags = [cls for cls in classes
-                         if cls.startswith('language-')]
-        if language_tags:
-            language = self.babel.language_name(language_tags[0][9:])
-            if language:
-                self.babel.otherlanguages[language] = True
-                self.out.append(r'\foreignlanguage{%s}{' % language)
-                classes.pop(classes.index(language_tags[0]))
-        if not classes:
-            return
-        # mark up for styling with custom macros
-        if 'align-center' in classes:
-            self.fallbacks['align-center'] = PreambleCmds.align_center
-        self.fallbacks['inline'] = PreambleCmds.inline
-        self.out += [r'\DUrole{%s}{' % cls for cls in classes]
+        self.context.append('}' * len(node['classes']))
+        for cls in node['classes']:
+            if cls == 'align-center':
+                self.fallbacks['align-center'] = PreambleCmds.align_center
+            if cls.startswith('language-'):
+                language = self.babel.language_name(cls[9:])
+                if language:
+                    self.babel.otherlanguages[language] = True
+                    self.out.append(r'\foreignlanguage{%s}{' % language)
+            else:
+                self.fallbacks['inline'] = PreambleCmds.inline
+                self.out.append(r'\DUrole{%s}{' % cls)
 
     def depart_inline(self, node):
         self.out.append(self.context.pop())
