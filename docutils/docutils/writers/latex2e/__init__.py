@@ -2138,9 +2138,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
             # The LaTeX "figure" environment always uses the full textwidth,
             # so "outer alignment" is ignored. Just write a comment.
             # TODO: use the wrapfigure environment?
-            self.out.append('\\begin{figure} %% align = "%s"\n' % alignment)
+            self.out.append('\n\\begin{figure} %% align = "%s"\n' % alignment)
         else:
-            self.out.append('\\begin{figure}\n')
+            self.out.append('\n\\begin{figure}\n')
         if node.get('ids'):
             self.out += self.ids_to_labels(node) + ['\n']
 
