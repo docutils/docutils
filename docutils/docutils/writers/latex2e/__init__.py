@@ -480,7 +480,7 @@ class PreambleCmds(object):
 
 PreambleCmds.abstract = r"""
 % abstract title
-\providecommand*{\DUtitleabstract}[1]{\centerline{\textbf{#1}}}"""
+\providecommand*{\DUtitleabstract}[1]{\centering\textbf{#1}}"""
 
 PreambleCmds.admonition = r"""
 % admonition (specially marked topic)
@@ -2402,9 +2402,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_literal(self, node):
         self.literal = True
-        if 'code' in node.get('classes', []):
+        if 'code' in node['classes'] and (
+                    self.settings.syntax_highlight != 'none'):
             self.requirements['color'] = PreambleCmds.color
-            self.requirements['code'] = PreambleCmds.highlight_rules
+            self.fallbacks['code'] = PreambleCmds.highlight_rules
         self.out.append('\\texttt{')
         if node['classes']:
             self.visit_inline(node)
@@ -2446,7 +2447,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if not self.active_table.is_open():
             # no quote inside tables, to avoid vertical space between
             # table border and literal block.
-            # BUG: fails if normal text preceeds the literal block.
+            # BUG: fails if normal text precedes the literal block.
             self.out.append('%\n\\begin{quote}')
             self.context.append('\n\\end{quote}\n')
         else:
@@ -2462,6 +2463,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.literal = True
             self.insert_newline = True
             self.insert_non_breaking_blanks = True
+            if 'code' in node['classes'] and (
+                    self.settings.syntax_highlight != 'none'):
+                self.requirements['color'] = PreambleCmds.color
+                self.fallbacks['code'] = PreambleCmds.highlight_rules
             self.out.append('{\\ttfamily \\raggedright \\noindent\n')
 
     def depart_literal_block(self, node):

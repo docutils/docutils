@@ -61,6 +61,26 @@ latex_preamble = r"""% PDF Standard Fonts
 """,
 stylesheet = '',
 fallbacks =  '',
+fallbacks_highlight = r"""% basic code highlight:
+\providecommand*\DUrolecomment[1]{\textcolor[rgb]{0.40,0.40,0.40}{#1}}
+\providecommand*\DUroledeleted[1]{\textcolor[rgb]{0.40,0.40,0.40}{#1}}
+\providecommand*\DUrolekeyword[1]{\textbf{#1}}
+\providecommand*\DUrolestring[1]{\textit{#1}}
+
+% inline markup (custom roles)
+% \DUrole{#1}{#2} tries \DUrole#1{#2}
+\providecommand*{\DUrole}[2]{%
+  \ifcsname DUrole#1\endcsname%
+    \csname DUrole#1\endcsname{#2}%
+  \else% backwards compatibility: try \docutilsrole#1{#2}
+    \ifcsname docutilsrole#1\endcsname%
+      \csname docutilsrole#1\endcsname{#2}%
+    \else%
+      #2%
+    \fi%
+  \fi%
+}
+""",
 pdfsetup = r"""
 % hyperlinks:
 \ifthenelse{\isundefined{\hypersetup}}{
@@ -119,6 +139,17 @@ r"""\usepackage{ifthen}
 \AtBeginDocument{\shorthandoff{.<>}}
 """)) + r"""
 Und damit \foreignlanguage{spanish}{basta}!
+
+\end{document}
+"""],
+]
+
+totest['code role'] = [
+[":code:`x=1`",
+head_template.substitute(dict(parts, requirements = parts['requirements']+
+r"""\usepackage{color}
+""", fallbacks = parts['fallbacks_highlight'])) + r"""
+\texttt{\DUrole{code}{x=1}}
 
 \end{document}
 """],
@@ -485,7 +516,7 @@ head_table + r"""
 # The "[" needs to be protected (otherwise it will be seen as an
 # option to "\\", "\item", etc. ).
 
-totest['brackett_protection'] = [
+totest['bracket_protection'] = [
 # input
 ["""\
 ::
@@ -549,7 +580,7 @@ This is a *section title*
 
 This is the *document*.
 """,
-head_template.substitute(dict(parts, 
+head_template.substitute(dict(parts,
     requirements=parts['requirements'] + '\\setcounter{secnumdepth}{0}\n',
     pdfsetup=parts['pdfsetup'] + r"""\hypersetup{
   pdftitle={This is the Title},
