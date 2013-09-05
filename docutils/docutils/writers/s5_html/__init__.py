@@ -286,24 +286,28 @@ class S5HTMLTranslator(html4css1.HTMLTranslator):
         self.meta.insert(0, self.content_type % self.settings.output_encoding)
         self.head.insert(0, self.content_type % self.settings.output_encoding)
         if self.math_header:
-            self.head.append(self.math_header)
-
+            if self.math_output == 'mathjax':
+                self.head.extend(self.math_header)
+            else:
+                self.stylesheet.extend(self.math_header)
+        # skip content-type meta tag with interpolated charset value:
+        self.html_head.extend(self.head[1:])
+        self.fragment.extend(self.body)
+        # special S5 code up to the next comment line
         header = ''.join(self.s5_header)
         footer = ''.join(self.s5_footer)
         title = ''.join(self.html_title).replace('<h1 class="title">', '<h1>')
         layout = self.layout_template % {'header': header,
                                          'title': title,
                                          'footer': footer}
-        self.fragment.extend(self.body)
         self.body_prefix.extend(layout)
         self.body_prefix.append('<div class="presentation">\n')
         self.body_prefix.append(
             self.starttag({'classes': ['slide'], 'ids': ['slide0']}, 'div'))
         if not self.section_count:
             self.body.append('</div>\n')
+        #
         self.body_suffix.insert(0, '</div>\n')
-        # skip content-type meta tag with interpolated charset value:
-        self.html_head.extend(self.head[1:])
         self.html_body.extend(self.body_prefix[1:] + self.body_pre_docinfo
                               + self.docinfo + self.body
                               + self.body_suffix[:-1])
