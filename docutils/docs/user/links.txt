@@ -116,6 +116,11 @@ HTML variants
   It can generate complete web sites (interlinked and indexed HTML pages)
   and/or PDF from a set of rst source files.
 
+* Nikola__  static site generator, use restructured text by
+  default.
+
+  __ http://getnikola.com
+
 * rst2ht_ by Oliver Rutherfurd, converts reStructuredText to an .ht
   template, for use with ht2html_.
 
