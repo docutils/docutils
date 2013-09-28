@@ -429,6 +429,8 @@ class HTMLTranslator(html4css1.HTMLTranslator):
         tag = self.starttag(node, 'table', CLASS=' '.join(classes))
         self.body.append(tag)
 
+    def depart_table(self, node):
+        self.body.append('</table>\n')
 
     # no hard-coded vertical alignment in table body::
 
