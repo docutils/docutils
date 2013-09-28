@@ -24,6 +24,10 @@ Changes Since 0.11
 
   - Apply patch by Jakub Wilk to fix bug [ 100 ].
 
+* test/test_error_reporting.py
+
+  - Fix [ 223 ] by removing redundant tests we do not have control over.
+    
 Release 0.11 (2013-07-22)
 =========================
 
