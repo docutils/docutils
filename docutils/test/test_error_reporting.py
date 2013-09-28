@@ -285,8 +285,8 @@ class ErrorReportingTests(unittest.TestCase):
     ensure that the correct exception is thrown.
     """
 
-    # These tests fail with a 'problematic locale' and
-    # (revision < 7035) and Python-2.
+    # These tests fail with a 'problematic locale',
+    # Docutils revision < 7035, and Python 2:
 
     parser = parsers.rst.Parser()
     """Parser shared by all ParserTestCases."""
@@ -317,21 +317,9 @@ class ErrorReportingTests(unittest.TestCase):
         self.assertRaises(utils.SystemMessage,
                           self.parser.parse, source, self.document)
 
-    def test_raw_url(self):
-        source = ('.. raw:: html\n'
-                  '   :url: http://bogus.html\n')
-        self.assertRaises(utils.SystemMessage,
-                          self.parser.parse, source, self.document)
-
     def test_csv_table(self):
         source = ('.. csv-table:: external file\n'
                   '   :file: bogus.csv\n')
-        self.assertRaises(utils.SystemMessage,
-                          self.parser.parse, source, self.document)
-
-    def test_csv_table_url(self):
-        source = ('.. csv-table:: external URL\n'
-                  '   :url: ftp://bogus.csv\n')
         self.assertRaises(utils.SystemMessage,
                           self.parser.parse, source, self.document)
 
