@@ -1,3 +1,3 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE document PUBLIC "+//IDN docutils.sourceforge.net//DTD Docutils Generic//EN//XML" "http://docutils.sourceforge.net/docs/ref/docutils.dtd">
-<document><section><title>Level 1</title></section><section><title>Level 1 again</title></section></document>
+<document source="input/twoHeaders.odt"><section><title>Level 1</title></section><section><title>Level 1 again</title></section></document>

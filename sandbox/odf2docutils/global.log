@@ -1,4 +1,963 @@
 **************************************
+Date: Tue Oct 29 13:34:39 CET 2013
+Author: stefan
+Tag: odf2docutils_1_86
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/odf2docutilslib
+In directory theowa:/home/stefan/free/odf2docutils/odf2docutilslib
+
+Modified Files:
+	python.py 
+
+--------------------------------------
+Log Message:
+Lists in texts are implemented.
+**************************************
+Date: Tue Oct 29 12:49:23 CET 2013
+Author: stefan
+Tag: odf2docutils_1_85
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/odf2docutilslib
+In directory theowa:/home/stefan/free/odf2docutils/odf2docutilslib
+
+Modified Files:
+	python.py 
+
+--------------------------------------
+Log Message:
+`visit` methods can process only some children.
+**************************************
+Date: Tue Oct 29 12:07:43 CET 2013
+Author: stefan
+Tag: odf2docutils_1_84
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/odf2docutilslib
+In directory theowa:/home/stefan/free/odf2docutils/odf2docutilslib
+
+Modified Files:
+	python.py 
+
+--------------------------------------
+Log Message:
+Added some more functionality. More tests run.
+**************************************
+Date: Mon Oct 28 15:08:10 CET 2013
+Author: stefan
+Tag: odf2docutils_1_83
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/odf2docutilslib
+In directory eskebo:/home/stefan/free/odf2docutils/odf2docutilslib
+
+Modified Files:
+	python.py 
+
+--------------------------------------
+Log Message:
+Added some more functionality. More tests run.
+**************************************
+Date: Sun Oct 27 12:26:46 CET 2013
+Author: stefan
+Tag: odf2docutils_1_82
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests
+In directory eskebo:/home/stefan/free/odf2docutils/tests
+
+Added Files:
+	expectedFilter 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/frontend
+In directory eskebo:/home/stefan/free/odf2docutils/tests/frontend
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/presentationSimple
+In directory eskebo:/home/stefan/free/odf2docutils/tests/presentationSimple
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/textSimple
+In directory eskebo:/home/stefan/free/odf2docutils/tests/textSimple
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests.xslt
+In directory eskebo:/home/stefan/free/odf2docutils/tests.xslt
+
+Added Files:
+	expectedFilter 
+
+--------------------------------------
+Log Message:
+Added filter for Docutils XML writer. Some tests run.
+**************************************
+Date: Sun Oct 27 12:05:45 CET 2013
+Author: stefan
+Tag: odf2docutils_1_81
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/odf2docutilslib
+In directory eskebo:/home/stefan/free/odf2docutils/odf2docutilslib
+
+Modified Files:
+	python.py 
+
+--------------------------------------
+Log Message:
+Implemented first element. Test still not working yet due to XML based
+differences.
+**************************************
+Date: Sat Oct 26 20:12:05 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_80
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/odf2docutilslib
+In directory eskebo:/home/stefan/free/odf2docutils/odf2docutilslib
+
+Modified Files:
+	python.py 
+
+--------------------------------------
+Log Message:
+`TreePruningException`\s are considered.
+**************************************
+Date: Sat Oct 26 19:31:32 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_79
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/odf2docutilslib
+In directory eskebo:/home/stefan/free/odf2docutils/odf2docutilslib
+
+Modified Files:
+	python.py 
+
+--------------------------------------
+Log Message:
+Refactoring: Implemented an explicit visitor.
+**************************************
+Date: Sat Oct 26 18:50:55 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_78
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/frontend
+In directory eskebo:/home/stefan/free/odf2docutils/tests/frontend
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/presentationSimple
+In directory eskebo:/home/stefan/free/odf2docutils/tests/presentationSimple
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/textSimple
+In directory eskebo:/home/stefan/free/odf2docutils/tests/textSimple
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Log Message:
+Added filter for suppressing unnecessary comment by Docutils XML
+writer.
+**************************************
+Date: Sat Oct 26 18:48:28 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_77
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/odf2docutilslib
+In directory eskebo:/home/stefan/free/odf2docutils/odf2docutilslib
+
+Modified Files:
+	odf2docutils.xsl xslt.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/frontend/expected
+In directory eskebo:/home/stefan/free/odf2docutils/tests/frontend/expected
+
+Modified Files:
+	noarg.xml simple.xml stdin.xml stdout.xml 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/presentationSimple/expected
+In directory eskebo:/home/stefan/free/odf2docutils/tests/presentationSimple/expected
+
+Modified Files:
+	empty.xml italicAutomatic.xml nestedBullets.xml oneBullet.xml 
+	oneTitle.xml twoBullets.xml wrongNesting.xml 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/textSimple/expected
+In directory eskebo:/home/stefan/free/odf2docutils/tests/textSimple/expected
+
+Modified Files:
+	emphasis.xml empty.xml italicAutomatic.xml manyHeaders.xml 
+	nestedHeader.xml nestedList.xml oneHeader.xml oneLine.xml 
+	simpleList.xml twoHeaders.xml twoParas.xml 
+	wrongNestedHeader.xml wrongNesting.xml wrongerNesting.xml 
+
+--------------------------------------
+Log Message:
+Name of source is included in output.      
+**************************************
+Date: Sat Oct 26 15:47:17 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_76
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/odf2docutilslib
+In directory eskebo:/home/stefan/free/odf2docutils/odf2docutilslib
+
+Modified Files:
+	python.py 
+
+--------------------------------------
+Log Message:
+Implemented first steps for Python based parser.
+**************************************
+Date: Thu Oct 24 15:20:05 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_75
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/odf2docutilslib
+In directory theowa:/home/stefan/free/odf2docutils/odf2docutilslib
+
+Added Files:
+	python.py 
+
+--------------------------------------
+Log Message:
+Added first step for Python based parser.
+**************************************
+Date: Sun Oct 13 17:12:44 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_74
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils
+In directory eskebo:/home/stefan/free/odf2docutils
+
+Modified Files:
+	odf2docutils.py 
+
+--------------------------------------
+Log Message:
+Gave up a todo.
+**************************************
+Date: Sun Oct 13 11:47:01 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_73
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils
+In directory eskebo:/home/stefan/free/odf2docutils
+
+Modified Files:
+	odf2docutils.py 
+
+--------------------------------------
+Log Message:
+Enhanced todos.
+**************************************
+Date: Sat Oct 12 17:40:29 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_72
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils
+In directory eskebo:/home/stefan/free/odf2docutils
+
+Modified Files:
+	odf2docutils.py 
+
+--------------------------------------
+Log Message:
+Added todo.
+**************************************
+Date: Sat Oct 12 17:31:26 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_71
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/frontend/expected
+In directory eskebo:/home/stefan/free/odf2docutils/tests/frontend/expected
+
+Added Files:
+	textInput.err textInput.ex textInput.xml 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/frontend/input
+In directory eskebo:/home/stefan/free/odf2docutils/tests/frontend/input
+
+Added Files:
+	textInput.arg textInput.odt textInput.opt 
+
+--------------------------------------
+Log Message:
+Added test with plain text input.
+**************************************
+Date: Sat Oct 12 17:28:36 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_70
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/frontend
+In directory eskebo:/home/stefan/free/odf2docutils/tests/frontend
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/frontend/expected
+In directory eskebo:/home/stefan/free/odf2docutils/tests/frontend/expected
+
+Added Files:
+	empty.err empty.ex empty.xml 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/frontend/input
+In directory eskebo:/home/stefan/free/odf2docutils/tests/frontend/input
+
+Added Files:
+	empty.arg empty.odt empty.opt 
+
+--------------------------------------
+Log Message:
+Added test with empty file.
+**************************************
+Date: Sat Oct 12 17:23:14 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_69
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/frontend/expected
+In directory eskebo:/home/stefan/free/odf2docutils/tests/frontend/expected
+
+Added Files:
+	noarg.err noarg.ex noarg.xml 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/frontend/input
+In directory eskebo:/home/stefan/free/odf2docutils/tests/frontend/input
+
+Added Files:
+	noarg.arg noarg.odt noarg.opt 
+
+--------------------------------------
+Log Message:
+Added test using no argument at all.
+**************************************
+Date: Sat Oct 12 17:21:08 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_68
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/frontend/expected
+In directory eskebo:/home/stefan/free/odf2docutils/tests/frontend/expected
+
+Added Files:
+	stdout.err stdout.ex stdout.xml 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/frontend/input
+In directory eskebo:/home/stefan/free/odf2docutils/tests/frontend/input
+
+Modified Files:
+	stdin.arg 
+Added Files:
+	stdout.arg stdout.odt stdout.opt 
+
+--------------------------------------
+Log Message:
+Added test using stdout.
+**************************************
+Date: Sat Oct 12 17:16:53 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_67
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils
+In directory eskebo:/home/stefan/free/odf2docutils
+
+Modified Files:
+	odf2docutils.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/frontend
+In directory eskebo:/home/stefan/free/odf2docutils/tests/frontend
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/frontend/expected
+In directory eskebo:/home/stefan/free/odf2docutils/tests/frontend/expected
+
+Added Files:
+	simple.err simple.ex stdin.err stdin.ex stdin.xml 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/frontend/input
+In directory eskebo:/home/stefan/free/odf2docutils/tests/frontend/input
+
+Added Files:
+	stdin.arg stdin.odt stdin.opt 
+
+--------------------------------------
+Log Message:
+Added test for readin stdin. Debugging.
+**************************************
+Date: Sat Oct 12 17:08:50 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_66
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils
+In directory eskebo:/home/stefan/free/odf2docutils
+
+Modified Files:
+	.cvsignore Makefile 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/frontend
+In directory eskebo:/home/stefan/free/odf2docutils/tests/frontend
+
+Added Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/frontend/expected
+In directory eskebo:/home/stefan/free/odf2docutils/tests/frontend/expected
+
+Added Files:
+	simple.xml 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/frontend/input
+In directory eskebo:/home/stefan/free/odf2docutils/tests/frontend/input
+
+Added Files:
+	simple.arg simple.odt simple.opt 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests.xslt/frontend
+In directory eskebo:/home/stefan/free/odf2docutils/tests.xslt/frontend
+
+Added Files:
+	filterunit.cfg 
+
+--------------------------------------
+Log Message:
+Added first test for testing frontend code.
+**************************************
+Date: Sat Oct 12 16:56:59 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_65
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils
+In directory eskebo:/home/stefan/free/odf2docutils
+
+Modified Files:
+	odf2docutils.py 
+
+--------------------------------------
+Log Message:
+Finished class `OdfFileInput`.
+**************************************
+Date: Sat Oct 12 12:55:49 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_64
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils
+In directory theowa:/home/stefan/free/odf2docutils
+
+Modified Files:
+	odf2docutils.py 
+
+--------------------------------------
+Log Message:
+Started class `OdfFileInput`.
+**************************************
+Date: Sat Oct 12 12:26:42 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_63
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils
+In directory theowa:/home/stefan/free/odf2docutils
+
+Modified Files:
+	odf2docutils.py 
+
+--------------------------------------
+Log Message:
+Assumed option setting is verified when possible.
+**************************************
+Date: Tue Oct  8 22:48:29 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_62
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils
+In directory theowa:/home/stefan/free/odf2docutils
+
+Modified Files:
+	odf2docutils.py 
+
+--------------------------------------
+Log Message:
+Options control choosing of parser and writer.
+**************************************
+Date: Tue Oct  8 13:12:09 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_61
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils
+In directory theowa:/home/stefan/free/odf2docutils
+
+Modified Files:
+	odf2docutils.py 
+
+--------------------------------------
+Log Message:
+Resolved call to `publish_cmdline()`.
+**************************************
+Date: Mon Oct  7 21:48:01 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_60
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/odf2docutilslib
+In directory theowa:/home/stefan/free/odf2docutils/odf2docutilslib
+
+Modified Files:
+	__init__.py 
+
+--------------------------------------
+Log Message:
+Removed dead code.
+**************************************
+Date: Mon Oct  7 21:45:39 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_59
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/odf2docutilslib
+In directory theowa:/home/stefan/free/odf2docutils/odf2docutilslib
+
+Modified Files:
+	xslt.py 
+
+--------------------------------------
+Log Message:
+Minor refactoring.
+**************************************
+Date: Mon Oct  7 21:03:26 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_58
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/odf2docutilslib
+In directory theowa:/home/stefan/free/odf2docutils/odf2docutilslib
+
+Modified Files:
+	xslt.py 
+
+--------------------------------------
+Log Message:
+Minor simplification.
+**************************************
+Date: Mon Oct  7 20:58:16 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_57
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils
+In directory theowa:/home/stefan/free/odf2docutils
+
+Modified Files:
+	odf2docutils.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/odf2docutilslib
+In directory theowa:/home/stefan/free/odf2docutils/odf2docutilslib
+
+Modified Files:
+	xslt.py 
+
+--------------------------------------
+Log Message:
+Debugging.
+**************************************
+Date: Mon Oct  7 20:22:48 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_56
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils
+In directory theowa:/home/stefan/free/odf2docutils
+
+Modified Files:
+	odf2docutils.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/odf2docutilslib
+In directory theowa:/home/stefan/free/odf2docutils/odf2docutilslib
+
+Added Files:
+	xslt.py 
+
+--------------------------------------
+Log Message:
+Added first implementation for XSLT based parser and writer. Not
+working yet.
+**************************************
+Date: Sun Oct  6 22:43:44 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_55
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils
+In directory theowa:/home/stefan/free/odf2docutils
+
+Modified Files:
+	odf2docutils.py 
+
+--------------------------------------
+Log Message:
+Reader implemented.
+**************************************
+Date: Sun Oct  6 21:27:17 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_54
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils
+In directory theowa:/home/stefan/free/odf2docutils
+
+Modified Files:
+	odf2docutils.py 
+
+--------------------------------------
+Log Message:
+Started complete refactoring to use docutils infrastructure.
+
+Settings work.
+**************************************
+Date: Sat Oct  5 23:07:31 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_53
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils
+In directory theowa:/home/stefan/free/odf2docutils
+
+Modified Files:
+	odf2docutils.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/odf2docutilslib
+In directory theowa:/home/stefan/free/odf2docutils/odf2docutilslib
+
+Modified Files:
+	__init__.py 
+
+--------------------------------------
+Log Message:
+Some minor cleanup.
+
+The whole thing should be implemented as a normal
+`docutils.core.Publisher` with a special reader for the ODF file and a
+ODF parser.
+**************************************
+Date: Fri Oct  4 21:25:29 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_52
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils
+In directory theowa:/home/stefan/free/odf2docutils
+
+Modified Files:
+	odf2docutils.py 
+
+--------------------------------------
+Log Message:
+Converted documentation to reST.
+**************************************
+Date: Thu Oct  3 22:01:02 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_51
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils
+In directory theowa:/home/stefan/free/odf2docutils
+
+Modified Files:
+	Makefile 
+
+--------------------------------------
+Log Message:
+Added target to generate Epydoc documentation.
+**************************************
+Date: Thu Oct  3 21:41:31 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_50
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/odf2docutilslib
+In directory theowa:/home/stefan/free/odf2docutils/odf2docutilslib
+
+Modified Files:
+	__init__.py 
+
+--------------------------------------
+Log Message:
+Formatted documentation strings to be compatible with Epydoc.
+**************************************
+Date: Sat Sep 28 17:11:02 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_49
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils
+In directory eskebo:/home/stefan/free/odf2docutils
+
+Modified Files:
+	Makefile odf2docutils.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/odf2docutilslib
+In directory eskebo:/home/stefan/free/odf2docutils/odf2docutilslib
+
+Modified Files:
+	__init__.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/presentationSimple
+In directory eskebo:/home/stefan/free/odf2docutils/tests/presentationSimple
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/textSimple
+In directory eskebo:/home/stefan/free/odf2docutils/tests/textSimple
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests.xslt/presentationSimple
+In directory eskebo:/home/stefan/free/odf2docutils/tests.xslt/presentationSimple
+
+Added Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests.xslt/textSimple
+In directory eskebo:/home/stefan/free/odf2docutils/tests.xslt/textSimple
+
+Added Files:
+	filterunit.cfg 
+
+--------------------------------------
+Log Message:
+Added options selecting the converter implementation.
+
+Added test infrastructure for XSLT converter.
+**************************************
+Date: Sat Sep 28 16:54:56 CEST 2013
+Author: stefan
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests.xslt
+In directory eskebo:/home/stefan/free/odf2docutils/tests.xslt
+
+
+--------------------------------------
+Log Message:
+Directory /home/stefan/vault/sm/odf2docutils/tests.xslt put under version control
+**************************************
+Date: Sat Sep 28 13:31:33 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_48
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/odf2docutilslib
+In directory eskebo:/home/stefan/free/odf2docutils/odf2docutilslib
+
+Modified Files:
+	__init__.py 
+
+--------------------------------------
+Log Message:
+Refactoring: `convert()` uses a converter with an own implementation
+of the conversion.
+**************************************
+Date: Wed Sep 25 11:49:07 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_47
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/textSimple
+In directory theowa:/home/stefan/free/odf2docutils/tests/textSimple
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Log Message:
+Marked last test as off because it is not implemented yet.
+**************************************
+Date: Wed Sep 25 00:16:30 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_46
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/textSimple/expected
+In directory theowa:/home/stefan/free/odf2docutils/tests/textSimple/expected
+
+Added Files:
+	emphasis.xml 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/textSimple/input
+In directory theowa:/home/stefan/free/odf2docutils/tests/textSimple/input
+
+Added Files:
+	emphasis.odt 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/textSimple/target
+In directory theowa:/home/stefan/free/odf2docutils/tests/textSimple/target
+
+Added Files:
+	emphasis.rst 
+
+--------------------------------------
+Log Message:
+Added test.
+**************************************
+Date: Wed Sep 25 00:07:38 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_45
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/textSimple/expected
+In directory theowa:/home/stefan/free/odf2docutils/tests/textSimple/expected
+
+Added Files:
+	italicAutomatic.xml 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/textSimple/input
+In directory theowa:/home/stefan/free/odf2docutils/tests/textSimple/input
+
+Added Files:
+	italicAutomatic.odt 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/textSimple/target
+In directory theowa:/home/stefan/free/odf2docutils/tests/textSimple/target
+
+Added Files:
+	italicAutomatic.rst 
+
+--------------------------------------
+Log Message:
+Added test.
+**************************************
+Date: Tue Sep 24 23:56:22 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_44
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/odf2docutilslib
+In directory theowa:/home/stefan/free/odf2docutils/odf2docutilslib
+
+Modified Files:
+	odf2docutils.xsl 
+
+--------------------------------------
+Log Message:
+Completed feature.
+**************************************
+Date: Tue Sep 24 23:21:46 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_43
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/odf2docutilslib
+In directory theowa:/home/stefan/free/odf2docutils/odf2docutilslib
+
+Modified Files:
+	odf2docutils.xsl 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/presentationSimple/expected
+In directory theowa:/home/stefan/free/odf2docutils/tests/presentationSimple/expected
+
+Added Files:
+	italicAutomatic.xml 
+
+--------------------------------------
+Log Message:
+Continued code for new feature.
+**************************************
+Date: Tue Sep 24 22:56:21 CEST 2013
+Author: stefan
+Tag: odf2docutils_1_42
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/odf2docutilslib
+In directory theowa:/home/stefan/free/odf2docutils/odf2docutilslib
+
+Modified Files:
+	odf2docutils.xsl 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/presentationSimple/input
+In directory theowa:/home/stefan/free/odf2docutils/tests/presentationSimple/input
+
+Added Files:
+	italicAutomatic.odp 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/tests/presentationSimple/target
+In directory theowa:/home/stefan/free/odf2docutils/tests/presentationSimple/target
+
+Added Files:
+	italicAutomatic.rst 
+
+--------------------------------------
+Log Message:
+Added test for missing feature.
+
+Refactored a bit for missing feature.
+**************************************
 Date: Sun Aug  4 11:05:38 CEST 2013
 Author: stefan
 Tag: odf2docutils_1_41
