@@ -39,6 +39,10 @@
     xmlns:xlink="http://www.w3.org/1999/xlink"
     xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0">
 
+  <!-- Name of the input file -->
+  <xsl:param
+      name="sourceName"/>
+
   <xsl:output
       method="xml"
       version="1.0"
@@ -53,6 +57,12 @@
     <xsl:element
     	name="document"
     	namespace="">
+      <xsl:attribute
+	  name="source"
+	  namespace="">
+	<xsl:value-of
+	    select="$sourceName"/>
+      </xsl:attribute>
       <xsl:apply-templates/>
     </xsl:element>
   </xsl:template>
@@ -105,6 +115,12 @@
     <xsl:element
     	name="document"
     	namespace="">
+      <xsl:attribute
+	  name="source"
+	  namespace="">
+	<xsl:value-of
+	    select="$sourceName"/>
+      </xsl:attribute>
       <!-- All headers in the main document. -->
       <xsl:variable
 	  name="allHeaders"
@@ -348,12 +364,86 @@
     <xsl:element
 	name="{$element}"
     	namespace="">
-      <xsl:value-of
-	  select="."/>
+      <xsl:apply-templates
+	  select="text() | *"
+	  mode="text"/>
     </xsl:element>
   </xsl:template>
 
-  <!-- Suppress all other text content -->
+  <!-- Consider spans. -->
+  <xsl:template
+      match="text:span"
+      mode="text">
+    <xsl:variable
+	name="rstStyle">
+      <xsl:call-template
+	  name="textSpan2RstStyle"/>
+    </xsl:variable>
+    <xsl:choose>
+      <xsl:when
+	  test="$rstStyle != ''">
+	<xsl:element
+	    name="{$rstStyle}"
+	    namespace="">
+	  <xsl:apply-templates
+	      select="text() | *"
+	      mode="text"/>
+	</xsl:element>
+      </xsl:when>
+      <xsl:otherwise>
+	<xsl:apply-templates
+	    select="text() | *"
+	    mode="text"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <!-- Evaluate a reST style from a span. -->
+  <xsl:template
+      name="textSpan2RstStyle">
+    <xsl:variable
+	name="odfStyleName"
+	select="@text:style-name"/>
+    <!-- TODO Consider @text:class-names -->
+    <xsl:if
+	test="$odfStyleName != ''">
+      <xsl:apply-templates
+	  select="//style:style[@style:family = 'text' and @style:name = $odfStyleName]"
+	  mode="textSpan2RstStyle"/>
+    </xsl:if>
+  </xsl:template>
+
+  <!-- Evaluate a reST style from a named style. -->
+  <xsl:template
+      match="style:style[@style:family = 'text']"
+      mode="textSpan2RstStyle">
+    <xsl:choose>
+      <xsl:when
+	  test="style:text-properties[@fo:font-style != 'normal']">
+	<xsl:value-of
+	    select="'emphasis'"/>
+      </xsl:when>
+    </xsl:choose>
+  </xsl:template>
+
+  <!-- Ignore other elements in paragraphs. -->
+  <xsl:template
+      match="*"
+      mode="text">
+    <xsl:apply-templates
+	select="text() | *"
+	mode="text"/>
+  </xsl:template>
+
+  <!-- Output text content from paragraphs. -->
+  <xsl:template
+      match="text()"
+      mode="text">
+    <xsl:value-of
+	select="."/>
+  </xsl:template>
+
+  <!-- Suppress all other text content. -->
   <xsl:template
       match="text()">
   </xsl:template>
