@@ -16,7 +16,7 @@
 # 02111-1307, USA.
 
 """
-Do conversion by using an XSLT script.
+Support writer for `XsltParser`.
 """
 
 __docformat__ = 'reStructuredText' # Formatted to be rendered by epydoc
@@ -25,10 +25,7 @@ __docformat__ = 'reStructuredText' # Formatted to be rendered by epydoc
 ###############################################################################
 # Import
 
-import os.path
-
-from parsers.xslt import XsltParser
-from writers.xslt import XsltWriter
+import docutils.writers
 
 ###############################################################################
 ###############################################################################
@@ -46,28 +43,16 @@ from writers.xslt import XsltWriter
 ###############################################################################
 # Classes
 
-class Parser(XsltParser):
-    """
-    Parse the input file and translate it to the output file by using XSLT.
-    """
-
-    MainXsltNm = 'odf2docutils.xsl'
-    """
-    :type: str
-
-    Name of the main XSLT source file.
-    """
-
-    def __init__(self):
-        modP = os.path.dirname(__file__)
-        XsltParser.__init__(self, os.path.join(modP, self.MainXsltNm))
-
 ###############################################################################
 
-class Writer(XsltWriter):
+class XsltWriter(docutils.writers.Writer):
     """
-    Writer transparently writing the result from the parser.
+    Writer transparently writing the result from an `XsltParser`. May be used
+    only together with `XsltParser`.
+
+    Please note that `supported` must be set in subclass since the output
+    format is determined by the XSLT.
     """
 
-    supported = ( 'xml', ) 
-    """Formats this writer supports.""" 
+    def translate(self):
+        self.output = str(self.document.xslt_result)
