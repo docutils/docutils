@@ -77,16 +77,18 @@ class SettingsSpec(docutils.SettingsSpec):
 
 ##############################################################################
 
-class OdfFileInput(docutils.io.FileInput):
+class ZipFileInput(docutils.io.FileInput):
     """
-    Input for ODF files.
+    Generic input class for ZIP files.
     """
 
-    ContentXmlNm = 'content.xml'
+    contentPath = None
     """
     :type: str
 
-    Name of the file containing the document content in the ODF ZIP file.
+    Path to the file inside the ZIP file to return for reading.
+
+    Override in subclasses.
     """
 
     def __init__(self, source=None, source_path=None, 
@@ -104,7 +106,16 @@ class OdfFileInput(docutils.io.FileInput):
             raise ValueError("%r is not a valid ZIP input file"
                              % ( self.source_path, ))
         inZip = zipfile.ZipFile(self.source)
-        return inZip.read(self.ContentXmlNm)
+        return inZip.read(self.contentPath)
+
+##############################################################################
+
+class OdfFileInput(ZipFileInput):
+    """
+    Input for ODF files.
+    """
+
+    contentPath = 'content.xml'
 
     def readlines(self):
         """

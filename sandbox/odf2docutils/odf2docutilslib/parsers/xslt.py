@@ -16,7 +16,7 @@
 # 02111-1307, USA.
 
 """
-Do conversion by using an XSLT script.
+Parse and produce result string by XSLT.
 """
 
 __docformat__ = 'reStructuredText' # Formatted to be rendered by epydoc
@@ -25,10 +25,9 @@ __docformat__ = 'reStructuredText' # Formatted to be rendered by epydoc
 ###############################################################################
 # Import
 
-import os.path
+import docutils.parsers
 
-from parsers.xslt import XsltParser
-from writers.xslt import XsltWriter
+from lxml import etree
 
 ###############################################################################
 ###############################################################################
@@ -46,28 +45,48 @@ from writers.xslt import XsltWriter
 ###############################################################################
 # Classes
 
-class Parser(XsltParser):
+class XsltParser(docutils.parsers.Parser):
     """
-    Parse the input file and translate it to the output file by using XSLT.
-    """
-
-    MainXsltNm = 'odf2docutils.xsl'
-    """
-    :type: str
-
-    Name of the main XSLT source file.
+    Parses XML input by XSLT and stores the result in the attribute
+    `xslt_result` of the document. Works together with `XsltWriter`.
     """
 
-    def __init__(self):
-        modP = os.path.dirname(__file__)
-        XsltParser.__init__(self, os.path.join(modP, self.MainXsltNm))
+    def __init__(self, xsltPath):
+        """
+        See instance variables for parameter documentation.
+        """
+        self.xsltPath = xsltPath
+        """
+        Path to the XSLT to use.
+        """
+        self.xslt = None
+        """
+        :type: Return type of `etree.XSLT`()
 
-###############################################################################
+        The XSLT to use for parsing.
+        """
 
-class Writer(XsltWriter):
-    """
-    Writer transparently writing the result from the parser.
-    """
+        # Find XSLT
+        try:
+            xsltF = open(self.xsltPath)
+        except IOError, e:
+            raise Exception("Can't open main XSLT file %r: %s"
+                            % ( self.xsltPath, e, ))
 
-    supported = ( 'xml', ) 
-    """Formats this writer supports.""" 
+        # Parse and prepare XSLT
+        try:
+            xsltDoc = etree.parse(xsltF)
+        except Exception, e:
+            raise Exception("Error parsing main XSLT file %r: %s"
+                            % ( self.xsltPath, e, ))
+        xsltF.close()
+        self.xslt = etree.XSLT(xsltDoc)
+
+    def parse(self, inputstring, document):
+        self.setup_parse(inputstring, document)
+        inDoc = etree.fromstring(inputstring)
+        document.xslt_result = self.xslt(inDoc, sourceName="'%s'"
+                                         % ( document.current_source, ))
+        if self.xslt.error_log:
+            document.reporter.error(self.xslt.error_log)
+        self.finish_parse()
