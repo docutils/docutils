@@ -27,8 +27,8 @@ __docformat__ = 'reStructuredText' # Formatted to be rendered by epydoc
 
 import os.path
 
-from parsers.xslt import XsltParser
-from writers.xslt import XsltWriter
+from docutils_xml.parsers.xslt import XsltParser
+from docutils_xml.writers.xslt import XsltWriter
 
 ###############################################################################
 ###############################################################################

@@ -1,4 +1,80 @@
 **************************************
+Date: Sat Nov 16 14:21:30 CET 2013
+Author: stefan
+Tag: odf2docutils_1_107
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils
+In directory eskebo:/home/stefan/free/odf2docutils
+
+Modified Files:
+	setup.py 
+
+--------------------------------------
+Log Message:
+Debgging.
+**************************************
+Date: Sat Nov 16 14:01:06 CET 2013
+Author: stefan
+Tag: odf2docutils_1_106
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/odf2docutilslib
+In directory eskebo:/home/stefan/free/odf2docutils/odf2docutilslib
+
+Modified Files:
+	python.py xslt.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/odf2docutilslib/parsers
+In directory eskebo:/home/stefan/free/odf2docutils/odf2docutilslib/parsers
+
+Removed Files:
+	__init__.py xml.py xslt.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/odf2docutilslib/writers
+In directory eskebo:/home/stefan/free/odf2docutils/odf2docutilslib/writers
+
+Removed Files:
+	__init__.py xslt.py 
+
+--------------------------------------
+Log Message:
+Removed sources now obtained from package `docutils_xml`.
+**************************************
+Date: Sat Nov 16 13:32:56 CET 2013
+Author: stefan
+Tag: odf2docutils_1_105
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils
+In directory eskebo:/home/stefan/free/odf2docutils
+
+Modified Files:
+	Makefile 
+
+--------------------------------------
+Log Message:
+Debugging.
+**************************************
+Date: Sat Nov 16 13:29:47 CET 2013
+Author: stefan
+Tag: odf2docutils_1_104
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils
+In directory eskebo:/home/stefan/free/odf2docutils
+
+Modified Files:
+	.cvsignore Makefile 
+Added Files:
+	odf2docutils.rst 
+
+--------------------------------------
+Log Message:
+Added documentation the reStructuredText way.
+**************************************
 Date: Mon Nov 11 13:32:40 CET 2013
 Author: stefan
 Tag: odf2docutils_1_103
