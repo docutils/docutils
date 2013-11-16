@@ -27,7 +27,7 @@ __docformat__ = 'reStructuredText' # Formatted to be rendered by epydoc
 
 import docutils.nodes
 
-from parsers.xml import XmlParser, XmlVisitor
+from docutils_xml.parsers.xml import XmlParser, XmlVisitor, SomeChildren
 
 ###############################################################################
 ###############################################################################
