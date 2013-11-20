@@ -226,11 +226,14 @@ class XmlParser(docutils.parsers.Parser):
     A generic XML parser for parsing XML input populating the Docutils doctree.
     """
 
-    ns2Prefix = { }
+    ns2Prefixes = { }
     """
-    :type: { unicode: unicode, ... }
+    :type: { unicode: unicode | ( unicode, ... ) , ... }
 
-    Map namespace URI to namespace tag name. Usually overridden in subclasses.
+    Map namespace URI to one or more namespace prefixes. In case a unique
+    prefix is needed for a namespace the first one is used.
+
+    Usually overridden in subclasses.
     """
 
     visitorClass = XmlVisitor
@@ -248,8 +251,11 @@ class XmlParser(docutils.parsers.Parser):
         # This is a global setting in etree which is problematic because it is
         # shared. However, this should work since it is overridden every time
         # before it is used.
-        [ etree.register_namespace(prefix, uri)
-          for ( uri, prefix ) in self.ns2Prefix.items() ]
+        for ( uri, prefixes ) in self.ns2Prefixes.items():
+            if isinstance(prefixes, basestring):
+                prefixes = ( prefixes, )
+            for prefix in prefixes:
+                etree.register_namespace(prefix, uri)
         inDoc = etree.fromstring(inputstring)
         self.walk(inDoc, self.visitorClass(self, document))
         self.finish_parse()
@@ -272,6 +278,7 @@ class XmlParser(docutils.parsers.Parser):
         stop = False
         skipDeparture = False
         someChildren = None
+        beep = False
         try:
             try:
                 visitor.visit(elem)
@@ -290,6 +297,8 @@ class XmlParser(docutils.parsers.Parser):
                         stop = True
                         break
             except docutils.nodes.SkipSiblings:
+                # Implies SkipDeparture for the child because it is caught only
+                # by the parent
                 pass
         except docutils.nodes.SkipChildren:
             pass
@@ -314,5 +323,11 @@ class XmlParser(docutils.parsers.Parser):
         prefix = None
         # elem.prefix would also work for lxml but using the namespace is saver
         if qName.namespace:
-            prefix = self.ns2Prefix.get(qName.namespace, None)
+            prefixes = self.ns2Prefixes.get(qName.namespace, None)
+            if prefixes is None:
+                prefix = None
+            elif isinstance(prefixes, basestring):
+                prefix = prefixes
+            else:
+                prefix = prefixes[0]
         return ( prefix, qName.localname )
