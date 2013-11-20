@@ -1,4 +1,19 @@
 **************************************
+Date: Tue Nov 19 23:53:41 CET 2013
+Author: stefan
+Tag: odf2docutils_1_108
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils/odf2docutilslib
+In directory theowa:/home/stefan/free/odf2docutils/odf2docutilslib
+
+Modified Files:
+	python.py 
+
+--------------------------------------
+Log Message:
+Adapted to docutils_xml V0.1.
+**************************************
 Date: Sat Nov 16 14:21:30 CET 2013
 Author: stefan
 Tag: odf2docutils_1_107
