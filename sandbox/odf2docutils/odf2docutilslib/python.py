@@ -98,7 +98,7 @@ class Parser(XmlParser):
     Parse the input file and translate it to the output file by Python.
     """
 
-    ns2Prefix = {
+    ns2Prefixes = {
         u"http://www.w3.org/2001/xml-events": u'dom',
         u"urn:oasis:names:tc:opendocument:xmlns:drawing:1.0": u'draw',
         u"urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0": u'fo',
