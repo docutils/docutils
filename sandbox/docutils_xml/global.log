@@ -1,4 +1,64 @@
 **************************************
+Date: Fri Nov 22 18:14:40 CET 2013
+Author: stefan
+Tag: docutils_xml_1_29
+
+--------------------------------------
+Update of /home/stefan/vault/sm/docutils_xml/docutils_xml/parsers
+In directory theowa:/home/stefan/free/docutils_xml/docutils_xml/parsers
+
+Modified Files:
+	xslt.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/docutils_xml/test/test_parsers
+In directory theowa:/home/stefan/free/docutils_xml/test/test_parsers
+
+Added Files:
+	test_XsltParser.py 
+
+--------------------------------------
+Log Message:
+Added test for `XsltParser`.
+**************************************
+Date: Thu Nov 21 14:24:11 CET 2013
+Author: stefan
+Tag: docutils_xml_1_28
+
+--------------------------------------
+Update of /home/stefan/vault/sm/docutils_xml/docutils_xml/parsers
+In directory theowa:/home/stefan/free/docutils_xml/docutils_xml/parsers
+
+Modified Files:
+	xslt.py 
+
+--------------------------------------
+Log Message:
+Changed interface of `XsltParser` to accept a file-like object.
+**************************************
+Date: Wed Nov 20 18:46:11 CET 2013
+Author: stefan
+Tag: docutils_xml_1_27
+
+--------------------------------------
+Update of /home/stefan/vault/sm/docutils_xml/docutils_xml/parsers
+In directory theowa:/home/stefan/free/docutils_xml/docutils_xml/parsers
+
+Modified Files:
+	xml.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/docutils_xml/test/test_parsers
+In directory theowa:/home/stefan/free/docutils_xml/test/test_parsers
+
+Modified Files:
+	test_XmlParser.py test_XmlVisitor.py 
+
+--------------------------------------
+Log Message:
+Refactoring: Factored out `Uri2Prefixes` uncoupling `XmlVisitor` from
+`XmlParser`.
+**************************************
 Date: Wed Nov 20 01:55:31 CET 2013
 Author: stefan
 Tag: docutils_xml_1_26

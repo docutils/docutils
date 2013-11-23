@@ -51,13 +51,12 @@ class XsltParser(docutils.parsers.Parser):
     `xslt_result` of the document. Works together with `XsltWriter`.
     """
 
-    def __init__(self, xsltPath):
+    def __init__(self, xsltSource):
         """
-        See instance variables for parameter documentation.
-        """
-        self.xsltPath = xsltPath
-        """
-        Path to the XSLT to use.
+        :Parameters:
+
+           xsltSource : file-like object
+             The source containing the XSLT. This is an open file-like object.
         """
         self.xslt = None
         """
@@ -66,20 +65,11 @@ class XsltParser(docutils.parsers.Parser):
         The XSLT to use for parsing.
         """
 
-        # Find XSLT
         try:
-            xsltF = open(self.xsltPath)
-        except IOError, e:
-            raise Exception("Can't open main XSLT file %r: %s"
-                            % ( self.xsltPath, e, ))
-
-        # Parse and prepare XSLT
-        try:
-            xsltDoc = etree.parse(xsltF)
+            xsltDoc = etree.parse(xsltSource)
         except Exception, e:
-            raise Exception("Error parsing main XSLT file %r: %s"
-                            % ( self.xsltPath, e, ))
-        xsltF.close()
+            raise Exception("Error parsing XSLT: %s" % ( e, ))
+        xsltSource.close()
         self.xslt = etree.XSLT(xsltDoc)
 
     def parse(self, inputstring, document):

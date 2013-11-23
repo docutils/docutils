@@ -74,6 +74,72 @@ class SomeChildren(docutils.nodes.TreePruningException):
 
 ###############################################################################
 
+class Uri2Prefixes(object):
+    """
+    Maps namespace URI to prefixes.
+    """
+
+    uri2Prefixes = { }
+    """
+    :type: { unicode: [ unicode, ... ] , ... }
+
+    Map namespace URI to one or more namespace prefixes.
+    """
+
+    def __init__(self, uriPrefixes):
+        """
+        :Parameters:
+
+          uriPrefixes : ( ( basestring, basestring, ... ), ... )
+            For each tuple in the list use the first entry as an URI and the
+            remaining entries as prefixes defined for this URI. An URI may be
+            given more than once
+
+            The strings must be convertable to unicode.
+        """
+        for uriPfxes in uriPrefixes:
+            pfxList = [ unicode(s)
+                        for s in uriPfxes ]
+            uri = pfxList.pop(0)
+            if uri not in self.uri2Prefixes:
+                self.uri2Prefixes[uri] = [ ]
+            self.uri2Prefixes[uri].extend(pfxList)
+
+    def etreeRegister(self):
+        """
+        Register all namespace URIs in etree.
+
+        .. note:: In etree this is a global setting which is problematic
+                  because it is shared. Take care to override the namespaces
+                  every time the parser needs them.
+        """
+        for ( uri, prefixes ) in self.uri2Prefixes.items():
+            for prefix in prefixes:
+                etree.register_namespace(prefix, uri)
+
+    def elem2PrefixName(self, elem):
+        """
+        :Parameters:
+
+          elem : etree._Element
+            The element to work for.
+
+        :rtype: ( unicode | None, unicode )
+        :return: Namespace prefix and localname of `elem`. Namespace prefix may
+                 be ``None`` if no or unknown namespace. If the namespace has
+                 more than one prefixes the first one is used.
+        """
+        qName = etree.QName(elem)
+        prefix = None
+        # elem.prefix would also work for lxml but using the namespace is saver
+        if qName.namespace:
+            prefixes = self.uri2Prefixes.get(qName.namespace, None)
+            if prefixes is not None:
+                prefix = prefixes[0]
+        return ( prefix, qName.localname )
+
+###############################################################################
+
 class XmlVisitor(object):
     """
     Base visitor class for visiting an XML tree.
@@ -104,15 +170,16 @@ class XmlVisitor(object):
         """
         raise NotImplementedError("'event_prefix_tag' is just for documentation")
 
-    def __init__(self, parser, document):
+    def __init__(self, uri2Prefixes, document):
         """
         See instance attributes for a description of the parameters.
         """
-        self.parser = parser
+        self.uri2Prefixes = uri2Prefixes
         """
-        :type: XmlParser
+        :type: Uri2Prefixes
 
-        The parser using this visitor.
+        The namespace prefixes to use. These must match those of the parser
+        used.
         """
         self.document = document
         """
@@ -140,7 +207,7 @@ class XmlVisitor(object):
           event : str
             The event to apply.
         """
-        ( prefix, name ) = self.parser.elem2PrefixName(elem)
+        ( prefix, name ) = self.uri2Prefixes.elem2PrefixName(elem)
         if prefix is None:
             prefix = ""
         prefix = prefix.replace("-", "")
@@ -226,12 +293,11 @@ class XmlParser(docutils.parsers.Parser):
     A generic XML parser for parsing XML input populating the Docutils doctree.
     """
 
-    ns2Prefixes = { }
+    uri2Prefixes = Uri2Prefixes(( ))
     """
-    :type: { unicode: unicode | ( unicode, ... ) , ... }
+    :type: Uri2Prefixes
 
-    Map namespace URI to one or more namespace prefixes. In case a unique
-    prefix is needed for a namespace the first one is used.
+    Map namespace URI to prefixes for this parser.
 
     Usually overridden in subclasses.
     """
@@ -248,16 +314,9 @@ class XmlParser(docutils.parsers.Parser):
 
     def parse(self, inputstring, document):
         self.setup_parse(inputstring, document)
-        # This is a global setting in etree which is problematic because it is
-        # shared. However, this should work since it is overridden every time
-        # before it is used.
-        for ( uri, prefixes ) in self.ns2Prefixes.items():
-            if isinstance(prefixes, basestring):
-                prefixes = ( prefixes, )
-            for prefix in prefixes:
-                etree.register_namespace(prefix, uri)
+        self.uri2Prefixes.etreeRegister()
         inDoc = etree.fromstring(inputstring)
-        self.walk(inDoc, self.visitorClass(self, document))
+        self.walk(inDoc, self.visitorClass(self.uri2Prefixes, document))
         self.finish_parse()
 
     def walk(self, elem, visitor):
@@ -291,7 +350,8 @@ class XmlParser(docutils.parsers.Parser):
             try:
                 for child in elem:
                     if (someChildren is not None
-                        and self.elem2PrefixName(child) not in someChildren):
+                        and self.uri2Prefixes.elem2PrefixName(child)
+                        not in someChildren):
                         continue
                     if self.walk(child, visitor):
                         stop = True
@@ -307,27 +367,3 @@ class XmlParser(docutils.parsers.Parser):
         if not skipDeparture:
             visitor.depart(elem)
         return stop
-
-    def elem2PrefixName(self, elem):
-        """
-        :Parameters:
-
-          elem : etree._Element
-            The element to work for.
-
-        :rtype: ( unicode | None, unicode )
-        :return: Namespace prefix and localname of `elem`. Namespace prefix
-                 may be ``None`` if no or unknown namespace.
-        """
-        qName = etree.QName(elem)
-        prefix = None
-        # elem.prefix would also work for lxml but using the namespace is saver
-        if qName.namespace:
-            prefixes = self.ns2Prefixes.get(qName.namespace, None)
-            if prefixes is None:
-                prefix = None
-            elif isinstance(prefixes, basestring):
-                prefix = prefixes
-            else:
-                prefix = prefixes[0]
-        return ( prefix, qName.localname )

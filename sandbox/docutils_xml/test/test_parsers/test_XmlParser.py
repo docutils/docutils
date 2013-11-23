@@ -25,7 +25,7 @@ from docutils.nodes import Text
 
 from __init__ import DocutilsTestSupport
 
-from docutils_xml.parsers.xml import XmlVisitor, XmlParser, SomeChildren
+from docutils_xml.parsers.xml import Uri2Prefixes, XmlVisitor, XmlParser, SomeChildren
 
 ###############################################################################
 
@@ -63,7 +63,7 @@ class XmlVisitorMock(XmlVisitor):
     """
 
     def __recordVisit(self, elem):
-        ( pfx, nm ) = self.parser.elem2PrefixName(elem)
+        ( pfx, nm ) = self.uri2Prefixes.elem2PrefixName(elem)
         attrs = ""
         for attr in sorted(elem.keys()):
             attrs += " %s=%r" % ( attr, elem.get(attr) )
@@ -88,7 +88,7 @@ class XmlVisitorMock(XmlVisitor):
         return None
 
     def __recordDepart(self, elem):
-        ( pfx, nm ) = self.parser.elem2PrefixName(elem)
+        ( pfx, nm ) = self.uri2Prefixes.elem2PrefixName(elem)
         self.depth -= 1
         self.document += Text("%s} %s:%s\n"
                               % ( self.depth * self.indent,
@@ -110,10 +110,11 @@ class XmlParserMock(XmlParser):
     Mock class recording visited nodes in the output document.
     """
 
-    ns2Prefixes = { u'urn:example': ( u'ex', u'alias', u'int', ),
-                    # u'urn:empty': u'', # Empty tag is not accepted by lxml
-                    u'urn:other': u'ot',
-                    }
+    uri2Prefixes = Uri2Prefixes((
+            ( 'urn:example', 'ex', 'alias', 'int' ),
+            # ( 'urn:empty', u'' ), # Empty tag is not accepted by lxml
+            ( 'urn:other', 'ot' ),
+            ))
 
     visitorClass = XmlVisitorMock
 

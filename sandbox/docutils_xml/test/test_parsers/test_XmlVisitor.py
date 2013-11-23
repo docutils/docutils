@@ -23,7 +23,7 @@ import unittest
 from lxml import etree
 import docutils.nodes, docutils.utils
 
-from docutils_xml.parsers.xml import XmlVisitor, XmlParser
+from docutils_xml.parsers.xml import XmlVisitor, Uri2Prefixes
 
 ###############################################################################
 
@@ -32,7 +32,7 @@ class XmlVisitorMock(XmlVisitor):
     Mock class recording calls.
     """
 
-    def __init__(self, parser, document):
+    def __init__(self, uri2Prefixes, document):
 
         self.calls = [ ]
         """
@@ -50,7 +50,7 @@ class XmlVisitorMock(XmlVisitor):
         The name of the current call.
         """
 
-        XmlVisitor.__init__(self, parser, document)
+        XmlVisitor.__init__(self, uri2Prefixes, document)
 
     def __record(self, *args, **kwargs):
         self.calls.append(( self.currentCall, args, kwargs ))
@@ -77,7 +77,7 @@ class XmlVisitorMock(XmlVisitor):
 class XmlVisitorTests(unittest.TestCase):
 
     def setUp(self):
-        self.visitor = XmlVisitorMock(XmlParser(),
+        self.visitor = XmlVisitorMock(Uri2Prefixes(( )),
                                       docutils.utils.new_document(None))
 
     def test__init__(self):
