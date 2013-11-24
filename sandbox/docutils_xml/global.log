@@ -1,4 +1,324 @@
 **************************************
+Date: Sun Nov 24 14:00:35 CET 2013
+Author: stefan
+Tag: docutils_xml_1_46
+
+--------------------------------------
+Update of /home/stefan/vault/sm/docutils_xml/test/test_parsers
+In directory eskebo:/home/stefan/free/docutils_xml/test/test_parsers
+
+Modified Files:
+	test_XsltParser.py 
+
+--------------------------------------
+Log Message:
+Added test for non-integer conversion.
+**************************************
+Date: Sun Nov 24 13:58:27 CET 2013
+Author: stefan
+Tag: docutils_xml_1_45
+
+--------------------------------------
+Update of /home/stefan/vault/sm/docutils_xml/test/test_parsers
+In directory eskebo:/home/stefan/free/docutils_xml/test/test_parsers
+
+Modified Files:
+	test_XsltParser.py 
+
+--------------------------------------
+Log Message:
+Added tests for giving node content.
+**************************************
+Date: Sun Nov 24 13:51:34 CET 2013
+Author: stefan
+Tag: docutils_xml_1_44
+
+--------------------------------------
+Update of /home/stefan/vault/sm/docutils_xml/test/test_parsers
+In directory eskebo:/home/stefan/free/docutils_xml/test/test_parsers
+
+Modified Files:
+	test_XsltParser.py 
+
+--------------------------------------
+Log Message:
+Added tests for missing parameters.
+**************************************
+Date: Sun Nov 24 13:48:08 CET 2013
+Author: stefan
+Tag: docutils_xml_1_43
+
+--------------------------------------
+Update of /home/stefan/vault/sm/docutils_xml/test/test_parsers
+In directory eskebo:/home/stefan/free/docutils_xml/test/test_parsers
+
+Modified Files:
+	test_XsltParser.py 
+
+--------------------------------------
+Log Message:
+Added tests with constants.
+**************************************
+Date: Sun Nov 24 13:11:55 CET 2013
+Author: stefan
+Tag: docutils_xml_1_42
+
+--------------------------------------
+Update of /home/stefan/vault/sm/docutils_xml/test/test_parsers
+In directory eskebo:/home/stefan/free/docutils_xml/test/test_parsers
+
+Modified Files:
+	test_XsltParser.py 
+
+--------------------------------------
+Log Message:
+Tests may throw exceptions.
+**************************************
+Date: Sun Nov 24 12:40:29 CET 2013
+Author: stefan
+Tag: docutils_xml_1_41
+
+--------------------------------------
+Update of /home/stefan/vault/sm/docutils_xml/docutils_xml/parsers
+In directory eskebo:/home/stefan/free/docutils_xml/docutils_xml/parsers
+
+Modified Files:
+	xslt.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/docutils_xml/test/test_parsers
+In directory eskebo:/home/stefan/free/docutils_xml/test/test_parsers
+
+Modified Files:
+	test_XsltParser.py 
+
+--------------------------------------
+Log Message:
+Added int conversion.
+**************************************
+Date: Sun Nov 24 12:27:06 CET 2013
+Author: stefan
+Tag: docutils_xml_1_40
+
+--------------------------------------
+Update of /home/stefan/vault/sm/docutils_xml/docutils_xml/parsers
+In directory eskebo:/home/stefan/free/docutils_xml/docutils_xml/parsers
+
+Modified Files:
+	xslt.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/docutils_xml/test/test_parsers
+In directory eskebo:/home/stefan/free/docutils_xml/test/test_parsers
+
+Modified Files:
+	test_XsltParser.py 
+
+--------------------------------------
+Log Message:
+Added float conversion.
+**************************************
+Date: Sat Nov 23 21:56:56 CET 2013
+Author: stefan
+Tag: docutils_xml_1_39
+
+--------------------------------------
+Update of /home/stefan/vault/sm/docutils_xml/docutils_xml/parsers
+In directory eskebo:/home/stefan/free/docutils_xml/docutils_xml/parsers
+
+Modified Files:
+	xslt.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/docutils_xml/test/test_parsers
+In directory eskebo:/home/stefan/free/docutils_xml/test/test_parsers
+
+Modified Files:
+	test_XsltParser.py 
+
+--------------------------------------
+Log Message:
+Added tests for `_boolParameter`().
+**************************************
+Date: Sat Nov 23 21:31:20 CET 2013
+Author: stefan
+Tag: docutils_xml_1_38
+
+--------------------------------------
+Update of /home/stefan/vault/sm/docutils_xml/docutils_xml/parsers
+In directory eskebo:/home/stefan/free/docutils_xml/docutils_xml/parsers
+
+Modified Files:
+	xslt.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/docutils_xml/test/test_parsers
+In directory eskebo:/home/stefan/free/docutils_xml/test/test_parsers
+
+Modified Files:
+	test_XsltParser.py 
+
+--------------------------------------
+Log Message:
+Added test.
+**************************************
+Date: Sat Nov 23 21:19:43 CET 2013
+Author: stefan
+Tag: docutils_xml_1_37
+
+--------------------------------------
+Update of /home/stefan/vault/sm/docutils_xml/docutils_xml/parsers
+In directory eskebo:/home/stefan/free/docutils_xml/docutils_xml/parsers
+
+Modified Files:
+	xslt.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/docutils_xml/test/test_parsers
+In directory eskebo:/home/stefan/free/docutils_xml/test/test_parsers
+
+Modified Files:
+	test_XsltParser.py 
+
+--------------------------------------
+Log Message:
+Debugging. All tests run.
+**************************************
+Date: Sat Nov 23 16:56:34 CET 2013
+Author: stefan
+Tag: docutils_xml_1_36
+
+--------------------------------------
+Update of /home/stefan/vault/sm/docutils_xml/docutils_xml/parsers
+In directory eskebo:/home/stefan/free/docutils_xml/docutils_xml/parsers
+
+Modified Files:
+	xslt.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/docutils_xml/test/test_parsers
+In directory eskebo:/home/stefan/free/docutils_xml/test/test_parsers
+
+Modified Files:
+	test_XsltParser.py 
+
+--------------------------------------
+Log Message:
+Debugging. Some tests fail.
+**************************************
+Date: Sat Nov 23 16:15:32 CET 2013
+Author: stefan
+Tag: docutils_xml_1_35
+
+--------------------------------------
+Update of /home/stefan/vault/sm/docutils_xml/docutils_xml/parsers
+In directory eskebo:/home/stefan/free/docutils_xml/docutils_xml/parsers
+
+Modified Files:
+	xslt.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/docutils_xml/test/test_parsers
+In directory eskebo:/home/stefan/free/docutils_xml/test/test_parsers
+
+Modified Files:
+	test_XsltParser.py 
+
+--------------------------------------
+Log Message:
+Debugging. Tests run.
+**************************************
+Date: Sat Nov 23 14:10:42 CET 2013
+Author: stefan
+Tag: docutils_xml_1_34
+
+--------------------------------------
+Update of /home/stefan/vault/sm/docutils_xml/docutils_xml/parsers
+In directory eskebo:/home/stefan/free/docutils_xml/docutils_xml/parsers
+
+Modified Files:
+	xslt.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/docutils_xml/test/test_parsers
+In directory eskebo:/home/stefan/free/docutils_xml/test/test_parsers
+
+Modified Files:
+	test_XsltParser.py 
+
+--------------------------------------
+Log Message:
+Extensions are registered in `XsltParser`. Tests do not work yet.
+**************************************
+Date: Sat Nov 23 13:52:35 CET 2013
+Author: stefan
+Tag: docutils_xml_1_33
+
+--------------------------------------
+Update of /home/stefan/vault/sm/docutils_xml/docutils_xml/parsers
+In directory eskebo:/home/stefan/free/docutils_xml/docutils_xml/parsers
+
+Modified Files:
+	xslt.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/docutils_xml/test/test_parsers
+In directory eskebo:/home/stefan/free/docutils_xml/test/test_parsers
+
+Modified Files:
+	test_XsltParser.py 
+
+--------------------------------------
+Log Message:
+XPath extension is integrated in tests but not in `XsltParser`.
+**************************************
+Date: Sat Nov 23 13:22:05 CET 2013
+Author: stefan
+Tag: docutils_xml_1_32
+
+--------------------------------------
+Update of /home/stefan/vault/sm/docutils_xml/test/test_parsers
+In directory eskebo:/home/stefan/free/docutils_xml/test/test_parsers
+
+Modified Files:
+	test_XsltParser.py 
+
+--------------------------------------
+Log Message:
+Refactoring: Test infrastructure for `XsltParser` allows various XSLT
+sheets.
+**************************************
+Date: Sat Nov 23 13:00:20 CET 2013
+Author: stefan
+Tag: docutils_xml_1_31
+
+--------------------------------------
+Update of /home/stefan/vault/sm/docutils_xml/test/test_parsers
+In directory eskebo:/home/stefan/free/docutils_xml/test/test_parsers
+
+Modified Files:
+	test_XsltParser.py 
+
+--------------------------------------
+Log Message:
+Refactoring: Test infrastructure for `XsltParser` allows various XSLT
+sheets.
+**************************************
+Date: Sat Nov 23 12:44:01 CET 2013
+Author: stefan
+Tag: docutils_xml_1_30
+
+--------------------------------------
+Update of /home/stefan/vault/sm/docutils_xml/docutils_xml/parsers
+In directory eskebo:/home/stefan/free/docutils_xml/docutils_xml/parsers
+
+Modified Files:
+	xslt.py 
+
+--------------------------------------
+Log Message:
+Moved `XPathExtension` from `xml2rstlib` to `docutils_xml`.
+**************************************
 Date: Fri Nov 22 18:14:40 CET 2013
 Author: stefan
 Tag: docutils_xml_1_29
