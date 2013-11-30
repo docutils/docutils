@@ -29,6 +29,8 @@ import docutils.parsers
 
 from lxml import etree
 
+from docutils_xml.parsers import encodeForXmlParser
+
 import math
 
 ###############################################################################
@@ -188,6 +190,12 @@ class XsltParser(docutils.parsers.Parser):
            xsltSource : file-like object
              The source containing the XSLT. This is an open file-like object.
 
+             The XSLT program receives settings from Docutils as parameters.
+             All settings whose value is a string, integer, float or boolean
+             are transferred. This allows settings for the specific XSLT
+             program. Please note that a string value may contain either ``'``
+             or ``"`` but not both.
+
            extension : None | XPathExtension
              The extensions to use or None for no extensions.
         """
@@ -211,9 +219,34 @@ class XsltParser(docutils.parsers.Parser):
 
     def parse(self, inputstring, document):
         self.setup_parse(inputstring, document)
-        inDoc = etree.fromstring(inputstring)
-        document.xslt_result = self.xslt(inDoc, sourceName="'%s'"
-                                         % ( document.current_source, ))
+        settings = document.settings.copy()
+        settings._source_name = document.current_source
+        xsltParams = { }
+        for ( key, val ) in settings.__dict__.items():
+            if isinstance(val, bool):
+                fmt = '%s'
+                if val:
+                    val = 'true()'
+                else:
+                    val = 'false()'
+            elif isinstance(val, ( int, long )):
+                fmt = '%d'
+            elif isinstance(val, float):
+                fmt = '%G'
+            elif isinstance(val, basestring):
+                val = unicode(val)
+                if "'" in val:
+                    if '"' in val:
+                        raise ValueError("Can not use string containing single and double quote as XSLT parameter ('%r')"
+                                         % ( val, ))
+                    fmt = '"%s"'
+                else:
+                    fmt = "'%s'"
+            else:
+                continue
+            xsltParams[key] = fmt % ( val, )
+        inDoc = etree.fromstring(encodeForXmlParser(inputstring))
+        document.xslt_result = self.xslt(inDoc, **xsltParams)
         if self.xslt.error_log:
             document.reporter.error(self.xslt.error_log)
         self.finish_parse()
