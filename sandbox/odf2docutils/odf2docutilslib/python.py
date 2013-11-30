@@ -27,7 +27,7 @@ __docformat__ = 'reStructuredText' # Formatted to be rendered by epydoc
 
 import docutils.nodes
 
-from docutils_xml.parsers.xml import XmlParser, XmlVisitor, SomeChildren
+from docutils_xml.parsers.xml import XmlParser, XmlVisitor, SomeChildren, Uri2Prefixes
 
 ###############################################################################
 ###############################################################################
@@ -98,19 +98,19 @@ class Parser(XmlParser):
     Parse the input file and translate it to the output file by Python.
     """
 
-    ns2Prefixes = {
-        u"http://www.w3.org/2001/xml-events": u'dom',
-        u"urn:oasis:names:tc:opendocument:xmlns:drawing:1.0": u'draw',
-        u"urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0": u'fo',
-        u"urn:oasis:names:tc:opendocument:xmlns:presentation:1.0": u'presentation',
-        u"urn:oasis:names:tc:opendocument:xmlns:script:1.0": u'script',
-        u"urn:oasis:names:tc:opendocument:xmlns:smil-compatible:1.0": u'smil',
-        u"urn:oasis:names:tc:opendocument:xmlns:style:1.0": u'style',
-        u"urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0": u'svg',
-        u"urn:oasis:names:tc:opendocument:xmlns:table:1.0": u'table',
-        u"urn:oasis:names:tc:opendocument:xmlns:text:1.0": u'text',
-        u"http://www.w3.org/1999/xlink": u'xlink',
-        u"urn:oasis:names:tc:opendocument:xmlns:office:1.0": u'office',
-        }
+    uri2Prefixes = Uri2Prefixes((
+            ( "http://www.w3.org/2001/xml-events", 'dom' ),
+            ( "urn:oasis:names:tc:opendocument:xmlns:drawing:1.0", 'draw' ),
+            ( "urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0", 'fo' ),
+            ( "urn:oasis:names:tc:opendocument:xmlns:presentation:1.0", 'presentation' ),
+            ( "urn:oasis:names:tc:opendocument:xmlns:script:1.0", 'script' ),
+            ( "urn:oasis:names:tc:opendocument:xmlns:smil-compatible:1.0", 'smil' ),
+            ( "urn:oasis:names:tc:opendocument:xmlns:style:1.0", 'style' ),
+            ( "urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0", 'svg' ),
+            ( "urn:oasis:names:tc:opendocument:xmlns:table:1.0", 'table' ),
+            ( "urn:oasis:names:tc:opendocument:xmlns:text:1.0", 'text' ),
+            ( "http://www.w3.org/1999/xlink", 'xlink' ),
+            ( "urn:oasis:names:tc:opendocument:xmlns:office:1.0", 'office' ),
+            ))
 
     visitorClass = OdfVisitor

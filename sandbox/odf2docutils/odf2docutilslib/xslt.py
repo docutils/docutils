@@ -60,7 +60,13 @@ class Parser(XsltParser):
 
     def __init__(self):
         modP = os.path.dirname(__file__)
-        XsltParser.__init__(self, os.path.join(modP, self.MainXsltNm))
+        xsltPath = os.path.join(modP, self.MainXsltNm)
+        try:
+            xsltF = open(xsltPath)
+        except IOError, e:
+            raise Exception("Can't open main XSLT file %r: %s"
+                            % ( xsltPath, e, ))
+        XsltParser.__init__(self, xsltF)
 
 ###############################################################################
 
