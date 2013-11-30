@@ -48,7 +48,8 @@ import docutils.writers
 class XsltWriter(docutils.writers.Writer):
     """
     Writer transparently writing the result from an `XsltParser`. May be used
-    only together with `XsltParser`.
+    only together with `XsltParser`. Use `docutils.io.BinaryFileOutput` as
+    output class for files so binary output is passed through unchanged.
 
     Please note that `supported` must be set in subclass since the output
     format is determined by the XSLT.

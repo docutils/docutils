@@ -25,9 +25,13 @@ __docformat__ = 'reStructuredText' # Formatted to be rendered by epydoc
 ###############################################################################
 # Import
 
+import re
+
 import docutils.parsers, docutils.nodes
 
 from lxml import etree
+
+from docutils_xml.parsers import encodeForXmlParser
 
 ###############################################################################
 ###############################################################################
@@ -153,7 +157,8 @@ class XmlVisitor(object):
 
         Vistor methods are named *event*\_\ *prefix*\_\ *tag* where *event* is
         either ``visit`` or ``depart``, *prefix* is the namespace prefix and
-        *tag* is the local name of the tag with hyphens removed.
+        *tag* is the local name of the tag with hyphens and other non-word and
+        non-ASCII characters removed.
 
         :Parameters:
 
@@ -211,7 +216,7 @@ class XmlVisitor(object):
         if prefix is None:
             prefix = ""
         prefix = prefix.replace("-", "")
-        name = name.replace("-", "")
+        name = re.sub(r"\W", "", name)
         methodName = "_".join(( event, prefix, name ))
         try:
             method = getattr(self, methodName)
@@ -315,7 +320,7 @@ class XmlParser(docutils.parsers.Parser):
     def parse(self, inputstring, document):
         self.setup_parse(inputstring, document)
         self.uri2Prefixes.etreeRegister()
-        inDoc = etree.fromstring(inputstring)
+        inDoc = etree.fromstring(encodeForXmlParser(inputstring))
         self.walk(inDoc, self.visitorClass(self.uri2Prefixes, document))
         self.finish_parse()
 

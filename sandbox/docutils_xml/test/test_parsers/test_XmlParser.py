@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # Copyright (C) 2013 Stefan Merten
 
 # This file is free software; you can redistribute it and/or modify
@@ -123,6 +125,9 @@ class XmlParserMock(XmlParser):
 class XmlParserTestCase(DocutilsTestSupport.ParserTestCase):
     """
     Output checker for XmlParser.
+
+    Supports additional settings on input and exceptions on output as
+    `XsltParserTestCase` does.
     """
 
     parser = XmlParserMock()
@@ -130,6 +135,26 @@ class XmlParserTestCase(DocutilsTestSupport.ParserTestCase):
 
     option_parser = docutils.frontend.OptionParser(components=(
             XmlParserMock, ))
+
+    def test_parser(self):
+        if self.run_in_debugger:
+            pdb.set_trace()
+        if isinstance(self.input, ( list, tuple )):
+            ( case_settings, input ) = self.input
+        else:
+            ( case_settings, input ) = ( { }, self.input )
+        settings = self.settings.copy()
+        settings.__dict__.update(self.suite_settings)
+        settings.__dict__.update(case_settings)
+        document = docutils.utils.new_document('test data', settings)
+        if (isinstance(self.expected, type)
+            and issubclass(self.expected, Exception)):
+            with self.assertRaises(self.expected):
+                self.parser.parse(input, document)
+        else:
+            self.parser.parse(input, document)
+            output = document.pformat()
+            self.compare_output(input, output, self.expected)
 
 ###############################################################################
 
@@ -181,6 +206,76 @@ totest['simple'] = (
     { :rootOnly attribute='content' otherAttr='moreContent'
     } :rootOnly
 """ ),
+    )
+
+totest['nonAscii'] = (
+    ( u"""<?xml version="1.0"?>
+<rootÜmlaut/>
+""",
+  """<document source="test data">
+    { :rootmlaut
+    } :rootmlaut
+""" ),
+    )
+
+totest['encoding'] = (
+    ( """<?xml version="1.0"?>
+<rootOnly/>
+""",
+  """<document source="test data">
+    { :rootOnly
+    } :rootOnly
+""" ),
+    ( """<?xml version="1.0" encoding="ascii"?>
+<rootOnly/>
+""",
+  """<document source="test data">
+    { :rootOnly
+    } :rootOnly
+""" ),
+    ( u"""<?xml version="1.0" encoding="ascii"?>
+<rootOnly/>
+""",
+  """<document source="test data">
+    { :rootOnly
+    } :rootOnly
+""" ),
+    ( """<?xml version="1.0" encoding="utf-8"?>
+<rootOnly/>
+""",
+  """<document source="test data">
+    { :rootOnly
+    } :rootOnly
+""" ),
+    ( u"""<?xml version="1.0" encoding="utf-8"?>
+<rootOnly/>
+""",
+  """<document source="test data">
+    { :rootOnly
+    } :rootOnly
+""" ),
+    ( """<?xml version="1.0" encoding="utf-8"?>
+<root\xC3\x9Cmlaut/>
+""",
+  u"""<document source="test data">
+    { :rootmlaut
+    } :rootmlaut
+""" ),
+    ( u"""<?xml version="1.0" encoding="utf-8"?>
+<rootÜmlaut/>
+""",
+  u"""<document source="test data">
+    { :rootmlaut
+    } :rootmlaut
+""" ),
+    ( u"""<?xml version="1.0" encoding="bla"?>
+<rootÜmlaut/>
+""",
+    LookupError ),
+    ( u"""<?xml version="1.0" encoding="iso-8859-1"?>
+<root€mlaut/>
+""",
+    UnicodeError ),
     )
 
 totest['namespace'] = (

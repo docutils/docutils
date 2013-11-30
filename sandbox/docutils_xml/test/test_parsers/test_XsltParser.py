@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # Copyright (C) 2013 Stefan Merten
 
 # This file is free software; you can redistribute it and/or modify
@@ -16,7 +18,7 @@
 # 02111-1307, USA.
 
 """
-Test XmlParser.
+Test XsltParser.
 """
 
 import unittest
@@ -55,6 +57,18 @@ class XsltParserTestCase(DocutilsTestSupport.ParserTestCase):
     """
 
     def __init__(self, *args, **kwargs):
+        """
+        :Parameters: See super class for arguments.
+
+          input : unicode | ( dict, unicode )
+            Either the input string to use or a tuple with a dictionary
+            containing settings for this test case and the input string.
+
+          expected : unicode | type
+            Either the expected output string or an exception class. If an
+            exception class is given the test case is expected to raise this
+            exception.
+        """
         self.parser = XsltParser(StringIO.StringIO(self.xslt), self.extension)
         """Input parser for this test case."""
         self.option_parser = docutils.frontend.OptionParser(components=(
@@ -62,18 +76,23 @@ class XsltParserTestCase(DocutilsTestSupport.ParserTestCase):
         DocutilsTestSupport.ParserTestCase.__init__(self, *args, **kwargs)
 
     def test_parser(self):
+        if isinstance(self.input, ( list, tuple )):
+            ( case_settings, input ) = self.input
+        else:
+            ( case_settings, input ) = ( { }, self.input )
         settings = self.settings.copy()
         settings.__dict__.update(self.suite_settings)
+        settings.__dict__.update(case_settings)
         document = docutils.utils.new_document('test data', settings)
         if (isinstance(self.expected, type)
             and issubclass(self.expected, Exception)):
             with self.assertRaises(self.expected):
-                self.parser.parse(self.input, document)
+                self.parser.parse(input, document)
         else:
-            self.parser.parse(self.input, document)
+            self.parser.parse(input, document)
             writer = XsltWriter()
             output = writer.write(document, docutils.io.StringOutput())
-            self.compare_output(self.input, output, self.expected)
+            self.compare_output(input, output, self.expected)
 
 ###############################################################################
 ###############################################################################
@@ -85,10 +104,21 @@ class XsltParserIdentityTestCase(XsltParserTestCase):
 
     xslt = u"""\
 <?xml version="1.0"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
-  <xsl:template match="/">
-    <xsl:copy-of select="/"/>
+
+<xsl:stylesheet
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    version="1.0">
+
+  <xsl:output
+      method="xml"
+      encoding="utf-8"/>
+
+  <xsl:template
+      match="/">
+    <xsl:copy-of
+        select="/"/>
   </xsl:template>
+
 </xsl:stylesheet>
 """
 
@@ -106,16 +136,69 @@ identity['simple'] = (
     ( u"""<?xml version="1.0"?>
 <rootOnly/>
 """,
-    u"""<?xml version="1.0"?>
+    """<?xml version="1.0" encoding="utf-8"?>
 <rootOnly/>
 """ ),
     ( u"""<?xml version="1.0"?>
 """,
     etree.LxmlSyntaxError, ),
-    ( u"""<?xml version="1.0"?>
+    ( u"""<?xml version="1.0" encoding="utf-8"?>
 <rootOnly>
 """,
     etree.LxmlSyntaxError, ),
+    )
+
+identity['encoding'] = (
+    ( """<?xml version="1.0"?>
+<rootOnly/>
+""",
+    """<?xml version="1.0" encoding="utf-8"?>
+<rootOnly/>
+""" ),
+    ( """<?xml version="1.0" encoding="ascii"?>
+<rootOnly/>
+""",
+    """<?xml version="1.0" encoding="utf-8"?>
+<rootOnly/>
+""" ),
+    ( u"""<?xml version="1.0" encoding="ascii"?>
+<rootOnly/>
+""",
+    """<?xml version="1.0" encoding="utf-8"?>
+<rootOnly/>
+""" ),
+    ( """<?xml version="1.0" encoding="utf-8"?>
+<rootOnly/>
+""",
+    """<?xml version="1.0" encoding="utf-8"?>
+<rootOnly/>
+""" ),
+    ( u"""<?xml version="1.0" encoding="utf-8"?>
+<rootOnly/>
+""",
+    """<?xml version="1.0" encoding="utf-8"?>
+<rootOnly/>
+""" ),
+    ( """<?xml version="1.0" encoding="utf-8"?>
+<root\xC3\x9Cmlaut/>
+""",
+    """<?xml version="1.0" encoding="utf-8"?>
+<root\xC3\x9Cmlaut/>
+""" ),
+    ( u"""<?xml version="1.0" encoding="utf-8"?>
+<rootÜmlaut/>
+""",
+    """<?xml version="1.0" encoding="utf-8"?>
+<root\xC3\x9Cmlaut/>
+""" ),
+    ( u"""<?xml version="1.0" encoding="bla"?>
+<rootÜmlaut/>
+""",
+    LookupError ),
+    ( u"""<?xml version="1.0" encoding="iso-8859-1"?>
+<root€mlaut/>
+""",
+    UnicodeError ),
     )
 
 ###############################################################################
@@ -427,24 +510,27 @@ xPathExtension['simple'] = (
     ( u"""<?xml version="1.0"?>
 <root/>
 """,
-    u"" ),
+    "" ),
+    )
 
+xPathExtension['void'] = (
     ( u"""<?xml version="1.0"?>
 <void/>
 """,
-    u"""
+    """
 """ ),
+    )
 
-    # string
+xPathExtension['string'] = (
     ( u"""<?xml version="1.0"?>
 <test type="string" const=""/>
 """,
-    u"""u'Constant'
+    """u'Constant'
 """ ),
     ( u"""<?xml version="1.0"?>
 <root string="Attribute content"/>
 """,
-    u"""u'Attribute content'
+    """u'Attribute content'
 """ ),
     ( u"""<?xml version="1.0"?>
 <test type="string" missing=""/>
@@ -454,22 +540,28 @@ xPathExtension['simple'] = (
 <test type="string" node="">Element content</test>
 """,
     TypeError ),
+    ( u"""<?xml version="1.0"?>
+<root string="ümlaut"/>
+""",
+    """u'\\xfcmlaut'
+""" ),
+    )
 
-    # boolean
+xPathExtension['boolean'] = (
     ( u"""<?xml version="1.0"?>
 <test type="boolean" const=""/>
 """,
-    u"""True
+    """True
 """ ),
     ( u"""<?xml version="1.0"?>
 <root boolean="non-empty"/>
 """,
-    u"""True
+    """True
 """ ),
     ( u"""<?xml version="1.0"?>
 <root boolean=""/>
 """,
-    u"""False
+    """False
 """ ),
     ( u"""<?xml version="1.0"?>
 <test type="boolean" missing=""/>
@@ -479,27 +571,28 @@ xPathExtension['simple'] = (
 <test type="boolean" node="">non-empty</test>
 """,
     TypeError ),
+    )
 
-    # float
+xPathExtension['float'] = (
     ( u"""<?xml version="1.0"?>
 <test type="float" const=""/>
 """,
-    u"""3.14
+    """3.14
 """ ),
     ( u"""<?xml version="1.0"?>
 <root float="0"/>
 """,
-    u"""0.0
+    """0.0
 """ ),
     ( u"""<?xml version="1.0"?>
 <root float=" -3.7 "/>
 """,
-    u"""-3.7
+    """-3.7
 """ ),
     ( u"""<?xml version="1.0"?>
 <root float="1e-3"/>
 """,
-    u"""0.001
+    """0.001
 """ ),
     ( u"""<?xml version="1.0"?>
 <test type="float" missing=""/>
@@ -509,27 +602,28 @@ xPathExtension['simple'] = (
 <test type="float" node="">10.7</test>
 """,
     TypeError ),
+    )
 
-    # int
+xPathExtension['int'] = (
     ( u"""<?xml version="1.0"?>
 <test type="int" const=""/>
 """,
-    u"""42
+    """42
 """ ),
     ( u"""<?xml version="1.0"?>
 <root int="0"/>
 """,
-    u"""0
+    """0
 """ ),
     ( u"""<?xml version="1.0"?>
 <root int=" -3 "/>
 """,
-    u"""-3
+    """-3
 """ ),
     ( u"""<?xml version="1.0"?>
 <root int="1e3"/>
 """,
-    u"""1000
+    """1000
 """ ),
     ( u"""<?xml version="1.0"?>
 <test type="int" missing=""/>
@@ -548,6 +642,128 @@ xPathExtension['simple'] = (
 ###############################################################################
 ###############################################################################
 
+class XsltParserParameterTestCase(XsltParserTestCase):
+    """
+    Output checker for XsltParser using parameters.
+    """
+
+    xslt = u"""\
+<?xml version="1.0"?>
+<xsl:stylesheet
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    version="1.0">
+
+  <xsl:param
+      name="bool"
+      select="false()"/>
+  <xsl:param
+      name="int"
+      select="0"/>
+  <xsl:param
+      name="float"
+      select="0.0"/>
+  <xsl:param
+      name="string"
+      select="''"/>
+  <xsl:param
+      name="mandatory"/>
+
+  <xsl:output
+      method="text"
+      encoding="utf-8"/>
+
+  <xsl:template match="/">
+    <xsl:value-of
+	select="$bool"/>
+    <xsl:text>&#xA;</xsl:text>
+    <xsl:value-of
+	select="$int"/>
+    <xsl:text>&#xA;</xsl:text>
+    <xsl:value-of
+	select="$float"/>
+    <xsl:text>&#xA;</xsl:text>
+    <xsl:value-of
+	select="$string"/>
+    <xsl:text>&#xA;</xsl:text>
+    <xsl:value-of
+	select="$mandatory"/>
+    <xsl:text>&#xA;</xsl:text>
+  </xsl:template>
+
+</xsl:stylesheet>
+"""
+
+###############################################################################
+
+class XsltParserParameterTestSuite(DocutilsTestSupport.ParserTestSuite):
+
+    test_case_class = XsltParserParameterTestCase
+
+###############################################################################
+
+parameter = { }
+
+parameter['simple'] = (
+    ( u"""<?xml version="1.0"?>
+<rootOnly/>""",
+    u"""false
+0
+0
+
+
+""" ),
+    ( ( { 'bool': True,
+          'int': 42,
+          'float': 3.14,
+          'string': 'bla',
+          'mandatory': 'given',
+          },
+        u"""<?xml version="1.0"?>
+<rootOnly/>""", ),
+    """true
+42
+3.14
+bla
+given
+""" ),
+    ( ( { 'bool': False,
+          'int': 2147483647,
+          'float': 1e50,
+          'string': '',
+          'mandatory': ( 1, 2 ),
+          },
+        u"""<?xml version="1.0"?>
+<rootOnly/>""", ),
+    """false
+2147483647
+ 1e+50
+
+
+""" ),
+    ( ( { 'string': '"\'',
+          },
+        u"""<?xml version="1.0"?>
+<rootOnly/>""", ),
+      ValueError ),
+    ( ( { 'bool': True,
+          'int': 42,
+          'float': 3.14,
+          'string': u'ümlaut',
+          'mandatory': 'given',
+          },
+        u"""<?xml version="1.0"?>
+<rootOnly/>""", ),
+    """true
+42
+3.14
+ümlaut
+given
+""" ),
+    )
+
+###############################################################################
+###############################################################################
+
 def suite():
     s = unittest.TestSuite()
 
@@ -558,6 +774,10 @@ def suite():
     xPathExtensionSuite = XsltParserXPathExtensionTestSuite()
     xPathExtensionSuite.generateTests(xPathExtension, dictname='xPathExtension')
     s.addTest(xPathExtensionSuite)
+
+    parameterSuite = XsltParserParameterTestSuite()
+    parameterSuite.generateTests(parameter, dictname='parameter')
+    s.addTest(parameterSuite)
 
     return s
 
