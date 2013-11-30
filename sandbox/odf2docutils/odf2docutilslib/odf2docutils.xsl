@@ -41,7 +41,7 @@
 
   <!-- Name of the input file -->
   <xsl:param
-      name="sourceName"/>
+      name="_source_name"/>
 
   <xsl:output
       method="xml"
@@ -61,7 +61,7 @@
 	  name="source"
 	  namespace="">
 	<xsl:value-of
-	    select="$sourceName"/>
+	    select="$_source_name"/>
       </xsl:attribute>
       <xsl:apply-templates/>
     </xsl:element>
@@ -119,7 +119,7 @@
 	  name="source"
 	  namespace="">
 	<xsl:value-of
-	    select="$sourceName"/>
+	    select="$_source_name"/>
       </xsl:attribute>
       <!-- All headers in the main document. -->
       <xsl:variable

@@ -77,6 +77,8 @@ class SettingsSpec(docutils.SettingsSpec):
 
 ##############################################################################
 
+# TODO Move this to `docutils_xml`
+
 class ZipFileInput(docutils.io.FileInput):
     """
     Generic input class for ZIP files.
@@ -187,7 +189,8 @@ if __name__ == '__main__':
         from odf2docutilslib.xslt import Parser, Writer
 
     pub = docutils.core.Publisher(docutils.readers.Reader(), Parser(), Writer(),
-                                  source_class=OdfFileInput)
+                                  source_class=OdfFileInput,
+                                  destination_class=docutils.io.BinaryFileOutput)
     pub.process_command_line(settings_spec=settingsSpec,
                              description="Reads ODF file <source> (default is stdin) and writes Docutils XML to <destination> (default is stdout).")
     if pub.settings.python != usePython:
