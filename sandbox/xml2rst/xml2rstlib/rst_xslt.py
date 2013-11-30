@@ -1,3 +1,20 @@
+# Copyright (C) 2010-2013 Stefan Merten
+
+# This file is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published
+# by the Free Software Foundation; either version 2 of the License,
+# or (at your option) any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+# General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+# 02111-1307, USA.
+
 """
 Glue code for XSLT and Python based conversion.
 """
@@ -7,103 +24,65 @@ Glue code for XSLT and Python based conversion.
 # Import
 
 import os.path
-import sys
-
-try:
-    from lxml import etree
-except ImportError:
-    raise Exception("""
-Python package 'lxml' is not available.
-You may try to use an older version of 'xml2rst.xsl' with a standalone
-XSLT processor like 'xalan' or 'xsltproc'""")
 
 from xml2rstlib import markup
 
-__docformat__ = 'reStructuredText'
+from docutils_xml.parsers.xslt import XsltParser, XPathExtension
+from docutils_xml.writers.xslt import XsltWriter
+
+import docutils.frontend, docutils.core
+
+__docformat__ = 'reStructuredText' # Formatted to be rendered by epydoc
 
 ###############################################################################
 ###############################################################################
 # Constants
 
-MainXsltNm = 'xml2rst.xsl'
+XsltNm = 'xml2rst.xsl'
 """
-`MainXsltNm`: ``str``
-   Name of the main XSLT source file.
+:type: str
+
+Name of the main XSLT source file.
 """
 
 ###############################################################################
 ###############################################################################
 # Classes
 
-class XPathExtension():
+class RstText(XPathExtension):
     """
-    Abstract class for XPath extension functions.
+    XPath extension functions for computing valid reStructuredText markup for
+    plain text.
     """
 
     namespace = "http://www.merten-home.de/xml2rst"
-    """
-    `namespace`: ``str``
-      Namespace for these XSLT extension functions.
-    """
-
-    def _stringParameter(self, string):
-        """
-        Return the normalized string parameter from an XPath
-        parameter.
-
-        `string`: ``lxml.etree._ElementStringResult`` | ``[ lxml.etree._ElementStringResult, ]`` | ``[ ]``
-          Original XPath string parameter.
-        """
-        if isinstance(string, list):
-            if len(string) == 0:
-                return ""
-            else:
-                assert len(string) == 1, "Encountered an XPath string parameter with more than one element"
-                return string[0]
-        else:
-            return string
-
-    def _boolParameter(self, boolean):
-        """
-        Return the normalized bool parameter from an XPath parameter.
-
-        `boolean`: ``bool``
-          Original XPath bool parameter.
-        """
-        return boolean
-
-###############################################################################
-
-class RstText(XPathExtension):
-    """
-    XPath extension functions for computing valid reStructuredText
-    markup for plain text.
-    """
 
     def plain(self, context, string, indent, literal):
         """
         Output a plain text preventing further interpretation by
         reStructuredText. Text may contain linefeeds.
 
-        `context`: ``lxml.etree._XSLTContext``
-          The evaluation context.
+        :Parameters:
 
-          `context.context_node`: ``Element``
-            The context node.
+          context : `lxml.etree._XSLTContext`
+            The evaluation context.
 
-          `contect.eval_context`: ``dict``
-            A dictionary to store state.
+            context.context_node : `Element`
+              The context node.
 
-        `string`:
-          The (smart) string to turn into output text.
+            contect.eval_context : dict
+              A dictionary to store state.
 
-        `indent`:
-          The (smart) string to use for indent in case of internal
-          linefeeds.
+          string
+            The (smart) string to turn into output text.
 
-        `literal`:
-          The (smart) string to use for indent in case of internal
-          linefeeds.
+          indent
+            The (smart) string to use for indent in case of internal
+            linefeeds.
+
+          literal
+            The (smart) boolean determining whether this should be output
+            literally.
         """
         return markup.Text.plain(self._stringParameter(string),
                                  self._stringParameter(indent),
@@ -121,73 +100,71 @@ class RstText(XPathExtension):
     # target_definition
 
 ###############################################################################
+
+class Parser(XsltParser):
+
+    settings_spec = (
+        "xml2rst options", None,
+        (( """\
+Configures title markup style.
+
+The value of the parameter must be a string made up of a sequence of character
+pairs. The first character of a pair is ``o`` (overline) or ``u`` (underline)
+and the second character is the character to use for the markup.
+
+The first and the second character pair is used for document title and
+subtitle, the following pairs are used for section titles where the third pair
+is used for the top level section title.
+
+Defaults to ``o=o-u=u-u~u`u,u.``.
+""",
+           ( '-a', '--adornment' ),
+           # TODO Define a validator
+           { # 'validator': docutils.frontend.validate_boolean,
+             'default': 'o=o-u=u-u~u`u,u.', }, ),
+( """\
+Configures whether long text lines in paragraphs should be folded and to which
+length.
+
+This option is for input with no internal line feeds in plain text strings. If
+there are internal line feeds in plain text strings these should be preferred.
+
+If folding is enabled text strings not in a line feed preserving
+context are first white-space normalized and then broken according to
+the folding rules. Folding rules put out the first word and continue
+to do so with the following words unless the next word would cross
+the folding boundary. Words are delimited by white-space.
+
+Defaults to 0, i.e. no folding.
+""",
+           ( '-f', '--fold' ),
+           { 'validator': docutils.frontend.validate_nonnegative_int,
+             'default': 0, }, ), ),
+        )
+
+###############################################################################
+
+class Writer(XsltWriter):
+    """
+    Writer for this parser.
+    """
+
+    supported = ( 'restructuredtext', )
+
+###############################################################################
 ###############################################################################
 # Specialized functions
 
-def convert(inNm, outNm, settings):
-    """
-    Do the conversion.
-
-    `inNm`: ``str``
-      Filename of input file.
-
-    `outNm`: ``str`` | None
-      Filename of output file or None for stdout.
-
-    `settings`: ``optparse.Values``
-      Options from command line.
-    """
+def main():
+    # Find XSLT in library
+    xsltP = os.path.join(os.path.dirname(__file__), XsltNm)
     try:
-        inF = open(inNm)
+        xsltF = open(xsltP)
     except IOError, e:
-        raise Exception("Can't open input file %r: %s" % ( inNm, e, ))
+        raise Exception("Can't open XSLT file %r: %s" % ( xsltP, e, ))
 
-    # Find XSLT
-    modP = os.path.dirname(__file__)
-    mainXsltNm = os.path.join(modP, MainXsltNm)
-    try:
-        mainXsltF = open(mainXsltNm)
-    except IOError, e:
-        raise Exception("Can't open main XSLT file %r: %s" % ( mainXsltNm, e, ))
+    docutils.core.publish_cmdline(parser=Parser(xsltF, RstText()),
+                                  writer=Writer(),
+                                  description="Reads Docutils XML from <source> and writes reStructuredText to <destination>")
 
-    # Parse and prepare XSLT and extensions
-    xsltParser = etree.XMLParser()
-    try:
-        mainXsltDoc = etree.parse(mainXsltF, xsltParser)
-    except Exception, e:
-        raise Exception("Error parsing main XSLT file %r: %s"
-                        % ( mainXsltNm, e, ))
-    mainXsltF.close()
-
-    rstText = RstText()
-    extensions = etree.Extension(rstText, ns=rstText.namespace)
-    mainXslt = etree.XSLT(mainXsltDoc, extensions=extensions)
-
-    # Parse input file
-    inParser = etree.XMLParser()
-    try:
-        inDoc = etree.parse(inF, inParser)
-    except Exception, e:
-        raise Exception("Error parsing input file %r: %s" % ( inNm, e, ))
-    inF.close()
-
-    # Process input
-    xsltParams = { }
-    if settings.fold is not None:
-        xsltParams['fold'] = str(settings.fold)
-    if settings.adornment is not None:
-        xsltParams['adornment'] = "'" + settings.adornment + "'"
-    try:
-        result = mainXslt(inDoc, **xsltParams)
-    except Exception, e:
-        raise Exception("Error transforming input file %r: %s" % ( inNm, e, ))
-    outS = str(result)
-    if outNm:
-        try:
-            outF = open(outNm, "w")
-        except IOError, e:
-            raise Exception("Can't open output file %r: %s" % ( outNm, e, ))
-        outF.write(outS)
-        outF.close()
-    else:
-        sys.stdout.write(outS)
+# TODO Accept additional XSLT sheets to create a transformation pipeline

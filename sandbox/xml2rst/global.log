@@ -1,4 +1,153 @@
 **************************************
+Date: Sat Nov 30 14:33:46 CET 2013
+Author: stefan
+Tag: xml2rst_1_236
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory eskebo:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/xml2rstlib
+In directory eskebo:/home/stefan/free/xml2rst/xml2rstlib
+
+Modified Files:
+	markup.py rst_xslt.py 
+
+--------------------------------------
+Log Message:
+Cleanup.
+**************************************
+Date: Sat Nov 30 14:27:42 CET 2013
+Author: stefan
+Tag: xml2rst_1_235
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory eskebo:/home/stefan/free/xml2rst
+
+Modified Files:
+	README setup.py xml2rst.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/xml2rstlib
+In directory eskebo:/home/stefan/free/xml2rst/xml2rstlib
+
+Modified Files:
+	rst_xslt.py 
+
+--------------------------------------
+Log Message:
+Cleanup. All tests run again.
+**************************************
+Date: Sat Nov 30 14:06:37 CET 2013
+Author: stefan
+Tag: xml2rst_1_234
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory eskebo:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/xml2rstlib
+In directory eskebo:/home/stefan/free/xml2rst/xml2rstlib
+
+Modified Files:
+	rst_xslt.py 
+
+--------------------------------------
+Log Message:
+Uses `docutils_xml` infrastructure.
+**************************************
+Date: Wed Nov 27 21:22:38 CET 2013
+Author: stefan
+Tag: xml2rst_1_233
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory theowa:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/xml2rstlib
+In directory theowa:/home/stefan/free/xml2rst/xml2rstlib
+
+Modified Files:
+	rst_xslt.py 
+
+--------------------------------------
+Log Message:
+Added first code for using `XsltParser`.
+**************************************
+Date: Sun Nov 24 15:34:19 CET 2013
+Author: stefan
+Tag: xml2rst_1_232
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/xml2rstlib
+In directory eskebo:/home/stefan/free/xml2rst/xml2rstlib
+
+Modified Files:
+	rst_xslt.py 
+
+--------------------------------------
+Log Message:
+Updated comments.
+**************************************
+Date: Sat Nov 23 12:45:15 CET 2013
+Author: stefan
+Tag: xml2rst_1_231
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/xml2rstlib
+In directory eskebo:/home/stefan/free/xml2rst/xml2rstlib
+
+Modified Files:
+	rst_xslt.py 
+
+--------------------------------------
+Log Message:
+Moved `XPathExtension` to `docutils_xml`.
+**************************************
+Date: Fri Nov 22 18:50:36 CET 2013
+Author: stefan
+Tag: xml2rst_1_230
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/xml2rstlib
+In directory theowa:/home/stefan/free/xml2rst/xml2rstlib
+
+Modified Files:
+	markup.py rst_xslt.py 
+
+--------------------------------------
+Log Message:
+Added and corrected comments. Some are markers for using `XsltParser`
+and friends.
+**************************************
+Date: Tue Nov 12 22:02:27 CET 2013
+Author: stefan
+Tag: xml2rst_1_229
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/xml2rstlib
+In directory theowa:/home/stefan/free/xml2rst/xml2rstlib
+
+Modified Files:
+	rst_xslt.py 
+
+--------------------------------------
+Log Message:
+Improved documentation.
+**************************************
 Date: Wed Jul 31 18:29:19 CEST 2013
 Author: stefan
 Tag: xml2rst_1_228
