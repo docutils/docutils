@@ -12,29 +12,34 @@ What is xml2rst?
 `Docutils XML`_ from some other format (such as ODF_) and then
 transform the result to reStructuredText_.
 
+How to use xml2rst
+==================
+
+``xml2rst.py`` is a normal Docutils converter program. Try
+``xml2rst.py --help`` for options.
+
+Dependencies
+============
+
+``xml2rst.py`` depends on the ``docutils_xml`` in the Docutils sandbox
+(http://svn.code.sf.net/p/docutils/code/trunk/sandbox/docutils_xml/).
+This in turn depends on the lxml_ package [#deb-lxml]_.
+
+.. [#deb-lxml] Under Debian based operating systems try ``apt-get
+   install python-lxml``.
+
+Run ``xml2rst --help`` for information on how to run it.
+
 .. _flavor:
 
-Using xml2rst
-=============
+Other ways to use xml2rst
+=========================
 
 `xml2rst` is currently implemented as an XSLT_ stylesheet usable in
-three flavors:
+two other flavors. However, these flavors are no longer actively
+maintained and may lack some features.
 
-1. ``xml2rst.py``
-
-   This script uses ``xml2rstlib/xml2rst.xsl`` through the XSLT_ engine
-   available through the lxml_ package [#deb-lxml]_. It also uses
-   Python callbacks for some advanced functionality.
-
-   This is the preferred method of using `xml2rst` but depends on the
-   lxml_ package. This is also what is installed normally.
-
-   .. [#deb-lxml] Under Debian based operating systems try ``apt-get
-      install python-lxml``.
-
-   Run ``xml2rst --help`` for information on how to run it.
-
-2. ``xml2rstlib/xml2rst-nopy.xsl``
+1. ``xml2rstlib/xml2rst-nopy.xsl``
 
    This is the core XSLT_ script without using Python. It uses EXSLT_
    and therefore needs an EXSLT_ capable XSLT_ processors such as
@@ -50,7 +55,7 @@ three flavors:
    Run ``perldoc xml2rstlib/xml2rst-nopy.xsl`` for information on how to
    run it.
 
-3. ``xml2rstlib/xml2rst-noexslt.xsl``
+2. ``xml2rstlib/xml2rst-noexslt.xsl``
 
    This version can be processed with every XSLT_ processor like
    Xalan_ [#deb-xalan]_.
