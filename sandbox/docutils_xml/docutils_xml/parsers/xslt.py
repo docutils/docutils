@@ -56,12 +56,7 @@ class XPathExtension(object):
     XSLT.
 
     Methods to be used as extension functions need to accept an fixed first
-    parameter.
-
-    :Parameters:
-
-      context : `lxml.etree._XSLTContext`
-        The evaluation context.
+    parameter (`lxml.etree._XSLTContext`). This is the evaluation context.
 
     Apart from that any number of parameters may be given according to the
     signature of the XPath function.
@@ -88,8 +83,8 @@ class XPathExtension(object):
 
         :Exceptions:
 
-          TypeError
-            When a type is given which is incompatible with an XPath string.
+          * `TypeError`: When a type is given which is incompatible with an
+            XPath string.
         """
         if isinstance(string, list):
             if len(string) == 0:
@@ -119,8 +114,8 @@ class XPathExtension(object):
 
         :Exceptions:
 
-          TypeError
-            When a type is given which is incompatible with a boolean.
+          * `TypeError`: When a type is given which is incompatible with a
+            boolean.
         """
         if isinstance(boolean, bool):
             return boolean
@@ -139,8 +134,8 @@ class XPathExtension(object):
 
         :Exceptions:
 
-          TypeError
-            When a type is given which is incompatible with an float.
+          * `TypeError`: When a type is given which is incompatible with an
+            float.
         """
         if isinstance(number, float):
             
@@ -160,11 +155,10 @@ class XPathExtension(object):
 
         :Exceptions:
 
-          TypeError
-            When a type is given which is incompatible with an int.
+          * `TypeError`: When a type is given which is incompatible with an
+            int.
 
-          ValueError
-            When the number has a non-trivial fractional part.
+          * `ValueError`: When the number has a non-trivial fractional part.
         """
         if isinstance(number, float):
             ( fraction, integer ) = math.modf(number)
@@ -201,7 +195,7 @@ class XsltParser(docutils.parsers.Parser):
         """
         self.xslt = None
         """
-        :type: Return type of `etree.XSLT`()
+        :type: Return type of `etree.XSLT`\ ()
 
         The XSLT to use for parsing.
         """
