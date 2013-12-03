@@ -55,12 +55,10 @@ def encodeForXmlParser(s):
 
     :Exceptions:
 
-      LookupError
-        If `s` contains an encoding unknown to Python.
+      * `LookupError`: If `s` contains an encoding unknown to Python.
 
-      UnicodeError
-        If `s` contains characters which are not encodable with the encoding
-        given.
+      * `UnicodeError`: If `s` contains characters which are not encodable with
+        the encoding given.
     """
     if not isinstance(s, unicode):
         # A non-unicode string is already encoded

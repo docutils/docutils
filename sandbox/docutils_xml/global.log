@@ -1,4 +1,19 @@
 **************************************
+Date: Wed Dec  4 00:02:21 CET 2013
+Author: stefan
+Tag: docutils_xml_1_62
+
+--------------------------------------
+Update of /home/stefan/vault/sm/docutils_xml/docutils_xml/parsers
+In directory theowa:/home/stefan/free/docutils_xml/docutils_xml/parsers
+
+Modified Files:
+	__init__.py xml.py xslt.py 
+
+--------------------------------------
+Log Message:
+Corrected documentation.
+**************************************
 Date: Sat Nov 30 13:57:05 CET 2013
 Author: stefan
 Tag: docutils_xml_1_61

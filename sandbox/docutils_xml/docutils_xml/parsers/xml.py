@@ -113,9 +113,9 @@ class Uri2Prefixes(object):
         """
         Register all namespace URIs in etree.
 
-        .. note:: In etree this is a global setting which is problematic
-                  because it is shared. Take care to override the namespaces
-                  every time the parser needs them.
+        :note: In etree this is a global setting which is problematic because
+               it is shared. Take care to override the namespaces every time
+               the parser needs them.
         """
         for ( uri, prefixes ) in self.uri2Prefixes.items():
             for prefix in prefixes:
