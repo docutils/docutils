@@ -30,10 +30,9 @@ __docformat__ = 'reStructuredText' # Formatted to be rendered by epydoc
 
 import sys
 
-import zipfile
-
 import docutils, docutils.core, docutils.frontend
 import docutils.io, docutils.readers, docutils.writers.docutils_xml
+import docutils_xml.io
 
 ###############################################################################
 ###############################################################################
@@ -77,54 +76,12 @@ class SettingsSpec(docutils.SettingsSpec):
 
 ##############################################################################
 
-# TODO Move this to `docutils_xml`
-
-class ZipFileInput(docutils.io.FileInput):
-    """
-    Generic input class for ZIP files.
-    """
-
-    contentPath = None
-    """
-    :type: str
-
-    Path to the file inside the ZIP file to return for reading.
-
-    Override in subclasses.
-    """
-
-    def __init__(self, source=None, source_path=None, 
-                 encoding=None, error_handler='strict', 
-                 autoclose=True, handle_io_errors=None, mode=None):
-        docutils.io.FileInput.__init__(self, source, source_path,
-                                       encoding=None,
-                                       error_handler='strict',
-                                       autoclose=autoclose,
-                                       handle_io_errors=handle_io_errors,
-                                       mode='rb')
-
-    def read(self):
-        if not zipfile.is_zipfile(self.source):
-            raise ValueError("%r is not a valid ZIP input file"
-                             % ( self.source_path, ))
-        inZip = zipfile.ZipFile(self.source)
-        return inZip.read(self.contentPath)
-
-##############################################################################
-
-class OdfFileInput(ZipFileInput):
+class OdfFileInput(docutils_xml.io.ZipFileInput):
     """
     Input for ODF files.
     """
 
     contentPath = 'content.xml'
-
-    def readlines(self):
-        """
-        Makes no sense.
-        """
-
-        raise ValueError("Can not read lines from an ODF input")
 
 ##############################################################################
 ##############################################################################
