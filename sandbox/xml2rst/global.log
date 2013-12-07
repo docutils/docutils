@@ -1,4 +1,91 @@
 **************************************
+Date: Sat Dec  7 12:41:20 CET 2013
+Author: stefan
+Tag: xml2rst_1_239
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/options/expected
+In directory eskebo:/home/stefan/free/xml2rst/tests/options/expected
+
+Added Files:
+	adornmentMarkup.err adornmentMarkup.ex adornmentMarkup.rst 
+	adornmentOverUnder.err adornmentOverUnder.ex 
+	adornmentOverUnder.rst 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/options/input
+In directory eskebo:/home/stefan/free/xml2rst/tests/options/input
+
+Added Files:
+	adornmentMarkup.opt adornmentMarkup.xml 
+	adornmentMarkup.xsltproc adornmentOverUnder.opt 
+	adornmentOverUnder.xml adornmentOverUnder.xsltproc 
+
+--------------------------------------
+Log Message:
+Added tests.
+**************************************
+Date: Sat Dec  7 12:36:34 CET 2013
+Author: stefan
+Tag: xml2rst_1_238
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/options
+In directory eskebo:/home/stefan/free/xml2rst/tests/options
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/options/expected
+In directory eskebo:/home/stefan/free/xml2rst/tests/options/expected
+
+Added Files:
+	adornmentDefault.err adornmentDefault.ex adornmentEmacs.err 
+	adornmentEmacs.ex adornmentOdd.err adornmentOdd.ex 
+	adornmentOdd.rst adornmentReverse.err adornmentReverse.ex 
+	fold20.err fold20.ex fold70.err fold70.ex 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/options/input
+In directory eskebo:/home/stefan/free/xml2rst/tests/options/input
+
+Added Files:
+	adornmentOdd.opt adornmentOdd.xml adornmentOdd.xsltproc 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests.xsltproc/options
+In directory eskebo:/home/stefan/free/xml2rst/tests.xsltproc/options
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/xml2rstlib
+In directory eskebo:/home/stefan/free/xml2rst/xml2rstlib
+
+Modified Files:
+	rst_xslt.py 
+
+--------------------------------------
+Log Message:
+Added a validator for adornment option.
+**************************************
+Date: Fri Dec  6 21:16:57 CET 2013
+Author: stefan
+Tag: xml2rst_1_237
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/xml2rstlib
+In directory theowa:/home/stefan/free/xml2rst/xml2rstlib
+
+Modified Files:
+	rst_xslt.py 
+
+--------------------------------------
+Log Message:
+Removed a todo.
+**************************************
 Date: Sat Nov 30 14:33:46 CET 2013
 Author: stefan
 Tag: xml2rst_1_236

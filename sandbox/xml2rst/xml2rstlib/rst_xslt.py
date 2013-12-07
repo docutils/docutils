@@ -45,6 +45,53 @@ XsltNm = 'xml2rst.xsl'
 Name of the main XSLT source file.
 """
 
+DocutilsSectionChars = '!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~'
+
+###############################################################################
+###############################################################################
+# Functions
+
+def validate_titleMarkup(setting, value, option_parser,
+                         config_parser=None, config_section=None):
+    """
+    Validate option value for title markup.
+
+    The parameters are reverse engineered.
+
+    :Parameters:
+
+      setting : str
+        The name of the option for this setting.
+
+      value : str
+        The value given for this option.
+
+      option_parser : ?
+        ?
+
+      config_parser : ?
+        ?
+
+      config_section : ?
+        ?
+
+    :return: The canonical value for `setting` from `value`.
+    """
+    tail = value
+    while tail:
+        head = tail[0:2]
+        if len(head) < 2:
+            raise ValueError("Odd number of characters (%r)" % ( value, ))
+        tail = tail[2:]
+        ( ou, ch ) = head
+        if ou not in "ou":
+            raise ValueError("Invalid overline / underline specification '%c'"
+                             % ( ou, ))
+        if ch not in DocutilsSectionChars:
+            raise ValueError("Invalid character '%c' for title markup"
+                             % ( ch, ))
+    return value
+
 ###############################################################################
 ###############################################################################
 # Classes
@@ -119,8 +166,7 @@ is used for the top level section title.
 Defaults to ``o=o-u=u-u~u`u,u.``.
 """,
            ( '-a', '--adornment' ),
-           # TODO Define a validator
-           { # 'validator': docutils.frontend.validate_boolean,
+           { 'validator': validate_titleMarkup,
              'default': 'o=o-u=u-u~u`u,u.', }, ),
 ( """\
 Configures whether long text lines in paragraphs should be folded and to which
@@ -166,5 +212,3 @@ def main():
     docutils.core.publish_cmdline(parser=Parser(xsltF, RstText()),
                                   writer=Writer(),
                                   description="Reads Docutils XML from <source> and writes reStructuredText to <destination>")
-
-# TODO Accept additional XSLT sheets to create a transformation pipeline
