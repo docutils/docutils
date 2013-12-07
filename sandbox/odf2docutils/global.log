@@ -1,4 +1,19 @@
 **************************************
+Date: Fri Dec  6 18:01:46 CET 2013
+Author: stefan
+Tag: odf2docutils_1_113
+
+--------------------------------------
+Update of /home/stefan/vault/sm/odf2docutils
+In directory theowa:/home/stefan/free/odf2docutils
+
+Modified Files:
+	odf2docutils.py 
+
+--------------------------------------
+Log Message:
+Adapted to docutils_xml V0.5.
+**************************************
 Date: Sat Nov 30 14:05:02 CET 2013
 Author: stefan
 Tag: odf2docutils_1_112
