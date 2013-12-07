@@ -1,0 +1,6 @@
+Usage
+=====
+  xml2rst.py [options] [<source> [<destination>]]
+
+xml2rst.py: error: Error in option "--adornment":
+    ValueError: Odd number of characters (u'o=u')
