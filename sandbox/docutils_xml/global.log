@@ -1,4 +1,100 @@
 **************************************
+Date: Fri Dec  6 21:18:05 CET 2013
+Author: stefan
+Tag: docutils_xml_1_67
+
+--------------------------------------
+Update of /home/stefan/vault/sm/docutils_xml/docutils_xml/parsers
+In directory theowa:/home/stefan/free/docutils_xml/docutils_xml/parsers
+
+Modified Files:
+	xslt.py 
+
+--------------------------------------
+Log Message:
+Added a todo.
+**************************************
+Date: Fri Dec  6 19:15:49 CET 2013
+Author: stefan
+Tag: docutils_xml_1_66
+
+--------------------------------------
+Update of /home/stefan/vault/sm/docutils_xml/docutils_xml
+In directory theowa:/home/stefan/free/docutils_xml/docutils_xml
+
+Modified Files:
+	io.py 
+
+--------------------------------------
+Log Message:
+Added encoding facility to `ZipFileInput`.
+**************************************
+Date: Fri Dec  6 19:08:14 CET 2013
+Author: stefan
+Tag: docutils_xml_1_65
+
+--------------------------------------
+Update of /home/stefan/vault/sm/docutils_xml/docutils_xml
+In directory theowa:/home/stefan/free/docutils_xml/docutils_xml
+
+Modified Files:
+	io.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/docutils_xml/test
+In directory theowa:/home/stefan/free/docutils_xml/test
+
+Modified Files:
+	test_io.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/docutils_xml/test/data
+In directory theowa:/home/stefan/free/docutils_xml/test/data
+
+Added Files:
+	latin1.zip utf8.zip 
+
+--------------------------------------
+Log Message:
+Added tests. Some fail.
+**************************************
+Date: Fri Dec  6 18:48:14 CET 2013
+Author: stefan
+Tag: docutils_xml_1_64
+
+--------------------------------------
+Update of /home/stefan/vault/sm/docutils_xml/test
+In directory theowa:/home/stefan/free/docutils_xml/test
+
+Added Files:
+	test_io.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/docutils_xml/test/data
+In directory theowa:/home/stefan/free/docutils_xml/test/data
+
+Added Files:
+	empty.zip hello.zip 
+
+--------------------------------------
+Log Message:
+Added tests for `ZipFileInput`.
+**************************************
+Date: Fri Dec  6 17:59:54 CET 2013
+Author: stefan
+Tag: docutils_xml_1_63
+
+--------------------------------------
+Update of /home/stefan/vault/sm/docutils_xml/docutils_xml
+In directory theowa:/home/stefan/free/docutils_xml/docutils_xml
+
+Added Files:
+	io.py 
+
+--------------------------------------
+Log Message:
+Moved `ZipFileInput` here.
+**************************************
 Date: Wed Dec  4 00:02:21 CET 2013
 Author: stefan
 Tag: docutils_xml_1_62

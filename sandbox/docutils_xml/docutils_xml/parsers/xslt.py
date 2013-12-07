@@ -177,6 +177,8 @@ class XsltParser(docutils.parsers.Parser):
     `xslt_result` of the document. Works together with `XsltWriter`.
     """
 
+    # TODO Accept additional XSLT sheets to create a transformation pipeline
+
     def __init__(self, xsltSource, extension=None):
         """
         :Parameters:
