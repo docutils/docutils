@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="utf-8"?>
+<document source="original/substitutionReference.rst"><substitution_definition names="simple">SIMPLE</substitution_definition><substitution_definition names="two\ words">TWO WORDS</substitution_definition><paragraph>This is a <substitution_reference refname="simple">simple</substitution_reference> substitution reference and one consisting of <substitution_reference refname="two words">two
+words</substitution_reference> split onto two lines.</paragraph></document>

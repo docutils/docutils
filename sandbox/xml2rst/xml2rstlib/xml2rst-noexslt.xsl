@@ -1839,11 +1839,15 @@ data: Data elements used by the stylesheet
       mode="bullet_list">
     <xsl:call-template
 	name="u:outputClass"/>
-    <xsl:call-template
-	name="u:BandI"/>
-    <xsl:value-of
-	select="../@bullet"/>    
-    &tSP;  <!-- space after bullet -->
+    <xsl:if
+	test="name(*[1]) != 'bullet_list'">
+      <!-- Start the list item only if the first child is not another list -->
+      <xsl:call-template
+	  name="u:BandI"/>
+      <xsl:value-of
+	  select="../@bullet"/>    
+      &tSP;  <!-- space after bullet -->
+    </xsl:if>
     <xsl:apply-templates/>
   </xsl:template>
 
@@ -2521,6 +2525,20 @@ data: Data elements used by the stylesheet
     <xsl:text>[</xsl:text>
     <xsl:apply-templates/>
     <xsl:text>]_</xsl:text>
+    <xsl:call-template
+	name="u:bkslshEscSuf"/>
+  </xsl:template>
+
+  <!-- ******************************************************************** -->
+
+  <!-- == inline_element -->
+  <xsl:template
+      match="substitution_reference">
+    <xsl:call-template
+	name="u:bkslshEscPre"/>
+    <xsl:text>|</xsl:text>
+    <xsl:apply-templates/>
+    <xsl:text>|</xsl:text>
     <xsl:call-template
 	name="u:bkslshEscSuf"/>
   </xsl:template>

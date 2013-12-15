@@ -2532,6 +2532,20 @@ data: Data elements used by the stylesheet
 
   <!-- == inline_element -->
   <xsl:template
+      match="substitution_reference">
+    <xsl:call-template
+	name="u:bkslshEscPre"/>
+    <xsl:text>|</xsl:text>
+    <xsl:apply-templates/>
+    <xsl:text>|</xsl:text>
+    <xsl:call-template
+	name="u:bkslshEscSuf"/>
+  </xsl:template>
+
+  <!-- ******************************************************************** -->
+
+  <!-- == inline_element -->
+  <xsl:template
       match="emphasis">
     <xsl:call-template
 	name="u:bkslshEscPre"/>
