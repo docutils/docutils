@@ -1,4 +1,108 @@
 **************************************
+Date: Sun Dec 15 12:11:23 CET 2013
+Author: stefan
+Tag: xml2rst_1_244
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests.xalan/enriched
+In directory eskebo:/home/stefan/free/xml2rst/tests.xalan/enriched
+
+Added Files:
+	filterunit.cfg 
+
+--------------------------------------
+Log Message:
+Added tests for no-EXSLT implementation.
+**************************************
+Date: Sat Dec 14 18:09:05 CET 2013
+Author: stefan
+Tag: xml2rst_1_243
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests.xsltproc/enriched
+In directory eskebo:/home/stefan/free/xml2rst/tests.xsltproc/enriched
+
+Added Files:
+	filterunit.cfg 
+
+--------------------------------------
+Log Message:
+Added tests for no-Python implementation.
+**************************************
+Date: Sat Dec 14 18:01:34 CET 2013
+Author: stefan
+Tag: xml2rst_1_242
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/xml2rstlib
+In directory eskebo:/home/stefan/free/xml2rst/xml2rstlib
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Added support for <substitution_reference>.
+**************************************
+Date: Sat Dec 14 17:56:32 CET 2013
+Author: stefan
+Tag: xml2rst_1_241
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests
+In directory eskebo:/home/stefan/free/xml2rst/tests
+
+Modified Files:
+	Makefile 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/enriched
+In directory eskebo:/home/stefan/free/xml2rst/tests/enriched
+
+Added Files:
+	Makefile filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/enriched/input
+In directory eskebo:/home/stefan/free/xml2rst/tests/enriched/input
+
+Added Files:
+	substitutionReference.xml 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/enriched/readable
+In directory eskebo:/home/stefan/free/xml2rst/tests/enriched/readable
+
+Added Files:
+	substitutionReference.xml 
+
+--------------------------------------
+Log Message:
+Completed test for `substitution_reference` in a new test suite for
+enriched tests. Do not work yet.
+**************************************
+Date: Sat Dec 14 17:41:27 CET 2013
+Author: stefan
+Tag: xml2rst_1_240
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/simple/expected
+In directory eskebo:/home/stefan/free/xml2rst/tests/simple/expected
+
+Added Files:
+	substitutionReference.rst 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/simple/original
+In directory eskebo:/home/stefan/free/xml2rst/tests/simple/original
+
+Added Files:
+	substitutionReference.rst 
+
+--------------------------------------
+Log Message:
+Added tests for `substitution_reference`. Do not work yet.
+**************************************
 Date: Sat Dec  7 12:41:20 CET 2013
 Author: stefan
 Tag: xml2rst_1_239
