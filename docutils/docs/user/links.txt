@@ -246,6 +246,9 @@ Applications using docutils/reStructuredText and helper applications.
 
 * For Blogs (Weblogs), please see the `FAQ entry about Blogs`_.
 
+* `Project Gutenberg`_ uses docutils, but with it's own xetex- and nroff-writer
+  and epub.
+
 Development
 ```````````
 
@@ -338,3 +341,4 @@ Presentations
 .. _Texinfo Writer: http://docutils.sf.net/sandbox/texinfo-writer/README.html
 .. _confluence CMS: http://www.atlassian.com/software/confluence
 .. _rst2blogger: https://github.com/dhellmann/rst2blogger#readme
+.. _Project Gutenberg: http://www.gutenberg.org
