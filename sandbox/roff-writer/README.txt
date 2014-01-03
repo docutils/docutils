@@ -2,6 +2,10 @@
 Roff Writer
 ===========
 
+:Status: stale
+:See also: project gutenberg nroff writer
+:Date: 2014-01-03
+
 What is roff
 ============
 
@@ -16,8 +20,5 @@ formatting text files.
 Why roff
 ========
 
-Fun, another way to make rst to postscript. roff is impressingly small
-and wuick.
-
-Anyway, Simon J. Gerraty wolunteers to work on it. Applause!
-
+Fun, another way to make rst to postscript. roff is impressive small
+and quick.
