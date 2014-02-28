@@ -65,6 +65,8 @@ Advanced text editors with reStructuredText support, IDEs, and docutils GUIs:
 * `NoTex <https://notex.ch>`_ is a browser based reStructuredText editor
   with syntax highlighting and PDF/HTML export functionality using Sphinx.
 
+* `rsted <https://github.com/anru/rsted>`_ is a "simple online editor for
+  reStructuredText on Flask". You can try it on http://rst.ninjs.org/ 
 
 Export
 ------
