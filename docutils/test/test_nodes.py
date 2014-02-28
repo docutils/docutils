@@ -92,7 +92,7 @@ class ElementTests(unittest.TestCase):
         if sys.version_info < (3,):
             self.assertEqual(str(element), '<Element mark="\\u2022"/>')
         else:
-            self.assertEqual(str(element), '<Element mark="\u2022"/>')
+            self.assertEqual(str(element), u'<Element mark="\u2022"/>')
         dom = element.asdom()
         self.assertEqual(dom.toxml(), u'<Element mark="\u2022"/>')
         dom.unlink()
