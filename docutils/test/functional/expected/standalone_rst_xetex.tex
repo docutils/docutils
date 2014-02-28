@@ -60,6 +60,9 @@
 % docinfo (width of docinfo table)
 \DUprovidelength{\DUdocinfowidth}{0.9\textwidth}
 
+% subtitle (in document title)
+\providecommand*{\DUdocumentsubtitle}[1]{{\large #1}}
+
 % error admonition title
 \providecommand*{\DUtitleerror}[1]{\DUtitle{\color{red}#1}}
 
@@ -193,7 +196,7 @@
   \label{restructuredtext-test-document}%
   \label{doctitle}%
   \\ % subtitle%
-  \large{Examples of Syntax Constructs}%
+  \DUdocumentsubtitle{Examples of Syntax Constructs}%
   \label{examples-of-syntax-constructs}%
   \label{subtitle}}
 \author{}

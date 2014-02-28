@@ -19,6 +19,7 @@ Changes Since 0.11
 * docutils/writers/latex2e/__init__.py
 
   - Fix [ 239 ] Latex writer glues paragraphs with figure floats.
+  - Apply [ 116 ] by Kirill Smelkov. Don't hardcode \large for subtitle. 
 
 * docutils/writers/odf_odt/__init__.py
 

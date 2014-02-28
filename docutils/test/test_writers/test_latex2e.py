@@ -582,6 +582,10 @@ This is the *document*.
 """,
 head_template.substitute(dict(parts,
     requirements=parts['requirements'] + '\\setcounter{secnumdepth}{0}\n',
+    fallbacks=r"""
+% subtitle (in document title)
+\providecommand*{\DUdocumentsubtitle}[1]{{\large #1}}
+""",
     pdfsetup=parts['pdfsetup'] + r"""\hypersetup{
   pdftitle={This is the Title},
 }
@@ -590,7 +594,7 @@ head_template.substitute(dict(parts,
   This is the \emph{Title}%
   \label{this-is-the-title}%
   \\ % subtitle%
-  \large{This is the \emph{Subtitle}}%
+  \DUdocumentsubtitle{This is the \emph{Subtitle}}%
   \label{this-is-the-subtitle}}
 \author{}
 \date{}
