@@ -658,6 +658,10 @@ PreambleCmds.subtitle = r"""
 % subtitle (for topic/sidebar)
 \providecommand*{\DUsubtitle}[2][class-arg]{\par\emph{#2}\smallskip}"""
 
+PreambleCmds.documentsubtitle = r"""
+% subtitle (in document title)
+\providecommand*{\DUdocumentsubtitle}[1]{{\large #1}}"""
+
 PreambleCmds.table = r"""\usepackage{longtable,ltcaption,array}
 \setlength{\extrarowheight}{2pt}
 \newlength{\DUtablewidth} % internal use in tables"""
@@ -1903,7 +1907,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             title = [''.join(self.title)] + self.title_labels
             if self.subtitle:
                 title += [r'\\ % subtitle',
-                             r'\large{%s}' % ''.join(self.subtitle)
+                          r'\DUdocumentsubtitle{%s}' % ''.join(self.subtitle)
                          ] + self.subtitle_labels
             self.titledata.append(r'\title{%s}' % '%\n  '.join(title))
             # \author (empty \author prevents warning with \maketitle)
@@ -2746,6 +2750,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_subtitle(self, node):
         if isinstance(node.parent, nodes.document):
             self.push_output_collector(self.subtitle)
+            self.fallbacks['documentsubtitle'] = PreambleCmds.documentsubtitle
             self.subtitle_labels += self.ids_to_labels(node, set_anchor=False)
         # section subtitle: "starred" (no number, not in ToC)
         elif isinstance(node.parent, nodes.section):
