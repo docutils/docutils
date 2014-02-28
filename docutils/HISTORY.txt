@@ -28,7 +28,11 @@ Changes Since 0.11
 * test/test_error_reporting.py
 
   - Fix [ 223 ] by removing redundant tests we do not have control over.
-    
+
+* test/test_nodes.py
+
+  - Apply [ 115 ] respect fixed 2to3 string literal conversion behavior.
+      
 Release 0.11 (2013-07-22)
 =========================
 
