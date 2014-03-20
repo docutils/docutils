@@ -170,14 +170,14 @@ class CSVTable(Table):
 
         def __init__(self, options):
             if 'delim' in options:
-                self.delimiter = str(options['delim'])
+                self.delimiter = CSVTable.encode_for_csv(options['delim'])
             if 'keepspace' in options:
                 self.skipinitialspace = False
             if 'quote' in options:
-                self.quotechar = str(options['quote'])
+                self.quotechar = CSVTable.encode_for_csv(options['quote'])
             if 'escape' in options:
                 self.doublequote = False
-                self.escapechar = str(options['escape'])
+                self.escapechar = CSVTable.encode_for_csv(options['escape'])
             csv.Dialect.__init__(self)
 
 
@@ -225,9 +225,12 @@ class CSVTable(Table):
         except SystemMessagePropagation, detail:
             return [detail.args[0]]
         except csv.Error, detail:
+            message = str(detail)
+            if sys.version_info < (3,) and '1-character string' in message:
+                message += '\nwith Python 2.x this must be an ASCII character.'
             error = self.state_machine.reporter.error(
                 'Error with CSV data in "%s" directive:\n%s'
-                % (self.name, detail), nodes.literal_block(
+                % (self.name, message), nodes.literal_block(
                 self.block_text, self.block_text), line=self.lineno)
             return [error]
         table = (col_widths, table_head, table_body)
