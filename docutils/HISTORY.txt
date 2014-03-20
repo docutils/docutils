@@ -16,6 +16,16 @@
 Changes Since 0.11
 ==================
 
+* docs/ref/rst/directives.txt
+
+  - Update "math" and "csv-table" descriptions.
+
+* docutils/parsers/rst/states.py
+
+  - Improve error report when a non-ASCII character is specified as
+    delimiter, quote or escape character under Python 2.
+    Fixes [ 249 ] and [ 250 ].
+  
 * docutils/writers/latex2e/__init__.py
 
   - Fix [ 239 ] Latex writer glues paragraphs with figure floats.
