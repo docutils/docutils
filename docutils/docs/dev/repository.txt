@@ -12,7 +12,7 @@
 
 .. admonition:: Quick Instructions
 
-   To get a checkout of the Docutils source tree (without the
+   To get a checkout of the Docutils source tree (with the
    sandboxes), type ::
 
        svn checkout http://svn.code.sf.net/p/docutils/code/trunk docutils-code
