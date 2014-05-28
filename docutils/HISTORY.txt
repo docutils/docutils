@@ -25,11 +25,16 @@ Changes Since 0.11
   - Improve error report when a non-ASCII character is specified as
     delimiter, quote or escape character under Python 2.
     Fixes [ 249 ] and [ 250 ].
-  
+
+* docutils/writers/html4css1/__init__.py
+
+  - Don't add newline after inline math.
+    Thanks to Yury G. Kudryashov for the patch.
+
 * docutils/writers/latex2e/__init__.py
 
   - Fix [ 239 ] Latex writer glues paragraphs with figure floats.
-  - Apply [ 116 ] by Kirill Smelkov. Don't hardcode \large for subtitle. 
+  - Apply [ 116 ] by Kirill Smelkov. Don't hardcode \large for subtitle.
 
 * docutils/writers/odf_odt/__init__.py
 
@@ -42,7 +47,7 @@ Changes Since 0.11
 * test/test_nodes.py
 
   - Apply [ 115 ] respect fixed 2to3 string literal conversion behavior.
-      
+
 Release 0.11 (2013-07-22)
 =========================
 
