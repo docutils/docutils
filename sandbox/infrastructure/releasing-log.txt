@@ -8,6 +8,68 @@ Releasing
 
 Notes on what happend while releasing.
 
+Release 0.12
+============
+
+svn revision: 7749
+
+Tests
+-----
+
+Tests are run from svn checkout, only few from install.
+
+Python3 tests are run ::
+
+  rm -rf build test3
+  python3 setup.py build
+  PYTHONPATH=build/lib python3 test3/alltests.py
+
+* ubuntu 8.04: python 2.4.5, 2.5.2, 2.6.7, 2.7.2 OK
+
+  python 2.6.4rc1 6 failure due to change in error message: no such file ...  
+
+  python 3.2.3 OK
+
+* macosx 10.6.8: python 2.5.4, 2.7.3
+
+  python 2.6.1 6 failure due to change in error message: no such file ...  
+
+  python 3.2, 3.4.1 OK
+
+* ubuntu 14.04: pyton 2.7.6,  python 3.4.0 OK
+
+* windows7: python 2.7.5 
+
+  Error (filed #256): test_writers/test_html4css1_template.py::
+
+      stylesheet = """\
+    - <link rel="stylesheet" href="/test.css" type="text/css" />"""
+    + <link rel="stylesheet" href="C:/test.css" type="text/css" />"""
+    ?                              ++
+
+  python 3.4.1
+
+  * test.css path error (filed #256) 
+  * test_parsers\test_rst\test_directives\test_include.py::
+
+      b'Encoding:\n\n.. include:: test_parsers/test_rst/test_directives/utf-16.csv\n   :encoding: utf-16\n'
+        File "test3\alltests.py", line 40, in write
+          string = string.encode('raw_unicode_escape').decode('ascii')
+      UnicodeDecodeError: 'ascii' codec can't decode byte 0xb0 in position 994: ordinal not in range(128)
+
+   fiddling with alltests.py (uncommitted) ::
+
+      <system_message level="4" line="1" source="test data" type="SEVERE">
+        <paragraph>
+            Problem with "raw" directive:
+            UnicodeDecodeError: \'utf-16-be\' codec can\'t decode bytes in position 90-91: illegal encoding
+        <literal_block xml:space="preserve">
+            .. raw:: html
+               :file: test_parsers/test_rst/test_directives/utf-16.csv
+               :encoding: utf-16''' != '''\
+
+
+
 Release 0.11
 ============
 
