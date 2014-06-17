@@ -28,6 +28,14 @@ Future changes
   - special admonitions (note, hint, warning, ...) -> generic "admonition"
     element with class attribute and auto-generated title.
 
+* Move to single source for Python 2 and Python 3, slowly.
+  See `Porting Python 2 Code to Python 3`_ and 
+  `future: clean single-source support for Python 2/3`_
+
+  - Drop support for python 2.4 probably after 0.12 release.
+
+.. _Porting Python 2 Code to Python 3: https://docs.python.org/3/howto/pyporting.html
+.. _future\: clean single-source support for Python 2/3: http://python-future.org
 
 Changes Since 0.11
 ==================
