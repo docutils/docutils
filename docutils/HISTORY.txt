@@ -20,6 +20,10 @@ Changes Since 0.11
 
   - Update "math" and "csv-table" descriptions.
 
+* docutils/parsers/rst/directives/images.py
+
+  - Fix [258] figwidth="image" generates unitless width value.
+  
 * docutils/parsers/rst/states.py
 
   - Improve error report when a non-ASCII character is specified as
