@@ -1047,9 +1047,9 @@ class HTMLTranslator(nodes.NodeVisitor):
                     self.settings.record_dependencies.add(
                         imagepath.replace('\\', '/'))
                     if 'width' not in atts:
-                        atts['width'] = str(img.size[0])
+                        atts['width'] = '%dpx' % img.size[0]
                     if 'height' not in atts:
-                        atts['height'] = str(img.size[1])
+                        atts['height'] = '%dpx' % img.size[1]
                     del img
             for att_name in 'width', 'height':
                 if att_name in atts:

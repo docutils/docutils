@@ -134,7 +134,7 @@ class Figure(Image):
                 else:
                     self.state.document.settings.record_dependencies.add(
                         imagepath.replace('\\', '/'))
-                    figure_node['width'] = img.size[0]
+                    figure_node['width'] = '%dpx' % img.size[0]
                     del img
         elif figwidth is not None:
             figure_node['width'] = figwidth
