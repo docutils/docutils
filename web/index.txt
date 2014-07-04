@@ -120,8 +120,8 @@ and `Docutils-checkins
 .. _browse the Sandbox:
    http://sourceforge.net/p/docutils/code/HEAD/tree/trunk/sandbox/
 
-.. _bug report: http://sourceforge.net/tracker/?group_id=38414&atid=422030
-.. _patch tracker: http://sourceforge.net/tracker/?group_id=38414&atid=422032
+.. _bug report: http://docutils.sourceforge.net/BUGS.html
+.. _patch tracker: http://sourceforge.net/p/docutils/patches/
 .. _mailing lists: docs/user/mailing-lists.html
 .. _Docutils-users: docs/user/mailing-lists.html#docutils-users
 .. _Docutils-develop: docs/user/mailing-lists.html#docutils-develop
