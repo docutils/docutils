@@ -47,6 +47,16 @@ Advanced text editors with reStructuredText support, IDEs, and docutils GUIs:
 
   __ http://resteditor.sf.net/
 
+* Gnome's gedit offers syntax highlighting and a reST preview pane.
+
+  Latest version of the plugin is available from `bittner @ github`_
+  (See also: `Gedit third party plugins`__).
+
+  __ https://wiki.gnome.org/Apps/Gedit/ThirdPartyPlugins-v3.8
+
+  .. _bittner @ github:  https://github.com/bittner/gedit-reST-plugin
+
+
 * Gunnar Schwant's DocFactory_ is a wxPython GUI application for
   Docutils.
 
