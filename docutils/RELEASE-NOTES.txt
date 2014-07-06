@@ -37,8 +37,8 @@ Future changes
 .. _Porting Python 2 Code to Python 3: https://docs.python.org/3/howto/pyporting.html
 .. _future\: clean single-source support for Python 2/3: http://python-future.org
 
-Changes Since 0.11
-==================
+Release 0.12 (2014-07-06)
+=========================
 
 
 Release 0.11 (2013-07-22)
