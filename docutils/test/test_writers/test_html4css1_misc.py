@@ -13,6 +13,7 @@ Miscellaneous HTML writer tests.
 from __init__ import DocutilsTestSupport
 from docutils import core
 from docutils._compat import b
+import os
 
 class EncodingTestCase(DocutilsTestSupport.StandardTestCase):
 
@@ -78,7 +79,8 @@ class SettingsTestCase(DocutilsTestSupport.StandardTestCase):
                       'stylesheet_path': 'html4css1.css, ham.css'}
         styles = core.publish_parts(self.data, writer_name='html4css1',
                                   settings_overrides=mysettings)['stylesheet']
-        self.assertIn('docutils/writers/html4css1/html4css1.css', styles)
+        if os.path.isdir('../docutils/writers/html4css1/'):
+            self.assertIn('docutils/writers/html4css1/html4css1.css', styles)
         self.assertIn('href="data/ham.css"', styles)
 
     def test_custom_stylesheet_dir_embedded(self):
