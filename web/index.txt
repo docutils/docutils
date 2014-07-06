@@ -83,7 +83,7 @@ the `release notes`_ for a list of changes since the previous release
 (0.11).
 
 __ http://prdownloads.sourceforge.net/docutils/docutils-0.12.tar.gz?download
-.. _release notes: RELEASE-NOTES.html#release-0-12-2013-07-06
+.. _release notes: RELEASE-NOTES.html#release-0-12-2014-07-06
 
 The Sandbox_ contains experimental, contributed code. You can download a
 complete `snapshot of the Sandbox`_ or `browse the Sandbox`_ to download a
