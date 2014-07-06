@@ -40,6 +40,7 @@ Future changes
 Release 0.12 (2014-07-06)
 =========================
 
+Small changes only, release current state
 
 Release 0.11 (2013-07-22)
 =========================
