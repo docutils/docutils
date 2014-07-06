@@ -292,7 +292,8 @@ class HelperFunctionsTests(unittest.TestCase):
         # Return the first expansion that matches an existing file.
         dirs = ('nonex', '.', '..')
         self.assertEqual(utils.find_file_in_dirs('HISTORY.txt', dirs),
-                         '../HISTORY.txt')
+                         '../HISTORY.txt',
+                         '"HISTORY.txt" not in "../", maybe not called from docutils directory.')
         # Return `path` if the file exists in the cwd or if there is no match
         self.assertEqual(utils.find_file_in_dirs('alltests.py', dirs),
                          'alltests.py')
