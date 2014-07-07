@@ -124,7 +124,7 @@ __ http://svn.collab.net/viewcvs/svn/trunk/BUGS?view=markup
 .. _mailing list archives: http://docutils.sf.net/#mailing-lists
 .. _Docutils-users: docs/user/mailing-lists.html#docutils-users
 .. _SourceForge Bug Tracker:
-   http://sourceforge.net/tracker/?group_id=38414&atid=422030
+   http://sourceforge.net/p/docutils/bugs/
 
 
 Known Bugs
