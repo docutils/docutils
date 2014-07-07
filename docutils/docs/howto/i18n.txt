@@ -34,7 +34,7 @@ have to be added to the project: one for Docutils itself (the
 .. [#] If anything in Docutils is insufficiently parameterized, it
    should be considered a bug.  Please report bugs to the Docutils
    project bug tracker on SourceForge at
-   http://sourceforge.net/tracker/?group_id=38414&atid=422030.
+   http://sourceforge.net/p/docutils/bugs/
 
 .. _Docutils: http://docutils.sourceforge.net/
 .. _Introduction to i18n:
@@ -193,4 +193,4 @@ If you do not have repository write access and want to contribute your
 language modules, feel free to submit them via the `SourceForge patch
 tracker`__.
 
-__ http://sourceforge.net/tracker/?group_id=38414&atid=422032
+__ http://sourceforge.net/p/docutils/patches/

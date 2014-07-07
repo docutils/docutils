@@ -371,7 +371,7 @@ Windows users type these commands::
 
 .. _Docutils Testing: http://docutils.sourceforge.net/docs/dev/testing.html
 .. _open a bug report:
-   http://sourceforge.net/tracker/?group_id=38414&atid=422030
+   http://sourceforge.net/p/docutils/bugs/
 .. _send email: mailto:docutils-users@lists.sourceforge.net
    ?subject=Test%20suite%20failure
 .. _web interface: http://post.gmane.org/post.php
