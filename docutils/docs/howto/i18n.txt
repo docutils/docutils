@@ -166,7 +166,7 @@ Testing the Language Modules
 
 Whenever a new language module is added or an existing one modified,
 the unit tests should be run.  The test modules can be found in the
-docutils/test directory from CVS_ or from the `latest CVS snapshot`_.
+docutils/test directory from code_ or from the `latest snapshot`_.
 
 The ``test_language.py`` module can be run as a script.  With no
 arguments, it will test all language modules.  With one or more
@@ -182,8 +182,8 @@ language codes, it will test just those languages.  For example::
 Use the "alltests.py" script to run all test modules, exhaustively
 testing the parser and other parts of the Docutils system.
 
-.. _CVS: http://sourceforge.net/cvs/?group_id=38414
-.. _latest CVS snapshot: http://docutils.sf.net/docutils-snapshot.tgz
+.. _code: https://sourceforge.net/p/docutils/code/HEAD/tree/trunk/
+.. _latest snapshot: https://sourceforge.net/p/docutils/code/HEAD/tarball
 
 
 Submitting the Language Modules
