@@ -9,6 +9,8 @@ Tests for the HTML writer.
 """
 
 import os
+import platform
+
 from __init__ import DocutilsTestSupport
 
 
@@ -20,6 +22,11 @@ def suite():
     s = DocutilsTestSupport.PublishTestSuite('html', suite_settings=settings)
     s.generateTests(totest)
     return s
+
+if platform.system() == "Windows":
+    drive_prefix = "C:"
+else:
+    drive_prefix = ""
 
 totest = {}
 
@@ -56,7 +63,7 @@ head = """\
 
 
 stylesheet = """\
-<link rel="stylesheet" href="/test.css" type="text/css" />"""
+<link rel="stylesheet" href="%(drive)s/test.css" type="text/css" />"""
 
 
 body_prefix = """\
@@ -113,7 +120,7 @@ head = """\
 
 
 stylesheet = """\
-<link rel="stylesheet" href="/test.css" type="text/css" />"""
+<link rel="stylesheet" href="%(drive)s/test.css" type="text/css" />"""
 
 
 body_prefix = """\
@@ -228,7 +235,9 @@ html_body = """\
 <hr class="footer" />
 footer text
 </div>"""
-''' % {'version': DocutilsTestSupport.docutils.__version__}]
+''' % {'version': DocutilsTestSupport.docutils.__version__,
+        'drive': drive_prefix,
+    }]
 ]
 
 if __name__ == '__main__':

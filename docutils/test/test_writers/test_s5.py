@@ -9,6 +9,8 @@ Tests for the S5/HTML writer.
 """
 
 import os
+import platform
+
 from __init__ import DocutilsTestSupport
 
 
@@ -22,7 +24,12 @@ def suite():
     s.generateTests(totest_2)
     return s
 
-interpolations = {'version': DocutilsTestSupport.docutils.__version__}
+interpolations = {
+        'version': DocutilsTestSupport.docutils.__version__,
+        'drive': '', }
+
+if platform.system() == "Windows":
+    interpolations['drive'] = "C:"
 
 totest_1 = {}
 totest_2 = {}
@@ -49,7 +56,7 @@ Slide text.
 <meta name="generator" content="Docutils %(version)s: http://docutils.sourceforge.net/" />
 <meta name="version" content="S5 1.1" />
 <title>Show Title</title>
-<link rel="stylesheet" href="/test.css" type="text/css" />
+<link rel="stylesheet" href="%(drive)s/test.css" type="text/css" />
 <!-- configuration parameters -->
 <meta name="defaultView" content="slideshow" />
 <meta name="controlVis" content="hidden" />
@@ -114,7 +121,7 @@ We're just checking the settings
 <meta name="generator" content="Docutils %(version)s: http://docutils.sourceforge.net/" />
 <meta name="version" content="S5 1.1" />
 <title>Bogus Slide Show</title>
-<link rel="stylesheet" href="/test.css" type="text/css" />
+<link rel="stylesheet" href="%(drive)s/test.css" type="text/css" />
 <!-- configuration parameters -->
 <meta name="defaultView" content="outline" />
 <meta name="controlVis" content="visible" />
