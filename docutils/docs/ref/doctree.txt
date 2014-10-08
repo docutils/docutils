@@ -291,7 +291,49 @@ its writing.
 ``abbreviation``
 ================
 
-`To be completed`_.
+The ``abbreviation`` element is an inline element used to represent an
+abbreviation being used in the document. An example of an abbreviation is 'St'
+being used instead of 'Street'.
+
+Details
+-------
+
+:Category:
+    `Inline Elements`_
+
+:Parents:
+     All elements employing the %inline.elements; parameter entities in their
+     content models may contain ``abbreviation``.
+
+:Children:
+    ``abbreviation`` elements may contain text data plus `inline elements`_.
+
+:Analogues:
+    ``abbreviation`` is analogous to the HTML "abbr" element.
+
+Content Model
+-------------
+
+.. parsed-literal::
+
+    `%text.model;`_
+
+:Attributes:
+    The ``abbreviation`` element contains only the `common attributes`_:
+    ids_, names_, dupnames_, source_, and classes_.
+
+Examples
+--------
+
+The ``abbreviation`` element is not exposed in default restructured text. It
+can only be accessed through custom roles.
+
+Pseudo-XML_ example from a custom `:abbr:` role::
+
+    <paragraph>
+        <abbreviation explanation="Street">
+            St
+        is a common abbreviation for "street".
 
 
 ``acronym``
