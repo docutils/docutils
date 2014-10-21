@@ -16,7 +16,7 @@ External links:
   <http://www.vim.org/scripts/script.php?script_id=973>`__
 
 * `VST (Vim reStructured Text) is a plugin for Vim7 with folding for
-  reST <http://skawina.eu.org/mikolaj/vst.html>`__
+  reST <http://www.vim.org/scripts/script.php?script_id=1334>`__
 
 * `rst mode <http://jedmodes.sf.net/mode/rst/>`__ for the `JED`_
   programmers editor

@@ -33,12 +33,15 @@ Advanced text editors with reStructuredText support, IDEs, and docutils GUIs:
   - `reStructuredText syntax highlighting mode
     <http://www.vim.org/scripts/script.php?script_id=973>`__,
 
-  - `VST <http://skawina.eu.org/mikolaj/vst.html>`__ (Vim reStructuredText)
-    plugin for Vim7 with folding.
+  - `VST <http://www.vim.org/scripts/script.php?script_id=1334>`__ (Vim 
+    reStructuredText) plugin for Vim7 with folding.
 
   - `VOoM <http://www.vim.org/scripts/script.php?script_id=2657>`__
     plugin for Vim that emulates two-pane outliner with
     support for reStructuredText (since version 4.0b2).
+
+  - `Riv: Take notes in rst <https://github.com/Rykka/riv.vim>`__ Vim
+    plugin to take notes in reStructured text.
 
 * `JED <http://www.jedsoft.org/jed/>`__ programmers editor with
   `rst mode <http://jedmodes.sf.net/mode/rst/>`__
