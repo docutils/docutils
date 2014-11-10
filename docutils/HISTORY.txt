@@ -16,6 +16,10 @@
 Changes Since 0.12
 ==================
 
+* docutils/writers/latex2e/__init__.py
+
+  - Fix [ 262 ] Use ``\linewidth`` instead of ``\textwidth`` for figures,
+    admonitions and docinfo.
 
 Release 0.12 (2014-07-06)
 =========================
@@ -26,7 +30,7 @@ Release 0.12 (2014-07-06)
 
 * docutils/parsers/rst/directives/images.py
 
-  - Fix [258] figwidth="image" generates unitless width value.
+  - Fix [ 258 ] figwidth="image" generates unitless width value.
   
 * docutils/parsers/rst/states.py
 

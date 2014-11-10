@@ -48,7 +48,7 @@
     \csname DUadmonition#1\endcsname{#2}%
   \else
     \begin{center}
-      \fbox{\parbox{0.9\textwidth}{#2}}
+      \fbox{\parbox{0.9\linewidth}{#2}}
     \end{center}
   \fi
 }
@@ -62,7 +62,7 @@
 \providecommand{\DUtopicdedication}[1]{\begin{center}#1\end{center}}
 
 % docinfo (width of docinfo table)
-\DUprovidelength{\DUdocinfowidth}{0.9\textwidth}
+\DUprovidelength{\DUdocinfowidth}{0.9\linewidth}
 
 % subtitle (in document title)
 \providecommand*{\DUdocumentsubtitle}[1]{{\large #1}}
@@ -146,7 +146,7 @@
 % sidebar (text outside the main text flow)
 \providecommand{\DUsidebar}[2][class-arg]{%
   \begin{center}
-    \colorbox[gray]{0.80}{\parbox{0.9\textwidth}{#2}}
+    \colorbox[gray]{0.80}{\parbox{0.9\linewidth}{#2}}
   \end{center}
 }
 
@@ -895,7 +895,7 @@ Image with multiple IDs:
 
 A centered image:
 
-\noindent\makebox[\textwidth][c]{\includegraphics{../../../docs/user/rst/images/biohazard.png}}
+\noindent\makebox[\linewidth][c]{\includegraphics{../../../docs/user/rst/images/biohazard.png}}
 
 A left-aligned image:
 
@@ -938,7 +938,7 @@ media, figures might float to a different position if this helps the page
 layout.
 
 \begin{figure}
-\noindent\makebox[\textwidth][c]{\includegraphics[width=258bp]{../../../docs/user/rst/images/title.png}}
+\noindent\makebox[\linewidth][c]{\includegraphics[width=258bp]{../../../docs/user/rst/images/title.png}}
 \caption{Plaintext markup syntax and parser system.}
 \begin{DUlegend}
 \setlength{\DUtablewidth}{\linewidth}
@@ -971,7 +971,7 @@ This paragraph is also part of the legend.
 A left-aligned figure:
 
 \begin{figure} % align = "left"
-\noindent\makebox[\textwidth][c]{\includegraphics[width=40px]{../../../docs/user/rst/images/biohazard.png}}
+\noindent\makebox[\linewidth][c]{\includegraphics[width=40px]{../../../docs/user/rst/images/biohazard.png}}
 \caption{This is the caption.}
 \begin{DUlegend}
 This is the legend.
@@ -988,7 +988,7 @@ rendering software used.
 A centered figure:
 
 \begin{figure}
-\noindent\makebox[\textwidth][c]{\includegraphics[width=40px]{../../../docs/user/rst/images/biohazard.png}}
+\noindent\makebox[\linewidth][c]{\includegraphics[width=40px]{../../../docs/user/rst/images/biohazard.png}}
 \caption{This is the caption.}
 \begin{DUlegend}
 This is the legend.
@@ -1005,7 +1005,7 @@ rendering software used.
 A right-aligned figure:
 
 \begin{figure} % align = "right"
-\noindent\makebox[\textwidth][c]{\includegraphics[width=40px]{../../../docs/user/rst/images/biohazard.png}}
+\noindent\makebox[\linewidth][c]{\includegraphics[width=40px]{../../../docs/user/rst/images/biohazard.png}}
 \caption{This is the caption.}
 \begin{DUlegend}
 This is the legend.
@@ -2386,7 +2386,7 @@ None
 
 \begin{figure}
 \phantomsection\label{figure-label}
-\noindent\makebox[\textwidth][c]{\includegraphics{../../../docs/user/rst/images/biohazard.png}}
+\noindent\makebox[\linewidth][c]{\includegraphics{../../../docs/user/rst/images/biohazard.png}}
 \caption{Figure with %
 \label{hypertarget-in-figure-caption}hypertarget in figure caption.}
 \begin{DUlegend}
