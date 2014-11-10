@@ -490,7 +490,7 @@ PreambleCmds.admonition = r"""
     \csname DUadmonition#1\endcsname{#2}%
   \else
     \begin{center}
-      \fbox{\parbox{0.9\textwidth}{#2}}
+      \fbox{\parbox{0.9\linewidth}{#2}}
     \end{center}
   \fi
 }"""
@@ -509,7 +509,7 @@ PreambleCmds.color = r"""\usepackage{color}"""
 
 PreambleCmds.docinfo = r"""
 % docinfo (width of docinfo table)
-\DUprovidelength{\DUdocinfowidth}{0.9\textwidth}"""
+\DUprovidelength{\DUdocinfowidth}{0.9\linewidth}"""
 # PreambleCmds.docinfo._depends = 'providelength'
 
 PreambleCmds.dedication = r"""
@@ -650,7 +650,7 @@ PreambleCmds.sidebar = r"""
 % sidebar (text outside the main text flow)
 \providecommand{\DUsidebar}[2][class-arg]{%
   \begin{center}
-    \colorbox[gray]{0.80}{\parbox{0.9\textwidth}{#2}}
+    \colorbox[gray]{0.80}{\parbox{0.9\linewidth}{#2}}
   \end{center}
 }"""
 
@@ -2139,7 +2139,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # for "inner alignment" use LaTeX default alignment (similar to HTML)
         alignment = node.attributes.get('align', 'center')
         if alignment != 'center':
-            # The LaTeX "figure" environment always uses the full textwidth,
+            # The LaTeX "figure" environment always uses the full linewidth,
             # so "outer alignment" is ignored. Just write a comment.
             # TODO: use the wrapfigure environment?
             self.out.append('\n\\begin{figure} %% align = "%s"\n' % alignment)
@@ -2306,7 +2306,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             'middle': (r'\raisebox{-0.5\height}{', '}'),
             'top':    (r'\raisebox{-\height}{', '}'),
             # block level images:
-            'center': (r'\noindent\makebox[\textwidth][c]{', '}'),
+            'center': (r'\noindent\makebox[\linewidth][c]{', '}'),
             'left':   (r'\noindent{', r'\hfill}'),
             'right':  (r'\noindent{\hfill', '}'),}
         if 'align' in attrs:
