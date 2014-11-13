@@ -25,19 +25,15 @@ for special needs.
        ../../docutils/test/test_functional.py
        ../../docutils/test/test_writers/test_latex2e.py
 
-    or all at once::
-
-       cd ../../docutils/test/
-       ./alltests.py
-
-    + if output changed: test-compile and approve new output in
+    if output changed: test-compile and approve new output in
       ../../docutils/test/functional/output/
 
     More (informal) tests are in::
 
+      tests/
       ../../docutils/test/functional/input/data/latex.txt
       ../grubert/test
-      ~/Texte/Test/Docutils
+
 
   * Documentation
 
@@ -49,21 +45,24 @@ for special needs.
 
     * add backwards-incompatible changes to ../../docutils/RELEASE-NOTES.txt
     * add summary of changes to ../../docutils/HISTORY.txt
-    * describe change in ../../docutils/docs/user/docutils-05-compat.sty.txt
-      (convert to style sheet and test with
-      ../../docutils/docutils/writers/latex2e/05-compatibility-test.txt
 
   * Commit and announce.
 
+  * If files are renamed, moved or deleted, update the Sourceforge-Web-Mirror
+    with rsync, e.g. ::
+
+     # Test:
+     rsync --dry-run -avkK --del  --exclude '.svn' --exclude '*~' \
+           ./ milde,docutils@web.sf.net:htdocs/sandbox/html4strict
+
+     # Action:
+     rsync -avkK --del  --exclude '.svn' --exclude '*~' \
+           ./ milde,docutils@web.sf.net:htdocs/sandbox/html4strict
+
+
+
 Questionnaire
 =============
-
-#. Which `default font`_ do you prefer for the output?
-
-#. Did you have problems with Find or Export of words with
-   non-ASCII chars (e.g. Umlauts) in the PDF reader (Acrobat, xpdf, ...)
-
-   Which font encoding do you prefer for the output?
 
 #. Does the latex2e writer need a `--stylesheet-path option`_?
 
@@ -95,43 +94,8 @@ Answers:
   screen and on paper.  Because they aren't embedded, it also results in a
   smaller file size.
 
-Using different fonts (e.g. standard postscript fonts) can be achieved
-easily by selecting a font package with the ``--stylesheet`` command line
-option or in a custom style-sheet.
 
 Font embedding must be configured in the LaTeX installation.
-
-Proposal
-~~~~~~~~
-
-Use one of the Postscript default fonts supported by standard LaTeX (pages
-10 and 11 of the `PSNFSS documentation`_)
-
-Bookman
-  | -2  very very wide
-Charter
-  | +0  nonspectacular
-  | -1  no "Base35" font
-New Century Schoolbook
-  | -1  very wide
-Palatino
-  | +1  recommended by font experts
-  | +1  good LaTeX support including matching math fonts, small caps,
-    	old-style figures
-  | -1  bad rendering in xpdf viewer (auto-hinting leads to different
-        x-hight for different characters at some magnifications)
-Times
-  | +1  'de facto standard'
-  | -1  overused
-  | -1  narrow (devised for multi-column layouts)
-Utopia
-  | +1  recommended by font experts
-  | -1  no `Base35` font, no required part of LaTeX any more.
-
-Implement as default stylesheet option, so it can be easily overridden.
-
-   My vote is for Palatino.
-   --Matthew Leingang
 
 
 --stylesheet-path option
@@ -286,16 +250,6 @@ added by LaTeX which is possible with:
 
   Gruesse,
   Martin
-
-
-
-Implemented Changes
-===================
-
-Changes to the latex2e writer in the SVN version since docutils version 0.5
-are documented in the compatibility style sheet latex2e-compat_.
-
-Also see the `Docutils Release Notes`_, the `Docutils History`_.
 
 
 Alternative latex writers
