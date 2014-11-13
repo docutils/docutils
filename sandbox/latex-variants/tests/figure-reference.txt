@@ -1,5 +1,7 @@
 ..                            -*- rst-mode -*-
 
+.. sectnum::
+
 How to label and reference a "formal" figure with RST
 *****************************************************
 
@@ -44,7 +46,11 @@ to utilise LaTeX's reference mechanism.
 Figure :ref:`mc` shows the icon for the file manager `Midnight
 Commander` enlarged to a width of 50 Pixel.
 
-The LaTeX output is OK, the HTML output can be corrected with a custom style
+This also works for section numbers, e.g. this is section
+:ref:`label-and-reference-via-latex-and-custom-roles`.
+
+
+The LaTeX output is OK, the HTML output can be improved with a custom style
 sheet:
 
 * Add the key ``Figure #:`` with ``:before`` pseudo class and automatic
