@@ -73,7 +73,7 @@ Advanced text editors with reStructuredText support, IDEs, and docutils GUIs:
   as `document editor`__ with outlines containing reStructuredText markup.
 
   .. _outliner: http://en.wikipedia.org/wiki/Outliner
-  __ http://webpages.charter.net/edreamleo/rstplugin3.html
+  __ http://leoeditor.com/tutorial-rst3.html
 
 * `NoTex <https://notex.ch>`_ is a browser based reStructuredText editor
   with syntax highlighting and PDF/HTML export functionality using Sphinx.
