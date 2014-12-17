@@ -1005,19 +1005,19 @@ The following options are recognized:
 
 
 .. _sectnum:
-.. _section-autonumbering:
+.. _section-numbering:
 
 Automatic Section Numbering
 ===========================
 
-:Directive Type: "sectnum" or "section-autonumbering" (synonyms)
+:Directive Type: "sectnum" or "section-numbering" (synonyms)
 :Doctree Elements: pending_, generated_
 :Directive Arguments: None.
 :Directive Options: Possible.
 :Directive Content: None.
 :Configuration Setting: sectnum_xform_
 
-The "sectnum" (or "section-autonumbering") directive automatically numbers
+The "sectnum" (or "section-numbering") directive automatically numbers
 sections and subsections in a document (if not disabled by the
 ``--no-section-numbering`` command line option or the `sectnum_xform`_
 configuration setting).
