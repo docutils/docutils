@@ -92,6 +92,7 @@ donations, tasty treats, and related projects:
 * Wolfgang Lipp
 * Edward Loper
 * Dallas Mahrt
+* Brecht Machiels
 * Mikolaj Machowski
 * Ken Manheimer
 * Bob Marshall

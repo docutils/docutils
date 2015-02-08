@@ -29,7 +29,8 @@ class Table(Directive):
     optional_arguments = 1
     final_argument_whitespace = True
     option_spec = {'class': directives.class_option,
-                   'name': directives.unchanged}
+                   'name': directives.unchanged,
+                   'widths': directives.positive_int_list}
     has_content = True
 
     def make_title(self):
@@ -85,7 +86,7 @@ class Table(Directive):
                     self.block_text, self.block_text), line=self.lineno)
                 raise SystemMessagePropagation(error)
 
-    def get_column_widths(self, max_cols):
+    def get_column_widths_from_option(self, max_cols):
         if 'widths' in self.options:
             col_widths = self.options['widths']
             if len(col_widths) != max_cols:
@@ -94,6 +95,12 @@ class Table(Directive):
                     '(%s).' % (self.name, max_cols), nodes.literal_block(
                     self.block_text, self.block_text), line=self.lineno)
                 raise SystemMessagePropagation(error)
+            return col_widths
+
+    def get_column_widths(self, max_cols):
+        col_widths_from_option = self.get_column_widths_from_option(max_cols)
+        if col_widths_from_option:
+            col_widths = col_widths_from_option
         elif max_cols:
             col_widths = [100 // max_cols] * max_cols
         else:
@@ -130,6 +137,13 @@ class RSTTable(Table):
             return [error]
         table_node = node[0]
         table_node['classes'] += self.options.get('class', [])
+        tgroup = table_node[0]
+        colspecs = [child for child in tgroup.children
+                    if child.tagname == 'colspec']
+        col_widths = self.get_column_widths_from_option(len(colspecs))
+        if col_widths:
+            for colspec, col_width in zip(colspecs, col_widths):
+                colspec['colwidth'] = col_width
         self.add_name(table_node)
         if title:
             table_node.insert(0, title)

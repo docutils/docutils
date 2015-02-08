@@ -21,6 +21,10 @@ Changes Since 0.12
   - Fix [ 262 ] Use ``\linewidth`` instead of ``\textwidth`` for figures,
     admonitions and docinfo.
 
+* docutils/parsers/rst/directives/tables.py
+
+  - non-csv tables accept widths, patch [120] .1 
+
 Release 0.12 (2014-07-06)
 =========================
 

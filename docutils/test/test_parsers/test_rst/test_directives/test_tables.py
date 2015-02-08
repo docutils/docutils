@@ -184,6 +184,52 @@ totest['table'] = [
         <literal_block xml:space="preserve">
             .. table:: empty
 """],
+["""\
+.. table::
+    :widths: 15, 25
+
+    ============ ==============
+    Columns with custom widths.
+    ============ ==============
+""",
+"""\
+<document source="test data">
+    <table>
+        <tgroup cols="2">
+            <colspec colwidth="15">
+            <colspec colwidth="25">
+            <tbody>
+                <row>
+                    <entry>
+                        <paragraph>
+                            Columns with
+                    <entry>
+                        <paragraph>
+                            custom widths.
+"""],
+["""\
+.. table::
+    :widths: 10, 20
+
+    +--------------+----------------+
+    | Columns with | custom widths. |
+    +--------------+----------------+
+""",
+"""\
+<document source="test data">
+    <table>
+        <tgroup cols="2">
+            <colspec colwidth="10">
+            <colspec colwidth="20">
+            <tbody>
+                <row>
+                    <entry>
+                        <paragraph>
+                            Columns with
+                    <entry>
+                        <paragraph>
+                            custom widths.
+"""],
 ]
 
 totest['csv-table'] = [
