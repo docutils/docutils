@@ -1288,7 +1288,7 @@
                         Plaintext markup syntax and parser system.
                     <legend>
                         <table>
-                            <tgroup cols="2">
+                            <tgroup cols="2" colwidths="auto">
                                 <colspec colwidth="12">
                                 <colspec colwidth="47">
                                 <tbody>
@@ -1558,7 +1558,7 @@
                     <paragraph>
                         Compound 7, with a table inside:
                     <table>
-                        <tgroup cols="3">
+                        <tgroup cols="3" colwidths="auto">
                             <colspec colwidth="20">
                             <colspec colwidth="20">
                             <colspec colwidth="20">
@@ -1768,7 +1768,7 @@
             <paragraph>
                 This table has a cell spanning two columns:
             <table>
-                <tgroup cols="3">
+                <tgroup cols="3" colwidths="auto">
                     <colspec colwidth="5">
                     <colspec colwidth="5">
                     <colspec colwidth="6">
@@ -1839,7 +1839,7 @@
             <paragraph>
                 Here's a table with cells spanning several rows:
             <table>
-                <tgroup cols="3">
+                <tgroup cols="3" colwidths="auto">
                     <colspec colwidth="24">
                     <colspec colwidth="12">
                     <colspec colwidth="18">
@@ -1891,7 +1891,7 @@
             <paragraph>
                 Here's a complex table, which should test all features.
             <table>
-                <tgroup cols="4">
+                <tgroup cols="4" colwidths="auto">
                     <colspec colwidth="24">
                     <colspec colwidth="12">
                     <colspec colwidth="10">
@@ -1978,7 +1978,7 @@
             <table classes="test">
                 <title>
                     list table with integral header
-                <tgroup cols="3">
+                <tgroup cols="3" colwidths="given">
                     <colspec colwidth="10" stub="1">
                     <colspec colwidth="20">
                     <colspec colwidth="30">

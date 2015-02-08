@@ -30,7 +30,7 @@ totest['grid_tables'] = [
 """\
 <document source="test data">
     <table>
-        <tgroup cols="1">
+        <tgroup cols="1" colwidths="auto">
             <colspec colwidth="37">
             <tbody>
                 <row>
@@ -47,7 +47,7 @@ totest['grid_tables'] = [
 """\
 <document source="test data">
     <table>
-        <tgroup cols="1">
+        <tgroup cols="1" colwidths="auto">
             <colspec colwidth="23">
             <tbody>
                 <row>
@@ -83,7 +83,7 @@ totest['grid_tables'] = [
 """\
 <document source="test data">
     <table>
-        <tgroup cols="1">
+        <tgroup cols="1" colwidths="auto">
             <colspec colwidth="24">
             <tbody>
                 <row>
@@ -91,7 +91,7 @@ totest['grid_tables'] = [
                         <paragraph>
                             A well-formed | table.
     <table>
-        <tgroup cols="1">
+        <tgroup cols="1" colwidths="auto">
             <colspec colwidth="24">
             <tbody>
                 <row>
@@ -107,7 +107,7 @@ totest['grid_tables'] = [
 """\
 <document source="test data">
     <table>
-        <tgroup cols="2">
+        <tgroup cols="2" colwidths="auto">
             <colspec colwidth="14">
             <colspec colwidth="14">
             <tbody>
@@ -129,7 +129,7 @@ totest['grid_tables'] = [
 """\
 <document source="test data">
     <table>
-        <tgroup cols="1">
+        <tgroup cols="1" colwidths="auto">
             <colspec colwidth="14">
             <tbody>
                 <row>
@@ -151,7 +151,7 @@ totest['grid_tables'] = [
 """\
 <document source="test data">
     <table>
-        <tgroup cols="2">
+        <tgroup cols="2" colwidths="auto">
             <colspec colwidth="14">
             <colspec colwidth="13">
             <tbody>
@@ -180,7 +180,7 @@ totest['grid_tables'] = [
 """\
 <document source="test data">
     <table>
-        <tgroup cols="2">
+        <tgroup cols="2" colwidths="auto">
             <colspec colwidth="14">
             <colspec colwidth="15">
             <tbody>
@@ -209,7 +209,7 @@ totest['grid_tables'] = [
 """\
 <document source="test data">
     <table>
-        <tgroup cols="2">
+        <tgroup cols="2" colwidths="auto">
             <colspec colwidth="12">
             <colspec colwidth="13">
             <tbody>
@@ -240,7 +240,7 @@ totest['grid_tables'] = [
 """\
 <document source="test data">
     <table>
-        <tgroup cols="2">
+        <tgroup cols="2" colwidths="auto">
             <colspec colwidth="14">
             <colspec colwidth="14">
             <tbody>
@@ -268,7 +268,7 @@ totest['grid_tables'] = [
 """\
 <document source="test data">
     <table>
-        <tgroup cols="3">
+        <tgroup cols="3" colwidths="auto">
             <colspec colwidth="12">
             <colspec colwidth="13">
             <colspec colwidth="15">
@@ -308,7 +308,7 @@ Complex spanning pattern (no edge knows all rows/cols):
     <paragraph>
         Complex spanning pattern (no edge knows all rows/cols):
     <table>
-        <tgroup cols="3">
+        <tgroup cols="3" colwidths="auto">
             <colspec colwidth="11">
             <colspec colwidth="13">
             <colspec colwidth="11">
@@ -348,7 +348,7 @@ Complex spanning pattern (no edge knows all rows/cols):
 """\
 <document source="test data">
     <table>
-        <tgroup cols="4">
+        <tgroup cols="4" colwidths="auto">
             <colspec colwidth="24">
             <colspec colwidth="12">
             <colspec colwidth="10">
@@ -423,7 +423,7 @@ No blank line after table.
 """\
 <document source="test data">
     <table>
-        <tgroup cols="2">
+        <tgroup cols="2" colwidths="auto">
             <colspec colwidth="17">
             <colspec colwidth="8">
             <tbody>
@@ -458,7 +458,7 @@ No blank line after table.
 """\
 <document source="test data">
     <table>
-        <tgroup cols="2">
+        <tgroup cols="2" colwidths="auto">
             <colspec colwidth="17">
             <colspec colwidth="8">
             <tbody>
@@ -518,7 +518,7 @@ No blank line after table.
 """\
 <document source="test data">
     <table>
-        <tgroup cols="1">
+        <tgroup cols="1" colwidths="auto">
             <colspec colwidth="30">
             <tbody>
                 <row>
@@ -526,7 +526,7 @@ No blank line after table.
                         <paragraph>
                             This table contains another.
                         <table>
-                            <tgroup cols="1">
+                            <tgroup cols="1" colwidths="auto">
                                 <colspec colwidth="25">
                                 <tbody>
                                     <row>
@@ -544,7 +544,7 @@ No blank line after table.
 """\
 <document source="test data">
     <table>
-        <tgroup cols="2">
+        <tgroup cols="2" colwidths="auto">
             <colspec colwidth="18">
             <colspec colwidth="8">
             <tbody>
@@ -572,7 +572,7 @@ No blank line after table.
 """\
 <document source="test data">
     <table>
-        <tgroup cols="1">
+        <tgroup cols="1" colwidths="auto">
             <colspec colwidth="78">
             <tbody>
                 <row>
@@ -609,7 +609,7 @@ And more.
     <paragraph>
         Something before.
     <table>
-        <tgroup cols="1">
+        <tgroup cols="1" colwidths="auto">
             <colspec colwidth="78">
             <tbody>
                 <row>
@@ -640,7 +640,7 @@ Paragraph.
 """\
 <document source="test data">
     <table>
-        <tgroup cols="2">
+        <tgroup cols="2" colwidths="auto">
             <colspec colwidth="12">
             <colspec colwidth="12">
             <tbody>
@@ -663,7 +663,7 @@ and           two rows.
 """\
 <document source="test data">
     <table>
-        <tgroup cols="2">
+        <tgroup cols="2" colwidths="auto">
             <colspec colwidth="12">
             <colspec colwidth="12">
             <tbody>
@@ -691,7 +691,7 @@ two rows, and a column span.
 """\
 <document source="test data">
     <table>
-        <tgroup cols="2">
+        <tgroup cols="2" colwidths="auto">
             <colspec colwidth="12">
             <colspec colwidth="14">
             <tbody>
@@ -723,7 +723,7 @@ two rows, and a column span.
 """\
 <document source="test data">
     <table>
-        <tgroup cols="3">
+        <tgroup cols="3" colwidths="auto">
             <colspec colwidth="2">
             <colspec colwidth="11">
             <colspec colwidth="44">
@@ -774,7 +774,7 @@ A table with three  columns.
 """\
 <document source="test data">
     <table>
-        <tgroup cols="3">
+        <tgroup cols="3" colwidths="auto">
             <colspec colwidth="7">
             <colspec colwidth="9">
             <colspec colwidth="8">
@@ -838,7 +838,7 @@ No blank line after table.
 """\
 <document source="test data">
     <table>
-        <tgroup cols="2">
+        <tgroup cols="2" colwidths="auto">
             <colspec colwidth="14">
             <colspec colwidth="6">
             <thead>
@@ -939,7 +939,7 @@ cell 3       cell 4
 """\
 <document source="test data">
     <table>
-        <tgroup cols="2">
+        <tgroup cols="2" colwidths="auto">
             <colspec colwidth="2">
             <colspec colwidth="28">
             <tbody>
@@ -956,7 +956,7 @@ cell 3       cell 4
                             2
                     <entry>
                         <table>
-                            <tgroup cols="3">
+                            <tgroup cols="3" colwidths="auto">
                                 <colspec colwidth="7">
                                 <colspec colwidth="6">
                                 <colspec colwidth="8">
@@ -985,7 +985,7 @@ with empty cells
 """\
 <document source="test data">
     <table>
-        <tgroup cols="2">
+        <tgroup cols="2" colwidths="auto">
             <colspec colwidth="16">
             <colspec colwidth="6">
             <tbody>
@@ -1011,7 +1011,7 @@ with empty cells
 """\
 <document source="test data">
     <table>
-        <tgroup cols="2">
+        <tgroup cols="2" colwidths="auto">
             <colspec colwidth="14">
             <colspec colwidth="8">
             <thead>
@@ -1067,7 +1067,7 @@ Blank line    after.
 """\
 <document source="test data">
     <table>
-        <tgroup cols="2">
+        <tgroup cols="2" colwidths="auto">
             <colspec colwidth="12">
             <colspec colwidth="17">
             <tbody>
@@ -1112,7 +1112,7 @@ A table with  many row separators.
 """\
 <document source="test data">
     <table>
-        <tgroup cols="2">
+        <tgroup cols="2" colwidths="auto">
             <colspec colwidth="12">
             <colspec colwidth="20">
             <tbody>
@@ -1183,7 +1183,7 @@ A table with  many row separators.
             3   no spans     here
             ==  ===========  ===========
     <table>
-        <tgroup cols="3">
+        <tgroup cols="3" colwidths="auto">
             <colspec colwidth="2">
             <colspec colwidth="11">
             <colspec colwidth="11">
@@ -1225,7 +1225,7 @@ Note       The first row of this table may expand
 """\
 <document source="test data">
     <table>
-        <tgroup cols="2">
+        <tgroup cols="2" colwidths="auto">
             <colspec colwidth="9">
             <colspec colwidth="69">
             <tbody>
