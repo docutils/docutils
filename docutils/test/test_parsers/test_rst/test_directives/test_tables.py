@@ -71,7 +71,7 @@ totest['table'] = [
     <table classes="custom" ids="tab-truth-not" names="tab:truth.not">
         <title>
             Truth table for "not"
-        <tgroup cols="2">
+        <tgroup cols="2" colwidths="auto">
             <colspec colwidth="5">
             <colspec colwidth="5">
             <thead>
@@ -109,7 +109,7 @@ totest['table'] = [
 """\
 <document source="test data">
     <table>
-        <tgroup cols="2">
+        <tgroup cols="2" colwidths="auto">
             <colspec colwidth="10">
             <colspec colwidth="10">
             <tbody>
@@ -143,7 +143,7 @@ totest['table'] = [
             <problematic ids="id2" refid="id1">
                 *
             error
-        <tgroup cols="2">
+        <tgroup cols="2" colwidths="auto">
             <colspec colwidth="6">
             <colspec colwidth="5">
             <tbody>
@@ -195,7 +195,7 @@ totest['table'] = [
 """\
 <document source="test data">
     <table>
-        <tgroup cols="2">
+        <tgroup cols="2" colwidths="given">
             <colspec colwidth="15">
             <colspec colwidth="25">
             <tbody>
@@ -218,7 +218,7 @@ totest['table'] = [
 """\
 <document source="test data">
     <table>
-        <tgroup cols="2">
+        <tgroup cols="2" colwidths="given">
             <colspec colwidth="10">
             <colspec colwidth="20">
             <tbody>
@@ -229,6 +229,52 @@ totest['table'] = [
                     <entry>
                         <paragraph>
                             custom widths.
+"""],
+["""\
+.. table::
+    :widths: auto
+
+    +--------------+-------------------+
+    | Columns with | automatic widths. |
+    +--------------+-------------------+
+""",
+"""\
+<document source="test data">
+    <table>
+        <tgroup cols="2" colwidths="auto">
+            <colspec colwidth="14">
+            <colspec colwidth="19">
+            <tbody>
+                <row>
+                    <entry>
+                        <paragraph>
+                            Columns with
+                    <entry>
+                        <paragraph>
+                            automatic widths.
+"""],
+["""\
+.. table::
+    :widths: grid
+
+    +--------------+-------------------+
+    | Columns with | automatic widths. |
+    +--------------+-------------------+
+""",
+"""\
+<document source="test data">
+    <table>
+        <tgroup cols="2" colwidths="given">
+            <colspec colwidth="14">
+            <colspec colwidth="19">
+            <tbody>
+                <row>
+                    <entry>
+                        <paragraph>
+                            Columns with
+                    <entry>
+                        <paragraph>
+                            automatic widths.
 """],
 ]
 
@@ -250,7 +296,7 @@ totest['csv-table'] = [
     <table>
         <title>
             inline with integral header
-        <tgroup cols="3">
+        <tgroup cols="3" colwidths="given">
             <colspec colwidth="10" stub="1">
             <colspec colwidth="20">
             <colspec colwidth="30">
@@ -310,7 +356,7 @@ totest['csv-table'] = [
     <table>
         <title>
             inline with separate header
-        <tgroup cols="3">
+        <tgroup cols="3" colwidths="given">
             <colspec colwidth="10">
             <colspec colwidth="20">
             <colspec colwidth="30">
@@ -354,7 +400,7 @@ totest['csv-table'] = [
     <table>
         <title>
             complex internal structure
-        <tgroup cols="3">
+        <tgroup cols="3" colwidths="auto">
             <colspec colwidth="33">
             <colspec colwidth="33">
             <colspec colwidth="33">
@@ -408,7 +454,7 @@ totest['csv-table'] = [
     <table>
         <title>
             short rows
-        <tgroup cols="3">
+        <tgroup cols="3" colwidths="auto">
             <colspec colwidth="33">
             <colspec colwidth="33">
             <colspec colwidth="33">
@@ -445,7 +491,7 @@ totest['csv-table'] = [
     <table>
         <title>
             short rows
-        <tgroup cols="3">
+        <tgroup cols="3" colwidths="auto">
             <colspec colwidth="33">
             <colspec colwidth="33">
             <colspec colwidth="33">
@@ -486,7 +532,7 @@ u"""\
     <table>
         <title>
             non-ASCII characters
-        <tgroup cols="1">
+        <tgroup cols="1" colwidths="auto">
             <colspec colwidth="100">
             <tbody>
                 <row>
@@ -584,7 +630,7 @@ u"""\
             <problematic ids="id2" refid="id1">
                 *
             title
-        <tgroup cols="3">
+        <tgroup cols="3" colwidths="auto">
             <colspec colwidth="33">
             <colspec colwidth="33">
             <colspec colwidth="33">
@@ -709,7 +755,7 @@ u"""\
     <table>
         <title>
             good delimiter
-        <tgroup cols="3">
+        <tgroup cols="3" colwidths="auto">
             <colspec colwidth="33">
             <colspec colwidth="33">
             <colspec colwidth="33">
@@ -727,7 +773,7 @@ u"""\
     <table>
         <title>
             good delimiter
-        <tgroup cols="3">
+        <tgroup cols="3" colwidths="auto">
             <colspec colwidth="33">
             <colspec colwidth="33">
             <colspec colwidth="33">
@@ -745,7 +791,7 @@ u"""\
     <table>
         <title>
             good delimiter
-        <tgroup cols="3">
+        <tgroup cols="3" colwidths="auto">
             <colspec colwidth="33">
             <colspec colwidth="33">
             <colspec colwidth="33">
@@ -763,7 +809,7 @@ u"""\
     <table>
         <title>
             good delimiter
-        <tgroup cols="3">
+        <tgroup cols="3" colwidths="auto">
             <colspec colwidth="33">
             <colspec colwidth="33">
             <colspec colwidth="33">
@@ -870,7 +916,7 @@ u"""\
     <table>
         <title>
             good encoding
-        <tgroup cols="3">
+        <tgroup cols="3" colwidths="auto">
             <colspec colwidth="33">
             <colspec colwidth="33">
             <colspec colwidth="33">
@@ -959,10 +1005,127 @@ totest['list-table'] = [
     <table>
         <title>
             list table with integral header
-        <tgroup cols="3">
+        <tgroup cols="3" colwidths="given">
             <colspec colwidth="10" stub="1">
             <colspec colwidth="20">
             <colspec colwidth="30">
+            <thead>
+                <row>
+                    <entry>
+                        <paragraph>
+                            Treat
+                    <entry>
+                        <paragraph>
+                            Quantity
+                    <entry>
+                        <paragraph>
+                            Description
+            <tbody>
+                <row>
+                    <entry>
+                        <paragraph>
+                            Albatross
+                    <entry>
+                        <paragraph>
+                            2.99
+                    <entry>
+                        <paragraph>
+                            On a stick!
+                <row>
+                    <entry>
+                        <paragraph>
+                            Crunchy Frog
+                    <entry>
+                        <paragraph>
+                            1.49
+                    <entry>
+                        <paragraph>
+                            If we took the bones out, it wouldn\'t be
+                            crunchy, now would it?
+                <row>
+                    <entry>
+                        <paragraph>
+                            Gannet Ripple
+                    <entry>
+                        <paragraph>
+                            1.99
+                    <entry>
+                        <paragraph>
+                            On a stick!
+"""],
+["""\
+.. list-table:: list table with integral header
+   :widths: auto
+   :header-rows: 1
+   :stub-columns: 1
+
+   * - Treat
+     - Quantity
+     - Description
+   * - Albatross
+     - 2.99
+     - On a stick!
+""",
+"""\
+<document source="test data">
+    <table>
+        <title>
+            list table with integral header
+        <tgroup cols="3" colwidths="auto">
+            <colspec colwidth="33" stub="1">
+            <colspec colwidth="33">
+            <colspec colwidth="33">
+            <thead>
+                <row>
+                    <entry>
+                        <paragraph>
+                            Treat
+                    <entry>
+                        <paragraph>
+                            Quantity
+                    <entry>
+                        <paragraph>
+                            Description
+            <tbody>
+                <row>
+                    <entry>
+                        <paragraph>
+                            Albatross
+                    <entry>
+                        <paragraph>
+                            2.99
+                    <entry>
+                        <paragraph>
+                            On a stick!
+"""],
+["""\
+.. list-table:: list table with integral header
+   :header-rows: 1
+   :stub-columns: 1
+
+   * - Treat
+     - Quantity
+     - Description
+   * - Albatross
+     - 2.99
+     - On a stick!
+   * - Crunchy Frog
+     - 1.49
+     - If we took the bones out, it wouldn\'t be
+       crunchy, now would it?
+   * - Gannet Ripple
+     - 1.99
+     - On a stick!
+""",
+"""\
+<document source="test data">
+    <table>
+        <title>
+            list table with integral header
+        <tgroup cols="3" colwidths="auto">
+            <colspec colwidth="33" stub="1">
+            <colspec colwidth="33">
+            <colspec colwidth="33">
             <thead>
                 <row>
                     <entry>

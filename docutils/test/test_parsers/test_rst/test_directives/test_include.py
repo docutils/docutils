@@ -531,7 +531,7 @@ Testing errors in included file:
                 section underline too short
                 -----
         <table>
-            <tgroup cols="2">
+            <tgroup cols="2" colwidths="auto">
                 <colspec colwidth="14">
                 <colspec colwidth="6">
                 <thead>

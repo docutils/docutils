@@ -1747,10 +1747,10 @@ class Body(RSTState):
                                     line=startline+offset)
         return [error]
 
-    def build_table(self, tabledata, tableline, stub_columns=0):
+    def build_table(self, tabledata, tableline, stub_columns=0, widths='auto'):
         colwidths, headrows, bodyrows = tabledata
         table = nodes.table()
-        tgroup = nodes.tgroup(cols=len(colwidths))
+        tgroup = nodes.tgroup(cols=len(colwidths), colwidths=widths)
         table += tgroup
         for colwidth in colwidths:
             colspec = nodes.colspec(colwidth=colwidth)

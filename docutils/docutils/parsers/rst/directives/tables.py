@@ -30,7 +30,8 @@ class Table(Directive):
     final_argument_whitespace = True
     option_spec = {'class': directives.class_option,
                    'name': directives.unchanged,
-                   'widths': directives.positive_int_list}
+                   'widths': directives.value_or(('auto', 'grid'),
+                                                 directives.positive_int_list)}
     has_content = True
 
     def make_title(self):
@@ -86,21 +87,19 @@ class Table(Directive):
                     self.block_text, self.block_text), line=self.lineno)
                 raise SystemMessagePropagation(error)
 
-    def get_column_widths_from_option(self, max_cols):
-        if 'widths' in self.options:
-            col_widths = self.options['widths']
-            if len(col_widths) != max_cols:
+    @property
+    def widths(self):
+        return self.options.get('widths', 'auto')
+
+    def get_column_widths(self, max_cols):
+        if type(self.widths) == list:
+            if len(self.widths) != max_cols:
                 error = self.state_machine.reporter.error(
                     '"%s" widths do not match the number of columns in table '
                     '(%s).' % (self.name, max_cols), nodes.literal_block(
                     self.block_text, self.block_text), line=self.lineno)
                 raise SystemMessagePropagation(error)
-            return col_widths
-
-    def get_column_widths(self, max_cols):
-        col_widths_from_option = self.get_column_widths_from_option(max_cols)
-        if col_widths_from_option:
-            col_widths = col_widths_from_option
+            col_widths = self.widths
         elif max_cols:
             col_widths = [100 // max_cols] * max_cols
         else:
@@ -108,7 +107,8 @@ class Table(Directive):
                 'No table data detected in CSV file.', nodes.literal_block(
                 self.block_text, self.block_text), line=self.lineno)
             raise SystemMessagePropagation(error)
-        return col_widths
+        widths = 'auto' if self.widths == 'auto' else 'given'
+        return widths, col_widths
 
     def extend_short_rows_with_empty_cells(self, columns, parts):
         for part in parts:
@@ -138,12 +138,12 @@ class RSTTable(Table):
         table_node = node[0]
         table_node['classes'] += self.options.get('class', [])
         tgroup = table_node[0]
-        colspecs = [child for child in tgroup.children
-                    if child.tagname == 'colspec']
-        col_widths = self.get_column_widths_from_option(len(colspecs))
-        if col_widths:
-            for colspec, col_width in zip(colspecs, col_widths):
+        if type(self.widths) == list:
+            colspecs = [child for child in tgroup.children
+                        if child.tagname == 'colspec']
+            for colspec, col_width in zip(colspecs, self.widths):
                 colspec['colwidth'] = col_width
+        tgroup['colwidths'] = 'auto' if self.widths == 'auto' else 'given'
         self.add_name(table_node)
         if title:
             table_node.insert(0, title)
@@ -155,7 +155,8 @@ class CSVTable(Table):
     option_spec = {'header-rows': directives.nonnegative_int,
                    'stub-columns': directives.nonnegative_int,
                    'header': directives.unchanged,
-                   'widths': directives.positive_int_list,
+                   'widths': directives.value_or(('auto', ),
+                                                 directives.positive_int_list),
                    'file': directives.path,
                    'url': directives.uri,
                    'encoding': directives.encoding,
@@ -233,7 +234,7 @@ class CSVTable(Table):
             self.check_table_dimensions(rows, header_rows, stub_columns)
             table_head.extend(rows[:header_rows])
             table_body = rows[header_rows:]
-            col_widths = self.get_column_widths(max_cols)
+            widths, col_widths = self.get_column_widths(max_cols)
             self.extend_short_rows_with_empty_cells(max_cols,
                                                     (table_head, table_body))
         except SystemMessagePropagation, detail:
@@ -249,7 +250,7 @@ class CSVTable(Table):
             return [error]
         table = (col_widths, table_head, table_body)
         table_node = self.state.build_table(table, self.content_offset,
-                                            stub_columns)
+                                            stub_columns, widths=widths)
         table_node['classes'] += self.options.get('class', [])
         self.add_name(table_node)
         if title:
@@ -374,7 +375,8 @@ class ListTable(Table):
 
     option_spec = {'header-rows': directives.nonnegative_int,
                    'stub-columns': directives.nonnegative_int,
-                   'widths': directives.positive_int_list,
+                   'widths': directives.value_or(('auto', ),
+                                                 directives.positive_int_list),
                    'class': directives.class_option,
                    'name': directives.unchanged}
 
@@ -389,7 +391,7 @@ class ListTable(Table):
         node = nodes.Element()          # anonymous container for parsing
         self.state.nested_parse(self.content, self.content_offset, node)
         try:
-            num_cols, col_widths = self.check_list_content(node)
+            num_cols, widths, col_widths = self.check_list_content(node)
             table_data = [[item.children for item in row_list[0]]
                           for row_list in node[0]]
             header_rows = self.options.get('header-rows', 0)
@@ -397,7 +399,7 @@ class ListTable(Table):
             self.check_table_dimensions(table_data, header_rows, stub_columns)
         except SystemMessagePropagation, detail:
             return [detail.args[0]]
-        table_node = self.build_table_from_list(table_data, col_widths,
+        table_node = self.build_table_from_list(table_data, widths, col_widths,
                                                 header_rows, stub_columns)
         table_node['classes'] += self.options.get('class', [])
         self.add_name(table_node)
@@ -441,15 +443,18 @@ class ListTable(Table):
                     raise SystemMessagePropagation(error)
             else:
                 num_cols = len(item[0])
-        col_widths = self.get_column_widths(num_cols)
-        return num_cols, col_widths
+        widths, col_widths = self.get_column_widths(num_cols)
+        return num_cols, widths, col_widths
 
-    def build_table_from_list(self, table_data, col_widths, header_rows, stub_columns):
+    def build_table_from_list(self, table_data, widths, col_widths, header_rows,
+                              stub_columns):
         table = nodes.table()
-        tgroup = nodes.tgroup(cols=len(col_widths))
+        tgroup = nodes.tgroup(cols=len(col_widths), colwidths=widths)
         table += tgroup
         for col_width in col_widths:
-            colspec = nodes.colspec(colwidth=col_width)
+            colspec = nodes.colspec()
+            if col_width is not None:
+                colspec.attributes['colwidth'] = col_width
             if stub_columns:
                 colspec.attributes['stub'] = 1
                 stub_columns -= 1

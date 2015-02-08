@@ -23,7 +23,8 @@ Changes Since 0.12
 
 * docutils/parsers/rst/directives/tables.py
 
-  - non-csv tables accept widths, patch [120] .1 
+  - patch [120] tables accept option widths: list of relative widths, 'auto' 
+    or 'grid'.
 
 Release 0.12 (2014-07-06)
 =========================
