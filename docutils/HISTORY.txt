@@ -26,6 +26,9 @@ Changes Since 0.12
   - patch [120] tables accept option widths: list of relative widths, 'auto' 
     or 'grid'.
 
+* docutils/writers/odf_odt/__init__.py remove decode.encode of filename
+  stored in zip.
+
 Release 0.12 (2014-07-06)
 =========================
 

@@ -594,9 +594,7 @@ class Writer(writers.Writer):
             if source is None:
                 continue
             try:
-                # encode/decode
-                destination1 = destination.decode('latin-1').encode('utf-8')
-                zfile.write(source, destination1)
+                zfile.write(source, destination)
             except OSError, e:
                 self.document.reporter.warning(
                     "Can't open file %s." % (source, ))
