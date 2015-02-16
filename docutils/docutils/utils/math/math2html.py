@@ -14,7 +14,7 @@
 # .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause
 
 #   Based on eLyXer: convert LyX source files to HTML output.
-#   http://elyxer.nongnu.org/
+#   http://alexfernandez.github.io/elyxer/
 
 # --end--
 # Alex 20101110
@@ -410,7 +410,7 @@ class FormulaConfig(object):
       u'\\bowtie':u'⋈', u'\\box':u'▫', u'\\boxdot':u'⊡', u'\\bullet':u'•', 
       u'\\bumpeq':u'≏', u'\\cancer':u'♋', u'\\cap':u'∩', u'\\capricornus':u'♑', 
       u'\\cdot':u'⋅', u'\\cdots':u'⋯', u'\\centerdot':u'∙', 
-      u'\\checkmark':u'✓', u'\\chi':u'χ', u'\\circ':u'○', u'\\circeq':u'≗', 
+      u'\\checkmark':u'✓', u'\\chi':u'χ', u'\\circ':u'∘', u'\\circeq':u'≗', 
       u'\\circledR':u'®', u'\\circledast':u'⊛', u'\\circledcirc':u'⊚', 
       u'\\circleddash':u'⊝', u'\\clubsuit':u'♣', u'\\coloneqq':u'≔', 
       u'\\complement':u'∁', u'\\cong':u'≅', u'\\coprod':u'∐', 
