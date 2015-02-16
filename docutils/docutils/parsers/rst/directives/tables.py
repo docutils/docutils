@@ -107,7 +107,10 @@ class Table(Directive):
                 'No table data detected in CSV file.', nodes.literal_block(
                 self.block_text, self.block_text), line=self.lineno)
             raise SystemMessagePropagation(error)
-        widths = 'auto' if self.widths == 'auto' else 'given'
+        if self.widths == 'auto':
+            widths = 'auto'
+        else:
+            widths = 'given'
         return widths, col_widths
 
     def extend_short_rows_with_empty_cells(self, columns, parts):
@@ -143,7 +146,10 @@ class RSTTable(Table):
                         if child.tagname == 'colspec']
             for colspec, col_width in zip(colspecs, self.widths):
                 colspec['colwidth'] = col_width
-        tgroup['colwidths'] = 'auto' if self.widths == 'auto' else 'given'
+        if self.widths == 'auto':
+            tgroup['colwidths'] = 'auto'
+        else:
+            tgroup['colwidths'] = 'given'
         self.add_name(table_node)
         if title:
             table_node.insert(0, title)
@@ -371,7 +377,7 @@ class ListTable(Table):
     Implement tables whose data is encoded as a uniform two-level bullet list.
     For further ideas, see
     http://docutils.sf.net/docs/dev/rst/alternatives.html#list-driven-tables
-    """ 
+    """
 
     option_spec = {'header-rows': directives.nonnegative_int,
                    'stub-columns': directives.nonnegative_int,
