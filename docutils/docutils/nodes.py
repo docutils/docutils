@@ -533,7 +533,7 @@ class Element(Node):
         parts = [self.tagname]
         for name, value in self.attlist():
             if value is None:           # boolean attribute
-                parts.append(name)
+                parts.append('%s="True"' % name)
                 continue
             if isinstance(value, list):
                 values = [serial_escape('%s' % (v,)) for v in value]
