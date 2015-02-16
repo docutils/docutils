@@ -25,8 +25,13 @@ Changes Since 0.12
   - patch [ 120 ] tables accept option widths: list of relative widths, 'auto' 
     or 'grid'.
 
-* docutils/writers/odf_odt/__init__.py remove decode.encode of filename
-  stored in zip.
+* docutils/writers/html4css1/__init__.py 
+
+  - Add "docutils" to class values for "container" object to address [ 267 ].
+
+* docutils/writers/odf_odt/__init__.py 
+
+  - remove decode.encode of filename stored in zip.
 
 * docutils/writers/latex2e/__init__.py
 

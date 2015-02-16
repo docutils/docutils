@@ -663,7 +663,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('</div>\n')
 
     def visit_container(self, node):
-        self.body.append(self.starttag(node, 'div', CLASS='container'))
+        self.body.append(self.starttag(node, 'div', CLASS='docutils container'))
 
     def depart_container(self, node):
         self.body.append('</div>\n')
