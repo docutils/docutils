@@ -8,7 +8,7 @@ Latex Writer Variants
 :Date: $Date$
 
 This sandbox project is a place to try out and discuss
-`latex2e writer extensions`_ and `alternative latex writers`_
+`latex2e writer extensions`_ and alternative latex writers
 for special needs.
 
 .. contents::
@@ -48,29 +48,6 @@ for special needs.
 
   * Commit and announce.
 
-  * If files are renamed, moved or deleted, update the Sourceforge-Web-Mirror
-    with rsync, e.g. ::
-
-     # Test:
-     rsync --dry-run -avkK --del  --exclude '.svn' --exclude '*~' \
-           ./ milde,docutils@web.sf.net:htdocs/sandbox/html4strict
-
-     # Action:
-     rsync -avkK --del  --exclude '.svn' --exclude '*~' \
-           ./ milde,docutils@web.sf.net:htdocs/sandbox/html4strict
-
-
-
-Questionnaire
-=============
-
-#. Does the latex2e writer need a `--stylesheet-path option`_?
-
-#. Feature wishes or ideas of improvement for the `latex2e` writer.
-
-
-Users of ``rst2latex2.py`` are encouraged to respond by mail to the
-docutils-users list.
 
 Proposed Changes
 ================
@@ -79,23 +56,6 @@ See also the notes in
 http://docutils.sourceforge.net/docs/user/latex.html#problems
 and the TODO list in
 http://docutils.sourceforge.net/docs/dev/todo.html#latex-writer
-
-
-Default font
-------------
-
-Which default font do you prefer for the output?
-
-Answers:
-  By default, PDFLaTeX uses embedded computer modern family, which look good
-  on paper but poor on LCDs (even if outlined, due to suboptimal hinting),
-  and result in large PDFs.  rst2pdf uses the "standard" PDF fonts by
-  default (Times, Helvetica, Courier) which IMO look reasonable both on
-  screen and on paper.  Because they aren't embedded, it also results in a
-  smaller file size.
-
-
-Font embedding must be configured in the LaTeX installation.
 
 
 --stylesheet-path option
@@ -214,7 +174,7 @@ Bibliography directive
 ----------------------
 
 Alan suggested a bibliography directive so that BibTex references are not
-automatically placed at the end (and bibtex for html via ... can be supported)
+automatically placed at the end (and bibtex for HTML via ... can be supported)
 
 This would imply supression of the "Bibliography" or "References" header
 added by LaTeX which is possible with:
@@ -251,23 +211,6 @@ added by LaTeX which is possible with:
   Gruesse,
   Martin
 
-
-Alternative latex writers
-*************************
-
-Browse the `SVN repository at berlios.de`__
-
-__ http://svn.berlios.de/viewvc/docutils/trunk/sandbox/latex-variants/
-
-* The `docs` dir contains generic documentation and discussion.
-
-  Writer specific documentation is placed in the respective "literate"
-  source.
-
-other latex writers
-===================
-
-Currently none.
 
 Tests
 *****
