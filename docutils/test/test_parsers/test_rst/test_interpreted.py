@@ -319,7 +319,7 @@ totest['references'] = [
 """\
 <document source="test data">
     <paragraph>
-        <reference refuri="http://www.faqs.org/rfcs/rfc2822.html">
+        <reference refuri="http://tools.ietf.org/html/rfc2822.html">
             RFC 2822
 """],
 ["""\

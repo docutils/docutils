@@ -20,6 +20,10 @@ Changes Since 0.12
 
   - Fix [ 253 ] Attribute key without value not allowed in XML.
 
+* docutils/parsers/rst/__init__.py
+
+  - Fix [ 233 ] Change the base URL for the :rfc: role.
+
 * docutils/parsers/rst/directives/tables.py
 
   - patch [ 120 ] tables accept option widths: list of relative widths, 'auto' 

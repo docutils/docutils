@@ -35,13 +35,13 @@ and RFC 2822 (which obsoletes RFC822 and RFC-733).
             pep-0287.txt
         ),
         and \n\
-        <reference refuri="http://www.faqs.org/rfcs/rfc2822.html">
+        <reference refuri="http://tools.ietf.org/html/rfc2822.html">
             RFC 2822
          (which obsoletes \n\
-        <reference refuri="http://www.faqs.org/rfcs/rfc822.html">
+        <reference refuri="http://tools.ietf.org/html/rfc822.html">
             RFC822
          and \n\
-        <reference refuri="http://www.faqs.org/rfcs/rfc733.html">
+        <reference refuri="http://tools.ietf.org/html/rfc733.html">
             RFC-733
         ).
 """],
@@ -63,7 +63,7 @@ RFC
             PEP
             287
     <paragraph>
-        <reference refuri="http://www.faqs.org/rfcs/rfc2822.html">
+        <reference refuri="http://tools.ietf.org/html/rfc2822.html">
             RFC
             2822
 """],
@@ -83,7 +83,7 @@ PEP 287 (http://www.python.org/dev/peps/pep-0287), RFC 2822.
         <reference refuri="http://www.python.org/dev/peps/pep-0287">
             http://www.python.org/dev/peps/pep-0287
         ), \n\
-        <reference refuri="http://www.faqs.org/rfcs/rfc2822.html">
+        <reference refuri="http://tools.ietf.org/html/rfc2822.html">
             RFC 2822
         .
 """],
