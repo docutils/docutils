@@ -62,8 +62,9 @@ Advanced text editors with reStructuredText support, IDEs, and docutils GUIs:
 
   .. _bittner @ github:  https://github.com/bittner/gedit-reST-plugin
 
-* A BBEdit__/TextWrangler language module for editing reST documents.
+* A BBEdit_/TextWrangler `language module`__ for editing reST documents.
 
+  .. _BBEdit: https://en.wikipedia.org/wiki/BBEdit
   __ http://ericfromcanada.bitbucket.org/
 
 * Gunnar Schwant's DocFactory_ is a wxPython GUI application for
@@ -376,7 +377,7 @@ Presentations
 * rst2outline_ translates a reStructuredText document to a plain text
   outline. This can then be transformed to PowerPoint.
 
-* Pandoc_ can also be used to produce slides, as shown in this 
+* Pandoc_ can also be used to produce slides, as shown in this
   `Pandoc Slides Demo`_
 
 .. _PythonPoint: http://www.reportlab.org/python_point.html
