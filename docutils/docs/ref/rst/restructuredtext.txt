@@ -2349,9 +2349,10 @@ Inline Markup
 In reStructuredText, inline markup applies to words or phrases within
 a text block.  The same whitespace and punctuation that serves to
 delimit words in written text is used to delimit the inline markup
-syntax constructs.  The text within inline markup may not begin or end
-with whitespace.  Arbitrary `character-level inline markup`_ is
-supported although not encouraged.  Inline markup cannot be nested.
+syntax constructs (see the `inline markup recognition rules`_ for
+details).  The text within inline markup may not begin or end with
+whitespace.  Arbitrary `character-level inline markup`_ is supported
+although not encouraged.  Inline markup cannot be nested.
 
 There are nine inline markup constructs.  Five of the constructs use
 identical start-strings and end-strings to indicate the markup:
@@ -2382,13 +2383,13 @@ the following conditions are met:
    immediately preceded by
 
    * whitespace,
-   * one of the ASCII characters ``- : / ' " < ( [ {`` or
-   * a non-ASCII punctuation character with `Unicode category`_
+   * one of the ASCII characters ``- : / ' " < ( [ {``, or
+   * a punctuation character with `Unicode category`_
      `Pd` (Dash),
      `Po` (Other),
-     `Ps` (Open),
-     `Pi` (Initial quote), or
-     `Pf` (Final quote) [#PiPf]_.
+     `Pi` (Initial quote),
+     `Pf` (Final quote), or
+     `Ps` (Open).
 
 2. Inline markup start-strings must be immediately followed by
    non-whitespace.
@@ -2400,19 +2401,21 @@ the following conditions are met:
    followed by
 
    * whitespace,
-   * one of the ASCII characters ``- . , : ; ! ? \ / ' " ) ] } >`` or
-   * a non-ASCII punctuation character with `Unicode category`_
+   * one of the ASCII characters ``- . , : ; ! ? \ / ' " ) ] } >``, or
+   * a punctuation character with `Unicode category`_
      `Pd` (Dash),
      `Po` (Other),
-     `Pe` (Close),
+     `Pi` (Initial quote),
      `Pf` (Final quote), or
-     `Pi` (Initial quote) [#PiPf]_.
+     `Pe` (Close).
 
 5. If an inline markup start-string is immediately preceded by one of the
-   ASCII characters ``' " < ( [ {``, or a character with Unicode character
+   ASCII characters ``' " < ( [ {`` or a character with Unicode character
    category `Ps`, `Pi`, or `Pf`, it must not be followed by the
-   corresponding [#corresponding-quotes]_ closing character from
-   ``' " ) ] } >`` or the categories `Pe`, `Pf`, or `Pi`.
+   corresponding closing character from ``' " ) ] } >`` or the categories
+   `Pe`, `Pf`, or `Pi`.
+   (For quotes, corresponding characters can be
+   any of the `quotation marks in international usage`_.)
 
 6. An inline markup end-string must be separated by at least one
    character from the start-string.
@@ -2420,13 +2423,6 @@ the following conditions are met:
 7. An unescaped backslash preceding a start-string or end-string will
    disable markup recognition, except for the end-string of `inline
    literals`_.  See `Escaping Mechanism`_ above for details.
-
-.. [#PiPf] `Pi` (Punctuation, Initial quote) characters are "usually
-   closing, sometimes opening". `Pf` (Punctuation, Final quote)
-   characters are "usually closing, sometimes opening".
-
-.. [#corresponding-quotes] For quotes, corresponding characters can be
-   any of the `quotation marks in international usage`_
 
 .. _Unicode category:
    http://www.unicode.org/Public/5.1.0/ucd/UCD.html#General_Category_Values
