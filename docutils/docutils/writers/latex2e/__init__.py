@@ -34,7 +34,7 @@ class Writer(writers.Writer):
     """Formats this writer supports."""
 
     default_template = 'default.tex'
-    default_template_path = os.path.dirname(__file__)
+    default_template_path = os.path.dirname(os.path.abspath(__file__))
 
     default_preamble = '\n'.join([r'% PDF Standard Fonts',
                                   r'\usepackage{mathptmx} % Times',

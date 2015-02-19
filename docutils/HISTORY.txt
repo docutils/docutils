@@ -36,6 +36,12 @@ Changes Since 0.12
 * docutils/writers/html4css1/__init__.py 
 
   - Add "docutils" to class values for "container" object to address [ 267 ].
+  - Apply patch [ 119 ] by Anatoly Techtonik: use absolute paths for
+    ``default_stylesheet_path`` and ``default_template_path``.
+
+* docutils/writers/latex2e/__init__.py 
+
+  - use absolute path for ``default_template_path``.
 
 * docutils/writers/odf_odt/__init__.py 
 
