@@ -412,7 +412,7 @@ class FormulaConfig(object):
       u'\\cdot':u'⋅', u'\\cdots':u'⋯', u'\\centerdot':u'∙', 
       u'\\checkmark':u'✓', u'\\chi':u'χ', u'\\circ':u'∘', u'\\circeq':u'≗', 
       u'\\circledR':u'®', u'\\circledast':u'⊛', u'\\circledcirc':u'⊚', 
-      u'\\circleddash':u'⊝', u'\\clubsuit':u'♣', u'\\coloneqq':u'≔', 
+      u'\\circleddash':u'⊝', u'\\clubsuit':u'♣', u'\\colon':u': ', u'\\coloneqq':u'≔', 
       u'\\complement':u'∁', u'\\cong':u'≅', u'\\coprod':u'∐', 
       u'\\copyright':u'©', u'\\cos':u'cos', u'\\cosh':u'cosh', u'\\cot':u'cot', 
       u'\\coth':u'coth', u'\\csc':u'csc', u'\\cup':u'∪', 
@@ -643,8 +643,8 @@ class FormulaConfig(object):
 
   modified = {
       u'\n':u'', u' ':u'', u'$':u'', u'&':u'    ', u'\'':u'’', u'+':u' + ', 
-      u',':u', ', u'-':u' − ', u'/':u' ⁄ ', u'<':u' &lt; ', u'=':u' = ', 
-      u'>':u' &gt; ', u'@':u'', u'~':u'', 
+      u',':u', ', u'-':u' − ', u'/':u' ⁄ ',u':':u' : ', u'<':u' &lt; ', 
+      u'=':u' = ', u'>':u' &gt; ', u'@':u'', u'~':u'', 
       }
 
   onefunctions = {
@@ -695,7 +695,7 @@ class FormulaConfig(object):
 
   unmodified = {
       
-      u'characters':[u'.',u'*',u'€',u'(',u')',u'[',u']',u':',u'·',u'!',u';',u'|',u'§',u'"',], 
+      u'characters':[u'.',u'*',u'€',u'(',u')',u'[',u']',u'·',u'!',u';',u'|',u'§',u'"',], 
       }
 
   urls = {

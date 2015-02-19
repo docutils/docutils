@@ -29,6 +29,10 @@ Changes Since 0.12
   - patch [ 120 ] tables accept option widths: list of relative widths, 'auto' 
     or 'grid'.
 
+* docutils/utils/math/math2html.py
+
+  - add ``\colon`` macro, fix spacing around colons. Fixes [ 246 ].
+  
 * docutils/writers/html4css1/__init__.py 
 
   - Add "docutils" to class values for "container" object to address [ 267 ].
