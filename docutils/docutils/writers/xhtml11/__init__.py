@@ -37,29 +37,41 @@ class Writer(html4css1.Writer):
 
     supported = ('html', 'xhtml', 'xhtml1',
                  'html4strict', 'xhtml1strict',
-                 'html4css2', 'xhtml1css2')
+                 'xhtml11', 'xhtml1css2')
     """Formats this writer supports."""
 
-    default_stylesheets = ['html4css1.css', 'html4css2.css']
+    default_stylesheets = ['html4css1.css', 'xhtml11.css']
+    default_stylesheet_dirs = ['.', 
+        os.path.abspath(os.path.dirname(__file__)),
+        os.path.abspath(os.path.join(
+            os.path.dirname(os.path.dirname(__file__)), 'html4css1'))
+                              ]
 
-    default_stylesheet_path = ','.join(
-        [os.path.join(os.path.dirname(__file__), stylesheet)
-         for stylesheet in default_stylesheets])
-
-    config_section = 'html4strict writer'
+    config_section = 'xhtml11 writer'
     config_section_dependencies = ('writers', 'html4css1 writer')
 
     settings_spec = frontend.filter_settings_spec(
         html4css1.Writer.settings_spec,
-        'field_name_limit', 'option_limit',
+        'field_name_limit', 'option_limit', # removed options
         stylesheet_path = (
-            'Specify comma separated list of stylesheet paths. '
-            'With --link-stylesheet, '
-            'the path is rewritten relative to the output HTML file. '
-            'Default: "%s"' % default_stylesheet_path,
-            ['--stylesheet-path'],
-            {'metavar': '<file>', 'overrides': 'stylesheet',
-            'default': default_stylesheet_path}),
+          'Comma separated list of stylesheet paths. '
+          'Relative paths are expanded if a matching file is found in '
+          'the --stylesheet-dirs. With --link-stylesheet, '
+          'the path is rewritten relative to the output HTML file. '
+          'Default: "%s"' % ','.join(default_stylesheets),
+          ['--stylesheet-path'],
+          {'metavar': '<file[,file,...]>', 'overrides': 'stylesheet',
+           'validator': frontend.validate_comma_separated_list,
+           'default': default_stylesheets}),
+
+        stylesheet_dirs = (
+          'Comma-separated list of directories where stylesheets are found. '
+          'Used by --stylesheet-path when expanding relative path arguments. '
+          'Default: "%s"' % default_stylesheet_dirs,
+          ['--stylesheet-dirs'],
+          {'metavar': '<dir[,dir,...]>',
+           'validator': frontend.validate_comma_separated_list,
+           'default': default_stylesheet_dirs}),
         math_output = ('Math output format, one of "MathML", "HTML", '
             '"MathJax" or "LaTeX". Default: "MathML"',
             ['--math-output'],
@@ -73,7 +85,7 @@ class Writer(html4css1.Writer):
 class HTMLTranslator(html4css1.HTMLTranslator):
     """
     This writer generates XHTML 1.1
-    without formatting hints that interfere with a CSS stylesheet.
+    without formatting that interferes with a CSS stylesheet.
     """
     doctype = ('<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" '
                '"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">\n')

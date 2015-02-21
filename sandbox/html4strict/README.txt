@@ -2,13 +2,18 @@
 .. sectnum::
 
 =====================================================
-            The Strict HTML Writer
+            The XHTML 1.1 Writer
 =====================================================
 
 :Author: Günter Milde
 :Date: $Date$
 :Abstract: A HTML writer, generating `XHTML 1.1` for styling
            with CSS 2.1.
+
+.. note:: The HTML4Strict writer moved to the Docutils core on 2015-02-20.
+          It is called xhtml11 there
+          (as the output conforms to http://www.w3.org/TR/xhtml11/).
+
 
 .. contents::
 
@@ -24,12 +29,12 @@ State of the art
 
 *Almost*, as it contains some deprecated constructs and "a minimum of
 formatting information" in order to ensure correct display with deficient
-but widespread browsers.
+but (at the time of creation) widespread browsers (mainly IE6).
 
 Objective
 ----------
 
-Goals of the `strict html writer`:
+Goals of the `xhtml11 writer`:
 
 * Strict standards compliance.
 
@@ -70,53 +75,23 @@ This writer is for you, if you
 
 * want extended CSS configurability.
 
-Manifest
---------
-
-* `<html4strict/>`_
-
-  * `<html4strict/__init__.py>`_: writer module
-  * `<html4strict/html4css2.css>`_: additional CSS style sheet
-
-* `<tools/>`_
-
-  * `<tools/rst2html_strict.py>`_: front end
-
-* `<data/>`_
-
-  * `<data/standalone_rst_html4strict.html>`_,
-  * `<data/standalone_rst_html4strict.txt>`_: reStructuredText Test Document
-  * `<simple-lists.html>`_,
-  * `<simple-lists.txt>`_: test the list compactation algorithm.
-
-Installation
-============
-
-1. Copy/Link/Move the `<html4strict/>`_ directory (including its
-   contents) either into
-
-   * the ``docutils/writers/`` directory (alongside the standard
-     writers), or
-   * Python's `Module Search Path`_.
-
-2. Copy/Link the standard style sheet ``html4css1.css`` into this this
-   directory.
-
-3. Copy/Link/Move `<tools/rst2html_strict.py>`_ into the binary PATH.
-
-.. _Module Search Path:
-   http://docs.python.org/tutorial/modules.html#the-module-search-path
 
 Usage
 =====
 
-Command line use::
+For an example of programmatic use, see the `minimal front end to the
+Docutils Publisher, producing valid XHTML 1.1`
+<../../docutils/tools/rst2xhtml11.py>`_.
 
-  rst2html_strict.py [options] [<source> [<destination>]]
+This wrapper can called from the command line (when it is installed in the
+BINARY PATH):
+
+Comman line use::
+
+  rst2xhtml11.py [options] [<source> [<destination>]]
 
 The full usage text can be obtained with the ``--help`` option.
 
-For an example of programmatic use, see `<tools/rst2html_strict.py>`_.
 
 
 Implementation
@@ -126,8 +101,8 @@ The writer module subclasses the ``html4css1.Writer`` and
 ``html4css1.HTMLTranslator`` classes. Some methods are overwritten to
 replace deprecated HTML constructs or hard coded formatting.
 
-The html4css2.css style sheet extends the standard layout for
-CSS2-conforming Html browsers.
+The xhtml11.css style sheet extends the standard layout for
+CSS2-conforming HTML browsers.
 
 
 Changes to the html4css1 writer

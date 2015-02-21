@@ -135,7 +135,7 @@ what-you-see-is-what-you-get plaintext markup syntax.""", # wrap at col 60
                  'docutils.utils.math',
                  'docutils.writers',
                  'docutils.writers.html4css1',
-                 # 'docutils.writers.html4strict',  # in the sandbox!
+                 'docutils.writers.xhtml11',
                  'docutils.writers.pep_html',
                  'docutils.writers.s5_html',
                  'docutils.writers.latex2e',
