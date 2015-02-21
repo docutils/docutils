@@ -26,24 +26,32 @@ Changes Since 0.12
 
 * docutils/parsers/rst/directives/tables.py
 
-  - patch [ 120 ] tables accept option widths: list of relative widths, 'auto' 
+  - patch [ 120 ] tables accept option widths: list of relative widths, 'auto'
     or 'grid'.
 
 * docutils/utils/math/math2html.py
 
   - add ``\colon`` macro, fix spacing around colons. Fixes [ 246 ].
-  
-* docutils/writers/html4css1/__init__.py 
+
+* docutils/writers/html4css1/__init__.py
 
   - Add "docutils" to class values for "container" object to address [ 267 ].
   - Apply patch [ 119 ] by Anatoly Techtonik: use absolute paths for
     ``default_stylesheet_path`` and ``default_template_path``.
 
-* docutils/writers/latex2e/__init__.py 
+* docutils/writers/xhtml11/
+
+  - New HTML writer generating `XHTML1.1`_ styled with CSS2.
+
+    Moved to the docutils core from sandbox/html4strict.
+
+  .. _XHTML1.1: http://www.w3.org/TR/xhtml11/
+
+* docutils/writers/latex2e/__init__.py
 
   - use absolute path for ``default_template_path``.
 
-* docutils/writers/odf_odt/__init__.py 
+* docutils/writers/odf_odt/__init__.py
 
   - remove decode.encode of filename stored in zip.
 
@@ -62,7 +70,7 @@ Release 0.12 (2014-07-06)
 * docutils/parsers/rst/directives/images.py
 
   - Fix [ 258 ] figwidth="image" generates unitless width value.
-  
+
 * docutils/parsers/rst/states.py
 
   - Improve error report when a non-ASCII character is specified as

@@ -25,13 +25,10 @@ except locale.Error:
 
 from docutils.core import publish_cmdline, default_description
 
-# Import the html4strict writer from either the canonical place for a
+# Import the xhtml11 writer from either the canonical place for a
 # Docutils writer or anywhere in the PYTHONPATH::
 
-try:
-    from docutils.writers.html4strict import Writer
-except ImportError:
-    from html4strict import Writer
+from docutils.writers.xhtml11 import Writer
 
 description = ('Generates CSS2-styled HTML documents from standalone '
                'reStructuredText! sources that conform to the XHTML 1.1 DTD '

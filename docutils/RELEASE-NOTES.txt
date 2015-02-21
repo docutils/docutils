@@ -22,6 +22,11 @@ Future changes
 
 * remove the `handle_io_errors` option from io.FileInput/Output.
 
+* remove deprecated options from the latex2e writer:
+
+    --use-latex-footnotes   Alias for --docutils-footnotes (deprecated)
+    --figure-footnotes      Use figure floats for footnote text (deprecated)
+
 * »Prune« the doctree (no change to the reST input syntax):
 
   - "doctest" element -> literal block with class argument,
@@ -29,7 +34,7 @@ Future changes
     element with class attribute and auto-generated title.
 
 * Move to single source for Python 2 and Python 3, slowly.
-  See `Porting Python 2 Code to Python 3`_ and 
+  See `Porting Python 2 Code to Python 3`_ and
   `future: clean single-source support for Python 2/3`_
 
   - Drop support for python 2.4 probably after 0.12 release.

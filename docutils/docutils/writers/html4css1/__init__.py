@@ -42,7 +42,7 @@ class Writer(writers.Writer):
     supported = ('html', 'html4css1', 'xhtml')
     """Formats this writer supports."""
 
-    default_stylesheet = 'html4css1.css'
+    default_stylesheets = ['html4css1.css']
     default_stylesheet_dirs = ['.', os.path.abspath(os.path.dirname(__file__))]
 
     default_template = 'template.txt'
@@ -65,11 +65,11 @@ class Writer(writers.Writer):
           'Relative paths are expanded if a matching file is found in '
           'the --stylesheet-dirs. With --link-stylesheet, '
           'the path is rewritten relative to the output HTML file. '
-          'Default: "%s"' % default_stylesheet,
+          'Default: "%s"' % ','.join(default_stylesheets),
           ['--stylesheet-path'],
           {'metavar': '<file[,file,...]>', 'overrides': 'stylesheet',
            'validator': frontend.validate_comma_separated_list,
-           'default': [default_stylesheet]}),
+           'default': default_stylesheets}),
          ('Embed the stylesheet(s) in the output HTML file.  The stylesheet '
           'files must be accessible during processing. This is the default.',
           ['--embed-stylesheet'],
