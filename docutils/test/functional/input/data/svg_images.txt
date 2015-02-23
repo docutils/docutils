@@ -67,3 +67,9 @@ A fixed-size image in a box 50% the line width and 15 pixle high.
    :height:  28 px
 
    SVG image in a figure.
+
+.. image:: ../../../docs/user/rst/images/biohazard-bitmap.svg
+   :width: 3em
+   :align: right
+
+An SVG image with embedded bitmap. Should be 3 em wide, right aligned.
