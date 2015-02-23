@@ -42,8 +42,12 @@ Changes Since 0.12
 * docutils/writers/xhtml11/
 
   - New HTML writer generating `XHTML1.1`_ styled with CSS2.
-
     Moved to the docutils core from sandbox/html4strict.
+
+  - Wrap SVG images in <img> tags not <object>.
+    Addresses bug [ 247 ], but rendering problems remain
+    (see test/functional/expected/standalone_rst_xhtml11.xhtml),
+    so we might need a config setting.
 
   .. _XHTML1.1: http://www.w3.org/TR/xhtml11/
 

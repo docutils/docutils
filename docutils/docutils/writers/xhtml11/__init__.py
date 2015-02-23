@@ -41,7 +41,7 @@ class Writer(html4css1.Writer):
     """Formats this writer supports."""
 
     default_stylesheets = ['html4css1.css', 'xhtml11.css']
-    default_stylesheet_dirs = ['.', 
+    default_stylesheet_dirs = ['.',
         os.path.abspath(os.path.dirname(__file__)),
         os.path.abspath(os.path.join(
             os.path.dirname(os.path.dirname(__file__)), 'html4css1'))
@@ -312,6 +312,11 @@ class HTMLTranslator(html4css1.HTMLTranslator):
 
     # def depart_generated(self, node):
     #     pass
+
+    # Image types to place in an <object> element
+    # SVG as <img> supported since IE version 9
+    # (but rendering problems remain (see standalonge_rst2xhtml11.xhtml test output)
+    object_image_types = {'.swf': 'application/x-shockwave-flash'}
 
     # Do not  mark the first child with 'class="first"'
     def visit_list_item(self, node):

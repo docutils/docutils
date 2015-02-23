@@ -903,7 +903,7 @@ class HTMLTranslator(nodes.NodeVisitor):
              and len(node.astext()) > self.settings.field_name_limit):
             atts['colspan'] = 2
             self.context.append('</tr>\n'
-                                + self.starttag(node.parent, 'tr', '', 
+                                + self.starttag(node.parent, 'tr', '',
                                                 CLASS='field')
                                 + '<td>&nbsp;</td>')
         else:
@@ -1013,16 +1013,19 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.header.extend(header)
         del self.body[start:]
 
+    # Image types to place in an <object> element
+    # SVG not supported by IE up to version 8
+    # (html4css1 strives for IE6 compatibility)
+    object_image_types = {'.svg': 'image/svg+xml',
+                         '.swf': 'application/x-shockwave-flash'}
+
     def visit_image(self, node):
         atts = {}
         uri = node['uri']
-        # place SVG and SWF images in an <object> element
-        types = {'.svg': 'image/svg+xml',
-                 '.swf': 'application/x-shockwave-flash'}
         ext = os.path.splitext(uri)[1].lower()
-        if ext in ('.svg', '.swf'):
+        if ext in self.object_image_types: # ('.svg', '.swf'):
             atts['data'] = uri
-            atts['type'] = types[ext]
+            atts['type'] = self.object_image_types[ext]
         else:
             atts['src'] = uri
             atts['alt'] = node.get('alt', uri)
@@ -1074,8 +1077,7 @@ class HTMLTranslator(nodes.NodeVisitor):
             suffix = '\n'
         if 'align' in node:
             atts['class'] = 'align-%s' % node['align']
-        self.context.append('')
-        if ext in ('.svg', '.swf'): # place in an object element,
+        if ext in self.object_image_types: # ('.svg', '.swf')
             # do NOT use an empty tag: incorrect rendering in browsers
             self.body.append(self.starttag(node, 'object', suffix, **atts) +
                              node.get('alt', uri) + '</object>' + suffix)
@@ -1083,7 +1085,8 @@ class HTMLTranslator(nodes.NodeVisitor):
             self.body.append(self.emptytag(node, 'img', suffix, **atts))
 
     def depart_image(self, node):
-        self.body.append(self.context.pop())
+        # self.body.append(self.context.pop())
+        pass
 
     def visit_inline(self, node):
         self.body.append(self.starttag(node, 'span', ''))
