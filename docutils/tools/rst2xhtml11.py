@@ -25,15 +25,9 @@ except locale.Error:
 
 from docutils.core import publish_cmdline, default_description
 
-# Import the xhtml11 writer from either the canonical place for a
-# Docutils writer or anywhere in the PYTHONPATH::
-
-from docutils.writers.xhtml11 import Writer
-
 description = ('Generates CSS2-styled HTML documents from standalone '
                'reStructuredText! sources that conform to the XHTML 1.1 DTD '
                '(strict XHTML). '
                + default_description)
 
-publish_cmdline(writer=Writer(), 
-                description=description)
+publish_cmdline(writer_name='xhtml11', description=description)

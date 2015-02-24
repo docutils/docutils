@@ -63,7 +63,6 @@ class Writer(html4css1.Writer):
           {'metavar': '<file[,file,...]>', 'overrides': 'stylesheet',
            'validator': frontend.validate_comma_separated_list,
            'default': default_stylesheets}),
-
         stylesheet_dirs = (
           'Comma-separated list of directories where stylesheets are found. '
           'Used by --stylesheet-path when expanding relative path arguments. '

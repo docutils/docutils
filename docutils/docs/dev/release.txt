@@ -185,8 +185,8 @@ For details see the script.
   .. _wheels: https://packaging.python.org/en/latest/distributing.html#wheels
   __ https://pypi.python.org/pypi/pip/
 
-  See also `Bug report [271]
-  <https://sourceforge.net/p/docutils/bugs/271/>`__
+  See also `feature request 43
+  <https://sourceforge.net/p/docutils/feature-requests/43/>`__
 
   For current Docutils, this would mean `pure Python wheels`__ for Python 2
   and 3 respectively.
