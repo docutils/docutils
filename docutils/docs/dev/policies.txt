@@ -60,11 +60,10 @@ Question:
   +1  usually triggers a fast response,
   -1  may be forgotten later,
 
-  and/or file a feature request at the `docutils tracker`_
+  and/or file a ticket at Docutils' `feature request tracker`_.
 
   +1  there is a permanent record,
   -1  it may stay forgotten among all the other feature requests.
-
 
 * Convince a Docutils developer that this is a valuable addition worth the
   effort.
@@ -88,7 +87,7 @@ How to make code contributions that are easily accepted:
   Testing`_ for a description of the test suite in ``docutils/test/``.
 
   Ensure the addition works with all supported Python versions
-  (2.4 ... 3.2).
+  (2.4 ... 3.4).
 
 * Look at the Docutils sources to see how similar features are implemented,
   learn to do it "the Docutils way".
@@ -102,7 +101,9 @@ How to make code contributions that are easily accepted:
   http://repo.or.cz/w/docutils.git or with git-svn.)
 
 .. _docutils-develop: ../user/mailing-lists.html#docutils-develop
-.. _docutils tracker: http://sourceforge.net/tracker/?group_id=38414
+.. _feature request tracker:
+   http://sourceforge.net/p/docutils/feature-requests/
+
 .. _git: http://git-scm.com/
 .. _Docutils testing: testing.html
 
@@ -225,55 +226,35 @@ intentions regarding copyright, in one of the following ways:
   The license should be well known, simple and compatible with other
   open source software licenses. To keep the number of different
   licenses at a minimum, using the `2-Clause BSD license`_
-  (also known as "Simplified" or `FreeBSD license`_) is recommended.
+  is recommended.
 
-  .. _2-Clause BSD license: http://www.opensource.org/licenses/BSD-2-Clause
-  .. _FreeBSD license:  http://www.freebsd.org/copyright/freebsd-license.html
+2-Clause BSD license
+--------------------
 
-..
+(also known as "Simplified" or `FreeBSD license`)
 
-  The following licenses are described as simple
-  and permissible on `Various Licenses and Comments about Them`_ by
-  the GNU Project and listed as popular in `OSI Approved Licenses`_:
+  If you want a simple, permissive non-copyleft free software license, the
+  FreeBSD license is a reasonable choice. However, please don't call it a
+  “BSD” or “BSD-style” license, because that is likely to cause confusion
+  which could lead to use of the flawed original BSD license.
 
-  Expat License / MIT License
+  -- `Various Licenses and Comments about Them`_
 
-    http://www.jclark.com/xml/copying.txt
-    http://www.opensource.org/licenses/MIT
-    http://www.spdx.org/licenses/MIT
+Pros:
+  * clear wording, structured text
+  * license used by the closely related Sphinx project
+  * "2-Clause BSD license" is a non-ambiguous name, used by both, OSI and
+    GNU.
 
-    The term MIT License is ambiguous and may accurately refer to the
-    Expat license or the X11 license
-    [http://en.wikipedia.org/wiki/MIT_License]
+References:
+  * http://www.freebsd.org/copyright/freebsd-license.html
+  * http://www.opensource.org/licenses/BSD-2-Clause
+  * http://www.spdx.org/licenses/BSD-2-Clause
 
-    -1  called `MIT license` by OSI and in the
-        `SPDX Open Source License Registry`_
-        but `Expat license` by GNU
-
-  2-Clause BSD license / FreeBSD license
-
-    http://www.freebsd.org/copyright/freebsd-license.html
-    http://www.opensource.org/licenses/BSD-2-Clause
-    http://www.spdx.org/licenses/BSD-2-Clause
-
-      If you want a simple, permissive non-copyleft free software
-      license, the FreeBSD license is a reasonable choice. However,
-      please don't call it a “BSD” or “BSD-style” license, because
-      that is likely to cause confusion which could lead to use of the
-      flawed original BSD license.
-
-      -- `Various Licenses and Comments about Them`_
-
-     +1  license used by the closely related Sphinx project
-     +1  "2-Clause BSD license" is a non-ambiguous name,
-         used by both, OSI and GNU.
-     +1  clear wording, structured text
-
-  .. _Various Licenses and Comments about Them:
-     http://www.gnu.org/licenses/license-list.html
-  .. _OSI Approved Licenses: http://www.opensource.org/licenses/category
-  .. _SPDX Open Source License Registry: http://www.spdx.org/licenses/
-  .. _pypi: http://pypi.python.org/pypi?:action=browse&c=54
+.. _Various Licenses and Comments about Them:
+   http://www.gnu.org/licenses/license-list.html
+.. _OSI Approved Licenses: http://www.opensource.org/licenses/category
+.. _SPDX Open Source License Registry: http://www.spdx.org/licenses/
 
 
 .. _Subversion Repository:
@@ -308,6 +289,8 @@ based on at least the latest feature release.  For example, when
 Docutils 0.5 is released, its maintenance branch will take over, and
 the 0.4.x maintenance branch may be retired.  Maintenance branches
 will receive bug fixes only; no new features will be allowed here.
+
+.. TODO: is this still active policy?
 
 Obvious and uncontroversial bug fixes *with tests* can be checked in
 directly to the core and to the maintenance branches.  Don't forget to
@@ -414,7 +397,7 @@ Docutils will pursue an open and trusting policy for as long as
 possible, and deal with any aberrations if (and hopefully not when)
 they happen.  We'd rather see a torrent of loose contributions than
 just a trickle of perfect-as-they-stand changes.  The occasional
-mistake is easy to fix.  That's what Subversion is for!
+mistake is easy to fix.  That's what version control is for!
 
 .. _Docutils Front-End Tools: ../user/tools.html
 .. _Docutils Configuration Files: ../user/config.html
@@ -440,37 +423,40 @@ included.
 
 Releases that change the micro number (x.y.z, e.g. 0.4.1) will be
 **bug-fix releases**.  No new features will be introduced in these
-releases; only bug fixes off of `maintenance branches`_ will be
-included.
+releases; only bug fixes will be included.
 
 This policy was adopted in October 2005, and will take effect with
 Docutils version 0.4.  Prior to version 0.4, Docutils didn't have an
 official version numbering policy, and micro releases contained both
 bug fixes and new features.
 
-.. _Docutils core:
-   http://docutils.svn.sourceforge.net/viewvc/docutils/trunk/docutils/
-.. _maintenance branches:
-   http://docutils.svn.sourceforge.net/viewvc/docutils/branches/
 
 
 Snapshots
 =========
 
-Snapshot tarballs will be generated regularly from
+Snapshot tarballs can be downloaded from the repository (see the "download
+snapshot" button in the head of the code listing table).
 
-* the Docutils core, representing the current cutting-edge state of
+* the `Docutils core`_, representing the current cutting-edge state of
   development;
 
-* each active maintenance branch, for bug fixes;
+* the `sandbox directory`_ with contributed projects and extensions from
+  `the Sandbox`_;
 
-* each development branch, representing the unstable
-  seat-of-your-pants bleeding edge.
+.. * maintenance branches, for bug fixes;
 
-The ``sandbox/infrastructure/docutils-update`` shell script, run as an
-hourly cron job on the BerliOS server, is responsible for
-automatically generating the snapshots and updating the web site.  See
-the `web site docs <website.html>`__.
+   TODO: do we have active maintenance branches?
+   (the only branch looking like a maintenance branch is
+   http://sourceforge.net/p/docutils/code/HEAD/tree/branches/docutils-0.4)
+
+* `development branches`_, representing ongoing development efforts to bring
+  new features into Docutils.
+
+.. _Docutils core:
+   http://sourceforge.net/p/docutils/code/HEAD/tree/trunk/docutils
+.. _development branches:
+   http://sourceforge.net/p/docutils/code/HEAD/tree/branches/
 
 
 Setting Up For Docutils Development
@@ -606,7 +592,7 @@ Docutils, may graduate to become `parallel projects`_.
 
 .. _sandbox README: http://docutils.sf.net/sandbox/README.html
 .. _sandbox directory:
-   http://docutils.svn.sourceforge.net/viewvc/docutils/trunk/sandbox/
+   http://sourceforge.net/p/docutils/code/HEAD/tree/trunk/sandbox/
 
 
 .. _parallel project:
@@ -649,7 +635,7 @@ code.
 Other related projects
 ----------------------
 
-Many related but independent projects are listed in the Docutils 
+Many related but independent projects are listed in the Docutils
 `link list`_. If you want your project to appear there, drop a note at
 the Docutils-develop_ mailing list.
 
