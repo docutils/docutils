@@ -37,7 +37,7 @@ files`_.
 The two arguments, "source" and "destination", are optional.  If only
 one argument (source) is specified, the standard output (stdout) is
 used for the destination.  If no arguments are specified, the standard
-input (stdin) is used for the source as well.
+input (stdin) is used for the source.
 
 
 Getting Help
@@ -101,10 +101,10 @@ rst2html.py
 
 :Reader: Standalone
 :Parser: reStructuredText
-:Writer: HTML
+:Writer: HTML (html4css1)
 
 The ``rst2html.py`` front end reads standalone reStructuredText source
-files and produces HTML 4 (XHTML 1) output compatible with modern
+files and produces HTML 4 (XHTML 1) "transitional" output compatible with
 browsers that support cascading stylesheets (CSS).  A stylesheet is
 required for proper rendering; a simple but complete stylesheet is
 installed and used by default (see Stylesheets_ below).
@@ -138,6 +138,17 @@ for Docutils`__.
 
 __ ../howto/html-stylesheets.html
 
+
+rst2xhtml11.py
+--------------
+
+:Reader: Standalone
+:Parser: reStructuredText
+:Writer: xhtml11
+
+The ``rst2xhtml11.py`` front end reads standalone reStructuredText source
+files and produces clean XHTML 1.1 output. A stylesheet is required for
+proper rendering; a complete stylesheet is installed and used by default.
 
 rstpep2html.py
 --------------
