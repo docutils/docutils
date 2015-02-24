@@ -13,13 +13,14 @@
 Assumptions and their failure
 -----------------------------
 
-On the test machine python2.4, 2.5 2.6 2.7 and 3.2 are installed.
+On the test machine python2.4, 2.5, 2.6, 2.7 and 3.2, 3.3, and 3.4
+are installed.
 Some in /usr/ some under /usr/local.
 
 Assumption: If python2.6 is in /usr/bin/ than site-packages is under
   /usr/local/lib/python2.6.
 
-On new ubuntu 12.10 
+On new ubuntu 12.10
 
 * python2.7 is here /usr/bin/python2.7.
 * in /usr/lib are python2.7, pymodules and pyshared.
@@ -63,7 +64,7 @@ reminded of them.
 Call ``sandbox/infrastructure/release.sh new_version svn_version``.
 For details see the script.
 
-``new_version`` is the current version, status will change from ``repository`` to 
+``new_version`` is the current version, status will change from ``repository`` to
 ``release``. ``svn_version`` is the version after release.
 
 .. Note:: *BUG* test tarball requires root password, but it is possible to skip
@@ -72,7 +73,7 @@ For details see the script.
 * Change ``__version_details__`` in docutils/docutils/__init__.py to
   "release" (from "repository").
 
-* Check the _`version number` in the following files, should be already 
+* Check the _`version number` in the following files, should be already
   correct:
 
   + docutils/setup.py
@@ -84,19 +85,25 @@ For details see the script.
 * Close the "Changes Since ..." section in docutils/HISTORY.txt.
 
 * Clear/unset the PYTHONPATH environment variable.
-   
+
 * Create the release tarball:
 
   (a) Create a new empty directory and ``cd`` into it.
 
   (b) Get a clean snapshot of the main tree::
 
-          svn export svn://svn.berlios.de/docutils/trunk/docutils
+          svn export svn://svn.code.sf.net/p/docutils/code/trunk/docutils
+
+      or via the [Download Snapshot] button at
+      http://sourceforge.net/p/docutils/code/HEAD/tree/trunk/docutils/
 
   (c) Use Distutils to create the release tarball::
 
           cd docutils
           python setup.py sdist
+
+  .. note:: PyPI recommends to `create and upload wheels`_ in addition to
+            the source tarball.
 
 * Expand and _`install` the release tarball in isolation:
 
@@ -148,11 +155,11 @@ For details see the script.
 * Upload the release tarball, release.sh tries with scp.
 
 * Access the _`file release system` on SourceForge (Admin
-  interface).  
+  interface).
 
   ``https://sourceforge.net/projects/docutils/files/docutils/``
- 
-  * change into the released version's directory 
+
+  * change into the released version's directory
   * click ``(i)`` button of the tar.gz-file
   * select as default download for all operating systems.
 
@@ -164,7 +171,43 @@ For details see the script.
 
 * Register with PyPI (``python setup.py register``).
 
-  Set the download-url so eggs can access older releases. 
+  Set the download-url so eggs can access older releases.
+
+  _`create and upload wheels`:
+
+* The `Python Packaging User Guide` recommends to provide `wheels`_ [#]_ in
+  addition to the source tarball.
+
+  .. [#] A Built Distribution format introduced by pypa:PEP427s, which is
+     intended to replace the Egg format. Wheel is currently supported by
+     pip__.
+
+  .. _wheels: https://packaging.python.org/en/latest/distributing.html#wheels
+  __ https://pypi.python.org/pypi/pip/
+
+  See also `Bug report [271]
+  <https://sourceforge.net/p/docutils/bugs/271/>`__
+
+  For current Docutils, this would mean `pure Python wheels`__ for Python 2
+  and 3 respectively.
+
+  __ https://packaging.python.org/en/latest/distributing.html#pure-python-wheels
+
+
+  + Eventually install the `wheel <https://pypi.python.org/pypi/wheel/>`__
+    package::
+
+       pip install wheel
+
+  + Produce wheels for Python 2 and Python 3::
+
+       python2 setup.py bdist_wheel
+       python3 setup.py bdist_wheel
+
+  + `Upload to PyPI`__
+
+  __ https://packaging.python.org/en/latest/distributing.html#upload-your-distributions
+
 
 * Restore ``__version_details__`` in docutils/docutils/__init__.py to
   "repository" (from "release").
@@ -178,7 +221,7 @@ For details see the script.
 * Run docutils-update on the server.
 
 * **Run alltests.py with svn version**
-    
+
 * **Send announcement email to:**
 
   * docutils-develop@lists.sourceforge.net (also announcing the end of
