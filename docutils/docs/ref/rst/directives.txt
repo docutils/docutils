@@ -548,7 +548,7 @@ symbols, for example::
     α_t(i) = P(O_1, O_2, … O_t, q_t = S_i λ)
 
 Support is limited to a subset of *LaTeX math* by the conversion
-required for many output formats.  For HTML, the the `math_output`_
+required for many output formats.  For HTML, the `math_output`_
 configuration setting (or the corresponding ``--math-output``
 command line option) select between alternative output formats with
 different subsets of supported elements. If a writer does not
@@ -1570,9 +1570,9 @@ Class
                     elements.
 
 The "class" directive sets the `"classes"`_ attribute value on its content
-or on the first immediately following non-comment element [#]_.  For
-details of the "classes" attribute, see `its entry`__ in `The Docutils
-Document Tree`_.
+or on the first immediately following [#]_ non-comment element [#]_. For
+details of the "classes" attribute, see the `classes entry in The Docutils
+Document Tree`__.
 
 The directive argument consists of one or more space-separated class
 names. The names are transformed to conform to the regular expression
@@ -1620,6 +1620,26 @@ The text above is parsed and transformed into this doctree fragment::
             First paragraph.
         <paragraph classes="multiple">
             Second paragraph.
+
+
+.. [#] This is also true, if the class directive is "nested" at the end of
+   an indented text block, for example::
+
+       .. note:: the class values set in this directive-block do not apply to
+          the note but the next paragraph.
+
+          .. class:: special
+
+       This is a paragraph with class value "special".
+
+   This allows the "classification" of individual list items (except the
+   first, as a preceding class directive applies to the list as a whole)::
+
+       * bullet list
+
+         .. class:: classy item
+
+       * second item, with class argument
 
 .. [#] To set a "classes" attribute value on a block quote, the
    "class" directive must be followed by an empty comment::

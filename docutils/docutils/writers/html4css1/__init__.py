@@ -704,7 +704,13 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('</dl>\n')
 
     def visit_definition_list_item(self, node):
-        pass
+        # pass class arguments, ids and names to definition term:
+        node.children[0]['classes'] = (
+            node.get('classes', []) + node.children[0].get('classes', []))
+        node.children[0]['ids'] = (
+            node.get('ids', []) + node.children[0].get('ids', []))
+        node.children[0]['names'] = (
+            node.get('names', []) + node.children[0].get('names', []))
 
     def depart_definition_list_item(self, node):
         pass

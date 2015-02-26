@@ -1551,7 +1551,10 @@ targets, directives, substitution definitions, and comments.
 Footnotes
 `````````
 
-Doctree elements: footnote, label.
+Doctree elements: footnote_, label_.
+
+.. _footnote: ../doctree.html#footnote
+.. _label: ../doctree.html#label
 
 Each footnote consists of an explicit markup start (".. "), a left
 square bracket, the footnote label, a right square bracket, and
@@ -1748,7 +1751,9 @@ differently from footnotes.  For example::
 Hyperlink Targets
 `````````````````
 
-Doctree element: target.
+Doctree element: target_.
+
+.. _target: ../doctree.html#target
 
 These are also called _`explicit hyperlink targets`, to differentiate
 them from `implicit hyperlink targets`_ defined below.
@@ -1785,7 +1790,7 @@ indirect.
 1. _`Internal hyperlink targets` have empty link blocks.  They provide
    an end point allowing a hyperlink to connect one place to another
    within a document.  An internal hyperlink target points to the
-   element following the target.  For example::
+   element following the target. [#]_  For example::
 
        Clicking on this internal hyperlink will take us to the target_
        below.
@@ -1816,6 +1821,18 @@ indirect.
 
    An inline form of internal hyperlink target is available; see
    `Inline Internal Targets`_.
+
+   .. [#] Works also, if the internal hyperlink target is "nested" at the
+      end of an indented text block. This behaviour allows setting targets
+      to individual list items (except the first, as a preceding internal
+      target applies to the list as a whole)::
+
+       * bullet list
+
+         .. _`second item`:
+
+       * second item, with hyperlink target.
+
 
 2. _`External hyperlink targets` have an absolute or relative URI or
    email address in their link blocks.  For example, take the
@@ -2754,7 +2771,9 @@ reference names.
 Footnote References
 -------------------
 
-Doctree element: footnote_reference.
+Doctree element: footnote_reference_.
+
+.. _footnote_reference: ../doctree.html#footnote-reference
 
 Start-string = "[", end-string = "]_".
 
