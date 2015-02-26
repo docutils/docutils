@@ -38,6 +38,7 @@ Changes Since 0.12
   - Add "docutils" to class values for "container" object to address [ 267 ].
   - Apply patch [ 119 ] by Anatoly Techtonik: use absolute paths for
     ``default_stylesheet_path`` and ``default_template_path``.
+  - Fix [ 266 ] creating labels/class values in description list items.
 
 * docutils/writers/xhtml11/
 

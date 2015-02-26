@@ -31,6 +31,48 @@ class EncodingTestCase(DocutilsTestSupport.StandardTestCase):
         # xmlcharrefreplace handler is used.
         self.assertIn(b('EUR = &#8364;'), result)
 
+class MovingArgsTestCase(DocutilsTestSupport.StandardTestCase):
+
+    settings_overrides={'stylesheet_path': '',
+                        # 'embed_stylesheet': False,
+                        '_disable_config': True,
+                       }
+
+    def test_definition_list_item_classes(self):
+        # Do not drop class arguments for the definition list item.
+        # Pass them to to the term node instead.
+        data = """\
+first term:
+  fist def
+
+  .. class:: for the second item
+
+second term:
+  second def
+"""
+        result = core.publish_string(data, writer_name='html4css1',
+                            settings_overrides=self.settings_overrides)
+        self.assertIn(b('<dt class="for the second item">second term:</dt>'),
+                      result)
+
+    def test_definition_list_item_name(self):
+        # Do not drop the "name" of the definition list item.
+        # Pass it to to the term node instead.
+        data = """\
+first term:
+  first def
+
+  .. _second item:
+
+second term:
+  second def
+"""
+        result = core.publish_string(data, writer_name='html4css1',
+                            settings_overrides=self.settings_overrides)
+        self.assertIn(b('<dt id="second-item">second term:</dt>'),
+                      result)
+
+
 class SettingsTestCase(DocutilsTestSupport.StandardTestCase):
     data = 'test'
 
