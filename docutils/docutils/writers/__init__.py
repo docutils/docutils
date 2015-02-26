@@ -121,7 +121,9 @@ class UnfilteredWriter(Writer):
 
 _writer_aliases = {
       'html': 'html4css1',
+      'xhtml': 'xhtml11',
       'latex': 'latex2e',
+      'xelatex': 'xetex',
       'pprint': 'pseudoxml',
       'pformat': 'pseudoxml',
       'pdf': 'rlpdf',

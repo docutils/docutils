@@ -160,7 +160,9 @@ what-you-see-is-what-you-get plaintext markup syntax.""", # wrap at col 60
                      ['docutils/writers/s5_html/themes/README.txt']),
                     ('docutils/writers/odf_odt',
                      ['docutils/writers/odf_odt/styles.odt']),
-                     ]
+                    ('docutils/writers/xhtml11',
+                     ['docutils/writers/xhtml11/xhtml11.css']),
+                   ]
                    + s5_theme_files),
     'scripts' : ['tools/rst2html.py',
                  'tools/rst2s5.py',
