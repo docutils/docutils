@@ -61,7 +61,7 @@ class Admonitions(Transform):
 
     into generic admonitions, like this::
 
-        <admonition classes="note">
+        <admonition classes="admonition note">
             <title>
                 Note
             <paragraph>
@@ -78,11 +78,12 @@ class Admonitions(Transform):
         for node in self.document.traverse(nodes.Admonition):
             node_name = node.__class__.__name__
             # Set class, so that we know what node this admonition came from.
-            node['classes'].append(node_name)
+            node['classes'].append('admonition')
             if not isinstance(node, nodes.admonition):
                 # Specific admonition.  Transform into a generic admonition.
                 admonition = nodes.admonition(node.rawsource, *node.children,
                                               **node.attributes)
                 title = nodes.title('', language.labels[node_name])
+                node['classes'].append(node_name)
                 admonition.insert(0, title)
                 node.replace_self(admonition)
