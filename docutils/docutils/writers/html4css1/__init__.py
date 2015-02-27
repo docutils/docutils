@@ -505,6 +505,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.depart_docinfo_item()
 
     def visit_admonition(self, node):
+        node['classes'].insert(0, 'admonition')
         self.body.append(self.starttag(node, 'div'))
         self.set_first_last(node)
 
