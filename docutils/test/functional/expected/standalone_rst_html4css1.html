@@ -1086,23 +1086,29 @@ crunchy, now would it?</td>
 </div>
 <div class="section" id="svg-images">
 <h2><a class="toc-backref" href="#id74">2.24&nbsp;&nbsp;&nbsp;SVG Images</a></h2>
-<object data="../../../docs/user/rst/images/biohazard.svg" style="width: 48px; height: 48px;" type="image/svg+xml">
+<object class="align-left" data="../../../docs/user/rst/images/biohazard.svg" style="width: 48px; height: 48px;" type="image/svg+xml">
 ../../../docs/user/rst/images/biohazard.svg</object>
 <p>Scalable vector graphics (SVG) images are not supported by all backends.
 Rendering depends partially on the backend, especially if the size is
 not explicitely given.</p>
 <object class="align-left" data="../../../docs/user/rst/images/title-scaling.svg" style="width: 50%;" type="image/svg+xml">
 ../../../docs/user/rst/images/title-scaling.svg</object>
-<p>A scaling image occupying 50% of the line width (scales with the
-browser window).</p>
+<p>A scaling image occupying 50% of the line width (scales with the browser
+window).</p>
 <p>Whether an SVG image is scaled or clipped/padded cannot be set in the
-containing HTML. It depends on the viewport declaration inside its
-root &lt;svg&gt; element.</p>
-<p>An inline SVG image <object data="../../../docs/user/rst/images/biohazard-scaling.svg" style="height: 0.8em;" type="image/svg+xml">inline-svg</object> scaled to a height of 0.8 em.</p>
+containing HTML.  If the image is wrapped in <tt class="docutils literal">&lt;object&gt;</tt> tags, it
+depends on the viewport declaration inside its root &lt;svg&gt; element, if it is
+wrapped in <tt class="docutils literal">&lt;img&gt;</tt> it depends on the browser.</p>
+<object class="align-left" data="../../../docs/user/rst/images/title.svg" style="width: 50%; height: 15px;" type="image/svg+xml">
+../../../docs/user/rst/images/title.svg</object>
+<p>A fixed-size image in a box with 50% of the line width, 15&nbsp;pixles high.</p>
 <object class="align-right" data="../../../docs/user/rst/images/title-scaling.svg" style="width: 50%; height: 1.2em;" type="image/svg+xml">
 ../../../docs/user/rst/images/title-scaling.svg</object>
 <p>A scaling image occupying 50% of the line width and 1.2 em high,
 right aligned (this SVG image keeps the aspect ratio):</p>
+<ul class="simple">
+<li>An inline SVG image <object data="../../../docs/user/rst/images/biohazard-scaling.svg" style="height: 0.8em;" type="image/svg+xml">inline-svg</object> scaled to a height of 0.8 em.</li>
+</ul>
 <object class="align-left" data="../../../docs/user/rst/images/biohazard-scaling.svg" style="height: 1em;" type="image/svg+xml">
 ../../../docs/user/rst/images/biohazard-scaling.svg</object>
 <p>A scaling image 1 em high, left aligned.</p>
@@ -1111,9 +1117,6 @@ right aligned (this SVG image keeps the aspect ratio):</p>
 <object class="align-left" data="../../../docs/user/rst/images/biohazard.svg" style="width: 4cm; height: 2em;" type="image/svg+xml">
 ../../../docs/user/rst/images/biohazard.svg</object>
 <p>A fixed-size image in a  4 cm x 2 em box.</p>
-<object class="align-left" data="../../../docs/user/rst/images/title.svg" style="width: 50%; height: 15px;" type="image/svg+xml">
-../../../docs/user/rst/images/title.svg</object>
-<p>A fixed-size image in a box 50% the line width and 15 pixle high.</p>
 <div class="figure">
 <object data="../../../docs/user/rst/images/title.svg" style="width: 290px; height: 28px;" type="image/svg+xml">
 reStructuredText, the markup syntax</object>
@@ -1121,7 +1124,11 @@ reStructuredText, the markup syntax</object>
 </div>
 <object class="align-right" data="../../../docs/user/rst/images/biohazard-bitmap.svg" style="width: 3em;" type="image/svg+xml">
 ../../../docs/user/rst/images/biohazard-bitmap.svg</object>
-<p>An SVG image with embedded bitmap. Should be 3 em wide, right aligned.</p>
+<p>An SVG image with embedded bitmap, 3&nbsp;em wide, right aligned.
+Older versions of <cite>webkit</cite> based browsers (chromium, safari, midori,
+konqueror) cannot display the contained bitmap image if the SVG is wrapped
+in <tt class="docutils literal">&lt;img&gt;</tt> tags. The image does not scale properly if wrapped in
+<tt class="docutils literal">&lt;object&gt;</tt> tags.</p>
 </div>
 <div class="section" id="swf-images">
 <h2><a class="toc-backref" href="#id75">2.25&nbsp;&nbsp;&nbsp;SWF Images</a></h2>
