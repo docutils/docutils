@@ -39,18 +39,17 @@ Enumerated lists with nested counters
 Description list
 ----------------
 
-Definition lists are styled like in most dictionaries, encyclopedias
-etc. (as well as the LaTeX `description` environment) if given the
-``description`` class argument:
+Definition lists with the ``description`` class argument:
 
 .. class:: description
 
-The label
-  is bold.
-
-The description
-  starts on the same line. If it is longer, you will see that it has a
-  hanging indent.
+description lists
+  Lists that are styled like in most dictionaries, encyclopedias
+  etc. (as well as the LaTeX `description` environment).
+label
+  The term to be described. Put in boldface.
+content
+  starts on the same line and has a hanging indent.
 
 
 Field list handling
@@ -72,7 +71,7 @@ characters" but the field name uses a proportional font.
 :MMMMMMMMMMMMMM: a field name that is actually longer than the
                  previous one but regarded "short" by html4css1.
 
-With `html4css2`, the field list is typeset as CSS-styled `definition
+With `html4css2`, a `field list` is typeset as CSS-styled `definition
 list`. The default layout is similar to the look with `html4css1`:
 
 .. class:: open
@@ -92,8 +91,8 @@ list`. The default layout is similar to the look with `html4css1`:
 Styling with class arguments
 ````````````````````````````
 
-The default style sheet ``html4css2.css`` supports the following class
-arguments for alternative styles:
+The ``xhtml11.css`` style sheet supports the following class arguments
+for alternative styles:
 
 *compact*
   .. class:: compact
@@ -136,7 +135,8 @@ arguments for alternative styles:
   :A long field name: sticks into the field body which continues on
                          the same line.
 
-  :The next field name:  and field body should align.
+  :The next field name:  and field body should align. Long text in the field
+                         body is wrapped and aligns with other fields.
 
 .. _`fix-labelwidth`:
 
@@ -146,11 +146,6 @@ arguments for alternative styles:
   :Feature:  The width of the field name (label) is fixed. Long labels
              wrap.
 
-  :Problem: Non-wrappable field names are truncated.
-
-  :a_very_long_field_name:
-             is truncated if it can not wrap.
-
   :this long field name: will wrap.
 
   :the next field name:  and field body should align.
@@ -159,9 +154,17 @@ arguments for alternative styles:
                 one line, following field bodies "float up" if not
                 prevented by a dummy dd:after element in the CSS.
 
+  :Problem: Non-wrappable field names are truncated.
+
+  :a_very_long_field_name:
+             is truncated if it can not wrap.
+
 
 Table styling with class arguments
 ----------------------------------
+
+The ``html-base.css`` style sheet provides rules for easy styling of tables
+with the "class" directive or directive argument.
 
 Numbered tables can be achieved with the ``numbered`` class option
 
@@ -176,6 +179,9 @@ Numbered tables can be achieved with the ``numbered`` class option
    False   True    True
    True    True    True
    ======= ======= ==========
+
+Currently, referencing to the table by number is not supported. This is a
+common request and already on the `TODO list`.
 
 In addition to the "borderless" table-style_, the style sheet also
 defines "booktabs", that will be rendered similar to the style from
@@ -210,7 +216,7 @@ True   True   True
 =====  =====  =======
 
 
-Of course, also booktabs style tables can be numbered:
+Of course, also "booktabs" style tables can be numbered:
 
 .. table:: I/O values
    :class: numbered booktabs
@@ -227,11 +233,11 @@ Of course, also booktabs style tables can be numbered:
    =====  =====  ======
 
 
-Math
-----
+Maths
+-----
 
-The W3C consortium provides a DTD for XHTML 1.1 plus MathML 2.0, so
-that documents embedding formulas as MathML can be validated.
+The ``html-output`` setting defaults to »MathML«. If there is mathematical
+content in `MathML` format, the document type is XHTML 1.1 plus MathML 2.0.
 
 The linear mapping :math:`f: \mathbb{C}^{N}\longmapsto\mathbb{C}^{N}`
 with

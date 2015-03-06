@@ -13,6 +13,6 @@ writer_name = "xhtml11"
 # Settings
 # local copy of default stylesheet:
 # (test runs in ``docutils/test/``, we need relative path from there.)
-settings_overrides['stylesheet_path'] = ( 
-    'functional/input/data/html4css1.css,'
+settings_overrides['stylesheet_path'] = (
+    'functional/input/data/html-base.css,'
     'functional/input/data/xhtml11.css')

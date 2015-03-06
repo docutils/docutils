@@ -40,12 +40,13 @@ class Writer(html4css1.Writer):
                  'xhtml11', 'xhtml1css2')
     """Formats this writer supports."""
 
-    default_stylesheets = ['html4css1.css', 'xhtml11.css']
+    default_stylesheets = ['html-base.css', 'xhtml11.css']
     default_stylesheet_dirs = ['.',
         os.path.abspath(os.path.dirname(__file__)),
+        # for math.css:                            
         os.path.abspath(os.path.join(
             os.path.dirname(os.path.dirname(__file__)), 'html4css1'))
-                              ]
+       ]
 
     config_section = 'xhtml11 writer'
     config_section_dependencies = ('writers', 'html4css1 writer')
@@ -97,6 +98,9 @@ class HTMLTranslator(html4css1.HTMLTranslator):
                             ' xml:lang="%(lang)s">\n<head>\n')
     lang_attribute = 'xml:lang' # changed from 'lang' in XHTML 1.0
 
+    def __init__(self, document):
+        html4css1.HTMLTranslator.__init__(self, document)
+        self.in_footnote_list = False
 
     # Do not  mark the first child with 'class="first"' and the last
     # child with 'class="last"' in definitions, table cells, field
@@ -108,9 +112,10 @@ class HTMLTranslator(html4css1.HTMLTranslator):
 
     # Compact lists
     # ------------
-    # Include field lists (in addition to ordered and unordered lists)
-    # in the test if a list is "simple"  (cf. the html4css1.HTMLTranslator
-    # docstring and the SimpleListChecker class at the end of this file).
+    # Include definition lists and field lists (in addition to ordered
+    # and unordered lists) in the test if a list is "simple"  (cf. the
+    # html4css1.HTMLTranslator docstring and the SimpleListChecker class at
+    # the end of this file).
 
     def is_compactable(self, node):
         # print "is_compactable %s ?" % node.__class__,
@@ -122,8 +127,9 @@ class HTMLTranslator(html4css1.HTMLTranslator):
             # print "explicitely open"
             return False
         # check config setting:
-        if (isinstance(node, nodes.field_list) and
-            not self.settings.compact_field_lists):
+        if (isinstance(node, nodes.field_list) or
+            isinstance(node, nodes.definition_list)
+           ) and not self.settings.compact_field_lists:
             # print "`compact-field-lists` is False"
             return False
         if (isinstance(node, nodes.enumerated_list) or
@@ -132,8 +138,7 @@ class HTMLTranslator(html4css1.HTMLTranslator):
             # print "`compact-lists` is False"
             return False
         # more special cases:
-        if (self.compact_simple or self.topic_classes == ['contents']):
-            # print "self.compact_simple is True"
+        if (self.topic_classes == ['contents']): # TODO: self.in_contents
             return True
         # check the list items:
         visitor = SimpleListChecker(self.document)
@@ -146,25 +151,74 @@ class HTMLTranslator(html4css1.HTMLTranslator):
             # print "simple list"
             return True
 
+    # address, literal block, and doctest block: no newline after <pre> tag
+    # (leads to blank line in XHTML1.1)
+    def visit_address(self, node):
+        self.visit_docinfo_item(node, 'address', meta=False)
+        self.body.append(self.starttag(node, 'pre',suffix='',
+                                       CLASS='address'))
+
+    # author, authors
+    # ---------------
+    # Use paragraphs instead of hard-coded linebreaks.
+
+    def visit_author(self, node):
+        if not(isinstance(node.parent, nodes.authors)):
+            self.visit_docinfo_item(node, 'author')
+        self.body.append('<p>')
+
+    def depart_author(self, node):
+        self.body.append('</p>')
+        if isinstance(node.parent, nodes.authors):
+            self.body.append('\n')
+        else:
+            self.depart_docinfo_item()
+
+    def visit_authors(self, node):
+        self.visit_docinfo_item(node, 'authors')
+
+    def depart_authors(self, node):
+        self.depart_docinfo_item()
+
     # citations
     # ---------
     # Use definition list instead of table for bibliographic references.
     # Join adjacent citation entries.
 
     def visit_citation(self, node):
-        if self.body[-1] == '<-- next citation -->':
-            del(self.body[-1])
-        else:
-            self.body.append('<dl class="citation">')
-        self.context.append(self.starttag(node, 'dd'))
-        self.footnote_backrefs(node)
+        if not self.in_footnote_list:
+            self.body.append('<dl class="citation">\n')
+            self.in_footnote_list = True
 
     def depart_citation(self, node):
         self.body.append('</dd>\n')
-        if isinstance(node.next_node(), nodes.citation):
-            self.body.append('<-- next citation -->')
-        else:
+        if not isinstance(node.next_node(descend=False, siblings=True),
+                          nodes.citation):
             self.body.append('</dl>\n')
+            self.in_footnote_list = False
+
+    # classifier
+    # ----------
+    # don't insert classifier-delimiter here (done by CSS)
+
+    def visit_classifier(self, node):
+        self.body.append(self.starttag(node, 'span', '', CLASS='classifier'))
+
+    def depart_classifier(self, node):
+        self.body.append('</span>')
+
+    # definition list
+    # ---------------
+    # check for simple/complex list and set class attribute
+
+    def visit_definition_list(self, node):
+        classes = node.setdefault('classes', [])
+        if self.is_compactable(node):
+            classes.append('simple')
+        self.body.append(self.starttag(node, 'dl'))
+
+    def depart_definition_list(self, node):
+        self.body.append('</dl>\n')
 
     # docinfo
     # -------
@@ -178,7 +232,7 @@ class HTMLTranslator(html4css1.HTMLTranslator):
 
     def depart_docinfo(self, node):
         self.body.append('</dl>\n')
-
+        
     def visit_docinfo_item(self, node, name, meta=True):
         if meta:
             meta_tag = '<meta name="%s" content="%s" />\n' \
@@ -191,6 +245,14 @@ class HTMLTranslator(html4css1.HTMLTranslator):
     def depart_docinfo_item(self):
         self.body.append('</dd>\n')
 
+    # doctest-block
+    # -------------
+    # no line-break
+    # TODO: RSt-parser should treat this as code-block with class "pycon".
+    
+    def visit_doctest_block(self, node):
+        self.body.append(self.starttag(node, 'pre', suffix='',
+                                       CLASS='code pycon doctest-block'))
 
     # enumerated lists
     # ----------------
@@ -200,17 +262,16 @@ class HTMLTranslator(html4css1.HTMLTranslator):
     def visit_enumerated_list(self, node):
         atts = {}
         if 'start' in node:
-            atts['style'] = 'counter-reset: item %d;' % (
-                                                node['start'] - 1)
+            atts['style'] = 'counter-reset: item %d;' % (node['start'] - 1)
         classes = node.setdefault('classes', [])
         if 'enumtype' in node:
             classes.append(node['enumtype'])
-        if self.is_compactable(node) and not self.compact_simple:
+        if self.is_compactable(node):
             classes.append('simple')
-        # @@@ To do: prefix, suffix. (?)
-        self.context.append((self.compact_simple, self.compact_p))
-        self.compact_p = False
         self.body.append(self.starttag(node, 'ol', **atts))
+
+    def depart_enumerated_list(self, node):
+        self.body.append('</ol>\n')
 
     # field-list
     # ----------
@@ -219,16 +280,12 @@ class HTMLTranslator(html4css1.HTMLTranslator):
     def visit_field_list(self, node):
         # Keep simple paragraphs in the field_body to enable CSS
         # rule to start body on new line if the label is too long
-        self.context.append((self.compact_field_list, self.compact_p))
-        self.compact_field_list, self.compact_p = False, False
-        #
         classes = 'field-list'
         if (self.is_compactable(node)):
             classes += ' simple'
         self.body.append(self.starttag(node, 'dl', CLASS=classes))
 
     def depart_field_list(self, node):
-        self.compact_field_list, self.compact_p = self.context.pop()
         self.body.append('</dl>\n')
 
     def visit_field(self, node):
@@ -254,22 +311,16 @@ class HTMLTranslator(html4css1.HTMLTranslator):
     # use definition list instead of table for footnote text
 
     def visit_footnote(self, node):
-        if self.body[-1] == '<-- next footnote -->':
-            del(self.body[-1])
-        else:
-            self.body.append('<dl class="footnote">')
-        self.context.append(self.starttag(node, 'dd'))
-        self.footnote_backrefs(node)
+        if not self.in_footnote_list:
+            self.body.append('<dl class="footnote">\n')
+            self.in_footnote_list = True
 
     def depart_footnote(self, node):
         self.body.append('</dd>\n')
-        next_siblings = node.traverse(descend=False, siblings=True,
-                                      include_self=False)
-        next = next_siblings and next_siblings[0]
-        if isinstance(next, nodes.footnote):
-            self.body.append('<-- next footnote -->')
-        else:
+        if not isinstance(node.next_node(descend=False, siblings=True),
+                          nodes.footnote):
             self.body.append('</dl>\n')
+            self.in_footnote_list = False
 
     # footnote and citation label
     def label_delim(self, node, bracket, superscript):
@@ -279,25 +330,33 @@ class HTMLTranslator(html4css1.HTMLTranslator):
                 return bracket
             else:
                 return superscript
-        else:
-            assert isinstance(node.parent, nodes.citation)
-            return bracket
+        assert isinstance(node.parent, nodes.citation)
+        return bracket
 
     def visit_label(self, node):
-        # Context added in footnote_backrefs.
-        suffix = '%s%s' % (self.context.pop(),
-                           self.label_delim(node, '[', ''))
-        self.body.append(self.starttag(node, 'dt', suffix, CLASS='label'))
+        # pass parent node to get id into starttag:
+        self.body.append(self.starttag(node.parent, 'dt', '', CLASS='label'))
+        # footnote/citation backrefs:
+        if self.settings.footnote_backlinks:
+            backrefs = node.parent['backrefs']
+            if len(backrefs) == 1:
+                self.body.append('<a class="fn-backref" href="#%s">'
+                                 % backrefs[0])
+        self.body.append(self.label_delim(node, '[', ''))
 
     def depart_label(self, node):
-        delim = self.label_delim(node, ']', '')
-        # Context added in footnote_backrefs.
-        backref = self.context.pop()
-        text = self.context.pop()
-        # <dd> starttag added in visit_footnote() / visit_citation()
-        starttag = self.context.pop()
-        self.body.append('%s%s</dt>\n%s%s' % (delim, backref, starttag, text))
-
+        self.body.append(self.label_delim(node, ']', ''))
+        if self.settings.footnote_backlinks:
+            backrefs = node.parent['backrefs']
+            if len(backrefs) == 1:
+                self.body.append('</a>')
+            elif len(backrefs) > 1:
+                # Python 2.4 fails with enumerate(backrefs, 1)
+                backlinks = ['<a href="#%s">%s</a>' % (ref, i+1)
+                             for (i, ref) in enumerate(backrefs)]
+                self.body.append('<span class="fn-backref">(%s)</span>'
+                                 % ','.join(backlinks))
+        self.body.append('</dt>\n<dd>')
 
     def visit_generated(self, node):
         if 'sectnum' in node['classes']:
@@ -315,7 +374,7 @@ class HTMLTranslator(html4css1.HTMLTranslator):
     # Image types to place in an <object> element
     # SVG as <img> supported since IE version 9
     # (but rendering problems remain (see standalonge_rst2xhtml11.xhtml test output)
-    object_image_types = {'.swf': 'application/x-shockwave-flash'}
+    # object_image_types = {'.swf': 'application/x-shockwave-flash'}
 
     # Do not  mark the first child with 'class="first"'
     def visit_list_item(self, node):
@@ -352,15 +411,9 @@ class HTMLTranslator(html4css1.HTMLTranslator):
         # skipped unless literal element is from "code" role:
         self.body.append('</code>')
 
-    # literal block and doctest block: no newline after <pre> tag
-    # (leads to blank line in XHTML1.1)
     def visit_literal_block(self, node,):
         self.body.append(self.starttag(node, 'pre', suffix='',
                                        CLASS='literal-block'))
-
-    def visit_doctest_block(self, node):
-        self.body.append(self.starttag(node, 'pre', suffix='',
-                                       CLASS='doctest-block'))
 
     # Meta tags: 'lang' attribute replaced by 'xml:lang' in XHTML 1.1
     def visit_meta(self, node):
@@ -419,10 +472,10 @@ class HTMLTranslator(html4css1.HTMLTranslator):
     # * In XHTML 1.1, e.g. a <blockquote> element may not contain
     #   character data, so you cannot drop the <p> tags.
     # * Keeping simple paragraphs in the field_body enables a CSS
-    #   rule to start the field-body on new line if the label is too long
+    #   rule to start the field-body on a new line if the label is too long
     # * it makes the code simpler.
     #
-    # TODO: omit paragraph tags in simple table cells.
+    # TODO: omit paragraph tags in simple table cells?
 
     def visit_paragraph(self, node):
         self.body.append(self.starttag(node, 'p', ''))
@@ -430,7 +483,6 @@ class HTMLTranslator(html4css1.HTMLTranslator):
     def depart_paragraph(self, node):
         self.body.append('</p>')
         if not (isinstance(node.parent, (nodes.list_item, nodes.entry)) and
-                # (node is node.parent[-1])
                 (len(node.parent) == 1)
                ):
             self.body.append('\n')
@@ -480,10 +532,8 @@ class SimpleListChecker(html4css1.SimpleListChecker):
 
     def visit_list_item(self, node):
         # print "visiting list item", node.__class__
-        children = []
-        for child in node.children:
-            if not isinstance(child, nodes.Invisible):
-                children.append(child)
+        children = [child for child in node.children
+                    if not isinstance(child, nodes.Invisible)]
         # print "has %s visible children" % len(children)
         if (children and isinstance(children[0], nodes.paragraph)
             and (isinstance(children[-1], nodes.bullet_list) or
@@ -509,11 +559,17 @@ class SimpleListChecker(html4css1.SimpleListChecker):
     visit_status = _simple_node
     visit_version = visit_list_item
 
-    # Field list items
+    # Definition list:
+    visit_definition_list = _pass_node
+    visit_definition_list_item = _pass_node
+    visit_term = _pass_node
+    visit_classifier = _pass_node
+    visit_definition = visit_list_item
+
+    # Field list:
     visit_field_list = _pass_node
     visit_field = _pass_node
     # the field body corresponds to a list item
-    # visit_field_body = html4css1.SimpleListChecker.visit_list_item
     visit_field_body = visit_list_item
     visit_field_name = html4css1.SimpleListChecker.invisible_visit
 

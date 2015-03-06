@@ -12,7 +12,7 @@
 <meta name="copyright" content="This document has been placed in the public domain. You may do with it as you wish. You may copy, modify, redistribute, reattribute, sell, buy, rent, lease, destroy, or improve it, quote it at length, excerpt, incorporate, collate, fold, staple, or mutilate it, or do anything else to it that your or anyone else's heart desires." />
 <meta content="reStructuredText, test, parser" name="keywords" />
 <meta content="A test document, containing at least one example of each reStructuredText construct." name="description" xml:lang="en" />
-<link rel="stylesheet" href="../input/data/html4css1.css" type="text/css" />
+<link rel="stylesheet" href="../input/data/html-base.css" type="text/css" />
 <link rel="stylesheet" href="../input/data/xhtml11.css" type="text/css" />
 </head>
 <body>
@@ -28,10 +28,9 @@
 
 <dl class="docinfo">
 <dt class="author">Author</dt>
-<dd class="author">David Goodger</dd>
+<dd class="author"><p>David Goodger</p></dd>
 <dt class="address">Address</dt>
-<dd class="address"><pre class="address">
-123 Example Street
+<dd class="address"><pre class="address">123 Example Street
 Example, EX  Canada
 A1B 2C3
 </pre>
@@ -39,9 +38,10 @@ A1B 2C3
 <dt class="contact">Contact</dt>
 <dd class="contact"><a class="reference external" href="mailto:goodger&#64;python.org">goodger&#64;python.org</a></dd>
 <dt class="authors">Authors</dt>
-<dd class="authors">Me
-<br />Myself
-<br />I</dd>
+<dd class="authors"><p>Me</p>
+<p>Myself</p>
+<p>I</p>
+</dd>
 <dt class="organization">Organization</dt>
 <dd class="organization">humankind</dd>
 <dt class="date">Date</dt>
@@ -276,18 +276,18 @@ live link to PEP 258 here.</p>
 </div>
 <div class="section" id="definition-lists">
 <h2><a class="toc-backref" href="#id47"><span class="sectnum">2.4</span> Definition Lists</a></h2>
-<dl class="docutils">
+<dl>
 <dt>Term</dt>
 <dd><p>Definition</p>
 </dd>
-<dt>Term <span class="classifier-delimiter">:</span> <span class="classifier">classifier</span></dt>
+<dt>Term<span class="classifier">classifier</span></dt>
 <dd><p>Definition paragraph 1.</p>
 <p>Definition paragraph 2.</p>
 </dd>
 <dt>Term</dt>
 <dd><p>Definition</p>
 </dd>
-<dt>Term <span class="classifier-delimiter">:</span> <span class="classifier">classifier one</span> <span class="classifier-delimiter">:</span> <span class="classifier">classifier two</span></dt>
+<dt>Term<span class="classifier">classifier one</span><span class="classifier">classifier two</span></dt>
 <dd><p>Definition</p>
 </dd>
 </dl>
@@ -461,7 +461,7 @@ notamment dans la documentation du langage Python.</p>
 </div>
 <div class="section" id="doctest-blocks">
 <h2><a class="toc-backref" href="#id53"><span class="sectnum">2.10</span> Doctest Blocks</a></h2>
-<pre class="doctest-block">&gt;&gt;&gt; print 'Python-specific usage examples; begun with &quot;&gt;&gt;&gt;&quot;'
+<pre class="code pycon doctest-block">&gt;&gt;&gt; print 'Python-specific usage examples; begun with &quot;&gt;&gt;&gt;&quot;'
 Python-specific usage examples; begun with &quot;&gt;&gt;&gt;&quot;
 &gt;&gt;&gt; print '(cut and pasted from interactive Python sessions)'
 (cut and pasted from interactive Python sessions)
@@ -469,47 +469,42 @@ Python-specific usage examples; begun with &quot;&gt;&gt;&gt;&quot;
 </div>
 <div class="section" id="footnotes">
 <h2><a class="toc-backref" href="#id54"><span class="sectnum">2.11</span> Footnotes</a></h2>
-<dl class="footnote"><dt class="label">[1]</dt>
-<dd id="id8">
-<em>(<a class="fn-backref" href="#id1">1</a>, <a class="fn-backref" href="#id9">2</a>, <a class="fn-backref" href="#id22">3</a>)</em> <p>A footnote contains body elements, consistently indented by at
+<dl class="footnote">
+<dt class="label" id="id8">[1]<span class="fn-backref">(<a href="#id1">1</a>,<a href="#id9">2</a>,<a href="#id22">3</a>)</span></dt>
+<dd><p>A footnote contains body elements, consistently indented by at
 least 3 spaces.</p>
-<p class="last">This is the footnote's second paragraph.</p>
+<p>This is the footnote's second paragraph.</p>
 </dd>
-<dt class="label">[2]</dt>
-<dd id="label">
-<em>(<a class="fn-backref" href="#id3">1</a>, <a class="fn-backref" href="#id10">2</a>)</em> <p>Footnotes may be numbered, either manually (as in <a class="footnote-reference" href="#id8" id="id9">[1]</a>) or
+<dt class="label" id="label">[2]<span class="fn-backref">(<a href="#id3">1</a>,<a href="#id10">2</a>)</span></dt>
+<dd><p>Footnotes may be numbered, either manually (as in <a class="footnote-reference" href="#id8" id="id9">[1]</a>) or
 automatically using a &quot;#&quot;-prefixed label.  This footnote has a
 label so it can be referred to from multiple places, both as a
 footnote reference (<a class="footnote-reference" href="#label" id="id10">[2]</a>) and as a <a class="reference internal" href="#label">hyperlink reference</a>.</p>
 </dd>
-<dt class="label"><a class="fn-backref" href="#id2">[3]</a></dt>
-<dd id="id12">
-<p class="first">This footnote is numbered automatically and anonymously using a
+<dt class="label" id="id12"><a class="fn-backref" href="#id2">[3]</a></dt>
+<dd><p>This footnote is numbered automatically and anonymously using a
 label of &quot;#&quot; only.</p>
 <p>This is the second paragraph.</p>
-<p class="last">And this is the third paragraph.</p>
+<p>And this is the third paragraph.</p>
 </dd>
-<dt class="label"><a class="fn-backref" href="#id4">[*]</a></dt>
-<dd id="id13">
-<p class="first last">Footnotes may also use symbols, specified with a &quot;*&quot; label.
+<dt class="label" id="id13"><a class="fn-backref" href="#id4">[*]</a></dt>
+<dd><p>Footnotes may also use symbols, specified with a &quot;*&quot; label.
 Here's a reference to the next footnote: <a class="footnote-reference" href="#id15" id="id14">[†]</a>.</p>
 </dd>
-<dt class="label"><a class="fn-backref" href="#id14">[†]</a></dt>
-<dd id="id15">
-<p class="first last">This footnote shows the next symbol in the sequence.</p>
+<dt class="label" id="id15"><a class="fn-backref" href="#id14">[†]</a></dt>
+<dd><p>This footnote shows the next symbol in the sequence.</p>
 </dd>
-<dt class="label">[4]</dt>
-<dd id="id16">
-<p class="first last">Here's an unreferenced footnote, with a reference to a
+<dt class="label" id="id16">[4]</dt>
+<dd><p>Here's an unreferenced footnote, with a reference to a
 nonexistent footnote: <a href="#id97"><span class="problematic" id="id98"><span id="id17"></span>[5]_</span></a>.</p>
 </dd>
 </dl>
 </div>
 <div class="section" id="citations">
 <h2><a class="toc-backref" href="#id55"><span class="sectnum">2.12</span> Citations</a></h2>
-<dl class="citation"><dt class="label">[CIT2002]</dt>
-<dd id="cit2002">
-<em>(<a class="fn-backref" href="#id5">1</a>, <a class="fn-backref" href="#id18">2</a>)</em> <p class="last">Citations are text-labeled footnotes. They may be
+<dl class="citation">
+<dt class="label" id="cit2002">[CIT2002]<span class="fn-backref">(<a href="#id5">1</a>,<a href="#id18">2</a>)</span></dt>
+<dd><p>Citations are text-labeled footnotes. They may be
 rendered separately and differently from footnotes.</p>
 </dd>
 </dl>
@@ -732,25 +727,21 @@ allowed (e.g. inside a directive).</p>
 </div>
 <div class="section" id="target-footnotes">
 <h3><a class="toc-backref" href="#id92"><span class="sectnum">2.14.5</span> Target Footnotes</a></h3>
-<dl class="footnote"><dt class="label">[5]</dt>
-<dd id="id25">
-<em>(<a class="fn-backref" href="#id26">1</a>, <a class="fn-backref" href="#id27">2</a>, <a class="fn-backref" href="#id28">3</a>, <a class="fn-backref" href="#id35">4</a>)</em> <p class="last"><a class="reference external" href="http://www.python.org/">http://www.python.org/</a></p>
+<dl class="footnote">
+<dt class="label" id="id25">[5]<span class="fn-backref">(<a href="#id26">1</a>,<a href="#id27">2</a>,<a href="#id28">3</a>,<a href="#id35">4</a>)</span></dt>
+<dd><p><a class="reference external" href="http://www.python.org/">http://www.python.org/</a></p>
 </dd>
-<dt class="label"><a class="fn-backref" href="#id30">[6]</a></dt>
-<dd id="id29">
-<p class="first last"><a class="reference external" href="http://pygments.org/">http://pygments.org/</a></p>
+<dt class="label" id="id29"><a class="fn-backref" href="#id30">[6]</a></dt>
+<dd><p><a class="reference external" href="http://pygments.org/">http://pygments.org/</a></p>
 </dd>
-<dt class="label"><a class="fn-backref" href="#id32">[7]</a></dt>
-<dd id="id31">
-<p class="first last"><a class="reference external" href="http://docutils.sourceforge.net/docs/user/config.html#table-style">http://docutils.sourceforge.net/docs/user/config.html#table-style</a></p>
+<dt class="label" id="id31"><a class="fn-backref" href="#id32">[7]</a></dt>
+<dd><p><a class="reference external" href="http://docutils.sourceforge.net/docs/user/config.html#table-style">http://docutils.sourceforge.net/docs/user/config.html#table-style</a></p>
 </dd>
-<dt class="label"><a class="fn-backref" href="#id34">[8]</a></dt>
-<dd id="id33">
-<p class="first last"><a class="reference external" href="http://tug.ctan.org/tex-archive/macros/latex/contrib/booktabs/booktabs.pdf">http://tug.ctan.org/tex-archive/macros/latex/contrib/booktabs/booktabs.pdf</a></p>
+<dt class="label" id="id33"><a class="fn-backref" href="#id34">[8]</a></dt>
+<dd><p><a class="reference external" href="http://tug.ctan.org/tex-archive/macros/latex/contrib/booktabs/booktabs.pdf">http://tug.ctan.org/tex-archive/macros/latex/contrib/booktabs/booktabs.pdf</a></p>
 </dd>
-<dt class="label"><a class="fn-backref" href="#id37">[9]</a></dt>
-<dd id="id36">
-<p class="first last"><a class="reference external" href="http://docutils.sourceforge.net/">http://docutils.sourceforge.net/</a></p>
+<dt class="label" id="id36"><a class="fn-backref" href="#id37">[9]</a></dt>
+<dd><p><a class="reference external" href="http://docutils.sourceforge.net/">http://docutils.sourceforge.net/</a></p>
 </dd>
 </dl>
 </div>
@@ -1077,34 +1068,49 @@ crunchy, now would it?</p></td>
 </div>
 <div class="section" id="svg-images">
 <h2><a class="toc-backref" href="#id78"><span class="sectnum">2.24</span> SVG Images</a></h2>
-<img alt="../../../docs/user/rst/images/biohazard.svg" src="../../../docs/user/rst/images/biohazard.svg" style="width: 48px; height: 48px;" />
+<object class="align-left" data="../../../docs/user/rst/images/biohazard.svg" style="width: 48px; height: 48px;" type="image/svg+xml">
+../../../docs/user/rst/images/biohazard.svg</object>
 <p>Scalable vector graphics (SVG) images are not supported by all backends.
 Rendering depends partially on the backend, especially if the size is
 not explicitely given.</p>
-<img alt="../../../docs/user/rst/images/title-scaling.svg" class="align-left" src="../../../docs/user/rst/images/title-scaling.svg" style="width: 50%;" />
-<p>A scaling image occupying 50% of the line width (scales with the
-browser window).</p>
+<object class="align-left" data="../../../docs/user/rst/images/title-scaling.svg" style="width: 50%;" type="image/svg+xml">
+../../../docs/user/rst/images/title-scaling.svg</object>
+<p>A scaling image occupying 50% of the line width (scales with the browser
+window).</p>
 <p>Whether an SVG image is scaled or clipped/padded cannot be set in the
-containing HTML. It depends on the viewport declaration inside its
-root &lt;svg&gt; element.</p>
-<p>An inline SVG image <img alt="inline-svg" src="../../../docs/user/rst/images/biohazard-scaling.svg" style="height: 0.8em;" /> scaled to a height of 0.8 em.</p>
-<img alt="../../../docs/user/rst/images/title-scaling.svg" class="align-right" src="../../../docs/user/rst/images/title-scaling.svg" style="width: 50%; height: 1.2em;" />
+containing HTML.  If the image is wrapped in <tt class="literal">&lt;object&gt;</tt> tags, it
+depends on the viewport declaration inside its root &lt;svg&gt; element, if it is
+wrapped in <tt class="literal">&lt;img&gt;</tt> it depends on the browser.</p>
+<object class="align-left" data="../../../docs/user/rst/images/title.svg" style="width: 50%; height: 15px;" type="image/svg+xml">
+../../../docs/user/rst/images/title.svg</object>
+<p>A fixed-size image in a box with 50% of the line width, 15&nbsp;pixles high.</p>
+<object class="align-right" data="../../../docs/user/rst/images/title-scaling.svg" style="width: 50%; height: 1.2em;" type="image/svg+xml">
+../../../docs/user/rst/images/title-scaling.svg</object>
 <p>A scaling image occupying 50% of the line width and 1.2 em high,
 right aligned (this SVG image keeps the aspect ratio):</p>
-<img alt="../../../docs/user/rst/images/biohazard-scaling.svg" class="align-left" src="../../../docs/user/rst/images/biohazard-scaling.svg" style="height: 1em;" />
+<ul class="simple">
+<li><p>An inline SVG image <object data="../../../docs/user/rst/images/biohazard-scaling.svg" style="height: 0.8em;" type="image/svg+xml">inline-svg</object> scaled to a height of 0.8 em.</p></li>
+</ul>
+<object class="align-left" data="../../../docs/user/rst/images/biohazard-scaling.svg" style="height: 1em;" type="image/svg+xml">
+../../../docs/user/rst/images/biohazard-scaling.svg</object>
 <p>A scaling image 1 em high, left aligned.</p>
 <p>A scaling image 5 mm x 5 mm, centered, with hyperlink reference:</p>
-<a class="reference internal image-reference" href="#directives"><img alt="../../../docs/user/rst/images/biohazard-scaling.svg" class="align-center" src="../../../docs/user/rst/images/biohazard-scaling.svg" style="width: 5mm; height: 5mm;" /></a>
-<img alt="../../../docs/user/rst/images/biohazard.svg" class="align-left" src="../../../docs/user/rst/images/biohazard.svg" style="width: 4cm; height: 2em;" />
+<a class="reference internal image-reference" href="#directives"><object class="align-center" data="../../../docs/user/rst/images/biohazard-scaling.svg" style="width: 5mm; height: 5mm;" type="image/svg+xml">../../../docs/user/rst/images/biohazard-scaling.svg</object></a>
+<object class="align-left" data="../../../docs/user/rst/images/biohazard.svg" style="width: 4cm; height: 2em;" type="image/svg+xml">
+../../../docs/user/rst/images/biohazard.svg</object>
 <p>A fixed-size image in a  4 cm x 2 em box.</p>
-<img alt="../../../docs/user/rst/images/title.svg" class="align-left" src="../../../docs/user/rst/images/title.svg" style="width: 50%; height: 15px;" />
-<p>A fixed-size image in a box 50% the line width and 15 pixle high.</p>
 <div class="figure">
-<img alt="reStructuredText, the markup syntax" src="../../../docs/user/rst/images/title.svg" style="width: 290px; height: 28px;" />
+<object data="../../../docs/user/rst/images/title.svg" style="width: 290px; height: 28px;" type="image/svg+xml">
+reStructuredText, the markup syntax</object>
 <p class="caption">SVG image in a figure.</p>
 </div>
-<img alt="../../../docs/user/rst/images/biohazard-bitmap.svg" class="align-right" src="../../../docs/user/rst/images/biohazard-bitmap.svg" style="width: 3em;" />
-<p>An SVG image with embedded bitmap. Should be 3 em wide, right aligned.</p>
+<object class="align-right" data="../../../docs/user/rst/images/biohazard-bitmap.svg" style="width: 3em;" type="image/svg+xml">
+../../../docs/user/rst/images/biohazard-bitmap.svg</object>
+<p>An SVG image with embedded bitmap, 3&nbsp;em wide, right aligned.
+Older versions of <cite>webkit</cite> based browsers (chromium, safari, midori,
+konqueror) cannot display the contained bitmap image if the SVG is wrapped
+in <tt class="literal">&lt;img&gt;</tt> tags. The image does not scale properly if wrapped in
+<tt class="literal">&lt;object&gt;</tt> tags.</p>
 </div>
 <div class="section" id="swf-images">
 <h2><a class="toc-backref" href="#id79"><span class="sectnum">2.25</span> SWF Images</a></h2>
@@ -1139,7 +1145,7 @@ wrapping in this kind of lists.</p></li>
 <ul class="simple">
 <li><p>Unordered list nested in enumeration.</p></li>
 </ul>
-<dl class="docutils">
+<dl class="simple">
 <dt>Definition list</dt>
 <dd><p>nested in top-level enumeration</p>
 </dd>
@@ -1150,16 +1156,17 @@ wrapping in this kind of lists.</p></li>
 </div>
 <div class="section" id="description-list">
 <h2><a class="toc-backref" href="#id82"><span class="sectnum">3.2</span> Description list</a></h2>
-<p>Definition lists are styled like in most dictionaries, encyclopedias
-etc. (as well as the LaTeX <cite>description</cite> environment) if given the
-<tt class="literal">description</tt> class argument:</p>
-<dl class="description docutils">
-<dt>The label</dt>
-<dd><p>is bold.</p>
+<p>Definition lists with the <tt class="literal">description</tt> class argument:</p>
+<dl class="description simple">
+<dt>description lists</dt>
+<dd><p>Lists that are styled like in most dictionaries, encyclopedias
+etc. (as well as the LaTeX <cite>description</cite> environment).</p>
 </dd>
-<dt>The description</dt>
-<dd><p>starts on the same line. If it is longer, you will see that it has a
-hanging indent.</p>
+<dt>label</dt>
+<dd><p>The term to be described. Put in boldface.</p>
+</dd>
+<dt>content</dt>
+<dd><p>starts on the same line and has a hanging indent.</p>
 </dd>
 </dl>
 </div>
@@ -1186,7 +1193,7 @@ with the default setting of <cite>field-name-limit: 14</cite>.</p>
 previous one but regarded &quot;short&quot; by html4css1.</p>
 </dd>
 </dl>
-<p>With <cite>html4css2</cite>, the field list is typeset as CSS-styled <cite>definition
+<p>With <cite>html4css2</cite>, a <cite>field list</cite> is typeset as CSS-styled <cite>definition
 list</cite>. The default layout is similar to the look with <cite>html4css1</cite>:</p>
 <dl class="open field-list">
 <dt>A long field name</dt>
@@ -1205,9 +1212,9 @@ example:</p>
 </dl>
 <div class="section" id="styling-with-class-arguments">
 <h3><a class="toc-backref" href="#id84"><span class="sectnum">3.3.1</span> Styling with class arguments</a></h3>
-<p>The default style sheet <tt class="literal">html4css2.css</tt> supports the following class
-arguments for alternative styles:</p>
-<dl class="docutils">
+<p>The <tt class="literal">xhtml11.css</tt> style sheet supports the following class arguments
+for alternative styles:</p>
+<dl>
 <dt><em>compact</em></dt>
 <dd><dl class="compact field-list simple">
 <dt>Feature</dt>
@@ -1251,7 +1258,7 @@ new line (if not combined with <a class="reference internal" href="#run-in">run-
 </dl>
 </dd>
 </dl>
-<dl class="docutils" id="run-in">
+<dl id="run-in">
 <dt><em>run-in</em></dt>
 <dd><dl class="run-in field-list simple">
 <dt>Feature</dt>
@@ -1263,23 +1270,18 @@ names.</p>
 the same line.</p>
 </dd>
 <dt>The next field name</dt>
-<dd><p>and field body should align.</p>
+<dd><p>and field body should align. Long text in the field
+body is wrapped and aligns with other fields.</p>
 </dd>
 </dl>
 </dd>
 </dl>
-<dl class="docutils" id="fix-labelwidth">
+<dl id="fix-labelwidth">
 <dt><em>fix-labelwidth</em></dt>
 <dd><dl class="fix-labelwidth field-list simple">
 <dt>Feature</dt>
 <dd><p>The width of the field name (label) is fixed. Long labels
 wrap.</p>
-</dd>
-<dt>Problem</dt>
-<dd><p>Non-wrappable field names are truncated.</p>
-</dd>
-<dt>a_very_long_field_name</dt>
-<dd><p>is truncated if it can not wrap.</p>
 </dd>
 <dt>this long field name</dt>
 <dd><p>will wrap.</p>
@@ -1290,6 +1292,12 @@ wrap.</p>
 one line, following field bodies "float up" if not
 prevented by a dummy dd:after element in the CSS. -->
 </dd>
+<dt>Problem</dt>
+<dd><p>Non-wrappable field names are truncated.</p>
+</dd>
+<dt>a_very_long_field_name</dt>
+<dd><p>is truncated if it can not wrap.</p>
+</dd>
 </dl>
 </dd>
 </dl>
@@ -1297,6 +1305,8 @@ prevented by a dummy dd:after element in the CSS. -->
 </div>
 <div class="section" id="table-styling-with-class-arguments">
 <h2><a class="toc-backref" href="#id85"><span class="sectnum">3.4</span> Table styling with class arguments</a></h2>
+<p>The <tt class="literal"><span class="pre">html-base.css</span></tt> style sheet provides rules for easy styling of tables
+with the &quot;class&quot; directive or directive argument.</p>
 <p>Numbered tables can be achieved with the <tt class="literal">numbered</tt> class option</p>
 <table class="numbered">
 <caption>truth values</caption>
@@ -1330,6 +1340,8 @@ prevented by a dummy dd:after element in the CSS. -->
 </tr>
 </tbody>
 </table>
+<p>Currently, referencing to the table by number is not supported. This is a
+common request and already on the <cite>TODO list</cite>.</p>
 <p>In addition to the &quot;borderless&quot; <a class="reference external" href="http://docutils.sourceforge.net/docs/user/config.html#table-style">table-style</a> <a class="footnote-reference" href="#id31" id="id32">[7]</a>, the style sheet also
 defines &quot;booktabs&quot;, that will be rendered similar to the style from
 the <a class="reference external" href="http://tug.ctan.org/tex-archive/macros/latex/contrib/booktabs/booktabs.pdf">booktabs</a> <a class="footnote-reference" href="#id33" id="id34">[8]</a> LaTeX package.</p>
@@ -1391,7 +1403,7 @@ the headers:</p>
 </tr>
 </tbody>
 </table>
-<p>Of course, also booktabs style tables can be numbered:</p>
+<p>Of course, also &quot;booktabs&quot; style tables can be numbered:</p>
 <table class="numbered booktabs">
 <caption>I/O values</caption>
 <colgroup>
@@ -1430,8 +1442,8 @@ the headers:</p>
 </div>
 <div class="section" id="math">
 <h2><a class="toc-backref" href="#id86"><span class="sectnum">3.5</span> Math</a></h2>
-<p>The W3C consortium provides a DTD for XHTML 1.1 plus MathML 2.0, so
-that documents embedding formulas as MathML can be validated.</p>
+<p>The <tt class="literal"><span class="pre">html-output</span></tt> setting defaults to »MathML«. If there is mathematical
+content in <cite>MathML</cite> format, the document type is XHTML 1.1 plus MathML 2.0.</p>
 <p>The linear mapping <math xmlns="http://www.w3.org/1998/Math/MathML">
 <mrow><mi>f</mi><mo>:</mo><msup><mi>ℂ</mi>
 <mrow><mi>N</mi></mrow></msup><mo>⟼</mo><msup><mi>ℂ</mi>
