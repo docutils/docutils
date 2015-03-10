@@ -99,16 +99,6 @@ ol.nested > li:before, ol.nested  ol > li:before {
 
 /* field-list variants:: */
 
-/* example for custom field-name width */
-dl.field-list.narrow > dd {
-  margin-left: 5em;
-}
-
-/* start field-body on same line after long field names */
-dl.field-list.run-in > dd p {
-  display: block;
-}
-
 /* wrap or truncate long field names */
 dl.field-list.fix-labelwidth > dt {
   width: 8em; /* set to dl.field-list > dd margin-left - padding-left */
@@ -119,4 +109,5 @@ dl.field-list.fix-labelwidth > dd:after {
   content: '';
   display: block;
   clear: left;
+  vertical-align: baseline; 
 }
