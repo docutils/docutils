@@ -10,5 +10,5 @@ writer_name = "xhtml"
 # Settings
 settings_overrides['math_output'] = 'MathML'
 # local copy of default stylesheet:
-settings_overrides['stylesheet_path'] = (
-    'functional/input/data/html4-base.css')
+# (test runs in ``docutils/test/``, we need relative path from there.)
+settings_overrides['stylesheet_dirs'] = ('.', 'functional/input/data')
