@@ -26,11 +26,7 @@ def suite():
 
 totest = {}
 
-if not east_asian_width:
-    print ('test_east_asian_text.py tests skipped; '
-           'Python 2.4 or higher required.')
-else:
-    totest['double-width'] = [
+totest['double-width'] = [
 [u"""\
 タイトル1
 =========
