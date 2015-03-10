@@ -43,7 +43,12 @@ class Writer(writers.Writer):
     """Formats this writer supports."""
 
     default_stylesheets = ['html4css1.css']
-    default_stylesheet_dirs = ['.', os.path.abspath(os.path.dirname(__file__))]
+    default_stylesheet_dirs = ['.',
+        os.path.abspath(os.path.dirname(__file__)),
+        # for math.css
+        os.path.abspath(os.path.join(
+            os.path.dirname(os.path.dirname(__file__)), 'html_base'))
+       ]
 
     default_template = 'template.txt'
     default_template_path = os.path.join(
