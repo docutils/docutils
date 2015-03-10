@@ -136,10 +136,14 @@ class Writer(writers.Writer):
           'or "LaTeX") and options(s).  Default: "HTML math.css"',
           ['--math-output'],
           {'default': 'HTML math.css'}),
-         ('Omit the XML declaration. Must be true for HTML5 conformance.',
+         ('Prepend an XML declaration. (Thwarts HTML5 conformance.) '
+          'Default: False',
+          ['--xml-declaration'],
+          {'default': False, 'action': 'store_true',
+           'validator': frontend.validate_boolean}),
+         ('Omit the XML declaration.',
           ['--no-xml-declaration'],
-          {'dest': 'xml_declaration', 'default': False,
-           'action': 'store_false', 'validator': frontend.validate_boolean}),
+          {'dest': 'xml_declaration', 'action': 'store_false'}),
          ('Obfuscate email addresses to confuse harvesters while still '
           'keeping email links usable with standards-compliant browsers.',
           ['--cloak-email-addresses'],
@@ -208,8 +212,8 @@ class HTMLTranslator(nodes.NodeVisitor):
                             ' xml:lang="%(lang)s" lang="%(lang)s">\n<head>\n')
     content_type = ('<meta http-equiv="Content-Type"'
                     ' content="text/html; charset=%s" />\n')
-    content_type_mathml = ('<meta http-equiv="Content-Type"'
-                           ' content="text/html; charset=%s" />\n')
+    content_type_xml = ('<meta http-equiv="Content-Type"'
+                        ' content="application/xhtml+xml; charset=%s" />\n')
 
     generator = ('<meta name="generator" content="Docutils %s: '
                  'http://docutils.sourceforge.net/" />\n')
@@ -240,6 +244,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         if settings.xml_declaration:
             self.head_prefix.append(self.xml_declaration
                                     % settings.output_encoding)
+            self.content_type = self.content_type_xml
             # encoding not interpolated:
             self.html_prolog.append(self.xml_declaration)
         self.head = self.meta[:]
@@ -831,18 +836,11 @@ class HTMLTranslator(nodes.NodeVisitor):
             atts['start'] = node['start']
         if 'enumtype' in node:
             atts['class'] = node['enumtype']
-        # @@@ To do: prefix, suffix. How? Change prefix/suffix to a
-        # single "format" attribute? Use CSS2?
-        old_compact_simple = self.compact_simple
-        self.context.append((self.compact_simple, self.compact_p))
-        self.compact_p = None
-        self.compact_simple = self.is_compactable(node)
-        if self.compact_simple and not old_compact_simple:
+        if self.is_compactable(node):
             atts['class'] = (atts.get('class', '') + ' simple').strip()
         self.body.append(self.starttag(node, 'ol', **atts))
 
     def depart_enumerated_list(self, node):
-        self.compact_simple, self.compact_p = self.context.pop()
         self.body.append('</ol>\n')
 
     # field-list
@@ -1192,7 +1190,7 @@ class HTMLTranslator(nodes.NodeVisitor):
             math_code = math2html.math2html(math_code)
         elif self.math_output == 'mathml':
             self.doctype = self.doctype_mathml
-            self.content_type = self.content_type_mathml
+            # self.content_type = self.content_type_mathml
             try:
                 mathml_tree = parse_latex_math(math_code, inline=not(math_env))
                 math_code = ''.join(mathml_tree.xml())

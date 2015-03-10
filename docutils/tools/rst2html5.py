@@ -16,7 +16,7 @@
 """
 A minimal front end to the Docutils Publisher, producing basic HTML 5
 
-The output also conforms to XHTML 1.0 transitional 
+The output also conforms to XHTML 1.0 transitional
 (except for the doctype declaration).
 """
 
@@ -28,8 +28,8 @@ except locale.Error:
 
 from docutils.core import publish_cmdline, default_description
 
-description = ('Generates HTML 5 documents from standalone '
-               'reStructuredText sources '
+description = (u'Generates HTML 5 documents from standalone '
+               u'reStructuredText sources '
                + default_description)
 
 publish_cmdline(writer_name='html-base', description=description)

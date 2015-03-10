@@ -55,9 +55,9 @@ h1.title, p.subtitle {
   text-align: center;
 }
 
-h1 + p.subtitle { font-size: 1.5em; }
-h1 + p.section-subtitle { font-size: 1.5em; }
-h2 + p.section-subtitle { font-size: 1.17em; }
+h1 + p.subtitle { font-size: 1.6em; }
+h1 + p.section-subtitle { font-size: 1.6em; }
+h2 + p.section-subtitle { font-size: 1.28em; }
 
 a.toc-backref {
   color: black;

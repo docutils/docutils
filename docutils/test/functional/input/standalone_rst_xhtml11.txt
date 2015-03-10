@@ -124,7 +124,7 @@ for alternative styles:
        sticks into the field body and the field body starts on a
        new line (if not combined with `run-in`_ or `fix-labelwidth`_).
 
-.. _`run-in`:
+  .. _`run-in`:
 
 *run-in*
   .. class:: run-in
@@ -138,7 +138,7 @@ for alternative styles:
   :The next field name:  and field body should align. Long text in the field
                          body is wrapped and aligns with other fields.
 
-.. _`fix-labelwidth`:
+  .. _`fix-labelwidth`:
 
 *fix-labelwidth*
   .. class:: fix-labelwidth

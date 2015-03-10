@@ -25,9 +25,11 @@ except locale.Error:
 
 from docutils.core import publish_cmdline, default_description
 
-description = ('Generates CSS2-styled HTML documents from standalone '
-               'reStructuredText! sources that conform to the XHTML 1.1 DTD '
-               '(strict XHTML). '
+description = (u'Generates HTML documents from standalone '
+               u'reStructuredText sources that conform to the XHTML 1.1 DTD '
+               u'(strict XHTML). '
+               u'Requires layout rules provided by CSS 2.1 stylesheets '
+               u'``html-base.css`` and ``xhtml11.css`` (or equivalent).'
                + default_description)
 
 publish_cmdline(writer_name='xhtml11', description=description)
