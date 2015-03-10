@@ -51,17 +51,13 @@ div.document {
 
 /* Sections           */
 
-h1.title, h2.subtitle {
+h1.title, p.subtitle {
   text-align: center;
 }
-h1.section-subtitle, h2.section-subtitle, h3.section-subtitle,
-h4.section-subtitle, h5.section-subtitle, h6.section-subtitle {
-  margin-top: -0.25em;
-}
-span.section-subtitle {
-  /* font-size relative to parent (h1..h6 element) */
-  font-size: 75%;
-}
+
+h1 + p.subtitle { font-size: 1.5em; }
+h1 + p.section-subtitle { font-size: 1.5em; }
+h2 + p.section-subtitle { font-size: 1.17em; }
 
 a.toc-backref {
   color: black;
@@ -98,10 +94,17 @@ dl > dd {
 p.admonition-title,
 p.topic-title,
 p.sidebar-title,
-p.sidebar-subtitle,
 p.system-message-title {
   font-weight: bold;
 }
+
+p.subtitle,
+p.section-subtitle,
+p.sidebar-subtitle {
+  font-weight: bold;
+  margin-top: -0.5em;
+}
+
 
 /* Warnings, Errors */
 div.caution p.admonition-title,
@@ -189,6 +192,15 @@ dl.docinfo    > dt:after {
   content: ":";
 }
 
+/* example for custom field-name width */
+dl.field-list.narrow > dd {
+  margin-left: 5em;
+}
+/* run-in: start field-body on same line after long field names */
+dl.field-list.run-in > dd p {
+  display: block;
+}
+
 /* Bibliographic Fields */
 
 /* use special field-list dl.docinfo */
@@ -272,7 +284,6 @@ div.topic p.attribution {
 table {
   border-collapse: collapse;
 }
-
 td, th {
   border-style: solid;
   border-color: silver;
@@ -281,12 +292,14 @@ td, th {
 /* in Firefox 31.5.0 and opera 10.63 */
   border-width: thin;
 }
-
 td > p:first-child, th > p:first-child {
   margin-top: 0;
 }
 td > p, th > p {
   margin-bottom: 0;
+}
+th {
+  vertical-align: bottom;
 }
 
 table > caption {
@@ -473,8 +486,11 @@ ul.auto-toc {
 /*   cite		    */
 /* Inline Literals          */
 
-/* possible values: normal, nowrap, pre, pre-wrap, pre-line */
-tt.literal, span.literal { white-space: pre-wrap; }
+tt.literal, span.docutils.literal {
+  font-family: monospace;
+  /* possible values: normal, nowrap, pre, pre-wrap, pre-line */
+  white-space: pre-wrap;
+}
 /* do not wraph a hyphens and similar: */
 .literal > span.pre { white-space: nowrap; }
 
