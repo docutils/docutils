@@ -29,7 +29,8 @@ Future changes
 
 * »Prune« the doctree (no change to the reST input syntax):
 
-  - "doctest" element -> literal block with class argument,
+  - "doctest" element -> literal block with 'pycon' class argument
+    and syntax highlight (like the "code" directive),
   - special admonitions (note, hint, warning, ...) -> generic "admonition"
     element with class attribute and auto-generated title.
 
@@ -37,7 +38,7 @@ Future changes
   See `Porting Python 2 Code to Python 3`_ and
   `future: clean single-source support for Python 2/3`_
 
-  - Drop support for python 2.4 probably after 0.12 release.
+  - Drop support for python 2.4 after 0.12 release.
 
 .. _Porting Python 2 Code to Python 3: https://docs.python.org/3/howto/pyporting.html
 .. _future\: clean single-source support for Python 2/3: http://python-future.org
