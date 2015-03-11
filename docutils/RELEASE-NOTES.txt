@@ -38,13 +38,27 @@ Future changes
   See `Porting Python 2 Code to Python 3`_ and
   `future: clean single-source support for Python 2/3`_
 
-  - Drop support for python 2.4 after 0.12 release.
+  - Drop support for python 2.4 after release 0.12.
 
 .. _Porting Python 2 Code to Python 3: https://docs.python.org/3/howto/pyporting.html
 .. _future\: clean single-source support for Python 2/3: http://python-future.org
 
 Changes Since 0.12
 ==================
+
+* docutils/writers/
+
+  - New HTML writers generating `HTML 5`_ and `XHTML 1.1`_.
+    
+    New stylesheet ``html-base.css`` for default layout using CSS 2.1.
+
+* tools/
+
+  - New front-ends ``rst2xhtml.py`` and ``rst2html5.py`` for the
+    corresponding writers.
+
+.. _HTML 5: http://www.w3.org/TR/html5/
+.. _XHTML 1.1: http://www.w3.org/TR/xhtml11/
 
 
 Release 0.12 (2014-07-06)
