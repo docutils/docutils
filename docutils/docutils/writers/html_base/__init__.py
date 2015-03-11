@@ -19,7 +19,7 @@
 """
 Basic HyperText Markup Language document tree Writer.
 
-The output conforms to the `HTML 5` specification as well as 
+The output conforms to the `HTML 5` specification as well as
 to `XHTML 1.0 transitional`.
 
 The cascading style sheet "html-base.css" is required for proper viewing.
@@ -298,7 +298,8 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def encode(self, text):
         """Encode special characters in `text` & return."""
-        # @@@ A codec to do these and all other HTML entities would be nice.
+        # Use only named entities known in both XML and HTML
+        # other characters are automatically encoded "by number" if required.
         text = unicode(text)
         return text.translate({
             ord('&'): u'&amp;',
@@ -432,10 +433,6 @@ class HTMLTranslator(nodes.NodeVisitor):
             return
         child['classes'].append(class_)
 
-    def set_first_last(self, node):
-        pass
-        # TODO: remove calls to this function
-
     def visit_Text(self, node):
         text = node.astext()
         encoded = self.encode(text)
@@ -471,12 +468,11 @@ class HTMLTranslator(nodes.NodeVisitor):
     def visit_admonition(self, node):
         node['classes'].insert(0, 'admonition')
         self.body.append(self.starttag(node, 'div'))
-        self.set_first_last(node)
 
     def depart_admonition(self, node=None):
         self.body.append('</div>\n')
 
-    attribution_formats = {'dash': ('&mdash;', ''),
+    attribution_formats = {'dash': (u'\u2014', ''),
                            'parentheses': ('(', ')'),
                            'parens': ('(', ')'),
                            'none': ('', '')}
@@ -486,9 +482,10 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.context.append(suffix)
         self.body.append(
             self.starttag(node, 'p', prefix, CLASS='attribution'))
+        self.body.append(self.starttag(node, 'cite', ''))
 
     def depart_attribution(self, node):
-        self.body.append(self.context.pop() + '</p>\n')
+        self.body.append('</cite>' + self.context.pop() + '</p>\n')
 
     # author, authors
     # ---------------
@@ -699,7 +696,6 @@ class HTMLTranslator(nodes.NodeVisitor):
     def visit_definition(self, node):
         self.body.append('</dt>\n')
         self.body.append(self.starttag(node, 'dd', ''))
-        self.set_first_last(node)
 
     def depart_definition(self, node):
         self.body.append('</dd>\n')
@@ -744,7 +740,7 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def depart_docinfo(self, node):
         self.body.append('</dl>\n')
-        
+
     def visit_docinfo_item(self, node, name, meta=True):
         if meta:
             meta_tag = '<meta name="%s" content="%s" />\n' \
@@ -818,9 +814,9 @@ class HTMLTranslator(nodes.NodeVisitor):
             node.parent.column += node['morecols']
         self.body.append(self.starttag(node, tagname, '', **atts))
         self.context.append('</%s>\n' % tagname.lower())
-        if len(node) == 0:              # empty cell
-            self.body.append('&nbsp;')
-        self.set_first_last(node)
+        # TODO: why did the html4css1 writer insert an NBSP into empty cells?
+        # if len(node) == 0:              # empty cell
+        #     self.body.append('&#0160;') # no-break space
 
     def depart_entry(self, node):
         self.body.append(self.context.pop())
@@ -905,6 +901,7 @@ class HTMLTranslator(nodes.NodeVisitor):
     # ---------
     # use definition list instead of table for footnote text
 
+    # TODO: use the new HTML5 element <aside>? (Also for footnote text)
     def visit_footnote(self, node):
         if not self.in_footnote_list:
             self.body.append('<dl class="footnote">\n')
@@ -1134,9 +1131,13 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_literal_block(self, node):
         self.body.append(self.starttag(node, 'pre', '', CLASS='literal-block'))
+        if 'code' in node.get('classes', []):
+            self.body.append('<code>')
 
     def depart_literal_block(self, node):
-        self.body.append('\n</pre>\n')
+        if 'code' in node.get('classes', []):
+            self.body.append('</code>')
+        self.body.append('</pre>\n')
 
     def visit_math(self, node, math_env=''):
         # If the method is called from visit_math_block(), math_env != ''.
@@ -1401,7 +1402,6 @@ class HTMLTranslator(nodes.NodeVisitor):
     def visit_sidebar(self, node):
         self.body.append(
             self.starttag(node, 'div', CLASS='sidebar'))
-        self.set_first_last(node)
         self.in_sidebar = True
 
     def depart_sidebar(self, node):
@@ -1612,6 +1612,7 @@ class HTMLTranslator(nodes.NodeVisitor):
     def depart_title_reference(self, node):
         self.body.append('</cite>')
 
+    # TODO: use the new HTML5 element <aside>? (Also for footnote text)
     def visit_topic(self, node):
         self.body.append(self.starttag(node, 'div', CLASS='topic'))
         self.topic_classes = node['classes']
@@ -1647,10 +1648,10 @@ class SimpleListChecker(nodes.GenericNodeVisitor):
 
     Here "simple" means a list item containing nothing other than a single
     paragraph, a simple list, or a paragraph followed by a simple list.
-    
+
     This version also checks for simple field lists and docinfo.
     """
-    
+
     def default_visit(self, node):
         raise nodes.NodeFound
 

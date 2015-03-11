@@ -33,7 +33,16 @@ Changes Since 0.12
 
   - Add ``\colon`` macro, fix spacing around colons. Fixes [ 246 ].
   - New upstream version (additional macros, piecewise integrals and sums).
-  
+
+* docutils/writers/html_base/
+
+  - New HTML writer generating basic HTML (`polyglot markup`_ conforming to
+    both, `HTML 5`_ and `XHTML 1.0`_ (transitional)).
+
+    New stylesheet ``html-base.css`` for default layout using CSS 2.1 rules.
+
+    Also base for the `xhtml11` writer.
+
 * docutils/writers/html4css1/__init__.py
 
   - Add "docutils" to class values for "container" object to address [ 267 ].
@@ -43,10 +52,8 @@ Changes Since 0.12
 
 * docutils/writers/xhtml11/
 
-  - New HTML writer generating `XHTML1.1`_ styled with CSS2.1
+  - New HTML writer generating `XHTML 1.1`_ styled with CSS2.1
     Moved to the docutils core from sandbox/html4strict.
-
-  .. _XHTML1.1: http://www.w3.org/TR/xhtml11/
 
 * docutils/writers/latex2e/__init__.py
 
@@ -60,6 +67,17 @@ Changes Since 0.12
 
   - Fix [ 262 ] Use ``\linewidth`` instead of ``\textwidth`` for figures,
     admonitions and docinfo.
+
+* tools/
+
+  - New front-ends ``rst2xhtml.py`` and ``rst2html5.py`` for the
+    corresponding writers.
+
+.. _polyglot markup: http://www.w3.org/TR/html-polyglot/
+.. _HTML 5: http://www.w3.org/TR/html5/
+.. _XHTML 1.0: http://www.w3.org/TR/xhtml1/
+.. _XHTML 1.1: http://www.w3.org/TR/xhtml11/
+
 
 Release 0.12 (2014-07-06)
 =========================
