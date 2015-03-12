@@ -135,8 +135,8 @@ see if your editor has a plug-in or extension for reStructuredText.
 If not, you can use one of `these editors <editors_>`_ which have 
 excellent support for reST.
 
-Vim and GNU Emacs can open non-.rst files by adding this code to their 
-file.
+Vim and GNU Emacs can open non-.rst files by appending a modeline to the 
+end of a file.
 
 GNU Emacs::
     
