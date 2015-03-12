@@ -1,0 +1,41 @@
+.. -*- coding: utf-8 -*-
+
+
+.. NOTE: These are new FAQ questions, the original FAQ.txt has not been
+   split yet.
+
+
+======================
+ reStructuredText FAQ
+======================
+
+:Date: $Date$
+:Revision: $Revision$
+:Web site: http://docutils.sourceforge.net/
+:Copyright: This document has been placed in the public domain.
+            
+.. contents::
+.. sectnum::
+
+This is a work in progress. 
+
+How to escape adjacent characters in inline markup
+--------------------------------------------------
+
+Is there a way to make it so "s" in 
+
+::
+
+    ``word``s
+      
+isn't caught in inline markup? Creating the equivalent to ``words``? The
+above will also generate a docutils error **Inline literal start-string
+without end-string.**.
+
+As of 2015-03-12, some syntax highlightings will mess up with adjacent 
+characters are used after inline markup symbols. [LIST-ESCAPE]
+
+.. [LIST-ESCAPE] http://thread.gmane.org/gmane.text.docutils.user/39/focus=40 
+   15 Dec 02:09 2002.
+
+.. vim: fileencoding=utf-8 filetype=rst 
