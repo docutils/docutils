@@ -8,7 +8,7 @@
    =============
 
    To keep the FAQ decisive as possible, it would be nice to have a second
-   set of eyes to review the answers, and also clarify if the rational is
+   set of eyes to review the answers, and also clarify if the rationale is
    backed by:
 
    A. reStructuredText specificaton
@@ -38,18 +38,22 @@ This is a work in progress.
 How to escape adjacent characters in inline markup
 --------------------------------------------------
 
-Is there a way to make it so "s" in 
+Why is it that inline strings with adjacent characters such as::
 
-::
-
-    ``word``s
+    ``word``'s
       
-isn't caught in inline markup? Creating the equivalent to ``words``? The
-above will also generate a docutils error **Inline literal start-string
-without end-string.**.
+creates ``word's``, with the "'s" in the markup?  
 
-As of 2015-03-12, some syntax highlightings will mess up with adjacent 
-characters are used after inline markup symbols. [LIST-ESCAPE]_
+The above will also generate a docutils error **Inline literal 
+start-string without end-string.**.
+
+Some editors with reStructuredText highlighting may break if using
+adjacent characters next to inline escapes. 
+You can escape it with::
+
+    ``word``\ 's
+
+Source: [LIST-ESCAPE]_
 
 .. [LIST-ESCAPE] http://thread.gmane.org/gmane.text.docutils.user/39/focus=40 
    15 Dec 02:09 2002.
@@ -134,9 +138,7 @@ excellent support for reST.
 Vim and GNU Emacs can open non-.rst files by adding this code to their 
 file.
 
-GNU Emacs:
-
-.. code-block:: emacs
+GNU Emacs::
     
     ..
         Local variables:
@@ -145,15 +147,11 @@ GNU Emacs:
         indent-tabs-mode: nil
         End:
 
-Vim:
-
-.. code-block:: vim
+Vim::
 
     .. vim: fileencoding=utf-8 filetype=rst 
 
-Emacs + vim: emacs:
-
-.. code-block:: emacs
+Emacs + vim: emacs::
 
     ..
         Local variables:
