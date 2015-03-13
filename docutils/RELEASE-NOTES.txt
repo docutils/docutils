@@ -29,8 +29,8 @@ Future changes
 
 * »Prune« the doctree (no change to the reST input syntax):
 
-  - "doctest" element -> literal block with 'pycon' class argument
-    and syntax highlight (like the "code" directive),
+  - "doctest" element -> literal block with "pycon" (python-console)
+    class argument and syntax highlight (like the "code" directive),
   - special admonitions (note, hint, warning, ...) -> generic "admonition"
     element with class attribute and auto-generated title.
 

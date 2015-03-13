@@ -753,10 +753,9 @@ class HTMLTranslator(nodes.NodeVisitor):
     def depart_docinfo_item(self):
         self.body.append('</dd>\n')
 
-    # TODO: RSt-parser should treat this as code-block with class "pycon".
     def visit_doctest_block(self, node):
         self.body.append(self.starttag(node, 'pre', suffix='',
-                                       CLASS='code pycon doctest-block'))
+                                       CLASS='code python doctest'))
 
     def depart_doctest_block(self, node):
         self.body.append('\n</pre>\n')
