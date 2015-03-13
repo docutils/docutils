@@ -1055,49 +1055,88 @@ crunchy, now would it?</p></td>
 </div>
 <div class="section" id="svg-images">
 <h2><a class="toc-backref" href="#id78"><span class="sectnum">2.24</span> SVG Images</a></h2>
-<object class="align-left" data="../../../docs/user/rst/images/biohazard.svg" style="width: 48px; height: 48px;" type="image/svg+xml">
-../../../docs/user/rst/images/biohazard.svg</object>
-<p>Scalable vector graphics (SVG) images are not supported by all backends.
-Rendering depends partially on the backend, especially if the size is
-not explicitely given.</p>
-<object class="align-left" data="../../../docs/user/rst/images/title-scaling.svg" style="width: 50%;" type="image/svg+xml">
-../../../docs/user/rst/images/title-scaling.svg</object>
-<p>A scaling image occupying 50% of the line width (scales with the browser
-window).</p>
-<p>Whether an SVG image is scaled or clipped/padded cannot be set in the
-containing HTML.  If the image is wrapped in <span class="docutils literal">&lt;object&gt;</span> tags, it
-depends on the viewport declaration inside its root &lt;svg&gt; element, if it is
-wrapped in <span class="docutils literal">&lt;img&gt;</span> it depends on the browser.</p>
-<object class="align-left" data="../../../docs/user/rst/images/title.svg" style="width: 50%; height: 15px;" type="image/svg+xml">
-../../../docs/user/rst/images/title.svg</object>
-<p>A fixed-size image in a box with 50% of the line width, 15 pixles high.</p>
-<object class="align-right" data="../../../docs/user/rst/images/title-scaling.svg" style="width: 50%; height: 1.2em;" type="image/svg+xml">
-../../../docs/user/rst/images/title-scaling.svg</object>
-<p>A scaling image occupying 50% of the line width and 1.2 em high,
-right aligned (this SVG image keeps the aspect ratio):</p>
+<img alt="../../../docs/user/rst/images/biohazard.svg" class="align-left" src="../../../docs/user/rst/images/biohazard.svg" style="width: 48px; height: 48px;" />
+<p>Scalable vector graphics (SVG) images are the only standards-compliable way
+to include vector graphics in HTML documents. However, they are not
+supported by all backends/output formats. (E.g., LaTeX supports the
+PDF or Postscript formats for vector graphics instead.)</p>
+<p>Rendering behaviour varies, depending on</p>
+<ol class="loweralpha">
+<li><p>The SVG image itself, e.g. fixed-size vs. scaling:</p>
+<pre class="literal-block">width=&quot;280&quot;              viewBox=&quot;0 0 280 27&quot;
+height=&quot;27&quot;              width=&quot;100%&quot;
+                         height=&quot;100%&quot;</pre>
+</li>
+<li><p>The method used to put the image in the document.</p>
+<p>For HTML, there are several alternatives including:</p>
 <ul class="simple">
-<li><p>An inline SVG image <object data="../../../docs/user/rst/images/biohazard-scaling.svg" style="height: 0.8em;" type="image/svg+xml">inline-svg</object> scaled to a height of 0.8 em.</p></li>
+<li><p>using the HTML <span class="docutils literal">&lt;img&gt;</span> tag (not for interactive/animated SVG),</p></li>
+<li><p>using the HTML <span class="docutils literal">&lt;object&gt;</span> tag,</p></li>
+<li><p>including within SVG using the SVG <span class="docutils literal">&lt;image&gt;</span> tag,</p></li>
+<li><p>embedd the SVG code within HTML (inlining).</p></li>
 </ul>
-<object class="align-left" data="../../../docs/user/rst/images/biohazard-scaling.svg" style="height: 1em;" type="image/svg+xml">
-../../../docs/user/rst/images/biohazard-scaling.svg</object>
-<p>A scaling image 1 em high, left aligned.</p>
-<p>A scaling image 5 mm x 5 mm, centered, with hyperlink reference:</p>
-<a class="reference internal image-reference" href="#directives"><object class="align-center" data="../../../docs/user/rst/images/biohazard-scaling.svg" style="width: 5mm; height: 5mm;" type="image/svg+xml">../../../docs/user/rst/images/biohazard-scaling.svg</object></a>
-<object class="align-left" data="../../../docs/user/rst/images/biohazard.svg" style="width: 4cm; height: 2em;" type="image/svg+xml">
-../../../docs/user/rst/images/biohazard.svg</object>
+<p>The <cite>html4css1</cite> writer uses <span class="docutils literal">&lt;object&gt;</span> tags, the <cite>html-base</cite> and <cite>xhtml11</cite>
+writers use <span class="docutils literal">&lt;img&gt;</span> tags.</p>
+<!-- cf. http://edutechwiki.unige.ch/en/Using_SVG_with_HTML5_tutorial -->
+</li>
+<li><p>The viewing agent.</p>
+<p>All up-to-date HTML browsers support SVG, however not all do this fully
+and in the same manner. Many older versions, especially IE &lt; 9, have
+deficiencies or require plug-ins (i.e. don't support the <span class="docutils literal">&lt;img&gt;</span> tag).</p>
+</li>
+</ol>
+<p>If the image is wrapped in <span class="docutils literal">&lt;object&gt;</span> or <span class="docutils literal">&lt;svg&gt;</span> tags, it depends on the
+<span class="docutils literal">viewBox</span> declaration inside the images root <span class="docutils literal">&lt;svg&gt;</span> element whether an
+SVG image is scaled or clipped/padded. Images wrapped in <span class="docutils literal">&lt;img&gt;</span> are
+always scaled.</p>
+<ul>
+<li><img alt="../../../docs/user/rst/images/title-scaling.svg" class="align-right" src="../../../docs/user/rst/images/title-scaling.svg" style="width: 50%;" />
+<p>A scaling image (scales with the browser window), occupying 50% of the line
+width. The <span class="docutils literal">viewBox</span> setting in the image file enables auto-scaling also in
+<span class="docutils literal">&lt;object&gt;</span> tags and embedded SVG (if width and hight are set to 100% in the
+SVG &lt;image&gt; tag).</p>
+</li>
+<li><img alt="../../../docs/user/rst/images/title.svg" class="align-right" src="../../../docs/user/rst/images/title.svg" style="width: 50%; height: 15px;" />
+<p>A fixed-size image in a box 50% wide and 15 pixles high. This image is
+scaled, if wrapped in an <span class="docutils literal">&lt;img&gt;</span> tag but clipped in an <span class="docutils literal">&lt;object&gt;</span> tag
+or within SVG.</p>
+</li>
+<li><img alt="../../../docs/user/rst/images/title-scaling.svg" class="align-right" src="../../../docs/user/rst/images/title-scaling.svg" style="width: 50%; height: 1.5em;" />
+<p>A right aligned, scaling image 50% wide and 1.5 em high. (This SVG image
+keeps the aspect ratio.)</p>
+</li>
+<li><p>An inline image <img alt="inline-svg" src="../../../docs/user/rst/images/biohazard-scaling.svg" style="height: 0.8em;" /> scaled to a height of 0.8 em.</p>
+</li>
+<li><img alt="../../../docs/user/rst/images/biohazard-scaling.svg" class="align-right" src="../../../docs/user/rst/images/biohazard-scaling.svg" style="height: 1em;" />
+<p>A scaling image 1 em high, right aligned:</p>
+</li>
+<li><p>A scaling image 5 mm x 5 mm, centered, with hyperlink reference:</p>
+<a class="reference external image-reference" href="SVGImages_"><img alt="../../../docs/user/rst/images/biohazard-scaling.svg" class="align-center" src="../../../docs/user/rst/images/biohazard-scaling.svg" style="width: 5mm; height: 5mm;" /></a>
+</li>
+<li><img alt="../../../docs/user/rst/images/biohazard.svg" class="align-right" src="../../../docs/user/rst/images/biohazard.svg" style="width: 4cm; height: 2em;" />
 <p>A fixed-size image in a  4 cm x 2 em box.</p>
-<div class="figure">
-<object data="../../../docs/user/rst/images/title.svg" style="width: 290px; height: 28px;" type="image/svg+xml">
-reStructuredText, the markup syntax</object>
-<p class="caption">SVG image in a figure.</p>
+</li>
+</ul>
+<p>Older versions of <cite>webkit</cite> based browsers (chromium, safari, midori,
+konqueror) support the <span class="docutils literal">&lt;img&gt;</span> tag but don't display contained bitmap
+images in this case.</p>
+<ul>
+<li><img alt="../../../docs/user/rst/images/biohazard-bitmap.svg" class="align-right" src="../../../docs/user/rst/images/biohazard-bitmap.svg" style="width: 3em;" />
+<p>A small, fixed-size SVG image with embedded bitmap, The <span class="docutils literal">:width:</span> is
+set to 3 em in the rST source. Does not scale if wrapped in <span class="docutils literal">&lt;object&gt;</span>
+tags.</p>
+</li>
+<li><img alt="../../../docs/user/rst/images/biohazard-bitmap-scaling.svg" class="align-right" src="../../../docs/user/rst/images/biohazard-bitmap-scaling.svg" style="width: 3em;" />
+<p>A scaling SVG image with embedded bitmap, 3 em wide.</p>
+</li>
+</ul>
+<p>SVG images can also be put in figures:</p>
+<blockquote>
+<div class="figure align-center">
+<img alt="reStructuredText, the markup syntax" src="../../../docs/user/rst/images/title.svg" style="width: 290px; height: 28px;" />
+<p class="caption"><strong>Figure:</strong> SVG image in a figure.</p>
 </div>
-<object class="align-right" data="../../../docs/user/rst/images/biohazard-bitmap.svg" style="width: 3em;" type="image/svg+xml">
-../../../docs/user/rst/images/biohazard-bitmap.svg</object>
-<p>An SVG image with embedded bitmap, 3 em wide, right aligned.
-Older versions of <cite>webkit</cite> based browsers (chromium, safari, midori,
-konqueror) cannot display the contained bitmap image if the SVG is wrapped
-in <span class="docutils literal">&lt;img&gt;</span> tags. The image does not scale properly if wrapped in
-<span class="docutils literal">&lt;object&gt;</span> tags.</p>
+</blockquote>
 </div>
 <div class="section" id="swf-images">
 <h2><a class="toc-backref" href="#id79"><span class="sectnum">2.25</span> SWF Images</a></h2>

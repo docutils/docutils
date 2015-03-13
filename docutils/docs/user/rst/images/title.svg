@@ -9,12 +9,32 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   id="svg2"
    version="1.1"
-   inkscape:version="0.47 r22583"
    width="280.82999"
    height="27.34"
+   id="svg2"
+   inkscape:version="0.48.5 r10040"
    sodipodi:docname="title.svg">
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1000"
+     inkscape:window-height="680"
+     id="namedview10"
+     showgrid="false"
+     inkscape:zoom="1.573906"
+     inkscape:cx="58.770981"
+     inkscape:cy="13.67"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg2" />
   <metadata
      id="metadata8">
     <rdf:RDF>
@@ -28,46 +48,22 @@
     </rdf:RDF>
   </metadata>
   <defs
-     id="defs6">
-    <inkscape:perspective
-       sodipodi:type="inkscape:persp3d"
-       inkscape:vp_x="0 : 0.5 : 1"
-       inkscape:vp_y="0 : 1000 : 0"
-       inkscape:vp_z="1 : 0.5 : 1"
-       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
-       id="perspective10" />
-  </defs>
-  <sodipodi:namedview
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1"
-     objecttolerance="10"
-     gridtolerance="10"
-     guidetolerance="10"
-     inkscape:pageopacity="0"
-     inkscape:pageshadow="2"
-     inkscape:window-width="941"
-     inkscape:window-height="791"
-     id="namedview4"
-     showgrid="false"
-     inkscape:zoom="1.0620155"
-     inkscape:cx="251.41436"
-     inkscape:cy="14.837708"
-     inkscape:window-x="142"
-     inkscape:window-y="267"
-     inkscape:window-maximized="0"
-     inkscape:current-layer="svg2" />
+     id="defs6" />
   <text
-     xml:space="preserve"
-     style="font-size:36px;font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:100%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:TeXGyrePagella;-inkscape-font-specification:TeXGyrePagella Italic"
-     x="-0.93599999"
-     y="26.908001"
+     x="1.1959002"
+     y="24.185671"
+     transform="scale(0.95603363,1.0459883)"
      id="text2818"
+     xml:space="preserve"
+     style="font-size:34.41720963px;font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:100%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:TeXGyrePagella;-inkscape-font-specification:TeXGyrePagella Italic"
      sodipodi:linespacing="100%"><tspan
-       sodipodi:role="line"
-       id="tspan2820"
-       x="-0.93599999"
-       y="26.908001">re<tspan
-   style="font-size:36px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:100%;writing-mode:lr-tb;text-anchor:start;font-family:LMMono12;-inkscape-font-specification:LMMono12"
-   id="tspan2822">Structured</tspan>Text</tspan></text>
+       x="1.1959002"
+       y="24.185671"
+       id="tspan2820"><tspan
+         id="tspan2985"
+         style="font-family:Times New Roman;-inkscape-font-specification:Times New Roman">re</tspan><tspan
+         id="tspan2822"
+         style="font-size:34.41720963px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:100%;writing-mode:lr-tb;text-anchor:start;font-family:Courier New;-inkscape-font-specification:Courier New">Structured</tspan><tspan
+         id="tspan2989"
+         style="font-family:Times New Roman;-inkscape-font-specification:Times New Roman">Text</tspan></tspan></text>
 </svg>
