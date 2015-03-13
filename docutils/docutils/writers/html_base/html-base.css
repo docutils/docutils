@@ -73,6 +73,7 @@ hr.docutils {
   width: 80%;
   margin-top: 1em;
   margin-bottom: 1em;
+  clear: both;
 }
 
 /* Paragraphs               */

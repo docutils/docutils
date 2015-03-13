@@ -150,6 +150,17 @@ The ``rst2xhtml11.py`` front end reads standalone reStructuredText source
 files and produces clean XHTML 1.1 output. A stylesheet is required for
 proper rendering; a complete stylesheet is installed and used by default.
 
+rst2html5.py
+------------
+
+:Reader: Standalone
+:Parser: reStructuredText
+:Writer: html5
+
+The ``rst2html5.py`` front end reads standalone reStructuredText source
+files and produces simple HTML 5 output. A stylesheet is required for
+proper rendering; a complete stylesheet is installed and used by default.
+
 rstpep2html.py
 --------------
 
