@@ -1,0 +1,268 @@
+.. include:: data/standard.txt
+.. include:: data/header_footer.txt
+.. include:: data/table_colspan.txt
+.. include:: data/table_rowspan.txt
+.. include:: data/table_complex.txt
+.. include:: data/list_table.txt
+.. include:: data/custom_roles.txt
+.. include:: data/svg_images.txt
+.. include:: data/swf_images.txt
+
+Additional html4css2 features
+================================
+
+Enumerated lists with nested counters
+-------------------------------------
+
+.. class:: nested
+
+#. first point
+
+   #. first sub-point
+   #. second sub-point
+
+      With a standard paragraph
+
+      #. first sub-sub-point
+
+   #. third sub-point with a long and silly text just to test the line
+      wrapping in this kind of lists.
+
+   * Unordered list nested in enumeration.
+
+   Definition list
+     nested in top-level enumeration
+
+#. second top-level point
+
+
+Description list
+----------------
+
+Definition lists with the ``description`` class argument:
+
+.. class:: description
+
+description lists
+  Lists that are styled like in most dictionaries, encyclopedias
+  etc. (as well as the LaTeX `description` environment).
+label
+  The term to be described. Put in boldface.
+content
+  starts on the same line and has a hanging indent.
+
+
+Field list handling
+-------------------
+
+The following list demonstrates the problems with the html4css1
+approach: the `field-name-limit` setting is given in "number of
+characters" but the field name uses a proportional font.
+
+:The field name:  is typeset on the same line, unless it is "long".
+
+:this field name: is considered "long" in the html table rendering by
+                  the html4css1 writer with the default setting of
+                  ``--field-name-limit=14``.
+
+:iiiiiiiiiiiiiii: a field name that is considered "long" by html4css1
+                  with the default setting of `field-name-limit: 14`.
+
+:MMMMMMMMMMMMMM: a field name that is actually longer than the
+                 previous one but regarded "short" by html4css1.
+
+With `html4css2`, a `field list` is typeset as CSS-styled `definition
+list`. The default layout is similar to the look with `html4css1`:
+
+.. class:: open
+
+:A long field name: sticks into the field body.
+
+                The field body is pushed to the next line (you can
+                suppress this behaviour with the `run-in`_ or
+                `fix-labelwidth`_ class arguments).
+
+:Customization: of the field name width is possible with CSS instead
+                of the `field-name-limit` configuration setting, for
+                example::
+
+                    dl.field-list > dd { margin-left: 6em; }
+
+Styling with class arguments
+````````````````````````````
+
+The ``xhtml11.css`` style sheet supports the following class arguments
+for alternative styles:
+
+*compact*
+  .. class:: compact
+
+  :Feature: No additional space between list items.
+
+  :Option: The ``--compact-field-lists`` command line option (and the
+           corresponding configuration setting) set the `compact`
+           class argument on all "simple" field lists, if not
+           overridden with `open`.
+
+  :Use:  For lists with short field body.
+
+*open*
+  .. class:: open
+
+  :Feature: Additional space between list items also in "simple" lists.
+            (Overrides the ``--compact-field-lists`` command line
+            option and the corresponding configuration setting)
+
+  :Use: For "simple" lists that should keep the space between list items.
+
+*narrow*
+  .. class:: narrow
+
+  :Feature: Less indented field body.
+  :Use:   For lists with short field names.
+  :A long field name:
+       sticks into the field body and the field body starts on a
+       new line (if not combined with `run-in`_ or `fix-labelwidth`_).
+
+  .. _`run-in`:
+
+*run-in*
+  .. class:: run-in
+
+  :Feature: Field body starts on the same line also after long field
+            names.
+
+  :A long field name: sticks into the field body which continues on
+                         the same line.
+
+  :The next field name:  and field body should align. Long text in the field
+                         body is wrapped and aligns with other fields.
+
+  .. _`fix-labelwidth`:
+
+*fix-labelwidth*
+  .. class:: fix-labelwidth
+
+  :Feature:  The width of the field name (label) is fixed. Long labels
+             wrap.
+
+  :this long field name: will wrap.
+
+  :the next field name:  and field body should align.
+
+             .. If the field name is wrapped but the field body just
+                one line, following field bodies "float up" if not
+                prevented by a dummy dd:after element in the CSS.
+
+  :Problem: Non-wrappable field names are truncated.
+
+  :a_very_long_field_name:
+             is truncated if it can not wrap.
+
+
+Table styling with class arguments
+----------------------------------
+
+The ``html-base.css`` style sheet provides rules for easy styling of tables
+with the "class" directive or directive argument.
+
+Numbered tables can be achieved with the ``numbered`` class option
+
+.. table:: truth values
+   :class: numbered
+
+   ======= ======= ==========
+   A       B       A or B
+   ======= ======= ==========
+   False   False   False
+   True    False   True
+   False   True    True
+   True    True    True
+   ======= ======= ==========
+
+Currently, referencing to the table by number is not supported. This is a
+common request and already on the `TODO list`.
+
+In addition to the "borderless" table-style_, the style sheet also
+defines "booktabs", that will be rendered similar to the style from
+the booktabs_ LaTeX package.
+
+.. _table-style:
+   http://docutils.sourceforge.net/docs/user/config.html#table-style
+.. _booktabs:
+   http://tug.ctan.org/tex-archive/macros/latex/contrib/booktabs/booktabs.pdf
+
+.. class:: booktabs
+
+=====  =====  ======
+False  False  False
+True   False  True
+False  True   True
+True   True   True
+=====  =====  ======
+
+This table also uses the "align-left" class argument, to left-align
+the headers:
+
+.. class:: booktabs align-left
+
+=====  =====  =======
+  A      B    A or B
+=====  =====  =======
+False  False  False
+True   False  True
+False  True   True
+True   True   True
+=====  =====  =======
+
+
+Of course, also "booktabs" style tables can be numbered:
+
+.. table:: I/O values
+   :class: numbered booktabs
+
+   =====  =====  ======
+      Inputs     Output
+   ------------  ------
+     A      B    A or B
+   =====  =====  ======
+   False  False  False
+   True   False  True
+   False  True   True
+   True   True   True
+   =====  =====  ======
+
+
+Maths
+-----
+
+The ``html-output`` setting defaults to »MathML«. If there is mathematical
+content in `MathML` format, the document type is XHTML 1.1 plus MathML 2.0.
+
+The linear mapping :math:`f: \mathbb{C}^{N}\longmapsto\mathbb{C}^{N}`
+with
+
+.. math::
+
+  c_{k}=F(kf_{0})=T_{\text{A}}
+  \sum_{n=-N/2}^{+N/2}f(x_{n})\text{e}^{-2\pi\text{i}\frac{nk}{N}}
+
+for all :math:`a\in\mathbb{C}^{N}` is called discrete Fourier
+transformation (DFT).
+
+
+.. include:: data/errors.txt
+
+.. footer:: |valid-xhtml11| |valid-CSS2|
+
+.. |valid-xhtml11| image:: http://www.w3.org/Icons/valid-xhtml11
+   :height: 31
+   :width: 88
+   :alt: Valid XHTML 1.1!
+   :target: http://validator.w3.org/check?uri=referer
+
+.. |valid-CSS2| image:: http://jigsaw.w3.org/css-validator/images/vcss
+   :height: 31
+   :width: 88
+   :alt: Valid CSS 2.1!
+   :target: http://jigsaw.w3.org/css-validator/check/referer
