@@ -1,0 +1,27 @@
+/*
+:Author: Tony Narlock (tony@git-pull.com)
+:Id: $Id$
+:Copyright: This stylesheet has been placed in the public domain.
+
+Website stylesheet for the docutils project.
+
+*/
+
+#brand {
+    font-size: 1.20em;
+}
+.vert-menu {
+    list-style-type: none;
+}
+
+.vert-menu > li {
+    display: inline;
+    padding-right: 10px;
+}
+.vert-menu > li:last-child {
+    padding-right: 0;
+}
+
+.vert-menu > .menu-section-item {
+    font-weight: bold;
+}
