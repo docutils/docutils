@@ -1,0 +1,773 @@
+.. -*- coding: utf-8 -*-
+
+
+.. NOTE TO MAINTAINERS: Please add new questions to the end of their
+   sections, so section/question numbers remain stable.
+
+===================================================
+ reStructuredText FAQ (Frequently Asked Questions)
+===================================================
+
+:Date: $Date$
+:Revision: $Revision$
+:Web site: http://docutils.sourceforge.net/
+:Copyright: This document has been placed in the public domain.
+
+.. NOTE::
+
+   You are viewing the FAQ for *reStructuredText*, the markup language.
+   For *Docutils*, a processing library used for processing 
+   reStructuredText, see the `Docutils FAQ`_. 
+
+
+.. contents::
+.. sectnum::
+
+
+This is a work in progress.  If you are reading a local copy, the
+`master copy`_ might be newer.  This document uses are relative links;
+if they don't work, please use the `master copy`_.
+
+Please feel free to ask questions and/or provide answers; send email
+to the `Docutils-users`_ mailing list.  Project members should feel
+free to edit the source text file directly.
+
+.. _master copy: http://docutils.sourceforge.net/FAQ.html
+.. _let us know:
+.. _Docutils-users: docs/user/mailing-lists.html#docutils-users
+
+About reStructuredText
+======================
+
+What is reStructuredText?
+-------------------------
+
+reStructuredText_ is an easy-to-read, what-you-see-is-what-you-get
+plaintext markup syntax and parser system.  The reStructuredText
+parser is a component of Docutils_.  reStructuredText is a revision
+and reinterpretation of the StructuredText_ and Setext_ lightweight
+markup systems.
+
+If you are reading this on the web, you can see for yourself.  `The
+source for this FAQ <FAQ.txt>`_ is written in reStructuredText; open
+it in another window and compare them side by side.
+
+`A ReStructuredText Primer`_ and the `Quick reStructuredText`_ user
+reference are a good place to start.  The `reStructuredText Markup
+Specification`_ is a detailed technical specification.
+
+.. _A ReStructuredText Primer: docs/user/rst/quickstart.html
+.. _Quick reStructuredText: docs/user/rst/quickref.html
+.. _reStructuredText Markup Specification:
+   docs/ref/rst/restructuredtext.html
+.. _reStructuredText: http://docutils.sourceforge.net/rst.html
+.. _StructuredText:
+   http://dev.zope.org/Members/jim/StructuredTextWiki/FrontPage/
+.. _Setext: http://docutils.sourceforge.net/mirror/setext.html
+
+
+Why is it called "reStructuredText"?
+------------------------------------
+
+The name came from a combination of "StructuredText", one of
+reStructuredText's predecessors, with "re": "revised", "reworked", and
+"reinterpreted", and as in the ``re.py`` regular expression module.
+For a detailed history of reStructuredText and the Docutils project,
+see `An Introduction to reStructuredText`_.
+
+"reStructuredText" is **ONE** word, *not two!*
+
+.. _An Introduction to reStructuredText: docs/ref/rst/introduction.html
+
+What's the standard abbreviation for "reStructuredText"?
+--------------------------------------------------------
+
+"RST" and "ReST" (or "reST") are both acceptable.  Care should be
+taken with capitalization, to avoid confusion with "REST__", an
+acronym for "Representational State Transfer".
+
+The abbreviations "reSTX" and "rSTX"/"rstx" should **not** be used;
+they overemphasize reStructuredText's precedessor, Zope's
+StructuredText.
+
+__ http://en.wikipedia.org/wiki/Representational_State_Transfer
+
+
+What's the standard filename extension for a reStructuredText file?
+-------------------------------------------------------------------
+
+It's ".txt".  Some people would like to use ".rest" or ".rst" or
+".restx", but why bother?  ReStructuredText source files are meant to
+be readable as plaintext, and most operating systems already associate
+".txt" with text files.  Using a specialized filename extension would
+require that users alter their OS settings, which is something that
+many users will not be willing or able to do.
+
+Also see `What's the official MIME type for reStructuredText data?`_
+
+Beyond reStructuredText
+=======================
+
+Are there any reStructuredText editor extensions?
+-------------------------------------------------
+
+See `Editor Support for reStructuredText`__.
+
+__ tools/editors/README.html
+
+Are there any tools for HTML/XML-to-reStructuredText?  (Round-tripping)
+-----------------------------------------------------------------------
+
+People have tossed the idea around, and some implementations of
+reStructuredText-generating tools can be found in the `Docutils Link
+List`_.
+
+There's no reason why reStructuredText should not be round-trippable
+to/from XML; any technicalities which prevent round-tripping would be
+considered bugs.  Whitespace would not be identical, but paragraphs
+shouldn't suffer.  The tricky parts would be the smaller details, like
+links and IDs and other bookkeeping.
+
+For HTML, true round-tripping may not be possible.  Even adding lots
+of extra "class" attributes may not be enough.  A "simple HTML" to RST
+filter is possible -- for some definition of "simple HTML" -- but HTML
+is used as dumb formatting so much that such a filter may not be
+particularly useful.  An 80/20 approach should work though: build a
+tool that does 80% of the work automatically, leaving the other 20%
+for manual tweaks.
+
+.. _Docutils Link List: docs/user/links.html
+
+
+Are there any Wikis that use reStructuredText syntax?
+-----------------------------------------------------
+
+There are several, with various degrees of completeness.  With no
+implied endorsement or recommendation, and in no particular order:
+
+* `Webware for Python wiki
+  <http://wiki.webwareforpython.org/thiswiki.html>`__
+
+* `Ian Bicking's experimental code
+  <http://docutils.sf.net/sandbox/ianb/wiki/Wiki.py>`__
+
+* `MoinMoin <http://moinmoin.wikiwikiweb.de/>`__ has some support;
+  `here's a sample <http://moinmoin.wikiwikiweb.de/RestSample>`__
+
+* Zope-based `Zwiki <http://zwiki.org/>`__
+
+* Zope3-based Zwiki (in the Zope 3 source tree as
+  ``zope.products.zwiki``)
+
+* `StikiWiki <http://mithrandr.moria.org/code/stikiwiki/>`__
+
+* `Trac <http://trac.edgewall.com//>`__ `supports using
+  reStructuredText
+  <http://trac.edgewall.com//wiki/WikiRestructuredText>`__ as
+  an alternative to wiki markup. This includes support for `TracLinks
+  <http://trac.edgewall.com//wiki/TracLinks>`__ from within
+  RST text via a custom RST reference-directive or, even easier, an
+  interpreted text role 'trac'
+
+Please `let us know`_ of any other reStructuredText Wikis.
+
+The example application for the `Web Framework Shootout
+<http://colorstudy.com/docs/shootout.html>`__ article is a Wiki using
+reStructuredText.
+
+
+Are there any Weblog (Blog) projects that use reStructuredText syntax?
+----------------------------------------------------------------------
+
+With no implied endorsement or recommendation, and in no particular
+order:
+
+* `Firedrop <http://www.voidspace.org.uk/python/firedrop2/>`__
+* `PyBloxsom <http://pyblosxom.sourceforge.net/>`__
+* `Lino WebMan <http://lino.sourceforge.net/webman.html>`__
+* `Pelican <http://blog.getpelican.com/>`__
+  (also  listed `on PyPi <http://pypi.python.org/pypi/pelican>`__)
+
+Please `let us know`_ of any other reStructuredText Blogs.
+
+
+
+Using reStructuredText
+======================
+
+How can I indicate the document title?  Subtitle?
+-------------------------------------------------
+
+A uniquely-adorned section title at the beginning of a document is
+treated specially, as the document title.  Similarly, a
+uniquely-adorned section title immediately after the document title
+becomes the document subtitle.  For example::
+
+    This is the Document Title
+    ==========================
+
+    This is the Document Subtitle
+    -----------------------------
+
+    Here's an ordinary paragraph.
+
+Counterexample::
+
+    Here's an ordinary paragraph.
+
+    This is *not* a Document Title
+    ==============================
+
+    The "ordinary paragraph" above the section title
+    prevents it from becoming the document title.
+
+Another counterexample::
+
+    This is not the Document Title,  because...
+    ===========================================
+
+    Here's an ordinary paragraph.
+
+    ... the title adornment is not unique
+    =====================================
+
+    Another ordinary paragraph.
+
+
+How can I represent esoteric characters (e.g. character entities) in a document?
+--------------------------------------------------------------------------------
+
+For example, say you want an em-dash (XML character entity &mdash;,
+Unicode character U+2014) in your document: use a real em-dash.
+Insert concrete characters (e.g. type a *real* em-dash) into your
+input file, using whatever encoding suits your application, and tell
+Docutils the input encoding.  Docutils uses Unicode internally, so the
+em-dash character is a real em-dash internally.
+
+Emacs users should refer to the `Emacs Support for reStructuredText`__
+document.  Tips for other editors are welcome.
+
+__ tools/editors/emacs/README.html
+
+ReStructuredText has no character entity subsystem; it doesn't know
+anything about XML charents.  To Docutils, "&mdash;" in input text is
+7 discrete characters; no interpretation happens.  When writing HTML,
+the "&" is converted to "&amp;", so in the raw output you'd see
+"&amp;mdash;".  There's no difference in interpretation for text
+inside or outside inline literals or literal blocks -- there's no
+character entity interpretation in either case.
+
+If you can't use a Unicode-compatible encoding and must rely on 7-bit
+ASCII, there is a workaround.  New in Docutils 0.3.10 is a set of
+`Standard Substitution Definition Sets`_, which provide equivalents of
+XML & HTML character entity sets as substitution definitions.  For
+example, the Japanese yen currency symbol can be used as follows::
+
+    .. include:: <xhtml1-lat1.txt>
+
+    |yen| 600 for a complete meal?  That's cheap!
+
+For earlier versions of Docutils, equivalent files containing
+character entity set substitution definitions using the "unicode_"
+directive `are available`_.  Please read the `description and
+instructions`_ for use.  Thanks to David Priest for the original idea.
+
+If you insist on using XML-style charents, you'll have to implement a
+pre-processing system to convert to UTF-8 or something.  That
+introduces complications though; you can no longer *write* about
+charents naturally; instead of writing "&mdash;" you'd have to write
+"&amp;mdash;".
+
+For the common case of long dashes, you might also want to insert the
+following substitution definitons into your document (both of them are
+using the "unicode_" directive)::
+
+    .. |--| unicode:: U+2013   .. en dash
+    .. |---| unicode:: U+2014  .. em dash, trimming surrounding whitespace
+       :trim:
+
+.. |--| unicode:: U+2013   .. en dash
+.. |---| unicode:: U+2014  .. em dash, trimming surrounding whitespace
+   :trim:
+
+Now you can write dashes using pure ASCII: "``foo |--| bar; foo |---|
+bar``", rendered as "foo |--| bar; foo |---| bar".  (Note that Mozilla
+and Firefox may render this incorrectly.)  The ``:trim:`` option for
+the em dash is necessary because you cannot write "``foo|---|bar``";
+thus you need to add spaces ("``foo |---| bar``") and advise the
+reStructuredText parser to trim the spaces.
+
+.. _Standard Substitution Definition Sets: docs/ref/rst/substitutions.html
+.. _unicode: docs/ref/rst/directives.html#unicode-character-codes
+.. _are available: http://docutils.sourceforge.net/tmp/charents/
+.. _tarball: http://docutils.sourceforge.net/tmp/charents.tgz
+.. _description and instructions:
+   http://docutils.sourceforge.net/tmp/charents/README.html
+.. _to-do list: docs/dev/todo.html
+
+
+How can I generate backticks using a Scandinavian keyboard?
+-----------------------------------------------------------
+
+The use of backticks in reStructuredText is a bit awkward with
+Scandinavian keyboards, where the backtick is a "dead" key.  To get
+one ` character one must press SHIFT-` + SPACE.
+
+Unfortunately, with all the variations out there, there's no way to
+please everyone.  For Scandinavian programmers and technical writers,
+this is not limited to reStructuredText but affects many languages and
+environments.
+
+Possible solutions include
+
+* If you have to input a lot of backticks, simply type one in the
+  normal/awkward way, select it, copy and then paste the rest (CTRL-V
+  is a lot faster than SHIFT-` + SPACE).
+
+* Use keyboard macros.
+
+* Remap the keyboard.  The Scandinavian keyboard layout is awkward for
+  other programming/technical characters too; for example, []{}
+  etc. are a bit awkward compared to US keyboards.
+
+  According to Axel Kollmorgen,
+
+      Under Windows, you can use the `Microsoft Keyboard Layout Creator
+      <http://www.microsoft.com/globaldev/tools/msklc.mspx>`__ to easily
+      map the backtick key to a real backtick (no dead key). took me
+      five minutes to load my default (german) keyboard layout, untick
+      "Dead Key?" from the backtick key properties ("in all shift
+      states"), "build dll and setup package", install the generated
+      .msi, and add my custom keyboard layout via Control Panel >
+      Regional and Language Options > Languages > Details > Add
+      Keyboard layout (and setting it as default "when you start your
+      computer").
+
+* Use a virtual/screen keyboard or character palette, such as:
+
+  - `Web-based keyboards <http://keyboard.lab.co.il/>`__ (IE only
+    unfortunately).
+  - Windows: `Click-N-Type <http://www.lakefolks.org/cnt/>`__.
+  - Mac OS X: the Character Palette can store a set of favorite
+    characters for easy input.  Open System Preferences,
+    International, Input Menu tab, enable "Show input menu in menu
+    bar", and be sure that Character Palette is enabled in the list.
+
+If anyone knows of other/better solutions, please `let us know`_.
+
+.. _Can lists be indented without generating block quotes?:
+
+How should I mark up lists?
+---------------------------
+
+Bullet_ & enumerated_ list markup is very intuitive but there are 2
+points that must be noted:
+
+.. _bullet: docs/ref/rst/restructuredtext.html#bullet-lists
+.. _enumerated: docs/ref/rst/restructuredtext.html#enumerated-lists
+
+1. Lists should **not** be indented.  This is correct::
+
+       paragraph
+
+       * list item 1
+
+         * nested item 1.1
+         * nested item 1.2
+
+       * list item 2
+
+   while this is probably incorrect::
+
+       paragraph
+
+         * list item 1
+
+             * nested item 1.1
+             * nested item 1.2
+
+         * list item 2
+
+   The extra indentation (of the list containing items 1.1 and 1.2) is
+   recognized as a block quote.  This is usually not what you mean and
+   it causes the list in the output to be indented too much.
+
+2. There **must** be blank lines around list items, except between
+   items of the same level, where blank lines are optional.  The
+   example above shows this.
+
+Note that formatting of the *output* is independent of the input, and
+is decided by the writer and the stylesheet.  For instance, lists
+*are* indented in HTML output by default.  See `How are lists
+formatted in HTML?`_ for details.
+
+
+Could lists be indented without generating block quotes?
+--------------------------------------------------------
+
+Some people like to write lists with indentation but don't intend a
+blockquote context.  There has been a lot of discussion about allowing
+this in reStructuredText, but there are some issues that would need to
+be resolved before it could be implemented.  There is a summary of the
+issues and pointers to the discussions in `the to-do list`__.
+
+__ docs/dev/todo.html#indented-lists
+
+
+Could the requirement for blank lines around lists be relaxed?
+--------------------------------------------------------------
+
+Short answer: no.
+
+In reStructuredText, it would be impossible to unambigously mark up
+and parse lists without blank lines before and after.  Deeply nested
+lists may look ugly with so many blank lines, but it's a price we pay
+for unambiguous markup.  Some other plaintext markup systems do not
+require blank lines in nested lists, but they have to compromise
+somehow, either accepting ambiguity or requiring extra complexity.
+For example, `Epytext <http://epydoc.sf.net/epytext.html#list>`__ does
+not require blank lines around lists, but it does require that lists
+be indented and that ambiguous cases be escaped.
+
+
+How can I include mathematical equations in documents?
+------------------------------------------------------
+
+Use the `math directive`_ and `math role`_, available since Docutils 0.8.
+
+.. _math directive: docs/ref/rst/directives.html#math
+.. _math role: docs/ref/rst/roles.html#math
+
+
+Is nested inline markup possible?
+---------------------------------
+
+Not currently, no.  It's on the `to-do list`__ (`details here`__), and
+hopefully will be part of the reStructuredText parser soon.  At that
+time, markup like this will become possible::
+
+    Here is some *emphasized text containing a `hyperlink`_ and
+    ``inline literals``*.
+
+__ docs/dev/todo.html#nested-inline-markup
+__ docs/dev/rst/alternatives.html#nested-inline-markup
+
+There are workarounds, but they are either convoluted or ugly or both.
+They are not recommended.
+
+* Inline markup can be combined with hyperlinks using `substitution
+  definitions`__ and references__ with the `"replace" directive`__.
+  For example::
+
+      Here is an |emphasized hyperlink|_.
+
+      .. |emphasized hyperlink| replace:: *emphasized hyperlink*
+      .. _emphasized hyperlink: http://example.org
+
+  It is not possible for just a portion of the replacement text to be
+  a hyperlink; it's the entire replacement text or nothing.
+
+  __ docs/ref/rst/restructuredtext.html#substitution-definitions
+  __ docs/ref/rst/restructuredtext.html#substitution-references
+  __ docs/ref/rst/directives.html#replace
+
+* The `"raw" directive`__ can be used to insert raw HTML into HTML
+  output::
+
+      Here is some |stuff|.
+
+      .. |stuff| raw:: html
+
+         <em>emphasized text containing a
+         <a href="http://example.org">hyperlink</a> and
+         <tt>inline literals</tt></em>
+
+  Raw LaTeX is supported for LaTeX output, etc.
+
+  __ docs/ref/rst/directives.html#raw
+
+
+How to indicate a line break or a significant newline?
+------------------------------------------------------
+
+`Line blocks`__ are designed for address blocks, verse, and other
+cases where line breaks are significant and must be preserved.  Unlike
+literal blocks, the typeface is not changed, and inline markup is
+recognized.  For example::
+
+    | A one, two, a one two three four
+    |
+    | Half a bee, philosophically,
+    |     must, *ipso facto*, half not be.
+    | But half the bee has got to be,
+    |     *vis a vis* its entity.  D'you see?
+    |
+    | But can a bee be said to be
+    |     or not to be an entire bee,
+    |         when half the bee is not a bee,
+    |             due to some ancient injury?
+    |
+    | Singing...
+
+__ docs/ref/rst/restructuredtext.html#line-blocks
+
+Here's a workaround for manually inserting explicit line breaks in
+HTML output::
+
+    .. |br| raw:: html
+
+       <br />
+
+    I want to break this line here: |br| this is after the break.
+
+    If the extra whitespace bothers you, |br|\ backslash-escape it.
+
+
+A URL containing asterisks doesn't work.  What to do?
+-----------------------------------------------------
+
+Asterisks are valid URL characters (see :RFC:`2396`), sometimes used
+in URLs.  For example::
+
+    http://cvs.example.org/viewcvs.py/*checkout*/module/file
+
+Unfortunately, the parser thinks the asterisks are indicating
+emphasis.  The slashes serve as delineating punctuation, allowing the
+asterisks to be recognized as markup.  The example above is separated
+by the parser into a truncated URL, an emphasized word, and some
+regular text::
+
+    http://cvs.example.org/viewcvs.py/
+    *checkout*
+    /module/file
+
+To turn off markup recognition, use a backslash to escape at least the
+first asterisk, like this::
+
+    http://cvs.example.org/viewcvs.py/\*checkout*/module/file
+
+Escaping the second asterisk doesn't hurt, but it isn't necessary.
+
+
+How can I make a literal block with *some* formatting?
+------------------------------------------------------
+
+Use the `parsed-literal`_ directive.
+
+.. _parsed-literal: docs/ref/rst/directives.html#parsed-literal
+
+Scenario: a document contains some source code, which calls for a
+literal block to preserve linebreaks and whitespace.  But part of the
+source code should be formatted, for example as emphasis or as a
+hyperlink.  This calls for a *parsed* literal block::
+
+    .. parsed-literal::
+
+       print "Hello world!"  # *tricky* code [1]_
+
+The emphasis (``*tricky*``) and footnote reference (``[1]_``) will be
+parsed.
+
+
+Can reStructuredText be used for web or generic templating?
+-----------------------------------------------------------
+
+Docutils and reStructuredText can be used with or as a component of a
+templating system, but they do not themselves include templating
+functionality.  Templating should simply be left to dedicated
+templating systems.  Users can choose a templating system to apply to
+their reStructuredText documents as best serves their interests.
+
+There are many good templating systems for Python (ht2html_, YAPTU_,
+Quixote_'s PTL, Cheetah_, etc.; see this non-exhaustive list of `some
+other templating systems`_), and many more for other languages, each
+with different approaches.  We invite you to try several and find one
+you like.  If you adapt it to use Docutils/reStructuredText, please
+consider contributing the code to Docutils or `let us know`_ and we'll
+keep a list here.
+
+One reST-specific web templating system is `rest2web
+<http://www.voidspace.org.uk/python/rest2web>`_, a tool for
+automatically building websites, or parts of websites.
+
+.. _ht2html: http://ht2html.sourceforge.net/
+.. _YAPTU:
+   http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/52305
+.. _Quixote: http://www.mems-exchange.org/software/quixote/
+.. _Cheetah: http://www.cheetahtemplate.org/
+.. _some other templating systems:
+   http://webware.sourceforge.net/Papers/Templates/
+
+
+How can I mark up a FAQ or other list of questions & answers?
+-------------------------------------------------------------
+
+There is no specific syntax for FAQs and Q&A lists.  Here are two
+options:
+
+1. For a FAQ (Frequently Asked Questions, usually with answers), a
+   convenient way to mark up the questions is as section titles, with
+   the answer(s) as section content.  This document is marked up in
+   this way.
+
+   The advantages of using section titles for questions are: sections
+   can be numbered automatically, and a table of contents can be
+   generated automatically.  One limitation of this format is that
+   questions must fit on one line (section titles may not wrap, in the
+   source text).  For very long questions, the title may be a summary
+   of the question, with the full question in the section body.
+
+2. Field lists work well as Q&A lists::
+
+       :Q: What kind of questions can we
+           put here?
+
+       :A: Any kind we like!
+
+   In order to separate questions, lists can be used:
+
+       1. :Q: What kind of question can we
+              put here?
+          :A: Any kind we like!
+
+       2. :Q: How many answers can a question have?
+          :A: It can have one,
+          :A: or more.
+          :A3: Answers can be numbered like this.
+          :A: 1. Or like this.
+              2. We're flexible!
+
+   If you don't want to number or otherwise mark questions, you can
+   use an empty comment between individual field lists to separate
+   them::
+
+       :Q: First question?
+       :A: Answer.
+
+       ..
+
+       :Q: Second question?
+       :A: Answer.
+
+
+.. _bidi:
+
+Can I produce documents in right-to-left languages?
+---------------------------------------------------
+
+Languages written from right to left, such as Arabic and Hebrew, must
+be reordered according to the `Unicode Bidi Algorithm`_.  This
+requires support from the editor and special markup in the output
+format.
+
+The source format of reStructuredText is relatively bidi-friendly:
+most constructs are denoted by punctuation without intrusion of
+English and when you must write in English, it's usually on a separate
+line.  So any editor that auto-detects direction per-line (like gedit
+or geresh_) will suffice.
+
+Moreover, it's possible to translate_ all reStructuredText keywords.
+This was not yet done for any RTL language, but when it is, it will be
+possible to write an RTL document with vitually no English.  This will
+allow reasonable use of editors limited to a single base direction for
+the whole document (like Notepad, Vim and text boxes in Firefox).
+
+.. _Unicode Bidi Algorithm: http://www.unicode.org/reports/tr9/
+.. _geresh: http://www.typo.co.il/~mooffie/geresh/
+.. _translate: docs/howto/i18n.html
+
+The second problem is bidi markup of the output.  There is an almost
+transparent implicit solution for HTML:
+
+* Grab http://cben-hacks.sourceforge.net/bidi/hibidi.py and
+  http://cben-hacks.sourceforge.net/bidi/rst2html_hibidi.py.
+  Put them both in the same directory and make them executable.
+  
+* Use ``rst2html_hibidi.py`` instead of ``rst2html.py``.
+
+* It infers dir attributes in the HTML from the text.  It does it
+  hierachically, giving much better results than usual.  You can still
+  use LRM/RLM and LRE/RLE/PDF control codes to help it.
+
+  * If you want the gory details: See the full theory_, and note the
+    incomplete practice_ (this is still a partial implementation - but
+    sufficient for most needs).
+
+    .. _theory: http://cben-hacks.sf.net/bidi/hibidi.html
+    .. _practice: http://cben-hacks.sf.net/bidi/hibidi.html#practice
+
+There is also an explicit way to set directions through CSS and
+classes in the HTML:
+
+* Copy ``default.css`` to a new file and add relevant parts of the
+  following::
+
+      /* Use these two if the main document direction is RTL */
+      body { direction: rtl; }
+      div.sidebar { float: left !important; }
+
+      /* The next 3 rules are very useful in documents containing pieces
+      of code in english */
+      /* Use this if you all your literal blocks (::) are LTR */
+      pre {direction: ltr; unicode-bidi: embed; }
+      /* Use this if you all your inline literals (``) are LTR */
+      tt {direction: ltr; unicode-bidi: embed; }
+      /* Use this if you all your interpretted text (`) is LTR */
+      cite {direction: ltr; unicode-bidi: embed; }
+
+      /* Allow manual direction override by class directive and roles */
+      .rtl { direction: rtl; }
+      .ltr { direction: ltr; }
+
+* Select this new stylesheet with ``--stylesheet=<file>`` or the
+  stylesheet_ setting.
+  
+* Now if you need to override the direction of some element (from a
+  paragraph to a whole section), write::
+
+      .. class:: rtl
+
+  or::
+
+      .. class:: ltr
+
+  before it (see the class_ directive for details).
+
+* To change the direction of some inline text fragment, you can use
+  RLE/LRE/PDF control characters, or write ``:rtl:`RTL text``` /
+  ``:ltr:`RTL text```.  To use the latter syntax, you must write this
+  once at the beginning of your document::
+
+      .. role:: ltr
+      .. role:: rtl
+
+.. _stylesheet: docs/user/config.html#stylesheet
+.. _class: docs/ref/rst/directives.txt#class
+
+LaTeX is quite hard to implement (it doesn't support the bidi
+algorithm, so all direction changes - even numbers in RTL text - must
+be explicitly marked).  Other formats are more-or-less easy.
+
+If you have any questions/problems/bugs related to bidi with docutils,
+ask `Beni Cherniavsky`__ directly or the `Docutils-users`_ mailing
+list.
+
+__ mailto:cben@users.sf.net
+
+
+What's the official MIME type for reStructuredText data?
+--------------------------------------------------------
+
+While there is no registered MIME type for reStructuredText, the
+"official unofficial" standard MIME type is "text/x-rst".  This was
+invented for the build system for PEPs (Python Enhancement Proposals),
+and it's used by the python.org web site build system.
+
+(The "x-" prefix means it's an unregistered MIME type.)
+
+Also see `What's the standard filename extension for a
+reStructuredText file?`_
+
+.. _Docutils FAQ: FAQ.html
+.. _Docutils: FAQ.html#docutils
+.. _How are lists formatted in HTML?: FAQ.html#how-are-lists-formatted-in-html
