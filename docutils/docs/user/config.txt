@@ -1102,22 +1102,37 @@ Default: do (1).  Options: ``--no-xml-declaration``.
 
 __ `xml_declaration [docutils_xml writer]`_
 
+[html-base writer]
+~~~~~~~~~~~~~~~~~~
+
+The `html-base` writer uses the settings described in the `[html4css1
+writer]`_ section with the following exceptions:
+
+Removed options:
+  `field_name_limit`_, `option_limit`_.
+
+Different default for:
+
+`stylesheet_path <stylesheet_path [html4css1 writer]_>`_:
+  Default: "html-base.css"
+
+`stylesheet_dirs <stylesheet_dirs [html4css1 writer]_>`_:
+  Default: Installation-dependent. Use the --help option to get the exact
+  value.
+
+
 [xhtml11 writer]
 ~~~~~~~~~~~~~~~~~
 
-The XHTML1.1 Writer derives from the standard HTML Writer, and shares
-most settings defined in the `[html4css1 writer]`_ section.  The
-"[html4css1 writer]" section of configuration files is processed
-before the "[xhtml11 writer]" section.
+The XHTML1.1 Writer derives from the `html-base` writer and uses the same
+setings. The "[html-base writer]" section of configuration files is
+processed before the "[xhtml11 writer]" section.
 
-removed options:
-  `field_name_limit`_, `option_limit`_
 
-The XHTML1.1 Writer's default for the following settings differ from
-those of the standard HTML Writer:
+Different default for:
 
 `stylesheet_path <stylesheet_path [html4css1 writer]_>`_:
-  Default: "html4css1.css,xhtml11.css"
+  Default: "html-base.css,xhtml11.css"
 
 `stylesheet_dirs <stylesheet_dirs [html4css1 writer]_>`_:
   Default: Installation-dependent. Use the --help option to get the exact

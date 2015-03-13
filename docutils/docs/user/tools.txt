@@ -158,8 +158,9 @@ rst2html5.py
 :Writer: html5
 
 The ``rst2html5.py`` front end reads standalone reStructuredText source
-files and produces simple HTML 5 output. A stylesheet is required for
-proper rendering; a complete stylesheet is installed and used by default.
+files and produces simple HTML 5 output (compatible to XHTML 1.0
+transitional). A stylesheet is required for proper rendering; a complete
+stylesheet is installed and used by default.
 
 rstpep2html.py
 --------------
@@ -310,6 +311,28 @@ printing or on-screen viewing.
 
 For details see `Generating LaTeX with Docutils`_.
 
+rst2xetex.py
+------------
+
+:Reader: Standalone
+:Parser: reStructuredText
+:Writer: XeTeX
+
+The ``rst2xetex.py`` front end reads standalone reStructuredText source
+files and produces `LaTeX` output for processing with unicode-aware
+TeX engines (`XeTeX` or `LuaTeX`_). For example, to process a
+reStructuredText file "``test.txt``" into LaTeX::
+
+    rst2xetex.py test.txt test.tex
+
+The output file "``test.tex``" should then be processed with ``xelatex`` or
+``lualatex`` to get a document in PDF format for printing or on-screen
+viewing.
+
+For details see `Generating LaTeX with Docutils`_.
+
+.. _XeTeX: https://en.wikipedia.org/wiki/XeTeX
+.. _LuaTeX: https://en.wikipedia.org/wiki/LuaTeX
 
 XML-Generating Tools
 ====================
