@@ -11,6 +11,6 @@ Docutils website menu + HTML5 writer
 
     ./buildhtml.py \
     --stylesheet-path=../docs/_template/web.css,../docutils/writers/html_base/html-base.css \
-    --template=../docs/_template/template.html .. --traceback
+    --template=../docs/_template/template.html ..
 * ``tools/buildhtml.py`` updated to use ``html_base`` and to use Günter
   Milde's HTML5 writer by default.
