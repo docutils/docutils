@@ -20,13 +20,6 @@ more detailed list of changes, please see the `Docutils History`_.
 Future changes
 ==============
 
-* remove the `handle_io_errors` option from io.FileInput/Output.
-
-* remove deprecated options from the latex2e writer:
-
-    --use-latex-footnotes   Alias for --docutils-footnotes (deprecated)
-    --figure-footnotes      Use figure floats for footnote text (deprecated)
-
 * »Prune« the doctree (no change to the reST input syntax):
 
   - "doctest" element -> literal block with "pycon" (python-console)

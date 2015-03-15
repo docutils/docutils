@@ -16,6 +16,10 @@
 Changes Since 0.12
 ==================
 
+* docutils/io.py
+
+  - removed the `handle_io_errors` option from io.FileInput/Output.
+
 * docutils/nodes.py
 
   - Fix [ 253 ] Attribute key without value not allowed in XML.
@@ -58,6 +62,9 @@ Changes Since 0.12
 * docutils/writers/latex2e/__init__.py
 
   - use absolute path for ``default_template_path``.
+
+  - removed deprecated options ``--use-latex-footnotes`` and
+    ``--figure-footnotes``.
 
 * docutils/writers/odf_odt/__init__.py
 
