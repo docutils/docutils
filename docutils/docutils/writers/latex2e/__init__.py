@@ -54,14 +54,6 @@ class Writer(writers.Writer):
           ['--docutils-footnotes'],
           {'default': True, 'action': 'store_true',
            'validator': frontend.validate_boolean}),
-         ('Alias for --docutils-footnotes (deprecated)',
-          ['--use-latex-footnotes'],
-          {'action': 'store_true',
-           'validator': frontend.validate_boolean}),
-         ('Use figure floats for footnote text (deprecated)',
-          ['--figure-footnotes'],
-          {'action': 'store_true',
-           'validator': frontend.validate_boolean}),
          ('Format for footnote references: one of "superscript" or '
           '"brackets".  Default is "superscript".',
           ['--footnote-references'],
@@ -545,17 +537,6 @@ PreambleCmds.footnotes = r"""% numeric or symbol footnotes with hyperlinks
   \footnotetext{#4}%
   \endgroup%
 }"""
-
-PreambleCmds.footnote_floats = r"""% settings for footnotes as floats:
-\setlength{\floatsep}{0.5em}
-\setlength{\textfloatsep}{\fill}
-\addtolength{\textfloatsep}{3em}
-\renewcommand{\textfraction}{0.5}
-\renewcommand{\topfraction}{0.5}
-\renewcommand{\bottomfraction}{0.5}
-\setcounter{totalnumber}{50}
-\setcounter{topnumber}{50}
-\setcounter{bottomnumber}{50}"""
 
 PreambleCmds.graphicx_auto = r"""% Check output format
 \ifx\pdftexversion\undefined
@@ -1204,16 +1185,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
                                      self.settings.graphicx_option)
         # footnotes:
         self.docutils_footnotes = settings.docutils_footnotes
-        if settings.use_latex_footnotes:
-            self.docutils_footnotes = True
-            self.warn('`use_latex_footnotes` is deprecated. '
-                      'The setting has been renamed to `docutils_footnotes` '
-                      'and the alias will be removed in a future version.')
-        self.figure_footnotes = settings.figure_footnotes
-        if self.figure_footnotes:
-            self.docutils_footnotes = True
-            self.warn('The "figure footnotes" workaround/setting is strongly '
-                      'deprecated and will be removed in a future version.')
 
         # Output collection stacks
         # ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -2165,13 +2136,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             backref = node['backrefs'][0]
         except IndexError:
             backref = node['ids'][0] # no backref, use self-ref instead
-        if self.settings.figure_footnotes:
-            self.requirements['~fnt_floats'] = PreambleCmds.footnote_floats
-            self.out.append('\\begin{figure}[b]')
-            self.append_hypertargets(node)
-            if node.get('id') == node.get('name'):  # explicite label
-                self.out += self.ids_to_labels(node)
-        elif self.docutils_footnotes:
+        if self.docutils_footnotes:
             self.fallbacks['footnotes'] = PreambleCmds.footnotes
             num,text = node.astext().split(None,1)
             if self.settings.footnote_references == 'brackets':
@@ -2185,10 +2150,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         ## else:  # TODO: "real" LaTeX \footnote{}s
 
     def depart_footnote(self, node):
-        if self.figure_footnotes:
-            self.out.append('\\end{figure}\n')
-        else:
-            self.out.append('}\n')
+        self.out.append('}\n')
 
     def visit_footnote_reference(self, node):
         href = ''
@@ -2223,12 +2185,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
     # footnote/citation label
     def label_delim(self, node, bracket, superscript):
         if isinstance(node.parent, nodes.footnote):
-            if not self.figure_footnotes:
-                raise nodes.SkipNode
-            if self.settings.footnote_references == 'brackets':
-                self.out.append(bracket)
-            else:
-                self.out.append(superscript)
+            raise nodes.SkipNode
         else:
             assert isinstance(node.parent, nodes.citation)
             if not self._use_latex_citations:
