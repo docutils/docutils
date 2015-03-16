@@ -1,0 +1,113 @@
+/* xhtml11.css: Cascading style sheet for Docutils' xhtml11 writer.	   */
+/*									   */
+/* :Author: Günter Milde						   */
+/* :Copyright: © 2009, 2014 Günter Milde.				   */
+/* :License: Released under the terms of the `2-Clause BSD license`_,	   */
+/* 	  in short:							   */
+/*									   */
+/*    Copying and distribution of this file, with or without modification, */
+/*    are permitted in any medium without royalty provided the copyright   */
+/*    notice and this notice are preserved.				   */
+/*    This file is offered as-is, without any warranty.			   */
+/*									   */
+/* .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause	   */
+
+/* This stylesheet contains rules specific to the output of the	    */
+/* XHTML 1.1 writer. It supplements the "html-base.css" stylesheet. */
+/* It validates_ as CSS2.1_					    */
+/*								    */
+/* .. _CSS2.1: http://www.w3.org/TR/CSS2			    */
+/* .. _validates: http://jigsaw.w3.org/css-validator/validator$link */
+
+
+/* Ordered List (Enumeration)						    */
+/* --------------------------						    */
+
+/* XHTML 1.1 removed the "start" argument form ordered lists (It       */
+/* resurfaces in HTML5).					       */
+/*								       */
+/* Use custom counters to replace the deprecated start attribute. Make */
+/* sure the resulting list resembles the list-style 'outside' with a   */
+/* hanging indent.						       */
+
+/* New ordered list: reset counter, suppress the default label */
+ol, ol.arabic, ol.loweralpha, ol.upperalpha,
+ol.lowerroman, ol.upperroman {
+  counter-reset: item;
+  list-style: none
+}
+
+/* Set the negative indent of the list label as feature of the list item */
+ol > li {
+  text-indent: -40px; /* Mozillas default indent */
+}
+/* reset for child elements */
+ol > li > * {
+  text-indent: 0px;
+  text-indent: 0;
+  margin-top: 0;
+  /* background: lightgreen; */
+}
+
+/* Label */
+ol > li:before {
+  /* increment and typeset counter(s), */
+  counter-increment: item;
+  content: counter(item) ".";
+  /* display next to the content (aligned top-right), */
+  display: inline-block;
+  text-align: right;
+  vertical-align: top;
+  /* sum must match ol>li {text-indent:} (40px is Mozillas default) */
+  width: 35px;
+  padding-right: 5px;
+/*   background: yellow; */
+}
+
+/* The list item's first line starts next to the label, without indent */
+ol > li > p:first-child,
+ol > li > ol:first-child,
+ol > li > ul:first-child,
+ol > li > dl:first-child {
+  display: inline-block;
+  /* background: lightblue; */
+}
+
+/* default separator variants */
+ol.loweralpha > li:before {
+  content: counter(item, lower-alpha) ")";
+}
+ol.upperalpha  > li:before {
+  content: counter(item, upper-alpha) ".";
+}
+ol.lowerroman  > li:before {
+  content: "(" counter(item, lower-roman) ")";
+}
+ol.upperroman  > li:before {
+  content: counter(item, upper-roman) ")";
+}
+/* nested counters (1, 1.1, 1.1.1, etc) */
+/* nested enumerated lists "inherit" the class attribute, other lists not */
+ol.nested > li:before, ol.nested  ol > li:before {
+  content: counters(item, ".") " ";
+}
+
+
+
+/* Field Lists */
+/* ----------- */
+
+/* field-list variants:: */
+
+/* wrap or truncate long field names */
+dl.field-list.fix-labelwidth > dt {
+  width: 8em; /* set to dl.field-list > dd margin-left - padding-left */
+  overflow: hidden;
+}
+dl.field-list.fix-labelwidth > dd:after {
+  /* a "stopper" to prevent next dd floating up too far */
+  content: '';
+  display: block;
+  clear: left;
+  vertical-align: baseline; 
+}
