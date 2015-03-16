@@ -17,8 +17,11 @@ from the ``docs`` directory of the `Docutils distribution`_.
 .. contents::
 
 
+Docutils: Documentation Utilities
+=================================
+
 Docutils Stakeholders
-=====================
+---------------------
 
 Docutils stakeholders can be categorized in several groups:
 
@@ -46,7 +49,7 @@ projects.  Component-developers are also client-developers.
 
 
 Project Fundamentals
-====================
+--------------------
 
 These files are for all Docutils stakeholders.  They are kept at the
 top level of the Docutils project directory.
@@ -76,9 +79,7 @@ top level of the Docutils project directory.
 .. _user:
 
 ``user/``: Introductory & Tutorial Material for End-Users
-=========================================================
-
-Docutils-general:
+---------------------------------------------------------
 
 * `Docutils Front-End Tools <user/tools.html>`__
 * `Docutils Configuration <user/config.html>`__
@@ -91,32 +92,14 @@ Writer-specific:
 * `Docutils LaTeX Writer <user/latex.html>`__
 * `Docutils ODF/OpenOffice/odt Writer <user/odt.html>`__
 
-`reStructuredText <http://docutils.sourceforge.net/rst.html>`_:
-
-* `A ReStructuredText Primer (HTML) <user/rst/quickstart.html>`__ (or
-  `text source <user/rst/quickstart.txt>`__)
-* `Quick reStructuredText <user/rst/quickref.html>`__ (user reference)
-* `reStructuredText Cheat Sheet <user/rst/cheatsheet.txt>`__ (text
-  only; 1 page for syntax, 1 page directive & role reference)
-* `reStructuredText Demonstration <user/rst/demo.html>`_ (a
-  demonstration of most reStructuredText features; you can also have a
-  look at the `text source <user/rst/demo.txt>`__)
-
-Editor support:
-
-* `Emacs support for reStructuredText <user/emacs.html>`_
-
-
 .. _ref:
 
 ``ref/``: Reference Material for All Groups
-===========================================
+-------------------------------------------
 
 Many of these files began as developer specifications, but now that
 they're mature and used by end-users and client-developers, they have
 become reference material.  Successful specs evolve into refs.
-
-Docutils-general:
 
 * `The Docutils Document Tree <ref/doctree.html>`__ (incomplete)
 * `Docutils Transforms <ref/transforms.html>`__
@@ -127,17 +110,6 @@ Docutils-general:
 Although not in the "ref" directory, `PEP 258`_ is a must-read
 reference for any Docutils developer.
 
-reStructuredText_:
-
-* `An Introduction to reStructuredText <ref/rst/introduction.html>`__
-  (includes the `Goals <ref/rst/introduction.html#goals>`__ and
-  `History <ref/rst/introduction.html#history>`__ of reStructuredText)
-* `reStructuredText Markup Specification <ref/rst/restructuredtext.html>`__
-* `reStructuredText Directives <ref/rst/directives.html>`__
-* `reStructuredText Interpreted Text Roles <ref/rst/roles.html>`__
-* `reStructuredText Standard Definition Files
-  <ref/rst/definitions.html>`_
-
 Prehistoric:
 
 * `Setext Documents Mirror
@@ -147,7 +119,7 @@ Prehistoric:
 .. _peps:
 
 ``peps/``: Python Enhancement Proposals
-=======================================
+---------------------------------------
 
 * `PEP 256: Docstring Processing System Framework`__ is a high-level
   generic proposal.  [`PEP 256`__ in the `master repository`_]
@@ -156,8 +128,6 @@ Prehistoric:
 * `PEP 258: Docutils Design Specification`__ is an overview of the
   architecture of Docutils.  It documents design issues and
   implementation details.  [`PEP 258`__ in the `master repository`_]
-* `PEP 287: reStructuredText Docstring Format`__ proposes a standard
-  markup syntax.  [`PEP 287`__ in the `master repository`_]
 
 Please note that PEPs in the `master repository`_ may not be current,
 whereas the local versions are.
@@ -169,15 +139,13 @@ __ http://www.python.org/peps/pep-0257.html
 .. _PEP 258:
 __ peps/pep-0258.html
 __ http://www.python.org/peps/pep-0258.html
-__ peps/pep-0287.html
-__ http://www.python.org/peps/pep-0287.html
 .. _master repository: http://www.python.org/peps/
 
 
 .. _api:
 
 ``api/``: API Reference Material for Client-Developers
-======================================================
+------------------------------------------------------
 
 * `The Docutils Publisher <api/publisher.html>`__
 * `Inside A Docutils Command-Line Front-End Tool <api/cmdline-tool.html>`__
@@ -190,7 +158,7 @@ __ http://www.python.org/peps/pep-0287.html
 .. _howto:
 
 ``howto/``: Instructions for Developers
-=======================================
+---------------------------------------
 
 * **Security:** `Deploying Docutils Securely <howto/security.html>`__
 * `Writing HTML (CSS) Stylesheets for Docutils
@@ -200,13 +168,10 @@ __ http://www.python.org/peps/pep-0287.html
 * `Creating reStructuredText Interpreted Text Roles
   <howto/rst-roles.html>`__
 
-
 .. _dev:
 
 ``dev/``: Development Notes and Plans for Core-Developers
-=========================================================
-
-Docutils-general:
+---------------------------------------------------------
 
 * `Docutils Hacker's Guide <dev/hacking.html>`__
 * `Docutils Distributor's Guide <dev/distributing.html>`__
@@ -222,12 +187,56 @@ Docutils-general:
 * `Plan for Enthought API Documentation Tool <dev/enthought-plan.html>`_
 * `Enthought API Documentation Tool RFP <dev/enthought-rfp.html>`_
 
-reStructuredText_:
 
+reStructuredText: Markup Language
+=================================
+
+* `reStructuredText Frequently Asked Questions`_
+  
+``user/rst/``: Introductory & Tutorial Material for End-Users
+-------------------------------------------------------------
+
+* `A ReStructuredText Primer (HTML) <user/rst/quickstart.html>`__ (or
+  `text source <user/rst/quickstart.txt>`__)
+* `Quick reStructuredText <user/rst/quickref.html>`__ (user reference)
+* `reStructuredText Cheat Sheet <user/rst/cheatsheet.txt>`__ (text
+  only; 1 page for syntax, 1 page directive & role reference)
+* `reStructuredText Demonstration <user/rst/demo.html>`_ (a
+  demonstration of most reStructuredText features; you can also have a
+  look at the `text source <user/rst/demo.txt>`__)
+* `Emacs support for reStructuredText <user/emacs.html>`_
+  
+``ref/rst``: Reference Material for All Groups
+----------------------------------------------
+
+* `An Introduction to reStructuredText <ref/rst/introduction.html>`__
+  (includes the `Goals <ref/rst/introduction.html#goals>`__ and
+  `History <ref/rst/introduction.html#history>`__ of reStructuredText)
+* `reStructuredText Markup Specification <ref/rst/restructuredtext.html>`__
+* `reStructuredText Directives <ref/rst/directives.html>`__
+* `reStructuredText Interpreted Text Roles <ref/rst/roles.html>`__
+* `reStructuredText Standard Definition Files
+  <ref/rst/definitions.html>`_
+  
+``peps/``: Python Enhancement Proposal
+--------------------------------------
+
+* `PEP 287: reStructuredText Docstring Format`__ proposes a standard
+  markup syntax.  [`PEP 287`__ in the `master repository`_]
+  
+``dev/rst/``: Development Notes and Plans for Core-Developers
+-------------------------------------------------------------
+  
 * `A Record of reStructuredText Syntax Alternatives
   <dev/rst/alternatives.html>`__
 * `Problems With StructuredText <dev/rst/problems.html>`__
+  
+.. _reStructuredText Frequently Asked Questions:
+    /FAQ.html#restructuredtext
+__ peps/pep-0287.html
+__ http://www.python.org/peps/pep-0287.html
 
+  
 
 ..
    Local Variables:
