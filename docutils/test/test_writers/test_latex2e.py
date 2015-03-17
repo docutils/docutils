@@ -396,55 +396,37 @@ totest['enumerated_lists'] = [
   (II) in roman numerals.
 """,
 # expected output
-head + r"""\newcounter{listcnt0}
-\begin{list}{\arabic{listcnt0}.}
-{
-\usecounter{listcnt0}
-\setlength{\rightmargin}{\leftmargin}
-}
+head + r"""\begin{enumerate}
 
 \item Item 1.
 
 \item Second to the previous item this one will explain
-\end{list}
+\end{enumerate}
 %
 \begin{quote}
-\setcounter{listcnt0}{0}
-\begin{list}{\alph{listcnt0})}
-{
-\usecounter{listcnt0}
-\setlength{\rightmargin}{\leftmargin}
-}
+\begin{enumerate}
+\renewcommand{\labelenumi}{\alph{enumi})}
 
 \item nothing.
 
 \item or some other.
-\end{list}
+\end{enumerate}
 
 \end{quote}
-\setcounter{listcnt0}{0}
-\begin{list}{\arabic{listcnt0}.}
-{
-\usecounter{listcnt0}
-\addtocounter{listcnt0}{2}
-\setlength{\rightmargin}{\leftmargin}
-}
+\begin{enumerate}
+\setcounter{enumi}{2}
 
 \item Third is
-\end{list}
+\end{enumerate}
 %
 \begin{quote}
-\setcounter{listcnt0}{0}
-\begin{list}{(\Roman{listcnt0})}
-{
-\usecounter{listcnt0}
-\setlength{\rightmargin}{\leftmargin}
-}
+\begin{enumerate}
+\renewcommand{\labelenumi}{(\Roman{enumi})}
 
 \item having pre and postfixes
 
 \item in roman numerals.
-\end{list}
+\end{enumerate}
 
 \end{quote}
 
