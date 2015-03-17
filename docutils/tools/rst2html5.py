@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
-# :Copyright: © 2005, 2009 Günter Milde.
+# :Copyright: © 2015 Günter Milde.
 # :License: Released under the terms of the `2-Clause BSD license`_, in short:
 #
 #    Copying and distribution of this file, with or without modification,
@@ -14,7 +14,7 @@
 # Date: $Date$
 
 """
-A minimal front end to the Docutils Publisher, producing basic HTML 5
+A minimal front end to the Docutils Publisher, producing HTML 5 documents.
 
 The output also conforms to XHTML 1.0 transitional
 (except for the doctype declaration).
@@ -32,4 +32,4 @@ description = (u'Generates HTML 5 documents from standalone '
                u'reStructuredText sources '
                + default_description)
 
-publish_cmdline(writer_name='html-base', description=description)
+publish_cmdline(writer_name='html5', description=description)
