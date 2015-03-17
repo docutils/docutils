@@ -35,9 +35,8 @@ from docutils.writers import html_base
 
 class Writer(html_base.Writer):
 
-    supported = ('html', 'xhtml', 'xhtml1',
-                 'html4strict', 'xhtml1strict',
-                 'xhtml11', 'xhtml1css2')
+    supported = ('html', 'html4', 'html4strict', 'html4css2',
+                 'xhtml', 'xhtml1', 'xhtml1strict', 'xhtml11')
     """Formats this writer supports."""
 
     default_stylesheets = ['html-base.css', 'xhtml11.css']

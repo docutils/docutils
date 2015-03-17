@@ -39,7 +39,7 @@ from docutils.utils.math.latex2mathml import parse_latex_math
 
 class Writer(writers.Writer):
 
-    supported = ('html', 'html4css1', 'xhtml')
+    supported = ('html', 'html4', 'html4css1', 'xhtml', 'xhtml10')
     """Formats this writer supports."""
 
     default_stylesheets = ['html4css1.css']
