@@ -144,8 +144,10 @@ website generators and HTML variants
   created to translate the `Python documentation`_, and is now `used by
   <http://sphinx.pocoo.org/examples.html>`__ a wide choice of projects.
 
-  It can generate complete web sites (interlinked and indexed HTML pages)
-  and/or PDF from a set of rst source files.
+  It can generate complete web sites (interlinked and indexed HTML pages),
+  ePub, PDF, and others [#]_ from a set of rst source files.
+  
+  .. [#] see http://sphinx-doc.org/config.html#options-for-epub-output
 
 * Nikola_  static site generator, use restructured text by
   default.
@@ -181,6 +183,23 @@ website generators and HTML variants
 .. _rst2chm: http://www.rutherfurd.net/software/rst2chm/
 .. _rest2web: http://www.voidspace.org.uk/python/rest2web/
 .. _simple HTML writer: http://docutils.sf.net/sandbox/bbum/DocArticle/
+
+ePub
+````
+ 
+* The `rst2epub`_ project by Robert Wierschke converts simple
+  reStructuredText doucments into valid epub files. 
+  
+  .. simple but well structured with classes/modules for epub components, 
+     and a standard ``setup.py`` installation file.
+
+* rst2epub2_ by Matt Harrison includes the epublib_ (originally by Tim
+  Tambin) and a rst2epub.py executable for the conversion.
+
+* Sphinx_ provides ePub as output option, too.
+
+.. _rst2epub: https://bitbucket.org/wierob/rst2epub
+.. _rst2epub2: https://github.com/mattharrison/rst2epub2
 
 
 Others
