@@ -193,7 +193,7 @@ ePub
   .. simple but well structured with classes/modules for epub components, 
      and a standard ``setup.py`` installation file.
 
-* rst2epub2_ by Matt Harrison includes the epublib_ (originally by Tim
+* rst2epub2_ by Matt Harrison includes the epublib (originally by Tim
   Tambin) and a rst2epub.py executable for the conversion.
 
 * Sphinx_ provides ePub as output option, too.
