@@ -2005,59 +2005,63 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.out.extend(self.active_table.depart_row())
 
     def visit_enumerated_list(self, node):
-        # We create our own enumeration list environment.
-        # This allows to set the style and starting value
-        # and unlimited nesting.
-        enum_style = {'arabic':'arabic',
-                'loweralpha':'alph',
-                'upperalpha':'Alph',
-                'lowerroman':'roman',
-                'upperroman':'Roman' }
-        enum_suffix = ''
-        if 'suffix' in node:
-            enum_suffix = node['suffix']
-        enum_prefix = ''
-        if 'prefix' in node:
-            enum_prefix = node['prefix']
+        # enumeration styles:
+        types = {'': '',
+                  'arabic':'arabic',
+                  'loweralpha':'alph',
+                  'upperalpha':'Alph',
+                  'lowerroman':'roman',
+                  'upperroman':'Roman'}
+        # the 4 default LaTeX enumeration labels: präfix, enumtype, suffix,
+        labels = [('',  'arabic', '.'), #  1.
+                  ('(', 'alph',   ')'), # (a)
+                  ('',  'roman',  '.'), #  i.
+                  ('',  'Alph',   '.')] #  A.
+
+        prefix = ''
         if self.compound_enumerators:
-            pref = ''
-            if self.section_prefix_for_enumerators and self.section_level:
-                for i in range(self.section_level):
-                    pref += '%d.' % self._section_number[i]
-                pref = pref[:-1] + self.section_enumerator_separator
-                enum_prefix += pref
-            for ctype, cname in self._enumeration_counters:
-                enum_prefix += '\\%s{%s}.' % (ctype, cname)
-        enum_type = 'arabic'
-        if 'enumtype' in node:
-            enum_type = node['enumtype']
-        if enum_type in enum_style:
-            enum_type = enum_style[enum_type]
+            if (self.section_prefix_for_enumerators and self.section_level
+                and not self._enumeration_counters):
+                prefix = '.'.join([str(n) for n in
+                                   self._section_number[:self.section_level]]
+                                 ) + self.section_enumerator_separator
+            if self._enumeration_counters:
+                prefix += self._enumeration_counters[-1]
+        # TODO: use LaTeX default for unspecified label-type? 
+              # (needs change of parser)
+        prefix += node.get('prefix', '')
+        enumtype = types[node.get('enumtype' '')]
+        suffix = node.get('suffix', '')
 
-        counter_name = 'listcnt%d' % len(self._enumeration_counters)
-        self._enumeration_counters.append((enum_type, counter_name))
-        # If we haven't used this counter name before, then create a
-        # new counter; otherwise, reset & reuse the old counter.
-        if len(self._enumeration_counters) > self._max_enumeration_counters:
-            self._max_enumeration_counters = len(self._enumeration_counters)
-            self.out.append('\\newcounter{%s}\n' % counter_name)
+        enumeration_level = len(self._enumeration_counters)+1
+        counter_name = 'enum' + roman.toRoman(enumeration_level).lower()
+        label = r'%s\%s{%s}%s' % (prefix, enumtype, counter_name, suffix)
+        self._enumeration_counters.append(label)
+
+        if enumeration_level <= 4:
+            self.out.append('\\begin{enumerate}\n')
+            if (prefix, enumtype, suffix
+               ) != labels[enumeration_level-1]:
+                self.out.append('\\renewcommand{\\label%s}{%s}\n' %
+                                (counter_name, label))
         else:
-            self.out.append('\\setcounter{%s}{0}\n' % counter_name)
-
-        self.out.append('\\begin{list}{%s\\%s{%s}%s}\n' %
-                        (enum_prefix,enum_type,counter_name,enum_suffix))
-        self.out.append('{\n')
-        self.out.append('\\usecounter{%s}\n' % counter_name)
-        # set start after usecounter, because it initializes to zero.
+            self.fallbacks[counter_name] = '\\newcounter{%s}' % counter_name
+            self.out.append('\\begin{list}')
+            self.out.append('{%s}' % label)
+            self.out.append('{\\usecounter{%s}}\n' % counter_name)
         if 'start' in node:
-            self.out.append('\\addtocounter{%s}{%d}\n' %
+            self.out.append('\\setcounter{%s}{%d}\n' %
                             (counter_name,node['start']-1))
-        ## set rightmargin equal to leftmargin
-        self.out.append('\\setlength{\\rightmargin}{\\leftmargin}\n')
-        self.out.append('}\n')
+        #     ## set rightmargin equal to leftmargin
+        #     self.out.append('\\setlength{\\rightmargin}{\\leftmargin}\n')
+
+
 
     def depart_enumerated_list(self, node):
-        self.out.append('\\end{list}\n')
+        if len(self._enumeration_counters) <= 4:
+            self.out.append('\\end{enumerate}\n')
+        else:
+            self.out.append('\\end{list}\n')
         self._enumeration_counters.pop()
 
     def visit_field(self, node):

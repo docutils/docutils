@@ -62,6 +62,7 @@
 
 % subtitle (in document title)
 \providecommand*{\DUdocumentsubtitle}[1]{{\large #1}}
+\newcounter{enumv}
 
 % error admonition title
 \providecommand*{\DUtitleerror}[1]{\DUtitle{\color{red}#1}}
@@ -422,89 +423,54 @@ Paragraph 2 of item 2.
 \subsection{2.3   Enumerated Lists%
   \label{enumerated-lists}%
 }
-\newcounter{listcnt0}
-\begin{list}{\arabic{listcnt0}.}
-{
-\usecounter{listcnt0}
-\setlength{\rightmargin}{\leftmargin}
-}
+\begin{enumerate}
 
 \item Arabic numerals.
-\newcounter{listcnt1}
-\begin{list}{\alph{listcnt1})}
-{
-\usecounter{listcnt1}
-\setlength{\rightmargin}{\leftmargin}
-}
+\begin{enumerate}
+\renewcommand{\labelenumii}{\alph{enumii})}
 
 \item lower alpha)
-\newcounter{listcnt2}
-\begin{list}{(\roman{listcnt2})}
-{
-\usecounter{listcnt2}
-\setlength{\rightmargin}{\leftmargin}
-}
+\begin{enumerate}
+\renewcommand{\labelenumiii}{(\roman{enumiii})}
 
 \item (lower roman)
-\newcounter{listcnt3}
-\begin{list}{\Alph{listcnt3}.}
-{
-\usecounter{listcnt3}
-\setlength{\rightmargin}{\leftmargin}
-}
+\begin{enumerate}
 
 \item upper alpha.
-\newcounter{listcnt4}
-\begin{list}{\Roman{listcnt4})}
-{
-\usecounter{listcnt4}
-\setlength{\rightmargin}{\leftmargin}
-}
+\begin{list}{\Roman{enumv})}{\usecounter{enumv}}
 
 \item upper roman)
 \end{list}
-\end{list}
-\end{list}
-\end{list}
+\end{enumerate}
+\end{enumerate}
+\end{enumerate}
 
 \item Lists that don’t start at 1:
-\setcounter{listcnt1}{0}
-\begin{list}{\arabic{listcnt1}.}
-{
-\usecounter{listcnt1}
-\addtocounter{listcnt1}{2}
-\setlength{\rightmargin}{\leftmargin}
-}
+\begin{enumerate}
+\renewcommand{\labelenumii}{\arabic{enumii}.}
+\setcounter{enumii}{2}
 
 \item Three
 
 \item Four
-\end{list}
-\setcounter{listcnt1}{0}
-\begin{list}{\Alph{listcnt1}.}
-{
-\usecounter{listcnt1}
-\addtocounter{listcnt1}{2}
-\setlength{\rightmargin}{\leftmargin}
-}
+\end{enumerate}
+\begin{enumerate}
+\renewcommand{\labelenumii}{\Alph{enumii}.}
+\setcounter{enumii}{2}
 
 \item C
 
 \item D
-\end{list}
-\setcounter{listcnt1}{0}
-\begin{list}{\roman{listcnt1}.}
-{
-\usecounter{listcnt1}
-\addtocounter{listcnt1}{2}
-\setlength{\rightmargin}{\leftmargin}
-}
+\end{enumerate}
+\begin{enumerate}
+\renewcommand{\labelenumii}{\roman{enumii}.}
+\setcounter{enumii}{2}
 
 \item iii
 
 \item iv
-\end{list}
-\end{list}
+\end{enumerate}
+\end{enumerate}
 
 
 \subsection{2.4   Definition Lists%

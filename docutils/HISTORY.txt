@@ -61,10 +61,12 @@ Changes Since 0.12
 
 * docutils/writers/latex2e/__init__.py
 
-  - use absolute path for ``default_template_path``.
+  - Use absolute path for ``default_template_path``.
 
-  - removed deprecated options ``--use-latex-footnotes`` and
+  - Removed deprecated options ``--use-latex-footnotes`` and
     ``--figure-footnotes``.
+
+  - Cleaner LaTeX code for enumerations.
 
 * docutils/writers/odf_odt/__init__.py
 
