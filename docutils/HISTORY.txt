@@ -70,6 +70,10 @@ Changes Since 0.12
 
   - remove decode.encode of filename stored in zip.
 
+* docutils/writers/xetex/__init__.py
+
+  - LuaLaTex compatibility: do not load "xunicode".
+
 * docutils/writers/xhtml11/
 
   - New HTML writer generating `XHTML 1.1`_ styled with CSS2.1
@@ -240,7 +244,7 @@ Release 0.10 (2012-12-16)
   - Apply [ 3527401 ] addmonition's don't preserve indentation
   - Apply [ 3527397 ] Add indentation to literal blocks in manpage writer.
 
-, docutils/writers/xetex/__init__.py
+* docutils/writers/xetex/__init__.py
 
   - Apply [ 3555160 ] ensure order of "otherlanguages".
   - Fix section numbering by LaTeX.
