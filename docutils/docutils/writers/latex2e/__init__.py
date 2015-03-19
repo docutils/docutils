@@ -1151,7 +1151,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.section_enumerator_separator = (
             settings.section_enumerator_separator.replace('_', r'\_'))
         # literal blocks:
-        self.literal_block_env = ''
+        self.literal_block_env = 'alltt'
         self.literal_block_options = ''
         if settings.literal_block_env != '':
             (none,
@@ -2417,30 +2417,39 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if not self.active_table.is_open():
             # no quote inside tables, to avoid vertical space between
             # table border and literal block.
-            # BUG: fails if normal text precedes the literal block.
+            # TODO: fails if normal text precedes the literal block.
+            # check parent node instead?
             self.out.append('%\n\\begin{quote}\n')
             self.context.append('\n\\end{quote}\n')
         else:
             self.out.append('\n')
             self.context.append('\n')
-        if self.literal_block_env != '' and self.is_plaintext(node):
+
+        if self.is_plaintext(node):
             environment = self.literal_block_env
-            self.verbatim = True
+            self.requirements['literal_block'] = packages.get(environment, '')
+            if environment == 'alltt':
+                self.alltt = True
+            else:
+                self.verbatim = True
+            self.out.append('\\begin{%s}%s\n' %
+                            (environment, self.literal_block_options))
+            self.context.append('\n\\end{%s}' % environment)
         else:
-            environment = 'alltt'
-            self.alltt = True
-            if ('code' in node['classes']
-                    and self.settings.syntax_highlight != 'none'):
+            self.literal = True
+            self.insert_newline = True
+            self.insert_non_breaking_blanks = True
+            if 'code' in node['classes'] and (
+                    self.settings.syntax_highlight != 'none'):
                 self.requirements['color'] = PreambleCmds.color
                 self.fallbacks['code'] = PreambleCmds.highlight_rules
-
-        self.requirements['literal_block'] = packages.get(environment, '')
-        self.out.append('\\begin{%s}%s\n' %
-                        (environment, self.literal_block_options))
-        self.context.append('\n\\end{%s}' % environment)
-
+            self.out.append('{\\ttfamily \\raggedright \\noindent\n')
+            self.context.append('\n}')
 
     def depart_literal_block(self, node):
+        self.insert_non_breaking_blanks = False
+        self.insert_newline = False
+        self.literal = False
         self.verbatim = False
         self.alltt = False
         self.out.append(self.context.pop())

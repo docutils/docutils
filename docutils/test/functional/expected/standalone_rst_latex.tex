@@ -1218,14 +1218,16 @@ Compound 7, another paragraph.
 }
 %
 \begin{quote}
-\begin{alltt}
-This is a parsed literal block.
-    This line is indented.  The next line is blank.
-
-Inline markup is supported, e.g. \emph{emphasis}, \textbf{strong}, \texttt{literal
-text}, footnotes\DUfootnotemark{id22}{id8}{1}, %
-\phantomsection\label{hyperlink-targets}hyperlink targets, and \href{http://www.python.org/}{references}.
-\end{alltt}
+{\ttfamily \raggedright \noindent
+This~is~a~parsed~literal~block.\\
+~~~~This~line~is~indented.~~The~next~line~is~blank.\\
+~\\
+Inline~markup~is~supported,~e.g.~\emph{emphasis},~\textbf{strong},~\texttt{literal\\
+text},~\textsubscript{sub-}~and~\textsuperscript{super}scripts,\\
+inline~formulas:~$A = 2 \pi r^2$,\\
+footnotes\DUfootnotemark{id22}{id8}{1},~%
+\phantomsection\label{hyperlink-targets}hyperlink~targets,~and~\href{http://www.python.org/}{references}.
+}
 \end{quote}
 
 
@@ -1250,11 +1252,11 @@ The \texttt{:number-lines:} option (with optional start value) generates line
 numbers:
 %
 \begin{quote}
-\begin{alltt}
-\DUrole{ln}{ 8 }# print integers from 0 to 9:
-\DUrole{ln}{ 9 }for i in range(10):
-\DUrole{ln}{10 }    print i
-\end{alltt}
+{\ttfamily \raggedright \noindent
+\DUrole{ln}{~8~}\#~print~integers~from~0~to~9:\\
+\DUrole{ln}{~9~}for~i~in~range(10):\\
+\DUrole{ln}{10~}~~~~print~i
+}
 \end{quote}
 
 For inline code snippets, there is the \DUroletitlereference{code} role, which can be used
@@ -1269,10 +1271,10 @@ The \texttt{:code:} option of the \DUroletitlereference{include} directive sets 
 as a code block, here the rst file \texttt{header\_footer.txt} with line numbers:
 %
 \begin{quote}
-\begin{alltt}
-\DUrole{ln}{1 }.. header:: Document header
-\DUrole{ln}{2 }.. footer:: Document footer
-\end{alltt}
+{\ttfamily \raggedright \noindent
+\DUrole{ln}{1~}..~header::~Document~header\\
+\DUrole{ln}{2~}..~footer::~Document~footer
+}
 \end{quote}
 
 
@@ -2299,7 +2301,7 @@ However also \emph{square brackets} {[}{]} need special care.
 %
 \begin{quote}
 
-item and all the other commands with optional arguments check
+Commands with optional arguments (e.g. \texttt{\textbackslash{}item}) check
 if the token right after the macro name is an opening bracket.
 In that case the contents between that bracket and the following
 closing bracket on the same grouping level are taken as the

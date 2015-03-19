@@ -1607,7 +1607,18 @@
                     <literal>
                         literal
                         text
-                    , footnotes 
+                    , 
+                    <subscript>
+                        sub-
+                     and 
+                    <superscript>
+                        super
+                    scripts,
+                    inline formulas: 
+                    <math>
+                        A = 2 \pi r^2
+                    ,
+                    footnotes 
                     <footnote_reference ids="id22" refid="id8">
                         1
                     , 
