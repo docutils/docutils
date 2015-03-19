@@ -692,7 +692,13 @@ PreambleCmds.transition = r"""
 class CharMaps(object):
     """LaTeX representations for active and Unicode characters."""
 
-    # characters that always need escaping:
+    # characters that need escaping even in `alltt` environments:
+    alltt = {
+        ord('\\'): ur'\textbackslash{}',
+        ord('{'): ur'\{',
+        ord('}'): ur'\}',
+    }
+    # characters that normally need escaping:
     special = {
         ord('#'): ur'\#',
         ord('$'): ur'\$',
@@ -701,9 +707,6 @@ class CharMaps(object):
         ord('~'): ur'\textasciitilde{}',
         ord('_'): ur'\_',
         ord('^'): ur'\textasciicircum{}',
-        ord('\\'): ur'\textbackslash{}',
-        ord('{'): ur'\{',
-        ord('}'): ur'\}',
         # straight double quotes are 'active' in many languages
         ord('"'): ur'\textquotedbl{}',
         # Square brackets are ordinary chars and cannot be escaped with '\',
@@ -1123,7 +1126,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
     insert_non_breaking_blanks = False # replace blanks by "~"
     insert_newline = False             # add latex newline commands
     literal = False                    # literal text (block or inline)
-
+    alltt = False                      # inside `alltt` environment
 
     def __init__(self, document, babel_class=Babel):
         nodes.NodeVisitor.__init__(self, document)
@@ -1418,16 +1421,17 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def encode(self, text):
         """Return text with 'problematic' characters escaped.
 
-        * Escape the ten special printing characters ``# $ % & ~ _ ^ \ { }``,
+        * Escape the special printing characters ``# $ % & ~ _ ^ \ { }``,
           square brackets ``[ ]``, double quotes and (in OT1) ``< | >``.
         * Translate non-supported Unicode characters.
         * Separate ``-`` (and more in literal text) to prevent input ligatures.
         """
         if self.verbatim:
             return text
-
         # Set up the translation table:
-        table = CharMaps.special.copy()
+        table = CharMaps.alltt.copy()
+        if not self.alltt:
+            table.update(CharMaps.special)
         # keep the underscore in citation references
         if self.inside_citation_reference_label:
             del(table[ord('_')])
@@ -1825,7 +1829,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 raise nodes.SkipNode
         self.out.append('\\textbf{%s}: &\n\t' % self.language_label(name))
         if name == 'address':
-            self.insert_newline = 1
+            self.insert_newline = True
             self.out.append('{\\raggedright\n')
             self.context.append(' } \\\\\n')
         else:
@@ -2027,7 +2031,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
                                  ) + self.section_enumerator_separator
             if self._enumeration_counters:
                 prefix += self._enumeration_counters[-1]
-        # TODO: use LaTeX default for unspecified label-type? 
+        # TODO: use LaTeX default for unspecified label-type?
               # (needs change of parser)
         prefix += node.get('prefix', '')
         enumtype = types[node.get('enumtype' '')]
@@ -2403,7 +2407,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_literal_block(self, node):
         """Render a literal block."""
         # environments and packages to typeset literal blocks
-        packages = {'listing': r'\usepackage{moreverb}',
+        packages = {'alltt': r'\usepackage{alltt}',
+                    'listing': r'\usepackage{moreverb}',
                     'lstlisting': r'\usepackage{listings}',
                     'Verbatim': r'\usepackage{fancyvrb}',
                     # 'verbatim': '',
@@ -2413,36 +2418,32 @@ class LaTeXTranslator(nodes.NodeVisitor):
             # no quote inside tables, to avoid vertical space between
             # table border and literal block.
             # BUG: fails if normal text precedes the literal block.
-            self.out.append('%\n\\begin{quote}')
+            self.out.append('%\n\\begin{quote}\n')
             self.context.append('\n\\end{quote}\n')
         else:
             self.out.append('\n')
             self.context.append('\n')
         if self.literal_block_env != '' and self.is_plaintext(node):
-            self.requirements['literal_block'] = packages.get(
-                                                  self.literal_block_env, '')
+            environment = self.literal_block_env
             self.verbatim = True
-            self.out.append('\\begin{%s}%s\n' % (self.literal_block_env,
-                                                 self.literal_block_options))
         else:
-            self.literal = True
-            self.insert_newline = True
-            self.insert_non_breaking_blanks = True
-            if 'code' in node['classes'] and (
-                    self.settings.syntax_highlight != 'none'):
+            environment = 'alltt'
+            self.alltt = True
+            if ('code' in node['classes']
+                    and self.settings.syntax_highlight != 'none'):
                 self.requirements['color'] = PreambleCmds.color
                 self.fallbacks['code'] = PreambleCmds.highlight_rules
-            self.out.append('{\\ttfamily \\raggedright \\noindent\n')
+
+        self.requirements['literal_block'] = packages.get(environment, '')
+        self.out.append('\\begin{%s}%s\n' %
+                        (environment, self.literal_block_options))
+        self.context.append('\n\\end{%s}' % environment)
+
 
     def depart_literal_block(self, node):
-        if self.verbatim:
-            self.out.append('\n\\end{%s}\n' % self.literal_block_env)
-            self.verbatim = False
-        else:
-            self.out.append('\n}')
-            self.insert_non_breaking_blanks = False
-            self.insert_newline = False
-            self.literal = False
+        self.verbatim = False
+        self.alltt = False
+        self.out.append(self.context.pop())
         self.out.append(self.context.pop())
 
     ## def visit_meta(self, node):
@@ -2470,7 +2471,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if node.get('ids'):
             math_code = '\n'.join([math_code] + self.ids_to_labels(node))
         if math_env == '$':
-            wrapper = u'$%s$'
+            if self.alltt:
+                wrapper = u'\(%s\)'
+            else:
+                wrapper = u'$%s$'
         else:
             wrapper = u'\n'.join(['%%',
                                  r'\begin{%s}' % math_env,
