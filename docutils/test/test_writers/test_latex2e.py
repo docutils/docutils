@@ -104,6 +104,12 @@ head_textcomp = head_template.substitute(
 r"""\usepackage{textcomp} % text symbol macros
 """))
 
+head_alltt = head_template.substitute(
+    dict(parts, requirements = parts['requirements'] +
+r"""\usepackage{alltt}
+"""))
+
+
 totest = {}
 totest_latex_toc = {}
 totest_latex_sectnum = {}
@@ -500,23 +506,38 @@ head_table + r"""
 
 totest['bracket_protection'] = [
 # input
-["""\
-::
-
-  something before to get a end of line.
-  [
-
-  the empty line gets tested too
-  ]
+["""
+* [no option] to this item
 """,
 head + r"""%
-\begin{quote}{\ttfamily \raggedright \noindent
-something~before~to~get~a~end~of~line.\\
-{[}\\
-~\\
-the~empty~line~gets~tested~too\\
-{]}
-}
+\begin{itemize}
+
+\item {[}no option{]} to this item
+
+\end{itemize}
+
+\end{document}
+"""],
+]
+
+totest['literal_block'] = [
+# input
+["""\
+Test special characters { [ \\\\ ] } in literal block::
+
+  { [ ( \macro
+
+  } ] )
+""",
+head_alltt + r"""
+Test special characters \{ {[} \textbackslash{} {]} \} in literal block:
+%
+\begin{quote}
+\begin{alltt}
+\{ [ ( \textbackslash{}macro
+
+\} ] )
+\end{alltt}
 \end{quote}
 
 \end{document}

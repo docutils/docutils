@@ -54,28 +54,27 @@ Changes Since 0.12
     ``default_stylesheet_path`` and ``default_template_path``.
   - Fix [ 266 ] creating labels/class values in description list items.
 
-* docutils/writers/xhtml11/
-
-  - New HTML writer generating `XHTML 1.1`_ styled with CSS2.1
-    Moved to the docutils core from sandbox/html4strict.
-
 * docutils/writers/latex2e/__init__.py
+
+  - Fix [ 262 ] Use ``\linewidth`` instead of ``\textwidth`` for figures,
+    admonitions and docinfo.
 
   - Use absolute path for ``default_template_path``.
 
   - Removed deprecated options ``--use-latex-footnotes`` and
     ``--figure-footnotes``.
 
-  - Cleaner LaTeX code for enumerations.
+  - Cleaner LaTeX code for enumerations and literal blocks.
 
 * docutils/writers/odf_odt/__init__.py
 
   - remove decode.encode of filename stored in zip.
 
-* docutils/writers/latex2e/__init__.py
+* docutils/writers/xhtml11/
 
-  - Fix [ 262 ] Use ``\linewidth`` instead of ``\textwidth`` for figures,
-    admonitions and docinfo.
+  - New HTML writer generating `XHTML 1.1`_ styled with CSS2.1
+    Moved to the docutils core from sandbox/html4strict.
+
 
 * tools/
 

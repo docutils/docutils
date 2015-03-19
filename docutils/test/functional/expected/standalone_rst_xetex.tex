@@ -12,6 +12,7 @@
 \usepackage{float} % float configuration
 \floatplacement{figure}{H} % place figures here definitely
 \usepackage{graphicx}
+\usepackage{alltt}
 \usepackage{multirow}
 \setcounter{secnumdepth}{0}
 \usepackage{longtable,ltcaption,array}
@@ -566,21 +567,23 @@ description.
 Literal blocks are indicated with a double-colon (“::”) at the end of
 the preceding paragraph (over there \texttt{-->}).  They can be indented:
 %
-\begin{quote}{\ttfamily \raggedright \noindent
-if~literal\_block:\\
-~~~~text~=~'is~left~as-is'\\
-~~~~spaces\_and\_linebreaks~=~'are~preserved'\\
-~~~~markup\_processing~=~None
-}
+\begin{quote}
+\begin{alltt}
+if literal_block:
+    text = 'is left as-is'
+    spaces_and_linebreaks = 'are preserved'
+    markup_processing = None
+\end{alltt}
 \end{quote}
 
 Or they can be quoted without indentation:
 %
-\begin{quote}{\ttfamily \raggedright \noindent
->>~Great~idea!\\
->\\
->~Why~didn't~I~think~of~that?
-}
+\begin{quote}
+\begin{alltt}
+>> Great idea!
+>
+> Why didn't I think of that?
+\end{alltt}
 \end{quote}
 
 
@@ -716,12 +719,13 @@ notamment dans la documentation du langage Python.
   \label{doctest-blocks}%
 }
 %
-\begin{quote}{\ttfamily \raggedright \noindent
->>>~print~'Python-specific~usage~examples;~begun~with~\textquotedbl{}>>>\textquotedbl{}'\\
-Python-specific~usage~examples;~begun~with~\textquotedbl{}>>>\textquotedbl{}\\
->>>~print~'(cut~and~pasted~from~interactive~Python~sessions)'\\
-(cut~and~pasted~from~interactive~Python~sessions)
-}
+\begin{quote}
+\begin{alltt}
+>>> print 'Python-specific usage examples; begun with ">>>"'
+Python-specific usage examples; begun with ">>>"
+>>> print '(cut and pasted from interactive Python sessions)'
+(cut and pasted from interactive Python sessions)
+\end{alltt}
 \end{quote}
 
 
@@ -1149,18 +1153,20 @@ Another compound statement:
 
 Compound 2, a literal block:
 %
-\begin{quote}{\ttfamily \raggedright \noindent
-Compound~2,~literal.
-}
+\begin{quote}
+\begin{alltt}
+Compound 2, literal.
+\end{alltt}
 \end{quote}
 Compound 2, this is a test.
 
 Compound 3, only consisting of one paragraph.
 %
-\begin{quote}{\ttfamily \raggedright \noindent
-Compound~4.\\
-This~one~starts~with~a~literal~block.
-}
+\begin{quote}
+\begin{alltt}
+Compound 4.
+This one starts with a literal block.
+\end{alltt}
 \end{quote}
 Compound 4, a paragraph.
 
@@ -1210,14 +1216,15 @@ Compound 7, another paragraph.
   \label{parsed-literal-blocks}%
 }
 %
-\begin{quote}{\ttfamily \raggedright \noindent
-This~is~a~parsed~literal~block.\\
-~~~~This~line~is~indented.~~The~next~line~is~blank.\\
-~\\
-Inline~markup~is~supported,~e.g.~\emph{emphasis},~\textbf{strong},~\texttt{literal\\
-text},~footnotes\DUfootnotemark{id22}{id8}{1},~%
-\phantomsection\label{hyperlink-targets}hyperlink~targets,~and~\href{http://www.python.org/}{references}.
-}
+\begin{quote}
+\begin{alltt}
+This is a parsed literal block.
+    This line is indented.  The next line is blank.
+
+Inline markup is supported, e.g. \emph{emphasis}, \textbf{strong}, \texttt{literal
+text}, footnotes\DUfootnotemark{id22}{id8}{1}, %
+\phantomsection\label{hyperlink-targets}hyperlink targets, and \href{http://www.python.org/}{references}.
+\end{alltt}
 \end{quote}
 
 
@@ -1232,19 +1239,21 @@ is turned off using the \texttt{syntax-highlight} config setting in the test
 conversions in order to get identical results with/without installed
 Pygments highlighter.)
 %
-\begin{quote}{\ttfamily \raggedright \noindent
-print~'This~is~Python~code.'
-}
+\begin{quote}
+\begin{alltt}
+print 'This is Python code.'
+\end{alltt}
 \end{quote}
 
 The \texttt{:number-lines:} option (with optional start value) generates line
 numbers:
 %
-\begin{quote}{\ttfamily \raggedright \noindent
-\DUrole{ln}{~8~}\#~print~integers~from~0~to~9:\\
-\DUrole{ln}{~9~}for~i~in~range(10):\\
-\DUrole{ln}{10~}~~~~print~i
-}
+\begin{quote}
+\begin{alltt}
+\DUrole{ln}{ 8 }# print integers from 0 to 9:
+\DUrole{ln}{ 9 }for i in range(10):
+\DUrole{ln}{10 }    print i
+\end{alltt}
 \end{quote}
 
 For inline code snippets, there is the \DUroletitlereference{code} role, which can be used
@@ -1258,10 +1267,11 @@ Docutils uses LaTeX syntax for math directives and roles:
 The \texttt{:code:} option of the \DUroletitlereference{include} directive sets the included content
 as a code block, here the rst file \texttt{header\_footer.txt} with line numbers:
 %
-\begin{quote}{\ttfamily \raggedright \noindent
-\DUrole{ln}{1~}..~header::~Document~header\\
-\DUrole{ln}{2~}..~footer::~Document~footer
-}
+\begin{quote}
+\begin{alltt}
+\DUrole{ln}{1 }.. header:: Document header
+\DUrole{ln}{2 }.. footer:: Document footer
+\end{alltt}
 \end{quote}
 
 
@@ -1489,14 +1499,15 @@ Let’s count in German \foreignlanguage{german}{eins zwei drei}.
 The following works in most browsers but does not validate
 (\texttt{<style>} is only allowed in the document head):
 %
-\begin{quote}{\ttfamily \raggedright \noindent
-..~raw::~html\\
-~\\
-~~<style~type=\textquotedbl{}text/css\textquotedbl{}><!--\\
-~~~.green~\{color:~green;\}\\
-~~~.sc~\{font-variant:~small-caps;\}\\
-~~~--></style>
-}
+\begin{quote}
+\begin{alltt}
+.. raw:: html
+
+  <style type="text/css"><!--
+   .green \{color: green;\}
+   .sc \{font-variant: small-caps;\}
+   --></style>
+\end{alltt}
 \end{quote}
 
 \DUrole{green}{\DUrole{sc}{\foreignlanguage{british}{British colourful text in small-caps}}}.
@@ -2000,11 +2011,12 @@ pdnderdmdtdrischpdnderdmdtdrischpdnderdmdtdrischpdnderdmdtdrischpdnderdmdtdrisch
 (some have an Euro sign at its place). You might see an error
 like:
 %
-\begin{quote}{\ttfamily \raggedright \noindent
-!~Package~textcomp~Error:~Symbol~\textbackslash{}textcurrency~not~provided~by\\
-(textcomp)~~~~~~~~~~~~~~~~font~family~ptm~in~TS1~encoding.\\
-(textcomp)~~~~~~~~~~~~~~~~Default~family~used~instead.
-}
+\begin{quote}
+\begin{alltt}
+! Package textcomp Error: Symbol \textbackslash{}textcurrency not provided by
+(textcomp)                font family ptm in TS1 encoding.
+(textcomp)                Default family used instead.
+\end{alltt}
 \end{quote}
 
 (which in case of font family ptm is a false positive). Add either
@@ -2045,9 +2057,10 @@ The following characters play a special role in LaTeX and are called
 
 The special chars verbatim:
 %
-\begin{quote}{\ttfamily \raggedright \noindent
-\#~\$~\%~\&~\textasciitilde{}~\_~\textasciicircum{}~\textbackslash{}~\{~\}
-}
+\begin{quote}
+\begin{alltt}
+# $ % & ~ _ ^ \textbackslash{} \{ \}
+\end{alltt}
 \end{quote}
 
 However also \emph{square brackets} {[}{]} need special care.
@@ -2087,9 +2100,10 @@ description term
 The OT1 font-encoding has different characters for the less-than,
 greater-than and bar, < | >, except for typewriter font \DUroletitlereference{cmtt}:
 %
-\begin{quote}{\ttfamily \raggedright \noindent
-<~|~>
-}
+\begin{quote}
+\begin{alltt}
+< | >
+\end{alltt}
 \end{quote}
 
 
@@ -2207,10 +2221,11 @@ These URLs are typeset inside a LaTeX command without error.
 
 \item Unbalanced braces, \{ or \}, will fail (both with href and url):
 %
-\begin{quote}{\ttfamily \raggedright \noindent
-`file~with~\{~<../strange\{name>`\_\_\\
-`<../strange\{name>`\_\_
-}
+\begin{quote}
+\begin{alltt}
+`file with \{ <../strange\{name>`__
+`<../strange\{name>`__
+\end{alltt}
 \end{quote}
 
 while balanced braces are suported:
