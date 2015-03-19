@@ -317,8 +317,8 @@ A line block, like the following poem by Christian Morgenstern, can
 also be centre-aligned:
 
 .. class:: language-de align-center
- 
-| **Die Trichter** 
+
+| **Die Trichter**
 |
 | Zwei Trichter wandeln durch die Nacht.
 | Durch ihres Rumpfs verengten Schacht
@@ -752,7 +752,9 @@ Parsed Literal Blocks
        This line is indented.  The next line is blank.
 
    Inline markup is supported, e.g. *emphasis*, **strong**, ``literal
-   text``, footnotes [1]_, _`hyperlink targets`, and `references
+   text``, :sub:`sub-` and :sup:`super`\ scripts,
+   inline formulas: :math:`A = 2 \pi r^2`,
+   footnotes [1]_, _`hyperlink targets`, and `references
    <http://www.python.org/>`_.
 
 Code
@@ -787,7 +789,7 @@ paragraph.
 .. role:: tex(code)
    :language: tex
 
-Docutils uses LaTeX syntax for math directives and roles: 
+Docutils uses LaTeX syntax for math directives and roles:
 :tex:`\alpha = f(x)` prints :math:`\alpha = f(x)`.
 
 The ``:code:`` option of the `include` directive sets the included content
