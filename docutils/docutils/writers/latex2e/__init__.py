@@ -593,6 +593,7 @@ PreambleCmds.linking = r"""
 %% hyperlinks:
 \ifthenelse{\isundefined{\hypersetup}}{
   \usepackage[%s]{hyperref}
+  \usepackage{bookmark}
   \urlstyle{same} %% normal text font (alternatives: tt, rm, sf)
 }{}"""
 
