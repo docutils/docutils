@@ -21,7 +21,7 @@ processing.  Rather than a single all-purpose program, Docutils has
 many small front ends, each specialized for a specific "Reader" (which
 knows how to interpret a file in context), a "Parser" (which
 understands the syntax of the text), and a "Writer" (which knows how
-to generate a specific data format).  
+to generate a specific data format).
 
 Most front ends have common options and the same command-line usage
 pattern::
@@ -66,7 +66,7 @@ buildhtml.py
 :Parser: reStructuredText
 :Writers: HTML, PEP/HTML
 
-Use ``buildhtml.py`` to generate .html from all the .txt files
+Use ``buildhtml.py`` to generate ``*.html`` from all the ``*.txt`` files
 (including PEPs) in each <directory> given, and their subdirectories
 too.  (Use the ``--local`` option to skip subdirectories.)
 
@@ -101,13 +101,14 @@ rst2html.py
 
 :Reader: Standalone
 :Parser: reStructuredText
-:Writer: HTML (html4css1)
+:Writer: html (html4css1; this will change to hmtl-base in future)
 
 The ``rst2html.py`` front end reads standalone reStructuredText source
-files and produces HTML 4 (XHTML 1) "transitional" output compatible with
-browsers that support cascading stylesheets (CSS).  A stylesheet is
-required for proper rendering; a simple but complete stylesheet is
-installed and used by default (see Stylesheets_ below).
+files and produces `HTML 4.1`_ Transitional (or `XHTML 1.0 Transitional`_)
+output.
+A CSS stylesheet is required for proper rendering; a simple but
+complete stylesheet is installed and used by default (see Stylesheets_
+below).
 
 For example, to process a reStructuredText file "``test.txt``" into
 HTML::
@@ -128,39 +129,41 @@ Stylesheets
 (or a link to a stylesheet, when passing the "``--link-stylesheet``"
 option).  A stylesheet is required for proper rendering.  The default
 stylesheet (``docutils/writers/html4css1/html4css1.css``, located in
-the installation directory) is provided for basic use.  To use a
-different stylesheet, you must specify the stylesheet's location with
-a "``--stylesheet``" (for a URL) or "``--stylesheet-path``" (for a
-local file) command-line option, or with `configuration file`_
-settings (e.g. ``./docutils.conf`` or ``~/.docutils``).  To experiment
-with styles, please see the `guide to writing HTML (CSS) stylesheets
-for Docutils`__.
+the installation directory) is provided for basic use.  To use
+different stylesheet(s), you must specify the stylesheets' locations
+as comma-separated list with the "``--stylesheet``" (for a URL)
+or "``--stylesheet-path``" (for a local file) command-line option,
+or with `configuration file`_ settings (e.g. ``./docutils.conf``
+or ``~/.docutils``).  To experiment with styles, please see the
+`guide to writing HTML (CSS) stylesheets for Docutils`__.
 
 __ ../howto/html-stylesheets.html
 
 
-rst2xhtml11.py
+rst2xhtml.py
 --------------
 
 :Reader: Standalone
 :Parser: reStructuredText
-:Writer: xhtml11
+:Writer: xhtml (xhtml11)
 
-The ``rst2xhtml11.py`` front end reads standalone reStructuredText source
-files and produces clean XHTML 1.1 output. A stylesheet is required for
-proper rendering; a complete stylesheet is installed and used by default.
+The ``rst2xhtml11.py`` front end reads standalone reStructuredText
+source files and produces clean `XHTML 1.1`_ (or `HTML 4.1`_ Strict)
+output. A CSS 2 stylesheet is required for proper rendering; a complete
+stylesheet is installed and used by default.
 
 rst2html5.py
 ------------
 
 :Reader: Standalone
 :Parser: reStructuredText
-:Writer: html5
+:Writer: html5 (html-base)
 
 The ``rst2html5.py`` front end reads standalone reStructuredText source
-files and produces simple HTML 5 output (compatible to XHTML 1.0
-transitional). A stylesheet is required for proper rendering; a complete
-stylesheet is installed and used by default.
+files and produces simple `HTML 5`_ output (compatible to `XHTML 1.0
+Transitional`_ and `HTML 4.1`_ Transitional). A CSS 2 stylesheet is
+required for proper rendering; a complete stylesheet is installed and
+used by default.
 
 rstpep2html.py
 --------------
@@ -169,12 +172,12 @@ rstpep2html.py
 :Parser: reStructuredText
 :Writer: PEP/HTML
 
-``rstpep2html.py`` reads a new-style PEP (marked up with
-reStructuredText) and produces HTML.  It requires a template file and
-a stylesheet.  By default, it makes use of a "``pep-html-template``"
-file and the "``pep.css``" stylesheet (both in the
-``docutils/writers/pep_html/`` directory), but these can be overridden
-by command-line options or configuration files.
+``rstpep2html.py`` reads a new-style PEP (marked up with reStructuredText)
+and produces `XHTML 1.0 Transitional`_.  It requires a template file and a
+stylesheet.  By default, it makes use of a "``pep-html-template``" file and
+the "``pep.css``" stylesheet (both in the ``docutils/writers/pep_html/``
+directory), but these can be overridden by command-line options or
+configuration files.
 
 For example, to process a PEP into HTML::
 
@@ -289,6 +292,12 @@ For details, please see `Easy Slide Shows With reStructuredText &
 S5 <slide-shows.html>`_.
 
 
+.. _HTML 5: http://www.w3.org/TR/html5/
+.. _HTML 4.1: http://www.w3.org/TR/html401/
+.. _XHTML 1.0 Transitional: http://www.w3.org/TR/xhtml1/
+.. _XHTML 1.1: http://www.w3.org/TR/xhtml1/
+
+
 LaTeX-Generating Tools
 ======================
 
@@ -297,10 +306,10 @@ rst2latex.py
 
 :Reader: Standalone
 :Parser: reStructuredText
-:Writer: LaTeX2e
+:Writer: latex2e
 
 The ``rst2latex.py`` front end reads standalone reStructuredText
-source files and produces LaTeX2e output. For example, to process a
+source files and produces LaTeX_ output. For example, to process a
 reStructuredText file "``test.txt``" into LaTeX::
 
     rst2latex.py test.txt test.tex
@@ -316,11 +325,11 @@ rst2xetex.py
 
 :Reader: Standalone
 :Parser: reStructuredText
-:Writer: XeTeX
+:Writer: xetex
 
 The ``rst2xetex.py`` front end reads standalone reStructuredText source
 files and produces `LaTeX` output for processing with unicode-aware
-TeX engines (`XeTeX` or `LuaTeX`_). For example, to process a
+TeX engines (`LuaTeX`_ or `XeTeX`_). For example, to process a
 reStructuredText file "``test.txt``" into LaTeX::
 
     rst2xetex.py test.txt test.tex
@@ -331,8 +340,10 @@ viewing.
 
 For details see `Generating LaTeX with Docutils`_.
 
+.. _LaTeX: https://en.wikipedia.org/wiki/LaTeX
 .. _XeTeX: https://en.wikipedia.org/wiki/XeTeX
 .. _LuaTeX: https://en.wikipedia.org/wiki/LuaTeX
+
 
 XML-Generating Tools
 ====================
