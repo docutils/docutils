@@ -66,6 +66,9 @@ Changes Since 0.12
 
   - Cleaner LaTeX code for enumerations and literal blocks.
 
+  - Use "hyperref" package together with "bookmark" (improved hyperlinking
+    by the same author).
+
 * docutils/writers/odf_odt/__init__.py
 
   - remove decode.encode of filename stored in zip.
