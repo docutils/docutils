@@ -85,6 +85,7 @@ pdfsetup = r"""
 % hyperlinks:
 \ifthenelse{\isundefined{\hypersetup}}{
   \usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue]{hyperref}
+  \usepackage{bookmark}
   \urlstyle{same} % normal text font (alternatives: tt, rm, sf)
 }{}
 """,
