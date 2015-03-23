@@ -32,11 +32,13 @@ def reldir(path):
 include1 = mydir('include1.txt')
 include2 = mydir('include2.txt')
 include3 = mydir('include3.txt')
+include6 = mydir('includes/more/include6.txt')
 include8 = mydir('include8.txt')
 include10 = mydir('include10.txt')
 include11 = mydir('include 11.txt')
 include12 = mydir('include12.txt')
 include13 = mydir('include13.txt')
+include14 = mydir('includes/include14.txt')
 include_literal = mydir('include_literal.txt')
 utf_16_file = mydir('utf-16.csv')
 utf_16_error_str = ("UnicodeDecodeError: 'ascii' codec can't decode byte 0xfe "
@@ -308,12 +310,16 @@ A paragraph.
                 A paragraph.
 """ % reldir(include1)],
 ["""\
+Recursive inclusions: adapt paths.
+
 In test data
 
 .. include:: %s
 """ % include3,
 """\
 <document source="test data">
+    <paragraph>
+        Recursive inclusions: adapt paths.
     <paragraph>
         In test data
     <paragraph>
@@ -326,6 +332,22 @@ In test data
         In includes/more/include6.txt
     <paragraph>
         In includes/sibling/include7.txt
+    <literal_block source="test_parsers/test_rst/test_directives/includes/include5.txt" xml:space="preserve">
+        In includes/include5.txt
+        
+        .. include:: more/include6.txt
+    <table>
+        <tgroup cols="2" colwidths="auto">
+            <colspec colwidth="50">
+            <colspec colwidth="50">
+            <tbody>
+                <row>
+                    <entry>
+                        <paragraph>
+                            In
+                    <entry>
+                        <paragraph>
+                            includes/sibling/include7.txt
 """],
 ["""\
 In test data
@@ -356,6 +378,22 @@ Section
             In includes/more/include6.txt
         <paragraph>
             In includes/sibling/include7.txt
+        <literal_block source="test_parsers/test_rst/test_directives/includes/include5.txt" xml:space="preserve">
+            In includes/include5.txt
+            
+            .. include:: more/include6.txt
+        <table>
+            <tgroup cols="2" colwidths="auto">
+                <colspec colwidth="50">
+                <colspec colwidth="50">
+                <tbody>
+                    <row>
+                        <entry>
+                            <paragraph>
+                                In
+                        <entry>
+                            <paragraph>
+                                includes/sibling/include7.txt
 """],
 ["""\
 Testing relative includes:
@@ -957,6 +995,29 @@ Included code
             ``test_include.py``
         .
 """ % reldir(include1)],
+["""\
+Including includes/include14.txt
+
+.. include:: %s
+""" % include14,
+"""\
+<document source="test data">
+    <paragraph>
+        Including includes/include14.txt
+    <paragraph>
+        Including more/include6.txt as rst-code from includes/include14.txt:
+    <literal_block classes="code rst" source="%s" xml:space="preserve">
+        In includes/more/include6.txt
+        \n\
+        <inline classes="punctuation">
+            ..
+         \n\
+        <inline classes="operator word">
+            include
+        <inline classes="punctuation">
+            ::
+         ../sibling/include7.txt
+""" % reldir(include6)],
 ]
 
 if __name__ == '__main__':
