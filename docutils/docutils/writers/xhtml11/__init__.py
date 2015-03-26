@@ -118,6 +118,24 @@ class HTMLTranslator(html_base.HTMLTranslator):
         self.body.append(self.starttag(node, 'ol', **atts))
 
 
+# <sup> and <sub> tags (possible with parsed-literal) are not allowed directly
+# in <pre> -- wrap in <span> ::
+
+    def visit_literal_block(self, node):
+        self.body.append(self.starttag(node, 'pre', '', CLASS='literal-block'))
+        if 'code' in node.get('classes', []):
+            self.body.append('<code>')
+        else:
+            self.body.append('<span>')
+
+    def depart_literal_block(self, node):
+        if 'code' in node.get('classes', []):
+            self.body.append('</code>')
+        else:
+            self.body.append('</span>')
+        self.body.append('</pre>\n')
+
+
     # Meta tags: 'lang' attribute replaced by 'xml:lang' in XHTML 1.1
     # HTML5/polyglott recommends using both
 

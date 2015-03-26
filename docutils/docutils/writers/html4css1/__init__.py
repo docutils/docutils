@@ -1180,8 +1180,10 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_literal_block(self, node):
         self.body.append(self.starttag(node, 'pre', CLASS='literal-block'))
+        self.body.append('<span>') # allow <sup> and <sub> (parsed-literal)
 
     def depart_literal_block(self, node):
+        self.body.append('</span>') # allow <sup> and <sub> (parsed-literal)
         self.body.append('\n</pre>\n')
 
     def visit_math(self, node, math_env=''):

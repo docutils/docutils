@@ -346,16 +346,16 @@ description.</p>
 <p>Literal blocks are indicated with a double-colon (&quot;::&quot;) at the end of
 the preceding paragraph (over there <tt class="docutils literal"><span class="pre">--&gt;</span></tt>).  They can be indented:</p>
 <pre class="literal-block">
-if literal_block:
+<span>if literal_block:
     text = 'is left as-is'
     spaces_and_linebreaks = 'are preserved'
-    markup_processing = None
+    markup_processing = None</span>
 </pre>
 <p>Or they can be quoted without indentation:</p>
 <pre class="literal-block">
-&gt;&gt; Great idea!
+<span>&gt;&gt; Great idea!
 &gt;
-&gt; Why didn't I think of that?
+&gt; Why didn't I think of that?</span>
 </pre>
 </div>
 <div class="section" id="line-blocks">
@@ -775,7 +775,7 @@ allowed (e.g. inside a directive).</p>
 <div class="compound">
 <p class="compound-first">Compound 2, a literal block:</p>
 <pre class="compound-middle literal-block">
-Compound 2, literal.
+<span>Compound 2, literal.</span>
 </pre>
 <p class="compound-last">Compound 2, this is a test.</p>
 </div>
@@ -784,8 +784,8 @@ Compound 2, literal.
 </div>
 <div class="compound">
 <pre class="compound-first literal-block">
-Compound 4.
-This one starts with a literal block.
+<span>Compound 4.
+This one starts with a literal block.</span>
 </pre>
 <p class="compound-last">Compound 4, a paragraph.</p>
 </div>
@@ -832,13 +832,13 @@ paragraph.</td>
 <div class="section" id="parsed-literal-blocks">
 <h3><a class="toc-backref" href="#id84">2.14.8&nbsp;&nbsp;&nbsp;Parsed Literal Blocks</a></h3>
 <pre class="literal-block">
-This is a parsed literal block.
+<span>This is a parsed literal block.
     This line is indented.  The next line is blank.
 
 Inline markup is supported, e.g. <em>emphasis</em>, <strong>strong</strong>, <tt class="docutils literal">literal
 text</tt>, <sub>sub-</sub> and <sup>super</sup>scripts,
 inline formulas: <span class="formula"><i>A</i> = 2<i>π</i><i>r</i><sup>2</sup></span>,
-footnotes <a class="footnote-reference" href="#id8" id="id22">[1]</a>, <span class="target" id="hyperlink-targets">hyperlink targets</span>, and <a class="reference external" href="http://www.python.org/">references</a>.
+footnotes <a class="footnote-reference" href="#id8" id="id22">[1]</a>, <span class="target" id="hyperlink-targets">hyperlink targets</span>, and <a class="reference external" href="http://www.python.org/">references</a>.</span>
 </pre>
 </div>
 <div class="section" id="code">
@@ -850,14 +850,14 @@ is turned off using the <tt class="docutils literal"><span class="pre">syntax-hi
 conversions in order to get identical results with/without installed
 Pygments highlighter.)</p>
 <pre class="code python literal-block">
-print 'This is Python code.'
+<span>print 'This is Python code.'</span>
 </pre>
 <p>The <tt class="docutils literal"><span class="pre">:number-lines:</span></tt> option (with optional start value) generates line
 numbers:</p>
 <pre class="code python literal-block">
-<span class="ln"> 8 </span># print integers from 0 to 9:
+<span><span class="ln"> 8 </span># print integers from 0 to 9:
 <span class="ln"> 9 </span>for i in range(10):
-<span class="ln">10 </span>    print i
+<span class="ln">10 </span>    print i</span>
 </pre>
 <p>For inline code snippets, there is the <cite>code</cite> role, which can be used
 directly (the code will not be parsed/tagged, as the language is not known)
@@ -868,8 +868,8 @@ paragraph.</p>
 <p>The <tt class="docutils literal">:code:</tt> option of the <cite>include</cite> directive sets the included content
 as a code block, here the rst file <tt class="docutils literal">header_footer.txt</tt> with line numbers:</p>
 <pre class="code rst literal-block">
-<span class="ln">1 </span>.. header:: Document header
-<span class="ln">2 </span>.. footer:: Document footer
+<span><span class="ln">1 </span>.. header:: Document header
+<span class="ln">2 </span>.. footer:: Document footer</span>
 </pre>
 </div>
 </div>
@@ -1075,12 +1075,12 @@ crunchy, now would it?</td>
 <p>The following works in most browsers but does not validate
 (<tt class="docutils literal">&lt;style&gt;</tt> is only allowed in the document head):</p>
 <pre class="literal-block">
-.. raw:: html
+<span>.. raw:: html
 
   &lt;style type=&quot;text/css&quot;&gt;&lt;!--
    .green {color: green;}
    .sc {font-variant: small-caps;}
-   --&gt;&lt;/style&gt;
+   --&gt;&lt;/style&gt;</span>
 </pre>
 <p><span class="green sc" lang="en-gb">British colourful text in small-caps</span>.</p>
 </li>
@@ -1098,9 +1098,9 @@ PDF or Postscript formats for vector graphics instead.)</p>
 <ol class="loweralpha">
 <li><p class="first">The SVG image itself, e.g. fixed-size vs. scaling:</p>
 <pre class="literal-block">
-width=&quot;280&quot;              viewBox=&quot;0 0 280 27&quot;
+<span>width=&quot;280&quot;              viewBox=&quot;0 0 280 27&quot;
 height=&quot;27&quot;              width=&quot;100%&quot;
-                         height=&quot;100%&quot;
+                         height=&quot;100%&quot;</span>
 </pre>
 </li>
 <li><p class="first">The method used to put the image in the document.</p>

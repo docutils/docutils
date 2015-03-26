@@ -53,6 +53,8 @@ Changes Since 0.12
   - Apply patch [ 119 ] by Anatoly Techtonik: use absolute paths for
     ``default_stylesheet_path`` and ``default_template_path``.
   - Fix [ 266 ] creating labels/class values in description list items.
+  - Wrap literal blocks in a <span> to support sub- and superscript (not
+    allowed in <pre> but possible in parsed-literal).
 
 * docutils/writers/latex2e/__init__.py
 
