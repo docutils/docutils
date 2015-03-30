@@ -85,7 +85,7 @@ always scaled.
 * A scaling image 5 mm x 5 mm, centered, with hyperlink reference:
 
   .. image:: ../../../docs/user/rst/images/biohazard-scaling.svg
-     :target: SVG Images_
+     :target: `SVG Images`_
      :width: 5 mm
      :height: 5 mm
      :align: center

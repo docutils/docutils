@@ -20,11 +20,11 @@
 /* .. _validates: http://jigsaw.w3.org/css-validator/validator$link */
 
 
-/* Ordered List (Enumeration)						    */
-/* --------------------------						    */
+/* Ordered List (Enumeration)					       */
+/* --------------------------					       */
 
-/* XHTML 1.1 removed the "start" argument form ordered lists (It       */
-/* resurfaces in HTML5).					       */
+/* XHTML 1.1 removes the "start" argument form ordered lists           */
+/* (it resurfaces in HTML5).					       */
 /*								       */
 /* Use custom counters to replace the deprecated start attribute. Make */
 /* sure the resulting list resembles the list-style 'outside' with a   */
@@ -92,7 +92,17 @@ ol.nested > li:before, ol.nested  ol > li:before {
   content: counters(item, ".") " ";
 }
 
+/* <sup> and <sub> tags (possible with parsed-literal) are not allowed */
+/* in <pre> --- use <span>					       */
 
+.subscript {
+  vertical-align: sub;
+  font-size: smaller;
+}
+.superscript {
+  vertical-align: super;
+  font-size: smaller;
+}
 
 /* Field Lists */
 /* ----------- */
@@ -109,5 +119,5 @@ dl.field-list.fix-labelwidth > dd:after {
   content: '';
   display: block;
   clear: left;
-  vertical-align: baseline; 
+  vertical-align: baseline;
 }
