@@ -13,14 +13,13 @@
 # .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause
 
 """
-Strict HyperText Markup Language document tree Writer.
+Strict eXtensible HyperText Markup Language (XHTML) document Writer.
 
-This is a variant of Docutils' standard 'html4css1' writer.
+This is a variant of Docutils' `html-base` writer.
 
-GOAL:
- * The output conforms to the XHTML version 1.1 DTD.
- * It contains no hard-coded formatting information that would prevent
-   layout design by cascading style sheets.
+* The output conforms to the XHTML version 1.1 DTD.
+* It contains no hard-coded formatting information that would prevent
+  configuration by cascading style sheets.
 """
 
 __docformat__ = 'reStructuredText'
@@ -118,23 +117,36 @@ class HTMLTranslator(html_base.HTMLTranslator):
         self.body.append(self.starttag(node, 'ol', **atts))
 
 
-# <sup> and <sub> tags (possible with parsed-literal) are not allowed directly
-# in <pre> -- wrap in <span> ::
+    # <sup> and <sub> tags (possible with parsed-literal) are not allowed
+    # in <pre> --- use <span> ::
 
-    def visit_literal_block(self, node):
-        self.body.append(self.starttag(node, 'pre', '', CLASS='literal-block'))
-        if 'code' in node.get('classes', []):
-            self.body.append('<code>')
+    def visit_subscript(self, node):
+        if isinstance(node.parent, nodes.literal_block):
+            self.body.append(self.starttag(node, 'span', '',
+                                           CLASS='subscript'))
         else:
-            self.body.append('<span>')
+            self.body.append(self.starttag(node, 'sub', ''))
 
-    def depart_literal_block(self, node):
-        if 'code' in node.get('classes', []):
-            self.body.append('</code>')
-        else:
+    def depart_subscript(self, node):
+        if isinstance(node.parent, nodes.literal_block):
             self.body.append('</span>')
-        self.body.append('</pre>\n')
+        else:
+            self.body.append('</sub>')
 
+
+    def visit_superscript(self, node):
+        # <sup> not allowed in <pre>
+        if isinstance(node.parent, nodes.literal_block):
+            self.body.append(self.starttag(node, 'span', '',
+                                           CLASS='superscript'))
+        else:
+            self.body.append(self.starttag(node, 'sup', ''))
+
+    def depart_superscript(self, node):
+        if isinstance(node.parent, nodes.literal_block):
+            self.body.append('</span>')
+        else:
+            self.body.append('</sup>')
 
     # Meta tags: 'lang' attribute replaced by 'xml:lang' in XHTML 1.1
     # HTML5/polyglott recommends using both

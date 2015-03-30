@@ -1180,10 +1180,8 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_literal_block(self, node):
         self.body.append(self.starttag(node, 'pre', CLASS='literal-block'))
-        self.body.append('<span>') # allow <sup> and <sub> (parsed-literal)
 
     def depart_literal_block(self, node):
-        self.body.append('</span>') # allow <sup> and <sub> (parsed-literal)
         self.body.append('\n</pre>\n')
 
     def visit_math(self, node, math_env=''):
@@ -1493,10 +1491,18 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('</strong>')
 
     def visit_subscript(self, node):
-        self.body.append(self.starttag(node, 'sub', ''))
+        # <sub> not allowed in <pre>
+        if isinstance(node.parent, nodes.literal_block):
+            self.body.append(self.starttag(node, 'span', '',
+                                           CLASS='subscript'))
+        else:
+            self.body.append(self.starttag(node, 'sub', ''))
 
     def depart_subscript(self, node):
-        self.body.append('</sub>')
+        if isinstance(node.parent, nodes.literal_block):
+            self.body.append('</span>')
+        else:
+            self.body.append('</sub>')
 
     def visit_substitution_definition(self, node):
         """Internal only."""
@@ -1531,10 +1537,18 @@ class HTMLTranslator(nodes.NodeVisitor):
             del self.body[:]
 
     def visit_superscript(self, node):
-        self.body.append(self.starttag(node, 'sup', ''))
+        # <sup> not allowed in <pre>
+        if isinstance(node.parent, nodes.literal_block):
+            self.body.append(self.starttag(node, 'span', '',
+                                           CLASS='superscript'))
+        else:
+            self.body.append(self.starttag(node, 'sup', ''))
 
     def depart_superscript(self, node):
-        self.body.append('</sup>')
+        if isinstance(node.parent, nodes.literal_block):
+            self.body.append('</span>')
+        else:
+            self.body.append('</sup>')
 
     def visit_system_message(self, node):
         self.body.append(self.starttag(node, 'div', CLASS='system-message'))
