@@ -101,11 +101,10 @@ rst2html.py
 
 :Reader: Standalone
 :Parser: reStructuredText
-:Writer: html (html4css1; this will change to hmtl-base in future)
+:Writer: html (html4css1_; this will change to hmtl-base_ in future)
 
 The ``rst2html.py`` front end reads standalone reStructuredText source
-files and produces `HTML 4.1`_ Transitional (or `XHTML 1.0 Transitional`_)
-output.
+files and produces `XHTML 1.0 Transitional`_ output.
 A CSS stylesheet is required for proper rendering; a simple but
 complete stylesheet is installed and used by default (see Stylesheets_
 below).
@@ -138,7 +137,7 @@ or ``~/.docutils``).  To experiment with styles, please see the
 `guide to writing HTML (CSS) stylesheets for Docutils`__.
 
 __ ../howto/html-stylesheets.html
-
+.. _html4css1: html.html#html4css1
 
 rst2xhtml.py
 --------------
@@ -148,7 +147,7 @@ rst2xhtml.py
 :Writer: xhtml (xhtml11)
 
 The ``rst2xhtml11.py`` front end reads standalone reStructuredText
-source files and produces clean `XHTML 1.1`_ (or `HTML 4.1`_ Strict)
+source files and produces clean `XHTML 1.1`_
 output. A CSS 2 stylesheet is required for proper rendering; a complete
 stylesheet is installed and used by default.
 
@@ -157,13 +156,14 @@ rst2html5.py
 
 :Reader: Standalone
 :Parser: reStructuredText
-:Writer: html5 (html-base)
+:Writer: html5 (html-base_)
 
 The ``rst2html5.py`` front end reads standalone reStructuredText source
 files and produces simple `HTML 5`_ output (compatible to `XHTML 1.0
-Transitional`_ and `HTML 4.1`_ Transitional). A CSS 2 stylesheet is
-required for proper rendering; a complete stylesheet is installed and
-used by default.
+Transitional`_). A CSS 2 stylesheet is required for proper rendering; a
+complete stylesheet is installed and used by default.
+
+.. _html-base: html.html#html-base
 
 rstpep2html.py
 --------------

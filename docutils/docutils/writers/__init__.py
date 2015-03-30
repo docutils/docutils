@@ -121,17 +121,19 @@ class UnfilteredWriter(Writer):
 
 _writer_aliases = {
       'html': 'html4css1',  # will change to html_base some day
+      'html4': 'html4css1',
+      'html5': 'html_base', # until a special HTML 5 writer is ready
+      'html4strict': 'xhtml11',
       'html-base': 'html_base',
-      'html5': 'html_base', # only until a special HTML 5 writer is ready
-      'xhtml': 'xhtml11',
-      'xhtml10': 'html4css1',
       'latex': 'latex2e',
-      'xelatex': 'xetex',
       'pprint': 'pseudoxml',
       'pformat': 'pseudoxml',
       'pdf': 'rlpdf',
-      'xml': 'docutils_xml',
-      's5': 's5_html'}
+      's5': 's5_html',
+      'xelatex': 'xetex',
+      'xhtml': 'xhtml11',
+      'xhtml10': 'html4css1',
+      'xml': 'docutils_xml'}
 
 def get_writer_class(writer_name):
     """Return the Writer class from the `writer_name` module."""
