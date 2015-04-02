@@ -2073,6 +2073,14 @@ HTML Writer
   omitting ``<p>`` tags.  List compacting would need to be done by
   adjusting CSS margins instead.
 
+  :2015-04-02: The new html writer no longer strips <p> tags but adds the
+               class value ``simple`` to the list.
+               Formatting is done by CSS --- configurable by a custom style
+               sheet.
+
+               Auto-compactization can be overridden by the ``open`` vs.
+               ``compact`` class arguments.
+
 * Idea for field-list rendering: hanging indent::
 
       Field name (bold): First paragraph of field body begins
@@ -2080,6 +2088,12 @@ HTML Writer
 
           If the first item of a field body is not a paragraph,
           it would begin on the following line.
+
+  :2015-04-02: The new html writer writes field-lists as definition lists
+               with class ``field-list``.
+               Formatting is done by CSS --- configurable by a custom style
+               sheet. The default style sheet has some examples, including a
+               run-in field-list style.
 
 * Add more support for <link> elements, especially for navigation
   bars.
@@ -2106,8 +2120,9 @@ PEP/HTML Writer
 * Remove the generic style information (duplicated from html4css1.css)
   from pep.css to avoid redundancy.
 
-  Needs support for multiple stylesheets in the PEP writer
-  (is this inherited from HTML?).
+  Set ``stylesheet-path`` to "html4css.css,pep.css" and the
+  ``stylesheet-dirs`` accordingly instead. (See the xhtml11 writer for an
+  example.)
 
 
 S5/HTML Writer
@@ -2173,17 +2188,17 @@ Epub/HTML Writer
 
 Add epub as an output format.
 
-Pack the output of a HTML writer and supporting files (e.g. images)
-into one single epub document.
-
   epub is an open file format for ebooks based on HTML, specified by the
   `International Digital Publishing Forum`_. Thus, documents in epub
   format are suited to be read with `electronic reading devices`_.
 
-There are with links to `ePub writers`_
-(two 3rd party implementations and Sphinx) in the Docutils link list.
+Pack the output of a HTML writer and supporting files (e.g. images)
+into one single epub document.
 
-.. _ePub writers: ../user/links.html#ePub
+There are `links to two 3rd party ePub writers`__ in the Docutils link list.
+Test and consider moving the better one into the docutils core.
+
+__ ../user/links.html#ePub
 .. _International Digital Publishing Forum: http://www.idpf.org/
 .. _electronic reading devices:
    http://en.wikipedia.org/wiki/List_of_e-book_readers
