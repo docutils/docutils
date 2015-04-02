@@ -761,10 +761,6 @@ __ rst/alternatives.html#or-not-to-do
 Misc
 ----
 
-* Allow embedded references and not only embedded URIs: ```link text
-  <reference_>`_``; see the second half of
-  <http://article.gmane.org/gmane.text.docutils.devel/3738>.
-
 * Another list problem::
 
       * foo
@@ -1099,8 +1095,9 @@ Misc
 
       :Case Study\: Event Handling: This chapter will be dropped.
 
-* Enable grid _`tables inside XML comments`, where "--" ends comments.
-  I see three implementation possibilities:
+* Enable grid _`tables inside XML comments`, where "``--``" ends comments.
+
+  Implementation possibilities:
 
   1. Make the table syntax characters into "table" directive options.
      This is the most flexible but most difficult, and we probably
@@ -1113,14 +1110,22 @@ Misc
      without a directive option.  Individual tables would have to be
      internally consistent.
 
+  4. Allow Unicode box characters for table markup
+     (`feature request [6]`_)
+
   Directive options are preferable to configuration settings, because
   tables are document-specific.  A pragma directive would be another
   approach, to set the syntax once for a whole document.
 
+  Unicode box character markup would kill two birds with one stone.
+
   In the meantime, the list-table_ directive is a good replacement for
   grid tables inside XML comments.
 
+  .. _feature request [6]:
+      http://sourceforge.net/p/docutils/feature-requests/6
   .. _list-table: ../ref/rst/directives.html#list-table
+
 
 * Generalize docinfo contents (bibliographic fields): remove specific
   fields, and have only a single generic "field"?
@@ -1244,7 +1249,7 @@ ASCIIMath_
   * The Python module ASCIIMathML_ translates a string with ASCIIMath into a
     MathML tree. Used, e.g., by MultiMarkdown__.
 
-    A more comprehensive and implementation is ASCIIMathPython_ by
+    A more comprehensive implementation is ASCIIMathPython_ by
     Paul Trembley (also used in his sandbox projects).
 
   * For conversion to LaTeX, there is a JavaScript script at
@@ -1315,7 +1320,10 @@ MathML_
   * Blahtex_ (C++)
   * MathToWeb_ (Java)
   * TeX4ht_ (TeX based)
-  * LaTeXML_ (Perl)
+  * LaTeXML_ (Perl) with the command latexmlmath_, e.g.::
+
+       latexmlmath --contentmathml=- $\vec{\alpha}$
+
   * itex_ (also `used in Abiword`__)
   * TtM_ (C, non free, free binary for Linux) with an `online-trial page`__
   * `Steve’s LATEX-to-MathML translator`_
@@ -1339,6 +1347,8 @@ MathML_
   .. _MathToWeb:  http://www.mathtoweb.com/
   .. _TeX4ht: http://www.tug.org/applications/tex4ht/mn.html
   .. _LaTeXML: http://dlmf.nist.gov/LaTeXML/
+  .. _latexmlmath:
+     http://dlmf.nist.gov/LaTeXML/manual/commands/latexmlmath.html
   .. _itex: http://golem.ph.utexas.edu/~distler/blog/itex2MMLcommands.html
   .. _ttm: http://hutchinson.belmont.ma.us/tth/mml/
   .. _Steve’s LATEX-to-MathML translator:
@@ -1601,7 +1611,7 @@ when used in a document.
   - Make the meaning of block quotes overridable?  Only a 1-shot
     though; doesn't solve the general problem.
 
-  - .. _conditional directives:
+  - _`conditional directives`:
 
     .. note:: See also the implementation in Sphinx_.
 
@@ -2168,32 +2178,15 @@ into one single epub document.
 
   epub is an open file format for ebooks based on HTML, specified by the
   `International Digital Publishing Forum`_. Thus, documents in epub
-  format are suited to be read with `electronic reading devices`_. The
-  epub format comprises:
+  format are suited to be read with `electronic reading devices`_.
 
-  * `Open Publication Structure (OPS)
-    <http://www.idpf.org/2007/ops/OPS_2.0_final_spec.html>`_
-  * `Open Packaging Format (OPF)
-    <http://www.idpf.org/2007/opf/OPF_2.0_final_spec.html>`_
-  * `OEBPS Container Format (OCF)
-    <http://www.idpf.org/ocf/ocf1.0/download/ocf10.htm>`_
+There are with links to `ePub writers`_
+(two 3rd party implementations and Sphinx) in the Docutils link list.
 
-  -- rst2epub_ README
-
-There is a project for epub support with sphinx providing a
-(hopefully) reusable framework.
-
-.. _rst2epub: http://bitbucket.org/wierob/rst2epub/
+.. _ePub writers: ../user/links.html#ePub
 .. _International Digital Publishing Forum: http://www.idpf.org/
 .. _electronic reading devices:
    http://en.wikipedia.org/wiki/List_of_e-book_readers
-
-Also, the plasTeX_ Python package has an EPUB renderer:
-
-  It simply calls the XHTML renderer and does the epub packaging in
-  postprocessing.
-
-.. _plasTeX: http://plastex.sourceforge.net/
 
 
 LaTeX writer
@@ -2362,12 +2355,7 @@ Which packages do we want to use?
      * perpage provides a general mechanism for resetting counters per page
      * footmisc provides a package option perpage
 
-* enumeration environment, field list
-
-  * use `mdwlist` from texlive-latex-recommended?
-
-  * use `eqlist` (texlive-latex-extra) for field-lists?
-
+* use `eqlist` or `enumitem` (texlive-latex-extra) for field-lists?
 
 * ``--use-latex-when-possible`` »super option« that would set the
   following::
