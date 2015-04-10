@@ -1317,40 +1317,46 @@ MathML_
   Converters from LaTeX to MathML include
 
   * latex_math_ (Python) by Jens Jørgen Mortensen in the Docutils sandbox
-  * Blahtex_ (C++)
+
+    This is the base for Docutils latex2mathml_ module used by
+    default with ``--math-output=MathML``.
+
+  * blahtexml_ (C++), supported with ``--math-output=MathML blahtexml``.
+
+    Fast conversion, support for many symbols and environments, but
+    no "align" (or other equation-aligning) environment.
+
+  * LaTeXML_ (Perl), supported with ``--math-output=MathML latexml``.
+
+    Comprehensive macro support but very slow
+
+  * TtM_ (C), ``--math-output=MathML ttm``, support may be removed.
+
+    No "matrix", "align" and  "cases" environments.
+
   * MathToWeb_ (Java)
   * TeX4ht_ (TeX based)
-  * LaTeXML_ (Perl) with the command latexmlmath_, e.g.::
-
-       latexmlmath --contentmathml=- $\vec{\alpha}$
-
   * itex_ (also `used in Abiword`__)
-  * TtM_ (C, non free, free binary for Linux) with an `online-trial page`__
   * `Steve’s LATEX-to-MathML translator`_
     ('mini-language', javascript, Python)
 
-  latex_math_ is the base for the current latex2mathml_ module used
-  with ``--math-output=MathML``.
 
-  * Write a new converter based on:
+  * Write a new converter? E.g. based on:
 
     * a generic tokenizer (see e.g. a `latex-codec recipe`_,
       `updated latex-codec`_, )
     * the Unicode-Char <-> LaTeX mappings database unimathsymbols_
 
   __ http://msevior.livejournal.com/26377.html
-  __ http://hutchinson.belmont.ma.us/tth/mml/ttmmozform.html
   .. _MathML: http://www.w3.org/TR/MathML2/
   .. _latex_math: ../../../sandbox/jensj/latex_math/
   .. _latex2mathml: ../../docutils/math/latex2mathml.py
-  .. _Blahtex: http://gva.noekeon.org/blahtexml/
-  .. _MathToWeb:  http://www.mathtoweb.com/
-  .. _TeX4ht: http://www.tug.org/applications/tex4ht/mn.html
+  .. _blahtexml: http://gva.noekeon.org/blahtexml/
   .. _LaTeXML: http://dlmf.nist.gov/LaTeXML/
-  .. _latexmlmath:
-     http://dlmf.nist.gov/LaTeXML/manual/commands/latexmlmath.html
-  .. _itex: http://golem.ph.utexas.edu/~distler/blog/itex2MMLcommands.html
   .. _ttm: http://hutchinson.belmont.ma.us/tth/mml/
+  .. _TeX4ht: http://www.tug.org/applications/tex4ht/mn.html
+  .. _MathToWeb:  http://www.mathtoweb.com/
+  .. _itex: http://golem.ph.utexas.edu/~distler/blog/itex2MMLcommands.html
   .. _Steve’s LATEX-to-MathML translator:
      http://www.gold-saucer.org/mathml/greasemonkey/dist/display-latex
   .. _latex-codec recipe:
@@ -1367,19 +1373,19 @@ HTML/CSS
   format math in standard HTML enhanced by CSS rules
   (Overview__, `Examples and experiments`__).
 
-  LaTeX-math to HTML/CSS converters include
+  The ``math-output=html`` option uses the converter from eLyXer_
+  (included with Docutils).
+
+  Alternatives: LaTeX-math to HTML/CSS converters include
 
   * TtH_ (C)
   * Hevea_ (Objective Caml)
-  * eLyXer_ (Python)
-
-  The ``math-output=html`` option uses the converter from eLyXer.
 
   __ http://www.cs.tut.fi/~jkorpela/math/
   __ http://www.zipcon.net/~swhite/docs/math/math.html
+  .. _elyxer: http://elyxer.nongnu.org/
   .. _TtH: ttp://hutchinson.belmont.ma.us/tth/index.html
   .. _Hevea: http://para.inria.fr/~maranget/hevea/
-  .. _elyxer: http://elyxer.nongnu.org/
 
 images
   (PNG or SVG) like e.g. Wikipedia. (e.g. with dvisvgm_ or the

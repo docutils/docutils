@@ -977,6 +977,21 @@ the output document. Supported values are (case insensitive):
     Transitional. However, MathML-enabled browsers will render it
     fine.
 
+  An external converter can be appended after whitespace:
+
+  * ``math-output: MathML blahtexml``
+
+    blahtexml_ (C++) Fast conversion, support for many symbols and
+    environments, but no "align" (or other equation-aligning) environment.
+
+  * ``--math-output=MathML latexml``.
+
+    LaTeXML_ (Perl) Comprehensive macro support but very slow
+
+  * ``--math-output=MathML ttm``, support may be removed.
+
+    No "matrix", "align" and  "cases" environments.
+
 :LaTeX:
   Include literal LaTeX code.
 
@@ -991,6 +1006,9 @@ New in Docutils 0.8.
 .. _MathJax: http://www.mathjax.org/
 .. _MathPlayer: http://www.dessci.com/en/products/mathplayer/
 .. _MathML: http://www.w3.org/TR/MathML/
+.. _blahtexml: http://gva.noekeon.org/blahtexml/
+.. _LaTeXML: http://dlmf.nist.gov/LaTeXML/
+.. _ttm: http://hutchinson.belmont.ma.us/tth/mml/
 
 option_limit
 ~~~~~~~~~~~~
