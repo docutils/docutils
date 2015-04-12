@@ -92,8 +92,8 @@ ol.nested > li:before, ol.nested  ol > li:before {
   content: counters(item, ".") " ";
 }
 
-/* <sup> and <sub> tags (possible with parsed-literal) are not allowed */
-/* in <pre> --- use <span>					       */
+/* "sup" and "sub" tags (possible with parsed-literal) are not allowed */
+/* in "pre" --- use "span"					       */
 
 .subscript {
   vertical-align: sub;

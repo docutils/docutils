@@ -63,13 +63,28 @@ For *emphazised* aliases exist ``rst2<alias>.py`` `front-end tools`_.
 .. _front-end tools: tools.html
 
 
+html
+~~~~
+
+The writer name `html` is an alias pointing to the "recommended Docutils
+HTML writer". Its meaning may change with the development of HTML, browsers
+and the web.
+
+* Use `get_writer_by_name('html') or the ``rst2html.py`` front end, if you
+  want the output to be up-to-date automatically.
+
+* Use a more specific writer name or front end, if you depend on stability
+  of the generated HTML code, e.g. because you use a custom style sheet or
+  postprocessing that may break otherwise.
+
+
 html_base
 ~~~~~~~~~
 
 .. note:: The name `html_base` will change to a more appropriate one.
    Candidates are `html_basic` (but beware of confusion with the
-   `XHTML Basic`_ document type), `html_common`, or simply `html` (name
-   currently used as alias by `html4css1`_). Suggestions welcome.
+   `XHTML Basic`_ document type) or `html_common`
+   Suggestions welcome.
 
 
 :aliases:   html-base, html5
@@ -130,9 +145,10 @@ The `math-output` `config setting`_ defaults to "MathML".
 html5
 """""
 
-The writer name `html5` is reserved for a HTML writer that makes use of the
-new features and objects defined in HTML5 (like <video>, <aside>, or
-<section>) that are not (yet) fit for use in `html-base`.
+The writer name `html5` is reserved for a HTML writer that makes use of new
+features and objects defined in HTML5 but not (yet) fit for use in
+`html-base` because of limited browser support (like <video>, <aside>, or
+<section>).
 
 
 html4css1

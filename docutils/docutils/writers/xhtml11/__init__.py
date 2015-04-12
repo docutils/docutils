@@ -16,10 +16,7 @@
 Strict eXtensible HyperText Markup Language (XHTML) document Writer.
 
 This is a variant of Docutils' `html-base` writer.
-
-* The output conforms to the XHTML version 1.1 DTD.
-* It contains no hard-coded formatting information that would prevent
-  configuration by cascading style sheets.
+The output conforms to the XHTML version 1.1 DTD.
 """
 
 __docformat__ = 'reStructuredText'
