@@ -1,0 +1,21 @@
+===========================
+ Docutils_ Building Wheels
+===========================
+
+:Authors: engelbert gruber; open to all Docutils developers
+:Contact: docutils-develop@lists.sourceforge.net
+:Date: $Date$
+:Revision: $Revision$
+:Copyright: This document has been placed in the public domain.
+
+.. _Docutils: http://docutils.sourceforge.net/
+
+.. contents::
+
+This document documents my trial to build python wheels from 
+docutils. Once it is finished it might be driven into distribution or
+release documentation.
+
+
+
+
