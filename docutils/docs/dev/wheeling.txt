@@ -16,6 +16,30 @@ This document documents my trial to build python wheels from
 docutils. Once it is finished it might be driven into distribution or
 release documentation.
 
+There is `feature request 43`_ :  Make setup.py build wheels. 
+
+  Just add this to setup.cfg:
+
+  [bdist_wheel]
+  universal = 1
+
+  See https://packaging.python.org/en/latest/distributing.html#universal-wheels
+
+  -.-.-
+  
+  Docutils is not fit for Universal Wheels. Docutils supports both Python 2 and
+  3, but with different code (we use “2to3”). This would make it a candidate
+  for "Pure Python wheels".
 
 
+and bugs275_ : Upload wheels to pypi 
+
+  Currently docutils does not publish any wheels on pypi. Wheels make docutils
+  faster to install (no need to run setup.py, which for a large number of
+  packages can take some time), and is no more difficult than uploading an
+  sdist (see https://packaging.python.org/en/latest/distributing.html#wheels
+  for instructions).
+
+.. _bugs275: https://sourceforge.net/p/docutils/bugs/275/
+.. _feature request 43: https://sourceforge.net/p/docutils/feature-requests/43/
 
