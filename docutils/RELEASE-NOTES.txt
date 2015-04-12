@@ -20,6 +20,8 @@ more detailed list of changes, please see the `Docutils History`_.
 Future changes
 ==============
 
+* remove the `handle_io_errors` option from io.FileInput/Output.
+
 * »Prune« the doctree (no change to the reST input syntax):
 
   - "doctest" element -> literal block with "pycon" (python-console)

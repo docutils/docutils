@@ -204,7 +204,7 @@ class FileInput(Input):
     """
     def __init__(self, source=None, source_path=None,
                  encoding=None, error_handler='strict',
-                 autoclose=True, mode='rU'):
+                 autoclose=True, handle_io_errors=None, mode='rU'):
         """
         :Parameters:
             - `source`: either a file-like object (which is read directly), or
@@ -214,6 +214,7 @@ class FileInput(Input):
             - `error_handler`: the encoding error handler to use.
             - `autoclose`: close automatically after read (except when
               `sys.stdin` is the source).
+            - `handle_io_errors`: ignored, deprecated, will be removed.
             - `mode`: how the file is to be opened (see standard function
               `open`). The default 'rU' provides universal newline support
               for text files.
@@ -302,7 +303,7 @@ class FileOutput(Output):
 
     def __init__(self, destination=None, destination_path=None,
                  encoding=None, error_handler='strict', autoclose=True,
-                 mode=None):
+                 handle_io_errors=None, mode=None):
         """
         :Parameters:
             - `destination`: either a file-like object (which is written
@@ -314,6 +315,7 @@ class FileOutput(Output):
             - `error_handler`: the encoding error handler to use.
             - `autoclose`: close automatically after write (except when
               `sys.stdout` or `sys.stderr` is the destination).
+            - `handle_io_errors`: ignored, deprecated, will be removed.
             - `mode`: how the file is to be opened (see standard function
               `open`). The default is 'w', providing universal newline
               support for text files.

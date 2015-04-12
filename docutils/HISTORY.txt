@@ -16,10 +16,6 @@
 Changes Since 0.12
 ==================
 
-* docutils/io.py
-
-  - removed the `handle_io_errors` option from io.FileInput/Output.
-
 * docutils/nodes.py
 
   - Fix [ 253 ] Attribute key without value not allowed in XML.
