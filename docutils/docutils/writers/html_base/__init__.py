@@ -1139,26 +1139,28 @@ class HTMLTranslator(nodes.NodeVisitor):
             self.body.append('</code>')
         self.body.append('</pre>\n')
 
+    # Mathematics:
+    # As there is no native HTML math support, we provide alternatives
+    # for the math-output: LaTeX and MathJax simply wrap the content,
+    # HTML and MathML also convert the math_code.
+    # HTML container
+    math_tags = {# math_output: (block, inline, class-arguments)
+                 'mathml':      ('div', '', ''),
+                 'html':        ('div', 'span', 'formula'),
+                 'mathjax':     ('div', 'span', 'math'),
+                 'latex':       ('pre', 'tt',   'math'),
+                }
+
     def visit_math(self, node, math_env=''):
         # If the method is called from visit_math_block(), math_env != ''.
 
-        # As there is no native HTML math support, we provide alternatives
-        # for the math-output: LaTeX and MathJax simply wrap the content,
-        # HTML and MathML also convert the math_code.
-        # HTML container
-        tags = {# math_output: (block, inline, class-arguments)
-                'mathml':      ('div', '', ''),
-                'html':        ('div', 'span', 'formula'),
-                'mathjax':     ('div', 'span', 'math'),
-                'latex':       ('pre', 'tt',   'math'),
-               }
-        if self.math_output not in tags:
+        if self.math_output not in self.math_tags:
             self.document.reporter.error(
                 'math-output format "%s" not supported '
                 'falling back to "latex"'% self.math_output)
             self.math_output = 'latex'
-        tag = tags[self.math_output][math_env == '']
-        clsarg = tags[self.math_output][2]
+        tag = self.math_tags[self.math_output][math_env == '']
+        clsarg = self.math_tags[self.math_output][2]
         # LaTeX container
         wrappers = {# math_mode: (inline, block)
                     'mathml':  ('$%s$',   u'\\begin{%s}\n%s\n\\end{%s}'),

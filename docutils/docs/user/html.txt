@@ -44,8 +44,7 @@ For *emphazised* aliases exist ``rst2<alias>.py`` `front-end tools`_.
 
 .. [#] `html` may become an alias for html-base in a future release.
 
-.. [#] TODO: how to name the alias/frontend specific to the html4css1 writer
-   replacing "html":
+.. [#] TODO: how to name the alias/frontend pointing to html4css1?
 
    :html4:
 
@@ -82,9 +81,13 @@ html_base
 ~~~~~~~~~
 
 .. note:: The name `html_base` will change to a more appropriate one.
-   Candidates are `html_basic` (but beware of confusion with the
-   `XHTML Basic`_ document type) or `html_common`
-   Suggestions welcome.
+   Candidates are 
+   
+   * `html_basic` (but beware of confusion with the `XHTML
+     Basic`_ document type), 
+   * `html-generic`, `html-conservative`, or
+   * `html_common` (the greatest common denominator of (X)HTML variants
+      currently in use).
 
 
 :aliases:   html-base, html5

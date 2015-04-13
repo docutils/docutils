@@ -814,8 +814,8 @@ paragraph.</p></td>
 
 Inline markup is supported, e.g. <em>emphasis</em>, <strong>strong</strong>, <span class="docutils literal">literal
 text</span>, <span class="subscript">sub-</span> and <span class="superscript">super</span>scripts,
-inline formulas: <math xmlns="http://www.w3.org/1998/Math/MathML">
-<mrow><mi>A</mi><mo>=</mo><mn>2</mn><mi>π</mi><msup><mi>r</mi><mn>2</mn></msup></mrow></math>,
+inline formulas: <span><math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow><mi>A</mi><mo>=</mo><mn>2</mn><mi>π</mi><msup><mi>r</mi><mn>2</mn></msup></mrow></math></span>,
 footnotes <a class="footnote-reference" href="#id8" id="id22">[1]</a>, <span class="target" id="hyperlink-targets">hyperlink targets</span>, and <a class="reference external" href="http://www.python.org/">references</a>.</pre>
 </div>
 <div class="section" id="code">
@@ -837,8 +837,8 @@ directly (the code will not be parsed/tagged, as the language is not known)
 or as base for special code roles, e.g. the LaTeX code in the next
 paragraph.</p>
 <p>Docutils uses LaTeX syntax for math directives and roles:
-<code class="tex">\alpha = f(x)</code> prints <math xmlns="http://www.w3.org/1998/Math/MathML">
-<mrow><mi>α</mi><mo>=</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow></math>.</p>
+<code class="tex">\alpha = f(x)</code> prints <span><math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow><mi>α</mi><mo>=</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow></math></span>.</p>
 <p>The <span class="docutils literal">:code:</span> option of the <cite>include</cite> directive sets the included content
 as a code block, here the rst file <span class="docutils literal">header_footer.txt</span> with line numbers:</p>
 <pre class="code rst literal-block"><code><span class="ln">1 </span>.. header:: Document header
@@ -1468,10 +1468,10 @@ the headers:</p>
 <h2><a class="toc-backref" href="#id86"><span class="sectnum">3.5</span> Maths</a></h2>
 <p>The <span class="docutils literal"><span class="pre">html-output</span></span> setting defaults to »MathML«. If there is mathematical
 content in <cite>MathML</cite> format, the document type is XHTML 1.1 plus MathML 2.0.</p>
-<p>The linear mapping <math xmlns="http://www.w3.org/1998/Math/MathML">
+<p>The linear mapping <span><math xmlns="http://www.w3.org/1998/Math/MathML">
 <mrow><mi>f</mi><mo>:</mo><msup><mi>ℂ</mi>
 <mrow><mi>N</mi></mrow></msup><mo>⟼</mo><msup><mi>ℂ</mi>
-<mrow><mi>N</mi></mrow></msup></mrow></math>
+<mrow><mi>N</mi></mrow></msup></mrow></math></span>
 with</p>
 <div>
 <math xmlns="http://www.w3.org/1998/Math/MathML" mode="display">
@@ -1488,9 +1488,9 @@ with</p>
 <mrow><mi>n</mi><mi>k</mi></mrow>
 <mrow><mi>N</mi></mrow></mfrac></mrow></msup></mtd></mtr></mtable></math>
 </div>
-<p>for all <math xmlns="http://www.w3.org/1998/Math/MathML">
+<p>for all <span><math xmlns="http://www.w3.org/1998/Math/MathML">
 <mrow><mi>a</mi><mo>∈</mo><msup><mi>ℂ</mi>
-<mrow><mi>N</mi></mrow></msup></mrow></math> is called discrete Fourier
+<mrow><mi>N</mi></mrow></msup></mrow></math></span> is called discrete Fourier
 transformation (DFT).</p>
 </div>
 </div>
