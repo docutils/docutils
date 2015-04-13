@@ -91,16 +91,17 @@ class HTMLTranslator(html_base.HTMLTranslator):
         '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0//EN" '
         '"http://www.w3.org/Math/DTD/mathml2/xhtml-math11-f.dtd">\n')
 
-    # there is no attribute "lang" in XHTML 1.1
+# there is no attribute "lang" in XHTML 1.1
+
     lang_attribute = 'xml:lang' # changed from 'lang' in XHTML 1.0
     head_prefix_template = ('<html xmlns="http://www.w3.org/1999/xhtml"'
                             ' xml:lang="%(lang)s">\n<head>\n')
 
 
-    # enumerated lists
-    # ----------------
-    # The 'start' attribute does not conform to HTML4/XHTML1 Strict
-    # (resurfaced in HTML5)
+# enumerated lists
+# ----------------
+# The 'start' attribute does not conform to HTML4/XHTML1 Strict
+# (resurfaced in HTML5)
 
     def visit_enumerated_list(self, node):
         atts = {}
@@ -114,8 +115,8 @@ class HTMLTranslator(html_base.HTMLTranslator):
         self.body.append(self.starttag(node, 'ol', **atts))
 
 
-    # <sup> and <sub> tags (possible with parsed-literal) are not allowed
-    # in <pre> --- use <span> ::
+# <sup> and <sub> tags (possible with parsed-literal) are not allowed
+# in <pre> --- use <span> ::
 
     def visit_subscript(self, node):
         if isinstance(node.parent, nodes.literal_block):
@@ -145,8 +146,18 @@ class HTMLTranslator(html_base.HTMLTranslator):
         else:
             self.body.append('</sup>')
 
-    # Meta tags: 'lang' attribute replaced by 'xml:lang' in XHTML 1.1
-    # HTML5/polyglott recommends using both
+# Wrap inline MathML in <span>, as it is not allowed directly in a <pre> block
+# (possible with parsed-literal)::
+
+    math_tags = {# math_output: (block, inline, class-arguments)
+                 'mathml':      ('div', 'span', ''),
+                 'html':        ('div', 'span', 'formula'),
+                 'mathjax':     ('div', 'span', 'math'),
+                 'latex':       ('pre', 'tt',   'math'),
+                }
+
+# Meta tags: 'lang' attribute replaced by 'xml:lang' in XHTML 1.1
+# HTML5/polyglott recommends using both
 
     def visit_meta(self, node):
         if node.hasattr('lang'):
