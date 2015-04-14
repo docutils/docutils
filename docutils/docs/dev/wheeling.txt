@@ -12,10 +12,15 @@
 
 .. contents::
 
+Abstract
+--------
 
 This document documents my trial to build python wheels from 
 docutils. Once it is finished it might be driven into distribution or
 release documentation.
+
+Requests
+--------
 
 There is `feature request 43`_ :  Make setup.py build wheels. 
 
@@ -42,6 +47,8 @@ and bugs275_ : Upload wheels to pypi
   sdist (see https://packaging.python.org/en/latest/distributing.html#wheels
   for instructions).
 
+Logbook 
+-------
 
 
 .. _bugs275: https://sourceforge.net/p/docutils/bugs/275/
