@@ -54,14 +54,6 @@ class Writer(writers.Writer):
           ['--docutils-footnotes'],
           {'default': True, 'action': 'store_true',
            'validator': frontend.validate_boolean}),
-         ('Alias for --docutils-footnotes (deprecated)',
-          ['--use-latex-footnotes'],
-          {'action': 'store_true',
-           'validator': frontend.validate_boolean}),
-         ('Use figure floats for footnote text (deprecated)',
-          ['--figure-footnotes'],
-          {'action': 'store_true',
-           'validator': frontend.validate_boolean}),
          ('Format for footnote references: one of "superscript" or '
           '"brackets".  Default is "superscript".',
           ['--footnote-references'],
@@ -546,17 +538,6 @@ PreambleCmds.footnotes = r"""% numeric or symbol footnotes with hyperlinks
   \endgroup%
 }"""
 
-PreambleCmds.footnote_floats = r"""% settings for footnotes as floats:
-\setlength{\floatsep}{0.5em}
-\setlength{\textfloatsep}{\fill}
-\addtolength{\textfloatsep}{3em}
-\renewcommand{\textfraction}{0.5}
-\renewcommand{\topfraction}{0.5}
-\renewcommand{\bottomfraction}{0.5}
-\setcounter{totalnumber}{50}
-\setcounter{topnumber}{50}
-\setcounter{bottomnumber}{50}"""
-
 PreambleCmds.graphicx_auto = r"""% Check output format
 \ifx\pdftexversion\undefined
   \usepackage{graphicx}
@@ -612,6 +593,7 @@ PreambleCmds.linking = r"""
 %% hyperlinks:
 \ifthenelse{\isundefined{\hypersetup}}{
   \usepackage[%s]{hyperref}
+  \usepackage{bookmark}
   \urlstyle{same} %% normal text font (alternatives: tt, rm, sf)
 }{}"""
 
@@ -711,7 +693,13 @@ PreambleCmds.transition = r"""
 class CharMaps(object):
     """LaTeX representations for active and Unicode characters."""
 
-    # characters that always need escaping:
+    # characters that need escaping even in `alltt` environments:
+    alltt = {
+        ord('\\'): ur'\textbackslash{}',
+        ord('{'): ur'\{',
+        ord('}'): ur'\}',
+    }
+    # characters that normally need escaping:
     special = {
         ord('#'): ur'\#',
         ord('$'): ur'\$',
@@ -720,9 +708,6 @@ class CharMaps(object):
         ord('~'): ur'\textasciitilde{}',
         ord('_'): ur'\_',
         ord('^'): ur'\textasciicircum{}',
-        ord('\\'): ur'\textbackslash{}',
-        ord('{'): ur'\{',
-        ord('}'): ur'\}',
         # straight double quotes are 'active' in many languages
         ord('"'): ur'\textquotedbl{}',
         # Square brackets are ordinary chars and cannot be escaped with '\',
@@ -1142,7 +1127,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
     insert_non_breaking_blanks = False # replace blanks by "~"
     insert_newline = False             # add latex newline commands
     literal = False                    # literal text (block or inline)
-
+    alltt = False                      # inside `alltt` environment
 
     def __init__(self, document, babel_class=Babel):
         nodes.NodeVisitor.__init__(self, document)
@@ -1167,7 +1152,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.section_enumerator_separator = (
             settings.section_enumerator_separator.replace('_', r'\_'))
         # literal blocks:
-        self.literal_block_env = ''
+        self.literal_block_env = 'alltt'
         self.literal_block_options = ''
         if settings.literal_block_env != '':
             (none,
@@ -1204,16 +1189,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
                                      self.settings.graphicx_option)
         # footnotes:
         self.docutils_footnotes = settings.docutils_footnotes
-        if settings.use_latex_footnotes:
-            self.docutils_footnotes = True
-            self.warn('`use_latex_footnotes` is deprecated. '
-                      'The setting has been renamed to `docutils_footnotes` '
-                      'and the alias will be removed in a future version.')
-        self.figure_footnotes = settings.figure_footnotes
-        if self.figure_footnotes:
-            self.docutils_footnotes = True
-            self.warn('The "figure footnotes" workaround/setting is strongly '
-                      'deprecated and will be removed in a future version.')
 
         # Output collection stacks
         # ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1447,16 +1422,17 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def encode(self, text):
         """Return text with 'problematic' characters escaped.
 
-        * Escape the ten special printing characters ``# $ % & ~ _ ^ \ { }``,
+        * Escape the special printing characters ``# $ % & ~ _ ^ \ { }``,
           square brackets ``[ ]``, double quotes and (in OT1) ``< | >``.
         * Translate non-supported Unicode characters.
         * Separate ``-`` (and more in literal text) to prevent input ligatures.
         """
         if self.verbatim:
             return text
-
         # Set up the translation table:
-        table = CharMaps.special.copy()
+        table = CharMaps.alltt.copy()
+        if not self.alltt:
+            table.update(CharMaps.special)
         # keep the underscore in citation references
         if self.inside_citation_reference_label:
             del(table[ord('_')])
@@ -1854,7 +1830,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 raise nodes.SkipNode
         self.out.append('\\textbf{%s}: &\n\t' % self.language_label(name))
         if name == 'address':
-            self.insert_newline = 1
+            self.insert_newline = True
             self.out.append('{\\raggedright\n')
             self.context.append(' } \\\\\n')
         else:
@@ -2034,59 +2010,63 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.out.extend(self.active_table.depart_row())
 
     def visit_enumerated_list(self, node):
-        # We create our own enumeration list environment.
-        # This allows to set the style and starting value
-        # and unlimited nesting.
-        enum_style = {'arabic':'arabic',
-                'loweralpha':'alph',
-                'upperalpha':'Alph',
-                'lowerroman':'roman',
-                'upperroman':'Roman' }
-        enum_suffix = ''
-        if 'suffix' in node:
-            enum_suffix = node['suffix']
-        enum_prefix = ''
-        if 'prefix' in node:
-            enum_prefix = node['prefix']
+        # enumeration styles:
+        types = {'': '',
+                  'arabic':'arabic',
+                  'loweralpha':'alph',
+                  'upperalpha':'Alph',
+                  'lowerroman':'roman',
+                  'upperroman':'Roman'}
+        # the 4 default LaTeX enumeration labels: präfix, enumtype, suffix,
+        labels = [('',  'arabic', '.'), #  1.
+                  ('(', 'alph',   ')'), # (a)
+                  ('',  'roman',  '.'), #  i.
+                  ('',  'Alph',   '.')] #  A.
+
+        prefix = ''
         if self.compound_enumerators:
-            pref = ''
-            if self.section_prefix_for_enumerators and self.section_level:
-                for i in range(self.section_level):
-                    pref += '%d.' % self._section_number[i]
-                pref = pref[:-1] + self.section_enumerator_separator
-                enum_prefix += pref
-            for ctype, cname in self._enumeration_counters:
-                enum_prefix += '\\%s{%s}.' % (ctype, cname)
-        enum_type = 'arabic'
-        if 'enumtype' in node:
-            enum_type = node['enumtype']
-        if enum_type in enum_style:
-            enum_type = enum_style[enum_type]
+            if (self.section_prefix_for_enumerators and self.section_level
+                and not self._enumeration_counters):
+                prefix = '.'.join([str(n) for n in
+                                   self._section_number[:self.section_level]]
+                                 ) + self.section_enumerator_separator
+            if self._enumeration_counters:
+                prefix += self._enumeration_counters[-1]
+        # TODO: use LaTeX default for unspecified label-type?
+              # (needs change of parser)
+        prefix += node.get('prefix', '')
+        enumtype = types[node.get('enumtype' '')]
+        suffix = node.get('suffix', '')
 
-        counter_name = 'listcnt%d' % len(self._enumeration_counters)
-        self._enumeration_counters.append((enum_type, counter_name))
-        # If we haven't used this counter name before, then create a
-        # new counter; otherwise, reset & reuse the old counter.
-        if len(self._enumeration_counters) > self._max_enumeration_counters:
-            self._max_enumeration_counters = len(self._enumeration_counters)
-            self.out.append('\\newcounter{%s}\n' % counter_name)
+        enumeration_level = len(self._enumeration_counters)+1
+        counter_name = 'enum' + roman.toRoman(enumeration_level).lower()
+        label = r'%s\%s{%s}%s' % (prefix, enumtype, counter_name, suffix)
+        self._enumeration_counters.append(label)
+
+        if enumeration_level <= 4:
+            self.out.append('\\begin{enumerate}\n')
+            if (prefix, enumtype, suffix
+               ) != labels[enumeration_level-1]:
+                self.out.append('\\renewcommand{\\label%s}{%s}\n' %
+                                (counter_name, label))
         else:
-            self.out.append('\\setcounter{%s}{0}\n' % counter_name)
-
-        self.out.append('\\begin{list}{%s\\%s{%s}%s}\n' %
-                        (enum_prefix,enum_type,counter_name,enum_suffix))
-        self.out.append('{\n')
-        self.out.append('\\usecounter{%s}\n' % counter_name)
-        # set start after usecounter, because it initializes to zero.
+            self.fallbacks[counter_name] = '\\newcounter{%s}' % counter_name
+            self.out.append('\\begin{list}')
+            self.out.append('{%s}' % label)
+            self.out.append('{\\usecounter{%s}}\n' % counter_name)
         if 'start' in node:
-            self.out.append('\\addtocounter{%s}{%d}\n' %
+            self.out.append('\\setcounter{%s}{%d}\n' %
                             (counter_name,node['start']-1))
-        ## set rightmargin equal to leftmargin
-        self.out.append('\\setlength{\\rightmargin}{\\leftmargin}\n')
-        self.out.append('}\n')
+        #     ## set rightmargin equal to leftmargin
+        #     self.out.append('\\setlength{\\rightmargin}{\\leftmargin}\n')
+
+
 
     def depart_enumerated_list(self, node):
-        self.out.append('\\end{list}\n')
+        if len(self._enumeration_counters) <= 4:
+            self.out.append('\\end{enumerate}\n')
+        else:
+            self.out.append('\\end{list}\n')
         self._enumeration_counters.pop()
 
     def visit_field(self, node):
@@ -2165,13 +2145,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             backref = node['backrefs'][0]
         except IndexError:
             backref = node['ids'][0] # no backref, use self-ref instead
-        if self.settings.figure_footnotes:
-            self.requirements['~fnt_floats'] = PreambleCmds.footnote_floats
-            self.out.append('\\begin{figure}[b]')
-            self.append_hypertargets(node)
-            if node.get('id') == node.get('name'):  # explicite label
-                self.out += self.ids_to_labels(node)
-        elif self.docutils_footnotes:
+        if self.docutils_footnotes:
             self.fallbacks['footnotes'] = PreambleCmds.footnotes
             num,text = node.astext().split(None,1)
             if self.settings.footnote_references == 'brackets':
@@ -2185,10 +2159,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         ## else:  # TODO: "real" LaTeX \footnote{}s
 
     def depart_footnote(self, node):
-        if self.figure_footnotes:
-            self.out.append('\\end{figure}\n')
-        else:
-            self.out.append('}\n')
+        self.out.append('}\n')
 
     def visit_footnote_reference(self, node):
         href = ''
@@ -2223,12 +2194,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
     # footnote/citation label
     def label_delim(self, node, bracket, superscript):
         if isinstance(node.parent, nodes.footnote):
-            if not self.figure_footnotes:
-                raise nodes.SkipNode
-            if self.settings.footnote_references == 'brackets':
-                self.out.append(bracket)
-            else:
-                self.out.append(superscript)
+            raise nodes.SkipNode
         else:
             assert isinstance(node.parent, nodes.citation)
             if not self._use_latex_citations:
@@ -2442,7 +2408,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_literal_block(self, node):
         """Render a literal block."""
         # environments and packages to typeset literal blocks
-        packages = {'listing': r'\usepackage{moreverb}',
+        packages = {'alltt': r'\usepackage{alltt}',
+                    'listing': r'\usepackage{moreverb}',
                     'lstlisting': r'\usepackage{listings}',
                     'Verbatim': r'\usepackage{fancyvrb}',
                     # 'verbatim': '',
@@ -2451,18 +2418,24 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if not self.active_table.is_open():
             # no quote inside tables, to avoid vertical space between
             # table border and literal block.
-            # BUG: fails if normal text precedes the literal block.
-            self.out.append('%\n\\begin{quote}')
+            # TODO: fails if normal text precedes the literal block.
+            # check parent node instead?
+            self.out.append('%\n\\begin{quote}\n')
             self.context.append('\n\\end{quote}\n')
         else:
             self.out.append('\n')
             self.context.append('\n')
-        if self.literal_block_env != '' and self.is_plaintext(node):
-            self.requirements['literal_block'] = packages.get(
-                                                  self.literal_block_env, '')
-            self.verbatim = True
-            self.out.append('\\begin{%s}%s\n' % (self.literal_block_env,
-                                                 self.literal_block_options))
+
+        if self.is_plaintext(node):
+            environment = self.literal_block_env
+            self.requirements['literal_block'] = packages.get(environment, '')
+            if environment == 'alltt':
+                self.alltt = True
+            else:
+                self.verbatim = True
+            self.out.append('\\begin{%s}%s\n' %
+                            (environment, self.literal_block_options))
+            self.context.append('\n\\end{%s}' % environment)
         else:
             self.literal = True
             self.insert_newline = True
@@ -2472,16 +2445,15 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 self.requirements['color'] = PreambleCmds.color
                 self.fallbacks['code'] = PreambleCmds.highlight_rules
             self.out.append('{\\ttfamily \\raggedright \\noindent\n')
+            self.context.append('\n}')
 
     def depart_literal_block(self, node):
-        if self.verbatim:
-            self.out.append('\n\\end{%s}\n' % self.literal_block_env)
-            self.verbatim = False
-        else:
-            self.out.append('\n}')
-            self.insert_non_breaking_blanks = False
-            self.insert_newline = False
-            self.literal = False
+        self.insert_non_breaking_blanks = False
+        self.insert_newline = False
+        self.literal = False
+        self.verbatim = False
+        self.alltt = False
+        self.out.append(self.context.pop())
         self.out.append(self.context.pop())
 
     ## def visit_meta(self, node):
@@ -2509,7 +2481,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if node.get('ids'):
             math_code = '\n'.join([math_code] + self.ids_to_labels(node))
         if math_env == '$':
-            wrapper = u'$%s$'
+            if self.alltt:
+                wrapper = u'\(%s\)'
+            else:
+                wrapper = u'$%s$'
         else:
             wrapper = u'\n'.join(['%%',
                                  r'\begin{%s}' % math_env,

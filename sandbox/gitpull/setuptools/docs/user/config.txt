@@ -313,7 +313,7 @@ footnote_backlinks
 Enable or disable backlinks from footnotes and citations to their
 references.
 
-Default: enabled (1).
+Default: enabled (True).
 Options: ``--footnote-backlinks, --no-footnote-backlinks``.
 
 generator
@@ -474,7 +474,7 @@ directive`_.
 If disabled, section numbers might be added to the output by the
 renderer (e.g. LaTeX or via a CSS style definition).
 
-Default: enabled (1).
+Default: enabled (True).
 Options: ``--section-numbering``, ``--no-section-numbering``.
 
 .. _sectnum directive: ../ref/rst/directives.html#sectnum
@@ -594,7 +594,7 @@ files, such as the "include_" & "raw_".  A "warning" system
 message (including the directive text) is inserted instead.  (See
 also raw_enabled_ for another security-relevant setting.)
 
-Default: enabled (1).
+Default: enabled (True).
 Options: ``--file-insertion-enabled, --no-file-insertion``.
 
 .. _include: ../ref/rst/directives.html#include
@@ -605,7 +605,7 @@ pep_references
 
 Recognize and link to standalone PEP references (like "PEP 258").
 
-Default: disabled (None); enabled (1) in PEP Reader.
+Default: disabled (None); enabled (True) in PEP Reader.
 Options: ``--pep-references``.
 
 pep_base_url
@@ -630,14 +630,14 @@ Enable or disable the "raw_" directive.  A "warning" system message
 (including the directive text) is inserted instead.  (See also
 file_insertion_enabled_ for another security-relevant setting.)
 
-Default: enabled (1).  Options: ``--raw-enabled, --no-raw``.
+Default: enabled (True).  Options: ``--raw-enabled, --no-raw``.
 
 rfc_references
 ~~~~~~~~~~~~~~
 
 Recognize and link to standalone RFC references (like "RFC 822").
 
-Default: disabled (None); enabled (1) in PEP Reader.
+Default: disabled (None); enabled (True) in PEP Reader.
 Options: ``--rfc-references``.
 
 rfc_base_url
@@ -730,7 +730,7 @@ docinfo_xform
 Enable or disable the bibliographic field list transform
 (docutils.transforms.frontmatter.DocInfo).
 
-Default: enabled (1).  Options: ``--no-doc-info``.
+Default: enabled (True).  Options: ``--no-doc-info``.
 
 doctitle_xform
 ~~~~~~~~~~~~~~
@@ -739,7 +739,7 @@ Enable or disable the promotion of a lone top-level section title
 to document title (and subsequent section title to document
 subtitle promotion; docutils.transforms.frontmatter.DocTitle).
 
-Default: enabled (1).  Options: ``--no-doc-title``.
+Default: enabled (True).  Options: ``--no-doc-title``.
 
 sectsubtitle_xform
 ~~~~~~~~~~~~~~~~~~
@@ -857,7 +857,7 @@ each contain one paragraph and/or one "simple" sublist only).  The
 behaviour can be specified directly via "class" attributes (values
 "compact" and "open") in the document.
 
-Default: enabled (1).
+Default: enabled (True).
 Options: ``--compact-lists, --no-compact-lists``.
 
 compact_field_lists
@@ -868,7 +868,7 @@ are "simple" (i.e., all field bodies each contain at most one
 paragraph).  The behaviour can be specified directly via "class"
 attributes (values "compact" and "open") in the document.
 
-Default: enabled (1).
+Default: enabled (True).
 Options: ``--compact-field-lists, --no-compact-field-lists``.
 
 .. _embed_stylesheet [html4css1 writer]:
@@ -977,12 +977,28 @@ the output document. Supported values are (case insensitive):
     Transitional. However, MathML-enabled browsers will render it
     fine.
 
+  An external converter can be appended after whitespace:
+
+  * ``math-output: MathML blahtexml``
+
+    blahtexml_ (C++) Fast conversion, support for many symbols and
+    environments, but no "align" (or other equation-aligning) environment.
+
+  * ``--math-output=MathML latexml``.
+
+    LaTeXML_ (Perl) Comprehensive macro support but very slow
+
+  * ``--math-output=MathML ttm``, support may be removed.
+
+    No "matrix", "align" and  "cases" environments.
+
 :LaTeX:
   Include literal LaTeX code.
 
   The failsave fallback.
 
-Default: "HTML math.css".  Option: ``--math-output``.
+Default: "HTML math.css" (MathML for the xhtml11 writer).
+Option: ``--math-output``.
 
 New in Docutils 0.8.
 
@@ -990,6 +1006,9 @@ New in Docutils 0.8.
 .. _MathJax: http://www.mathjax.org/
 .. _MathPlayer: http://www.dessci.com/en/products/mathplayer/
 .. _MathML: http://www.w3.org/TR/MathML/
+.. _blahtexml: http://gva.noekeon.org/blahtexml/
+.. _LaTeXML: http://dlmf.nist.gov/LaTeXML/
+.. _ttm: http://hutchinson.belmont.ma.us/tth/mml/
 
 option_limit
 ~~~~~~~~~~~~
@@ -1101,45 +1120,6 @@ Generate XML with an XML declaration.  Also defined for the
 Default: do (1).  Options: ``--no-xml-declaration``.
 
 __ `xml_declaration [docutils_xml writer]`_
-
-[html-base writer]
-~~~~~~~~~~~~~~~~~~
-
-The `html-base` writer uses the settings described in the `[html4css1
-writer]`_ section with the following exceptions:
-
-Removed options:
-  `field_name_limit`_, `option_limit`_.
-
-Different default for:
-
-`stylesheet_path <stylesheet_path [html4css1 writer]_>`_:
-  Default: "html-base.css"
-
-`stylesheet_dirs <stylesheet_dirs [html4css1 writer]_>`_:
-  Default: Installation-dependent. Use the --help option to get the exact
-  value.
-
-
-[xhtml11 writer]
-~~~~~~~~~~~~~~~~~
-
-The XHTML1.1 Writer derives from the `html-base` writer and uses the same
-setings. The "[html-base writer]" section of configuration files is
-processed before the "[xhtml11 writer]" section.
-
-
-Different default for:
-
-`stylesheet_path <stylesheet_path [html4css1 writer]_>`_:
-  Default: "html-base.css,xhtml11.css"
-
-`stylesheet_dirs <stylesheet_dirs [html4css1 writer]_>`_:
-  Default: Installation-dependent. Use the --help option to get the exact
-  value.
-
-math_output_:
-  Default: "MathML"
 
 
 [pep_html writer]
@@ -1254,6 +1234,50 @@ view_mode
 The initial view mode, either "slideshow" or "outline".
 
 Default: "slidewhow".  Option: ``--view-mode``.
+
+
+[html-base writer]
+------------------
+
+The `html-base` writer uses the settings described in the `[html4css1
+writer]`_ section with the following exceptions:
+
+Removed options:
+  `field_name_limit`_, `option_limit`_.
+
+Different default for:
+
+`stylesheet_path <stylesheet_path [html4css1 writer]_>`_:
+  Default: "html-base.css"
+
+`stylesheet_dirs <stylesheet_dirs [html4css1 writer]_>`_:
+  Default: Installation-dependent. Use the --help option to get the exact
+  value.
+
+New in Docutils 0.13.
+
+
+[xhtml11 writer]
+----------------
+
+The XHTML1.1 Writer derives from the `html-base` writer and uses the same
+setings. The "[html-base writer]" section of configuration files is
+processed before the "[xhtml11 writer]" section.
+
+
+Different default for:
+
+`stylesheet_path <stylesheet_path [html4css1 writer]_>`_:
+  Default: "html-base.css,xhtml11.css"
+
+`stylesheet_dirs <stylesheet_dirs [html4css1 writer]_>`_:
+  Default: Installation-dependent. Use the --help option to get the exact
+  value.
+
+math_output_:
+  Default: "MathML"
+
+New in Docutils 0.13.
 
 
 [latex2e writer]

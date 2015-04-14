@@ -1,0 +1,77 @@
+===========================
+ Docutils_ Building Wheels
+===========================
+
+:Authors: engelbert gruber; open to all Docutils developers
+:Contact: docutils-develop@lists.sourceforge.net
+:Date: $Date$
+:Revision: $Revision$
+:Copyright: This document has been placed in the public domain.
+
+.. _Docutils: http://docutils.sourceforge.net/
+
+.. contents::
+
+Abstract
+--------
+
+This document documents my trial to build python wheels from 
+docutils. Once it is finished it might be driven into distribution or
+release documentation.
+
+Requests
+--------
+
+There is `feature request 43`_ :  Make setup.py build wheels. 
+
+  Just add this to setup.cfg:
+
+  [bdist_wheel]
+  universal = 1
+
+  See https://packaging.python.org/en/latest/distributing.html#universal-wheels
+
+  -.-.-
+  
+  Docutils is not fit for Universal Wheels. Docutils supports both Python 2 and
+  3, but with different code (we use “2to3”). This would make it a candidate
+  for "Pure Python wheels".
+
+  https://packaging.python.org/en/latest/distributing.html#pure-python-wheels
+
+and bugs275_ : Upload wheels to pypi 
+
+  Currently docutils does not publish any wheels on pypi. Wheels make docutils
+  faster to install (no need to run setup.py, which for a large number of
+  packages can take some time), and is no more difficult than uploading an
+  sdist (see https://packaging.python.org/en/latest/distributing.html#wheels
+  for instructions).
+
+Logbook 
+-------
+
+1. Add ``[bdist_wheel] universal = 0`` to setup.cfg.
+2. Run ``python setup.py bdist_wheel``::
+
+     error: invalid command 'bdist_wheel'
+
+3. setuptools is too old. Install the new one by wheel or source or pip or easy...
+
+4. try wheel ... first get wheel tar.gz and unpack.
+
+5. try ::
+
+     python2.7 wheel-0.24.0/wheel install setuptools-15.0-py2.py3-none-any.whl
+
+   no error. But still ``error: invalid command 'bdist_wheel'``::
+
+     $ python2.7 setup.py --version
+     0.12
+
+   Did wheel install ? If no, why no error, if yes in which place ?
+
+   
+
+.. _bugs275: https://sourceforge.net/p/docutils/bugs/275/
+.. _feature request 43: https://sourceforge.net/p/docutils/feature-requests/43/
+

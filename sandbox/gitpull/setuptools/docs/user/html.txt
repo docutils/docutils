@@ -1,0 +1,283 @@
+=====================
+Docutils HTML writers
+=====================
+
+.. note:: This document is a working draft. Naming of writers, aliases, and
+   front-ends may change before the release of Docutils 0.13.
+
+Since version 0.13, Docutils comes with a family of HTML writers to support
+
+* state of the art HTML (html_base_, html5),
+
+* state of the art XHTML (xhtml11_), and
+
+* older user agents with no/limited support for CSS and XHTML (html4css1_
+  and descendants).
+
+
+Overview
+--------
+
+==========  ===========  =================   =============================
+alias       alias        name                output format(s)
+==========  ===========  =================   =============================
+*html5*     html-base    html_base_          | HTML5_
+[#]_                                         | `XHTML 1 Transitional`_
+
+*xhtml*     html4strict  xhtml11_            | `XHTML 1.1`_
+                                             | HTML5_
+
+*html*      *xhtml1* or  html4css1_          `XHTML 1 Transitional`_
+[#]_        *html4*
+            [#]_
+..                       pep_html_           `XHTML 1 Transitional`_
+
+*s5*                     s5_html_            `XHTML 1 Transitional`_
+
+..                       html4trans_ [#]_    `XHTML 1 Transitional`_
+==========  ===========  =================   =============================
+
+For *emphazised* aliases exist ``rst2<alias>.py`` `front-end tools`_.
+
+.. [#] `html5` may become the name of an advanced HTML5 writer derived from
+   html-base in a future release.
+
+.. [#] `html` may become an alias for html-base in a future release.
+
+.. [#] TODO: how to name the alias/frontend pointing to html4css1?
+
+   :html4:
+
+     +1  short form of html4css1,
+     -1  writer produces XHTML 1, not HTML 4
+
+   :xhtml1:
+
+     +1  correct and short description of the output format.
+     -1  may be confused with xhtml11 or xhtml (aliases for the
+         "new" XHTML 1.1. writer inheriting from html-base).
+
+.. [#] in the sandbox
+
+.. _front-end tools: tools.html
+
+
+html
+~~~~
+
+The writer name `html` is an alias pointing to the "recommended Docutils
+HTML writer". Its meaning may change with the development of HTML, browsers
+and the web.
+
+* Use `get_writer_by_name('html') or the ``rst2html.py`` front end, if you
+  want the output to be up-to-date automatically.
+
+* Use a more specific writer name or front end, if you depend on stability
+  of the generated HTML code, e.g. because you use a custom style sheet or
+  postprocessing that may break otherwise.
+
+
+html_base
+~~~~~~~~~
+
+.. note:: The name `html_base` will change to a more appropriate one.
+   Candidates are 
+   
+   * `html_basic` (but beware of confusion with the `XHTML
+     Basic`_ document type), 
+   * `html-generic`, `html-conservative`, or
+   * `html_common` (the greatest common denominator of (X)HTML variants
+      currently in use).
+
+
+:aliases:   html-base, html5
+:front-end: rst2html5.py_
+:config: `[html-base writer]`_
+
+The `html-base` writer is both, basis for more specialized HTML writers and
+working code generating clean and highly compatible documents.
+
+It generates modern `polyglot HTML`_ output (compatible with HTML5_
+and `XHTML 1 Transitional`_). Correct rendering depends on a CSS_ style
+sheet. An example style sheet, html-base.css_, is provided and used by
+default.
+
+New features and elements will only be used if they are widely supported to
+make documents `viewable with any browser`_. Leaving out hard-coded
+formatting information from the HTML code allows adaption of the layout with
+`custom style sheets`_.
+
+.. _rst2html5.py: tools.html#rst2html5-py
+.. _[html-base writer]: config.html#html-base-writer
+.. _html-base.css: ../../docutils/writers/html_base/html-base.css
+.. _custom style sheets: ../howto/html-stylesheets.html
+.. _viewable with any browser: http://www.anybrowser.org/campaign
+
+
+xhtml11
+"""""""
+:aliases:   xhtml, html4strict
+:front-end: rst2xhtml.py_
+:config:    `[xhtml11 writer]`_
+
+`XHTML 1.1`_ is the current version of the XML based `extensible Hypertext
+Markup Language`.
+
+The `xhtml11` writer inherits from html_base_ and adds compatibility to the
+strict requirements of `XHTML 1.1`_:
+
+* There is no attribute "lang" (only "xml:lang").
+
+* Enumerated lists don't support the 'start' attribute.
+
+  The style sheet xhtml11.css_ adds support for a "start" value for
+  enumerated lists via a CSS-counter.
+
+* ``<sup>`` and ``<sub>`` tags are not allowed in preformatted blocks
+  (``<pre>``) but possible in reStructuredText with the "parsed-literal"
+  directive.
+
+The `math-output` `config setting`_ defaults to "MathML".
+
+.. _rst2xhtml.py: tools.html#rst2html5-py
+.. _config setting:
+.. _[xhtml11 writer]: config.html#xhtml11-writer
+.. _xhtml11.css: ../../docutils/writers/xhtml11/xhtml11.css
+
+
+html5
+"""""
+
+The writer name `html5` is reserved for a HTML writer that makes use of new
+features and objects defined in HTML5 but not (yet) fit for use in
+`html-base` because of limited browser support (like <video>, <aside>, or
+<section>).
+
+
+html4css1
+~~~~~~~~~
+
+:aliases:    html4, html
+:front-ends: rst2html.py_, rst2html4.py
+:config:     `[html4css1 writer]`_
+
+The HTML Writer module, ``docutils/writers/html4css1.py``, started
+as a proof-of-concept reference implementation. It is the first Docutils
+writer and was up to release 0.13 the only official HTML writer.
+
+The output conforms to the `XHTML 1 Transitional`_ specification.
+Correct rendering depends on a CSS_ style sheet. A reference style sheet,
+`html4css1.css`_, is provided and used by default.
+
+Due to the closing of empty tags required in XML but not allowed in HTML 4,
+generated documents do not validate as `HTML 4.01 Transitional`_.
+However, they follow the `HTML Compatibility Guidelines`_ for proper
+rendering on most HTML user agents.
+
+To support the `Internet Explorer` [#IE]_ (with a market share of about 90%
+around 2002, the time this writer was written), documents are tagged as
+"text/html" (instead of "application/xhtml+xml") and contain some hard-coded
+formatting hints.
+
+.. [#IE] Conformance to CSS 2.1 has been added in the IE 8 (2009), support
+   for XHTML in IE 9 (2011).
+
+.. _rst2html.py: tools.html#rst2html-py
+.. _[html4css1 writer]: config.html#html4css1-writer
+.. _html4css1.css: ../../docutils/writers/html4css1/html4css1.css
+
+--------------------------------------------------------------------------
+
+The following three HTML writers inherit from `html4css1`:
+
+pep_html
+""""""""
+
+:front-end: rstpep2html.py_
+:config:    `[pep_html writer]`_
+
+This is a special writer for the generation of `Python Enhancement
+Proposals`_ (PEPs). It adds some PEP-Specific
+Options, a style sheet and template. The front-end uses also a specialized
+reader.
+
+.. _rstpep2html.py: tools.html#rstpep2html-py
+.. _[pep_html writer]: config.html#pep-html-writer
+.. _Python Enhancement Proposals: https://www.python.org/dev/peps/
+
+s5_html
+"""""""
+
+:alias:     s5
+:front-end: rst2s5.py_
+:config:    `[s5_html writer]`_
+
+The `s5` writer is used to prepare `Easy Slide Shows With reST & S5`_. It
+produces XHTML for use with S5_, the “Simple Standards-based Slide Show
+System” by Eric Meyer.
+
+.. _rst2s5.py: tools.html#rst2s5-py
+.. _[s5_html writer]: config.html#s5-html-writer
+.. _Easy Slide Shows With reST & S5: slide-shows.html
+.. _S5: http://meyerweb.com/eric/tools/s5/
+.. _theme: tools.html#themes
+
+
+html4trans
+""""""""""
+
+:front-end: rst2html_trans.py_
+
+Correct rendering of HTML+CSS requires considerable resources in form of
+program code, memory space and computation time. On older machines or in
+embedded devices this might pose a serious problem.
+
+The `HTML writer for lightweight browsers`_ lives in the Docutils sandbox
+(`sandbox/html4trans`_) since 2008. It removes the dependency on CSS. The
+output conforms to `XHTML 1 Transitional`_ and contains sufficient
+formatting information for rendering without style sheet. (Of course, this
+has some drawbacks_.)
+
+.. _HTML writer for lightweight browsers:
+   ../../../sandbox/html4trans/README.html
+.. _drawbacks: ../../../sandbox/html4trans/README.html#drawbacks
+.. _sandbox/html4trans: ../../../sandbox/html4trans
+.. _rst2html_trans.py: ../../../sandbox/html4trans/tools/rst2html_trans.py
+
+
+HTML variants
+-------------
+
+_`HTML5`
+   `HTML5, A vocabulary and associated APIs for HTML and XHTML`,
+   W3C Recommendation, 28 October 2014.
+   http://www.w3.org/TR/html5/
+
+_`XHTML 1.1`
+   `XHTML™ 1.1 - Module-based XHTML - Second Edition`,
+   W3C Recommendation, 23 November 2010.
+   http://www.w3.org/TR/xhtml11/
+
+_`XHTML 1 Transitional`
+   `Transitional version`_ of:
+   `XHTML™ 1.0 The Extensible HyperText Markup Language (Second
+   Edition)`, `A Reformulation of HTML 4 in XML 1.0`,
+   W3C Recommendation, 26 January 2000, revised 1 August 2002.
+   http://www.w3.org/TR/xhtml1/
+
+_`XHTML Basic`
+   `XHTML™ Basic 1.1 - Second Edition`,
+   W3C Recommendation, 23 November 2010.
+   http://www.w3.org/TR/xhtml-basic/
+
+.. _transitional version:
+   http://www.w3.org/TR/xhtml1/#a_dtd_XHTML-1.0-Transitional
+
+_`HTML 4.01 Transitional`
+  Transitional version of:
+  `HTML 4.01 Specification`, W3C Recommendation 24 December 1999.
+  http://www.w3.org/TR/html4/
+
+.. _HTML Compatibility Guidelines: http://www.w3.org/TR/xhtml1/#guidelines
+.. _polyglot HTML: http://www.w3.org/TR/html-polyglot/
+.. _CSS: http://www.w3.org/TR/CSS/

@@ -13,14 +13,10 @@
 # .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause
 
 """
-Strict HyperText Markup Language document tree Writer.
+Strict eXtensible HyperText Markup Language (XHTML) document Writer.
 
-This is a variant of Docutils' standard 'html4css1' writer.
-
-GOAL:
- * The output conforms to the XHTML version 1.1 DTD.
- * It contains no hard-coded formatting information that would prevent
-   layout design by cascading style sheets.
+This is a variant of Docutils' `html-base` writer.
+The output conforms to the XHTML version 1.1 DTD.
 """
 
 __docformat__ = 'reStructuredText'
@@ -35,9 +31,8 @@ from docutils.writers import html_base
 
 class Writer(html_base.Writer):
 
-    supported = ('html', 'xhtml', 'xhtml1',
-                 'html4strict', 'xhtml1strict',
-                 'xhtml11', 'xhtml1css2')
+    supported = ('html', 'html4', 'html4strict', 'html4css2',
+                 'xhtml', 'xhtml1', 'xhtml1strict', 'xhtml11')
     """Formats this writer supports."""
 
     default_stylesheets = ['html-base.css', 'xhtml11.css']
@@ -96,16 +91,17 @@ class HTMLTranslator(html_base.HTMLTranslator):
         '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0//EN" '
         '"http://www.w3.org/Math/DTD/mathml2/xhtml-math11-f.dtd">\n')
 
-    # there is no attribute "lang" in XHTML 1.1
+# there is no attribute "lang" in XHTML 1.1
+
     lang_attribute = 'xml:lang' # changed from 'lang' in XHTML 1.0
     head_prefix_template = ('<html xmlns="http://www.w3.org/1999/xhtml"'
                             ' xml:lang="%(lang)s">\n<head>\n')
 
 
-    # enumerated lists
-    # ----------------
-    # The 'start' attribute does not conform to HTML4/XHTML1 Strict
-    # (resurfaced in HTML5)
+# enumerated lists
+# ----------------
+# The 'start' attribute does not conform to HTML4/XHTML1 Strict
+# (resurfaced in HTML5)
 
     def visit_enumerated_list(self, node):
         atts = {}
@@ -119,8 +115,49 @@ class HTMLTranslator(html_base.HTMLTranslator):
         self.body.append(self.starttag(node, 'ol', **atts))
 
 
-    # Meta tags: 'lang' attribute replaced by 'xml:lang' in XHTML 1.1
-    # HTML5/polyglott recommends using both
+# <sup> and <sub> tags (possible with parsed-literal) are not allowed
+# in <pre> --- use <span> ::
+
+    def visit_subscript(self, node):
+        if isinstance(node.parent, nodes.literal_block):
+            self.body.append(self.starttag(node, 'span', '',
+                                           CLASS='subscript'))
+        else:
+            self.body.append(self.starttag(node, 'sub', ''))
+
+    def depart_subscript(self, node):
+        if isinstance(node.parent, nodes.literal_block):
+            self.body.append('</span>')
+        else:
+            self.body.append('</sub>')
+
+
+    def visit_superscript(self, node):
+        # <sup> not allowed in <pre>
+        if isinstance(node.parent, nodes.literal_block):
+            self.body.append(self.starttag(node, 'span', '',
+                                           CLASS='superscript'))
+        else:
+            self.body.append(self.starttag(node, 'sup', ''))
+
+    def depart_superscript(self, node):
+        if isinstance(node.parent, nodes.literal_block):
+            self.body.append('</span>')
+        else:
+            self.body.append('</sup>')
+
+# Wrap inline MathML in <span>, as it is not allowed directly in a <pre> block
+# (possible with parsed-literal)::
+
+    math_tags = {# math_output: (block, inline, class-arguments)
+                 'mathml':      ('div', 'span', ''),
+                 'html':        ('div', 'span', 'formula'),
+                 'mathjax':     ('div', 'span', 'math'),
+                 'latex':       ('pre', 'tt',   'math'),
+                }
+
+# Meta tags: 'lang' attribute replaced by 'xml:lang' in XHTML 1.1
+# HTML5/polyglott recommends using both
 
     def visit_meta(self, node):
         if node.hasattr('lang'):
