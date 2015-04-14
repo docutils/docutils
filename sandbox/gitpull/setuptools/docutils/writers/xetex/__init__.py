@@ -17,8 +17,9 @@
 """
 XeLaTeX document tree Writer.
 
-A variant of Docutils' standard 'latex2e' writer producing output
-suited for processing with XeLaTeX (http://tug.org/xetex/).
+A variant of Docutils' standard 'latex2e' writer producing LaTeX output
+suited for processing with the Unicode-aware TeX engines
+LuaTeX and XeTeX.
 """
 
 __docformat__ = 'reStructuredText'
@@ -32,9 +33,9 @@ from docutils import frontend, nodes, utils, writers, languages
 from docutils.writers import latex2e
 
 class Writer(latex2e.Writer):
-    """A writer for Unicode-based LaTeX variants (XeTeX, LuaTeX)"""
+    """A writer for Unicode-aware LaTeX variants (XeTeX, LuaTeX)"""
 
-    supported = ('xetex','xelatex','luatex')
+    supported = ('lxtex', 'xetex','xelatex','luatex', 'lualatex')
     """Formats this writer supports."""
 
     default_template = 'xelatex.tex'
@@ -54,7 +55,7 @@ class Writer(latex2e.Writer):
         template=('Template file. Default: "%s".' % default_template,
           ['--template'], {'default': default_template, 'metavar': '<file>'}),
         latex_preamble=('Customization by LaTeX code in the preamble. '
-          'Default: select PDF standard fonts (Times, Helvetica, Courier).',
+          'Default: select "Linux Libertine" fonts.',
           ['--latex-preamble'],
           {'default': default_preamble}),
         )

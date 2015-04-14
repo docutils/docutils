@@ -44,12 +44,12 @@ import docutils
 from docutils import frontend, nodes, utils, writers, languages, io
 from docutils.utils.error_reporting import SafeString
 from docutils.transforms import writer_aux
-from docutils.utils.math import unichar2tex, pick_math_environment, math2html
-from docutils.utils.math.latex2mathml import parse_latex_math
+from docutils.utils.math import (unichar2tex, pick_math_environment,
+                                 math2html, latex2mathml, tex2mathml_extern)
 
 class Writer(writers.Writer):
 
-    supported = ('html', 'html5', 'xhtml')
+    supported = ('html', 'html5', 'html4', 'xhtml', 'xhtml10')
     """Formats this writer supports."""
 
     default_stylesheets = ['html-base.css']
@@ -132,8 +132,9 @@ class Writer(writers.Writer):
           'Defined styles: "borderless". Default: ""',
           ['--table-style'],
           {'default': ''}),
-         ('Math output format (one of "MathML", "HTML", "MathJax" '
-          'or "LaTeX") and options(s).  Default: "HTML math.css"',
+         ('Math output format (one of "MathML", "HTML", "MathJax", '
+          'or "LaTeX") and option(s). '
+          'Default: "HTML math.css"',
           ['--math-output'],
           {'default': 'HTML math.css'}),
          ('Prepend an XML declaration. (Thwarts HTML5 conformance.) '
@@ -1138,41 +1139,46 @@ class HTMLTranslator(nodes.NodeVisitor):
             self.body.append('</code>')
         self.body.append('</pre>\n')
 
+    # Mathematics:
+    # As there is no native HTML math support, we provide alternatives
+    # for the math-output: LaTeX and MathJax simply wrap the content,
+    # HTML and MathML also convert the math_code.
+    # HTML container
+    math_tags = {# math_output: (block, inline, class-arguments)
+                 'mathml':      ('div', '', ''),
+                 'html':        ('div', 'span', 'formula'),
+                 'mathjax':     ('div', 'span', 'math'),
+                 'latex':       ('pre', 'tt',   'math'),
+                }
+
     def visit_math(self, node, math_env=''):
         # If the method is called from visit_math_block(), math_env != ''.
 
-        # As there is no native HTML math support, we provide alternatives:
-        # LaTeX and MathJax math_output modes simply wrap the content,
-        # HTML and MathML math_output modes also convert the math_code.
-        if self.math_output not in ('mathml', 'html', 'mathjax', 'latex'):
+        if self.math_output not in self.math_tags:
             self.document.reporter.error(
                 'math-output format "%s" not supported '
                 'falling back to "latex"'% self.math_output)
             self.math_output = 'latex'
-        #
-        # HTML container
-        tags = {# math_output: (block, inline, class-arguments)
-                'mathml':      ('div', '', ''),
-                'html':        ('div', 'span', 'formula'),
-                'mathjax':     ('div', 'span', 'math'),
-                'latex':       ('pre', 'tt',   'math'),
-               }
-        tag = tags[self.math_output][math_env == '']
-        clsarg = tags[self.math_output][2]
+        tag = self.math_tags[self.math_output][math_env == '']
+        clsarg = self.math_tags[self.math_output][2]
         # LaTeX container
         wrappers = {# math_mode: (inline, block)
-                    'mathml':  (None,     None),
+                    'mathml':  ('$%s$',   u'\\begin{%s}\n%s\n\\end{%s}'),
                     'html':    ('$%s$',   u'\\begin{%s}\n%s\n\\end{%s}'),
                     'mathjax': ('\(%s\)', u'\\begin{%s}\n%s\n\\end{%s}'),
                     'latex':   (None,     None),
                    }
         wrapper = wrappers[self.math_output][math_env != '']
+        if self.math_output == 'mathml' and (not self.math_output_options or
+                                self.math_output_options[0] == 'blahtexml'):
+            wrapper = None
         # get and wrap content
         math_code = node.astext().translate(unichar2tex.uni2tex_table)
-        if wrapper and math_env:
-            math_code = wrapper % (math_env, math_code, math_env)
-        elif wrapper:
-            math_code = wrapper % math_code
+        if wrapper:
+            try: # wrapper with three "%s"
+                math_code = wrapper % (math_env, math_code, math_env)
+            except TypeError: # wrapper with one "%s"
+                math_code = wrapper % math_code
         # settings and conversion
         if self.math_output in ('latex', 'mathjax'):
             math_code = self.encode(math_code)
@@ -1191,9 +1197,26 @@ class HTMLTranslator(nodes.NodeVisitor):
         elif self.math_output == 'mathml':
             self.doctype = self.doctype_mathml
             # self.content_type = self.content_type_mathml
+            converter = ' '.join(self.math_output_options).lower()
             try:
-                mathml_tree = parse_latex_math(math_code, inline=not(math_env))
-                math_code = ''.join(mathml_tree.xml())
+                if converter == 'latexml':
+                    math_code = tex2mathml_extern.latexml(math_code,
+                                                    self.document.reporter)
+                elif converter == 'ttm':
+                    math_code = tex2mathml_extern.ttm(math_code,
+                                                    self.document.reporter)
+                elif converter == 'blahtexml':
+                    math_code = tex2mathml_extern.blahtexml(math_code,
+                        inline=not(math_env), 
+                        reporter=self.document.reporter)
+                elif not converter:
+                    math_code = latex2mathml.tex2mathml(math_code,
+                                                        inline=not(math_env))
+                else:
+                    self.document.reporter.error('option "%s" not supported '
+                    'with math-output "MathML"')
+            except OSError:
+                    raise OSError('is "latexmlmath" in your PATH?')
             except SyntaxError, err:
                 err_node = self.document.reporter.error(err, base_node=node)
                 self.visit_system_message(err_node)

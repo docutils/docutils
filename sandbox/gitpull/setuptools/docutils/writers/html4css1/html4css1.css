@@ -28,6 +28,14 @@ table.borderless td, table.borderless th {
 .hidden {
   display: none }
 
+.subscript {
+  vertical-align: sub;
+  font-size: smaller }
+
+.superscript {
+  vertical-align: super;
+  font-size: smaller }
+
 a.toc-backref {
   text-decoration: none ;
   color: black }

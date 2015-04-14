@@ -85,6 +85,7 @@ pdfsetup = r"""
 % hyperlinks:
 \ifthenelse{\isundefined{\hypersetup}}{
   \usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue]{hyperref}
+  \usepackage{bookmark}
   \urlstyle{same} % normal text font (alternatives: tt, rm, sf)
 }{}
 """,
@@ -103,6 +104,12 @@ head_textcomp = head_template.substitute(
     dict(parts, requirements = parts['requirements'] +
 r"""\usepackage{textcomp} % text symbol macros
 """))
+
+head_alltt = head_template.substitute(
+    dict(parts, requirements = parts['requirements'] +
+r"""\usepackage{alltt}
+"""))
+
 
 totest = {}
 totest_latex_toc = {}
@@ -396,55 +403,37 @@ totest['enumerated_lists'] = [
   (II) in roman numerals.
 """,
 # expected output
-head + r"""\newcounter{listcnt0}
-\begin{list}{\arabic{listcnt0}.}
-{
-\usecounter{listcnt0}
-\setlength{\rightmargin}{\leftmargin}
-}
+head + r"""\begin{enumerate}
 
 \item Item 1.
 
 \item Second to the previous item this one will explain
-\end{list}
+\end{enumerate}
 %
 \begin{quote}
-\setcounter{listcnt0}{0}
-\begin{list}{\alph{listcnt0})}
-{
-\usecounter{listcnt0}
-\setlength{\rightmargin}{\leftmargin}
-}
+\begin{enumerate}
+\renewcommand{\labelenumi}{\alph{enumi})}
 
 \item nothing.
 
 \item or some other.
-\end{list}
+\end{enumerate}
 
 \end{quote}
-\setcounter{listcnt0}{0}
-\begin{list}{\arabic{listcnt0}.}
-{
-\usecounter{listcnt0}
-\addtocounter{listcnt0}{2}
-\setlength{\rightmargin}{\leftmargin}
-}
+\begin{enumerate}
+\setcounter{enumi}{2}
 
 \item Third is
-\end{list}
+\end{enumerate}
 %
 \begin{quote}
-\setcounter{listcnt0}{0}
-\begin{list}{(\Roman{listcnt0})}
-{
-\usecounter{listcnt0}
-\setlength{\rightmargin}{\leftmargin}
-}
+\begin{enumerate}
+\renewcommand{\labelenumi}{(\Roman{enumi})}
 
 \item having pre and postfixes
 
 \item in roman numerals.
-\end{list}
+\end{enumerate}
 
 \end{quote}
 
@@ -518,23 +507,38 @@ head_table + r"""
 
 totest['bracket_protection'] = [
 # input
-["""\
-::
-
-  something before to get a end of line.
-  [
-
-  the empty line gets tested too
-  ]
+["""
+* [no option] to this item
 """,
 head + r"""%
-\begin{quote}{\ttfamily \raggedright \noindent
-something~before~to~get~a~end~of~line.\\
-{[}\\
-~\\
-the~empty~line~gets~tested~too\\
-{]}
-}
+\begin{itemize}
+
+\item {[}no option{]} to this item
+
+\end{itemize}
+
+\end{document}
+"""],
+]
+
+totest['literal_block'] = [
+# input
+["""\
+Test special characters { [ \\\\ ] } in literal block::
+
+  { [ ( \macro
+
+  } ] )
+""",
+head_alltt + r"""
+Test special characters \{ {[} \textbackslash{} {]} \} in literal block:
+%
+\begin{quote}
+\begin{alltt}
+\{ [ ( \textbackslash{}macro
+
+\} ] )
+\end{alltt}
 \end{quote}
 
 \end{document}

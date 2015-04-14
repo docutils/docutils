@@ -147,7 +147,8 @@ dl > dd p:first-child { margin-top: 0; }
 /* dl > dd p:last-child  { margin-bottom: 0; } */
 
 /* lists nested in definition lists */
-dd > ul, dd > ol { padding-left: 0pt; }
+/* :only-child is not part of CSS 2.1 (introduced in CSS 3) */
+dd > ul:only-child, dd > ol:only-child { padding-left: 1em; }
 
 dt span.classifier { font-style: italic }
 dt span.classifier:before {
@@ -458,7 +459,7 @@ p.rubric {
 
 /* can be styled in a custom stylesheet */
 
-/* Document Header & Footer */
+/* Document Header and Footer */
 
 div.footer, div.header {
   clear: both;

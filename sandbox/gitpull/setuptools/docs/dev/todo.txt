@@ -761,10 +761,6 @@ __ rst/alternatives.html#or-not-to-do
 Misc
 ----
 
-* Allow embedded references and not only embedded URIs: ```link text
-  <reference_>`_``; see the second half of
-  <http://article.gmane.org/gmane.text.docutils.devel/3738>.
-
 * Another list problem::
 
       * foo
@@ -1099,8 +1095,9 @@ Misc
 
       :Case Study\: Event Handling: This chapter will be dropped.
 
-* Enable grid _`tables inside XML comments`, where "--" ends comments.
-  I see three implementation possibilities:
+* Enable grid _`tables inside XML comments`, where "``--``" ends comments.
+
+  Implementation possibilities:
 
   1. Make the table syntax characters into "table" directive options.
      This is the most flexible but most difficult, and we probably
@@ -1113,14 +1110,22 @@ Misc
      without a directive option.  Individual tables would have to be
      internally consistent.
 
+  4. Allow Unicode box characters for table markup
+     (`feature request [6]`_)
+
   Directive options are preferable to configuration settings, because
   tables are document-specific.  A pragma directive would be another
   approach, to set the syntax once for a whole document.
 
+  Unicode box character markup would kill two birds with one stone.
+
   In the meantime, the list-table_ directive is a good replacement for
   grid tables inside XML comments.
 
+  .. _feature request [6]:
+      http://sourceforge.net/p/docutils/feature-requests/6
   .. _list-table: ../ref/rst/directives.html#list-table
+
 
 * Generalize docinfo contents (bibliographic fields): remove specific
   fields, and have only a single generic "field"?
@@ -1244,7 +1249,7 @@ ASCIIMath_
   * The Python module ASCIIMathML_ translates a string with ASCIIMath into a
     MathML tree. Used, e.g., by MultiMarkdown__.
 
-    A more comprehensive and implementation is ASCIIMathPython_ by
+    A more comprehensive implementation is ASCIIMathPython_ by
     Paul Trembley (also used in his sandbox projects).
 
   * For conversion to LaTeX, there is a JavaScript script at
@@ -1312,35 +1317,46 @@ MathML_
   Converters from LaTeX to MathML include
 
   * latex_math_ (Python) by Jens Jørgen Mortensen in the Docutils sandbox
-  * Blahtex_ (C++)
+
+    This is the base for Docutils latex2mathml_ module used by
+    default with ``--math-output=MathML``.
+
+  * blahtexml_ (C++), supported with ``--math-output=MathML blahtexml``.
+
+    Fast conversion, support for many symbols and environments, but
+    no "align" (or other equation-aligning) environment.
+
+  * LaTeXML_ (Perl), supported with ``--math-output=MathML latexml``.
+
+    Comprehensive macro support but very slow
+
+  * TtM_ (C), ``--math-output=MathML ttm``, support may be removed.
+
+    No "matrix", "align" and  "cases" environments.
+
   * MathToWeb_ (Java)
   * TeX4ht_ (TeX based)
-  * LaTeXML_ (Perl)
   * itex_ (also `used in Abiword`__)
-  * TtM_ (C, non free, free binary for Linux) with an `online-trial page`__
   * `Steve’s LATEX-to-MathML translator`_
     ('mini-language', javascript, Python)
 
-  latex_math_ is the base for the current latex2mathml_ module used
-  with ``--math-output=MathML``.
 
-  * Write a new converter based on:
+  * Write a new converter? E.g. based on:
 
     * a generic tokenizer (see e.g. a `latex-codec recipe`_,
       `updated latex-codec`_, )
     * the Unicode-Char <-> LaTeX mappings database unimathsymbols_
 
   __ http://msevior.livejournal.com/26377.html
-  __ http://hutchinson.belmont.ma.us/tth/mml/ttmmozform.html
   .. _MathML: http://www.w3.org/TR/MathML2/
   .. _latex_math: ../../../sandbox/jensj/latex_math/
   .. _latex2mathml: ../../docutils/math/latex2mathml.py
-  .. _Blahtex: http://gva.noekeon.org/blahtexml/
-  .. _MathToWeb:  http://www.mathtoweb.com/
-  .. _TeX4ht: http://www.tug.org/applications/tex4ht/mn.html
+  .. _blahtexml: http://gva.noekeon.org/blahtexml/
   .. _LaTeXML: http://dlmf.nist.gov/LaTeXML/
-  .. _itex: http://golem.ph.utexas.edu/~distler/blog/itex2MMLcommands.html
   .. _ttm: http://hutchinson.belmont.ma.us/tth/mml/
+  .. _TeX4ht: http://www.tug.org/applications/tex4ht/mn.html
+  .. _MathToWeb:  http://www.mathtoweb.com/
+  .. _itex: http://golem.ph.utexas.edu/~distler/blog/itex2MMLcommands.html
   .. _Steve’s LATEX-to-MathML translator:
      http://www.gold-saucer.org/mathml/greasemonkey/dist/display-latex
   .. _latex-codec recipe:
@@ -1357,19 +1373,19 @@ HTML/CSS
   format math in standard HTML enhanced by CSS rules
   (Overview__, `Examples and experiments`__).
 
-  LaTeX-math to HTML/CSS converters include
+  The ``math-output=html`` option uses the converter from eLyXer_
+  (included with Docutils).
+
+  Alternatives: LaTeX-math to HTML/CSS converters include
 
   * TtH_ (C)
   * Hevea_ (Objective Caml)
-  * eLyXer_ (Python)
-
-  The ``math-output=html`` option uses the converter from eLyXer.
 
   __ http://www.cs.tut.fi/~jkorpela/math/
   __ http://www.zipcon.net/~swhite/docs/math/math.html
+  .. _elyxer: http://elyxer.nongnu.org/
   .. _TtH: ttp://hutchinson.belmont.ma.us/tth/index.html
   .. _Hevea: http://para.inria.fr/~maranget/hevea/
-  .. _elyxer: http://elyxer.nongnu.org/
 
 images
   (PNG or SVG) like e.g. Wikipedia. (e.g. with dvisvgm_ or the
@@ -1601,7 +1617,7 @@ when used in a document.
   - Make the meaning of block quotes overridable?  Only a 1-shot
     though; doesn't solve the general problem.
 
-  - .. _conditional directives:
+  - _`conditional directives`:
 
     .. note:: See also the implementation in Sphinx_.
 
@@ -2063,6 +2079,14 @@ HTML Writer
   omitting ``<p>`` tags.  List compacting would need to be done by
   adjusting CSS margins instead.
 
+  :2015-04-02: The new html writer no longer strips <p> tags but adds the
+               class value ``simple`` to the list.
+               Formatting is done by CSS --- configurable by a custom style
+               sheet.
+
+               Auto-compactization can be overridden by the ``open`` vs.
+               ``compact`` class arguments.
+
 * Idea for field-list rendering: hanging indent::
 
       Field name (bold): First paragraph of field body begins
@@ -2070,6 +2094,12 @@ HTML Writer
 
           If the first item of a field body is not a paragraph,
           it would begin on the following line.
+
+  :2015-04-02: The new html writer writes field-lists as definition lists
+               with class ``field-list``.
+               Formatting is done by CSS --- configurable by a custom style
+               sheet. The default style sheet has some examples, including a
+               run-in field-list style.
 
 * Add more support for <link> elements, especially for navigation
   bars.
@@ -2096,8 +2126,9 @@ PEP/HTML Writer
 * Remove the generic style information (duplicated from html4css1.css)
   from pep.css to avoid redundancy.
 
-  Needs support for multiple stylesheets in the PEP writer
-  (is this inherited from HTML?).
+  Set ``stylesheet-path`` to "html4css.css,pep.css" and the
+  ``stylesheet-dirs`` accordingly instead. (See the xhtml11 writer for an
+  example.)
 
 
 S5/HTML Writer
@@ -2163,37 +2194,20 @@ Epub/HTML Writer
 
 Add epub as an output format.
 
+  epub is an open file format for ebooks based on HTML, specified by the
+  `International Digital Publishing Forum`_. Thus, documents in epub
+  format are suited to be read with `electronic reading devices`_.
+
 Pack the output of a HTML writer and supporting files (e.g. images)
 into one single epub document.
 
-  epub is an open file format for ebooks based on HTML, specified by the
-  `International Digital Publishing Forum`_. Thus, documents in epub
-  format are suited to be read with `electronic reading devices`_. The
-  epub format comprises:
+There are `links to two 3rd party ePub writers`__ in the Docutils link list.
+Test and consider moving the better one into the docutils core.
 
-  * `Open Publication Structure (OPS)
-    <http://www.idpf.org/2007/ops/OPS_2.0_final_spec.html>`_
-  * `Open Packaging Format (OPF)
-    <http://www.idpf.org/2007/opf/OPF_2.0_final_spec.html>`_
-  * `OEBPS Container Format (OCF)
-    <http://www.idpf.org/ocf/ocf1.0/download/ocf10.htm>`_
-
-  -- rst2epub_ README
-
-There is a project for epub support with sphinx providing a
-(hopefully) reusable framework.
-
-.. _rst2epub: http://bitbucket.org/wierob/rst2epub/
+__ ../user/links.html#ePub
 .. _International Digital Publishing Forum: http://www.idpf.org/
 .. _electronic reading devices:
    http://en.wikipedia.org/wiki/List_of_e-book_readers
-
-Also, the plasTeX_ Python package has an EPUB renderer:
-
-  It simply calls the XHTML renderer and does the epub packaging in
-  postprocessing.
-
-.. _plasTeX: http://plastex.sourceforge.net/
 
 
 LaTeX writer
@@ -2362,12 +2376,7 @@ Which packages do we want to use?
      * perpage provides a general mechanism for resetting counters per page
      * footmisc provides a package option perpage
 
-* enumeration environment, field list
-
-  * use `mdwlist` from texlive-latex-recommended?
-
-  * use `eqlist` (texlive-latex-extra) for field-lists?
-
+* use `eqlist` or `enumitem` (texlive-latex-extra) for field-lists?
 
 * ``--use-latex-when-possible`` »super option« that would set the
   following::

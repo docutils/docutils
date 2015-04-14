@@ -49,24 +49,36 @@ Changes Since 0.12
   - Apply patch [ 119 ] by Anatoly Techtonik: use absolute paths for
     ``default_stylesheet_path`` and ``default_template_path``.
   - Fix [ 266 ] creating labels/class values in description list items.
+  - Do not use <sup> and <sub> tags inside <pre> (parsed-literal blocks).
+
+* docutils/writers/latex2e/__init__.py
+
+  - Fix [ 262 ] Use ``\linewidth`` instead of ``\textwidth`` for figures,
+    admonitions and docinfo.
+
+  - Use absolute path for ``default_template_path``.
+
+  - Removed deprecated options ``--use-latex-footnotes`` and
+    ``--figure-footnotes``.
+
+  - Cleaner LaTeX code for enumerations and literal blocks.
+
+  - Use "hyperref" package together with "bookmark" (improved hyperlinking
+    by the same author).
+
+* docutils/writers/odf_odt/__init__.py
+
+  - remove decode.encode of filename stored in zip.
+
+* docutils/writers/xetex/__init__.py
+
+  - LuaLaTex compatibility: do not load "xunicode".
 
 * docutils/writers/xhtml11/
 
   - New HTML writer generating `XHTML 1.1`_ styled with CSS2.1
     Moved to the docutils core from sandbox/html4strict.
 
-* docutils/writers/latex2e/__init__.py
-
-  - use absolute path for ``default_template_path``.
-
-* docutils/writers/odf_odt/__init__.py
-
-  - remove decode.encode of filename stored in zip.
-
-* docutils/writers/latex2e/__init__.py
-
-  - Fix [ 262 ] Use ``\linewidth`` instead of ``\textwidth`` for figures,
-    admonitions and docinfo.
 
 * tools/
 
@@ -232,7 +244,7 @@ Release 0.10 (2012-12-16)
   - Apply [ 3527401 ] addmonition's don't preserve indentation
   - Apply [ 3527397 ] Add indentation to literal blocks in manpage writer.
 
-, docutils/writers/xetex/__init__.py
+* docutils/writers/xetex/__init__.py
 
   - Apply [ 3555160 ] ensure order of "otherlanguages".
   - Fix section numbering by LaTeX.
