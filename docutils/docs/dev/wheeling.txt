@@ -12,6 +12,7 @@
 
 .. contents::
 
+
 This document documents my trial to build python wheels from 
 docutils. Once it is finished it might be driven into distribution or
 release documentation.
@@ -31,6 +32,7 @@ There is `feature request 43`_ :  Make setup.py build wheels.
   3, but with different code (we use “2to3”). This would make it a candidate
   for "Pure Python wheels".
 
+  https://packaging.python.org/en/latest/distributing.html#pure-python-wheels
 
 and bugs275_ : Upload wheels to pypi 
 
@@ -39,6 +41,8 @@ and bugs275_ : Upload wheels to pypi
   packages can take some time), and is no more difficult than uploading an
   sdist (see https://packaging.python.org/en/latest/distributing.html#wheels
   for instructions).
+
+
 
 .. _bugs275: https://sourceforge.net/p/docutils/bugs/275/
 .. _feature request 43: https://sourceforge.net/p/docutils/feature-requests/43/
