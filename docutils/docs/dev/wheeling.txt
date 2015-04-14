@@ -50,6 +50,20 @@ and bugs275_ : Upload wheels to pypi
 Logbook 
 -------
 
+1. Add ``[bdist_wheel] universal = 0`` to setup.cfg.
+2. Run ``python setup.py bdist_wheel``::
+
+     error: invalid command 'bdist_wheel'
+
+3. setuptools is too old. Install the new one by wheel or source or pip or easy...
+
+4. try wheel ... first get wheel tar.gz and unpack.
+
+5. try ::
+
+     python2.7 wheel-0.24.0/wheel install setuptools-15.0-py2.py3-none-any.whl
+
+   no error. But still ``error: invalid command 'bdist_wheel'``
 
 .. _bugs275: https://sourceforge.net/p/docutils/bugs/275/
 .. _feature request 43: https://sourceforge.net/p/docutils/feature-requests/43/
