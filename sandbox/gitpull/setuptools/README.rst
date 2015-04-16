@@ -19,9 +19,15 @@ existing functionality. This sandbox / branch also incorporates
 researching concrete details on the implications setuptools would have to 
 the tooling of the project and its' compatibility.
 
+Links
+-----
+
+- `setuptools docs`_
+
 .. _distutils was merged into setuptools:
    https://mail.python.org/pipermail/distutils-sig/2013-March/020126.html
 .. _Python Packaging User Guide: https://packaging.python.org/en/latest/
+.. _setuptools docs: https://pythonhosted.org/setuptools/setuptools.html
 .. [1] http://www.aosabook.org/en/packaging.html
 .. [2] http://lucumr.pocoo.org/2012/6/22/hate-hate-hate-everywhere/
 .. [3] http://stackoverflow.com/a/14753678
