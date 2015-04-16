@@ -141,3 +141,9 @@ While you probably do not need to ship the tests with your
 distribution, you can test your package by installing it and then
 running ``alltests.py`` from the ``tests/`` directory of the Docutils
 tarball.
+
+Official releases on docutils must have tests succeed across all
+supported python versions. For more information on testing, view
+the `Docutils Testing`_ page.
+
+.. _Docutils Testing: http://docutils.sourceforge.net/docs/dev/testing.html
