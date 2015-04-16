@@ -70,8 +70,82 @@ Logbook
 
    Did wheel install ? If no, why no error, if yes in which place ?
 
-   
+Logbook: with setuptools branch
+-------------------------------
+
+`gitpull/setuptools`_ sandbox branch introduces `setuptools`_ in ``setup.py``.
+
+As of 2015-04-16: **Not working yet**, ``import docutils`` will raise an ``ImportError``. Need to get packages 
+detected correctly.
+
+Install::
+
+    $ svn checkout svn://svn.code.sf.net/p/docutils/code/trunk/sandbox/gitpull/setuptools docutils-setuptools
+    $ cd setuptools
+    # create a virtualenv (however you like)
+    $ pip install -e .
+
+This includes support for generate ``python setup.py bdist_wheel``::
+
+    $ python setup.py bdist_wheel
+    running bdist_wheel
+    running build
+    running build_scripts
+    installing to build/bdist.linux-x86_64/wheel
+    running install
+    running install_egg_info
+    running egg_info
+    writing docutils.egg-info/PKG-INFO
+    writing top-level names to docutils.egg-info/top_level.txt
+    writing dependency_links to docutils.egg-info/dependency_links.txt
+    reading manifest file 'docutils.egg-info/SOURCES.txt'
+    reading manifest template 'MANIFEST.in'
+    warning: no files found matching 'MANIFEST'
+    warning: no files found matching '*' under directory 'extras'
+    warning: no previously-included files matching '.cvsignore' found under directory '*'
+    warning: no previously-included files matching '*~' found under directory '*'
+    warning: no previously-included files matching '.DS_Store' found under directory '*'
+    writing manifest file 'docutils.egg-info/SOURCES.txt'
+    Copying docutils.egg-info to build/bdist.linux-x86_64/wheel/docutils-0.13.data/purelib/docutils-0.13-py2.7.egg-info
+    running install_scripts
+    creating build/bdist.linux-x86_64/wheel/docutils-0.13.data/scripts
+    copying build/scripts-2.7/rst2pseudoxml.py -> build/bdist.linux-x86_64/wheel/docutils-0.13.data/scripts
+    copying build/scripts-2.7/rst2man.py -> build/bdist.linux-x86_64/wheel/docutils-0.13.data/scripts
+    copying build/scripts-2.7/rst2odt.py -> build/bdist.linux-x86_64/wheel/docutils-0.13.data/scripts
+    copying build/scripts-2.7/rst2latex.py -> build/bdist.linux-x86_64/wheel/docutils-0.13.data/scripts
+    copying build/scripts-2.7/rstpep2html.py -> build/bdist.linux-x86_64/wheel/docutils-0.13.data/scripts
+    copying build/scripts-2.7/rst2s5.py -> build/bdist.linux-x86_64/wheel/docutils-0.13.data/scripts
+    copying build/scripts-2.7/rst2odt_prepstyles.py -> build/bdist.linux-x86_64/wheel/docutils-0.13.data/scripts
+    copying build/scripts-2.7/rst2html.py -> build/bdist.linux-x86_64/wheel/docutils-0.13.data/scripts
+    copying build/scripts-2.7/rst2html5.py -> build/bdist.linux-x86_64/wheel/docutils-0.13.data/scripts
+    copying build/scripts-2.7/rst2xml.py -> build/bdist.linux-x86_64/wheel/docutils-0.13.data/scripts
+    copying build/scripts-2.7/rst2xetex.py -> build/bdist.linux-x86_64/wheel/docutils-0.13.data/scripts
+    changing mode of build/bdist.linux-x86_64/wheel/docutils-0.13.data/scripts/rst2pseudoxml.py to 755
+    changing mode of build/bdist.linux-x86_64/wheel/docutils-0.13.data/scripts/rst2man.py to 755
+    changing mode of build/bdist.linux-x86_64/wheel/docutils-0.13.data/scripts/rst2odt.py to 755
+    changing mode of build/bdist.linux-x86_64/wheel/docutils-0.13.data/scripts/rst2latex.py to 755
+    changing mode of build/bdist.linux-x86_64/wheel/docutils-0.13.data/scripts/rstpep2html.py to 755
+    changing mode of build/bdist.linux-x86_64/wheel/docutils-0.13.data/scripts/rst2s5.py to 755
+    changing mode of build/bdist.linux-x86_64/wheel/docutils-0.13.data/scripts/rst2odt_prepstyles.py to 755
+    changing mode of build/bdist.linux-x86_64/wheel/docutils-0.13.data/scripts/rst2html.py to 755
+    changing mode of build/bdist.linux-x86_64/wheel/docutils-0.13.data/scripts/rst2html5.py to 755
+    changing mode of build/bdist.linux-x86_64/wheel/docutils-0.13.data/scripts/rst2xml.py to 755
+    changing mode of build/bdist.linux-x86_64/wheel/docutils-0.13.data/scripts/rst2xetex.py to 755
+    creating build/bdist.linux-x86_64/wheel/docutils-0.13.dist-info/WHEEL
+
+Installation::
+
+    # create a fresh virtualenv
+    $ pip install -U dist/docutils-0.13-cp27-none-linux_x86_64.whl
+    Processing ./dist/docutils-0.13-cp27-none-linux_x86_64.whl
+    Installing collected packages: docutils
+    Found existing installation: docutils 0.13
+    Uninstalling docutils-0.13:
+    Successfully uninstalled docutils-0.13
+    Successfully installed docutils-0.13
 
 .. _bugs275: https://sourceforge.net/p/docutils/bugs/275/
 .. _feature request 43: https://sourceforge.net/p/docutils/feature-requests/43/
+.. _gitpull/setuptools: https://sourceforge.net/p/docutils/code/HEAD/tree/trunk/sandbox/gitpull/setuptools/
+.. _setuptools: https://pythonhosted.org/setuptools/
 
