@@ -16,6 +16,13 @@
 Changes Since 0.12
 ==================
 
+* tox.ini
+
+  - Test py26, py27, py33 and py34.
+
+    To use, install the ``tox`` package via pip or easy_install and use
+    tox from the project root directory.
+
 * docutils/nodes.py
 
   - Fix [ 253 ] Attribute key without value not allowed in XML.
