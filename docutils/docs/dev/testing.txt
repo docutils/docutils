@@ -29,6 +29,34 @@ be sure that you haven't broken anything.  From a shell::
     cd docutils/test
     ./alltests.py
 
+Testing Across Versions with tox
+================================
+
+To save time, you can use `tox`_ to test docutils on versions 2.6+. To
+install tox, you can use ``easy_install tox`` or ``pip install tox``.
+From shell::
+
+    cd docutils
+    tox
+
+If you need to install multiple versions of python, you can install
+`pyenv`_ (see `installing pyenv`_) and setup multiple python versions::
+
+    # assuming your system runs 2.7.x
+    $ pyenv install 2.6.9
+    $ pyenv install 3.3.6
+    $ pyenv install 3.4.3
+    $ pyenv global system 2.6.9 3.3.6 3.4.3
+    $ rm -rf ~/.pyenv/shims && pyenv rehash
+
+This will give you ``python2.6``, ``python2.7``, ``python3.3`` and
+``python3.4``. Along with that, ``pip2.6``, ``pip2.7`` and so on.
+
+Note: tox only supports python 2.6 and onward.
+
+.. _tox: https://tox.readthedocs.org/en/latest/
+.. _pyenv: https://github.com/yyuu/pyenv
+.. _installing pyenv: https://github.com/yyuu/pyenv#installation
 
 Python Versions
 ===============
