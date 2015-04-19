@@ -172,6 +172,8 @@ http://www.oasis-open.org/html/tm9901.htm).
 
 <!-- These parameter entities customize the table model DTD. -->
 <!ENTITY % bodyatt              " %basic.atts; ">  <!-- table elt -->
+<!-- 1 colspec element is expected per table column: -->
+<!ENTITY % tbl.tgroup.mdl      "colspec+,thead?,tbody">
 <!ENTITY % tbl.tgroup.att       " %basic.atts; ">
 <!ENTITY % tbl.thead.att        " %basic.atts; ">
 <!ENTITY % tbl.tbody.att        " %basic.atts; ">
@@ -179,6 +181,7 @@ http://www.oasis-open.org/html/tm9901.htm).
   " %basic.atts;
     stub      %yesorno; #IMPLIED ">
 <!ENTITY % tbl.row.att          " %basic.atts; ">
+<!-- nested tables are supported -->
 <!ENTITY % tbl.entry.mdl        " (%body.elements;)* ">
 <!ENTITY % tbl.entry.att
   " %basic.atts;
