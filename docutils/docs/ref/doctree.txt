@@ -3977,6 +3977,10 @@ attributes are stored in the ``subtitle`` element.
 ``table``
 =========
 
+Docutils tables are based on the Exchange subset of the CALS-table model
+(OASIS Technical Memorandum 9901:1999 "XML Exchange Table Model DTD",
+http://www.oasis-open.org/html/tm9901.htm).
+
 `To be completed`_.
 
 
