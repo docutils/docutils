@@ -16,13 +16,6 @@
 Changes Since 0.12
 ==================
 
-* tox.ini
-
-  - Test py26, py27, py33 and py34.
-
-    To use, install the ``tox`` package via pip or easy_install and use
-    tox from the project root directory.
-
 * docutils/nodes.py
 
   - Fix [ 253 ] Attribute key without value not allowed in XML.
@@ -43,12 +36,12 @@ Changes Since 0.12
 
 * docutils/writers/html_base/
 
-  - New HTML writer generating basic HTML (`polyglot markup`_ conforming to
-    both, `HTML 5`_ and `XHTML 1.0`_ (transitional)).
+  - New HTML writer generating clean, polyglot_ markup conforming to
+    `HTML 5`_ and compatible with `XHTML 1.0`_ Transitional.
 
     New stylesheet ``html-base.css`` for default layout using CSS 2.1 rules.
 
-    Also base for the `xhtml11` writer.
+    Also base for the xhtml11_ writer.
 
 * docutils/writers/html4css1/__init__.py
 
@@ -81,7 +74,7 @@ Changes Since 0.12
 
   - LuaLaTex compatibility: do not load "xunicode".
 
-* docutils/writers/xhtml11/
+* docutils/writers/_`xhtml11`/
 
   - New HTML writer generating `XHTML 1.1`_ styled with CSS2.1
     Moved to the docutils core from sandbox/html4strict.
@@ -92,7 +85,14 @@ Changes Since 0.12
   - New front-ends ``rst2xhtml.py`` and ``rst2html5.py`` for the
     corresponding writers.
 
-.. _polyglot markup: http://www.w3.org/TR/html-polyglot/
+* tox.ini
+
+  - Test py26, py27, py33 and py34.
+
+    To use, install the ``tox`` package via pip or easy_install and use
+    tox from the project root directory.
+
+.. _polyglot: http://www.w3.org/TR/html-polyglot/
 .. _HTML 5: http://www.w3.org/TR/html5/
 .. _XHTML 1.0: http://www.w3.org/TR/xhtml1/
 .. _XHTML 1.1: http://www.w3.org/TR/xhtml11/
