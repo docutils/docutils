@@ -22,6 +22,9 @@ Future changes
 
 * remove the `handle_io_errors` option from io.FileInput/Output.
 
+  .. used by Sphinx up to version 1.3.1,
+     see https://github.com/sphinx-doc/sphinx/issues/1834
+
 * »Prune« the doctree (no change to the reST input syntax):
 
   - "doctest" element -> literal block with "pycon" (python-console)
@@ -29,14 +32,8 @@ Future changes
   - special admonitions (note, hint, warning, ...) -> generic "admonition"
     element with class attribute and auto-generated title.
 
-* Move to single source for Python 2 and Python 3, slowly.
-  See `Porting Python 2 Code to Python 3`_ and
-  `future: clean single-source support for Python 2/3`_
+* Drop support for python 2.4 after release 0.13.
 
-  - Drop support for python 2.4 after release 0.12.
-
-.. _Porting Python 2 Code to Python 3: https://docs.python.org/3/howto/pyporting.html
-.. _future\: clean single-source support for Python 2/3: http://python-future.org
 
 Changes Since 0.12
 ==================
@@ -44,7 +41,7 @@ Changes Since 0.12
 * docutils/writers/
 
   - New HTML writers generating `HTML 5`_ and `XHTML 1.1`_.
-    
+
     New stylesheet ``html-base.css`` for default layout using CSS 2.1.
 
 * tools/
