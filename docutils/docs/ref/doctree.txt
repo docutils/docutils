@@ -2907,8 +2907,8 @@ Pseudo-XML_ fragment from simple parsing::
 ``math``
 ========
 
-The ``math`` element contains text in `LaTeX math format` that is typeset
-as mathematical notation (inline formula).
+The ``math`` element contains text in `LaTeX math format` [#latex-math]_
+that is typeset as mathematical notation (inline formula).
 
 If the output format does not support math typesetting, the content is
 inserted verbatim.
@@ -2920,7 +2920,7 @@ Details
     `Inline Elements`_
 
 :Parents:
-    All elements employing the `%inline.elements;`_ parameter entities in 
+    All elements employing the `%inline.elements;`_ parameter entities in
     their content models may contain ``math``.
 
 :Children:
@@ -2944,14 +2944,19 @@ Content Model
     The ``math`` element contains the `common attributes`_
     (ids_, names_, dupnames_, source_, and classes_).
 
+.. [#latex-math] For details of the supported mathematical language, see
+   the `"math" directive`_
+
+.. _"math" directive: rst/directives.html#math
+
 
 ``math_block``
 ==============
 
 The ``math_block`` element contains a block of text in `LaTeX math
-format` that is typeset as mathematical notation (display formula).
-The ``math_block`` element is generated during the initial parse from a
-"math" directive.
+format` [#latex-math]_ that is typeset as mathematical notation
+(display formula). The ``math_block`` element is generated during
+the initial parse from a "math" directive.
 
 If the output format does not support math typesetting, the content is
 inserted verbatim.
@@ -2983,7 +2988,7 @@ Content Model
 
 .. parsed-literal::
 
-    `%text.model;`_
+    (#PCDATA)
 
 :Attributes:
     The ``math`` element contains the `common attributes`_

@@ -125,7 +125,7 @@ resolve to either an internal or external reference.
 <!ENTITY % additional.body.elements "">
 <!ENTITY % body.elements
   " paragraph | compound | container | literal_block | doctest_block
-    | line_block | block_quote
+    | math_block | line_block | block_quote
     | table | figure | image | footnote | citation | rubric
     | bullet_list | enumerated_list | definition_list | field_list
     | option_list
@@ -137,7 +137,7 @@ resolve to either an internal or external reference.
 
 <!ENTITY % additional.inline.elements "">
 <!ENTITY % inline.elements
-  " emphasis | strong | literal
+  " emphasis | strong | literal | math
     | reference | footnote_reference | citation_reference
     | substitution_reference | title_reference
     | abbreviation | acronym | subscript | superscript
@@ -394,6 +394,13 @@ or " ") or the text between option arguments (typically either "," or
     %basic.atts;
     %fixedspace.att;>
 
+<!--
+`math_block` contains a block of text in "LaTeX math format"
+that is typeset as mathematical notation (display formula).
+-->
+<!ELEMENT math_block (#PCDATA)>
+<!ATTLIST math_block %basic.atts;>
+
 <!ELEMENT line_block (line | line_block)+>
 <!ATTLIST line_block %basic.atts;>
 
@@ -537,7 +544,7 @@ following caveats:
 - Nested inline elements may or may not be supported by individual
   applications using this DTD.
 - The inline elements <footnote_reference>, <citation_reference>,
-  <literal>, and <image> do not support nesting.
+  <literal>, <math>, and <image> do not support nesting.
 -->
 
 <!ELEMENT emphasis %text.model;>
@@ -548,6 +555,9 @@ following caveats:
 
 <!ELEMENT literal (#PCDATA)>
 <!ATTLIST literal %basic.atts;>
+
+<!ELEMENT math (#PCDATA)>
+<!ATTLIST math %basic.atts;>
 
 <!-- Can also be a body element, when it contains an "image" element. -->
 <!ELEMENT reference %text.model;>

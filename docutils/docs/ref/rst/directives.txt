@@ -531,9 +531,9 @@ Math
 :Doctree Element: math_block_
 :Directive Arguments: One, optional: prepended to content.
 :Directive Options: `:class:`_, `:name:`_
-:Directive Content: Interpreted as math block(s).
-                    Content blocks separated by a blank line are put in
-                    separate math-block doctree elements.
+:Directive Content: Becomes the body of the math block.
+                    (Content blocks separated by a blank line are put in
+                    adjacent math blocks.)
 :Configuration Setting: math_output_
 
 (New in Docutils 0.8)
@@ -558,7 +558,7 @@ support math typesetting at all, the content is inserted verbatim.
    (see, e.g., the `Short Math Guide`_).
 
 
-For inline math, use the `"math" role`_.
+For inline formulas, use the `"math" role`_.
 
 .. _Short Math Guide: ftp://ftp.ams.org/ams/doc/amsmath/short-math-guide.pdf
 .. _"math" role: roles.html#math
