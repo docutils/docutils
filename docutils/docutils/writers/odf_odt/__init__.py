@@ -58,7 +58,7 @@ try:
     import pygments.lexers
     from pygmentsformatter import OdtPygmentsProgFormatter, \
         OdtPygmentsLaTeXFormatter
-except ImportError, exp:
+except (ImportError, SyntaxError), exp:
     pygments = None
 
 # check for the Python Imaging Library
