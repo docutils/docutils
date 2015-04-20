@@ -71,6 +71,17 @@ Many of these are now handled by Sphinx_
 General
 =======
 
+* Move to single source for Python 2 and Python 3.
+  (Cf. `Porting Python 2 Code to Python 3`_ and
+  `clean single-source support for Python 2/3`_.)
+
+  - Gradually phase out support for Python 2.4 and 2.5 first.
+
+  .. _Porting Python 2 Code to Python 3:
+      https://docs.python.org/3/howto/pyporting.html
+  .. _clean single-source support for Python 2/3:
+      http://python-future.org
+
 * Encoding of command line arguments can only be guessed:
 
   * try UTF-8/strict first, then try the locale's encoding with
