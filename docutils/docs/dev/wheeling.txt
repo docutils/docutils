@@ -189,8 +189,8 @@ Summary:
   and 3 for both, the released and the repository version of Docutils
   without changes to the code base.
 
-TODO:
-  Test-install the wheels.
+  The generated wheel can be installed. Installing the Py3k version happens
+  "instantaneously".
 
 .. [#] Docutils uses the batteries included with Python and avoids external
    dependencies.  
