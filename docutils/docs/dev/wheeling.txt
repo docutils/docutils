@@ -15,31 +15,29 @@
 Abstract
 --------
 
-This document documents my trial to build python wheels from 
-docutils. Once it is finished it might be driven into distribution or
-release documentation.
+This document documents trials to build python wheels from Docutils. Once it
+is finished it might be driven into distribution or release documentation.
 
 Requests
 --------
 
-There is `feature request 43`_ :  Make setup.py build wheels. 
+There is `feature request 43`_ :  Make setup.py build wheels.
 
   Just add this to setup.cfg:
 
   [bdist_wheel]
   universal = 1
 
-  See https://packaging.python.org/en/latest/distributing.html#universal-wheels
 
-  -.-.-
-  
-  Docutils is not fit for Universal Wheels. Docutils supports both Python 2 and
-  3, but with different code (we use “2to3”). This would make it a candidate
-  for "Pure Python wheels".
+  .. warning:: Docutils is not fit for Universal Wheels. It supports both
+     Python 2 and 3, but with different code (we use “2to3”). This makes it
+     a candidate for `Pure Python wheels`_.
 
-  https://packaging.python.org/en/latest/distributing.html#pure-python-wheels
+     As "universal" is false by default, no change to setup.cfg is required.
+     The wheel builder detects that the package is pure Python and generates
+     wheels for Py2 and Py3 depending under which python version it runs.
 
-and bugs275_ : Upload wheels to pypi 
+and bugs275_ : Upload wheels to pypi
 
   Currently docutils does not publish any wheels on pypi. Wheels make docutils
   faster to install (no need to run setup.py, which for a large number of
@@ -47,7 +45,7 @@ and bugs275_ : Upload wheels to pypi
   sdist (see https://packaging.python.org/en/latest/distributing.html#wheels
   for instructions).
 
-Logbook 
+Logbook
 -------
 
 1. Add ``[bdist_wheel] universal = 0`` to setup.cfg.
@@ -55,7 +53,8 @@ Logbook
 
      error: invalid command 'bdist_wheel'
 
-3. setuptools is too old. Install the new one by wheel or source or pip or easy...
+3. setuptools is too old. Install the new one by wheel or source or pip or
+   easy...
 
 4. try wheel ... first get wheel tar.gz and unpack.
 
@@ -70,13 +69,14 @@ Logbook
 
    Did wheel install ? If no, why no error, if yes in which place ?
 
+
 Logbook: with setuptools branch
 -------------------------------
 
 `gitpull/setuptools`_ sandbox branch introduces `setuptools`_ in ``setup.py``.
 
-As of 2015-04-16: **Not working yet**, ``import docutils`` will raise an ``ImportError``. Need to get packages 
-detected correctly.
+As of 2015-04-16: **Not working yet**, ``import docutils`` will raise an
+``ImportError``. Need to get packages detected correctly.
 
 Install::
 
@@ -143,9 +143,62 @@ Installation::
     Uninstalling docutils-0.13:
     Successfully uninstalled docutils-0.13
     Successfully installed docutils-0.13
+    
+    
+Logbook with "pip"
+------------------
+
+Docutils' "setup.py" imports from the stdlib's "distutils" module
+instead of the 3rd party "setuptools". "distutils" cannot build wheels. [#]_
+
+OTOH, pip_ internally uses "setuptools" instead of "distutils". This way, it
+can generate wheels without changes to "setup.py".
+
+1. Install "pip" and "wheels"
+
+   Under Debian Gnu/Linux: ``aptitude install python-pip python3-pip``
+
+2. In the repository root directory, run ::
+
+      #> pip wheel ./docutils/
+      Unpacking ./docutils
+        Running setup.py (path:/tmp/pip-Ym9hKL-build/setup.py) egg_info for package from file:///[...]docutils-svn/docutils
+
+          warning: no previously-included files matching '.DS_Store' found under directory '*'
+      Building wheels for collected packages: docutils
+        Running setup.py bdist_wheel for docutils
+        Destination directory: /home/milde/Code/Python/docutils-svn/wheelhouse
+      Successfully built docutils
+      Cleaning up...
+
+3. There is a "pure Python" wheel under
+   ``wheelhouse/docutils-0.13-py2-none-any.whl``
+
+4. Repeat with::
+
+     #> pip3 wheel ./docutils/
+     
+   to get ``wheelhouse/docutils-0.13-py3-none-any.whl``
+
+You can also generate wheels for Docutils 0.12 with ``pip wheel docutils``
+and ``pip3 wheel docutils``. The 0.12 archive is downloaded from PIP and
+re-packed as wheel. With "pip3" this includes the 2to3 conversion.
+
+Summary:
+  With the "pip" utility, it is possible to generate wheels for Python 2
+  and 3 for both, the released and the repository version of Docutils
+  without changes to the code base.
+
+TODO:
+  Test-install the wheels.
+
+.. [#] Docutils uses the batteries included with Python and avoids external
+   dependencies.  
 
 .. _bugs275: https://sourceforge.net/p/docutils/bugs/275/
+.. _pure python wheels:
+    https://packaging.python.org/en/latest/distributing.html#pure-python-wheels
 .. _feature request 43: https://sourceforge.net/p/docutils/feature-requests/43/
 .. _gitpull/setuptools: https://sourceforge.net/p/docutils/code/HEAD/tree/trunk/sandbox/gitpull/setuptools/
 .. _setuptools: https://pythonhosted.org/setuptools/
-
+.. _pip: http://pip.readthedocs.org/en/latest/
