@@ -240,6 +240,16 @@ For details see the script.
 
   __ http://freecode.com/projects/docutils/
 
+* **build a wheel** at least for python3::
+
+    pip3 wheel docutils
+
+  This builds the wheel by downloading the new release from pypi.
+
+  Upload the wheel to pypi.
+
+  Question: Can we have an tar.gz (distutil) and a py2-wheel and a py3-wheel
+    on pypi and will installers select the correct files ?
 
 
 ..
