@@ -15,97 +15,91 @@ Since version 0.13, Docutils comes with a family of HTML writers to support
   and descendants).
 
 
-Overview
---------
+=============  ============  =================   ==========================
+alias          alias         name                output format(s)
+=============  ============  =================   ==========================
+*html5* [#5]_                html_base_          | HTML5_
+                             [#base]_            | `XHTML 1 Transitional`_
+                             
+*xhtml*        html4strict   xhtml11_            | `XHTML 1.1`_
+                                                 | HTML5_
+                             
+*html* [#h]_   xhtml1        html4css1_          `XHTML 1 Transitional`_
+               html4         
+                             
+..                           pep_html_           `XHTML 1 Transitional`_
+                             
+*s5*                         s5_html_            `XHTML 1 Transitional`_
+                             
+=============  ============  =================   ==========================
+  
+For *emphasised* aliases exist ``rst2<alias>.py`` `front-end tools`_.
+  
 
-==========  ===========  =================   =============================
-alias       alias        name                output format(s)
-==========  ===========  =================   =============================
-*html5*     html-base    html_base_          | HTML5_
-[#]_                                         | `XHTML 1 Transitional`_
-
-*xhtml*     html4strict  xhtml11_            | `XHTML 1.1`_
-                                             | HTML5_
-
-*html*      *xhtml1* or  html4css1_          `XHTML 1 Transitional`_
-[#]_        *html4*
-            [#]_
-..                       pep_html_           `XHTML 1 Transitional`_
-
-*s5*                     s5_html_            `XHTML 1 Transitional`_
-
-..                       html4trans_ [#]_    `XHTML 1 Transitional`_
-==========  ===========  =================   =============================
-
-For *emphazised* aliases exist ``rst2<alias>.py`` `front-end tools`_.
-
-.. [#] `html5` may become the name of an advanced HTML5 writer derived from
-   html-base in a future release.
-
-.. [#] `html` may become an alias for html-base in a future release.
-
-.. [#] TODO: how to name the alias/frontend pointing to html4css1?
-
-   :html4:
-
-     +1  short form of html4css1,
-     -1  writer produces XHTML 1, not HTML 4
-
-   :xhtml1:
-
-     +1  correct and short description of the output format.
-     -1  may be confused with xhtml11 or xhtml (aliases for the
-         "new" XHTML 1.1. writer inheriting from html-base).
-
-.. [#] in the sandbox
+..                           html4trans_         `XHTML 1 Transitional`_
+                             [#sandbox]_
+  .. [#sandbox] in the sandbox
 
 .. _front-end tools: tools.html
 
 
 html
-~~~~
+----
 
-The writer name `html` is an alias pointing to the "recommended Docutils
-HTML writer". Its meaning may change with the development of HTML, browsers
-and the web.
+The writer alias `html` points to the "recommended Docutils HTML writer".
+Its meaning may change with the development of HTML, browsers, Docutils, and
+the web.
 
 * Use `get_writer_by_name('html') or the ``rst2html.py`` front end, if you
   want the output to be up-to-date automatically.
 
 * Use a more specific writer name or front end, if you depend on stability
   of the generated HTML code, e.g. because you use a custom style sheet or
-  postprocessing that may break otherwise.
+  post-processing that may break otherwise.
 
 
 html_base
-~~~~~~~~~
+---------
 
-.. note:: The name `html_base` will change to a more appropriate one.
-   Candidates are 
-   
-   * `html_basic` (but beware of confusion with the `XHTML
-     Basic`_ document type), 
-   * `html-generic`, `html-conservative`, or
-   * `html_common` (the greatest common denominator of (X)HTML variants
-      currently in use).
-
-
-:aliases:   html-base, html5
+:aliases:   html-base [#base]_, html5 [#5]_
 :front-end: rst2html5.py_
 :config: `[html-base writer]`_
 
-The `html-base` writer is both, basis for more specialized HTML writers and
-working code generating clean and highly compatible documents.
+The `html-base` module is both, basis for other HTML writers and
+a writer generating simple, clean, and highly compatible documents.
 
-It generates modern `polyglot HTML`_ output (compatible with HTML5_
-and `XHTML 1 Transitional`_). Correct rendering depends on a CSS_ style
-sheet. An example style sheet, html-base.css_, is provided and used by
-default.
+It generates `polyglot HTML`_ output (compatible with HTML5_ and `XHTML 1
+Transitional`_). New features and elements will only be used if they are
+widely supported to make documents `viewable with any browser`_. 
 
-New features and elements will only be used if they are widely supported to
-make documents `viewable with any browser`_. Leaving out hard-coded
+Correct rendering depends on a CSS_ style sheet. An example style sheet,
+html-base.css_, is provided and used by default. Leaving out hard-coded
 formatting information from the HTML code allows adaption of the layout with
 `custom style sheets`_.
+
+.. [#base] TODO: Find a better name for the basic html writer. 
+
+   Suggestions:
+
+   html-plain
+     +1 simple, plain, unadorned.
+   html-simple
+     ±0 simple   
+   html-vanilla
+     -0 too long
+   html-basic
+     -1 does not produce `XHTML Basic`_
+   html-lcd 
+     `Lowest Common Denominator` -- supporting HTML 5, XHTML 1,
+     and older (HTML 4 + CSS2) browsers.
+     
+     -1 cryptic
+   html-base
+     -1 not only base class but also for end-users
+
+.. [#5] `html5` may become the name for a specialised `html5 writer`_ in a
+   future release.
+
 
 .. _rst2html5.py: tools.html#rst2html5-py
 .. _[html-base writer]: config.html#html-base-writer
@@ -115,7 +109,7 @@ formatting information from the HTML code allows adaption of the layout with
 
 
 xhtml11
-"""""""
+~~~~~~~
 :aliases:   xhtml, html4strict
 :front-end: rst2xhtml.py_
 :config:    `[xhtml11 writer]`_
@@ -131,7 +125,7 @@ strict requirements of `XHTML 1.1`_:
 * Enumerated lists don't support the 'start' attribute.
 
   The style sheet xhtml11.css_ adds support for a "start" value for
-  enumerated lists via a CSS-counter.
+  enumerated lists via a CSS-counter. This allows also nested enumeration.
 
 * ``<sup>`` and ``<sub>`` tags are not allowed in preformatted blocks
   (``<pre>``) but possible in reStructuredText with the "parsed-literal"
@@ -145,8 +139,10 @@ The `math-output` `config setting`_ defaults to "MathML".
 .. _xhtml11.css: ../../docutils/writers/xhtml11/xhtml11.css
 
 
+.. _`html5 writer`:
+
 html5
-"""""
+~~~~~
 
 The writer name `html5` is reserved for a HTML writer that makes use of new
 features and objects defined in HTML5 but not (yet) fit for use in
@@ -155,11 +151,23 @@ features and objects defined in HTML5 but not (yet) fit for use in
 
 
 html4css1
-~~~~~~~~~
+---------
 
-:aliases:    html4, html
+:aliases:    html4 [#html4]_, html [#h]_
 :front-ends: rst2html.py_, rst2html4.py
 :config:     `[html4css1 writer]`_
+
+.. [#h] `html` may become an alias for html-base in a future release.
+
+.. [#html4] TODO: How to name a specific alias/front-end pointing to html4css1?
+
+   html4
+     | +1 short form of html4css1,
+     | -1 writer produces XHTML 1, not HTML 4
+   xhtml1
+     | +1 correct and short description of the output format.
+     | -1 may be confused with xhtml11 or xhtml (aliases for the
+          "new" XHTML 1.1. writer inheriting from html-base).
 
 The HTML Writer module, ``docutils/writers/html4css1.py``, started
 as a proof-of-concept reference implementation. It is the first Docutils
@@ -191,14 +199,14 @@ formatting hints.
 The following three HTML writers inherit from `html4css1`:
 
 pep_html
-""""""""
+~~~~~~~~
 
 :front-end: rstpep2html.py_
 :config:    `[pep_html writer]`_
 
 This is a special writer for the generation of `Python Enhancement
 Proposals`_ (PEPs). It adds some PEP-Specific
-Options, a style sheet and template. The front-end uses also a specialized
+Options, a style sheet and template. The front-end uses also a specialised
 reader.
 
 .. _rstpep2html.py: tools.html#rstpep2html-py
@@ -206,7 +214,7 @@ reader.
 .. _Python Enhancement Proposals: https://www.python.org/dev/peps/
 
 s5_html
-"""""""
+~~~~~~~
 
 :alias:     s5
 :front-end: rst2s5.py_
@@ -224,7 +232,7 @@ System” by Eric Meyer.
 
 
 html4trans
-""""""""""
+~~~~~~~~~~
 
 :front-end: rst2html_trans.py_
 
