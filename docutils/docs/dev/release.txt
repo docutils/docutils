@@ -194,16 +194,25 @@ For details see the script.
   __ https://packaging.python.org/en/latest/distributing.html#pure-python-wheels
 
 
-  + Eventually install the `wheel <https://pypi.python.org/pypi/wheel/>`__
-    package::
+  + Eventually install the `pip <https://pypi.python.org/pypi/pip/>`__` and
+    `wheel <https://pypi.python.org/pypi/wheel/>`__ packages.
 
-       pip install wheel
+  + Produce wheels:
+  
+    For the default Python version:
 
-  + Produce wheels for Python 2 and Python 3::
+    - From release at PyPI ::
 
-       python2 setup.py bdist_wheel
-       python3 setup.py bdist_wheel
+        pip wheel docutils
 
+    - From working directory's sub-directory "docutils" ::
+    
+        pip wheel ./docutils/
+       
+    Under Debian, the default Python version is 2.7 and the wheel is usable
+    for all 2.x versions supported by Docutils and
+    the command ``pip3 wheel docutils`` generates a wheel suitable for Py3k.
+   
   + `Upload to PyPI`__
 
   __ https://packaging.python.org/en/latest/distributing.html#upload-your-distributions

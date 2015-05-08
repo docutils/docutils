@@ -40,10 +40,6 @@ Docutils has the following dependencies:
   well as included source code files (with the "code" option to the include_
   directive).
 
-* There is one file in the ``extras/`` directory of the Docutils
-  distribution, ``roman.py``. It is automatically installed by the setup
-  script (when calling "python setup.py install").
-
 .. _Python Imaging Library: http://www.pythonware.com/products/pil/
 .. _Pygments: http://pygments.org/
 .. _code directives: ../ref/rst/directives.html#code
