@@ -860,14 +860,18 @@ class HTMLTranslator(nodes.NodeVisitor):
     def depart_field(self, node):
         pass
 
+    # as field is ignored, pass class arguments to field-name and field-body:
+
     def visit_field_name(self, node):
-        self.body.append(self.starttag(node, 'dt', ''))
+        self.body.append(self.starttag(node, 'dt', '',
+                                       CLASS=''.join(node.parent['classes'])))
 
     def depart_field_name(self, node):
         self.body.append('</dt>\n')
 
     def visit_field_body(self, node):
-        self.body.append(self.starttag(node, 'dd', ''))
+        self.body.append(self.starttag(node, 'dd', '',
+                                       CLASS=''.join(node.parent['classes'])))
 
     def depart_field_body(self, node):
         self.body.append('</dd>\n')
@@ -1207,7 +1211,7 @@ class HTMLTranslator(nodes.NodeVisitor):
                                                     self.document.reporter)
                 elif converter == 'blahtexml':
                     math_code = tex2mathml_extern.blahtexml(math_code,
-                        inline=not(math_env), 
+                        inline=not(math_env),
                         reporter=self.document.reporter)
                 elif not converter:
                     math_code = latex2mathml.tex2mathml(math_code,
