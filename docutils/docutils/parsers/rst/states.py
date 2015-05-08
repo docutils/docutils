@@ -225,7 +225,6 @@ class RSTState(StateWS):
         # enable the reporter to determine source and source-line
         if not hasattr(self.reporter, 'get_source_and_line'):
             self.reporter.get_source_and_line = self.state_machine.get_source_and_line
-            # print "adding get_source_and_line to reporter", self.state_machine.input_offset
 
 
     def goto_line(self, abs_line_offset):
@@ -1230,6 +1229,8 @@ class Body(RSTState):
     def bullet(self, match, context, next_state):
         """Bullet list item."""
         bulletlist = nodes.bullet_list()
+        (bulletlist.source,
+         bulletlist.line) = self.state_machine.get_source_and_line()
         self.parent += bulletlist
         bulletlist['bullet'] = match.string[0]
         i, blank_finish = self.list_item(match.end())
@@ -1460,6 +1461,7 @@ class Body(RSTState):
     def option_marker(self, match, context, next_state):
         """Option list item."""
         optionlist = nodes.option_list()
+        (optionlist.source, optionlist.line) = self.state_machine.get_source_and_line()
         try:
             listitem, blank_finish = self.option_list_item(match)
         except MarkupError, error:
