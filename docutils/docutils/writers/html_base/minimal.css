@@ -1,0 +1,240 @@
+/* Minimal style sheet for the HTML output of Docutils.                    */
+/*                                                                         */
+/* :Author: Günter Milde, based on html4css1.css by David Goodger          */
+/* :Id: $Id$               */
+/* :Copyright: © 2015 Günter Milde.                                        */
+/* :License: Released under the terms of the `2-Clause BSD license`_,      */
+/*    in short:                                                            */
+/*                                                                         */
+/*    Copying and distribution of this file, with or without modification, */
+/*    are permitted in any medium without royalty provided the copyright   */
+/*    notice and this notice are preserved.                                */
+/*                                                                         */
+/*    This file is offered as-is, without any warranty.                    */
+/*                                                                         */
+/* .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause     */
+
+/* This CSS2.1_ stylesheet defines rules for Docutils elements without    */
+/* HTML equivalent. It is required to make the document semantic visible. */
+/*                                                                        */
+/* .. _CSS2.1: http://www.w3.org/TR/CSS2                                  */
+/* .. _validates: http://jigsaw.w3.org/css-validator/validator$link       */
+
+/* Figure/table alignment */
+.align-left  { text-align: left; }
+.align-right { text-align: right; }
+.align-center { clear: both; text-align: center;}
+
+/* titles */
+h1.title, p.subtitle {
+  text-align: center;
+}
+p.admonition-title,
+p.topic-title,
+p.sidebar-title,
+p.rubric,
+p.system-message-title {
+  font-weight: bold;
+}
+h1 + p.subtitle,
+h1 + p.section-subtitle {
+  font-size: 1.6em;
+}
+h2 + p.section-subtitle { font-size: 1.28em; }
+p.subtitle,
+p.section-subtitle,
+p.sidebar-subtitle {
+  font-weight: bold;
+  margin-top: -0.5em;
+}
+p.sidebar-title,
+p.rubric {
+  font-size: larger;
+}
+p.rubric { color: maroon; }
+a.toc-backref {
+  color: black;
+  text-decoration: none; }
+
+/* Warnings, Errors */
+div.caution p.admonition-title,
+div.attention p.admonition-title,
+div.danger p.admonition-title,
+div.error p.admonition-title,
+div.warning p.admonition-title,
+div.system-messages h1,
+div.error,
+span.problematic,
+p.system-message-title {
+  color: red;
+}
+
+/* inline literals */
+span.docutils.literal {
+  font-family: monospace;
+  white-space: pre-wrap;
+}
+/* do not wraph at hyphens and similar: */
+.literal > span.pre { white-space: nowrap; }
+
+/* Lists */
+
+/* compact and simple lists: no margin between items */
+.simple  li, .compact li,
+.simple  ul, .compact ul,
+.simple  ol, .compact ol,
+.simple > li p, .compact > li p,
+dl.simple > dd, dl.compact > dd {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+/* Table of Contents */
+div.topic.contents { margin: 0; }
+ul.auto-toc {
+  list-style-type: none;
+  padding-left: 1.5em; }
+
+/* Enumerated Lists */
+ol.arabic     { list-style: decimal }
+ol.loweralpha { list-style: lower-alpha }
+ol.upperalpha { list-style: upper-alpha }
+ol.lowerroman { list-style: lower-roman }
+ol.upperroman { list-style: upper-roman }
+
+dt span.classifier { font-style: italic }
+dt span.classifier:before {
+  font-style: normal;
+  margin: 0.5em;
+  content: ":";
+}
+
+/* Field Lists and drivatives */
+/* bold field name, content starts on the same line */
+dl.field-list > dt,
+dl.option-list > dt,
+dl.docinfo > dt,
+dl.footnote > dt,
+dl.citation > dt {
+  font-weight: bold;
+  clear: left;
+  float: left;
+  margin: 0;
+  padding: 0;
+  padding-right: 0.5em;
+}
+/* Offset for field content (corresponds to the --field-name-limit option) */
+dl.field-list > dd,
+dl.option-list > dd,
+dl.docinfo > dd {
+  margin-left:  9em; /* ca. 14 chars in the test examples */
+}
+/* start field-body on a new line after long field names */
+dl.field-list > dd > *:first-child,
+dl.option-list > dd > *:first-child
+{
+  display: inline-block;
+  width: 100%;
+  margin: 0;
+}
+/* field names followed by a colon */
+dl.field-list > dt:after,
+dl.docinfo > dt:after {
+  content: ":";
+}
+
+/* Bibliographic Fields (docinfo) */
+pre.address { font: inherit; }
+dd.authors > p { margin: 0; }
+
+/* Option Lists */
+dl.option-list { margin-left: 40px; }
+dl.option-list > dt { font-weight: normal; }
+span.option { white-space: nowrap; }
+
+/* Footnotes and Citations  */
+dl > dt.label { font-weight: normal; }
+dt.label > span.fn-backref { margin: 0.2em; }
+dt.label > span.fn-backref > a { font-style: italic; }
+
+/* Line Blocks */
+div.line-block { display: block; }
+div.line-block div.line-block {
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-left: 40px;
+}
+
+/* Images and Figures */
+img.align-left,
+.figure.align-left,
+object.align-left {
+  display: block;
+  margin-right: auto;
+}
+img.align-center,
+.figure.align-center,
+object.align-center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+img.align-right,
+.figure.align-right,
+object.align-right {
+  display: block;
+  margin-left: auto;
+}
+/* reset inner alignment in figures */
+div.align-right { text-align: inherit }
+
+/* Admonitions and System Messages */
+div.admonition,
+div.system-message,
+div.sidebar{
+  margin: 40px;
+  border: medium outset;
+  padding-right: 1em;
+  padding-left: 1em;
+}
+
+/* Sidebar */
+div.sidebar {
+  width: 30%;
+  max-width: 26em;
+  float: right;
+  clear: right;
+}
+
+/* Text Blocks */
+div.topic,
+pre.literal-block,
+pre.doctest-block,
+pre.math,
+pre.code {
+  margin-right: 40px;
+  margin-left: 40px;
+}
+pre.code .ln { color: gray; } /* line numbers */
+
+/* Tables */
+table { border-collapse: collapse; }
+td, th {
+  border-style: solid;
+  border-color: silver;
+  padding: 0 1ex;
+  border-width: thin;
+}
+td > p:first-child, th > p:first-child { margin-top: 0; }
+td > p, th > p { margin-bottom: 0; }
+
+table > caption {
+  text-align: left;
+  margin-bottom: 0.25em
+}
+
+table.borderless td, table.borderless th {
+  border: 0;
+  padding: 0;
+  padding-right: 0.5em /* separate table cells */
+}

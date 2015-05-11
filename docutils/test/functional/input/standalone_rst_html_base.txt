@@ -24,22 +24,6 @@ Changes to the html4css1 writer
 
 * Put subtitles in <p> elements.
 
-Description list
-----------------
-
-Definition lists with the ``description`` class argument:
-
-.. class:: description
-
-description lists
-  Lists that are styled like in most dictionaries, encyclopedias
-  etc. (as well as the LaTeX `description` environment).
-label
-  The term to be described. Put in boldface.
-content
-  starts on the same line and has a hanging indent.
-
-
 Field list handling
 -------------------
 
@@ -59,7 +43,7 @@ characters" but the field name uses a proportional font.
 :MMMMMMMMMMMMMM: a field name that is actually longer than the
                  previous one but regarded "short" by html4css1.
 
-With `html4css2`, a `field list` is typeset as CSS-styled `definition
+With ``html_base``, a `field list` is typeset as CSS-styled `definition
 list`. The default layout is similar to the look with `html4css1`:
 
 .. class:: open
@@ -76,10 +60,30 @@ list`. The default layout is similar to the look with `html4css1`:
                     dl.field-list > dd { margin-left: 6em; }
 
 Styling with class arguments
-````````````````````````````
+----------------------------
 
-The ``xhtml11.css`` style sheet supports the following class arguments
-for alternative styles:
+The ``plain.css`` style sheet comes with some pre-defined style variants
+that can be choosen via a class argument.
+
+Description lists
+`````````````````
+
+Definition lists with the "description" class argument:
+
+.. class:: description
+
+description lists
+  Definition lists that are styled like in most dictionaries, 
+  encyclopedias etc. (as well as the LaTeX `description` environment).
+label
+  The term to be described. Put in boldface.
+content
+  Starts on the same line and has a hanging indent.
+
+Field list variants
+```````````````````
+
+For field lists, the "compact/open", "narrow" and "run-in" styles are defined.
 
 *compact*
   .. class:: compact
@@ -125,14 +129,14 @@ for alternative styles:
   :The next field name:  and field body should align. Long text in the field
                          body is wrapped and aligns with other fields.
 
+Table variants
+``````````````
 
-Table styling with class arguments
-----------------------------------
+The following styles can be applied to individual tables via a class
+argument or as document wide setting with the table-style_ configuration
+setting (or command line argument).
 
-The ``html-base.css`` style sheet provides rules for easy styling of tables
-with the "class" directive or directive argument.
-
-Numbered tables can be achieved with the ``numbered`` class option
+Numbered tables can be achieved with the "numbered" class option
 
 .. table:: truth values
    :class: numbered
@@ -149,9 +153,8 @@ Numbered tables can be achieved with the ``numbered`` class option
 Currently, referencing to the table by number is not supported. This is a
 common request and already on the `TODO list`.
 
-In addition to the "borderless" table-style_, the style sheet also
-defines "booktabs", that will be rendered similar to the style from
-the booktabs_ LaTeX package.
+A table with "booktabs" class argument, is rendered similar to the style
+from the booktabs_ LaTeX package.
 
 .. _table-style:
    http://docutils.sourceforge.net/docs/user/config.html#table-style
@@ -197,24 +200,6 @@ Of course, also "booktabs" style tables can be numbered:
    False  True   True
    True   True   True
    =====  =====  ======
-
-
-Maths
------
-
-For maximal compatibility, the ``html-output`` setting defaults to »HTML«.
-(HTML 5 accepts also MathML and SVG as nested languages.)
-
-The linear mapping :math:`f: \mathbb{C}^{N}\longmapsto\mathbb{C}^{N}`
-with
-
-.. math::
-
-  c_{k}=F(kf_{0})=T_{\text{A}}
-  \sum_{n=-N/2}^{+N/2}f(x_{n})\text{e}^{-2\pi\text{i}\frac{nk}{N}}
-
-for all :math:`a\in\mathbb{C}^{N}` is called discrete Fourier
-transformation (DFT).
 
 
 .. include:: data/errors.txt

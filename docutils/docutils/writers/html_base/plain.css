@@ -1,10 +1,11 @@
-/* Basic style sheet for the HTML output of Docutils.                      */
+/* CSS31_ style sheet for the output of Docutils HTML writers.             */
+/* Rules for easy reading and pre-defined style variants.		   */
 /*                                                                         */
 /* :Author: Günter Milde, based on html4css1.css by David Goodger          */
-/* :Id: $Id$              */
+/* :Id: $Id$               */
 /* :Copyright: © 2015 Günter Milde.                                        */
 /* :License: Released under the terms of the `2-Clause BSD license`_,      */
-/*        in short:                                                        */
+/*    in short:                                                            */
 /*                                                                         */
 /*    Copying and distribution of this file, with or without modification, */
 /*    are permitted in any medium without royalty provided the copyright   */
@@ -13,25 +14,17 @@
 /*    This file is offered as-is, without any warranty.                    */
 /*                                                                         */
 /* .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause     */
-
-
-/* This stylesheet contains basic rules for the output of the	    */
-/* Docutils HTML writers. It validates_ as CSS2.1_		    */
-/*								    */
-/* .. _CSS2.1: http://www.w3.org/TR/CSS2			    */
-/* .. _validates: http://jigsaw.w3.org/css-validator/validator$link */
+/* .. _CSS3: http://www.w3.org/TR/CSS3		        		   */
 
 
 /* Document Structure */
 /* ****************** */
 
-/* Document           */
-
+/* "page layout" */
 body {
   padding: 0 5%;
   margin: 8px 0;
 }
-
 div.document {
   line-height:1.3;
   counter-reset: table;
@@ -42,30 +35,7 @@ div.document {
   margin: auto;
 }
 
-.align-left  { text-align: left; }
-.align-right { text-align: right; }
-.align-center {
-  clear: both;
-  text-align: center;
-}
-
-/* Sections           */
-
-h1.title, p.subtitle {
-  text-align: center;
-}
-
-h1 + p.subtitle { font-size: 1.6em; }
-h1 + p.section-subtitle { font-size: 1.6em; }
-h2 + p.section-subtitle { font-size: 1.28em; }
-
-a.toc-backref {
-  color: black;
-  text-decoration: none;
-}
-
-/* Stop floating sidebars, images and figures at section level 1,2,3 */
-h1, h2, h3 { clear: both; }
+/* Sections */
 
 /* Transitions */
 
@@ -91,54 +61,8 @@ dl > dd {
   margin-bottom: 0.5em;
 }
 
-/* titles */
-p.admonition-title,
-p.topic-title,
-p.sidebar-title,
-p.system-message-title {
-  font-weight: bold;
-}
-
-p.subtitle,
-p.section-subtitle,
-p.sidebar-subtitle {
-  font-weight: bold;
-  margin-top: -0.5em;
-}
-
-
-/* Warnings, Errors */
-div.caution p.admonition-title,
-div.attention p.admonition-title,
-div.danger p.admonition-title,
-div.error p.admonition-title,
-div.warning p.admonition-title,
-div.system-messages h1,
-div.error,
-span.problematic,
-p.system-message-title {
-  color: red;
-}
-
 /* Lists                    */
 /* ==========               */
-
-/* compact and simple lists: no margin between items */
-dl.simple > dd, dl.compact > dd,
-.compact li, .compact ul, .compact ol
-.simple  li, .simple  ul, .simple  ol,
-.simple > li p, .compact > li p {
-  margin-top: 0;
-  margin-bottom: 0;
-}
-
-/* Enumerated Lists         */
-
-ol.arabic     { list-style: decimal }
-ol.loweralpha { list-style: lower-alpha }
-ol.upperalpha { list-style: upper-alpha }
-ol.lowerroman { list-style: lower-roman }
-ol.upperroman { list-style: upper-roman }
 
 /* Definition Lists         */
 
@@ -150,21 +74,8 @@ dl > dd p:first-child { margin-top: 0; }
 /* :only-child is not part of CSS 2.1 (introduced in CSS 3) */
 dd > ul:only-child, dd > ol:only-child { padding-left: 1em; }
 
-dt span.classifier { font-style: italic }
-dt span.classifier:before {
-  font-style: normal;
-  margin: 0.5em;
-  content: ":";
-}
-
-/* Field Lists              */
-
-/* bold field name, content starts on the same line */
-dl.field-list > dt,
-dl.option-list > dt,
-dl.docinfo > dt,
-dl.footnote > dt,
-dl.citation > dt,
+/* Description Lists */
+/* styled like in most dictionaries, encyclopedias etc. */
 dl.description > dt {
   font-weight: bold;
   clear: left;
@@ -173,26 +84,8 @@ dl.description > dt {
   padding: 0;
   padding-right: 0.5em;
 }
-/* Offset for field content (corresponds to the --field-name-limit option) */
-dl.field-list > dd,
-dl.option-list > dd,
-dl.docinfo > dd {
-  margin-left:  9em; /* ca. 14 chars in the test examples */
-/*   padding-left: 0.5em; */
-}
-/* start field-body on a new line after long field names */
-dl.field-list > dd > *:first-child,
-dl.option-list > dd > *:first-child,
-dl.docinfo > dd  > *:first-child {
-  display: inline-block;
-  width: 100%;
-  margin: 0;
-}
-/* field names followed by a colon */
-dl.field-list > dt:after,
-dl.docinfo    > dt:after {
-  content: ":";
-}
+
+/* Field Lists */
 
 /* example for custom field-name width */
 dl.field-list.narrow > dd {
@@ -205,19 +98,11 @@ dl.field-list.run-in > dd p {
 
 /* Bibliographic Fields */
 
-/* use special field-list dl.docinfo */
-
-pre.address {
-  margin-bottom: 0;
-  margin-top: 0;
-  font: inherit;
-}
-dd.authors > p { margin: 0; }
-
+/* generally, bibliographic fields use special definition list dl.docinfo */
+/* but dedication and abstract are placed into "topic" divs */
 div.abstract p.topic-title {
   text-align: center;
 }
-
 div.dedication {
   margin: 2em 5em;
   text-align: center;
@@ -227,34 +112,18 @@ div.dedication p.topic-title {
   font-style: normal;
 }
 
-/* Option Lists             */
-
-dl.option-list {
-  margin-left: 1em;
+/* Citations */
+dl.citation dt.label {
+  font-weight: bold;
 }
-dl.option-list > dt {
+span.fn-backref {
   font-weight: normal;
-}
-span.option {
-  white-space: nowrap;
 }
 
 /* Text Blocks           */
 /* ============          */
 
-/* Line Blocks              */
-
-div.line-block {
-  display: block;
-}
-div.line-block div.line-block {
-  margin-top: 0;
-  margin-bottom: 0;
-  margin-left: 1.5em;
-}
-
 /* Literal Blocks           */
-
 pre.literal-block, pre.doctest-block,
 pre.math, pre.code {
   margin-left: 1.5em;
@@ -282,38 +151,7 @@ div.topic p.attribution {
 /* Tables                   */
 /* ======                   */
 
-/* margins and borders for "normal" tables */
-table {
-  border-collapse: collapse;
-}
-td, th {
-  border-style: solid;
-  border-color: silver;
-  padding: 0 1ex;
-/* some borders missing at some magnifications
-/* in Firefox 31.5.0 and opera 10.63 */
-  border-width: thin;
-}
-td > p:first-child, th > p:first-child {
-  margin-top: 0;
-}
-td > p, th > p {
-  margin-bottom: 0;
-}
-th {
-  vertical-align: bottom;
-}
-
-table > caption {
-  text-align: left;
-  margin-bottom: 0.25em
-}
-
-table.borderless td, table.borderless th {
-  border: 0;
-  padding: 0;
-  padding-right: 0.5em /* separate table cells */
-}
+/* th { vertical-align: bottom; } */
 
 /* "booktabs" style (no vertical lines) */
 table.booktabs {
@@ -322,7 +160,6 @@ table.booktabs {
   border-bottom: 2px solid;
   border-collapse: collapse;
 }
-
 table.booktabs * {
   border: 0;
 }
@@ -351,35 +188,13 @@ dl.footnote {
   border-left-width: thin;
 }
 
-dl > dt.label {
-  font-weight: normal;
-}
-dt.label > span.fn-backref {
-  margin: 0.2em;
-}
-dt.label > span.fn-backref > a {
-  font-style: italic;
-}
-
 /* Directives               */
 /* ----------               */
-
-/* Admonitions              */
-/* System Messages          */
-
-div.admonition,
-div.system-message {
-  margin: 2em;
-  border: medium outset;
-  padding-right: 1em;
-  padding-left: 1em;
-}
 
 /* Body Elements            */
 /* ~~~~~~~~~~~~~            */
 
-/* Image and Figure */
-
+/* Images and Figures */
 img.align-left,
 .figure.align-left,
 object.align-left {
@@ -394,38 +209,20 @@ object.align-right {
   float: right;
   margin-left: 1em
 }
-img.align-center,
-.figure.align-center,
-object.align-center {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-}
-/* reset inner alignment in figures */
-div.align-right {
-  text-align: inherit }
+/* Stop floating sidebars, images and figures at section level 1,2,3 */
+h1, h2, h3 { clear: both; }
 
-/* Topic                    */
+/* Sidebar */
 
-div.topic { margin: 2em }
-
-/* Sidebar                  */
-
-/* in a layout with fixed margins,		       */
-/* the sidebar can be moved into the margin completely */
+/* Move into the margin. In a layout with fixed margins, */
+/* it can be moved into the margin completely.		 */
 div.sidebar {
-  border: medium outset;
-  padding-right: 1em;
-  padding-left: 1em;
   width: 30%;
   max-width: 26em;
-  float: right;
-  clear: right;
   margin-left: 1em;
   margin-right: -5.5%;
   background-color: #ffffee ;
 }
-p.sidebar-title { font-size: larger; }
 
 /* Code                     */
 
@@ -443,14 +240,6 @@ pre.code .inserted, code .inserted { background-color: #A3D289}
 /* Math                     */
 /* styled separately (see math.css for math-output=HTML) */
 
-/* Rubric                   */
-
-p.rubric {
-  font-weight: bold;
-  font-size: larger;
-  color: maroon;
-}
-
 /* Epigraph                 */
 /* Highlights               */
 /* Pull-Quote               */
@@ -466,15 +255,6 @@ div.footer, div.header {
   font-size: smaller;
 }
 
-/* Contents 		    */
-
-div.topic.contents {
-  margin: 0; /* don't indent like a topic */
-}
-ul.auto-toc {
-  list-style-type: none;
-}
-
 /* Inline Markup            */
 /* =============            */
 
@@ -487,17 +267,10 @@ ul.auto-toc {
 /* Title Reference 	    */
 /*   cite		    */
 /* Inline Literals          */
-
-tt.literal, span.docutils.literal {
-  font-family: monospace;
-  /* possible values: normal, nowrap, pre, pre-wrap, pre-line */
-  white-space: pre-wrap;
-}
-/* do not wraph a hyphens and similar: */
-.literal > span.pre { white-space: nowrap; }
+/* possible values: normal, nowrap, pre, pre-wrap, pre-line */
+/*   span.docutils.literal { white-space: pre-wrap; } */
 
 /* Hyperlink References     */
-
 a { text-decoration: none; }
 
 /* External Targets         */
