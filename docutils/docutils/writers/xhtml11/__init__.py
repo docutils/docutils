@@ -35,7 +35,7 @@ class Writer(html_base.Writer):
                  'xhtml', 'xhtml1', 'xhtml1strict', 'xhtml11')
     """Formats this writer supports."""
 
-    default_stylesheets = ['html-base.css', 'xhtml11.css']
+    default_stylesheets = ['minimal.css', 'plain.css', 'xhtml11.css']
     default_stylesheet_dirs = ['.',
         os.path.abspath(os.path.dirname(__file__)),
         os.path.abspath(os.path.join(

@@ -22,7 +22,8 @@ Basic HyperText Markup Language document tree Writer.
 The output conforms to the `HTML 5` specification as well as
 to `XHTML 1.0 transitional`.
 
-The cascading style sheet "html-base.css" is required for proper viewing.
+The cascading style sheet "minimal.css" is required for proper viewing,
+the style sheet "plain.css" provides a better reading experience.
 """
 __docformat__ = 'reStructuredText'
 
@@ -52,7 +53,7 @@ class Writer(writers.Writer):
     supported = ('html', 'html5', 'html4', 'xhtml', 'xhtml10')
     """Formats this writer supports."""
 
-    default_stylesheets = ['html-base.css']
+    default_stylesheets = ['minimal.css','plain.css']
     default_stylesheet_dirs = ['.', os.path.abspath(os.path.dirname(__file__))]
 
     default_template = 'template.txt'

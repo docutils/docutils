@@ -7,7 +7,8 @@
 <meta name="author" content="David Goodger" />
 <meta content="reStructuredText, test, parser" name="keywords" />
 <meta content="A test document, containing at least one example of each reStructuredText construct." lang="en" name="description" xml:lang="en" />
-<link rel="stylesheet" href="../input/data/html-base.css" type="text/css" />
+<link rel="stylesheet" href="../input/data/minimal.css" type="text/css" />
+<link rel="stylesheet" href="../input/data/plain.css" type="text/css" />
 <link rel="stylesheet" href="../input/data/math.css" type="text/css" />
 </head>
 <body>
@@ -139,14 +140,14 @@ They are transformed from section titles after parsing. -->
 </li>
 <li><p><a class="reference internal" href="#changes-to-the-html4css1-writer" id="id80"><span class="sectnum">3</span> Changes to the html4css1 writer</a></p>
 <ul class="auto-toc">
-<li><p><a class="reference internal" href="#description-list" id="id81"><span class="sectnum">3.1</span> Description list</a></p></li>
-<li><p><a class="reference internal" href="#field-list-handling" id="id82"><span class="sectnum">3.2</span> Field list handling</a></p>
+<li><p><a class="reference internal" href="#field-list-handling" id="id81"><span class="sectnum">3.1</span> Field list handling</a></p></li>
+<li><p><a class="reference internal" href="#styling-with-class-arguments" id="id82"><span class="sectnum">3.2</span> Styling with class arguments</a></p>
 <ul class="auto-toc">
-<li><p><a class="reference internal" href="#styling-with-class-arguments" id="id83"><span class="sectnum">3.2.1</span> Styling with class arguments</a></p></li>
+<li><p><a class="reference internal" href="#description-lists" id="id83"><span class="sectnum">3.2.1</span> Description lists</a></p></li>
+<li><p><a class="reference internal" href="#field-list-variants" id="id84"><span class="sectnum">3.2.2</span> Field list variants</a></p></li>
+<li><p><a class="reference internal" href="#table-variants" id="id85"><span class="sectnum">3.2.3</span> Table variants</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#table-styling-with-class-arguments" id="id84"><span class="sectnum">3.3</span> Table styling with class arguments</a></p></li>
-<li><p><a class="reference internal" href="#maths" id="id85"><span class="sectnum">3.4</span> Maths</a></p></li>
 </ul>
 </li>
 <li><p><a class="reference internal" href="#error-handling" id="id86"><span class="sectnum">4</span> Error Handling</a></p></li>
@@ -1161,24 +1162,8 @@ For complete control over display options use raw HTML.</p>
 space.</p></li>
 <li><p>Put subtitles in &lt;p&gt; elements.</p></li>
 </ul>
-<div class="section" id="description-list">
-<h2><a class="toc-backref" href="#id81"><span class="sectnum">3.1</span> Description list</a></h2>
-<p>Definition lists with the <span class="docutils literal">description</span> class argument:</p>
-<dl class="description simple">
-<dt>description lists</dt>
-<dd><p>Lists that are styled like in most dictionaries, encyclopedias
-etc. (as well as the LaTeX <cite>description</cite> environment).</p>
-</dd>
-<dt>label</dt>
-<dd><p>The term to be described. Put in boldface.</p>
-</dd>
-<dt>content</dt>
-<dd><p>starts on the same line and has a hanging indent.</p>
-</dd>
-</dl>
-</div>
 <div class="section" id="field-list-handling">
-<h2><a class="toc-backref" href="#id82"><span class="sectnum">3.2</span> Field list handling</a></h2>
+<h2><a class="toc-backref" href="#id81"><span class="sectnum">3.1</span> Field list handling</a></h2>
 <p>The following list demonstrates the problems with the html4css1
 approach: the <cite>field-name-limit</cite> setting is given in &quot;number of
 characters&quot; but the field name uses a proportional font.</p>
@@ -1200,7 +1185,7 @@ with the default setting of <cite>field-name-limit: 14</cite>.</p>
 previous one but regarded &quot;short&quot; by html4css1.</p>
 </dd>
 </dl>
-<p>With <cite>html4css2</cite>, a <cite>field list</cite> is typeset as CSS-styled <cite>definition
+<p>With <span class="docutils literal">html_base</span>, a <cite>field list</cite> is typeset as CSS-styled <cite>definition
 list</cite>. The default layout is similar to the look with <cite>html4css1</cite>:</p>
 <dl class="open field-list">
 <dt>A long field name</dt>
@@ -1215,10 +1200,30 @@ example:</p>
 <pre class="literal-block">dl.field-list &gt; dd { margin-left: 6em; }</pre>
 </dd>
 </dl>
+</div>
 <div class="section" id="styling-with-class-arguments">
-<h3><a class="toc-backref" href="#id83"><span class="sectnum">3.2.1</span> Styling with class arguments</a></h3>
-<p>The <span class="docutils literal">xhtml11.css</span> style sheet supports the following class arguments
-for alternative styles:</p>
+<h2><a class="toc-backref" href="#id82"><span class="sectnum">3.2</span> Styling with class arguments</a></h2>
+<p>The <span class="docutils literal">plain.css</span> style sheet comes with some pre-defined style variants
+that can be choosen via a class argument.</p>
+<div class="section" id="description-lists">
+<h3><a class="toc-backref" href="#id83"><span class="sectnum">3.2.1</span> Description lists</a></h3>
+<p>Definition lists with the &quot;description&quot; class argument:</p>
+<dl class="description simple">
+<dt>description lists</dt>
+<dd><p>Definition lists that are styled like in most dictionaries,
+encyclopedias etc. (as well as the LaTeX <cite>description</cite> environment).</p>
+</dd>
+<dt>label</dt>
+<dd><p>The term to be described. Put in boldface.</p>
+</dd>
+<dt>content</dt>
+<dd><p>Starts on the same line and has a hanging indent.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="field-list-variants">
+<h3><a class="toc-backref" href="#id84"><span class="sectnum">3.2.2</span> Field list variants</a></h3>
+<p>For field lists, the &quot;compact/open&quot;, &quot;narrow&quot; and &quot;run-in&quot; styles are defined.</p>
 <dl class="simple">
 <dt><em>compact</em></dt>
 <dd><dl class="compact field-list simple">
@@ -1282,12 +1287,12 @@ body is wrapped and aligns with other fields.</p>
 </dd>
 </dl>
 </div>
-</div>
-<div class="section" id="table-styling-with-class-arguments">
-<h2><a class="toc-backref" href="#id84"><span class="sectnum">3.3</span> Table styling with class arguments</a></h2>
-<p>The <span class="docutils literal"><span class="pre">html-base.css</span></span> style sheet provides rules for easy styling of tables
-with the &quot;class&quot; directive or directive argument.</p>
-<p>Numbered tables can be achieved with the <span class="docutils literal">numbered</span> class option</p>
+<div class="section" id="table-variants">
+<h3><a class="toc-backref" href="#id85"><span class="sectnum">3.2.3</span> Table variants</a></h3>
+<p>The following styles can be applied to individual tables via a class
+argument or as document wide setting with the <a class="reference external" href="http://docutils.sourceforge.net/docs/user/config.html#table-style">table-style</a> <a class="footnote-reference" href="#id31" id="id32">[7]</a> configuration
+setting (or command line argument).</p>
+<p>Numbered tables can be achieved with the &quot;numbered&quot; class option</p>
 <table class="numbered">
 <caption>truth values</caption>
 <colgroup>
@@ -1322,9 +1327,8 @@ with the &quot;class&quot; directive or directive argument.</p>
 </table>
 <p>Currently, referencing to the table by number is not supported. This is a
 common request and already on the <cite>TODO list</cite>.</p>
-<p>In addition to the &quot;borderless&quot; <a class="reference external" href="http://docutils.sourceforge.net/docs/user/config.html#table-style">table-style</a> <a class="footnote-reference" href="#id31" id="id32">[7]</a>, the style sheet also
-defines &quot;booktabs&quot;, that will be rendered similar to the style from
-the <a class="reference external" href="http://tug.ctan.org/tex-archive/macros/latex/contrib/booktabs/booktabs.pdf">booktabs</a> <a class="footnote-reference" href="#id33" id="id34">[8]</a> LaTeX package.</p>
+<p>A table with &quot;booktabs&quot; class argument, is rendered similar to the style
+from the <a class="reference external" href="http://tug.ctan.org/tex-archive/macros/latex/contrib/booktabs/booktabs.pdf">booktabs</a> <a class="footnote-reference" href="#id33" id="id34">[8]</a> LaTeX package.</p>
 <table class="booktabs">
 <colgroup>
 <col style="width: 31%" />
@@ -1420,17 +1424,6 @@ the headers:</p>
 </tbody>
 </table>
 </div>
-<div class="section" id="maths">
-<h2><a class="toc-backref" href="#id85"><span class="sectnum">3.4</span> Maths</a></h2>
-<p>For maximal compatibility, the <span class="docutils literal"><span class="pre">html-output</span></span> setting defaults to »HTML«.
-(HTML 5 accepts also MathML and SVG as nested languages.)</p>
-<p>The linear mapping <span class="formula"><i>f</i> : ℂ<sup><i>N</i></sup>⟼ℂ<sup><i>N</i></sup></span>
-with</p>
-<div class="formula">
-<i>c</i><sub><i>k</i></sub> = <i>F</i>(<i>kf</i><sub>0</sub>) = <i>T</i><sub><span class="text">A</span></sub><span class="limits"><sup class="limit"> + <i>N</i> ⁄ 2</sup><span class="limit">⎲</span><span class="limit">⎳</span><sub class="limit"><i>n</i> =  − <i>N</i> ⁄ 2</sub></span><i>f</i>(<i>x</i><sub><i>n</i></sub>)<span class="text">e</span><sup> − 2<i>π</i><span class="text">i</span><span class="fraction"><span class="ignored">(</span><span class="numerator"><i>nk</i></span><span class="ignored">)/(</span><span class="denominator"><i>N</i></span><span class="ignored">)</span></span></sup>
-</div>
-<p>for all <span class="formula"><i>a</i> ∈ ℂ<sup><i>N</i></sup></span> is called discrete Fourier
-transformation (DFT).</p>
 </div>
 </div>
 <div class="section" id="error-handling">
