@@ -39,7 +39,8 @@ Changes Since 0.12
   - New HTML writer generating clean, polyglot_ markup conforming to
     `HTML 5`_ and compatible with `XHTML 1.0`_ Transitional.
 
-    New stylesheet ``html-base.css`` for default layout using CSS 2.1 rules.
+    CSS stylesheets ``minimal.css`` and ``plain.css`` with required and
+    recommended layout rules.
 
     Also base for the xhtml11_ writer.
 
