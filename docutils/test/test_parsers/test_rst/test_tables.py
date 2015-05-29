@@ -789,6 +789,56 @@ A table with three  columns.
 """],
 ["""\
 ==============  ======
+A simple table  this text extends to the right
+cell 3          as does this text
+==============  ======
+""",
+"""\
+<document source="test data">
+    <table>
+        <tgroup cols="2" colwidths="auto">
+            <colspec colwidth="14">
+            <colspec colwidth="30">
+            <tbody>
+                <row>
+                    <entry>
+                        <paragraph>
+                            A simple table
+                    <entry>
+                        <paragraph>
+                            this text extends to the right
+                <row>
+                    <entry>
+                        <paragraph>
+                            cell 3
+                    <entry>
+                        <paragraph>
+                            as does this text
+"""],
+["""\
+==============  ======
+A simple table  this text extends to the right
+                continuation of cell 2
+==============  ======
+""",
+"""\
+<document source="test data">
+    <table>
+        <tgroup cols="2" colwidths="auto">
+            <colspec colwidth="14">
+            <colspec colwidth="30">
+            <tbody>
+                <row>
+                    <entry>
+                        <paragraph>
+                            A simple table
+                    <entry>
+                        <paragraph>
+                            this text extends to the right
+                            continuation of cell 2
+"""],
+["""\
+==============  ======
 A simple table  with
 no bottom       border
 """,
