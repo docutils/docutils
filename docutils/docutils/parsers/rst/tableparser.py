@@ -511,8 +511,8 @@ class SimpleTableParser(TableParser):
                 if i == lastcol and line[end:].strip():
                     text = line[start:].rstrip()
                     new_end = start + len(text)
-                    columns[i] = (start, new_end)
                     main_start, main_end = self.columns[-1]
+                    columns[i] = (start, max(main_end, new_end))
                     if new_end > main_end:
                         self.columns[-1] = (main_start, new_end)
                 elif line[end:nextstart].strip():
