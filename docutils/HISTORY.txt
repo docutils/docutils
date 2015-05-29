@@ -29,6 +29,11 @@ Changes Since 0.12
   - Patch [ 120 ] tables accept option widths: list of relative widths, 'auto'
     or 'grid'.
 
+* docutils/transforms/frontmatter.py
+
+  - Add name of generic bibliographic fields as a "classes" attribute value
+    (after conversion to a valid identifier form).
+
 * docutils/utils/math/math2html.py
 
   - Add ``\colon`` macro, fix spacing around colons. Fixes [ 246 ].
