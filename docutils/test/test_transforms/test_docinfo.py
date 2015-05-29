@@ -44,7 +44,7 @@ totest['bibliographic_field_lists'] = ((DocInfo,), [
             1
         <date>
             2001-08-11
-        <field>
+        <field classes="parameter-i">
             <field_name>
                 Parameter i
             <field_body>
@@ -97,7 +97,7 @@ totest['bibliographic_field_lists'] = ((DocInfo,), [
                         There can only be one "Abstract" field.
         <date>
             2001-08-11
-        <field>
+        <field classes="parameter-i">
             <field_name>
                 Parameter i
             <field_body>

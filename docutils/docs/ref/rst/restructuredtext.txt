@@ -921,6 +921,8 @@ for details.
 
 Unregistered/generic fields may contain one or more paragraphs or
 arbitrary body elements.
+The field name is also used as a "classes"
+attribute value after being converted into a valid identifier form.
 
 
 RCS Keywords

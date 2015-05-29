@@ -403,7 +403,7 @@ class DocInfo(Transform):
         for field in field_list:
             try:
                 name = field[0][0].astext()
-                normedname = nodes.fully_normalize_name(name)
+                normedname = nodes.make_id(name)
                 if not (len(field) == 2 and normedname in bibliofields
                         and self.check_empty_biblio_field(field, name)):
                     raise TransformError
@@ -433,6 +433,8 @@ class DocInfo(Transform):
                        and isinstance(field[-1][0], nodes.paragraph):
                     utils.clean_rcs_keywords(
                         field[-1][0], self.rcs_keyword_substitutions)
+                if normedname and normedname not in bibliofields:
+                    field['classes'].append(normedname)
                 docinfo.append(field)
         nodelist = []
         if len(docinfo) != 0:

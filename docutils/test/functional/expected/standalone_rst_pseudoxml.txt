@@ -48,13 +48,13 @@
             incorporate, collate, fold, staple, or mutilate it, or do
             anything else to it that your or anyone else's heart
             desires.
-        <field>
+        <field classes="field-name">
             <field_name>
                 field name
             <field_body>
                 <paragraph>
                     This is a "generic bibliographic field".
-        <field>
+        <field classes="field-name-2">
             <field_name>
                 field name "2"
             <field_body>
