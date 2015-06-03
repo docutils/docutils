@@ -45,13 +45,11 @@ from docutils._compat import BytesIO
 
 #
 # Globals
-TEMP_FILE_PATH = '/tmp'
+TEMP_FILE_PATH = 'functional/output/'
 INPUT_PATH = 'functional/input/'
 EXPECTED_PATH = 'functional/expected/'
 
-
 class DocutilsOdtTestCase(DocutilsTestSupport.StandardTestCase):
-
     #
     # Check to see if we can import the needed XML library.
     # Report failure if we cannot.
@@ -149,12 +147,26 @@ class DocutilsOdtTestCase(DocutilsTestSupport.StandardTestCase):
 
     def test_odt_basic(self):
         self.process_test('odt_basic.txt', 'odt_basic.odt',
-            #save_output_name='odt_basic.odt'
+            save_output_name='odt_basic.odt'
             )
+
+    def test_odt_nested_class(self):
+        self.process_test('odt_nested_class.txt',
+                          'odt_nested_class.odt',
+                          save_output_name='odt_nested_class.odt'
+        )
+        self.process_test('odt_unnested_class.txt',
+                          'odt_unnested_class.odt',
+                          save_output_name='odt_unnested_class.odt'
+        )
+        self.process_test('odt_no_class.txt',
+                          'odt_no_class.odt',
+                          save_output_name='odt_no_class.odt'
+        )
 
     def test_odt_tables1(self):
         self.process_test('odt_tables1.txt', 'odt_tables1.odt',
-            #save_output_name='odt_tables1.odt'
+            save_output_name='odt_tables1.odt'
             )
 
     def test_odt_custom_headfoot(self):
@@ -164,7 +176,7 @@ class DocutilsOdtTestCase(DocutilsTestSupport.StandardTestCase):
             }
         self.process_test('odt_custom_headfoot.txt', 'odt_custom_headfoot.odt',
             settings_overrides=settings_overrides,
-            #save_output_name='odt_custom_headfoot.odt'
+            save_output_name='odt_custom_headfoot.odt'
             )
 
     #
