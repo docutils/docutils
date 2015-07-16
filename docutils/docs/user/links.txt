@@ -146,23 +146,40 @@ website generators and HTML variants
 
   It can generate complete web sites (interlinked and indexed HTML pages),
   ePub, PDF, and others [#]_ from a set of rst source files.
-  
+
   .. [#] see http://sphinx-doc.org/config.html#options-for-epub-output
+  .. _Sphinx: http://sphinx.pocoo.org/
 
 * Nikola_  static site generator, use restructured text by
   default.
 
+  .. _nikola:  http://getnikola.com/
+
+* Pelican_ is a static site generator (mainly for blogs). Articles/pages can
+  be written in reStructuredText or Markdown format.
+
+  .. _pelican: http://docs.getpelican.com
+
 * rst2ht_ by Oliver Rutherfurd, converts reStructuredText to an .ht
   template, for use with ht2html_.
+
+  .. _rst2ht: http://www.rutherfurd.net/articles/rst-ht2html.html
+  .. _ht2html: http://ht2html.sourceforge.net/
 
 * htmlnav_ by Gunnar Schwant, is an HTML writer which supports navigation
   bars.
 
+  .. _htmlnav: http://docutils.sf.net/sandbox/gschwant/htmlnav/
+
 * rest2web_, by Michael Foord, is a tool for creating web sites with
   reStructuredText.
 
+  .. _rest2web: http://www.voidspace.org.uk/python/rest2web/
+
 * rst2chm_ by Oliver Rutherfurd, generates Microsoft HTML Help files from
   reStructuredText files.
+
+  .. _rst2chm: http://www.rutherfurd.net/software/rst2chm/
 
 * `html4strict <http://docutils.sf.net/sandbox/html4strict/>`__
   produces XHTML that strictly conforms to the XHTML 1.0 specification.
@@ -175,22 +192,15 @@ website generators and HTML variants
 * A `simple HTML writer`_ by Bill Bumgarner that doesn't rely on CSS
   (stylesheets).
 
-.. _Sphinx: http://sphinx.pocoo.org/
-.. _nikola:  http://getnikola.com/
-.. _rst2ht: http://www.rutherfurd.net/articles/rst-ht2html.html
-.. _ht2html: http://ht2html.sourceforge.net/
-.. _htmlnav: http://docutils.sf.net/sandbox/gschwant/htmlnav/
-.. _rst2chm: http://www.rutherfurd.net/software/rst2chm/
-.. _rest2web: http://www.voidspace.org.uk/python/rest2web/
-.. _simple HTML writer: http://docutils.sf.net/sandbox/bbum/DocArticle/
+  .. _simple HTML writer: http://docutils.sf.net/sandbox/bbum/DocArticle/
 
 ePub
 ````
- 
+
 * The `rst2epub`_ project by Robert Wierschke converts simple
-  reStructuredText doucments into valid epub files. 
-  
-  .. simple but well structured with classes/modules for epub components, 
+  reStructuredText doucments into valid epub files.
+
+  .. simple but well structured with classes/modules for epub components,
      and a standard ``setup.py`` installation file.
 
 * rst2epub2_ by Matt Harrison includes the epublib (originally by Tim
@@ -261,6 +271,11 @@ Convert other formats to reStructuredText:
 
 * xhtml2rest_, written by Antonios Christofides, is a simple utility
   to convert XHTML to reStructuredText.
+
+* DashTable_ by Gustav Klopp converts HTML tables into reStructuredText.
+  Colspan and Rowspan supported!
+
+  .. _DashTable: https://github.com/gustavklopp/DashTable
 
 * Sphinx_ includes a `LaTeX to Rst converter
   <http://svn.python.org/projects/doctools/converter/>`__ in its source code

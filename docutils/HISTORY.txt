@@ -43,15 +43,13 @@ Changes Since 0.12
   - Add ``\colon`` macro, fix spacing around colons. Fixes [ 246 ].
   - New upstream version (additional macros, piecewise integrals and sums).
 
-* docutils/writers/html_base/
+* docutils/writers/html_plain/
 
   - New HTML writer generating clean, polyglot_ markup conforming to
     `HTML 5`_ and compatible with `XHTML 1.0`_ Transitional.
 
-    CSS stylesheets ``minimal.css`` and ``plain.css`` with required and
-    recommended layout rules.
-
-    Also base for the xhtml11_ writer.
+    The CSS stylesheets ``minimal.css`` and ``plain.css`` contain required
+    and recommended layout rules.
 
 * docutils/writers/html4css1/__init__.py
 
@@ -84,16 +82,9 @@ Changes Since 0.12
 
   - LuaLaTex compatibility: do not load "xunicode".
 
-* docutils/writers/_`xhtml11`/
-
-  - New HTML writer generating `XHTML 1.1`_ styled with CSS2.1
-    Moved to the docutils core from sandbox/html4strict.
-
-
 * tools/
 
-  - New front-ends ``rst2xhtml.py`` and ``rst2html5.py`` for the
-    corresponding writers.
+  - New front-end ``rst2html5.py``.
 
 * tox.ini
 
@@ -105,7 +96,6 @@ Changes Since 0.12
 .. _polyglot: http://www.w3.org/TR/html-polyglot/
 .. _HTML 5: http://www.w3.org/TR/html5/
 .. _XHTML 1.0: http://www.w3.org/TR/xhtml1/
-.. _XHTML 1.1: http://www.w3.org/TR/xhtml11/
 
 
 Release 0.12 (2014-07-06)

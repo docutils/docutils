@@ -101,7 +101,7 @@ rst2html.py
 
 :Reader: Standalone
 :Parser: reStructuredText
-:Writer: html (html4css1_; this will change to hmtl-base_ in future)
+:Writer: html_ (html4css1_)
 
 The ``rst2html.py`` front end reads standalone reStructuredText source
 files and produces `XHTML 1.0 Transitional`_ output.
@@ -129,7 +129,7 @@ Stylesheets
 option).  A stylesheet is required for proper rendering.  The default
 stylesheet (``docutils/writers/html4css1/html4css1.css``, located in
 the installation directory) is provided for basic use.  To use
-different stylesheet(s), you must specify the stylesheets' locations
+different stylesheet(s), specify the stylesheets' location(s)
 as comma-separated list with the "``--stylesheet``" (for a URL)
 or "``--stylesheet-path``" (for a local file) command-line option,
 or with `configuration file`_ settings (e.g. ``./docutils.conf``
@@ -138,32 +138,24 @@ or ``~/.docutils``).  To experiment with styles, please see the
 
 __ ../howto/html-stylesheets.html
 .. _html4css1: html.html#html4css1
+.. _html: html.html#html
 
-rst2xhtml.py
---------------
-
-:Reader: Standalone
-:Parser: reStructuredText
-:Writer: xhtml (xhtml11)
-
-The ``rst2xhtml11.py`` front end reads standalone reStructuredText
-source files and produces clean `XHTML 1.1`_
-output. A CSS 2 stylesheet is required for proper rendering; a complete
-stylesheet is installed and used by default.
 
 rst2html5.py
 ------------
 
 :Reader: Standalone
 :Parser: reStructuredText
-:Writer: html5 (html-base_)
+:Writer: html5 (html_plain_)
 
 The ``rst2html5.py`` front end reads standalone reStructuredText source
 files and produces simple `HTML 5`_ output (compatible to `XHTML 1.0
-Transitional`_). A CSS 2 stylesheet is required for proper rendering; a
-complete stylesheet is installed and used by default.
+Transitional`_).
+Correct rendering of elements not directly supported by HTML depends on a
+CSS style sheet. The provided style sheets ``minimal.css`` and ``plain.css``
+define required and optional styling rules respectively.
 
-.. _html-base: html.html#html-base
+.. _html_plain: html.html#html-plain
 
 rstpep2html.py
 --------------

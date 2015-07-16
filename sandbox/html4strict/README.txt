@@ -79,27 +79,47 @@ This writer is for you, if you
 Usage
 =====
 
-For an example of programmatic use, see the `minimal front end to the
-Docutils Publisher, producing valid XHTML 1.1`
-<../../docutils/tools/rst2xhtml11.py>`_.
+The `rst2xhtml.py`_ front end reads standalone reStructuredText
+source files and produces clean `XHTML 1.1`_
+output. A CSS 2 stylesheet is required for proper rendering; a complete
+stylesheet is installed and used by default.
 
-This wrapper can called from the command line (when it is installed in the
-BINARY PATH):
+:Reader: Standalone
+:Parser: reStructuredText
+:Writer: xhtml (xhtml11)
 
-Comman line use::
+This wrapper can be called from the command line (when it is installed in the
+BINARY PATH)::
 
   rst2xhtml11.py [options] [<source> [<destination>]]
 
 The full usage text can be obtained with the ``--help`` option.
 
 
+.. For an example of programmatic use, see the `minimal front end to the
+   Docutils Publisher, producing valid XHTML 1.1`
+   <../../docutils/tools/rst2xhtml11.py>`_.
+
 
 Implementation
 ==============
 
-The writer module subclasses the ``html4css1.Writer`` and
-``html4css1.HTMLTranslator`` classes. Some methods are overwritten to
-replace deprecated HTML constructs or hard coded formatting.
+The writer module subclasses the ``html_plain.Writer`` and
+``html_plain.HTMLTranslator`` classes and adds compatibility to the strict
+requirements of `XHTML 1.1`_:
+
+* There is no attribute "lang" (only "xml:lang").
+
+* Enumerated lists don't support the 'start' attribute.
+
+  The style sheet xhtml11.css_ adds support for a "start" value for
+  enumerated lists via a CSS-counter. This allows also nested enumeration.
+
+* ``<sup>`` and ``<sub>`` tags are not allowed in preformatted blocks
+  (``<pre>``).
+
+The `math-output` `config setting`_ defaults to "MathML".
+
 
 The xhtml11.css style sheet extends the standard layout for
 CSS2-conforming HTML browsers.
@@ -402,3 +422,9 @@ References
   cascading style sheet by a lightweight html browser
   (e.g. `Dillo <http://www.dillo.org>`__ or the console browser
   `elinks <http://elinks.cz>`__).
+
+_`XHTML 1.1`
+   `XHTML™ 1.1 - Module-based XHTML - Second Edition`,
+   W3C Recommendation, 23 November 2010.
+   http://www.w3.org/TR/xhtml11/
+
