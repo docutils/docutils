@@ -2147,15 +2147,16 @@ class LaTeXTranslator(nodes.NodeVisitor):
             backref = node['ids'][0] # no backref, use self-ref instead
         if self.docutils_footnotes:
             self.fallbacks['footnotes'] = PreambleCmds.footnotes
-            num,text = node.astext().split(None,1)
+            num = node[0].astext()
             if self.settings.footnote_references == 'brackets':
                 num = '[%s]' % num
             self.out.append('%%\n\\DUfootnotetext{%s}{%s}{%s}{' %
                             (node['ids'][0], backref, self.encode(num)))
             if node['ids'] == node['names']:
                 self.out += self.ids_to_labels(node)
-            # mask newline to prevent spurious whitespace:
-            self.out.append('%')
+            # mask newline to prevent spurious whitespace if paragraph follows:
+            if node[1:] and isinstance(node[1], nodes.paragraph):
+                self.out.append('%')
         ## else:  # TODO: "real" LaTeX \footnote{}s
 
     def depart_footnote(self, node):

@@ -226,8 +226,8 @@ Options can be specified as
 LaTeX code
 ----------
 
-Custom LaTeX code can be placed in `style sheets`_, the `LaTeX
- preamble`_, the document body (`raw LaTeX`_), or custom templates_.
+Custom LaTeX code can be placed in `style sheets`_, the
+`LaTeX preamble`_, the document body (`raw LaTeX`_), or custom templates_.
 
 .. _style sheet:
 .. _custom style sheets:
@@ -1032,11 +1032,10 @@ footnotes
 By default, footnotes are set with Docutils-specific wrappers around
 the standard ``\footnotemark`` and ``\footnotetext`` commands.  You
 can configure the footnote layout similar to standard LaTeX footnotes
-in a custom `style sheet`_.
+in a custom `style sheet`_ or the `LaTeX preamble`_.
 
 Further configuration is possible by alternative definitions of
 ``\DUfootnotemark`` and ``\DUfootnotetext``
-
 
 Example 1:
   Set footnote text with a hanging indent.
@@ -1068,7 +1067,15 @@ Example 1:
     (adapt the ``\hangindent`` value).
 
 Example 2:
-  place the footnote text where it appears in the source document (instead
+  Footnote marks in normal font size, not superscript::
+
+    \usepackage{scrextend} % not required with KOMA-script document classes
+    \deffootnote{1em}{1em}{\thefootnotemark\ }
+
+  (See the `KOMA-script Guide`_ for details and other options.)
+
+Example 3:
+  Place the footnote text where it appears in the source document (instead
   of at the page bottom). This can be used to get the effect of endnotes
   (needs the hanging_ package)::
 
