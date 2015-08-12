@@ -221,7 +221,47 @@ Paragraph 2.
 
 \end{document}
 """],
+]
 
+totest['footnote text'] = [
+# input
+["""\
+.. [1] paragraph
+
+.. [2]
+
+.. [3] 1. enumeration
+""",
+## # expected output
+head_template.substitute(dict(parts,
+    fallbacks=r"""% numeric or symbol footnotes with hyperlinks
+\providecommand*{\DUfootnotemark}[3]{%
+  \raisebox{1em}{\hypertarget{#1}{}}%
+  \hyperlink{#2}{\textsuperscript{#3}}%
+}
+\providecommand{\DUfootnotetext}[4]{%
+  \begingroup%
+  \renewcommand{\thefootnote}{%
+    \protect\raisebox{1em}{\protect\hypertarget{#1}{}}%
+    \protect\hyperlink{#2}{#3}}%
+  \footnotetext{#4}%
+  \endgroup%
+}
+""")) + r"""%
+\DUfootnotetext{id1}{id1}{1}{%
+paragraph
+}
+%
+\DUfootnotetext{id2}{id2}{2}{}
+%
+\DUfootnotetext{id3}{id3}{3}{\begin{enumerate}
+
+\item enumeration
+\end{enumerate}
+}
+
+\end{document}
+"""],
 ]
 
 totest_latex_toc['no_sectnum'] = [
