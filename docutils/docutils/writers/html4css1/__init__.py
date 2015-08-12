@@ -47,7 +47,7 @@ class Writer(writers.Writer):
         os.path.abspath(os.path.dirname(__file__)),
         # for math.css
         os.path.abspath(os.path.join(
-            os.path.dirname(os.path.dirname(__file__)), 'html_base'))
+            os.path.dirname(os.path.dirname(__file__)), 'html_plain'))
        ]
 
     default_template = 'template.txt'

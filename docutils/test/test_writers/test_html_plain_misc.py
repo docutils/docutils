@@ -25,7 +25,7 @@ class EncodingTestCase(DocutilsTestSupport.StandardTestCase):
             'stylesheet': '',
             '_disable_config': True,}
         result = core.publish_string(
-            u'EUR = \u20ac', writer_name='html_base',
+            u'EUR = \u20ac', writer_name='html_plain',
             settings_overrides=settings_overrides)
         # Encoding a euro sign with latin1 doesn't work, so the
         # xmlcharrefreplace handler is used.
@@ -50,7 +50,7 @@ first term:
 second term:
   second def
 """
-        result = core.publish_string(data, writer_name='html_base',
+        result = core.publish_string(data, writer_name='html_plain',
                             settings_overrides=self.settings_overrides)
         self.assertIn(b('<dt class="for the second item">second term:</dt>'),
                       result)
@@ -67,7 +67,7 @@ first term:
 second term:
   second def
 """
-        result = core.publish_string(data, writer_name='html_base',
+        result = core.publish_string(data, writer_name='html_plain',
                             settings_overrides=self.settings_overrides)
         self.assertIn(b('<dt id="second-item">second term:</dt>'),
                       result)
@@ -79,7 +79,7 @@ class SettingsTestCase(DocutilsTestSupport.StandardTestCase):
     def test_default_stylesheet(self):
         # default style sheet, embedded
         mysettings = {'_disable_config': True,}
-        styles = core.publish_parts(self.data, writer_name='html_base',
+        styles = core.publish_parts(self.data, writer_name='html_plain',
                                   settings_overrides=mysettings)['stylesheet']
         self.assertIn('Minimal style sheet '
                       'for the HTML output of Docutils.', styles)
@@ -88,19 +88,19 @@ class SettingsTestCase(DocutilsTestSupport.StandardTestCase):
         # default style sheet, linked
         mysettings = {'_disable_config': True,
                       'embed_stylesheet': False}
-        styles = core.publish_parts(self.data, writer_name='html_base',
+        styles = core.publish_parts(self.data, writer_name='html_plain',
                                   settings_overrides=mysettings)['stylesheet']
-        self.assertIn('docutils/writers/html_base/minimal.css', styles)
+        self.assertIn('docutils/writers/html_plain/minimal.css', styles)
 
     def test_math_stylesheet_linked(self):
         # default + math style sheet, linked
         mysettings = {'_disable_config': True,
                       'embed_stylesheet': False,
                       'stylesheet_path': 'minimal.css, math.css'}
-        styles = core.publish_parts(self.data, writer_name='html_base',
+        styles = core.publish_parts(self.data, writer_name='html_plain',
                                   settings_overrides=mysettings)['stylesheet']
-        self.assertIn('docutils/writers/html_base/minimal.css', styles)
-        self.assertIn('docutils/writers/html_base/math.css', styles)
+        self.assertIn('docutils/writers/html_plain/minimal.css', styles)
+        self.assertIn('docutils/writers/html_plain/math.css', styles)
 
     def test_custom_stylesheet_linked(self):
         # default + custom style sheet, linked
@@ -108,30 +108,30 @@ class SettingsTestCase(DocutilsTestSupport.StandardTestCase):
                       'embed_stylesheet': False,
                       'stylesheet_path': 'minimal.css, '
                                          'data/ham.css'}
-        styles = core.publish_parts(self.data, writer_name='html_base',
+        styles = core.publish_parts(self.data, writer_name='html_plain',
                                   settings_overrides=mysettings)['stylesheet']
-        self.assertIn('docutils/writers/html_base/minimal.css', styles)
+        self.assertIn('docutils/writers/html_plain/minimal.css', styles)
         self.assertIn('href="data/ham.css"', styles)
 
     def test_custom_stylesheet_dir(self):
         mysettings = {'_disable_config': True,
                       'embed_stylesheet': False,
-                      'stylesheet_dirs': ('../docutils/writers/html_base/',
+                      'stylesheet_dirs': ('../docutils/writers/html_plain/',
                                           'data'),
                       'stylesheet_path': 'minimal.css, ham.css'}
-        styles = core.publish_parts(self.data, writer_name='html_base',
+        styles = core.publish_parts(self.data, writer_name='html_plain',
                                   settings_overrides=mysettings)['stylesheet']
-        if os.path.isdir('../docutils/writers/html_base/'):
-            self.assertIn('docutils/writers/html_base/minimal.css', styles)
+        if os.path.isdir('../docutils/writers/html_plain/'):
+            self.assertIn('docutils/writers/html_plain/minimal.css', styles)
         self.assertIn('href="data/ham.css"', styles)
 
     def test_custom_stylesheet_dir_embedded(self):
         mysettings = {'_disable_config': True,
                       'embed_stylesheet': True,
-                      'stylesheet_dirs': ('../docutils/writers/html_base/',
+                      'stylesheet_dirs': ('../docutils/writers/html_plain/',
                                           'data'),
                       'stylesheet_path': 'ham.css'}
-        styles = core.publish_parts(self.data, writer_name='html_base',
+        styles = core.publish_parts(self.data, writer_name='html_plain',
                                   settings_overrides=mysettings)['stylesheet']
         self.assertIn('dl.docutils dd {\n  margin-bottom: 0.5em }', styles)
 
@@ -150,7 +150,7 @@ class MathTestCase(DocutilsTestSupport.StandardTestCase):
     def test_math_output_default(self):
         # HTML with math.css stylesheet (since 0.11)
         mysettings = {'_disable_config': True,}
-        styles = core.publish_parts(self.data, writer_name='html_base',
+        styles = core.publish_parts(self.data, writer_name='html_plain',
                                   settings_overrides=mysettings)['stylesheet']
         self.assertIn('convert LaTeX equations to HTML output.', styles)
 
@@ -159,7 +159,7 @@ class MathTestCase(DocutilsTestSupport.StandardTestCase):
         # use default MathJax URL
         mysettings = {'_disable_config': True,
                       'math_output': 'MathJax'}
-        head = core.publish_parts(self.data, writer_name='html_base',
+        head = core.publish_parts(self.data, writer_name='html_plain',
             settings_overrides=mysettings)['head']
         self.assertIn(self.mathjax_script % self.default_mathjax_url, head)
 
@@ -168,14 +168,14 @@ class MathTestCase(DocutilsTestSupport.StandardTestCase):
         mysettings = {'_disable_config': True,
                       'math_output':
                       'mathjax %s' % self.custom_mathjax_url}
-        head = core.publish_parts(self.data, writer_name='html_base',
+        head = core.publish_parts(self.data, writer_name='html_plain',
             settings_overrides=mysettings)['head']
         self.assertIn(self.mathjax_script % self.custom_mathjax_url, head)
 
     def test_math_output_html(self):
         mysettings = {'_disable_config': True,
                       'math_output': 'HTML'}
-        head = core.publish_parts(self.data, writer_name='html_base',
+        head = core.publish_parts(self.data, writer_name='html_plain',
             settings_overrides=mysettings)['head']
         # There should be no MathJax script when math_output is not MathJax
         self.assertNotIn('MathJax.js', head)
@@ -185,7 +185,7 @@ class MathTestCase(DocutilsTestSupport.StandardTestCase):
                       'math_output': 'HTML math.css,custom/style.css',
                       'stylesheet_dirs': ('.', 'functional/input/data'),
                       'embed_stylesheet': False}
-        styles = core.publish_parts(self.data, writer_name='html_base',
+        styles = core.publish_parts(self.data, writer_name='html_plain',
             settings_overrides=mysettings)['stylesheet']
         self.assertEqual(u"""\
 <link rel="stylesheet" href="functional/input/data/minimal.css" type="text/css" />
@@ -198,7 +198,7 @@ class MathTestCase(DocutilsTestSupport.StandardTestCase):
         mysettings = {'_disable_config': True,
                       'math_output': 'MathJax'}
         # There should be no math script when text does not contain math
-        head = core.publish_parts('No math.', writer_name='html_base')['head']
+        head = core.publish_parts('No math.', writer_name='html_plain')['head']
         self.assertNotIn('MathJax', head)
 
 

@@ -376,6 +376,44 @@ General
   Especially useful for character entity sets, text transform specs,
   boilerplate, etc.
 
+* Support "include" as embedded inline-compatible directive in substitution
+  definitions, e.g. ::
+
+    .. |version| include:: version.txt
+
+    This document describes version |version| of ...
+
+  (cf. Grzegorz Adam Hankiewicz's post from 2014-10-01 in docutils-devel)
+
+* Add an ``:optional: <replacement text>`` option to the "include"
+  directive? This would not throw an error for a missing file, instead a
+  warning is given and ``<replacement text>`` is used instead. It would be
+  the responsibility of the author to ensure the missing file does not lead
+  to problems later in the document.
+
+  Use cases:
+
+  + Standard rST syntax to replace Sphinx's "literalinclude"::
+
+      .. include:: blah.cpp
+         :literal:
+         :optional: file ``blah.cpp`` not found
+
+  + Variable content taken from a file, e.g.
+
+    version.txt::
+
+       .. |version| replace:: 3.1
+
+    optionally used as::
+
+       .. include:: version.txt
+          :optional: .. |version| replace:: unknown
+
+       This document describes version |version| of ...
+
+    (cf. Grzegorz Adam Hankiewicz's post from 2014-10-01 in docutils-devel)
+
 * Parameterize the Reporter object or class?  See the `2004-02-18
   "rest checking and source path"`_ thread.
 
@@ -1725,6 +1763,20 @@ when used in a document.
     either by running it at the command line with a ``--help`` option
     or through an exposed API.  [Suggestion for Optik.]
 
+  - _`body.float`: Generic float that can be used for figures, tables,
+    code listings, flowcharts, ...
+
+    There is a Sphinx extension by Ignacio Fernández Galván <jellby@gmail.com>
+
+       I implemented something for generic floats in sphinx, and submitted a
+       pull request that is still waiting::
+
+        .. float::
+           :type: figure
+           :caption: My caption
+
+      https://github.com/sphinx-doc/sphinx/pull/1858
+
 
 Interpreted Text
 ----------------
@@ -2506,9 +2558,9 @@ Image and figure directives
   + `<../../test/functional/expected/standalone_rst_html4css1.html>`__
   + `<../../test/functional/expected/standalone_rst_latex.tex>`__
 
-* According to the HTML standard
-  http://www.w3.org/TR/html4/struct/objects.html#adef-align-IMG a right- or
-  left-aligned image should be floated alongside the paragraph.
+* The default CSS styling for HTML output (plain.css, default.css) lets
+  text following a right- or left-aligned image float to the side of the
+  image/figure.
 
   + Use this default also for LaTeX?
 

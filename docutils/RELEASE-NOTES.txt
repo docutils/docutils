@@ -38,19 +38,16 @@ Future changes
 Changes Since 0.12
 ==================
 
-* docutils/writers/
+* docutils/writers/html_plain
 
-  - New HTML writers generating `HTML 5`_ and `XHTML 1.1`_.
+  - New HTML writer generating `HTML 5`_.
 
-    New stylesheet ``html-base.css`` for default layout using CSS 2.1.
 
 * tools/
 
-  - New front-ends ``rst2xhtml.py`` and ``rst2html5.py`` for the
-    corresponding writers.
+  - New front-end ``rst2html5.py``.
 
 .. _HTML 5: http://www.w3.org/TR/html5/
-.. _XHTML 1.1: http://www.w3.org/TR/xhtml11/
 
 
 Release 0.12 (2014-07-06)

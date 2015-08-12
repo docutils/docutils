@@ -43,7 +43,7 @@ characters" but the field name uses a proportional font.
 :MMMMMMMMMMMMMM: a field name that is actually longer than the
                  previous one but regarded "short" by html4css1.
 
-With ``html_base``, a `field list` is typeset as CSS-styled `definition
+With ``html_plain``, a `field list` is typeset as CSS-styled `definition
 list`. The default layout is similar to the look with `html4css1`:
 
 .. class:: open
