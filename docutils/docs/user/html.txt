@@ -278,7 +278,7 @@ has some drawbacks_.)
 
 
 HTML and CSS Versions
-~~~~~~~~~~~~~~~~~~~~~
+---------------------
 
 _`HTML 5`
    `HTML5, A vocabulary and associated APIs for HTML and XHTML`,
