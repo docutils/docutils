@@ -1566,15 +1566,13 @@ See also: `Footnote References`_.
 
 Doctree elements: footnote_, label_.
 
-Configuration settings: `footnote_references (HTML writer)`_,
-`footnote_references (LaTeX writer)`_.
+Configuration settings:
+`footnote_references <footnote_references setting_>`_.
 
 .. _footnote: ../doctree.html#footnote
 .. _label: ../doctree.html#label
-.. _footnote_references (HTML writer):
+.. _footnote_references setting:
    ../../user/config.html#footnote-references-html4css1-writer
-.. _footnote_references (LaTeX writer):
-   ../../user/config.html#footnote-references-latex2e-writer
 
 Each footnote consists of an explicit markup start (".. "), a left
 square bracket, the footnote label, a right square bracket, and
@@ -2802,14 +2800,10 @@ See also: Footnotes_
 Doctree element: footnote_reference_.
 
 Configuration settings:
-`footnote_references (HTML writer)`_,
-`footnote_references (LaTeX writer)`_, trim_footnote_reference_space_.
+`footnote_references <footnote_references setting_>`_,
+trim_footnote_reference_space_.
 
 .. _footnote_reference: ../doctree.html#footnote-reference
-.. _footnote_references (HTML writer):
-   ../../user/config.html#footnote-references-html4css1-writer
-.. _footnote_references (LaTeX writer):
-   ../../user/config.html#footnote-references-latex2e-writer
 .. _trim_footnote_reference_space:
    ../../user/config.html#trim-footnote-reference-space
 
@@ -2832,6 +2826,13 @@ For example::
     Please RTFM [1]_.
 
     .. [1] Read The Fine Manual
+
+`Inline markup recognition rules`_ may require whitespace in front of the
+footnote reference. To remove the whitespace from the output, use an
+escaped whitespace character (see `Escaping Mechanism`_) or set the
+trim_footnote_reference_space_ configuration setting. Leading whitespace
+is removed by default, if the `footnote_references setting`_ is
+"superscript".
 
 
 Citation References
