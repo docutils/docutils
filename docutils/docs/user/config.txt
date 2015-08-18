@@ -310,7 +310,7 @@ Options: ``--expose-internal-attribute`` (hidden, for development use only).
 footnote_backlinks
 ------------------
 
-Enable or disable backlinks from footnotes and citations to their
+Enable or disable backlinks from footnotes_ and citations_ to their
 references.
 
 Default: enabled (True).
@@ -472,7 +472,7 @@ Enable or disable automatic section numbering by Docutils
 directive`_.
 
 If disabled, section numbers might be added to the output by the
-renderer (e.g. LaTeX or via a CSS style definition).
+renderer (e.g. by LaTeX or via a CSS style definition).
 
 Default: enabled (True).
 Options: ``--section-numbering``, ``--no-section-numbering``.
@@ -539,12 +539,14 @@ Default: disabled (None).  Option: ``--strip-element-with-class``.
 title
 -----
 
-The document title as metadata, which does not become part of the
+The `document title`_ as metadata, which does not become part of the
 document body.  It overrides a document-supplied title.  For
 example, in HTML output the metadata document title appears in the
 title bar of the browser window.
 
 Default: none.  Option: ``--title``.
+
+.. _document title: ../ref/rst/restructuredtext.html#document-title
 
 toc_backlinks
 -------------
@@ -707,7 +709,7 @@ Default: 8.  Options: ``--tab-width``.
 trim_footnote_reference_space
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Remove spaces before footnote references.
+Remove spaces before `footnote references`_.
 
 Default: don't (None); may be overriden by a writer-specific
 footnote_references__ default though.
@@ -715,7 +717,6 @@ footnote_references__ default though.
 Options: ``--trim-footnote-reference-space, --leave-footnote-reference-space``.
 
 __ `footnote_references [latex2e writer]`_
-
 
 [readers]
 =========
@@ -727,7 +728,7 @@ __ `footnote_references [latex2e writer]`_
 docinfo_xform
 ~~~~~~~~~~~~~
 
-Enable or disable the bibliographic field list transform
+Enable or disable the `bibliographic field list`_ transform
 (docutils.transforms.frontmatter.DocInfo).
 
 Default: enabled (True).  Options: ``--no-doc-info``.
@@ -736,7 +737,7 @@ doctitle_xform
 ~~~~~~~~~~~~~~
 
 Enable or disable the promotion of a lone top-level section title
-to document title (and subsequent section title to document
+to `document title`_ (and subsequent section title to document
 subtitle promotion; docutils.transforms.frontmatter.DocTitle).
 
 Default: enabled (True).  Options: ``--no-doc-title``.
@@ -776,8 +777,9 @@ Not implemented.
      indents_ options may adversely affect whitespace; use them only for
      reading convenience (see http://bugs.python.org/issue4147).
 
-   * The XML declaration carries text encoding information, without which
-     standard tools may be unable to read the generated XML.
+   * The XML declaration carries text encoding information. If the encoding
+     is not UTF-8 or ASCII and the XML declaration is missing, standard
+     tools may be unable to read the generated XML.
 
 doctype_declaration
 ~~~~~~~~~~~~~~~~~~~
@@ -821,7 +823,7 @@ __ `xml_declaration [html4css1 writer]`_
 attribution
 ~~~~~~~~~~~
 
-Format for block quote attributions: one of "dash" (em-dash
+Format for `block quote`_ attributions: one of "dash" (em-dash
 prefix), "parentheses"/"parens", or "none".  Also defined for the
 `LaTeX Writer <attribution [latex2e writer]_>`__.
 
@@ -863,7 +865,7 @@ Options: ``--compact-lists, --no-compact-lists``.
 compact_field_lists
 ~~~~~~~~~~~~~~~~~~~
 
-Remove extra vertical whitespace between items of field lists that
+Remove extra vertical whitespace between items of `field lists`_ that
 are "simple" (i.e., all field bodies each contain at most one
 paragraph).  The behaviour can be specified directly via "class"
 attributes (values "compact" and "open") in the document.
@@ -889,7 +891,7 @@ __ `stylesheet_path [html4css1 writer]`_
 field_name_limit
 ~~~~~~~~~~~~~~~~
 
-The maximum width (in characters) for one-column field names. Longer
+The maximum width (in characters) for one-column `field names`_. Longer
 field names will span an entire row of the table used to render the field
 list.  0 indicates "no limit".  See also option_limit_.
 
@@ -900,7 +902,7 @@ Default: 14 (i.e. 14 characters).  Option: ``--field-name-limit``.
 footnote_references
 ~~~~~~~~~~~~~~~~~~~
 
-Format for footnote references, one of "superscript" or "brackets".
+Format for `footnote references`_, one of "superscript" or "brackets".
 Also defined for the `LaTeX Writer <footnote_references [latex2e writer]_>`__.
 
 Overrides [#override]_ trim_footnote_reference_space_, if
@@ -1013,7 +1015,7 @@ New in Docutils 0.8.
 option_limit
 ~~~~~~~~~~~~
 
-The maximum width (in characters) for options in option lists.
+The maximum width (in characters) for options in `option lists`_.
 Longer options will span an entire row of the table used to render
 the option list.  0 indicates "no limit".  See also
 field_name_limit_.
@@ -1080,7 +1082,7 @@ __ `stylesheet_dirs [html4css1 writer]`_
 table_style
 ~~~~~~~~~~~
 
-Class value(s) added to tables to allow styling with CSS.
+Class value(s) added to tables_ to allow styling with CSS.
 The default sylesheet defines:
 
 borderless
@@ -1113,9 +1115,9 @@ xml_declaration
 Generate XML with an XML declaration.  Also defined for the
 `Docutils XML Writer`__.
 
-.. Caution:: The XML declaration carries text encoding
-   information, without which standard tools may be unable to read
-   the generated XML.
+.. Caution:: The XML declaration carries text encoding information.  If the
+   encoding is not UTF-8 or ASCII and the XML declaration is missing,
+   standard tools may be unable to read the generated XHTML.
 
 Default: do (1).  Options: ``--no-xml-declaration``.
 
@@ -1236,10 +1238,10 @@ The initial view mode, either "slideshow" or "outline".
 Default: "slidewhow".  Option: ``--view-mode``.
 
 
-[html-base writer]
-------------------
+[html-plain writer]
+-------------------
 
-The `html-base` writer uses the settings described in the `[html4css1
+The `html-plain` writer uses the settings described in the `[html4css1
 writer]`_ section with the following exceptions:
 
 Removed options:
@@ -1248,34 +1250,11 @@ Removed options:
 Different default for:
 
 `stylesheet_path <stylesheet_path [html4css1 writer]_>`_:
-  Default: "html-base.css"
+  Default: "minimal.css,plain.css"
 
 `stylesheet_dirs <stylesheet_dirs [html4css1 writer]_>`_:
   Default: Installation-dependent. Use the --help option to get the exact
   value.
-
-New in Docutils 0.13.
-
-
-[xhtml11 writer]
-----------------
-
-The XHTML1.1 Writer derives from the `html-base` writer and uses the same
-setings. The "[html-base writer]" section of configuration files is
-processed before the "[xhtml11 writer]" section.
-
-
-Different default for:
-
-`stylesheet_path <stylesheet_path [html4css1 writer]_>`_:
-  Default: "html-base.css,xhtml11.css"
-
-`stylesheet_dirs <stylesheet_dirs [html4css1 writer]_>`_:
-  Default: Installation-dependent. Use the --help option to get the exact
-  value.
-
-math_output_:
-  Default: "MathML"
 
 New in Docutils 0.13.
 
@@ -1286,7 +1265,7 @@ New in Docutils 0.13.
 use_latex_toc
 ~~~~~~~~~~~~~
 
-To get pagenumbers in the table of contents the table of contents
+To get pagenumbers in the `table of contents`_, it
 must be generated by LaTeX. Usually latex must be run twice to get
 numbers correct.
 
@@ -1295,40 +1274,29 @@ Default: on.  Options: ``--use-latex-toc, --use-docutils-toc``.
 use_latex_docinfo
 ~~~~~~~~~~~~~~~~~
 
-Attach author and date to the document title
-instead of the document info table.
+Attach author and date to the `document title`_
+instead of the `bibliographic fields`_.
 
 Default: off.  Options: ``--use-latex-docinfo, --use-docutils-docinfo``.
 
 docutils_footnotes
 ~~~~~~~~~~~~~~~~~~
 Use the Docutils-specific macros ``\DUfootnote`` and
-``\DUfootnotetext`` for footnotes.
+``\DUfootnotetext`` for footnotes_.
 
 Default: on.  Option: ``--docutils-footnotes``.
-
-figure_footnotes
-~~~~~~~~~~~~~~~~
-
-Typeset footnote text in a figure float. This may lead to footnotes,
-citations, and figures being mixed at page foot.
-
-*Deprecated:* This setting will be removed in a future Docutils
-version.
-
-Default: off.  Option: ``--figure-footnotes``.
 
 use_latex_citations
 ~~~~~~~~~~~~~~~~~~~
 
-Use \cite for citations instead of a simulation with figure-floats.
+Use \cite for citations_ instead of a simulation with figure-floats.
 
 Default: off.  Options: ``--use-latex-citations, --figure-citations``.
 
 use_latex_abstract
 ~~~~~~~~~~~~~~~~~~
 
-Use LaTeX abstract environment for the document's abstract.
+Use LaTeX abstract environment for the document's abstract_.
 
 Default: off.  Options: ``--use-latex-abstract, --topic-abstract``.
 
@@ -1363,7 +1331,7 @@ Default: "".   Option: ``--hyperref-options``.
 documentclass
 ~~~~~~~~~~~~~
 
-Specify latex documentclass.
+Specify LaTeX documentclass.
 
 Default: "article".  Option: ``--documentclass``.
 
@@ -1510,7 +1478,7 @@ __ `template [html4css1 writer]`_
 footnote_references
 ~~~~~~~~~~~~~~~~~~~
 
-Format for footnote references: one of "superscript" or
+Format for `footnote references`_: one of "superscript" or
 "brackets".  Also defined for the `HTML Writer`__.
 
 Overrides [#override]_ trim_footnote_reference_space_, if
@@ -1530,7 +1498,7 @@ See `attribution [html4css1 writer]`_.
 compound_enumerators
 ~~~~~~~~~~~~~~~~~~~~
 
-Enable or disable compound enumerators for nested enumerated lists
+Enable or disable compound enumerators for nested `enumerated lists`_
 (e.g. "1.2.a.ii").
 
 Default: disabled (None).
@@ -1539,7 +1507,7 @@ Options: ``--compound-enumerators``, ``--no-compound-enumerators``.
 literal_block_env
 ~~~~~~~~~~~~~~~~~
 
-When possibile\ [#]_, use the specified environment for literal-blocks.
+When possibile\ [#]_, use the specified environment for `literal blocks`_.
 
 Default: "" (quoting of whitespace and special chars).
 Option: ``--literal-block-env``.
@@ -1584,7 +1552,7 @@ Default: "-".  Option: ``--section-enumerator-separator``.
 table_style
 ~~~~~~~~~~~
 
-Specify the drawing of separation lines.
+Specify the drawing of separation lines in tables_
 Supported values:
 
 standard
@@ -1607,7 +1575,7 @@ before the "[xetex writer]" section.
 The following settings differ from those of the latex2e writer:
 
 font_encoding_
-    Disabled  (XeTeX uses Unicode-encoded fonts).
+    Disabled  (Use Unicode-encoded fonts).
 
 latex_preamble_
     Default: Font setup for `Linux Libertine`_,::
@@ -1914,3 +1882,22 @@ pep_stylesheet         [pep_html writer] stylesheet
 pep_stylesheet_path    [pep_html writer] stylesheet_path
 pep_template           [pep_html writer] template
 =====================  =====================================
+
+.. References
+
+.. _abstract:
+.. _bibliographic field list:
+.. _bibliographic fields:
+   ../ref/rst/restructuredtext.html#bibliographic-fields
+.. _block quote: ../ref/rst/restructuredtext.html#block-quotes
+.. _citations: ../ref/rst/restructuredtext.html#citations
+.. _enumerated lists: ../ref/rst/restructuredtext.html#enumerated-lists
+.. _field lists: ../ref/rst/restructuredtext.html#field-lists
+.. _field names: ../ref/rst/restructuredtext.html#field-names
+.. _footnotes: ../ref/rst/restructuredtext.html#footnotes
+.. _footnote references: ../ref/rst/restructuredtext.html#footnote-references
+.. _literal blocks: ../ref/rst/restructuredtext.html#literal-blocks
+.. _option lists: ../ref/rst/restructuredtext.html#option-lists
+.. _tables: ../ref/rst/restructuredtext.html#tables
+
+.. _table of contents: ../ref/rst/directives.html#contents

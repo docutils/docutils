@@ -441,13 +441,20 @@ rearranging the document fragment into a complete document with a
 title and possibly other metadata elements (author, date, etc.; see
 `Bibliographic Fields`_).
 
+.. _document title:
+
 Specifically, there is no way to indicate a document title and
-subtitle explicitly in reStructuredText.  Instead, a lone top-level
+subtitle explicitly in reStructuredText. [#]_ Instead, a lone top-level
 section title (see Sections_ below) can be treated as the document
 title.  Similarly, a lone second-level section title immediately after
 the "document title" can become the document subtitle.  The rest of
 the sections are then lifted up a level or two.  See the `DocTitle
 transform`_ for details.
+
+.. [#] The `title`_ configuration setting can set a document title that does
+   not become part of the document body.
+
+.. _title: ../../user/config.html#title
 
 
 Sections
@@ -815,7 +822,9 @@ transform fields or field bodies in certain contexts.  For examples,
 see `Bibliographic Fields`_ below, or the "image_" and "meta_"
 directives in `reStructuredText Directives`_.
 
-Field lists are mappings from field names to field bodies, modeled on
+.. _field names:
+
+Field lists are mappings from *field names* to *field bodies*, modeled on
 RFC822_ headers.  A field name may consist of any characters, but
 colons (":") inside of field names must be escaped with a backslash.
 Inline markup is parsed in field names.  Field names are
@@ -1553,10 +1562,19 @@ targets, directives, substitution definitions, and comments.
 Footnotes
 `````````
 
+See also: `Footnote References`_.
+
 Doctree elements: footnote_, label_.
+
+Configuration settings: `footnote_references (HTML writer)`_,
+`footnote_references (LaTeX writer)`_.
 
 .. _footnote: ../doctree.html#footnote
 .. _label: ../doctree.html#label
+.. _footnote_references (HTML writer):
+   ../../user/config.html#footnote-references-html4css1-writer
+.. _footnote_references (LaTeX writer):
+   ../../user/config.html#footnote-references-latex2e-writer
 
 Each footnote consists of an explicit markup start (".. "), a left
 square bracket, the footnote label, a right square bracket, and
@@ -1734,6 +1752,12 @@ illustrative::
 
 Citations
 `````````
+
+See also: `Citation References`_.
+
+Doctree element: citation_
+
+.. _citation: ../doctree.html#citation
 
 Citations are identical to footnotes except that they use only
 non-numeric labels such as ``[note]`` or ``[GVR2001]``.  Citation
@@ -2773,9 +2797,21 @@ reference names.
 Footnote References
 -------------------
 
+See also: Footnotes_
+
 Doctree element: footnote_reference_.
 
+Configuration settings:
+`footnote_references (HTML writer)`_,
+`footnote_references (LaTeX writer)`_, trim_footnote_reference_space_.
+
 .. _footnote_reference: ../doctree.html#footnote-reference
+.. _footnote_references (HTML writer):
+   ../../user/config.html#footnote-references-html4css1-writer
+.. _footnote_references (LaTeX writer):
+   ../../user/config.html#footnote-references-latex2e-writer
+.. _trim_footnote_reference_space:
+   ../../user/config.html#trim-footnote-reference-space
 
 Start-string = "[", end-string = "]_".
 
@@ -2801,7 +2837,11 @@ For example::
 Citation References
 -------------------
 
-Doctree element: citation_reference.
+See also: Citations_
+
+Doctree element: citation_reference_.
+
+.. _citation_reference: ../doctree.html#citation_reference
 
 Start-string = "[", end-string = "]_".
 
@@ -2813,8 +2853,6 @@ plus internal hyphens, underscores, and periods; no whitespace).
 For example::
 
     Here is a citation reference: [CIT2002]_.
-
-See Citations_ for the citation itself.
 
 
 Substitution References
