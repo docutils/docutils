@@ -329,12 +329,13 @@ fi
 
 cd $htdocsdest
 if [ $on_sourceforge ] ; then
-    print_feedback "rsync on sf"
+    print_feedback "rsync ON sf"
     rsync -r -t ./ $remotehtdocs
     cp ../snapshots/$project-snapshot.tgz $remotehtdocs
     cp ../snapshots/$project-sandbox-snapshot.tgz $remotehtdocs
 
 else
+    print_feedback "rsync TO sf"
     # do not use -a to avoid "failed to set permissions"
     # -t preserve modification times. But a new svn checkout has new modtime.
     rsync -e ssh -r -t ./ web.sourceforge.net:$remotehtdocs
