@@ -136,7 +136,7 @@ what-you-see-is-what-you-get plaintext markup syntax.""", # wrap at col 60
                  'docutils.writers',
                  'docutils.writers.html4css1',
                  'docutils.writers.html_plain',
-                 'docutils.writers.xhtml11',
+                 # 'docutils.writers.xhtml11', # moved to the sandbox
                  'docutils.writers.pep_html',
                  'docutils.writers.s5_html',
                  'docutils.writers.latex2e',
@@ -165,8 +165,6 @@ what-you-see-is-what-you-get plaintext markup syntax.""", # wrap at col 60
                      ['docutils/writers/s5_html/themes/README.txt']),
                     ('docutils/writers/odf_odt',
                      ['docutils/writers/odf_odt/styles.odt']),
-                    ('docutils/writers/xhtml11',
-                     ['docutils/writers/xhtml11/xhtml11.css']),
                    ]
                    + s5_theme_files),
     'scripts' : ['tools/rst2html.py',
