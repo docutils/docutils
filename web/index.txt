@@ -59,7 +59,7 @@ Download
 
 .. Note::
 
-   Snapshots are supported by sourceforge directly::
+   Snapshots are supported by sourceforge directly:
 
      https://sourceforge.net/p/docutils/code/HEAD/tarball
 
