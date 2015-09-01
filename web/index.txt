@@ -59,16 +59,18 @@ Download
 
 .. Note::
 
-   Snapshots are supported by sourceforge directly:
+   Snapshots are supported by sourceforge directly.
+   The whole trunk is packed docutils, sandbox, prest/perl and web:
 
      https://sourceforge.net/p/docutils/code/HEAD/tarball
 
-  BUT
+   or only the docutils package:
 
-  1. a direct link to the tarball of HEAD does not work.
-  2. the whole trunk is packed docutils, sandbox, prest/perl and web.
+     http://sourceforge.net/p/docutils/code/HEAD/tree/trunk/docutils/
 
-  The provided snapshosts are created on website updates.     
+  Click the download snapshot button.
+
+  The snapshosts listed below are created on website updates.     
 
 We recommend that you use a snapshot_ from `Docutils' Subversion
 repository`_. The snapshots usually contain *more features* and *fewer bugs*
