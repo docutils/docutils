@@ -182,12 +182,12 @@ activated with the <span class="docutils literal"><span class="pre">--section-su
 <h3><a class="toc-backref" href="#id44"><span class="sectnum">2.1.1</span> Inline Markup</a></h3>
 <p>Paragraphs contain text and may contain inline markup: <em>emphasis</em>,
 <strong>strong emphasis</strong>, <span class="docutils literal">inline literals</span>, standalone hyperlinks
-(<a class="reference external" href="http://www.python.org">http://www.python.org</a>), external hyperlinks (<a class="reference external" href="http://www.python.org/">Python</a> <a class="footnote-reference" href="#id25" id="id26">[5]</a>), internal
+(<a class="reference external" href="http://www.python.org">http://www.python.org</a>), external hyperlinks (<a class="reference external" href="http://www.python.org/">Python</a> <a class="footnote-reference brackets" href="#id25" id="id26">5</a>), internal
 cross-references (<a class="reference internal" href="#example">example</a>), external hyperlinks with embedded URIs
 (<a class="reference external" href="http://www.python.org">Python web site</a>), <a class="reference external" href="http://www.python.org/">anonymous hyperlink
-references</a> <a class="footnote-reference" href="#id25" id="id35">[5]</a> (<a class="reference external" href="http://docutils.sourceforge.net/">a second reference</a> <a class="footnote-reference" href="#id36" id="id37">[9]</a>), footnote references (manually
-numbered <a class="footnote-reference" href="#id8" id="id1">[1]</a>, anonymous auto-numbered <a class="footnote-reference" href="#id12" id="id2">[3]</a>, labeled auto-numbered
-<a class="footnote-reference" href="#label" id="id3">[2]</a>, or symbolic <a class="footnote-reference" href="#id13" id="id4">[*]</a>), citation references (<a class="citation-reference" href="#cit2002" id="id5">[CIT2002]</a>),
+references</a> <a class="footnote-reference brackets" href="#id25" id="id35">5</a> (<a class="reference external" href="http://docutils.sourceforge.net/">a second reference</a> <a class="footnote-reference brackets" href="#id36" id="id37">9</a>), footnote references (manually
+numbered <a class="footnote-reference brackets" href="#id8" id="id1">1</a>, anonymous auto-numbered <a class="footnote-reference brackets" href="#id12" id="id2">3</a>, labeled auto-numbered
+<a class="footnote-reference brackets" href="#label" id="id3">2</a>, or symbolic <a class="footnote-reference brackets" href="#id13" id="id4">*</a>), citation references (<a class="citation-reference" href="#cit2002" id="id5">[CIT2002]</a>),
 substitution references (<img alt="EXAMPLE" src="../../../docs/user/rst/images/biohazard.png" />), and <span class="target" id="inline-hyperlink-targets">inline hyperlink targets</span>
 (see <a class="reference internal" href="#targets">Targets</a> below for a reference back to here).  Character-level
 inline markup is also possible (although exceedingly ugly!) in <em>re</em><span class="docutils literal">Structured</span><em>Text</em>.  Problems are indicated by <a href="#id23"><span class="problematic" id="id24">|problematic|</span></a> text
@@ -462,32 +462,32 @@ Python-specific usage examples; begun with &quot;&gt;&gt;&gt;&quot;
 </div>
 <div class="section" id="footnotes">
 <h2><a class="toc-backref" href="#id54"><span class="sectnum">2.11</span> Footnotes</a></h2>
-<dl class="footnote">
-<dt class="label" id="id8">[1]<span class="fn-backref">(<a href="#id1">1</a>,<a href="#id9">2</a>,<a href="#id22">3</a>)</span></dt>
+<dl class="footnote brackets">
+<dt class="label" id="id8"><span class="brackets">1</span><span class="fn-backref">(<a href="#id1">1</a>,<a href="#id9">2</a>,<a href="#id22">3</a>)</span></dt>
 <dd><p>A footnote contains body elements, consistently indented by at
 least 3 spaces.</p>
 <p>This is the footnote's second paragraph.</p>
 </dd>
-<dt class="label" id="label">[2]<span class="fn-backref">(<a href="#id3">1</a>,<a href="#id10">2</a>)</span></dt>
-<dd><p>Footnotes may be numbered, either manually (as in <a class="footnote-reference" href="#id8" id="id9">[1]</a>) or
+<dt class="label" id="label"><span class="brackets">2</span><span class="fn-backref">(<a href="#id3">1</a>,<a href="#id10">2</a>)</span></dt>
+<dd><p>Footnotes may be numbered, either manually (as in <a class="footnote-reference brackets" href="#id8" id="id9">1</a>) or
 automatically using a &quot;#&quot;-prefixed label.  This footnote has a
 label so it can be referred to from multiple places, both as a
-footnote reference (<a class="footnote-reference" href="#label" id="id10">[2]</a>) and as a <a class="reference internal" href="#label">hyperlink reference</a>.</p>
+footnote reference (<a class="footnote-reference brackets" href="#label" id="id10">2</a>) and as a <a class="reference internal" href="#label">hyperlink reference</a>.</p>
 </dd>
-<dt class="label" id="id12"><a class="fn-backref" href="#id2">[3]</a></dt>
+<dt class="label" id="id12"><span class="brackets"><a class="fn-backref" href="#id2">3</span></a></dt>
 <dd><p>This footnote is numbered automatically and anonymously using a
 label of &quot;#&quot; only.</p>
 <p>This is the second paragraph.</p>
 <p>And this is the third paragraph.</p>
 </dd>
-<dt class="label" id="id13"><a class="fn-backref" href="#id4">[*]</a></dt>
+<dt class="label" id="id13"><span class="brackets"><a class="fn-backref" href="#id4">*</span></a></dt>
 <dd><p>Footnotes may also use symbols, specified with a &quot;*&quot; label.
-Here's a reference to the next footnote: <a class="footnote-reference" href="#id15" id="id14">[†]</a>.</p>
+Here's a reference to the next footnote: <a class="footnote-reference brackets" href="#id15" id="id14">†</a>.</p>
 </dd>
-<dt class="label" id="id15"><a class="fn-backref" href="#id14">[†]</a></dt>
+<dt class="label" id="id15"><span class="brackets"><a class="fn-backref" href="#id14">†</span></a></dt>
 <dd><p>This footnote shows the next symbol in the sequence.</p>
 </dd>
-<dt class="label" id="id16">[4]</dt>
+<dt class="label" id="id16"><span class="brackets">4</span></dt>
 <dd><p>Here's an unreferenced footnote, with a reference to a
 nonexistent footnote: <a href="#id96"><span class="problematic" id="id97"><span id="id17"></span>[5]_</span></a>.</p>
 </dd>
@@ -496,7 +496,7 @@ nonexistent footnote: <a href="#id96"><span class="problematic" id="id97"><span 
 <div class="section" id="citations">
 <h2><a class="toc-backref" href="#id55"><span class="sectnum">2.12</span> Citations</a></h2>
 <dl class="citation">
-<dt class="label" id="cit2002">[CIT2002]<span class="fn-backref">(<a href="#id5">1</a>,<a href="#id18">2</a>)</span></dt>
+<dt class="label" id="cit2002"><span class="brackets">CIT2002</span><span class="fn-backref">(<a href="#id5">1</a>,<a href="#id18">2</a>)</span></dt>
 <dd><p>Citations are text-labeled footnotes. They may be
 rendered separately and differently from footnotes.</p>
 </dd>
@@ -512,7 +512,7 @@ hyperlink targets</a> are also possible.</p>
 <p>Section headers are implicit targets, referred to by name. See
 <a class="reference internal" href="#targets">Targets</a>, which is a subsection of <a class="reference internal" href="#body-elements">Body Elements</a>.</p>
 <p>Explicit external targets are interpolated into references such as
-&quot;<a class="reference external" href="http://www.python.org/">Python</a> <a class="footnote-reference" href="#id25" id="id27">[5]</a>&quot;.</p>
+&quot;<a class="reference external" href="http://www.python.org/">Python</a> <a class="footnote-reference brackets" href="#id25" id="id27">5</a>&quot;.</p>
 <p>Targets may be indirect and anonymous.  Thus <a class="reference internal" href="#targets">this phrase</a> may also
 refer to the <a class="reference internal" href="#targets">Targets</a> section.</p>
 <p>Here's a <a href="#id100"><span class="problematic" id="id101">`hyperlink reference without a target`_</span></a>, which generates an
@@ -720,27 +720,27 @@ allowed (e.g. inside a directive).</p>
 </div>
 <div class="section" id="target-footnotes">
 <h3><a class="toc-backref" href="#id91"><span class="sectnum">2.14.5</span> Target Footnotes</a></h3>
-<dl class="footnote">
-<dt class="label" id="id25">[5]<span class="fn-backref">(<a href="#id26">1</a>,<a href="#id27">2</a>,<a href="#id28">3</a>,<a href="#id35">4</a>)</span></dt>
+<dl class="footnote brackets">
+<dt class="label" id="id25"><span class="brackets">5</span><span class="fn-backref">(<a href="#id26">1</a>,<a href="#id27">2</a>,<a href="#id28">3</a>,<a href="#id35">4</a>)</span></dt>
 <dd><p><a class="reference external" href="http://www.python.org/">http://www.python.org/</a></p>
 </dd>
-<dt class="label" id="id29"><a class="fn-backref" href="#id30">[6]</a></dt>
+<dt class="label" id="id29"><span class="brackets"><a class="fn-backref" href="#id30">6</span></a></dt>
 <dd><p><a class="reference external" href="http://pygments.org/">http://pygments.org/</a></p>
 </dd>
-<dt class="label" id="id31"><a class="fn-backref" href="#id32">[7]</a></dt>
+<dt class="label" id="id31"><span class="brackets"><a class="fn-backref" href="#id32">7</span></a></dt>
 <dd><p><a class="reference external" href="http://docutils.sourceforge.net/docs/user/config.html#table-style">http://docutils.sourceforge.net/docs/user/config.html#table-style</a></p>
 </dd>
-<dt class="label" id="id33"><a class="fn-backref" href="#id34">[8]</a></dt>
+<dt class="label" id="id33"><span class="brackets"><a class="fn-backref" href="#id34">8</span></a></dt>
 <dd><p><a class="reference external" href="http://tug.ctan.org/tex-archive/macros/latex/contrib/booktabs/booktabs.pdf">http://tug.ctan.org/tex-archive/macros/latex/contrib/booktabs/booktabs.pdf</a></p>
 </dd>
-<dt class="label" id="id36"><a class="fn-backref" href="#id37">[9]</a></dt>
+<dt class="label" id="id36"><span class="brackets"><a class="fn-backref" href="#id37">9</span></a></dt>
 <dd><p><a class="reference external" href="http://docutils.sourceforge.net/">http://docutils.sourceforge.net/</a></p>
 </dd>
 </dl>
 </div>
 <div class="section" id="replacement-text">
 <h3><a class="toc-backref" href="#id92"><span class="sectnum">2.14.6</span> Replacement Text</a></h3>
-<p>I recommend you try <a class="reference external" href="http://www.python.org/">Python, <em>the</em> best language around</a> <a class="footnote-reference" href="#id25" id="id28">[5]</a>.</p>
+<p>I recommend you try <a class="reference external" href="http://www.python.org/">Python, <em>the</em> best language around</a> <a class="footnote-reference brackets" href="#id25" id="id28">5</a>.</p>
 </div>
 <div class="section" id="compound-paragraph">
 <h3><a class="toc-backref" href="#id93"><span class="sectnum">2.14.7</span> Compound Paragraph</a></h3>
@@ -814,12 +814,12 @@ paragraph.</p></td>
 Inline markup is supported, e.g. <em>emphasis</em>, <strong>strong</strong>, <span class="docutils literal">literal
 text</span>, <sub>sub-</sub> and <sup>super</sup>scripts,
 inline formulas: <span class="formula"><i>A</i> = 2<i>π</i><i>r</i><sup>2</sup></span>,
-footnotes <a class="footnote-reference" href="#id8" id="id22">[1]</a>, <span class="target" id="hyperlink-targets">hyperlink targets</span>, and <a class="reference external" href="http://www.python.org/">references</a>.</pre>
+footnotes <a class="footnote-reference brackets" href="#id8" id="id22">1</a>, <span class="target" id="hyperlink-targets">hyperlink targets</span>, and <a class="reference external" href="http://www.python.org/">references</a>.</pre>
 </div>
 <div class="section" id="code">
 <h3><a class="toc-backref" href="#id95"><span class="sectnum">2.14.9</span> Code</a></h3>
 <p>Blocks of source code can be set with the <cite>code</cite> directive. If the code
-language is specified, the content is parsed and tagged by the <a class="reference external" href="http://pygments.org/">Pygments</a> <a class="footnote-reference" href="#id29" id="id30">[6]</a>
+language is specified, the content is parsed and tagged by the <a class="reference external" href="http://pygments.org/">Pygments</a> <a class="footnote-reference brackets" href="#id29" id="id30">6</a>
 syntax highlighter and can be formatted with a style sheet. (Code parsing
 is turned off using the <span class="docutils literal"><span class="pre">syntax-highlight</span></span> config setting in the test
 conversions in order to get identical results with/without installed
@@ -1290,7 +1290,7 @@ body is wrapped and aligns with other fields.</p>
 <div class="section" id="table-variants">
 <h3><a class="toc-backref" href="#id85"><span class="sectnum">3.2.3</span> Table variants</a></h3>
 <p>The following styles can be applied to individual tables via a class
-argument or as document wide setting with the <a class="reference external" href="http://docutils.sourceforge.net/docs/user/config.html#table-style">table-style</a> <a class="footnote-reference" href="#id31" id="id32">[7]</a> configuration
+argument or as document wide setting with the <a class="reference external" href="http://docutils.sourceforge.net/docs/user/config.html#table-style">table-style</a> <a class="footnote-reference brackets" href="#id31" id="id32">7</a> configuration
 setting (or command line argument).</p>
 <p>Numbered tables can be achieved with the &quot;numbered&quot; class option</p>
 <table class="numbered">
@@ -1328,7 +1328,7 @@ setting (or command line argument).</p>
 <p>Currently, referencing to the table by number is not supported. This is a
 common request and already on the <cite>TODO list</cite>.</p>
 <p>A table with &quot;booktabs&quot; class argument, is rendered similar to the style
-from the <a class="reference external" href="http://tug.ctan.org/tex-archive/macros/latex/contrib/booktabs/booktabs.pdf">booktabs</a> <a class="footnote-reference" href="#id33" id="id34">[8]</a> LaTeX package.</p>
+from the <a class="reference external" href="http://tug.ctan.org/tex-archive/macros/latex/contrib/booktabs/booktabs.pdf">booktabs</a> <a class="footnote-reference brackets" href="#id33" id="id34">8</a> LaTeX package.</p>
 <table class="booktabs">
 <colgroup>
 <col style="width: 31%" />
