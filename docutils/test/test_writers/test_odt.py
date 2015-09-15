@@ -107,7 +107,7 @@ class DocutilsOdtTestCase(DocutilsTestSupport.StandardTestCase):
 ##         self.assertEqual(str(len(result)), str(len(expected)))
         if save_output_name:
             filename = '%s%s%s' % (TEMP_FILE_PATH, os.sep, save_output_name,)
-            outfile = open(filename, 'w')
+            outfile = open(filename, 'wb')
             outfile.write(result)
             outfile.close()
         content1 = self.extract_file(result, 'content.xml')
