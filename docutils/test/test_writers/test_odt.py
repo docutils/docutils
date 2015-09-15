@@ -94,7 +94,9 @@ class DocutilsOdtTestCase(DocutilsTestSupport.StandardTestCase):
         input_file.close()
         expected_file.close()
         if settings_overrides is None:
-            settings_overrides={ }
+            settings_overrides={}
+            settings_overrides['_disable_config'] = True
+
         result = docutils.core.publish_string(
             source=input,
             reader_name='standalone',
