@@ -37,7 +37,6 @@ Future changes
 Checks before 0.13
 ==================
 
-* FAIL: test_odt_nested_class (test_writers.test_odt.DocutilsOdtTestCase)
 * new html writer status
 * rst.el and emacs 24.4 electric-indent-mode
 
