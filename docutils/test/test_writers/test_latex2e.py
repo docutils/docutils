@@ -542,6 +542,45 @@ head_table + r"""
 """],
 ]
 
+totest['table_empty_thead_entry'] = [
+# input
+["""\
+===== ======
+Title
+===== ======
+entry value1
+===== ======
+""",
+head_table + r"""
+\setlength{\DUtablewidth}{\linewidth}
+\begin{longtable*}[c]{|p{0.075\DUtablewidth}|p{0.086\DUtablewidth}|}
+\hline
+\textbf{%
+Title
+} &  \\
+\hline
+\endfirsthead
+\hline
+\textbf{%
+Title
+} &  \\
+\hline
+\endhead
+\multicolumn{2}{c}{\hfill ... continued on next page} \\
+\endfoot
+\endlastfoot
+
+entry
+ & 
+value1
+ \\
+\hline
+\end{longtable*}
+
+\end{document}
+"""],
+]
+
 # The "[" needs to be protected (otherwise it will be seen as an
 # option to "\\", "\item", etc. ).
 
