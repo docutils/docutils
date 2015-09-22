@@ -113,7 +113,7 @@ schemes = {
       'tel': ('a connection to a terminal that handles normal voice '
               'telephone calls, a voice mailbox or another voice messaging '
               'system or a service that can be operated using DTMF tones; '
-              'RFC 2806.'),
+              'RFC 3966.'),
       'telephone': 'telephone',
       'telnet': 'Reference to interactive sessions; RFC 4248',
       'tftp': 'Trivial File Transfer Protocol; RFC 3617',
