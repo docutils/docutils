@@ -32,7 +32,7 @@ Changes Since 0.12
 *docutils/parsers/rst/tableparser.py
 
   - Really fix [ 159 ] Spurious table column alignment errors.
-  
+
 * docutils/transforms/frontmatter.py
 
   - Add name of generic bibliographic fields as a "classes" attribute value
@@ -74,6 +74,8 @@ Changes Since 0.12
 
   - Use "hyperref" package together with "bookmark" (improved hyperlinking
     by the same author).
+
+  - Fix [ 286 ] Empty column title cause invalid latex file.
 
 * docutils/writers/odf_odt/__init__.py
 

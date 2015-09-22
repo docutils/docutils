@@ -1982,7 +1982,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.context.append('')
 
         # header / not header
-        if isinstance(node.parent.parent, nodes.thead):
+        if len(node) and isinstance(node.parent.parent, nodes.thead):
             if self.out[-1].endswith("%"):
                 self.out.append("\n")
             self.out.append('\\textbf{%')
