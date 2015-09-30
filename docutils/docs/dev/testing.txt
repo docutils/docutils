@@ -159,6 +159,13 @@ look at the following imaginary ``test_square.py``::
 For more details on how to write tests, please refer to the
 documentation of the ``unittest`` module.
 
+.. Note::
+
+   Unit tests and functional test should generally set ::
+
+     settings_overrides['_disable_config'] = True
+
+   in order to be independent on the users local configuration.
 
 .. _functional:
 
