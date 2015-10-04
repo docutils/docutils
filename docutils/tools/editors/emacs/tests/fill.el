@@ -463,7 +463,7 @@ Normal text should also fill as expected
 
   Normal text should also fill as expected
 \^?"
-             "
+             "\^@
 * This is a test
   with a fill column
   of 20
@@ -513,7 +513,7 @@ expected
   Normal text should
   also fill as
   expected
-\^@\^?"
+\^?"
              ))
     (should (ert-equal-buffer
              (explicit-fill-region)
@@ -537,7 +537,7 @@ Normal text should also fill as expected
 
   Normal text should also fill as expected
 \^?"
-             "
+             "\^@
 * This is a test
   with a fill column
   of 20
@@ -578,6 +578,6 @@ expected
   Normal text should
   also fill as
   expected
-\^@\^?"
+\^?"
              ))
     ))
