@@ -38,7 +38,6 @@ Checks before 0.13
 ==================
 
 * new html writer status
-* rst.el and emacs 24.4 electric-indent-mode
 
 Changes Since 0.12
 ==================
@@ -53,6 +52,8 @@ Changes Since 0.12
   - New front-end ``rst2html5.py``.
 
 .. _HTML 5: http://www.w3.org/TR/html5/
+
+* rst.el : The problem with `electric-indent-mode' has been fixed.
 
 
 Release 0.12 (2014-07-06)
