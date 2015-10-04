@@ -150,6 +150,167 @@ Header C
       )
     ))
 
+(defun toc ()
+  "Call `rst-toc' and copy special buffer to target buffer."
+  (let ((wincfg (current-window-configuration))
+	txt pt mrk)
+    (if (get-buffer rst-toc-buffer-name)
+	(kill-buffer rst-toc-buffer-name))
+    (rst-toc)
+    (with-current-buffer rst-toc-buffer-name
+      (setq txt (buffer-substring-no-properties (point-min) (point-max)))
+      (setq pt (point))
+      (setq mrk (mark t)))
+    (set-window-configuration wincfg)
+    (kill-buffer rst-toc-buffer-name)
+    (delete-region (point-min) (point-max))
+    (insert txt)
+    (set-mark mrk)
+    (goto-char pt)))
+
+(ert-deftest rst-toc ()
+  "Tests `rst-toc'."
+  ;; Set customizable variables to defaults
+  (let ((rst-toc-indent 2))
+    (should (ert-equal-buffer
+	     (toc)
+	     "=====
+Title
+=====
+
+Header A
+========
+
+Header B
+========
+
+Subheader B.a
+-------------
+
+SubSubheader B.a.1
+~~~~~~~~~~~~~~~~~~
+
+Subheader B.b
+-------------
+
+Header C
+========
+\^@"
+	     "Table of Contents: 
+Title
+  Header A
+  Header B
+    Subheader B.a
+      SubSubheader B.a.1
+    Subheader B.b
+\^@  Header C
+"
+	     ))
+    (should (ert-equal-buffer
+	     (toc)
+	     "=====
+Title
+=====
+
+Header A
+========
+
+Header B
+========
+
+Subh\^@eader B.a
+-------------
+
+SubSubheader B.a.1
+~~~~~~~~~~~~~~~~~~
+
+Subheader B.b
+-------------
+
+Header C
+========
+"
+	     "Table of Contents: 
+Title
+  Header A
+  Header B
+\^@    Subheader B.a
+      SubSubheader B.a.1
+    Subheader B.b
+  Header C
+"
+	     ))
+    (should (ert-equal-buffer
+	     (toc)
+	     "\^@
+
+=====
+Title
+=====
+
+Header A
+========
+
+Header B
+========
+
+Subheader B.a
+-------------
+
+SubSubheader B.a.1
+~~~~~~~~~~~~~~~~~~
+
+Subheader B.b
+-------------
+
+Header C
+========
+"
+	     "\^@Table of Contents: 
+Title
+  Header A
+  Header B
+    Subheader B.a
+      SubSubheader B.a.1
+    Subheader B.b
+  Header C
+"
+	     ))
+    (should (ert-equal-buffer
+	     (toc)
+	     "=====
+Title
+=====
+
+Header A
+========
+
+Header B
+========
+
+Subheader B.a
+-------------
+
+SubSubheader B.a.1
+~~~~~~~~~~~~~~~~~~
+\^@
+Subheader B.b
+-------------
+
+Header C
+========
+"
+	     "Table of Contents: 
+Title
+  Header A
+  Header B
+    Subheader B.a
+\^@      SubSubheader B.a.1
+    Subheader B.b
+  Header C
+"
+	     ))
+    ))
+
 ;; FIXME: More functions to test:
-;; * rst-toc
 ;; * rst-toc-mode-goto-section
