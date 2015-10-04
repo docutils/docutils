@@ -6,7 +6,7 @@
 
 :Authors: Stefan Merten <stefan@merten-home.de>, Martin Blais
           <blais@furius.ca>
-:Version: ``rst.el`` V1.4.0
+:Version: ``rst.el`` V1.4.1
 :Abstract:
 
     High-level description of the existing Emacs_ support for editing
@@ -34,14 +34,14 @@ mode (``rst-mode``) provided by the ``rst.el`` Emacs_ package.
 Emacs_ distributions contain ``rst.el`` since version V23.1. However,
 a significantly updated version of ``rst.el`` is contained in Emacs_
 V24.3. This document describes the version of ``rst.el`` contained in
-Emacs_ V24.3. This version of ``rst.el`` has the internal version
-V1.4.0.
+Emacs_ V24.3 and later versions. This version of ``rst.el`` has the
+internal version V1.4.1.
 
 If you have Emacs_ V24.3 or later you do not need to install anything
 to get reST support. If you have an Emacs_ between V23.1 and V24.2 you
-may use the included version of ``rst.el`` or install a more recent
-one locally_ (recommended). In other cases you need to install
-``rst.el`` locally_ to get reST support.
+may use the version of ``rst.el`` installed with Emacs_ or install a
+more recent one locally_ (recommended). In other cases you need to
+install ``rst.el`` locally_ to get reST support.
 
 Checking situation
 ------------------
@@ -77,7 +77,7 @@ Here are some steps to check your situation:
    The content of ``rst-version`` gives you the internal version of
    ``rst.el``. The version contained in Emacs_ V24.3 and described here
    is V1.4.0. If you have an older version you may or may not install
-   a more recent version of ``rst.el`` locally.
+   a more recent version of ``rst.el`` locally_.
 
 .. _locally:
 
@@ -204,8 +204,8 @@ described in this tutorial.
           V1.0.0. This was necessary to make room for new
           functionality. Some of the old bindings still work but give
           a warning to use the new binding. In the output of ``C-h m``
-          these bindings show up as ``??``. The old bindings may be
-          removed completely in a later version.
+          these bindings show up as ``rst-deprecated-...``. The old
+          bindings will be removed completely in a later version.
 
 Section Adornments
 ==================
@@ -233,10 +233,14 @@ repeatedly and whose behavior depends on context:
    adjust the length of the existing adornment when you need to edit
    the title.
 
-#. If there is no section adornment at all, an adornment of the same
-   level as the last encountered section level is added. You can
-   simply enter a few characters of the title and invoke the function
-   to create the section adornment.
+#. If there is no section adornment at all, by default an adornment of
+   the same level as the last encountered section level is added. You
+   can simply enter a few characters of the title and invoke the
+   function to create the section adornment.
+
+   The variable ``rst-new-adornment-down`` can be customized to create
+   one level lower adornments than the previous section title instead
+   of keeping the level.
 
 #. If there is already a section adornment, it is promoted one level
    up. You can invoke it like this repeatedly to cycle the title
@@ -273,8 +277,22 @@ Customizations for Adornments
 
 You can customize the variable ``rst-preferred-adornments`` to a list
 of the adornments that you like to use for documents.
-``rst-default-indent`` can be set to the number of indent spaces
-preferred for the over-and-under adornment style.
+
+If you prefer adornments according to
+http://sphinx-doc.org/rest.html#sections you may customize it to end
+up with a value like this::
+
+  ((35 over-and-under 0) ; ?#
+   (42 over-and-under 0) ; ?*
+   (61 simple 0) ; ?=
+   (45 simple 0) ; ?-
+   (94 simple 0) ; ?^
+   (34 simple 0)) ; ?"
+
+This will become the default in a later version of ``rst.el``.
+
+If you set ``rst-preferred-adornments`` to nil resembling the empty
+list only the section adornment found in the buffer will be used.
 
 Viewing the Hierarchy of Section Adornments
 -------------------------------------------
@@ -376,6 +394,19 @@ Typing another ``TAB`` gets you to the first level::
 
   @
 
+.. note:: Since Emacs_ V24.4 ``electric-indent-mode`` is globally on.
+          This breaks indentation in ``rst-mode`` and renders
+          ``rst-mode`` mostly useless. This is fixed in V1.4.1 of
+          ``rst-mode``.
+
+          A quick fix for older versions of ``rst.el`` is to add the
+          following line at the end of the ``(define-derived-mode
+          rst-mode ...`` block in your copy of ``rst.el``::
+
+            (setq electric-indent-inhibit t)
+
+          You may also install V1.4.1 or newer locally_.
+
 Filling
 -------
 
@@ -390,6 +421,9 @@ Lists are supported in various flavors in reStructuredText_.
 ``rst-mode`` understands reStructuredText_ lists and offers some
 support for operating on lists. Key bindings for commands for
 operating on lists start with ``C-c C-l``.
+
+Please note that so far definition lists are not explicitly supported
+by ``rst-mode``.
 
 Bulleted and Enumerated Lists
 -----------------------------
@@ -527,6 +561,8 @@ explicitly by using a prefix argument (``C-u M-;``).
 Please note that only indented comments are supported properly by the
 parts of ``comment-dwim`` working on regions.
 
+.. _Conversion:
+
 Converting Documents from Emacs
 ===============================
 
@@ -621,11 +657,14 @@ that looks something like this::
       Good Feelings
     References
 
-When you move the cursor to a section title and press ``RET`` or
-``f``, the temporary buffer disappears and you are left with the
-cursor positioned at the chosen section. Use ``q`` in this buffer to
-just quit it without moving the cursor in the original document. Use
-``z`` to zap the buffer altogether.
+When you move the cursor to a section title and press ``RET`` or ``f``
+or click with ``button1`` on a section title, the temporary buffer
+disappears and you are left with the cursor positioned at the chosen
+section. Clicking with ``button2`` jumps to the respective section but
+keeps the toc buffer. You can use this to look at the various section
+headers quickly. Use ``q`` in this buffer to just quit it without
+moving the cursor in the original document. Use ``z`` to zap the
+buffer altogether.
 
 Inserting a Table of Contents
 -----------------------------
@@ -680,8 +719,8 @@ Maintaining the Table of Contents Up-to-date
 
 One issue is that you will probably want to maintain the inserted
 table of contents up-to-date. ``rst-toc-update`` (``C-c C-t C-u``)
-will automatically locate an inserted table of contents following a
-``.. contents::`` directive.
+will automatically update an inserted table of contents following a
+``.. contents::`` directive laid out like the example above.
 
 Syntax Highlighting via Font-Lock
 =================================
@@ -720,20 +759,11 @@ be different in every source file. Using the customization option
 sequence of adornments you prefer to markup the different levels of
 sections headers.
 
-The title text of over-and-under adornments may be indented.
-``rst-default-indent`` tells ``rst-mode`` how many positions a
-over-and-under adornment should be indented.
-
-Finally if you create a completely new section adornment by
-``rst-adjust`` the question is on what level the new section adornment
-should be. ``rst-new-adornment-down`` can be used to create one level
-lower adornments than the previous section title. By default the new
-section title is on the same level as the previous one.
-
-Please note, that normally the given adornments of a buffer are
-preferred over your preferences, however. See `Redoing All the
-Adornments to Your Taste`_ for a method to change this for the whole
-buffer.
+Finally the title text of over-and-under adornments may be indented in
+reStructuredText_. ``rst-default-indent`` tells ``rst-mode`` how many
+positions a over-and-under adornment should be indented when toggling
+from simple adornment and in case a consistent indentation throughout
+the whole buffer for such adornment is needed.
 
 Customizing Indentation
 -----------------------
@@ -780,6 +810,41 @@ deeper than six levels you may want to customize this option. You may
 also want to customize it if you like the general idea of section
 title fontification in ``rst-mode`` but for instance prefer a reversed
 order.
+
+Customizing Conversion
+----------------------
+
+Conversion_ can be customized by the customization options in the
+customization group ``rst-compile``.
+
+If some conversion does not work as expected please check
+the variable ``rst-compile-toolsets`` ::
+
+  M-x customize-option<RETURN>rst-compile-toolsets
+
+This variable defines the commands and other details used for
+conversion. In case of problems please check that the commands are
+either available or customize them to what is available in your
+environment.
+
+.. note:: There are some options in V1.4.1 of ``rst.el`` which should
+          be customization options but are not yet. Customization
+          support will be added in a later version.
+
+.. note:: Please note that there is a package ``rst2pdf`` based on the
+          ReportLab library. Please note that the command of this
+          package requires an additional ``-o`` for naming the output
+          file. This breaks the usual conventions employed by Docutils
+          tools. ``rst-mode`` V1.4.1 does not support this directly.
+
+Other Customizations
+--------------------
+
+``rst-preferred-bullets`` can be customized to hold your preferred set
+of bullets to use for bulleted lists.
+
+``rst-mode-hook`` is a normal major mode hook which may be customized.
+It is run if you enter ``rst-mode``.
 
 Related aspects
 ===============
@@ -881,6 +946,11 @@ Merten who also is the current maintainer of ``rst.el``.
 
 
 ..  LocalWords:  reST utf Merten Blais rst el docutils modeline emacs
+..  LocalWords:  Init mEmacs sInit alist setq txt overlines RET nd py
+..  LocalWords:  dwim conf toolset pseudoxml pdf Imenu imenu menubar
+..  LocalWords:  func toc xmlunicode unichars eacute charset fontset
+..  LocalWords:  kTextEncodingISOLatin charsets monaco ascii latin
+..  LocalWords:  iso unicode Choi's Goodger Guo
 
 ..
    Local Variables:
@@ -888,8 +958,3 @@ Merten who also is the current maintainer of ``rst.el``.
    indent-tabs-mode: nil
    fill-column: 70
    End:
-..  LocalWords:  Init mEmacs sInit alist setq txt overlines RET nd py
-..  LocalWords:  dwim conf toolset pseudoxml pdf Imenu imenu menubar
-..  LocalWords:  func toc xmlunicode unichars eacute charset fontset
-..  LocalWords:  kTextEncodingISOLatin charsets monaco ascii latin
-..  LocalWords:  iso unicode Choi's Goodger Guo
