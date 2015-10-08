@@ -340,13 +340,20 @@ Applications using docutils/reStructuredText and helper applications.
 
 * For Blogs (Weblogs), please see the `FAQ entry about Blogs`_.
 
-* `Project Gutenberg`_ uses docutils, but with it's own xetex- and nroff-writer
-  and epub.
+* `Project Gutenberg`_ uses a customized version of Docutils with it's own
+  xetex- and nroff-writer and epub generator.
 
 .. _FAQ entry about Wikis: http://docutils.sf.net/FAQ.html#are-there-any-wikis-that-use-restructuredtext-syntax
 .. _FAQ entry about Blogs: http://docutils.sf.net/FAQ.html#are-there-any-weblog-blog-projects-that-use-restructuredtext-syntax
 .. _Project Gutenberg: http://www.gutenberg.org
 
+Tools
+`````
+
+* rstcheck_ Checks syntax of reStructuredText and code blocks nested within
+  it. (Using the Sphinx syntax "code-block" for the "code" directive.)
+
+.. _rstcheck: https://pypi.python.org/pypi/rstcheck
 
 Development
 ```````````
@@ -373,7 +380,7 @@ Development
 
 .. _Python documentation: http://docs.python.org/
 .. _Trac: http://trac.edgewall.org/
-.. _PyLit: http://pylit.berlios.de
+.. _PyLit: http://repo.or.cz/pylit.git
 .. _rst2qhc: http://rst2qhc.googlecode.com
 
 
