@@ -29,7 +29,7 @@ Changes Since 0.12
   - Patch [ 120 ] tables accept option widths: list of relative widths, 'auto'
     or 'grid'.
 
-*docutils/parsers/rst/tableparser.py
+* docutils/parsers/rst/tableparser.py
 
   - Really fix [ 159 ] Spurious table column alignment errors.
 
