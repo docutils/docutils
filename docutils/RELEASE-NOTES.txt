@@ -53,7 +53,7 @@ Changes Since 0.12
 
 .. _HTML 5: http://www.w3.org/TR/html5/
 
-* rst.el : The problem with `electric-indent-mode' has been fixed.
+* rst.el : The problem with ``electric-indent-mode`` has been fixed.
 
 
 Release 0.12 (2014-07-06)
