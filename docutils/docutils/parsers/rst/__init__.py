@@ -249,12 +249,6 @@ class Directive(object):
     - ``lineno`` is the absolute line number of the first line
       of the directive.
 
-    - ``src`` is the name (or path) of the rst source of the directive.
-
-    - ``srcline`` is the line number of the first line of the directive
-      in its source. It may differ from ``lineno``, if the main source
-      includes other sources with the ``.. include::`` directive.
-
     - ``content_offset`` is the line offset of the first line of the content from
       the beginning of the current input.  Used when initiating a nested parse.
 
