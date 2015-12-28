@@ -218,7 +218,7 @@ and before TAIL-RE and DELIM-RE in VAR or DEFAULT for no match."
 ;; Use CVSHeader to really get information from CVS and not other version
 ;; control systems.
 (defconst rst-cvs-header
-  "$CVSHeader: sm/rst_el/rst.el,v 1.327.2.24 2015/10/04 09:08:14 stefan Exp $")
+  "$CVSHeader: sm/rst_el/rst.el,v 1.327.2.30 2015/12/28 22:43:38 stefan Exp $")
 (defconst rst-cvs-rev
   (rst-extract-version "\\$" "CVSHeader: \\S + " "[0-9]+\\(?:\\.[0-9]+\\)+"
 		       " .*" rst-cvs-header "0.0")
@@ -243,7 +243,7 @@ SVN revision is the upstream (docutils) revision.")
 ;; Maintained by the release process.
 (defconst rst-official-version
   (rst-extract-version "%" "OfficialVersion: " "[0-9]+\\(?:\\.[0-9]+\\)+" " "
-		       "%OfficialVersion: 1.4.1 %")
+		       "%OfficialVersion: 1.4.2 %")
   "Official version of the package.")
 (defconst rst-official-cvs-rev
   (rst-extract-version "[%$]" "Revision: " "[0-9]+\\(?:\\.[0-9]+\\)+" " "
@@ -268,6 +268,7 @@ in parentheses follows the development revision and the time stamp.")
     ("1.3.1" . "24.3")
     ("1.4.0" . "24.3")
     ("1.4.1" . "24.5")
+    ("1.4.2" . "24.5")
     ))
 
 (unless (assoc rst-official-version rst-package-emacs-version-alist)
@@ -2751,11 +2752,13 @@ for negative COUNT."
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Functions to work on item lists (e.g. indent/dedent, enumerate), which are
-;; always 2 or 3 characters apart horizontally with rest.
+;; Indentation
 
 (defun rst-find-leftmost-column (beg end)
-  "Return the leftmost column in region BEG to END."
+  "Return the leftmost column spanned by region BEG to END.
+The line containing the start of the region is always considered
+spanned.  If the region ends at the beginning of a line this line
+is not considered spanned, otherwise it is spanned."
   (let (mincol)
     (save-excursion
       (goto-char beg)
@@ -2767,80 +2770,6 @@ for negative COUNT."
 			 (current-column))))
         (forward-line 1)))
     mincol))
-
-;; FIXME: This definition is old and deprecated.  We need to move to the newer
-;;        version below.
-(defmacro rst-iterate-leftmost-paragraphs
-  (beg end first-only body-consequent body-alternative)
-  ;; FIXME: The following comment is pretty useless.
-  "Call FUN at the beginning of each line, with an argument that
-specifies whether we are at the first line of a paragraph that
-starts at the leftmost column of the given region BEG and END.
-Set FIRST-ONLY to true if you want to callback on the first line
-of each paragraph only."
-  `(save-excursion
-    (let ((leftcol (rst-find-leftmost-column ,beg ,end))
-	  (endm (copy-marker ,end)))
-
-      (do* (;; Iterate lines.
-	    (l (progn (goto-char ,beg) (back-to-indentation))
-	       (progn (forward-line 1) (back-to-indentation)))
-
-	    (previous nil valid)
-
- 	    (curcol (current-column)
-		    (current-column))
-
-	    (valid (and (= curcol leftcol)
-			(not (looking-at (rst-re 'lin-end))))
-		   (and (= curcol leftcol)
-			(not (looking-at (rst-re 'lin-end))))))
-	  ((>= (point) endm))
-
-	(if (if ,first-only
-		(and valid (not previous))
-	      valid)
-	    ,body-consequent
-	  ,body-alternative)))))
-
-;; FIXME: This needs to be refactored. Probably this is simply a function
-;;        applying BODY rather than a macro.
-(defmacro rst-iterate-leftmost-paragraphs-2 (spec &rest body)
-  "Evaluate BODY for each line in region defined by BEG END.
-LEFTMOST is set to true if the line is one of the leftmost of the
-entire paragraph.  PARABEGIN is set to true if the line is the
-first of a paragraph."
-  (declare (indent 1) (debug (sexp body)))
-  (destructuring-bind
-      (beg end parabegin leftmost isleftmost isempty) spec
-
-  `(save-excursion
-     (let ((,leftmost (rst-find-leftmost-column ,beg ,end))
-	   (endm (copy-marker ,end)))
-
-      (do* (;; Iterate lines.
-	    (l (progn (goto-char ,beg) (back-to-indentation))
-	       (progn (forward-line 1) (back-to-indentation)))
-
- 	    (empty-line-previous nil ,isempty)
-
-	    (,isempty (looking-at (rst-re 'lin-end))
-			(looking-at (rst-re 'lin-end)))
-
-	    (,parabegin (not ,isempty)
-			(and empty-line-previous
-			     (not ,isempty)))
-
-	    (,isleftmost (and (not ,isempty)
-			      (= (current-column) ,leftmost))
-			 (and (not ,isempty)
-			      (= (current-column) ,leftmost))))
-	  ((>= (point) endm))
-
-	(progn ,@body))))))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Indentation
 
 ;; FIXME: At the moment only block comments with leading empty comment line are
 ;;        supported.  Comment lines with leading comment markup should be also
@@ -3150,7 +3079,8 @@ Region is from BEG to END.  ARG is ignored"
       (indent-rigidly eol end (- rst-indent-comment))
       (delete-region bol eol))))
 
-;;------------------------------------------------------------------------------
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Apply to indented block
 
 ;; FIXME: These next functions should become part of a larger effort to redo
 ;;        the bullets in bulleted lists.  The enumerate would just be one of
@@ -3158,29 +3088,127 @@ Region is from BEG to END.  ARG is ignored"
 ;;
 ;; FIXME: We need to do the enumeration removal as well.
 
+(defun rst-apply-indented-blocks (beg end ind fun)
+  "Apply FUN to all lines from BEG to END in blocks indented to IND.
+The first indented block starts with the first non-empty line
+containing or after BEG and indented to IND.  After the first
+line the indented block may contain more lines with same
+indentation (the paragraph) followed by empty lines and lines
+more indented (the sub-blocks).  A following line indented to IND
+starts the next indented block.  A line with less indentation
+than IND terminates the current indented block.  Such lines and
+all following lines not indented to IND are skipped.  FUN is
+applied to unskipped lines like this
+
+  (FUN COUNT FIRSTP SUBP EMPTYP RELIND LASTRET)
+
+COUNT is 0 before the first indented block and increments for
+every indented block found.
+
+FIRSTP is t when this is the first line of the paragraph.
+
+SUBP is t when this line is part of a sub-block.
+
+EMPTYP is t when this line is empty.
+
+RELIND is nil for an empty line, 0 for a line indented to IND,
+and the number of columns more indented otherwise.
+
+LASTRET is the return value of FUN returned by the last
+invocation for the same indented block or nil for the first
+invocation.
+
+When FUN is called point is immediately behind indentation of
+that line.  FUN may change everything as long as a marker at END
+is handled correctly by the change.
+
+Return the return value of the last invocation of FUN or nil if
+FUN was never called."
+  (let (lastret
+	subp
+	skipping
+	nextm
+	(count 0) ; Before first indented block
+	(endm (copy-marker end t)))
+    (save-excursion
+      (goto-char beg)
+      (while (< (point) endm)
+	(save-excursion
+	  (setq nextm (save-excursion
+			(forward-line 1)
+			(copy-marker (point) t)))
+	  (back-to-indentation)
+	  (let (firstp
+		emptyp
+		(relind (- (current-column) ind)))
+	    (cond
+	     ((looking-at (rst-re 'lin-end))
+	      (setq emptyp t)
+	      (setq relind nil)
+	      ;; Breaks indented block if one is started
+	      (setq subp (not (zerop count))))
+	     ((< relind 0) ; Less indented
+	      (setq skipping t))
+	     ((zerop relind) ; In indented block
+	      (when (or subp skipping (zerop count))
+		(setq firstp t)
+		(incf count))
+	      (setq subp nil)
+	      (setq skipping nil))
+	     (t ; More indented
+	      (setq subp t)))
+	    (unless skipping
+	      (setq lastret
+		    (funcall fun count firstp subp emptyp relind lastret)))))
+	(goto-char nextm))
+      lastret)))
+
 (defun rst-enumerate-region (beg end all)
   "Add enumeration to all the leftmost paragraphs in the given region.
 The region is specified between BEG and END.  With ALL,
 do all lines instead of just paragraphs."
   (interactive "r\nP")
-  (let ((count 0)
-	(last-insert-len nil))
-    (rst-iterate-leftmost-paragraphs
-     beg end (not all)
-     (let ((ins-string (format "%d. " (incf count))))
-       (setq last-insert-len (length ins-string))
-       (insert ins-string))
-     (insert (make-string last-insert-len ?\ )))))
+  (let ((enum 0))
+    (rst-apply-indented-blocks
+     beg end (rst-find-leftmost-column beg end)
+     (lambda (count firstp subp emptyp relind lastret)
+       (cond
+	(emptyp)
+	((zerop count))
+	(subp
+	 (insert lastret))
+	((or firstp all)
+	 (let ((ins (format "%d. " (incf enum))))
+	   (setq lastret (make-string (length ins) ?\ ))
+	   (insert ins)))
+	(t
+	 (insert lastret)))
+       lastret))))
 
+;; FIXME: Does not deal with deeper indentation - although
+;;        `rst-apply-indented-blocks' could.
 (defun rst-bullet-list-region (beg end all)
   "Add bullets to all the leftmost paragraphs in the given region.
 The region is specified between BEG and END.  With ALL,
 do all lines instead of just paragraphs."
   (interactive "r\nP")
-  (rst-iterate-leftmost-paragraphs
-   beg end (not all)
-   (insert (car rst-preferred-bullets) " ")
-   (insert "  ")))
+  (unless rst-preferred-bullets
+    (error "No preferred bullets defined"))
+  (let ((bul (format "%c " (car rst-preferred-bullets)))
+	(cont "  "))
+    (rst-apply-indented-blocks
+     beg end (rst-find-leftmost-column beg end)
+     (lambda (count firstp subp emptyp relind lastret)
+       (cond
+	(emptyp)
+	((zerop count))
+	(subp
+	 (insert cont))
+	((or firstp all)
+	 (insert bul))
+	(t
+	 (insert cont)))
+       nil))))
 
 ;; FIXME: Does not deal with a varying number of digits appropriately.
 ;; FIXME: Does not deal with multiple levels independently.
@@ -3203,24 +3231,17 @@ Renumber as necessary.  Region is from BEG to END."
 	(replace-match (format "%d." count) nil nil nil 1)
 	(incf count)))))
 
-;;------------------------------------------------------------------------------
-
-(defun rst-line-block-region (rbeg rend &optional pfxarg)
-  "Toggle line block prefixes for a region.
-Region is from RBEG to REND.  With PFXARG set the empty lines too."
+(defun rst-line-block-region (beg end &optional with-empty)
+  "Add line block prefixes for a region.
+Region is from BEG to END.  With WITH-EMPTY prefix empty lines too."
   (interactive "r\nP")
-  (let ((comment-start "| ")
-	(comment-end "")
-	(comment-start-skip "| ")
-	(comment-style 'indent)
-	(force (not (not pfxarg))))
-    (rst-iterate-leftmost-paragraphs-2
-        (rbeg rend parbegin leftmost isleft isempty)
-      (when (or force (not isempty))
-        (move-to-column leftmost force)
-        (delete-region (point) (+ (point) (- (current-indentation) leftmost)))
-        (insert "| ")))))
-
+  (let ((ind (rst-find-leftmost-column beg end)))
+    (rst-apply-indented-blocks
+     beg end ind
+     (lambda (count firstp subp emptyp relind lastret)
+       (when (or with-empty (not emptyp))
+	 (move-to-column ind t)
+	 (insert "| "))))))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -4235,9 +4256,5 @@ column is used (fill-column vs. end of previous/next line)."
 ;; End:
 
 (provide 'rst)
-
-;; Local Variables:
-;; coding: utf-8
-;; End:
 
 ;;; rst.el ends here
