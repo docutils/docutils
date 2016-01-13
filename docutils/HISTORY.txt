@@ -38,6 +38,10 @@ Changes Since 0.12
   - Add name of generic bibliographic fields as a "classes" attribute value
     (after conversion to a valid identifier form).
 
+* docutils/utils/error_reporting.py
+
+  - Fix [ 130 ] support streams expectiong byte-strings in ErrorOutput.
+
 * docutils/utils/math/math2html.py
 
   - Add ``\colon`` macro, fix spacing around colons. Fixes [ 246 ].
