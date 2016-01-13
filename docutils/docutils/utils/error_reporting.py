@@ -189,7 +189,11 @@ class ErrorOutput(object):
             self.stream.write(data)
         except UnicodeEncodeError:
             self.stream.write(data.encode(self.encoding, self.encoding_errors))
-        except TypeError: # in Python 3, stderr expects unicode
+        except TypeError: 
+            if isinstance(data, unicode): # passed stream may expect bytes
+                self.stream.write(data.encode(self.encoding, 
+                                              self.encoding_errors))
+                return
             if self.stream in (sys.stderr, sys.stdout):
                 self.stream.buffer.write(data) # write bytes to raw stream
             else:
