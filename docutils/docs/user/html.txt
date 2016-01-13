@@ -157,8 +157,9 @@ html
 
 Currently, `html` is an alias for the html4css1_ writer.
 
-Suggestion
-  The alias `html` points to the "recommended Docutils HTML writer".
+.. admonition:: Suggestion
+
+  Let the alias `html` point to the "recommended Docutils HTML writer".
   Its target may change with the development of HTML, browsers, Docutils, and
   the web.
 
@@ -242,7 +243,7 @@ strict requirements of `XHTML 1.1`_:
 
 * There is no attribute "lang" (only "xml:lang").
 
-* Enumerated lists don't support the 'start' attribute.
+* Enumerated lists don't support the "start" attribute.
 
   The style sheet xhtml11.css_ adds support for a "start" value for
   enumerated lists via a CSS-counter. This allows also nested enumeration.

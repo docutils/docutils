@@ -40,7 +40,7 @@ class MovingArgsTestCase(DocutilsTestSupport.StandardTestCase):
 
     def test_definition_list_item_classes(self):
         # Do not drop class arguments for the definition list item.
-        # Pass them to to the term node instead.
+        # Pass them to the term node instead.
         data = """\
 first term:
   fist def

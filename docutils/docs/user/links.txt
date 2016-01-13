@@ -150,11 +150,7 @@ website generators and HTML variants
   .. [#] see http://sphinx-doc.org/config.html#options-for-epub-output
   .. _Sphinx: http://sphinx.pocoo.org/
 
-* Sphinx_ based static blogging Tinkerer_
-
-  .. _Tinkerer: http://tinkerer.me/
-
-* Nikola_  static site generator, use restructured text by
+* Nikola_  static site generator, uses restructured text by
   default.
 
   .. _nikola:  http://getnikola.com/
@@ -163,6 +159,10 @@ website generators and HTML variants
   be written in reStructuredText or Markdown format.
 
   .. _pelican: http://docs.getpelican.com
+
+* tinkerer_ is a static bloggin framework based on Sphinx_.
+
+  .. _tinkerer: http://tinkerer.me
 
 * rst2ht_ by Oliver Rutherfurd, converts reStructuredText to an .ht
   template, for use with ht2html_.

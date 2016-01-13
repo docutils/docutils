@@ -856,7 +856,7 @@ b) CM-Super_ is another outline CM replacement.
    -1  said to be of inferior quality compared to LM.
 
    -2  not part of a minimal standard TeX installation,
-       even bigger download size than Latin Modern.
+       even bigger download size than Latin Modern (64 MB).
 
 c) `Bera`_ (Bitstream Vera)
 
@@ -938,10 +938,12 @@ d) PSNFSS_ Postscript fonts
      charter   Charter
 
      utopia    Utopia
+
+     fourier   Utopia                                   Fourier
      ========= ============ ============= ============= =========
 
 .. [#] Extended versions of the standard Postscript fonts including
-       accented chars, Greek and Cyrillic as well as real small-caps
+       accented chars, as well as real small-caps
        and old-style numbers are available with the `TeX Gyre`_ bundle
        which is part of, e.g., `TeX Live`_.
 
