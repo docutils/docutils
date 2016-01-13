@@ -43,7 +43,7 @@ Authors
 `John Gruber`_ did all of the hard work of writing this software in Perl for
 `Movable Type`_ and almost all of this useful documentation.  `Chad Miller`_
 ported it to Python to use with Pyblosxom_.
-Adapted to Docutils_ by Günter Milde
+Adapted to Docutils_ by Günter Milde.
 
 Additional Credits
 ==================
