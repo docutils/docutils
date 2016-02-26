@@ -150,7 +150,7 @@ website generators and HTML variants
   .. [#] see http://sphinx-doc.org/config.html#options-for-epub-output
   .. _Sphinx: http://sphinx.pocoo.org/
 
-* Nikola_  static site generator, uses restructured text by
+* The Nikola_ static site generator, uses reStructuredText by
   default.
 
   .. _nikola:  http://getnikola.com/
