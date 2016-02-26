@@ -407,9 +407,6 @@ Are there any Wikis that use reStructuredText syntax?
 There are several, with various degrees of completeness.  With no
 implied endorsement or recommendation, and in no particular order:
 
-* `Webware for Python wiki
-  <http://wiki.webwareforpython.org/thiswiki.html>`__
-
 * `Ian Bicking's experimental code
   <http://docutils.sf.net/sandbox/ianb/wiki/Wiki.py>`__
 
@@ -433,9 +430,10 @@ implied endorsement or recommendation, and in no particular order:
 
 Please `let us know`_ of any other reStructuredText Wikis.
 
-The example application for the `Web Framework Shootout
-<http://colorstudy.com/docs/shootout.html>`__ article is a Wiki using
-reStructuredText.
+.. dead link
+.. The example application for the `Web Framework Shootout
+.. <http://colorstudy.com/docs/shootout.html>`__ article is a Wiki using
+.. reStructuredText.
 
 
 Are there any Weblog (Blog) projects that use reStructuredText syntax?
