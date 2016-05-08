@@ -1,0 +1,23 @@
+an option block, and within it, a part of the text block indented. 
+the rest of the text ("More lines 1", etc.) isn't aligned at the same
+level as "Line1".  Instead, they're flush left to the screen
+
+-l, --color-limit limit
+        Line1.
+        Line2.
+        Line3.
+
+        ::
+
+                Indented line 1.
+                Indented line 2.
+                Indented line 3.
+
+                Indented line 4.
+                Indented line 5.
+                Indented line 6.
+
+        More lines 1.
+        More lines 2.
+        More lines 3.
+
