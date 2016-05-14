@@ -119,30 +119,30 @@ totest['basics'] = [
         :not a role if it contains whitespace:
 """],
 ["""\
-:title:`` (empty interpteted text not recognized)
+:title:`` (empty interpreted text not recognized)
 """,
 """\
 <document source="test data">
     <paragraph>
-        :title:`` (empty interpteted text not recognized)
+        :title:`` (empty interpreted text not recognized)
 """],
 ["""\
-:title:`\ ` (interpteted text containing empty string)
+:title:`\ ` (interpreted text containing empty string)
 """,
 """\
 <document source="test data">
     <paragraph>
         <title_reference>
-         (interpteted text containing empty string)
+         (interpreted text containing empty string)
 """],
 ["""\
-`\ `:title: (interpteted text containing empty string (postfix))
+`\ `:title: (interpreted text containing empty string (postfix))
 """,
 """\
 <document source="test data">
     <paragraph>
         <title_reference>
-         (interpteted text containing empty string (postfix))
+         (interpreted text containing empty string (postfix))
 """],
 ["""\
 :title:`\ non-empty`
@@ -283,7 +283,7 @@ Python code :python:`print("The end")`.
                 print
             <inline classes="punctuation">
                 (
-            <inline classes="literal string">
+            <inline classes="literal string double">
                 "The end"
             <inline classes="punctuation">
                 )

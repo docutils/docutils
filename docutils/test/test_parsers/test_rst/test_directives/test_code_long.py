@@ -60,7 +60,7 @@ totest['code-parsing-long'] = [
         <inline classes="ln">
             11 \n\
             \n\
-        <inline classes="comment">
+        <inline classes="comment single">
             # and now for something completely different
         \n\
         <inline classes="ln">
