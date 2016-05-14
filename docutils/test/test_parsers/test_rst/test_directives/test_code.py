@@ -107,10 +107,10 @@ totest['code-parsing'] = [
         <inline classes="keyword">
             print
          \n\
-        <inline classes="literal string">
+        <inline classes="literal string single">
             'hello world'
          \n\
-        <inline classes="comment">
+        <inline classes="comment single">
             # to stdout
 """],
 ["""\
@@ -155,7 +155,7 @@ totest['code-parsing'] = [
         <inline classes="ln">
             11 \n\
             \n\
-        <inline classes="comment">
+        <inline classes="comment single">
             # and now for something completely different
         \n\
         <inline classes="ln">
