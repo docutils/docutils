@@ -141,8 +141,8 @@ class MathTestCase(DocutilsTestSupport.StandardTestCase):
     which is open to change in future Docutils releases. """
 
     mathjax_script = '<script type="text/javascript" src="%s">'
-    default_mathjax_url = ('http://cdn.mathjax.org/mathjax/latest/MathJax.js'
-                           '?config=TeX-AMS-MML_HTMLorMML')
+    default_mathjax_url = ('https://cdn.mathjax.org/mathjax/latest/MathJax.js'
+                           '?config=TeX-AMS_HTML')
     custom_mathjax_url = ('file:///usr/share/javascript/mathjax/MathJax.js'
                           '?config=TeX-AMS-MML_HTMLorMML')
     data = ':math:`42`'
