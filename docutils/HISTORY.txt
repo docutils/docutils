@@ -67,6 +67,7 @@ Changes Since 0.12
   - Fix [ 266 ] creating labels/class values in description list items.
   - Do not use <sup> and <sub> tags inside <pre> (parsed-literal blocks).
   - Fix footnotes with content that does not start with a paragraph.
+  - Use https in default MathJax URL (report Alan G Isaac).
 
 * docutils/writers/latex2e/__init__.py
 
