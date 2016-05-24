@@ -89,12 +89,9 @@ __ docs/howto/rst-roles.html
 Try it Online
 =============
 
-If you want to try reStructuredText out without downloading Docutils,
-you can use the `reStructuredText online renderer`__.  Thanks to Jiri
-Barton for `setting it up`__!
-
-__ http://www.hosting4u.cz/jbar/rest/rest.html
-__ http://www.hosting4u.cz/jbar/rest/about.html
+If you want to try reStructuredText out without downloading Docutils, you
+can play with the "simple online editor for reStructuredText" on
+http://rst.ninjs.org/
 
 
 Testimonials
