@@ -334,7 +334,7 @@ def code_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
 
     node = nodes.literal(rawtext, '', classes=classes)
 
-    # analyze content and add nodes for every token
+    # analyse content and add nodes for every token
     for classes, value in tokens:
         # print (classes, value)
         if classes:
@@ -351,9 +351,10 @@ code_role.options = {'class': directives.class_option,
 register_canonical_role('code', code_role)
 
 def math_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
+    set_classes(options)
     i = rawtext.find('`')
     text = rawtext.split('`')[1]
-    node = nodes.math(rawtext, text)
+    node = nodes.math(rawtext, text, **options)
     return [node], []
 
 register_canonical_role('math', math_role)
