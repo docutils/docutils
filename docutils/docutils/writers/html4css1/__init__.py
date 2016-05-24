@@ -266,8 +266,8 @@ class HTMLTranslator(nodes.NodeVisitor):
     # The latest version of MathJax from the distributed server:
     # avaliable to the public under the `MathJax CDN Terms of Service`__
     # __http://www.mathjax.org/download/mathjax-cdn-terms-of-service/
-    mathjax_url = ('http://cdn.mathjax.org/mathjax/latest/MathJax.js?'
-                   'config=TeX-AMS-MML_HTMLorMML')
+    mathjax_url = ('https://cdn.mathjax.org/mathjax/latest/MathJax.js?'
+                   'config=TeX-AMS_HTML')
     # may be overwritten by custom URL appended to "mathjax"
 
     stylesheet_link = '<link rel="stylesheet" href="%s" type="text/css" />\n'
