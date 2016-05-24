@@ -52,6 +52,17 @@ u"""\
         “‘nested’ smart” quotes
         – and —also long— dashes.
 """],
+[r"""Escaped \\"smart quotes\\", \\'single smart quotes\\',
+\\"\\'nested\\' smart\\" quotes
+\\-- and -\\--also long-\\-- dashes.
+""",
+u"""\
+<document source="test data">
+    <paragraph>
+        Escaped "smart quotes", 'single smart quotes',
+        "'nested' smart" quotes
+        -- and ---also long--- dashes.
+"""],
 ["""\
 Do not "educate" quotes ``inside "literal" text`` and ::
 
