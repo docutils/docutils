@@ -17,13 +17,13 @@
 
 
 """
-Basic HyperText Markup Language document tree Writer.
+Plain HyperText Markup Language document tree Writer.
 
 The output conforms to the `HTML 5` specification as well as
 to `XHTML 1.0 transitional`.
 
 The cascading style sheet "minimal.css" is required for proper viewing,
-the style sheet "plain.css" provides a better reading experience.
+the style sheet "plain.css" improves reading experience.
 """
 __docformat__ = 'reStructuredText'
 
@@ -153,7 +153,7 @@ class Writer(writers.Writer):
 
     settings_defaults = {'output_encoding_error_handler': 'xmlcharrefreplace'}
 
-    config_section = 'html-base writer'
+    config_section = 'html-plain writer'
     config_section_dependencies = ('writers',)
 
     visitor_attributes = (
@@ -1056,17 +1056,17 @@ class HTMLTranslator(nodes.NodeVisitor):
                                  % backrefs[0])
 
     def depart_label(self, node):
-        self.body.append('</span>')
         if self.settings.footnote_backlinks:
             backrefs = node.parent['backrefs']
             if len(backrefs) == 1:
                 self.body.append('</a>')
-            elif len(backrefs) > 1:
-                # Python 2.4 fails with enumerate(backrefs, 1)
-                backlinks = ['<a href="#%s">%s</a>' % (ref, i+1)
-                             for (i, ref) in enumerate(backrefs)]
-                self.body.append('<span class="fn-backref">(%s)</span>'
-                                 % ','.join(backlinks))
+        self.body.append('</span>')
+        if self.settings.footnote_backlinks and len(backrefs) > 1:
+            # Python 2.4 fails with enumerate(backrefs, 1)
+            backlinks = ['<a href="#%s">%s</a>' % (ref, i+1)
+                            for (i, ref) in enumerate(backrefs)]
+            self.body.append('<span class="fn-backref">(%s)</span>'
+                                % ','.join(backlinks))
         self.body.append('</dt>\n<dd>')
 
     def visit_legend(self, node):
