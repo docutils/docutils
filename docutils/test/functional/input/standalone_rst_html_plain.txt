@@ -59,6 +59,10 @@ list`. The default layout is similar to the look with `html4css1`:
 
                     dl.field-list > dd { margin-left: 6em; }
 
+:Empty:
+
+:fields:       must not lead to misalignment of the following content.
+
 Styling with class arguments
 ----------------------------
 
@@ -73,7 +77,7 @@ Definition lists with the "description" class argument:
 .. class:: description
 
 description lists
-  Definition lists that are styled like in most dictionaries, 
+  Definition lists that are styled like in most dictionaries,
   encyclopedias etc. (as well as the LaTeX `description` environment).
 label
   The term to be described. Put in boldface.

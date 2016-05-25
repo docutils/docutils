@@ -873,6 +873,9 @@ class HTMLTranslator(nodes.NodeVisitor):
     def visit_field_body(self, node):
         self.body.append(self.starttag(node, 'dd', '',
                                        CLASS=''.join(node.parent['classes'])))
+        # prevent misalignment of following content if the field is empty:
+        if not node.children:
+            self.body.append('<p></p>')
 
     def depart_field_body(self, node):
         self.body.append('</dd>\n')
