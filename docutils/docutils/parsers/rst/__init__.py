@@ -142,6 +142,14 @@ class Parser(docutils.parsers.Parser):
           'one of "yes", "no", "alt[ernative]" (default "no").',
           ['--smart-quotes'],
           {'default': False, 'validator': frontend.validate_ternary}),
+         ('Ignore inline markup unless surrounded by whitespace '
+          'or punctuation. Enabled by default.',
+          ['--conservative-inline-markup'],
+          {'action': 'store_false', 'dest': 'simple_inline_markup'}),
+         ('No restrictions on characters around inline markup.',
+          ['--simple-inline-markup'],
+          {'action': 'store_true', 'default': False,
+           'dest': 'simple_inline_markup'}),
         ))
 
     config_section = 'restructuredtext parser'
