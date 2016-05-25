@@ -2417,55 +2417,55 @@ markup.
 Inline markup recognition rules
 -------------------------------
 
-Inline markup start-strings and end-strings are only recognized if all of
+Inline markup start-strings and end-strings are only recognized if
 the following conditions are met:
 
-1. Inline markup start-strings must start a text block or be
+1. Inline markup start-strings must be immediately followed by
+   non-whitespace.
+
+2. Inline markup end-strings must be immediately preceded by
+   non-whitespace.
+
+3. The inline markup end-string must be separated by at least one
+   character from the start-string.
+
+4. Both, inline markup start-string and end-string must not be preceded by
+   an unescaped backslash (except for the end-string of `inline literals`_).
+   See `Escaping Mechanism`_ above for details.
+
+5. If an inline markup start-string is immediately preceded by one of the
+   ASCII characters ``' " < ( [ {`` or a similar Unicode character\ [#]_, it
+   must not be followed by the corresponding closing character from ``' " )
+   ] } >`` or a similar Unicode character\ [#]_.
+   (For quotes, corresponding characters can be any of the `quotation marks
+   in international usage`_.)
+
+If the configuration setting `simple-inline-markup`_ is False (default),
+additional conditions apply to the characters "around" the
+inline markup:
+
+6. Inline markup start-strings must start a text block or be
    immediately preceded by
 
    * whitespace,
-   * one of the ASCII characters ``- : / ' " < ( [ {``, or
-   * a punctuation character with `Unicode category`_
-     `Pd` (Dash),
-     `Po` (Other),
-     `Pi` (Initial quote),
-     `Pf` (Final quote), or
-     `Ps` (Open).
+   * one of the ASCII characters ``- : / ' " < ( [ {``
+   * or a similar Unicode punctuation character.\ [#]_
 
-2. Inline markup start-strings must be immediately followed by
-   non-whitespace.
-
-3. Inline markup end-strings must be immediately preceded by
-   non-whitespace.
-
-4. Inline markup end-strings must end a text block or be immediately
+7. Inline markup end-strings must end a text block or be immediately
    followed by
 
    * whitespace,
-   * one of the ASCII characters ``- . , : ; ! ? \ / ' " ) ] } >``, or
-   * a punctuation character with `Unicode category`_
-     `Pd` (Dash),
-     `Po` (Other),
-     `Pi` (Initial quote),
-     `Pf` (Final quote), or
-     `Pe` (Close).
+   * one of the ASCII characters ``- . , : ; ! ? \ / ' " ) ] } >``
+   * or a similar Unicode punctuation character.\ [#]_
 
-5. If an inline markup start-string is immediately preceded by one of the
-   ASCII characters ``' " < ( [ {`` or a character with Unicode character
-   category `Ps`, `Pi`, or `Pf`, it must not be followed by the
-   corresponding closing character from ``' " ) ] } >`` or the categories
-   `Pe`, `Pf`, or `Pi`.
-   (For quotes, corresponding characters can be
-   any of the `quotation marks in international usage`_.)
+.. [#] `Unicode categories`_ `Ps`, `Pi`, or `Pf`
+.. [#] Unicode categories `Pe`, `Pf`, or `Pi`
+.. [#] Unicode categories `Pd` (Dash), `Po` (Other), `Pi` (Initial quote),
+       `Pf` (Final quote), or `Ps` (Open)
+.. [#] Unicode categories `Pd` (Dash), `Po` (Other), `Pi` (Initial quote),
+       `Pf` (Final quote), or `Pe` (Close)
 
-6. An inline markup end-string must be separated by at least one
-   character from the start-string.
-
-7. An unescaped backslash preceding a start-string or end-string will
-   disable markup recognition, except for the end-string of `inline
-   literals`_.  See `Escaping Mechanism`_ above for details.
-
-.. _Unicode category:
+.. _Unicode categories:
    http://www.unicode.org/Public/5.1.0/ucd/UCD.html#General_Category_Values
 
 .. _quotation marks in international usage:
@@ -2475,19 +2475,19 @@ The inline markup recognition rules were devised to allow 90% of non-markup
 uses of "*", "`", "_", and "|" without escaping. For example, none of the
 following terms are recognized as containing inline markup strings:
 
-- 2*x a**b O(N**2) e**(x*y) f(x)*f(y) a|b file*.* (breaks 1)
-- 2 * x  a ** b  (* BOM32_* ` `` _ __ | (breaks 2)
+- 2 * x  a ** b  (* BOM32_* ` `` _ __ | (breaks 1)
+- || (breaks 3)
 - "*" '|' (*) [*] {*} <*>
   ‘*’ ‚*‘ ‘*‚ ’*’ ‚*’
   “*” „*“ “*„ ”*” „*”
   »*« ›*‹ «*» »*» ›*› (breaks 5)
-- || (breaks 6)
-- __init__ __init__()
+- 2*x a**b O(N**2) e**(x*y) f(x)*f(y) a|b file*.*
+  __init__ __init__()  (breaks 6)
 
 No escaping is required inside the following inline markup examples:
 
-- *2 * x  *a **b *.txt* (breaks 3)
-- *2*x a**b O(N**2) e**(x*y) f(x)*f(y) a*(1+2)* (breaks 4)
+- *2 * x  *a **b *.txt* (breaks 2)
+- *2*x a**b O(N**2) e**(x*y) f(x)*f(y) a*(1+2)* (breaks 7)
 
 It may be desirable to use `inline literals`_ for some of these anyhow,
 especially if they represent code snippets.  It's a judgment call.
@@ -2501,6 +2501,16 @@ In most use cases, `inline literals`_ or `literal blocks`_ are the best
 choice (by default, this also selects a monospaced font)::
 
     *4, class_, *args, **kwargs, `TeX-quoted', *ML, *.txt
+
+For languages that don't use whitespace between words (e.g. Japanese or
+Chinese) it is recommended to set `simple-inline-markup`_ to True and
+eventually escape inline markup characters.
+The examples breaking rules 6 and 7 above show which constructs may need
+special attention.
+
+
+.. _simple-inline-markup: ../../user/config.html#simple-inline-markup
+
 
 Recognition order
 -----------------

@@ -1050,7 +1050,7 @@ Relative URIs' reference text can be omitted:
         <reference name="anonymous" refuri="anonymous">
             anonymous
 """],
-["""\
+[r"""
 Escape trailing low-line char in URIs:
 
 `<reference\_>`_
@@ -1068,6 +1068,25 @@ Escape trailing low-line char in URIs:
     <paragraph>
         <reference name="anonymous_" refuri="anonymous_">
             anonymous_
+"""],
+["""\
+Escape other char in URIs:
+
+`<reference\:1>`_
+
+`<anonymous\\call>`__
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        Escape other char in URIs:
+    <paragraph>
+        <reference name="reference:1" refuri="reference:1">
+            reference:1
+        <target ids="reference-1" names="reference:1" refuri="reference:1">
+    <paragraph>
+        <reference name="anonymouscall" refuri="anonymouscall">
+            anonymouscall
 """],
 ]
 
@@ -1122,18 +1141,36 @@ long  phrase_>`__
             embedded alias with whitespace
 """],
 [r"""
-`embedded alias with too much whitespace < alias_ >`__
+`no embedded alias (whitespace inside bracket) < alias_ >`__
 
-`embedded alias with no preceding whitespace<alias_>`__
+`no embedded alias (no preceding whitespace)<alias_>`__
 """,
 """\
 <document source="test data">
     <paragraph>
-        <reference anonymous="1" name="embedded alias with too much whitespace < alias_ >">
-            embedded alias with too much whitespace < alias_ >
+        <reference anonymous="1" name="no embedded alias (whitespace inside bracket) < alias_ >">
+            no embedded alias (whitespace inside bracket) < alias_ >
     <paragraph>
-        <reference anonymous="1" name="embedded alias with no preceding whitespace<alias_>">
-            embedded alias with no preceding whitespace<alias_>
+        <reference anonymous="1" name="no embedded alias (no preceding whitespace)<alias_>">
+            no embedded alias (no preceding whitespace)<alias_>
+"""],
+[r"""
+`anonymous reference <alias\ with\\ escaped \:characters_>`__
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        <reference name="anonymous reference" refname="aliaswith\ escaped :characters">
+            anonymous reference
+"""],
+[r"""
+`anonymous reference <alias\ with\\ escaped \:characters_>`__
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        <reference name="anonymous reference" refname="aliaswith\ escaped :characters">
+            anonymous reference
 """],
 ]
 

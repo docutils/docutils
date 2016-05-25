@@ -19,6 +19,11 @@ Changes Since 0.12
 * docutils/nodes.py
 
   - Fix [ 253 ] Attribute key without value not allowed in XML.
+  
+* docutils/parsers/
+
+  - Apply [ 103 ] Recognize inline markups without word boundaries.
+  - Enable escaping in embedded URIs and aliases (fixes [ 284 ]).
 
 * docutils/parsers/rst/__init__.py
 

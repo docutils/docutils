@@ -649,6 +649,22 @@ Base URL for RFC references.
 
 Default: "http://www.faqs.org/rfcs/".  Option: ``--rfc-base-url``.
 
+simple_inline_markup
+~~~~~~~~~~~~~~~~~~~~
+
+Relax the `inline markup recognition rules`_ --
+no constraints on the characters before/after inline markup.
+
+This results in simpler to predict behaviour and is especially suited for
+langauges that do not use whitespace to separate words (e.g. Japanese,
+Chinese).
+
+Default: disabled (False).
+Options: ``--simple-inline-markup, --conservative-inline-markup``.
+
+New in Docutils 0.12.
+
+
 smart_quotes
 ~~~~~~~~~~~~
 
@@ -943,8 +959,9 @@ the output document. Supported values are (case insensitive):
   Pro:
     Works 'out of the box' across multiple browsers and platforms.
 
-    Supports a large subset of LaTeX math commands and constructs
-    (see http://www.mathjax.org/docs/1.1/tex.html).
+    Large set of `supported LaTeX math commands and constructs`__
+    
+    __ http://docs.mathjax.org/en/latest/tex.html#supported-latex-commands
 
   Con:
     Requires an Internet connection (or a local MathJax
@@ -957,10 +974,6 @@ the output document. Supported values are (case insensitive):
 
     math-output: MathJax file:/usr/share/javascript/mathjax/MathJax.js
 
-  or a URI to `access the MathJax CDN using a https secure
-  connection`__.
-
-  __ http://www.mathjax.org/resources/faqs/#problem-https
 
 :MathML:
   Embed math content as presentational MathML_.
@@ -1896,6 +1909,8 @@ pep_template           [pep_html writer] template
 .. _field names: ../ref/rst/restructuredtext.html#field-names
 .. _footnotes: ../ref/rst/restructuredtext.html#footnotes
 .. _footnote references: ../ref/rst/restructuredtext.html#footnote-references
+.. _inline markup recognition rules:
+    ../ref/rst/restructuredtext.html#inline-markup-recognition-rules
 .. _literal blocks: ../ref/rst/restructuredtext.html#literal-blocks
 .. _option lists: ../ref/rst/restructuredtext.html#option-lists
 .. _tables: ../ref/rst/restructuredtext.html#tables
