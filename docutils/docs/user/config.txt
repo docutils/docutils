@@ -652,29 +652,28 @@ Default: "http://www.faqs.org/rfcs/".  Option: ``--rfc-base-url``.
 character_level_inline_markup
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Relax the `inline markup recognition rules`_ requiring whitespace or
-punctuation around inline markup.
+Experimental setting to relax the `inline markup recognition rules`_
+requiring whitespace or punctuation around inline markup.
 
-This allows character level inline markup without escaped whithespace and is
+Allows character level inline markup without escaped whithespace and is
 especially suited for langauges that do not use whitespace to separate words
 (e.g. Japanese, Chinese).
 
 .. WARNING:: Potentially dangerous; use with caution.
 
    When changing this setting to "True", inline markup charactes in
-   URLs, names and formulas must be escaped to prevent errors. 
-   Examples::
-   
+   URLs, names and formulas must be escaped to prevent recognition and
+   possible errors. Examples::
+
      http://rST_for_all.html (hyperlinks to rST_ and for_)
      x_2, inline_markup      (hyperlinks to x_ and inline_)
      2*x                     (starts emphasised text)
      a|b                     (starts a substitution reference)
 
-
 Default: disabled (False).
-Options: ``--character-level-inline-markup, --conservative-inline-markup``.
+Options: ``--character-level-inline-markup, --word-level-inline-markup``.
 
-New in Docutils 0.12.
+New in Docutils 0.13.
 
 
 smart_quotes
@@ -972,7 +971,7 @@ the output document. Supported values are (case insensitive):
     Works 'out of the box' across multiple browsers and platforms.
 
     Large set of `supported LaTeX math commands and constructs`__
-    
+
     __ http://docs.mathjax.org/en/latest/tex.html#supported-latex-commands
 
   Con:
