@@ -145,11 +145,11 @@ class Parser(docutils.parsers.Parser):
          ('Ignore inline markup unless surrounded by whitespace '
           'or punctuation. Enabled by default.',
           ['--conservative-inline-markup'],
-          {'action': 'store_false', 'dest': 'simple_inline_markup'}),
+          {'action': 'store_false', 'dest': 'character_level_inline_markup'}),
          ('No restrictions on characters around inline markup.',
-          ['--simple-inline-markup'],
+          ['--character-level-inline-markup'],
           {'action': 'store_true', 'default': False,
-           'dest': 'simple_inline_markup'}),
+           'dest': 'character_level_inline_markup'}),
         ))
 
     config_section = 'restructuredtext parser'

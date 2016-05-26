@@ -467,7 +467,7 @@ class Inliner:
 
     def init_customizations(self, settings):
         # lookahead and look-behind expressions for inline markup rules
-        if settings.simple_inline_markup:
+        if settings.character_level_inline_markup:
             start_string_prefix = u'(^|(?<!\x00))'
             end_string_suffix = u''
         else:
