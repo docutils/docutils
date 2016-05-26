@@ -59,7 +59,7 @@ Changes Since 0.12
 * docutils/writers/html_plain/
 
   - New HTML writer generating clean, polyglot_ markup conforming to
-    `HTML 5`_ and compatible with `XHTML 1.0`_ Transitional.
+    `HTML 5`_.
 
     The CSS stylesheets ``minimal.css`` and ``plain.css`` contain required
     and recommended layout rules.

@@ -1,5 +1,5 @@
 # .. coding: utf8
-# :Author: Günter Milde <milde@users.berlios.de>
+# :Author: Günter Milde <milde@users.sf.net>
 # :Revision: $Revision$
 # :Date: $Date: 2005-06-28$
 # :Copyright: © 2005, 2009 Günter Milde.
@@ -19,8 +19,7 @@
 """
 Plain HyperText Markup Language document tree Writer.
 
-The output conforms to the `HTML 5` specification as well as
-to `XHTML 1.0 transitional`.
+The output conforms to the `HTML 5` specification.
 
 The cascading style sheet "minimal.css" is required for proper viewing,
 the style sheet "plain.css" improves reading experience.
@@ -212,10 +211,7 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     head_prefix_template = ('<html xmlns="http://www.w3.org/1999/xhtml"'
                             ' xml:lang="%(lang)s" lang="%(lang)s">\n<head>\n')
-    content_type = ('<meta http-equiv="Content-Type"'
-                    ' content="text/html; charset=%s" />\n')
-    content_type_xml = ('<meta http-equiv="Content-Type"'
-                        ' content="application/xhtml+xml; charset=%s" />\n')
+    content_type = ('<meta charset="%s"/>\n')
 
     generator = ('<meta name="generator" content="Docutils %s: '
                  'http://docutils.sourceforge.net/" />\n')
@@ -225,9 +221,9 @@ class HTMLTranslator(nodes.NodeVisitor):
     # The latest version of MathJax from the distributed server:
     # avaliable to the public under the `MathJax CDN Terms of Service`__
     # __http://www.mathjax.org/download/mathjax-cdn-terms-of-service/
+    # may be overwritten by custom URL appended to "mathjax"
     mathjax_url = ('https://cdn.mathjax.org/mathjax/latest/MathJax.js?'
                    'config=TeX-AMS_CHTML')
-    # may be overwritten by custom URL appended to "mathjax"
 
     stylesheet_link = '<link rel="stylesheet" href="%s" type="text/css" />\n'
     embedded_stylesheet = '<style type="text/css">\n\n%s\n</style>\n'
@@ -246,7 +242,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         if settings.xml_declaration:
             self.head_prefix.append(self.xml_declaration
                                     % settings.output_encoding)
-            self.content_type = self.content_type_xml
+            self.content_type = ""
             # encoding not interpolated:
             self.html_prolog.append(self.xml_declaration)
         self.head = self.meta[:]
