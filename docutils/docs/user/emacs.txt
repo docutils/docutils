@@ -89,7 +89,7 @@ If you decided to install locally please follow these steps.
 #. Download ``rst.el``
 
    Download the most recent published version of ``rst.el`` from
-   http://docutils.sourceforge.net/tools/editors/emacs/rst.el
+   http://sourceforge.net/p/docutils/code/HEAD/tree/trunk/docutils/tools/editors/emacs/rst.el
 
 #. Put ``rst.el`` to a directory in ``load-path``
 
