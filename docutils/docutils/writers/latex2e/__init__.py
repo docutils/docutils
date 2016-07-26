@@ -939,8 +939,12 @@ class Table(object):
 
     # horizontal lines are drawn below a row,
     def get_opening(self):
+        align_map = {'left': 'l',
+                     'center': 'c',
+                     'right': 'r'}
+        align = align_map.get(self.get('align') or 'center')
         return '\n'.join([r'\setlength{\DUtablewidth}{\linewidth}',
-                          r'\begin{%s}[c]' % self.get_latex_type()])
+                          r'\begin{%s}[%s]' % (self.get_latex_type(), align)])
 
     def get_closing(self):
         closing = []
@@ -992,12 +996,12 @@ class Table(object):
 
     def get_column_width(self):
         """Return columnwidth for current cell (not multicell)."""
-        return '%.2f\\DUtablewidth' % self._col_width[self._cell_in_row-1]
+        return '%.2f\\DUtablewidth' % self._col_width[self._cell_in_row]
 
     def get_multicolumn_width(self, start, len_):
         """Return sum of columnwidths for multicell."""
         mc_width = sum([width
-                       for width in ([self._col_width[start + co - 1]
+                       for width in ([self._col_width[start + co]
                                      for co in range (len_)])])
         return '%.2f\\DUtablewidth' % mc_width
 
@@ -1039,8 +1043,10 @@ class Table(object):
         # for longtable one could add firsthead, foot and lastfoot
         self._in_thead -= 1
         return a
+
     def visit_row(self):
         self._cell_in_row = 0
+
     def depart_row(self):
         res = [' \\\\\n']
         self._cell_in_row = None  # remove cell counter
@@ -1071,15 +1077,19 @@ class Table(object):
             self._rowspan[cell] = value
         except:
             pass
+
     def get_rowspan(self,cell):
         try:
             return self._rowspan[cell]
         except:
             return 0
+
     def get_entry_number(self):
         return self._cell_in_row
+
     def visit_entry(self):
         self._cell_in_row += 1
+
     def is_stub_column(self):
         if len(self.stubs) >= self._cell_in_row:
             return self.stubs[self._cell_in_row-1]
@@ -1930,52 +1940,50 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.depart_inline(node)
         self.out.append('}')
 
+    # Append column delimiters and advance column counter,
+    # if the current cell is a multi-row continuation."""
+    def insert_additional_table_colum_delimiters(self):
+        while self.active_table.get_rowspan(
+                                self.active_table.get_entry_number()):
+            self.out.append(' & ')
+            self.active_table.visit_entry() # increment cell count
+
     def visit_entry(self, node):
-        self.active_table.visit_entry()
         # cell separation
-        # BUG: the following fails, with more than one multirow
-        # starting in the second column (or later) see
-        # ../../../test/functional/input/data/latex.txt
-        if self.active_table.get_entry_number() == 1:
-            # if the first row is a multirow, this actually is the second row.
-            # this gets hairy if rowspans follow each other.
-            if self.active_table.get_rowspan(0):
-                count = 0
-                while self.active_table.get_rowspan(count):
-                    count += 1
-                    self.out.append(' & ')
-                self.active_table.visit_entry() # increment cell count
+        if self.active_table.get_entry_number() == 0:
+            self.insert_additional_table_colum_delimiters()
         else:
             self.out.append(' & ')
+
         # multirow, multicolumn
-        # IN WORK BUG TODO HACK continues here
-        # multirow in LaTeX simply will enlarge the cell over several rows
-        # (the following n if n is positive, the former if negative).
         if 'morerows' in node and 'morecols' in node:
             raise NotImplementedError('Cells that '
             'span multiple rows *and* columns are not supported, sorry.')
+        # multirow in LaTeX simply will enlarge the cell over several rows
+        # (the following n if n is positive, the former if negative).
         if 'morerows' in node:
             self.requirements['multirow'] = r'\usepackage{multirow}'
-            count = node['morerows'] + 1
+            mrows = node['morerows'] + 1
             self.active_table.set_rowspan(
-                                self.active_table.get_entry_number()-1,count)
-            # TODO why does multirow end on % ? needs to be checked for below
+                            self.active_table.get_entry_number(), mrows)
             self.out.append('\\multirow{%d}{%s}{%%' %
-                            (count,self.active_table.get_column_width()))
+                        (mrows, self.active_table.get_column_width()))
+            # (end line with "%" to mask the line break,
+            # needs to be checked for below).
             self.context.append('}')
         elif 'morecols' in node:
             # the vertical bar before column is missing if it is the first
             # column. the one after always.
-            if self.active_table.get_entry_number() == 1:
+            if self.active_table.get_entry_number() == 0:
                 bar1 = self.active_table.get_vertical_bar()
             else:
                 bar1 = ''
-            count = node['morecols'] + 1
+            mcols = node['morecols'] + 1
             self.out.append('\\multicolumn{%d}{%sp{%s}%s}{' %
-                    (count, bar1,
+                    (mcols, bar1,
                      self.active_table.get_multicolumn_width(
                         self.active_table.get_entry_number(),
-                        count),
+                        mcols),
                      self.active_table.get_vertical_bar()))
             self.context.append('}')
         else:
@@ -1994,14 +2002,13 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.context.append('}')
         else:
             self.context.append('')
+        self.active_table.visit_entry() # increment cell count
 
     def depart_entry(self, node):
         self.out.append(self.context.pop()) # header / not header
         self.out.append(self.context.pop()) # multirow/column
-        # if following row is spanned from above.
-        if self.active_table.get_rowspan(self.active_table.get_entry_number()):
-           self.out.append(' & ')
-           self.active_table.visit_entry() # increment cell count
+        # insert extra "&"s, if following rows are spanned from above:
+        self.insert_additional_table_colum_delimiters()
 
     def visit_row(self, node):
         self.active_table.visit_row()
@@ -2416,6 +2423,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
                     # 'verbatim': '',
                     'verbatimtab': r'\usepackage{moreverb}'}
 
+        if node.get('ids'):
+            self.out += ['\n'] + self.ids_to_labels(node)
+
         if not self.active_table.is_open():
             # no quote inside tables, to avoid vertical space between
             # table border and literal block.
@@ -2784,6 +2794,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.active_table.open()
         for cls in node['classes']:
             self.active_table.set_table_style(cls)
+        if 'align' in node:
+            self.active_table.set('align', node['align'])
         if self.active_table._table_style == 'booktabs':
             self.requirements['booktabs'] = r'\usepackage{booktabs}'
         self.push_output_collector([])
