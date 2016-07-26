@@ -988,6 +988,120 @@ The legend may consist of several paragraphs.
 This paragraph might flow around the figure. The specific behavior depends
 upon the style sheet and the browser or rendering software used.
 
+Tables may be given titles and additional arguments with the \emph{table}
+directive:
+
+\setlength{\DUtablewidth}{\linewidth}
+\begin{longtable}[l]{|p{0.075\DUtablewidth}|p{0.075\DUtablewidth}|}
+\caption{left-aligned table}\\
+\hline
+\textbf{%
+A
+} & \textbf{%
+not A
+} \\
+\hline
+\endfirsthead
+\caption[]{left-aligned table (... continued)}\\
+\hline
+\textbf{%
+A
+} & \textbf{%
+not A
+} \\
+\hline
+\endhead
+\multicolumn{2}{c}{\hfill ... continued on next page} \\
+\endfoot
+\endlastfoot
+
+False
+ & 
+True
+ \\
+\hline
+
+True
+ & 
+False
+ \\
+\hline
+\end{longtable}
+
+\setlength{\DUtablewidth}{\linewidth}
+\begin{longtable}[c]{|p{0.075\DUtablewidth}|p{0.075\DUtablewidth}|}
+\caption{center-aligned table}\\
+\hline
+\textbf{%
+A
+} & \textbf{%
+not A
+} \\
+\hline
+\endfirsthead
+\caption[]{center-aligned table (... continued)}\\
+\hline
+\textbf{%
+A
+} & \textbf{%
+not A
+} \\
+\hline
+\endhead
+\multicolumn{2}{c}{\hfill ... continued on next page} \\
+\endfoot
+\endlastfoot
+
+False
+ & 
+True
+ \\
+\hline
+
+True
+ & 
+False
+ \\
+\hline
+\end{longtable}
+
+\setlength{\DUtablewidth}{\linewidth}
+\begin{longtable}[r]{|p{0.075\DUtablewidth}|p{0.075\DUtablewidth}|}
+\caption{right-aligned table}\\
+\hline
+\textbf{%
+A
+} & \textbf{%
+not A
+} \\
+\hline
+\endfirsthead
+\caption[]{right-aligned table (... continued)}\\
+\hline
+\textbf{%
+A
+} & \textbf{%
+not A
+} \\
+\hline
+\endhead
+\multicolumn{2}{c}{\hfill ... continued on next page} \\
+\endfoot
+\endlastfoot
+
+False
+ & 
+True
+ \\
+\hline
+
+True
+ & 
+False
+ \\
+\hline
+\end{longtable}
+
 
 \subsubsection{2.14.3~~~Admonitions%
   \label{admonitions}%
@@ -1701,7 +1815,7 @@ This is a \DUroletitlereference{\DUrole{custom-title-reference}{customized title
   \label{more-tables}%
 }
 
-A multicolumn table with multi-paragraph rowspanning cells:
+A table with multi-paragraph multicolumn cells:
 
 \setlength{\DUtablewidth}{\linewidth}
 \begin{longtable*}[c]{|p{0.133\DUtablewidth}|p{0.179\DUtablewidth}|p{0.179\DUtablewidth}|p{0.110\DUtablewidth}|p{0.121\DUtablewidth}|p{0.145\DUtablewidth}|}
@@ -1758,7 +1872,10 @@ Short multicolumn 4
 \hline
 \end{longtable*}
 
-A table with multirow header
+Tables with multi-paragraph multirow cells currently fail due to a LaTeX
+limitation (see \url{https://sourceforge.net/p/docutils/bugs/225/}).
+
+A table with multirow header:
 %
 \begin{quote}
 
@@ -2523,8 +2640,8 @@ reach at some level
 
 an unsupported level.
 
-% unusual combinations (from newlatex, for interactive testing)
-% .. include:: data/latex.txt
+% unusual combinations (currently separately tested)
+% .. include:: data/latex_cornercases.txt
 
 % Preface for System Messages:
 

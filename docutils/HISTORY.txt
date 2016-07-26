@@ -34,6 +34,10 @@ Changes Since 0.12
   - Patch [ 120 ] tables accept option widths: list of relative widths, 'auto'
     or 'grid'.
 
+  - Implement feature request [ 48 ]
+    Add :align: option to the table directives.
+    Thanks to Takeshi KOMIYA for the patch.
+
 * docutils/parsers/rst/roles.py
 
   - Fix [ 295 ] Class argument for custom role inheriting from math.

@@ -22,3 +22,13 @@ Here's a list table exercising all features:
    * - Gannet Ripple
      - 1.99
      - On a stick!
+
+.. list-table:: center aligned list table
+   :align: center
+
+   * - Albatross
+     - 2.99
+   * - Crunchy Frog
+     - 1.49
+   * - Gannet Ripple
+     - 1.99

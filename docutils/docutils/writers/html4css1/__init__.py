@@ -1582,9 +1582,11 @@ class HTMLTranslator(nodes.NodeVisitor):
     def visit_table(self, node):
         self.context.append(self.compact_p)
         self.compact_p = True
-        classes = ' '.join(['docutils', self.settings.table_style]).strip()
+        classes = ['docutils', self.settings.table_style]
+        if 'align' in node:
+            classes.append('align-%s' % node['align'])
         self.body.append(
-            self.starttag(node, 'table', CLASS=classes, border="1"))
+            self.starttag(node, 'table', CLASS=' '.join(classes), border="1"))
 
     def depart_table(self, node):
         self.compact_p = self.context.pop()

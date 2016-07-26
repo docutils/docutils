@@ -1361,6 +1361,99 @@
                 <paragraph>
                     This paragraph might flow around the figure. The specific behavior depends
                     upon the style sheet and the browser or rendering software used.
+                <paragraph>
+                    Tables may be given titles and additional arguments with the 
+                    <emphasis>
+                        table
+                    
+                    directive:
+                <table align="left">
+                    <title>
+                        left-aligned table
+                    <tgroup cols="2" colwidths="auto">
+                        <colspec colwidth="5">
+                        <colspec colwidth="5">
+                        <thead>
+                            <row>
+                                <entry>
+                                    <paragraph>
+                                        A
+                                <entry>
+                                    <paragraph>
+                                        not A
+                        <tbody>
+                            <row>
+                                <entry>
+                                    <paragraph>
+                                        False
+                                <entry>
+                                    <paragraph>
+                                        True
+                            <row>
+                                <entry>
+                                    <paragraph>
+                                        True
+                                <entry>
+                                    <paragraph>
+                                        False
+                <table align="center">
+                    <title>
+                        center-aligned table
+                    <tgroup cols="2" colwidths="auto">
+                        <colspec colwidth="5">
+                        <colspec colwidth="5">
+                        <thead>
+                            <row>
+                                <entry>
+                                    <paragraph>
+                                        A
+                                <entry>
+                                    <paragraph>
+                                        not A
+                        <tbody>
+                            <row>
+                                <entry>
+                                    <paragraph>
+                                        False
+                                <entry>
+                                    <paragraph>
+                                        True
+                            <row>
+                                <entry>
+                                    <paragraph>
+                                        True
+                                <entry>
+                                    <paragraph>
+                                        False
+                <table align="right">
+                    <title>
+                        right-aligned table
+                    <tgroup cols="2" colwidths="auto">
+                        <colspec colwidth="5">
+                        <colspec colwidth="5">
+                        <thead>
+                            <row>
+                                <entry>
+                                    <paragraph>
+                                        A
+                                <entry>
+                                    <paragraph>
+                                        not A
+                        <tbody>
+                            <row>
+                                <entry>
+                                    <paragraph>
+                                        False
+                                <entry>
+                                    <paragraph>
+                                        True
+                            <row>
+                                <entry>
+                                    <paragraph>
+                                        True
+                                <entry>
+                                    <paragraph>
+                                        False
             <section ids="admonitions" names="admonitions">
                 <title auto="1" refid="id76">
                     <generated classes="sectnum">
@@ -2036,6 +2129,34 @@
                             <entry>
                                 <paragraph>
                                     On a stick!
+            <table align="center">
+                <title>
+                    center aligned list table
+                <tgroup cols="2" colwidths="auto">
+                    <colspec colwidth="50">
+                    <colspec colwidth="50">
+                    <tbody>
+                        <row>
+                            <entry>
+                                <paragraph>
+                                    Albatross
+                            <entry>
+                                <paragraph>
+                                    2.99
+                        <row>
+                            <entry>
+                                <paragraph>
+                                    Crunchy Frog
+                            <entry>
+                                <paragraph>
+                                    1.49
+                        <row>
+                            <entry>
+                                <paragraph>
+                                    Gannet Ripple
+                            <entry>
+                                <paragraph>
+                                    1.99
     <section ids="error-handling" names="error\ handling">
         <title auto="1" refid="id73">
             <generated classes="sectnum">
@@ -2081,9 +2202,9 @@
         <system_message level="1" line="475" source="functional/input/data/standard.txt" type="INFO">
             <paragraph>
                 Hyperlink target "image-target-3" is not referenced.
-        <system_message level="1" line="632" source="functional/input/data/standard.txt" type="INFO">
+        <system_message level="1" line="667" source="functional/input/data/standard.txt" type="INFO">
             <paragraph>
                 Hyperlink target "docutils" is not referenced.
-        <system_message level="1" line="753" source="functional/input/data/standard.txt" type="INFO">
+        <system_message level="1" line="788" source="functional/input/data/standard.txt" type="INFO">
             <paragraph>
                 Hyperlink target "hyperlink targets" is not referenced.

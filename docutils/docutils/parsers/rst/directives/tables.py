@@ -20,6 +20,10 @@ from docutils.parsers.rst import Directive
 from docutils.parsers.rst import directives
 
 
+def align(argument):
+    return directives.choice(argument, ('left', 'center', 'right'))
+
+
 class Table(Directive):
 
     """
@@ -30,6 +34,7 @@ class Table(Directive):
     final_argument_whitespace = True
     option_spec = {'class': directives.class_option,
                    'name': directives.unchanged,
+                   'align': align,
                    'widths': directives.value_or(('auto', 'grid'),
                                                  directives.positive_int_list)}
     has_content = True
@@ -140,6 +145,8 @@ class RSTTable(Table):
             return [error]
         table_node = node[0]
         table_node['classes'] += self.options.get('class', [])
+        if 'align' in self.options:
+            table_node['align'] = self.options.get('align')
         tgroup = table_node[0]
         if type(self.widths) == list:
             colspecs = [child for child in tgroup.children
@@ -168,6 +175,7 @@ class CSVTable(Table):
                    'encoding': directives.encoding,
                    'class': directives.class_option,
                    'name': directives.unchanged,
+                   'align': align,
                    # field delimiter char
                    'delim': directives.single_char_or_whitespace_or_unicode,
                    # treat whitespace after delimiter as significant
@@ -258,6 +266,8 @@ class CSVTable(Table):
         table_node = self.state.build_table(table, self.content_offset,
                                             stub_columns, widths=widths)
         table_node['classes'] += self.options.get('class', [])
+        if 'align' in self.options:
+            table_node['align'] = self.options.get('align')
         self.add_name(table_node)
         if title:
             table_node.insert(0, title)
@@ -384,7 +394,8 @@ class ListTable(Table):
                    'widths': directives.value_or(('auto', ),
                                                  directives.positive_int_list),
                    'class': directives.class_option,
-                   'name': directives.unchanged}
+                   'name': directives.unchanged,
+                   'align': align}
 
     def run(self):
         if not self.content:
@@ -407,6 +418,8 @@ class ListTable(Table):
             return [detail.args[0]]
         table_node = self.build_table_from_list(table_data, widths, col_widths,
                                                 header_rows, stub_columns)
+        if 'align' in self.options:
+            table_node['align'] = self.options.get('align')
         table_node['classes'] += self.options.get('class', [])
         self.add_name(table_node)
         if title:

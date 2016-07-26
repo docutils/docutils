@@ -1514,6 +1514,8 @@ class HTMLTranslator(nodes.NodeVisitor):
     def visit_table(self, node):
         classes = [cls.strip(u' \t\n')
                    for cls in self.settings.table_style.split(',')]
+        if 'align' in node:
+            classes.append('align-%s' % node['align'])
         tag = self.starttag(node, 'table', CLASS=' '.join(classes))
         self.body.append(tag)
 

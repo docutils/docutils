@@ -597,6 +597,41 @@ This paragraph might flow around the figure. The specific behavior depends
 upon the style sheet and the browser or rendering software used.
 
 
+Tables may be given titles and additional arguments with the *table*
+directive:
+
+.. Table:: left-aligned table
+   :align: left
+
+   =====  =====
+     A    not A
+   =====  =====
+   False  True
+   True   False
+   =====  =====
+
+.. Table:: center-aligned table
+   :align: center
+
+   =====  =====
+     A    not A
+   =====  =====
+   False  True
+   True   False
+   =====  =====
+
+.. Table:: right-aligned table
+   :align: right
+
+   =====  =====
+     A    not A
+   =====  =====
+   False  True
+   True   False
+   =====  =====
+
+
+
 Admonitions
 ```````````
 

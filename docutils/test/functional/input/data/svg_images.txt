@@ -28,8 +28,8 @@ b) The method used to put the image in the document.
    * including within SVG using the SVG ``<image>`` tag,
    * embedd the SVG code within HTML (inlining).
 
-   The `html4css1` writer uses ``<object>`` tags, the `html-base` and `xhtml11`
-   writers use ``<img>`` tags.
+   The `html4css1` writer uses ``<object>`` tags, the `html5`
+   writer uses ``<img>`` tags.
 
    .. cf. http://edutechwiki.unige.ch/en/Using_SVG_with_HTML5_tutorial
 

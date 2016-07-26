@@ -317,6 +317,49 @@ And even more stuff
  'html_head': '''...<title></title>\\n'''}
 """],
 ["""\
+.. table::
+   :align: right
+
+   +-----+-----+
+   |  1  |  2  |
+   +-----+-----+
+   |  3  |  4  |
+   +-----+-----+
+""",
+"""\
+{'fragment': '''<table border="1" class="docutils align-right">
+<colgroup>
+<col width="50%%" />
+<col width="50%%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>1</td>
+<td>2</td>
+</tr>
+<tr><td>3</td>
+<td>4</td>
+</tr>
+</tbody>
+</table>\\n''',
+ 'html_body': '''<div class="document">
+<table border="1" class="docutils align-right">
+<colgroup>
+<col width="50%%" />
+<col width="50%%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>1</td>
+<td>2</td>
+</tr>
+<tr><td>3</td>
+<td>4</td>
+</tr>
+</tbody>
+</table>
+</div>\\n''',
+ 'html_head': '''...<title></title>\\n'''}
+"""],
+["""\
 Not a docinfo.
 
 :This: .. _target:
