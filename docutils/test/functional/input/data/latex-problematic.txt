@@ -1,44 +1,13 @@
-Some Tests for the LaTeX Writer
-===============================
+Problematic Cases for the LaTeX Writer
+======================================
 
-These tests have been written to exercise some unusual combinations of
-syntax elements which may cause trouble for the LaTeX writer but do
-not need to be tested with other writers (e.g. the HTML writer).
+These tests contain unusual combinations of syntax elements which may cause
+trouble for the LaTeX writer but do not need to be tested with other writers
+(e.g. the HTML writer).
 
-This file is not yet used by any automated test.  It is currently only
-used to control the visual appearance of the output.
-
-
-Block Quotes
-------------
-
-    This block quote comes directly after the section heading and is
-    followed by a paragraph.
-
-    This is the second paragraph of the block quote and it contains
-    some more text filling up some space which would otherwise be
-    empty.
-
-    -- Attribution
-
-This is a paragraph.
-
-    This block quote does not have an attribution.
-
-This is another paragraph.
-
-    Another block quote at the end of the section.
-
-
-More Block Quotes
------------------
-
-    Block quote followed by a transition.
-
-----------
-
-    Another block quote.
-
+The file `latex-problematic.txt` contains the cases with non unsatisfying
+results. It is only used to control the visual appearance of the output, not
+by any automated test
 
 Sidebars
 --------
@@ -76,7 +45,6 @@ some text.  This is some text.
 This is some text.  This is some text.  This is some text.  This is
 some text.  This is some text.  This is some text.  This is some text.
 This is some text.  This is some text.  This is some text.
-
 
 Nested Elements
 ---------------
@@ -188,81 +156,28 @@ Too deeply nested lists fail. TODO: generate an error or provide a workaround.
 |   paragraph.    |
 +-----------------+
 
-
-Images
-------
-
-Image with 20% width:
-
-.. image:: ../../../../docs/user/rst/images/title.png
-   :width: 20%
-
-Image with 100% width:
-
-.. image:: ../../../../docs/user/rst/images/title.png
-   :width: 100%
-
-
 Vertical alignment of inline images
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. |top| image:: ../../../../docs/user/rst/images/biohazard.png
    :align: top
+   :width: 3em
 
 .. |middle| image:: ../../../../docs/user/rst/images/biohazard.png
    :align: middle
+   :width: 2em
 
 .. |bottom| image:: ../../../../docs/user/rst/images/biohazard.png
    :align: bottom
+   :width: 2.5em
 
-A paragraph containing top |top|, middle |middle|, and bottom |bottom|
+A paragraph with top |top|, middle |middle|, and bottom |bottom|
 aligned images.
 
+A paragraph with top |top| aligned image.
 
-Rowspanning tables
-------------------
+A paragraph with middle |middle| aligned image.
 
-Several rowspanning cells in a table.
+A paragraph with bottom |bottom| aligned image.
 
-.. Problem:
 
-   In the LaTeX `multicol` package, if there are multirow cells, the
-   "overwritten" cells need to be defined as empty cells.
-
-   Docutils (similarily to HTML) uses is the "Exchange Table Model" (also
-   known as CALS tables, see docs/ref/soextblx.dtd) which defines only the
-   remaining cells in a row "affected" by multirow cells.
-
-   Therefore, visit_entry() is only called for the remaining cells and the
-   LaTeX writer needs bookkeeping to write out the required number of extra
-   '&'s.
-
-.. class:: standard
-
-+-----------+------------+------------------+-----------+
-| cell 11   | cell  12   | cell  13         | cell 41   |
-+-----------+------------+------------------+-----------+
-| cell 12   | Cell a     |                  | cell 42   |
-+-----------+            |                  +-----------+
-| cell 13   |            | cell b           | cell 43   |
-+-----------+------------+------------------+-----------+
-
-.. class:: standard
-
-+------------+------------------+-----------+
-| cell  12   | cell  13         | cell 41   |
-+------------+------------------+-----------+
-| Cell a     |                  | cell 42   |
-+            |                  +-----------+
-|            | cell b           | cell 43   |
-+------------+------------------+-----------+
-
-.. class:: standard
-
-+-----------+------------+-----------+
-| cell 11   | cell  12   | cell 41   |
-+-----------+------------+-----------+
-| cell 12   | Cell a     | cell 42   |
-+-----------+            +-----------+
-| cell 13   |            | cell 43   |
-+-----------+------------+-----------+

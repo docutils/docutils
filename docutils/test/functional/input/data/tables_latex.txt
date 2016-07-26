@@ -27,7 +27,5 @@ A table with multirow header
         |            +-------------------+
         |            | Description       |
         +============+===================+
-        | multirow header breaks latex   |
+        | multicollumn cell              |
         +--------------------------------+
-
-
