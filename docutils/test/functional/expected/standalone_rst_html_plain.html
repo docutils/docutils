@@ -644,6 +644,68 @@ rendering software used.</p>
 </div>
 <p>This paragraph might flow around the figure. The specific behavior depends
 upon the style sheet and the browser or rendering software used.</p>
+<p>Tables may be given titles and additional arguments with the <em>table</em>
+directive:</p>
+<table class="align-left">
+<caption>left-aligned table</caption>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr><th class="head"><p>A</p></th>
+<th class="head"><p>not A</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p>False</p></td>
+<td><p>True</p></td>
+</tr>
+<tr><td><p>True</p></td>
+<td><p>False</p></td>
+</tr>
+</tbody>
+</table>
+<table class="align-center">
+<caption>center-aligned table</caption>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr><th class="head"><p>A</p></th>
+<th class="head"><p>not A</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p>False</p></td>
+<td><p>True</p></td>
+</tr>
+<tr><td><p>True</p></td>
+<td><p>False</p></td>
+</tr>
+</tbody>
+</table>
+<table class="align-right">
+<caption>right-aligned table</caption>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr><th class="head"><p>A</p></th>
+<th class="head"><p>not A</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p>False</p></td>
+<td><p>True</p></td>
+</tr>
+<tr><td><p>True</p></td>
+<td><p>False</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="section" id="admonitions">
 <h3><a class="toc-backref" href="#id89"><span class="sectnum">2.14.3</span> Admonitions</a></h3>
@@ -1024,6 +1086,24 @@ crunchy, now would it?</p></td>
 </tr>
 </tbody>
 </table>
+<table class="align-center">
+<caption>center aligned list table</caption>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr><td><p>Albatross</p></td>
+<td><p>2.99</p></td>
+</tr>
+<tr><td><p>Crunchy Frog</p></td>
+<td><p>1.49</p></td>
+</tr>
+<tr><td><p>Gannet Ripple</p></td>
+<td><p>1.99</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="section" id="custom-roles">
 <h2><a class="toc-backref" href="#id77"><span class="sectnum">2.23</span> Custom Roles</a></h2>
@@ -1075,8 +1155,8 @@ height=&quot;27&quot;              width=&quot;100%&quot;
 <li><p>including within SVG using the SVG <span class="docutils literal">&lt;image&gt;</span> tag,</p></li>
 <li><p>embedd the SVG code within HTML (inlining).</p></li>
 </ul>
-<p>The <cite>html4css1</cite> writer uses <span class="docutils literal">&lt;object&gt;</span> tags, the <cite>html-base</cite> and <cite>xhtml11</cite>
-writers use <span class="docutils literal">&lt;img&gt;</span> tags.</p>
+<p>The <cite>html4css1</cite> writer uses <span class="docutils literal">&lt;object&gt;</span> tags, the <cite>html5</cite>
+writer uses <span class="docutils literal">&lt;img&gt;</span> tags.</p>
 <!-- cf. http://edutechwiki.unige.ch/en/Using_SVG_with_HTML5_tutorial -->
 </li>
 <li><p>The viewing agent.</p>
@@ -1359,9 +1439,9 @@ from the <a class="reference external" href="http://tug.ctan.org/tex-archive/mac
 </tr>
 </tbody>
 </table>
-<p>This table also uses the &quot;align-left&quot; class argument, to left-align
-the headers:</p>
-<table class="booktabs align-left">
+<p>This table also uses the &quot;align-right&quot; class argument, to right-align
+the table:</p>
+<table class="booktabs align-right">
 <colgroup>
 <col style="width: 29%" />
 <col style="width: 29%" />
@@ -1392,8 +1472,8 @@ the headers:</p>
 </tr>
 </tbody>
 </table>
-<p>Of course, also &quot;booktabs&quot; style tables can be numbered:</p>
-<table class="numbered booktabs">
+<p>&quot;Booktabs&quot; style table, numbered and centre-aligned:</p>
+<table class="numbered booktabs align-center">
 <caption>I/O values</caption>
 <colgroup>
 <col style="width: 31%" />

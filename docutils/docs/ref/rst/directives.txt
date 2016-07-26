@@ -223,7 +223,9 @@ The following options are recognized:
 
 ``align`` : "top", "middle", "bottom", "left", "center", or "right"
     The alignment of the image, equivalent to the HTML ``<img>`` tag's
-    "align" attribute.  The values "top", "middle", and "bottom"
+    deprecated "align" attribute or the corresponding "vertical-align" and
+    "text-align" CSS properties.
+    The values "top", "middle", and "bottom"
     control an image's vertical alignment (relative to the text
     baseline); they are only useful for inline images (substitutions).
     The values "left", "center", and "right" control an image's
@@ -749,7 +751,7 @@ Table
 :Directive Type: "table"
 :Doctree Element: table_
 :Directive Arguments: 1, optional (table title).
-:Directive Options: `:class:`_, `:name:`_
+:Directive Options: Possible (see below).
 :Directive Content: A normal reStructuredText table.
 
 (New in Docutils 0.3.1)
@@ -766,6 +768,13 @@ title with a table::
        True   False
        =====  =====
 
+The following options are recognized:
+
+``align`` : "left", "center", or "right"
+    The horizontal alignment of the table.
+    (New in Docutils 0.13)
+
+and the common options `:class:`_ and `:name:`_.
 
 .. _csv-table:
 
@@ -880,6 +889,10 @@ The following options are recognized:
     .. Add another possible value, "double", to explicitly indicate
        the default case?
 
+``align`` : "left", "center", or "right"
+    The horizontal alignment of the table.
+    (New in Docutils 0.13)
+
 and the common options `:class:`_ and `:name:`_.
 
 
@@ -934,6 +947,10 @@ The following options are recognized:
 ``stub-columns`` : integer
     The number of table columns to use as stubs (row titles, on the
     left).  Defaults to 0.
+
+``align`` : "left", "center", or "right"
+    The horizontal alignment of the table.
+    (New in Docutils 0.13)
 
 and the common options `:class:`_ and `:name:`_.
 

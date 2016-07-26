@@ -1,7 +1,7 @@
 More Tables
 -----------
 
-A multicolumn table with multi-paragraph rowspanning cells:
+A table with multi-paragraph multicolumn cells:
 
 +----------+--------------+---------------------------------+-----------+
 | test     | **bold hd**  | multicolumn 1                   | *emph hd* |
@@ -19,7 +19,10 @@ A multicolumn table with multi-paragraph rowspanning cells:
 | cell     | cell         | cell         | Short multicolumn 4          |
 +----------+--------------+--------------+------------------------------+
 
-A table with multirow header
+Tables with multi-paragraph multirow cells currently fail due to a LaTeX
+limitation (see https://sourceforge.net/p/docutils/bugs/225/).
+
+A table with multirow header:
 
 
         +------------+-------------------+

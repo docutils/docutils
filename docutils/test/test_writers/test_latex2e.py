@@ -542,6 +542,40 @@ head_table + r"""
 """],
 ]
 
+totest['table_align'] = [
+# input
+["""\
+.. table::
+   :align: right
+
+   +-----+-----+
+   |  1  |  2  |
+   +-----+-----+
+   |  3  |  4  |
+   +-----+-----+
+""",
+head_table + r"""
+\setlength{\DUtablewidth}{\linewidth}
+\begin{longtable*}[r]{|p{0.075\DUtablewidth}|p{0.075\DUtablewidth}|}
+\hline
+
+1
+ & 
+2
+ \\
+\hline
+
+3
+ & 
+4
+ \\
+\hline
+\end{longtable*}
+
+\end{document}
+"""],
+]
+
 totest['table_empty_thead_entry'] = [
 # input
 ["""\

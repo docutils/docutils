@@ -153,6 +153,8 @@ div.topic p.attribution {
 
 /* th { vertical-align: bottom; } */
 
+table tr { text-align: left; }
+
 /* "booktabs" style (no vertical lines) */
 table.booktabs {
   border: 0;
@@ -165,7 +167,6 @@ table.booktabs * {
 }
 table.booktabs th {
   border-bottom: thin solid;
-  text-align: left;
 }
 
 /* numbered tables (counter defined in div.document) */
@@ -195,16 +196,20 @@ dl.footnote {
 /* ~~~~~~~~~~~~~            */
 
 /* Images and Figures */
-img.align-left,
+
+/* let content flow to the side of aligned images and figures */
 .figure.align-left,
+img.align-left,
 object.align-left {
+  display: block;
   clear: left;
   float: left;
   margin-right: 1em
 }
-img.align-right,
 .figure.align-right,
+img.align-right,
 object.align-right {
+  display: block;
   clear: right;
   float: right;
   margin-left: 1em

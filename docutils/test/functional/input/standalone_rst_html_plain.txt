@@ -174,10 +174,10 @@ False  True   True
 True   True   True
 =====  =====  ======
 
-This table also uses the "align-left" class argument, to left-align
-the headers:
+This table also uses the "align-right" class argument, to right-align
+the table:
 
-.. class:: booktabs align-left
+.. class:: booktabs align-right
 
 =====  =====  =======
   A      B    A or B
@@ -189,9 +189,10 @@ True   True   True
 =====  =====  =======
 
 
-Of course, also "booktabs" style tables can be numbered:
+"Booktabs" style table, numbered and centre-aligned:
 
 .. table:: I/O values
+   :align: center
    :class: numbered booktabs
 
    =====  =====  ======

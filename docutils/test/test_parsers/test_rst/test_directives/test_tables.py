@@ -276,6 +276,29 @@ totest['table'] = [
                         <paragraph>
                             automatic widths.
 """],
+["""\
+.. table::
+    :align: center
+
+    ======  =====
+    Simple  table
+    ======  =====
+""",
+"""\
+<document source="test data">
+    <table align="center">
+        <tgroup cols="2" colwidths="auto">
+            <colspec colwidth="6">
+            <colspec colwidth="5">
+            <tbody>
+                <row>
+                    <entry>
+                        <paragraph>
+                            Simple
+                    <entry>
+                        <paragraph>
+                            table
+"""],
 ]
 
 totest['csv-table'] = [
@@ -539,6 +562,37 @@ u"""\
                     <entry>
                         <paragraph>
                             Heiz\xf6lr\xfccksto\xdfabd\xe4mpfung
+"""],
+["""\
+.. csv-table:: center aligned
+   :align: center
+
+   11, 12
+   21, 22
+""",
+"""\
+<document source="test data">
+    <table align="center">
+        <title>
+            center aligned
+        <tgroup cols="2" colwidths="auto">
+            <colspec colwidth="50">
+            <colspec colwidth="50">
+            <tbody>
+                <row>
+                    <entry>
+                        <paragraph>
+                            11
+                    <entry>
+                        <paragraph>
+                            12
+                <row>
+                    <entry>
+                        <paragraph>
+                            21
+                    <entry>
+                        <paragraph>
+                            22
 """],
 ["""\
 .. csv-table:: empty
@@ -1169,6 +1223,39 @@ totest['list-table'] = [
                     <entry>
                         <paragraph>
                             On a stick!
+"""],
+["""\
+.. list-table:: center aligned
+   :align: center
+
+   * - 11
+     - 12
+   * - 21
+     - 22
+""",
+"""\
+<document source="test data">
+    <table align="center">
+        <title>
+            center aligned
+        <tgroup cols="2" colwidths="auto">
+            <colspec colwidth="50">
+            <colspec colwidth="50">
+            <tbody>
+                <row>
+                    <entry>
+                        <paragraph>
+                            11
+                    <entry>
+                        <paragraph>
+                            12
+                <row>
+                    <entry>
+                        <paragraph>
+                            21
+                    <entry>
+                        <paragraph>
+                            22
 """],
 ["""\
 .. list-table::

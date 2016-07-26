@@ -988,6 +988,120 @@ The legend may consist of several paragraphs.
 This paragraph might flow around the figure. The specific behavior depends
 upon the style sheet and the browser or rendering software used.
 
+Tables may be given titles and additional arguments with the \emph{table}
+directive:
+
+\setlength{\DUtablewidth}{\linewidth}
+\begin{longtable}[l]{|p{0.075\DUtablewidth}|p{0.075\DUtablewidth}|}
+\caption{left-aligned table}\\
+\hline
+\textbf{%
+A
+} & \textbf{%
+not A
+} \\
+\hline
+\endfirsthead
+\caption[]{left-aligned table (... continued)}\\
+\hline
+\textbf{%
+A
+} & \textbf{%
+not A
+} \\
+\hline
+\endhead
+\multicolumn{2}{c}{\hfill ... continued on next page} \\
+\endfoot
+\endlastfoot
+
+False
+ & 
+True
+ \\
+\hline
+
+True
+ & 
+False
+ \\
+\hline
+\end{longtable}
+
+\setlength{\DUtablewidth}{\linewidth}
+\begin{longtable}[c]{|p{0.075\DUtablewidth}|p{0.075\DUtablewidth}|}
+\caption{center-aligned table}\\
+\hline
+\textbf{%
+A
+} & \textbf{%
+not A
+} \\
+\hline
+\endfirsthead
+\caption[]{center-aligned table (... continued)}\\
+\hline
+\textbf{%
+A
+} & \textbf{%
+not A
+} \\
+\hline
+\endhead
+\multicolumn{2}{c}{\hfill ... continued on next page} \\
+\endfoot
+\endlastfoot
+
+False
+ & 
+True
+ \\
+\hline
+
+True
+ & 
+False
+ \\
+\hline
+\end{longtable}
+
+\setlength{\DUtablewidth}{\linewidth}
+\begin{longtable}[r]{|p{0.075\DUtablewidth}|p{0.075\DUtablewidth}|}
+\caption{right-aligned table}\\
+\hline
+\textbf{%
+A
+} & \textbf{%
+not A
+} \\
+\hline
+\endfirsthead
+\caption[]{right-aligned table (... continued)}\\
+\hline
+\textbf{%
+A
+} & \textbf{%
+not A
+} \\
+\hline
+\endhead
+\multicolumn{2}{c}{\hfill ... continued on next page} \\
+\endfoot
+\endlastfoot
+
+False
+ & 
+True
+ \\
+\hline
+
+True
+ & 
+False
+ \\
+\hline
+\end{longtable}
+
 
 \subsubsection{2.14.3   Admonitions%
   \label{admonitions}%

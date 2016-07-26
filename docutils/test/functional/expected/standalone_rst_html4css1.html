@@ -662,6 +662,68 @@ rendering software used.</p>
 </div>
 <p>This paragraph might flow around the figure. The specific behavior depends
 upon the style sheet and the browser or rendering software used.</p>
+<p>Tables may be given titles and additional arguments with the <em>table</em>
+directive:</p>
+<table border="1" class="docutils align-left">
+<caption>left-aligned table</caption>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">A</th>
+<th class="head">not A</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>False</td>
+<td>True</td>
+</tr>
+<tr><td>True</td>
+<td>False</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils align-center">
+<caption>center-aligned table</caption>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">A</th>
+<th class="head">not A</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>False</td>
+<td>True</td>
+</tr>
+<tr><td>True</td>
+<td>False</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils align-right">
+<caption>right-aligned table</caption>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">A</th>
+<th class="head">not A</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>False</td>
+<td>True</td>
+</tr>
+<tr><td>True</td>
+<td>False</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="section" id="admonitions">
 <h3><a class="toc-backref" href="#id79">2.14.3&nbsp;&nbsp;&nbsp;Admonitions</a></h3>
@@ -1055,6 +1117,24 @@ crunchy, now would it?</td>
 </tr>
 </tbody>
 </table>
+<table border="1" class="docutils align-center">
+<caption>center aligned list table</caption>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Albatross</td>
+<td>2.99</td>
+</tr>
+<tr><td>Crunchy Frog</td>
+<td>1.49</td>
+</tr>
+<tr><td>Gannet Ripple</td>
+<td>1.99</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="section" id="custom-roles">
 <h2><a class="toc-backref" href="#id73">2.23&nbsp;&nbsp;&nbsp;Custom Roles</a></h2>
@@ -1111,8 +1191,8 @@ height=&quot;27&quot;              width=&quot;100%&quot;
 <li>including within SVG using the SVG&nbsp;<tt class="docutils literal">&lt;image&gt;</tt> tag,</li>
 <li>embedd the SVG code within HTML (inlining).</li>
 </ul>
-<p>The <cite>html4css1</cite> writer uses <tt class="docutils literal">&lt;object&gt;</tt> tags, the <cite>html-base</cite> and <cite>xhtml11</cite>
-writers use <tt class="docutils literal">&lt;img&gt;</tt> tags.</p>
+<p>The <cite>html4css1</cite> writer uses <tt class="docutils literal">&lt;object&gt;</tt> tags, the <cite>html5</cite>
+writer uses <tt class="docutils literal">&lt;img&gt;</tt> tags.</p>
 <!-- cf. http://edutechwiki.unige.ch/en/Using_SVG_with_HTML5_tutorial -->
 </li>
 <li><p class="first">The viewing agent.</p>
