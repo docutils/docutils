@@ -477,7 +477,10 @@ class Date(Directive):
             except UnicodeEncodeError:
                 raise self.warning(u'Cannot encode date format string '
                     u'with locale encoding "%s".' % locale_encoding)
-        text = time.strftime(format_str)
+        text = time.strftime(
+            format_str,
+            time.gmtime(int(os.environ.get('SOURCE_DATE_EPOCH', time.time()))),
+        )
         if sys.version_info< (3, 0):
             # `text` is a byte string that may contain non-ASCII characters:
             try:
