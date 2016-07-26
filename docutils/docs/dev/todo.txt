@@ -1389,6 +1389,8 @@ MathML_
   * `Steve’s LATEX-to-MathML translator`_
     ('mini-language', javascript, Python)
 
+  * `MathJax for Node`_
+
 
   * Write a new converter? E.g. based on:
 
@@ -1413,6 +1415,7 @@ MathML_
   .. _updated latex-codec:
      http://mirror.ctan.org/biblio/bibtex/utils/mab2bib/latex.py
   .. _unimathsymbols: http://milde.users.sourceforge.net/LUCR/Math/
+  .. _MathJax for Node: https://github.com/mathjax/MathJax-node
 
 .. URL seems down:
    .. _itex: http://pear.math.pitt.edu/mathzilla/itex2mmlItex.html
@@ -1429,6 +1432,7 @@ HTML/CSS
 
   * TtH_ (C)
   * Hevea_ (Objective Caml)
+  * `MathJax for Node`_
 
   __ http://www.cs.tut.fi/~jkorpela/math/
   __ http://www.zipcon.net/~swhite/docs/math/math.html
@@ -1439,6 +1443,9 @@ HTML/CSS
 images
   (PNG or SVG) like e.g. Wikipedia. (e.g. with dvisvgm_ or the
   pure-python MathML->SVG converter SVGMath_)
+
+  * `MathJax for Node`_
+
 
   .. _dvisvgm: http://dvisvgm.sourceforge.net/
   .. _SVGMath: http://www.grigoriev.ru/svgmath/
@@ -2288,15 +2295,6 @@ __ ../user/latex.html#problems
 Bug fixes
 ---------
 
-* A multirow cell in a table expects empty cells in the spanned rows while
-  the doctree contains only the remaining cells ("Exchange Table Model", see
-  docs/ref/soextblx.dtd).
-
-  Needs bookkeeping of "open" multirow cells (how many how long) and
-  insertion of additional '&'s.
-
-  See `<../../test/functional/input/data/latex.txt>`__
-
 * Too deeply nested lists fail: generate a warning and provide
   a workaround.
 
@@ -2307,9 +2305,6 @@ Bug fixes
     should    be grouped    in pairs).
 
   Discuss the desired behaviour and implement a consistent one.
-
-* An enumerated list in the docinfo fails (\newcounter definition inside
-  tabularx).
 
 * File names of included graphics (see also `grffile` package).
 
