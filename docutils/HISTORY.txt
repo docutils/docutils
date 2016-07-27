@@ -32,6 +32,7 @@ Changes Since 0.12
 * docutils/parsers/rst/directives/misc.py
 
   - Apply [ 132 ] Add SOURCE_DATE_EPOCH support to date directive.
+    Activate with the "use_source_date_epoch" config setting.
 
 * docutils/parsers/rst/directives/tables.py
 
