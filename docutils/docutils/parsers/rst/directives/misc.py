@@ -231,7 +231,7 @@ class Raw(Directive):
                 raise self.severe(u'Problems with "%s" directive URL "%s":\n%s.'
                     % (self.name, self.options['url'], ErrorString(error)))
             raw_file = io.StringInput(source=raw_text, source_path=source,
-                                      encoding=encoding, 
+                                      encoding=encoding,
                                       error_handler=e_handler)
             try:
                 text = raw_file.read()
@@ -477,8 +477,12 @@ class Date(Directive):
             except UnicodeEncodeError:
                 raise self.warning(u'Cannot encode date format string '
                     u'with locale encoding "%s".' % locale_encoding)
-        source_date_epoch = os.environ.get('SOURCE_DATE_EPOCH')
-        if source_date_epoch:
+        if self.state.document.settings.use_source_date_epoch:
+            try:
+                source_date_epoch = os.environ['SOURCE_DATE_EPOCH']
+            except KeyError:
+                raise self.warning(u'setting "use_source_date_epoch" enabled '
+                    u'but SOURCE_DATE_EPOCH environment variable not set.')
             text = time.strftime(format_str,
                                  time.gmtime(int(source_date_epoch)))
         else:

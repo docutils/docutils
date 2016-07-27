@@ -588,6 +588,32 @@ Docutils currently supports only one parser, for reStructuredText.
 [restructuredtext parser]
 -------------------------
 
+character_level_inline_markup
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Experimental setting to relax the `inline markup recognition rules`_
+requiring whitespace or punctuation around inline markup.
+
+Allows character level inline markup without escaped whithespace and is
+especially suited for langauges that do not use whitespace to separate words
+(e.g. Japanese, Chinese).
+
+.. WARNING:: Potentially dangerous; use with caution.
+
+   When changing this setting to "True", inline markup charactes in
+   URLs, names and formulas must be escaped to prevent recognition and
+   possible errors. Examples::
+
+     http://rST_for_all.html (hyperlinks to rST_ and for_)
+     x_2, inline_markup      (hyperlinks to x_ and inline_)
+     2*x                     (starts emphasised text)
+     a|b                     (starts a substitution reference)
+
+Default: disabled (False).
+Options: ``--character-level-inline-markup, --word-level-inline-markup``.
+
+New in Docutils 0.13.
+
 file_insertion_enabled
 ~~~~~~~~~~~~~~~~~~~~~~
 
@@ -648,33 +674,6 @@ rfc_base_url
 Base URL for RFC references.
 
 Default: "http://www.faqs.org/rfcs/".  Option: ``--rfc-base-url``.
-
-character_level_inline_markup
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Experimental setting to relax the `inline markup recognition rules`_
-requiring whitespace or punctuation around inline markup.
-
-Allows character level inline markup without escaped whithespace and is
-especially suited for langauges that do not use whitespace to separate words
-(e.g. Japanese, Chinese).
-
-.. WARNING:: Potentially dangerous; use with caution.
-
-   When changing this setting to "True", inline markup charactes in
-   URLs, names and formulas must be escaped to prevent recognition and
-   possible errors. Examples::
-
-     http://rST_for_all.html (hyperlinks to rST_ and for_)
-     x_2, inline_markup      (hyperlinks to x_ and inline_)
-     2*x                     (starts emphasised text)
-     a|b                     (starts a substitution reference)
-
-Default: disabled (False).
-Options: ``--character-level-inline-markup, --word-level-inline-markup``.
-
-New in Docutils 0.13.
-
 
 smart_quotes
 ~~~~~~~~~~~~
@@ -744,6 +743,27 @@ footnote_references__ default though.
 Options: ``--trim-footnote-reference-space, --leave-footnote-reference-space``.
 
 __ `footnote_references [latex2e writer]`_
+
+use_source_date_epoch
+~~~~~~~~~~~~~~~~~~~~~
+
+Use timestamp from the `SOURCE_DATE_EPOCH`_ environment variable for the
+`date directive`_.
+
+With this setting and environment variable, Docutils-generated documentation
+can be part of `reproducible software builds`_
+
+Default: disabled (False).
+Options: ``--use-source-date-epoch``.
+
+New in Docutils 0.13.
+
+.. _SOURCE_DATE_EPOCH:
+   https://reproducible-builds.org/specs/source-date-epoch/
+.. _reproducible software builds:
+   https://reproducible-builds.org/
+.. _date directive: ../ref/rst/directives.html#date
+
 
 [readers]
 =========

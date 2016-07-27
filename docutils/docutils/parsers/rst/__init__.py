@@ -155,6 +155,10 @@ class Parser(docutils.parsers.Parser):
           ['--character-level-inline-markup'],
           {'action': 'store_true', 'default': False,
            'dest': 'character_level_inline_markup'}),
+         ('Use timestamp from SOURCE_DATE_EPOCH environment variable '
+          'for the "date" directive.',
+          ['--use-source-date-epoch'],
+          {'action': 'store_true', 'validator': frontend.validate_boolean}),
         ))
 
     config_section = 'restructuredtext parser'
