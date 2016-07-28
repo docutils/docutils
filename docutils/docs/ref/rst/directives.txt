@@ -756,8 +756,8 @@ Table
 
 (New in Docutils 0.3.1)
 
-The "table" directive is used to create a titled table, to associate a
-title with a table::
+The "table" directive is used to associate a
+title with a table or specify options::
 
     .. table:: Truth table for "not"
 
@@ -773,6 +773,16 @@ The following options are recognized:
 ``align`` : "left", "center", or "right"
     The horizontal alignment of the table.
     (New in Docutils 0.13)
+
+``widths`` : "auto", "grid" or a list of integers
+
+    A comma- or space-separated list of relative column widths.
+    The default is the width of the corresponding input columns
+    (in characters).
+
+    The special values "auto" or "grid" may be used by writers to decide
+    whether to delegate the determination of column widths to the backend
+    (LaTeX, the HTML browser, ...).
 
 and the common options `:class:`_ and `:name:`_.
 
@@ -835,9 +845,13 @@ Working limitations:
 
 The following options are recognized:
 
-``widths`` : integer [, integer...]
+``widths`` : integer [, integer...] or "auto"
     A comma- or space-separated list of relative column widths.  The
     default is equal-width columns (100%/#columns).
+
+    The special value "auto" may be used by writers to decide
+    whether to delegate the determination of column widths to the backend
+    (LaTeX, the HTML browser, ...).
 
 ``header-rows`` : integer
     The number of rows of CSV data to use in the table header.
@@ -936,9 +950,13 @@ Example::
 
 The following options are recognized:
 
-``widths`` : integer [integer...]
+``widths`` : integer [integer...] or "auto"
     A comma- or space-separated list of relative column widths.  The
     default is equal-width columns (100%/#columns).
+
+    The special value "auto" may be used by writers to decide
+    whether to delegate the determination of column widths to the backend
+    (LaTeX, the HTML browser, ...).
 
 ``header-rows`` : integer
     The number of rows of list data to use in the table header.
