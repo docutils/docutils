@@ -1288,7 +1288,7 @@
                         Plaintext markup syntax and parser system.
                     <legend>
                         <table>
-                            <tgroup cols="2" colwidths="auto">
+                            <tgroup cols="2">
                                 <colspec colwidth="12">
                                 <colspec colwidth="47">
                                 <tbody>
@@ -1370,7 +1370,7 @@
                 <table align="left">
                     <title>
                         left-aligned table
-                    <tgroup cols="2" colwidths="auto">
+                    <tgroup cols="2">
                         <colspec colwidth="5">
                         <colspec colwidth="5">
                         <thead>
@@ -1399,7 +1399,7 @@
                 <table align="center">
                     <title>
                         center-aligned table
-                    <tgroup cols="2" colwidths="auto">
+                    <tgroup cols="2">
                         <colspec colwidth="5">
                         <colspec colwidth="5">
                         <thead>
@@ -1428,7 +1428,7 @@
                 <table align="right">
                     <title>
                         right-aligned table
-                    <tgroup cols="2" colwidths="auto">
+                    <tgroup cols="2">
                         <colspec colwidth="5">
                         <colspec colwidth="5">
                         <thead>
@@ -1651,7 +1651,7 @@
                     <paragraph>
                         Compound 7, with a table inside:
                     <table>
-                        <tgroup cols="3" colwidths="auto">
+                        <tgroup cols="3">
                             <colspec colwidth="20">
                             <colspec colwidth="20">
                             <colspec colwidth="20">
@@ -1872,7 +1872,7 @@
             <paragraph>
                 This table has a cell spanning two columns:
             <table>
-                <tgroup cols="3" colwidths="auto">
+                <tgroup cols="3">
                     <colspec colwidth="5">
                     <colspec colwidth="5">
                     <colspec colwidth="6">
@@ -1943,7 +1943,7 @@
             <paragraph>
                 Here's a table with cells spanning several rows:
             <table>
-                <tgroup cols="3" colwidths="auto">
+                <tgroup cols="3">
                     <colspec colwidth="24">
                     <colspec colwidth="12">
                     <colspec colwidth="18">
@@ -1995,7 +1995,7 @@
             <paragraph>
                 Here's a complex table, which should test all features.
             <table>
-                <tgroup cols="4" colwidths="auto">
+                <tgroup cols="4">
                     <colspec colwidth="24">
                     <colspec colwidth="12">
                     <colspec colwidth="10">
@@ -2079,10 +2079,10 @@
                 List Tables
             <paragraph>
                 Here's a list table exercising all features:
-            <table classes="test">
+            <table classes="colwidths-given test">
                 <title>
                     list table with integral header
-                <tgroup cols="3" colwidths="given">
+                <tgroup cols="3">
                     <colspec colwidth="10" stub="1">
                     <colspec colwidth="20">
                     <colspec colwidth="30">
@@ -2132,7 +2132,7 @@
             <table align="center">
                 <title>
                     center aligned list table
-                <tgroup cols="2" colwidths="auto">
+                <tgroup cols="2">
                     <colspec colwidth="50">
                     <colspec colwidth="50">
                     <tbody>

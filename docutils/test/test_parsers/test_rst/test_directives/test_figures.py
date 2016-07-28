@@ -173,7 +173,7 @@ This figure lacks a caption. It may still have a
             A picture with a caption and a legend.
         <legend>
             <table>
-                <tgroup cols="2" colwidths="auto">
+                <tgroup cols="2">
                     <colspec colwidth="23">
                     <colspec colwidth="23">
                     <thead>

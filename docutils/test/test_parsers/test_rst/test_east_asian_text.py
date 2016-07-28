@@ -61,7 +61,7 @@ u"""\
 u"""\
 <document source="test data">
     <table>
-        <tgroup cols="1" colwidths="auto">
+        <tgroup cols="1">
             <colspec colwidth="23">
             <tbody>
                 <row>
@@ -95,7 +95,7 @@ u"""\
     <paragraph>
         Complex spanning pattern (no edge knows all rows/cols):
     <table>
-        <tgroup cols="3" colwidths="auto">
+        <tgroup cols="3">
             <colspec colwidth="8">
             <colspec colwidth="14">
             <colspec colwidth="6">
@@ -134,7 +134,7 @@ u"""\
 u"""\
 <document source="test data">
     <table>
-        <tgroup cols="2" colwidths="auto">
+        <tgroup cols="2">
             <colspec colwidth="9">
             <colspec colwidth="9">
             <tbody>
@@ -182,7 +182,7 @@ b("""\
     <paragraph>
         Some ambiguous-width characters:
     <table>
-        <tgroup cols="2" colwidths="auto">
+        <tgroup cols="2">
             <colspec colwidth="1">
             <colspec colwidth="35">
             <tbody>
