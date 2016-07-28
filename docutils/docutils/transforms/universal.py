@@ -49,6 +49,10 @@ class Decorations(Transform):
     def generate_footer(self):
         # @@@ Text is hard-coded for now.
         # Should be made dynamic (language-dependent).
+        # @@@ Use timestamp from the `SOURCE_DATE_EPOCH`_ environment variable
+        # for the datestamp?
+        # See https://sourceforge.net/p/docutils/patches/132/
+        # and https://reproducible-builds.org/specs/source-date-epoch/
         settings = self.document.settings
         if settings.generator or settings.datestamp or settings.source_link \
                or settings.source_url:
