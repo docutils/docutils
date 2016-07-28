@@ -29,11 +29,6 @@ Changes Since 0.12
 
   - Fix [ 233 ] Change the base URL for the :rfc: role.
 
-* docutils/parsers/rst/directives/misc.py
-
-  - Apply [ 132 ] Add SOURCE_DATE_EPOCH support to date directive.
-    Activate with the "use_source_date_epoch" config setting.
-
 * docutils/parsers/rst/directives/tables.py
 
   - Apply [ 120 ] tables accept option widths: list of relative widths, 'auto'
