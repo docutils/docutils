@@ -39,6 +39,34 @@ On new ubuntu 12.10
 Releasing
 ---------
 
+Note on numbering (Feature Request #50)
+
+  PEP 440 specifies how release version are understood by pip and other tools.
+
+  The last released package of docutils was in 2014.
+
+  If you install the version from Source it will not be overriden by version
+  0.13 when it is eventaully released.
+
+  As folks have installed 0.13 from indeterminate source versions the current
+  version should be incremented as to allow pip to overrite a 0.13 snapshot
+  when the next official release.
+
+  Please increment and switch the version in setup.py to be a pre-release. e.g.
+  0.13.1a
+
+  When a version is tagged it should be changed to a non pre release and then
+  in the next commit incremented to the next expected version but with a pre
+  release added ::
+
+    0.13.1a -> Head
+    0.13.1 -> when tagged for release
+    0.13.2a -> new head after release
+
+  Additionally snapshots can be marked with the .devXXX nominclature.
+
+These can then all be pushed to pypi.python.org and by default pip will install the latest release unless explicitly requested via the --pre flag or a version specifier docutils>=0.13.1a
+
 REWORK FOR SOURCEFORGE REPO
 
 Steps in boldface text are *not* covered by the release script at
