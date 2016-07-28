@@ -337,7 +337,7 @@ In test data
         
         .. include:: more/include6.txt
     <table>
-        <tgroup cols="2" colwidths="auto">
+        <tgroup cols="2">
             <colspec colwidth="50">
             <colspec colwidth="50">
             <tbody>
@@ -383,7 +383,7 @@ Section
             
             .. include:: more/include6.txt
         <table>
-            <tgroup cols="2" colwidths="auto">
+            <tgroup cols="2">
                 <colspec colwidth="50">
                 <colspec colwidth="50">
                 <tbody>
@@ -569,7 +569,7 @@ Testing errors in included file:
                 section underline too short
                 -----
         <table>
-            <tgroup cols="2" colwidths="auto">
+            <tgroup cols="2">
                 <colspec colwidth="14">
                 <colspec colwidth="6">
                 <thead>
