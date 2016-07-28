@@ -94,7 +94,7 @@ class Table(Directive):
 
     @property
     def widths(self):
-        return self.options.get('widths', 'auto')
+        return self.options.get('widths', '')
 
     def get_column_widths(self, max_cols):
         if type(self.widths) == list:
@@ -114,8 +114,10 @@ class Table(Directive):
             raise SystemMessagePropagation(error)
         if self.widths == 'auto':
             widths = 'auto'
-        else:
+        elif self.widths: # "grid" or list of integers
             widths = 'given'
+        else:
+            widths = self.widths
         return widths, col_widths
 
     def extend_short_rows_with_empty_cells(self, columns, parts):
@@ -153,10 +155,13 @@ class RSTTable(Table):
                         if child.tagname == 'colspec']
             for colspec, col_width in zip(colspecs, self.widths):
                 colspec['colwidth'] = col_width
+        # @@@ the colwidths argument for <tgroup> is not part of the
+        # XML Exchange Table spec (https://www.oasis-open.org/specs/tm9901.htm)
+        # and hence violates the docutils.dtd.
         if self.widths == 'auto':
-            tgroup['colwidths'] = 'auto'
-        else:
-            tgroup['colwidths'] = 'given'
+            table_node['classes'] += ['colwidths-auto']
+        elif self.widths: # "grid" or list of integers
+            table_node['classes'] += ['colwidths-given']
         self.add_name(table_node)
         if title:
             table_node.insert(0, title)
@@ -468,7 +473,9 @@ class ListTable(Table):
     def build_table_from_list(self, table_data, widths, col_widths, header_rows,
                               stub_columns):
         table = nodes.table()
-        tgroup = nodes.tgroup(cols=len(col_widths), colwidths=widths)
+        if widths:
+            table['classes'] += ['colwidths-%s' % widths]
+        tgroup = nodes.tgroup(cols=len(col_widths))
         table += tgroup
         for col_width in col_widths:
             colspec = nodes.colspec()

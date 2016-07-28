@@ -634,11 +634,9 @@ class HTMLTranslator(nodes.NodeVisitor):
         pass
 
     def write_colspecs(self):
-        width = 0
+        total_width = sum(node['colwidth'] for node in self.colspecs)
         for node in self.colspecs:
-            width += node['colwidth']
-        for node in self.colspecs:
-            colwidth = int(node['colwidth'] * 100.0 / width + 0.5)
+            colwidth = int(node['colwidth'] * 100.0 / total_width + 0.5)
             self.body.append(self.emptytag(node, 'col',
                                            style='width: %i%%' % colwidth))
         self.colspecs = []

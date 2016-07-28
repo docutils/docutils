@@ -49,6 +49,7 @@ physical system changes in time.
 Math-Accents:
   .. list-table::
      :class: borderless
+     :widths: 26 26 26
 
      * - :math:`\acute{a}`      ``\acute{a}``
        - :math:`\dot{t}`        ``\dot{t}``
