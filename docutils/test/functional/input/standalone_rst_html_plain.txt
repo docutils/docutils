@@ -167,18 +167,6 @@ from the booktabs_ LaTeX package.
 
 .. class:: booktabs
 
-=====  =====  ======
-False  False  False
-True   False  True
-False  True   True
-True   True   True
-=====  =====  ======
-
-This table also uses the "align-right" class argument, to right-align
-the table:
-
-.. class:: booktabs align-right
-
 =====  =====  =======
   A      B    A or B
 =====  =====  =======
@@ -187,7 +175,6 @@ True   False  True
 False  True   True
 True   True   True
 =====  =====  =======
-
 
 "Booktabs" style table, numbered and centre-aligned:
 

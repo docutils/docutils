@@ -71,7 +71,7 @@ totest['table'] = [
     <table classes="custom" ids="tab-truth-not" names="tab:truth.not">
         <title>
             Truth table for "not"
-        <tgroup cols="2" colwidths="auto">
+        <tgroup cols="2">
             <colspec colwidth="5">
             <colspec colwidth="5">
             <thead>
@@ -109,7 +109,7 @@ totest['table'] = [
 """\
 <document source="test data">
     <table>
-        <tgroup cols="2" colwidths="auto">
+        <tgroup cols="2">
             <colspec colwidth="10">
             <colspec colwidth="10">
             <tbody>
@@ -143,7 +143,7 @@ totest['table'] = [
             <problematic ids="id2" refid="id1">
                 *
             error
-        <tgroup cols="2" colwidths="auto">
+        <tgroup cols="2">
             <colspec colwidth="6">
             <colspec colwidth="5">
             <tbody>
@@ -194,8 +194,8 @@ totest['table'] = [
 """,
 """\
 <document source="test data">
-    <table>
-        <tgroup cols="2" colwidths="given">
+    <table classes="colwidths-given">
+        <tgroup cols="2">
             <colspec colwidth="15">
             <colspec colwidth="25">
             <tbody>
@@ -217,8 +217,8 @@ totest['table'] = [
 """,
 """\
 <document source="test data">
-    <table>
-        <tgroup cols="2" colwidths="given">
+    <table classes="colwidths-given">
+        <tgroup cols="2">
             <colspec colwidth="10">
             <colspec colwidth="20">
             <tbody>
@@ -240,8 +240,8 @@ totest['table'] = [
 """,
 """\
 <document source="test data">
-    <table>
-        <tgroup cols="2" colwidths="auto">
+    <table classes="colwidths-auto">
+        <tgroup cols="2">
             <colspec colwidth="14">
             <colspec colwidth="19">
             <tbody>
@@ -263,8 +263,8 @@ totest['table'] = [
 """,
 """\
 <document source="test data">
-    <table>
-        <tgroup cols="2" colwidths="given">
+    <table classes="colwidths-given">
+        <tgroup cols="2">
             <colspec colwidth="14">
             <colspec colwidth="19">
             <tbody>
@@ -287,7 +287,7 @@ totest['table'] = [
 """\
 <document source="test data">
     <table align="center">
-        <tgroup cols="2" colwidths="auto">
+        <tgroup cols="2">
             <colspec colwidth="6">
             <colspec colwidth="5">
             <tbody>
@@ -316,10 +316,10 @@ totest['csv-table'] = [
 """,
 """\
 <document source="test data">
-    <table>
+    <table classes="colwidths-given">
         <title>
             inline with integral header
-        <tgroup cols="3" colwidths="given">
+        <tgroup cols="3">
             <colspec colwidth="10" stub="1">
             <colspec colwidth="20">
             <colspec colwidth="30">
@@ -376,10 +376,10 @@ totest['csv-table'] = [
 """,
 """\
 <document source="test data">
-    <table>
+    <table classes="colwidths-given">
         <title>
             inline with separate header
-        <tgroup cols="3" colwidths="given">
+        <tgroup cols="3">
             <colspec colwidth="10">
             <colspec colwidth="20">
             <colspec colwidth="30">
@@ -423,7 +423,7 @@ totest['csv-table'] = [
     <table>
         <title>
             complex internal structure
-        <tgroup cols="3" colwidths="auto">
+        <tgroup cols="3">
             <colspec colwidth="33">
             <colspec colwidth="33">
             <colspec colwidth="33">
@@ -477,7 +477,7 @@ totest['csv-table'] = [
     <table>
         <title>
             short rows
-        <tgroup cols="3" colwidths="auto">
+        <tgroup cols="3">
             <colspec colwidth="33">
             <colspec colwidth="33">
             <colspec colwidth="33">
@@ -514,7 +514,7 @@ totest['csv-table'] = [
     <table>
         <title>
             short rows
-        <tgroup cols="3" colwidths="auto">
+        <tgroup cols="3">
             <colspec colwidth="33">
             <colspec colwidth="33">
             <colspec colwidth="33">
@@ -555,7 +555,7 @@ u"""\
     <table>
         <title>
             non-ASCII characters
-        <tgroup cols="1" colwidths="auto">
+        <tgroup cols="1">
             <colspec colwidth="100">
             <tbody>
                 <row>
@@ -575,7 +575,7 @@ u"""\
     <table align="center">
         <title>
             center aligned
-        <tgroup cols="2" colwidths="auto">
+        <tgroup cols="2">
             <colspec colwidth="50">
             <colspec colwidth="50">
             <tbody>
@@ -684,7 +684,7 @@ u"""\
             <problematic ids="id2" refid="id1">
                 *
             title
-        <tgroup cols="3" colwidths="auto">
+        <tgroup cols="3">
             <colspec colwidth="33">
             <colspec colwidth="33">
             <colspec colwidth="33">
@@ -809,7 +809,7 @@ u"""\
     <table>
         <title>
             good delimiter
-        <tgroup cols="3" colwidths="auto">
+        <tgroup cols="3">
             <colspec colwidth="33">
             <colspec colwidth="33">
             <colspec colwidth="33">
@@ -827,7 +827,7 @@ u"""\
     <table>
         <title>
             good delimiter
-        <tgroup cols="3" colwidths="auto">
+        <tgroup cols="3">
             <colspec colwidth="33">
             <colspec colwidth="33">
             <colspec colwidth="33">
@@ -845,7 +845,7 @@ u"""\
     <table>
         <title>
             good delimiter
-        <tgroup cols="3" colwidths="auto">
+        <tgroup cols="3">
             <colspec colwidth="33">
             <colspec colwidth="33">
             <colspec colwidth="33">
@@ -863,7 +863,7 @@ u"""\
     <table>
         <title>
             good delimiter
-        <tgroup cols="3" colwidths="auto">
+        <tgroup cols="3">
             <colspec colwidth="33">
             <colspec colwidth="33">
             <colspec colwidth="33">
@@ -970,7 +970,7 @@ u"""\
     <table>
         <title>
             good encoding
-        <tgroup cols="3" colwidths="auto">
+        <tgroup cols="3">
             <colspec colwidth="33">
             <colspec colwidth="33">
             <colspec colwidth="33">
@@ -1056,10 +1056,10 @@ totest['list-table'] = [
 """,
 """\
 <document source="test data">
-    <table>
+    <table classes="colwidths-given">
         <title>
             list table with integral header
-        <tgroup cols="3" colwidths="given">
+        <tgroup cols="3">
             <colspec colwidth="10" stub="1">
             <colspec colwidth="20">
             <colspec colwidth="30">
@@ -1122,10 +1122,10 @@ totest['list-table'] = [
 """,
 """\
 <document source="test data">
-    <table>
+    <table classes="colwidths-auto">
         <title>
             list table with integral header
-        <tgroup cols="3" colwidths="auto">
+        <tgroup cols="3">
             <colspec colwidth="33" stub="1">
             <colspec colwidth="33">
             <colspec colwidth="33">
@@ -1176,7 +1176,7 @@ totest['list-table'] = [
     <table>
         <title>
             list table with integral header
-        <tgroup cols="3" colwidths="auto">
+        <tgroup cols="3">
             <colspec colwidth="33" stub="1">
             <colspec colwidth="33">
             <colspec colwidth="33">
@@ -1238,7 +1238,7 @@ totest['list-table'] = [
     <table align="center">
         <title>
             center aligned
-        <tgroup cols="2" colwidths="auto">
+        <tgroup cols="2">
             <colspec colwidth="50">
             <colspec colwidth="50">
             <tbody>
