@@ -96,6 +96,9 @@ Changes Since 0.12
   - Fix [ 286 ] Empty column title cause invalid latex file.
 
   - Fix [ 224 ] Fix rowspan support for tables.
+  
+  - Let LaTeX determine the column widths in tables with "colwidths-auto".
+    Not suited for with multi-paragraph cells!
 
 * docutils/writers/odf_odt/__init__.py
 

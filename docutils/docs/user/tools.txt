@@ -149,8 +149,7 @@ rst2html5.py
 :Writer: html5 (html_plain_)
 
 The ``rst2html5.py`` front end reads standalone reStructuredText source
-files and produces simple `HTML 5`_ output (compatible to `XHTML 1.0
-Transitional`_).
+files and produces `HTML 5`_ output.
 Correct rendering of elements not directly supported by HTML depends on a
 CSS style sheet. The provided style sheets ``minimal.css`` and ``plain.css``
 define required and optional styling rules respectively.

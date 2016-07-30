@@ -631,15 +631,21 @@ class HTMLTranslator(nodes.NodeVisitor):
         node.parent.stubs.append(node.attributes.get('stub'))
 
     def depart_colspec(self, node):
-        pass
-
-    def write_colspecs(self):
+        # write out <colgroup> when all colspecs are processed
+        if isinstance(node.next_node(descend=False, siblings=True),
+                      nodes.colspec):
+            return
+        if 'colwidths-auto' in node.parent.parent['classes'] or (
+            'colwidths-auto' in self.settings.table_style and
+            ('colwidths-given' not in node.parent.parent['classes'])):
+            return
         total_width = sum(node['colwidth'] for node in self.colspecs)
+        self.body.append(self.starttag(node, 'colgroup'))
         for node in self.colspecs:
             colwidth = int(node['colwidth'] * 100.0 / total_width + 0.5)
             self.body.append(self.emptytag(node, 'col',
                                            style='width: %i%%' % colwidth))
-        self.colspecs = []
+        self.body.append('</colgroup>\n')
 
     def visit_comment(self, node,
                       sub=re.compile('-(?=-)').sub):
@@ -1531,11 +1537,8 @@ class HTMLTranslator(nodes.NodeVisitor):
     def depart_target(self, node):
         self.body.append(self.context.pop())
 
-    # no hard-coded vertical alignment in table body::
-
+    # no hard-coded vertical alignment in table body
     def visit_tbody(self, node):
-        self.write_colspecs()
-        self.body.append(self.context.pop()) # '</colgroup>\n' or ''
         self.body.append(self.starttag(node, 'tbody'))
 
     def depart_tbody(self, node):
@@ -1552,20 +1555,13 @@ class HTMLTranslator(nodes.NodeVisitor):
         pass
 
     def visit_tgroup(self, node):
-        # Mozilla needs <colgroup>:
-        self.body.append(self.starttag(node, 'colgroup'))
-        # Appended by thead or tbody:
-        self.context.append('</colgroup>\n')
+        self.colspecs = []
         node.stubs = []
 
     def depart_tgroup(self, node):
         pass
 
     def visit_thead(self, node):
-        self.write_colspecs()
-        self.body.append(self.context.pop()) # '</colgroup>\n'
-        # There may or may not be a <thead>; this is for <tbody> to use:
-        self.context.append('')
         self.body.append(self.starttag(node, 'thead'))
 
     def depart_thead(self, node):

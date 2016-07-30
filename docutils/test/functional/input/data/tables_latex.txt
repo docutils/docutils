@@ -22,8 +22,10 @@ A table with multi-paragraph multicolumn cells:
 Tables with multi-paragraph multirow cells currently fail due to a LaTeX
 limitation (see https://sourceforge.net/p/docutils/bugs/225/).
 
-A table with multirow header:
+A table with multirow header and column-widths set by LaTeX:
 
+.. table::
+        :widths: auto
 
         +------------+-------------------+
         | XXX        | Variable Summary  |
