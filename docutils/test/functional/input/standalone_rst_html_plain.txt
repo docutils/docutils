@@ -13,9 +13,9 @@ Changes to the html4css1 writer
 
 * Use only meta keywords recognized by HTML 5.
 
-* Style table column widths with CSS rule, not "width" argument.
+* Set table column widths with <style="width: ...">, not "width" argument.
 
-* Vertical alignment of table heads with CSS.
+* Horizontal alignment of table heads with CSS.
 
 * Field lists as styled definition lists.
 
@@ -140,58 +140,63 @@ The following styles can be applied to individual tables via a class
 argument or as document wide setting with the table-style_ configuration
 setting (or command line argument).
 
-Numbered tables can be achieved with the "numbered" class option
+* Numbered tables can be achieved with the "numbered" class option:
 
-.. table:: truth values
-   :class: numbered
+  .. table:: truth values
+     :class: numbered
 
-   ======= ======= ==========
-   A       B       A or B
-   ======= ======= ==========
-   False   False   False
-   True    False   True
-   False   True    True
-   True    True    True
-   ======= ======= ==========
+     ======= ======= ==========
+     A       B       A or B
+     ======= ======= ==========
+     False   False   False
+     True    False   True
+     False   True    True
+     True    True    True
+     ======= ======= ==========
 
-Currently, referencing to the table by number is not supported. This is a
-common request and already on the `TODO list`.
+  Currently, referencing to the table by number is not supported. This is a
+  common request and already on the `TODO list`.
 
-A table with "booktabs" class argument, is rendered similar to the style
-from the booktabs_ LaTeX package.
+* With the "widths" argument "auto" (or "class" value "colwidths-auto"),
+  column widths are determined by the browser.
 
-.. _table-style:
-   http://docutils.sourceforge.net/docs/user/config.html#table-style
-.. _booktabs:
-   http://tug.ctan.org/tex-archive/macros/latex/contrib/booktabs/booktabs.pdf
+  .. table::
+     :widths: auto
 
-.. class:: booktabs
+     ======= ======= ==========
+     A       B       A or B
+     ======= ======= ==========
+     False   False   False
+     True    False   True
+     False   True    True
+     True    True    True
+     ======= ======= ==========
 
-=====  =====  =======
-  A      B    A or B
-=====  =====  =======
-False  False  False
-True   False  True
-False  True   True
-True   True   True
-=====  =====  =======
+* A table with "booktabs" class value, is rendered similar to the style
+  from the booktabs_ LaTeX package.
 
-"Booktabs" style table, numbered and centre-aligned:
+  .. _table-style:
+     http://docutils.sourceforge.net/docs/user/config.html#table-style
+  .. _booktabs:
+     http://tug.ctan.org/tex-archive/macros/latex/contrib/booktabs/booktabs.pdf
 
-.. table:: I/O values
-   :align: center
-   :class: numbered booktabs
+"Booktabs" style table, numbered, centre-aligned, with auto-sized columns:
 
-   =====  =====  ======
-      Inputs     Output
-   ------------  ------
-     A      B    A or B
-   =====  =====  ======
-   False  False  False
-   True   False  True
-   False  True   True
-   True   True   True
-   =====  =====  ======
+  .. table:: I/O values
+     :class: booktabs numbered
+     :align: center
+     :widths: auto
+
+     ======= ======= ==========
+     Input           Output
+     --------------- ----------
+     A       B       A or B
+     ======= ======= ==========
+     False   False   False
+     True    False   True
+     False   True    True
+     True    True    True
+     ======= ======= ==========
 
 
 .. include:: data/errors.txt

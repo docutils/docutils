@@ -933,7 +933,7 @@ class Table(object):
         return None
 
     def get_vertical_bar(self):
-        if self._table_style == 'standard':
+        if 'standard' in self._table_style:
             return '|'
         return ''
 
@@ -960,7 +960,7 @@ class Table(object):
         # "stubs" list is an attribute of the tgroup element:
         self.stubs.append(node.attributes.get('stub'))
 
-    def get_colspecs(self):
+    def get_colspecs(self, node):
         """Return column specification for longtable.
 
         Assumes reST line length being 80 characters.
@@ -972,38 +972,47 @@ class Table(object):
 
         usually gets to narrow, therefore we add 1 (fiddlefactor).
         """
+        bar = self.get_vertical_bar()
+        self._rowspan= [0] * len(self._col_specs)
+        self._col_width = []
+        if 'colwidths-auto' in node.parent.parent['classes'] or (
+            'colwidths-auto' in self._table_style and
+            ('colwidths-given' not in node.parent.parent['classes'])):
+            latex_table_spec = (bar+'l')*len(self._col_specs)
+            return latex_table_spec+bar
         width = 80
-
         total_width = 0.0
         # first see if we get too wide.
         for node in self._col_specs:
             colwidth = float(node['colwidth']+1) / width
             total_width += colwidth
-        self._col_width = []
-        self._rowspan = []
         # donot make it full linewidth
         factor = 0.93
         if total_width > 1.0:
             factor /= total_width
-        bar = self.get_vertical_bar()
         latex_table_spec = ''
         for node in self._col_specs:
             colwidth = factor * float(node['colwidth']+1) / width
             self._col_width.append(colwidth+0.005)
-            self._rowspan.append(0)
             latex_table_spec += '%sp{%.3f\\DUtablewidth}' % (bar, colwidth+0.005)
         return latex_table_spec+bar
 
     def get_column_width(self):
         """Return columnwidth for current cell (not multicell)."""
-        return '%.2f\\DUtablewidth' % self._col_width[self._cell_in_row]
+        try:
+            return '%.2f\\DUtablewidth' % self._col_width[self._cell_in_row]
+        except IndexError:
+            return '*'
 
     def get_multicolumn_width(self, start, len_):
         """Return sum of columnwidths for multicell."""
-        mc_width = sum([width
-                       for width in ([self._col_width[start + co]
-                                     for co in range (len_)])])
-        return '%.2f\\DUtablewidth' % mc_width
+        try:
+            mc_width = sum([width
+                            for width in ([self._col_width[start + co]
+                                           for co in range (len_)])])
+            return 'p{%.2f\\DUtablewidth}' % mc_width
+        except IndexError:
+            return 'l'
 
     def get_caption(self):
         if not self.caption:
@@ -1958,7 +1967,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # multirow, multicolumn
         if 'morerows' in node and 'morecols' in node:
             raise NotImplementedError('Cells that '
-            'span multiple rows *and* columns are not supported, sorry.')
+            'span multiple rows *and* columns currently not supported, sorry.')
+            # TODO: should be possible with LaTeX, see e.g.
+            # http://texblog.org/2012/12/21/multi-column-and-multi-row-cells-in-latex-tables/
         # multirow in LaTeX simply will enlarge the cell over several rows
         # (the following n if n is positive, the former if negative).
         if 'morerows' in node:
@@ -1979,7 +1990,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             else:
                 bar1 = ''
             mcols = node['morecols'] + 1
-            self.out.append('\\multicolumn{%d}{%sp{%s}%s}{' %
+            self.out.append('\\multicolumn{%d}{%s%s%s}{' %
                     (mcols, bar1,
                      self.active_table.get_multicolumn_width(
                         self.active_table.get_entry_number(),
@@ -2838,7 +2849,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # BUG write preamble if not yet done (colspecs not [])
         # for tables without heads.
         if not self.active_table.get('preamble written'):
-            self.visit_thead(None)
+            self.visit_thead(node)
             self.depart_thead(None)
 
     def depart_tbody(self, node):
@@ -2870,7 +2881,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_thead(self, node):
         self._thead_depth += 1
         if 1 == self.thead_depth():
-            self.out.append('{%s}\n' % self.active_table.get_colspecs())
+            self.out.append('{%s}\n' % self.active_table.get_colspecs(node))
             self.active_table.set('preamble written',1)
         self.out.append(self.active_table.get_caption())
         self.out.extend(self.active_table.visit_thead())

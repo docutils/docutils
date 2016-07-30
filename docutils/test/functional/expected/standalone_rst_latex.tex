@@ -1875,14 +1875,12 @@ Short multicolumn 4
 Tables with multi-paragraph multirow cells currently fail due to a LaTeX
 limitation (see \url{https://sourceforge.net/p/docutils/bugs/225/}).
 
-A table with multirow header:
-%
-\begin{quote}
+A table with multirow header and column-widths set by LaTeX:
 
 \setlength{\DUtablewidth}{\linewidth}
-\begin{longtable*}[c]{|p{0.156\DUtablewidth}|p{0.238\DUtablewidth}|}
+\begin{longtable*}[c]{|l|l|}
 \hline
-\multirow{2}{0.16\DUtablewidth}{%
+\multirow{2}{*}{%
 \textbf{%
 XXX
 }} & \textbf{%
@@ -1895,7 +1893,7 @@ Description
 \hline
 \endfirsthead
 \hline
-\multirow{2}{0.16\DUtablewidth}{%
+\multirow{2}{*}{%
 \textbf{%
 XXX
 }} & \textbf{%
@@ -1910,13 +1908,11 @@ Description
 \multicolumn{2}{c}{\hfill ... continued on next page} \\
 \endfoot
 \endlastfoot
-\multicolumn{2}{|p{0.39\DUtablewidth}|}{
+\multicolumn{2}{|l|}{
 multicollumn cell
 } \\
 \hline
 \end{longtable*}
-
-\end{quote}
 
 % This file is used by the standalone_rst_latex test.
 
