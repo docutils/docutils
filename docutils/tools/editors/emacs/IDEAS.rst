@@ -228,8 +228,6 @@ Sophisticated filling
 
   * Tables
 
-  * Section headers
-
   * Link definitions
 
   * May be `fill-nobreak-predicate` can help here, too
@@ -246,6 +244,8 @@ Sophisticated filling
   * Alternatively indentation could indent the whole item
 
     * See `Sophisticated indentation`_
+
+* See also `Filling of section headers`_
 
 Sophisticated indentation
 =========================
@@ -472,3 +472,199 @@ Sophisticated alignment
   :Even longer name: More aligned
 
   * See `align.el`
+
+toc-mode per buffer
+===================
+
+* At the moment there can only be globally one TOC
+
+  * A TOC could be separate for each buffer
+
+toc-mode could generate reST
+============================
+
+* The format of the generated TOC could be reStructuredText
+
+  * For instance as a bullet list
+
+  * So it could be copied and basted into a reStructuredText document
+
+  * Conversion could be done in toc-mode buffer
+
+* An alternative could be that `rst-bullet-list-region` handles
+  indented text properly
+
+Improvements for comments
+=========================
+
+* `comment-use-syntax` should be set to nil locally
+
+* `comment-forward` should work so `comment-dwim` recognizes a
+  commented region
+
+  * Then it could uncomment it automatically and use of prefix
+    argument is no longer neccessary
+
+Context sensitive M-q
+=====================
+
+* M-q / `fill-paragraph` should check whether point is in section
+  header and call `rst-adjust` in this case
+
+  * This would unify handling of changes in section headers and normal
+    paragraphs
+
+Switch to using `cl-lib`
+========================
+
+* Options to use `cl-lib`
+
+    There are various options, and you'll have to judge for yourself which
+    is best for your particular case:
+    - live with the warnings.
+    - switch to cl-lib and ask users of older Emacsen to install cl-lib
+      (available in GNU ELPA).
+    - add things like (unless (fboundp 'cl-letf) (defalias 'cl-letf 'letf)).
+    - change the code to use something else (e.g. for flet, you can switch
+      to using either defadvice or (let ((f1 (lambda ..))) ...).
+    - ...
+
+    -- Stefan Monnier
+
+* Remove own implementations then
+
+Filling of section headers
+==========================
+
+* Filling should recognize section headers and adjust the adornment
+
+  * Then a fill operation for a region wouldn't break the section
+    header adornment
+
+  * In addition a fill operation could be used instead of adjusting a
+    section header
+
+Cursor after adjusting adornment
+================================
+
+* Adjusting a section header should move the cursor to the end of the
+  adornment
+
+  * Then a following C-j / Return opens a new line instead of breaking
+    the adornment just created
+
+Copying literal blocks
+======================
+
+* Copying literal blocks should eat up the block indentation
+
+  * This way code fragments can be copied without removing the block
+    indentation by hand
+
+Structural operations for toc-mode
+==================================
+
+* Structrual operations for toc-mode
+
+  * Raise or lower sections
+
+  * Move sections around
+
+Inhibit auto-fill in literal blocks
+===================================
+
+* In a literal block a space should not do auto-fill
+
+  * May be variable `normal-auto-fill-function` can be set mode
+    specific
+
+    * Is normally `do-auto-fill`
+
+toc-mode should leave mark
+==========================
+
+* When you jump to a different point in the document by using toc-mode
+  the mark should be set at the point of departure
+
+  * This aligns with the semantic of other far jumps in the document
+    such as `beginning-of-buffer`
+
+Remembering last location per section
+=====================================
+
+* Remembering the last location per section would make it possible to
+  jump back to this location
+
+  * This is useful if several sections are worked on in parallel
+
+* The jump into the section could happen from toc-mode
+
+  * Instead of to the section header
+
+  * May be by a special key
+
+* Other section based jump commands could do similar
+
+  * For instance navigating by sections
+
+* This calls for a general modifier for jumps
+
+Multiple steps for `rst-adjust`
+===============================
+
+* Sometimes it's useful to adjust more than one step in the given
+  direction
+
+  * For instance to follow a 2= title by 1= normal header skipping the
+    usual 2- level
+
+* Therefore using a counter may be useful
+
+Enhance compilation support
+===========================
+
+* Compilation to ODT should be supported
+
+* Arbitrary compilations should be supported using customization
+
+  * Key must be configurable
+
+  * Command must be configurable
+
+* May be the whole toolset stuff needs to be replaced?
+
+Support for longlines mode
+==========================
+
+* `longlines-mode` should use correct indentation for broken lines
+
+  * This is actually an enhancement of `longlines-mode`
+
+  * `longlines-mode` modifies the buffer
+
+    * This is needed to use all the standard functionality like
+      `move-to-column`
+
+    * Using property `display` for inserting indentation does not work
+      properly because of this
+
+  * Indentation must be inserted in the buffer
+
+    * However, it needs to have the property `intangible` so it can
+      not be modified
+
+      * See `Emacs Lisp => 32.19 Text Properties => Special
+	Properties`
+
+    * It would be nice to also have a visible indication for being
+      automatic insertion
+
+  * Such indentation must be removed by `longlines-encode-*`
+
+    * Probably it should be marked by a special property such as
+      `longlines-indentation`
+
+  * `longlines-wrap-line` needs a hook called after replacing the
+    blank by a soft newline
+
+  * May be `longlines-*search-*` needs to be adapted as well?

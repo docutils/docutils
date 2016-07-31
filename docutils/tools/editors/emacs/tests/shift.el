@@ -40,67 +40,67 @@
 	(rst-indent-literal-minimized 2)
 	(rst-indent-comment 3))
     (should (ert-equal-buffer
-	     (line-tabs)
+	     '(line-tabs)
 	     "\^@"
 	     "
 "
 	     ))
     (should (ert-equal-buffer
-	     (line-tabs)
+	     '(line-tabs)
 	     "
 * a\^@"
 	     "
 B a"
 	     ))
     (should (ert-equal-buffer
-	     (line-tabs)
+	     '(line-tabs)
 	     "
   * b\^@"
 	     "
   B a"
 	     ))
     (should (ert-equal-buffer
-	     (line-tabs)
+	     '(line-tabs)
 	     "
     XV. c\^@"
 	     "
     B   a"
 	     ))
     (should (ert-equal-buffer
-	     (line-tabs)
+	     '(line-tabs)
 	     "
 * \^@"
 	     "
 A"
 	     ))
     (should (ert-equal-buffer
-	     (line-tabs)
+	     '(line-tabs)
 	     "
   *\tb\^@"
 	     "
   B     a"
 	     ))
     (should (ert-equal-buffer
-	     (line-tabs)
+	     '(line-tabs)
 	     "Some para\^@"
 	     "
 A"
 	     ))
     (should (ert-equal-buffer
-	     (line-tabs)
+	     '(line-tabs)
 	     "  A quoted block\^@"
 	     "
   A"
 	     ))
     (should (ert-equal-buffer
-	     (line-tabs)
+	     '(line-tabs)
 	     "
 :Field: Content on same line\^@"
 	     "
 C b     a"
 	     ))
     (should (ert-equal-buffer
-	     (line-tabs)
+	     '(line-tabs)
 	     "
 :Field: \^@"
 	     "
@@ -108,105 +108,105 @@ B a"
 	     ))
     (let ((rst-indent-field 0))
       (should (ert-equal-buffer
-	       (line-tabs)
+	       '(line-tabs)
 	       "
 :Field: Content on same line\^@"
 	       "
 B       a"
 	       ))
       (should (ert-equal-buffer
-	       (line-tabs)
+	       '(line-tabs)
 	       "
 :Field: \^@"
 	       "
 B       a"
 	       )))
     (should (ert-equal-buffer
-	     (line-tabs)
+	     '(line-tabs)
 	     "
 .. dir:: Content on same line\^@"
 	     "
 C  b     a"
 	     ))
     (should (ert-equal-buffer
-	     (line-tabs)
+	     '(line-tabs)
 	     "
 .. dir:: \^@"
 	     "
 B  a"
 	     ))
     (should (ert-equal-buffer
-	     (line-tabs)
+	     '(line-tabs)
 	     "
 .. |sub| dir:: Content on same line\^@"
 	     "
 D  c     b     a"
 	     ))
     (should (ert-equal-buffer
-	     (line-tabs)
+	     '(line-tabs)
 	     "
 .. |sub| dir::\^@"
 	     "
 C  b     a"
 	     ))
     (should (ert-equal-buffer
-	     (line-tabs)
+	     '(line-tabs)
 	     "
 .. [CIT] citation\^@"
 	     "
 C  b     a"
 	     ))
     (should (ert-equal-buffer
-	     (line-tabs)
+	     '(line-tabs)
 	     "
 .. [#FN] Footnote\^@"
 	     "
 C  b     a"
 	     ))
     (should (ert-equal-buffer
-	     (line-tabs)
+	     '(line-tabs)
 	     "
 .. [CIT]\^@"
 	     "
 B  a"
 	     ))
     (should (ert-equal-buffer
-	     (line-tabs)
+	     '(line-tabs)
 	     "
 Some text::\^@"
 	     "
 B a"
 	     ))
     (should (ert-equal-buffer
-	     (line-tabs)
+	     '(line-tabs)
 	     "
 ::\^@"
 	     "
 B  a"
 	     ))
     (should (ert-equal-buffer
-	     (line-tabs)
+	     '(line-tabs)
 	     "
   ::\^@"
 	     "
   B  a"
 	     ))
     (should (ert-equal-buffer
-	     (line-tabs)
+	     '(line-tabs)
 	     "
 .. First comment\^@"
 	     "
 B  a"
 	     ))
     (should (ert-equal-buffer
-	     (line-tabs)
+	     '(line-tabs)
 	     "
     XV. c::\^@"
 	     "
     C   b a"
 	     ))
     (should (ert-equal-buffer
-	     (line-tabs)
+	     '(line-tabs)
 	     "
       :f: val::\^@"
 	     "
@@ -233,13 +233,13 @@ B  a"
 	(rst-indent-literal-minimized 2)
 	(rst-indent-comment 3))
     (should (ert-equal-buffer
-	     (compute-tabs)
+	     '(compute-tabs)
 	     "\^@"
 	     "
 "
 	     ))
     (should (ert-equal-buffer
-	     (compute-tabs)
+	     '(compute-tabs)
 	     "
 * a
 \^@"
@@ -247,7 +247,7 @@ B  a"
 B A"
 	     ))
     (should (ert-equal-buffer
-	     (compute-tabs)
+	     '(compute-tabs)
 	     "
 * a
   * b
@@ -256,7 +256,7 @@ B A"
 C B A"
 	     ))
     (should (ert-equal-buffer
-	     (compute-tabs)
+	     '(compute-tabs)
 	     "
 * a
   * b
@@ -266,7 +266,7 @@ C B A"
 D C B   A"
 	     ))
     (should (ert-equal-buffer
-	     (compute-tabs)
+	     '(compute-tabs)
 	     "
 * a
     XV. c
@@ -275,7 +275,7 @@ D C B   A"
 D C B   A"
 	     ))
     (should (ert-equal-buffer
-	     (compute-tabs)
+	     '(compute-tabs)
 	     "
 * 
     XV. c
@@ -284,7 +284,7 @@ D C B   A"
 C   B   A"
 	     ))
     (should (ert-equal-buffer
-	     (compute-tabs)
+	     '(compute-tabs)
 	     "
 * a
   * b
@@ -295,7 +295,7 @@ C   B   A"
 C B A"
 	     ))
     (should (ert-equal-buffer
-	     (compute-tabs)
+	     '(compute-tabs)
 	     "
 * a
   * b
@@ -307,7 +307,7 @@ C B A"
 B A"
 	     ))
     (should (ert-equal-buffer
-	     (compute-tabs)
+	     '(compute-tabs)
 	     "
   * a
     * b
@@ -317,7 +317,7 @@ B A"
   D C B   A"
 	     ))
     (should (ert-equal-buffer
-	     (compute-tabs)
+	     '(compute-tabs)
 	     "
 * a
   *\tb
@@ -326,14 +326,14 @@ B A"
 C B     A"
 	     ))
     (should (ert-equal-buffer
-	     (compute-tabs)
+	     '(compute-tabs)
 	     "* a
 \^@"
 	     "
 B A"
 	     ))
     (should (ert-equal-buffer
-	     (compute-tabs)
+	     '(compute-tabs)
 	     "  * a
     * b
       XV. c
@@ -342,7 +342,7 @@ B A"
   D C B   A"
 	     ))
     (should (ert-equal-buffer
-	     (compute-tabs)
+	     '(compute-tabs)
 	     "Some para
 
   A quoted block
@@ -353,7 +353,7 @@ B A"
 C B  A"
 	     ))
     (should (ert-equal-buffer
-	     (compute-tabs)
+	     '(compute-tabs)
 	     "
 :Field: Content on same line
 \^@"
@@ -361,7 +361,7 @@ C B  A"
 C B     A"
 	     ))
     (should (ert-equal-buffer
-	     (compute-tabs)
+	     '(compute-tabs)
 	     "
 :Field: Content on same line
    but continued differently
@@ -370,7 +370,7 @@ C B     A"
 D CA    B"
 	     ))
     (should (ert-equal-buffer
-	     (compute-tabs)
+	     '(compute-tabs)
 	     "
 :Field: Content on same line
             but continued differently
@@ -379,7 +379,7 @@ D CA    B"
 D C     B   A"
 	     ))
     (should (ert-equal-buffer
-	     (compute-tabs)
+	     '(compute-tabs)
 	     "
 :Field:
 
@@ -389,7 +389,7 @@ D C     B   A"
 C BA"
 	     ))
     (should (ert-equal-buffer
-	     (compute-tabs)
+	     '(compute-tabs)
 	     "
 :Field: Starts on same line
 
@@ -399,7 +399,7 @@ C BA"
 C A     B"
 	     ))
     (should (ert-equal-buffer
-	     (compute-tabs)
+	     '(compute-tabs)
 	     "
 .. dir:: Content on same line
 \^@"
@@ -407,7 +407,7 @@ C A     B"
 C  B     A"
 	     ))
     (should (ert-equal-buffer
-	     (compute-tabs)
+	     '(compute-tabs)
 	     "
 .. dir:: 
 
@@ -417,7 +417,7 @@ C  B     A"
 B  A"
 	     ))
     (should (ert-equal-buffer
-	     (compute-tabs)
+	     '(compute-tabs)
 	     "
 .. dir:: 
 
@@ -427,7 +427,7 @@ B  A"
 C  B A"
 	     ))
     (should (ert-equal-buffer
-	     (compute-tabs)
+	     '(compute-tabs)
 	     "
 .. dir:: Same
 
@@ -437,7 +437,7 @@ C  B A"
 D  C A   B"
 	     ))
     (should (ert-equal-buffer
-	     (compute-tabs)
+	     '(compute-tabs)
 	     "
 .. |sub| dir:: Content on same line
 \^@"
@@ -445,7 +445,7 @@ D  C A   B"
 D  C     B     A"
 	     ))
     (should (ert-equal-buffer
-	     (compute-tabs)
+	     '(compute-tabs)
 	     "
 .. |sub| dir::
 
@@ -455,7 +455,7 @@ D  C     B     A"
 C  A     B"
 	     ))
     (should (ert-equal-buffer
-	     (compute-tabs)
+	     '(compute-tabs)
 	     "
 .. |sub| dir::
 
@@ -465,7 +465,7 @@ C  A     B"
 D  C A   B"
 	     ))
     (should (ert-equal-buffer
-	     (compute-tabs)
+	     '(compute-tabs)
 	     "
 .. |sub| dir:: Same
 
@@ -475,7 +475,7 @@ D  C A   B"
 E  D A   C     B"
 	     ))
     (should (ert-equal-buffer
-	     (compute-tabs)
+	     '(compute-tabs)
 	     "
 .. |sub| dir:: Same
 
@@ -487,7 +487,7 @@ E  D A   C     B"
 E  DC A   B"
 	     ))
     (should (ert-equal-buffer
-	     (compute-tabs)
+	     '(compute-tabs)
 	     "
 .. |sub| dir::
 
@@ -499,7 +499,7 @@ E  DC A   B"
 C  A     B"
 	     ))
     (should (ert-equal-buffer
-	     (compute-tabs)
+	     '(compute-tabs)
 	     "
 .. |sub| dir:: Same
 
@@ -511,7 +511,7 @@ C  A     B"
 E  DAC B"
 	     ))
     (should (ert-equal-buffer
-	     (compute-tabs)
+	     '(compute-tabs)
 	     "
 .. |sub| dir:: Same
 
@@ -523,7 +523,7 @@ E  DAC B"
 D  A C B"
 	     ))
     (should (ert-equal-buffer
-	     (compute-tabs)
+	     '(compute-tabs)
 	     "
 .. |sub| dir:: Same
 
@@ -535,7 +535,7 @@ D  A C B"
 C  B A"
 	     ))
     (should (ert-equal-buffer
-	     (compute-tabs)
+	     '(compute-tabs)
 	     "
 .. |sub| dir:: Same
 
@@ -549,7 +549,7 @@ C  B A"
 D  C B  A"
 	     ))
     (should (ert-equal-buffer
-	     (compute-tabs)
+	     '(compute-tabs)
 	     "
 .. [CIT] citation
 \^@"
@@ -557,7 +557,7 @@ D  C B  A"
 C  B     A"
 	     ))
     (should (ert-equal-buffer
-	     (compute-tabs)
+	     '(compute-tabs)
 	     "
 .. [#FN] Footnote
 \^@"
@@ -565,7 +565,7 @@ C  B     A"
 C  B     A"
 	     ))
     (should (ert-equal-buffer
-	     (compute-tabs)
+	     '(compute-tabs)
 	     "
 .. [CIT]
 
@@ -575,7 +575,7 @@ C  B     A"
 B  A"
 	     ))
     (should (ert-equal-buffer
-	     (compute-tabs)
+	     '(compute-tabs)
 	     "
 .. [CIT]
 
@@ -585,7 +585,7 @@ B  A"
 C  B A"
 	     ))
     (should (ert-equal-buffer
-	     (compute-tabs)
+	     '(compute-tabs)
 	     "
 .. [CIT]
 
@@ -603,7 +603,7 @@ C  B A"
 E  D  C B  A"
 	     ))
     (should (ert-equal-buffer
-	     (compute-tabs)
+	     '(compute-tabs)
 	     "
 Some text::
 \^@"
@@ -611,7 +611,7 @@ Some text::
 B A"
 	     ))
     (should (ert-equal-buffer
-	     (compute-tabs)
+	     '(compute-tabs)
 	     "
 No text
 
@@ -621,7 +621,7 @@ No text
 B  A"
 	     ))
     (should (ert-equal-buffer
-	     (compute-tabs)
+	     '(compute-tabs)
 	     "
 No text
 
@@ -631,7 +631,7 @@ No text
 C B  A"
 	     ))
     (should (ert-equal-buffer
-	     (compute-tabs)
+	     '(compute-tabs)
 	     "
 .. [CIT]
 
@@ -649,7 +649,7 @@ C B  A"
 E  D  C B  A"
 	     ))
     (should (ert-equal-buffer
-	     (compute-tabs)
+	     '(compute-tabs)
 	     "
 .. First comment
 \^@"
@@ -657,7 +657,7 @@ E  D  C B  A"
 B  A"
 	     ))
     (should (ert-equal-buffer
-	     (compute-tabs)
+	     '(compute-tabs)
 	     "
 * a
     XV. c::
@@ -666,7 +666,7 @@ B  A"
 E D C   B A"
 	     ))
     (should (ert-equal-buffer
-	     (compute-tabs)
+	     '(compute-tabs)
 	     "
 .. [CIT]
 
@@ -685,7 +685,7 @@ F  E  D C B A"
   "Tests for `rst-shift-region' to the right."
   (let ((rst-indent-width 2)) ; Set relevant variables
     (should (ert-equal-buffer
-	     (rst-shift-region 1)
+	     '(rst-shift-region 1)
 	     "
 \^@a
 \^?"
@@ -694,7 +694,7 @@ F  E  D C B A"
 \^?"
 	     t))
     (should (ert-equal-buffer
-	     (rst-shift-region 1)
+	     '(rst-shift-region 1)
 	     "
 \^@  a
 \^?"
@@ -703,7 +703,7 @@ F  E  D C B A"
 \^?"
 	     t))
     (should (ert-equal-buffer
-	     (rst-shift-region 1)
+	     '(rst-shift-region 1)
 	     "\^@
 a
 b
@@ -714,7 +714,7 @@ b
 \^?"
 	     t))
     (should (ert-equal-buffer
-	     (rst-shift-region 1)
+	     '(rst-shift-region 1)
 	     "*  x
 \^@
 a
@@ -727,7 +727,7 @@ b
 \^?"
 	     t))
     (should (ert-equal-buffer
-	     (rst-shift-region 1)
+	     '(rst-shift-region 1)
 	     "*  x
 \^@
    a
@@ -740,7 +740,7 @@ b
 \^?"
 	     t))
     (should (ert-equal-buffer
-	     (rst-shift-region 1)
+	     '(rst-shift-region 1)
 	     "*  x
    *  y
 \^@
@@ -755,7 +755,7 @@ b
 \^?"
 	     t))
     (should (ert-equal-buffer
-	     (rst-shift-region 1)
+	     '(rst-shift-region 1)
 	     "*  x
 \^?
 a
@@ -768,7 +768,7 @@ b
 \^@"
 	     t))
     (should (ert-equal-buffer
-	     (rst-shift-region 2)
+	     '(rst-shift-region 2)
 	     "*  x
 \^?
 a
@@ -786,7 +786,7 @@ b
   "Tests for `rst-shift-region' to the left."
   (let ((rst-indent-width 2)) ; Set relevant variables
     (should (ert-equal-buffer
-	     (rst-shift-region -1)
+	     '(rst-shift-region -1)
 	     "*  x
 \^@
      a
@@ -799,7 +799,7 @@ b
 \^?"
 	     t))
     (should (ert-equal-buffer
-	     (rst-shift-region -1)
+	     '(rst-shift-region -1)
 	     "
 \^@  a
 \^?"
@@ -808,7 +808,7 @@ b
 \^?"
 	     t))
     (should (ert-equal-buffer
-	     (rst-shift-region -1)
+	     '(rst-shift-region -1)
 	     "
 \^@    a
 \^?"
@@ -817,7 +817,7 @@ b
 \^?"
 	     t))
     (should (ert-equal-buffer
-	     (rst-shift-region -1)
+	     '(rst-shift-region -1)
 	     "\^@
   a
   b
@@ -828,7 +828,7 @@ b
 \^?"
 	     t))
     (should (ert-equal-buffer
-	     (rst-shift-region -1)
+	     '(rst-shift-region -1)
 	     "*  x
 \^@
    a
@@ -841,7 +841,7 @@ b
 \^?"
 	     t))
     (should (ert-equal-buffer
-	     (rst-shift-region -1)
+	     '(rst-shift-region -1)
 	     "*  x
    *  y
 \^@
@@ -856,7 +856,7 @@ b
 \^?"
 	     t))
     (should (ert-equal-buffer
-	     (rst-shift-region -1)
+	     '(rst-shift-region -1)
 	     "*  x
 \^?
    a
@@ -869,7 +869,7 @@ b
 \^@"
 	     t))
     (should (ert-equal-buffer
-	     (rst-shift-region 0)
+	     '(rst-shift-region 0)
 	     "*  x
    *  y
 \^@
@@ -884,7 +884,7 @@ b
 \^?"
 	     t))
     (should (ert-equal-buffer
-	     (rst-shift-region -1)
+	     '(rst-shift-region -1)
 	     "\^@*  x
    *  y
 
@@ -899,7 +899,7 @@ b
 \^?"
 	     t))
     (should (ert-equal-buffer
-	     (rst-shift-region -2)
+	     '(rst-shift-region -2)
 	     "*  x
    *  y
 \^@

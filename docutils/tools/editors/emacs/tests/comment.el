@@ -24,19 +24,19 @@ Must be called on a line conaining at most whitespace."
 	(rst-indent-comment 3)
 	(fill-column 20))
     (should (ert-equal-buffer
-	     (cmnt-insert)
+	     '(cmnt-insert)
 	     "\^@"
 	     ".. \^@"
 	     ))
     (should (ert-equal-buffer
-	     (cmnt-insert)
+	     '(cmnt-insert)
 	     "
    \^@"
 	     "
 .. \^@"
 	     ))
     (should (ert-equal-buffer
-	     (cmnt-insert)
+	     '(cmnt-insert)
 	     "
 * bla
 
@@ -47,7 +47,7 @@ Must be called on a line conaining at most whitespace."
   .. \^@"
 	     ))
     (should (ert-equal-buffer
-	     (cmnt-insert)
+	     '(cmnt-insert)
 	     "
 :Field: Content
 
@@ -72,24 +72,24 @@ Must be called on a line conaining at most whitespace."
 	(rst-indent-comment 3)
 	(fill-column 20))
     (should (ert-equal-buffer
-	     (cmnt-indent nil)
+	     '(cmnt-indent nil)
 	     "\^@"
 	     ".. \^@"
 	     ))
     (should (ert-equal-buffer
-	     (cmnt-indent nil)
+	     '(cmnt-indent nil)
 	     "
    \^@"
 	     "
 .. \^@"
 	     ))
     (should (ert-equal-buffer
-	     (cmnt-indent nil)
+	     '(cmnt-indent nil)
 	     ".. comment\^@"
 	     ".. \^@comment"
 	     ))
     (should (ert-equal-buffer
-	     (cmnt-indent nil)
+	     '(cmnt-indent nil)
 	     "
 * bla
 
@@ -100,7 +100,7 @@ Must be called on a line conaining at most whitespace."
   .. \^@comment"
 	     ))
     (should (ert-equal-buffer
-	     (cmnt-indent nil)
+	     '(cmnt-indent nil)
 	     "
 :Field: Content
 
@@ -111,7 +111,7 @@ Must be called on a line conaining at most whitespace."
 	.. \^@"
 	     ))
     (should (ert-equal-buffer
-	     (cmnt-indent nil)
+	     '(cmnt-indent nil)
 	     "
 :Field: Content
 
@@ -136,13 +136,13 @@ Must be called on a line conaining at most whitespace."
 	(rst-indent-comment 3)
 	(fill-column 20))
     (should (ert-equal-buffer
-	     (uncmnt-region)
+	     '(uncmnt-region)
 	     "\^?..
    com\^@ment"
 	     "\^?com\^@ment"
 	     ))
     (should (ert-equal-buffer
-	     (uncmnt-region)
+	     '(uncmnt-region)
 	     "\^?..
    com\^@ment
 
@@ -154,7 +154,7 @@ Must be called on a line conaining at most whitespace."
 "
 	     ))
     (should (ert-equal-buffer
-	     (uncmnt-region)
+	     '(uncmnt-region)
 	     "\^?..
    comment
 
@@ -180,13 +180,13 @@ bl\^@a
 	(rst-indent-comment 3)
 	(fill-column 20))
     (should (ert-equal-buffer
-	     (cmnt-region)
+	     '(cmnt-region)
 	     "\^?com\^@ment"
 	     "\^?..
    com\^@ment"
 	     ))
     (should (ert-equal-buffer
-	     (cmnt-region)
+	     '(cmnt-region)
 	     "\^?com\^@ment
 
    bla
@@ -198,7 +198,7 @@ bl\^@a
 "
 	     ))
     (should (ert-equal-buffer
-	     (cmnt-region)
+	     '(cmnt-region)
 	     "\^?comment
 
 bl\^@a

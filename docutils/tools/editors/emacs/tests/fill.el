@@ -27,7 +27,7 @@
 	(rst-indent-comment 3)
 	(fill-column 20))
     (should (ert-equal-buffer
-	     (auto-fill)
+	     '(auto-fill)
 	     "
 * This is a test with a fill column of 20\^@"
              "
@@ -36,7 +36,7 @@
   of 20\^@"
              ))
     (should (ert-equal-buffer
-	     (auto-fill)
+	     '(auto-fill)
              "
 * This is a test
   with a fill column of 20\^@"
@@ -46,7 +46,7 @@
   of 20\^@"
              ))
     (should (ert-equal-buffer
-	     (auto-fill)
+	     '(auto-fill)
 	     "
 :Field: Does this work for fields?\^@"
 	     "
@@ -55,7 +55,7 @@
 	fields?\^@"
 	     ))
     (should (ert-equal-buffer
-	     (auto-fill)
+	     '(auto-fill)
 	     "
 :Field: Does this
 	work for fields?\^@"
@@ -65,7 +65,7 @@
 	fields?\^@"
 	     ))
     (should (ert-equal-buffer
-	     (auto-fill)
+	     '(auto-fill)
 	     "
 .. dir:: Yes, quite fine\^@"
 	     "
@@ -73,7 +73,7 @@
 	 fine\^@"
 	     ))
     (should (ert-equal-buffer
-	     (auto-fill)
+	     '(auto-fill)
 	     "
 .. dir:: Yes, quite fine\^@
    :f: Field"
@@ -83,7 +83,7 @@
    :f: Field"
 	     ))
     (should (ert-equal-buffer
-	     (auto-fill)
+	     '(auto-fill)
 	     "
 .. |s| r:: Dir ectives had problems\^@"
 	     "
@@ -93,7 +93,7 @@
 	   problems\^@"
 	     ))
     (should (ert-equal-buffer
-	     (auto-fill)
+	     '(auto-fill)
 	     "
 .. |s| r:: Dir
 	   ectives
@@ -105,7 +105,7 @@
 	   problems\^@"
 	     ))
     (should (ert-equal-buffer
-	     (auto-fill)
+	     '(auto-fill)
 	     "
 .. [CIT] X cit is citations are also filled\^@"
 	     "
@@ -115,7 +115,7 @@
 	 filled\^@"
 	     ))
     (should (ert-equal-buffer
-	     (auto-fill)
+	     '(auto-fill)
 	     "
 .. [CIT] X cit is
 	 citations
@@ -127,7 +127,7 @@
 	 filled\^@"
 	     ))
     (should (ert-equal-buffer
-	     (auto-fill)
+	     '(auto-fill)
 	     "
 .. Comments should also fill nicely\^@"
 	     "
@@ -135,7 +135,7 @@
    also fill nicely\^@"
 	     ))
     (should (ert-equal-buffer
-	     (auto-fill)
+	     '(auto-fill)
 	     "
 Normal text should also fill as expected\^@"
 	     "
@@ -144,7 +144,7 @@ also fill as
 expected\^@"
 	     ))
     (should (ert-equal-buffer
-	     (auto-fill)
+	     '(auto-fill)
 	     "
   Normal text should also fill as expected\^@"
 	     "
@@ -153,7 +153,7 @@ expected\^@"
   expected\^@"
 	     ))
     (should (ert-equal-buffer
-	     (auto-fill)
+	     '(auto-fill)
 	     "
 Normal text should also fill \^@as expected"
 	     "
@@ -179,7 +179,7 @@ also fill \^@as expected"
 	(rst-indent-comment 3)
 	(fill-column 20))
     (should (ert-equal-buffer
-             (explicit-fill)
+             '(explicit-fill)
              "
 * This is a test with a fill column of 20\^@
 "
@@ -190,7 +190,7 @@ also fill \^@as expected"
 "
              ))
     (should (ert-equal-buffer
-             (explicit-fill)
+             '(explicit-fill)
              "
 * This is a test \^@with a fill column
   of 20
@@ -202,7 +202,7 @@ also fill \^@as expected"
 "
              ))
     (should (ert-equal-buffer
-             (explicit-fill)
+             '(explicit-fill)
              "
 :Field: Does this work for fields?\^@
 "
@@ -213,7 +213,7 @@ also fill \^@as expected"
 "
              ))
     (should (ert-equal-buffer
-             (explicit-fill)
+             '(explicit-fill)
              "
 :Field: Does this work\^@ for
         fields?
@@ -225,7 +225,7 @@ also fill \^@as expected"
 "
              ))
     (should (ert-equal-buffer
-             (explicit-fill)
+             '(explicit-fill)
              "
 .. dir:: Yes, quite fine\^@
 "
@@ -235,7 +235,7 @@ also fill \^@as expected"
 "
              ))
     (should (ert-equal-buffer
-             (explicit-fill)
+             '(explicit-fill)
              "
 \^@.. dir:: Yes, quite
          fine
@@ -246,7 +246,7 @@ also fill \^@as expected"
 "
              ))
     (should (ert-equal-buffer
-             (explicit-fill)
+             '(explicit-fill)
              "
 .. dir:: Yes, quite fine\^@
    :f: Field
@@ -258,7 +258,7 @@ also fill \^@as expected"
 "
              ))
     (should (ert-equal-buffer
-             (explicit-fill)
+             '(explicit-fill)
              "
 .. [CIT] X cit is citations are also filled\^@
 "
@@ -270,7 +270,7 @@ also fill \^@as expected"
 "
              ))
     (should (ert-equal-buffer
-             (explicit-fill)
+             '(explicit-fill)
              "
 .. [CIT] X cit is
    citations are also filled\^@
@@ -282,7 +282,7 @@ also fill \^@as expected"
 "
              ))
     (should (ert-equal-buffer
-             (explicit-fill)
+             '(explicit-fill)
              "
 .. [CIT] X cit is
      citations are also filled\^@
@@ -294,7 +294,7 @@ also fill \^@as expected"
 "
              ))
     (should (ert-equal-buffer
-             (explicit-fill)
+             '(explicit-fill)
              "
 .. |s| r:: Dir ectives had problems\^@
 "
@@ -306,7 +306,7 @@ also fill \^@as expected"
 "
              ))
     (should (ert-equal-buffer
-             (explicit-fill)
+             '(explicit-fill)
              "
 \^@.. |s| r:: Dir ectives had problems
 "
@@ -318,7 +318,7 @@ also fill \^@as expected"
 "
              ))
     (should (ert-equal-buffer
-             (explicit-fill)
+             '(explicit-fill)
              "
 .. |s| r:: Dir
     ectives had problems\^@
@@ -330,7 +330,7 @@ also fill \^@as expected"
 "
              ))
     (should (ert-equal-buffer
-             (explicit-fill)
+             '(explicit-fill)
              "
 Normal \^@text should also fill as expected
 "
@@ -341,7 +341,7 @@ expected
 "
              ))
     (should (ert-equal-buffer
-             (explicit-fill)
+             '(explicit-fill)
              "
 \^@Normal text should also fill as expected
 "
@@ -352,7 +352,7 @@ expected
 "
              ))
     (should (ert-equal-buffer
-             (explicit-fill)
+             '(explicit-fill)
              "
   Normal text should also fill as expected\^@
 "
@@ -363,7 +363,7 @@ expected
 "
              ))
     (should (ert-equal-buffer
-             (explicit-fill)
+             '(explicit-fill)
              "
 Normal text should also fill as expected
 
@@ -378,7 +378,7 @@ expected\^@
 "
              ))
     (should (ert-equal-buffer
-             (explicit-fill)
+             '(explicit-fill)
              "
 \^@Normal text should
 also fill as
@@ -402,7 +402,7 @@ expected
 	(rst-indent-comment 3)
 	(fill-column 20))
     (should (ert-equal-buffer
-             (explicit-fill)
+             '(explicit-fill)
              "
 \^@Normal text should
     also fill as
@@ -433,7 +433,7 @@ expected
         (rst-indent-comment 3)
         (fill-column 20))
     (should (ert-equal-buffer
-             (explicit-fill-region)
+             '(explicit-fill-region)
              "\^@
 * This is a test with a fill column of 20
 
@@ -516,7 +516,7 @@ expected
 \^?"
              ))
     (should (ert-equal-buffer
-             (explicit-fill-region)
+             '(explicit-fill-region)
              "\^@
 * This is a test with a fill column of 20
 * This is a test with a fill column
