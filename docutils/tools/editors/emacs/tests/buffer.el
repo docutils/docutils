@@ -81,7 +81,7 @@ run successively. Prompt is omitted.")
 
 (defun test-reads (inputs fun-args result)
   (setq read-fun-args fun-args)
-  (ert-equal-buffer (insert-reads) "" result inputs))
+  (ert-equal-buffer '(insert-reads) "" result inputs))
 
 (ert-deftest reads ()
   "Tests for functions using `completing-read's."
@@ -120,59 +120,59 @@ run successively. Prompt is omitted.")
 
 (ert-deftest ert-equal-buffer ()
   "Tests for `ert-equal-buffer'."
-  (should (ert-equal-buffer (insert "foo")
+  (should (ert-equal-buffer '(insert "foo")
 			    (concat ert-Buf-point-char ert-Buf-mark-char)
 			    (concat ert-Buf-mark-char "foo"
 				    ert-Buf-point-char)))
-  (should (ert-equal-buffer (delete-region)
+  (should (ert-equal-buffer '(delete-region)
 			    (concat ert-Buf-mark-char "foo"
 				    ert-Buf-point-char)
 			    (concat ert-Buf-point-char ert-Buf-mark-char)
 			    t))
-  (should (ert-equal-buffer (delete-region 1 4)
+  (should (ert-equal-buffer '(delete-region 1 4)
 			    "foo"
 			    ""))
-  (should-error (ert-equal-buffer (delete-region 0 3)
+  (should-error (ert-equal-buffer '(delete-region 0 3)
 			    (concat "foo")
 			    "") :type 'args-out-of-range)
-  (should (ert-equal-buffer (goto-char 4)
+  (should (ert-equal-buffer '(goto-char 4)
 			    "foo"
 			    (concat "foo" ert-Buf-point-char)))
   )
 
 (ert-deftest ert-equal-buffer-return ()
   "Tests for `ert-equal-buffer-return'."
-  (should (ert-equal-buffer-return (buffer-substring-no-properties 4 1)
+  (should (ert-equal-buffer-return '(buffer-substring-no-properties 4 1)
 				   "foo"
 				   t
 				   "foo"))
-  (should (ert-equal-buffer-return (delete-and-extract-region 1 4)
+  (should (ert-equal-buffer-return '(delete-and-extract-region 1 4)
 				   "foo"
 				   ""
 				   "foo"))
-  (should (ert-equal-buffer-return (point)
+  (should (ert-equal-buffer-return '(point)
 				   ert-Buf-point-char
 				   t
 				   1))
-  (should (ert-equal-buffer-return (point)
+  (should (ert-equal-buffer-return '(point)
 				   (concat " " ert-Buf-point-char)
 				   t
 				   2))
-  (should (ert-equal-buffer-return (region-beginning)
+  (should (ert-equal-buffer-return '(region-beginning)
 				   (concat ert-Buf-point-char " "
 					   ert-Buf-mark-char)
 				   t
 				   1))
-  (should (ert-equal-buffer-return (region-end)
+  (should (ert-equal-buffer-return '(region-end)
 				   (concat ert-Buf-mark-char " "
 					   ert-Buf-point-char)
 				   t
 				   2))
-  (should (ert-equal-buffer-return (following-char)
+  (should (ert-equal-buffer-return '(following-char)
 				   (concat ert-Buf-point-char "A")
 				   t
 				   ?A))
-  (should (ert-equal-buffer-return (following-char)
+  (should (ert-equal-buffer-return '(following-char)
 				   (concat "A" ert-Buf-point-char)
 				   t
 				   0))

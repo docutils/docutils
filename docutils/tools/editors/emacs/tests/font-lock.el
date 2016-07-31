@@ -13,12 +13,12 @@
 (ert-deftest rst-forward-indented-block ()
   "Tests `rst-forward-indented-block'."
   (should (ert-equal-buffer-return
-	   (rst-forward-indented-block)
+	   '(rst-forward-indented-block)
 	   "\^@abc"
 	   t
 	   nil))
   (should (ert-equal-buffer-return
-	   (rst-forward-indented-block)
+	   '(rst-forward-indented-block)
 	   (concat "  \^@abc
 
 def")
@@ -41,19 +41,19 @@ Uses and sets region and returns t if region has been changed."
 (ert-deftest rst-font-lock-extend-region-internal-indent ()
   "Tests `rst-font-lock-extend-region-internal'."
   (should (ert-equal-buffer-return
-	   (extend-region)
+	   '(extend-region)
 	   "\^@abc\^?"
 	   t
 	   nil
 	   t))
   (should (ert-equal-buffer-return
-	   (extend-region)
+	   '(extend-region)
 	   "\^@  abc\^?"
 	   t
 	   nil
 	   t))
   (should (ert-equal-buffer-return
-	   (extend-region)
+	   '(extend-region)
 	   "  abc
 \^@  def\^?"
 	   "\^@  abc
@@ -61,7 +61,7 @@ Uses and sets region and returns t if region has been changed."
 	   t
 	   t))
   (should (ert-equal-buffer-return
-	   (extend-region)
+	   '(extend-region)
 	   "  abc
 \^@  def
 \^?  ghi
@@ -73,7 +73,7 @@ uvw"
 	   t
 	   t))
   (should (ert-equal-buffer-return
-	   (extend-region)
+	   '(extend-region)
 	   "xyz
 abc
 \^@  def
@@ -85,7 +85,7 @@ abc
 	   t
 	   t))
   (should (ert-equal-buffer-return
-	   (extend-region)
+	   '(extend-region)
 	   "xyz
   abc::
 \^@  def
@@ -99,7 +99,7 @@ uvw"
 	   t
 	   t))
   (should (ert-equal-buffer-return
-	   (extend-region)
+	   '(extend-region)
 	   "xyz
   .. abc
 \^@     def
@@ -111,7 +111,7 @@ uvw"
 	   t
 	   t))
   (should (ert-equal-buffer-return
-	   (extend-region)
+	   '(extend-region)
 	   "xyz
   .. abc
      123
@@ -127,7 +127,7 @@ uvw"
 	   t
 	   t))
   (should (ert-equal-buffer-return
-	   (extend-region)
+	   '(extend-region)
 	   "xyz
 
   .. abc
@@ -153,13 +153,13 @@ uvw"
 (ert-deftest rst-font-lock-extend-region-internal-adornment ()
   "Tests `rst-font-lock-extend-region-internal'."
   (should (ert-equal-buffer-return
-	   (extend-region)
+	   '(extend-region)
 	   "\^@===\^?"
 	   t
 	   nil
 	   t))
   (should (ert-equal-buffer-return
-	   (extend-region)
+	   '(extend-region)
 	   "abc
 \^@===\^?"
 	   "\^@abc
@@ -167,14 +167,14 @@ uvw"
 	   t
 	   t))
   (should (ert-equal-buffer-return ; Quite complicated without the trailing newline
-	   (extend-region)
+	   '(extend-region)
 	   "\^@abc
 \^?==="
 	   t
 	   nil
 	   t))
   (should (ert-equal-buffer-return
-	   (extend-region)
+	   '(extend-region)
 	   "\^@abc
 \^?===
 "
@@ -184,7 +184,7 @@ uvw"
 	   t
 	   t))
   (should (ert-equal-buffer-return
-	   (extend-region)
+	   '(extend-region)
 	   "===
 abc
 \^@===
@@ -196,7 +196,7 @@ abc
 	   t
 	   t))
   (should (ert-equal-buffer-return
-	   (extend-region)
+	   '(extend-region)
 	   "\^@===
 \^?abc
 ===
@@ -208,7 +208,7 @@ abc
 	   t
 	   t))
   (should (ert-equal-buffer-return
-	   (extend-region)
+	   '(extend-region)
 	   "def
 
 ===
@@ -224,7 +224,7 @@ abc
 	   t
 	   t))
   (should (ert-equal-buffer-return
-	   (extend-region)
+	   '(extend-region)
 	   "def
 
 \^@===

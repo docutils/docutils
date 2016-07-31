@@ -41,17 +41,22 @@ Header C
 	  (rst-toc-insert-max-level nil))
       ;; Can't identify a title so do nothing - that's actually a (MIS-)FEATURE
       (should (ert-equal-buffer
-	       (rst-toc-insert)
+	       '(rst-toc-insert)
 	       (concat "\^@" headers)
+	       t))
+      ;; Can't identify a title so do nothing - that's actually a (MIS-)FEATURE
+      (should (ert-equal-buffer
+	       (rst-toc-insert)
+	       (concat "\^@\n" headers)
 	       t))
       ;; Won't work on a section title
       (should (ert-equal-buffer
-	       (rst-toc-insert)
+	       '(rst-toc-insert)
 	       (concat title "\^@" headers)
 	       t))
       ;; No indentation
       (should (ert-equal-buffer
-	       (rst-toc-insert)
+	       '(rst-toc-insert)
 	       (concat title "\^@\n\n" headers)
 	       (concat title "1  Header A
 2  Header B
@@ -63,7 +68,7 @@ Header C
 " headers)))
       ;; Indentation
       (should (ert-equal-buffer
-	       (rst-toc-insert)
+	       '(rst-toc-insert)
 	       (concat title "  \^@\n\n" headers)
 	       (concat title "  1  Header A
   2  Header B
@@ -75,7 +80,7 @@ Header C
 " headers)))
       ;; Only first level
       (should (ert-equal-buffer
-	       (rst-toc-insert 1)
+	       '(rst-toc-insert 1)
 	       (concat title "  \^@\n\n" headers)
 	       (concat title "  1  Header A
   2  Header B
@@ -84,7 +89,7 @@ Header C
 " headers)))
       ;; Prefix and indentation
       (should (ert-equal-buffer
-	       (rst-toc-insert)
+	       '(rst-toc-insert)
 	       (concat title "..  \^@\n\n" headers)
 	       (concat title "..  1  Header A
     2  Header B
@@ -140,11 +145,11 @@ Header C
 	  (rst-toc-insert-number-separator "  ")
 	  (rst-toc-insert-max-level nil))
       (should (ert-equal-buffer
-	       (rst-toc-update)
+	       '(rst-toc-update)
 	       (concat title contents fields old "\n\n" headers "\^@")
 	       (concat title contents fields new "\n\n" headers "\^@")))
       (should (ert-equal-buffer
-	       (rst-toc-update)
+	       '(rst-toc-update)
 	       (concat title contents old "\n\n" headers "\^@")
 	       (concat title contents new "\n\n" headers "\^@")))
       )
@@ -173,7 +178,14 @@ Header C
   ;; Set customizable variables to defaults
   (let ((rst-toc-indent 2))
     (should (ert-equal-buffer
-	     (toc)
+	     '(toc)
+	     "No section title at all
+\^@"
+	     "\^@Table of Contents:
+"
+	     ))
+    (should (ert-equal-buffer
+	     '(toc)
 	     "=====
 Title
 =====
@@ -196,7 +208,7 @@ Subheader B.b
 Header C
 ========
 \^@"
-	     "Table of Contents: 
+	     "Table of Contents:
 Title
   Header A
   Header B
@@ -207,7 +219,7 @@ Title
 "
 	     ))
     (should (ert-equal-buffer
-	     (toc)
+	     '(toc)
 	     "=====
 Title
 =====
@@ -230,7 +242,7 @@ Subheader B.b
 Header C
 ========
 "
-	     "Table of Contents: 
+	     "Table of Contents:
 Title
   Header A
   Header B
@@ -241,7 +253,7 @@ Title
 "
 	     ))
     (should (ert-equal-buffer
-	     (toc)
+	     '(toc)
 	     "\^@
 
 =====
@@ -266,7 +278,7 @@ Subheader B.b
 Header C
 ========
 "
-	     "\^@Table of Contents: 
+	     "\^@Table of Contents:
 Title
   Header A
   Header B
@@ -277,7 +289,7 @@ Title
 "
 	     ))
     (should (ert-equal-buffer
-	     (toc)
+	     '(toc)
 	     "=====
 Title
 =====
@@ -300,7 +312,7 @@ Subheader B.b
 Header C
 ========
 "
-	     "Table of Contents: 
+	     "Table of Contents:
 Title
   Header A
   Header B

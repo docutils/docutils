@@ -25,12 +25,12 @@
 	(rst-indent-literal-minimized 2)
 	(rst-indent-comment 3))
     (should (ert-equal-buffer
-	     (indent-for-tab)
+	     '(indent-for-tab)
 	     "\^@"
 	     t
 	     ))
     (should (ert-equal-buffer
-	     (indent-for-tab)
+	     '(indent-for-tab)
 	     "
 * a
 \^@"
@@ -39,7 +39,7 @@
   \^@"
 	     ))
     (should (ert-equal-buffer
-	     (indent-for-tab)
+	     '(indent-for-tab)
 	     "
 * a
   \^@"
@@ -48,7 +48,7 @@
 \^@"
 	     ))
     (should (ert-equal-buffer
-	     (indent-for-tab)
+	     '(indent-for-tab)
 	     "
 * a
 
@@ -59,7 +59,7 @@
   * b\^@"
 	     ))
     (should (ert-equal-buffer
-	     (indent-for-tab)
+	     '(indent-for-tab)
 	     "
 * a
 
@@ -70,7 +70,7 @@
 * b\^@"
 	     ))
     (should (ert-equal-buffer
-	     (indent-for-tab)
+	     '(indent-for-tab)
 	     "
 * a
 
@@ -81,7 +81,7 @@
   \^@* b"
 	     ))
     (should (ert-equal-buffer
-	     (indent-for-tab)
+	     '(indent-for-tab)
 	     "
 * a
 
@@ -92,7 +92,7 @@
 \^@* b"
 	     ))
     (should (ert-equal-buffer
-	     (indent-for-tab)
+	     '(indent-for-tab)
 	     "
 * a
   * b
@@ -109,7 +109,7 @@
   \^@"
 	     ))
     (should (ert-equal-buffer
-	     (indent-for-tab)
+	     '(indent-for-tab)
 	     "
 * a
   * b
@@ -126,7 +126,7 @@
 \^@"
 	     ))
     (should (ert-equal-buffer
-	     (indent-for-tab)
+	     '(indent-for-tab)
 	     "
 * a
   * b
@@ -141,7 +141,7 @@
     * e\^@"
 	     ))
     (should (ert-equal-buffer
-	     (indent-for-tab)
+	     '(indent-for-tab)
 	     "
 * a
   * b
@@ -156,7 +156,7 @@
   * e\^@"
 	     ))
     (should (ert-equal-buffer
-	     (indent-for-tab)
+	     '(indent-for-tab)
 	     "
 * a
   * b
@@ -171,7 +171,7 @@
 * e\^@"
 	     ))
     (should (ert-equal-buffer
-	     (indent-for-tab)
+	     '(indent-for-tab)
 	     "
 * a
   * b
@@ -186,7 +186,7 @@
     * e\^@"
 	     ))
     (should (ert-equal-buffer
-	     (indent-for-tab)
+	     '(indent-for-tab)
 	     "
 .. [CIT]
 
@@ -215,7 +215,7 @@
                  \^@"
 	     ))
     (should (ert-equal-buffer
-	     (indent-for-tab)
+	     '(indent-for-tab)
 	     "
 .. [CIT]
 
@@ -244,7 +244,7 @@
                \^@"
 	     ))
     (should (ert-equal-buffer
-	     (indent-for-tab)
+	     '(indent-for-tab)
 	     "
 .. [CIT]
 
@@ -273,7 +273,7 @@
              \^@"
 	     ))
     (should (ert-equal-buffer
-	     (indent-for-tab)
+	     '(indent-for-tab)
 	     "
 .. [CIT]
 
@@ -302,7 +302,7 @@
             \^@"
 	     ))
     (should (ert-equal-buffer
-	     (indent-for-tab)
+	     '(indent-for-tab)
 	     "
 .. [CIT]
 
@@ -331,7 +331,7 @@
           \^@"
 	     ))
     (should (ert-equal-buffer
-	     (indent-for-tab)
+	     '(indent-for-tab)
 	     "
 .. [CIT]
 
@@ -360,7 +360,7 @@
         \^@"
 	     ))
     (should (ert-equal-buffer
-	     (indent-for-tab)
+	     '(indent-for-tab)
 	     "
 .. [CIT]
 
@@ -389,7 +389,7 @@
       \^@"
 	     ))
     (should (ert-equal-buffer
-	     (indent-for-tab)
+	     '(indent-for-tab)
 	     "
 .. [CIT]
 
@@ -418,7 +418,7 @@
    \^@"
 	     ))
     (should (ert-equal-buffer
-	     (indent-for-tab)
+	     '(indent-for-tab)
 	     "
 .. [CIT]
 

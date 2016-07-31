@@ -56,3 +56,12 @@
   (should (equal (rst-position-if 'not '(nil nil)) 0))
   (should (equal (rst-position-if 'not '(t t nil)) 2))
   )
+
+(ert-deftest rst-member-if ()
+  "Test `rst-member-if'."
+  (let ((eql-3 (lambda (el) (equal el 3))))
+    (should (equal (rst-member-if eql-3 nil) nil))
+    (should (equal (rst-member-if eql-3 '(1 2)) nil))
+    (should (equal (rst-member-if eql-3 '(1 2 3)) '(3)))
+    (should (equal (rst-member-if eql-3 '(1 2 3 4)) '(3 4)))
+    ))

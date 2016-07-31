@@ -34,7 +34,7 @@
 ;;
 ;; Examples:
 ;;
-;;   (should (ert-equal-buffer (insert "foo")
+;;   (should (ert-equal-buffer '(insert "foo")
 ;;                             ; Insertion of "foo"...
 ;;   			       (concat ert-Buf-point-char ert-Buf-mark-char)
 ;;                             ; ...into an empty buffer with point and mark...
@@ -43,7 +43,7 @@
 ;;                             ; ...should result in a buffer containing "foo"
 ;;                             ; with point and mark moved appropriately.
 ;;
-;;   (should (ert-equal-buffer (delete-region)
+;;   (should (ert-equal-buffer '(delete-region)
 ;;                             ; Deleting region...
 ;;                             `(,ert-Buf-mark-char "foo" ,ert-Buf-point-char)
 ;;                             ; ...in a region spanning the whole buffer...
@@ -52,7 +52,7 @@
 ;;                             t))
 ;;                             ; ...when called interactively.
 ;;
-;;   (should (ert-equal-buffer-return (point)
+;;   (should (ert-equal-buffer-return '(point)
 ;;                                    ; Returning the point...
 ;;                                    ert-Buf-point-char
 ;;                                    ; ...in an empty buffer...
@@ -239,7 +239,7 @@ environment."
     (let ((act-return
 	   (cond
 	    ((not interactive)
-	     (apply (car form) (cdr form)))
+	     (eval form))
 	    ((eq interactive t)
 	     (let ((current-prefix-arg (cadr form)))
 	       (call-interactively (car form))))
@@ -299,12 +299,8 @@ described for `ert-equal-buffer-return'.  Return t if equal."
       (unless elem
 	(throw 'return nil)))))
 
-(defmacro ert-equal-buffer-return (form input exp-output exp-return &optional interactive)
+(defun ert-equal-buffer-return (form input exp-output exp-return &optional interactive)
   "Evaluate function form FORM with a buffer and compare results.
-Since `ert-equal-buffer-return' is a macro FORM is not evaluated
-immediately. Thus you must give FORM as a normal function form
-with no additional quoting.
-
 The buffer is filled with INPUT.  Compare the buffer content to
 EXP-OUTPUT if this is non-nil.  Compare the return value to
 EXP-RETURN.  Return t if buffer and return value are equal to the
@@ -337,16 +333,16 @@ elements of the list are given to (advised forms of) functions
 reading from the minibuffer as user input strings.  This allows
 simulating interactive user input.
 
-Return t if buffer and return value equal the expected values."
-  `(let ((formq ',form))
-     (ert--equal-buffer formq ,input ,exp-output nil ,exp-return ,interactive)))
+FORM usually needs to be quoted.
 
-(defmacro ert-equal-buffer (form input exp-output &optional interactive)
+Return t if buffer and return value equal the expected values."
+  (ert--equal-buffer form input exp-output nil exp-return interactive))
+
+(defun ert-equal-buffer (form input exp-output &optional interactive)
   "Like `ert-equal-buffer-return' but the return value of FORM is ignored.
 INPUT, EXP-OUTPUT and INTERACTIVE are described in
 `ert-equal-buffer-return'."
-  `(let ((formq ',form))
-     (ert--equal-buffer formq ,input ,exp-output t nil ,interactive)))
+  (ert--equal-buffer form input exp-output t nil interactive))
 
 ;; ****************************************************************************
 ;; Explainers

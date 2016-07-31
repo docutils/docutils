@@ -1,4 +1,4 @@
-;; Tests for `rst-section-tree'
+;; Tests for `rst-all-stn' and relatives
 
 (add-to-list 'load-path ".")
 (load "init" nil t)
@@ -10,33 +10,14 @@
   (should (equal ert-Buf-mark-char "\^?"))
   )
 
-(defun mrk2int (obj)
-  "Replace all markers in OBJ by integers and return result."
-  (cond
-   ((markerp obj)
-    (marker-position obj))
-   ((stringp obj)
-    obj)
-   ((sequencep obj)
-    (mapcar 'mrk2int obj))
-   (t obj)))
-
-(defun section-tree ()
-  "Return result of `rst-section-tree' with markers replaced by integers."
-  (mrk2int (rst-section-tree)))
-
-(defun section-tree-point ()
-  "Return result of `rst-section-tree-point' with markers replaced by integers."
-  (mrk2int (rst-section-tree-point (rst-section-tree))))
-
-(ert-deftest rst-section-tree ()
-  "Tests `rst-section-tree'."
-  (let ((title "=====
+(ert-deftest rst-all-stn ()
+  "Tests `rst-all-stn'."
+  (let* ((title "=====
 Title
 =====
 
 ")
-	(headers "Header A
+	 (headers "Header A
 ========
 
 Header B
@@ -48,66 +29,182 @@ Subheader B.a
 SubSubheader B.a.1
 ~~~~~~~~~~~~~~~~~~
 
-Subheader B.b
--------------
-
 Header C
-========"))
-    (should (ert-equal-buffer-return
-	     (section-tree)
-	     ""
-	     t
-	     '((nil))
-	     ))
-    (should (ert-equal-buffer-return
-	     (section-tree)
-	     title
-	     t
-	     '((nil 7) (("Title" 7)))
-	     ))
-    (should (ert-equal-buffer-return
-	     (section-tree)
-	     (concat title headers)
-	     t
-	     '((nil 7)
-	       (("Title" 7)
-		(("Header A" 20))
-		(("Header B" 39)
-		 (("Subheader B.a" 58)
-		  (("SubSubheader B.a.1" 87)))
-		 (("Subheader B.b" 126)))
-		(("Header C" 155))))
-	     ))
-    ))
+========
 
-(ert-deftest rst-section-tree-point ()
-  "Tests `rst-section-tree-point'."
-  (let ((title "=====
+Missing node C.a.1
+~~~~~~~~~~~~~~~~~~
+")
+	 (ado-T (rst-Ado-new-over-and-under ?=))
+	 (ttl-T (rst-Ttl-new ado-T '(1 18 1 6 7 12 13 18) 0
+			     "Title" nil 0))
+	 (ado-A (rst-Ado-new-simple ?=))
+	 (ttl-A (rst-Ttl-new ado-A '(20 37 nil nil 20 28 29 37) 0
+			     "Header A" nil 1))
+	 (ttl-B (rst-Ttl-new ado-A '(39 56 nil nil 39 47 48 56) 0
+			     "Header B" nil 1))
+	 (ado-Ba (rst-Ado-new-simple ?-))
+	 (ttl-Ba (rst-Ttl-new ado-Ba '(58 85 nil nil 58 71 72 85) 0
+			      "Subheader B.a" nil 2))
+	 (ado-Ba1 (rst-Ado-new-simple ?~))
+	 (ttl-Ba1 (rst-Ttl-new ado-Ba1 '(87 124 nil nil 87 105 106 124) 0
+			       "SubSubheader B.a.1" nil 3))
+	 (ttl-C (rst-Ttl-new ado-A '(126 143 nil nil 126 134 135 143) 0
+			     "Header C" nil 1))
+	 (ttl-Ca nil)
+	 (ttl-Ca1 (rst-Ttl-new ado-Ba1 '(145 182 nil nil 145 163 164 182) 0
+			       "Missing node C.a.1" nil 3)))
+    (rst-Ttl-evaluate-hdr ttl-T)
+    (rst-Ttl-evaluate-hdr ttl-A)
+    (rst-Ttl-evaluate-hdr ttl-B)
+    (rst-Ttl-evaluate-hdr ttl-Ba)
+    (rst-Ttl-evaluate-hdr ttl-Ba1)
+    (rst-Ttl-evaluate-hdr ttl-C)
+    (rst-Ttl-evaluate-hdr ttl-Ca1)
+    (let* ((stn-Ca (rst-Stn-new
+		    ttl-Ca 2
+		    (list (rst-Stn-new ttl-Ca1 3 nil))))
+	   (stn-C (rst-Stn-new
+		   ttl-C 1
+		   (list stn-Ca)))
+	   (stn-A (rst-Stn-new ttl-A 1 nil))
+	   (stn-B (rst-Stn-new
+		   ttl-B 1
+		   (list (rst-Stn-new
+			  ttl-Ba 2
+			  (list (rst-Stn-new ttl-Ba1 3 nil))))))
+	   (stn-T (rst-Stn-new
+		   ttl-T 0
+		   (list stn-A
+			 stn-B
+			 stn-C))))
+      (should (ert-equal-buffer-return
+	       '(rst-all-stn)
+	       ""
+	       t
+	       nil
+	       ))
+      (should (ert-equal-buffer-return
+	       '(rst-all-stn)
+	       title
+	       t
+	       (rst-Stn-new
+		nil -1
+		(list (rst-Stn-new ttl-T 0 nil)))
+	       ))
+      (should (ert-equal-buffer-return
+	       '(rst-all-stn)
+	       (concat title headers)
+	       t
+	       (rst-Stn-new
+		nil -1
+		(list stn-T))
+	       ))
+      )))
+
+(ert-deftest rst-stn-containing-point ()
+  "Tests `rst-stn-containing-point'."
+  (let* (;; "
+	 ;; =====
+	 ;; Title
+	 ;; =====
+	 ;; 
+	 ;; Header A
+	 ;; ========
+	 ;; 
+	 ;; Header B
+	 ;; ========
+	 ;; 
+	 ;; Subheader B.a
+	 ;; -------------
+	 ;; 
+	 ;; SubSubheader B.a.1
+	 ;; ~~~~~~~~~~~~~~~~~~
+	 ;; 
+	 ;; Subheader B.b
+	 ;; -------------
+	 ;; 
+	 ;; Header C
+	 ;; ========
+	 ;; 
+	 ;; Missing node C.a.1
+	 ;; ~~~~~~~~~~~~~~~~~~
+	 ;; "
+	 (title "=====
 Title
 =====
 
-"))
-    (should (ert-equal-buffer-return
-	     (section-tree-point)
-	     "\^@"
-	     t
-	     '(((nil)))
-	     ))
-    (should (ert-equal-buffer-return
-	     (section-tree-point)
-	     (concat "\^@" title)
-	     t
-	     '(((nil 7)))
-	     ))
-    (should (ert-equal-buffer-return
-	     (section-tree-point)
-	     (concat title "\^@")
-	     t
-	     '(((nil 7) ("Title" 7)) ("Title" 7))
-	     ))
-    (should (ert-equal-buffer-return
-	     (section-tree-point)
-	     (concat title "\^@Header A
+")
+	 (ado-T (rst-Ado-new-over-and-under ?=))
+	 (ttl-T (rst-Ttl-new ado-T '(1 18 1 6 7 12 13 18) 0
+			     "Title" nil 0))
+	 (ado-A (rst-Ado-new-simple ?=))
+	 (ttl-A (rst-Ttl-new ado-A '(20 37 nil nil 20 28 29 37) 0
+			     "Header A" nil 1))
+	 (ttl-B (rst-Ttl-new ado-A '(39 56 nil nil 39 47 48 56) 0
+			     "Header B" nil 1))
+	 (ado-Ba (rst-Ado-new-simple ?-))
+	 (ttl-Ba (rst-Ttl-new ado-Ba '(58 85 nil nil 58 71 72 85) 0
+			      "Subheader B.a" nil 2))
+	 (ado-Ba1 (rst-Ado-new-simple ?~))
+	 (ttl-Ba1 (rst-Ttl-new ado-Ba1 '(87 124 nil nil 87 105 106 124) 0
+			       "SubSubheader B.a.1" nil 3))
+	 (ttl-Bb (rst-Ttl-new ado-Ba '(126 153 nil nil 126 139 140 153) 0
+			      "Subheader B.b" nil 2))
+	 (ttl-C (rst-Ttl-new ado-A '(155 172 nil nil 155 163 164 172) 0
+			     "Header C" nil 1))
+	 (ttl-Ca nil)
+	 (ttl-Ca1 (rst-Ttl-new ado-Ba1 '(164 211 nil nil 164 192 193 211) 0
+			       "Missing node C.a.1" nil 3)))
+    (rst-Ttl-evaluate-hdr ttl-T)
+    (rst-Ttl-evaluate-hdr ttl-A)
+    (rst-Ttl-evaluate-hdr ttl-B)
+    (rst-Ttl-evaluate-hdr ttl-Ba)
+    (rst-Ttl-evaluate-hdr ttl-Ba1)
+    (rst-Ttl-evaluate-hdr ttl-Bb)
+    (rst-Ttl-evaluate-hdr ttl-C)
+    (rst-Ttl-evaluate-hdr ttl-Ca1)
+    (let* ((stn-Ca (rst-Stn-new
+		    ttl-Ca 2
+		    (list (rst-Stn-new ttl-Ca1 3 nil))))
+	   (stn-C (rst-Stn-new
+		   ttl-C 1
+		   (list stn-Ca)))
+	   (stn-A (rst-Stn-new ttl-A 1 nil))
+	   (stn-Ba (rst-Stn-new
+		    ttl-Ba 2
+		    (list (rst-Stn-new ttl-Ba1 3 nil))))
+	   (stn-Bb (rst-Stn-new ttl-Bb 2 nil))
+	   (stn-B (rst-Stn-new
+		   ttl-B 1
+		   (list stn-Ba
+			 stn-Bb)))
+	   (stn-T (rst-Stn-new
+		   ttl-T 0
+		   (list stn-A
+			 stn-B
+			 stn-C))))
+      (should (ert-equal-buffer-return
+	       '(rst-stn-containing-point (rst-all-stn))
+	       "\^@"
+	       t
+	       nil
+	       ))
+      (should (ert-equal-buffer-return
+	       '(rst-stn-containing-point (rst-all-stn))
+	       (concat "\^@" title)
+	       t
+	       nil
+	       ))
+      (should (ert-equal-buffer-return
+	       '(rst-stn-containing-point (rst-all-stn))
+	       (concat title "\^@")
+	       t
+	       (rst-Stn-new ttl-T 0 nil)
+	       ))
+      (should (ert-equal-buffer-return
+	       '(rst-stn-containing-point (rst-all-stn))
+	       (concat title "\^@Header A
 ========
 
 Header B
@@ -124,12 +221,12 @@ Subheader B.b
 
 Header C
 ========")
-	     t
-	     '(((nil 7) ("Title" 7) ("Header A" 20)) ("Header A" 20))
-	     ))
-    (should (ert-equal-buffer-return
-	     (section-tree-point)
-	     (concat title "Header A
+	       t
+	       stn-A
+	       ))
+      (should (ert-equal-buffer-return
+	       '(rst-stn-containing-point (rst-all-stn))
+	       (concat title "Header A
 ========
 
 Header B
@@ -146,15 +243,12 @@ Subheader B.b
 
 Header C
 ========")
-	     t
-	     '(((nil 7) ("Title" 7) ("Header B" 39)) ("Header B" 39)
-	       (("Subheader B.a" 58)
-		(("SubSubheader B.a.1" 87)))
-	       (("Subheader B.b" 126)))
-	     ))
-    (should (ert-equal-buffer-return
-	     (section-tree-point)
-	     (concat title "Header A
+	       t
+	       stn-B
+	       ))
+      (should (ert-equal-buffer-return
+	       '(rst-stn-containing-point (rst-all-stn))
+	       (concat title "Header A
 ========
 
 Header B
@@ -171,14 +265,12 @@ Subheader B.b
 
 Header C
 ========")
-	     t
-	     '(((nil 7) ("Title" 7) ("Header B" 39) ("Subheader B.a" 58))
-	       ("Subheader B.a" 58)
-	       (("SubSubheader B.a.1" 87)))
-	     ))
-    (should (ert-equal-buffer-return
-	     (section-tree-point)
-	     (concat title "Header A
+	       t
+	       stn-Ba
+	       ))
+      (should (ert-equal-buffer-return
+	       '(rst-stn-containing-point (rst-all-stn))
+	       (concat title "Header A
 ========
 
 Header B
@@ -195,8 +287,7 @@ S\^@ubheader B.b
 
 Header C
 ========")
-	     t
-	     '(((nil 7) ("Title" 7) ("Header B" 39) ("Subheader B.b" 126))
-	       ("Subheader B.b" 126))
-	     ))
-    ))
+	       t
+	       stn-Bb
+	       ))
+    )))

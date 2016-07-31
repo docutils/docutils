@@ -18,7 +18,7 @@
 (ert-deftest forward-paragraph ()
   "Tests for `forward-paragraph'."
   (should (ert-equal-buffer-return
-	   (fwd-para)
+	   '(fwd-para)
 	   "
 :Field: Content
 \^@
@@ -42,7 +42,7 @@
 
 
   (should (ert-equal-buffer-return
-	   (fwd-para)
+	   '(fwd-para)
 	   "\^@
 This is
 a short
@@ -54,7 +54,7 @@ para\^@"
 	   0
 	   ))
   (should (ert-equal-buffer-return
-	   (fwd-para)
+	   '(fwd-para)
 	   "\^@
 This is
 a short
@@ -68,7 +68,7 @@ para
 	   0
 	   ))
   (should (ert-equal-buffer-return
-	   (fwd-para)
+	   '(fwd-para)
 	   "\^@
 This is
 a short
@@ -84,7 +84,7 @@ para
 	   0
 	   ))
   (should (ert-equal-buffer-return
-	   (fwd-para)
+	   '(fwd-para)
 	   "\^@
 This is
 a short
@@ -102,7 +102,7 @@ para
 	   0
 	   ))
   (should (ert-equal-buffer-return
-	   (fwd-para)
+	   '(fwd-para)
 	   "
 \^@This is
 a short
@@ -118,7 +118,7 @@ para
 	   0
 	   ))
   (should (ert-equal-buffer-return
-	   (fwd-para)
+	   '(fwd-para)
 	   "
 This is
 a short
@@ -134,7 +134,7 @@ para
 	   0
 	   ))
   (should (ert-equal-buffer-return
-	   (fwd-para)
+	   '(fwd-para)
 	   "
 This is
 a short
@@ -150,7 +150,7 @@ para
 	   0
 	   ))
   (should (ert-equal-buffer-return
-	   (fwd-para)
+	   '(fwd-para)
 	   "
 This is
 \^@a short
@@ -166,7 +166,7 @@ a short
 	   0
 	   ))
   (should (ert-equal-buffer-return
-	   (fwd-para)
+	   '(fwd-para)
 	   "
 This is
 a short
@@ -190,7 +190,7 @@ para
 	   0
 	   ))
   (should (ert-equal-buffer-return
-	   (fwd-para)
+	   '(fwd-para)
 	   "
 \^@* An item
 
@@ -204,7 +204,7 @@ para
 	   0
 	   ))
   (should (ert-equal-buffer-return
-	   (fwd-para)
+	   '(fwd-para)
 	   "
 \^@* An item
 * Another item
@@ -216,7 +216,7 @@ para
 	   0
 	   ))
   (should (ert-equal-buffer-return
-	   (fwd-para)
+	   '(fwd-para)
 	   "
 \^@:Field: Content
 
@@ -238,7 +238,7 @@ para
 	   0
 	   ))
   (should (ert-equal-buffer-return
-	   (fwd-para)
+	   '(fwd-para)
 	   "
 :Field: Content
 \^@
@@ -260,7 +260,7 @@ para
 	   0
 	   ))
   (should (ert-equal-buffer-return
-	   (fwd-para)
+	   '(fwd-para)
 	   "
 :Field: Content
 
@@ -282,7 +282,7 @@ para
 	   0
 	   ))
   (should (ert-equal-buffer-return
-	   (fwd-para)
+	   '(fwd-para)
 	   "\^@
 .. |s| d::
   :F: Content
@@ -304,7 +304,7 @@ para
 	   0
 	   ))
   (should (ert-equal-buffer-return
-	   (fwd-para)
+	   '(fwd-para)
 	   "
 .. |s| d::
 \^@  :F: Content
@@ -326,7 +326,7 @@ para
 	   0
 	   ))
   (should (ert-equal-buffer-return
-	   (fwd-para)
+	   '(fwd-para)
 	   "
 .. |s| d::
   :F: Content
@@ -348,7 +348,7 @@ para
 	   0
 	   ))
   (should (ert-equal-buffer-return
-	   (fwd-para)
+	   '(fwd-para)
 	   "
 .. |s| d::
   :F: Content

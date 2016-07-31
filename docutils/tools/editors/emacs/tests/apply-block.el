@@ -19,27 +19,27 @@
 (ert-deftest rst-find-leftmost-column ()
   "Tests for `rst-find-leftmost-column'."
   (should (ert-equal-buffer-return
-	   (find-leftmost-column)
+	   '(find-leftmost-column)
 	   "\^@abc
 \^?"
 	   t
 	   0))
   (should (ert-equal-buffer-return
-	   (find-leftmost-column)
+	   '(find-leftmost-column)
 	   "
 \^@abc
 \^?"
 	   t
 	   0))
   (should (ert-equal-buffer-return
-	   (find-leftmost-column)
+	   '(find-leftmost-column)
 	   "
 \^@  abc
 \^?"
 	   t
 	   2))
   (should (ert-equal-buffer-return
-	   (find-leftmost-column)
+	   '(find-leftmost-column)
 	   "
 \^@  abc
 def
@@ -47,7 +47,7 @@ def
 	   t
 	   0))
   (should (ert-equal-buffer-return
-	   (find-leftmost-column)
+	   '(find-leftmost-column)
 	   "
 \^@  abc
     def
@@ -55,7 +55,7 @@ def
 	   t
 	   2))
   (should (ert-equal-buffer-return
-	   (find-leftmost-column)
+	   '(find-leftmost-column)
 	   "
 \^@    abc
     def
@@ -63,7 +63,7 @@ def
 	   t
 	   4))
   (should (ert-equal-buffer-return
-	   (find-leftmost-column)
+	   '(find-leftmost-column)
 	   ; Empty lines contain spaces
 	   "
 \^@
@@ -76,13 +76,13 @@ def
 	   t
 	   4))
   (should (ert-equal-buffer-return
-	   (find-leftmost-column)
+	   '(find-leftmost-column)
 	   "  abc\^@
 def\^?"
 	   t
 	   0))
   (should (ert-equal-buffer-return
-	   (find-leftmost-column)
+	   '(find-leftmost-column)
 	   "
   abc\^@
     def
@@ -90,13 +90,13 @@ def\^?"
 	   t
 	   2))
   (should (ert-equal-buffer-return
-	   (find-leftmost-column)
+	   '(find-leftmost-column)
 	   "  a\^@b\^?c
 def"
 	   t
 	   2))
   (should (ert-equal-buffer-return
-	   (find-leftmost-column)
+	   '(find-leftmost-column)
 	   "
 \^@    abc
 \^?  def
@@ -104,7 +104,7 @@ def"
 	   t
 	   4))
   (should (ert-equal-buffer-return
-	   (find-leftmost-column)
+	   '(find-leftmost-column)
 	   "
 \^@    abc
  \^? def
@@ -112,7 +112,7 @@ def"
 	   t
 	   2))
   (should (ert-equal-buffer-return
-	   (find-leftmost-column)
+	   '(find-leftmost-column)
 	   "
 \^@    abc
   d\^?ef
@@ -131,7 +131,7 @@ def"
   "Tests for `rst-bullet-list-region'."
   (let ((rst-preferred-bullets '(?*)))
     (should (ert-equal-buffer
-	     (bullet-list-region nil)
+	     '(bullet-list-region nil)
 	     "
 \^@
 eins
@@ -149,7 +149,7 @@ two
   two
 \^?"))
     (should (ert-equal-buffer
-	     (bullet-list-region nil)
+	     '(bullet-list-region nil)
 	     "
 \^@
 eins
@@ -171,7 +171,7 @@ two
   two
 \^?"))
     (should (ert-equal-buffer
-	     (bullet-list-region nil)
+	     '(bullet-list-region nil)
 	     "
 \^@
 eins
@@ -187,7 +187,7 @@ two\^?"
 * zwei
   two\^?"))
     (should (ert-equal-buffer
-	     (bullet-list-region t)
+	     '(bullet-list-region t)
 	     "
 \^@
 eins
@@ -212,7 +212,7 @@ drei
   "Tests for `rst-bullet-list-region' ending in an error."
   (let ((rst-preferred-bullets nil))
     (should-error (ert-equal-buffer
-		   (bullet-list-region nil)
+		   '(bullet-list-region nil)
 		   ""
 		   t
 		   )
@@ -228,7 +228,7 @@ drei
 (ert-deftest rst-enumerate-region ()
   "Tests for `rst-enumerate-region'."
   (should (ert-equal-buffer
-	   (enumerate-region nil)
+	   '(enumerate-region nil)
 	   "
 \^@eins
 one
@@ -244,7 +244,7 @@ two
    two
 \^?"))
   (should (ert-equal-buffer
-	   (enumerate-region nil)
+	   '(enumerate-region nil)
 	   "
 \^@eins
 one
@@ -264,7 +264,7 @@ two
    two
 \^?"))
   (should (ert-equal-buffer
-	   (enumerate-region t)
+	   '(enumerate-region t)
 	   "
 \^@eins
 zwei
@@ -288,7 +288,7 @@ drei
 (ert-deftest rst-line-block-region ()
   "Tests for `rst-line-block-region'."
   (should (ert-equal-buffer
-	   (line-block-region nil)
+	   '(line-block-region nil)
 	   "
 \^@
 eins
@@ -304,7 +304,7 @@ zwei
 | zwei
 \^?"))
   (should (ert-equal-buffer
-	   (line-block-region nil)
+	   '(line-block-region nil)
 	   "
 \^@
 eins
@@ -322,7 +322,7 @@ zwei
 |     two
 \^?"))
   (should (ert-equal-buffer
-	   (line-block-region nil)
+	   '(line-block-region nil)
 	   "
 \^@
     eins
@@ -340,7 +340,7 @@ zwei
   |   two
 \^?"))
   (should (ert-equal-buffer
-	   (line-block-region t)
+	   '(line-block-region t)
 	   "
 \^@
 eins
@@ -356,7 +356,7 @@ zwei
 | zwei
 \^?"))
   (should (ert-equal-buffer
-	   (line-block-region t)
+	   '(line-block-region t)
 	   "
 \^@
 eins
@@ -372,7 +372,7 @@ zwei
 | zwei
 \^?"))
   (should (ert-equal-buffer
-	   (line-block-region t)
+	   '(line-block-region t)
 	   "
 \^@
     eins
@@ -403,20 +403,20 @@ zwei
 (ert-deftest rst-apply-indented-blocks ()
   "Tests for `rst-apply-indented-blocks'."
   (should (ert-equal-buffer-return
-	   (apply-indented-blocks 0 indented-block-params)
+	   '(apply-indented-blocks 0 'indented-block-params)
 	   "\^@abc
 \^?"
 	   t
 	   '((0 1 t   nil nil 0)
 	     )))
   (should (ert-equal-buffer-return
-	   (apply-indented-blocks 0 indented-block-params)
+	   '(apply-indented-blocks 0 'indented-block-params)
 	   "a\^@b\^?c"
 	   t
 	   '((0 1 t   nil nil 0)
 	     )))
   (should (ert-equal-buffer-return
-	   (apply-indented-blocks 2 indented-block-params)
+	   '(apply-indented-blocks 2 'indented-block-params)
 	   "\^@  
   abc
 \^?"
@@ -425,7 +425,7 @@ zwei
 	     (2 1 t   nil nil 0)
 	     )))
   (should (ert-equal-buffer-return
-	   (apply-indented-blocks 2 indented-block-params)
+	   '(apply-indented-blocks 2 'indented-block-params)
 	   "\^@
   abc
 
@@ -438,7 +438,7 @@ zwei
 	     (4 1 nil t   nil 2)
 	     )))
   (should (ert-equal-buffer-return
-	   (apply-indented-blocks 2 indented-block-params)
+	   '(apply-indented-blocks 2 'indented-block-params)
 	   "\^@
   abc
 
@@ -455,12 +455,12 @@ zwei
 	     (2 1 nil t   t   nil)
 	     )))
   (should (ert-equal-buffer-return
-	   (apply-indented-blocks 0 indented-block-params)
+	   '(apply-indented-blocks 0 'indented-block-params)
 	   "\^@\^?abc"
 	   t
 	   nil))
   (should (ert-equal-buffer-return
-	   (apply-indented-blocks 2 indented-block-params)
+	   '(apply-indented-blocks 2 'indented-block-params)
 	   "\^@
   abc
 
@@ -475,7 +475,7 @@ zwei
 	     (4 2 nil t   nil 2)
 	     )))
   (should (ert-equal-buffer-return
-	   (apply-indented-blocks 2 indented-block-params)
+	   '(apply-indented-blocks 2 'indented-block-params)
 	   "\^@
   abc
 
