@@ -28,46 +28,10 @@ __ http://www.latex-project.org/
 .. _books on LaTeX and related topics:
    http://www.latex-project.org/guides/books.html
 
-
-There are two approaches to typeset documents from reStructuredText
-sources via LaTeX:
-
-1. treat LaTeX as a document format (like HTML):
-
-   Transform the internal markup into corresponding LaTeX markup.
-   For example, a section title would be written with the LaTeX section
-   command: ``\section{this section title}``.
-
-   This keeps the document structure and semantic markup produing a readable
-   LaTeX file, but may require hacking around Docutils — LaTeX
-   incompatibilities.
-
-   As with HTML, styling is mostly done via style sheets or
-   `LaTeX packages`_.
-
-   If you prefer this approach, try the `latex2e` or the `xetex`
-   writer.
-
-2. treat LaTeX as a page description format (like Postscript):
-
-   Use LaTeX as a typesetting system to produce the desired output
-   without representing document structure in the LaTeX source. This
-   will work around Docutils-incompatible features in LaTeX but
-   produces a hard to read LaTeX file. Styling is done via options to
-   the latex writer.
-
-   The (orphaned) `newlatex` writer (``rst2newlatex.py``) uses LaTeX as
-   a typesetter without caring about producing readable/stylable LaTeX
-   files.
-
-This documents describes the first approach used by the `latex2e`
-and `xetex` writers.
-
-
 LaTeX
 =====
 
-Unlike HTML/CSS, LaTeX provides one common language for markup and
+Unlike HTML with CSS, LaTeX uses one common language for markup and
 style definitions. Separation of content and style is realized by
 collecting style definitions in the documentclass_, `LaTeX packages`_,
 or the document preamble.
@@ -79,10 +43,9 @@ LaTeX packages (similar to Python modules or C libraries) provide
 means to extend or modify the LaTeX language by redefining macros or
 providing new ones. There is a *huge* selection of packages (standard
 as well as user contributed) coming with your TeX distribution or
-available at CTAN_ (see the `TeX Catalogue`_).
+available at CTAN_.
 
 .. _CTAN: http://www.ctan.org
-.. _TeX Catalogue: http://texcatalogue.sarovar.org/
 .. _stylesheet:
    config.html#stylesheet-latex2e-writer
 .. _TeX input path:
@@ -149,10 +112,7 @@ following less common units:
 The default length unit (added by Docutils to length specifications
 without unit) is the "DTP point".
 
-For more on lengths in LaTeX, see e.g. `Hypertext Help with LaTeX: Lengths`__
-
 .. _length units: ../ref/rst/restructuredtext.html#length-units
-__ http://www.giss.nasa.gov/tools/latex/ltx-86.html.
 
 
 PDF generation
@@ -174,16 +134,17 @@ _`latex` + dvips + ps2pdf
   Produce a DVI file with ``latex``, postscript with ``dvips`` and PDF with
   ``ps2pdf``.
 
-_`xelatex`
-  The `XeTeX`__ engine works with input files in UTF-8 encoding and system
-  fonts. Export your document with the `xetex` writer (``rst2xetex``),
-  if you want to go this route.
+_`xelatex` or _`lualatex`
+  The `XeTeX`_ and LuaTeX_ engines work with input files in UTF-8 encoding
+  and system fonts. Export your document with the `xetex` writer
+  (``rst2xetex``), if you want to go this route.
 
-You need to call latex (or pdflatex/xelatex) twice (or even three times) to
+You need to call latex (or pdflatex/xelatex/lualatex) twice (or even three times) to
 get internal references correct.
 
 .. _documentoptions: config.html#documentoptions
-__ http://tug.org/xetex/
+.. _xetex: http://tug.org/xetex/
+.. _luatex: http://luatex.org/
 
 
 _`rubber`
@@ -192,7 +153,7 @@ _`rubber`
   This includes processing bibliographic references or indices, as well as
   compilation or conversion of figures.
 
-__ http://iml.univ-mrs.fr/~beffara/soft/rubber/
+__ https://launchpad.net/rubber/
 
 
 Configuration
@@ -552,7 +513,6 @@ document class
 
 There are hundreds of LaTeX document classes installed by modern
 LaTeX distributions, provided by publishers, or available at CTAN_.
-The `TeX Catalogue`_ lists most of them.
 
 Popular document classes:
   * article, report, book: standard document classes
@@ -1904,7 +1864,7 @@ The Rubber_ wrapper can be used for automatic image conversion.
 Docutils expects an URI as pointer to the image file. The latex writer
 transforms this URI to a local path. By default, LaTeX does not accept
 spaces and more than one dot in the filename. If using "traditional"
-filenames is not an option, the adding grffile_ to the `style sheets`_
+filenames is not an option, adding grffile_ to the `style sheets`_
 can help.
 
 __ ../ref/rst/directives.html#images
@@ -2044,17 +2004,13 @@ Tables
 
 :Tablewidth: reST-documents line length is assumed to be 80 characters. The
              tablewidth is set relative to this value. If someone produces
-             documents with line length of 132 this will fail.
+             documents with line length of 132 this will lead to suboptimal
+             results.
 
-             Table width is tried to fit in page even if it is wider than
-             the assumed linewidth, still assumed linewidth is a hook.
+             You may use the `:width:` option to manually set the
+             table column widths.
 
 * Table: multicol cells are always left aligned.
-
-* The contents of a rowspan cell do not influence table height.
-  (multirow "feature", use a phantom or strut?)
-
-* Multirow cells might mix up the following table rows.
 
 * Table cells with both multirow and multicolumn are currently not possible.
 

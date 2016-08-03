@@ -129,7 +129,9 @@ class Writer(writers.Writer):
           ['--no-compact-field-lists'],
           {'dest': 'compact_field_lists', 'action': 'store_false'}),
          ('Added to standard table classes. '
-          'Defined styles: "borderless". Default: ""',
+          'Defined styles: borderless, booktabs, '
+          'align-left, align-center, align-right, colwidths-auto. '
+          'Default: ""',
           ['--table-style'],
           {'default': ''}),
          ('Math output format (one of "MathML", "HTML", "MathJax", '

@@ -21,7 +21,7 @@ Overview
   ..          html_          rst2html.py    `XHTML 1          `CSS 1`_
                                             Transitional`_
 
-  html_plain_ html5_         rst2html5.py   `HTML 5`_         `CSS 3`_
+  html_plain_ html5_         rst2html5.py   `HTML5`_          `CSS 3`_
   =========== ============== ============== ================= ===========
 
 * `Special HTML writers`_
@@ -82,17 +82,6 @@ formatting hints and are tagged as "text/html" (instead of
 .. [#IE] Conformance to `CSS 2.1`_ has been added in IE 8 (2009), support
    for XHTML in IE 9 (2011).
 
-.. TODO: How to name a specific alias/front-end pointing to html4css1?
-
-   html4
-     | +1 short form of html4css1,
-     | -1 writer produces XHTML 1, not HTML 4
-   xhtml1
-     | +1 correct and short description of the output format.
-     | -1 may be confused with xhtml11 or xhtml (aliases for the
-          "new" XHTML 1.1. writer inheriting from html_plain).
-
-
 .. _rst2html.py: tools.html#rst2html-py
 .. _[html4css1 writer]: config.html#html4css1-writer
 .. _html4css1.css: ../../docutils/writers/html4css1/html4css1.css
@@ -105,42 +94,18 @@ html_plain
 :front-end: rst2html5.py_
 :config: `[html-plain writer]`_
 
-The `html_plain` module is both, basis for other HTML writers and a
-versatile writer for end-users or programmatic use.
+The ``html_plain`` writer generates `polyglot HTML`_ output, valid XML that
+is compatible with `HTML5`_.
+New features and elements will only be used if they are widely supported to
+make documents `viewable with any browser`_.
 
-The ``html_plain`` writer generates `polyglot HTML`_ output that is
-compatible with `HTML 5`_ and `XHTML 1 Transitional`_. New features and
-elements will only be used if they are widely supported to make documents
-`viewable with any browser`_.  There is no hard-coded formatting information
-in the HTML document. Correct rendering of elements not directly supported
-by HTML depends on a CSS_ style sheet. The provided style sheets
-minimal.css_ and plain.css_ define required and optional styling rules
-respectively. Adaption of the layout is possible with `custom style
-sheets`_.
+There is no hard-coded formatting information in the HTML document. Correct
+rendering of elements not directly supported by HTML depends on a CSS_ style
+sheet. The provided style sheets minimal.css_ and plain.css_ define required
+and optional styling rules respectively. Adaption of the layout is possible
+with `custom style sheets`_.
 
 New in Docutils 0.13
-
-.. TODO
-
-   Find the right name for this writer. Suggestions:
-
-   html-common
-     ±0 common definitions for XHTML and HTML5
-   html-plain
-     ±0 simple, plain, unadorned.
-   html-simple
-     ±0 simple
-   html-vanilla
-     -0 too long, too colloquial
-   html-basic
-     -1 does not produce `XHTML Basic`_
-   html-lcd
-     `Lowest Common Denominator` -- supporting HTML 5, XHTML 1,
-     and older (HTML 4 + CSS2) browsers.
-
-     -1 cryptic
-   html-base
-     -1 not only base class but also suited for end-users
 
 .. _rst2html5.py: tools.html#rst2html5-py
 .. _[html-plain writer]: config.html#html-plain-writer
@@ -149,43 +114,24 @@ New in Docutils 0.13
 .. _custom style sheets: ../howto/html-stylesheets.html
 .. _viewable with any browser: http://www.anybrowser.org/campaign
 
-Aliases
-~~~~~~~
 
 html
-""""
+~~~~
 
-Currently, `html` is an alias for the html4css1_ writer.
+`html` is an alias for the recommended Docutils HTML writer.
+Currently, `html` is mapped to html4css1_.
 
-.. admonition:: Suggestion
+The target may change with the development of HTML, browsers, Docutils, and
+the web.
 
-  Let the alias `html` point to the "recommended Docutils HTML writer".
-  Its target may change with the development of HTML, browsers, Docutils, and
-  the web.
+* Use `get_writer_by_name('html') or the ``rst2html.py`` front end, if you
+  want the output to be up-to-date automatically.
 
-  * Use `get_writer_by_name('html') or the ``rst2html.py`` front end, if you
-    want the output to be up-to-date automatically.
+* Use a specific writer name or front end, if you depend on stability of the
+  generated HTML code, e.g. because you use a custom style sheet or
+  post-processing that may break otherwise.
 
-  * Use a specific writer name or front end, if you depend on stability of
-    the generated HTML code, e.g. because you use a custom style sheet or
-    post-processing that may break otherwise.
 
-html4
-"""""
-
-The alias `html4` provides a stable shortcut for the html4css1_ writer.
-
-New in Docutils 0.13
-
-html5
-"""""
-
-In Docutils 0.13, html5 is an alias to the html_plain_ writer.
-
-In future releases, `html5` may become a separate HTML writer that makes use
-of new features and objects defined in HTML5 but not (yet) fit for use in
-`html_plain`_ because of limited browser support (like <video>, <aside>, or
-<section>).
 
 Special HTML writers
 --------------------
@@ -229,35 +175,21 @@ HTML writers in the sandbox
 
 There are two more HTML writers in the sandbox_:
 
+.. _sandbox: ../dev/policies.html#the-sandbox
+
 xhtml11
 ~~~~~~~
 :aliases:   xhtml, html4strict
 :front-end: rst2xhtml.py
 :config:    `[xhtml11 writer]`
 
-`XHTML 1.1`_ is the current version of the XML based `extensible Hypertext
-Markup Language`.
+`XHTML 1.1`_ is the latest version of the XML based `extensible
+Hypertext Markup Language` with an official DTD.
 
-The `xhtml11` writer inherits from html_plain_ and adds compatibility to the
-strict requirements of `XHTML 1.1`_:
+The `xhtml11 writer`_ lives in the Docutils sandbox_ since 2008. The output
+conforms to the strict requirements of `XHTML 1.1`_.
 
-* There is no attribute "lang" (only "xml:lang").
-
-* Enumerated lists don't support the "start" attribute.
-
-  The style sheet xhtml11.css_ adds support for a "start" value for
-  enumerated lists via a CSS-counter. This allows also nested enumeration.
-
-* ``<sup>`` and ``<sub>`` tags are not allowed in preformatted blocks
-  (``<pre>``).
-
-The `math-output` `config setting`_ defaults to "MathML".
-
-.. _sandbox: ../dev/policies.html#the-sandbox
-.. _rst2xhtml.py: tools.html#rst2html5-py
-.. _config setting:
-.. _[xhtml11 writer]: config.html#xhtml11-writer
-.. _xhtml11.css: ../../docutils/writers/xhtml11/xhtml11.css
+.. _xhtml11 writer: ../../../sandbox/html4strict/README.html
 
 
 html4trans
@@ -281,7 +213,7 @@ has some drawbacks_.)
 HTML and CSS Versions
 ---------------------
 
-_`HTML 5`
+_`HTML5`
    `HTML5, A vocabulary and associated APIs for HTML and XHTML`,
    W3C Recommendation, 28 October 2014.
    http://www.w3.org/TR/html5/
@@ -314,7 +246,7 @@ _`HTML 4.01 Transitional`
 .. _`CSS 1`:
 
 _`CSS Level 1`:
-  The features defined in the CSS1 specification, but using the syntax
+  The features defined in the `CSS1 specification`_, but using the syntax
   and definitions in the `CSS 2.1`_ specification.
 
 _`CSS 2.1` `Cascading Style Sheets Level 2 Revision 1 (CSS 2.1) Specification`,
@@ -333,5 +265,88 @@ _`CSS 3`:
    ----------------
 
 .. _HTML Compatibility Guidelines: http://www.w3.org/TR/xhtml1/#guidelines
-.. _polyglot HTML: http://www.w3.org/TR/html-polyglot/
 .. _CSS: http://www.w3.org/TR/CSS/
+.. _CSS1 specification: http://www.w3.org/TR/2008/REC-CSS1-20080411/
+.. _polyglot HTML: http://www.w3.org/TR/html-polyglot/
+
+   .. Beware. This specification is no longer in active maintenance and the
+      HTML Working Group does not intend to maintain it further.
+
+.. Appendix
+
+
+      On the question of Polyglot markup, there seems to be little
+      consensus. One line of argument suggests that, to the extent that it
+      is practical to obey the Robustness principle, it makes sense to do
+      so. That is, if you're generating HTML markup for the web, and you can
+      generate Polyglot markup that is also directly consumable as XML, you
+      should do so. Another line of argument suggests that even under the
+      most optimistic of projections, so tiny a fraction of the web will
+      ever be written in Polyglot that there's no practical benefit to
+      pursuing it as a general strategy for consuming documents from the
+      web. If you want to consume HTML content, use an HTML parser that
+      produces an XML-compatible DOM or event stream.
+
+      -- https://www.w3.org/TR/html-xml-tf-report/#conclusions
+
+  Further development
+
+  On 2016-05-25, David Goodger wrote:
+
+  > In addition, I'd actually like to see the HTML writer(s) with
+  > fully-parameterized classes, i.e. removing hard-coded *classes* as well as
+  > formatting. This way, any user who wants to (e.g.) write reST for use with
+  > Bootstrap can easily work around any naming conflicts.
+
+
+
+  Problems with html4css1 writer:
+
+  1. Limiting ourself to CSS Level 1 requires use of hard-coded HTML
+     formatting to get all rST objects mapped to HTML.
+     Hard-coded HTML formatting is considered bad practice.
+
+  2. Maths cannot be included in MathML format without rendering a
+     hmtl4css1-generated document invalid.
+
+     (XHTML 1.1. is the only member of the "HTML4 family" allowing embedding
+     of MathML. However, hard-coded HTML formatting prevents its use.)
+
+
+
+  Comparison of current HTML versions
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  XHTML1.1
+  """"""""
+
+  +2 XML-based with official DTD
+     +1 allows processing with XML-tool-chain
+     +1 allows validating against the DTD
+
+  +1 writer exists (in sandbox) and in active use since 2008
+
+  -1 "old" format
+  -1 requires to work around restrictions lifted in HTML5
+     ("start" argument for enumerated lists, some tags in parsed literal)
+     which makes code and documents more complicated
+
+  HTML5
+  """""
+  +1 more recent
+  +1 simpler to write, less restrictions
+
+  +1 writer exists and in active use since 2015
+
+  +1 new page structure elements such as <main>, <section>, <article>,
+     <header>, <footer>, <aside>, <nav> and <figure>
+     provide a better matches for the rst document model.
+
+  -1 new elements not yet supported by many browsers.
+
+  -2 no DTD, not SGML-based
+     - no proper validation possible (there is an experimental validator)
+     - no standard interface to post-processing XML-tools
+
+  -1 two concurring definitions:
+     W3C standard and WHATWG "HTML Living Standard".

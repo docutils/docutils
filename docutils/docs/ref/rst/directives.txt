@@ -757,9 +757,11 @@ Table
 (New in Docutils 0.3.1)
 
 The "table" directive is used to associate a
-title with a table or specify options::
+title with a table or specify options, e.g.::
 
     .. table:: Truth table for "not"
+
+       :widths: auto
 
        =====  =====
          A    not A
@@ -775,16 +777,17 @@ The following options are recognized:
     (New in Docutils 0.13)
 
 ``widths`` : "auto", "grid" or a list of integers
-
-    A comma- or space-separated list of relative column widths.
-    The default is the width of the corresponding input columns
-    (in characters).
+    A comma- or space-separated list of column widths.
+    The default is the width of the input columns (in characters).
 
     The special values "auto" or "grid" may be used by writers to decide
     whether to delegate the determination of column widths to the backend
     (LaTeX, the HTML browser, ...).
+    See also the `table_style`_ configuration option.
 
 and the common options `:class:`_ and `:name:`_.
+
+.. _table_style: ../../user/config.html#table-style-html4css1-writer
 
 .. _csv-table:
 
