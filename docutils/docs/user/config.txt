@@ -574,7 +574,7 @@ Options: ``--traceback, --no-traceback``.
 warning_stream
 --------------
 
-Path to a file for the output of system messages (warnings) [#pwd]_.
+Path to a file for the output of system messages (warnings). [#pwd]_
 
 Default: stderr (None).  Options: ``--warnings``.
 
@@ -1128,8 +1128,10 @@ __ `stylesheet_dirs [html4css1 writer]`_
 table_style
 ~~~~~~~~~~~
 
-Class value(s) added to tables_ to allow styling with CSS.
-The default sylesheet defines:
+Class value(s) added to all tables_.
+Also defined for the `LaTeX Writer`__.
+
+The default CSS sylesheet defines:
 
 borderless
   No borders around the table.
@@ -1137,14 +1139,30 @@ borderless
 booktabs
   Lines above and below the table and a thin line after the head.
 
+align-left, align-center, align-right
+  Align the tables
+
+.. note::
+
+  The html5 writer also supports:
+
+  colwidths-auto
+    Delegate the determination of table column widths to the backend
+    (Leave out the ``<colgroup>`` column specification.)
+
+    Cf. the `table directive`_.
+
 Default: "".  Option: ``--table-style``.
+
+__ `table_style [latex2e writer]`_
+.. _table directive: ../ref/rst/directives.html#table
 
 .. _template [html4css1 writer]:
 
 template
 ~~~~~~~~
 
-Path to template file, which must be encoded in UTF-8 [#pwd]_.
+Path to template file, which must be encoded in UTF-8. [#pwd]_
 Also defined for the `LaTeX Writer`__.
 
 Default: "template.txt" in the docutils/writers/html4css1/
@@ -1504,21 +1522,6 @@ Courier)::
 
 Option: ``--latex-preamble``.
 
-
-.. _template [latex2e writer]:
-
-template
-~~~~~~~~
-
-Path to template file, which must be encoded in UTF-8 [#pwd]_.
-Also defined for the `HTML Writer`__.
-
-Default: "default.tex" in the docutils/writers/latex2e/
-directory (installed automatically; for the exact machine-specific
-path, use the ``--help`` option).  Options: ``--template``.
-
-__ `template [html4css1 writer]`_
-
 .. _footnote_references [latex2e writer]:
 
 footnote_references
@@ -1598,17 +1601,52 @@ Default: "-".  Option: ``--section-enumerator-separator``.
 table_style
 ~~~~~~~~~~~
 
-Specify the drawing of separation lines in tables_
+Specify the default style for tables_
+Also defined for the `HTML Writer`__.
+
 Supported values:
 
 standard
-  lines around and between cells.
+  Borders around all cells.
 booktabs
-  a line above and below the table and one after the head.
+  A line above and below the table and one after the head.
 borderless
-  no lines.
+  No borders.
+
+align-left, align-center, align-right
+  Align tables.
+
+colwidths-auto, colwidths-given
+  Default value for column width determination by
+  LaTeX or Docutils.
+  Override with the `table directive`_'s :widths: option.
+
+  .. warning::
+
+    ``colwidths-auto`` is only suited for tables with simple cell content.
+
+    LaTeX puts the content of auto-sized columns on one line (merging
+    paragraphs) and may fail with complex content.
 
 Default: "standard".  Option: ``--table-style``.
+
+__ `table_style [html4css1 writer]`_
+
+
+.. _template [latex2e writer]:
+
+template
+~~~~~~~~
+
+Path to template file, which must be encoded in UTF-8. [#pwd]_
+Also defined for the `HTML Writer`__.
+
+Default: "default.tex" in the docutils/writers/latex2e/
+directory (installed automatically; for the exact machine-specific
+path, use the ``--help`` option).  Options: ``--template``.
+
+__ `template [html4css1 writer]`_
+
 
 [xetex writer]
 ~~~~~~~~~~~~~~
@@ -1823,7 +1861,7 @@ them in configuration files has no effect.
 config
 ~~~~~~
 
-Path to a configuration file to read (if it exists) [#pwd]_.
+Path to a configuration file to read (if it exists). [#pwd]_
 Settings may override defaults and earlier settings.  The config
 file is processed immediately.  Multiple ``--config`` options may
 be specified; each will be processed in turn.
