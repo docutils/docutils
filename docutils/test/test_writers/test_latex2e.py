@@ -24,6 +24,10 @@ def suite():
     settings['sectnum_xform'] = True
     settings['use_latex_citations'] = True
     s.generateTests(totest_latex_citations)
+    settings['table_style'] = ['colwidths-auto']
+    s.generateTests(totest_table_style_auto)
+    settings['table_style'] = ['booktabs']
+    s.generateTests(totest_table_style_booktabs)
     settings['stylesheet_path'] = 'data/spam,data/ham.tex'
     s.generateTests(totest_stylesheet)
     settings['embed_stylesheet'] = True
@@ -58,6 +62,10 @@ latex_preamble = r"""% PDF Standard Fonts
 \usepackage{mathptmx} % Times
 \usepackage[scaled=.90]{helvet}
 \usepackage{courier}
+""",
+longtable = r"""\usepackage{longtable,ltcaption,array}
+\setlength{\extrarowheight}{2pt}
+\newlength{\DUtablewidth} % internal use in tables
 """,
 stylesheet = '',
 fallbacks =  '',
@@ -94,11 +102,11 @@ titledata = '')
 head = head_template.substitute(parts)
 
 head_table = head_template.substitute(
-    dict(parts, requirements = parts['requirements'] +
-r"""\usepackage{longtable,ltcaption,array}
-\setlength{\extrarowheight}{2pt}
-\newlength{\DUtablewidth} % internal use in tables
-"""))
+    dict(parts, requirements = parts['requirements'] + parts['longtable']))
+
+head_booktabs = head_template.substitute(
+    dict(parts, requirements=parts['requirements']
+         + '\\usepackage{booktabs}\n' + parts['longtable']))
 
 head_textcomp = head_template.substitute(
     dict(parts, requirements = parts['requirements'] +
@@ -117,6 +125,8 @@ totest_latex_sectnum = {}
 totest_latex_citations = {}
 totest_stylesheet = {}
 totest_stylesheet_embed = {}
+totest_table_style_auto = {}
+totest_table_style_booktabs = {}
 
 totest['url_chars'] = [
 ["http://nowhere/url_with%28parens%29",
@@ -437,7 +447,7 @@ totest['enumerated_lists'] = [
   a) nothing.
   b) or some other.
 
-3. Third is 
+3. Third is
 
   (I) having pre and postfixes
   (II) in roman numerals.
@@ -511,8 +521,7 @@ head_table + r"""
 """],
 ]
 
-totest['table_class'] = [
-# input
+totest['table_styles'] = [
 ["""\
 .. table::
    :class: borderless
@@ -540,6 +549,214 @@ head_table + r"""
 
 \end{document}
 """],
+["""\
+.. table::
+   :class: booktabs
+
+   +-----+-+
+   |  1  |2|
+   +-----+-+
+""",
+head_booktabs + r"""
+\setlength{\DUtablewidth}{\linewidth}
+\begin{longtable*}[c]{p{0.075\DUtablewidth}p{0.028\DUtablewidth}}
+\toprule
+
+1
+ & 
+2
+ \\
+\bottomrule
+\end{longtable*}
+
+\end{document}
+"""],
+["""\
+.. table::
+   :class: colwidths-auto
+
+   +-----+-+
+   |  1  |2|
+   +-----+-+
+""",
+head_table + r"""
+\begin{longtable*}[c]{|l|l|}
+\hline
+1 & 2 \\
+\hline
+\end{longtable*}
+
+\end{document}
+"""],
+["""\
+.. table::
+   :widths: auto
+
+   +-----+-+
+   |  1  |2|
+   +-----+-+
+""",
+head_table + r"""
+\begin{longtable*}[c]{|l|l|}
+\hline
+1 & 2 \\
+\hline
+\end{longtable*}
+
+\end{document}
+"""],
+["""\
+.. table::
+   :widths: 15, 30
+
+   +-----+-----+
+   |  1  |  2  |
+   +-----+-----+
+""",
+head_table + r"""
+\setlength{\DUtablewidth}{\linewidth}
+\begin{longtable*}[c]{|p{0.191\DUtablewidth}|p{0.365\DUtablewidth}|}
+\hline
+
+1
+ & 
+2
+ \\
+\hline
+\end{longtable*}
+
+\end{document}
+"""],
+]
+
+totest_table_style_booktabs['table_styles'] = [
+# borderless overrides "booktabs" table_style
+["""\
+.. table::
+   :class: borderless
+
+   +-----+-----+
+   |  1  |  2  |
+   +-----+-----+
+   |  3  |  4  |
+   +-----+-----+
+""",
+head_table + r"""
+\setlength{\DUtablewidth}{\linewidth}
+\begin{longtable*}[c]{p{0.075\DUtablewidth}p{0.075\DUtablewidth}}
+
+1
+ & 
+2
+ \\
+
+3
+ & 
+4
+ \\
+\end{longtable*}
+
+\end{document}
+"""],
+["""\
+.. table::
+   :widths: auto
+
+   +-----+-+
+   |  1  |2|
+   +-----+-+
+""",
+head_booktabs + r"""
+\begin{longtable*}[c]{ll}
+\toprule
+1 & 2 \\
+\bottomrule
+\end{longtable*}
+
+\end{document}
+"""],
+["""\
+.. table::
+   :widths: 15, 30
+
+   +-----+-----+
+   |  1  |  2  |
+   +-----+-----+
+""",
+head_booktabs + r"""
+\setlength{\DUtablewidth}{\linewidth}
+\begin{longtable*}[c]{p{0.191\DUtablewidth}p{0.365\DUtablewidth}}
+\toprule
+
+1
+ & 
+2
+ \\
+\bottomrule
+\end{longtable*}
+
+\end{document}
+"""],
+]
+totest_table_style_auto['table_styles'] = [
+["""\
+.. table::
+   :class: borderless
+
+   +-----+-----+
+   |  1  |  2  |
+   +-----+-----+
+   |  3  |  4  |
+   +-----+-----+
+""",
+head_table + r"""
+\begin{longtable*}[c]{ll}
+1 & 2 \\
+3 & 4 \\
+\end{longtable*}
+
+\end{document}
+"""],
+["""\
+.. table::
+   :class: booktabs
+
+   +-----+-+
+   |  1  |2|
+   +-----+-+
+""",
+head_booktabs + r"""
+\begin{longtable*}[c]{ll}
+\toprule
+1 & 2 \\
+\bottomrule
+\end{longtable*}
+
+\end{document}
+"""],
+# given width overrides "colwidth-auto"
+["""\
+.. table::
+   :widths: 15, 30
+
+   +-----+-----+
+   |  1  |  2  |
+   +-----+-----+
+""",
+head_table + r"""
+\setlength{\DUtablewidth}{\linewidth}
+\begin{longtable*}[c]{|p{0.191\DUtablewidth}|p{0.365\DUtablewidth}|}
+\hline
+
+1
+ & 
+2
+ \\
+\hline
+\end{longtable*}
+
+\end{document}
+"""],
 ]
 
 totest['table_align'] = [
@@ -551,8 +768,6 @@ totest['table_align'] = [
    +-----+-----+
    |  1  |  2  |
    +-----+-----+
-   |  3  |  4  |
-   +-----+-----+
 """,
 head_table + r"""
 \setlength{\DUtablewidth}{\linewidth}
@@ -562,12 +777,6 @@ head_table + r"""
 1
  & 
 2
- \\
-\hline
-
-3
- & 
-4
  \\
 \hline
 \end{longtable*}

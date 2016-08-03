@@ -35,11 +35,13 @@ class Writer(writers.Writer):
 
     default_template = 'default.tex'
     default_template_path = os.path.dirname(os.path.abspath(__file__))
-
     default_preamble = '\n'.join([r'% PDF Standard Fonts',
                                   r'\usepackage{mathptmx} % Times',
                                   r'\usepackage[scaled=.90]{helvet}',
                                   r'\usepackage{courier}'])
+    table_style_values = ('standard', 'booktabs','nolines', 'borderless',
+                          'colwidths-auto', 'colwidths-given')
+
     settings_spec = (
         'LaTeX-Specific Options',
         None,
@@ -182,9 +184,11 @@ class Writer(writers.Writer):
           'above and below the table and below the header or "borderless".  '
           'Default: "standard"',
           ['--table-style'],
-          {'choices': ['standard', 'booktabs','nolines', 'borderless'],
-           'default': 'standard',
-           'metavar': '<format>'}),
+          {'default': ['standard'],
+           'metavar': '<format>',
+           'action': 'append',
+           'validator': frontend.validate_comma_separated_list,
+           'choices': table_style_values}),
          ('LaTeX graphicx package option. '
           'Possible values are "dvips", "pdftex". "auto" includes LaTeX code '
           'to use "pdftex" if processing with pdf(la)tex and dvips otherwise. '
@@ -886,17 +890,20 @@ class Table(object):
     :booktabs:   only horizontal lines (requires "booktabs" LaTeX package)
     :borderless: no borders around table cells
     :nolines:    alias for borderless
+
+    :colwidths-auto:  column widths determined by LaTeX
+    :colwidths-given: use colum widths from rST source
     """
-    def __init__(self,translator,latex_type,table_style):
+    def __init__(self, translator, latex_type):
         self._translator = translator
         self._latex_type = latex_type
-        self._table_style = table_style
         self._open = False
         # miscellaneous attributes
         self._attrs = {}
         self._col_width = []
         self._rowspan = []
         self.stubs = []
+        self.colwidths_auto = False
         self._in_thead = 0
 
     def open(self):
@@ -911,13 +918,23 @@ class Table(object):
         self.caption = []
         self._attrs = {}
         self.stubs = []
+        self.colwidths_auto = False
+
     def is_open(self):
         return self._open
 
-    def set_table_style(self, table_style):
-        if not table_style in ('standard','booktabs','borderless','nolines'):
-            return
-        self._table_style = table_style
+    def set_table_style(self, table_style, classes):
+        borders = [cls.replace('nolines', 'borderless')
+                   for cls in table_style+classes
+                   if cls in ('standard','booktabs','borderless', 'nolines')]
+        try:
+            self.borders = borders[-1]
+        except IndexError:
+            self.borders = 'standard'
+        self.colwidths_auto = (('colwidths-auto' in classes
+                                and 'colwidths-given' not in table_style)
+                               or ('colwidths-auto' in table_style
+                                   and ('colwidths-given' not in classes)))
 
     def get_latex_type(self):
         if self._latex_type == 'longtable' and not self.caption:
@@ -933,7 +950,7 @@ class Table(object):
         return None
 
     def get_vertical_bar(self):
-        if 'standard' in self._table_style:
+        if self.borders == 'standard':
             return '|'
         return ''
 
@@ -943,14 +960,16 @@ class Table(object):
                      'center': 'c',
                      'right': 'r'}
         align = align_map.get(self.get('align') or 'center')
-        return '\n'.join([r'\setlength{\DUtablewidth}{\linewidth}',
-                          r'\begin{%s}[%s]' % (self.get_latex_type(), align)])
+        opening = [r'\begin{%s}[%s]' % (self.get_latex_type(), align)]
+        if not self.colwidths_auto:
+            opening.insert(0, r'\setlength{\DUtablewidth}{\linewidth}')
+        return '\n'.join(opening)
 
     def get_closing(self):
         closing = []
-        if self._table_style == 'booktabs':
+        if self.borders == 'booktabs':
             closing.append(r'\bottomrule')
-        # elif self._table_style == 'standard':
+        # elif self.borders == 'standard':
         #     closing.append(r'\hline')
         closing.append(r'\end{%s}' % self.get_latex_type())
         return '\n'.join(closing)
@@ -975,9 +994,7 @@ class Table(object):
         bar = self.get_vertical_bar()
         self._rowspan= [0] * len(self._col_specs)
         self._col_width = []
-        if 'colwidths-auto' in node.parent.parent['classes'] or (
-            'colwidths-auto' in self._table_style and
-            ('colwidths-given' not in node.parent.parent['classes'])):
+        if self.colwidths_auto:
             latex_table_spec = (bar+'l')*len(self._col_specs)
             return latex_table_spec+bar
         width = 80
@@ -1029,17 +1046,17 @@ class Table(object):
 
     def visit_thead(self):
         self._in_thead += 1
-        if self._table_style == 'standard':
+        if self.borders == 'standard':
             return ['\\hline\n']
-        elif self._table_style == 'booktabs':
+        elif self.borders == 'booktabs':
             return ['\\toprule\n']
         return []
 
     def depart_thead(self):
         a = []
-        #if self._table_style == 'standard':
+        #if self.borders == 'standard':
         #    a.append('\\hline\n')
-        if self._table_style == 'booktabs':
+        if self.borders == 'booktabs':
             a.append('\\midrule\n')
         if self._latex_type == 'longtable':
             if 1 == self._translator.thead_depth():
@@ -1063,7 +1080,7 @@ class Table(object):
             if (self._rowspan[i]>0):
                 self._rowspan[i] -= 1
 
-        if self._table_style == 'standard':
+        if self.borders == 'standard':
             rowspans = [i+1 for i in range(len(self._rowspan))
                         if (self._rowspan[i]<=0)]
             if len(rowspans)==len(self._rowspan):
@@ -1101,7 +1118,7 @@ class Table(object):
 
     def is_stub_column(self):
         if len(self.stubs) >= self._cell_in_row:
-            return self.stubs[self._cell_in_row-1]
+            return self.stubs[self._cell_in_row]
         return False
 
 
@@ -1208,6 +1225,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
                                      self.settings.graphicx_option)
         # footnotes:
         self.docutils_footnotes = settings.docutils_footnotes
+        # @@ table_style: list of values from fixed set: warn?
+        # for s in self.settings.table_style:
+        #     if s not in Writer.table_style_values:
+        #         self.warn('Ignoring value "%s" in "table-style" setting.' %s)
 
         # Output collection stacks
         # ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1265,7 +1286,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
         # object for a table while proccessing.
         self.table_stack = []
-        self.active_table = Table(self, 'longtable', settings.table_style)
+        self.active_table = Table(self, 'longtable')
 
         # Where to collect the output of visitor methods (default: body)
         self.out = self.body
@@ -1977,10 +1998,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
             mrows = node['morerows'] + 1
             self.active_table.set_rowspan(
                             self.active_table.get_entry_number(), mrows)
-            self.out.append('\\multirow{%d}{%s}{%%' %
-                        (mrows, self.active_table.get_column_width()))
-            # (end line with "%" to mask the line break,
-            # needs to be checked for below).
+            self.out.append('\\multirow{%d}{%s}{' %
+                            (mrows, self.active_table.get_column_width()))
             self.context.append('}')
         elif 'morecols' in node:
             # the vertical bar before column is missing if it is the first
@@ -2000,19 +2019,18 @@ class LaTeXTranslator(nodes.NodeVisitor):
         else:
             self.context.append('')
 
-        # header / not header
-        if len(node) and isinstance(node.parent.parent, nodes.thead):
-            if self.out[-1].endswith("%"):
-                self.out.append("\n")
-            self.out.append('\\textbf{%')
-            self.context.append('}')
-        elif self.active_table.is_stub_column():
-            if self.out[-1].endswith("%"):
-                self.out.append("\n")
+        # bold header/stub-column
+        if len(node) and (isinstance(node.parent.parent, nodes.thead)
+                          or self.active_table.is_stub_column()):
             self.out.append('\\textbf{')
             self.context.append('}')
         else:
             self.context.append('')
+
+        # if line ends with '{', mask line break to prevent spurious whitespace
+        if not self.active_table.colwidths_auto and self.out[-1].endswith("{"):
+                self.out.append("%")
+
         self.active_table.visit_entry() # increment cell count
 
     def depart_entry(self, node):
@@ -2583,8 +2601,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.depart_docinfo_item(node)
 
     def visit_paragraph(self, node):
-        # insert blank line, if the paragraph is not first in a list item
-        # nor follows a non-paragraph node in a compound
+        # insert blank line, unless
+        # * the paragraph is first in a list item,
+        # * follows a non-paragraph node in a compound,
+        # * is in a table with auto-width columns
         index = node.parent.index(node)
         if (index == 0 and (isinstance(node.parent, nodes.list_item) or
                             isinstance(node.parent, nodes.description))):
@@ -2593,6 +2613,12 @@ class LaTeXTranslator(nodes.NodeVisitor):
               not isinstance(node.parent[index - 1], nodes.paragraph) and
               not isinstance(node.parent[index - 1], nodes.compound)):
             pass
+        elif self.active_table.colwidths_auto:
+            if index == 1: # second paragraph
+                self.warn('LaTeX merges paragraphs in tables '
+                          'with auto-sized columns!', base_node=node)
+            if index > 0:
+                self.out.append('\n')
         else:
             self.out.append('\n')
         if node.get('ids'):
@@ -2603,7 +2629,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def depart_paragraph(self, node):
         if node['classes']:
             self.depart_inline(node)
-        self.out.append('\n')
+        if not self.active_table.colwidths_auto:
+            self.out.append('\n')
 
     def visit_problematic(self, node):
         self.requirements['color'] = PreambleCmds.color
@@ -2794,7 +2821,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if self.active_table.is_open():
             self.table_stack.append(self.active_table)
             # nesting longtable does not work (e.g. 2007-04-18)
-            self.active_table = Table(self,'tabular',self.settings.table_style)
+            self.active_table = Table(self,'tabular')
         # A longtable moves before \paragraph and \subparagraph
         # section titles if it immediately follows them:
         if (self.active_table._latex_type == 'longtable' and
@@ -2803,11 +2830,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.d_class.section(self.section_level).find('paragraph') != -1):
             self.out.append('\\leavevmode')
         self.active_table.open()
-        for cls in node['classes']:
-            self.active_table.set_table_style(cls)
+        self.active_table.set_table_style(self.settings.table_style,
+                                          node['classes'])
         if 'align' in node:
             self.active_table.set('align', node['align'])
-        if self.active_table._table_style == 'booktabs':
+        if self.active_table.borders == 'booktabs':
             self.requirements['booktabs'] = r'\usepackage{booktabs}'
         self.push_output_collector([])
 
@@ -2821,8 +2848,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.active_table.close()
         if len(self.table_stack)>0:
             self.active_table = self.table_stack.pop()
-        else:
-            self.active_table.set_table_style(self.settings.table_style)
         # Insert hyperlabel after (long)table, as
         # other places (beginning, caption) result in LaTeX errors.
         if node.get('ids'):
