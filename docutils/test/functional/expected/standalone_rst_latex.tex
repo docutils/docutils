@@ -1824,7 +1824,7 @@ A table with multi-paragraph multicolumn cells:
 test
  & 
 \textbf{bold hd}
- & \multicolumn{3}{p{0.41\DUtablewidth}|}{
+ & \multicolumn{3}{p{0.41\DUtablewidth}|}{%
 multicolumn 1
 
 With a second paragraph
@@ -1832,7 +1832,7 @@ With a second paragraph
 \emph{emph hd}
  \\
 \hline
-\multicolumn{2}{|p{0.31\DUtablewidth}|}{
+\multicolumn{2}{|p{0.31\DUtablewidth}|}{%
 multicolumn 2
 
 With a second paragraph
@@ -1848,7 +1848,7 @@ cell
 \hline
 
 cell
- & \multicolumn{2}{p{0.36\DUtablewidth}|}{
+ & \multicolumn{2}{p{0.36\DUtablewidth}|}{%
 multicolumn 3 (one line,
 but very very very very
 very looooong)
@@ -1866,7 +1866,7 @@ cell
 cell
  & 
 cell
- & \multicolumn{3}{p{0.38\DUtablewidth}|}{
+ & \multicolumn{3}{p{0.38\DUtablewidth}|}{%
 Short multicolumn 4
 } \\
 \hline
@@ -1877,40 +1877,36 @@ limitation (see \url{https://sourceforge.net/p/docutils/bugs/225/}).
 
 A table with multirow header and column-widths set by LaTeX:
 
-\setlength{\DUtablewidth}{\linewidth}
 \begin{longtable*}[c]{|l|l|}
 \hline
-\multirow{2}{*}{%
-\textbf{%
-XXX
-}} & \textbf{%
-Variable Summary
-} \\
+\multirow{2}{*}{\textbf{XXX}} & \textbf{Variable Summary} \\
 \cline{2-2}
- & \textbf{%
-Description
-} \\
+ & \textbf{Description} \\
 \hline
 \endfirsthead
 \hline
-\multirow{2}{*}{%
-\textbf{%
-XXX
-}} & \textbf{%
-Variable Summary
-} \\
+\multirow{2}{*}{\textbf{XXX}} & \textbf{Variable Summary} \\
 \cline{2-2}
- & \textbf{%
-Description
-} \\
+ & \textbf{Description} \\
 \hline
 \endhead
 \multicolumn{2}{c}{\hfill ... continued on next page} \\
 \endfoot
 \endlastfoot
-\multicolumn{2}{|l|}{
-multicollumn cell
-} \\
+\multicolumn{2}{|l|}{multicollumn cell} \\
+\hline
+\end{longtable*}
+
+In a table with column-widths set by LaTeX, each cell has just one line.
+Paragraphs are merged (a warning is given).
+
+\begin{longtable*}[c]{|l|l|}
+\hline
+11 & first paragraph
+second paragraph
+third paragraph \\
+\hline
+21 & 22 \\
 \hline
 \end{longtable*}
 

@@ -25,12 +25,28 @@ limitation (see https://sourceforge.net/p/docutils/bugs/225/).
 A table with multirow header and column-widths set by LaTeX:
 
 .. table::
-        :widths: auto
+   :widths: auto
 
-        +------------+-------------------+
-        | XXX        | Variable Summary  |
-        |            +-------------------+
-        |            | Description       |
-        +============+===================+
-        | multicollumn cell              |
-        +--------------------------------+
+   +------------+-------------------+
+   | XXX        | Variable Summary  |
+   |            +-------------------+
+   |            | Description       |
+   +============+===================+
+   | multicollumn cell              |
+   +--------------------------------+
+
+In a table with column-widths set by LaTeX, each cell has just one line.
+Paragraphs are merged (a warning is given).
+
+.. table::
+   :widths: auto
+
+   +------------+-------------------+
+   | 11         | first paragraph   |
+   |            |                   |
+   |            | second paragraph  |
+   |            |                   |
+   |            | third paragraph   |
+   +------------+-------------------+
+   | 21         | 22                |
+   +------------+-------------------+
