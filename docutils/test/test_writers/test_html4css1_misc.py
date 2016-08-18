@@ -100,7 +100,7 @@ class SettingsTestCase(DocutilsTestSupport.StandardTestCase):
         styles = core.publish_parts(self.data, writer_name='html4css1',
                                   settings_overrides=mysettings)['stylesheet']
         self.assertIn('docutils/writers/html4css1/html4css1.css', styles)
-        self.assertIn('docutils/writers/html_plain/math.css', styles)
+        self.assertIn('docutils/writers/html5_polyglot/math.css', styles)
 
     def test_custom_stylesheet_linked(self):
         # default + custom style sheet, linked

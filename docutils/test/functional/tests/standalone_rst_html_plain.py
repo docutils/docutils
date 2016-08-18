@@ -1,8 +1,8 @@
 exec(open('functional/tests/_standalone_rst_defaults.py').read())
 
 # Source and destination file names.
-test_source = "standalone_rst_html_plain.txt"
-test_destination = "standalone_rst_html_plain.html"
+test_source = "standalone_rst_html5_polyglot.txt"
+test_destination = "standalone_rst_html5_polyglot.html"
 
 # Keyword parameters passed to publish_file.
 writer_name = "html-plain"
