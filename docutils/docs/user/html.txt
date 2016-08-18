@@ -12,17 +12,17 @@ Overview
 
 * `Generic HTML writers`_
 
-  =========== ============== ============== ================= ===========
-  name        alias(es)      `front-end`_   HTML version      CSS version
-  =========== ============== ============== ================= ===========
-  html4css1_  html4          rst2html4.py   `XHTML 1          `CSS 1`_
+  =============== ========== ============== ================= ===========
+  name            alias(es)  `front-end`_   HTML version      CSS version
+  =============== ========== ============== ================= ===========
+  html4css1_      html4      rst2html4.py   `XHTML 1          `CSS 1`_
                                             Transitional`_
 
-  ..          html_          rst2html.py    `XHTML 1          `CSS 1`_
+  ..              html_      rst2html.py    `XHTML 1          `CSS 1`_
                                             Transitional`_
 
-  html_plain_ html5_         rst2html5.py   `HTML5`_          `CSS 3`_
-  =========== ============== ============== ================= ===========
+  html5_polyglot_ html5_     rst2html5.py   `HTML5`_          `CSS 3`_
+  =============== ========== ============== ================= ===========
 
 * `Special HTML writers`_
 
@@ -87,14 +87,14 @@ formatting hints and are tagged as "text/html" (instead of
 .. _html4css1.css: ../../docutils/writers/html4css1/html4css1.css
 
 
-html_plain
-~~~~~~~~~~
+html5_polyglot
+~~~~~~~~~~~~~~
 
 :aliases: html5_
 :front-end: rst2html5.py_
-:config: `[html-plain writer]`_
+:config: `[html-polyglot writer]`_
 
-The ``html_plain`` writer generates `polyglot HTML`_ output, valid XML that
+The ``html5_polyglot`` writer generates `polyglot HTML`_ output, valid XML that
 is compatible with `HTML5`_.
 New features and elements will only be used if they are widely supported to
 make documents `viewable with any browser`_.
@@ -109,8 +109,8 @@ New in Docutils 0.13
 
 .. _rst2html5.py: tools.html#rst2html5-py
 .. _[html-plain writer]: config.html#html-plain-writer
-.. _minimal.css: ../../docutils/writers/html_plain/minimal.css
-.. _plain.css: ../../docutils/writers/html_plain/plain.css
+.. _minimal.css: ../../docutils/writers/html5_polyglot/minimal.css
+.. _plain.css: ../../docutils/writers/html5_polyglot/plain.css
 .. _custom style sheets: ../howto/html-stylesheets.html
 .. _viewable with any browser: http://www.anybrowser.org/campaign
 

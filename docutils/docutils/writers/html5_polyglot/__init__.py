@@ -203,7 +203,7 @@ class Writer(writers.Writer):
 class HTMLTranslator(nodes.NodeVisitor):
 
     """
-    This writer generates `polyglott markup`: HTML 5 that is also valid XML.
+    This writer generates `polyglot markup`: HTML 5 that is also valid XML.
     """
 
     xml_declaration = '<?xml version="1.0" encoding="%s" ?>\n'
@@ -1255,7 +1255,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         pass # never reached
 
     # Meta tags: 'lang' attribute replaced by 'xml:lang' in XHTML 1.1
-    # HTML5/polyglott recommends using both
+    # HTML5/polyglot recommends using both
     def visit_meta(self, node):
         if node.hasattr('lang'):
             node['xml:lang'] = node['lang']

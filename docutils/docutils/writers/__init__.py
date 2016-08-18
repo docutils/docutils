@@ -122,15 +122,14 @@ class UnfilteredWriter(Writer):
 _writer_aliases = {
       'html': 'html4css1',  # may change to html5 some day
       'html4': 'html4css1',
-      'html5': 'html_plain', # may be replaced with a special HTML 5 writer
-      'html-plain': 'html_plain',
+      'html5': 'html5_polyglot',
       'latex': 'latex2e',
       'pprint': 'pseudoxml',
       'pformat': 'pseudoxml',
       'pdf': 'rlpdf',
       's5': 's5_html',
       'xelatex': 'xetex',
-      'xhtml': 'html_plain',
+      'xhtml': 'html5_polyglot',
       'xhtml10': 'html4css1',
       'xml': 'docutils_xml'}
 
