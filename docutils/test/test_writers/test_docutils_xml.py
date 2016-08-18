@@ -49,8 +49,7 @@ bodynormal = u"""\
 bodynewlines = u"""\
 <document source="&lt;string&gt;">
 <paragraph>Test</paragraph>
-<transition>
-</transition>
+<transition></transition>
 <paragraph>Test. \xe4\xf6\xfc&#8364;</paragraph>
 </document>
 """
@@ -58,8 +57,7 @@ bodynewlines = u"""\
 bodyindents = u"""\
 <document source="&lt;string&gt;">
     <paragraph>Test</paragraph>
-    <transition>
-    </transition>
+    <transition></transition>
     <paragraph>Test. \xe4\xf6\xfc&#8364;</paragraph>
 </document>
 """

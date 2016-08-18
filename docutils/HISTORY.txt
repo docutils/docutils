@@ -289,6 +289,7 @@ Release 0.10 (2012-12-16)
 * docutils/writers/s5_html/docutils_xml.py
 
   - Fix [ 3552403 ] Prevent broken PyXML replacing stdlibs xml module.
+  - Fix/improve output with ``--indent`` option.
 
 * setup.py
 
