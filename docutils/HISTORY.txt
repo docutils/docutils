@@ -16,6 +16,11 @@
 Changes Since 0.12
 ==================
 
+* docutils/languages/fa.py
+  docutils/parsers/rst/languages/fa.py:
+  
+  - Apply [ 133 ] Persian mappings by Shahin Azad.
+
 * docutils/nodes.py
 
   - Fix [ 253 ] Attribute key without value not allowed in XML.
