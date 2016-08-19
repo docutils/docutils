@@ -5,7 +5,7 @@ test_destination = "math_output_mathml.xhtml"
 # Keyword parameters passed to publish_file.
 reader_name = "standalone"
 parser_name = "rst"
-writer_name = "html-plain"
+writer_name = "html5"
 
 # Settings
 settings_overrides['math_output'] = 'MathML'
