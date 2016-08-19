@@ -146,7 +146,7 @@ rst2html5.py
 
 :Reader: Standalone
 :Parser: reStructuredText
-:Writer: html5 (html_plain_)
+:Writer: html5 (html5_polyglot_)
 
 The ``rst2html5.py`` front end reads standalone reStructuredText source
 files and produces `HTML 5`_ output.
@@ -154,7 +154,7 @@ Correct rendering of elements not directly supported by HTML depends on a
 CSS style sheet. The provided style sheets ``minimal.css`` and ``plain.css``
 define required and optional styling rules respectively.
 
-.. _html_plain: html.html#html-plain
+.. _html5_polyglot: html.html#html5-polyglot
 
 rstpep2html.py
 --------------

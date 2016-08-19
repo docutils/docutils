@@ -1302,10 +1302,10 @@ The initial view mode, either "slideshow" or "outline".
 Default: "slidewhow".  Option: ``--view-mode``.
 
 
-[html-plain writer]
--------------------
+[html5 writer]
+--------------
 
-The `html-plain` writer uses the settings described in the `[html4css1
+The `html5` writer uses the settings described in the `[html4css1
 writer]`_ section with the following exceptions:
 
 Removed options:
