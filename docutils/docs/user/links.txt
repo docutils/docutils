@@ -124,9 +124,12 @@ PDF
 
 * rlpdf_ is another PDF Writer based on ReportLabs.
 
+* RinohType_ is a pure Python PDF Writer based on a document template and a
+  style sheet (beta).
+
 .. _py Lib scripts: http://codespeak.net/py/dist/bin.html
 .. _rlpdf: http://docutils.sf.net/sandbox/dreamcatcher/rlpdf/
-
+.. _RinohType: http://pypi.python.org/pypi/RinohType/0.2.1
 
 OpenOffice
 ``````````
@@ -357,7 +360,18 @@ Tools
 * rstcheck_ Checks syntax of reStructuredText and code blocks nested within
   it. (Using the Sphinx syntax "code-block" for the "code" directive.)
 
-.. _rstcheck: https://pypi.python.org/pypi/rstcheck
+  .. _rstcheck: https://pypi.python.org/pypi/rstcheck
+
+* restview_ is a viewer for ReStructuredText documents.
+
+  Pass the name of a ReStructuredText document to restview, and it will
+  launch a web server on localhost:random-port and open a web browser. It
+  will also watch for changes in that file and automatically reload and
+  rerender it. This is very convenient for previewing a document while
+  you're editing it.
+  
+  .. _restview: http://mg.pov.lt/restview/
+
 
 Development
 ```````````
