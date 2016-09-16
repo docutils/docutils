@@ -21,7 +21,7 @@ Overview
   ..              html_      rst2html.py    `XHTML 1          `CSS 1`_
                                             Transitional`_
 
-  html5_polyglot_ html5_     rst2html5.py   `HTML5`_          `CSS 3`_
+  html5_polyglot_ html5      rst2html5.py   `HTML5`_          `CSS 3`_
   =============== ========== ============== ================= ===========
 
 * `Special HTML writers`_
@@ -90,9 +90,9 @@ formatting hints and are tagged as "text/html" (instead of
 html5_polyglot
 ~~~~~~~~~~~~~~
 
-:aliases: html5_
+:aliases: html5
 :front-end: rst2html5.py_
-:config: `[html-polyglot writer]`_
+:config: `[html5 writer]`_
 
 The ``html5_polyglot`` writer generates `polyglot HTML`_ output, valid XML that
 is compatible with `HTML5`_.
@@ -108,7 +108,7 @@ with `custom style sheets`_.
 New in Docutils 0.13
 
 .. _rst2html5.py: tools.html#rst2html5-py
-.. _[html-plain writer]: config.html#html-plain-writer
+.. _[html5 writer]: config.html#html5-writer
 .. _minimal.css: ../../docutils/writers/html5_polyglot/minimal.css
 .. _plain.css: ../../docutils/writers/html5_polyglot/plain.css
 .. _custom style sheets: ../howto/html-stylesheets.html
@@ -340,11 +340,11 @@ _`CSS 3`:
 
   +1 new page structure elements such as <main>, <section>, <article>,
      <header>, <footer>, <aside>, <nav> and <figure>
-     provide a better matches for the rst document model.
+     provide better matches for the rst document model.
 
   -1 new elements not yet supported by many browsers.
 
-  -2 no DTD, not SGML-based
+  -2 no DTD
      - no proper validation possible (there is an experimental validator)
      - no standard interface to post-processing XML-tools
 
