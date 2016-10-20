@@ -17,10 +17,13 @@ Changes Since 0.12
 ==================
 
 * docutils/languages/fa.py
-  docutils/parsers/rst/languages/fa.py:
+  docutils/parsers/rst/languages/fa.py
+  docutils/languages/la.py
+  docutils/parsers/rst/languages/la.py:
   
   - Apply [ 133 ] Persian mappings by Shahin Azad.
-
+  - Apply [ 135 ] Language modules for Latvian by Alexander Smishlajev
+  
 * docutils/nodes.py
 
   - Fix [ 253 ] Attribute key without value not allowed in XML.
