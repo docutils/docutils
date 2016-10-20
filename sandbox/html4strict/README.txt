@@ -10,11 +10,6 @@
 :Abstract: A HTML writer, generating `XHTML 1.1` for styling
            with CSS 2.1.
 
-.. note:: The HTML4Strict writer moved to the Docutils core on 2015-02-20.
-          It is called xhtml11 there
-          (as the output conforms to http://www.w3.org/TR/xhtml11/).
-
-
 .. contents::
 
 Introduction
@@ -30,6 +25,9 @@ State of the art
 *Almost*, as it contains some deprecated constructs and "a minimum of
 formatting information" in order to ensure correct display with deficient
 but (at the time of creation) widespread browsers (mainly IE6).
+
+A new HTML5 writer with most features of this writer may become part of
+Docutils 0.13.
 
 Objective
 ----------
@@ -79,26 +77,23 @@ This writer is for you, if you
 Usage
 =====
 
-The `rst2xhtml.py`_ front end reads standalone reStructuredText
+The `<rst2xhtml.py>`_ front end reads standalone reStructuredText
 source files and produces clean `XHTML 1.1`_
 output. A CSS 2 stylesheet is required for proper rendering; a complete
-stylesheet is installed and used by default.
+sample stylesheet is provided.
 
 :Reader: Standalone
 :Parser: reStructuredText
 :Writer: xhtml (xhtml11)
 
-This wrapper can be called from the command line (when it is installed in the
-BINARY PATH)::
+The front end can be called from the command line (when it is installed in
+the BINARY PATH)::
 
-  rst2xhtml11.py [options] [<source> [<destination>]]
+  rst2xhtml.py [options] [<source> [<destination>]]
 
 The full usage text can be obtained with the ``--help`` option.
 
-
-.. For an example of programmatic use, see the `minimal front end to the
-   Docutils Publisher, producing valid XHTML 1.1`
-   <../../docutils/tools/rst2xhtml11.py>`_.
+The front end `rst2xhtml.py`_ is also an example of programmatic use.
 
 
 Implementation
@@ -118,11 +113,10 @@ requirements of `XHTML 1.1`_:
 * ``<sup>`` and ``<sub>`` tags are not allowed in preformatted blocks
   (``<pre>``).
 
-The `math-output` `config setting`_ defaults to "MathML".
+The `math-output` configuration setting defaults to "MathML".
 
-
-The xhtml11.css style sheet extends the standard layout for
-CSS2-conforming HTML browsers.
+The `xhtml11.css <xhtml11/xhtml11.css>`_ style sheet extends the standard
+layout for CSS2-conforming HTML browsers.
 
 
 Changes to the html4css1 writer
@@ -158,7 +152,7 @@ Class arguments for docinfo items
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Items in the docinfo list are passed class arguments specifying
-their type to enable customization the docinfo layout.
+their type to enable customizing the docinfo layout.
 
 The default style sheet contains example definitions: author and date
 are typeset centered and without label, if they occur as first docinfo
@@ -168,7 +162,7 @@ fields.
 Footnotes and citations
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-+ Based on definition lists.
++ Typeset as CSS-styled definition lists.
 
 + Collect adjacent footnotes/citations in one list.
 
@@ -307,7 +301,7 @@ __ http://docutils.sf.net/docs/ref/rst/restructuredtext.html#inline-literals
 Table styling with CSS
 ~~~~~~~~~~~~~~~~~~~~~~
 
-+ No hard-coded border setting in the table head.
++ No hard-coded border setting.
 
 + Pre-defined table styles selected by class arguments "borderless"
   and "booktabs" matching the interpretation in the latex2e writer.
@@ -343,8 +337,8 @@ bodies, option descriptions, and list items. Use the
 Language attribute name changed to 'xml:lang'
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The name of the language attribute changed from 'lang' in XHTML 1.0 to
-'xml:lang' in XHTML 1.1. Documents using 'lang' do not validate.
+The name of the language attribute changed from 'lang' in XHTML 1.0 to
+'xml:lang' in XHTML 1.1. Documents using 'lang' do not validate.
 
 
 Do not omit <p> tags
@@ -368,14 +362,6 @@ TODO
 
 * Validate output with "critical" cases not covered by
   the functional test (e.g. headings with level > 6).
-
-* Check, whether we should use the advise from
-  http://www.evotech.net/blog/2009/02/css-browser-support/
-
-    To force IE8 to render your page in IE8 compliance mode, include the
-    following meta tag::
-
-     <meta http-equiv="X-UA-Compatible" content="IE=8" />
 
 * Move widely supported constructs to the html4css1 writer.
 
