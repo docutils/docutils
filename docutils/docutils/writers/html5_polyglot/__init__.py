@@ -1,8 +1,11 @@
 # .. coding: utf8
 # :Author: Günter Milde <milde@users.sf.net>
+#          Based on the html4css1 writer by David Goodger.
+# :Maintainer: docutils-develop@lists.sourceforge.net
 # :Revision: $Revision$
 # :Date: $Date: 2005-06-28$
-# :Copyright: © 2005, 2009 Günter Milde.
+# :Copyright: © 2005, 2009, 2015 Günter Milde,
+#             portions from html4css1 © David Goodger.
 # :License: Released under the terms of the `2-Clause BSD license`_, in short:
 #
 #    Copying and distribution of this file, with or without modification,
@@ -14,7 +17,6 @@
 
 # Use "best practice" as recommended by the W3C:
 # http://www.w3.org/2009/cheatsheet/
-
 
 """
 Plain HyperText Markup Language document tree Writer.
@@ -390,8 +392,11 @@ class HTMLTranslator(nodes.NodeVisitor):
                 # may be targets inside of references, but nested "a"
                 # elements aren't allowed in XHTML (even if they do
                 # not all have a "href" attribute).
-                if empty:
-                    # Empty tag.  Insert target right in front of element.
+                if empty or isinstance(node,
+                            (nodes.bullet_list, nodes.enumerated_list,
+                             nodes.definition_list, nodes.field_list,
+                             nodes.option_list, nodes.docinfo)):
+                    # Insert target right in front of element.
                     prefix.append('<span id="%s"></span>' % id)
                 else:
                     # Non-empty tag.  Place the auxiliary <span> tag
@@ -542,14 +547,12 @@ class HTMLTranslator(nodes.NodeVisitor):
             # print "explicitely open"
             return False
         # check config setting:
-        if (isinstance(node, nodes.field_list) or
-            isinstance(node, nodes.definition_list)
-           ) and not self.settings.compact_field_lists:
+        if (isinstance(node, (nodes.field_list, nodes.definition_list))
+            and not self.settings.compact_field_lists):
             # print "`compact-field-lists` is False"
             return False
-        if (isinstance(node, nodes.enumerated_list) or
-            isinstance(node, nodes.bullet_list)
-           ) and not self.settings.compact_lists:
+        if (isinstance(node, (nodes.enumerated_list, nodes.bullet_list))
+            and not self.settings.compact_lists):
             # print "`compact-lists` is False"
             return False
         # more special cases:
