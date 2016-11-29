@@ -12,6 +12,7 @@ from __init__ import DocutilsTestSupport
 
 import os, sys
 import csv
+import platform
 from docutils.parsers.rst.directives import tables
 
 
@@ -33,10 +34,15 @@ else:
     unichr_exception_string = str(unichr_exception)
 
 # some error messages changed in Python 3.3:
+# CPython has backported to 2.7.4, PyPy has not
+# platform.python_implementation is new in 2.6
 csv_eod_error_str = 'unexpected end of data'
-if sys.version_info < (3,2,4) and not (# backport to 2.7.4
-    sys.version_info[:2] == (2,7) and sys.version_info[2] > 3):
+if ((3,) < sys.version_info < (3,2,4) or sys.version_info < (2,7,4)
+    or platform.python_implementation() == 'PyPy'):
     csv_eod_error_str = 'newline inside string'
+# pypy adds a line number
+if sys.version_info > (2, 6) and platform.python_implementation() == 'PyPy':
+    csv_eod_error_str = 'line 1: ' + csv_eod_error_str
 csv_unknown_url = "'bogus.csv'"
 if sys.version_info < (3,3,2):
     csv_unknown_url = "bogus.csv"
@@ -782,7 +788,7 @@ u"""\
                :widths: 0 0 0
             \n\
                some, csv, data
-""" % DocutilsTestSupport.exception_data(int, "y")[1][0]],
+""" % DocutilsTestSupport.exception_data(int, u"y")[1][0]],
 ["""\
 .. csv-table:: good delimiter
    :delim: /

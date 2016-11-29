@@ -277,7 +277,7 @@ totest['images'] = [
         <literal_block xml:space="preserve">
             .. image:: picture.png
                :scale: fifty
-""" % DocutilsTestSupport.exception_data(int, "fifty")[1][0]],
+""" % DocutilsTestSupport.exception_data(int, u"fifty")[1][0]],
 ["""\
 .. image:: picture.png
    :scale: 50
