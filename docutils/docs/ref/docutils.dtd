@@ -48,9 +48,9 @@ Attributes shared by all elements in this DTD:
 
 - `id` is a unique identifier, typically assigned by the system.
 - `name` is an identifier assigned in the markup.
-- `dupname` is the same as `name`, used when it's a duplicate.
+- `dupnames` is the same as `name`, used when it's a duplicate.
 - `source` is the name of the source of this document or fragment.
-- `class` is used to transmit individuality information forward.
+- `classes` is used to transmit individuality information forward.
 -->
 <!ENTITY % basic.atts
   " ids       NMTOKENS  #IMPLIED
@@ -185,6 +185,7 @@ http://www.oasis-open.org/html/tm9901.htm).
 <!ENTITY % tbl.entry.mdl        " (%body.elements;)* ">
 <!ENTITY % tbl.entry.att
   " %basic.atts;
+    %align-h.att;
     morecols  %number;  #IMPLIED ">
 
 <!--
@@ -490,7 +491,7 @@ that is typeset as mathematical notation (display formula).
 <!ATTLIST figure
     %basic.atts;
     %align-h.att;
-    width     %number;  #IMPLIED>
+    width     %measure;  #IMPLIED>
 
 <!-- Also an inline element. -->
 <!ELEMENT image EMPTY>
@@ -544,7 +545,7 @@ following caveats:
 - Nested inline elements may or may not be supported by individual
   applications using this DTD.
 - The inline elements <footnote_reference>, <citation_reference>,
-  <literal>, <math>, and <image> do not support nesting.
+  <math>, and <image> do not support nesting.
 -->
 
 <!ELEMENT emphasis %text.model;>
@@ -553,7 +554,7 @@ following caveats:
 <!ELEMENT strong %text.model;>
 <!ATTLIST strong %basic.atts;>
 
-<!ELEMENT literal (#PCDATA)>
+<!ELEMENT literal %text.model;>
 <!ATTLIST literal %basic.atts;>
 
 <!ELEMENT math (#PCDATA)>
