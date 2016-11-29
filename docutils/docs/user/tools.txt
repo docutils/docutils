@@ -64,7 +64,7 @@ buildhtml.py
 
 :Readers: Standalone, PEP
 :Parser: reStructuredText
-:Writers: HTML, PEP/HTML
+:Writers: html_, pep_html_
 
 Use ``buildhtml.py`` to generate ``*.html`` from all the ``*.txt`` files
 (including PEPs) in each <directory> given, and their subdirectories
@@ -101,7 +101,25 @@ rst2html.py
 
 :Reader: Standalone
 :Parser: reStructuredText
-:Writer: html_ (html4css1_)
+:Writer: html_
+
+`rst2html.py` is the front-end for the default Docutils HTML writer.
+The default writer may change with the development of HTML, browsers,
+Docutils, and the web. Currently, it is html4css1_.
+
+* Use `rst2html.py`, if you want the output to be up-to-date automatically.
+
+* Use a specific front end, if you depend on stability of the
+  generated HTML code, e.g. because you use a custom style sheet or
+  post-processing that may break otherwise.
+
+
+rst2html4.py
+------------
+
+:Reader: Standalone
+:Parser: reStructuredText
+:Writer: html4css1_
 
 The ``rst2html.py`` front end reads standalone reStructuredText source
 files and produces `XHTML 1.0 Transitional`_ output.
@@ -161,7 +179,7 @@ rstpep2html.py
 
 :Reader: PEP
 :Parser: reStructuredText
-:Writer: PEP/HTML
+:Writer: pep_html_
 
 ``rstpep2html.py`` reads a new-style PEP (marked up with reStructuredText)
 and produces `XHTML 1.0 Transitional`_.  It requires a template file and a
@@ -175,13 +193,14 @@ For example, to process a PEP into HTML::
     cd <path-to-docutils>/docs/peps
     rstpep2html.py pep-0287.txt pep-0287.html
 
+.. _pep_html: html.html#pep-html
 
 rst2s5.py
 ---------
 
 :Reader: Standalone
 :Parser: reStructuredText
-:Writer: S5/HTML
+:Writer: s5_html_
 
 The ``rst2s5.py`` front end reads standalone reStructuredText source
 files and produces (X)HTML output compatible with S5_, the "Simple
@@ -198,7 +217,7 @@ Now open the "``slides.html``" file in your favorite browser, switch
 to full-screen mode, and enjoy the results.
 
 .. _S5: http://meyerweb.com/eric/tools/s5/
-
+.. _s5_html: html.html#s5-html
 
 Themes
 ``````
