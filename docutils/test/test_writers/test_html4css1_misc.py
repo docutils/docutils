@@ -142,7 +142,7 @@ class MathTestCase(DocutilsTestSupport.StandardTestCase):
 
     mathjax_script = '<script type="text/javascript" src="%s">'
     default_mathjax_url = ('https://cdn.mathjax.org/mathjax/latest/MathJax.js'
-                           '?config=TeX-AMS_HTML')
+                           '?config=TeX-AMS_CHTML')
     custom_mathjax_url = ('file:///usr/share/javascript/mathjax/MathJax.js'
                           '?config=TeX-AMS-MML_HTMLorMML')
     data = ':math:`42`'
