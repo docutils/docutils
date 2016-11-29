@@ -68,7 +68,11 @@ Changes Since 0.12
   - Add ``\colon`` macro, fix spacing around colons. Fixes [ 246 ].
   - New upstream version (additional macros, piecewise integrals and sums).
 
-* docutils/writers/html_plain/
+* docutils/writers/_html_base.py
+
+  - New auxiliary module for definitions common to all HTML writers.
+  
+* docutils/writers/html5_polyglot/
 
   - New HTML writer generating clean, polyglot_ markup conforming to
     `HTML 5`_.
@@ -85,6 +89,7 @@ Changes Since 0.12
   - Do not use <sup> and <sub> tags inside <pre> (parsed-literal blocks).
   - Fix footnotes with content that does not start with a paragraph.
   - Use https in default MathJax URL (report Alan G Isaac).
+  - Outsourcing of common code to _html_base.py.
 
 * docutils/writers/latex2e/__init__.py
 

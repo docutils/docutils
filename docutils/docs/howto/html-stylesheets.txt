@@ -15,7 +15,7 @@ The look of Docutils' HTML output is customizable via CSS stylesheets.
 The default stylesheets can be found in the
 ``docutils/writers/html*/`` directories of the ``html4css1`` and
 ``html-base`` writers in the Docutils installation.  Use the front-end
-command (``rst2html.py``, ``rst2html5.py`` or ``rst2xhtml.py``) with the
+command (``rst2html.py`` or ``rst2html5.py``) with the
 ``--help`` option and look at the description of the ``--stylesheet-path``
 command-line option for the exact machine-specific location.
 
