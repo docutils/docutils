@@ -8,6 +8,27 @@ Releasing
 
 Notes on what happend while releasing.
 
+Release 0.13
+============
+
+svn revision: 7980
+
+Tests
+-----
+
+Tests are run from svn checkout, only few from install.
+
+* windows7 python 2.7.5: OK
+
+* windows7 python 3.4.1: as in previous release
+
+  * test.css path error (filed #256) 
+  * test_parsers\test_rst\test_directives\test_include.py::
+
+* macosx 10.10 python 2.7.10: OK
+* macosx 10.10 python 3.3.2: OK
+* macosx 10.10 python 3.4.1: OK
+
 Release 0.12
 ============
 
