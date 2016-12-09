@@ -32,24 +32,25 @@ Tests are run from svn checkout, only few from install.
 * ubuntu 12.04 python 2.7.3: OK
 * ubuntu 12.04 python 3.2.3: OK
 
-testing tarball 0.13.1 (build sdist) ::
+* testing tarball 0.13.1 (build sdist) ::
 
-  +++ functional/output/standalone_rst_html5.html
-  @@ -7,9 +7,9 @@
-   <meta name="author" content="David Goodger" />
-   <meta content="reStructuredText, test, parser" name="keywords" />
-   <meta content="A test document, containing at least one example of each reStructuredText construct." lang="en" name="description" xml:lang="en" />
-  -<link rel="stylesheet" href="../input/data/minimal.css" type="text/css" />
-  -<link rel="stylesheet" href="../input/data/plain.css" type="text/css" />
-  -<link rel="stylesheet" href="../input/data/math.css" type="text/css" />
-  +<link rel="stylesheet" href="../../minimal.css" type="text/css" />
-  +<link rel="stylesheet" href="../../plain.css" type="text/css" />
-  +<link rel="stylesheet" href="../../math.css" type="text/css" />
-   </head>
-   <body>
-   <div class="header">
+    +++ functional/output/standalone_rst_html5.html
+    @@ -7,9 +7,9 @@
+     <meta content="A test document, containing at least one example of each reStructuredText construct." lang="en" name="description" xml:lang="en" />
+    -<link rel="stylesheet" href="../input/data/minimal.css" type="text/css" />
+    -<link rel="stylesheet" href="../input/data/plain.css" type="text/css" />
+    -<link rel="stylesheet" href="../input/data/math.css" type="text/css" />
+    +<link rel="stylesheet" href="../../minimal.css" type="text/css" />
+    +<link rel="stylesheet" href="../../plain.css" type="text/css" />
+    +<link rel="stylesheet" href="../../math.css" type="text/css" />
+     </head>
 
- IN WORK
+  this is because ``test/functional/input/data/minimal.css`` is a symlink to
+  ``../../../../docutils/writers/html5_polyglot/minimal.css`` and release_test.sh 
+  removes directory docutils to ensure the test uses the installed docutils
+  not the unzipped.
+
+  FIX: remove docutils/__init__.py
 
 Release 0.12
 ============
