@@ -83,10 +83,10 @@ cd docutils-"$docutils_ver"
 python$py_ver setup.py build
 sudo python$py_ver setup.py install
 echo
-echo "Remove dcoutils code directory from tarball_test to make sure it is not used.."
+echo "Remove __init__.py from docutils code directory to make sure it is not used.."
 echo "TODO for python3."
 read
-rm -rf docutils 
+rm -rf docutils/__init__.py
 
 # BUG test-dependecies.py
 # * breaks on record.txt access if not run as root
