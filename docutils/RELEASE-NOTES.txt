@@ -34,11 +34,6 @@ Future changes
 
 * Drop support for python 2.4 after release 0.13.
 
-Checks before 0.13
-==================
-
-* new html writer status
-
 Changes Since 0.12
 ==================
 
@@ -52,6 +47,14 @@ Changes Since 0.12
   - New front-end ``rst2html5.py``.
 
 .. _HTML 5: http://www.w3.org/TR/html5/
+
+* languages: persian/farsi and latvian/la mappings.
+
+* change default base url for :rfc: to http://tools.ietf.org/html/  
+
+* tables accept widths, a list and align 
+
+* latex2e: Fix admonition width, remove deprecated options, better tablewidth auto, ... 
 
 * rst.el : The problem with ``electric-indent-mode`` has been fixed.
 
