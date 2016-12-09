@@ -13,8 +13,8 @@
 
 .. contents::
 
-Changes Since 0.12
-==================
+Release 0.13.1 (2016-12-09)
+===========================
 
 * docutils/languages/fa.py
   docutils/parsers/rst/languages/fa.py
