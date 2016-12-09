@@ -34,6 +34,10 @@ Future changes
 
 * Drop support for python 2.4 after release 0.13.
 
+Changes Since 0.13.1
+====================
+
+
 Release 0.13.1 (2016-12-09)
 ===========================
 
