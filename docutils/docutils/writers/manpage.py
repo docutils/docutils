@@ -368,7 +368,7 @@ class Translator(nodes.NodeVisitor):
         tmpl = (".TH %(title_upper)s %(manual_section)s"
                 " \"%(date)s\" \"%(version)s\" \"%(manual_group)s\"\n"
                 ".SH NAME\n"
-                "%(title)s \- %(subtitle)s\n")
+                "%(title)s \\- %(subtitle)s\n")
         return tmpl % self._docinfo
 
     def append_header(self):

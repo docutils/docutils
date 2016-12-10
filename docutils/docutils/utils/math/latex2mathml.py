@@ -151,8 +151,8 @@ mathscr = {
           }
 
 negatables = {'=': u'\u2260',
-              '\in': u'\u2209',
-              '\equiv': u'\u2262'}
+              r'\in': u'\u2209',
+              r'\equiv': u'\u2262'}
 
 # LaTeX to MathML translation stuff:
 class math:

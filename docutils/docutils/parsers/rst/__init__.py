@@ -145,7 +145,7 @@ class Parser(docutils.parsers.Parser):
          ('Inline markup recognized at word boundaries only '
           '(adjacent to punctuation or whitespace). '
           'Force character-level inline markup recognition with '
-          '"\ " (backslash + space). Default.',
+          '"\\ " (backslash + space). Default.',
           ['--word-level-inline-markup'],
           {'action': 'store_false', 'dest': 'character_level_inline_markup'}),
          ('Inline markup recognized anywhere, regardless of surrounding '
