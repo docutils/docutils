@@ -168,6 +168,7 @@ what-you-see-is-what-you-get plaintext markup syntax.""", # wrap at col 60
                    ]
                    + s5_theme_files),
     'scripts' : ['tools/rst2html.py',
+                 'tools/rst2html4.py',
                  'tools/rst2html5.py',
                  'tools/rst2s5.py',
                  'tools/rst2latex.py',
