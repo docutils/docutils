@@ -34,8 +34,21 @@ Future changes
 
 * Drop support for python 2.4 after release 0.13.
 
+* The default HTML writer may eventually become "html" with frontend
+  ``rst2html.py``.
+
+  Use `get_writer_by_name('html')` or the rst2html.py_ front end, if you
+  want the output to be up-to-date automatically.
+
+  Use a specific writer name or front end, if you depend on stability of the
+  generated HTML code, e.g. because you use a custom style sheet or
+  post-processing that may break otherwise.
+
+
 Changes Since 0.13.1
 ====================
+
+  - New front-end ``rst2html4.py``.
 
 
 Release 0.13.1 (2016-12-09)
@@ -52,13 +65,14 @@ Release 0.13.1 (2016-12-09)
 
 .. _HTML 5: http://www.w3.org/TR/html5/
 
-* languages: persian/farsi and latvian/la mappings.
+* languages: persian/farsi (fa) and latvian (la) mappings.
 
-* change default base url for :rfc: to http://tools.ietf.org/html/  
+* change default base url for :rfc: to http://tools.ietf.org/html/
 
-* tables accept widths, a list and align 
+* tables accept widths, a list and align
 
-* latex2e: Fix admonition width, remove deprecated options, better tablewidth auto, ... 
+* latex2e: Fix admonition width, remove deprecated options,
+           better tablewidth auto, ...
 
 * rst.el : The problem with ``electric-indent-mode`` has been fixed.
 
