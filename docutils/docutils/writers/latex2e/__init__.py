@@ -1194,7 +1194,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             (none,
              self.literal_block_env,
              self.literal_block_options,
-             none ) = re.split('(\w+)(.*)', settings.literal_block_env)
+             none ) = re.split(r'(\w+)(.*)', settings.literal_block_env)
         elif settings.use_verbatim_when_possible:
             self.literal_block_env = 'verbatim'
         #
@@ -1462,7 +1462,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def encode(self, text):
         """Return text with 'problematic' characters escaped.
 
-        * Escape the special printing characters ``# $ % & ~ _ ^ \ { }``,
+        * Escape the special printing characters ``# $ % & ~ _ ^ \\ { }``,
           square brackets ``[ ]``, double quotes and (in OT1) ``< | >``.
         * Translate non-supported Unicode characters.
         * Separate ``-`` (and more in literal text) to prevent input ligatures.
@@ -1561,7 +1561,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def ids_to_labels(self, node, set_anchor=True):
         """Return list of label definitions for all ids of `node`
 
-        If `set_anchor` is True, an anchor is set with \phantomsection.
+        If `set_anchor` is True, an anchor is set with \\phantomsection.
         """
         labels = ['\\label{%s}' % id for id in node.get('ids', [])]
         if set_anchor and labels:
@@ -1919,7 +1919,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.titledata.append('%%% Title Data')
             # \title (empty \title prevents error with \maketitle)
             if self.title:
-                self.title.insert(0, '\phantomsection%\n  ')
+                self.title.insert(0, '\\phantomsection%\n  ')
             title = [''.join(self.title)] + self.title_labels
             if self.subtitle:
                 title += [r'\\ % subtitle',
@@ -2266,7 +2266,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if pxunit is not None:
             sys.stderr.write('deprecation warning: LaTeXTranslator.to_latex_length()'
                              ' option `pxunit` will be removed.')
-        match = re.match('(\d*\.?\d*)\s*(\S*)', length_str)
+        match = re.match(r'(\d*\.?\d*)\s*(\S*)', length_str)
         if not match:
             return length_str
         value, unit = match.groups()[:2]
@@ -2378,7 +2378,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.out.append('\\end{DUlegend}\n')
 
     def visit_line(self, node):
-        self.out.append('\item[] ')
+        self.out.append(r'\item[] ')
 
     def depart_line(self, node):
         self.out.append('\n')
@@ -2522,7 +2522,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             math_code = '\n'.join([math_code] + self.ids_to_labels(node))
         if math_env == '$':
             if self.alltt:
-                wrapper = u'\(%s\)'
+                wrapper = ur'\(%s\)'
             else:
                 wrapper = u'$%s$'
         else:
@@ -2801,7 +2801,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             line = ', line~%s' % node['line']
         except KeyError:
             line = ''
-        self.out.append('\n\n{\color{red}%s/%s} in \\texttt{%s}%s\n' %
+        self.out.append('\n\n{\\color{red}%s/%s} in \\texttt{%s}%s\n' %
                          (node['type'], node['level'],
                           self.encode(node['source']), line))
         if len(node['backrefs']) == 1:

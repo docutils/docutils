@@ -122,7 +122,7 @@ class Input(TransformSpec):
             '%s.\n(%s)' % (', '.join([repr(enc) for enc in encodings]),
                          ErrorString(error)))
 
-    coding_slug = re.compile(b("coding[:=]\s*([-\w.]+)"))
+    coding_slug = re.compile(b(r"coding[:=]\s*([-\w.]+)"))
     """Encoding declaration pattern."""
 
     byte_order_marks = ((codecs.BOM_UTF8, 'utf-8'), # 'utf-8-sig' new in v2.5

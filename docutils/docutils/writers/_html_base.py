@@ -1032,7 +1032,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         wrappers = {# math_mode: (inline, block)
                     'mathml':  ('$%s$',   u'\\begin{%s}\n%s\n\\end{%s}'),
                     'html':    ('$%s$',   u'\\begin{%s}\n%s\n\\end{%s}'),
-                    'mathjax': ('\(%s\)', u'\\begin{%s}\n%s\n\\end{%s}'),
+                    'mathjax': (r'\(%s\)', u'\\begin{%s}\n%s\n\\end{%s}'),
                     'latex':   (None,     None),
                    }
         wrapper = wrappers[self.math_output][math_env != '']

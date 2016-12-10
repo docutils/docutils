@@ -4101,7 +4101,7 @@ class FormulaCommand(FormulaBit):
 
   def emptycommand(self, pos):
     """Check for an empty command: look for command disguised as ending.
-    Special case against '{ \{ \} }' situation."""
+    Special case against '{ \\{ \\} }' situation."""
     command = ''
     if not pos.isout():
       ending = pos.nextending()
