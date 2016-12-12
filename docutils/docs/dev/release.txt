@@ -39,6 +39,8 @@ On new ubuntu 12.10
 Releasing
 ---------
 
+Prerelease: test/notify sphinx.
+
 Note on numbering (Feature Request #50)
 
   PEP 440 specifies how release version are understood by pip and other tools.
