@@ -65,9 +65,11 @@ Note on numbering (Feature Request #50)
     0.13.1 -> when tagged for release
     0.13.2a -> new head after release
 
-  Additionally snapshots can be marked with the .devXXX nominclature.
+  Additionally snapshots can be marked with the .devXXX nomenclature.
 
-These can then all be pushed to pypi.python.org and by default pip will install the latest release unless explicitly requested via the --pre flag or a version specifier docutils>=0.13.1a
+These can then all be pushed to pypi.python.org and by default pip will
+install the latest release unless explicitly requested via the ``--pre``
+flag or a version specifier ``docutils>=0.13.1a``
 
 REWORK FOR SOURCEFORGE REPO
 
@@ -90,6 +92,9 @@ reminded of them.
   Consult HISTORY.TXT for changes.
 
 * **Announce a check-in freeze on Docutils-develop.**
+
+* **Announce the upcoming release at the Sphinx-devel mailing list
+  and ask for testing with Sphinx.**
 
 Call ``sandbox/infrastructure/release.sh new_version svn_version``.
 For details see the script.
@@ -131,9 +136,6 @@ For details see the script.
 
           cd docutils
           python setup.py sdist
-
-  .. note:: PyPI recommends to `create and upload wheels`_ in addition to
-            the source tarball.
 
 * Expand and _`install` the release tarball in isolation:
 
@@ -203,51 +205,6 @@ For details see the script.
 
   Set the download-url so eggs can access older releases.
 
-  _`create and upload wheels`:
-
-* The `Python Packaging User Guide` recommends to provide `wheels`_ [#]_ in
-  addition to the source tarball.
-
-  .. [#] A Built Distribution format introduced by pypa:PEP427s, which is
-     intended to replace the Egg format. Wheel is currently supported by
-     pip__.
-
-  .. _wheels: https://packaging.python.org/en/latest/distributing.html#wheels
-  __ https://pypi.python.org/pypi/pip/
-
-  See also `feature request 43
-  <https://sourceforge.net/p/docutils/feature-requests/43/>`__
-
-  For current Docutils, this would mean `pure Python wheels`__ for Python 2
-  and 3 respectively.
-
-  __ https://packaging.python.org/en/latest/distributing.html#pure-python-wheels
-
-
-  + Eventually install the `pip <https://pypi.python.org/pypi/pip/>`__` and
-    `wheel <https://pypi.python.org/pypi/wheel/>`__ packages.
-
-  + Produce wheels:
-  
-    For the default Python version:
-
-    - From release at PyPI ::
-
-        pip wheel docutils
-
-    - From working directory's sub-directory "docutils" ::
-    
-        pip wheel ./docutils/
-       
-    Under Debian, the default Python version is 2.7 and the wheel is usable
-    for all 2.x versions supported by Docutils and
-    the command ``pip3 wheel docutils`` generates a wheel suitable for Py3k.
-   
-  + `Upload to PyPI`__
-
-  __ https://packaging.python.org/en/latest/distributing.html#upload-your-distributions
-
-
 * Restore ``__version_details__`` in docutils/docutils/__init__.py to
   "repository" (from "release").
 
@@ -260,6 +217,26 @@ For details see the script.
 * Run docutils-update on the server.
 
 * **Run alltests.py with svn version**
+
+* **build wheels**::
+
+    pip wheel docutils
+    pip3 wheel docutils
+
+  This builds wheels_ (`pure Python wheels`_ for Python 2 and 3
+  respectively) by downloading the new release from pypi.
+
+  `Upload the wheels to PyPI`_.
+
+  Question: Can we have an tar.gz (distutil) and a py2-wheel and a py3-wheel
+    on pypi and will installers select the correct files ?
+
+
+  .. _wheels: https://packaging.python.org/en/latest/distributing.html#wheels
+  .. _pure Python wheels:
+     https://packaging.python.org/en/latest/distributing.html#pure-python-wheels
+  .. _Upload the wheels to PyPI:
+     https://packaging.python.org/en/latest/distributing.html#upload-your-distributions
 
 * **Send announcement email to:**
 
@@ -278,17 +255,6 @@ For details see the script.
   `Docutils project`__. (freecode is freshmeat.net's new name)
 
   __ http://freecode.com/projects/docutils/
-
-* **build a wheel** at least for python3::
-
-    pip3 wheel docutils
-
-  This builds the wheel by downloading the new release from pypi.
-
-  Upload the wheel to pypi.
-
-  Question: Can we have an tar.gz (distutil) and a py2-wheel and a py3-wheel
-    on pypi and will installers select the correct files ?
 
 
 ..
