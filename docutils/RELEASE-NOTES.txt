@@ -44,7 +44,7 @@ Future changes
   generated HTML code, e.g. because you use a custom style sheet or
   post-processing that may break otherwise.
 
-  __ docs/user/tools.html#rst2html-py
+.. _rst2html.py: docs/user/tools.html#rst2html-py
 
 Changes Since 0.13.1
 ====================
