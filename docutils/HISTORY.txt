@@ -13,10 +13,27 @@
 
 .. contents::
 
+
 Changes Since 0.13.1
 ====================
 
+* docs/ref/rst/restructuredtext.txt:
+
+  - Added documentation for escaped whitespace in URI contexts.
+
+* docutils/parsers/rst/states.py:
+
+  - Added functionality: escaped whitespace in URI contexts.
+
+* docutils/utils/__init__.py:
+
+  - Added ``split_escaped_whitespace`` function, support for escaped
+    whitespace in URI contexts.
+
+* tools/
+
   - New front-end ``rst2html4.py``.
+
 
 Release 0.13.1 (2016-12-09)
 ===========================

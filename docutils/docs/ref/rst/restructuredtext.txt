@@ -347,7 +347,8 @@ mechanism to override the default meaning of the characters used for
 the markup.  In reStructuredText we use the backslash, commonly used
 as an escaping character in other domains.
 
-A backslash followed by any character (except whitespace characters)
+A backslash followed by any character (except whitespace characters
+in non-URI contexts)
 escapes that character.  The escaped character represents the
 character itself, and is prevented from playing a role in any markup
 interpretation.  The backslash is removed from the output.  A literal
@@ -355,8 +356,11 @@ backslash is represented by two backslashes in a row (the first
 backslash "escapes" the second, preventing it being interpreted in an
 "escaping" role).
 
-Backslash-escaped whitespace characters are removed from the document.
+In non-URI contexts,
+backslash-escaped whitespace characters are removed from the document.
 This allows for character-level `inline markup`_.
+
+In URIs, backslash-escaped whitespace represents a single space.
 
 There are two contexts in which backslashes have no special meaning:
 literal blocks and inline literals.  In these contexts, a single
@@ -1881,7 +1885,7 @@ indirect.
    explicit markup start and target name, or it may begin in an
    indented text block immediately following, with no intervening
    blank lines.  If there are multiple lines in the link block, they
-   are concatenated.  Any whitespace is removed (whitespace is
+   are concatenated.  Any unescaped whitespace is removed (whitespace is
    permitted to allow for line wrapping).  The following external
    hyperlink targets are equivalent::
 
@@ -1893,6 +1897,10 @@ indirect.
        .. _entirely-below:
           http://docutils.
           sourceforge.net/rst.html
+
+   Escaped whitespace is preserved as intentional spaces, e.g.::
+
+       .. _reference: ../local\ path\ with\ spaces.html
 
    If an external hyperlink target's URI contains an underscore as its
    last character, it must be escaped to avoid being mistaken for an

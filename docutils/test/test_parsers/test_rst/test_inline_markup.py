@@ -981,6 +981,21 @@ long/path /and  /whitespace>`__
         <reference name="embedded URI with whitespace" refuri="http://example.com/long/path/and/whitespace">
             embedded URI with whitespace
 """],
+[r"""
+`embedded URI with escaped whitespace <http://example.com/a\
+long/path\ and/some\ escaped\ whitespace>`__
+
+`<omitted\ reference\ text\ with\ escaped\ whitespace>`__
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        <reference name="embedded URI with escaped whitespace" refuri="http://example.com/a long/path and/some escaped whitespace">
+            embedded URI with escaped whitespace
+    <paragraph>
+        <reference name="omitted reference text with escaped whitespace" refuri="omitted reference text with escaped whitespace">
+            omitted reference text with escaped whitespace
+"""],
 ["""\
 `embedded email address <jdoe@example.com>`__
 
@@ -1138,6 +1153,15 @@ long  phrase_>`__
 <document source="test data">
     <paragraph>
         <reference name="embedded alias with whitespace" refname="alias long phrase">
+            embedded alias with whitespace
+"""],
+["""\
+`<embedded alias with whitespace_>`__
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        <reference name="embedded alias with whitespace" refname="embedded alias with whitespace">
             embedded alias with whitespace
 """],
 [r"""

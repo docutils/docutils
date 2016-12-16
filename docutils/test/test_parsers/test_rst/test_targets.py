@@ -36,7 +36,7 @@ totest['targets'] = [
 <document source="test data">
     <target ids="optional-space-before-colon" names="optional\ space\ before\ colon">
 """],
-["""\
+[r"""
 External hyperlink targets:
 
 .. _one-liner: http://structuredtext.sourceforge.net
@@ -49,7 +49,10 @@ External hyperlink targets:
    http://structuredtext.
    sourceforge.net
 
-.. _not-indirect: uri\\_
+.. _escaped-whitespace: http://example.org/a\ path\ with\
+   spaces.html
+
+.. _not-indirect: uri\_
 """,
 """\
 <document source="test data">
@@ -58,6 +61,7 @@ External hyperlink targets:
     <target ids="one-liner" names="one-liner" refuri="http://structuredtext.sourceforge.net">
     <target ids="starts-on-this-line" names="starts-on-this-line" refuri="http://structuredtext.sourceforge.net">
     <target ids="entirely-below" names="entirely-below" refuri="http://structuredtext.sourceforge.net">
+    <target ids="escaped-whitespace" names="escaped-whitespace" refuri="http://example.org/a path with spaces.html">
     <target ids="not-indirect" names="not-indirect" refuri="uri_">
 """],
 ["""\
