@@ -117,6 +117,7 @@ from docutils.parsers.rst import directives, languages, tableparser, roles
 from docutils.parsers.rst.languages import en as _fallback_language_module
 from docutils.utils import escape2null, unescape, column_width
 from docutils.utils import punctuation_chars, roman, urischemes
+from docutils.utils import split_escaped_whitespace
 
 class MarkupError(DataError): pass
 class UnknownInterpretedRoleError(DataError): pass
@@ -807,7 +808,9 @@ class Inliner:
                 target.indirect_reference_name = aliastext[:-1]
             else:
                 aliastype = 'uri'
-                alias = ''.join(aliastext.split())
+                alias_parts = split_escaped_whitespace(match.group(2))
+                alias = ' '.join(''.join(unescape(part).split())
+                                 for part in alias_parts)
                 alias = self.adjust_uri(alias)
                 if alias.endswith(r'\_'):
                     alias = alias[:-2] + '_'
@@ -1958,8 +1961,10 @@ class Body(RSTState):
             refname = self.is_reference(reference)
             if refname:
                 return 'refname', refname
-        reference = ''.join([''.join(line.split()) for line in block])
-        return 'refuri', unescape(reference)
+        ref_parts = split_escaped_whitespace(' '.join(block))
+        reference = ' '.join(''.join(unescape(part).split())
+                             for part in ref_parts)
+        return 'refuri', reference
 
     def is_reference(self, reference):
         match = self.explicit.patterns.reference.match(

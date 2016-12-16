@@ -48,6 +48,12 @@ Future changes
 Changes Since 0.13.1
 ====================
 
+* docutils/parsers/rst/:
+
+  - Added functionality: escaped whitespace in URI contexts.
+
+* tools/
+
   - New front-end ``rst2html4.py``.
 
 

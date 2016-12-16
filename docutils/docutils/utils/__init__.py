@@ -13,6 +13,7 @@ import sys
 import os
 import os.path
 import re
+import itertools
 import warnings
 import unicodedata
 from docutils import ApplicationError, DataError
@@ -575,7 +576,7 @@ def escape2null(text):
         parts.append('\x00' + text[found+1:found+2])
         start = found + 2               # skip character after escape
 
-def unescape(text, restore_backslashes=False):
+def unescape(text, restore_backslashes=False, respect_whitespace=False):
     """
     Return a string with nulls removed or restored to backslashes.
     Backslash-escaped spaces are also removed.
@@ -586,6 +587,16 @@ def unescape(text, restore_backslashes=False):
         for sep in ['\x00 ', '\x00\n', '\x00']:
             text = ''.join(text.split(sep))
         return text
+
+def split_escaped_whitespace(text):
+    """
+    Split `text` on escaped whitespace (null+space or null+newline).
+    Return a list of strings.
+    """
+    strings = text.split('\x00 ')
+    strings = [string.split('\x00\n') for string in strings]
+    # flatten list of lists of strings to list of strings:
+    return list(itertools.chain(*strings))
 
 def strip_combining_chars(text):
     if isinstance(text, str) and sys.version_info < (3,0):
