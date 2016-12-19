@@ -541,12 +541,12 @@ class Inliner:
               $                         # end of string
               """ % args, re.VERBOSE | re.UNICODE),
           literal=re.compile(self.non_whitespace_before + '(``)'
-                             + end_string_suffix),
+                             + end_string_suffix, re.UNICODE),
           target=re.compile(self.non_whitespace_escape_before
-                            + r'(`)' + end_string_suffix),
+                            + r'(`)' + end_string_suffix, re.UNICODE),
           substitution_ref=re.compile(self.non_whitespace_escape_before
                                       + r'(\|_{0,2})'
-                                      + end_string_suffix),
+                                      + end_string_suffix, re.UNICODE),
           email=re.compile(self.email_pattern % args + '$',
                            re.VERBOSE | re.UNICODE),
           uri=re.compile(

@@ -1791,6 +1791,47 @@ u"""\
         <emphasis>
             LINE SEPARATOR
 """],
+[u"""\
+inline markup separated by non-ASCII whitespace
+\xa0**NO-BREAK SPACE**\xa0, \xa0``NO-BREAK SPACE``\xa0, \xa0`NO-BREAK SPACE`\xa0,
+\u2000**EN QUAD**\u2000, \u2000``EN QUAD``\u2000, \u2000`EN QUAD`\u2000,
+\u202f**NARROW NBSP**\u202f, \u202f``NARROW NBSP``\u202f, \u202f`NARROW NBSP`\u202f,
+""",                                      
+u"""\
+<document source="test data">
+    <paragraph>
+        inline markup separated by non-ASCII whitespace
+        \xa0
+        <strong>
+            NO-BREAK SPACE
+        \xa0, \xa0
+        <literal>
+            NO-BREAK SPACE
+        \xa0, \xa0
+        <title_reference>
+            NO-BREAK SPACE
+        \xa0,
+        \u2000
+        <strong>
+            EN QUAD
+        \u2000, \u2000
+        <literal>
+            EN QUAD
+        \u2000, \u2000
+        <title_reference>
+            EN QUAD
+        \u2000,
+        \u202f
+        <strong>
+            NARROW NBSP
+        \u202f, \u202f
+        <literal>
+            NARROW NBSP
+        \u202f, \u202f
+        <title_reference>
+            NARROW NBSP
+        \u202f,
+"""],
 # « * » ‹ * › « * » ‹ * › « * » ‹ * › French,
 [u"""\
 "Quoted" markup start-string (matched openers & closers) -> no markup:
