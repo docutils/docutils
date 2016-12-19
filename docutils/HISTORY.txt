@@ -24,6 +24,8 @@ Changes Since 0.13.1
 * docutils/parsers/rst/states.py:
 
   - Added functionality: escaped whitespace in URI contexts.
+  - Recognize non-ASCII whitespace around inline literal, target,
+    and substitution.
 
 * docutils/utils/__init__.py:
 
@@ -42,10 +44,10 @@ Release 0.13.1 (2016-12-09)
   docutils/parsers/rst/languages/fa.py
   docutils/languages/la.py
   docutils/parsers/rst/languages/la.py:
-  
+
   - Apply [ 133 ] Persian mappings by Shahin Azad.
   - Apply [ 135 ] Language modules for Latvian by Alexander Smishlajev
-  
+
 * docutils/nodes.py
 
   - Fix [ 253 ] Attribute key without value not allowed in XML.
@@ -93,7 +95,7 @@ Release 0.13.1 (2016-12-09)
 * docutils/writers/_html_base.py
 
   - New auxiliary module for definitions common to all HTML writers.
-  
+
 * docutils/writers/html5_polyglot/
 
   - New HTML writer generating clean, polyglot_ markup conforming to
@@ -131,7 +133,7 @@ Release 0.13.1 (2016-12-09)
   - Fix [ 286 ] Empty column title cause invalid latex file.
 
   - Fix [ 224 ] Fix rowspan support for tables.
-  
+
   - Let LaTeX determine the column widths in tables with "colwidths-auto".
     Not suited for with multi-paragraph cells!
 
