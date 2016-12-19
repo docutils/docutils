@@ -382,6 +382,8 @@ class smartchars(object):
     # For other languages see:
     # http://en.wikipedia.org/wiki/Non-English_usage_of_quotation_marks
     # http://de.wikipedia.org/wiki/Anf%C3%BChrungszeichen#Andere_Sprachen
+    # https://fr.wikipedia.org/wiki/Guillemet
+    # https://en.wikipedia.org/wiki/Hebrew_punctuation#Quotation_marks
     quotes = {'af':           u'“”‘’',
               'af-x-altquot': u'„”‚’',
               'ca':           u'«»“”',
@@ -428,10 +430,9 @@ class smartchars(object):
               'sk':           u'„“‚‘',
               'sk-x-altquot': u'»«›‹',
               'sv':           u'””’’',
-              'sv-x-altquot': u'»»›>',
+              'sv-x-altquot': u'»»››',
               # 'sv-x-altquot': u'»«›‹',
               'zh-CN':        u'“”‘’',
-              'it':           u'«»“”',
               'zh-TW':        u'「」『』',
              }
 
