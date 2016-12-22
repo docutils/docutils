@@ -13,7 +13,7 @@ Currently, `html` is mapped to html4css1_.
 The target may change with the development of HTML, browsers, Docutils, and
 the web.
 
-* Use `get_writer_by_name('html')` or the rst2html.py_ front end, if you
+* Use ``get_writer_by_name('html')`` or the rst2html.py_ front end, if you
   want the output to be up-to-date automatically.
 
 * Use a specific writer name or front end, if you depend on stability of the
@@ -28,9 +28,8 @@ html4css1
 :front-ends: rst2html4.py, rst2html.py_
 :config:     `[html4css1 writer]`_
 
-The HTML Writer module, ``docutils/writers/html4css1.py``, started
-as a proof-of-concept reference implementation. It is the first Docutils
-writer and was up to release 0.13 the only official HTML writer.
+The HTML Writer module, ``docutils/writers/html4css1.py``, was the first
+Docutils writer and up to release 0.13 the only official HTML writer.
 
 The output conforms to the `XHTML 1 Transitional`_ specification. It does
 not validate as `HTML 4.01 Transitional`_ due to the closing of empty tags
@@ -94,18 +93,22 @@ html5_polyglot
 :front-end: rst2html5.py_
 :config: `[html5 writer]`_
 
-The ``html5_polyglot`` writer generates `polyglot HTML`_ output, valid XML that
-is compatible with `HTML5`_ (cf. `Benefits of polyglot XHTML5`_).
-New features and elements will only be used if they are widely supported to
-make documents `viewable with any browser`_.
+The ``html5_polyglot`` writer generates `polyglot HTML`_ [#]_ output, valid
+XML [#safetext]_ that is compatible with `HTML5`_. New features and elements
+will only be used if they are widely supported to make documents `viewable
+with any browser`_.
 
 There is no hard-coded formatting information in the HTML document. Correct
 rendering of elements not directly supported by HTML depends on a CSS_ style
 sheet. The provided style sheets minimal.css_ and plain.css_ define required
 and optional styling rules respectively. Adaption of the layout is possible
-with `custom style sheets`_.
+with `custom style sheets`_. [#safetext]_
 
 New in Docutils 0.13
+
+.. [#] see also `Benefits of polyglot XHTML5`_
+.. [#safetext] The validity of raw HTML and custom stylesheets must be
+   ensured by the author (e.g. using `safe text content`_).
 
 .. _rst2html5.py: tools.html#rst2html5-py
 .. _[html5 writer]: config.html#html5-writer
@@ -114,6 +117,9 @@ New in Docutils 0.13
 .. _custom style sheets: ../howto/html-stylesheets.html
 .. _viewable with any browser: http://www.anybrowser.org/campaign
 .. _Benefits of polyglot XHTML5: http://xmlplease.com/xhtml/xhtml5polyglot/
+.. _safe text content:
+     https://www.w3.org/TR/html-polyglot/#dfn-safe-text-content
+
 
 HTML writers in the sandbox
 ---------------------------
@@ -161,8 +167,8 @@ Overview
 =============== =========== ============== ================= ===========
 name            alias(es)   `front-end`_   HTML version      CSS version
 =============== =========== ============== ================= ===========
-html4css1_      html4,      rst2html4.py   `XHTML 1          `CSS 1`_
-                html_                      Transitional`_
+html4css1_      html4,      rst2html4.py,  `XHTML 1          `CSS 1`_
+                html_       rst2html.py    Transitional`_
 
 pep_html_       ..          rstpep2html.py `XHTML 1          `CSS 1`_
                                            Transitional`_
