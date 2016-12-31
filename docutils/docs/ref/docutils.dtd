@@ -39,15 +39,15 @@ by wrapper DTDs.
 <!-- Emphasize that the attribute value must be a number. -->
 <!ENTITY % number  "NMTOKEN">
 
-<!-- A number which may be immediately followed by a unit. -->
-<!ENTITY % measure "NMTOKEN">
+<!-- A number which may be immediately followed by a unit or percent sign. -->
+<!ENTITY % measure "CDATA">
 
 <!ENTITY % additional.basic.atts "">
 <!--
 Attributes shared by all elements in this DTD:
 
-- `id` is a unique identifier, typically assigned by the system.
-- `name` is an identifier assigned in the markup.
+- `ids` are unique identifiers, typically assigned by the system.
+- `names` are identifiers assigned in the markup.
 - `dupnames` is the same as `name`, used when it's a duplicate.
 - `source` is the name of the source of this document or fragment.
 - `classes` is used to transmit individuality information forward.
@@ -181,12 +181,13 @@ http://www.oasis-open.org/html/tm9901.htm).
   " %basic.atts;
     stub      %yesorno; #IMPLIED ">
 <!ENTITY % tbl.row.att          " %basic.atts; ">
-<!-- nested tables are supported -->
+<!-- ``(...)*``: nested tables are supported -->
 <!ENTITY % tbl.entry.mdl        " (%body.elements;)* ">
 <!ENTITY % tbl.entry.att
   " %basic.atts;
-    %align-h.att;
     morecols  %number;  #IMPLIED ">
+<!ATTLIST table
+    %align-h.att;>
 
 <!--
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
