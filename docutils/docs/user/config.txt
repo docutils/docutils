@@ -744,28 +744,6 @@ Options: ``--trim-footnote-reference-space, --leave-footnote-reference-space``.
 
 __ `footnote_references [latex2e writer]`_
 
-.. @@@ do we want a setting for considering/ignoring SOURCE_DATE_EPOCH ?
-
-  use_source_date_epoch
-  ~~~~~~~~~~~~~~~~~~~~~
-
-  Use timestamp from the `SOURCE_DATE_EPOCH`_ environment variable for the
-  `date directive`_.
-
-  With this setting and environment variable, Docutils-generated documentation
-  can be part of `reproducible software builds`_
-
-  Default: disabled (False).
-  Options: ``--use-source-date-epoch``.
-
-  New in Docutils 0.13.
-
-  .. _SOURCE_DATE_EPOCH:
-     https://reproducible-builds.org/specs/source-date-epoch/
-  .. _reproducible software builds:
-     https://reproducible-builds.org/
-  .. _date directive: ../ref/rst/directives.html#date
-
 
 [readers]
 =========
