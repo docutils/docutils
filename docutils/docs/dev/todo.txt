@@ -1959,6 +1959,9 @@ any knowledge of the Python-Reader origin of these elements.
 Doctree pruning
 ---------------
 
+[DG 2017-01-02: These are not definitive to-dos, just one developer's
+opinion. Added 2009-10-13 by Günter Milde, in r6178.]
+
 The number of doctree nodes can be reduced by "normalizing" some related
 nodes. This makes the document model and the writers somewhat simpler.
 
@@ -1966,14 +1969,30 @@ nodes. This makes the document model and the writers somewhat simpler.
   a front-end to generic literal blocks.  We could immediately (in 0.7)
   remove the doctest node from the doctree, but leave the
   syntax in reST.  The reST parser could represent doctest blocks as
-  literal blocks with a class attribute.  The syntax could be left in
-  reST (for a set period of time?).
+  literal blocks with a class attribute.
+
+  [DG 2017-01-02:] +0.
+
+  The syntax could be left in reST (for a set period of time?).
+
+  [DG 2017-01-02:] The syntax must be left in reST, practically
+  forever. Removing it would introduce a huge backwards
+  incompatibility. Any syntax removal must be preceded by a thorough
+  review and planning, including a deprecation warning process. My
+  opinion: it's not worth it.
 
 * "Normalize" special admonitions (note, hint, warning, ...) during parsing
   (similar to _`transforms.writer_aux.Admonitions`). There is no need to
   keep them as distinct elements in the doctree specification.
 
+  [DG 2017-01-02:] -1: <note>{body}</> is much more concise and
+  expressive than <admonition><title>Note</>{body}</>, and the title
+  translation can be put off until much later in the process.
+
   Keep the special admonition directives in reStructuredText syntax?
+
+  [DG 2017-01-02:] We must definitely keep the syntax. Removing it
+  would introduce a huge backwards incompatibility.
 
 
 Unimplemented Transforms
