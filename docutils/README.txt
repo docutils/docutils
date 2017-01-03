@@ -103,7 +103,7 @@ Requirements
 
 To run the code, Python_ must be installed.
 Docutils is compatible with Python versions from 2.4 up to 2.7 and
-versions 3.1 and 3.2 (cf. `Python 3 compatibility`_).
+versions 3.1 to 3.5 (cf. `Python 3 compatibility`_).
 
 Docutils uses the following packages for enhanced functionality, if they are
 installed:
@@ -137,9 +137,6 @@ translation for `porting to Python 3`_.
 
 * When editing the source, do changes on the Python 2 versions of the
   files and re-run the build command.
-
-Using Docutils with Python 3.x is less tested and might still have some
-issues.
 
 .. _porting to Python 3: http://docs.python.org/py3k/howto/pyporting.html
 

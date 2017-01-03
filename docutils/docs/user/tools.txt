@@ -121,7 +121,7 @@ rst2html4.py
 :Parser: reStructuredText
 :Writer: html4css1_
 
-The ``rst2html.py`` front end reads standalone reStructuredText source
+The ``rst2html4.py`` front end reads standalone reStructuredText source
 files and produces `XHTML 1.0 Transitional`_ output.
 A CSS stylesheet is required for proper rendering; a simple but
 complete stylesheet is installed and used by default (see Stylesheets_
