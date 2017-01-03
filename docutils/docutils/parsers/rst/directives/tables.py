@@ -112,13 +112,7 @@ class Table(Directive):
                 'No table data detected in CSV file.', nodes.literal_block(
                 self.block_text, self.block_text), line=self.lineno)
             raise SystemMessagePropagation(error)
-        if self.widths == 'auto':
-            widths = 'auto'
-        elif self.widths: # "grid" or list of integers
-            widths = 'given'
-        else:
-            widths = self.widths
-        return widths, col_widths
+        return col_widths
 
     def extend_short_rows_with_empty_cells(self, columns, parts):
         for part in parts:
@@ -253,7 +247,7 @@ class CSVTable(Table):
             self.check_table_dimensions(rows, header_rows, stub_columns)
             table_head.extend(rows[:header_rows])
             table_body = rows[header_rows:]
-            widths, col_widths = self.get_column_widths(max_cols)
+            col_widths = self.get_column_widths(max_cols)
             self.extend_short_rows_with_empty_cells(max_cols,
                                                     (table_head, table_body))
         except SystemMessagePropagation, detail:
@@ -269,7 +263,7 @@ class CSVTable(Table):
             return [error]
         table = (col_widths, table_head, table_body)
         table_node = self.state.build_table(table, self.content_offset,
-                                            stub_columns, widths=widths)
+                                            stub_columns, widths=self.widths)
         table_node['classes'] += self.options.get('class', [])
         if 'align' in self.options:
             table_node['align'] = self.options.get('align')
@@ -413,7 +407,7 @@ class ListTable(Table):
         node = nodes.Element()          # anonymous container for parsing
         self.state.nested_parse(self.content, self.content_offset, node)
         try:
-            num_cols, widths, col_widths = self.check_list_content(node)
+            num_cols, col_widths = self.check_list_content(node)
             table_data = [[item.children for item in row_list[0]]
                           for row_list in node[0]]
             header_rows = self.options.get('header-rows', 0)
@@ -421,7 +415,7 @@ class ListTable(Table):
             self.check_table_dimensions(table_data, header_rows, stub_columns)
         except SystemMessagePropagation, detail:
             return [detail.args[0]]
-        table_node = self.build_table_from_list(table_data, widths, col_widths,
+        table_node = self.build_table_from_list(table_data, col_widths,
                                                 header_rows, stub_columns)
         if 'align' in self.options:
             table_node['align'] = self.options.get('align')
@@ -467,14 +461,15 @@ class ListTable(Table):
                     raise SystemMessagePropagation(error)
             else:
                 num_cols = len(item[0])
-        widths, col_widths = self.get_column_widths(num_cols)
-        return num_cols, widths, col_widths
+        col_widths = self.get_column_widths(num_cols)
+        return num_cols, col_widths
 
-    def build_table_from_list(self, table_data, widths, col_widths, header_rows,
-                              stub_columns):
+    def build_table_from_list(self, table_data, col_widths, header_rows, stub_columns):
         table = nodes.table()
-        if widths:
-            table['classes'] += ['colwidths-%s' % widths]
+        if self.widths == 'auto':
+            table['classes'] += ['colwidths-auto']
+        elif self.widths: # "grid" or list of integers
+            table['classes'] += ['colwidths-given']
         tgroup = nodes.tgroup(cols=len(col_widths))
         table += tgroup
         for col_width in col_widths:
