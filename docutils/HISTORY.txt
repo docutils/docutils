@@ -26,6 +26,12 @@ Changes Since 0.13.1
   - Added functionality: escaped whitespace in URI contexts.
   - Recognize non-ASCII whitespace around inline literal, target,
     and substitution.
+  - improve backwards compatibility of patch [ 120 ]
+
+* docutils/parsers/rst/directives/tables.py
+
+  - improve backwards compatibility of patch [ 120 ] (tables accept
+    option widths: list of relative widths, 'auto' or 'grid').
 
 * docutils/utils/__init__.py:
 
