@@ -1,4 +1,4 @@
-;; Tests for various functions around shifting text
+;; Tests for various functions around shifting text  -*- lexical-binding: t -*-
 
 (add-to-list 'load-path ".")
 (load "init" nil t)

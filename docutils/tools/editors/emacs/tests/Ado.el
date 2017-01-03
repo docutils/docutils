@@ -1,4 +1,4 @@
-;; Tests for class `rst-Ado'
+;; Tests for class `rst-Ado'  -*- lexical-binding: t -*-
 
 (add-to-list 'load-path ".")
 (load "init" nil t)
@@ -17,7 +17,7 @@
 		:type 'wrong-type-argument)
 
   (should-error (rst-Ado-new-simple ?a)
-		:type 'args-out-of-range)
+		:type 'wrong-type-argument)
 
   (should (rst-Ado-p (rst-Ado-new-simple ?=)))
   )
@@ -30,7 +30,7 @@
 		:type 'wrong-type-argument)
 
   (should-error (rst-Ado-new-over-and-under ?a)
-		:type 'args-out-of-range)
+		:type 'wrong-type-argument)
 
   (should (rst-Ado-p (rst-Ado-new-over-and-under ?=)))
   )

@@ -1,4 +1,4 @@
-;; Tests for rst-adjust
+;; Tests for rst-adjust  -*- lexical-binding: t -*-
 
 (add-to-list 'load-path ".")
 (load "init" nil t)
@@ -873,6 +873,56 @@ Document Title
 ==============
 Document Title2
 ===============
+
+"
+	     t))
+    ))
+
+(ert-deftest rst-adjust-special ()
+  "Tests for `rst-adjust' for special situations."
+  (let ( ;; Set customizable variables to defined values
+	(rst-new-adornment-down t)
+	(rst-default-indent 3)
+	(rst-preferred-adornments '((?= over-and-under 1)
+				    (?= simple 0)
+				    (?- simple 0)
+				    (?~ simple 0)
+				    (?+ simple 0)
+				    (?` simple 0)
+				    (?# simple 0)
+				    (?@ simple 0)))
+	;; Make sure the region is active.
+	(transient-mark-mode t))
+    ;; Switch to `rst-ajust-region'.
+    (should (ert-equal-buffer
+	     '(rst-adjust)
+	     "
+\^?
+Some Title
+==========
+\^@
+"
+	     "
+
+============
+ Some Title
+============
+
+"
+	     t))
+    (should (ert-equal-buffer
+	     '(rst-adjust -)
+	     "
+\^?
+Some Title
+==========
+\^@
+"
+	     "
+
+============
+ Some Title
+============
 
 "
 	     t))

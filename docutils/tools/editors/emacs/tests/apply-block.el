@@ -1,4 +1,4 @@
-;; Tests for various functions around applying a function to an indented block
+;; Tests for various functions around applying a function to an indented block  -*- lexical-binding: t -*-
 
 (add-to-list 'load-path ".")
 (load "init" nil t)
@@ -391,54 +391,64 @@ zwei
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun indented-block-params (count firstp subp emptyp relind lastret)
-  "Return LASTRET appended by a list of current column and the other parameters."
-  (append lastret
-	  (list (list (current-column) count firstp subp emptyp relind))))
-
-(defun apply-indented-blocks (ind fun)
-  "Call `rst-apply-indented-blocks' on current region with IND and FUN."
-  (rst-apply-indented-blocks (region-beginning) (region-end) ind fun))
+(defun apply-indented-blocks (ind &optional limit)
+  "Call `rst-apply-indented-blocks' on current region with IND.
+Stop after LIMIT calls if given. Return a list of all parameter
+packs to the callback function followed by the return value."
+  (let ((called 0)
+	params r)
+    (setq r (rst-apply-indented-blocks
+	     (region-beginning) (region-end) ind
+	     #'(lambda (count firstp subp supp emptyp relind)
+		 (setq params
+		       (append
+			params
+			(list
+			 (list (current-column)
+			       count firstp subp supp emptyp relind))))
+		 (cl-incf called)
+		 (and limit (>= called limit) called))))
+    (append params (list r))))
 
 (ert-deftest rst-apply-indented-blocks ()
   "Tests for `rst-apply-indented-blocks'."
   (should (ert-equal-buffer-return
-	   '(apply-indented-blocks 0 'indented-block-params)
+	   '(apply-indented-blocks 0)
 	   "\^@abc
 \^?"
 	   t
-	   '((0 1 t   nil nil 0)
-	     )))
+	   '((0 1 t   nil nil nil 0)
+	     nil)))
   (should (ert-equal-buffer-return
-	   '(apply-indented-blocks 0 'indented-block-params)
+	   '(apply-indented-blocks 0)
 	   "a\^@b\^?c"
 	   t
-	   '((0 1 t   nil nil 0)
-	     )))
+	   '((0 1 t   nil nil nil 0)
+	     nil)))
   (should (ert-equal-buffer-return
-	   '(apply-indented-blocks 2 'indented-block-params)
+	   '(apply-indented-blocks 2)
 	   "\^@  
   abc
 \^?"
 	   t
-	   '((2 0 nil nil t   nil)
-	     (2 1 t   nil nil 0)
-	     )))
+	   '((2 0 nil nil nil t   nil)
+	     (2 1 t   nil nil nil 0)
+	     nil)))
   (should (ert-equal-buffer-return
-	   '(apply-indented-blocks 2 'indented-block-params)
+	   '(apply-indented-blocks 2)
 	   "\^@
   abc
 
     def
 \^?"
 	   t
-	   '((0 0 nil nil t   nil)
-	     (2 1 t   nil nil 0)
-	     (0 1 nil t   t   nil)
-	     (4 1 nil t   nil 2)
-	     )))
+	   '((0 0 nil nil nil t   nil)
+	     (2 1 t   nil nil nil 0)
+	     (0 1 nil nil nil t   nil)
+	     (4 1 nil t   nil nil 2)
+	     nil)))
   (should (ert-equal-buffer-return
-	   '(apply-indented-blocks 2 'indented-block-params)
+	   '(apply-indented-blocks 2)
 	   "\^@
   abc
 
@@ -447,20 +457,20 @@ zwei
   
 \^?"
 	   t
-	   '((0 0 nil nil t   nil)
-	     (2 1 t   nil nil 0)
-	     (0 1 nil t   t   nil)
-	     (4 1 nil t   nil 2)
-	     (6 1 nil t   nil 4)
-	     (2 1 nil t   t   nil)
-	     )))
+	   '((0 0 nil nil nil t   nil)
+	     (2 1 t   nil nil nil 0)
+	     (0 1 nil nil nil t   nil)
+	     (4 1 nil t   nil nil 2)
+	     (6 1 nil t   nil nil 4)
+	     (2 1 nil t   nil t   nil)
+	     nil)))
   (should (ert-equal-buffer-return
-	   '(apply-indented-blocks 0 'indented-block-params)
+	   '(apply-indented-blocks 0)
 	   "\^@\^?abc"
 	   t
-	   nil))
+	   '(nil)))
   (should (ert-equal-buffer-return
-	   '(apply-indented-blocks 2 'indented-block-params)
+	   '(apply-indented-blocks 2)
 	   "\^@
   abc
 
@@ -468,14 +478,14 @@ zwei
     ghi
 \^?"
 	   t
-	   '((0 0 nil nil t   nil)
-	     (2 1 t   nil nil 0)
-	     (0 1 nil t   t   nil)
-	     (2 2 t   nil nil 0)
-	     (4 2 nil t   nil 2)
-	     )))
+	   '((0 0 nil nil nil t   nil)
+	     (2 1 t   nil nil nil 0)
+	     (0 1 nil nil nil t   nil)
+	     (2 2 t   nil nil nil 0)
+	     (4 2 nil t   nil nil 2)
+	     nil)))
   (should (ert-equal-buffer-return
-	   '(apply-indented-blocks 2 'indented-block-params)
+	   '(apply-indented-blocks 2)
 	   "\^@
   abc
 
@@ -486,10 +496,24 @@ def
   mno
 \^?"
     t
-    '((0 0 nil nil t   nil)
-      (2 1 t   nil nil 0)
-      (0 1 nil t   t   nil)
-      (2 2 t   nil nil 0)
-      (2 2 nil nil nil 0)
-      )))
+    '((0 0 nil nil nil t   nil)
+      (2 1 t   nil nil nil 0)
+      (0 1 nil nil nil t   nil)
+      (0 1 nil nil t   nil -2)
+      (0 1 nil nil t   t   nil)
+      (4 1 nil t   nil nil 2)
+      (2 2 t   nil nil nil 0)
+      (2 2 nil nil nil nil 0)
+      nil)))
+  (should (ert-equal-buffer-return
+	   '(apply-indented-blocks 2 2)
+	   "\^@
+  abc
+
+    def
+\^?"
+	   t
+	   '((0 0 nil nil nil t   nil)
+	     (2 1 t   nil nil nil 0)
+	     2)))
   )

@@ -1,4 +1,4 @@
-;; Tests for class `rst-Hdr'
+;; Tests for class `rst-Hdr'  -*- lexical-binding: t -*-
 
 (add-to-list 'load-path ".")
 (load "init" nil t)

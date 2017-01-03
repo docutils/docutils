@@ -1,4 +1,4 @@
-;;; buffer.el --- Test the test support for buffers
+;;; buffer.el --- Test the test support for buffers  -*- lexical-binding: t -*-
 
 (add-to-list 'load-path ".")
 (load "ert-buffer" nil t)

@@ -668,3 +668,63 @@ Support for longlines mode
     blank by a soft newline
 
   * May be `longlines-*search-*` needs to be adapted as well?
+
+Indent correctly
+================
+
+* `rst-shift-region` should have a mode to indent correctly
+
+  * I.e.: Indent the region according to the tab given by the line
+    above
+
+* But see also `Copying literal blocks`_
+
+Jumps leaving mark
+==================
+
+* All jumps across a wider distance should push the mark on the local
+  mark ring
+
+  * See C-u C-SPC documentation
+
+  * Jumps to section titles
+
+    * That would result in jumping back to TOC which is especially
+      useful for an internal TOC
+
+  * But not jumps to paragraphs
+
+  * Jumps with C-M-a / C-M-e?
+
+TOC controlling sliding window
+==============================
+
+* `toc-mode` must have a mode where cursor entering a new line moves
+  to the respective section in another window
+
+  * So one can browse through a buffer by using the TOC
+
+Jump to list entry on same level
+================================
+
+* If on a list entry of some sort there should be a way to navigate to
+  a sibling
+
+  * Forward and backward
+
+* May be also up and down
+
+`rst-shift-region` shifts as needed
+===================================
+
+* `rst-shift-region` should have an option to "do the right thing"
+
+* In particular it should shift as needed by the text above
+
+  * This makes indentation of an inserted block easier because you
+    don't need to know the correct number of tabs
+
+  * There should be an option to "align under", "align same" and
+    "align less"
+
+  * May be this could be commanded by one or more C-u's

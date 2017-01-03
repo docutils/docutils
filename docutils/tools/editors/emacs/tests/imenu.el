@@ -1,4 +1,4 @@
-;; Tests for rst-imenu-create-index
+;; Tests for rst-imenu-create-index  -*- lexical-binding: t -*-
 
 (add-to-list 'load-path ".")
 (load "init" nil t)
