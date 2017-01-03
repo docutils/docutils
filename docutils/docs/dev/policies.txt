@@ -86,8 +86,9 @@ How to make code contributions that are easily accepted:
   cases are also examples and showcases for new features. See `Docutils
   Testing`_ for a description of the test suite in ``docutils/test/``.
 
-  Ensure the addition works with all supported Python versions
-  (2.4 ... 3.4).
+  Ensure the addition works with all `supported Python versions`__.
+
+  __ ../../README.html#requirements
 
 * Look at the Docutils sources to see how similar features are implemented,
   learn to do it "the Docutils way".

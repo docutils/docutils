@@ -14,7 +14,6 @@ Swedish language mappings for language-dependent features of reStructuredText.
 
 __docformat__ = 'reStructuredText'
 
-
 directives = {
       u'observera': 'attention',
       u'akta': 'caution', # also 'försiktigt'
@@ -31,7 +30,7 @@ directives = {
       u'ämne': 'topic',
       u'tema': 'topic',
       u'rad-block': 'line-block',
-      u'parsed-literal (translation required)': 'parsed-literal',
+      u'parsed-literal (translation required)': 'parsed-literal', # 'tolkad-bokstavlig'?
       u'rubrik': 'rubric',
       u'epigraf': 'epigraph',
       u'höjdpunkter': 'highlights',

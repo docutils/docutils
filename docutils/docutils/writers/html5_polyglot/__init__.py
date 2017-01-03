@@ -1,9 +1,8 @@
 # .. coding: utf8
+# $Id$
 # :Author: Günter Milde <milde@users.sf.net>
 #          Based on the html4css1 writer by David Goodger.
 # :Maintainer: docutils-develop@lists.sourceforge.net
-# :Revision: $Revision$
-# :Date: $Date: 2005-06-28$
 # :Copyright: © 2005, 2009, 2015 Günter Milde,
 #             portions from html4css1 © David Goodger.
 # :License: Released under the terms of the `2-Clause BSD license`_, in short:
