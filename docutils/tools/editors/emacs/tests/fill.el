@@ -1,4 +1,4 @@
-;; Tests for functions around filling
+;; Tests for functions around filling  -*- lexical-binding: t -*-
 
 (add-to-list 'load-path ".")
 (load "init" nil t)

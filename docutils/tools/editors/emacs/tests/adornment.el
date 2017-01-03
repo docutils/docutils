@@ -1,4 +1,4 @@
-;; Tests for various functions handling adornments
+;; Tests for various functions handling adornments  -*- lexical-binding: t -*-
 
 (add-to-list 'load-path ".")
 (load "init" nil t)
@@ -97,6 +97,20 @@ Du bon vin tous les jours.
   (should (ert-equal-buffer-return
 	   '(ttl-at-point)
 	   "
+\^@===========
+Du bon vin tous les jours.
+-----------
+"
+	   "
+\^@===========
+Du bon vin tous les jours.
+-----------
+"
+	   nil
+	   ))
+  (should (ert-equal-buffer-return
+	   '(ttl-at-point)
+	   "
 Du bon vin tous les jours.
 \^@-----------
 Du bon vin tous les jours.
@@ -118,13 +132,27 @@ Du bon vin tous les jours.
 	   '(ttl-at-point)
 	   "
 
-\^@-----------
+\^@===========
 
 "
 	   "
 
-\^@-----------
+\^@===========
 
+"
+	   nil
+	   ))
+  (should (ert-equal-buffer-return
+	   '(ttl-at-point)
+	   "\^@"
+	   "\^@"
+	   nil
+	   ))
+  (should (ert-equal-buffer-return
+	   '(ttl-at-point)
+	   "\^@
+"
+	   "\^@
 "
 	   nil
 	   ))
@@ -258,7 +286,7 @@ Same
   (mapcar (lambda (ttl)
 	    (cons (line-number-at-pos (rst-Ttl-get-title-beginning ttl))
 		  (rst-Ttl-ado ttl)))
-	  (rst-all-ttls)))
+	  (rst-all-ttls-compute)))
 
 (ert-deftest rst-all-ttls ()
   "Tests for `rst-all-ttls'."
@@ -273,6 +301,38 @@ Same
 	   "
   Not a valid section header because of indentation
 ===================================================
+"
+	   t
+	   nil
+	   ))
+  (should (ert-equal-buffer-return
+	   '(find-all-adornments)
+	   "
+Only a...
+
+===================================================
+
+...transition
+"
+	   t
+	   nil
+	   ))
+  (should (ert-equal-buffer-return
+	   '(find-all-adornments)
+	   "
+=======================================================
+Not a valid section header because of missing underline
+
+"
+	   t
+	   nil
+	   ))
+  (should (ert-equal-buffer-return
+	   '(find-all-adornments)
+	   "
+=====================================================
+Not a valid section header because of wrong underline
+-----------------------------------------------------
 "
 	   t
 	   nil
@@ -398,7 +458,7 @@ No indent
 (ert-deftest rst-get-hierarchy-ignore ()
   "Tests for `rst-hdr-hierarchy' with ignoring a line."
   (should (ert-equal-buffer-return
-	   '(rst-hdr-hierarchy t)
+	   '(rst-hdr-hierarchy (point))
 	   text-1
 	   t
 	   (list
@@ -407,7 +467,7 @@ No indent
 	    (rst-Hdr-new (rst-Ado-new-simple ?-) 0))
 	   ))
   (should (ert-equal-buffer-return
-	   '(rst-hdr-hierarchy t)
+	   '(rst-hdr-hierarchy (point))
 	   text-4
 	   t
 	   (list
@@ -459,6 +519,17 @@ No indent
 
 (ert-deftest rst-adornment-complete-p ()
   "Tests for `rst-adornment-complete-p'."
+  (should (ert-equal-buffer-return
+	   '(rst-adornment-complete-p (rst-Ado-new-simple ?=) 0)
+	   "Vaudou\^@"
+	   t
+	   nil))
+  (should (ert-equal-buffer-return
+	   '(rst-adornment-complete-p (rst-Ado-new-over-and-under ?=) 0)
+	   "Vaudou\^@
+======"
+	   t
+	   nil))
   (should (ert-equal-buffer-return
 	   '(rst-adornment-complete-p (rst-Ado-new-simple ?=) 0)
 	   "
@@ -695,6 +766,12 @@ groups match match group 0."
   (apply-ttl-match (rst-classify-adornment
 		    (buffer-substring-no-properties beg end) end)))
 
+(defun classify-adornment-accept (beg end)
+  "Wrapper for calling `rst-classify-adornment'."
+  (interactive "r")
+  (apply-ttl-match (rst-classify-adornment
+		    (buffer-substring-no-properties beg end) end t)))
+
 (ert-deftest rst-classify-adornment ()
   "Tests for `rst-classify-adornment'."
   (should (ert-equal-buffer-return
@@ -725,11 +802,37 @@ Du bon vin tous les jours
 	   t))
   (should (ert-equal-buffer-return
 	   '(classify-adornment)
+	   "\^@====================\^?
+Du bon vin tous les jours"
+	   nil
+	   nil
+	   t))
+  (should (ert-equal-buffer-return
+	   '(classify-adornment-accept)
+	   "\^@====================\^?
+Du bon vin tous les jours"
+	   nil
+	   (list
+	    (rst-Ado-new-over-and-under ?=) 0
+	    "====================" "Du bon vin tous les jours" nil)
+	   t))
+  (should (ert-equal-buffer-return
+	   '(classify-adornment)
 	   "
 
      Du bon vin tous les jours
 \^@====================\^?
 
+"
+	   nil
+	   (list
+	    (rst-Ado-new-simple ?=) 5
+	    nil "     Du bon vin tous les jours" "====================")
+	   t))
+  (should (ert-equal-buffer-return
+	   '(classify-adornment)
+	   "     Du bon vin tous les jours
+\^@====================\^?
 "
 	   nil
 	   (list
@@ -828,9 +931,7 @@ Du bon vin tous les jours
 
 "
 	   nil
-	   (list
-	    (rst-Ado-new-simple ?~) 0
-	    nil "Du bon vin tous les jours" "~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+	   nil
 	   t))
   (should (ert-equal-buffer-return
 	   '(classify-adornment)
@@ -839,6 +940,16 @@ Du bon vin tous les jours
 	   (list
 	    (rst-Ado-new-transition) nil
 	    nil "---------------------------" nil)
+	   t))
+  (should (ert-equal-buffer-return
+	   '(classify-adornment)
+	   "
+\^@===\^?
+"
+	   nil
+	   (list
+	    (rst-Ado-new-transition) nil
+	    nil "===" nil)
 	   t))
   (should (ert-equal-buffer-return
 	   '(classify-adornment)
@@ -967,8 +1078,8 @@ Section Level 3
 	     ))
     )
 
-(ert-deftest rst-promote-region ()
-  "Tests for `rst-promote-region'."
+(ert-deftest rst-adjust-region ()
+  "Tests for `rst-adjust-region'."
   (let ((rst-preferred-adornments '((?= over-and-under 1)
 				    (?= simple 0)
 				    (?- simple 0)
@@ -978,12 +1089,12 @@ Section Level 3
 				    (?# simple 0)
 				    (?@ simple 0))))
     (should (ert-equal-buffer
-	     '(rst-promote-region nil)
+	     '(rst-adjust-region nil)
 	     "\^@\^?"
 	     t
 	     ))
     (should (ert-equal-buffer
-	     '(rst-promote-region nil)
+	     '(rst-adjust-region nil)
 	     "
 First
 -----
@@ -1022,7 +1133,7 @@ Third
 "
 	     ))
     (should (ert-equal-buffer
-	     '(rst-promote-region nil)
+	     '(rst-adjust-region nil)
 	     "
 First
 -----
@@ -1060,7 +1171,7 @@ Third
 "
 	     ))
     (should (ert-equal-buffer
-	     '(rst-promote-region nil)
+	     '(rst-adjust-region nil)
 	     "
 First
 -----
@@ -1100,7 +1211,7 @@ Third
 "
 	     ))
     (should (ert-equal-buffer
-	     '(rst-promote-region t)
+	     '(rst-adjust-region t)
 	     "
 First
 -----
@@ -1139,7 +1250,7 @@ Third
 "
 	     ))
     (should (ert-equal-buffer
-	     '(rst-promote-region t)
+	     '(rst-adjust-region t)
 	     "
 First
 -----
@@ -1238,9 +1349,10 @@ Third
 
 (defun find-all-levels ()
   "Call `rst-all-ttls-with-level' and return conses of line and level."
-  (mapcar (lambda (ttl)
-	    (cons (line-number-at-pos (rst-Ttl-get-title-beginning ttl))
-		  (rst-Ttl-level ttl)))
+  (mapcar (cl-function
+	   (lambda ((ttl . level))
+	     (cons (line-number-at-pos (rst-Ttl-get-title-beginning ttl))
+		   level)))
 	  (rst-all-ttls-with-level)))
 
 (ert-deftest rst-all-ttls-with-level ()
@@ -1437,6 +1549,17 @@ abc\^@
 	   "abc\^@
 ===
  "
+   
+	   ))
+  (should (ert-equal-buffer
+	   '(update-section ?= t 0)
+	   "===
+\^@abc
+===
+"
+	   "abc\^@
+===
+"
    
 	   ))
   )

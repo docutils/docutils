@@ -1,4 +1,4 @@
-;; Initialize tests
+;; Initialize tests  -*- lexical-binding: t -*-
 
 (defun init-rst-ert (&optional with-buffer)
   "Initialize tests.

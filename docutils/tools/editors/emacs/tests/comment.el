@@ -1,4 +1,4 @@
-;; Tests for comment handling
+;; Tests for comment handling  -*- lexical-binding: t -*-
 
 (add-to-list 'load-path ".")
 (load "init" nil t)

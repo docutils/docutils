@@ -1,5 +1,6 @@
-;; Tests for rst-adjust for all use cases not only "filling" an existing
-;; adornment
+;; Tests for rst-adjust  -*- lexical-binding: t -*-
+;;
+;; These tests are for all use cases not only "filling" an existing adornment
 
 (add-to-list 'load-path ".")
 (load "init" nil t)

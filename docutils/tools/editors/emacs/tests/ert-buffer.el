@@ -1,4 +1,4 @@
-;;; ert-buffer.el --- Support functions for running ert tests on buffers
+;;; ert-buffer.el --- Support functions for running ert tests on buffers  -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2010-2012  Free Software Foundation, Inc.
 

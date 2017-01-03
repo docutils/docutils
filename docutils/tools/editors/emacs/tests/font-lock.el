@@ -1,4 +1,4 @@
-;; Tests for font-locking code
+;; Tests for font-locking code  -*- lexical-binding: t -*-
 
 (add-to-list 'load-path ".")
 (load "init" nil t)
@@ -26,6 +26,87 @@ def")
 \^@
 def")
 	   7))
+  (should (ert-equal-buffer-return
+	   '(rst-forward-indented-block)
+	   (concat "  \^@abc
+def")
+	   (concat "  abc
+\^@def")
+	   7))
+  (should (ert-equal-buffer-return
+	   '(rst-forward-indented-block)
+	   (concat "  \^@abc
+  def
+ghi")
+	   (concat "  abc
+  def
+\^@ghi")
+	   13))
+  (should (ert-equal-buffer-return
+	   '(rst-forward-indented-block)
+	   (concat "  \^@abc
+  def
+
+ghi")
+	   (concat "  abc
+  def
+\^@
+ghi")
+	   13))
+  (should (ert-equal-buffer-return
+	   '(rst-forward-indented-block)
+	   (concat "  \^@abc
+
+  def
+
+ghi")
+	   (concat "  abc
+
+  def
+\^@
+ghi")
+	   14))
+  (should (ert-equal-buffer-return
+	   '(rst-forward-indented-block)
+	   (concat "  \^@abc
+
+
+    def
+
+
+ghi")
+	   (concat "  abc
+
+
+    def
+\^@
+
+ghi")
+	   17))
+  (should (ert-equal-buffer-return
+	   '(rst-forward-indented-block)
+	   (concat "  \^@abc
+    def
+ghi")
+	   (concat "  abc
+    def
+\^@ghi")
+	   15))
+  (should (ert-equal-buffer-return
+	   '(rst-forward-indented-block)
+	   (concat "  \^@abc
+
+    def")
+	   t
+	   nil))
+  (should (ert-equal-buffer-return
+	   '(rst-forward-indented-block)
+	   (concat "\^@abc
+  def
+ghi
+")
+	   t
+	   nil))
   )
 
 (defun extend-region (beg end)

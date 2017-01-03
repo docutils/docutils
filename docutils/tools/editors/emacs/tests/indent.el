@@ -1,4 +1,4 @@
-;; Tests for functions around indentation
+;; Tests for functions around indentation  -*- lexical-binding: t -*-
 
 (add-to-list 'load-path ".")
 (load "init" nil t)
@@ -447,3 +447,24 @@
 \^@"
 	     ))
   ))
+
+(ert-deftest indent-for-tab-command-BUGS ()
+  "Exposes bugs for `indent-for-tab-command'."
+  :expected-result :failed ;; These are bugs
+  (let ((rst-indent-width 2)
+	(rst-indent-field 2)
+	(rst-indent-literal-normal 3)
+	(rst-indent-literal-minimized 2)
+	(rst-indent-comment 3))
+    ;; Bug https://sourceforge.net/p/docutils/bugs/299/
+    (should (ert-equal-buffer
+	     '(indent-for-tab)
+	     "
+Lorem ipsum dolor sit amet, consectetur adipisicing elit
+:other:`something` sed do eiusmod tempor incididunt ut
+\^@"
+	     "
+Lorem ipsum dolor sit amet, consectetur adipisicing elit
+:other:`something` sed do eiusmod tempor incididunt ut
+\^@"
+	     ))))

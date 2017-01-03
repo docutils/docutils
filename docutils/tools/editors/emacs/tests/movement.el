@@ -1,4 +1,4 @@
-;; Tests for various movement commands
+;; Tests for various movement commands  -*- lexical-binding: t -*-
 
 (add-to-list 'load-path ".")
 (load "init" nil t)
@@ -369,4 +369,520 @@ para
 \^@"
 	   0
 	   ))
+  )
+
+(ert-deftest rst-forward-section ()
+  "Tests for `rst-forward-section'."
+  (should (ert-equal-buffer
+	   '(rst-forward-section -1)
+	   "
+========
+\^@Header 1
+========
+
+Some text
+
+Header 2
+========
+"
+	   "\^@
+========
+Header 1
+========
+
+Some text
+
+Header 2
+========
+"
+	   ))
+  (should (ert-equal-buffer
+	   '(rst-forward-section 1)
+	   "\^@"
+	   "\^@"))
+  (should (ert-equal-buffer
+	   '(rst-forward-section 1)
+	   "
+Some text\^@
+
+More text
+"
+	   "
+Some text
+
+More text
+\^@"
+	   ))
+  (should (ert-equal-buffer
+	   '(rst-forward-section 1)
+	   "
+Some text
+
+More text
+\^@"
+	   "
+Some text
+
+More text
+\^@"
+	   ))
+  (should (ert-equal-buffer
+	   '(rst-forward-section -1)
+	   "
+Some text
+
+More text
+\^@"
+	   "\^@
+Some text
+
+More text
+"
+	   ))
+  (should (ert-equal-buffer
+	   '(rst-forward-section 1)
+	   "
+\^@Header 1
+========
+
+Some text
+"
+	   "
+Header 1
+========
+
+Some text
+\^@"
+	   ))
+  (should (ert-equal-buffer
+	   '(rst-forward-section 1)
+	   "
+Header 1\^@
+========
+
+Some text
+"
+	   "
+Header 1
+========
+
+Some text
+\^@"
+	   ))
+  (should (ert-equal-buffer
+	   '(rst-forward-section 1)
+	   "
+Header 1
+===\^@=====
+
+Some text
+"
+	   "
+Header 1
+========
+
+Some text
+\^@"
+	   ))
+  (should (ert-equal-buffer
+	   '(rst-forward-section 1)
+	   "
+Header 1\^@
+========
+
+Some text
+
+Header 2
+========
+"
+	   "
+Header 1
+========
+
+Some text
+
+\^@Header 2
+========
+"
+	   ))
+  (should (ert-equal-buffer
+	   '(rst-forward-section 1)
+	   "
+Header 1
+========
+
+\^@Some text
+
+Header 2
+========
+"
+	   "
+Header 1
+========
+
+Some text
+
+\^@Header 2
+========
+"
+	   ))
+  (should (ert-equal-buffer
+	   '(rst-forward-section 1)
+	   "
+Header 1
+========\^@
+
+Some text
+
+Header 2
+========
+"
+	   "
+Header 1
+========
+
+Some text
+
+\^@Header 2
+========
+"
+	   ))
+  (should (ert-equal-buffer
+	   '(rst-forward-section 1)
+	   "
+========
+\^@Header 1
+========
+
+Some text
+
+Header 2
+========
+"
+	   "
+========
+Header 1
+========
+
+Some text
+
+\^@Header 2
+========
+"
+	   ))
+  (should (ert-equal-buffer
+	   '(rst-forward-section 1)
+	   "
+\^@========
+Header 1
+========
+
+Some text
+
+Header 2
+========
+"
+	   "
+========
+Header 1
+========
+
+Some text
+
+\^@Header 2
+========
+"
+	   ))
+  (should (ert-equal-buffer
+	   '(rst-forward-section -1)
+	   "
+========
+Header 1
+========
+
+Some text
+
+\^@Header 2
+========
+"
+	   "
+========
+\^@Header 1
+========
+
+Some text
+
+Header 2
+========
+"
+	   ))
+
+; ****
+
+  (should (ert-equal-buffer
+	   '(rst-forward-section 2)
+	   "\^@
+========
+Header 1
+========
+
+Some text
+
+Header 2
+========
+"
+	   "
+========
+Header 1
+========
+
+Some text
+
+\^@Header 2
+========
+"
+	   ))
+  (should (ert-equal-buffer
+	   '(rst-forward-section 3)
+	   "
+========
+\^@Header 1
+========
+
+Some text
+
+Header 2
+========
+
+Header 3
+========
+
+Header 4
+========
+"
+	   "
+========
+Header 1
+========
+
+Some text
+
+Header 2
+========
+
+Header 3
+========
+
+\^@Header 4
+========
+"
+	   ))
+  (should (ert-equal-buffer
+	   '(rst-forward-section 3)
+	   "\^@
+========
+Header 1
+========
+
+Some text
+
+Header 2
+========
+"
+	   "
+========
+Header 1
+========
+
+Some text
+
+Header 2
+========
+\^@"
+	   ))
+  (should (ert-equal-buffer
+	   '(rst-forward-section 0)
+	   "
+========
+Header 1\^@
+========
+
+Some text
+
+Header 2
+========
+"
+	   "
+========
+\^@Header 1
+========
+
+Some text
+
+Header 2
+========
+"
+	   ))
+  (should (ert-equal-buffer
+	   '(rst-forward-section 0)
+	   "
+========\^@
+Header 1
+========
+
+Some text
+
+Header 2
+========
+"
+	   "
+========
+\^@Header 1
+========
+
+Some text
+
+Header 2
+========
+"
+	   ))
+  (should (ert-equal-buffer
+	   '(rst-forward-section 0)
+	   "
+========
+Header 1
+========\^@
+
+Some text
+
+Header 2
+========
+"
+	   "
+========
+\^@Header 1
+========
+
+Some text
+
+Header 2
+========
+"
+	   ))
+  (should (ert-equal-buffer
+	   '(rst-forward-section 0)
+	   "
+========
+Header 1
+========
+
+Some text\^@
+
+Header 2
+========
+"
+	   "
+========
+Header 1
+========
+
+Some text\^@
+
+Header 2
+========
+"
+	   ))
+  (should (ert-equal-buffer
+	   '(rst-forward-section -)
+	   "
+========
+Header 1
+========
+
+Some text
+
+\^@Header 2
+========
+"
+	   "
+========
+\^@Header 1
+========
+
+Some text
+
+Header 2
+========
+"
+	   t))
+  (should (ert-equal-buffer
+	   '(rst-forward-section nil)
+	   "
+========
+\^@Header 1
+========
+
+Some text
+
+Header 2
+========
+"
+	   "
+========
+Header 1
+========
+
+Some text
+
+\^@Header 2
+========
+"
+	   t
+	   ))
+  (should (ert-equal-buffer
+	   '(rst-forward-section (4))
+	   "\^@
+========
+Header 1
+========
+
+Some text
+
+Header 2
+========
+"
+	   "
+========
+Header 1
+========
+
+Some text
+
+Header 2
+========
+\^@"
+	   t))
+  (should (ert-equal-buffer
+	   '(rst-backward-section nil)
+	   "
+========
+Header 1
+========
+
+Some text
+
+\^@Header 2
+========
+"
+	   "
+========
+\^@Header 1
+========
+
+Some text
+
+Header 2
+========
+"
+	   t))
   )

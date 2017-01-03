@@ -1,4 +1,4 @@
-;; Tests for the regular expression builder
+;; Tests for the regular expression builder  -*- lexical-binding: t -*-
 
 (add-to-list 'load-path ".")
 (load "init" nil t)

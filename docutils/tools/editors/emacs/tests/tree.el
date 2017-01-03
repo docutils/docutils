@@ -1,4 +1,4 @@
-;; Tests for `rst-all-stn' and relatives
+;; Tests for `rst-all-stn' and relatives  -*- lexical-binding: t -*-
 
 (add-to-list 'load-path ".")
 (load "init" nil t)
@@ -36,31 +36,24 @@ Missing node C.a.1
 ~~~~~~~~~~~~~~~~~~
 ")
 	 (ado-T (rst-Ado-new-over-and-under ?=))
-	 (ttl-T (rst-Ttl-new ado-T '(1 18 1 6 7 12 13 18) 0
-			     "Title" nil 0))
+	 (ttl-T (rst-Ttl--new ado-T '(1 18 1 6 7 12 13 18) 0
+			      "Title"))
 	 (ado-A (rst-Ado-new-simple ?=))
-	 (ttl-A (rst-Ttl-new ado-A '(20 37 nil nil 20 28 29 37) 0
-			     "Header A" nil 1))
-	 (ttl-B (rst-Ttl-new ado-A '(39 56 nil nil 39 47 48 56) 0
-			     "Header B" nil 1))
+	 (ttl-A (rst-Ttl--new ado-A '(20 37 nil nil 20 28 29 37) 0
+			      "Header A"))
+	 (ttl-B (rst-Ttl--new ado-A '(39 56 nil nil 39 47 48 56) 0
+			      "Header B"))
 	 (ado-Ba (rst-Ado-new-simple ?-))
-	 (ttl-Ba (rst-Ttl-new ado-Ba '(58 85 nil nil 58 71 72 85) 0
-			      "Subheader B.a" nil 2))
+	 (ttl-Ba (rst-Ttl--new ado-Ba '(58 85 nil nil 58 71 72 85) 0
+			       "Subheader B.a"))
 	 (ado-Ba1 (rst-Ado-new-simple ?~))
-	 (ttl-Ba1 (rst-Ttl-new ado-Ba1 '(87 124 nil nil 87 105 106 124) 0
-			       "SubSubheader B.a.1" nil 3))
-	 (ttl-C (rst-Ttl-new ado-A '(126 143 nil nil 126 134 135 143) 0
-			     "Header C" nil 1))
+	 (ttl-Ba1 (rst-Ttl--new ado-Ba1 '(87 124 nil nil 87 105 106 124) 0
+				"SubSubheader B.a.1"))
+	 (ttl-C (rst-Ttl--new ado-A '(126 143 nil nil 126 134 135 143) 0
+			      "Header C"))
 	 (ttl-Ca nil)
-	 (ttl-Ca1 (rst-Ttl-new ado-Ba1 '(145 182 nil nil 145 163 164 182) 0
-			       "Missing node C.a.1" nil 3)))
-    (rst-Ttl-evaluate-hdr ttl-T)
-    (rst-Ttl-evaluate-hdr ttl-A)
-    (rst-Ttl-evaluate-hdr ttl-B)
-    (rst-Ttl-evaluate-hdr ttl-Ba)
-    (rst-Ttl-evaluate-hdr ttl-Ba1)
-    (rst-Ttl-evaluate-hdr ttl-C)
-    (rst-Ttl-evaluate-hdr ttl-Ca1)
+	 (ttl-Ca1 (rst-Ttl--new ado-Ba1 '(145 182 nil nil 145 163 164 182) 0
+				"Missing node C.a.1")))
     (let* ((stn-Ca (rst-Stn-new
 		    ttl-Ca 2
 		    (list (rst-Stn-new ttl-Ca1 3 nil))))
@@ -136,34 +129,26 @@ Title
 
 ")
 	 (ado-T (rst-Ado-new-over-and-under ?=))
-	 (ttl-T (rst-Ttl-new ado-T '(1 18 1 6 7 12 13 18) 0
-			     "Title" nil 0))
+	 (ttl-T (rst-Ttl--new ado-T '(1 18 1 6 7 12 13 18) 0
+			      "Title"))
 	 (ado-A (rst-Ado-new-simple ?=))
-	 (ttl-A (rst-Ttl-new ado-A '(20 37 nil nil 20 28 29 37) 0
-			     "Header A" nil 1))
-	 (ttl-B (rst-Ttl-new ado-A '(39 56 nil nil 39 47 48 56) 0
-			     "Header B" nil 1))
+	 (ttl-A (rst-Ttl--new ado-A '(20 37 nil nil 20 28 29 37) 0
+			      "Header A"))
+	 (ttl-B (rst-Ttl--new ado-A '(39 56 nil nil 39 47 48 56) 0
+			      "Header B"))
 	 (ado-Ba (rst-Ado-new-simple ?-))
-	 (ttl-Ba (rst-Ttl-new ado-Ba '(58 85 nil nil 58 71 72 85) 0
-			      "Subheader B.a" nil 2))
+	 (ttl-Ba (rst-Ttl--new ado-Ba '(58 85 nil nil 58 71 72 85) 0
+			       "Subheader B.a"))
 	 (ado-Ba1 (rst-Ado-new-simple ?~))
-	 (ttl-Ba1 (rst-Ttl-new ado-Ba1 '(87 124 nil nil 87 105 106 124) 0
-			       "SubSubheader B.a.1" nil 3))
-	 (ttl-Bb (rst-Ttl-new ado-Ba '(126 153 nil nil 126 139 140 153) 0
-			      "Subheader B.b" nil 2))
-	 (ttl-C (rst-Ttl-new ado-A '(155 172 nil nil 155 163 164 172) 0
-			     "Header C" nil 1))
+	 (ttl-Ba1 (rst-Ttl--new ado-Ba1 '(87 124 nil nil 87 105 106 124) 0
+				"SubSubheader B.a.1"))
+	 (ttl-Bb (rst-Ttl--new ado-Ba '(126 153 nil nil 126 139 140 153) 0
+			       "Subheader B.b"))
+	 (ttl-C (rst-Ttl--new ado-A '(155 172 nil nil 155 163 164 172) 0
+			      "Header C"))
 	 (ttl-Ca nil)
-	 (ttl-Ca1 (rst-Ttl-new ado-Ba1 '(164 211 nil nil 164 192 193 211) 0
-			       "Missing node C.a.1" nil 3)))
-    (rst-Ttl-evaluate-hdr ttl-T)
-    (rst-Ttl-evaluate-hdr ttl-A)
-    (rst-Ttl-evaluate-hdr ttl-B)
-    (rst-Ttl-evaluate-hdr ttl-Ba)
-    (rst-Ttl-evaluate-hdr ttl-Ba1)
-    (rst-Ttl-evaluate-hdr ttl-Bb)
-    (rst-Ttl-evaluate-hdr ttl-C)
-    (rst-Ttl-evaluate-hdr ttl-Ca1)
+	 (ttl-Ca1 (rst-Ttl--new ado-Ba1 '(164 211 nil nil 164 192 193 211) 0
+				"Missing node C.a.1")))
     (let* ((stn-Ca (rst-Stn-new
 		    ttl-Ca 2
 		    (list (rst-Stn-new ttl-Ca1 3 nil))))
