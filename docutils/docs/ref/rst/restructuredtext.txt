@@ -2442,11 +2442,11 @@ the following conditions are met:
    See `Escaping Mechanism`_ above for details.
 
 5. If an inline markup start-string is immediately preceded by one of the
-   ASCII characters ``' " < ( [ {`` or a similar Unicode character\ [#]_, it
-   must not be followed by the corresponding closing character from ``' " )
-   ] } >`` or a similar Unicode character\ [#]_.
-   (For quotes, corresponding characters can be any of the `quotation marks
-   in international usage`_.)
+   ASCII characters ``' " < ( [ {`` or a similar
+   Unicode character [#openers]_, it must not be followed by the
+   corresponding closing character from ``' " ) ] } >`` or a similar Unicode
+   character [#closers]_. (For quotes, matching characters can be any of
+   the `quotation marks in international usage`_.)
 
 If the configuration setting `simple-inline-markup`_ is False (default),
 additional conditions apply to the characters "around" the
@@ -2457,25 +2457,31 @@ inline markup:
 
    * whitespace,
    * one of the ASCII characters ``- : / ' " < ( [ {``
-   * or a similar Unicode punctuation character.\ [#]_
+   * or a similar Unicode punctuation character. [#pre-chars]_
 
 7. Inline markup end-strings must end a text block or be immediately
    followed by
 
    * whitespace,
    * one of the ASCII characters ``- . , : ; ! ? \ / ' " ) ] } >``
-   * or a similar Unicode punctuation character.\ [#]_
+   * or a similar Unicode punctuation character. [#post-chars]_
 
-.. [#] `Unicode categories`_ `Ps`, `Pi`, or `Pf`
-.. [#] Unicode categories `Pe`, `Pf`, or `Pi`
-.. [#] Unicode categories `Pd` (Dash), `Po` (Other), `Pi` (Initial quote),
-       `Pf` (Final quote), or `Ps` (Open)
-.. [#] Unicode categories `Pd` (Dash), `Po` (Other), `Pi` (Initial quote),
-       `Pf` (Final quote), or `Pe` (Close)
+.. [#openers]    `Unicode categories`_ `Ps` (Open), `Pi` (Initial quote),
+                 or `Pf` (Final quote). [#uni-version]_
+.. [#closers]    Unicode categories `Pe` (Close), `Pi` (Initial quote),
+                 or `Pf` (Final quote). [#uni-version]_
+.. [#pre-chars]  Unicode categories `Ps` (Open), `Pi` (Initial quote),
+                 `Pf` (Final quote), `Pd` (Dash), or `Po` (Other). [#uni-version]_
+.. [#post-chars] Unicode categories  `Pe` (Close), `Pi` (Initial quote),
+                 `Pf` (Final quote), `Pd` (Dash), or `Po` (Other). [#uni-version]_
+
+.. [#uni-version] The category of some characters changed with the
+   development of the Unicode standard.
+   Docutils 0.13 uses `Unicode version 5.2.0`_.
 
 .. _Unicode categories:
    http://www.unicode.org/Public/5.1.0/ucd/UCD.html#General_Category_Values
-
+.. _Unicode version 5.2.0: http://www.unicode.org/Public/5.2.0/
 .. _quotation marks in international usage:
    http://en.wikipedia.org/wiki/Quotation_mark,_non-English_usage
 

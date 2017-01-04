@@ -20,18 +20,18 @@ Changes Since 0.13.1
 * docs/ref/rst/restructuredtext.txt:
 
   - Added documentation for escaped whitespace in URI contexts.
+  - Clarified use of Unicode character categories.
 
 * docutils/parsers/rst/states.py:
 
   - Added functionality: escaped whitespace in URI contexts.
   - Recognize non-ASCII whitespace around inline literal, target,
     and substitution.
-  - improve backwards compatibility of patch [ 120 ]
 
 * docutils/parsers/rst/directives/tables.py
 
-  - improve backwards compatibility of patch [ 120 ] (tables accept
-    option widths: list of relative widths, 'auto' or 'grid').
+  - Rework patch [ 120 ] (revert change to ``Table.get_column_widths()``
+    that led to problems in an application with a custom table directive).
 
 * docutils/utils/__init__.py:
 
