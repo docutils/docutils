@@ -107,6 +107,39 @@ ghi
 ")
 	   t
 	   nil))
+  (should (ert-equal-buffer-return
+	   '(rst-forward-indented-block)
+	   (concat "abc\^@ def
+ghi
+")
+	   (concat "abc def
+\^@ghi
+")
+	   9))
+  (should (ert-equal-buffer-return
+	   '(rst-forward-indented-block)
+	   (concat "abc\^@ def
+ghi")
+	   (concat "abc def
+\^@ghi")
+	   9))
+  (should (ert-equal-buffer-return
+	   '(rst-forward-indented-block)
+	   (concat ".. \^@abc
+   def
+
+   ghi
+
+jkl
+")
+	   (concat ".. abc
+   def
+
+   ghi
+\^@
+jkl
+")
+	   23))
   )
 
 (defun extend-region (beg end)
