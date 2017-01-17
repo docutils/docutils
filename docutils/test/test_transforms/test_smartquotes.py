@@ -206,7 +206,7 @@ English "smart quotes" and 'single smart quotes' have no alternative.
 
 .. class:: language-ro
 
-Alternative Romanian "smart quotes" and 'single' smart quotes.
+Romanian "smart quotes" and 'secondary' smart quotes.
 """,
 u"""\
 <document source="test data">
@@ -215,7 +215,7 @@ u"""\
     <paragraph classes="language-en-uk">
         English “smart quotes” and ‘single smart quotes’ have no alternative.
     <paragraph classes="language-ro">
-        Alternative Romanian «smart quotes» and „single” smart quotes.
+        Romanian „smart quotes” and «secondary» smart quotes.
 """],
 ])
 

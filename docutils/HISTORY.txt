@@ -20,7 +20,7 @@ Changes Since 0.13.1
 * docs/ref/rst/restructuredtext.txt:
 
   - Added documentation for escaped whitespace in URI contexts.
-  - Clarified use of Unicode character categories.
+  - Clarify use of Unicode character categories.
 
 * docutils/parsers/rst/states.py:
 
@@ -28,7 +28,7 @@ Changes Since 0.13.1
   - Recognize non-ASCII whitespace around inline literal, target,
     and substitution.
 
-* docutils/parsers/rst/directives/tables.py
+* docutils/parsers/rst/directives/tables.py:
 
   - Rework patch [ 120 ] (revert change to ``Table.get_column_widths()``
     that led to problems in an application with a custom table directive).
@@ -38,10 +38,15 @@ Changes Since 0.13.1
   - Added ``split_escaped_whitespace`` function, support for escaped
     whitespace in URI contexts.
 
-* tools/
+* docutils/utils/smartquotes.py: 
 
-  - New front-end ``rst2html4.py``.
-
+  - Update quote definitions for languages et, fi, ro, sv, tr, uk.
+  - New quote definitions for hr, hsb, hu, lv, sl.
+    
+* tools/rst2html4.py: New front-end.
+  
+* tools/dev/generate_punctuation_chars.py: New skript
+  to test and update utils.punctuation_chars.
 
 Release 0.13.1 (2016-12-09)
 ===========================

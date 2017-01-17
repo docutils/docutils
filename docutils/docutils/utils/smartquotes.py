@@ -384,6 +384,7 @@ class smartchars(object):
     # http://de.wikipedia.org/wiki/Anf%C3%BChrungszeichen#Andere_Sprachen
     # https://fr.wikipedia.org/wiki/Guillemet
     # https://en.wikipedia.org/wiki/Hebrew_punctuation#Quotation_marks
+    # http://www.tustep.uni-tuebingen.de/bi/bi00/bi001t1-anfuehrung.pdf
     quotes = {'af':           u'“”‘’',
               'af-x-altquot': u'„”‚’',
               'ca':           u'«»“”',
@@ -400,38 +401,51 @@ class smartchars(object):
               'en-UK':        u'‘’“”',
               'eo':           u'“”‘’',
               'es':           u'«»“”',
-              'et':           u'„“‚‘', # no secondary quote listed in
-              'et-x-altquot': u'»«›‹', # the sources above (wikipedia.org)
-              'eu':           u'«»‹›',
               'es-x-altquot': u'“”‘’',
+              'et':           u'„“‚‘', # no secondary quote listed in
+              'et-x-altquot': u'«»‹›', # the sources above (wikipedia.org)
+              'eu':           u'«»‹›',
               'fi':           u'””’’',
-              'fi-x-altquot': u'»»’’',
+              'fi-x-altquot': u'»»››',
               'fr':           (u'« ',  u' »', u'‹ ', u' ›'), # with narrow no-break space
               'fr-x-altquot': u'«»‹›', # for use with manually set spaces
-              # 'fr-x-altquot': (u'“ ',  u' ”', u'‘ ', u' ’'), # rarely used
+              # 'fr-x-altquot2': (u'“ ',  u' ”', u'‘ ', u' ’'), # rarely used
               'fr-CH':        u'«»‹›',
               'gl':           u'«»“”',
               'he':           u'”“»«',
               'he-x-altquot': u'„”‚’',
+              'hr':           u'„”‘’',
+              'hr-x-altquot': u'»«›‹',
+              'hsb':          u'„“‚‘',
+              'hsb-x-altquot':u'»«›‹',
+              'hu':           u'„”«»',
               'it':           u'«»“”',
               'it-CH':        u'«»‹›',
               'it-x-altquot': u'“”‘’',
+              # 'it-x-altquot2': u'“„‘‚', # antiquated?
               'ja':           u'「」『』',
               'lt':           u'„“‚‘',
+              'lv':           u'„“‚‘',
               'nl':           u'“”‘’',
               'nl-x-altquot': u'„”‚’',
+              # 'nl-x-altquot2': u'””’’',
               'pl':           u'„”«»',
               'pl-x-altquot': u'«»“”',
               'pt':           u'«»“”',
               'pt-BR':        u'“”‘’',
               'ro':           u'„”«»',
-              'ro-x-altquot': u'«»„”',
               'ru':           u'«»„“',
               'sk':           u'„“‚‘',
               'sk-x-altquot': u'»«›‹',
+              'sl':           u'„“‚‘',
+              'sl-x-altquot': u'»«›‹',
               'sv':           u'””’’',
               'sv-x-altquot': u'»»››',
-              # 'sv-x-altquot': u'»«›‹',
+              'tr':           u'“”‘’',
+              'tr-x-altquot': u'«»‹›',
+              # 'tr-x-altquot2': u'“„‘‚', # antiquated?
+              'uk':           u'«»„“',
+              'uk-x-altquot': u'„“‚‘',
               'zh-CN':        u'“”‘’',
               'zh-TW':        u'「」『』',
              }
