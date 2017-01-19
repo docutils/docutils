@@ -10,8 +10,8 @@
 :Copyright: This document has been placed in the public domain.
 
 
-This document summarizes the major changes in recent releases.  For a
-more detailed list of changes, please see the `Docutils History`_.
+This document summarizes the major changes in recent and upcoming releases.
+For a more detailed list of changes, please see the `Docutils History`_.
 
 .. _Docutils History: HISTORY.html
 
@@ -20,10 +20,16 @@ more detailed list of changes, please see the `Docutils History`_.
 Future changes
 ==============
 
-* remove the `handle_io_errors` option from io.FileInput/Output.
+Release 1.0
+-----------
 
-  .. used by Sphinx up to version 1.3.1,
-     see https://github.com/sphinx-doc/sphinx/issues/1834
+* remove the `handle_io_errors` option from io.FileInput/Output.
+  Used by Sphinx up to version 1.3.1, fixed in 1.3.2 (Nov 29, 2015).
+
+* Drop support for python 2.4.
+
+No target release
+-----------------
 
 * »Prune« the doctree (no change to the reST input syntax):
 
@@ -32,10 +38,9 @@ Future changes
   - special admonitions (note, hint, warning, ...) -> generic "admonition"
     element with class attribute and auto-generated title.
 
-* Drop support for python 2.4 after release 0.13.
 
-* The default HTML writer may eventually become "html" with frontend
-  ``rst2html.py``.
+* The default HTML writer "html" with frontend ``rst2html.py`` may change
+  from "html4css1" to "html5".
 
   Use `get_writer_by_name('html')` or the rst2html.py_ front end, if you
   want the output to be up-to-date automatically.
