@@ -39,9 +39,13 @@ On new ubuntu 12.10
 Releasing
 ---------
 
-Prerelease: test/notify sphinx.
+Version numbers
+~~~~~~~~~~~~~~~
 
-Note on numbering (Feature Request #50)
+Version numbers shall follow the `Docutils Project Policies`_ and comply
+with `PEP 440`_.
+
+From `Feature Request #50`_
 
   PEP 440 specifies how release version are understood by pip and other tools.
 
@@ -54,8 +58,8 @@ Note on numbering (Feature Request #50)
   version should be incremented as to allow pip to overrite a 0.13 snapshot
   when the next official release.
 
-  Please increment and switch the version in setup.py to be a pre-release. e.g.
-  0.13.1a
+  Please increment and switch the version in setup.py to be a pre-release.
+  e.g. 0.13.1a
 
   When a version is tagged it should be changed to a non pre release and then
   in the next commit incremented to the next expected version but with a pre
@@ -67,15 +71,23 @@ Note on numbering (Feature Request #50)
 
   Additionally snapshots can be marked with the .devXXX nomenclature.
 
-These can then all be pushed to pypi.python.org and by default pip will
-install the latest release unless explicitly requested via the ``--pre``
-flag or a version specifier ``docutils>=0.13.1a``
+  These can then all be pushed to pypi.python.org and by default pip will
+  install the latest release unless explicitly requested via the ``--pre``
+  flag or a version specifier ``docutils>=0.13.1a``
+
+.. _Docutils Project Policies: policies.html#version-numbers
+.. _Feature Request #50: https://sourceforge.net/p/docutils/feature-requests/50/
+.. _PEP 440: https://www.python.org/dev/peps/pep-0440/
+
+Release steps
+~~~~~~~~~~~~~
 
 REWORK FOR SOURCEFORGE REPO
 
-Steps in boldface text are *not* covered by the release script at
-sandbox/infrastructure/release.sh.  "Not covered" means that you aren't even
-reminded of them.
+
+.. WARNING:: Steps in boldface text are *not* covered by the release script
+   at sandbox/infrastructure/release.sh.  "Not covered" means that you
+   aren't even reminded of them.
 
 .. Note:: This document does not cover branching and tagging, but the
    release script does.
@@ -95,15 +107,18 @@ reminded of them.
 
 * **Announce the upcoming release at the Sphinx-devel mailing list
   and ask for testing with Sphinx.**
+  (This step can be skipped for bugfix releases.)
 
-Call ``sandbox/infrastructure/release.sh new_version svn_version``.
-For details see the script.
+* Call ``sandbox/infrastructure/release.sh new_version svn_version``.
+  For details see the script.
 
-``new_version`` is the current version, status will change from ``repository`` to
-``release``. ``svn_version`` is the version after release.
+  ``new_version`` is the current version, status will change from
+  ``repository`` to ``release``. ``svn_version`` is the version after
+  release.
 
-.. Note:: *BUG* test tarball requires root password, but it is possible to skip
-   this stage interactively, and testing should be done before release.
+  .. Note:: *BUG* test tarball requires root password, but it is possible to
+     skip this stage interactively, and testing should be done before
+     release.
 
 * Change ``__version_details__`` in docutils/docutils/__init__.py to
   "release" (from "repository").
