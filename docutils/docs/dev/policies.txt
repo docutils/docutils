@@ -431,7 +431,9 @@ Docutils version 0.4.  Prior to version 0.4, Docutils didn't have an
 official version numbering policy, and micro releases contained both
 bug fixes and new features.
 
+See also the `Docutils Release Procedure`_.
 
+.. _Docutils Release Procedure: release.html#version-numbers
 
 Snapshots
 =========
