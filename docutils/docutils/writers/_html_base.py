@@ -15,9 +15,7 @@
 #
 # .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause
 
-
-# _html_base.py:  common definitions for Docutils HTML writers
-# ============================================================
+"""common definitions for Docutils HTML writers"""
 
 import sys
 import os.path
@@ -97,11 +95,56 @@ class Writer(writers.Writer):
 
 
 class HTMLTranslator(nodes.NodeVisitor):
-
     """Generic Docutils to HTML translator.
 
-    See the html4css1 and html5_polyglott for writers for full featured HTML
-    writers. """
+    See the `html4css1` and `html5_polyglot` writers for full featured
+    HTML writers.
+
+    .. IMPORTANT::
+      the `visit_*` and `depart_*` methods use a the
+      heterogeneous stack `self.context`.
+      When subclassing, make sure to be consistent!
+
+      Examples for robust coding:
+
+      a) Overwrite both, don't call the parent functions.
+
+      b) Overwrite both, call the parent functions::
+
+           def visit_field_list(self, node):
+           if foo:
+                self.body.append('<div class="foo">\n')
+           html4css1.HTMLTranslator.visit_field_list(self, node)
+
+           def depart_field_list(self, node):
+           html4css1.HTMLTranslator.depart_field_list(self, node)
+           if foo:
+                self.body.append('</div>\n')
+
+      c) Overwrite both, call the parent functions under the same
+         conditions::
+
+           def visit_example(self, node):
+             if foo:
+               <my special code>
+             else: # call the parent method
+               _html_base.HTMLTranslator.visit_example(self, node)
+
+           def depart_example(self, node):
+             if foo:
+               <my special code>
+             else: # call the parent method
+               _html_base.HTMLTranslator.depart_example(self, node)
+
+      d) Overwrite one, don't use the stack, call the parent::
+
+           def depart_field_list(self, node):
+              html4css1.HTMLTranslator.depart_field_list(self, node)
+              if 'rfc2822' in node['classes']:
+                   self.body.append('<hr />\n')
+
+      This way, changes in stack use will not bite you.
+    """
 
     xml_declaration = '<?xml version="1.0" encoding="%s" ?>\n'
     doctype = '<!DOCTYPE html>\n'
@@ -136,6 +179,7 @@ class HTMLTranslator(nodes.NodeVisitor):
                          }
     """Character references for characters with a special meaning in HTML."""
 
+
     def __init__(self, document):
         nodes.NodeVisitor.__init__(self, document)
         self.settings = settings = document.settings
@@ -168,9 +212,11 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.math_output_options = self.math_output[1:]
         self.math_output = self.math_output[0].lower()
 
-        # A heterogenous stack used in conjunction with the tree traversal.
-        # Make sure that the pops correspond to the pushes:
         self.context = []
+        """Heterogeneous stack.
+
+        Used by visit_* and depart_* functions in conjunction with the tree
+        traversal. Make sure that the pops correspond to the pushes."""
 
         self.topic_classes = [] # TODO: replace with self_in_contents
         self.colspecs = []
@@ -360,7 +406,7 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_address(self, node):
         self.visit_docinfo_item(node, 'address', meta=False)
-        self.body.append(self.starttag(node, 'pre', 
+        self.body.append(self.starttag(node, 'pre',
                                        suffix= '', CLASS='address'))
 
     def depart_address(self, node):
