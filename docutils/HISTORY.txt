@@ -38,13 +38,17 @@ Changes Since 0.13.1
   - Added ``split_escaped_whitespace`` function, support for escaped
     whitespace in URI contexts.
 
-* docutils/utils/smartquotes.py: 
+* docutils/utils/smartquotes.py:
 
   - Update quote definitions for languages et, fi, ro, sv, tr, uk.
   - New quote definitions for hr, hsb, hu, lv, sl.
-    
+
+* docutils/writers/_html_base.py
+
+  - Provide default title in metadata (required by HTML5).
+
 * tools/rst2html4.py: New front-end.
-  
+
 * tools/dev/generate_punctuation_chars.py: New skript
   to test and update utils.punctuation_chars.
 

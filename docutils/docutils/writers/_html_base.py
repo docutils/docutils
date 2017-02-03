@@ -691,8 +691,9 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('\n</pre>\n')
 
     def visit_document(self, node):
-        self.head.append('<title>%s</title>\n'
-                         % self.encode(node.get('title', '')))
+        title = (node.get('title', '') or os.path.basename(node['source'])
+                 or 'docutils document without title')
+        self.head.append('<title>%s</title>\n' % self.encode(title))
 
     def depart_document(self, node):
         self.head_prefix.extend([self.doctype,
