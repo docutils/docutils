@@ -1255,7 +1255,7 @@ Open issues:
   the "math directive issues" thread in May 2008
   (http://osdir.com/ml/text.docutils.devel/2008-05/threads.html)?
 
-* Generic "math-output" option (currently specific to HTML).
+* Generic `math-output setting`_ (currently specific to HTML).
   (List of math-output preferences?)
 
 * Try to be compatible with `Math support in Sphinx`_?
@@ -1269,10 +1269,14 @@ Open issues:
     math environment (you have to specify the math environment in the
     content).
 
-.. _Math support in Sphinx: http://sphinx.pocoo.org/ext/math.html
+  .. _Math support in Sphinx: http://sphinx.pocoo.org/ext/math.html
 
-* Equation numbering and references. (Should be handled in a unified way
-  with other numbered entities like formal tables and images.)
+* Equation numbering and references. (see the section on 
+  `object numbering and object references` for equations,
+  formal tables, and images.)
+
+.. _math-output setting: ../user/config.html#math-output
+
 
 alternative input formats
 `````````````````````````
@@ -1360,26 +1364,14 @@ See http://www.math.uiuc.edu/~hildebr/tex/displays.html.
 HTML output
 ```````````
 
-There is no native math support in HTML.
+There is no native math support in HTML. 
+For supported math output variants see the `math-output setting`_.
+Add more/better alternatives?
 
 MathML_
   Converters from LaTeX to MathML include
 
-  * latex_math_ (Python) by Jens Jørgen Mortensen in the Docutils sandbox
-
-    This is the base for Docutils latex2mathml_ module used by
-    default with ``--math-output=MathML``.
-
-  * blahtexml_ (C++), supported with ``--math-output=MathML blahtexml``.
-
-    Fast conversion, support for many symbols and environments, but
-    no "align" (or other equation-aligning) environment.
-
-  * LaTeXML_ (Perl), supported with ``--math-output=MathML latexml``.
-
-    Comprehensive macro support but very slow
-
-  * TtM_ (C), ``--math-output=MathML ttm``, support may be removed.
+  * TtM_ (C), ``--math-output=MathML ttm``, undocumented, may be removed.
 
     No "matrix", "align" and  "cases" environments.
 
@@ -1388,9 +1380,7 @@ MathML_
   * itex_ (also `used in Abiword`__)
   * `Steve’s LATEX-to-MathML translator`_
     ('mini-language', javascript, Python)
-
   * `MathJax for Node`_
-
 
   * Write a new converter? E.g. based on:
 
@@ -1400,10 +1390,6 @@ MathML_
 
   __ http://msevior.livejournal.com/26377.html
   .. _MathML: http://www.w3.org/TR/MathML2/
-  .. _latex_math: ../../../sandbox/jensj/latex_math/
-  .. _latex2mathml: ../../docutils/math/latex2mathml.py
-  .. _blahtexml: http://gva.noekeon.org/blahtexml/
-  .. _LaTeXML: http://dlmf.nist.gov/LaTeXML/
   .. _ttm: http://hutchinson.belmont.ma.us/tth/mml/
   .. _TeX4ht: http://www.tug.org/applications/tex4ht/mn.html
   .. _MathToWeb:  http://www.mathtoweb.com/
@@ -1424,7 +1410,6 @@ MathML_
 HTML/CSS
   format math in standard HTML enhanced by CSS rules
   (Overview__, `Examples and experiments`__).
-
   The ``math-output=html`` option uses the converter from eLyXer_
   (included with Docutils).
 
@@ -1441,15 +1426,24 @@ HTML/CSS
   .. _Hevea: http://para.inria.fr/~maranget/hevea/
 
 images
-  (PNG or SVG) like e.g. Wikipedia. (e.g. with dvisvgm_ or the
-  pure-python MathML->SVG converter SVGMath_)
-
+  (PNG or SVG) like e.g. Wikipedia.
+  
+  * dvisvgm_
+  * the pure-python MathML->SVG converter SVGMath_)
   * `MathJax for Node`_
-
 
   .. _dvisvgm: http://dvisvgm.sourceforge.net/
   .. _SVGMath: http://www.grigoriev.ru/svgmath/
 
+
+client side JavaScript conversion
+  Use TeX notation in the web page and JavaScript in the displaying browser.
+  (implemented as `math-output setting`_ "mathjax").
+  
+  * jqMath_ (faster and lighter than MathJax_)
+
+  .. _MathJax: http://www.mathjax.org/
+  .. _jqMath: http://mathscribe.com/author/jqmath.html
 
 OpenOffice output
 `````````````````
@@ -1961,25 +1955,25 @@ Doctree pruning
 
 [DG 2017-01-02: These are not definitive to-dos, just one developer's
 opinion. Added 2009-10-13 by Günter Milde, in r6178.]
+[Updated by GM 2017-02-04]
 
 The number of doctree nodes can be reduced by "normalizing" some related
 nodes. This makes the document model and the writers somewhat simpler.
 
-* The "doctest" element should go away.  The construct could simply be
-  a front-end to generic literal blocks.  We could immediately (in 0.7)
-  remove the doctest node from the doctree, but leave the
-  syntax in reST.  The reST parser could represent doctest blocks as
-  literal blocks with a class attribute.
+* The "doctest" element can be replaced by literal blocks with a class
+  attribute (similar to the "code" directive output).
+  The syntax shall be left in reST.
 
   [DG 2017-01-02:] +0.
 
-  The syntax could be left in reST (for a set period of time?).
-
-  [DG 2017-01-02:] The syntax must be left in reST, practically
-  forever. Removing it would introduce a huge backwards
-  incompatibility. Any syntax removal must be preceded by a thorough
-  review and planning, including a deprecation warning process. My
-  opinion: it's not worth it.
+  Discussion
+    The syntax could be left in reST (for a set period of time?).
+    
+    [DG 2017-01-02:] The syntax must be left in reST, practically
+    forever. Removing it would introduce a huge backwards
+    incompatibility. Any syntax removal must be preceded by a thorough
+    review and planning, including a deprecation warning process. My
+    opinion: it's not worth it.
 
 * "Normalize" special admonitions (note, hint, warning, ...) during parsing
   (similar to _`transforms.writer_aux.Admonitions`). There is no need to
@@ -1988,8 +1982,28 @@ nodes. This makes the document model and the writers somewhat simpler.
   [DG 2017-01-02:] -1: <note>{body}</> is much more concise and
   expressive than <admonition><title>Note</>{body}</>, and the title
   translation can be put off until much later in the process.
+  
+  [GM 2017-02-04]:
+  
+  -0 for <admonition class=note><title>Note</>... instead of <note>:
+     a document is rarely printed/used as doctree or XML.
+     
+  +1 reduce the complexity of the doctree
+     (there is no 1:1 rST syntax element <-> doctree node mapping anyway).
+  
+  +2 every writer needs 9 visit_*/depart_* method pairs to handle the 9
+     subtypes of an admonition, i.e. we could but also remove 36 redundant
+     methods (HTML, LaTeX, Manpage, ODF).
+  
+  -1 the most unfortunately named of these directives will survive. [#]_
+  
+     .. [#] with "biblical touch" and hard to translate:
+     
+            :admonition: | Ermahnung; Verweis; Warnung; Rüge
+                         | (exhortation; censure; warning; reprimand, rebuke)
+  
 
-  Keep the special admonition directives in reStructuredText syntax?
+  Keep the special admonition directives in reStructuredText syntax.
 
   [DG 2017-01-02:] We must definitely keep the syntax. Removing it
   would introduce a huge backwards incompatibility.
