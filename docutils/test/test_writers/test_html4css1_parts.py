@@ -33,7 +33,7 @@ Simple String
  'html_body': '''<div class="document">
 <p>Simple String</p>
 </div>\\n''',
- 'html_head': '''...<title></title>\\n'''}
+ 'html_head': '''...<title>&lt;string&gt;</title>\\n'''}
 """],
 ["""\
 Simple String with *markup*
@@ -43,7 +43,7 @@ Simple String with *markup*
  'html_body': '''<div class="document">
 <p>Simple String with <em>markup</em></p>
 </div>\\n''',
- 'html_head': '''...<title></title>\\n'''}
+ 'html_head': '''...<title>&lt;string&gt;</title>\\n'''}
 """],
 ["""\
 Simple String with an even simpler ``inline literal``
@@ -53,7 +53,7 @@ Simple String with an even simpler ``inline literal``
  'html_body': '''<div class="document">
 <p>Simple String with an even simpler <tt class="docutils literal">inline literal</tt></p>
 </div>\\n''',
- 'html_head': '''...<title></title>\\n'''}
+ 'html_head': '''...<title>&lt;string&gt;</title>\\n'''}
 """],
 ["""\
 A simple `anonymous reference`__
@@ -65,7 +65,7 @@ __ http://www.test.com/test_url
  'html_body': '''<div class="document">
 <p>A simple <a class="reference external" href="http://www.test.com/test_url">anonymous reference</a></p>
 </div>\\n''',
- 'html_head': '''...<title></title>\\n'''}
+ 'html_head': '''...<title>&lt;string&gt;</title>\\n'''}
 """],
 ["""\
 One paragraph.
@@ -79,7 +79,7 @@ Two paragraphs.
 <p>One paragraph.</p>
 <p>Two paragraphs.</p>
 </div>\\n''',
- 'html_head': '''...<title></title>\\n'''}
+ 'html_head': '''...<title>&lt;string&gt;</title>\\n'''}
 """],
 ["""\
 A simple `named reference`_ with stuff in between the
@@ -94,7 +94,7 @@ reference and the target.</p>\\n''',
 <p>A simple <a class="reference external" href="http://www.test.com/test_url">named reference</a> with stuff in between the
 reference and the target.</p>
 </div>\\n''',
- 'html_head': '''...<title></title>\\n'''}
+ 'html_head': '''...<title>&lt;string&gt;</title>\\n'''}
 """],
 ["""\
 +++++
@@ -195,7 +195,7 @@ Simple String
  'html_body': '''<div class="document">
 <p>Simple String</p>
 </div>\\n''',
- 'html_head': '''...<title></title>\\n'''}
+ 'html_head': '''...<title>&lt;string&gt;</title>\\n'''}
 """],
 ["""\
 Simple String with *markup*
@@ -205,7 +205,7 @@ Simple String with *markup*
  'html_body': '''<div class="document">
 <p>Simple String with <em>markup</em></p>
 </div>\\n''',
- 'html_head': '''...<title></title>\\n'''}
+ 'html_head': '''...<title>&lt;string&gt;</title>\\n'''}
 """],
 ["""\
 Simple String with an even simpler ``inline literal``
@@ -215,7 +215,7 @@ Simple String with an even simpler ``inline literal``
  'html_body': '''<div class="document">
 <p>Simple String with an even simpler <tt class="docutils literal">inline literal</tt></p>
 </div>\\n''',
- 'html_head': '''...<title></title>\\n'''}
+ 'html_head': '''...<title>&lt;string&gt;</title>\\n'''}
 """],
 ["""\
 A simple `anonymous reference`__
@@ -227,7 +227,7 @@ __ http://www.test.com/test_url
  'html_body': '''<div class="document">
 <p>A simple <a class="reference external" href="http://www.test.com/test_url">anonymous reference</a></p>
 </div>\\n''',
- 'html_head': '''...<title></title>\\n'''}
+ 'html_head': '''...<title>&lt;string&gt;</title>\\n'''}
 """],
 ["""\
 A simple `named reference`_ with stuff in between the
@@ -242,7 +242,7 @@ reference and the target.</p>\\n''',
 <p>A simple <a class="reference external" href="http://www.test.com/test_url">named reference</a> with stuff in between the
 reference and the target.</p>
 </div>\\n''',
- 'html_head': '''...<title></title>\\n'''}
+ 'html_head': '''...<title>&lt;string&gt;</title>\\n'''}
 """],
 ["""\
 +++++
@@ -297,7 +297,7 @@ And even more stuff
 </div>
 </div>
 </div>\\n''',
- 'html_head': '''...<title></title>\\n'''}
+ 'html_head': '''...<title>&lt;string&gt;</title>\\n'''}
 """],
 ["""\
 * bullet
@@ -314,7 +314,7 @@ And even more stuff
 <li>list</li>
 </ul>
 </div>\\n''',
- 'html_head': '''...<title></title>\\n'''}
+ 'html_head': '''...<title>&lt;string&gt;</title>\\n'''}
 """],
 ["""\
 .. table::
@@ -357,7 +357,7 @@ And even more stuff
 </tbody>
 </table>
 </div>\\n''',
- 'html_head': '''...<title></title>\\n'''}
+ 'html_head': '''...<title>&lt;string&gt;</title>\\n'''}
 """],
 ["""\
 Not a docinfo.
@@ -404,7 +404,7 @@ Not a docinfo.
 </tbody>
 </table>
 </div>\\n''',
- 'html_head': '''...<title></title>\\n'''}
+ 'html_head': '''...<title>&lt;string&gt;</title>\\n'''}
 """],
 ["""\
 Not a docinfo.
@@ -439,7 +439,7 @@ Not a docinfo.
 </tbody>
 </table>
 </div>\\n''',
- 'html_head': '''...<title></title>\\n'''}
+ 'html_head': '''...<title>&lt;string&gt;</title>\\n'''}
 """],
 ])
 
