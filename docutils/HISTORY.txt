@@ -28,6 +28,10 @@ Changes Since 0.13.1
   - Recognize non-ASCII whitespace around inline literal, target,
     and substitution.
 
+* docutils/parsers/rst/directives/images.py:
+
+  - Added support for escaped whitespace in URI contexts.
+
 * docutils/parsers/rst/directives/tables.py:
 
   - Rework patch [ 120 ] (revert change to ``Table.get_column_widths()``

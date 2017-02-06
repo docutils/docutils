@@ -432,6 +432,16 @@ u"""\
         <image uri="test.png">
     <target ids="uppercase" names="uppercase" refuri="http://docutils.sourceforge.net/">
 """],
+[r"""
+.. image:: path\ with\ spaces/name\ with\ spaces.png
+   :target: path\ with\ spaces/
+            target\ with\ spaces\ across\ lines.html
+""",
+"""\
+<document source="test data">
+    <reference refuri="path with spaces/target with spaces across lines.html">
+        <image uri="path with spaces/name with spaces.png">
+"""],
 ]
 
 
