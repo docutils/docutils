@@ -463,6 +463,18 @@ General
   could be used by any writer, and applying such classes to all tables
   in a document with writer options is too broad.
 
+  See also the `table_styling Sphinx extension`_ which defines
+
+  :widths: also in Docutils core (but different implementation)
+  :column-alignment: Sets per-column text alignment
+  :column-wrapping:  Sets per-column text wrapping
+  :column-dividers:  Add dividers between columns
+  :column-classes:   Add per-column css classes.
+  :header-columns:   Specify number of “stub” columns
+
+  .. _table_styling Sphinx extension: https://pythonhosted.org/cloud_sptheme/
+                                      lib/cloud_sptheme.ext.table_styling.html
+
 * Add file-specific settings support to config files, like::
 
       [file index.txt]
@@ -1271,7 +1283,7 @@ Open issues:
 
   .. _Math support in Sphinx: http://sphinx.pocoo.org/ext/math.html
 
-* Equation numbering and references. (see the section on 
+* Equation numbering and references. (see the section on
   `object numbering and object references` for equations,
   formal tables, and images.)
 
@@ -1364,7 +1376,7 @@ See http://www.math.uiuc.edu/~hildebr/tex/displays.html.
 HTML output
 ```````````
 
-There is no native math support in HTML. 
+There is no native math support in HTML.
 For supported math output variants see the `math-output setting`_.
 Add more/better alternatives?
 
@@ -1427,7 +1439,7 @@ HTML/CSS
 
 images
   (PNG or SVG) like e.g. Wikipedia.
-  
+
   * dvisvgm_
   * the pure-python MathML->SVG converter SVGMath_)
   * `MathJax for Node`_
@@ -1439,7 +1451,7 @@ images
 client side JavaScript conversion
   Use TeX notation in the web page and JavaScript in the displaying browser.
   (implemented as `math-output setting`_ "mathjax").
-  
+
   * jqMath_ (faster and lighter than MathJax_)
 
   .. _MathJax: http://www.mathjax.org/
@@ -1968,7 +1980,7 @@ nodes. This makes the document model and the writers somewhat simpler.
 
   Discussion
     The syntax could be left in reST (for a set period of time?).
-    
+
     [DG 2017-01-02:] The syntax must be left in reST, practically
     forever. Removing it would introduce a huge backwards
     incompatibility. Any syntax removal must be preceded by a thorough
@@ -1982,26 +1994,26 @@ nodes. This makes the document model and the writers somewhat simpler.
   [DG 2017-01-02:] -1: <note>{body}</> is much more concise and
   expressive than <admonition><title>Note</>{body}</>, and the title
   translation can be put off until much later in the process.
-  
+
   [GM 2017-02-04]:
-  
+
   -0 for <admonition class=note><title>Note</>... instead of <note>:
      a document is rarely printed/used as doctree or XML.
-     
+
   +1 reduce the complexity of the doctree
      (there is no 1:1 rST syntax element <-> doctree node mapping anyway).
-  
+
   +2 every writer needs 9 visit_*/depart_* method pairs to handle the 9
      subtypes of an admonition, i.e. we could but also remove 36 redundant
      methods (HTML, LaTeX, Manpage, ODF).
-  
+
   -1 the most unfortunately named of these directives will survive. [#]_
-  
+
      .. [#] with "biblical touch" and hard to translate:
-     
+
             :admonition: | Ermahnung; Verweis; Warnung; Rüge
                          | (exhortation; censure; warning; reprimand, rebuke)
-  
+
 
   Keep the special admonition directives in reStructuredText syntax.
 
