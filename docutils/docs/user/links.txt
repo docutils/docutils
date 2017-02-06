@@ -159,7 +159,7 @@ website generators and HTML variants
   .. _nikola:  http://getnikola.com/
 
 * Pelican_ is a static site generator (mainly for blogs). Articles/pages can
-  be written in reStructuredText or Markdown format.
+  be written in reStructuredText or Markdown\ [#markdown]_ format.
 
   .. _pelican: http://docs.getpelican.com
 
@@ -222,8 +222,8 @@ ePub
 Others
 ``````
 
-* Pandoc_ is a document converter that can write Markdown, reStructuredText,
-  HTML, LaTeX, RTF, DocBook XML, and S5.
+* Pandoc_ is a document converter that can write Markdown\ [#markdown]_,
+  reStructuredText, HTML, LaTeX, RTF, DocBook XML, and S5.
 
 * restxsl_ by Michael Alyn Miller, lets you transform reStructuredText
   documents into XML/XHTML files using XSLT stylesheets.
@@ -269,6 +269,8 @@ Import
 
 Convert other formats to reStructuredText:
 
+* recommonmark_ is a Markdown\ [#markdown]_ (CommonMark_) parser for docutils.
+
 * sxw2rest_, by Trent W. Buck, converts StarOffice XML Writer (SXW)
   files to reStructuredText.
 
@@ -288,20 +290,28 @@ Convert other formats to reStructuredText:
   <http://svn.python.org/projects/doctools/converter/>`__ in its source code
   (trimmed to importing the old Python docs).
 
-* Pandoc_ can read Markdown and (subsets of) HTML, and LaTeX and export to
+* Pandoc_ can read Markdown\ [#markdown]_ and (subsets of) HTML, and LaTeX and export to
   (amongst others) reStructuredText.
 
 * PySource_, by Tony Ibbs, is an experimental Python source Reader.
   There is some related code in David Goodger's sandbox
   (pysource_reader_) and a `Python Source Reader`_ document.
 
+.. [#markdown]
+   `Markdown <http://daringfireball.net/projects/markdown/syntax>`__ is
+   another lightwight markup language.  See also documentation on `Common
+   markup for Markdown and reStructuredText`_.
+
+.. _recommonmark: https://github.com/rtfd/recommonmark
+.. _CommonMark: http://commonmark.org/
 .. _sxw2rest: http://twb.ath.cx/~twb/darcs/sxw2rest/
 .. _xml2rst: http://www.merten-home.de/FreeSoftware/xml2rst/index.html
 .. _xhtml2rest: http://docutils.sf.net/sandbox/wiemann/xhtml2rest/
-
 .. _PySource: http://docutils.sf.net/sandbox/tibs/pysource/
 .. _pysource_reader: http://docutils.sf.net/sandbox/davidg/pysource_reader/
 .. _Python Source Reader: http://docutils.sf.net/docs/dev/pysource.html
+.. _Common markup for Markdown and reStructuredText:
+   https://gist.github.com/dupuy/1855764
 
 
 Extensions
@@ -350,9 +360,12 @@ Applications using docutils/reStructuredText and helper applications.
 * `Project Gutenberg`_ uses a customized version of Docutils with it's own
   xetex- and nroff-writer and epub generator.
 
-.. _FAQ entry about Wikis: http://docutils.sf.net/FAQ.html#are-there-any-wikis-that-use-restructuredtext-syntax
-.. _FAQ entry about Blogs: http://docutils.sf.net/FAQ.html#are-there-any-weblog-blog-projects-that-use-restructuredtext-syntax
+.. _FAQ entry about Wikis: http://docutils.sf.net/FAQ.html
+    #are-there-any-wikis-that-use-restructuredtext-syntax
+.. _FAQ entry about Blogs: http://docutils.sf.net/FAQ.html
+    #are-there-any-weblog-blog-projects-that-use-restructuredtext-syntax
 .. _Project Gutenberg: http://www.gutenberg.org
+
 
 Tools
 `````
@@ -369,7 +382,7 @@ Tools
   will also watch for changes in that file and automatically reload and
   rerender it. This is very convenient for previewing a document while
   you're editing it.
-  
+
   .. _restview: http://mg.pov.lt/restview/
 
 
