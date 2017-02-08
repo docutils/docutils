@@ -2489,25 +2489,26 @@ The inline markup recognition rules were devised to allow 90% of non-markup
 uses of "*", "`", "_", and "|" without escaping. For example, none of the
 following terms are recognized as containing inline markup strings:
 
-- 2 * x  a ** b  (* BOM32_* ` `` _ __ | (breaks 1)
-- || (breaks 3)
+- 2 * x  a ** b  (* BOM32_* ` `` _ __ | (breaks rule 1)
+- || (breaks rule 3)
 - "*" '|' (*) [*] {*} <*>
   ‘*’ ‚*‘ ‘*‚ ’*’ ‚*’
   “*” „*“ “*„ ”*” „*”
-  »*« ›*‹ «*» »*» ›*› (breaks 5)
+  »*« ›*‹ «*» »*» ›*› (breaks rule 5)
 - 2*x a**b O(N**2) e**(x*y) f(x)*f(y) a|b file*.*
-  __init__ __init__()  (breaks 6)
+  __init__ __init__()  (breaks rule 6)
 
 No escaping is required inside the following inline markup examples:
 
-- *2 * x  *a **b *.txt* (breaks 2)
-- *2*x a**b O(N**2) e**(x*y) f(x)*f(y) a*(1+2)* (breaks 7)
+- ``*2 * x  *a **b *.txt*`` (breaks rule 2; renders as "*2 * x  *a **b *.txt*")
+- ``*2*x a**b O(N**2) e**(x*y) f(x)*f(y) a*(1+2)*`` 
+  (breaks rule 7; renders as "*2*x a**b O(N**2) e**(x*y) f(x)*f(y) a*(1+2)*")
 
 It may be desirable to use `inline literals`_ for some of these anyhow,
 especially if they represent code snippets.  It's a judgment call.
 
 These cases *do* require either literal-quoting or escaping to avoid
-misinterpretation:
+misinterpretation::
 
     \*4, class\_, \*args, \**kwargs, \`TeX-quoted', \*ML, \*.txt
 
