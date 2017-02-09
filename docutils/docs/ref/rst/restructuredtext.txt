@@ -2443,8 +2443,8 @@ the following conditions are met:
 
 5. If an inline markup start-string is immediately preceded by one of the
    ASCII characters ``' " < ( [ {`` or a similar
-   Unicode character [#openers]_, it must not be followed by the
-   corresponding closing character from ``' " ) ] } >`` or a similar Unicode
+   non-ASCII character [#openers]_, it must not be followed by the
+   corresponding closing character from ``' " ) ] } >`` or a similar non-ASCII
    character [#closers]_. (For quotes, matching characters can be any of
    the `quotation marks in international usage`_.)
 
@@ -2457,14 +2457,14 @@ inline markup:
 
    * whitespace,
    * one of the ASCII characters ``- : / ' " < ( [ {``
-   * or a similar Unicode punctuation character. [#pre-chars]_
+   * or a similar non-ASCII punctuation character. [#pre-chars]_
 
 7. Inline markup end-strings must end a text block or be immediately
    followed by
 
    * whitespace,
    * one of the ASCII characters ``- . , : ; ! ? \ / ' " ) ] } >``
-   * or a similar Unicode punctuation character. [#post-chars]_
+   * or a similar non-ASCII punctuation character. [#post-chars]_
 
 .. [#openers]    `Unicode categories`_ `Ps` (Open), `Pi` (Initial quote),
                  or `Pf` (Final quote). [#uni-version]_
