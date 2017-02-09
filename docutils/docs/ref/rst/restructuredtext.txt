@@ -2687,12 +2687,12 @@ Doctree element: reference.
 
 - Named hyperlink references:
 
-  - Start-string = "" (empty string), end-string = "_".
+  - No start-string, end-string = "_".
   - Start-string = "`", end-string = "\`_".  (Phrase references.)
 
 - Anonymous hyperlink references:
 
-  - Start-string = "" (empty string), end-string = "__".
+  - No start-string, end-string = "__".
   - Start-string = "`", end-string = "\`__".  (Phrase references.)
 
 Hyperlink references are indicated by a trailing underscore, "_",
@@ -2915,7 +2915,7 @@ Standalone Hyperlinks
 
 Doctree element: reference.
 
-Start-string = end-string = "" (empty string).
+No start-string or end-string.
 
 A URI (absolute URI [#URI]_ or standalone email address) within a text
 block is treated as a general external hyperlink with the URI itself
