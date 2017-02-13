@@ -51,6 +51,7 @@ No target release
 
 .. _rst2html.py: docs/user/tools.html#rst2html-py
 
+
 Changes Since 0.13.1
 ====================
 
@@ -66,10 +67,9 @@ Changes Since 0.13.1
 Release 0.13.1 (2016-12-09)
 ===========================
 
-* docutils/writers/html_plain
+* docutils/writers/html5_polyglot
 
   - New HTML writer generating `HTML 5`_.
-
 
 * tools/
 
@@ -86,13 +86,14 @@ Release 0.13.1 (2016-12-09)
 * latex2e: Fix admonition width, remove deprecated options,
            better tablewidth auto, ...
 
-* rst.el : The problem with ``electric-indent-mode`` has been fixed.
+* rst.el: The problem with ``electric-indent-mode`` has been fixed.
 
 
 Release 0.12 (2014-07-06)
 =========================
 
 Small changes only, release current state
+
 
 Release 0.11 (2013-07-22)
 =========================
