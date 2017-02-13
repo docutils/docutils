@@ -43,6 +43,7 @@ by wrapper DTDs.
 <!ENTITY % measure "CDATA">
 
 <!ENTITY % additional.basic.atts "">
+
 <!--
 Attributes shared by all elements in this DTD:
 
