@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- coding: utf8 -*-
+# -*- coding: utf-8 -*-
 # :Author: David Goodger, Günter Milde
 #          Based on the html4css1 writer by David Goodger.
 # :Maintainer: docutils-develop@lists.sourceforge.net
@@ -93,7 +93,6 @@ class Writer(writers.Writer):
             self.parts[part] = ''.join(getattr(self, part))
 
 
-
 class HTMLTranslator(nodes.NodeVisitor):
     """Generic Docutils to HTML translator.
 
@@ -101,46 +100,47 @@ class HTMLTranslator(nodes.NodeVisitor):
     HTML writers.
 
     .. IMPORTANT::
-      the `visit_*` and `depart_*` methods use a the
-      heterogeneous stack `self.context`.
-      When subclassing, make sure to be consistent!
+      The `visit_*` and `depart_*` methods use a
+      heterogeneous stack, `self.context`.
+      When subclassing, make sure to be consistent in its use!
 
       Examples for robust coding:
 
-      a) Overwrite both, don't call the parent functions.
+      a) Overwrite both `visit_*` and `depart_*` methods, don't call the
+         parent functions.
 
       b) Overwrite both, call the parent functions::
 
            def visit_field_list(self, node):
-           if foo:
-                self.body.append('<div class="foo">\n')
-           html4css1.HTMLTranslator.visit_field_list(self, node)
+               if foo:
+                   self.body.append('<div class="foo">\n')
+               html4css1.HTMLTranslator.visit_field_list(self, node)
 
            def depart_field_list(self, node):
-           html4css1.HTMLTranslator.depart_field_list(self, node)
-           if foo:
-                self.body.append('</div>\n')
+               html4css1.HTMLTranslator.depart_field_list(self, node)
+               if foo:
+                   self.body.append('</div>\n')
 
       c) Overwrite both, call the parent functions under the same
-         conditions::
+         conditions::
 
            def visit_example(self, node):
-             if foo:
-               <my special code>
-             else: # call the parent method
-               _html_base.HTMLTranslator.visit_example(self, node)
+               if foo:
+                   <my special code>
+               else: # call the parent method
+                   _html_base.HTMLTranslator.visit_example(self, node)
 
            def depart_example(self, node):
-             if foo:
-               <my special code>
-             else: # call the parent method
-               _html_base.HTMLTranslator.depart_example(self, node)
+               if foo:
+                   <my special code>
+               else: # call the parent method
+                   _html_base.HTMLTranslator.depart_example(self, node)
 
       d) Overwrite one, don't use the stack, call the parent::
 
            def depart_field_list(self, node):
-              html4css1.HTMLTranslator.depart_field_list(self, node)
-              if 'rfc2822' in node['classes']:
+               html4css1.HTMLTranslator.depart_field_list(self, node)
+               if 'rfc2822' in node['classes']:
                    self.body.append('<hr />\n')
 
       This way, changes in stack use will not bite you.
@@ -168,7 +168,8 @@ class HTMLTranslator(nodes.NodeVisitor):
     stylesheet_link = '<link rel="stylesheet" href="%s" type="text/css" />\n'
     embedded_stylesheet = '<style type="text/css">\n\n%s\n</style>\n'
     words_and_spaces = re.compile(r'\S+| +|\n')
-    sollbruchstelle = re.compile(r'.+\W\W.+|[-?].+', re.U) # wrap point inside word
+    # wrap point inside word:
+    sollbruchstelle = re.compile(r'.+\W\W.+|[-?].+', re.U)
     lang_attribute = 'lang' # name changes to 'xml:lang' in XHTML 1.1
 
     special_characters = {ord('&'): u'&amp;',
