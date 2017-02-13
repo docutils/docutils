@@ -17,6 +17,18 @@
 Changes Since 0.13.1
 ====================
 
+* docutils/docs/ref/docutils.dtd:
+
+  - Enable validation of Docutils XML documents against the DTD:
+
+    Use attribute type NMTOKEN instead of REFID for the `refid` attribute
+    and NMTOKENS for `backrefs`: REFID refers to an ID type instance,
+    however, the `ids` attribute cannot use the ID type because `XML only
+    allows one ID per Element Type`__ and doesn't support a multiple-ID
+    "IDS" attribute type.
+
+  __ https://www.w3.org/TR/REC-xml/#sec-attribute-types
+
 * docs/ref/rst/restructuredtext.txt:
 
   - Added documentation for escaped whitespace in URI contexts.

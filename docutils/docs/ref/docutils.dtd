@@ -47,7 +47,8 @@ by wrapper DTDs.
 <!--
 Attributes shared by all elements in this DTD:
 
-- `ids` are unique identifiers, typically assigned by the system.
+- `ids` are unique identifiers, typically assigned by the system. The NMTOKENS
+  attribute type is used because XML doesn't support a multiple-ID "IDS" type.
 - `names` are identifiers assigned in the markup.
 - `dupnames` is the same as `name`, used when it's a duplicate.
 - `source` is the name of the source of this document or fragment.
@@ -65,13 +66,21 @@ Attributes shared by all elements in this DTD:
 <!ENTITY % refuri.att
   " refuri    CDATA     #IMPLIED ">
 
-<!-- Internal reference to the `id` attribute of an element. -->
+<!--
+Internal reference to the `ids` attribute of an element. The NMTOKENS
+type is used instead of IDREF, because XML doesn't support a multiple-ID
+"IDS" type.
+-->
 <!ENTITY % refid.att
-  " refid     IDREF     #IMPLIED ">
+  " refid     NMTOKEN     #IMPLIED ">
 
-<!-- Space-separated list of id references, for backlinks. -->
+<!--
+Space-separated list of `ids` references, for backlinks. The NMTOKENS
+type is used instead of IDREF, because XML doesn't support a multiple-ID
+"IDS" type.
+-->
 <!ENTITY % backrefs.att
-  " backrefs  IDREFS    #IMPLIED ">
+  " backrefs  NMTOKENS    #IMPLIED ">
 
 <!--
 Internal reference to the `name` attribute of an element. On a
