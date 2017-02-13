@@ -630,6 +630,21 @@ directive:
    True   False
    =====  =====
 
+With the "widths" argument "auto" (or "class" value "colwidths-auto"),
+column widths are determined by the backend (if supported by the
+writer/backend).
+
+.. table::
+   :widths: auto
+
+   ======= ======= ==========
+   A       B       A or B
+   ======= ======= ==========
+   False   False   False
+   True    False   True
+   False   True    True
+   True    True    True
+   ======= ======= ==========
 
 
 Admonitions

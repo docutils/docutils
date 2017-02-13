@@ -63,6 +63,10 @@ Changes Since 0.13.1
 
   - Provide default title in metadata (required by HTML5).
 
+* docutils/writers/html4css1/__init__.py
+
+  - Apply [ 125 ] HTML writer: respect automatic table column sizing.
+
 * tools/rst2html4.py: New front-end.
 
 * tools/dev/generate_punctuation_chars.py: New skript
@@ -166,7 +170,7 @@ Release 0.13.1 (2016-12-09)
   - Fix [ 224 ] Fix rowspan support for tables.
 
   - Let LaTeX determine the column widths in tables with "colwidths-auto".
-    Not suited for with multi-paragraph cells!
+    Not suited for multi-paragraph cells!
 
 * docutils/writers/odf_odt/__init__.py
 

@@ -247,6 +247,29 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
     def depart_authors(self, node):
         self.depart_docinfo_item()
 
+    # use "width" argument insted of "style: 'width'":
+    def visit_colspec(self, node):
+        self.colspecs.append(node)
+        # "stubs" list is an attribute of the tgroup element:
+        node.parent.stubs.append(node.attributes.get('stub'))
+    #
+    def depart_colspec(self, node):
+        # write out <colgroup> when all colspecs are processed
+        if isinstance(node.next_node(descend=False, siblings=True),
+                      nodes.colspec):
+            return
+        if 'colwidths-auto' in node.parent.parent['classes'] or (
+            'colwidths-auto' in self.settings.table_style and
+            ('colwidths-given' not in node.parent.parent['classes'])):
+            return
+        total_width = sum(node['colwidth'] for node in self.colspecs)
+        self.body.append(self.starttag(node, 'colgroup'))
+        for node in self.colspecs:
+            colwidth = int(node['colwidth'] * 100.0 / total_width + 0.5)
+            self.body.append(self.emptytag(node, 'col',
+                                           width='%i%%' % colwidth))
+        self.body.append('</colgroup>\n')
+
     # Compact lists:
     # exclude definition lists and field lists (non-compact by default)
 
@@ -277,20 +300,6 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
     def visit_classifier(self, node):
         self.body.append(' <span class="classifier-delimiter">:</span> ')
         self.body.append(self.starttag(node, 'span', '', CLASS='classifier'))
-
-    # rewritten in _html_base (support for "auto" width)
-    def depart_colspec(self, node):
-        pass
-
-    def write_colspecs(self):
-        width = 0
-        for node in self.colspecs:
-            width += node['colwidth']
-        for node in self.colspecs:
-            colwidth = int(node['colwidth'] * 100.0 / width + 0.5)
-            self.body.append(self.emptytag(node, 'col',
-                                           width='%i%%' % colwidth))
-        self.colspecs = []
 
     # ersatz for first/last pseudo-classes
     def visit_definition(self, node):
@@ -761,24 +770,17 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
 
     # hard-coded vertical alignment
     def visit_tbody(self, node):
-        self.write_colspecs()
-        self.body.append(self.context.pop()) # '</colgroup>\n' or ''
         self.body.append(self.starttag(node, 'tbody', valign='top'))
+    #
+    def depart_tbody(self, node):
+        self.body.append('</tbody>\n')
 
-    # rewritten in _html_base
-    def visit_tgroup(self, node):
-        self.body.append(self.starttag(node, 'colgroup'))
-        # Appended by thead or tbody:
-        self.context.append('</colgroup>\n')
-        node.stubs = []
-
-    # rewritten in _html_base
+    # hard-coded vertical alignment
     def visit_thead(self, node):
-        self.write_colspecs()
-        self.body.append(self.context.pop()) # '</colgroup>\n'
-        # There may or may not be a <thead>; this is for <tbody> to use:
-        self.context.append('')
         self.body.append(self.starttag(node, 'thead', valign='bottom'))
+    #
+    def depart_thead(self, node):
+        self.body.append('</thead>\n')
 
 
 class SimpleListChecker(writers._html_base.SimpleListChecker):
