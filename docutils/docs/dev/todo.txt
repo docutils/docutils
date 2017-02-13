@@ -2343,13 +2343,9 @@ Bug fixes
 * Too deeply nested lists fail: generate a warning and provide
   a workaround.
 
-* Spaces in inline literal text::
+  2017-02-09 this is fixed for enumeration in 0.13.1
 
-    Now note    the
-    spacing    between the    words of    this sentence    (words
-    should    be grouped    in pairs).
-
-  Discuss the desired behaviour and implement a consistent one.
+  for others, cf. sandbox/latex-variants/tests/rst-levels.txt
 
 * File names of included graphics (see also `grffile` package).
 
@@ -2397,8 +2393,6 @@ Which packages do we want to use?
 
   + pointers to advanced packages and their use in the `latex writer
     documentation`_.
-
-* ``alltt`` environment for literal block.
 
 * footnotes
 
