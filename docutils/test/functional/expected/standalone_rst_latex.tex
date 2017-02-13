@@ -1102,6 +1102,32 @@ False
 \hline
 \end{longtable}
 
+With the “widths” argument “auto” (or “class” value “colwidths-auto”),
+column widths are determined by the backend (if supported by the
+writer/backend).
+
+\begin{longtable*}[c]{|l|l|l|}
+\hline
+\textbf{A} & \textbf{B} & \textbf{A or B} \\
+\hline
+\endfirsthead
+\hline
+\textbf{A} & \textbf{B} & \textbf{A or B} \\
+\hline
+\endhead
+\multicolumn{3}{c}{\hfill ... continued on next page} \\
+\endfoot
+\endlastfoot
+False & False & False \\
+\hline
+True & False & True \\
+\hline
+False & True & True \\
+\hline
+True & True & True \\
+\hline
+\end{longtable*}
+
 
 \subsubsection{2.14.3~~~Admonitions%
   \label{admonitions}%
