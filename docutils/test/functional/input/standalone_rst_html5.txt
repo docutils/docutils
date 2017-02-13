@@ -157,21 +157,6 @@ setting (or command line argument).
   Currently, referencing to the table by number is not supported. This is a
   common request and already on the `TODO list`.
 
-* With the "widths" argument "auto" (or "class" value "colwidths-auto"),
-  column widths are determined by the browser.
-
-  .. table::
-     :widths: auto
-
-     ======= ======= ==========
-     A       B       A or B
-     ======= ======= ==========
-     False   False   False
-     True    False   True
-     False   True    True
-     True    True    True
-     ======= ======= ==========
-
 * A table with "booktabs" class value, is rendered similar to the style
   from the booktabs_ LaTeX package.
 

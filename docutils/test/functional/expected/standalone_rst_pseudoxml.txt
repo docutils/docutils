@@ -1454,6 +1454,67 @@
                                 <entry>
                                     <paragraph>
                                         False
+                <paragraph>
+                    With the "widths" argument "auto" (or "class" value "colwidths-auto"),
+                    column widths are determined by the backend (if supported by the
+                    writer/backend).
+                <table classes="colwidths-auto">
+                    <tgroup cols="3">
+                        <colspec colwidth="7">
+                        <colspec colwidth="7">
+                        <colspec colwidth="10">
+                        <thead>
+                            <row>
+                                <entry>
+                                    <paragraph>
+                                        A
+                                <entry>
+                                    <paragraph>
+                                        B
+                                <entry>
+                                    <paragraph>
+                                        A or B
+                        <tbody>
+                            <row>
+                                <entry>
+                                    <paragraph>
+                                        False
+                                <entry>
+                                    <paragraph>
+                                        False
+                                <entry>
+                                    <paragraph>
+                                        False
+                            <row>
+                                <entry>
+                                    <paragraph>
+                                        True
+                                <entry>
+                                    <paragraph>
+                                        False
+                                <entry>
+                                    <paragraph>
+                                        True
+                            <row>
+                                <entry>
+                                    <paragraph>
+                                        False
+                                <entry>
+                                    <paragraph>
+                                        True
+                                <entry>
+                                    <paragraph>
+                                        True
+                            <row>
+                                <entry>
+                                    <paragraph>
+                                        True
+                                <entry>
+                                    <paragraph>
+                                        True
+                                <entry>
+                                    <paragraph>
+                                        True
             <section ids="admonitions" names="admonitions">
                 <title auto="1" refid="id76">
                     <generated classes="sectnum">
@@ -2202,9 +2263,9 @@
         <system_message level="1" line="475" source="functional/input/data/standard.txt" type="INFO">
             <paragraph>
                 Hyperlink target "image-target-3" is not referenced.
-        <system_message level="1" line="667" source="functional/input/data/standard.txt" type="INFO">
+        <system_message level="1" line="682" source="functional/input/data/standard.txt" type="INFO">
             <paragraph>
                 Hyperlink target "docutils" is not referenced.
-        <system_message level="1" line="788" source="functional/input/data/standard.txt" type="INFO">
+        <system_message level="1" line="803" source="functional/input/data/standard.txt" type="INFO">
             <paragraph>
                 Hyperlink target "hyperlink targets" is not referenced.
