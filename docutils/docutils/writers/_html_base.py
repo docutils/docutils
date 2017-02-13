@@ -169,7 +169,7 @@ class HTMLTranslator(nodes.NodeVisitor):
     embedded_stylesheet = '<style type="text/css">\n\n%s\n</style>\n'
     words_and_spaces = re.compile(r'\S+| +|\n')
     # wrap point inside word:
-    sollbruchstelle = re.compile(r'.+\W\W.+|[-?].+', re.U)
+    in_word_wrap_point = re.compile(r'.+\W\W.+|[-?].+', re.U)
     lang_attribute = 'lang' # name changes to 'xml:lang' in XHTML 1.1
 
     special_characters = {ord('&'): u'&amp;',
@@ -1031,7 +1031,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         # Protect text like ``--an-option`` and the regular expression
         # ``[+]?(\d+(\.\d*)?|\.\d+)`` from bad line wrapping
         for token in self.words_and_spaces.findall(text):
-            if token.strip() and self.sollbruchstelle.search(token):
+            if token.strip() and self.in_word_wrap_point.search(token):
                 self.body.append('<span class="pre">%s</span>'
                                     % self.encode(token))
             else:
