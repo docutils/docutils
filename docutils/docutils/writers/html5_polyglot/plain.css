@@ -68,7 +68,7 @@ dl > dd {
 
 dl > dd p:first-child { margin-top: 0; }
 /* :last-child is not part of CSS 2.1 (introduced in CSS 3) */
-/* dl > dd p:last-child  { margin-bottom: 0; } */
+dl > dd p:last-child  { margin-bottom: 0; }
 
 /* lists nested in definition lists */
 /* :only-child is not part of CSS 2.1 (introduced in CSS 3) */
