@@ -20,7 +20,7 @@
 """
 Plain HyperText Markup Language document tree Writer.
 
-The output conforms to the `HTML 5` specification.
+The output conforms to the `HTML5` specification.
 
 The cascading style sheet "minimal.css" is required for proper viewing,
 the style sheet "plain.css" improves reading experience.
@@ -147,7 +147,7 @@ class Writer(writers._html_base.Writer):
 
 class HTMLTranslator(writers._html_base.HTMLTranslator):
     """
-    This writer generates `polyglot markup`: HTML 5 that is also valid XML.
+    This writer generates `polyglot markup`: HTML5 that is also valid XML.
     """
     # def __init__(self, document):
     #     writers._html_base.HTMLTranslator.__init__(self, document)
@@ -161,18 +161,18 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
     def depart_acronym(self, node):
         self.body.append('</abbr>')
 
-    # no meta tag in HTML 5
+    # no meta tag in HTML5
     def visit_authors(self, node):
         self.visit_docinfo_item(node, 'authors', meta=False)
 
     def visit_copyright(self, node):
         self.visit_docinfo_item(node, 'copyright', meta=False)
 
-    # no meta tag in HTML 5
+    # no meta tag in HTML5
     def visit_date(self, node):
         self.visit_docinfo_item(node, 'date', meta=False)
 
-    # TODO: use HTML 5 <footer> element?
+    # TODO: use HTML5 <footer> element?
     # def visit_footer(self, node):
     # def depart_footer(self, node):
 
@@ -188,11 +188,11 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
         meta = self.emptytag(node, 'meta', **node.non_default_attributes())
         self.add_meta(meta)
 
-    # no meta tag in HTML 5
+    # no meta tag in HTML5
     def visit_organization(self, node):
         self.visit_docinfo_item(node, 'organization', meta=False)
 
-    # TODO: use the new HTML 5 element <section>?
+    # TODO: use the new HTML5 element <section>?
     # def visit_section(self, node):
 
     # TODO: use the new HTML5 element <aside>?

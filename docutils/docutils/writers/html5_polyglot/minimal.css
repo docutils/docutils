@@ -204,7 +204,7 @@ table.align-right {
   margin-left: auto;
 }
 /* reset inner alignment in figures and tables */
-div.align-left, div.align-center, div.align-right,
+/* div.align-left, div.align-center, div.align-right, */
 table.align-left, table.align-center, table.align-right
 { text-align: inherit }
 
