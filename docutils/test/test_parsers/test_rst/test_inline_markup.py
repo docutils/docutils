@@ -1653,7 +1653,7 @@ lines.
 """],
 [u"""\
 text-*separated*\u2010*by*\u2011*various*\u2012*dashes*\u2013*and*\u2014*hyphens*.
-\u00bf*punctuation*? \u00a1*examples*!\u00a0*\u00a0no-break-space\u00a0*.
+\u00bf*punctuation*? \u00a1*examples*!\u00a0*no-break-space*\u00a0.
 """,
 u"""\
 <document source="test data">
@@ -1685,8 +1685,8 @@ u"""\
             examples
         !\xa0
         <emphasis>
-            \u00a0no-break-space\u00a0
-        .
+            no-break-space
+        \u00a0.
 """],
 # Whitespace characters:
 #  \u180e*MONGOLIAN VOWEL SEPARATOR*\u180e,   fails in Python 2.4
@@ -1831,6 +1831,69 @@ u"""\
         <title_reference>
             NARROW NBSP
         \u202f,
+"""],
+[u"""\
+no inline markup due to whitespace inside and behind: *
+newline
+*
+* space * or one of
+*\xa0NO-BREAK SPACE\xa0*
+*\u1680OGHAM SPACE MARK\u1680*
+*\u2000EN QUAD\u2000*
+*\u2001EM QUAD\u2001*
+*\u2002EN SPACE\u2002*
+*\u2003EM SPACE\u2003*
+*\u2004THREE-PER-EM SPACE\u2004*
+*\u2005FOUR-PER-EM SPACE\u2005*
+*\u2006SIX-PER-EM SPACE\u2006*
+*\u2007FIGURE SPACE\u2007*
+*\u2008PUNCTUATION SPACE\u2008*
+*\u2009THIN SPACE\u2009*
+*\u200aHAIR SPACE\u200a*
+*\u202fNARROW NO-BREAK SPACE\u202f*
+*\u205fMEDIUM MATHEMATICAL SPACE\u205f*
+*\u3000IDEOGRAPHIC SPACE\u3000*
+*\u2028LINE SEPARATOR\u2028*
+""",
+u"""\
+<document source="test data">
+    <paragraph>
+        no inline markup due to whitespace inside and behind: *
+        newline
+        *
+        * space * or one of
+        *\xa0NO-BREAK SPACE\xa0*
+        *\u1680OGHAM SPACE MARK\u1680*
+        *\u2000EN QUAD\u2000*
+        *\u2001EM QUAD\u2001*
+        *\u2002EN SPACE\u2002*
+        *\u2003EM SPACE\u2003*
+        *\u2004THREE-PER-EM SPACE\u2004*
+        *\u2005FOUR-PER-EM SPACE\u2005*
+        *\u2006SIX-PER-EM SPACE\u2006*
+        *\u2007FIGURE SPACE\u2007*
+        *\u2008PUNCTUATION SPACE\u2008*
+        *\u2009THIN SPACE\u2009*
+        *\u200aHAIR SPACE\u200a*
+        *\u202fNARROW NO-BREAK SPACE\u202f*
+        *\u205fMEDIUM MATHEMATICAL SPACE\u205f*
+        *\u3000IDEOGRAPHIC SPACE\u3000*
+        *
+        LINE SEPARATOR
+        *"""],
+[u"""\
+no inline markup because of non-ASCII whitespace following /preceding the markup
+**\xa0NO-BREAK SPACE\xa0** ``\xa0NO-BREAK SPACE\xa0`` `\xa0NO-BREAK SPACE\xa0`
+**\u2000EN QUAD\u2000** ``\u2000EN QUAD\u2000`` `\u2000EN QUAD\u2000`
+**\u202fNARROW NBSP\u202f** ``\u202fNARROW NBSP\u202f`` `\u202fNARROW NBSP\u202f`
+""",
+u"""\
+<document source="test data">
+    <paragraph>
+        no inline markup because of non-ASCII whitespace following /preceding the markup
+        **\xa0NO-BREAK SPACE\xa0** ``\xa0NO-BREAK SPACE\xa0`` `\xa0NO-BREAK SPACE\xa0`
+        **\u2000EN QUAD\u2000** ``\u2000EN QUAD\u2000`` `\u2000EN QUAD\u2000`
+        **\u202fNARROW NBSP\u202f** ``\u202fNARROW NBSP\u202f`` `\u202fNARROW NBSP\u202f`\
 """],
 # « * » ‹ * › « * » ‹ * › « * » ‹ * › French,
 [u"""\

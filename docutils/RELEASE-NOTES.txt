@@ -60,6 +60,9 @@ Changes Since 0.13.1
 * docutils/parsers/rst/:
 
   - Added functionality: escaped whitespace in URI contexts.
+  - Consistent handling of all whitespace characters in inline markup
+    recognition. (May break documents that relied on some whitespace
+    characters (NBSP, ...) not to be recognized as whitespace.)
 
 * tools/
 
