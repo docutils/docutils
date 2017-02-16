@@ -659,10 +659,10 @@ class Inliner:
     # -------------------------
     # print start_string_prefix.encode('utf8')
     # TODO: support non-ASCII whitespace in the following 4 patterns?
-    non_whitespace_before = r'(?<![ \n])'
-    non_whitespace_escape_before = r'(?<![ \n\x00])'
-    non_unescaped_whitespace_escape_before = r'(?<!(?<!\x00)[ \n\x00])'
-    non_whitespace_after = r'(?![ \n])'
+    non_whitespace_before = r'(?<!\s)'
+    non_whitespace_escape_before = r'(?<![\s\x00])'
+    non_unescaped_whitespace_escape_before = r'(?<!(?<!\x00)[\s\x00])'
+    non_whitespace_after = r'(?!\s)'
     # Alphanumerics with isolated internal [-._+:] chars (i.e. not 2 together):
     simplename = r'(?:(?!_)\w)+(?:[-._+:](?:(?!_)\w)+)*'
     # Valid URI characters (see RFC 2396 & RFC 2732);
