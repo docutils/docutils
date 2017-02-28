@@ -45,6 +45,8 @@ class Table(Directive):
             text_nodes, messages = self.state.inline_text(title_text,
                                                           self.lineno)
             title = nodes.title(title_text, '', *text_nodes)
+            (title.source,
+             title.line) = self.state_machine.get_source_and_line(self.lineno)
         else:
             title = None
             messages = []
