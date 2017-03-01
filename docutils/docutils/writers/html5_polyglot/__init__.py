@@ -148,29 +148,37 @@ class Writer(writers._html_base.Writer):
 class HTMLTranslator(writers._html_base.HTMLTranslator):
     """
     This writer generates `polyglot markup`: HTML5 that is also valid XML.
-    """
-    # def __init__(self, document):
-    #     writers._html_base.HTMLTranslator.__init__(self, document)
 
+    Safe subclassing: when overriding, treat ``visit_*`` and ``depart_*``
+    methods as a unit to prevent breaks due to internal changes. See the
+    docstring of docutils.writers._html_base.HTMLTranslator for details
+    and examples.
+    """
 
     # <acronym> tag not supported in HTML5. Use the <abbr> tag instead.
     def visit_acronym(self, node):
         # @@@ implementation incomplete ("title" attribute)
         self.body.append(self.starttag(node, 'abbr', ''))
-
     def depart_acronym(self, node):
         self.body.append('</abbr>')
 
     # no meta tag in HTML5
     def visit_authors(self, node):
         self.visit_docinfo_item(node, 'authors', meta=False)
+    def depart_authors(self, node):
+        self.depart_docinfo_item()
 
+    # no meta tag in HTML5
     def visit_copyright(self, node):
         self.visit_docinfo_item(node, 'copyright', meta=False)
+    def depart_copyright(self, node):
+        self.depart_docinfo_item()
 
     # no meta tag in HTML5
     def visit_date(self, node):
         self.visit_docinfo_item(node, 'date', meta=False)
+    def depart_date(self, node):
+        self.depart_docinfo_item()
 
     # TODO: use HTML5 <footer> element?
     # def visit_footer(self, node):
@@ -178,6 +186,7 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
 
     # TODO: use the new HTML5 element <aside>? (Also for footnote text)
     # def visit_footnote(self, node):
+    # def depart_footnote(self, node):
 
     # Meta tags: 'lang' attribute replaced by 'xml:lang' in XHTML 1.1
     # HTML5/polyglot recommends using both
@@ -187,13 +196,19 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
             # del(node['lang'])
         meta = self.emptytag(node, 'meta', **node.non_default_attributes())
         self.add_meta(meta)
+    def depart_meta(self, node):
+        pass
 
     # no meta tag in HTML5
     def visit_organization(self, node):
         self.visit_docinfo_item(node, 'organization', meta=False)
+    def depart_organization(self, node):
+        self.depart_docinfo_item()
 
     # TODO: use the new HTML5 element <section>?
     # def visit_section(self, node):
+    # def depart_section(self, node):
 
     # TODO: use the new HTML5 element <aside>?
     # def visit_topic(self, node):
+    # def depart_topic(self, node):
