@@ -138,7 +138,7 @@ class Writer(writers._html_base.Writer):
           ['--cloak-email-addresses'],
           {'action': 'store_true', 'validator': frontend.validate_boolean}),))
 
-    config_section = 'html-plain writer'
+    config_section = 'html5 writer'
 
     def __init__(self):
         self.parts = {}
