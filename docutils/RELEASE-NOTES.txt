@@ -64,6 +64,11 @@ Changes Since 0.13.1
     recognition. (May break documents that relied on some whitespace
     characters (NBSP, ...) not to be recognized as whitespace.)
 
+* docutils/writers/latex2e/__init__.py
+
+  - Handle class arguments for block-level elements by wrapping them
+    in a "DUclass" environment. 
+
 * tools/
 
   - New front-end ``rst2html4.py``.

@@ -491,12 +491,6 @@ PreambleCmds.admonition = r"""
   \fi
 }"""
 
-PreambleCmds.align_center = r"""
-\makeatletter
-\@namedef{DUrolealign-center}{\centering}
-\makeatother
-"""
-
 ## PreambleCmds.caption = r"""% configure caption layout
 ## \usepackage{caption}
 ## \captionsetup{singlelinecheck=false}% no exceptions for one-liners"""
@@ -511,6 +505,17 @@ PreambleCmds.docinfo = r"""
 PreambleCmds.dedication = r"""
 % dedication topic
 \providecommand{\DUtopicdedication}[1]{\begin{center}#1\end{center}}"""
+
+PreambleCmds.duclass = r"""
+% class handling for environments (block-level elements)
+% \begin{DUclass}{spam} tries \DUCLASSspam and
+% \end{DUclass}{spam} tries \endDUCLASSspam
+\ifx\DUclass\undefined % poor man's "provideenvironment"
+ \newenvironment{DUclass}[1]%
+  {\def\DocutilsClassFunctionName{DUCLASS#1}% arg cannot be used in end-part of environment.
+     \csname \DocutilsClassFunctionName \endcsname}%
+  {\csname end\DocutilsClassFunctionName \endcsname}%
+\fi"""
 
 PreambleCmds.error = r"""
 % error admonition title
@@ -559,14 +564,11 @@ PreambleCmds.inline = r"""
 % inline markup (custom roles)
 % \DUrole{#1}{#2} tries \DUrole#1{#2}
 \providecommand*{\DUrole}[2]{%
-  \ifcsname DUrole#1\endcsname%
+  % backwards compatibility: try \docutilsrole#1{#2}
+  \ifcsname docutilsrole#1\endcsname%
+    \csname docutilsrole#1\endcsname{#2}%
+  \else
     \csname DUrole#1\endcsname{#2}%
-  \else% backwards compatibility: try \docutilsrole#1{#2}
-    \ifcsname docutilsrole#1\endcsname%
-      \csname docutilsrole#1\endcsname{#2}%
-    \else%
-      #2%
-    \fi%
   \fi%
 }"""
 
@@ -629,20 +631,20 @@ PreambleCmds.providelength = r"""
 
 PreambleCmds.rubric = r"""
 % rubric (informal heading)
-\providecommand*{\DUrubric}[2][class-arg]{%
-  \subsubsection*{\centering\textit{\textmd{#2}}}}"""
+\providecommand*{\DUrubric}[1]{%
+  \subsubsection*{\centering\textit{\textmd{#1}}}}"""
 
 PreambleCmds.sidebar = r"""
 % sidebar (text outside the main text flow)
-\providecommand{\DUsidebar}[2][class-arg]{%
+\providecommand{\DUsidebar}[1]{%
   \begin{center}
-    \colorbox[gray]{0.80}{\parbox{0.9\linewidth}{#2}}
+    \colorbox[gray]{0.80}{\parbox{0.9\linewidth}{#1}}
   \end{center}
 }"""
 
 PreambleCmds.subtitle = r"""
 % subtitle (for topic/sidebar)
-\providecommand*{\DUsubtitle}[2][class-arg]{\par\emph{#2}\smallskip}"""
+\providecommand*{\DUsubtitle}[1]{\par\emph{#1}\smallskip}"""
 
 PreambleCmds.documentsubtitle = r"""
 % subtitle (in document title)
@@ -684,7 +686,7 @@ PreambleCmds.topic = r"""
 
 PreambleCmds.transition = r"""
 % transition (break, fancybreak, anonymous section)
-\providecommand*{\DUtransition}[1][class-arg]{%
+\providecommand*{\DUtransition}{%
   \hspace*{\fill}\hrulefill\hspace*{\fill}
   \vskip 0.5\baselineskip
 }"""
@@ -1123,13 +1125,19 @@ class Table(object):
 
 
 class LaTeXTranslator(nodes.NodeVisitor):
+    """
+    Generate code for 8-bit LaTeX from a Docutils document tree.
+
+    See the docstring of docutils.writers._html_base.HTMLTranslator for
+    notes on and examples of safe subclassing.
+    """
 
     # When options are given to the documentclass, latex will pass them
     # to other packages, as done with babel.
     # Dummy settings might be taken from document settings
 
-    # Write code for typesetting with 8-bit tex/pdftex (vs. xetex/luatex) engine
-    # overwritten by the XeTeX writer
+    # Generate code for typesetting with 8-bit latex/pdflatex vs.
+    # xelatex/lualatex engine. Overwritten by the XeTeX writer
     is_xetex = False
 
     # Config setting defaults
@@ -1252,9 +1260,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body = []
         ## self.body_suffix = ['\\end{document}\n']
 
-        # A heterogenous stack used in conjunction with the tree traversal.
-        # Make sure that the pops correspond to the pushes:
         self.context = []
+        """Heterogeneous stack.
+
+        Used by visit_* and depart_* functions in conjunction with the tree
+        traversal. Make sure that the pops correspond to the pushes."""
 
         # Title metadata:
         self.title_labels = []
@@ -1568,6 +1578,49 @@ class LaTeXTranslator(nodes.NodeVisitor):
             labels.insert(0, '\\phantomsection')
         return labels
 
+    def set_align_from_classes(self, node):
+        """Convert ``align-*`` class arguments into alignment args."""
+        # separate:
+        align = [cls for cls in node['classes'] if cls.startswith('align-')]
+        if align:
+            node['align'] = align[-1].replace('align-', '')
+            node['classes'] = [cls for cls in node['classes']
+                               if not cls.startswith('align-')]
+
+    def insert_align_declaration(self, node, default=None):
+        align = node.get('align', default)
+        if align == 'left':
+            self.out.append('\\raggedright\n')
+        elif align == 'center':
+            self.out.append('\\centering\n')
+        elif align == 'right':
+            self.out.append('\\raggedleft\n')
+
+    def duclass_open(self, node):
+        """Open a group and insert declarations for class values."""
+        self.out.append('\n')
+        for cls in node['classes']:
+            if cls.startswith('language-'):
+                language = self.babel.language_name(cls[9:])
+                if language:
+                    self.babel.otherlanguages[language] = True
+                    self.out.append('\\begin{selectlanguage}{%s}\n' % language)
+            else:
+                self.fallbacks['DUclass'] = PreambleCmds.duclass
+                self.out.append('\\begin{DUclass}{%s}\n' % cls)
+
+    def duclass_close(self, node):
+        """Close a group of class declarations."""
+        for cls in reversed(node['classes']):
+            if cls.startswith('language-'):
+                language = self.babel.language_name(cls[9:])
+                if language:
+                    self.babel.otherlanguages[language] = True
+                    self.out.append('\\end{selectlanguage}\n')
+            else:
+                self.fallbacks['DUclass'] = PreambleCmds.duclass
+                self.out.append('\\end{DUclass}\n')
+
     def push_output_collector(self, new_out):
         self.out_stack.append(self.out)
         self.out = new_out
@@ -1630,30 +1683,26 @@ class LaTeXTranslator(nodes.NodeVisitor):
         pass
 
     def visit_block_quote(self, node):
-        self.out.append( '%\n\\begin{quote}\n')
-        if node['classes']:
-            self.visit_inline(node)
+        self.duclass_open(node)
+        self.out.append( '\\begin{quote}\n')
 
     def depart_block_quote(self, node):
-        if node['classes']:
-            self.depart_inline(node)
         self.out.append( '\n\\end{quote}\n')
+        self.duclass_close(node)
 
     def visit_bullet_list(self, node):
+        self.duclass_open(node)
         if self.is_toc_list:
-            self.out.append( '%\n\\begin{list}{}{}\n' )
+            self.out.append( '\\begin{list}{}{}\n' )
         else:
-            self.out.append( '%\n\\begin{itemize}\n' )
-        # if node['classes']:
-        #     self.visit_inline(node)
+            self.out.append( '\\begin{itemize}\n' )
 
     def depart_bullet_list(self, node):
-        # if node['classes']:
-        #     self.depart_inline(node)
         if self.is_toc_list:
             self.out.append( '\n\\end{list}\n' )
         else:
             self.out.append( '\n\\end{itemize}\n' )
+        self.duclass_close(node)
 
     def visit_superscript(self, node):
         self.out.append(r'\textsuperscript{')
@@ -1769,10 +1818,13 @@ class LaTeXTranslator(nodes.NodeVisitor):
         pass
 
     def visit_compound(self, node):
-        pass
+        self.duclass_open(node)
+        # TODO: remove/comment blank lines in content
+        # so that included lists, equations, figures, ...
+        # become part of the compound paragraph.
 
     def depart_compound(self, node):
-        pass
+        self.duclass_close(node)
 
     def visit_contact(self, node):
         self.visit_docinfo_item(node, 'contact')
@@ -1781,10 +1833,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.depart_docinfo_item(node)
 
     def visit_container(self, node):
-        pass
+        self.duclass_open(node)
 
     def depart_container(self, node):
-        pass
+        self.duclass_close(node)
 
     def visit_copyright(self, node):
         self.visit_docinfo_item(node, 'copyright')
@@ -1812,10 +1864,12 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.out.append('\n')
 
     def visit_definition_list(self, node):
-        self.out.append( '%\n\\begin{description}\n' )
+        self.duclass_open(node)
+        self.out.append( '\\begin{description}\n' )
 
     def depart_definition_list(self, node):
         self.out.append( '\\end{description}\n' )
+        self.duclass_close(node)
 
     def visit_definition_list_item(self, node):
         pass
@@ -2069,7 +2123,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             if self._enumeration_counters:
                 prefix += self._enumeration_counters[-1]
         # TODO: use LaTeX default for unspecified label-type?
-              # (needs change of parser)
+        #       (needs change of parser)
         prefix += node.get('prefix', '')
         enumtype = types[node.get('enumtype' '')]
         suffix = node.get('suffix', '')
@@ -2079,6 +2133,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         label = r'%s\%s{%s}%s' % (prefix, enumtype, counter_name, suffix)
         self._enumeration_counters.append(label)
 
+        self.duclass_open(node)
         if enumeration_level <= 4:
             self.out.append('\\begin{enumerate}\n')
             if (prefix, enumtype, suffix
@@ -2093,9 +2148,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if 'start' in node:
             self.out.append('\\setcounter{%s}{%d}\n' %
                             (counter_name,node['start']-1))
-        #     ## set rightmargin equal to leftmargin
-        #     self.out.append('\\setlength{\\rightmargin}{\\leftmargin}\n')
-
 
 
     def depart_enumerated_list(self, node):
@@ -2103,6 +2155,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.out.append('\\end{enumerate}\n')
         else:
             self.out.append('\\end{list}\n')
+        self.duclass_close(node)
         self._enumeration_counters.pop()
 
     def visit_field(self, node):
@@ -2127,13 +2180,15 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.out.append(r'\\')
 
     def visit_field_list(self, node):
+        self.duclass_open(node)
         if self.out is not self.docinfo:
             self.fallbacks['fieldlist'] = PreambleCmds.fieldlist
-            self.out.append('%\n\\begin{DUfieldlist}\n')
+            self.out.append('\\begin{DUfieldlist}\n')
 
     def depart_field_list(self, node):
         if self.out is not self.docinfo:
             self.out.append('\\end{DUfieldlist}\n')
+        self.duclass_close(node)
 
     def visit_field_name(self, node):
         if self.out is self.docinfo:
@@ -2151,6 +2206,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_figure(self, node):
         self.requirements['float_settings'] = PreambleCmds.float_settings
+        self.duclass_open(node)
         # The 'align' attribute sets the "outer alignment",
         # for "inner alignment" use LaTeX default alignment (similar to HTML)
         alignment = node.attributes.get('align', 'center')
@@ -2158,14 +2214,15 @@ class LaTeXTranslator(nodes.NodeVisitor):
             # The LaTeX "figure" environment always uses the full linewidth,
             # so "outer alignment" is ignored. Just write a comment.
             # TODO: use the wrapfigure environment?
-            self.out.append('\n\\begin{figure} %% align = "%s"\n' % alignment)
+            self.out.append('\\begin{figure} %% align = "%s"\n' % alignment)
         else:
-            self.out.append('\n\\begin{figure}\n')
+            self.out.append('\\begin{figure}\n')
         if node.get('ids'):
             self.out += self.ids_to_labels(node) + ['\n']
 
     def depart_figure(self, node):
         self.out.append('\\end{figure}\n')
+        self.duclass_close(node)
 
     def visit_footer(self, node):
         self.push_output_collector([])
@@ -2295,10 +2352,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             # Set default align of image in a figure to 'center'
             if isinstance(node.parent, nodes.figure):
                 attrs['align'] = 'center'
-            # query 'align-*' class argument
-            for cls in node['classes']:
-                if cls.startswith('align-'):
-                    attrs['align'] = cls.split('-')[1]
+            self.set_align_from_classes(node)
         # pre- and postfix (prefix inserted in reverse order)
         pre = []
         post = []
@@ -2346,10 +2400,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.out += self.ids_to_labels(node) + ['\n']
 
     def visit_inline(self, node): # <span>, i.e. custom roles
-        self.context.append('}' * len(node['classes']))
         for cls in node['classes']:
-            if cls == 'align-center':
-                self.fallbacks['align-center'] = PreambleCmds.align_center
             if cls.startswith('language-'):
                 language = self.babel.language_name(cls[9:])
                 if language:
@@ -2360,7 +2411,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 self.out.append(r'\DUrole{%s}{' % cls)
 
     def depart_inline(self, node):
-        self.out.append(self.context.pop())
+        self.out.append('}' * len(node['classes']))
 
     def visit_interpreted(self, node):
         # @@@ Incomplete, pending a proper implementation on the
@@ -2386,20 +2437,19 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_line_block(self, node):
         self.fallbacks['_providelength'] = PreambleCmds.providelength
         self.fallbacks['lineblock'] = PreambleCmds.lineblock
+        self.set_align_from_classes(node)
         if isinstance(node.parent, nodes.line_block):
             self.out.append('\\item[]\n'
                              '\\begin{DUlineblock}{\\DUlineblockindent}\n')
         else:
-            self.out.append('\n\\begin{DUlineblock}{0em}\n')
-        if node['classes']:
-            self.visit_inline(node)
-            self.out.append('\n')
+            # nested line-blocks cannot be given class arguments
+            self.duclass_open(node)
+            self.out.append('\\begin{DUlineblock}{0em}\n')
+            self.insert_align_declaration(node)
 
     def depart_line_block(self, node):
-        if node['classes']:
-            self.depart_inline(node)
-            self.out.append('\n')
         self.out.append('\\end{DUlineblock}\n')
+        self.duclass_close(node)
 
     def visit_list_item(self, node):
         self.out.append('\n\\item ')
@@ -2455,15 +2505,15 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if node.get('ids'):
             self.out += ['\n'] + self.ids_to_labels(node)
 
+        self.duclass_open(node)
         if not self.active_table.is_open():
             # no quote inside tables, to avoid vertical space between
             # table border and literal block.
             # TODO: fails if normal text precedes the literal block.
             # check parent node instead?
-            self.out.append('%\n\\begin{quote}\n')
+            self.out.append('\\begin{quote}\n')
             self.context.append('\n\\end{quote}\n')
         else:
-            self.out.append('\n')
             self.context.append('\n')
 
         if self.is_plaintext(node):
@@ -2495,6 +2545,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.alltt = False
         self.out.append(self.context.pop())
         self.out.append(self.context.pop())
+        self.duclass_close(node)
 
     ## def visit_meta(self, node):
     ##     self.out.append('[visit_meta]\n')
@@ -2575,10 +2626,12 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_option_list(self, node):
         self.fallbacks['_providelength'] = PreambleCmds.providelength
         self.fallbacks['optionlist'] = PreambleCmds.optionlist
-        self.out.append('%\n\\begin{DUoptionlist}\n')
+        self.duclass_open(node)
+        self.out.append('\\begin{DUoptionlist}\n')
 
     def depart_option_list(self, node):
         self.out.append('\n\\end{DUoptionlist}\n')
+        self.duclass_close(node)
 
     def visit_option_list_item(self, node):
         pass
@@ -2715,6 +2768,15 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def depart_revision(self, node):
         self.depart_docinfo_item(node)
 
+    def visit_rubric(self, node):
+        self.fallbacks['rubric'] = PreambleCmds.rubric
+        self.duclass_open(node)
+        self.out.append('\\DUrubric{')
+
+    def depart_rubric(self, node):
+        self.out.append('}\n')
+        self.duclass_close(node)
+
     def visit_section(self, node):
         self.section_level += 1
         # Initialize counter for potential subsections:
@@ -2728,12 +2790,14 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.section_level -= 1
 
     def visit_sidebar(self, node):
+        self.duclass_open(node)
         self.requirements['color'] = PreambleCmds.color
         self.fallbacks['sidebar'] = PreambleCmds.sidebar
-        self.out.append('\n\\DUsidebar{\n')
+        self.out.append('\\DUsidebar{\n')
 
     def depart_sidebar(self, node):
         self.out.append('}\n')
+        self.duclass_close(node)
 
     attribution_formats = {'dash': (u'—', ''), # EM DASH
                            'parentheses': ('(', ')'),
@@ -3070,14 +3134,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if ('abstract' in node['classes'] or
             'dedication' in node['classes']):
             self.pop_output_collector()
-
-    def visit_rubric(self, node):
-        self.fallbacks['rubric'] = PreambleCmds.rubric
-        self.out.append('\n\\DUrubric{')
-        self.context.append('}\n')
-
-    def depart_rubric(self, node):
-        self.out.append(self.context.pop())
 
     def visit_transition(self, node):
         self.fallbacks['transition'] = PreambleCmds.transition

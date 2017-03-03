@@ -68,10 +68,16 @@ Changes Since 0.13.1
 
   - Apply [ 125 ] HTML writer: respect automatic table column sizing.
 
+* docutils/writers/latex2e/__init__.py
+
+  - Handle class arguments for block-level elements by wrapping them
+    in a "DUclass" environment.  
+
 * tools/rst2html4.py: New front-end.
 
 * tools/dev/generate_punctuation_chars.py: New skript
   to test and update utils.punctuation_chars.
+
 
 Release 0.13.1 (2016-12-09)
 ===========================
