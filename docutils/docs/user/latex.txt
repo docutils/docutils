@@ -52,8 +52,8 @@ available at CTAN_.
    http://www.tex.ac.uk/cgi-bin/texfaq2html?label=what-TDS
 
 
-Docutils special LaTeX macros
------------------------------
+Docutils specific LaTeX macros
+------------------------------
 
 Some Docutils objects have no LaTeX counterpart, they will be typeset
 using a Docutils specific LaTeX *macro* (command, environment, or
@@ -161,7 +161,7 @@ Configuration
 
 The LaTeX code generation can be configured via
 
-* configuration options_ to the Docutils writer,
+* configuration `options/settings`_ of the Docutils writer,
 * `LaTeX packages`_,
 * custom `LaTeX code`_ in
   + `style sheets`_,
@@ -171,8 +171,8 @@ The LaTeX code generation can be configured via
 
 .. _option:
 
-Options
--------
+Options/Settings
+----------------
 
 Options can be specified as
 
@@ -183,6 +183,96 @@ Options can be specified as
 
 .. _Docutils Configuration:
    config.html
+
+Classes
+-------
+
+The `classes attribute`_ is one of the common attributes, shared by all
+Docutils elements.
+
+  The purpose of the attribute is to indicate an “is-a” variant
+  relationship, to allow an extensible way of defining sub-classes of
+  existing elements. It can be used to carry context forward between a
+  Docutils Reader and Writer, when a custom structure is reduced to a
+  standardized document tree.
+
+In HTML, the common use is to provide selection criteria for style rules in
+CSS stylesheets. As there is no comparable framework for LaTeX, Docutils
+mimics some of this behaviour via `Docutils specific LaTeX macros`_.
+
+* Role names and class arguments are converted to conform to the regular
+  expression ``[a-z][-a-z0-9]*`` (lowercase letters, digits and hyphen, see
+  `class directive`_).
+
+* Class arguments may contain numbers and hyphens, which need special
+  treatment in LaTeX command names. (The commands ``\begincsname`` and
+  ``\endcsname`` or the special command ``\@namedef`` can
+  help with the definition of corresponding macros or environments.)
+
+* Elements can have multiple class arguments. In contrast to HTML/CSS, the
+  order of the class arguments cannot be ignored in LaTeX
+
+For inline elements, classes are handled via the ``\DUrole{}`` macro,
+see `custom interpreted text roles`_.
+
+Block level elements are wrapped in "class environments".
+
+* ``\begin{DUclass}{«classargument»}``
+  calls the macro named ``\DUCLASSe«classargument»{}`` if it is defined and
+  silently ignores this class argument if a corresponding macro is not
+  defined.
+
+* ``\end{DUclass}{«classargument»}``
+  tries ``\endDUCLASS«classargument»``
+
+Customization is done by defining matching macros or environments.
+
+Examples:
+
+* Use small caps font inside elements with class value "custom"::
+
+   \newcommand*{\DUCLASScustom}{\scshape}
+
+  The LaTeX directive (macro without argument) ``\scshape`` switches to the
+  small caps font. Its effect is confined to the wrapper ``DUclass``
+  environment.
+
+* Turn bullet lists with class value "enumerateitems" into enumerated
+  lists::
+
+   \newcommand*{\DUCLASSenumerateitems}{%
+     \renewenvironment{itemize}{\begin{enumerate}}%
+                               {\end{enumerate}}%
+   }
+
+  The matching LaTeX macro can also locally redefine other LaTeX macros.
+
+* Draw a line below elements with class value "rulebelow"::
+
+   \newenvironment{DUCLASSrulebelow}%
+                  {} % nothing to do at start of element
+                  {\noindent\rule[0.5ex]{1\columnwidth}{1pt}}
+
+  The new LaTeX environment executes the rule-drawing macro when leaving the
+  wrapper ``DUclass`` environment.
+
+For "historical reasons", class handling differs for some elements and class
+values:
+
+* The special macros ``\DUadmonition``, ``\DUtitle``, and ``\DUtopic`` are
+  handed a comma separated list of class values as optional argument. See
+  the sections on admonitions_, titles_, and the `topic element`_ for
+  customization examples.
+
+* Class argument values starting with ``align-`` are transformed to "align"
+  argument values. Class argument values starting with ``language-`` set the
+  elements language property.
+
+* The table element recognizes some special class values. See section table_.
+
+
+
+.. _classes attribute: ../ref/doctree.html#classes
 
 LaTeX code
 ----------
@@ -318,7 +408,7 @@ An exception are commands that need to be given in the document
 preamble (e.g. package loading with ``\usepackage``, which can be
 achieved with the ``--style-sheet`` or ``--latex-preamble`` command
 line options instead). Remember to use *re-defining* commands for
-customizing `Docutils special LaTeX macros`_ with raw LaTeX.
+customizing `Docutils specific LaTeX macros`_ with raw LaTeX.
 
 Example:
   Define the transition command as page break::
@@ -354,7 +444,7 @@ Default:
   Typeset in a frame (90 % of text width).
 
 The admonition title is typeset with the ``\DUtitle`` command which also
-takes a class argument. See `topic title`_
+takes a class argument. See `titles`_
 
 Example 1:
   A lighter layout without the frame::
@@ -396,32 +486,18 @@ Example 2:
 custom interpreted text roles
 -----------------------------
 
-The rst `role directive`_ allows defining custom `text roles`_
-that mark parts of inline text (spans) with a class argument.
-
-* Role names and class arguments are converted to conform to the regular
-  expression ``[a-z][-a-z0-9]*`` (see `class directive`_).
-
-* Class arguments may contain numbers and hyphens, which need special
-  treatment in LaTeX command names. (The special command ``\@namedef`` can
-  help with the definition of corresponding commands.)
-
-* Custom roles can have multiple class arguments.
-
-  In contrast to HTML/CSS, the order of the class arguments might matter.
+The rst `role directive`_ allows defining custom `text roles`_ that mark
+parts of inline text (spans) with class arguments (see section classes_).
 
 Commands:
   ``\DUrole``: dispatcher command
 
-  ``\DUroleCLASSARGUMENT``: optional styling command
+  ``\DUrole«classargument»``: optional styling command
 
 Default:
-  The definition of ``\DUrole{CLASSARGUMENT}{}`` calls the macro named
-  ``\DUroleCLASSARGUMENT{}``\ [#]_ if it is defined (but silently ignores
-  this class argument if a corresponding macro is not defined).
-
-.. [#] For backwards compatibility, the prefix ``\docutilsrole...`` in the
-   styling commands also recognized.
+  The definition of ``\DUrole{«classargument»}{}`` calls the macro named
+  ``\DUrole«classargument»{}`` if it is defined and silently ignores
+  this class argument if a corresponding macro is not defined.
 
 Example 1:
   Typeset text in small caps::
@@ -690,13 +766,13 @@ http://www.csarven.ca/web-typography).
 Selecting a suitable font also solves the problem with `bad looking
 PDF output`_.
 
-Font selection is one of the main differences between LaTeX and XeTeX:
+Font selection is one of the main differences between LaTeX and XeTeX/LuaTeX:
 
 LaTeX
   cannot use the fonts of the operating system directly but needs
   specially installed fonts with additional supporting files.
 
-XeTeX
+XeTeX/LuaTeX
   can use system fonts and provides access to the full feature set of
   modern OpenType_ fonts.
 
@@ -707,7 +783,7 @@ The default font setup is done in the latex-preamble_:
 LaTeX
   `PDF standard fonts`_ (Times, Helvetica, Courier)
 
-XeTeX
+XeTeX/LuaTeX
   `Linux Libertine`_, a free, high quality alternative to Times with a
   wide coverage of glyphs, styles, and OpenType features.
 
@@ -762,7 +838,7 @@ LaTeX
       \renewcommand{\ttdefault}{txtt}
 
 
-XeTeX
+XeTeX/LuaTeX
   using the macros of the fontspec_ package. Use some font-viewer or
   -manager (e.g. fontmatrix_) to find out the correct names of the
   fonts on your system.
@@ -783,7 +859,7 @@ XeTeX
 choice of suitable fonts
 ````````````````````````
 
-High quality free fonts suitable for use with XeTeX are, e.g., listed
+High quality free fonts suitable for use with XeTeX/LuaTeX are, e.g., listed
 at `Good Libre Fonts`_, `25 Best Free Quality Fonts`_ and the update
 `19 More Free Quality Fonts`_.
 
@@ -803,10 +879,7 @@ a) The `Latin Modern`_ (LM) fonts are extended outline versions of the
        +1  compatible with extensions made to match CM,
        -1  modern types are hard to read at low (screen) resolutions.
 
-   -2  not part of a minimal standard TeX installation
-
-       -1  might not work out-of-the-box
-       -1  large additional download (ca. 12 ... 17 MB)
+   -1  not part of a minimal standard TeX installation
 
 b) CM-Super_ is another outline CM replacement.
 
@@ -815,8 +888,8 @@ b) CM-Super_ is another outline CM replacement.
 
    -1  said to be of inferior quality compared to LM.
 
-   -2  not part of a minimal standard TeX installation,
-       even bigger download size than Latin Modern (64 MB).
+   -1  not part of a minimal standard TeX installation,
+       bigger download size than Latin Modern (64 MB).
 
 c) `Bera`_ (Bitstream Vera)
 
@@ -824,7 +897,7 @@ c) `Bera`_ (Bitstream Vera)
 
    +1  optimized for on-screen viewing with goot hinting
 
-   -2  not part of a minimal standard TeX installation
+   -1  not part of a minimal standard TeX installation
 
 d) PSNFSS_ Postscript fonts
 
@@ -1276,7 +1349,6 @@ Commands
 
   ``\pagebreak[2]``: recommended page break after line end (precedence 1...4)
 
-
 Example:
   Define the transition command as page break with the `LaTeX code`_::
 
@@ -1435,7 +1507,7 @@ Default:
 Example:
   set flushleft and red::
 
-    \newcommand*{\DUrubric}[2][class-arg]{%
+    \newcommand*{\DUrubric}[1]{%
        \subsubsection*{{\color{red}#1}\hfill}}
 
 __ ../ref/rst/directives.html#rubric
@@ -1476,21 +1548,10 @@ Command:
 Default:
   Box with grey background.
 
-Example 1:
-  Less space before the title::
-
-    \providecommand{\DUsidebar}[2]{%
-        \begin{center}
-          \colorbox[gray]{0.90}{\parbox{0.9\textwidth}{%
-            \smallskip\textbf{#1}\smallskip
-            #2}}
-        \end{center}
-    }
-
-Example 2:
+Example:
   Use margin notes::
 
-    \newcommand{\DUsidebar}[2]{\marginpar{\flushleft \textbf{#1} #2}}
+    \newcommand{\DUsidebar}[1]{\marginpar{\flushleft #1}}
 
   * Make sure the margin is wide enough to hold the note.
   * This fails with some constructs inside the `side bar` and where
@@ -1518,6 +1579,15 @@ Example:
     \pdfpxdimen=1in % 1 DPI
     \divide\pdfpxdimen by 96 % 96 DPI
 
+table
+-----
+
+A pre-configured table style can be globally selected via the table-style_
+setting or set for individual tables via a `class directive`_ or the class
+option of the `table directive`_.
+
+.. _table-style: config.html#table-style-latex2e-writer
+.. _table directive: ../ref/rst/directives.html#table
 
 topic element
 -------------
@@ -1555,8 +1625,8 @@ Example 2:
 .. _section title: ../ref/rst/restructuredtext.html#sections
 
 
-topic title
------------
+titles
+------
 
 The titles of admonitions_, sidebar_, and `topic element`_ are defined with
 the ``\DUtitle`` command that also takes a "class" argument.
@@ -1706,7 +1776,7 @@ Default:
 Example 1:
   Use three stars::
 
-    \newcommand*{\DUtransition}[1][class-arg]{\centering{}*\quad*\quad*}
+    \newcommand*{\DUtransition}{\centering{}*\quad*\quad*}
 
   Alternatively use the more elaborated version in `transition-stars.sty`_.
 
@@ -1714,7 +1784,7 @@ Example 2:
   If paragraphs are separated by indentation, you can simply use a vertical
   space::
 
-    \newcommand*{\DUtransition}[1][class-arg]{\vspace{2ex}}
+    \newcommand*{\DUtransition}{\vspace{2ex}}
 
 __ http://docutils.sf.net/docutils/docs/ref/rst/restructuredtext.html#transitions
 
@@ -1725,12 +1795,10 @@ Changes
 =======
 
 * The Docutils HISTORY_ lists all changes during the history of docutils.
-
-* Changes since release (0.5) are summarized in the RELEASE-NOTES_
-  and explained in detail in docutils-05-compat_.
+  Important changes are summarized in the RELEASE-NOTES_.
 
 * docutils-05-compat.sty_ is a `style sheet`_ that provides best possible
-  backwards compatibility.
+  backwards compatibility with release 0.5.
 
 .. _HISTORY: ../../HISTORY.html
 .. _RELEASE-NOTES: ../../RELEASE-NOTES.html
@@ -1758,7 +1826,7 @@ Make sure the default font is not a bitmap font.
 
 There is `Latin Modern`_ if you like the look of the standard font on paper,
 but want nice pdf. Or select something else like Times, Palatino, ... via
-configuration options_ to the Docutils tool. See font_ and font-encoding_.
+configuration `options/settings`_. See font_ and font-encoding_.
 
 
 footnote mark and text at different pages
@@ -2002,13 +2070,11 @@ The appearance in the output can be configured in a `style sheet`_.
 Tables
 ``````
 
-:Tablewidth: reST-documents line length is assumed to be 80 characters. The
-             tablewidth is set relative to this value. If someone produces
-             documents with line length of 132 this will lead to suboptimal
-             results.
+* reST-documents line length is assumed to be 80 characters. The
+  *tablewidth* is set relative to this value. If someone produces documents
+  with line length of 132 this will lead to suboptimal results.
 
-             You may use the `:width:` option to manually set the
-             table column widths.
+  You may use the `:width:` option to manually set the table column widths.
 
 * Table: multicol cells are always left aligned.
 
@@ -2051,5 +2117,6 @@ Miscellaneous
   docs/user/rst/demo.txt 2.14 directives.
 
 * Pagestyle headings does not work, when sections are starred. Use LaTeX for
-  the section numbering with the options_ ``--no-section-numbers``
-  (command line) or ``sectnum_xform: False`` (config file).
+  the section numbering with the `options/settings`_
+  ``--no-section-numbers`` (command line) or ``sectnum_xform: False``
+  (config file).

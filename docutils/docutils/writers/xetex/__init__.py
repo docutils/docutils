@@ -115,7 +115,7 @@ class Babel(latex2e.Babel):
         self.quotes = ('"', '"')
         # language dependent configuration:
         # double quotes are "active" in some languages (e.g. German).
-        self.literal_double_quote = u'"' # TODO: use \textquotedbl
+        self.literal_double_quote = u'"' # TODO: use \textquotedbl ?
 
     def __call__(self):
         setup = [r'\usepackage{polyglossia}',
@@ -127,6 +127,12 @@ class Babel(latex2e.Babel):
 
 
 class XeLaTeXTranslator(latex2e.LaTeXTranslator):
+    """
+    Generate code for LaTeX using Unicode fonts (XeLaTex or LuaLaTeX).
+
+    See the docstring of docutils.writers._html_base.HTMLTranslator for
+    notes on and examples of safe subclassing.
+    """
 
     def __init__(self, document):
         self.is_xetex = True  # typeset with XeTeX or LuaTeX engine
