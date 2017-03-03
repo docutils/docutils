@@ -1458,7 +1458,9 @@
                     With the "widths" argument "auto" (or "class" value "colwidths-auto"),
                     column widths are determined by the backend (if supported by the
                     writer/backend).
-                <table classes="colwidths-auto">
+                <target refid="target1">
+                <target refid="target2">
+                <table classes="colwidths-auto" ids="target2 target1" names="target2 target1">
                     <tgroup cols="3">
                         <colspec colwidth="7">
                         <colspec colwidth="7">
@@ -2263,9 +2265,15 @@
         <system_message level="1" line="475" source="functional/input/data/standard.txt" type="INFO">
             <paragraph>
                 Hyperlink target "image-target-3" is not referenced.
-        <system_message level="1" line="682" source="functional/input/data/standard.txt" type="INFO">
+        <system_message level="1" line="639" source="functional/input/data/standard.txt" type="INFO">
+            <paragraph>
+                Hyperlink target "target1" is not referenced.
+        <system_message level="1" line="640" source="functional/input/data/standard.txt" type="INFO">
+            <paragraph>
+                Hyperlink target "target2" is not referenced.
+        <system_message level="1" line="685" source="functional/input/data/standard.txt" type="INFO">
             <paragraph>
                 Hyperlink target "docutils" is not referenced.
-        <system_message level="1" line="803" source="functional/input/data/standard.txt" type="INFO">
+        <system_message level="1" line="806" source="functional/input/data/standard.txt" type="INFO">
             <paragraph>
                 Hyperlink target "hyperlink targets" is not referenced.
