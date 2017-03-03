@@ -1006,7 +1006,9 @@ Python-specific usage examples; begun with "&gt;&gt;&gt;"
                 <paragraph>With the "widths" argument "auto" (or "class" value "colwidths-auto"),
                     column widths are determined by the backend (if supported by the
                     writer/backend).</paragraph>
-                <table classes="colwidths-auto">
+                <target refid="target1"></target>
+                <target refid="target2"></target>
+                <table classes="colwidths-auto" ids="target2 target1" names="target2 target1">
                     <tgroup cols="3">
                         <colspec colwidth="7"></colspec>
                         <colspec colwidth="7"></colspec>

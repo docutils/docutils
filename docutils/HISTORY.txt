@@ -38,7 +38,7 @@ Changes Since 0.13.1
 
   - Added functionality: escaped whitespace in URI contexts.
   - Consistent handling of all whitespace characters in inline markup
-    recognition. Last part of fix for [ 3402314 ].
+    recognition. Fixes [ 307 ] and [ 3402314 ] (now [ 173 ]).
 
 * docutils/parsers/rst/directives/images.py:
 
@@ -62,6 +62,7 @@ Changes Since 0.13.1
 * docutils/writers/_html_base.py
 
   - Provide default title in metadata (required by HTML5).
+  - Fix [ 312 ] HTML writer generates invalid HTML if the table has two tags.
 
 * docutils/writers/html4css1/__init__.py
 
