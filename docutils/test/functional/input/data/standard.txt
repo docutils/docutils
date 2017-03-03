@@ -634,6 +634,9 @@ With the "widths" argument "auto" (or "class" value "colwidths-auto"),
 column widths are determined by the backend (if supported by the
 writer/backend).
 
+.. _target1:
+.. _target2:
+
 .. table::
    :widths: auto
 
