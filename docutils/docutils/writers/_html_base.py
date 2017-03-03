@@ -52,7 +52,7 @@ class Writer(writers.Writer):
     settings_defaults = {'output_encoding_error_handler': 'xmlcharrefreplace'}
 
     # config_section = ... # set in subclass!
-    config_section_dependencies = ('writers',)
+    config_section_dependencies = ['writers', 'html writers']
 
     visitor_attributes = (
         'head_prefix', 'head', 'stylesheet', 'body_prefix',
@@ -336,9 +336,10 @@ class HTMLTranslator(nodes.NodeVisitor):
                 # elements aren't allowed in XHTML (even if they do
                 # not all have a "href" attribute).
                 if empty or isinstance(node,
-                            (nodes.bullet_list, nodes.enumerated_list,
-                             nodes.definition_list, nodes.field_list,
-                             nodes.option_list, nodes.docinfo)):
+                            (nodes.bullet_list, nodes.docinfo,
+                             nodes.definition_list, nodes.enumerated_list,
+                             nodes.field_list, nodes.option_list,
+                             nodes.table)):
                     # Insert target right in front of element.
                     prefix.append('<span id="%s"></span>' % id)
                 else:
