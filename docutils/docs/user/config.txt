@@ -1120,15 +1120,11 @@ booktabs
 align-left, align-center, align-right
   Align the tables
 
-.. note::
+colwidths-auto
+  Delegate the determination of table column widths to the backend
+  (Leave out the ``<colgroup>`` column specification.)
 
-  The html5 writer also supports:
-
-  colwidths-auto
-    Delegate the determination of table column widths to the backend
-    (Leave out the ``<colgroup>`` column specification.)
-
-    Cf. the `table directive`_.
+  Cf. the `table directive`_.
 
 Default: "".  Option: ``--table-style``.
 
