@@ -476,7 +476,7 @@ class PreambleCmds(object):
 
 PreambleCmds.abstract = r"""
 % abstract title
-\providecommand*{\DUtitleabstract}[1]{\centering\textbf{#1}}"""
+\providecommand*{\DUtitleabstract}[1]{\centerline{\textbf{#1}}}"""
 
 PreambleCmds.admonition = r"""
 % admonition (specially marked topic)
@@ -504,7 +504,9 @@ PreambleCmds.docinfo = r"""
 
 PreambleCmds.dedication = r"""
 % dedication topic
-\providecommand{\DUtopicdedication}[1]{\begin{center}#1\end{center}}"""
+\providecommand*{\DUCLASSdedication}{%
+  \renewenvironment{quote}{\begin{center}}{\end{center}}%
+}"""
 
 PreambleCmds.duclass = r"""
 % class handling for environments (block-level elements)
@@ -520,7 +522,6 @@ PreambleCmds.duclass = r"""
 PreambleCmds.error = r"""
 % error admonition title
 \providecommand*{\DUtitleerror}[1]{\DUtitle{\color{red}#1}}"""
-# PreambleCmds.errortitle._depends = 'color'
 
 PreambleCmds.fieldlist = r"""
 % fieldlist environment
@@ -671,16 +672,6 @@ PreambleCmds.title = r"""
     \csname DUtitle#1\endcsname{#2}%
   \else
     \smallskip\noindent\textbf{#2}\smallskip%
-  \fi
-}"""
-
-PreambleCmds.topic = r"""
-% topic (quote with heading)
-\providecommand{\DUtopic}[2][class-arg]{%
-  \ifcsname DUtopic#1\endcsname%
-    \csname DUtopic#1\endcsname{#2}%
-  \else
-    \begin{quote}#2\end{quote}
   \fi
 }"""
 
@@ -2441,8 +2432,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if isinstance(node.parent, nodes.line_block):
             self.out.append('\\item[]\n'
                              '\\begin{DUlineblock}{\\DUlineblockindent}\n')
-        else:
             # nested line-blocks cannot be given class arguments
+        else:
             self.duclass_open(node)
             self.out.append('\\begin{DUlineblock}{0em}\n')
             self.insert_align_declaration(node)
@@ -3096,7 +3087,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 depth = node.get('depth', 0)
                 if 'local' in node['classes']:
                     self.minitoc(node, title, depth)
-                    self.context.append('')
                     return
                 if depth:
                     self.out.append('\\setcounter{tocdepth}{%d}\n' % depth)
@@ -3108,29 +3098,31 @@ class LaTeXTranslator(nodes.NodeVisitor):
             else: # Docutils generated contents list
                 # set flag for visit_bullet_list() and visit_title()
                 self.is_toc_list = True
-            self.context.append('')
         elif ('abstract' in node['classes'] and
               self.settings.use_latex_abstract):
             self.push_output_collector(self.abstract)
             self.out.append('\\begin{abstract}')
-            self.context.append('\\end{abstract}\n')
             if isinstance(node.next_node(), nodes.title):
                 node.pop(0) # LaTeX provides its own title
         else:
-            self.fallbacks['topic'] = PreambleCmds.topic
             # special topics:
             if 'abstract' in node['classes']:
                 self.fallbacks['abstract'] = PreambleCmds.abstract
                 self.push_output_collector(self.abstract)
-            if 'dedication' in node['classes']:
+            elif 'dedication' in node['classes']:
                 self.fallbacks['dedication'] = PreambleCmds.dedication
                 self.push_output_collector(self.dedication)
-            self.out.append('\n\\DUtopic[%s]{\n' % ','.join(node['classes']))
-            self.context.append('}\n')
+            else:
+                node['classes'].insert(0, 'topic')
+            self.visit_block_quote(node)
 
     def depart_topic(self, node):
-        self.out.append(self.context.pop())
         self.is_toc_list = False
+        if ('abstract' in node['classes']
+          and self.settings.use_latex_abstract):
+            self.out.append('\\end{abstract}\n')
+        elif not 'contents' in node['classes']:
+            self.depart_block_quote(node)
         if ('abstract' in node['classes'] or
             'dedication' in node['classes']):
             self.pop_output_collector()

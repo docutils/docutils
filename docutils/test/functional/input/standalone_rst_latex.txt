@@ -13,6 +13,7 @@ Test syntax elements which may cause trouble for the LaTeX writer but might
 not need to be tested with other writers (e.g. the HTML writer).
 
 .. include:: data/custom_roles_latex.txt
+.. include:: data/classes_latex.txt
 .. include:: data/tables_latex.txt
 .. include:: data/option_lists.txt
 .. include:: data/nonalphanumeric.txt

@@ -52,7 +52,7 @@
 }
 
 % abstract title
-\providecommand*{\DUtitleabstract}[1]{\centering\textbf{#1}}
+\providecommand*{\DUtitleabstract}[1]{\centerline{\textbf{#1}}}
 
 % admonition (specially marked topic)
 \providecommand{\DUadmonition}[2][class-arg]{%
@@ -67,7 +67,9 @@
 }
 
 % dedication topic
-\providecommand{\DUtopicdedication}[1]{\begin{center}#1\end{center}}
+\providecommand*{\DUCLASSdedication}{%
+  \renewenvironment{quote}{\begin{center}}{\end{center}}%
+}
 
 % docinfo (width of docinfo table)
 \DUprovidelength{\DUdocinfowidth}{0.9\linewidth}
@@ -172,15 +174,6 @@
 % titlereference role
 \providecommand*{\DUroletitlereference}[1]{\textsl{#1}}
 
-% topic (quote with heading)
-\providecommand{\DUtopic}[2][class-arg]{%
-  \ifcsname DUtopic#1\endcsname%
-    \csname DUtopic#1\endcsname{#2}%
-  \else
-    \begin{quote}#2\end{quote}
-  \fi
-}
-
 % transition (break, fancybreak, anonymous section)
 \providecommand*{\DUtransition}{%
   \hspace*{\fill}\hrulefill\hspace*{\fill}
@@ -261,18 +254,24 @@ Like this.
 \end{tabularx}
 \end{center}
 
-\DUtopic[dedication]{
+\begin{DUclass}{dedication}
+\begin{quote}
 \DUtitle[dedication]{Dedication}
 
 For Docutils users \& co-developers.
-}
 
-\DUtopic[abstract]{
+\end{quote}
+\end{DUclass}
+
+\begin{DUclass}{abstract}
+\begin{quote}
 \DUtitle[abstract]{Abstract}
 
 This is a test document, containing at least one example of each
 reStructuredText construct.
-}
+
+\end{quote}
+\end{DUclass}
 
 % This is a comment. Note how any initial comments are moved by
 % transforms to after the document title, subtitle, and docinfo.
@@ -1252,11 +1251,14 @@ background or font color.
 A \emph{topic} is like a block quote with a title, or a self-contained section
 with no subsections.
 
-\DUtopic[]{
-\DUtitle[title]{Topic Title}
+\begin{DUclass}{topic}
+\begin{quote}
+\DUtitle[topic]{Topic Title}
 
 This is a topic.
-}
+
+\end{quote}
+\end{DUclass}
 
 A \emph{rubric} is like an informal heading that doesn’t correspond to the
 document’s structure. It is typically highlighted in red (hence the name).
@@ -1855,7 +1857,8 @@ characters are replaced by a hyphen).
 Class arguments may contain numbers and hyphens, which need special
 treatment in LaTeX command names.
 
-\DUrole{large}{\DUrole{custom4}{\DUrole{small-caps}{\DUrole{custom-role}{\DUrole{custom-role}{Interpreted Text}}}}}
+\DUrole{large}{\DUrole{custom4}{\DUrole{small-caps}{\DUrole{custom-role}{\DUrole{custom-role}{Text with role “custom4”}}}}} (but without styling by \texttt{DUrole*}
+macros).
 
 \item With LaTeX, roles can be styled within the document using the \DUroletitlereference{raw}
 directive.
@@ -1866,7 +1869,7 @@ directive.
 \@namedef{DUrolecustom4}{\textbf}
 \makeatother
 
-\DUrole{large}{\DUrole{custom4}{\DUrole{small-caps}{\DUrole{custom-role}{\DUrole{custom-role}{Interpreted Text}}}}} in large, bold, small-caps.
+\DUrole{large}{\DUrole{custom4}{\DUrole{small-caps}{\DUrole{custom-role}{\DUrole{custom-role}{inline text}}}}} in large, bold, small-caps.
 
 \item Custom roles can be based on standard roles:
 
@@ -1885,7 +1888,119 @@ This is a \DUroletitlereference{\DUrole{custom-title-reference}{customized title
 \end{itemize}
 
 
-\subsection{3.2~~~More Tables%
+\subsection{3.2~~~class handling%
+  \label{class-handling}%
+}
+
+This section tests class handling for block level elements by the LaTeX
+writer. See the input file \texttt{classes\_latex.txt} for the raw LaTeX code used
+to style the examples.
+
+An “epigraph” directive is exported as “quote” wrapped in a “DUclass”
+environment. Here, it is styled by a “DUCLASSepigraph” environment
+redefining the “quote” environment as “minipage”:
+
+\newcommand*{\DUCLASSepigraph}{%
+  \renewenvironment{quote}{\vspace{1em}
+                           \footnotesize\hfill{}%
+                           \begin{minipage}{0.4\columnwidth}}%
+                          {\end{minipage}\vskip\baselineskip}}
+
+\begin{DUclass}{epigraph}
+\begin{quote}
+
+Do not play this piece fast. It is never right to play \emph{Ragtime} fast.
+\nopagebreak
+
+\raggedleft —Scott Joplin
+
+\end{quote}
+\end{DUclass}
+
+Raw latex is also used to style the following lists: “DUCLASSenumerateitems”
+redefines “itemize” as “enumerate”, “DUCLASSrules” draws horizontal lines
+above and below.
+
+\newcommand*{\DUCLASSenumerateitems}{%
+  \renewenvironment{itemize}{\begin{enumerate}}%
+                            {\end{enumerate}}%
+}
+
+\newenvironment{DUCLASSrules}%
+               {\noindent\rule[0.5ex]{1\columnwidth}{1pt}}%
+               {\noindent\rule[0.5ex]{1\columnwidth}{1pt}}
+
+An “enumerated” bullet list:
+
+\begin{DUclass}{enumerateitems}
+\begin{itemize}
+
+\item item
+
+\item next item
+
+\item third item
+
+\end{itemize}
+\end{DUclass}
+
+A list with lines above and below:
+
+\begin{DUclass}{rules}
+\begin{itemize}
+
+\item item
+
+\item next item
+
+\end{itemize}
+\end{DUclass}
+
+A normal bullet list is kept unchanged by the above redefinitions:
+
+\begin{itemize}
+
+\item item
+
+\item next item
+
+\item third item
+
+\end{itemize}
+
+A container wraps several elements in a common “class wrapper”. Here, we use
+it to set 2 paragraphs and a list in small caps:
+
+\newcommand*{\DUCLASSscshape}{\scshape}
+
+\begin{DUclass}{scshape}
+
+paragraph 1
+
+paragraph 2
+
+\begin{itemize}
+
+\item bullet list
+
+\item still bullet list
+
+\end{itemize}
+\end{DUclass}
+
+A right-aligned line-block. Alignment handling is built into the latex
+writer for image, table, and line block elements.
+
+\begin{DUlineblock}{0em}
+\raggedleft
+\item[] Max Mustermann
+\item[] Waldstr. 22
+\item[] D 01234 Testdorf
+\item[] Tel.: 0123/456789
+\end{DUlineblock}
+
+
+\subsection{3.3~~~More Tables%
   \label{more-tables}%
 }
 
@@ -1987,7 +2102,7 @@ third paragraph \\
 % This file is used by the standalone_rst_latex test.
 
 
-\subsection{3.3~~~Option lists%
+\subsection{3.4~~~Option lists%
   \label{id23}%
 }
 
@@ -2023,7 +2138,7 @@ is contained in a quote
 \end{description}
 
 
-\subsection{3.4~~~Monospaced non-alphanumeric characters%
+\subsection{3.5~~~Monospaced non-alphanumeric characters%
   \label{monospaced-non-alphanumeric-characters}%
 }
 
@@ -2039,7 +2154,7 @@ The two lines of non-alphanumeric characters should both have the same
 width as the third line.
 
 
-\subsection{3.5~~~Non-ASCII characters%
+\subsection{3.6~~~Non-ASCII characters%
   \label{non-ascii-characters}%
 }
 
@@ -2425,36 +2540,10 @@ pdn\-derd\-mdtd\-ri\-schpdn\-derd\-mdtd\-ri\-schpdn\-derd\-mdtd\-ri\-schpdn\-der
 
 pdnderdmdtdrischpdnderdmdtdrischpdnderdmdtdrischpdnderdmdtdrischpdnderdmdtdrisch
 
-\item The currency sign (\textbackslash{}u00a4) is not supported by all fonts
-(some have an Euro sign at its place). You might see an error
-like:
-
-\begin{quote}
-\begin{alltt}
-! Package textcomp Error: Symbol \textbackslash{}textcurrency not provided by
-(textcomp)                font family ptm in TS1 encoding.
-(textcomp)                Default family used instead.
-\end{alltt}
-\end{quote}
-
-(which in case of font family ptm is a false positive). Add either
-
-\begin{DUfieldlist}
-\item[{warn:}]
-turn the error in a warning, use the default symbol (bitmap), or
-
-\item[{force,almostfull:}]
-use the symbol provided by the font at the users
-risk,
-
-\end{DUfieldlist}
-
-to the document options or use a different font package.
-
 \end{itemize}
 
 
-\subsection{3.6~~~Encoding special chars%
+\subsection{3.7~~~Encoding special chars%
   \label{encoding-special-chars}%
 }
 
@@ -2525,7 +2614,7 @@ greater-than and bar, < | >, except for typewriter font \DUroletitlereference{cm
 \end{quote}
 
 
-\subsection{3.7~~~Hyperlinks and -targets%
+\subsection{3.8~~~Hyperlinks and -targets%
   \label{hyperlinks-and-targets}%
 }
 
@@ -2571,7 +2660,7 @@ See \hyperref[hypertarget-in-plain-text]{hypertarget in plain text},
 \hyperref[image-label]{image label}.
 
 
-\subsection{3.8~~~External references%
+\subsection{3.9~~~External references%
   \label{external-references}%
 }
 
@@ -2657,50 +2746,50 @@ while balanced braces are suported:
 \end{itemize}
 
 
-\subsection{3.9~~~Section titles with \hyperref[inline-markup]{inline markup}%
+\subsection{3.10~~~Section titles with \hyperref[inline-markup]{inline markup}%
   \label{section-titles-with-inline-markup}%
 }
 
 
-\subsubsection{3.9.1~~~\emph{emphasized}, H\textsubscript{2}O and $x^2$%
+\subsubsection{3.10.1~~~\emph{emphasized}, H\textsubscript{2}O and $x^2$%
   \label{emphasized-h2o-and-x-2}%
 }
 
 
-\subsubsection{3.9.2~~~Substitutions work%
+\subsubsection{3.10.2~~~Substitutions work%
   \label{substitutions-fail}%
 }
 
 
-\subsection{3.10~~~Deeply nested sections%
+\subsection{3.11~~~Deeply nested sections%
   \label{deeply-nested-sections}%
 }
 
 In LaTeX and HTML,
 
 
-\subsubsection{3.10.1~~~Level 3%
+\subsubsection{3.11.1~~~Level 3%
   \label{level-3}%
 }
 
 nested sections
 
 
-\paragraph{3.10.1.1~~~level 4%
+\paragraph{3.11.1.1~~~level 4%
   \label{level-4}%
 }
 
 reach at some level
 
 
-\subparagraph{3.10.1.1.1~~~level 5%
+\subparagraph{3.11.1.1.1~~~level 5%
   \label{level-5}%
 }
 
 (depending on the document class)
 
 
-\DUtitle[sectionVI]{3.10.1.1.1.1~~~level 6%
+\DUtitle[sectionVI]{3.11.1.1.1.1~~~level 6%
   \label{level-6}%
 }
 

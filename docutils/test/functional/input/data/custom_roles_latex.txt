@@ -12,7 +12,8 @@ Custom Roles in LaTeX
   .. role:: custom4
      :class: large custom4 small_caps custom.role custom\role
 
-  :custom4:`Interpreted Text`
+  :custom4:`Text with role "custom4"` (but without styling by ``DUrole*``
+  macros).
 
 * With LaTeX, roles can be styled within the document using the `raw`
   directive.
@@ -25,7 +26,7 @@ Custom Roles in LaTeX
     \@namedef{DUrolecustom4}{\textbf}
     \makeatother
 
-  :custom4:`Interpreted Text` in large, bold, small-caps.
+  :custom4:`inline text` in large, bold, small-caps.
 
 * Custom roles can be based on standard roles:
 

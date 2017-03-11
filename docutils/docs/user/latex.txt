@@ -7,18 +7,21 @@
 :Revision: $Revision$
 :Date: $Date$
 :Copyright: This document has been placed in the public domain.
+:Abstract: This document covers topics specific to Docutils' LaTeX_ export.
 
 .. contents::
 .. sectnum::
 
-Introduction
-============
 
-This document covers topics specific to Docutils' LaTeX__ export.  For
-an introduction to LaTeX see, e.g., `LaTeX2e for authors`_. There exists
-a wide selecton of `LaTeX Documentation on the net`_ and
-`books on LaTeX and related topics`_.
+LaTeX
+=====
 
+LaTeX__, is a document preparation system for high-quality typesetting. It
+is most often used for medium-to-large technical or scientific documents but
+it can be used for almost any form of publishing. There exists a wide
+selecton of `LaTeX Documentation on the net`_ and `books on LaTeX and
+related topics`_. For an introduction to LaTeX see, e.g., `LaTeX2e for
+authors`_.
 
 __ http://www.latex-project.org/
 .. _LaTeX2e for authors:
@@ -28,28 +31,27 @@ __ http://www.latex-project.org/
 .. _books on LaTeX and related topics:
    http://www.latex-project.org/guides/books.html
 
-LaTeX
-=====
 
-Unlike HTML with CSS, LaTeX uses one common language for markup and
-style definitions. Separation of content and style is realized by
-collecting style definitions in the documentclass_, `LaTeX packages`_,
-or the document preamble.
+.. _LaTeX packages:
 
-LaTeX packages
---------------
+LaTeX classes and packages
+--------------------------
 
-LaTeX packages (similar to Python modules or C libraries) provide
-means to extend or modify the LaTeX language by redefining macros or
-providing new ones. There is a *huge* selection of packages (standard
-as well as user contributed) coming with your TeX distribution or
-available at CTAN_.
+Unlike HTML with CSS, LaTeX uses one common language for markup and style
+definitions. Separation of content and style is realized by collecting style
+definitions in LaTeX classes and packages, or the
+`document preamble <LaTeX preamble_>`_.
+
+LaTeX document classes and packages (similar to Python modules or C
+libraries) provide means to extend or modify the LaTeX language by
+redefining macros or providing new ones.
+
+Using the `document class`_ and `style sheet`_ configuration options, you
+can select from a *huge* selection of classes and packages (standard as well
+as user contributed) coming with your TeX distribution or available at
+CTAN_ as well as custom style sheets.
 
 .. _CTAN: http://www.ctan.org
-.. _stylesheet:
-   config.html#stylesheet-latex2e-writer
-.. _TeX input path:
-   http://www.tex.ac.uk/cgi-bin/texfaq2html?label=what-TDS
 
 
 Docutils specific LaTeX macros
@@ -73,9 +75,6 @@ style sheets`_, if a macro is required in the document.
 
 See the test output standalone_rst_latex.tex_ for an example of the fallback
 definitions and their use in the document.
-
-.. _standalone_rst_latex.tex:
-   ../../test/functional/expected/standalone_rst_latex.tex
 
 .. [#] DU for Documentation Utilities = Docutils
 
@@ -125,22 +124,13 @@ source, including:
 _`pdflatex`
   Generates a PDF document directly from the LaTeX file.
 
-_`latex + dvipdfmx`
-  Use ``latex`` to generate a DVI file and ``dvipdfmx`` to produce a PDF
-  file. If you take this approach, add ``dvipdfmx`` to the
-  _documentoptions.
-
-_`latex` + dvips + ps2pdf
-  Produce a DVI file with ``latex``, postscript with ``dvips`` and PDF with
-  ``ps2pdf``.
-
 _`xelatex` or _`lualatex`
   The `XeTeX`_ and LuaTeX_ engines work with input files in UTF-8 encoding
   and system fonts. Export your document with the `xetex` writer
   (``rst2xetex``), if you want to go this route.
 
-You need to call latex (or pdflatex/xelatex/lualatex) twice (or even three times) to
-get internal references correct.
+You may need to call latex two or three times to get internal references
+correct.
 
 .. _documentoptions: config.html#documentoptions
 .. _xetex: http://tug.org/xetex/
@@ -159,15 +149,7 @@ __ https://launchpad.net/rubber/
 Configuration
 =============
 
-The LaTeX code generation can be configured via
-
-* configuration `options/settings`_ of the Docutils writer,
-* `LaTeX packages`_,
-* custom `LaTeX code`_ in
-  + `style sheets`_,
-  + the `LaTeX preamble`_,
-  + the document body (`raw LaTeX`_), or
-  + custom templates_.
+.. contents:: :local:
 
 .. _option:
 
@@ -176,10 +158,12 @@ Options/Settings
 
 Options can be specified as
 
-* command-line options (run ``rst2latex.py --help`` to get a list of
-  available options), or
+* command-line options, or
 
-* configuration settings (see `Docutils Configuration`_ for details).
+* configuration settings.
+
+Run ``rst2latex.py --help`` to get a list of available options;
+see `Docutils Configuration`_ for details.
 
 .. _Docutils Configuration:
    config.html
@@ -187,81 +171,65 @@ Options can be specified as
 Classes
 -------
 
-The `classes attribute`_ is one of the common attributes, shared by all
+The `"classes" attribute`_ is one of the common attributes, shared by all
 Docutils elements.
-
-  The purpose of the attribute is to indicate an “is-a” variant
-  relationship, to allow an extensible way of defining sub-classes of
-  existing elements. It can be used to carry context forward between a
-  Docutils Reader and Writer, when a custom structure is reduced to a
-  standardized document tree.
-
 In HTML, the common use is to provide selection criteria for style rules in
 CSS stylesheets. As there is no comparable framework for LaTeX, Docutils
 mimics some of this behaviour via `Docutils specific LaTeX macros`_.
 
-* Role names and class arguments are converted to conform to the regular
-  expression ``[a-z][-a-z0-9]*`` (lowercase letters, digits and hyphen, see
-  `class directive`_).
+*Inline elements*
+  are handled via the ``\DUrole{}`` macro, that calls the optional styling
+  command ``\DUrole«classargument»`` with one argument (the role content).
+  See `custom interpreted text roles`_.
 
-* Class arguments may contain numbers and hyphens, which need special
-  treatment in LaTeX command names. (The commands ``\begincsname`` and
-  ``\endcsname`` or the special command ``\@namedef`` can
-  help with the definition of corresponding macros or environments.)
-
-* Elements can have multiple class arguments. In contrast to HTML/CSS, the
-  order of the class arguments cannot be ignored in LaTeX
-
-For inline elements, classes are handled via the ``\DUrole{}`` macro,
-see `custom interpreted text roles`_.
-
-Block level elements are wrapped in "class environments".
-
-* ``\begin{DUclass}{«classargument»}``
-  calls the macro named ``\DUCLASSe«classargument»{}`` if it is defined and
-  silently ignores this class argument if a corresponding macro is not
-  defined.
-
-* ``\end{DUclass}{«classargument»}``
-  tries ``\endDUCLASS«classargument»``
+*Block level elements*
+  are wrapped in "class environments":
+  ``\begin{DUclass}`` calls the optional styling command
+  ``\DUCLASSe«classargument»{}``, ``\end{DUclass}`` tries
+  ``\endDUCLASS«classargument»``.
 
 Customization is done by defining matching macros or environments.
 
-Examples:
+Example 1:
+  Use small caps font inside elements with class value "custom".
 
-* Use small caps font inside elements with class value "custom"::
+  *Inline elements*
+    The LaTeX function ``\textsc`` sets the argument in small caps::
 
-   \newcommand*{\DUCLASScustom}{\scshape}
+      \newcommand{\DUrolesmallcaps}[1]{\textsc{#1}}
 
-  The LaTeX directive (macro without argument) ``\scshape`` switches to the
-  small caps font. Its effect is confined to the wrapper ``DUclass``
-  environment.
+  *Block-level elements*
+    The LaTeX directive (macro without argument) ``\scshape`` switches to
+    the small caps font. Its effect is confined to the wrapper ``DUclass``
+    environment::
 
-* Turn bullet lists with class value "enumerateitems" into enumerated
+      \newcommand*{\DUCLASScustom}{\scshape}
+
+Example 2:
+  It is even possible to locally redefine other LaTeX macros, e.g. to
+  turn bullet lists with class value "enumerateitems" into enumerated
   lists::
 
-   \newcommand*{\DUCLASSenumerateitems}{%
-     \renewenvironment{itemize}{\begin{enumerate}}%
-                               {\end{enumerate}}%
-   }
+    \newcommand*{\DUCLASSenumerateitems}{%
+      \renewenvironment{itemize}{\begin{enumerate}}%
+                                {\end{enumerate}}%
+    }
 
-  The matching LaTeX macro can also locally redefine other LaTeX macros.
 
-* Draw a line below elements with class value "rulebelow"::
+Class arguments may contain numbers and hyphens, which need special
+treatment in LaTeX command names (see `class directive`_). The commands
+``\begincsname`` and ``\endcsname`` or the special command ``\@namedef`` can
+help with the definition of corresponding macros or environments.
 
-   \newenvironment{DUCLASSrulebelow}%
-                  {} % nothing to do at start of element
-                  {\noindent\rule[0.5ex]{1\columnwidth}{1pt}}
-
-  The new LaTeX environment executes the rule-drawing macro when leaving the
-  wrapper ``DUclass`` environment.
+* Elements can have multiple class arguments. In contrast to HTML/CSS, the
+  order of the class arguments cannot be ignored in LaTeX
 
 For "historical reasons", class handling differs for some elements and class
 values:
 
 * The special macros ``\DUadmonition``, ``\DUtitle``, and ``\DUtopic`` are
-  handed a comma separated list of class values as optional argument. See
-  the sections on admonitions_, titles_, and the `topic element`_ for
+  written with a comma separated list of class values as optional argument.
+  See the sections on admonitions_, titles_, and the `topic element`_ for
   customization examples.
 
 * Class argument values starting with ``align-`` are transformed to "align"
@@ -270,15 +238,29 @@ values:
 
 * The table element recognizes some special class values. See section table_.
 
+.. _"classes" attribute: ../ref/doctree.html#classes
 
-
-.. _classes attribute: ../ref/doctree.html#classes
 
 LaTeX code
 ----------
 
 Custom LaTeX code can be placed in `style sheets`_, the
 `LaTeX preamble`_, the document body (`raw LaTeX`_), or custom templates_.
+
+The functional tests that come with Docutils, can serve as example.
+
+input:
+  standalone_rst_latex.txt_ (includes files from `tests/functional/input/data`_)
+expected output:
+  standalone_rst_latex.tex_
+
+.. _standalone_rst_latex.txt:
+  https://sf.net/p/docutils/code/HEAD/tree/trunk/docutils/test/functional/input/standalone_rst_latex.txt
+.. _tests/functional/input/data:
+  https://sf.net/p/docutils/code/HEAD/tree/trunk/docutils/test/functional/input/data
+.. _standalone_rst_latex.tex:
+   https://sf.net/p/docutils/code/HEAD/tree/trunk/docutils/test/functional/expected/standalone_rst_latex.tex?format=raw
+
 
 .. _style sheet:
 .. _custom style sheets:
@@ -295,7 +277,7 @@ Options:
   stylesheet_
 
   It is possible to specify multiple style sheets and mix `LaTeX
-  packages`_ with `custom style sheets`_.
+  packages`_ with custom style sheets.
 
 You cannot specify package options with the stylesheet_ setting. If
 you need to pass options to the package, use the ``\usepackage``
@@ -326,6 +308,8 @@ Stylesheet Repository
 
 .. _clsguide:
    http://mirror.ctan.org/macros/latex/doc/clsguide.pdf
+.. _stylesheet:
+   config.html#stylesheet-latex2e-writer
 .. _embed-stylesheet:
    config.html#embed-stylesheet-latex2e-writer
 .. _repository of user-contributed style sheets:
@@ -401,7 +385,8 @@ Example:
 
        \[x^3 + 3x^2a + 3xa^2 + a^3,\]
 
-  (Drawback: the formula will be invisible in other output formats.)
+  (Drawback: the formula will be invisible in other output formats. Better
+  use the `math directive`_)
 
 Most LaTeX code examples also work as raw LaTeX inside the document.
 An exception are commands that need to be given in the document
@@ -423,6 +408,8 @@ See also:
 
 .. _raw directive:
    ../ref/rst/directives.html#raw
+.. _math directive:
+   ../ref/rst/directives.html#math
 
 
 
@@ -492,12 +479,13 @@ parts of inline text (spans) with class arguments (see section classes_).
 Commands:
   ``\DUrole``: dispatcher command
 
-  ``\DUrole«classargument»``: optional styling command
+  ``\DUrole«classargument»``: optional styling command with 1 argument (the
+  role content).
 
 Default:
-  The definition of ``\DUrole{«classargument»}{}`` calls the macro named
-  ``\DUrole«classargument»{}`` if it is defined and silently ignores
-  this class argument if a corresponding macro is not defined.
+  The default definition of ``\DUrole{«classargument»}{}`` calls the macro
+  named ``\DUrole«classargument»{}`` if it is defined and silently ignores
+  this class argument if not.
 
 Example 1:
   Typeset text in small caps::
@@ -1289,6 +1277,27 @@ __ ../ref/rst/restructuredtext.html#literal-blocks
     http://mirror.ctan.org/macros/latex/contrib/listings/listings.pdf
 
 
+lists
+-----
+
+Remove extra vertical whitespace between items of bullet lists and
+enumerated lists.
+
+Example:
+  Pass the class argument "compact" to the list::
+
+    .. class:: compact
+
+    * first item
+    * second item
+
+  The following lines for the `LaTeX preamble`_ use the enumitem_ package to
+  remove spacing from all lists with class argument "compact"::
+
+    \usepackage{enumitem}
+    \newcommand*{\DUCLASScompact}{\setlist{noitemsep}}
+
+
 list of figures/tables
 ----------------------
 
@@ -1481,7 +1490,7 @@ Default (in most document classes):
   Indent the first line in a paragraph unless it is the first line of a
   chapter, section, subsection, or subsubsection.
 
-Example:
+Example 1:
   To set paragraph indentation to zero but add a vertical space between
   load the `parskip` package with the command line argument::
 
@@ -1491,6 +1500,17 @@ Example:
 
     \usepackage{parskip}
 
+Example 2:
+  To suppress the indentation of a specific paragraph, you may give it the
+  class "noindent" with, e.g. ::
+
+    .. class:: noindent
+
+    This paragraph should not be indented.
+
+  and define the `custom role`_ command::
+
+    \newcommand{\DUrolenoindent}[1]{\noindent #1}
 
 rubric
 ------
@@ -1592,34 +1612,16 @@ option of the `table directive`_.
 topic element
 -------------
 
-A topic_ is like a block quote with a title, or a self-contained section with
-no subsections.
+A topic_ is like a block quote with a title, or a self-contained section
+with no subsections. Topics and rubrics can be used at places where a
+`section title`_ is not allowed (e.g. inside a directive).
 
-Topics and rubrics can be used at places where a `section title`_ is not
-allowed (e.g. inside a directive).
+Example:
+  Use a standard paragraph for a topic::
 
-Command:
-  ``DUtopic``
-
-Default:
-  "quote" environment
-
-Example 1:
-  If you generally prefer a "normal" section over a block quote, define::
-
-    \newcommand{\DUtopic}[2][class-arg]{%
-      \ifcsname DUtopic#1\endcsname%
-        \csname DUtopic#1\endcsname{#2}%
-      \else
-        #2
-      \fi
+    \newcommand{\DUCLASStopic}{%
+      \renewenvironment{quote}{}{}%
     }
-
-Example 2:
-  If you want a "normal" section for topics with class argument "noquote",
-  define::
-
-    \newcommand{\DUtopicnoquote}[1]{#1}
 
 .. _topic: ../ref/rst/directives.html#topic
 .. _section title: ../ref/rst/restructuredtext.html#sections
@@ -1860,13 +1862,11 @@ Right:
 
   a) compile with pdflatex_,
 
-  b) compile with `latex + dvipdfmx`_,
+  b) use the package breakurl_,
 
-  c) use the package breakurl_,
+  c) (for printout) `disable hyperlinks`_ using the package "nohyperref".
 
-  d) (for printout) `disable hyperlinks`_ using the package "nohyperref".
-
-See also the `Link text doesn’t break at end line`_ FAQ entry.
+See also the `Link text doesn’t break at end line`_ LaTeX FAQ entry.
 
 .. _breakurl:
    http://mirror.ctan.org/help/Catalogue/entries/breakurl.html
@@ -1893,23 +1893,8 @@ This can be solved with the "unicode" hyperref_option_ setting::
 "latin1"). Newer versions of hyperref default to "unicode=true" if the
 document language is "russian".
 
-However, this setting leads to "strange" characters in the bookmarks
-if used with xelatex_ in hyperref versions before v6.79g (2009/11/20).
-(cf `bugreport 3100778`__).
-
-If updating the hyperref package is not an option, the workaround is
-to set ::
-
-  --hyperref-option="unicode=false"
-
-or (in the config file)::
-
-  [xetex writer]
-
-  hyperref-option: unicode=false
-
-__ http://sourceforge.net/tracker/?func=detail&aid=3100778&group_id=38414&atid=422030
 .. _hyperref_option: config.html#stylesheet-latex2e-writer
+
 
 image inclusion
 ```````````````
@@ -1917,10 +1902,10 @@ image inclusion
 Images__ are included in LaTeX with the help of the `graphicx` package. The
 supported file formats depend on the used driver:
 
-* Standard latex_ can include **only EPS** graphics, no other format.
-* `latex + dvipdfmx`_ works with EPS and JPG (add 'dvipdfmx' to the
-  documentoptions_ and 'bmpsize' to the stylesheet_ setting).
 * pdflatex_ and xelatex_ work with PNG, JPG, or PDF, but **not EPS**.
+* Standard latex_ can include **only EPS** graphics, no other format.
+* latex + dvipdfmx works with EPS and JPG (add 'dvipdfmx' to the
+  documentoptions_ and 'bmpsize' to the stylesheet_ setting).
 
 If PDF-image inclusion in PDF files fails, specifying
 ``--graphicx-option=pdftex`` or ``--graphicx-option=auto`` might help.
@@ -2038,7 +2023,7 @@ the BUGS_ documentation and the `SourceForge Bug Tracker`_.
 .. _Docutils TODO list: ../dev/todo.html#latex-writer
 .. _bugs: ../../BUGS.html
 .. _SourceForge Bug Tracker:
-   http://sourceforge.net/tracker/?group_id=38414&atid=422030
+   http://sf.net/tracker/?group_id=38414&atid=422030
 
 
 Footnotes and citations
