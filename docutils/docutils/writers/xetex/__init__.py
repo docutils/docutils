@@ -99,6 +99,11 @@ class Babel(latex2e.Babel):
     for key in ('af',           # 'afrikaans',
                 'de-AT',        # 'naustrian',
                 'de-AT-1901',   # 'austrian',
+                # TODO: use variant=... for English variants
+                'en-CA',        # 'canadian',
+                'en-GB',        # 'british',
+                'en-NZ',        # 'newzealand',
+                'en-US',        # 'american',
                 'fr-CA',        # 'canadien',
                 'grc-ibycus',   # 'ibycus', (Greek Ibycus encoding)
                 'sr-Latn',      # 'serbian script=latin'
@@ -110,7 +115,7 @@ class Babel(latex2e.Babel):
         self.reporter = reporter
         self.language = self.language_name(language_code)
         self.otherlanguages = {}
-        self.warn_msg = 'Language "%s" not supported by XeTeX (polyglossia).'
+        self.warn_msg = 'Language "%s" not supported by Polyglossia.'
         self.quote_index = 0
         self.quotes = ('"', '"')
         # language dependent configuration:
