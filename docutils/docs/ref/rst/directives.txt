@@ -48,6 +48,17 @@ reStructuredText Directives`_.
  Admonitions
 -------------
 
+.. From Webster's Revised Unabridged Dictionary (1913) [web1913]:
+   Admonition
+      Gentle or friendly reproof; counseling against a fault or
+      error; expression of authoritative advice; friendly caution
+      or warning.
+
+      Syn: {Admonition}, {Reprehension}, {Reproof}.
+
+      Usage: Admonition is prospective, and relates to moral delinquencies;
+             its object is to prevent further transgression.
+
 .. _attention:
 .. _caution:
 .. _danger:
@@ -760,7 +771,6 @@ The "table" directive is used to associate a
 title with a table or specify options, e.g.::
 
     .. table:: Truth table for "not"
-
        :widths: auto
 
        =====  =====
