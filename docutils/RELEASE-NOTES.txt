@@ -67,7 +67,8 @@ Changes Since 0.13.1
 * docutils/writers/latex2e/__init__.py
 
   - Handle class arguments for block-level elements by wrapping them
-    in a "DUclass" environment. 
+    in a "DUclass" environment. This replaces the special handling for
+    "epigraph" and "topic" elements.
 
 * tools/
 
