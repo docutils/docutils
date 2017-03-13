@@ -660,6 +660,12 @@ PreambleCmds.table = r"""\usepackage{longtable,ltcaption,array}
 PreambleCmds.textcomp = """\
 \\usepackage{textcomp} % text symbol macros"""
 
+PreambleCmds.textsubscript = r"""
+% text mode subscript
+\ifx\textsubscript\undefined
+  \usepackage{fixltx2e} % since 2015 loaded by default
+\fi"""
+
 PreambleCmds.titlereference = r"""
 % titlereference role
 \providecommand*{\DUroletitlereference}[1]{\textsl{#1}}"""
@@ -1655,7 +1661,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # strip the generic 'admonition' from the list of classes
         node['classes'] = [cls for cls in node['classes']
                            if cls != 'admonition']
-        self.out.append('\n\\DUadmonition[%s]{\n' % ','.join(node['classes']))
+        self.out.append('\n\\DUadmonition[%s]{' % ','.join(node['classes']))
 
     def depart_admonition(self, node=None):
         self.out.append('}\n')
@@ -1675,24 +1681,24 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_block_quote(self, node):
         self.duclass_open(node)
-        self.out.append( '\\begin{quote}\n')
+        self.out.append( '\\begin{quote}')
 
     def depart_block_quote(self, node):
-        self.out.append( '\n\\end{quote}\n')
+        self.out.append( '\\end{quote}\n')
         self.duclass_close(node)
 
     def visit_bullet_list(self, node):
         self.duclass_open(node)
         if self.is_toc_list:
-            self.out.append( '\\begin{list}{}{}\n' )
+            self.out.append( '\\begin{list}{}{}' )
         else:
-            self.out.append( '\\begin{itemize}\n' )
+            self.out.append( '\\begin{itemize}' )
 
     def depart_bullet_list(self, node):
         if self.is_toc_list:
-            self.out.append( '\n\\end{list}\n' )
+            self.out.append( '\\end{list}\n' )
         else:
-            self.out.append( '\n\\end{itemize}\n' )
+            self.out.append( '\\end{itemize}\n' )
         self.duclass_close(node)
 
     def visit_superscript(self, node):
@@ -1706,7 +1712,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.out.append('}')
 
     def visit_subscript(self, node):
-        self.out.append(r'\textsubscript{') # requires `fixltx2e`
+        self.fallbacks['textsubscript'] = PreambleCmds.textsubscript
+        self.out.append(r'\textsubscript{')
         if node['classes']:
             self.visit_inline(node)
 
@@ -1792,7 +1799,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.out.append( '(\\textbf{' )
 
     def depart_classifier(self, node):
-        self.out.append( '})\n' )
+        self.out.append( '})' )
 
     def visit_colspec(self, node):
         self.active_table.visit_colspec(node)
@@ -2126,18 +2133,18 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
         self.duclass_open(node)
         if enumeration_level <= 4:
-            self.out.append('\\begin{enumerate}\n')
+            self.out.append('\\begin{enumerate}')
             if (prefix, enumtype, suffix
                ) != labels[enumeration_level-1]:
-                self.out.append('\\renewcommand{\\label%s}{%s}\n' %
+                self.out.append('\n\\renewcommand{\\label%s}{%s}' %
                                 (counter_name, label))
         else:
             self.fallbacks[counter_name] = '\\newcounter{%s}' % counter_name
             self.out.append('\\begin{list}')
             self.out.append('{%s}' % label)
-            self.out.append('{\\usecounter{%s}}\n' % counter_name)
+            self.out.append('{\\usecounter{%s}}' % counter_name)
         if 'start' in node:
-            self.out.append('\\setcounter{%s}{%d}\n' %
+            self.out.append('\n\\setcounter{%s}{%d}' %
                             (counter_name,node['start']-1))
 
 
@@ -2154,7 +2161,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         pass
 
     def depart_field(self, node):
-        self.out.append('\n')
+        pass
         ##self.out.append('%[depart_field]\n')
 
     def visit_field_argument(self, node):
@@ -2168,13 +2175,13 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def depart_field_body(self, node):
         if self.out is self.docinfo:
-            self.out.append(r'\\')
+            self.out.append(r'\\'+'\n')
 
     def visit_field_list(self, node):
         self.duclass_open(node)
         if self.out is not self.docinfo:
             self.fallbacks['fieldlist'] = PreambleCmds.fieldlist
-            self.out.append('\\begin{DUfieldlist}\n')
+            self.out.append('\\begin{DUfieldlist}')
 
     def depart_field_list(self, node):
         if self.out is not self.docinfo:
@@ -2187,7 +2194,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         else:
             # Commands with optional args inside an optional arg must be put
             # in a group, e.g. ``\item[{\hyperref[label]{text}}]``.
-            self.out.append('\\item[{')
+            self.out.append('\n\\item[{')
 
     def depart_field_name(self, node):
         if self.out is self.docinfo:
@@ -2618,10 +2625,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.fallbacks['_providelength'] = PreambleCmds.providelength
         self.fallbacks['optionlist'] = PreambleCmds.optionlist
         self.duclass_open(node)
-        self.out.append('\\begin{DUoptionlist}\n')
+        self.out.append('\\begin{DUoptionlist}')
 
     def depart_option_list(self, node):
-        self.out.append('\n\\end{DUoptionlist}\n')
+        self.out.append('\\end{DUoptionlist}\n')
         self.duclass_close(node)
 
     def visit_option_list_item(self, node):
@@ -2784,7 +2791,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.duclass_open(node)
         self.requirements['color'] = PreambleCmds.color
         self.fallbacks['sidebar'] = PreambleCmds.sidebar
-        self.out.append('\\DUsidebar{\n')
+        self.out.append('\\DUsidebar{')
 
     def depart_sidebar(self, node):
         self.out.append('}\n')
@@ -2850,7 +2857,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.fallbacks['title'] = PreambleCmds.title
         node['classes'] = ['system-message']
         self.visit_admonition(node)
-        self.out.append('\\DUtitle[system-message]{system-message}\n')
+        self.out.append('\n\\DUtitle[system-message]{system-message}\n')
         self.append_hypertargets(node)
         try:
             line = ', line~%s' % node['line']
@@ -2989,7 +2996,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             classes = ','.join(node.parent['classes'])
             if not classes:
                 classes = node.tagname
-            self.out.append('\\DUtitle[%s]{' % classes)
+            self.out.append('\n\\DUtitle[%s]{' % classes)
             self.context.append('}\n')
         # Table caption
         elif isinstance(node.parent, nodes.table):
@@ -3075,7 +3082,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.out += self.ids_to_labels(node)
             # add contents to PDF bookmarks sidebar
             if isinstance(node.next_node(), nodes.title):
-                self.out.append('\n\\pdfbookmark[%d]{%s}{%s}\n' %
+                self.out.append('\n\\pdfbookmark[%d]{%s}{%s}' %
                                 (self.section_level+1,
                                  node.next_node().astext(),
                                  node.get('ids', ['contents'])[0]
@@ -3091,9 +3098,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 if depth:
                     self.out.append('\\setcounter{tocdepth}{%d}\n' % depth)
                 if title != 'Contents':
-                    self.out.append('\\renewcommand{\\contentsname}{%s}\n' %
+                    self.out.append('\n\\renewcommand{\\contentsname}{%s}' %
                                     title)
-                self.out.append('\\tableofcontents\n\n')
+                self.out.append('\n\\tableofcontents\n')
                 self.has_latex_toc = True
             else: # Docutils generated contents list
                 # set flag for visit_bullet_list() and visit_title()
@@ -3129,10 +3136,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_transition(self, node):
         self.fallbacks['transition'] = PreambleCmds.transition
-        self.out.append('\n\n')
-        self.out.append('%' + '_' * 75 + '\n')
-        self.out.append(r'\DUtransition')
-        self.out.append('\n\n')
+        self.out.append('\n%' + '_' * 75 + '\n')
+        self.out.append('\\DUtransition\n')
 
     def depart_transition(self, node):
         pass

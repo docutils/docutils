@@ -163,6 +163,11 @@
 % subtitle (for topic/sidebar)
 \providecommand*{\DUsubtitle}[1]{\par\emph{#1}\smallskip}
 
+% text mode subscript
+\ifx\textsubscript\undefined
+  \usepackage{fixltx2e} % since 2015 loaded by default
+\fi
+
 % title for topics, admonitions, unsupported section levels, and sidebar
 \providecommand*{\DUtitle}[2][class-arg]{%
   % call \DUtitle#1{#2} if it exists:
@@ -261,7 +266,6 @@ Like this.
 \DUtitle[dedication]{Dedication}
 
 For Docutils users \& co-developers.
-
 \end{quote}
 \end{DUclass}
 
@@ -271,7 +275,6 @@ For Docutils users \& co-developers.
 
 This is a test document, containing at least one example of each
 reStructuredText construct.
-
 \end{quote}
 \end{DUclass}
 
@@ -289,7 +292,6 @@ reStructuredText construct.
 \pdfbookmark[1]{Table of Contents}{table-of-contents}
 \renewcommand{\contentsname}{Table of Contents}
 \tableofcontents
-
 
 
 \section{1   Structural Elements%
@@ -318,17 +320,13 @@ activated with the \texttt{--section-subtitles} command line option or the
 
 Here’s a transition:
 
-
 %___________________________________________________________________________
 \DUtransition
-
 
 It divides the section.  Transitions may also occur between sections:
 
-
 %___________________________________________________________________________
 \DUtransition
-
 
 
 \section{2   Body Elements%
@@ -387,15 +385,12 @@ live link to PEP 258 here.
 }
 
 \begin{itemize}
-
 \item A bullet list
 
 \begin{itemize}
-
 \item Nested bullet list.
 
 \item Nested item 2.
-
 \end{itemize}
 
 \item Item 2.
@@ -403,17 +398,14 @@ live link to PEP 258 here.
 Paragraph 2 of item 2.
 
 \begin{itemize}
-
 \item Nested bullet list.
 
 \item Nested item 2.
 
 \begin{itemize}
-
 \item Third level.
 
 \item Item 2.
-
 \end{itemize}
 
 \item Nested item 3.
@@ -422,9 +414,7 @@ Paragraph 2 of item 2.
 %
 \phantomsection\label{target}
 % Even if this item contains a target and a comment.
-
 \end{itemize}
-
 \end{itemize}
 
 
@@ -433,25 +423,20 @@ Paragraph 2 of item 2.
 }
 
 \begin{enumerate}
-
 \item Arabic numerals.
 
 \begin{enumerate}
 \renewcommand{\labelenumii}{\alph{enumii})}
-
 \item lower alpha)
 
 \begin{enumerate}
 \renewcommand{\labelenumiii}{(\roman{enumiii})}
-
 \item (lower roman)
 
 \begin{enumerate}
-
 \item upper alpha.
 
 \begin{list}{\Roman{enumv})}{\usecounter{enumv}}
-
 \item upper roman)
 \end{list}
 \end{enumerate}
@@ -463,7 +448,6 @@ Paragraph 2 of item 2.
 \begin{enumerate}
 \renewcommand{\labelenumii}{\arabic{enumii}.}
 \setcounter{enumii}{2}
-
 \item Three
 
 \item Four
@@ -472,7 +456,6 @@ Paragraph 2 of item 2.
 \begin{enumerate}
 \renewcommand{\labelenumii}{\Alph{enumii}.}
 \setcounter{enumii}{2}
-
 \item C
 
 \item D
@@ -481,7 +464,6 @@ Paragraph 2 of item 2.
 \begin{enumerate}
 \renewcommand{\labelenumii}{\roman{enumii}.}
 \setcounter{enumii}{2}
-
 \item iii
 
 \item iv
@@ -498,7 +480,6 @@ Paragraph 2 of item 2.
 Definition
 
 \item[{Term}] \leavevmode (\textbf{classifier})
-
 Definition paragraph 1.
 
 Definition paragraph 2.
@@ -506,9 +487,7 @@ Definition paragraph 2.
 \item[{Term}] \leavevmode 
 Definition
 
-\item[{Term}] \leavevmode (\textbf{classifier one})
-(\textbf{classifier two})
-
+\item[{Term}] \leavevmode (\textbf{classifier one})(\textbf{classifier two})
 Definition
 
 \end{description}
@@ -534,7 +513,6 @@ relative to the field marker.
 \DUrole{credits}{This paragraph has the \DUroletitlereference{credits} class set.  (This is actually not
 about credits but just for ensuring that the class attribute
 doesn’t get stripped away.)}
-
 \end{DUfieldlist}
 
 
@@ -545,7 +523,6 @@ doesn’t get stripped away.)}
 For listing command-line options:
 
 \begin{DUoptionlist}
-
 \item[-a]  command-line option “a”
 
 \item[-b file]  options can have arguments
@@ -568,7 +545,6 @@ regardless of where it starts.
 \item[-1 file, --one=file, --two file]  Multiple options with arguments.
 
 \item[/V]  DOS/VMS-style options too
-
 \end{DUoptionlist}
 
 There must be at least two spaces between the option and the
@@ -644,7 +620,6 @@ Another line block, surrounded by paragraphs:
 Take it away, Eric the Orchestra Leader!
 
 \begin{quote}
-
 \begin{DUlineblock}{0em}
 \item[] A one, two, a one two three four
 \item[] 
@@ -675,7 +650,6 @@ Take it away, Eric the Orchestra Leader!
 \end{DUlineblock}
 \item[] Singing…
 \end{DUlineblock}
-
 \end{quote}
 
 A line block, like the following poem by Christian Morgenstern, can
@@ -706,7 +680,6 @@ also be centre-aligned:
 Block quotes consist of indented body elements:
 
 \begin{quote}
-
 My theory by A. Elk.  Brackets Miss, brackets.  This theory goes
 as follows and begins now.  All brontosauruses are thin at one
 end, much much thicker in the middle and then thin again at the
@@ -715,7 +688,6 @@ own it, and what it is too.
 \nopagebreak
 
 \raggedleft —Anne Elk (Miss)
-
 \end{quote}
 
 The language of a quote (like any other object) can be specified by
@@ -725,10 +697,8 @@ a class attribute:
 
 \begin{selectlanguage}{french}
 \begin{quote}
-
 ReStructuredText est un langage de balisage léger utilisé
 notamment dans la documentation du langage Python.
-
 \end{quote}
 \end{selectlanguage}
 
@@ -1192,7 +1162,6 @@ It’s bigger than a bread box.
 \DUtitle[important]{Important}
 
 \begin{itemize}
-
 \item Wash behind your ears.
 
 \item Clean up your room.
@@ -1200,7 +1169,6 @@ It’s bigger than a bread box.
 \item Call your mother.
 
 \item Back up your data.
-
 \end{itemize}
 }
 
@@ -1258,7 +1226,6 @@ with no subsections.
 \DUtitle[topic]{Topic Title}
 
 This is a topic.
-
 \end{quote}
 \end{DUclass}
 
@@ -1318,11 +1285,9 @@ Compound 1, paragraph 1.
 Compound 1, paragraph 2.
 
 \begin{itemize}
-
 \item Compound 1, list item one.
 
 \item Compound 1, list item two.
-
 \end{itemize}
 \end{DUclass}
 
@@ -1674,7 +1639,6 @@ body row 3
 }
 
 \begin{itemize}
-
 \item A role based on an existing role.
 
 \texttt{\DUrole{custom}{one}} \texttt{\DUrole{custom}{two}} \texttt{\DUrole{custom}{three}}
@@ -1711,7 +1675,6 @@ The following works in most browsers but does not validate
 \end{quote}
 
 \DUrole{green}{\DUrole{sc}{\foreignlanguage{english}{British colourful text in small-caps}}}.
-
 \end{itemize}
 
 
@@ -1854,7 +1817,6 @@ not need to be tested with other writers (e.g. the HTML writer).
 }
 
 \begin{itemize}
-
 \item Role names and class arguments are converted to conform to the
 regular expression \texttt{{[}a-z{]}{[}-a-z0-9{]}*} (letters are downcased,
 accents and similar decoration is stripped, non-conforming
@@ -1890,7 +1852,6 @@ This is a \textsubscript{\DUrole{custom-subscript}{customized subscript text rol
 This is a \textsuperscript{\DUrole{custom-superscript}{customized superscript text role}}
 
 This is a \DUroletitlereference{\DUrole{custom-title-reference}{customized title-reference text role}}
-
 \end{itemize}
 
 
@@ -1914,12 +1875,10 @@ redefining the “quote” environment as “minipage”:
 
 \begin{DUclass}{epigraph}
 \begin{quote}
-
 Do not play this piece fast. It is never right to play \emph{Ragtime} fast.
 \nopagebreak
 
 \raggedleft —Scott Joplin
-
 \end{quote}
 \end{DUclass}
 
@@ -1940,13 +1899,11 @@ An “enumerated” bullet list:
 
 \begin{DUclass}{enumerateitems}
 \begin{itemize}
-
 \item item
 
 \item next item
 
 \item third item
-
 \end{itemize}
 \end{DUclass}
 
@@ -1954,24 +1911,20 @@ A list with lines above and below:
 
 \begin{DUclass}{rules}
 \begin{itemize}
-
 \item item
 
 \item next item
-
 \end{itemize}
 \end{DUclass}
 
 A normal bullet list is kept unchanged by the above redefinitions:
 
 \begin{itemize}
-
 \item item
 
 \item next item
 
 \item third item
-
 \end{itemize}
 
 A container wraps several elements in a common “class wrapper”. Here, we use
@@ -1986,11 +1939,9 @@ paragraph 1
 paragraph 2
 
 \begin{itemize}
-
 \item bullet list
 
 \item still bullet list
-
 \end{itemize}
 \end{DUclass}
 
@@ -2120,25 +2071,19 @@ If the option list is not at the first element in the definition, it
 is contained in a quote
 
 \begin{quote}
-
 \begin{DUoptionlist}
-
 \item[--help]  show help
 
 \item[-v]  verbose
-
 \end{DUoptionlist}
-
 \end{quote}
 
 \begin{description}
 \item[{In a definition list:}] \leavevmode 
 \begin{DUoptionlist}
-
 \item[--help]  show help
 
 \item[-v]  verbose
-
 \end{DUoptionlist}
 
 \end{description}
@@ -2533,7 +2478,6 @@ The \DUroletitlereference{Latin-1 extended} Unicode block
 \end{longtable*}
 
 \begin{itemize}
-
 \item The following line should not be wrapped, because it uses
 no-break spaces (\textbackslash{}u00a0):
 
@@ -2545,7 +2489,6 @@ X X X X X X X X X X X X X X X X X X X X X X X X X X X�
 pdn\-derd\-mdtd\-ri\-schpdn\-derd\-mdtd\-ri\-schpdn\-derd\-mdtd\-ri\-schpdn\-derd\-mdtd\-ri\-schpdn\-derd\-mdtd\-ri\-sch
 
 pdnderdmdtdrischpdnderdmdtdrischpdnderdmdtdrischpdnderdmdtdrischpdnderdmdtdrisch
-
 \end{itemize}
 
 
@@ -2556,16 +2499,12 @@ pdnderdmdtdrischpdnderdmdtdrischpdnderdmdtdrischpdnderdmdtdrischpdnderdmdtdrisch
 The LaTeX Info pages lists under “2.18 Special Characters”
 
 \begin{quote}
-
 The following characters play a special role in LaTeX and are called
 “special printing characters”, or simply “special characters”.
 
 \begin{quote}
-
 \# \$ \% \& \textasciitilde{} \_ \textasciicircum{} \textbackslash{} \{ \}
-
 \end{quote}
-
 \end{quote}
 
 The special chars verbatim:
@@ -2579,7 +2518,6 @@ The special chars verbatim:
 However also \emph{square brackets} {[}{]} need special care.
 
 \begin{quote}
-
 Commands with optional arguments (e.g. \texttt{\textbackslash{}item}) check
 if the token right after the macro name is an opening bracket.
 In that case the contents between that bracket and the following
@@ -2588,17 +2526,14 @@ optional argument. What makes this unintuitive is the fact that
 the square brackets aren’t grouping characters themselves, so in
 your last example item{[}{[}…{]}{]} the optional argument consists of
 {[}… (without the closing bracket).
-
 \end{quote}
 
 Compare the items in the following lists:
 
 \begin{itemize}
-
 \item simple item
 
 \item {[}bracketed{]} item
-
 \end{itemize}
 
 \begin{description}
@@ -2699,7 +2634,6 @@ They can, however be used in paths and/or filenames.
 Handling by the LaTeX writer:
 
 \begin{itemize}
-
 \item \texttt{\#}, \texttt{\textbackslash{}} and \texttt{\%} are escaped:
 
 \begin{DUlineblock}{0em}
@@ -2721,11 +2655,9 @@ These URLs are typeset inside a LaTeX command without error.
 \item[] \url{A:DOS\\path\\}\DUfootnotemark{id46}{id43}{10}
 \end{DUlineblock}
 }
-
 \end{itemize}
 
 \begin{itemize}
-
 \item \textasciicircum{}\textasciicircum{} LaTeX’s special syntax for characters results in “strange” replacements
 (both with href and url). A warning is given.
 
@@ -2748,7 +2680,6 @@ while balanced braces are suported:
 \item[] \url{../st{r}ange{n}ame}
 \item[] \url{../{st{r}ange{n}ame}}
 \end{DUlineblock}
-
 \end{itemize}
 
 
