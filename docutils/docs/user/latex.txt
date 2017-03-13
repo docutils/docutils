@@ -215,28 +215,34 @@ Example 2:
                                 {\end{enumerate}}%
     }
 
+Notes
+`````
 
-Class arguments may contain numbers and hyphens, which need special
-treatment in LaTeX command names (see `class directive`_). The commands
-``\begincsname`` and ``\endcsname`` or the special command ``\@namedef`` can
-help with the definition of corresponding macros or environments.
+* Class arguments may contain numbers and hyphens, which need special
+  treatment in LaTeX command names (see `class directive`_). The commands
+  ``\begincsname`` and ``\endcsname`` or the special command ``\@namedef``
+  can help with the definition of corresponding macros or environments.
 
 * Elements can have multiple class arguments. In contrast to HTML/CSS, the
   order of the class arguments cannot be ignored in LaTeX
 
-For "historical reasons", class handling differs for some elements and class
-values:
+* For "historical reasons", class handling differs for some elements and
+  class values:
 
-* The special macros ``\DUadmonition``, ``\DUtitle``, and ``\DUtopic`` are
-  written with a comma separated list of class values as optional argument.
-  See the sections on admonitions_, titles_, and the `topic element`_ for
-  customization examples.
+  * The special macros ``\DUadmonition``, ``\DUtitle``, and ``\DUtopic`` are
+    written with a comma separated list of class values as optional
+    argument.  See http://www.ctan.org/topic/keyval for LaTeX packages that
+    help parsing value lists.
 
-* Class argument values starting with ``align-`` are transformed to "align"
-  argument values. Class argument values starting with ``language-`` set the
-  elements language property.
+    See the sections on admonitions_, titles_, and the `topic element`_ for
+    customization examples.
 
-* The table element recognizes some special class values. See section table_.
+  * Class argument values starting with ``align-`` are transformed to
+    "align" argument values. Class argument values starting with
+    ``language-`` set the elements language property.
+
+  * The table element recognizes some special class values. See section
+    table_.
 
 .. _"classes" attribute: ../ref/doctree.html#classes
 
