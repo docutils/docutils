@@ -58,6 +58,8 @@ Changes Since 0.13.1
 
   - Update quote definitions for languages et, fi, ro, sv, tr, uk.
   - New quote definitions for hr, hsb, hu, lv, sl.
+  - Fix [ 313 ] Differentiate apostrophe from closing single quote
+    (if possible).
 
 * docutils/writers/_html_base.py
 
