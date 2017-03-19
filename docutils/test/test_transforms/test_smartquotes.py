@@ -41,25 +41,25 @@ totest_de_alt = {}
 
 totest['transitions'] = ((SmartQuotes,), [
 ["""\
-Test "smart quotes", 'single smart quotes',
+Test "smart quotes", 'secondary smart quotes',
 "'nested' smart" quotes
 -- and ---also long--- dashes.
 """,
 u"""\
 <document source="test data">
     <paragraph>
-        Test “smart quotes”, ‘single smart quotes’,
+        Test “smart quotes”, ‘secondary smart quotes’,
         “‘nested’ smart” quotes
         – and —also long— dashes.
 """],
-[r"""Escaped \\"smart quotes\\", \\'single smart quotes\\',
+[r"""Escaped \\"smart quotes\\", \\'secondary smart quotes\\',
 \\"\\'nested\\' smart\\" quotes
 \\-- and -\\--also long-\\-- dashes.
 """,
 u"""\
 <document source="test data">
     <paragraph>
-        Escaped "smart quotes", 'single smart quotes',
+        Escaped "smart quotes", 'secondary smart quotes',
         "'nested' smart" quotes
         -- and ---also long--- dashes.
 """],
@@ -155,7 +155,11 @@ u"""\
 ["""\
 .. class:: language-de
 
-German "smart quotes" and 'single smart quotes'.
+German "smart quotes" and 'secondary smart quotes'.
+
+.. class:: language-en-UK
+
+British "quotes" use single and 'secondary quotes' double quote signs.
 
 .. class:: language-foo
 
@@ -163,17 +167,19 @@ German "smart quotes" and 'single smart quotes'.
 
 .. class:: language-de-x-altquot
 
-Alternative German "smart quotes" and 'single smart quotes'.
+Alternative German "smart quotes" and 'secondary smart quotes'.
 """,
 u"""\
 <document source="test data">
     <paragraph classes="language-de">
-        German „smart quotes“ and ‚single smart quotes‘.
+        German „smart quotes“ and ‚secondary smart quotes‘.
+    <paragraph classes="language-en-uk">
+        British ‘quotes’ use single and “secondary quotes” double quote signs.
     <paragraph classes="language-foo">
         "Quoting style" for unknown languages is 'ASCII'.
     <paragraph classes="language-de-x-altquot">
-        Alternative German »smart quotes« and ›single smart quotes‹.
-    <system_message level="2" line="7" source="test data" type="WARNING">
+        Alternative German »smart quotes« and ›secondary smart quotes‹.
+    <system_message level="2" line="11" source="test data" type="WARNING">
         <paragraph>
             No smart quotes defined for language "foo".
 """],
@@ -181,28 +187,31 @@ u"""\
 
 totest_de['transitions'] = ((SmartQuotes,), [
 ["""\
-German "smart quotes" and 'single smart quotes'.
+German "smart quotes" and 'secondary smart quotes'.
 
-.. class:: language-en-UK
+.. class:: language-en
 
-English "smart quotes" and 'single smart quotes'.
+English "smart quotes" and 'secondary smart quotes'.
 """,
 u"""\
 <document source="test data">
     <paragraph>
-        German „smart quotes“ and ‚single smart quotes‘.
-    <paragraph classes="language-en-uk">
-        English “smart quotes” and ‘single smart quotes’.
+        German „smart quotes“ and ‚secondary smart quotes‘.
+    <paragraph classes="language-en">
+        English “smart quotes” and ‘secondary smart quotes’.
 """],
 ])
 
 totest_de_alt['transitions'] = ((SmartQuotes,), [
 ["""\
-Alternative German "smart quotes" and 'single smart quotes'.
+Alternative German "smart quotes" and 'secondary smart quotes'.
+
+In this case, the apostrophe isn't a closing secondary quote!
 
 .. class:: language-en-UK
 
-English "smart quotes" and 'single smart quotes' have no alternative.
+British "quotes" use single and 'secondary quotes' double quote signs
+(there are no alternative quotes defined).
 
 .. class:: language-ro
 
@@ -211,9 +220,12 @@ Romanian "smart quotes" and 'secondary' smart quotes.
 u"""\
 <document source="test data">
     <paragraph>
-        Alternative German »smart quotes« and ›single smart quotes‹.
+        Alternative German »smart quotes« and ›secondary smart quotes‹.
+    <paragraph>
+        In this case, the apostrophe isn’t a closing secondary quote!
     <paragraph classes="language-en-uk">
-        English “smart quotes” and ‘single smart quotes’ have no alternative.
+        British ‘quotes’ use single and “secondary quotes” double quote signs
+        (there are no alternative quotes defined).
     <paragraph classes="language-ro">
         Romanian „smart quotes” and «secondary» smart quotes.
 """],

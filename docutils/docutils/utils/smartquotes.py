@@ -160,21 +160,21 @@ appropriate, such as source code or example markup.
 Backslash Escapes
 =================
 
-If you need to use literal straight quotes (or plain hyphens and
-periods), SmartyPants accepts the following backslash escape sequences
-to force non-smart punctuation. It does so by transforming the escape
-sequence into a character:
+If you need to use literal straight quotes (or plain hyphens and periods),
+`smartquotes` accepts the following backslash escape sequences to force
+ASCII-punctuation. Mind, that you need two backslashes as Docutils expands it,
+too.
 
-========  =====  =========
-Escape    Value  Character
-========  =====  =========
-``\\\\``  &#92;  \\
-\\"       &#34;  "
-\\'       &#39;  '
-\\.       &#46;  .
-\\-       &#45;  \-
-\\`       &#96;  \`
-========  =====  =========
+========  =========
+Escape    Character
+========  =========
+``\\``    \\
+``\\"``   \\"
+``\\'``   \\'
+``\\.``   \\.
+``\\-``   \\-
+``\\```   \\`
+========  =========
 
 This is useful, for example, when you want to use straight quotes as
 foot and inch marks: 6\\'2\\" tall; a 17\\" iMac.
@@ -274,7 +274,7 @@ If you're the sort of person who just doesn't care, you might well want to
 continue not caring. Using straight quotes -- and sticking to the 7-bit
 ASCII character set in general -- is certainly a simpler way to live.
 
-Even if you I *do* care about accurate typography, you still might want to
+Even if you *do* care about accurate typography, you still might want to
 think twice before educating the quote characters in your weblog. One side
 effect of publishing curly quote characters is that it makes your
 weblog a bit harder for others to quote from using copy-and-paste. What
@@ -305,16 +305,45 @@ apostrophes are used at the start of leading contractions. For example:
 ``'Twas the night before Christmas.``
 
 In the case above, SmartyPants will turn the apostrophe into an opening
-single-quote, when in fact it should be a closing one. I don't think
-this problem can be solved in the general case -- every word processor
-I've tried gets this wrong as well. In such cases, it's best to use the
-proper character for closing single-quotes (``’``) by hand.
+single-quote, when in fact it should be the `right single quotation mark`
+character which is also "the preferred character to use for apostrophe"
+(Unicode). I don't think this problem can be solved in the general case --
+every word processor I've tried gets this wrong as well. In such cases, it's
+best to use the proper character for closing single-quotes (’) by hand.
+
+In English, the same character is used for apostrophe and  closing single
+quote (both plain and "smart" ones). For other locales (French, Italean,
+Swiss, ...) "smart" single closing quotes differ from the curly apostrophe.
+
+   .. class:: language-fr
+
+   Il dit : "C'est 'super' !"
+
+If the apostrophe is used at the end of a word, it cannot be distinguished
+from a single quote by the algorithm. Therefore, a text like::
+
+   .. class:: language-de-CH
+
+   "Er sagt: 'Ich fass' es nicht.'"
+
+will get a single closing guillemet instead of an apostrophe.
+
+This can be prevented by use use of the curly apostrophe character (’) in
+the source:
+
+   .. class:: language-de-CH
+
+   "Er sagt: 'Ich fass' es nicht.'"  →  "Er sagt: 'Ich fass’ es nicht.'"
 
 
 Version History
 ===============
 
-1.7     2012-11-19
+1.7.1:  2017-03-19
+        - Update and extend language-dependent quotes.
+        - Differentiate apostrophe from single quote.
+
+1.7:    2012-11-19
         - Internationalization: language-dependent quotes.
 
 1.6.1:  2012-11-06
@@ -370,6 +399,7 @@ class smartchars(object):
     endash   = u'–' # "&#8211;" EN DASH
     emdash   = u'—' # "&#8212;" EM DASH
     ellipsis = u'…' # "&#8230;" HORIZONTAL ELLIPSIS
+    apostrophe = u'’'
 
     # quote characters (language-specific, set in __init__())
     #
@@ -395,10 +425,10 @@ class smartchars(object):
               'da-x-altquot': u'„“‚‘',
               'de':           u'„“‚‘',
               'de-x-altquot': u'»«›‹',
-              'de-CH':        u'«»‹›',
+              'de-ch':        u'«»‹›',
               'el':           u'«»“”',
               'en':           u'“”‘’',
-              'en-UK':        u'‘’“”',
+              'en-uk':        u'‘’“”',
               'eo':           u'“”‘’',
               'es':           u'«»“”',
               'es-x-altquot': u'“”‘’',
@@ -410,7 +440,7 @@ class smartchars(object):
               'fr':           (u'« ',  u' »', u'‹ ', u' ›'), # with narrow no-break space
               'fr-x-altquot': u'«»‹›', # for use with manually set spaces
               # 'fr-x-altquot2': (u'“ ',  u' ”', u'‘ ', u' ’'), # rarely used
-              'fr-CH':        u'«»‹›',
+              'fr-ch':        u'«»‹›',
               'gl':           u'«»“”',
               'he':           u'”“»«',
               'he-x-altquot': u'„”‚’',
@@ -420,7 +450,7 @@ class smartchars(object):
               'hsb-x-altquot':u'»«›‹',
               'hu':           u'„”«»',
               'it':           u'«»“”',
-              'it-CH':        u'«»‹›',
+              'it-ch':        u'«»‹›',
               'it-x-altquot': u'“”‘’',
               # 'it-x-altquot2': u'“„‘‚', # antiquated?
               'ja':           u'「」『』',
@@ -432,7 +462,7 @@ class smartchars(object):
               'pl':           u'„”«»',
               'pl-x-altquot': u'«»“”',
               'pt':           u'«»“”',
-              'pt-BR':        u'“”‘’',
+              'pt-br':        u'“”‘’',
               'ro':           u'„”«»',
               'ru':           u'«»„“',
               'sk':           u'„“‚‘',
@@ -446,15 +476,15 @@ class smartchars(object):
               # 'tr-x-altquot2': u'“„‘‚', # antiquated?
               'uk':           u'«»„“',
               'uk-x-altquot': u'„“‚‘',
-              'zh-CN':        u'“”‘’',
-              'zh-TW':        u'「」『』',
+              'zh-cn':        u'“”‘’',
+              'zh-tw':        u'「」『』',
              }
 
     def __init__(self, language='en'):
         self.language = language
         try:
             (self.opquote, self.cpquote,
-             self.osquote, self.csquote) = self.quotes[language]
+             self.osquote, self.csquote) = self.quotes[language.lower()]
         except KeyError:
             self.opquote, self.cpquote, self.osquote, self.csquote = u'""\'\''
 
@@ -624,21 +654,29 @@ def educateQuotes(text, language='en'):
                     )
                     '                 # the quote
                     (?=\w)            # followed by a word character
-                    """ % (dec_dashes,), re.VERBOSE)
+                    """ % (dec_dashes,), re.VERBOSE | re.UNICODE)
     text = opening_single_quotes_regex.sub(r'\1'+smart.osquote, text)
+
+    # In many locales, single closing quotes are different from apostrophe:
+    if smart.csquote != smart.apostrophe:
+        apostrophe_regex = re.compile(r"(?<=(\w|\d))'(?=\w)", re.UNICODE)
+        text = apostrophe_regex.sub(smart.apostrophe, text)
 
     closing_single_quotes_regex = re.compile(r"""
                     (%s)
                     '
-                    (?!\s | s\b | \d)
-                    """ % (close_class,), re.VERBOSE)
+                    (?!\s  |       # whitespace
+                       s\b |
+                        \d         # digits   ('80s)
+                    )
+                    """ % (close_class,), re.VERBOSE | re.UNICODE)
     text = closing_single_quotes_regex.sub(r'\1'+smart.csquote, text)
 
     closing_single_quotes_regex = re.compile(r"""
                     (%s)
                     '
                     (\s | s\b)
-                    """ % (close_class,), re.VERBOSE)
+                    """ % (close_class,), re.VERBOSE | re.UNICODE)
     text = closing_single_quotes_regex.sub(r'\1%s\2' % smart.csquote, text)
 
     # Any remaining single quotes should be opening ones:
@@ -879,7 +917,7 @@ if __name__ == "__main__":
         pass
 
     from docutils.core import publish_string
-    docstring_html = publish_string(__doc__, writer_name='html')
+    docstring_html = publish_string(__doc__, writer_name='html5')
 
     print docstring_html
 
@@ -912,11 +950,3 @@ if __name__ == "__main__":
             self.assertEqual(sp(text), text)
 
     unittest.main()
-
-
-
-
-__author__ = "Chad Miller <smartypantspy@chad.org>"
-__version__ = "1.5_1.6: Fri, 27 Jul 2007 07:06:40 -0400"
-__url__ = "http://wiki.chad.org/SmartyPantsPy"
-__description__ = "Smart-quotes, smart-ellipses, and smart-dashes for weblog entries in pyblosxom"
