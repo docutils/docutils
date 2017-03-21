@@ -29,6 +29,12 @@ be sure that you haven't broken anything.  From a shell::
     cd docutils/test
     ./alltests.py
 
+For Python 3, the tests must be converted with 2to3. To run the tests with
+Python 3, ``cd`` to the package's root directory and do::
+
+    python3 setup.py build
+    python3 test3/alltests.py
+
 Python Versions
 ===============
 
