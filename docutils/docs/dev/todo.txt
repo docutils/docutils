@@ -2349,6 +2349,14 @@ Bug fixes
 
 * File names of included graphics (see also `grffile` package).
 
+* Paragraph following field-list or table in compound is indented.
+
+  This is a problem with the current DUfieldlist definition and with
+  the use of "longtable" for tables.
+  See `LaTeX constructs and packages instead of re-implementations`_ for
+  alternatives.
+
+
 Generate clean and configurable LaTeX source
 ----------------------------------------------
 
@@ -2498,7 +2506,8 @@ Default layout
 
   Overriding:
 
-  * continue if the `compound paragraph`_ directive is used, or
+  * continue if the `compound paragraph`_ directive is used (as currently),
+    or
   * force a new paragraph with an empty comment.
 
 * Sidebar handling (environment with `framed`, `marginnote`, `wrapfig`,
@@ -2552,7 +2561,6 @@ Tables
 
 * Add more classes or options, e.g. for
 
-  + column width set by latex,
   + horizontal alignment and rules.
   + long table vs. tabular (see next item).
 
