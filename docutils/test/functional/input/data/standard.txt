@@ -731,25 +731,33 @@ I recommend you try |Python|_.
 Compound Paragraph
 ``````````````````
 
+The *compound* directive is used to create a "compound paragraph", which
+is a single logical paragraph containing multiple physical body
+elements. For example:
+
+.. compound::
+
+   The 'rm' command is very dangerous.  If you are logged
+   in as root and enter ::
+
+       cd /
+       rm -rf *
+
+   you will erase the entire contents of your file system.
+
+Test the handling and display of compound paragraphs:
+
 .. compound::
    :class: some-class
 
-   Compound 1, paragraph 1.
+   Compound 2, paragraph 1,
 
-   Compound 1, paragraph 2.
+   compound 2, paragraph 2,
 
-   * Compound 1, list item one.
-   * Compound 1, list item two.
+   * list item 1,
+   * list item 2,
 
-Another compound statement:
-
-.. compound::
-
-   Compound 2, a literal block::
-
-       Compound 2, literal.
-
-   Compound 2, this is a test.
+   compound 2, paragraph 3.
 
 .. compound::
 
@@ -762,7 +770,7 @@ Another compound statement:
        Compound 4.
        This one starts with a literal block.
 
-   Compound 4, a paragraph.
+   Compound 4, paragraph following the literal block.
 
 Now something *really* perverted -- a nested compound block.  This is
 just to test that it works at all; the results don't have to be
@@ -774,7 +782,7 @@ meaningful.
 
    .. compound::
 
-      Compound 6, block 2 in compound 5.
+      Compound 6 is block 2 in compound 5.
 
       Compound 6, another paragraph.
 
@@ -782,7 +790,8 @@ meaningful.
 
 .. compound::
 
-   Compound 7, with a table inside:
+   Compound 7, tests the inclusion of various block-level
+   elements in one logical paragraph. First a table,
 
    +--------------------+--------------------+--------------------+
    | Left cell, first   | Middle cell,       | Right cell.        |
@@ -792,9 +801,45 @@ meaningful.
    | paragraph.         |                    | Paragraph 3.       |
    +--------------------+--------------------+--------------------+
 
-   Compound 7, a paragraph after the table.
+   followed by a paragraph. This physical paragraph is
+   actually a continuation of the paragraph before the table. It is followed
+   by
 
-   Compound 7, another paragraph.
+     a quote and
+
+   #. an enumerated list,
+
+   a paragraph,
+
+   --an  option list,
+
+   a paragraph,
+
+   :a field: list,
+
+   a paragraph,
+
+   a definition
+     list,
+
+   a paragraph, an image:
+
+   .. image:: ../../../docs/user/rst/images/biohazard.png
+
+   a paragraph,
+
+   | a line
+   | block,
+
+   a paragraph followed by a comment,
+
+   .. this is a comment
+
+   a paragraph, a
+
+   .. note:: with content
+
+   and the final paragraph of the compound 7.
 
 Parsed Literal Blocks
 `````````````````````

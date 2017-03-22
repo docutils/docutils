@@ -1595,7 +1595,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def duclass_open(self, node):
         """Open a group and insert declarations for class values."""
-        self.out.append('\n')
+        if not isinstance(node.parent, nodes.compound):
+             self.out.append('\n')
         for cls in node['classes']:
             if cls.startswith('language-'):
                 language = self.babel.language_name(cls[9:])
@@ -1808,18 +1809,20 @@ class LaTeXTranslator(nodes.NodeVisitor):
         pass
 
     def visit_comment(self, node):
+        if not isinstance(node.parent, nodes.compound):
+             self.out.append('\n')
         # Precede every line with a comment sign, wrap in newlines
-        self.out.append('\n%% %s\n' % node.astext().replace('\n', '\n% '))
+        self.out.append('%% %s\n' % node.astext().replace('\n', '\n% '))
         raise nodes.SkipNode
 
     def depart_comment(self, node):
         pass
 
     def visit_compound(self, node):
+        if isinstance(node.parent, nodes.compound):
+            self.out.append('\n')
+        node['classes'].insert(0, 'compound')
         self.duclass_open(node)
-        # TODO: remove/comment blank lines in content
-        # so that included lists, equations, figures, ...
-        # become part of the compound paragraph.
 
     def depart_compound(self, node):
         self.duclass_close(node)
@@ -1859,7 +1862,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         pass
 
     def depart_definition(self, node):
-        self.out.append('\n')
+        self.out.append('\n')                # TODO: just pass?
 
     def visit_definition_list(self, node):
         self.duclass_open(node)
@@ -2382,8 +2385,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
             include_graphics_options.append('width=%s' %
                             self.to_latex_length(attrs['width']))
         if not (self.is_inline(node) or
-                isinstance(node.parent, nodes.figure)):
+                isinstance(node.parent, (nodes.figure, nodes.compound))):
             pre.append('\n')
+        if not (self.is_inline(node) or
+                isinstance(node.parent, nodes.figure)):
             post.append('\n')
         pre.reverse()
         self.out.extend(pre)
@@ -2653,12 +2658,12 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_paragraph(self, node):
         # insert blank line, unless
-        # * the paragraph is first in a list item,
+        # * the paragraph is first in a list item or compound,
         # * follows a non-paragraph node in a compound,
         # * is in a table with auto-width columns
         index = node.parent.index(node)
-        if (index == 0 and (isinstance(node.parent, nodes.list_item) or
-                            isinstance(node.parent, nodes.description))):
+        if index == 0 and isinstance(node.parent,
+                (nodes.list_item, nodes.description, nodes.compound)):
             pass
         elif (index > 0 and isinstance(node.parent, nodes.compound) and
               not isinstance(node.parent[index - 1], nodes.paragraph) and

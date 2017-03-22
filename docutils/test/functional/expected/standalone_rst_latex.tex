@@ -1269,59 +1269,71 @@ I recommend you try \href{http://www.python.org/}{Python, \emph{the} best langua
   \label{compound-paragraph}%
 }
 
-\begin{DUclass}{some-class}
+The \emph{compound} directive is used to create a “compound paragraph”, which
+is a single logical paragraph containing multiple physical body
+elements. For example:
 
-Compound 1, paragraph 1.
-
-Compound 1, paragraph 2.
-
-\begin{itemize}
-\item Compound 1, list item one.
-
-\item Compound 1, list item two.
-\end{itemize}
-\end{DUclass}
-
-Another compound statement:
-
-
-Compound 2, a literal block:
-
+\begin{DUclass}{compound}
+The ‘rm’ command is very dangerous.  If you are logged
+in as root and enter
 \begin{quote}
 \begin{alltt}
-Compound 2, literal.
+cd /
+rm -rf *
 \end{alltt}
 \end{quote}
-Compound 2, this is a test.
+you will erase the entire contents of your file system.
+\end{DUclass}
 
+Test the handling and display of compound paragraphs:
 
+\begin{DUclass}{compound}
+\begin{DUclass}{some-class}
+Compound 2, paragraph 1,
+
+compound 2, paragraph 2,
+\begin{itemize}
+\item list item 1,
+
+\item list item 2,
+\end{itemize}
+compound 2, paragraph 3.
+\end{DUclass}
+\end{DUclass}
+
+\begin{DUclass}{compound}
 Compound 3, only consisting of one paragraph.
+\end{DUclass}
 
-
+\begin{DUclass}{compound}
 \begin{quote}
 \begin{alltt}
 Compound 4.
 This one starts with a literal block.
 \end{alltt}
 \end{quote}
-Compound 4, a paragraph.
+Compound 4, paragraph following the literal block.
+\end{DUclass}
 
 Now something \emph{really} perverted – a nested compound block.  This is
 just to test that it works at all; the results don’t have to be
 meaningful.
 
-
+\begin{DUclass}{compound}
 Compound 5, block 1 (a paragraph).
 
-
-Compound 6, block 2 in compound 5.
+\begin{DUclass}{compound}
+Compound 6 is block 2 in compound 5.
 
 Compound 6, another paragraph.
+\end{DUclass}
 
 Compound 5, block 3 (a paragraph).
+\end{DUclass}
 
-
-Compound 7, with a table inside:
+\begin{DUclass}{compound}
+Compound 7, tests the inclusion of various block-level
+elements in one logical paragraph. First a table,
 
 \setlength{\DUtablewidth}{\linewidth}
 \begin{longtable*}[c]{|p{0.249\DUtablewidth}|p{0.249\DUtablewidth}|p{0.249\DUtablewidth}|}
@@ -1346,9 +1358,48 @@ Paragraph 3.
  \\
 \hline
 \end{longtable*}
-Compound 7, a paragraph after the table.
+followed by a paragraph. This physical paragraph is
+actually a continuation of the paragraph before the table. It is followed
+by
+\begin{quote}
+a quote and
+\end{quote}
+\begin{enumerate}
+\item an enumerated list,
+\end{enumerate}
+a paragraph,
+\begin{DUoptionlist}
+\item[-{}-an]  option list,
+\end{DUoptionlist}
+a paragraph,
+\begin{DUfieldlist}
+\item[{a field:}]
+list,
+\end{DUfieldlist}
+a paragraph,
+\begin{description}
+\item[{a definition}] \leavevmode 
+list,
 
-Compound 7, another paragraph.
+\end{description}
+a paragraph, an image:
+\includegraphics{../../../docs/user/rst/images/biohazard.png}
+a paragraph,
+\begin{DUlineblock}{0em}
+\item[] a line
+\item[] block,
+\end{DUlineblock}
+a paragraph followed by a comment,
+% this is a comment
+a paragraph, a
+
+\DUadmonition[note]{
+\DUtitle[note]{Note}
+
+with content
+}
+and the final paragraph of the compound 7.
+\end{DUclass}
 
 
 \subsubsection{2.14.8~~~Parsed Literal Blocks%

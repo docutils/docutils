@@ -1663,27 +1663,38 @@
                     <generated classes="sectnum">
                         2.14.7   
                     Compound Paragraph
+                <paragraph>
+                    The 
+                    <emphasis>
+                        compound
+                     directive is used to create a "compound paragraph", which
+                    is a single logical paragraph containing multiple physical body
+                    elements. For example:
+                <compound>
+                    <paragraph>
+                        The 'rm' command is very dangerous.  If you are logged
+                        in as root and enter
+                    <literal_block xml:space="preserve">
+                        cd /
+                        rm -rf *
+                    <paragraph>
+                        you will erase the entire contents of your file system.
+                <paragraph>
+                    Test the handling and display of compound paragraphs:
                 <compound classes="some-class">
                     <paragraph>
-                        Compound 1, paragraph 1.
+                        Compound 2, paragraph 1,
                     <paragraph>
-                        Compound 1, paragraph 2.
+                        compound 2, paragraph 2,
                     <bullet_list bullet="*">
                         <list_item>
                             <paragraph>
-                                Compound 1, list item one.
+                                list item 1,
                         <list_item>
                             <paragraph>
-                                Compound 1, list item two.
-                <paragraph>
-                    Another compound statement:
-                <compound>
+                                list item 2,
                     <paragraph>
-                        Compound 2, a literal block:
-                    <literal_block xml:space="preserve">
-                        Compound 2, literal.
-                    <paragraph>
-                        Compound 2, this is a test.
+                        compound 2, paragraph 3.
                 <compound>
                     <paragraph>
                         Compound 3, only consisting of one paragraph.
@@ -1692,7 +1703,7 @@
                         Compound 4.
                         This one starts with a literal block.
                     <paragraph>
-                        Compound 4, a paragraph.
+                        Compound 4, paragraph following the literal block.
                 <paragraph>
                     Now something 
                     <emphasis>
@@ -1705,14 +1716,15 @@
                         Compound 5, block 1 (a paragraph).
                     <compound>
                         <paragraph>
-                            Compound 6, block 2 in compound 5.
+                            Compound 6 is block 2 in compound 5.
                         <paragraph>
                             Compound 6, another paragraph.
                     <paragraph>
                         Compound 5, block 3 (a paragraph).
                 <compound>
                     <paragraph>
-                        Compound 7, with a table inside:
+                        Compound 7, tests the inclusion of various block-level
+                        elements in one logical paragraph. First a table,
                     <table>
                         <tgroup cols="3">
                             <colspec colwidth="20">
@@ -1741,9 +1753,66 @@
                                         <paragraph>
                                             Paragraph 3.
                     <paragraph>
-                        Compound 7, a paragraph after the table.
+                        followed by a paragraph. This physical paragraph is
+                        actually a continuation of the paragraph before the table. It is followed
+                        by
+                    <block_quote>
+                        <paragraph>
+                            a quote and
+                    <enumerated_list enumtype="arabic" prefix="" suffix=".">
+                        <list_item>
+                            <paragraph>
+                                an enumerated list,
                     <paragraph>
-                        Compound 7, another paragraph.
+                        a paragraph,
+                    <option_list>
+                        <option_list_item>
+                            <option_group>
+                                <option>
+                                    <option_string>
+                                        --an
+                            <description>
+                                <paragraph>
+                                    option list,
+                    <paragraph>
+                        a paragraph,
+                    <field_list>
+                        <field>
+                            <field_name>
+                                a field
+                            <field_body>
+                                <paragraph>
+                                    list,
+                    <paragraph>
+                        a paragraph,
+                    <definition_list>
+                        <definition_list_item>
+                            <term>
+                                a definition
+                            <definition>
+                                <paragraph>
+                                    list,
+                    <paragraph>
+                        a paragraph, an image:
+                    <image uri="../../../docs/user/rst/images/biohazard.png">
+                    <paragraph>
+                        a paragraph,
+                    <line_block>
+                        <line>
+                            a line
+                        <line>
+                            block,
+                    <paragraph>
+                        a paragraph followed by a comment,
+                    <comment xml:space="preserve">
+                        this is a comment
+                    <paragraph>
+                        a paragraph, a
+                    <note>
+                        <paragraph>
+                            with content
+                    <paragraph>
+                        and the final paragraph of the compound 7.
             <section ids="parsed-literal-blocks" names="parsed\ literal\ blocks">
                 <title auto="1" refid="id81">
                     <generated classes="sectnum">
@@ -2274,6 +2343,6 @@
         <system_message level="1" line="685" source="functional/input/data/standard.txt" type="INFO">
             <paragraph>
                 Hyperlink target "docutils" is not referenced.
-        <system_message level="1" line="806" source="functional/input/data/standard.txt" type="INFO">
+        <system_message level="1" line="851" source="functional/input/data/standard.txt" type="INFO">
             <paragraph>
                 Hyperlink target "hyperlink targets" is not referenced.
