@@ -431,7 +431,7 @@ class smartchars(object):
               'eu':           u'«»‹›',
               'fi':           u'””’’',
               'fi-x-altquot': u'»»››',
-              'fr':           (u'« ', u' »', u'“', u'”'), # full no-break space
+              'fr':           (u'« ', u' »', u'“', u'”'), # full no-break space
               'fr-x-altquot': (u'« ', u' »', u'“', u'”'), # narrow no-break space
               'fr-ch':        u'«»‹›',
               'fr-ch-x-altquot': (u'« ',  u' »', u'‹ ', u' ›'), # narrow no-break space, http://typoguide.ch/
