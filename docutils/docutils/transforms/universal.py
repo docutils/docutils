@@ -288,7 +288,7 @@ class SmartQuotes(Transform):
             # Iterator educating quotes in plain text:
             # '2': set all, using old school en- and em- dash shortcuts
             teacher = smartquotes.educate_tokens(self.get_tokens(txtnodes),
-                                                 attr='2', language=lang)
+                                                 attr='qDe', language=lang)
 
             for txtnode, newtext in zip(txtnodes, teacher):
                 txtnode.parent.replace(txtnode, nodes.Text(newtext))

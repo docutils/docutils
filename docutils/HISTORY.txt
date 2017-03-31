@@ -56,8 +56,8 @@ Changes Since 0.13.1
 
 * docutils/utils/smartquotes.py:
 
-  - Update quote definitions for languages et, fi, ro, sv, tr, uk.
-  - New quote definitions for hr, hsb, hu, lv, sl.
+  - Update quote definitions for languages et, fi, fr, ro, sv, tr, uk.
+  - New quote definitions for hr, hsb, hu, lv, sh, sl, sr.
   - Fix [ 313 ] Differentiate apostrophe from closing single quote
     (if possible).
 

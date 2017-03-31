@@ -192,7 +192,7 @@ Numeric values are the easiest way to configure SmartyPants' behavior:
 "1"
         Performs default SmartyPants transformations: quotes (including
         \`\`backticks'' -style), em-dashes, and ellipses. "``--``" (dash dash)
-        is used to signify an em-dash; there is no support for en-dashes.
+        is used to signify an em-dash; there is no support for en-dashes
 
 "2"
         Same as smarty_pants="1", except that it uses the old-school typewriter
@@ -217,7 +217,8 @@ individual transformations from within the smarty_pants attribute. For
 example, to educate normal quotes and em-dashes, but not ellipses or
 \`\`backticks'' -style quotes:
 
-``py['smartypants_attributes'] = "1"``
+E.g. ``py['smartypants_attributes'] = "1"`` is equivalent to
+``py['smartypants_attributes'] = "qBde"``.
 
 "q"
         Educates normal quote characters: (") and (').
@@ -329,11 +330,10 @@ from a single quote by the algorithm. Therefore, a text like::
 will get a single closing guillemet instead of an apostrophe.
 
 This can be prevented by use use of the curly apostrophe character (’) in
-the source:
+the source::
 
-   .. class:: language-de-CH
-
-   "Er sagt: 'Ich fass' es nicht.'"  →  "Er sagt: 'Ich fass’ es nicht.'"
+   -  "Er sagt: 'Ich fass' es nicht.'"
+   +  "Er sagt: 'Ich fass’ es nicht.'"
 
 
 Version History
@@ -399,20 +399,14 @@ class smartchars(object):
     endash   = u'–' # "&#8211;" EN DASH
     emdash   = u'—' # "&#8212;" EM DASH
     ellipsis = u'…' # "&#8230;" HORIZONTAL ELLIPSIS
-    apostrophe = u'’'
+    apostrophe = u'’' # "&#8217;" RIGHT SINGLE QUOTATION MARK
 
     # quote characters (language-specific, set in __init__())
-    #
-    # English smart quotes (open primary, close primary, open secondary, close
-    # secondary) are:
-    #   opquote  = u'“' # "&#8220;" LEFT DOUBLE QUOTATION MARK
-    #   cpquote  = u'”' # "&#8221;" RIGHT DOUBLE QUOTATION MARK
-    #   osquote  = u'‘' # "&#8216;" LEFT SINGLE QUOTATION MARK
-    #   csquote  = u'’' # "&#8217;" RIGHT SINGLE QUOTATION MARK
-    # For other languages see:
     # http://en.wikipedia.org/wiki/Non-English_usage_of_quotation_marks
     # http://de.wikipedia.org/wiki/Anf%C3%BChrungszeichen#Andere_Sprachen
     # https://fr.wikipedia.org/wiki/Guillemet
+    # http://typographisme.net/post/Les-espaces-typographiques-et-le-web
+    # http://www.btb.termiumplus.gc.ca/tpv2guides/guides/redac/index-fra.html
     # https://en.wikipedia.org/wiki/Hebrew_punctuation#Quotation_marks
     # http://www.tustep.uni-tuebingen.de/bi/bi00/bi001t1-anfuehrung.pdf
     quotes = {'af':           u'“”‘’',
@@ -428,7 +422,7 @@ class smartchars(object):
               'de-ch':        u'«»‹›',
               'el':           u'«»“”',
               'en':           u'“”‘’',
-              'en-uk':        u'‘’“”',
+              'en-uk-x-altquot': u'‘’“”', # Attention: " → ‘ and ' → “ !
               'eo':           u'“”‘’',
               'es':           u'«»“”',
               'es-x-altquot': u'“”‘’',
@@ -437,10 +431,10 @@ class smartchars(object):
               'eu':           u'«»‹›',
               'fi':           u'””’’',
               'fi-x-altquot': u'»»››',
-              'fr':           (u'« ',  u' »', u'‹ ', u' ›'), # with narrow no-break space
-              'fr-x-altquot': u'«»‹›', # for use with manually set spaces
-              # 'fr-x-altquot2': (u'“ ',  u' ”', u'‘ ', u' ’'), # rarely used
+              'fr':           (u'« ', u' »', u'“', u'”'), # full no-break space
+              'fr-x-altquot': (u'« ', u' »', u'“', u'”'), # narrow no-break space
               'fr-ch':        u'«»‹›',
+              'fr-ch-x-altquot': (u'« ',  u' »', u'‹ ', u' ›'), # narrow no-break space, http://typoguide.ch/
               'gl':           u'«»“”',
               'he':           u'”“»«',
               'he-x-altquot': u'„”‚’',
@@ -465,8 +459,11 @@ class smartchars(object):
               'pt-br':        u'“”‘’',
               'ro':           u'„”«»',
               'ru':           u'«»„“',
+              'sh':           u'„”‚’',
+              'sh-x-altquot': u'»«›‹',
               'sk':           u'„“‚‘',
               'sk-x-altquot': u'»«›‹',
+              'sr':           u'„”’’',
               'sl':           u'„“‚‘',
               'sl-x-altquot': u'»«›‹',
               'sv':           u'””’’',
@@ -637,7 +634,8 @@ def educateQuotes(text, language='en'):
     text = re.sub(r"""'"(?=\w)""", smart.osquote+smart.opquote, text)
 
     # Special case for decade abbreviations (the '80s):
-    text = re.sub(r"""\b'(?=\d{2}s)""", smart.csquote, text)
+    if language.startswith('en'): # TODO similar cases in other languages?
+        text = re.sub(r"""'(?=\d{2}s)""", smart.apostrophe, text, re.UNICODE)
 
     close_class = r"""[^\ \t\r\n\[\{\(\-]"""
     dec_dashes = r"""&#8211;|&#8212;"""
@@ -661,6 +659,8 @@ def educateQuotes(text, language='en'):
     if smart.csquote != smart.apostrophe:
         apostrophe_regex = re.compile(r"(?<=(\w|\d))'(?=\w)", re.UNICODE)
         text = apostrophe_regex.sub(smart.apostrophe, text)
+    # TODO: keep track of quoting level to recognize apostrophe in, e.g.,
+    # "Ich fass' es nicht."
 
     closing_single_quotes_regex = re.compile(r"""
                     (%s)

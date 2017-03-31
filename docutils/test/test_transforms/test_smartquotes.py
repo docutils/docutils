@@ -157,9 +157,10 @@ u"""\
 
 German "smart quotes" and 'secondary smart quotes'.
 
-.. class:: language-en-UK
+.. class:: language-en-UK-x-altquot
 
-British "quotes" use single and 'secondary quotes' double quote signs.
+British "primary quotes" use single and
+'secondary quotes' double quote signs.
 
 .. class:: language-foo
 
@@ -173,13 +174,14 @@ u"""\
 <document source="test data">
     <paragraph classes="language-de">
         German „smart quotes“ and ‚secondary smart quotes‘.
-    <paragraph classes="language-en-uk">
-        British ‘quotes’ use single and “secondary quotes” double quote signs.
+    <paragraph classes="language-en-uk-x-altquot">
+        British ‘primary quotes’ use single and
+        “secondary quotes” double quote signs.
     <paragraph classes="language-foo">
         "Quoting style" for unknown languages is 'ASCII'.
     <paragraph classes="language-de-x-altquot">
         Alternative German »smart quotes« and ›secondary smart quotes‹.
-    <system_message level="2" line="11" source="test data" type="WARNING">
+    <system_message level="2" line="12" source="test data" type="WARNING">
         <paragraph>
             No smart quotes defined for language "foo".
 """],
