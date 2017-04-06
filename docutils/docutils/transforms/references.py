@@ -893,7 +893,10 @@ class DanglingReferencesVisitor(nodes.SparseNodeVisitor):
                 msgid = self.document.set_id(msg)
                 prb = nodes.problematic(
                       node.rawsource, node.rawsource, refid=msgid)
-                prbid = self.document.set_id(prb)
+                try:
+                    prbid = node['ids'][0]
+                except IndexError:
+                    prbid = self.document.set_id(prb)
                 msg.add_backref(prbid)
                 node.replace_self(prb)
         else:

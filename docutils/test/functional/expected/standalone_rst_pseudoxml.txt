@@ -1044,7 +1044,7 @@
                 <paragraph>
                     Here's an unreferenced footnote, with a reference to a
                     nonexistent footnote: 
-                    <problematic ids="id84 id17" refid="id83">
+                    <problematic ids="id17" refid="id83">
                         [5]_
                     .
         <section ids="citations" names="citations">
@@ -1063,7 +1063,7 @@
                 <citation_reference ids="id18" refid="cit2002">
                     CIT2002
                 , and a 
-                <problematic ids="id86 id19" refid="id85">
+                <problematic ids="id19" refid="id84">
                     [nonexistent]_
                 
                 citation.
@@ -1114,7 +1114,7 @@
             <target anonymous="1" ids="id20" refid="targets">
             <paragraph>
                 Here's a 
-                <problematic ids="id88" refid="id87">
+                <problematic ids="id86" refid="id85">
                     `hyperlink reference without a target`_
                 , which generates an
                 error.
@@ -1139,7 +1139,7 @@
                     Since there are two "Duplicate Target Names" section headers, we
                     cannot uniquely refer to either of them by name.  If we try to (like
                     this: 
-                    <problematic ids="id90" refid="id89">
+                    <problematic ids="id88" refid="id87">
                         `Duplicate Target Names`_
                     ), an error is generated.
         <section ids="directives" names="directives">
@@ -2307,16 +2307,16 @@
         <system_message backrefs="id24" ids="id23" level="3" line="104" source="functional/input/data/standard.txt" type="ERROR">
             <paragraph>
                 Undefined substitution referenced: "problematic".
-        <system_message backrefs="id84" ids="id83" level="3" line="391" source="functional/input/data/standard.txt" type="ERROR">
+        <system_message backrefs="id17" ids="id83" level="3" line="391" source="functional/input/data/standard.txt" type="ERROR">
             <paragraph>
                 Unknown target name: "5".
-        <system_message backrefs="id86" ids="id85" level="3" line="400" source="functional/input/data/standard.txt" type="ERROR">
+        <system_message backrefs="id19" ids="id84" level="3" line="400" source="functional/input/data/standard.txt" type="ERROR">
             <paragraph>
                 Unknown target name: "nonexistent".
-        <system_message backrefs="id88" ids="id87" level="3" line="427" source="functional/input/data/standard.txt" type="ERROR">
+        <system_message backrefs="id86" ids="id85" level="3" line="427" source="functional/input/data/standard.txt" type="ERROR">
             <paragraph>
                 Unknown target name: "hyperlink reference without a target".
-        <system_message backrefs="id90" ids="id89" level="3" line="440" source="functional/input/data/standard.txt" type="ERROR">
+        <system_message backrefs="id88" ids="id87" level="3" line="440" source="functional/input/data/standard.txt" type="ERROR">
             <paragraph>
                 Duplicate target name, cannot be used as a unique reference: "duplicate target names".
         <system_message level="1" line="163" source="functional/input/data/standard.txt" type="INFO">
