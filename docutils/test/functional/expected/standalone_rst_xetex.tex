@@ -756,7 +756,6 @@ This footnote shows the next symbol in the sequence.
 \DUfootnotetext{id16}{id16}{4}{%
 Here’s an unreferenced footnote, with a reference to a
 nonexistent footnote:%
-\raisebox{1em}{\hypertarget{id48}{}}%
 \raisebox{1em}{\hypertarget{id17}{}}\hyperlink{id47}{\textbf{\color{red}{[}5{]}\_}}.
 }
 
@@ -770,8 +769,7 @@ rendered separately and differently from footnotes.
 \end{figure}
 
 Here’s a reference to the above, \hyperlink{cit2002}{[CIT2002]}, and a %
-\raisebox{1em}{\hypertarget{id50}{}}%
-\raisebox{1em}{\hypertarget{id19}{}}\hyperlink{id49}{\textbf{\color{red}{[}nonexistent{]}\_}}
+\raisebox{1em}{\hypertarget{id19}{}}\hyperlink{id48}{\textbf{\color{red}{[}nonexistent{]}\_}}
 citation.
 
 
@@ -795,7 +793,7 @@ Targets may be indirect and anonymous.  Thus \hyperref[targets]{this phrase} may
 refer to the \hyperref[targets]{Targets} section.
 
 Here’s a %
-\raisebox{1em}{\hypertarget{id52}{}}\hyperlink{id51}{\textbf{\color{red}`hyperlink reference without a target`\_}}, which generates an
+\raisebox{1em}{\hypertarget{id50}{}}\hyperlink{id49}{\textbf{\color{red}`hyperlink reference without a target`\_}}, which generates an
 error.
 
 
@@ -815,7 +813,7 @@ explicit targets will generate “warning” (level-2) system messages.
 Since there are two “Duplicate Target Names” section headers, we
 cannot uniquely refer to either of them by name.  If we try to (like
 this: %
-\raisebox{1em}{\hypertarget{id54}{}}\hyperlink{id53}{\textbf{\color{red}`Duplicate Target Names`\_}}), an error is generated.
+\raisebox{1em}{\hypertarget{id52}{}}\hyperlink{id51}{\textbf{\color{red}`Duplicate Target Names`\_}}), an error is generated.
 
 
 \subsection{2.14   Directives%
@@ -2832,37 +2830,37 @@ Undefined substitution referenced: \textquotedbl{}problematic\textquotedbl{}.
 
 {\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~391
 
-\hyperlink{id48}{
+\hyperlink{id17}{
 Unknown target name: \textquotedbl{}5\textquotedbl{}.
+}}
+
+\DUadmonition[system-message]{
+\DUtitle[system-message]{system-message}
+\raisebox{1em}{\hypertarget{id48}{}}
+
+{\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~400
+
+\hyperlink{id19}{
+Unknown target name: \textquotedbl{}nonexistent\textquotedbl{}.
 }}
 
 \DUadmonition[system-message]{
 \DUtitle[system-message]{system-message}
 \raisebox{1em}{\hypertarget{id49}{}}
 
-{\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~400
+{\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~427
 
 \hyperlink{id50}{
-Unknown target name: \textquotedbl{}nonexistent\textquotedbl{}.
+Unknown target name: \textquotedbl{}hyperlink reference without a target\textquotedbl{}.
 }}
 
 \DUadmonition[system-message]{
 \DUtitle[system-message]{system-message}
 \raisebox{1em}{\hypertarget{id51}{}}
 
-{\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~427
-
-\hyperlink{id52}{
-Unknown target name: \textquotedbl{}hyperlink reference without a target\textquotedbl{}.
-}}
-
-\DUadmonition[system-message]{
-\DUtitle[system-message]{system-message}
-\raisebox{1em}{\hypertarget{id53}{}}
-
 {\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~440
 
-\hyperlink{id54}{
+\hyperlink{id52}{
 Duplicate target name, cannot be used as a unique reference: \textquotedbl{}duplicate target names\textquotedbl{}.
 }}
 

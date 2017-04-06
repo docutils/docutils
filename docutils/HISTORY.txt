@@ -49,6 +49,10 @@ Changes Since 0.13.1
   - Rework patch [ 120 ] (revert change to ``Table.get_column_widths()``
     that led to problems in an application with a custom table directive).
 
+* docutils/transforms/references.py
+
+  - Don't add a second ID to problematic references.
+
 * docutils/utils/__init__.py:
 
   - Added ``split_escaped_whitespace`` function, support for escaped

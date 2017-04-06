@@ -700,7 +700,7 @@ Python-specific usage examples; begun with "&gt;&gt;&gt;"
             <footnote ids="id16" names="4">
                 <label>4</label>
                 <paragraph>Here's an unreferenced footnote, with a reference to a
-                    nonexistent footnote: <problematic ids="id84 id17" refid="id83">[5]_</problematic>.</paragraph>
+                    nonexistent footnote: <problematic ids="id17" refid="id83">[5]_</problematic>.</paragraph>
             </footnote>
         </section>
         <section ids="citations" names="citations">
@@ -710,7 +710,7 @@ Python-specific usage examples; begun with "&gt;&gt;&gt;"
                 <paragraph>Citations are text-labeled footnotes. They may be
                     rendered separately and differently from footnotes.</paragraph>
             </citation>
-            <paragraph>Here's a reference to the above, <citation_reference ids="id18" refid="cit2002">CIT2002</citation_reference>, and a <problematic ids="id86 id19" refid="id85">[nonexistent]_</problematic>
+            <paragraph>Here's a reference to the above, <citation_reference ids="id18" refid="cit2002">CIT2002</citation_reference>, and a <problematic ids="id19" refid="id84">[nonexistent]_</problematic>
                 citation.</paragraph>
             <target refid="another-target"></target>
         </section>
@@ -728,7 +728,7 @@ Python-specific usage examples; begun with "&gt;&gt;&gt;"
             <paragraph>Targets may be indirect and anonymous.  Thus <reference anonymous="1" name="this phrase" refid="targets">this phrase</reference> may also
                 refer to the <reference name="Targets" refid="targets">Targets</reference> section.</paragraph>
             <target anonymous="1" ids="id20" refid="targets"></target>
-            <paragraph>Here's a <problematic ids="id88" refid="id87">`hyperlink reference without a target`_</problematic>, which generates an
+            <paragraph>Here's a <problematic ids="id86" refid="id85">`hyperlink reference without a target`_</problematic>, which generates an
                 error.</paragraph>
             <section dupnames="duplicate\ target\ names" ids="duplicate-target-names">
                 <title auto="1" refid="id53"><generated classes="sectnum">2.13.1   </generated>Duplicate Target Names</title>
@@ -743,7 +743,7 @@ Python-specific usage examples; begun with "&gt;&gt;&gt;"
                 </system_message>
                 <paragraph>Since there are two "Duplicate Target Names" section headers, we
                     cannot uniquely refer to either of them by name.  If we try to (like
-                    this: <problematic ids="id90" refid="id89">`Duplicate Target Names`_</problematic>), an error is generated.</paragraph>
+                    this: <problematic ids="id88" refid="id87">`Duplicate Target Names`_</problematic>), an error is generated.</paragraph>
             </section>
         </section>
         <section ids="directives" names="directives">
@@ -1709,16 +1709,16 @@ Comments may contain non-ASCII characters: ä ö ü æ ø å</comment>
         <system_message backrefs="id24" ids="id23" level="3" line="104" source="functional/input/data/standard.txt" type="ERROR">
             <paragraph>Undefined substitution referenced: "problematic".</paragraph>
         </system_message>
-        <system_message backrefs="id84" ids="id83" level="3" line="391" source="functional/input/data/standard.txt" type="ERROR">
+        <system_message backrefs="id17" ids="id83" level="3" line="391" source="functional/input/data/standard.txt" type="ERROR">
             <paragraph>Unknown target name: "5".</paragraph>
         </system_message>
-        <system_message backrefs="id86" ids="id85" level="3" line="400" source="functional/input/data/standard.txt" type="ERROR">
+        <system_message backrefs="id19" ids="id84" level="3" line="400" source="functional/input/data/standard.txt" type="ERROR">
             <paragraph>Unknown target name: "nonexistent".</paragraph>
         </system_message>
-        <system_message backrefs="id88" ids="id87" level="3" line="427" source="functional/input/data/standard.txt" type="ERROR">
+        <system_message backrefs="id86" ids="id85" level="3" line="427" source="functional/input/data/standard.txt" type="ERROR">
             <paragraph>Unknown target name: "hyperlink reference without a target".</paragraph>
         </system_message>
-        <system_message backrefs="id90" ids="id89" level="3" line="440" source="functional/input/data/standard.txt" type="ERROR">
+        <system_message backrefs="id88" ids="id87" level="3" line="440" source="functional/input/data/standard.txt" type="ERROR">
             <paragraph>Duplicate target name, cannot be used as a unique reference: "duplicate target names".</paragraph>
         </system_message>
         <system_message level="1" line="163" source="functional/input/data/standard.txt" type="INFO">

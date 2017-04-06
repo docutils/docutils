@@ -912,7 +912,7 @@ Duplicate manual footnote labels, with reference ([1]_):
 <document source="test data">
     <paragraph>
         Duplicate manual footnote labels, with reference (
-        <problematic ids="id5 id1" refid="id4">
+        <problematic ids="id1" refid="id4">
             [1]_
         ):
     <footnote dupnames="1" ids="id2">
@@ -928,7 +928,7 @@ Duplicate manual footnote labels, with reference ([1]_):
                 Duplicate explicit target name: "1".
         <paragraph>
             Footnote.
-    <system_message backrefs="id5" ids="id4" level="3" line="1" source="test data" type="ERROR">
+    <system_message backrefs="id1" ids="id4" level="3" line="1" source="test data" type="ERROR">
         <paragraph>
             Duplicate target name, cannot be used as a unique reference: "1".
 """],
