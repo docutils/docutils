@@ -17,25 +17,25 @@
 
 
 r"""
-========================
-SmartyPants for Docutils
-========================
+=========================
+Smart Quotes for Docutils
+=========================
 
 Synopsis
 ========
 
-Smart-quotes for Docutils.
+"SmartyPants" is a free web publishing plug-in for Movable Type, Blosxom, and
+BBEdit that easily translates plain ASCII punctuation characters into "smart"
+typographic punctuation characters.
 
-The original "SmartyPants" is a free web publishing plug-in for Movable Type,
-Blosxom, and BBEdit that easily translates plain ASCII punctuation characters
-into "smart" typographic punctuation characters.
+``smartquotes.py`` is an adaption of "SmartyPants" to Docutils_.
 
-`smartypants.py`, endeavours to be a functional port of
-SmartyPants to Python, for use with Pyblosxom_.
+* Using Unicode characters instead of HTML entities for typographic quotes, it
+  works for any output format that supports Unicode.
+* Support `language specific quote characters`__.
 
-`smartquotes.py` is an adaption of Smartypants to Docutils_. By using Unicode
-characters instead of HTML entities for typographic quotes, it works for any
-output format that supports Unicode.
+__ http://en.wikipedia.org/wiki/Non-English_usage_of_quotation_marks
+
 
 Authors
 =======
@@ -182,69 +182,51 @@ foot and inch marks: 6\\'2\\" tall; a 17\\" iMac.
 Options
 =======
 
-For Pyblosxom users, the ``smartypants_attributes`` attribute is where you
-specify configuration options.
-
 Numeric values are the easiest way to configure SmartyPants' behavior:
 
-"0"
-        Suppress all transformations. (Do nothing.)
-"1"
-        Performs default SmartyPants transformations: quotes (including
+:0:     Suppress all transformations. (Do nothing.)
+
+:1:     Performs default SmartyPants transformations: quotes (including
         \`\`backticks'' -style), em-dashes, and ellipses. "``--``" (dash dash)
         is used to signify an em-dash; there is no support for en-dashes
 
-"2"
-        Same as smarty_pants="1", except that it uses the old-school typewriter
+:2:     Same as smarty_pants="1", except that it uses the old-school typewriter
         shorthand for dashes:  "``--``" (dash dash) for en-dashes, "``---``"
         (dash dash dash)
         for em-dashes.
 
-"3"
-        Same as smarty_pants="2", but inverts the shorthand for dashes:
+:3:     Same as smarty_pants="2", but inverts the shorthand for dashes:
         "``--``" (dash dash) for em-dashes, and "``---``" (dash dash dash) for
         en-dashes.
 
-"-1"
-        Stupefy mode. Reverses the SmartyPants transformation process, turning
+:-1:    Stupefy mode. Reverses the SmartyPants transformation process, turning
         the characters produced by SmartyPants into their ASCII equivalents.
-        E.g.  "“" is turned into a simple double-quote (\"), "—" is
-        turned into two dashes, etc.
+        E.g. the LEFT DOUBLE QUOTATION MARK (“) is turned into a simple
+        double-quote (\"), "—" is turned into two dashes, etc.
 
 
 The following single-character attribute values can be combined to toggle
 individual transformations from within the smarty_pants attribute. For
-example, to educate normal quotes and em-dashes, but not ellipses or
-\`\`backticks'' -style quotes:
-
-E.g. ``py['smartypants_attributes'] = "1"`` is equivalent to
+example, ``py['smartypants_attributes'] = "1"`` is equivalent to
 ``py['smartypants_attributes'] = "qBde"``.
 
-"q"
-        Educates normal quote characters: (") and (').
+:q:     Educates normal quote characters: (") and (').
 
-"b"
-        Educates \`\`backticks'' -style double quotes.
+:b:     Educates \`\`backticks'' -style double quotes.
 
-"B"
-        Educates \`\`backticks'' -style double quotes and \`single' quotes.
+:B:     Educates \`\`backticks'' -style double quotes and \`single' quotes.
 
-"d"
-        Educates em-dashes.
+:d:     Educates em-dashes.
 
-"D"
-        Educates em-dashes and en-dashes, using old-school typewriter shorthand:
+:D:     Educates em-dashes and en-dashes, using old-school typewriter shorthand:
         (dash dash) for en-dashes, (dash dash dash) for em-dashes.
 
-"i"
-        Educates em-dashes and en-dashes, using inverted old-school typewriter
+:i:     Educates em-dashes and en-dashes, using inverted old-school typewriter
         shorthand: (dash dash) for em-dashes, (dash dash dash) for en-dashes.
 
-"e"
-        Educates ellipses.
+:e:     Educates ellipses.
 
-"w"
-        Translates any instance of ``&quot;`` into a normal double-quote character.
+:w:     Translates any instance of ``&quot;`` into a normal double-quote character.
         This should be of no interest to most people, but of particular interest
         to anyone who writes their posts using Dreamweaver, as Dreamweaver
         inexplicably uses this entity to represent a literal double-quote
@@ -301,9 +283,9 @@ Algorithmic Shortcomings
 ------------------------
 
 One situation in which quotes will get curled the wrong way is when
-apostrophes are used at the start of leading contractions. For example:
+apostrophes are used at the start of leading contractions. For example::
 
-``'Twas the night before Christmas.``
+  'Twas the night before Christmas.
 
 In the case above, SmartyPants will turn the apostrophe into an opening
 single-quote, when in fact it should be the `right single quotation mark`
@@ -402,21 +384,28 @@ class smartchars(object):
     apostrophe = u'’' # "&#8217;" RIGHT SINGLE QUOTATION MARK
 
     # quote characters (language-specific, set in __init__())
-    # http://en.wikipedia.org/wiki/Non-English_usage_of_quotation_marks
-    # http://de.wikipedia.org/wiki/Anf%C3%BChrungszeichen#Andere_Sprachen
-    # https://fr.wikipedia.org/wiki/Guillemet
-    # http://typographisme.net/post/Les-espaces-typographiques-et-le-web
-    # http://www.btb.termiumplus.gc.ca/tpv2guides/guides/redac/index-fra.html
-    # https://en.wikipedia.org/wiki/Hebrew_punctuation#Quotation_marks
-    # http://www.tustep.uni-tuebingen.de/bi/bi00/bi001t1-anfuehrung.pdf
+    # [1] http://en.wikipedia.org/wiki/Non-English_usage_of_quotation_marks
+    # [2] http://de.wikipedia.org/wiki/Anf%C3%BChrungszeichen#Andere_Sprachen
+    # [3] https://fr.wikipedia.org/wiki/Guillemet
+    # [4] http://typographisme.net/post/Les-espaces-typographiques-et-le-web
+    # [5] http://www.btb.termiumplus.gc.ca/tpv2guides/guides/redac/index-fra.html
+    # [6] https://en.wikipedia.org/wiki/Hebrew_punctuation#Quotation_marks
+    # [7] http://www.tustep.uni-tuebingen.de/bi/bi00/bi001t1-anfuehrung.pdf
+    #
+    # TODO: configuration option, e.g.::
+    #
+    #   smartquote-locales: nl: „“’’,  # apostrophe for ``'s Gravenhage``
+    #                       nr: se,    # alias
+    #                       fr: « : »:‹ : ›, # :-separated list with NBSPs
     quotes = {'af':           u'“”‘’',
               'af-x-altquot': u'„”‚’',
               'ca':           u'«»“”',
               'ca-x-altquot': u'“”‘’',
               'cs':           u'„“‚‘',
               'cs-x-altquot': u'»«›‹',
-              'da':           u'»«‘’',
+              'da':           u'»«›‹',
               'da-x-altquot': u'„“‚‘',
+              # 'da-x-altquot2': u'””’’',
               'de':           u'„“‚‘',
               'de-x-altquot': u'»«›‹',
               'de-ch':        u'«»‹›',
@@ -436,17 +425,19 @@ class smartchars(object):
               'fr-ch':        u'«»‹›',
               'fr-ch-x-altquot': (u'« ',  u' »', u'‹ ', u' ›'), # narrow no-break space, http://typoguide.ch/
               'gl':           u'«»“”',
-              'he':           u'”“»«',
-              'he-x-altquot': u'„”‚’',
-              'hr':           u'„”‘’',
+              'he':           u'”“»«', # Hebrew is RTL, test position:
+              'he-x-altquot': u'„”‚’', # low quotation marks are opening.
+              # 'he-x-altquot': u'“„‘‚', # RTL: low quotation marks opening
+              'hr':           u'„”‘’', # http://hrvatska-tipografija.com/polunavodnici/
               'hr-x-altquot': u'»«›‹',
               'hsb':          u'„“‚‘',
               'hsb-x-altquot':u'»«›‹',
               'hu':           u'„”«»',
+              'is':           u'„“‚‘',
               'it':           u'«»“”',
               'it-ch':        u'«»‹›',
               'it-x-altquot': u'“”‘’',
-              # 'it-x-altquot2': u'“„‘‚', # antiquated?
+              # 'it-x-altquot2': u'“„‘‚', # [7] antiquated?
               'ja':           u'「」『』',
               'lt':           u'„“‚‘',
               'lv':           u'„“‚‘',
@@ -454,23 +445,27 @@ class smartchars(object):
               'nl-x-altquot': u'„”‚’',
               # 'nl-x-altquot2': u'””’’',
               'pl':           u'„”«»',
-              'pl-x-altquot': u'«»“”',
+              'pl-x-altquot': u'«»‚’',
+              # 'pl-x-altquot2': u'„”‚’', # https://pl.wikipedia.org/wiki/Cudzys%C5%82%C3%B3w
               'pt':           u'«»“”',
               'pt-br':        u'“”‘’',
               'ro':           u'„”«»',
               'ru':           u'«»„“',
-              'sh':           u'„”‚’',
+              'sh':           u'„”‚’', # Serbo-Croatian
               'sh-x-altquot': u'»«›‹',
-              'sk':           u'„“‚‘',
+              'sk':           u'„“‚‘', # Slovak
               'sk-x-altquot': u'»«›‹',
-              'sr':           u'„”’’',
-              'sl':           u'„“‚‘',
+              'sl':           u'„“‚‘', # Slovenian
               'sl-x-altquot': u'»«›‹',
+              'sq':           u'«»‹›', # Albanian
+              'sq-x-altquot': u'“„‘‚',
+              'sr':           u'„”’’',
+              'sr-x-altquot': u'»«›‹',
               'sv':           u'””’’',
               'sv-x-altquot': u'»»››',
               'tr':           u'“”‘’',
               'tr-x-altquot': u'«»‹›',
-              # 'tr-x-altquot2': u'“„‘‚', # antiquated?
+              # 'tr-x-altquot2': u'“„‘‚', # [7] antiquated?
               'uk':           u'«»„“',
               'uk-x-altquot': u'„“‚‘',
               'zh-cn':        u'“”‘’',
@@ -921,8 +916,7 @@ if __name__ == "__main__":
 
     print docstring_html
 
-
-    # Unit test output goes out stderr.
+    # Unit test output goes to stderr.
     import unittest
     sp = smartyPants
 
@@ -931,16 +925,11 @@ if __name__ == "__main__":
 
         def test_dates(self):
             self.assertEqual(sp("1440-80's"), u"1440-80’s")
-            self.assertEqual(sp("1440-'80s"), u"1440-‘80s")
-            self.assertEqual(sp("1440---'80s"), u"1440–‘80s")
-            self.assertEqual(sp("1960s"), "1960s")  # no effect.
+            self.assertEqual(sp("1440-'80s"), u"1440-’80s")
+            self.assertEqual(sp("1440---'80s"), u"1440–’80s")
             self.assertEqual(sp("1960's"), u"1960’s")
-            self.assertEqual(sp("one two '60s"), u"one two ‘60s")
-            self.assertEqual(sp("'60s"), u"‘60s")
-
-        def test_ordinal_numbers(self):
-            self.assertEqual(sp("21st century"), "21st century")  # no effect.
-            self.assertEqual(sp("3rd"), "3rd")  # no effect.
+            self.assertEqual(sp("one two '60s"), u"one two ’60s")
+            self.assertEqual(sp("'60s"), u"’60s")
 
         def test_educated_quotes(self):
             self.assertEqual(sp('''"Isn't this fun?"'''), u'“Isn’t this fun?”')

@@ -1,0 +1,465 @@
+=========================
+Smart Quotes for Docutils
+=========================
+
+:Author: Günter Milde,
+         based on SmartyPants by John Gruber, Brad Choate, and Chad Miller
+:Contact: docutils-develop@lists.sourceforge.net
+:Revision: $Revision$
+:Date: $Date$
+:License: Released under the terms of the `2-Clause BSD license`_
+:Abstract: This document describes the Docutils `smartquotes` module.
+
+.. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause
+
+.. contents::
+
+Description
+===========
+
+The `smart_quotes configuration setting`_ triggers the SmartQuotes
+transformation on Text nodes that includes the following steps:
+
+- Straight quotes (``"`` and ``'``) into "curly" quote characters
+- dashes (``--`` and ``---``) into en- and em-dash entities
+- three consecutive dots (``...`` or ``. . .``) into an ellipsis entity.
+
+This means you can write, edit, and save your documents using plain old
+ASCII---straight quotes, plain dashes, and plain dots---while Docutils
+generates documents with typographical quotes, dashes, and ellipses.
+
+Advantages:
+
+* typing speed (especiall when blind-typing),
+* the possibility to change the quoting style of the
+  complete document with just one configuration option, and
+* restriction to 7-bit characters in the source.
+
+However, there are `algorithmic shortcomings`_ for 2 reasons:
+
+* Dual use of the "ASCII-apostrophe" (') as single quote and apostrophe,
+* languages that do not use whitespace around words.
+
+So, please consider also
+`Why You Might Not Want to Use "Smart" Quotes in Your Documents`_.
+
+.. _smart_quotes configuration setting: config.html#smart-quotes
+
+
+Escaping
+========
+
+The `SmartQuotes` transform does not modify characters in literal text
+such as source code, maths, or literal blocks.
+
+If you need literal straight quotes (or plain hyphens and periods) in normal
+text, you can backslash escape the characters to preserve
+ASCII-punctuation. You need two backslashes as one backslash is removed by
+the reStructuredText `escaping mechanism`_.
+
+========  =========  ========  =========
+Escape    Character  Escape    Character
+========  =========  ========  =========
+``\\``    \\         ``\\.``   \\.
+``\\"``   \\"        ``\\-``   \\-
+``\\'``   \\'        ``\\```   \\`
+========  =========  ========  =========
+
+This is useful, for example, when you want to use straight quotes as
+foot and inch marks: 6\\'2\\" tall; a 17\\" iMac.
+
+.. _escaping mechanism: ../ref/rst/restructuredtext.html#escaping-mechanism
+
+
+Localisation
+============
+
+Quotation marks have a `variety of forms`__ in different languages and
+media.
+
+`Smartquotes` selects quotation marks depending on the language of the current
+block element and the value of the `smart_quotes configuration setting`_.
+
+__ https://en.wikipedia.org/wiki/Quotation_mark#Summary_table
+
+Docutils' `smartquotes` support the following languages:
+
+
+.. class:: language-af
+
+"'Afrikaans' quotes"
+
+.. class:: language-af-x-altquot
+
+"'Afrikaans' alternative quotes"
+
+.. class:: language-ca
+
+"'Catalan' quotes"
+
+.. class:: language-ca-x-altquot
+
+"'Catalan' alternative quotes"
+
+.. class:: language-cs
+
+"'Czech' quotes"
+
+.. class:: language-cs-x-altquot
+
+"'Czech' alternative quotes"
+
+.. class:: language-da
+
+"'Danish' quotes"
+
+.. class:: language-da-x-altquot
+
+"'Danish' alternative quotes"
+
+.. class:: language-de
+
+"'German' quotes"
+
+.. class:: language-de-x-altquot
+
+"'German' alternative quotes"
+
+.. class:: language-de-ch
+
+"'Swiss-German' quotes"
+
+.. class:: language-el
+
+"'Greek' quotes"
+
+.. class:: language-en
+
+"'English' quotes"
+
+.. class:: language-en-uk-x-altquot
+
+"'British' alternative quotes"
+(swaps single and double quotes: ``"`` → ‘ and ``'`` → “)
+
+.. class:: language-eo
+
+"'Esperanto' quotes"
+
+.. class:: language-es
+
+"'Spanish' quotes"
+
+.. class:: language-es-x-altquot
+
+"'Spanish' alternative quotes"
+
+.. class:: language-et
+
+"'Estonian' quotes" (no secondary quote listed in Wikipedia)
+
+.. class:: language-et-x-altquot
+
+"'Estonian' alternative quotes"
+
+.. class:: language-eu
+
+"'Basque' quotes"
+
+.. class:: language-fi
+
+"'Finnish' quotes"
+
+.. class:: language-fi-x-altquot
+
+"'Finnish' alternative quotes"
+
+.. class:: language-fr
+
+"'French' quotes"
+
+.. class:: language-fr-x-altquot
+
+"'French' alternative quotes"
+
+.. class:: language-fr-ch
+
+"'Swiss-French' quotes"
+
+.. class:: language-fr-ch-x-altquot
+
+"'Swiss-French' alternative quotes" (narrow no-break space, see
+http://typoguide.ch/)
+
+.. class:: language-gl
+
+"'Galician' quotes"
+
+.. class:: language-he
+
+"'Hebrew' quotes"
+
+.. class:: language-he-x-altquot
+
+"'Hebrew' alternative quotes"
+
+.. class:: language-hr
+
+"'Croatian' quotes"
+
+.. class:: language-hr-x-altquot
+
+"'Croatian' alternative quotes"
+
+.. class:: language-hsb
+
+"'Upper Sorbian' quotes"
+
+.. class:: language-hsb-x-altquot
+
+"'Upper Sorbian' alternative quotes"
+
+.. class:: language-hu
+
+"'Hungarian' quotes"
+
+.. class:: language-is
+
+"'Icelandic' quotes"
+
+.. class:: language-it
+
+"'Italian' quotes"
+
+.. class:: language-it-ch
+
+"'Swiss-Italian' quotes"
+
+.. class:: language-it-x-altquot
+
+"'Italian' alternative quotes"
+
+.. class:: language-ja
+
+"'Japanese' quotes"
+
+.. class:: language-lt
+
+"'Lithuanian' quotes"
+
+.. class:: language-lv
+
+"'Latvian' quotes"
+
+.. class:: language-nl
+
+"'Dutch' quotes"
+
+.. class:: language-nl-x-altquot
+
+"'Dutch' alternative quotes"
+
+.. # 'nl-x-altquot2': u'””’’',
+
+.. class:: language-pl
+
+"'Polish' quotes"
+
+.. class:: language-pl-x-altquot
+
+"'Polish' alternative quotes"
+
+.. class:: language-pt
+
+"'Portuguese' quotes"
+
+.. class:: language-pt-br
+
+"'Portuguese (Brazil)' quotes"
+
+.. class:: language-ro
+
+"'Romanian' quotes"
+
+.. class:: language-ru
+
+"'Russian' quotes"
+
+.. class:: language-sh
+
+"'Serbo-Croatian' quotes"
+
+.. class:: language-sh-x-altquot
+
+"'Serbo-Croatian' alternative quotes"
+
+.. class:: language-sk
+
+"'Slovak' quotes"
+
+.. class:: language-sk-x-altquot
+
+"'Slovak' alternative quotes"
+
+.. class:: language-sl
+
+"'Slovenian' quotes"
+
+.. class:: language-sl-x-altquot
+
+"'Slovenian' alternative quotes"
+
+.. class:: language-sr
+
+"'Serbian' quotes"
+
+.. class:: language-sr-x-altquot
+
+"'Serbian' alternative quotes"
+
+.. class:: language-sv
+
+"'Swedish' quotes"
+
+.. class:: language-sv-x-altquot
+
+"'Swedish' alternative quotes"
+
+.. class:: language-tr
+
+"'Turkish' quotes"
+
+.. class:: language-tr-x-altquot
+
+"'Turkish' alternative quotes"
+
+.. 'tr-x-altquot2': u'“„‘‚', # antiquated?
+
+.. class:: language-uk
+
+"'Ukrainian' quotes"
+
+.. class:: language-uk-x-altquot
+
+"'Ukrainian' alternative quotes"
+
+.. class:: language-zh-cn
+
+"'Chinese (China)' quotes"
+
+.. class:: language-zh-tw
+
+"'Chinese (Taiwan)' quotes"
+
+Quotes in text blocks in a non-supported language use the document
+language:
+
+.. class:: langugage-undefined-example
+
+"'Undefined' quotes"
+
+
+Caveats
+=======
+
+Why You Might Not Want to Use "Smart" Quotes in Your Documents
+--------------------------------------------------------------
+
+For one thing, you might not care.
+
+Most normal, mentally stable individuals do not take notice of proper
+typographic punctuation. Many design and typography nerds, however, break
+out in a nasty rash when they encounter, say, a restaurant sign that uses
+a straight apostrophe to spell "Joe's".
+
+If you're the sort of person who just doesn't care, you might well want to
+continue not caring. Using straight quotes -- and sticking to the 7-bit
+ASCII character set in general -- is certainly a simpler way to live.
+
+Even if you *do* care about accurate typography, you still might want to
+think twice before "auto-educating" the quote characters in your documents.
+As there is always a chance that the algorithm gets it wrong, you may
+instead prefer to use the compose key or some other means to insert the
+correct Unicode characters into the source.
+
+
+Algorithmic Shortcomings
+------------------------
+
+The ASCII character (u0027 APOSTROPHE) is used for apostrophe and single
+quotes. If use inside a word, it is converted into an apostrophe:
+
+   .. class:: language-fr
+
+   Il dit : "C'est 'super' !"
+
+At the beginning or end of a word, it cannot be distinguished from a single
+quote by the algorithm.
+
+The `right single quotation mark`_ character -- used to close a secondary
+(inner) quote in English -- is also "the preferred character to use for
+apostrophe" (Unicode_). Therefore, "educating" works as expected for
+apostrophes at the end of a word, e.g.,
+
+  Mr. Hastings' pen; three days' leave; my two cents' worth.
+
+However, when apostrophes are used at the start of leading contractions,
+"educating" will turn the apostrophe into an *opening* secondary quote. In
+English, this is *not* the apostrophe character, e.g., ``'Twas brillig``
+is "miseducated" to
+
+  'Twas brillig.
+
+In other locales (French, Italian, German, ...), secondary closing quotes
+differ from the apostrophe. A text like::
+
+   .. class:: language-de-CH
+
+   "Er sagt: 'Ich fass' es nicht.'"
+
+becomes
+
+   .. class:: language-de-CH
+
+   "Er sagt: 'Ich fass' es nicht.'"
+
+with a single closing guillemet in place of the apostrophe.
+
+In such cases, it's best to use the recommended apostrophe character (’) in
+the source:
+
+   | ’Twas brillig, and the slithy toves
+   | Did gyre and gimble in the wabe;
+   | All mimsy were the borogoves,
+   | And the mome raths outgrabe.
+
+.. _right single quotation mark:
+    http://www.fileformat.info/info/unicode/char/2019/index.htm
+.. _Unicode: http://www.unicode.org/charts/PDF/U2000.pdf
+
+History
+=======
+
+The smartquotes module is an adaption of "SmartyPants_" to Docutils.
+
+`John Gruber`_ did all of the hard work of writing this software in Perl for
+`Movable Type`_ and almost all of this useful documentation.  `Chad Miller`_
+ported it to Python to use with Pyblosxom_.
+
+Portions of the SmartyPants original work are based on Brad Choate's nifty
+MTRegex plug-in.  `Brad Choate`_ also contributed a few bits of source code to
+this plug-in.  Brad Choate is a fine hacker indeed.
+`Jeremy Hedley`_ and `Charles Wiltgen`_ deserve mention for exemplary beta
+testing of the original SmartyPants.
+
+Internationalization and adaption to Docutils by Günter Milde.
+
+.. _SmartyPants: http://daringfireball.net/projects/smartypants/
+.. _Pyblosxom: http://pyblosxom.bluesock.org/
+.. _Movable Type: http://www.movabletype.org/
+.. _John Gruber: http://daringfireball.net/
+.. _Chad Miller: http://web.chad.org/
+.. _Brad Choate: http://bradchoate.com/
+.. _Jeremy Hedley: http://antipixel.com/
+.. _Charles Wiltgen: http://playbacktime.com/
+.. _Rael Dornfest: http://raelity.org/
