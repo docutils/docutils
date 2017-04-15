@@ -22,16 +22,10 @@ For a more detailed list of changes, please see the `Docutils History`_.
 Future changes
 ==============
 
-Release 1.0
------------
-
 * remove the `handle_io_errors` option from io.FileInput/Output.
   Used by Sphinx up to version 1.3.1, fixed in 1.3.2 (Nov 29, 2015).
 
-* Drop support for python 2.4.
-
-No target release
------------------
+* Stepwise drop support for Python < 2.7.
 
 * »Prune« the doctree (no change to the reST input syntax):
 
