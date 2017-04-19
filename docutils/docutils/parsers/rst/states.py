@@ -464,11 +464,13 @@ class Inliner:
     """
 
     def __init__(self):
-        pass
+        self.implicit_dispatch = []
+        """List of (pattern, bound method) tuples, used by
+        `self.implicit_inline`."""
 
     def init_customizations(self, settings):
         # lookahead and look-behind expressions for inline markup rules
-        if settings.character_level_inline_markup:
+        if getattr(settings, 'character_level_inline_markup', False):
             start_string_prefix = u'(^|(?<!\x00))'
             end_string_suffix = u''
         else:
@@ -479,7 +481,6 @@ class Inliner:
                                  (punctuation_chars.closing_delimiters,
                                   punctuation_chars.delimiters,
                                   punctuation_chars.closers))
-
         args = locals().copy()
         args.update(vars(self.__class__))
 
@@ -509,6 +510,9 @@ class Inliner:
              )
             ]
            )
+        self.start_string_prefix = start_string_prefix
+        self.end_string_suffix = end_string_suffix
+        self.parts = parts
 
         self.patterns = Struct(
           initial=build_regexp(parts),
@@ -596,10 +600,8 @@ class Inliner:
                 (RFC(-|\s+)?(?P<rfcnum>\d+))
                 %(end_string_suffix)s""" % args, re.VERBOSE | re.UNICODE))
 
-        self.implicit_dispatch = [(self.patterns.uri, self.standalone_uri),]
-        """List of (pattern, bound method) tuples, used by
-        `self.implicit_inline`."""
-
+        self.implicit_dispatch.append((self.patterns.uri,
+                                       self.standalone_uri))
         if settings.pep_references:
             self.implicit_dispatch.append((self.patterns.pep,
                                            self.pep_reference))
@@ -657,8 +659,7 @@ class Inliner:
 
     # Inline object recognition
     # -------------------------
-    # print start_string_prefix.encode('utf8')
-    # TODO: support non-ASCII whitespace in the following 4 patterns?
+    # See also init_customizations().
     non_whitespace_before = r'(?<!\s)'
     non_whitespace_escape_before = r'(?<![\s\x00])'
     non_unescaped_whitespace_escape_before = r'(?<!(?<!\x00)[\s\x00])'
