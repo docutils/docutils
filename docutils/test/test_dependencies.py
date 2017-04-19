@@ -74,7 +74,7 @@ class RecordDependenciesTests(unittest.TestCase):
         self.assertEqual(record, expected)
 
     def test_dependencies_latex(self):
-        # since 0.9, the latex writer records only really accessed files, too
+        # since 0.9, the latex writer records only really accessed files, too.
         # Note: currently, raw input files are read (and hence recorded) while
         # parsing even if not used in the chosen output format.
         # This should change (see parsers/rst/directives/misc.py).

@@ -27,3 +27,11 @@ Scaled images without given size are recorded by the html writer:
 
 .. image:: ../docs/user/rst/images/biohazard.png
    :scale: 50 %
+
+TODO: Paths in included files should be rewritten relative to the base
+      document.
+
+      * when loading images,
+      * when recording dependencies.
+
+.. include: subdir/dependencies-included.txt
