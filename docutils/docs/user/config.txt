@@ -678,7 +678,8 @@ Default: "http://www.faqs.org/rfcs/".  Option: ``--rfc-base-url``.
 smart_quotes
 ~~~~~~~~~~~~
 
-Change straight quotation marks to typographic form. `Quote characters`_
+Activate the SmartQuotes_ transform to
+change straight quotation marks to typographic form. `Quote characters`_
 are selected according to the language of the current block element (see
 language_code_). Also changes consequtive runs of hyphen-minus and full
 stops (``---``, ``--``, ``...``) to em-dash, en-dash and ellipsis Unicode
@@ -696,6 +697,7 @@ Default: "no". Option: ``--smart-quotes``.
 
 New in Docutils 0.10.
 
+.. _SmartQuotes: smartquotes.html
 .. _quote characters:
    http://en.wikipedia.org/wiki/Non-English_usage_of_quotation_marks
 
@@ -786,10 +788,10 @@ The `pep_references`_ and `rfc_references`_ settings
 (`[restructuredtext parser]`_) are set on by default.
 
 
-[python reader]
----------------
+.. [python reader]
+   ---------------
 
-Not implemented.
+   Not implemented.
 
 
 [writers]
@@ -954,7 +956,7 @@ the output document. Supported values are (case insensitive):
 :HTML:
   Format math in standard HTML enhanced by CSS rules.
   Requires the ``math.css`` stylesheet (in the system
-  `stylesheet directory <stylesheet_dirs [html4css1 writer]_>`_
+  `stylesheet directory <stylesheet_dirs [html4css1 writer]_>`_)
 
   A `stylesheet_path <stylesheet_path [html4css1 writer]_>`_
   can be appended after whitespace, the specified
@@ -975,8 +977,8 @@ the output document. Supported values are (case insensitive):
     __ http://docs.mathjax.org/en/latest/tex.html#supported-latex-commands
 
   Con:
-    Requires an Internet connection (or a local MathJax
-    installation and configuration).
+    Requires an Internet connection or a local MathJax
+    installation and configuration.
 
     Downloads JavaScript code from a third-party site.
 
