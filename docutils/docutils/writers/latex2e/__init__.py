@@ -727,19 +727,31 @@ class CharMaps(object):
     }
     # Unicode chars that are not recognized by LaTeX's utf8 encoding
     unsupported_unicode = {
-        0x00A0: ur'~', # NO-BREAK SPACE
         # TODO: ensure white space also at the beginning of a line?
         # 0x00A0: ur'\leavevmode\nobreak\vadjust{}~'
+        0x2000: ur'\enskip', # EN QUAD
+        0x2001: ur'\quad', # EM QUAD
+        0x2002: ur'\enskip', # EN SPACE
+        0x2003: ur'\quad', # EM SPACE
         0x2008: ur'\,', # PUNCTUATION SPACE   
-        0x2011: ur'\hbox{-}', # NON-BREAKING HYPHEN
+        0x200b: ur'\hspace{0pt}', # ZERO WIDTH SPACE
         0x202F: ur'\,', # NARROW NO-BREAK SPACE
-        0x21d4: ur'$\Leftrightarrow$',
+        # 0x02d8: ur'\\u{ }', # BREVE
+        0x2011: ur'\hbox{-}', # NON-BREAKING HYPHEN
+        0x212b: ur'\AA', # ANGSTROM SIGN
+        0x21d4: ur'\ensuremath{\Leftrightarrow}',
         # Docutils footnote symbols:
-        0x2660: ur'$\spadesuit$',
-        0x2663: ur'$\clubsuit$',
+        0x2660: ur'\ensuremath{\spadesuit}',
+        0x2663: ur'\ensuremath{\clubsuit}',
+        0xfb00: ur'ff', # LATIN SMALL LIGATURE FF
+        0xfb01: ur'fi', # LATIN SMALL LIGATURE FI
+        0xfb02: ur'fl', # LATIN SMALL LIGATURE FL
+        0xfb03: ur'ffi', # LATIN SMALL LIGATURE FFI
+        0xfb04: ur'ffl', # LATIN SMALL LIGATURE FFL
     }
     # Unicode chars that are recognized by LaTeX's utf8 encoding
     utf8_supported_unicode = {
+        0x00A0: ur'~', # NO-BREAK SPACE
         0x00AB: ur'\guillemotleft{}', # LEFT-POINTING DOUBLE ANGLE QUOTATION MARK
         0x00bb: ur'\guillemotright{}', # RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK
         0x200C: ur'\textcompwordmark{}', # ZERO WIDTH NON-JOINER
@@ -1503,17 +1515,24 @@ class LaTeXTranslator(nodes.NodeVisitor):
             table[ord(' ')] = ur'~'
         # Unicode replacements for 8-bit tex engines (not required with XeTeX/LuaTeX):
         if not self.is_xetex:
-            table.update(CharMaps.unsupported_unicode)
             if not self.latex_encoding.startswith('utf8'):
+                table.update(CharMaps.unsupported_unicode)
                 table.update(CharMaps.utf8_supported_unicode)
                 table.update(CharMaps.textcomp)
             table.update(CharMaps.pifont)
             # Characters that require a feature/package to render
-            if [True for ch in text if ord(ch) in CharMaps.textcomp]:
-                self.requirements['textcomp'] = PreambleCmds.textcomp
-            if [True for ch in text if ord(ch) in CharMaps.pifont]:
+            for ch in text:
+                cp = ord(ch)
+                if cp in CharMaps.textcomp:
+                    self.requirements['textcomp'] = PreambleCmds.textcomp
+                elif cp in CharMaps.pifont:
                     self.requirements['pifont'] = '\\usepackage{pifont}'
-
+                # preamble-definitions for unsupported Unicode characters 
+                elif (self.latex_encoding == 'utf8'
+                      and cp in CharMaps.unsupported_unicode):
+                    self.requirements['_inputenc'+str(cp)] = (
+                        '\\DeclareUnicodeCharacter{%04X}{%s}'
+                         % (cp, CharMaps.unsupported_unicode[cp]))
         text = text.translate(table)
 
         # Break up input ligatures e.g. '--' to '-{}-'.

@@ -4,6 +4,9 @@
 \usepackage{ifthen}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
+\DeclareUnicodeCharacter{21D4}{\ensuremath{\Leftrightarrow}}
+\DeclareUnicodeCharacter{2660}{\ensuremath{\spadesuit}}
+\DeclareUnicodeCharacter{2663}{\ensuremath{\clubsuit}}
 \usepackage{amsmath}
 \usepackage[british,french,ngerman,english]{babel}
 % Prevent side-effects if French hyphenation patterns are not loaded:
@@ -289,12 +292,12 @@ reStructuredText construct.
 \tableofcontents
 
 
-\section{1~~~Structural Elements%
+\section{1   Structural Elements%
   \label{structural-elements}%
 }
 
 
-\subsection{1.1~~~Section Title%
+\subsection{1.1   Section Title%
   \label{section-title}%
 }
 \subsubsection*{Section Subtitle}
@@ -304,12 +307,12 @@ activated with the \texttt{-{}-section-subtitles} command line option or the
 \texttt{sectsubtitle-xform} configuration value.
 
 
-\subsection{1.2~~~Empty Section%
+\subsection{1.2   Empty Section%
   \label{empty-section}%
 }
 
 
-\subsection{1.3~~~Transitions%
+\subsection{1.3   Transitions%
   \label{transitions}%
 }
 
@@ -324,19 +327,19 @@ It divides the section.  Transitions may also occur between sections:
 \DUtransition
 
 
-\section{2~~~Body Elements%
+\section{2   Body Elements%
   \label{body-elements}%
 }
 
 
-\subsection{2.1~~~Paragraphs%
+\subsection{2.1   Paragraphs%
   \label{paragraphs}%
 }
 
 A paragraph.
 
 
-\subsubsection{2.1.1~~~Inline Markup%
+\subsubsection{2.1.1   Inline Markup%
   \label{inline-markup}%
 }
 
@@ -375,7 +378,7 @@ If the \texttt{-{}-pep-references} option was supplied, there should be a
 live link to PEP 258 here.
 
 
-\subsection{2.2~~~Bullet Lists%
+\subsection{2.2   Bullet Lists%
   \label{bullet-lists}%
 }
 
@@ -413,7 +416,7 @@ Paragraph 2 of item 2.
 \end{itemize}
 
 
-\subsection{2.3~~~Enumerated Lists%
+\subsection{2.3   Enumerated Lists%
   \label{enumerated-lists}%
 }
 
@@ -466,7 +469,7 @@ Paragraph 2 of item 2.
 \end{enumerate}
 
 
-\subsection{2.4~~~Definition Lists%
+\subsection{2.4   Definition Lists%
   \label{definition-lists}%
 }
 
@@ -488,7 +491,7 @@ Definition
 \end{description}
 
 
-\subsection{2.5~~~Field Lists%
+\subsection{2.5   Field Lists%
   \label{field-lists}%
 }
 
@@ -511,7 +514,7 @@ doesn’t get stripped away.)}
 \end{DUfieldlist}
 
 
-\subsection{2.6~~~Option Lists%
+\subsection{2.6   Option Lists%
   \label{option-lists}%
 }
 
@@ -546,7 +549,7 @@ There must be at least two spaces between the option and the
 description.
 
 
-\subsection{2.7~~~Literal Blocks%
+\subsection{2.7   Literal Blocks%
   \label{literal-blocks}%
 }
 
@@ -573,7 +576,7 @@ Or they can be quoted without indentation:
 \end{quote}
 
 
-\subsection{2.8~~~Line Blocks%
+\subsection{2.8   Line Blocks%
   \label{line-blocks}%
 }
 
@@ -659,7 +662,7 @@ also be centre-aligned:
 \item[] Durch ihres Rumpfs verengten Schacht
 \item[] fließt weißes Mondlicht
 \item[] still und heiter
-\item[] auf ~ ihren
+\item[] auf   ihren
 \item[] Waldweg
 \item[] u. s.
 \item[] w.
@@ -668,7 +671,7 @@ also be centre-aligned:
 \end{selectlanguage}
 
 
-\subsection{2.9~~~Block Quotes%
+\subsection{2.9   Block Quotes%
   \label{block-quotes}%
 }
 
@@ -698,7 +701,7 @@ notamment dans la documentation du langage Python.
 \end{selectlanguage}
 
 
-\subsection{2.10~~~Doctest Blocks%
+\subsection{2.10   Doctest Blocks%
   \label{doctest-blocks}%
 }
 
@@ -712,7 +715,7 @@ Python-specific usage examples; begun with ">>>"
 \end{quote}
 
 
-\subsection{2.11~~~Footnotes%
+\subsection{2.11   Footnotes%
   \label{footnotes}%
 }
 %
@@ -755,7 +758,7 @@ nonexistent footnote:%
 }
 
 
-\subsection{2.12~~~Citations%
+\subsection{2.12   Citations%
   \label{citations}%
 }
 \begin{figure}[b]\raisebox{1em}{\hypertarget{cit2002}{}}[CIT2002]
@@ -768,7 +771,7 @@ Here’s a reference to the above, \hyperlink{cit2002}{[CIT2002]}, and a %
 citation.
 
 
-\subsection{2.13~~~Targets%
+\subsection{2.13   Targets%
   \label{targets}%
   \label{another-target}%
 }
@@ -792,7 +795,7 @@ Here’s a %
 error.
 
 
-\subsubsection{2.13.1~~~Duplicate Target Names%
+\subsubsection{2.13.1   Duplicate Target Names%
   \label{duplicate-target-names}%
 }
 
@@ -801,7 +804,7 @@ generate “info” (level-1) system messages.  Duplicate names in
 explicit targets will generate “warning” (level-2) system messages.
 
 
-\subsubsection{2.13.2~~~Duplicate Target Names%
+\subsubsection{2.13.2   Duplicate Target Names%
   \label{id21}%
 }
 
@@ -811,7 +814,7 @@ this: %
 \raisebox{1em}{\hypertarget{id50}{}}\hyperlink{id49}{\textbf{\color{red}`Duplicate Target Names`\_}}), an error is generated.
 
 
-\subsection{2.14~~~Directives%
+\subsection{2.14   Directives%
   \label{directives}%
 }
 
@@ -821,7 +824,7 @@ others, please see
 \url{http://docutils.sourceforge.net/docs/ref/rst/directives.html}.
 
 
-\subsubsection{2.14.1~~~Document Parts%
+\subsubsection{2.14.1   Document Parts%
   \label{document-parts}%
 }
 
@@ -830,7 +833,7 @@ An example of the “contents” directive can be seen above this section
 document (a document-wide \hyperref[table-of-contents]{table of contents}).
 
 
-\subsubsection{2.14.2~~~Images and Figures%
+\subsubsection{2.14.2   Images and Figures%
   \label{images-and-figures}%
 }
 
@@ -1117,7 +1120,7 @@ True & True & True \\
 \label{target2}\label{target1}
 
 
-\subsubsection{2.14.3~~~Admonitions%
+\subsubsection{2.14.3   Admonitions%
   \label{admonitions}%
 }
 
@@ -1191,7 +1194,7 @@ You can make up your own admonition too.
 }
 
 
-\subsubsection{2.14.4~~~Topics, Sidebars, and Rubrics%
+\subsubsection{2.14.4   Topics, Sidebars, and Rubrics%
   \label{topics-sidebars-and-rubrics}%
 }
 
@@ -1231,7 +1234,7 @@ Topics and rubrics can be used at places where a \hyperref[section-title]{sectio
 allowed (e.g. inside a directive).
 
 
-\subsubsection{2.14.5~~~Target Footnotes%
+\subsubsection{2.14.5   Target Footnotes%
   \label{target-footnotes}%
 }
 %
@@ -1256,14 +1259,14 @@ allowed (e.g. inside a directive).
 }
 
 
-\subsubsection{2.14.6~~~Replacement Text%
+\subsubsection{2.14.6   Replacement Text%
   \label{replacement-text}%
 }
 
 I recommend you try \href{http://www.python.org/}{Python, \emph{the} best language around}\DUfootnotemark{id32}{id29}{5}.
 
 
-\subsubsection{2.14.7~~~Compound Paragraph%
+\subsubsection{2.14.7   Compound Paragraph%
   \label{compound-paragraph}%
 }
 
@@ -1400,7 +1403,7 @@ and the final paragraph of the compound 7.
 \end{DUclass}
 
 
-\subsubsection{2.14.8~~~Parsed Literal Blocks%
+\subsubsection{2.14.8   Parsed Literal Blocks%
   \label{parsed-literal-blocks}%
 }
 
@@ -1418,7 +1421,7 @@ footnotes\DUfootnotemark{id22}{id8}{1},~%
 \end{quote}
 
 
-\subsubsection{2.14.9~~~Code%
+\subsubsection{2.14.9   Code%
   \label{code}%
 }
 
@@ -1477,7 +1480,7 @@ as a code block, here the rst file \texttt{header\_footer.txt} with line numbers
 \end{DUclass}
 
 
-\subsection{2.15~~~Substitution Definitions%
+\subsection{2.15   Substitution Definitions%
   \label{substitution-definitions}%
 }
 
@@ -1486,7 +1489,7 @@ An inline image (\includegraphics{../../../docs/user/rst/images/biohazard.png}) 
 (Substitution definitions are not visible in the HTML source.)
 
 
-\subsection{2.16~~~Comments%
+\subsection{2.16   Comments%
   \label{comments}%
 }
 
@@ -1503,7 +1506,7 @@ Here’s one:
 (View the HTML source to see the comment.)
 
 
-\subsection{2.17~~~Raw text%
+\subsection{2.17   Raw text%
   \label{raw-text}%
 }
 
@@ -1522,7 +1525,7 @@ This is the \DUrole{myrawroleclass}{fourth test} with myrawroleclass set.
 Fifth test in LaTeX.\\Line two.
 
 
-\subsection{2.18~~~Container%
+\subsection{2.18   Container%
   \label{container}%
 }
 
@@ -1537,7 +1540,7 @@ paragraph 2
 % .. include:: data/header_footer.txt
 
 
-\subsection{2.19~~~Colspanning tables%
+\subsection{2.19   Colspanning tables%
   \label{colspanning-tables}%
 }
 
@@ -1615,7 +1618,7 @@ True
 \end{longtable*}
 
 
-\subsection{2.20~~~Rowspanning tables%
+\subsection{2.20   Rowspanning tables%
   \label{rowspanning-tables}%
 }
 
@@ -1674,7 +1677,7 @@ body row 3
 \end{longtable*}
 
 
-\subsection{2.21~~~Custom Roles%
+\subsection{2.21   Custom Roles%
   \label{custom-roles}%
 }
 
@@ -1718,7 +1721,7 @@ The following works in most browsers but does not validate
 \end{itemize}
 
 
-\subsection{2.22~~~Mathematics%
+\subsection{2.22   Mathematics%
   \label{mathematics}%
 }
 
@@ -1844,7 +1847,7 @@ HTML writers with \texttt{-{}-math-output=MathML}):
                   \end{cases}
 \end{equation*}
 
-\section{3~~~Tests for the LaTeX writer%
+\section{3   Tests for the LaTeX writer%
   \label{tests-for-the-latex-writer}%
 }
 
@@ -1852,7 +1855,7 @@ Test syntax elements which may cause trouble for the LaTeX writer but might
 not need to be tested with other writers (e.g. the HTML writer).
 
 
-\subsection{3.1~~~Custom Roles in LaTeX%
+\subsection{3.1   Custom Roles in LaTeX%
   \label{custom-roles-in-latex}%
 }
 
@@ -1895,7 +1898,7 @@ This is a \DUroletitlereference{\DUrole{custom-title-reference}{customized title
 \end{itemize}
 
 
-\subsection{3.2~~~class handling%
+\subsection{3.2   class handling%
   \label{class-handling}%
 }
 
@@ -1997,7 +2000,7 @@ writer for image, table, and line block elements.
 \end{DUlineblock}
 
 
-\subsection{3.3~~~More Tables%
+\subsection{3.3   More Tables%
   \label{more-tables}%
 }
 
@@ -2099,7 +2102,7 @@ third paragraph \\
 % This file is used by the standalone_rst_latex test.
 
 
-\subsection{3.4~~~Option lists%
+\subsection{3.4   Option lists%
   \label{id23}%
 }
 
@@ -2129,7 +2132,7 @@ is contained in a quote
 \end{description}
 
 
-\subsection{3.5~~~Monospaced non-alphanumeric characters%
+\subsection{3.5   Monospaced non-alphanumeric characters%
   \label{monospaced-non-alphanumeric-characters}%
 }
 
@@ -2145,7 +2148,7 @@ The two lines of non-alphanumeric characters should both have the same
 width as the third line.
 
 
-\subsection{3.6~~~Non-ASCII characters%
+\subsection{3.6   Non-ASCII characters%
   \label{non-ascii-characters}%
 }
 
@@ -2227,13 +2230,13 @@ black heart suit
  \\
 \hline
 
-$\spadesuit$
+♠
  & 
 black spade suit
  \\
 \hline
 
-$\clubsuit$
+♣
  & 
 black club suit
  \\
@@ -2251,7 +2254,7 @@ trade mark sign
  \\
 \hline
 
-$\Leftrightarrow$
+⇔
  & 
 left-right double arrow
  \\
@@ -2521,7 +2524,7 @@ The \DUroletitlereference{Latin-1 extended} Unicode block
 \item The following line should not be wrapped, because it uses
 no-break spaces (\textbackslash{}u00a0):
 
-X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X
+X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X
 
 \item Line wrapping with/without breakpoints marked by soft hyphens
 (\textbackslash{}u00ad):
@@ -2532,7 +2535,7 @@ pdnderdmdtdrischpdnderdmdtdrischpdnderdmdtdrischpdnderdmdtdrischpdnderdmdtdrisch
 \end{itemize}
 
 
-\subsection{3.7~~~Encoding special chars%
+\subsection{3.7   Encoding special chars%
   \label{encoding-special-chars}%
 }
 
@@ -2595,7 +2598,7 @@ greater-than and bar, < | >, except for typewriter font \DUroletitlereference{cm
 \end{quote}
 
 
-\subsection{3.8~~~Hyperlinks and -targets%
+\subsection{3.8   Hyperlinks and -targets%
   \label{hyperlinks-and-targets}%
 }
 
@@ -2641,7 +2644,7 @@ See \hyperref[hypertarget-in-plain-text]{hypertarget in plain text},
 \hyperref[image-label]{image label}.
 
 
-\subsection{3.9~~~External references%
+\subsection{3.9   External references%
   \label{external-references}%
 }
 
@@ -2723,50 +2726,50 @@ while balanced braces are suported:
 \end{itemize}
 
 
-\subsection{3.10~~~Section titles with \hyperref[inline-markup]{inline markup}%
+\subsection{3.10   Section titles with \hyperref[inline-markup]{inline markup}%
   \label{section-titles-with-inline-markup}%
 }
 
 
-\subsubsection{3.10.1~~~\emph{emphasized}, H\textsubscript{2}O and $x^2$%
+\subsubsection{3.10.1   \emph{emphasized}, H\textsubscript{2}O and $x^2$%
   \label{emphasized-h2o-and-x-2}%
 }
 
 
-\subsubsection{3.10.2~~~Substitutions work%
+\subsubsection{3.10.2   Substitutions work%
   \label{substitutions-fail}%
 }
 
 
-\subsection{3.11~~~Deeply nested sections%
+\subsection{3.11   Deeply nested sections%
   \label{deeply-nested-sections}%
 }
 
 In LaTeX and HTML,
 
 
-\subsubsection{3.11.1~~~Level 3%
+\subsubsection{3.11.1   Level 3%
   \label{level-3}%
 }
 
 nested sections
 
 
-\paragraph{3.11.1.1~~~level 4%
+\paragraph{3.11.1.1   level 4%
   \label{level-4}%
 }
 
 reach at some level
 
 
-\subparagraph{3.11.1.1.1~~~level 5%
+\subparagraph{3.11.1.1.1   level 5%
   \label{level-5}%
 }
 
 (depending on the document class)
 
 
-\DUtitle[sectionVI]{3.11.1.1.1.1~~~level 6%
+\DUtitle[sectionVI]{3.11.1.1.1.1   level 6%
   \label{level-6}%
 }
 
@@ -2778,7 +2781,7 @@ an unsupported level.
 % Preface for System Messages:
 
 
-\section{4~~~Error Handling%
+\section{4   Error Handling%
   \label{error-handling}%
 }
 

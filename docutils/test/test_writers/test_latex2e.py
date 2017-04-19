@@ -309,7 +309,7 @@ head_template.substitute(dict(parts,
 \tableofcontents
 
 
-\section{1~~~first section%
+\section{1   first section%
   \label{first-section}%
 }
 
