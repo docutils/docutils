@@ -64,6 +64,7 @@ Changes Since 0.13.1
   - New quote definitions for hr, hsb, hu, lv, sh, sl, sr.
   - Fix [ 313 ] Differentiate apostrophe from closing single quote
     (if possible).
+  - Fix [ 317 ] Extra space inserted with French smartquotes.
 
 * docutils/writers/_html_base.py
 

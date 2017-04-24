@@ -153,6 +153,72 @@ u"""\
         .\
 """],
 ["""\
+Do not convert context-character at inline-tag boundaries
+(in French, smart quotes expand to two characters).
+
+.. class:: language-fr-ch-x-altquot
+
+  Around "_`targets`", "*emphasized*" or "``literal``" text
+  and links to "targets_".
+
+  Inside *"emphasized"* or other `inline "roles"`:
+  (``"string"``), (``'string'``), *\\"betont\\"*, \\"*betont*".
+
+  Do not drop characters from intra-word inline markup like
+  *re*\ ``Structured``\ *Text*.
+""",
+u"""\
+<document source="test data">
+    <paragraph>
+        Do not convert context-character at inline-tag boundaries
+        (in French, smart quotes expand to two characters).
+    <paragraph classes="language-fr-ch-x-altquot">
+        Around «\u202f
+        <target ids="targets" names="targets">
+            targets
+        \u202f», «\u202f
+        <emphasis>
+            emphasized
+        \u202f» or «\u202f
+        <literal>
+            literal
+        \u202f» text
+        and links to «\u202f
+        <reference name="targets" refname="targets">
+            targets
+        \u202f».
+    <paragraph classes="language-fr-ch-x-altquot">
+        Inside \n\
+        <emphasis>
+            «\u202femphasized\u202f»
+         or other \n\
+        <title_reference>
+            inline «\u202froles\u202f»
+        :
+        (
+        <literal>
+            "string"
+        ), (
+        <literal>
+            'string'
+        ), 
+        <emphasis>
+            «\u202fbetont\u202f»
+        , «\u202f
+        <emphasis>
+            betont
+        \u202f».
+    <paragraph classes="language-fr-ch-x-altquot">
+        Do not drop characters from intra-word inline markup like
+        <emphasis>
+            re
+        <literal>
+            Structured
+        <emphasis>
+            Text
+        .
+"""],
+["""\
 .. class:: language-de
 
 German "smart quotes" and 'secondary smart quotes'.

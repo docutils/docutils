@@ -588,7 +588,10 @@ def educate_tokens(text_tokens, attr=default_smartypants_attr, language='en'):
             text = educateSingleBackticks(text, language)
 
         if do_quotes:
-            text = educateQuotes(prev_token_last_char+text, language)[1:]
+            # Replace plain quotes to prevent converstion to
+            # 2-character sequence in French.
+            context = prev_token_last_char.replace('"',';').replace("'",';')
+            text = educateQuotes(context+text, language)[1:]
 
         if do_stupefy:
             text = stupefyEntities(text, language)
