@@ -65,6 +65,7 @@ Changes Since 0.13.1
   - Fix [ 313 ] Differentiate apostrophe from closing single quote
     (if possible).
   - Fix [ 317 ] Extra space inserted with French smartquotes.
+  - Add command line interface for stand-alone use (requires 2.7).
 
 * docutils/writers/_html_base.py
 

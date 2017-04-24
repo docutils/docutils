@@ -30,9 +30,9 @@ typographic punctuation characters.
 
 ``smartquotes.py`` is an adaption of "SmartyPants" to Docutils_.
 
-* Using Unicode characters instead of HTML entities for typographic quotes, it
-  works for any output format that supports Unicode.
-* Support `language specific quote characters`__.
+* Using Unicode instead of HTML entities for typographic punctuation 
+  characters, it works for any output format that supports Unicode.
+* Supports `language specific quote characters`__.
 
 __ http://en.wikipedia.org/wiki/Non-English_usage_of_quotation_marks
 
@@ -179,66 +179,6 @@ Escape    Character
 This is useful, for example, when you want to use straight quotes as
 foot and inch marks: 6\\'2\\" tall; a 17\\" iMac.
 
-Options
-=======
-
-Numeric values are the easiest way to configure SmartyPants' behavior:
-
-:0:     Suppress all transformations. (Do nothing.)
-
-:1:     Performs default SmartyPants transformations: quotes (including
-        \`\`backticks'' -style), em-dashes, and ellipses. "``--``" (dash dash)
-        is used to signify an em-dash; there is no support for en-dashes
-
-:2:     Same as smarty_pants="1", except that it uses the old-school typewriter
-        shorthand for dashes:  "``--``" (dash dash) for en-dashes, "``---``"
-        (dash dash dash)
-        for em-dashes.
-
-:3:     Same as smarty_pants="2", but inverts the shorthand for dashes:
-        "``--``" (dash dash) for em-dashes, and "``---``" (dash dash dash) for
-        en-dashes.
-
-:-1:    Stupefy mode. Reverses the SmartyPants transformation process, turning
-        the characters produced by SmartyPants into their ASCII equivalents.
-        E.g. the LEFT DOUBLE QUOTATION MARK (“) is turned into a simple
-        double-quote (\"), "—" is turned into two dashes, etc.
-
-
-The following single-character attribute values can be combined to toggle
-individual transformations from within the smarty_pants attribute. For
-example, ``py['smartypants_attributes'] = "1"`` is equivalent to
-``py['smartypants_attributes'] = "qBde"``.
-
-:q:     Educates normal quote characters: (") and (').
-
-:b:     Educates \`\`backticks'' -style double quotes.
-
-:B:     Educates \`\`backticks'' -style double quotes and \`single' quotes.
-
-:d:     Educates em-dashes.
-
-:D:     Educates em-dashes and en-dashes, using old-school typewriter shorthand:
-        (dash dash) for en-dashes, (dash dash dash) for em-dashes.
-
-:i:     Educates em-dashes and en-dashes, using inverted old-school typewriter
-        shorthand: (dash dash) for em-dashes, (dash dash dash) for en-dashes.
-
-:e:     Educates ellipses.
-
-:w:     Translates any instance of ``&quot;`` into a normal double-quote character.
-        This should be of no interest to most people, but of particular interest
-        to anyone who writes their posts using Dreamweaver, as Dreamweaver
-        inexplicably uses this entity to represent a literal double-quote
-        character. SmartyPants only educates normal quotes, not entities (because
-        ordinarily, entities are used for the explicit purpose of representing the
-        specific character they represent). The "w" option must be used in
-        conjunction with one (or both) of the other quote options ("q" or "b").
-        Thus, if you wish to apply all SmartyPants transformations (quotes, en-
-        and em-dashes, and ellipses) and also translate ``&quot;`` entities into
-        regular quotes so SmartyPants can educate them, you should pass the
-        following to the smarty_pants attribute:
-
 
 Caveats
 =======
@@ -321,6 +261,9 @@ the source::
 Version History
 ===============
 
+1.8:    2017-04-24
+        - Command line front-end.
+
 1.7.1:  2017-03-19
         - Update and extend language-dependent quotes.
         - Differentiate apostrophe from single quote.
@@ -369,10 +312,72 @@ Version History
         - Initial release
 """
 
+options = r"""
+Options
+=======
+
+Numeric values are the easiest way to configure SmartyPants' behavior:
+
+:0:     Suppress all transformations. (Do nothing.)
+
+:1:     Performs default SmartyPants transformations: quotes (including
+        \`\`backticks'' -style), em-dashes, and ellipses. "``--``" (dash dash)
+        is used to signify an em-dash; there is no support for en-dashes
+
+:2:     Same as smarty_pants="1", except that it uses the old-school typewriter
+        shorthand for dashes:  "``--``" (dash dash) for en-dashes, "``---``"
+        (dash dash dash)
+        for em-dashes.
+
+:3:     Same as smarty_pants="2", but inverts the shorthand for dashes:
+        "``--``" (dash dash) for em-dashes, and "``---``" (dash dash dash) for
+        en-dashes.
+
+:-1:    Stupefy mode. Reverses the SmartyPants transformation process, turning
+        the characters produced by SmartyPants into their ASCII equivalents.
+        E.g. the LEFT DOUBLE QUOTATION MARK (“) is turned into a simple
+        double-quote (\"), "—" is turned into two dashes, etc.
+
+
+The following single-character attribute values can be combined to toggle
+individual transformations from within the smarty_pants attribute. For
+example, ``"1"`` is equivalent to ``"qBde"``.
+
+:q:     Educates normal quote characters: (") and (').
+
+:b:     Educates \`\`backticks'' -style double quotes.
+
+:B:     Educates \`\`backticks'' -style double quotes and \`single' quotes.
+
+:d:     Educates em-dashes.
+
+:D:     Educates em-dashes and en-dashes, using old-school typewriter shorthand:
+        (dash dash) for en-dashes, (dash dash dash) for em-dashes.
+
+:i:     Educates em-dashes and en-dashes, using inverted old-school typewriter
+        shorthand: (dash dash) for em-dashes, (dash dash dash) for en-dashes.
+
+:e:     Educates ellipses.
+
+:w:     Translates any instance of ``&quot;`` into a normal double-quote character.
+        This should be of no interest to most people, but of particular interest
+        to anyone who writes their posts using Dreamweaver, as Dreamweaver
+        inexplicably uses this entity to represent a literal double-quote
+        character. SmartyPants only educates normal quotes, not entities (because
+        ordinarily, entities are used for the explicit purpose of representing the
+        specific character they represent). The "w" option must be used in
+        conjunction with one (or both) of the other quote options ("q" or "b").
+        Thus, if you wish to apply all SmartyPants transformations (quotes, en-
+        and em-dashes, and ellipses) and also translate ``&quot;`` entities into
+        regular quotes so SmartyPants can educate them, you should pass the
+        following to the smarty_pants attribute:
+"""
+
+
 default_smartypants_attr = "1"
 
 
-import re
+import re, sys
 
 class smartchars(object):
     """Smart quotes and dashes
@@ -514,9 +519,8 @@ def educate_tokens(text_tokens, attr=default_smartypants_attr, language='en'):
     do_ellipses = False
     do_stupefy = False
 
-    if attr == "0": # Do nothing.
-        yield text
-    elif attr == "1": # Do everything, turn all options on.
+    # if attr == "0": # pass tokens unchanged (see below).
+    if attr == "1": # Do everything, turn all options on.
         do_quotes    = True
         do_backticks = True
         do_dashes    = 1
@@ -559,7 +563,7 @@ def educate_tokens(text_tokens, attr=default_smartypants_attr, language='en'):
 
         # skip literal text (math, literal, raw, ...)
         if ttype == 'literal':
-            prev_token_last_char = text[-1:]
+            prev_token_last_char = text[-1:].replace('"',';').replace("'",';')
             yield text
             continue
 
@@ -588,10 +592,7 @@ def educate_tokens(text_tokens, attr=default_smartypants_attr, language='en'):
             text = educateSingleBackticks(text, language)
 
         if do_quotes:
-            # Replace plain quotes to prevent converstion to
-            # 2-character sequence in French.
-            context = prev_token_last_char.replace('"',';').replace("'",';')
-            text = educateQuotes(context+text, language)[1:]
+            text = educateQuotes(prev_token_last_char+text, language)[1:]
 
         if do_stupefy:
             text = stupefyEntities(text, language)
@@ -908,37 +909,80 @@ def tokenize(text):
 if __name__ == "__main__":
 
     import locale
-
     try:
         locale.setlocale(locale.LC_ALL, '')
     except:
         pass
 
-    from docutils.core import publish_string
-    docstring_html = publish_string(__doc__, writer_name='html5')
+    # from docutils.core import publish_string
+    # docstring_html = publish_string(__doc__, writer_name='html5')
+    #
+    # print docstring_html
 
-    print docstring_html
+    import argparse
+    parser = argparse.ArgumentParser(
+                description='Filter stdin making ASCII punctuation "smart".')
+    # parser.add_argument("text", help="text to be acted on")
+    parser.add_argument("-a", "--action", default="1",
+                        help="what to do with the input (see --actionhelp)")
+    parser.add_argument("-e", "--encoding", default="utf8",
+                        help="text encoding")
+    parser.add_argument("-l", "--language", default="en",
+                        help="text language (BCP47 tag)")
+    parser.add_argument("-q", "--alternative-quotes", action="store_true",
+                        help="use alternative quote style")
+    parser.add_argument("--doc", action="store_true",
+                        help="print documentation")
+    parser.add_argument("--actionhelp", action="store_true",
+                        help="list available actions")
+    parser.add_argument("--stylehelp", action="store_true",
+                        help="list available quote styles")
+    parser.add_argument("--test", action="store_true",
+                        help="perform short self-test")
+    args = parser.parse_args()
 
-    # Unit test output goes to stderr.
-    import unittest
-    sp = smartyPants
+    if args.doc:
+        print (__doc__)
+    elif args.actionhelp:
+        print options
+    elif args.stylehelp:
+        print
+        print "Available styles (primary open/close, secondary open/close)"
+        print "language tag   quotes"
+        print "============   ======"
+        for (key, value) in smartchars.quotes.items():
+            print "%-14s %s" % (key, value)
+    elif args.test:
+        # Unit test output goes to stderr.
+        import unittest
 
-    class TestSmartypantsAllAttributes(unittest.TestCase):
-        # the default attribute is "1", which means "all".
+        class TestSmartypantsAllAttributes(unittest.TestCase):
+            # the default attribute is "1", which means "all".
+            def test_dates(self):
+                self.assertEqual(smartyPants("1440-80's"), u"1440-80’s")
+                self.assertEqual(smartyPants("1440-'80s"), u"1440-’80s")
+                self.assertEqual(smartyPants("1440---'80s"), u"1440–’80s")
+                self.assertEqual(smartyPants("1960's"), u"1960’s")
+                self.assertEqual(smartyPants("one two '60s"), u"one two ’60s")
+                self.assertEqual(smartyPants("'60s"), u"’60s")
 
-        def test_dates(self):
-            self.assertEqual(sp("1440-80's"), u"1440-80’s")
-            self.assertEqual(sp("1440-'80s"), u"1440-’80s")
-            self.assertEqual(sp("1440---'80s"), u"1440–’80s")
-            self.assertEqual(sp("1960's"), u"1960’s")
-            self.assertEqual(sp("one two '60s"), u"one two ’60s")
-            self.assertEqual(sp("'60s"), u"’60s")
+            def test_educated_quotes(self):
+                self.assertEqual(smartyPants('"Isn\'t this fun?"'), u'“Isn’t this fun?”')
 
-        def test_educated_quotes(self):
-            self.assertEqual(sp('''"Isn't this fun?"'''), u'“Isn’t this fun?”')
+            def test_html_tags(self):
+                text = '<a src="foo">more</a>'
+                self.assertEqual(smartyPants(text), text)
 
-        def test_html_tags(self):
-            text = '<a src="foo">more</a>'
-            self.assertEqual(sp(text), text)
+        suite = unittest.TestLoader().loadTestsFromTestCase(
+                                            TestSmartypantsAllAttributes)
+        unittest.TextTestRunner().run(suite)
 
-    unittest.main()
+    else:
+        if args.alternative_quotes:
+            if '-x-altquot' in args.language:
+                args.language = args.language.replace('-x-altquot', '')
+            else:
+                args.language += '-x-altquot'
+        text = sys.stdin.read().decode(args.encoding)
+        print smartyPants(text, attr=args.action,
+                          language=args.language).encode(args.encoding)
