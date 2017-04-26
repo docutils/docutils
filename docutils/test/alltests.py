@@ -19,6 +19,7 @@ start = time.time()
 
 import sys
 import os
+import platform
 import DocutilsTestSupport              # must be imported before docutils
 import docutils
 
@@ -81,6 +82,9 @@ if __name__ == '__main__':
            % (docutils.__version__, docutils.__version_details__,
               sys.version.split()[0],
               time.strftime('%Y-%m-%d'), time.strftime('%H:%M:%S')))
+    print ('OS: %s %s %s (%s, %s)'
+        % (platform.system(), platform.release(), platform.version(),
+           sys.platform, platform.platform()))
     print 'Working directory: %s' % os.getcwd()
     print 'Docutils package: %s' % os.path.dirname(docutils.__file__)
     sys.stdout.flush()
