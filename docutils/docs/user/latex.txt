@@ -220,8 +220,16 @@ Notes
 
 * Class arguments may contain numbers and hyphens, which need special
   treatment in LaTeX command names (see `class directive`_). The commands
-  ``\begincsname`` and ``\endcsname`` or the special command ``\@namedef``
-  can help with the definition of corresponding macros or environments.
+  ``\csname`` and ``\endcsname`` or the special command ``\@namedef`` can
+  help with the definition of corresponding macros or environments, e.g.::
+
+    \expandafter\newcommand\csname gg1\endcsname{Definition of gg1.}
+
+  or ::
+
+    \makeatletter
+    \@namedef{DUadmonitionadmonition-test}{…}
+    \makeatother
 
 * Elements can have multiple class arguments. In contrast to HTML/CSS, the
   order of the class arguments cannot be ignored in LaTeX
