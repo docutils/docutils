@@ -223,7 +223,7 @@ Use |sub| and |indirect1| and |sub| again (and |sub| one more time).
     <system_message backrefs="id6" ids="id5" level="3" line="5" source="test data" type="ERROR">
         <paragraph>
             Circular substitution definition referenced: "sub".
-    <system_message backrefs="id8" ids="id7" level="3" source="test data" type="ERROR">
+    <system_message backrefs="id8" ids="id7" level="3" line="5" source="test data" type="ERROR">
         <paragraph>
             Circular substitution definition referenced: "Sub".
 """],

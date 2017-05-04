@@ -710,6 +710,7 @@ class Substitutions(Transform):
                             raise CircularSubstitutionDefinitionError
                         else:
                             nested[nested_name].append(key)
+                            nested_ref['ref-origin'] = ref
                             subreflist.append(nested_ref)
                 except CircularSubstitutionDefinitionError:
                     parent = ref.parent
@@ -721,9 +722,13 @@ class Substitutions(Transform):
                             line=parent.line, base_node=parent)
                         parent.replace_self(msg)
                     else:
+                        # find original ref substitution which cased this error
+                        ref_origin = ref
+                        while ref_origin.hasattr('ref-origin'):
+                            ref_origin = ref_origin['ref-origin']
                         msg = self.document.reporter.error(
-                            'Circular substitution definition referenced: "%s".'
-                            % refname, base_node=ref)
+                            'Circular substitution definition referenced: '
+                            '"%s".' % refname, base_node=ref_origin)
                         msgid = self.document.set_id(msg)
                         prb = nodes.problematic(
                             ref.rawsource, ref.rawsource, refid=msgid)
