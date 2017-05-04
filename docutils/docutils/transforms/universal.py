@@ -273,7 +273,7 @@ class SmartQuotes(Transform):
                     lang = lang.replace('-x-altquot', '')
                 else:
                     lang += '-x-altquot'
-            # drop subtags missing in quotes:
+            # drop unsupported subtags:
             for tag in utils.normalize_language_tag(lang):
                 if tag in smartquotes.smartchars.quotes:
                     lang = tag
@@ -286,7 +286,7 @@ class SmartQuotes(Transform):
                 lang = ''
 
             # Iterator educating quotes in plain text:
-            # '2': set all, using old school en- and em- dash shortcuts
+            # (see "utils/smartquotes.py" for the attribute setting)
             teacher = smartquotes.educate_tokens(self.get_tokens(txtnodes),
                                                  attr='qDe', language=lang)
 
