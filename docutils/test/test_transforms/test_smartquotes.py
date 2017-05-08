@@ -32,12 +32,16 @@ def suite():
     s.generateTests(totest_de)
     settings['smart_quotes'] = 'alternative'
     s.generateTests(totest_de_alt)
+    settings['smart_quotes'] = True
+    settings['smartquotes_locales'] = [('de', u'«»()'), ('nl', u'„”’’')]
+    s.generateTests(totest_locales)
     return s
 
 
 totest = {}
 totest_de = {}
 totest_de_alt = {}
+totest_locales = {}
 
 totest['transitions'] = ((SmartQuotes,), [
 ["""\
@@ -298,6 +302,24 @@ u"""\
         Romanian „smart quotes” and «secondary» smart quotes.
 """],
 ])
+
+totest_locales['transitions'] = ((SmartQuotes,), [
+["""\
+German "smart quotes" and 'secondary smart quotes'.
+
+.. class:: language-nl
+
+Dutch "smart quotes" and 's Gravenhage (leading apostrophe).
+""",
+u"""\
+<document source="test data">
+    <paragraph>
+        German «smart quotes» and (secondary smart quotes).
+    <paragraph classes="language-nl">
+        Dutch „smart quotes” and ’s Gravenhage (leading apostrophe).
+"""],
+])
+
 
 if __name__ == '__main__':
     import unittest

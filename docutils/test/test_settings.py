@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 # $Id$
 # Author: David Goodger <goodger@python.org>
@@ -176,6 +177,10 @@ class HelperFunctionsTests(unittest.TestCase):
     pathdict = {'foo': 'hallo', 'ham': u'h\xE4m', 'spam': u'spam'}
     keys = ['foo', 'ham']
 
+    def setUp(self):
+        self.option_parser = frontend.OptionParser(
+            components=(rst.Parser,), read_config_files=None)
+
     def test_make_paths_absolute(self):
         pathdict = self.pathdict.copy()
         frontend.make_paths_absolute(pathdict, self.keys, base_path='base')
@@ -195,6 +200,33 @@ class HelperFunctionsTests(unittest.TestCase):
         # not touched, because key not in keys:
         self.assertEqual(pathdict['spam'], u'spam')
 
+    boolean_settings = (
+                (True, True ),
+                ('1', True ),
+                (u'on', True ),
+                ('yes', True ),
+                (u'true', True ),
+                (u'0', False ),
+                ('off', False ),
+                (u'no', False ),
+                ('false', False ),
+               )
+    def test_validate_boolean(self):
+        for t in self.boolean_settings:
+            self.assertEqual(
+                frontend.validate_boolean(None, t[0], self.option_parser),
+                             t[1])
+
+    def test_validate_ternary(self):
+        tests = (
+                 ('500V', '500V'),
+                 (u'parrot', u'parrot'),
+                )
+        for t in self.boolean_settings + tests:
+            self.assertEqual(
+                frontend.validate_ternary(None, t[0], self.option_parser),
+                             t[1])
+
     def test_validate_colon_separated_string_list(self):
         tests = (
                     (u'a', ['a',] ),
@@ -208,7 +240,6 @@ class HelperFunctionsTests(unittest.TestCase):
             self.assertEqual(
                     frontend.validate_colon_separated_string_list(None, t[0], None),
                     t[1])
-
 
     def test_validate_comma_separated_list(self):
         tests = (
@@ -224,6 +255,34 @@ class HelperFunctionsTests(unittest.TestCase):
             self.assertEqual(
                     frontend.validate_comma_separated_list(None, t[0], None),
                     t[1])
+
+    def test_validate_url_trailing_slash(self):
+        tests = (
+                    ('', './' ),
+                    (None, './' ),
+                    (u'http://example.org', u'http://example.org/' ),
+                    ('http://example.org/', 'http://example.org/' ),
+                )
+        for t in tests:
+            self.assertEqual(
+                    frontend.validate_url_trailing_slash(None, t[0], None),
+                    t[1])
+
+    def test_validate_smartquotes_locales(self):
+        tests = (
+                 ('en:ssvv', [('en', 'ssvv')]),
+                 (u'sd:«»°°', [(u'sd', u'«»°°')]),
+                 ([('sd', u'«»°°'), u'ds:°°«»'], [('sd', u'«»°°'),
+                                                  ('ds', u'°°«»')]),
+                 (u'frs:« : »:((:))', [(u'frs', [u'« ', u' »',
+                                                 u'((', u'))'])]),
+                )
+        for t in tests:
+            self.assertEqual(
+                    frontend.validate_smartquotes_locales(None, t[0], None),
+                    t[1])
+
+
 
 if __name__ == '__main__':
     unittest.main()
