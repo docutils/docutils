@@ -681,9 +681,11 @@ smart_quotes
 Activate the SmartQuotes_ transform to
 change straight quotation marks to typographic form. `Quote characters`_
 are selected according to the language of the current block element (see
-language_code_). Also changes consequtive runs of hyphen-minus and full
-stops (``---``, ``--``, ``...``) to em-dash, en-dash and ellipsis Unicode
-characters respectively.
+language_code_, smartquotes_locales_, and the `pre-defined quote sets`__).
+
+Also changes consecutive runs of hyphen-minus and full stops (``---``,
+``--``, ``...``) to em-dash, en-dash and ellipsis Unicode characters
+respectively.
 
 Supported values:
 
@@ -698,8 +700,32 @@ Default: "no". Option: ``--smart-quotes``.
 New in Docutils 0.10.
 
 .. _SmartQuotes: smartquotes.html
+__ smartquotes.html#localisation
 .. _quote characters:
    http://en.wikipedia.org/wiki/Non-English_usage_of_quotation_marks
+
+
+smartquotes_locales
+~~~~~~~~~~~~~~~~~~~
+
+Typographical quotes used by the SmartQuotes_ transform.
+
+A comma-separated list_ with language tag and a set of four quotes (primary
+open/close, secondary open/close)smartquotes_locales. (If more than one
+character shall be used for a quote (e.g. padding in French quotes), a
+colon-separated list may be used.)
+
+Example:
+  Ensure a correct leading apostrophe in ``'s Gravenhage`` in Dutch (at the
+  cost of incorrect opening single quotes) and set French quotes to double
+  and single guillemets with inner padding::
+
+          smartquote-locales: nl: „”’’,
+                              fr: « : »:‹ : ›
+
+Default: None. Option: ``--smartquotes-locales``.
+
+New in Docutils 0.14.
 
 syntax_highlight
 ~~~~~~~~~~~~~~~~

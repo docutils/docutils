@@ -249,6 +249,9 @@ class SmartQuotes(Transform):
         # print repr(alternative)
 
         document_language = self.document.settings.language_code
+        lc_smartquotes = self.document.settings.smartquotes_locales
+        if lc_smartquotes:
+            smartquotes.smartchars.quotes.update(dict(lc_smartquotes))
 
         # "Educate" quotes in normal text. Handle each block of text
         # (TextElement node) as a unit to keep context around inline nodes:

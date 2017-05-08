@@ -141,7 +141,13 @@ class Parser(docutils.parsers.Parser):
          ('Change straight quotation marks to typographic form: '
           'one of "yes", "no", "alt[ernative]" (default "no").',
           ['--smart-quotes'],
-          {'default': False, 'validator': frontend.validate_ternary}),
+          {'default': False, 'metavar': '<yes/no/alt>',
+           'validator': frontend.validate_ternary}),
+         ('Characters to use as "smart quotes" for <language>. ',
+          ['--smartquotes-locales'],
+          {'metavar': '<language:quotes[,language:quotes,...]>',
+           'action': 'append',
+           'validator': frontend.validate_smartquotes_locales}),
          ('Inline markup recognized at word boundaries only '
           '(adjacent to punctuation or whitespace). '
           'Force character-level inline markup recognition with '

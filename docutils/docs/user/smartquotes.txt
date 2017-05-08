@@ -17,7 +17,7 @@ Smart Quotes for Docutils
 Description
 ===========
 
-The `smart_quotes configuration setting`_ triggers the SmartQuotes
+The `"smart_quotes" configuration setting`_ triggers the SmartQuotes
 transformation on Text nodes that includes the following steps:
 
 - Straight quotes (``"`` and ``'``) into "curly" quote characters
@@ -30,7 +30,7 @@ generates documents with typographical quotes, dashes, and ellipses.
 
 Advantages:
 
-* typing speed (especiall when blind-typing),
+* typing speed (especially when blind-typing),
 * the possibility to change the quoting style of the
   complete document with just one configuration option, and
 * restriction to 7-bit characters in the source.
@@ -43,7 +43,8 @@ However, there are `algorithmic shortcomings`_ for 2 reasons:
 So, please consider also
 `Why You Might Not Want to Use "Smart" Quotes in Your Documents`_.
 
-.. _smart_quotes configuration setting: config.html#smart-quotes
+.. _"smart_quotes" configuration setting:
+.. _"smart_quotes" setting: config.html#smart-quotes
 
 
 Escaping
@@ -77,286 +78,301 @@ Localisation
 Quotation marks have a `variety of forms`__ in different languages and
 media.
 
-`Smartquotes` selects quotation marks depending on the language of the current
-block element and the value of the `smart_quotes configuration setting`_.
-
 __ https://en.wikipedia.org/wiki/Quotation_mark#Summary_table
 
-Docutils' `smartquotes` support the following languages:
+`SmartQuotes` inserts quotation marks depending on the language of the
+current block element and the value of the `"smart_quotes" setting`_.\
+[#x-altquot]_ 
+There is built-in support for the following languages:\ [#smartquotes-locales]_
 
+:af: .. class:: language-af
 
-.. class:: language-af
+    "'Afrikaans' quotes"
 
-"'Afrikaans' quotes"
+:af-x-altquot: .. class:: language-af-x-altquot
 
-.. class:: language-af-x-altquot
+    "'Afrikaans' alternative quotes"
 
-"'Afrikaans' alternative quotes"
+:ca: .. class:: language-ca
 
-.. class:: language-ca
+    "'Catalan' quotes"
 
-"'Catalan' quotes"
+:ca-x-altquot: .. class:: language-ca-x-altquot
 
-.. class:: language-ca-x-altquot
+    "'Catalan' alternative quotes"
 
-"'Catalan' alternative quotes"
+:cs: .. class:: language-cs
 
-.. class:: language-cs
+    "'Czech' quotes"
 
-"'Czech' quotes"
+:cs-x-altquot: .. class:: language-cs-x-altquot
 
-.. class:: language-cs-x-altquot
+    "'Czech' alternative quotes"
 
-"'Czech' alternative quotes"
+:da: .. class:: language-da
 
-.. class:: language-da
+    "'Danish' quotes"
 
-"'Danish' quotes"
+:da-x-altquot: .. class:: language-da-x-altquot
 
-.. class:: language-da-x-altquot
+    "'Danish' alternative quotes"
 
-"'Danish' alternative quotes"
+:de: .. class:: language-de
 
-.. class:: language-de
+    "'German' quotes"
 
-"'German' quotes"
+:de-x-altquot: .. class:: language-de-x-altquot
 
-.. class:: language-de-x-altquot
+    "'German' alternative quotes"
 
-"'German' alternative quotes"
+:de-ch: .. class:: language-de-ch
 
-.. class:: language-de-ch
+    "'Swiss-German' quotes"
 
-"'Swiss-German' quotes"
+:el: .. class:: language-el
 
-.. class:: language-el
+    "'Greek' quotes"
 
-"'Greek' quotes"
+:en: .. class:: language-en
 
-.. class:: language-en
+    "'English' quotes"
 
-"'English' quotes"
+:en-uk-x-altquot: .. class:: language-en-uk-x-altquot
 
-.. class:: language-en-uk-x-altquot
+    "'British' alternative quotes"
+    (swaps single and double quotes: ``"`` → ‘ and ``'`` → “)
 
-"'British' alternative quotes"
-(swaps single and double quotes: ``"`` → ‘ and ``'`` → “)
+:eo: .. class:: language-eo
 
-.. class:: language-eo
+    "'Esperanto' quotes"
 
-"'Esperanto' quotes"
+:es: .. class:: language-es
 
-.. class:: language-es
+    "'Spanish' quotes"
 
-"'Spanish' quotes"
+:es-x-altquot: .. class:: language-es-x-altquot
 
-.. class:: language-es-x-altquot
+    "'Spanish' alternative quotes"
 
-"'Spanish' alternative quotes"
+:et: .. class:: language-et
 
-.. class:: language-et
+    "'Estonian' quotes" (no secondary quote listed in Wikipedia)
 
-"'Estonian' quotes" (no secondary quote listed in Wikipedia)
+:et-x-altquot: .. class:: language-et-x-altquot
 
-.. class:: language-et-x-altquot
+    "'Estonian' alternative quotes"
 
-"'Estonian' alternative quotes"
+:eu: .. class:: language-eu
 
-.. class:: language-eu
+    "'Basque' quotes"
 
-"'Basque' quotes"
+:fi: .. class:: language-fi
 
-.. class:: language-fi
+    "'Finnish' quotes"
 
-"'Finnish' quotes"
+:fi-x-altquot: .. class:: language-fi-x-altquot
 
-.. class:: language-fi-x-altquot
+    "'Finnish' alternative quotes"
 
-"'Finnish' alternative quotes"
+:fr: .. class:: language-fr
 
-.. class:: language-fr
+    "'French' quotes"
 
-"'French' quotes"
+:fr-x-altquot: .. class:: language-fr-x-altquot
 
-.. class:: language-fr-x-altquot
+    "'French' alternative quotes"
 
-"'French' alternative quotes"
+:fr-ch: .. class:: language-fr-ch
 
-.. class:: language-fr-ch
+    "'Swiss-French' quotes"
 
-"'Swiss-French' quotes"
+:fr-ch-x-altquot: .. class:: language-fr-ch-x-altquot
 
-.. class:: language-fr-ch-x-altquot
+    "'Swiss-French' alternative quotes" (narrow no-break space, see
+    http://typoguide.ch/)
 
-"'Swiss-French' alternative quotes" (narrow no-break space, see
-http://typoguide.ch/)
+:gl: .. class:: language-gl
 
-.. class:: language-gl
+    "'Galician' quotes"
 
-"'Galician' quotes"
+:he: .. class:: language-he
 
-.. class:: language-he
+    "'Hebrew' quotes"
 
-"'Hebrew' quotes"
+:he-x-altquot: .. class:: language-he-x-altquot
 
-.. class:: language-he-x-altquot
+    "'Hebrew' alternative quotes"
 
-"'Hebrew' alternative quotes"
+:hr: .. class:: language-hr
 
-.. class:: language-hr
+    "'Croatian' quotes"
 
-"'Croatian' quotes"
+:hr-x-altquot: .. class:: language-hr-x-altquot
 
-.. class:: language-hr-x-altquot
+    "'Croatian' alternative quotes"
 
-"'Croatian' alternative quotes"
+:hsb: .. class:: language-hsb
 
-.. class:: language-hsb
+    "'Upper Sorbian' quotes"
 
-"'Upper Sorbian' quotes"
+:hsb-x-altquot: .. class:: language-hsb-x-altquot
 
-.. class:: language-hsb-x-altquot
+    "'Upper Sorbian' alternative quotes"
 
-"'Upper Sorbian' alternative quotes"
+:hu: .. class:: language-hu
 
-.. class:: language-hu
+    "'Hungarian' quotes"
 
-"'Hungarian' quotes"
+:is: .. class:: language-is
 
-.. class:: language-is
+    "'Icelandic' quotes"
 
-"'Icelandic' quotes"
+:it: .. class:: language-it
 
-.. class:: language-it
+    "'Italian' quotes"
 
-"'Italian' quotes"
+:it-ch: .. class:: language-it-ch
 
-.. class:: language-it-ch
+    "'Swiss-Italian' quotes"
 
-"'Swiss-Italian' quotes"
+:it-x-altquot: .. class:: language-it-x-altquot
 
-.. class:: language-it-x-altquot
+    "'Italian' alternative quotes"
 
-"'Italian' alternative quotes"
+:ja: .. class:: language-ja
 
-.. class:: language-ja
+    "'Japanese' quotes"
 
-"'Japanese' quotes"
+:lt: .. class:: language-lt
 
-.. class:: language-lt
+    "'Lithuanian' quotes"
 
-"'Lithuanian' quotes"
+:lv: .. class:: language-lv
 
-.. class:: language-lv
+    "'Latvian' quotes"
 
-"'Latvian' quotes"
+:nl: .. class:: language-nl
 
-.. class:: language-nl
+    "'Dutch' quotes"
 
-"'Dutch' quotes"
+:nl-x-altquot: .. class:: language-nl-x-altquot
 
-.. class:: language-nl-x-altquot
-
-"'Dutch' alternative quotes"
+    "'Dutch' alternative quotes"
 
 .. # 'nl-x-altquot2': u'””’’',
 
-.. class:: language-pl
+:pl: .. class:: language-pl
 
-"'Polish' quotes"
+    "'Polish' quotes"
 
-.. class:: language-pl-x-altquot
+:pl-x-altquot: .. class:: language-pl-x-altquot
 
-"'Polish' alternative quotes"
+    "'Polish' alternative quotes"
 
-.. class:: language-pt
+:pt: .. class:: language-pt
 
-"'Portuguese' quotes"
+    "'Portuguese' quotes"
 
-.. class:: language-pt-br
+:pt-br: .. class:: language-pt-br
 
-"'Portuguese (Brazil)' quotes"
+    "'Portuguese (Brazil)' quotes"
 
-.. class:: language-ro
+:ro: .. class:: language-ro
 
-"'Romanian' quotes"
+    "'Romanian' quotes"
 
-.. class:: language-ru
+:ru: .. class:: language-ru
 
-"'Russian' quotes"
+    "'Russian' quotes"
 
-.. class:: language-sh
+:sh: .. class:: language-sh
 
-"'Serbo-Croatian' quotes"
+    "'Serbo-Croatian' quotes"
 
-.. class:: language-sh-x-altquot
+:sh-x-altquot: .. class:: language-sh-x-altquot
 
-"'Serbo-Croatian' alternative quotes"
+    "'Serbo-Croatian' alternative quotes"
 
-.. class:: language-sk
+:sk: .. class:: language-sk
 
-"'Slovak' quotes"
+    "'Slovak' quotes"
 
-.. class:: language-sk-x-altquot
+:sk-x-altquot: .. class:: language-sk-x-altquot
 
-"'Slovak' alternative quotes"
+    "'Slovak' alternative quotes"
 
-.. class:: language-sl
+:sl: .. class:: language-sl
 
-"'Slovenian' quotes"
+    "'Slovenian' quotes"
 
-.. class:: language-sl-x-altquot
+:sl-x-altquot: .. class:: language-sl-x-altquot
 
-"'Slovenian' alternative quotes"
+    "'Slovenian' alternative quotes"
 
-.. class:: language-sr
+:sr: .. class:: language-sr
 
-"'Serbian' quotes"
+    "'Serbian' quotes"
 
-.. class:: language-sr-x-altquot
+:sr-x-altquot: .. class:: language-sr-x-altquot
 
-"'Serbian' alternative quotes"
+    "'Serbian' alternative quotes"
 
-.. class:: language-sv
+:sv: .. class:: language-sv
 
-"'Swedish' quotes"
+    "'Swedish' quotes"
 
-.. class:: language-sv-x-altquot
+:sv-x-altquot: .. class:: language-sv-x-altquot
 
-"'Swedish' alternative quotes"
+    "'Swedish' alternative quotes"
 
-.. class:: language-tr
+:tr: .. class:: language-tr
 
-"'Turkish' quotes"
+    "'Turkish' quotes"
 
-.. class:: language-tr-x-altquot
+:tr-x-altquot: .. class:: language-tr-x-altquot
 
-"'Turkish' alternative quotes"
+    "'Turkish' alternative quotes"
 
 .. 'tr-x-altquot2': u'“„‘‚', # antiquated?
 
-.. class:: language-uk
+:uk: .. class:: language-uk
 
-"'Ukrainian' quotes"
+    "'Ukrainian' quotes"
 
-.. class:: language-uk-x-altquot
+:uk-x-altquot: .. class:: language-uk-x-altquot
 
-"'Ukrainian' alternative quotes"
+    "'Ukrainian' alternative quotes"
 
-.. class:: language-zh-cn
+:zh-cn: .. class:: language-zh-cn
 
-"'Chinese (China)' quotes"
+    "'Chinese (China)' quotes"
 
-.. class:: language-zh-tw
+:zh-tw: .. class:: language-zh-tw
 
-"'Chinese (Taiwan)' quotes"
+    "'Chinese (Taiwan)' quotes"
 
-Quotes in text blocks in a non-supported language use the document
-language:
+Quotes in text blocks in a non-configured language are kept as plain quotes:
 
-.. class:: langugage-undefined-example
+:undefined: .. class:: language-undefined-example
 
-"'Undefined' quotes"
+    "'Undefined' quotes"
+
+.. [#x-altquot] Tags with the non-standard extension ``-x-altquot`` define
+   the quote set used with the `"smart_quotes" setting`_ value ``"alt"``.
+
+.. [#smartquotes-locales] The definitions for language-dependend
+   typographical quotes can be extended or overwritten using the
+   `"smartquotes_locales" setting`_.
+
+   The following example ensures a correct leading apostrophe in ``'s
+   Gravenhage`` (at the cost of incorrect leading single quotes) in Dutch
+   and sets French quotes to double and single guillemets with inner
+   spacing::
+
+     smartquote-locales: nl: „”’’
+                         fr: « : »:‹ : ›
+
+.. _"smartquotes_locales" setting: config.html#smartquotes-locales
 
 
 Caveats
@@ -452,7 +468,7 @@ this plug-in.  Brad Choate is a fine hacker indeed.
 `Jeremy Hedley`_ and `Charles Wiltgen`_ deserve mention for exemplary beta
 testing of the original SmartyPants.
 
-Internationalization and adaption to Docutils by Günter Milde.
+Internationalisation and adaption to Docutils by Günter Milde.
 
 .. _SmartyPants: http://daringfireball.net/projects/smartypants/
 .. _Pyblosxom: http://pyblosxom.bluesock.org/
