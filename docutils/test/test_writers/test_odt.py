@@ -96,6 +96,7 @@ class DocutilsOdtTestCase(DocutilsTestSupport.StandardTestCase):
         if settings_overrides is None:
             settings_overrides={}
             settings_overrides['_disable_config'] = True
+            settings_overrides['language_code'] = 'en-US'
 
         result = docutils.core.publish_string(
             source=input,
@@ -175,6 +176,7 @@ class DocutilsOdtTestCase(DocutilsTestSupport.StandardTestCase):
         settings_overrides = {
             'custom_header': 'Page %p% of %P%',
             'custom_footer': 'Title: %t%  Date: %d3%  Time: %t4%',
+            'language_code': 'en-US',
             }
         self.process_test('odt_custom_headfoot.txt', 'odt_custom_headfoot.odt',
             settings_overrides=settings_overrides,
