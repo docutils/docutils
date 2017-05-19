@@ -572,38 +572,35 @@ class Writer(writers.Writer):
         s1 = self.get_stylesheet()
         # Set default language in document to be generated.
         # Language is specified by the -l/--language command line option.
-        # Allowed values are "ll", "ll-rr" or "ll_rr", where ll is language
-        # and rr is region.  If region is omitted, we use
+        # The format is described in BCP 47.  If region is omitted, we use
         # local.normalize(ll) to obtain a region.
         language_code = None
         region_code = None
-        if len(self.visitor.normalized_language_code) > 0:
-            language_ids = self.visitor.normalized_language_code[0].split('-')
-            if len(language_ids) == 2:
-                language_code = language_ids[0]
-                region_code = language_ids[1]
-            elif len(language_ids) == 1:
-                language_code = language_ids[0]
+        if self.visitor.language_code:
+            language_ids = self.visitor.language_code.replace('_', '-')
+            language_ids = language_ids.split('-')
+            # first tag is primary language tag
+            language_code = language_ids[0].lower()
+            # 2-letter region subtag may follow in 2nd or 3rd position
+            for subtag in language_ids[1:]:
+                if len(subtag) == 2 and subtag.isalpha():
+                    region_code = subtag.upper()
+                    break
+                elif len(subtag) == 1:
+                    break   # 1-letter tag is never before valid region tag
+            if region_code is None:
                 rcode = locale.normalize(language_code)
                 rcode = rcode.split('_')
                 if len(rcode) > 1:
-                    rcode = rcode[1]
-                    rcode = rcode.split('.')
-                    if len(rcode) >= 1:
-                        region_code = rcode[0]
+                    rcode = rcode[1].split('.')
+                    region_code = rcode[0]
                 if region_code is None:
-                    raise RuntimeError(
+                    self.document.reporter.warning(
                         'invalid language-region.  '
                         'Could not find region with locale.normalize().  '
                         'If language is supplied, then you must specify '
-                        'both lanauge and region (ll-rr).  Examples: '
-                        'es-mx (Spanish, Mexico), en-au (English, Australia).')
-        else:
-            raise RuntimeError(
-                'invalid language-region. '
-                'Format must be "ll-rr" or "ll_rr", where ll is language '
-                'and rr is region. '
-                'See https://en.wikipedia.org/wiki/IETF_language_tag')
+                        'both language and region (ll-RR).  Examples: '
+                        'es-MX (Spanish, Mexico), en-AU (English, Australia).')
         # Update the style ElementTree with the language and region.
         # Note that we keep a reference to the modified node because
         # it is possible that ElementTree will throw away the Python
@@ -888,8 +885,6 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         self.language = languages.get_language(
             self.language_code,
             document.reporter)
-        self.normalized_language_code = languages.normalize_language_tag(
-            self.language_code)
         self.format_map = {}
         if self.settings.odf_config_file:
             from ConfigParser import ConfigParser
@@ -3445,7 +3440,10 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     depart_admonition = depart_warning
 
     def generate_admonition(self, node, label, title=None):
-        translated_label = self.language.labels[label]
+        if hasattr(self.language, 'labels'):
+            translated_label = self.language.labels[label]
+        else:
+            translated_label = label
         el1 = SubElement(self.current_element, 'text:p', attrib={
             'text:style-name': self.rststyle(
                 'admon-%s-hdr', (label, )),
