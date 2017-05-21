@@ -911,16 +911,33 @@ def tokenize(text):
 
 if __name__ == "__main__":
 
-    import locale
+    import itertools
     try:
-        locale.setlocale(locale.LC_ALL, '')
+        import locale # module missing in Jython
+        locale.setlocale(locale.LC_ALL, '') # set to user defaults
+        defaultlanguage = locale.getdefaultlocale()[0]
     except:
-        pass
+        defaultlanguage = 'en'
 
-    # from docutils.core import publish_string
-    # docstring_html = publish_string(__doc__, writer_name='html5')
-    #
-    # print docstring_html
+    # Normalize and drop unsupported subtags:
+    defaultlanguage = defaultlanguage.lower().replace('-','_')
+    # split (except singletons, which mark the following tag as non-standard):
+    defaultlanguage = re.sub(r'_([a-zA-Z0-9])_', r'_\1-', defaultlanguage)
+    _subtags = [subtag for subtag in defaultlanguage.split('_')]
+    _basetag = _subtags.pop(0)
+    # find all combinations of subtags
+    for n in range(len(_subtags), 0, -1):
+        for tags in itertools.combinations(_subtags, n):
+            _tag = '-'.join((_basetag,)+tags)
+            if _tag in smartchars.quotes:
+                defaultlanguage = _tag
+                break
+        else:
+            if _basetag in smartchars.quotes:
+                defaultlanguage = _basetag
+            else:
+                defaultlanguage = 'en'
+
 
     import argparse
     parser = argparse.ArgumentParser(
@@ -930,8 +947,8 @@ if __name__ == "__main__":
                         help="what to do with the input (see --actionhelp)")
     parser.add_argument("-e", "--encoding", default="utf8",
                         help="text encoding")
-    parser.add_argument("-l", "--language", default="en",
-                        help="text language (BCP47 tag)")
+    parser.add_argument("-l", "--language", default=defaultlanguage,
+                        help="text language (BCP47 tag), Default: %s"%defaultlanguage)
     parser.add_argument("-q", "--alternative-quotes", action="store_true",
                         help="use alternative quote style")
     parser.add_argument("--doc", action="store_true",
@@ -953,8 +970,8 @@ if __name__ == "__main__":
         print "Available styles (primary open/close, secondary open/close)"
         print "language tag   quotes"
         print "============   ======"
-        for (key, value) in smartchars.quotes.items():
-            print "%-14s %s" % (key, value)
+        for key in sorted(smartchars.quotes.keys()):
+            print "%-14s %s" % (key, smartchars.quotes[key])
     elif args.test:
         # Unit test output goes to stderr.
         import unittest
