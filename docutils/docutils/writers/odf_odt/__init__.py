@@ -24,7 +24,10 @@ import StringIO
 import copy
 import urllib2
 import docutils
-import locale
+try:
+    import locale # module missing in Jython
+except ImportError:
+    pass
 from docutils import frontend, nodes, utils, writers, languages
 from docutils.readers import standalone
 from docutils.transforms import references
@@ -589,18 +592,21 @@ class Writer(writers.Writer):
                 elif len(subtag) == 1:
                     break   # 1-letter tag is never before valid region tag
             if region_code is None:
-                rcode = locale.normalize(language_code)
+                try:
+                    rcode = locale.normalize(language_code)
+                except NameError:
+                    rcode = language_code
                 rcode = rcode.split('_')
                 if len(rcode) > 1:
                     rcode = rcode[1].split('.')
                     region_code = rcode[0]
                 if region_code is None:
                     self.document.reporter.warning(
-                        'invalid language-region.  '
-                        'Could not find region with locale.normalize().  '
-                        'If language is supplied, then you must specify '
-                        'both language and region (ll-RR).  Examples: '
-                        'es-MX (Spanish, Mexico), en-AU (English, Australia).')
+                        'invalid language-region.\n'
+                        '  Could not find region with locale.normalize().\n'
+                        '  Please specify both language and region (ll-RR).\n'
+                        '  Examples: es-MX (Spanish, Mexico),\n'
+                        '  en-AU (English, Australia).')
         # Update the style ElementTree with the language and region.
         # Note that we keep a reference to the modified node because
         # it is possible that ElementTree will throw away the Python
