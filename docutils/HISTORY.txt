@@ -87,6 +87,16 @@ Changes Since 0.13.1
 * tools/dev/generate_punctuation_chars.py: New skript
   to test and update utils.punctuation_chars.
 
+* docutils/writers/odf_ odt/__init__.py:
+
+  - Command line option -l/--language now sets the default language
+    of the generated ODF document.
+  - The use of image directive options :width: (%), :scale:, etc now
+    set the width/height/size of images in the generated ODF
+    documents.
+  - The heading/title of admonitions now reflects the language
+    specified by the -l/--language command line option.
+
 
 Release 0.13.1 (2016-12-09)
 ===========================
