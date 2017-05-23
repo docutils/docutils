@@ -606,8 +606,10 @@ def strip_combining_chars(text):
 def find_combining_chars(text):
     """Return indices of all combining chars in  Unicode string `text`.
 
+    >>> from docutils.utils import find_combining_chars
     >>> find_combining_chars(u'A t̆ab̆lĕ')
     [3, 6, 9]
+
     """
     if isinstance(text, str) and sys.version_info < (3,0):
         return []
@@ -616,8 +618,10 @@ def find_combining_chars(text):
 def column_indices(text):
     """Indices of Unicode string `text` when skipping combining characters.
 
+    >>> from docutils.utils import column_indices
     >>> column_indices(u'A t̆ab̆lĕ')
     [0, 1, 2, 4, 5, 7, 8]
+
     """
     # TODO: account for asian wide chars here instead of using dummy
     # replacements in the tableparser?
@@ -674,17 +678,21 @@ def normalize_language_tag(tag):
 
     Example:
 
+    >>> from docutils.utils import normalize_language_tag
     >>> normalize_language_tag('de_AT-1901')
     ['de-at-1901', 'de-at', 'de-1901', 'de']
+    >>> normalize_language_tag('de-CH-x_altquot')
+    ['de-ch-x-altquot', 'de-ch', 'de-x-altquot', 'de']
+
     """
     # normalize:
-    tag = tag.lower().replace('_','-')
+    tag = tag.lower().replace('-','_')
     # split (except singletons, which mark the following tag as non-standard):
-    tag = re.sub(r'-([a-zA-Z0-9])-', r'-\1_', tag)
-    taglist = []
-    subtags = [subtag.replace('_', '-') for subtag in tag.split('-')]
+    tag = re.sub(r'_([a-zA-Z0-9])_', r'_\1-', tag)
+    subtags = [subtag for subtag in tag.split('_')]
     base_tag = [subtags.pop(0)]
     # find all combinations of subtags
+    taglist = []
     for n in range(len(subtags), 0, -1):
         for tags in unique_combinations(subtags, n):
             taglist.append('-'.join(base_tag+tags))
