@@ -51,6 +51,10 @@ Future changes
 Changes Since 0.13.1
 ====================
 
+* docutils/docs/ref/docutils.dtd:
+
+  - Enable validation of Docutils XML documents against the DTD:
+
 * docutils/parsers/rst/:
 
   - Added functionality: escaped whitespace in URI contexts.
@@ -58,11 +62,34 @@ Changes Since 0.13.1
     recognition. (May break documents that relied on some whitespace
     characters (NBSP, ...) not to be recognized as whitespace.)
 
+* docutils/utils/smartquotes.py:
+
+  - Update quote definitions for et, fi, fr, ro, sv, tr, uk.
+  - Add quote definitions for hr, hsb, hu, lv, sh, sl, sr.
+  - Fix [ 313 ] Differentiate apostrophe from closing single quote
+    (if possible).
+  - Fix [ 317 ] Extra space inserted with French smartquotes.
+  - Add command line interface for stand-alone use (requires 2.7).
+
+* docutils/writers/_html_base:
+
+  - Provide default title in metadata.
+  - Fix [ 312 ] HTML writer generates invalid HTML if the table has two tags.
+
+* docutils/writers/html4css1:
+
+  - Respect automatic table column sizing.
+
 * docutils/writers/latex2e/__init__.py
 
   - Handle class arguments for block-level elements by wrapping them
     in a "DUclass" environment. This replaces the special handling for
     "epigraph" and "topic" elements.
+
+* docutils/writers/odf_ odt:
+
+  - Language option sets ODF document's default language
+  - Image width, scale, ... set image size in generated ODF. 
 
 * tools/
 
