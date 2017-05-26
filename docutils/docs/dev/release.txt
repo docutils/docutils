@@ -109,7 +109,31 @@ REWORK FOR SOURCEFORGE REPO
   and ask for testing with Sphinx.**
   (This step can be skipped for bugfix releases.)
 
-* Call ``sandbox/infrastructure/release.sh new_version svn_version``.
+* THIS CHANGES for new numbering:
+
+  we want: 
+  
+  the release-number might include a prerelease character 
+  ``a``, ``b``, or ``c`` or ``rc1``.
+
+  for a prerelease 
+
+  0. before release ``repository <next-release-number>`` 
+  1. set this to ``prerelease <next-release-number>``
+  2. release
+  3. increase prerelease character, set to text repository
+
+  for a release 
+
+  0. before release ``repository <next-release-number>`` 
+  1. set this to ``release <next-release-number>``
+     without prerelease character.
+  2. release
+  3. set prerelease character ``a``, set to text repository
+
+  see what ``sandbox/infrastructure/release.sh`` can aid      
+
+  Call ``sandbox/infrastructure/release.sh new_version svn_version``.
   For details see the script.
 
   ``new_version`` is the current version, status will change from
