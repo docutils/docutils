@@ -53,11 +53,12 @@ Subpackages:
 __docformat__ = 'reStructuredText'
 
 __version__ = '0.14a0'
-"""``major.minor.micro`` version number.  The micro number is bumped for API
-changes, for new functionality, and for interim project releases.  The minor
-number is bumped whenever there is a significant project release.  The major
-number will be bumped when the project is feature-complete, and perhaps if
-there is a major change in the design."""
+"""``major.minor.micro`` version number.
+The major number will be bumped when the project is feature-complete, and
+later if there is a major change in the design or API.
+The minor number is bumped whenever there are new features.
+The micro number is bumped for bug-fix releases.
+"""
 
 __version_details__ = 'prerelease'
 """Extra version details (e.g. 'snapshot 2005-05-29, r3410', 'repository',
