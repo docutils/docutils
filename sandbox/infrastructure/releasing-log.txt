@@ -8,10 +8,11 @@ Releasing
 
 Notes on what happend while releasing.
 
-Prerelease 0.14.0a
-==================
+Prerelease 0.14a0
+=================
 
-svn revision: 8078
+svn revision: 8082 Prerelease 0.14a0
+svn revision: 8078 Prerelease 0.14.0a
 
 * merge changes from HISTORY.txt to RELEASE-NOTES.txt
 * extract release number description setting from release.sh
