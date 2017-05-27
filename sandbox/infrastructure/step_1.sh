@@ -39,6 +39,9 @@ old_ver="`python -c 'import docutils; print docutils.__version__'`"
 
 new_ver=$2
 
+echo "version ${old_ver} to ${new_ver}"
+echo "description to ${new_desc}"
+
 function set_ver()
 {
     # Parameters: old_version new_version
