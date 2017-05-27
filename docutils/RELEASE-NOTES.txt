@@ -48,8 +48,8 @@ Future changes
 .. _rst2html.py: docs/user/tools.html#rst2html-py
 
 
-Changes Since 0.13.1
-====================
+Release 0.14.0a (2017-05-27)
+============================
 
 * docutils/docs/ref/docutils.dtd:
 
