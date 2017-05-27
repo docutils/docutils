@@ -52,16 +52,16 @@ Subpackages:
 
 __docformat__ = 'reStructuredText'
 
-__version__ = '0.13.2a'
+__version__ = '0.14.0a'
 """``major.minor.micro`` version number.  The micro number is bumped for API
 changes, for new functionality, and for interim project releases.  The minor
 number is bumped whenever there is a significant project release.  The major
 number will be bumped when the project is feature-complete, and perhaps if
 there is a major change in the design."""
 
-__version_details__ = 'repository'
+__version_details__ = 'prerelease'
 """Extra version details (e.g. 'snapshot 2005-05-29, r3410', 'repository',
-'release'), modified automatically & manually."""
+'prerelease', 'release'), modified automatically & manually."""
 
 import sys
 
