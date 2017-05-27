@@ -52,7 +52,7 @@ Subpackages:
 
 __docformat__ = 'reStructuredText'
 
-__version__ = '0.14rc1'
+__version__ = '0.14rc2'
 """``major.minor.micro`` version number.
 The major number will be bumped when the project is feature-complete, and
 later if there is a major change in the design or API.
@@ -60,7 +60,7 @@ The minor number is bumped whenever there are new features.
 The micro number is bumped for bug-fix releases.
 """
 
-__version_details__ = 'prerelease'
+__version_details__ = 'repository'
 """Extra version details (e.g. 'snapshot 2005-05-29, r3410', 'repository',
 'prerelease', 'release'), modified automatically & manually."""
 
