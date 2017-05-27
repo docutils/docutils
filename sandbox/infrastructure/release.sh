@@ -153,7 +153,11 @@ function initialize()
         echo 'Aborting.'
         exit 1
     fi
-    svnroot="`echo "$svnurl" | sed 's/\/\(branches\|trunk\).*//'`"
+    if test `uname` = "Darwin" ; then
+        svnroot="`echo "$svnurl" | sed -E 's/\/(branches|trunk).*//'`"
+    else
+        svnroot="`echo "$svnurl" | sed 's/\/\(branches\|trunk\).*//'`"
+    fi
     echo "Subversion root URL: $svnroot"
     if test "$svnurl" = "$svnroot"; then
         echo 'Error: Subversion URL and Subversion root URL are the same.'
