@@ -52,7 +52,7 @@ Subpackages:
 
 __docformat__ = 'reStructuredText'
 
-__version__ = '0.14a0'
+__version__ = '0.14rc1'
 """``major.minor.micro`` version number.
 The major number will be bumped when the project is feature-complete, and
 later if there is a major change in the design or API.
