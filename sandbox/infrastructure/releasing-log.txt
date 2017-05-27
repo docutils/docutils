@@ -8,6 +8,21 @@ Releasing
 
 Notes on what happend while releasing.
 
+Prerelease 0.14.0a
+==================
+
+svn revision: 8078
+
+* merge changes from HISTORY.txt to RELEASE-NOTES.txt
+* extract release number description setting from release.sh
+* rename headings in HISTORY.txt and RELEASE-NOTES.txt
+* run release.sh stage 2: do a clean checkout and packing
+* run local test with python2.7
+* upload to sourceforge.net. Keep 0.13 as lattest, stable.
+* reister on to pypi and upload tgz
+* pypi: unset hide old releases
+
+
 Release 0.13
 ============
 
