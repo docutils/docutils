@@ -218,11 +218,11 @@ class SmartQuotes(Transform):
 
     default_priority = 850
 
-    nodes_to_skip = [nodes.FixedTextElement, nodes.Special]
+    nodes_to_skip = (nodes.FixedTextElement, nodes.Special)
     """Do not apply "smartquotes" to instances of these block-level nodes."""
 
-    literal_nodes = [nodes.image, nodes.literal, nodes.math,
-                     nodes.raw, nodes.problematic]
+    literal_nodes = (nodes.image, nodes.literal, nodes.math,
+                     nodes.raw, nodes.problematic)
     """Do not change quotes in instances of these inline nodes."""
 
     smartquotes_action = 'qDe'
