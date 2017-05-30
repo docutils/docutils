@@ -218,6 +218,20 @@ class SmartQuotes(Transform):
 
     default_priority = 850
 
+    nodes_to_skip = [nodes.FixedTextElement, nodes.Special]
+    """Do not apply "smartquotes" to instances of these block-level nodes."""
+
+    literal_nodes = [nodes.image, nodes.literal, nodes.math,
+                     nodes.raw, nodes.problematic]
+    """Do not change quotes in instances of these inline nodes."""
+
+    smartquotes_action = 'qDe'
+    """Setting to select smartquote transformations.
+
+    The default 'qDe' educates normal quote characters: (", '),
+    em- and en-dashes (---, --) and ellipses (...).
+    """
+
     def __init__(self, document, startnode):
         Transform.__init__(self, document, startnode=startnode)
         self.unsupported_languages = set()
@@ -230,11 +244,7 @@ class SmartQuotes(Transform):
                     False: 'plain'}
         for txtnode in txtnodes:
             nodetype = texttype[isinstance(txtnode.parent,
-                                           (nodes.literal,
-                                            nodes.math,
-                                            nodes.image,
-                                            nodes.raw,
-                                            nodes.problematic))]
+                                           self.literal_nodes)]
             yield (nodetype, txtnode.astext())
 
 
@@ -257,7 +267,7 @@ class SmartQuotes(Transform):
         # (TextElement node) as a unit to keep context around inline nodes:
         for node in self.document.traverse(nodes.TextElement):
             # skip preformatted text blocks and special elements:
-            if isinstance(node, (nodes.FixedTextElement, nodes.Special)):
+            if isinstance(node, self.nodes_to_skip):
                 continue
             # nested TextElements are not "block-level" elements:
             if isinstance(node.parent, nodes.TextElement):
@@ -291,7 +301,7 @@ class SmartQuotes(Transform):
             # Iterator educating quotes in plain text:
             # (see "utils/smartquotes.py" for the attribute setting)
             teacher = smartquotes.educate_tokens(self.get_tokens(txtnodes),
-                                                 attr='qDe', language=lang)
+                                attr=self.smartquotes_action, language=lang)
 
             for txtnode, newtext in zip(txtnodes, teacher):
                 txtnode.parent.replace(txtnode, nodes.Text(newtext))
