@@ -17,11 +17,7 @@
 Prerelease 0.14rc1 (2017-05-27)
 ===============================
 
-* docutils/docutils/transforms/universal.py
-
-  Fix: warn only once if language is unsupported
-
-* docutils/docs/ref/docutils.dtd:
+* docs/ref/docutils.dtd:
 
   - Enable validation of Docutils XML documents against the DTD:
 
@@ -56,6 +52,10 @@ Prerelease 0.14rc1 (2017-05-27)
 * docutils/transforms/references.py
 
   - Don't add a second ID to problematic references.
+
+* docutils/transforms/universal.py
+
+  Fix SmartQuotes: warn only once if language is unsupported
 
 * docutils/utils/__init__.py:
 
