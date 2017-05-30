@@ -45,35 +45,21 @@ Version numbers
 Version numbers shall follow the `Docutils Project Policies`_ and comply
 with `PEP 440`_.
 
-From `Feature Request #50`_
+Especially, mark pre-releases and the repository version/snapshots as
+"between" releases (cf. `Feature Request #50`_ and the discussion on
+docutils-devel on May 28 2017), e.g.
 
-  PEP 440 specifies how release version are understood by pip and other tools.
+|  prev. release  0.13.1,
+|  prerelease     0.14rc1,
+| [prereleases    0.14rc2, ...]
+|  release        0.14,
+|  repo/snapshots 0.15.dev
+| [bugfix relases 0.14.1, ...]  # branches off of the 0.14 release.
 
-  The last released package of docutils was in 2014.
-
-  If you install the version from Source it will not be overriden by version
-  0.13 when it is eventaully released.
-
-  As folks have installed 0.13 from indeterminate source versions the current
-  version should be incremented as to allow pip to overrite a 0.13 snapshot
-  when the next official release.
-
-  Please increment and switch the version in setup.py to be a pre-release.
-  e.g. 0.13.1a
-
-  When a version is tagged it should be changed to a non pre release and then
-  in the next commit incremented to the next expected version but with a pre
-  release added ::
-
-    0.13.1a -> Head
-    0.13.1 -> when tagged for release
-    0.13.2a -> new head after release
-
-  Additionally snapshots can be marked with the .devXXX nomenclature.
-
-  These can then all be pushed to pypi.python.org and by default pip will
-  install the latest release unless explicitly requested via the ``--pre``
-  flag or a version specifier ``docutils>=0.13.1a``
+The repository version number is always equal to the last released
+version + 1, with a .dev suffix: ``<major>.<minor+1>.dev``.
+(Exception: during "feature freeze" between pre-release and release it may
+point to the next pre-release.)
 
 .. _Docutils Project Policies: policies.html#version-numbers
 .. _Feature Request #50: https://sourceforge.net/p/docutils/feature-requests/50/
@@ -101,6 +87,8 @@ REWORK FOR SOURCEFORGE REPO
 * **On the Docutils-develop mailing list, announce that the release is
   going to be made, update the release notes and ask for additions.**
 
+ **Announce the date of the feature freeze, at least a week away.**
+
   Consult HISTORY.TXT for changes.
 
 * **Announce a check-in freeze on Docutils-develop.**
@@ -109,29 +97,27 @@ REWORK FOR SOURCEFORGE REPO
   and ask for testing with Sphinx.**
   (This step can be skipped for bugfix releases.)
 
-* THIS CHANGES for new numbering:
+* update `version numbers`_:
 
-  we want: 
-  
-  the release-number might include a prerelease character 
-  ``a``, ``b``, or ``c`` or ``rc1``.
+  We want pre-release tags ``rcN`` for pre-releases, development release tag
+  ``.dev`` for snapshots and installs from the repository.
 
-  for a prerelease 
+  For a prerelease
 
-  0. before release ``repository <next-release-number>`` 
-  1. set this to ``prerelease <next-release-number>``
+  0. before release ``<next-release-number>.dev``
+  1. set this to ``<next-release-number>.rc1``
   2. release
-  3. increase prerelease character, set to text repository
+  3. increase prerelease number in the repository
 
-  for a release 
+  For a release
 
-  0. before release ``repository <next-release-number>`` 
-  1. set this to ``release <next-release-number>``
-     without prerelease character.
+  0. before release ``<next-release-number>.dev`` or
+     ``<next-release-number>.rc<N>``
+  1. set this to ``<next-release-number>`` without prerelease character.
   2. release
-  3. set prerelease character ``a``, set to text repository
+  3. set to ``<major>.<minor+1>.dev`` in the repository (trunk).
 
-  see what ``sandbox/infrastructure/release.sh`` can aid      
+  see what ``sandbox/infrastructure/release.sh`` can aid
 
   Call ``sandbox/infrastructure/release.sh new_version svn_version``.
   For details see the script.
@@ -152,7 +138,7 @@ REWORK FOR SOURCEFORGE REPO
 
   + docutils/setup.py
   + docutils/docutils/__init__.py
-  + docutils/test/functional/expected/* ("Generator: Docutils X.Y.Z")
+  + docutils/test/functional/expected/* ("Generator: Docutils X.Y[.Z]")
   + docutils/README.txt
   + web/index.txt
 
