@@ -51,10 +51,6 @@ Future changes
 Prerelease 0.14rc1 (2017-05-27)
 ===============================
 
-* docutils/docutils/transforms/universal.py
-
-  Fix: warn only once if language is unsupported
-
 * docutils/docs/ref/docutils.dtd:
 
   - Enable validation of Docutils XML documents against the DTD:
