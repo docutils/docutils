@@ -396,6 +396,9 @@ class smartchars(object):
     # [5] http://www.btb.termiumplus.gc.ca/tpv2guides/guides/redac/index-fra.html
     # [6] https://en.wikipedia.org/wiki/Hebrew_punctuation#Quotation_marks
     # [7] http://www.tustep.uni-tuebingen.de/bi/bi00/bi001t1-anfuehrung.pdf
+    # [8] http://www.korrekturavdelingen.no/anforselstegn.htm
+    # [9] Typografisk håndbok. Oslo: Spartacus. 2000. s. 67. ISBN 8243001530.
+    # [10] http://www.typografi.org/sitat/sitatart.html
     #
     # TODO: configuration option, e.g.::
     #
@@ -404,6 +407,7 @@ class smartchars(object):
     #                       fr: « : »:‹ : ›, # :-separated list with NBSPs
     quotes = {'af':           u'“”‘’',
               'af-x-altquot': u'„”‚’',
+              'bg':           u'„“‚‘', # Bulgarian, https://bg.wikipedia.org/wiki/Кавички
               'ca':           u'«»“”',
               'ca-x-altquot': u'“”‘’',
               'cs':           u'„“‚‘',
@@ -442,13 +446,23 @@ class smartchars(object):
               'it':           u'«»“”',
               'it-ch':        u'«»‹›',
               'it-x-altquot': u'“”‘’',
-              # 'it-x-altquot2': u'“„‘‚', # [7] antiquated?
+              # 'it-x-altquot2': u'“„‘‚', # [7] in headlines
               'ja':           u'「」『』',
               'lt':           u'„“‚‘',
               'lv':           u'„“‚‘',
+              'mk':           u'„“‚‘', # Macedonian, https://mk.wikipedia.org/wiki/Правопис_и_правоговор_на_македонскиот_јазик
               'nl':           u'“”‘’',
               'nl-x-altquot': u'„”‚’',
               # 'nl-x-altquot2': u'””’’',
+              'nb':           u'«»’’', # Norsk bokmål (canonical form 'no')
+              'nn':           u'«»’’', # Nynorsk [10]
+              'nn-x-altquot': u'«»‘’', # [8], [10]
+              # 'nn-x-altquot2': u'«»«»', # [9], [10
+              # 'nn-x-altquot3': u'„“‚‘', # [10]
+              'no':           u'«»’’', # Norsk bokmål [10]
+              'no-x-altquot': u'«»‘’', # [8], [10]
+              # 'no-x-altquot2': u'«»«»', # [9], [10
+              # 'no-x-altquot3': u'„“‚‘', # [10]
               'pl':           u'„”«»',
               'pl-x-altquot': u'«»‚’',
               # 'pl-x-altquot2': u'„”‚’', # https://pl.wikipedia.org/wiki/Cudzys%C5%82%C3%B3w
