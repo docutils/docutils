@@ -111,11 +111,18 @@ print "hello world"
 
     def test_heuristics_no_utf8(self):
         # if no encoding is given and decoding with utf8 fails,
-        # use either the locale encoding (if specified) or latin1:
+        # use either the locale encoding (if specified) or latin-1:
+        if sys.version_info >= (3,0) and locale_encoding != "utf8":
+            # in Py3k, the locale encoding is used without --input-encoding
+            # skipping the heuristic unless decoding fails.
+            return
+        probed_encodings = (locale_encoding, 'latin-1')
         input = io.FileInput(source_path='data/latin1.txt')
         data = input.read()
-        self.assertTrue(input.successful_encoding in (locale_encoding,
-                                                      'latin-1'))
+        if input.successful_encoding not in probed_encodings:
+            raise AssertionError(
+                "guessed encoding '%s' differs from probed encodings %r"
+                % (input.successful_encoding, probed_encodings))
         if input.successful_encoding == 'latin-1':
             self.assertEqual(data, u'Gr\xfc\xdfe\n')
 
