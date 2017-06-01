@@ -17,8 +17,8 @@ On the test machine python2.4, 2.5, 2.6, 2.7 and 3.2, 3.3, and 3.4
 are installed.
 Some in /usr/ some under /usr/local.
 
-Assumption: If python2.6 is in /usr/bin/ than site-packages is under
-  /usr/local/lib/python2.6.
+Assumption: If python2.6 is in /usr/bin/ then site-packages is under
+/usr/local/lib/python2.6.
 
 On new ubuntu 12.10
 
@@ -87,7 +87,7 @@ REWORK FOR SOURCEFORGE REPO
 * **On the Docutils-develop mailing list, announce that the release is
   going to be made, update the release notes and ask for additions.**
 
- **Announce the date of the feature freeze, at least a week away.**
+  **Announce the date of the feature freeze, at least a week away.**
 
   Consult HISTORY.TXT for changes.
 
