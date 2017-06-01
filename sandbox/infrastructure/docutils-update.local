@@ -30,7 +30,8 @@
 # ATTENTION
 #
 # Directories might contain Makefile.docutils-update files with
-# special instructions. only used in docs/user to call rst2s5.
+# special instructions. Used in docs/user to call rst2s5
+# add --smartquotes=true to convert smartquotes.
 # Maybe add special treatment and remove this general solution.
 #
 # Options:

@@ -4,3 +4,6 @@ slide-shows.s5.html: slide-shows.txt
 		--overwrite-theme-files \
 		--link-stylesheet \
 		--no-generator --no-datestamp --no-source-link
+
+smartquotes.html: smartquotes.txt
+	rst2html.py smartquotes.txt smartquotes.html --smart-quotes=true
