@@ -50,21 +50,54 @@ Subpackages:
 - writers: Format-specific output translators.
 """
 
+import sys
+
+try:
+    # Python 2.6 required:
+    from collections import namedtuple
+except ImportError:
+    namedtuple = None
+
+
 __docformat__ = 'reStructuredText'
 
-__version__ = '0.14rc2.dev'
-"""``major.minor.micro`` version number.
-The major number will be bumped when the project is feature-complete, and
-later if there is a major change in the design or API.
-The minor number is bumped whenever there are new features.
-The micro number is bumped for bug-fix releases.
+# workaround for Python < 2.6:
+__version_info__ = (0, 14, 0, 'rc', 2, True)
+if namedtuple:
+    __version_info__ = (
+        namedtuple(
+            'version_info',
+            ['major', 'minor', 'micro', 'releaselevel', 'serial', 'development'])
+        (*__version_info__))
+
+__version__ = '%s.%s%s%s%s%s' % (
+    __version_info__[0],                                          # major
+    __version_info__[1],                                          # minor
+    ('.%s' % __version_info__[2]) if __version_info__[2] else '', # micro
+    __version_info__[3],                                          # releaselevel
+    __version_info__[4] if __version_info__[4] else '',           # serial
+    '.dev' if __version_info__[5] else '')                        # development
+"""The Docutils version number (complies with PEP 440)::
+
+    major.minor[.micro][{releaselevel}serial][.dev]
+
+* The major number will be bumped when the project is feature-complete, and
+  later if there is a major change in the design or API.
+* The minor number is bumped whenever there are new features.
+* The micro number is bumped for bug-fix releases. Omitted for micro=0.
+* The releaselevel string is used for pre-releases, one of 'a' (alpha),
+  'b' (beta), or 'rc' (release candidate). Omitted for final releases.
+* The serial number is used when
+* The '.dev' suffix indicates active development, unreleased, before the
+  version indicated.
+
+Rather than parsing the `__version__` text, use `__version_info__`.
 """
 
 __version_details__ = 'repository'
 """Extra version details (e.g. 'snapshot 2005-05-29, r3410', 'repository',
 'prerelease', 'release'), modified automatically & manually."""
 
-import sys
 
 class ApplicationError(StandardError):
     # Workaround:
