@@ -12,31 +12,30 @@
 .. Gmane went down 2016 and is only partially restored.
    http://home.gmane.org/2016/08/29/next-steps-gmane/
 
-  .. raw:: html
+.. raw:: html
+
+   https://sourceforge.net/p/docutils/mailman/search/?mail_list=docutils-checkins
+                                                             all
 
    <div class="sidebar">
-   <p class="first sidebar-title">Search the list archives on Gmane</p>
-   <form method="get" action="http://search.gmane.org/">
-   <p style="margin-bottom: 3px;"><input type="text" name="query" style="width: 100%;" /></p>
-   <p>Search in <select name="group">
-       <option value="gmane.text.docutils.*">all mailing lists</option>
-       <option value="gmane.text.docutils.user">Docutils-users</option>
-       <option value="gmane.text.docutils.devel">Docutils-develop</option>
-       <option value="gmane.text.docutils.cvs">Docutils-checkins</option>
-       <option value="gmane.comp.python.documentation">Doc-SIG</option>
+   <p class="first sidebar-title">Search the list archives</p>
+   <form method="get" action="https://sourceforge.net/p/docutils/mailman/search/">
+   <p style="margin-bottom: 3px;"><input type="text" name="q" style="width: 100%;" /></p>
+   <p>Search in <select name="mail_list">
+       <option value="all">all mailing lists</option>
+       <option value="docutils-users">Docutils-users</option>
+       <option value="docutils-develop">Docutils-develop</option>
+       <option value="docutils-checkins">Docutils-checkins</option>
        </select></p>
-   <p>Sort by <select name="sort">
-       <option value="relevance">relevance</option>
-       <option value="date">date (newest first)</option>
-       <option value="revdate">date (oldest first)</option></select></p>
    <p class="last"><input type="submit" value="Search" /></p>
    </form>
    </div>
 
 All discussion about Docutils takes place on mailing lists.
 
-There are four different lists with traffic related to Docutils.  If
-unsure, use the **Docutils-users** mailing list:
+There are four different lists with traffic related to Docutils.
+For an oversight, see https://sourceforge.net/p/docutils/mailman/.
+If unsure, use the **Docutils-users** mailing list:
 
 
 Docutils-users
