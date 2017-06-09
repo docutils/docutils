@@ -152,8 +152,10 @@ Also see the `SourceForge Bug Tracker`_.
   ``href="C:/test/foo.css"`` instead of
   ``href="file:///C:/test/foo.css"``.
 
-  For details, see `this posting by Alan G. Isaac
-  <http://article.gmane.org/gmane.text.docutils.user/1569>`_.
+  .. gmane web interface is down.
+     TODO: find this article in the Sourceforge mail archives
+     For details, see `this posting by Alan G. Isaac
+     <http://article.gmane.org/gmane.text.docutils.user/1569>`_.
 
 * Footnote label "5" should be "4" when processing the following
   input::

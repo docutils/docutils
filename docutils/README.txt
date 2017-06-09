@@ -31,7 +31,7 @@ This is for those who want to get up & running quickly.
 
 3. Unpack the tarball in a temporary directory (**not** directly in
    Python's ``site-packages``), go to the directory created by expanding
-   the archive, and run ``setup.py install`` with admin rights. On
+   the archive, and run ``setup.py install``. On
    Windows systems it may be sufficient to double-click ``install.py``.
 
    See Installation_ below for details.
@@ -79,17 +79,18 @@ Releases & Snapshots
 ====================
 
 While we are trying to follow a "release early & often" policy,
-features are added very frequently.  Since the code in the Subversion
+features are added frequently.  Since the code in the Subversion
 repository is usually in a bug-free state, we recommend that you use
-the current snapshot (which is usually updated within an hour of
-changes being committed to the repository):
+a current snapshot.
 
-* Snapshot of Docutils code, documentation, front-end tools, and
-  tests:
-  http://docutils.svn.sourceforge.net/viewvc/docutils/trunk/docutils/?view=tar
+To get a snapshot, go to the code page and click the download snapshot
+button:
 
-* Snapshot of the Sandbox (experimental, contributed code):
-  http://docutils.svn.sourceforge.net/viewvc/docutils/trunk/sandbox/?view=tar
+* Docutils code, documentation, front-end tools, and tests:
+  https://sourceforge.net/p/docutils/code/HEAD/tree/trunk/docutils/
+
+* Sandbox (experimental, contributed code):
+  https://sourceforge.net/p/docutils/code/HEAD/tree/trunk/sandbox/
 
 To keep up to date on the latest developments, download fresh copies of
 the snapshots regularly or use a working copy of the
@@ -350,8 +351,8 @@ depend on the computer running the tests.  The difference between the
 two times represents the time required to set up the tests (import
 modules, create data structures, etc.).
 
-If any of the tests fail, please `open a bug report`_, `send email`_,
-or post a message via the `web interface`_ (see `Bugs <BUGS.html>`_).
+If any of the tests fail, please `open a bug report`_ or `send an email`_
+(see `Bugs <BUGS.html>`_).
 Please include all relevant output, information about your operating
 system, Python version, and Docutils version.  To see the Docutils
 version, use one of the ``rst2*`` front ends or ``tools/quicktest.py``
@@ -369,10 +370,8 @@ Windows users type these commands::
 .. _Docutils Testing: http://docutils.sourceforge.net/docs/dev/testing.html
 .. _open a bug report:
    http://sourceforge.net/p/docutils/bugs/
-.. _send email: mailto:docutils-users@lists.sourceforge.net
+.. _send an email: mailto:docutils-users@lists.sourceforge.net
    ?subject=Test%20suite%20failure
-.. _web interface: http://post.gmane.org/post.php
-   ?group=gmane.text.docutils.user&subject=Test+suite+failure
 
 
 Getting Help
