@@ -1,1 +1,0 @@
-../sandbox/infrastructure/step_1.sh
