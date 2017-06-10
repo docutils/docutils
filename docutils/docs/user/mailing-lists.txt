@@ -14,9 +14,6 @@
 
 .. raw:: html
 
-   https://sourceforge.net/p/docutils/mailman/search/?mail_list=docutils-checkins
-                                                             all
-
    <div class="sidebar">
    <p class="first sidebar-title">Search the list archives</p>
    <form method="get" action="https://sourceforge.net/p/docutils/mailman/search/">
