@@ -372,6 +372,7 @@ Windows users type these commands::
    http://sourceforge.net/p/docutils/bugs/
 .. _send an email: mailto:docutils-users@lists.sourceforge.net
    ?subject=Test%20suite%20failure
+.. _web interface: https://sourceforge.net/p/docutils/mailman/
 
 
 Getting Help
