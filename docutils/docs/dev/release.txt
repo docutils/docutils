@@ -253,9 +253,11 @@ REWORK FOR SOURCEFORGE REPO
 
   `Upload the wheels to PyPI`_.
 
-  Question: Can we have an tar.gz (distutil) and a py2-wheel and a py3-wheel
-    on pypi and will installers select the correct files ?
+  Question:
+    Can we have an tar.gz (distutil) and a py2-wheel and a py3-wheel
+    on pypi and will installers select the correct files?
 
+    2017-06-09 it seems to according to experience with 0.13.1.
 
   .. _wheels: https://packaging.python.org/en/latest/distributing.html#wheels
   .. _pure Python wheels:
@@ -271,8 +273,9 @@ REWORK FOR SOURCEFORGE REPO
   * doc-sig@python.org
   * python-announce@python.org
 
-* **Add a SourceForge News item, with title "Docutils X.Y.Z released"
-  and containing the release tarball's download URL.**
+* **Add a `SourceForge News item`__, with title "Docutils X.Y.Z released"**
+
+  __ https://sourceforge.net/p/docutils/news
 
   **Mark as default download for all platforms.**
 

@@ -403,7 +403,7 @@ Algorithmic Shortcomings
 ------------------------
 
 The ASCII character (u0027 APOSTROPHE) is used for apostrophe and single
-quotes. If use inside a word, it is converted into an apostrophe:
+quotes. If used inside a word, it is converted into an apostrophe:
 
    .. class:: language-fr
 
