@@ -223,7 +223,7 @@ classifiers = [
     'Natural Language :: Spanish',
     'Natural Language :: Swedish',
     ]
-# BUG pypi did not like fllowing languages
+# BUG pypi did not like following languages
 #   'Natural Language :: Lithuanian',
 """Trove classifiers for the Distutils "register" command."""
 
