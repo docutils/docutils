@@ -52,51 +52,49 @@ Subpackages:
 
 import sys
 
-try:
-    # Python 2.6 required:
-    from collections import namedtuple
-except ImportError:
-    namedtuple = None
-
 
 __docformat__ = 'reStructuredText'
 
-# workaround for Python < 2.6:
-__version_info__ = (0, 14, 0, 'rc', 2, True)
-if namedtuple:
-    __version_info__ = (
-        namedtuple(
-            'version_info',
-            ['major', 'minor', 'micro', 'releaselevel', 'serial', 'development'])
-        (*__version_info__))
-
-__version__ = '%s.%s%s%s%s%s' % (
-    __version_info__[0],                                          # major
-    __version_info__[1],                                          # minor
-    ('.%s' % __version_info__[2]) if __version_info__[2] else '', # micro
-    __version_info__[3],                                          # releaselevel
-    __version_info__[4] if __version_info__[4] else '',           # serial
-    '.dev' if __version_info__[5] else '')                        # development
+__version__ = '0.14rc2.dev'
 """The Docutils version number (complies with PEP 440)::
 
-    major.minor[.micro][{releaselevel}serial][.dev]
+    major.minor[.micro][releaselevel[serial]][.dev]
 
 * The major number will be bumped when the project is feature-complete, and
   later if there is a major change in the design or API.
 * The minor number is bumped whenever there are new features.
-* The micro number is bumped for bug-fix releases. Omitted for micro=0.
-* The releaselevel string is used for pre-releases, one of 'a' (alpha),
-  'b' (beta), or 'rc' (release candidate). Omitted for final releases.
-* The serial number is used when
-* The '.dev' suffix indicates active development, unreleased, before the
+* The micro number is bumped for bug-fix releases. Omitted if micro=0.
+* The releaselevel abbreviation string is used for pre-releases, one of 'a'
+  (alpha), 'b' (beta), or 'rc' (release 'candidate'). Omitted for final
+  releases.
+* The serial release number identifies prereleases; omitted if 0.
+* The '.dev' suffix indicates active development, not a release, before the
   version indicated.
 
-Rather than parsing the `__version__` text, use `__version_info__`.
+Rather than parsing the text of `__version__`, use `__version_info__`.
 """
 
 __version_details__ = 'repository'
 """Extra version details (e.g. 'snapshot 2005-05-29, r3410', 'repository',
 'prerelease', 'release'), modified automatically & manually."""
+
+# workaround for Python < 2.6:
+__version_info__ = (0, 14, 0, 'candidate', 2, False)
+# To add in Docutils 0.15, replacing the line above:
+"""
+from collections import namedtuple
+VersionInfo = namedtuple(
+    'VersionInfo', 'major minor micro releaselevel serial release')
+__version_info__ = VersionInfo(
+    major=0,
+    minor=14,
+    micro=0,
+    # one of 'alpha', 'beta', 'candidate', 'final':
+    releaselevel='candidate',
+    # 0 for the in-development stage before a release is planned:
+    serial=2,
+    release=False)
+"""
 
 
 class ApplicationError(StandardError):
@@ -107,6 +105,7 @@ class ApplicationError(StandardError):
     if sys.version_info < (2,6):
         def __unicode__(self):
             return u', '.join(self.args)
+
 
 class DataError(ApplicationError): pass
 

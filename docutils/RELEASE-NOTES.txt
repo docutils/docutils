@@ -22,18 +22,10 @@ For a more detailed list of changes, please see the `Docutils History`_.
 Future changes
 ==============
 
+* Drop support for Python 2.4 and 2.5 immediately after the 0.14 release.
+
 * Remove the `handle_io_errors` option from io.FileInput/Output.
   Used by Sphinx up to version 1.3.1, fixed in 1.3.2 (Nov 29, 2015).
-
-* Drop support for Python 2.4 and 2.5.
-
-* »Prune« the doctree (no change to the reST input syntax):
-
-  - "doctest" element -> literal block with "pycon" (python-console)
-    class argument and syntax highlight (like the "code" directive),
-  - special admonitions (note, hint, warning, ...) -> generic "admonition"
-    element with class attribute and auto-generated title.
-
 
 * The default HTML writer "html" with frontend ``rst2html.py`` may change
   from "html4css1" to "html5".
@@ -103,11 +95,11 @@ Release 0.13.1 (2016-12-09)
 
   - New HTML writer generating `HTML 5`_.
 
+  .. _HTML 5: http://www.w3.org/TR/html5/
+
 * tools/
 
   - New front-end ``rst2html5.py``.
-
-.. _HTML 5: http://www.w3.org/TR/html5/
 
 * languages: persian/farsi (fa) and latvian (la) mappings.
 
@@ -116,7 +108,7 @@ Release 0.13.1 (2016-12-09)
 * tables accept widths, a list and align
 
 * latex2e: Fix admonition width, remove deprecated options,
-           better tablewidth auto, ...
+  better tablewidth auto, ...
 
 * rst.el: The problem with ``electric-indent-mode`` has been fixed.
 
