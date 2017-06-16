@@ -56,7 +56,7 @@ import sys
 __docformat__ = 'reStructuredText'
 
 __version__ = '0.14rc2.dev'
-"""The Docutils version number (complies with PEP 440)::
+"""Docutils version identifier (complies with PEP 440)::
 
     major.minor[.micro][releaselevel[serial]][.dev]
 
@@ -64,14 +64,14 @@ __version__ = '0.14rc2.dev'
   later if there is a major change in the design or API.
 * The minor number is bumped whenever there are new features.
 * The micro number is bumped for bug-fix releases. Omitted if micro=0.
-* The releaselevel abbreviation string is used for pre-releases, one of 'a'
-  (alpha), 'b' (beta), or 'rc' (release 'candidate'). Omitted for final
-  releases.
+* The releaselevel identifier is used for pre-releases, one of 'a' (alpha),
+  'b' (beta), or 'rc' (release candidate). Omitted for final releases.
 * The serial release number identifies prereleases; omitted if 0.
 * The '.dev' suffix indicates active development, not a release, before the
   version indicated.
 
-Rather than parsing the text of `__version__`, use `__version_info__`.
+For version comparison operations, use `__version_info__`
+rather than parsing the text of `__version__`.
 """
 
 __version_details__ = 'repository'
@@ -87,13 +87,24 @@ VersionInfo = namedtuple(
     'VersionInfo', 'major minor micro releaselevel serial release')
 __version_info__ = VersionInfo(
     major=0,
-    minor=14,
+    minor=15,
     micro=0,
-    # one of 'alpha', 'beta', 'candidate', 'final':
-    releaselevel='candidate',
-    # 0 for the in-development stage before a release is planned:
-    serial=2,
-    release=False)
+    releaselevel='alpha', # one of 'alpha', 'beta', 'candidate', 'final'
+    serial=0,             # 0 for final releases and the in-development
+                          # stage before a release is planned.
+    release=False         # True for official releases and pre-releases
+    )
+
+Comprehensive version information tuple. Can be used to test for a
+minimally required version, e.g. ::
+
+  if __version_info__ >= (0, 13, 0, 'candidate', 2, True)
+
+or in a self-documenting way like ::
+
+  if __version_info__ >= docutils.VersionInfo(
+      major=0, minor=13, micro=0,
+      releaselevel='candidate', serial=2, release=True)
 """
 
 
