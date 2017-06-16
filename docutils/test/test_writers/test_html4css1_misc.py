@@ -141,10 +141,9 @@ class MathTestCase(DocutilsTestSupport.StandardTestCase):
     which is open to change in future Docutils releases. """
 
     mathjax_script = '<script type="text/javascript" src="%s">'
-    default_mathjax_url = ('https://cdn.mathjax.org/mathjax/latest/MathJax.js'
+    default_mathjax_url = ('file:/usr/share/javascript/mathjax/MathJax.js'
                            '?config=TeX-AMS_CHTML')
-    custom_mathjax_url = ('file:///usr/share/javascript/mathjax/MathJax.js'
-                          '?config=TeX-AMS-MML_HTMLorMML')
+    custom_mathjax_url = ('/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML')
     data = ':math:`42`'
 
     def test_math_output_default(self):
@@ -158,6 +157,7 @@ class MathTestCase(DocutilsTestSupport.StandardTestCase):
         # Explicitly specifying math_output=MathJax, case insensitively
         # use default MathJax URL
         mysettings = {'_disable_config': True,
+                      'report_level': 3,
                       'math_output': 'MathJax'}
         head = core.publish_parts(self.data, writer_name='html4css1',
             settings_overrides=mysettings)['head']

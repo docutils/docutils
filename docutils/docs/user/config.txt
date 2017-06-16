@@ -990,29 +990,52 @@ the output document. Supported values are (case insensitive):
   (i.e. if there is mathematical content in the document).
 
 :MathJax:
-  Format math for display with MathJax_, a JavaScript-based math
-  rendering engine that uses HTML/CSS, JavaScript, and unicode
-  fonts for high-quality typesetting that is scalable and prints
-  at full resolution.
+  Format math for display with MathJax_, a JavaScript-based math rendering
+  engine.
 
   Pro:
-    Works 'out of the box' across multiple browsers and platforms.
+    Works across multiple browsers and platforms.
 
     Large set of `supported LaTeX math commands and constructs`__
 
     __ http://docs.mathjax.org/en/latest/tex.html#supported-latex-commands
 
   Con:
-    Requires an Internet connection or a local MathJax
-    installation and configuration.
+    Rendering requires JavaScript and an Internet connection or local
+    MathJax installation.
 
-    Downloads JavaScript code from a third-party site.
+  A URL pointing to a MathJax library should be appended after whitespace.
+  A warning is given if this is missing.
 
-  A custom URI can be appended after whitespace,
-  for example a local installation ::
+  * It is recommended to install__ the MathJax library on the same
+    server as the rest of the deployed site files.
 
-    math-output: MathJax file:/usr/share/javascript/mathjax/MathJax.js
+    __ http://docs.mathjax.org/en/latest/installation.html
 
+    Example: Install the library at the top level of the web
+    server’s hierarchy in the directory ``MathJax`` and set::
+
+      math-output: mathjax /MathJax/MathJax.js
+
+  * The easiest way to use MathJax is to link directly to a public
+    installation. In that case, there is no need to install MathJax locally.
+
+    Downside: Downloads JavaScript code from a third-party site --- opens
+    the door to cross-site scripting attacs!
+
+    Example: MathJax.org recommends ``cdnjs.cloudflare.com``::
+
+      math-output: mathjax
+                   https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js
+
+    See https://cdnjs.com/about and https://www.cloudflare.com/terms/ for
+    details and terms of use.
+
+  * Use a local MathJax installation on the *client* machine, e.g.::
+
+      math-output: MathJax file:/usr/share/javascript/mathjax/MathJax.js
+
+    This is the fallback if no URL is specified.
 
 :MathML:
   Embed math content as presentational MathML_.
@@ -1027,31 +1050,28 @@ the output document. Supported values are (case insensitive):
     subset of LaTeX syntax.
 
     With the "html4css1" writer, the resulting HTML document does
-    not validate, as there is no DTD for MathML + XHTML
-    Transitional. However, MathML-enabled browsers will render it
-    fine.
+    not validate, as there is no DTD for `MathML + XHTML Transitional`.
+    However, MathML-enabled browsers will render it fine.
 
-  An external converter can be appended after whitespace:
+  An external converter can be appended after whitespace, e.g.,
+  ``--math-output="MathML latexml"``:
 
-  * ``math-output: MathML blahtexml``
+  blahtexml_
+    Fast conversion, support for many symbols and environments, but no
+    "align" (or other equation-aligning) environment. (C++)
 
-    blahtexml_ (C++) Fast conversion, support for many symbols and
-    environments, but no "align" (or other equation-aligning) environment.
+  LaTeXML_
+    Comprehensive macro support but very slow. (Perl)
 
-  * ``--math-output=MathML latexml``.
-
-    LaTeXML_ (Perl) Comprehensive macro support but very slow
-
-  * ``--math-output=MathML ttm``, support may be removed.
-
-    No "matrix", "align" and  "cases" environments.
+  TtM_
+    No "matrix", "align" and  "cases" environments. Support may be removed.
 
 :LaTeX:
   Include literal LaTeX code.
 
   The failsave fallback.
 
-Default: "HTML math.css" (MathML for the xhtml11 writer).
+Default: "HTML math.css" (The `[html5 writer]`_ defaults to "MathML").
 Option: ``--math-output``.
 
 New in Docutils 0.8.
@@ -1062,7 +1082,7 @@ New in Docutils 0.8.
 .. _MathML: http://www.w3.org/TR/MathML/
 .. _blahtexml: http://gva.noekeon.org/blahtexml/
 .. _LaTeXML: http://dlmf.nist.gov/LaTeXML/
-.. _ttm: http://hutchinson.belmont.ma.us/tth/mml/
+.. _TtM: http://hutchinson.belmont.ma.us/tth/mml/
 
 option_limit
 ~~~~~~~~~~~~
@@ -1314,6 +1334,9 @@ Removed options:
   `field_name_limit`_, `option_limit`_.
 
 Different default for:
+
+`math_output`_
+  Default: "MathML"
 
 `stylesheet_path <stylesheet_path [html4css1 writer]_>`_:
   Default: "minimal.css,plain.css"

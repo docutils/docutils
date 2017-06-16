@@ -14,7 +14,7 @@
 .. contents::
 
 
-Prerelease 0.14rc1 (2017-05-27)
+Prerelease 0.14rc2
 ===============================
 
 * docs/ref/docutils.dtd:
@@ -75,6 +75,9 @@ Prerelease 0.14rc1 (2017-05-27)
 
   - Provide default title in metadata (required by HTML5).
   - Fix [ 312 ] HTML writer generates invalid HTML if the table has two tags.
+  - Fix [ 319 ] The MathJax CDN shut down on April 30, 2017. For security
+    reasons, we don't use a third party public installation as default but
+    warn if math-output_ is set to MathJax without URL.
 
 * docutils/writers/html4css1/__init__.py
 
@@ -86,7 +89,7 @@ Prerelease 0.14rc1 (2017-05-27)
     in a "DUclass" environment. This replaces the special handling for
     "epigraph" and "topic" elements.
 
-* docutils/writers/odf_ odt/__init__.py:
+* docutils/writers/odf_odt/__init__.py:
 
   - Command setting ``language`` now sets the default language
     of the generated ODF document.
