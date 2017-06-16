@@ -8,8 +8,7 @@ parser_name = "rst"
 writer_name = "html"
 
 # Settings
-settings_overrides['math_output'] = 'MathJax'
+settings_overrides['math_output'] = 'MathJax /usr/share/javascript/mathjax/MathJax.js'
 # local copy of default stylesheet:
-settings_overrides['stylesheet_path'] = ( 
+settings_overrides['stylesheet_path'] = (
     'functional/input/data/html4css1.css')
-    

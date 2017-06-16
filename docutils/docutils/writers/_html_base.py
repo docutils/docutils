@@ -94,7 +94,8 @@ class Writer(writers.Writer):
 
 
 class HTMLTranslator(nodes.NodeVisitor):
-    """Generic Docutils to HTML translator.
+    """
+    Generic Docutils to HTML translator.
 
     See the `html4css1` and `html5_polyglot` writers for full featured
     HTML writers.
@@ -113,13 +114,13 @@ class HTMLTranslator(nodes.NodeVisitor):
 
            def visit_field_list(self, node):
                if foo:
-                   self.body.append('<div class="foo">\n')
+                   self.body.append('<div class="foo">')
                html4css1.HTMLTranslator.visit_field_list(self, node)
 
            def depart_field_list(self, node):
                html4css1.HTMLTranslator.depart_field_list(self, node)
                if foo:
-                   self.body.append('</div>\n')
+                   self.body.append('</div>')
 
       c) Overwrite both, call the parent functions under the same
          conditions::
@@ -141,7 +142,7 @@ class HTMLTranslator(nodes.NodeVisitor):
            def depart_field_list(self, node):
                html4css1.HTMLTranslator.depart_field_list(self, node)
                if 'rfc2822' in node['classes']:
-                   self.body.append('<hr />\n')
+                   self.body.append('<hr />')
 
       This way, changes in stack use will not bite you.
     """
@@ -158,12 +159,21 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     # Template for the MathJax script in the header:
     mathjax_script = '<script type="text/javascript" src="%s"></script>\n'
-    # The latest version of MathJax from the distributed server:
-    # avaliable to the public under the `MathJax CDN Terms of Service`__
-    # __http://www.mathjax.org/download/mathjax-cdn-terms-of-service/
-    # may be overwritten by custom URL appended to "mathjax"
-    mathjax_url = ('https://cdn.mathjax.org/mathjax/latest/MathJax.js?'
-                   'config=TeX-AMS_CHTML')
+
+    mathjax_url = 'file:/usr/share/javascript/mathjax/MathJax.js'
+    """
+    URL of the MathJax javascript library.
+
+    The MathJax library ought to be installed on the same
+    server as the rest of the deployed site files and specified
+    in the `math-output` setting appended to "mathjax".
+    See `Docutils Configuration`__.
+
+    __ http://docutils.sourceforge.net/docs/user/config.html#math-output
+
+    The fallback tries a local MathJax installation at
+    ``/usr/share/javascript/mathjax/MathJax.js``.
+    """
 
     stylesheet_link = '<link rel="stylesheet" href="%s" type="text/css" />\n'
     embedded_stylesheet = '<style type="text/css">\n\n%s\n</style>\n'
@@ -1099,8 +1109,15 @@ class HTMLTranslator(nodes.NodeVisitor):
         if self.math_output in ('latex', 'mathjax'):
             math_code = self.encode(math_code)
         if self.math_output == 'mathjax' and not self.math_header:
-            if self.math_output_options:
+            try:
                 self.mathjax_url = self.math_output_options[0]
+            except IndexError:
+                self.document.reporter.warning('No MathJax URL specified, '
+                    'using local fallback (see config.html)')
+            # append configuration, if not already present in the URL:
+            # input LaTeX with AMS, output common HTML
+            if '?' not in self.mathjax_url:
+                self.mathjax_url += '?config=TeX-AMS_CHTML'
             self.math_header = [self.mathjax_script % self.mathjax_url]
         elif self.math_output == 'html':
             if self.math_output_options and not self.math_header:

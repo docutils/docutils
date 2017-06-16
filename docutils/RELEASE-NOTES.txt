@@ -40,7 +40,7 @@ Future changes
 .. _rst2html.py: docs/user/tools.html#rst2html-py
 
 
-Prerelease 0.14rc1 (2017-05-27)
+Prerelease 0.14rc2
 ===============================
 
 * docutils/docs/ref/docutils.dtd:
@@ -52,21 +52,22 @@ Prerelease 0.14rc1 (2017-05-27)
   - Added functionality: escaped whitespace in URI contexts.
   - Consistent handling of all whitespace characters in inline markup
     recognition. (May break documents that relied on some whitespace
-    characters (NBSP, ...) not to be recognized as whitespace.)
+    characters (NBSP, ...) *not* to be recognized as whitespace.)
 
 * docutils/utils/smartquotes.py:
 
   - Update quote definitions for et, fi, fr, ro, sv, tr, uk.
   - Add quote definitions for hr, hsb, hu, lv, sh, sl, sr.
-  - Fix [ 313 ] Differentiate apostrophe from closing single quote
-    (if possible).
-  - Fix [ 317 ] Extra space inserted with French smartquotes.
+  - Differentiate apostrophe from closing single quote (if possible).
   - Add command line interface for stand-alone use (requires 2.7).
 
 * docutils/writers/_html_base:
 
   - Provide default title in metadata.
-  - Fix [ 312 ] HTML writer generates invalid HTML if the table has two tags.
+  - The MathJax CDN shut down on April 30, 2017. For security reasons, we
+    don't use a third party public installation as default but warn
+    if `math-output` is set to MathJax without specifying a URL.
+    See math-output_ for details.
 
 * docutils/writers/html4css1:
 
@@ -78,10 +79,10 @@ Prerelease 0.14rc1 (2017-05-27)
     in a "DUclass" environment. This replaces the special handling for
     "epigraph" and "topic" elements.
 
-* docutils/writers/odf_ odt:
+* docutils/writers/odf_odt:
 
   - Language option sets ODF document's default language
-  - Image width, scale, ... set image size in generated ODF. 
+  - Image width, scale, ... set image size in generated ODF.
 
 * tools/
 
