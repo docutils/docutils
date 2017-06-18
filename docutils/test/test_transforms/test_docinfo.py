@@ -1,4 +1,5 @@
 #! /usr/bin/env python
+# -*- coding: utf-8 -*-
 
 # $Id$
 # Author: David Goodger <goodger@python.org>
@@ -15,11 +16,19 @@ from docutils.parsers.rst import Parser
 
 def suite():
     parser = Parser()
-    s = DocutilsTestSupport.TransformTestSuite(parser)
+    settings = {'language_code': 'en'}
+    s = DocutilsTestSupport.TransformTestSuite(
+        parser, suite_settings=settings)
     s.generateTests(totest)
+    settings['language_code'] = 'de'
+    s.generateTests(totest_de)
+    settings['language_code'] = 'ru'
+    s.generateTests(totest_ru)
     return s
 
 totest = {}
+totest_de = {}
+totest_ru = {}
 
 totest['bibliographic_field_lists'] = ((DocInfo,), [
 ["""\
@@ -325,6 +334,92 @@ totest['bibliographic_field_lists'] = ((DocInfo,), [
         RCS keyword extraction.
 """],
 ])
+
+totest_de['bibliographic_field_lists'] = ((DocInfo,), [
+[u"""\
+.. Bibliographic element extraction for a German document.
+
+:Zusammenfassung: Abstract 1.
+:Autor: Me
+:Adresse: 123 My Street
+          Example, EX
+:Kontakt: me@my.org
+:Version: 1
+:Datum: 2001-08-11
+:Parameter i: integer
+""",
+u"""\
+<document source="test data">
+    <docinfo>
+        <author>
+            Me
+        <address xml:space="preserve">
+            123 My Street
+            Example, EX
+        <contact>
+            <reference refuri="mailto:me@my.org">
+                me@my.org
+        <version>
+            1
+        <date>
+            2001-08-11
+        <field classes="parameter-i">
+            <field_name>
+                Parameter i
+            <field_body>
+                <paragraph>
+                    integer
+    <topic classes="abstract">
+        <title>
+            Zusammenfassung
+        <paragraph>
+            Abstract 1.
+    <comment xml:space="preserve">
+        Bibliographic element extraction for a German document.
+"""],])
+
+totest_ru['bibliographic_field_lists'] = ((DocInfo,), [
+[u"""\
+.. Bibliographic element extraction for a Russian document.
+
+:аннотация: Abstract 1.
+:автор: Me
+:адрес: 123 My Street
+          Example, EX
+:контакт: me@my.org
+:версия: 1
+:дата: 2001-08-11
+:Parameter i: integer
+""",
+u"""\
+<document source="test data">
+    <docinfo>
+        <author>
+            Me
+        <address xml:space="preserve">
+            123 My Street
+            Example, EX
+        <contact>
+            <reference refuri="mailto:me@my.org">
+                me@my.org
+        <version>
+            1
+        <date>
+            2001-08-11
+        <field classes="parameter-i">
+            <field_name>
+                Parameter i
+            <field_body>
+                <paragraph>
+                    integer
+    <topic classes="abstract">
+        <title>
+            Аннотация
+        <paragraph>
+            Abstract 1.
+    <comment xml:space="preserve">
+        Bibliographic element extraction for a Russian document.
+"""],])
 
 
 if __name__ == '__main__':
