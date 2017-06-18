@@ -403,7 +403,7 @@ class Translator(nodes.NodeVisitor):
                 self.defs['strong'][0],
                 self.language.labels.get(name, name).upper(),
                 self.defs['strong'][1],
-                )        
+                )
             self.body.append(name)
         self.visit_block_quote(node)
 
@@ -755,6 +755,12 @@ class Translator(nodes.NodeVisitor):
 
     depart_important = depart_admonition
 
+    def visit_inline(self, node):
+        pass
+
+    def depart_inline(self, node):
+        pass
+
     def visit_label(self, node):
         # footnote and citation
         if (isinstance(node.parent, nodes.footnote)
@@ -818,7 +824,7 @@ class Translator(nodes.NodeVisitor):
         # BUG/HACK: indent alway uses the _last_ indention,
         # thus we need two of them.
         self.indent(LITERAL_BLOCK_INDENT)
-        self.indent(0)        
+        self.indent(0)
         self.body.append(self.defs['literal_block'][0])
         self._in_literal = True
 

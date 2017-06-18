@@ -77,7 +77,7 @@ Prerelease 0.14rc2
   - Fix [ 312 ] HTML writer generates invalid HTML if the table has two tags.
   - Fix [ 319 ] The MathJax CDN shut down on April 30, 2017. For security
     reasons, we don't use a third party public installation as default but
-    warn if math-output_ is set to MathJax without URL.
+    warn if math-output_ is set to MathJax without specifying a URL.
 
 * docutils/writers/html4css1/__init__.py
 
@@ -88,6 +88,10 @@ Prerelease 0.14rc2
   - Handle class arguments for block-level elements by wrapping them
     in a "DUclass" environment. This replaces the special handling for
     "epigraph" and "topic" elements.
+
+* docutils/writers/manpage.py
+
+  - Apply [ 141 ] Handling inline in manpage writer.
 
 * docutils/writers/odf_odt/__init__.py:
 
