@@ -74,10 +74,6 @@ For version comparison operations, use `__version_info__`
 rather than parsing the text of `__version__`.
 """
 
-__version_details__ = 'repository'
-"""Extra version details (e.g. 'snapshot 2005-05-29, r3410', 'repository',
-'prerelease', 'release'), modified automatically & manually."""
-
 # workaround for Python < 2.6:
 __version_info__ = (0, 14, 0, 'candidate', 2, False)
 # To add in Docutils 0.15, replacing the line above:
@@ -89,9 +85,9 @@ __version_info__ = VersionInfo(
     major=0,
     minor=15,
     micro=0,
-    releaselevel='alpha', # one of 'alpha', 'beta', 'candidate', 'final'
-    serial=0,             # 0 for final releases and the in-development
-                          # stage before a release is planned.
+    releaselevel='alpha', # development status:
+                          # one of 'alpha', 'beta', 'candidate', 'final'
+    serial=0,             # pre-release number (0 for final releases)
     release=False         # True for official releases and pre-releases
     )
 
@@ -105,6 +101,11 @@ or in a self-documenting way like ::
   if __version_info__ >= docutils.VersionInfo(
       major=0, minor=13, micro=0,
       releaselevel='candidate', serial=2, release=True)
+"""
+
+__version_details__ = ''
+"""Optional extra version details (e.g. 'snapshot 2005-05-29, r3410').
+(For development and release status see `__version_info__`.)
 """
 
 
