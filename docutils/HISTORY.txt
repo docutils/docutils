@@ -66,6 +66,10 @@ Prerelease 0.14rc2
   - Added ``split_escaped_whitespace`` function, support for escaped
     whitespace in URI contexts.
 
+* docutils/utils/error_reporting.py
+
+  - Fix [ 321 ] Import block might cause name error.
+
 * docutils/utils/smartquotes.py:
 
   - Update quote definitions for languages et, fi, fr, ro, sv, tr, uk.
