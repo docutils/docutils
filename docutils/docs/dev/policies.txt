@@ -285,13 +285,11 @@ The "docutils" directory of the **trunk** (a.k.a. the **Docutils
 core**) is used for active -- but stable, fully tested, and reviewed
 -- development.
 
-There will be at least one active **maintenance branch** at a time,
-based on at least the latest feature release.  For example, when
-Docutils 0.5 is released, its maintenance branch will take over, and
-the 0.4.x maintenance branch may be retired.  Maintenance branches
-will receive bug fixes only; no new features will be allowed here.
-
-.. TODO: is this still active policy?
+If we need to cut a bugfix release, we'll create a **maintenance branch**
+based on the latest feature release.  For example, when Docutils 0.5 is
+released, this would be ``branches/docutils-0.5``, any existing 0.4.x
+maintenance branches may be retired.  Maintenance branches will receive bug
+fixes only; no new features will be allowed here.
 
 Obvious and uncontroversial bug fixes *with tests* can be checked in
 directly to the core and to the maintenance branches.  Don't forget to
@@ -411,12 +409,10 @@ Version Numbering
 Docutils version numbering uses a ``major.minor.micro`` scheme (x.y.z;
 for example, 0.4.1).
 
-**Major releases** (x.0, e.g. 1.0) will be rare, and will represent
-major changes in API, functionality, or commitment.  For example, as
-long as the major version of Docutils is 0, it is to be considered
-*experimental code*.  When Docutils reaches version 1.0, the major
-APIs will be considered frozen and backward compatibility will become
-of paramount importance.
+**Major releases** (x.0, e.g. 1.0) will be rare, and will represent major
+changes in API, functionality, or commitment.  When Docutils reaches version
+1.0, the major APIs will be considered frozen and backward compatibility
+will become of paramount importance.
 
 Releases that change the minor number (x.y, e.g. 0.5) will be
 **feature releases**; new features from the `Docutils core`_ will be
@@ -431,7 +427,8 @@ Docutils version 0.4.  Prior to version 0.4, Docutils didn't have an
 official version numbering policy, and micro releases contained both
 bug fixes and new features.
 
-See also the `Docutils Release Procedure`_.
+See also the `Docutils Release Procedure`_, `docutils.__version__` and
+`docutils.__version_info__`.
 
 .. _Docutils Release Procedure: release.html#version-numbers
 
