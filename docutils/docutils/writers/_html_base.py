@@ -21,6 +21,7 @@ import sys
 import os.path
 import re
 import urllib
+
 try: # check for the Python Imaging Library
     import PIL.Image
 except ImportError:
@@ -30,6 +31,7 @@ except ImportError:
         PIL.Image = Image
     except ImportError:
         PIL = None
+
 import docutils
 from docutils import nodes, utils, writers, languages, io
 from docutils.utils.error_reporting import SafeString
@@ -94,6 +96,7 @@ class Writer(writers.Writer):
 
 
 class HTMLTranslator(nodes.NodeVisitor):
+
     """
     Generic Docutils to HTML translator.
 
@@ -107,42 +110,45 @@ class HTMLTranslator(nodes.NodeVisitor):
 
       Examples for robust coding:
 
-      a) Overwrite both `visit_*` and `depart_*` methods, don't call the
+      a) Override both `visit_*` and `depart_*` methods, don't call the
          parent functions.
 
-      b) Overwrite both, call the parent functions::
+      b) Extend both and unconditionally call the parent functions::
 
-           def visit_field_list(self, node):
+           def visit_example(self, node):
                if foo:
                    self.body.append('<div class="foo">')
-               html4css1.HTMLTranslator.visit_field_list(self, node)
+               html4css1.HTMLTranslator.visit_example(self, node)
 
-           def depart_field_list(self, node):
-               html4css1.HTMLTranslator.depart_field_list(self, node)
+           def depart_example(self, node):
+               html4css1.HTMLTranslator.depart_example(self, node)
                if foo:
                    self.body.append('</div>')
 
-      c) Overwrite both, call the parent functions under the same
+      c) Extend both, calling the parent functions under the same
          conditions::
 
            def visit_example(self, node):
                if foo:
-                   <my special code>
+                   self.body.append('<div class="foo">\n')
                else: # call the parent method
                    _html_base.HTMLTranslator.visit_example(self, node)
 
            def depart_example(self, node):
                if foo:
-                   <my special code>
+                   self.body.append('</div>\n')
                else: # call the parent method
                    _html_base.HTMLTranslator.depart_example(self, node)
 
-      d) Overwrite one, don't use the stack, call the parent::
+      d) Extend one method (call the parent), but don't otherwise use the
+         `self.context` stack::
 
-           def depart_field_list(self, node):
-               html4css1.HTMLTranslator.depart_field_list(self, node)
-               if 'rfc2822' in node['classes']:
-                   self.body.append('<hr />')
+           def depart_example(self, node):
+               _html_base.HTMLTranslator.depart_example(self, node)
+               if foo:
+                   # implementation-specific code
+                   # that does not use `self.context`
+                   self.body.append('</div>\n')
 
       This way, changes in stack use will not bite you.
     """
