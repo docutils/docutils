@@ -23,6 +23,16 @@ class ApplicationErrorTests(unittest.TestCase):
         err = docutils.ApplicationError(u'\u0169')
         self.assertEqual(unicode(err), u'\u0169')
 
+class VersionInfoTests(unittest.TestCase):
+
+    def test_version_info(self):
+        self.assertEqual(len(docutils.__version_info__), 6)
+        # self.assertEqual(type(docutils.__version_info__.major), int)
+        # self.assertEqual(type(docutils.__version_info__.minor), int)
+        # self.assertEqual(type(docutils.__version_info__.micro), int)
+        # self.assertEqual(type(docutils.__version_info__.releaselevel), str)
+        # self.assertEqual(type(docutils.__version_info__.serial), int)
+        # self.assertEqual(type(docutils.__version_info__.release), bool)
 
 if __name__ == '__main__':
     unittest.main()

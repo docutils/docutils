@@ -570,8 +570,10 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
 
     config_section = 'general'
 
-    version_template = ('%%prog (Docutils %s [%s], Python %s, on %s)'
-                        % (docutils.__version__, docutils.__version_details__,
+    version_template = ('%%prog (Docutils %s%s, Python %s, on %s)'
+                        % (docutils.__version__,
+                           docutils.__version_details__ and
+                           ' [%s]'%docutils.__version_details__ or '',
                            sys.version.split()[0], sys.platform))
     """Default version message."""
 
