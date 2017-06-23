@@ -2160,7 +2160,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         # Capture the image file.
         if 'uri' in node.attributes:
             source = node.attributes['uri']
-            if not source.startswith('http:'):
+            if not (source.startswith('http:') or source.startswith('https:')):
                 if not source.startswith(os.sep):
                     docsource, line = utils.get_source_line(node)
                     if docsource:
@@ -2179,7 +2179,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             self.image_count += 1
             filename = os.path.split(source)[1]
             destination = 'Pictures/1%08x%s' % (self.image_count, filename, )
-            if source.startswith('http:'):
+            if source.startswith('http:') or source.startswith('https:'):
                 try:
                     imgfile = urllib2.urlopen(source)
                     content = imgfile.read()
