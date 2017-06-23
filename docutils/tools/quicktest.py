@@ -142,9 +142,10 @@ def posixGetArgs(argv):
             usage()
             sys.exit()
         elif o in ['-V', '--version']:
-            sys.stderr.write('quicktest.py (Docutils %s [%s])\n' %
-                             (docutils.__version__, 
-                              docutils.__version_details__))
+            sys.stderr.write('quicktest.py (Docutils %s%s)\n' %
+                             (docutils.__version__,
+                              docutils.__version_details__ and
+                              ' [%s]'%docutils.__version_details__ or ''))
             sys.exit()
         elif o in ['-r', '--rawxml']:
             outputFormat = 'rawxml'
@@ -180,7 +181,7 @@ def macGetArgs():
     EasyDialogs.Message("""\
 Use the next dialog to build a command line:
 
-1. Choose an output format from the [Option] list 
+1. Choose an output format from the [Option] list
 2. Click [Add]
 3. Choose an input file: [Add existing file...]
 4. Save the output: [Add new file...]

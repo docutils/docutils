@@ -279,9 +279,11 @@ class Publisher:
             print >>self._stderr, ("""\
 Exiting due to error.  Use "--traceback" to diagnose.
 Please report errors to <docutils-users@lists.sf.net>.
-Include "--traceback" output, Docutils version (%s [%s]),
+Include "--traceback" output, Docutils version (%s%s),
 Python version (%s), your OS type & version, and the
-command line used.""" % (__version__, __version_details__,
+command line used.""" % (__version__,
+                         docutils.__version_details__ and
+                         ' [%s]'%docutils.__version_details__ or '',
                          sys.version.split()[0]))
 
     def report_SystemMessage(self, error):
