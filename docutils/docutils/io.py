@@ -204,7 +204,7 @@ class FileInput(Input):
     """
     def __init__(self, source=None, source_path=None,
                  encoding=None, error_handler='strict',
-                 autoclose=True, handle_io_errors=None, mode='rU'):
+                 autoclose=True, mode='rU', **kwargs):
         """
         :Parameters:
             - `source`: either a file-like object (which is read directly), or
@@ -214,7 +214,6 @@ class FileInput(Input):
             - `error_handler`: the encoding error handler to use.
             - `autoclose`: close automatically after read (except when
               `sys.stdin` is the source).
-            - `handle_io_errors`: ignored, deprecated, will be removed.
             - `mode`: how the file is to be opened (see standard function
               `open`). The default 'rU' provides universal newline support
               for text files.
@@ -222,6 +221,16 @@ class FileInput(Input):
         Input.__init__(self, source, source_path, encoding, error_handler)
         self.autoclose = autoclose
         self._stderr = ErrorOutput()
+        # deprecation warning
+        for key in kwargs:
+            if key == 'handle_io_errors':
+                sys.stderr.write('deprecation warning: '
+                    'io.FileInput() argument `handle_io_errors` '
+                    'is ignored since 'Docutils 0.10 (2012-12-16) '
+                    'and will soon be removed.')
+            else:
+                raise TypeError('__init__() got an unexpected keyword '
+                                "argument '%s'" % key)
 
         if source is None:
             if source_path:
@@ -381,7 +390,7 @@ class FileOutput(Output):
                     try:
                         self.destination.buffer.write(data)
                     except AttributeError:
-                        if check_encoding(self.destination, 
+                        if check_encoding(self.destination,
                                           self.encoding) is False:
                             raise ValueError('Encoding of %s (%s) differs \n'
                                 '  from specified encoding (%s)' %
