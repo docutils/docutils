@@ -1,46 +1,39 @@
-#!/bin/bash 
+#!/bin/bash
 
 # set version number and description
-    
+
 # Author: engelbert gruber (taken from Lea Wiemann's release.sh)
 # Contact: grubert@users.sourceforge.net
 # Revision: $Revision$
 # Date: $Date$
 # Copyright: This script has been placed in the public domain.
-    
+
 # USAGE see: docutils/docs/dev/release.txt
-    
-# must be run from docutils trunk/docutils, 
+
+# must be run from docutils trunk/docutils,
 # because HISTORY and RELEASE_NOTES.txt are modified.
-    
+
 set -e
 
-echo "Change version number and description"
-if [ -z "$1" -o -z "$2" ] ; then
+echo "Change version identifier"
+if [ -z "$1" ] ; then
     echo "USAGE"
-    echo "    step_1.sh  new-description new-version-number"
+    echo "    set_version.sh  <new_version-identifier>"
     echo ""
-    echo "Description might be: repository prerelease release"
-    echo ""
-    echo "Version number: major.minor.micro"
-    echo "    micro is for bug-fix releases and left out on new minor-numbers"
-    echo "    prereleases get '(a|b|rc)#' appended"
+    echo "Version identifier: major.minor[.micro][<pre>][.dev]"
+    echo "    micro is for bug-fix releases and left out if zero"
+    echo "    prereleases get '(a|b|rc[N])#' appended"
+    echo "    a '.dev' suffix indicates repository versions (no release)"
     echo ""
     echo "Samples"
-    echo "    0.14 0.14a0 0.14rc1 0.20.1a0"
-    exit 
-fi 
+    echo "    0.14b.dev 0.14b 0.14rc1.dev 0.14rc1 0.14 0.15b.dev"
+    exit
+fi
 
-# new description: repository prerelease release
-new_desc=$1
-
-echo -n 'Detecting current Docutils version... '
 old_ver="`python -c 'import docutils; print docutils.__version__'`"
+new_ver=$1
 
-new_ver=$2
-
-echo "version ${old_ver} to ${new_ver}"
-echo "description to ${new_desc}"
+echo "from current Docutils version ${old_ver} to ${new_ver}"
 
 function set_ver()
 {
@@ -48,8 +41,9 @@ function set_ver()
     shopt -s extglob
     echo Determining list of files to be changed...
     # BUG ls lists directories but does not descend
+    # (try ls --recursive)
     files="docutils/__init__.py setup.py `$svn ls test/functional/expected/ | sed 's|^|test/functional/expected/|'`"
-    echo "Now I'll change the version number to $2 in the following files:"
+    echo "Now I'll change the version number to ${new_ver} in the following files:"
     echo $files
     echo
     echo 'Press enter to proceed (or enter anything to skip)...'
@@ -61,18 +55,14 @@ function set_ver()
         # we temporarily deactivate exit-on-error.
         set +e
         for F in $files; do
-            (echo ",s/$old_ver_regex/$2/g"; echo 'wq') | ed "$F"
+            (echo ",s/$old_ver_regex/${new_ver}/g"; echo 'wq') | ed "$F"
         done
         set -e
     fi
     echo
     echo 'CAUTION: please look at the diffs carefully, for wrongly'
-    echo ' replaced embedded numbers.'
+    echo '         replaced embedded numbers.'
 #    checkin "set version number to $2" $files
 }
 
-# update __version_details__ string
-(echo ",s/^__version_details__ = .*\$/__version_details__ = '${new_desc}'/";
-    echo wq) | ed docutils/__init__.py 2> /dev/null
 set_ver "$old_ver" "$new_ver"
-
