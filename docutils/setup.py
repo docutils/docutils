@@ -44,6 +44,8 @@ if sys.version_info >= (3,):
         prune */*/*/*/*/.svn
         """
         def run(self):
+            # fix
+            print("build_py_2to3")
             build_py_2to3.run(self)
             print("copy/convert test suite")
             loglevel = log.set_threshold(log.ERROR)
