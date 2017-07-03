@@ -23,6 +23,7 @@ import re
 import StringIO
 import copy
 import urllib2
+import itertools
 import docutils
 try:
     import locale # module missing in Jython
@@ -33,6 +34,7 @@ from docutils.readers import standalone
 from docutils.transforms import references
 
 
+IMAGE_NAME_COUNTER = itertools.count()
 WhichElementTree = ''
 try:
     # 1. Try to use lxml.
@@ -902,7 +904,8 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                     self.document.reporter.warning(
                         'Style "%s" is not a style used by odtwriter.' % (
                             rststyle, ))
-                self.format_map[rststyle] = format.decode('utf-8')
+                if sys.version_info.major == 2:
+                    self.format_map[rststyle] = format.decode('utf-8')
         self.section_level = 0
         self.section_count = 0
         # Create ElementTree content and styles documents.
@@ -2405,6 +2408,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             el2 = SubElement(el1, 'style:text-properties', 
                 attrib=attrib, nsdict=SNSD)
         style_name = 'rstframestyle%d' % self.image_style_count
+        draw_name = 'graphics%d' % IMAGE_NAME_COUNTER.next()
         # Add the styles
         attrib = {
             'style:name': style_name,
@@ -2435,7 +2439,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             'style:graphic-properties', attrib=attrib, nsdict=SNSD)
         attrib = {
             'draw:style-name': style_name,
-            'draw:name': 'Frame1',
+            'draw:name': draw_name,
             'text:anchor-type': 'paragraph',
             'draw:z-index': '0',
             }
@@ -2509,12 +2513,13 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             attrib['style:wrap'] = 'none'
         el2 = SubElement(el1,
             'style:graphic-properties', attrib=attrib, nsdict=SNSD)
+        draw_name = 'graphics%d' % IMAGE_NAME_COUNTER.next()
         # Add the content.
         #el = SubElement(current_element, 'text:p',
         #    attrib={'text:style-name': self.rststyle('textbody')})
         attrib={
             'draw:style-name': style_name,
-            'draw:name': 'graphics2',
+            'draw:name': draw_name,
             'draw:z-index': '1',
             }
         if isinstance(node.parent, nodes.TextElement):
