@@ -95,7 +95,7 @@ Removing Files & Directories
   
 #. Removing files and directories from SVN will not trigger their removal
    from the web site.  Files and directories must be manually removed from
-   sourceforge.net (under ``/home/groups/d/do/docutils/htdocs/``). 
+   sourceforge.net (under ``/home/project-web/docutils/htdocs/``). 
 
 
 ..
