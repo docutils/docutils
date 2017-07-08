@@ -255,10 +255,10 @@ function upload_htdocs()
     confirm ./buildhtml.py --local ..
     confirm ./buildhtml.py ../docs
     run cd ..
-    echo '$ find -name test -type d -prune -o -name \*.css -print0 \
+    echo '$ find . -name test -type d -prune -o -name \*.css -print0 \
         -o -name \*.html -print0 -o -name \*.txt -print0 \
         | tar -cjvf docutils-docs.tar.bz2 -T - --null'
-    find -name test -type d -prune -o -name \*.css -print0 \
+    find . -name test -type d -prune -o -name \*.css -print0 \
         -o -name \*.html -print0 -o -name \*.txt -print0 \
         | tar -cjvf docutils-docs.tar.bz2 -T - --null
     echo 'Upload docs to SF.net...'
