@@ -55,7 +55,7 @@ import sys
 
 __docformat__ = 'reStructuredText'
 
-__version__ = '0.14rc2.dev'
+__version__ = '0.14rc2'
 """Docutils version identifier (complies with PEP 440)::
 
     major.minor[.micro][releaselevel[serial]][.dev]
@@ -75,7 +75,7 @@ rather than parsing the text of `__version__`.
 """
 
 # workaround for Python < 2.6:
-__version_info__ = (0, 14, 0, 'candidate', 2, False)
+__version_info__ = (0, 14, 0, 'candidate', 2, True)
 # To add in Docutils 0.15, replacing the line above:
 """
 from collections import namedtuple
