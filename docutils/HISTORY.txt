@@ -14,8 +14,8 @@
 .. contents::
 
 
-Prerelease 0.14rc2
-===============================
+Release 0.14rc2 (2017-07-08)
+============================
 
 * docs/ref/docutils.dtd:
 
