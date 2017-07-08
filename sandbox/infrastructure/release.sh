@@ -394,6 +394,9 @@ function stage_2()
     confirm test_tarball
     echo 'Registering with PyPI...'
     echo 'TODO upload to pypi or set download url for this release'
+    echo "TODO: USE twine docutils-xx.tar.gz ... might require setting .pypirc"
+    echo "see https://packaging.python.org/guides/migrating-to-pypi-org/#"
+
     echo 'Press enter to proceed (or enter anything to skip)...'
     read
     if [ ! "$REPLY" ]; then
