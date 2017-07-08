@@ -12,7 +12,7 @@ Test module for utils/__init__.py.
 import unittest
 import sys
 import os
-from DocutilsTestSupport import utils, nodes
+from DocutilsTestSupport import docutils, utils, nodes
 try:
     from io import StringIO
 except ImportError:    # io is new in Python 2.6
@@ -237,6 +237,14 @@ class ExtensionOptionTests(unittest.TestCase):
 
 class HelperFunctionsTests(unittest.TestCase):
 
+    def test_version_identifier(self):
+        """
+        docutils.utils.version_identifier() depends on
+        docutils.__version_info__, so this also tests that
+        docutils.__version__ is equivalent to docutils.__version_info__.
+        """
+        self.assertEqual(utils.version_identifier(), docutils.__version__)
+
     def test_normalize_language_tag(self):
         self.assertEqual(utils.normalize_language_tag('de'), ['de'])
         self.assertEqual(utils.normalize_language_tag('de-AT'),
@@ -302,7 +310,6 @@ class HelperFunctionsTests(unittest.TestCase):
                          'alltests.py')
         self.assertEqual(utils.find_file_in_dirs('gibts/nicht.txt', dirs),
                          'gibts/nicht.txt')
-
 
 
 if __name__ == '__main__':

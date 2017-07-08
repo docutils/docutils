@@ -16,7 +16,7 @@ import re
 import itertools
 import warnings
 import unicodedata
-from docutils import ApplicationError, DataError
+from docutils import ApplicationError, DataError, __version_info__
 from docutils import nodes
 import docutils.io
 from docutils.utils.error_reporting import ErrorOutput, SafeString
@@ -766,3 +766,42 @@ class DependencyList(object):
         except AttributeError:
             output_file = None
         return '%s(%r, %s)' % (self.__class__.__name__, output_file, self.list)
+
+
+release_level_abbreviations = {
+    'alpha':     'a',
+    'beta':      'b',
+    'candidate': 'rc',
+    'final':     '',}
+
+def version_identifier(version_info=None):
+    # to add in Docutils 0.15:
+    # version_info is a namedtuple, an instance of Docutils.VersionInfo.
+    """
+    Given a `version_info` tuple (default is docutils.__version_info__),
+    build & return a version identifier string.
+    """
+    if version_info is None:
+        version_info = __version_info__
+    if version_info[2]:                   # version_info.micro
+        micro = '.%s' % version_info[2]
+    else:
+        micro = ''
+    releaselevel = release_level_abbreviations[
+        version_info[3]]                  # version_info.releaselevel
+    if version_info[4]:                   # version_info.serial
+        serial = version_info[4]
+    else:
+        serial = ''
+    if version_info[5]:                   # version_info.release
+        dev = ''
+    else:
+        dev = '.dev'
+    version = '%s.%s%s%s%s%s' % (
+        version_info[0],  # version_info.major
+        version_info[1],  # version_info.minor
+        micro,
+        releaselevel,
+        serial,
+        dev)
+    return version
