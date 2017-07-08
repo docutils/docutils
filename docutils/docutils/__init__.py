@@ -75,7 +75,7 @@ rather than parsing the text of `__version__`.
 """
 
 # workaround for Python < 2.6:
-__version_info__ = (0, 14, 0, 'candidate', 2, True)
+__version_info__ = (0, 14, 0, 'candidate', 3, False)
 # To add in Docutils 0.15, replacing the line above:
 """
 from collections import namedtuple
