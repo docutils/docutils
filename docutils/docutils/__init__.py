@@ -55,7 +55,7 @@ import sys
 
 __docformat__ = 'reStructuredText'
 
-__version__ = '0.14rc2'
+__version__ = '0.14rc3.dev'
 """Docutils version identifier (complies with PEP 440)::
 
     major.minor[.micro][releaselevel[serial]][.dev]
