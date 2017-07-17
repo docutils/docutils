@@ -110,6 +110,9 @@ Release 0.14rc2 (2017-07-08)
     documents.
   - The heading/title of admonitions now reflects the language
     specified by the ``language`` setting.
+  - Fixed [ 306 ] only first of multiple "image" directives with the same URL 
+    shown in output.
+  - Fixed [ 282 ] python3: AttributeError.
 
 * tools/rst2html4.py: New front-end.
 
