@@ -59,7 +59,8 @@ Release 0.14rc2 (2017-07-08)
 
 * docutils/transforms/universal.py
 
-  Fix SmartQuotes: warn only once if language is unsupported
+  Fix SmartQuotes: warn only once if language is unsupported,
+  keep "rawsource" when "educating" quotes.
 
 * docutils/utils/__init__.py:
 
