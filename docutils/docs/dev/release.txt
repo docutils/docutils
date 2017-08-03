@@ -228,19 +228,6 @@ REWORK FOR SOURCEFORGE REPO
 
   Set the download-url so eggs can access older releases.
 
-* Restore ``__version_details__`` in docutils/docutils/__init__.py to
-  "repository" (from "release").
-
-* Bump the `version number`_ again.
-
-* Add a new empty section "Changes Since ..." in HISTORY.txt.
-
-* Update the web page (web/index.txt).
-
-* Run docutils-update on the server.
-
-* **Run alltests.py with svn version**
-
 * **build wheels**::
 
     pip wheel docutils
@@ -263,6 +250,18 @@ REWORK FOR SOURCEFORGE REPO
   .. _Upload the wheels to PyPI:
      https://packaging.python.org/en/latest/distributing.html#upload-your-distributions
 
+* Restore ``__version_info`` in docutils/docutils/__init__.py to
+  "repository" (from "release").
+
+* Bump the `version number`_ again.
+
+* Add a new empty section "Changes Since ..." in HISTORY.txt.
+
+* Update the web page (web/index.txt).
+
+* Run docutils-update on the server.
+
+* **Run alltests.py with svn version**
 * **Send announcement email to:**
 
   * docutils-develop@lists.sourceforge.net (also announcing the end of
