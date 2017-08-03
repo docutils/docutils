@@ -236,19 +236,10 @@ REWORK FOR SOURCEFORGE REPO
   This builds wheels_ (`pure Python wheels`_ for Python 2 and 3
   respectively) by downloading the new release from pypi.
 
-  `Upload the wheels to PyPI`_.
+  Upload the wheels to PyPI::
 
-  Question:
-    Can we have an tar.gz (distutil) and a py2-wheel and a py3-wheel
-    on pypi and will installers select the correct files?
-
-    2017-06-09 it seems to according to experience with 0.13.1.
-
-  .. _wheels: https://packaging.python.org/en/latest/distributing.html#wheels
-  .. _pure Python wheels:
-     https://packaging.python.org/en/latest/distributing.html#pure-python-wheels
-  .. _Upload the wheels to PyPI:
-     https://packaging.python.org/en/latest/distributing.html#upload-your-distributions
+    twine upload docultils-<VERSION>-py2-none-any.whl
+    twine upload wheelhouse/docultils-<VERSION>-py3-none-any.whl
 
 * Restore ``__version_info`` in docutils/docutils/__init__.py to
   "repository" (from "release").
