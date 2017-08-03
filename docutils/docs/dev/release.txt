@@ -267,11 +267,6 @@ REWORK FOR SOURCEFORGE REPO
 
   **Mark as default download for all platforms.**
 
-* **Register with freecode.** Add a new release for the
-  `Docutils project`__. (freecode is freshmeat.net's new name)
-
-  __ http://freecode.com/projects/docutils/
-
 
 ..
    Local Variables:
