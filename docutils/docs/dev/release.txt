@@ -119,12 +119,10 @@ REWORK FOR SOURCEFORGE REPO
 
   see what ``sandbox/infrastructure/release.sh`` can aid
 
-  Call ``sandbox/infrastructure/release.sh new_version svn_version``.
+  Call ``sandbox/infrastructure/set_release.sh new_version``.
   For details see the script.
 
-  ``new_version`` is the current version, status will change from
-  ``repository`` to ``release``. ``svn_version`` is the version after
-  release.
+  ``new_version`` is major.minor[.micro][<pre>][.dev]
 
   .. Note:: *BUG* test tarball requires root password, but it is possible to
      skip this stage interactively, and testing should be done before
