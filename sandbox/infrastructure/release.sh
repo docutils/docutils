@@ -403,6 +403,11 @@ function stage_2()
         pwd
         run twine upload "$tarball"
         echo "verify on PyPI. hide older releases."
+        echo "TODO TEST build wheels and upload"
+        run pip wheel docutils
+        run twine upload docutils-*-py2-none-any.whl
+        run pip3 wheel docutils
+        run twine upload wheelhouse/docutils-${new_ver}-py3-none-any.whl
     fi
 }
 
