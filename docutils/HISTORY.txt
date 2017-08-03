@@ -13,6 +13,10 @@
 
 .. contents::
 
+Changes Since 0.14
+==================
+
+* infrastructure automatisms
 
 Release 0.14 (2017-08-03)
 =========================
