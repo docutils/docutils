@@ -59,11 +59,16 @@ run rm -rf $test_dir
 run mkdir -p $test_dir
 cd $test_dir
 
-echo "Deleting and installing Docutils on Python $py_ver."
+py_ver_maj=${py_ver:0:1}
+echo "Deleting and installing Docutils on Python $py_ver ($py_ver_maj)."
 echo "Press enter."
 read
 
-docutils_install_dir=$(python$py_ver -c 'import docutils, os.path; print os.path.dirname(docutils.__file__)')
+if [ $py_ver_maj = "2" ] ; then
+    docutils_install_dir=$(python$py_ver -c 'import docutils, os.path; print os.path.dirname(docutils.__file__)')
+else
+    docutils_install_dir=$(python$py_ver -c 'import docutils, os.path; print(os.path.dirname(docutils.__file__))')
+fi
 
 if [ -z "$docutils_install_dir" ] ; then
     echo "No docutils installation found"
@@ -84,7 +89,6 @@ python$py_ver setup.py build
 sudo python$py_ver setup.py install
 echo
 echo "Remove __init__.py from docutils code directory to make sure it is not used.."
-echo "TODO for python3."
 read
 rm -rf docutils/__init__.py
 
@@ -94,7 +98,13 @@ rm -rf docutils/__init__.py
 
 echo "run alltests.py"
 
-python$py_ver -u test/alltests.py
+if [ ${py_ver_maj} = "2" ] ; then
+    TESTD=test
+else
+    TESTD=test3
+fi
+
+python$py_ver -u ${TESTD}/alltests.py
 
 echo "remove test directory Ctrl C to abort"
 read
