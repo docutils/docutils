@@ -87,7 +87,6 @@ the `release notes`_ for a list of changes since the previous release
 
 __ https://sourceforge.net/projects/docutils/files/docutils/0.14/docutils-0.14.tar.gz/download
 
-
 .. _release notes: RELEASE-NOTES.html#id38
 
 The Sandbox_ contains experimental, contributed code. You can download a
@@ -119,9 +118,9 @@ and `Docutils-checkins
    http://docutils.sourceforge.net/sandbox/latex_directive/
 
 .. _snapshot:
-   http://docutils.sourceforge.net/docutils-snapshot.tgz
+   http://sourceforge.net/p/docutils/code/HEAD/tree/trunk/docutils/
 .. _snapshot of the Sandbox:
-   http://docutils.sourceforge.net/docutils-sandbox-snapshot.tgz
+   http://sourceforge.net/p/docutils/code/HEAD/tree/trunk/sandbox/
 .. _browse the Sandbox:
    http://sourceforge.net/p/docutils/code/HEAD/tree/trunk/sandbox/
 
