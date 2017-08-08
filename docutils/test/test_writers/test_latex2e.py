@@ -45,10 +45,9 @@ $latex_preamble
 $stylesheet
 %%% Fallback definitions for Docutils-specific commands
 $fallbacks$pdfsetup
-$titledata
 %%% Body
 \begin{document}
-""")
+$titledata""")
 
 parts = dict(
 head_prefix = r"""\documentclass[a4paper]{article}
@@ -899,9 +898,7 @@ head_template.substitute(dict(parts,
     pdfsetup=parts['pdfsetup'] + r"""\hypersetup{
   pdftitle={This is the Title},
 }
-""", titledata=r"""%%% Title Data
-\title{\phantomsection%
-  This is the \emph{Title}%
+""", titledata=r"""\title{This is the \emph{Title}%
   \label{this-is-the-title}%
   \\ % subtitle%
   \DUdocumentsubtitle{This is the \emph{Subtitle}}%

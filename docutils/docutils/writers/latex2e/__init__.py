@@ -217,9 +217,9 @@ class Writer(writers.Writer):
     config_section_dependencies = ('writers',)
 
     head_parts = ('head_prefix', 'requirements', 'latex_preamble',
-                  'stylesheet', 'fallbacks', 'pdfsetup',
-                  'title', 'subtitle', 'titledata')
-    visitor_attributes = head_parts + ('body_pre_docinfo', 'docinfo',
+                  'stylesheet', 'fallbacks', 'pdfsetup', 'titledata')
+    visitor_attributes = head_parts + ('title', 'subtitle',
+                                       'body_pre_docinfo', 'docinfo',
                                        'dedication', 'abstract', 'body')
 
     output = None
@@ -596,8 +596,7 @@ PreambleCmds.lineblock = r"""
 }{}"""
 # PreambleCmds.lineblock._depends = 'providelength'
 
-PreambleCmds.linking = r"""
-%% hyperlinks:
+PreambleCmds.linking = r"""%% hyperlinks:
 \ifthenelse{\isundefined{\hypersetup}}{
   \usepackage[%s]{hyperref}
   \usepackage{bookmark}
@@ -1687,6 +1686,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.out.append('}\n')
 
     def visit_author(self, node):
+        self.pdfauthor.append(self.attval(node.astext()))
         self.visit_docinfo_item(node, 'author')
 
     def depart_author(self, node):
@@ -1922,8 +1922,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
                                 '\\end{center}\n')
 
     def visit_docinfo_item(self, node, name):
-        if name == 'author':
-            self.pdfauthor.append(self.attval(node.astext()))
         if self.use_latex_docinfo:
             if name in ('author', 'organization', 'contact', 'address'):
                 # We attach these to the last author.  If any of them precedes
@@ -1989,12 +1987,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
         #   'author', 'organization', 'contact', 'address' and 'date')
         if self.title or (
            self.use_latex_docinfo and (self.author_stack or self.date)):
-            # with the default template, titledata is written to the preamble
-            self.titledata.append('%%% Title Data')
             # \title (empty \title prevents error with \maketitle)
+            title = [''.join(self.title)]
             if self.title:
-                self.title.insert(0, '\\phantomsection%\n  ')
-            title = [''.join(self.title)] + self.title_labels
+                title += self.title_labels
             if self.subtitle:
                 title += [r'\\ % subtitle',
                           r'\DUdocumentsubtitle{%s}' % ''.join(self.subtitle)
