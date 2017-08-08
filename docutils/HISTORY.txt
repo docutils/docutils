@@ -16,12 +16,18 @@
 Changes Since 0.14
 ==================
 
-* infrastructure automatisms
+* General
+
+  - infrastructure automatisms.
+
+* docutils/writers/latex2e/__init__.py
+
+  - Fix [ 323 ] don't add ``\phantomsection`` and whitespace to
+    ``parts['title'].
+
 
 Release 0.14 (2017-08-03)
 =========================
-
-As rc2.
 
 * docs/ref/docutils.dtd:
 
@@ -117,7 +123,7 @@ As rc2.
     documents.
   - The heading/title of admonitions now reflects the language
     specified by the ``language`` setting.
-  - Fixed [ 306 ] only first of multiple "image" directives with the same URL 
+  - Fixed [ 306 ] only first of multiple "image" directives with the same URL
     shown in output.
   - Fixed [ 282 ] python3: AttributeError.
 
