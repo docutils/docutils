@@ -8,6 +8,12 @@ Releasing
 
 Notes on what happend while releasing.
 
+Release 0.14
+============
+
+svn revision: 8145 - start of release
+
+
 Prerelease 0.14a0
 =================
 
