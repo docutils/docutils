@@ -82,12 +82,11 @@ than the "official" releases |---| they're not only for developers!
 
 The latest **release package** is `docutils-0.14.tar.gz`__.  It was
 released on 2017-08-03 and is mostly intended for distributors.  See
-the `release notes`_ for a list of changes since the previous release
-(0.12).
+the `release notes`_ for a list of changes since the previous release.
 
 __ https://sourceforge.net/projects/docutils/files/docutils/0.14/docutils-0.14.tar.gz/download
 
-.. _release notes: RELEASE-NOTES.html#id38
+.. _release notes: RELEASE-NOTES.html
 
 The Sandbox_ contains experimental, contributed code. You can download a
 complete `snapshot of the Sandbox`_ or `browse the Sandbox`_ to download a

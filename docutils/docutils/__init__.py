@@ -86,8 +86,9 @@ __version_info__ = VersionInfo(
     major=0,
     minor=15,
     micro=0,
-    releaselevel='alpha', # development status:
+    releaselevel='alpha', # `development status`__:
                           # one of 'alpha', 'beta', 'candidate', 'final'
+                          # __ https://en.wikipedia.org/wiki/Software_release_life_cycle
     serial=0,             # pre-release number (0 for final releases)
     release=False         # True for official releases and pre-releases
     )

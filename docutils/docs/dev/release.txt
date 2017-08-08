@@ -39,31 +39,85 @@ On new ubuntu 12.10
 Releasing
 ---------
 
-Version numbers
-~~~~~~~~~~~~~~~
+Version identifier
+~~~~~~~~~~~~~~~~~~
 
-Version numbers shall follow the `Docutils Project Policies`_ and comply
-with `PEP 440`_.
+The version identifier ``docutils.__version__`` is a concise,
+`PEP 440`_-conforming representation of the namedtuple
+``docutils.__version_info__``.
 
-Especially, mark pre-releases and the repository version/snapshots as
-"between" releases (cf. `Feature Request #50`_ and the discussion on
-docutils-devel on May 28 2017), e.g.
+* The `release segment` (``<major>.<minor>[.<micro>]``)
+  is set according to the `Docutils Project Policies`_.
 
-|  prev. release  0.13.1,
-|  prerelease     0.14rc1,
-| [prereleases    0.14rc2, ...]
-|  release        0.14,
-|  repo/snapshots 0.15b.dev     # immediate after releasing 0.14, no alpha.
-| [bugfix relases 0.14.1, ...]  # branches off of the 0.14 release.
+* The `pre-release segment` (``[{a|b|rc}N]``) corresponds to the
+  `development status`_ of the repository or release.
+  It matches ``__version_info__.releaselevel``:
 
-The repository version number is always equal to the last released
-version + 1, with a .dev suffix: ``<major>.<minor+1>.dev``.
-(Exception: during "feature freeze" between pre-release and release it may
-point to the next pre-release.)
+  ======= ============ ==========================================
+  ..      releaselevel comment
+  ======= ============ ==========================================
+  ``a``   alpha        only after major experimental changes
+  ``b``   beta         default state of the repository
+  ``rcN`` candidate    ready to release unless significant bugs
+                       emerge (N is ``__version_info__.serial``)
+  ..      final        no pre-release segment
+  ======= ============ ==========================================
+
+* The `development release segment` (``.dev``) is omitted for official
+  releases and pre-releases, i.e. if ``__version_info__.release`` is True.
+
+See also `Feature Request #50`_ and the `discussion on
+docutils-devel`__ from May 28 to June 20 2017.
+
+Examples:
+
+   ============  ==============   =============
+   releaselevel  repository       release
+   ============  ==============   =============
+   final         …                0.14
+   beta          0.15b.dev        0.15b¹
+   candidate     0.15rc1.dev      0.15rc1
+   candidate     0.15rc2.dev¹     0.15rc2¹
+   final         0.15.dev         0.15
+   beta          0.16b.dev        …
+   ============  ==============   =============
+
+   ¹may be skipped
+
 
 .. _Docutils Project Policies: policies.html#version-numbers
-.. _Feature Request #50: https://sourceforge.net/p/docutils/feature-requests/50/
+.. _Feature Request #50:
+   https://sourceforge.net/p/docutils/feature-requests/50/
 .. _PEP 440: https://www.python.org/dev/peps/pep-0440/
+.. _development status:
+   https://en.wikipedia.org/wiki/Software_release_life_cycle
+__ https://sourceforge.net/p/docutils/mailman/message/35903816/
+
+How to change the version identifier
+""""""""""""""""""""""""""""""""""""
+
+The `version identifier` ``docutils.__version__`` is defined in
+``docutils/docutils/__init__.py`` and used in in the following files::
+
+    docutils/setup.py
+    docutils/test/functional/expected/* ("Generator: Docutils X.Y[.Z]")
+    docutils/README.txt
+    web/index.txt
+
+You can use the script ``set_release.sh``:
+
+#. ``cd`` to the "docutils" subdirectory in the repository checkout,
+
+
+#. call ::
+
+     ../sandbox/infrastructure/set_release.sh <new_version>
+
+   where ``<new_version>`` is major.minor[.micro][<pre>][.dev].
+
+Finally change ``__version_info__`` in ``docutils/docutils/__init__.py``
+"by hand" to ensure it matches the `version identifier`_.
+
 
 Release steps
 ~~~~~~~~~~~~~
@@ -84,61 +138,51 @@ REWORK FOR SOURCEFORGE REPO
    .. _ReleaseForge: http://releaseforge.sourceforge.net/
 
 
-* **On the Docutils-develop mailing list, announce that the release is
-  going to be made, update the release notes and ask for additions.**
+* **Announce**
 
-  **Announce the date of the feature freeze, at least a week away.**
+  On the Docutils-develop mailing list, announce that the release is
+  going to be made, update the release notes (consult HISTORY.TXT for
+  changes) and ask for additions.
 
-  Consult HISTORY.TXT for changes.
+  Announce the upcoming release at the Sphinx-devel mailing list
+  and ask for testing with Sphinx.
+  (This step can be skipped for bugfix releases and pre-releases.)
 
-* **Announce a check-in freeze on Docutils-develop.**
+  Announce the date of the feature freeze – at least a week ahead!
 
-* **Announce the upcoming release at the Sphinx-devel mailing list
-  and ask for testing with Sphinx.**
-  (This step can be skipped for bugfix releases.)
+* **Feature freeze** From now on, only bug-fix commits are allowed.
 
-* update `version numbers`_:
+  Update the `pre-release segment` of the `version identifier`_
+  (``b``, ``rcN`` or empty) to match the level of the upcoming release
+  (beta, candidate or final). Ensure ``docutils.__version_info__`` matches
+  the version identifier. (See also `How to change the version
+  identifier`_.)
 
-  We want pre-release tags ``rcN`` for pre-releases, development release tag
-  ``.dev`` for snapshots and installs from the repository.
+* **Announce** the check-in freeze date on Docutils-develop – at least a
+  week ahead.
 
-  For a prerelease
+* **Check-in freeze**
 
-  0. before release ``<next-release-number>.dev``
-  1. set this to ``<next-release-number>.rc1``
-  2. release
-  3. increase prerelease number in the repository
+  **Update the version identifier**:
+  Remove the `development release segment` (``.dev``) from the `version
+  identifier`_ and set ``docutils.__version_info__.release`` to True.
 
-  For a release
-
-  0. before release ``<next-release-number>.dev`` or
-     ``<next-release-number>.rc<N>``
-  1. set this to ``<next-release-number>`` without prerelease character.
-  2. release
-  3. set to ``<major>.<minor+1>.dev`` in the repository (trunk).
-
-  see what ``sandbox/infrastructure/release.sh`` can aid
-
-  Call ``sandbox/infrastructure/set_release.sh new_version``.
-  For details see the script.
-
-  ``new_version`` is major.minor[.micro][<pre>][.dev]
-
-  .. Note:: *BUG* test tarball requires root password, but it is possible to
-     skip this stage interactively, and testing should be done before
-     release.
-
-* Change ``__version_details__`` in docutils/docutils/__init__.py to
-  "release" (from "repository").
-
-* Check the _`version number` in the following files, should be already
-  correct:
+  Check the `version identifier` in the following files (should be
+  already correct if set according to `How to change the version
+  identifier`_):
 
   + docutils/setup.py
   + docutils/docutils/__init__.py
   + docutils/test/functional/expected/* ("Generator: Docutils X.Y[.Z]")
   + docutils/README.txt
   + web/index.txt
+
+* See what ``sandbox/infrastructure/release.sh`` can aid
+
+  .. Note:: *BUG* test tarball requires root password, but it is possible to
+     skip this stage interactively, and testing should be done before
+     release.
+
 
 * Close the "Changes Since ..." section in docutils/HISTORY.txt.
 
@@ -241,18 +285,22 @@ REWORK FOR SOURCEFORGE REPO
     twine upload docultils-<VERSION>-py2-none-any.whl
     twine upload wheelhouse/docultils-<VERSION>-py3-none-any.whl
 
-* Restore ``__version_info`` in docutils/docutils/__init__.py to
-  "repository" (from "release").
+* **Lift the freeze**
 
-* Bump the `version number`_ again.
+  Set the `version identifier`_ and ``__version_info__.releaselevel`` in
+  docutils/docutils/__init__.py to mark the repository version as
+  "in development", usually ``<major>.<minor+1>b.dev`` (cf. `How to change
+  the version identifier`_).
 
-* Add a new empty section "Changes Since ..." in HISTORY.txt.
+* After a final release, add a new empty section "Changes Since ..." in
+  HISTORY.txt.
 
 * Update the web page (web/index.txt).
 
 * Run docutils-update on the server.
 
 * **Run alltests.py with svn version**
+
 * **Send announcement email to:**
 
   * docutils-develop@lists.sourceforge.net (also announcing the end of
@@ -261,11 +309,15 @@ REWORK FOR SOURCEFORGE REPO
   * doc-sig@python.org
   * python-announce@python.org
 
-* **Add a `SourceForge News item`__, with title "Docutils X.Y.Z released"**
+* **Add a** `SourceForge News item`__, **with title "Docutils X.Y.Z released"**
 
   __ https://sourceforge.net/p/docutils/news
 
   **Mark as default download for all platforms.**
+
+.. _wheels: https://packaging.python.org/en/latest/distributing.html#wheels
+.. _pure Python wheels:
+   https://packaging.python.org/en/latest/distributing.html#pure-python-wheels
 
 
 ..
