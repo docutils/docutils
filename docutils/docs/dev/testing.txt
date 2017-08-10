@@ -38,28 +38,25 @@ Python 3, ``cd`` to the package's root directory and do::
 Python Versions
 ===============
 
-A docutils release has a commitment to support a minimum version and 
+A docutils release has a commitment to support a minimum version and
 beyond. Before a release is cut, tests must pass in all supported python
 versions.
 
-The Docutils 0.10 release supports Python 2.4 or later. 
-Versions after 0.12 will drop python 2.4, supporting **2.5** and later.
+The Docutils 0.15 release supports Python 2.6 or later.
 
-Therefore, you should install python 2.5, as well as the latest Python 
-(3.4 at the time of this writing) installed and always run the tests on 
-all of them. In a pinch, the edge cases (2.5, and 3.4) should cover most 
-of it.
+Therefore, you should install python 2.6, 2.7 as well as 3.3 up to the
+latest Python (3.5 at the time of this writing) installed and always run the
+tests on all of them. In a pinch, the edge cases (2.6, and 3.5) should cover
+most of it.
 
 Good resources covering the differences between Python versions:
 
-* `What's New in Python 2.5`__
 * `What's New in Python 2.6`__
 * `What's New in Python 2.7`__
 * `What's New in Python 3.3`__
 * `What's New in Python 3.4`__
 * `PEP 290 - Code Migration and Modernization`__
 
-__ http://www.python.org/doc/2.5.2/whatsnew/whatsnew25.html
 __ http://docs.python.org/whatsnew/2.6.html
 __ http://docs.python.org/whatsnew/2.7.html
 __ https://docs.python.org/3/whatsnew/3.3.html
@@ -75,14 +72,14 @@ __ http://www.python.org/peps/pep-0290.html
 Testing across multiple python versions
 ---------------------------------------
 
-`pyenv`_ can be installed and configured (see `installing pyenv`_) to 
+`pyenv`_ can be installed and configured (see `installing pyenv`_) to
 test multiple python versions::
 
     # assuming your system runs 2.7.x
     pyenv install 2.6.9
     pyenv install 3.3.6
     pyenv install 3.4.3
-    pyenv global system 2.5.6 2.6.9 3.3.6 3.4.3
+    pyenv global system 2.6.9 3.3.6 3.4.3
 
     # reset your shims
     rm -rf ~/.pyenv/shims && pyenv rehash
@@ -90,14 +87,12 @@ test multiple python versions::
 This will give you ``python2.6``, ``python2.7``, ``python3.3`` and
 ``python3.4``. Along with that, ``pip2.6``, ``pip2.7`` and so on.
 
-To save time, you can use `tox`_ to test docutils on versions 2.6+. To
+To save time, you can use `tox`_. To
 install tox, you can use ``easy_install tox`` or ``pip install tox``.
 From shell::
 
     cd docutils
     tox
-
-Note: tox and virtualenv only supports python 2.6 and onward.
 
 .. _tox: https://tox.readthedocs.org/en/latest/
 .. _pyenv: https://github.com/yyuu/pyenv

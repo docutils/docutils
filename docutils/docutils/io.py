@@ -226,7 +226,7 @@ class FileInput(Input):
             if key == 'handle_io_errors':
                 sys.stderr.write('deprecation warning: '
                     'io.FileInput() argument `handle_io_errors` '
-                    'is ignored since "Docutils 0.10 (2012-12-16)" '
+                    'is ignored since Docutils 0.10 (2012-12-16) '
                     'and will soon be removed.')
             else:
                 raise TypeError('__init__() got an unexpected keyword '
