@@ -41,9 +41,6 @@ Requirements
 In addition to the Docutils standard requirements, ``odtwriter``
 requires:
 
-- ElementTree --  Python (version 2.5 or later) now includes
-  ElementTree (``xml.etree.ElementTree``).
-
 - Optional -- `Pygments`_ is required if you want syntax
   highlighting of code in literal blocks.  See section `Syntax
   highlighting`_.

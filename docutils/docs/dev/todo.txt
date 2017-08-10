@@ -75,8 +75,6 @@ General
   (Cf. `Porting Python 2 Code to Python 3`_ and
   `clean single-source support for Python 2/3`_.)
 
-  - Gradually phase out support for Python 2.4 and 2.5 first.
-
   .. _Porting Python 2 Code to Python 3:
       https://docs.python.org/3/howto/pyporting.html
   .. _clean single-source support for Python 2/3:
@@ -1307,6 +1305,9 @@ MathML_
   .. _mathweb wiki: http://www.mathweb.org/wiki/MathML
   .. _ConTeXT MathML page: http://wiki.contextgarden.net/MathML
 
+  A MathML to LaTeX XSLT sheet:
+  https://github.com/davidcarlisle/web-xslt/tree/master/pmml2tex
+
 
 ASCIIMath_
   Simple, ASCII based math input language (see also `ASCIIMath tutorial`_).
@@ -1317,8 +1318,18 @@ ASCIIMath_
     A more comprehensive implementation is ASCIIMathPython_ by
     Paul Trembley (also used in his sandbox projects).
 
-  * For conversion to LaTeX, there is a JavaScript script at
-    http://dlippman.imathas.com/asciimathtex/ASCIIMath2TeX.js
+  * For conversion to LaTeX, there is
+
+    - a JavaScript script at
+      http://dlippman.imathas.com/asciimathtex/ASCIIMath2TeX.js
+
+    - The javascript `asciimath-to-latex` AsciiMath to LaTex converter at
+      the node package manager
+      https://www.npmjs.com/package/asciimath-to-latex
+      and at GitHub https://github.com/tylerlong/asciimath-to-latex
+
+    - a javascript and a PHP converter script at GitHub
+      https://github.com/asciimath/asciimathml/tree/master/asciimath-based
 
   .. _ASCIIMath: http://www1.chapman.edu/~jipsen/mathml/asciimath.html
   .. _ASCIIMath tutorial:

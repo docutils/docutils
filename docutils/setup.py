@@ -138,11 +138,9 @@ what-you-see-is-what-you-get plaintext markup syntax.""", # wrap at col 60
                  'docutils.writers',
                  'docutils.writers.html4css1',
                  'docutils.writers.html5_polyglot',
-                 # 'docutils.writers.xhtml11', # moved to the sandbox
                  'docutils.writers.pep_html',
                  'docutils.writers.s5_html',
                  'docutils.writers.latex2e',
-                 # 'docutils.writers.newlatex2e', # in the sandbox since 0.8
                  'docutils.writers.xetex',
                  'docutils.writers.odf_odt',
                  ],
@@ -196,8 +194,6 @@ classifiers = [
     'License :: OSI Approved :: BSD License',
     'License :: OSI Approved :: GNU General Public License (GPL)',
     'Operating System :: OS Independent',
-    'Programming Language :: Python :: 2.4',
-    'Programming Language :: Python :: 2.5',
     'Programming Language :: Python :: 2.6',
     'Programming Language :: Python :: 2.7',
     'Programming Language :: Python :: 3',

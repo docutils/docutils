@@ -18,6 +18,7 @@ Changes Since 0.14
 
 * General
 
+  - Dropped support for Python 2.4, 2.5, 3.1, and 3.2.
   - infrastructure automatisms.
 
 * docutils/writers/latex2e/__init__.py
