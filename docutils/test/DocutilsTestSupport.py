@@ -72,7 +72,6 @@ try:
     from docutils.parsers.rst import states, tableparser, roles, languages
     from docutils.readers import standalone, pep
     from docutils.statemachine import StringList, string2lines
-    from docutils._compat import bytes
 except ImportError:
     # The importing module (usually __init__.py in one of the
     # subdirectories) may catch ImportErrors in order to detect the

@@ -1689,7 +1689,7 @@ u"""\
         \u00a0.
 """],
 # Whitespace characters:
-#  \u180e*MONGOLIAN VOWEL SEPARATOR*\u180e,   fails in Python 2.4
+#  \u180e*MONGOLIAN VOWEL SEPARATOR*\u180e,   fails in Python 2.6
 [u"""\
 text separated by
 *newline*

@@ -1452,10 +1452,7 @@ class StringList(ViewList):
         Pad all double-width characters in self by appending `pad_char` to each.
         For East Asian language support.
         """
-        if hasattr(unicodedata, 'east_asian_width'):
-            east_asian_width = unicodedata.east_asian_width
-        else:
-            return                      # new in Python 2.4
+        east_asian_width = unicodedata.east_asian_width
         for i in range(len(self.data)):
             line = self.data[i]
             if isinstance(line, unicode):

@@ -12,7 +12,7 @@ import pickle
 import DocutilsTestSupport              # must be imported before docutils
 import docutils
 from docutils import core, nodes, io
-from docutils._compat import b, bytes, u_prefix
+from docutils._compat import b, u_prefix
 
 
 test_document = """\

@@ -997,9 +997,8 @@ class HTMLTranslator(nodes.NodeVisitor):
                 self.body.append('</a>')
         self.body.append('</span>')
         if self.settings.footnote_backlinks and len(backrefs) > 1:
-            # Python 2.4 fails with enumerate(backrefs, 1)
-            backlinks = ['<a href="#%s">%s</a>' % (ref, i+1)
-                            for (i, ref) in enumerate(backrefs)]
+            backlinks = ['<a href="#%s">%s</a>' % (ref, i)
+                            for (i, ref) in enumerate(backrefs, 1)]
             self.body.append('<span class="fn-backref">(%s)</span>'
                                 % ','.join(backlinks))
         self.body.append('</dt>\n<dd>')
