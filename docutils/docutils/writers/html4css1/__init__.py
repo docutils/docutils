@@ -484,10 +484,9 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
                 self.context.append('<a class="fn-backref" href="#%s">'
                                     % backrefs[0])
             else:
-                # Python 2.4 fails with enumerate(backrefs, 1)
-                for (i, backref) in enumerate(backrefs):
+                for (i, backref) in enumerate(backrefs, 1):
                     backlinks.append('<a class="fn-backref" href="#%s">%s</a>'
-                                     % (backref, i+1))
+                                     % (backref, i))
                 self.context.append('<em>(%s)</em> ' % ', '.join(backlinks))
                 self.context += ['', '']
         else:

@@ -37,7 +37,7 @@ except ImportError: # new in Python 2.6
 import DocutilsTestSupport              # must be imported before docutils
 from docutils import core, parsers, frontend, utils
 from docutils.utils.error_reporting import SafeString, ErrorString, ErrorOutput
-from docutils._compat import b, bytes
+from docutils._compat import b
 
 oldlocale = None
 if sys.version_info < (3,0): # problems solved in py3k
@@ -158,14 +158,14 @@ class ErrorStringTests(unittest.TestCase):
 # -----------------
 
 # Stub: Buffer with 'strict' auto-conversion of input to byte string:
-class BBuf(BytesIO, object): # super class object required by Python <= 2.5
+class BBuf(BytesIO):
     def write(self, data):
         if isinstance(data, unicode):
             data.encode('ascii', 'strict')
         super(BBuf, self).write(data)
 
 # Stub: Buffer expecting unicode string:
-class UBuf(StringIO, object): # super class object required by Python <= 2.5
+class UBuf(StringIO):
     def write(self, data):
         # emulate Python 3 handling of stdout, stderr
         if isinstance(data, bytes):

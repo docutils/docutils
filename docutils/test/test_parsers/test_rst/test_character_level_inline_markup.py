@@ -480,13 +480,13 @@ u"""\
         \xa0.
 """],
 # Whitespace characters:
-#  \u180e*MONGOLIAN VOWEL SEPARATOR*\u180e,   fails in Python 2.4
 [u"""\
 inline markup surrounded by various whitespace characters:
 *newline*
 or *space* or one of
 \xa0*NO-BREAK SPACE*\xa0,
 \u1680*OGHAM SPACE MARK*\u1680,
+\u180e*MONGOLIAN VOWEL SEPARATOR*\u180e,
 \u2000*EN QUAD*\u2000,
 \u2001*EM QUAD*\u2001,
 \u2002*EN SPACE*\u2002,
@@ -522,6 +522,10 @@ u"""\
         <emphasis>
             OGHAM SPACE MARK
         \u1680,
+        \u180e
+        <emphasis>
+            MONGOLIAN VOWEL SEPARATOR
+        \u180e,
         \u2000
         <emphasis>
             EN QUAD

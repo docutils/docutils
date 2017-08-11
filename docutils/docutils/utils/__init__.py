@@ -647,11 +647,8 @@ def column_width(text):
     """
     if isinstance(text, str) and sys.version_info < (3,0):
         return len(text)
-    try:
-        width = sum([east_asian_widths[unicodedata.east_asian_width(c)]
-                     for c in text])
-    except AttributeError:  # east_asian_width() New in version 2.4.
-        width = len(text)
+    width = sum([east_asian_widths[unicodedata.east_asian_width(c)]
+                 for c in text])
     # correction for combining chars:
     width -= len(find_combining_chars(text))
     return width
@@ -690,11 +687,12 @@ def normalize_language_tag(tag):
     # split (except singletons, which mark the following tag as non-standard):
     tag = re.sub(r'_([a-zA-Z0-9])_', r'_\1-', tag)
     subtags = [subtag for subtag in tag.split('_')]
-    base_tag = [subtags.pop(0)]
+    base_tag = (subtags.pop(0),)
     # find all combinations of subtags
     taglist = []
     for n in range(len(subtags), 0, -1):
-        for tags in unique_combinations(subtags, n):
+        # for tags in unique_combinations(subtags, n):
+        for tags in itertools.combinations(subtags, n):
             taglist.append('-'.join(base_tag+tags))
     taglist += base_tag
     return taglist

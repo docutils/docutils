@@ -22,7 +22,7 @@ unstyled_tokens = ['token', # Token (base token type)
                    '']      # short name for Token and Text
 # (Add, e.g., Token.Punctuation with ``unstyled_tokens += 'punctuation'``.)
 
-class LexerError(ApplicationError): 
+class LexerError(ApplicationError):
     pass
 
 class Lexer(object):
@@ -64,11 +64,14 @@ class Lexer(object):
         except pygments.util.ClassNotFound:
             raise LexerError('Cannot analyze code. '
                 'No Pygments lexer found for "%s".' % language)
+        # self.lexer.add_filter('tokenmerge')
+        # Since version 1.2. (released Jan 01, 2010) Pygments has a
+        # TokenMergeFilter. # ``self.merge(tokens)`` in __iter__ could
+        # be replaced by ``self.lexer.add_filter('tokenmerge')`` in __init__.
+        # However, `merge` below also strips a final newline added by pygments.
+        #
+        # self.lexer.add_filter('tokenmerge')
 
-    # Since version 1.2. (released Jan 01, 2010) Pygments has a
-    # TokenMergeFilter. However, this requires Python >= 2.4. When Docutils
-    # requires same minimal version,  ``self.merge(tokens)`` in __iter__ can
-    # be replaced by ``self.lexer.add_filter('tokenmerge')`` in __init__.
     def merge(self, tokens):
         """Merge subsequent tokens of same token-type.
 

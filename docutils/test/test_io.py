@@ -11,7 +11,7 @@ Test module for io.py.
 import unittest, sys
 import DocutilsTestSupport              # must be imported before docutils
 from docutils import io
-from docutils._compat import b, bytes
+from docutils._compat import b
 from docutils.utils.error_reporting import locale_encoding
 from test_error_reporting import BBuf, UBuf
 

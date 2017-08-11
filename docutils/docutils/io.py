@@ -125,7 +125,7 @@ class Input(TransformSpec):
     coding_slug = re.compile(b(r"coding[:=]\s*([-\w.]+)"))
     """Encoding declaration pattern."""
 
-    byte_order_marks = ((codecs.BOM_UTF8, 'utf-8'), # 'utf-8-sig' new in v2.5
+    byte_order_marks = ((codecs.BOM_UTF8, 'utf-8'),
                         (codecs.BOM_UTF16_BE, 'utf-16-be'),
                         (codecs.BOM_UTF16_LE, 'utf-16-le'),)
     """Sequence of (start_bytes, encoding) tuples for encoding detection.
@@ -263,25 +263,24 @@ class FileInput(Input):
         """
         Read and decode a single file and return the data (Unicode string).
         """
-        try: # In Python < 2.5, try...except has to be nested in try...finally.
-            try:
-                if self.source is sys.stdin and sys.version_info >= (3,0):
-                    # read as binary data to circumvent auto-decoding
-                    data = self.source.buffer.read()
-                    # normalize newlines
-                    data = b('\n').join(data.splitlines()) + b('\n')
-                else:
-                    data = self.source.read()
-            except (UnicodeError, LookupError), err: # (in Py3k read() decodes)
-                if not self.encoding and self.source_path:
-                    # re-read in binary mode and decode with heuristics
-                    b_source = open(self.source_path, 'rb')
-                    data = b_source.read()
-                    b_source.close()
-                    # normalize newlines
-                    data = b('\n').join(data.splitlines()) + b('\n')
-                else:
-                    raise
+        try:
+            if self.source is sys.stdin and sys.version_info >= (3,0):
+                # read as binary data to circumvent auto-decoding
+                data = self.source.buffer.read()
+                # normalize newlines
+                data = b('\n').join(data.splitlines()) + b('\n')
+            else:
+                data = self.source.read()
+        except (UnicodeError, LookupError), err: # (in Py3k read() decodes)
+            if not self.encoding and self.source_path:
+                # re-read in binary mode and decode with heuristics
+                b_source = open(self.source_path, 'rb')
+                data = b_source.read()
+                b_source.close()
+                # normalize newlines
+                data = b('\n').join(data.splitlines()) + b('\n')
+            else:
+                raise
         finally:
             if self.autoclose:
                 self.close()
@@ -382,26 +381,25 @@ class FileOutput(Output):
             if sys.version_info >= (3,0) and os.linesep != '\n':
                 data = data.replace(b('\n'), b(os.linesep)) # fix endings
 
-        try: # In Python < 2.5, try...except has to be nested in try...finally.
-            try:
-                self.destination.write(data)
-            except TypeError, e:
-                if sys.version_info >= (3,0) and isinstance(data, bytes):
-                    try:
-                        self.destination.buffer.write(data)
-                    except AttributeError:
-                        if check_encoding(self.destination,
-                                          self.encoding) is False:
-                            raise ValueError('Encoding of %s (%s) differs \n'
-                                '  from specified encoding (%s)' %
-                                (self.destination_path or 'destination',
-                                self.destination.encoding, self.encoding))
-                        else:
-                            raise e
-            except (UnicodeError, LookupError), err:
-                raise UnicodeError(
-                    'Unable to encode output data. output-encoding is: '
-                    '%s.\n(%s)' % (self.encoding, ErrorString(err)))
+        try:
+            self.destination.write(data)
+        except TypeError, e:
+            if sys.version_info >= (3,0) and isinstance(data, bytes):
+                try:
+                    self.destination.buffer.write(data)
+                except AttributeError:
+                    if check_encoding(self.destination,
+                                      self.encoding) is False:
+                        raise ValueError('Encoding of %s (%s) differs \n'
+                            '  from specified encoding (%s)' %
+                            (self.destination_path or 'destination',
+                            self.destination.encoding, self.encoding))
+                    else:
+                        raise e
+        except (UnicodeError, LookupError), err:
+            raise UnicodeError(
+                'Unable to encode output data. output-encoding is: '
+                '%s.\n(%s)' % (self.encoding, ErrorString(err)))
         finally:
             if self.autoclose:
                 self.close()
