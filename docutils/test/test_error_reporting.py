@@ -37,7 +37,6 @@ except ImportError: # new in Python 2.6
 import DocutilsTestSupport              # must be imported before docutils
 from docutils import core, parsers, frontend, utils
 from docutils.utils.error_reporting import SafeString, ErrorString, ErrorOutput
-from docutils._compat import b
 
 oldlocale = None
 if sys.version_info < (3,0): # problems solved in py3k
@@ -82,7 +81,7 @@ class SafeStringTests(unittest.TestCase):
     # -> see the test in test_error_reporting.py
 
     # test data:
-    bs = b('\xfc')     # unicode(bs) fails, str(bs) in Python 3 return repr()
+    bs = b'\xfc'     # unicode(bs) fails, str(bs) in Python 3 return repr()
     us = u'\xfc'       # bytes(us) fails; str(us) fails in Python 2
     be = Exception(bs) # unicode(be) fails
     ue = Exception(us) # bytes(ue) fails, str(ue) fails in Python 2;
@@ -97,7 +96,7 @@ class SafeStringTests(unittest.TestCase):
     def test_7bit(self):
         # wrapping (not required with 7-bit chars) must not change the
         # result of conversions:
-        bs7 = b('foo')
+        bs7 = b'foo'
         us7 = u'foo'
         be7 = Exception(bs7)
         ue7 = Exception(us7)
@@ -134,8 +133,8 @@ class SafeStringTests(unittest.TestCase):
 
 
 class ErrorStringTests(unittest.TestCase):
-    bs = b('\xfc')     # unicode(bs) fails, str(bs) in Python 3 return repr()
-    us = u'\xfc'       # bytes(us) fails; str(us) fails in Python 2
+    bs = b'\xfc'     # unicode(bs) fails, str(bs) in Python 3 return repr()
+    us = u'\xfc'     # bytes(us) fails; str(us) fails in Python 2
 
     def test_str(self):
         self.assertEqual('Exception: spam',
@@ -181,25 +180,25 @@ class ErrorOutputTests(unittest.TestCase):
         buf = BBuf() # buffer storing byte string
         e = ErrorOutput(buf, encoding='ascii')
         # write byte-string as-is
-        e.write(b('b\xfc'))
-        self.assertEqual(buf.getvalue(), b('b\xfc'))
+        e.write(b'b\xfc')
+        self.assertEqual(buf.getvalue(), b'b\xfc')
         # encode unicode data with backslashescape fallback replacement:
         e.write(u' u\xfc')
-        self.assertEqual(buf.getvalue(), b('b\xfc u\\xfc'))
+        self.assertEqual(buf.getvalue(), b'b\xfc u\\xfc')
         # handle Exceptions with Unicode string args
         # unicode(Exception(u'e\xfc')) # fails in Python < 2.6
         e.write(AttributeError(u' e\xfc'))
-        self.assertEqual(buf.getvalue(), b('b\xfc u\\xfc e\\xfc'))
+        self.assertEqual(buf.getvalue(), b'b\xfc u\\xfc e\\xfc')
         # encode with `encoding` attribute
         e.encoding = 'utf8'
         e.write(u' u\xfc')
-        self.assertEqual(buf.getvalue(), b('b\xfc u\\xfc e\\xfc u\xc3\xbc'))
+        self.assertEqual(buf.getvalue(), b'b\xfc u\\xfc e\\xfc u\xc3\xbc')
 
     def test_ubuf(self):
         buf = UBuf() # buffer only accepting unicode string
         # decode of binary strings
         e = ErrorOutput(buf, encoding='ascii')
-        e.write(b('b\xfc'))
+        e.write(b'b\xfc')
         self.assertEqual(buf.getvalue(), u'b\ufffd') # use REPLACEMENT CHARACTER
         # write Unicode string and Exceptions with Unicode args
         e.write(u' u\xfc')
@@ -208,7 +207,7 @@ class ErrorOutputTests(unittest.TestCase):
         self.assertEqual(buf.getvalue(), u'b\ufffd u\xfc e\xfc')
         # decode with `encoding` attribute
         e.encoding = 'latin1'
-        e.write(b(' b\xfc'))
+        e.write(b' b\xfc')
         self.assertEqual(buf.getvalue(), u'b\ufffd u\xfc e\xfc b\xfc')
 
 
@@ -223,10 +222,10 @@ class SafeStringTests_locale(unittest.TestCase):
     if testlocale:
         locale.setlocale(locale.LC_ALL, testlocale)
     # test data:
-    bs = b('\xfc')
+    bs = b'\xfc'
     us = u'\xfc'
     try:
-        open(b('\xfc'))
+        open(b'\xfc')
     except IOError, e: # in Python 3 the name for the exception instance
         bioe = e       # is local to the except clause
     try:
@@ -239,7 +238,7 @@ class SafeStringTests_locale(unittest.TestCase):
         except IOError, e:
             uioe = e
     try:
-        os.chdir(b('\xfc'))
+        os.chdir(b'\xfc')
     except OSError, e:
         bose = e
     try:

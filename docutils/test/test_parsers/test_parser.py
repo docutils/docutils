@@ -13,7 +13,6 @@ import unittest
 import DocutilsTestSupport              # must be imported before docutils
 import docutils
 from docutils import parsers, utils, frontend
-from docutils._compat import b
 
 
 class RstParserTests(unittest.TestCase):
@@ -27,10 +26,10 @@ class RstParserTests(unittest.TestCase):
         if sys.version_info < (3,):
             # supplying string input is supported, but only if ascii-decodable
             self.assertRaises(UnicodeDecodeError,
-                              parser.parse, b('hol%s' % chr(224)), document)
+                              parser.parse, b'hol%s' % chr(224), document)
         else:
             # input must be unicode at all times
-            self.assertRaises(TypeError, parser.parse, b('hol'), document)
+            self.assertRaises(TypeError, parser.parse, b'hol', document)
 
 
 if __name__ == '__main__':

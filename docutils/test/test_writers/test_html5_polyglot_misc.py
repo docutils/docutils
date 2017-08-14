@@ -12,7 +12,6 @@ Miscellaneous HTML writer tests.
 
 from __init__ import DocutilsTestSupport
 from docutils import core
-from docutils._compat import b
 import os
 
 class EncodingTestCase(DocutilsTestSupport.StandardTestCase):
@@ -29,7 +28,7 @@ class EncodingTestCase(DocutilsTestSupport.StandardTestCase):
             settings_overrides=settings_overrides)
         # Encoding a euro sign with latin1 doesn't work, so the
         # xmlcharrefreplace handler is used.
-        self.assertIn(b('EUR = &#8364;'), result)
+        self.assertIn(b'EUR = &#8364;', result)
 
 class MovingArgsTestCase(DocutilsTestSupport.StandardTestCase):
 
@@ -52,7 +51,7 @@ second term:
 """
         result = core.publish_string(data, writer_name='html5_polyglot',
                             settings_overrides=self.settings_overrides)
-        self.assertIn(b('<dt class="for the second item">second term:</dt>'),
+        self.assertIn(b'<dt class="for the second item">second term:</dt>',
                       result)
 
     def test_definition_list_item_name(self):
@@ -69,7 +68,7 @@ second term:
 """
         result = core.publish_string(data, writer_name='html5_polyglot',
                             settings_overrides=self.settings_overrides)
-        self.assertIn(b('<dt id="second-item">second term:</dt>'),
+        self.assertIn(b'<dt id="second-item">second term:</dt>',
                       result)
 
 

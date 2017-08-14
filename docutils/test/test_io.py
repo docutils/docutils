@@ -11,7 +11,6 @@ Test module for io.py.
 import unittest, sys
 import DocutilsTestSupport              # must be imported before docutils
 from docutils import io
-from docutils._compat import b
 from docutils.utils.error_reporting import locale_encoding
 from test_error_reporting import BBuf, UBuf
 
@@ -50,7 +49,7 @@ class HelperTests(unittest.TestCase):
 class InputTests(unittest.TestCase):
 
     def test_bom(self):
-        input = io.StringInput(source=b('\xef\xbb\xbf foo \xef\xbb\xbf bar'),
+        input = io.StringInput(source=b'\xef\xbb\xbf foo \xef\xbb\xbf bar',
                                encoding='utf8')
         # Assert BOMs are gone.
         self.assertEqual(input.read(), u' foo  bar')
@@ -60,26 +59,26 @@ class InputTests(unittest.TestCase):
         self.assertEqual(input.read(), u'\ufeff foo \ufeff bar')
 
     def test_coding_slug(self):
-        input = io.StringInput(source=b("""\
+        input = io.StringInput(source=b"""\
 .. -*- coding: ascii -*-
 data
 blah
-"""))
+""")
         data = input.read()
         self.assertEqual(input.successful_encoding, 'ascii')
-        input = io.StringInput(source=b("""\
+        input = io.StringInput(source=b"""\
 #! python
 # -*- coding: ascii -*-
 print "hello world"
-"""))
+""")
         data = input.read()
         self.assertEqual(input.successful_encoding, 'ascii')
-        input = io.StringInput(source=b("""\
+        input = io.StringInput(source=b"""\
 #! python
 # extraneous comment; prevents coding slug from being read
 # -*- coding: ascii -*-
 print "hello world"
-"""))
+""")
         data = input.read()
         self.assertNotEqual(input.successful_encoding, 'ascii')
 
@@ -132,12 +131,12 @@ print "hello world"
         # keep unicode instances as-is
         self.assertEqual(uniinput.decode(u'ja'), u'ja')
         # raise AssertionError if data is not an unicode string
-        self.assertRaises(AssertionError, uniinput.decode, b('ja'))
+        self.assertRaises(AssertionError, uniinput.decode, b'ja')
 
 
 class OutputTests(unittest.TestCase):
 
-    bdata = b('\xfc')
+    bdata = b'\xfc'
     udata = u'\xfc'
 
     def setUp(self):

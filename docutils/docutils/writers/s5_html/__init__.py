@@ -17,7 +17,6 @@ import docutils
 from docutils import frontend, nodes, utils
 from docutils.writers import html4css1
 from docutils.parsers.rst import directives
-from docutils._compat import b
 
 themes_dir_path = utils.relative_path(
     os.path.join(os.getcwd(), 'dummy'),
@@ -268,8 +267,7 @@ class S5HTMLTranslator(html4css1.HTMLTranslator):
                 src_file.close()
                 dest_file = open(dest, 'wb')
                 dest_dir = dest_dir.replace(os.sep, '/')
-                dest_file.write(src_data.replace(
-                    b('ui/default'),
+                dest_file.write(src_data.replace(b'ui/default',
                     dest_dir[dest_dir.rfind('ui/'):].encode(
                     sys.getfilesystemencoding())))
                 dest_file.close()
