@@ -287,7 +287,7 @@ core**) is used for active -- but stable, fully tested, and reviewed
 
 If we need to cut a bugfix release, we'll create a **maintenance branch**
 based on the latest feature release.  For example, when Docutils 0.5 is
-released, this would be ``branches/docutils-0.5``, any existing 0.4.x
+released, this would be ``branches/docutils-0.5``, and any existing 0.4.x
 maintenance branches may be retired.  Maintenance branches will receive bug
 fixes only; no new features will be allowed here.
 
@@ -406,31 +406,116 @@ mistake is easy to fix.  That's what version control is for!
 Version Numbering
 =================
 
-Docutils version numbering uses a ``major.minor.micro`` scheme (x.y.z;
-for example, 0.4.1).
+The version identifier ``docutils.__version__`` indicates the state of
+development of the current Docutils codebase.
+``docutils.__version__``, a text string, is a concise, `PEP
+440`_-conforming representation of the namedtuple
+``docutils.__version_info__``.
 
-**Major releases** (x.0, e.g. 1.0) will be rare, and will represent major
-changes in API, functionality, or commitment.  When Docutils reaches version
-1.0, the major APIs will be considered frozen and backward compatibility
-will become of paramount importance.
+.. _PEP 440: https://www.python.org/dev/peps/pep-0440/
 
-Releases that change the minor number (x.y, e.g. 0.5) will be
-**feature releases**; new features from the `Docutils core`_ will be
-included.
+* The *release segment* ("``<major>.<minor>[.<micro>]``",
+  e.g. "0.4.1") is incremented after each official release.
 
-Releases that change the micro number (x.y.z, e.g. 0.4.1) will be
-**bug-fix releases**.  No new features will be introduced in these
-releases; only bug fixes will be included.
+  **Major releases** (x.0, e.g. 1.0) will be rare, and will represent
+  major changes in API, functionality, or commitment.  When Docutils
+  reaches version 1.0, the major APIs will be considered frozen and
+  backward compatibility will become of paramount importance.  The
+  Docutils major release number is found in
+  ``docutils.__version_info__.major``.
 
-This policy was adopted in October 2005, and will take effect with
-Docutils version 0.4.  Prior to version 0.4, Docutils didn't have an
-official version numbering policy, and micro releases contained both
-bug fixes and new features.
+  Releases that change the minor number (x.y, e.g. 0.5) will be
+  **feature releases**; new features from the `Docutils core`_ will be
+  included.  The Docutils minor release number is found in
+  ``docutils.__version_info__.minor``.
 
-See also the `Docutils Release Procedure`_, `docutils.__version__` and
-`docutils.__version_info__`.
+  Releases that change the micro number (x.y.z, e.g. 0.4.1) will be
+  **bug-fix releases**.  No new features will be introduced in these
+  releases; only bug fixes will be included.  The Docutils micro
+  release number is found in ``docutils.__version_info__.micro``.
+
+* The *pre-release segment* ("``[{a|b|rc}[N]]``") corresponds to the
+  `development status`_ of the repository or release. The alphabetic
+  label indicates the release level, found in
+  ``docutils.__version_info__.releaselevel``:
+
+  =======  =============  ============================================
+  Label    Release Level  Comment
+  =======  =============  ============================================
+  ``a``    alpha          To be used only after major experimental
+                          changes, to indicate an unstable codebase.
+
+  ``b``    beta           Stable but between releases. This is the
+                          default state of the repository, with serial==0.
+
+  ``rcN``  candidate      Release candidate: ready to release unless
+                          significant bugs emerge.
+
+  ..       final          (No label.) There is no pre-release segment
+                          for final releases.
+  =======  =============  ============================================
+
+  .. _development status:
+     https://en.wikipedia.org/wiki/Software_release_life_cycle
+
+  ``N`` in the *pre-release segment* is a non-negative integer serial
+  number; found in ``docutils.__version_info__.serial``. The serial
+  number is incremented whenever a new pre-release is begun. When the
+  serial number N is 0, it is omitted from the pre-release segment. 0
+  is used between releases (with the "beta" release level).
+
+* The *development release segment* (``.dev``) is in place during
+  development, and omitted for official releases and pre-releases.
+  "``.dev``" is present in ``docutils.__version__`` when
+  ``docutils.__version_info__.release`` is False, and absent from
+  ``docutils.__version__`` when ``docutils.__version_info__.release``
+  is True.
+
+Examples of ``docutils.__version__`` version identifiers, over the
+course of normal development (without branches), in chronological
+order:
+
+======================  ============================
+Release Level           Version Identifier
+======================  ============================
+final (release)         0.14
+beta (development)      0.15b.dev
+beta (release)          0.15b¹
+candidate 1 (dev.)      0.15rc1.dev
+candidate 1 (release)   0.15rc1
+candidate 2 (dev.)      0.15rc2.dev¹
+candidate 2 (release)   0.15rc2¹
+... candidate N         0.15rcN.dev¹, 0.15rcN¹
+final (dev.)            0.15.dev¹
+final (release)         0.15
+beta (dev.)             0.16b.dev
+======================  ============================
+
+¹may be skipped
+
+Policy history:
+
+* Prior to version 0.4, Docutils didn't have an official version
+  numbering policy, and micro releases contained both bug fixes and
+  new features.
+
+* An earlier version of this policy was adopted in October 2005, and
+  took effect with Docutils version 0.4.
+
+* This policy was updated in June 2017 for Docutils version 0.14. See
+  `Feature Request #50`_ and the `discussion on docutils-devel`__ from
+  May 28 to June 20 2017.
+
+  .. _Feature Request #50:
+     https://sourceforge.net/p/docutils/feature-requests/50/
+  __ https://sourceforge.net/p/docutils/mailman/message/35903816/
+
+See also the `Docutils Release Procedure`_, and
+``docutils.__version__`` & ``docutils.__version_info__`` in
+docuitls/__init__.py.
 
 .. _Docutils Release Procedure: release.html#version-numbers
+
 
 Snapshots
 =========

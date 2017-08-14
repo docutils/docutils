@@ -42,61 +42,15 @@ Releasing
 Version identifier
 ~~~~~~~~~~~~~~~~~~
 
-The version identifier ``docutils.__version__`` is a concise,
-`PEP 440`_-conforming representation of the namedtuple
-``docutils.__version_info__``.
+For details, see `Version Numbering in Docutils Project Policies`__.
 
-* The `release segment` (``<major>.<minor>[.<micro>]``)
-  is set according to the `Docutils Project Policies`_.
+__ policies.html#version-numbering
 
-* The `pre-release segment` (``[{a|b|rc}N]``) corresponds to the
-  `development status`_ of the repository or release.
-  It matches ``__version_info__.releaselevel``:
-
-  ======= ============ ==========================================
-  ..      releaselevel comment
-  ======= ============ ==========================================
-  ``a``   alpha        only after major experimental changes
-  ``b``   beta         default state of the repository
-  ``rcN`` candidate    ready to release unless significant bugs
-                       emerge (N is ``__version_info__.serial``)
-  ..      final        no pre-release segment
-  ======= ============ ==========================================
-
-* The `development release segment` (``.dev``) is omitted for official
-  releases and pre-releases, i.e. if ``__version_info__.release`` is True.
-
-See also `Feature Request #50`_ and the `discussion on
-docutils-devel`__ from May 28 to June 20 2017.
-
-Examples:
-
-   ============  ==============   =============
-   releaselevel  repository       release
-   ============  ==============   =============
-   final         …                0.14
-   beta          0.15b.dev        0.15b¹
-   candidate     0.15rc1.dev      0.15rc1
-   candidate     0.15rc2.dev¹     0.15rc2¹
-   final         0.15.dev         0.15
-   beta          0.16b.dev        …
-   ============  ==============   =============
-
-   ¹may be skipped
-
-
-.. _Docutils Project Policies: policies.html#version-numbers
-.. _Feature Request #50:
-   https://sourceforge.net/p/docutils/feature-requests/50/
-.. _PEP 440: https://www.python.org/dev/peps/pep-0440/
-.. _development status:
-   https://en.wikipedia.org/wiki/Software_release_life_cycle
-__ https://sourceforge.net/p/docutils/mailman/message/35903816/
 
 How to change the version identifier
 """"""""""""""""""""""""""""""""""""
 
-The `version identifier` ``docutils.__version__`` is defined in
+The *version identifier* ``docutils.__version__`` is defined in
 ``docutils/docutils/__init__.py`` and used in in the following files::
 
     docutils/setup.py
@@ -104,10 +58,10 @@ The `version identifier` ``docutils.__version__`` is defined in
     docutils/README.txt
     web/index.txt
 
-You can use the script ``set_release.sh``:
+You can use the script ``set_release.sh`` to change the version
+identifier:
 
 #. ``cd`` to the "docutils" subdirectory in the repository checkout,
-
 
 #. call ::
 
@@ -116,7 +70,10 @@ You can use the script ``set_release.sh``:
    where ``<new_version>`` is major.minor[.micro][<pre>][.dev].
 
 Finally change ``__version_info__`` in ``docutils/docutils/__init__.py``
-"by hand" to ensure it matches the `version identifier`_.
+**by hand** to ensure it matches the `version identifier`_.
+
+Run the test suite after changing the codebase version to ensure
+accuracy and consistency.
 
 
 Release steps

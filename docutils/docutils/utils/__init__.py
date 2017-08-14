@@ -773,31 +773,33 @@ release_level_abbreviations = {
     'final':     '',}
 
 def version_identifier(version_info=None):
-    # to add in Docutils 0.15:
-    # version_info is a namedtuple, an instance of Docutils.VersionInfo.
     """
-    Given a `version_info` tuple (default is docutils.__version_info__),
-    build & return a version identifier string.
+    Return a version identifier string built from `version_info`, a
+    `docutils.VersionInfo` namedtuple instance or compatible tuple. If
+    `version_info` is not provided, by default return a version identifier
+    string based on `docutils.__version_info__` (i.e. the current Docutils
+    version).
     """
     if version_info is None:
         version_info = __version_info__
-    if version_info[2]:                   # version_info.micro
-        micro = '.%s' % version_info[2]
+    if version_info.micro:
+        micro = '.%s' % version_info.micro
     else:
+        # 0 is omitted:
         micro = ''
-    releaselevel = release_level_abbreviations[
-        version_info[3]]                  # version_info.releaselevel
-    if version_info[4]:                   # version_info.serial
-        serial = version_info[4]
+    releaselevel = release_level_abbreviations[version_info.releaselevel]
+    if version_info.serial:
+        serial = version_info.serial
     else:
+        # 0 is omitted:
         serial = ''
-    if version_info[5]:                   # version_info.release
+    if version_info.release:
         dev = ''
     else:
         dev = '.dev'
     version = '%s.%s%s%s%s%s' % (
-        version_info[0],  # version_info.major
-        version_info[1],  # version_info.minor
+        version_info.major,
+        version_info.minor,
         micro,
         releaselevel,
         serial,
