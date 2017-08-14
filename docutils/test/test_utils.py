@@ -1,5 +1,5 @@
-# -*- coding: utf-8 -*-
 #! /usr/bin/env python
+# -*- coding: utf-8 -*-
 
 # $Id$
 # Author: David Goodger <goodger@python.org>
@@ -238,12 +238,18 @@ class ExtensionOptionTests(unittest.TestCase):
 class HelperFunctionsTests(unittest.TestCase):
 
     def test_version_identifier(self):
-        """
-        docutils.utils.version_identifier() depends on
-        docutils.__version_info__, so this also tests that
-        docutils.__version__ is equivalent to docutils.__version_info__.
-        """
-        self.assertEqual(utils.version_identifier(), docutils.__version__)
+        release_0_14_final = docutils.VersionInfo(
+            major=0, minor=14, micro=0,
+            releaselevel='final', serial=0, release=True)
+        self.assertEqual(utils.version_identifier(release_0_14_final), '0.14')
+        dev_0_15_beta = docutils.VersionInfo(
+            major=0, minor=15, micro=0,
+            releaselevel='beta', serial=0, release=False)
+        self.assertEqual(utils.version_identifier(dev_0_15_beta), '0.15b.dev')
+        release_0_14_rc1 = docutils.VersionInfo(
+            major=0, minor=14, micro=0,
+            releaselevel='candidate', serial=1, release=True)
+        self.assertEqual(utils.version_identifier(release_0_14_rc1), '0.14rc1')
 
     def test_normalize_language_tag(self):
         self.assertEqual(utils.normalize_language_tag('de'), ['de'])
@@ -262,7 +268,6 @@ class HelperFunctionsTests(unittest.TestCase):
         self.assertEqual(utils.column_width(u'de'), 2)
         self.assertEqual(utils.column_width(u'dâ'), 2) # pre-composed
         self.assertEqual(utils.column_width(u'dâ'), 2) # combining
-
 
     def test_relative_path(self):
         # Build and return a path to `target`, relative to `source`:
