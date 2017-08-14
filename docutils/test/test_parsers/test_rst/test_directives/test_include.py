@@ -12,7 +12,6 @@ import os.path
 import sys
 from __init__ import DocutilsTestSupport
 from docutils.parsers.rst import states
-from docutils._compat import b
 from docutils.utils.code_analyzer import with_pygments
 
 def suite():
@@ -423,7 +422,7 @@ Encoding:
 .. include:: %s
    :encoding: utf-16
 """ % reldir(utf_16_file),
-b("""\
+b"""\
 <document source="test data">
     <paragraph>
         Encoding:
@@ -433,7 +432,7 @@ b("""\
         "Crunchy Frog", 1.49, "If we took the b\xf6nes out, it wouldn\\u2019t be
         crunchy, now would it?"
         "Gannet Ripple", 1.99, "\xbfOn a \\u03c3\\u03c4\\u03b9\\u03ba?"
-""").decode('raw_unicode_escape')],
+""".decode('raw_unicode_escape')],
 ["""\
 Include file is UTF-16-encoded, and is not valid ASCII.
 
@@ -719,7 +718,7 @@ Standard include data file:
 
 .. include:: <isogrk4.txt>
 """,
-b("""\
+b"""\
 <document source="test data">
     <paragraph>
         Standard include data file:
@@ -734,7 +733,7 @@ b("""\
         \\u03dc
     <substitution_definition names="b.gammad">
         \\u03dd
-""").decode('raw_unicode_escape')],
+""".decode('raw_unicode_escape')],
 ["""\
 Nonexistent standard include data file:
 

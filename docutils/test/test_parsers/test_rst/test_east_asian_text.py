@@ -17,8 +17,6 @@ try:
 except AttributeError:
     east_asian_width = None
 
-from docutils._compat import b
-
 def suite():
     s = DocutilsTestSupport.ParserTestSuite()
     s.generateTests(totest)
@@ -177,7 +175,7 @@ Some ambiguous-width characters:
 ⇔ left-right double arrow
 = ===================================
 """,
-b("""\
+b"""\
 <document source="test data">
     <paragraph>
         Some ambiguous-width characters:
@@ -305,7 +303,7 @@ b("""\
                     <entry>
                         <paragraph>
                             left-right double arrow
-""").decode('raw_unicode_escape')],
+""".decode('raw_unicode_escape')],
 ]
 '''
 [u"""\

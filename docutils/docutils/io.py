@@ -14,7 +14,6 @@ import os
 import re
 import codecs
 from docutils import TransformSpec
-from docutils._compat import b
 from docutils.utils.error_reporting import locale_encoding, ErrorString, ErrorOutput
 
 
@@ -122,7 +121,7 @@ class Input(TransformSpec):
             '%s.\n(%s)' % (', '.join([repr(enc) for enc in encodings]),
                          ErrorString(error)))
 
-    coding_slug = re.compile(b(r"coding[:=]\s*([-\w.]+)"))
+    coding_slug = re.compile(br"coding[:=]\s*([-\w.]+)")
     """Encoding declaration pattern."""
 
     byte_order_marks = ((codecs.BOM_UTF8, 'utf-8'),
@@ -268,7 +267,7 @@ class FileInput(Input):
                 # read as binary data to circumvent auto-decoding
                 data = self.source.buffer.read()
                 # normalize newlines
-                data = b('\n').join(data.splitlines()) + b('\n')
+                data = b'\n'.join(data.splitlines()) + b'\n'
             else:
                 data = self.source.read()
         except (UnicodeError, LookupError), err: # (in Py3k read() decodes)
@@ -278,7 +277,7 @@ class FileInput(Input):
                 data = b_source.read()
                 b_source.close()
                 # normalize newlines
-                data = b('\n').join(data.splitlines()) + b('\n')
+                data = b'\n'.join(data.splitlines()) + b'\n'
             else:
                 raise
         finally:
@@ -379,7 +378,7 @@ class FileOutput(Output):
            ):
             data = self.encode(data)
             if sys.version_info >= (3,0) and os.linesep != '\n':
-                data = data.replace(b('\n'), b(os.linesep)) # fix endings
+                data = data.replace(b'\n', bytes(os.linesep)) # fix endings
 
         try:
             self.destination.write(data)

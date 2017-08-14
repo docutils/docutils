@@ -14,7 +14,6 @@ import unittest
 import types
 import DocutilsTestSupport              # must be imported before docutils
 from DocutilsTestSupport import nodes, utils
-from docutils._compat import b
 
 debug = False
 
@@ -58,10 +57,10 @@ class TextTests(unittest.TestCase):
     def test_asciirestriction(self):
         if sys.version_info < (3,):
             self.assertRaises(UnicodeDecodeError, nodes.Text,
-                              b('hol%s' % chr(224)))
+                              b'hol%s' % chr(224))
         else:
             # no bytes at all allowed
-            self.assertRaises(TypeError, nodes.Text, b('hol'))
+            self.assertRaises(TypeError, nodes.Text, b'hol')
 
     def test_longrepr(self):
         self.assertEqual(repr(self.longtext), r"<#text: 'Mary had a "

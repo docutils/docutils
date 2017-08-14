@@ -11,7 +11,6 @@ Tests for misc.py "raw" directive.
 import os.path
 import sys
 from __init__ import DocutilsTestSupport
-from docutils._compat import b
 
 def suite():
     s = DocutilsTestSupport.ParserTestSuite()
@@ -98,7 +97,7 @@ totest['raw'] = [
    :file: %s
    :encoding: utf-16
 """ % utf_16_file_rel,
-b("""\
+b"""\
 <document source="test data">
     <raw format="html" source="%s" xml:space="preserve">
         "Treat", "Quantity", "Description"
@@ -106,7 +105,7 @@ b("""\
         "Crunchy Frog", 1.49, "If we took the b\xf6nes out, it wouldn\\u2019t be
         crunchy, now would it?"
         "Gannet Ripple", 1.99, "\xbfOn a \\u03c3\\u03c4\\u03b9\\u03ba?"
-""" % utf_16_file_rel).decode('raw_unicode_escape')],
+""".decode('raw_unicode_escape') % utf_16_file_rel],
 ["""\
 Raw input file is UTF-16-encoded, and is not valid ASCII.
 

@@ -74,11 +74,6 @@ For version comparison operations, use `__version_info__`
 rather than parsing the text of `__version__`.
 """
 
-# workaround for Python < 2.6:
-__version_info__ = (0, 15, 0, 'beta', 0, False)
-# NOTE: (0, 15, 0, 'beta', 0, False) means 0.15b.dev
-# To add in Docutils 0.15, replacing the line above:
-"""
 from collections import namedtuple
 VersionInfo = namedtuple(
     'VersionInfo', 'major minor micro releaselevel serial release')
@@ -86,14 +81,13 @@ __version_info__ = VersionInfo(
     major=0,
     minor=15,
     micro=0,
-    releaselevel='alpha', # `development status`__:
+    releaselevel='beta',  # `development status`__:
                           # one of 'alpha', 'beta', 'candidate', 'final'
                           # __ https://en.wikipedia.org/wiki/Software_release_life_cycle
-    serial=0,             # pre-release number (0 for final releases)
+    serial=0,             # pre-release serial number (0 for final releases)
     release=False         # True for official releases and pre-releases
     )
-
-Comprehensive version information tuple. Can be used to test for a
+"""Comprehensive version information tuple. Can be used to test for a
 minimally required version, e.g. ::
 
   if __version_info__ >= (0, 13, 0, 'candidate', 2, True)
@@ -111,16 +105,7 @@ __version_details__ = ''
 """
 
 
-class ApplicationError(StandardError):
-    # Workaround:
-    # In Python < 2.6, unicode(<exception instance>) calls `str` on the
-    # arg and therefore, e.g., unicode(StandardError(u'\u234')) fails
-    # with UnicodeDecodeError.
-    if sys.version_info < (2,6):
-        def __unicode__(self):
-            return u', '.join(self.args)
-
-
+class ApplicationError(StandardError): pass
 class DataError(ApplicationError): pass
 
 

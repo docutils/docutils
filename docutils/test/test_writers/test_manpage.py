@@ -10,8 +10,6 @@ Tests for manpage writer.
 
 from __init__ import DocutilsTestSupport
 
-from docutils._compat import b
-
 def suite():
     settings = {}
     s = DocutilsTestSupport.PublishTestSuite('manpage', suite_settings=settings)
