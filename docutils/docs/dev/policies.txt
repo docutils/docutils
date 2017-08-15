@@ -406,94 +406,156 @@ mistake is easy to fix.  That's what version control is for!
 Version Numbering
 =================
 
-The version identifier ``docutils.__version__`` indicates the state of
-development of the current Docutils codebase.
-``docutils.__version__``, a text string, is a concise, `PEP
-440`_-conforming representation of the namedtuple
+The state of development of the current Docutils codebase is stored in
+two forms: a ``docutils.__version_info__`` namedtuple, and a
+``docutils.__version__`` text string.
+
+See also the `Docutils Release Procedure`_, and
+``docutils.__version__`` & ``docutils.__version_info__`` in
+docutils/__init__.py.
+
+.. _Docutils Release Procedure: release.html#version-numbers
+
+
+``docutils.__version_info__``
+-----------------------------
+
+Detailed version information is available in the namedtuple
+``docutils.__version_info__``, which has the following attributes:
+
+major : non-negative integer
+    **Major releases** (x.0, e.g. 1.0) will be rare, and will
+    represent major changes in API, functionality, or commitment.  The
+    major number will be bumped to 1 when the project is
+    feature-complete, and may be incremented later if there is a major
+    change in the design or API.  When Docutils reaches version 1.0,
+    the major APIs will be considered frozen and backward
+    compatibility will become of paramount importance.
+
+minor : non-negative integer
+    Releases that change the minor number (x.y, e.g. 0.5) will be
+    **feature releases**; new features from the `Docutils core`_ will
+    be included.
+
+micro : non-negative integer
+    Releases that change the micro number (x.y.z, e.g. 0.4.1) will be
+    **bug-fix releases**.  No new features will be introduced in these
+    releases; only bug fixes will be included.  The micro number is
+    omitted from ``docutils.__version__`` when micro=0.
+
+releaselevel : text string
+    The release level indicates the `development status`_ (or phase)
+    of the project's codebase:
+
+    =============  =======  ============================================
+    Release Level  Label    Description
+    =============  =======  ============================================
+    alpha          ``a``    Reserved for use after major experimental
+                            changes, to indicate an unstable codebase.
+
+    beta           ``b``    Indicates active development, between releases.
+                            Used with serial = 0.
+
+    candidate      ``rcN``  Release candidate: indicates that the
+                            codebase is ready to release unless
+                            significant bugs emerge.
+                            Serial N starts at 1.
+
+    final                   Indicates an official project release.
+                            There is no pre-release segment for final
+                            releases (no label).
+    =============  =======  ============================================
+
+    The abbreviations in the "Label" column are used in the
+    `docutils.__version__`_ identifier text.
+
+    .. _development status:
+       https://en.wikipedia.org/wiki/Software_release_life_cycle
+
+serial : non-negative integer
+    The serial number is incremented whenever a new pre-release is
+    begun.
+
+release : boolean
+    True for official releases and pre-releases, False during
+    development.
+
+One of *{major, minor, micro}* is incremented after each official
+release, and the lower-order numbers are reset to 0.
+
+The default state of the repository during active development and
+between releases is: release level "beta", serial = 0, release =
+False.
+
+``docutils.__version_info__`` can be used to test for a minimally
+required version, e.g.::
+
+    if docutils.__version_info__ >= (0, 13, 0, 'candidate', 2, True)
+
+or in a self-documenting way::
+
+    comparison_version = docutils.VersionInfo(
+        major=0, minor=13, micro=0,
+        releaselevel='candidate', serial=2, release=True)
+    if docutils.__version_info__ >= comparison_version:
+        ...
+
+
+``docutils.__version__``
+------------------------
+
+``docutils.__version__`` contains the version identifier as a text
+string: a concise, `PEP 440`_-conforming representation of
 ``docutils.__version_info__``.
+
+For version comparison operations, use `docutils.__version_info__`_.
+Do not parse the text of ``docutils.__version__``.
+
+``docutils.__version__`` takes the following form::
+
+    <major>.<minor>[.<micro>][<releaselevel>[<serial>]][.dev]
+    <--- release segment ---><-- pre-release segment -><- development ->
 
 .. _PEP 440: https://www.python.org/dev/peps/pep-0440/
 
-* The *release segment* ("``<major>.<minor>[.<micro>]``",
-  e.g. "0.4.1") is incremented after each official release.
+* The abbreviated forms of each release level, found in the "Label"
+  column in the table above ("a" or "b" or "rc"), are used in the
+  pre-release segment.
 
-  **Major releases** (x.0, e.g. 1.0) will be rare, and will represent
-  major changes in API, functionality, or commitment.  When Docutils
-  reaches version 1.0, the major APIs will be considered frozen and
-  backward compatibility will become of paramount importance.  The
-  Docutils major release number is found in
-  ``docutils.__version_info__.major``.
+* When the serial number is 0, it is omitted from the pre-release
+  segment.
 
-  Releases that change the minor number (x.y, e.g. 0.5) will be
-  **feature releases**; new features from the `Docutils core`_ will be
-  included.  The Docutils minor release number is found in
-  ``docutils.__version_info__.minor``.
+* The development segment is present during active development (as
+  "``.dev``", when ``docutils.__version_info__.release`` is False),
+  and absent for official releases and pre-releases (when
+  ``docutils.__version_info__.release`` is True).
 
-  Releases that change the micro number (x.y.z, e.g. 0.4.1) will be
-  **bug-fix releases**.  No new features will be introduced in these
-  releases; only bug fixes will be included.  The Docutils micro
-  release number is found in ``docutils.__version_info__.micro``.
-
-* The *pre-release segment* ("``[{a|b|rc}[N]]``") corresponds to the
-  `development status`_ of the repository or release. The alphabetic
-  label indicates the release level, found in
-  ``docutils.__version_info__.releaselevel``:
-
-  =======  =============  ============================================
-  Label    Release Level  Comment
-  =======  =============  ============================================
-  ``a``    alpha          To be used only after major experimental
-                          changes, to indicate an unstable codebase.
-
-  ``b``    beta           Stable but between releases. This is the
-                          default state of the repository, with serial==0.
-
-  ``rcN``  candidate      Release candidate: ready to release unless
-                          significant bugs emerge.
-
-  ..       final          (No label.) There is no pre-release segment
-                          for final releases.
-  =======  =============  ============================================
-
-  .. _development status:
-     https://en.wikipedia.org/wiki/Software_release_life_cycle
-
-  ``N`` in the *pre-release segment* is a non-negative integer serial
-  number; found in ``docutils.__version_info__.serial``. The serial
-  number is incremented whenever a new pre-release is begun. When the
-  serial number N is 0, it is omitted from the pre-release segment. 0
-  is used between releases (with the "beta" release level).
-
-* The *development release segment* (``.dev``) is in place during
-  development, and omitted for official releases and pre-releases.
-  "``.dev``" is present in ``docutils.__version__`` when
-  ``docutils.__version_info__.release`` is False, and absent from
-  ``docutils.__version__`` when ``docutils.__version_info__.release``
-  is True.
-
-Examples of ``docutils.__version__`` version identifiers, over the
-course of normal development (without branches), in chronological
-order:
+Examples of ``docutils.__version__`` identifiers, over the course of
+normal development (without branches), in chronological order:
 
 ======================  ============================
 Release Level           Version Identifier
 ======================  ============================
 final (release)         0.14
-beta (development)      0.15b.dev
-beta (release)          0.15b¹
+beta (development)      0.15b.dev [2]_
+beta (release)          0.15b [1]_
 candidate 1 (dev.)      0.15rc1.dev
 candidate 1 (release)   0.15rc1
-candidate 2 (dev.)      0.15rc2.dev¹
-candidate 2 (release)   0.15rc2¹
-... candidate N         0.15rcN.dev¹, 0.15rcN¹
-final (dev.)            0.15.dev¹
+candidate 2 (dev.)      0.15rc2.dev [1]_
+candidate 2 (release)   0.15rc2 [1]_
+... candidate N         0.15rcN.dev [1]_, 0.15rcN [1]_
+final (dev.)            0.15.dev [1]_
 final (release)         0.15
-beta (dev.)             0.16b.dev
+beta (dev.)             0.16b.dev [2]_
 ======================  ============================
 
-¹may be skipped
+.. [1] These steps may be skipped.
 
-Policy history:
+.. [2] Default active development state between releases.
+
+
+Policy History
+--------------
 
 * Prior to version 0.4, Docutils didn't have an official version
   numbering policy, and micro releases contained both bug fixes and
@@ -509,12 +571,6 @@ Policy history:
   .. _Feature Request #50:
      https://sourceforge.net/p/docutils/feature-requests/50/
   __ https://sourceforge.net/p/docutils/mailman/message/35903816/
-
-See also the `Docutils Release Procedure`_, and
-``docutils.__version__`` & ``docutils.__version_info__`` in
-docuitls/__init__.py.
-
-.. _Docutils Release Procedure: release.html#version-numbers
 
 
 Snapshots
