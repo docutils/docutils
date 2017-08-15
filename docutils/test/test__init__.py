@@ -29,7 +29,7 @@ class ApplicationErrorTests(unittest.TestCase):
 
 class VersionInfoTests(unittest.TestCase):
 
-    def test_version_info(self):
+    def test__version_info__(self):
         self.assertEqual(len(docutils.__version_info__), 6)
         self.assertEqual(type(docutils.__version_info__.major), int)
         self.assertEqual(type(docutils.__version_info__.minor), int)
@@ -37,15 +37,15 @@ class VersionInfoTests(unittest.TestCase):
         self.assertEqual(type(docutils.__version_info__.releaselevel), str)
         self.assertEqual(type(docutils.__version_info__.serial), int)
         self.assertEqual(type(docutils.__version_info__.release), bool)
+        releaselevels = ('alpha', 'beta', 'candidate', 'final')
+        self.assertTrue(
+            docutils.__version_info__.releaselevel in releaselevels)
 
-    def test_version_identifier(self):
-        """
-        docutils.utils.version_identifier() implicitly depends on
-        docutils.__version_info__, so this tests that
-        docutils.__version__ is equivalent to docutils.__version_info__.
-        """
+    def test__version__(self):
+        """Test that __version__ is equivalent to __version_info__."""
         self.assertEqual(
-            docutils.utils.version_identifier(), docutils.__version__)
+            docutils.utils.version_identifier(docutils.__version_info__),
+            docutils.__version__)
 
 
 if __name__ == '__main__':
