@@ -235,7 +235,7 @@ class ExtensionOptionTests(unittest.TestCase):
                           field_list, self.optionspec)
 
 
-class HelperFunctionsTests(unittest.TestCase):
+class HelperFunctionTests(unittest.TestCase):
 
     def test_version_identifier(self):
         release_0_14_final = docutils.VersionInfo(
@@ -250,6 +250,11 @@ class HelperFunctionsTests(unittest.TestCase):
             major=0, minor=14, micro=0,
             releaselevel='candidate', serial=1, release=True)
         self.assertEqual(utils.version_identifier(release_0_14_rc1), '0.14rc1')
+
+    def test_implicit_version_identifier(self):
+        self.assertEqual(
+            utils.version_identifier(docutils.__version_info__),
+            utils.version_identifier())
 
     def test_normalize_language_tag(self):
         self.assertEqual(utils.normalize_language_tag('de'), ['de'])

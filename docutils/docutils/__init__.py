@@ -51,6 +51,7 @@ Subpackages:
 """
 
 import sys
+from collections import namedtuple
 
 
 __docformat__ = 'reStructuredText'
@@ -60,44 +61,28 @@ __version__ = '0.15b.dev'
 
     major.minor[.micro][releaselevel[serial]][.dev]
 
-* The major number will be bumped when the project is feature-complete, and
-  later if there is a major change in the design or API.
-* The minor number is bumped whenever there are new features.
-* The micro number is bumped for bug-fix releases. Omitted if micro=0.
-* The releaselevel identifier is used for pre-releases, one of 'a' (alpha),
-  'b' (beta), or 'rc' (release candidate). Omitted for final releases.
-* The serial release number identifies prereleases; omitted if 0.
-* The '.dev' suffix indicates active development, not a release, before the
-  version indicated.
-
-For version comparison operations, use `__version_info__`
+For version comparison operations, use `__version_info__` (which see, below)
 rather than parsing the text of `__version__`.
+
+See 'Version Numbering' in docs/dev/policies.txt.
 """
 
-from collections import namedtuple
 VersionInfo = namedtuple(
     'VersionInfo', 'major minor micro releaselevel serial release')
+
 __version_info__ = VersionInfo(
     major=0,
     minor=15,
     micro=0,
-    releaselevel='beta',  # `development status`__:
-                          # one of 'alpha', 'beta', 'candidate', 'final'
-                          # __ https://en.wikipedia.org/wiki/Software_release_life_cycle
-    serial=0,             # pre-release serial number (0 for final releases)
-    release=False         # True for official releases and pre-releases
+    # one of 'alpha', 'beta', 'candidate', 'final':
+    releaselevel='beta',
+    # pre-release serial number (0 for final releases and active development):
+    serial=0,
+    # True for official releases and pre-releases, False during development:
+    release=False
     )
-"""Comprehensive version information tuple. Can be used to test for a
-minimally required version, e.g. ::
-
-  if __version_info__ >= (0, 13, 0, 'candidate', 2, True)
-
-or in a self-documenting way like ::
-
-  if __version_info__ >= docutils.VersionInfo(
-      major=0, minor=13, micro=0,
-      releaselevel='candidate', serial=2, release=True)
-"""
+"""Comprehensive version information tuple. See 'Version Numbering' in
+docs/dev/policies.txt."""
 
 __version_details__ = ''
 """Optional extra version details (e.g. 'snapshot 2005-05-29, r3410').
