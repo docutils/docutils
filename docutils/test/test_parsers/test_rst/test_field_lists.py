@@ -542,6 +542,52 @@ Field: marker is missing its open-colon.
                 <paragraph>
                     A definition list, not a field list.
 """],
+[r"""
+:first: field
+:field:name:with:embedded:colons: unambiguous, no need for escapes
+
+..
+
+:embedded:colons: in first field name
+:field:\`:name: not interpreted text
+:field:\`name: not interpreted text
+""",
+"""\
+<document source="test data">
+    <field_list>
+        <field>
+            <field_name>
+                first
+            <field_body>
+                <paragraph>
+                    field
+        <field>
+            <field_name>
+                field:name:with:embedded:colons
+            <field_body>
+                <paragraph>
+                    unambiguous, no need for escapes
+    <comment xml:space="preserve">
+    <field_list>
+        <field>
+            <field_name>
+                embedded:colons
+            <field_body>
+                <paragraph>
+                    in first field name
+        <field>
+            <field_name>
+                field:`:name
+            <field_body>
+                <paragraph>
+                    not interpreted text
+        <field>
+            <field_name>
+                field:`name
+            <field_body>
+                <paragraph>
+                    not interpreted text
+"""],
 ]
 
 if __name__ == '__main__':

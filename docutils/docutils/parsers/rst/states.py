@@ -1119,7 +1119,7 @@ class Body(RSTState):
     patterns = {
           'bullet': u'[-+*\u2022\u2023\u2043]( +|$)',
           'enumerator': r'(%(parens)s|%(rparen)s|%(period)s)( +|$)' % pats,
-          'field_marker': r':(?![: ])([^:\\]|\\.)*(?<! ):( +|$)',
+          'field_marker': r':(?![: ])([^:\\]|\\.|:(?!([ `]|$)))*(?<! ):( +|$)',
           'option_marker': r'%(option)s(, %(option)s)*(  +| ?$)' % pats,
           'doctest': r'>>>( +|$)',
           'line_block': r'\|( +|$)',

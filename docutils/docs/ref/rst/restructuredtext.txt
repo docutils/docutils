@@ -830,7 +830,8 @@ directives in `reStructuredText Directives`_.
 
 Field lists are mappings from *field names* to *field bodies*, modeled on
 RFC822_ headers.  A field name may consist of any characters, but
-colons (":") inside of field names must be escaped with a backslash.
+colons (":") inside of field names must be backslash-escaped
+when followed by whitespace.
 Inline markup is parsed in field names.  Field names are
 case-insensitive when further processed or transformed.  The field
 name, along with a single colon prefix and suffix, together form the

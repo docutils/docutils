@@ -29,6 +29,7 @@ class MetaBody(states.SpecializedBody):
 
     def parsemeta(self, match):
         name = self.parse_field_marker(match)
+        name = utils.unescape(utils.escape2null(name))
         indented, indent, line_offset, blank_finish = \
               self.state_machine.get_first_known_indented(match.end())
         node = self.meta()
@@ -36,7 +37,7 @@ class MetaBody(states.SpecializedBody):
                                 {'component': 'writer',
                                  'format': 'html',
                                  'nodes': [node]})
-        node['content'] = ' '.join(indented)
+        node['content'] = utils.unescape(utils.escape2null(' '.join(indented)))
         if not indented:
             line = self.state_machine.line
             msg = self.reporter.info(
