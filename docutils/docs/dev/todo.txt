@@ -1150,10 +1150,6 @@ Misc
   This would correspond well to DocBook's SegmentedList.  Output could
   be tabular or "name: value" pairs, as described in DocBook's docs.
 
-* Allow backslash-escaped colons in field names::
-
-      :Case Study\: Event Handling: This chapter will be dropped.
-
 * Enable grid _`tables inside XML comments`, where "``--``" ends comments.
 
   Implementation possibilities:
