@@ -222,6 +222,22 @@ Paragraph
         <literal_block xml:space="preserve">
             :name notattval: content
 """],
+[r"""
+.. meta::
+   :name\:with\:colons: escaped line\
+                        break
+""",
+"""\
+<document source="test data">
+    <pending>
+        .. internal attributes:
+             .transform: docutils.transforms.components.Filter
+             .details:
+               component: 'writer'
+               format: 'html'
+               nodes:
+                 <meta content="escaped linebreak" name="name:with:colons">
+"""],
 ]
 
 
