@@ -226,6 +226,7 @@ Paragraph
 .. meta::
    :name\:with\:colons: escaped line\
                         break
+   :unescaped:embedded:colons: content
 """,
 """\
 <document source="test data">
@@ -237,6 +238,14 @@ Paragraph
                format: 'html'
                nodes:
                  <meta content="escaped linebreak" name="name:with:colons">
+    <pending>
+        .. internal attributes:
+             .transform: docutils.transforms.components.Filter
+             .details:
+               component: \'writer\'
+               format: \'html\'
+               nodes:
+                 <meta content="content" name="unescaped:embedded:colons">
 """],
 ]
 
