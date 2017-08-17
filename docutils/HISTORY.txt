@@ -28,13 +28,16 @@ Changes Since 0.14
 
 * docutils/parsers/rst/directives/html.py:
 
-  - [Fix for bug 281:] Allow backslash-escaped colons in meta directive
-    field list field names (also updated docs/dev/todo.txt).
+  - Fix [ 281 ] Remove escaping backslashes in meta directive content.
 
 * docutils/writers/latex2e/__init__.py
 
   - Fix [ 323 ] don't add ``\phantomsection`` and whitespace to
     ``parts['title'].
+
+* docutils/utils/__init__.py:
+
+  - Deprecate `unique_combinations` (obsoleted by `itertools.combinations`).
 
 
 Release 0.14 (2017-08-03)

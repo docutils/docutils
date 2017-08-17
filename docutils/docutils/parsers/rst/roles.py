@@ -308,7 +308,7 @@ def raw_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
         prb = inliner.problematic(rawtext, rawtext, msg)
         return [prb], [msg]
     set_classes(options)
-    node = nodes.raw(rawtext, utils.unescape(text, 1), **options)
+    node = nodes.raw(rawtext, utils.unescape(text, True), **options)
     node.source, node.line = inliner.reporter.get_source_and_line(lineno)
     return [node], []
 
@@ -325,7 +325,7 @@ def code_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
     if language and language not in classes:
         classes.append(language)
     try:
-        tokens = Lexer(utils.unescape(text, 1), language,
+        tokens = Lexer(utils.unescape(text, True), language,
                        inliner.document.settings.syntax_highlight)
     except LexerError, error:
         msg = inliner.reporter.warning(error)
