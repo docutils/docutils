@@ -37,7 +37,8 @@ class MetaBody(states.SpecializedBody):
                                 {'component': 'writer',
                                  'format': 'html',
                                  'nodes': [node]})
-        node['content'] = utils.unescape(utils.escape2null(' '.join(indented)))
+        node['content'] = utils.unescape(utils.escape2null(
+                                            ' '.join(indented)))
         if not indented:
             line = self.state_machine.line
             msg = self.reporter.info(

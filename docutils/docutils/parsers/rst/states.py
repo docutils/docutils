@@ -714,14 +714,14 @@ class Inliner:
             text = unescape(endmatch.string[:endmatch.start(1)],
                             restore_backslashes)
             textend = matchend + endmatch.end(1)
-            rawsource = unescape(string[matchstart:textend], 1)
+            rawsource = unescape(string[matchstart:textend], True)
             return (string[:matchstart], [nodeclass(rawsource, text)],
                     string[textend:], [], endmatch.group(1))
         msg = self.reporter.warning(
               'Inline %s start-string without end-string.'
               % nodeclass.__name__, line=lineno)
-        text = unescape(string[matchstart:matchend], 1)
-        rawsource = unescape(string[matchstart:matchend], 1)
+        text = unescape(string[matchstart:matchend], True)
+        rawsource = unescape(string[matchstart:matchend], True)
         prb = self.problematic(text, rawsource, msg)
         return string[:matchstart], [prb], string[matchend:], [msg], ''
 
@@ -764,25 +764,25 @@ class Inliner:
                         'Multiple roles in interpreted text (both '
                         'prefix and suffix present; only one allowed).',
                         line=lineno)
-                    text = unescape(string[rolestart:textend], 1)
+                    text = unescape(string[rolestart:textend], True)
                     prb = self.problematic(text, text, msg)
                     return string[:rolestart], [prb], string[textend:], [msg]
                 role = endmatch.group('suffix')[1:-1]
                 position = 'suffix'
             escaped = endmatch.string[:endmatch.start(1)]
-            rawsource = unescape(string[matchstart:textend], 1)
+            rawsource = unescape(string[matchstart:textend], True)
             if rawsource[-1:] == '_':
                 if role:
                     msg = self.reporter.warning(
                           'Mismatch: both interpreted text role %s and '
                           'reference suffix.' % position, line=lineno)
-                    text = unescape(string[rolestart:textend], 1)
+                    text = unescape(string[rolestart:textend], True)
                     prb = self.problematic(text, text, msg)
                     return string[:rolestart], [prb], string[textend:], [msg]
                 return self.phrase_ref(string[:matchstart], string[textend:],
                                        rawsource, escaped, unescape(escaped))
             else:
-                rawsource = unescape(string[rolestart:textend], 1)
+                rawsource = unescape(string[rolestart:textend], True)
                 nodelist, messages = self.interpreted(rawsource, escaped, role,
                                                       lineno)
                 return (string[:rolestart], nodelist,
@@ -790,7 +790,7 @@ class Inliner:
         msg = self.reporter.warning(
               'Inline interpreted text or phrase reference start-string '
               'without end-string.', line=lineno)
-        text = unescape(string[matchstart:matchend], 1)
+        text = unescape(string[matchstart:matchend], True)
         prb = self.problematic(text, text, msg)
         return string[:matchstart], [prb], string[matchend:], [msg]
 
@@ -977,8 +977,8 @@ class Inliner:
             else:
                 addscheme = ''
             text = match.group('whole')
-            unescaped = unescape(text, 0)
-            return [nodes.reference(unescape(text, 1), unescaped,
+            unescaped = unescape(text)
+            return [nodes.reference(unescape(text, True), unescaped,
                                     refuri=addscheme + unescaped)]
         else:                   # not a valid scheme
             raise MarkupMismatch
@@ -993,8 +993,8 @@ class Inliner:
             raise MarkupMismatch
         ref = (self.document.settings.pep_base_url
                + self.document.settings.pep_file_url_template % pepnum)
-        unescaped = unescape(text, 0)
-        return [nodes.reference(unescape(text, 1), unescaped, refuri=ref)]
+        unescaped = unescape(text)
+        return [nodes.reference(unescape(text, True), unescaped, refuri=ref)]
 
     rfc_url = 'rfc%d.html'
 
@@ -1005,8 +1005,8 @@ class Inliner:
             ref = self.document.settings.rfc_base_url + self.rfc_url % rfcnum
         else:
             raise MarkupMismatch
-        unescaped = unescape(text, 0)
-        return [nodes.reference(unescape(text, 1), unescaped, refuri=ref)]
+        unescaped = unescape(text)
+        return [nodes.reference(unescape(text, True), unescaped, refuri=ref)]
 
     def implicit_inline(self, text, lineno):
         """
@@ -1028,7 +1028,7 @@ class Inliner:
                             self.implicit_inline(text[match.end():], lineno))
                 except MarkupMismatch:
                     pass
-        return [nodes.Text(unescape(text), rawsource=unescape(text, 1))]
+        return [nodes.Text(unescape(text), rawsource=unescape(text, True))]
 
     dispatch = {'*': emphasis,
                 '**': strong,

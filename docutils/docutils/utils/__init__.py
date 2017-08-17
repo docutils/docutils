@@ -660,15 +660,12 @@ def uniq(L):
              r.append(item)
      return r
 
-# by Li Daobing http://code.activestate.com/recipes/190465/
-# since Python 2.6 there is also itertools.combinations()
 def unique_combinations(items, n):
-    """Return n-length tuples, in sorted order, no repeated elements"""
-    if n==0: yield []
-    else:
-        for i in xrange(len(items)-n+1):
-            for cc in unique_combinations(items[i+1:],n-1):
-                yield [items[i]]+cc
+    """Return `itertools.combinations`."""
+    warnings.warn('docutils.utils.unique_combinations is deprecated; '
+                  'use itertools.combinations directly.',
+                      DeprecationWarning, stacklevel=2)
+    return itertools.combinations(items, n)
 
 def normalize_language_tag(tag):
     """Return a list of normalized combinations for a `BCP 47` language tag.
