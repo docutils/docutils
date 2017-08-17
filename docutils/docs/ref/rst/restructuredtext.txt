@@ -832,7 +832,9 @@ Field lists are mappings from *field names* to *field bodies*, modeled on
 RFC822_ headers.  A field name may consist of any characters, but
 colons (":") inside of field names must be backslash-escaped
 when followed by whitespace.
-Inline markup is parsed in field names.  Field names are
+Inline markup is parsed in field names, but care must be taken when
+using `interpreted text`_ with explicit roles in field names: the role
+must be a suffix to the interpreted text.  Field names are
 case-insensitive when further processed or transformed.  The field
 name, along with a single colon prefix and suffix, together form the
 field marker.  The field marker is followed by whitespace and the
@@ -2650,6 +2652,28 @@ reference parser; see `reStructuredText Interpreted Text Roles`_ for
 individual descriptions.  The role_ directive can be used to define
 custom interpreted text roles.  In addition, applications may support
 specialized roles.
+
+In `field lists`_, care must be taken when using interpreted text with
+explicit roles in field names: the role must be a suffix to the
+interpreted text. The following are recognized as field list items::
+
+    :`field name`:code:: interpreted text with explicit role as suffix
+
+    :a `complex`:code:\  field name: a backslash-escaped space
+                                     is necessary
+
+The following are **not** recognized as field list items::
+
+    ::code:`not a field name`: paragraph with interpreted text
+
+    :code:`not a field name`: paragraph with interpreted text
+
+Edge cases::
+
+    :field\:`name`: interpreted text (standard role) requires
+                    escaping the leading colon in a field name
+
+    :field:\`name`: not interpreted text
 
 
 Inline Literals

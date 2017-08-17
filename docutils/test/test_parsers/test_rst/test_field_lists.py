@@ -588,6 +588,94 @@ Field: marker is missing its open-colon.
                 <paragraph>
                     not interpreted text
 """],
+[r"""
+Edge cases involving embedded colons and interpreted text.
+
+Recognized as field list items:
+
+:field\:`name`: interpreted text (standard role) requires
+                escaping a leading colon in a field name
+
+:field:name: unambiguous, no need for escapes
+
+:field::name: double colons are OK, too
+
+:field:\`name`: not interpreted text
+
+:`field name`:code:: interpreted text with role in the field name
+                     works only when the role follows the text
+
+:a `complex`:code:\  field name: field body
+
+Not recognized as field list items:
+
+::code:`not a field name`: paragraph with interpreted text
+
+:code:`not a field name`: paragraph with interpreted text
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        Edge cases involving embedded colons and interpreted text.
+    <paragraph>
+        Recognized as field list items:
+    <field_list>
+        <field>
+            <field_name>
+                field:
+                <title_reference>
+                    name
+            <field_body>
+                <paragraph>
+                    interpreted text (standard role) requires
+                    escaping a leading colon in a field name
+        <field>
+            <field_name>
+                field:name
+            <field_body>
+                <paragraph>
+                    unambiguous, no need for escapes
+        <field>
+            <field_name>
+                field::name
+            <field_body>
+                <paragraph>
+                    double colons are OK, too
+        <field>
+            <field_name>
+                field:`name`
+            <field_body>
+                <paragraph>
+                    not interpreted text
+        <field>
+            <field_name>
+                <literal classes="code">
+                    field name
+            <field_body>
+                <paragraph>
+                    interpreted text with role in the field name
+                    works only when the role follows the text
+        <field>
+            <field_name>
+                a 
+                <literal classes="code">
+                    complex
+                 field name
+            <field_body>
+                <paragraph>
+                    field body
+    <paragraph>
+        Not recognized as field list items:
+    <paragraph>
+        :
+        <literal classes="code">
+            not a field name
+        : paragraph with interpreted text
+    <paragraph>
+        <literal classes="code">
+            not a field name
+        : paragraph with interpreted text
+"""],
 ]
 
 if __name__ == '__main__':
