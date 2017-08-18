@@ -37,9 +37,24 @@ class VersionInfoTests(unittest.TestCase):
         self.assertEqual(type(docutils.__version_info__.releaselevel), str)
         self.assertEqual(type(docutils.__version_info__.serial), int)
         self.assertEqual(type(docutils.__version_info__.release), bool)
+
         releaselevels = ('alpha', 'beta', 'candidate', 'final')
         self.assertTrue(
             docutils.__version_info__.releaselevel in releaselevels)
+
+        if (docutils.__version_info__.releaselevel == 'final'):
+            # releaselevel 'final' must not be used with development versions
+            # (leads to wrong version ordering of the related __version__):
+            #
+            #   Within a numeric release (1.0, 2.7.3), the following suffixes
+            #   are permitted and MUST be ordered as shown:
+            #
+            #      .devN, aN, bN, rcN, <no suffix>, .postN
+            #
+            # https://www.python.org/dev/peps/pep-0440/#summary-of-permitted-suffixes-and-relative-ordering
+            self.assertTrue(docutils.__version_info__.release)
+            # pre-release serial number must be 0 for final releases:
+            self.assertEqual(type(docutils.__version_info__.serial), 0)
 
     def test__version__(self):
         """Test that __version__ is equivalent to __version_info__."""

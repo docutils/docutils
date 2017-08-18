@@ -403,12 +403,14 @@ mistake is easy to fix.  That's what version control is for!
 .. _HISTORY.txt: ../../HISTORY.txt
 
 
-Version Numbering
-=================
+.. _`Version Numbering`:
+
+Version Identification
+======================
 
 The state of development of the current Docutils codebase is stored in
-two forms: a ``docutils.__version_info__`` namedtuple, and a
-``docutils.__version__`` text string.
+two forms: a `docutils.__version_info__`_ namedtuple, and a
+`docutils.__version__`_ text string.
 
 See also the `Docutils Release Procedure`_, and
 ``docutils.__version__`` & ``docutils.__version_info__`` in
@@ -420,8 +422,10 @@ docutils/__init__.py.
 ``docutils.__version_info__``
 -----------------------------
 
-Detailed version information is available in the namedtuple
-``docutils.__version_info__``, which has the following attributes:
+Detailed version information is available in
+``docutils.__version_info__``, an instance of the namedtuple_
+``docutils.VersionInfo``. It is modelled on `sys.version_info`_ and
+has the following attributes:
 
 major : non-negative integer
     **Major releases** (x.0, e.g. 1.0) will be rare, and will
@@ -490,15 +494,28 @@ False.
 ``docutils.__version_info__`` can be used to test for a minimally
 required version, e.g.::
 
-    if docutils.__version_info__ >= (0, 13, 0, 'candidate', 2, True)
-
-or in a self-documenting way::
-
     comparison_version = docutils.VersionInfo(
         major=0, minor=13, micro=0,
         releaselevel='candidate', serial=2, release=True)
     if docutils.__version_info__ >= comparison_version:
         ...
+
+For practical purposes it may suffice to test against a truncated tuple,
+e.g.::
+
+    if docutils.__version_info__ >= (0, 13)
+
+is True for all versions "larger" than ``"0.13"``.
+
+Mind, however, that a test like ::
+
+    if docutils.__version_info__ > (0, 14)
+
+is True also for development versions and pre-releases of the 0.14 series
+although, according to PEP 440, these must be sorted before 0.14.
+
+.. _namedtuple: https://docs.python.org/3/library/collections.html#collections.namedtuple
+.. _sys.version_info: https://docs.python.org/3/library/sys.html#version-info
 
 
 ``docutils.__version__``
@@ -531,7 +548,7 @@ Do not parse the text of ``docutils.__version__``.
   ``docutils.__version_info__.release`` is True).
 
 Examples of ``docutils.__version__`` identifiers, over the course of
-normal development (without branches), in chronological order:
+normal development (without branches), in ascending order:
 
 ======================  ============================
 Release Level           Version Identifier
@@ -544,7 +561,6 @@ candidate 1 (release)   0.15rc1
 candidate 2 (dev.)      0.15rc2.dev [1]_
 candidate 2 (release)   0.15rc2 [1]_
 ... candidate N         0.15rcN.dev [1]_, 0.15rcN [1]_
-final (dev.)            0.15.dev [1]_
 final (release)         0.15
 beta (dev.)             0.16b.dev [2]_
 ======================  ============================
