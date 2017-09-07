@@ -43,17 +43,20 @@ Release 0.15b.dev
 
 .. Note::
 
-   Docutils 0.14.x is the last version supporting Python 2.4, 2.5, 
+   Docutils 0.14.x is the last version supporting Python 2.4, 2.5,
    3.1, and 3.2.
 
    Docutils 0.15.x is compatible with Python versions 2.6, 2.7 and 3.3 to 3.5
    (cf. `Python 3 compatibility`_).
 
+* reStructuredText:
+
+  - Allow embedded colons in field list field names (before, tokens like
+    ``:this:example:`` were considered ordinary text).
+
 
 Release 0.14 (2017-08-03)
 =========================
-
-As rc2.
 
 * docutils/docs/ref/docutils.dtd:
 
