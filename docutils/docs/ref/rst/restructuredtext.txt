@@ -831,7 +831,7 @@ directives in `reStructuredText Directives`_.
 Field lists are mappings from *field names* to *field bodies*, modeled on
 RFC822_ headers.  A field name may consist of any characters, but
 colons (":") inside of field names must be backslash-escaped
-when followed by whitespace.
+when followed by whitespace.\ [#]_
 Inline markup is parsed in field names, but care must be taken when
 using `interpreted text`_ with explicit roles in field names: the role
 must be a suffix to the interpreted text.  Field names are
@@ -875,6 +875,8 @@ Syntax diagram (simplified)::
             | (body elements)+                  |
             +-----------------------------------+
 
+.. [#] Up to Docutils 0.14, field markers were not recognized when
+   containing a colon.
 
 Bibliographic Fields
 ````````````````````
@@ -2510,15 +2512,17 @@ No escaping is required inside the following inline markup examples:
 It may be desirable to use `inline literals`_ for some of these anyhow,
 especially if they represent code snippets.  It's a judgment call.
 
-These cases *do* require either literal-quoting or escaping to avoid
+The following terms *do* require either literal-quoting or escaping to avoid
 misinterpretation::
+
+    *4, class_, *args, **kwargs, `TeX-quoted', *ML, *.txt
+
+In most use cases, `inline literals`_ or `literal blocks`_ are the best
+choice (by default, this also selects a monospaced font). Alternatively, the
+inline markup characters can be escaped::
 
     \*4, class\_, \*args, \**kwargs, \`TeX-quoted', \*ML, \*.txt
 
-In most use cases, `inline literals`_ or `literal blocks`_ are the best
-choice (by default, this also selects a monospaced font)::
-
-    *4, class_, *args, **kwargs, `TeX-quoted', *ML, *.txt
 
 For languages that don't use whitespace between words (e.g. Japanese or
 Chinese) it is recommended to set `simple-inline-markup`_ to True and
