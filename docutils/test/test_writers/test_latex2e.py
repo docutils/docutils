@@ -770,8 +770,7 @@ head_table + r"""
 """],
 ]
 
-totest['table_empty_thead_entry'] = [
-# input
+totest['table_empty_cells'] = [
 ["""\
 ===== ======
 Title
@@ -802,6 +801,29 @@ entry
  & 
 value1
  \\
+\hline
+\end{longtable*}
+
+\end{document}
+"""],
+["""\
++----+----+
+| c3 | c4 |
++----+----+
+|         |
++---------+
+""",
+head_table + r"""
+\setlength{\DUtablewidth}{\linewidth}
+\begin{longtable*}[c]{|p{0.063\DUtablewidth}|p{0.063\DUtablewidth}|}
+\hline
+
+c3
+ & 
+c4
+ \\
+\hline
+\multicolumn{2}{|p{0.13\DUtablewidth}|}{} \\
 \hline
 \end{longtable*}
 

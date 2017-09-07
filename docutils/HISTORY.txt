@@ -32,8 +32,9 @@ Changes Since 0.14
 
 * docutils/writers/latex2e/__init__.py
 
-  - Fix [ 323 ] don't add ``\phantomsection`` and whitespace to
+  - Fix [ 323 ] spurious ``\phantomsection`` and whitespace in
     ``parts['title'].
+  - Fix [ 324 ] Invalid LaTeX for table with empty multicolumn cell.
 
 * docutils/utils/__init__.py:
 
