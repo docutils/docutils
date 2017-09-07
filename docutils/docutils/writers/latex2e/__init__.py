@@ -2098,7 +2098,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.context.append('')
 
         # if line ends with '{', mask line break to prevent spurious whitespace
-        if not self.active_table.colwidths_auto and self.out[-1].endswith("{"):
+        if (not self.active_table.colwidths_auto
+            and self.out[-1].endswith("{")
+            and node.astext()):
                 self.out.append("%")
 
         self.active_table.visit_entry() # increment cell count
