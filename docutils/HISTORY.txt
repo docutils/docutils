@@ -21,10 +21,14 @@ Changes Since 0.14
   - Dropped support for Python 2.4, 2.5, 3.1, and 3.2.
   - Infrastructure automation.
 
+* docs/ref/rst/restructuredtext.txt:
+
+  - Document rST syntax change: Tokens like ``:this:example:`` are now valid
+    field list names (instead of ordinary text).
+
 * docutils/parsers/rst/states.py:
 
-  - Allow embedded colons in field list field names (also updated
-    docs/ref/rst/restructuredtext.txt).
+  - Allow embedded colons in field list field names.
 
 * docutils/parsers/rst/directives/html.py:
 
