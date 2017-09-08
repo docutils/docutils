@@ -42,9 +42,10 @@ function set_ver()
     echo Determining list of files to be changed...
     # BUG ls lists directories but does not descend
     # (try ls --recursive)
-    files="docutils/__init__.py setup.py `$svn ls test/functional/expected/ | sed 's|^|test/functional/expected/|'`"
-    echo "Now I'll change the version number to ${new_ver} in the following files:"
+    files="docutils/__init__.py setup.py README.txt `$svn ls test/functional/expected/ | sed 's|^|test/functional/expected/|'`"
+    echo "Now I'll change the version identifier to ${new_ver} in the following files:"
     echo $files
+    echo 'and update the version_info in docutils/__init__.py.'
     echo
     echo 'Press enter to proceed (or enter anything to skip)...'
     read
@@ -58,13 +59,15 @@ function set_ver()
             (echo ",s/$old_ver_regex/${new_ver}/g"; echo 'wq') | ed "$F"
         done
         set -e
+        echo 'Modifying docutils/__init__.py with version_identifier_parsing.py'
+        python ../sandbox/infrastructure/version_identifier_parsing.py --change-version-info=docutils/__init__.py
     fi
-    echo
     echo 'CAUTION: please look at the diffs carefully, for wrongly'
     echo '         replaced embedded numbers.'
 #    checkin "set version number to $2" $files
 }
 
 set_ver "$old_ver" "$new_ver"
-echo "VERIFY: major, minor, micro, releaselevel (candidate,rinal), prerelease number, pre/release or checkout"
-python -c 'import docutils; print "__version_info__ =", docutils.__version_info__'
+
+#echo "VERIFY: major, minor, micro, releaselevel (candidate,final), prerelease serial, pre/release or checkout"
+#python -c 'import docutils; print "__version_info__ =", docutils.__version_info__'
