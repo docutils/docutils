@@ -69,8 +69,8 @@ identifier:
 
    where ``<new_version>`` is major.minor[.micro][<pre>][.dev].
 
-Finally change ``__version_info__`` in ``docutils/docutils/__init__.py``
-**by hand** to ensure it matches the `version identifier`_.
+   This also changes ``__version_info__`` in
+   ``docutils/docutils/__init__.py``.
 
 Run the test suite after changing the codebase version to ensure
 accuracy and consistency.
