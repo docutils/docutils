@@ -1204,9 +1204,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.section_enumerator_separator = (
             settings.section_enumerator_separator.replace('_', r'\_'))
         # literal blocks:
-        self.literal_block_env = 'alltt'
+        self.literal_block_env = ''
         self.literal_block_options = ''
-        if settings.literal_block_env != '':
+        if settings.literal_block_env:
             (none,
              self.literal_block_env,
              self.literal_block_options,
@@ -1492,7 +1492,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if not self.alltt:
             table.update(CharMaps.special)
         # keep the underscore in citation references
-        if self.inside_citation_reference_label:
+        if self.inside_citation_reference_label and not self.alltt:
             del(table[ord('_')])
         # Workarounds for OT1 font-encoding
         if self.font_encoding in ['OT1', ''] and not self.is_xetex:
@@ -1526,7 +1526,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
                     self.requirements['textcomp'] = PreambleCmds.textcomp
                 elif cp in CharMaps.pifont:
                     self.requirements['pifont'] = '\\usepackage{pifont}'
-                # preamble-definitions for unsupported Unicode characters 
+                # preamble-definitions for unsupported Unicode characters
                 elif (self.latex_encoding == 'utf8'
                       and cp in CharMaps.unsupported_unicode):
                     self.requirements['_inputenc'+str(cp)] = (
@@ -2513,49 +2513,77 @@ class LaTeXTranslator(nodes.NodeVisitor):
         return (len(node) == 1) and isinstance(node[0], nodes.Text)
 
     def visit_literal_block(self, node):
-        """Render a literal block."""
-        # environments and packages to typeset literal blocks
-        packages = {'alltt': r'\usepackage{alltt}',
+        """Render a literal block.
+
+        Corresponding rST elements: literal block, parsed-literal, code.
+        """
+        packages = {'lstlisting':  r'\usepackage{listings}' '\n'
+                                   r'\lstset{xleftmargin=\leftmargin}',
                     'listing': r'\usepackage{moreverb}',
-                    'lstlisting': r'\usepackage{listings}',
                     'Verbatim': r'\usepackage{fancyvrb}',
-                    # 'verbatim': '',
                     'verbatimtab': r'\usepackage{moreverb}'}
 
+        environment = self.literal_block_env
+        _in_table = self.active_table.is_open()
+        # TODO: fails if normal text precedes the literal block.
+        #       Check parent node instead?
+        _autowidth_table = _in_table and self.active_table.colwidths_auto
+        _plaintext = self.is_plaintext(node)
+        _listings = (environment == 'lstlisting') and _plaintext
+
+        # Labels and classes:
         if node.get('ids'):
             self.out += ['\n'] + self.ids_to_labels(node)
-
         self.duclass_open(node)
-        if not self.active_table.is_open():
-            # no quote inside tables, to avoid vertical space between
-            # table border and literal block.
-            # TODO: fails if normal text precedes the literal block.
-            # check parent node instead?
+        if (not _plaintext and 'code' in node['classes']
+            and self.settings.syntax_highlight != 'none'):
+            self.requirements['color'] = PreambleCmds.color
+            self.fallbacks['code'] = PreambleCmds.highlight_rules
+
+        # Wrapper?
+        if _in_table and _plaintext and not _autowidth_table:
+            # minipage prevents extra vertical space with alltt
+            # and verbatim-like environments
+            self.fallbacks['ttem'] = '\n'.join(['',
+                r'% character width in monospaced font',
+                r'\newlength{\ttemwidth}',
+                r'\settowidth{\ttemwidth}{\ttfamily M}'])
+            self.out.append('\\begin{minipage}{%d\\ttemwidth}\n' %
+                (max(len(line) for line in node.astext().split('\n'))))
+            self.context.append('\n\\end{minipage}\n')
+        elif not _in_table and not _listings:
+            # wrap in quote to set off vertically and indent
             self.out.append('\\begin{quote}\n')
             self.context.append('\n\\end{quote}\n')
         else:
             self.context.append('\n')
 
-        if self.is_plaintext(node):
-            environment = self.literal_block_env
-            self.requirements['literal_block'] = packages.get(environment, '')
-            if environment == 'alltt':
-                self.alltt = True
-            else:
-                self.verbatim = True
+        # Use verbatim-like environment, if defined and possible
+        if environment and _plaintext and (not _autowidth_table or _listings):
+            try:
+                self.requirements['literal_block'] = packages[environment]
+            except KeyError:
+                pass
+            self.verbatim = True
+            if _in_table and _listings:
+                self.out.append('\lstset{xleftmargin=0pt}\n')
             self.out.append('\\begin{%s}%s\n' %
                             (environment, self.literal_block_options))
             self.context.append('\n\\end{%s}' % environment)
+        elif _plaintext and not _autowidth_table:
+            self.alltt = True
+            self.requirements['alltt'] = r'\usepackage{alltt}'
+            self.out.append('\\begin{alltt}\n')
+            self.context.append('\n\\end{alltt}')
         else:
             self.literal = True
             self.insert_newline = True
             self.insert_non_breaking_blanks = True
-            if 'code' in node['classes'] and (
-                    self.settings.syntax_highlight != 'none'):
-                self.requirements['color'] = PreambleCmds.color
-                self.fallbacks['code'] = PreambleCmds.highlight_rules
-            self.out.append('{\\ttfamily \\raggedright \\noindent\n')
-            self.context.append('\n}')
+            # \raggedright ensures leading blanks are respected but
+            # leads to additional leading vspace if the first line
+            # of the block is overfull :-(
+            self.out.append('\\ttfamily\\raggedright\n')
+            self.context.append('')
 
     def depart_literal_block(self, node):
         self.insert_non_breaking_blanks = False
