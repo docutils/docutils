@@ -9,6 +9,7 @@
     {\addfontfeatures{RawFeature=-tlig,Mapping=}\char34}}%
 \fi
 \usepackage{ifthen}
+\usepackage{alltt}
 \usepackage{amsmath}
 \usepackage{polyglossia}
 \setdefaultlanguage{english}
@@ -17,7 +18,6 @@
 \usepackage{float} % float configuration
 \floatplacement{figure}{H} % place figures here definitely
 \usepackage{graphicx}
-\usepackage{alltt}
 \usepackage{multirow}
 \setcounter{secnumdepth}{0}
 \usepackage{longtable,ltcaption,array}
@@ -1411,7 +1411,7 @@ and the final paragraph of the compound 7.
 }
 
 \begin{quote}
-{\ttfamily \raggedright \noindent
+\ttfamily\raggedright
 This~is~a~parsed~literal~block.\\
 ~~~~This~line~is~indented.~~The~next~line~is~blank.\\
 ~\\
@@ -1420,7 +1420,6 @@ text},~\textsubscript{sub-}~and~\textsuperscript{super}scripts,\\
 inline~formulas:~$A = 2 \pi r^2$,\\
 footnotes\DUfootnotemark{id22}{id8}{1},~%
 \phantomsection\label{hyperlink-targets}hyperlink~targets,~and~\href{http://www.python.org/}{references}.
-}
 \end{quote}
 
 
@@ -1451,11 +1450,10 @@ numbers:
 \begin{DUclass}{code}
 \begin{DUclass}{python}
 \begin{quote}
-{\ttfamily \raggedright \noindent
+\ttfamily\raggedright
 \DUrole{ln}{~8~}\#~print~integers~from~0~to~9:\\
 \DUrole{ln}{~9~}for~i~in~range(10):\\
 \DUrole{ln}{10~}~~~~print~i
-}
 \end{quote}
 \end{DUclass}
 \end{DUclass}
@@ -1474,10 +1472,9 @@ as a code block, here the rst file \texttt{header\_footer.txt} with line numbers
 \begin{DUclass}{code}
 \begin{DUclass}{rst}
 \begin{quote}
-{\ttfamily \raggedright \noindent
+\ttfamily\raggedright
 \DUrole{ln}{1~}..~header::~Document~header\\
 \DUrole{ln}{2~}..~footer::~Document~footer
-}
 \end{quote}
 \end{DUclass}
 \end{DUclass}

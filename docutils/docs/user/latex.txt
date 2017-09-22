@@ -1260,7 +1260,8 @@ Example:
   ``--literal-block-env=lstlisting``
 
   The ``lstlisting`` environment is highly configurable (as documented in
-  listings.pdf_), for instance ::
+  listings.pdf_) and provides syntax highlight for many programming languages,
+  for instance ::
 
     \renewcommand{\ttdefault}{txtt}
     \lstset{language=Python, morekeywords=[1]{yield}}
@@ -1275,6 +1276,10 @@ Example:
     \lstset{columns=fullflexible,
          basewidth={0.5em,0.4em}}
 
+  and to get LaTeX syntax highlight for a code block with "listings"::
+
+    \lstloadlanguages{[LaTeX]TeX} %  comma separated list of languages
+    \newcommand{\DUCLASSlatex}{\lstset{language=[LaTeX]TeX}}
 
   The indentation of literal blocks can be reset with ::
 
@@ -2002,8 +2007,14 @@ Search for text that contains characters outside the ASCII range (e.g.
 umlauts) might fail.  See font_ and `font encoding`_ (as well as
 `Searching PDF files`_ for background information).
 
+It may help to load the `cmap` package (via `style sheets`_ or the custom
+`LaTeX preamble`_ (see also `Proper use of cmap and mmmap`_).
+
 .. _Searching PDF files:
    http://www.tex.ac.uk/cgi-bin/texfaq2html?label=srchpdf
+
+.. _Proper use of cmap and mmmap:
+   https://tex.stackexchange.com/questions/64409/proper-use-of-cmap-and-mmap
 
 Unicode box drawing and block characters
 ````````````````````````````````````````

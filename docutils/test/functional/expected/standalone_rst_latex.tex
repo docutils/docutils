@@ -7,6 +7,7 @@
 \DeclareUnicodeCharacter{21D4}{\ensuremath{\Leftrightarrow}}
 \DeclareUnicodeCharacter{2660}{\ensuremath{\spadesuit}}
 \DeclareUnicodeCharacter{2663}{\ensuremath{\clubsuit}}
+\usepackage{alltt}
 \usepackage{amsmath}
 \usepackage[british,french,ngerman,english]{babel}
 % Prevent side-effects if French hyphenation patterns are not loaded:
@@ -16,7 +17,6 @@
 \usepackage{float} % float configuration
 \floatplacement{figure}{H} % place figures here definitely
 \usepackage{graphicx}
-\usepackage{alltt}
 \usepackage{multirow}
 \usepackage{pifont}
 \setcounter{secnumdepth}{0}
@@ -1405,7 +1405,7 @@ and the final paragraph of the compound 7.
 }
 
 \begin{quote}
-{\ttfamily \raggedright \noindent
+\ttfamily\raggedright
 This~is~a~parsed~literal~block.\\
 ~~~~This~line~is~indented.~~The~next~line~is~blank.\\
 ~\\
@@ -1414,7 +1414,6 @@ text},~\textsubscript{sub-}~and~\textsuperscript{super}scripts,\\
 inline~formulas:~$A = 2 \pi r^2$,\\
 footnotes\DUfootnotemark{id22}{id8}{1},~%
 \phantomsection\label{hyperlink-targets}hyperlink~targets,~and~\href{http://www.python.org/}{references}.
-}
 \end{quote}
 
 
@@ -1445,11 +1444,10 @@ numbers:
 \begin{DUclass}{code}
 \begin{DUclass}{python}
 \begin{quote}
-{\ttfamily \raggedright \noindent
+\ttfamily\raggedright
 \DUrole{ln}{~8~}\#~print~integers~from~0~to~9:\\
 \DUrole{ln}{~9~}for~i~in~range(10):\\
 \DUrole{ln}{10~}~~~~print~i
-}
 \end{quote}
 \end{DUclass}
 \end{DUclass}
@@ -1468,10 +1466,9 @@ as a code block, here the rst file \texttt{header\_footer.txt} with line numbers
 \begin{DUclass}{code}
 \begin{DUclass}{rst}
 \begin{quote}
-{\ttfamily \raggedright \noindent
+\ttfamily\raggedright
 \DUrole{ln}{1~}..~header::~Document~header\\
 \DUrole{ln}{2~}..~footer::~Document~footer
-}
 \end{quote}
 \end{DUclass}
 \end{DUclass}
