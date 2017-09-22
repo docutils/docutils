@@ -1,4 +1,4 @@
-# .. coding: utf8
+# .. coding: utf-8
 # $Id$
 # :Author: Günter Milde <milde@users.sf.net>
 #          Based on the html4css1 writer by David Goodger.
