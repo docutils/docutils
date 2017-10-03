@@ -2262,7 +2262,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         elif size.endswith('pc'):
             size = float(size[:-2]) * 2.371     # convert pc to cm
         elif size.endswith('mm'):
-            size = float(size[:-2]) * 10.0      # convert mm to cm
+            size = float(size[:-2]) * 0.1       # convert mm to cm
         elif size.endswith('cm'):
             size = float(size[:-2])
         else:
