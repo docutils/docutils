@@ -433,10 +433,10 @@ class DocInfo(Transform):
                        and isinstance(field[-1][0], nodes.paragraph):
                     utils.clean_rcs_keywords(
                         field[-1][0], self.rcs_keyword_substitutions)
-                if normedname not in bibliofields:
-                    classvalue = nodes.make_id(normedname)
-                    if classvalue:
-                        field['classes'].append(classvalue)
+                # if normedname not in bibliofields:
+                classvalue = nodes.make_id(normedname)
+                if classvalue:
+                    field['classes'].append(classvalue)
                 docinfo.append(field)
         nodelist = []
         if len(docinfo) != 0:
