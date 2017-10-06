@@ -192,6 +192,75 @@ totest['table'] = [
 """],
 ["""\
 .. table::
+    :width: 100 %
+
+    ============ ==============
+    col 1        col 2
+    ============ ==============
+""",
+"""\
+<document source="test data">
+    <table width="100%">
+        <tgroup cols="2">
+            <colspec colwidth="12">
+            <colspec colwidth="14">
+            <tbody>
+                <row>
+                    <entry>
+                        <paragraph>
+                            col 1
+                    <entry>
+                        <paragraph>
+                            col 2
+"""],
+["""\
+.. table::
+    :width: 100px
+
+    ============ ==============
+    col 1        col 2
+    ============ ==============
+""",
+"""\
+<document source="test data">
+    <table width="100px">
+        <tgroup cols="2">
+            <colspec colwidth="12">
+            <colspec colwidth="14">
+            <tbody>
+                <row>
+                    <entry>
+                        <paragraph>
+                            col 1
+                    <entry>
+                        <paragraph>
+                            col 2
+"""],
+["""\
+.. table::
+    :width: 321
+
+    ============ ==============
+    col 1        col 2
+    ============ ==============
+""",
+"""\
+<document source="test data">
+    <table width="321">
+        <tgroup cols="2">
+            <colspec colwidth="12">
+            <colspec colwidth="14">
+            <tbody>
+                <row>
+                    <entry>
+                        <paragraph>
+                            col 1
+                    <entry>
+                        <paragraph>
+                            col 2
+"""],
+["""\
+.. table::
     :widths: 15, 25
 
     ============ ==============
