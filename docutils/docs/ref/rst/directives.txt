@@ -221,9 +221,6 @@ The following options are recognized:
     Used to reserve space or scale the image horizontally.  As with "height"
     above, when the "scale" option is also specified, they are combined.
 
-    .. _length: restructuredtext.html#length-units
-    .. _percentage: restructuredtext.html#percentage-units
-
 ``scale`` : integer percentage (the "%" symbol is optional)
     The uniform scaling factor of the image.  The default is "100 %", i.e.
     no scaling.
@@ -795,6 +792,11 @@ The following options are recognized:
     (LaTeX, the HTML browser, ...).
     See also the `table_style`_ configuration option.
 
+``width`` : `length`_ or `percentage`_ of the current line width
+    Forces the width of the table to the specified length or percentage
+    of the line width.  If omitted, the renderer determines the width
+    of the table based on its contents.
+
 and the common options `:class:`_ and `:name:`_.
 
 .. _table_style: ../../user/config.html#table-style-html4css1-writer
@@ -865,6 +867,11 @@ The following options are recognized:
     The special value "auto" may be used by writers to decide
     whether to delegate the determination of column widths to the backend
     (LaTeX, the HTML browser, ...).
+
+``width`` : `length`_ or `percentage`_ of the current line width
+    Forces the width of the table to the specified length or percentage
+    of the line width.  If omitted, the renderer determines the width
+    of the table based on its contents.
 
 ``header-rows`` : integer
     The number of rows of CSV data to use in the table header.
@@ -970,6 +977,11 @@ The following options are recognized:
     The special value "auto" may be used by writers to decide
     whether to delegate the determination of column widths to the backend
     (LaTeX, the HTML browser, ...).
+
+``width`` : `length`_ or `percentage`_ of the current line width
+    Forces the width of the table to the specified length or percentage
+    of the line width.  If omitted, the renderer determines the width
+    of the table based on its contents.
 
 ``header-rows`` : integer
     The number of rows of list data to use in the table header.
@@ -1956,9 +1968,11 @@ _`:name:` : text
 .. _inline elements: ../doctree.html#inline-elements
 .. _literal_block: ../doctree.html#literal-block
 .. _legend: ../doctree.html#legend
+.. _length: restructuredtext.html#length-units
 .. _line_block: ../doctree.html#line-block
 .. _math_block: ../doctree.html#math-block
 .. _pending: ../doctree.html#pending
+.. _percentage: restructuredtext.html#percentage-units
 .. _raw: ../doctree.html#raw
 .. _rubric: ../doctree.html#rubric
 .. _sidebar: ../doctree.html#sidebar
