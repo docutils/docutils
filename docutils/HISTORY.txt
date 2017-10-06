@@ -34,6 +34,10 @@ Changes Since 0.14
 
   - Fix [ 281 ] Remove escaping backslashes in meta directive content.
 
+* docutils/transforms/frontmatter.py
+
+  - Add field name as class argument to generic docinfo fields unconditionally.
+
 * docutils/writers/html5_polyglot/
 
   - automatically add HTML5-compatible meta tags for docinfo items
