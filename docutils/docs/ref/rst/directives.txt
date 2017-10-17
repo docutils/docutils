@@ -346,7 +346,7 @@ Topic
 
 :Directive Type: "topic"
 :Doctree Element: topic_
-:Directive Arguments: 1, required (topic title).
+:Directive Arguments: One, required (topic title).
 :Directive Options: `:class:`_, `:name:`_
 :Directive Content: Interpreted as the topic body.
 
@@ -539,7 +539,7 @@ Math
 
 :Directive Type: "math"
 :Doctree Element: math_block_
-:Directive Arguments: One, optional: prepended to content.
+:Directive Arguments: None.
 :Directive Options: `:class:`_, `:name:`_
 :Directive Content: Becomes the body of the math block.
                     (Content blocks separated by a blank line are put in
@@ -579,7 +579,7 @@ Rubric
 
 :Directive Type: "rubric"
 :Doctree Element: rubric_
-:Directive Arguments: 1, required (rubric text).
+:Directive Arguments: One, required (rubric text).
 :Directive Options: `:class:`_, `:name:`_
 :Directive Content: None.
 
@@ -758,7 +758,7 @@ Table
 
 :Directive Type: "table"
 :Doctree Element: table_
-:Directive Arguments: 1, optional (table title).
+:Directive Arguments: One, optional (table title).
 :Directive Options: Possible (see below).
 :Directive Content: A normal reStructuredText table.
 
@@ -808,7 +808,7 @@ CSV Table
 
 :Directive Type: "csv-table"
 :Doctree Element: table_
-:Directive Arguments: 1, optional (table title).
+:Directive Arguments: One, optional (table title).
 :Directive Options: Possible (see below).
 :Directive Content: A CSV (comma-separated values) table.
 
@@ -935,7 +935,7 @@ List Table
 
 :Directive Type: "list-table"
 :Doctree Element: table_
-:Directive Arguments: 1, optional (table title).
+:Directive Arguments: One, optional (table title).
 :Directive Options: Possible (see below).
 :Directive Content: A uniform two-level bullet list.
 
@@ -1893,7 +1893,7 @@ Metadata Document Title
 
 :Directive Type: "title"
 :Doctree Element: None.
-:Directive Arguments: 1, required (the title text).
+:Directive Arguments: One, required (the title text).
 :Directive Options: None.
 :Directive Content: None.
 
