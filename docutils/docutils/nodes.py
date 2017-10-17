@@ -785,7 +785,7 @@ class Element(Node):
 
     def copy_attr_consistent(self, attr, value, replace):
         """
-        If replace is True or selfpattr] is None, replace self[attr] with
+        If replace is True or self[attr] is None, replace self[attr] with
         value.  Otherwise, do nothing.
         """
         if self.get(attr) is not value:
