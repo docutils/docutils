@@ -2211,7 +2211,7 @@
                 List Tables
             <paragraph>
                 Here's a list table exercising all features:
-            <table classes="colwidths-given test">
+            <table classes="colwidths-given test" width="40em">
                 <title>
                     list table with integral header
                 <tgroup cols="3">
@@ -2261,7 +2261,7 @@
                             <entry>
                                 <paragraph>
                                     On a stick!
-            <table align="center">
+            <table align="center" classes="colwidths-auto">
                 <title>
                     center aligned list table
                 <tgroup cols="2">

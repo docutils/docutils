@@ -3,6 +3,7 @@
     .. include:: data/header_footer.txt
 .. include:: data/table_colspan.txt
 .. include:: data/table_rowspan.txt
+.. include:: data/list_table.txt
 .. include:: data/custom_roles.txt
 .. include:: data/math.txt
 

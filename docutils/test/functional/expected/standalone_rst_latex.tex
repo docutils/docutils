@@ -1671,7 +1671,79 @@ body row 3
 \end{longtable*}
 
 
-\subsection{2.21   Custom Roles%
+\subsection{2.21   List Tables%
+  \label{list-tables}%
+}
+
+Here’s a list table exercising all features:
+
+\setlength{\DUtablewidth}{40em}
+\begin{longtable}[c]{|p{0.133\DUtablewidth}|p{0.249\DUtablewidth}|p{0.365\DUtablewidth}|}
+\caption{list table with integral header}\\
+\hline
+\textbf{%
+Treat
+} & \textbf{%
+Quantity
+} & \textbf{%
+Description
+} \\
+\hline
+\endfirsthead
+\caption[]{list table with integral header (... continued)}\\
+\hline
+\textbf{%
+Treat
+} & \textbf{%
+Quantity
+} & \textbf{%
+Description
+} \\
+\hline
+\endhead
+\multicolumn{3}{c}{\hfill ... continued on next page} \\
+\endfoot
+\endlastfoot
+\textbf{%
+Albatross
+} & 
+2.99
+ & 
+On a stick!
+ \\
+\hline
+\textbf{%
+Crunchy Frog
+} & 
+1.49
+ & 
+If we took the bones out, it wouldn’t be
+crunchy, now would it?
+ \\
+\hline
+\textbf{%
+Gannet Ripple
+} & 
+1.99
+ & 
+On a stick!
+ \\
+\hline
+\end{longtable}
+
+\begin{longtable}[c]{|l|l|}
+\caption{center aligned list table}\\
+\hline
+Albatross & 2.99 \\
+\hline
+Crunchy Frog & 1.49 \\
+\hline
+Gannet Ripple & 1.99 \\
+\hline
+\end{longtable}
+
+
+\subsection{2.22   Custom Roles%
   \label{custom-roles}%
 }
 
@@ -1715,7 +1787,7 @@ The following works in most browsers but does not validate
 \end{itemize}
 
 
-\subsection{2.22   Mathematics%
+\subsection{2.23   Mathematics%
   \label{mathematics}%
 }
 

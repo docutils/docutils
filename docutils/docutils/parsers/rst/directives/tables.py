@@ -276,6 +276,7 @@ class CSVTable(Table):
         table_node['classes'] += self.options.get('class', [])
         if 'align' in self.options:
             table_node['align'] = self.options.get('align')
+        self.set_table_width(table_node)
         self.add_name(table_node)
         if title:
             table_node.insert(0, title)
