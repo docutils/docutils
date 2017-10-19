@@ -1605,7 +1605,7 @@ Comments may contain non-ASCII characters: ä ö ü æ ø å</comment>
         <section ids="list-tables" names="list\ tables">
             <title auto="1" refid="id72"><generated classes="sectnum">2.22   </generated>List Tables</title>
             <paragraph>Here's a list table exercising all features:</paragraph>
-            <table classes="colwidths-given test">
+            <table classes="colwidths-given test" width="40em">
                 <title>list table with integral header</title>
                 <tgroup cols="3">
                     <colspec colwidth="10" stub="1"></colspec>
@@ -1662,7 +1662,7 @@ Comments may contain non-ASCII characters: ä ö ü æ ø å</comment>
                     </tbody>
                 </tgroup>
             </table>
-            <table align="center">
+            <table align="center" classes="colwidths-auto">
                 <title>center aligned list table</title>
                 <tgroup cols="2">
                     <colspec colwidth="50"></colspec>

@@ -965,14 +965,14 @@ class Table(object):
         return ''
 
     # horizontal lines are drawn below a row,
-    def get_opening(self):
+    def get_opening(self, width=r'\linewidth'):
         align_map = {'left': 'l',
                      'center': 'c',
                      'right': 'r'}
         align = align_map.get(self.get('align') or 'center')
         opening = [r'\begin{%s}[%s]' % (self.get_latex_type(), align)]
         if not self.colwidths_auto:
-            opening.insert(0, r'\setlength{\DUtablewidth}{\linewidth}')
+            opening.insert(0, r'\setlength{\DUtablewidth}{%s}'%width)
         return '\n'.join(opening)
 
     def get_closing(self):
@@ -2954,7 +2954,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # wrap content in the right environment:
         content = self.out
         self.pop_output_collector()
-        self.out.append('\n' + self.active_table.get_opening())
+        try:
+            width = self.to_latex_length(node.attributes['width'])
+        except KeyError:
+            width = r'\linewidth'
+        self.out.append('\n' + self.active_table.get_opening(width))
         self.out += content
         self.out.append(self.active_table.get_closing() + '\n')
         self.active_table.close()

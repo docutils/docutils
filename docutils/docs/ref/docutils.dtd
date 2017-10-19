@@ -197,7 +197,8 @@ http://www.oasis-open.org/html/tm9901.htm).
   " %basic.atts;
     morecols  %number;  #IMPLIED ">
 <!ATTLIST table
-    %align-h.att;>
+    %align-h.att;
+    width     %measure;  #IMPLIED>
 
 <!--
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

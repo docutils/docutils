@@ -379,6 +379,7 @@ totest['table'] = [
 totest['csv-table'] = [
 ["""\
 .. csv-table:: inline with integral header
+   :width: 80%
    :widths: 10, 20, 30
    :header-rows: 1
    :stub-columns: 1
@@ -391,7 +392,7 @@ totest['csv-table'] = [
 """,
 """\
 <document source="test data">
-    <table classes="colwidths-given">
+    <table classes="colwidths-given" width="80%">
         <title>
             inline with integral header
         <tgroup cols="3">
