@@ -1,6 +1,6 @@
 # Source and destination file names.
 test_source = "latex_literal_block.txt"
-test_destination = "latex_literal_block_Verbatim.tex"
+test_destination = "latex_literal_block_fancyvrb.tex"
 
 # Keyword parameters passed to publish_file.
 reader_name = "standalone"
