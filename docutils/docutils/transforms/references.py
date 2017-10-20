@@ -692,14 +692,12 @@ class Substitutions(Transform):
                      or 'trim' in subdef.attributes):
                     if index > 0 and isinstance(parent[index - 1],
                                                 nodes.Text):
-                        parent.replace(parent[index - 1],
-                                       parent[index - 1].rstrip())
+                        parent[index - 1] = parent[index - 1].rstrip()
                 if  ('rtrim' in subdef.attributes
                      or 'trim' in subdef.attributes):
                     if  (len(parent) > index + 1
                          and isinstance(parent[index + 1], nodes.Text)):
-                        parent.replace(parent[index + 1],
-                                       parent[index + 1].lstrip())
+                        parent[index + 1] = parent[index + 1].lstrip()
                 subdef_copy = subdef.deepcopy()
                 try:
                     # Take care of nested substitution references:

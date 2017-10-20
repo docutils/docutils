@@ -54,6 +54,8 @@ Release 0.15b.dev
   - Allow embedded colons in field list field names (before, tokens like
     ``:this:example:`` were considered ordinary text).
 
+  - Fixed a bug with the "trim" options of the "unicode" directive.
+
 
 Release 0.14 (2017-08-03)
 =========================
