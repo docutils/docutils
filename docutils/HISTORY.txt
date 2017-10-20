@@ -42,6 +42,10 @@ Changes Since 0.14
 
   - Add field name as class argument to generic docinfo fields unconditionally.
 
+* docutils/transforms/references.py
+
+  - Fix bug #331: fixed the "trim" options of the "unicode" directive.
+
 * docutils/writers/html5_polyglot/
 
   - automatically add HTML5-compatible meta tags for docinfo items
