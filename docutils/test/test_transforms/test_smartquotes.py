@@ -56,16 +56,12 @@ u"""\
         “‘nested’ smart” quotes
         – and —also long— dashes.
 """],
-[r"""Escaped \\"smart quotes\\", \\'secondary smart quotes\\',
-\\"\\'nested\\' smart\\" quotes
-\\-- and -\\--also long-\\-- dashes.
+[r"""Escaped \\"ASCII quotes\\" and \\'secondary ASCII quotes\\'.
 """,
 u"""\
 <document source="test data">
     <paragraph>
-        Escaped "smart quotes", 'secondary smart quotes',
-        "'nested' smart" quotes
-        -- and ---also long--- dashes.
+        Escaped "ASCII quotes" and 'secondary ASCII quotes'.
 """],
 ["""\
 Do not "educate" quotes ``inside "literal" text`` and ::
@@ -105,6 +101,40 @@ u"""\
         print "hello"
     <math_block xml:space="preserve">
         f'(x) = df(x)/dx
+"""],
+[u"""\
+Quotes preceded by
+a word"a" and'a',
+punctuation:"a",'a',
+
+normal space "a" 'a',
+thin space "a" 'a',
+em space "a" 'a',
+NBSP "a" 'a',
+ZWSP\u200B"a" and\u200B'a',
+ZWNJ\u200C"a" and\u200C'a',
+
+&mdash;"a",&mdash;'a'
+en dash–"a"–'a',
+em dash—"a"—'a'.
+""",
+u"""\
+<document source="test data">
+    <paragraph>
+        Quotes preceded by
+        a word”a” and’a’,
+        punctuation:”a”,’a’,
+    <paragraph>
+        normal space “a” ‘a’,
+        thin space “a” ‘a’,
+        em space “a” ‘a’,
+        NBSP “a” ‘a’,
+        ZWSP\u200B“a” and\u200B‘a’,
+        ZWNJ\u200C“a” and\u200C‘a’,
+    <paragraph>
+        &mdash;“a”,&mdash;‘a’
+        en dash–“a”–‘a’,
+        em dash—“a”—‘a’.
 """],
 ["""\
 Quotes and inline-elements:
