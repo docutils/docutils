@@ -32,30 +32,34 @@ Changes Since 0.14
 
 * docutils/parsers/rst/directives/html.py:
 
-  - Fix [ 281 ] Remove escaping backslashes in meta directive content.
+  - Fix bug #281: Remove escaping backslashes in meta directive content.
 
 * docutils/parsers/rst/directives/tables.py:
 
-  - Apply [ 121 ] Add a :width: option for the table directives.
+  - Apply patch #121: Add "width" option for the table directives.
 
-* docutils/transforms/frontmatter.py
+* docutils/transforms/frontmatter.py:
 
   - Add field name as class argument to generic docinfo fields unconditionally.
 
-* docutils/transforms/references.py
+* docutils/transforms/references.py:
 
   - Fix bug #331: fixed the "trim" options of the "unicode" directive.
+
+* docutils/utils/smartquotes.py:
+
+  - Fix bug #332: use open quote after whitespace, ZWSP, and ZWNJ.
 
 * docutils/writers/html5_polyglot/
 
   - automatically add HTML5-compatible meta tags for docinfo items
     "authors", "date", and "copyright".
 
-* docutils/writers/latex2e/__init__.py
+* docutils/writers/latex2e/__init__.py:
 
-  - Fix [ 323 ] spurious ``\phantomsection`` and whitespace in
-    ``parts['title'].
-  - Fix [ 324 ] Invalid LaTeX for table with empty multicolumn cell.
+  - Fix bug #323: spurious ``\phantomsection`` and whitespace in
+    ``parts['title']``.
+  - Fix bug #324: Invalid LaTeX for table with empty multicolumn cell.
   - Fixes to literal block handling.
 
 * docutils/utils/__init__.py:
@@ -98,15 +102,15 @@ Release 0.14 (2017-08-03)
   - Rework patch [ 120 ] (revert change to ``Table.get_column_widths()``
     that led to problems in an application with a custom table directive).
 
-* docutils/transforms/frontmatter.py
+* docutils/transforms/frontmatter.py:
 
   - Fix [ 320 ] Russian docinfo fields not recognized.
 
-* docutils/transforms/references.py
+* docutils/transforms/references.py:
 
   - Don't add a second ID to problematic references.
 
-* docutils/transforms/universal.py
+* docutils/transforms/universal.py:
 
   Fix SmartQuotes: warn only once if language is unsupported,
   keep "rawsource" when "educating" quotes.
@@ -116,7 +120,7 @@ Release 0.14 (2017-08-03)
   - Added ``split_escaped_whitespace`` function, support for escaped
     whitespace in URI contexts.
 
-* docutils/utils/error_reporting.py
+* docutils/utils/error_reporting.py:
 
   - Fix [ 321 ] Import block might cause name error.
 
@@ -129,7 +133,7 @@ Release 0.14 (2017-08-03)
   - Fix [ 317 ] Extra space inserted with French smartquotes.
   - Add command line interface for stand-alone use (requires 2.7).
 
-* docutils/writers/_html_base.py
+* docutils/writers/_html_base.py:
 
   - Provide default title in metadata (required by HTML5).
   - Fix [ 312 ] HTML writer generates invalid HTML if the table has two tags.
@@ -137,17 +141,17 @@ Release 0.14 (2017-08-03)
     reasons, we don't use a third party public installation as default but
     warn if math-output_ is set to MathJax without specifying a URL.
 
-* docutils/writers/html4css1/__init__.py
+* docutils/writers/html4css1/__init__.py:
 
   - Apply [ 125 ] HTML writer: respect automatic table column sizing.
 
-* docutils/writers/latex2e/__init__.py
+* docutils/writers/latex2e/__init__.py:
 
   - Handle class arguments for block-level elements by wrapping them
     in a "DUclass" environment. This replaces the special handling for
     "epigraph" and "topic" elements.
 
-* docutils/writers/manpage.py
+* docutils/writers/manpage.py:
 
   - Apply [ 141 ] Handling inline in manpage writer.
 

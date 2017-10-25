@@ -25,6 +25,8 @@ Future changes
 * Remove the `handle_io_errors` option from io.FileInput/Output.
   Used by Sphinx up to version 1.3.1, fixed in 1.3.2 (Nov 29, 2015).
 
+* Remove `utils.unique_combinations` (obsoleted by `itertools.combinations`).
+
 * The default HTML writer "html" with frontend ``rst2html.py`` may change
   from "html4css1" to "html5".
 
