@@ -58,6 +58,10 @@ Release 0.15b.dev
 
   - Fixed a bug with the "trim" options of the "unicode" directive.
 
+  - Allow escaping of author-separators in `bibliographic fields`__.
+  
+    __ docs/ref/rst/restructuredtext.html#bibliographic-fields
+
 
 Release 0.14 (2017-08-03)
 =========================
