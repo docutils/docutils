@@ -54,6 +54,15 @@ class TextTests(unittest.TestCase):
         self.assertTrue(isinstance(self.text.pformat(), unicode))
         self.assertEqual(self.text.pformat(), u'Line 1.\nLine 2.\n')
 
+    def test_strip(self):
+        text = nodes.Text(' was noch ', ' \was\ noch \\ ')
+        stripped = text.lstrip().rstrip()
+        stripped2 = text.lstrip(' wahn').rstrip(' wahn')
+        self.assertEqual(stripped, u'was noch')
+        self.assertEqual(stripped.rawsource, u'\was\\ noch')
+        self.assertEqual(stripped2, u's noc')
+        self.assertEqual(stripped2.rawsource, u's\\ noc')
+
     def test_asciirestriction(self):
         if sys.version_info < (3,):
             self.assertRaises(UnicodeDecodeError, nodes.Text,

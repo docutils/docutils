@@ -304,8 +304,6 @@ if sys.version_info < (3,):
 
         def __repr__(self):
             return unicode.__repr__(self)[1:]
-
-
 else:
     reprunicode = unicode
 
@@ -344,7 +342,6 @@ class Text(Node, reprunicode):
             return reprunicode.__new__(cls, data)
 
     def __init__(self, data, rawsource=''):
-
         self.rawsource = rawsource
         """The raw text from which this element was constructed."""
 
@@ -387,13 +384,17 @@ class Text(Node, reprunicode):
 
     # rstrip and lstrip are used by substitution definitions where
     # they are expected to return a Text instance, this was formerly
-    # taken care of by UserString. Note that then and now the
-    # rawsource member is lost.
+    # taken care of by UserString.
 
     def rstrip(self, chars=None):
-        return self.__class__(reprunicode.rstrip(self, chars))
+        node = self.__class__(reprunicode.rstrip(self, chars))
+        node.rawsource = self.rawsource.rstrip((chars or ' \n\t\r')+'\\')
+        return node
     def lstrip(self, chars=None):
-        return self.__class__(reprunicode.lstrip(self, chars))
+        node = self.__class__(reprunicode.lstrip(self, chars))
+        node.rawsource = re.sub(ur'^(\\?[%s])+'%(chars or ' \n\t\r'), u'',
+                                self.rawsource)
+        return node
 
 class Element(Node):
 
@@ -447,7 +448,7 @@ class Element(Node):
     """List attributes, automatically initialized to empty lists for
     all nodes."""
 
-    known_attributes = list_attributes + ('source',)
+    known_attributes = list_attributes + ('source', 'rawsource')
     """List attributes that are known to the Element base class."""
 
     tagname = None
@@ -459,7 +460,10 @@ class Element(Node):
 
     def __init__(self, rawsource='', *children, **attributes):
         self.rawsource = rawsource
-        """The raw text from which this element was constructed."""
+        """The raw text from which this element was constructed.
+
+        NOTE: some elements do not set this value (default '').
+        """
 
         self.children = []
         """List of child nodes (elements and/or `Text`)."""
