@@ -916,9 +916,10 @@ doctree elements are as follows:
 - "Abstract": topic.
 
 The "Authors" field may contain either: a single paragraph consisting
-of a list of authors, separated by ";" or ","; or a bullet list whose
-elements each contain a single paragraph per author.  ";" is checked
-first, so "Doe, Jane; Doe, John" will work.  In some languages
+of a list of authors, separated by ";" or "," (";" is checked first,
+so "Doe, Jane; Doe, John" will work.); multiple paragraphs (one per
+author); or a bullet list whose elements each contain a single
+paragraph per author. In some languages
 (e.g. Swedish), there is no singular/plural distinction between
 "Author" and "Authors", so only an "Authors" field is provided, and a
 single name is interpreted as an "Author".  If a single name contains
@@ -2506,7 +2507,7 @@ following terms are recognized as containing inline markup strings:
 No escaping is required inside the following inline markup examples:
 
 - ``*2 * x  *a **b *.txt*`` (breaks rule 2; renders as "*2 * x  *a **b *.txt*")
-- ``*2*x a**b O(N**2) e**(x*y) f(x)*f(y) a*(1+2)*`` 
+- ``*2*x a**b O(N**2) e**(x*y) f(x)*f(y) a*(1+2)*``
   (breaks rule 7; renders as "*2*x a**b O(N**2) e**(x*y) f(x)*f(y) a*(1+2)*")
 
 It may be desirable to use `inline literals`_ for some of these anyhow,
