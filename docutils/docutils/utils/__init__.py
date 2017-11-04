@@ -588,6 +588,13 @@ def unescape(text, restore_backslashes=False, respect_whitespace=False):
             text = ''.join(text.split(sep))
         return text
 
+def unescape_rawsource(text):
+    """Remove escape-backslashes and escaped whitespace."""
+    # remove escaped whitespace or backslash at end of text
+    text = re.sub(r'(?<!\\)\\([ \n]|$)', r'', text)
+    # remove backslash-escapes
+    return re.sub(r'\\(.)', r'\1', text)
+
 def split_escaped_whitespace(text):
     """
     Split `text` on escaped whitespace (null+space or null+newline).

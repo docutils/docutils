@@ -321,6 +321,22 @@ class HelperFunctionTests(unittest.TestCase):
         self.assertEqual(utils.find_file_in_dirs('gibts/nicht.txt', dirs),
                          'gibts/nicht.txt')
 
+    # samples for the (un)escaping tests:
+    raw = r'spa\m\ and \\ham' + '\\'
+    nulled = 'spa\x00m\x00 and \x00\ham\x00'
+    unescaped = 'spamand \\ham'
+
+    def test_escape2null(self):
+        self.assertEqual(utils.escape2null(self.raw), self.nulled)
+
+    def test_unescape(self):
+        self.assertEqual(utils.unescape(self.nulled), self.unescaped)
+        self.assertEqual(utils.unescape(self.nulled, restore_backslashes=True),
+                         self.raw)
+
+    def test_unescape_rawsource(self):
+        self.assertEqual(utils.unescape_rawsource(self.raw), self.unescaped)
+
 
 if __name__ == '__main__':
     unittest.main()
