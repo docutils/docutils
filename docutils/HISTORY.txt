@@ -47,6 +47,8 @@ Changes Since 0.14
 * docutils/transforms/frontmatter.py:
 
   - Add field name as class argument to generic docinfo fields unconditionally.
+  - Ignore backslash-escaped separators when extracting authors from a
+    paragraph.
 
 * docutils/transforms/references.py:
 

@@ -424,6 +424,7 @@ class DocInfo(Transform):
                             base_node=field)
                         raise TransformError
                     title = nodes.title(name, labels[canonical])
+                    title[0].rawsource =  labels[canonical]
                     topics[canonical] = biblioclass(
                         '', title, classes=[canonical], *field[1].children)
                 else:
@@ -503,20 +504,30 @@ class DocInfo(Transform):
             raise
 
     def authors_from_one_paragraph(self, field):
-        text = field[1][0].astext().strip()
+        """Return list of Text nodes for ";"- or ","-separated authornames."""
+        # @@ keep original formatting? (e.g. ``:authors: A. Test, *et-al*``)
+        rawnames = (node.rawsource or node.astext
+                    for node in field[1].traverse(nodes.Text))
+        text = ''.join(rawnames)
         if not text:
             raise TransformError
         for authorsep in self.language.author_separators:
-            authornames = text.split(authorsep)
+            # don't split at escaped `authorsep`:
+            pattern = r'(?<=\\\\)%s|(?<!\\)%s' % (authorsep, authorsep)
+            authornames = re.split(pattern, text)
             if len(authornames) > 1:
                 break
-        authornames = [author.strip() for author in authornames]
-        authors = [[nodes.Text(author)] for author in authornames if author]
+        authornames = ((utils.unescape_rawsource(rawname).strip(),
+                        rawname.strip()) for rawname in authornames)
+        authors = [[nodes.Text(author, rawname)]
+                   for (author, rawname) in authornames if author]
         return authors
 
     def authors_from_bullet_list(self, field):
         authors = []
         for item in field[1][0]:
+            if isinstance(item, nodes.comment):
+                continue
             if len(item) != 1 or not isinstance(item[0], nodes.paragraph):
                 raise TransformError
             authors.append(item[0].children)
@@ -526,7 +537,8 @@ class DocInfo(Transform):
 
     def authors_from_paragraphs(self, field):
         for item in field[1]:
-            if not isinstance(item, nodes.paragraph):
+            if not isinstance(item, (nodes.paragraph, nodes.comment)):
                 raise TransformError
-        authors = [item.children for item in field[1]]
+        authors = [item.children for item in field[1]
+                   if not isinstance(item, nodes.comment)]
         return authors
