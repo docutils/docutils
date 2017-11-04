@@ -33,6 +33,8 @@ Changes Since 0.14
 * docutils/parsers/rst/states.py:
 
   - Allow embedded colons in field list field names.
+  - Add "rawsource" attribute for text of inline elements and definition
+    list terms.
 
 * docutils/parsers/rst/directives/html.py:
 

@@ -424,7 +424,9 @@ class RSTState(StateWS):
         """
         Return 2 lists: nodes (text and inline elements), and system_messages.
         """
-        return self.inliner.parse(text, lineno, self.memo, self.parent)
+        nodes, messages = self.inliner.parse(text, lineno,
+                                             self.memo, self.parent)
+        return nodes, messages
 
     def unindent_warning(self, node_name):
         # the actual problem is one line below the current line
@@ -711,11 +713,13 @@ class Inliner:
             return (string[:matchend], [], string[matchend:], [], '')
         endmatch = end_pattern.search(string[matchend:])
         if endmatch and endmatch.start(1):  # 1 or more chars
-            text = unescape(endmatch.string[:endmatch.start(1)],
-                            restore_backslashes)
+            _text = endmatch.string[:endmatch.start(1)]
+            text = unescape(_text, restore_backslashes)
             textend = matchend + endmatch.end(1)
             rawsource = unescape(string[matchstart:textend], True)
-            return (string[:matchstart], [nodeclass(rawsource, text)],
+            node = nodeclass(rawsource, text)
+            node[0].rawsource = unescape(_text, True)
+            return (string[:matchstart], [node],
                     string[textend:], [], endmatch.group(1))
         msg = self.reporter.warning(
               'Inline %s start-string without end-string.'
@@ -798,6 +802,7 @@ class Inliner:
         match = self.patterns.embedded_link.search(escaped)
         if match: # embedded <URI> or <alias_>
             text = unescape(escaped[:match.start(0)])
+            rawtext = unescape(escaped[:match.start(0)], True)
             aliastext = match.group(2)
             underscore_escaped = aliastext.endswith('\x00_')
             aliastext = unescape(aliastext)
@@ -824,10 +829,13 @@ class Inliner:
                 text = alias
         else:
             target = None
+            rawtext = unescape(escaped, True)
 
         refname = normalize_name(text)
         reference = nodes.reference(rawsource, text,
                                     name=whitespace_normalize_name(text))
+        reference[0].rawsource = rawtext
+
         node_list = [reference]
 
         if rawsource[-2:] == '__':
@@ -869,6 +877,10 @@ class Inliner:
                                        self.reporter)
         if role_fn:
             nodes, messages2 = role_fn(role, rawsource, text, lineno, self)
+            try:
+                nodes[0][0].rawsource = unescape(text, True)
+            except IndexError:
+                pass
             return nodes, messages + messages2
         else:
             msg = self.reporter.error(
@@ -956,6 +968,7 @@ class Inliner:
         referencenode = nodes.reference(
             referencename + match.group('refend'), referencename,
             name=whitespace_normalize_name(referencename))
+        referencenode[0].rawsource = referencename
         if anonymous:
             referencenode['anonymous'] = 1
         else:
@@ -978,8 +991,11 @@ class Inliner:
                 addscheme = ''
             text = match.group('whole')
             unescaped = unescape(text)
-            return [nodes.reference(unescape(text, True), unescaped,
-                                    refuri=addscheme + unescaped)]
+            rawsource = unescape(text, True)
+            reference = nodes.reference(rawsource, unescaped,
+                                        refuri=addscheme + unescaped)
+            reference[0].rawsource = rawsource
+            return [reference]
         else:                   # not a valid scheme
             raise MarkupMismatch
 
@@ -2829,10 +2845,9 @@ class Text(RSTState):
         """Return a definition_list's term and optional classifiers."""
         assert len(lines) == 1
         text_nodes, messages = self.inline_text(lines[0], lineno)
-        term_node = nodes.term()
+        term_node = nodes.term(lines[0])
         (term_node.source,
          term_node.line) = self.state_machine.get_source_and_line(lineno)
-        term_node.rawsource = unescape(lines[0])
         node_list = [term_node]
         for i in range(len(text_nodes)):
             node = text_nodes[i]
@@ -2841,10 +2856,14 @@ class Text(RSTState):
                 if len(parts) == 1:
                     node_list[-1] += node
                 else:
-
-                    node_list[-1] += nodes.Text(parts[0].rstrip())
+                    rawtext = parts[0].rstrip()
+                    textnode = nodes.Text(utils.unescape_rawsource(rawtext))
+                    textnode.rawsource = rawtext
+                    node_list[-1] += textnode
                     for part in parts[1:]:
-                        classifier_node = nodes.classifier('', part)
+                        classifier_node = nodes.classifier(part,
+                                            utils.unescape_rawsource(part))
+                        classifier_node[0].rawsource = part
                         node_list.append(classifier_node)
             else:
                 node_list[-1] += node

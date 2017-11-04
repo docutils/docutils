@@ -866,7 +866,7 @@ class DanglingReferences(Transform):
 
 
 class DanglingReferencesVisitor(nodes.SparseNodeVisitor):
-    
+
     def __init__(self, document, unknown_reference_resolvers):
         nodes.SparseNodeVisitor.__init__(self, document)
         self.document = document
