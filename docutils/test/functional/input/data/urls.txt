@@ -1,9 +1,9 @@
 External references
 -------------------
 
-Long URLs should be wrapped in the PDF.
-This can be achieved with the \url command which is used by the LaTeX writer
-whenever the content (name) of a reference node equals the link URL.
+Long URLs should be wrapped in the PDF. This can be achieved with the
+``\url`` command which is used by the LaTeX writer whenever the content
+(name) of a reference node equals the link URL.
 
 Example:
   a long URL that should wrap in the output
@@ -44,13 +44,13 @@ __
 __ A:DOS\\path\\
 
 
-* ^^ LaTeX's special syntax for characters results in "strange" replacements
-  (both with \href and \url). A warning is given.
+* ``^^`` LaTeX's special syntax for characters results in "strange" replacements
+  (both with ``\href`` and ``\url``). A warning is given.
 
   `file with ^^ <../strange^^name>`__:
   `<../strange^^name>`__
 
-* Unbalanced braces, { or }, will fail (both with \href and \url)::
+* Unbalanced braces, { or }, will fail (both with ``\href`` and ``\url``)::
 
     `file with { <../strange{name>`__
     `<../strange{name>`__

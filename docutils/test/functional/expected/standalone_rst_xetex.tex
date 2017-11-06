@@ -2642,7 +2642,7 @@ In that case the contents between that bracket and the following
 closing bracket on the same grouping level are taken as the
 optional argument. What makes this unintuitive is the fact that
 the square brackets aren’t grouping characters themselves, so in
-your last example item{[}{[}…{]}{]} the optional argument consists of
+your last example \texttt{\textbackslash{}item{[}{[}...{]}{]}} the optional argument consists of
 {[}… (without the closing bracket).
 \end{quote}
 
@@ -2723,9 +2723,9 @@ See \hyperref[hypertarget-in-plain-text]{hypertarget in plain text},
   \label{external-references}%
 }
 
-Long URLs should be wrapped in the PDF.
-This can be achieved with the url command which is used by the LaTeX writer
-whenever the content (name) of a reference node equals the link URL.
+Long URLs should be wrapped in the PDF. This can be achieved with the
+\texttt{\textbackslash{}url} command which is used by the LaTeX writer whenever the content
+(name) of a reference node equals the link URL.
 
 \begin{description}
 \item[{Example:}] \leavevmode 
@@ -2776,13 +2776,13 @@ These URLs are typeset inside a LaTeX command without error.
 \end{itemize}
 
 \begin{itemize}
-\item \textasciicircum{}\textasciicircum{} LaTeX’s special syntax for characters results in “strange” replacements
-(both with href and url). A warning is given.
+\item \texttt{\textasciicircum{}\textasciicircum{}} LaTeX’s special syntax for characters results in “strange” replacements
+(both with \texttt{\textbackslash{}href} and \texttt{\textbackslash{}url}). A warning is given.
 
 \href{../strange^^name}{file with \textasciicircum{}\textasciicircum{}}:
 \url{../strange^^name}
 
-\item Unbalanced braces, \{ or \}, will fail (both with href and url):
+\item Unbalanced braces, \{ or \}, will fail (both with \texttt{\textbackslash{}href} and \texttt{\textbackslash{}url}):
 
 \begin{quote}
 \begin{alltt}

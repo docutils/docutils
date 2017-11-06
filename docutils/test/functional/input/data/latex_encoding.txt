@@ -20,7 +20,7 @@ However also *square brackets* [] need special care.
    closing bracket on the same grouping level are taken as the
    optional argument. What makes this unintuitive is the fact that
    the square brackets aren't grouping characters themselves, so in
-   your last example \item[[...]] the optional argument consists of
+   your last example ``\item[[...]]`` the optional argument consists of
    [... (without the closing bracket).
 
 Compare the items in the following lists:
