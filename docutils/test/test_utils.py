@@ -322,21 +322,24 @@ class HelperFunctionTests(unittest.TestCase):
                          'gibts/nicht.txt')
 
     # samples for the (un)escaping tests:
-    raw = r'spa\m\ and \\ham' + '\\'
-    nulled = 'spa\x00m\x00 and \x00\ham\x00'
-    unescaped = 'spamand \\ham'
+    escaped = r'escapes: \*one, \\*two, \\\*three in\side no\ space' + '\\'
+    nulled = ('escapes: \x00*one, \x00\\*two, \x00\\\x00*three'
+              + ' in\x00side no\x00 space\x00')
+    unescaped = r'escapes: *one, \*two, \*three inside nospace'
 
     def test_escape2null(self):
-        self.assertEqual(utils.escape2null(self.raw), self.nulled)
+        nulled = utils.escape2null(self.escaped)
+        self.assertEqual(nulled, self.nulled)
 
     def test_unescape(self):
-        self.assertEqual(utils.unescape(self.nulled), self.unescaped)
-        self.assertEqual(utils.unescape(self.nulled, restore_backslashes=True),
-                         self.raw)
+        unescaped = utils.unescape(self.nulled)
+        self.assertEqual(unescaped, self.unescaped)
+        restored = utils.unescape(self.nulled, restore_backslashes=True)
+        self.assertEqual(restored, self.escaped)
 
     def test_unescape_rawsource(self):
-        self.assertEqual(utils.unescape_rawsource(self.raw), self.unescaped)
-
+        unescaped = utils.unescape_rawsource(self.escaped)
+        self.assertEqual(unescaped, self.unescaped)
 
 if __name__ == '__main__':
     unittest.main()
