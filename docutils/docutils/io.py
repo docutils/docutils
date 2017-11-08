@@ -378,7 +378,7 @@ class FileOutput(Output):
            ):
             data = self.encode(data)
             if sys.version_info >= (3,0) and os.linesep != '\n':
-                data = data.replace(b'\n', bytes(os.linesep)) # fix endings
+                data = data.replace(b'\n', bytes(os.linesep, 'ascii')) # fix endings
 
         try:
             self.destination.write(data)
