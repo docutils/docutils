@@ -28,11 +28,7 @@ unless the minimal required Python version has this problem fixed.
 import unittest
 import sys, os
 import codecs
-try: # from standard library module `io`
-    from io import StringIO, BytesIO
-except ImportError: # new in Python 2.6
-    from StringIO import StringIO
-    BytesIO = StringIO
+from io import StringIO, BytesIO
 
 import DocutilsTestSupport              # must be imported before docutils
 from docutils import core, parsers, frontend, utils
