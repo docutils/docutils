@@ -803,9 +803,9 @@ class Inliner:
         if match: # embedded <URI> or <alias_>
             text = unescape(escaped[:match.start(0)])
             rawtext = unescape(escaped[:match.start(0)], True)
-            aliastext = match.group(2)
-            underscore_escaped = aliastext.endswith('\x00_')
-            aliastext = unescape(aliastext)
+            aliastext = unescape(match.group(2))
+            rawaliastext = unescape(match.group(2), True)
+            underscore_escaped = rawaliastext.endswith(r'\_')
             if aliastext.endswith('_') and not (underscore_escaped
                                         or self.patterns.uri.match(aliastext)):
                 aliastype = 'name'
@@ -827,6 +827,7 @@ class Inliner:
                                        % aliastext)
             if not text:
                 text = alias
+                rawtext = rawaliastext
         else:
             target = None
             rawtext = unescape(escaped, True)
