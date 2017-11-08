@@ -678,7 +678,7 @@ Default: "http://www.faqs.org/rfcs/".  Option: ``--rfc-base-url``.
 smart_quotes
 ~~~~~~~~~~~~
 
-Activate the SmartQuotes_ transform to
+Activate the experimental SmartQuotes_ transform to
 change straight quotation marks to typographic form. `Quote characters`_
 are selected according to the language of the current block element (see
 language_code_, smartquotes_locales_, and the `pre-defined quote sets`__).
