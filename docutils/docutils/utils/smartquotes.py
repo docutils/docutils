@@ -404,11 +404,7 @@ class smartchars(object):
     # [9] Typografisk håndbok. Oslo: Spartacus. 2000. s. 67. ISBN 8243001530.
     # [10] http://www.typografi.org/sitat/sitatart.html
     #
-    # TODO: configuration option, e.g.::
-    #
-    #   smartquote-locales: nl: „“’’,  # apostrophe for ``'s Gravenhage``
-    #                       nr: se,    # alias
-    #                       fr: « : »:‹ : ›, # :-separated list with NBSPs
+    # See also configuration option "smartquote-locales".
     quotes = {'af':           u'“”‘’',
               'af-x-altquot': u'„”‚’',
               'bg':           u'„“‚‘', # Bulgarian, https://bg.wikipedia.org/wiki/Кавички
