@@ -1602,21 +1602,29 @@ __ http://docutils.sf.net/docutils/docs/ref/rst/directives.html#sidebar
 size of a pixel
 ---------------
 
-The length unit ``px`` is a "relative length" whose value depends on the
-*resolution* of the output device (usually specified in *dots per inch*
-(DPI). However, when producing a PDF, the resolution of the output device
-(printer, screen (for PDF-viewer)) is generally not known.
+The *physical size* of a pixel depends on the resolution of the output
+device and is usually specified in *dots per inch* (DPI).
 
-With pdftex, the "resolution" is a configuration setting.
+The *length unit* "px" is defined by the output format. For LaTeX, it is
+`defined in pdfTeX and LuaTeX`__ (the `xetex` writer emulates this
+definition).
 
 Default:
-  72 DPI, i.e. 1 px = 1/72 in.
+  72 DPI, i.e. 1 px = 1/72 in. [#]_
 
 Example:
-  Set a resolution of 96 DPI with the `LaTeX code`_::
+  Set the value to match the CSS definition
+  with the `LaTeX code`_::
 
-    \pdfpxdimen=1in % 1 DPI
-    \divide\pdfpxdimen by 96 % 96 DPI
+    \pdfpxdimen=1in
+    \divide\pdfpxdimen by 96 % 1/96 inch
+
+.. [#] The `CSS length unit ``px```_ defaults to 1/96 inch.
+
+__ http://tex.stackexchange.com/questions/41370/
+   what-are-the-possible-dimensions-sizes-units-latex-understands
+.. _CSS length unit ``px``: http://www.w3.org/TR/css-values-3/#px
+.. _reference pixel: http://www.w3.org/TR/css-values-3/#reference-pixel
 
 table
 -----

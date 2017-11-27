@@ -3026,30 +3026,35 @@ Length Units
 The following length units are supported by the reStructuredText
 parser:
 
-* em (ems, the height of the element's font)
-* ex (x-height, the height of the letter "x")
-* px (pixels, relative to the canvas resolution)
-* in (inches; 1in=2.54cm)
-* cm (centimeters; 1cm=10mm)
-* mm (millimeters)
-* pt (points; 1pt=1/72in)
-* pc (picas; 1pc=12pt)
+* em (em unit, the element's font size)
+* ex (ex unit, x-height of the element’s font)
+* mm (millimeters; 1 mm = 1/1000 m)
+* cm (centimeters; 1 cm = 10 mm)
+* in (inches; 1 in = 2.54 cm = 96 px)
+* px (pixels, 1 px = 1/96 in) [#]_
+* pt (points; 1 pt = 1/72 in)
+* pc (picas; 1 pc = 1/6 in = 12 pt)
 
-This set corresponds to the `length units in CSS`_.
+This set corresponds to the `length units in CSS2`_ (a subset of `length
+units in CSS3`_).
 
-(List and explanations taken from
-http://www.htmlhelp.com/reference/css/units.html#length.)
+.. [#] In LaTeX, the default definition is 1 px = 1/72 in (cf. `How to
+   configure the size of a pixel`_ in the LaTeX writer documentation).
 
 The following are all valid length values: "1.5em", "20 mm", ".5in".
 
 Length values without unit are completed with a writer-dependent
-default (e.g. px with `html4css1`, pt with `latex2e`). See the writer
+default (e.g. "px" with HTML, "pt" with `latex2e`). See the writer
 specific documentation in the `user doc`__ for details.
 
-.. _length units in CSS:
+.. _length units in CSS2:
    http://www.w3.org/TR/CSS2/syndata.html#length-units
-
+.. _length units in CSS3:
+   http://www.w3.org/TR/css-values-3/#absolute-lengths
+.. _How to configure the size of a pixel:
+   ../../user/latex.html#size-of-a-pixel
 __ ../../user/
+
 
 Percentage Units
 ----------------
