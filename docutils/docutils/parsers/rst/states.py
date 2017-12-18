@@ -2065,7 +2065,8 @@ class Body(RSTState):
             if self.disallowed_inside_substitution_definitions(node):
                 pformat = nodes.literal_block('', node.pformat().rstrip())
                 msg = self.reporter.error(
-                    'Substitution definition contains illegal element:',
+                    'Substitution definition contains illegal element <%s>:'
+                    % node.tagname,
                     pformat, nodes.literal_block(blocktext, blocktext),
                     source=src, line=srcline)
                 return [msg], blank_finish
@@ -2083,9 +2084,9 @@ class Body(RSTState):
         if (node['ids'] or
             isinstance(node, nodes.reference) and node.get('anonymous') or
             isinstance(node, nodes.footnote_reference) and node.get('auto')):
-            return 1
+            return True
         else:
-            return 0
+            return False
 
     def directive(self, match, **option_presets):
         """Returns a 2-tuple: list of nodes, and a "blank finish" boolean."""
