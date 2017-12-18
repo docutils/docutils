@@ -297,7 +297,7 @@ __ URL
         match in this snippet.
     <system_message level="3" line="5" source="test data" type="ERROR">
         <paragraph>
-            Substitution definition contains illegal element:
+            Substitution definition contains illegal element <reference>:
         <literal_block xml:space="preserve">
             <reference anonymous="1" name="anonymous">
                 anonymous

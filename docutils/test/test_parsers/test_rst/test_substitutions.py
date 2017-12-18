@@ -266,7 +266,7 @@ Elements that are prohibited inside of substitution definitions:
         Elements that are prohibited inside of substitution definitions:
     <system_message level="3" line="3" source="test data" type="ERROR">
         <paragraph>
-            Substitution definition contains illegal element:
+            Substitution definition contains illegal element <target>:
         <literal_block xml:space="preserve">
             <target ids="target" names="target">
                 target
@@ -274,7 +274,7 @@ Elements that are prohibited inside of substitution definitions:
             .. |target| replace:: _`target`
     <system_message level="3" line="4" source="test data" type="ERROR">
         <paragraph>
-            Substitution definition contains illegal element:
+            Substitution definition contains illegal element <reference>:
         <literal_block xml:space="preserve">
             <reference anonymous="1" name="anonymous">
                 anonymous
@@ -282,7 +282,7 @@ Elements that are prohibited inside of substitution definitions:
             .. |reference| replace:: anonymous__
     <system_message level="3" line="5" source="test data" type="ERROR">
         <paragraph>
-            Substitution definition contains illegal element:
+            Substitution definition contains illegal element <footnote_reference>:
         <literal_block xml:space="preserve">
             <footnote_reference auto="1" ids="id1">
         <literal_block xml:space="preserve">

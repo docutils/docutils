@@ -109,7 +109,7 @@ I recommend you try |Python|_.
             Inline literal start-string without end-string.
     <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
-            Substitution definition contains illegal element:
+            Substitution definition contains illegal element <problematic>:
         <literal_block xml:space="preserve">
             <problematic ids="id2" refid="id1">
                 *
