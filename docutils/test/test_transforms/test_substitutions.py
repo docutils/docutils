@@ -336,7 +336,7 @@ Make sure this substitution definition is not registered: |target|
         Substitution definition with an illegal element:
     <system_message level="3" line="3" source="test data" type="ERROR">
         <paragraph>
-            Substitution definition contains illegal element:
+            Substitution definition contains illegal element <target>:
         <literal_block xml:space="preserve">
             <target ids="target" names="target">
                 target
