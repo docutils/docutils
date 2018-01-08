@@ -653,7 +653,7 @@ def educateQuotes(text, language='en'):
 
     # Special case for decade abbreviations (the '80s):
     if language.startswith('en'): # TODO similar cases in other languages?
-        text = re.sub(r"""'(?=\d{2}s)""", smart.apostrophe, text, re.UNICODE)
+        text = re.sub(r"'(?=\d{2}s)", smart.apostrophe, text, flags=re.UNICODE)
 
     # Get most opening single quotes:
     opening_single_quotes_regex = re.compile(ur"""
