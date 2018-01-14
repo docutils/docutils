@@ -30,7 +30,7 @@ totest['tables_of_contents'] = ((PropagateTargets, AnonymousHyperlinks,
                                  DanglingReferences,
     ), [
 ["""\
-.. _target: http://exammple.org
+.. _target: http://example.org
 
 A reference to a target_.
 
@@ -38,21 +38,21 @@ A reference to a target_.
 """,
 """\
 <document source="test data">
-    <target ids="target" names="target" refuri="http://exammple.org">
+    <target ids="target" names="target" refuri="http://example.org">
     <paragraph>
         A reference to a \n\
-        <reference name="target" refuri="http://exammple.org">
+        <reference name="target" refuri="http://example.org">
             target
          \n\
         <footnote_reference auto="1" ids="id2" refid="id1">
         .
     <footnote auto="1" ids="id1" names="TARGET_NOTE:\\ id1">
         <paragraph>
-            <reference refuri="http://exammple.org">
-                http://exammple.org
+            <reference refuri="http://example.org">
+                http://example.org
 """],
 ["""\
-.. _target: http://exammple.org
+.. _target: http://example.org
 
 A reference to a target_.
 
@@ -60,10 +60,10 @@ A reference to a target_.
 """,
 """\
 <document source="test data">
-    <target ids="target" names="target" refuri="http://exammple.org">
+    <target ids="target" names="target" refuri="http://example.org">
     <paragraph>
         A reference to a \n\
-        <reference name="target" refuri="http://exammple.org">
+        <reference name="target" refuri="http://example.org">
             target
         <inline classes="custom">
              \n\
@@ -71,8 +71,8 @@ A reference to a target_.
         .
     <footnote auto="1" ids="id1" names="TARGET_NOTE:\\ id1">
         <paragraph>
-            <reference refuri="http://exammple.org">
-                http://exammple.org
+            <reference refuri="http://example.org">
+                http://example.org
 """],
 ])
 
