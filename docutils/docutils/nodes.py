@@ -1005,7 +1005,11 @@ class Element(Node):
                         for child in self.children])
 
     def copy(self):
-        return self.__class__(rawsource=self.rawsource, **self.attributes)
+        obj = self.__class__(rawsource=self.rawsource, **self.attributes)
+        obj.document = self.document
+        obj.source = self.source
+        obj.line = self.line
+        return obj
 
     def deepcopy(self):
         copy = self.copy()
@@ -1472,8 +1476,11 @@ class document(Root, Structural, Element):
             self.current_line = offset + 1
 
     def copy(self):
-        return self.__class__(self.settings, self.reporter,
+        obj = self.__class__(self.settings, self.reporter,
                               **self.attributes)
+        obj.source = self.source
+        obj.line = self.line
+        return obj
 
     def get_decoration(self):
         if not self.decoration:
@@ -1672,11 +1679,12 @@ class system_message(Special, BackLinkable, PreBibliographic, Element):
     """
 
     def __init__(self, message=None, *children, **attributes):
+        rawsource = attributes.get('rawsource', '')
         if message:
             p = paragraph('', message)
             children = (p,) + children
         try:
-            Element.__init__(self, '', *children, **attributes)
+            Element.__init__(self, rawsource, *children, **attributes)
         except:
             print 'system_message: children=%r' % (children,)
             raise
@@ -1752,8 +1760,12 @@ class pending(Special, Invisible, Element):
                            for line in internals]))
 
     def copy(self):
-        return self.__class__(self.transform, self.details, self.rawsource,
+        obj = self.__class__(self.transform, self.details, self.rawsource,
                               **self.attributes)
+        obj.document = self.document
+        obj.source = self.source
+        obj.line = self.line
+        return obj
 
 
 class raw(Special, Inline, PreBibliographic, FixedTextElement):

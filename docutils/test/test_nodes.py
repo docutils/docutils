@@ -616,6 +616,9 @@ class MiscTests(unittest.TestCase):
         self.assertEqual(e.rawsource, 'rawsource')
         self.assertEqual(e_copy.rawsource, e.rawsource)
         self.assertEqual(e_copy['att'], 'e')
+        self.assertEqual(e_copy.document, e.document)
+        self.assertEqual(e_copy.source, e.source)
+        self.assertEqual(e_copy.line, e.line)
         # Children are not copied.
         self.assertEqual(len(e_copy), 0)
         # Deep copy:

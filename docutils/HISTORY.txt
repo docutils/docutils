@@ -29,11 +29,13 @@ Changes Since 0.14
 * docutils/nodes.py
 
   - `Text.rstrip` and `Text.lstrip` now handle `rawsource` attribute.
-  
+  - Fix [ 251 ] system_message.copy() TypeError.
+    Element.copy() also copies `document`, `line`, and `source` attributes.
+
 * docutils/parsers/rst/states.py:
 
   - Allow embedded colons in field list field names.
-  - Add "rawsource" attribute for text of inline elements and definition
+  - Add `rawsource` attribute for text of inline elements and definition
     list terms.
 
 * docutils/parsers/rst/directives/html.py:
