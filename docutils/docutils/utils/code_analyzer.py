@@ -9,6 +9,11 @@
 
 from docutils import ApplicationError
 try:
+    from pkg_resources import DistributionNotFound as ResourceError
+except (ImportError, RuntimeError):
+    class ResourceError(ApplicationError):
+        pass # stub
+try:
     import pygments
     from pygments.lexers import get_lexer_by_name
     from pygments.formatters.html import _get_ttype_class
@@ -61,7 +66,7 @@ class Lexer(object):
                                     'Pygments package not found.')
         try:
             self.lexer = get_lexer_by_name(self.language)
-        except pygments.util.ClassNotFound:
+        except (pygments.util.ClassNotFound, ResourceError):
             raise LexerError('Cannot analyze code. '
                 'No Pygments lexer found for "%s".' % language)
         # self.lexer.add_filter('tokenmerge')
