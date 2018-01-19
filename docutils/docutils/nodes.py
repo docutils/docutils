@@ -376,25 +376,21 @@ class Text(Node, reprunicode):
         return self.copy()
 
     def pformat(self, indent='    ', level=0):
-        result = []
         indent = indent * level
-        for line in self.splitlines():
-            result.append(indent + line + '\n')
-        return ''.join(result)
+        lines = [indent+line for line in self.astext().splitlines()]
+        if not lines:
+            return ''
+        return '\n'.join(lines) + '\n'
 
     # rstrip and lstrip are used by substitution definitions where
     # they are expected to return a Text instance, this was formerly
     # taken care of by UserString.
 
     def rstrip(self, chars=None):
-        node = self.__class__(reprunicode.rstrip(self, chars))
-        node.rawsource = self.rawsource.rstrip((chars or ' \n\t\r')+'\\')
-        return node
+        return self.__class__(reprunicode.rstrip(self, chars), self.rawsource)
+    
     def lstrip(self, chars=None):
-        node = self.__class__(reprunicode.lstrip(self, chars))
-        node.rawsource = re.sub(ur'^(\\?[%s])+'%(chars or ' \n\t\r'), u'',
-                                self.rawsource)
-        return node
+        return self.__class__(reprunicode.lstrip(self, chars), self.rawsource)
 
 class Element(Node):
 

@@ -59,9 +59,7 @@ class TextTests(unittest.TestCase):
         stripped = text.lstrip().rstrip()
         stripped2 = text.lstrip(' wahn').rstrip(' wahn')
         self.assertEqual(stripped, u'was noch')
-        self.assertEqual(stripped.rawsource, u'\was\\ noch')
         self.assertEqual(stripped2, u's noc')
-        self.assertEqual(stripped2.rawsource, u's\\ noc')
 
     def test_asciirestriction(self):
         if sys.version_info < (3,):
@@ -606,14 +604,14 @@ class MiscTests(unittest.TestCase):
         return x not in self.testlist
 
     def test_copy(self):
-        grandchild = nodes.Text('rawsource')
-        child = nodes.emphasis('rawsource', grandchild, att='child')
-        e = nodes.Element('rawsource', child, att='e')
+        grandchild = nodes.Text('mytext')
+        child = nodes.emphasis('mytext', grandchild, att='child')
+        e = nodes.Element('mytext', child, att='e')
         # Shallow copy:
         e_copy = e.copy()
         self.assertTrue(e is not e_copy)
         # Internal attributes (like `rawsource`) are also copied.
-        self.assertEqual(e.rawsource, 'rawsource')
+        self.assertEqual(e.rawsource, 'mytext')
         self.assertEqual(e_copy.rawsource, e.rawsource)
         self.assertEqual(e_copy['att'], 'e')
         self.assertEqual(e_copy.document, e.document)
