@@ -28,9 +28,8 @@ Changes Since 0.14
 
 * docutils/nodes.py
 
-  - `Text.rstrip` and `Text.lstrip` now handle `rawsource` attribute.
   - Fix [ 251 ] system_message.copy() TypeError.
-    Element.copy() also copies `document`, `line`, and `source` attributes.
+  - Element.copy() also copies `document`, `line`, and `source` attributes.
 
 * docutils/parsers/rst/states.py:
 
