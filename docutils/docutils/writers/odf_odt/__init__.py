@@ -2238,7 +2238,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                     size = float(size) / 100.0
                     unit = '%'
                 else:
-                    size, unit = convert_to_cm(size)
+                    size, unit = self.convert_to_cm(size)
             except ValueError, exp:
                 self.document.reporter.warning(
                     'Invalid %s for image: "%s".  '
