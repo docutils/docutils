@@ -76,11 +76,15 @@ fallbacks_highlight = r"""% basic code highlight:
 % inline markup (custom roles)
 % \DUrole{#1}{#2} tries \DUrole#1{#2}
 \providecommand*{\DUrole}[2]{%
-  % backwards compatibility: try \docutilsrole#1{#2}
-  \ifcsname docutilsrole#1\endcsname%
-    \csname docutilsrole#1\endcsname{#2}%
-  \else
+  \ifcsname DUrole#1\endcsname%
     \csname DUrole#1\endcsname{#2}%
+  \else
+    % backwards compatibility: try \docutilsrole#1{#2}
+    \ifcsname docutilsrole#1\endcsname%
+      \csname docutilsrole#1\endcsname{#2}%
+    \else%
+      #2%
+    \fi%
   \fi%
 }
 """,
