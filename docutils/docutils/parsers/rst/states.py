@@ -2803,7 +2803,8 @@ class Text(RSTState):
             return self.quoted_literal_block()
         data = '\n'.join(indented)
         literal_block = nodes.literal_block(data, data)
-        literal_block.line = offset + 1
+        (literal_block.source,
+         literal_block.line) = self.state_machine.get_source_and_line(offset+1)
         nodelist = [literal_block]
         if not blank_finish:
             nodelist.append(self.unindent_warning('Literal block'))
