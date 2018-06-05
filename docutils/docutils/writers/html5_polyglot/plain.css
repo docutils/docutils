@@ -124,19 +124,9 @@ span.fn-backref {
 /* ============          */
 
 /* Literal Blocks           */
-pre.literal-block, pre.doctest-block,
-pre.math, pre.code {
-  margin-left: 1.5em;
-  margin-right: 1.5em
-}
 
 /* Block Quotes             */
 
-blockquote,
-div.topic {
-  margin-left: 1.5em;
-  margin-right: 1.5em
-}
 blockquote > table,
 div.topic > table {
   margin-top: 0;
@@ -231,6 +221,7 @@ div.sidebar {
 
 /* Code                     */
 
+pre.code { padding: 0.7ex }
 pre.code, code { background-color: #eeeeee }
 pre.code .ln { color: gray; } /* line numbers */
 /* basic highlighting: for a complete scheme, see */
