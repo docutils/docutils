@@ -94,9 +94,10 @@ dl.simple > dd, dl.compact > dd {
 
 /* Table of Contents */
 div.topic.contents { margin: 0; }
-ul.auto-toc {
+div.topic.contents ul {
   list-style-type: none;
-  padding-left: 1.5em; }
+  padding-left: 1.5em;
+}
 
 /* Enumerated Lists */
 ol.arabic     { list-style: decimal }
@@ -227,13 +228,14 @@ div.sidebar {
 }
 
 /* Text Blocks */
+blockquote,
 div.topic,
 pre.literal-block,
 pre.doctest-block,
 pre.math,
 pre.code {
-  margin-right: 40px;
-  margin-left: 40px;
+  margin-left: 1.5em;
+  margin-right: 1.5em
 }
 pre.code .ln { color: gray; } /* line numbers */
 
