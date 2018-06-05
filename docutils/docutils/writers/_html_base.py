@@ -681,6 +681,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('</dd>\n')
 
     def visit_docinfo(self, node):
+        self.context.append(len(self.body))
         classes = 'docinfo'
         if (self.is_compactable(node)):
             classes += ' simple'
@@ -688,6 +689,9 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def depart_docinfo(self, node):
         self.body.append('</dl>\n')
+        start = self.context.pop()
+        self.docinfo = self.body[start:]
+        self.body = []
 
     def visit_docinfo_item(self, node, name, meta=True):
         if meta:
@@ -1403,14 +1407,14 @@ class HTMLTranslator(nodes.NodeVisitor):
             classes = 'sidebar-subtitle'
         elif isinstance(node.parent, nodes.document):
             classes = 'subtitle'
-            self.in_document_title = len(self.body)
+            self.in_document_title = len(self.body)+1
         elif isinstance(node.parent, nodes.section):
             classes = 'section-subtitle'
         self.body.append(self.starttag(node, 'p', '', CLASS=classes))
 
     def depart_subtitle(self, node):
         self.body.append('</p>\n')
-        if self.in_document_title:
+        if isinstance(node.parent, nodes.document):
             self.subtitle = self.body[self.in_document_title:-1]
             self.in_document_title = 0
             self.body_pre_docinfo.extend(self.body)

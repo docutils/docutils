@@ -757,28 +757,6 @@ class PublishTestSuite(CustomTestSuite):
                       writer_name=self.writer_name)
 
 
-class HtmlPublishPartsTestSuite(CustomTestSuite):
-
-    def generateTests(self, dict, dictname='totest'):
-        for name, (settings_overrides, cases) in dict.items():
-            settings = self.suite_settings.copy()
-            settings.update(settings_overrides)
-            for casenum in range(len(cases)):
-                case = cases[casenum]
-                run_in_debugger = False
-                if len(case)==3:
-                    if case[2]:
-                        run_in_debugger = True
-                    else:
-                        continue
-                self.addTestCase(
-                      HtmlWriterPublishPartsTestCase, 'test_publish',
-                      input=case[0], expected=case[1],
-                      id='%s[%r][%s]' % (dictname, name, casenum),
-                      run_in_debugger=run_in_debugger,
-                      suite_settings=settings)
-
-
 class HtmlWriterPublishPartsTestCase(WriterPublishTestCase):
 
     """
@@ -853,6 +831,29 @@ class HtmlWriterPublishPartsTestCase(WriterPublishTestCase):
             if output[-1].endswith("\n'''"):
                 output[-1] = output[-1][:-4] + "\\n'''"
         return '{' + ',\n '.join(output) + '}\n'
+
+
+class HtmlPublishPartsTestSuite(CustomTestSuite):
+
+    testcase_class = HtmlWriterPublishPartsTestCase
+    
+    def generateTests(self, dict, dictname='totest'):
+        for name, (settings_overrides, cases) in dict.items():
+            settings = self.suite_settings.copy()
+            settings.update(settings_overrides)
+            for casenum in range(len(cases)):
+                case = cases[casenum]
+                run_in_debugger = False
+                if len(case)==3:
+                    if case[2]:
+                        run_in_debugger = True
+                    else:
+                        continue
+                self.addTestCase(self.testcase_class, 'test_publish',
+                                 input=case[0], expected=case[1],
+                                 id='%s[%r][%s]' % (dictname, name, casenum),
+                                 run_in_debugger=run_in_debugger,
+                                 suite_settings=settings)
 
 
 def exception_data(func, *args, **kwds):
