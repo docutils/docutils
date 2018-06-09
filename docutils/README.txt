@@ -25,7 +25,7 @@ This is for those who want to get up & running quickly.
 2. Use the latest Docutils code.  Get the code from the `Subversion
    repository`_ or from the snapshot:
 
-     http://docutils.svn.sourceforge.net/viewvc/docutils/trunk/docutils/?view=tar
+     https://sourceforge.net/p/docutils/code/HEAD/tree/trunk/docutils/
 
    See `Releases & Snapshots`_ below for details.
 
