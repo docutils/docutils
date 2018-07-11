@@ -553,6 +553,36 @@ Python ``list``\s use square bracket syntax.
             list
         s use square bracket syntax.
 """],
+[r"""
+Blank after opening `` not allowed.
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        Blank after opening `` not allowed.
+"""],
+[r"""
+no blank ``after closing``continues`` literal.
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        no blank \n\
+        <literal>
+            after closing``continues
+         literal.
+"""],
+[r"""
+dot ``after closing``. is possible.
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        dot \n\
+        <literal>
+            after closing
+        . is possible.
+"""],
 ]
 
 totest['references'] = [
