@@ -106,7 +106,7 @@ Plain definition lists are only supported by transaltion to
       Returns the size in bytes of a ctypes type or instance memory
       buffer.  Does the same as the C sizeof() function.
 
-Note: the classifier must be preceeded by ``blank colon blank`` and no
+Note: the classifier must be preceeded by ``" : "`` (blank colon blank) and no
   blank line before the descriptional text.
 
   And the definition, e.g. ``sizeof(...)`` is processed as text only, 
