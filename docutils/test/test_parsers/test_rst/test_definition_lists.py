@@ -369,6 +369,44 @@ Term `with *inline ``text **errors : classifier `with *errors ``too
                         Inline strong start-string without end-string.
 """],
 ["""\
+Term : `reference`_
+    classifier starting with a reference crashes from release 8197 to ...
+""",
+"""\
+<document source="test data">
+    <definition_list>
+        <definition_list_item>
+            <term>
+                Term
+            <classifier>
+                <reference name="reference" refname="reference">
+                    reference
+            <definition>
+                <paragraph>
+                    classifier starting with a reference crashes from release 8197 to ...
+"""],
+["""\
+Term : a `reference`_ in text : second
+    classifier with reference crashes from release 8197 to ...
+""",
+"""\
+<document source="test data">
+    <definition_list>
+        <definition_list_item>
+            <term>
+                Term
+            <classifier>
+                a \n\
+                <reference name="reference" refname="reference">
+                    reference
+                 in text
+            <classifier>
+                second
+            <definition>
+                <paragraph>
+                    classifier with reference crashes from release 8197 to ...
+"""],
+["""\
 Term : classifier one  :  classifier two
     Definition
 """,

@@ -36,6 +36,7 @@ Changes Since 0.14
   - Allow embedded colons in field list field names.
   - Add `rawsource` attribute for text of inline elements and definition
     list terms.
+  - Fix: definition list term classifier starting with a reference crash. 
 
 * docutils/parsers/rst/directives/html.py:
 
