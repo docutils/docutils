@@ -53,11 +53,6 @@ umask 002
 # URL for SVN project checkout:
 svnurl=http://svn.code.sf.net/p/docutils/code/trunk
 
-on_sourceforge=0
-if [ -e "ON_SOURCEFORGE" ] ; then
-    on_sourceforge=1
-fi
-
 htmlfilelist=`pwd`/htmlfiles.lst
 basedir=`pwd`/update-dir
 if [ ! -e $basedir ] ; then
@@ -329,18 +324,11 @@ fi
 # specify your user in your .ssh/config
 
 cd $htdocsdest
-if [ $on_sourceforge ] ; then
-    print_feedback "rsync ON sf"
-    rsync -r -t ./ $remotehtdocs
-    cp ../snapshots/$project-snapshot.tgz $remotehtdocs
-    cp ../snapshots/$project-sandbox-snapshot.tgz $remotehtdocs
 
-else
-    print_feedback "rsync TO sf"
-    # do not use -a to avoid "failed to set permissions"
-    # -t preserve modification times. But a new svn checkout has new modtime.
-    rsync -e ssh -r -t ./ web.sourceforge.net:$remotehtdocs
-fi
+print_feedback "rsync TO sf"
+# do not use -a to avoid "failed to set permissions"
+# -t preserve modification times. But a new svn checkout has new modtime.
+rsync -e ssh -r -t ./ web.sourceforge.net:$remotehtdocs
 
 trap - 0 1 2 3 15
 rm -rf $lockdir
