@@ -2866,7 +2866,11 @@ class Text(RSTState):
                     for part in parts[1:]:
                         classifier_node = nodes.classifier(part,
                                             utils.unescape_rawsource(part))
-                        classifier_node[0].rawsource = part
+                        try:
+                            classifier_node[0].rawsource = part
+                        except IndexError:
+                            # might be a reference or similar in the next node
+                            pass
                         node_list.append(classifier_node)
             else:
                 node_list[-1] += node
