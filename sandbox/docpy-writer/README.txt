@@ -7,8 +7,9 @@
 :Date: $Date$
 :Copyright: This document has been placed in the public domain.
 
-This tries to explore the posibilities to use docutils as format for python
-library documentation as specified in `Documenting Python`_ .
+This tried, at a time when texinfo was used, to explore the posibilities to use
+docutils as format for python library documentation as specified in
+`Documenting Python`_ .
 
 This version is based on a script from Greg Ward, hacked by Thomas Heller.
 
