@@ -26,6 +26,11 @@ Changes Since 0.14
   - Document rST syntax change: Tokens like ``:this:example:`` are now valid
     field list names (instead of ordinary text).
 
+* docutils/io.py
+
+  - Fix [ 348 ] Since Python 3.4, the 'U' universal newlines mode has been 
+    deprecated (thanks to hugovk).
+
 * docutils/nodes.py
 
   - Fix [ 251 ] system_message.copy() TypeError.
