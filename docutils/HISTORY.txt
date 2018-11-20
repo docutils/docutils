@@ -59,8 +59,6 @@ Changes Since 0.14
 * docutils/transforms/frontmatter.py:
 
   - Add field name as class argument to generic docinfo fields unconditionally.
-  - Ignore backslash-escaped separators when extracting authors from a
-    paragraph.
 
 * docutils/transforms/references.py:
 
@@ -85,7 +83,6 @@ Changes Since 0.14
 * docutils/utils/__init__.py:
 
   - Deprecate `unique_combinations` (obsoleted by `itertools.combinations`).
-  - New function `unescape_rawsource`.
 
 
 Release 0.14 (2017-08-03)

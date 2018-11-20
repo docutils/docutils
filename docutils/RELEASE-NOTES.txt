@@ -39,6 +39,10 @@ Future changes
 
 .. _rst2html.py: docs/user/tools.html#rst2html-py
 
+* Allow escaping of author-separators in `bibliographic fields`__.
+
+  __ docs/ref/rst/restructuredtext.html#bibliographic-fields
+
 
 Release 0.15b.dev
 =================
@@ -57,10 +61,6 @@ Release 0.15b.dev
     ``:this:example:`` were considered ordinary text).
 
   - Fixed a bug with the "trim" options of the "unicode" directive.
-
-  - Allow escaping of author-separators in `bibliographic fields`__.
-  
-    __ docs/ref/rst/restructuredtext.html#bibliographic-fields
 
 
 Release 0.14 (2017-08-03)

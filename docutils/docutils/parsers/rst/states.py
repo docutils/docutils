@@ -2859,17 +2859,12 @@ class Text(RSTState):
                 if len(parts) == 1:
                     node_list[-1] += node
                 else:
-                    rawtext = parts[0].rstrip()
-                    textnode = nodes.Text(utils.unescape_rawsource(rawtext))
-                    textnode.rawsource = rawtext
+                    text = parts[0].rstrip()
+                    textnode = nodes.Text(utils.unescape(text, True))
                     node_list[-1] += textnode
                     for part in parts[1:]:
-                        classifier_node = nodes.classifier(part,
-                                            utils.unescape_rawsource(part))
-                        # might be a reference or similar in the next node
-                        # then classifier_node is empty
-                        if len(classifier_node) > 0:
-                            classifier_node[0].rawsource = part
+                        classifier_node = nodes.classifier(
+                                            unescape(part, True), part)
                         node_list.append(classifier_node)
             else:
                 node_list[-1] += node

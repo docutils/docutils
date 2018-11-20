@@ -506,21 +506,19 @@ class DocInfo(Transform):
     def authors_from_one_paragraph(self, field):
         """Return list of Text nodes for ";"- or ","-separated authornames."""
         # @@ keep original formatting? (e.g. ``:authors: A. Test, *et-al*``)
-        rawnames = (node.rawsource or node.astext
-                    for node in field[1].traverse(nodes.Text))
-        text = ''.join(rawnames)
+        text = ''.join(unicode(node)
+                       for node in field[1].traverse(nodes.Text))
         if not text:
             raise TransformError
         for authorsep in self.language.author_separators:
             # don't split at escaped `authorsep`:
-            pattern = r'(?<=\\\\)%s|(?<!\\)%s' % (authorsep, authorsep)
+            pattern = '(?<!\x00)%s' % authorsep
             authornames = re.split(pattern, text)
             if len(authornames) > 1:
                 break
-        authornames = ((utils.unescape_rawsource(rawname).strip(),
-                        rawname.strip()) for rawname in authornames)
-        authors = [[nodes.Text(author, rawname)]
-                   for (author, rawname) in authornames if author]
+        authornames = (name.strip() for name in authornames)
+        authors = [[nodes.Text(name, utils.unescape(name, True))]
+                   for name in authornames if name]
         return authors
 
     def authors_from_bullet_list(self, field):
