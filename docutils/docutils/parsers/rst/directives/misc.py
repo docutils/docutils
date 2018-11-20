@@ -114,7 +114,7 @@ class Include(Directive):
         include_lines = statemachine.string2lines(rawtext, tab_width,
                                                   convert_whitespace=True)
         if 'literal' in self.options:
-            # Convert tabs to spaces, if `tab_width` is positive.
+            # Don't convert tabs to spaces, if `tab_width` is positive.
             if tab_width >= 0:
                 text = rawtext.expandtabs(tab_width)
             else:
@@ -144,6 +144,9 @@ class Include(Directive):
             return [literal_block]
         if 'code' in self.options:
             self.options['source'] = path
+            # Don't convert tabs to spaces, if `tab_width` is negative:
+            if tab_width < 0:
+                include_lines = rawtext.splitlines()
             codeblock = CodeBlock(self.name,
                                   [self.options.pop('code')], # arguments
                                   self.options,

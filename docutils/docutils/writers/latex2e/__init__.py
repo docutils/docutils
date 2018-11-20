@@ -1516,6 +1516,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 table[ord('>')] = ur'\textgreater{}'
         if self.insert_non_breaking_blanks:
             table[ord(' ')] = ur'~'
+            # tab chars may occur in included files (literal or code)
+            # quick-and-dirty replacement with spaces
+            # (for better results use `--literal-block-env=lstlisting`)
+            table[ord('\t')] = u'~' * self.settings.tab_width
         # Unicode replacements for 8-bit tex engines (not required with XeTeX/LuaTeX):
         if not self.is_xetex:
             if not self.latex_encoding.startswith('utf8'):
