@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# $Id$
+# $Id: test_smartquotes.py 8190 2017-10-25 13:57:27Z milde $
 #
 # :Copyright: © 2011 Günter Milde.
 # :Maintainer: docutils-develop@lists.sourceforge.net
@@ -24,7 +24,8 @@ from docutils.parsers.rst import Parser
 
 def suite():
     parser = Parser()
-    settings = {'smart_quotes': True}
+    settings = {'smart_quotes': True,
+                'trim_footnote_ref_space': True}
     s = DocutilsTestSupport.TransformTestSuite(
         parser, suite_settings=settings)
     s.generateTests(totest)
@@ -43,7 +44,7 @@ totest_de = {}
 totest_de_alt = {}
 totest_locales = {}
 
-totest['transitions'] = ((SmartQuotes,), [
+totest['smartquotes'] = ((SmartQuotes,), [
 ["""\
 Test "smart quotes", 'secondary smart quotes',
 "'nested' smart" quotes
@@ -56,7 +57,7 @@ u"""\
         “‘nested’ smart” quotes
         – and —also long— dashes.
 """],
-[r"""Escaped \\"ASCII quotes\\" and \\'secondary ASCII quotes\\'.
+[r"""Escaped \"ASCII quotes\" and \'secondary ASCII quotes\'.
 """,
 u"""\
 <document source="test data">
@@ -113,6 +114,7 @@ em space "a" 'a',
 NBSP "a" 'a',
 ZWSP\u200B"a" and\u200B'a',
 ZWNJ\u200C"a" and\u200C'a',
+escaped space\ "a" and\ 'a',
 
 &mdash;"a",&mdash;'a'
 en dash–"a"–'a',
@@ -131,6 +133,7 @@ u"""\
         NBSP “a” ‘a’,
         ZWSP\u200B“a” and\u200B‘a’,
         ZWNJ\u200C“a” and\u200C‘a’,
+        escaped space“a” and‘a’,
     <paragraph>
         &mdash;“a”,&mdash;‘a’
         en dash–“a”–‘a’,
@@ -196,7 +199,7 @@ Do not convert context-character at inline-tag boundaries
   and links to "targets_".
 
   Inside *"emphasized"* or other `inline "roles"`:
-  (``"string"``), (``'string'``), *\\"betont\\"*, \\"*betont*".
+  (``"string"``), (``'string'``), *\"betont\"*, \"*betont*".
 
   Do not drop characters from intra-word inline markup like
   *re*\ ``Structured``\ *Text*.
@@ -252,6 +255,104 @@ u"""\
             Text
         .
 """],
+[r"""
+Docutils escape mechanism uses the backslash:
+
+\Remove \non-escaped \backslashes\:
+\item \newline \tab \" \' \*.
+
+\ Remove-\ escaped-\ white\ space-\
+including-\ newlines.
+
+\\Keep\\escaped\\backslashes\\
+(but\\only\\one).
+
+\\ Keep \\ space\\ around  \\ backslashes.
+
+Keep backslashes ``\in\ literal``, :math:`in \mathrm{math}`,
+and :code:`in\ code`.
+
+Test around inline elements:\ [*]_
+
+*emphasized*, H\ :sub:`2`\ O and :math:`x^2`
+
+*emphasized*, H\ :sub:`2`\ O and :math:`x^2`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. [*] and footnotes
+""",
+u"""\
+<document source="test data">
+    <paragraph>
+        Docutils escape mechanism uses the backslash:
+    <paragraph>
+        Remove non-escaped backslashes:
+        item newline tab " \' *.
+    <paragraph>
+        Remove-escaped-whitespace-including-newlines.
+    <paragraph>
+        \\Keep\\escaped\\backslashes\\
+        (but\\only\\one).
+    <paragraph>
+        \\ Keep \\ space\\ around  \\ backslashes.
+    <paragraph>
+        Keep backslashes \n\
+        <literal>
+            \\in\\ literal
+        , \n\
+        <math>
+            in \\mathrm{math}
+        ,
+        and \n\
+        <literal classes="code">
+            in\\ code
+        .
+    <paragraph>
+        Test around inline elements:
+        <footnote_reference auto="*" ids="id1">
+    <paragraph>
+        <emphasis>
+            emphasized
+        , H
+        <subscript>
+            2
+        O and \n\
+        <math>
+            x^2
+    <section ids="emphasized-h2o-and-x-2" names="emphasized,\\ h2o\\ and\\ x^2">
+        <title>
+            <emphasis>
+                emphasized
+            , H
+            <subscript>
+                2
+            O and \n\
+            <math>
+                x^2
+        <footnote auto="*" ids="id2">
+            <paragraph>
+                and footnotes
+"""],
+[r"""
+Character-level m\ *a*\ **r**\ ``k``\ `u`:title:\p
+with backslash-escaped whitespace, including new\
+lines.
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        Character-level m
+        <emphasis>
+            a
+        <strong>
+            r
+        <literal>
+            k
+        <title_reference>
+            u
+        p
+        with backslash-escaped whitespace, including newlines.
+"""],
 ["""\
 .. class:: language-de
 
@@ -287,7 +388,7 @@ u"""\
 """],
 ])
 
-totest_de['transitions'] = ((SmartQuotes,), [
+totest_de['smartquotes'] = ((SmartQuotes,), [
 ["""\
 German "smart quotes" and 'secondary smart quotes'.
 
@@ -304,7 +405,7 @@ u"""\
 """],
 ])
 
-totest_de_alt['transitions'] = ((SmartQuotes,), [
+totest_de_alt['smartquotes'] = ((SmartQuotes,), [
 ["""\
 Alternative German "smart quotes" and 'secondary smart quotes'.
 
@@ -333,7 +434,7 @@ u"""\
 """],
 ])
 
-totest_locales['transitions'] = ((SmartQuotes,), [
+totest_locales['smartquotes'] = ((SmartQuotes,), [
 ["""\
 German "smart quotes" and 'secondary smart quotes'.
 

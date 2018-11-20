@@ -67,6 +67,7 @@ Changes Since 0.14
 * docutils/utils/smartquotes.py:
 
   - Fix bug #332: use open quote after whitespace, ZWSP, and ZWNJ.
+  - Use single backslashes for escaping.
 
 * docutils/writers/html5_polyglot/
 
