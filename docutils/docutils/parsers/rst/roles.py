@@ -195,7 +195,7 @@ class GenericRole:
     def __call__(self, role, rawtext, text, lineno, inliner,
                  options={}, content=[]):
         set_classes(options)
-        return [self.node_class(rawtext, utils.unescape(text), **options)], []
+        return [self.node_class(rawtext, text, **options)], []
 
 
 class CustomRole:
@@ -234,7 +234,7 @@ def generic_custom_role(role, rawtext, text, lineno, inliner,
     # Once nested inline markup is implemented, this and other methods should
     # recursively call inliner.nested_parse().
     set_classes(options)
-    return [nodes.inline(rawtext, utils.unescape(text), **options)], []
+    return [nodes.inline(rawtext, text, **options)], []
 
 generic_custom_role.options = {'class': directives.class_option}
 
@@ -255,7 +255,7 @@ register_generic_role('title-reference', nodes.title_reference)
 def pep_reference_role(role, rawtext, text, lineno, inliner,
                        options={}, content=[]):
     try:
-        pepnum = int(text)
+        pepnum = int(utils.unescape(text))
         if pepnum < 0 or pepnum > 9999:
             raise ValueError
     except ValueError:
@@ -268,7 +268,7 @@ def pep_reference_role(role, rawtext, text, lineno, inliner,
     ref = (inliner.document.settings.pep_base_url
            + inliner.document.settings.pep_file_url_template % pepnum)
     set_classes(options)
-    return [nodes.reference(rawtext, 'PEP ' + utils.unescape(text), refuri=ref,
+    return [nodes.reference(rawtext, 'PEP ' + text, refuri=ref,
                             **options)], []
 
 register_canonical_role('pep-reference', pep_reference_role)
@@ -276,7 +276,7 @@ register_canonical_role('pep-reference', pep_reference_role)
 def rfc_reference_role(role, rawtext, text, lineno, inliner,
                        options={}, content=[]):
     try:
-        rfcnum = int(text)
+        rfcnum = int(utils.unescape(text))
         if rfcnum <= 0:
             raise ValueError
     except ValueError:
@@ -288,7 +288,7 @@ def rfc_reference_role(role, rawtext, text, lineno, inliner,
     # Base URL mainly used by inliner.rfc_reference, so this is correct:
     ref = inliner.document.settings.rfc_base_url + inliner.rfc_url % rfcnum
     set_classes(options)
-    node = nodes.reference(rawtext, 'RFC ' + utils.unescape(text), refuri=ref,
+    node = nodes.reference(rawtext, 'RFC ' + text, refuri=ref,
                            **options)
     return [node], []
 
