@@ -5,8 +5,8 @@ Smart Quotes for Docutils
 :Author: Günter Milde,
          based on SmartyPants by John Gruber, Brad Choate, and Chad Miller
 :Contact: docutils-develop@lists.sourceforge.net
-:Revision: $Revision$
-:Date: $Date$
+:Revision: $Revision: 8112 $
+:Date: $Date: 2017-06-14 16:20:20 +0200 (Mi, 14. Jun 2017) $
 :License: Released under the terms of the `2-Clause BSD license`_
 :Abstract: This document describes the Docutils `smartquotes` module.
 
@@ -25,19 +25,19 @@ transformation on Text nodes that includes the following steps:
 - three consecutive dots (``...`` or ``. . .``) into an ellipsis entity.
 
 This means you can write, edit, and save your documents using plain old
-ASCII---straight quotes, plain dashes, and plain dots---while Docutils
+ASCII -- straight quotes, plain dashes, and plain dots -- while Docutils
 generates documents with typographical quotes, dashes, and ellipses.
 
 Advantages:
 
 * typing speed (especially when blind-typing),
 * the possibility to change the quoting style of the
-  complete document with just one configuration option, and
-* restriction to 7-bit characters in the source.
+  complete document with just one configuration option,
+* restriction to 7-bit ASCII characters in the source.
 
 However, there are `algorithmic shortcomings`_ for 2 reasons:
 
-* Dual use of the "ASCII-apostrophe" (') as single quote and apostrophe,
+* dual use of the "ASCII-apostrophe" (') as single quote and apostrophe,
 * languages that do not use whitespace around words.
 
 So, please consider also
@@ -54,22 +54,25 @@ The `SmartQuotes` transform does not modify characters in literal text
 such as source code, maths, or literal blocks.
 
 If you need literal straight quotes (or plain hyphens and periods) in normal
-text, you can backslash escape the characters to preserve
-ASCII-punctuation. You need two backslashes as one backslash is removed by
-the reStructuredText `escaping mechanism`_.
+text, you can `backslash escape`_ the characters to preserve
+ASCII-punctuation.
 
-========  =========  ========  =========
-Escape    Character  Escape    Character
-========  =========  ========  =========
-``\\``    \\         ``\\.``   \\.
-``\\"``   \\"        ``\\-``   \\-
-``\\'``   \\'        ``\\```   \\`
-========  =========  ========  =========
+.. class:: booktabs
+
+=========  ========= == ========  ==========
+Input      Output       Input     Output
+=========  ========= == ========  ==========
+``\\``     \\           ``\...``  \...
+``\"``     \"           ``\--``   \--
+``\'``     \'           ``\```    \`
+=========  ========= == ========  ==========
 
 This is useful, for example, when you want to use straight quotes as
-foot and inch marks: 6\\'2\\" tall; a 17\\" iMac.
+foot and inch marks:
 
-.. _escaping mechanism: ../ref/rst/restructuredtext.html#escaping-mechanism
+  6\'2\" tall; a 17\" monitor.
+
+.. _backslash escape: ../ref/rst/restructuredtext.html#escaping-mechanism
 
 
 Localisation
@@ -82,7 +85,7 @@ __ https://en.wikipedia.org/wiki/Quotation_mark#Summary_table
 
 `SmartQuotes` inserts quotation marks depending on the language of the
 current block element and the value of the `"smart_quotes" setting`_.\
-[#x-altquot]_ 
+[#x-altquot]_
 There is built-in support for the following languages:\ [#smartquotes-locales]_
 
 :af: .. class:: language-af
