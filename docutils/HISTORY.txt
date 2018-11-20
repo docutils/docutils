@@ -47,6 +47,11 @@ Changes Since 0.14
 
   - Fix bug #281: Remove escaping backslashes in meta directive content.
 
+* docutils/parsers/rst/directives/misc.py:
+
+  - Don't convert tabs to spaces, if `tab_width` is negative in
+    `include` directive with `code` option.
+
 * docutils/parsers/rst/directives/tables.py:
 
   - Apply patch #121: Add "width" option for the table directives.
