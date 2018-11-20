@@ -230,54 +230,54 @@ totest['bibliographic_field_lists'] = ((DocInfo,), [
             <author>
                 One, Only
 """],
-[r""":Authors: Me\, Myself; **I**
-:Authors: Pac\;Man\\; Ms. Pac\Man; Pac\ Man, Jr.
-:Authors:
-    Here
-
-    The\re
-
-    *Every\ where*
-:Authors: - First\\
-          - Se\ cond
-          - Thir\d
-""",
-"""\
-<document source="test data">
-    <docinfo>
-        <authors>
-            <author>
-                Me, Myself
-            <author>
-                I
-        <authors>
-            <author>
-                Pac;Man\\
-            <author>
-                Ms. PacMan
-            <author>
-                PacMan, Jr.
-        <authors>
-            <author>
-                Here
-            <author>
-                There
-            <author>
-                <emphasis>
-                    Everywhere
-        <authors>
-            <author>
-                First\\
-            <author>
-                Second
-            <author>
-                Third
-"""],
+# [r""":Authors: Me\, Myself; **I**
+# :Authors: Pac\;Man\\; Ms. Pac\Man; Pac\ Man, Jr.
+# :Authors:
+#     Here
+# 
+#     The\re
+# 
+#     *Every\ where*
+# :Authors: - First\\
+#           - Se\ cond
+#           - Thir\d
+# """,
+# """\
+# <document source="test data">
+#     <docinfo>
+#         <authors>
+#             <author>
+#                 Me, Myself
+#             <author>
+#                 I
+#         <authors>
+#             <author>
+#                 Pac;Man\\
+#             <author>
+#                 Ms. PacMan
+#             <author>
+#                 PacMan, Jr.
+#         <authors>
+#             <author>
+#                 Here
+#             <author>
+#                 There
+#             <author>
+#                 <emphasis>
+#                     Everywhere
+#         <authors>
+#             <author>
+#                 First\\
+#             <author>
+#                 Second
+#             <author>
+#                 Third
+# """],
 ["""\
 :Authors:
 
-:Authors: 1. One
-          2. Two
+:Authors: A. Einstein
+          B. Shaw
 
 :Authors:
     -
@@ -307,13 +307,13 @@ totest['bibliographic_field_lists'] = ((DocInfo,), [
             <field_name>
                 Authors
             <field_body>
-                <enumerated_list enumtype="arabic" prefix="" suffix=".">
+                <enumerated_list enumtype="upperalpha" prefix="" suffix=".">
                     <list_item>
                         <paragraph>
-                            One
+                            Einstein
                     <list_item>
                         <paragraph>
-                            Two
+                            Shaw
                 <system_message level="2" line="3" source="test data" type="WARNING">
                     <paragraph>
                         Bibliographic field "Authors" incompatible with extraction: it must contain either a single paragraph (with authors separated by one of ";,"), multiple paragraphs (one per author), or a bullet list with one paragraph (one author) per item.

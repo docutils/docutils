@@ -337,9 +337,5 @@ class HelperFunctionTests(unittest.TestCase):
         restored = utils.unescape(self.nulled, restore_backslashes=True)
         self.assertEqual(restored, self.escaped)
 
-    def test_unescape_rawsource(self):
-        unescaped = utils.unescape_rawsource(self.escaped)
-        self.assertEqual(unescaped, self.unescaped)
-
 if __name__ == '__main__':
     unittest.main()

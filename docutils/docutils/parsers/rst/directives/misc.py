@@ -323,7 +323,7 @@ class Unicode(Directive):
             except ValueError, error:
                 raise self.error(u'Invalid character code: %s\n%s'
                     % (code, ErrorString(error)))
-            element += nodes.Text(utils.unescape_rawsource(decoded), decoded)
+            element += nodes.Text(utils.unescape(decoded), decoded)
         return element.children
 
 
