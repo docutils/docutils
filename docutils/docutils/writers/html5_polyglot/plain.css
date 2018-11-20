@@ -22,8 +22,8 @@
 
 /* "page layout" */
 body {
-  padding: 0 5%;
-  margin: 8px 0;
+  margin: 0;
+  background-color: #dbdbdb;
 }
 div.document {
   line-height:1.3;
@@ -32,7 +32,9 @@ div.document {
   /* avoid long lines --> better reading */
   /* OTOH: lines should not be too short because of missing hyphenation, */
   max-width: 50em;
+  padding: 1px 2%; /* 1px on top avoids grey bar above title (mozilla) */
   margin: auto;
+  background-color: white;
 }
 
 /* Sections */
