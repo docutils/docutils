@@ -12,8 +12,6 @@ import sys
 
 from docutils import utils, parsers, Component
 from docutils.transforms import universal
-if sys.version_info < (2,5):
-    from docutils._compat import __import__
 
 
 class Reader(Component):

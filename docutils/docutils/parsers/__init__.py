@@ -10,8 +10,6 @@ __docformat__ = 'reStructuredText'
 
 import sys
 from docutils import Component
-if sys.version_info < (2,5):
-    from docutils._compat import __import__
 
 
 class Parser(Component):
