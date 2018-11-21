@@ -15,8 +15,6 @@ import sys
 from docutils import nodes
 from docutils.utils import split_escaped_whitespace, escape2null, unescape
 from docutils.parsers.rst.languages import en as _fallback_language_module
-if sys.version_info < (2,5):
-    from docutils._compat import __import__
 
 
 _directive_registry = {

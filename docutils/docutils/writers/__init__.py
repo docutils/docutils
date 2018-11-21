@@ -14,8 +14,6 @@ import sys
 import docutils
 from docutils import languages, Component
 from docutils.transforms import universal
-if sys.version_info < (2,5):
-    from docutils._compat import __import__
 
 
 class Writer(Component):

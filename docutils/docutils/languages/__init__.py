@@ -14,8 +14,7 @@ __docformat__ = 'reStructuredText'
 import sys
 
 from docutils.utils import normalize_language_tag
-if sys.version_info < (2,5):
-    from docutils._compat import __import__
+
 
 _languages = {}
 
