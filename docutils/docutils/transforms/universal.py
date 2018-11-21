@@ -222,10 +222,9 @@ class SmartQuotes(Transform):
     nodes_to_skip = (nodes.FixedTextElement, nodes.Special)
     """Do not apply "smartquotes" to instances of these block-level nodes."""
 
-    literal_nodes = (nodes.FixedTextElement, nodes.Special,
-                     nodes.image, nodes.literal, nodes.math,
+    literal_nodes = (nodes.image, nodes.literal, nodes.math,
                      nodes.raw, nodes.problematic)
-    """Do apply smartquotes to instances of these inline nodes."""
+    """Do not change quotes in instances of these inline nodes."""
 
     smartquotes_action = 'qDe'
     """Setting to select smartquote transformations.
@@ -241,14 +240,14 @@ class SmartQuotes(Transform):
     def get_tokens(self, txtnodes):
         # A generator that yields ``(texttype, nodetext)`` tuples for a list
         # of "Text" nodes (interface to ``smartquotes.educate_tokens()``).
-        for node in txtnodes:
-            if (isinstance(node.parent, self.literal_nodes)
-                or isinstance(node.parent.parent, self.literal_nodes)):
-                yield ('literal', unicode(node))
-            else: 
-                # SmartQuotes uses backslash escapes instead of null-escapes
-                txt = re.sub('(?<=\x00)([-\\\'".`])', r'\\\1', unicode(node))
-                yield ('plain', txt)
+
+        texttype = {True: 'literal', # "literal" text is not changed:
+                    False: 'plain'}
+        for txtnode in txtnodes:
+            nodetype = texttype[isinstance(txtnode.parent,
+                                           self.literal_nodes)]
+            yield (nodetype, txtnode.astext())
+
 
     def apply(self):
         smart_quotes = self.document.settings.smart_quotes

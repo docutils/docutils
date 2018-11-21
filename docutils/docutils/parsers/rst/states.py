@@ -713,20 +713,20 @@ class Inliner:
             return (string[:matchend], [], string[matchend:], [], '')
         endmatch = end_pattern.search(string[matchend:])
         if endmatch and endmatch.start(1):  # 1 or more chars
-            text = endmatch.string[:endmatch.start(1)]
-            if restore_backslashes:
-                text = unescape(text, True)
+            _text = endmatch.string[:endmatch.start(1)]
+            text = unescape(_text, restore_backslashes)
             textend = matchend + endmatch.end(1)
             rawsource = unescape(string[matchstart:textend], True)
             node = nodeclass(rawsource, text)
-            node[0].rawsource = unescape(text, True)
+            node[0].rawsource = unescape(_text, True)
             return (string[:matchstart], [node],
                     string[textend:], [], endmatch.group(1))
         msg = self.reporter.warning(
               'Inline %s start-string without end-string.'
               % nodeclass.__name__, line=lineno)
         text = unescape(string[matchstart:matchend], True)
-        prb = self.problematic(text, text, msg)
+        rawsource = unescape(string[matchstart:matchend], True)
+        prb = self.problematic(text, rawsource, msg)
         return string[:matchstart], [prb], string[matchend:], [msg], ''
 
     def problematic(self, text, rawsource, message):
@@ -784,7 +784,7 @@ class Inliner:
                     prb = self.problematic(text, text, msg)
                     return string[:rolestart], [prb], string[textend:], [msg]
                 return self.phrase_ref(string[:matchstart], string[textend:],
-                                       rawsource, escaped)
+                                       rawsource, escaped, unescape(escaped))
             else:
                 rawsource = unescape(string[rolestart:textend], True)
                 nodelist, messages = self.interpreted(rawsource, escaped, role,
@@ -798,30 +798,26 @@ class Inliner:
         prb = self.problematic(text, text, msg)
         return string[:matchstart], [prb], string[matchend:], [msg]
 
-    def phrase_ref(self, before, after, rawsource, escaped, text=None):
-        # `text` is ignored (since 0.15dev)
+    def phrase_ref(self, before, after, rawsource, escaped, text):
         match = self.patterns.embedded_link.search(escaped)
         if match: # embedded <URI> or <alias_>
-            text = escaped[:match.start(0)]
-            unescaped = unescape(text)
-            rawtext = unescape(text, True)
-            aliastext = match.group(2)
-            rawaliastext = unescape(aliastext, True)
+            text = unescape(escaped[:match.start(0)])
+            rawtext = unescape(escaped[:match.start(0)], True)
+            aliastext = unescape(match.group(2))
+            rawaliastext = unescape(match.group(2), True)
             underscore_escaped = rawaliastext.endswith(r'\_')
             if aliastext.endswith('_') and not (underscore_escaped
                                         or self.patterns.uri.match(aliastext)):
                 aliastype = 'name'
-                alias = normalize_name(unescape(aliastext[:-1]))
+                alias = normalize_name(aliastext[:-1])
                 target = nodes.target(match.group(1), refname=alias)
-                target.indirect_reference_name = whitespace_normalize_name(
-                                                    unescape(aliastext[:-1]))
+                target.indirect_reference_name = aliastext[:-1]
             else:
                 aliastype = 'uri'
-                # remove unescaped whitespace
                 alias_parts = split_escaped_whitespace(match.group(2))
-                alias = ' '.join(''.join(part.split())
+                alias = ' '.join(''.join(unescape(part).split())
                                  for part in alias_parts)
-                alias = self.adjust_uri(unescape(alias))
+                alias = self.adjust_uri(alias)
                 if alias.endswith(r'\_'):
                     alias = alias[:-2] + '_'
                 target = nodes.target(match.group(1), refuri=alias)
@@ -831,17 +827,14 @@ class Inliner:
                                        % aliastext)
             if not text:
                 text = alias
-                unescaped = unescape(text)
                 rawtext = rawaliastext
         else:
-            text = escaped
-            unescaped = unescape(text)
             target = None
             rawtext = unescape(escaped, True)
 
-        refname = normalize_name(unescaped)
+        refname = normalize_name(text)
         reference = nodes.reference(rawsource, text,
-                                    name=whitespace_normalize_name(unescaped))
+                                    name=whitespace_normalize_name(text))
         reference[0].rawsource = rawtext
 
         node_list = [reference]
@@ -998,9 +991,11 @@ class Inliner:
             else:
                 addscheme = ''
             text = match.group('whole')
-            refuri = addscheme + unescape(text)
-            reference = nodes.reference(unescape(text, True), text,
-                                        refuri=refuri)
+            unescaped = unescape(text)
+            rawsource = unescape(text, True)
+            reference = nodes.reference(rawsource, unescaped,
+                                        refuri=addscheme + unescaped)
+            reference[0].rawsource = rawsource
             return [reference]
         else:                   # not a valid scheme
             raise MarkupMismatch
@@ -1008,25 +1003,27 @@ class Inliner:
     def pep_reference(self, match, lineno):
         text = match.group(0)
         if text.startswith('pep-'):
-            pepnum = int(unescape(match.group('pepnum1')))
+            pepnum = int(match.group('pepnum1'))
         elif text.startswith('PEP'):
-            pepnum = int(unescape(match.group('pepnum2')))
+            pepnum = int(match.group('pepnum2'))
         else:
             raise MarkupMismatch
         ref = (self.document.settings.pep_base_url
                + self.document.settings.pep_file_url_template % pepnum)
-        return [nodes.reference(unescape(text, True), text, refuri=ref)]
+        unescaped = unescape(text)
+        return [nodes.reference(unescape(text, True), unescaped, refuri=ref)]
 
     rfc_url = 'rfc%d.html'
 
     def rfc_reference(self, match, lineno):
         text = match.group(0)
         if text.startswith('RFC'):
-            rfcnum = int(unescape(match.group('rfcnum')))
+            rfcnum = int(match.group('rfcnum'))
             ref = self.document.settings.rfc_base_url + self.rfc_url % rfcnum
         else:
             raise MarkupMismatch
-        return [nodes.reference(unescape(text, True), text, refuri=ref)]
+        unescaped = unescape(text)
+        return [nodes.reference(unescape(text, True), unescaped, refuri=ref)]
 
     def implicit_inline(self, text, lineno):
         """
@@ -1048,7 +1045,7 @@ class Inliner:
                             self.implicit_inline(text[match.end():], lineno))
                 except MarkupMismatch:
                     pass
-        return [nodes.Text(text, unescape(text, True))]
+        return [nodes.Text(unescape(text), rawsource=unescape(text, True))]
 
     dispatch = {'*': emphasis,
                 '**': strong,
@@ -2845,7 +2842,6 @@ class Text(RSTState):
         self.nested_parse(indented, input_offset=line_offset, node=definition)
         return itemnode, blank_finish
 
-    #@ TODO ignore null-escaped delimiter
     classifier_delimiter = re.compile(' +: +')
 
     def term(self, lines, lineno):
@@ -2859,12 +2855,12 @@ class Text(RSTState):
         for i in range(len(text_nodes)):
             node = text_nodes[i]
             if isinstance(node, nodes.Text):
-                parts = self.classifier_delimiter.split(node)
+                parts = self.classifier_delimiter.split(node.rawsource)
                 if len(parts) == 1:
                     node_list[-1] += node
                 else:
                     text = parts[0].rstrip()
-                    textnode = nodes.Text(text, unescape(text, True))
+                    textnode = nodes.Text(utils.unescape(text, True))
                     node_list[-1] += textnode
                     for part in parts[1:]:
                         classifier_node = nodes.classifier(
