@@ -246,8 +246,6 @@ Term: not a classifier
     Because there's no space before the colon.
 Term :not a classifier
     Because there's no space after the colon.
-Term \: not a classifier
-    Because the colon is escaped.
 """,
 """\
 <document source="test data">
@@ -264,12 +262,6 @@ Term \: not a classifier
             <definition>
                 <paragraph>
                     Because there's no space after the colon.
-        <definition_list_item>
-            <term>
-                Term : not a classifier
-            <definition>
-                <paragraph>
-                    Because the colon is escaped.
 """],
 ["""\
 ``Term : not a classifier``

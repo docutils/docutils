@@ -28,7 +28,7 @@ Changes Since 0.14
 
 * docutils/io.py
 
-  - Fix [ 348 ] Since Python 3.4, the 'U' universal newlines mode has been 
+  - Fix [ 348 ] Since Python 3.4, the 'U' universal newlines mode has been
     deprecated (thanks to hugovk).
 
 * docutils/nodes.py
@@ -39,9 +39,7 @@ Changes Since 0.14
 * docutils/parsers/rst/states.py:
 
   - Allow embedded colons in field list field names.
-  - Add `rawsource` attribute for text of inline elements and definition
-    list terms.
-  - Fix: definition list term classifier starting with a reference crash. 
+  - Add `rawsource` attribute for text of inline elements.
 
 * docutils/parsers/rst/directives/html.py:
 
