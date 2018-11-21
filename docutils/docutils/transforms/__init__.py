@@ -70,8 +70,9 @@ class Transformer(TransformSpec):
 
     def __init__(self, document):
         self.transforms = []
-        """List of transforms to apply.  Each item is a 3-tuple:
-        ``(priority string, transform class, pending node or None)``."""
+        """List of transforms to apply.  Each item is a 4-tuple:
+        ``(priority string, transform class, pending node or None, kwargs)``.
+        """
 
         self.unknown_reference_resolvers = []
         """List of hook functions which assist in resolving references"""
