@@ -198,7 +198,7 @@ class XMLTranslator(nodes.GenericNodeVisitor):
         raise nodes.SkipNode # content already processed
 
 
-class TestXml(xml.sax.ContentHandler):
+class TestXml(xml.sax.handler.ContentHandler):
 
     def setDocumentLocator(self, locator):
         self.locator = locator
