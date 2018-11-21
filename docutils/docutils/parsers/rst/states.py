@@ -2855,7 +2855,7 @@ class Text(RSTState):
         for i in range(len(text_nodes)):
             node = text_nodes[i]
             if isinstance(node, nodes.Text):
-                parts = self.classifier_delimiter.split(node.rawsource)
+                parts = self.classifier_delimiter.split(node)
                 if len(parts) == 1:
                     node_list[-1] += node
                 else:
@@ -2863,9 +2863,8 @@ class Text(RSTState):
                     textnode = nodes.Text(utils.unescape(text, True))
                     node_list[-1] += textnode
                     for part in parts[1:]:
-                        classifier_node = nodes.classifier(
-                                            unescape(part, True), part)
-                        node_list.append(classifier_node)
+                        node_list.append(
+                            nodes.classifier(unescape(part, True), part))
             else:
                 node_list[-1] += node
         return node_list, messages
