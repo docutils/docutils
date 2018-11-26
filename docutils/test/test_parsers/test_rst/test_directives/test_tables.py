@@ -37,8 +37,7 @@ else:
 # CPython has backported to 2.7.4, PyPy has not
 # platform.python_implementation is new in 2.6
 csv_eod_error_str = 'unexpected end of data'
-if ((3,) < sys.version_info < (3,2,4) or sys.version_info < (2,7,4)
-    or platform.python_implementation() == 'PyPy'):
+if sys.version_info < (2,7,4) or platform.python_implementation() == 'PyPy':
     csv_eod_error_str = 'newline inside string'
 # pypy adds a line number
 if sys.version_info > (2, 6) and platform.python_implementation() == 'PyPy':
