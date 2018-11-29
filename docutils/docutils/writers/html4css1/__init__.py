@@ -814,14 +814,11 @@ class SimpleListChecker(writers._html_base.SimpleListChecker):
     # def visit_enumerated_list(self, node):
     #     pass
 
-    # def visit_paragraph(self, node):
-    #     raise nodes.SkipNode
+    def visit_paragraph(self, node):
+        raise nodes.SkipNode
 
     def visit_definition_list(self, node):
         raise nodes.NodeFound
 
     def visit_docinfo(self, node):
-        raise nodes.NodeFound
-
-    def visit_definition_list(self, node):
         raise nodes.NodeFound
