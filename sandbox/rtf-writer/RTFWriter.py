@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """ This is a docutils RTF Writer
 
    We just need a few features so it shouldn't be too difficult
@@ -10,7 +11,7 @@
 
       Sean M. Burke, sburke@cpan.org
       
-   Author:    Benoît Allard
+   Author:    BenoÃ®t Allard
    Contact:   benoit@aeteurope.nl
    Copyright: This module has been placed in the public domain.
 """
