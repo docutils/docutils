@@ -91,6 +91,10 @@ class Node(object):
         """Return a deep copy of self (also copying children)."""
         raise NotImplementedError
 
+    def astext(self):
+        """Return a string representation of this Node."""
+        raise NotImplementedError
+
     def setup_child(self, child):
         child.parent = self
         if self.document:
@@ -390,7 +394,7 @@ class Text(Node, reprunicode):
 
     def rstrip(self, chars=None):
         return self.__class__(reprunicode.rstrip(self, chars), self.rawsource)
-    
+
     def lstrip(self, chars=None):
         return self.__class__(reprunicode.lstrip(self, chars), self.rawsource)
 
