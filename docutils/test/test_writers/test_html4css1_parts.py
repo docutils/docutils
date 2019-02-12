@@ -56,6 +56,16 @@ Simple String with an even simpler ``inline literal``
  'html_head': '''...<title>&lt;string&gt;</title>\\n'''}
 """],
 ["""\
+Simple ``inline\xA0literal`` with NBSP
+""",
+"""\
+{'fragment': '''<p>Simple <tt class="docutils literal">inline&nbsp;literal</tt> with NBSP</p>\\n''',
+ 'html_body': '''<div class="document">
+<p>Simple <tt class="docutils literal">inline&nbsp;literal</tt> with NBSP</p>
+</div>\\n''',
+ 'html_head': '''...<title>&lt;string&gt;</title>\\n'''}
+"""],
+["""\
 A simple `anonymous reference`__
 
 __ http://www.test.com/test_url
