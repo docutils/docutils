@@ -1581,7 +1581,7 @@ Options: ``--compound-enumerators``, ``--no-compound-enumerators``.
 literal_block_env
 ~~~~~~~~~~~~~~~~~
 
-When possibile\ [#]_, use the specified environment for `literal blocks`_.
+When possible\ [#]_, use the specified environment for `literal blocks`_.
 
 Default: "" (quoting of whitespace and special chars).
 Option: ``--literal-block-env``.

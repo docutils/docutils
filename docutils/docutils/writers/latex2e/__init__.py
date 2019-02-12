@@ -170,11 +170,11 @@ class Writer(writers.Writer):
           'for compound enumerated lists.  Default is "-".',
           ['--section-enumerator-separator'],
           {'default': '-', 'metavar': '<char>'}),
-         ('When possibile, use the specified environment for literal-blocks. '
+         ('When possible, use the specified environment for literal-blocks. '
           'Default is quoting of whitespace and special chars.',
           ['--literal-block-env'],
           {'default': ''}),
-         ('When possibile, use verbatim for literal-blocks. '
+         ('When possible, use verbatim for literal-blocks. '
           'Compatibility alias for "--literal-block-env=verbatim".',
           ['--use-verbatim-when-possible'],
           {'default': 0, 'action': 'store_true',
