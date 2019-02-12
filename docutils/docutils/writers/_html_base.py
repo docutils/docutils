@@ -183,7 +183,7 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     stylesheet_link = '<link rel="stylesheet" href="%s" type="text/css" />\n'
     embedded_stylesheet = '<style type="text/css">\n\n%s\n</style>\n'
-    words_and_spaces = re.compile(r'\S+| +|\n')
+    words_and_spaces = re.compile(r'[^ \n]+| +|\n')
     # wrap point inside word:
     in_word_wrap_point = re.compile(r'.+\W\W.+|[-?].+', re.U)
     lang_attribute = 'lang' # name changes to 'xml:lang' in XHTML 1.1

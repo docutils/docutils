@@ -62,6 +62,10 @@ Changes Since 0.14
 
   - Fix bug #331: fixed the "trim" options of the "unicode" directive.
 
+* docutils/utils/__init__.py:
+
+  - Deprecate `unique_combinations` (obsoleted by `itertools.combinations`).
+
 * docutils/utils/smartquotes.py:
 
   - Fix bug #332: use open quote after whitespace, ZWSP, and ZWNJ.
@@ -71,16 +75,16 @@ Changes Since 0.14
   - automatically add HTML5-compatible meta tags for docinfo items
     "authors", "date", and "copyright".
 
+* docutils/writers/_html_base.py
+
+  - Fix bug #358: Non-breaking space removed from fixed-width literal.
+
 * docutils/writers/latex2e/__init__.py:
 
   - Fix bug #323: spurious ``\phantomsection`` and whitespace in
     ``parts['title']``.
   - Fix bug #324: Invalid LaTeX for table with empty multicolumn cell.
   - Fixes to literal block handling.
-
-* docutils/utils/__init__.py:
-
-  - Deprecate `unique_combinations` (obsoleted by `itertools.combinations`).
 
 
 Release 0.14 (2017-08-03)
