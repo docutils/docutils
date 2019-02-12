@@ -130,17 +130,18 @@ class StandardTestCase(unittest.TestCase):
                     msg or '%s == %s' % _format_str(first, second))
 
     # assertIn and assertNotIn: new in Python 2.7:
-
-    def assertIn(self, a, b, msg=None):
-        if a not in b:
-            raise self.failureException, (
-                    msg or '%s not in %s' % _format_str(a, b))
-
-    def assertNotIn(self, a, b, msg=None):
-        if a in b:
-            raise self.failureException, (
-                    msg or '%s in %s' % _format_str(a, b))
-
+    if sys.version_info < (2,7):
+    
+        def assertIn(self, a, b, msg=None):
+            if a not in b:
+                raise self.failureException, (
+                        msg or '%s not in %s' % _format_str(a, b))
+    
+        def assertNotIn(self, a, b, msg=None):
+            if a in b:
+                raise self.failureException, (
+                        msg or '%s in %s' % _format_str(a, b))
+    
     # aliases for assertion methods, deprecated since Python 2.7
 
     failUnlessEqual = assertEquals = assertEqual
