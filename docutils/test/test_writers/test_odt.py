@@ -32,7 +32,6 @@ Instructions for adding a new test:
 
 import sys
 import os
-import StringIO
 import zipfile
 from xml.dom import minidom
 import tempfile
@@ -60,18 +59,18 @@ class DocutilsOdtTestCase(DocutilsTestSupport.StandardTestCase):
             #from lxml import etree
             #WhichElementTree = 'lxml'
             raise ImportError('Ignoring lxml')
-        except ImportError, e:
+        except ImportError as e:
             try:
                 # 2. Try to use ElementTree from the Python standard library.
                 from xml.etree import ElementTree as etree
                 WhichElementTree = 'elementtree'
-            except ImportError, e:
+            except ImportError as e:
                 try:
                     # 3. Try to use a version of ElementTree installed as a separate
                     #    product.
                     from elementtree import ElementTree as etree
                     WhichElementTree = 'elementtree'
-                except ImportError, e:
+                except ImportError as e:
                     s1 = '\nSkipped test of odf_odt writer.  ' \
                          'In order to test odf_odt writer ' \
                          'must install either a version of Python containing ' \
