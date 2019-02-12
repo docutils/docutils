@@ -913,7 +913,9 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                     self.document.reporter.warning(
                         'Style "%s" is not a style used by odtwriter.' % (
                             rststyle, ))
-                if sys.version_info.major == 2:
+                if sys.version_info.major >= 3:
+                    self.format_map[rststyle] = format
+                else:
                     self.format_map[rststyle] = format.decode('utf-8')
         self.section_level = 0
         self.section_count = 0
