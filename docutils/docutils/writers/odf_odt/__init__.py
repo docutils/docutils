@@ -7,8 +7,6 @@ Open Document Format (ODF) Writer.
 
 """
 
-VERSION = '1.0a'
-
 __docformat__ = 'reStructuredText'
 
 
@@ -20,6 +18,16 @@ import zipfile
 from xml.dom import minidom
 import time
 import re
+import copy
+import itertools
+import docutils
+try:
+    import locale   # module missing in Jython
+except ImportError:
+    pass
+from docutils import frontend, nodes, utils, writers, languages
+from docutils.readers import standalone
+from docutils.transforms import references
 if sys.version_info.major >= 3:
     from io import StringIO
     from urllib.request import urlopen
@@ -27,17 +35,9 @@ if sys.version_info.major >= 3:
 else:
     from StringIO import StringIO
     from urllib2 import urlopen, HTTPError
-import copy
-import itertools
-import docutils
-try:
-    import locale # module missing in Jython
-except ImportError:
-    pass
-from docutils import frontend, nodes, utils, writers, languages
-from docutils.readers import standalone
-from docutils.transforms import references
 
+
+VERSION = '1.0a'
 
 IMAGE_NAME_COUNTER = itertools.count()
 WhichElementTree = ''
@@ -46,18 +46,18 @@ try:
     #from lxml import etree
     #WhichElementTree = 'lxml'
     raise ImportError('Ignoring lxml')
-except ImportError as e:
+except ImportError:
     try:
         # 2. Try to use ElementTree from the Python standard library.
         from xml.etree import ElementTree as etree
         WhichElementTree = 'elementtree'
-    except ImportError as e:
+    except ImportError:
         try:
             # 3. Try to use a version of ElementTree installed as a separate
             #    product.
             from elementtree import ElementTree as etree
             WhichElementTree = 'elementtree'
-        except ImportError as e:
+        except ImportError:
             s1 = 'Must install either a version of Python containing ' \
                  'ElementTree (Python version >=2.5) or install ElementTree.'
             raise ImportError(s1)
@@ -73,7 +73,7 @@ try:
     else:
         from pygmentsformatter import OdtPygmentsProgFormatter, \
             OdtPygmentsLaTeXFormatter
-except (ImportError, SyntaxError) as exp:
+except (ImportError, SyntaxError):
     pygments = None
 
 # check for the Python Imaging Library
@@ -82,7 +82,9 @@ try:
 except ImportError:
     try:  # sometimes PIL modules are put in PYTHONPATH's root
         import Image
-        class PIL(object): pass  # dummy wrapper
+
+        class PIL(object):
+            pass  # dummy wrapper
         PIL.Image = Image
     except ImportError:
         PIL = None
@@ -109,12 +111,15 @@ if WhichElementTree == 'elementtree':
         _ElementInterface = etree.Element
     else:
         _ElementInterface = etree._ElementInterface
+
     class _ElementInterfaceWrapper(_ElementInterface):
         def __init__(self, tag, attrib=None):
             _ElementInterface.__init__(self, tag, attrib)
             _parents[self] = None
+
         def setparent(self, parent):
             _parents[self] = parent
+
         def getparent(self):
             return _parents[self]
 
@@ -129,7 +134,8 @@ FILL_PAT2 = re.compile(r' {2,}')
 
 TABLESTYLEPREFIX = 'rststyle-table-'
 TABLENAMEDEFAULT = '%s0' % TABLESTYLEPREFIX
-TABLEPROPERTYNAMES = ('border', 'border-top', 'border-left',
+TABLEPROPERTYNAMES = (
+    'border', 'border-top', 'border-left',
     'border-right', 'border-bottom', )
 
 GENERATOR_DESC = 'Docutils.org/odf_odt'
@@ -137,7 +143,7 @@ GENERATOR_DESC = 'Docutils.org/odf_odt'
 NAME_SPACE_1 = 'urn:oasis:names:tc:opendocument:xmlns:office:1.0'
 
 CONTENT_NAMESPACE_DICT = CNSD = {
-#    'office:version': '1.0',
+    #'office:version': '1.0',
     'chart': 'urn:oasis:names:tc:opendocument:xmlns:chart:1.0',
     'dc': 'http://purl.org/dc/elements/1.1/',
     'dom': 'http://www.w3.org/2001/xml-events',
@@ -163,10 +169,10 @@ CONTENT_NAMESPACE_DICT = CNSD = {
     'xlink': 'http://www.w3.org/1999/xlink',
     'xsd': 'http://www.w3.org/2001/XMLSchema',
     'xsi': 'http://www.w3.org/2001/XMLSchema-instance',
-    }
+}
 
 STYLES_NAMESPACE_DICT = SNSD = {
-#    'office:version': '1.0',
+    #'office:version': '1.0',
     'chart': 'urn:oasis:names:tc:opendocument:xmlns:chart:1.0',
     'dc': 'http://purl.org/dc/elements/1.1/',
     'dom': 'http://www.w3.org/2001/xml-events',
@@ -188,14 +194,14 @@ STYLES_NAMESPACE_DICT = SNSD = {
     'table': 'urn:oasis:names:tc:opendocument:xmlns:table:1.0',
     'text': 'urn:oasis:names:tc:opendocument:xmlns:text:1.0',
     'xlink': 'http://www.w3.org/1999/xlink',
-    }
+}
 
 MANIFEST_NAMESPACE_DICT = MANNSD = {
     'manifest': 'urn:oasis:names:tc:opendocument:xmlns:manifest:1.0',
 }
 
 META_NAMESPACE_DICT = METNSD = {
-#    'office:version': '1.0',
+    #'office:version': '1.0',
     'dc': 'http://purl.org/dc/elements/1.1/',
     'meta': 'urn:oasis:names:tc:opendocument:xmlns:meta:1.0',
     'office': NAME_SPACE_1,
@@ -220,7 +226,8 @@ CONTENT_NAMESPACE_ATTRIB = {
     'xmlns:meta': 'urn:oasis:names:tc:opendocument:xmlns:meta:1.0',
     'xmlns:number': 'urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0',
     'xmlns:office': NAME_SPACE_1,
-    'xmlns:presentation': 'urn:oasis:names:tc:opendocument:xmlns:presentation:1.0',
+    'xmlns:presentation':
+        'urn:oasis:names:tc:opendocument:xmlns:presentation:1.0',
     'xmlns:ooo': 'http://openoffice.org/2004/office',
     'xmlns:oooc': 'http://openoffice.org/2004/calc',
     'xmlns:ooow': 'http://openoffice.org/2004/writer',
@@ -233,7 +240,7 @@ CONTENT_NAMESPACE_ATTRIB = {
     'xmlns:xlink': 'http://www.w3.org/1999/xlink',
     'xmlns:xsd': 'http://www.w3.org/2001/XMLSchema',
     'xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance',
-    }
+}
 
 STYLES_NAMESPACE_ATTRIB = {
     #'office:version': '1.0',
@@ -248,7 +255,8 @@ STYLES_NAMESPACE_ATTRIB = {
     'xmlns:meta': 'urn:oasis:names:tc:opendocument:xmlns:meta:1.0',
     'xmlns:number': 'urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0',
     'xmlns:office': NAME_SPACE_1,
-    'xmlns:presentation': 'urn:oasis:names:tc:opendocument:xmlns:presentation:1.0',
+    'xmlns:presentation':
+        'urn:oasis:names:tc:opendocument:xmlns:presentation:1.0',
     'xmlns:ooo': 'http://openoffice.org/2004/office',
     'xmlns:oooc': 'http://openoffice.org/2004/calc',
     'xmlns:ooow': 'http://openoffice.org/2004/writer',
@@ -258,7 +266,7 @@ STYLES_NAMESPACE_ATTRIB = {
     'xmlns:table': 'urn:oasis:names:tc:opendocument:xmlns:table:1.0',
     'xmlns:text': 'urn:oasis:names:tc:opendocument:xmlns:text:1.0',
     'xmlns:xlink': 'http://www.w3.org/1999/xlink',
-    }
+}
 
 MANIFEST_NAMESPACE_ATTRIB = {
     'xmlns:manifest': 'urn:oasis:names:tc:opendocument:xmlns:manifest:1.0',
@@ -293,6 +301,7 @@ def Element(tag, attrib=None, nsmap=None, nsdict=CNSD):
         el = _ElementInterfaceWrapper(tag, attrib)
     return el
 
+
 def SubElement(parent, tag, attrib=None, nsmap=None, nsdict=CNSD):
     if attrib is None:
         attrib = {}
@@ -305,6 +314,7 @@ def SubElement(parent, tag, attrib=None, nsmap=None, nsdict=CNSD):
         el.setparent(parent)
     return el
 
+
 def fix_ns(tag, attrib, nsdict):
     nstag = add_ns(tag, nsdict)
     nsattrib = {}
@@ -312,6 +322,7 @@ def fix_ns(tag, attrib, nsdict):
         nskey = add_ns(key, nsdict)
         nsattrib[nskey] = val
     return nstag, nsattrib
+
 
 def add_ns(tag, nsdict=CNSD):
     if WhichElementTree == 'lxml':
@@ -321,6 +332,7 @@ def add_ns(tag, nsdict=CNSD):
             raise RuntimeError('Invalid namespace prefix: %s' % nstag)
         tag = '{%s}%s' % (ns, name,)
     return tag
+
 
 def ToString(et):
     outstream = StringIO()
@@ -339,15 +351,15 @@ def escape_cdata(text):
     text = text.replace(">", "&gt;")
     ascii = ''
     for char in text:
-      if ord(char) >= ord("\x7f"):
-          ascii += "&#x%X;" % ( ord(char), )
-      else:
-          ascii += char
+        if ord(char) >= ord("\x7f"):
+            ascii += "&#x%X;" % (ord(char), )
+        else:
+            ascii += char
     return ascii
 
 
-
 WORD_SPLIT_PAT1 = re.compile(r'\b(\w*)\b\W*')
+
 
 def split_words(line):
     # We need whitespace at the end of the string for our regexpr.
@@ -372,19 +384,26 @@ class TableStyle(object):
     def __init__(self, border=None, backgroundcolor=None):
         self.border = border
         self.backgroundcolor = backgroundcolor
+
     def get_border_(self):
         return self.border_
+
     def set_border_(self, border):
         self.border_ = border
+
     border = property(get_border_, set_border_)
+
     def get_backgroundcolor_(self):
         return self.backgroundcolor_
+
     def set_backgroundcolor_(self, backgroundcolor):
         self.backgroundcolor_ = backgroundcolor
     backgroundcolor = property(get_backgroundcolor_, set_backgroundcolor_)
 
+
 BUILTIN_DEFAULT_TABLE_STYLE = TableStyle(
-    border = '0.0007in solid #000000')
+    border='0.0007in solid #000000')
+
 
 #
 # Information about the indentation level for lists nested inside
@@ -394,12 +413,24 @@ class ListLevel(object):
         self.level = level
         self.sibling_level = sibling_level
         self.nested_level = nested_level
-    def set_sibling(self, sibling_level): self.sibling_level = sibling_level
-    def get_sibling(self): return self.sibling_level
-    def set_nested(self, nested_level): self.nested_level = nested_level
-    def get_nested(self): return self.nested_level
-    def set_level(self, level): self.level = level
-    def get_level(self): return self.level
+
+    def set_sibling(self, sibling_level):
+        self.sibling_level = sibling_level
+
+    def get_sibling(self):
+        return self.sibling_level
+
+    def set_nested(self, nested_level):
+        self.nested_level = nested_level
+
+    def get_nested(self):
+        return self.nested_level
+
+    def set_level(self, level):
+        self.level = level
+
+    def get_level(self):
+        return self.level
 
 
 class Writer(writers.Writer):
@@ -426,135 +457,136 @@ class Writer(writers.Writer):
         'ODF-Specific Options',
         None,
         (
-        ('Specify a stylesheet.  '
-            'Default: "%s"' % default_stylesheet_path,
-            ['--stylesheet'],
-            {
-                'default': default_stylesheet_path,
-                'dest': 'stylesheet'
+            ('Specify a stylesheet.  '
+                'Default: "%s"' % default_stylesheet_path,
+                ['--stylesheet'],
+                {
+                    'default': default_stylesheet_path,
+                    'dest': 'stylesheet'
                 }),
-        ('Specify a configuration/mapping file relative to the '
-            'current working '
-            'directory for additional ODF options.  '
-            'In particular, this file may contain a section named '
-            '"Formats" that maps default style names to '
-            'names to be used in the resulting output file allowing for '
-            'adhering to external standards. '
-            'For more info and the format of the configuration/mapping file, '
-            'see the odtwriter doc.',
-            ['--odf-config-file'],
-            {'metavar': '<file>'}),
-        ('Obfuscate email addresses to confuse harvesters while still '
-            'keeping email links usable with standards-compliant browsers.',
-            ['--cloak-email-addresses'],
-            {'default': False,
-                'action': 'store_true',
-                'dest': 'cloak_email_addresses',
-                'validator': frontend.validate_boolean}),
-        ('Do not obfuscate email addresses.',
-            ['--no-cloak-email-addresses'],
-            {'default': False,
-                'action': 'store_false',
-                'dest': 'cloak_email_addresses',
-                'validator': frontend.validate_boolean}),
-        ('Specify the thickness of table borders in thousands of a cm.  '
-            'Default is 35.',
-            ['--table-border-thickness'],
-            {'default': None,
-                'validator': frontend.validate_nonnegative_int}),
-        ('Add syntax highlighting in literal code blocks.',
-            ['--add-syntax-highlighting'],
-            {'default': False,
-                'action': 'store_true',
-                'dest': 'add_syntax_highlighting',
-                'validator': frontend.validate_boolean}),
-        ('Do not add syntax highlighting in literal code blocks. (default)',
-            ['--no-syntax-highlighting'],
-            {'default': False,
-                'action': 'store_false',
-                'dest': 'add_syntax_highlighting',
-                'validator': frontend.validate_boolean}),
-        ('Create sections for headers.  (default)',
-            ['--create-sections'],
-            {'default': True, 
-                'action': 'store_true',
-                'dest': 'create_sections',
-                'validator': frontend.validate_boolean}),
-        ('Do not create sections for headers.',
-            ['--no-sections'],
-            {'default': True, 
-                'action': 'store_false',
-                'dest': 'create_sections',
-                'validator': frontend.validate_boolean}),
-        ('Create links.',
-            ['--create-links'],
-            {'default': False,
-                'action': 'store_true',
-                'dest': 'create_links',
-                'validator': frontend.validate_boolean}),
-        ('Do not create links.  (default)',
-            ['--no-links'],
-            {'default': False,
-                'action': 'store_false',
-                'dest': 'create_links',
-                'validator': frontend.validate_boolean}),
-        ('Generate endnotes at end of document, not footnotes '
-            'at bottom of page.',
-            ['--endnotes-end-doc'],
-            {'default': False,
-                'action': 'store_true',
-                'dest': 'endnotes_end_doc',
-                'validator': frontend.validate_boolean}),
-        ('Generate footnotes at bottom of page, not endnotes '
-            'at end of document. (default)',
-            ['--no-endnotes-end-doc'],
-            {'default': False,
-                'action': 'store_false',
-                'dest': 'endnotes_end_doc',
-                'validator': frontend.validate_boolean}),
-        ('Generate a bullet list table of contents, not '
-            'an ODF/oowriter table of contents.',
-            ['--generate-list-toc'],
-            {'default': True,
-                'action': 'store_false',
-                'dest': 'generate_oowriter_toc',
-                'validator': frontend.validate_boolean}),
-        ('Generate an ODF/oowriter table of contents, not '
-            'a bullet list. (default)',
-            ['--generate-oowriter-toc'],
-            {'default': True,
-                'action': 'store_true',
-                'dest': 'generate_oowriter_toc',
-                'validator': frontend.validate_boolean}),
-        ('Specify the contents of an custom header line.  '
-            'See odf_odt writer documentation for details '
-            'about special field character sequences.',
-            ['--custom-odt-header'],
-            {   'default': '',
-                'dest': 'custom_header',
-                }),
-        ('Specify the contents of an custom footer line.  '
-            'See odf_odt writer documentation for details '
-            'about special field character sequences.',
-            ['--custom-odt-footer'],
-            {   'default': '',
-                'dest': 'custom_footer',
-                }),
+            ('Specify a configuration/mapping file relative to the '
+                'current working '
+                'directory for additional ODF options.  '
+                'In particular, this file may contain a section named '
+                '"Formats" that maps default style names to '
+                'names to be used in the resulting output file allowing for '
+                'adhering to external standards. '
+                'For more info and the format of the '
+                'configuration/mapping file, '
+                'see the odtwriter doc.',
+                ['--odf-config-file'],
+                {'metavar': '<file>'}),
+            ('Obfuscate email addresses to confuse harvesters while still '
+                'keeping email links usable with '
+                'standards-compliant browsers.',
+                ['--cloak-email-addresses'],
+                {'default': False,
+                    'action': 'store_true',
+                    'dest': 'cloak_email_addresses',
+                    'validator': frontend.validate_boolean}),
+            ('Do not obfuscate email addresses.',
+                ['--no-cloak-email-addresses'],
+                {'default': False,
+                    'action': 'store_false',
+                    'dest': 'cloak_email_addresses',
+                    'validator': frontend.validate_boolean}),
+            ('Specify the thickness of table borders in thousands of a cm.  '
+                'Default is 35.',
+                ['--table-border-thickness'],
+                {'default': None,
+                    'validator': frontend.validate_nonnegative_int}),
+            ('Add syntax highlighting in literal code blocks.',
+                ['--add-syntax-highlighting'],
+                {'default': False,
+                    'action': 'store_true',
+                    'dest': 'add_syntax_highlighting',
+                    'validator': frontend.validate_boolean}),
+            ('Do not add syntax highlighting in '
+             'literal code blocks. (default)',
+                ['--no-syntax-highlighting'],
+                {'default': False,
+                    'action': 'store_false',
+                    'dest': 'add_syntax_highlighting',
+                    'validator': frontend.validate_boolean}),
+            ('Create sections for headers.  (default)',
+                ['--create-sections'],
+                {'default': True,
+                    'action': 'store_true',
+                    'dest': 'create_sections',
+                    'validator': frontend.validate_boolean}),
+            ('Do not create sections for headers.',
+                ['--no-sections'],
+                {'default': True,
+                    'action': 'store_false',
+                    'dest': 'create_sections',
+                    'validator': frontend.validate_boolean}),
+            ('Create links.',
+                ['--create-links'],
+                {'default': False,
+                    'action': 'store_true',
+                    'dest': 'create_links',
+                    'validator': frontend.validate_boolean}),
+            ('Do not create links.  (default)',
+                ['--no-links'],
+                {'default': False,
+                    'action': 'store_false',
+                    'dest': 'create_links',
+                    'validator': frontend.validate_boolean}),
+            ('Generate endnotes at end of document, not footnotes '
+                'at bottom of page.',
+                ['--endnotes-end-doc'],
+                {'default': False,
+                    'action': 'store_true',
+                    'dest': 'endnotes_end_doc',
+                    'validator': frontend.validate_boolean}),
+            ('Generate footnotes at bottom of page, not endnotes '
+                'at end of document. (default)',
+                ['--no-endnotes-end-doc'],
+                {'default': False,
+                    'action': 'store_false',
+                    'dest': 'endnotes_end_doc',
+                    'validator': frontend.validate_boolean}),
+            ('Generate a bullet list table of contents, not '
+                'an ODF/oowriter table of contents.',
+                ['--generate-list-toc'],
+                {'default': True,
+                    'action': 'store_false',
+                    'dest': 'generate_oowriter_toc',
+                    'validator': frontend.validate_boolean}),
+            ('Generate an ODF/oowriter table of contents, not '
+                'a bullet list. (default)',
+                ['--generate-oowriter-toc'],
+                {'default': True,
+                    'action': 'store_true',
+                    'dest': 'generate_oowriter_toc',
+                    'validator': frontend.validate_boolean}),
+            ('Specify the contents of an custom header line.  '
+                'See odf_odt writer documentation for details '
+                'about special field character sequences.',
+                ['--custom-odt-header'],
+                {'default': '',
+                    'dest': 'custom_header', }),
+            ('Specify the contents of an custom footer line.  '
+                'See odf_odt writer documentation for details '
+                'about special field character sequences.',
+                ['--custom-odt-footer'],
+                {'default': '',
+                    'dest': 'custom_footer', }),
         )
-        )
+    )
 
     settings_defaults = {
         'output_encoding_error_handler': 'xmlcharrefreplace',
-        }
+    }
 
     relative_path_settings = (
         'stylesheet_path',
-        )
+    )
 
     config_section = 'odf_odt writer'
     config_section_dependencies = (
         'writers',
-        )
+    )
 
     def __init__(self):
         writers.Writer.__init__(self)
@@ -575,7 +607,8 @@ class Writer(writers.Writer):
         writers.Writer.assemble_parts(self)
         f = tempfile.NamedTemporaryFile()
         zfile = zipfile.ZipFile(f, 'w', zipfile.ZIP_DEFLATED)
-        self.write_zip_str(zfile, 'mimetype', self.MIME_TYPE,
+        self.write_zip_str(
+            zfile, 'mimetype', self.MIME_TYPE,
             compress_type=zipfile.ZIP_STORED)
         content = self.visitor.content_astext()
         self.write_zip_str(zfile, 'content.xml', content)
@@ -703,7 +736,7 @@ class Writer(writers.Writer):
                 continue
             try:
                 zfile.write(source, destination)
-            except OSError as e:
+            except OSError:
                 self.document.reporter.warning(
                     "Can't open file %s." % (source, ))
 
@@ -745,36 +778,38 @@ class Writer(writers.Writer):
 
     def create_manifest(self):
         if WhichElementTree == 'lxml':
-            root = Element('manifest:manifest',
+            root = Element(
+                'manifest:manifest',
                 nsmap=MANIFEST_NAMESPACE_DICT,
                 nsdict=MANIFEST_NAMESPACE_DICT,
-                )
+            )
         else:
-            root = Element('manifest:manifest',
+            root = Element(
+                'manifest:manifest',
                 attrib=MANIFEST_NAMESPACE_ATTRIB,
                 nsdict=MANIFEST_NAMESPACE_DICT,
-                )
+            )
         doc = etree.ElementTree(root)
         SubElement(root, 'manifest:file-entry', attrib={
             'manifest:media-type': self.MIME_TYPE,
             'manifest:full-path': '/',
-            }, nsdict=MANNSD)
+        }, nsdict=MANNSD)
         SubElement(root, 'manifest:file-entry', attrib={
             'manifest:media-type': 'text/xml',
             'manifest:full-path': 'content.xml',
-            }, nsdict=MANNSD)
+        }, nsdict=MANNSD)
         SubElement(root, 'manifest:file-entry', attrib={
             'manifest:media-type': 'text/xml',
             'manifest:full-path': 'styles.xml',
-            }, nsdict=MANNSD)
+        }, nsdict=MANNSD)
         SubElement(root, 'manifest:file-entry', attrib={
             'manifest:media-type': 'text/xml',
             'manifest:full-path': 'settings.xml',
-            }, nsdict=MANNSD)
+        }, nsdict=MANNSD)
         SubElement(root, 'manifest:file-entry', attrib={
             'manifest:media-type': 'text/xml',
             'manifest:full-path': 'meta.xml',
-            }, nsdict=MANNSD)
+        }, nsdict=MANNSD)
         s1 = ToString(doc)
         doc = minidom.parseString(s1)
         s1 = doc.toprettyxml('  ')
@@ -782,15 +817,17 @@ class Writer(writers.Writer):
 
     def create_meta(self):
         if WhichElementTree == 'lxml':
-            root = Element('office:document-meta',
+            root = Element(
+                'office:document-meta',
                 nsmap=META_NAMESPACE_DICT,
                 nsdict=META_NAMESPACE_DICT,
-                )
+            )
         else:
-            root = Element('office:document-meta',
+            root = Element(
+                'office:document-meta',
                 attrib=META_NAMESPACE_ATTRIB,
                 nsdict=META_NAMESPACE_DICT,
-                )
+            )
         doc = etree.ElementTree(root)
         root = SubElement(root, 'office:meta', nsdict=METNSD)
         el1 = SubElement(root, 'meta:generator', nsdict=METNSD)
@@ -924,12 +961,12 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             root = Element(
                 'office:document-content',
                 nsmap=CONTENT_NAMESPACE_DICT,
-                )
+            )
         else:
             root = Element(
                 'office:document-content',
                 attrib=CONTENT_NAMESPACE_ATTRIB,
-                )
+            )
         self.content_tree = etree.ElementTree(element=root)
         self.current_element = root
         SubElement(root, 'office:scripts')
@@ -968,7 +1005,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         self.footnote_list = []
         self.footnote_chars_idx = 0
         self.footnote_level = 0
-        self.pending_ids = [ ]
+        self.pending_ids = []
         self.in_paragraph = False
         self.found_doc_title = False
         self.bumped_list_level_stack = []
@@ -1006,11 +1043,13 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             s2 = zfile.read('content.xml')
             zfile.close()
         else:
-            raise RuntimeError('stylesheet path (%s) must be %s or .xml file' %(stylespath, extension))
+            raise RuntimeError('stylesheet path (%s) must be %s or '
+                               '.xml file' % (stylespath, extension))
         self.str_stylesheet = s1
         self.str_stylesheetcontent = s2
         self.dom_stylesheet = etree.fromstring(self.str_stylesheet)
-        self.dom_stylesheetcontent = etree.fromstring(self.str_stylesheetcontent)
+        self.dom_stylesheetcontent = etree.fromstring(
+            self.str_stylesheetcontent)
         self.table_styles = self.extract_table_styles(s2)
 
     def extract_table_styles(self, styles_str):
@@ -1030,8 +1069,8 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                 if family == 'table':
                     properties = stylenode.find(
                         '{%s}table-properties' % (CNSD['style'], ))
-                    property = properties.get('{%s}%s' % (CNSD['fo'],
-                        'background-color', ))
+                    property = properties.get(
+                        '{%s}%s' % (CNSD['fo'], 'background-color', ))
                     if property is not None and property != 'none':
                         tablestyle.backgroundcolor = property
                 elif family == 'table-cell':
@@ -1056,9 +1095,9 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         if text:
             self.title = text
             if not self.found_doc_title:
-                el = Element('text:p', attrib = {
+                el = Element('text:p', attrib={
                     'text:style-name': self.rststyle('title'),
-                    })
+                })
                 el.text = text
                 self.body_text_element.insert(0, el)
         el = self.find_first_text_p(self.body_text_element)
@@ -1070,8 +1109,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         """
         if (
                 el.tag == 'text:p' or
-                el.tag == 'text:h'
-                ):
+                el.tag == 'text:h'):
             return el
         elif el.getchildren():
             for child in el.getchildren():
@@ -1117,8 +1155,10 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def setup_page(self):
         self.setup_paper(self.dom_stylesheet)
-        if (len(self.header_content) > 0 or len(self.footer_content) > 0 or
-            self.settings.custom_header or self.settings.custom_footer):
+        if (len(self.header_content) > 0 or
+                len(self.footer_content) > 0 or
+                self.settings.custom_header or
+                self.settings.custom_footer):
             self.add_header_footer(self.dom_stylesheet)
         new_content = etree.tostring(self.dom_stylesheet)
         return new_content
@@ -1129,23 +1169,30 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def setup_paper(self, root_el):
         try:
             fin = os.popen("paperconf -s 2> /dev/null")
-            w, h = list(map(float, fin.read().split()))
-            fin.close()
-        except:
+            content = fin.read()
+            content = content.split()
+            content = map(float, content)
+            content = list(content)
+            w, h = content
+        except (IOError, ValueError):
             w, h = 612, 792     # default to Letter
+        finally:
+            fin.close()
+
         def walk(el):
             if el.tag == "{%s}page-layout-properties" % SNSD["style"] and \
                     "{%s}page-width" % SNSD["fo"] not in el.attrib:
                 el.attrib["{%s}page-width" % SNSD["fo"]] = "%.3fpt" % w
                 el.attrib["{%s}page-height" % SNSD["fo"]] = "%.3fpt" % h
                 el.attrib["{%s}margin-left" % SNSD["fo"]] = \
-                        el.attrib["{%s}margin-right" % SNSD["fo"]] = \
-                        "%.3fpt" % (.1 * w)
+                    el.attrib["{%s}margin-right" % SNSD["fo"]] = \
+                    "%.3fpt" % (.1 * w)
                 el.attrib["{%s}margin-top" % SNSD["fo"]] = \
-                        el.attrib["{%s}margin-bottom" % SNSD["fo"]] = \
-                        "%.3fpt" % (.1 * h)
+                    el.attrib["{%s}margin-bottom" % SNSD["fo"]] = \
+                    "%.3fpt" % (.1 * h)
             else:
-                for subel in el.getchildren(): walk(subel)
+                for subel in el.getchildren():
+                    walk(subel)
         walk(root_el)
 
     def add_header_footer(self, root_el):
@@ -1171,51 +1218,58 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             if WhichElementTree == 'lxml':
                 el2 = SubElement(el1, 'style:header', nsdict=SNSD)
             else:
-                el2 = SubElement(el1, 'style:header',
+                el2 = SubElement(
+                    el1, 'style:header',
                     attrib=STYLES_NAMESPACE_ATTRIB,
                     nsdict=STYLES_NAMESPACE_DICT,
-                    )
+                )
             for el in self.header_content:
                 attrkey = add_ns('text:style-name', nsdict=SNSD)
                 el.attrib[attrkey] = self.rststyle('header')
                 el2.append(el)
             if self.settings.custom_header:
-                elcustom = self.create_custom_headfoot(el2,
+                self.create_custom_headfoot(
+                    el2,
                     self.settings.custom_header, 'header', automatic_styles)
         if self.footer_content or self.settings.custom_footer:
             if WhichElementTree == 'lxml':
                 el2 = SubElement(el1, 'style:footer', nsdict=SNSD)
             else:
-                el2 = SubElement(el1, 'style:footer',
+                el2 = SubElement(
+                    el1, 'style:footer',
                     attrib=STYLES_NAMESPACE_ATTRIB,
                     nsdict=STYLES_NAMESPACE_DICT,
-                    )
+                )
             for el in self.footer_content:
                 attrkey = add_ns('text:style-name', nsdict=SNSD)
                 el.attrib[attrkey] = self.rststyle('footer')
                 el2.append(el)
             if self.settings.custom_footer:
-                elcustom = self.create_custom_headfoot(el2,
+                self.create_custom_headfoot(
+                    el2,
                     self.settings.custom_footer, 'footer', automatic_styles)
 
     code_none, code_field, code_text = list(range(3))
     field_pat = re.compile(r'%(..?)%')
 
-    def create_custom_headfoot(self, parent, text, style_name, automatic_styles):
+    def create_custom_headfoot(
+            self, parent, text, style_name, automatic_styles):
         parent = SubElement(parent, 'text:p', attrib={
             'text:style-name': self.rststyle(style_name),
-            })
+        })
         current_element = None
         field_iter = self.split_field_specifiers_iter(text)
         for item in field_iter:
             if item[0] == ODFTranslator.code_field:
-                if item[1] not in ('p', 'P', 
-                    't1', 't2', 't3', 't4',
-                    'd1', 'd2', 'd3', 'd4', 'd5',
-                    's', 't', 'a'):
+                if item[1] not in (
+                        'p', 'P',
+                        't1', 't2', 't3', 't4',
+                        'd1', 'd2', 'd3', 'd4', 'd5',
+                        's', 't', 'a'):
                     msg = 'bad field spec: %%%s%%' % (item[1], )
                     raise RuntimeError(msg)
-                el1 = self.make_field_element(parent,
+                el1 = self.make_field_element(
+                    parent,
                     item[1], style_name, automatic_styles)
                 if el1 is None:
                     msg = 'bad field spec: %%%s%%' % (item[1], )
@@ -1233,76 +1287,79 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             el1 = SubElement(parent, 'text:page-number', attrib={
                 #'text:style-name': self.rststyle(style_name),
                 'text:select-page': 'current',
-                })
+            })
         elif text == 'P':
             el1 = SubElement(parent, 'text:page-count', attrib={
                 #'text:style-name': self.rststyle(style_name),
-                })
+            })
         elif text == 't1':
             self.style_index += 1
             el1 = SubElement(parent, 'text:time', attrib={
                 'text:style-name': self.rststyle(style_name),
                 'text:fixed': 'true',
-                'style:data-style-name': 'rst-time-style-%d' % self.style_index,
-                })
+                'style:data-style-name':
+                    'rst-time-style-%d' % self.style_index,
+            })
             el2 = SubElement(automatic_styles, 'number:time-style', attrib={
                 'style:name': 'rst-time-style-%d' % self.style_index,
                 'xmlns:number': SNSD['number'],
                 'xmlns:style': SNSD['style'],
-                    })
+            })
             el3 = SubElement(el2, 'number:hours', attrib={
-                    'number:style': 'long',
-                    })
+                'number:style': 'long',
+            })
             el3 = SubElement(el2, 'number:text')
             el3.text = ':'
             el3 = SubElement(el2, 'number:minutes', attrib={
-                    'number:style': 'long',
-                    })
+                'number:style': 'long',
+            })
         elif text == 't2':
             self.style_index += 1
             el1 = SubElement(parent, 'text:time', attrib={
                 'text:style-name': self.rststyle(style_name),
                 'text:fixed': 'true',
-                'style:data-style-name': 'rst-time-style-%d' % self.style_index,
-                })
+                'style:data-style-name':
+                    'rst-time-style-%d' % self.style_index,
+            })
             el2 = SubElement(automatic_styles, 'number:time-style', attrib={
                 'style:name': 'rst-time-style-%d' % self.style_index,
                 'xmlns:number': SNSD['number'],
                 'xmlns:style': SNSD['style'],
-                    })
+            })
             el3 = SubElement(el2, 'number:hours', attrib={
-                    'number:style': 'long',
-                    })
+                'number:style': 'long',
+            })
             el3 = SubElement(el2, 'number:text')
             el3.text = ':'
             el3 = SubElement(el2, 'number:minutes', attrib={
-                    'number:style': 'long',
-                    })
+                'number:style': 'long',
+            })
             el3 = SubElement(el2, 'number:text')
             el3.text = ':'
             el3 = SubElement(el2, 'number:seconds', attrib={
-                    'number:style': 'long',
-                    })
+                'number:style': 'long',
+            })
         elif text == 't3':
             self.style_index += 1
             el1 = SubElement(parent, 'text:time', attrib={
                 'text:style-name': self.rststyle(style_name),
                 'text:fixed': 'true',
-                'style:data-style-name': 'rst-time-style-%d' % self.style_index,
-                })
+                'style:data-style-name':
+                    'rst-time-style-%d' % self.style_index,
+            })
             el2 = SubElement(automatic_styles, 'number:time-style', attrib={
                 'style:name': 'rst-time-style-%d' % self.style_index,
                 'xmlns:number': SNSD['number'],
                 'xmlns:style': SNSD['style'],
-                    })
+            })
             el3 = SubElement(el2, 'number:hours', attrib={
-                    'number:style': 'long',
-                    })
+                'number:style': 'long',
+            })
             el3 = SubElement(el2, 'number:text')
             el3.text = ':'
             el3 = SubElement(el2, 'number:minutes', attrib={
-                    'number:style': 'long',
-                    })
+                'number:style': 'long',
+            })
             el3 = SubElement(el2, 'number:text')
             el3.text = ' '
             el3 = SubElement(el2, 'number:am-pm')
@@ -1311,26 +1368,27 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             el1 = SubElement(parent, 'text:time', attrib={
                 'text:style-name': self.rststyle(style_name),
                 'text:fixed': 'true',
-                'style:data-style-name': 'rst-time-style-%d' % self.style_index,
-                })
+                'style:data-style-name':
+                    'rst-time-style-%d' % self.style_index,
+            })
             el2 = SubElement(automatic_styles, 'number:time-style', attrib={
                 'style:name': 'rst-time-style-%d' % self.style_index,
                 'xmlns:number': SNSD['number'],
                 'xmlns:style': SNSD['style'],
-                    })
+            })
             el3 = SubElement(el2, 'number:hours', attrib={
-                    'number:style': 'long',
-                    })
+                'number:style': 'long',
+            })
             el3 = SubElement(el2, 'number:text')
             el3.text = ':'
             el3 = SubElement(el2, 'number:minutes', attrib={
-                    'number:style': 'long',
-                    })
+                'number:style': 'long',
+            })
             el3 = SubElement(el2, 'number:text')
             el3.text = ':'
             el3 = SubElement(el2, 'number:seconds', attrib={
-                    'number:style': 'long',
-                    })
+                'number:style': 'long',
+            })
             el3 = SubElement(el2, 'number:text')
             el3.text = ' '
             el3 = SubElement(el2, 'number:am-pm')
@@ -1338,22 +1396,23 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             self.style_index += 1
             el1 = SubElement(parent, 'text:date', attrib={
                 'text:style-name': self.rststyle(style_name),
-                'style:data-style-name': 'rst-date-style-%d' % self.style_index,
-                })
+                'style:data-style-name':
+                    'rst-date-style-%d' % self.style_index,
+            })
             el2 = SubElement(automatic_styles, 'number:date-style', attrib={
                 'style:name': 'rst-date-style-%d' % self.style_index,
                 'number:automatic-order': 'true',
                 'xmlns:number': SNSD['number'],
                 'xmlns:style': SNSD['style'],
-                    })
+            })
             el3 = SubElement(el2, 'number:month', attrib={
-                    'number:style': 'long',
-                    })
+                'number:style': 'long',
+            })
             el3 = SubElement(el2, 'number:text')
             el3.text = '/'
             el3 = SubElement(el2, 'number:day', attrib={
-                    'number:style': 'long',
-                    })
+                'number:style': 'long',
+            })
             el3 = SubElement(el2, 'number:text')
             el3.text = '/'
             el3 = SubElement(el2, 'number:year')
@@ -1361,119 +1420,120 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             self.style_index += 1
             el1 = SubElement(parent, 'text:date', attrib={
                 'text:style-name': self.rststyle(style_name),
-                'style:data-style-name': 'rst-date-style-%d' % self.style_index,
-                })
+                'style:data-style-name':
+                    'rst-date-style-%d' % self.style_index,
+            })
             el2 = SubElement(automatic_styles, 'number:date-style', attrib={
                 'style:name': 'rst-date-style-%d' % self.style_index,
                 'number:automatic-order': 'true',
                 'xmlns:number': SNSD['number'],
                 'xmlns:style': SNSD['style'],
-                    })
+            })
             el3 = SubElement(el2, 'number:month', attrib={
-                    'number:style': 'long',
-                    })
+                'number:style': 'long',
+            })
             el3 = SubElement(el2, 'number:text')
             el3.text = '/'
             el3 = SubElement(el2, 'number:day', attrib={
-                    'number:style': 'long',
-                    })
+                'number:style': 'long',
+            })
             el3 = SubElement(el2, 'number:text')
             el3.text = '/'
             el3 = SubElement(el2, 'number:year', attrib={
-                    'number:style': 'long',
-                    })
+                'number:style': 'long',
+            })
         elif text == 'd3':
             self.style_index += 1
             el1 = SubElement(parent, 'text:date', attrib={
                 'text:style-name': self.rststyle(style_name),
-                'style:data-style-name': 'rst-date-style-%d' % self.style_index,
-                })
+                'style:data-style-name':
+                    'rst-date-style-%d' % self.style_index,
+            })
             el2 = SubElement(automatic_styles, 'number:date-style', attrib={
                 'style:name': 'rst-date-style-%d' % self.style_index,
                 'number:automatic-order': 'true',
                 'xmlns:number': SNSD['number'],
                 'xmlns:style': SNSD['style'],
-                    })
+            })
             el3 = SubElement(el2, 'number:month', attrib={
-                    'number:textual': 'true',
-                    })
+                'number:textual': 'true',
+            })
             el3 = SubElement(el2, 'number:text')
             el3.text = ' '
-            el3 = SubElement(el2, 'number:day', attrib={
-                    })
+            el3 = SubElement(el2, 'number:day', attrib={})
             el3 = SubElement(el2, 'number:text')
             el3.text = ', '
             el3 = SubElement(el2, 'number:year', attrib={
-                    'number:style': 'long',
-                    })
+                'number:style': 'long',
+            })
         elif text == 'd4':
             self.style_index += 1
             el1 = SubElement(parent, 'text:date', attrib={
                 'text:style-name': self.rststyle(style_name),
-                'style:data-style-name': 'rst-date-style-%d' % self.style_index,
-                })
+                'style:data-style-name':
+                    'rst-date-style-%d' % self.style_index,
+            })
             el2 = SubElement(automatic_styles, 'number:date-style', attrib={
                 'style:name': 'rst-date-style-%d' % self.style_index,
                 'number:automatic-order': 'true',
                 'xmlns:number': SNSD['number'],
                 'xmlns:style': SNSD['style'],
-                    })
+            })
             el3 = SubElement(el2, 'number:month', attrib={
-                    'number:textual': 'true',
-                    'number:style': 'long',
-                    })
+                'number:textual': 'true',
+                'number:style': 'long',
+            })
             el3 = SubElement(el2, 'number:text')
             el3.text = ' '
-            el3 = SubElement(el2, 'number:day', attrib={
-                    })
+            el3 = SubElement(el2, 'number:day', attrib={})
             el3 = SubElement(el2, 'number:text')
             el3.text = ', '
             el3 = SubElement(el2, 'number:year', attrib={
-                    'number:style': 'long',
-                    })
+                'number:style': 'long',
+            })
         elif text == 'd5':
             self.style_index += 1
             el1 = SubElement(parent, 'text:date', attrib={
                 'text:style-name': self.rststyle(style_name),
-                'style:data-style-name': 'rst-date-style-%d' % self.style_index,
-                })
+                'style:data-style-name':
+                    'rst-date-style-%d' % self.style_index,
+            })
             el2 = SubElement(automatic_styles, 'number:date-style', attrib={
                 'style:name': 'rst-date-style-%d' % self.style_index,
                 'xmlns:number': SNSD['number'],
                 'xmlns:style': SNSD['style'],
-                    })
+            })
             el3 = SubElement(el2, 'number:year', attrib={
-                    'number:style': 'long',
-                    })
+                'number:style': 'long',
+            })
             el3 = SubElement(el2, 'number:text')
             el3.text = '-'
             el3 = SubElement(el2, 'number:month', attrib={
-                    'number:style': 'long',
-                    })
+                'number:style': 'long',
+            })
             el3 = SubElement(el2, 'number:text')
             el3.text = '-'
             el3 = SubElement(el2, 'number:day', attrib={
-                    'number:style': 'long',
-                    })
+                'number:style': 'long',
+            })
         elif text == 's':
             el1 = SubElement(parent, 'text:subject', attrib={
                 'text:style-name': self.rststyle(style_name),
-                })
+            })
         elif text == 't':
             el1 = SubElement(parent, 'text:title', attrib={
                 'text:style-name': self.rststyle(style_name),
-                })
+            })
         elif text == 'a':
             el1 = SubElement(parent, 'text:author-name', attrib={
                 'text:fixed': 'false',
-                })
+            })
         else:
             el1 = None
         return el1
 
     def split_field_specifiers_iter(self, text):
         pos1 = 0
-        pos_end = len(text)
         while True:
             mo = ODFTranslator.field_pat.search(text, pos1)
             if mo:
@@ -1488,7 +1548,6 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         if trailing:
             yield (ODFTranslator.code_text, trailing)
 
-
     def astext(self):
         root = self.content_tree.getroot()
         et = etree.ElementTree(root)
@@ -1498,12 +1557,20 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def content_astext(self):
         return self.astext()
 
-    def set_title(self, title): self.title = title
-    def get_title(self): return self.title
+    def set_title(self, title):
+        self.title = title
+
+    def get_title(self):
+        return self.title
+
     def set_embedded_file_list(self, embedded_file_list):
         self.embedded_file_list = embedded_file_list
-    def get_embedded_file_list(self): return self.embedded_file_list
-    def get_meta_dict(self): return self.meta_dict
+
+    def get_embedded_file_list(self):
+        return self.embedded_file_list
+
+    def get_meta_dict(self):
+        return self.meta_dict
 
     def process_footnotes(self):
         for node, el1 in self.footnote_list:
@@ -1518,7 +1585,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                         el2.append(el3)
                     else:
                         children = el2.getchildren()
-                        if len(children) > 0: #  and 'id' in el2.attrib:
+                        if len(children) > 0:   # and 'id' in el2.attrib:
                             child = children[0]
                             ref1 = child.text
                             attribkey = add_ns('text:id', nsdict=SNSD)
@@ -1536,7 +1603,8 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                             el2.attrib[attribkey] = note_class
                             attribkey = add_ns('text:ref-name', nsdict=SNSD)
                             el2.attrib[attribkey] = id1
-                            attribkey = add_ns('text:reference-format', nsdict=SNSD)
+                            attribkey = add_ns(
+                                'text:reference-format', nsdict=SNSD)
                             el2.attrib[attribkey] = 'page'
                             el2.text = ref1
 
@@ -1546,15 +1614,12 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def append_child(self, tag, attrib=None, parent=None):
         if parent is None:
             parent = self.current_element
-        if attrib is None:
-            el = SubElement(parent, tag)
-        else:
-            el = SubElement(parent, tag, attrib)
+        el = SubElement(parent, tag, attrib)
         return el
 
     def append_p(self, style, text=None):
         result = self.append_child('text:p', attrib={
-                'text:style-name': self.rststyle(style)})
+            'text:style-name': self.rststyle(style)})
         self.append_pending_ids(result)
         if text is not None:
             result.text = text
@@ -1564,8 +1629,8 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         if self.settings.create_links:
             for id in self.pending_ids:
                 SubElement(el, 'text:reference-mark', attrib={
-                        'text:name': id})
-        self.pending_ids = [ ]
+                    'text:name': id})
+        self.pending_ids = []
 
     def set_current_element(self, el):
         self.current_element = el
@@ -1576,7 +1641,8 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def generate_labeled_block(self, node, label):
         label = '%s:' % (self.language.labels[label], )
         el = self.append_p('textbody')
-        el1 = SubElement(el, 'text:span',
+        el1 = SubElement(
+            el, 'text:span',
             attrib={'text:style-name': self.rststyle('strong')})
         el1.text = label
         el = self.append_p('blockindent')
@@ -1585,7 +1651,8 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def generate_labeled_line(self, node, label):
         label = '%s:' % (self.language.labels[label], )
         el = self.append_p('textbody')
-        el1 = SubElement(el, 'text:span',
+        el1 = SubElement(
+            el, 'text:span',
             attrib={'text:style-name': self.rststyle('strong')})
         el1.text = label
         el1.tail = node.astext()
@@ -1662,7 +1729,8 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def visit_authors(self, node):
         label = '%s:' % (self.language.labels['authors'], )
         el = self.append_p('textbody')
-        el1 = SubElement(el, 'text:span',
+        el1 = SubElement(
+            el, 'text:span',
             attrib={'text:style-name': self.rststyle('strong')})
         el1.text = label
 
@@ -1704,13 +1772,13 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         self.set_to_parent()
 
     def visit_revision(self, node):
-        el = self.generate_labeled_line(node, 'revision')
+        self.generate_labeled_line(node, 'revision')
 
     def depart_revision(self, node):
         pass
 
     def visit_version(self, node):
-        el = self.generate_labeled_line(node, 'version')
+        self.generate_labeled_line(node, 'version')
         #self.set_current_element(el)
 
     def depart_version(self, node):
@@ -1718,7 +1786,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         pass
 
     def visit_attribution(self, node):
-        el = self.append_p('attribution', node.astext())
+        self.append_p('attribution', node.astext())
 
     def depart_attribution(self, node):
         pass
@@ -1741,7 +1809,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         self.line_indent_level -= 1
 
     def visit_bullet_list(self, node):
-        self.list_level +=1
+        self.list_level += 1
         if self.in_table_of_contents:
             if self.settings.generate_oowriter_toc:
                 pass
@@ -1750,37 +1818,37 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                         'auto-toc' in node.attributes['classes']:
                     el = SubElement(self.current_element, 'text:list', attrib={
                         'text:style-name': self.rststyle('tocenumlist'),
-                        })
+                    })
                     self.list_style_stack.append(self.rststyle('enumitem'))
                 else:
                     el = SubElement(self.current_element, 'text:list', attrib={
                         'text:style-name': self.rststyle('tocbulletlist'),
-                        })
+                    })
                     self.list_style_stack.append(self.rststyle('bulletitem'))
                 self.set_current_element(el)
         else:
             if self.blockstyle == self.rststyle('blockquote'):
                 el = SubElement(self.current_element, 'text:list', attrib={
                     'text:style-name': self.rststyle('blockquote-bulletlist'),
-                    })
+                })
                 self.list_style_stack.append(
                     self.rststyle('blockquote-bulletitem'))
             elif self.blockstyle == self.rststyle('highlights'):
                 el = SubElement(self.current_element, 'text:list', attrib={
                     'text:style-name': self.rststyle('highlights-bulletlist'),
-                    })
+                })
                 self.list_style_stack.append(
                     self.rststyle('highlights-bulletitem'))
             elif self.blockstyle == self.rststyle('epigraph'):
                 el = SubElement(self.current_element, 'text:list', attrib={
                     'text:style-name': self.rststyle('epigraph-bulletlist'),
-                    })
+                })
                 self.list_style_stack.append(
                     self.rststyle('epigraph-bulletitem'))
             else:
                 el = SubElement(self.current_element, 'text:list', attrib={
                     'text:style-name': self.rststyle('bulletlist'),
-                    })
+                })
                 self.list_style_stack.append(self.rststyle('bulletitem'))
             self.set_current_element(el)
 
@@ -1794,7 +1862,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         else:
             self.set_to_parent()
             self.list_style_stack.pop()
-        self.list_level -=1
+        self.list_level -= 1
 
     def visit_caption(self, node):
         raise nodes.SkipChildren()
@@ -1805,11 +1873,11 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def visit_comment(self, node):
         el = self.append_p('textbody')
-        el1 =  SubElement(el, 'office:annotation', attrib={})
-        el2 =  SubElement(el1, 'dc:creator', attrib={})
+        el1 = SubElement(el, 'office:annotation', attrib={})
+        el2 = SubElement(el1, 'dc:creator', attrib={})
         s1 = os.environ.get('USER', '')
         el2.text = s1
-        el2 =  SubElement(el1, 'text:p', attrib={})
+        el2 = SubElement(el1, 'text:p', attrib={})
         el2.text = node.astext()
 
     def depart_comment(self, node):
@@ -1839,13 +1907,13 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         pass
 
     def visit_definition_list(self, node):
-        self.def_list_level +=1
+        self.def_list_level += 1
         if self.list_level > 5:
             raise RuntimeError(
                 'max definition list nesting level exceeded')
 
     def depart_definition_list(self, node):
-        self.def_list_level -=1
+        self.def_list_level -= 1
 
     def visit_definition_list_item(self, node):
         pass
@@ -1875,9 +1943,9 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         els = self.current_element.getchildren()
         if len(els) > 0:
             el = els[-1]
-            el1 = SubElement(el, 'text:span',
-                attrib={'text:style-name': self.rststyle('emphasis')
-                })
+            el1 = SubElement(
+                el, 'text:span',
+                attrib={'text:style-name': self.rststyle('emphasis')})
             el1.text = ' (%s)' % (node.astext(), )
 
     def depart_classifier(self, node):
@@ -1893,10 +1961,12 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         self.section_level += 1
         self.section_count += 1
         if self.settings.create_sections:
-            el = self.append_child('text:section', attrib={
+            el = self.append_child(
+                'text:section', attrib={
                     'text:name': 'Section%d' % self.section_count,
                     'text:style-name': 'Sect%d' % self.section_level,
-                    })
+                }
+            )
             self.set_current_element(el)
 
     def depart_docinfo(self, node):
@@ -1905,7 +1975,8 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             self.set_to_parent()
 
     def visit_emphasis(self, node):
-        el = SubElement(self.current_element, 'text:span',
+        el = SubElement(
+            self.current_element, 'text:span',
             attrib={'text:style-name': self.rststyle('emphasis')})
         self.set_current_element(el)
 
@@ -1917,23 +1988,23 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         if self.blockstyle == self.rststyle('blockquote'):
             el2 = SubElement(el1, 'text:list', attrib={
                 'text:style-name': self.rststyle('blockquote-enumlist'),
-                })
+            })
             self.list_style_stack.append(self.rststyle('blockquote-enumitem'))
         elif self.blockstyle == self.rststyle('highlights'):
             el2 = SubElement(el1, 'text:list', attrib={
                 'text:style-name': self.rststyle('highlights-enumlist'),
-                })
+            })
             self.list_style_stack.append(self.rststyle('highlights-enumitem'))
         elif self.blockstyle == self.rststyle('epigraph'):
             el2 = SubElement(el1, 'text:list', attrib={
                 'text:style-name': self.rststyle('epigraph-enumlist'),
-                })
+            })
             self.list_style_stack.append(self.rststyle('epigraph-enumitem'))
         else:
             liststylename = 'enumlist-%s' % (node.get('enumtype', 'arabic'), )
             el2 = SubElement(el1, 'text:list', attrib={
                 'text:style-name': self.rststyle(liststylename),
-                })
+            })
             self.list_style_stack.append(self.rststyle('enumitem'))
         self.set_current_element(el2)
 
@@ -2011,7 +2082,8 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def visit_field_name(self, node):
         el = self.append_p('textbody')
-        el1 = SubElement(el, 'text:span',
+        el1 = SubElement(
+            el, 'text:span',
             attrib={'text:style-name': self.rststyle('strong')})
         el1.text = node.astext()
 
@@ -2051,7 +2123,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         '++', '+++',
         '##', '###',
         '@@', '@@@',
-        ]
+    ]
 
     def visit_footnote_reference(self, node):
         if self.footnote_level <= 0:
@@ -2066,29 +2138,29 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             el1 = self.append_child('text:note', attrib={
                 'text:id': '%s' % (refid, ),
                 'text:note-class': note_class,
-                })
+            })
             note_auto = str(node.attributes.get('auto', 1))
             if isinstance(node, docutils.nodes.citation_reference):
                 citation = '[%s]' % node.astext()
                 el2 = SubElement(el1, 'text:note-citation', attrib={
                     'text:label': citation,
-                    })
+                })
                 el2.text = citation
             elif note_auto == '1':
                 el2 = SubElement(el1, 'text:note-citation', attrib={
                     'text:label': node.astext(),
-                    })
+                })
                 el2.text = node.astext()
             elif note_auto == '*':
                 if self.footnote_chars_idx >= len(
-                    ODFTranslator.footnote_chars):
+                        ODFTranslator.footnote_chars):
                     self.footnote_chars_idx = 0
                 footnote_char = ODFTranslator.footnote_chars[
                     self.footnote_chars_idx]
                 self.footnote_chars_idx += 1
                 el2 = SubElement(el1, 'text:note-citation', attrib={
                     'text:label': footnote_char,
-                    })
+                })
                 el2.text = footnote_char
             self.footnote_ref_dict[id] = el1
         raise nodes.SkipChildren()
@@ -2116,7 +2188,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             el = self.append_child('text:reference-ref', attrib={
                 'text:ref-name': '%s' % (id, ),
                 'text:reference-format': 'text',
-                })
+            })
             el.text = '['
             self.set_current_element(el)
         elif self.current_element.text is None:
@@ -2138,9 +2210,9 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             if self.settings.create_links:
                 el0 = SubElement(el, 'text:span')
                 el0.text = '['
-                el1 = self.append_child('text:reference-mark-start', attrib={
-                        'text:name': '%s' % (self.citation_id, ),
-                        })
+                self.append_child('text:reference-mark-start', attrib={
+                    'text:name': '%s' % (self.citation_id, ),
+                })
             else:
                 el.text = '['
 
@@ -2149,9 +2221,9 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             pass
         elif self.citation_id is not None:
             if self.settings.create_links:
-                el = self.append_child('text:reference-mark-end', attrib={
-                        'text:name': '%s' % (self.citation_id, ),
-                        })
+                self.append_child('text:reference-mark-end', attrib={
+                    'text:name': '%s' % (self.citation_id, ),
+                })
                 el0 = SubElement(self.current_element, 'text:span')
                 el0.text = ']'
             else:
@@ -2203,7 +2275,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                     imgfile2.close()
                     imgfilename = imgfile2.name
                     source = imgfilename
-                except HTTPError as e:
+                except HTTPError:
                     self.document.reporter.warning(
                         "Can't open image url %s." % (source, ))
                 spec = (source, destination,)
@@ -2215,19 +2287,22 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         if self.in_paragraph:
             el1 = self.current_element
         else:
-            el1 = SubElement(self.current_element, 'text:p',
+            el1 = SubElement(
+                self.current_element, 'text:p',
                 attrib={'text:style-name': self.rststyle('textbody')})
         el2 = el1
         if isinstance(node.parent, docutils.nodes.figure):
-            el3, el4, el5, caption = self.generate_figure(node, source,
+            el3, el4, el5, caption = self.generate_figure(
+                node, source,
                 destination, el2)
             attrib = {}
-            el6, width = self.generate_image(node, source, destination,
+            el6, width = self.generate_image(
+                node, source, destination,
                 el5, attrib)
             if caption is not None:
                 el6.tail = caption
-        else:   #if isinstance(node.parent, docutils.nodes.image):
-            el3 = self.generate_image(node, source, destination, el2)
+        else:   # if isinstance(node.parent, docutils.nodes.image):
+            self.generate_image(node, source, destination, el2)
 
     def depart_image(self, node):
         pass
@@ -2312,7 +2387,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             # dpi information can be (xdpi, ydpi) or xydpi
             try:
                 iter(dpi)
-            except:
+            except TypeError:
                 dpi = (dpi, dpi)
         else:
             imageobj = None
@@ -2369,7 +2444,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                 page_width, _ = self.convert_to_cm(page_width)
                 margin_left, _ = self.convert_to_cm(margin_left)
                 margin_right, _ = self.convert_to_cm(margin_right)
-            except ValueError as exp:
+            except ValueError:
                 self.document.reporter.warning(
                     'Stylesheet file contains invalid page width '
                     'or margin size.')
@@ -2395,17 +2470,17 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                 'style:family': 'paragraph',
                 'style:name': 'Caption',
                 'style:parent-style-name': 'Standard',
-                }
+            }
             el1 = SubElement(self.automatic_styles, 'style:style',
-                attrib=attrib, nsdict=SNSD)
+                             attrib=attrib, nsdict=SNSD)
             attrib = {
                 'fo:margin-bottom': '0.0835in',
                 'fo:margin-top': '0.0835in',
                 'text:line-number': '0',
                 'text:number-lines': 'false',
-                }
-            el2 = SubElement(el1, 'style:paragraph-properties', 
-                attrib=attrib, nsdict=SNSD)
+            }
+            SubElement(el1, 'style:paragraph-properties',
+                       attrib=attrib, nsdict=SNSD)
             attrib = {
                 'fo:font-size': '12pt',
                 'fo:font-style': 'italic',
@@ -2415,9 +2490,9 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                 'style:font-size-complex': '12pt',
                 'style:font-style-asian': 'italic',
                 'style:font-style-complex': 'italic',
-                }
-            el2 = SubElement(el1, 'style:text-properties', 
-                attrib=attrib, nsdict=SNSD)
+            }
+            SubElement(el1, 'style:text-properties',
+                       attrib=attrib, nsdict=SNSD)
         style_name = 'rstframestyle%d' % self.image_style_count
         draw_name = 'graphics%d' % next(IMAGE_NAME_COUNTER)
         # Add the styles
@@ -2425,18 +2500,9 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             'style:name': style_name,
             'style:family': 'graphic',
             'style:parent-style-name': self.rststyle('figureframe'),
-            }
-        el1 = SubElement(self.automatic_styles, 
-            'style:style', attrib=attrib, nsdict=SNSD)
-        halign = 'center'
-        valign = 'top'
-        if 'align' in node.attributes:
-            align = node.attributes['align'].split()
-            for val in align:
-                if val in ('left', 'center', 'right'):
-                    halign = val
-                elif val in ('top', 'middle', 'bottom'):
-                    valign = val
+        }
+        el1 = SubElement(self.automatic_styles,
+                         'style:style', attrib=attrib, nsdict=SNSD)
         attrib = {}
         wrap = False
         classes = node.parent.attributes.get('classes')
@@ -2446,26 +2512,26 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             attrib['style:wrap'] = 'dynamic'
         else:
             attrib['style:wrap'] = 'none'
-        el2 = SubElement(el1,
-            'style:graphic-properties', attrib=attrib, nsdict=SNSD)
+        SubElement(el1, 'style:graphic-properties',
+                   attrib=attrib, nsdict=SNSD)
         attrib = {
             'draw:style-name': style_name,
             'draw:name': draw_name,
             'text:anchor-type': 'paragraph',
             'draw:z-index': '0',
-            }
+        }
         attrib['svg:width'] = width
         el3 = SubElement(current_element, 'draw:frame', attrib=attrib)
         attrib = {}
         el4 = SubElement(el3, 'draw:text-box', attrib=attrib)
         attrib = {
             'text:style-name': self.rststyle('caption'),
-            }
+        }
         el5 = SubElement(el4, 'text:p', attrib=attrib)
         return el3, el4, el5, caption
 
     def generate_image(self, node, source, destination, current_element,
-        frame_attrs=None):
+                       frame_attrs=None):
         width, height = self.get_image_scaled_width_height(node, source)
         self.image_style_count += 1
         style_name = 'rstframestyle%d' % self.image_style_count
@@ -2474,9 +2540,9 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             'style:name': style_name,
             'style:family': 'graphic',
             'style:parent-style-name': self.rststyle('image'),
-            }
-        el1 = SubElement(self.automatic_styles, 
-            'style:style', attrib=attrib, nsdict=SNSD)
+        }
+        el1 = SubElement(self.automatic_styles,
+                         'style:style', attrib=attrib, nsdict=SNSD)
         halign = None
         valign = None
         if 'align' in node.attributes:
@@ -2502,14 +2568,14 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                 'draw:color-inversion': 'false',
                 'draw:image-opacity': '100%',
                 'draw:color-mode': 'standard',
-                }
+            }
         else:
             attrib = frame_attrs
         if halign is not None:
             attrib['style:horizontal-pos'] = halign
         if valign is not None:
             attrib['style:vertical-pos'] = valign
-        # If there is a classes/wrap directive or we are 
+        # If there is a classes/wrap directive or we are
         #   inside a table, add a no-wrap style.
         wrap = False
         classes = node.attributes.get('classes')
@@ -2522,30 +2588,30 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         # If we are inside a table, add a no-wrap style.
         if self.is_in_table(node):
             attrib['style:wrap'] = 'none'
-        el2 = SubElement(el1,
-            'style:graphic-properties', attrib=attrib, nsdict=SNSD)
+        SubElement(el1, 'style:graphic-properties',
+                   attrib=attrib, nsdict=SNSD)
         draw_name = 'graphics%d' % next(IMAGE_NAME_COUNTER)
         # Add the content.
         #el = SubElement(current_element, 'text:p',
         #    attrib={'text:style-name': self.rststyle('textbody')})
-        attrib={
+        attrib = {
             'draw:style-name': style_name,
             'draw:name': draw_name,
             'draw:z-index': '1',
-            }
+        }
         if isinstance(node.parent, nodes.TextElement):
-            attrib['text:anchor-type'] = 'as-char' #vds
+            attrib['text:anchor-type'] = 'as-char'      # vds
         else:
             attrib['text:anchor-type'] = 'paragraph'
         attrib['svg:width'] = width
         attrib['svg:height'] = height
         el1 = SubElement(current_element, 'draw:frame', attrib=attrib)
-        el2 = SubElement(el1, 'draw:image', attrib={
+        SubElement(el1, 'draw:image', attrib={
             'xlink:href': '%s' % (destination, ),
             'xlink:type': 'simple',
             'xlink:show': 'embed',
             'xlink:actuate': 'onLoad',
-            })
+        })
         return el1, width
 
     def is_in_table(self, node):
@@ -2580,16 +2646,16 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def visit_line(self, node):
         style = 'lineblock%d' % self.line_indent_level
-        el1 = SubElement(self.current_element, 'text:p', attrib={
-                'text:style-name': self.rststyle(style),
-                })
+        el1 = SubElement(self.current_element, 'text:p',
+                         attrib={'text:style-name': self.rststyle(style), })
         self.current_element = el1
 
     def depart_line(self, node):
         self.set_to_parent()
 
     def visit_literal(self, node):
-        el = SubElement(self.current_element, 'text:span',
+        el = SubElement(
+            self.current_element, 'text:span',
             attrib={'text:style-name': self.rststyle('inlineliteral')})
         self.set_current_element(el)
 
@@ -2635,11 +2701,13 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def _add_syntax_highlighting(self, insource, language):
         lexer = pygments.lexers.get_lexer_by_name(language, stripall=True)
         if language in ('latex', 'tex'):
-            fmtr = OdtPygmentsLaTeXFormatter(lambda name, parameters=():
+            fmtr = OdtPygmentsLaTeXFormatter(
+                lambda name, parameters=():
                 self.rststyle(name, parameters),
                 escape_function=escape_cdata)
         else:
-            fmtr = OdtPygmentsProgFormatter(lambda name, parameters=():
+            fmtr = OdtPygmentsProgFormatter(
+                lambda name, parameters=():
                 self.rststyle(name, parameters),
                 escape_function=escape_cdata)
         outsource = pygments.highlight(insource, lexer, fmtr)
@@ -2668,11 +2736,12 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             wrapper1 = '<text:p text:style-name="%s">%%s</text:p>' % (
                 self.rststyle('codeblock'), )
         source = node.astext()
-        if (pygments and
-            self.settings.add_syntax_highlighting
-            #and
-            #node.get('hilight', False)
-            ):
+        if (
+                pygments and
+                self.settings.add_syntax_highlighting
+                #and
+                #node.get('hilight', False)
+        ):
             language = node.get('language', 'python')
             source = self._add_syntax_highlighting(source, language)
         else:
@@ -2681,8 +2750,8 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         # If there is an empty last line, remove it.
         if lines[-1] == '':
             del lines[-1]
-        lines1 = ['<wrappertag1 xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0">']
-
+        lines1 = ['<wrappertag1 xmlns:text="urn:oasis:names:tc:'
+                  'opendocument:xmlns:text:1.0">']
         my_lines = []
         for my_line in lines:
             my_line = self.fill_line(my_line)
@@ -2709,7 +2778,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     # placeholder for math (see docs/dev/todo.txt)
     def visit_math(self, node):
         self.document.reporter.warning('"math" role not supported',
-                base_node=node)
+                                       base_node=node)
         self.visit_literal(node)
 
     def depart_math(self, node):
@@ -2717,7 +2786,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def visit_math_block(self, node):
         self.document.reporter.warning('"math" directive not supported',
-                base_node=node)
+                                       base_node=node)
         self.visit_literal_block(node)
 
     def depart_math_block(self, node):
@@ -2746,18 +2815,18 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                 'table:align': 'left',
                 'style:shadow': 'none'}, nsdict=SNSD)
             el = SubElement(self.automatic_styles, 'style:style', attrib={
-                'style:name': self.rststyle('%s.%%c' % table_name, ( 'A', )),
+                'style:name': self.rststyle('%s.%%c' % table_name, ('A', )),
                 'style:family': 'table-column'}, nsdict=SNSD)
             el1 = SubElement(el, 'style:table-column-properties', attrib={
                 'style:column-width': '4.999cm'}, nsdict=SNSD)
             el = SubElement(self.automatic_styles, 'style:style', attrib={
-                'style:name': self.rststyle('%s.%%c' % table_name, ( 'B', )),
+                'style:name': self.rststyle('%s.%%c' % table_name, ('B', )),
                 'style:family': 'table-column'}, nsdict=SNSD)
             el1 = SubElement(el, 'style:table-column-properties', attrib={
                 'style:column-width': '12.587cm'}, nsdict=SNSD)
             el = SubElement(self.automatic_styles, 'style:style', attrib={
                 'style:name': self.rststyle(
-                    '%s.%%c%%d' % table_name, ( 'A', 1, )),
+                    '%s.%%c%%d' % table_name, ('A', 1, )),
                 'style:family': 'table-cell'}, nsdict=SNSD)
             el1 = SubElement(el, 'style:table-cell-properties', attrib={
                 'fo:background-color': 'transparent',
@@ -2769,14 +2838,14 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             el2 = SubElement(el1, 'style:background-image', nsdict=SNSD)
             el = SubElement(self.automatic_styles, 'style:style', attrib={
                 'style:name': self.rststyle(
-                    '%s.%%c%%d' % table_name, ( 'B', 1, )),
+                    '%s.%%c%%d' % table_name, ('B', 1, )),
                 'style:family': 'table-cell'}, nsdict=SNSD)
             el1 = SubElement(el, 'style:table-cell-properties', attrib={
                 'fo:padding': '0.097cm',
                 'fo:border': '0.035cm solid #000000'}, nsdict=SNSD)
             el = SubElement(self.automatic_styles, 'style:style', attrib={
                 'style:name': self.rststyle(
-                    '%s.%%c%%d' % table_name, ( 'A', 2, )),
+                    '%s.%%c%%d' % table_name, ('A', 2, )),
                 'style:family': 'table-cell'}, nsdict=SNSD)
             el1 = SubElement(el, 'style:table-cell-properties', attrib={
                 'fo:padding': '0.097cm',
@@ -2786,7 +2855,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                 'fo:border-bottom': '0.035cm solid #000000'}, nsdict=SNSD)
             el = SubElement(self.automatic_styles, 'style:style', attrib={
                 'style:name': self.rststyle(
-                    '%s.%%c%%d' % table_name, ( 'B', 2, )),
+                    '%s.%%c%%d' % table_name, ('B', 2, )),
                 'style:family': 'table-cell'}, nsdict=SNSD)
             el1 = SubElement(el, 'style:table-cell-properties', attrib={
                 'fo:padding': '0.097cm',
@@ -2799,29 +2868,29 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         el = self.append_child('table:table', attrib={
             'table:name': self.rststyle(table_name),
             'table:style-name': self.rststyle(table_name),
-            })
+        })
         el1 = SubElement(el, 'table:table-column', attrib={
             'table:style-name': self.rststyle(
-                '%s.%%c' % table_name, ( 'A', ))})
+                '%s.%%c' % table_name, ('A', ))})
         el1 = SubElement(el, 'table:table-column', attrib={
             'table:style-name': self.rststyle(
-                '%s.%%c' % table_name, ( 'B', ))})
+                '%s.%%c' % table_name, ('B', ))})
         el1 = SubElement(el, 'table:table-header-rows')
         el2 = SubElement(el1, 'table:table-row')
         el3 = SubElement(el2, 'table:table-cell', attrib={
             'table:style-name': self.rststyle(
-                '%s.%%c%%d' % table_name, ( 'A', 1, )),
+                '%s.%%c%%d' % table_name, ('A', 1, )),
             'office:value-type': 'string'})
         el4 = SubElement(el3, 'text:p', attrib={
             'text:style-name': 'Table_20_Heading'})
-        el4.text= 'Option'
+        el4.text = 'Option'
         el3 = SubElement(el2, 'table:table-cell', attrib={
             'table:style-name': self.rststyle(
-                '%s.%%c%%d' % table_name, ( 'B', 1, )),
+                '%s.%%c%%d' % table_name, ('B', 1, )),
             'office:value-type': 'string'})
         el4 = SubElement(el3, 'text:p', attrib={
             'text:style-name': 'Table_20_Heading'})
-        el4.text= 'Description'
+        el4.text = 'Description'
         self.set_current_element(el)
 
     def depart_option_list(self, node):
@@ -2885,7 +2954,8 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             el = self.append_p('footer')
         else:
             style_name = self.paragraph_style_stack[-1]
-            el = self.append_child('text:p',
+            el = self.append_child(
+                'text:p',
                 attrib={'text:style-name': style_name})
             self.append_pending_ids(el)
         self.set_current_element(el)
@@ -2916,8 +2986,9 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             formatlist = formats.split()
             if 'odt' in formatlist:
                 rawstr = node.astext()
-                attrstr = ' '.join(['%s="%s"' % (k, v, )
-                    for k,v in list(CONTENT_NAMESPACE_ATTRIB.items())])
+                attrstr = ' '.join([
+                    '%s="%s"' % (k, v, )
+                    for k, v in list(CONTENT_NAMESPACE_ATTRIB.items())])
                 contentstr = '<stuff %s>%s</stuff>' % (attrstr, rawstr, )
                 if WhichElementTree != "lxml":
                     contentstr = contentstr.encode("utf-8")
@@ -2942,31 +3013,33 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             pass
 
     def visit_reference(self, node):
-        text = node.astext()
+        #text = node.astext()
         if self.settings.create_links:
             if 'refuri' in node:
-                    href = node['refuri']
-                    if ( self.settings.cloak_email_addresses
-                         and href.startswith('mailto:')):
-                        href = self.cloak_mailto(href)
-                    el = self.append_child('text:a', attrib={
-                        'xlink:href': '%s' % href,
-                        'xlink:type': 'simple',
-                        })
-                    self.set_current_element(el)
+                href = node['refuri']
+                if (
+                        self.settings.cloak_email_addresses and
+                        href.startswith('mailto:')):
+                    href = self.cloak_mailto(href)
+                el = self.append_child('text:a', attrib={
+                    'xlink:href': '%s' % href,
+                    'xlink:type': 'simple',
+                })
+                self.set_current_element(el)
             elif 'refid' in node:
                 if self.settings.create_links:
                     href = node['refid']
                     el = self.append_child('text:reference-ref', attrib={
                         'text:ref-name': '%s' % href,
                         'text:reference-format': 'text',
-                        })
+                    })
             else:
                 self.document.reporter.warning(
                     'References must have "refuri" or "refid" attribute.')
-        if (self.in_table_of_contents and
-            len(node.children) >= 1 and
-            isinstance(node.children[0], docutils.nodes.generated)):
+        if (
+                self.in_table_of_contents and
+                len(node.children) >= 1 and
+                isinstance(node.children[0], docutils.nodes.generated)):
             node.remove(node.children[0])
 
     def depart_reference(self, node):
@@ -2981,11 +3054,11 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             class1 = classes[0]
             if class1:
                 style_name = class1
-        el = SubElement(self.current_element, 'text:h', attrib = {
+        el = SubElement(self.current_element, 'text:h', attrib={
             #'text:outline-level': '%d' % section_level,
             #'text:style-name': 'Heading_20_%d' % section_level,
             'text:style-name': style_name,
-            })
+        })
         text = node.astext()
         el.text = self.encode(text)
 
@@ -2999,7 +3072,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             el = self.append_child('text:section', attrib={
                 'text:name': 'Section%d' % self.section_count,
                 'text:style-name': 'Sect%d' % self.section_level,
-                })
+            })
             self.set_current_element(el)
 
     def depart_section(self, node):
@@ -3009,7 +3082,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def visit_strong(self, node):
         el = SubElement(self.current_element, 'text:span',
-            attrib={'text:style-name': self.rststyle('strong')})
+                        attrib={'text:style-name': self.rststyle('strong')})
         self.set_current_element(el)
 
     def depart_strong(self, node):
@@ -3030,13 +3103,11 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def get_table_style(self, node):
         table_style = None
         table_name = None
-        use_predefined_table_style = False
         str_classes = node.get('classes')
         if str_classes is not None:
             for str_class in str_classes:
                 if str_class.startswith(TABLESTYLEPREFIX):
                     table_name = str_class
-                    use_predefined_table_style = True
                     break
         if table_name is not None:
             table_style = self.table_styles.get(table_name)
@@ -3045,15 +3116,16 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                 #   and use the default table style.
                 self.document.reporter.warning(
                     'Can\'t find table style "%s".  Using default.' % (
-                    table_name, ))
+                        table_name, ))
                 table_name = TABLENAMEDEFAULT
                 table_style = self.table_styles.get(table_name)
                 if table_style is None:
                     # If we can't find the default table style, issue a warning
                     #   and use a built-in default style.
                     self.document.reporter.warning(
-                        'Can\'t find default table style "%s".  Using built-in default.' % (
-                        table_name, ))
+                        'Can\'t find default table style "%s".  '
+                        'Using built-in default.' % (
+                            table_name, ))
                     table_style = BUILTIN_DEFAULT_TABLE_STYLE
         else:
             table_name = TABLENAMEDEFAULT
@@ -3062,8 +3134,9 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                 # If we can't find the default table style, issue a warning
                 #   and use a built-in default style.
                 self.document.reporter.warning(
-                    'Can\'t find default table style "%s".  Using built-in default.' % (
-                    table_name, ))
+                    'Can\'t find default table style "%s".  '
+                    'Using built-in default.' % (
+                        table_name, ))
                 table_style = BUILTIN_DEFAULT_TABLE_STYLE
         return table_style
 
@@ -3073,59 +3146,59 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         table_name = '%s%%d' % TABLESTYLEPREFIX
         el1 = SubElement(self.automatic_styles, 'style:style', attrib={
             'style:name': self.rststyle(
-                '%s' % table_name, ( self.table_count, )),
+                '%s' % table_name, (self.table_count, )),
             'style:family': 'table',
-            }, nsdict=SNSD)
+        }, nsdict=SNSD)
         if table_style.backgroundcolor is None:
-            el1_1 = SubElement(el1, 'style:table-properties', attrib={
+            SubElement(el1, 'style:table-properties', attrib={
                 #'style:width': '17.59cm',
                 #'table:align': 'margins',
                 'table:align': 'left',
                 'fo:margin-top': '0in',
                 'fo:margin-bottom': '0.10in',
-                }, nsdict=SNSD)
+            }, nsdict=SNSD)
         else:
-            el1_1 = SubElement(el1, 'style:table-properties', attrib={
+            SubElement(el1, 'style:table-properties', attrib={
                 #'style:width': '17.59cm',
                 'table:align': 'margins',
                 'fo:margin-top': '0in',
                 'fo:margin-bottom': '0.10in',
                 'fo:background-color': table_style.backgroundcolor,
-                }, nsdict=SNSD)
+            }, nsdict=SNSD)
         # We use a single cell style for all cells in this table.
         # That's probably not correct, but seems to work.
         el2 = SubElement(self.automatic_styles, 'style:style', attrib={
             'style:name': self.rststyle(
-                '%s.%%c%%d' % table_name, ( self.table_count, 'A', 1, )),
+                '%s.%%c%%d' % table_name, (self.table_count, 'A', 1, )),
             'style:family': 'table-cell',
-            }, nsdict=SNSD)
+        }, nsdict=SNSD)
         thickness = self.settings.table_border_thickness
         if thickness is None:
             line_style1 = table_style.border
         else:
             line_style1 = '0.%03dcm solid #000000' % (thickness, )
-        el2_1 = SubElement(el2, 'style:table-cell-properties', attrib={
+        SubElement(el2, 'style:table-cell-properties', attrib={
             'fo:padding': '0.049cm',
             'fo:border-left': line_style1,
             'fo:border-right': line_style1,
             'fo:border-top': line_style1,
             'fo:border-bottom': line_style1,
-            }, nsdict=SNSD)
+        }, nsdict=SNSD)
         title = None
         for child in node.children:
             if child.tagname == 'title':
                 title = child.astext()
                 break
         if title is not None:
-            el3 = self.append_p('table-title', title)
+            self.append_p('table-title', title)
         else:
             pass
         el4 = SubElement(self.current_element, 'table:table', attrib={
             'table:name': self.rststyle(
-                '%s' % table_name, ( self.table_count, )),
+                '%s' % table_name, (self.table_count, )),
             'table:style-name': self.rststyle(
-                '%s' % table_name, ( self.table_count, )),
-            })
+                '%s' % table_name, (self.table_count, )),
+        })
         self.set_current_element(el4)
         self.current_table_style = el1
         self.table_width = 0.0
@@ -3149,19 +3222,17 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         colspec_name = self.rststyle(
             '%s%%d.%%s' % TABLESTYLEPREFIX,
             (self.table_count, chr(self.column_count), )
-            )
+        )
         colwidth = node['colwidth'] / 12.0
         el1 = SubElement(self.automatic_styles, 'style:style', attrib={
             'style:name': colspec_name,
             'style:family': 'table-column',
-            }, nsdict=SNSD)
-        el1_1 = SubElement(el1, 'style:table-column-properties', attrib={
-            'style:column-width': '%.4fin' % colwidth 
-            },
-            nsdict=SNSD)
-        el2 = self.append_child('table:table-column', attrib={
-            'table:style-name': colspec_name,
-            })
+        }, nsdict=SNSD)
+        SubElement(el1, 'style:table-column-properties',
+                   attrib={'style:column-width': '%.4fin' % colwidth},
+                   nsdict=SNSD)
+        self.append_child('table:table-column',
+                          attrib={'table:style-name': colspec_name, })
         self.table_width += colwidth
 
     def depart_colspec(self, node):
@@ -3189,13 +3260,13 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def visit_entry(self, node):
         self.column_count += 1
         cellspec_name = self.rststyle(
-            '%s%%d.%%c%%d' % TABLESTYLEPREFIX, 
+            '%s%%d.%%c%%d' % TABLESTYLEPREFIX,
             (self.table_count, 'A', 1, )
-            )
-        attrib={
+        )
+        attrib = {
             'table:style-name': cellspec_name,
             'office:value-type': 'string',
-            }
+        }
         morecols = node.get('morecols', 0)
         if morecols > 0:
             attrib['table:number-columns-spanned'] = '%d' % (morecols + 1,)
@@ -3219,8 +3290,9 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         #
         # I don't know how to implement targets in ODF.
         # How do we create a target in oowriter?  A cross-reference?
-        if not ('refuri' in node or 'refid' in node
-                or 'refname' in node):
+        if not ('refuri' in node or
+                'refid' in node or
+                'refname' in node):
             pass
         else:
             pass
@@ -3238,11 +3310,12 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                     '    Reducing to heading level 7 for heading: "%s"' % (
                         node.astext(), ))
                 section_level = 7
-            el1 = self.append_child('text:h', attrib = {
-                'text:outline-level': '%d' % section_level,
-                #'text:style-name': 'Heading_20_%d' % section_level,
-                'text:style-name': self.rststyle(
-                    'heading%d', (section_level, )),
+            el1 = self.append_child(
+                'text:h', attrib={
+                    'text:outline-level': '%d' % section_level,
+                    #'text:style-name': 'Heading_20_%d' % section_level,
+                    'text:style-name': self.rststyle(
+                        'heading%d', (section_level, )),
                 })
             self.append_pending_ids(el1)
             self.set_current_element(el1)
@@ -3250,9 +3323,9 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             #    text = self.settings.title
             #else:
             #    text = node.astext()
-            el1 = SubElement(self.current_element, 'text:p', attrib = {
+            el1 = SubElement(self.current_element, 'text:p', attrib={
                 'text:style-name': self.rststyle(title_type),
-                })
+            })
             self.append_pending_ids(el1)
             text = node.astext()
             self.title = text
@@ -3260,8 +3333,9 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             self.set_current_element(el1)
 
     def depart_title(self, node):
-        if (isinstance(node.parent, docutils.nodes.section) or
-            isinstance(node.parent, docutils.nodes.document)):
+        if (
+                isinstance(node.parent, docutils.nodes.section) or
+                isinstance(node.parent, docutils.nodes.document)):
             self.set_to_parent()
 
     def visit_subtitle(self, node, move_ids=1):
@@ -3281,19 +3355,20 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def generate_table_of_content_entry_template(self, el1):
         for idx in range(1, 11):
-            el2 = SubElement(el1, 
-                'text:table-of-content-entry-template', 
+            el2 = SubElement(
+                el1,
+                'text:table-of-content-entry-template',
                 attrib={
                     'text:outline-level': "%d" % (idx, ),
                     'text:style-name': self.rststyle('contents-%d' % (idx, )),
                 })
-            el3 = SubElement(el2, 'text:index-entry-chapter')
-            el3 = SubElement(el2, 'text:index-entry-text')
-            el3 = SubElement(el2, 'text:index-entry-tab-stop', attrib={
+            SubElement(el2, 'text:index-entry-chapter')
+            SubElement(el2, 'text:index-entry-text')
+            SubElement(el2, 'text:index-entry-tab-stop', attrib={
                 'style:leader-char': ".",
                 'style:type': "right",
-                })
-            el3 = SubElement(el2, 'text:index-entry-page-number')
+            })
+            SubElement(el2, 'text:index-entry-page-number')
 
     def find_title_label(self, node, class_type, label_key):
         label = ''
@@ -3311,29 +3386,30 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def visit_topic(self, node):
         if 'classes' in node.attributes:
             if 'contents' in node.attributes['classes']:
-                label = self.find_title_label(node, docutils.nodes.title,
-                    'contents')
+                label = self.find_title_label(
+                    node, docutils.nodes.title, 'contents')
                 if self.settings.generate_oowriter_toc:
                     el1 = self.append_child('text:table-of-content', attrib={
                         'text:name': 'Table of Contents1',
                         'text:protected': 'true',
                         'text:style-name': 'Sect1',
-                        })
-                    el2 = SubElement(el1,
+                    })
+                    el2 = SubElement(
+                        el1,
                         'text:table-of-content-source',
                         attrib={
                             'text:outline-level': '10',
                         })
-                    el3 =SubElement(el2, 'text:index-title-template', attrib={
+                    el3 = SubElement(el2, 'text:index-title-template', attrib={
                         'text:style-name': 'Contents_20_Heading',
-                        })
+                    })
                     el3.text = label
                     self.generate_table_of_content_entry_template(el2)
                     el4 = SubElement(el1, 'text:index-body')
                     el5 = SubElement(el4, 'text:index-title')
                     el6 = SubElement(el5, 'text:p', attrib={
                         'text:style-name': self.rststyle('contents-heading'),
-                        })
+                    })
                     el6.text = label
                     self.save_current_element = self.current_element
                     self.table_of_content_index_body = el4
@@ -3341,24 +3417,29 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                 else:
                     el = self.append_p('horizontalline')
                     el = self.append_p('centeredtextbody')
-                    el1 = SubElement(el, 'text:span',
+                    el1 = SubElement(
+                        el, 'text:span',
                         attrib={'text:style-name': self.rststyle('strong')})
                     el1.text = label
                 self.in_table_of_contents = True
             elif 'abstract' in node.attributes['classes']:
                 el = self.append_p('horizontalline')
                 el = self.append_p('centeredtextbody')
-                el1 = SubElement(el, 'text:span',
+                el1 = SubElement(
+                    el, 'text:span',
                     attrib={'text:style-name': self.rststyle('strong')})
-                label = self.find_title_label(node, docutils.nodes.title,
+                label = self.find_title_label(
+                    node, docutils.nodes.title,
                     'abstract')
                 el1.text = label
             elif 'dedication' in node.attributes['classes']:
                 el = self.append_p('horizontalline')
                 el = self.append_p('centeredtextbody')
-                el1 = SubElement(el, 'text:span',
+                el1 = SubElement(
+                    el, 'text:span',
                     attrib={'text:style-name': self.rststyle('strong')})
-                label = self.find_title_label(node, docutils.nodes.title,
+                label = self.find_title_label(
+                    node, docutils.nodes.title,
                     'dedication')
                 el1.text = label
 
@@ -3370,7 +3451,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                         self.table_of_content_index_body)
                     self.set_current_element(self.save_current_element)
                 else:
-                    el = self.append_p('horizontalline')
+                    self.append_p('horizontalline')
                 self.in_table_of_contents = False
 
     def update_toc_page_numbers(self, el):
@@ -3387,14 +3468,14 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def update_toc_add_numbers(self, collection):
         for level, el1 in collection:
-            if (el1.tag == 'text:p' and
-                el1.text != 'Table of Contents'):
+            if (
+                    el1.tag == 'text:p' and
+                    el1.text != 'Table of Contents'):
                 el2 = SubElement(el1, 'text:tab')
                 el2.tail = '9999'
 
-
     def visit_transition(self, node):
-        el = self.append_p('horizontalline')
+        self.append_p('horizontalline')
 
     def depart_transition(self, node):
         pass
@@ -3483,7 +3564,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def visit_subscript(self, node):
         el = self.append_child('text:span', attrib={
             'text:style-name': 'rststyle-subscript',
-            })
+        })
         self.set_current_element(el)
 
     def depart_subscript(self, node):
@@ -3492,11 +3573,29 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def visit_superscript(self, node):
         el = self.append_child('text:span', attrib={
             'text:style-name': 'rststyle-superscript',
-            })
+        })
         self.set_current_element(el)
 
     def depart_superscript(self, node):
         self.set_to_parent()
+
+    def visit_abbreviation(self, node):
+        pass
+
+    def depart_abbreviation(self, node):
+        pass
+
+    def visit_acronym(self, node):
+        pass
+
+    def depart_acronym(self, node):
+        pass
+
+    def visit_sidebar(self, node):
+        pass
+
+    def depart_sidebar(self, node):
+        pass
 
 
 # Use an own reader to modify transformations done.
@@ -3506,6 +3605,5 @@ class Reader(standalone.Reader):
         default = standalone.Reader.get_transforms(self)
         if self.settings.create_links:
             return default
-        return [ i
-                 for i in default
-                 if i is not references.DanglingReferences ]
+        return [i for i in default
+                if i is not references.DanglingReferences]
