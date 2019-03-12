@@ -22,10 +22,29 @@ For a more detailed list of changes, please see the `Docutils History`_.
 Future changes
 ==============
 
+* Drop support for Python 2.6, 3.3, and 3.4 immediately after the 0.15
+  release.
+
+* The "latex" writer will handle admonitions like other block-level elements
+  and wrap them in a "DUclass" environment. The current implementation fails
+  with some content, see docs/user/latex.txt and
+  https://sourceforge.net/p/docutils/bugs/339/
+  If your custom stylesheets modify "\DUadmonition" to style admonitions,
+  you will need to adapt them after upgrading to versions > 0.15.
+
 * Remove the `handle_io_errors` option from io.FileInput/Output.
   Used by Sphinx up to version 1.3.1, fixed in 1.3.2 (Nov 29, 2015).
 
 * Remove `utils.unique_combinations` (obsoleted by `itertools.combinations`).
+
+* Currently, the rST `escape mechanism`__ cannot be used in transforms.
+  In Docutils > 0.15, backslash characters in text will be represented by
+  NULL characters in the "text" attribute of Doctree nodes and be removed 
+  in the writing stage by the node's ``astext()`` method.
+  Allows fixing bugs #353__, #342, and #332.
+
+  __ http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html#escaping-mechanism
+  __ https://sourceforge.net/p/docutils/bugs/353/
 
 * The default HTML writer "html" with frontend ``rst2html.py`` may change
   from "html4css1" to "html5".
