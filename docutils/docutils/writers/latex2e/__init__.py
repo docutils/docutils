@@ -2192,12 +2192,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
         pass
         ##self.out.append('%[depart_field]\n')
 
-    def visit_field_argument(self, node):
-        self.out.append('%[visit_field_argument]\n')
-
-    def depart_field_argument(self, node):
-        self.out.append('%[depart_field_argument]\n')
-
     def visit_field_body(self, node):
         pass
 
@@ -2440,14 +2434,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def depart_inline(self, node):
         self.out.append('}' * len(node['classes']))
-
-    def visit_interpreted(self, node):
-        # @@@ Incomplete, pending a proper implementation on the
-        # Parser/Reader end.
-        self.visit_literal(node)
-
-    def depart_interpreted(self, node):
-        self.depart_literal(node)
 
     def visit_legend(self, node):
         self.fallbacks['legend'] = PreambleCmds.legend

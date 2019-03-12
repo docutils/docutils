@@ -174,7 +174,6 @@ class ContentsFilter(nodes.TreeCopyVisitor):
     def ignore_node_but_process_children(self, node):
         raise nodes.SkipDeparture
 
-    visit_interpreted = ignore_node_but_process_children
     visit_problematic = ignore_node_but_process_children
     visit_reference = ignore_node_but_process_children
     visit_target = ignore_node_but_process_children
