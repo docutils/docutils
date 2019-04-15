@@ -334,6 +334,15 @@ totest['references'] = [
         <paragraph>
             RFC number must be a number greater than or equal to 1; "0" is invalid.
 """],
+["""\
+:RFC:`2822#section1`
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        <reference refuri="http://tools.ietf.org/html/rfc2822.html#section1">
+            RFC 2822
+"""],
 ]
 
 totest['unknown_roles'] = [

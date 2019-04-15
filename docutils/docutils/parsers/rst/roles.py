@@ -276,7 +276,11 @@ register_canonical_role('pep-reference', pep_reference_role)
 def rfc_reference_role(role, rawtext, text, lineno, inliner,
                        options={}, content=[]):
     try:
-        rfcnum = int(text)
+        if "#" in text:
+            rfcnum, section = text.split("#", 1)
+        else:
+            rfcnum, section  = text, None
+        rfcnum = int(rfcnum)
         if rfcnum <= 0:
             raise ValueError
     except ValueError:
@@ -287,8 +291,10 @@ def rfc_reference_role(role, rawtext, text, lineno, inliner,
         return [prb], [msg]
     # Base URL mainly used by inliner.rfc_reference, so this is correct:
     ref = inliner.document.settings.rfc_base_url + inliner.rfc_url % rfcnum
+    if section is not None:
+        ref += "#"+section
     set_classes(options)
-    node = nodes.reference(rawtext, 'RFC ' + utils.unescape(text), refuri=ref,
+    node = nodes.reference(rawtext, 'RFC ' + utils.unescape(str(rfcnum)), refuri=ref,
                            **options)
     return [node], []
 
