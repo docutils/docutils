@@ -448,6 +448,7 @@ class smartchars(object):
               'it-x-altquot': u'“”‘’',
               # 'it-x-altquot2': u'“„‘‚', # [7] in headlines
               'ja':           u'「」『』',
+              'ko':           u'《》〈〉',
               'lt':           u'„“‚‘',
               'lv':           u'„“‚‘',
               'mk':           u'„“‚‘', # Macedonian, https://mk.wikipedia.org/wiki/Правопис_и_правоговор_на_македонскиот_јазик
