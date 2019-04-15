@@ -31,6 +31,11 @@ Changes Since 0.14
   - Fix [ 348 ] Since Python 3.4, the 'U' universal newlines mode has been
     deprecated (thanks to hugovk).
 
+*  docutils/languages/la.py
+   docutils/parsers/rst/languages/la.py:
+
+  - Apply [ 153 ] Korean mappings by Thomas Sungjin Kang.
+
 * docutils/nodes.py
 
   - Fix [ 251 ] system_message.copy() TypeError.

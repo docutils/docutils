@@ -81,6 +81,7 @@ Release 0.15b.dev
 
   - Fixed a bug with the "trim" options of the "unicode" directive.
 
+* languages: Added Korean (ko) mappings.
 
 Release 0.14 (2017-08-03)
 =========================
