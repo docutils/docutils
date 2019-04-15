@@ -209,6 +209,9 @@ This is equivalent to::
 
     __ http://www.faqs.org/rfcs/rfc2822.html
 
+You can link to a specific section by saying :rfc:`number#anchor` (new in
+Docutils 0.15).
+
 
 ``:strong:``
 ============
