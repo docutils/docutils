@@ -2999,7 +2999,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def depart_term(self, node):
         # \leavevmode results in a line break if the
         # term is followed by an item list.
-        self.out.append('}] \leavevmode ')
+        self.out.append('}] \\leavevmode ')
 
     def visit_tgroup(self, node):
         #self.out.append(self.starttag(node, 'colgroup'))
