@@ -2560,7 +2560,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 pass
             self.verbatim = True
             if _in_table and _listings:
-                self.out.append('\lstset{xleftmargin=0pt}\n')
+                self.out.append('\\lstset{xleftmargin=0pt}\n')
             self.out.append('\\begin{%s}%s\n' %
                             (environment, self.literal_block_options))
             self.context.append('\n\\end{%s}' % environment)
