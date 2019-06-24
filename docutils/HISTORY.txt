@@ -41,6 +41,10 @@ Changes Since 0.14
   - Fix [ 251 ] system_message.copy() TypeError.
   - Element.copy() also copies `document`, `line`, and `source` attributes.
 
+* docutils/parsers/rst/__init__.py:
+
+  - Apply [ 152 ] reset `default role` at end of document.
+
 * docutils/parsers/rst/states.py:
 
   - Allow embedded colons in field list field names.
