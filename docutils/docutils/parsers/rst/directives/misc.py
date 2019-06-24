@@ -449,7 +449,6 @@ class DefaultRole(Directive):
                 line=self.lineno)
             return messages + [error]
         roles._roles[''] = role
-        # @@@ should this be local to the document, not the parser?
         return messages
 
 
