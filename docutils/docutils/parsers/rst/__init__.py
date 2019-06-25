@@ -191,7 +191,7 @@ class Parser(docutils.parsers.Parser):
         self.statemachine.run(inputlines, document, inliner=self.inliner)
         # restore the "default" default role after parsing a document
         if '' in roles._roles:
-                del roles._roles['']
+            del roles._roles['']
         self.finish_parse()
 
 
