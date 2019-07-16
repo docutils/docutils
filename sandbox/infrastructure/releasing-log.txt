@@ -8,10 +8,29 @@ Releasing
 
 Notes on what happend while releasing.
 
+Release 0.15
+============
+
+svn revision: 8258 - start of release
+
+
+
 Release 0.14
 ============
 
-svn revision: 8145 - start of release
+svn revision: 8145 - start of release - 0.15.0 beta
+
+o test on : python 2.6 2.7 3.4 3.5 3.6 3.7
+o change version to : 0.15.0 candidate, serial: 1
+o merge changes from HISTORY.txt to RELEASE-NOTES.txt
+o extract release number description setting from release.sh
+o rename headings in HISTORY.txt and RELEASE-NOTES.txt
+o run release.sh stage 2: do a clean checkout and packing
+o run local test with python 2.6 2.7 3.4 3.5 3.6 3.7
+o upload to sourceforge.net. Keep 0.14 as lattest, stable.
+o build wheels
+o register on to pypi and upload tgz
+o pypi: unset hide old releases
 
 
 Prerelease 0.14a0
