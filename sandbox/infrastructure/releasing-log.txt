@@ -20,7 +20,14 @@ Release 0.14
 
 svn revision: 8145 - start of release - 0.15.0 beta
 
-o test on : python 2.6 2.7 3.4 3.5 3.6 3.7
+* test on linux 2.7 3.7 : passed
+* test on macosx python2.6: 
+
+  - 7 failures due to different error messages. see below
+  - 4 errors: python2.6 sys.version_info is a tuple no dictionary 
+    FIXED: revision 8260
+
+* test on macosx 2.7 3.4 3.6 3.7 : passed
 o change version to : 0.15.0 candidate, serial: 1
 o merge changes from HISTORY.txt to RELEASE-NOTES.txt
 o extract release number description setting from release.sh
