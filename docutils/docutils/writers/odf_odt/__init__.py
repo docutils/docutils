@@ -28,7 +28,7 @@ except ImportError:
 from docutils import frontend, nodes, utils, writers, languages
 from docutils.readers import standalone
 from docutils.transforms import references
-if sys.version_info.major >= 3:
+if type(sys.version_info)!=type((0,)) and sys.version_info.major >= 3:
     from io import StringIO
     from urllib.request import urlopen
     from urllib.error import HTTPError
