@@ -2,8 +2,8 @@ Releasing
 =========
 
 :Contact: grubert@users.sourceforge.net, docutils-develop@users.sourceforge.net
-:Revision: $Revision: 7396 $
-:Date: $Date: 2012-04-29 11:18:23 +0200 (So, 29 Apr 2012) $
+:Revision: $Revision$
+:Date: $Date$
 :Copyright: This document has been placed in the public domain.
 
 Notes on what happend while releasing.
