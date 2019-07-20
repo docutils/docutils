@@ -54,7 +54,7 @@ class VersionInfoTests(unittest.TestCase):
             # https://www.python.org/dev/peps/pep-0440/#summary-of-permitted-suffixes-and-relative-ordering
             self.assertTrue(docutils.__version_info__.release)
             # pre-release serial number must be 0 for final releases:
-            self.assertEqual(type(docutils.__version_info__.serial), 0)
+            self.assertEqual(docutils.__version_info__.serial, 0)
 
     def test__version__(self):
         """Test that __version__ is equivalent to __version_info__."""
