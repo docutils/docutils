@@ -21,7 +21,10 @@ svn revision: 8258 - start of release
     FIXED: revision 8260
 
 * test on macosx 2.7 3.4 3.6 3.7 : passed
-o change version to : 0.15.0 candidate, serial: 1
+* change version to : 0.15rc1.dev
+
+  - run tests: python 2.7 and 3.7
+
 o merge changes from HISTORY.txt to RELEASE-NOTES.txt
 o extract release number description setting from release.sh
 o rename headings in HISTORY.txt and RELEASE-NOTES.txt
