@@ -81,7 +81,12 @@ Release 0.15b.dev
 
   - Fixed a bug with the "trim" options of the "unicode" directive.
 
-* languages: Added Korean (ko) mappings.
+* languages: Added Korean (ko) mappings and latin.
+
+* Several fixes to keep mor information on source in parsed elements,
+  isolate documents roles from other documents parsed, smartquotes, 
+  table gets width and latex table multicolumn cells, ...
+
 
 Release 0.14 (2017-08-03)
 =========================

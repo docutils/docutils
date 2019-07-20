@@ -25,8 +25,7 @@ svn revision: 8258 - start of release
 
   - run tests: python 2.7 and 3.7
 
-o merge changes from HISTORY.txt to RELEASE-NOTES.txt
-o extract release number description setting from release.sh
+* extract changes from HISTORY.txt to RELEASE-NOTES.txt
 o rename headings in HISTORY.txt and RELEASE-NOTES.txt
 o run release.sh stage 2: do a clean checkout and packing
 o run local test with python 2.6 2.7 3.4 3.5 3.6 3.7
