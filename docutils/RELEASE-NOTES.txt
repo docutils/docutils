@@ -63,8 +63,8 @@ Future changes
   __ docs/ref/rst/restructuredtext.html#bibliographic-fields
 
 
-Release 0.15b.dev
-=================
+Release 0.15
+============
 
 .. Note::
 
