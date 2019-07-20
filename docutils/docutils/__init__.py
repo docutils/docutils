@@ -56,7 +56,7 @@ from collections import namedtuple
 
 __docformat__ = 'reStructuredText'
 
-__version__ = '0.15rc1.dev'
+__version__ = '0.15'
 """Docutils version identifier (complies with PEP 440)::
 
     major.minor[.micro][releaselevel[serial]][.dev]
@@ -74,15 +74,15 @@ __version_info__ = VersionInfo(
     major=0,
     minor=15,
     micro=0,
-    releaselevel='candidate', # one of 'alpha', 'beta', 'candidate', 'final'
+    releaselevel='final', # one of 'alpha', 'beta', 'candidate', 'final'
     # pre-release serial number (0 for final releases and active development):
-    serial=1,
-    release=False # True for official releases and pre-releases
+    serial=0,
+    release=True # True for official releases and pre-releases
     )
 """Comprehensive version information tuple. See 'Version Numbering' in
 docs/dev/policies.txt."""
 
-__version_details__ = ''
+__version_details__ = 'release'
 """Optional extra version details (e.g. 'snapshot 2005-05-29, r3410').
 (For development and release status see `__version_info__`.)
 """

@@ -13,8 +13,12 @@
 
 .. contents::
 
-Changes Since 0.14
+Changes Since 0.15
 ==================
+
+
+Release 0.15 (2019-07-20)
+=========================
 
 * General
 
