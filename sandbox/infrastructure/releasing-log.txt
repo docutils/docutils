@@ -27,12 +27,40 @@ svn revision: 8258 - start of release
 
 * extract changes from HISTORY.txt to RELEASE-NOTES.txt
 * rename headings in HISTORY.txt and RELEASE-NOTES.txt
-o run release.sh stage 2: do a clean checkout and packing
-o run local test with python 2.6 2.7 3.4 3.5 3.6 3.7
-o upload to sourceforge.net. Keep 0.14 as lattest, stable.
-o build wheels
-o register on to pypi and upload tgz
-o pypi: unset hide old releases
+* run release.sh stage 2: do a clean checkout and packing
+* run local test with python 2.6 2.7 3.4 3.6 3.7
+* upload to sourceforge.net. Keep 0.15 as latest, stable.
+* Fix: README.txt version number BY HAND
+* pypi :
+
+  - docutils is registered
+  - check setup.py : add classifier 'Programming Language :: Python :: 3.7'
+  - Login to pypi (see https://packaging.python.org/tutorials/packaging-projects/)
+
+    - python3 -m pip install --user --upgrade setuptools wheel
+
+      (warns about not being in PATH. symlink into my/bin)
+    - python3 setup.py sdist bdist_wheel ::
+
+        /Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/distutils/dist.py:274: UserWarning: Unknown distribution option: 'python_requires'
+          warnings.warn(msg)
+
+        error: invalid command 'bdist_wheel'
+
+    - add import setuptools to setup.py
+    - python3 setup.py sdist bdist_wheel
+    - python2 setup.py bdist_wheel
+    - python3 -m pip install --user --upgrade twine
+    - twine upload dist/*
+
+  check on pypi: 0.15 is there.
+
+* update website docs
+
+  - in directory web edit index.txt
+  - in sandbox/infrastructure run ./docutils-update.local
+
+* set version of repository to 0.16b.dev
 
 
 Release 0.14
@@ -51,7 +79,7 @@ svn revision: 8078 Prerelease 0.14.0a
 * rename headings in HISTORY.txt and RELEASE-NOTES.txt
 * run release.sh stage 2: do a clean checkout and packing
 * run local test with python2.7
-* upload to sourceforge.net. Keep 0.13 as lattest, stable.
+* upload to sourceforge.net. Keep 0.13 as latest, stable.
 * reister on to pypi and upload tgz
 * pypi: unset hide old releases
 
