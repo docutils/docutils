@@ -117,7 +117,7 @@ function initialize()
         usage
     fi
     echo 'Initializing...'
-    python_versions='2.4 2.5 2.6 2.7'
+    python_versions='2.6 2.7'
     for py_ver in $python_versions; do
         echo -n "Checking for Python $py_ver (python$py_ver)... "
         if ! echo 'print "OK"' | python$py_ver; then
@@ -251,7 +251,7 @@ function upload_htdocs()
     confirm tar xzvf "../$tarball"
     run cd docutils-"$new_ver"/tools/
     echo "BUG no docutils installation left."
-    echo "DO NOT let call but manually in $(pwd)"
+    echo "DO NOT call manually in $(pwd)"
     confirm ./buildhtml.py --local ..
     confirm ./buildhtml.py ../docs
     run cd ..
