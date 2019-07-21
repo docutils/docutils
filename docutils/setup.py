@@ -6,6 +6,7 @@ import sys
 import os
 import glob
 try:
+    import setuptools
     from distutils.core import setup, Command
     from distutils.command.build import build
     from distutils.command.build_py import build_py
