@@ -10,32 +10,6 @@
 
 .. _Docutils: http://docutils.sourceforge.net/
 
-Assumptions and their failure
------------------------------
-
-On the test machine python 2.6, 2.7 and 3.2, 3.3, and 3.4
-are installed.
-Some in /usr/ some under /usr/local.
-
-Assumption: If python2.6 is in /usr/bin/ then site-packages is under
-/usr/local/lib/python2.6.
-
-On new ubuntu 12.10
-
-* python2.7 is here /usr/bin/python2.7.
-* in /usr/lib are python2.7, pymodules and pyshared.
-
-  in /usr/lib/python2.7 no site-packages directory even after installation
-  of docutils
-
-  in /usr/local/lib/python2.7 are dist-packages  site-packages.
-
-  site-packages is empty.
-
-  docutils is installed under dist-packages.
-
-  pymodules has a python2.7 directory.
-
 Releasing
 ---------
 
@@ -89,12 +63,6 @@ REWORK FOR SOURCEFORGE REPO
 .. Note:: This document does not cover branching and tagging, but the
    release script does.
 
-.. Note:: You may want to use ReleaseForge_ instead of using
-   SourceForge's file release system.
-
-   .. _ReleaseForge: http://releaseforge.sourceforge.net/
-
-
 * **Announce**
 
   On the Docutils-develop mailing list, announce that the release is
@@ -119,6 +87,8 @@ REWORK FOR SOURCEFORGE REPO
   week ahead.
 
 * **Check-in freeze**
+
+  for example it was 0.14b.dev and is changed to 0.15
 
   **Update the version identifier**:
   Remove the `development release segment` (``.dev``) from the `version
@@ -227,20 +197,19 @@ REWORK FOR SOURCEFORGE REPO
 
 * Register with PyPI (``python setup.py register``).
 
-  Set the download-url so eggs can access older releases.
+  (2019-07-21 still ?) Set the download-url so eggs can access older releases.
 
 * **build wheels**::
 
-    pip wheel docutils
-    pip3 wheel docutils
+    python3 setup.py sdist bdist_wheel
+    python2 setup.py bdist_wheel
 
   This builds wheels_ (`pure Python wheels`_ for Python 2 and 3
   respectively) by downloading the new release from pypi.
 
   Upload the wheels to PyPI::
 
-    twine upload docultils-<VERSION>-py2-none-any.whl
-    twine upload wheelhouse/docultils-<VERSION>-py3-none-any.whl
+    twine upload dist/*
 
 * **Lift the freeze**
 
@@ -252,9 +221,14 @@ REWORK FOR SOURCEFORGE REPO
 * After a final release, add a new empty section "Changes Since ..." in
   HISTORY.txt.
 
-* Update the web page (web/index.txt).
+* Update the web page (web/index.txt)::
 
-* Run docutils-update on the server.
+    cd sandbox/infrastructure/
+    ./docutils-update.local
+
+  Running on sf-server no longer works.
+
+* set svn version e.g. 0.16b.dev
 
 * **Run alltests.py with svn version**
 
