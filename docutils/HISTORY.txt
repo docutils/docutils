@@ -16,11 +16,23 @@
 Changes Since 0.15
 ==================
 
-* Drop Python 2.6 support (gradually).
+* General
 
-* Apply patch #157: In test/test_io.py method test_deprecation_warning, 
-  close FileInput to avoid test failure because of a ResourceWarning when
-  PYTHONWARNINGS=default is set.
+  - Dropped support for Python 2.6 (work in progress).
+  - Keep `backslash escapes`__ in the document tree. Backslash characters in
+    text are be represented by NULL characters in the ``text`` attribute of
+    Doctree nodes and removed in the writing stage by the node's
+    ``astext()`` method.
+
+  __ http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html#escaping-mechanism
+
+
+* test/test_io.py:
+
+  - Apply patch #157: In method test_deprecation_warning, close
+    ``FileInput`` to avoid test failure because of a ``ResourceWarning``
+    when ``PYTHONWARNINGS=default`` is set.
+
 
 Release 0.15 (2019-07-20)
 =========================
