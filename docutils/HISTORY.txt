@@ -18,6 +18,10 @@ Changes Since 0.15
 
 * Drop Python 2.6 support (gradually).
 
+* Apply patch #157: In test/test_io.py method test_deprecation_warning, 
+  close FileInput to avoid test failure because of a ResourceWarning when
+  PYTHONWARNINGS=default is set.
+
 Release 0.15 (2019-07-20)
 =========================
 
