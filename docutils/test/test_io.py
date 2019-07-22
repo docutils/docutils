@@ -134,6 +134,9 @@ print "hello world"
         self.assertRaises(AssertionError, uniinput.decode, b'ja')
 
     def test_deprecation_warning(self):
+        # Test deprecation warning of 'U' universal newlines mode.
+        # TODO remove with 3.4 support end
+
         # Arrange
         import warnings
         with warnings.catch_warnings(record=True) as w:
