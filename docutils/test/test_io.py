@@ -142,7 +142,7 @@ print "hello world"
 
             # Act
             # Trigger a warning?
-            io.FileInput(source_path='data/include.txt')
+            io.FileInput(source_path='data/include.txt').close()
 
             # Assert
             self.assertEqual(len(w), 0, "Expected no warnings, got %s" %
