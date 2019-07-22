@@ -487,13 +487,11 @@ class Date(Directive):
         #      __ https://reproducible-builds.org/
         #
         # Con: Changes the specs, hard to predict behaviour,
-        #      no actual use case!
         #
         # See also the discussion about \date \time \year in TeX
         # http://tug.org/pipermail/tex-k/2016-May/002704.html
         # source_date_epoch = os.environ.get('SOURCE_DATE_EPOCH')
-        # if (source_date_epoch
-        #     and self.state.document.settings.use_source_date_epoch):
+        # if (source_date_epoch):
         #     text = time.strftime(format_str,
         #                          time.gmtime(int(source_date_epoch)))
         # else:
