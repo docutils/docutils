@@ -8,6 +8,20 @@ Releasing
 
 Notes on what happend while releasing.
 
+CAUTION (2019-07-22)
+====================
+
+  While releasing 0.15 ::
+
+    python3 setup.py sdist bdist_wheel
+    python2 setup.py bdist_wheel
+
+  This will result in the py2 wheel being identical to the py3 one.
+
+  The name ``docutils-0.15-py2-none-any.whl`` cannot be used twice on pypi,
+  build the py2-wheel and name it ``docutils-0.15.post1-py2-none-any.whl``.
+  (No code was changed.)
+
 Release 0.15
 ============
 
