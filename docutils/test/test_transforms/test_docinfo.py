@@ -230,49 +230,49 @@ totest['bibliographic_field_lists'] = ((DocInfo,), [
             <author>
                 One, Only
 """],
-# [r""":Authors: Me\, Myself; **I**
-# :Authors: Pac\;Man\\; Ms. Pac\Man; Pac\ Man, Jr.
-# :Authors:
-#     Here
-# 
-#     The\re
-# 
-#     *Every\ where*
-# :Authors: - First\\
-#           - Se\ cond
-#           - Thir\d
-# """,
-# """\
-# <document source="test data">
-#     <docinfo>
-#         <authors>
-#             <author>
-#                 Me, Myself
-#             <author>
-#                 I
-#         <authors>
-#             <author>
-#                 Pac;Man\\
-#             <author>
-#                 Ms. PacMan
-#             <author>
-#                 PacMan, Jr.
-#         <authors>
-#             <author>
-#                 Here
-#             <author>
-#                 There
-#             <author>
-#                 <emphasis>
-#                     Everywhere
-#         <authors>
-#             <author>
-#                 First\\
-#             <author>
-#                 Second
-#             <author>
-#                 Third
-# """],
+[r""":Authors: Me\, Myself; **I**
+:Authors: Pac\;Man\\; Ms. Pac\Man; Pac\ Man, Jr.
+:Authors:
+    Here
+
+    The\re
+
+    *Every\ where*
+:Authors: - First\\
+          - Se\ cond
+          - Thir\d
+""",
+"""\
+<document source="test data">
+    <docinfo>
+        <authors>
+            <author>
+                Me, Myself
+            <author>
+                I
+        <authors>
+            <author>
+                Pac;Man\\
+            <author>
+                Ms. PacMan
+            <author>
+                PacMan, Jr.
+        <authors>
+            <author>
+                Here
+            <author>
+                There
+            <author>
+                <emphasis>
+                    Everywhere
+        <authors>
+            <author>
+                First\\
+            <author>
+                Second
+            <author>
+                Third
+"""],
 ["""\
 :Authors:
 
