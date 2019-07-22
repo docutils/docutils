@@ -16,6 +16,7 @@
 Changes Since 0.15
 ==================
 
+* Drop Python 2.6 support (gradually).
 
 Release 0.15 (2019-07-20)
 =========================
