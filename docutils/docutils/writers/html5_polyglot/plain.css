@@ -221,7 +221,7 @@ div.sidebar {
   background-color: #ffffee ;
 }
 
-/* Code                     */
+/* Code */
 
 pre.code { padding: 0.7ex }
 pre.code, code { background-color: #eeeeee }
@@ -235,7 +235,7 @@ pre.code .name.builtin, code .name.builtin { color: #352B84 }
 pre.code .deleted, code .deleted { background-color: #DEB0A1}
 pre.code .inserted, code .inserted { background-color: #A3D289}
 
-/* Math                     */
+/* Math */
 /* styled separately (see math.css for math-output=HTML) */
 
 /* Epigraph                 */
