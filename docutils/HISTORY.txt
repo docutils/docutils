@@ -28,6 +28,10 @@ Changes Since 0.15
 
   __ http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html#escaping-mechanism
 
+* docutils/utils/__init__.py
+
+  - unescape() definition moved to `nodes` to avoid circular import
+    dependency. Fixes [ 366 ].
 
 * test/test_io.py:
 
