@@ -277,11 +277,11 @@ def rfc_reference_role(role, rawtext, text, lineno, inliner,
                        options={}, content=[]):
     try:
         if "#" in text:
-            rfcnum, section = text.split("#", 1)
+            rfcnum, section = utils.unescape(text).split("#", 1)
         else:
-            rfcnum, section  = text, None
+            rfcnum, section  = utils.unescape(text), None
         rfcnum = int(rfcnum)
-        if rfcnum <= 0:
+        if rfcnum < 1:
             raise ValueError
     except ValueError:
         msg = inliner.reporter.error(
@@ -294,7 +294,7 @@ def rfc_reference_role(role, rawtext, text, lineno, inliner,
     if section is not None:
         ref += "#"+section
     set_classes(options)
-    node = nodes.reference(rawtext, 'RFC ' + utils.unescape(str(rfcnum)), refuri=ref,
+    node = nodes.reference(rawtext, 'RFC ' + str(rfcnum), refuri=ref,
                            **options)
     return [node], []
 
