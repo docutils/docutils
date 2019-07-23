@@ -237,6 +237,11 @@ pre.code {
   margin-left: 1.5em;
   margin-right: 1.5em
 }
+pre.literal-block,
+pre.doctest-block,
+pre.math,
+pre.code {
+  font-family: monospace;
 pre.code .ln { color: gray; } /* line numbers */
 
 /* Tables */
