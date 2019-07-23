@@ -13,6 +13,8 @@
 
 .. contents::
 
+2019-07-23 : Branch: branches/rel-0.15 created to investigate import problems: bugs#366
+
 Changes Since 0.15
 ==================
 
