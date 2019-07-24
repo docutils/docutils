@@ -33,11 +33,14 @@ Changes Since 0.15
   - unescape() definition moved to `nodes` to avoid circular import
     dependency. Fixes [ 366 ].
 
+* docutils/transforms/universal.py
+
+  - Fix [ 332 ]: Standard backslash escape for smartquotes.
+    Fix [ 342 ]: No escape in roles descending from `inline literal`.
+
 * test/test_io.py:
 
-  - Apply patch #157: In method test_deprecation_warning, close
-    ``FileInput`` to avoid test failure because of a ``ResourceWarning``
-    when ``PYTHONWARNINGS=default`` is set.
+  - Apply patch #157: avoid test failure because of a ``ResourceWarning``.
 
 Release 0.15.1 (2019-07-24)
 ===========================
