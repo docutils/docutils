@@ -19,8 +19,41 @@ CAUTION (2019-07-22)
   This will result in the py2 wheel being identical to the py3 one.
 
   The name ``docutils-0.15-py2-none-any.whl`` cannot be used twice on pypi,
-  build the py2-wheel and name it ``docutils-0.15.post1-py2-none-any.whl``.
-  (No code was changed.)
+  build the py2-wheel and rename it ``docutils-0.15.post1-py2-none-any.whl``.
+  (No code was changed therefore only filename change.)
+
+  Name it ``docutils-0.15-post1-py2-none-any.whl`` then the version in the filename
+  corresponds to the directory names in the wheel file.
+
+  Maybe change the the version number in setup.py ?
+
+Release 0.15.1 (2019-07-24)
+===========================
+
+branches/rel-0.15
+
+Bug fix release for python2 only.
+
+* set version 0.15.1
+* ``python2 setup.py sdist bdist_wheel``
+* ``python3 -m twine upload --repository-url https://test.pypi.org/legacy/ dist/docutils-0.15.1-py2-none-any.whl ``
+* in a new virtualenv::
+
+    python -m pip install --index-url https://test.pypi.org/simple/ --no-deps docutils
+
+  and then test/alltests.py 
+* ``python3 -m twine upload  dist/docutils-0.15.1*``
+
+  upload py2-wheel and source.
+* in a new virtualenv::
+
+    python -m pip install docutils
+
+  and then test/alltests.py 
+
+
+
+
 
 Release 0.15
 ============
