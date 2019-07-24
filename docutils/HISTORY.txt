@@ -39,6 +39,13 @@ Changes Since 0.15
     ``FileInput`` to avoid test failure because of a ``ResourceWarning``
     when ``PYTHONWARNINGS=default`` is set.
 
+Release 0.15.1 (2019-07-24)
+===========================
+
+source: branches/rel-0.15
+
+Bugs #366 fix release for python2 only.
+
 
 Release 0.15 (2019-07-20)
 =========================
