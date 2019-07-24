@@ -43,7 +43,7 @@ function set_ver()
     # BUG ls lists directories but does not descend
     # (try ls --recursive)
     files="docutils/__init__.py setup.py README.txt `$svn ls test/functional/expected/ | sed 's|^|test/functional/expected/|'`"
-    echo "Now I'll change the version identifier to ${new_ver} in the following files:"
+    echo "Now I'll change the version identifier to ${2} in the following files:"
     echo $files
     echo 'and update the version_info in docutils/__init__.py.'
     echo
@@ -56,7 +56,7 @@ function set_ver()
         # we temporarily deactivate exit-on-error.
         set +e
         for F in $files; do
-            (echo ",s/$old_ver_regex/${new_ver}/g"; echo 'wq') | ed "$F"
+            (echo ",s/$old_ver_regex[^0-9]/${2}/g"; echo 'wq') | ed "$F"
         done
         set -e
         echo 'Modifying docutils/__init__.py with version_identifier_parsing.py'
