@@ -56,7 +56,7 @@ function set_ver()
         # we temporarily deactivate exit-on-error.
         set +e
         for F in $files; do
-            (echo ",s/$old_ver_regex[^0-9]/${2}/g"; echo 'wq') | ed "$F"
+            (echo ",s/$old_ver_regex\b/${2}/g"; echo 'wq') | ed "$F"
         done
         set -e
         echo 'Modifying docutils/__init__.py with version_identifier_parsing.py'
