@@ -27,10 +27,13 @@ CAUTION (2019-07-22)
 
   Maybe change the the version number in setup.py ?
 
-Release 0.15.1 (2019-07-24)
-===========================
+Release 0.15 (2019-07-24)
+=========================
 
 branches/rel-0.15
+
+Release 0.15.1 (2019-07-24)
+===========================
 
 Bug fix release for python2 only.
 
@@ -51,10 +54,30 @@ Bug fix release for python2 only.
 
   and then test/alltests.py 
 
+* (2019-07-25) replace source by -post1
 
+  Name it ``docutils-0.15.1-post1.tar.gz`` to make sure
 
+  * It is unchanged library code: *post1*
+  * the version is still 0.15.1: therefore separate with ``-``
 
+  * run the tests somewhere, fix and commit.
+    Then::
 
+      svn export svn+ssh://@svn.code.sf.net/p/docutils/code/branches/rel-0.15/docutils d
+      cd d
+      python2 setup.py sdist
+    
+  * check ``tar tzf dist/docutils-0.15.1.tar.gz`` for remaining files.
+    Then::
+
+      mv dist/docutils-0.15.1.tar.gz dist/docutils-0.15.1-post1.tar.gz
+      python -m twine upload dist/docutils-0.15.1-post1.tar.gz
+
+  * Build a venv (python3), install docutils, copy test3 from development
+    directory and run the test.
+
+    As there is no 0.15.1 wheel for python3 this will be the source package. 
 Release 0.15
 ============
 
