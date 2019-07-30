@@ -32,6 +32,104 @@ Release 0.15 (2019-07-24)
 
 branches/rel-0.15
 
+Release 0.15.2 (2019-07-30)
+===========================
+
+Bump the version number to ease tool live.
+
+Bump version ::
+
+  set_version 0.15.2 
+  python2 test/alltests.py
+  python3 setup.py test3/alltests.py
+  # visual inspection
+  svn di | grep '^[+-]' | less -p '0.15.[12]'
+  svn ci
+
+Build py2 release upload to test.pypi ::
+
+  mkdir py2 ; cd py2
+  svn export svn+ssh://grubert@svn.code.sf.net/p/docutils/code/branches/rel-0.15/docutils
+  cd docutils
+  python2 setup.py sdist bdist_wheel
+  python3 -m twine upload --repository-url https://test.pypi.org/legacy/ dist/docutils-0.15.2-py2-none-any.whl
+
+Test in virtualenv ::
+
+  virtualenv du2 ; cd du2
+  export PYTHONPATH= ; . bin/activate
+
+  python -m pip install --index-url https://test.pypi.org/simple/ --no-deps docutils
+  cp -r ~/projects/docutils-rel-0.15/docutils/py2/docutils/test .
+  python2 test/alltests.py
+  # IGNORE stylesheet path differences  
+  
+  deactivate ; cd .. ; rm -rf du2
+
+release to pypi from the exported source directory   ::
+
+  python3 -m twine upload  dist/docutils-0.15.2*  
+
+Test in new virtualenv ::
+
+  virtualenv du2 ; cd du2
+  export PYTHONPATH= ; . bin/activate
+
+  pip install docutils
+  # Successfully installed docutils-0.15.2
+
+  cp -r ~/projects/docutils-rel-0.15/docutils/py2/docutils/test .
+  python2 test/alltests.py
+  # IGNORE stylesheet path differences  
+
+  deactivate ; cd .. ; rm -rf du2
+
+Build py3 release upload to test.pypi.
+In the export/docutils ::
+
+  # py3 and source 
+  python3 setup.py bdist_wheel
+  python3 -m twine upload --repository-url https://test.pypi.org/legacy/ dist/docutils-0.15.2-py3-none-any.whl
+
+Test in virtualenv ::
+
+  python3 -m venv du3 ; cd du3
+  export PYTHONPATH= ; . bin/activate
+
+  python3 -m pip install --index-url https://test.pypi.org/simple/ --no-deps docutils
+
+BUG install 0.15 source. Check test.pypi web interface ... py3-wheel is there.
+Retry::
+
+  # Successfully installed docutils-0.15.2
+  cp -r ~/projects/docutils-rel-0.15/docutils/py2/docutils/test3 .
+  python test3/alltests.py
+  # IGNORE upper directory Failure
+  
+  deactivate ; cd .. ; rm -rf du3 
+
+release to pypi from the exported source directory   ::
+
+  python3 -m twine upload  dist/docutils-0.15.2-py3*  
+
+Wait for wheel to appear on pypi.org.
+
+Test in virtualenv ::
+
+  python3 -m venv du3 ; cd du3
+  export PYTHONPATH= ; . bin/activate
+
+  pip install docutils
+  # Successfully installed docutils-0.15.2
+  
+  cp -r ~/projects/docutils-rel-0.15/docutils/py2/docutils/test3 .
+  python test3/alltests.py
+  # IGNORE upper directory Failure
+
+  deactivate ; cd .. ; rm -rf du3
+
+FINE 0.15.2
+
 Release 0.15.1 (2019-07-24)
 ===========================
 
