@@ -38,6 +38,10 @@ Changes Since 0.15
   - Fix [ 332 ]: Standard backslash escape for smartquotes.
     Fix [ 342 ]: No escape in roles descending from `inline literal`.
 
+* docutils/statemachine.py
+
+  - Patch [ 158 ]: Speed up patterns by saving compiled versions (eric89gxl)
+
 * test/test_io.py:
 
   - Apply patch #157: avoid test failure because of a ``ResourceWarning``.

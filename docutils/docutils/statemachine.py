@@ -715,7 +715,7 @@ class State:
         try:
             pattern = self.patterns[name]
             if not hasattr(pattern, 'match'):
-                pattern = re.compile(pattern)
+                pattern = self.patterns[name] = re.compile(pattern)
         except KeyError:
             raise TransitionPatternNotFound(
                   '%s.patterns[%r]' % (self.__class__.__name__, name))
@@ -859,7 +859,7 @@ class StateMachineWS(StateMachine):
             offset += 1
         return indented, offset, blank_finish
 
-    def get_first_known_indented(self, indent, until_blank=False, 
+    def get_first_known_indented(self, indent, until_blank=False,
                                  strip_indent=True, strip_top=True):
         """
         Return an indented block and info.
@@ -945,8 +945,8 @@ class StateWS(State):
     `indent_sm_kwargs`. Override it in subclasses to avoid the default.
     """
 
-    ws_patterns = {'blank': ' *$',
-                   'indent': ' +'}
+    ws_patterns = {'blank': re.compile(' *$'),
+                   'indent': re.compile(' +')}
     """Patterns for default whitespace transitions.  May be overridden in
     subclasses."""
 
