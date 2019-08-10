@@ -55,7 +55,7 @@ class TextTests(unittest.TestCase):
         self.assertEqual(self.text.pformat(), u'Line 1.\nLine 2.\n')
 
     def test_strip(self):
-        text = nodes.Text(' was noch ', ' \was\ noch \\ ')
+        text = nodes.Text(' was noch ', r' \was\ noch \\ ')
         stripped = text.lstrip().rstrip()
         stripped2 = text.lstrip(' wahn').rstrip(' wahn')
         self.assertEqual(stripped, u'was noch')
