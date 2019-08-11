@@ -52,7 +52,7 @@ A "References" section should be generated.
     <section ids="id1">
         <title>
             References
-        <footnote auto="1" ids="id2" names="TARGET_NOTE:\ id2">
+        <footnote auto="1" ids="id2" names="TARGET_NOTE:\\ id2">
             <paragraph>
                 <reference refuri="http://www.example.org">
                     http://www.example.org

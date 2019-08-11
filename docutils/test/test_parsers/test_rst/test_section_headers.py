@@ -129,7 +129,7 @@ Do not count combining chars in title column width.
 """,
 u"""\
 <document source="test data">
-    <section ids="a-with-combining-varia" names="a\u0300\ with\ combining\ varia">
+    <section ids="a-with-combining-varia" names="a\u0300\\ with\\ combining\\ varia">
         <title>
             à with combining varia
         <paragraph>
@@ -218,7 +218,7 @@ Test long title and space normalization.
 """,
 """\
 <document source="test data">
-    <section ids="long-title" names="long\ title">
+    <section ids="long-title" names="long\\ title">
         <title>
             Long    Title
         <system_message level="2" line="1" source="test data" type="WARNING">
@@ -319,22 +319,22 @@ Paragraph 4.
 <document source="test data">
     <comment xml:space="preserve">
         Test return to existing, highest-level section (Title 3).
-    <section ids="title-1" names="title\ 1">
+    <section ids="title-1" names="title\\ 1">
         <title>
             Title 1
         <paragraph>
             Paragraph 1.
-        <section ids="title-2" names="title\ 2">
+        <section ids="title-2" names="title\\ 2">
             <title>
                 Title 2
             <paragraph>
                 Paragraph 2.
-    <section ids="title-3" names="title\ 3">
+    <section ids="title-3" names="title\\ 3">
         <title>
             Title 3
         <paragraph>
             Paragraph 3.
-        <section ids="title-4" names="title\ 4">
+        <section ids="title-4" names="title\\ 4">
             <title>
                 Title 4
             <paragraph>
@@ -367,22 +367,22 @@ Paragraph 4.
 <document source="test data">
     <paragraph>
         Test return to existing, highest-level section (Title 3, with overlines).
-    <section ids="title-1" names="title\ 1">
+    <section ids="title-1" names="title\\ 1">
         <title>
             Title 1
         <paragraph>
             Paragraph 1.
-        <section ids="title-2" names="title\ 2">
+        <section ids="title-2" names="title\\ 2">
             <title>
                 Title 2
             <paragraph>
                 Paragraph 2.
-    <section ids="title-3" names="title\ 3">
+    <section ids="title-3" names="title\\ 3">
         <title>
             Title 3
         <paragraph>
             Paragraph 3.
-        <section ids="title-4" names="title\ 4">
+        <section ids="title-4" names="title\\ 4">
             <title>
                 Title 4
             <paragraph>
@@ -411,22 +411,22 @@ Paragraph 4.
 <document source="test data">
     <paragraph>
         Test return to existing, higher-level section (Title 4).
-    <section ids="title-1" names="title\ 1">
+    <section ids="title-1" names="title\\ 1">
         <title>
             Title 1
         <paragraph>
             Paragraph 1.
-        <section ids="title-2" names="title\ 2">
+        <section ids="title-2" names="title\\ 2">
             <title>
                 Title 2
             <paragraph>
                 Paragraph 2.
-            <section ids="title-3" names="title\ 3">
+            <section ids="title-3" names="title\\ 3">
                 <title>
                     Title 3
                 <paragraph>
                     Paragraph 3.
-        <section ids="title-4" names="title\ 4">
+        <section ids="title-4" names="title\\ 4">
             <title>
                 Title 4
             <paragraph>
@@ -455,17 +455,17 @@ Paragraph 4.
 <document source="test data">
     <paragraph>
         Test bad subsection order (Title 4).
-    <section ids="title-1" names="title\ 1">
+    <section ids="title-1" names="title\\ 1">
         <title>
             Title 1
         <paragraph>
             Paragraph 1.
-        <section ids="title-2" names="title\ 2">
+        <section ids="title-2" names="title\\ 2">
             <title>
                 Title 2
             <paragraph>
                 Paragraph 2.
-    <section ids="title-3" names="title\ 3">
+    <section ids="title-3" names="title\\ 3">
         <title>
             Title 3
         <paragraph>
@@ -506,17 +506,17 @@ Paragraph 4.
 <document source="test data">
     <paragraph>
         Test bad subsection order (Title 4, with overlines).
-    <section ids="title-1" names="title\ 1">
+    <section ids="title-1" names="title\\ 1">
         <title>
             Title 1
         <paragraph>
             Paragraph 1.
-        <section ids="title-2" names="title\ 2">
+        <section ids="title-2" names="title\\ 2">
             <title>
                 Title 2
             <paragraph>
                 Paragraph 2.
-    <section ids="title-3" names="title\ 3">
+    <section ids="title-3" names="title\\ 3">
         <title>
             Title 3
         <paragraph>
@@ -539,7 +539,7 @@ Paragraph.
 """,
 """\
 <document source="test data">
-    <section ids="title-containing-inline-markup" names="title\ containing\ inline\ markup">
+    <section ids="title-containing-inline-markup" names="title\\ containing\\ inline\\ markup">
         <title>
             Title containing \n\
             <emphasis>
@@ -558,7 +558,7 @@ Paragraph.
 """,
 """\
 <document source="test data">
-    <section ids="numbered-title" names="1.\ numbered\ title">
+    <section ids="numbered-title" names="1.\\ numbered\\ title">
         <title>
             1. Numbered Title
         <paragraph>
@@ -584,7 +584,7 @@ Paragraph.
     <system_message level="2" line="3" source="test data" type="WARNING">
         <paragraph>
             Enumerated list ends without a blank line; unexpected unindent.
-    <section ids="numbered-title" names="3.\ numbered\ title">
+    <section ids="numbered-title" names="3.\\ numbered\\ title">
         <title>
             3. Numbered Title
         <paragraph>
@@ -863,7 +863,7 @@ Empty Section
 """,
 """\
 <document source="test data">
-    <section ids="empty-section" names="empty\ section">
+    <section ids="empty-section" names="empty\\ section">
         <title>
             Empty Section
 """],

@@ -857,7 +857,7 @@ totest['literal_block'] = [
 ["""\
 Test special characters { [ \\\\ ] } in literal block::
 
-  { [ ( \macro
+  { [ ( \\macro
 
   } ] )
 """,

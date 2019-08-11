@@ -68,26 +68,26 @@ Paragraph 4.
                         <paragraph>
                             <reference ids="id4" refid="title-4">
                                 Title 4
-    <section ids="title-1" names="title\ 1">
+    <section ids="title-1" names="title\\ 1">
         <title refid="id1">
             Title 1
         <paragraph>
             Paragraph 1.
-        <section ids="title-2" names="title\ 2">
+        <section ids="title-2" names="title\\ 2">
             <title>
                 <reference name="Title" refname="title">
                     Title
                  2
             <paragraph>
                 Paragraph 2.
-            <section ids="title-3" names="title\ 3">
+            <section ids="title-3" names="title\\ 3">
                 <title refid="id3">
                     <target ids="title" names="title">
                         Title
                      3
                 <paragraph>
                     Paragraph 3.
-        <section ids="title-4" names="title\ 4">
+        <section ids="title-4" names="title\\ 4">
             <title refid="id4">
                 Title 4
             <paragraph>
@@ -106,7 +106,7 @@ Paragraph 2.
 """,
 """\
 <document source="test data">
-    <topic classes="contents" ids="table-of-contents" names="table\ of\ contents">
+    <topic classes="contents" ids="table-of-contents" names="table\\ of\\ contents">
         <title>
             Table of Contents
         <bullet_list>
@@ -119,12 +119,12 @@ Paragraph 2.
                         <paragraph>
                             <reference ids="id2" refid="title-2">
                                 Title 2
-    <section ids="title-1" names="title\ 1">
+    <section ids="title-1" names="title\\ 1">
         <title refid="id1">
             Title 1
         <paragraph>
             Paragraph 1.
-        <section ids="title-2" names="title\ 2">
+        <section ids="title-2" names="title\\ 2">
             <title refid="id2">
                 Title 2
             <paragraph>
@@ -145,7 +145,7 @@ Paragraph 2.
 """,
 """\
 <document source="test data">
-    <topic classes="contents" ids="there-s-an-image-in-title-2" names="there's\ an\ image\ in\ title\ 2">
+    <topic classes="contents" ids="there-s-an-image-in-title-2" names="there's\\ an\\ image\\ in\\ title\\ 2">
         <title>
             There's an image in Title 2
         <bullet_list>
@@ -157,17 +157,17 @@ Paragraph 2.
                 <paragraph>
                     <reference ids="id2" refid="title-2">
                         Title 2
-    <section ids="title-1" names="title\ 1">
+    <section ids="title-1" names="title\\ 1">
         <title refid="id1">
             Title 1
         <paragraph>
             Paragraph 1.
-    <section ids="title-2" names="title\ 2">
+    <section ids="title-2" names="title\\ 2">
         <title refid="id2">
             <image alt="Title 2" uri="title2.png">
         <paragraph>
             Paragraph 2.
-        <substitution_definition names="Title\ 2">
+        <substitution_definition names="Title\\ 2">
             <image alt="Title 2" uri="title2.png">
 """],                                   # emacs cruft: "
 ["""\
@@ -209,22 +209,22 @@ Paragraph 4.
                         <paragraph>
                             <reference ids="id3" refid="title-4">
                                 Title 4
-    <section ids="title-1" names="title\ 1">
+    <section ids="title-1" names="title\\ 1">
         <title refid="id1">
             Title 1
         <paragraph>
             Paragraph 1.
-        <section ids="title-2" names="title\ 2">
+        <section ids="title-2" names="title\\ 2">
             <title refid="id2">
                 Title 2
             <paragraph>
                 Paragraph 2.
-            <section ids="title-3" names="title\ 3">
+            <section ids="title-3" names="title\\ 3">
                 <title>
                     Title 3
                 <paragraph>
                     Paragraph 3.
-        <section ids="title-4" names="title\ 4">
+        <section ids="title-4" names="title\\ 4">
             <title refid="id3">
                 Title 4
             <paragraph>
@@ -253,7 +253,7 @@ Paragraph 4.
 """,
 """\
 <document source="test data">
-    <section ids="title-1" names="title\ 1">
+    <section ids="title-1" names="title\\ 1">
         <title>
             Title 1
         <topic classes="contents local" ids="contents" names="contents">
@@ -273,17 +273,17 @@ Paragraph 4.
                             Title 4
         <paragraph>
             Paragraph 1.
-        <section ids="title-2" names="title\ 2">
+        <section ids="title-2" names="title\\ 2">
             <title refid="id1">
                 Title 2
             <paragraph>
                 Paragraph 2.
-            <section ids="title-3" names="title\ 3">
+            <section ids="title-3" names="title\\ 3">
                 <title refid="id2">
                     Title 3
                 <paragraph>
                     Paragraph 3.
-        <section ids="title-4" names="title\ 4">
+        <section ids="title-4" names="title\\ 4">
             <title refid="id3">
                 Title 4
             <paragraph>
@@ -394,7 +394,7 @@ Paragraph 3.
 """,
 """\
 <document source="test data">
-    <section ids="title-1" names="title\ 1">
+    <section ids="title-1" names="title\\ 1">
         <title>
             Title 1
         <paragraph>
@@ -413,12 +413,12 @@ Paragraph 3.
                                 <paragraph>
                                     <reference ids="id2" refid="title-3">
                                         Title 3
-        <section ids="title-2" names="title\ 2">
+        <section ids="title-2" names="title\\ 2">
             <title refid="id1">
                 Title 2
             <paragraph>
                 Paragraph 2.
-            <section ids="title-3" names="title\ 3">
+            <section ids="title-3" names="title\\ 3">
                 <title refid="id2">
                     Title 3
                 <paragraph>

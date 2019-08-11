@@ -199,7 +199,7 @@ Testing a :fileref:`role` in a nested parse.
 .. role:: custom
 .. role:: special
 
-Empty :custom:`\ ` and empty `\ `:special:
+Empty :custom:`\\ ` and empty `\\ `:special:
 """,
 """\
 <document source="test data">

@@ -64,7 +64,7 @@ totest['code-parsing-none'] = [
 ["""\
 .. code:: latex
 
-  hello \emph{world} % emphasize
+  hello \\emph{world} % emphasize
 """,
 """\
 <document source="test data">

@@ -69,7 +69,7 @@ Paragraph
 """,
 """\
 <document source="test data">
-    <section classes="four" ids="section-title" names="section\ title">
+    <section classes="four" ids="section-title" names="section\\ title">
         <title>
             Section Title
         <paragraph>

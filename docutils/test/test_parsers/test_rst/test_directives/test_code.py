@@ -40,7 +40,7 @@ totest['code'] = [
 """,
 """\
 <document source="test data">
-    <literal_block classes="code testclass" ids="without-argument" names="without\ argument" xml:space="preserve">
+    <literal_block classes="code testclass" ids="without-argument" names="without\\ argument" xml:space="preserve">
         This is a code block with generic options.
 """],
 ["""\
@@ -175,7 +175,7 @@ totest['code-parsing'] = [
 .. code:: latex
   :class: testclass
 
-  hello \emph{world} % emphasize
+  hello \\emph{world} % emphasize
 """,
 """\
 <document source="test data">

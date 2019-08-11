@@ -23,7 +23,7 @@ totest['replace'] = [
 ["""\
 Test directive containing french role exposant (superscript).
 
-.. |Na+| remplace:: Na\ :exp:`+`
+.. |Na+| remplace:: Na\\ :exp:`+`
 
 Le |Na+| est l'ion sodium.
 """,
@@ -44,7 +44,7 @@ Le |Na+| est l'ion sodium.
 ["""\
 Test directive containing english role superscript.
 
-.. |Na+| remplace:: Na\ :sup:`+`
+.. |Na+| remplace:: Na\\ :sup:`+`
 
 Le |Na+| est l'ion sodium.
 """,

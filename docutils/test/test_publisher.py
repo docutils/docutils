@@ -22,7 +22,7 @@ Test Document
 This is a test document with a broken reference: nonexistent_
 """
 pseudoxml_output = b"""\
-<document ids="test-document" names="test\ document" source="<string>" title="Test Document">
+<document ids="test-document" names="test\\ document" source="<string>" title="Test Document">
     <title>
         Test Document
     <paragraph>
@@ -39,7 +39,7 @@ pseudoxml_output = b"""\
 exposed_pseudoxml_output = (b"""\
 <document ids="test-document" internal:refnames="{"""
 + u_prefix
-+ b"""\'nonexistent\': [<reference: <#text: \'nonexistent\'>>]}" names="test\ document" source="<string>" title="Test Document">
++ b"""\'nonexistent\': [<reference: <#text: \'nonexistent\'>>]}" names="test\\ document" source="<string>" title="Test Document">
     <title>
         Test Document
     <paragraph>

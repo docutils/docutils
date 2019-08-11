@@ -97,9 +97,9 @@ Bad input:
             Substitution definition "empty too" empty or invalid.
         <literal_block xml:space="preserve">
             .. |empty too| unicode:: .. comment doesn't count as content
-    <substitution_definition names="not\ hex">
+    <substitution_definition names="not\\ hex">
         0xHEX
-    <substitution_definition names="not\ all\ hex">
+    <substitution_definition names="not\\ all\\ hex">
         UABCX
     <system_message level="3" line="8" source="test data" type="ERROR">
         <paragraph>
@@ -130,7 +130,7 @@ u"""\
         .
     <substitution_definition names="copy">
         \u00A9
-    <substitution_definition names="BogusMegaCorp\ (TM)">
+    <substitution_definition names="BogusMegaCorp\\ (TM)">
         BogusMegaCorp
         \u2122
 """],

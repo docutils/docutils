@@ -79,7 +79,7 @@ totest['code-parsing-long'] = [
 ["""\
 .. code:: latex
 
-  hello \emph{world} % emphasize
+  hello \\emph{world} % emphasize
 """,
 """\
 <document source="test data">

@@ -34,7 +34,7 @@ totest['targets'] = [
 """,
 """\
 <document source="test data">
-    <target ids="optional-space-before-colon" names="optional\ space\ before\ colon">
+    <target ids="optional-space-before-colon" names="optional\\ space\\ before\\ colon">
 """],
 [r"""
 External hyperlink targets:
@@ -83,13 +83,13 @@ Indirect hyperlink targets:
 
 .. _`a target name: including a colon (quoted)`:
 
-.. _a target name\: including a colon (escaped):
+.. _a target name\\: including a colon (escaped):
 """,
 """\
 <document source="test data">
-    <target ids="a-long-target-name" names="a\ long\ target\ name">
-    <target ids="a-target-name-including-a-colon-quoted" names="a\ target\ name:\ including\ a\ colon\ (quoted)">
-    <target ids="a-target-name-including-a-colon-escaped" names="a\ target\ name:\ including\ a\ colon\ (escaped)">
+    <target ids="a-long-target-name" names="a\\ long\\ target\\ name">
+    <target ids="a-target-name-including-a-colon-quoted" names="a\\ target\\ name:\\ including\\ a\\ colon\\ (quoted)">
+    <target ids="a-target-name-including-a-colon-escaped" names="a\\ target\\ name:\\ including\\ a\\ colon\\ (escaped)">
 """],
 ["""\
 .. _`target: No matching backquote.
@@ -116,8 +116,8 @@ Indirect hyperlink targets:
 """,
 """\
 <document source="test data">
-    <target ids="a-very-long-target-name-split-across-lines" names="a\ very\ long\ target\ name,\ split\ across\ lines">
-    <target ids="and-another-with-backquotes" names="and\ another,\ with\ backquotes">
+    <target ids="a-very-long-target-name-split-across-lines" names="a\\ very\\ long\\ target\\ name,\\ split\\ across\\ lines">
+    <target ids="and-another-with-backquotes" names="and\\ another,\\ with\\ backquotes">
 """],
 ["""\
 External hyperlink:
@@ -139,7 +139,7 @@ External hyperlink:
 """\
 <document source="test data">
     <target ids="email" names="email" refuri="mailto:jdoe@example.com">
-    <target ids="multi-line-email" names="multi-line\ email" refuri="mailto:jdoe@example.com">
+    <target ids="multi-line-email" names="multi-line\\ email" refuri="mailto:jdoe@example.com">
 """],
 ["""\
 Malformed target:
@@ -400,7 +400,7 @@ Explicit internal target.
 
 .. _:: no good either
 
-.. _escaped colon\:: OK
+.. _escaped colon\\:: OK
 
 .. _`unescaped colon, quoted:`: OK
 """,
@@ -416,8 +416,8 @@ Explicit internal target.
     <system_message level="2" line="3" source="test data" type="WARNING">
         <paragraph>
             malformed hyperlink target.
-    <target ids="escaped-colon" names="escaped\ colon:" refuri="OK">
-    <target ids="unescaped-colon-quoted" names="unescaped\ colon,\ quoted:" refuri="OK">
+    <target ids="escaped-colon" names="escaped\\ colon:" refuri="OK">
+    <target ids="unescaped-colon-quoted" names="unescaped\\ colon,\\ quoted:" refuri="OK">
 """],
 ]
 
