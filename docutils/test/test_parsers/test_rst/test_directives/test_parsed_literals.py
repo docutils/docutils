@@ -43,7 +43,7 @@ totest['parsed_literals'] = [
 """,
 """\
 <document source="test data">
-    <literal_block classes="myliteral" ids="example-parsed" names="example:\ parsed" xml:space="preserve">
+    <literal_block classes="myliteral" ids="example-parsed" names="example:\\ parsed" xml:space="preserve">
          This is a parsed literal block with options.
 """],
 ["""\

@@ -69,11 +69,11 @@ Here's a series of substitution definitions:
 <document source="test data">
     <paragraph>
         Here's a series of substitution definitions:
-    <substitution_definition names="symbol\ 1">
+    <substitution_definition names="symbol\\ 1">
         <image alt="symbol 1" uri="symbol1.png">
-    <substitution_definition names="SYMBOL\ 2">
+    <substitution_definition names="SYMBOL\\ 2">
         <image alt="SYMBOL 2" height="50" uri="symbol2.png" width="100">
-    <substitution_definition names="symbol\ 3">
+    <substitution_definition names="symbol\\ 3">
         <image alt="symbol 3" uri="symbol3.png">
 """],
 ["""\
@@ -82,7 +82,7 @@ Here's a series of substitution definitions:
 """,
 """\
 <document source="test data">
-    <substitution_definition names="very\ long\ substitution\ text,\ split\ across\ lines">
+    <substitution_definition names="very\\ long\\ substitution\\ text,\\ split\\ across\\ lines">
         <image alt="very long substitution text, split across lines" uri="symbol.png">
 """],
 ["""\
@@ -121,11 +121,11 @@ Followed by a paragraph.
 """,
 """\
 <document source="test data">
-    <substitution_definition names="symbol\ 1">
+    <substitution_definition names="symbol\\ 1">
         <image alt="symbol 1" uri="symbol.png">
     <paragraph>
         Followed by a paragraph.
-    <substitution_definition names="symbol\ 2">
+    <substitution_definition names="symbol\\ 2">
         <image alt="symbol 2" uri="symbol.png">
     <comment xml:space="preserve">
     <block_quote>

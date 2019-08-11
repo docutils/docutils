@@ -133,7 +133,7 @@ The system_message should move after the document title
 (it was before the beginning of the section).
 """,
 """\
-<document ids="long-title" names="long\ title" source="test data" title="Long    Title">
+<document ids="long-title" names="long\\ title" source="test data" title="Long    Title">
     <title>
         Long    Title
     <system_message level="2" line="1" source="test data" type="WARNING">
@@ -164,19 +164,19 @@ Title 3
 Paragraph 3.
 """,
 """\
-<document ids="title-1" names="title\ 1" source="test data" title="Title 1">
+<document ids="title-1" names="title\\ 1" source="test data" title="Title 1">
     <title>
         Title 1
     <comment xml:space="preserve">
         Test multiple second-level titles.
     <paragraph>
         Paragraph 1.
-    <section ids="title-2" names="title\ 2">
+    <section ids="title-2" names="title\\ 2">
         <title>
             Title 2
         <paragraph>
             Paragraph 2.
-    <section ids="title-3" names="title\ 3">
+    <section ids="title-3" names="title\\ 3">
         <title>
             Title 3
         <paragraph>
@@ -198,7 +198,7 @@ substitution_definition.
         Title
     <substitution_definition names="foo">
         bar
-    <target ids="invisible-target" names="invisible\ target">
+    <target ids="invisible-target" names="invisible\\ target">
     <paragraph>
         This title should be the document title despite the
         substitution_definition.
@@ -225,15 +225,15 @@ Another Subtitle
 <document source="test data">
     <paragraph>
         (Because of this paragraph, the following is not a doc title.)
-    <section ids="section-title" names="section\ title">
+    <section ids="section-title" names="section\\ title">
         <title>
             Section Title
         <subtitle ids="subtitle" names="subtitle">
             Subtitle
-        <section ids="another-section" names="another\ section">
+        <section ids="another-section" names="another\\ section">
             <title>
                 Another Section
-            <subtitle ids="another-subtitle" names="another\ subtitle">
+            <subtitle ids="another-subtitle" names="another\\ subtitle">
                 Another Subtitle
 """],
 ["""\

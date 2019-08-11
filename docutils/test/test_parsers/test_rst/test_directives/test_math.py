@@ -47,12 +47,12 @@ totest['options'] = [
   :class: new
   :name: eq:Eulers law
 
-  e^i*2*\pi = 1
+  e^i*2*\\pi = 1
 """,
 """\
 <document source="test data">
-    <math_block classes="new" ids="eq-eulers-law" names="eq:eulers\ law" xml:space="preserve">
-        e^i*2*\pi = 1
+    <math_block classes="new" ids="eq-eulers-law" names="eq:eulers\\ law" xml:space="preserve">
+        e^i*2*\\pi = 1
 """],
 ]
 

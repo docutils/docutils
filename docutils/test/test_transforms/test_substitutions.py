@@ -102,7 +102,7 @@ u"""\
 ["""\
 .. |l| unicode:: U+00AB .. left chevron
 .. |r| unicode:: U+00BB .. right chevron
-.. |.| replace:: |l|\ ``.``\ |r|
+.. |.| replace:: |l|\\ ``.``\\ |r|
 
 .. Delete either of the following lines, and there is no error.
 
@@ -290,7 +290,7 @@ u"""\
         .
     <substitution_definition names="copy">
         \u00a9
-    <substitution_definition names="BogusMegaCorp\ (TM)">
+    <substitution_definition names="BogusMegaCorp\\ (TM)">
         BogusMegaCorp
         \u2122
 """],

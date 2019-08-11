@@ -300,7 +300,7 @@ Paragraph.
 
    Block quote.
 
-   \-- Not an attribution
+   \\-- Not an attribution
 
 Paragraph.
 

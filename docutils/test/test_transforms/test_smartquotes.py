@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# $Id: test_smartquotes.py 8190 2017-10-25 13:57:27Z milde $
+# $Id$
 #
 # :Copyright: © 2011 Günter Milde.
 # :Maintainer: docutils-develop@lists.sourceforge.net
@@ -120,7 +120,7 @@ em space "a" 'a',
 NBSP "a" 'a',
 ZWSP\u200B"a" and\u200B'a',
 ZWNJ\u200C"a" and\u200C'a',
-escaped space\ "a" and\ 'a',
+escaped space\\ "a" and\\ 'a',
 
 &mdash;"a",&mdash;'a'
 en dash–"a"–'a',
@@ -154,7 +154,7 @@ Quotes and inline-elements:
 * Inside *"emphasized"* or other `inline "roles"`
 
 Do not drop characters from intra-word inline markup like
-*re*\ ``Structured``\ *Text*.
+*re*\\ ``Structured``\\ *Text*.
 """,
 u"""\
 <document source="test data">
@@ -208,7 +208,7 @@ Do not convert context-character at inline-tag boundaries
   (``"string"``), (``'string'``), *\"betont\"*, \"*betont*".
 
   Do not drop characters from intra-word inline markup like
-  *re*\ ``Structured``\ *Text*.
+  *re*\\ ``Structured``\\ *Text*.
 """,
 u"""\
 <document source="test data">

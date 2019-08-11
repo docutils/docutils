@@ -74,7 +74,7 @@ totest['container'] = [
 """,
 """\
 <document source="test data">
-    <container ids="my-name" names="my\ name">
+    <container ids="my-name" names="my\\ name">
         <paragraph>
             The name argument allows hyperlinks to 
             <reference name="my name" refname="my name">

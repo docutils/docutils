@@ -49,7 +49,7 @@ totest['basics'] = [
             interpreted
 """],
 ["""\
-`interpreted \`title``
+`interpreted \\`title``
 """,
 """\
 <document source="test data">
@@ -127,7 +127,7 @@ totest['basics'] = [
         :title:`` (empty interpreted text not recognized)
 """],
 ["""\
-:title:`\ ` (interpreted text containing empty string)
+:title:`\\ ` (interpreted text containing empty string)
 """,
 """\
 <document source="test data">
@@ -136,7 +136,7 @@ totest['basics'] = [
          (interpreted text containing empty string)
 """],
 ["""\
-`\ `:title: (interpreted text containing empty string (postfix))
+`\\ `:title: (interpreted text containing empty string (postfix))
 """,
 """\
 <document source="test data">
@@ -145,7 +145,7 @@ totest['basics'] = [
          (interpreted text containing empty string (postfix))
 """],
 ["""\
-:title:`\ non-empty`
+:title:`\\ non-empty`
 """,
 """\
 <document source="test data">
@@ -154,7 +154,7 @@ totest['basics'] = [
             non-empty
 """],
 ["""\
-:title:`\  ` (trailing unquoted space)
+:title:`\\  ` (trailing unquoted space)
 """,
 """\
 <document source="test data">
@@ -220,7 +220,7 @@ Simple explicit roles:
 totest['code'] = [
 ["""\
 Code role for inline code snippets:
-:code:`$\alpha = \int_0^\infty f(x) dx$`.
+:code:`$\alpha = \\int_0^\\infty f(x) dx$`.
 """,
 """\
 <document source="test data">

@@ -63,7 +63,7 @@ totest['topics'] = [
 """,
 """\
 <document source="test data">
-    <topic classes="custom" ids="my-point" names="my\ point">
+    <topic classes="custom" ids="my-point" names="my\\ point">
         <title>
             With Options
         <paragraph>

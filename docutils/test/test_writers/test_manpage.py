@@ -293,7 +293,7 @@ bla bla bla
 .UNINDENT
 .INDENT 0.0
 .TP
-.B \&.
+.B \\&.
 bla bla bla
 .UNINDENT
 .INDENT 0.0

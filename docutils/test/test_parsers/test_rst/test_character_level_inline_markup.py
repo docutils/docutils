@@ -172,9 +172,9 @@ and \**kwargs or ** as emphasized.
          as emphasized.
 """],
 ["""\
-Strong asterisk: **\***
+Strong asterisk: **\\***
 and
-strong double asterisk: **\*\***
+strong double asterisk: **\\*\\***
 require escaping with simple-inline-markup.
 """,
 """\
@@ -285,8 +285,8 @@ Escape chars in URIs:
             reference:1
         <target ids="reference-1" names="reference:1" refuri="reference:1">
     <paragraph>
-        <reference name="anonymous\call" refuri="anonymous\call">
-            anonymous\call
+        <reference name="anonymous\\call" refuri="anonymous\\call">
+            anonymous\\call
     <paragraph>
         <reference name="anonymous_call" refuri="anonymous_call">
             anonymous_call

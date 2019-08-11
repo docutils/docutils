@@ -127,7 +127,7 @@ totest['admonitions'] = [
         <paragraph>
             Content before options
             is possible too.
-    <note ids="role-not-option" names="role\ not\ option">
+    <note ids="role-not-option" names="role\\ not\\ option">
         <paragraph>
             <strong>
                 a role is not an option
@@ -185,7 +185,7 @@ totest['admonitions'] = [
 """,
 """\
 <document source="test data">
-    <admonition classes="emergency" ids="reference-name" names="reference\ name">
+    <admonition classes="emergency" ids="reference-name" names="reference\\ name">
         <title>
             Admonition
         <paragraph>
