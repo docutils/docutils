@@ -36,7 +36,7 @@ Changes Since 0.15
 * docutils/transforms/universal.py
 
   - Fix [ 332 ]: Standard backslash escape for smartquotes.
-    Fix [ 342 ]: No escape in roles descending from `inline literal`.
+  - Fix [ 342 ]: No escape in roles descending from `inline literal`.
 
 * docutils/statemachine.py
 
@@ -45,6 +45,11 @@ Changes Since 0.15
 * test/test_io.py:
 
   - Apply patch #157: avoid test failure because of a ``ResourceWarning``.
+
+* test/test_writers/test_odt.py:
+
+  - Fix [ 359 ]: Test suite failes on Python 3.8. odt xml sorting.
+    Use ElemtTree instead of minidom.  
 
 Release 0.15.1 (2019-07-24)
 ===========================

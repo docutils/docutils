@@ -33,7 +33,7 @@ Instructions for adding a new test:
 import sys
 import os
 import zipfile
-from xml.dom import minidom
+import xml.etree.ElementTree as ET
 import tempfile
 
 from __init__ import DocutilsTestSupport
@@ -116,15 +116,29 @@ class DocutilsOdtTestCase(DocutilsTestSupport.StandardTestCase):
             len(content2), len(content1), )
         self.assertEqual(content1, content2, msg)
 
+    def reorder_attributes(self, root):
+        """
+        Make attribute order independent of python version. 
+        python3.8 is different to previous.
+        """
+        for el in root.iter():
+            attrib = el.attrib
+            if len(attrib) > 1:
+                # adjust attribute order, e.g. by sorting
+                attribs = sorted(attrib.items())
+                attrib.clear()
+                attrib.update(attribs)
+
     def extract_file(self, payload, filename):
         payloadfile = BytesIO()
         payloadfile.write(payload)
         payloadfile.seek(0)
         zfile = zipfile.ZipFile(payloadfile, 'r')
         content1 = zfile.read(filename)
-        doc = minidom.parseString(content1)
+        doc = ET.fromstring(content1)
+        self.reorder_attributes(doc)
         #content2 = doc.toprettyxml(indent='  ')
-        content2 = doc.toxml()
+        content2 = ET.tostring(doc)
         return content2
 
     def assertEqual(self, first, second, msg=None):
