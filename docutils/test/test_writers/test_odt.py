@@ -202,6 +202,9 @@ class DocutilsOdtTestCase(DocutilsTestSupport.StandardTestCase):
     def test_odt_contents(self):
         self.process_test('odt_contents.txt', 'odt_contents.odt')
 
+    def test_odt_classifier(self):
+        self.process_test('odt_classifier.txt', 'odt_classifier.odt')
+
     #
     # Template for new tests.
     # Also add functional/input/odt_xxxx.txt and
