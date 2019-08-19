@@ -1938,9 +1938,8 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         self.bumped_list_level_stack.pop()
 
     def visit_classifier(self, node):
-        els = self.current_element.getchildren()
-        if len(els) > 0:
-            el = els[-1]
+        if len(self.current_element) > 0:
+            el = self.current_element[-1]
             el1 = SubElement(
                 el, 'text:span',
                 attrib={'text:style-name': self.rststyle('emphasis')})
