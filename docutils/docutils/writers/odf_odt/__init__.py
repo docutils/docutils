@@ -1111,13 +1111,11 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                 el.tag == 'text:p' or
                 el.tag == 'text:h'):
             return el
-        elif el.getchildren():
-            for child in el.getchildren():
+        else:
+            for child in el:
                 el1 = self.find_first_text_p(child)
                 if el1 is not None:
                     return el1
-            return None
-        else:
             return None
 
     def attach_page_style(self, el):
@@ -1191,7 +1189,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                     el.attrib["{%s}margin-bottom" % SNSD["fo"]] = \
                     "%.3fpt" % (.1 * h)
             else:
-                for subel in el.getchildren():
+                for subel in el:
                     walk(subel)
         walk(root_el)
 
@@ -1691,11 +1689,11 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         text = node.astext()
         # Are we in mixed content?  If so, add the text to the
         #   etree tail of the previous sibling element.
-        if len(self.current_element.getchildren()) > 0:
-            if self.current_element.getchildren()[-1].tail:
-                self.current_element.getchildren()[-1].tail += text
+        if len(self.current_element) > 0:
+            if self.current_element[-1].tail:
+                self.current_element[-1].tail += text
             else:
-                self.current_element.getchildren()[-1].tail = text
+                self.current_element[-1].tail = text
         else:
             if self.current_element.text:
                 self.current_element.text += text
@@ -2970,9 +2968,9 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                 self.current_element.getchildren()[-1])
         elif self.in_footer:
             self.footer_content.append(
-                self.current_element.getchildren()[-1])
+                self.current_element[-1])
             self.current_element.remove(
-                self.current_element.getchildren()[-1])
+                self.current_element[-1])
 
     def visit_problematic(self, node):
         pass
