@@ -199,6 +199,9 @@ class DocutilsOdtTestCase(DocutilsTestSupport.StandardTestCase):
     def test_odt_literal_block(self):
         self.process_test('odt_literal_block.txt', 'odt_literal_block.odt')
 
+    def test_odt_contents(self):
+        self.process_test('odt_contents.txt', 'odt_contents.odt')
+
     #
     # Template for new tests.
     # Also add functional/input/odt_xxxx.txt and
