@@ -196,6 +196,9 @@ class DocutilsOdtTestCase(DocutilsTestSupport.StandardTestCase):
             save_output_name='odt_custom_headfoot.odt'
             )
 
+    def test_odt_literal_block(self):
+        self.process_test('odt_literal_block.txt', 'odt_literal_block.odt')
+
     #
     # Template for new tests.
     # Also add functional/input/odt_xxxx.txt and
