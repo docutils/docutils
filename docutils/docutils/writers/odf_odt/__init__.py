@@ -2763,8 +2763,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         if WhichElementTree != "lxml":
             s1 = s1.encode("utf-8")
         el1 = etree.fromstring(s1)
-        children = el1.getchildren()
-        for child in children:
+        for child in el1:
             self.current_element.append(child)
 
     def depart_literal_block(self, node):
@@ -3460,7 +3459,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def update_toc_collect(self, el, level, collection):
         collection.append((level, el))
         level += 1
-        for child_el in el.getchildren():
+        for child_el in el:
             if child_el.tag != 'text:index-body':
                 self.update_toc_collect(child_el, level, collection)
 
