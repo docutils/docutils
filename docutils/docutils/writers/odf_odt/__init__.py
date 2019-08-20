@@ -2984,12 +2984,8 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                 if WhichElementTree != "lxml":
                     contentstr = contentstr.encode("utf-8")
                 content = etree.fromstring(contentstr)
-                # TODO add test and remove getchildren
-                # if len(content) > 0:
-                #     el1 = contenet[0]
-                elements = content.getchildren()
-                if len(elements) > 0:
-                    el1 = elements[0]
+                if len(content) > 0:
+                    el1 = content[0]
                     if self.in_header:
                         pass
                     elif self.in_footer:
