@@ -49,7 +49,7 @@ Changes Since 0.15
 * test/test_writers/test_odt.py:
 
   - Fix [ 359 ]: Test suite failes on Python 3.8. odt xml sorting.
-    Use ElemtTree instead of minidom.  
+    Use ElementTree instead of minidom.  
 
 Release 0.15.1 (2019-07-24)
 ===========================
