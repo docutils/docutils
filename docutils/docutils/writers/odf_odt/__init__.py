@@ -2959,17 +2959,11 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         self.in_paragraph = False
         self.set_to_parent()
         if self.in_header:
-            # TODO add test and remove getchildren
-            #    self.current_element[-1])
-            self.header_content.append(
-                self.current_element.getchildren()[-1])
-            self.current_element.remove(
-                self.current_element.getchildren()[-1])
+            self.header_content.append( self.current_element[-1] )
+            self.current_element.remove( self.current_element[-1] )
         elif self.in_footer:
-            self.footer_content.append(
-                self.current_element[-1])
-            self.current_element.remove(
-                self.current_element[-1])
+            self.footer_content.append( self.current_element[-1] )
+            self.current_element.remove( self.current_element[-1] )
 
     def visit_problematic(self, node):
         pass
