@@ -205,6 +205,11 @@ class DocutilsOdtTestCase(DocutilsTestSupport.StandardTestCase):
     def test_odt_classifier(self):
         self.process_test('odt_classifier.txt', 'odt_classifier.odt')
 
+    def test_odt_footnotes(self):
+        self.process_test('odt_footnotes.txt', 'odt_footnotes.odt',
+            save_output_name='odt_footnotes.odt'
+            )
+
     #
     # Template for new tests.
     # Also add functional/input/odt_xxxx.txt and
