@@ -48,7 +48,8 @@ if sys.version_info < (3,3,2):
 
 def null_bytes():
     import csv
-    csv_data = open(utf_16_csv, 'rb').read()
+    with open(utf_16_csv, 'rb') as f:
+        csv_data = f.read()
     csv_data = unicode(csv_data, 'latin1').splitlines()
     reader = csv.reader([tables.CSVTable.encode_for_csv(line + '\n')
                          for line in csv_data])
