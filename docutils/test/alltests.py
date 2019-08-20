@@ -18,6 +18,7 @@ import time
 start = time.time()
 
 import sys
+import atexit
 import os
 import platform
 import DocutilsTestSupport              # must be imported before docutils
@@ -30,21 +31,29 @@ class Tee:
 
     def __init__(self, filename, stream=sys.__stdout__):
         self.file = open(filename, 'w')
+        atexit.register(self.close)
         self.stream = stream
         self.encoding = getattr(stream, 'encoding', None)
+
+    def close(self):
+        self.file.close()
+        self.file = None
 
     def write(self, string):
         try:
             self.stream.write(string)
-            self.file.write(string)
+            if self.file:
+                self.file.write(string)
         except UnicodeEncodeError:   # Py3k writing to "ascii" stream/file
             string = string.encode('raw_unicode_escape').decode('ascii')
             self.stream.write(string)
-            self.file.write(string)
+            if self.file:
+                self.file.write(string)
 
     def flush(self):
         self.stream.flush()
-        self.file.flush()
+        if self.file:
+            self.file.flush()
 
 
 def pformat(suite):
