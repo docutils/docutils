@@ -196,6 +196,12 @@ class DocutilsOdtTestCase(DocutilsTestSupport.StandardTestCase):
             save_output_name='odt_custom_headfoot.odt'
             )
 
+    def test_odt_header_footer(self):
+        self.process_test('odt_header_footer.txt', 'odt_header_footer.odt',
+            save_output_name='odt_header_footer.odt'
+            )
+            
+
     def test_odt_literal_block(self):
         self.process_test('odt_literal_block.txt', 'odt_literal_block.odt')
 
