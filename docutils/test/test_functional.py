@@ -126,9 +126,11 @@ expected output and check it in:
         namespace['settings_overrides'] = {'_disable_config': True}
         # Read the variables set in the default config file and in
         # the current config file into namespace:
-        defaultpy = open(join_path(datadir, 'tests', '_default.py')).read()
-        exec(defaultpy, namespace)
-        exec(open(self.configfile).read(), namespace)
+        with open(join_path(datadir, 'tests', '_default.py')) as f:
+            defaultpy = f.read()
+            exec(defaultpy, namespace)
+        with open(self.configfile) as f:
+            exec(f.read(), namespace)
         # Check for required settings:
         assert 'test_source' in namespace,\
                "No 'test_source' supplied in " + self.configfile
