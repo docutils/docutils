@@ -1582,9 +1582,8 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                         el3 = copy.deepcopy(el1)
                         el2.append(el3)
                     else:
-                        children = el2.getchildren()
-                        if len(children) > 0:   # and 'id' in el2.attrib:
-                            child = children[0]
+                        if len(el2) > 0:   # and 'id' in el2.attrib:
+                            child = el2[0]
                             ref1 = child.text
                             attribkey = add_ns('text:id', nsdict=SNSD)
                             id1 = el2.get(attribkey, 'footnote-error')
@@ -2960,6 +2959,8 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         self.in_paragraph = False
         self.set_to_parent()
         if self.in_header:
+            # TODO add test and remove getchildren
+            #    self.current_element[-1])
             self.header_content.append(
                 self.current_element.getchildren()[-1])
             self.current_element.remove(
@@ -2989,6 +2990,9 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                 if WhichElementTree != "lxml":
                     contentstr = contentstr.encode("utf-8")
                 content = etree.fromstring(contentstr)
+                # TODO add test and remove getchildren
+                # if len(content) > 0:
+                #     el1 = contenet[0]
                 elements = content.getchildren()
                 if len(elements) > 0:
                     el1 = elements[0]
