@@ -237,6 +237,9 @@ class ExtensionOptionTests(unittest.TestCase):
 
 class HelperFunctionTests(unittest.TestCase):
 
+    # Test conversion from `version information tuple` to a PEP 440 compliant
+    # Docutils version identifier.
+    # See 'Version Numbering' in docs/dev/policies.txt.
     def test_version_identifier(self):
         release_0_14_final = docutils.VersionInfo(
             major=0, minor=14, micro=0,
