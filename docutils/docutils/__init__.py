@@ -61,7 +61,7 @@ __version__ = '0.16b.dev'
 
     major.minor[.micro][releaselevel[serial]][.dev]
 
-For version comparison operations, use `__version_info__` (which see, below)
+For version comparison operations, use `__version_info__` (see, below)
 rather than parsing the text of `__version__`.
 
 See 'Version Numbering' in docs/dev/policies.txt.
