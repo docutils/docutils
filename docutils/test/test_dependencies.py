@@ -8,9 +8,9 @@
 Test module for the --record-dependencies option.
 """
 
+import csv
 import os.path
 import unittest
-import sys
 import DocutilsTestSupport              # must be imported before docutils
 import docutils.core
 import docutils.utils
@@ -89,13 +89,9 @@ class RecordDependenciesTests(unittest.TestCase):
         self.assertEqual(record, expected)
 
     def test_csv_dependencies(self):
-        try:
-            import csv
-            csvsource = os.path.join('data', 'csv_dep.txt')
-            self.assertEqual(self.get_record(source_path=csvsource),
-                             ['data/csv_data.txt'])
-        except ImportError:
-            pass
+        csvsource = os.path.join('data', 'csv_dep.txt')
+        self.assertEqual(self.get_record(source_path=csvsource),
+                         ['data/csv_data.txt'])
 
     def test_stylesheet_dependencies(self):
         stylesheet = paths['stylesheet']

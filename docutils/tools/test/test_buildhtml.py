@@ -24,15 +24,8 @@ Build-HTML Options
 
 import unittest
 import os
-import re
-try:
-    import tempfile
-except ImportError:
-    pass
-try:
-    from subprocess import Popen, PIPE, STDOUT
-except ImportError:
-    pass
+from subprocess import Popen, PIPE, STDOUT
+import tempfile
 
 
 buildhtml_path = os.path.abspath(os.path.join(
