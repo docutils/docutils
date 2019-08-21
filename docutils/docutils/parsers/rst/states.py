@@ -719,7 +719,6 @@ class Inliner:
             textend = matchend + endmatch.end(1)
             rawsource = unescape(string[matchstart:textend], True)
             node = nodeclass(rawsource, text)
-            node[0].rawsource = unescape(text, True)
             return (string[:matchstart], [node],
                     string[textend:], [], endmatch.group(1))
         msg = self.reporter.warning(
@@ -885,10 +884,6 @@ class Inliner:
                                        self.reporter)
         if role_fn:
             nodes, messages2 = role_fn(role, rawsource, text, lineno, self)
-            try:
-                nodes[0][0].rawsource = unescape(text, True)
-            except IndexError:
-                pass
             return nodes, messages + messages2
         else:
             msg = self.reporter.error(
@@ -2863,7 +2858,7 @@ class Text(RSTState):
                     node_list[-1] += node
                 else:
                     text = parts[0].rstrip()
-                    textnode = nodes.Text(text, unescape(text, True))
+                    textnode = nodes.Text(text)
                     node_list[-1] += textnode
                     for part in parts[1:]:
                         node_list.append(

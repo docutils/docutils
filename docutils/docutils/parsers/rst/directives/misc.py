@@ -138,9 +138,9 @@ class Include(Directive):
                         literal_block += nodes.inline(value, value,
                                                       classes=classes)
                     else:
-                        literal_block += nodes.Text(value, value)
+                        literal_block += nodes.Text(value)
             else:
-                literal_block += nodes.Text(text, text)
+                literal_block += nodes.Text(text)
             return [literal_block]
         if 'code' in self.options:
             self.options['source'] = path
@@ -323,7 +323,7 @@ class Unicode(Directive):
             except ValueError, error:
                 raise self.error(u'Invalid character code: %s\n%s'
                     % (code, ErrorString(error)))
-            element += nodes.Text(utils.unescape(decoded), decoded)
+            element += nodes.Text(decoded)
         return element.children
 
 

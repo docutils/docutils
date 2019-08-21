@@ -172,7 +172,7 @@ class CodeBlock(Directive):
                 node += nodes.inline(value, value, classes=classes)
             else:
                 # insert as Text to decrease the verbosity of the output
-                node += nodes.Text(value, value)
+                node += nodes.Text(value)
 
         return [node]
 
