@@ -5,8 +5,8 @@ Smart Quotes for Docutils
 :Author: Günter Milde,
          based on SmartyPants by John Gruber, Brad Choate, and Chad Miller
 :Contact: docutils-develop@lists.sourceforge.net
-:Revision: $Revision: 8112 $
-:Date: $Date: 2017-06-14 16:20:20 +0200 (Mi, 14. Jun 2017) $
+:Revision: $Revision$
+:Date: $Date$
 :License: Released under the terms of the `2-Clause BSD license`_
 :Abstract: This document describes the Docutils `smartquotes` module.
 
@@ -438,9 +438,7 @@ differ from the apostrophe. A text like::
 
 becomes
 
-   .. class:: language-de-CH
-
-   "Er sagt: 'Ich fass' es nicht.'"
+   «Er sagt: ‹Ich fass› es nicht.›»
 
 with a single closing guillemet in place of the apostrophe.
 
