@@ -15,8 +15,10 @@ if [ -z "`man -?|grep -- '^ *-T'`" ] ; then
     echo 'WARNING: your man does not support "-T Format" to specify encoding'
     echo 'SKIPPING encoding tests'
     ENCS=""
+    GROFF="ps"
 else
     ENCS="latin1 utf8 ascii ps"
+    GROFF=""
 fi
 
 if [ -z "$1" ] ; then
@@ -55,6 +57,16 @@ for IN_F in $IN_DIR/$FILES ; do
       if [ -e $EXP_DIR/$F_BASE.$ENC ] ; then
         man -T$ENC $OUT_DIR/$F_BASE.man > $OUT_DIR/$F_BASE.$ENC
         diff -s -u $EXP_DIR/$F_BASE.$ENC $OUT_DIR/$F_BASE.$ENC
+        if [ $? -ne 0 ] ; then
+          inc_ERROR_CNT
+        fi
+      fi
+    done
+    for ENC in $GROFF ; do
+      if [ -e $EXP_DIR/$F_BASE.groff.$ENC ] ; then
+        # macosx -t means troff means gross -Tps
+        man -t  $OUT_DIR/$F_BASE.man > $OUT_DIR/$F_BASE.groff.$ENC
+        diff -s -u $EXP_DIR/$F_BASE.groff.$ENC $OUT_DIR/$F_BASE.groff.$ENC
         if [ $? -ne 0 ] ; then
           inc_ERROR_CNT
         fi
