@@ -46,6 +46,10 @@ Changes Since 0.15
 
   - Fix: ElementTree.getchildren deprecated warning
 
+* docutils/writers/manpage.py
+
+  - Apply fix for [ 289 ], line starting with ``.`` in a text.
+
 * test/alltests.py
 
   - Fix: 377 ResourceWarning: unclosed file python3.8

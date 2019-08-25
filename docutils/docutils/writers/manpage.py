@@ -958,8 +958,11 @@ class Translator(nodes.NodeVisitor):
         self.ensure_eol()
         if not self.first_child(node):
             self.body.append('.sp\n')
+        # set in literal to escape dots after a new-line-character
+        self._in_literal = True
 
     def depart_paragraph(self, node):
+        self._in_literal = False
         self.body.append('\n')
 
     def visit_problematic(self, node):

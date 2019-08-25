@@ -137,6 +137,9 @@ With mixed case.
    something important
 
 . period at line start.
+
+and . in a line and at line start
+.in a paragraph
 """, 
         r""".\" Man page generated from reStructuredText.
 .
@@ -195,6 +198,9 @@ something important
 .UNINDENT
 .sp
 \&. period at line start.
+.sp
+and . in a line and at line start
+\&.in a paragraph
 .SH AUTHOR
 someone@somewhere.net
 
