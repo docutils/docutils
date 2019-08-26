@@ -51,12 +51,8 @@ IMAGE_NAME_COUNTER = itertools.count()
 try:
     import pygments
     import pygments.lexers
-    if sys.version_info.major >= 3:
-        from .pygmentsformatter import OdtPygmentsProgFormatter, \
-            OdtPygmentsLaTeXFormatter
-    else:
-        from .pygmentsformatter import OdtPygmentsProgFormatter, \
-            OdtPygmentsLaTeXFormatter
+    from .pygmentsformatter import (OdtPygmentsProgFormatter,
+                                    OdtPygmentsLaTeXFormatter)
 except (ImportError, SyntaxError):
     pygments = None
 
