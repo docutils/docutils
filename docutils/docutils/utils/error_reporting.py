@@ -49,7 +49,7 @@ else:
         # locale.getpreferredencoding([do_setlocale=True|False])
         # has side-effects | might return a wrong guess.
         # (cf. Update 1 in http://stackoverflow.com/questions/4082645/using-python-2-xs-locale-module-to-format-numbers-and-currency)
-    except ValueError, error: # OS X may set UTF-8 without language code
+    except ValueError as error: # OS X may set UTF-8 without language code
         # see http://bugs.python.org/issue18378
         # and https://sourceforge.net/p/docutils/bugs/298/
         if "unknown locale: UTF-8" in error.args:
@@ -113,7 +113,7 @@ class SafeString(object):
             if isinstance(self.data, EnvironmentError):
                 u = u.replace(": u'", ": '") # normalize filename quoting
             return u
-        except UnicodeError, error: # catch ..Encode.. and ..Decode.. errors
+        except UnicodeError as error: # catch ..Encode.. and ..Decode.. errors
             if isinstance(self.data, EnvironmentError):
                 return  u"[Errno %s] %s: '%s'" % (self.data.errno,
                     SafeString(self.data.strerror, self.encoding,

@@ -302,7 +302,7 @@ class HTMLTranslator(nodes.NodeVisitor):
                 content = io.FileInput(source_path=path,
                                        encoding='utf-8').read()
                 self.settings.record_dependencies.add(path)
-            except IOError, err:
+            except IOError as err:
                 msg = u"Cannot embed stylesheet '%s': %s." % (
                                 path, SafeString(err.strerror))
                 self.document.reporter.error(msg)
@@ -1159,7 +1159,7 @@ class HTMLTranslator(nodes.NodeVisitor):
                     'with math-output "MathML"')
             except OSError:
                     raise OSError('is "latexmlmath" in your PATH?')
-            except SyntaxError, err:
+            except SyntaxError as err:
                 err_node = self.document.reporter.error(err, base_node=node)
                 self.visit_system_message(err_node)
                 self.body.append(self.starttag(node, 'p'))

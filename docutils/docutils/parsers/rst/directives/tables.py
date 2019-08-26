@@ -259,9 +259,9 @@ class CSVTable(Table):
             col_widths = self.get_column_widths(max_cols)
             self.extend_short_rows_with_empty_cells(max_cols,
                                                     (table_head, table_body))
-        except SystemMessagePropagation, detail:
+        except SystemMessagePropagation as detail:
             return [detail.args[0]]
-        except csv.Error, detail:
+        except csv.Error as detail:
             message = str(detail)
             if sys.version_info < (3,) and '1-character string' in message:
                 message += '\nwith Python 2.x this must be an ASCII character.'
@@ -320,7 +320,7 @@ class CSVTable(Table):
                                         encoding=encoding,
                                         error_handler=error_handler)
                 csv_data = csv_file.read().splitlines()
-            except IOError, error:
+            except IOError as error:
                 severe = self.state_machine.reporter.severe(
                     u'Problems with "%s" directive path:\n%s.'
                     % (self.name, SafeString(error)),
@@ -336,7 +336,7 @@ class CSVTable(Table):
             source = self.options['url']
             try:
                 csv_text = urllib2.urlopen(source).read()
-            except (urllib2.URLError, IOError, OSError, ValueError), error:
+            except (urllib2.URLError, IOError, OSError, ValueError) as error:
                 severe = self.state_machine.reporter.severe(
                       'Problems with "%s" directive URL "%s":\n%s.'
                       % (self.name, self.options['url'], SafeString(error)),
@@ -424,7 +424,7 @@ class ListTable(Table):
             header_rows = self.options.get('header-rows', 0)
             stub_columns = self.options.get('stub-columns', 0)
             self.check_table_dimensions(table_data, header_rows, stub_columns)
-        except SystemMessagePropagation, detail:
+        except SystemMessagePropagation as detail:
             return [detail.args[0]]
         table_node = self.build_table_from_list(table_data, col_widths,
                                                 header_rows, stub_columns)

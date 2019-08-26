@@ -114,7 +114,7 @@ class Input(TransformSpec):
                 self.successful_encoding = enc
                 # Return decoded, removing BOMs.
                 return decoded.replace(u'\ufeff', u'')
-            except (UnicodeError, LookupError), err:
+            except (UnicodeError, LookupError) as err:
                 error = err # in Python 3, the <exception instance> is
                             # local to the except clause
         raise UnicodeError(
@@ -244,7 +244,7 @@ class FileInput(Input):
 
                 try:
                     self.source = open(source_path, mode, **kwargs)
-                except IOError, error:
+                except IOError as error:
                     raise InputError(error.errno, error.strerror, source_path)
             else:
                 self.source = sys.stdin
@@ -272,7 +272,7 @@ class FileInput(Input):
                 data = b'\n'.join(data.splitlines()) + b'\n'
             else:
                 data = self.source.read()
-        except (UnicodeError, LookupError), err: # (in Py3k read() decodes)
+        except (UnicodeError, LookupError) as err: # (in Py3k read() decodes)
             if not self.encoding and self.source_path:
                 # re-read in binary mode and decode with heuristics
                 b_source = open(self.source_path, 'rb')
@@ -362,7 +362,7 @@ class FileOutput(Output):
             kwargs = {}
         try:
             self.destination = open(self.destination_path, self.mode, **kwargs)
-        except IOError, error:
+        except IOError as error:
             raise OutputError(error.errno, error.strerror,
                               self.destination_path)
         self.opened = True
@@ -384,7 +384,7 @@ class FileOutput(Output):
 
         try:
             self.destination.write(data)
-        except TypeError, e:
+        except TypeError as e:
             if sys.version_info >= (3,0) and isinstance(data, bytes):
                 try:
                     self.destination.buffer.write(data)
@@ -397,7 +397,7 @@ class FileOutput(Output):
                             self.destination.encoding, self.encoding))
                     else:
                         raise e
-        except (UnicodeError, LookupError), err:
+        except (UnicodeError, LookupError) as err:
             raise UnicodeError(
                 'Unable to encode output data. output-encoding is: '
                 '%s.\n(%s)' % (self.encoding, ErrorString(err)))

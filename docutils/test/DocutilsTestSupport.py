@@ -230,7 +230,7 @@ class CustomTestCase(StandardTestCase):
             output = '\n'.join(output.splitlines())
         try:
             self.assertEqual(output, expected)
-        except AssertionError, error:
+        except AssertionError as error:
             print('\n%s\ninput:' % (self,), file=sys.stderr)
             print(input, file=sys.stderr)
             try:
@@ -543,7 +543,7 @@ class GridTableParserTestCase(CustomTestCase):
             self.parser.find_head_body_sep()
             self.parser.parse_table()
             output = self.parser.cells
-        except Exception, details:
+        except Exception as details:
             output = '%s: %s' % (details.__class__.__name__, details)
         self.compare_output(self.input, pformat(output) + '\n',
                             pformat(self.expected) + '\n')
@@ -552,7 +552,7 @@ class GridTableParserTestCase(CustomTestCase):
         try:
             output = self.parser.parse(StringList(string2lines(self.input),
                                                   'test data'))
-        except Exception, details:
+        except Exception as details:
             output = '%s: %s' % (details.__class__.__name__, details)
         self.compare_output(self.input, pformat(output) + '\n',
                             pformat(self.expected) + '\n')
@@ -865,7 +865,7 @@ def exception_data(func, *args, **kwds):
     """
     try:
         func(*args, **kwds)
-    except Exception, detail:
+    except Exception as detail:
         return (detail, detail.args,
                 '%s: %s' % (detail.__class__.__name__, detail))
 

@@ -85,7 +85,7 @@ class ReporterTests(unittest.TestCase):
         and hence fails with unicode message"""
         try:
             raise Exception(u'mesidʒ')
-        except Exception, err:
+        except Exception as err:
             sw = self.reporter.system_message(0, err)
             self.assertEqual(sw.pformat(), u"""\
 <system_message level="0" source="test data" type="DEBUG">
