@@ -15,12 +15,13 @@ one of::
     python setup.py install --help
     python setup.py --help
 """
+from __future__ import print_function
 
 from distutils import core
 from setup import do_setup
 
-if __name__ == '__main__' :
-    print __doc__
+if __name__ == '__main__':
+    print(__doc__)
     core._setup_stop_after = 'config'
     dist = do_setup()
     dist.commands = ['install']

@@ -9,8 +9,6 @@ Test module for the ViewList class from statemachine.py.
 """
 
 import unittest
-import sys
-import re
 from DocutilsTestSupport import statemachine
 
 
@@ -76,7 +74,6 @@ class ViewListTests(unittest.TestCase):
         self.assertEqual(a, a_list)
         self.assertEqual(a.items, [('a', i+1) for (i, v) in enumerate(a_list)])
         self.assertEqual(a.parent, self.a)
-        # a.pprint()
 
     def test_set_slice(self):
         a = statemachine.ViewList(self.a[:])
@@ -84,8 +81,6 @@ class ViewListTests(unittest.TestCase):
         s[2:2] = self.b
         s_list = self.a_list[2:-2]
         s_list[2:2] = self.b_list
-        # s.pprint()
-        # s[1:4].pprint()
         self.assertEqual(s, s_list)
         self.assertEqual(s, a[2:-2])
         self.assertEqual(s.items, a[2:-2].items)
@@ -119,7 +114,6 @@ class ViewListTests(unittest.TestCase):
         a = statemachine.ViewList(self.a)
         a.append('Q', 'runtime')
         a.append(self.b)
-        # a.pprint()
         self.assertEqual(a, a_list)
         self.assertEqual(a.info(len(self.a)), ('runtime', 0))
         self.assertEqual(a.info(-2), ('b', len(self.b) - 2))
@@ -131,7 +125,6 @@ class ViewListTests(unittest.TestCase):
         a.extend(self.b)
         self.assertEqual(a, a_list)
         self.assertEqual(a.info(len(self.a) + 1), ('b', 1))
-        # a.pprint()
 
     def test_view(self):
         a = statemachine.ViewList(self.a[:])
@@ -176,15 +169,8 @@ class ViewListTests(unittest.TestCase):
     def test_sort(self):
         c = self.c[:]
         c.reverse()
-        # c.pprint()
         c.sort()
         self.assertEqual(self.c, c)
-
-#         print
-#         print a
-#         print s
-#         print a.items
-#         print s.items
 
 
 class StringList(unittest.TestCase):

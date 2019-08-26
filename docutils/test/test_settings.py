@@ -8,6 +8,7 @@
 """
 Tests of runtime settings.
 """
+from __future__ import print_function
 
 import sys
 import os
@@ -111,10 +112,10 @@ class ConfigFileTests(unittest.TestCase):
         try:
             self.assertEqual(result, expected)
         except AssertionError:
-            print >>sys.stderr, '\n%s\n' % (self,)
-            print >>sys.stderr, '-: expected\n+: result'
-            print >>sys.stderr, ''.join(self.compare(expected.splitlines(1),
-                                                     result.splitlines(1)))
+            print('\n%s\n' % (self,), file=sys.stderr)
+            print('-: expected\n+: result', file=sys.stderr)
+            print(''.join(self.compare(expected.splitlines(1),
+                                                     result.splitlines(1))), file=sys.stderr)
             raise
 
     def test_nofiles(self):

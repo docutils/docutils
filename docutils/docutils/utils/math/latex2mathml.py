@@ -384,7 +384,6 @@ def parse_latex_math(string, inline=True):
             c2 = string[1]
         else:
             c2 = ''
-##        print n, string, c, c2, node.__class__.__name__
         if c == ' ':
             pass
         elif c == '\\':

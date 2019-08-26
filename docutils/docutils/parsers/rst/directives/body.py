@@ -11,12 +11,12 @@ See `docutils.parsers.rst.directives` for API details.
 __docformat__ = 'reStructuredText'
 
 
-import sys
 from docutils import nodes
 from docutils.parsers.rst import Directive
 from docutils.parsers.rst import directives
 from docutils.parsers.rst.roles import set_classes
 from docutils.utils.code_analyzer import Lexer, LexerError, NumberLines
+
 
 class BasePseudoSection(Directive):
 
@@ -167,7 +167,6 @@ class CodeBlock(Directive):
             node.attributes['source'] = self.options['source']
         # analyze content and add nodes for every token
         for classes, value in tokens:
-            # print (classes, value)
             if classes:
                 node += nodes.inline(value, value, classes=classes)
             else:

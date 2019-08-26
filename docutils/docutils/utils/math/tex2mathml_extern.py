@@ -15,6 +15,7 @@
 # Wrappers for TeX->MathML conversion by external tools
 # =====================================================
 
+from __future__ import print_function
 import subprocess
 
 document_template = r"""\documentclass{article}
@@ -141,6 +142,6 @@ def blahtexml(math_code, inline=True, reporter=None):
 
 if __name__ == "__main__":
     example = ur'\frac{\partial \sin^2(\alpha)}{\partial \vec r} \varpi \, \text{Grüße}'
-    # print latexml(example).encode('utf8')
-    # print ttm(example)#.encode('utf8')
-    print blahtexml(example).encode('utf8')
+    # print(latexml(example).encode('utf8'))
+    # print(ttm(example))
+    print(blahtexml(example).encode('utf8'))

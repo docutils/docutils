@@ -69,7 +69,7 @@ blah
         input = io.StringInput(source=b"""\
 #! python
 # -*- coding: ascii -*-
-print "hello world"
+print("hello world")
 """)
         data = input.read()
         self.assertEqual(input.successful_encoding, 'ascii')
@@ -77,7 +77,7 @@ print "hello world"
 #! python
 # extraneous comment; prevents coding slug from being read
 # -*- coding: ascii -*-
-print "hello world"
+print("hello world")
 """)
         data = input.read()
         self.assertNotEqual(input.successful_encoding, 'ascii')

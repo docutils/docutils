@@ -9,6 +9,7 @@ This module extends unittest.py with `loadTestModules()`, by loading multiple
 test modules from a directory.  Optionally, test packages are also loaded,
 recursively.
 """
+from __future__ import print_function
 
 import sys
 import os
@@ -37,8 +38,8 @@ Options:
 def usageExit(msg=None):
     """Print usage and exit."""
     if msg:
-        print msg
-    print USAGE
+        print(msg)
+    print(USAGE)
     sys.exit(2)
 
 def parseArgs(argv=sys.argv):
@@ -96,11 +97,11 @@ def loadTestModules(path, name='', packages=None):
     sys.path.insert(0, path)
     for mod in testModules:
         if debug:
-            print >>sys.stderr, "importing %s" % mod
+            print("importing %s" % mod, file=sys.stderr)
         try:
             module = import_module(mod)
         except ImportError:
-            print >>sys.stderr, "ERROR: Can't import %s, skipping its tests:" % mod
+            print("ERROR: Can't import %s, skipping its tests:" % mod, file=sys.stderr)
             sys.excepthook(*sys.exc_info())
         else:
             # if there's a suite defined, incorporate its contents
@@ -148,7 +149,7 @@ def main(suite=None):
         suite = unittest.defaultTestLoader.loadTestsFromModule(
               __import__('__main__'))
     if debug:
-        print >>sys.stderr, "Debug: Suite=%s" % suite
+        print("Debug: Suite=%s" % suite, file=sys.stderr)
     testRunner = unittest.TextTestRunner(verbosity=verbosity)
     # run suites (if we were called from test_all) or suite...
     if type(suite) == type([]):

@@ -9,6 +9,7 @@ Perform tests with the data in the functional/ directory.
 
 Read README.txt for details on how this is done.
 """
+from __future__ import print_function
 
 import sys
 import os
@@ -196,8 +197,8 @@ expected output and check it in:
                 expected_path, params['destination_path']))
             if sys.version_info < (3,0):
                 diff = diff.encode(sys.stderr.encoding or 'ascii', 'replace')
-            print >>sys.stderr, '\n%s:' % (self,)
-            print >>sys.stderr, diff
+            print('\n%s:' % (self,), file=sys.stderr)
+            print(diff, file=sys.stderr)
             raise
         # Execute optional function containing extra tests:
         if '_test_more' in namespace:

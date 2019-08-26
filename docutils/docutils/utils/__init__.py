@@ -173,7 +173,6 @@ class Reporter(object):
         if not 'source' in attributes: # 'line' is absolute line number
             try: # look up (source, line-in-source)
                 source, line = self.get_source_and_line(attributes.get('line'))
-                # print "locator lookup", kwargs.get('line'), "->", source, line
             except AttributeError:
                 source, line = None, None
             if source is not None:

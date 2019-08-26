@@ -6,6 +6,7 @@
 I/O classes provide a uniform API for low-level input and output.  Subclasses
 exist for a variety of input/output mechanisms.
 """
+from __future__ import print_function
 
 __docformat__ = 'reStructuredText'
 
@@ -343,9 +344,9 @@ class FileOutput(Output):
         elif (# destination is file-type object -> check mode:
               mode and hasattr(self.destination, 'mode')
               and mode != self.destination.mode):
-                print >>self._stderr, ('Warning: Destination mode "%s" '
-                               'differs from specified mode "%s"' %
-                               (self.destination.mode, mode))
+                print('Warning: Destination mode "%s" differs from specified '
+                      'mode "%s"' % (self.destination.mode, mode),
+                      file=self._stderr)
         if not destination_path:
             try:
                 self.destination_path = self.destination.name

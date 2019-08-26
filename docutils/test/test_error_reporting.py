@@ -20,13 +20,15 @@ instances like, e.g., ::
   try:
     something
   except IOError, error:
-    print 'Found %s' % error
+    print('Found %s' % error)
 
 unless the minimal required Python version has this problem fixed.
 """
+from __future__ import print_function
 
 import unittest
-import sys, os
+import os
+import sys
 from io import StringIO, BytesIO
 
 import DocutilsTestSupport              # must be imported before docutils
@@ -39,8 +41,8 @@ if sys.version_info < (3, 0):  # problems solved in py3k
         import locale  # module missing in Jython
         oldlocale = locale.getlocale()
     except ImportError:
-        print ('cannot test error reporting with problematic locales,\n'
-               '`import locale` failed.')
+        print('cannot test error reporting with problematic locales,\n'
+              '`import locale` failed.')
 
 
 # locales confirmed to use non-ASCII chars in the IOError message
