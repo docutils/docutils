@@ -123,7 +123,7 @@ what-you-see-is-what-you-get plaintext markup syntax.""", # wrap at col 60
     'maintainer_email': 'docutils-develop@lists.sourceforge.net',
     'license': 'public domain, Python, 2-Clause BSD, GPL 3 (see COPYING.txt)',
     'platforms': 'OS-independent',
-    'python_requires': '>=2.7, !=3.0.*, !=3.1.*, !=3.2.*',
+    'python_requires': '>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*',
     'package_dir': {'docutils': 'docutils',
                     'docutils.tools': 'tools'},
     'packages': ['docutils',

@@ -20,7 +20,7 @@ Changes Since 0.15
 
 * General
 
-  - Dropped support for Python 2.6 (work in progress).
+  - Dropped support for Python 2.6, Python 3.3 (work in progress).
   - Keep `backslash escapes`__ in the document tree. Backslash characters in
     text are be represented by NULL characters in the ``text`` attribute of
     Doctree nodes and removed in the writing stage by the node's

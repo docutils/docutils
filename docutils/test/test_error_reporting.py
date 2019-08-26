@@ -27,7 +27,6 @@ unless the minimal required Python version has this problem fixed.
 
 import unittest
 import sys, os
-import codecs
 from io import StringIO, BytesIO
 
 import DocutilsTestSupport              # must be imported before docutils
@@ -35,15 +34,13 @@ from docutils import core, parsers, frontend, utils
 from docutils.utils.error_reporting import SafeString, ErrorString, ErrorOutput
 
 oldlocale = None
-if sys.version_info < (3,0): # problems solved in py3k
+if sys.version_info < (3, 0):  # problems solved in py3k
     try:
-        import locale # module missing in Jython
+        import locale  # module missing in Jython
         oldlocale = locale.getlocale()
-        # Why does getlocale return the defaultlocale in Python 3.2 ????
-        # oldlocale = (None, None) # test suite runs without locale
     except ImportError:
         print ('cannot test error reporting with problematic locales,\n'
-            '`import locale` failed.')
+               '`import locale` failed.')
 
 
 # locales confirmed to use non-ASCII chars in the IOError message
@@ -81,8 +78,6 @@ class SafeStringTests(unittest.TestCase):
     us = u'\xfc'       # bytes(us) fails; str(us) fails in Python 2
     be = Exception(bs) # unicode(be) fails
     ue = Exception(us) # bytes(ue) fails, str(ue) fails in Python 2;
-                       # unicode(ue) fails in Python < 2.6 (issue2517_)
-                       # .. _issue2517: http://bugs.python.org/issue2517
     # wrapped test data:
     wbs = SafeString(bs)
     wus = SafeString(us)
@@ -114,7 +109,7 @@ class SafeStringTests(unittest.TestCase):
         self.assertEqual(unicode(self.us), unicode(self.wus))
         # unicode(self.be) fails
         self.assertEqual(unicode, type(unicode(self.wbe)))
-        # unicode(ue) fails in Python < 2.6 (issue2517_)
+        self.assertEqual(unicode, type(unicode(self.ue)))
         self.assertEqual(unicode, type(unicode(self.wue)))
         self.assertEqual(self.us, unicode(self.wue))
 

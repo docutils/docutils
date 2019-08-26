@@ -46,6 +46,7 @@ TEMP_FILE_PATH = 'functional/output/'
 INPUT_PATH = 'functional/input/'
 EXPECTED_PATH = 'functional/expected/'
 
+
 class DocutilsOdtTestCase(DocutilsTestSupport.StandardTestCase):
 
     def process_test(self, input_filename, expected_filename, 

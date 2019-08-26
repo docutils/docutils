@@ -777,7 +777,7 @@ Skipping "%s" configuration file.
             except IOError:
                 continue
             try:
-                if sys.version_info < (3,2):
+                if sys.version_info < (3, 0):
                     CP.RawConfigParser.readfp(self, fp, filename)
                 else:
                     CP.RawConfigParser.read_file(self, fp, filename)

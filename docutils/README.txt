@@ -16,7 +16,7 @@ Quick-Start
 
 This is for those who want to get up & running quickly.
 
-1. Docutils requires Python (version 2.6 or later), available from
+1. Docutils requires Python (version 2.7 or later), available from
 
      http://www.python.org/
 

@@ -18,7 +18,7 @@ try:
     from pygments.lexers import get_lexer_by_name
     from pygments.formatters.html import _get_ttype_class
     with_pygments = True
-except (ImportError, SyntaxError): # pygments 2.0.1 fails with Py 3.1 and 3.2
+except ImportError:
     with_pygments = False
 
 # Filter the following token types from the list of class arguments:
