@@ -10,7 +10,8 @@ Tests for tables.py directives.
 
 from __init__ import DocutilsTestSupport
 
-import os, sys
+import os
+import sys
 import csv
 import platform
 from docutils.parsers.rst.directives import tables
@@ -33,21 +34,20 @@ if isinstance(unichr_exception, OverflowError):
 else:
     unichr_exception_string = str(unichr_exception)
 
-# some error messages changed in Python 3.3:
-# CPython has backported to 2.7.4, PyPy has not
-# platform.python_implementation is new in 2.6
+# some error messages changed in Python 3.3, CPython has backported to 2.7.4,
+# PyPy has not
 csv_eod_error_str = 'unexpected end of data'
 if sys.version_info < (2,7,4) or platform.python_implementation() == 'PyPy':
     csv_eod_error_str = 'newline inside string'
 # pypy adds a line number
-if sys.version_info > (2, 6) and platform.python_implementation() == 'PyPy':
+if sys.version_info > (2, 7) and platform.python_implementation() == 'PyPy':
     csv_eod_error_str = 'line 1: ' + csv_eod_error_str
 csv_unknown_url = "'bogus.csv'"
-if sys.version_info < (3,3,2):
+if sys.version_info < (3, 0):
     csv_unknown_url = "bogus.csv"
 
+
 def null_bytes():
-    import csv
     with open(utf_16_csv, 'rb') as f:
         csv_data = f.read()
     csv_data = unicode(csv_data, 'latin1').splitlines()

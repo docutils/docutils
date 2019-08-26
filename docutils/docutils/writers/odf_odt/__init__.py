@@ -22,10 +22,12 @@ import re
 import copy
 import itertools
 import weakref
+
 try:
     import locale   # module missing in Jython
 except ImportError:
     pass
+
 import docutils
 from docutils import frontend, nodes, utils, writers, languages
 from docutils.readers import standalone
@@ -90,6 +92,7 @@ if isinstance(etree.Element, type):
     _ElementInterface = etree.Element
 else:
     _ElementInterface = etree._ElementInterface
+
 
 class _ElementInterfaceWrapper(_ElementInterface):
     def __init__(self, tag, attrib=None):
@@ -302,7 +305,7 @@ def add_ns(tag, nsdict=CNSD):
 
 def ToString(et):
     outstream = StringIO()
-    if sys.version_info >= (3, 2):
+    if sys.version_info >= (3, 0):
         et.write(outstream, encoding="unicode")
     else:
         et.write(outstream)

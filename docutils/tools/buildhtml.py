@@ -241,7 +241,7 @@ class Builder:
                               writer_name=pub_struct.writer_name,
                               settings=settings)
         except ApplicationError:
-            error = sys.exc_info()[1] # get exception in Python <2.6 and 3.x
+            error = sys.exc_info()[1]  # get exception in Python 3.x
             errout.write('        %s\n' % ErrorString(error))
 
 

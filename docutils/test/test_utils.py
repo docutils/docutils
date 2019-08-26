@@ -9,14 +9,11 @@
 Test module for utils/__init__.py.
 """
 
-import unittest
-import sys
+from io import StringIO
 import os
+import unittest
+
 from DocutilsTestSupport import docutils, utils, nodes
-try:
-    from io import StringIO
-except ImportError:    # io is new in Python 2.6
-    from StringIO import StringIO
 
 
 class ReporterTests(unittest.TestCase):
