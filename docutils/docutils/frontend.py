@@ -33,10 +33,14 @@ import os
 import os.path
 import sys
 import warnings
-import ConfigParser as CP
 import codecs
 import optparse
 from optparse import SUPPRESS_HELP
+if sys.version_info >= (3,0):
+    from configparser import RawConfigParser
+else:
+    from ConfigParser import RawConfigParser
+
 import docutils
 import docutils.utils
 import docutils.nodes
@@ -735,7 +739,7 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
         raise KeyError('No option with dest == %r.' % dest)
 
 
-class ConfigParser(CP.RawConfigParser):
+class ConfigParser(RawConfigParser):
 
     old_settings = {
         'pep_stylesheet': ('pep_html writer', 'stylesheet'),
@@ -757,7 +761,7 @@ Skipping "%s" configuration file.
 """
 
     def __init__(self, *args, **kwargs):
-        CP.RawConfigParser.__init__(self, *args, **kwargs)
+        RawConfigParser.__init__(self, *args, **kwargs)
 
         self._files = []
         """List of paths of configuration files read."""
@@ -776,9 +780,9 @@ Skipping "%s" configuration file.
                 continue
             try:
                 if sys.version_info < (3,0):
-                    CP.RawConfigParser.readfp(self, fp, filename)
+                    RawConfigParser.readfp(self, fp, filename)
                 else:
-                    CP.RawConfigParser.read_file(self, fp, filename)
+                    RawConfigParser.read_file(self, fp, filename)
             except UnicodeDecodeError:
                 self._stderr.write(self.not_utf8_error % (filename, filename))
                 fp.close()
