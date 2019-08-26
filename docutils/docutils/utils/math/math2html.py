@@ -1624,7 +1624,7 @@ class TaggedOutput(ContentsOutput):
 
   def open(self, container):
     "Get opening line."
-    if not self.checktag():
+    if not self.checktag(container):
       return ''
     open = '<' + self.tag + '>'
     if self.breaklines:
@@ -1633,7 +1633,7 @@ class TaggedOutput(ContentsOutput):
 
   def close(self, container):
     "Get closing line."
-    if not self.checktag():
+    if not self.checktag(container):
       return ''
     close = '</' + self.tag.split()[0] + '>'
     if self.breaklines:
@@ -1642,14 +1642,14 @@ class TaggedOutput(ContentsOutput):
 
   def selfclosing(self, container):
     "Get self-closing line."
-    if not self.checktag():
+    if not self.checktag(container):
       return ''
     selfclosing = '<' + self.tag + '/>'
     if self.breaklines:
       return selfclosing + '\n'
     return selfclosing
 
-  def checktag(self):
+  def checktag(self, container):
     "Check that the tag is valid."
     if not self.tag:
       Trace.error('No tag in ' + unicode(container))

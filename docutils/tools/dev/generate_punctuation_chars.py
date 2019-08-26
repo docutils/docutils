@@ -319,17 +319,6 @@ def print_differences(old, new, name):
     else:
         print('%s unchanged' % name)
 
-def print_quote_pairs():
-    pairs = [(o,c) for o,c in quote_pairs.items()]
-    for o,c in sorted(pairs):
-        print((u'%s %s' % (o,c)).encode('utf8'))
-
-    # # Test open/close matching:
-    # for i in range(min(len(openers),len(closers))):
-    #     print('%4d    %s    %s' % (i, openers[i].encode('utf8'),
-    #                                closers[i].encode('utf8'))
-
-
 # Output
 # ------
 #
