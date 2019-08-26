@@ -15,16 +15,18 @@ import os
 import os.path
 import tempfile
 import zipfile
+from xml.etree import ElementTree as etree
 from xml.dom import minidom
 import time
 import re
 import copy
 import itertools
-import docutils
+import weakref
 try:
     import locale   # module missing in Jython
 except ImportError:
     pass
+import docutils
 from docutils import frontend, nodes, utils, writers, languages
 from docutils.readers import standalone
 from docutils.transforms import references
@@ -40,27 +42,6 @@ else:
 VERSION = '1.0a'
 
 IMAGE_NAME_COUNTER = itertools.count()
-WhichElementTree = ''
-try:
-    # 1. Try to use lxml.
-    #from lxml import etree
-    #WhichElementTree = 'lxml'
-    raise ImportError('Ignoring lxml')
-except ImportError:
-    try:
-        # 2. Try to use ElementTree from the Python standard library.
-        from xml.etree import ElementTree as etree
-        WhichElementTree = 'elementtree'
-    except ImportError:
-        try:
-            # 3. Try to use a version of ElementTree installed as a separate
-            #    product.
-            from elementtree import ElementTree as etree
-            WhichElementTree = 'elementtree'
-        except ImportError:
-            s1 = 'Must install either a version of Python containing ' \
-                 'ElementTree (Python version >=2.5) or install ElementTree.'
-            raise ImportError(s1)
 
 #
 # Import pygments and odtwriter pygments formatters if possible.
@@ -104,24 +85,22 @@ except ImportError:
 # This wrapper class and the following support functions provide
 #   that support for the ability to get the parent of an element.
 #
-if WhichElementTree == 'elementtree':
-    import weakref
-    _parents = weakref.WeakKeyDictionary()
-    if isinstance(etree.Element, type):
-        _ElementInterface = etree.Element
-    else:
-        _ElementInterface = etree._ElementInterface
+_parents = weakref.WeakKeyDictionary()
+if isinstance(etree.Element, type):
+    _ElementInterface = etree.Element
+else:
+    _ElementInterface = etree._ElementInterface
 
-    class _ElementInterfaceWrapper(_ElementInterface):
-        def __init__(self, tag, attrib=None):
-            _ElementInterface.__init__(self, tag, attrib)
-            _parents[self] = None
+class _ElementInterfaceWrapper(_ElementInterface):
+    def __init__(self, tag, attrib=None):
+        _ElementInterface.__init__(self, tag, attrib)
+        _parents[self] = None
 
-        def setparent(self, parent):
-            _parents[self] = parent
+    def setparent(self, parent):
+        _parents[self] = parent
 
-        def getparent(self):
-            return _parents[self]
+    def getparent(self):
+        return _parents[self]
 
 
 #
@@ -209,9 +188,8 @@ META_NAMESPACE_DICT = METNSD = {
     'xlink': 'http://www.w3.org/1999/xlink',
 }
 
-#
-# Attribute dictionaries for use with ElementTree (not lxml), which
-#   does not support use of nsmap parameter on Element() and SubElement().
+# Attribute dictionaries for use with ElementTree, which
+# does not support use of nsmap parameter on Element() and SubElement().
 
 CONTENT_NAMESPACE_ATTRIB = {
     #'office:version': '1.0',
@@ -295,10 +273,7 @@ def Element(tag, attrib=None, nsmap=None, nsdict=CNSD):
     if attrib is None:
         attrib = {}
     tag, attrib = fix_ns(tag, attrib, nsdict)
-    if WhichElementTree == 'lxml':
-        el = etree.Element(tag, attrib, nsmap=nsmap)
-    else:
-        el = _ElementInterfaceWrapper(tag, attrib)
+    el = _ElementInterfaceWrapper(tag, attrib)
     return el
 
 
@@ -306,12 +281,9 @@ def SubElement(parent, tag, attrib=None, nsmap=None, nsdict=CNSD):
     if attrib is None:
         attrib = {}
     tag, attrib = fix_ns(tag, attrib, nsdict)
-    if WhichElementTree == 'lxml':
-        el = etree.SubElement(parent, tag, attrib, nsmap=nsmap)
-    else:
-        el = _ElementInterfaceWrapper(tag, attrib)
-        parent.append(el)
-        el.setparent(parent)
+    el = _ElementInterfaceWrapper(tag, attrib)
+    parent.append(el)
+    el.setparent(parent)
     return el
 
 
@@ -325,12 +297,6 @@ def fix_ns(tag, attrib, nsdict):
 
 
 def add_ns(tag, nsdict=CNSD):
-    if WhichElementTree == 'lxml':
-        nstag, name = tag.split(':')
-        ns = nsdict.get(nstag)
-        if ns is None:
-            raise RuntimeError('Invalid namespace prefix: %s' % nstag)
-        tag = '{%s}%s' % (ns, name,)
     return tag
 
 
@@ -777,18 +743,11 @@ class Writer(writers.Writer):
         pass
 
     def create_manifest(self):
-        if WhichElementTree == 'lxml':
-            root = Element(
-                'manifest:manifest',
-                nsmap=MANIFEST_NAMESPACE_DICT,
-                nsdict=MANIFEST_NAMESPACE_DICT,
-            )
-        else:
-            root = Element(
-                'manifest:manifest',
-                attrib=MANIFEST_NAMESPACE_ATTRIB,
-                nsdict=MANIFEST_NAMESPACE_DICT,
-            )
+        root = Element(
+            'manifest:manifest',
+            attrib=MANIFEST_NAMESPACE_ATTRIB,
+            nsdict=MANIFEST_NAMESPACE_DICT,
+        )
         doc = etree.ElementTree(root)
         SubElement(root, 'manifest:file-entry', attrib={
             'manifest:media-type': self.MIME_TYPE,
@@ -816,18 +775,11 @@ class Writer(writers.Writer):
         return s1
 
     def create_meta(self):
-        if WhichElementTree == 'lxml':
-            root = Element(
-                'office:document-meta',
-                nsmap=META_NAMESPACE_DICT,
-                nsdict=META_NAMESPACE_DICT,
-            )
-        else:
-            root = Element(
-                'office:document-meta',
-                attrib=META_NAMESPACE_ATTRIB,
-                nsdict=META_NAMESPACE_DICT,
-            )
+        root = Element(
+            'office:document-meta',
+            attrib=META_NAMESPACE_ATTRIB,
+            nsdict=META_NAMESPACE_DICT,
+        )
         doc = etree.ElementTree(root)
         root = SubElement(root, 'office:meta', nsdict=METNSD)
         el1 = SubElement(root, 'meta:generator', nsdict=METNSD)
@@ -957,16 +909,10 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         self.section_level = 0
         self.section_count = 0
         # Create ElementTree content and styles documents.
-        if WhichElementTree == 'lxml':
-            root = Element(
-                'office:document-content',
-                nsmap=CONTENT_NAMESPACE_DICT,
-            )
-        else:
-            root = Element(
-                'office:document-content',
-                attrib=CONTENT_NAMESPACE_ATTRIB,
-            )
+        root = Element(
+            'office:document-content',
+            attrib=CONTENT_NAMESPACE_ATTRIB,
+        )
         self.content_tree = etree.ElementTree(element=root)
         self.current_element = root
         SubElement(root, 'office:scripts')
@@ -1213,14 +1159,11 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             return
         el1 = master_el
         if self.header_content or self.settings.custom_header:
-            if WhichElementTree == 'lxml':
-                el2 = SubElement(el1, 'style:header', nsdict=SNSD)
-            else:
-                el2 = SubElement(
-                    el1, 'style:header',
-                    attrib=STYLES_NAMESPACE_ATTRIB,
-                    nsdict=STYLES_NAMESPACE_DICT,
-                )
+            el2 = SubElement(
+                el1, 'style:header',
+                attrib=STYLES_NAMESPACE_ATTRIB,
+                nsdict=STYLES_NAMESPACE_DICT,
+            )
             for el in self.header_content:
                 attrkey = add_ns('text:style-name', nsdict=SNSD)
                 el.attrib[attrkey] = self.rststyle('header')
@@ -1230,14 +1173,11 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                     el2,
                     self.settings.custom_header, 'header', automatic_styles)
         if self.footer_content or self.settings.custom_footer:
-            if WhichElementTree == 'lxml':
-                el2 = SubElement(el1, 'style:footer', nsdict=SNSD)
-            else:
-                el2 = SubElement(
-                    el1, 'style:footer',
-                    attrib=STYLES_NAMESPACE_ATTRIB,
-                    nsdict=STYLES_NAMESPACE_DICT,
-                )
+            el2 = SubElement(
+                el1, 'style:footer',
+                attrib=STYLES_NAMESPACE_ATTRIB,
+                nsdict=STYLES_NAMESPACE_DICT,
+            )
             for el in self.footer_content:
                 attrkey = add_ns('text:style-name', nsdict=SNSD)
                 el.attrib[attrkey] = self.rststyle('footer')
@@ -2758,8 +2698,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         lines1.append(my_lines_str2)
         lines1.append('</wrappertag1>')
         s1 = ''.join(lines1)
-        if WhichElementTree != "lxml":
-            s1 = s1.encode("utf-8")
+        s1 = s1.encode("utf-8")
         el1 = etree.fromstring(s1)
         for child in el1:
             self.current_element.append(child)
@@ -2981,8 +2920,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                     '%s="%s"' % (k, v, )
                     for k, v in list(CONTENT_NAMESPACE_ATTRIB.items())])
                 contentstr = '<stuff %s>%s</stuff>' % (attrstr, rawstr, )
-                if WhichElementTree != "lxml":
-                    contentstr = contentstr.encode("utf-8")
+                contentstr = contentstr.encode("utf-8")
                 content = etree.fromstring(contentstr)
                 if len(content) > 0:
                     el1 = content[0]
