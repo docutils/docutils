@@ -181,7 +181,7 @@ def register_generic_role(canonical_name, node_class):
     register_canonical_role(canonical_name, role)
 
 
-class GenericRole:
+class GenericRole(object):
 
     """
     Generic interpreted text role, where the interpreted text is simply
@@ -198,7 +198,7 @@ class GenericRole:
         return [self.node_class(rawtext, text, **options)], []
 
 
-class CustomRole:
+class CustomRole(object):
 
     """
     Wrapper for custom interpreted text roles.

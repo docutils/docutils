@@ -107,7 +107,7 @@ class OptionParser(frontend.OptionParser):
         return source, destination
 
 
-class Struct:
+class Struct(object):
 
     """Stores data attributes for dotted-attribute access."""
 
@@ -115,7 +115,7 @@ class Struct:
         self.__dict__.update(keywordargs)
 
 
-class Builder:
+class Builder(object):
 
     def __init__(self):
         self.publishers = {

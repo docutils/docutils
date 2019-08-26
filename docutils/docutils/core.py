@@ -23,7 +23,7 @@ from docutils.transforms import Transformer
 from docutils.utils.error_reporting import ErrorOutput, ErrorString
 import docutils.readers.doctree
 
-class Publisher:
+class Publisher(object):
 
     """
     A facade encapsulating the high-level logic of a Docutils system.

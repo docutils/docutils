@@ -155,7 +155,7 @@ negatables = {'=': u'\u2260',
               r'\equiv': u'\u2262'}
 
 # LaTeX to MathML translation stuff:
-class math:
+class math(object):
     """Base class for MathML elements."""
 
     nchildren = 1000000

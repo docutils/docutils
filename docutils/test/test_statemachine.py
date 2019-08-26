@@ -203,7 +203,7 @@ class SMWSTests(unittest.TestCase):
         self.assertEqual(self.sm.run(testtext), expected)
 
 
-class EmptyClass:
+class EmptyClass(object):
     pass
 
 
