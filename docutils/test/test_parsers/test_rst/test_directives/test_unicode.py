@@ -8,7 +8,13 @@
 Tests for misc.py "unicode" directive.
 """
 
+import sys
+
 from __init__ import DocutilsTestSupport
+
+
+if sys.version_info >= (3, 0):
+    unichr = chr  # noqa
 
 
 def suite():

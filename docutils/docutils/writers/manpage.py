@@ -45,6 +45,10 @@ by the command whatis or apropos.
 __docformat__ = 'reStructuredText'
 
 import re
+import sys
+
+if sys.version_info < (3, 0):
+    range = xrange
 
 import docutils
 from docutils import nodes, writers, languages
@@ -255,7 +259,7 @@ class Translator(nodes.NodeVisitor):
             # ensure we get a ".TH" as viewers require it.
             self.append_header()
         # filter body
-        for i in xrange(len(self.body)-1, 0, -1):
+        for i in range(len(self.body)-1, 0, -1):
             # remove superfluous vertical gaps.
             if self.body[i] == '.sp\n':
                 if self.body[i - 1][:4] in ('.BI ','.IP '):

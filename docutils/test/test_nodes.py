@@ -17,6 +17,9 @@ from DocutilsTestSupport import nodes, utils
 
 debug = False
 
+if sys.version_info >= (3, 0):
+    unicode = str  # noqa
+
 
 class TextTests(unittest.TestCase):
 

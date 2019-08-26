@@ -26,6 +26,9 @@ _reporter = docutils.utils.new_reporter('', _settings)
 
 reference_language = 'en'
 
+if sys.version_info >= (3, 0):
+    unicode = str  # noqa
+
 
 class LanguageTestSuite(DocutilsTestSupport.CustomTestSuite):
 
@@ -156,7 +159,7 @@ class LanguageTestCase(DocutilsTestSupport.CustomTestCase):
         if failures:
             text = ('Module docutils.parsers.rst.languages.%s:\n    %s'
                     % (self.language, '\n    '.join(failures)))
-            if type(text) is unicode:
+            if isinstance(text, unicode):
                 text = text.encode('raw_unicode_escape')
             self.fail(text)
 
@@ -191,7 +194,7 @@ class LanguageTestCase(DocutilsTestSupport.CustomTestCase):
         if failures:
             text = ('Module docutils.parsers.rst.languages.%s:\n    %s'
                     % (self.language, '\n    '.join(failures)))
-            if type(text) is unicode:
+            if isinstance(text, unicode):
                 text = text.encode('raw_unicode_escape')
             self.fail(text)
 

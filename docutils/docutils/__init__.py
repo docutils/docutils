@@ -88,7 +88,8 @@ __version_details__ = 'release'
 """
 
 
-class ApplicationError(StandardError): pass
+class ApplicationError(Exception): pass
+
 class DataError(ApplicationError): pass
 
 

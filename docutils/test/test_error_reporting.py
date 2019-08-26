@@ -44,6 +44,9 @@ if sys.version_info < (3, 0):  # problems solved in py3k
         print('cannot test error reporting with problematic locales,\n'
               '`import locale` failed.')
 
+if sys.version_info >= (3, 0):
+    unicode = str  # noqa
+
 
 # locales confirmed to use non-ASCII chars in the IOError message
 # for a missing file (https://bugs.gentoo.org/show_bug.cgi?id=349101)

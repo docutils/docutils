@@ -17,6 +17,9 @@ from StringIO import StringIO
 import docutils
 from docutils import frontend, writers, nodes
 
+if sys.version_info >= (3, 0):
+    unicode = str  # noqa
+
 
 class RawXmlError(docutils.ApplicationError): pass
 

@@ -114,6 +114,9 @@ import unicodedata
 from docutils import utils
 from docutils.utils.error_reporting import ErrorOutput
 
+if sys.version_info >= (3, 0):
+    unicode = str  # noqa
+
 
 class StateMachine(object):
 
@@ -1124,7 +1127,12 @@ class ViewList(object):
     def __ne__(self, other): return self.data != self.__cast(other)
     def __gt__(self, other): return self.data >  self.__cast(other)
     def __ge__(self, other): return self.data >= self.__cast(other)
-    def __cmp__(self, other): return cmp(self.data, self.__cast(other))
+
+    def __cmp__(self, other):
+        # from https://docs.python.org/3.0/whatsnew/3.0.html
+        mine = self.data
+        yours = self.__cast(other)
+        return (mine > yours) - (yours < mine)
 
     def __cast(self, other):
         if isinstance(other, ViewList):

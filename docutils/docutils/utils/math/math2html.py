@@ -20,10 +20,21 @@
 # Alex 20101110
 # eLyXer standalone formula conversion to HTML.
 
-
-
-
+import codecs
+import datetime
+import gettext
+import io
+import os.path
 import sys
+import unicodedata
+import urllib
+
+
+if sys.version_info >= (3,0):
+    unicode = str  #noqa
+    basestring = str  # noqa
+    file = io.IOBase  # noqa
+
 
 class Trace(object):
   "A tracing class"
@@ -71,12 +82,6 @@ class Trace(object):
   error = classmethod(error)
   fatal = classmethod(fatal)
   show = classmethod(show)
-
-
-
-
-import os.path
-import sys
 
 
 class BibStylesConfig(object):
@@ -1305,17 +1310,6 @@ class BranchOptions(object):
     return 'options for ' + self.name + ': ' + unicode(self.options)
 
 
-
-
-import urllib
-
-
-
-
-
-
-
-
 class Cloner(object):
   "An object used to clone other objects."
 
@@ -1697,15 +1691,6 @@ class StringOutput(ContainerOutput):
   def gethtml(self, container):
     "Return a bare string"
     return [container.string]
-
-
-
-
-
-
-
-import sys
-import codecs
 
 
 class LineReader(object):
@@ -3092,24 +3077,6 @@ class FormulaFactory(object):
       Trace.error('Unknown formula at: ' + pos.identifier())
       whole.add(TaggedBit().constant(formula, 'span class="unknown"'))
     return whole
-
-
-
-
-import unicodedata
-
-
-
-
-
-
-
-
-
-
-
-
-import gettext
 
 
 class Translator(object):
@@ -4588,8 +4555,6 @@ class BeginCommand(CommandBit):
 
 FormulaCommand.types += [BeginCommand]
 
-
-import datetime
 
 
 class CombiningFunction(OneParamFunction):

@@ -30,6 +30,10 @@ import warnings
 import types
 import unicodedata
 
+if sys.version_info >= (3, 0):
+    unicode = str  # noqa
+    basestring = str  # noqa
+
 # ==============================
 #  Functional Node Base Classes
 # ==============================
@@ -61,7 +65,7 @@ class Node(object):
         """
         return True
 
-    if sys.version_info < (3,):
+    if sys.version_info < (3, 0):
         # on 2.x, str(node) will be a byte string with Unicode
         # characters > 255 escaped; on 3.x this is no longer necessary
         def __str__(self):
@@ -301,7 +305,7 @@ class Node(object):
         except IndexError:
             return None
 
-if sys.version_info < (3,):
+if sys.version_info < (3, 0):
     class reprunicode(unicode):
         """
         A unicode sub-class that removes the initial u from unicode's repr.
