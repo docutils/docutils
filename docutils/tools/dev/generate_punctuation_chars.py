@@ -33,14 +33,13 @@
 # .. _inline markup recognition rules:
 #     ../../docs/ref/rst/restructuredtext.html#inline-markup
 
+from __future__ import print_function
 
-# Setup::
-
-import sys, re
+import sys
 import unicodedata
 
 if sys.version_info >= (3,):
-    unichr = chr # unichr not available in Py3k
+    unichr = chr  # unichr not available in Py3k
 else:
     import codecs
     sys.stdout = codecs.getwriter('UTF-8')(sys.stdout)
@@ -421,44 +420,3 @@ if __name__ == '__main__':
         }
 
     print(module_template % substitutions)
-
-
-# test prints
-# ~~~~~~~~~~~
-#
-# For interactive use in development you may uncomment the following
-# definitions::
-
-    # print "wide" Unicode characters:
-    # ucharlists = unicode_charlists(unicode_punctuation_categories)
-    # for key in ucharlists:
-    #     if key.endswith('wide'):
-    #         print key, ucharlists[key]
-
-    # print 'openers = ', repr(openers)
-    # print 'closers = ', repr(closers)
-    # print 'delimiters = ', repr(delimiters)
-    # print 'closing_delimiters = ', repr(closing_delimiters)
-
-    # ucharlists = unicode_charlists(unicode_punctuation_categories)
-    # for cat, chars in ucharlists.items():
-    #     # print cat, chars
-    #     # compact output (visible with a comprehensive font):
-    #     print (u":%s: %s" % (cat, u''.join(chars))).encode('utf8')
-
-# verbose print
-#
-# ::
-
-    # print 'openers:'
-    # for ch in openers:
-    #     print ch.encode('utf8'), unicodedata.name(ch)
-    # print 'closers:'
-    # for ch in closers:
-    #     print ch.encode('utf8'), unicodedata.name(ch)
-    # print 'delimiters:'
-    # for ch in delimiters:
-    #     print ch.encode('utf8'), unicodedata.name(ch)
-    # print 'closing_delimiters:'
-    # for ch in closing_delimiters:
-    #     print ch.encode('utf8'), unicodedata.name(ch)

@@ -18,7 +18,7 @@ Test module for universal.SmartQuotes transform.
 """
 
 
-from __init__ import DocutilsTestSupport # must be imported before docutils
+from __init__ import DocutilsTestSupport  # must be imported before docutils
 from docutils.transforms.universal import SmartQuotes
 from docutils.parsers.rst import Parser
 
@@ -72,13 +72,13 @@ Do not "educate" quotes ``inside "literal" text`` and ::
 .. role:: python(code)
    :class: python
 
-Keep quotes straight in code and math: 
+Keep quotes straight in code and math:
 :code:`print "hello"` :python:`print("hello")` :math:`1' 12"`.
 
 .. code::
 
-   print "hello"
-  
+   print("hello")
+
 .. math::
 
    f'(x) = df(x)/dx
@@ -105,7 +105,7 @@ u"""\
             1' 12"
         .
     <literal_block classes="code" xml:space="preserve">
-        print "hello"
+        print("hello")
     <math_block xml:space="preserve">
         f'(x) = df(x)/dx
 """],

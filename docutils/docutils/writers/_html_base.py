@@ -494,7 +494,6 @@ class HTMLTranslator(nodes.NodeVisitor):
     # the end of this file).
 
     def is_compactable(self, node):
-        # print "is_compactable %s ?" % node.__class__,
         # explicite class arguments have precedence
         if 'compact' in node['classes']:
             return True
@@ -503,11 +502,9 @@ class HTMLTranslator(nodes.NodeVisitor):
         # check config setting:
         if (isinstance(node, (nodes.field_list, nodes.definition_list))
             and not self.settings.compact_field_lists):
-            # print "`compact-field-lists` is False"
             return False
         if (isinstance(node, (nodes.enumerated_list, nodes.bullet_list))
             and not self.settings.compact_lists):
-            # print "`compact-lists` is False"
             return False
         # more special cases:
         if (self.topic_classes == ['contents']): # TODO: self.in_contents
@@ -882,7 +879,6 @@ class HTMLTranslator(nodes.NodeVisitor):
         if 'sectnum' in node['classes']:
             # get section number (strip trailing no-break-spaces)
             sectnum = node.astext().rstrip(u' ')
-            # print sectnum.encode('utf-8')
             self.body.append('<span class="sectnum">%s</span> '
                                     % self.encode(sectnum))
             # Content already processed:
@@ -1194,7 +1190,6 @@ class HTMLTranslator(nodes.NodeVisitor):
         pass # never reached
 
     def visit_math_block(self, node):
-        # print node.astext().encode('utf8')
         math_env = pick_math_environment(node.astext())
         self.visit_math(node, math_env=math_env)
 
@@ -1611,20 +1606,16 @@ class SimpleListChecker(nodes.GenericNodeVisitor):
         raise nodes.NodeFound
 
     def visit_list_item(self, node):
-        # print "visiting list item", node.__class__
         children = [child for child in node.children
                     if not isinstance(child, nodes.Invisible)]
-        # print "has %s visible children" % len(children)
         if (children and isinstance(children[0], nodes.paragraph)
             and (isinstance(children[-1], nodes.bullet_list) or
                  isinstance(children[-1], nodes.enumerated_list) or
                  isinstance(children[-1], nodes.field_list))):
             children.pop()
-        # print "%s children remain" % len(children)
         if len(children) <= 1:
             return
         else:
-            # print "found", child.__class__, "in", node.__class__
             raise nodes.NodeFound
 
     def pass_node(self, node):

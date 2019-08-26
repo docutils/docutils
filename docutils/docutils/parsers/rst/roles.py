@@ -342,7 +342,6 @@ def code_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
 
     # analyse content and add nodes for every token
     for classes, value in tokens:
-        # print (classes, value)
         if classes:
             node += nodes.inline(value, value, classes=classes)
         else:

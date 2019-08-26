@@ -7,6 +7,7 @@
 """
 Test module for statemachine.py.
 """
+from __future__ import print_function
 
 import unittest
 import sys
@@ -56,47 +57,47 @@ class MockState(statemachine.StateWS):
     def bof(self, context):
         self.levelholder[0] += 1
         self.level = self.levelholder[0]
-        if self.debug: print >>sys.stderr, 'StateMachine%s' % self.level
+        if self.debug: print('StateMachine%s' % self.level, file=sys.stderr)
         return [], ['StateMachine%s' % self.level]
 
     def blank(self, match, context, next_state):
         result = ['blank%s' % self.level]
-        if self.debug: print >>sys.stderr, 'blank%s' % self.level
+        if self.debug: print('blank%s' % self.level, file=sys.stderr)
         if context and context[-1] and context[-1][-2:] == '::':
             result.extend(self.literalblock())
         return [], None, result
 
     def indent(self, match, context, next_state):
-        if self.debug: print >>sys.stderr, 'indent%s' % self.level
+        if self.debug: print('indent%s' % self.level, file=sys.stderr)
         context, next_state, result = statemachine.StateWS.indent(
               self, match, context, next_state)
         return context, next_state, ['indent%s' % self.level] + result
 
     def known_indent(self, match, context, next_state):
-        if self.debug: print >>sys.stderr, 'known_indent%s' % self.level
+        if self.debug: print('known_indent%s' % self.level, file=sys.stderr)
         context, next_state, result = statemachine.StateWS.known_indent(
               self, match, context, next_state)
         return context, next_state, ['known_indent%s' % self.level] + result
 
     def bullet(self, match, context, next_state):
-        if self.debug: print >>sys.stderr, 'bullet%s' % self.level
+        if self.debug: print('bullet%s' % self.level, file=sys.stderr)
         context, next_state, result \
               = self.known_indent(match, context, next_state)
         return [], next_state, ['bullet%s' % self.level] + result
 
     def text(self, match, context, next_state):
-        if self.debug: print >>sys.stderr, 'text%s' % self.level
+        if self.debug: print('text%s' % self.level, file=sys.stderr)
         return [match.string], next_state, ['text%s' % self.level]
 
     def literalblock(self):
         indented, indent, offset, good = self.state_machine.get_indented()
-        if self.debug: print >>sys.stderr, 'literalblock%s(%s)' % (self.level,
-                                                                   indent)
+        if self.debug: print('literalblock%s(%s)' % (self.level,
+                                                                   indent), file=sys.stderr)
         return ['literalblock%s(%s)' % (self.level, indent)]
 
     def eof(self, context):
         self.levelholder[0] -= 1
-        if self.debug: print >>sys.stderr, 'finished%s' % self.level
+        if self.debug: print('finished%s' % self.level, file=sys.stderr)
         return ['finished%s' % self.level]
 
 
@@ -169,10 +170,10 @@ class SMWSTests(unittest.TestCase):
         self.assertTrue(good)
         self.sm.previous_line(3)
         if self.sm.debug:
-            print '\ntest_get_indented: self.sm.line:\n', self.sm.line
+            print('\ntest_get_indented: self.sm.line:\n', self.sm.line)
         indented, indent, offset, good = self.sm.get_indented()
         if self.sm.debug:
-            print '\ntest_get_indented: indented:\n', indented
+            print('\ntest_get_indented: indented:\n', indented)
         self.assertEqual(indent, lbindent)
         self.assertEqual(indented, literalblock)
         self.assertEqual(offset, (len(para1) + len(item1) + len(item2)

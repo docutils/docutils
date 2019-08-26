@@ -17,11 +17,11 @@ Transforms needed by most or all documents:
 __docformat__ = 'reStructuredText'
 
 import re
-import sys
 import time
 from docutils import nodes, utils
 from docutils.transforms import TransformError, Transform
 from docutils.utils import smartquotes
+
 
 class Decorations(Transform):
 
@@ -258,7 +258,6 @@ class SmartQuotes(Transform):
             alternative = smart_quotes.startswith('alt')
         except AttributeError:
             alternative = False
-        # print repr(alternative)
 
         document_language = self.document.settings.language_code
         lc_smartquotes = self.document.settings.smartquotes_locales

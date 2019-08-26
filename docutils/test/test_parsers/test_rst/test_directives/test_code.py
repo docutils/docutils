@@ -98,7 +98,7 @@ totest['code-parsing'] = [
 .. code:: python
   :class: testclass
 
-   print 'hello world' # to stdout
+   print('hello world') # to stdout
 """,
 """\
 <document source="test data">
@@ -106,9 +106,12 @@ totest['code-parsing'] = [
          \n\
         <inline classes="keyword">
             print
-         \n\
+        <inline classes="punctuation">
+            (
         <inline classes="literal string single">
             'hello world'
+        <inline classes="punctuation">
+            )
          \n\
         <inline classes="comment single">
             # to stdout
@@ -124,7 +127,7 @@ totest['code-parsing'] = [
       '''
 
       # and now for something completely different
-      print 8/2
+      print(8/2)
 """,
 """\
 <document source="test data">
@@ -163,13 +166,16 @@ totest['code-parsing'] = [
             \n\
         <inline classes="keyword">
             print
-         \n\
+        <inline classes="punctuation">
+            (
         <inline classes="literal number integer">
             8
         <inline classes="operator">
             /
         <inline classes="literal number integer">
             2
+        <inline classes="punctuation">
+            )
 """],
 ["""\
 .. code:: latex

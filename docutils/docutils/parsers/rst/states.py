@@ -2756,8 +2756,8 @@ class Text(RSTState):
             src, srcline = self.state_machine.get_source_and_line()
             # TODO: why is abs_line_number() == srcline+1
             # if the error is in a table (try with test_tables.py)?
-            # print "get_source_and_line", srcline
-            # print "abs_line_number", self.state_machine.abs_line_number()
+            # print("get_source_and_line", srcline)
+            # print("abs_line_number", self.state_machine.abs_line_number())
             msg = self.reporter.severe('Unexpected section title.',
                 nodes.literal_block(blocktext, blocktext),
                 source=src, line=srcline)

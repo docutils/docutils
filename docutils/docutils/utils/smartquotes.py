@@ -315,6 +315,7 @@ Version History
 1.5_1.0: Tue, 09 Mar 2004 08:08:35 -0500
         - Initial release
 """
+from __future__ import print_function
 
 options = r"""
 Options
@@ -965,16 +966,16 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     if args.doc:
-        print (__doc__)
+        print(__doc__)
     elif args.actionhelp:
-        print options
+        print(options)
     elif args.stylehelp:
-        print
-        print "Available styles (primary open/close, secondary open/close)"
-        print "language tag   quotes"
-        print "============   ======"
+        print()
+        print("Available styles (primary open/close, secondary open/close)")
+        print("language tag   quotes")
+        print("============   ======")
         for key in sorted(smartchars.quotes.keys()):
-            print "%-14s %s" % (key, smartchars.quotes[key])
+            print("%-14s %s" % (key, smartchars.quotes[key]))
     elif args.test:
         # Unit test output goes to stderr.
         import unittest
@@ -1007,5 +1008,5 @@ if __name__ == "__main__":
             else:
                 args.language += '-x-altquot'
         text = sys.stdin.read().decode(args.encoding)
-        print smartyPants(text, attr=args.action,
-                          language=args.language).encode(args.encoding)
+        print(smartyPants(text, attr=args.action,
+                          language=args.language).encode(args.encoding))

@@ -37,7 +37,7 @@ totest['code-parsing-none'] = [
       '''
 
       # and now for something completely different
-      print 8/2
+      print(8/2)
 """,
 """\
 <document source="test data">
@@ -59,7 +59,7 @@ totest['code-parsing-none'] = [
             # and now for something completely different
         <inline classes="ln">
             12 \n\
-            print 8/2
+            print(8/2)
 """],
 ["""\
 .. code:: latex

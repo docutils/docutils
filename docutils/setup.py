@@ -2,9 +2,12 @@
 # $Id$
 # Copyright: This file has been placed in the public domain.
 
+from __future__ import print_function
+
 import sys
 import os
 import glob
+
 try:
     import setuptools
     from distutils.core import setup, Command
@@ -17,10 +20,10 @@ try:
     from distutils.util import convert_path
     from distutils import log
 except ImportError:
-    print ('Error: The "distutils" standard module, which is required for the ')
-    print ('installation of Docutils, could not be found.  You may need to ')
-    print ('install a package called "python-devel" (or similar) on your ')
-    print ('system using your package manager.')
+    print('Error: The "distutils" standard module, which is required for the ')
+    print('installation of Docutils, could not be found.  You may need to ')
+    print('install a package called "python-devel" (or similar) on your ')
+    print('system using your package manager.')
     sys.exit(1)
 
 

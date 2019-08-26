@@ -38,6 +38,7 @@ Exports the following:
     - `HtmlFragmentTestSuite`
     - `DevNull` (output sink)
 """
+from __future__ import print_function
 __docformat__ = 'reStructuredText'
 
 import sys
@@ -230,17 +231,17 @@ class CustomTestCase(StandardTestCase):
         try:
             self.assertEqual(output, expected)
         except AssertionError, error:
-            print >>sys.stderr, '\n%s\ninput:' % (self,)
-            print >>sys.stderr, input
+            print('\n%s\ninput:' % (self,), file=sys.stderr)
+            print(input, file=sys.stderr)
             try:
                 comparison = ''.join(self.compare(expected.splitlines(1),
                                                   output.splitlines(1)))
-                print >>sys.stderr, '-: expected\n+: output'
-                print >>sys.stderr, comparison
+                print('-: expected\n+: output', file=sys.stderr)
+                print(comparison, file=sys.stderr)
             except AttributeError:      # expected or output not a string
                 # alternative output for non-strings:
-                print >>sys.stderr, 'expected: %r' % expected
-                print >>sys.stderr, 'output:   %r' % output
+                print('expected: %r' % expected, file=sys.stderr)
+                print('output:   %r' % output, file=sys.stderr)
             raise error
 
 
@@ -375,20 +376,20 @@ class TransformTestCase(CustomTestCase):
     def test_transforms_verbosely(self):
         if self.run_in_debugger:
             pdb.set_trace()
-        print '\n', self.id
-        print '-' * 70
-        print self.input
+        print('\n', self.id)
+        print('-' * 70)
+        print(self.input)
         settings = self.settings.copy()
         settings.__dict__.update(self.suite_settings)
         document = utils.new_document('test data', settings)
         self.parser.parse(self.input, document)
-        print '-' * 70
-        print document.pformat()
+        print('-' * 70)
+        print(document.pformat())
         for transformClass in self.transforms:
             transformClass(document).apply()
         output = document.pformat()
-        print '-' * 70
-        print output
+        print('-' * 70)
+        print(output)
         self.compare_output(self.input, output, self.expected)
 
 

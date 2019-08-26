@@ -19,6 +19,7 @@ hierarchy.
 
 .. _DTD: http://docutils.sourceforge.net/docs/ref/docutils.dtd
 """
+from __future__ import print_function
 
 __docformat__ = 'reStructuredText'
 
@@ -1724,7 +1725,7 @@ class system_message(Special, BackLinkable, PreBibliographic, Element):
         try:
             Element.__init__(self, rawsource, *children, **attributes)
         except:
-            print 'system_message: children=%r' % (children,)
+            print('system_message: children=%r' % (children,))
             raise
 
     def astext(self):

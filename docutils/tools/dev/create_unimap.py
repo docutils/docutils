@@ -9,6 +9,7 @@
 # Get unicode.xml from
 # <http://www.w3.org/2003/entities/xml/unicode.xml>.
 
+from __future__ import print_function
 from xml.dom import minidom
 import sys
 import pprint

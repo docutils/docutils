@@ -21,7 +21,7 @@ totest['doctest_blocks'] = [
 ["""\
 Paragraph.
 
->>> print "Doctest block."
+>>> print("Doctest block.")
 Doctest block.
 
 Paragraph.
@@ -31,7 +31,7 @@ Paragraph.
     <paragraph>
         Paragraph.
     <doctest_block xml:space="preserve">
-        >>> print "Doctest block."
+        >>> print("Doctest block.")
         Doctest block.
     <paragraph>
         Paragraph.
@@ -39,7 +39,7 @@ Paragraph.
 ["""\
 Paragraph.
 
->>> print "    Indented output."
+>>> print("    Indented output.")
     Indented output.
 """,
 """\
@@ -47,13 +47,13 @@ Paragraph.
     <paragraph>
         Paragraph.
     <doctest_block xml:space="preserve">
-        >>> print "    Indented output."
+        >>> print("    Indented output.")
             Indented output.
 """],
 ["""\
 Paragraph.
 
-    >>> print "    Indented block & output."
+    >>> print("    Indented block & output.")
         Indented block & output.
 """,
 """\
@@ -62,7 +62,7 @@ Paragraph.
         Paragraph.
     <block_quote>
         <doctest_block xml:space="preserve">
-            >>> print "    Indented block & output."
+            >>> print("    Indented block & output.")
                 Indented block & output.
 """],
 ]

@@ -29,7 +29,7 @@ totest['code-parsing-long'] = [
       '''
 
       # and now for something completely different
-      print 8/2
+      print(8/2)
 """,
 """\
 <document source="test data">
@@ -68,13 +68,16 @@ totest['code-parsing-long'] = [
             \n\
         <inline classes="keyword">
             print
-         \n\
+        <inline classes="punctuation">
+            (
         <inline classes="literal number integer">
             8
         <inline classes="operator">
             /
         <inline classes="literal number integer">
             2
+        <inline classes="punctuation">
+            )
 """],
 ["""\
 .. code:: latex

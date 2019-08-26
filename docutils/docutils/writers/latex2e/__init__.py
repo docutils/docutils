@@ -15,7 +15,6 @@ __docformat__ = 'reStructuredText'
 
 import sys
 import os
-import time
 import re
 import string
 import urllib
@@ -27,6 +26,7 @@ from docutils import frontend, nodes, languages, writers, utils, io
 from docutils.utils.error_reporting import SafeString
 from docutils.transforms import writer_aux
 from docutils.utils.math import pick_math_environment, unichar2tex
+
 
 class Writer(writers.Writer):
 
@@ -2283,14 +2283,14 @@ class LaTeXTranslator(nodes.NodeVisitor):
             href = self.document.nameids[node['refname']]
         # if not self.docutils_footnotes:
             # TODO: insert footnote content at (or near) this place
-            # print "footnote-ref to", node['refid']
+            # print("footnote-ref to", node['refid'])
             # footnotes = (self.document.footnotes +
             #              self.document.autofootnotes +
             #              self.document.symbol_footnotes)
             # for footnote in footnotes:
-            #     # print footnote['ids']
+            #     # print(footnote['ids'])
             #     if node.get('refid', '') in footnote['ids']:
-            #         print 'matches', footnote['ids']
+            #         print('matches', footnote['ids'])
         format = self.settings.footnote_references
         if format == 'brackets':
             self.append_hypertargets(node)
@@ -2623,7 +2623,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
                                  r'\begin{%s}' % math_env,
                                  '%s',
                                  r'\end{%s}' % math_env])
-        # print repr(wrapper), repr(math_code)
         self.out.append(wrapper % math_code)
         if node['classes']:
             self.depart_inline(node)
