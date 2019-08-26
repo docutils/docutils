@@ -815,8 +815,7 @@ class HtmlWriterPublishPartsTestCase(WriterPublishTestCase):
             if not parts[key]:
                 del parts[key]
         # standard output format:
-        keys = parts.keys()
-        keys.sort()
+        keys = sorted(parts.keys())
         output = []
         for key in keys:
             output.append("%r: '''%s'''"

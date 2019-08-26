@@ -366,8 +366,7 @@ class HTMLTranslator(nodes.NodeVisitor):
                     # Non-empty tag.  Place the auxiliary <span> tag
                     # *inside* the element, as the first child.
                     suffix += '<span id="%s"></span>' % id
-        attlist = atts.items()
-        attlist.sort()
+        attlist = sorted(atts.items())
         parts = [tagname]
         for name, value in attlist:
             # value=None was used for boolean attributes without

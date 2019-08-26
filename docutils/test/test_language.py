@@ -150,8 +150,7 @@ class LanguageTestCase(DocutilsTestSupport.CustomTestCase):
             except Exception as error:
                 failures.append('"%s": %s' % (d, error))
         inverted = self._invert(module.directives)
-        canonical = directives._directive_registry.keys()
-        canonical.sort()
+        canonical = sorted(directives._directive_registry.keys())
         canonical.remove('restructuredtext-test-directive')
         for name in canonical:
             if name not in inverted:
@@ -185,8 +184,7 @@ class LanguageTestCase(DocutilsTestSupport.CustomTestCase):
             except KeyError as error:
                 failures.append('"%s": %s' % (d, error))
         inverted = self._invert(module.roles)
-        canonical = roles._role_registry.keys()
-        canonical.sort()
+        canonical = sorted(roles._role_registry.keys())
         canonical.remove('restructuredtext-unimplemented-role')
         for name in canonical:
             if name not in inverted:

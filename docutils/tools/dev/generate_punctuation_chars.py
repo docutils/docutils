@@ -269,8 +269,7 @@ def mark_intervals(s):
     Sort string and replace 'cdef' by 'c-f' and similar.
     """
     l =[]
-    s = [ord(ch) for ch in s]
-    s.sort()
+    s = sorted([ord(ch) for ch in s])
     for n in s:
         try:
             if l[-1][-1]+1 == n:
