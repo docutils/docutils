@@ -34,10 +34,12 @@ from docutils import frontend, nodes, utils, writers, languages
 from docutils.readers import standalone
 from docutils.transforms import references
 if sys.version_info >= (3,0):
+    from configparser import ConfigParser
     from io import StringIO
     from urllib.request import urlopen
     from urllib.error import HTTPError
 else:
+    from ConfigParser import ConfigParser
     from StringIO import StringIO
     from urllib2 import urlopen, HTTPError
 
@@ -893,8 +895,6 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             document.reporter)
         self.format_map = {}
         if self.settings.odf_config_file:
-            from configparser import ConfigParser
-
             parser = ConfigParser()
             parser.read(self.settings.odf_config_file)
             for rststyle, format in parser.items("Formats"):
