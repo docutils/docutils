@@ -8,9 +8,11 @@
 """
 test get_writer_class
 """
+from __future__ import absolute_import
 
-from __init__ import DocutilsTestSupport
+from . import DocutilsTestSupport
 from docutils.writers import get_writer_class
+
 
 class GetWriterClassTestCase(DocutilsTestSupport.StandardTestCase):
     #tests = ( ('manpage', 1), ('nope', 0), ('dummy-writer', 1))

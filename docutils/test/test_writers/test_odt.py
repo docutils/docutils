@@ -29,13 +29,13 @@ Instructions for adding a new test:
 5. If any other tests fail, that's a possible regression.
 
 """
+from __future__ import absolute_import
 
 import os
 import zipfile
 import xml.etree.ElementTree as etree
 
-from __init__ import DocutilsTestSupport
-
+from . import DocutilsTestSupport
 import docutils
 import docutils.core
 from docutils._compat import BytesIO

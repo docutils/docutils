@@ -7,8 +7,10 @@
 """
 Test for Null writer.
 """
+from __future__ import absolute_import
 
-from __init__ import DocutilsTestSupport
+from . import DocutilsTestSupport
+
 
 def suite():
     s = DocutilsTestSupport.PublishTestSuite('null')

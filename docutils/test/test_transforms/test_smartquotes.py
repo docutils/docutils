@@ -16,11 +16,12 @@
 """
 Test module for universal.SmartQuotes transform.
 """
+from __future__ import absolute_import
 
-
-from __init__ import DocutilsTestSupport  # must be imported before docutils
+from . import DocutilsTestSupport  # must be imported before docutils
 from docutils.transforms.universal import SmartQuotes
 from docutils.parsers.rst import Parser
+
 
 def suite():
     parser = Parser()

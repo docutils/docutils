@@ -8,8 +8,9 @@
 """
 test get_parser_class
 """
+from __future__ import absolute_import
 
-from __init__ import DocutilsTestSupport
+from . import DocutilsTestSupport
 from docutils.parsers import get_parser_class
 
 class GetParserClassTestCase(DocutilsTestSupport.StandardTestCase):

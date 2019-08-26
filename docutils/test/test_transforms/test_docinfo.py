@@ -8,8 +8,9 @@
 """
 Tests for docutils.transforms.frontmatter.DocInfo.
 """
+from __future__ import absolute_import
 
-from __init__ import DocutilsTestSupport
+from . import DocutilsTestSupport
 from docutils.transforms.frontmatter import DocInfo
 from docutils.parsers.rst import Parser
 

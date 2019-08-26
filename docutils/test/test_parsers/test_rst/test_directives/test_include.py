@@ -7,10 +7,11 @@
 """
 Tests for misc.py "include" directive.
 """
+from __future__ import absolute_import
 
 import os.path
 import sys
-from __init__ import DocutilsTestSupport
+from . import DocutilsTestSupport
 from docutils.parsers.rst import states
 from docutils.utils.code_analyzer import with_pygments
 

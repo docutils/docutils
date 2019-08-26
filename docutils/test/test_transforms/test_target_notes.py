@@ -8,8 +8,9 @@
 Tests for `docutils.transforms.references.TargetNotes` (via
 `docutils.transforms.universal.LastReaderPending`).
 """
+from __future__ import absolute_import
 
-from __init__ import DocutilsTestSupport
+from . import DocutilsTestSupport
 from docutils.transforms.references import PropagateTargets, \
      AnonymousHyperlinks, IndirectHyperlinks, ExternalTargets, \
      InternalTargets, DanglingReferences, Footnotes

@@ -7,8 +7,9 @@
 """
 Test the 'code' directive in parsers/rst/directives/body.py.
 """
+from __future__ import absolute_import
 
-from __init__ import DocutilsTestSupport
+from . import DocutilsTestSupport
 from docutils.utils.code_analyzer import with_pygments
 
 def suite():

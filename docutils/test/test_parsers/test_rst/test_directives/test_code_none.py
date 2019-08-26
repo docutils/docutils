@@ -7,8 +7,9 @@
 """
 Test the 'code' directive in body.py with syntax_highlight = 'none'.
 """
+from __future__ import absolute_import
 
-from __init__ import DocutilsTestSupport
+from . import DocutilsTestSupport
 
 def suite():
     s = DocutilsTestSupport.ParserTestSuite(suite_settings={'syntax_highlight':'none'})

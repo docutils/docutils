@@ -7,10 +7,11 @@
 """
 Tests for misc.py "unicode" directive.
 """
+from __future__ import absolute_import
 
 import sys
 
-from __init__ import DocutilsTestSupport
+from . import DocutilsTestSupport
 
 
 if sys.version_info >= (3, 0):
