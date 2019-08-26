@@ -11,7 +11,7 @@ Test module for nodes.py.
 
 import sys
 import unittest
-import types
+
 import DocutilsTestSupport              # must be imported before docutils
 from DocutilsTestSupport import nodes, utils
 
@@ -359,7 +359,7 @@ class MiscTests(unittest.TestCase):
         node_class_names = []
         for x in dir(nodes):
             c = getattr(nodes, x)
-            if isinstance(c, (type, types.ClassType)) and \
+            if isinstance(c, type) and \
                    issubclass(c, nodes.Node) and len(c.__bases__) > 1:
                 node_class_names.append(x)
         node_class_names.sort()

@@ -109,7 +109,6 @@ __docformat__ = 'restructuredtext'
 
 import sys
 import re
-import types
 import unicodedata
 from docutils import utils
 from docutils.utils.error_reporting import ErrorOutput
@@ -1148,7 +1147,7 @@ class ViewList(object):
     # just works.
 
     def __getitem__(self, i):
-        if isinstance(i, types.SliceType):
+        if isinstance(i, slice):
             assert i.step in (None, 1),  'cannot handle slice with stride'
             return self.__class__(self.data[i.start:i.stop],
                                   items=self.items[i.start:i.stop],
@@ -1157,7 +1156,7 @@ class ViewList(object):
             return self.data[i]
 
     def __setitem__(self, i, item):
-        if isinstance(i, types.SliceType):
+        if isinstance(i, slice):
             assert i.step in (None, 1), 'cannot handle slice with stride'
             if not isinstance(item, ViewList):
                 raise TypeError('assigning non-ViewList to ViewList slice')

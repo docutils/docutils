@@ -27,7 +27,6 @@ import sys
 import os
 import re
 import warnings
-import types
 import unicodedata
 
 if sys.version_info >= (3, 0):
@@ -257,11 +256,11 @@ class Node(object):
         if include_self and descend and not siblings:
             if condition is None:
                 return self._all_traverse()
-            elif isinstance(condition, (types.ClassType, type)):
+            elif isinstance(condition, type):
                 return self._fast_traverse(condition)
         # Check if `condition` is a class (check for TypeType for Python
         # implementations that use only new-style classes, like PyPy).
-        if isinstance(condition, (types.ClassType, type)):
+        if isinstance(condition, type):
             node_class = condition
             def condition(node, node_class=node_class):
                 return isinstance(node, node_class)
@@ -590,7 +589,7 @@ class Element(Node):
             return self.attributes[key]
         elif isinstance(key, int):
             return self.children[key]
-        elif isinstance(key, types.SliceType):
+        elif isinstance(key, slice):
             assert key.step in (None, 1), 'cannot handle slice with stride'
             return self.children[key.start:key.stop]
         else:
@@ -603,7 +602,7 @@ class Element(Node):
         elif isinstance(key, int):
             self.setup_child(item)
             self.children[key] = item
-        elif isinstance(key, types.SliceType):
+        elif isinstance(key, slice):
             assert key.step in (None, 1), 'cannot handle slice with stride'
             for node in item:
                 self.setup_child(node)
@@ -617,7 +616,7 @@ class Element(Node):
             del self.attributes[key]
         elif isinstance(key, int):
             del self.children[key]
-        elif isinstance(key, types.SliceType):
+        elif isinstance(key, slice):
             assert key.step in (None, 1), 'cannot handle slice with stride'
             del self.children[key.start:key.stop]
         else:
