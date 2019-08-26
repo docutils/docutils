@@ -168,7 +168,7 @@ class math(object):
 
         self.children = []
         if children is not None:
-            if type(children) is list:
+            if isinstance(children, list):
                 for child in children:
                     self.append(child)
             else:

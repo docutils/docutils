@@ -104,7 +104,7 @@ class Table(Directive):
         return self.options.get('widths', '')
 
     def get_column_widths(self, max_cols):
-        if type(self.widths) == list:
+        if isinstance(self.widths, list):
             if len(self.widths) != max_cols:
                 error = self.state_machine.reporter.error(
                     '"%s" widths do not match the number of columns in table '
@@ -152,7 +152,7 @@ class RSTTable(Table):
         if 'align' in self.options:
             table_node['align'] = self.options.get('align')
         tgroup = table_node[0]
-        if type(self.widths) == list:
+        if isinstance(self.widths, list):
             colspecs = [child for child in tgroup.children
                         if child.tagname == 'colspec']
             for colspec, col_width in zip(colspecs, self.widths):

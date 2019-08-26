@@ -121,7 +121,7 @@ class ElementTests(unittest.TestCase):
             self.assertEqual(repr(uelement), "<Element: <#text: 'gr\\xfcn'>>")
         else:
             self.assertEqual(repr(uelement), u"<Element: <#text: 'grün'>>")
-        self.assertTrue(isinstance(repr(uelement),str))
+        self.assertTrue(isinstance(repr(uelement), str))
         self.assertEqual(str(element), '<Element>text\nmore</Element>')
         self.assertEqual(str(uelement), '<Element>gr\xfcn</Element>')
         dom = element.asdom()
