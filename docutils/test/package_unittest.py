@@ -120,7 +120,7 @@ def loadTestModules(path, name='', packages=None):
             elif isinstance(suite, unittest.TestSuite):
                 testSuite.addTest(suite)
             else:
-                raise AssertionError, "don't understand suite (%s)" % mod
+                raise AssertionError("don't understand suite (%s)" % mod)
     sys.path.pop(0)
     return testSuite
 

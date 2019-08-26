@@ -594,8 +594,8 @@ class Element(Node):
             assert key.step in (None, 1), 'cannot handle slice with stride'
             return self.children[key.start:key.stop]
         else:
-            raise TypeError, ('element index must be an integer, a slice, or '
-                              'an attribute name string')
+            raise TypeError('element index must be an integer, a slice, or '
+                            'an attribute name string')
 
     def __setitem__(self, key, item):
         if isinstance(key, basestring):
@@ -609,8 +609,8 @@ class Element(Node):
                 self.setup_child(node)
             self.children[key.start:key.stop] = item
         else:
-            raise TypeError, ('element index must be an integer, a slice, or '
-                              'an attribute name string')
+            raise TypeError('element index must be an integer, a slice, or '
+                            'an attribute name string')
 
     def __delitem__(self, key):
         if isinstance(key, basestring):
@@ -621,8 +621,8 @@ class Element(Node):
             assert key.step in (None, 1), 'cannot handle slice with stride'
             del self.children[key.start:key.stop]
         else:
-            raise TypeError, ('element index must be an integer, a simple '
-                              'slice, or an attribute name string')
+            raise TypeError('element index must be an integer, a simple '
+                            'slice, or an attribute name string')
 
     def __add__(self, other):
         return self.children + other
