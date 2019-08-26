@@ -36,7 +36,7 @@ from docutils import core, parsers, frontend, utils
 from docutils.utils.error_reporting import SafeString, ErrorString, ErrorOutput
 
 oldlocale = None
-if sys.version_info < (3, 0):  # problems solved in py3k
+if sys.version_info < (3,0):  # problems solved in py3k
     try:
         import locale  # module missing in Jython
         oldlocale = locale.getlocale()
@@ -44,7 +44,7 @@ if sys.version_info < (3, 0):  # problems solved in py3k
         print('cannot test error reporting with problematic locales,\n'
               '`import locale` failed.')
 
-if sys.version_info >= (3, 0):
+if sys.version_info >= (3,0):
     unicode = str  # noqa
 
 

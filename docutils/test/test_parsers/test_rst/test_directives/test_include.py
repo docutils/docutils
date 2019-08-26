@@ -16,7 +16,7 @@ from docutils.parsers.rst import states
 from docutils.utils.code_analyzer import with_pygments
 
 
-if sys.version_info >= (3, 0):
+if sys.version_info >= (3,0):
     unichr = chr  # noqa
 
 

@@ -113,7 +113,7 @@ import unicodedata
 from docutils import utils
 from docutils.utils.error_reporting import ErrorOutput
 
-if sys.version_info >= (3, 0):
+if sys.version_info >= (3,0):
     unicode = str  # noqa
 
 
