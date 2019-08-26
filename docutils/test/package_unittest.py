@@ -115,7 +115,7 @@ def loadTestModules(path, name='', packages=None):
                 # to cheat:
                 testSuite.addTest(moduleTests)
                 continue
-            if type(suite) == types.FunctionType:
+            if isinstance(suite, types.FunctionType):
                 testSuite.addTest(suite())
             elif isinstance(suite, unittest.TestSuite):
                 testSuite.addTest(suite)
@@ -152,7 +152,7 @@ def main(suite=None):
         print("Debug: Suite=%s" % suite, file=sys.stderr)
     testRunner = unittest.TextTestRunner(verbosity=verbosity)
     # run suites (if we were called from test_all) or suite...
-    if type(suite) == type([]):
+    if isinstance(suite, type([])):
         for s in suite:
             testRunner.run(s)
     else:

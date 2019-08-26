@@ -447,7 +447,7 @@ def build_regexp(definition, compile=True):
     name, prefix, suffix, parts = definition
     part_strings = []
     for part in parts:
-        if type(part) is tuple:
+        if isinstance(part, tuple):
             part_strings.append(build_regexp(part, None))
         else:
             part_strings.append(part)

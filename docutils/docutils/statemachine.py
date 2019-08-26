@@ -737,7 +737,7 @@ class State(object):
         names = []
         transitions = {}
         for namestate in name_list:
-            if type(namestate) is stringtype:
+            if isinstance(namestate, stringtype):
                 transitions[namestate] = self.make_transition(namestate)
                 names.append(namestate)
             else:
