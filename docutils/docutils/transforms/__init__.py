@@ -153,8 +153,8 @@ class Transformer(TransformSpec):
         unknown_reference_resolvers = []
         for i in components:
             unknown_reference_resolvers.extend(i.unknown_reference_resolvers)
-        decorated_list = sorted([(f.priority, f) for f in unknown_reference_resolvers])
-        self.unknown_reference_resolvers.extend([f[1] for f in decorated_list])
+        decorated_list = sorted((f.priority, f) for f in unknown_reference_resolvers)
+        self.unknown_reference_resolvers.extend(f[1] for f in decorated_list)
 
     def apply_transforms(self):
         """Apply all of the stored transforms, in priority order."""
