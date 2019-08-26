@@ -89,7 +89,7 @@ except:
     import pdb
 
 
-if sys.version_info >= (3, 0):
+if sys.version_info >= (3,0):
     unicode = str  # noqa
 
 
@@ -202,7 +202,7 @@ class CustomTestCase(StandardTestCase):
         """`input`, `output`, and `expected` should all be strings."""
         if isinstance(input, unicode):
             input = input.encode('raw_unicode_escape')
-        if sys.version_info > (3,):
+        if sys.version_info > (3,0):
             # API difference: Python 3's node.__str__ doesn't escape
             #assert expected is None or isinstance(expected, unicode)
             if isinstance(expected, bytes):

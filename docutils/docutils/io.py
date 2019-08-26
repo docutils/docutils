@@ -17,7 +17,7 @@ import codecs
 from docutils import TransformSpec
 from docutils.utils.error_reporting import locale_encoding, ErrorString, ErrorOutput
 
-if sys.version_info >= (3, 0):
+if sys.version_info >= (3,0):
     unicode = str  # noqa
 
 
@@ -208,7 +208,7 @@ class FileInput(Input):
     def __init__(self, source=None, source_path=None,
                  encoding=None, error_handler='strict',
                  autoclose=True,
-                 mode='r' if sys.version_info >= (3, 4) else 'rU', **kwargs):
+                 mode='r' if sys.version_info >= (3,0) else 'rU', **kwargs):
         """
         :Parameters:
             - `source`: either a file-like object (which is read directly), or

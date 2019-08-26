@@ -43,7 +43,7 @@ import docutils.nodes
 from docutils.utils.error_reporting import (locale_encoding, SafeString,
                                             ErrorOutput, ErrorString)
 
-if sys.version_info >= (3, 0):
+if sys.version_info >= (3,0):
     unicode = str  # noqa
 
 
@@ -775,7 +775,7 @@ Skipping "%s" configuration file.
             except IOError:
                 continue
             try:
-                if sys.version_info < (3, 0):
+                if sys.version_info < (3,0):
                     CP.RawConfigParser.readfp(self, fp, filename)
                 else:
                     CP.RawConfigParser.read_file(self, fp, filename)

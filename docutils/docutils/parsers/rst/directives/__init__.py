@@ -16,7 +16,7 @@ from docutils import nodes
 from docutils.utils import split_escaped_whitespace, escape2null, unescape
 from docutils.parsers.rst.languages import en as _fallback_language_module
 
-if sys.version_info >= (3, 0):
+if sys.version_info >= (3,0):
     unichr = chr  # noqa
 
 

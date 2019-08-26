@@ -24,7 +24,7 @@ from docutils.transforms import TransformError, Transform
 from docutils.utils import smartquotes
 
 
-if sys.version_info >= (3, 0):
+if sys.version_info >= (3,0):
     unicode = str  # noqa
 
 

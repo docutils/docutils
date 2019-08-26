@@ -38,7 +38,7 @@ from __future__ import print_function
 import sys
 import unicodedata
 
-if sys.version_info >= (3,):
+if sys.version_info >= (3,0):
     unichr = chr  # unichr not available in Py3k
 else:
     import codecs
@@ -361,7 +361,7 @@ if __name__ == '__main__':
 # Import the punctuation_chars module from the source
 # or Py3k build path for local Python modules::
 
-        if sys.version_info < (3,):
+        if sys.version_info < (3,0):
             sys.path.insert(0, '../../docutils')
         else:
             sys.path.insert(0, '../../build/lib')

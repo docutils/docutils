@@ -29,7 +29,7 @@ import re
 import warnings
 import unicodedata
 
-if sys.version_info >= (3, 0):
+if sys.version_info >= (3,0):
     unicode = str  # noqa
     basestring = str  # noqa
 
@@ -64,7 +64,7 @@ class Node(object):
         """
         return True
 
-    if sys.version_info < (3, 0):
+    if sys.version_info < (3,0):
         # on 2.x, str(node) will be a byte string with Unicode
         # characters > 255 escaped; on 3.x this is no longer necessary
         def __str__(self):
@@ -304,7 +304,7 @@ class Node(object):
         except IndexError:
             return None
 
-if sys.version_info < (3, 0):
+if sys.version_info < (3,0):
     class reprunicode(unicode):
         """
         A unicode sub-class that removes the initial u from unicode's repr.
@@ -320,7 +320,7 @@ def ensure_str(s):
     """
     Failsave conversion of `unicode` to `str`.
     """
-    if sys.version_info < (3,) and isinstance(s, unicode):
+    if sys.version_info < (3,0) and isinstance(s, unicode):
         return s.encode('ascii', 'backslashreplace')
     return s
 
@@ -352,7 +352,7 @@ class Text(Node, reprunicode):
     children = ()
     """Text nodes have no children, and cannot have children."""
 
-    if sys.version_info > (3,):
+    if sys.version_info > (3,0):
         def __new__(cls, data, rawsource=None):
             """Prevent the rawsource argument from propagating to str."""
             if isinstance(data, bytes):
@@ -544,7 +544,7 @@ class Element(Node):
         else:
             return self.emptytag()
 
-    if sys.version_info > (3,):
+    if sys.version_info > (3,0):
         # 2to3 doesn't convert __unicode__ to __str__
         __str__ = __unicode__
 
