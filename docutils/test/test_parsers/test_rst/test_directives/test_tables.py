@@ -17,6 +17,11 @@ import platform
 from docutils.parsers.rst.directives import tables
 
 
+if sys.version_info >= (3, 0):
+    unicode = str  # noqa
+    unichr = chr  # noqa
+
+
 def suite():
     s = DocutilsTestSupport.ParserTestSuite()
     s.generateTests(totest)

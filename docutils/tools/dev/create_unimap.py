@@ -14,15 +14,15 @@ from xml.dom import minidom
 import sys
 import pprint
 
-if sys.version_info >= (3,0):
-    unicode = str
+if sys.version_info >= (3, 0):
+    unicode = str  #noqa
 else:
-    bytes = str
-    chr = unichr
+    bytes = str  # noqa
+    chr = unichr  # noqa
 
 
 def w(s):
-    if sys.version_info >= (3,0) and isinstance(s, unicode):
+    if sys.version_info >= (3, 0) and isinstance(s, unicode):
         s = s.encode('utf8')
     sys.stdout.write(s)
 

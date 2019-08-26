@@ -17,6 +17,9 @@ import codecs
 from docutils import TransformSpec
 from docutils.utils.error_reporting import locale_encoding, ErrorString, ErrorOutput
 
+if sys.version_info >= (3, 0):
+    unicode = str  # noqa
+
 
 class InputError(IOError): pass
 class OutputError(IOError): pass

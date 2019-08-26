@@ -40,6 +40,10 @@ from docutils.utils.math import (unichar2tex, pick_math_environment,
                                  math2html, latex2mathml, tex2mathml_extern)
 
 
+if sys.version_info >= (3, 0):
+    unicode = str  # noqa
+
+
 class Writer(writers.Writer):
 
     supported = ('html', 'xhtml') # update in subclass

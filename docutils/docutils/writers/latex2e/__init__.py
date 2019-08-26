@@ -28,6 +28,10 @@ from docutils.transforms import writer_aux
 from docutils.utils.math import pick_math_environment, unichar2tex
 
 
+if sys.version_info >= (3, 0):
+    unicode = str  # noqa
+
+
 class Writer(writers.Writer):
 
     supported = ('latex','latex2e')

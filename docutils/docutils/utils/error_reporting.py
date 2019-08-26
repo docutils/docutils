@@ -35,7 +35,8 @@ The `SafeString`, `ErrorString` and `ErrorOutput` classes handle
 common exceptions.
 """
 
-import sys, codecs
+import codecs
+import sys
 
 # Guess the locale's encoding.
 # If no valid guess can be made, locale_encoding is set to `None`:
@@ -63,6 +64,9 @@ else:
     except LookupError:
         locale_encoding = None
 
+
+if sys.version_info >= (3, 0):
+    unicode = str  # noqa
 
 
 class SafeString(object):
@@ -199,9 +203,9 @@ class ErrorOutput(object):
             self.stream.write(data)
         except UnicodeEncodeError:
             self.stream.write(data.encode(self.encoding, self.encoding_errors))
-        except TypeError: 
+        except TypeError:
             if isinstance(data, unicode): # passed stream may expect bytes
-                self.stream.write(data.encode(self.encoding, 
+                self.stream.write(data.encode(self.encoding,
                                               self.encoding_errors))
                 return
             if self.stream in (sys.stderr, sys.stdout):

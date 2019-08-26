@@ -14,6 +14,11 @@ from __init__ import DocutilsTestSupport
 from docutils.parsers.rst import states
 from docutils.utils.code_analyzer import with_pygments
 
+
+if sys.version_info >= (3, 0):
+    unichr = chr  # noqa
+
+
 def suite():
     s = DocutilsTestSupport.ParserTestSuite()
     if not with_pygments:

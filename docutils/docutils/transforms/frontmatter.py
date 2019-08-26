@@ -22,8 +22,14 @@ Transforms related to the front matter of a document or a section
 __docformat__ = 'reStructuredText'
 
 import re
+import sys
+
 from docutils import nodes, utils
 from docutils.transforms import TransformError, Transform
+
+
+if sys.version_info >= (3, 0):
+    unicode = str  # noqa
 
 
 class TitlePromoter(Transform):

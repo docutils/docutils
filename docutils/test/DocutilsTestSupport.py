@@ -89,6 +89,10 @@ except:
     import pdb
 
 
+if sys.version_info >= (3, 0):
+    unicode = str  # noqa
+
+
 # Hack to make repr(StringList) look like repr(list):
 StringList.__repr__ = StringList.__str__
 
