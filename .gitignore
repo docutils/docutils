@@ -1,0 +1,13 @@
+MANIFEST
+build
+*.pyc
+*.egg-info
+__pycache__
+
+.venv
+.tox
+
+/docutils/test3
+/docutils/test/alltests.out
+/docutils/test/record.txt
+/docutils/test/functional/output
