@@ -4,6 +4,9 @@ build
 *.egg-info
 __pycache__
 
+*~
+docutils/docs/**.html
+
 .venv
 .tox
 
