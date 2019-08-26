@@ -19,7 +19,7 @@ instances like, e.g., ::
 
   try:
     something
-  except IOError, error:
+  except IOError as error:
     print('Found %s' % error)
 
 unless the minimal required Python version has this problem fixed.
@@ -219,29 +219,29 @@ class SafeStringTests_locale(unittest.TestCase):
     us = u'\xfc'
     try:
         open(b'\xfc')
-    except IOError, e: # in Python 3 the name for the exception instance
+    except IOError as e: # in Python 3 the name for the exception instance
         bioe = e       # is local to the except clause
     try:
         open(u'\xfc')
-    except IOError, e:
+    except IOError as e:
         uioe = e
     except UnicodeEncodeError:
         try:
             open(u'\xfc'.encode(sys.getfilesystemencoding(), 'replace'))
-        except IOError, e:
+        except IOError as e:
             uioe = e
     try:
         os.chdir(b'\xfc')
-    except OSError, e:
+    except OSError as e:
         bose = e
     try:
         os.chdir(u'\xfc')
-    except OSError, e:
+    except OSError as e:
         uose = e
     except UnicodeEncodeError:
         try:
             os.chdir(u'\xfc'.encode(sys.getfilesystemencoding(), 'replace'))
-        except OSError, e:
+        except OSError as e:
             uose = e
     # wrapped test data:
     wbioe = SafeString(bioe)

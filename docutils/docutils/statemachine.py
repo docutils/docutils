@@ -248,7 +248,7 @@ class StateMachine(object):
                         break
                     else:
                         results.extend(result)
-                except TransitionCorrection, exception:
+                except TransitionCorrection as exception:
                     self.previous_line() # back up for another try
                     transitions = (exception.args[0],)
                     if self.debug:
@@ -257,7 +257,7 @@ class StateMachine(object):
                               'state "%s", transition %s.'
                               % (state.__class__.__name__, transitions[0])), file=self._stderr)
                     continue
-                except StateCorrection, exception:
+                except StateCorrection as exception:
                     self.previous_line() # back up for another try
                     next_state = exception.args[0]
                     if len(exception.args) == 1:
@@ -413,7 +413,7 @@ class StateMachine(object):
                                                     flush_left)
             self.next_line(len(block) - 1)
             return block
-        except UnexpectedIndentationError, err:
+        except UnexpectedIndentationError as err:
             block = err.args[0]
             self.next_line(len(block) - 1) # advance to last line of block
             raise

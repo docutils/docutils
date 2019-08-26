@@ -219,10 +219,10 @@ class Publisher(object):
             self.apply_transforms()
             output = self.writer.write(self.document, self.destination)
             self.writer.assemble_parts()
-        except SystemExit, error:
+        except SystemExit as error:
             exit = 1
             exit_status = error.code
-        except Exception, error:
+        except Exception as error:
             if not self.settings:       # exception too early to report nicely
                 raise
             if self.settings.traceback: # Propagate exceptions?

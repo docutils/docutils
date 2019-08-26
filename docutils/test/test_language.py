@@ -144,7 +144,7 @@ class LanguageTestCase(DocutilsTestSupport.CustomTestCase):
                 func, msg = directives.directive(d, module, None)
                 if not func:
                     failures.append('"%s": unknown directive' % d)
-            except Exception, error:
+            except Exception as error:
                 failures.append('"%s": %s' % (d, error))
         inverted = self._invert(module.directives)
         canonical = directives._directive_registry.keys()
@@ -179,7 +179,7 @@ class LanguageTestCase(DocutilsTestSupport.CustomTestCase):
                 method = roles._role_registry[d]
                 #if not method:
                 #    failures.append('"%s": unknown role' % d)
-            except KeyError, error:
+            except KeyError as error:
                 failures.append('"%s": %s' % (d, error))
         inverted = self._invert(module.roles)
         canonical = roles._role_registry.keys()

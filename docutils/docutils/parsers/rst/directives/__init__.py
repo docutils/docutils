@@ -86,7 +86,7 @@ def directive(directive_name, language_module, document):
     canonicalname = None
     try:
         canonicalname = language_module.directives[normname]
-    except AttributeError, error:
+    except AttributeError as error:
         msg_text.append('Problem retrieving directive entry from language '
                         'module %r: %s.' % (language_module, error))
     except KeyError:
@@ -113,7 +113,7 @@ def directive(directive_name, language_module, document):
         return None, messages
     try:
         module = __import__(modulename, globals(), locals(), level=1)
-    except ImportError, detail:
+    except ImportError as detail:
         messages.append(document.reporter.error(
             'Error importing directive module "%s" (directive "%s"):\n%s'
             % (modulename, directive_name, detail),
@@ -309,7 +309,7 @@ def unicode_code(code):
                 return unichr(int(value, 16))
             else:                           # other text
                 return code
-    except OverflowError, detail:
+    except OverflowError as detail:
         raise ValueError('code too large (%s)' % detail)
 
 def single_char_or_unicode(argument):

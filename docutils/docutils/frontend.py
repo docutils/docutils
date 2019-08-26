@@ -62,7 +62,7 @@ def read_config_file(option, opt, value, parser):
     """
     try:
         new_settings = parser.get_config_file_settings(value)
-    except ValueError, error:
+    except ValueError as error:
         parser.error(error)
     parser.values.update(new_settings, parser)
 
@@ -346,7 +346,7 @@ class Option(optparse.Option):
                 value = getattr(values, setting)
                 try:
                     new_value = self.validator(setting, value, parser)
-                except Exception, error:
+                except Exception as error:
                     raise (optparse.OptionValueError(
                         'Error in option "%s":\n    %s'
                         % (opt, ErrorString(error))),
@@ -605,7 +605,7 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
         if read_config_files and not self.defaults['_disable_config']:
             try:
                 config_settings = self.get_standard_config_settings()
-            except ValueError, error:
+            except ValueError as error:
                 self.error(SafeString(error))
             self.set_defaults_from_dict(config_settings.__dict__)
 
@@ -826,7 +826,7 @@ Skipping "%s" configuration file.
                         new_value = option.validator(
                             setting, value, option_parser,
                             config_parser=self, config_section=section)
-                    except Exception, error:
+                    except Exception as error:
                         raise (ValueError(
                             'Error in config file "%s", section "[%s]":\n'
                             '    %s\n'
