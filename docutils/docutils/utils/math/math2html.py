@@ -2208,7 +2208,7 @@ class Container(object):
       if ord(pos.current()) > 128:
         codepoint = hex(ord(pos.current()))
         if codepoint == '0xd835':
-          codepoint = hex(ord(pos.next()) + 0xf800)
+          codepoint = hex(ord(next(pos)) + 0xf800)
         result += '&#' + codepoint[1:] + ';'
       else:
         result += pos.current()

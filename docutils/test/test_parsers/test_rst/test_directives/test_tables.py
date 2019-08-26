@@ -59,7 +59,7 @@ def null_bytes():
     csv_data = unicode(csv_data, 'latin1').splitlines()
     reader = csv.reader([tables.CSVTable.encode_for_csv(line + '\n')
                          for line in csv_data])
-    reader.next()
+    next(reader)
 
 null_bytes_exception = DocutilsTestSupport.exception_data(null_bytes)[0]
 
