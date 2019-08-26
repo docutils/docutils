@@ -33,7 +33,7 @@ class SystemMessage(ApplicationError):
 class SystemMessagePropagation(ApplicationError): pass
 
 
-class Reporter:
+class Reporter(object):
 
     """
     Info/warning/error reporter and ``system_message`` element generator.

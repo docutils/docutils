@@ -114,7 +114,7 @@ from docutils import utils
 from docutils.utils.error_reporting import ErrorOutput
 
 
-class StateMachine:
+class StateMachine(object):
 
     """
     A finite state machine for text filters using regular expressions.
@@ -518,7 +518,7 @@ class StateMachine:
             observer(*info)
 
 
-class State:
+class State(object):
 
     """
     State superclass. Contains a list of transitions, and transition methods.
@@ -1034,7 +1034,7 @@ class StateWS(State):
         return context, next_state, results
 
 
-class _SearchOverride:
+class _SearchOverride(object):
 
     """
     Mix-in class to override `StateMachine` regular expression behavior.
@@ -1067,7 +1067,7 @@ class SearchStateMachineWS(_SearchOverride, StateMachineWS):
     pass
 
 
-class ViewList:
+class ViewList(object):
 
     """
     List with extended functionality: slices of ViewList objects are child

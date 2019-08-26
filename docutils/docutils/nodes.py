@@ -1112,12 +1112,12 @@ class FixedTextElement(TextElement):
 #  Mixins
 # ========
 
-class Resolvable:
+class Resolvable(object):
 
     resolved = 0
 
 
-class BackLinkable:
+class BackLinkable(object):
 
     def add_backref(self, refid):
         self['backrefs'].append(refid)
@@ -1127,39 +1127,63 @@ class BackLinkable:
 #  Element Categories
 # ====================
 
-class Root: pass
+class Root(object):
+    pass
 
-class Titular: pass
 
-class PreBibliographic:
+class Titular(object):
+    pass
+
+
+class PreBibliographic(object):
     """Category of Node which may occur before Bibliographic Nodes."""
 
-class Bibliographic: pass
 
-class Decorative(PreBibliographic): pass
+class Bibliographic(object):
+    pass
 
-class Structural: pass
 
-class Body: pass
+class Decorative(PreBibliographic):
+    pass
 
-class General(Body): pass
+
+class Structural(object):
+    pass
+
+
+class Body(object):
+    pass
+
+
+class General(Body):
+    pass
+
 
 class Sequential(Body):
     """List-like elements."""
 
+
 class Admonition(Body): pass
+
 
 class Special(Body):
     """Special internal body elements."""
 
+
 class Invisible(PreBibliographic):
     """Internal elements that don't appear in output."""
 
-class Part: pass
 
-class Inline: pass
+class Part(object):
+    pass
 
-class Referential(Resolvable): pass
+
+class Inline(object):
+    pass
+
+
+class Referential(Resolvable):
+    pass
 
 
 class Targetable(Resolvable):
@@ -1171,7 +1195,7 @@ class Targetable(Resolvable):
     Required for MoinMoin/reST compatibility."""
 
 
-class Labeled:
+class Labeled(object):
     """Contains a `label` as its first element."""
 
 
@@ -1856,7 +1880,7 @@ node_class_names = """
 """A list of names of all concrete Node subclasses."""
 
 
-class NodeVisitor:
+class NodeVisitor(object):
 
     """
     "Visitor" pattern [GoF95]_ abstract superclass implementation for

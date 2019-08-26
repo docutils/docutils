@@ -40,7 +40,7 @@ class TableMarkupError(DataError):
             DataError.__init__(self, *args)
 
 
-class TableParser:
+class TableParser(object):
 
     """
     Abstract superclass for the common parts of the syntax-specific parsers.

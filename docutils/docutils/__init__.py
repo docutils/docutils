@@ -92,7 +92,7 @@ class ApplicationError(StandardError): pass
 class DataError(ApplicationError): pass
 
 
-class SettingsSpec:
+class SettingsSpec(object):
 
     """
     Runtime setting specification base class.

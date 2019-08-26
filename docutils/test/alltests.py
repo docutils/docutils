@@ -25,7 +25,7 @@ import DocutilsTestSupport              # must be imported before docutils
 import docutils
 
 
-class Tee:
+class Tee(object):
 
     """Write to a file and a stream (default: stdout) simultaneously."""
 

@@ -28,8 +28,8 @@ def w(s):
 text_map = {}
 math_map = {}
 
-class Visitor:
-    
+
+class Visitor(object):
     """Node visitor for contents of unicode.xml."""
 
     def visit_character(self, node):
