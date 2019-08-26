@@ -7,8 +7,10 @@
 """
 Tests for the body.py 'parsed-literal' directive.
 """
+from __future__ import absolute_import
 
-from __init__ import DocutilsTestSupport
+from . import DocutilsTestSupport
+
 
 def suite():
     s = DocutilsTestSupport.ParserTestSuite()

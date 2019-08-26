@@ -6,6 +6,7 @@
 Open Document Format (ODF) Writer.
 
 """
+from __future__ import absolute_import
 
 __docformat__ = 'reStructuredText'
 
@@ -54,7 +55,7 @@ try:
         from .pygmentsformatter import OdtPygmentsProgFormatter, \
             OdtPygmentsLaTeXFormatter
     else:
-        from pygmentsformatter import OdtPygmentsProgFormatter, \
+        from .pygmentsformatter import OdtPygmentsProgFormatter, \
             OdtPygmentsLaTeXFormatter
 except (ImportError, SyntaxError):
     pygments = None

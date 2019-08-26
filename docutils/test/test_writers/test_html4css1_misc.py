@@ -9,10 +9,13 @@
 """
 Miscellaneous HTML writer tests.
 """
+from __future__ import absolute_import
 
-from __init__ import DocutilsTestSupport
-from docutils import core
 import os
+
+from .__init__ import DocutilsTestSupport
+from docutils import core
+
 
 class EncodingTestCase(DocutilsTestSupport.StandardTestCase):
 

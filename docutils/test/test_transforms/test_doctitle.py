@@ -7,11 +7,13 @@
 """
 Tests for docutils.transforms.frontmatter.DocTitle.
 """
+from __future__ import absolute_import
 
-from __init__ import DocutilsTestSupport
+from . import DocutilsTestSupport
 from docutils.transforms.frontmatter import DocTitle, SectionSubTitle
 from docutils.parsers.rst import Parser, Directive
 from docutils.parsers.rst.directives import register_directive
+
 
 # dummy directive to test attribute merging:
 class AddNameToDocumentTitle(Directive):

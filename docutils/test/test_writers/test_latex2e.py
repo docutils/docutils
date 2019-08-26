@@ -8,9 +8,12 @@
 """
 Tests for latex2e writer.
 """
+from __future__ import absolute_import
 
 import string
-from __init__ import DocutilsTestSupport
+
+from . import DocutilsTestSupport
+
 
 def suite():
     settings = {'use_latex_toc': False}

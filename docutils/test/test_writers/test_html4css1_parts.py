@@ -11,9 +11,11 @@ Note: the 'body' and 'whole' entries have been removed from the parts
 dictionaries (redundant), along with 'meta' and 'stylesheet' entries with
 standard values, and any entries with empty values.
 """
+from __future__ import absolute_import
 
-from __init__ import DocutilsTestSupport
+from . import DocutilsTestSupport
 from docutils import core
+
 
 def suite():
     s = DocutilsTestSupport.HtmlPublishPartsTestSuite()

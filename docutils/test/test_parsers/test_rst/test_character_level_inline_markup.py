@@ -11,8 +11,9 @@ with the "character-level-inline-markup" setting.
 
 Experimental.
 """
+from __future__ import absolute_import
 
-from __init__ import DocutilsTestSupport
+from . import DocutilsTestSupport
 
 def suite():
     s = DocutilsTestSupport.ParserTestSuite(suite_settings={'character_level_inline_markup': True})

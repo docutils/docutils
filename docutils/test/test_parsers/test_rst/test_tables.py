@@ -7,9 +7,12 @@
 """
 Tests for states.py.
 """
+from __future__ import absolute_import
 
 import os
-from __init__ import DocutilsTestSupport
+
+from . import DocutilsTestSupport
+
 
 def suite():
     s = DocutilsTestSupport.ParserTestSuite()

@@ -13,10 +13,11 @@ Test for docutils XML writer.
    ``<empty></empty>`` vs. ``<empty/>``. The sample strings in this test
    module mirrors the current behaviour of the docutils_xml writer.
 """
+from __future__ import absolute_import
 
 from StringIO import StringIO
 
-from __init__ import DocutilsTestSupport # must be imported before docutils
+from . import DocutilsTestSupport # must be imported before docutils
 import docutils
 import docutils.core
 

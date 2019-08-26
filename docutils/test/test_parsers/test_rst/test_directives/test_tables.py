@@ -7,13 +7,14 @@
 """
 Tests for tables.py directives.
 """
-
-from __init__ import DocutilsTestSupport
+from __future__ import absolute_import
 
 import os
 import sys
 import csv
 import platform
+
+from . import DocutilsTestSupport
 from docutils.parsers.rst.directives import tables
 
 

@@ -7,12 +7,12 @@
 """
 Tests for docutils.transforms.references.Hyperlinks.
 """
+from __future__ import absolute_import
 
-from __init__ import DocutilsTestSupport
+from . import DocutilsTestSupport
 from docutils.transforms.references import PropagateTargets, \
      AnonymousHyperlinks, IndirectHyperlinks, ExternalTargets, \
      InternalTargets, DanglingReferences
-
 from docutils.parsers.rst import Parser
 
 

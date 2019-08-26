@@ -8,14 +8,17 @@
 """
 Tests for East Asian text with double-width characters.
 """
+from __future__ import absolute_import
 
-from __init__ import DocutilsTestSupport
+from . import DocutilsTestSupport
 
 import unicodedata
+
 try:
     east_asian_width = unicodedata.east_asian_width
 except AttributeError:
     east_asian_width = None
+
 
 def suite():
     s = DocutilsTestSupport.ParserTestSuite()

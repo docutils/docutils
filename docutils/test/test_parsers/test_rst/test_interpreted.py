@@ -7,9 +7,11 @@
 """
 Tests for interpreted text in docutils/parsers/rst/states.py.
 """
+from __future__ import absolute_import
 
-from __init__ import DocutilsTestSupport
+from . import DocutilsTestSupport
 from docutils.utils.code_analyzer import with_pygments
+
 
 def suite():
     s = DocutilsTestSupport.ParserTestSuite()

@@ -7,8 +7,9 @@
 """
 Tests for docutils.transforms.references.Substitutions.
 """
+from __future__ import absolute_import
 
-from __init__ import DocutilsTestSupport
+from . import DocutilsTestSupport
 from docutils.transforms.references import Substitutions
 from docutils.parsers.rst import Parser
 

@@ -7,10 +7,12 @@
 """
 Tests for images.py image directives.
 """
+from __future__ import absolute_import
 
-from __init__ import DocutilsTestSupport
+from . import DocutilsTestSupport
 
 from docutils.nodes import reprunicode
+
 
 def suite():
     s = DocutilsTestSupport.ParserTestSuite()

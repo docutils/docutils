@@ -8,8 +8,10 @@
 Tests for interpreted text in docutils/parsers/rst/states.py.
 Test not default/fallback language french.
 """
+from __future__ import absolute_import
 
-from __init__ import DocutilsTestSupport
+from . import DocutilsTestSupport
+
 
 def suite():
     s = DocutilsTestSupport.ParserTestSuite(suite_settings={'language_code':'fr'})

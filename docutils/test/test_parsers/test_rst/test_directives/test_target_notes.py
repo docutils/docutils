@@ -7,8 +7,10 @@
 """
 Tests for the target-notes directives.
 """
+from __future__ import absolute_import
 
-from __init__ import DocutilsTestSupport
+from . import DocutilsTestSupport
+
 
 def suite():
     s = DocutilsTestSupport.ParserTestSuite()

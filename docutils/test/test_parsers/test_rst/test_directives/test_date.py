@@ -7,8 +7,9 @@
 """
 Tests for the misc.py "date" directive.
 """
+from __future__ import absolute_import
 
-from __init__ import DocutilsTestSupport
+from . import DocutilsTestSupport
 import time
 
 from docutils.utils.error_reporting import locale_encoding

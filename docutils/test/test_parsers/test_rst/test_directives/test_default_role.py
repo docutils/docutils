@@ -7,8 +7,9 @@
 """
 Tests for misc.py "default-role" directive.
 """
+from __future__ import absolute_import
 
-from __init__ import DocutilsTestSupport
+from . import DocutilsTestSupport
 
 
 def suite():

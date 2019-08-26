@@ -8,8 +8,9 @@
 Tests for the block quote directives "epigraph", "highlights", and
 "pull-quote".
 """
+from __future__ import absolute_import
 
-from __init__ import DocutilsTestSupport
+from . import DocutilsTestSupport
 
 def suite():
     s = DocutilsTestSupport.ParserTestSuite()

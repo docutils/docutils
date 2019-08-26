@@ -7,11 +7,12 @@
 """
 Tests for the S5/HTML writer.
 """
+from __future__ import absolute_import
 
 import os
 import platform
 
-from __init__ import DocutilsTestSupport
+from . import DocutilsTestSupport
 
 
 def suite():

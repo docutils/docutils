@@ -9,8 +9,10 @@
 Tests for inline markup in docutils/parsers/rst/states.py.
 Interpreted text tests are in a separate module, test_interpreted.py.
 """
+from __future__ import absolute_import
 
-from __init__ import DocutilsTestSupport
+from . import DocutilsTestSupport
+
 
 def suite():
     s = DocutilsTestSupport.ParserTestSuite()

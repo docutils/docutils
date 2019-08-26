@@ -5,9 +5,13 @@
 # Author: David Goodger <goodger@python.org>
 # Copyright: This module has been placed in the public domain.
 
-"""Tests for states.py."""
+"""
+Tests for states.py.
+"""
+from __future__ import absolute_import
 
-from __init__ import DocutilsTestSupport
+from . import DocutilsTestSupport
+
 
 def suite():
     s = DocutilsTestSupport.ParserTestSuite()

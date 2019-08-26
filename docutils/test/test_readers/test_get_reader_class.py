@@ -8,9 +8,11 @@
 """
 test get_reader_class
 """
+from __future__ import absolute_import
 
-from __init__ import DocutilsTestSupport
+from . import DocutilsTestSupport
 from docutils.readers import get_reader_class
+
 
 class GetReaderClassTestCase(DocutilsTestSupport.StandardTestCase):
 
@@ -29,4 +31,3 @@ class GetReaderClassTestCase(DocutilsTestSupport.StandardTestCase):
 if __name__ == '__main__':
     import unittest
     unittest.main()
-
