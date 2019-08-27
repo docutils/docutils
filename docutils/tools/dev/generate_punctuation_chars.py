@@ -375,10 +375,16 @@ if __name__ == '__main__':
 
         print_differences(openers, o, 'openers')
         if o_wide:
-            print('+ openers-wide = ur"""%s"""' % o_wide.encode('utf8'))
+            if sys.version_info < (3, 0):
+                print('+ openers-wide = ur"""%s"""' % o_wide.encode('utf8'))
+            else:
+                print('+ openers-wide = r"""%s"""' % o_wide.encode('utf8'))
         print_differences(closers, c, 'closers')
         if c_wide:
-            print('+ closers-wide = ur"""%s"""' % c_wide.encode('utf8'))
+            if sys.version_info < (3, 0):
+                print('+ closers-wide = ur"""%s"""' % c_wide.encode('utf8'))
+            else:
+                print('+ closers-wide = r"""%s"""' % c_wide.encode('utf8'))
 
         print_differences(delimiters, d + d_wide, 'delimiters')
         print_differences(closing_delimiters, cd, 'closing_delimiters')

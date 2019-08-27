@@ -658,20 +658,21 @@ def educateQuotes(text, language='en'):
         text = re.sub(r"'(?=\d{2}s)", smart.apostrophe, text)
 
     # Get most opening single quotes:
-    opening_single_quotes_regex = re.compile(ur"""
+    opening_single_quotes_regex = re.compile(u"""
                     (# ?<=  # look behind fails: requires fixed-width pattern
-                            \s          |   # a whitespace char, or
+                            \\s         |   # a whitespace char, or
                             %s          |   # another separating char, or
                             &nbsp;      |   # a non-breaking space entity, or
-                            [–—]        |   # literal dashes, or
+                            [\u2013 \u2014 ]        |   # literal dashes, or
                             --          |   # dumb dashes, or
                             &[mn]dash;  |   # dash entities (named or
                             %s          |   # decimal or
-                            &\#x201[34];    # hex)
+                            &\\#x201[34];    # hex)
                     )
                     '                 # the quote
-                    (?=\w)            # followed by a word character
-                    """ % (open_class,dec_dashes), re.VERBOSE | re.UNICODE)
+                    (?=\\w)           # followed by a word character
+                    """ % (open_class, dec_dashes), re.VERBOSE | re.UNICODE)
+
     text = opening_single_quotes_regex.sub(r'\1'+smart.osquote, text)
 
     # In many locales, single closing quotes are different from apostrophe:
@@ -691,20 +692,21 @@ def educateQuotes(text, language='en'):
     text = re.sub(r"""'""", smart.osquote, text)
 
     # Get most opening double quotes:
-    opening_double_quotes_regex = re.compile(ur"""
+    opening_double_quotes_regex = re.compile(u"""
                     (
-                            \s          |   # a whitespace char, or
+                            \\s         |   # a whitespace char, or
                             %s          |   # another separating char, or
                             &nbsp;      |   # a non-breaking space entity, or
-                            [–—]        |   # literal dashes, or
+                            [\u2013 \u2014 ]        |   # literal dashes, or
                             --          |   # dumb dashes, or
                             &[mn]dash;  |   # dash entities (named or
                             %s          |   # decimal or
-                            &\#x201[34];    # hex)
+                            &\\#x201[34];    # hex)
                     )
                     "                 # the quote
-                    (?=\w)            # followed by a word character
+                    (?=\\w)            # followed by a word character
                     """ % (open_class,dec_dashes), re.VERBOSE | re.UNICODE)
+
     text = opening_double_quotes_regex.sub(r'\1'+smart.opquote, text)
 
     # Double closing quotes:
