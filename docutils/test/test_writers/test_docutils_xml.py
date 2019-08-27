@@ -15,11 +15,16 @@ Test for docutils XML writer.
 """
 from __future__ import absolute_import
 
-from StringIO import StringIO
+import sys
 
 from . import DocutilsTestSupport # must be imported before docutils
 import docutils
 import docutils.core
+
+if sys.version_info >= (3, 0):
+    from io import StringIO
+else:
+    from StringIO import StringIO
 
 # sample strings
 # --------------

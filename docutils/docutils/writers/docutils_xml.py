@@ -12,10 +12,15 @@ __docformat__ = 'reStructuredText'
 
 import sys
 import xml.sax.saxutils
-from StringIO import StringIO
 
 import docutils
 from docutils import frontend, writers, nodes
+
+if sys.version_info >= (3, 0):
+    from io import StringIO  # noqa
+else:
+    from StringIO import StringIO  # noqa
+
 
 if sys.version_info >= (3, 0):
     unicode = str  # noqa
