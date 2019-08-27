@@ -9,11 +9,16 @@
 Test module for utils/__init__.py.
 """
 
-from io import StringIO
 import os
+import sys
 import unittest
 
 from DocutilsTestSupport import docutils, utils, nodes
+
+if sys.version_info >= (3, 0):
+    from io import StringIO
+else:
+    from StringIO import StringIO
 
 
 class ReporterTests(unittest.TestCase):
