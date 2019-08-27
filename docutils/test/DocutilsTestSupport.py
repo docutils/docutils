@@ -810,14 +810,10 @@ class HtmlWriterPublishPartsTestCase(WriterPublishTestCase):
             self.standard_html_meta_value, '...')
         parts['html_prolog'] = parts['html_prolog'].replace(
             self.standard_html_prolog, '')
-        # remove empty values:
-        for key in list(parts.keys()):
-            if not parts[key]:
-                del parts[key]
-        # standard output format:
-        keys = sorted(parts.keys())
         output = []
-        for key in keys:
+        for key in sorted(parts.keys()):
+            if not parts[key]:
+                continue
             output.append("%r: '''%s'''"
                           % (key, parts[key]))
             if output[-1].endswith("\n'''"):
