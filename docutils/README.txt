@@ -123,23 +123,9 @@ installed:
 Python 3 compatibility
 ----------------------
 
-The Docutils codebase is written for Python 2 and uses "on-demand"
-translation for `porting to Python 3`_.
-
-* The `setup.py` script generates Python 3 compatible sources in
-  ``build/`` and tests in ``tests3/`` sub-directories during
-  installation_ with Python 3.
-
-* The scripts in the ``tools/`` sub-directory work with all supported
-  Python versions without conversion.
-
-* To convert the sources without installing (e.g. for testing), run
-  ``python3 setup.py build``.
-
-* When editing the source, do changes on the Python 2 versions of the
-  files and re-run the build command.
-
-.. _porting to Python 3: http://docs.python.org/py3k/howto/pyporting.html
+Up to version 0.15, the Docutils codebase was translated "on-demand" using
+the 2to3 tool. Starting with Docutils 0.16, the code base supports both
+Python 2.7 and 3.4+ natively.
 
 
 Project Files & Directories
@@ -194,12 +180,6 @@ Project Files & Directories
   if you're planning to modify it.  See `Running the Test Suite`_
   below.
 
-Generated directories when installing under Python 3:
-
-* build: Converted sources.
-
-* test3: Converted tests.
-
 
 Installation
 ============
@@ -232,7 +212,7 @@ GNU/Linux, BSDs, Unix, Mac OS X, etc.
    To install for a specific Python version, use this version in the
    setup call, e.g. ::
 
-       python3.1 setup.py install
+       python3.7 setup.py install
 
    To install for different Python versions, repeat step 3 for every
    required version. The last installed version will be used in the
@@ -331,11 +311,6 @@ Under Windows, type::
 
     cd <archive_directory_path>\test
     python alltests.py
-
-For testing with Python 3 use the converted test suite::
-
-    cd <archive_directory_path>/test3
-    python3 alltests.py
 
 
 You should see a long line of periods, one for each test, and then a

@@ -61,7 +61,14 @@ Release 0.16
    Docutils 0.16 is compatible with Python versions 2.7 and 3.5 to 3.7.
    (cf. `Python 3 compatibility`_).
 
-* Keep `backslash escapes`__ in the document tree.
+* General:
+
+  - Docutils now supports Python 2.7 and Python 3.5+ natively,
+    without the use of the ``2to3`` tool.
+
+* reStructuredText:
+
+  - Keep `backslash escapes`__ in the document tree.
 
   __ http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html#escaping-mechanism
 
