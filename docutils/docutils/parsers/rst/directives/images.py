@@ -10,12 +10,13 @@ __docformat__ = 'reStructuredText'
 
 
 import sys
-import urllib
+
 from docutils import nodes, utils
 from docutils.parsers.rst import Directive
 from docutils.parsers.rst import directives, states
 from docutils.nodes import fully_normalize_name, whitespace_normalize_name
 from docutils.parsers.rst.roles import set_classes
+
 try: # check for the Python Imaging Library
     import PIL.Image
 except ImportError:
@@ -25,6 +26,12 @@ except ImportError:
         PIL.Image = Image
     except ImportError:
         PIL = None
+
+if sys.version_info >= (3, 0):
+    from urllib.request import url2pathname
+else:
+    from urllib import url2pathname
+
 
 class Image(Directive):
 
@@ -125,7 +132,7 @@ class Figure(Image):
         figure_node = nodes.figure('', image_node)
         if figwidth == 'image':
             if PIL and self.state.document.settings.file_insertion_enabled:
-                imagepath = urllib.url2pathname(image_node['uri'])
+                imagepath = url2pathname(image_node['uri'])
                 try:
                     img = PIL.Image.open(
                             imagepath.encode(sys.getfilesystemencoding()))

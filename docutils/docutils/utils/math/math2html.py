@@ -27,7 +27,11 @@ import io
 import os.path
 import sys
 import unicodedata
-import urllib
+
+if sys.version_info >= (3, 0):
+    from urllib.parse import quote_plus
+else:
+    from urllib import quote_plus
 
 
 if sys.version_info >= (3, 0):
@@ -2927,7 +2931,7 @@ class Formula(Container):
 
   def googlecharts(self):
     "Make the contents using Google Charts http://code.google.com/apis/chart/."
-    url = FormulaConfig.urls['googlecharts'] + urllib.quote_plus(self.parsed)
+    url = FormulaConfig.urls['googlecharts'] + quote_plus(self.parsed)
     img = '<img class="chart" src="' + url + '" alt="' + self.parsed + '"/>'
     self.contents = [Constant(img)]
 

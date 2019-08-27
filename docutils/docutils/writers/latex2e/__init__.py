@@ -17,16 +17,21 @@ import sys
 import os
 import re
 import string
-import urllib
+
 try:
     import roman
 except ImportError:
     import docutils.utils.roman as roman
+
 from docutils import frontend, nodes, languages, writers, utils, io
 from docutils.utils.error_reporting import SafeString
 from docutils.transforms import writer_aux
 from docutils.utils.math import pick_math_environment, unichar2tex
 
+if sys.version_info >= (3, 0):
+    from urllib.request import url2pathname
+else:
+    from urllib import url2pathname
 
 if sys.version_info >= (3, 0):
     unicode = str  # noqa
@@ -2369,7 +2374,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.requirements['graphicx'] = self.graphicx_package
         attrs = node.attributes
         # Convert image URI to a local file path
-        imagepath = urllib.url2pathname(attrs['uri']).replace('\\', '/')
+        imagepath = url2pathname(attrs['uri']).replace('\\', '/')
         # alignment defaults:
         if not 'align' in attrs:
             # Set default align of image in a figure to 'center'

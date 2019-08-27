@@ -227,10 +227,14 @@ class Raw(Directive):
             # Do not import urllib2 at the top of the module because
             # it may fail due to broken SSL dependencies, and it takes
             # about 0.15 seconds to load.
-            import urllib2
+            if sys.version_info >= (3, 0):
+                from urllib.request import urlopen
+                from urllib.error import URLError
+            else:
+                from urllib2 import urlopen, URLError
             try:
-                raw_text = urllib2.urlopen(source).read()
-            except (urllib2.URLError, IOError, OSError) as error:
+                raw_text = urlopen(source).read()
+            except (URLError, IOError, OSError) as error:
                 raise self.severe(u'Problems with "%s" directive URL "%s":\n%s.'
                     % (self.name, self.options['url'], ErrorString(error)))
             raw_file = io.StringInput(source=raw_text, source_path=source,
