@@ -1115,10 +1115,8 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def setup_paper(self, root_el):
         try:
             fin = os.popen("paperconf -s 2> /dev/null")
-            content = fin.read()
-            content = content.split()
-            content = list(map(float, content))
-            w, h = content
+            dimensions = fin.read().split()
+            w, h = (float(s) for s in dimensions)
         except (IOError, ValueError):
             w, h = 612, 792     # default to Letter
         finally:
