@@ -811,7 +811,7 @@ class HtmlWriterPublishPartsTestCase(WriterPublishTestCase):
         parts['html_prolog'] = parts['html_prolog'].replace(
             self.standard_html_prolog, '')
         # remove empty values:
-        for key in parts.keys():
+        for key in list(parts.keys()):
             if not parts[key]:
                 del parts[key]
         # standard output format:

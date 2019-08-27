@@ -52,7 +52,7 @@ class LanguageTestSuite(DocutilsTestSupport.CustomTestSuite):
             match = self.language_module_pattern.match(mod)
             if match:
                 languages[match.group(1)] = 1
-        self.languages = languages.keys()
+        self.languages = list(languages.keys())
         # test language tag normalization:
         self.languages += ['en_gb', 'en_US', 'en-CA', 'de-DE', 'de-AT-1901',
                            'pt-BR', 'pt-foo-BR']

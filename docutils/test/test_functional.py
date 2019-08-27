@@ -154,7 +154,7 @@ expected output and check it in:
         del params['test_source']
         del params['test_destination']
         # Delete private stuff like params['__builtins__']:
-        for key in params.keys():
+        for key in list(params.keys()):
             if key.startswith('_'):
                 del params[key]
         # Get output (automatically written to the output/ directory

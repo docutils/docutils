@@ -1297,7 +1297,7 @@ class ViewList(object):
         self.parent = None
 
     def sort(self, *args):
-        tmp = zip(self.data, self.items)
+        tmp = list(zip(self.data, self.items))
         tmp.sort(*args)
         self.data = [entry[0] for entry in tmp]
         self.items = [entry[1] for entry in tmp]

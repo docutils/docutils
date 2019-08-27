@@ -152,7 +152,7 @@ class SMWSTests(unittest.TestCase):
         self.sm.unlink()
 
     def test___init__(self):
-        self.assertEqual(self.sm.states.keys(), ['MockState'])
+        self.assertEqual(list(self.sm.states.keys()), ['MockState'])
         self.assertEqual(len(self.sm.states['MockState'].transitions), 4)
 
     def test_get_indented(self):
