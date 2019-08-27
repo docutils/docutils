@@ -41,7 +41,7 @@ def process_and_return_filelist(options):
         (cin, cout) = (p.stdin, p.stdout)
     except NameError:
         cin, cout = os.popen4(buildhtml_path+" "+options)
-    while 1:
+    while True:
         line = cout.readline()
         if not line:
             break

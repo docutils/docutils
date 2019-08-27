@@ -185,13 +185,13 @@ class Translator(nodes.NodeVisitor):
         # writing the header .TH and .SH NAME is postboned after
         # docinfo.
         self._docinfo = {
-                "title" : "", "title_upper": "",
-                "subtitle" : "",
-                "manual_section" : "", "manual_group" : "",
-                "author" : [],
-                "date" : "",
-                "copyright" : "",
-                "version" : "",
+                "title": "", "title_upper": "",
+                "subtitle": "",
+                "manual_section": "", "manual_group": "",
+                "author": [],
+                "date": "",
+                "copyright": "",
+                "version": "",
                     }
         self._docinfo_keys = []     # a list to keep the sequence as in source.
         self._docinfo_names = {}    # to get name from text not normalized.
@@ -213,24 +213,24 @@ class Translator(nodes.NodeVisitor):
         # ``B`` bold, ``I`` italic, ``R`` roman should be available.
         # Hopefully ``C`` courier too.
         self.defs = {
-                'indent' : ('.INDENT %.1f\n', '.UNINDENT\n'),
-                'definition_list_item' : ('.TP', ''),
-                'field_name' : ('.TP\n.B ', '\n'),
-                'literal' : ('\\fB', '\\fP'),
-                'literal_block' : ('.sp\n.nf\n.ft C\n', '\n.ft P\n.fi\n'),
+                'indent': ('.INDENT %.1f\n', '.UNINDENT\n'),
+                'definition_list_item': ('.TP', ''),
+                'field_name': ('.TP\n.B ', '\n'),
+                'literal': ('\\fB', '\\fP'),
+                'literal_block': ('.sp\n.nf\n.ft C\n', '\n.ft P\n.fi\n'),
 
-                'option_list_item' : ('.TP\n', ''),
+                'option_list_item': ('.TP\n', ''),
 
-                'reference' : (r'\fI\%', r'\fP'),
+                'reference': (r'\fI\%', r'\fP'),
                 'emphasis': ('\\fI', '\\fP'),
-                'strong' : ('\\fB', '\\fP'),
-                'term' : ('\n.B ', '\n'),
-                'title_reference' : ('\\fI', '\\fP'),
+                'strong': ('\\fB', '\\fP'),
+                'term': ('\n.B ', '\n'),
+                'title_reference': ('\\fI', '\\fP'),
 
-                'topic-title' : ('.SS ',),
-                'sidebar-title' : ('.SS ',),
+                'topic-title': ('.SS ',),
+                'sidebar-title': ('.SS ',),
 
-                'problematic' : ('\n.nf\n', '\n.fi\n'),
+                'problematic': ('\n.nf\n', '\n.fi\n'),
                     }
         # NOTE do not specify the newline before a dot-command, but ensure
         # it is there.
@@ -262,7 +262,7 @@ class Translator(nodes.NodeVisitor):
         for i in range(len(self.body)-1, 0, -1):
             # remove superfluous vertical gaps.
             if self.body[i] == '.sp\n':
-                if self.body[i - 1][:4] in ('.BI ','.IP '):
+                if self.body[i - 1][:4] in ('.BI ', '.IP '):
                     self.body[i] = '.\n'
                 elif (self.body[i - 1][:3] == '.B ' and
                     self.body[i - 2][:4] == '.TP\n'):
@@ -282,7 +282,7 @@ class Translator(nodes.NodeVisitor):
 
     def visit_Text(self, node):
         text = node.astext()
-        text = text.replace('\\','\\e')
+        text = text.replace('\\', '\\e')
         replace_pairs = [
             (u'-', u'\\-'),
             (u'\'', u'\\(aq'),
@@ -306,8 +306,8 @@ class Translator(nodes.NodeVisitor):
     def list_start(self, node):
         class enum_char(object):
             enum_style = {
-                    'bullet'     : '\\(bu',
-                    'emdash'     : '\\(em',
+                    'bullet': '\\(bu',
+                    'emdash': '\\(em',
                      }
 
             def __init__(self, style):
@@ -654,7 +654,7 @@ class Translator(nodes.NodeVisitor):
 
     def visit_field_body(self, node):
         if self._in_docinfo:
-            name_normalized = self._field_name.lower().replace(" ","_")
+            name_normalized = self._field_name.lower().replace(" ", "_")
             self._docinfo_names[name_normalized] = self._field_name
             self.visit_docinfo_item(node, name_normalized)
             raise nodes.SkipNode

@@ -11,4 +11,4 @@ writer_name = "html5"
 settings_overrides['math_output'] = 'MathML'
 # local copy of default stylesheet:
 # (test runs in ``docutils/test/``, we need relative path from there.)
-settings_overrides['stylesheet_dirs'] = ('.','functional/input/data')
+settings_overrides['stylesheet_dirs'] = ('.', 'functional/input/data')

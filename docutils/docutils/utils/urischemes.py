@@ -33,7 +33,7 @@ schemes = {
               'specialized to justify their own schemes'),
       'fax': ('a connection to a terminal that can handle telefaxes '
               '(facsimiles); RFC 2806'),
-      'feed' : 'NetNewsWire feed',
+      'feed': 'NetNewsWire feed',
       'file': 'Host-specific file names; RFC 1738',
       'finger': '',
       'freenet': '',
@@ -60,7 +60,7 @@ schemes = {
       'ipp': 'Internet Printing Protocol; RFC 3510',
       'irc': 'Internet Relay Chat',
       'iris.beep': 'iris.beep; RFC 3983',
-      'iseek' : 'See www.ambrosiasw.com;  a little util for OS X.',
+      'iseek': 'See www.ambrosiasw.com;  a little util for OS X.',
       'jar': 'Java archive',
       'javascript': ('JavaScript code; evaluates the expression after the '
                      'colon'),
@@ -89,7 +89,7 @@ schemes = {
       'pres': 'Presence; RFC 3859',
       'printer': '',
       'prospero': 'Prospero Directory Service; RFC 4157',
-      'rdar' : ('URLs found in Darwin source '
+      'rdar': ('URLs found in Darwin source '
                 '(http://www.opensource.apple.com/darwinsource/).'),
       'res': '',
       'rtsp': 'real time streaming protocol; RFC 2326',

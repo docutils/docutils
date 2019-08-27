@@ -441,7 +441,7 @@ class smartchars(object):
               'hr':           u'„”‘’', # http://hrvatska-tipografija.com/polunavodnici/
               'hr-x-altquot': u'»«›‹',
               'hsb':          u'„“‚‘',
-              'hsb-x-altquot':u'»«›‹',
+              'hsb-x-altquot': u'»«›‹',
               'hu':           u'„”«»',
               'is':           u'„“‚‘',
               'it':           u'«»“”',
@@ -610,7 +610,7 @@ def educate_tokens(text_tokens, attr=default_smartypants_attr, language='en'):
         if do_quotes:
             # Replace plain quotes in context to prevent converstion to
             # 2-character sequence in French.
-            context = prev_token_last_char.replace('"',';').replace("'",';')
+            context = prev_token_last_char.replace('"', ';').replace("'", ';')
             text = educateQuotes(context+text, language)[1:]
 
         if do_stupefy:
@@ -705,7 +705,7 @@ def educateQuotes(text, language='en'):
                     )
                     "                 # the quote
                     (?=\\w)            # followed by a word character
-                    """ % (open_class,dec_dashes), re.VERBOSE | re.UNICODE)
+                    """ % (open_class, dec_dashes), re.VERBOSE | re.UNICODE)
 
     text = opening_double_quotes_regex.sub(r'\1'+smart.opquote, text)
 
@@ -925,7 +925,7 @@ if __name__ == "__main__":
         defaultlanguage = 'en'
 
     # Normalize and drop unsupported subtags:
-    defaultlanguage = defaultlanguage.lower().replace('-','_')
+    defaultlanguage = defaultlanguage.lower().replace('-', '_')
     # split (except singletons, which mark the following tag as non-standard):
     defaultlanguage = re.sub(r'_([a-zA-Z0-9])_', r'_\1-', defaultlanguage)
     _subtags = [subtag for subtag in defaultlanguage.split('_')]

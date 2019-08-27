@@ -39,7 +39,7 @@ if sys.version_info >= (3, 0):
 
 class Writer(writers.Writer):
 
-    supported = ('latex','latex2e')
+    supported = ('latex', 'latex2e')
     """Formats this writer supports."""
 
     default_template = 'default.tex'
@@ -48,7 +48,7 @@ class Writer(writers.Writer):
                                   r'\usepackage{mathptmx} % Times',
                                   r'\usepackage[scaled=.90]{helvet}',
                                   r'\usepackage{courier}'])
-    table_style_values = ('standard', 'booktabs','nolines', 'borderless',
+    table_style_values = ('standard', 'booktabs', 'nolines', 'borderless',
                           'colwidths-auto', 'colwidths-given')
 
     settings_spec = (
@@ -369,7 +369,7 @@ class Babel(object):
         # zh-Latn:      Chinese Pinyin
         }
     # normalize (downcase) keys
-    language_codes = dict([(k.lower(), v) for (k,v) in language_codes.items()])
+    language_codes = dict([(k.lower(), v) for (k, v) in language_codes.items()])
 
     warn_msg = 'Language "%s" not supported by LaTeX (babel)'
 
@@ -948,7 +948,7 @@ class Table(object):
     def set_table_style(self, table_style, classes):
         borders = [cls.replace('nolines', 'borderless')
                    for cls in table_style+classes
-                   if cls in ('standard','booktabs','borderless', 'nolines')]
+                   if cls in ('standard', 'booktabs', 'borderless', 'nolines')]
         try:
             self.borders = borders[-1]
         except IndexError:
@@ -964,9 +964,9 @@ class Table(object):
             return('longtable*')
         return self._latex_type
 
-    def set(self,attr,value):
+    def set(self, attr, value):
         self._attrs[attr] = value
-    def get(self,attr):
+    def get(self, attr):
         if attr in self._attrs:
             return self._attrs[attr]
         return None
@@ -1116,17 +1116,17 @@ class Table(object):
                         c_start = rowspans.pop()
                     except:
                         break
-                    cline += '\\cline{%d-%d}\n' % (c_start,c_start)
+                    cline += '\\cline{%d-%d}\n' % (c_start, c_start)
                 res.append(cline)
         return res
 
-    def set_rowspan(self,cell,value):
+    def set_rowspan(self, cell, value):
         try:
             self._rowspan[cell] = value
         except:
             pass
 
-    def get_rowspan(self,cell):
+    def get_rowspan(self, cell):
         try:
             return self._rowspan[cell]
         except:
@@ -1227,7 +1227,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.literal_block_env = 'verbatim'
         #
         if self.settings.use_bibtex:
-            self.bibtex = self.settings.use_bibtex.split(',',1)
+            self.bibtex = self.settings.use_bibtex.split(',', 1)
             # TODO avoid errors on not declared citations.
         else:
             self.bibtex = None
@@ -1445,7 +1445,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             path = utils.relative_path(self.settings._destination, path)
         return cmd % path
 
-    def to_latex_encoding(self,docutils_encoding):
+    def to_latex_encoding(self, docutils_encoding):
         """Translate docutils encoding name into LaTeX's.
 
         Default method is remove "-" and "_" chars from docutils_encoding.
@@ -2034,7 +2034,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
                                  widest_label)
                 for bi in self._bibitems:
                     # cite_key: underscores must not be escaped
-                    cite_key = bi[0].replace(r'\_','_')
+                    cite_key = bi[0].replace(r'\_', '_')
                     self.out.append('\\bibitem[%s]{%s}{%s}\n' %
                                      (bi[0], cite_key, bi[1]))
                 self.out.append('\\end{thebibliography}\n')
@@ -2181,7 +2181,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.out.append('{\\usecounter{%s}}' % counter_name)
         if 'start' in node:
             self.out.append('\n\\setcounter{%s}{%d}' %
-                            (counter_name,node['start']-1))
+                            (counter_name, node['start']-1))
 
 
     def depart_enumerated_list(self, node):
@@ -2934,7 +2934,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if self.active_table.is_open():
             self.table_stack.append(self.active_table)
             # nesting longtable does not work (e.g. 2007-04-18)
-            self.active_table = Table(self,'tabular')
+            self.active_table = Table(self, 'tabular')
         # A longtable moves before \paragraph and \subparagraph
         # section titles if it immediately follows them:
         if (self.active_table._latex_type == 'longtable' and
@@ -3024,7 +3024,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self._thead_depth += 1
         if 1 == self.thead_depth():
             self.out.append('{%s}\n' % self.active_table.get_colspecs(node))
-            self.active_table.set('preamble written',1)
+            self.active_table.set('preamble written', 1)
         self.out.append(self.active_table.get_caption())
         self.out.extend(self.active_table.visit_thead())
 
@@ -3068,7 +3068,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 self.requirements['color'] = PreambleCmds.color
                 section_title = self.encode(node.astext())
                 self.out.append(r'\%s[%s]{\color{red}' % (
-                                section_name,section_title))
+                                section_name, section_title))
             else:
                 self.out.append(r'\%s{' % section_name)
             if self.section_level > len(self.d_class.sections):
