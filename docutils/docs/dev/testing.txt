@@ -29,11 +29,6 @@ be sure that you haven't broken anything.  From a shell::
     cd docutils/test
     ./alltests.py
 
-For Python 3, the tests must be converted with 2to3. To run the tests with
-Python 3, ``cd`` to the package's root directory and do::
-
-    python3 setup.py build
-    python3 test3/alltests.py
 
 Python Versions
 ===============
@@ -41,11 +36,12 @@ Python Versions
 A docutils release has a commitment to support a minimum version and beyond.
 Before a release is cut, tests must pass in all supported Python versions.
 
-The Docutils 0.15 release supports Python 2.7 and Python 3.5 or later.
+Docutils 0.16 supports Python 2.7 and Python 3.5 or later.
 
 Therefore, you should install Python 2.7 as well as 3.5 up to the latest Python
 (3.7 at the time of this writing) and always run the tests on all of
-them. In a pinch, the edge cases (2.7, and 3.7) should cover most of it.
+them (see `Testing across multiple python versions`_). 
+In a pinch, the edge cases (2.7, and 3.7) should cover most of it.
 
 Good resources covering the differences between Python versions:
 
@@ -64,8 +60,7 @@ __ http://www.python.org/peps/pep-0290.html
 .. _Python Check-in Policies: http://www.python.org/dev/tools.html
 .. _sandbox directory:
    http://docutils.svn.sourceforge.net/svnroot/docutils/trunk/sandbox/
-.. _nightly repository tarball:
-   http://svn.berlios.de/svndumps/docutils-repos.gz
+   
 
 Testing across multiple python versions
 ---------------------------------------
