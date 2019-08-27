@@ -247,7 +247,7 @@ def validate_smartquotes_locales(setting, value, option_parser,
             raise ValueError('Invalid value "%s". Please specify 4 quotes\n'
                 '    (primary open/close; secondary open/close).'
                              % item.encode('ascii', 'backslashreplace'))
-        lc_quotes.append((lang,quotes))
+        lc_quotes.append((lang, quotes))
     return lc_quotes
 
 def make_paths_absolute(pathdict, keys, base_path=None):

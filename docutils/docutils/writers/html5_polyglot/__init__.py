@@ -38,7 +38,7 @@ class Writer(writers._html_base.Writer):
     supported = ('html', 'html5', 'html4', 'xhtml', 'xhtml10')
     """Formats this writer supports."""
 
-    default_stylesheets = ['minimal.css','plain.css']
+    default_stylesheets = ['minimal.css', 'plain.css']
     default_stylesheet_dirs = ['.', os.path.abspath(os.path.dirname(__file__))]
 
     default_template = 'template.txt'

@@ -673,7 +673,7 @@ def normalize_language_tag(tag):
 
     """
     # normalize:
-    tag = tag.lower().replace('-','_')
+    tag = tag.lower().replace('-', '_')
     # split (except singletons, which mark the following tag as non-standard):
     tag = re.sub(r'_([a-zA-Z0-9])_', r'_\1-', tag)
     subtags = [subtag for subtag in tag.split('_')]

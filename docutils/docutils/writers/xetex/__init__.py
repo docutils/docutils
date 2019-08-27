@@ -35,7 +35,7 @@ from docutils.writers import latex2e
 class Writer(latex2e.Writer):
     """A writer for Unicode-aware LaTeX variants (XeTeX, LuaTeX)"""
 
-    supported = ('lxtex', 'xetex','xelatex','luatex', 'lualatex')
+    supported = ('lxtex', 'xetex', 'xelatex', 'luatex', 'lualatex')
     """Formats this writer supports."""
 
     default_template = 'xelatex.tex'
@@ -93,7 +93,7 @@ class Babel(latex2e.Babel):
         # zh-Latn:      ???        #     Chinese Pinyin
         })
     # normalize (downcase) keys
-    language_codes = dict([(k.lower(), v) for (k,v) in language_codes.items()])
+    language_codes = dict([(k.lower(), v) for (k, v) in language_codes.items()])
 
     # Languages without Polyglossia support:
     for key in ('af',           # 'afrikaans',
