@@ -38,8 +38,10 @@ import optparse
 from optparse import SUPPRESS_HELP
 if sys.version_info >= (3, 0):
     from configparser import RawConfigParser
+    from os import getcwd
 else:
     from ConfigParser import RawConfigParser
+    from os import getcwdu as getcwd
 
 import docutils
 import docutils.utils
@@ -256,7 +258,7 @@ def make_paths_absolute(pathdict, keys, base_path=None):
     `OptionParser.relative_path_settings`.
     """
     if base_path is None:
-        base_path = os.getcwdu() # type(base_path) == unicode
+        base_path = os.getcwd() # type(base_path) == unicode
         # to allow combining non-ASCII cwd with unicode values in `pathdict`
     for key in keys:
         if key in pathdict:
