@@ -53,7 +53,7 @@ class Node(object):
     line = None
     """The line number (1-based) of the beginning of this Node in `source`."""
 
-    def __nonzero__(self):
+    def __bool__(self):
         """
         Node instances are always true, even if they're empty.  A node is more
         than a simple container.  Its boolean "truth" does not depend on
@@ -63,6 +63,9 @@ class Node(object):
         false value.
         """
         return True
+
+    if sys.version_info < (3, 0):
+        __nonzero__ = __bool__
 
     if sys.version_info < (3, 0):
         # on 2.x, str(node) will be a byte string with Unicode
@@ -544,8 +547,7 @@ class Element(Node):
         else:
             return self.emptytag()
 
-    if sys.version_info > (3, 0):
-        # 2to3 doesn't convert __unicode__ to __str__
+    if sys.version_info >= (3, 0):
         __str__ = __unicode__
 
     def starttag(self, quoteattr=None):

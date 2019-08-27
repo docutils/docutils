@@ -1313,6 +1313,9 @@ class BranchOptions(object):
     "String representation"
     return 'options for ' + self.name + ': ' + unicode(self.options)
 
+  if sys.version_info >= (3, 0):
+    __str__ = __unicode__
+
 
 class Cloner(object):
   "An object used to clone other objects."
@@ -1452,6 +1455,10 @@ class Parser(object):
   def __unicode__(self):
     "Return a description"
     return self.__class__.__name__ + ' (' + unicode(self.begin) + ')'
+
+  if sys.version_info >= (3, 0):
+    __str__ = __unicode__
+
 
 class LoneCommand(Parser):
   "A parser for just one command line"
@@ -1986,6 +1993,10 @@ class EndingList(object):
       string = string[:-1]
     return string + ']'
 
+  if sys.version_info >= (3, 0):
+    __str__ = __unicode__
+
+
 class PositionEnding(object):
   "An ending for a parsing position"
 
@@ -2004,6 +2015,8 @@ class PositionEnding(object):
       string += ' (optional)'
     return string
 
+  if sys.version_info >= (3, 0):
+    __str__ = __unicode__
 
 
 class Position(Globable):
@@ -2046,10 +2059,13 @@ class Position(Globable):
     self.skip(current)
     return current
 
-  def next(self):
+  def __next__(self):
     "Advance the position and return the next character."
     self.skipcurrent()
     return self.current()
+
+  if sys.version_info < (3, 0):
+      next = __next__
 
   def checkskip(self, string):
     "Check for a string at the given position; if there, skip it"
@@ -2312,6 +2328,10 @@ class Container(object):
       return self.__class__.__name__
     return self.__class__.__name__ + '@' + unicode(self.begin)
 
+  if sys.version_info >= (3, 0):
+    __str__ = __unicode__
+
+
 class BlackBox(Container):
   "A container that does not output anything"
 
@@ -2370,7 +2390,7 @@ class StringContainer(Container):
   def extracttext(self):
     "Return all text."
     return self.string
-  
+
   def __unicode__(self):
     "Return a printable representation."
     result = 'StringContainer'
@@ -2380,6 +2400,10 @@ class StringContainer(Container):
     if len(self.string.strip()) <= 15:
       ellipsis = ''
     return result + ' (' + self.string.strip()[:15] + ellipsis + ')'
+
+  if sys.version_info >= (3, 0):
+    __str__ = __unicode__
+
 
 class Constant(StringContainer):
   "A constant string"
@@ -2391,6 +2415,10 @@ class Constant(StringContainer):
 
   def __unicode__(self):
     return 'Constant: ' + self.string
+
+  if sys.version_info >= (3, 0):
+    __str__ = __unicode__
+
 
 class TaggedText(Container):
   "Text inside a tag"
@@ -2421,9 +2449,8 @@ class TaggedText(Container):
       return 'Tagged <unknown tag>'
     return 'Tagged <' + self.output.tag + '>'
 
-
-
-
+  if sys.version_info >= (3, 0):
+    __str__ = __unicode__
 
 
 class DocumentParameters(object):
@@ -2555,19 +2582,12 @@ class MacroParser(FormulaParser):
     "See if the formula is inlined"
     self.begin = reader.linenumber + 1
     return ['inline']
-  
+
   def parse(self, reader):
     "Parse the formula until the end"
     formula = self.parsemultiliner(reader, self.parent.start, self.ending)
     reader.nextline()
     return formula
-  
-
-
-
-
-
-
 
 
 class FormulaBit(Container):
@@ -2614,6 +2634,10 @@ class FormulaBit(Container):
     "Get a string representation"
     return self.__class__.__name__ + ' read in ' + self.original
 
+  if sys.version_info >= (3, 0):
+    __str__ = __unicode__
+
+
 class TaggedBit(FormulaBit):
   "A tagged string in a formula"
 
@@ -2655,6 +2679,10 @@ class FormulaConstant(Constant):
   def __unicode__(self):
     "Return a printable representation."
     return 'Formula constant: ' + self.string
+
+  if sys.version_info >= (3, 0):
+    __str__ = __unicode__
+
 
 class RawText(FormulaBit):
   "A bit of text inside a formula"
@@ -2739,6 +2767,10 @@ class WhiteSpace(FormulaBit):
     "Return a printable representation."
     return 'Whitespace: *' + self.original + '*'
 
+  if sys.version_info >= (3, 0):
+    __str__ = __unicode__
+
+
 class Bracket(FormulaBit):
   "A {} bracket inside a formula"
 
@@ -2822,7 +2854,6 @@ class SquareBracket(Bracket):
     return bracket
 
 
-
 class MathsProcessor(object):
   "A processor for a maths construction inside the FormulaProcessor."
 
@@ -2833,6 +2864,10 @@ class MathsProcessor(object):
   def __unicode__(self):
     "Return a printable description."
     return 'Maths processor ' + self.__class__.__name__
+
+  if sys.version_info >= (3, 0):
+    __str__ = __unicode__
+
 
 class FormulaProcessor(object):
   "A processor specifically for formulas."
@@ -2996,6 +3031,10 @@ class Formula(Container):
     if self.partkey and self.partkey.number:
       return 'Formula (' + self.partkey.number + ')'
     return 'Unnumbered formula'
+
+  if sys.version_info >= (3, 0):
+    __str__ = __unicode__
+
 
 class WholeFormula(FormulaBit):
   "Parse a whole formula"
@@ -3228,6 +3267,10 @@ class NumberCounter(object):
     if self.mode:
       result += ' in mode ' + self.mode
     return result
+
+  if sys.version_info >= (3, 0):
+    __str__ = __unicode__
+
 
 class DependentCounter(NumberCounter):
   "A counter which depends on another one (the master)."
@@ -3780,6 +3823,10 @@ class Link(Container):
       result += ' to ' + self.url
     return result
 
+  if sys.version_info >= (3, 0):
+    __str__ = __unicode__
+
+
 class URL(Link):
   "A clickable URL"
 
@@ -3948,6 +3995,10 @@ class Label(Link):
       return 'Unnamed label'
     return 'Label ' + self.key
 
+  if sys.version_info >= (3, 0):
+    __str__ = __unicode__
+
+
 class Reference(Link):
   "A reference to a label."
 
@@ -4008,6 +4059,8 @@ class Reference(Link):
     "Return a printable representation."
     return 'Reference ' + self.key
 
+  if sys.version_info >= (3, 0):
+    __str__ = __unicode__
 
 
 class FormulaCommand(FormulaBit):
@@ -4630,6 +4683,10 @@ class LimitPreviousCommand(LimitCommand):
     "Return a printable representation."
     return 'Limit previous command'
 
+  if sys.version_info >= (3, 0):
+    __str__ = __unicode__
+
+
 class LimitsProcessor(MathsProcessor):
   "A processor for limits inside an element."
 
@@ -4853,6 +4910,10 @@ class ParameterDefinition(object):
     else:
       result += ' (empty)'
     return result
+
+  if sys.version_info >= (3, 0):
+    __str__ = __unicode__
+
 
 class ParameterFunction(CommandBit):
   "A function with a variable number of parameters defined in a template."
@@ -5305,6 +5366,10 @@ class FormulaMacro(Formula):
   def __unicode__(self):
     "Return a printable representation."
     return 'Math macro'
+
+  if sys.version_info >= (3, 0):
+    __str__ = __unicode__
+
 
 FormulaFactory.types += [ MacroParameter ]
 
