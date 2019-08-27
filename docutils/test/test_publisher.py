@@ -9,10 +9,16 @@ Test the `Publisher` facade and the ``publish_*`` convenience functions.
 """
 
 import pickle
+import sys
+
 import DocutilsTestSupport              # must be imported before docutils
 import docutils
 from docutils import core, nodes, io
-from docutils._compat import u_prefix
+
+if sys.version_info < (3, 0):
+    u_prefix = 'u'
+else:
+    u_prefix = b''
 
 
 test_document = """\

@@ -34,11 +34,11 @@ from __future__ import absolute_import
 import os
 import zipfile
 import xml.etree.ElementTree as etree
+from io import BytesIO
 
 from . import DocutilsTestSupport
 import docutils
 import docutils.core
-from docutils._compat import BytesIO
 
 #
 # Globals
