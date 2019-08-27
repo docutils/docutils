@@ -5,7 +5,7 @@ build
 __pycache__
 
 *~
-docutils/docs/**.html
+docutils/docs/**/*.html
 
 .venv
 .tox
