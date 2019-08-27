@@ -290,7 +290,7 @@ class GridTableParser(TableParser):
         rowindex = {}
         for i in range(len(rowseps)):
             rowindex[rowseps[i]] = i    # row boundary -> row number mapping
-        colseps = self.colseps.keys()   # list of column boundaries
+        colseps = list(self.colseps.keys())   # list of column boundaries
         colseps.sort()
         colindex = {}
         for i in range(len(colseps)):

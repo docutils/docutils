@@ -1117,8 +1117,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             fin = os.popen("paperconf -s 2> /dev/null")
             content = fin.read()
             content = content.split()
-            content = map(float, content)
-            content = list(content)
+            content = list(map(float, content))
             w, h = content
         except (IOError, ValueError):
             w, h = 612, 792     # default to Letter
