@@ -451,6 +451,7 @@ class ListTable(Table):
                 line=self.lineno)
             raise SystemMessagePropagation(error)
         list_node = node[0]
+        num_cols = 0
         # Check for a uniform two-level bullet list:
         for item_index in range(len(list_node)):
             item = list_node[item_index]
@@ -463,9 +464,6 @@ class ListTable(Table):
                     self.block_text, self.block_text), line=self.lineno)
                 raise SystemMessagePropagation(error)
             elif item_index:
-                # ATTN pychecker users: num_cols is guaranteed to be set in the
-                # "else" clause below for item_index==0, before this branch is
-                # triggered.
                 if len(item[0]) != num_cols:
                     error = self.state_machine.reporter.error(
                         'Error parsing content block for the "%s" directive: '
