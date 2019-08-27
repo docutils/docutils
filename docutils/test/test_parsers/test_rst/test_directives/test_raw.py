@@ -26,7 +26,7 @@ utf_16_file = os.path.join(mydir, 'utf-16.csv')
 utf_16_file_rel = DocutilsTestSupport.utils.relative_path(None, utf_16_file)
 utf_16_error_str = ("UnicodeDecodeError: 'ascii' codec can't decode byte 0xfe "
                     "in position 0: ordinal not in range(128)")
-if sys.version_info < (3,0):
+if sys.version_info < (3, 0):
     utf_16_error_str = ("UnicodeError: Unable to decode input data.  "
                         "Tried the following encodings: 'ascii'.\n"
                         "            (%s)" % utf_16_error_str)

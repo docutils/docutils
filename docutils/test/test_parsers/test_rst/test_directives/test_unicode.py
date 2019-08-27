@@ -14,7 +14,7 @@ import sys
 from . import DocutilsTestSupport
 
 
-if sys.version_info >= (3,0):
+if sys.version_info >= (3, 0):
     unichr = chr  # noqa
 
 

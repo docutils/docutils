@@ -48,7 +48,7 @@ def main(argv=None):
         inpath = 'unicode.xml'
     if not os.path.isfile(inpath):
         usage(argv[0], 1, 'No such file: "%s".' % inpath)
-    if sys.version_info >= (3,0):
+    if sys.version_info >= (3, 0):
         infile = open(inpath, mode='rb')
     else:
         infile = open(inpath)

@@ -65,7 +65,7 @@ else:
         locale_encoding = None
 
 
-if sys.version_info >= (3,0):
+if sys.version_info >= (3, 0):
     unicode = str  # noqa
 
 
@@ -93,7 +93,7 @@ class SafeString(object):
                         for arg in self.data.args]
                 return ', '.join(args)
             if isinstance(self.data, unicode):
-                if sys.version_info > (3,0):
+                if sys.version_info > (3, 0):
                     return self.data
                 else:
                     return self.data.encode(self.encoding,

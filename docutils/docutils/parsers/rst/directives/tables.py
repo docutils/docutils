@@ -263,7 +263,7 @@ class CSVTable(Table):
             return [detail.args[0]]
         except csv.Error as detail:
             message = str(detail)
-            if sys.version_info < (3,0) and '1-character string' in message:
+            if sys.version_info < (3, 0) and '1-character string' in message:
                 message += '\nwith Python 2.x this must be an ASCII character.'
             error = self.state_machine.reporter.error(
                 'Error with CSV data in "%s" directive:\n%s'
@@ -356,7 +356,7 @@ class CSVTable(Table):
             raise SystemMessagePropagation(error)
         return csv_data, source
 
-    if sys.version_info < (3,0):
+    if sys.version_info < (3, 0):
         # 2.x csv module doesn't do Unicode
         def decode_from_csv(s):
             return s.decode('utf-8')

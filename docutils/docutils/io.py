@@ -17,7 +17,7 @@ import codecs
 from docutils import TransformSpec
 from docutils.utils.error_reporting import locale_encoding, ErrorString, ErrorOutput
 
-if sys.version_info >= (3,0):
+if sys.version_info >= (3, 0):
     unicode = str  # noqa
 
 
@@ -208,7 +208,7 @@ class FileInput(Input):
     def __init__(self, source=None, source_path=None,
                  encoding=None, error_handler='strict',
                  autoclose=True,
-                 mode='r' if sys.version_info >= (3,0) else 'rU', **kwargs):
+                 mode='r' if sys.version_info >= (3, 0) else 'rU', **kwargs):
         """
         :Parameters:
             - `source`: either a file-like object (which is read directly), or
@@ -239,7 +239,7 @@ class FileInput(Input):
         if source is None:
             if source_path:
                 # Specify encoding in Python 3
-                if sys.version_info >= (3,0):
+                if sys.version_info >= (3, 0):
                     kwargs = {'encoding': self.encoding,
                               'errors': self.error_handler}
                 else:
@@ -251,7 +251,7 @@ class FileInput(Input):
                     raise InputError(error.errno, error.strerror, source_path)
             else:
                 self.source = sys.stdin
-        elif (sys.version_info >= (3,0) and
+        elif (sys.version_info >= (3, 0) and
               check_encoding(self.source, self.encoding) is False):
             # TODO: re-open, warn or raise error?
             raise UnicodeError('Encoding clash: encoding given is "%s" '
@@ -268,7 +268,7 @@ class FileInput(Input):
         Read and decode a single file and return the data (Unicode string).
         """
         try:
-            if self.source is sys.stdin and sys.version_info >= (3,0):
+            if self.source is sys.stdin and sys.version_info >= (3, 0):
                 # read as binary data to circumvent auto-decoding
                 data = self.source.buffer.read()
                 # normalize newlines
@@ -358,7 +358,7 @@ class FileOutput(Output):
 
     def open(self):
         # Specify encoding in Python 3.
-        if sys.version_info >= (3,0) and 'b' not in self.mode:
+        if sys.version_info >= (3, 0) and 'b' not in self.mode:
             kwargs = {'encoding': self.encoding,
                       'errors': self.error_handler}
         else:
@@ -378,17 +378,17 @@ class FileOutput(Output):
         """
         if not self.opened:
             self.open()
-        if ('b' not in self.mode and sys.version_info < (3,0)
+        if ('b' not in self.mode and sys.version_info < (3, 0)
             or check_encoding(self.destination, self.encoding) is False
            ):
             data = self.encode(data)
-            if sys.version_info >= (3,0) and os.linesep != '\n':
+            if sys.version_info >= (3, 0) and os.linesep != '\n':
                 data = data.replace(b'\n', bytes(os.linesep, 'ascii')) # fix endings
 
         try:
             self.destination.write(data)
         except TypeError as e:
-            if sys.version_info >= (3,0) and isinstance(data, bytes):
+            if sys.version_info >= (3, 0) and isinstance(data, bytes):
                 try:
                     self.destination.buffer.write(data)
                 except AttributeError:

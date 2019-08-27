@@ -51,7 +51,7 @@ from pprint import pformat
 
 testroot = os.path.abspath(os.path.dirname(__file__) or os.curdir)
 os.chdir(testroot)
-if sys.version_info >= (3,0):
+if sys.version_info >= (3, 0):
     sys.path.insert(0, os.path.normpath(os.path.join(testroot,
                                                      '..', 'build', 'lib')))
     sys.path.append(os.path.normpath(os.path.join(testroot, '..',
@@ -89,7 +89,7 @@ except:
     import pdb
 
 
-if sys.version_info >= (3,0):
+if sys.version_info >= (3, 0):
     unicode = str  # noqa
 
 
@@ -202,7 +202,7 @@ class CustomTestCase(StandardTestCase):
         """`input`, `output`, and `expected` should all be strings."""
         if isinstance(input, unicode):
             input = input.encode('raw_unicode_escape')
-        if sys.version_info > (3,0):
+        if sys.version_info > (3, 0):
             # API difference: Python 3's node.__str__ doesn't escape
             #assert expected is None or isinstance(expected, unicode)
             if isinstance(expected, bytes):

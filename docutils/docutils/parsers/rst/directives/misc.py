@@ -473,7 +473,7 @@ class Date(Directive):
                 'Invalid context: the "%s" directive can only be used within '
                 'a substitution definition.' % self.name)
         format_str = '\n'.join(self.content) or '%Y-%m-%d'
-        if sys.version_info< (3,0):
+        if sys.version_info< (3, 0):
             try:
                 format_str = format_str.encode(locale_encoding or 'utf-8')
             except UnicodeEncodeError:
@@ -496,7 +496,7 @@ class Date(Directive):
         #                          time.gmtime(int(source_date_epoch)))
         # else:
         text = time.strftime(format_str)
-        if sys.version_info< (3,0):
+        if sys.version_info< (3, 0):
             # `text` is a byte string that may contain non-ASCII characters:
             try:
                 text = text.decode(locale_encoding or 'utf-8')

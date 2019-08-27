@@ -14,7 +14,7 @@ This module currently provides the following helper symbols:
 
 import sys
 
-if sys.version_info < (3,0):
+if sys.version_info < (3, 0):
     u_prefix = 'u'
     from StringIO import StringIO as BytesIO
 else:

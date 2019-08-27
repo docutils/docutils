@@ -33,7 +33,8 @@ import docutils
 from docutils import frontend, nodes, utils, writers, languages
 from docutils.readers import standalone
 from docutils.transforms import references
-if sys.version_info >= (3,0):
+
+if sys.version_info >= (3, 0):
     from configparser import ConfigParser
     from io import StringIO
     from urllib.request import urlopen
@@ -41,7 +42,8 @@ if sys.version_info >= (3,0):
 else:
     from ConfigParser import ConfigParser
     from StringIO import StringIO
-    from urllib2 import urlopen, HTTPError
+    from urllib2 import HTTPError
+    from urllib2 import urlopen
 
 
 VERSION = '1.0a'
@@ -304,7 +306,7 @@ def add_ns(tag, nsdict=CNSD):
 
 def ToString(et):
     outstream = StringIO()
-    if sys.version_info >= (3,0):
+    if sys.version_info >= (3, 0):
         et.write(outstream, encoding="unicode")
     else:
         et.write(outstream)
@@ -902,7 +904,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                     self.document.reporter.warning(
                         'Style "%s" is not a style used by odtwriter.' % (
                             rststyle, ))
-                if sys.version_info >= (3,0):
+                if sys.version_info >= (3, 0):
                     self.format_map[rststyle] = format
                 else:
                     self.format_map[rststyle] = format.decode('utf-8')

@@ -16,7 +16,7 @@ from docutils.parsers.rst import states
 from docutils.utils.code_analyzer import with_pygments
 
 
-if sys.version_info >= (3,0):
+if sys.version_info >= (3, 0):
     unichr = chr  # noqa
 
 
@@ -48,7 +48,7 @@ include_literal = mydir('include_literal.txt')
 utf_16_file = mydir('utf-16.csv')
 utf_16_error_str = ("UnicodeDecodeError: 'ascii' codec can't decode byte 0xfe "
                     "in position 0: ordinal not in range(128)")
-if sys.version_info < (3,0):
+if sys.version_info < (3, 0):
     utf_16_error_str = ("UnicodeError: Unable to decode input data.  "
                         "Tried the following encodings: 'ascii'.\n"
                         "            (%s)" % utf_16_error_str)

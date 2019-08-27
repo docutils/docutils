@@ -103,7 +103,7 @@ print("hello world")
         # if no encoding is given, try decoding with utf8:
         input = io.FileInput(source_path='functional/input/cyrillic.txt')
         data = input.read()
-        if sys.version_info < (3,0):
+        if sys.version_info < (3, 0):
             # in Py3k, the locale encoding is used without --input-encoding
             # skipping the heuristic
             self.assertEqual(input.successful_encoding, 'utf-8')
@@ -111,7 +111,7 @@ print("hello world")
     def test_heuristics_no_utf8(self):
         # if no encoding is given and decoding with utf8 fails,
         # use either the locale encoding (if specified) or latin-1:
-        if sys.version_info >= (3,0) and locale_encoding != "utf8":
+        if sys.version_info >= (3, 0) and locale_encoding != "utf8":
             # in Py3k, the locale encoding is used without --input-encoding
             # skipping the heuristic unless decoding fails.
             return
@@ -172,7 +172,7 @@ class OutputTests(unittest.TestCase):
         self.assertEqual(self.udrain.getvalue(), self.udata)
 
     def test_write_utf8(self):
-        if sys.version_info >= (3,0):
+        if sys.version_info >= (3, 0):
             fo = io.FileOutput(destination=self.udrain, encoding='utf8',
                                autoclose=False)
             fo.write(self.udata)
@@ -192,7 +192,7 @@ class OutputTests(unittest.TestCase):
         self.assertEqual(self.bdrain.getvalue(), self.bdata)
 
     # Test for Python 3 features:
-    if sys.version_info >= (3,0):
+    if sys.version_info >= (3, 0):
         def test_write_bytes_to_stdout(self):
             # try writing data to `destination.buffer`, if data is
             # instance of `bytes` and writing to `destination` fails:

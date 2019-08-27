@@ -22,7 +22,7 @@ from docutils.nodes import unescape
 import docutils.io
 from docutils.utils.error_reporting import ErrorOutput, SafeString
 
-if sys.version_info >= (3,0):
+if sys.version_info >= (3, 0):
     unicode = str
 
 
@@ -592,7 +592,7 @@ def split_escaped_whitespace(text):
     return list(itertools.chain(*strings))
 
 def strip_combining_chars(text):
-    if isinstance(text, str) and sys.version_info < (3,0):
+    if isinstance(text, str) and sys.version_info < (3, 0):
         return text
     return u''.join([c for c in text if not unicodedata.combining(c)])
 
@@ -604,7 +604,7 @@ def find_combining_chars(text):
     [3, 6, 9]
 
     """
-    if isinstance(text, str) and sys.version_info < (3,0):
+    if isinstance(text, str) and sys.version_info < (3, 0):
         return []
     return [i for i,c in enumerate(text) if unicodedata.combining(c)]
 
@@ -638,7 +638,7 @@ def column_width(text):
 
     Correct ``len(text)`` for wide East Asian and combining Unicode chars.
     """
-    if isinstance(text, str) and sys.version_info < (3,0):
+    if isinstance(text, str) and sys.version_info < (3, 0):
         return len(text)
     width = sum([east_asian_widths[unicodedata.east_asian_width(c)]
                  for c in text])
