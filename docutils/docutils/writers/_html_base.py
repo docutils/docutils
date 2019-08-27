@@ -20,7 +20,6 @@
 import sys
 import os.path
 import re
-import urllib
 
 try: # check for the Python Imaging Library
     import PIL.Image
@@ -39,6 +38,10 @@ from docutils.transforms import writer_aux
 from docutils.utils.math import (unichar2tex, pick_math_environment,
                                  math2html, latex2mathml, tex2mathml_extern)
 
+if sys.version_info >= (3, 0):
+    from urllib.request import url2pathname
+else:
+    from urllib import url2pathname
 
 if sys.version_info >= (3, 0):
     unicode = str  # noqa
@@ -923,7 +926,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         if 'scale' in node:
             if (PIL and not ('width' in node and 'height' in node)
                 and self.settings.file_insertion_enabled):
-                imagepath = urllib.url2pathname(uri)
+                imagepath = url2pathname(uri)
                 try:
                     img = PIL.Image.open(
                             imagepath.encode(sys.getfilesystemencoding()))
