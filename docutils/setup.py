@@ -13,7 +13,7 @@ try:
     from distutils.core import setup, Command
     from distutils.command.build import build
     from distutils.command.build_py import build_py
-    if sys.version_info >= (3,0):
+    if sys.version_info >= (3, 0):
         from distutils.command.build_py import build_py_2to3
         from distutils.util import copydir_run_2to3
     from distutils.command.install_data import install_data
@@ -27,7 +27,7 @@ except ImportError:
     sys.exit(1)
 
 
-if sys.version_info >= (3,0):
+if sys.version_info >= (3, 0):
     # copy-convert auxiliary python sources
     class copy_build_py_2to3(build_py_2to3):
         """Copy/convert Python source files in given directories recursively.
@@ -97,7 +97,7 @@ def do_setup():
     kwargs['cmdclass'] = {'build_data': build_data,
                           'install_data': smart_install_data}
     # Auto-convert source code for Python 3
-    if sys.version_info >= (3,0):
+    if sys.version_info >= (3, 0):
         kwargs['cmdclass']['build_py'] = copy_build_py_2to3
     else:
         kwargs['cmdclass']['build_py'] = build_py

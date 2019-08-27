@@ -33,7 +33,7 @@ class CommandLineEncodingTests(unittest.TestCase):
         if argv_encoding == 'ascii': # cannot test
             return
         sys.argv.append('--source-url=test.txt') # pure ASCII argument
-        if sys.version_info < (3,0):
+        if sys.version_info < (3, 0):
             sys.argv.append(u'--title=Dornröschen'.encode(argv_encoding))
         else:
             sys.argv.append(u'--title=Dornröschen')

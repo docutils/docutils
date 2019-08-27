@@ -18,7 +18,7 @@ from . import DocutilsTestSupport
 from docutils.parsers.rst.directives import tables
 
 
-if sys.version_info >= (3,0):
+if sys.version_info >= (3, 0):
     unicode = str  # noqa
     unichr = chr  # noqa
 
@@ -46,10 +46,10 @@ csv_eod_error_str = 'unexpected end of data'
 if sys.version_info < (2,7,4) or platform.python_implementation() == 'PyPy':
     csv_eod_error_str = 'newline inside string'
 # pypy adds a line number
-if sys.version_info >= (3,0) and platform.python_implementation() == 'PyPy':
+if sys.version_info >= (3, 0) and platform.python_implementation() == 'PyPy':
     csv_eod_error_str = 'line 1: ' + csv_eod_error_str
 csv_unknown_url = "'bogus.csv'"
-if sys.version_info < (3,0):
+if sys.version_info < (3, 0):
     csv_unknown_url = "bogus.csv"
 
 

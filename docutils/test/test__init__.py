@@ -16,7 +16,7 @@ import docutils
 import docutils.utils
 
 
-if sys.version_info >= (3,0):
+if sys.version_info >= (3, 0):
     unicode = str  # noqa
 
 

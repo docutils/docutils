@@ -155,7 +155,7 @@ class Publisher(object):
         if argv is None:
             argv = sys.argv[1:]
             # converting to Unicode (Python 3 does this automatically):
-            if sys.version_info < (3,0):
+            if sys.version_info < (3, 0):
                 # TODO: make this failsafe and reversible?
                 argv_encoding = (frontend.locale_encoding or 'ascii')
                 argv = [a.decode(argv_encoding) for a in argv]

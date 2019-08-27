@@ -23,7 +23,7 @@ class RstParserTests(unittest.TestCase):
         document = utils.new_document('test data', frontend.OptionParser(
                     components=(parser, )).get_default_values())
 
-        if sys.version_info < (3,0):
+        if sys.version_info < (3, 0):
             # supplying string input is supported, but only if ascii-decodable
             self.assertRaises(UnicodeDecodeError,
                               parser.parse, b'hol%s' % chr(224), document)
