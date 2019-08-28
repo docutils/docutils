@@ -201,11 +201,9 @@ REWORK FOR SOURCEFORGE REPO
 
 * **build wheels**::
 
-    python3 setup.py sdist bdist_wheel
-    python2 setup.py bdist_wheel
+    python setup.py bdist_wheel
 
-  This builds wheels_ (`pure Python wheels`_ for Python 2 and 3
-  respectively) by downloading the new release from pypi.
+  This builds wheels_ by downloading the new release from pypi.
 
   Upload the wheels to PyPI::
 
