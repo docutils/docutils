@@ -45,13 +45,16 @@ the Docutils-develop_ mailing list.
 
 The only **requirement** for running Docutils is Python_
 
+* After subversion commit r8378 (thanks to Stephen Finucane) the code is compatible
+  with both Python 2 and Python 3.
+
+* 0.15 ist the last to support Python 2.6 and 3.3.
 * Docutil 0.14 dropped Python 2.4, 2.5, 3.1 and 3.2.
 * Docutils 0.10 dropped Python 2.3 support.
-* For Docutils 0.5, Python 2.2.1+ is required.
-* Up to Docutils 0.4, Python 2.1 is required.
-
 * From version 0.6, Docutils is compatible with Python 3 (see README_ for
   details).
+* For Docutils 0.5, Python 2.2.1+ is required.
+* Up to Docutils 0.4, Python 2.1 is required.
 
 Docutils is in active development and APIs should be considered 
 **experimental** subject to change at any time.  Although *any time* is a time 
