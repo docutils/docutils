@@ -26,22 +26,19 @@ To the developers of an open source project, **feedback** is a great
 motivator and is very welcome.  We also rely on feedback for
 determining what features to implement.  Thus, if you tell us what you
 need, you may just get it!  Please post any feedback to the
-Docutils-users_ mailing list.
+docutils-users_ mailing list.
 
 All **discussion** about Docutils takes place on the `mailing lists`_.
 
 If you find a **bug**, please file a `bug report`_ or send email to
-the Docutils-users_ mailing list.  **Patch** submissions should be
-filed in the `patch tracker`_ (preferred) or sent to Docutils-develop_
-(where you will be asked to send them to the `patch tracker`_).
+the docutils-users_ mailing list.  **Patch** submissions should be
+filed in the `patch tracker`_ (preferred) or sent to docutils-develop_
+(where you may be asked to send them to the `patch tracker`_).
 
 We welcome all kinds of **contributions**.  There's a `To Do list`_
 full of interesting ideas awaiting a champion.  If you have any
 questions regarding how to extend Docutils, please feel free to ask on
-the Docutils-develop_ mailing list.
-
-.. NO DONATE on new sf platform
-   Please also consider **donating** to Docutils: |donate|.
+the docutils-develop_ mailing list.
 
 The only **requirement** for running Docutils is Python_
 
@@ -64,6 +61,14 @@ after serious thought and discussion.
 Download
 ========
 
+`Release packages`_ can be downloaded from PyPI_. They are mostly intended
+for distributors.  See the `release notes`_ for a list of changes since the
+previous release.
+
+We recommend that you use a snapshot_ from `Docutils' Subversion
+repository`_. The snapshots usually contain *more features* and *fewer bugs*
+than the "official" releases |---| they're not only for developers!
+
 .. Note::
 
    Snapshots are supported by sourceforge directly.
@@ -77,17 +82,10 @@ Download
 
   Click the download snapshot button.
 
-  The snapshosts listed below are created on website updates.     
+  The snapshosts listed below are created on website updates.
 
-We recommend that you use a snapshot_ from `Docutils' Subversion
-repository`_. The snapshots usually contain *more features* and *fewer bugs*
-than the "official" releases |---| they're not only for developers!
-
-The latest **release package** is on pypi__ with wheels and without. It was
-released on 2019-07-30 and is mostly intended for distributors.  See
-the `release notes`_ for a list of changes since the previous release.
-
-__ https://pypi.org/projects/docutils
+.. _release packages: https://pypi.org/project/docutils/#files
+.. _PyPI: https://pypi.org
 
 .. _release notes: RELEASE-NOTES.html
 
@@ -100,25 +98,8 @@ subset.
 Web site, tracker and mailing lists and subversion repository hosted by |SourceForge|_.
 Powered by |Python|_.
 
-.. class:: hidden
-
-Google should index the mailing lists: `Docutils-users
-<http://news.gmane.org/group/gmane.text.docutils.user/last=/force_load=t>`__,
-`Docutils-develop
-<http://news.gmane.org/group/gmane.text.docutils.devel/last=/force_load=t>`__,
-and `Docutils-checkins
-<http://news.gmane.org/group/gmane.text.docutils.cvs/last=/force_load=t>`__.
-
 .. |---| unicode:: U+02014 .. em dash
    :trim:
-.. _Deploying Docutils Securely: docs/howto/security.html
-.. _Docutils sprint:
-   http://wiki.python.org/moin/PyCon2006/Sprints/DocutilsSprint
-.. _PyCon 2006: http://us.pycon.org/TX2006/HomePage
-.. _dugui: http://docutils.sourceforge.net/sandbox/dugui/
-.. _LaTeX math support:
-   http://docutils.sourceforge.net/sandbox/latex_directive/
-
 .. _snapshot:
    http://sourceforge.net/p/docutils/code/HEAD/tree/trunk/docutils/
 .. _snapshot of the Sandbox:
@@ -129,8 +110,8 @@ and `Docutils-checkins
 .. _bug report: http://docutils.sourceforge.net/BUGS.html
 .. _patch tracker: http://sourceforge.net/p/docutils/patches/
 .. _mailing lists: docs/user/mailing-lists.html
-.. _Docutils-users: docs/user/mailing-lists.html#docutils-users
-.. _Docutils-develop: docs/user/mailing-lists.html#docutils-develop
+.. _docutils-users: docs/user/mailing-lists.html#docutils-users
+.. _docutils-develop: docs/user/mailing-lists.html#docutils-develop
 .. _sandbox: sandbox/README.html
 .. _reStructuredText: rst.html
 .. _project files page:
@@ -140,12 +121,6 @@ and `Docutils-checkins
 .. _Quick-Start: README.html#quick-start
 .. _Docutils Project Documentation Overview: docs/index.html
 .. _Docutils' Subversion repository: docs/dev/repository.html
-.. |donate| image:: http://images.sourceforge.net/images/project-support.jpg
-   :target: http://sourceforge.net/donate/index.php?group_id=38414
-   :align: middle
-   :width: 88
-   :height: 32
-   :alt: Support the Docutils project!
 .. |SourceForge| image::
    http://sourceforge.net/sflogo.php?group_id=38414
    :alt: SourceForge Logo
@@ -153,21 +128,13 @@ and `Docutils-checkins
    :class: borderless
    :width: 88
    :height: 31
-.. |BerliOS| image::
-   http://developer.berlios.de/sflogo.php?group_id=2920
-   :alt: BerliOS Logo
-   :align: middle
-   :class: borderless
-   :width: 124
-   :height: 32
+.. _SourceForge: http://sourceforge.net/
 .. |Python| image:: python.png
    :alt: Python Logo
    :align: middle
    :class: borderless
    :width: 193
    :height: 32
-.. _BerliOS: http://developer.berlios.de/
-.. _SourceForge: http://sourceforge.net/
 .. _Python: http://www.python.org/
 
 
