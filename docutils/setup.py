@@ -10,6 +10,10 @@ import glob
 
 try:
     import setuptools
+except ImportError:
+    print('Warning: Could not load package `setuptools`.')
+    print('Actions requiring `setuptools` instead of `distutils` will fail')
+try:
     from distutils.core import setup, Command
     from distutils.command.build import build
     from distutils.command.build_py import build_py
@@ -82,7 +86,7 @@ what-you-see-is-what-you-get plaintext markup syntax.""",  # wrap at col 60
     'maintainer_email': 'docutils-develop@lists.sourceforge.net',
     'license': 'public domain, Python, 2-Clause BSD, GPL 3 (see COPYING.txt)',
     'platforms': 'OS-independent',
-    'python_requires': '>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*',
+    'python_requires': '>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*', !=3.4.*',
     'cmdclass': {
         'build_data': build_data,
         'install_data': smart_install_data,
@@ -147,8 +151,6 @@ what-you-see-is-what-you-get plaintext markup syntax.""",  # wrap at col 60
         'tools/rst2odt.py',
         'tools/rst2odt_prepstyles.py',
     ],
-    # BUG pypi did not like following languages
-    #   'Natural Language :: Lithuanian',
     'classifiers': [
         'Development Status :: 4 - Beta',
         'Environment :: Console',
@@ -176,14 +178,20 @@ what-you-see-is-what-you-get plaintext markup syntax.""",  # wrap at col 60
         'Natural Language :: Chinese (Simplified)',
         'Natural Language :: Chinese (Traditional)',
         'Natural Language :: Czech',
+        'Natural Language :: Danish',
         'Natural Language :: Dutch',
         'Natural Language :: Esperanto',
         'Natural Language :: Finnish',
         'Natural Language :: French',
         'Natural Language :: Galician',
         'Natural Language :: German',
+        'Natural Language :: Hebrew',
         'Natural Language :: Italian',
         'Natural Language :: Japanese',
+        'Natural Language :: Korean',
+        'Natural Language :: Latvian',
+        'Natural Language :: Lithuanian',
+        'Natural Language :: Persian',
         'Natural Language :: Polish',
         'Natural Language :: Portuguese (Brazilian)',
         'Natural Language :: Russian',
