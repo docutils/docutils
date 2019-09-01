@@ -16,7 +16,7 @@ Quick-Start
 
 This is for those who want to get up & running quickly.
 
-1. Docutils requires Python (version 2.7 or later), available from
+1. Docutils requires Python, available from
 
      http://www.python.org/
 
@@ -104,10 +104,10 @@ Requirements
 
 To run the code, Python_ must be installed.
 Docutils is compatible with Python versions 2.7, and
-versions 3.5 to 3.7 (cf. `Python 3 compatibility`_).
+3.5 to 3.7 (cf. `Python 3 compatibility`_).
 
-Docutils uses the following packages for enhanced functionality, if they are
-installed:
+Docutils uses the following packages for enhanced functionality,
+if they are installed:
 
 * The `Python Imaging Library`_, or PIL, is used for some image
   manipulation operations.
@@ -125,7 +125,7 @@ Python 3 compatibility
 
 Up to version 0.15, the Docutils codebase was translated "on-demand" using
 the 2to3 tool. Starting with Docutils 0.16, the code base supports both
-Python 2.7 and 3.4+ natively.
+Python 2.7 and 3.5+ natively.
 
 
 Project Files & Directories
