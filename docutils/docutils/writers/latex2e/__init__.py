@@ -1815,13 +1815,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if self._use_latex_citations:
             followup_citation = False
             # check for a following citation separated by a space or newline
-            next_siblings = node.traverse(descend=False, siblings=True,
-                                          include_self=False)
-            if len(next_siblings) > 1:
-                next = next_siblings[0]
-                if (isinstance(next, nodes.Text) and
-                    next.astext() in (' ', '\n')):
-                    if next_siblings[1].__class__ == node.__class__:
+            sibling = node.next_node(descend=False, siblings=True)
+            if (isinstance(sibling, nodes.Text) 
+                and sibling.astext() in (' ', '\n')):
+                sibling2 = sibling.next_node(descend=False, siblings=True)
+                if isinstance(sibling2, nodes.citation_reference):
                         followup_citation = True
             if followup_citation:
                 self.out.append(',')

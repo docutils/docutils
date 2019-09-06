@@ -144,7 +144,7 @@ class FilterMessages(Transform):
     default_priority = 870
 
     def apply(self):
-        for node in self.document.traverse(nodes.system_message):
+        for node in list(self.document.traverse(nodes.system_message)):
             if node['level'] < self.document.reporter.report_level:
                 node.parent.remove(node)
 
@@ -176,7 +176,7 @@ class StripComments(Transform):
 
     def apply(self):
         if self.document.settings.strip_comments:
-            for node in self.document.traverse(nodes.comment):
+            for node in list(self.document.traverse(nodes.comment)):
                 node.parent.remove(node)
 
 
@@ -191,27 +191,31 @@ class StripClassesAndElements(Transform):
     default_priority = 420
 
     def apply(self):
-        if not (self.document.settings.strip_elements_with_classes
-                or self.document.settings.strip_classes):
+        if self.document.settings.strip_elements_with_classes:
+            self.strip_elements = set(
+                self.document.settings.strip_elements_with_classes)
+            # Iterate over a list as removing the current node
+            # corrupts the iterator returned by `traverse`:
+            for node in list(self.document.traverse(self.check_classes)):
+                node.parent.remove(node)
+
+        if not self.document.settings.strip_classes:
             return
-        # prepare dicts for lookup (not sets, for Python 2.2 compatibility):
-        self.strip_elements = dict(
-            [(key, None)
-             for key in (self.document.settings.strip_elements_with_classes
-                         or [])])
-        self.strip_classes = dict(
-            [(key, None) for key in (self.document.settings.strip_classes
-                                     or [])])
-        for node in self.document.traverse(self.check_classes):
-            node.parent.remove(node)
+        strip_classes = self.document.settings.strip_classes
+        for node in self.document.traverse(nodes.Element):
+            for class_value in strip_classes:
+                try:
+                    node['classes'].remove(class_value)
+                except ValueError:
+                    pass
 
     def check_classes(self, node):
-        if isinstance(node, nodes.Element):
-            for class_value in node['classes'][:]:
-                if class_value in self.strip_classes:
-                    node['classes'].remove(class_value)
-                if class_value in self.strip_elements:
-                    return 1
+        if not isinstance(node, nodes.Element):
+            return False
+        for class_value in node['classes'][:]:
+            if class_value in self.strip_elements:
+                return True
+        return False
 
 
 class SmartQuotes(Transform):

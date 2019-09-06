@@ -31,6 +31,8 @@ Title
 =====
 
 Paragraph.
+
+.. second comment
 """,
 """\
 <document source="test data">
