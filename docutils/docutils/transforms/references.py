@@ -663,7 +663,7 @@ class Substitutions(Transform):
     def apply(self):
         defs = self.document.substitution_defs
         normed = self.document.substitution_names
-        subreflist = self.document.traverse(nodes.substitution_reference)
+        subreflist = list(self.document.traverse(nodes.substitution_reference))
         nested = {}
         for ref in subreflist:
             refname = ref['refname']
