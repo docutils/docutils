@@ -199,21 +199,19 @@ class Node(object):
         return stop
 
     def _fast_traverse(self, cls):
-        """Specialized traverse() that only supports instance checks."""
-        result = []
+        """Return iterator that only supports instance checks."""
         if isinstance(self, cls):
-            result.append(self)
+            yield self
         for child in self.children:
-            result.extend(child._fast_traverse(cls))
-        return result
+            for subnode in child._fast_traverse(cls):
+                yield subnode
 
     def _all_traverse(self):
-        """Specialized traverse() that doesn't check for a condition."""
-        result = []
-        result.append(self)
+        """Return iterator that doesn't check for a condition."""
+        yield self
         for child in self.children:
-            result.extend(child._all_traverse())
-        return result
+            for subnode in child._all_traverse():
+                yield subnode
 
     def traverse(self, condition=None, include_self=True, descend=True,
                  siblings=False, ascend=False):
@@ -252,43 +250,58 @@ class Node(object):
 
             [<strong>, <#text: Foo>, <#text: Bar>, <reference>, <#text: Baz>]
         """
+        # Although the documented API only promises an "iterable" as return
+        # value, the implementation returned a list up to v. 0.15. Some 3rd
+        # party code still relies on this (e.g. Sphinx as of 2019-09-07).
+        # Therefore, let's return a list until this is sorted out:
+        return list(self._traverse(condition, include_self,
+                                   descend, siblings, ascend))
+
+    def _traverse(self, condition=None, include_self=True, descend=True,
+                  siblings=False, ascend=False):
+        """Return iterator over nodes following `self`. See `traverse()`."""
         if ascend:
             siblings=True
         # Check for special argument combinations that allow using an
         # optimized version of traverse()
         if include_self and descend and not siblings:
             if condition is None:
-                return self._all_traverse()
+                for subnode in self._all_traverse():
+                    yield subnode
+                return
             elif isinstance(condition, type):
-                return self._fast_traverse(condition)
+                for subnode in self._fast_traverse(condition):
+                    yield subnode
+                return
         # Check if `condition` is a class (check for TypeType for Python
         # implementations that use only new-style classes, like PyPy).
         if isinstance(condition, type):
             node_class = condition
             def condition(node, node_class=node_class):
                 return isinstance(node, node_class)
-        r = []
+
+
         if include_self and (condition is None or condition(self)):
-            r.append(self)
+            yield self
         if descend and len(self.children):
             for child in self:
-                r.extend(child.traverse(include_self=True, descend=True,
-                                        siblings=False, ascend=False,
-                                        condition=condition))
+                for subnode in child._traverse(condition=condition,
+                                    include_self=True, descend=True,
+                                    siblings=False, ascend=False):
+                    yield subnode
         if siblings or ascend:
             node = self
             while node.parent:
                 index = node.parent.index(node)
                 for sibling in node.parent[index+1:]:
-                    r.extend(sibling.traverse(include_self=True,
-                                              descend=descend,
-                                              siblings=False, ascend=False,
-                                              condition=condition))
+                    for subnode in sibling._traverse(condition=condition,
+                                        include_self=True, descend=descend,
+                                        siblings=False, ascend=False):
+                        yield subnode
                 if not ascend:
                     break
                 else:
                     node = node.parent
-        return r
 
     def next_node(self, condition=None, include_self=False, descend=True,
                   siblings=False, ascend=False):
@@ -297,14 +310,13 @@ class Node(object):
         or None if the iterable is empty.
 
         Parameter list is the same as of traverse.  Note that
-        include_self defaults to 0, though.
+        include_self defaults to False, though.
         """
-        iterable = self.traverse(condition=condition,
-                                 include_self=include_self, descend=descend,
-                                 siblings=siblings, ascend=ascend)
+        node_iterator = self._traverse(condition, include_self,
+                                      descend, siblings, ascend)
         try:
-            return iterable[0]
-        except IndexError:
+            return next(node_iterator)
+        except StopIteration:
             return None
 
 if sys.version_info < (3, 0):
