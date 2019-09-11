@@ -929,7 +929,7 @@ head_template.substitute(dict(parts,
 }
 """, titledata=r"""\title{This is the \emph{Title}%
   \label{this-is-the-title}%
-  \\ % subtitle%
+  \\%
   \DUdocumentsubtitle{This is the \emph{Subtitle}}%
   \label{this-is-the-subtitle}}
 \author{}
