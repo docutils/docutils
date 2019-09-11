@@ -54,40 +54,36 @@ class Writer(writers.Writer):
     settings_spec = (
         'LaTeX-Specific Options',
         None,
-        (('Specify documentclass.  Default is "article".',
+        (('Specify LaTeX documentclass.  Default: "article".',
           ['--documentclass'],
           {'default': 'article', }),
          ('Specify document options.  Multiple options can be given, '
-          'separated by commas.  Default is "a4paper".',
+          'separated by commas.  Default: "a4paper".',
           ['--documentoptions'],
           {'default': 'a4paper', }),
-         ('Footnotes with numbers/symbols by Docutils. (default)',
-          ['--docutils-footnotes'],
-          {'default': True, 'action': 'store_true',
-           'validator': frontend.validate_boolean}),
          ('Format for footnote references: one of "superscript" or '
-          '"brackets".  Default is "superscript".',
+          '"brackets".  Default: "superscript".',
           ['--footnote-references'],
           {'choices': ['superscript', 'brackets'], 'default': 'superscript',
            'metavar': '<format>',
            'overrides': 'trim_footnote_reference_space'}),
-         ('Use \\cite command for citations. ',
+         ('Use \\cite command for citations. (future default)',
           ['--use-latex-citations'],
-          {'default': 0, 'action': 'store_true',
+          {'default': False, 'action': 'store_true',
            'validator': frontend.validate_boolean}),
          ('Use figure floats for citations '
-          '(might get mixed with real figures). (default)',
+          '(might get mixed with real figures). (current default)',
           ['--figure-citations'],
           {'dest': 'use_latex_citations', 'action': 'store_false',
            'validator': frontend.validate_boolean}),
          ('Format for block quote attributions: one of "dash" (em-dash '
-          'prefix), "parentheses"/"parens", or "none".  Default is "dash".',
+          'prefix), "parentheses"/"parens", or "none".  Default: "dash".',
           ['--attribution'],
           {'choices': ['dash', 'parentheses', 'parens', 'none'],
            'default': 'dash', 'metavar': '<format>'}),
          ('Specify LaTeX packages/stylesheets. '
-         ' A style is referenced with \\usepackage if extension is '
-         '".sty" or omitted and with \\input else. '
+          'A style is referenced with "\\usepackage" if extension is '
+          '".sty" or omitted and with "\\input" else. '
           ' Overrides previous --stylesheet and --stylesheet-path settings.',
           ['--stylesheet'],
           {'default': '', 'metavar': '<file[,file,...]>',
@@ -106,11 +102,11 @@ class Writer(writers.Writer):
          ('Embed the stylesheet(s) in the output file. '
           'Stylesheets must be accessible during processing. ',
           ['--embed-stylesheet'],
-          {'default': 0, 'action': 'store_true',
+          {'default': False, 'action': 'store_true',
            'validator': frontend.validate_boolean}),
          ('Comma-separated list of directories where stylesheets are found. '
           'Used by --stylesheet-path when expanding relative path arguments. '
-          'Default: "."',
+          'Default: ".".',
           ['--stylesheet-dirs'],
           {'metavar': '<dir[,dir,...]>',
            'validator': frontend.validate_comma_separated_list,
@@ -122,75 +118,72 @@ class Writer(writers.Writer):
          ('Specify the template file. Default: "%s".' % default_template,
           ['--template'],
           {'default': default_template, 'metavar': '<file>'}),
-         ('Table of contents by LaTeX. (default) ',
+         ('Table of contents by LaTeX. (default)',
           ['--use-latex-toc'],
-          {'default': 1, 'action': 'store_true',
+          {'default': True, 'action': 'store_true',
            'validator': frontend.validate_boolean}),
-         ('Table of contents by Docutils (without page numbers). ',
+         ('Table of contents by Docutils (without page numbers).',
           ['--use-docutils-toc'],
           {'dest': 'use_latex_toc', 'action': 'store_false',
            'validator': frontend.validate_boolean}),
          ('Add parts on top of the section hierarchy.',
           ['--use-part-section'],
-          {'default': 0, 'action': 'store_true',
+          {'default': False, 'action': 'store_true',
            'validator': frontend.validate_boolean}),
-         ('Attach author and date to the document info table. (default) ',
+         ('Attach author and date to the document info table. (default)',
           ['--use-docutils-docinfo'],
           {'dest': 'use_latex_docinfo', 'action': 'store_false',
            'validator': frontend.validate_boolean}),
          ('Attach author and date to the document title.',
           ['--use-latex-docinfo'],
-          {'default': 0, 'action': 'store_true',
+          {'default': False, 'action': 'store_true',
            'validator': frontend.validate_boolean}),
          ("Typeset abstract as topic. (default)",
           ['--topic-abstract'],
           {'dest': 'use_latex_abstract', 'action': 'store_false',
            'validator': frontend.validate_boolean}),
-         ("Use LaTeX abstract environment for the document's abstract. ",
+         ("Use LaTeX abstract environment for the document's abstract.",
           ['--use-latex-abstract'],
-          {'default': 0, 'action': 'store_true',
+          {'default': False, 'action': 'store_true',
            'validator': frontend.validate_boolean}),
-         ('Color of any hyperlinks embedded in text '
-          '(default: "blue", "false" to disable).',
+         ('Color of any hyperlinks embedded in text. '
+          'Default: "blue" (use "false" to disable).',
           ['--hyperlink-color'], {'default': 'blue'}),
-         ('Additional options to the "hyperref" package '
-          '(default: "").',
+         ('Additional options to the "hyperref" package.',
           ['--hyperref-options'], {'default': ''}),
          ('Enable compound enumerators for nested enumerated lists '
-          '(e.g. "1.2.a.ii").  Default: disabled.',
+          '(e.g. "1.2.a.ii").',
           ['--compound-enumerators'],
-          {'default': None, 'action': 'store_true',
+          {'default': False, 'action': 'store_true',
            'validator': frontend.validate_boolean}),
          ('Disable compound enumerators for nested enumerated lists. '
-          'This is the default.',
+          '(default)',
           ['--no-compound-enumerators'],
           {'action': 'store_false', 'dest': 'compound_enumerators'}),
          ('Enable section ("." subsection ...) prefixes for compound '
-          'enumerators.  This has no effect without --compound-enumerators.'
-          'Default: disabled.',
+          'enumerators.  This has no effect without --compound-enumerators.',
           ['--section-prefix-for-enumerators'],
           {'default': None, 'action': 'store_true',
            'validator': frontend.validate_boolean}),
-         ('Disable section prefixes for compound enumerators.  '
-          'This is the default.',
+         ('Disable section prefixes for compound enumerators. (default)',
           ['--no-section-prefix-for-enumerators'],
           {'action': 'store_false', 'dest': 'section_prefix_for_enumerators'}),
          ('Set the separator between section number and enumerator '
-          'for compound enumerated lists.  Default is "-".',
+          'for compound enumerated lists.  Default: "-".',
           ['--section-enumerator-separator'],
           {'default': '-', 'metavar': '<char>'}),
          ('When possible, use the specified environment for literal-blocks. '
-          'Default is quoting of whitespace and special chars.',
+          'Default: "" (fall back to "alltt").',
           ['--literal-block-env'],
           {'default': ''}),
-         ('When possible, use verbatim for literal-blocks. '
+         ('When possible, use "verbatim" for literal-blocks. '
           'Compatibility alias for "--literal-block-env=verbatim".',
           ['--use-verbatim-when-possible'],
-          {'default': 0, 'action': 'store_true',
+          {'default': False, 'action': 'store_true',
            'validator': frontend.validate_boolean}),
          ('Table style. "standard" with horizontal and vertical lines, '
           '"booktabs" (LaTeX booktabs style) only horizontal lines '
-          'above and below the table and below the header or "borderless".  '
+          'above and below the table and below the header, or "borderless". '
           'Default: "standard"',
           ['--table-style'],
           {'default': ['standard'],
@@ -201,7 +194,7 @@ class Writer(writers.Writer):
          ('LaTeX graphicx package option. '
           'Possible values are "dvips", "pdftex". "auto" includes LaTeX code '
           'to use "pdftex" if processing with pdf(la)tex and dvips otherwise. '
-          'Default is no option.',
+          'Default: "".',
           ['--graphicx-option'],
           {'default': ''}),
          ('LaTeX font encoding. '
@@ -213,12 +206,17 @@ class Writer(writers.Writer):
           'hyperreferences. Specify "ref*" or "pageref*" to get the section '
           'number or the page number.',
           ['--reference-label'],
-          {'default': None, }),
+          {'default': ''}),
          ('Specify style and database for bibtex, for example '
           '"--use-bibtex=mystyle,mydb1,mydb2".',
           ['--use-bibtex'],
-          {'default': None, }),
-          ),)
+          {'default': ''}),
+         # TODO: implement "latex footnotes" alternative
+         ('Footnotes with numbers/symbols by Docutils. (currently ignored)',
+           ['--docutils-footnotes'],
+           {'default': True, 'action': 'store_true',
+            'validator': frontend.validate_boolean}),
+        ),)
 
     settings_defaults = {'sectnum_depth': 0 # updated by SectNum transform
                         }
@@ -1251,7 +1249,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         else:
             self.graphicx_package = (r'\usepackage[%s]{graphicx}' %
                                      self.settings.graphicx_option)
-        # footnotes:
+        # footnotes: TODO: implement LaTeX footnotes
         self.docutils_footnotes = settings.docutils_footnotes
         # @@ table_style: list of values from fixed set: warn?
         # for s in self.settings.table_style:
@@ -2276,7 +2274,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             # mask newline to prevent spurious whitespace if paragraph follows:
             if node[1:] and isinstance(node[1], nodes.paragraph):
                 self.out.append('%')
-        ## else:  # TODO: "real" LaTeX \footnote{}s
+        # TODO: "real" LaTeX \footnote{}s (see visit_footnotes_reference())
 
     def depart_footnote(self, node):
         self.out.append('}\n')
