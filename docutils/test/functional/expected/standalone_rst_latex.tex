@@ -152,8 +152,7 @@
 }{}
 
 % rubric (informal heading)
-\providecommand*{\DUrubric}[1]{%
-  \subsubsection*{\centering\textit{\textmd{#1}}}}
+\providecommand*{\DUrubric}[1]{\subsubsection*{\emph{#1}}}
 
 % sidebar (text outside the main text flow)
 \providecommand{\DUsidebar}[1]{%
@@ -205,7 +204,7 @@
 \title{reStructuredText Test Document%
   \label{restructuredtext-test-document}%
   \label{doctitle}%
-  \\ % subtitle%
+  \\%
   \DUdocumentsubtitle{Examples of Syntax Constructs}%
   \label{examples-of-syntax-constructs}%
   \label{subtitle}}
@@ -1203,9 +1202,9 @@ You can make up your own admonition too.
 \emph{Sidebars} are like miniature, parallel documents.
 
 \DUsidebar{
-\DUtitle[title]{Sidebar Title}
+\DUtitle[sidebar]{Sidebar Title}
 
-\DUsubtitle[sidebar]{Optional Subtitle}
+\DUsubtitle{Optional Subtitle}
 
 This is a sidebar.  It is for text outside the flow of the main
 text.

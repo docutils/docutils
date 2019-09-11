@@ -21,6 +21,8 @@ Changes Since 0.15
 * General
 
   - Dropped support for Python 2.6, 3.3 and 3.4 (work in progress).
+  - Docutils now supports Python 2.7 and Python 3.5+ natively
+    (without conversion by ``2to3``).
   - Keep `backslash escapes`__ in the document tree. Backslash characters in
     text are be represented by NULL characters in the ``text`` attribute of
     Doctree nodes and removed in the writing stage by the node's
@@ -41,6 +43,10 @@ Changes Since 0.15
 * docutils/statemachine.py
 
   - Patch [ 158 ]: Speed up patterns by saving compiled versions (eric89gxl)
+
+* docutils/writers/latex2e/__init__.py:
+
+  - Fix topic subtitle, do not center a rubric.
 
 * docutils/writers/odf_odt/__init__.py:
 

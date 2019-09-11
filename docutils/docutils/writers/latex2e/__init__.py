@@ -641,8 +641,7 @@ PreambleCmds.providelength = r"""
 
 PreambleCmds.rubric = r"""
 % rubric (informal heading)
-\providecommand*{\DUrubric}[1]{%
-  \subsubsection*{\centering\textit{\textmd{#1}}}}"""
+\providecommand*{\DUrubric}[1]{\subsubsection*{\emph{#1}}}"""
 
 PreambleCmds.sidebar = r"""
 % sidebar (text outside the main text flow)
@@ -2004,7 +2003,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             if self.title:
                 title += self.title_labels
             if self.subtitle:
-                title += [r'\\ % subtitle',
+                title += [r'\\',
                           r'\DUdocumentsubtitle{%s}' % ''.join(self.subtitle)
                          ] + self.subtitle_labels
             self.titledata.append(r'\title{%s}' % '%\n  '.join(title))
@@ -2891,7 +2890,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
                              self.d_class.section(self.section_level + 1))
         else:
             self.fallbacks['subtitle'] = PreambleCmds.subtitle
-            self.out.append('\n\\DUsubtitle[%s]{' % node.parent.tagname)
+            self.out.append('\n\\DUsubtitle{')
 
     def depart_subtitle(self, node):
         if isinstance(node.parent, nodes.document):
@@ -3046,7 +3045,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.fallbacks['title'] = PreambleCmds.title
             classes = ','.join(node.parent['classes'])
             if not classes:
-                classes = node.tagname
+                classes = node.parent.tagname
             self.out.append('\n\\DUtitle[%s]{' % classes)
             self.context.append('}\n')
         # Table caption
