@@ -212,9 +212,11 @@ class Writer(writers.Writer):
           ['--use-bibtex'],
           {'default': ''}),
          # TODO: implement "latex footnotes" alternative
-         ('Footnotes with numbers/symbols by Docutils. (currently ignored)',
+         ('Footnotes with numbers/symbols by Docutils. (default) '
+          '(The alternative, --latex-footnotes, is not implemented yet.)',
            ['--docutils-footnotes'],
-           {'default': True, 'action': 'store_true',
+           {'default': True,
+            'action': 'store_true',
             'validator': frontend.validate_boolean}),
         ),)
 
@@ -652,7 +654,7 @@ PreambleCmds.sidebar = r"""
 }"""
 
 PreambleCmds.subtitle = r"""
-% subtitle (for topic/sidebar)
+% subtitle (for sidebar)
 \providecommand*{\DUsubtitle}[1]{\par\emph{#1}\smallskip}"""
 
 PreambleCmds.documentsubtitle = r"""
@@ -1695,7 +1697,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
                            if cls != 'admonition']
         self.out.append('\n\\DUadmonition[%s]{' % ','.join(node['classes']))
 
-    def depart_admonition(self, node=None):
+    def depart_admonition(self, node):
         self.out.append('}\n')
 
     def visit_author(self, node):
@@ -1773,7 +1775,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.out.append( '}' )
 
     def visit_citation(self, node):
-        # TODO maybe use cite bibitems
         if self._use_latex_citations:
             self.push_output_collector([])
         else:
@@ -1784,6 +1785,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def depart_citation(self, node):
         if self._use_latex_citations:
+            # TODO: normalize label
             label = self.out[0]
             text = ''.join(self.out[1:])
             self._bibitems.append([label, text])
@@ -1813,7 +1815,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             followup_citation = False
             # check for a following citation separated by a space or newline
             sibling = node.next_node(descend=False, siblings=True)
-            if (isinstance(sibling, nodes.Text) 
+            if (isinstance(sibling, nodes.Text)
                 and sibling.astext() in (' ', '\n')):
                 sibling2 = sibling.next_node(descend=False, siblings=True)
                 if isinstance(sibling2, nodes.citation_reference):
@@ -2188,12 +2190,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self._enumeration_counters.pop()
 
     def visit_field(self, node):
-        # real output is done in siblings: _argument, _body, _name
+        # output is done in field_argument, field_body, field_name
         pass
 
     def depart_field(self, node):
         pass
-        ##self.out.append('%[depart_field]\n')
 
     def visit_field_body(self, node):
         pass
@@ -2497,7 +2498,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
     #
     # In both cases, we want to use a typewriter/monospaced typeface.
     # For "real" literal-blocks, we can use \verbatim, while for all
-    # the others we must use \mbox or \alltt.
+    # the others we must use \ttfamily and \raggedright.
     #
     # We can distinguish between the two kinds by the number of
     # siblings that compose this node: if it is composed by a
@@ -2520,27 +2521,31 @@ class LaTeXTranslator(nodes.NodeVisitor):
                     'Verbatim': r'\usepackage{fancyvrb}',
                     'verbatimtab': r'\usepackage{moreverb}'}
 
-        environment = self.literal_block_env
+        literal_env = self.literal_block_env
+
+        # Check, if it is possible to use a literal-block environment
+        _plaintext = self.is_plaintext(node)
         _in_table = self.active_table.is_open()
         # TODO: fails if normal text precedes the literal block.
         #       Check parent node instead?
         _autowidth_table = _in_table and self.active_table.colwidths_auto
-        _plaintext = self.is_plaintext(node)
-        _listings = (environment == 'lstlisting') and _plaintext
+        _use_env = _plaintext and not isinstance(node.parent,
+                                        (nodes.footnote, nodes.admonition))
+        _use_listings = (literal_env == 'lstlisting') and _use_env
 
         # Labels and classes:
         if node.get('ids'):
             self.out += ['\n'] + self.ids_to_labels(node)
         self.duclass_open(node)
+        # Highlight code?
         if (not _plaintext and 'code' in node['classes']
             and self.settings.syntax_highlight != 'none'):
             self.requirements['color'] = PreambleCmds.color
             self.fallbacks['code'] = PreambleCmds.highlight_rules
-
-        # Wrapper?
-        if _in_table and _plaintext and not _autowidth_table:
-            # minipage prevents extra vertical space with alltt
-            # and verbatim-like environments
+        # Wrap?
+        if _in_table and _use_env and not _autowidth_table:
+            # Wrap in minipage to prevent extra vertical space
+            # with alltt and verbatim-like environments:
             self.fallbacks['ttem'] = '\n'.join(['',
                 r'% character width in monospaced font',
                 r'\newlength{\ttemwidth}',
@@ -2548,26 +2553,28 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.out.append('\\begin{minipage}{%d\\ttemwidth}\n' %
                 (max(len(line) for line in node.astext().split('\n'))))
             self.context.append('\n\\end{minipage}\n')
-        elif not _in_table and not _listings:
-            # wrap in quote to set off vertically and indent
+        elif not _in_table and not _use_listings:
+            # Wrap in quote to set off vertically and indent
             self.out.append('\\begin{quote}\n')
             self.context.append('\n\\end{quote}\n')
         else:
             self.context.append('\n')
 
         # Use verbatim-like environment, if defined and possible
-        if environment and _plaintext and (not _autowidth_table or _listings):
+        # (in an auto-width table, only listings works):
+        if literal_env and _use_env and (not _autowidth_table
+                                         or _use_listings):
             try:
-                self.requirements['literal_block'] = packages[environment]
+                self.requirements['literal_block'] = packages[literal_env]
             except KeyError:
                 pass
             self.verbatim = True
-            if _in_table and _listings:
+            if _in_table and _use_listings:
                 self.out.append('\\lstset{xleftmargin=0pt}\n')
             self.out.append('\\begin{%s}%s\n' %
-                            (environment, self.literal_block_options))
-            self.context.append('\n\\end{%s}' % environment)
-        elif _plaintext and not _autowidth_table:
+                            (literal_env, self.literal_block_options))
+            self.context.append('\n\\end{%s}' % literal_env)
+        elif _use_env and not _autowidth_table:
             self.alltt = True
             self.requirements['alltt'] = r'\usepackage{alltt}'
             self.out.append('\\begin{alltt}\n')
@@ -2922,7 +2929,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def depart_system_message(self, node):
         self.out.append(self.context.pop())
-        self.depart_admonition()
+        self.depart_admonition(node)
 
     def visit_table(self, node):
         self.requirements['table'] = PreambleCmds.table
@@ -2974,8 +2981,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             return
         self.out.append('%\n')
         # do we need an anchor (\phantomsection)?
-        set_anchor = not(isinstance(node.parent, nodes.caption) or
-                         isinstance(node.parent, nodes.title))
+        set_anchor = not isinstance(node.parent, (nodes.caption, nodes.title))
         # TODO: where else can/must we omit the \phantomsection?
         self.out += self.ids_to_labels(node, set_anchor)
 

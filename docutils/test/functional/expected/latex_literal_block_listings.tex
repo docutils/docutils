@@ -36,6 +36,18 @@
      \csname \DocutilsClassFunctionName \endcsname}%
   {\csname end\DocutilsClassFunctionName \endcsname}%
 \fi
+
+% admonition (specially marked topic)
+\providecommand{\DUadmonition}[2][class-arg]{%
+  % try \DUadmonition#1{#2}:
+  \ifcsname DUadmonition#1\endcsname%
+    \csname DUadmonition#1\endcsname{#2}%
+  \else
+    \begin{center}
+      \fbox{\parbox{0.9\linewidth}{#2}}
+    \end{center}
+  \fi
+}
 % numeric or symbol footnotes with hyperlinks
 \providecommand*{\DUfootnotemark}[3]{%
   \raisebox{1em}{\hypertarget{#1}{}}%
@@ -70,6 +82,16 @@
   \usepackage{fixltx2e} % since 2015 loaded by default
 \fi
 
+% title for topics, admonitions, unsupported section levels, and sidebar
+\providecommand*{\DUtitle}[2][class-arg]{%
+  % call \DUtitle#1{#2} if it exists:
+  \ifcsname DUtitle#1\endcsname%
+    \csname DUtitle#1\endcsname{#2}%
+  \else
+    \smallskip\noindent\textbf{#2}\smallskip%
+  \fi
+}
+
 % titlereference role
 \providecommand*{\DUroletitlereference}[1]{\textsl{#1}}
 
@@ -88,8 +110,10 @@
 \begin{document}
 
 In LaTeX, literal blocks can be customized with the \textquotedbl{}literal-block-env\textquotedbl{}
-setting. This test file exists to check the latex writer output compiles and
-looks as expected. Start with a plain literal block:
+setting. This test file exists to check if the LaTeX writer output compiles
+and looks as expected.
+
+Start with a plain literal block:
 
 \begin{lstlisting}
 $\sin^2(x)$ and $\cos^2(x)$ equals one:
@@ -147,6 +171,17 @@ test &
 \hline
 \end{longtable*}
 
+\DUadmonition[note]{
+\DUtitle[note]{Note}
+
+A literal block in an admonition:
+
+\begin{quote}
+\ttfamily\raggedright
+\textbackslash{}sin\textasciicircum{}2~x
+\end{quote}
+}
+
 Parsed literal block with inline markup and leading whitespace:
 
 \begin{quote}
@@ -173,6 +208,13 @@ maths~$\sin^2(x)$,\\
 %
 \DUfootnotetext{id3}{id1}{*}{%
 This footnote is referenced in a \DUroletitlereference{parsed literal} block.
+
+It contains a literal block:
+
+\begin{quote}
+\ttfamily\raggedright
+\textbackslash{}sin\textasciicircum{}2~x
+\end{quote}
 }
 \begin{figure}[b]\raisebox{1em}{\hypertarget{cit2002}{}}[CIT2002]
 Sample Citation, 2017.

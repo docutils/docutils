@@ -185,7 +185,7 @@ mimics some of this behaviour via `Docutils specific LaTeX macros`_.
 *Block level elements*
   are wrapped in "class environments":
   ``\begin{DUclass}`` calls the optional styling command
-  ``\DUCLASSe«classargument»{}``, ``\end{DUclass}`` tries
+  ``\DUCLASS«classargument»{}``, ``\end{DUclass}`` tries
   ``\endDUCLASS«classargument»``.
 
 Customization is done by defining matching macros or environments.
@@ -196,7 +196,7 @@ Example 1:
   *Inline elements*
     The LaTeX function ``\textsc`` sets the argument in small caps::
 
-      \newcommand{\DUrolesmallcaps}[1]{\textsc{#1}}
+      \newcommand{\DUrolecustom}[1]{\textsc{#1}}
 
   *Block-level elements*
     The LaTeX directive (macro without argument) ``\scshape`` switches to
@@ -215,8 +215,7 @@ Example 2:
                                 {\end{enumerate}}%
     }
 
-Notes
-`````
+.. rubric:: Notes
 
 * Class arguments may contain numbers and hyphens, which need special
   treatment in LaTeX command names (see `class directive`_). The commands
