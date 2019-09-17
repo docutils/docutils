@@ -50,6 +50,7 @@ Changes Since 0.15
   - Make "rubric" bold-italic and left aligned.
   - Fix [ 339 ] don't use "alltt" or literal-block-environment
     in admonitions and footnotes.
+  - Deprecation warning for ``\docutilsrole``-prefixed styling commands.
 
 * docutils/writers/odf_odt/__init__.py:
 
