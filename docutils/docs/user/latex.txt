@@ -468,17 +468,22 @@ Example 1:
    ../ref/rst/directives.html#specific-admonitions
 
 Example 2:
-  Use ``.. note::`` for a margin note::
+  Print admonitions in the margin::
+
+    \newcommand{\DUadmonition}[2][class-arg]{\marginpar{#2}}
+
+  Make sure there is enough space to fit the note.
+  See also the marginnote_ package.
+
+Example 3:
+  Use the ``.. note::`` admonition for a margin note::
 
     \newcommand{\DUadmonitionnote}[1]{\marginpar{#1}}
 
   Make sure there is enough space to fit the note.
-  See also the marginnote_ and pdfcomment_ packages.
 
 .. _marginnote:
    http://mirror.ctan.org/help/Catalogue/entries/marginnote.html
-.. _pdfcomment:
-   http://mirror.ctan.org/help/Catalogue/entries/pdfcomment.html
 
 
 .. _custom role:
