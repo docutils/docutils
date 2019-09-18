@@ -53,10 +53,6 @@ The only **requirement** for running Docutils is Python_
 * For Docutils 0.5, Python 2.2.1+ is required.
 * Up to Docutils 0.4, Python 2.1 is required.
 
-Docutils is in active development and APIs should be considered 
-**experimental** subject to change at any time.  Although *any time* is a time 
-after serious thought and discussion.
-
 
 Download
 ========
