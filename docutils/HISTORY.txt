@@ -20,7 +20,7 @@ Changes Since 0.15
 
 * General
 
-  - Dropped support for Python 2.6, 3.3 and 3.4 (work in progress).
+  - Dropped support for Python 2.6, 3.3 and 3.4
   - Docutils now supports Python 2.7 and Python 3.5+ natively
     (without conversion by ``2to3``).
   - Keep `backslash escapes`__ in the document tree. Backslash characters in
@@ -30,19 +30,25 @@ Changes Since 0.15
 
   __ http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html#escaping-mechanism
 
-* docutils/utils/__init__.py
+* docutils/nodes.py
 
-  - unescape() definition moved to `nodes` to avoid circular import
-    dependency. Fixes [ 366 ].
+  - Speed up Node.next_node().
+  - Warn about Node.traverse() returning an iterator instead of a list
+    in future.
+
+* docutils/statemachine.py
+
+  - Patch [ 158 ]: Speed up patterns by saving compiled versions (eric89gxl)
 
 * docutils/transforms/universal.py
 
   - Fix [ 332 ]: Standard backslash escape for smartquotes.
   - Fix [ 342 ]: No escape in roles descending from `inline literal`.
 
-* docutils/statemachine.py
+* docutils/utils/__init__.py
 
-  - Patch [ 158 ]: Speed up patterns by saving compiled versions (eric89gxl)
+  - unescape() definition moved to `nodes` to avoid circular import
+    dependency. Fixes [ 366 ].
 
 * docutils/writers/latex2e/__init__.py:
 
@@ -78,6 +84,7 @@ Changes Since 0.15
 
   - Fix [ 359 ]: Test suite failes on Python 3.8. odt xml sorting.
     Use ElementTree instead of minidom.
+
 
 Release 0.15.1 (2019-07-24)
 ===========================

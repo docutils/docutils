@@ -23,15 +23,17 @@ Future changes
 ==============
 
 * The "latex" writer will wrap admonitions in a "DUclass" environment.
-  If your custom stylesheets modify "\DUadmonition" to style admonitions,
-  you will need to adapt them after upgrading to versions > 0.16.
+  Stylesheets modifying "\DUadmonition" will need to adapt.
+
   Styling commands using ``\docutilsrole`` prefix will be ignored
   in versions > 0.16 (see `Generating LaTeX with Docutils`__).
-  
+
   __ docs/user/latex.html#classes
 
 * Remove the `handle_io_errors` option from io.FileInput/Output.
   Used by Sphinx up to version 1.3.1, fixed in 1.3.2 (Nov 29, 2015).
+
+* Node.traverse() will return an iterator instead of a list.
 
 * Remove `utils.unique_combinations` (obsoleted by `itertools.combinations`).
 
