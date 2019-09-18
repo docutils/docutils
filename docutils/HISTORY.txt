@@ -30,6 +30,10 @@ Changes Since 0.15
 
   __ http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html#escaping-mechanism
 
+* docutils/io.py
+
+  - Remove the `handle_io_errors` option from io.FileInput/Output.
+
 * docutils/nodes.py
 
   - Speed up Node.next_node().
