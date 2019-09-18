@@ -33,6 +33,28 @@ if sys.version_info >= (3, 0):
     unicode = str  # noqa
     basestring = str  # noqa
 
+
+class _traversal_list():
+    # auxiliary class to report a FutureWarning
+    
+    def __init__(self, iterable):
+        self.nodes = list(iterable)
+
+    def __getattr__(self, name):
+        msg = ("The iterable returned by Node.traverse()\n    "
+               "will become an iterator instead of a list in "
+               "Docutils > 0.16.")
+        warnings.warn(msg, FutureWarning, stacklevel=2)
+        return getattr(self.nodes, name)
+    
+    def __iter__(self):
+        return iter(self.nodes)
+    
+    def __len__(self):
+        # used in Python 2.7 when typecasting to `list` or `tuple`
+        return len(self.nodes)
+
+
 # ==============================
 #  Functional Node Base Classes
 # ==============================
@@ -254,7 +276,7 @@ class Node(object):
         # value, the implementation returned a list up to v. 0.15. Some 3rd
         # party code still relies on this (e.g. Sphinx as of 2019-09-07).
         # Therefore, let's return a list until this is sorted out:
-        return list(self._traverse(condition, include_self,
+        return _traversal_list(self._traverse(condition, include_self,
                                    descend, siblings, ascend))
 
     def _traverse(self, condition=None, include_self=True, descend=True,

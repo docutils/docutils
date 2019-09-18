@@ -144,7 +144,7 @@ class FilterMessages(Transform):
     default_priority = 870
 
     def apply(self):
-        for node in list(self.document.traverse(nodes.system_message)):
+        for node in tuple(self.document.traverse(nodes.system_message)):
             if node['level'] < self.document.reporter.report_level:
                 node.parent.remove(node)
 
@@ -176,7 +176,7 @@ class StripComments(Transform):
 
     def apply(self):
         if self.document.settings.strip_comments:
-            for node in list(self.document.traverse(nodes.comment)):
+            for node in tuple(self.document.traverse(nodes.comment)):
                 node.parent.remove(node)
 
 
@@ -194,9 +194,9 @@ class StripClassesAndElements(Transform):
         if self.document.settings.strip_elements_with_classes:
             self.strip_elements = set(
                 self.document.settings.strip_elements_with_classes)
-            # Iterate over a list as removing the current node
+            # Iterate over a tuple as removing the current node
             # corrupts the iterator returned by `traverse`:
-            for node in list(self.document.traverse(self.check_classes)):
+            for node in tuple(self.document.traverse(self.check_classes)):
                 node.parent.remove(node)
 
         if not self.document.settings.strip_classes:
