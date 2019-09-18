@@ -30,9 +30,6 @@ Future changes
 
   __ docs/user/latex.html#classes
 
-* Remove the `handle_io_errors` option from io.FileInput/Output.
-  Used by Sphinx up to version 1.3.1, fixed in 1.3.2 (Nov 29, 2015).
-
 * Node.traverse() will return an iterator instead of a list.
 
 * Remove `utils.unique_combinations` (obsoleted by `itertools.combinations`).
@@ -48,10 +45,6 @@ Future changes
   post-processing that may break otherwise.
 
 .. _rst2html.py: docs/user/tools.html#rst2html-py
-
-* Allow escaping of author-separators in `bibliographic fields`__.
-
-  __ docs/ref/rst/restructuredtext.html#bibliographic-fields
 
 
 Release 0.16
@@ -71,15 +64,22 @@ Release 0.16
 
 * reStructuredText:
 
-  - Keep `backslash escapes`__ in the document tree.
+  - Keep `backslash escapes`__ in the document tree. This allows, e.g.,
+    escaping of author-separators in `bibliographic fields`__.
 
   __ http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html#escaping-mechanism
+  __ docs/ref/rst/restructuredtext.html#bibliographic-fields
+
 
 * LaTeX writer:
 
   - Informal titles of type "rubric" default to bold-italic and left aligned.
   - Deprecate ``\docutilsrole`` prefix for styling commands:
     use ``\DUrole`` instead.
+
+* docutils/io.py
+
+  - Remove the `handle_io_errors` option from io.FileInput/Output.
 
 
 Release 0.15

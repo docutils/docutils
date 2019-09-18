@@ -208,7 +208,7 @@ class FileInput(Input):
     def __init__(self, source=None, source_path=None,
                  encoding=None, error_handler='strict',
                  autoclose=True,
-                 mode='r' if sys.version_info >= (3, 0) else 'rU', **kwargs):
+                 mode='r' if sys.version_info >= (3, 0) else 'rU'):
         """
         :Parameters:
             - `source`: either a file-like object (which is read directly), or
@@ -220,21 +220,11 @@ class FileInput(Input):
               `sys.stdin` is the source).
             - `mode`: how the file is to be opened (see standard function
               `open`). The default 'rU' provides universal newline support
-              for text files on Python < 3.4.
+              for text files with Python 2.x.
         """
         Input.__init__(self, source, source_path, encoding, error_handler)
         self.autoclose = autoclose
         self._stderr = ErrorOutput()
-        # deprecation warning
-        for key in kwargs:
-            if key == 'handle_io_errors':
-                sys.stderr.write('deprecation warning: '
-                    'io.FileInput() argument `handle_io_errors` '
-                    'is ignored since Docutils 0.10 (2012-12-16) '
-                    'and will soon be removed.')
-            else:
-                raise TypeError('__init__() got an unexpected keyword '
-                                "argument '%s'" % key)
 
         if source is None:
             if source_path:
@@ -244,7 +234,6 @@ class FileInput(Input):
                               'errors': self.error_handler}
                 else:
                     kwargs = {}
-
                 try:
                     self.source = open(source_path, mode, **kwargs)
                 except IOError as error:
