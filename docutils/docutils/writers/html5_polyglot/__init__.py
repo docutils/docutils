@@ -217,7 +217,3 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
     # TODO: use the new HTML5 element <section>?
     # def visit_section(self, node):
     # def depart_section(self, node):
-
-    # TODO: use the new HTML5 element <aside>?
-    # def visit_topic(self, node):
-    # def depart_topic(self, node):

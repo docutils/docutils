@@ -1514,11 +1514,10 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_title(self, node):
         """Only 6 section levels are supported by HTML."""
-        check_id = 0  # TODO: is this a bool (False) or a counter?
         close_tag = '</p>\n'
         if isinstance(node.parent, nodes.topic):
             self.body.append(
-                  self.starttag(node, 'p', '', CLASS='topic-title first'))
+                  self.starttag(node, 'p', '', CLASS='topic-title'))
         elif isinstance(node.parent, nodes.sidebar):
             self.body.append(
                   self.starttag(node, 'p', '', CLASS='sidebar-title'))

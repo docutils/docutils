@@ -87,7 +87,8 @@ content
 Field list variants
 ```````````````````
 
-For field lists, the "compact/open", "narrow" and "run-in" styles are defined.
+For field lists, the "compact/open", "narrow" and "run-in" styles are defined
+in the style sheet ``plain.css``.
 
 *compact*
   .. class:: compact
@@ -194,7 +195,7 @@ setting (or command line argument).
    :alt: Conforms to HTML 5
    :target: http://www.w3.org/TR/html5/
 
-.. |validator| image:: https://validator-suite.w3.org/icons/vs-blue-256.png
+.. |validator| image:: https://www.w3.org/Icons/ValidatorSuite/vs-blue-190.png
    :height: 31
    :width: 88
    :alt: Check validity!

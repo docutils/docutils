@@ -32,10 +32,10 @@
 h1.title, p.subtitle {
   text-align: center;
 }
-p.admonition-title,
 p.topic-title,
 p.sidebar-title,
 p.rubric,
+p.admonition-title,
 p.system-message-title {
   font-weight: bold;
 }
@@ -93,7 +93,7 @@ dl.simple > dd, dl.compact > dd {
 }
 
 /* Table of Contents */
-div.topic.contents { margin: 0; }
+div.topic.contents { margin: 0.5em 0; }
 div.topic.contents ul {
   list-style-type: none;
   padding-left: 1.5em;
@@ -152,7 +152,7 @@ pre.address { font: inherit; }
 dd.authors > p { margin: 0; }
 
 /* Option Lists */
-dl.option-list { margin-left: 40px; }
+dl.option-list { margin-left: 1.5em; }
 dl.option-list > dt { font-weight: normal; }
 span.option { white-space: nowrap; }
 
@@ -189,11 +189,7 @@ table.align-left {
 }
 .figure.align-center,
 img.align-center,
-object.align-center {
-  margin-left: auto;
-  margin-right: auto;
-  display: block;
-}
+object.align-center,
 table.align-center {
   margin-left: auto;
   margin-right: auto;
@@ -204,6 +200,11 @@ object.align-right,
 table.align-right {
   margin-left: auto;
 }
+.figure.align-center, .figure.align-right,
+img.align-center, img.align-right,
+object.align-center, object.align-right {
+  display: block;
+}
 /* reset inner alignment in figures and tables */
 /* div.align-left, div.align-center, div.align-right, */
 table.align-left, table.align-center, table.align-right
@@ -212,15 +213,19 @@ table.align-left, table.align-center, table.align-right
 /* Admonitions and System Messages */
 div.admonition,
 div.system-message,
-div.sidebar{
-  margin: 40px;
+div.sidebar,
+aside.sidebar {
+  margin: 1em 1.5em;
   border: medium outset;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
   padding-right: 1em;
   padding-left: 1em;
 }
 
 /* Sidebar */
-div.sidebar {
+div.sidebar,
+aside.sidebar {
   width: 30%;
   max-width: 26em;
   float: right;
@@ -235,13 +240,8 @@ pre.doctest-block,
 pre.math,
 pre.code {
   margin-left: 1.5em;
-  margin-right: 1.5em
+  margin-right: 1.5em;
 }
-pre.literal-block,
-pre.doctest-block,
-pre.math,
-pre.code {
-  font-family: monospace;
 pre.code .ln { color: gray; } /* line numbers */
 
 /* Tables */
@@ -264,4 +264,15 @@ table.borderless td, table.borderless th {
   border: 0;
   padding: 0;
   padding-right: 0.5em /* separate table cells */
+}
+
+/* Document Header and Footer */
+/* div.header,				      */
+/* header { border-bottom: 1px solid black; } */
+/* div.footer,				      */
+/* footer { border-top: 1px solid black; }    */
+
+/* new HTML5 block elements: set display for older browsers */
+header, section, footer, aside, nav, main, article, figure {
+  display: block;
 }
