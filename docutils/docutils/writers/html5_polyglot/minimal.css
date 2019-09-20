@@ -182,12 +182,14 @@ div.line-block div.line-block {
 
 /* Figures, Images, and Tables */
 .figure.align-left,
+figure.align-left,
 img.align-left,
 object.align-left,
 table.align-left {
   margin-right: auto;
 }
 .figure.align-center,
+figure.align-center,
 img.align-center,
 object.align-center,
 table.align-center {
@@ -195,20 +197,24 @@ table.align-center {
   margin-right: auto;
 }
 .figure.align-right,
+figure.align-right,
 img.align-right,
 object.align-right,
 table.align-right {
   margin-left: auto;
 }
 .figure.align-center, .figure.align-right,
+figure.align-center, figure.align-right,
 img.align-center, img.align-right,
 object.align-center, object.align-right {
   display: block;
 }
 /* reset inner alignment in figures and tables */
-/* div.align-left, div.align-center, div.align-right, */
-table.align-left, table.align-center, table.align-right
-{ text-align: inherit }
+.figure.align-left, .figure.align-right,
+figure.align-left, figure.align-right,
+table.align-left, table.align-center, table.align-right {
+  text-align: inherit;
+}
 
 /* Admonitions and System Messages */
 div.admonition,

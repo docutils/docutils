@@ -22,6 +22,10 @@ For a more detailed list of changes, please see the `Docutils History`_.
 Future changes
 ==============
 
+* The "html5" will use the new semantic tags <main>, <section>, <header>,
+  <footer>, <aside>, <figure>, and <figcaption>.
+  See ``minimal.css`` and ``plain.css`` for styling rule examples.
+
 * The "latex" writer will wrap admonitions in a "DUclass" environment.
   Stylesheets modifying "\DUadmonition" will need to adapt.
 
@@ -69,7 +73,6 @@ Release 0.16
 
   __ http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html#escaping-mechanism
   __ docs/ref/rst/restructuredtext.html#bibliographic-fields
-
 
 * LaTeX writer:
 
