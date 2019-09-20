@@ -25,7 +25,8 @@ body {
   margin: 0;
   background-color: #dbdbdb;
 }
-div.document {
+div.document,
+main {
   line-height:1.3;
   counter-reset: table;
   /* counter-reset: figure; */
@@ -199,20 +200,22 @@ dl.footnote {
 
 /* let content flow to the side of aligned images and figures */
 .figure.align-left,
+figure.align-left,
 img.align-left,
 object.align-left {
   display: block;
   clear: left;
   float: left;
-  margin-right: 1em
+  margin-right: 1em;
 }
 .figure.align-right,
+figure.align-right,
 img.align-right,
 object.align-right {
   display: block;
   clear: right;
   float: right;
-  margin-left: 1em
+  margin-left: 1em;
 }
 /* Stop floating sidebars, images and figures at section level 1,2,3 */
 h1, h2, h3 { clear: both; }
@@ -221,12 +224,13 @@ h1, h2, h3 { clear: both; }
 
 /* Move right. In a layout with fixed margins, */
 /* it can be moved into the margin.   	       */
-div.sidebar {
+div.sidebar,
+aside.sidebar {
   width: 30%;
   max-width: 26em;
   margin-left: 1em;
   margin-right: -2%;
-  background-color: #ffffee ;
+  background-color: #ffffee;
 }
 
 /* Code */
