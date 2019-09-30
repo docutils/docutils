@@ -426,6 +426,14 @@ reference (1_).  Of course, each type of reference (hyperlink,
 footnote, citation) may be processed and rendered differently.  Some
 care should be taken to avoid reference name conflicts.
 
+.. note::
+  Links to the target position in generated HTML documents must use the
+  auto-generated `identifier` which may differ from the `reference name` due
+  to additional restrictions_ or the use of a numbered id to avoid
+  duplication.
+
+  .. _restrictions: directives.html#rationale
+
 
 Document Structure
 ==================
