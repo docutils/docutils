@@ -335,7 +335,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         classes = []
         languages = []
         # unify class arguments and move language specification
-        for cls in node.get('classes', []) + atts.pop('class', '').split() :
+        for cls in node.get('classes', []) + atts.pop('class', '').split():
             if cls.startswith('language-'):
                 languages.append(cls[9:])
             elif cls.strip() and cls not in classes:
