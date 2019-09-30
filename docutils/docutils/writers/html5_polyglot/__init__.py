@@ -155,7 +155,7 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
     and examples.
     """
 
-    # <acronym> tag not supported in HTML5. Use the <abbr> tag instead.
+    # <acronym> tag obsolete in HTML5. Use the <abbr> tag instead.
     def visit_acronym(self, node):
         # @@@ implementation incomplete ("title" attribute)
         self.body.append(self.starttag(node, 'abbr', ''))

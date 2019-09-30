@@ -7,6 +7,7 @@
 .. include:: data/custom_roles.txt
 .. include:: data/svg_images.txt
 .. include:: data/swf_images.txt
+.. include:: html5-text-level-tags.txt
 
 Changes to the html4css1 writer
 ===============================
@@ -183,7 +184,6 @@ setting (or command line argument).
      False   True    True
      True    True    True
      ======= ======= ==========
-
 
 .. include:: data/errors.txt
 
