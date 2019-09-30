@@ -22,26 +22,33 @@ For a more detailed list of changes, please see the `Docutils History`_.
 Future changes
 ==============
 
-* The "html5" will use the new semantic tags <main>, <section>, <header>,
-  <footer>, <aside>, <figure>, and <figcaption>.
-  See ``minimal.css`` and ``plain.css`` for styling rule examples.
+* HTML5 writer:
+    Use the new semantic tags <main>, <section>, <header>,
+    <footer>, <aside>, <figure>, and <figcaption>.
+    See ``minimal.css`` and ``plain.css`` for styling rule examples.
 
-* The "latex" writer will wrap admonitions in a "DUclass" environment.
-  Stylesheets modifying "\DUadmonition" will need to adapt.
+    Use HTML text-level tags <small>, <s>, <q>, <dfn>, <var>, <samp>, <kbd>,
+    <i>, <b>, <u>, <mark>, and <bdi> if matching class value is found in
+    `inline` and `literal` elements.
 
-  Styling commands using ``\docutilsrole`` prefix will be ignored
-  in versions > 0.16 (see `Generating LaTeX with Docutils`__).
+* LaTeX writer:
+    Wrap admonitions in a "DUclass" environment. Stylesheets modifying
+    "\DUadmonition" will need to adapt.
 
-  __ docs/user/latex.html#classes
+    Styling commands using ``\docutilsrole`` prefix will be ignored in
+    versions > 0.16 (see `Generating LaTeX with Docutils`__).
 
-* Node.traverse() will return an iterator instead of a list.
+    __ docs/user/latex.html#classes
 
-* Remove `utils.unique_combinations` (obsoleted by `itertools.combinations`).
+* ``Node.traverse()`` will return an iterator instead of a list.
+
+* Remove ``utils.unique_combinations``
+  (obsoleted by ``itertools.combinations``).
 
 * The default HTML writer "html" with frontend ``rst2html.py`` may change
   from "html4css1" to "html5".
 
-  Use `get_writer_by_name('html')` or the rst2html.py_ front end, if you
+  Use ``get_writer_by_name('html')`` or the rst2html.py_ front end, if you
   want the output to be up-to-date automatically.
 
   Use a specific writer name or front end, if you depend on stability of the
