@@ -1,5 +1,5 @@
 Text-level semantics
-====================
+--------------------
 
 `HTML 5 tags for representation of text-level semantics`__ and their
 reStructuredText equivalents.
@@ -216,9 +216,40 @@ __ https://html.spec.whatwg.org/#text-level-semantics
 
     www.simply​​\ |wbr|\orange\ |wbr|\juice.com
 
+Indicating Edits
+----------------
 
-.. [#attribute-optional] Would gain from support for attributes to inline
-   roles (title argument). See TODO_
+`HTML tags for representation of edits to the document`__ and their
+reStructuredText equivalents.
+
+__ https://html.spec.whatwg.org/multipage/edits.html
+
+:ins:
+  Additions [#attribute-optional]_
+
+    .. role:: ins
+
+    This text has "always" been here. :ins:`This text has been inserted.`
+    
+    .. container:: ins
+    
+      This paragraph has been inserted.
+      
+
+:del:
+  Removed content [#attribute-optional]_
+
+    .. role:: del
+
+    :del:`This text has been deleted`, here is the rest of the paragraph.
+
+    .. container:: del
+    
+      This paragraph has been deleted.
+
+
+.. [#attribute-optional] Would gain from support for attributes/arguments
+   to inline roles. See TODO_
 
 .. [#attribute-required] Requires support for attributes to inline
    roles to make sense.

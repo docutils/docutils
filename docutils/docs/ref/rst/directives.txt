@@ -1730,6 +1730,8 @@ The text above is parsed and transformed into this doctree fragment::
           may be followed by any number of letters, digits ([0-9]),
           hyphens ("-"), underscores ("_"), colons (":"), and periods
           (".").
+          
+          -- http://www.w3.org/TR/html401/types.html#type-name
 
     - The `CSS1 spec`_ defines identifiers based on the "name" token
       ("flex" tokenizer notation below; "latin1" and "escape" 8-bit

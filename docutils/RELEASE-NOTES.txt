@@ -28,8 +28,12 @@ Future changes
     See ``minimal.css`` and ``plain.css`` for styling rule examples.
 
     Use HTML text-level tags <small>, <s>, <q>, <dfn>, <var>, <samp>, <kbd>,
-    <i>, <b>, <u>, <mark>, and <bdi> if matching class value is found in
-    `inline` and `literal` elements.
+    <i>, <b>, <u>, <mark>, and <bdi> if a matching class value
+    is found in `inline` and `literal` elements.
+
+    Use HTML tags <ins> and <del> if a matching class value
+    is found in `inline`, `literal`, or `container` elements.
+
 
 * LaTeX writer:
     Wrap admonitions in a "DUclass" environment. Stylesheets modifying
