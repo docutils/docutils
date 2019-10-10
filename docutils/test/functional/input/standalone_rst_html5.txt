@@ -5,6 +5,10 @@
 .. include:: data/table_complex.txt
 .. include:: data/list_table.txt
 .. include:: data/custom_roles.txt
+
+HTML specific
+=============
+
 .. include:: data/svg_images.txt
 .. include:: data/swf_images.txt
 .. include:: html5-text-level-tags.txt
