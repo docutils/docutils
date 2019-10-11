@@ -127,7 +127,8 @@ class Contents(Transform):
             entrytext = self.copy_and_filter(title)
             reference = nodes.reference('', '', refid=section['ids'][0],
                                         *entrytext)
-            ref_id = self.document.set_id(reference)
+            ref_id = self.document.set_id(reference,
+                                          suggested_prefix='toc-entry')
             entry = nodes.paragraph('', '', reference)
             item = nodes.list_item('', entry)
             if ( self.backlinks in ('entry', 'top')
