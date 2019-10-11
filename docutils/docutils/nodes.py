@@ -20,6 +20,7 @@ hierarchy.
 .. _DTD: http://docutils.sourceforge.net/docs/ref/docutils.dtd
 """
 from __future__ import print_function
+from collections import Counter
 
 __docformat__ = 'reStructuredText'
 
@@ -36,7 +37,7 @@ if sys.version_info >= (3, 0):
 
 class _traversal_list():
     # auxiliary class to report a FutureWarning
-    
+
     def __init__(self, iterable):
         self.nodes = list(iterable)
 
@@ -46,10 +47,10 @@ class _traversal_list():
                "Docutils > 0.16.")
         warnings.warn(msg, FutureWarning, stacklevel=2)
         return getattr(self.nodes, name)
-    
+
     def __iter__(self):
         return iter(self.nodes)
-    
+
     def __len__(self):
         # used in Python 2.7 when typecasting to `list` or `tuple`
         return len(self.nodes)
@@ -1320,8 +1321,8 @@ class document(Root, Structural, Element):
         self.symbol_footnote_start = 0
         """Initial symbol footnote symbol index."""
 
-        self.id_start = 1
-        """Initial ID number."""
+        self.id_counter = Counter()
+        """Numbers added to otherwise identical IDs."""
 
         self.parse_messages = []
         """System messages generated while parsing."""
@@ -1355,23 +1356,37 @@ class document(Root, Structural, Element):
         domroot.appendChild(self._dom_node(domroot))
         return domroot
 
-    def set_id(self, node, msgnode=None):
+    def set_id(self, node, msgnode=None, suggested_prefix=''):
         for id in node['ids']:
             if id in self.ids and self.ids[id] is not node:
                 msg = self.reporter.severe('Duplicate ID: "%s".' % id)
                 if msgnode != None:
                     msgnode += msg
         if not node['ids']:
+            id_prefix = self.settings.id_prefix
+            auto_id_prefix = self.settings.auto_id_prefix
+            id = ''
             for name in node['names']:
-                id = self.settings.id_prefix + make_id(name)
+                id = id_prefix + make_id(name)
+                # TODO: allow names starting with numbers if `id_prefix`
+                # is non-empty:  id = make_id(id_prefix + name)
                 if id and id not in self.ids:
                     break
             else:
-                id = ''
-                while not id or id in self.ids:
-                    id = (self.settings.id_prefix +
-                          self.settings.auto_id_prefix + str(self.id_start))
-                    self.id_start += 1
+                if id and auto_id_prefix.endswith('%'):
+                    # disambiguate name-derived ID
+                    # TODO: remove second condition after announcing change
+                    prefix = id + '-'
+                else:
+                    prefix = id_prefix + auto_id_prefix
+                    if  prefix.endswith('%'):
+                        prefix = '%s%s-' % (prefix[:-1], suggested_prefix
+                                                    or make_id(node.tagname))
+                while True:
+                    self.id_counter[prefix] += 1
+                    id = '%s%d' % (prefix, self.id_counter[prefix])
+                    if id not in self.ids:
+                        break
             node['ids'].append(id)
         self.ids[id] = node
         return id
