@@ -199,9 +199,12 @@ auto_id_prefix
 
 Prefix prepended to all auto-generated IDs generated within the
 document, after id_prefix_.
+A trailing "%" is replaced with the tag name (new in Docutils 0.16).
 
-Default: "id".
+Default: "id". (Will be `changed to "%" in future`__.)
 Options: ``--auto-id-prefix`` (hidden, intended mainly for programmatic use).
+
+__ ../../RELEASE-NOTES.html#future-changes
 
 datestamp
 ---------
