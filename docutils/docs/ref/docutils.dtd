@@ -49,7 +49,7 @@ Expand the set of `XML standard attribute types`_.
 <!-- A space-separated list of `class names`.
 
 Docutils normalizes class names to conform to HTML4.1 and CSS1.0 `name`
-requirements, i.e. the regular expression ``[a-z](-?[a-z0-9]+)*`` via an
+requirements, i.e. the regular expression ``[a-z](-?[a-z0-9]+)*``, via an
 `identifier normalisation`. -->
 <!ENTITY % classnames.type "NMTOKENS">
 

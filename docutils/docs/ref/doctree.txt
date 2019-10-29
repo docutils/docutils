@@ -36,7 +36,6 @@ throughout this document.  For a gentle introduction, see `A
 ReStructuredText Primer`_.  For complete technical details, see the
 `reStructuredText Markup Specification`_.
 
-
 .. _Docutils: http://docutils.sourceforge.net/
 .. _Docutils Generic DTD:
 .. _Docutils DTD:
@@ -994,6 +993,11 @@ Pseudo-XML_ fragment from simple parsing::
 
 ``colspec``
 ===========
+
+:Attributes:
+    The ``colspec`` element contains the `common attributes`_ (ids_,
+    names_, dupnames_, source_, and classes_), plus `stub`_.
+
 
 `To be completed`_.
 
@@ -2153,8 +2157,7 @@ The ``field_list`` element contains two-column table-like structures
 resembling database records (label & data pairs).  Field lists are
 often meant for further processing.  In reStructuredText_, field lists
 are used to represent bibliographic fields (contents of the docinfo_
-element) and directive options.
-
+element) and `directive options`_.
 
 Details
 -------
@@ -2236,6 +2239,8 @@ Pseudo-XML_ fragment from simple parsing::
             <field_body>
                 <paragraph>
                     integer
+
+.. _directive options: rst/restructuredtext.html#directive-options
 
 
 ``field_name``
@@ -2490,6 +2495,11 @@ Pseudo-XML_ fragment from simple parsing::
 
 ``image``
 =========
+
+:Attributes:
+    The ``image`` element contains the `common attributes`_ (ids_,
+    names_, dupnames_, source_, and classes_), plus uri, alt, height_,
+    width_, and scale_.
 
 `To be completed`_.
 
@@ -2956,7 +2966,7 @@ Content Model
 The ``math_block`` element contains a block of text in `LaTeX math
 format` [#latex-math]_ that is typeset as mathematical notation
 (display formula). The ``math_block`` element is generated during
-the initial parse from a "math" directive.
+the initial parse from a `"math" directive`_.
 
 If the output format does not support math typesetting, the content is
 inserted verbatim.
@@ -4475,6 +4485,157 @@ Pseudo-XML_ fragment from simple parsing::
             Reader discretion is strongly advised.
 
 
+.. _attribute type:
+
+---------------
+Attribute types
+---------------
+
+.. contents:: :local:
+              :depth: 1
+
+Standard attribute types
+========================
+
+Attribute types defined in the `attribute types`__ section of the
+`XML 1.0 specification`_:
+
+_`CDATA`
+    Character data.  CDATA attributes may contain arbitrary text.
+
+_`NMTOKEN`
+    A "name token".  One or more of letters, digits, ".", "-", and
+    "_".
+
+_`NMTOKENS`
+    One or more space-separated NMTOKEN values.
+
+_`EnumeratedType`
+    The attribute value may be one of a specified list of values.
+
+Docutils uses `custom attribute types`_ instead of the ID, IDREF, and IDREFS
+standard types, because it does not adhere to the `One ID per Element Type`_
+validity constraint.
+
+__ `XML attribute types`_
+
+
+Custom attribute types
+======================
+
+The Docutils DTD defines `parameter entities`_ that resolve to standard
+attribute types to highlight specific attribute value constraints.
+
+_`yesorno`
+    Boolean: no if zero ("0"), yes if any other value.
+    Resolves to ``NMTOKEN``.
+
+    Used in the `anonymous`_ and `stub`_ attributes.
+
+_`number`
+    The attribute value must be a number. Resolves to ``NMTOKEN``.
+
+    Used in the `start`_ and `scale`_ attributes.
+
+    .. also ltrim, rtrim
+
+_`measure`
+    A number which may be immediately followed by a unit or percent sign.
+    Resolves to CDATA.
+
+    Used in the `height`_ and `width`_ attributes.
+
+_`classnames.type`
+    A space-separated list of `class names` [#classname]_. Resolves to NMTOKEN.
+
+    Used in the `classes`_ attribute.
+
+_`refname.type`
+    A normalized_ `reference name`_. Resolves to CDATA (in contrast to
+    NMTOKENS, `reference names`_ may consist of any text).
+
+    Used in the `refname`_ attribute.
+
+_`refnames.type`
+    A space-separated list of `reference names`_. Resolves to CDATA.
+
+    `Backslash escaping`_ is used for space characters inside a `reference
+    name`.
+
+    Used in the `names`_ and `dupnames`_ attributes.
+
+_`ids.type`
+    A space-separated list of unique `identifier keys` [#identifier]_.
+    Resolves to NMTOKENS (the XML `standard attribute types`_ do not provide
+    for a list of IDs).
+
+    Used in the `ids`_ attribute.
+
+_`idref.type`
+    A reference to an `identifier key`_.
+    Resolves to NMTOKEN (Docutils identifier keys do not use the ID standard
+    type as required by the `IDREF Validity constraint`_).
+
+    Used in the `refid`_ attribute.
+
+_`idrefs.type`
+    A list of references to element identifiers.
+    Resolves to NMTOKENS.
+
+    Used in the `backrefs`_ attribute.
+
+.. _`class names`:
+
+.. [#classname] `Class names` define sub-classes of existing elements.
+
+   In reStructuredText, custom `class names` can be specified using
+   the `"class" directive`_, a directive's `:class: option`_, or
+   `custom interpreted text roles`_.
+   Docutils normalizes them to conform to both, HTML4.1 and CSS1.0 `name`
+   requirements (the regular expression ``[a-z](-?[a-z0-9]+)*``) via the
+   `identifier normalization`_.
+
+.. _identifiers:
+.. _identifier key:
+.. _identifier keys:
+
+.. [#identifier] `Identifier keys` are used for cross references in
+   generated documents. Therefore, they must comply with restrictions in the
+   respective output formats (HTML4.1__, HTML5__, `polyglot HTML`__,
+   LaTeX__, ODT__, troff (manpage), XML__).
+
+   Identifier keys cannot be specified directly in reStructuredText.
+   Docutils generates them by applying the `identifier normalization`_ to
+   `reference names`_ or from the auto_id_prefix_, prepending the id_prefix_
+   and potentially appending numbers for disambiguation.
+
+   __ http://www.w3.org/TR/html401/types.html#type-name
+   __ https://www.w3.org/TR/html50/dom.html#the-id-attribute
+   __ https://www.w3.org/TR/html-polyglot/#id-attribute
+   __ https://tex.stackexchange.com/questions/18311/what-are-the-valid-names-as-labels
+   __ https://help.libreoffice.org/6.3/en-US/text/swriter/01/04040000.html?DbPAR=WRITER#bm_id4974211
+   __ https://www.w3.org/TR/REC-xml/#id
+
+
+.. _XML 1.0 specification: https://www.w3.org/TR/REC-xml
+.. _XML attribute types: https://www.w3.org/TR/REC-xml/#sec-attribute-types
+.. _One ID per Element Type: https://www.w3.org/TR/REC-xml/#one-id-per-el
+.. .. _ID attribute type: https://www.w3.org/TR/REC-xml/#id
+.. _parameter entities: https://www.w3.org/TR/REC-xml/#dt-PE
+.. _IDREF Validity constraint: https://www.w3.org/TR/REC-xml/#idref
+
+.. _reference names:
+.. _reference name: rst/restructuredtext.html#reference-names
+.. _backslash escaping: rst/restructuredtext.html#escaping-mechanism
+.. _id_prefix: ../user/config.html#id-prefix
+.. _auto_id_prefix: ../user/config.html#auto-id-prefix
+.. _identifier normalization:
+    rst/directives.html#identifier-normalization
+.. _`:class: option`: rst/directives.html#class-option
+.. _custom interpreted text roles:
+    rst/directives.html#custom-interpreted-text-roles
+
+
 ---------------------
  Attribute Reference
 ---------------------
@@ -4483,53 +4644,14 @@ Pseudo-XML_ fragment from simple parsing::
               :depth: 1
 
 _`Common Attributes`: Through the `%basic.atts;`_ parameter entity,
-all elements contain the following attributes: ids_, names_, dupnames_,
+all elements contain the following attributes: ids_, names_ or dupnames_,
 source_, and classes_.
-
-.. _attribute type:
-
-Attribute types:
-
-``CDATA``
-    Character data.  ``CDATA`` attributes may contain arbitrary text.
-
-``ID``
-    Like a ``NMTOKEN``, but it must begin with a letter (a "name
-    production").  Identical ``ID`` values must not appear more than
-    once in a document; i.e., ID values must uniquely identify their
-    elements.
-
-``IDREF``
-    A reference to an ``ID`` value (a name production) of another
-    element.
-
-``IDREFS``
-    One or more space-separated ``ID`` references (name productions).
-
-``NMTOKEN``
-    A "name token".  One or more of letters, digits, ".", "-", and
-    "_".
-
-``NMTOKENS``
-    One or more space-separated ``NMTOKEN`` names.
-
-``%yesorno;``
-    No if zero ("0"), yes if any other value.  This is a parameter
-    entity which resolves to a ``NMTOKEN`` attribute type.
-
-``%number;``
-    This emphasizes that the attribute value must be a number.  This
-    is a parameter entity which resolves to a ``NMTOKEN`` attribute
-    type.
-
-enumeration
-    The attribute value may be one of a specified list of values.
 
 
 ``anonymous``
 =============
 
-`Attribute type`_: ``%yesorno;``.  Default value: none (implies no).
+Attribute type: `yesorno`_.  Default value: none (implies no).
 
 The ``anonymous`` attribute is used for unnamed hyperlinks in the
 target_ and reference_ elements (via the `%anonymous.att;`_ parameter
@@ -4539,7 +4661,7 @@ entity).
 ``auto``
 ========
 
-`Attribute type`_: ``CDATA``.  Default value: none.
+Attribute type: `CDATA`_.  Default value: none.
 
 The ``auto`` attribute is used to indicate automatically-numbered
 footnote_, footnote_reference_ and title_ elements (via the
@@ -4549,9 +4671,9 @@ footnote_, footnote_reference_ and title_ elements (via the
 ``backrefs``
 ============
 
-`Attribute type`_: ``IDREFS``.  Default value: none.
+Attribute type: `idrefs.type`_.  Default value: none.
 
-The ``backrefs`` attribute contains a space-separated list of ids_
+The ``backrefs`` attribute contains a space-separated list of identifier_
 references, used for backlinks from footnote_, citation_, and
 system_message_ elements (via the `%backrefs.att;`_ parameter entity).
 
@@ -4559,7 +4681,7 @@ system_message_ elements (via the `%backrefs.att;`_ parameter entity).
 ``bullet``
 ==========
 
-`Attribute type`_: ``CDATA``.  Default value: none.
+Attribute type: `CDATA`_.  Default value: none.
 
 The ``bullet`` attribute is used in the bullet_list_ element.
 
@@ -4567,20 +4689,17 @@ The ``bullet`` attribute is used in the bullet_list_ element.
 ``classes``
 ===========
 
-`Attribute type`_: ``NMTOKENS``.  Default value: none.
+Attribute type: `classnames.type`_.  Default value: none.
 
-The ``classes`` attribute is a list containing zero or more names used
-to classify an element. The names are converted to conform to the
-regular expression ``[a-z](-?[a-z0-9]+)*`` (see the `"class"
-directive`_ description for details and rationale_).
+The ``classes`` attribute is a space separated list containing zero or more
+`class names`_.
 
-The purpose of the attribute is to indicate
-an "is-a" variant relationship, to allow an extensible way of defining
-sub-classes of existing elements.  It can be used to carry context
-forward between a Docutils Reader and Writer, when a custom structure
-is reduced to a standardized document tree.  One common use is in
-conjunction with stylesheets, to add selection criteria.  It should
-not be used to carry formatting instructions or arbitrary content.
+The purpose of the attribute is to indicate an "is-a" variant relationship,
+to allow an extensible way of defining sub-classes of existing elements.  It
+can be used to carry context forward between a Docutils Reader and Writer,
+when a custom structure is reduced to a standardized document tree.  One
+common use is in conjunction with stylesheets, to add selection criteria.
+It should not be used to carry formatting instructions or arbitrary content.
 
 The ``classes`` attribute's contents should be ignorable.  Writers that
 are not familiar with the variant expressed should be able to ignore
@@ -4590,12 +4709,12 @@ the attribute.
 elements.
 
 .. _"class" directive: rst/directives.html#class
-.. _rationale: rst/directives.html#rationale
+
 
 ``delimiter``
 =============
 
-`Attribute type`_: ``CDATA``.  Default value: none.
+Attribute type: `CDATA`_.  Default value: none.
 
 The ``delimiter`` attribute is used in the option_argument_ element.
 
@@ -4603,54 +4722,81 @@ The ``delimiter`` attribute is used in the option_argument_ element.
 ``dupnames``
 ============
 
-`Attribute type`_: ``CDATA``.  Default value: none.
+Attribute type: `refnames.type`_.  Default value: none.
 
-The ``dupnames`` attribute is a list containing the names of an
-element when there has been a naming conflict.  The contents of the
-``dupnames`` attribute would have been transferred from the `names`_
-attribute.  An element may have at most one of the ``names`` or
-``dupnames`` attributes, but not both.  ``dupnames`` is one of the
-`common attributes`_, shared by all Docutils elements.
+The ``dupnames`` attribute replaces the `names`_ attribute
+when there has been a naming conflict.
+``dupnames`` is one of the `common attributes`_, shared by all
+Docutils elements.
 
 
 ``enumtype``
 ============
 
-`Attribute type`_: enumeration, one of "arabic", "loweralpha",
+Attribute type: EnumeratedType_, one of "arabic", "loweralpha",
 "upperalpha", "lowerroman", or "upperroman".  Default value: none.
 
 The ``enumtype`` attribute is used in the enumerated_list_ element.
 
 
+``height``
+==========
+
+Attribute type: measure_.  Default value: none.
+
+The ``height`` attribute is used in the image_ element.
+
+
 ``ids``
 =======
 
-`Attribute type`_: ``NMTOKENS``.  Default value: none.
+Attribute type: `ids.type`_.  Default value: none.
 
-The ``ids`` attribute is a list containing one or more unique
-identifier keys.  ``ids`` is one of the `common attributes`_, shared
-by all Docutils elements.
+The ``ids`` attribute is a space separated list containing one or more
+unique `identifier keys`_, typically assigned by the system.
+
+``ids`` is one of the `common attributes`_, shared by all Docutils
+elements.
+
+.. TODO:
+   * Use 'id' for primary identifier key?
+   * Keep additional keys in `ids`
+     or in the preceding target elements?
 
 
 ``names``
 =========
 
-`Attribute type`_: ``CDATA``.  Default value: none.
+Attribute type: `refnames.type`_.  Default value: none.
 
-The ``names`` attribute is a list containing the names of an element,
-typically originating from the element's title or content.  Each name
-in ``names`` must be unique; if there are name conflicts (two or more
-elements want to the same name), the contents will be transferred to
-the `dupnames`_ attribute on the duplicate elements.  An element may
-have at most one of the ``names`` or ``dupnames`` attributes, but not
-both.  ``names`` is one of the `common attributes`_, shared by all
+The ``names`` attribute is a space-separated list containing
+`normalized`_ `reference names`_ of an element. Whitespace inside a
+name is backslash escaped.
+Each name in the list must be unique; if there are name conflicts
+(two or more elements want to the same name), the contents will be
+transferred to the `dupnames`_ attribute on the duplicate elements.
+An element may have at most one of the ``names`` or ``dupnames``
+attributes, but not both.
+
+`Reference names`_ are identifiers assigned in the markup. They
+originate from `internal hyperlink targets`_, a directive's `name
+option`_, or the element's title or content and are used for
+internal cross-references (cf. refname_).
+
+``names`` is one of the `common attributes`_, shared by all
 Docutils elements.
+
+.. _normalized:
+   rst/restructuredtext.html#normalized-reference-names
+.. _internal hyperlink targets:
+   rst/restructuredtext.html#internal-hyperlink-targets
+.. _name option: rst/directives.html#name
 
 
 ``prefix``
 ==========
 
-`Attribute type`_: ``CDATA``.  Default value: none.
+Attribute type: `CDATA`_.  Default value: none.
 
 The ``prefix`` attribute is used in the enumerated_list_ element.
 
@@ -4658,33 +4804,39 @@ The ``prefix`` attribute is used in the enumerated_list_ element.
 ``refid``
 =========
 
-`Attribute type`_: ``IDREF``.  Default value: none.
+Attribute type: `idref.type`_.  Default value: none.
 
-The ``refid`` attribute contains references to `ids`_ attributes in
-other elements.  It is used by the target_, reference_,
-footnote_reference_, citation_reference_, title_ and problematic_
-elements (via the `%refid.att;`_ and `%reference.atts;`_ parameter
-entities).
+The ``refid`` attribute contains a reference to an `identifier key`_
+
+``refid`` is used by the target_, reference_, footnote_reference_,
+citation_reference_, title_ and problematic_ elements (via the
+`%refid.att;`_ and `%reference.atts;`_ parameter entities).
 
 
 ``refname``
 ===========
 
-`Attribute type`_: ``NMTOKENS``.  Default value: none.
+Attribute type: `refname.type`_.  Default value: none.
 
-The ``refname`` attribute contains an internal reference to the
-`names`_ attribute of another element.  On a `target`_ element,
-``refname`` indicates an indirect target which may resolve to either
-an internal or external reference.  ``refname`` is used by the
-target_, reference_, footnote_reference_, citation_reference_, and
-substitution_reference_ elements (via the `%refname.att;`_ and
-`%reference.atts;`_ parameter entities).
+The ``refname`` attribute contains a reference to one of the
+`reference names`_ in the `names`_ attribute of another element.  On
+a `target`_ element, ``refname`` indicates an `indirect target`_ which
+may resolve to either an internal or external reference.  Docutils
+"transforms_" replace the ``refname`` attribute with a refid_ pointing
+to the same element.
+
+``refname`` is used by the target_, reference_, footnote_reference_,
+citation_reference_, and substitution_reference_ elements (via the
+`%refname.att;`_ and `%reference.atts;`_ parameter entities).
+
+.. _indirect target: rst/restructuredtext.html#indirect-hyperlink-targets
+.. _transforms: transforms.html
 
 
 ``refuri``
 ==========
 
-`Attribute type`_: ``CDATA``.  Default value: none.
+Attribute type: `CDATA`_.  Default value: none.
 
 The ``refuri`` attribute contains an external reference to a URI/URL.
 It is used by the target_, reference_, footnote_reference_, and
@@ -4692,10 +4844,18 @@ citation_reference_ elements (via the `%reference.atts;`_ parameter
 entity).
 
 
+``scale``
+==========
+
+Attribute type: number_.  Default value: none.
+
+The ``scale`` attribute is used in the image_ element.
+
+
 ``source``
 ==========
 
-`Attribute type`_: ``CDATA``.  Default value: none.
+Attribute type: `CDATA`_.  Default value: none.
 
 The ``source`` attribute is used to store the path or URL to the
 source text that was used to produce the document tree.  It is one of
@@ -4705,24 +4865,40 @@ the `common attributes`_, shared by all Docutils elements.
 ``start``
 =========
 
-`Attribute type`_: ``%number;``.  Default value: none.
+Attribute type: `number`_.  Default value: none.
 
 The ``start`` attribute is used in the enumerated_list_ element.
+
+
+``stub``
+=========
+
+Attribute type: `yesorno`_.  Default value: none.
+
+The ``stub`` attribute is used in the colspec_ element.
 
 
 ``suffix``
 ==========
 
-`Attribute type`_: ``CDATA``.  Default value: none.
+Attribute type: `CDATA`_.  Default value: none.
 
 The ``suffix`` attribute is used in the enumerated_list_ element.
+
+
+``width``
+==========
+
+Attribute type: measure_.  Default value: none.
+
+The ``width`` attribute is used in the image_ element.
 
 
 ``xml:space``
 =============
 
-`Attribute type`_: one of "default" or "preserve".  Default value:
-"preserve" (fixed).
+`Attribute type`: `EnumeratedType`_, one of "default" or "preserve".
+Default value: "preserve" (fixed).
 
 The ``xml:space`` attribute is a standard XML attribute for
 whitespace-preserving elements.  It is used by the literal_block_,
@@ -4738,7 +4914,7 @@ instance.
 ``title``
 =========
 
-`Attribute type`_: ``CDATA``.  Default value: none.
+Attribute type: `CDATA`_.  Default value: none.
 
 The ``title`` attribute stores the title metadata of a document.  This
 title is typically not part of the rendered document.  It may for
@@ -4803,7 +4979,7 @@ Entity definition:
 
 .. parsed-literal::
 
-    backrefs_  IDREFS    #IMPLIED
+    backrefs_  %idrefs.type;    #IMPLIED
 
 The citation_, footnote_, and system_message_ elements directly employ
 the ``%backrefs.att;`` parameter entity in their attribute lists.
@@ -4969,7 +5145,7 @@ Entity definition:
 
 .. parsed-literal::
 
-    refid_   CDATA     #IMPLIED
+    refid_   %idref.type;    #IMPLIED
 
 The title_ and problematic_ elements directly employ the
 ``%refid.att;`` parameter entity in their attribute lists.
@@ -4992,7 +5168,7 @@ Entity definition:
 
 .. parsed-literal::
 
-    refname_  NMTOKENS  #IMPLIED
+    refname_  %refname.type;  #IMPLIED
 
 The substitution_reference_ element directly employs the
 ``%refname.att;`` parameter entity in its attribute list.

@@ -252,7 +252,7 @@ reader, parser and writer.
 Now run ``test_functional.py``.  The test will fail, of course,
 because you do not have an expected output yet.  However, an output
 file will have been generated in ``functional/output/``.  Check this
-output file for validity and correctness.  Then copy the file to
+output file for validity [#]_ and correctness.  Then copy the file to
 ``functional/expected/``.
 
 If you rerun ``test_functional.py`` now, it should pass.
@@ -264,6 +264,13 @@ If this is the case and you made an intentional change, check the
 actual output for validity and correctness, copy it to
 ``functional/expected/`` (overwriting the old expected output), and
 commit the change.
+
+.. [#] The validity of `Docutils XML` can be tested with
+   ``xmllint <document-referencing-local-Docutils-DTD>.xml --valid --noout``.
+     
+   .. note: the ``--dtdvalid`` and ``--nonet`` options did not help override
+     a reference to the PUBLIC "docutils.dtd" if there is a local version
+     on the system (e.g. /usr/share/xml/docutils/docutils.dtd in Debian).
 
 
 .. _default configuration file:
