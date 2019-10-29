@@ -75,7 +75,7 @@ foot and inch marks:
 .. _backslash escape: ../ref/rst/restructuredtext.html#escaping-mechanism
 
 
-Localisation
+Localization
 ============
 
 Quotation marks have a `variety of forms`__ in different languages and
@@ -469,7 +469,7 @@ this plug-in.  Brad Choate is a fine hacker indeed.
 `Jeremy Hedley`_ and `Charles Wiltgen`_ deserve mention for exemplary beta
 testing of the original SmartyPants.
 
-Internationalisation and adaption to Docutils by Günter Milde.
+Internationalization and adaption to Docutils by Günter Milde.
 
 .. _SmartyPants: http://daringfireball.net/projects/smartypants/
 .. _Pyblosxom: http://pyblosxom.bluesock.org/

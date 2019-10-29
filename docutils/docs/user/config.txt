@@ -197,13 +197,18 @@ Settings in the "[general]" section are always applied.
 auto_id_prefix
 --------------
 
-Prefix prepended to all auto-generated IDs generated within the
-document, after id_prefix_.
+Prefix prepended to all auto-generated `identifier keys` generated within
+the document, after id_prefix_. Ensure the value conforms to the
+restrictions on identifiers in the output format, as it is not subjected to
+the `identifier normalization`_.
+
 A trailing "%" is replaced with the tag name (new in Docutils 0.16).
 
-Default: "id". (Will be `changed to "%" in future`__.)
+Default: "id" (`will change to "%" in future`__).
 Options: ``--auto-id-prefix`` (hidden, intended mainly for programmatic use).
 
+.. _identifier normalization:
+   ../ref/rst/directives.html#identifier-normalization
 __ ../../RELEASE-NOTES.html#future-changes
 
 datestamp
@@ -338,8 +343,10 @@ Default: severe (4).  Options: ``--halt, --strict``.
 id_prefix
 ---------
 
-Prefix prepended to all IDs generated within the document.  See also
-auto_id_prefix_.
+Prefix prepended to all identifier keys generated within the document.  
+Ensure the value conforms to the restrictions on identifiers in the output
+format, as it is not subjected to the `identifier normalization`_. 
+See also auto_id_prefix_.
 
 Default: "" (empty).
 Options: ``--id-prefix`` (hidden, intended mainly for programmatic use).
@@ -703,7 +710,7 @@ Default: "no". Option: ``--smart-quotes``.
 New in Docutils 0.10.
 
 .. _SmartQuotes: smartquotes.html
-__ smartquotes.html#localisation
+__ smartquotes.html#localization
 .. _quote characters:
    http://en.wikipedia.org/wiki/Non-English_usage_of_quotation_marks
 
