@@ -381,6 +381,15 @@ appear in Python docstrings is to use raw docstrings::
 Reference Names
 ===============
 
+`Reference names` identify elements for cross-referencing.
+
+.. Note:: References to a target position in external, generated documents
+   must use the auto-generated `identifier key`_ which may differ from the
+   `reference name` due to restrictions on identifiers/labels in the
+   output format.
+
+   .. _identifier key: ../doctree.html#identifier-keys
+
 Simple reference names are single words consisting of alphanumerics
 plus isolated (no two adjacent) internal hyphens, underscores,
 periods, colons and plus signs; no whitespace or other characters are
@@ -398,6 +407,8 @@ and treating the backquoted text as a reference name::
     .. _my favorite programming language: http://www.python.org
 
 Simple reference names may also optionally use backquotes.
+
+.. _`normalized reference names`:
 
 Reference names are whitespace-neutral and case-insensitive.  When
 resolving reference names internally:
@@ -425,14 +436,6 @@ reference (``[1]_``), can also be referred to by a plain hyperlink
 reference (1_).  Of course, each type of reference (hyperlink,
 footnote, citation) may be processed and rendered differently.  Some
 care should be taken to avoid reference name conflicts.
-
-.. note::
-  Links to the target position in generated HTML documents must use the
-  auto-generated `identifier` which may differ from the `reference name` due
-  to additional restrictions_ or the use of a numbered id to avoid
-  duplication.
-
-  .. _restrictions: directives.html#rationale
 
 
 Document Structure
@@ -948,8 +951,8 @@ for details.
 
 Unregistered/generic fields may contain one or more paragraphs or
 arbitrary body elements.
-The field name is also used as a "classes"
-attribute value after being converted into a valid identifier form.
+The field name is also used as a `"classes" attribute`_ value after being
+converted into a valid identifier form.
 
 
 RCS Keywords
@@ -3085,6 +3088,7 @@ Markup errors are handled according to the specification in `PEP
 .. _reStructuredText: http://docutils.sourceforge.net/rst.html
 .. _Docutils: http://docutils.sourceforge.net/
 .. _The Docutils Document Tree: ../doctree.html
+.. _"classes" attribute:  ../doctree.html#classes
 .. _Docutils Generic DTD: ../docutils.dtd
 .. _transforms:
    http://docutils.sourceforge.net/docutils/transforms/
