@@ -30,8 +30,12 @@ entities beginning with "additional" are meant to allow easy extension
 by wrapper DTDs.
 -->
 
-<!-- Attributes
-================================================================== -->
+<!-- Attribute types
+==================================================================
+
+Expand the set of `XML standard attribute types`_.
+
+-->
 
 <!-- Boolean: no if zero(s), yes if any other value. -->
 <!ENTITY % yesorno "NMTOKEN">
@@ -41,6 +45,54 @@ by wrapper DTDs.
 
 <!-- A number which may be immediately followed by a unit or percent sign. -->
 <!ENTITY % measure "CDATA">
+
+<!-- A space-separated list of `class names`.
+
+Docutils normalizes class names to conform to HTML4.1 and CSS1.0 `name`
+requirements, i.e. the regular expression ``[a-z](-?[a-z0-9]+)*`` via an
+`identifier normalisation`. -->
+<!ENTITY % classnames.type "NMTOKENS">
+
+<!-- A normalized `reference name`.
+
+The CDATA type is used because a `reference name` may consist of any text.
+
+`Normalization` implies downcasing and replacing runs of whitespace with
+single space characters. -->
+<!ENTITY % refname.type  "CDATA">
+
+<!-- A space-separated list of `reference names`.
+
+`Backslash escaping`_ is used for space characters inside a `reference name`.
+-->
+<!ENTITY % refnames.type "CDATA">
+
+<!-- A space-separated list of `identifier keys`.
+
+The NMTOKENS type is used because `XML standard attribute types`_
+do not include a list of IDs.
+-->
+<!ENTITY % ids.type  "NMTOKENS">
+
+<!-- A reference to an `identifier key` in another element's `ids` attribute.
+
+The NMTOKEN type is used, because Docutils `identifier keys` do not use the
+``ID`` attribute type, as required by the `IDREF Validity constraint`_ -->
+<!ENTITY % idref.type  "NMTOKEN">
+
+<!-- A list of references to `identifier keys` in other elements. -->
+<!ENTITY % idrefs.type  "NMTOKENS">
+
+<!-- References:
+.. _XML standard attribute types:
+       https://www.w3.org/TR/REC-xml/#sec-attribute-types
+.. _IDREF Validity constraint: https://www.w3.org/TR/REC-xml/#idref
+.. _backslash escaping: rst/restructuredtext.html#escaping-mechanism
+-->
+
+
+<!-- Attributes
+================================================================== -->
 
 <!ENTITY % additional.basic.atts "">
 
@@ -55,32 +107,24 @@ Attributes shared by all elements in this DTD:
 - `classes` is used to transmit individuality information forward.
 -->
 <!ENTITY % basic.atts
-  " ids       NMTOKENS  #IMPLIED
-    names     CDATA     #IMPLIED
-    dupnames  CDATA     #IMPLIED
-    source    CDATA     #IMPLIED
-    classes   NMTOKENS  #IMPLIED
+  " ids       %ids.type;         #IMPLIED
+    names     %refnames.type;    #IMPLIED
+    dupnames  %refnames.type;    #IMPLIED
+    source    CDATA              #IMPLIED
+    classes   %classnames.type;  #IMPLIED
     %additional.basic.atts; ">
 
 <!-- External reference to a URI/URL. -->
 <!ENTITY % refuri.att
-  " refuri    CDATA     #IMPLIED ">
+  " refuri    CDATA              #IMPLIED ">
 
-<!--
-Internal reference to the `ids` attribute of an element. The NMTOKENS
-type is used instead of IDREF, because XML doesn't support a multiple-ID
-"IDS" type.
--->
+<!-- Internal reference to the `ids` attribute of an element. -->
 <!ENTITY % refid.att
-  " refid     NMTOKEN     #IMPLIED ">
+  " refid     %idref.type;       #IMPLIED ">
 
-<!--
-Space-separated list of `ids` references, for backlinks. The NMTOKENS
-type is used instead of IDREF, because XML doesn't support a multiple-ID
-"IDS" type.
--->
+<!-- Space-separated list of `ids` references, for backlinks. -->
 <!ENTITY % backrefs.att
-  " backrefs  NMTOKENS    #IMPLIED ">
+  " backrefs  %idrefs.type;      #IMPLIED ">
 
 <!--
 Internal reference to the `name` attribute of an element. On a
@@ -88,7 +132,7 @@ Internal reference to the `name` attribute of an element. On a
 resolve to either an internal or external reference.
 -->
 <!ENTITY % refname.att
-  " refname   NMTOKENS  #IMPLIED ">
+  " refname  %refname.type;   #IMPLIED ">
 
 <!ENTITY % additional.reference.atts "">
 <!-- Collected hyperlink reference attributes. -->
