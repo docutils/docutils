@@ -49,18 +49,17 @@ Future changes
 * Remove ``utils.unique_combinations``
   (obsoleted by ``itertools.combinations``).
   
-* The id_prefix_ setting will be prepended to the `reference name`_ *before*
-  conversion to an ID. (Currently it is prepended as-is, without checking
-  for conformance to Docutils' `ID naming rules`_.) This may change
-  generated IDs.
+* If the id_prefix_ setting is non-empty, leading number and hyphen characters
+  will not be stripped from a `reference name`_ during `identifier
+  normalization`_. This may change generated `identifier keys`.
   
-  Example: with ``--id-prefix="DU"``, a section with title "34.
-  May" currently gets the ID ``DU-may`` and after the change the ID
-  ``du-34-may``.
+  Example: with ``--id-prefix="DU-"``, a section with title "34. May"
+  currently gets the identifier key ``DU-may`` and after the change the
+  identifier key ``DU-34-may``.
 
 * The default value for auto_id_prefix_ will change to "%". This means
   auto-generated IDs will use the tag name as prefix. Set auto_id_prefix_ to
-  "id" if you want unchanged IDs or to "%" if you want descriptive IDs.
+  "id" if you want unchanged auto-IDs or to "%" if you want descriptive IDs.
 
 * The default HTML writer "html" with frontend ``rst2html.py`` may change
   from "html4css1" to "html5".
@@ -76,7 +75,7 @@ Future changes
 .. _auto_id_prefix: docs/user/config.html#auto-id-prefix
 .. _rst2html.py: docs/user/tools.html#rst2html-py
 .. _reference name: docs/ref/rst/restructuredtext.html#reference-names
-.. _ID naming rules: docs/ref/rst/directives.html#rationale
+.. _identifier normalization: directives.html#identifier-normalization
 
 Release 0.16
 ============

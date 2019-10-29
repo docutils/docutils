@@ -37,8 +37,7 @@ Changes Since 0.15
 * docutils/nodes.py
 
   - Speed up Node.next_node().
-  - If `auto_id_prefix`_ ends with a "%", this is replaced with the tag
-    name.
+  - If `auto_id_prefix`_ ends with "%", this is replaced with the tag name.
   - Warn about Node.traverse() returning an iterator instead of a list
     in future.
 
