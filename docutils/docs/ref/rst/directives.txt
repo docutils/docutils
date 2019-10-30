@@ -1724,6 +1724,8 @@ For example ``"Rot.Gelb&Grün:+2008"`` becomes ``"rot-gelb-grun-2008"`` and
 
 .. topic:: Rationale:
 
+    Identifier keys must be valid in all supported output formats.
+
     For HTML 4.1 + CSS1 compatibility, identifiers should have no
     underscores, colons, or periods.  Hyphens may be used.
 
@@ -1736,7 +1738,7 @@ For example ``"Rot.Gelb&Grün:+2008"`` becomes ``"rot-gelb-grun-2008"`` and
 
           -- http://www.w3.org/TR/html401/types.html#type-name
 
-    - The `CSS1 spec`_ [#]_ defines identifiers based on the "name" token
+    - The `CSS1 spec`_ defines identifiers based on the "name" token
       ("flex" tokenizer notation below; "latin1" and "escape" 8-bit
       characters have been replaced with XML entities)::
 
@@ -1746,24 +1748,25 @@ For example ``"Rot.Gelb&Grün:+2008"`` becomes ``"rot-gelb-grun-2008"`` and
           nmchar      [-A-Za-z0-9]|{latin1}|{escape}
           name        {nmchar}+
 
-    The CSS rule does not include underscores ("_"), colons (":"), or
-    periods ("."), therefore `"classes"`_ and `"ids"`_ attributes should not
-    contain these characters.  Combined with HTML's requirements (the
+    The CSS1 rule requires underscores ("_"), colons (":"), and
+    periods (".") to be escaped [#]_,
+    therefore `"classes"`_ and `"ids"`_ attributes should not
+    contain these characters.  Combined with HTML4.1 requirements (the
     first character must be a letter; no "unicode", "latin1", or
     "escape" characters), this results in the regular expression
     ``[A-Za-z][-A-Za-z0-9]*``. Docutils adds a normalization by
     downcasing and merge of consecutive hyphens.
 
-    .. [#] The CSS Working Group considers the CSS1 specification to be
-       obsolete__. `CSS2.1 identifiers`__ may also use underscores (_)
-       and any backslash escaped character.
+    .. [#] CSS identifiers may use underscores ("_") directly in
+       `CSS Level 1`__, `CSS2.1`__, CSS2.2__, and CSS3__.
 
-       __ https://www.w3.org/TR/CSS/#css-level-1
        __ https://www.w3.org/TR/CSS21/syndata.html#value-def-identifier
+       __ https://www.w3.org/TR/CSS/#css-level-1
+       __ https://www.w3.org/TR/CSS22/syndata.html
+       __ https://www.w3.org/TR/css-syntax-3/#typedef-ident-token
 
     .. _HTML 4.01 spec: http://www.w3.org/TR/html401/
     .. _CSS1 spec: http://www.w3.org/TR/REC-CSS1
-
 
 .. _role:
 
