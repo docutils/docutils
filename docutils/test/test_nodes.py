@@ -661,6 +661,68 @@ class TreeCopyVisitorTests(unittest.TestCase):
         self.compare_trees(self.document, newtree)
 
 
+class SetIdTests(unittest.TestCase):
+
+    def setUp(self):
+        self.document = utils.new_document('test')
+        self.elements = [nodes.Element(names=['test']),
+                         nodes.section(), # Name empty
+                         nodes.section(names=['Test']), # duplicate id
+                         nodes.footnote(names=['2019-10-30']), # id empty
+                        ]
+
+    def test_set_id_default(self):
+        # Default prefixes.
+        for element in self.elements:
+            self.document.set_id(element)
+        ids = [element['ids'] for element in self.elements]
+        self.assertEqual(ids, [['test'], ['id1'], ['id2'], ['id3']])
+
+    def test_set_id_custom(self):
+        # Custom prefixes.
+        
+        # Change settings.
+        self.document.settings.id_prefix = 'P-'
+        self.document.settings.auto_id_prefix = 'auto'
+
+        for element in self.elements:
+            self.document.set_id(element)
+        ids = [element['ids'] for element in self.elements]
+        self.assertEqual(ids, [['P-test'],
+                               ['P-auto1'],
+                               ['P-auto2'],
+                               ['P-auto3']])
+
+    def test_set_id_descriptive_auto_id(self):
+        # Use name or tag-name for auto-id.
+        
+        # Change setting.
+        self.document.settings.auto_id_prefix = '%'
+
+        for element in self.elements:
+            self.document.set_id(element)
+        ids = [element['ids'] for element in self.elements]
+        self.assertEqual(ids, [['test'],
+                               ['section-1'],
+                               ['test-1'],
+                               ['footnote-1']])
+
+    def test_set_id_custom_descriptive_auto_id(self):
+        # Custom prefixes and name or tag-name for auto-id.
+        
+        # Change settings.
+        self.document.settings.id_prefix = 'P:'
+        self.document.settings.auto_id_prefix = 'a-%'
+
+        for element in self.elements:
+            self.document.set_id(element)
+        ids = [element['ids'] for element in self.elements]
+        self.assertEqual(ids, [['P:test'],
+                               ['P:a-section-1'],
+                               ['P:test-1'],
+                               ['P:a-footnote-1']])
+
+
 class MiscFunctionTests(unittest.TestCase):
 
     names = [('a', 'a'), ('A', 'a'), ('A a A', 'a a a'),
@@ -671,33 +733,6 @@ class MiscFunctionTests(unittest.TestCase):
         for input, output in self.names:
             normed = nodes.fully_normalize_name(input)
             self.assertEqual(normed, output)
-
-    def test_set_id_default(self):
-        # Default prefixes.
-        document = utils.new_document('test')
-        # From name.
-        element = nodes.Element(names=['test'])
-        document.set_id(element)
-        self.assertEqual(element['ids'], ['test'])
-        # Auto-generated.
-        element = nodes.Element()
-        document.set_id(element)
-        self.assertEqual(element['ids'], ['id1'])
-
-    def test_set_id_custom(self):
-        # Custom prefixes.
-        document = utils.new_document('test')
-        # Change settings.
-        document.settings.id_prefix = 'prefix'
-        document.settings.auto_id_prefix = 'auto'
-        # From name.
-        element = nodes.Element(names=['test'])
-        document.set_id(element)
-        self.assertEqual(element['ids'], ['prefixtest'])
-        # Auto-generated.
-        element = nodes.Element()
-        document.set_id(element)
-        self.assertEqual(element['ids'], ['prefixauto1'])
 
 
 if __name__ == '__main__':
