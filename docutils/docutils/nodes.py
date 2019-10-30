@@ -1365,15 +1365,17 @@ class document(Root, Structural, Element):
         if not node['ids']:
             id_prefix = self.settings.id_prefix
             auto_id_prefix = self.settings.auto_id_prefix
+            base_id = ''
             id = ''
             for name in node['names']:
-                id = id_prefix + make_id(name)
+                base_id = make_id(name)
+                id = id_prefix + base_id
                 # TODO: allow names starting with numbers if `id_prefix`
                 # is non-empty:  id = make_id(id_prefix + name)
-                if id and id not in self.ids:
+                if base_id and id not in self.ids:
                     break
             else:
-                if id and auto_id_prefix.endswith('%'):
+                if base_id and auto_id_prefix.endswith('%'):
                     # disambiguate name-derived ID
                     # TODO: remove second condition after announcing change
                     prefix = id + '-'
