@@ -14,7 +14,7 @@
 # Date: $Date$
 
 """
-A minimal front end to the Docutils Publisher, producing HTML 5 documents.
+A minimal front end to the Docutils Publisher, producing HTML 5 documents.
 
 The output also conforms to XHTML 1.0 transitional
 (except for the doctype declaration).
@@ -28,7 +28,7 @@ except locale.Error:
 
 from docutils.core import publish_cmdline, default_description
 
-description = (u'Generates HTML 5 documents from standalone '
+description = (u'Generates HTML 5 documents from standalone '
                u'reStructuredText sources '
                + default_description)
 

@@ -32,7 +32,7 @@ from docutils import core, frontend, utils
 from docutils.utils.error_reporting import ErrorOutput, ErrorString
 from docutils.parsers import rst
 from docutils.readers import standalone, pep
-from docutils.writers import html4css1, pep_html
+from docutils.writers import html4css1, html5_polyglot, pep_html
 
 
 usage = '%prog [options] [<directory> ...]'
@@ -75,6 +75,12 @@ class SettingsSpec(docutils.SettingsSpec):
           {'metavar': '<patterns>', 'action': 'append',
            'default': [],
            'validator': frontend.validate_colon_separated_string_list}),
+         ('HTML version, one of "html", "html4", "html5". '
+          'Default: "html" (use Docutils\' default HTML writer).',
+          ['--html-writer'],
+          {'metavar': '<html_writer>',
+           'choices': ['html', 'html4', 'html5'],
+           'default': 'html'}),
          ('Work silently (no progress messages).  Independent of "--quiet".',
           ['--silent'],
           {'action': 'store_true', 'validator': frontend.validate_boolean}),
@@ -121,10 +127,14 @@ class Builder(object):
         self.publishers = {
             '': Struct(components=(pep.Reader, rst.Parser, pep_html.Writer,
                                    SettingsSpec)),
-            '.txt': Struct(components=(rst.Parser, standalone.Reader,
+            'html4': Struct(components=(rst.Parser, standalone.Reader,
                                        html4css1.Writer, SettingsSpec),
                            reader_name='standalone',
-                           writer_name='html'),
+                           writer_name='html4'),
+            'html5': Struct(components=(rst.Parser, standalone.Reader,
+                                       html5_polyglot.Writer, SettingsSpec),
+                           reader_name='standalone',
+                           writer_name='html5'),
             'PEPs': Struct(components=(rst.Parser, pep.Reader,
                                        pep_html.Writer, SettingsSpec),
                            reader_name='pep',
@@ -134,6 +144,8 @@ class Builder(object):
         all components used by individual publishers."""
 
         self.setup_publishers()
+        # default html writer (may change to html5 some time):
+        self.publishers['html'] = self.publishers['html4']
 
     def setup_publishers(self):
         """
@@ -223,7 +235,7 @@ class Builder(object):
         if name.startswith('pep-'):
             publisher = 'PEPs'
         else:
-            publisher = '.txt'
+            publisher = self.initial_settings.html_writer
         settings = self.get_settings(publisher, directory)
         errout = ErrorOutput(encoding=settings.error_encoding)
         pub_struct = self.publishers[publisher]

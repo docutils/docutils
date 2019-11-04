@@ -92,6 +92,13 @@ Changes Since 0.15
   - Fix [ 359 ]: Test suite failes on Python 3.8. odt xml sorting.
     Use ElementTree instead of minidom.
 
+* tools/buildhtml.py
+
+  - New option "--html-writer" allows to select "html__" (default),
+    "html4" or "html5".
+
+  __ html: docs/user/html.html#html
+
 
 Release 0.15.1 (2019-07-24)
 ===========================
