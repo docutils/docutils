@@ -48,11 +48,11 @@ Future changes
 
 * Remove ``utils.unique_combinations``
   (obsoleted by ``itertools.combinations``).
-  
+
 * If the id_prefix_ setting is non-empty, leading number and hyphen characters
   will not be stripped from a `reference name`_ during `identifier
   normalization`_. This may change generated `identifier keys`.
-  
+
   Example: with ``--id-prefix="DU-"``, a section with title "34. May"
   currently gets the identifier key ``DU-may`` and after the change the
   identifier key ``DU-34-may``.
@@ -106,13 +106,20 @@ Release 0.16
   - Deprecate ``\docutilsrole`` prefix for styling commands:
     use ``\DUrole`` instead.
 
+* tools/buildhtml.py
+
+  - New option "--html-writer" allows to select "html__" (default),
+    "html4" or "html5".
+
+  __ html: docs/user/html.html#html
+
 * docutils/io.py
 
   - Remove the `handle_io_errors` option from io.FileInput/Output.
 
 
-Release 0.15
-============
+Release 0.15 (2019-07-20)
+=========================
 
 .. Note::
 
