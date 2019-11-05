@@ -64,14 +64,18 @@ Changes Since 0.15
   - Fix [ 339 ] don't use "alltt" or literal-block-environment
     in admonitions and footnotes.
   - Deprecation warning for ``\docutilsrole``-prefixed styling commands.
+  - Add "latex writers" to the `config_section_dependencies`.
+
+* docutils/writers/manpage.py
+
+  - Apply fix for [ 289 ], line starting with ``.`` in a text.
 
 * docutils/writers/odf_odt/__init__.py:
 
   - Fix: ElementTree.getchildren deprecated warning
 
-* docutils/writers/manpage.py
-
-  - Apply fix for [ 289 ], line starting with ``.`` in a text.
+* docutils/writers/xetex/__init__.py:
+  - Add "latex writers" to the `config_section_dependencies`.
 
 * test/alltests.py
 

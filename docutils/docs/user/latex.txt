@@ -123,11 +123,13 @@ source, including:
 
 _`pdflatex`
   Generates a PDF document directly from the LaTeX file.
+  Export your document with the _`LaTeX2e writer` (writer
+  name "``latex``", frontend tool rst2latex.py_).
 
 _`xelatex` or _`lualatex`
   The `XeTeX`_ and LuaTeX_ engines work with input files in UTF-8 encoding
-  and system fonts. Export your document with the `xetex` writer
-  (``rst2xetex``), if you want to go this route.
+  and system fonts. Export your document with the _`XeTeX writer` (writer
+  name "``xetex``", frontend tool rst2xetex.py_).
 
 You may need to call latex two or three times to get internal references
 correct.
@@ -135,7 +137,8 @@ correct.
 .. _documentoptions: config.html#documentoptions
 .. _xetex: http://tug.org/xetex/
 .. _luatex: http://luatex.org/
-
+.. _rst2latex.py: tools.html#rst2latex-py
+.. _rst2xetex.py: tools.html#rst2xetex-py
 
 _`rubber`
   The Rubber__ wrapper for LaTeX and friends can be used to automatically

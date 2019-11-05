@@ -47,7 +47,8 @@ class Writer(latex2e.Writer):
     ])
 
     config_section = 'xetex writer'
-    config_section_dependencies = ('writers', 'latex2e writer')
+    config_section_dependencies = ('writers', 'latex writers',
+                                   'latex2e writer') # TODO: remove dependency on `latex2e writer`.
 
     settings_spec = frontend.filter_settings_spec(
         latex2e.Writer.settings_spec,
