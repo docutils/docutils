@@ -554,9 +554,7 @@ class Writer(writers.Writer):
     )
 
     config_section = 'odf_odt writer'
-    config_section_dependencies = (
-        'writers',
-    )
+    config_section_dependencies = ('writers',)
 
     def __init__(self):
         writers.Writer.__init__(self)

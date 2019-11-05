@@ -223,7 +223,7 @@ class Writer(writers.Writer):
     settings_defaults = {'sectnum_depth': 0 # updated by SectNum transform
                         }
     config_section = 'latex2e writer'
-    config_section_dependencies = ('writers',)
+    config_section_dependencies = ('writers', 'latex writers')
 
     head_parts = ('head_prefix', 'requirements', 'latex_preamble',
                   'stylesheet', 'fallbacks', 'pdfsetup', 'titledata')

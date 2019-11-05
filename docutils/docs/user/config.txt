@@ -343,9 +343,9 @@ Default: severe (4).  Options: ``--halt, --strict``.
 id_prefix
 ---------
 
-Prefix prepended to all identifier keys generated within the document.  
+Prefix prepended to all identifier keys generated within the document.
 Ensure the value conforms to the restrictions on identifiers in the output
-format, as it is not subjected to the `identifier normalization`_. 
+format, as it is not subjected to the `identifier normalization`_.
 See also auto_id_prefix_.
 
 Default: "" (empty).
@@ -780,7 +780,7 @@ footnote_references__ default though.
 
 Options: ``--trim-footnote-reference-space, --leave-footnote-reference-space``.
 
-__ `footnote_references [latex2e writer]`_
+__ `footnote_references [latex writers]`_
 
 
 [readers]
@@ -890,7 +890,7 @@ attribution
 
 Format for `block quote`_ attributions: one of "dash" (em-dash
 prefix), "parentheses"/"parens", or "none".  Also defined for the
-`LaTeX Writer <attribution [latex2e writer]_>`__.
+`LaTeX Writers <attribution [latex writers]_>`__.
 
 Default: "dash".  Options: ``--attribution``.
 
@@ -946,7 +946,7 @@ embed_stylesheet
 Embed the stylesheet in the output HTML file.  The stylesheet file
 must specified by the stylesheet_path__ setting and must be
 accessible during processing.
-Also defined for the `LaTeX Writer <embed_stylesheet [latex2e writer]_>`__.
+Also defined for the `LaTeX Writers <embed_stylesheet [latex writers]_>`__.
 
 Default: enabled.  Options: ``--embed-stylesheet,
 --link-stylesheet``.
@@ -968,7 +968,7 @@ footnote_references
 ~~~~~~~~~~~~~~~~~~~
 
 Format for `footnote references`_, one of "superscript" or "brackets".
-Also defined for the `LaTeX Writer <footnote_references [latex2e writer]_>`__.
+Also defined for the `LaTeX Writers <footnote_references [latex writers]_>`__.
 
 Overrides [#override]_ trim_footnote_reference_space_, if
 applicable. [#footnote_space]_
@@ -1110,7 +1110,7 @@ stylesheet
 ~~~~~~~~~~
 
 A comma-separated list of CSS stylesheet URLs, used verbatim.
-Also defined for the `LaTeX Writer <stylesheet [latex2e writer]_>`__.
+Also defined for the `LaTeX Writer <stylesheet [latex writers]_>`__.
 
 Overrides also stylesheet-path__. [#override]_
 
@@ -1156,7 +1156,7 @@ Default: "html4css1.css".
 Options: ``--stylesheet-path``.
 
 __ `embed_stylesheet [html4css1 writer]`_
-__ `stylesheet_path [latex2e writer]`_
+__ `stylesheet_path [latex writers]`_
 __ `stylesheet_dirs [html4css1 writer]`_
 
 .. _table_style [html4css1 writer]:
@@ -1186,7 +1186,7 @@ colwidths-auto
 
 Default: "".  Option: ``--table-style``.
 
-__ `table_style [latex2e writer]`_
+__ `table_style [latex writers]`_
 .. _table directive: ../ref/rst/directives.html#table
 
 .. _template [html4css1 writer]:
@@ -1201,7 +1201,7 @@ Default: "template.txt" in the docutils/writers/html4css1/
 directory (installed automatically; for the exact machine-specific
 path, use the ``--help`` option).  Options: ``--template``.
 
-__ `template [latex2e writer]`_
+__ `template [latex writers]`_
 
 .. _xml_declaration [html4css1 writer]:
 
@@ -1358,8 +1358,10 @@ Different default for:
 New in Docutils 0.13.
 
 
-[latex2e writer]
+[latex writers]
 ----------------
+
+Common settings for the `[latex2e writer]`_ and `[xetex writer]`_.
 
 use_latex_toc
 ~~~~~~~~~~~~~
@@ -1442,20 +1444,8 @@ commas.
 
 Default: "a4paper".  Option: ``--documentoptions``.
 
-font_encoding
-~~~~~~~~~~~~~
 
-Specify LaTeX font encoding. Multiple options can be given, separated by
-commas. The last value becomes the document default.
-Possible values are "", "T1", "OT1", "LGR,T1" or any other combination of
-`LaTeX font encodings`_.
-
-Default: "T1".  Option: ``--font-encoding``.
-
-.. _LaTeX font encodings:
-   http://mirror.ctan.org/macros/latex/doc/encguide.pdf
-
-.. _embed_stylesheet [latex2e writer]:
+.. _embed_stylesheet [latex writers]:
 
 embed_stylesheet
 ~~~~~~~~~~~~~~~~
@@ -1470,7 +1460,7 @@ Default: off.  Options: ``--embed-stylesheet, --link-stylesheet``.
 
 __ `embed_stylesheet [html4css1 writer]`_
 
-.. _stylesheet [latex2e writer]:
+.. _stylesheet [latex writers]:
 
 stylesheet
 ~~~~~~~~~~
@@ -1488,14 +1478,14 @@ LaTeX will search the specified files in the `TeX input path`_.
 
 Default: no stylesheet ("").  Option: ``--stylesheet``.
 
-__ `stylesheet_path [latex2e writer]`_
-__ `embed_stylesheet [latex2e writer]`_
+__ `stylesheet_path [latex writers]`_
+__ `embed_stylesheet [latex writers]`_
 __ `stylesheet [html4css1 writer]`_
 .. _TeX input path:
    http://www.tex.ac.uk/cgi-bin/texfaq2html?label=what-TDS
 
 
-.. _stylesheet_dirs [latex2e writer]:
+.. _stylesheet_dirs [latex writers]:
 
 stylesheet_dirs
 ~~~~~~~~~~~~~~~
@@ -1508,14 +1498,14 @@ executables). However, the term "path" is already used in the
 stylesheet_path__ setting with the meaning of a file location.
 
 __
-__ `stylesheet_path [latex2e writer]`_
+__ `stylesheet_path [latex writers]`_
 
 Default: the working directory of the process at launch and the directory
 with default stylesheet files (writer and installation specific).
 Use the ``--help`` option to get the exact value.
 Option: ``--stylesheet-directories``.
 
-.. _stylesheet_path [latex2e writer]:
+.. _stylesheet_path [latex writers]:
 
 stylesheet_path
 ~~~~~~~~~~~~~~~
@@ -1535,10 +1525,10 @@ Also overrides stylesheet__. [#override]_
 
 Default: no stylesheet ("").  Option: ``--stylesheet-path``.
 
-__ `stylesheet_dirs [latex2e writer]`_
-__ `embed_stylesheet [latex2e writer]`_
+__ `stylesheet_dirs [latex writers]`_
+__ `embed_stylesheet [latex writers]`_
 __
-__ `stylesheet [latex2e writer]`_
+__ `stylesheet [latex writers]`_
 
 
 latex_preamble
@@ -1548,16 +1538,10 @@ LaTeX code that will be inserted in the document preamble.
 Can be used to load packages with options or (re-) define LaTeX
 macros without writing a custom style file (new in Docutils 0.7).
 
-Default: Load the "PDF standard fonts" (Times, Helvetica,
-Courier)::
-
-  \usepackage{mathptmx} % Times
-  \usepackage[scaled=.90]{helvet}
-  \usepackage{courier}
-
+Default: writer dependent (see `[latex2e writer]`_, `[xetex writer]`_).
 Option: ``--latex-preamble``.
 
-.. _footnote_references [latex2e writer]:
+.. _footnote_references [latex writers]:
 
 footnote_references
 ~~~~~~~~~~~~~~~~~~~
@@ -1572,7 +1556,7 @@ Default: "superscript".  Option: ``--footnote-references``.
 
 __ `footnote_references [html4css1 writer]`_
 
-.. _attribution [latex2e writer]:
+.. _attribution [latex writers]:
 
 attribution
 ~~~~~~~~~~~
@@ -1631,7 +1615,7 @@ unambiguous "1-1.1" and "1.1-1".
 
 Default: "-".  Option: ``--section-enumerator-separator``.
 
-.. _table_style [latex2e writer]:
+.. _table_style [latex writers]:
 
 table_style
 ~~~~~~~~~~~
@@ -1668,36 +1652,81 @@ Default: "standard".  Option: ``--table-style``.
 __ `table_style [html4css1 writer]`_
 
 
-.. _template [latex2e writer]:
+.. _template [latex writers]:
 
 template
 ~~~~~~~~
 
-Path to template file, which must be encoded in UTF-8. [#pwd]_
+Path [#pwd]_ to template file, which must be encoded in UTF-8.
 Also defined for the `HTML Writer`__.
 
-Default: "default.tex" in the docutils/writers/latex2e/
-directory (installed automatically; for the exact machine-specific
-path, use the ``--help`` option).  Options: ``--template``.
+Default: writer dependent (see `[latex2e writer]`_, `[xetex writer]`_).
+Options: ``--template``.
 
 __ `template [html4css1 writer]`_
+
+
+[latex2e writer]
+~~~~~~~~~~~~~~~~
+
+The `LaTeX2e writer`_ generates a LaTeX source for compilation with 8-bit
+LaTeX (pdfTeX_). It shares all settings defined in the `[latex writers]`_
+`configuration section`_.
+
+.. _LaTeX2e writer: latex.html#latex2e-writer
+.. _pdfTeX: https://www.tug.org/applications/pdftex/
+.. _configuration section: `Configuration File Sections & Entries`_
+
+
+Writer Specific Defaults
+""""""""""""""""""""""""
+
+latex_preamble_
+   Load the "PDF standard fonts" (Times, Helvetica, Courier)::
+
+    \usepackage{mathptmx} % Times
+    \usepackage[scaled=.90]{helvet}
+    \usepackage{courier}
+
+template__
+  "default.tex" in the ``docutils/writers/latex2e/`` directory
+  (installed automatically).
+
+  __ `template [latex writers]`_
+
+
+font_encoding
+"""""""""""""
+
+Specify `LaTeX font encoding`_. Multiple options can be given, separated by
+commas. The last value becomes the document default.
+Possible values are "", "T1", "OT1", "LGR,T1" or any other combination of
+`LaTeX font encodings`_.
+
+Default: "T1".  Option: ``--font-encoding``.
+
+.. _LaTeX font encoding: latex.html#font-encoding
+.. _LaTeX font encodings:
+   http://mirror.ctan.org/macros/latex/doc/encguide.pdf
 
 
 [xetex writer]
 ~~~~~~~~~~~~~~
 
-The xetex writer derives from the latex2e writer, and shares
-all settings defined in the `[latex2e writer]`_ section.  The
-"[latex2e writer]" section of configuration files is processed
-before the "[xetex writer]" section.
+The `XeTeX writer`_ generates a LaTeX source for compilation with `XeTeX or
+LuaTeX`_. It derives from the latex2e writer, and shares all settings
+defined in the `[latex writers]`_ and `[latex2e writer]`_ `configuration
+sections`_.
 
-The following settings differ from those of the latex2e writer:
+.. _XeTeX writer: latex.html#xetex-writer
+.. _XeTeX or LuaTeX: https://texfaq.org/FAQ-xetex-luatex
+.. _configuration sections: `Configuration File Sections & Entries`_
 
-font_encoding_
-    Disabled  (Use Unicode-encoded fonts).
+Writer Specific Defaults
+""""""""""""""""""""""""
 
-latex_preamble_
-    Default: Font setup for `Linux Libertine`_,::
+latex_preamble_:
+  Font setup for `Linux Libertine`_,::
 
       % Linux Libertine (free, wide coverage, not only for Linux)
       \setmainfont{Linux Libertine O}
@@ -1707,11 +1736,17 @@ latex_preamble_
   The optional argument ``HyphenChar=None`` to the monospace font
   prevents word hyphenation in literal text.
 
-template__
-    Default: "xelatex.tex"
-
 .. _Linux Libertine: http://www.linuxlibertine.org/
-__ `template [latex2e writer]`_
+
+template__:
+  "xelatex.tex" in the ``docutils/writers/latex2e/`` directory
+  (installed automatically).
+  
+  .. TODO: show full path with --help (like in the HTML writers) and
+     add the following line:
+     for the exact machine-specific path, use the ``--help`` option).
+
+  __ `template [latex writers]`_
 
 
 [odf_odt writer]
