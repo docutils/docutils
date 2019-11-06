@@ -159,13 +159,14 @@ general-to-specific order, as follows:
    Reader used ("[... reader]").  For example, `[pep reader]`_ depends
    on `[standalone reader]`_.
 
-4. `[writers]`_, writer dependencies, and the section specific to the
-   Writer used ("[... writer]").  For example, `[pep_html writer]`_
-   depends on `[html4css1 writer]`_.
+4. `[writers]`_, writer family ("[... writers]"; if applicable),
+   writer dependencies, and the section specific to the writer used
+   ("[... writer]").  For example, `[pep_html writer]`_ depends
+   on `[html4css1 writer]`_.
 
 5. `[applications]`_, application dependencies, and the section
-    specific to the Application (front-end tool) in use
-    ("[... application]").
+   specific to the Application (front-end tool) in use
+   ("[... application]").
 
 Since any setting may be specified in any section, this ordering
 allows component- or application-specific overrides of earlier
@@ -873,26 +874,28 @@ xml_declaration
 ~~~~~~~~~~~~~~~
 
 Generate XML with an XML declaration.  Also defined for the
-`HTML Writer`__.
+`HTML Writers`__.
 
 Default: do (1).  Options: ``--no-xml-declaration``.
 
-__ `xml_declaration [html4css1 writer]`_
+__ `xml_declaration [html writers]`_
 
 
-[html4css1 writer]
-------------------
+[html writers]
+--------------
 
-.. _attribution [html4css1 writer]:
+.. _attribution [html writers]:
 
 attribution
 ~~~~~~~~~~~
 
 Format for `block quote`_ attributions: one of "dash" (em-dash
 prefix), "parentheses"/"parens", or "none".  Also defined for the
-`LaTeX Writers <attribution [latex writers]_>`__.
+`LaTeX Writers`__.
 
 Default: "dash".  Options: ``--attribution``.
+
+__ attribution [latex writers]_
 
 cloak_email_addresses
 ~~~~~~~~~~~~~~~~~~~~~
@@ -938,7 +941,8 @@ attributes (values "compact" and "open") in the document.
 Default: enabled (True).
 Options: ``--compact-field-lists, --no-compact-field-lists``.
 
-.. _embed_stylesheet [html4css1 writer]:
+
+.. _embed_stylesheet [html writers]:
 
 embed_stylesheet
 ~~~~~~~~~~~~~~~~
@@ -951,18 +955,10 @@ Also defined for the `LaTeX Writers <embed_stylesheet [latex writers]_>`__.
 Default: enabled.  Options: ``--embed-stylesheet,
 --link-stylesheet``.
 
-__ `stylesheet_path [html4css1 writer]`_
+__ `stylesheet_path [html writers]`_
 
-field_name_limit
-~~~~~~~~~~~~~~~~
 
-The maximum width (in characters) for one-column `field names`_. Longer
-field names will span an entire row of the table used to render the field
-list.  0 indicates "no limit".  See also option_limit_.
-
-Default: 14 (i.e. 14 characters).  Option: ``--field-name-limit``.
-
-.. _footnote_references [html4css1 writer]:
+.. _footnote_references [html writers]:
 
 footnote_references
 ~~~~~~~~~~~~~~~~~~~
@@ -983,6 +979,7 @@ document title & subtitle; see doctitle_xform_.
 
 Default: 1 (for "<h1>").  Option: ``--initial-header-level``.
 
+
 math_output
 ~~~~~~~~~~~
 
@@ -992,9 +989,9 @@ the output document. Supported values are (case insensitive):
 :HTML:
   Format math in standard HTML enhanced by CSS rules.
   Requires the ``math.css`` stylesheet (in the system
-  `stylesheet directory <stylesheet_dirs [html4css1 writer]_>`_)
+  `stylesheet directory <stylesheet_dirs [html writers]_>`_)
 
-  A `stylesheet_path <stylesheet_path [html4css1 writer]_>`_
+  A `stylesheet_path <stylesheet_path [html writers]_>`_
   can be appended after whitespace, the specified
   stylesheet(s) will only be referenced or embedded, if required
   (i.e. if there is mathematical content in the document).
@@ -1081,7 +1078,7 @@ the output document. Supported values are (case insensitive):
 
   The failsave fallback.
 
-Default: "HTML math.css" (The `[html5 writer]`_ defaults to "MathML").
+Default: writer dependent (see `[html4css1 writer]`_, `[html5 writer]`_).
 Option: ``--math-output``.
 
 New in Docutils 0.8.
@@ -1094,17 +1091,8 @@ New in Docutils 0.8.
 .. _LaTeXML: http://dlmf.nist.gov/LaTeXML/
 .. _TtM: http://hutchinson.belmont.ma.us/tth/mml/
 
-option_limit
-~~~~~~~~~~~~
 
-The maximum width (in characters) for options in `option lists`_.
-Longer options will span an entire row of the table used to render
-the option list.  0 indicates "no limit".  See also
-field_name_limit_.
-
-Default: 14 (i.e. 14 characters).  Option: ``--option-limit``.
-
-.. _stylesheet [html4css1 writer]:
+.. _stylesheet [html writers]:
 
 stylesheet
 ~~~~~~~~~~
@@ -1116,9 +1104,10 @@ Overrides also stylesheet-path__. [#override]_
 
 Default: None.  Options: ``--stylesheet``.
 
-__ `stylesheet_path [html4css1 writer]`_
+__ `stylesheet_path [html writers]`_
 
-.. _stylesheet_dirs [html4css1 writer]:
+
+.. _stylesheet_dirs [html writers]:
 
 stylesheet_dirs
 ~~~~~~~~~~~~~~~
@@ -1131,14 +1120,14 @@ executables). However, the term "path" is already used in the
 stylesheet_path__ setting with the meaning of a file location.
 
 __
-__ `stylesheet_path [html4css1 writer]`_
+__ `stylesheet_path [html writers]`_
 
 Default: the working directory of the process at launch and the directory
 with default stylesheet files (writer and installation specific).
 Use the ``--help`` option to get the exact value.
 Option: ``--stylesheet-directories``.
 
-.. _stylesheet_path [html4css1 writer]:
+.. _stylesheet_path [html writers]:
 
 stylesheet_path
 ~~~~~~~~~~~~~~~
@@ -1152,14 +1141,16 @@ Also overrides "stylesheet". [#override]_
 Pass an empty string (to either "stylesheet" or "stylesheet_path") to
 deactivate stylesheet inclusion.
 
-Default: "html4css1.css".
+Default: writer dependent (see `[html4css1 writer]`_, `[html5 writer]`_,
+[pep_html writer]_).
 Options: ``--stylesheet-path``.
 
-__ `embed_stylesheet [html4css1 writer]`_
+__ `embed_stylesheet [html writers]`_
 __ `stylesheet_path [latex writers]`_
-__ `stylesheet_dirs [html4css1 writer]`_
+__ `stylesheet_dirs [html writers]`_
 
-.. _table_style [html4css1 writer]:
+
+.. _table_style [html writers]:
 
 table_style
 ~~~~~~~~~~~
@@ -1189,7 +1180,8 @@ Default: "".  Option: ``--table-style``.
 __ `table_style [latex writers]`_
 .. _table directive: ../ref/rst/directives.html#table
 
-.. _template [html4css1 writer]:
+
+.. _template [html writers]:
 
 template
 ~~~~~~~~
@@ -1203,7 +1195,8 @@ path, use the ``--help`` option).  Options: ``--template``.
 
 __ `template [latex writers]`_
 
-.. _xml_declaration [html4css1 writer]:
+
+.. _xml_declaration [html writers]:
 
 xml_declaration
 ~~~~~~~~~~~~~~~
@@ -1220,22 +1213,83 @@ Default: do (1).  Options: ``--no-xml-declaration``.
 __ `xml_declaration [docutils_xml writer]`_
 
 
+[html4css1 writer]
+~~~~~~~~~~~~~~~~~~
+
+The `HTML4/CSS1 Writer`_ generates output that conforms to the
+`XHTML 1 Transitional`_ specification.
+It shares all settings defined in the `[html writers]`_
+`configuration section`_.
+
+
+Writer specific defaults:
+
+math_output_
+  "MathML"
+
+`stylesheet_path <stylesheet_path [html writers]_>`_:
+  "html4css1.css"
+
+.. _HTML4/CSS1 Writer: html.html#html4css1
+.. _XHTML 1 Transitional: http://www.w3.org/TR/xhtml1/
+
+
+field_name_limit
+""""""""""""""""
+
+The maximum width (in characters) for one-column `field names`_. Longer
+field names will span an entire row of the table used to render the field
+list.  0 indicates "no limit".  See also option_limit_.
+
+Default: 14 (i.e. 14 characters).  Option: ``--field-name-limit``.
+
+
+option_limit
+""""""""""""
+
+The maximum width (in characters) for options in `option lists`_.
+Longer options will span an entire row of the table used to render
+the option list.  0 indicates "no limit".  See also
+field_name_limit_.
+
+Default: 14 (i.e. 14 characters).  Option: ``--option-limit``.
+
+
+[html5 writer]
+~~~~~~~~~~~~~~
+
+The `HTML5 Writer`_ generates valid XML that is compatible with `HTML5`_.
+It shares all settings defined in the `[html writers]`_
+`configuration section`_.
+
+Writer specific defaults:
+
+`math_output`_
+  "MathML"
+
+`stylesheet_path <stylesheet_path [html writers]_>`_:
+  "minimal.css,plain.css"
+
+New in Docutils 0.13.
+
+.. _HTML5 Writer: html.html#html5-polyglot
+.. _HTML5: http://www.w3.org/TR/html5/
+
+
 [pep_html writer]
 ~~~~~~~~~~~~~~~~~
 
-The PEP/HTML Writer derives from the standard HTML Writer, and shares
-all settings defined in the `[html4css1 writer]`_ section.  The
-"[html4css1 writer]" section of configuration files is processed
-before the "[pep_html writer]" section.
+The PEP/HTML Writer derives from the HTML4/CSS1 Writer, and shares
+all settings defined in the `[html writers]`_ and `[html4css1 writer]`_
+`configuration sections`_.
 
-The PEP/HTML Writer's default for the following settings differ from
-those of the standard HTML Writer:
+Writer specific defaults:
 
-`stylesheet_path <stylesheet_path [html4css1 writer]_>`_:
-  Default: "pep.css"
+`stylesheet_path <stylesheet_path [html writers]_>`__:
+  "pep.css"
 
-`template <template [html4css1 writer]_>`_:
-  Default: ``docutils/writers/pep_html/template.txt`` in the installation
+`template <template [html writers]_>`__:
+  ``docutils/writers/pep_html/template.txt`` in the installation
   directory.  For the exact machine-specific path, use the ``--help``
   option.
 
@@ -1263,21 +1317,21 @@ Default: parent directory ("..").  Options: ``--python-home``.
 [s5_html writer]
 ~~~~~~~~~~~~~~~~
 
-The S5/HTML Writer derives from the standard HTML Writer, and shares
-all settings defined in the `[html4css1 writer]`_ section.  The
-"[html4css1 writer]" section of configuration files is processed
-before the "[s5_html writer]" section.
+The S5/HTML Writer derives from the HTML4/CSS1 Writer, and shares
+all settings defined in the `[html writers]`_ and `[html4css1 writer]`_
+`configuration sections`_.
 
-The S5/HTML Writer's default for the following settings differ
-from those of the standard HTML Writer:
+Writer specific defaults:
 
 compact_lists_:
-    Default: disable compact lists.
+  disable compact lists.
 
-template_:
-  Default: ``docutils/writers/s5_html/template.txt`` in the installation
+template__:
+  ``docutils/writers/s5_html/template.txt`` in the installation
   directory.  For the exact machine-specific path, use the ``--help``
   option.
+
+__ `template [html writers]`_
 
 
 hidden_controls
@@ -1320,6 +1374,7 @@ Default: "default".  Option: ``--theme``.
 
 theme_url
 """""""""
+
 The URL of an S5 theme directory.  The destination file (output
 HTML) will link to this theme; nothing will be copied.  Also overrides
 the "theme_" setting. [#override]_
@@ -1333,35 +1388,15 @@ The initial view mode, either "slideshow" or "outline".
 
 Default: "slidewhow".  Option: ``--view-mode``.
 
-
-[html5 writer]
---------------
-
-The `html5` writer uses the settings described in the `[html4css1
-writer]`_ section with the following exceptions:
-
-Removed options:
-  `field_name_limit`_, `option_limit`_.
-
-Different default for:
-
-`math_output`_
-  Default: "MathML"
-
-`stylesheet_path <stylesheet_path [html4css1 writer]_>`_:
-  Default: "minimal.css,plain.css"
-
-`stylesheet_dirs <stylesheet_dirs [html4css1 writer]_>`_:
-  Default: Installation-dependent. Use the --help option to get the exact
-  value.
-
-New in Docutils 0.13.
-
+.. ------------------------------------------------------------
 
 [latex writers]
 ----------------
 
-Common settings for the `[latex2e writer]`_ and `[xetex writer]`_.
+Common settings for the `LaTeX writers`_
+`[latex2e writer]`_ and `[xetex writer]`_.
+
+.. _LaTeX writers: latex.html
 
 use_latex_toc
 ~~~~~~~~~~~~~
@@ -1454,11 +1489,11 @@ Embed the stylesheet(s) in the header of the output file.  The
 stylesheets must be accessible during processing.  Currently, this
 fails if the file is not available via the given path (i.e. the
 file is *not* searched in the `TeX input path`_).
-Also defined for the `HTML Writer`__ (with default *on*).
+Also defined for the `HTML Writers`__ (with default *on*).
 
 Default: off.  Options: ``--embed-stylesheet, --link-stylesheet``.
 
-__ `embed_stylesheet [html4css1 writer]`_
+__ `embed_stylesheet [html writers]`_
 
 .. _stylesheet [latex writers]:
 
@@ -1466,7 +1501,7 @@ stylesheet
 ~~~~~~~~~~
 
 A comma-separated list_ of style files.
-Also defined for the `HTML Writer`__.
+Also defined for the `HTML Writers`__.
 
 Overrides also stylesheet_path__. [#override]_
 
@@ -1480,7 +1515,7 @@ Default: no stylesheet ("").  Option: ``--stylesheet``.
 
 __ `stylesheet_path [latex writers]`_
 __ `embed_stylesheet [latex writers]`_
-__ `stylesheet [html4css1 writer]`_
+__ `stylesheet [html writers]`_
 .. _TeX input path:
    http://www.tex.ac.uk/cgi-bin/texfaq2html?label=what-TDS
 
@@ -1519,7 +1554,7 @@ the output file.
 The stylesheet__  option is preferred for files in the `TeX input path`_.
 
 Also defined for the
-`HTML Writer <stylesheet_path [html4css1 writer]_>`__.
+`HTML Writers <stylesheet_path [html writers]_>`__.
 
 Also overrides stylesheet__. [#override]_
 
@@ -1547,21 +1582,21 @@ footnote_references
 ~~~~~~~~~~~~~~~~~~~
 
 Format for `footnote references`_: one of "superscript" or
-"brackets".  Also defined for the `HTML Writer`__.
+"brackets".  Also defined for the `HTML Writers`__.
 
 Overrides [#override]_ trim_footnote_reference_space_, if
 applicable [#footnote_space]_.
 
 Default: "superscript".  Option: ``--footnote-references``.
 
-__ `footnote_references [html4css1 writer]`_
+__ `footnote_references [html writers]`_
 
 .. _attribution [latex writers]:
 
 attribution
 ~~~~~~~~~~~
 
-See `attribution [html4css1 writer]`_.
+See `attribution [html writers]`_.
 
 compound_enumerators
 ~~~~~~~~~~~~~~~~~~~~
@@ -1621,7 +1656,7 @@ table_style
 ~~~~~~~~~~~
 
 Specify the default style for tables_
-Also defined for the `HTML Writer`__.
+Also defined for the `HTML Writers`__.
 
 Supported values:
 
@@ -1649,7 +1684,7 @@ colwidths-auto, colwidths-given
 
 Default: "standard".  Option: ``--table-style``.
 
-__ `table_style [html4css1 writer]`_
+__ `table_style [html writers]`_
 
 
 .. _template [latex writers]:
@@ -1658,12 +1693,12 @@ template
 ~~~~~~~~
 
 Path [#pwd]_ to template file, which must be encoded in UTF-8.
-Also defined for the `HTML Writer`__.
+Also defined for the `HTML Writers`__.
 
 Default: writer dependent (see `[latex2e writer]`_, `[xetex writer]`_).
 Options: ``--template``.
 
-__ `template [html4css1 writer]`_
+__ `template [html writers]`_
 
 
 [latex2e writer]
@@ -1741,7 +1776,7 @@ latex_preamble_:
 template__:
   "xelatex.tex" in the ``docutils/writers/latex2e/`` directory
   (installed automatically).
-  
+
   .. TODO: show full path with --help (like in the HTML writers) and
      add the following line:
      for the exact machine-specific path, use the ``--help`` option).

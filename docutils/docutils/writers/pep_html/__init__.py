@@ -55,7 +55,8 @@ class Writer(html4css1.Writer):
     relative_path_settings = ('template',)
 
     config_section = 'pep_html writer'
-    config_section_dependencies = ('writers', 'html4css1 writer')
+    config_section_dependencies = ('writers', 'html writers',
+                                   'html4css1 writer')
 
     def __init__(self):
         html4css1.Writer.__init__(self)

@@ -61,7 +61,7 @@ class Writer(writers.Writer):
     settings_defaults = {'output_encoding_error_handler': 'xmlcharrefreplace'}
 
     # config_section = ... # set in subclass!
-    config_section_dependencies = ['writers', 'html writers']
+    config_section_dependencies = ('writers', 'html writers')
 
     visitor_attributes = (
         'head_prefix', 'head', 'stylesheet', 'body_prefix',
