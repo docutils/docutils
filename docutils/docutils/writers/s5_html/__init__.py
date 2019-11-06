@@ -83,7 +83,8 @@ class Writer(html4css1.Writer):
     settings_default_overrides = {'toc_backlinks': 0}
 
     config_section = 's5_html writer'
-    config_section_dependencies = ('writers', 'html4css1 writer')
+    config_section_dependencies = ('writers', 'html writers',
+                                   'html4css1 writer')
 
     def __init__(self):
         html4css1.Writer.__init__(self)
