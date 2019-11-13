@@ -34,8 +34,8 @@ __ http://www.latex-project.org/
 
 .. _LaTeX packages:
 
-LaTeX classes and packages
---------------------------
+LaTeX document classes and packages
+-----------------------------------
 
 Unlike HTML with CSS, LaTeX uses one common language for markup and style
 definitions. Separation of content and style is realized by collecting style
@@ -178,10 +178,12 @@ The `"classes" attribute`_ is one of the common attributes, shared by all
 Docutils elements.
 In HTML, the common use is to provide selection criteria for style rules in
 CSS stylesheets. As there is no comparable framework for LaTeX, Docutils
-mimics some of this behaviour via `Docutils specific LaTeX macros`_.
+emulates some of this behaviour via `Docutils specific LaTeX macros`_.
+Due to LaTeX limitations, class arguments are ignored for
+some elements (e.g. a rubric_).
 
 *Inline elements*
-  are handled via the ``\DUrole{}`` macro, that calls the optional styling
+  are handled via the ``\DUrole{}`` macro that calls the optional styling
   command ``\DUrole«classargument»`` with one argument (the role content).
   See `custom interpreted text roles`_.
 
@@ -1548,16 +1550,21 @@ Command:
   ``\DUrubric``
 
 Default:
-  subsubsection style, italic, centred
+  subsubsection style (unnumbered), italic
 
-Example:
-  set flushleft and red::
+Example1:
+  Set centred and red::
 
     \newcommand*{\DUrubric}[1]{%
-       \subsubsection*{{\color{red}#1}\hfill}}
+       \subsubsection*{\centerline{\color{red}#1}}}
+
+.. note::
+  Class attribute values are ignored because the "classes_ wrapper" 
+  interferes with LaTeX's formatting (spacing/indendation) of text following
+  a section heading. Consider using a `topic element`_ or a container_.
 
 __ ../ref/rst/directives.html#rubric
-
+.. _container: ../ref/rst/directives.html#container
 
 section numbering
 -----------------
@@ -1640,7 +1647,7 @@ A pre-configured table style can be globally selected via the table-style_
 setting or set for individual tables via a `class directive`_ or the class
 option of the `table directive`_.
 
-.. _table-style: config.html#table-style-latex2e-writer
+.. _table-style: config.html#table-style-latex-writers
 .. _table directive: ../ref/rst/directives.html#table
 
 topic element
