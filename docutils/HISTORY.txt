@@ -65,6 +65,8 @@ Changes Since 0.15
     in admonitions and footnotes.
   - Deprecation warning for ``\docutilsrole``-prefixed styling commands.
   - Add "latex writers" to the `config_section_dependencies`.
+  - Ignore classes for `rubric` elements
+    (class wrapper interferes with LaTeX formatting).
 
 * docutils/writers/manpage.py
 

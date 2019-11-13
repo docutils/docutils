@@ -715,7 +715,7 @@ Container
 =========
 
 :Directive Type: "container"
-:Doctree Element: container_
+:Doctree Element: `container <container element_>`__
 :Directive Arguments: One or more, optional (class names).
 :Directive Options: `:name:`_
 :Directive Content: Interpreted as body elements.
@@ -1978,7 +1978,7 @@ _`:name:` : text
 .. _block_quote: ../doctree.html#block-quote
 .. _caption: ../doctree.html#caption
 .. _compound: ../doctree.html#compound
-.. _container: ../doctree.html#container
+.. _container element: ../doctree.html#container
 .. _decoration: ../doctree.html#decoration
 .. _figure: ../doctree.html#figure
 .. _footnote: ../doctree.html#footnote

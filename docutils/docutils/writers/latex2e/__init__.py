@@ -2823,12 +2823,12 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_rubric(self, node):
         self.fallbacks['rubric'] = PreambleCmds.rubric
-        self.duclass_open(node)
-        self.out.append('\\DUrubric{')
+        # class wrapper would interfere with ``\section*"`` type commands
+        # (spacing/indent of first paragraph)
+        self.out.append('\n\\DUrubric{')
 
     def depart_rubric(self, node):
         self.out.append('}\n')
-        self.duclass_close(node)
 
     def visit_section(self, node):
         self.section_level += 1
