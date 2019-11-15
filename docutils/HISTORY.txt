@@ -84,10 +84,14 @@ Changes Since 0.15
   - Fix: 377 ResourceWarning: unclosed file python3.8
     Close alltests.out with atexit.
 
-* test/functional/tests/*
+* test/functional/*
 
   - Fix: 377 ResourceWarning: unclosed file python3.8
     Read defaults file with context.
+
+  - Set "auto_id_prefix" to "%" (expands to tag-names).
+    Results in descriptive links in HTML and more localized changes when
+    editions to the input add or remove auto-ids.
 
 * test/test_io.py:
 
