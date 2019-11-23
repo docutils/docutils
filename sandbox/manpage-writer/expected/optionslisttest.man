@@ -187,8 +187,7 @@ Defintions lists are not nested
 More Description for term3.
 .UNINDENT
 .sp
-This paragraph should be at level 0. But the rst\-manpage writer has a
-bug here. See the option list above.
+This paragraph should be at level 0 again.
 .SH AUTHOR
 h.goebel@goebel-consult.de
 .SH COPYRIGHT

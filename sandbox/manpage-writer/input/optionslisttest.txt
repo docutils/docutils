@@ -141,6 +141,5 @@ DEFINITION LIST
 
    More Description for term3.
 
-This paragraph should be at level 0. But the rst-manpage writer has a
-bug here. See the option list above.
+This paragraph should be at level 0 again.
 
