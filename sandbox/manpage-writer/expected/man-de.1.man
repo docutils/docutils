@@ -208,7 +208,7 @@ gebunden ist.
 .TP
 .B \fBman \-l \-Tdvi ./foo.1x.gz > ./foo.1x.dvi\fP
 Dieser  Befehl  formatiert   die   komprimierte   nroff\-Manualseite
-./foo.1x.gz  in  eine  device  independent (dvi) Datei. Diese Datei
+\&./foo.1x.gz  in  eine  device  independent (dvi) Datei. Diese Datei
 wird zuerst dekomprimiert, bevor sie durch passende Filter und Pro\-
 gramme  bearbeitet  wird.  Die  Umlenkung  ist notwendig, da die \-T
 Option die Ausgabe unformatiert an die Standardausgabe schickt. Die
