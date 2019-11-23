@@ -7,8 +7,8 @@ NNAAMMEE
 
 SSYYNNTTAAXX
           man   [-acdhwutZV]  [-m  System[,...]] [-L locale] [-p Zeichenkette]
-          [-M Pfad] [-P Pager]  [-r  Prompt]  [-T  Format]  [-S   Liste]   [-e
-          Erweiterung] [[Abschnitt] Seite ...] ...
+          [-M Pfad] [-P Pager] [-r Prompt] [-T Format] [-S  Liste]   [-e   Er-
+          weiterung] [[Abschnitt] Seite ...] ...
 
           man  -l  [-tZ]  [-p Zeichenkette] [-P Pager] [-r Prompt] [-T Format]
           Datei ...
@@ -119,60 +119,61 @@ BBEEIISSPPIIEELLEE
 
        mmaann --ll --TTddvvii ..//ffoooo..11xx..ggzz >> ..//ffoooo..11xx..ddvvii
               Dieser  Befehl  formatiert   die   komprimierte    nroff-Manual-
-              seite wird zuerst dekomprimiert, bevor sie durch passende Filter
-              und  Pro-  gramme   bearbeitet   wird.   Die    Umlenkung    ist
-              notwendig,  da  die  -T  Option  die Ausgabe unformatiert an die
-              Standardausgabe schickt. Die Ausgabe  kann  mit  einem  Programm
-              wie  xdvi  betrachtet oder mit einem Programm wie dvips in Post-
+              seite  ./foo.1x.gz   in   eine  device  independent (dvi) Datei.
+              Diese Datei wird zuerst dekomprimiert, bevor sie durch  passende
+              Filter  und  Pro- gramme  bearbeitet  wird.  Die  Umlenkung  ist
+              notwendig, da die -T Option  die  Ausgabe  unformatiert  an  die
+              Standardausgabe  schickt.  Die  Ausgabe  kann mit einem Programm
+              wie xdvi betrachtet oder mit einem Programm wie dvips  in  Post-
               script weiterverarbeitet werden.
 
        mmaann --kk pprriinnttff
-              Sucht die Kurzbeschreibungen und die  Namen   der   Manualseiten
+              Sucht  die  Kurzbeschreibungen und die  Namen  der  Manualseiten
               zum Schluesselwort printf und gibt alle Treffer aus.
 
        mmaann --ff ssmmaaiill
-              Sucht   die   Manualseiten, die sich auf smail beziehen und gibt
+              Sucht  die  Manualseiten, die sich auf smail beziehen  und  gibt
               alle gefundenen Kurzbeschreibungen aus.
 
 UUEEBBEERRSSIICCHHTT
-       Um dem Benutzer eine groesstmoegliche Flexibilität zu bieten, sind   in
-       man  viele  Optionen verfuegbar. Veraenderungen koennen am Suchpfad, in
+       Um  dem Benutzer eine groesstmoegliche Flexibilität zu bieten, sind  in
+       man viele Optionen verfuegbar. Veraenderungen koennen am  Suchpfad,  in
        der Reihenfolge der Abschnitte  oder  am  Ausgabeprozessor  vorgenommen
-       werden.   Andere  Verhaltensweisen und  Operationen  sind  weiter unten
+       werden.  Andere Verhaltensweisen und  Operationen  sind   weiter  unten
        beschrieben.
 
-       Um die Arbeitsweise von man zu  bestimmen,  werden  verschiedene  Umge-
-       bungsvariablen  benutzt.  Mit dieser Version ist es moeglich, die Vari-
+       Um  die Arbeitsweise von man zu  bestimmen,  werden  verschiedene Umge-
+       bungsvariablen benutzt.  Mit dieser Version ist es moeglich, die  Vari-
        able $$MMAANNOOPPTT auf einen Ausdruck im Kommandozeilenformat zu  setzen.  Es
-       gibt  folgende   Ausnahme:  Da  jede Option  in $$MMAANNOOPPTT von Leerzeichen
-       eingeschlossen ist, muessen  Leerzeichen,  die Teil  eines   Argumentes
-       sind,  gequotet  werden.  man bearbeitet diese Variable vor der eigenen
-       Kommandozeile.  Die Optionen,  die  ein  Argument  benoetigen,  koennen
-       durch  die  gleichen  Optionen in der Kommandozeile ueberschrieben wer-
-       den.  Um alle Optionen zurueckzusetzen, die in $$MMAANNOOPPTT gesetzt  werden,
-       kann   --DD  als   initiale Kommandozeilen-Option angegeben werden.  Dies
-       erlaubt man alle Optionen zu _u_e_b_e_r_s_c_h_r_e_i_b_e_n,  die  in  $$MMAANNOOPPTT  gesetzt
-       werden,  obwohl   diese  weiterhin  gelten.   Damit  wird  die groesst-
-       moegliche Flexibilität fuer  einen  Benutzer   erzeugt,  der  man   auf
-       seine   eigenen Beduerfnisse  anpassen will, ohne zahllose Optionen bei
+       gibt folgende  Ausnahme:  Da  jede Option  in $$MMAANNOOPPTT  von  Leerzeichen
+       eingeschlossen  ist,  muessen  Leerzeichen,  die Teil eines  Argumentes
+       sind, gequotet  werden.  man bearbeitet diese Variable vor der  eigenen
+       Kommandozeile.   Die  Optionen,  die  ein  Argument benoetigen, koennen
+       durch die gleichen  Optionen in der Kommandozeile  ueberschrieben  wer-
+       den.   Um alle Optionen zurueckzusetzen, die in $$MMAANNOOPPTT gesetzt werden,
+       kann  --DD als  initiale Kommandozeilen-Option  angegeben  werden.   Dies
+       erlaubt  man alle Optionen zu _u_e_b_e_r_s_c_h_r_e_i_b_e_n,  die  in  $$MMAANNOOPPTT gesetzt
+       werden, obwohl   diese  weiterhin  gelten.   Damit  wird  die  groesst-
+       moegliche  Flexibilität  fuer   einen  Benutzer   erzeugt, der man  auf
+       seine  eigenen Beduerfnisse  anpassen will, ohne zahllose Optionen  bei
        der Suche einer Manualseite einzugeben.
 
-       Die Hilfsprogramme, die im man-db-Paket zusammengefasst  sind,   machen
+       Die  Hilfsprogramme, die im man-db-Paket zusammengefasst  sind,  machen
        umfassenden  Gebrauch  von  Indexdatenbanken.   Diese  Zwischenspeicher
        enthalten Informationen ueber den Ort und die zugehoerige whatis Infor-
-       mation  (einzeilige   Kurzbeschreibung der Manualseite), sowie darüber,
+       mation (einzeilige  Kurzbeschreibung der Manualseite),  sowie  darüber,
        wo sich eine Manualseite im Dateisystem befindet. Eine Aufgabe von  man
-       ist   die Konsistenzsicherung der Datenbank. Die Datenbanken verhindern
+       ist  die Konsistenzsicherung der Datenbank. Die Datenbanken  verhindern
        die Notwendigkeit einer manuellen Bearbeitung  zur  Aktualisierung  der
-       whatis-Textdatenbank   und  erlauben man schneller zu arbeiten, als bei
+       whatis-Textdatenbank  und erlauben man schneller zu arbeiten,  als  bei
        der Suche nach der passenden Manualseite im gesamten Dateisystem.
 
        Wenn man keine von mandb erstellte Indexdatenbank zu  einer  speziellen
        Manualhierarchie  finden kann, wird dennoch nach der gewuenschten Manu-
        alseite gesucht. In diesem Fall ist es jedoch wieder noetig,  nach  der
-       alten   Methode alle  in  Frage  kommenden Verzeichnisse zu durchsuchen
+       alten  Methode alle  in  Frage  kommenden Verzeichnisse zu  durchsuchen
        (sog. globbing). Wenn whatis oder apropos keine  Indexdatenbank  finden
-       koennen,   versucht   es  die Information  aus  der whatis-Datenbank zu
+       koennen,  versucht  es  die Information  aus  der  whatis-Datenbank  zu
        beziehen.  Auch anwenderspezifische Manualhierarchien  werden  waehrend
        der Benutzung in Indexdatenbanken zusammengefasst.
 
@@ -256,17 +257,17 @@ NNOORRMMAALLEEIINNSSTTEELLLLUUNNGGEENN
 OOPPTTIIOONNEENN
        Eine Argumentoption, die entweder in der Kommandozeile, in $$MMAANNOOPPTT oder
        in beiden doppelt vorkommt , ist nicht schaedlich. Fuer  Optionen,  die
-       ein  Argument benötigen, überschreibt jedes Duplikat den vorhergehenden
+       ein Argument benötigen, überschreibt jedes Duplikat den  vorhergehenden
        Wert.
 
        --ll, ----llooccaall--ffiillee
               Aktiviert den lokalen Modus. Formatiert und zeigt lokale Manual-
-              dateien  an,  anstatt  die System-Manualsammlung zu durchsuchen.
+              dateien an,  anstatt  die System-Manualsammlung zu  durchsuchen.
               Jedes Manualseiten-Argument wird als nroff-Quelle  im  richtigen
               Format  interpretiert. Komprimierte nroff-Quelldateien mit einer
               unterstuetzten Kompressions-Erweiterung werden  von  man  dekom-
               primiert, bevor sie ueber den ueblichen Filter angezeigt werden.
-              Es wird keine cat-Datei erzeugt. Wenn eines  der   Argumente   --
+              Es  wird  keine cat-Datei erzeugt. Wenn eines  der  Argumente  --
               ist, wird die Eingabe von der Standardeingabe uebernommen.
 
        --LL _l_o_c_a_l_e,, ----llooccaallee==_l_o_c_a_l_e
@@ -290,8 +291,8 @@ OOPPTTIIOONNEENN
 
        --MM _P_f_a_d,, ----mmaannppaatthh==_P_f_a_d
               Ermoeglicht es, einen alternativen  Manualpfad  anzugeben.  Nor-
-              malerweise  verwendet  man dieselben Methoden wie in manpath, um
-              den Suchpfad zu ermitteln. Diese Option ueberschreibt die  Umge-
+              malerweise verwendet man dieselben Methoden wie in  manpath,  um
+              den  Suchpfad zu ermitteln. Diese Option ueberschreibt die Umge-
               bungsvariable $$MMAANNPPAATTHH.
 
        --PP _P_a_g_e_r,, ----ppaaggeerr==_P_a_g_e_r
@@ -309,11 +310,11 @@ OOPPTTIIOONNEENN
               wobei  name  die  Manualseite  bezeichnet,  die gerade angezeigt
               wird, sec der Abschnitt ist, in dem sie gefunden  wurde,  und  x
               die aktuelle Zeilennummer ist.  Diese Anzeige wird durch Verwen-
-              dung  der  Umgebungsvariable  $$LLEESSSS erreicht.  Man beachte, dass
+              dung der Umgebungsvariable $$LLEESSSS erreicht.   Man  beachte,  dass
               einzelne Bezeichnungen sich bei der Verwendung von landessprach-
-              lichen  Meldungen  ändern koennen.  Die Option --rr ermöglicht es,
+              lichen Meldungen ändern koennen.  Die Option --rr  ermöglicht  es,
               durch  Angabe einer Formatierungszeichenkette, das Ausgabeformat
-              selbst  zu  bestimmen.  Wenn diese Zeichenkette $$MMAANN__PPNN enthält,
+              selbst zu bestimmen.  Wenn diese Zeichenkette  $$MMAANN__PPNN  enthält,
               wird dieser Text durch den Namen der Manualseite gefolgt von der
               Abschnittsnummer in runden Klammern ersetzt.  Die  Zeichenkette,
               die im Normalfall verwendet wird ist:
@@ -322,11 +323,11 @@ OOPPTTIIOONNEENN
                  byte\ %bB?s/%s..?\ (END):?pB %pB\\%..
 
               Die  zweizeilige  Darstellung  wurde nur der besseren Lesbarkeit
-              wegen  gewählt.  Nähere Informationen liefert less(1).   Da  die
+              wegen gewählt. Nähere Informationen liefert less(1).    Da   die
               Zeichenkette  zuerst  vom  Kommandointerpreter ausgewertet wird,
-              muessen  entsprechende Zeichen durch einen  Backslash  geschützt
-              werden.   Weitere  Optionen  für   less   koennen   nach   einem
-              geschützten  $$ am Ende der Zeichenkette hinzugefügt werden.  Der
+              muessen entsprechende Zeichen durch einen  Backslash   geschützt
+              werden.    Weitere   Optionen   für   less  koennen  nach  einem
+              geschützten $$ am Ende der Zeichenkette hinzugefügt werden.   Der
               Default ist hier --iixx88.
 
        --SS _L_i_s_t_e,, ----sseeccttiioonnss==_L_i_s_t_e
@@ -351,20 +352,20 @@ OOPPTTIIOONNEENN
               nur eine Menge von Diagnoseinformation.
 
        --ee _E_r_w_e_i_t_e_r_u_n_g,, ----eexxtteennssiioonn==_E_r_w_e_i_t_e_r_u_n_g
-              Einige  Systeme  enthalten  grosse  Pakete an Manualseiten,  wie
-              z.B.  in dem Tcl Paket, die  in  die  normalen  Manualabschnitte
-              integriert  werden.  Um beispielsweise das Problem zweier unter-
-              schiedlicher Manualseiten mit gleichem Namen,  wie  exit(3),  zu
+              Einige Systeme enthalten grosse  Pakete  an  Manualseiten,   wie
+              z.B.  in dem Tcl Paket, die in die normalen Manualabschnitte in-
+              tegriert werden.  Um beispielsweise das  Problem  zweier  unter-
+              schiedlicher  Manualseiten  mit  gleichem Namen, wie exit(3), zu
               lösen, wurden früher alle Tcl Seiten dem Abschnitt l zugeordnet.
               Dieses erwies sich als keine gute Lösung. Bei dieser Version von
-              man  ist  es  möglich,  die  Seiten  in die richtigen Abschnitte
-              einzuordnen und ihrem Seitennamen eine spezifische  Erweiterung,
-              hier  z.  B.  exit(3tcl)  anzuhängen.   Unter normalen Umständen
+              man ist es möglich,  die  Seiten  in  die  richtigen  Abschnitte
+              einzuordnen  und ihrem Seitennamen eine spezifische Erweiterung,
+              hier z. B.  exit(3tcl)  anzuhängen.   Unter  normalen  Umständen
               zeigt man bevorzugt exit(3) gegenüber exit(3tcl) an.  Um  dieses
               Verhalten  umzukehren,  ist  man  die   Zeichenkette Erweiterung
-              zu übergeben, die angibt, in welchem Paket  die  Manualseite  zu
-              finden  ist.  Im  obigen   Fall  beschränkt man seine Suche  auf
-              Seiten  mit der Erweiterung **ttccll, wenn es mit --ee ttccll  aufgerufen
+              zu  übergeben,  die  angibt, in welchem Paket die Manualseite zu
+              finden ist. Im obigen  Fall  beschränkt  man  seine  Suche   auf
+              Seiten   mit der Erweiterung **ttccll, wenn es mit --ee ttccll aufgerufen
               wurde. Die Suche wird  dabei in allen Abschnitten durchgeführt.
 
        --ff, ----wwhhaattiiss
@@ -477,7 +478,7 @@ UUMMGGEEBBUUNNGG
 
        LLAANNGG,, LLCC__MMEESSSSAAGGEESS
               Abhaengig von System und Implementation  werden  entweder  $LANG
-              oder $LC_MESSAGES  oder  beide  nach  der gegenwaertigen  locale
+              oder  $LC_MESSAGES  oder  beide  nach  der gegenwaertigen locale
               Information  durchsucht.   man  wird   (wenn   moeglich)   seine
               Nachrichten in dieser locale anzeigen. Fuer Details siehe setlo-
               cale(3).
@@ -509,18 +510,18 @@ FFEEHHLLEERR
        werden diese Seiten als fehlerhaft zurueckgewiesen.
 
 GGEESSCCHHIICCHHTTEE
-       1990,   1991   -   Originale   geschrieben   von   John   W.  Eaton  (-
+       1990,  1991  -   Originale   geschrieben   von   John   W.   Eaton   (-
        _j_w_e_@_c_h_e_._u_t_e_x_a_s_._e_d_u).
 
-       23. Dez. 1992: Fehlerbereinigung  durch  Rik  Faith  (_f_a_i_t_h_@_c_s_._u_n_c_._e_d_u)
+       23.  Dez.  1992:  Fehlerbereinigung  durch Rik Faith (_f_a_i_t_h_@_c_s_._u_n_c_._e_d_u)
        unterstützt durch Willem Kasdorp (_w_k_a_s_d_o_@_n_i_k_h_e_f_k_._n_i_k_e_f_._n_l).
 
-       Zwischen  dem  30.  April  1994  und  dem  23. Februar 2000 hat Wilf (-
-       _G_._W_i_l_f_o_r_d_@_e_e_._s_u_r_r_e_y_._a_c_._u_k)   unter   Mithilfe   von   einigen   wenigen
-       engagierten Menschen dieses Paket entwickelt und weitergeführt.
+       Zwischen dem 30. April 1994 und  dem  23.  Februar  2000  hat  Wilf  (-
+       _G_._W_i_l_f_o_r_d_@_e_e_._s_u_r_r_e_y_._a_c_._u_k)  unter  Mithilfe  von  einigen  wenigen  en-
+       gagierten Menschen dieses Paket entwickelt und weitergeführt.
 
-       Die    deutsche    Übersetzung    wurde   von   Anke   Steuernagel   (-
-       _a___s_t_e_u_e_r_@_i_n_f_o_r_m_a_t_i_k_._u_n_i_-_k_l_._d_e)      und      Nils       Magnus       (-
+       Die   deutsche   Übersetzung   wurde   von    Anke    Steuernagel    (-
+       _a___s_t_e_u_e_r_@_i_n_f_o_r_m_a_t_i_k_._u_n_i_-_k_l_._d_e)       und       Nils      Magnus      (-
        _m_a_g_n_u_s_@_i_n_f_o_r_m_a_t_i_k_._u_n_i_-_k_l_._d_e) angefertigt.
 
        Für persönliche Würdigungen und Zusätze siehe Quelltexte.
