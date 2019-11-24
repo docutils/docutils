@@ -210,6 +210,7 @@ class Translator(nodes.NodeVisitor):
         #
         # Fonts are put on a stack, the top one is used.
         # ``.ft P`` or ``\\fP`` pop from stack.
+        # But ``.BI`` seams to fill stack with BIBIBIBIB...
         # ``B`` bold, ``I`` italic, ``R`` roman should be available.
         # Hopefully ``C`` courier too.
         self.defs = {
@@ -912,7 +913,10 @@ class Translator(nodes.NodeVisitor):
     def visit_option(self, node):
         # each form of the option will be presented separately
         if self.context[-1] > 0:
-            self.body.append('\\fP,\\fB ')
+            if self.context[-3] == '.BI':
+                self.body.append('\\fR,\\fB ')
+            else:
+                self.body.append('\\fP,\\fB ')
         if self.context[-3] == '.BI':
             self.body.append('\\')
         self.body.append(' ')
