@@ -1,0 +1,23 @@
+#380 manpage writer does not add space after .B
+
+... somewhere in the sphinx pipeline something is ... failing
+
+Maybe the ``install`` subparser is a problem.
+
+Input extracted with standard argparse ---
+
+usage: tmpmain.py [-h] [--general GENERAL] foo bar {install} ...
+
+positional arguments:
+  foo                   foo help
+  bar
+  {install}
+    install             install help
+
+optional arguments:
+  -h, --help             show this help message and exit
+  --general GENERAL, -G GENERAL
+                         General option
+  -o FILE, --ouput FILE  output file
+
+NOTE "show" "General" and "output" on same column.

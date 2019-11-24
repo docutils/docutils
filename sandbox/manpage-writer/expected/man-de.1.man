@@ -373,7 +373,7 @@ primiert, bevor sie ueber den ueblichen Filter angezeigt werden.
 Es wird keine cat\-Datei erzeugt. Wenn eines  der  Argumente  \fB\-\fP
 ist, wird die Eingabe von der Standardeingabe uebernommen.
 .TP
-.BI \-L \ locale\fP,\fB \ \-\-locale\fB= locale
+.BI \-L \ locale\fR,\fB \ \-\-locale\fB= locale
 Normalerweise  bestimmt  man  die  aktuelle  locale  durch einen
 Aufruf der C Funktion setlocale (3), die diverse  Umgebungsvari\-
 ablen, darunter u. U.  $LC_MESSAGES und $LANG untersucht.  Diese
@@ -392,18 +392,18 @@ wieder rueckgaengig zu machen, die bereits in der Umgebungsvari\-
 able  $MANOPT  gesetzt sind. Alle Optionen, die \-D folgen, haben
 wieder ihren gewohnten Effekt.
 .TP
-.BI \-M \ Pfad\fP,\fB \ \-\-manpath\fB= Pfad
+.BI \-M \ Pfad\fR,\fB \ \-\-manpath\fB= Pfad
 Ermoeglicht es, einen alternativen  Manualpfad  anzugeben.
 Normalerweise verwendet man dieselben Methoden wie in manpath, um
 den Suchpfad zu ermitteln. Diese Option ueberschreibt die
 Umgebungsvariable \fB$MANPATH\fP\&.
 .TP
-.BI \-P \ Pager\fP,\fB \ \-\-pager\fB= Pager
+.BI \-P \ Pager\fR,\fB \ \-\-pager\fB= Pager
 Gibt an, welcher Pager verwendet wird. Die Normaleinstellung ist
 pager\-s.   Diese  Option  ueberschreibt  die   Umgebungsvariable
 \fB$PAGER\fP und wird nicht in Zusammenhang mit \-f oder \-k verwendet.
 .TP
-.BI \-r \ Prompt\fP,\fB \ \-\-prompt\fB= Prompt
+.BI \-r \ Prompt\fR,\fB \ \-\-prompt\fB= Prompt
 Wenn eine hinreichend neue Version von less als Pager  verwendet
 wird, versucht man dort einige sinnvolle Optionen zu setzen. Die
 Eingabeaufforderung in der letzten Zeile sieht in  dem  Fall  so
@@ -446,7 +446,7 @@ werden.  Weitere Optionen für less koennen nach einem
 geschützten \fB$\fP am Ende der Zeichenkette hinzugefügt werden.
 Der Default ist hier \fB\-ix8\fP\&.
 .TP
-.BI \-S \ Liste\fP,\fB \ \-\-sections\fB= Liste
+.BI \-S \ Liste\fR,\fB \ \-\-sections\fB= Liste
 Eine   durch   Doppelpunkte   getrennte  Liste  von  Abschnitten
 definiert bei Benutzung dieser Option die  Reihenfolge,  in  der
 die Abschnitte durchsucht werden. Diese Option ueberschreibt die
@@ -467,7 +467,7 @@ wird dabei nichts angezeigt.
 Bei  dieser  Option werden keine Manualseiten angezeigt, sondern
 nur eine Menge von Diagnoseinformation.
 .TP
-.BI \-e \ Erweiterung\fP,\fB \ \-\-extension\fB= Erweiterung
+.BI \-e \ Erweiterung\fR,\fB \ \-\-extension\fB= Erweiterung
 Einige Systeme enthalten grosse Pakete an Manualseiten,  wie
 z.B.  in dem Tcl Paket, die in die normalen Manualabschnitte
 integriert werden.  Um beispielsweise das Problem zweier
@@ -514,7 +514,7 @@ ueberschreibt die Umgebungsvariable $SYSTEM.
 .UNINDENT
 .INDENT 0.0
 .TP
-.BI \-p \ Zeichenkette\fP,\fB \ \-\-preprocessor\fB= Zeichenkette
+.BI \-p \ Zeichenkette\fR,\fB \ \-\-preprocessor\fB= Zeichenkette
 Diese Option gibt die Reihenfolge an, in der die Praeprozessoren
 vor nroff  oder  troff/groff  abgearbeitet  werden.  Nicht  alle
 Installationen   haben  notwendigerweise  alle  Praeprozessoren.
