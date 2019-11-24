@@ -270,7 +270,7 @@ OOPPTTIIOONNEENN
               Es  wird  keine cat-Datei erzeugt. Wenn eines  der  Argumente  --
               ist, wird die Eingabe von der Standardeingabe uebernommen.
 
-       --LL _l_o_c_a_l_e,, ----llooccaallee==_l_o_c_a_l_e
+       --LL _l_o_c_a_l_e, ----llooccaallee==_l_o_c_a_l_e
               Normalerweise  bestimmt  man  die  aktuelle  locale  durch einen
               Aufruf der C Funktion setlocale (3), die diverse  Umgebungsvari-
               ablen, darunter u. U.  $LC_MESSAGES und $LANG untersucht.  Diese
@@ -289,18 +289,18 @@ OOPPTTIIOONNEENN
               able  $MANOPT  gesetzt sind. Alle Optionen, die -D folgen, haben
               wieder ihren gewohnten Effekt.
 
-       --MM _P_f_a_d,, ----mmaannppaatthh==_P_f_a_d
+       --MM _P_f_a_d, ----mmaannppaatthh==_P_f_a_d
               Ermoeglicht es, einen alternativen  Manualpfad  anzugeben.  Nor‐
               malerweise verwendet man dieselben Methoden wie in  manpath,  um
               den  Suchpfad zu ermitteln. Diese Option ueberschreibt die Umge‐
               bungsvariable $$MMAANNPPAATTHH.
 
-       --PP _P_a_g_e_r,, ----ppaaggeerr==_P_a_g_e_r
+       --PP _P_a_g_e_r, ----ppaaggeerr==_P_a_g_e_r
               Gibt an, welcher Pager verwendet wird. Die Normaleinstellung ist
               pager-s.   Diese  Option  ueberschreibt  die   Umgebungsvariable
               $$PPAAGGEERR und wird nicht in Zusammenhang mit -f oder -k verwendet.
 
-       --rr _P_r_o_m_p_t,, ----pprroommpptt==_P_r_o_m_p_t
+       --rr _P_r_o_m_p_t, ----pprroommpptt==_P_r_o_m_p_t
               Wenn eine hinreichend neue Version von less als Pager  verwendet
               wird, versucht man dort einige sinnvolle Optionen zu setzen. Die
               Eingabeaufforderung in der letzten Zeile sieht in  dem  Fall  so
@@ -330,7 +330,7 @@ OOPPTTIIOONNEENN
               geschützten $$ am Ende der Zeichenkette hinzugefügt werden.   Der
               Default ist hier --iixx88.
 
-       --SS _L_i_s_t_e,, ----sseeccttiioonnss==_L_i_s_t_e
+       --SS _L_i_s_t_e, ----sseeccttiioonnss==_L_i_s_t_e
               Eine   durch   Doppelpunkte   getrennte  Liste  von  Abschnitten
               definiert bei Benutzung dieser Option die  Reihenfolge,  in  der
               die Abschnitte durchsucht werden. Diese Option ueberschreibt die
@@ -351,7 +351,7 @@ OOPPTTIIOONNEENN
               Bei  dieser  Option werden keine Manualseiten angezeigt, sondern
               nur eine Menge von Diagnoseinformation.
 
-       --ee _E_r_w_e_i_t_e_r_u_n_g,, ----eexxtteennssiioonn==_E_r_w_e_i_t_e_r_u_n_g
+       --ee _E_r_w_e_i_t_e_r_u_n_g, ----eexxtteennssiioonn==_E_r_w_e_i_t_e_r_u_n_g
               Einige Systeme enthalten grosse  Pakete  an  Manualseiten,   wie
               z.B.  in dem Tcl Paket, die in die normalen Manualabschnitte in‐
               tegriert werden.  Um beispielsweise das  Problem  zweier  unter‐
@@ -393,7 +393,7 @@ OOPPTTIIOONNEENN
               durch den Betriebssystemnamen  man  angesprochen.  Diese  Option
               ueberschreibt die Umgebungsvariable $SYSTEM.
 
-       --pp _Z_e_i_c_h_e_n_k_e_t_t_e,, ----pprreepprroocceessssoorr==_Z_e_i_c_h_e_n_k_e_t_t_e
+       --pp _Z_e_i_c_h_e_n_k_e_t_t_e, ----pprreepprroocceessssoorr==_Z_e_i_c_h_e_n_k_e_t_t_e
               Diese Option gibt die Reihenfolge an, in der die Praeprozessoren
               vor nroff  oder  troff/groff  abgearbeitet  werden.  Nicht  alle
               Installationen   haben  notwendigerweise  alle  Praeprozessoren.

@@ -45,7 +45,7 @@ MMOORREE OOPPTTIIOONNSS
 
        --bb     another
 
-       --mm _M_E_S_S_A_G_E,, ----mmeessssaaggee==_M_E_S_S_A_G_E
+       --mm _M_E_S_S_A_G_E, ----mmeessssaaggee==_M_E_S_S_A_G_E
               The message to display (beaware of ,,)
 
 EEXXAAMMPPLLEESS
@@ -117,8 +117,7 @@ DDEEFFIINNIITTIIOONN LLIISSTT
 
               More Description for term3.
 
-       This paragraph should be at level 0. But the rst-manpage writer  has  a
-       bug here. See the option list above.
+       This paragraph should be at level 0 again.
 
 AAUUTTHHOORR
        h.goebel@goebel-consult.de
