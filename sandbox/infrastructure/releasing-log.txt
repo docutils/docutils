@@ -27,6 +27,18 @@ CAUTION (2019-07-22)
 
   Maybe change the the version number in setup.py ?
 
+Release 0.16 (2019-11-xx)
+=========================
+
+Universal wheel ::
+
+  set_version 0.16 beta ... or rc1
+  python3 setup.py sdist
+  python3 setup.py bdist_wheel --universal
+  python3 -m twine upload --repository-url https://test.pypi.org/legacy/ dist/*
+
+
+
 Release 0.15 (2019-07-24)
 =========================
 
