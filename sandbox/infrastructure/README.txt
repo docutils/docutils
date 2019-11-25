@@ -21,8 +21,8 @@ are needed for the development of the Docutils project.
     If a file ``ON_SOURCEFORGE`` exists in current dorectory, the
     script assumes being executed on shell.sourceforge.
 
-:`<release.sh>`_: The script to make releases_ of Docutils.
-    For usage details see `<release.txt>`_
+:`<release.sh>`_: The script to make releases of Docutils.
+    For usage details see `release.txt`_
 
     TODO : test. 
       Allow release without testing, because tests must be done
