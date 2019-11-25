@@ -12,6 +12,9 @@
 The `infrastructure <.>`_ sandbox directory stores any scripts that
 are needed for the development of the Docutils project.
 
+:`<releasing-log.txt>`_: What happend at release time ... what to do next time
+    better.
+
 :`<docutils-update.local>`_: The script to update the `web site`_
     from a developer machine or on shell.sourceforge.
 
