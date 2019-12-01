@@ -11,12 +11,22 @@ Notes on what happend while releasing.
 Release 0.16 (2019-11-xx)
 =========================
 
-Universal wheel ::
+Upload 0.16beta universal wheel and source to test.pypi::
 
-  set_version 0.16 beta ... or rc1
-  python3 setup.py sdist
+  python setup.py sdist
   python3 setup.py bdist_wheel --universal
   python3 -m twine upload --repository-url https://test.pypi.org/legacy/ dist/*
+
+Fails::
+
+  Uploading docutils-0.16b0.dev0-py2.py3-none-any.whl
+  100% ...
+  NOTE: Try --verbose to see response content.
+  HTTPError: 400 Client Error: Invalid value for classifiers. 
+    Error: 'Natural Language :: Lithuanian' is not a valid choice for this field 
+    for url: https://test.pypi.org/legacy/
+
+
 
 Test a beta ::
 
