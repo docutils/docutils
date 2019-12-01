@@ -77,18 +77,12 @@ Future changes
 .. _reference name: docs/ref/rst/restructuredtext.html#reference-names
 .. _identifier normalization: directives.html#identifier-normalization
 
-Release 0.16
-============
-
-.. Note::
-
-   Docutils 0.15.x is the last version supporting Python 2.6, 3.3, and 3.4.
-
-   Docutils 0.16 is compatible with Python versions 2.7 and 3.5 to 3.7.
-   (cf. `Python 3 compatibility`_).
+Release 0.16b (2019-12-01)
+==========================
 
 * General:
 
+  - Dropped support for Python 2.6, 3.3 and 3.4
   - Docutils now supports Python 2.7 and Python 3.5+ natively,
     without the use of the ``2to3`` tool.
 
@@ -105,6 +99,19 @@ Release 0.16
   - Informal titles of type "rubric" default to bold-italic and left aligned.
   - Deprecate ``\docutilsrole`` prefix for styling commands:
     use ``\DUrole`` instead.
+  - Fix topic subtitle.
+  - Add "latex writers" to the `config_section_dependencies`.
+  - Ignore classes for `rubric` elements
+    (class wrapper interferes with LaTeX formatting).
+
+* docutils/writers/manpage.py
+
+  - Apply fix for [ 287 ] comma after option is bold.
+  - Apply fix for [ 289 ], line starting with ``.`` in a text.
+
+* docutils/writers/odf_odt/__init__.py:
+
+  - Fix: ElementTree.getchildren deprecated warning
 
 * tools/buildhtml.py
 
@@ -117,6 +124,33 @@ Release 0.16
 
   - Remove the `handle_io_errors` option from io.FileInput/Output.
 
+* docutils/nodes.py
+
+  - Speed up Node.next_node().
+  - Warn about Node.traverse() returning an iterator instead of a list
+    in future.
+  - If `auto_id_prefix`_ ends with "%", this is replaced with the tag name.
+
+  .. _auto_id_prefix: docs/user/config.html#auto-id-prefix
+
+* docutils/statemachine.py
+
+  - Patch [ 158 ]: Speed up patterns by saving compiled versions (eric89gxl)
+
+* docutils/transforms/universal.py
+
+  - Fix [ 332 ]: Standard backslash escape for smartquotes.
+  - Fix [ 342 ]: No escape in roles descending from `inline literal`.
+
+* docutils/utils/__init__.py
+
+  - unescape() definition moved to `nodes` to avoid circular import
+    dependency. Fixes [ 366 ].
+
+* test/...
+
+  - Fix python3.8 ResourceWarning
+  - Fix python3.8 odt xml sorting.
 
 Release 0.15 (2019-07-20)
 =========================
