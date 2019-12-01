@@ -78,6 +78,7 @@ Changes Since 0.15
   - Fix: ElementTree.getchildren deprecated warning
 
 * docutils/writers/xetex/__init__.py:
+
   - Add "latex writers" to the `config_section_dependencies`.
 
 * test/alltests.py
