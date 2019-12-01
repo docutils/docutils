@@ -70,6 +70,7 @@ Changes Since 0.15
 
 * docutils/writers/manpage.py
 
+  - Apply fix for [ 287 ] comma after option is bold.
   - Apply fix for [ 289 ], line starting with ``.`` in a text.
 
 * docutils/writers/odf_odt/__init__.py:
