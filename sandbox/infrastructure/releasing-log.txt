@@ -26,7 +26,7 @@ Fails::
     Error: 'Natural Language :: Lithuanian' is not a valid choice for this field 
     for url: https://test.pypi.org/legacy/
 
-
+Fix: DeprecationWarning: Please use assertEqual in test_nodes.
 
 Test a beta ::
 
