@@ -11,26 +11,56 @@ Notes on what happend while releasing.
 Release 0.16 (2019-11-xx)
 =========================
 
+test ::
+
+  export PYTHONWARNINGS=default
+  python2 test/alltests.py
+  python3 test/alltests.py
+
+Fix: DeprecationWarning: Please use assertEqual in test_nodes.
+
 Upload 0.16beta universal wheel and source to test.pypi::
 
   python setup.py sdist
   python3 setup.py bdist_wheel --universal
   python3 -m twine upload --repository-url https://test.pypi.org/legacy/ dist/*
 
-Fails::
+Test in virtualenv ::
 
-  Uploading docutils-0.16b0.dev0-py2.py3-none-any.whl
-  100% ...
-  NOTE: Try --verbose to see response content.
-  HTTPError: 400 Client Error: Invalid value for classifiers. 
-    Error: 'Natural Language :: Lithuanian' is not a valid choice for this field 
-    for url: https://test.pypi.org/legacy/
+  virtualenv du2 ; cd du2
+  export PYTHONPATH= ; . bin/activate
 
-Fix: DeprecationWarning: Please use assertEqual in test_nodes.
+  python -m pip install --index-url https://test.pypi.org/simple/ --no-deps docutils
+  # Successfully installed docutils-0.15.2
+  python -m pip uninstall docutils
+  python -m pip install --index-url https://test.pypi.org/simple/ --no-deps --pre docutils
+  # Successfully installed docutils-0.16b0.dev0
 
-Test a beta ::
+  cp -r ~/projects/docutils-code/docutils/test .
+  python2 test/alltests.py
+  # IGNORE stylesheet path differences ?
 
-  pip install --pre docutils
+  # -<link rel="stylesheet" href="../input/data/html4css1.css" type="text/css" />
+  # -<link rel="stylesheet" href="../input/data/math.css" type="text/css" />
+  # +<link rel="stylesheet" href="../../html4css1.css" type="text/css" />
+  # +<link rel="stylesheet" href="../../math.css" type="text/css" />
+
+  deactivate ; cd .. ; rm -rf du2
+
+Test in venv ::
+
+  python3 -m venv du3 ; cd du3
+  export PYTHONPATH= ; . bin/activate
+
+  python3 -m pip install --index-url https://test.pypi.org/simple/ --no-deps docutils
+  # Successfully installed docutils-0.15.2
+  python -m pip uninstall docutils
+  python -m pip install --index-url https://test.pypi.org/simple/ --no-deps --pre docutils
+  # Successfully installed docutils-0.16b0.dev0
+  cp -r ~/projects/docutils-code/docutils/test .
+  python test/alltests.py
+
+40 failures ... some cached pip thing ?
 
 
 Release 0.15 (2019-07-24)
