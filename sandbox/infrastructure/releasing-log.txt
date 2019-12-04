@@ -198,9 +198,11 @@ Bug fix release for python2 only.
     python -m pip install --index-url https://test.pypi.org/simple/ --no-deps docutils
 
   and then test/alltests.py 
+
 * ``python3 -m twine upload  dist/docutils-0.15.1*``
 
   upload py2-wheel and source.
+
 * in a new virtualenv::
 
     python -m pip install docutils
@@ -231,6 +233,7 @@ Bug fix release for python2 only.
     directory and run the test.
 
     As there is no 0.15.1 wheel for python3 this will be the source package. 
+
 Release 0.15
 ============
 
@@ -284,7 +287,6 @@ svn revision: 8258 - start of release
   - in sandbox/infrastructure run ./docutils-update.local
 
 * set version of repository to 0.16b.dev
-
 
 Release 0.14
 ============
