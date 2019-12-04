@@ -60,8 +60,39 @@ Test in venv ::
   cp -r ~/projects/docutils-code/docutils/test .
   python test/alltests.py
 
-40 failures ... some cached pip thing ?
+Seven CSS-path failures ... ignored for now.
 
+Now upload to pypi::
+
+  python3 -m twine upload  dist/docutils-0.16b0.*
+
+and test::
+
+  python3 -m venv du3 ; cd du3
+  export PYTHONPATH= ; . bin/activate
+
+  pip install --no-deps docutils
+  # 0.15.2
+  pip uninstall docutils
+  pip install --no-deps --pre docutils
+  # 0.16b0
+  cp -r ~/projects/docutils-code/docutils/test .
+  python test/alltests.py
+  # css paths fail
+
+  virtualenv du2 ; cd du2
+  export PYTHONPATH= ; . bin/activate
+
+  pip install --no-deps docutils
+  # 0.15.2
+  pip uninstall docutils
+  pip install --no-deps --pre docutils
+  # 0.16b0
+  cp -r ~/projects/docutils-code/docutils/test .
+  python test/alltests.py
+  # css paths fail
+
+Notify to docutils-developer and user.
 
 Release 0.15 (2019-07-24)
 =========================
