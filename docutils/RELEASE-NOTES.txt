@@ -83,11 +83,12 @@ Future changes
 Release 0.16b (2019-12-01)
 ==========================
 
-* General:
+.. Note::
 
-  - Dropped support for Python 2.6, 3.3 and 3.4
-  - Docutils now supports Python 2.7 and Python 3.5+ natively,
-    without the use of the ``2to3`` tool.
+   Docutils 0.15.x is the last version supporting Python 2.6, 3.3 and 3.4.
+
+   Docutils 0.16.x supports Python 2.7 and Python >= 3.5 natively,
+   without the use of the ``2to3`` tool.
 
 * reStructuredText:
 
@@ -107,15 +108,6 @@ Release 0.16b (2019-12-01)
   - Ignore classes for `rubric` elements
     (class wrapper interferes with LaTeX formatting).
 
-* docutils/writers/manpage.py
-
-  - Apply fix for [ 287 ] comma after option is bold.
-  - Apply fix for [ 289 ], line starting with ``.`` in a text.
-
-* docutils/writers/odf_odt/__init__.py:
-
-  - Fix: ElementTree.getchildren deprecated warning
-
 * tools/buildhtml.py
 
   - New option "--html-writer" allows to select "html__" (default),
@@ -129,31 +121,12 @@ Release 0.16b (2019-12-01)
 
 * docutils/nodes.py
 
-  - Speed up Node.next_node().
-  - Warn about Node.traverse() returning an iterator instead of a list
-    in future.
   - If `auto_id_prefix`_ ends with "%", this is replaced with the tag name.
 
   .. _auto_id_prefix: docs/user/config.html#auto-id-prefix
 
-* docutils/statemachine.py
+* Various bugfixes and improvements (see HISTORY_).
 
-  - Patch [ 158 ]: Speed up patterns by saving compiled versions (eric89gxl)
-
-* docutils/transforms/universal.py
-
-  - Fix [ 332 ]: Standard backslash escape for smartquotes.
-  - Fix [ 342 ]: No escape in roles descending from `inline literal`.
-
-* docutils/utils/__init__.py
-
-  - unescape() definition moved to `nodes` to avoid circular import
-    dependency. Fixes [ 366 ].
-
-* test/...
-
-  - Fix python3.8 ResourceWarning
-  - Fix python3.8 odt xml sorting.
 
 Release 0.15 (2019-07-20)
 =========================
@@ -175,7 +148,7 @@ Release 0.15 (2019-07-20)
 
 * languages: Added Korean localisation (ko).
 
-* Bugfixes (see HISTORY.txt).
+* Bugfixes (see HISTORY_).
 
 
 Release 0.14 (2017-08-03)
@@ -798,3 +771,5 @@ Release 0.3.5 (2004-07-29)
 * Added "csv-table__" directive.
 
   __ docs/ref/rst/directives.html#csv-table
+
+.. _HISTORY: HISTORY.html
