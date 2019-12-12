@@ -23,7 +23,7 @@ have been addressed.  This document provides instructions to help you
 secure the Docutils software in your applications.
 
 Docutils does not come in a through-the-web secure state, because this
-would inconvenience ordinary users
+would inconvenience ordinary users.
 
 __ ../../FAQ.html#are-there-any-weblog-blog-projects-that-use-restructuredtext-syntax
 __ ../../FAQ.html#are-there-any-wikis-that-use-restructuredtext-syntax
@@ -64,6 +64,17 @@ malicious JavaScript code into a web page.  The "raw_" directive can
 be disabled by setting "raw_enabled_" to 0/false.
 
 .. _raw_enabled: ../user/config.html#raw-enabled
+
+
+CPU and memory utilization
+--------------------------
+
+Parsing complex reStructuredText documents may require high processing
+ressources. This enables `Denial of Service` attacs using specially crafted
+input.
+
+It is recommended to enforce limits for the computation time and resource
+utilization of the Docutils process when processing untrusted input.
 
 
 Securing Docutils
