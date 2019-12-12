@@ -32,7 +32,7 @@ The *version identifier* ``docutils.__version__`` is defined in
     docutils/README.txt
     web/index.txt
 
-You can use the script ``set_release.sh`` to change the version
+You can use the script ``set_version.sh`` to change the version
 identifier:
 
 #. ``cd`` to the "docutils" subdirectory in the repository checkout,
@@ -67,7 +67,7 @@ REWORK FOR SOURCEFORGE REPO
 
   On the Docutils-develop mailing list, announce that the release is
   going to be made, update the release notes (consult HISTORY.TXT for
-  changes) and ask for additions.
+  important changes) and ask for additions.
 
   Announce the upcoming release at the Sphinx-devel mailing list
   and ask for testing with Sphinx.
