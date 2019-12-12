@@ -1500,7 +1500,6 @@ class StateCorrection(Exception):
     transition name.
     """
 
-
 def string2lines(astring, tab_width=8, convert_whitespace=False,
                  whitespace=re.compile('[\v\f]')):
     """
@@ -1518,6 +1517,8 @@ def string2lines(astring, tab_width=8, convert_whitespace=False,
     """
     if convert_whitespace:
         astring = whitespace.sub(' ', astring)
+    # TODO: add a test for too long lines (max_line_lenght = 1000, say)?
+    # See bug #381.
     return [s.expandtabs(tab_width).rstrip() for s in astring.splitlines()]
 
 def _exception_data():
