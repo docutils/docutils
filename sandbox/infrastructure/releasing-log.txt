@@ -8,8 +8,10 @@ Releasing
 
 Notes on what happend while releasing.
 
-Release 0.16 (2019-11-xx)
+Release 0.16 (2019-12-xx)
 =========================
+
+Set version 0.16rc1
 
 test ::
 
@@ -19,22 +21,22 @@ test ::
 
 Fix: DeprecationWarning: Please use assertEqual in test_nodes.
 
-Upload 0.16beta universal wheel and source to test.pypi::
+Upload universal wheel and source to test.pypi::
 
-  python setup.py sdist
+  python3 setup.py sdist
   python3 setup.py bdist_wheel --universal
   python3 -m twine upload --repository-url https://test.pypi.org/legacy/ dist/*
 
-Test in virtualenv ::
+Wait some minutes to test in virtualenv ::
 
-  virtualenv du2 ; cd du2
+  python2 -m virtualenv du2 ; cd du2
   export PYTHONPATH= ; . bin/activate
 
   python -m pip install --index-url https://test.pypi.org/simple/ --no-deps docutils
   # Successfully installed docutils-0.15.2
   python -m pip uninstall docutils
   python -m pip install --index-url https://test.pypi.org/simple/ --no-deps --pre docutils
-  # Successfully installed docutils-0.16b0.dev0
+  # Successfully installed docutils-0.16Crc1
 
   cp -r ~/projects/docutils-code/docutils/test .
   python2 test/alltests.py
@@ -60,34 +62,30 @@ Test in venv ::
   cp -r ~/projects/docutils-code/docutils/test .
   python test/alltests.py
 
-Seven CSS-path failures ... ignored for now.
+Seven CSS-path failures ... ignored for now::
+
+  deactivate ; cd .. ; rm -rf du3
 
 Now upload to pypi::
 
-  python3 -m twine upload  dist/docutils-0.16b0.*
+  python3 -m twine upload  dist/docutils-0.16rc1*
 
 and test::
 
   python3 -m venv du3 ; cd du3
   export PYTHONPATH= ; . bin/activate
 
-  pip install --no-deps docutils
-  # 0.15.2
-  pip uninstall docutils
   pip install --no-deps --pre docutils
-  # 0.16b0
+  # 0.16rc1
   cp -r ~/projects/docutils-code/docutils/test .
   python test/alltests.py
   # css paths fail
 
-  virtualenv du2 ; cd du2
+  python2 -m virtualenv du2 ; cd du2
   export PYTHONPATH= ; . bin/activate
 
-  pip install --no-deps docutils
-  # 0.15.2
-  pip uninstall docutils
   pip install --no-deps --pre docutils
-  # 0.16b0
+  # 0.16rc1
   cp -r ~/projects/docutils-code/docutils/test .
   python test/alltests.py
   # css paths fail
