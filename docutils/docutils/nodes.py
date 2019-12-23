@@ -34,57 +34,32 @@ if sys.version_info >= (3, 0):
     unicode = str  # noqa
     basestring = str  # noqa
 
-
-class _traversal_list():
+class _traversal_list(list):
     # auxiliary class to report a FutureWarning
-    msg = ("\n   The iterable returned by Node.traverse()"
-           "\n   will become an iterator instead of a list in "
-           "Docutils > 0.16.")
+    done = False
+    def _warning_decorator(fun):
+        msg = ("\n   The iterable returned by Node.traverse()"
+               "\n   will become an iterator instead of a list in "
+               "Docutils > 0.16.")
+        def wrapper(self, *args, **kwargs):
+            if not self.done:
+                warnings.warn(msg, FutureWarning, stacklevel=2)
+            self.done = True
+            return fun(self, *args, **kwargs)
+        return wrapper
 
-    def __init__(self, iterable):
-        self.nodes = list(iterable)
-
-    # iterating is not affected from the future change:
-    def __iter__(self):
-        return iter(self.nodes)
-
-    def __len__(self):
-        # used in Python 2.7 when typecasting to `list` or `tuple`
-        return len(self.nodes)
-
-    # other methods give a FutureWarning:
-
-    def __getattr__(self, name):
-        warnings.warn(self.msg, FutureWarning, stacklevel=2)
-        return getattr(self.nodes, name)
-
-    def __getitem__(self, i):
-        warnings.warn(self.msg, FutureWarning, stacklevel=2)
-        return self.nodes[i]
-
-    def __getslice__(self, i, j):
-        warnings.warn(self.msg, FutureWarning, stacklevel=2)
-        return self.nodes[i:j]
-
-    def __reversed__(self):
-        warnings.warn(self.msg, FutureWarning, stacklevel=2)
-        return self.nodes.__reversed__()
-
-    def append(self, object):
-        warnings.warn(self.msg, FutureWarning, stacklevel=2)
-        return self.nodes.append(object)
-
-    def extend(self, iterable):
-        warnings.warn(self.msg, FutureWarning, stacklevel=2)
-        return self.nodes.extend(iterable)
-
-    def pop(self):
-        warnings.warn(self.msg, FutureWarning, stacklevel=2)
-        return self.nodes.pop()
-
-    def reverse(self):
-        warnings.warn(self.msg, FutureWarning, stacklevel=2)
-        return self.nodes.reverse()
+    __add__ = _warning_decorator(list.__add__)
+    __contains__ = _warning_decorator(list.__contains__)
+    __getitem__ = _warning_decorator(list.__getitem__)
+    __reversed__ = _warning_decorator(list.__reversed__)
+    __setitem__ = _warning_decorator(list.__setitem__)
+    append = _warning_decorator(list.append)
+    count = _warning_decorator(list.count)
+    extend = _warning_decorator(list.extend)
+    index = _warning_decorator(list.index)
+    insert = _warning_decorator(list.insert)
+    pop = _warning_decorator(list.pop)
+    reverse = _warning_decorator(list.reverse)
 
 
 # ==============================
