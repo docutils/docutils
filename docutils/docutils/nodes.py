@@ -37,23 +37,54 @@ if sys.version_info >= (3, 0):
 
 class _traversal_list():
     # auxiliary class to report a FutureWarning
+    msg = ("\n   The iterable returned by Node.traverse()"
+           "\n   will become an iterator instead of a list in "
+           "Docutils > 0.16.")
 
     def __init__(self, iterable):
         self.nodes = list(iterable)
 
-    def __getattr__(self, name):
-        msg = ("The iterable returned by Node.traverse()\n    "
-               "will become an iterator instead of a list in "
-               "Docutils > 0.16.")
-        warnings.warn(msg, FutureWarning, stacklevel=2)
-        return getattr(self.nodes, name)
-
+    # iterating is not affected from the future change:
     def __iter__(self):
         return iter(self.nodes)
 
     def __len__(self):
         # used in Python 2.7 when typecasting to `list` or `tuple`
         return len(self.nodes)
+
+    # other methods give a FutureWarning:
+
+    def __getattr__(self, name):
+        warnings.warn(self.msg, FutureWarning, stacklevel=2)
+        return getattr(self.nodes, name)
+
+    def __getitem__(self, i):
+        warnings.warn(self.msg, FutureWarning, stacklevel=2)
+        return self.nodes[i]
+
+    def __getslice__(self, i, j):
+        warnings.warn(self.msg, FutureWarning, stacklevel=2)
+        return self.nodes[i:j]
+
+    def __reversed__(self):
+        warnings.warn(self.msg, FutureWarning, stacklevel=2)
+        return self.nodes.__reversed__()
+
+    def append(self, object):
+        warnings.warn(self.msg, FutureWarning, stacklevel=2)
+        return self.nodes.append(object)
+
+    def extend(self, iterable):
+        warnings.warn(self.msg, FutureWarning, stacklevel=2)
+        return self.nodes.extend(iterable)
+
+    def pop(self):
+        warnings.warn(self.msg, FutureWarning, stacklevel=2)
+        return self.nodes.pop()
+
+    def reverse(self):
+        warnings.warn(self.msg, FutureWarning, stacklevel=2)
+        return self.nodes.reverse()
 
 
 # ==============================
