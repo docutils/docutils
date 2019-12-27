@@ -13,10 +13,7 @@ what-you-see-is-what-you-get plaintext markup language.
 
 ----------------------------------------------------------------------
 
-.. Note::
-
-   Currently **frozen**
-   ====================
+.. Note:: Currently **frozen**
 
    Release 0.16 on the way, 0.16rc1 on pypi.
 
