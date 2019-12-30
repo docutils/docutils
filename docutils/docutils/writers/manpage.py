@@ -319,7 +319,7 @@ class Translator(nodes.NodeVisitor):
                     self._cnt = 0
                 self._indent = 2
                 if style == 'arabic':
-                    # indentation depends on number of childrens
+                    # indentation depends on number of children
                     # and start value.
                     self._indent = len(str(len(node.children)))
                     self._indent += len(str(self._cnt)) + 1
