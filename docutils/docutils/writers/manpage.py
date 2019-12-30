@@ -37,7 +37,7 @@ and
 
   AUTHOR .
 
-A unix-like system keeps an index of the DESCRIPTIONs, which is accesable
+A unix-like system keeps an index of the DESCRIPTIONs, which is accessible
 by the command whatis or apropos.
 
 """
@@ -448,7 +448,7 @@ class Translator(nodes.NodeVisitor):
         pass
 
     def visit_block_quote(self, node):
-        # BUG/HACK: indent alway uses the _last_ indention,
+        # BUG/HACK: indent always uses the _last_ indention,
         # thus we need two of them.
         self.indent(BLOCKQOUTE_INDENT)
         self.indent(0)
@@ -583,7 +583,7 @@ class Translator(nodes.NodeVisitor):
     def visit_document(self, node):
         # no blank line between comment and header.
         self.head.append(self.comment(self.document_start).rstrip()+'\n')
-        # writing header is postboned
+        # writing header is postponed
         self.header_written = 0
 
     def depart_document(self, node):
@@ -830,7 +830,7 @@ class Translator(nodes.NodeVisitor):
         self.body.append(self.defs['literal'][1])
 
     def visit_literal_block(self, node):
-        # BUG/HACK: indent alway uses the _last_ indention,
+        # BUG/HACK: indent always uses the _last_ indention,
         # thus we need two of them.
         self.indent(LITERAL_BLOCK_INDENT)
         self.indent(0)
@@ -965,7 +965,7 @@ class Translator(nodes.NodeVisitor):
         # ``.PP`` : Start standard indented paragraph.
         # ``.LP`` : Start block paragraph, all except the first.
         # ``.P [type]``  : Start paragraph type.
-        # NOTE dont use paragraph starts because they reset indentation.
+        # NOTE do not use paragraph starts because they reset indentation.
         # ``.sp`` is only vertical space
         self.ensure_eol()
         if not self.first_child(node):
