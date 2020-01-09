@@ -5,7 +5,7 @@
 # Copyright: This module has been placed in the public domain.
 
 """
-Tests for admonitions.py directives.
+Tests for admonitions.py directives in German document.
 """
 from __future__ import absolute_import
 
@@ -15,7 +15,8 @@ except ValueError: # when running as stand-alone test
     from __init__ import DocutilsTestSupport
 
 def suite():
-    s = DocutilsTestSupport.ParserTestSuite()
+    settings = {'language_code': 'de'}
+    s = DocutilsTestSupport.ParserTestSuite(suite_settings=settings)
     s.generateTests(totest)
     return s
 
@@ -23,29 +24,29 @@ totest = {}
 
 totest['admonitions'] = [
 ["""\
-.. Attention:: Directives at large.
+.. Achtung:: Directives at large.
 
-.. Note:: :name: mynote
+.. Notiz:: :name: mynote
    :class: testnote
 
    Admonitions support the generic "name" and "class" options.
 
-.. Tip:: 15% if the
+.. Tipp:: 15% if the
    service is good.
 
-.. Hint:: It's bigger than a bread box.
+.. Hinweis:: It's bigger than a bread box.
 
-- .. WARNING:: Strong prose may provoke extreme mental exertion.
+- .. WARNUNG:: Strong prose may provoke extreme mental exertion.
      Reader discretion is strongly advised.
-- .. Error:: Does not compute.
+- .. Fehler:: Does not compute.
 
-.. Caution::
+.. Vorsicht::
 
    Don't take any wooden nickels.
 
-.. DANGER:: Mad scientist at work!
+.. GEFAHR:: Mad scientist at work!
 
-.. Important::
+.. Wichtig::
    - Wash behind your ears.
    - Clean up your room.
    - Call your mother.
@@ -98,9 +99,9 @@ totest['admonitions'] = [
                     Back up your data.
 """],
 ["""\
-.. note:: One-line notes.
-.. note:: One after the other.
-.. note:: No blank lines in-between.
+.. Notiz:: One-line notes.
+.. Notiz:: One after the other.
+.. Notiz:: No blank lines in-between.
 """,
 """\
 <document source="test data">
@@ -115,14 +116,14 @@ totest['admonitions'] = [
             No blank lines in-between.
 """],
 ["""\
-.. note:: Content before options
+.. Notiz:: Content before options
    is possible too.
    :class: mynote
 
-.. note:: :strong:`a role is not an option`.
+.. Notiz:: :strong:`a role is not an option`.
    :name: role not option
 
-.. note:: a role is
+.. Notiz:: a role is
    :strong:`not an option`, even if its starts a line.
 """,
 """\
@@ -136,6 +137,10 @@ totest['admonitions'] = [
             <strong>
                 a role is not an option
             .
+        <system_message level="1" line="5" source="test data" type="INFO">
+            <paragraph>
+                No role entry for "strong" in module "docutils.parsers.rst.languages.de".
+                Using English fallback for role "strong".
     <note>
         <paragraph>
             a role is
@@ -144,15 +149,15 @@ totest['admonitions'] = [
             , even if its starts a line.
 """],
 ["""\
-.. note::
+.. Notiz::
 """,
 """\
 <document source="test data">
     <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
-            Content block expected for the "note" directive; none found.
+            Content block expected for the "Notiz" directive; none found.
         <literal_block xml:space="preserve">
-            .. note::
+            .. Notiz::
 """],
 ["""\
 .. admonition:: Admonition
