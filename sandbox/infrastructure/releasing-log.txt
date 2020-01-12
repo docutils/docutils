@@ -8,6 +8,16 @@ Releasing
 
 Notes on what happend while releasing.
 
+Problems
+========
+
+* If docutils is installed into virtual environment and
+  the test directory is copied from development directory,
+  
+  - finding ``HISTORY.txt`` in test_utils.py fails.
+    Create a HISTORY.txt file to avoid.
+  - the path to css files is different.
+  
 Release 0.16 (2020-01-12)
 =========================
 
