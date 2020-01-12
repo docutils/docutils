@@ -319,7 +319,7 @@ class HelperFunctionTests(unittest.TestCase):
         # '..\\HISTORY.txt' on windows
         # '../HISTORY.txt' on other platforms
         # 'HISTORY.txt' if not called from docutils directory.
-        self.assertTrue(found.startswith('..'))
+        self.assertTrue(found.startswith('..'), 'HISTORY.txt not found in "..".')
         # Return `path` if the file exists in the cwd or if there is no match
         self.assertEqual(utils.find_file_in_dirs('alltests.py', dirs),
                          'alltests.py')
