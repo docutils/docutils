@@ -17,6 +17,12 @@ Problems
   - finding ``HISTORY.txt`` in test_utils.py fails.
     Create a HISTORY.txt file to avoid.
   - the path to css files is different.
+* test_rst/ interpreted directives/code and some more fail
+  for python 3.8.0b3 and 3.8.1 on Darwin 15.6.0 (MacOSX):
+
+    classes="keyword" is "name builtin" 
+
+  But nor for 3.8.1 on Linux .
   
 Release 0.16 (2020-01-12)
 =========================
