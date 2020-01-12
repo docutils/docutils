@@ -13,17 +13,6 @@ what-you-see-is-what-you-get plaintext markup language.
 
 ----------------------------------------------------------------------
 
-.. Note:: 
-
-   Release 0.16 on the way, 0.16rc1 on pypi.
-
-   If you would like to try, install ::
- 
-     python3 -m venv testrc1 
-     cd testrc1
-     source bin/activate
-     pip install --pre --no-deps docutils
-
 
 Overview
 ========
@@ -57,8 +46,8 @@ The only **requirement** for running Docutils is Python_
 * After subversion commit r8378 (thanks to Stephen Finucane) the code is compatible
   with both Python 2 and Python 3.
 
-* 0.15 is the last to support Python 2.6, 3.3, and 3.4.
-* Docutil 0.14 dropped Python 2.4, 2.5, 3.1 and 3.2.
+* Docutils 0.16 dropped Python 2.6, 3.3, and 3.4 support.
+* Docutils 0.14 dropped Python 2.4, 2.5, 3.1 and 3.2 support.
 * Docutils 0.10 dropped Python 2.3 support.
 * From version 0.6, Docutils is compatible with Python 3 (see README_ for
   details).
