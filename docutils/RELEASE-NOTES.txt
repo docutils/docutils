@@ -80,8 +80,8 @@ Future changes
 .. _reference name: docs/ref/rst/restructuredtext.html#reference-names
 .. _identifier normalization: directives.html#identifier-normalization
 
-Release 0.16b (2019-12-01)
-==========================
+Release 0.16 (2020-01-12)
+=========================
 
 .. Note::
 
