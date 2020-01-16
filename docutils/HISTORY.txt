@@ -18,6 +18,10 @@
 Changes Since 0.16
 ==================
 
+* General
+
+  - Explicit include test subdirectory contents in MANIFEST.in to avoid
+    inclusion of test outputs.
 
 Release 0.16
 ============
