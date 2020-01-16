@@ -110,10 +110,9 @@ Release 0.16
 
 * tools/buildhtml.py
 
-  - New option "--html-writer" allows to select "html__" (default),
-    "html4" or "html5".
+  - New option `html-writer`_.
 
-  __ html: docs/user/html.html#html
+  .. _html-writer: docs/user/config.html#html-writer
 
 
 Release 0.15.1 (2019-07-24)
