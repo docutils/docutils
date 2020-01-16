@@ -124,7 +124,12 @@ Notify to docutils-developer and user.
 * docutils/HISTORY.txt: change title "Changes since 0.15" to "Release 0.16"
   add "Changes since 0.16"
 * docutils/RELEASE-NOTES.txt change title "Release 0.16b ..." to Release 0.16 ..."
-  
+
+* Release to sourceforge.
+
+  - Remove test/outputs from tar.gz.
+  - Upload tar.gz and 0.16 release notes to sourceforge.
+  - Select docutils-0.16.tar.gz as default for all OS.  
 
 Release 0.16rc1
 ---------------
