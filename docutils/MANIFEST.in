@@ -6,6 +6,18 @@ include MANIFEST.in
 recursive-include docutils *
 recursive-include docs *
 recursive-include licenses *
-recursive-include test *
+include test/*.py
+include test/coverage.sh
+include test/docutils.conf
+recursive-include test/data *
+include test/functional/README.txt
+include test/functional/output/README.txt
+recursive-include test/functional/expected *
+recursive-include test/functional/input *
+recursive-include test/functional/tests *
+recursive-include test/test_parsers *
+recursive-include test/test_readers *
+recursive-include test/test_transforms *
+recursive-include test/test_writers *
 recursive-include tools *
 recursive-exclude * *.pyc *~ .DS_Store
