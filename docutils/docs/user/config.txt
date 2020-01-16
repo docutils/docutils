@@ -1911,6 +1911,23 @@ This writer does not define specific settings.
 [buildhtml application]
 -----------------------
 
+dry_run
+~~~~~~~
+
+Do not process files, show files that would be processed.
+
+Default:  False.  Options: ``--dry-run``.
+
+html_writer
+~~~~~~~~~~~
+
+`HTML writer`_ version. One of "html", "html4", "html5".
+
+Default: "html" (use Docutils' default HTML writer).
+Options: ``--html-writer``
+
+.. _HTML writer: html.html
+
 ignore
 ~~~~~~
 
