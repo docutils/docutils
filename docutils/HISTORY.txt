@@ -27,6 +27,10 @@ Changes Since 0.16
 * docutils/__init__.py
 
   - VersionInfo: ValueError for invalid values, fix comparison to tuples.
+
+* docutils/utils/smartquotes.py
+
+  - Fix [ 383 ]: Smart quotes around opening and separator characters.
   
 
 Release 0.16
