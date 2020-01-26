@@ -151,7 +151,7 @@ class RSTStateMachine(StateMachineWS):
         run the StateMachine.
         """
         self.language = languages.get_language(
-            document.settings.language_code)
+            document.settings.language_code, document.reporter)
         self.match_titles = match_titles
         if inliner is None:
             inliner = Inliner()
