@@ -29,7 +29,8 @@ Docutils is designed to work flexibly with text in multiple languages
 be [#]_) fully parameterized.  To enable a new language, two modules
 have to be added to the project: one for Docutils itself (the
 `Docutils Language Module`_) and one for the reStructuredText parser
-(the `reStructuredText Language Module`_).
+(the `reStructuredText Language Module`_). Users may add local language
+support via a module in the PYTHONPATH root (e.g. the working directory).
 
 .. [#] If anything in Docutils is insufficiently parameterized, it
    should be considered a bug.  Please report bugs to the Docutils
@@ -69,25 +70,6 @@ is "en" for English.  Examples of module names include ``en.py``,
 .. _ISO 639: http://www.loc.gov/standards/iso639-2/php/English_list.php
 .. _ISO 3166: http://www.iso.ch/iso/en/prods-services/iso3166ma/
    02iso-3166-code-lists/index.html
-
-
-Python Code
-===========
-
-Generally Python code in Docutils is ASCII-only.  In language modules,
-Unicode-escapes can be used for non-ASCII characters.
-
-`PEP 263`_ introduces source code encodings to Python modules,
-implemented beginning in Python 2.3.  Especially for languages with
-non-Latin scripts, using UTF-8 encoded literal Unicode strings increases the
-readability. Start the source code file with the magic comment::
-
-  # -*- coding: utf-8 -*-
-
-As mentioned in the note above, developers are invited to explore
-"gettext" and other i18n technologies.
-
-.. _PEP 263: http://www.python.org/peps/pep-0263.html
 
 
 Docutils Language Module

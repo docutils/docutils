@@ -17,6 +17,15 @@ import sys
 from docutils.languages import LanguageImporter
 
 class RstLanguageImporter(LanguageImporter):
+    """Import language modules.
+
+    When called with a BCP 47 language tag, instances return a module
+    with localisations for "directive" and "role" names for  from
+    `docutils.parsers.rst.languages` or the PYTHONPATH.
+
+    If there is no matching module, warn (if a `reporter` is passed)
+    and return None.
+    """
     packages = ('docutils.parsers.rst.languages.', '')
     warn_msg = 'rST localisation for language "%s" not found.'
     fallback = None
@@ -28,11 +37,3 @@ class RstLanguageImporter(LanguageImporter):
             raise ImportError
 
 get_language = RstLanguageImporter()
-"""Return module with language localizations for reStructuredText.
-
-Get translated directive and rolenames from `docutils.parsers.rst.languages`
-or the PYTHONPATH.
-
-The argument `language_code` is a "BCP 47" language tag.
-If there is no matching module, warn and return None.
-"""
