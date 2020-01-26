@@ -37,7 +37,7 @@ class LanguageImporter(object):
             try:
                 module = import_module(package+name)
                 self.check_content(module)
-            except (ImportError, AttributeError, AssertionError):
+            except (ImportError, AttributeError):
                 continue
             self.cache[name] = module
             return module
@@ -45,9 +45,10 @@ class LanguageImporter(object):
 
     def check_content(self, module):
         """Check if we got a Docutils language module."""
-        assert isinstance(module.labels, dict)
-        assert isinstance(module.bibliographic_fields, dict)
-        assert isinstance(module.author_separators, list)
+        if not (isinstance(module.labels, dict)
+                and isinstance(module.bibliographic_fields, dict)
+                and isinstance(module.author_separators, list)):
+            raise ImportError
 
     def __call__(self, language_code, reporter=None):
         try:

@@ -20,12 +20,13 @@ class RstLanguageImporter(LanguageImporter):
     packages = ('docutils.parsers.rst.languages.', '')
     warn_msg = 'rST localisation for language "%s" not found.'
     fallback = None
-    
+
     def check_content(self, module):
         """Check if we got an rST language module."""
-        assert isinstance(module.directives, dict)
-        assert isinstance(module.roles, dict)
-        
+        if not (isinstance(module.directives, dict)
+                and isinstance(module.roles, dict)):
+            raise ImportError
+
 get_language = RstLanguageImporter()
 """Return module with language localizations for reStructuredText.
 
