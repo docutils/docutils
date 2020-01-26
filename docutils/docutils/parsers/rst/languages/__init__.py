@@ -14,23 +14,24 @@ __docformat__ = 'reStructuredText'
 
 import sys
 
-from docutils.utils import normalize_language_tag
+from docutils.languages import LanguageImporter
 
+class RstLanguageImporter(LanguageImporter):
+    packages = ('docutils.parsers.rst.languages.', '')
+    warn_msg = 'rST localisation for language "%s" not found.'
+    fallback = None
+    
+    def check_content(self, module):
+        """Check if we got an rST language module."""
+        assert isinstance(module.directives, dict)
+        assert isinstance(module.roles, dict)
+        
+get_language = RstLanguageImporter()
+"""Return module with language localizations for reStructuredText.
 
-_languages = {}
+Get translated directive and rolenames from `docutils.parsers.rst.languages`
+or the PYTHONPATH.
 
-def get_language(language_code):
-    for tag in normalize_language_tag(language_code):
-        tag = tag.replace('-', '_') # '-' not valid in module names
-        if tag in _languages:
-            return _languages[tag]
-        try:
-            module = __import__(tag, globals(), locals(), level=1)
-        except ImportError:
-            try:
-                module = __import__(tag, globals(), locals(), level=0)
-            except ImportError:
-                continue
-        _languages[tag] = module
-        return module
-    return None
+The argument `language_code` is a "BCP 47" language tag.
+If there is no matching module, warn and return None.
+"""
