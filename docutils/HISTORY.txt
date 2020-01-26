@@ -24,6 +24,11 @@ Changes Since 0.16
     inclusion of test outputs.
   - Fix [ 385 ]: Import of language modules.
 
+* docutils/__init__.py
+
+  - VersionInfo: ValueError for invalid values, fix comparison to tuples.
+  
+
 Release 0.16
 ============
 

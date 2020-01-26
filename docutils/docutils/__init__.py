@@ -67,8 +67,47 @@ rather than parsing the text of `__version__`.
 See 'Version Numbering' in docs/dev/policies.txt.
 """
 
-VersionInfo = namedtuple(
-    'VersionInfo', 'major minor micro releaselevel serial release')
+# from functools import total_ordering
+# @total_ordering
+class VersionInfo(namedtuple('VersionInfo',
+                             'major minor micro releaselevel serial release')):
+
+    def __new__(cls, major=0, minor=0, micro=0,
+                releaselevel='final', serial=0, release=True):
+        releaselevels = ('alpha', 'beta', 'candidate', 'final')
+        if releaselevel not in releaselevels:
+            raise ValueError('releaselevel must be one of %r.'
+                             % (releaselevels, ))
+        if releaselevel == 'final':
+            if not(release):
+                raise ValueError('releaselevel "final" must not be used '
+                             'with development versions (leads to wrong '
+                             'version ordering of the related __version__')
+            if serial != 0:
+                raise ValueError('"serial" must be 0 for final releases')
+        
+        return super(VersionInfo, cls).__new__(cls, major, minor, micro,
+                                               releaselevel, serial, release)
+
+    def __lt__(self, other):
+        if isinstance(other, tuple):
+            other = VersionInfo(*other)
+        return tuple.__lt__(self, other)
+
+    def __gt__(self, other):
+        if isinstance(other, tuple):
+            other = VersionInfo(*other)
+        return tuple.__gt__(self, other)
+
+    def __le__(self, other):
+        if isinstance(other, tuple):
+            other = VersionInfo(*other)
+        return tuple.__le__(self, other)
+    
+    def __ge__(self, other):
+        if isinstance(other, tuple):
+            other = VersionInfo(*other)
+        return tuple.__ge__(self, other)
 
 __version_info__ = VersionInfo(
     major=0,
