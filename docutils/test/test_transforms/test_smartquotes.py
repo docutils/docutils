@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # $Id$
 #
@@ -18,7 +18,9 @@ Test module for universal.SmartQuotes transform.
 """
 from __future__ import absolute_import
 
-from . import DocutilsTestSupport  # must be imported before docutils
+if __name__ == '__main__':
+    import __init__
+from test_transforms import DocutilsTestSupport  # must be imported before docutils
 from docutils.transforms.universal import SmartQuotes
 from docutils.parsers.rst import Parser
 
@@ -26,7 +28,8 @@ from docutils.parsers.rst import Parser
 def suite():
     parser = Parser()
     settings = {'smart_quotes': True,
-                'trim_footnote_ref_space': True}
+                'trim_footnote_ref_space': True,
+                'report': 2} # TODO: why is this ignored when running as main?
     s = DocutilsTestSupport.TransformTestSuite(
         parser, suite_settings=settings)
     s.generateTests(totest)
@@ -111,10 +114,11 @@ u"""\
         f'(x) = df(x)/dx
 """],
 [u"""\
-Quotes preceded by
-a word"a" and'a',
-punctuation:"a",'a',
+Closing quotes, if preceded by
+wor"d char's
+or punctuation:"a",'a';'a' (TODO: opening quotes if followed by word-char?).
 
+Opening quotes after
 normal space "a" 'a',
 thin space "a" 'a',
 em space "a" 'a',
@@ -123,17 +127,25 @@ ZWSP\u200B"a" and\u200B'a',
 ZWNJ\u200C"a" and\u200C'a',
 escaped space\\ "a" and\\ 'a',
 
+hyphen -"a", -'a'
 &mdash;"a",&mdash;'a'
-en dash–"a"–'a',
-em dash—"a"—'a'.
+en dash –"a"–'a',
+em dash —"a"—'a'.
+
+opening brackets ("a") ('a') ["a"] ['a'] {"a"} {'a'}
+
+But not if followed by (optional punctuation and) whitespace:
+"-", "–", "—", "(", "a[", "{"
+'-', '–', '—', '((', '[', '{'
 """,
 u"""\
 <document source="test data">
     <paragraph>
-        Quotes preceded by
-        a word”a” and’a’,
-        punctuation:”a”,’a’,
+        Closing quotes, if preceded by
+        wor”d char’s
+        or punctuation:”a”,’a’;’a’ (TODO: opening quotes if followed by word-char?).
     <paragraph>
+        Opening quotes after
         normal space “a” ‘a’,
         thin space “a” ‘a’,
         em space “a” ‘a’,
@@ -142,9 +154,16 @@ u"""\
         ZWNJ\u200C“a” and\u200C‘a’,
         escaped space“a” and‘a’,
     <paragraph>
+        hyphen -“a”, -‘a’
         &mdash;“a”,&mdash;‘a’
-        en dash–“a”–‘a’,
-        em dash—“a”—‘a’.
+        en dash –“a”–‘a’,
+        em dash —“a”—‘a’.
+    <paragraph>
+        opening brackets (“a”) (‘a’) [“a”] [‘a’] {“a”} {‘a’}
+    <paragraph>
+        But not if followed by (optional punctuation and) whitespace:
+        “-”, “–”, “—”, “(”, “a[”, “{”
+        ‘-’, ‘–’, ‘—’, ‘((’, ‘[’, ‘{’
 """],
 ["""\
 Quotes and inline-elements:
