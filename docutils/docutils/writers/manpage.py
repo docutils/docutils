@@ -133,9 +133,9 @@ class Table(object):
             self._coldefs.append('l')
     def _minimize_cell(self, cell_lines):
         """Remove leading and trailing blank and ``.sp`` lines"""
-        while (cell_lines and cell_lines[0] in ('\n', '.sp\n')):
+        while cell_lines and cell_lines[0] in ('\n', '.sp\n'):
             del cell_lines[0]
-        while (cell_lines and cell_lines[-1] in ('\n', '.sp\n')):
+        while cell_lines and cell_lines[-1] in ('\n', '.sp\n'):
             del cell_lines[-1]
     def as_list(self):
         text = ['.TS\n']
@@ -306,7 +306,7 @@ class Translator(nodes.NodeVisitor):
         pass
 
     def list_start(self, node):
-        class enum_char(object):
+        class EnumChar(object):
             enum_style = {
                     'bullet': '\\(bu',
                     'emdash': '\\(em',
@@ -361,9 +361,9 @@ class Translator(nodes.NodeVisitor):
                 return 'enum_style-%s' % list(self._style)
 
         if 'enumtype' in node:
-            self._list_char.append(enum_char(node['enumtype']))
+            self._list_char.append(EnumChar(node['enumtype']))
         else:
-            self._list_char.append(enum_char('bullet'))
+            self._list_char.append(EnumChar('bullet'))
         if len(self._list_char) > 1:
             # indent nested lists
             self.indent(self._list_char[-2].get_width())
