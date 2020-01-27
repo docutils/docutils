@@ -196,6 +196,7 @@ class Translator(nodes.NodeVisitor):
         self._docinfo_keys = []     # a list to keep the sequence as in source.
         self._docinfo_names = {}    # to get name from text not normalized.
         self._in_docinfo = None
+        self._field_name = None
         self._active_table = None
         self._in_literal = False
         self.header_written = 0
