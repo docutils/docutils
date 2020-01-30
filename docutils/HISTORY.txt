@@ -46,6 +46,18 @@ Changes Since 0.16
   - Use HTML tags <ins> and <del> if a matching class value
     is found in `inline`, `literal`, or `container` elements.
 
+* docutils/writers/latex2e/__init__.py:
+
+  - Use LaTeX environments for admonitions and "class wrappers" for styling
+    admonitions and titles if the new configuration setting
+    `legacy_class_functions`_ is False.
+
+  - Remove backwards compatibility code for the deprecated
+    `styling command`__ prefix ``\docutilsrole``.
+    
+    __ docs/user/latex.html#classes
+
+
 Release 0.16
 ============
 
@@ -185,7 +197,6 @@ Release 0.15 (2019-07-20)
 * docutils/parsers/rst/states.py:
 
   - Allow embedded colons in field list field names.
-  - Add `rawsource` attribute for text of inline elements.
 
 * docutils/parsers/rst/directives/html.py:
 
