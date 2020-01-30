@@ -238,17 +238,8 @@ Example 2:
 * Elements can have multiple class arguments. In contrast to HTML/CSS, the
   order of the class arguments cannot be ignored in LaTeX
 
-* For "historical reasons", class handling differs for some elements and
-  class values:
-
-  * The special macros ``\DUadmonition``, ``\DUtitle``, and ``\DUtopic`` are
-    written with a comma separated list of class values as optional
-    argument.  See http://www.ctan.org/topic/keyval for LaTeX packages that
-    help parsing value lists.
-
-    See the sections on admonitions_, titles_, and the `topic element`_ for
-    customization examples.
-
+* Class handling differs for some elements and class values:
+  
   * Class argument values starting with ``align-`` are transformed to
     "align" argument values. Class argument values starting with
     ``language-`` set the elements language property.
@@ -256,8 +247,14 @@ Example 2:
   * The table element recognizes some special class values. See section
     table_.
 
-.. _"classes" attribute: ../ref/doctree.html#classes
+  * For "historical reasons", the special macros ``\DUadmonition`` and
+    ``\DUtitle`` are written with a comma separated list of class values as
+    optional argument if the legacy-class-functions_ setting is True.
 
+    See the sections on admonitions_ and titles_ for customization examples.
+
+.. _"classes" attribute: ../ref/doctree.html#classes
+.. _legacy-class-functions: config.html#legacy-class-functions
 
 LaTeX code
 ----------
@@ -443,13 +440,17 @@ ordinary body element can.
 __ ../ref/rst/directives.html#admonitions
 
 Command:
-  ``\DUadmonition``
+  ``\DUadmonition`` (with legacy-class-functions_)
+  
+Environment:
+  ``DUadmonition`` (with new-class-functions_)
+ 
+  .. _new-class-functions: legacy-class-functions_
 
 Default:
   Typeset in a frame (90 % of text width).
 
-The admonition title is typeset with the ``\DUtitle`` command which also
-takes a class argument. See `titles`_
+The admonition title is typeset with the ``\DUtitle`` command (see `titles`_).
 
 Example 1:
   A lighter layout without the frame::
@@ -464,13 +465,13 @@ Example 1:
         \end{quote}
       \fi
     }
+    
+  rsp with new-class-functions_::
+  
+    \newenvironment{DUadmonition}%
+      {\begin{quote}}
+      {\end{quote}}
 
-  The first part of this definition acts as a "dispatcher". This way it is
-  possible to define a special handling of `specific admonitions`_ based on
-  the "class" argument.
-
-.. _specific admonitions:
-   ../ref/rst/directives.html#specific-admonitions
 
 Example 2:
   Print admonitions in the margin::
@@ -485,7 +486,14 @@ Example 3:
 
     \newcommand{\DUadmonitionnote}[1]{\marginpar{#1}}
 
+  rsp with new-class-functions_ we re-define the environment in the
+  class-wrapper::
+
+    \newcommand{\DUCLASSnote}{%
+      \renewcommand{\DUadmonition}{\marginpar}
+
   Make sure there is enough space to fit the note.
+
 
 .. _marginnote:
    http://mirror.ctan.org/help/Catalogue/entries/marginnote.html

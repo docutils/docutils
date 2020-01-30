@@ -1415,13 +1415,6 @@ instead of the `bibliographic fields`_.
 
 Default: off.  Options: ``--use-latex-docinfo, --use-docutils-docinfo``.
 
-docutils_footnotes
-~~~~~~~~~~~~~~~~~~
-Use the Docutils-specific macros ``\DUfootnote`` and
-``\DUfootnotetext`` for footnotes_.
-
-Default: on.  Option: ``--docutils-footnotes``.
-
 use_latex_citations
 ~~~~~~~~~~~~~~~~~~~
 
@@ -1622,7 +1615,6 @@ Option: ``--literal-block-env``.
    A LaTeX verbatim environment is only usable if there is no other
    markup contained in the literal-block.
 
-
 section_prefix_for_enumerators
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -1743,6 +1735,30 @@ Default: "T1".  Option: ``--font-encoding``.
 .. _LaTeX font encoding: latex.html#font-encoding
 .. _LaTeX font encodings:
    http://mirror.ctan.org/macros/latex/doc/encguide.pdf
+
+legacy_class_functions
+~~~~~~~~~~~~~~~~~~~~~~
+
+Use legacy functions ``\DUtitle`` and ``\DUadmonition`` with a
+comma-separated list of class values as optional argument. If `False`, class
+values are handled with wrappers and admonitions use the ``DUadmonition``
+environment. See `Generating LaTeX with Docutils`__ for details.
+
+Default: True (this will change to False in version 0.18).
+Options: ``--legacy-class-functions``, ``--new-class-functions``.
+
+New in Docutils 0.17.
+
+__ latex.html#classes
+
+docutils_footnotes
+~~~~~~~~~~~~~~~~~~
+Use the Docutils-specific macros ``\DUfootnote`` and
+``\DUfootnotetext`` for footnotes_.
+
+TODO: The alternative, "use_latex_footnotes" is not implemented yet.
+
+Default: on.  Option: ``--docutils-footnotes``.
 
 
 [xetex writer]
