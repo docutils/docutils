@@ -211,6 +211,18 @@ class Writer(writers.Writer):
           '"--use-bibtex=mystyle,mydb1,mydb2".',
           ['--use-bibtex'],
           {'default': ''}),
+         ('Use legacy functions with class value list for '
+          '\\DUtitle and \\DUadmonition (current default). ',
+          ['--legacy-class-functions'],
+          {'default': True,
+           'action': 'store_true',
+           'validator': frontend.validate_boolean}),
+         ('Use \\DUrole and "DUclass" wrappers for class values. '
+          'Place admonition content in an environment (future default).',
+          ['--new-class-functions'],
+          {'dest': 'legacy_class_functions',
+           'action': 'store_false',
+           'validator': frontend.validate_boolean}),
          # TODO: implement "latex footnotes" alternative
          ('Footnotes with numbers/symbols by Docutils. (default) '
           '(The alternative, --latex-footnotes, is not implemented yet.)',
@@ -482,11 +494,17 @@ class SortableDict(dict):
 class PreambleCmds(object):
     """Building blocks for the latex preamble."""
 
-PreambleCmds.abstract = r"""
+PreambleCmds.abstract_legacy = r"""
 % abstract title
 \providecommand*{\DUtitleabstract}[1]{\centerline{\textbf{#1}}}"""
 
-PreambleCmds.admonition = r"""
+PreambleCmds.abstract = r"""
+\providecommand*{\DUCLASSabstract}{
+  \renewcommand{\DUtitle}[1]{\centerline{\textbf{##1}}}
+}"""
+
+# deprecated, see https://sourceforge.net/p/docutils/bugs/339/
+PreambleCmds.admonition_legacy = r"""
 % admonition (specially marked topic)
 \providecommand{\DUadmonition}[2][class-arg]{%
   % try \DUadmonition#1{#2}:
@@ -498,6 +516,22 @@ PreambleCmds.admonition = r"""
     \end{center}
   \fi
 }"""
+
+PreambleCmds.admonition = r"""
+% admonition (specially marked topic)
+\ifx\DUadmonition\undefined % poor man's "provideenvironment"
+ \newbox{\DUadmonitionbox}
+ \newenvironment{DUadmonition}%
+  {\begin{center}
+     \begin{lrbox}{\DUadmonitionbox}
+       \begin{minipage}{0.9\linewidth}
+  }%
+  {    \end{minipage}
+     \end{lrbox}
+     \fbox{\usebox{\DUadmonitionbox}}
+   \end{center}
+  }
+\fi"""
 
 ## PreambleCmds.caption = r"""% configure caption layout
 ## \usepackage{caption}
@@ -515,6 +549,7 @@ PreambleCmds.dedication = r"""
 \providecommand*{\DUCLASSdedication}{%
   \renewenvironment{quote}{\begin{center}}{\end{center}}%
 }"""
+# TODO: add \em to set dedication text in italics.
 
 PreambleCmds.duclass = r"""
 % class handling for environments (block-level elements)
@@ -527,9 +562,12 @@ PreambleCmds.duclass = r"""
   {\csname end\DocutilsClassFunctionName \endcsname}%
 \fi"""
 
-PreambleCmds.error = r"""
+PreambleCmds.error_legacy = r"""
 % error admonition title
 \providecommand*{\DUtitleerror}[1]{\DUtitle{\color{red}#1}}"""
+
+PreambleCmds.error = r"""
+\providecommand*{\DUCLASSerror}{\color{red}}"""
 
 PreambleCmds.fieldlist = r"""
 % fieldlist environment
@@ -682,7 +720,7 @@ PreambleCmds.titlereference = r"""
 % titlereference role
 \providecommand*{\DUroletitlereference}[1]{\textsl{#1}}"""
 
-PreambleCmds.title = r"""
+PreambleCmds.title_legacy = r"""
 % title for topics, admonitions, unsupported section levels, and sidebar
 \providecommand*{\DUtitle}[2][class-arg]{%
   % call \DUtitle#1{#2} if it exists:
@@ -692,6 +730,10 @@ PreambleCmds.title = r"""
     \smallskip\noindent\textbf{#2}\smallskip%
   \fi
 }"""
+
+PreambleCmds.title = r"""
+% title for topics, admonitions, unsupported section levels, and sidebar
+\providecommand*{\DUtitle}[1]{\subsubsection*{#1}}"""
 
 PreambleCmds.transition = r"""
 % transition (break, fancybreak, anonymous section)
@@ -1648,7 +1690,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
             if cls.startswith('language-'):
                 language = self.babel.language_name(cls[9:])
                 if language:
-                    self.babel.otherlanguages[language] = True
                     self.out.append('\\end{selectlanguage}\n')
             else:
                 self.fallbacks['DUclass'] = PreambleCmds.duclass
@@ -1691,16 +1732,27 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.depart_docinfo_item(node)
 
     def visit_admonition(self, node):
-        self.fallbacks['admonition'] = PreambleCmds.admonition
-        if 'error' in node['classes']:
-            self.fallbacks['error'] = PreambleCmds.error
         # strip the generic 'admonition' from the list of classes
         node['classes'] = [cls for cls in node['classes']
                            if cls != 'admonition']
-        self.out.append('\n\\DUadmonition[%s]{' % ','.join(node['classes']))
+        if self.settings.legacy_class_functions:
+            self.fallbacks['admonition'] = PreambleCmds.admonition_legacy
+            if 'error' in node['classes']:
+                self.fallbacks['error'] = PreambleCmds.error_legacy
+            self.out.append('\n\\DUadmonition[%s]{' % ','.join(node['classes']))
+            return
+        self.fallbacks['admonition'] = PreambleCmds.admonition
+        if 'error' in node['classes']:
+            self.fallbacks['error'] = PreambleCmds.error
+        self.duclass_open(node)
+        self.out.append('\\begin{DUadmonition}')
 
     def depart_admonition(self, node):
-        self.out.append('}\n')
+        if self.settings.legacy_class_functions:
+            self.out.append('}\n')
+            return
+        self.out.append('\\end{DUadmonition}\n')
+        self.duclass_close(node)
 
     def visit_author(self, node):
         self.pdfauthor.append(self.attval(node.astext()))
@@ -1780,7 +1832,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if self._use_latex_citations:
             self.push_output_collector([])
         else:
-            # TODO: do we need these?
             ## self.requirements['~fnt_floats'] = PreambleCmds.footnote_floats
             self.out.append(r'\begin{figure}[b]')
             self.append_hypertargets(node)
@@ -1813,6 +1864,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.out.append('\\hyperlink{%s}{[' % href)
 
     def depart_citation_reference(self, node):
+        # TODO: normalize labels
         if self._use_latex_citations:
             followup_citation = False
             # check for a following citation separated by a space or newline
@@ -2910,6 +2962,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_system_message(self, node):
         self.requirements['color'] = PreambleCmds.color
         self.fallbacks['title'] = PreambleCmds.title
+        if self.settings.legacy_class_functions:
+            self.fallbacks['title'] = PreambleCmds.title_legacy
         node['classes'] = ['system-message']
         self.visit_admonition(node)
         self.out.append('\n\\DUtitle[system-message]{system-message}\n')
@@ -3050,11 +3104,13 @@ class LaTeXTranslator(nodes.NodeVisitor):
         elif (isinstance(node.parent, nodes.topic) or
               isinstance(node.parent, nodes.admonition) or
               isinstance(node.parent, nodes.sidebar)):
-            self.fallbacks['title'] = PreambleCmds.title
-            classes = ','.join(node.parent['classes'])
-            if not classes:
-                classes = node.parent.tagname
-            self.out.append('\n\\DUtitle[%s]{' % classes)
+            classes = node.parent['classes'] or [node.parent.tagname]
+            if self.settings.legacy_class_functions:
+                self.fallbacks['title'] = PreambleCmds.title_legacy
+                self.out.append('\n\\DUtitle[%s]{' % ','.join(classes))
+            else:
+                self.fallbacks['title'] = PreambleCmds.title
+                self.out.append('\n\\DUtitle{')
             self.context.append('}\n')
         # Table caption
         elif isinstance(node.parent, nodes.table):
@@ -3173,6 +3229,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
             # special topics:
             if 'abstract' in node['classes']:
                 self.fallbacks['abstract'] = PreambleCmds.abstract
+                if self.settings.legacy_class_functions:
+                    self.fallbacks['abstract'] = PreambleCmds.abstract_legacy
                 self.push_output_collector(self.abstract)
             elif 'dedication' in node['classes']:
                 self.fallbacks['dedication'] = PreambleCmds.dedication
