@@ -219,7 +219,6 @@ table.align-left, table.align-center, table.align-right {
 /* Admonitions and System Messages */
 div.admonition,
 div.system-message,
-div.sidebar,
 aside.sidebar {
   margin: 1em 1.5em;
   border: medium outset;
@@ -230,7 +229,6 @@ aside.sidebar {
 }
 
 /* Sidebar */
-div.sidebar,
 aside.sidebar {
   width: 30%;
   max-width: 26em;
@@ -273,10 +271,8 @@ table.borderless td, table.borderless th {
 }
 
 /* Document Header and Footer */
-/* div.header,				      */
-/* header { border-bottom: 1px solid black; } */
-/* div.footer,				      */
-/* footer { border-top: 1px solid black; }    */
+header { border-bottom: 1px solid black; }
+footer { border-top: 1px solid black; }
 
 /* new HTML5 block elements: set display for older browsers */
 header, section, footer, aside, nav, main, article, figure {

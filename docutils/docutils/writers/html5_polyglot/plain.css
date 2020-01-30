@@ -73,9 +73,8 @@ dl > dd {
 /* ===== */
 
 /* Definition Lists */
-
-/* lists nested in definition lists */
-/* (:only-child is new in CSS 3) */
+/* Indent lists nested in definition lists */
+/* (:only-child is new in CSS 3)     	   */
 dd > ul:only-child, dd > ol:only-child { padding-left: 1em; }
 
 /* Description Lists */
@@ -256,12 +255,9 @@ pre.code .inserted, code .inserted { background-color: #A3D289}
 /* Compound Paragraph */
 /* Container          */
 
-/* can be styled in a custom stylesheet */
-
 /* Document Header and Footer */
 
-footer, header,
-div.footer, div.header {
+footer, header {
   font-size: smaller;
   clear: both;
   padding: 0.5em 2%;

@@ -13,7 +13,9 @@ standard values, and any entries with empty values.
 """
 from __future__ import absolute_import
 
-from . import DocutilsTestSupport
+if __name__ == '__main__':
+    import __init__
+from test_transforms import DocutilsTestSupport  # must be imported before docutils
 from DocutilsTestSupport import (HtmlWriterPublishPartsTestCase,
                                  HtmlPublishPartsTestSuite)
 from docutils import core, __version__
@@ -140,26 +142,26 @@ And even more stuff
 """,
 """\
 {'fragment': '''<p>Some stuff</p>
-<div class="section" id="section">
+<section id="section">
 <h1>Section</h1>
 <p>Some more stuff</p>
-<div class="section" id="another-section">
+<section id="another-section">
 <h2>Another Section</h2>
 <p>And even more stuff</p>
-</div>
-</div>\\n''',
+</section>
+</section>\\n''',
  'html_body': '''<div class="document" id="title">
 <h1 class="title">Title</h1>
 <p class="subtitle" id="subtitle">Subtitle</p>
 <p>Some stuff</p>
-<div class="section" id="section">
+<section id="section">
 <h1>Section</h1>
 <p>Some more stuff</p>
-<div class="section" id="another-section">
+<section id="another-section">
 <h2>Another Section</h2>
 <p>And even more stuff</p>
-</div>
-</div>
+</section>
+</section>
 </div>\\n''',
  'html_head': '''...<title>Title</title>\\n''',
  'html_subtitle': '''<p class="subtitle" id="subtitle">Subtitle</p>\\n''',
@@ -279,37 +281,37 @@ Another Section
 And even more stuff
 """,
 """\
-{'fragment': '''<div class="section" id="title">
+{'fragment': '''<section id="title">
 <h1>Title</h1>
-<div class="section" id="not-a-subtitle">
+<section id="not-a-subtitle">
 <h2>Not A Subtitle</h2>
 <p>Some stuff</p>
-<div class="section" id="section">
+<section id="section">
 <h3>Section</h3>
 <p>Some more stuff</p>
-<div class="section" id="another-section">
+<section id="another-section">
 <h4>Another Section</h4>
 <p>And even more stuff</p>
-</div>
-</div>
-</div>
-</div>\\n''',
+</section>
+</section>
+</section>
+</section>\\n''',
  'html_body': '''<div class="document">
-<div class="section" id="title">
+<section id="title">
 <h1>Title</h1>
-<div class="section" id="not-a-subtitle">
+<section id="not-a-subtitle">
 <h2>Not A Subtitle</h2>
 <p>Some stuff</p>
-<div class="section" id="section">
+<section id="section">
 <h3>Section</h3>
 <p>Some more stuff</p>
-<div class="section" id="another-section">
+<section id="another-section">
 <h4>Another Section</h4>
 <p>And even more stuff</p>
-</div>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
+</section>
 </div>\\n''',
  'html_head': '''...<title>&lt;string&gt;</title>\\n'''}
 """],

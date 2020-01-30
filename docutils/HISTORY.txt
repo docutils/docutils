@@ -32,6 +32,9 @@ Changes Since 0.16
 
   - Fix [ 383 ]: Smart quotes around opening and separator characters.
   
+* docutils/writers/html5_polyglot/
+
+  - Use semantic HTML5 tags <header>, <footer>, <section>.
 
 Release 0.16
 ============
