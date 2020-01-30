@@ -182,6 +182,26 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
     def depart_caption(self, node):
         self.body.append('</p>\n')
 
+    # use HTML block-level tags if matching class value found
+    supported_block_tags = set(('ins', 'del'))
+    def visit_container(self, node):
+        # If there is exactly one of the "supported block tags" in
+        # the list of class values, use it as tag name:
+        classes = node.get('classes', [])
+        tags = [cls for cls in classes
+                if cls in self.supported_block_tags]
+        if len(tags) == 1:
+            node.html5tagname = tags[0]
+            classes.remove(tags[0])
+        else:
+            node.html5tagname = 'div'
+        self.body.append(self.starttag(node, node.html5tagname,
+                                       CLASS='docutils container'))
+
+    def depart_container(self, node):
+        self.body.append('</%s>\n' % node.html5tagname)
+
+
     # no standard meta tag name in HTML5, use dcterms.rights
     # see https://wiki.whatwg.org/wiki/MetaExtensions
     def visit_copyright(self, node):
@@ -273,7 +293,8 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
 
     # use HTML text-level tags if matching class value found
     supported_inline_tags = set(('small', 's', 'q', 'dfn', 'var', 'samp',
-                                 'kbd', 'i', 'b', 'u', 'mark', 'bdi'))
+                                 'kbd', 'i', 'b', 'u', 'mark', 'bdi',
+                                 'ins', 'del'))
     def visit_inline(self, node):
         # If there is exactly one of the "supported inline tags" in
         # the list of class values, use it as tag name:
