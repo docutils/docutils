@@ -9,6 +9,7 @@ This package contains Docutils Reader modules.
 __docformat__ = 'reStructuredText'
 
 import sys
+from importlib import import_module
 
 from docutils import utils, parsers, Component
 from docutils.transforms import universal
@@ -106,7 +107,7 @@ def get_reader_class(reader_name):
     if reader_name in _reader_aliases:
         reader_name = _reader_aliases[reader_name]
     try:
-        module = __import__(reader_name, globals(), locals(), level=1)
+        module = import_module('docutils.readers.'+reader_name)
     except ImportError:
-        module = __import__(reader_name, globals(), locals(), level=0)
+        module = import_module(reader_name)
     return module.Reader

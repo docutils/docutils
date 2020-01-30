@@ -9,6 +9,8 @@ This package contains Docutils parser modules.
 __docformat__ = 'reStructuredText'
 
 import sys
+from importlib import import_module
+
 from docutils import Component
 
 
@@ -45,7 +47,7 @@ def get_parser_class(parser_name):
     if parser_name in _parser_aliases:
         parser_name = _parser_aliases[parser_name]
     try:
-        module = __import__(parser_name, globals(), locals(), level=1)
+        module = import_module('docutils.parsers.'+parser_name)
     except ImportError:
-        module = __import__(parser_name, globals(), locals(), level=0)
+        module = import_module(parser_name)
     return module.Parser

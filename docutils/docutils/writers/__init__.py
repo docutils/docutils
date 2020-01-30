@@ -10,6 +10,7 @@ __docformat__ = 'reStructuredText'
 
 import os.path
 import sys
+from importlib import import_module
 
 import docutils
 from docutils import languages, Component
@@ -137,7 +138,7 @@ def get_writer_class(writer_name):
     if writer_name in _writer_aliases:
         writer_name = _writer_aliases[writer_name]
     try:
-        module = __import__(writer_name, globals(), locals(), level=1)
+        module = import_module('docutils.writers.'+writer_name)
     except ImportError:
-        module = __import__(writer_name, globals(), locals(), level=0)
+        module = import_module(writer_name)
     return module.Writer
