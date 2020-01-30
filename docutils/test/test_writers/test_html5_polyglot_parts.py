@@ -423,7 +423,8 @@ Not a docinfo.
 :simple field list with loooong field: names
 """,
 """\
-{'fragment': '''<p>Not a docinfo.</p>
+{'fragment': '''\
+<p>Not a docinfo.</p>
 <dl class="field-list simple">
 <dt>This is</dt>
 <dd><p>a</p>
@@ -432,7 +433,8 @@ Not a docinfo.
 <dd><p>names</p>
 </dd>
 </dl>\\n''',
- 'html_body': '''<div class="document">
+ 'html_body': '''\
+<div class="document">
 <p>Not a docinfo.</p>
 <dl class="field-list simple">
 <dt>This is</dt>
@@ -445,7 +447,117 @@ Not a docinfo.
 </div>\\n''',
  'html_head': '''...<title>&lt;string&gt;</title>\\n'''}
 """],
+["""\
+.. figure:: dummy.png
+
+   The figure's caption.
+
+   A legend.
+
+   The legend's second paragraph.
+""",
+"""\
+{'fragment': '''\
+<figure>
+<img alt="dummy.png" src="dummy.png" />
+<figcaption>
+<p>The figure's caption.</p>
+<div class="legend">
+<p>A legend.</p>
+<p>The legend's second paragraph.</p>
+</div>
+</figcaption>
+</figure>\\n''',
+ 'html_body': '''\
+<div class="document">
+<figure>
+<img alt="dummy.png" src="dummy.png" />
+<figcaption>
+<p>The figure's caption.</p>
+<div class="legend">
+<p>A legend.</p>
+<p>The legend's second paragraph.</p>
+</div>
+</figcaption>
+</figure>
+</div>\\n''',
+ 'html_head': '''...<title>&lt;string&gt;</title>\\n'''}
+"""],
+["""\
+.. figure:: dummy.png
+
+   The figure's caption, no legend.
+""",
+"""\
+{'fragment': '''\
+<figure>
+<img alt="dummy.png" src="dummy.png" />
+<figcaption>
+<p>The figure's caption, no legend.</p>
+</figcaption>
+</figure>\\n''',
+ 'html_body': '''\
+<div class="document">
+<figure>
+<img alt="dummy.png" src="dummy.png" />
+<figcaption>
+<p>The figure's caption, no legend.</p>
+</figcaption>
+</figure>
+</div>\\n''',
+ 'html_head': '''...<title>&lt;string&gt;</title>\\n'''}
+"""],
+["""\
+.. figure:: dummy.png
+
+   ..
+
+   A legend without caption.
+""",
+"""\
+{'fragment': '''\
+<figure>
+<img alt="dummy.png" src="dummy.png" />
+<figcaption>
+<div class="legend">
+<p>A legend without caption.</p>
+</div>
+</figcaption>
+</figure>\\n''',
+ 'html_body': '''\
+<div class="document">
+<figure>
+<img alt="dummy.png" src="dummy.png" />
+<figcaption>
+<div class="legend">
+<p>A legend without caption.</p>
+</div>
+</figcaption>
+</figure>
+</div>\\n''',
+ 'html_head': '''...<title>&lt;string&gt;</title>\\n'''}
+"""],
 ])
+["""\
+.. figure:: dummy.png
+
+No caption nor legend.
+""",
+"""\
+{'fragment': '''\
+<figure>
+<img alt="dummy.png" src="dummy.png" />
+</figure>
+<p>No caption nor legend.</p>\\n''',
+ 'html_body': '''\
+<div class="document">
+<figure>
+<img alt="dummy.png" src="dummy.png" />
+</figure>
+<p>No caption nor legend.</p>
+</div>\\n''',
+ 'html_head': '''...<title>&lt;string&gt;</title>\\n'''}
+"""],
 
 
 if __name__ == '__main__':
