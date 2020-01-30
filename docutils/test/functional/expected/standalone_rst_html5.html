@@ -595,9 +595,10 @@ the browser or rendering software used.</p>
 <p>A <em>figure</em> is an image with a caption and/or a legend.  With page-based output
 media, figures might float to a different position if this helps the page
 layout.</p>
-<div class="figclass1 figclass2 figure">
+<figure class="figclass1 figclass2">
 <img alt="reStructuredText, the markup syntax" class="class1 class2" src="../../../docs/user/rst/images/title.png" style="width: 258px;" />
-<p class="caption">Plaintext markup syntax and parser system.</p>
+<figcaption>
+<p>Plaintext markup syntax and parser system.</p>
 <div class="legend">
 <table>
 <colgroup>
@@ -618,40 +619,47 @@ layout.</p>
 </table>
 <p>This paragraph is also part of the legend.</p>
 </div>
-</div>
+</figcaption>
+</figure>
 <p>A left-aligned figure:</p>
-<div class="figclass1 figclass2 figure align-left" style="width: 70%">
+<figure class="figclass1 figclass2 align-left" style="width: 70%">
 <img alt="reStructuredText, the markup syntax" class="class1 class2" src="../../../docs/user/rst/images/biohazard.png" style="width: 40px;" />
-<p class="caption">This is the caption.</p>
+<figcaption>
+<p>This is the caption.</p>
 <div class="legend">
 <p>This is the legend.</p>
 <p>The legend may consist of several paragraphs.</p>
 </div>
-</div>
+</figcaption>
+</figure>
 <p>This paragraph might flow around the figure.</p>
 <p>The specific behavior depends upon the style sheet and the browser or
 rendering software used.</p>
 <p>A centered figure:</p>
-<div class="figure align-center">
+<figure class="align-center">
 <img alt="../../../docs/user/rst/images/biohazard.png" src="../../../docs/user/rst/images/biohazard.png" style="width: 40px;" />
-<p class="caption">This is the caption.</p>
+<figcaption>
+<p>This is the caption.</p>
 <div class="legend">
 <p>This is the legend.</p>
 <p>The legend may consist of several paragraphs.</p>
 </div>
-</div>
+</figcaption>
+</figure>
 <p>This paragraph might flow around the figure.</p>
 <p>The specific behavior depends upon the style sheet and the browser or
 rendering software used.</p>
 <p>A right-aligned figure:</p>
-<div class="figure align-right">
+<figure class="align-right">
 <img alt="../../../docs/user/rst/images/biohazard.png" src="../../../docs/user/rst/images/biohazard.png" style="width: 40px;" />
-<p class="caption">This is the caption.</p>
+<figcaption>
+<p>This is the caption.</p>
 <div class="legend">
 <p>This is the legend.</p>
 <p>The legend may consist of several paragraphs.</p>
 </div>
-</div>
+</figcaption>
+</figure>
 <p>This paragraph might flow around the figure. The specific behavior depends
 upon the style sheet and the browser or rendering software used.</p>
 <p>Tables may be given titles and additional arguments with the <em>table</em>
@@ -1307,10 +1315,12 @@ tags.</p>
 </ul>
 <p>SVG images can also be put in figures:</p>
 <blockquote>
-<div class="figure align-center">
+<figure class="align-center">
 <img alt="reStructuredText, the markup syntax" src="../../../docs/user/rst/images/title.svg" style="width: 290px; height: 28px;" />
-<p class="caption"><strong>Figure:</strong> SVG image in a figure.</p>
-</div>
+<figcaption>
+<p><strong>Figure:</strong> SVG image in a figure.</p>
+</figcaption>
+</figure>
 </blockquote>
 </section>
 <section id="swf-images">

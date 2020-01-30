@@ -159,6 +159,7 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
     def visit_acronym(self, node):
         # @@@ implementation incomplete ("title" attribute)
         self.body.append(self.starttag(node, 'abbr', ''))
+
     def depart_acronym(self, node):
         self.body.append('</abbr>')
 
@@ -167,10 +168,19 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
     def visit_authors(self, node):
         self.visit_docinfo_item(node, 'authors', meta=False)
         for subnode in node:
-            self.add_meta('<meta name="author" content="%s" />\n' % 
+            self.add_meta('<meta name="author" content="%s" />\n' %
                           self.attval(subnode.astext()))
+
     def depart_authors(self, node):
         self.depart_docinfo_item()
+    
+    # don't add 'caption' class value
+    def visit_caption(self, node):
+        self.body.append('<figcaption>\n')
+        self.body.append(self.starttag(node, 'p', ''))
+
+    def depart_caption(self, node):
+        self.body.append('</p>\n')
 
     # no standard meta tag name in HTML5, use dcterms.rights
     # see https://wiki.whatwg.org/wiki/MetaExtensions
@@ -178,6 +188,7 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
         self.visit_docinfo_item(node, 'copyright', meta=False)
         self.add_meta('<meta name="dcterms.rights" content="%s" />\n'
                       % self.attval(node.astext()))
+
     def depart_copyright(self, node):
         self.depart_docinfo_item()
 
@@ -186,8 +197,23 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
         self.visit_docinfo_item(node, 'date', meta=False)
         self.add_meta('<meta name="dcterms.date" content="%s" />\n'
                       % self.attval(node.astext()))
+
     def depart_date(self, node):
         self.depart_docinfo_item()
+
+    # use new HTML5 <figure> and <figcaption> elements
+    def visit_figure(self, node):
+        atts = {}
+        if node.get('width'):
+            atts['style'] = 'width: %s' % node['width']
+        if node.get('align'):
+            atts['class'] = "align-" + node['align']
+        self.body.append(self.starttag(node, 'figure', **atts))
+
+    def depart_figure(self, node):
+        if len(node) > 1:
+            self.body.append('</figcaption>\n')
+        self.body.append('</figure>\n')
 
     # use HTML5 <footer> element
     def visit_footer(self, node):
@@ -202,6 +228,7 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
         self.body_suffix[:0] = footer
         del self.body[start:]
 
+    # use HTML5 <header> element
     def visit_header(self, node):
         self.context.append(len(self.body))
 
@@ -213,7 +240,17 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
         self.body_prefix.extend(header)
         self.header.extend(header)
         del self.body[start:]
+        
+    # place inside HTML5 <figcaption> element (together with caption)
+    def visit_legend(self, node):
+        if not isinstance(node.parent[1], nodes.caption):
+            self.body.append('<figcaption>\n')
+        self.body.append(self.starttag(node, 'div', CLASS='legend'))
 
+    def depart_legend(self, node):
+        self.body.append('</div>\n')
+        # <figcaption> closed in visit_figure()
+        
     # Meta tags: 'lang' attribute replaced by 'xml:lang' in XHTML 1.1
     # HTML5/polyglot recommends using both
     def visit_meta(self, node):
