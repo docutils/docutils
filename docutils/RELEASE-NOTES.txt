@@ -24,19 +24,6 @@ Future changes
 
 * Installing with ``setup.py`` will require setuptools_ in versions > 0.16.
   
-* HTML5 writer:
-    Use the new semantic tags <main>, <section>, <header>,
-    <footer>, <aside>, <figure>, and <figcaption>.
-    See ``minimal.css`` and ``plain.css`` for styling rule examples.
-
-    Use HTML text-level tags <small>, <s>, <q>, <dfn>, <var>, <samp>, <kbd>,
-    <i>, <b>, <u>, <mark>, and <bdi> if a matching class value
-    is found in `inline` and `literal` elements.
-
-    Use HTML tags <ins> and <del> if a matching class value
-    is found in `inline`, `literal`, or `container` elements.
-
-
 * LaTeX writer:
     Wrap admonitions in a "DUclass" environment. Stylesheets modifying
     "\DUadmonition" will need to adapt.
@@ -79,6 +66,24 @@ Future changes
 .. _rst2html.py: docs/user/tools.html#rst2html-py
 .. _reference name: docs/ref/rst/restructuredtext.html#reference-names
 .. _identifier normalization: directives.html#identifier-normalization
+
+
+Release 0.17
+============
+
+* HTML5 writer:
+
+  - Use the new semantic tags <main>, <section>, <header>,
+    <footer>, <aside>, <figure>, and <figcaption>.
+    See ``minimal.css`` and ``plain.css`` for styling rule examples.
+
+  - Use HTML text-level tags <small>, <s>, <q>, <dfn>, <var>, <samp>, <kbd>,
+    <i>, <b>, <u>, <mark>, and <bdi> if a matching class value
+    is found in `inline` and `literal` elements.
+
+  - Use HTML tags <ins> and <del> if a matching class value
+    is found in `inline`, `literal`, or `container` elements.
+
 
 Release 0.16 (2020-01-12)
 =========================
