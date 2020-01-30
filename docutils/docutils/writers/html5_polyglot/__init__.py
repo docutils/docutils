@@ -201,6 +201,36 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
     def depart_date(self, node):
         self.depart_docinfo_item()
 
+    def visit_document(self, node):
+        title = (node.get('title', '') or os.path.basename(node['source'])
+                 or 'untitled Docutils document')
+        self.head.append('<title>%s</title>\n' % self.encode(title))
+
+    def depart_document(self, node):
+        self.head_prefix.extend([self.doctype,
+                                 self.head_prefix_template %
+                                 {'lang': self.settings.language_code}])
+        self.html_prolog.append(self.doctype)
+        self.meta.insert(0, self.content_type % self.settings.output_encoding)
+        self.head.insert(0, self.content_type % self.settings.output_encoding)
+        if 'name="dcterms.' in ''.join(self.meta):
+            self.head.append(
+             '<link rel="schema.dcterms" href="http://purl.org/dc/terms/">')
+        if self.math_header:
+            if self.math_output == 'mathjax':
+                self.head.extend(self.math_header)
+            else:
+                self.stylesheet.extend(self.math_header)
+        # skip content-type meta tag with interpolated charset value:
+        self.html_head.extend(self.head[1:])
+        self.body_prefix.append(self.starttag(node, 'main'))
+        self.body_suffix.insert(0, '</main>\n')
+        self.fragment.extend(self.body) # self.fragment is the "naked" body
+        self.html_body.extend(self.body_prefix[1:] + self.body_pre_docinfo
+                              + self.docinfo + self.body
+                              + self.body_suffix[:-1])
+        assert not self.context, 'len(context) = %s' % len(self.context)
+
     # use new HTML5 <figure> and <figcaption> elements
     def visit_figure(self, node):
         atts = {}

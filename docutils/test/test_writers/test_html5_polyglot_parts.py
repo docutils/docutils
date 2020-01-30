@@ -54,9 +54,9 @@ Simple String
 """,
 """\
 {'fragment': '''<p>Simple String</p>\\n''',
- 'html_body': '''<div class="document">
+ 'html_body': '''<main>
 <p>Simple String</p>
-</div>\\n''',
+</main>\\n''',
  'html_head': '''...<title>&lt;string&gt;</title>\\n'''}
 """],
 ["""\
@@ -64,9 +64,9 @@ Simple String with *markup*
 """,
 """\
 {'fragment': '''<p>Simple String with <em>markup</em></p>\\n''',
- 'html_body': '''<div class="document">
+ 'html_body': '''<main>
 <p>Simple String with <em>markup</em></p>
-</div>\\n''',
+</main>\\n''',
  'html_head': '''...<title>&lt;string&gt;</title>\\n'''}
 """],
 ["""\
@@ -74,9 +74,9 @@ Simple String with an even simpler ``inline literal``
 """,
 """\
 {'fragment': '''<p>Simple String with an even simpler <span class="docutils literal">inline literal</span></p>\\n''',
- 'html_body': '''<div class="document">
+ 'html_body': '''<main>
 <p>Simple String with an even simpler <span class="docutils literal">inline literal</span></p>
-</div>\\n''',
+</main>\\n''',
  'html_head': '''...<title>&lt;string&gt;</title>\\n'''}
 """],
 ["""\
@@ -86,9 +86,9 @@ __ http://www.test.com/test_url
 """,
 """\
 {'fragment': '''<p>A simple <a class="reference external" href="http://www.test.com/test_url">anonymous reference</a></p>\\n''',
- 'html_body': '''<div class="document">
+ 'html_body': '''<main>
 <p>A simple <a class="reference external" href="http://www.test.com/test_url">anonymous reference</a></p>
-</div>\\n''',
+</main>\\n''',
  'html_head': '''...<title>&lt;string&gt;</title>\\n'''}
 """],
 ["""\
@@ -99,10 +99,10 @@ Two paragraphs.
 """\
 {'fragment': '''<p>One paragraph.</p>
 <p>Two paragraphs.</p>\\n''',
- 'html_body': '''<div class="document">
+ 'html_body': '''<main>
 <p>One paragraph.</p>
 <p>Two paragraphs.</p>
-</div>\\n''',
+</main>\\n''',
  'html_head': '''...<title>&lt;string&gt;</title>\\n'''}
 """],
 ["""\
@@ -114,10 +114,10 @@ reference and the target.
 """\
 {'fragment': '''<p>A simple <a class="reference external" href="http://www.test.com/test_url">named reference</a> with stuff in between the
 reference and the target.</p>\\n''',
- 'html_body': '''<div class="document">
+ 'html_body': '''<main>
 <p>A simple <a class="reference external" href="http://www.test.com/test_url">named reference</a> with stuff in between the
 reference and the target.</p>
-</div>\\n''',
+</main>\\n''',
  'html_head': '''...<title>&lt;string&gt;</title>\\n'''}
 """],
 ["""\
@@ -150,7 +150,7 @@ And even more stuff
 <p>And even more stuff</p>
 </section>
 </section>\\n''',
- 'html_body': '''<div class="document" id="title">
+ 'html_body': '''<main id="title">
 <h1 class="title">Title</h1>
 <p class="subtitle" id="subtitle">Subtitle</p>
 <p>Some stuff</p>
@@ -162,7 +162,7 @@ And even more stuff
 <p>And even more stuff</p>
 </section>
 </section>
-</div>\\n''',
+</main>\\n''',
  'html_head': '''...<title>Title</title>\\n''',
  'html_subtitle': '''<p class="subtitle" id="subtitle">Subtitle</p>\\n''',
  'html_title': '''<h1 class="title">Title</h1>\\n''',
@@ -184,14 +184,14 @@ Some stuff
 <dd class="author"><p>me</p></dd>
 </dl>\\n''',
  'fragment': '''<p>Some stuff</p>\\n''',
- 'html_body': '''<div class="document" id="title">
+ 'html_body': '''<main id="title">
 <h1 class="title">Title</h1>
 <dl class="docinfo simple">
 <dt class="author">Author</dt>
 <dd class="author"><p>me</p></dd>
 </dl>
 <p>Some stuff</p>
-</div>\\n''',
+</main>\\n''',
  'html_head': '''...<title>Title</title>
 <meta name="author" content="me" />\\n''',
  'html_title': '''<h1 class="title">Title</h1>\\n''',
@@ -208,9 +208,9 @@ Simple String
 """,
 """\
 {'fragment': '''<p>Simple String</p>\\n''',
- 'html_body': '''<div class="document">
+ 'html_body': '''<main>
 <p>Simple String</p>
-</div>\\n''',
+</main>\\n''',
  'html_head': '''...<title>&lt;string&gt;</title>\\n'''}
 """],
 ["""\
@@ -218,9 +218,9 @@ Simple String with *markup*
 """,
 """\
 {'fragment': '''<p>Simple String with <em>markup</em></p>\\n''',
- 'html_body': '''<div class="document">
+ 'html_body': '''<main>
 <p>Simple String with <em>markup</em></p>
-</div>\\n''',
+</main>\\n''',
  'html_head': '''...<title>&lt;string&gt;</title>\\n'''}
 """],
 ["""\
@@ -228,9 +228,9 @@ Simple String with an even simpler ``inline literal``
 """,
 """\
 {'fragment': '''<p>Simple String with an even simpler <span class="docutils literal">inline literal</span></p>\\n''',
- 'html_body': '''<div class="document">
+ 'html_body': '''<main>
 <p>Simple String with an even simpler <span class="docutils literal">inline literal</span></p>
-</div>\\n''',
+</main>\\n''',
  'html_head': '''...<title>&lt;string&gt;</title>\\n'''}
 """],
 ["""\
@@ -240,9 +240,9 @@ __ http://www.test.com/test_url
 """,
 """\
 {'fragment': '''<p>A simple <a class="reference external" href="http://www.test.com/test_url">anonymous reference</a></p>\\n''',
- 'html_body': '''<div class="document">
+ 'html_body': '''<main>
 <p>A simple <a class="reference external" href="http://www.test.com/test_url">anonymous reference</a></p>
-</div>\\n''',
+</main>\\n''',
  'html_head': '''...<title>&lt;string&gt;</title>\\n'''}
 """],
 ["""\
@@ -254,10 +254,10 @@ reference and the target.
 """\
 {'fragment': '''<p>A simple <a class="reference external" href="http://www.test.com/test_url">named reference</a> with stuff in between the
 reference and the target.</p>\\n''',
- 'html_body': '''<div class="document">
+ 'html_body': '''<main>
 <p>A simple <a class="reference external" href="http://www.test.com/test_url">named reference</a> with stuff in between the
 reference and the target.</p>
-</div>\\n''',
+</main>\\n''',
  'html_head': '''...<title>&lt;string&gt;</title>\\n'''}
 """],
 ["""\
@@ -296,7 +296,7 @@ And even more stuff
 </section>
 </section>
 </section>\\n''',
- 'html_body': '''<div class="document">
+ 'html_body': '''<main>
 <section id="title">
 <h1>Title</h1>
 <section id="not-a-subtitle">
@@ -312,7 +312,7 @@ And even more stuff
 </section>
 </section>
 </section>
-</div>\\n''',
+</main>\\n''',
  'html_head': '''...<title>&lt;string&gt;</title>\\n'''}
 """],
 ["""\
@@ -324,12 +324,12 @@ And even more stuff
 <li><p>bullet</p></li>
 <li><p>list</p></li>
 </ul>\\n''',
- 'html_body': '''<div class="document">
+ 'html_body': '''<main>
 <ul class="simple">
 <li><p>bullet</p></li>
 <li><p>list</p></li>
 </ul>
-</div>\\n''',
+</main>\\n''',
  'html_head': '''...<title>&lt;string&gt;</title>\\n'''}
 """],
 ["""\
@@ -357,7 +357,7 @@ And even more stuff
 </tr>
 </tbody>
 </table>\\n''',
- 'html_body': '''<div class="document">
+ 'html_body': '''<main>
 <table class="align-right">
 <colgroup>
 <col style="width: 50%%" />
@@ -372,7 +372,7 @@ And even more stuff
 </tr>
 </tbody>
 </table>
-</div>\\n''',
+</main>\\n''',
  'html_head': '''...<title>&lt;string&gt;</title>\\n'''}
 """],
 ["""\
@@ -399,7 +399,7 @@ Not a docinfo.
 <dd><p>list</p>
 </dd>
 </dl>\\n''',
- 'html_body': '''<div class="document">
+ 'html_body': '''<main>
 <p>Not a docinfo.</p>
 <dl class="field-list simple">
 <dt>This</dt>
@@ -413,7 +413,7 @@ Not a docinfo.
 <dd><p>list</p>
 </dd>
 </dl>
-</div>\\n''',
+</main>\\n''',
  'html_head': '''...<title>&lt;string&gt;</title>\\n'''}
 """],
 ["""\
@@ -434,7 +434,7 @@ Not a docinfo.
 </dd>
 </dl>\\n''',
  'html_body': '''\
-<div class="document">
+<main>
 <p>Not a docinfo.</p>
 <dl class="field-list simple">
 <dt>This is</dt>
@@ -444,7 +444,7 @@ Not a docinfo.
 <dd><p>names</p>
 </dd>
 </dl>
-</div>\\n''',
+</main>\\n''',
  'html_head': '''...<title>&lt;string&gt;</title>\\n'''}
 """],
 ["""\
@@ -469,7 +469,7 @@ Not a docinfo.
 </figcaption>
 </figure>\\n''',
  'html_body': '''\
-<div class="document">
+<main>
 <figure>
 <img alt="dummy.png" src="dummy.png" />
 <figcaption>
@@ -480,7 +480,7 @@ Not a docinfo.
 </div>
 </figcaption>
 </figure>
-</div>\\n''',
+</main>\\n''',
  'html_head': '''...<title>&lt;string&gt;</title>\\n'''}
 """],
 ["""\
@@ -497,14 +497,14 @@ Not a docinfo.
 </figcaption>
 </figure>\\n''',
  'html_body': '''\
-<div class="document">
+<main>
 <figure>
 <img alt="dummy.png" src="dummy.png" />
 <figcaption>
 <p>The figure's caption, no legend.</p>
 </figcaption>
 </figure>
-</div>\\n''',
+</main>\\n''',
  'html_head': '''...<title>&lt;string&gt;</title>\\n'''}
 """],
 ["""\
@@ -525,7 +525,7 @@ Not a docinfo.
 </figcaption>
 </figure>\\n''',
  'html_body': '''\
-<div class="document">
+<main>
 <figure>
 <img alt="dummy.png" src="dummy.png" />
 <figcaption>
@@ -534,7 +534,7 @@ Not a docinfo.
 </div>
 </figcaption>
 </figure>
-</div>\\n''',
+</main>\\n''',
  'html_head': '''...<title>&lt;string&gt;</title>\\n'''}
 """],
 ])
@@ -550,12 +550,12 @@ No caption nor legend.
 </figure>
 <p>No caption nor legend.</p>\\n''',
  'html_body': '''\
-<div class="document">
+<main>
 <figure>
 <img alt="dummy.png" src="dummy.png" />
 </figure>
 <p>No caption nor legend.</p>
-</div>\\n''',
+</main>\\n''',
  'html_head': '''...<title>&lt;string&gt;</title>\\n'''}
 """],
 
