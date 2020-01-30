@@ -25,13 +25,9 @@ Future changes
 * Installing with ``setup.py`` will require setuptools_ in versions > 0.16.
   
 * LaTeX writer:
-    Wrap admonitions in a "DUclass" environment. Stylesheets modifying
-    "\DUadmonition" will need to adapt.
-
-    Styling commands using ``\docutilsrole`` prefix will be ignored in
-    versions > 0.16 (see `Generating LaTeX with Docutils`__).
-
-    __ docs/user/latex.html#classes
+    The default for the configuration setting `legacy_class_functions`_ will
+    change to "False". Adapt stylesheets modifying ``\DUadmonition``
+    and/or ``\DUtitle`` or set to "True".
 
 * ``Node.traverse()`` will return an iterator instead of a list.
 
@@ -66,6 +62,7 @@ Future changes
 .. _rst2html.py: docs/user/tools.html#rst2html-py
 .. _reference name: docs/ref/rst/restructuredtext.html#reference-names
 .. _identifier normalization: directives.html#identifier-normalization
+.. _legacy_class_functions: docs/user/config.html#legacy-class-functions
 
 
 Release 0.17
@@ -84,6 +81,14 @@ Release 0.17
   - Use HTML tags <ins> and <del> if a matching class value
     is found in `inline`, `literal`, or `container` elements.
 
+* LaTeX writer:
+
+  - New configuration setting `legacy_class_functions`_.
+
+  - `Styling commands`__ using the legacy ``\docutilsrole`` prefix are
+    now ignored. Use ``\DUrole``.
+
+    __ docs/user/latex.html#classes
 
 Release 0.16 (2020-01-12)
 =========================

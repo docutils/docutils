@@ -12,7 +12,9 @@ from __future__ import absolute_import
 
 import string
 
-from . import DocutilsTestSupport
+if __name__ == '__main__':
+    import __init__
+from test_transforms import DocutilsTestSupport  # must be imported before docutils
 
 
 def suite():
@@ -81,15 +83,8 @@ fallbacks_highlight = r"""% basic code highlight:
 \providecommand*{\DUrole}[2]{%
   \ifcsname DUrole#1\endcsname%
     \csname DUrole#1\endcsname{#2}%
-  \else
-    % backwards compatibility: try \docutilsrole#1{#2}
-    \ifcsname docutilsrole#1\endcsname%
-      \PackageWarningNoLine{docutils}{Command prefix "docutilsrole" is
-         deprecated, \MessageBreak use `\protect\DUrole #1`}
-      \csname docutilsrole#1\endcsname{#2}%
-    \else%
-      #2%
-    \fi%
+  \else%
+    #2%
   \fi%
 }
 """,
