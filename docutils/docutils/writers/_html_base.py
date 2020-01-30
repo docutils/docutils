@@ -720,6 +720,7 @@ class HTMLTranslator(nodes.NodeVisitor):
                  or 'docutils document without title')
         self.head.append('<title>%s</title>\n' % self.encode(title))
 
+    # TODO: use new HTML5 element <main>?
     def depart_document(self, node):
         self.head_prefix.extend([self.doctype,
                                  self.head_prefix_template %

@@ -189,13 +189,30 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
     def depart_date(self, node):
         self.depart_docinfo_item()
 
-    # TODO: use HTML5 <footer> element?
-    # def visit_footer(self, node):
-    # def depart_footer(self, node):
+    # use HTML5 <footer> element
+    def visit_footer(self, node):
+        self.context.append(len(self.body))
 
-    # TODO: use the new HTML5 element <aside>? (Also for footnote text)
-    # def visit_footnote(self, node):
-    # def depart_footnote(self, node):
+    def depart_footer(self, node):
+        start = self.context.pop()
+        footer = [self.starttag(node, 'footer')]
+        footer.extend(self.body[start:])
+        footer.append('\n</footer>\n')
+        self.footer.extend(footer)
+        self.body_suffix[:0] = footer
+        del self.body[start:]
+
+    def visit_header(self, node):
+        self.context.append(len(self.body))
+
+    def depart_header(self, node):
+        start = self.context.pop()
+        header = [self.starttag(node, 'header')]
+        header.extend(self.body[start:])
+        header.append('</header>\n')
+        self.body_prefix.extend(header)
+        self.header.extend(header)
+        del self.body[start:]
 
     # Meta tags: 'lang' attribute replaced by 'xml:lang' in XHTML 1.1
     # HTML5/polyglot recommends using both
@@ -214,6 +231,22 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
     def depart_organization(self, node):
         self.depart_docinfo_item()
 
-    # TODO: use the new HTML5 element <section>?
-    # def visit_section(self, node):
-    # def depart_section(self, node):
+    # use the new HTML5 element <section>
+    def visit_section(self, node):
+        self.section_level += 1
+        self.body.append(
+            self.starttag(node, 'section'))
+
+    def depart_section(self, node):
+        self.section_level -= 1
+        self.body.append('</section>\n')
+
+    # use the new HTML5 element <aside>
+    def visit_sidebar(self, node):
+        self.body.append(
+            self.starttag(node, 'aside', CLASS='sidebar'))
+        self.in_sidebar = True
+
+    def depart_sidebar(self, node):
+        self.body.append('</aside>\n')
+        self.in_sidebar = False
