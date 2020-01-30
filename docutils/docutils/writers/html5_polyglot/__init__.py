@@ -173,7 +173,7 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
 
     def depart_authors(self, node):
         self.depart_docinfo_item()
-    
+
     # don't add 'caption' class value
     def visit_caption(self, node):
         self.body.append('<figcaption>\n')
@@ -270,7 +270,26 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
         self.body_prefix.extend(header)
         self.header.extend(header)
         del self.body[start:]
-        
+
+    # use HTML text-level tags if matching class value found
+    supported_inline_tags = set(('small', 's', 'q', 'dfn', 'var', 'samp',
+                                 'kbd', 'i', 'b', 'u', 'mark', 'bdi'))
+    def visit_inline(self, node):
+        # If there is exactly one of the "supported inline tags" in
+        # the list of class values, use it as tag name:
+        classes = node.get('classes', [])
+        tags = [cls for cls in classes
+                if cls in self.supported_inline_tags]
+        if len(tags) == 1:
+            node.html5tagname = tags[0]
+            classes.remove(tags[0])
+        else:
+            node.html5tagname = 'span'
+        self.body.append(self.starttag(node, node.html5tagname, ''))
+
+    def depart_inline(self, node):
+        self.body.append('</%s>' % node.html5tagname)
+
     # place inside HTML5 <figcaption> element (together with caption)
     def visit_legend(self, node):
         if not isinstance(node.parent[1], nodes.caption):
@@ -280,7 +299,47 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
     def depart_legend(self, node):
         self.body.append('</div>\n')
         # <figcaption> closed in visit_figure()
-        
+
+    # use HTML text-level tags if matching class value found
+    def visit_literal(self, node):
+        # special case: "code" role
+        classes = node.get('classes', [])
+        if 'code' in classes:
+            # filter 'code' from class arguments
+            node['classes'] = [cls for cls in classes if cls != 'code']
+            self.body.append(self.starttag(node, 'code', ''))
+            return
+
+        classes = node.get('classes', [])
+        tags = [cls for cls in classes
+                if cls in self.supported_inline_tags]
+        if len(tags) == 1:
+            tagname = tags[0]
+            classes.remove(tags[0])
+        else:
+            tagname = 'span'
+        self.body.append(
+            self.starttag(node, tagname, '', CLASS='docutils literal'))
+        text = node.astext()
+        # remove hard line breaks (except if in a parsed-literal block)
+        if not isinstance(node.parent, nodes.literal_block):
+            text = text.replace('\n', ' ')
+        # Protect text like ``--an-option`` and the regular expression
+        # ``[+]?(\d+(\.\d*)?|\.\d+)`` from bad line wrapping
+        for token in self.words_and_spaces.findall(text):
+            if token.strip() and self.in_word_wrap_point.search(token):
+                self.body.append('<span class="pre">%s</span>'
+                                    % self.encode(token))
+            else:
+                self.body.append(self.encode(token))
+        self.body.append('</%s>' % tagname)
+        # Content already processed:
+        raise nodes.SkipNode
+
+    def depart_literal(self, node):
+        # skipped unless literal element is from "code" role:
+        self.body.append('</code>')
+
     # Meta tags: 'lang' attribute replaced by 'xml:lang' in XHTML 1.1
     # HTML5/polyglot recommends using both
     def visit_meta(self, node):
