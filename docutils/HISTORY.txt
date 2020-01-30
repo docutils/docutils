@@ -23,6 +23,7 @@ Changes Since 0.16
   - Explicit include test subdirectory contents in MANIFEST.in to avoid
     inclusion of test outputs.
   - Fix [ 385 ]: Import of language modules.
+  - Use importlib.import_module() to programmatically import modules.
 
 * docutils/__init__.py
 

@@ -11,6 +11,7 @@ __docformat__ = 'reStructuredText'
 import re
 import codecs
 import sys
+from importlib import import_module
 
 from docutils import nodes
 from docutils.utils import split_escaped_whitespace, escape2null, unescape
@@ -115,7 +116,7 @@ def directive(directive_name, language_module, document):
         # Error handling done by caller.
         return None, messages
     try:
-        module = __import__(modulename, globals(), locals(), level=1)
+        module = import_module('docutils.parsers.rst.directives.'+modulename)
     except ImportError as detail:
         messages.append(document.reporter.error(
             'Error importing directive module "%s" (directive "%s"):\n%s'
