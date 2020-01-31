@@ -13,7 +13,9 @@ from __future__ import absolute_import
 
 import os
 
-from . import DocutilsTestSupport
+if __name__ == '__main__':
+    import __init__
+from test_writers import DocutilsTestSupport
 from docutils import core
 
 

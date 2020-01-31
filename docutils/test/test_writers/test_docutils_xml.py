@@ -17,7 +17,9 @@ from __future__ import absolute_import
 
 import sys
 
-from . import DocutilsTestSupport # must be imported before docutils
+if __name__ == '__main__':
+    import __init__
+from test_writers import DocutilsTestSupport # before importing docutils!
 import docutils
 import docutils.core
 

@@ -10,7 +10,9 @@ Tests for `docutils.transforms.references.TargetNotes` (via
 """
 from __future__ import absolute_import
 
-from . import DocutilsTestSupport
+if __name__ == '__main__':
+    import __init__
+from test_transforms import DocutilsTestSupport
 from docutils.transforms.references import PropagateTargets, \
      AnonymousHyperlinks, IndirectHyperlinks, ExternalTargets, \
      InternalTargets, DanglingReferences, Footnotes

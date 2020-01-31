@@ -9,7 +9,9 @@ Tests for docutils.transforms.references.Footnotes.
 """
 from __future__ import absolute_import
 
-from . import DocutilsTestSupport
+if __name__ == '__main__':
+    import __init__
+from test_transforms import DocutilsTestSupport
 from docutils.transforms.references import Footnotes
 from docutils.parsers.rst import Parser
 

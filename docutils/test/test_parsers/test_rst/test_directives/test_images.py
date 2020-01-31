@@ -9,7 +9,9 @@ Tests for images.py image directives.
 """
 from __future__ import absolute_import
 
-from . import DocutilsTestSupport
+if __name__ == '__main__':
+    import __init__
+from test_parsers import DocutilsTestSupport
 
 from docutils.nodes import reprunicode
 

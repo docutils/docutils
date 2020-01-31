@@ -9,10 +9,9 @@ Tests for admonition directives with local language module.
 """
 from __future__ import absolute_import
 
-try:
-    from . import DocutilsTestSupport
-except ValueError: # when running as stand-alone test
-    from __init__ import DocutilsTestSupport
+if __name__ == '__main__':
+    import __init__
+from test_parsers import DocutilsTestSupport
 
 def suite():
     settings = {'language_code': 'local-dummy-lang',

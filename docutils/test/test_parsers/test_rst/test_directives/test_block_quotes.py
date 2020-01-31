@@ -10,7 +10,9 @@ Tests for the block quote directives "epigraph", "highlights", and
 """
 from __future__ import absolute_import
 
-from . import DocutilsTestSupport
+if __name__ == '__main__':
+    import __init__
+from test_parsers import DocutilsTestSupport
 
 def suite():
     s = DocutilsTestSupport.ParserTestSuite()

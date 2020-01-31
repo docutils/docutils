@@ -10,7 +10,9 @@ test get_writer_class
 """
 from __future__ import absolute_import
 
-from . import DocutilsTestSupport
+if __name__ == '__main__':
+    import __init__
+from test_writers import DocutilsTestSupport
 from docutils.writers import get_writer_class
 
 
