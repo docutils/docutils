@@ -10,7 +10,9 @@ test get_reader_class
 """
 from __future__ import absolute_import
 
-from . import DocutilsTestSupport
+if __name__ == '__main__':
+    import __init__
+from test_readers import DocutilsTestSupport
 from docutils.readers import get_reader_class
 
 

@@ -10,7 +10,9 @@ Test module for universal.ExposeInternals transform.
 from __future__ import absolute_import
 
 
-from . import DocutilsTestSupport # must be imported before docutils
+if __name__ == '__main__':
+    import __init__
+from test_transforms import DocutilsTestSupport # before importing docutils!
 from docutils.transforms.universal import ExposeInternals
 from docutils.parsers.rst import Parser
 

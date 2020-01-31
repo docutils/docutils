@@ -14,7 +14,9 @@ import sys
 import csv
 import platform
 
-from . import DocutilsTestSupport
+if __name__ == '__main__':
+    import __init__
+from test_parsers import DocutilsTestSupport
 from docutils.parsers.rst.directives import tables
 
 

@@ -11,7 +11,9 @@ from __future__ import absolute_import
 
 import sys
 
-from . import DocutilsTestSupport
+if __name__ == '__main__':
+    import __init__
+from test_parsers import DocutilsTestSupport
 
 
 if sys.version_info >= (3, 0):

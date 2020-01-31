@@ -9,7 +9,9 @@ Tests for misc.py "default-role" directive.
 """
 from __future__ import absolute_import
 
-from . import DocutilsTestSupport
+if __name__ == '__main__':
+    import __init__
+from test_parsers import DocutilsTestSupport
 
 
 def suite():

@@ -36,7 +36,9 @@ import zipfile
 import xml.etree.ElementTree as etree
 from io import BytesIO
 
-from . import DocutilsTestSupport
+if __name__ == '__main__':
+    import __init__
+from test_writers import DocutilsTestSupport
 import docutils
 import docutils.core
 

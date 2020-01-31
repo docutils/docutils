@@ -14,7 +14,7 @@ import string
 
 if __name__ == '__main__':
     import __init__
-from test_transforms import DocutilsTestSupport  # must be imported before docutils
+from test_transforms import DocutilsTestSupport  # before importing docutils!
 
 
 def suite():
