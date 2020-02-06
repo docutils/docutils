@@ -1,8 +1,8 @@
 /* CSS31_ style sheet for the output of Docutils HTML writers.             */
-/* Rules for easy reading and pre-defined style variants.		   */
+/* Rules for easy reading and pre-defined style variants.                  */
 /*                                                                         */
 /* :Author: Günter Milde, based on html4css1.css by David Goodger          */
-/* :Id: $Id$               */
+/* :Id: $Id$                                                               */
 /* :Copyright: © 2015 Günter Milde.                                        */
 /* :License: Released under the terms of the `2-Clause BSD license`_,      */
 /*    in short:                                                            */
@@ -10,11 +10,11 @@
 /*    Copying and distribution of this file, with or without modification, */
 /*    are permitted in any medium without royalty provided the copyright   */
 /*    notice and this notice are preserved.                                */
-/*    	     	      	     	 					   */
+/*                                                                         */
 /*    This file is offered as-is, without any warranty.                    */
 /*                                                                         */
 /* .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause     */
-/* .. _CSS3: http://www.w3.org/TR/CSS3		        		   */
+/* .. _CSS3: http://www.w3.org/TR/CSS3                                     */
 
 
 /* Document Structure */
@@ -53,7 +53,7 @@ hr.docutils {
 /* ========== */
 
 /* vertical space (parskip) */
-p, ol, ul, dl,
+p, ol, ul, dl, li, dd,
 div.line-block,
 div.topic,
 table {
@@ -72,9 +72,12 @@ dl > dd {
 /* Lists */
 /* ===== */
 
+/* Separate list entries in compound lists */
+dl > dd, ol > li,
+
 /* Definition Lists */
 /* Indent lists nested in definition lists */
-/* (:only-child is new in CSS 3)     	   */
+/* (:only-child is new in CSS 3)           */
 dd > ul:only-child, dd > ol:only-child { padding-left: 1em; }
 
 /* Description Lists */
@@ -222,7 +225,7 @@ h1, h2, h3 { clear: both; }
 /* Sidebar */
 
 /* Move right. In a layout with fixed margins, */
-/* it can be moved into the margin.   	       */
+/* it can be moved into the margin.            */
 div.sidebar,
 aside.sidebar {
   width: 30%;
@@ -271,11 +274,11 @@ footer, header {
 /* Emphasis           */
 /*   em               */
 /* Strong Emphasis    */
-/*   strong	      */
+/*   strong           */
 /* Interpreted Text   */
 /*   span.interpreted */
 /* Title Reference    */
-/*   cite	      */
+/*   cite             */
 
 /* Inline Literals                                          */
 /* possible values: normal, nowrap, pre, pre-wrap, pre-line */
@@ -286,7 +289,7 @@ a { text-decoration: none; }
 
 /* External Targets       */
 /*   span.target.external */
-/* Internal Targets  	  */
+/* Internal Targets       */
 /*   span.target.internal */
 /* Footnote References    */
 /*   a.footnote-reference */
