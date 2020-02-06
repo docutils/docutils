@@ -59,6 +59,10 @@ Changes Since 0.16
     
     __ docs/user/latex.html#classes
 
+* docutils/writers/latex2e/docutils-05-compat.sty:
+
+  - Remove this legacy stylesheet.
+
 
 Release 0.16
 ============
@@ -1061,8 +1065,7 @@ Release 0.6 (2009-10-11)
 
   - Apply [ 1612821 ] Double quotes in literal text in Italian/German
 
-* docutils/writers/latex2e/__init__.py (see also
-  `<docs/user/docutils-05-compat.sty.html>`__) :
+* docutils/writers/latex2e/__init__.py:
 
   - Add ``--embed-stylesheet`` option.
   - Apply [ 1474017 ] image vertical alignment is reversed.
