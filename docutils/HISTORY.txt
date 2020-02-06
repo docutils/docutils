@@ -23,7 +23,7 @@ Changes Since 0.16
   - Use importlib.import_module() to programmatically import modules.
   - Remove legacy LaTeX stylesheet ``docutils-05-compat.sty``.
   - Installing with ``setup.py`` now requires ``setuptools``.
-    Alternatively, install with `pip`_.
+    Alternatively, install with `pip`_ (or "manually").
 
 * docutils/MANIFEST.in
 

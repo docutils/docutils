@@ -12,9 +12,13 @@ try:
     from setuptools import setup
 except ImportError:
     print('Error: The "setuptools" module, which is required for the')
-    print('installation of Docutils, could not be found.  You may need to ')
-    print('install a package called "python-setuptools" (or similar) on your ')
-    print('system using your package manager.')
+    print('  installation of Docutils, could not be found.\n')
+    print('  You may install  it with `python -m pip install setuptools`')
+    print('  or from a package called "python-setuptools" (or similar)')
+    print('  using your system\'s package manager.\n')
+    print('  Alternatively, install a release from PyPi with')
+    print('  `python -m pip install docutils`.')
+    
     sys.exit(1)
 
 

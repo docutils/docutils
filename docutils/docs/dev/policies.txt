@@ -622,35 +622,58 @@ Setting Up For Docutils Development
 When making changes to the code, testing is a must.  The code should
 be run to verify that it produces the expected results, and the entire
 test suite should be run too.  The modified Docutils code has to be
-accessible to Python for the tests to have any meaning.  There are two
+accessible to Python for the tests to have any meaning.  There are several
 ways to keep the Docutils code accessible during development:
 
 1. Update your ``PYTHONPATH`` environment variable so that Python
-   picks up your local working copy of the code.  This is the
-   recommended method.
+   picks up your local working copy of the code.
 
-   We'll assume that the Docutils trunk is checked out under your
-   ~/projects/ directory as follows::
-
-       svn co https://<user>@docutils.svn.sourceforge.net/svnroot/docutils/trunk \
-           docutils
+   We'll assume that the `Docutils trunk`__ is checked out under your
+   ``~/projects/`` directory.
 
    For the bash shell, add this to your ``~/.profile``::
 
        PYTHONPATH=$HOME/projects/docutils/docutils
-       PYTHONPATH=$PYTHONPATH:$HOME/projects/docutils/docutils/extras
+       PYTHONPATH=$PYTHONPATH:$HOME/projects/docutils/docutils
        export PYTHONPATH
 
    The first line points to the directory containing the ``docutils``
    package.  The second line adds the directory containing the
    third-party modules Docutils depends on.  The third line exports
-   this environment variable.  You may also wish to add the ``tools``
-   directory to your ``PATH``::
+   this environment variable.
+
+   You many also want to add the ``tools`` directory to your binary ``PATH``::
 
        PATH=$PATH:$HOME/projects/docutils/docutils/tools
        export PATH
 
-2. Before you run anything, every time you make a change, reinstall
+   __ repository.html
+
+2. Create a symlink to the docutils package directory somewhere in the
+   module serach path (``sys.path``), e.g., ::
+
+     ln -s ~/projects/docutils/docutils \
+          /usr/local/lib/python2.7/site-packages/
+
+   Alternatively, use a `path configuration file`__.
+   
+   __ https://docs.python.org/library/site.html
+   
+   You may also want to copy or link the front-end tools in
+   ``docutils/tools`` to a suitable place in your binary PATH, e.g., ::
+
+     ln -s ~/projects/docutils/docutils/tools/rst2html.py \
+           /usr/local/bin/rst2html
+
+3. Do an `editable install`__ with pip.
+
+   __ https://pip.pypa.io/en/stable/reference/pip_install/#editable-installs
+
+4. Install in `development mode`__ with setuptools.
+
+   __ https://setuptools.readthedocs.io/en/latest/setuptools.html#development-mode
+
+5. Before you run anything, every time you make a change, reinstall
    Docutils::
 
        python setup.py install
@@ -670,7 +693,7 @@ and alternate copies of the code is a ``set-PATHS`` file
 containing the following lines::
 
     # source this file
-    export PYTHONPATH=$PWD:$PWD/extras
+    export PYTHONPATH=$PWD:$PWD
     export PATH=$PWD/tools:$PATH
 
 Open a shell for this branch, ``cd`` to the ``docutils`` top-level
@@ -738,9 +761,8 @@ structure is recommended::
                 ...
             tools/      # For front ends etc.
                 ...
-            setup.py    # Use Distutils to install the component
-                        # code and tools/ files into the right
-                        # places in Docutils.
+            setup.py    # Install the component code and tools/ files
+                        # into the right places.
         userid/       # For *temporary* personal space.
 
 Some sandbox projects are destined to move to the Docutils core once

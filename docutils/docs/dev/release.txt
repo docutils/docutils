@@ -126,7 +126,7 @@ REWORK FOR SOURCEFORGE REPO
       or via the [Download Snapshot] button at
       http://sourceforge.net/p/docutils/code/HEAD/tree/trunk/docutils/
 
-  (c) Use Distutils to create the release tarball::
+  (c) Use `setuptools` to create the release tarball::
 
           cd docutils
           python setup.py sdist
