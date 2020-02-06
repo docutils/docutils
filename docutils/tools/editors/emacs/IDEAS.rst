@@ -6,7 +6,7 @@ Convert to id
 
 * Convert the region to an HTML id
 
-  * For instance "Eine Überschrift" to "eine-berschrift"
+  * For instance "Eine Ãœberschrift" to "eine-uberschrift"
 
   * According the same rules as reST does this
 
@@ -138,11 +138,11 @@ Sophisticated navigation in sections
 
   * Like XML, Lisp
 
-  * C-M-u für Up
+  * C-M-u fÃ¼r Up
 
-  * C-M-d für Down
+  * C-M-d fÃ¼r Down
 
-  * C-M-f / C-M-b für Forward / Backward
+  * C-M-f / C-M-b fÃ¼r Forward / Backward
 
 Display of current location
 ===========================
@@ -200,10 +200,10 @@ Outline support
 
       * Key bindings need to be reused
 
-	* However, care must be taken if a file uses `allout-mode` for
-	  instance by comment strings
+        * However, care must be taken if a file uses `allout-mode` for
+          instance by comment strings
 
-	* In this case key bindings must not be overridden
+        * In this case key bindings must not be overridden
 
   * A command adding / updating `allout-mode` tags could be a solution
 
@@ -267,7 +267,7 @@ Sophisticated indentation
 
       * bla
 
-	@
+        @
 
 * <backtab> should be used to indent in the other direction
 
@@ -280,21 +280,21 @@ Sophisticated indentation
 
     * <tab> over list works::
 
-	Text
+        Text
 
-	  * GGGGGG
-	  * SSSSSSSSSSSSSSS
-	  * TTTTTTTT
-	  * ZZZZZZZZ
+          * GGGGGG
+          * SSSSSSSSSSSSSSS
+          * TTTTTTTT
+          * ZZZZZZZZ
 
     * <tab> over list doesn't work::
 
-	Text
+        Text
 
-	* GGGGGG
-	* SSSSSSSSSSSSSSS
-	* TTTTTTTT
-	* ZZZZZZZZ
+        * GGGGGG
+        * SSSSSSSSSSSSSSS
+        * TTTTTTTT
+        * ZZZZZZZZ
 
 * An indenting tab on the head of a list item should indent the whole
   list item instead of only the first line
@@ -654,7 +654,7 @@ Support for longlines mode
       not be modified
 
       * See `Emacs Lisp => 32.19 Text Properties => Special
-	Properties`
+        Properties`
 
     * It would be nice to also have a visible indication for being
       automatic insertion
