@@ -79,8 +79,6 @@ The exceptions to the `Public Domain Dedication`_ above are:
 * docutils/utils/math/__init__.py,
   docutils/utils/math/latex2mathml.py,
   docutils/writers/xetex/__init__.py,
-  docutils/writers/latex2e/docutils-05-compat.sty,
-  docs/user/docutils-05-compat.sty.txt,
   docutils/utils/error_reporting.py,
   docutils/test/transforms/test_smartquotes.py:
 

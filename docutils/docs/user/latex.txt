@@ -1848,14 +1848,8 @@ Changes
 * The Docutils HISTORY_ lists all changes during the history of docutils.
   Important changes are summarized in the RELEASE-NOTES_.
 
-* docutils-05-compat.sty_ is a `style sheet`_ that provides best possible
-  backwards compatibility with release 0.5.
-
 .. _HISTORY: ../../HISTORY.html
 .. _RELEASE-NOTES: ../../RELEASE-NOTES.html
-.. _docutils-05-compat: docutils-05-compat.sty.html
-.. _docutils-05-compat.sty:
-   ../../docutils/writers/latex2e/docutils-05-compat.sty
 
 
 Problems
