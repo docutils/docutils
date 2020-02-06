@@ -13,7 +13,7 @@ try:
 except ImportError:
     print('Error: The "setuptools" module, which is required for the')
     print('installation of Docutils, could not be found.  You may need to ')
-    print('install a package called "python-devel" (or similar) on your ')
+    print('install a package called "python-setuptools" (or similar) on your ')
     print('system using your package manager.')
     sys.exit(1)
 
@@ -36,6 +36,7 @@ what-you-see-is-what-you-get plaintext markup syntax.""",  # wrap at col 60
     'platforms': 'OS-independent',
     'python_requires': '>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*',
     'include_package_data': True,
+    'exclude_package_data': {"": ["docutils.conf"]},                
     'package_dir': {
         'docutils': 'docutils',
         'docutils.tools': 'tools'

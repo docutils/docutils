@@ -1,29 +1,11 @@
 include *.txt
-include *.py
-include setup.cfg
-include MANIFEST
-include MANIFEST.in
+include install.py
 recursive-include docutils *
 recursive-include docs *
 recursive-include licenses *
-include test/*.py
-include test/coverage.sh
-include test/docutils.conf
-recursive-include test/data *
-include test/functional/README.txt
-include test/functional/output/README.txt
-recursive-include test/functional/expected *
-recursive-include test/functional/input *
-recursive-include test/functional/tests *
-recursive-include test/test_parsers *
-recursive-include test/test_readers *
-recursive-include test/test_transforms *
-recursive-include test/test_writers *
 recursive-include tools *
-recursive-include docutils/writers *.css
-recursive-include docutils/writers *.gif
-recursive-include docutils/writers *.odt
-recursive-include docutils/writers *.js
-recursive-include docutils/writers *.txt
-recursive-exclude * *.pyc *~ .DS_Store
-global-exclude docutils.conf
+recursive-include test *
+exclude test/alltests.out test/record.txt 
+prune test/functional/output
+include test/functional/output/README.txt
+global-exclude *.pyc *~ __pycache__ .DS_Store
