@@ -681,7 +681,6 @@ def normalize_language_tag(tag):
     # find all combinations of subtags
     taglist = []
     for n in range(len(subtags), 0, -1):
-        # for tags in unique_combinations(subtags, n):
         for tags in itertools.combinations(subtags, n):
             taglist.append('-'.join(base_tag+tags))
     taglist += base_tag
