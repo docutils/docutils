@@ -13,17 +13,13 @@
 
 
 This document summarizes the major changes in recent and upcoming releases.
-For a more detailed list of changes, please see the `Docutils History`_.
-
-.. _Docutils History: HISTORY.html
+For a more detailed list of changes, please see the Docutils `HISTORY`_.
 
 .. contents::
 
 Future changes
 ==============
 
-* Installing with ``setup.py`` will require setuptools_ in versions > 0.16.
-  
 * LaTeX writer:
     The default for the configuration setting `legacy_class_functions`_ will
     change to "False". Adapt stylesheets modifying ``\DUadmonition``
@@ -56,17 +52,18 @@ Future changes
   generated HTML code, e.g. because you use a custom style sheet or
   post-processing that may break otherwise.
 
-.. _setuptools: https://setuptools.readthedocs.io/en/latest/
 .. _id_prefix: docs/user/config.html#id-prefix
 .. _auto_id_prefix: docs/user/config.html#auto-id-prefix
 .. _rst2html.py: docs/user/tools.html#rst2html-py
 .. _reference name: docs/ref/rst/restructuredtext.html#reference-names
 .. _identifier normalization: directives.html#identifier-normalization
-.. _legacy_class_functions: docs/user/config.html#legacy-class-functions
 
 
 Release 0.17
 ============
+
+* Installing with ``setup.py`` now requires setuptools_.
+  Alternatively, install with pip_.
 
 * HTML5 writer:
 
@@ -89,6 +86,11 @@ Release 0.17
     now ignored. Use ``\DUrole``.
 
     __ docs/user/latex.html#classes
+
+.. _setuptools: https://pypi.org/project/setuptools/
+.. _pip: https://pypi.org/project/pip/
+.. _legacy_class_functions: docs/user/config.html#legacy-class-functions
+
 
 Release 0.16 (2020-01-12)
 =========================
@@ -157,8 +159,6 @@ Release 0.15 (2019-07-20)
   - Fixed a bug with the "trim" options of the "unicode" directive.
 
 * languages: Added Korean localisation (ko).
-
-* Bugfixes (see HISTORY_).
 
 
 Release 0.14 (2017-08-03)
@@ -271,7 +271,7 @@ Release 0.11 (2013-07-22)
   - Avoid repeated class declarations in html4css1 writer
     (modified version of patch [ 104 ]).
 
-.. _math-output: docs/user/config.html#math-output
+  .. _math-output: docs/user/config.html#math-output
 
 * docutils/writers/latex2e/__init__.py
 
@@ -282,7 +282,7 @@ Release 0.11 (2013-07-22)
     where stylesheets are found. Used by `stylesheet_path` when expanding
     relative path arguments.
 
-.. _SmartQuotes: docs/user/config.html#smart-quotes
+  .. _SmartQuotes: docs/user/config.html#smart-quotes
 
 * docutils/writers/manpage.py
 
@@ -318,8 +318,6 @@ Release 0.10 (2012-12-16)
 
   - FileInput/FileOutput: no system-exit on IOError.
     The `handle_io_errors` option is ignored.
-
-.. _Python 3 compatibility: README.html#python-3-compatibility
 
 * docutils/writers/html4css1/__init__.py
 
@@ -783,3 +781,4 @@ Release 0.3.5 (2004-07-29)
   __ docs/ref/rst/directives.html#csv-table
 
 .. _HISTORY: HISTORY.html
+.. _Python 3 compatibility: README.html#python-3-compatibility

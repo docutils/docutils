@@ -13,7 +13,6 @@
 
 .. contents::
 
-2019-07-23 : Branch: branches/rel-0.15 created to investigate import problems: bugs#366
 
 Changes Since 0.16
 ==================
@@ -22,6 +21,9 @@ Changes Since 0.16
 
   - Fix [ 385 ]: Import of language modules.
   - Use importlib.import_module() to programmatically import modules.
+  - Remove legacy LaTeX stylesheet ``docutils-05-compat.sty``.
+  - Installing with ``setup.py`` now requires ``setuptools``.
+    Alternatively, install with `pip`_.
 
 * docutils/MANIFEST.in
 
@@ -56,12 +58,11 @@ Changes Since 0.16
 
   - Remove backwards compatibility code for the deprecated
     `styling command`__ prefix ``\docutilsrole``.
-    
+
     __ docs/user/latex.html#classes
 
-* docutils/writers/latex2e/docutils-05-compat.sty:
-
-  - Remove this legacy stylesheet.
+.. _pip: https://pypi.org/project/pip/
+.. _legacy_class_functions: docs/user/config.html#legacy-class-functions
 
 
 Release 0.16
