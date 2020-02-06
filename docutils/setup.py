@@ -4,70 +4,18 @@
 
 from __future__ import print_function
 
-import sys
-import os
 import glob
+import os
+import sys
 
 try:
-    import setuptools
+    from setuptools import setup
 except ImportError:
-    print('Warning: Could not load package `setuptools`.')
-    print('Actions requiring `setuptools` instead of `distutils` will fail')
-try:
-    from distutils.core import setup, Command
-    from distutils.command.build import build
-    from distutils.command.build_py import build_py
-    from distutils.command.install_data import install_data
-    from distutils.util import convert_path
-    from distutils import log
-except ImportError:
-    print('Error: The "distutils" standard module, which is required for the ')
+    print('Error: The "setuptools" module, which is required for the')
     print('installation of Docutils, could not be found.  You may need to ')
     print('install a package called "python-devel" (or similar) on your ')
     print('system using your package manager.')
     sys.exit(1)
-
-
-class smart_install_data(install_data):
-    # From <http://wiki.python.org/moin/DistutilsInstallDataScattered>,
-    # by Pete Shinners.
-
-    def run(self):
-        # need to change self.install_dir to the library dir
-        install_cmd = self.get_finalized_command('install')
-        self.install_dir = getattr(install_cmd, 'install_lib')
-        return install_data.run(self)
-
-
-class build_data(Command):
-
-    def initialize_options(self):
-        pass
-
-    def finalize_options(self):
-        pass
-
-    def run(self):
-        build_py_cmd = self.get_finalized_command('build_py')
-        data_files = self.distribution.data_files
-        for f in data_files:
-            dir = convert_path(f[0])
-            dir = os.path.join(build_py_cmd.build_lib, dir)
-            self.mkpath(dir)
-            for data in f[1]:
-                data = convert_path(data)
-                self.copy_file(data, dir)
-
-
-# let our build_data run
-build.sub_commands.append(('build_data', lambda *a: True))
-
-
-s5_theme_files = []
-for dir in glob.glob('docutils/writers/s5_html/themes/*'):
-    if os.path.isdir(dir):
-        theme_files = glob.glob('%s/*' % dir)
-        s5_theme_files.append((dir, theme_files))
 
 
 package_data = {
@@ -87,10 +35,7 @@ what-you-see-is-what-you-get plaintext markup syntax.""",  # wrap at col 60
     'license': 'public domain, Python, 2-Clause BSD, GPL 3 (see COPYING.txt)',
     'platforms': 'OS-independent',
     'python_requires': '>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*',
-    'cmdclass': {
-        'build_data': build_data,
-        'install_data': smart_install_data,
-    },
+    'include_package_data': True,
     'package_dir': {
         'docutils': 'docutils',
         'docutils.tools': 'tools'
@@ -115,28 +60,6 @@ what-you-see-is-what-you-get plaintext markup syntax.""",  # wrap at col 60
         'docutils.writers.xetex',
         'docutils.writers.odf_odt',
     ],
-    'data_files': [
-        ('docutils/parsers/rst/include',
-         glob.glob('docutils/parsers/rst/include/*.txt')),
-        ('docutils/writers/html5_polyglot', [
-            'docutils/writers/html5_polyglot/minimal.css',
-            'docutils/writers/html5_polyglot/plain.css',
-            'docutils/writers/html5_polyglot/math.css',
-            'docutils/writers/html5_polyglot/template.txt']),
-        ('docutils/writers/html4css1', [
-            'docutils/writers/html4css1/html4css1.css',
-            'docutils/writers/html4css1/template.txt']),
-        ('docutils/writers/latex2e', [
-            'docutils/writers/latex2e/default.tex',
-            'docutils/writers/latex2e/titlepage.tex',
-            'docutils/writers/latex2e/xelatex.tex']),
-        ('docutils/writers/pep_html', [
-            'docutils/writers/pep_html/pep.css',
-            'docutils/writers/pep_html/template.txt']),
-        ('docutils/writers/s5_html/themes', [
-            'docutils/writers/s5_html/themes/README.txt']),
-        ('docutils/writers/odf_odt', ['docutils/writers/odf_odt/styles.odt']),
-    ] + s5_theme_files,
     'scripts': [
         'tools/rst2html.py',
         'tools/rst2html4.py',

@@ -20,4 +20,10 @@ recursive-include test/test_readers *
 recursive-include test/test_transforms *
 recursive-include test/test_writers *
 recursive-include tools *
+recursive-include docutils/writers *.css
+recursive-include docutils/writers *.gif
+recursive-include docutils/writers *.odt
+recursive-include docutils/writers *.js
+recursive-include docutils/writers *.txt
 recursive-exclude * *.pyc *~ .DS_Store
+global-exclude docutils.conf
