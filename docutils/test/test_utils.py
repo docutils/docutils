@@ -267,9 +267,9 @@ class HelperFunctionTests(unittest.TestCase):
                          ['de-at', 'de'])
         self.assertEqual(utils.normalize_language_tag('de-AT-1901'),
                          ['de-at-1901', 'de-at', 'de-1901', 'de'])
-        self.assertEqual(utils.normalize_language_tag('de-AT-1901-frak'),
-                         ['de-at-1901-frak', 'de-at-1901', 'de-at-frak',
-                          'de-1901-frak', 'de-at', 'de-1901', 'de-frak', 'de'])
+        self.assertEqual(utils.normalize_language_tag('de-AT-1901-Latf'),
+                         ['de-at-1901-latf', 'de-at-1901', 'de-at-latf',
+                          'de-1901-latf', 'de-at', 'de-1901', 'de-latf', 'de'])
         self.assertEqual(utils.normalize_language_tag('grc-ibycus-x-altquot'),
                          ['grc-ibycus-x-altquot', 'grc-ibycus',
                           'grc-x-altquot', 'grc'])
