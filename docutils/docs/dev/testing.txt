@@ -29,6 +29,16 @@ be sure that you haven't broken anything.  From a shell::
     cd docutils/test
     ./alltests.py
 
+You should run this with multiple Python versions. You can use ``tox`` for
+this purpose. To run tests against all supported versions of Python, run::
+
+    tox
+
+To run against a specific version of Python, use the ``pyNN`` environment.
+For example::
+
+    tox -e py37
+
 
 Python Versions
 ===============
@@ -40,7 +50,7 @@ Docutils 0.16 supports Python 2.7 and Python 3.5 or later.
 
 Therefore, you should install Python 2.7 as well as 3.5 up to the latest Python
 (3.7 at the time of this writing) and always run the tests on all of
-them (see `Testing across multiple python versions`_). 
+them (see `Testing across multiple python versions`_).
 In a pinch, the edge cases (2.7, and 3.7) should cover most of it.
 
 Good resources covering the differences between Python versions:
@@ -51,7 +61,7 @@ Good resources covering the differences between Python versions:
 * `What's New in Python 3.7`__
 * `PEP 290 - Code Migration and Modernization`__
 
-__ https://docs.python.org/whatsnew/2.6.html
+__ https://docs.python.org/whatsnew/2.7.html
 __ https://docs.python.org/3/whatsnew/3.5.html
 __ https://docs.python.org/3/whatsnew/3.6.html
 __ https://docs.python.org/3/whatsnew/3.7.html
@@ -60,7 +70,7 @@ __ http://www.python.org/peps/pep-0290.html
 .. _Python Check-in Policies: http://www.python.org/dev/tools.html
 .. _sandbox directory:
    http://docutils.svn.sourceforge.net/svnroot/docutils/trunk/sandbox/
-   
+
 
 Testing across multiple python versions
 ---------------------------------------
