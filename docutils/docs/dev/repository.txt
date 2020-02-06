@@ -107,6 +107,14 @@ type ::
 
     svn update
 
+Switching the Repository Root
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If you changed your mind and want to use a different repository root,
+``cd`` into your working copy and type::
+
+    svn switch --relocate OLDROOT NEWROOT
+
 Creating a local git clone
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -118,13 +126,6 @@ and proceed according to the `git documentation`_.
 
 .. _git documentation: http://git-scm.com/documentation
 
-Switching the Repository Root
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-If you changed your mind and want to use a different repository root,
-``cd`` into your working copy and type::
-
-    svn switch --relocate OLDROOT NEWROOT
 
 .. _developer access:
 

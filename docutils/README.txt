@@ -17,32 +17,26 @@ Quick-Start
 This is for those who want to get up & running quickly.
 
 1. Docutils requires Python, available from
-
-     http://www.python.org/
+   http://www.python.org/.
 
    See Requirements_ below for details.
 
-2. Use the latest Docutils code.  Get the code from the `Subversion
-   repository`_ or from the snapshot:
+2. Install the latest release from PyPi with pip_::
 
-     https://sourceforge.net/p/docutils/code/HEAD/tree/trunk/docutils/
+       python -m pip install docutils
 
-   See `Releases & Snapshots`_ below for details.
+   To install a `development version`_, follow
+   the instructions in section `Installation`_ below.
 
-3. Unpack the tarball in a temporary directory (**not** directly in
-   Python's ``site-packages``), go to the directory created by expanding
-   the archive, and run ``setup.py install``. On
-   Windows systems it may be sufficient to double-click ``install.py``.
-
-   See Installation_ below for details.
-
-4. Use the front-end scripts to convert reStructuredText documents.
+3. Use the front-end scripts to convert reStructuredText documents.
    Try for example::
 
        rst2html.py FAQ.txt FAQ.html         (Unix)
        python tools/rst2html.py FAQ.txt FAQ.html  (Windows)
 
    See Usage_ below for details.
+
+.. _pip: https://pypi.org/project/pip/
 
 
 Purpose
@@ -75,36 +69,16 @@ Support for the following sources is planned:
    http://www.python.org/peps/pep-0012.html
 
 
-Releases & Snapshots
-====================
-
-While we are trying to follow a "release early & often" policy,
-features are added frequently.  Since the code in the Subversion
-repository is usually in a bug-free state, we recommend that you use
-a current snapshot.
-
-To get a snapshot, go to the code page and click the download snapshot
-button:
-
-* Docutils code, documentation, front-end tools, and tests:
-  https://sourceforge.net/p/docutils/code/HEAD/tree/trunk/docutils/
-
-* Sandbox (experimental, contributed code):
-  https://sourceforge.net/p/docutils/code/HEAD/tree/trunk/sandbox/
-
-To keep up to date on the latest developments, download fresh copies of
-the snapshots regularly or use a working copy of the
-`Subversion repository`_.
-
-.. _Subversion repository: docs/dev/repository.html
-
-
 Requirements
 ============
 
 To run the code, Python_ must be installed.
-Docutils is compatible with Python versions 2.7, and
-3.5 to 3.7 (cf. `Python 3 compatibility`_).
+Docutils is compatible with Python versions 2.7 and 3.5 to 3.7.
+Starting with Docutils 0.16, the code base supports both Python 2.7
+and 3.5+ natively. [#]_
+
+.. [#] Up to version 0.15, the Docutils codebase was translated "on-demand"
+   using the 2to3 tool.
 
 Docutils uses the following packages for enhanced functionality,
 if they are installed:
@@ -117,15 +91,133 @@ if they are installed:
 
 .. _Python: http://www.python.org/.
 .. _Python Imaging Library: http://www.pythonware.com/products/pil/
-.. _Pygments: http://pygments.org/
+.. _Pygments: https://pypi.org/project/Pygments/
+.. _setuptools: https://pypi.org/project/setuptools/
 
 
-Python 3 compatibility
-----------------------
+Development version
+===================
 
-Up to version 0.15, the Docutils codebase was translated "on-demand" using
-the 2to3 tool. Starting with Docutils 0.16, the code base supports both
-Python 2.7 and 3.5+ natively.
+While we are trying to follow a "release early & often" policy,
+features are added frequently.  Since the code in the repository_
+is usually in a bug-free state, we recommend using a current snapshot
+or a working copy.
+
+To get a _`snapshot`, go to the code page and click the download snapshot
+button:
+
+* Docutils code, documentation, front-end tools, and tests:
+  https://sourceforge.net/p/docutils/code/HEAD/tree/trunk/docutils/
+
+* Sandbox (experimental, contributed code):
+  https://sourceforge.net/p/docutils/code/HEAD/tree/trunk/sandbox/
+
+To keep up to date on the latest developments, download fresh copies of the
+snapshots regularly or use a `working copy of the Docutils code repository`__.
+
+Continue with the `Installation`_ instructions below.
+
+.. _repository: docs/dev/repository.html
+__ docs/dev/repository.html#checking-out-the-repository
+
+Installation
+============
+
+Steps to install Docutils from source:
+
+* Go to the directory containing the file ``setup.py``.
+
+  A snapshot_ must be unpacked in a temporary directory (**not** directly in
+  Python's ``site-packages``) first.
+
+* Run ``setup.py install``. [#setup-requires-setuptools]_
+  On Windows systems it may be sufficient to double-click ``install.py``.
+
+.. [#setup-requires-setuptools] ``setup.py`` requires the `setuptools`_
+   package. For a manual install see the options in `Setting up for Docutils
+   development`__.
+   
+   __ docs/dev/policies.html#setting-up-for-docutils-development
+   
+Optional steps:
+
+* `running the test suite`_
+
+* `converting the documentation`_
+
+OS-specific installation instructions follow.
+
+
+GNU/Linux, BSDs, Unix, Mac OS X, etc.
+-------------------------------------
+
+1. Open a shell.
+
+2. Go to the directory containing ``setup.py``::
+
+       cd <archive_directory_path>
+
+3. Install the package (you may need root permissions to complete this
+   step)::
+
+       su
+       (enter admin password)
+       python setup.py install
+
+   If the python executable isn't on your path, you'll have to specify
+   the complete path, such as ``/usr/local/bin/python``.
+
+   To install for a specific Python version, use this version in the
+   setup call, e.g. ::
+
+       python3.7 setup.py install
+
+   To install for different Python versions, repeat step 3 for every
+   required version. The last installed version will be used in the
+   `shebang line`_ of the ``rst2*.py`` wrapper scripts.
+
+   .. _shebang line: http://en.wikipedia.org/wiki/Shebang_%28Unix%29
+
+Windows
+-------
+
+Just double-click ``install.py``.  If this doesn't work, try the
+following:
+
+1. Open a DOS Box (Command Shell, MS-DOS Prompt, or whatever they're
+   calling it these days).
+
+2. Go to the directory created by expanding the archive::
+
+       cd <archive_directory_path>
+
+3. Install the package::
+
+       <path_to_python.exe>\python setup.py install
+
+   To install for a specific python version, specify the Python
+   executable for this version.
+
+   To install for different Python versions, repeat step 3 for every
+   required version.
+
+
+Usage
+=====
+
+There are many front-end tools in the unpacked "tools" subdirectory.
+Installation under Unix places copies in the PATH.
+You may want to begin with the "rst2html.py" front-end tool.  Most
+tools take up to two arguments, the source path and destination path,
+with STDIN and STDOUT being the defaults.  Use the "--help" option to
+the front-end tools for details on options and arguments.  See
+Docutils Front-End Tools (``docs/user/tools.txt``) for full documentation.
+
+The package modules are continually growing and evolving.  The
+``docutils.statemachine`` module is usable independently.  It contains
+extensive inline documentation (in reStructuredText format of course).
+
+Contributions are welcome!
 
 
 Project Files & Directories
@@ -179,93 +271,6 @@ Project Files & Directories
 * test: Unit tests.  Not required to use the software, but very useful
   if you're planning to modify it.  See `Running the Test Suite`_
   below.
-
-
-Installation
-============
-
-The first step is to expand the ``.tgz`` archive in a temporary
-directory (**not** directly in Python's ``site-packages``).  It
-contains a distutils setup file "setup.py".  OS-specific installation
-instructions follow.
-
-
-GNU/Linux, BSDs, Unix, Mac OS X, etc.
--------------------------------------
-
-1. Open a shell.
-
-2. Go to the directory created by expanding the archive::
-
-       cd <archive_directory_path>
-
-3. Install the package (you may need root permissions to complete this
-   step)::
-
-       su
-       (enter admin password)
-       python setup.py install
-
-   If the python executable isn't on your path, you'll have to specify
-   the complete path, such as ``/usr/local/bin/python``.
-
-   To install for a specific Python version, use this version in the
-   setup call, e.g. ::
-
-       python3.7 setup.py install
-
-   To install for different Python versions, repeat step 3 for every
-   required version. The last installed version will be used in the
-   `shebang line`_ of the ``rst2*.py`` wrapper scripts.
-
-   .. _shebang line: http://en.wikipedia.org/wiki/Shebang_%28Unix%29
-
-Windows
--------
-
-Just double-click ``install.py``.  If this doesn't work, try the
-following:
-
-1. Open a DOS Box (Command Shell, MS-DOS Prompt, or whatever they're
-   calling it these days).
-
-2. Go to the directory created by expanding the archive::
-
-       cd <archive_directory_path>
-
-3. Install the package::
-
-       <path_to_python.exe>\python setup.py install
-
-   To install for a specific python version, specify the Python
-   executable for this version.
-
-   To install for different Python versions, repeat step 3 for every
-   required version.
-
-Optional steps:
-
-* `running the test suite`_
-
-* `converting the documentation`_
-
-
-Usage
-=====
-
-There are many front-end tools in the unpacked "tools" subdirectory.
-Installation under Unix places copies in the PATH.
-You may want to begin with the "rst2html.py" front-end tool.  Most
-tools take up to two arguments, the source path and destination path,
-with STDIN and STDOUT being the defaults.  Use the "--help" option to
-the front-end tools for details on options and arguments.  See
-Docutils Front-End Tools (``docs/user/tools.txt``) for full documentation.
-
-The package modules are continually growing and evolving.  The
-``docutils.statemachine`` module is usable independently.  It contains
-extensive inline documentation (in reStructuredText format of course).
-
-Contributions are welcome!
 
 
 Converting the documentation

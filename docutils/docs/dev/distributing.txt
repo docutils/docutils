@@ -65,10 +65,9 @@ Executables
 The executable front-end tools are located in the ``tools/`` directory
 of the Docutils tarball.
 
-The ``rst2*.py`` tools (except ``rst2newlatex.py``) are intended for
-end-users.  You should install them to ``/usr/bin/``.  You do not need
-to change the names (e.g. to ``docutils-rst2html.py``) because the
-``rst2`` prefix is unique.
+The ``rst2*.py`` tools are intended for end-users. You should install them
+to ``/usr/bin/``.  You do not need to change the names (e.g. to
+``docutils-rst2html.py``) because the ``rst2`` prefix is unique.
 
 
 Documentation
