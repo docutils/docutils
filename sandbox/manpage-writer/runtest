@@ -37,7 +37,7 @@ report_ERROR_CNT () {
 	echo "$ERROR_CNT errors"
 }
 
-CMD="../../docutils/tools/rst2man.py --traceback"
+CMD="python3 ../../docutils/tools/rst2man.py --traceback"
 
 for IN_F in $IN_DIR/$FILES ; do
   BASE=`basename $IN_F`
