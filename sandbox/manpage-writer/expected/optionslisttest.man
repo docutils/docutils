@@ -52,7 +52,7 @@ This line must be in indented.
 .BI \-o \ x
 an option
 .TP
-.B \-b
+.B  \-b
 another
 .sp
 This option does the following points:
@@ -65,7 +65,7 @@ second point
 .INDENT 3.5
 .INDENT 0.0
 .TP
-.B \-\-ccc
+.B  \-\-ccc
 option lists may be nested, even if this is rarely
 used.
 .UNINDENT
@@ -73,7 +73,7 @@ used.
 .UNINDENT
 .UNINDENT
 .TP
-.B \-k
+.B  \-k
 and even another
 .sp
 This option does the following points:
@@ -92,7 +92,7 @@ For all other options see \fB\-\-help\fP\&. This line must be intented.
 .BI \-o \ x
 an option
 .TP
-.B \-b
+.B  \-b
 another
 .TP
 .BI \-m \ MESSAGE\fR,\fB \ \-\-message\fB= MESSAGE

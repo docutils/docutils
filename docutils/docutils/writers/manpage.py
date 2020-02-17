@@ -900,7 +900,7 @@ class Translator(nodes.NodeVisitor):
         # options with parameter bold italic, .BI, -f file
         #
         # we do not know if .B or .BI
-        self.context.append('.B')           # blind guess
+        self.context.append('.B ')          # blind guess. Add blank for spinx see docutils/bugs/380
         self.context.append(len(self.body)) # to be able to insert later
         self.context.append(0)              # option counter
 

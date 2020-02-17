@@ -56,7 +56,7 @@ install             install help
 .B optional arguments:
 .INDENT 7.0
 .TP
-.B \-h\fP,\fB  \-\-help
+.B  \-h\fP,\fB  \-\-help
 show this help message and exit
 .TP
 .BI \-\-general \ GENERAL\fR,\fB \ \-G \ GENERAL

@@ -46,10 +46,10 @@ Run it and examine output.
 .BI \-o \ x
 an option
 .TP
-.B \-b
+.B  \-b
 another
 .TP
-.B \-f\fP,\fB  \-\-force
+.B  \-f\fP,\fB  \-\-force
 really do it
 .UNINDENT
 .sp

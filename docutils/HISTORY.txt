@@ -61,6 +61,10 @@ Changes Since 0.16
 
     __ docs/user/latex.html#classes
 
+* docutils/writers/manpage.py
+
+  - [ Fix #380 ] commandline option problem in sphinx.
+ 
 .. _pip: https://pypi.org/project/pip/
 .. _legacy_class_functions: docs/user/config.html#legacy-class-functions
 
