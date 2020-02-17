@@ -363,7 +363,7 @@ beiden doppelt vorkommt , ist nicht schaedlich. Fuer  Optionen,  die ein
 Argument benötigen, überschreibt jedes Duplikat den vorhergehenden Wert.
 .INDENT 0.0
 .TP
-.B \-l\fP,\fB  \-\-local\-file
+.B  \-l\fP,\fB  \-\-local\-file
 Aktiviert den lokalen Modus. Formatiert und zeigt lokale Manualdateien
 an,  anstatt  die System\-Manualsammlung zu durchsuchen.
 Jedes Manualseiten\-Argument wird als nroff\-Quelle  im  richtigen
@@ -384,7 +384,7 @@ den.  Man beachte, dass dieser Effekt erst beim konkreten Suchen
 der Seite in Erscheinung tritt. Daher werden  Ausgaben  wie  die
 Hilfeseite immer in der urspruenglichen Sprache ausgegeben.
 .TP
-.B \-D\fP,\fB  \-\-default
+.B  \-D\fP,\fB  \-\-default
 Diese Option wird normalerweise nur als allererste angegeben und
 setzt das Verhalten von man in allen Belangen  wieder  zum  Nor\-
 malverhalten  zurueck.  Der Zweck dieser Option ist es, Optionen
@@ -452,18 +452,18 @@ definiert bei Benutzung dieser Option die  Reihenfolge,  in  der
 die Abschnitte durchsucht werden. Diese Option ueberschreibt die
 Umgebungsvariable $MANSECT.
 .TP
-.B \-a\fP,\fB  \-\-all
+.B  \-a\fP,\fB  \-\-all
 Wird eine Manualseite in einem Abschnitt gefunden, so terminiert
 man   nach  Anzeige  dieser  Seite.  Wird  jedoch  diese  Option
 angegeben, so werden alle  passenden  Manualseiten  nacheinander
 angezeigt.
 .TP
-.B \-c\fP,\fB  \-\-catman
+.B  \-c\fP,\fB  \-\-catman
 Diese Option ueberprueft nur, ob die zur angegebenen Manualseite
 passende cat\-Seite aktuell ist und erzeugt ggf.  eine  neue.  Es
 wird dabei nichts angezeigt.
 .TP
-.B \-d\fP,\fB  \-\-debug
+.B  \-d\fP,\fB  \-\-debug
 Bei  dieser  Option werden keine Manualseiten angezeigt, sondern
 nur eine Menge von Diagnoseinformation.
 .TP
@@ -485,14 +485,14 @@ Suche  auf  Seiten  mit der Erweiterung \fB*tcl\fP, wenn es mit
 \fB\-e tcl\fP aufgerufen wurde. Die Suche wird  dabei in allen
 Abschnitten durchgeführt.
 .TP
-.B \-f\fP,\fB  \-\-whatis
+.B  \-f\fP,\fB  \-\-whatis
 Diese  Option  ist  das  AEquivalent  zu  whatis.   Es wird eine
 Kurzbeschreibung der gewuenschten  Manualseite  angezeigt,  wenn
 sie  gefunden  wurde.  Zu  Details  siehe whatis(1).  Mit dieser
 Option ist nur eine Standardsuche  moeglich.  Verbesserte  Such\-
 moeglichkeiten bieten die Optionen von whatis.
 .TP
-.B \-k\fP,\fB  \-\-apropos
+.B  \-k\fP,\fB  \-\-apropos
 Diese  Option  ist  das  AEquivalent  zu apropos.  Es werden die
 Kurzbeschreibungen zu allen Manualseiten  nach  dem  angegebenen
 Stichwort  durchsucht.  Zu Details siehe apropos(1).  Mit dieser
@@ -524,7 +524,7 @@ refer (r).  Diese  Option  ueberschreibt  die  Umgebungsvariable
 $MANROFFSEQ.   Der  Praeprozessor  zsoelim wird immer als erster
 gestartet.
 .TP
-.B \-u\fP,\fB  \-\-update
+.B  \-u\fP,\fB  \-\-update
 Die  Indexdatenbanken  werden  immer  waehrend   des   laufenden
 Betriebes   auf   neuestem   Stand  gehalten,  was  insbesondere
 bedeutet, dass mandb nicht benoetigt wird, um sie konsistent  zu
@@ -536,7 +536,7 @@ seiten  im  Dateisystem  darstellt.  Wenn dieser Test auf Inode\-
 Ebene  durchgefuehrt  werden  soll,  muss  man  die  Option   \-u
 benutzen.
 .TP
-.B \-t\fP,\fB  \-\-troff
+.B  \-t\fP,\fB  \-\-troff
 Mit  dieser  Option wird groff \-mandoc verwendet, um die Manual\-
 seite zu formatieren und an die Standardausgabe zu  liefern.  Im
 Zusammenhang mit \-T oder \-Z ist diese Option nicht noetig.
@@ -551,7 +551,7 @@ beinhalten dvi, latin1, ps, utf8, X75 und X100.
 .UNINDENT
 .INDENT 0.0
 .TP
-.B \-Z\fP,\fB  \-\-ditroff
+.B  \-Z\fP,\fB  \-\-ditroff
 Das  traditionelle  troff  erzeugt   ditroff.    groff   startet
 zunaechst  troff  und leitet danach dessen Ausgabe an einen fuer
 das gewaehlte  Ausgabeformat  geeigneten  Postprozessor  weiter.
@@ -559,16 +559,16 @@ Wenn  groff  \-mandoc  groff ist, zwingt diese Option groff dazu,
 traditionelles troff zu emulieren und impliziert \-t, andernfalls
 wird es ignoriert.
 .TP
-.B \-w\fP,\fB  \-\-where\fP,\fB  \-\-location
+.B  \-w\fP,\fB  \-\-where\fP,\fB  \-\-location
 Zeigt  nicht  die Manualseiten, sondern die Position der Dateien
 im Dateisystem an, die formatiert oder angezeigt  wuerden.  Wenn
 die  Datei  eine  cat\-Seite  ist, wird auch der Ort ihrer nroff\-
 Quelldatei angezeigt.
 .TP
-.B \-h\fP,\fB  \-\-help
+.B  \-h\fP,\fB  \-\-help
 Zeigt einen Hilfstext an.
 .TP
-.B \-V\fP,\fB  \-\-version
+.B  \-V\fP,\fB  \-\-version
 Zeigt Programmversion und Autor an.
 .UNINDENT
 .SH UMGEBUNG
