@@ -375,7 +375,7 @@ class Translator(nodes.NodeVisitor):
         self._list_char.pop()
 
     def header(self):
-        tmpl = (".TH %(title_upper)s %(manual_section)s"
+        tmpl = (".TH \"%(title_upper)s\" %(manual_section)s"
                 " \"%(date)s\" \"%(version)s\" \"%(manual_group)s\"\n"
                 ".SH NAME\n"
                 "%(title)s \\- %(subtitle)s\n")

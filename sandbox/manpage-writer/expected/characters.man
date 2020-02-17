@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH SPECIAL CHARACTERS  "" "" ""
+.TH "SPECIAL CHARACTERS"  "" "" ""
 .SH NAME
 special characters \- test special characters
 .

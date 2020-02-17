@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH ENGLISH_MANPAGE_SAMPLE 1 "2009-08-24" "0.5" "Example manpages"
+.TH "ENGLISH_MANPAGE_SAMPLE" 1 "2009-08-24" "0.5" "Example manpages"
 .SH NAME
 english_manpage_sample \- manpage description
 .

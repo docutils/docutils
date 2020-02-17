@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH   "" "" ""
+.TH ""  "" "" ""
 .SH NAME
  \- 
 .

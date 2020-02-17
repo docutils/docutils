@@ -63,6 +63,7 @@ Changes Since 0.16
 
 * docutils/writers/manpage.py
 
+  - [ Fix #126 ] manpage title with spaces.
   - [ Fix #380 ] commandline option problem in sphinx.
  
 .. _pip: https://pypi.org/project/pip/
