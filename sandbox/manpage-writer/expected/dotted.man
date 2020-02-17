@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH WELCOME TO TEST'S DOCUMENTATION!  "" "" ""
+.TH "WELCOME TO TEST'S DOCUMENTATION!"  "" "" ""
 .SH NAME
 Welcome to test's documentation! \- 
 .

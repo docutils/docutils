@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH OPTIONLISTTEST 1 "2008-04-29" "" ""
+.TH "OPTIONLISTTEST" 1 "2008-04-29" "" ""
 .SH NAME
 OptionlistTest \- Test for correct intention/detention of option lists
 .

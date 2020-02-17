@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH RST2MAN 1 "2006-10-22" "0.1" "text processing"
+.TH "RST2MAN" 1 "2006-10-22" "0.1" "text processing"
 .SH NAME
 rst2man \- generate unix manpages from reStructured text
 .
