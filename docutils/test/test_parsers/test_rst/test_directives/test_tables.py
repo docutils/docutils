@@ -45,10 +45,11 @@ else:
 # some error messages changed in Python 3.3, CPython has backported to 2.7.4,
 # PyPy has not
 csv_eod_error_str = 'unexpected end of data'
-if sys.version_info < (2,7,4) or platform.python_implementation() == 'PyPy':
+if sys.version_info < (2,7,4) or (platform.python_implementation() == 'PyPy'
+                                  and sys.version_info < (3,0)):
     csv_eod_error_str = 'newline inside string'
 # pypy adds a line number
-if sys.version_info >= (3, 0) and platform.python_implementation() == 'PyPy':
+if platform.python_implementation() == 'PyPy':
     csv_eod_error_str = 'line 1: ' + csv_eod_error_str
 csv_unknown_url = "'bogus.csv'"
 if sys.version_info < (3, 0):
