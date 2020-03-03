@@ -25,6 +25,7 @@ Build-HTML Options
 import unittest
 import os
 from subprocess import Popen, PIPE, STDOUT
+import sys
 import tempfile
 
 
@@ -35,7 +36,7 @@ buildhtml_path = os.path.abspath(os.path.join(
 def process_and_return_filelist(options):
     dirs = []
     files = []
-    p = Popen(buildhtml_path+" "+options, shell=True,
+    p = Popen([sys.executable, buildhtml_path] + options,
               stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True)
     (cin, cout) = (p.stdin, p.stdout)
     while True:
@@ -91,12 +92,12 @@ class BuildHtmlTests(unittest.TestCase):
         os.rmdir(self.root)
 
     def test_1(self):
-        opts = "--dry-run "+ self.root
+        opts = ["--dry-run", self.root]
         dirs, files = process_and_return_filelist( opts )
         self.assertEqual(files.count("one.txt"), 4)
 
     def test_local(self):
-        opts = "--dry-run --local "+ self.root
+        opts = ["--dry-run", "--local", self.root]
         dirs, files = process_and_return_filelist( opts )
         self.assertEqual( len(dirs), 1)
         self.assertEqual( files, [])
