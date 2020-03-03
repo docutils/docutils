@@ -35,12 +35,9 @@ buildhtml_path = os.path.abspath(os.path.join(
 def process_and_return_filelist(options):
     dirs = []
     files = []
-    try:
-        p = Popen(buildhtml_path+" "+options, shell=True,
-                  stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True)
-        (cin, cout) = (p.stdin, p.stdout)
-    except NameError:
-        cin, cout = os.popen4(buildhtml_path+" "+options)
+    p = Popen(buildhtml_path+" "+options, shell=True,
+              stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True)
+    (cin, cout) = (p.stdin, p.stdout)
     while True:
         line = cout.readline()
         if not line:
@@ -73,11 +70,7 @@ class BuildHtmlTests(unittest.TestCase):
              )
 
     def setUp(self):
-        try:
-            self.root = tempfile.mkdtemp()
-        except NameError:
-            self.root = os.tempnam()
-            os.mkdir(self.root)
+        self.root = tempfile.mkdtemp()
 
         for s in self.tree:
             s = os.path.join(self.root, s)
