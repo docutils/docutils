@@ -271,7 +271,7 @@ Custom role based on code role:
 Custom role based on code role:
 
 .. role:: python(code)
-   :language: python
+   :language: python3
    :class: testclass
 
 Python code :python:`print("The end")`.
@@ -282,8 +282,8 @@ Python code :python:`print("The end")`.
         Custom role based on code role:
     <paragraph>
         Python code \n\
-        <literal classes="code testclass python">
-            <inline classes="keyword">
+        <literal classes="code testclass python3">
+            <inline classes="name builtin">
                 print
             <inline classes="punctuation">
                 (

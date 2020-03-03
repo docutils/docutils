@@ -24,7 +24,7 @@ totest = {}
 
 totest['code-parsing-long'] = [
 ["""\
-.. code:: python
+.. code:: python3
   :number-lines: 7
 
   def my_function():
@@ -36,7 +36,7 @@ totest['code-parsing-long'] = [
 """,
 """\
 <document source="test data">
-    <literal_block classes="code python" xml:space="preserve">
+    <literal_block classes="code python3" xml:space="preserve">
         <inline classes="ln">
              7 \n\
         <inline classes="keyword">
@@ -69,7 +69,7 @@ totest['code-parsing-long'] = [
         <inline classes="ln">
             12 \n\
             \n\
-        <inline classes="keyword">
+        <inline classes="name builtin">
             print
         <inline classes="punctuation">
             (
