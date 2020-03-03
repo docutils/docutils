@@ -53,6 +53,7 @@ def process_and_return_filelist(options):
             dirs.append(item)
     cin.close()
     cout.close()
+    p.wait()
     return (dirs, files)
 
 class BuildHtmlTests(unittest.TestCase):
