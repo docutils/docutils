@@ -30,6 +30,10 @@ Future changes
 * Remove ``utils.unique_combinations``
   (obsoleted by ``itertools.combinations``).
 
+* Eventually remove the "rawsource" attribute and argument from nodes.Text: we
+  store the null-escaped text in Text nodes since 0.16 so there is no additional
+  information in the rawsource.
+
 * If the id_prefix_ setting is non-empty, leading number and hyphen characters
   will not be stripped from a `reference name`_ during `identifier
   normalization`_. This may change generated `identifier keys`.
