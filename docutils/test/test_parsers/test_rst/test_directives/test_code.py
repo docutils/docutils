@@ -98,16 +98,16 @@ totest['code'] = [
 
 totest['code-parsing'] = [
 ["""\
-.. code:: python
+.. code:: python3
   :class: testclass
 
    print('hello world') # to stdout
 """,
 """\
 <document source="test data">
-    <literal_block classes="code python testclass" xml:space="preserve">
+    <literal_block classes="code python3 testclass" xml:space="preserve">
          \n\
-        <inline classes="keyword">
+        <inline classes="name builtin">
             print
         <inline classes="punctuation">
             (
@@ -120,7 +120,7 @@ totest['code-parsing'] = [
             # to stdout
 """],
 ["""\
-.. code:: python
+.. code:: python3
   :class: testclass
   :name: my_function
   :number-lines: 7
@@ -134,7 +134,7 @@ totest['code-parsing'] = [
 """,
 """\
 <document source="test data">
-    <literal_block classes="code python testclass" ids="my-function" names="my_function" xml:space="preserve">
+    <literal_block classes="code python3 testclass" ids="my-function" names="my_function" xml:space="preserve">
         <inline classes="ln">
              7 \n\
         <inline classes="keyword">
@@ -167,7 +167,7 @@ totest['code-parsing'] = [
         <inline classes="ln">
             12 \n\
             \n\
-        <inline classes="keyword">
+        <inline classes="name builtin">
             print
         <inline classes="punctuation">
             (
