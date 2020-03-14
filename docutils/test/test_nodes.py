@@ -607,14 +607,14 @@ class MiscTests(unittest.TestCase):
         return x not in self.testlist
 
     def test_copy(self):
-        grandchild = nodes.Text('mytext')
-        child = nodes.emphasis('mytext', grandchild, att='child')
-        e = nodes.Element('mytext', child, att='e')
+        grandchild = nodes.Text('grandchild text')
+        child = nodes.emphasis('childtext', grandchild, att='child')
+        e = nodes.Element('raw text', child, att='e')
         # Shallow copy:
         e_copy = e.copy()
         self.assertTrue(e is not e_copy)
         # Internal attributes (like `rawsource`) are also copied.
-        self.assertEqual(e.rawsource, 'mytext')
+        self.assertEqual(e.rawsource, 'raw text')
         self.assertEqual(e_copy.rawsource, e.rawsource)
         self.assertEqual(e_copy['att'], 'e')
         self.assertEqual(e_copy.document, e.document)
@@ -630,6 +630,16 @@ class MiscTests(unittest.TestCase):
         self.assertEqual(e_deepcopy[0][0], grandchild)
         self.assertTrue(e_deepcopy[0][0] is not grandchild)
         self.assertEqual(e_deepcopy[0]['att'], 'child')
+
+    def test_system_message_copy(self):
+        e = nodes.system_message('mytext', att='e', rawsource='raw text')
+        # Shallow copy:
+        e_copy = e.copy()
+        self.assertTrue(e is not e_copy)
+        # Internal attributes (like `rawsource`) are also copied.
+        self.assertEqual(e.rawsource, 'raw text')
+        self.assertEqual(e_copy.rawsource, e.rawsource)
+        self.assertEqual(e_copy['att'], 'e')
 
 
 class TreeCopyVisitorTests(unittest.TestCase):
