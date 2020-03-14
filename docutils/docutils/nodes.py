@@ -1775,7 +1775,7 @@ class system_message(Special, BackLinkable, PreBibliographic, Element):
     """
 
     def __init__(self, message=None, *children, **attributes):
-        rawsource = attributes.get('rawsource', '')
+        rawsource = attributes.pop('rawsource', '')
         if message:
             p = paragraph('', message)
             children = (p,) + children

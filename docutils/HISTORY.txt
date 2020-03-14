@@ -33,6 +33,10 @@ Changes Since 0.16
 
   - VersionInfo: ValueError for invalid values, fix comparison to tuples.
 
+* docutils/nodes.py
+
+  - Apply patch #165: Fix error when copying `system_message` node.
+
 * docutils/utils/smartquotes.py
 
   - Fix [ 383 ]: Smart quotes around opening and separator characters.
