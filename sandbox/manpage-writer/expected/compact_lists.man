@@ -1,8 +1,8 @@
 .\" Man page generated from reStructuredText.
 .
-.TH ""  "" "" ""
+.TH "COMPACT-LISTS"  "" "" ""
 .SH NAME
- \- 
+compact-lists \- test compact lists
 .
 .nr rst2man-indent-level 0
 .

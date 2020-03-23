@@ -1,8 +1,8 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "WELCOME TO TEST'S DOCUMENTATION!"  "" "" ""
+.TH "DOTLINE"  "" "" ""
 .SH NAME
-Welcome to test's documentation! \- 
+dotline \- test lines starting with a dot
 .
 .nr rst2man-indent-level 0
 .
