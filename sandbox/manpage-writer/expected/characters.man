@@ -1,8 +1,8 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "SPECIAL CHARACTERS"  "" "" ""
+.TH "SPECIAL-CHARACTERS"  "" "" ""
 .SH NAME
-special characters \- test special characters
+special-characters \- test special characters
 .
 .nr rst2man-indent-level 0
 .
