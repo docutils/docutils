@@ -1,3 +1,11 @@
+==============
+regression-380
+==============
+
+---------------------------
+regression test for BUG#380
+---------------------------
+
 #380 manpage writer does not add space after .B
 
 ... somewhere in the sphinx pipeline something is ... failing

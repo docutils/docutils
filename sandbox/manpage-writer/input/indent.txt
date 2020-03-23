@@ -1,3 +1,11 @@
+================================
+indent
+================================
+
+------------------------------
+test indenated blocks
+------------------------------
+
 an option block, and within it, a part of the text block indented. 
 the rest of the text ("More lines 1", etc.) isn't aligned at the same
 level as "Line1".  Instead, they're flush left to the screen

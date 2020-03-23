@@ -1,8 +1,8 @@
 .\" Man page generated from reStructuredText.
 .
-.TH ""  "" "" ""
+.TH "REGRESSION-380"  "" "" ""
 .SH NAME
- \- 
+regression-380 \- regression test for BUG#380
 .
 .nr rst2man-indent-level 0
 .
@@ -30,6 +30,7 @@ level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .in \\n[rst2man-indent\\n[rst2man-indent-level]]u
 ..
+.sp
 #380 manpage writer does not add space after .B
 .sp
 \&... somewhere in the sphinx pipeline something is ... failing
@@ -45,7 +46,7 @@ usage: tmpmain.py [\-h] [\-\-general GENERAL] foo bar {install} ...
 foo                   foo help
 bar
 {install}
-.IP "System Message: ERROR/3 (input/optionstoo.txt:, line 15)"
+.IP "System Message: ERROR/3 (input/optionstoo.txt:, line 23)"
 Unexpected indentation.
 .INDENT 7.0
 .INDENT 3.5

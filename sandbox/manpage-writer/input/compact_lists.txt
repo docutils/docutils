@@ -1,3 +1,11 @@
+===============
+ compact-lists
+===============
+
+-----------------------
+test compact lists
+-----------------------
+
 * This is an ordinary simple bullet list.
 * It should be made compact (<p> & </p> tags omitted).
 
