@@ -1,9 +1,9 @@
-SPECIAL CHARACTERS()                                      SPECIAL CHARACTERS()
+SPECIAL-CHARACTERS()                                      SPECIAL-CHARACTERS()
 
 
 
 NNAAMMEE
-       special characters - test special characters
+       special-characters - test special characters
 
 SSEEEE AALLSSOO
        In mercurial the following substitutions are in use:
@@ -41,4 +41,4 @@ DDEESSCCRRIIPPTTIIOONN
 
 
 
-                                                          SPECIAL CHARACTERS()
+                                                          SPECIAL-CHARACTERS()
