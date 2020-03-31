@@ -292,16 +292,16 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
         del self.body[start:]
 
     # use HTML text-level tags if matching class value found
-    supported_inline_tags = set(('small', 's', 'q', 'dfn', 'var', 'samp',
-                                 'kbd', 'i', 'b', 'u', 'mark', 'bdi',
-                                 'ins', 'del'))
+    supported_inline_tags = set(('code', 'kbd', 'dfn', 'samp', 'var',
+                                 'bdi', 'del', 'ins', 'mark', 'small',
+                                 'b', 'i', 'q', 's', 'u'))
     def visit_inline(self, node):
-        # If there is exactly one of the "supported inline tags" in
-        # the list of class values, use it as tag name:
+        # Use "supported inline tag" as tag name if found in class values
+        # (first: 
         classes = node.get('classes', [])
-        tags = [cls for cls in classes
-                if cls in self.supported_inline_tags]
-        if len(tags) == 1:
+        tags = [cls for cls in self.supported_inline_tags
+                if cls in classes]
+        if len(tags):
             node.html5tagname = tags[0]
             classes.remove(tags[0])
         else:
@@ -310,6 +310,7 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
 
     def depart_inline(self, node):
         self.body.append('</%s>' % node.html5tagname)
+        del(node.html5tagname)
 
     # place inside HTML5 <figcaption> element (together with caption)
     def visit_legend(self, node):
@@ -323,22 +324,17 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
 
     # use HTML text-level tags if matching class value found
     def visit_literal(self, node):
-        # special case: "code" role
         classes = node.get('classes', [])
-        if 'code' in classes:
-            # filter 'code' from class arguments
-            node['classes'] = [cls for cls in classes if cls != 'code']
-            self.body.append(self.starttag(node, 'code', ''))
-            return
-
-        classes = node.get('classes', [])
-        tags = [cls for cls in classes
-                if cls in self.supported_inline_tags]
-        if len(tags) == 1:
+        tags = [cls for cls in self.supported_inline_tags
+                if cls in classes]
+        if len(tags):
             tagname = tags[0]
             classes.remove(tags[0])
         else:
             tagname = 'span'
+        if tagname == 'code':
+            self.body.append(self.starttag(node, 'code', ''))
+            return
         self.body.append(
             self.starttag(node, tagname, '', CLASS='docutils literal'))
         text = node.astext()
