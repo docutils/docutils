@@ -28,8 +28,8 @@ except locale.Error:
 
 from docutils.core import publish_cmdline, default_description
 
-description = (u'Generates HTML 5 documents from standalone '
-               u'reStructuredText sources '
+description = (u'Generates HTML5 documents from standalone '
+               u'reStructuredText sources.\n'
                + default_description)
 
 publish_cmdline(writer_name='html5', description=description)
