@@ -776,8 +776,8 @@ trim_footnote_reference_space
 
 Remove spaces before `footnote references`_.
 
-Default: don't (None); may be overriden by a writer-specific
-footnote_references__ default though.
+Default: don't (None) rsp. depending on the writer-specific
+footnote_references__ setting. [#footnote_space]_
 
 Options: ``--trim-footnote-reference-space, --leave-footnote-reference-space``.
 
@@ -1578,7 +1578,7 @@ Format for `footnote references`_: one of "superscript" or
 "brackets".  Also defined for the `HTML Writers`__.
 
 Overrides [#override]_ trim_footnote_reference_space_, if
-applicable [#footnote_space]_.
+applicable. [#footnote_space]_
 
 Default: "superscript".  Option: ``--footnote-references``.
 
