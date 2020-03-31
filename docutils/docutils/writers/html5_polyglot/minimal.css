@@ -43,30 +43,28 @@ h1 + p.subtitle,
 h1 + p.section-subtitle {
   font-size: 1.6em;
 }
-h2 + p.section-subtitle { font-size: 1.28em; }
+h2 + p.section-subtitle { 
+  font-size: 1.28em;
+}
 p.subtitle,
 p.section-subtitle,
 p.sidebar-subtitle {
   font-weight: bold;
   margin-top: -0.5em;
 }
-p.sidebar-title,
-p.rubric {
+p.sidebar-title {
   font-size: larger;
 }
-p.rubric { color: maroon; }
+p.rubric {
+  font-size: larger;
+  color: maroon;
+}
 a.toc-backref {
   color: black;
   text-decoration: none; }
 
 /* Warnings, Errors */
-div.caution p.admonition-title,
-div.attention p.admonition-title,
-div.danger p.admonition-title,
-div.error p.admonition-title,
-div.warning p.admonition-title,
 div.system-messages h1,
-div.error,
 span.problematic,
 p.system-message-title {
   color: red;
@@ -216,18 +214,6 @@ table.align-left, table.align-center, table.align-right {
   text-align: inherit;
 }
 
-/* Admonitions and System Messages */
-div.admonition,
-div.system-message,
-aside.sidebar {
-  margin: 1em 1.5em;
-  border: medium outset;
-  padding-top: 0.5em;
-  padding-bottom: 0.5em;
-  padding-right: 1em;
-  padding-left: 1em;
-}
-
 /* Sidebar */
 aside.sidebar {
   width: 30%;
@@ -239,6 +225,8 @@ aside.sidebar {
 /* Text Blocks */
 blockquote,
 div.topic,
+div.admonition,
+div.system-message,
 pre.literal-block,
 pre.doctest-block,
 pre.math,

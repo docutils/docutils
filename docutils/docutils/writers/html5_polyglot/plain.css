@@ -222,6 +222,26 @@ object.align-right {
 /* Stop floating sidebars, images and figures at section level 1,2,3 */
 h1, h2, h3 { clear: both; }
 
+/* Admonitions and System Messages */
+
+div.admonition,
+div.system-message,
+aside.sidebar {
+  border: medium outset;
+  margin: 1em 1.5em;
+  padding: 0.5em 1em;
+}
+
+div.caution p.admonition-title,
+div.attention p.admonition-title,
+div.danger p.admonition-title,
+div.error p.admonition-title,
+div.warning p.admonition-title,
+div.error {
+  color: red;
+}
+
+
 /* Sidebar */
 
 /* Move right. In a layout with fixed margins, */
