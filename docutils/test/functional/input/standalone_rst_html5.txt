@@ -189,6 +189,18 @@ setting (or command line argument).
      True    True    True
      ======= ======= ==========
 
+Numbered Figures
+````````````````
+
+Numbered figures can be achieved with the "numbered" ``:figclass:`` option:
+
+   .. figure:: ../../../docs/user/rst/images/title.svg
+      :alt: reStructuredText, the markup syntax
+      :figclass: numbered
+   
+      SVG image in a numbered figure.
+
+
 .. include:: data/errors.txt
 
 .. footer:: |HTML 5| |validator| |valid-CSS2|
