@@ -968,7 +968,7 @@ class HTMLTranslator(nodes.NodeVisitor):
             atts['class'] = 'align-%s' % node['align']
         if ext in self.object_image_types:
             # do NOT use an empty tag: incorrect rendering in browsers
-            self.body.append(self.starttag(node, 'object', suffix, **atts) +
+            self.body.append(self.starttag(node, 'object', '', **atts) +
                              node.get('alt', uri) + '</object>' + suffix)
         else:
             self.body.append(self.emptytag(node, 'img', suffix, **atts))
