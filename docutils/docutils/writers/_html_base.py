@@ -1323,11 +1323,12 @@ class HTMLTranslator(nodes.NodeVisitor):
                    'References must have "refuri" or "refid" attribute.'
             atts['href'] = '#' + node['refid']
             atts['class'] += ' internal'
+        if len(node) == 1 and isinstance(node[0], nodes.image):
+            atts['class'] += ' image-reference'
         if not isinstance(node.parent, nodes.TextElement):
             assert len(node) == 1 and isinstance(node[0], nodes.image)
             if not isinstance(node.parent, (nodes.figure, nodes.compound)):
                 self.body.append('<p class="image-wrapper">')
-            atts['class'] += ' image-reference'
         self.body.append(self.starttag(node, 'a', '', **atts))
 
     def depart_reference(self, node):
