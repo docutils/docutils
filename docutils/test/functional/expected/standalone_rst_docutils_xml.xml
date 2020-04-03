@@ -148,56 +148,59 @@ They are transformed from section titles after parsing.</comment>
                                 <paragraph><reference ids="toc-entry-24" refid="images-and-figures"><generated classes="sectnum">2.14.2   </generated>Images and Figures</reference></paragraph>
                             </list_item>
                             <list_item>
-                                <paragraph><reference ids="toc-entry-25" refid="admonitions"><generated classes="sectnum">2.14.3   </generated>Admonitions</reference></paragraph>
+                                <paragraph><reference ids="toc-entry-25" refid="tables"><generated classes="sectnum">2.14.3   </generated>Tables</reference></paragraph>
                             </list_item>
                             <list_item>
-                                <paragraph><reference ids="toc-entry-26" refid="topics-sidebars-and-rubrics"><generated classes="sectnum">2.14.4   </generated>Topics, Sidebars, and Rubrics</reference></paragraph>
+                                <paragraph><reference ids="toc-entry-26" refid="admonitions"><generated classes="sectnum">2.14.4   </generated>Admonitions</reference></paragraph>
                             </list_item>
                             <list_item>
-                                <paragraph><reference ids="toc-entry-27" refid="target-footnotes"><generated classes="sectnum">2.14.5   </generated>Target Footnotes</reference></paragraph>
+                                <paragraph><reference ids="toc-entry-27" refid="topics-sidebars-and-rubrics"><generated classes="sectnum">2.14.5   </generated>Topics, Sidebars, and Rubrics</reference></paragraph>
                             </list_item>
                             <list_item>
-                                <paragraph><reference ids="toc-entry-28" refid="replacement-text"><generated classes="sectnum">2.14.6   </generated>Replacement Text</reference></paragraph>
+                                <paragraph><reference ids="toc-entry-28" refid="target-footnotes"><generated classes="sectnum">2.14.6   </generated>Target Footnotes</reference></paragraph>
                             </list_item>
                             <list_item>
-                                <paragraph><reference ids="toc-entry-29" refid="compound-paragraph"><generated classes="sectnum">2.14.7   </generated>Compound Paragraph</reference></paragraph>
+                                <paragraph><reference ids="toc-entry-29" refid="replacement-text"><generated classes="sectnum">2.14.7   </generated>Replacement Text</reference></paragraph>
                             </list_item>
                             <list_item>
-                                <paragraph><reference ids="toc-entry-30" refid="parsed-literal-blocks"><generated classes="sectnum">2.14.8   </generated>Parsed Literal Blocks</reference></paragraph>
+                                <paragraph><reference ids="toc-entry-30" refid="compound-paragraph"><generated classes="sectnum">2.14.8   </generated>Compound Paragraph</reference></paragraph>
                             </list_item>
                             <list_item>
-                                <paragraph><reference ids="toc-entry-31" refid="code"><generated classes="sectnum">2.14.9   </generated>Code</reference></paragraph>
+                                <paragraph><reference ids="toc-entry-31" refid="parsed-literal-blocks"><generated classes="sectnum">2.14.9   </generated>Parsed Literal Blocks</reference></paragraph>
+                            </list_item>
+                            <list_item>
+                                <paragraph><reference ids="toc-entry-32" refid="code"><generated classes="sectnum">2.14.10   </generated>Code</reference></paragraph>
                             </list_item>
                         </bullet_list>
                     </list_item>
                     <list_item>
-                        <paragraph><reference ids="toc-entry-32" refid="substitution-definitions"><generated classes="sectnum">2.15   </generated>Substitution Definitions</reference></paragraph>
+                        <paragraph><reference ids="toc-entry-33" refid="substitution-definitions"><generated classes="sectnum">2.15   </generated>Substitution Definitions</reference></paragraph>
                     </list_item>
                     <list_item>
-                        <paragraph><reference ids="toc-entry-33" refid="comments"><generated classes="sectnum">2.16   </generated>Comments</reference></paragraph>
+                        <paragraph><reference ids="toc-entry-34" refid="comments"><generated classes="sectnum">2.16   </generated>Comments</reference></paragraph>
                     </list_item>
                     <list_item>
-                        <paragraph><reference ids="toc-entry-34" refid="raw-text"><generated classes="sectnum">2.17   </generated>Raw text</reference></paragraph>
+                        <paragraph><reference ids="toc-entry-35" refid="raw-text"><generated classes="sectnum">2.17   </generated>Raw text</reference></paragraph>
                     </list_item>
                     <list_item>
-                        <paragraph><reference ids="toc-entry-35" refid="container"><generated classes="sectnum">2.18   </generated>Container</reference></paragraph>
+                        <paragraph><reference ids="toc-entry-36" refid="container"><generated classes="sectnum">2.18   </generated>Container</reference></paragraph>
                     </list_item>
                     <list_item>
-                        <paragraph><reference ids="toc-entry-36" refid="colspanning-tables"><generated classes="sectnum">2.19   </generated>Colspanning tables</reference></paragraph>
+                        <paragraph><reference ids="toc-entry-37" refid="colspanning-tables"><generated classes="sectnum">2.19   </generated>Colspanning tables</reference></paragraph>
                     </list_item>
                     <list_item>
-                        <paragraph><reference ids="toc-entry-37" refid="rowspanning-tables"><generated classes="sectnum">2.20   </generated>Rowspanning tables</reference></paragraph>
+                        <paragraph><reference ids="toc-entry-38" refid="rowspanning-tables"><generated classes="sectnum">2.20   </generated>Rowspanning tables</reference></paragraph>
                     </list_item>
                     <list_item>
-                        <paragraph><reference ids="toc-entry-38" refid="complex-tables"><generated classes="sectnum">2.21   </generated>Complex tables</reference></paragraph>
+                        <paragraph><reference ids="toc-entry-39" refid="complex-tables"><generated classes="sectnum">2.21   </generated>Complex tables</reference></paragraph>
                     </list_item>
                     <list_item>
-                        <paragraph><reference ids="toc-entry-39" refid="list-tables"><generated classes="sectnum">2.22   </generated>List Tables</reference></paragraph>
+                        <paragraph><reference ids="toc-entry-40" refid="list-tables"><generated classes="sectnum">2.22   </generated>List Tables</reference></paragraph>
                     </list_item>
                 </bullet_list>
             </list_item>
             <list_item>
-                <paragraph><reference ids="toc-entry-40" refid="error-handling"><generated classes="sectnum">3   </generated>Error Handling</reference></paragraph>
+                <paragraph><reference ids="toc-entry-41" refid="error-handling"><generated classes="sectnum">3   </generated>Error Handling</reference></paragraph>
             </list_item>
         </bullet_list>
     </topic>
@@ -752,31 +755,34 @@ Python-specific usage examples; begun with "&gt;&gt;&gt;"
             <topic classes="contents local" ids="contents" names="contents">
                 <bullet_list classes="auto-toc">
                     <list_item>
-                        <paragraph><reference ids="toc-entry-41" refid="document-parts"><generated classes="sectnum">2.14.1   </generated>Document Parts</reference></paragraph>
+                        <paragraph><reference ids="toc-entry-42" refid="document-parts"><generated classes="sectnum">2.14.1   </generated>Document Parts</reference></paragraph>
                     </list_item>
                     <list_item>
-                        <paragraph><reference ids="toc-entry-42" refid="images-and-figures"><generated classes="sectnum">2.14.2   </generated>Images and Figures</reference></paragraph>
+                        <paragraph><reference ids="toc-entry-43" refid="images-and-figures"><generated classes="sectnum">2.14.2   </generated>Images and Figures</reference></paragraph>
                     </list_item>
                     <list_item>
-                        <paragraph><reference ids="toc-entry-43" refid="admonitions"><generated classes="sectnum">2.14.3   </generated>Admonitions</reference></paragraph>
+                        <paragraph><reference ids="toc-entry-44" refid="tables"><generated classes="sectnum">2.14.3   </generated>Tables</reference></paragraph>
                     </list_item>
                     <list_item>
-                        <paragraph><reference ids="toc-entry-44" refid="topics-sidebars-and-rubrics"><generated classes="sectnum">2.14.4   </generated>Topics, Sidebars, and Rubrics</reference></paragraph>
+                        <paragraph><reference ids="toc-entry-45" refid="admonitions"><generated classes="sectnum">2.14.4   </generated>Admonitions</reference></paragraph>
                     </list_item>
                     <list_item>
-                        <paragraph><reference ids="toc-entry-45" refid="target-footnotes"><generated classes="sectnum">2.14.5   </generated>Target Footnotes</reference></paragraph>
+                        <paragraph><reference ids="toc-entry-46" refid="topics-sidebars-and-rubrics"><generated classes="sectnum">2.14.5   </generated>Topics, Sidebars, and Rubrics</reference></paragraph>
                     </list_item>
                     <list_item>
-                        <paragraph><reference ids="toc-entry-46" refid="replacement-text"><generated classes="sectnum">2.14.6   </generated>Replacement Text</reference></paragraph>
+                        <paragraph><reference ids="toc-entry-47" refid="target-footnotes"><generated classes="sectnum">2.14.6   </generated>Target Footnotes</reference></paragraph>
                     </list_item>
                     <list_item>
-                        <paragraph><reference ids="toc-entry-47" refid="compound-paragraph"><generated classes="sectnum">2.14.7   </generated>Compound Paragraph</reference></paragraph>
+                        <paragraph><reference ids="toc-entry-48" refid="replacement-text"><generated classes="sectnum">2.14.7   </generated>Replacement Text</reference></paragraph>
                     </list_item>
                     <list_item>
-                        <paragraph><reference ids="toc-entry-48" refid="parsed-literal-blocks"><generated classes="sectnum">2.14.8   </generated>Parsed Literal Blocks</reference></paragraph>
+                        <paragraph><reference ids="toc-entry-49" refid="compound-paragraph"><generated classes="sectnum">2.14.8   </generated>Compound Paragraph</reference></paragraph>
                     </list_item>
                     <list_item>
-                        <paragraph><reference ids="toc-entry-49" refid="code"><generated classes="sectnum">2.14.9   </generated>Code</reference></paragraph>
+                        <paragraph><reference ids="toc-entry-50" refid="parsed-literal-blocks"><generated classes="sectnum">2.14.9   </generated>Parsed Literal Blocks</reference></paragraph>
+                    </list_item>
+                    <list_item>
+                        <paragraph><reference ids="toc-entry-51" refid="code"><generated classes="sectnum">2.14.10   </generated>Code</reference></paragraph>
                     </list_item>
                 </bullet_list>
             </topic>
@@ -784,13 +790,13 @@ Python-specific usage examples; begun with "&gt;&gt;&gt;"
                 others, please see
                 <reference refuri="http://docutils.sourceforge.net/docs/ref/rst/directives.html">http://docutils.sourceforge.net/docs/ref/rst/directives.html</reference>.</paragraph>
             <section ids="document-parts" names="document\ parts">
-                <title auto="1" refid="toc-entry-41"><generated classes="sectnum">2.14.1   </generated>Document Parts</title>
+                <title auto="1" refid="toc-entry-42"><generated classes="sectnum">2.14.1   </generated>Document Parts</title>
                 <paragraph>An example of the "contents" directive can be seen above this section
                     (a local, untitled table of <reference name="contents" refid="contents">contents</reference>) and at the beginning of the
                     document (a document-wide <reference name="table of contents" refid="table-of-contents">table of contents</reference>).</paragraph>
             </section>
             <section ids="images-and-figures" names="images\ and\ figures">
-                <title auto="1" refid="toc-entry-42"><generated classes="sectnum">2.14.2   </generated>Images and Figures</title>
+                <title auto="1" refid="toc-entry-43"><generated classes="sectnum">2.14.2   </generated>Images and Figures</title>
                 <paragraph>An image directive (also clickable -- a hyperlink reference):</paragraph>
                 <reference name="directives" refid="directives"><image classes="class1 class2" uri="../../../docs/user/rst/images/title.png"></image></reference>
                 <paragraph>Image with multiple IDs:</paragraph>
@@ -897,6 +903,9 @@ Python-specific usage examples; begun with "&gt;&gt;&gt;"
                 </figure>
                 <paragraph>This paragraph might flow around the figure. The specific behavior depends
                     upon the style sheet and the browser or rendering software used.</paragraph>
+            </section>
+            <section ids="tables" names="tables">
+                <title auto="1" refid="toc-entry-44"><generated classes="sectnum">2.14.3   </generated>Tables</title>
                 <paragraph>Tables may be given titles and additional arguments with the <emphasis>table</emphasis>
                     directive:</paragraph>
                 <table align="left">
@@ -1077,7 +1086,7 @@ Python-specific usage examples; begun with "&gt;&gt;&gt;"
                 </table>
             </section>
             <section ids="admonitions" names="admonitions">
-                <title auto="1" refid="toc-entry-43"><generated classes="sectnum">2.14.3   </generated>Admonitions</title>
+                <title auto="1" refid="toc-entry-45"><generated classes="sectnum">2.14.4   </generated>Admonitions</title>
                 <attention>
                     <paragraph>Directives at large.</paragraph>
                 </attention>
@@ -1126,7 +1135,7 @@ Python-specific usage examples; begun with "&gt;&gt;&gt;"
                 </admonition>
             </section>
             <section ids="topics-sidebars-and-rubrics" names="topics,\ sidebars,\ and\ rubrics">
-                <title auto="1" refid="toc-entry-44"><generated classes="sectnum">2.14.4   </generated>Topics, Sidebars, and Rubrics</title>
+                <title auto="1" refid="toc-entry-46"><generated classes="sectnum">2.14.5   </generated>Topics, Sidebars, and Rubrics</title>
                 <paragraph><emphasis>Sidebars</emphasis> are like miniature, parallel documents.</paragraph>
                 <sidebar>
                     <title>Sidebar Title</title>
@@ -1150,7 +1159,7 @@ Python-specific usage examples; begun with "&gt;&gt;&gt;"
                     allowed (e.g. inside a directive).</paragraph>
             </section>
             <section ids="target-footnotes" names="target\ footnotes">
-                <title auto="1" refid="toc-entry-45"><generated classes="sectnum">2.14.5   </generated>Target Footnotes</title>
+                <title auto="1" refid="toc-entry-47"><generated classes="sectnum">2.14.6   </generated>Target Footnotes</title>
                 <footnote auto="1" backrefs="footnote-reference-10 footnote-reference-11 footnote-reference-12 footnote-reference-14" ids="footnote-6" names="TARGET_NOTE:\ footnote-6">
                     <label>5</label>
                     <paragraph><reference refuri="http://www.python.org/">http://www.python.org/</reference></paragraph>
@@ -1165,12 +1174,12 @@ Python-specific usage examples; begun with "&gt;&gt;&gt;"
                 </footnote>
             </section>
             <section ids="replacement-text" names="replacement\ text">
-                <title auto="1" refid="toc-entry-46"><generated classes="sectnum">2.14.6   </generated>Replacement Text</title>
+                <title auto="1" refid="toc-entry-48"><generated classes="sectnum">2.14.7   </generated>Replacement Text</title>
                 <paragraph>I recommend you try <reference refuri="http://www.python.org/">Python, <emphasis>the</emphasis> best language around</reference> <footnote_reference auto="1" ids="footnote-reference-12" refid="footnote-6">5</footnote_reference>.</paragraph>
                 <substitution_definition names="Python">Python, <emphasis>the</emphasis> best language around</substitution_definition>
             </section>
             <section ids="compound-paragraph" names="compound\ paragraph">
-                <title auto="1" refid="toc-entry-47"><generated classes="sectnum">2.14.7   </generated>Compound Paragraph</title>
+                <title auto="1" refid="toc-entry-49"><generated classes="sectnum">2.14.8   </generated>Compound Paragraph</title>
                 <paragraph>The <emphasis>compound</emphasis> directive is used to create a "compound paragraph", which
                     is a single logical paragraph containing multiple physical body
                     elements. For example:</paragraph>
@@ -1304,7 +1313,7 @@ This one starts with a literal block.</literal_block>
                 </compound>
             </section>
             <section ids="parsed-literal-blocks" names="parsed\ literal\ blocks">
-                <title auto="1" refid="toc-entry-48"><generated classes="sectnum">2.14.8   </generated>Parsed Literal Blocks</title>
+                <title auto="1" refid="toc-entry-50"><generated classes="sectnum">2.14.9   </generated>Parsed Literal Blocks</title>
                 <literal_block xml:space="preserve">This is a parsed literal block.
     This line is indented.  The next line is blank.
 
@@ -1314,7 +1323,7 @@ inline formulas: <math>A = 2 \pi r^2</math>,
 footnotes <footnote_reference ids="footnote-reference-9" refid="footnote-1">1</footnote_reference>, <target ids="hyperlink-targets" names="hyperlink\ targets">hyperlink targets</target>, and <reference name="references" refuri="http://www.python.org/">references</reference><target ids="references" names="references" refuri="http://www.python.org/"></target>.</literal_block>
             </section>
             <section ids="code" names="code">
-                <title auto="1" refid="toc-entry-49"><generated classes="sectnum">2.14.9   </generated>Code</title>
+                <title auto="1" refid="toc-entry-51"><generated classes="sectnum">2.14.10   </generated>Code</title>
                 <paragraph>Blocks of source code can be set with the <title_reference>code</title_reference> directive. If the code
                     language is specified, the content is parsed and tagged by the <reference name="Pygments" refuri="http://pygments.org/">Pygments</reference> <footnote_reference auto="1" ids="footnote-reference-13" refid="footnote-7">6</footnote_reference>
                     syntax highlighter and can be formatted with a style sheet. (Code parsing
@@ -1341,7 +1350,7 @@ footnotes <footnote_reference ids="footnote-reference-9" refid="footnote-1">1</f
             </section>
         </section>
         <section ids="substitution-definitions" names="substitution\ definitions">
-            <title auto="1" refid="toc-entry-32"><generated classes="sectnum">2.15   </generated>Substitution Definitions</title>
+            <title auto="1" refid="toc-entry-33"><generated classes="sectnum">2.15   </generated>Substitution Definitions</title>
             <paragraph>An inline image (<image alt="EXAMPLE" uri="../../../docs/user/rst/images/biohazard.png"></image>) example:</paragraph>
             <substitution_definition names="EXAMPLE"><image alt="EXAMPLE" uri="../../../docs/user/rst/images/biohazard.png"></image></substitution_definition>
             <paragraph>A Unicode example:</paragraph>
@@ -1349,7 +1358,7 @@ footnotes <footnote_reference ids="footnote-reference-9" refid="footnote-1">1</f
             <paragraph>(Substitution definitions are not visible in the HTML source.)</paragraph>
         </section>
         <section ids="comments" names="comments">
-            <title auto="1" refid="toc-entry-33"><generated classes="sectnum">2.16   </generated>Comments</title>
+            <title auto="1" refid="toc-entry-34"><generated classes="sectnum">2.16   </generated>Comments</title>
             <paragraph>Here's one:</paragraph>
             <comment xml:space="preserve">Comments begin with two dots and a space. Anything may
 follow, except for the syntax of footnotes, hyperlink
@@ -1361,7 +1370,7 @@ Comments may contain non-ASCII characters: ä ö ü æ ø å</comment>
             <paragraph>(View the HTML source to see the comment.)</paragraph>
         </section>
         <section ids="raw-text" names="raw\ text">
-            <title auto="1" refid="toc-entry-34"><generated classes="sectnum">2.17   </generated>Raw text</title>
+            <title auto="1" refid="toc-entry-35"><generated classes="sectnum">2.17   </generated>Raw text</title>
             <paragraph>This does not necessarily look nice, because there may be missing white space.</paragraph>
             <paragraph>It's just there to freeze the behavior.</paragraph>
             <raw format="html latex" xml:space="preserve">A test.</raw>
@@ -1372,14 +1381,14 @@ Comments may contain non-ASCII characters: ä ö ü æ ø å</comment>
             <raw format="latex" xml:space="preserve">Fifth test in LaTeX.\\Line two.</raw>
         </section>
         <section ids="container" names="container">
-            <title auto="1" refid="toc-entry-35"><generated classes="sectnum">2.18   </generated>Container</title>
+            <title auto="1" refid="toc-entry-36"><generated classes="sectnum">2.18   </generated>Container</title>
             <container classes="custom">
                 <paragraph>paragraph 1</paragraph>
                 <paragraph>paragraph 2</paragraph>
             </container>
         </section>
         <section ids="colspanning-tables" names="colspanning\ tables">
-            <title auto="1" refid="toc-entry-36"><generated classes="sectnum">2.19   </generated>Colspanning tables</title>
+            <title auto="1" refid="toc-entry-37"><generated classes="sectnum">2.19   </generated>Colspanning tables</title>
             <paragraph>This table has a cell spanning two columns:</paragraph>
             <table>
                 <tgroup cols="3">
@@ -1457,7 +1466,7 @@ Comments may contain non-ASCII characters: ä ö ü æ ø å</comment>
             </table>
         </section>
         <section ids="rowspanning-tables" names="rowspanning\ tables">
-            <title auto="1" refid="toc-entry-37"><generated classes="sectnum">2.20   </generated>Rowspanning tables</title>
+            <title auto="1" refid="toc-entry-38"><generated classes="sectnum">2.20   </generated>Rowspanning tables</title>
             <paragraph>Here's a table with cells spanning several rows:</paragraph>
             <table>
                 <tgroup cols="3">
@@ -1514,7 +1523,7 @@ Comments may contain non-ASCII characters: ä ö ü æ ø å</comment>
             </table>
         </section>
         <section ids="complex-tables" names="complex\ tables">
-            <title auto="1" refid="toc-entry-38"><generated classes="sectnum">2.21   </generated>Complex tables</title>
+            <title auto="1" refid="toc-entry-39"><generated classes="sectnum">2.21   </generated>Complex tables</title>
             <paragraph>Here's a complex table, which should test all features.</paragraph>
             <table>
                 <tgroup cols="4">
@@ -1606,7 +1615,7 @@ Comments may contain non-ASCII characters: ä ö ü æ ø å</comment>
             </table>
         </section>
         <section ids="list-tables" names="list\ tables">
-            <title auto="1" refid="toc-entry-39"><generated classes="sectnum">2.22   </generated>List Tables</title>
+            <title auto="1" refid="toc-entry-40"><generated classes="sectnum">2.22   </generated>List Tables</title>
             <paragraph>Here's a list table exercising all features:</paragraph>
             <table classes="colwidths-given test" width="40em">
                 <title>list table with integral header</title>
@@ -1701,7 +1710,7 @@ Comments may contain non-ASCII characters: ä ö ü æ ø å</comment>
         </section>
     </section>
     <section ids="error-handling" names="error\ handling">
-        <title auto="1" refid="toc-entry-40"><generated classes="sectnum">3   </generated>Error Handling</title>
+        <title auto="1" refid="toc-entry-41"><generated classes="sectnum">3   </generated>Error Handling</title>
         <paragraph>Any errors caught during processing will generate system messages.</paragraph>
         <paragraph>There should be five messages in the following, auto-generated
             section, "Docutils System Messages":</paragraph>
@@ -1739,16 +1748,16 @@ Comments may contain non-ASCII characters: ä ö ü æ ø å</comment>
         <system_message level="1" line="476" source="functional/input/data/standard.txt" type="INFO">
             <paragraph>Hyperlink target "image-target-3" is not referenced.</paragraph>
         </system_message>
-        <system_message level="1" line="640" source="functional/input/data/standard.txt" type="INFO">
+        <system_message level="1" line="643" source="functional/input/data/standard.txt" type="INFO">
             <paragraph>Hyperlink target "target1" is not referenced.</paragraph>
         </system_message>
-        <system_message level="1" line="641" source="functional/input/data/standard.txt" type="INFO">
+        <system_message level="1" line="644" source="functional/input/data/standard.txt" type="INFO">
             <paragraph>Hyperlink target "target2" is not referenced.</paragraph>
         </system_message>
-        <system_message level="1" line="686" source="functional/input/data/standard.txt" type="INFO">
+        <system_message level="1" line="689" source="functional/input/data/standard.txt" type="INFO">
             <paragraph>Hyperlink target "docutils" is not referenced.</paragraph>
         </system_message>
-        <system_message level="1" line="852" source="functional/input/data/standard.txt" type="INFO">
+        <system_message level="1" line="855" source="functional/input/data/standard.txt" type="INFO">
             <paragraph>Hyperlink target "hyperlink targets" is not referenced.</paragraph>
         </system_message>
     </section>

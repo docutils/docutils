@@ -598,6 +598,9 @@ This paragraph might flow around the figure. The specific behavior depends
 upon the style sheet and the browser or rendering software used.
 
 
+Tables
+``````
+
 Tables may be given titles and additional arguments with the *table*
 directive:
 

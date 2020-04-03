@@ -242,97 +242,103 @@
                                         Images and Figures
                             <list_item>
                                 <paragraph>
-                                    <reference ids="toc-entry-25" refid="admonitions">
+                                    <reference ids="toc-entry-25" refid="tables">
                                         <generated classes="sectnum">
                                             2.14.3   
+                                        Tables
+                            <list_item>
+                                <paragraph>
+                                    <reference ids="toc-entry-26" refid="admonitions">
+                                        <generated classes="sectnum">
+                                            2.14.4   
                                         Admonitions
                             <list_item>
                                 <paragraph>
-                                    <reference ids="toc-entry-26" refid="topics-sidebars-and-rubrics">
+                                    <reference ids="toc-entry-27" refid="topics-sidebars-and-rubrics">
                                         <generated classes="sectnum">
-                                            2.14.4   
+                                            2.14.5   
                                         Topics, Sidebars, and Rubrics
                             <list_item>
                                 <paragraph>
-                                    <reference ids="toc-entry-27" refid="target-footnotes">
+                                    <reference ids="toc-entry-28" refid="target-footnotes">
                                         <generated classes="sectnum">
-                                            2.14.5   
+                                            2.14.6   
                                         Target Footnotes
                             <list_item>
                                 <paragraph>
-                                    <reference ids="toc-entry-28" refid="replacement-text">
+                                    <reference ids="toc-entry-29" refid="replacement-text">
                                         <generated classes="sectnum">
-                                            2.14.6   
+                                            2.14.7   
                                         Replacement Text
                             <list_item>
                                 <paragraph>
-                                    <reference ids="toc-entry-29" refid="compound-paragraph">
+                                    <reference ids="toc-entry-30" refid="compound-paragraph">
                                         <generated classes="sectnum">
-                                            2.14.7   
+                                            2.14.8   
                                         Compound Paragraph
                             <list_item>
                                 <paragraph>
-                                    <reference ids="toc-entry-30" refid="parsed-literal-blocks">
+                                    <reference ids="toc-entry-31" refid="parsed-literal-blocks">
                                         <generated classes="sectnum">
-                                            2.14.8   
+                                            2.14.9   
                                         Parsed Literal Blocks
                             <list_item>
                                 <paragraph>
-                                    <reference ids="toc-entry-31" refid="code">
+                                    <reference ids="toc-entry-32" refid="code">
                                         <generated classes="sectnum">
-                                            2.14.9   
+                                            2.14.10   
                                         Code
                     <list_item>
                         <paragraph>
-                            <reference ids="toc-entry-32" refid="substitution-definitions">
+                            <reference ids="toc-entry-33" refid="substitution-definitions">
                                 <generated classes="sectnum">
                                     2.15   
                                 Substitution Definitions
                     <list_item>
                         <paragraph>
-                            <reference ids="toc-entry-33" refid="comments">
+                            <reference ids="toc-entry-34" refid="comments">
                                 <generated classes="sectnum">
                                     2.16   
                                 Comments
                     <list_item>
                         <paragraph>
-                            <reference ids="toc-entry-34" refid="raw-text">
+                            <reference ids="toc-entry-35" refid="raw-text">
                                 <generated classes="sectnum">
                                     2.17   
                                 Raw text
                     <list_item>
                         <paragraph>
-                            <reference ids="toc-entry-35" refid="container">
+                            <reference ids="toc-entry-36" refid="container">
                                 <generated classes="sectnum">
                                     2.18   
                                 Container
                     <list_item>
                         <paragraph>
-                            <reference ids="toc-entry-36" refid="colspanning-tables">
+                            <reference ids="toc-entry-37" refid="colspanning-tables">
                                 <generated classes="sectnum">
                                     2.19   
                                 Colspanning tables
                     <list_item>
                         <paragraph>
-                            <reference ids="toc-entry-37" refid="rowspanning-tables">
+                            <reference ids="toc-entry-38" refid="rowspanning-tables">
                                 <generated classes="sectnum">
                                     2.20   
                                 Rowspanning tables
                     <list_item>
                         <paragraph>
-                            <reference ids="toc-entry-38" refid="complex-tables">
+                            <reference ids="toc-entry-39" refid="complex-tables">
                                 <generated classes="sectnum">
                                     2.21   
                                 Complex tables
                     <list_item>
                         <paragraph>
-                            <reference ids="toc-entry-39" refid="list-tables">
+                            <reference ids="toc-entry-40" refid="list-tables">
                                 <generated classes="sectnum">
                                     2.22   
                                 List Tables
             <list_item>
                 <paragraph>
-                    <reference ids="toc-entry-40" refid="error-handling">
+                    <reference ids="toc-entry-41" refid="error-handling">
                         <generated classes="sectnum">
                             3   
                         Error Handling
@@ -1159,57 +1165,63 @@
                 <bullet_list classes="auto-toc">
                     <list_item>
                         <paragraph>
-                            <reference ids="toc-entry-41" refid="document-parts">
+                            <reference ids="toc-entry-42" refid="document-parts">
                                 <generated classes="sectnum">
                                     2.14.1   
                                 Document Parts
                     <list_item>
                         <paragraph>
-                            <reference ids="toc-entry-42" refid="images-and-figures">
+                            <reference ids="toc-entry-43" refid="images-and-figures">
                                 <generated classes="sectnum">
                                     2.14.2   
                                 Images and Figures
                     <list_item>
                         <paragraph>
-                            <reference ids="toc-entry-43" refid="admonitions">
+                            <reference ids="toc-entry-44" refid="tables">
                                 <generated classes="sectnum">
                                     2.14.3   
+                                Tables
+                    <list_item>
+                        <paragraph>
+                            <reference ids="toc-entry-45" refid="admonitions">
+                                <generated classes="sectnum">
+                                    2.14.4   
                                 Admonitions
                     <list_item>
                         <paragraph>
-                            <reference ids="toc-entry-44" refid="topics-sidebars-and-rubrics">
+                            <reference ids="toc-entry-46" refid="topics-sidebars-and-rubrics">
                                 <generated classes="sectnum">
-                                    2.14.4   
+                                    2.14.5   
                                 Topics, Sidebars, and Rubrics
                     <list_item>
                         <paragraph>
-                            <reference ids="toc-entry-45" refid="target-footnotes">
+                            <reference ids="toc-entry-47" refid="target-footnotes">
                                 <generated classes="sectnum">
-                                    2.14.5   
+                                    2.14.6   
                                 Target Footnotes
                     <list_item>
                         <paragraph>
-                            <reference ids="toc-entry-46" refid="replacement-text">
+                            <reference ids="toc-entry-48" refid="replacement-text">
                                 <generated classes="sectnum">
-                                    2.14.6   
+                                    2.14.7   
                                 Replacement Text
                     <list_item>
                         <paragraph>
-                            <reference ids="toc-entry-47" refid="compound-paragraph">
+                            <reference ids="toc-entry-49" refid="compound-paragraph">
                                 <generated classes="sectnum">
-                                    2.14.7   
+                                    2.14.8   
                                 Compound Paragraph
                     <list_item>
                         <paragraph>
-                            <reference ids="toc-entry-48" refid="parsed-literal-blocks">
+                            <reference ids="toc-entry-50" refid="parsed-literal-blocks">
                                 <generated classes="sectnum">
-                                    2.14.8   
+                                    2.14.9   
                                 Parsed Literal Blocks
                     <list_item>
                         <paragraph>
-                            <reference ids="toc-entry-49" refid="code">
+                            <reference ids="toc-entry-51" refid="code">
                                 <generated classes="sectnum">
-                                    2.14.9   
+                                    2.14.10   
                                 Code
             <paragraph>
                 These are just a sample of the many reStructuredText Directives.  For
@@ -1218,7 +1230,7 @@
                     http://docutils.sourceforge.net/docs/ref/rst/directives.html
                 .
             <section ids="document-parts" names="document\ parts">
-                <title auto="1" refid="toc-entry-41">
+                <title auto="1" refid="toc-entry-42">
                     <generated classes="sectnum">
                         2.14.1   
                     Document Parts
@@ -1233,7 +1245,7 @@
                         table of contents
                     ).
             <section ids="images-and-figures" names="images\ and\ figures">
-                <title auto="1" refid="toc-entry-42">
+                <title auto="1" refid="toc-entry-43">
                     <generated classes="sectnum">
                         2.14.2   
                     Images and Figures
@@ -1369,6 +1381,11 @@
                 <paragraph>
                     This paragraph might flow around the figure. The specific behavior depends
                     upon the style sheet and the browser or rendering software used.
+            <section ids="tables" names="tables">
+                <title auto="1" refid="toc-entry-44">
+                    <generated classes="sectnum">
+                        2.14.3   
+                    Tables
                 <paragraph>
                     Tables may be given titles and additional arguments with the 
                     <emphasis>
@@ -1526,9 +1543,9 @@
                                     <paragraph>
                                         True
             <section ids="admonitions" names="admonitions">
-                <title auto="1" refid="toc-entry-43">
+                <title auto="1" refid="toc-entry-45">
                     <generated classes="sectnum">
-                        2.14.3   
+                        2.14.4   
                     Admonitions
                 <attention>
                     <paragraph>
@@ -1576,9 +1593,9 @@
                         You can make up your own admonition too.
                     <target ids="docutils" names="docutils" refuri="http://docutils.sourceforge.net/">
             <section ids="topics-sidebars-and-rubrics" names="topics,\ sidebars,\ and\ rubrics">
-                <title auto="1" refid="toc-entry-44">
+                <title auto="1" refid="toc-entry-46">
                     <generated classes="sectnum">
-                        2.14.4   
+                        2.14.5   
                     Topics, Sidebars, and Rubrics
                 <paragraph>
                     <emphasis>
@@ -1623,9 +1640,9 @@
                      is not
                     allowed (e.g. inside a directive).
             <section ids="target-footnotes" names="target\ footnotes">
-                <title auto="1" refid="toc-entry-45">
+                <title auto="1" refid="toc-entry-47">
                     <generated classes="sectnum">
-                        2.14.5   
+                        2.14.6   
                     Target Footnotes
                 <footnote auto="1" backrefs="footnote-reference-10 footnote-reference-11 footnote-reference-12 footnote-reference-14" ids="footnote-6" names="TARGET_NOTE:\ footnote-6">
                     <label>
@@ -1646,9 +1663,9 @@
                         <reference refuri="http://docutils.sourceforge.net/">
                             http://docutils.sourceforge.net/
             <section ids="replacement-text" names="replacement\ text">
-                <title auto="1" refid="toc-entry-46">
+                <title auto="1" refid="toc-entry-48">
                     <generated classes="sectnum">
-                        2.14.6   
+                        2.14.7   
                     Replacement Text
                 <paragraph>
                     I recommend you try 
@@ -1667,9 +1684,9 @@
                         the
                      best language around
             <section ids="compound-paragraph" names="compound\ paragraph">
-                <title auto="1" refid="toc-entry-47">
+                <title auto="1" refid="toc-entry-49">
                     <generated classes="sectnum">
-                        2.14.7   
+                        2.14.8   
                     Compound Paragraph
                 <paragraph>
                     The 
@@ -1822,9 +1839,9 @@
                     <paragraph>
                         and the final paragraph of the compound 7.
             <section ids="parsed-literal-blocks" names="parsed\ literal\ blocks">
-                <title auto="1" refid="toc-entry-48">
+                <title auto="1" refid="toc-entry-50">
                     <generated classes="sectnum">
-                        2.14.8   
+                        2.14.9   
                     Parsed Literal Blocks
                 <literal_block xml:space="preserve">
                     This is a parsed literal block.
@@ -1863,9 +1880,9 @@
                     <target ids="references" names="references" refuri="http://www.python.org/">
                     .
             <section ids="code" names="code">
-                <title auto="1" refid="toc-entry-49">
+                <title auto="1" refid="toc-entry-51">
                     <generated classes="sectnum">
-                        2.14.9   
+                        2.14.10   
                     Code
                 <paragraph>
                     Blocks of source code can be set with the 
@@ -1941,7 +1958,7 @@
                     .. footer:: Document footer
                 <target ids="pygments" names="pygments" refuri="http://pygments.org/">
         <section ids="substitution-definitions" names="substitution\ definitions">
-            <title auto="1" refid="toc-entry-32">
+            <title auto="1" refid="toc-entry-33">
                 <generated classes="sectnum">
                     2.15   
                 Substitution Definitions
@@ -1958,7 +1975,7 @@
             <paragraph>
                 (Substitution definitions are not visible in the HTML source.)
         <section ids="comments" names="comments">
-            <title auto="1" refid="toc-entry-33">
+            <title auto="1" refid="toc-entry-34">
                 <generated classes="sectnum">
                     2.16   
                 Comments
@@ -1975,7 +1992,7 @@
             <paragraph>
                 (View the HTML source to see the comment.)
         <section ids="raw-text" names="raw\ text">
-            <title auto="1" refid="toc-entry-34">
+            <title auto="1" refid="toc-entry-35">
                 <generated classes="sectnum">
                     2.17   
                 Raw text
@@ -1999,7 +2016,7 @@
             <raw format="latex" xml:space="preserve">
                 Fifth test in LaTeX.\\Line two.
         <section ids="container" names="container">
-            <title auto="1" refid="toc-entry-35">
+            <title auto="1" refid="toc-entry-36">
                 <generated classes="sectnum">
                     2.18   
                 Container
@@ -2009,7 +2026,7 @@
                 <paragraph>
                     paragraph 2
         <section ids="colspanning-tables" names="colspanning\ tables">
-            <title auto="1" refid="toc-entry-36">
+            <title auto="1" refid="toc-entry-37">
                 <generated classes="sectnum">
                     2.19   
                 Colspanning tables
@@ -2080,7 +2097,7 @@
                                 <paragraph>
                                     True
         <section ids="rowspanning-tables" names="rowspanning\ tables">
-            <title auto="1" refid="toc-entry-37">
+            <title auto="1" refid="toc-entry-38">
                 <generated classes="sectnum">
                     2.20   
                 Rowspanning tables
@@ -2132,7 +2149,7 @@
                                 <paragraph>
                                     body row 3
         <section ids="complex-tables" names="complex\ tables">
-            <title auto="1" refid="toc-entry-38">
+            <title auto="1" refid="toc-entry-39">
                 <generated classes="sectnum">
                     2.21   
                 Complex tables
@@ -2217,7 +2234,7 @@
                                         -->
                             <entry>
         <section ids="list-tables" names="list\ tables">
-            <title auto="1" refid="toc-entry-39">
+            <title auto="1" refid="toc-entry-40">
                 <generated classes="sectnum">
                     2.22   
                 List Tables
@@ -2302,7 +2319,7 @@
                                 <paragraph>
                                     1.99
     <section ids="error-handling" names="error\ handling">
-        <title auto="1" refid="toc-entry-40">
+        <title auto="1" refid="toc-entry-41">
             <generated classes="sectnum">
                 3   
             Error Handling
@@ -2346,15 +2363,15 @@
         <system_message level="1" line="476" source="functional/input/data/standard.txt" type="INFO">
             <paragraph>
                 Hyperlink target "image-target-3" is not referenced.
-        <system_message level="1" line="640" source="functional/input/data/standard.txt" type="INFO">
+        <system_message level="1" line="643" source="functional/input/data/standard.txt" type="INFO">
             <paragraph>
                 Hyperlink target "target1" is not referenced.
-        <system_message level="1" line="641" source="functional/input/data/standard.txt" type="INFO">
+        <system_message level="1" line="644" source="functional/input/data/standard.txt" type="INFO">
             <paragraph>
                 Hyperlink target "target2" is not referenced.
-        <system_message level="1" line="686" source="functional/input/data/standard.txt" type="INFO">
+        <system_message level="1" line="689" source="functional/input/data/standard.txt" type="INFO">
             <paragraph>
                 Hyperlink target "docutils" is not referenced.
-        <system_message level="1" line="852" source="functional/input/data/standard.txt" type="INFO">
+        <system_message level="1" line="855" source="functional/input/data/standard.txt" type="INFO">
             <paragraph>
                 Hyperlink target "hyperlink targets" is not referenced.
