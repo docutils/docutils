@@ -124,4 +124,4 @@ SVG images can also be put in figures:
       :height:  28 px
       :align: center
    
-      **Figure:** SVG image in a figure.
+      SVG image in a figure.
