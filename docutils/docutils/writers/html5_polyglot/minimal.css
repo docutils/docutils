@@ -201,8 +201,6 @@ object.align-right,
 table.align-right {
   margin-left: auto;
 }
-.figure.align-center, .figure.align-right,
-figure.align-center, figure.align-right,
 img.align-center, img.align-right,
 object.align-center, object.align-right {
   display: block;

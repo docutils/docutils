@@ -28,11 +28,11 @@ body {
 div.document,
 main {
   line-height:1.3;
-  counter-reset: table;
-  /* counter-reset: figure; */
+  counter-reset: table figure;
   /* avoid long lines --> better reading */
+  /* optimum is 45…75 characters/line <http://webtypography.net/2.1.2> */ 
   /* OTOH: lines should not be too short because of missing hyphenation, */
-  max-width: 50em;
+  max-width: 50em; 
   padding: 1px 2%; /* 1px on top avoids grey bar above title (mozilla) */
   margin: auto;
   background-color: white;
@@ -221,6 +221,14 @@ object.align-right {
 }
 /* Stop floating sidebars, images and figures at section level 1,2,3 */
 h1, h2, h3 { clear: both; }
+
+/* Numbered figures */
+figure.numbered > figcaption > p:before {
+  counter-increment: figure;
+  content: "Figure " counter(figure) ": ";
+  font-weight: bold;
+}
+
 
 /* Admonitions and System Messages */
 
