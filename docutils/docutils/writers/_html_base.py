@@ -957,13 +957,13 @@ class HTMLTranslator(nodes.NodeVisitor):
                 del atts[att_name]
         if style:
             atts['style'] = ' '.join(style)
-        if (isinstance(node.parent, nodes.TextElement) or
-            (isinstance(node.parent, nodes.reference) and
-             not isinstance(node.parent.parent, nodes.TextElement))):
-            # Inline context or surrounded by <a>...</a>.
-            suffix = ''
-        else:
+        if isinstance(node.parent, (nodes.figure, nodes.compound)):
             suffix = '\n'
+        elif not isinstance(node.parent, (nodes.TextElement, nodes.reference)):
+            self.body.append('<p class="image-wrapper">')
+            suffix = '</p>\n'
+        else:
+            suffix = ''
         if 'align' in node:
             atts['class'] = 'align-%s' % node['align']
         if ext in self.object_image_types:
@@ -1325,12 +1325,16 @@ class HTMLTranslator(nodes.NodeVisitor):
             atts['class'] += ' internal'
         if not isinstance(node.parent, nodes.TextElement):
             assert len(node) == 1 and isinstance(node[0], nodes.image)
+            if not isinstance(node.parent, (nodes.figure, nodes.compound)):
+                self.body.append('<p class="image-wrapper">')
             atts['class'] += ' image-reference'
         self.body.append(self.starttag(node, 'a', '', **atts))
 
     def depart_reference(self, node):
         self.body.append('</a>')
         if not isinstance(node.parent, nodes.TextElement):
+            if not isinstance(node.parent, (nodes.figure, nodes.compound)):
+                self.body.append('</p>')
             self.body.append('\n')
         self.in_mailto = False
 
