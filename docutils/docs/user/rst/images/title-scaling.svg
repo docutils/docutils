@@ -1,41 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
-
 <svg
    xmlns:dc="http://purl.org/dc/elements/1.1/"
    xmlns:cc="http://creativecommons.org/ns#"
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   version="1.1"
-   viewBox="0 0 280.82999 27.34" 
-   width="100%" 
-   height="100%"
    id="svg2"
-   inkscape:version="0.48.5 r10040"
-   sodipodi:docname="title.svg">
-  <sodipodi:namedview
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1"
-     objecttolerance="10"
-     gridtolerance="10"
-     guidetolerance="10"
-     inkscape:pageopacity="0"
-     inkscape:pageshadow="2"
-     inkscape:window-width="1000"
-     inkscape:window-height="680"
-     id="namedview10"
-     showgrid="false"
-     inkscape:zoom="1.573906"
-     inkscape:cx="58.770981"
-     inkscape:cy="13.67"
-     inkscape:window-x="0"
-     inkscape:window-y="0"
-     inkscape:window-maximized="0"
-     inkscape:current-layer="svg2" />
+   height="19.933594pt"
+   width="214.26941pt"
+   viewBox="0 0 285.69254 26.578126"
+   version="1.1">
   <metadata
      id="metadata8">
     <rdf:RDF>
@@ -44,27 +18,26 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
   <defs
      id="defs6" />
   <text
-     x="1.1959002"
-     y="24.185671"
-     transform="scale(0.95603363,1.0459883)"
-     id="text2818"
+     style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:34.41720963px;line-height:0%;font-family:TeXGyrePagella;-inkscape-font-specification:'TeXGyrePagella Italic';text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
      xml:space="preserve"
-     style="font-size:34.41720963px;font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:100%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:TeXGyrePagella;-inkscape-font-specification:TeXGyrePagella Italic"
-     sodipodi:linespacing="100%"><tspan
-       x="1.1959002"
-       y="24.185671"
-       id="tspan2820"><tspan
-         id="tspan2985"
-         style="font-family:Times New Roman;-inkscape-font-specification:Times New Roman">re</tspan><tspan
-         id="tspan2822"
-         style="font-size:34.41720963px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:100%;writing-mode:lr-tb;text-anchor:start;font-family:Courier New;-inkscape-font-specification:Courier New">Structured</tspan><tspan
-         id="tspan2989"
-         style="font-family:Times New Roman;-inkscape-font-specification:Times New Roman">Text</tspan></tspan></text>
+     id="text2818"
+     transform="scale(0.95603363,1.0459883)"
+     y="24.939034"
+     x="-0.3865214"><tspan
+       id="tspan2820"
+       y="24.939034"
+       x="-0.3865214"><tspan
+         style="font-family:'Times New Roman';-inkscape-font-specification:'Times New Roman'"
+         id="tspan2985">re</tspan><tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:34.41720963px;line-height:100%;font-family:'Courier New';-inkscape-font-specification:'Courier New';text-align:start;writing-mode:lr-tb;text-anchor:start"
+         id="tspan2822">Structured</tspan><tspan
+         style="font-family:'Times New Roman';-inkscape-font-specification:'Times New Roman'"
+         id="tspan2989">Text</tspan></tspan></text>
 </svg>
