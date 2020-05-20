@@ -40,7 +40,7 @@ Changes Since 0.16
 * docutils/utils/smartquotes.py
 
   - Fix [ 383 ]: Smart quotes around opening and separator characters.
-  
+
 * docutils/writers/html5_polyglot/
 
   - Use the new semantic tags <main>, <section>, <header>,
@@ -50,9 +50,12 @@ Changes Since 0.16
   - Use HTML text-level tags <small>, <s>, <q>, <dfn>, <var>, <samp>, <kbd>,
     <i>, <b>, <u>, <mark>, and <bdi> if a matching class value
     is found in `inline` and `literal` elements.
-
-  - Use HTML tags <ins> and <del> if a matching class value
+    Use <ins> and <del> if a matching class value
     is found in `inline`, `literal`, or `container` elements.
+
+  - Wrap block-level image elements in <p> (except for figures).
+    Move non-essential styling from ``minimal.css`` to ``plain.css``.
+    Support numbered figures in ``plain.css``.
 
 * docutils/writers/latex2e/__init__.py:
 
@@ -69,7 +72,7 @@ Changes Since 0.16
 
   - [ Fix #126 ] manpage title with spaces.
   - [ Fix #380 ] commandline option problem in sphinx.
- 
+
 .. _pip: https://pypi.org/project/pip/
 .. _legacy_class_functions: docs/user/config.html#legacy-class-functions
 
