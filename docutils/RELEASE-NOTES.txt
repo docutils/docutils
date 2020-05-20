@@ -25,6 +25,12 @@ Future changes
     change to "False". Adapt stylesheets modifying ``\DUadmonition``
     and/or ``\DUtitle`` or set to "True".
 
+* HTML5 writer:
+    Do not use <h1> for section headings when it is used for the document
+    title. https://www.w3.org/wiki/HTML/Usage/Headings/h1only
+    
+    Use <blockquote> instead of <div> tags for topics and admonitions.
+
 * ``Node.traverse()`` will return an iterator instead of a list.
 
 * Remove ``utils.unique_combinations``
@@ -78,9 +84,13 @@ Release 0.17
   - Use HTML text-level tags <small>, <s>, <q>, <dfn>, <var>, <samp>, <kbd>,
     <i>, <b>, <u>, <mark>, and <bdi> if a matching class value
     is found in `inline` and `literal` elements.
-
-  - Use HTML tags <ins> and <del> if a matching class value
+    Use <ins> and <del> if a matching class value
     is found in `inline`, `literal`, or `container` elements.
+
+  - Wrap block-level image elements in <p> (except for figures).
+    Move non-essential styling from ``minimal.css`` to ``plain.css``.
+    Support numbered figures in ``plain.css``.
+
 
 * LaTeX writer:
 

@@ -1506,9 +1506,9 @@ LaTeX will search the specified files in the `TeX input path`_.
 
 Default: no stylesheet ("").  Option: ``--stylesheet``.
 
+__ `stylesheet [html writers]`_
 __ `stylesheet_path [latex writers]`_
 __ `embed_stylesheet [latex writers]`_
-__ `stylesheet [html writers]`_
 .. _TeX input path:
    http://www.tex.ac.uk/cgi-bin/texfaq2html?label=what-TDS
 
