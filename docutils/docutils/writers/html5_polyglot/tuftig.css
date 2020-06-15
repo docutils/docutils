@@ -1,0 +1,582 @@
+/* CSS31_ style sheet for the output of Docutils HTML writers.             */
+/* Rules inspired by Edward Tufte's layout design.                         */
+/*                                                                         */
+/* :Author: Günter Milde						   */
+/*    	    based on tufte.css_ by Dave Liepmann    			   */
+/* 	    and the tufte-latex_ package.	    			   */
+/*  	    								   */
+/* :Id: $Id$               						   */
+/* :Copyright: © 2020 Günter Milde.                                        */
+/* :License: Released under the terms of the `2-Clause BSD license`_,      */
+/*    in short:                                                            */
+/*                                                                         */
+/*    Copying and distribution of this file, with or without modification, */
+/*    are permitted in any medium without royalty provided the copyright   */
+/*    notice and this notice are preserved.                                */
+/*                                                                         */
+/*    This file is offered as-is, without any warranty.                    */
+/*                                                                         */
+/* .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause     */
+/* .. _CSS3: http://www.w3.org/TR/CSS3                                     */
+/* .. _tufte.css: https://edwardtufte.github.io/tufte-css/		   */
+/* .. _tufte-latex_: https://www.ctan.org/pkg/tufte-latex
+
+
+/* Setup */
+/* ***** */
+
+main {
+  counter-reset: figure table;
+}
+
+
+/* Document Structure */
+/* ****************** */
+
+/* "page layout" */
+body {
+  margin: 0;
+  margin-left: auto;
+  margin-right: auto;
+  font-family: et-book, serif;
+  background-color: grey;
+  max-width: 100em;
+  font-size: 1.2em;
+  line-height: 1.6; /* TODO: compute with  https://grtcalculator.com/math/ */
+}
+.sans {
+    font-family: "Gill Sans", "Gill Sans MT", Calibri, sans-serif;
+    letter-spacing: .03em;
+}
+
+main, header, footer {
+  padding: 0.5em 0;
+  background-color: #fefef8;
+  padding-left: 10%;
+}
+
+/* Main text elements: Keep large right margin for sidenotes etc. */
+section > p,
+section > dl,
+section > div,
+section > div.topic.contents,
+section > ol,
+section > ul,
+section > h3,
+hr.docutils {
+  background: GhostWhite;
+  box-sizing: border-box;
+  width: 55%; /* of max 100em ≦ 55em, ca. 90…100 characters */
+}
+section > h1, section > h2 {
+  width: 60% /* cf. tufte-latex */
+}
+section > table {
+  max-width: 55%;
+}
+/* Indented Blocks */
+section> blockquote,
+section > div.topic,
+section > dl.option-list {
+  box-sizing: border-box;
+  width: 53%;
+}
+section > pre { /* full width for preformatted text */
+  box-sizing: border-box;
+  width: 93%; 
+}
+blockquote,
+div.topic,
+dl.option-list,
+pre.literal-block, pre.math,
+pre.doctest-block, pre.code {
+  background: Honeydew;
+  margin: 1em 0 1em 2%;
+  padding-left: 1em;
+}
+
+/* Fullwidth Elements */
+h1.title, p.subtitle,
+dl.docinfo, div.abstract,
+div.topic.dedication, 
+main > div.topic.contents,
+.fullwidth {
+  background: Linen;
+  width: 90%;
+  max-width: 55em; /* ca. 90…100 characters */
+}
+
+/* Margin Elements */
+/* Sidebar, Footnotes, Citations, Captions */
+aside.sidebar,
+dl.footnote,
+dl.citation,
+figcaption,
+.marginal {
+  background: Lavender;
+  box-sizing: border-box;
+  float: right;
+  clear: right;
+  max-width: 55em;
+  width: 45%;
+  padding: 0 2.5%;
+  font-size: 0.8em;
+  text-align: initial;
+}
+aside.sidebar {
+  margin: 0;
+  border: none;
+}
+
+/* One-Column Layout for Small Screens */
+/* ----------------------------------- */
+
+@media (max-width: 65em) {
+  /* main text ca. 45…50 characters/line */
+  section > p,
+  section > dl,
+  section > div,
+  section > div.topic.contents,
+  section > ol,
+  section > ul,
+  section > h3,
+  hr.docutils,
+  section > h1, section > h2 {
+    width: 95%;
+  }
+  section > table,
+  section > table.fullwidth {
+    width: auto;
+    max-width: 95%;
+  }
+  
+  section> blockquote,
+  section > div.topic,
+  section > dl.option-list {
+    width: 93%;
+  }
+  section > pre {
+    width: 97%; 
+  }
+  
+  dl.footnote, dl.citation,
+  figcaption {
+    float: none;
+    width: 95%;
+    padding: 0;
+  }
+}
+
+
+
+/* Titles and Headings */
+
+h1, h2, h3, p.subtitle, p.section-subtitle,
+p.topic-title, p.sidebar-title, p.sidebar-subtitle {
+  font-weight: 400;
+  font-style: italic;
+  text-align: left;
+  line-height: 1;
+}
+/* .sectnum {		 */
+/*   font-style: normal; */
+/* }			 */
+
+h1.title {
+  text-align: left;
+  margin-top: 0;
+  padding-top: 2em;
+  font-size: 2.4em;
+}
+h1 + p.subtitle {
+  margin-top: 0.4em;
+  margin-bottom: 2em;
+  font-size: 2.0em;
+}
+
+h1, .contents > p.topic-title {
+  margin-top: 2.1em;
+  font-size: 2.0em;
+  clear: both;
+}
+h1 + p.section-subtitle {
+  font-size: 1.6em;
+}
+
+h2 {
+  margin-top: 2em;
+  font-size: 1.2em;
+}
+h2 + p.section-subtitle {
+  font-size: 1.1em;
+}
+
+h3 {
+  margin-top: 1.7em;
+  font-size: 1.1em;
+}
+
+p.section-subtitle {
+  margin-top: 0.4em;
+  font-size: 1em;
+}
+
+
+/* Transitions */
+
+hr.docutils {
+  border: 0;
+  border-top: 1px solid #ccc;
+  margin: 1em 0;
+  clear: both;
+}
+
+
+/* Paragraphs */
+/* ========== */
+
+/* vertical space (parskip) */
+p, ol, ul, dl,
+div.line-block,
+div.topic,
+table {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+p:first-child { margin-top: 0; }
+/* (:last-child is new in CSS 3) */
+p:last-child  { margin-bottom: 0; }
+
+h1, h2, h3, h4, h5, h6,
+dl > dd {
+  margin-bottom: 0.5em;
+}
+
+/* Lists */
+/* ===== */
+
+/* Less indent per level */
+ul, ol {
+  padding-left: 1.5em;
+  -webkit-padding-start: 1.5em;
+  -moz-padding-start: 1.5em;
+}
+
+/* Definition Lists */
+dd {
+  margin-left: 1.5em;
+}
+
+/* lists nested in definition lists */
+/* (:only-child is new in CSS 3) */
+dd > ul:only-child, dd > ol:only-child { padding-left: 1em; }
+
+/* Description Lists */
+/* styled like in most dictionaries, encyclopedias etc. */
+dl.description > dt {
+/*   font-weight: bold; */
+  font-style: italic;
+  clear: left;
+  float: left;
+  margin: 0;
+  padding: 0;
+  padding-right: 0.5em;
+}
+
+/* Field Lists and drivatives */
+
+dl.field-list > dd {
+  margin-left: 6em;
+}
+/* italic field name */
+dl.field-list > dt,
+dl.docinfo > dt {
+  font-weight: 400;
+  font-style: italic;
+}
+
+/* example for custom field-name width */
+dl.field-list.narrow > dd {
+  margin-left: 4em;
+}
+/* run-in: start field-body on same line after long field names */
+dl.field-list.run-in > dd p {
+  display: block;
+}
+
+/* Bibliographic Fields */
+
+/* generally, bibliographic fields use special definition list dl.docinfo */
+
+/* dedication and abstract are placed into "topic" divs */
+div.abstract {
+  font-size: 0.9em;
+}
+div.topic.dedication {
+  margin: 2em 0;
+  padding: 0;
+  font-style: italic;
+}
+div.abstract p.topic-title, div.dedication p.topic-title {
+  display: none;
+}
+
+/* Table of Contents */
+div.topic.contents {
+  padding: 0;
+}
+
+/* Blocks */
+/* ====== */
+
+/* Literal Blocks */
+
+/* span.docutils.literal, */
+pre.literal-block,
+pre.doctest-block,
+pre.math,
+pre.code {
+  /* font-family: Consolas, "Liberation Mono", Menlo, monospace; */
+  /* font-size: 0.9em; */
+  overflow: auto;
+  -webkit-text-size-adjust: 100%; /* Prevent adjustments of font size after orientation changes in iOS. See https://github.com/edwardtufte/tufte-css/issues/81#issuecomment-261953409 */
+}
+
+/* Line Blocks */
+/* cf. "indented blocks" above */
+div.line-block div.line-block {
+  background: LightCyan;
+  margin-left: 2%;
+  padding-left: 1em;
+}
+
+/* Block Quotes */
+
+blockquote {
+/*   font-size: 0.9em; */
+}
+
+blockquote > table,
+div.topic > table {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+blockquote p.attribution,
+div.topic p.attribution {
+  text-align: right;
+}
+
+
+/* Tables */
+/* ====== */
+
+/* th { vertical-align: bottom; } */
+
+table tr { text-align: left; }
+
+/* "booktabs" style (no vertical lines) */
+table.booktabs {
+  border: 0;
+  border-top: 2px solid;
+  border-bottom: 2px solid;
+  border-collapse: collapse;
+}
+table.booktabs * {
+  border: 0;
+}
+table.booktabs th {
+  border-bottom: thin solid;
+}
+
+/* numbered tables */
+table.numbered > caption:before {
+  counter-increment: table;
+  content: "Table " counter(table) ": ";
+}
+
+/* table > caption {		     */
+/*   background: lightgray;	     */
+/*   caption-side: right;	     */
+/*   width: 40%;		     */
+/* }				     */
+/* table[class*="align"] > caption { */
+/*   background: red;		     */
+/*   caption-side: inherit;	     */
+/*   width: auto;		     */
+/* }				     */
+
+/* Explicit Markup Blocks */
+/* ====================== */
+
+/* Labels */
+dl.citation dt.label {
+/*   font-weight: bold; */
+/*   font-style: normal; */
+}
+span.fn-backref {
+  font-weight: normal;
+}
+
+
+
+/* Directives */
+/* ---------- */
+
+/* Body Elements */
+/* ~~~~~~~~~~~~~ */
+
+/* Images and Figures */
+
+figure {
+  /* box-sizing: border-box; * failure when image size is set in rST source */
+  width: 100%;
+  margin: 0.5em 0;
+  background: azure;
+}
+
+/* let content flow to the side of aligned images and figures */
+figure.align-left,
+img.align-left,
+object.align-left {
+  clear: left;
+  float: left;
+  margin-left: 0;
+  padding-right: 0.5em;
+  width: auto;
+}
+figure.align-right,
+img.align-right,
+object.align-right {
+  width: auto;
+  clear: right;
+  float: right;
+  padding-left: 0.5em;
+}
+figure.align-right > figcaption {
+  float: none;
+  width: auto;
+  padding-left: 0;
+}
+
+figure[style~="width:"] > figcaption {
+  width: auto;
+}
+
+/* numbered figures */
+figure.numbered > figcaption > p:before {
+  counter-increment: figure;
+  content: "Figure " counter(figure) ": ";
+}
+figcaption > div.legend {
+  padding-left: 1em;
+}
+
+/* Admonitions and System Messages */
+
+div.admonition,
+div.system-message {
+  border-style: solid;
+  border-color: silver;
+  border-width: thin;
+  margin: 1em 0;
+  padding: 0.5em;
+}
+
+div.caution p.admonition-title,
+div.attention p.admonition-title,
+div.danger p.admonition-title,
+div.warning p.admonition-title,
+div.error {
+  color: maroon;
+}
+
+
+
+/* Code */
+
+pre.code .ln { color: gray; } /* line numbers */
+/* basic highlighting: for a complete scheme, see */
+/* http://docutils.sourceforge.net/sandbox/stylesheets/ */
+pre.code .comment, code .comment { color: #5C6576 }
+pre.code .keyword, code .keyword { color: #3B0D06; font-weight: bold }
+pre.code .literal.string, code .literal.string { color: #0C5404 }
+pre.code .name.builtin, code .name.builtin { color: #352B84 }
+pre.code .deleted, code .deleted { background-color: #DEB0A1}
+pre.code .inserted, code .inserted { background-color: #A3D289}
+
+/* Math */
+/* styled separately (see math.css for math-output=HTML) */
+
+/* Epigraph           */
+/* Highlights         */
+/* Pull-Quote         */
+/* Compound Paragraph */
+/* Container          */
+
+/* can be styled in a custom stylesheet */
+
+/* Document Header and Footer */
+
+footer, header {
+  font-size: smaller;
+  clear: both;
+  width: 90%;
+  /* background-color: #ebebee; */
+  /* border: none;	        */
+}
+
+/* Inline Markup */
+/* ============= */
+
+
+/* Inline Literals                                          */
+/* possible values: normal, nowrap, pre, pre-wrap, pre-line */
+/*   span.docutils.literal { white-space: pre-wrap; }       */
+
+/* Hyperlink References */
+
+a { text-decoration: none; }
+
+/* External Targets       */
+/*   span.target.external */
+/* Internal Targets       */
+/*   span.target.internal */
+/* Footnote References    */
+/*   a.footnote-reference */
+/* Citation References    */
+/*   a.citation-reference */
+
+/* Links: replicate underline that clears descenders */
+a {
+  color: inherit;
+}
+
+.contents a:link, a.toc-backref:link, a.image-reference:link,
+a.footnote-reference:link, a.fn-backref:link, .fn-backref a:link {
+  /* color: inherit; */
+  background: unset;
+  text-shadow: unset;
+}
+
+a:link {
+    text-decoration: none;
+/*     background: -webkit-linear-gradient(#fffff8, #fffff8), -webkit-linear-gradient(#fffff8, #fffff8), -webkit-linear-gradient(currentColor, currentColor); */
+    background: linear-gradient(#fffff8, #fffff8), linear-gradient(#fffff8, #fffff8), linear-gradient(currentColor, currentColor);
+    -webkit-background-size: 0.05em 1px, 0.05em 1px, 1px 1px;
+    background-size: 0.05em 1px, 0.05em 1px, 1px 1px;
+    background-repeat: no-repeat, no-repeat, repeat-x;
+    text-shadow: 0.03em 0 #fffff8, -0.03em 0 #fffff8, 0 0.03em #fffff8, 0 -0.03em #fffff8, 0.06em 0 #fffff8, -0.06em 0 #fffff8, 0.09em 0 #fffff8, -0.09em 0 #fffff8, 0.12em 0 #fffff8, -0.12em 0 #fffff8, 0.15em 0 #fffff8, -0.15em 0 #fffff8;
+    background-position: 0% 93%, 100% 93%, 0% 93%;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+    a:link, .tufte-underline, .hover-tufte-underline:hover {
+        background-position-y: 87%, 87%, 87%;
+    }
+}
+
+a:link::selection,
+a:link::-moz-selection {
+    text-shadow: 0.03em 0 #b4d5fe, -0.03em 0 #b4d5fe, 0 0.03em #b4d5fe, 0 -0.03em #b4d5fe, 0.06em 0 #b4d5fe, -0.06em 0 #b4d5fe, 0.09em 0 #b4d5fe, -0.09em 0 #b4d5fe, 0.12em 0 #b4d5fe, -0.12em 0 #b4d5fe, 0.15em 0 #b4d5fe, -0.15em 0 #b4d5fe;
+    background: #b4d5fe;
+}
