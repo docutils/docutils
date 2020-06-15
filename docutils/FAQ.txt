@@ -318,7 +318,7 @@ the em dash is necessary because you cannot write "``foo|---|bar``";
 thus you need to add spaces ("``foo |---| bar``") and advise the
 reStructuredText parser to trim the spaces.
 
-.. _Standard Substitution Definition Sets: docs/ref/rst/substitutions.html
+.. _Standard Substitution Definition Sets: docs/ref/rst/definitions.html
 .. _unicode: docs/ref/rst/directives.html#unicode-character-codes
 .. _are available: http://docutils.sourceforge.net/tmp/charents/
 .. _tarball: http://docutils.sourceforge.net/tmp/charents.tgz
