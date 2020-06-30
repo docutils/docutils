@@ -476,7 +476,7 @@ class Translator(nodes.NodeVisitor):
     depart_caution = depart_admonition
 
     def visit_citation(self, node):
-        num, text = node.astext().split(None, 1)
+        num = node.astext().split(None, 1)[0]
         num = num.strip()
         self.body.append('.IP [%s] 5\n' % num)
 
