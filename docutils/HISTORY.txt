@@ -70,8 +70,9 @@ Changes Since 0.16
 
 * docutils/writers/manpage.py
 
-  - [ Fix #126 ] manpage title with spaces.
-  - [ Fix #380 ] commandline option problem in sphinx.
+  - Patch [ #168 ] fix crashing on empty citation (by Takeshi KOMIYA).
+  - Fix [ #126 ] manpage title with spaces.
+  - Fix [ #380 ] commandline option problem in sphinx.
 
 .. _pip: https://pypi.org/project/pip/
 .. _legacy_class_functions: docs/user/config.html#legacy-class-functions
