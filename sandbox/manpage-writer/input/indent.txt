@@ -6,6 +6,9 @@ indent
 test indentation blocks
 ------------------------------
 
+option block
+------------
+
 an option block, and within it, a part of the text block indented. 
 the rest of the text ("More lines 1", etc.) isn't aligned at the same
 level as "Line1".  Instead, they're flush left to the screen
@@ -28,4 +31,12 @@ level as "Line1".  Instead, they're flush left to the screen
         More lines 1.
         More lines 2.
         More lines 3.
+
+rubric starting with a list
+---------------------------
+
+.. rubric:: empty rubric
+
+- followed
+- by a list
 
