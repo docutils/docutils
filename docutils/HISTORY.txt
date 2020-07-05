@@ -70,6 +70,7 @@ Changes Since 0.16
 
 * docutils/writers/manpage.py
 
+  - Fix [ 394 ] fix missing new line after rubric.
   - Patch [ #168 ] fix crashing on empty citation (by Takeshi KOMIYA).
   - Fix [ #126 ] manpage title with spaces.
   - Fix [ #380 ] commandline option problem in sphinx.

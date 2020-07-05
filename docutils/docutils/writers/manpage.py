@@ -1153,7 +1153,7 @@ class Translator(nodes.NodeVisitor):
         pass
 
     def depart_rubric(self, node):
-        pass
+        self.body.append('\n')
 
     def visit_transition(self, node):
         # .PP      Begin a new paragraph and reset prevailing indent.
