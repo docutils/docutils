@@ -3,7 +3,7 @@ indent
 ================================
 
 ------------------------------
-test indenated blocks
+test indentation blocks
 ------------------------------
 
 an option block, and within it, a part of the text block indented. 

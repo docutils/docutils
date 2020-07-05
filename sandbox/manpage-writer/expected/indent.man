@@ -2,7 +2,7 @@
 .
 .TH "INDENT"  "" "" ""
 .SH NAME
-indent \- test indenated blocks
+indent \- test indentation blocks
 .
 .nr rst2man-indent-level 0
 .
