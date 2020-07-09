@@ -35,7 +35,10 @@ Changes Since 0.16
 
 * docutils/nodes.py
 
-  - Apply patch #165: Fix error when copying `system_message` node.
+  - Apply patch #165: Fix error when copying `system_message` node
+    (by Takeshi KOMIYA).
+  - Apply version of patch #167: Let document.set_id() register all
+    existing IDs (thanks to Takeshi KOMIYA).
 
 * docutils/utils/smartquotes.py
 
