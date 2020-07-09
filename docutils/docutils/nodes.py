@@ -1361,39 +1361,43 @@ class document(Root, Structural, Element):
         return domroot
 
     def set_id(self, node, msgnode=None, suggested_prefix=''):
-        for id in node['ids']:
-            if id in self.ids and self.ids[id] is not node:
-                msg = self.reporter.severe('Duplicate ID: "%s".' % id)
-                if msgnode != None:
-                    msgnode += msg
-        if not node['ids']:
-            id_prefix = self.settings.id_prefix
-            auto_id_prefix = self.settings.auto_id_prefix
-            base_id = ''
-            id = ''
-            for name in node['names']:
-                base_id = make_id(name)
-                id = id_prefix + base_id
-                # TODO: allow names starting with numbers if `id_prefix`
-                # is non-empty:  id = make_id(id_prefix + name)
-                if base_id and id not in self.ids:
-                    break
+        if node['ids']: 
+            # register and check for duplicates
+            for id in node['ids']:
+                self.ids.setdefault(id, node)
+                if self.ids[id] is not node:
+                    msg = self.reporter.severe('Duplicate ID: "%s".' % id)
+                    if msgnode != None:
+                        msgnode += msg
+            return id
+        # generate and set id
+        id_prefix = self.settings.id_prefix
+        auto_id_prefix = self.settings.auto_id_prefix
+        base_id = ''
+        id = ''
+        for name in node['names']:
+            base_id = make_id(name)
+            id = id_prefix + base_id
+            # TODO: allow names starting with numbers if `id_prefix`
+            # is non-empty:  id = make_id(id_prefix + name)
+            if base_id and id not in self.ids:
+                break
+        else:
+            if base_id and auto_id_prefix.endswith('%'):
+                # disambiguate name-derived ID
+                # TODO: remove second condition after announcing change
+                prefix = id + '-'
             else:
-                if base_id and auto_id_prefix.endswith('%'):
-                    # disambiguate name-derived ID
-                    # TODO: remove second condition after announcing change
-                    prefix = id + '-'
-                else:
-                    prefix = id_prefix + auto_id_prefix
-                    if  prefix.endswith('%'):
-                        prefix = '%s%s-' % (prefix[:-1], suggested_prefix
-                                                    or make_id(node.tagname))
-                while True:
-                    self.id_counter[prefix] += 1
-                    id = '%s%d' % (prefix, self.id_counter[prefix])
-                    if id not in self.ids:
-                        break
-            node['ids'].append(id)
+                prefix = id_prefix + auto_id_prefix
+                if  prefix.endswith('%'):
+                    prefix = '%s%s-' % (prefix[:-1], suggested_prefix
+                                                or make_id(node.tagname))
+            while True:
+                self.id_counter[prefix] += 1
+                id = '%s%d' % (prefix, self.id_counter[prefix])
+                if id not in self.ids:
+                    break
+        node['ids'].append(id)
         self.ids[id] = node
         return id
 
