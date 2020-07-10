@@ -375,7 +375,9 @@ Option:
   template_
 
 In addition to the 'default.tex' template, the latex writer directory
-contains the alternative 'titlepage.tex'.
+contains the alternatives 'titlepage.tex' (separete title page) and
+'titlinpage.tex'" (separate title page with the `memoir`_
+`document class`_).
 
 Example:
   Print a title page including docinfo, dedication, and abstract::
@@ -384,7 +386,6 @@ Example:
 
 .. _publisher documentation: ../api/publisher.html
 .. _template: config.html#template-latex2e-writer
-
 
 Raw LaTeX
 `````````
