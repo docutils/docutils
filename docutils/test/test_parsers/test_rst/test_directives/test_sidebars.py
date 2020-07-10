@@ -61,6 +61,17 @@ totest['sidebars'] = [
             Body.
 """],
 ["""\
+.. sidebar::
+
+   The title is optional.
+""",
+"""\
+<document source="test data">
+    <sidebar>
+        <paragraph>
+            The title is optional.
+"""],
+["""\
 .. sidebar:: Outer
 
    .. topic:: Topic

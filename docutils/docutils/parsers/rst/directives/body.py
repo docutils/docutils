@@ -36,16 +36,20 @@ class BasePseudoSection(Directive):
             raise self.error('The "%s" directive may not be used within '
                              'topics or body elements.' % self.name)
         self.assert_has_content()
-        title_text = self.arguments[0]
-        textnodes, messages = self.state.inline_text(title_text, self.lineno)
-        titles = [nodes.title(title_text, '', *textnodes)]
-        # Sidebar uses this code.
-        if 'subtitle' in self.options:
-            textnodes, more_messages = self.state.inline_text(
-                self.options['subtitle'], self.lineno)
-            titles.append(nodes.subtitle(self.options['subtitle'], '',
-                                         *textnodes))
-            messages.extend(more_messages)
+        if self.arguments:  # title (in sidebars optional)
+            title_text = self.arguments[0]
+            textnodes, messages = self.state.inline_text(title_text, self.lineno)
+            titles = [nodes.title(title_text, '', *textnodes)]
+            # Sidebar uses this code.
+            if 'subtitle' in self.options:
+                textnodes, more_messages = self.state.inline_text(
+                    self.options['subtitle'], self.lineno)
+                titles.append(nodes.subtitle(self.options['subtitle'], '',
+                                            *textnodes))
+                messages.extend(more_messages)
+        else:
+            titles = []
+            messages = []
         text = '\n'.join(self.content)
         node = self.node_class(text, *(titles + messages))
         node['classes'] += self.options.get('class', [])
@@ -64,6 +68,8 @@ class Sidebar(BasePseudoSection):
 
     node_class = nodes.sidebar
 
+    required_arguments = 0
+    optional_arguments = 1
     option_spec = BasePseudoSection.option_spec.copy()
     option_spec['subtitle'] = directives.unchanged_required
 
@@ -71,6 +77,10 @@ class Sidebar(BasePseudoSection):
         if isinstance(self.state_machine.node, nodes.sidebar):
             raise self.error('The "%s" directive may not be used within a '
                              'sidebar element.' % self.name)
+        if 'subtitle' in self.options and not self.arguments:
+            raise self.error('The "subtitle" option may not be used '
+                             'without a title.')
+
         return BasePseudoSection.run(self)
 
 

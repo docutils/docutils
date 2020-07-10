@@ -1138,7 +1138,7 @@ Python-specific usage examples; begun with "&gt;&gt;&gt;"
                 <title auto="1" refid="toc-entry-46"><generated classes="sectnum">2.14.5   </generated>Topics, Sidebars, and Rubrics</title>
                 <paragraph><emphasis>Sidebars</emphasis> are like miniature, parallel documents.</paragraph>
                 <sidebar>
-                    <title>Sidebar Title</title>
+                    <title>Optional Sidebar Title</title>
                     <subtitle>Optional Subtitle</subtitle>
                     <paragraph>This is a sidebar.  It is for text outside the flow of the main
                         text.</paragraph>
