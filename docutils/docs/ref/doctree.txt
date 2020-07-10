@@ -3765,7 +3765,7 @@ Details
     section_
 
 :Children:
-    ``sidebar`` elements begin with a title_ and an optional subtitle_
+    ``sidebar`` elements begin with optional title_ and subtitle_
     and contain `body elements`_ and topic_ elements.
 
 :Analogues:
@@ -3801,7 +3801,7 @@ Examples
 The `"sidebar" directive`_ is used to create a ``sidebar`` element.
 reStructuredText_ source::
 
-    .. sidebar:: Title
+    .. sidebar:: Optional Title
        :subtitle: If Desired
 
        Body.
@@ -3810,7 +3810,7 @@ Pseudo-XML_ fragment from simple parsing::
 
     <sidebar>
         <title>
-            Title
+            Optional Title
         <subtitle>
             If Desired
         <paragraph>

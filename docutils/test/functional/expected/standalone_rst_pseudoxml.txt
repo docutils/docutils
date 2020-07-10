@@ -1603,7 +1603,7 @@
                      are like miniature, parallel documents.
                 <sidebar>
                     <title>
-                        Sidebar Title
+                        Optional Sidebar Title
                     <subtitle>
                         Optional Subtitle
                     <paragraph>

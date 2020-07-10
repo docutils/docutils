@@ -693,7 +693,7 @@ Topics, Sidebars, and Rubrics
 
 *Sidebars* are like miniature, parallel documents.
 
-.. sidebar:: Sidebar Title
+.. sidebar:: Optional Sidebar Title
    :subtitle: Optional Subtitle
 
    This is a sidebar.  It is for text outside the flow of the main

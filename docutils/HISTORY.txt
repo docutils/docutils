@@ -40,6 +40,10 @@ Changes Since 0.16
   - Apply version of patch #167: Let document.set_id() register all
     existing IDs (thanks to Takeshi KOMIYA).
 
+* docutils/parsers/rst/directives/body.py:
+
+  - Make the sidebar's "title" argument optional (feature request #69).
+
 * docutils/utils/smartquotes.py
 
   - Fix #383: Smart quotes around opening and separator characters.

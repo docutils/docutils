@@ -373,7 +373,7 @@ Sidebar
 
 :Directive Type: "sidebar"
 :Doctree Element: sidebar_
-:Directive Arguments: One, required (sidebar title).
+:Directive Arguments: One, optional (sidebar title).
 :Directive Options: Possible (see below).
 :Directive Content: Interpreted as the sidebar body.
 
@@ -392,7 +392,7 @@ which may be followed by a subtitle option (see below); the next line
 must be blank.  All subsequent lines make up the sidebar body,
 interpreted as body elements.  For example::
 
-    .. sidebar:: Sidebar Title
+    .. sidebar:: Optional Sidebar Title
        :subtitle: Optional Sidebar Subtitle
 
        Subsequent indented lines comprise
