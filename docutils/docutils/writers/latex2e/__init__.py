@@ -653,7 +653,7 @@ PreambleCmds.minitoc = r"""%% local table of contents
 
 PreambleCmds.optionlist = r"""
 % optionlist environment
-\providecommand*{\DUoptionlistlabel}[1]{\bf #1 \hfill}
+\providecommand*{\DUoptionlistlabel}[1]{\bfseries #1 \hfill}
 \DUprovidelength{\DUoptionlistindent}{3cm}
 \ifthenelse{\isundefined{\DUoptionlist}}{
   \newenvironment{DUoptionlist}{%
@@ -1635,12 +1635,15 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.out.append('%\n'.join(['\\raisebox{1em}{\\hypertarget{%s}{}}' %
                                     id for id in node['ids']]))
 
-    def ids_to_labels(self, node, set_anchor=True):
+    def ids_to_labels(self, node, set_anchor=True, protect=False):
         """Return list of label definitions for all ids of `node`
 
         If `set_anchor` is True, an anchor is set with \\phantomsection.
+        If `protect` is True, the \label cmd is made robust.
         """
         labels = ['\\label{%s}' % id for id in node.get('ids', [])]
+        if protect:
+            labels = ['\\protect'+label for label in labels]
         if set_anchor and labels:
             labels.insert(0, '\\phantomsection')
         return labels
@@ -2023,7 +2026,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # titled document?
         if (self.use_latex_docinfo or len(node) and
             isinstance(node[0], nodes.title)):
-            self.title_labels += self.ids_to_labels(node, set_anchor=False)
+            protect = (self.settings.documentclass == 'memoir')
+            self.title_labels += self.ids_to_labels(node, set_anchor=False,
+                                                    protect=protect)
 
     def depart_document(self, node):
         # Complete header with information gained from walkabout
@@ -2937,7 +2942,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if isinstance(node.parent, nodes.document):
             self.push_output_collector(self.subtitle)
             self.fallbacks['documentsubtitle'] = PreambleCmds.documentsubtitle
-            self.subtitle_labels += self.ids_to_labels(node, set_anchor=False)
+            protect = (self.settings.documentclass == 'memoir')
+            self.subtitle_labels += self.ids_to_labels(node, set_anchor=False,
+                                                       protect=protect)
         # section subtitle: "starred" (no number, not in ToC)
         elif isinstance(node.parent, nodes.section):
             self.out.append(r'\%s*{' %
@@ -3188,7 +3195,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.out.append('\n')
             self.out += self.ids_to_labels(node)
             # add contents to PDF bookmarks sidebar
-            if isinstance(node.next_node(), nodes.title):
+            if (isinstance(node.next_node(), nodes.title)
+                and self.settings.documentclass != 'memoir'):
                 self.out.append('\n\\pdfbookmark[%d]{%s}{%s}' %
                                 (self.section_level+1,
                                  node.next_node().astext(),

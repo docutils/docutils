@@ -19,7 +19,7 @@ Changes Since 0.16
 
 * General
 
-  - Fix [ 385 ]: Import of language modules.
+  - Fix #385: Import of language modules.
   - Use importlib.import_module() to programmatically import modules.
   - Remove legacy LaTeX stylesheet ``docutils-05-compat.sty``.
   - Installing with ``setup.py`` now requires ``setuptools``.
@@ -42,7 +42,7 @@ Changes Since 0.16
 
 * docutils/utils/smartquotes.py
 
-  - Fix [ 383 ]: Smart quotes around opening and separator characters.
+  - Fix #383: Smart quotes around opening and separator characters.
 
 * docutils/writers/html5_polyglot/
 
@@ -70,13 +70,16 @@ Changes Since 0.16
     `styling command`__ prefix ``\docutilsrole``.
 
     __ docs/user/latex.html#classes
+    
+  - Support the `memoir` LaTeX document class.
+    Fixes #390, #391, and #392. 
 
 * docutils/writers/manpage.py
 
-  - Fix [ 394 ] fix missing new line after rubric.
-  - Patch [ #168 ] fix crashing on empty citation (by Takeshi KOMIYA).
-  - Fix [ #126 ] manpage title with spaces.
-  - Fix [ #380 ] commandline option problem in sphinx.
+  - Fix #394 fix missing new line after rubric.
+  - Patch #168 fix crashing on empty citation (by Takeshi KOMIYA).
+  - Fix #126 manpage title with spaces.
+  - Fix #380 commandline option problem in sphinx.
 
 .. _pip: https://pypi.org/project/pip/
 .. _legacy_class_functions: docs/user/config.html#legacy-class-functions
