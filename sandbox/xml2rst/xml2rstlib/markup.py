@@ -25,7 +25,7 @@ Python based conversion.
 
 import re
 import docutils
-import docutils.parsers.rst.states
+import docutils.parsers.rst.states as states
 
 __docformat__ = 'reStructuredText'
 
@@ -33,20 +33,29 @@ __docformat__ = 'reStructuredText'
 ###############################################################################
 # Classes
 
-class Inliner(docutils.parsers.rst.states.Inliner):
+class Inliner(states.Inliner):
     """
     Recognizer for inline markup. Derive this from the original inline
     markup parser for best results.
     """
+
+    # Copy static attributes from super class
+    vars().update(vars(states.Inliner))
 
     def quoteInline(self, text):
         """
         `text`: ``str``
           Return `text` with inline markup quoted.
         """
-        # Method inspired by `docutils.parsers.rst.states.Inliner.parse`
+        # Method inspired by `states.Inliner.parse`
         self.document = docutils.utils.new_document("<string>")
         self.document.settings.trim_footnote_reference_space = False
+        self.document.settings.character_level_inline_markup = False
+        self.document.settings.pep_references = False
+        self.document.settings.rfc_references = False
+
+        self.init_customizations(self.document.settings)
+
         self.reporter = self.document.reporter
         self.reporter.stream = None
         self.language = None
