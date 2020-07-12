@@ -1,4 +1,156 @@
 **************************************
+Date: Sun Jul  5 19:04:24 CEST 2020
+Author: stefan
+Tag: xml2rst_1_254
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/xml2rstlib
+In directory eskebo:/home/stefan/free/xml2rst/xml2rstlib
+
+Modified Files:
+	markup.py 
+
+--------------------------------------
+Log Message:
+R
+**************************************
+Date: Sun Jul  5 19:03:12 CEST 2020
+Author: stefan
+Tag: xml2rst_1_253
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/xml2rstlib
+In directory eskebo:/home/stefan/free/xml2rst/xml2rstlib
+
+Modified Files:
+	markup.py 
+
+--------------------------------------
+Log Message:
+Class attributes are copied in class.
+**************************************
+Date: Sun Jul  5 18:53:12 CEST 2020
+Author: stefan
+Tag: xml2rst_1_252
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/xml2rstlib
+In directory eskebo:/home/stefan/free/xml2rst/xml2rstlib
+
+Modified Files:
+	markup.py 
+
+--------------------------------------
+Log Message:
+Class attributes are initialized in constructor.
+**************************************
+Date: Sun Jul  5 18:29:08 CEST 2020
+Author: stefan
+Tag: xml2rst_1_251
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/xml2rstlib
+In directory eskebo:/home/stefan/free/xml2rst/xml2rstlib
+
+Modified Files:
+	markup.py 
+
+--------------------------------------
+Log Message:
+Class attributes are copied explicitly to the subclass. Tests (nearly)
+run.
+**************************************
+Date: Thu Jun 11 12:00:24 CEST 2020
+Author: stefan
+Tag: xml2rst_1_250
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/xml2rstlib
+In directory eskebo:/home/stefan/free/xml2rst/xml2rstlib
+
+Modified Files:
+	markup.py 
+
+--------------------------------------
+Log Message:
+Shortet notation used.
+**************************************
+Date: Thu Jun 11 11:31:59 CEST 2020
+Author: stefan
+Tag: xml2rst_1_249
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/xml2rstlib
+In directory eskebo:/home/stefan/free/xml2rst/xml2rstlib
+
+Modified Files:
+	markup.py 
+
+--------------------------------------
+Log Message:
+Removed new style class. Test fail.
+**************************************
+Date: Thu Jun 11 11:21:18 CEST 2020
+Author: stefan
+Tag: xml2rst_1_248
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/xml2rstlib
+In directory eskebo:/home/stefan/free/xml2rst/xml2rstlib
+
+Modified Files:
+	markup.py 
+
+--------------------------------------
+Log Message:
+Fixed one problem. Tests fail.
+**************************************
+Date: Thu Jun 11 11:17:32 CEST 2020
+Author: stefan
+Tag: xml2rst_1_247
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/xml2rstlib
+In directory eskebo:/home/stefan/free/xml2rst/xml2rstlib
+
+Modified Files:
+	markup.py 
+
+--------------------------------------
+Log Message:
+Tests failed. Stripped patch down to the obvious minimum. Tests still
+fail.
+**************************************
+Date: Thu Jun 11 10:49:48 CEST 2020
+Author: stefan
+Tag: xml2rst_1_246
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/xml2rstlib
+In directory eskebo:/home/stefan/free/xml2rst/xml2rstlib
+
+Modified Files:
+	markup.py 
+
+--------------------------------------
+Log Message:
+Imported patch from Yaroslav Nikitenko unchanged.
+**************************************
+Date: Sat Apr 12 22:53:59 CEST 2014
+Author: stefan
+Tag: xml2rst_1_245
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/command
+In directory eskebo:/home/stefan/free/xml2rst/tests/command
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Log Message:
+Adapted to `filterunit` V1.4.1.
+**************************************
 Date: Sun Dec 15 12:11:23 CET 2013
 Author: stefan
 Tag: xml2rst_1_244
