@@ -376,7 +376,7 @@ Option:
 
 In addition to the 'default.tex' template, the latex writer directory
 contains the alternatives 'titlepage.tex' (separete title page) and
-'titlinpage.tex'" (separate title page with the `memoir`_
+'titlingpage.tex'" (separate title page with the `memoir`_
 `document class`_).
 
 Example:
@@ -1574,6 +1574,32 @@ Example1:
 
 __ ../ref/rst/directives.html#rubric
 .. _container: ../ref/rst/directives.html#container
+
+section headings
+----------------
+
+Options: documentclass_, use-part-section_
+
+Section headings are converted into LaTeX macros according to their level,
+the document class and the value of the use-part-section_ setting:
+
+=====  =============  ================== =============  ==============
+Level  article        article with part  book [#]_      book with part
+=====  =============  ================== =============  ==============
+  1    section        part               chapter        part
+  2    subsection     section            section        chapter
+  3    subsubsection  subsection         subsection     section      
+  4    paragraph      subsubsection      subsubsection  subsection   
+  5    subparagraph   paragraph          paragraph      subsubsection
+  6    DUtitle        subparagraph       subparagraph   paragraph    
+  7    DUtitle        DUtitle            DUtitle        subparagraph 
+=====  =============  ================== =============  ==============
+                                                        
+
+.. [#] One of the document classes 'book', 'memoir', 'report 'scrbook',
+       or 'scrreprt'.
+
+.. _use-part-section: config.html#use-part-section
 
 section numbering
 -----------------

@@ -388,8 +388,6 @@ Reference Names
    `reference name` due to restrictions on identifiers/labels in the
    output format.
 
-   .. _identifier key: ../doctree.html#identifier-keys
-
 Simple reference names are single words consisting of alphanumerics
 plus isolated (no two adjacent) internal hyphens, underscores,
 periods, colons and plus signs; no whitespace or other characters are
@@ -444,7 +442,8 @@ Document Structure
 Document
 --------
 
-Doctree element: document.
+Doctree element: `document <document element_>`_.
+
 
 The top-level element of a parsed reStructuredText document is the
 "document" element.  After initial parsing, the document element is a
@@ -475,7 +474,7 @@ transform`_ for details.
 Sections
 --------
 
-Doctree elements: section, title.
+Doctree elements: section_, title_.
 
 Sections are identified through their titles, which are marked up with
 adornment: "underlines" below the title text, or underlines and
@@ -569,7 +568,7 @@ sections.
 Transitions
 -----------
 
-Doctree element: transition.
+Doctree element: transition_.
 
     Instead of subheads, extra space or a type ornament between
     paragraphs may be used to mark text divisions or to signal
@@ -609,7 +608,7 @@ Body Elements
 Paragraphs
 ----------
 
-Doctree element: paragraph.
+Doctree element: paragraph_.
 
 Paragraphs consist of blocks of left-aligned text with no markup
 indicating any other body element.  Blank lines separate paragraphs
@@ -632,7 +631,7 @@ Syntax diagram::
 Bullet Lists
 ------------
 
-Doctree elements: bullet_list, list_item.
+Doctree elements: bullet_list_, list_item_.
 
 A text block which begins with a "*", "+", "-", "•", "‣", or "⁃",
 followed by whitespace, is a bullet list item (a.k.a. "unordered" list
@@ -681,7 +680,7 @@ Syntax diagram::
 Enumerated Lists
 ----------------
 
-Doctree elements: enumerated_list, list_item.
+Doctree elements: enumerated_list_, list_item_.
 
 Enumerated lists (a.k.a. "ordered" lists) are similar to bullet lists,
 but use enumerators instead of bullets.  An enumerator consists of an
@@ -769,8 +768,8 @@ Example syntax diagram::
 Definition Lists
 ----------------
 
-Doctree elements: definition_list, definition_list_item, term,
-classifier, definition.
+Doctree elements: definition_list_, definition_list_item_, term_,
+classifier_, definition_.
 
 Each definition list item contains a term, optional classifiers, and a
 definition.  A term is a simple one-line word or phrase.  Optional
@@ -826,7 +825,7 @@ Syntax diagram::
 Field Lists
 -----------
 
-Doctree elements: field_list, field, field_name, field_body.
+Doctree elements: field_list_, field_, field_name_, field_body_.
 
 Field lists are used as part of an extension syntax, such as options
 for directives_, or database-like records meant for further
@@ -892,8 +891,9 @@ Syntax diagram (simplified)::
 Bibliographic Fields
 ````````````````````
 
-Doctree elements: docinfo, author, authors, organization, contact,
-version, status, date, copyright, field, topic.
+Doctree elements: docinfo_, address_, author_, authors_, contact_,
+copyright_, date_, organization_, revision_, status_, topic_,
+version_.
 
 When a field list is the first non-comment element in a document
 (after the document title, if there is one), it may have its fields
@@ -903,7 +903,7 @@ copyright page.
 
 Certain registered field names (listed below) are recognized and
 transformed to the corresponding doctree elements, most becoming child
-elements of the "docinfo" element.  No ordering is required of these
+elements of the docinfo_ element.  No ordering is required of these
 fields, although they may be rearranged to fit the document structure,
 as noted.  Unless otherwise indicated below, each of the bibliographic
 elements' field bodies may contain a single paragraph only.  Field
@@ -914,17 +914,22 @@ element.
 The registered bibliographic field names and their corresponding
 doctree elements are as follows:
 
-- Field name "Author": author element.
-- "Authors": authors.
-- "Organization": organization.
-- "Contact": contact.
-- "Address": address.
-- "Version": version.
-- "Status": status.
-- "Date": date.
-- "Copyright": copyright.
-- "Dedication": topic.
-- "Abstract": topic.
+  ============= ================
+  Field name    doctree element
+  ============= ================
+  Abstract      topic_
+  Address       address_
+  Author        author_
+  Authors       authors_
+  Contact       contact_
+  Copyright     copyright_
+  Date          date_
+  Dedication    topic_
+  Organization  organization_
+  Revision      revision_
+  Status        status_
+  Version       version_
+  ============= ================
 
 The "Authors" field may contain either: a single paragraph consisting
 of a list of authors, separated by ";" or "," (";" is checked first,
@@ -982,8 +987,8 @@ after a document title if there is one).
 Option Lists
 ------------
 
-Doctree elements: option_list, option_list_item, option_group, option,
-option_string, option_argument, description.
+Doctree elements: option_list_, option_list_item_, option_group_, option_,
+option_string_, option_argument_, description_.
 
 Option lists are two-column lists of command-line options and
 descriptions, documenting a program's options.  For example::
@@ -1073,7 +1078,7 @@ Syntax diagram (simplified)::
 Literal Blocks
 --------------
 
-Doctree element: literal_block.
+Doctree element: literal_block_.
 
 A paragraph consisting of two colons ("::") signifies that the
 following text block(s) comprise a literal block.  The literal block
@@ -1196,7 +1201,7 @@ Syntax diagram::
 Line Blocks
 -----------
 
-Doctree elements: line_block, line.  (New in Docutils 0.3.5.)
+Doctree elements: line_block_, line_.  (New in Docutils 0.3.5.)
 
 Line blocks are useful for address blocks, verse (poetry, song
 lyrics), and unadorned lists, where the structure of lines is
@@ -1247,7 +1252,7 @@ Syntax diagram::
 Block Quotes
 ------------
 
-Doctree element: block_quote, attribution.
+Doctree elements: block_quote_, attribution_.
 
 A text block that is indented relative to the preceding text, without
 preceding markup indicating it to be a literal block or other content,
@@ -1314,7 +1319,7 @@ Syntax diagram::
 Doctest Blocks
 --------------
 
-Doctree element: doctest_block.
+Doctree element: doctest_block_.
 
 Doctest blocks are interactive Python sessions cut-and-pasted into
 docstrings.  They are meant to illustrate usage by example, and
@@ -1344,7 +1349,7 @@ Indentation is not required for doctest blocks.
 Tables
 ------
 
-Doctree elements: table, tgroup, colspec, thead, tbody, row, entry.
+Doctree elements: table_, tgroup_, colspec_, thead_, tbody_, row_, entry_.
 
 ReStructuredText provides two syntaxes for delineating table cells:
 `Grid Tables`_ and `Simple Tables`_.
@@ -1590,10 +1595,8 @@ Doctree elements: footnote_, label_.
 Configuration settings:
 `footnote_references <footnote_references setting_>`_.
 
-.. _footnote: ../doctree.html#footnote
-.. _label: ../doctree.html#label
 .. _footnote_references setting:
-   ../../user/config.html#footnote-references-html4css1-writer
+   ../../user/config.html#footnote-references
 
 Each footnote consists of an explicit markup start (".. "), a left
 square bracket, the footnote label, a right square bracket, and
@@ -1776,8 +1779,6 @@ See also: `Citation References`_.
 
 Doctree element: citation_
 
-.. _citation: ../doctree.html#citation
-
 Citations are identical to footnotes except that they use only
 non-numeric labels such as ``[note]`` or ``[GVR2001]``.  Citation
 labels are simple `reference names`_ (case-insensitive single words
@@ -1797,8 +1798,6 @@ Hyperlink Targets
 `````````````````
 
 Doctree element: target_.
-
-.. _target: ../doctree.html#target
 
 These are also called _`explicit hyperlink targets`, to differentiate
 them from `implicit hyperlink targets`_ defined below.
@@ -2134,7 +2133,7 @@ Syntax diagram::
 Substitution Definitions
 ````````````````````````
 
-Doctree element: substitution_definition.
+Doctree element: substitution_definition_.
 
 Substitution definitions are indicated by an explicit markup start
 (".. ") followed by a vertical bar, the substitution text, another
@@ -2336,7 +2335,7 @@ Replacement text
 Comments
 ````````
 
-Doctree element: comment.
+Doctree element: comment_.
 
 Arbitrary indented text may follow the explicit markup start and will
 be processed as a comment element.  No further processing is done on
@@ -2604,7 +2603,7 @@ above will disappear from the processed document.
 Emphasis
 --------
 
-Doctree element: emphasis.
+Doctree element: emphasis_.
 
 Start-string = end-string = "*".
 
@@ -2618,7 +2617,7 @@ Emphasized text is typically displayed in italics.
 Strong Emphasis
 ---------------
 
-Doctree element: strong.
+Doctree element: strong_.
 
 Start-string = end-string = "**".
 
@@ -2695,7 +2694,7 @@ Edge cases::
 Inline Literals
 ---------------
 
-Doctree element: literal.
+Doctree element: literal_.
 
 Start-string = end-string = "``".
 
@@ -2724,7 +2723,7 @@ Inline literals are useful for short code snippets.  For example::
 Hyperlink References
 --------------------
 
-Doctree element: reference.
+Doctree element: reference_.
 
 - Named hyperlink references:
 
@@ -2839,7 +2838,7 @@ text::
 Inline Internal Targets
 ------------------------
 
-Doctree element: target.
+Doctree element: target_.
 
 Start-string = "_`", end-string = "`".
 
@@ -2869,7 +2868,6 @@ Configuration settings:
 `footnote_references <footnote_references setting_>`_,
 trim_footnote_reference_space_.
 
-.. _footnote_reference: ../doctree.html#footnote-reference
 .. _trim_footnote_reference_space:
    ../../user/config.html#trim-footnote-reference-space
 
@@ -2908,8 +2906,6 @@ See also: Citations_
 
 Doctree element: citation_reference_.
 
-.. _citation_reference: ../doctree.html#citation_reference
-
 Start-string = "[", end-string = "]_".
 
 Each citation reference consists of a square-bracketed label followed
@@ -2925,7 +2921,7 @@ For example::
 Substitution References
 -----------------------
 
-Doctree element: substitution_reference, reference.
+Doctree elements: substitution_reference_, reference_.
 
 Start-string = "|", end-string = "|" (optionally followed by "_" or
 "__").
@@ -2954,7 +2950,7 @@ Examples::
 Standalone Hyperlinks
 ---------------------
 
-Doctree element: reference.
+Doctree element: reference_.
 
 No start-string or end-string.
 
@@ -3079,7 +3075,7 @@ they occur.
  Error Handling
 ----------------
 
-Doctree element: system_message, problematic.
+Doctree elements: system_message_, problematic_.
 
 Markup errors are handled according to the specification in `PEP
 258`_.
@@ -3087,8 +3083,6 @@ Markup errors are handled according to the specification in `PEP
 
 .. _reStructuredText: http://docutils.sourceforge.net/rst.html
 .. _Docutils: http://docutils.sourceforge.net/
-.. _The Docutils Document Tree: ../doctree.html
-.. _"classes" attribute:  ../doctree.html#classes
 .. _Docutils Generic DTD: ../docutils.dtd
 .. _transforms:
    http://docutils.sourceforge.net/docutils/transforms/
@@ -3123,6 +3117,77 @@ Markup errors are handled according to the specification in `PEP
 .. _RFC2732: http://www.rfc-editor.org/rfc/rfc2732.txt
 .. _Zope: http://www.zope.com/
 .. _PEP 258: ../../peps/pep-0258.html
+
+.. _The Docutils Document Tree: ../doctree.html
+.. _"classes" attribute:  ../doctree.html#classes
+.. _topic: ../doctree.html#topic
+.. _address: ../doctree.html#address
+.. _author: ../doctree.html#author
+.. _authors: ../doctree.html#authors
+.. _contact: ../doctree.html#contact
+.. _copyright: ../doctree.html#copyright
+.. _date: ../doctree.html#date
+.. _topic: ../doctree.html#topic
+.. _organization: ../doctree.html#organization
+.. _revision: ../doctree.html#revision
+.. _status: ../doctree.html#status
+.. _version: ../doctree.html#version
+.. _docinfo: ../doctree.html#docinfo
+.. _field: ../doctree.html#field
+.. _section: ../doctree.html#section
+.. _bullet_list: ../doctree.html#bullet-list
+.. _list_item: ../doctree.html#list-item
+.. _enumerated_list: ../doctree.html#enumerated-list
+.. _list_item: ../doctree.html#list-item
+.. _definition_list: ../doctree.html#definition-list
+.. _definition_list_item: ../doctree.html#definition-list-item
+.. _term: ../doctree.html#term
+.. _classifier: ../doctree.html#classifier
+.. _definition: ../doctree.html#definition
+.. _field_list: ../doctree.html#field-list
+.. _field_name: ../doctree.html#field-name
+.. _field_body: ../doctree.html#field-body
+.. _option_list: ../doctree.html#option-list
+.. _option_list_item: ../doctree.html#option-list-item
+.. _option_group: ../doctree.html#option-group
+.. _option: ../doctree.html#option
+.. _option_string: ../doctree.html#option-string
+.. _option_argument: ../doctree.html#option-argument
+.. _description: ../doctree.html#description
+.. _line_block: ../doctree.html#line-block
+.. _line: ../doctree.html#line
+.. _table: ../doctree.html#table
+.. _tgroup: ../doctree.html#tgroup
+.. _colspec: ../doctree.html#colspec
+.. _thead: ../doctree.html#thead
+.. _tbody: ../doctree.html#tbody
+.. _row: ../doctree.html#row
+.. _entry: ../doctree.html#entry
+.. _identifier key: ../doctree.html#identifier-keys
+.. _document element: ../doctree.html#document
+.. _footnote: ../doctree.html#footnote
+.. _label: ../doctree.html#label
+.. _citation: ../doctree.html#citation
+.. _target: ../doctree.html#target
+.. _footnote_reference: ../doctree.html#footnote-reference
+.. _citation_reference: ../doctree.html#citation-reference
+.. _transition: ../doctree.html#transition
+.. _paragraph: ../doctree.html#paragraph
+.. _literal_block: ../doctree.html#literal-block
+.. _block_quote: ../doctree.html#block-quote
+.. _attribution: ../doctree.html#attribution
+.. _doctest_block: ../doctree.html#doctest-block
+.. _substitution_definition: ../doctree.html#substitution-definition
+.. _comment: ../doctree.html#comment
+.. _strong: ../doctree.html#strong
+.. _literal: ../doctree.html#literal
+.. _reference: ../doctree.html#reference
+.. _substitution_reference: ../doctree.html#substitution-reference
+.. _reference: ../doctree.html#reference
+.. _reference: ../doctree.html#reference
+.. _system_message: ../doctree.html#system-message
+.. _problematic: ../doctree.html#problematic
+
 
 
 ..
