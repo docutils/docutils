@@ -92,9 +92,12 @@ class Headers(Transform):
                                     'a single paragraph:\n%s'
                                     % field.pformat(level=1))
             elif name == 'last-modified':
-                date = time.strftime(
-                      '%d-%b-%Y',
-                      time.localtime(os.stat(self.document['source'])[8]))
+                try:
+                    date = time.strftime(
+                        '%d-%b-%Y',
+                        time.localtime(os.stat(self.document['source'])[8]))
+                except OSError:
+                    date = 'unknown'
                 if cvs_url:
                     body += nodes.paragraph(
                         '', '', nodes.reference('', date, refuri=cvs_url))

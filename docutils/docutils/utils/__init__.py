@@ -350,7 +350,10 @@ def decode_path(path):
     try:
         path = path.decode(sys.getfilesystemencoding(), 'strict')
     except AttributeError: # default value None has no decode method
-        return nodes.reprunicode(path)
+        if not path:
+            return nodes.reprunicode('')
+        raise ValueError('`path` value must be a String or ``None``, not %r'
+                         %path)
     except UnicodeDecodeError:
         try:
             path = path.decode('utf-8', 'strict')
