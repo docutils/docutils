@@ -19,7 +19,7 @@ Changes Since 0.16
 
 * General
 
-  - Fix #385: Import of language modules.
+  - Fix bug #385: Import of language modules.
   - Use importlib.import_module() to programmatically import modules.
   - Remove legacy LaTeX stylesheet ``docutils-05-compat.sty``.
   - Installing with ``setup.py`` now requires ``setuptools``.
@@ -46,7 +46,7 @@ Changes Since 0.16
 
 * docutils/utils/smartquotes.py
 
-  - Fix #383: Smart quotes around opening and separator characters.
+  - Fix bug #383: Smart quotes around opening and separator characters.
 
 * docutils/writers/html5_polyglot/
 
@@ -64,7 +64,7 @@ Changes Since 0.16
     Move non-essential styling from ``minimal.css`` to ``plain.css``.
     Support numbered figures in ``plain.css``.
     
-  - Fix #398: properly close link tag to "schema.dcterms".
+  - Fix bug #398: properly close link tag to "schema.dcterms".
 
 * docutils/writers/latex2e/__init__.py:
 
