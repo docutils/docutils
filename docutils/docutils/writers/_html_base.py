@@ -729,7 +729,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.head.insert(0, self.content_type % self.settings.output_encoding)
         if 'name="dcterms.' in ''.join(self.meta):
             self.head.append(
-             '<link rel="schema.dcterms" href="http://purl.org/dc/terms/">')
+             '<link rel="schema.dcterms" href="http://purl.org/dc/terms/"/>')
         if self.math_header:
             if self.math_output == 'mathjax':
                 self.head.extend(self.math_header)
