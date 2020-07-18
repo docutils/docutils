@@ -17,6 +17,7 @@ from DocutilsTestSupport import docutils, utils, nodes
 
 if sys.version_info >= (3, 0):
     from io import StringIO
+    unicode = str
 else:
     from StringIO import StringIO
 
@@ -279,6 +280,18 @@ class HelperFunctionTests(unittest.TestCase):
         self.assertEqual(utils.column_width(u'dâ'), 2) # pre-composed
         self.assertEqual(utils.column_width(u'dâ'), 2) # combining
 
+    def test_decode_path(self):
+        strpath = utils.decode_path('späm')
+        unipath = utils.decode_path(u'späm')
+        defaultpath = utils.decode_path(None)
+        self.assertEqual(strpath, u'späm')
+        self.assertEqual(unipath, u'späm')
+        self.assertEqual(defaultpath, u'')
+        self.assertTrue(isinstance(strpath, nodes.reprunicode))
+        self.assertTrue(isinstance(unipath, unicode))
+        self.assertTrue(isinstance(defaultpath, unicode))
+        self.assertRaises(ValueError, utils.decode_path, 13)
+
     def test_relative_path(self):
         # Build and return a path to `target`, relative to `source`:
         # Use '/' as path sep in result.
@@ -341,6 +354,7 @@ class HelperFunctionTests(unittest.TestCase):
         self.assertEqual(unescaped, self.unescaped)
         restored = utils.unescape(self.nulled, restore_backslashes=True)
         self.assertEqual(restored, self.escaped)
+  
 
 if __name__ == '__main__':
     unittest.main()
