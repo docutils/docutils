@@ -63,6 +63,8 @@ Changes Since 0.16
   - Wrap block-level image elements in <p> (except for figures).
     Move non-essential styling from ``minimal.css`` to ``plain.css``.
     Support numbered figures in ``plain.css``.
+    
+  - Fix #398: properly close link tag to "schema.dcterms".
 
 * docutils/writers/latex2e/__init__.py:
 
