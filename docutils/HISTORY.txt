@@ -24,6 +24,8 @@ Changes Since 0.16
   - Remove legacy LaTeX stylesheet ``docutils-05-compat.sty``.
   - Installing with ``setup.py`` now requires ``setuptools``.
     Alternatively, install with `pip`_ (or "manually").
+  - Run python3 test like python2 run against source not the build/-directory
+    (test/DocutilsTestSupport.py #8531).
 
 * docutils/MANIFEST.in
 
