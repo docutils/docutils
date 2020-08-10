@@ -85,7 +85,7 @@ class VersionInfo(namedtuple('VersionInfo',
                              'version ordering of the related __version__')
             if serial != 0:
                 raise ValueError('"serial" must be 0 for final releases')
-        
+
         return super(VersionInfo, cls).__new__(cls, major, minor, micro,
                                                releaselevel, serial, release)
 
@@ -103,7 +103,7 @@ class VersionInfo(namedtuple('VersionInfo',
         if isinstance(other, tuple):
             other = VersionInfo(*other)
         return tuple.__le__(self, other)
-    
+
     def __ge__(self, other):
         if isinstance(other, tuple):
             other = VersionInfo(*other)
