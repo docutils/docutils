@@ -48,7 +48,7 @@ import re
 import sys
 
 if sys.version_info < (3, 0):
-    range = xrange
+    range = xrange  # NOQA: F821  # flake8 do not check undefined name
 
 import docutils
 from docutils import nodes, writers, languages
