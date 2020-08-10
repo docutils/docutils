@@ -79,7 +79,7 @@ class VersionInfo(namedtuple('VersionInfo',
             raise ValueError('releaselevel must be one of %r.'
                              % (releaselevels, ))
         if releaselevel == 'final':
-            if not(release):
+            if not release:
                 raise ValueError('releaselevel "final" must not be used '
                              'with development versions (leads to wrong '
                              'version ordering of the related __version__')
