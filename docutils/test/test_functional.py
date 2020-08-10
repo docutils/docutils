@@ -63,21 +63,6 @@ class FunctionalTestSuite(DocutilsTestSupport.CustomTestSuite):
             else:
                 os.remove(path)
 
-    def walker(self, dummy, dirname, names):
-        """
-        Process all config files among `names` in `dirname`.
-
-        This is a helper function for os.path.walk.  A config file is
-        a Python file (*.py) which sets several variables.
-        """
-        for name in names:
-            if name.endswith('.py') and not name.startswith('_'):
-                config_file_full_path = join_path(dirname, name)
-                self.addTestCase(FunctionalTestCase, 'test', None, None,
-                                 id=config_file_full_path,
-                                 configfile=config_file_full_path)
-                self.added += 1
-
 
 class FunctionalTestCase(DocutilsTestSupport.CustomTestCase):
 
