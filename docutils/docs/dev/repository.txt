@@ -37,7 +37,7 @@ analogously.
 There is a git_ mirror at http://repo.or.cz/docutils.git providing
 `web access`_ and the base for `creating a local git clone`_.
 
-docutils trunk is cloned hourly to github :
+and docutils trunk is cloned hourly to github :
 
   https://github.com/live-clones/docutils/tree/master/docutils
 
