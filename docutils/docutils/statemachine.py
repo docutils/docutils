@@ -1517,7 +1517,7 @@ def string2lines(astring, tab_width=8, convert_whitespace=False,
     """
     if convert_whitespace:
         astring = whitespace.sub(' ', astring)
-    # TODO: add a test for too long lines (max_line_lenght = 1000, say)?
+    # TODO: add a test for too long lines (max_line_length = 1000, say)?
     # See bug #381.
     return [s.expandtabs(tab_width).rstrip() for s in astring.splitlines()]
 
