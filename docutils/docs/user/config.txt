@@ -1078,8 +1078,7 @@ the output document. Supported values are (case insensitive):
 
   The failsave fallback.
 
-Default: writer dependent (see `[html4css1 writer]`_, `[html5 writer]`_).
-Option: ``--math-output``.
+Default: HTML math.css.  Option: ``--math-output``.
 
 New in Docutils 0.8.
 
@@ -1224,9 +1223,6 @@ It shares all settings defined in the `[html writers]`_
 
 Writer specific defaults:
 
-math_output_
-  "MathML"
-
 `stylesheet_path <stylesheet_path [html writers]_>`_:
   "html4css1.css"
 
@@ -1263,9 +1259,6 @@ It shares all settings defined in the `[html writers]`_
 `configuration section`_.
 
 Writer specific defaults:
-
-`math_output`_
-  "MathML"
 
 `stylesheet_path <stylesheet_path [html writers]_>`_:
   "minimal.css,plain.css"
