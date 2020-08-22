@@ -24,8 +24,7 @@ Changes Since 0.16
   - Remove legacy LaTeX stylesheet ``docutils-05-compat.sty``.
   - Installing with ``setup.py`` now requires ``setuptools``.
     Alternatively, install with `pip`_ (or "manually").
-  - Run python3 test like python2 run against source not the build/-directory
-    (test/DocutilsTestSupport.py #8531).
+  - Apply patch for bug #399 Fixes in Korean translation.
 
 * docutils/MANIFEST.in
 
@@ -88,6 +87,10 @@ Changes Since 0.16
   - Patch #168 fix crashing on empty citation (by Takeshi KOMIYA).
   - Fix #126 manpage title with spaces.
   - Fix #380 commandline option problem in sphinx.
+
+* test/DocutilsTestSupport.py
+
+  - Run python3 test like python2 against source not the build/-directory
 
 .. _pip: https://pypi.org/project/pip/
 .. _legacy_class_functions: docs/user/config.html#legacy-class-functions
