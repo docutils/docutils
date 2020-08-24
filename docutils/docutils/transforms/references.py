@@ -720,7 +720,7 @@ class Substitutions(Transform):
                             line=parent.line, base_node=parent)
                         parent.replace_self(msg)
                     else:
-                        # find original ref substitution which cased this error
+                        # find original ref substitution which caused this error
                         ref_origin = ref
                         while ref_origin.hasattr('ref-origin'):
                             ref_origin = ref_origin['ref-origin']
