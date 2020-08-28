@@ -666,8 +666,8 @@ raw_enabled
 ~~~~~~~~~~~
 
 Enable or disable the "raw_" directive.  A "warning" system message
-(including the directive text) is inserted instead.  (See also
-file_insertion_enabled_ for another security-relevant setting.)
+(including the directive text) is inserted instead.  See also
+file_insertion_enabled_ for another security-relevant setting.
 
 Default: enabled (True).  Options: ``--raw-enabled, --no-raw``.
 
@@ -774,14 +774,16 @@ Default: 8.  Options: ``--tab-width``.
 trim_footnote_reference_space
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Remove spaces before `footnote references`_.
+Remove spaces before `footnote references`_. [#]_
 
 Default: don't (None) rsp. depending on the writer-specific
-footnote_references__ setting. [#footnote_space]_
+`footnote_references setting`_. [#footnote_space]_
 
 Options: ``--trim-footnote-reference-space, --leave-footnote-reference-space``.
 
-__ `footnote_references [latex writers]`_
+.. [#] The footnote space is trimmed if the reference style is
+   "superscript", and it is left if the reference style is "brackets".
+
 
 
 [readers]
@@ -868,17 +870,16 @@ Generate XML with newlines before and after tags.
 
 Default: don't (None).  Options: ``--newlines``.
 
+
 .. _xml_declaration [docutils_xml writer]:
 
 xml_declaration
 ~~~~~~~~~~~~~~~
 
-Generate XML with an XML declaration.  Also defined for the
-`HTML Writers`__.
+Generate XML with an XML declaration.
+See also `xml_declaration [html writers]`_.
 
 Default: do (1).  Options: ``--no-xml-declaration``.
-
-__ `xml_declaration [html writers]`_
 
 
 [html writers]
@@ -890,12 +891,11 @@ attribution
 ~~~~~~~~~~~
 
 Format for `block quote`_ attributions: one of "dash" (em-dash
-prefix), "parentheses"/"parens", or "none".  Also defined for the
-`LaTeX Writers`__.
+prefix), "parentheses"/"parens", or "none".
+See also `attribution [latex writers]`_.
 
 Default: "dash".  Options: ``--attribution``.
 
-__ attribution [latex writers]_
 
 cloak_email_addresses
 ~~~~~~~~~~~~~~~~~~~~~
@@ -948,23 +948,22 @@ embed_stylesheet
 ~~~~~~~~~~~~~~~~
 
 Embed the stylesheet in the output HTML file.  The stylesheet file
-must specified by the stylesheet_path__ setting and must be
+must specified by the stylesheet_path_ setting and must be
 accessible during processing.
-Also defined for the `LaTeX Writers <embed_stylesheet [latex writers]_>`__.
+See also `embed_stylesheet [latex writers]`_.
 
 Default: enabled.  Options: ``--embed-stylesheet,
 --link-stylesheet``.
 
-__ `stylesheet_path [html writers]`_
 
-
+.. _footnote_references setting:
 .. _footnote_references [html writers]:
 
 footnote_references
 ~~~~~~~~~~~~~~~~~~~
 
 Format for `footnote references`_, one of "superscript" or "brackets".
-Also defined for the `LaTeX Writers <footnote_references [latex writers]_>`__.
+See also `footnote_references [latex writers]`_.
 
 Overrides [#override]_ trim_footnote_reference_space_, if
 applicable. [#footnote_space]_
@@ -989,9 +988,9 @@ the output document. Supported values are (case insensitive):
 :HTML:
   Format math in standard HTML enhanced by CSS rules.
   Requires the ``math.css`` stylesheet (in the system
-  `stylesheet directory <stylesheet_dirs [html writers]_>`_)
+  `stylesheet directory <stylesheet_dirs [html writers]_>`__)
 
-  A `stylesheet_path <stylesheet_path [html writers]_>`_
+  A `stylesheet_path <stylesheet_path [html writers]_>`__
   can be appended after whitespace, the specified
   stylesheet(s) will only be referenced or embedded, if required
   (i.e. if there is mathematical content in the document).
@@ -1097,13 +1096,11 @@ stylesheet
 ~~~~~~~~~~
 
 A comma-separated list of CSS stylesheet URLs, used verbatim.
-Also defined for the `LaTeX Writer <stylesheet [latex writers]_>`__.
+See also `stylesheet [latex writers]`_.
 
-Overrides also stylesheet-path__. [#override]_
+Overrides also stylesheet_path_. [#override]_
 
 Default: None.  Options: ``--stylesheet``.
-
-__ `stylesheet_path [html writers]`_
 
 
 .. _stylesheet_dirs [html writers]:
@@ -1112,20 +1109,20 @@ stylesheet_dirs
 ~~~~~~~~~~~~~~~
 
 A comma-separated list of directories where stylesheets can be found.
-Used by the stylesheet_path__ setting when expanding relative path arguments.
+Used by the stylesheet_path_ setting when expanding relative path arguments.
 
 Note: This setting defines a "search path" (similar to the PATH variable for
 executables). However, the term "path" is already used in the
-stylesheet_path__ setting with the meaning of a file location.
+stylesheet_path_ setting with the meaning of a file location.
 
-__
-__ `stylesheet_path [html writers]`_
 
 Default: the working directory of the process at launch and the directory
 with default stylesheet files (writer and installation specific).
 Use the ``--help`` option to get the exact value.
 Option: ``--stylesheet-directories``.
 
+
+.. _stylesheet_path:
 .. _stylesheet_path [html writers]:
 
 stylesheet_path
@@ -1134,7 +1131,8 @@ stylesheet_path
 A comma-separated list of paths to CSS stylesheets. Relative paths are
 expanded if a matching file is found in the stylesheet_dirs__.
 If embed_stylesheet__ is False, paths are rewritten relative to the
-output HTML file. Also defined for the `LaTeX Writer`__.
+output HTML file.
+See also `stylesheet_path [latex writers]`_.
 
 Also overrides "stylesheet". [#override]_
 Pass an empty string (to either "stylesheet" or "stylesheet_path") to
@@ -1145,7 +1143,6 @@ Default: writer dependent (see `[html4css1 writer]`_, `[html5 writer]`_,
 Options: ``--stylesheet-path``.
 
 __ `embed_stylesheet [html writers]`_
-__ `stylesheet_path [latex writers]`_
 __ `stylesheet_dirs [html writers]`_
 
 
@@ -1155,7 +1152,7 @@ table_style
 ~~~~~~~~~~~
 
 Class value(s) added to all tables_.
-Also defined for the `LaTeX Writer`__.
+See also `table_style [latex writers]`_.
 
 The default CSS sylesheet defines:
 
@@ -1176,7 +1173,6 @@ colwidths-auto
 
 Default: "".  Option: ``--table-style``.
 
-__ `table_style [latex writers]`_
 .. _table directive: ../ref/rst/directives.html#table
 
 
@@ -1186,13 +1182,11 @@ template
 ~~~~~~~~
 
 Path to template file, which must be encoded in UTF-8. [#pwd]_
-Also defined for the `LaTeX Writer`__.
+See also `template [latex writers]`_.
 
 Default: "template.txt" in the docutils/writers/html4css1/
 directory (installed automatically; for the exact machine-specific
 path, use the ``--help`` option).  Options: ``--template``.
-
-__ `template [latex writers]`_
 
 
 .. _xml_declaration [html writers]:
@@ -1200,8 +1194,8 @@ __ `template [latex writers]`_
 xml_declaration
 ~~~~~~~~~~~~~~~
 
-Generate XML with an XML declaration.  Also defined for the
-`Docutils XML Writer`__.
+Generate XML with an XML declaration.
+See also `xml_declaration [docutils_xml writer]`_.
 
 .. Caution:: The XML declaration carries text encoding information.  If the
    encoding is not UTF-8 or ASCII and the XML declaration is missing,
@@ -1209,7 +1203,6 @@ Generate XML with an XML declaration.  Also defined for the
 
 Default: do (1).  Options: ``--no-xml-declaration``.
 
-__ `xml_declaration [docutils_xml writer]`_
 
 
 [html4css1 writer]
@@ -1223,7 +1216,7 @@ It shares all settings defined in the `[html writers]`_
 
 Writer specific defaults:
 
-`stylesheet_path <stylesheet_path [html writers]_>`_:
+`stylesheet_path <stylesheet_path [html writers]_>`__:
   "html4css1.css"
 
 .. _HTML4/CSS1 Writer: html.html#html4css1
@@ -1245,8 +1238,8 @@ option_limit
 
 The maximum width (in characters) for options in `option lists`_.
 Longer options will span an entire row of the table used to render
-the option list.  0 indicates "no limit".  See also
-field_name_limit_.
+the option list.  0 indicates "no limit".
+See also field_name_limit_.
 
 Default: 14 (i.e. 14 characters).  Option: ``--option-limit``.
 
@@ -1260,7 +1253,7 @@ It shares all settings defined in the `[html writers]`_
 
 Writer specific defaults:
 
-`stylesheet_path <stylesheet_path [html writers]_>`_:
+`stylesheet_path <stylesheet_path [html writers]_>`__:
   "minimal.css,plain.css"
 
 New in Docutils 0.13.
@@ -1391,6 +1384,7 @@ Common settings for the `LaTeX writers`_
 
 .. _LaTeX writers: latex.html
 
+
 .. _attribution [latex writers]:
 
 attribution
@@ -1423,8 +1417,6 @@ commas.
 Default: "a4paper".  Option: ``--documentoptions``.
 
 
-.. _embed_stylesheet [latex writers]:
-
 docutils_footnotes
 ~~~~~~~~~~~~~~~~~~
 Use the Docutils-specific macros ``\DUfootnote`` and
@@ -1434,6 +1426,9 @@ TODO: The alternative, "use_latex_footnotes" is not implemented yet.
 
 Default: on.  Option: ``--docutils-footnotes``.
 
+
+.. _embed_stylesheet [latex writers]:
+
 embed_stylesheet
 ~~~~~~~~~~~~~~~~
 
@@ -1441,26 +1436,24 @@ Embed the stylesheet(s) in the header of the output file.  The
 stylesheets must be accessible during processing.  Currently, this
 fails if the file is not available via the given path (i.e. the
 file is *not* searched in the `TeX input path`_).
-Also defined for the `HTML Writers`__ (with default *on*).
+See also `embed_stylesheet [html writers]`_.
 
 Default: off.  Options: ``--embed-stylesheet, --link-stylesheet``.
 
-__ `embed_stylesheet [html writers]`_
 
-.. _stylesheet [latex writers]:
+.. _footnote_references [latex writers]:
 
 footnote_references
 ~~~~~~~~~~~~~~~~~~~
 
-Format for `footnote references`_: one of "superscript" or
-"brackets".  Also defined for the `HTML Writers`__.
+Format for `footnote references`_: one of "superscript" or "brackets".
+See also `footnote_references [html writers]`_.
 
 Overrides [#override]_ trim_footnote_reference_space_, if
 applicable. [#footnote_space]_
 
 Default: "superscript".  Option: ``--footnote-references``.
 
-__ `footnote_references [html writers]`_
 
 graphicx_option
 ~~~~~~~~~~~~~~~
@@ -1510,7 +1503,6 @@ macros without writing a custom style file (new in Docutils 0.7).
 Default: writer dependent (see `[latex2e writer]`_, `[xetex writer]`_).
 Option: ``--latex-preamble``.
 
-.. _footnote_references [latex writers]:
 
 legacy_class_functions
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -1566,7 +1558,6 @@ unambiguous "1-1.1" and "1.1-1".
 
 Default: "-".  Option: ``--section-enumerator-separator``.
 
-.. _table_style [latex writers]:
 
 
 section_prefix_for_enumerators
@@ -1580,11 +1571,14 @@ Default: disabled (None).
 Options: ``--section-prefix-for-enumerators``,
 ``--no-section-prefix-for-enumerators``.
 
+
+.. _stylesheet [latex writers]:
+
 stylesheet
 ~~~~~~~~~~
 
 A comma-separated list_ of style files.
-Also defined for the `HTML Writers`__.
+See also `stylesheet [html writers]`_.
 
 Overrides also stylesheet_path__. [#override]_
 
@@ -1596,7 +1590,6 @@ LaTeX will search the specified files in the `TeX input path`_.
 
 Default: no stylesheet ("").  Option: ``--stylesheet``.
 
-__ `stylesheet [html writers]`_
 __ `stylesheet_path [latex writers]`_
 __ `embed_stylesheet [latex writers]`_
 .. _TeX input path:
@@ -1623,6 +1616,7 @@ with default stylesheet files (writer and installation specific).
 Use the ``--help`` option to get the exact value.
 Option: ``--stylesheet-directories``.
 
+
 .. _stylesheet_path [latex writers]:
 
 stylesheet_path
@@ -1633,11 +1627,9 @@ matching file is found in the stylesheet_dirs__.
 If embed_stylesheet__ is False, paths are rewritten relative to the
 output file path. Run ``latex`` from the directory containing
 the output file.
+See also `stylesheet_path [html writers]`_.
 
 The stylesheet__  option is preferred for files in the `TeX input path`_.
-
-Also defined for the
-`HTML Writers <stylesheet_path [html writers]_>`__.
 
 Also overrides stylesheet__. [#override]_
 
@@ -1648,11 +1640,14 @@ __ `embed_stylesheet [latex writers]`_
 __
 __ `stylesheet [latex writers]`_
 
+
+.. _table_style [latex writers]:
+
 table_style
 ~~~~~~~~~~~
 
-Specify the default style for tables_
-Also defined for the `HTML Writers`__.
+Specify the default style for tables_.
+See also `table_style [html writers]`_.
 
 Supported values:
 
@@ -1680,8 +1675,6 @@ colwidths-auto, colwidths-given
 
 Default: "standard".  Option: ``--table-style``.
 
-__ `table_style [html writers]`_
-
 
 .. _template [latex writers]:
 
@@ -1689,12 +1682,11 @@ template
 ~~~~~~~~
 
 Path [#pwd]_ to template file, which must be encoded in UTF-8.
-Also defined for the `HTML Writers`__.
+See also `template [html writers]`_.
 
 Default: writer dependent (see `[latex2e writer]`_, `[xetex writer]`_).
 Options: ``--template``.
 
-__ `template [html writers]`_
 
 use_bibtex
 ~~~~~~~~~~
@@ -2100,12 +2092,8 @@ Default: stdin (None).  No command-line options.
 .. [#dependencies] Images are only added to the dependency list if the
    reStructuredText parser extracted image dimensions from the file.
 
-.. [#footnote_space] The footnote space is trimmed if the reference
-   style is "superscript", and it is left if the reference style is
-   "brackets".
-
-   The overriding only happens if the parser supports the
-   trim_footnote_reference_space option.
+.. [#footnote_space] The overriding only happens if the parser supports
+   the trim_footnote_reference_space option.
 
 
 ------------------------------
