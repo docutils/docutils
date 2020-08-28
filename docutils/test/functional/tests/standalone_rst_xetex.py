@@ -11,3 +11,6 @@ writer_name = "xetex"
 # Settings
 # use "smartquotes" transition:
 settings_overrides['smart_quotes'] = True
+# use docutils.sty and up-to-date class functions:
+settings_overrides['legacy_class_functions'] = False
+settings_overrides['stylesheet'] = 'docutils'

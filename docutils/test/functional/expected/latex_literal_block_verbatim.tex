@@ -17,71 +17,9 @@
 \usepackage{courier}
 
 %%% User specified packages and stylesheets
+\usepackage{docutils}
 
 %%% Fallback definitions for Docutils-specific commands
-
-% class handling for environments (block-level elements)
-% \begin{DUclass}{spam} tries \DUCLASSspam and
-% \end{DUclass}{spam} tries \endDUCLASSspam
-\ifx\DUclass\undefined % poor man's "provideenvironment"
- \newenvironment{DUclass}[1]%
-  {\def\DocutilsClassFunctionName{DUCLASS#1}% arg cannot be used in end-part of environment.
-     \csname \DocutilsClassFunctionName \endcsname}%
-  {\csname end\DocutilsClassFunctionName \endcsname}%
-\fi
-
-% admonition (specially marked topic)
-\providecommand{\DUadmonition}[2][class-arg]{%
-  % try \DUadmonition#1{#2}:
-  \ifcsname DUadmonition#1\endcsname%
-    \csname DUadmonition#1\endcsname{#2}%
-  \else
-    \begin{center}
-      \fbox{\parbox{0.9\linewidth}{#2}}
-    \end{center}
-  \fi
-}
-% numeric or symbol footnotes with hyperlinks
-\providecommand*{\DUfootnotemark}[3]{%
-  \raisebox{1em}{\hypertarget{#1}{}}%
-  \hyperlink{#2}{\textsuperscript{#3}}%
-}
-\providecommand{\DUfootnotetext}[4]{%
-  \begingroup%
-  \renewcommand{\thefootnote}{%
-    \protect\raisebox{1em}{\protect\hypertarget{#1}{}}%
-    \protect\hyperlink{#2}{#3}}%
-  \footnotetext{#4}%
-  \endgroup%
-}
-
-% inline markup (custom roles)
-% \DUrole{#1}{#2} tries \DUrole#1{#2}
-\providecommand*{\DUrole}[2]{%
-  \ifcsname DUrole#1\endcsname%
-    \csname DUrole#1\endcsname{#2}%
-  \else%
-    #2%
-  \fi%
-}
-
-% text mode subscript
-\ifx\textsubscript\undefined
-  \usepackage{fixltx2e} % since 2015 loaded by default
-\fi
-
-% title for topics, admonitions, unsupported section levels, and sidebar
-\providecommand*{\DUtitle}[2][class-arg]{%
-  % call \DUtitle#1{#2} if it exists:
-  \ifcsname DUtitle#1\endcsname%
-    \csname DUtitle#1\endcsname{#2}%
-  \else
-    \smallskip\noindent\textbf{#2}\smallskip%
-  \fi
-}
-
-% titlereference role
-\providecommand*{\DUroletitlereference}[1]{\textsl{#1}}
 
 % character width in monospaced font
 \newlength{\ttemwidth}
@@ -160,8 +98,9 @@ test &
 \hline
 \end{longtable*}
 
-\DUadmonition[note]{
-\DUtitle[note]{Note}
+\begin{DUclass}{note}
+\begin{DUadmonition}
+\DUtitle{Note}
 
 A literal block in an admonition:
 
@@ -169,7 +108,8 @@ A literal block in an admonition:
 \ttfamily\raggedright
 \textbackslash{}sin\textasciicircum{}2~x
 \end{quote}
-}
+\end{DUadmonition}
+\end{DUclass}
 
 Parsed literal block with inline markup and leading whitespace:
 
