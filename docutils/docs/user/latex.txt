@@ -322,11 +322,11 @@ Stylesheet Repository
   Docutils Sandbox_.
 
 .. _clsguide:
-   http://mirror.ctan.org/macros/latex/doc/clsguide.pdf
+   http://mirrors.ctan.org/macros/latex/base/clsguide.pdf
 .. _stylesheet:
-   config.html#stylesheet-latex2e-writer
+   config.html#stylesheet-latex-writers
 .. _embed-stylesheet:
-   config.html#embed-stylesheet-latex2e-writer
+   config.html#embed-stylesheet-latex-writers
 .. _repository of user-contributed style sheets:
    ../../../sandbox/stylesheets/
 .. _sandbox: ../../../sandbox/
@@ -385,7 +385,7 @@ Example:
     --template=titlepage.tex
 
 .. _publisher documentation: ../api/publisher.html
-.. _template: config.html#template-latex2e-writer
+.. _template: config.html#template-latex-writers
 
 Raw LaTeX
 `````````
@@ -497,7 +497,8 @@ Example 3:
 
 
 .. _marginnote:
-   http://mirror.ctan.org/help/Catalogue/entries/marginnote.html
+   http://ctan.org/pkg/marginnote
+   http://ctan.org/pkg/marginnote
 
 
 .. _custom role:
@@ -619,9 +620,9 @@ Option:
   documentclass_
 
 .. _KOMA-script:
-   http://mirror.ctan.org/help/Catalogue/entries/koma-script.html
+   http://ctan.org/pkg/koma-script
 .. _memoir:
-   http://mirror.ctan.org/help/Catalogue/entries/memoir.html
+   http://ctan.org/pkg/memoir
 .. _documentclass:
    config.html#documentclass
 
@@ -706,7 +707,7 @@ Example:
    `labeling`.
 
 .. _enumitem:
-   http://mirror.ctan.org/help/Catalogue/entries/enumitem.html
+   http://ctan.org/pkg/enumitem
 
 __ ../ref/rst/restructuredtext.html#field-lists
 
@@ -730,9 +731,9 @@ Example
     \captionsetup{justification=raggedleft,singlelinecheck=false}
 
 .. _caption:
-   http://mirror.ctan.org/help/Catalogue/entries/caption.html
+   http://ctan.org/pkg/caption
 .. _chngcntr:
-   http://mirror.ctan.org/help/Catalogue/entries/chngcntr.html
+   http://ctan.org/pkg/chngcntr
 __ http://www.tex.ac.uk/cgi-bin/texfaq2html?label=running-nos
 
 
@@ -771,9 +772,9 @@ Example 2:
 
 .. _figures: ../ref/rst/directives.html#figure
 .. _float:
-   http://mirror.ctan.org/help/Catalogue/entries/float.html
+   http://ctan.org/pkg/float
 .. _float.pdf:
-   http://mirror.ctan.org/macros/latex/contrib/float/float.pdf
+   http://mirrors.ctan.org/macros/latex/contrib/float/float.pdf
 
 .. _font setup:
 
@@ -871,7 +872,7 @@ XeTeX/LuaTeX
       \setsansfont{DejaVu Sans}
       \setmonofont[HyphenChar=None]{DejaVu Sans Mono}
 
-.. _fontspec: http://mirror.ctan.org/help/Catalogue/entries/fontspec.html
+.. _fontspec: http://ctan.org/pkg/fontspec
 .. _fontmatrix: http://fontmatrix.net/
 .. _DejaVu: http://dejavu-fonts.org/
 .. _documentoptions: config.html#documentoptions
@@ -1004,19 +1005,19 @@ d) PSNFSS_ Postscript fonts
 .. _LaTeX Font Catalogue:
    http://www.tug.dk/FontCatalogue/
 .. _Latin Modern:
-   http://mirror.ctan.org/help/Catalogue/entries/lm.html
+   http://ctan.org/pkg/lm
 .. _CM-Super:
-   http://mirror.ctan.org/help/Catalogue/entries/cm-super.html
+   http://ctan.org/pkg/cm-super
 .. _bera:
-   http://mirror.ctan.org/help/Catalogue/entries/bera.html
+   http://ctan.org/pkg/bera
 .. _TeX Gyre: http://www.gust.org.pl/projects/e-foundry/tex-gyre
 .. _PSNFSS:
-   http://mirror.ctan.org/help/Catalogue/entries/psnfss.html
+   http://ctan.org/pkg/psnfss
 .. _Using common PostScript fonts with LaTeX:
-   http://mirror.ctan.org/macros/latex/required/psnfss/psnfss2e.pdf
+   http://mirrors.ctan.org/macros/latex/required/psnfss/psnfss2e.pdf
 .. _TeX Live: http://tug.org/texlive/
 .. _txfonts:
-   http://mirror.ctan.org/help/Catalogue/entries/txfonts.html
+   http://ctan.org/pkg/txfonts
 .. _PDF Standard Font:
    http://en.wikipedia.org/wiki/PDF#Standard_Type_1_Fonts
 .. _testflow:
@@ -1063,11 +1064,11 @@ Example 2:
     --font-encoding=LGR,T1 --stylesheet=lmodern
 
 .. _encguide:
-   http://mirror.ctan.org/macros/latex/doc/encguide.pdf
+   http://mirrors.ctan.org/macros/latex/base/encguide.pdf
 .. _font-encoding:
    config.html#font-encoding
 .. _fontenc:
-   http://mirror.ctan.org/help/Catalogue/entries/fontenc.html
+   http://ctan.org/pkg/fontenc
 
 
 font size
@@ -1078,7 +1079,7 @@ Add font size in points to the document options, e.g.
 extsizes_ for values other than [10,11,12].
 
 .. _extsizes:
-   http://mirror.ctan.org/help/Catalogue/entries/extsizes.html
+   http://ctan.org/pkg/extsizes
 
 
 footnotes
@@ -1142,9 +1143,9 @@ Example 3:
      }
 
 .. _footmisc:
-   http://mirror.ctan.org/help/Catalogue/entries/footmisc.html
+   http://ctan.org/pkg/footmisc
 .. _hanging:
-   http://mirror.ctan.org/help/Catalogue/entries/hanging.html
+   http://ctan.org/pkg/hanging
 
 
 hyphenation
@@ -1218,7 +1219,7 @@ Option:
   \urlstyle{same}
 
 .. _hyperref:
-   http://mirror.ctan.org/help/Catalogue/entries/hyperref.html
+   http://ctan.org/pkg/hyperref
 
 line blocks
 -----------
@@ -1311,7 +1312,7 @@ __ ../ref/rst/restructuredtext.html#literal-blocks
 .. _literal-block-env:
    config.html#literal-block-env
 .. _listings.pdf:
-    http://mirror.ctan.org/macros/latex/contrib/listings/listings.pdf
+   http://mirrors.ctan.org/macros/latex/contrib/listings/listings.pdf
 
 
 lists
@@ -1439,13 +1440,13 @@ Example 2:
     \geometry{height=10in}.
 
 .. _typearea:
-   http://mirror.ctan.org/help/Catalogue/entries/typearea.html
+   http://ctan.org/pkg/typearea
 .. _KOMA-Script Guide:
-   http://mirror.ctan.org/macros/latex/contrib/koma-script/scrguien.pdf
+   http://mirrors.ctan.org/macros/latex/contrib/koma-script/doc/scrguien.pdf
 .. _geometry:
-   http://mirror.ctan.org/help/Catalogue/entries/geometry.html
+   http://ctan.org/pkg/geometry
 .. _geometry manual:
-   http://mirror.ctan.org/macros/latex/contrib/geometry/geometry.pdf
+   http://mirrors.ctan.org/macros/latex/contrib/geometry/geometry.pdf
 
 
 page headers and footers
@@ -1484,9 +1485,9 @@ Example:
   See the `chappg documentation`_ for details.
 
 .. _chappg:
-   http://mirror.ctan.org/help/Catalogue/entries/chappg.html
+   http://ctan.org/pkg/chappg
 .. _chappg documentation:
-   http://mirror.ctan.org/macros/latex/contrib/chappg/chappg.pdf
+   http://mirrors.ctan.org/macros/latex/contrib/chappg/chappg.pdf
 
 
 paper size
@@ -1763,9 +1764,9 @@ With use-latex-toc (default since release 0.6):
 .. _use-latex-toc: config.html#use-latex-toc
 .. _contents directive: ../ref/rst/directives.html#contents
 .. _minitoc:
-   http://mirror.ctan.org/help/Catalogue/entries/minitoc.html
+   http://ctan.org/pkg/minitoc
 .. _minitoc documentation:
-   http://mirror.ctan.org/macros/latex/contrib/minitoc/minitoc.pdf
+   http://mirrors.ctan.org/macros/latex/contrib/minitoc/minitoc.pdf
 
 
 title reference role
@@ -1833,9 +1834,9 @@ Note:
 .. _LaTeX Unicode: http://www.unruh.de/DniQ/latex/unicode/
 .. _output-encoding: config.html#output-encoding
 .. _inputenc:
-   http://mirror.ctan.org/help/Catalogue/entries/inputenc.html
+   http://ctan.org/pkg/inputenc
 .. _ucs:
-   http://mirror.ctan.org/help/Catalogue/entries/unicode.html
+   http://ctan.org/pkg/unicode
 
 
 transition element
@@ -1939,7 +1940,7 @@ Right:
 See also the `Link text doesn’t break at end line`_ LaTeX FAQ entry.
 
 .. _breakurl:
-   http://mirror.ctan.org/help/Catalogue/entries/breakurl.html
+   http://ctan.org/pkg/breakurl
 
 .. _Link text doesn’t break at end line:
    http://www.tex.ac.uk/cgi-bin/texfaq2html?label=breaklinks
@@ -1963,7 +1964,7 @@ This can be solved with the "unicode" hyperref_option_ setting::
 "latin1"). Newer versions of hyperref default to "unicode=true" if the
 document language is "russian".
 
-.. _hyperref_option: config.html#stylesheet-latex2e-writer
+.. _hyperref_option: config.html#stylesheet-latex-writers
 
 
 image inclusion
@@ -1975,7 +1976,8 @@ supported file formats depend on the used driver:
 * pdflatex_ and xelatex_ work with PNG, JPG, or PDF, but **not EPS**.
 * Standard latex_ can include **only EPS** graphics, no other format.
 * latex + dvipdfmx works with EPS and JPG (add 'dvipdfmx' to the
-  documentoptions_ and 'bmpsize' to the stylesheet_ setting).
+  documentoptions_ or graphicx_ setting
+  and 'bmpsize' to the stylesheet_ setting).
 
 If PDF-image inclusion in PDF files fails, specifying
 ``--graphicx-option=pdftex`` or ``--graphicx-option=auto`` might help.
@@ -1992,9 +1994,9 @@ can help.
 
 __ ../ref/rst/directives.html#images
 .. _grfguide.pdf:
-   http://mirror.ctan.org/macros/latex/required/graphics/grfguide.pdf
+   http://mirrors.ctan.org/macros/latex/required/graphics/grfguide.pdf
 .. _grffile:
-   http://mirror.ctan.org/help/Catalogue/entries/grffile.html
+   http://ctan.org/pkg/grffile
 
 
 
@@ -2083,11 +2085,11 @@ Unfortunately, this defines only a subset of the characters
 (see pmboxdraw.pdf_ for a list).
 
 .. _pmboxdraw:
-   http://mirror.ctan.org/help/Catalogue/entries/pmboxdraw.html
+   http://ctan.org/pkg/pmboxdraw
 
 .. _pmboxdraw.pdf:
-   http://mirror.ctan.org/macros/latex/contrib/oberdiek/pmboxdraw.pdf
-
+   http://mirrors.ctan.org/macros/latex/contrib/pmboxdraw/pmboxdraw.pdf
+   
 Bugs and open issues
 --------------------
 
@@ -2165,7 +2167,7 @@ Figures
   `wrapfig`_ package.)
 
 .. _wrapfig:
-   http://mirror.ctan.org/help/Catalogue/entries/wrapfig.html
+   http://ctan.org/pkg/wrapfig
 
 
 Miscellaneous
