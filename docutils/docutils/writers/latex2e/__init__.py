@@ -192,8 +192,8 @@ class Writer(writers.Writer):
            'validator': frontend.validate_comma_separated_list,
            'choices': table_style_values}),
          ('LaTeX graphicx package option. '
-          'Possible values are "dvips", "pdftex". "auto" includes LaTeX code '
-          'to use "pdftex" if processing with pdf(la)tex and dvips otherwise. '
+          'Possible values are "dvipdfmx", "dvips", "dvisvgm", '
+          '"luatex", "pdftex", and "xetex".'
           'Default: "".',
           ['--graphicx-option'],
           {'default': ''}),
@@ -494,16 +494,38 @@ class SortableDict(dict):
 class PreambleCmds(object):
     """Building blocks for the latex preamble."""
 
+# Requirements
+
+PreambleCmds.color = r"""\usepackage{color}"""
+
+PreambleCmds.float = r"""\usepackage{float} % extended float configuration
+\floatplacement{figure}{H} % place figures here definitely"""
+
+PreambleCmds.linking = r"""%% hyperlinks:
+\ifthenelse{\isundefined{\hypersetup}}{
+  \usepackage[%s]{hyperref}
+  \usepackage{bookmark}
+  \urlstyle{same} %% normal text font (alternatives: tt, rm, sf)
+}{}"""
+
+PreambleCmds.minitoc = r"""%% local table of contents
+\usepackage{minitoc}"""
+
+PreambleCmds.table = r"""\usepackage{longtable,ltcaption,array}
+\setlength{\extrarowheight}{2pt}
+\newlength{\DUtablewidth} % internal use in tables"""
+
+PreambleCmds.textcomp = r"""\usepackage{textcomp} % text symbol macros"""
+# TODO? Options [force,almostfull] prevent spurious error messages,
+# see de.comp.text.tex/2005-12/msg01855
+
+# backwards compatibility definitions
+
 PreambleCmds.abstract_legacy = r"""
 % abstract title
 \providecommand*{\DUtitleabstract}[1]{\centerline{\textbf{#1}}}"""
 
-PreambleCmds.abstract = r"""
-\providecommand*{\DUCLASSabstract}{
-  \renewcommand{\DUtitle}[1]{\centerline{\textbf{##1}}}
-}"""
-
-# deprecated, see https://sourceforge.net/p/docutils/bugs/339/
+# see https://sourceforge.net/p/docutils/bugs/339/
 PreambleCmds.admonition_legacy = r"""
 % admonition (specially marked topic)
 \providecommand{\DUadmonition}[2][class-arg]{%
@@ -517,201 +539,9 @@ PreambleCmds.admonition_legacy = r"""
   \fi
 }"""
 
-PreambleCmds.admonition = r"""
-% admonition (specially marked topic)
-\ifx\DUadmonition\undefined % poor man's "provideenvironment"
- \newbox{\DUadmonitionbox}
- \newenvironment{DUadmonition}%
-  {\begin{center}
-     \begin{lrbox}{\DUadmonitionbox}
-       \begin{minipage}{0.9\linewidth}
-  }%
-  {    \end{minipage}
-     \end{lrbox}
-     \fbox{\usebox{\DUadmonitionbox}}
-   \end{center}
-  }
-\fi"""
-
-## PreambleCmds.caption = r"""% configure caption layout
-## \usepackage{caption}
-## \captionsetup{singlelinecheck=false}% no exceptions for one-liners"""
-
-PreambleCmds.color = r"""\usepackage{color}"""
-
-PreambleCmds.docinfo = r"""
-% docinfo (width of docinfo table)
-\DUprovidelength{\DUdocinfowidth}{0.9\linewidth}"""
-# PreambleCmds.docinfo._depends = 'providelength'
-
-PreambleCmds.dedication = r"""
-% dedication topic
-\providecommand*{\DUCLASSdedication}{%
-  \renewenvironment{quote}{\begin{center}}{\end{center}}%
-}"""
-# TODO: add \em to set dedication text in italics.
-
-PreambleCmds.duclass = r"""
-% class handling for environments (block-level elements)
-% \begin{DUclass}{spam} tries \DUCLASSspam and
-% \end{DUclass}{spam} tries \endDUCLASSspam
-\ifx\DUclass\undefined % poor man's "provideenvironment"
- \newenvironment{DUclass}[1]%
-  {\def\DocutilsClassFunctionName{DUCLASS#1}% arg cannot be used in end-part of environment.
-     \csname \DocutilsClassFunctionName \endcsname}%
-  {\csname end\DocutilsClassFunctionName \endcsname}%
-\fi"""
-
 PreambleCmds.error_legacy = r"""
 % error admonition title
 \providecommand*{\DUtitleerror}[1]{\DUtitle{\color{red}#1}}"""
-
-PreambleCmds.error = r"""
-\providecommand*{\DUCLASSerror}{\color{red}}"""
-
-PreambleCmds.fieldlist = r"""
-% fieldlist environment
-\ifthenelse{\isundefined{\DUfieldlist}}{
-  \newenvironment{DUfieldlist}%
-    {\quote\description}
-    {\enddescription\endquote}
-}{}"""
-
-PreambleCmds.float_settings = r"""\usepackage{float} % float configuration
-\floatplacement{figure}{H} % place figures here definitely"""
-
-PreambleCmds.footnotes = r"""% numeric or symbol footnotes with hyperlinks
-\providecommand*{\DUfootnotemark}[3]{%
-  \raisebox{1em}{\hypertarget{#1}{}}%
-  \hyperlink{#2}{\textsuperscript{#3}}%
-}
-\providecommand{\DUfootnotetext}[4]{%
-  \begingroup%
-  \renewcommand{\thefootnote}{%
-    \protect\raisebox{1em}{\protect\hypertarget{#1}{}}%
-    \protect\hyperlink{#2}{#3}}%
-  \footnotetext{#4}%
-  \endgroup%
-}"""
-
-PreambleCmds.graphicx_auto = r"""% Check output format
-\ifx\pdftexversion\undefined
-  \usepackage{graphicx}
-\else
-  \usepackage[pdftex]{graphicx}
-\fi"""
-
-PreambleCmds.highlight_rules = r"""% basic code highlight:
-\providecommand*\DUrolecomment[1]{\textcolor[rgb]{0.40,0.40,0.40}{#1}}
-\providecommand*\DUroledeleted[1]{\textcolor[rgb]{0.40,0.40,0.40}{#1}}
-\providecommand*\DUrolekeyword[1]{\textbf{#1}}
-\providecommand*\DUrolestring[1]{\textit{#1}}"""
-
-PreambleCmds.inline = r"""
-% inline markup (custom roles)
-% \DUrole{#1}{#2} tries \DUrole#1{#2}
-\providecommand*{\DUrole}[2]{%
-  \ifcsname DUrole#1\endcsname%
-    \csname DUrole#1\endcsname{#2}%
-  \else%
-    #2%
-  \fi%
-}"""
-
-PreambleCmds.legend = r"""
-% legend environment
-\ifthenelse{\isundefined{\DUlegend}}{
-  \newenvironment{DUlegend}{\small}{}
-}{}"""
-
-PreambleCmds.lineblock = r"""
-% lineblock environment
-\DUprovidelength{\DUlineblockindent}{2.5em}
-\ifthenelse{\isundefined{\DUlineblock}}{
-  \newenvironment{DUlineblock}[1]{%
-    \list{}{\setlength{\partopsep}{\parskip}
-            \addtolength{\partopsep}{\baselineskip}
-            \setlength{\topsep}{0pt}
-            \setlength{\itemsep}{0.15\baselineskip}
-            \setlength{\parsep}{0pt}
-            \setlength{\leftmargin}{#1}}
-    \raggedright
-  }
-  {\endlist}
-}{}"""
-# PreambleCmds.lineblock._depends = 'providelength'
-
-PreambleCmds.linking = r"""%% hyperlinks:
-\ifthenelse{\isundefined{\hypersetup}}{
-  \usepackage[%s]{hyperref}
-  \usepackage{bookmark}
-  \urlstyle{same} %% normal text font (alternatives: tt, rm, sf)
-}{}"""
-
-PreambleCmds.minitoc = r"""%% local table of contents
-\usepackage{minitoc}"""
-
-PreambleCmds.optionlist = r"""
-% optionlist environment
-\providecommand*{\DUoptionlistlabel}[1]{\bfseries #1 \hfill}
-\DUprovidelength{\DUoptionlistindent}{3cm}
-\ifthenelse{\isundefined{\DUoptionlist}}{
-  \newenvironment{DUoptionlist}{%
-    \list{}{\setlength{\labelwidth}{\DUoptionlistindent}
-            \setlength{\rightmargin}{1cm}
-            \setlength{\leftmargin}{\rightmargin}
-            \addtolength{\leftmargin}{\labelwidth}
-            \addtolength{\leftmargin}{\labelsep}
-            \renewcommand{\makelabel}{\DUoptionlistlabel}}
-  }
-  {\endlist}
-}{}"""
-# PreambleCmds.optionlist._depends = 'providelength'
-
-PreambleCmds.providelength = r"""
-% providelength (provide a length variable and set default, if it is new)
-\providecommand*{\DUprovidelength}[2]{
-  \ifthenelse{\isundefined{#1}}{\newlength{#1}\setlength{#1}{#2}}{}
-}"""
-
-PreambleCmds.rubric = r"""
-% rubric (informal heading)
-\providecommand*{\DUrubric}[1]{\subsubsection*{\emph{#1}}}"""
-
-PreambleCmds.sidebar = r"""
-% sidebar (text outside the main text flow)
-\providecommand{\DUsidebar}[1]{%
-  \begin{center}
-    \colorbox[gray]{0.80}{\parbox{0.9\linewidth}{#1}}
-  \end{center}
-}"""
-
-PreambleCmds.subtitle = r"""
-% subtitle (for sidebar)
-\providecommand*{\DUsubtitle}[1]{\par\emph{#1}\smallskip}"""
-
-PreambleCmds.documentsubtitle = r"""
-% subtitle (in document title)
-\providecommand*{\DUdocumentsubtitle}[1]{{\large #1}}"""
-
-PreambleCmds.table = r"""\usepackage{longtable,ltcaption,array}
-\setlength{\extrarowheight}{2pt}
-\newlength{\DUtablewidth} % internal use in tables"""
-
-# Options [force,almostfull] prevent spurious error messages, see
-# de.comp.text.tex/2005-12/msg01855
-PreambleCmds.textcomp = """\
-\\usepackage{textcomp} % text symbol macros"""
-
-PreambleCmds.textsubscript = r"""
-% text mode subscript
-\ifx\textsubscript\undefined
-  \usepackage{fixltx2e} % since 2015 loaded by default
-\fi"""
-
-PreambleCmds.titlereference = r"""
-% titlereference role
-\providecommand*{\DUroletitlereference}[1]{\textsl{#1}}"""
 
 PreambleCmds.title_legacy = r"""
 % title for topics, admonitions, unsupported section levels, and sidebar
@@ -724,16 +554,37 @@ PreambleCmds.title_legacy = r"""
   \fi
 }"""
 
-PreambleCmds.title = r"""
-% title for topics, admonitions, unsupported section levels, and sidebar
-\providecommand*{\DUtitle}[1]{\subsubsection*{#1}}"""
+## PreambleCmds.caption = r"""% configure caption layout
+## \usepackage{caption}
+## \captionsetup{singlelinecheck=false}% no exceptions for one-liners"""
 
-PreambleCmds.transition = r"""
-% transition (break, fancybreak, anonymous section)
-\providecommand*{\DUtransition}{%
-  \hspace*{\fill}\hrulefill\hspace*{\fill}
-  \vskip 0.5\baselineskip
-}"""
+
+# Definitions from docutils.sty::
+
+def _read_block(fp):
+    block = [next(fp)] # first line (empty)
+    for line in fp:
+        if not line.strip():
+            break
+        block.append(line)
+    return ''.join(block).rstrip()
+
+_du_sty = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                      'docutils.sty')
+with open(_du_sty) as fp:
+    for line in fp:
+        line = line.strip('% \n')
+        if not line.endswith('::'):
+            continue
+        block_name = line.rstrip(':')
+        if not block_name:
+            continue
+        definitions = _read_block(fp)
+        if block_name in ('color', 'float', 'table', 'textcomp'):
+            definitions = definitions.strip()
+        # print('Block: `%s`'% block_name)
+        # print(definitions)
+        setattr(PreambleCmds, block_name, definitions)
 
 
 # LaTeX encoding maps
@@ -1282,8 +1133,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # graphic package options:
         if self.settings.graphicx_option == '':
             self.graphicx_package = r'\usepackage{graphicx}'
-        elif self.settings.graphicx_option.lower() == 'auto':
-            self.graphicx_package = PreambleCmds.graphicx_auto
         else:
             self.graphicx_package = (r'\usepackage[%s]{graphicx}' %
                                      self.settings.graphicx_option)
@@ -1388,8 +1237,17 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # Stylesheets
         # (the name `self.stylesheet` is singular because only one
         # stylesheet was supported before Docutils 0.6).
+        stylesheet_list = utils.get_stylesheet_list(settings)
+        self.fallback_stylesheet = [sheet for sheet in stylesheet_list
+                                    if sheet == 'docutils']
+        # docutils.sty is incompatible with legacy functions
+        if self.fallback_stylesheet and self.settings.legacy_class_functions:
+            self.fallback_stylesheet = []
+            stylesheet_list = [sheet for sheet in stylesheet_list
+                               if sheet != 'docutils']
         self.stylesheet = [self.stylesheet_call(path)
-                           for path in utils.get_stylesheet_list(settings)]
+                           for path in stylesheet_list]
+
 
         # PDF setup
         if self.hyperlink_color in ('0', 'false', 'False', ''):
@@ -1574,7 +1432,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             # Characters that require a feature/package to render
             for ch in text:
                 cp = ord(ch)
-                if cp in CharMaps.textcomp:
+                if cp in CharMaps.textcomp and not self.fallback_stylesheet:
                     self.requirements['textcomp'] = PreambleCmds.textcomp
                 elif cp in CharMaps.pifont:
                     self.requirements['pifont'] = '\\usepackage{pifont}'
@@ -1677,7 +1535,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
                     self.babel.otherlanguages[language] = True
                     self.out.append('\\begin{selectlanguage}{%s}\n' % language)
             else:
-                self.fallbacks['DUclass'] = PreambleCmds.duclass
+                if not self.fallback_stylesheet:
+                    self.fallbacks['DUclass'] = PreambleCmds.duclass
                 self.out.append('\\begin{DUclass}{%s}\n' % cls)
 
     def duclass_close(self, node):
@@ -1688,7 +1547,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 if language:
                     self.out.append('\\end{selectlanguage}\n')
             else:
-                self.fallbacks['DUclass'] = PreambleCmds.duclass
+                if not self.fallback_stylesheet:
+                    self.fallbacks['DUclass'] = PreambleCmds.duclass
                 self.out.append('\\end{DUclass}\n')
 
     def push_output_collector(self, new_out):
@@ -1737,8 +1597,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 self.fallbacks['error'] = PreambleCmds.error_legacy
             self.out.append('\n\\DUadmonition[%s]{' % ','.join(node['classes']))
             return
-        self.fallbacks['admonition'] = PreambleCmds.admonition
-        if 'error' in node['classes']:
+        if not self.fallback_stylesheet:
+            self.fallbacks['admonition'] = PreambleCmds.admonition
+        if 'error' in node['classes'] and not self.fallback_stylesheet:
             self.fallbacks['error'] = PreambleCmds.error
         self.duclass_open(node)
         self.out.append('\\begin{DUadmonition}')
@@ -1797,7 +1658,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.out.append('}')
 
     def visit_subscript(self, node):
-        self.fallbacks['textsubscript'] = PreambleCmds.textsubscript
         self.out.append(r'\textsubscript{')
         if node['classes']:
             self.visit_inline(node)
@@ -1814,7 +1674,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.out.append('}\n')
 
     def visit_title_reference(self, node):
-        self.fallbacks['titlereference'] = PreambleCmds.titlereference
+        if not self.fallback_stylesheet:
+            self.fallbacks['titlereference'] = PreambleCmds.titlereference
         self.out.append(r'\DUroletitlereference{')
         if node['classes']:
             self.visit_inline(node)
@@ -1975,8 +1836,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if self.docinfo:
             # tabularx: automatic width of columns, no page breaks allowed.
             self.requirements['tabularx'] = r'\usepackage{tabularx}'
-            self.fallbacks['_providelength'] = PreambleCmds.providelength
-            self.fallbacks['docinfo'] = PreambleCmds.docinfo
+            if not self.fallback_stylesheet:
+                self.fallbacks['_providelength'] = PreambleCmds.providelength
+                self.fallbacks['docinfo'] = PreambleCmds.docinfo
             #
             self.docinfo.insert(0, '\n% Docinfo\n'
                                 '\\begin{center}\n'
@@ -2258,7 +2120,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_field_list(self, node):
         self.duclass_open(node)
         if self.out is not self.docinfo:
-            self.fallbacks['fieldlist'] = PreambleCmds.fieldlist
+            if not self.fallback_stylesheet:
+                self.fallbacks['fieldlist'] = PreambleCmds.fieldlist
             self.out.append('\\begin{DUfieldlist}')
 
     def depart_field_list(self, node):
@@ -2281,7 +2144,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.out.append(':}]')
 
     def visit_figure(self, node):
-        self.requirements['float_settings'] = PreambleCmds.float_settings
+        self.requirements['float'] = PreambleCmds.float
         self.duclass_open(node)
         # The 'align' attribute sets the "outer alignment",
         # for "inner alignment" use LaTeX default alignment (similar to HTML)
@@ -2315,7 +2178,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
         except IndexError:
             backref = node['ids'][0] # no backref, use self-ref instead
         if self.docutils_footnotes:
-            self.fallbacks['footnotes'] = PreambleCmds.footnotes
+            if not self.fallback_stylesheet:
+                self.fallbacks['footnotes'] = PreambleCmds.footnotes
             num = node[0].astext()
             if self.settings.footnote_references == 'brackets':
                 num = '[%s]' % num
@@ -2353,7 +2217,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.out.append('\\hyperlink{%s}{[' % href)
             self.context.append(']}')
         else:
-            self.fallbacks['footnotes'] = PreambleCmds.footnotes
+            if not self.fallback_stylesheet:
+                self.fallbacks['footnotes'] = PreambleCmds.footnotes
             self.out.append(r'\DUfootnotemark{%s}{%s}{' %
                             (node['ids'][0], href))
             self.context.append('}')
@@ -2413,7 +2278,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
             # XeTeX does not know the length unit px.
             # Use \pdfpxdimen, the macro to set the value of 1 px in pdftex.
             # This way, configuring works the same for pdftex and xetex.
-            self.fallbacks['_providelength'] = PreambleCmds.providelength
+            if not self.fallback_stylesheet:
+                self.fallbacks['_providelength'] = PreambleCmds.providelength
             self.fallbacks['px'] = '\n\\DUprovidelength{\\pdfpxdimen}{1bp}\n'
             length_str = r'%s\pdfpxdimen' % value
         return length_str
@@ -2485,14 +2351,16 @@ class LaTeXTranslator(nodes.NodeVisitor):
                     self.babel.otherlanguages[language] = True
                     self.out.append(r'\foreignlanguage{%s}{' % language)
             else:
-                self.fallbacks['inline'] = PreambleCmds.inline
+                if not self.fallback_stylesheet:
+                    self.fallbacks['inline'] = PreambleCmds.inline
                 self.out.append(r'\DUrole{%s}{' % cls)
 
     def depart_inline(self, node):
         self.out.append('}' * len(node['classes']))
 
     def visit_legend(self, node):
-        self.fallbacks['legend'] = PreambleCmds.legend
+        if not self.fallback_stylesheet:
+            self.fallbacks['legend'] = PreambleCmds.legend
         self.out.append('\\begin{DUlegend}')
 
     def depart_legend(self, node):
@@ -2505,8 +2373,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.out.append('\n')
 
     def visit_line_block(self, node):
-        self.fallbacks['_providelength'] = PreambleCmds.providelength
-        self.fallbacks['lineblock'] = PreambleCmds.lineblock
+        if not self.fallback_stylesheet:
+            self.fallbacks['_providelength'] = PreambleCmds.providelength
+            self.fallbacks['lineblock'] = PreambleCmds.lineblock
         self.set_align_from_classes(node)
         if isinstance(node.parent, nodes.line_block):
             self.out.append('\\item[]\n'
@@ -2529,10 +2398,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_literal(self, node):
         self.literal = True
-        if 'code' in node['classes'] and (
-                    self.settings.syntax_highlight != 'none'):
+        if ('code' in node['classes'] and
+            self.settings.syntax_highlight != 'none'):
             self.requirements['color'] = PreambleCmds.color
-            self.fallbacks['code'] = PreambleCmds.highlight_rules
+            if not self.fallback_stylesheet:
+                self.fallbacks['code'] = PreambleCmds.highlight_rules
         self.out.append('\\texttt{')
         if node['classes']:
             self.visit_inline(node)
@@ -2590,10 +2460,12 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.out += ['\n'] + self.ids_to_labels(node)
         self.duclass_open(node)
         # Highlight code?
-        if (not _plaintext and 'code' in node['classes']
+        if (not _plaintext
+            and 'code' in node['classes']
             and self.settings.syntax_highlight != 'none'):
             self.requirements['color'] = PreambleCmds.color
-            self.fallbacks['code'] = PreambleCmds.highlight_rules
+            if not self.fallback_stylesheet:
+                self.fallbacks['code'] = PreambleCmds.highlight_rules
         # Wrap?
         if _in_table and _use_env and not _autowidth_table:
             # Wrap in minipage to prevent extra vertical space
@@ -2727,8 +2599,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.out.append('] ')
 
     def visit_option_list(self, node):
-        self.fallbacks['_providelength'] = PreambleCmds.providelength
-        self.fallbacks['optionlist'] = PreambleCmds.optionlist
+        if not self.fallback_stylesheet:
+            self.fallbacks['_providelength'] = PreambleCmds.providelength
+            self.fallbacks['optionlist'] = PreambleCmds.optionlist
         self.duclass_open(node)
         self.out.append('\\begin{DUoptionlist}')
 
@@ -2872,7 +2745,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.depart_docinfo_item(node)
 
     def visit_rubric(self, node):
-        self.fallbacks['rubric'] = PreambleCmds.rubric
+        if not self.fallback_stylesheet:
+            self.fallbacks['rubric'] = PreambleCmds.rubric
         # class wrapper would interfere with ``\section*"`` type commands
         # (spacing/indent of first paragraph)
         self.out.append('\n\\DUrubric{')
@@ -2895,7 +2769,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_sidebar(self, node):
         self.duclass_open(node)
         self.requirements['color'] = PreambleCmds.color
-        self.fallbacks['sidebar'] = PreambleCmds.sidebar
+        if not self.fallback_stylesheet:
+            self.fallbacks['sidebar'] = PreambleCmds.sidebar
         self.out.append('\\DUsidebar{')
 
     def depart_sidebar(self, node):
@@ -2941,7 +2816,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_subtitle(self, node):
         if isinstance(node.parent, nodes.document):
             self.push_output_collector(self.subtitle)
-            self.fallbacks['documentsubtitle'] = PreambleCmds.documentsubtitle
+            if not self.fallback_stylesheet:
+                self.fallbacks['documentsubtitle'] = PreambleCmds.documentsubtitle
             protect = (self.settings.documentclass == 'memoir')
             self.subtitle_labels += self.ids_to_labels(node, set_anchor=False,
                                                        protect=protect)
@@ -2950,7 +2826,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.out.append(r'\%s*{' %
                              self.d_class.section(self.section_level + 1))
         else:
-            self.fallbacks['subtitle'] = PreambleCmds.subtitle
+            if not self.fallback_stylesheet:
+                self.fallbacks['subtitle'] = PreambleCmds.subtitle
             self.out.append('\n\\DUsubtitle{')
 
     def depart_subtitle(self, node):
@@ -2961,7 +2838,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_system_message(self, node):
         self.requirements['color'] = PreambleCmds.color
-        self.fallbacks['title'] = PreambleCmds.title
+        if not self.fallback_stylesheet:
+            self.fallbacks['title'] = PreambleCmds.title
         if self.settings.legacy_class_functions:
             self.fallbacks['title'] = PreambleCmds.title_legacy
         node['classes'] = ['system-message']
@@ -3109,7 +2987,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 self.fallbacks['title'] = PreambleCmds.title_legacy
                 self.out.append('\n\\DUtitle[%s]{' % ','.join(classes))
             else:
-                self.fallbacks['title'] = PreambleCmds.title
+                if not self.fallback_stylesheet:
+                    self.fallbacks['title'] = PreambleCmds.title
                 self.out.append('\n\\DUtitle{')
             self.context.append('}\n')
         # Table caption
@@ -3132,7 +3011,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 self.out.append(r'\%s{' % section_name)
             if self.section_level > len(self.d_class.sections):
                 # section level not supported by LaTeX
-                self.fallbacks['title'] = PreambleCmds.title
+                if not self.fallback_stylesheet:
+                    self.fallbacks['title'] = PreambleCmds.title
                 # self.out.append('\\phantomsection%\n  ')
             # label and ToC entry:
             bookmark = ['']
@@ -3229,12 +3109,14 @@ class LaTeXTranslator(nodes.NodeVisitor):
         else:
             # special topics:
             if 'abstract' in node['classes']:
-                self.fallbacks['abstract'] = PreambleCmds.abstract
+                if not self.fallback_stylesheet:
+                    self.fallbacks['abstract'] = PreambleCmds.abstract
                 if self.settings.legacy_class_functions:
                     self.fallbacks['abstract'] = PreambleCmds.abstract_legacy
                 self.push_output_collector(self.abstract)
             elif 'dedication' in node['classes']:
-                self.fallbacks['dedication'] = PreambleCmds.dedication
+                if not self.fallback_stylesheet:
+                    self.fallbacks['dedication'] = PreambleCmds.dedication
                 self.push_output_collector(self.dedication)
             else:
                 node['classes'].insert(0, 'topic')
@@ -3252,7 +3134,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.pop_output_collector()
 
     def visit_transition(self, node):
-        self.fallbacks['transition'] = PreambleCmds.transition
+        if not self.fallback_stylesheet:
+            self.fallbacks['transition'] = PreambleCmds.transition
         self.out.append('\n%' + '_' * 75 + '\n')
         self.out.append('\\DUtransition\n')
 

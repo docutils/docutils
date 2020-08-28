@@ -14,7 +14,7 @@
 \frenchbsetup{StandardLayout}
 \AtBeginDocument{\selectlanguage{english}\noextrasfrench}
 \usepackage{color}
-\usepackage{float} % float configuration
+\usepackage{float} % extended float configuration
 \floatplacement{figure}{H} % place figures here definitely
 \usepackage{graphicx}
 \usepackage{multirow}
@@ -41,12 +41,12 @@
 % \end{DUclass}{spam} tries \endDUCLASSspam
 \ifx\DUclass\undefined % poor man's "provideenvironment"
  \newenvironment{DUclass}[1]%
-  {\def\DocutilsClassFunctionName{DUCLASS#1}% arg cannot be used in end-part of environment.
+  {\def\DocutilsClassFunctionName{DUCLASS#1}% "#1" does not work in end-part of environment.
      \csname \DocutilsClassFunctionName \endcsname}%
   {\csname end\DocutilsClassFunctionName \endcsname}%
 \fi
 
-% providelength (provide a length variable and set default, if it is new)
+% Provide a length variable and set default, if it is new
 \providecommand*{\DUprovidelength}[2]{
   \ifthenelse{\isundefined{#1}}{\newlength{#1}\setlength{#1}{#2}}{}
 }
@@ -66,12 +66,12 @@
   \fi
 }
 
-% dedication topic
+% special topic for dedications
 \providecommand*{\DUCLASSdedication}{%
   \renewenvironment{quote}{\begin{center}}{\end{center}}%
 }
 
-% docinfo (width of docinfo table)
+% width of docinfo table
 \DUprovidelength{\DUdocinfowidth}{0.9\linewidth}
 
 % subtitle (in document title)
@@ -81,13 +81,14 @@
 % error admonition title
 \providecommand*{\DUtitleerror}[1]{\DUtitle{\color{red}#1}}
 
-% fieldlist environment
+% field list environment (for separate configuration of `field lists`)
 \ifthenelse{\isundefined{\DUfieldlist}}{
   \newenvironment{DUfieldlist}%
     {\quote\description}
     {\enddescription\endquote}
 }{}
-% numeric or symbol footnotes with hyperlinks
+
+% numerical or symbol footnotes with hyperlinks and backlinks
 \providecommand*{\DUfootnotemark}[3]{%
   \raisebox{1em}{\hypertarget{#1}{}}%
   \hyperlink{#2}{\textsuperscript{#3}}%
@@ -101,8 +102,7 @@
   \endgroup%
 }
 
-% inline markup (custom roles)
-% \DUrole{#1}{#2} tries \DUrole#1{#2}
+% custom inline roles: \DUrole{#1}{#2} tries \DUrole#1{#2}
 \providecommand*{\DUrole}[2]{%
   \ifcsname DUrole#1\endcsname%
     \csname DUrole#1\endcsname{#2}%
@@ -111,12 +111,12 @@
   \fi%
 }
 
-% legend environment
+% legend environment (in figures and formal tables)
 \ifthenelse{\isundefined{\DUlegend}}{
   \newenvironment{DUlegend}{\small}{}
 }{}
 
-% lineblock environment
+% line block environment
 \DUprovidelength{\DUlineblockindent}{2.5em}
 \ifthenelse{\isundefined{\DUlineblock}}{
   \newenvironment{DUlineblock}[1]{%
@@ -131,7 +131,7 @@
   {\endlist}
 }{}
 
-% optionlist environment
+% list of command line options
 \providecommand*{\DUoptionlistlabel}[1]{\bfseries #1 \hfill}
 \DUprovidelength{\DUoptionlistindent}{3cm}
 \ifthenelse{\isundefined{\DUoptionlist}}{
@@ -146,10 +146,10 @@
   {\endlist}
 }{}
 
-% rubric (informal heading)
+% informal heading
 \providecommand*{\DUrubric}[1]{\subsubsection*{\emph{#1}}}
 
-% sidebar (text outside the main text flow)
+% text outside the main text flow
 \providecommand{\DUsidebar}[1]{%
   \begin{center}
     \colorbox[gray]{0.80}{\parbox{0.9\linewidth}{#1}}
@@ -158,11 +158,6 @@
 
 % subtitle (for sidebar)
 \providecommand*{\DUsubtitle}[1]{\par\emph{#1}\smallskip}
-
-% text mode subscript
-\ifx\textsubscript\undefined
-  \usepackage{fixltx2e} % since 2015 loaded by default
-\fi
 
 % title for topics, admonitions, unsupported section levels, and sidebar
 \providecommand*{\DUtitle}[2][class-arg]{%
@@ -174,10 +169,10 @@
   \fi
 }
 
-% titlereference role
+% titlereference standard role
 \providecommand*{\DUroletitlereference}[1]{\textsl{#1}}
 
-% transition (break, fancybreak, anonymous section)
+% transition (break / fancybreak / anonymous section)
 \providecommand*{\DUtransition}{%
   \hspace*{\fill}\hrulefill\hspace*{\fill}
   \vskip 0.5\baselineskip

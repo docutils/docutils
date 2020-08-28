@@ -72,14 +72,14 @@ longtable = r"""\usepackage{longtable,ltcaption,array}
 """,
 stylesheet = '',
 fallbacks =  '',
-fallbacks_highlight = r"""% basic code highlight:
+fallbacks_highlight = r"""
+% basic code highlight:
 \providecommand*\DUrolecomment[1]{\textcolor[rgb]{0.40,0.40,0.40}{#1}}
 \providecommand*\DUroledeleted[1]{\textcolor[rgb]{0.40,0.40,0.40}{#1}}
 \providecommand*\DUrolekeyword[1]{\textbf{#1}}
 \providecommand*\DUrolestring[1]{\textit{#1}}
 
-% inline markup (custom roles)
-% \DUrole{#1}{#2} tries \DUrole#1{#2}
+% custom inline roles: \DUrole{#1}{#2} tries \DUrole#1{#2}
 \providecommand*{\DUrole}[2]{%
   \ifcsname DUrole#1\endcsname%
     \csname DUrole#1\endcsname{#2}%
@@ -239,7 +239,8 @@ totest['footnote text'] = [
 """,
 ## # expected output
 head_template.substitute(dict(parts,
-    fallbacks=r"""% numeric or symbol footnotes with hyperlinks
+    fallbacks=r"""
+% numerical or symbol footnotes with hyperlinks and backlinks
 \providecommand*{\DUfootnotemark}[3]{%
   \raisebox{1em}{\hypertarget{#1}{}}%
   \hyperlink{#2}{\textsuperscript{#3}}%
