@@ -1,0 +1,14 @@
+==============
+refernce tests
+==============
+
+some tests for references in man pages
+--------------------------------------
+
+See https://docutils.sourceforge.io/docs/user/rst/quickref.html#explicit-markup
+for more 
+
+External hyperlinks, like Python_.
+
+.. _Python: http://www.python.org/ 
+
