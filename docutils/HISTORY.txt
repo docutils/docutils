@@ -72,14 +72,26 @@ Changes Since 0.16
   - Use LaTeX environments for admonitions and "class wrappers" for styling
     admonitions and titles if the new configuration setting
     `legacy_class_functions`_ is False.
+    
+    .. _legacy_class_functions: docs/user/config.html#legacy-class-functions
+
 
   - Remove backwards compatibility code for the deprecated
     `styling command`__ prefix ``\docutilsrole``.
 
-    __ docs/user/latex.html#classes
+    __ docs/user/latex.html#custom-interpreted-text-roles
     
   - Support the `memoir` LaTeX document class.
     Fixes #390, #391, and #392. 
+    
+  - The special value "auto" for the `graphicx_option`_ setting
+    is no longer supported (it never worked for xetex/luatex).
+
+    .. _graphicx_option: docs/user/config.html#graphicx-option
+
+  - Most helper commands and element definitions are now defined in the
+    LaTeX package `docutils.sty` and no longer inserted in the document
+    preamble if the `stylesheet` setting lists "docutils".
 
 * docutils/writers/manpage.py
 
@@ -93,7 +105,6 @@ Changes Since 0.16
   - Run python3 test like python2 against source not the build/-directory
 
 .. _pip: https://pypi.org/project/pip/
-.. _legacy_class_functions: docs/user/config.html#legacy-class-functions
 
 
 Release 0.16

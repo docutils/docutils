@@ -28,7 +28,7 @@ Future changes
 * HTML5 writer:
     Do not use <h1> for section headings when it is used for the document
     title. https://www.w3.org/wiki/HTML/Usage/Headings/h1only
-    
+
     Use <blockquote> instead of <div> tags for topics and admonitions.
 
 * ``Node.traverse()`` will return an iterator instead of a list.
@@ -36,9 +36,9 @@ Future changes
 * Remove ``utils.unique_combinations``
   (obsoleted by ``itertools.combinations``).
 
-* Eventually remove the "rawsource" attribute and argument from nodes.Text: we
-  store the null-escaped text in Text nodes since 0.16 so there is no additional
-  information in the rawsource.
+* Eventually remove the "rawsource" attribute and argument from nodes.Text:
+  we store the null-escaped text in Text nodes since 0.16 so there is no
+  additional information in the rawsource.
 
 * If the id_prefix_ setting is non-empty, leading number and hyphen characters
   will not be stripped from a `reference name`_ during `identifier
@@ -91,19 +91,29 @@ Release 0.17
     Move non-essential styling from ``minimal.css`` to ``plain.css``.
     Support numbered figures in ``plain.css``.
 
-
 * LaTeX writer:
 
   - New configuration setting `legacy_class_functions`_.
+
+  - The special value "auto" for the `graphicx_option`_ setting
+    is no longer supported (it never worked for xetex/luatex).
 
   - `Styling commands`__ using the legacy ``\docutilsrole`` prefix are
     now ignored. Use ``\DUrole``.
 
     __ docs/user/latex.html#classes
 
+  - Most helper commands and element definitions are now defined in the
+    LaTeX package `docutils.sty` and no longer inserted in the document
+    preamble if the stylesheet__ setting lists "docutils".
+  
+    __ docs/user/config.html#stylesheet-latex-writers
+    
 .. _setuptools: https://pypi.org/project/setuptools/
 .. _pip: https://pypi.org/project/pip/
 .. _legacy_class_functions: docs/user/config.html#legacy-class-functions
+.. _graphicx_option: docs/user/config.html#graphicx-option
+.. docutils.sty: https://ctan.org/pkg/docutils  (coming soon)
 
 
 Release 0.16 (2020-01-12)
