@@ -109,7 +109,7 @@ setting::
 Via a Configuration File
 ------------------------
 
-You should secure Docutils via a configuration file:
+You may secure Docutils via a configuration file:
 
 * if your application executes one of the `Docutils front-end tools`_
   as a separate process;
@@ -118,7 +118,7 @@ You should secure Docutils via a configuration file:
 * if you want to secure all Docutils deployments system-wide.
 
 If you call Docutils programmatically, it may be preferable to use the
-methods described in section below.
+methods described in the section above.
 
 Docutils automatically looks in three places for a configuration file:
 
@@ -133,22 +133,12 @@ environment variable.  Details about configuration files, the purpose
 of the various locations, and ``DOCUTILSCONFIG`` are available in the
 `"Configuration Files"`_ section of `Docutils Configuration`_.
 
-To fully secure your Docutils installation, the configuration file
+To fully secure a recent Docutils installation, the configuration file
 should contain the following lines::
 
     [general]
-    file-insertion-enabled:
-    raw-enabled:
-
-.. Note:: Due to a bug in the definitions of these security-related
-   settings, the right-hand-side of the above lines (the values)
-   should be left blank, as shown.  The bug was corrected on
-   2006-11-12 and is reflected in Docutils releases 0.4.1 and higher.
-   In these versions, more verbose forms may be used, such as::
-
-       [general]
-       file-insertion-enabled: off
-       raw-enabled: no
+    file-insertion-enabled: off
+    raw-enabled: no
 
 .. _Docutils front-end tools: ../user/tools.html
 .. _"Configuration Files": ../user/config.html#configuration-files
@@ -159,10 +149,17 @@ Version Applicability
 =====================
 
 The ``file_insertion_enabled`` & ``raw_enabled`` settings were added
-to Docutils 0.3.9; previous versions will ignore these settings.  A
-bug existed in the configuration file handling of these settings in
-Docutils 0.4 and earlier.  The bug was fixed with the 0.4.1 release on
-2006-11-12.
+to Docutils 0.3.9; previous versions will ignore these settings. 
+
+A bug existed in the configuration file handling of these settings in
+Docutils 0.4 and earlier: the right-hand-side of the  (the
+values) needed to be left blank::
+   
+       [general]
+       file-insertion-enabled:
+       raw-enabled:
+
+The bug was fixed with the 0.4.1 release on 2006-11-12.
 
 
 Related Documents
