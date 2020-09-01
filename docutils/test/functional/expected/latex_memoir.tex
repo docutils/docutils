@@ -41,7 +41,8 @@
 % \end{DUclass}{spam} tries \endDUCLASSspam
 \ifx\DUclass\undefined % poor man's "provideenvironment"
  \newenvironment{DUclass}[1]%
-  {\def\DocutilsClassFunctionName{DUCLASS#1}% "#1" does not work in end-part of environment.
+  {% "#1" does not work in end-part of environment.
+   \def\DocutilsClassFunctionName{DUCLASS#1}
      \csname \DocutilsClassFunctionName \endcsname}%
   {\csname end\DocutilsClassFunctionName \endcsname}%
 \fi

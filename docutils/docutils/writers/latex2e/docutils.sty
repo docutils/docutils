@@ -14,35 +14,46 @@
 %    .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause
 %
 %
-% :Abstract:  Helper commands and element definitions for Docutils_ LaTeX output.
+% :Abstract:
+%    Helper commands and element definitions for Docutils_ LaTeX output.
 %
-% :Identification: 
-%  ::
+% :Changelog:
+%    .. class:: borderless
+%
+%    ====== ========== =========================================================
+%    0.1    2020-08-28 initial version
+%    ====== ========== =========================================================
+%
+% Installation
+% ============
+%
+% Copy/Move/Link ``docutils.sty`` to a suitable place in the “TeX Directory
+% Structure” (TDS_) and run ``texhash``, or place it in the current working
+% directory (e.g. for testing).
+%
+% Usage
+% =====
+%
+% When generating LaTeX documents from reStructuredText sources,
+% specify this package with the `"stylesheet"`_ configuration_ option, e.g.
+% ``rst2latex --stylesheet=docutils``.
+% Alternatively, the Docutils `LaTeX writer` will extract required definitions
+% and insert them into the preamble of generated documents
+% (see `Docutils LaTeX Writer`_ for details).
+%
+%
+% Implementation
+% ==============
+%
+% ::
 
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{docutils}
   [2020/08/28 v0.1 macros for Docutils LaTeX output]
 
-% Changelog:
-%   .. class:: borderless
-%
-%   ====== ========== =========================================================
-%   0.1    2020-08-28 initial version
-%   ====== ========== =========================================================
-%
-%
-% Motivation
-% ==========
-%
-% Several elements of the `Docutils document tree`_ have no corresponding
-% LaTeX construct. Others lack configurability_. 
-%
-% Authors may specify this package with the `"stylesheet"`_ configuration_
-% option. Alternatively, the `Docutils LaTeX writer`_ will extract required
-% definitions and insert them into the preamble of generated documents.
 
 % Helpers
-% =======
+% -------
 %
 % duclass::
 
@@ -51,7 +62,8 @@
 % \end{DUclass}{spam} tries \endDUCLASSspam
 \ifx\DUclass\undefined % poor man's "provideenvironment"
  \newenvironment{DUclass}[1]%
-  {\def\DocutilsClassFunctionName{DUCLASS#1}% "#1" does not work in end-part of environment.
+  {% "#1" does not work in end-part of environment.
+   \def\DocutilsClassFunctionName{DUCLASS#1}
      \csname \DocutilsClassFunctionName \endcsname}%
   {\csname end\DocutilsClassFunctionName \endcsname}%
 \fi
@@ -65,7 +77,7 @@
 
 
 % Configuration defaults
-% ======================
+% ----------------------
 %
 % See `Docutils LaTeX Writer`_ for details.
 %
@@ -83,7 +95,7 @@
 }
 
 % TODO: add \em to set dedication text in italics?
-
+%
 % docinfo::
 
 % width of docinfo table
@@ -102,7 +114,7 @@
 \providecommand*\DUrolestring[1]{\textit{#1}}
 
 % Elements
-% ============
+% --------
 %
 % Definitions for unknown or to-be-configured Docutils elements
 % and roles (inline elements).
@@ -244,11 +256,11 @@
 }
 
 % References
-% ----------
+% ==========
 %
 % .. [Docutils] https://docutils.sourceforge.io/
 %
-% .. _Docutils Document Tree: 
+% .. _Docutils Document Tree:
 %   https://docutils.sourceforge.io/docs/ref/doctree.html
 %
 % .. _Docutils LaTeX Writer:
@@ -260,5 +272,4 @@
 % .. _"stylesheet":
 %    https://docutils.sourceforge.io/docs/user/config.html#stylesheet-latex-writers
 %
-% .. _configurability:
-%    https://docutils.sourceforge.io/docs/user/latex.html#how-to-configure-the
+% .. _TDS: http://www.tex.ac.uk/cgi-bin/texfaq2html?label=tds
