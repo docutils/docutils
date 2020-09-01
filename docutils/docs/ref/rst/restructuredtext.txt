@@ -223,7 +223,8 @@ Whitespace
 ==========
 
 Spaces are recommended for indentation_, but tabs may also be used.
-Tabs will be converted to spaces.  Tab stops are at every 8th column.
+Tabs will be converted to spaces.  Tab stops are at every 8th column
+(processing systems may make this value configurable).
 
 Other whitespace characters (form feeds [chr(12)] and vertical tabs
 [chr(11)]) are converted to single spaces before processing.
@@ -245,13 +246,13 @@ Indentation
 -----------
 
 Indentation is used to indicate -- and is only significant in
-indicating -- block quotes, definitions (in definition list items),
+indicating -- block quotes, definitions (in `definition lists`_),
 and local nested content:
 
 - list item content (multi-line contents of list items, and multiple
   body elements within a list item, including nested lists),
-- the content of literal blocks, and
-- the content of explicit markup blocks.
+- the content of `literal blocks`_, and
+- the content of `explicit markup blocks`_ (directives, footnotes, ...).
 
 Any text whose indentation is less than that of the current level
 (i.e., unindented text or "dedents") ends the current level of
@@ -298,33 +299,27 @@ text, the lines must be left-aligned::
 
 Several constructs begin with a marker, and the body of the construct
 must be indented relative to the marker.  For constructs using simple
-markers (`bullet lists`_, `enumerated lists`_, footnotes_, citations_,
-`hyperlink targets`_, directives_, and comments_), the level of
+markers (`bullet lists`_, `enumerated lists`_), the level of
 indentation of the body is determined by the position of the first
-line of text, which begins on the same line as the marker.  For
-example, bullet list bodies must be indented by at least two columns
-relative to the left edge of the bullet::
+line of text. For example::
 
     - This is the first line of a bullet list
       item's paragraph.  All lines must align
-      relative to the first line.  [1]_
+      relative to the first line.
 
           This indented paragraph is interpreted
           as a block quote.
 
-    Because it is not sufficiently indented,
-    this paragraph does not belong to the list
-    item.
+      Another paragraph belonging to the first list item.
 
-    .. [1] Here's a footnote.  The second line is aligned
-       with the beginning of the footnote label.  The ".."
-       marker is what determines the indentation.
+     Because it is not sufficiently indented,
+     this paragraph does not belong to the list
+     item (it's a block quote following the list).
 
-For constructs using complex markers (`field lists`_ and `option
-lists`_), where the marker may contain arbitrary text, the indentation
-of the first line *after* the marker determines the left edge of the
-body.  For example, field lists may have very long markers (containing
-the field names)::
+The body of `explicit markup blocks`_, `field lists`_, and `option
+lists`_ ends above the first line with the same or less indentation
+than the marker.  For example, field lists may have very long markers
+(containing the field names)::
 
     :Hello: This field has a short field name, so aligning the field
             body with the first line is feasible.
@@ -1560,6 +1555,10 @@ column in the processed output (row 4)::
 Explicit Markup Blocks
 ----------------------
 
+The explicit markup syntax is used for footnotes_, citations_,
+`hyperlink targets`_, directives_, `substitution definitions`_,
+and comments_.
+
 An explicit markup block is a text block:
 
 - whose first line begins with ".." followed by whitespace (the
@@ -1568,21 +1567,16 @@ An explicit markup block is a text block:
   the first, and
 - which ends before an unindented line.
 
-Explicit markup blocks are analogous to bullet list items, with ".."
-as the bullet.  The text on the lines immediately after the explicit
-markup start determines the indentation of the block body.  The
+Explicit markup blocks are analogous to field list items. The
 maximum common indentation is always removed from the second and
-subsequent lines of the block body.  Therefore if the first construct
-fits in one line, and the indentation of the first and second
+subsequent lines of the block body.  Therefore, if the first construct
+fits in one line and the indentation of the first and second
 constructs should differ, the first construct should not begin on the
 same line as the explicit markup start.
 
 Blank lines are required between explicit markup blocks and other
 elements, but are optional between explicit markup blocks where
 unambiguous.
-
-The explicit markup syntax is used for footnotes, citations, hyperlink
-targets, directives, substitution definitions, and comments.
 
 
 Footnotes
@@ -1612,8 +1606,8 @@ be:
 
 - a single "*" (denoting `auto-symbol footnotes`_).
 
-The footnote content (body elements) must be consistently indented (by
-at least 3 spaces) and left-aligned.  The first body element within a
+The footnote content (body elements) must be consistently indented
+and left-aligned.  The first body element within a
 footnote may often begin on the same line as the footnote label.
 However, if the first element fits on one line and the indentation of
 the remaining elements differ, the first element must begin on the
@@ -2074,7 +2068,7 @@ after the directive type for these reasons:
   (including the directive itself) will be included as a literal
   block.  Thus "::" is a natural choice.
 
-The directive block is consists of any text on the first line of the
+The directive block consists of any text on the first line of the
 directive after the directive marker, and any subsequent indented
 text.  The interpretation of the directive block is up to the
 directive code.  There are three logical parts to the directive block:
@@ -2337,15 +2331,12 @@ Comments
 
 Doctree element: comment_.
 
-Arbitrary indented text may follow the explicit markup start and will
-be processed as a comment element.  No further processing is done on
-the comment block text; a comment contains a single "text blob".
-Depending on the output formatter, comments may be removed from the
-processed output.  The only restriction on comments is that they not
-use the same syntax as any of the other explicit markup constructs:
-substitution definitions, directives, footnotes, citations, or
-hyperlink targets.  To ensure that none of the other explicit markup
-constructs is recognized, leave the ".." on a line by itself::
+`Explicit markup blocks`_ that are not recognized as citations_,
+directives_, footnotes_, `hyperlink targets`_, or `substitution
+definitions`_ will be processed as a comment element. Arbitrary
+indented text may be used on the lines following the explicit markup
+start. To ensure that none of the other explicit markup constructs is
+recognized, leave the ".." on a line by itself::
 
     .. This is a comment
     ..
@@ -2357,13 +2348,12 @@ constructs is recognized, leave the ".." on a line by itself::
     ..
        |even| this:: !
 
-.. _empty comments:
+    .. [this] however, is a citation.
 
-An explicit markup start followed by a blank line and nothing else
-(apart from whitespace) is an "_`empty comment`".  It serves to
-terminate a preceding construct, and does **not** consume any indented
-text following.  To have a block quote follow a list or any indented
-construct, insert an unindented empty comment in-between.
+Apart from removing the maximum common indentation, no further
+processing is done on the content; a comment contains a single "text
+blob".  Depending on the output formatter, comments may be removed
+from the processed output.
 
 Syntax diagram::
 
@@ -2373,6 +2363,21 @@ Syntax diagram::
             |                      |
             +----------------------+
 
+Empty Comments
+..............
+
+An explicit markup start followed by a blank line and nothing else
+(apart from whitespace) is an "_`empty comment`".  It serves to
+terminate a preceding construct, and does **not** consume any indented
+text following.  To have a block quote follow a list or any indented
+construct, insert an unindented empty comment in-between::
+
+    This is
+      a definition list.
+
+    ..
+
+      This is a block quote.
 
 Implicit Hyperlink Targets
 ==========================
@@ -2437,6 +2442,9 @@ Three constructs use different start-strings and end-strings:
 
 `Standalone hyperlinks`_ are recognized implicitly, and use no extra
 markup.
+
+Inline comments are not supported.
+
 
 Inline markup recognition rules
 -------------------------------
