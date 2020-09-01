@@ -249,8 +249,6 @@ The following options are recognized:
 
 and the common options `:class:`_ and `:name:`_.
 
-.. _substitution definition: restructuredtext.html#substitution-definitions
-
 
 Figure
 ======
@@ -1292,11 +1290,13 @@ Non-standard element: imagemap.
  Directives for Substitution Definitions
 -----------------------------------------
 
-The directives in this section may only be used in substitution
-definitions.  They may not be used directly, in standalone context.
+The directives in this section may only be used in `substitution
+definitions`_.  They may not be used directly, in standalone context.
 The `image`_ directive may be used both in substitution definitions
 and in the standalone context.
 
+.. _substitution definitions:
+.. _substitution definition: restructuredtext.html#substitution-definitions
 
 .. _replace:
 
@@ -1310,8 +1310,8 @@ Replacement Text
 :Directive Content: A single paragraph; may contain inline markup.
 
 The "replace" directive is used to indicate replacement text for a
-substitution reference.  It may be used within substitution
-definitions only.  For example, this directive can be used to expand
+substitution reference.  It may be used within `substitution
+definitions`_ only.  For example, this directive can be used to expand
 abbreviations::
 
     .. |reST| replace:: reStructuredText
@@ -1342,7 +1342,7 @@ Unicode Character Codes
 :Directive Content: None.
 
 The "unicode" directive converts Unicode character codes (numerical
-values) to characters, and may be used in substitution definitions
+values) to characters, and may be used in `substitution definitions`_
 only.
 
 The arguments, separated by spaces, can be:
