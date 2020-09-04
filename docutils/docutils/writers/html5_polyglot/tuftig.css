@@ -62,13 +62,13 @@ section > div,
 section > div.topic.contents,
 section > ol,
 section > ul,
-section > h3,
+section > h4,
 hr.docutils {
   background: GhostWhite;
   box-sizing: border-box;
   width: 55%; /* of max 100em ≦ 55em, ca. 90…100 characters */
 }
-section > h1, section > h2 {
+section > h2, section > h3 {
   width: 60% /* cf. tufte-latex */
 }
 section > table {
@@ -139,9 +139,9 @@ aside.sidebar {
   section > div.topic.contents,
   section > ol,
   section > ul,
-  section > h3,
+  section > h4,
   hr.docutils,
-  section > h1, section > h2 {
+  section > h2, section > h3 {
     width: 95%;
   }
   section > table,
@@ -171,7 +171,7 @@ aside.sidebar {
 
 /* Titles and Headings */
 
-h1, h2, h3, p.subtitle, p.section-subtitle,
+h2, h3, h4, p.subtitle, p.section-subtitle,
 p.topic-title, p.sidebar-title, p.sidebar-subtitle {
   font-weight: 400;
   font-style: italic;
@@ -199,19 +199,19 @@ h1, .contents > p.topic-title {
   font-size: 2.0em;
   clear: both;
 }
-h1 + p.section-subtitle {
+h2 + p.section-subtitle {
   font-size: 1.6em;
 }
 
-h2 {
+h3 {
   margin-top: 2em;
   font-size: 1.2em;
 }
-h2 + p.section-subtitle {
+h3 + p.section-subtitle {
   font-size: 1.1em;
 }
 
-h3 {
+h4 {
   margin-top: 1.7em;
   font-size: 1.1em;
 }

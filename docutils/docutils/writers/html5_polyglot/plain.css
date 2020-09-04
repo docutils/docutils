@@ -220,7 +220,7 @@ object.align-right {
   margin-left: 1em;
 }
 /* Stop floating sidebars, images and figures at section level 1,2,3 */
-h1, h2, h3 { clear: both; }
+h1, h2, h3, h4 { clear: both; }
 
 /* Numbered figures */
 figure.numbered > figcaption > p:before {

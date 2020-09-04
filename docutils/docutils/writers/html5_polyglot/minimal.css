@@ -40,10 +40,10 @@ p.system-message-title {
   font-weight: bold;
 }
 h1 + p.subtitle,
-h1 + p.section-subtitle {
+h2 + p.section-subtitle {
   font-size: 1.6em;
 }
-h2 + p.section-subtitle { 
+h3 + p.section-subtitle { 
   font-size: 1.28em;
 }
 p.subtitle,
@@ -64,7 +64,7 @@ a.toc-backref {
   text-decoration: none; }
 
 /* Warnings, Errors */
-div.system-messages h1,
+div.system-messages h2,
 span.problematic,
 p.system-message-title {
   color: red;

@@ -976,7 +976,9 @@ initial_header_level
 The initial level for header elements.  This does not affect the
 document title & subtitle; see doctitle_xform_.
 
-Default: 1 (for "<h1>").  Option: ``--initial-header-level``.
+Default: writer dependent (see `[html4css1 writer]`_, `[html5 writer]`_,
+`[pep_html writer]`_).
+Option: ``--initial-header-level``.
 
 
 math_output
@@ -1139,7 +1141,7 @@ Pass an empty string (to either "stylesheet" or "stylesheet_path") to
 deactivate stylesheet inclusion.
 
 Default: writer dependent (see `[html4css1 writer]`_, `[html5 writer]`_,
-[pep_html writer]_).
+`[pep_html writer]`_).
 Options: ``--stylesheet-path``.
 
 __ `embed_stylesheet [html writers]`_
@@ -1216,6 +1218,9 @@ It shares all settings defined in the `[html writers]`_
 
 Writer specific defaults:
 
+`initial_header_level`_
+  1 (for "<h1>")
+
 `stylesheet_path <stylesheet_path [html writers]_>`__:
   "html4css1.css"
 
@@ -1253,13 +1258,18 @@ It shares all settings defined in the `[html writers]`_
 
 Writer specific defaults:
 
+`initial_header_level`_
+  2 (for "<h2>", cf. the `HTML5.3 Working Draft`__)
+
 `stylesheet_path <stylesheet_path [html writers]_>`__:
   "minimal.css,plain.css"
 
 New in Docutils 0.13.
 
+__  https://www.w3.org/TR/html53/sections.html#the-h1-h2-h3-h4-h5-and-h6-elements
 .. _HTML5 Writer: html.html#html5-polyglot
 .. _HTML5: http://www.w3.org/TR/html5/
+
 
 
 [pep_html writer]
@@ -1270,6 +1280,9 @@ all settings defined in the `[html writers]`_ and `[html4css1 writer]`_
 `configuration sections`_.
 
 Writer specific defaults:
+
+`initial_header_level`_
+  1 (for "<h1>")
 
 `stylesheet_path <stylesheet_path [html writers]_>`__:
   "pep.css"

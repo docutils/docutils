@@ -12,7 +12,7 @@
 #    notice and this notice are preserved.
 #    This file is offered as-is, without any warranty.
 #
-# .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause
+# .. _2-Clause BSD license: https://opensource.org/licenses/BSD-2-Clause
 
 # Use "best practice" as recommended by the W3C:
 # http://www.w3.org/2009/cheatsheet/
@@ -82,10 +82,10 @@ class Writer(writers._html_base.Writer):
           {'metavar': '<dir[,dir,...]>',
            'validator': frontend.validate_comma_separated_list,
            'default': default_stylesheet_dirs}),
-         ('Specify the initial header level.  Default is 1 for "<h1>".  '
+         ('Specify the initial header level.  Default is 2 for "<h2>".  '
           'Does not affect document title & subtitle (see --no-doc-title).',
           ['--initial-header-level'],
-          {'choices': '1 2 3 4 5 6'.split(), 'default': '1',
+          {'choices': '1 2 3 4 5 6'.split(), 'default': '2',
            'metavar': '<level>'}),
          ('Format for footnote references: one of "superscript" or '
           '"brackets".  Default is "brackets".',
