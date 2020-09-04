@@ -881,7 +881,7 @@ Release 0.8 (2011-07-07)
 * docs/dev/policies.txt:
 
   - Recommend the 2-Clause BSD license
-    (http://www.spdx.org/licenses/BSD-2-Clause)
+    (http://opensource.org/licenses/BSD-2-Clause)
     for code that is kept under the author's copyright.
 
 * tools/buildhtml.py:
