@@ -109,16 +109,16 @@ Release 0.17
     __ docs/user/latex.html#classes
 
   - Most helper commands and element definitions are now defined in the
-    LaTeX package `docutils.sty` and no longer inserted in the document
-    preamble if the stylesheet__ setting lists "docutils".
-  
+    LaTeX package `docutils.sty`_ and only inserted in the document
+    preamble if the stylesheet__ setting does not lists "docutils".
+    
     __ docs/user/config.html#stylesheet-latex-writers
     
 .. _setuptools: https://pypi.org/project/setuptools/
 .. _pip: https://pypi.org/project/pip/
 .. _legacy_class_functions: docs/user/config.html#legacy-class-functions
 .. _graphicx_option: docs/user/config.html#graphicx-option
-.. docutils.sty: https://ctan.org/pkg/docutils  (coming soon)
+.. _docutils.sty: https://ctan.org/pkg/docutils
 
 
 Release 0.16 (2020-01-12)

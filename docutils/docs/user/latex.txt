@@ -62,9 +62,12 @@ using a Docutils specific LaTeX *macro* (command, environment, or
 length) to allow customization. By convention, special macros use the
 prefix ``\DU``\ [#]_.
 
+The `docutils.sty`_ LaTeX package providing required definitions is
+part of Docutils ≥ 0.17 and available on CTAN since 2020-09-04.
 The generated LaTeX documents should be kept processable by a standard LaTeX
 installation. Therefore fallback definitions are included after the `custom
-style sheets`_, if a macro is required in the document.
+style sheets`_, if a macro is required in the document and
+the `stylesheet`_ setting does not include "docutils".
 
 * Custom `style sheets`_ can define alternative implementations with
   ``\newcommand``, ``\newenvironment``, and ``\newlength`` followed by
@@ -77,6 +80,9 @@ See the test output standalone_rst_latex.tex_ for an example of the fallback
 definitions and their use in the document.
 
 .. [#] DU for Documentation Utilities = Docutils
+
+.. _docutils.sty: https://ctan.org/pkg/docutils
+
 
 
 Length units
@@ -239,7 +245,7 @@ Example 2:
   order of the class arguments cannot be ignored in LaTeX
 
 * Class handling differs for some elements and class values:
-  
+
   * Class argument values starting with ``align-`` are transformed to
     "align" argument values. Class argument values starting with
     ``language-`` set the elements language property.
@@ -442,10 +448,10 @@ __ ../ref/rst/directives.html#admonitions
 
 Command:
   ``\DUadmonition`` (with legacy-class-functions_)
-  
+
 Environment:
   ``DUadmonition`` (with new-class-functions_)
- 
+
   .. _new-class-functions: legacy-class-functions_
 
 Default:
@@ -466,9 +472,9 @@ Example 1:
         \end{quote}
       \fi
     }
-    
+
   rsp with new-class-functions_::
-  
+
     \newenvironment{DUadmonition}%
       {\begin{quote}}
       {\end{quote}}
@@ -1569,7 +1575,7 @@ Example1:
        \subsubsection*{\centerline{\color{red}#1}}}
 
 .. note::
-  Class attribute values are ignored because the "classes_ wrapper" 
+  Class attribute values are ignored because the "classes_ wrapper"
   interferes with LaTeX's formatting (spacing/indendation) of text following
   a section heading. Consider using a `topic element`_ or a container_.
 
@@ -1589,13 +1595,13 @@ Level  article        article with part  book [#]_      book with part
 =====  =============  ================== =============  ==============
   1    section        part               chapter        part
   2    subsection     section            section        chapter
-  3    subsubsection  subsection         subsection     section      
-  4    paragraph      subsubsection      subsubsection  subsection   
+  3    subsubsection  subsection         subsection     section
+  4    paragraph      subsubsection      subsubsection  subsection
   5    subparagraph   paragraph          paragraph      subsubsection
-  6    DUtitle        subparagraph       subparagraph   paragraph    
-  7    DUtitle        DUtitle            DUtitle        subparagraph 
+  6    DUtitle        subparagraph       subparagraph   paragraph
+  7    DUtitle        DUtitle            DUtitle        subparagraph
 =====  =============  ================== =============  ==============
-                                                        
+
 
 .. [#] One of the document classes 'book', 'memoir', 'report 'scrbook',
        or 'scrreprt'.
@@ -1976,11 +1982,11 @@ supported file formats depend on the used driver:
 * pdflatex_ and xelatex_ work with PNG, JPG, or PDF, but **not EPS**.
 * Standard latex_ can include **only EPS** graphics, no other format.
 * latex + dvipdfmx works with EPS and JPG (add 'dvipdfmx' to the
-  documentoptions_ or graphicx_ setting
+  documentoptions_ or graphicx-option_ setting
   and 'bmpsize' to the stylesheet_ setting).
 
 If PDF-image inclusion in PDF files fails, specifying
-``--graphicx-option=pdftex`` or ``--graphicx-option=auto`` might help.
+``--graphicx-option=pdftex`` might help.
 
 For details see grfguide.pdf_.
 
@@ -1995,8 +2001,8 @@ can help.
 __ ../ref/rst/directives.html#images
 .. _grfguide.pdf:
    http://mirrors.ctan.org/macros/latex/required/graphics/grfguide.pdf
-.. _grffile:
-   http://ctan.org/pkg/grffile
+.. _grffile: http://ctan.org/pkg/grffile
+.. _graphicx-option: config.html#graphicx-option
 
 
 
@@ -2089,7 +2095,7 @@ Unfortunately, this defines only a subset of the characters
 
 .. _pmboxdraw.pdf:
    http://mirrors.ctan.org/macros/latex/contrib/pmboxdraw/pmboxdraw.pdf
-   
+
 Bugs and open issues
 --------------------
 

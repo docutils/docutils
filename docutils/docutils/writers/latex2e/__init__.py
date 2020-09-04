@@ -784,8 +784,9 @@ class DocumentClass(object):
         """
         if level <= len(self.sections):
             return self.sections[level-1]
-        else:  # unsupported levels
-            return 'DUtitle[section%s]' % roman.toRoman(level)
+        # unsupported levels
+        return 'DUtitle'
+
 
 class Table(object):
     """Manage a table while traversing.
@@ -1238,16 +1239,20 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # (the name `self.stylesheet` is singular because only one
         # stylesheet was supported before Docutils 0.6).
         stylesheet_list = utils.get_stylesheet_list(settings)
-        self.fallback_stylesheet = [sheet for sheet in stylesheet_list
-                                    if sheet == 'docutils']
-        # docutils.sty is incompatible with legacy functions
-        if self.fallback_stylesheet and self.settings.legacy_class_functions:
-            self.fallback_stylesheet = []
+        if 'docutils' in stylesheet_list:
             stylesheet_list = [sheet for sheet in stylesheet_list
                                if sheet != 'docutils']
+            if self.settings.legacy_class_functions:
+                # docutils.sty is incompatible with legacy functions
+                self.fallback_stylesheet = False
+            else:
+                self.fallback_stylesheet = True
+                # require a minimal version:
+                self.fallbacks['docutils.sty'
+                              ] = r'\usepackage{docutils}[2020/08/28]'
+
         self.stylesheet = [self.stylesheet_call(path)
                            for path in stylesheet_list]
-
 
         # PDF setup
         if self.hyperlink_color in ('0', 'false', 'False', ''):
@@ -2999,8 +3004,21 @@ class LaTeXTranslator(nodes.NodeVisitor):
         else:
             if hasattr(PreambleCmds, 'secnumdepth'):
                 self.requirements['secnumdepth'] = PreambleCmds.secnumdepth
-            section_name = self.d_class.section(self.section_level)
+            level = self.section_level
+            section_name = self.d_class.section(level)
             self.out.append('\n\n')
+            if level > len(self.d_class.sections):
+                # section level not supported by LaTeX
+                if self.settings.legacy_class_functions:
+                    self.fallbacks['title'] = PreambleCmds.title_legacy
+                    section_name += '[section%s]' % roman.toRoman(level)
+                else:
+                    if not self.fallback_stylesheet:
+                        self.fallbacks['title'] = PreambleCmds.title
+                        self.fallbacks['DUclass'] = PreambleCmds.duclass
+                    self.out.append('\\begin{DUclass}{section%s}\n'
+                                    % roman.toRoman(level))
+
             # System messages heading in red:
             if ('system-messages' in node.parent['classes']):
                 self.requirements['color'] = PreambleCmds.color
@@ -3009,21 +3027,19 @@ class LaTeXTranslator(nodes.NodeVisitor):
                                 section_name, section_title))
             else:
                 self.out.append(r'\%s{' % section_name)
-            if self.section_level > len(self.d_class.sections):
-                # section level not supported by LaTeX
-                if not self.fallback_stylesheet:
-                    self.fallbacks['title'] = PreambleCmds.title
-                # self.out.append('\\phantomsection%\n  ')
+
             # label and ToC entry:
             bookmark = ['']
             # add sections with unsupported level to toc and pdfbookmarks?
-            ## if self.section_level > len(self.d_class.sections):
+            ## if level > len(self.d_class.sections):
             ##     section_title = self.encode(node.astext())
             ##     bookmark.append(r'\addcontentsline{toc}{%s}{%s}' %
             ##               (section_name, section_title))
             bookmark += self.ids_to_labels(node.parent, set_anchor=False)
             self.context.append('%\n  '.join(bookmark) + '%\n}\n')
-
+            if (level > len(self.d_class.sections)
+                and not self.settings.legacy_class_functions):
+                self.context[-1] += '\\end{DUclass}\n'
             # MAYBE postfix paragraph and subparagraph with \leavemode to
             # ensure floats stay in the section and text starts on a new line.
 

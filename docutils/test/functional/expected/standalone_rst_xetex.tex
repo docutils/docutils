@@ -32,9 +32,9 @@
 \setmonofont[HyphenChar=None,Scale=MatchLowercase]{DejaVu Sans Mono}
 
 %%% User specified packages and stylesheets
-\usepackage{docutils}
 
 %%% Fallback definitions for Docutils-specific commands
+\usepackage{docutils}[2020/08/28]
 \newcounter{enumv}
 
 \DUprovidelength{\pdfpxdimen}{1bp}
@@ -2725,9 +2725,11 @@ reach at some level
 (depending on the document class)
 
 
-\DUtitle[sectionVI]{3.11.1.1.1.1   level 6%
+\begin{DUclass}{sectionVI}
+\DUtitle{3.11.1.1.1.1   level 6%
   \label{level-6}%
 }
+\end{DUclass}
 
 an unsupported level.
 
