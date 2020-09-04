@@ -13,7 +13,7 @@
 #    notices and this notice are preserved.
 #    This file is offered as-is, without any warranty.
 #
-# .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause
+# .. _2-Clause BSD license: https://opensource.org/licenses/BSD-2-Clause
 
 
 r"""
@@ -133,7 +133,7 @@ smartypants.py license (2-Clause BSD license):
 .. _Pyblosxom: http://pyblosxom.bluesock.org/
 .. _SmartyPants: http://daringfireball.net/projects/smartypants/
 .. _Movable Type: http://www.movabletype.org/
-.. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause
+.. _2-Clause BSD license: https://opensource.org/licenses/BSD-2-Clause
 .. _Docutils: http://docutils.sf.net/
 
 Description

@@ -248,14 +248,14 @@ Pros:
     GNU.
 
 References:
-  * http://www.freebsd.org/copyright/freebsd-license.html
-  * http://www.opensource.org/licenses/BSD-2-Clause
-  * http://www.spdx.org/licenses/BSD-2-Clause
+  * https://www.freebsd.org/copyright/freebsd-license.html
+  * https://opensource.org/licenses/BSD-2-Clause
+  * https://spdx.org/licenses/BSD-2-Clause.html
 
 .. _Various Licenses and Comments about Them:
-   http://www.gnu.org/licenses/license-list.html
-.. _OSI Approved Licenses: http://www.opensource.org/licenses/category
-.. _SPDX Open Source License Registry: http://www.spdx.org/licenses/
+   https://www.gnu.org/licenses/license-list.html
+.. _OSI Approved Licenses: https://www.opensource.org/licenses/category
+.. _SPDX Open Source License Registry: https://www.spdx.org/licenses/
 
 
 .. _Subversion Repository:

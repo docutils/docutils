@@ -7,7 +7,7 @@
 #    notice and this notice are preserved.
 #    This file is offered as-is, without any warranty.
 #
-# .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause
+# .. _2-Clause BSD license: https://opensource.org/licenses/BSD-2-Clause
 
 """
 This is the Docutils (Python Documentation Utilities) "math" sub-package.
