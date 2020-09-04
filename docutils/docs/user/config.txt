@@ -1473,8 +1473,7 @@ graphicx_option
 
 LaTeX graphicx package option.
 
-Possible values are "dvips", "pdftex", "auto".  "auto" includes LaTeX code
-to use "pdftex" if processing with pdf(la)tex and dvips otherwise.
+Possible values are "dvips", "pdftex", "dvipdfmx".
 
 Default: "".  Option: ``--graphicx-option``.
 

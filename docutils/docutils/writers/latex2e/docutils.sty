@@ -1,46 +1,14 @@
-% docutils.sty
-% ************
-% Style file for docutils LaTeX output
-% ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-%
-% :Copyright: © 2020 Günter Milde
-% :Licence: Released under the terms of the `2-Clause BSD license`_, in short:
-%
-%    Copying and distribution of this file, with or without modification,
-%    are permitted in any medium without royalty provided the copyright
-%    notice and this notice are preserved.
-%    This file is offered as-is, without any warranty.
-%
-%    .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause
-%
-%
-% :Abstract:
-%    Helper commands and element definitions for Docutils_ LaTeX output.
-%
-% :Changelog:
-%    .. class:: borderless
-%
-%    ====== ========== =========================================================
-%    0.1    2020-08-28 initial version
-%    ====== ========== =========================================================
-%
-% Installation
-% ============
-%
-% Copy/Move/Link ``docutils.sty`` to a suitable place in the “TeX Directory
-% Structure” (TDS_) and run ``texhash``, or place it in the current working
-% directory (e.g. for testing).
-%
-% Usage
-% =====
-%
-% When generating LaTeX documents from reStructuredText sources,
-% specify this package with the `"stylesheet"`_ configuration_ option, e.g.
-% ``rst2latex --stylesheet=docutils``.
-% Alternatively, the Docutils `LaTeX writer` will extract required definitions
-% and insert them into the preamble of generated documents
-% (see `Docutils LaTeX Writer`_ for details).
-%
+%% docutils.sty: macros for Docutils LaTeX output.
+%%
+%%   Copyright © 2020 Günter Milde
+%%   Released under the terms of the `2-Clause BSD license`, in short:
+%%
+%%      Copying and distribution of this file, with or without modification,
+%%      are permitted in any medium without royalty provided the copyright
+%%      notice and this notice are preserved.
+%%      This file is offered as-is, without any warranty.
+
+% .. include:: README
 %
 % Implementation
 % ==============
@@ -49,8 +17,7 @@
 
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{docutils}
-  [2020/08/28 v0.1 macros for Docutils LaTeX output]
-
+  [2020/08/28 macros for Docutils LaTeX output]
 
 % Helpers
 % -------
@@ -116,8 +83,7 @@
 % Elements
 % --------
 %
-% Definitions for unknown or to-be-configured Docutils elements
-% and roles (inline elements).
+% Definitions for unknown or to-be-configured Docutils elements.
 %
 % admonition::
 
@@ -254,22 +220,3 @@
   \hspace*{\fill}\hrulefill\hspace*{\fill}
   \vskip 0.5\baselineskip
 }
-
-% References
-% ==========
-%
-% .. [Docutils] https://docutils.sourceforge.io/
-%
-% .. _Docutils Document Tree:
-%   https://docutils.sourceforge.io/docs/ref/doctree.html
-%
-% .. _Docutils LaTeX Writer:
-%   https://docutils.sourceforge.io/docs/user/latex.html
-%
-% .. _Configuration:
-%   https://docutils.sourceforge.io/docs/user/config.html
-%
-% .. _"stylesheet":
-%    https://docutils.sourceforge.io/docs/user/config.html#stylesheet-latex-writers
-%
-% .. _TDS: http://www.tex.ac.uk/cgi-bin/texfaq2html?label=tds

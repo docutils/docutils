@@ -95,8 +95,12 @@ Changes Since 0.16
     .. _graphicx_option: docs/user/config.html#graphicx-option
 
   - Most helper commands and element definitions are now defined in the
-    LaTeX package `docutils.sty` and no longer inserted in the document
-    preamble if the `stylesheet` setting lists "docutils".
+    LaTeX package `docutils.sty`_ and only inserted in the document
+    preamble if the `stylesheet`__ setting does not list "docutils".
+    
+    .. _docutils.sty: https://ctan.org/pkg/docutils
+    __ docs/user/config.html#stylesheet-latex-writers
+
 
 * docutils/writers/manpage.py
 
