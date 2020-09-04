@@ -143,10 +143,10 @@ And even more stuff
 """\
 {'fragment': '''<p>Some stuff</p>
 <section id="section">
-<h1>Section</h1>
+<h2>Section</h2>
 <p>Some more stuff</p>
 <section id="another-section">
-<h2>Another Section</h2>
+<h3>Another Section</h3>
 <p>And even more stuff</p>
 </section>
 </section>\\n''',
@@ -155,10 +155,10 @@ And even more stuff
 <p class="subtitle" id="subtitle">Subtitle</p>
 <p>Some stuff</p>
 <section id="section">
-<h1>Section</h1>
+<h2>Section</h2>
 <p>Some more stuff</p>
 <section id="another-section">
-<h2>Another Section</h2>
+<h3>Another Section</h3>
 <p>And even more stuff</p>
 </section>
 </section>
@@ -282,15 +282,15 @@ And even more stuff
 """,
 """\
 {'fragment': '''<section id="title">
-<h1>Title</h1>
+<h2>Title</h2>
 <section id="not-a-subtitle">
-<h2>Not A Subtitle</h2>
+<h3>Not A Subtitle</h3>
 <p>Some stuff</p>
 <section id="section">
-<h3>Section</h3>
+<h4>Section</h4>
 <p>Some more stuff</p>
 <section id="another-section">
-<h4>Another Section</h4>
+<h5>Another Section</h5>
 <p>And even more stuff</p>
 </section>
 </section>
@@ -298,15 +298,15 @@ And even more stuff
 </section>\\n''',
  'html_body': '''<main>
 <section id="title">
-<h1>Title</h1>
+<h2>Title</h2>
 <section id="not-a-subtitle">
-<h2>Not A Subtitle</h2>
+<h3>Not A Subtitle</h3>
 <p>Some stuff</p>
 <section id="section">
-<h3>Section</h3>
+<h4>Section</h4>
 <p>Some more stuff</p>
 <section id="another-section">
-<h4>Another Section</h4>
+<h5>Another Section</h5>
 <p>And even more stuff</p>
 </section>
 </section>

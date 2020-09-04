@@ -54,6 +54,11 @@ Changes Since 0.16
   - Use the new semantic tags <main>, <section>, <header>,
     <footer>, <aside>, <figure>, and <figcaption>.
     See ``minimal.css`` and ``plain.css`` for styling rule examples.
+    
+    Change the `initial_header_level` setting default to "2", as browsers
+    use the `same style for <h1> and <h2> when nested in a <section>`__.
+    
+    __ https://stackoverflow.com/questions/39547412/same-font-size-for-h1-and-h2-in-article
 
   - Use HTML text-level tags <small>, <s>, <q>, <dfn>, <var>, <samp>, <kbd>,
     <i>, <b>, <u>, <mark>, and <bdi> if a matching class value

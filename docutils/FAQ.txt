@@ -995,6 +995,11 @@ without H2).
 
 (Thanks to Mark McEahern for the question and much of the answer.)
 
+.. note:: For the html5 writer, `initial_header_level`_ defaults to
+   ``2`` because this is what the `HTML5 standard`__ expects as
+   start value for headings nested in <section> elements.
+
+   __ https://www.w3.org/TR/html53/sections.html#headings-and-sections
 
 How are lists formatted in HTML?
 --------------------------------
