@@ -1239,14 +1239,14 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # (the name `self.stylesheet` is singular because only one
         # stylesheet was supported before Docutils 0.6).
         stylesheet_list = utils.get_stylesheet_list(settings)
-        if 'docutils' in stylesheet_list:
+        self.fallback_stylesheet = 'docutils' in stylesheet_list
+        if self.fallback_stylesheet:
             stylesheet_list = [sheet for sheet in stylesheet_list
                                if sheet != 'docutils']
             if self.settings.legacy_class_functions:
                 # docutils.sty is incompatible with legacy functions
                 self.fallback_stylesheet = False
             else:
-                self.fallback_stylesheet = True
                 # require a minimal version:
                 self.fallbacks['docutils.sty'
                               ] = r'\usepackage{docutils}[2020/08/28]'
