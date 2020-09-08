@@ -569,7 +569,7 @@ support math typesetting at all, the content is inserted verbatim.
 
 For inline formulas, use the `"math" role`_.
 
-.. _Short Math Guide: ftp://ftp.ams.org/ams/doc/amsmath/short-math-guide.pdf
+.. _Short Math Guide: http://tug.ctan.org/info/short-math-guide/short-math-guide.pdf
 .. _"math" role: roles.html#math
 .. _math_output: ../../user/config.html#math-output
 
