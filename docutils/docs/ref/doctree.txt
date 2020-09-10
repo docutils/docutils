@@ -5248,10 +5248,13 @@ The following restrictions are imposed by this model:
 * A transition may not occur at the beginning of a document or
   section.
 
-An additional restriction, which cannot be expressed in the language
-of DTDs, is imposed by software:
+.. The following is not the case with Docutils (since at least 2004)
+   (cf. test/functional/input/data/standard.txt)
 
-* A transition may not occur at the end of a document or section.
+   An additional restriction, which cannot be expressed in the language
+   of DTDs, is imposed by software:
+   
+   * A transition may not occur at the end of a document or section.
 
 The `%structure.model;`_ parameter entity is directly employed in the
 content models of the document_ and section_ elements.

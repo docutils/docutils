@@ -2611,12 +2611,7 @@ Image and figure directives
 
 * support more graphic formats (especially SVG, the only standard
   vector format for HTML)
-
-  There is a `SWF package`_ at CTAN.
-
-.. _SWF package:
-   http://mirror.ctan.org/macros/latex/contrib/flashmovie
-
+  
 
 Missing features
 ----------------
@@ -2630,8 +2625,12 @@ Missing features
 
 * Let `meta` directive insert PDF-keywords into header?
 
+  See https://tex.stackexchange.com/questions/26529/how-can-i-generate-pdf-metadata-from-latex#26530
+  https://tex.stackexchange.com/questions/161094/adding-custom-metadata-values-to-a-pdf-file
+  
+  
+
 * Multiple author entries in docinfo (same thing as in html).
-  (already solved?)
 
 * Consider supporting the "compact" option and class argument (from
   rst2html) as some lists look better compact and others need the space.
