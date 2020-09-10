@@ -1338,6 +1338,9 @@ class document(Root, Structural, Element):
         self.transformer = docutils.transforms.Transformer(self)
         """Storage for transforms to be applied to this document."""
 
+        self.include_log = []
+        """The current source's parents (to detect inclusion loops)."""
+
         self.decoration = None
         """Document's `decoration` node."""
 
@@ -1361,7 +1364,7 @@ class document(Root, Structural, Element):
         return domroot
 
     def set_id(self, node, msgnode=None, suggested_prefix=''):
-        if node['ids']: 
+        if node['ids']:
             # register and check for duplicates
             for id in node['ids']:
                 self.ids.setdefault(id, node)

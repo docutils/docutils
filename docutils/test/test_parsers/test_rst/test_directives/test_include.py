@@ -46,6 +46,8 @@ include11 = mydir('include 11.txt')
 include12 = mydir('include12.txt')
 include13 = mydir('include13.txt')
 include14 = mydir('includes/include14.txt')
+include15 = mydir('includes/include15.txt')
+include16 = mydir('includes/include16.txt')
 include_literal = mydir('include_literal.txt')
 utf_16_file = mydir('utf-16.csv')
 utf_16_error_str = ("UnicodeDecodeError: 'ascii' codec can't decode byte 0xfe "
@@ -1025,6 +1027,59 @@ Including includes/include14.txt
             ::
          ../sibling/include7.txt
 """ % reldir(include6)],
+["""\
+Circular inclusion
+
+.. include:: %s
+""" % include15,
+"""\
+<document source="test data">
+    <paragraph>
+        Circular inclusion
+    <paragraph>
+        File "include15.txt": example of rekursive inclusion.
+    <paragraph>
+        File "include16.txt": example of rekursive inclusion.
+    <system_message level="2" line="3" source="%s" type="WARNING">
+        <paragraph>
+            circular inclusion in "include" directive: %s < %s < %s < test data
+        <literal_block xml:space="preserve">
+            .. include:: include15.txt
+    <paragraph>
+        No loop when clipping before the "include" directive:
+    <paragraph>
+        File "include15.txt": example of rekursive inclusion.
+""" % (reldir(include16), reldir(include15),
+       reldir(include16), reldir(include15))],
+["""\
+Circular inclusion with clipping.
+
+.. include:: %s
+   :start-line: 2
+""" % include16,
+"""\
+<document source="test data">
+    <paragraph>
+        Circular inclusion with clipping.
+    <paragraph>
+        File "include15.txt": example of rekursive inclusion.
+    <paragraph>
+        File "include16.txt": example of rekursive inclusion.
+    <system_message level="2" line="3" source="%s" type="WARNING">
+        <paragraph>
+            circular inclusion in "include" directive: %s < %s < %s < %s < test data
+        <literal_block xml:space="preserve">
+            .. include:: include15.txt
+    <paragraph>
+        No loop when clipping before the "include" directive:
+    <paragraph>
+        File "include15.txt": example of rekursive inclusion.
+    <paragraph>
+        No loop when clipping before the "include" directive:
+    <paragraph>
+        File "include15.txt": example of rekursive inclusion.
+""" % (reldir(include16), reldir(include15), reldir(include16),
+       reldir(include15), reldir(include16))],
 ]
 
 if __name__ == '__main__':
