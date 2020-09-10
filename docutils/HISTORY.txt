@@ -45,6 +45,10 @@ Changes Since 0.16
 
   - Make the sidebar's "title" argument optional (feature request #69).
 
+* docutils/parsers/rst/directives/misc.py:
+
+  - Prevent infinite inclusion loops.
+
 * docutils/utils/smartquotes.py
 
   - Fix bug #383: Smart quotes around opening and separator characters.

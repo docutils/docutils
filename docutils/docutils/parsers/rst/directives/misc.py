@@ -81,6 +81,8 @@ class Include(Directive):
         except IOError as error:
             raise self.severe(u'Problems with "%s" directive path:\n%s.' %
                       (self.name, ErrorString(error)))
+
+        # Get to-be-included content
         startline = self.options.get('start-line', None)
         endline = self.options.get('end-line', None)
         try:
@@ -142,6 +144,7 @@ class Include(Directive):
             else:
                 literal_block += nodes.Text(text)
             return [literal_block]
+
         if 'code' in self.options:
             self.options['source'] = path
             # Don't convert tabs to spaces, if `tab_width` is negative:
@@ -157,7 +160,30 @@ class Include(Directive):
                                   self.state,
                                   self.state_machine)
             return codeblock.run()
+
+        # include as rST source
+        #
+        # Prevent circular inclusion:
+        source = utils.relative_path(None, source)
+        clip_options = (startline, endline, before_text, after_text)
+        include_log = self.state.document.include_log
+        if not include_log: # new document:
+            # log entries: (<source>, <clip-options>, <insertion end index>)
+            include_log = [(source, (None,None,None,None), sys.maxsize/2)]
+        # cleanup: we may have passed the last inclusion(s):
+        include_log = [entry for entry in include_log
+                       if entry[2] >= self.lineno]
+        if (path, clip_options) in [(pth, opt)
+                                    for (pth, opt, e) in include_log]:
+            raise self.warning('circular inclusion in "%s" directive: %s'
+                % (self.name, ' < '.join([path] + [pth for (pth, opt, e)
+                                                   in include_log[::-1]])))
+        # include as input
         self.state_machine.insert_input(include_lines, path)
+        # update include-log
+        include_log.append((path, clip_options, self.lineno))
+        self.state.document.include_log = [(pth, opt, e+len(include_lines)+2)
+                                           for (pth, opt, e) in include_log]
         return []
 
 
