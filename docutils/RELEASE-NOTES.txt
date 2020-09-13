@@ -20,13 +20,20 @@ For a more detailed list of changes, please see the Docutils `HISTORY`_.
 Future changes
 ==============
 
-* LaTeX writer:
+* `latex` writer:
     The default for the configuration setting `legacy_class_functions`_ will
     change to "False". Adapt stylesheets modifying ``\DUadmonition``
     and/or ``\DUtitle`` or set to "True".
 
-* HTML5 writer:
+* `html5` writer:
     Use <blockquote> instead of <div> tags for topics and admonitions.
+    
+    Use <summary> and <details> tags for term and definition of a
+    definition list with class value "details".
+
+* `s5_html` writer:
+    Remove the IE PNG Fix by Angus Turnbull. IE has native PNG
+    support since version 7.
 
 * ``Node.traverse()`` will return an iterator instead of a list.
 
