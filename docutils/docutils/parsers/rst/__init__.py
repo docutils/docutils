@@ -133,6 +133,10 @@ class Parser(docutils.parsers.Parser):
          ('Enable the "raw" directive.  Enabled by default.',
           ['--raw-enabled'],
           {'action': 'store_true'}),
+         ('Maximal number of characters in an input line. Default 10 000.',
+          ['--line-length-limit'],
+          {'metavar': '<length>', 'type': 'int', 'default': 10000,
+           'validator': frontend.validate_nonnegative_int}),
          ('Token name set for parsing code with Pygments: one of '
           '"long", "short", or "none (no parsing)". Default is "long".',
           ['--syntax-highlight'],
@@ -188,7 +192,14 @@ class Parser(docutils.parsers.Parser):
         inputlines = docutils.statemachine.string2lines(
               inputstring, tab_width=document.settings.tab_width,
               convert_whitespace=True)
-        self.statemachine.run(inputlines, document, inliner=self.inliner)
+        for i, line in enumerate(inputlines):
+            if len(line) > self.document.settings.line_length_limit:
+                error = self.document.reporter.error(
+                            'Line %d exceeds the line-length-limit.'%(i+1))
+                self.document.append(error)
+                break
+        else:
+            self.statemachine.run(inputlines, document, inliner=self.inliner)
         # restore the "default" default role after parsing a document
         if '' in roles._roles:
             del roles._roles['']
