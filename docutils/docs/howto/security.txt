@@ -76,6 +76,10 @@ input.
 It is recommended to enforce limits for the computation time and resource
 utilization of the Docutils process when processing untrusted input.
 
+In addition, the "line_length_limit_" can be adapted.
+
+.. _line_length_limit: ../user/config.html#line-length-limit
+
 
 Securing Docutils
 =================

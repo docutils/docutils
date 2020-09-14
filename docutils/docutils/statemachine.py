@@ -1505,12 +1505,12 @@ def string2lines(astring, tab_width=8, convert_whitespace=False,
     - `astring`: a multi-line string.
     - `tab_width`: the number of columns between tab stops.
     - `convert_whitespace`: convert form feeds and vertical tabs to spaces?
+    - `whitespace`: pattern object with the to-be-converted
+      whitespace characters (default [\\v\\f]).
     """
     if convert_whitespace:
         astring = whitespace.sub(' ', astring)
     lines = [s.expandtabs(tab_width).rstrip() for s in astring.splitlines()]
-    # TODO: test for too long lines (fixes bug #381):
-    # for line in lines:
     return lines
 
 def _exception_data():

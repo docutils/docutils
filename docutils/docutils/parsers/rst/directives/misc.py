@@ -115,8 +115,13 @@ class Include(Directive):
 
         include_lines = statemachine.string2lines(rawtext, tab_width,
                                                   convert_whitespace=True)
+        for i, line in enumerate(include_lines):
+            if len(line) > self.state.document.settings.line_length_limit:
+                raise self.warning('"%s": line %d exceeds the'
+                                   ' line-length-limit.' % (path, i+1))
+
         if 'literal' in self.options:
-            # Don't convert tabs to spaces, if `tab_width` is positive.
+            # Don't convert tabs to spaces, if `tab_width` is negative.
             if tab_width >= 0:
                 text = rawtext.expandtabs(tab_width)
             else:

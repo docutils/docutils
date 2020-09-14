@@ -639,6 +639,21 @@ Options: ``--file-insertion-enabled, --no-file-insertion``.
 .. _include: ../ref/rst/directives.html#include
 .. _raw: ../ref/rst/directives.html#raw
 
+line_length_limit
+~~~~~~~~~~~~~~~~~
+
+Maximal number of characters in an input line or `substitution`_
+definition. To prevent extraordinary high processing times or memory
+usage for certain input constructs, a "warning" system message is
+inserted instead.
+          
+Default: 10 000.
+Option: ``--line-length-limit``
+
+New in Docutils 0.17.
+
+.. _substitution: ../ref/rst/directives.html#substitution
+
 pep_references
 ~~~~~~~~~~~~~~
 

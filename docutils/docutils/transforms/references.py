@@ -663,11 +663,13 @@ class Substitutions(Transform):
     def apply(self):
         defs = self.document.substitution_defs
         normed = self.document.substitution_names
-        subreflist = list(self.document.traverse(nodes.substitution_reference))
         nested = {}
+        line_length_limit = getattr(self.document.settings,
+                                    "line_length_limit", 10000)
 
         subreflist = list(self.document.traverse(nodes.substitution_reference))
         for ref in subreflist:
+            msg = ''
             refname = ref['refname']
             if refname in defs:
                 key = refname
@@ -678,6 +680,13 @@ class Substitutions(Transform):
                 msg = self.document.reporter.error(
                       'Undefined substitution referenced: "%s".'
                       % refname, base_node=ref)
+            else:
+                subdef = defs[key]
+                if len(subdef.astext()) > line_length_limit:
+                    msg = self.document.reporter.error(
+                            'Substitution definition "%s" exceeds the'
+                            ' line-length-limit.' % (key))
+            if msg:
                 msgid = self.document.set_id(msg)
                 prb = nodes.problematic(
                       ref.rawsource, ref.rawsource, refid=msgid)
@@ -686,7 +695,6 @@ class Substitutions(Transform):
                 ref.replace_self(prb)
                 continue
 
-            subdef = defs[key]
             parent = ref.parent
             index = parent.index(ref)
             if  ('ltrim' in subdef.attributes
