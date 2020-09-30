@@ -16,8 +16,7 @@
 """
 A minimal front end to the Docutils Publisher, producing HTML 5 documents.
 
-The output also conforms to XHTML 1.0 transitional
-(except for the doctype declaration).
+The output is also valid XML.
 """
 
 try:
