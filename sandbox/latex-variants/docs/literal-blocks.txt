@@ -1,8 +1,8 @@
 .. -*- rst-mode -*-
 
-.. translate to LaTeX with 
-    
-    rst2latex --use-verbatim-when-possible --stylesheet=uselistings.tex
+.. translate to LaTeX with
+
+    rst2latex --literal-block-env=(|listings|verbatim|Verbatim)
 
 Comparing blocks
 ================
@@ -21,6 +21,16 @@ indented or **consistently** quoted text is a literal block.
 
 Indented literal block
 ~~~~~~~~~~~~~~~~~~~~~~
+
+::
+
+  Whitespace, newlines, blank lines, and
+  all kinds of markup (like *this* or
+  \this) is preserved by literal blocks.
+
+indented literal block with class
+
+.. class:: testme
 
 ::
 
@@ -77,7 +87,7 @@ verse, and adornment-free lists.
 | Continuation lines are wrapped
   portions of long lines; they begin
   with spaces in place of vertical bars.
-| last line  
+| last line
 
 
 Line Block directive
@@ -101,10 +111,10 @@ Special characters in a literal block
 In LaTeX, many characters have a special meaning ::
 
   The squares of $\sin(x)$ and $\cos(x)$ equals one:
-  
+
   $$
      \sin^2(x) + \cos^2(x) = 1
   $$
-  
+
 and need escaping in a literal block if no verbatim environment is
 used.
