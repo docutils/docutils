@@ -836,6 +836,58 @@ c4
 """],
 ]
 
+totest['table_nonstandard_class'] = [
+["""\
+.. table::
+   :class: my-class
+
+   +-----+-----+
+   |  1  |  2  |
+   +-----+-----+
+   |  3  |  4  |
+   +-----+-----+
+""",
+head_template.substitute(
+    dict(
+        parts,
+        requirements = parts['requirements'] + parts['longtable'],
+        fallbacks = r"""
+% class handling for environments (block-level elements)
+% \begin{DUclass}{spam} tries \DUCLASSspam and
+% \end{DUclass}{spam} tries \endDUCLASSspam
+\ifx\DUclass\undefined % poor man's "provideenvironment"
+ \newenvironment{DUclass}[1]%
+  {% "#1" does not work in end-part of environment.
+   \def\DocutilsClassFunctionName{DUCLASS#1}
+     \csname \DocutilsClassFunctionName \endcsname}%
+  {\csname end\DocutilsClassFunctionName \endcsname}%
+\fi
+"""
+    )
+) + r"""
+\begin{DUclass}{my-class}
+\setlength{\DUtablewidth}{\linewidth}
+\begin{longtable*}[c]{|p{0.075\DUtablewidth}|p{0.075\DUtablewidth}|}
+\hline
+
+1
+ & 
+2
+ \\
+\hline
+
+3
+ & 
+4
+ \\
+\hline
+\end{longtable*}
+\end{DUclass}
+
+\end{document}
+"""],
+]
+
 # The "[" needs to be protected (otherwise it will be seen as an
 # option to "\\", "\item", etc. ).
 

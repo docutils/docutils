@@ -58,10 +58,10 @@ Changes Since 0.16
   - Use the new semantic tags <main>, <section>, <header>,
     <footer>, <aside>, <figure>, and <figcaption>.
     See ``minimal.css`` and ``plain.css`` for styling rule examples.
-    
+
     Change the `initial_header_level` setting default to "2", as browsers
     use the `same style for <h1> and <h2> when nested in a <section>`__.
-    
+
     __ https://stackoverflow.com/questions/39547412/same-font-size-for-h1-and-h2-in-article
 
   - Use HTML text-level tags <small>, <s>, <q>, <dfn>, <var>, <samp>, <kbd>,
@@ -73,7 +73,7 @@ Changes Since 0.16
   - Wrap block-level image elements in <p> (except for figures).
     Move non-essential styling from ``minimal.css`` to ``plain.css``.
     Support numbered figures in ``plain.css``.
-    
+
   - Fix bug #398: properly close link tag to "schema.dcterms".
 
 * docutils/writers/latex2e/__init__.py:
@@ -81,7 +81,7 @@ Changes Since 0.16
   - Use LaTeX environments for admonitions and "class wrappers" for styling
     admonitions and titles if the new configuration setting
     `legacy_class_functions`_ is False.
-    
+
     .. _legacy_class_functions: docs/user/config.html#legacy-class-functions
 
 
@@ -89,10 +89,10 @@ Changes Since 0.16
     `styling command`__ prefix ``\docutilsrole``.
 
     __ docs/user/latex.html#custom-interpreted-text-roles
-    
+
   - Support the `memoir` LaTeX document class.
-    Fixes #390, #391, and #392. 
-    
+    Fixes #390, #391, and #392.
+
   - The special value "auto" for the `graphicx_option`_ setting
     is no longer supported (it never worked for xetex/luatex).
 
@@ -101,10 +101,12 @@ Changes Since 0.16
   - Most helper commands and element definitions are now defined in the
     LaTeX package `docutils.sty`_ and only inserted in the document
     preamble if the `stylesheet`__ setting does not list "docutils".
-    
+
     .. _docutils.sty: https://ctan.org/pkg/docutils
     __ docs/user/config.html#stylesheet-latex-writers
 
+  - Apply patch #173 "Make *TeX writers convert nonstandard table
+    classes to DUclass environments" by John Thorvald Wodder II.
 
 * docutils/writers/manpage.py
 

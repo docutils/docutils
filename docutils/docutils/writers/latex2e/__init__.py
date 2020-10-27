@@ -1539,6 +1539,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 if language:
                     self.babel.otherlanguages[language] = True
                     self.out.append('\\begin{selectlanguage}{%s}\n' % language)
+            elif isinstance(node, nodes.table) and cls in Writer.table_style_values:
+                pass
             else:
                 if not self.fallback_stylesheet:
                     self.fallbacks['DUclass'] = PreambleCmds.duclass
@@ -1551,6 +1553,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 language = self.babel.language_name(cls[9:])
                 if language:
                     self.out.append('\\end{selectlanguage}\n')
+            elif isinstance(node, nodes.table) and cls in Writer.table_style_values:
+                pass
             else:
                 if not self.fallback_stylesheet:
                     self.fallbacks['DUclass'] = PreambleCmds.duclass
@@ -2871,6 +2875,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.depart_admonition(node)
 
     def visit_table(self, node):
+        self.duclass_open(node)
         self.requirements['table'] = PreambleCmds.table
         if self.active_table.is_open():
             self.table_stack.append(self.active_table)
@@ -2900,7 +2905,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
             width = self.to_latex_length(node.attributes['width'])
         except KeyError:
             width = r'\linewidth'
-        self.out.append('\n' + self.active_table.get_opening(width))
+        if isinstance(node.parent, nodes.compound):
+            self.out.append('\n')
+        self.out.append(self.active_table.get_opening(width))
         self.out += content
         self.out.append(self.active_table.get_closing() + '\n')
         self.active_table.close()
@@ -2910,6 +2917,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # other places (beginning, caption) result in LaTeX errors.
         if node.get('ids'):
             self.out += self.ids_to_labels(node, set_anchor=False) + ['\n']
+        self.duclass_close(node)
 
     def visit_target(self, node):
         # Skip indirect targets:
