@@ -18,7 +18,7 @@ are needed for the development of the Docutils project.
 :`<docutils-update.local>`_: The script to update the `web site`_
     from a developer machine or on shell.sourceforge.
 
-    If a file ``ON_SOURCEFORGE`` exists in current dorectory, the
+    If a file ``ON_SOURCEFORGE`` exists in current directory, the
     script assumes being executed on shell.sourceforge.
 
 :`<release.sh>`_: The script to make releases of Docutils.
@@ -30,6 +30,11 @@ are needed for the development of the Docutils project.
 
 :`<release-test.sh>`_: The script to run tests at release time, extracted
     from ``release.sh``.
+
+:`<set_version.sh>`_: Script to change the version identifier in
+    documentation, tests, docutils/__init__, ...
+    extracted from ``release.sh``.
+
 
 Everything below this line needs rework
 ---------------------------------------
