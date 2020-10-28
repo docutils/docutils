@@ -1718,9 +1718,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 self.out.append(r'\cite{')
                 self.inside_citation_reference_label = 1
             else:
-                assert self.body[-1] in (' ', '\n'),\
+                assert self.out[-1] in (' ', '\n'),\
                         'unexpected non-whitespace while in reference label'
-                del self.body[-1]
+                del self.out[-1]
         else:
             href = ''
             if 'refid' in node:
