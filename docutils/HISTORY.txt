@@ -112,6 +112,9 @@ Changes Since 0.16
   - Apply patch #173 "Make *TeX writers convert nonstandard table
     classes to DUclass environments" by John Thorvald Wodder II.
 
+  - Fix bug #408 "Incorrect assert in latex writer
+    for multiple citation references".
+  
 * docutils/writers/manpage.py
 
   - Fix #394 fix missing new line after rubric.
