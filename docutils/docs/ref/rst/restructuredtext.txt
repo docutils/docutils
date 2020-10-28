@@ -372,6 +372,7 @@ appear in Python docstrings is to use raw docstrings::
 
     r"""This is a raw docstring.  Backslashes (\) are not touched."""
 
+.. _reference name:
 
 Reference Names
 ===============
@@ -2669,7 +2670,8 @@ Interpreted text allows extensions to the available inline descriptive
 markup constructs.  To emphasis_, `strong emphasis`_, `inline
 literals`_, and `hyperlink references`_, we can add "title reference",
 "index entry", "acronym", "class", "red", "blinking" or anything else
-we want.  Only pre-determined roles are recognized; unknown roles will
+we want (as long as it is a simple `reference name`_).
+Only pre-determined roles are recognized; unknown roles will
 generate errors.  A core set of standard roles is implemented in the
 reference parser; see `reStructuredText Interpreted Text Roles`_ for
 individual descriptions.  The role_ directive can be used to define
@@ -2888,7 +2890,7 @@ by a trailing underscore.  Footnote labels are one of:
 
 - a single "#" (denoting `auto-numbered footnotes`_),
 
-- a "#" followed by a simple reference name (an `autonumber label`_),
+- a "#" followed by a simple `reference name`_ (an `autonumber label`_),
   or
 
 - a single "*" (denoting `auto-symbol footnotes`_).

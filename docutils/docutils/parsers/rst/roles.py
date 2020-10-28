@@ -152,7 +152,7 @@ def register_canonical_role(name, role_fn):
       - `role_fn`: The role function.  See the module docstring.
     """
     set_implicit_options(role_fn)
-    _role_registry[name] = role_fn
+    _role_registry[name.lower()] = role_fn
 
 def register_local_role(name, role_fn):
     """
@@ -163,7 +163,7 @@ def register_local_role(name, role_fn):
       - `role_fn`: The role function.  See the module docstring.
     """
     set_implicit_options(role_fn)
-    _roles[name] = role_fn
+    _roles[name.lower()] = role_fn
 
 def set_implicit_options(role_fn):
     """
