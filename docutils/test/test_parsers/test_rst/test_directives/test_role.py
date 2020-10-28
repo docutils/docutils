@@ -212,6 +212,19 @@ Empty :custom:`\\ ` and empty `\\ `:special:
          and empty 
         <inline classes="special">
 """],
+["""\
+.. role:: CaSiNg
+
+Role names are :cAsInG:`case-insensitive`.
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        Role names are \n\
+        <inline classes="casing">
+            case-insensitive
+        .
+"""],
 ]
 
 totest['raw_role'] = [

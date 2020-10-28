@@ -1775,7 +1775,7 @@ Custom Interpreted Text Roles
 
 :Directive Type: "role"
 :Doctree Element: None; affects subsequent parsing.
-:Directive Arguments: Two; one required (new role name), one optional
+:Directive Arguments: Two; one required (new `role name`_), one optional
                       (base role name, in parentheses).
 :Directive Options: Possible (depends on base role).
 :Directive Content: depends on base role.
@@ -1800,6 +1800,12 @@ This will be parsed into the following document tree fragment::
             interpreted text
 
 The role must be declared in a document before it can be used.
+
+.. _role name:
+
+Role names are case insensitive and must conform to the rules of
+simple `reference names`_ (but do not share a namespace with
+hyperlinks, footnotes, and citations).
 
 The new role may be based on an existing role, specified as a second
 argument in parentheses (whitespace optional)::
@@ -1966,7 +1972,8 @@ _`:name:` : text
     New in Docutils 0.8.
 
 
-.. _reference name: restructuredtext.html#reference-names
+.. _reference name:
+.. _reference names: restructuredtext.html#reference-names
 .. _hyperlink target: restructuredtext.html#hyperlink-targets
 .. _hyperlink references: restructuredtext.html#hyperlink-references
 .. _class names: ../doctree.html#classnames-type
