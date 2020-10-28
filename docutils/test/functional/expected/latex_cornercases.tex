@@ -338,4 +338,63 @@ LaTeX writer needs bookkeeping to write out the required number of extra
 \hline
 \end{longtable*}
 
+
+\section{Nested tables%
+  \label{nested-tables}%
+}
+
+TODO:
+Set alignment of nested tables without creating too much vertical space.
+
+\setlength{\DUtablewidth}{\linewidth}
+\begin{longtable*}[c]{|p{0.493\DUtablewidth}|p{0.214\DUtablewidth}|}
+\hline
+
+Lorem ipsum dolor sit amet, consectetur
+ & 
+adipisicing elit
+ \\
+\hline
+
+\setlength{\DUtablewidth}{\linewidth}
+\begin{tabular}[r]{|p{0.075\DUtablewidth}|p{0.075\DUtablewidth}|}
+\hline
+
+1
+ & 
+2
+ \\
+\hline
+\end{tabular}
+ & 
+cell 1, 2
+ \\
+\hline
+
+\setlength{\DUtablewidth}{\linewidth}
+\begin{tabular}[r]{|p{0.075\DUtablewidth}|p{0.075\DUtablewidth}|}
+\hline
+
+1
+ & 
+2
+ \\
+\hline
+\end{tabular}
+
+\begin{description}
+\item[{definition:}] \leavevmode 
+list
+
+\end{description}
+ & 
+cell 2, 2
+ \\
+\hline
+ & 
+cell 3, 2
+ \\
+\hline
+\end{longtable*}
+
 \end{document}

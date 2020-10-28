@@ -136,3 +136,32 @@ LaTeX writer needs bookkeeping to write out the required number of extra
 +-------+----+
 | 31    | 32 |
 +-------+----+
+
+Nested tables
+-------------
+
+TODO:
+Set alignment of nested tables without creating too much vertical space.
+
++-----------------------------------------+-----------------+
+| Lorem ipsum dolor sit amet, consectetur | adipisicing elit|
++-----------------------------------------+-----------------+
+| .. table::                              | cell 1, 2       |
+|     :align: right                       |                 |
+|                                         |                 |
+|     +-----+-----+                       |                 |
+|     |  1  |  2  |                       |                 |
+|     +-----+-----+                       |                 |
++-----------------------------------------+-----------------+
+| .. table::                              | cell 2, 2       |
+|     :align: right                       |                 |
+|                                         |                 |
+|     +-----+-----+                       |                 |
+|     |  1  |  2  |                       |                 |
+|     +-----+-----+                       |                 |
+|                                         |                 |
+| definition:                             |                 |
+|             list                        |                 |
++-----------------------------------------+-----------------+
+|                                         |       cell 3, 2 |
++-----------------------------------------+-----------------+
