@@ -22,7 +22,7 @@ Problems
 
     classes="keyword" is "name builtin" 
 
-  But nor for 3.8.1 on Linux .
+  But not for 3.8.1 on Linux .
   
 Release 0.16 (2020-01-12)
 =========================
