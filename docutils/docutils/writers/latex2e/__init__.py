@@ -1502,7 +1502,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         """Return list of label definitions for all ids of `node`
 
         If `set_anchor` is True, an anchor is set with \\phantomsection.
-        If `protect` is True, the \label cmd is made robust.
+        If `protect` is True, the \\label cmd is made robust.
         """
         labels = ['\\label{%s}' % id for id in node.get('ids', [])]
         if protect:
