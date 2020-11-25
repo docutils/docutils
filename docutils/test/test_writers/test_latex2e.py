@@ -497,8 +497,8 @@ totest['table_caption'] = [
    +-----+-----+
 """,
 head_table + r"""
-\setlength{\DUtablewidth}{\linewidth}
-\begin{longtable}[c]{|p{0.075\DUtablewidth}|p{0.075\DUtablewidth}|}
+\setlength{\DUtablewidth}{\linewidth}%
+\begin{longtable}{|p{0.075\DUtablewidth}|p{0.075\DUtablewidth}|}
 \caption{Foo}\\
 \hline
  &  \\
@@ -523,8 +523,8 @@ totest['table_styles'] = [
    +-----+-----+
 """,
 head_table + r"""
-\setlength{\DUtablewidth}{\linewidth}
-\begin{longtable*}[c]{p{0.075\DUtablewidth}p{0.075\DUtablewidth}}
+\setlength{\DUtablewidth}{\linewidth}%
+\begin{longtable*}{p{0.075\DUtablewidth}p{0.075\DUtablewidth}}
 
 1
  & 
@@ -548,8 +548,8 @@ head_table + r"""
    +-----+-+
 """,
 head_booktabs + r"""
-\setlength{\DUtablewidth}{\linewidth}
-\begin{longtable*}[c]{p{0.075\DUtablewidth}p{0.028\DUtablewidth}}
+\setlength{\DUtablewidth}{\linewidth}%
+\begin{longtable*}{p{0.075\DUtablewidth}p{0.028\DUtablewidth}}
 \toprule
 
 1
@@ -570,7 +570,7 @@ head_booktabs + r"""
    +-----+-+
 """,
 head_table + r"""
-\begin{longtable*}[c]{|l|l|}
+\begin{longtable*}{|l|l|}
 \hline
 1 & 2 \\
 \hline
@@ -587,7 +587,7 @@ head_table + r"""
    +-----+-+
 """,
 head_table + r"""
-\begin{longtable*}[c]{|l|l|}
+\begin{longtable*}{|l|l|}
 \hline
 1 & 2 \\
 \hline
@@ -604,8 +604,8 @@ head_table + r"""
    +-----+-----+
 """,
 head_table + r"""
-\setlength{\DUtablewidth}{\linewidth}
-\begin{longtable*}[c]{|p{0.191\DUtablewidth}|p{0.365\DUtablewidth}|}
+\setlength{\DUtablewidth}{\linewidth}%
+\begin{longtable*}{|p{0.191\DUtablewidth}|p{0.365\DUtablewidth}|}
 \hline
 
 1
@@ -632,8 +632,8 @@ totest_table_style_booktabs['table_styles'] = [
    +-----+-----+
 """,
 head_table + r"""
-\setlength{\DUtablewidth}{\linewidth}
-\begin{longtable*}[c]{p{0.075\DUtablewidth}p{0.075\DUtablewidth}}
+\setlength{\DUtablewidth}{\linewidth}%
+\begin{longtable*}{p{0.075\DUtablewidth}p{0.075\DUtablewidth}}
 
 1
  & 
@@ -657,7 +657,7 @@ head_table + r"""
    +-----+-+
 """,
 head_booktabs + r"""
-\begin{longtable*}[c]{ll}
+\begin{longtable*}{ll}
 \toprule
 1 & 2 \\
 \bottomrule
@@ -674,8 +674,8 @@ head_booktabs + r"""
    +-----+-----+
 """,
 head_booktabs + r"""
-\setlength{\DUtablewidth}{\linewidth}
-\begin{longtable*}[c]{p{0.191\DUtablewidth}p{0.365\DUtablewidth}}
+\setlength{\DUtablewidth}{\linewidth}%
+\begin{longtable*}{p{0.191\DUtablewidth}p{0.365\DUtablewidth}}
 \toprule
 
 1
@@ -700,7 +700,7 @@ totest_table_style_auto['table_styles'] = [
    +-----+-----+
 """,
 head_table + r"""
-\begin{longtable*}[c]{ll}
+\begin{longtable*}{ll}
 1 & 2 \\
 3 & 4 \\
 \end{longtable*}
@@ -716,7 +716,7 @@ head_table + r"""
    +-----+-+
 """,
 head_booktabs + r"""
-\begin{longtable*}[c]{ll}
+\begin{longtable*}{ll}
 \toprule
 1 & 2 \\
 \bottomrule
@@ -734,8 +734,8 @@ head_booktabs + r"""
    +-----+-----+
 """,
 head_table + r"""
-\setlength{\DUtablewidth}{\linewidth}
-\begin{longtable*}[c]{|p{0.191\DUtablewidth}|p{0.365\DUtablewidth}|}
+\setlength{\DUtablewidth}{\linewidth}%
+\begin{longtable*}{|p{0.191\DUtablewidth}|p{0.365\DUtablewidth}|}
 \hline
 
 1
@@ -760,7 +760,7 @@ totest['table_align'] = [
    +-----+-----+
 """,
 head_table + r"""
-\setlength{\DUtablewidth}{\linewidth}
+\setlength{\DUtablewidth}{\linewidth}%
 \begin{longtable*}[r]{|p{0.075\DUtablewidth}|p{0.075\DUtablewidth}|}
 \hline
 
@@ -784,8 +784,8 @@ entry value1
 ===== ======
 """,
 head_table + r"""
-\setlength{\DUtablewidth}{\linewidth}
-\begin{longtable*}[c]{|p{0.075\DUtablewidth}|p{0.086\DUtablewidth}|}
+\setlength{\DUtablewidth}{\linewidth}%
+\begin{longtable*}{|p{0.075\DUtablewidth}|p{0.086\DUtablewidth}|}
 \hline
 \textbf{%
 Title
@@ -819,8 +819,8 @@ value1
 +---------+
 """,
 head_table + r"""
-\setlength{\DUtablewidth}{\linewidth}
-\begin{longtable*}[c]{|p{0.063\DUtablewidth}|p{0.063\DUtablewidth}|}
+\setlength{\DUtablewidth}{\linewidth}%
+\begin{longtable*}{|p{0.063\DUtablewidth}|p{0.063\DUtablewidth}|}
 \hline
 
 c3
@@ -866,8 +866,8 @@ head_template.substitute(
     )
 ) + r"""
 \begin{DUclass}{my-class}
-\setlength{\DUtablewidth}{\linewidth}
-\begin{longtable*}[c]{|p{0.075\DUtablewidth}|p{0.075\DUtablewidth}|}
+\setlength{\DUtablewidth}{\linewidth}%
+\begin{longtable*}{|p{0.075\DUtablewidth}|p{0.075\DUtablewidth}|}
 \hline
 
 1

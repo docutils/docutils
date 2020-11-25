@@ -70,8 +70,8 @@ $\sin^2(x)$ and $\cos^2(x)$ equals one:
 
 A literal block in a table:
 
-\setlength{\DUtablewidth}{\linewidth}
-\begin{longtable*}[c]{|p{0.063\DUtablewidth}|p{0.145\DUtablewidth}|p{0.063\DUtablewidth}|}
+\setlength{\DUtablewidth}{\linewidth}%
+\begin{longtable*}{|p{0.063\DUtablewidth}|p{0.145\DUtablewidth}|p{0.063\DUtablewidth}|}
 \hline
 
 test
@@ -89,7 +89,7 @@ test
 
 A literal block in a table with auto-width columns:
 
-\begin{longtable*}[c]{|l|l|l|}
+\begin{longtable*}{|l|l|l|}
 \hline
 test & 
 \ttfamily\raggedright

@@ -866,13 +866,20 @@ class Table(object):
 
     # horizontal lines are drawn below a row,
     def get_opening(self, width=r'\linewidth'):
-        align_map = {'left': 'l',
-                     'center': 'c',
-                     'right': 'r'}
-        align = align_map.get(self.get('align') or 'center')
-        opening = [r'\begin{%s}[%s]' % (self.get_latex_type(), align)]
+        align_map = {'left': '[l]',
+                     'center': '[c]',
+                     'right': '[r]',
+                     None: ''}
+        align = align_map.get(self.get('align'))
+        latex_type = self.get_latex_type()
+        if align and latex_type not in ("longtable", "longtable*"):
+            opening = [r'\noindent\makebox[\linewidth]%s{%%' % (align,),
+                       r'\begin{%s}' % (latex_type,),
+                      ]
+        else:
+            opening = [r'\begin{%s}%s' % (latex_type, align)]
         if not self.colwidths_auto:
-            opening.insert(0, r'\setlength{\DUtablewidth}{%s}'%width)
+            opening.insert(-1, r'\setlength{\DUtablewidth}{%s}%%'%width)
         return '\n'.join(opening)
 
     def get_closing(self):
@@ -882,6 +889,8 @@ class Table(object):
         # elif self.borders == 'standard':
         #     closing.append(r'\hline')
         closing.append(r'\end{%s}' % self.get_latex_type())
+        if self.get('align') and self.get_latex_type() not in ("longtable", "longtable*"):
+            closing.append('}')
         return '\n'.join(closing)
 
     def visit_colspec(self, node):
@@ -2880,6 +2889,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if self.active_table.is_open():
             self.table_stack.append(self.active_table)
             # nesting longtable does not work (e.g. 2007-04-18)
+            # TODO: don't use a longtable or add \noindent before
+            #       the next paragraph, when in a "compound paragraph".
             self.active_table = Table(self, 'tabular')
         # A longtable moves before \paragraph and \subparagraph
         # section titles if it immediately follows them:
