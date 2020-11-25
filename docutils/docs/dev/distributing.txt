@@ -32,15 +32,17 @@ Docutils has the following dependencies:
   dependencies.
 
 * Docutils may optionally make use of the PIL (`Python Imaging
-  Library`_).  If PIL is present, it is automatically detected by
-  Docutils.
+  Library`_ or Pillow_).  If PIL is present, it is automatically
+  detected by Docutils.
 
 * Docutils recommends the `Pygments`_ syntax hightlighter. If available, it
   is used for highlighting the content of `code directives`_ and roles as
   well as included source code files (with the "code" option to the include_
   directive).
 
-.. _Python Imaging Library: http://www.pythonware.com/products/pil/
+.. _Python Imaging Library: 
+    https://en.wikipedia.org/wiki/Python_Imaging_Library
+.. _Pillow: https://pypi.org/project/Pillow/
 .. _Pygments: http://pygments.org/
 .. _code directives: ../ref/rst/directives.html#code
 .. _include: ../ref/rst/directives.html#include

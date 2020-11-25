@@ -1181,7 +1181,7 @@ pick up the default paper size on platforms where the program
     http://docutils.sourceforge.net/
 
 .. _`Python Imaging Library`:
-    http://www.pythonware.com/products/pil/
+    https://en.wikipedia.org/wiki/Python_Imaging_Library
 
 .. _`Open Document at Wikipedia`:
     http://en.wikipedia.org/wiki/OpenDocument
