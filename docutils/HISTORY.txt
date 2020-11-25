@@ -114,6 +114,9 @@ Changes Since 0.16
 
   - Fix bug #408 "Incorrect assert in latex writer
     for multiple citation references".
+    
+  - Apply patch #175 "Fix alignment of nested tables",
+    additional fixes to table alignment.
   
 * docutils/writers/manpage.py
 
