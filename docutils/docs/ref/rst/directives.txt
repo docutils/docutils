@@ -226,9 +226,9 @@ The following options are recognized:
     The uniform scaling factor of the image.  The default is "100 %", i.e.
     no scaling.
 
-    If no "height" or "width" options are specified, the `Python Imaging
-    Library`_ (PIL) may be used to determine them, if it is installed and
-    the image file is available.
+    If no "height" or "width" options are specified, the `Python
+    Imaging Library`_ (PIL/Pillow_) may be used to determine them, if
+    it is installed and the image file is available.
 
 ``align`` : "top", "middle", "bottom", "left", "center", or "right"
     The alignment of the image, equivalent to the HTML ``<img>`` tag's
@@ -333,7 +333,9 @@ In addition, the following options are recognized:
     Set a `"classes"`_ attribute value on the figure element.  See the
     class_ directive below.
 
-.. _Python Imaging Library: http://www.pythonware.com/products/pil/
+.. _Python Imaging Library: 
+    https://en.wikipedia.org/wiki/Python_Imaging_Library
+.. _Pillow: https://pypi.org/project/Pillow/
 
 
 ---------------
@@ -1782,8 +1784,8 @@ Custom Interpreted Text Roles
 
 (New in Docutils 0.3.2)
 
-The "role" directive dynamically creates a custom interpreted text
-role and registers it with the parser.  This means that after
+The "role" directive dynamically creates a custom `interpreted text
+role`_ and registers it with the parser.  This means that after
 declaring a role like this::
 
     .. role:: custom
@@ -1993,6 +1995,7 @@ _`:name:` : text
 .. _generated: ../doctree.html#generated
 .. _image: ../doctree.html#image
 .. _inline elements: ../doctree.html#inline-elements
+.. _interpreted text role: roles.html
 .. _literal_block: ../doctree.html#literal-block
 .. _legend: ../doctree.html#legend
 .. _length: restructuredtext.html#length-units
