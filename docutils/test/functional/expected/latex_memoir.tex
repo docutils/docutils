@@ -884,8 +884,8 @@ layout.
 \noindent\makebox[\linewidth][c]{\includegraphics[width=258bp]{../../../docs/user/rst/images/title.png}}
 \caption{Plaintext markup syntax and parser system.}
 \begin{DUlegend}
-\setlength{\DUtablewidth}{\linewidth}
-\begin{longtable*}[c]{|p{0.156\DUtablewidth}|p{0.563\DUtablewidth}|}
+\setlength{\DUtablewidth}{\linewidth}%
+\begin{longtable*}{|p{0.156\DUtablewidth}|p{0.563\DUtablewidth}|}
 \hline
 
 re
@@ -974,7 +974,7 @@ upon the style sheet and the browser or rendering software used.
 Tables may be given titles and additional arguments with the \emph{table}
 directive:
 
-\setlength{\DUtablewidth}{\linewidth}
+\setlength{\DUtablewidth}{\linewidth}%
 \begin{longtable}[l]{|p{0.075\DUtablewidth}|p{0.075\DUtablewidth}|}
 \caption{left-aligned table}\\
 \hline
@@ -1011,7 +1011,7 @@ False
 \hline
 \end{longtable}
 
-\setlength{\DUtablewidth}{\linewidth}
+\setlength{\DUtablewidth}{\linewidth}%
 \begin{longtable}[c]{|p{0.075\DUtablewidth}|p{0.075\DUtablewidth}|}
 \caption{center-aligned table}\\
 \hline
@@ -1048,7 +1048,7 @@ False
 \hline
 \end{longtable}
 
-\setlength{\DUtablewidth}{\linewidth}
+\setlength{\DUtablewidth}{\linewidth}%
 \begin{longtable}[r]{|p{0.075\DUtablewidth}|p{0.075\DUtablewidth}|}
 \caption{right-aligned table}\\
 \hline
@@ -1089,7 +1089,7 @@ With the \textquotedbl{}widths\textquotedbl{} argument \textquotedbl{}auto\textq
 column widths are determined by the backend (if supported by the
 writer/backend).
 
-\begin{longtable*}[c]{|l|l|l|}
+\begin{longtable*}{|l|l|l|}
 \hline
 \textbf{A} & \textbf{B} & \textbf{A or B} \\
 \hline
@@ -1329,8 +1329,8 @@ Compound 5, block 3 (a paragraph).
 Compound 7, tests the inclusion of various block-level
 elements in one logical paragraph. First a table,
 
-\setlength{\DUtablewidth}{\linewidth}
-\begin{longtable*}[c]{|p{0.249\DUtablewidth}|p{0.249\DUtablewidth}|p{0.249\DUtablewidth}|}
+\setlength{\DUtablewidth}{\linewidth}%
+\begin{longtable*}{|p{0.249\DUtablewidth}|p{0.249\DUtablewidth}|p{0.249\DUtablewidth}|}
 \hline
 
 Left cell, first
@@ -1538,8 +1538,8 @@ paragraph 2
 
 This table has a cell spanning two columns:
 
-\setlength{\DUtablewidth}{\linewidth}
-\begin{longtable*}[c]{|p{0.075\DUtablewidth}|p{0.075\DUtablewidth}|p{0.086\DUtablewidth}|}
+\setlength{\DUtablewidth}{\linewidth}%
+\begin{longtable*}{|p{0.075\DUtablewidth}|p{0.075\DUtablewidth}|p{0.086\DUtablewidth}|}
 \hline
 \multicolumn{2}{|p{0.15\DUtablewidth}|}{\textbf{%
 Inputs
@@ -1616,8 +1616,8 @@ True
 
 Here's a table with cells spanning several rows:
 
-\setlength{\DUtablewidth}{\linewidth}
-\begin{longtable*}[c]{|p{0.296\DUtablewidth}|p{0.156\DUtablewidth}|p{0.226\DUtablewidth}|}
+\setlength{\DUtablewidth}{\linewidth}%
+\begin{longtable*}{|p{0.296\DUtablewidth}|p{0.156\DUtablewidth}|p{0.226\DUtablewidth}|}
 \hline
 \textbf{%
 Header row, column 1
@@ -1676,8 +1676,8 @@ body row 3
 Here's a list table exercising all features:
 
 \begin{DUclass}{test}
-\setlength{\DUtablewidth}{40em}
-\begin{longtable}[c]{|p{0.133\DUtablewidth}|p{0.249\DUtablewidth}|p{0.365\DUtablewidth}|}
+\setlength{\DUtablewidth}{40em}%
+\begin{longtable}{|p{0.133\DUtablewidth}|p{0.249\DUtablewidth}|p{0.365\DUtablewidth}|}
 \caption{list table with integral header}\\
 \hline
 \textbf{%
@@ -1840,8 +1840,8 @@ physical system changes in time.
 
 \begin{description}
 \item[{Math-Accents:}] \leavevmode 
-\setlength{\DUtablewidth}{\linewidth}
-\begin{longtable*}[c]{p{0.315\DUtablewidth}p{0.315\DUtablewidth}p{0.315\DUtablewidth}}
+\setlength{\DUtablewidth}{\linewidth}%
+\begin{longtable*}{p{0.315\DUtablewidth}p{0.315\DUtablewidth}p{0.315\DUtablewidth}}
 
 $\acute{a}$      \texttt{\textbackslash{}acute\{a\}}
  & 
@@ -2072,8 +2072,8 @@ writer for image, table, and line block elements.
 
 A table with multi-paragraph multicolumn cells:
 
-\setlength{\DUtablewidth}{\linewidth}
-\begin{longtable*}[c]{|p{0.133\DUtablewidth}|p{0.179\DUtablewidth}|p{0.179\DUtablewidth}|p{0.110\DUtablewidth}|p{0.121\DUtablewidth}|p{0.145\DUtablewidth}|}
+\setlength{\DUtablewidth}{\linewidth}%
+\begin{longtable*}{|p{0.133\DUtablewidth}|p{0.179\DUtablewidth}|p{0.179\DUtablewidth}|p{0.110\DUtablewidth}|p{0.121\DUtablewidth}|p{0.145\DUtablewidth}|}
 \hline
 
 test
@@ -2132,7 +2132,7 @@ limitation (see \url{https://sourceforge.net/p/docutils/bugs/225/}).
 
 A table with multirow header and column-widths set by LaTeX:
 
-\begin{longtable*}[c]{|l|l|}
+\begin{longtable*}{|l|l|}
 \hline
 \multirow{2}{*}{\textbf{XXX}} & \textbf{Variable Summary} \\
 \cline{2-2}
@@ -2155,7 +2155,7 @@ A table with multirow header and column-widths set by LaTeX:
 In a table with column-widths set by LaTeX, each cell has just one line.
 Paragraphs are merged (a warning is given).
 
-\begin{longtable*}[c]{|l|l|}
+\begin{longtable*}{|l|l|}
 \hline
 11 & first paragraph
 second paragraph
@@ -2220,8 +2220,8 @@ width as the third line.
 
 Punctuation and footnote symbols
 
-\setlength{\DUtablewidth}{\linewidth}
-\begin{longtable*}[c]{|p{0.028\DUtablewidth}|p{0.424\DUtablewidth}|}
+\setlength{\DUtablewidth}{\linewidth}%
+\begin{longtable*}{|p{0.028\DUtablewidth}|p{0.424\DUtablewidth}|}
 \hline
 
 –
@@ -2329,8 +2329,8 @@ left-right double arrow
 
 The \DUroletitlereference{Latin-1 extended} Unicode block
 
-\setlength{\DUtablewidth}{\linewidth}
-\begin{longtable*}[c]{|p{0.051\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|}
+\setlength{\DUtablewidth}{\linewidth}%
+\begin{longtable*}{|p{0.051\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|}
 \hline
 
 % 
@@ -2673,8 +2673,8 @@ In LaTeX, we must set an explicit anchor (\texttt{\textbackslash{}phantomsection
 \phantomsection\label{hypertarget-in-plain-text}hypertarget in plain text or in a figure but not in a longtable or
 caption:
 
-\setlength{\DUtablewidth}{\linewidth}
-\begin{longtable}[c]{|p{0.075\DUtablewidth}|p{0.075\DUtablewidth}|p{0.075\DUtablewidth}|}
+\setlength{\DUtablewidth}{\linewidth}%
+\begin{longtable}{|p{0.075\DUtablewidth}|p{0.075\DUtablewidth}|p{0.075\DUtablewidth}|}
 \caption{Table with %
 \label{hypertarget-in-table-title}hypertarget in table title.}\\
 \hline

@@ -4,6 +4,7 @@
 \usepackage{ifthen}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
+\usepackage{booktabs}
 \usepackage{graphicx}
 \usepackage{multirow}
 \setcounter{secnumdepth}{0}
@@ -125,8 +126,8 @@ Therefore, visit\_entry() is only called for the remaining cells and the
 LaTeX writer needs bookkeeping to write out the required number of extra
 '\&'s.
 
-\setlength{\DUtablewidth}{\linewidth}
-\begin{longtable*}[c]{|p{0.075\DUtablewidth}|p{0.133\DUtablewidth}|p{0.133\DUtablewidth}|p{0.086\DUtablewidth}|}
+\setlength{\DUtablewidth}{\linewidth}%
+\begin{longtable*}{|p{0.075\DUtablewidth}|p{0.133\DUtablewidth}|p{0.133\DUtablewidth}|p{0.086\DUtablewidth}|}
 \hline
 
 11
@@ -167,8 +168,8 @@ LaTeX writer needs bookkeeping to write out the required number of extra
 \hline
 \end{longtable*}
 
-\setlength{\DUtablewidth}{\linewidth}
-\begin{longtable*}[c]{|p{0.098\DUtablewidth}|p{0.098\DUtablewidth}|p{0.063\DUtablewidth}|}
+\setlength{\DUtablewidth}{\linewidth}%
+\begin{longtable*}{|p{0.098\DUtablewidth}|p{0.098\DUtablewidth}|p{0.063\DUtablewidth}|}
 \hline
 
 11
@@ -192,8 +193,8 @@ LaTeX writer needs bookkeeping to write out the required number of extra
 \hline
 \end{longtable*}
 
-\setlength{\DUtablewidth}{\linewidth}
-\begin{longtable*}[c]{|p{0.098\DUtablewidth}|p{0.063\DUtablewidth}|}
+\setlength{\DUtablewidth}{\linewidth}%
+\begin{longtable*}{|p{0.098\DUtablewidth}|p{0.063\DUtablewidth}|}
 \hline
 
 11
@@ -213,8 +214,8 @@ LaTeX writer needs bookkeeping to write out the required number of extra
 \hline
 \end{longtable*}
 
-\setlength{\DUtablewidth}{\linewidth}
-\begin{longtable*}[c]{|p{0.063\DUtablewidth}|p{0.110\DUtablewidth}|p{0.063\DUtablewidth}|}
+\setlength{\DUtablewidth}{\linewidth}%
+\begin{longtable*}{|p{0.063\DUtablewidth}|p{0.110\DUtablewidth}|p{0.063\DUtablewidth}|}
 \hline
 
 11
@@ -241,8 +242,8 @@ LaTeX writer needs bookkeeping to write out the required number of extra
 \hline
 \end{longtable*}
 
-\setlength{\DUtablewidth}{\linewidth}
-\begin{longtable*}[c]{|p{0.063\DUtablewidth}|p{0.110\DUtablewidth}|}
+\setlength{\DUtablewidth}{\linewidth}%
+\begin{longtable*}{|p{0.063\DUtablewidth}|p{0.110\DUtablewidth}|}
 \hline
 
 11
@@ -262,8 +263,8 @@ LaTeX writer needs bookkeeping to write out the required number of extra
 \hline
 \end{longtable*}
 
-\setlength{\DUtablewidth}{\linewidth}
-\begin{longtable*}[c]{|p{0.063\DUtablewidth}|p{0.110\DUtablewidth}|}
+\setlength{\DUtablewidth}{\linewidth}%
+\begin{longtable*}{|p{0.063\DUtablewidth}|p{0.110\DUtablewidth}|}
 \hline
 
 11
@@ -283,8 +284,8 @@ LaTeX writer needs bookkeeping to write out the required number of extra
 \hline
 \end{longtable*}
 
-\setlength{\DUtablewidth}{\linewidth}
-\begin{longtable*}[c]{|p{0.063\DUtablewidth}|p{0.156\DUtablewidth}|p{0.110\DUtablewidth}|}
+\setlength{\DUtablewidth}{\linewidth}%
+\begin{longtable*}{|p{0.063\DUtablewidth}|p{0.156\DUtablewidth}|p{0.110\DUtablewidth}|}
 \hline
 
 11
@@ -300,8 +301,8 @@ LaTeX writer needs bookkeeping to write out the required number of extra
 \hline
 \end{longtable*}
 
-\setlength{\DUtablewidth}{\linewidth}
-\begin{longtable*}[c]{|p{0.098\DUtablewidth}|p{0.063\DUtablewidth}|p{0.110\DUtablewidth}|}
+\setlength{\DUtablewidth}{\linewidth}%
+\begin{longtable*}{|p{0.098\DUtablewidth}|p{0.063\DUtablewidth}|p{0.110\DUtablewidth}|}
 \hline
 \multirow{2}{0.10\DUtablewidth}{%
 1/2 3
@@ -317,8 +318,8 @@ LaTeX writer needs bookkeeping to write out the required number of extra
 \hline
 \end{longtable*}
 
-\setlength{\DUtablewidth}{\linewidth}
-\begin{longtable*}[c]{|p{0.098\DUtablewidth}|p{0.063\DUtablewidth}|}
+\setlength{\DUtablewidth}{\linewidth}%
+\begin{longtable*}{|p{0.098\DUtablewidth}|p{0.063\DUtablewidth}|}
 \hline
 \multirow{2}{0.10\DUtablewidth}{%
 1/2 3
@@ -346,8 +347,8 @@ LaTeX writer needs bookkeeping to write out the required number of extra
 TODO:
 Set alignment of nested tables without creating too much vertical space.
 
-\setlength{\DUtablewidth}{\linewidth}
-\begin{longtable*}[c]{|p{0.493\DUtablewidth}|p{0.214\DUtablewidth}|}
+\setlength{\DUtablewidth}{\linewidth}%
+\begin{longtable*}{|p{0.493\DUtablewidth}|p{0.214\DUtablewidth}|}
 \hline
 
 Lorem ipsum dolor sit amet, consectetur
@@ -356,8 +357,8 @@ adipisicing elit
  \\
 \hline
 
-\setlength{\DUtablewidth}{\linewidth}
-\begin{tabular}[r]{|p{0.075\DUtablewidth}|p{0.075\DUtablewidth}|}
+\setlength{\DUtablewidth}{\linewidth}%
+\begin{tabular}{|p{0.075\DUtablewidth}|p{0.075\DUtablewidth}|}
 \hline
 
 1
@@ -371,8 +372,9 @@ cell 1, 2
  \\
 \hline
 
-\setlength{\DUtablewidth}{\linewidth}
-\begin{tabular}[r]{|p{0.075\DUtablewidth}|p{0.075\DUtablewidth}|}
+\noindent\makebox[\linewidth][l]{%
+\setlength{\DUtablewidth}{\linewidth}%
+\begin{tabular}{|p{0.075\DUtablewidth}|p{0.075\DUtablewidth}|}
 \hline
 
 1
@@ -381,6 +383,58 @@ cell 1, 2
  \\
 \hline
 \end{tabular}
+}
+ & 
+cell 1, 2
+ \\
+\hline
+
+\noindent\makebox[\linewidth][c]{%
+\setlength{\DUtablewidth}{\linewidth}%
+\begin{tabular}{|p{0.075\DUtablewidth}|p{0.075\DUtablewidth}|}
+\hline
+
+1
+ & 
+2
+ \\
+\hline
+\end{tabular}
+}
+ & 
+cell 1, 2
+ \\
+\hline
+
+\noindent\makebox[\linewidth][r]{%
+\setlength{\DUtablewidth}{\linewidth}%
+\begin{tabular}{|p{0.075\DUtablewidth}|p{0.075\DUtablewidth}|}
+\hline
+
+1
+ & 
+2
+ \\
+\hline
+\end{tabular}
+}
+ & 
+cell 1, 2
+ \\
+\hline
+
+\noindent\makebox[\linewidth][r]{%
+\setlength{\DUtablewidth}{\linewidth}%
+\begin{tabular}{|p{0.075\DUtablewidth}|p{0.075\DUtablewidth}|}
+\hline
+
+1
+ & 
+2
+ \\
+\hline
+\end{tabular}
+}
 
 \begin{description}
 \item[{definition:}] \leavevmode 
@@ -395,6 +449,58 @@ cell 2, 2
 cell 3, 2
  \\
 \hline
+\end{longtable*}
+
+\setlength{\DUtablewidth}{\linewidth}%
+\begin{longtable*}{p{0.493\DUtablewidth}p{0.214\DUtablewidth}}
+\toprule
+
+Lorem ipsum dolor sit amet, consectetur
+ & 
+adipisicing elit
+ \\
+
+\noindent\makebox[\linewidth][r]{%
+\setlength{\DUtablewidth}{\linewidth}%
+\begin{tabular}{|p{0.075\DUtablewidth}|p{0.075\DUtablewidth}|}
+\hline
+
+1
+ & 
+2
+ \\
+\hline
+\end{tabular}
+}
+ & 
+cell 1, 2
+ \\
+
+\noindent\makebox[\linewidth][r]{%
+\setlength{\DUtablewidth}{\linewidth}%
+\begin{tabular}{|p{0.075\DUtablewidth}|p{0.075\DUtablewidth}|}
+\hline
+
+1
+ & 
+2
+ \\
+\hline
+\end{tabular}
+}
+
+\begin{description}
+\item[{definition:}] \leavevmode 
+list
+
+\end{description}
+ & 
+cell 2, 2
+ \\
+ & 
+cell 3, 2
+ \\
+\bottomrule
 \end{longtable*}
 
 \end{document}
