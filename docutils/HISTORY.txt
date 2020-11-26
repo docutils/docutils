@@ -109,7 +109,7 @@ Changes Since 0.16
     .. _docutils.sty: https://ctan.org/pkg/docutils
     __ docs/user/config.html#stylesheet-latex-writers
 
-  - Apply patch #173 "Make *TeX writers convert nonstandard table
+  - Apply patch #173 "Make \*TeX writers convert nonstandard table
     classes to DUclass environments" by John Thorvald Wodder II.
 
   - Fix bug #408 "Incorrect assert in latex writer
