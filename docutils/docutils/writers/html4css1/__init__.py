@@ -124,6 +124,15 @@ class Writer(writers._html_base.Writer):
          ('Disable compact simple field lists.',
           ['--no-compact-field-lists'],
           {'dest': 'compact_field_lists', 'action': 'store_false'}),
+         ('Embed images in the output HTML file, if the image '
+          'files are accessible during processing.',
+          ['--embed-images'],
+          {'default': 0, 'action': 'store_true',
+           'validator': frontend.validate_boolean}),
+         ('Link to images in the output HTML file. '
+          'This is the default.',
+          ['--link-images'],
+          {'dest': 'embed_images', 'action': 'store_false'}),
          ('Added to standard table classes. '
           'Defined styles: "borderless". Default: ""',
           ['--table-style'],

@@ -1,0 +1,25 @@
+Embedded Images
+---------------
+
+The "embed" flag tells Docutils that it should 
+try to embed the image in the output document.
+
+If the image can be read from the local file system, it is base64_
+encoded and included as a `data URI`_. 
+In future, SVG images may be directly inserted into HTML5.
+
+   .. figure:: ../docs/user/rst/images/biohazard.svg
+      :alt: biohazard
+      :align: center
+   
+      SVG image embedded in a figure.
+
+
+Embedded inline image |inline-embedded| scaled to a height of 0.8 em.
+
+  .. |inline-embedded| image:: ../docs/user/rst/images/biohazard.png
+     :height: 0.8 em
+
+.. _base64: https://en.wikipedia.org/wiki/Base64
+.. _data URI: https://en.wikipedia.org/wiki/Data_URI_scheme
+
