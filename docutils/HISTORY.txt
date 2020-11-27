@@ -25,6 +25,7 @@ Changes Since 0.16
   - Installing with ``setup.py`` now requires ``setuptools``.
     Alternatively, install with `pip`_ (or "manually").
   - Apply patch for bug #399 Fixes in Korean translation.
+  - Implement feature request #40 `Option to embed images as data URI`.
 
 * docutils/MANIFEST.in
 

@@ -17,9 +17,11 @@
 
 """common definitions for Docutils HTML writers"""
 
-import sys
-import os.path
+import base64
+import mimetypes
+import os, os.path
 import re
+import sys
 
 try: # check for the Python Imaging Library
     import PIL.Image
@@ -905,19 +907,10 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.header.extend(header)
         del self.body[start:]
 
-    # Image types to place in an <object> element
-    object_image_types = {'.swf': 'application/x-shockwave-flash'}
-
     def visit_image(self, node):
         atts = {}
         uri = node['uri']
-        ext = os.path.splitext(uri)[1].lower()
-        if ext in self.object_image_types:
-            atts['data'] = uri
-            atts['type'] = self.object_image_types[ext]
-        else:
-            atts['src'] = uri
-            atts['alt'] = node.get('alt', uri)
+        mimetype = mimetypes.guess_type(uri)[0]
         # image size
         if 'width' in node:
             atts['width'] = node['width']
@@ -966,12 +959,35 @@ class HTMLTranslator(nodes.NodeVisitor):
             suffix = ''
         if 'align' in node:
             atts['class'] = 'align-%s' % node['align']
-        if ext in self.object_image_types:
+        # Embed image file (embedded SVG or data URI):
+        if self.settings.embed_images or ('embed' in node):
+            err_msg = ''
+            if not mimetype:
+                err_msg = 'unknown MIME type for "%s"' % uri
+            if not self.settings.file_insertion_enabled:
+                err_msg = 'file insertion disabled.'
+            try:
+                with open(url2pathname(uri), 'rb') as imagefile:
+                    imagedata = imagefile.read()
+            except IOError as err:
+                err_msg = str(err)
+            if not err_msg: 
+                # TODO (test mimetype for SVG and insert directly)
+                data64 = base64.b64encode(imagedata).decode()
+                uri = u'data:%s;base64,%s' % (mimetype, data64)
+            else:
+                # raise NotImplementedError(os.getcwd() + err_msg)
+                self.document.reporter.error("Cannot embed image\n "+err_msg)
+
+        if mimetype == 'application/x-shockwave-flash':
+            atts['type'] = mimetype
             # do NOT use an empty tag: incorrect rendering in browsers
-            self.body.append(self.starttag(node, 'object', '', **atts) +
-                             node.get('alt', uri) + '</object>' + suffix)
+            tag = (self.starttag(node, 'object', '', data=uri, **atts)
+                   + node.get('alt', uri) + '</object>' + suffix)
         else:
-            self.body.append(self.emptytag(node, 'img', suffix, **atts))
+            atts['alt'] = node.get('alt', node['uri'])
+            tag = self.emptytag(node, 'img', suffix, src=uri, **atts)
+        self.body.append(tag)
 
     def depart_image(self, node):
         pass
