@@ -1964,7 +1964,7 @@ class NodeVisitor(object):
     for `docutils.writers.Writer` subclasses).  Unimplemented methods will
     raise exceptions.
 
-    For sparse traversals, where only certain node types are of interest,
+    For sparse traversals, where only certain node types are of interest, use
     subclass `SparseNodeVisitor` instead.  When (mostly or entirely) uniform
     processing is desired, subclass `GenericNodeVisitor`.
 

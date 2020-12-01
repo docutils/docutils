@@ -53,9 +53,9 @@ class Image(Directive):
                    'width': directives.length_or_percentage_or_unitless,
                    'scale': directives.percentage,
                    'align': align,
-                   'name': directives.unchanged,
                    'target': directives.unchanged_required,
-                   'class': directives.class_option}
+                   'class': directives.class_option,
+                   'name': directives.unchanged}
 
     def run(self):
         if 'align' in self.options:
