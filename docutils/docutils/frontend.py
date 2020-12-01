@@ -20,8 +20,8 @@ Also exports the following functions:
   `validate_encoding_error_handler`,
   `validate_encoding_and_error_handler`,
   `validate_boolean`, `validate_ternary`, `validate_threshold`,
-  `validate_colon_separated_string_list`,
-  `validate_comma_separated_string_list`,
+  `validate_colon_separated_list`,
+  `validate_comma_separated_list`,
   `validate_dependency_file`.
 * `make_paths_absolute`.
 * SettingSpec manipulation: `filter_settings_spec`.
@@ -175,8 +175,8 @@ def validate_comma_separated_list(setting, value, option_parser,
                                     config_parser=None, config_section=None):
     """Check/normalize list arguments (split at "," and strip whitespace).
     """
-    # `value` is already a ``list`` when  given as command line option
-    # and "action" is "append" and ``unicode`` or ``str`` else.
+    # `value` may be ``unicode``, ``str``, or a ``list`` (when  given as
+    # command line option and "action" is "append").
     if not isinstance(value, list):
         value = [value]
     # this function is called for every option added to `value`

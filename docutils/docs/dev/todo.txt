@@ -156,7 +156,7 @@ General
   settings.  These partially solve the problem, allowing or disabling
   **all** file accesses, but not limited access.
 
-* Configuration file handling needs discussion:
+* Configuration_ file handling needs discussion:
 
   - There should be some error checking on the contents of config
     files.  How much checking should be done?  How loudly should
@@ -497,7 +497,7 @@ General
 * Add support for _`plugins`.
 
 * _`Config directories`: Currently, ~/.docutils, ./docutils.conf/, &
-  /etc/docutils.conf are read as configuration files.  Proposal: allow
+  /etc/docutils.conf are read as configuration_ files.  Proposal: allow
   ~/.docutils to be a a configuration *directory*, along with
   /etc/docutils/ and ./docutils.conf/.  Within these directories,
   check for config.txt files.  We can also have subdirectories here,
@@ -900,94 +900,6 @@ Misc
   contexts).  XLink/XPointer?  ``.. baseref::``?  See Doc-SIG
   2001-08-10.
 
-* .. _adaptable file extensions:
-
-  In target URLs, it would be useful to not explicitly specify the
-  file extension.  If we're generating HTML, then ".html" is
-  appropriate; if PDF, then ".pdf"; etc.  How about using ".*" to
-  indicate "choose the most appropriate filename extension"?  For
-  example::
-
-      .. _Another Document: another.*
-
-  What is to be done for output formats that don't *have* hyperlinks?
-  For example, LaTeX targeted at print.  Hyperlinks may be "called
-  out", as footnotes with explicit URLs.  (Don't convert the links.)
-
-  But then there's also LaTeX targeted at PDFs, which *can* have
-  links.  Perhaps a runtime setting for "*" could explicitly provide
-  the extension, defaulting to the output file's extension.
-
-  Should the system check for existing files?  No, not practical.
-
-  Handle documents only, or objects (images, etc.) also?
-
-  If this handles images also, how to differentiate between document
-  and image links?  Element context (within "image")?  Which image
-  extension to use for which document format?  Again, a runtime
-  setting would suffice.
-
-  This may not be just a parser issue; it may need framework support.
-
-  Mailing list threads: `Images in both HTML and LaTeX`__ (especially
-  `this summary of Lea's objections`__), `more-universal links?`__,
-  `Output-format-sensitive link targets?`__
-
-  __ http://thread.gmane.org/gmane.text.docutils.user/1239
-  __ http://article.gmane.org/gmane.text.docutils.user/1278
-  __ http://thread.gmane.org/gmane.text.docutils.user/1915
-  __ http://thread.gmane.org/gmane.text.docutils.user/2438
-
-  Idea from Jim Fulton: an external lookup table of targets:
-
-      I would like to specify the extension (e.g. .txt) [in the
-      source, rather than ``filename.*``], but tell the converter to
-      change references to the files anticipating that the files will
-      be converted too.
-
-      For example::
-
-        .. _Another Document: another.txt
-
-        rst2html.py --convert-links "another.txt bar.txt" foo.txt
-
-      That is, name the files for which extensions should be converted.
-
-      Note that I want to refer to original files in the original text
-      (another.txt rather than another.txt) because I want the
-      unconverted text to stand on its own.
-
-      Note that in most cases, people will be able to use globs::
-
-        rst2html.py --convert-link-extensions-for "`echo *.txt`" foo.txt
-
-      It might be nice to be able to use multiple arguments, as in::
-
-        rst2html.py --convert-link-extensions-for *.txt -- foo.txt
-
-      ::
-
-      > What is to be done for output formats
-      > that don't have hyperlinks?
-
-      Don't convert the links.
-
-      ::
-
-      > Handle documents only, or objects
-      > (images, etc.) also?
-
-      No, documents only, but there really is no need for gueswork.
-      Just get the file names as command-line arguments.  EIBTI
-      [explicit is better than implicit].
-
-  For images, we probably need separate solution (which is being
-  worked on), whereas for documents, the issue is basically
-  interlinking between reStructuredText documents.  IMO, this cries
-  for support for multiple input and output files, i.e. support for
-  documents which comprise multiple files.  Adding adaptable file
-  extensions seems like a kludge.  // FW
-
 * Implement the header row separator modification to table.el.  (Wrote
   to Takaaki Ota & the table.el mailing list on 2001-08-12, suggesting
   support for "=====" header rows.  On 2001-08-17 he replied, saying
@@ -1238,6 +1150,156 @@ Misc
   Quite a few nodes are getting a "None" source attribute as well.  In
   particular, see the bodies of definition lists.
 
+
+Adaptable file extensions
+-------------------------
+
+Questions
+`````````
+
+Should Docutils support adaptable file extensions in hyperlinks?
+
+  In the rST source, sister documents are ".txt" files. If we're
+  generating HTML, then ".html" is appropriate; if PDF, then ".pdf";
+  etc.
+
+Handle documents only, or objects (images, etc.) also?
+
+  Different output formats support different sets of image formats (HTML
+  supports ".svg" but not ".pdf", pdfLaTeX supports ".pdf" but not ".svg",
+  LaTeX supports only ".eps").
+
+  This is less urgent 2020 than previously, as `pdflatex` and
+  `lualatex` are now standard and support most image formats. Also, a
+  wrapper like `rubber`__ that provide on-the-fly image conversion
+  depend on the "wrong" extension in the LaTeX source.
+
+  __ https://pypi.org/project/rubber/
+
+At what point should the extensions be substituted?
+
+  Transformations:
+    Fits well in the Docutils processing framework.  (Writer-specific
+    configuration is still possible in the respective sections of the
+    configuration_ file.)
+
+  Writers:
+    May be simpler to code.
+
+  Pre- or post-processing:
+    Can be implemented independent of Docutils -- keeps Docutils simple.
+
+      ... those who need more sophisticated filename extension
+      tweaking can simply use regular expressions, which isn't too
+      difficult due to the determinability of the writers.  So there
+      is no need to add a complex filename-extension-handling feature
+      to Docutils.
+
+      --- `Lea Wiemann in docutils-users 2004-06-04`__
+
+  __ https://sourceforge.net/p/docutils/mailman/message/6918089/
+
+
+Proposals
+`````````
+
+How about using ".*" to indicate "choose the most appropriate filename
+extension"?  For example::
+
+    .. _Another Document: another.*
+
+* My point about using ``.*`` is that any other mechanism inside reST
+  leads to too many ambiguities in reading reST documents; at least
+  with ``.*`` it's clear that some kind of substitution is going on.
+
+  --- Aahz
+
+* What is to be done for output formats that don't *have* hyperlinks?
+  For example, LaTeX targeted at print.  Hyperlinks may be "called
+  out", as footnotes with explicit URLs.  (Don't convert the links.)
+
+  But then there's also LaTeX targeted at PDFs, which *can* have
+  links.  Perhaps a runtime setting for "*" could explicitly provide
+  the extension, defaulting to the output file's extension.
+
+* If this handles images also, how to differentiate between document
+  and image links?  Element context (within "image")?  Which image
+  extension to use for which document format? For HTML output, there
+  is no reliable way of determining which extension to use (svg, png,
+  jpg, jpeg, gif, ...).
+
+  Should the system check for existing files?  No, not practical (the
+  image files may be not available when the document is processed to HTML).
+
+  Mailing list threads: `Images in both HTML and LaTeX`__ (especially
+  `this summary of Lea's objections`__).
+
+  __ https://sourceforge.net/p/docutils/mailman/docutils-users/thread/40BAA4B7.5020801%40python.org/#msg6918066
+  __ https://sourceforge.net/p/docutils/mailman/message/6918089/
+
+Chris Liechti suggests a new ``:link:`` role in `more-universal
+links?`__::
+
+    .. role:: link(rewrite)
+       :transform: .txt|.html
+
+  and then to use it::
+
+    for more information see :link:`README.txt`
+
+  it would be useful if it supported an additional option
+  ``:format: html`` so that separate rules for each format can be
+  defined. (like the "raw" role)
+
+__ https://sourceforge.net/p/docutils/mailman/message/6919484/
+
+
+Idea from Jim Fulton: an external lookup table of targets:
+
+    I would like to specify the extension (e.g. .txt) [in the
+    source, rather than ``filename.*``], but tell the converter to
+    change references to the files anticipating that the files will
+    be converted too.
+
+    For example::
+
+      .. _Another Document: another.txt
+
+      rst2html.py --convert-links "another.txt bar.txt" foo.txt
+
+    That is, name the files for which extensions should be converted.
+
+    Note that I want to refer to original files in the original text
+    (another.txt rather than another.txt) because I want the
+    unconverted text to stand on its own.
+
+    Note that in most cases, people will be able to use globs::
+
+      rst2html.py --convert-link-extensions-for "`echo *.txt`" foo.txt
+
+    It might be nice to be able to use multiple arguments, as in::
+
+      rst2html.py --convert-link-extensions-for *.txt -- foo.txt
+
+    | > Handle documents only, or objects
+    | > (images, etc.) also?
+
+    No, documents only, but there really is no need for guesswork.
+    Just get the file names as command-line arguments.  EIBTI
+    [explicit is better than implicit].
+
+In `Patch #169`__ `Hyperlink extension rewriting`, John L. Clark
+suggests command line options that map to-be-changed file extensions, e.g.::
+
+     rst2html --map-extension rst html --map-extension jpg png \
+        input-filename.rst
+
+__ https://sourceforge.net/p/docutils/patches/169/
+
+  Specifying the mapping as regular expressions would make this
+  approach more generic and easier to implement (use ``re.replace``
+  and refer to the "re" module's documentation instead of coding and
+  documenting a home-grown extraction and mapping procedure).
 
 
 Math Markup
@@ -1719,8 +1781,8 @@ when used in a document.
     This could be an interface to the Filter transform
     (docutils.transforms.components.Filter).
 
-    The ideas in `adaptable file extensions`_ above may also be
-    applicable here.
+    The ideas in the `adaptable file extensions`_ section above may
+    also be applicable here.
 
     SVG's "switch" statement may provide inspiration.
 
@@ -2611,7 +2673,7 @@ Image and figure directives
 
 * support more graphic formats (especially SVG, the only standard
   vector format for HTML)
-  
+
 
 Missing features
 ----------------
@@ -2627,8 +2689,8 @@ Missing features
 
   See https://tex.stackexchange.com/questions/26529/how-can-i-generate-pdf-metadata-from-latex#26530
   https://tex.stackexchange.com/questions/161094/adding-custom-metadata-values-to-a-pdf-file
-  
-  
+
+
 
 * Multiple author entries in docinfo (same thing as in html).
 
@@ -2811,6 +2873,16 @@ Front-End Tools
 
 * Create a single dynamic_ or unqualified_ front end that can be
   installed?
+
+  The "new" `argparse` module supports `partial parsing`_, so a
+  generic front end may parse and remove additional options to select
+  the reader/parser/writer and leave the remaining arguments intact
+  for ``publish_cmdline()``.
+
+.. _partial parsing:
+   https://docs.python.org/3/library/argparse.html#partial-parsing
+
+.. _configuration: ../user/config.html
 
 
 ..
