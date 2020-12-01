@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf8 -*-
 # :Copyright: © 2020 Günter Milde.
 # :License: Released under the terms of the `2-Clause BSD license`_, in short:
@@ -22,7 +22,7 @@ from test_parsers import DocutilsTestSupport
 
 
 def suite():
-    s = DocutilsTestSupport.ParserTestSuite(
+    s = DocutilsTestSupport.RecommonmarkParserTestSuite(
             suite_settings={'line_length_limit': 80})
     s.generateTests(totest)
     return s
@@ -49,29 +49,6 @@ above the limit
     <system_message level="3" source="test data" type="ERROR">
         <paragraph>
             Line 2 exceeds the line-length-limit.
-"""],
-["""\
-Include Test
-============
-
-.. include:: docutils.conf
-   :literal:
-
-A paragraph.
-""",
-"""\
-<document source="test data">
-    <section ids="include-test" names="include\\ test">
-        <title>
-            Include Test
-        <system_message level="2" line="4" source="test data" type="WARNING">
-            <paragraph>
-                "docutils.conf": line 5 exceeds the line-length-limit.
-            <literal_block xml:space="preserve">
-                .. include:: docutils.conf
-                   :literal:
-        <paragraph>
-            A paragraph.
 """],
 ]
 

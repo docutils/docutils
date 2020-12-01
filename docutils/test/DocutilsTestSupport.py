@@ -47,6 +47,7 @@ import unittest
 import re
 import inspect
 import traceback
+import warnings
 from pprint import pformat
 
 testroot = os.path.abspath(os.path.dirname(__file__) or os.curdir)
@@ -63,7 +64,7 @@ try:
     from docutils import frontend, nodes, statemachine, utils
     from docutils.utils import urischemes
     from docutils.transforms import universal
-    from docutils.parsers import rst
+    from docutils.parsers import rst, recommonmark_wrapper
     from docutils.parsers.rst import states, tableparser, roles, languages
     from docutils.readers import standalone, pep
     from docutils.statemachine import StringList, string2lines
@@ -81,7 +82,6 @@ try:
     import mypdb as pdb
 except:
     import pdb
-
 
 if sys.version_info >= (3, 0):
     unicode = str  # noqa
@@ -518,6 +518,38 @@ class PEPParserTestSuite(ParserTestSuite):
     test_case_class = PEPParserTestCase
 
 
+class RecommonmarkParserTestCase(ParserTestCase):
+
+    """Recommonmark-specific parser test case."""
+
+    parser = recommonmark_wrapper.Parser()
+    """Parser shared by all RecommonmarkParserTestCases."""
+
+    option_parser = frontend.OptionParser(
+                        components=(recommonmark_wrapper.Parser,))
+    settings = option_parser.get_default_values()
+    settings.report_level = 5
+    settings.halt_level = 5
+    settings.debug = package_unittest.debug
+
+class RecommonmarkParserTestSuite(ParserTestSuite):
+
+    """A collection of RecommonmarkParserTestCases."""
+
+    test_case_class = RecommonmarkParserTestCase
+    skip_message = 'skip "%s" (module `recommonmark` not found)'
+
+    def generateTests(self, dict, dictname='totest'):
+        if 'recommonmark' not in recommonmark_wrapper.Parser.supported:
+            if RecommonmarkParserTestSuite.skip_message: # warn (only once)
+                print(self.skip_message%self.id)
+                RecommonmarkParserTestSuite.skip_message = ''
+            return
+        # suppress UserWarnings from recommonmark parser
+        warnings.filterwarnings('ignore', message='Unsupported.*type')
+        ParserTestSuite.generateTests(self, dict, dictname='totest')
+
+
 class GridTableParserTestCase(CustomTestCase):
 
     parser = tableparser.GridTableParser()
@@ -756,7 +788,7 @@ class HtmlWriterPublishPartsTestCase(WriterPublishTestCase):
 class HtmlPublishPartsTestSuite(CustomTestSuite):
 
     testcase_class = HtmlWriterPublishPartsTestCase
-    
+
     def generateTests(self, dict, dictname='totest'):
         for name, (settings_overrides, cases) in dict.items():
             settings = self.suite_settings.copy()

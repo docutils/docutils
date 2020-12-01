@@ -11,11 +11,27 @@ __docformat__ = 'reStructuredText'
 import sys
 from importlib import import_module
 
-from docutils import Component
+from docutils import Component, frontend
 
 
 class Parser(Component):
 
+    settings_spec = (
+        'Generic Parser Options',
+        None,
+        (('Disable the "raw" directives; replaced with a "warning" '
+          'system message.',
+          ['--no-raw'],
+          {'action': 'store_false', 'default': 1, 'dest': 'raw_enabled',
+           'validator': frontend.validate_boolean}),
+         ('Enable the "raw" directive.  Enabled by default.',
+          ['--raw-enabled'],
+          {'action': 'store_true'}),
+         ('Maximal number of characters in an input line. Default 10 000.',
+          ['--line-length-limit'],
+          {'metavar': '<length>', 'type': 'int', 'default': 10000,
+           'validator': frontend.validate_nonnegative_int}),
+        ))
     component_type = 'parser'
     config_section = 'parsers'
 
@@ -39,7 +55,10 @@ _parser_aliases = {
       'restructuredtext': 'rst',
       'rest': 'rst',
       'restx': 'rst',
-      'rtxt': 'rst',}
+      'rtxt': 'rst',
+      'recommonmark': 'recommonmark_wrapper',
+      'commonmark': 'recommonmark_wrapper',
+      'markdown': 'recommonmark_wrapper'}
 
 def get_parser_class(parser_name):
     """Return the Parser class from the `parser_name` module."""
