@@ -1,12 +1,20 @@
-#! /usr/bin/env python
-
-# $Id$
-# Author: David Goodger <goodger@python.org>
-# Copyright: This module has been placed in the public domain.
+#!/usr/bin/env python3
+# -*- coding: utf8 -*-
+# :Copyright: © 2020 Günter Milde.
+# :License: Released under the terms of the `2-Clause BSD license`_, in short:
+#
+#    Copying and distribution of this file, with or without modification,
+#    are permitted in any medium without royalty provided the copyright
+#    notice and this notice are preserved.
+#    This file is offered as-is, without any warranty.
+#
+# .. _2-Clause BSD license: https://opensource.org/licenses/BSD-2-Clause
 
 """
-Tests for states.py.
+Test for bullet lists in CommonMark parsers.
+Cf. the `CommonMark Specification <https://spec.commonmark.org/>`__
 """
+
 from __future__ import absolute_import
 
 if __name__ == '__main__':
@@ -14,7 +22,7 @@ if __name__ == '__main__':
 from test_parsers import DocutilsTestSupport
 
 def suite():
-    s = DocutilsTestSupport.ParserTestSuite()
+    s = DocutilsTestSupport.RecommonmarkParserTestSuite()
     s.generateTests(totest)
     return s
 
@@ -26,7 +34,7 @@ totest['bullet_lists'] = [
 """,
 """\
 <document source="test data">
-    <bullet_list bullet="-">
+    <bullet_list>
         <list_item>
             <paragraph>
                 item
@@ -38,7 +46,7 @@ totest['bullet_lists'] = [
 """,
 """\
 <document source="test data">
-    <bullet_list bullet="*">
+    <bullet_list>
         <list_item>
             <paragraph>
                 item 1
@@ -56,7 +64,7 @@ No blank line between:
 <document source="test data">
     <paragraph>
         No blank line between:
-    <bullet_list bullet="+">
+    <bullet_list>
         <list_item>
             <paragraph>
                 item 1
@@ -65,20 +73,20 @@ No blank line between:
                 item 2
 """],
 ["""\
-- item 1, para 1.
+- item 1, paragraph 1.
 
-  item 1, para 2.
+  item 1, paragraph 2.
 
 - item 2
 """,
 """\
 <document source="test data">
-    <bullet_list bullet="-">
+    <bullet_list>
         <list_item>
             <paragraph>
-                item 1, para 1.
+                item 1, paragraph 1.
             <paragraph>
-                item 1, para 2.
+                item 1, paragraph 2.
         <list_item>
             <paragraph>
                 item 2
@@ -90,7 +98,7 @@ No blank line between:
 """,
 """\
 <document source="test data">
-    <bullet_list bullet="-">
+    <bullet_list>
         <list_item>
             <paragraph>
                 item 1, line 1
@@ -100,54 +108,47 @@ No blank line between:
                 item 2
 """],
 ["""\
-Different bullets:
+Different bullets start different lists: 
 
 - item 1
 
 + item 1
 
-* item 1
-- item 1
+* no blank line
+- required between lists
 """,
 """\
 <document source="test data">
     <paragraph>
-        Different bullets:
-    <bullet_list bullet="-">
+        Different bullets start different lists:
+    <bullet_list>
         <list_item>
             <paragraph>
                 item 1
-    <bullet_list bullet="+">
+    <bullet_list>
         <list_item>
             <paragraph>
                 item 1
-    <bullet_list bullet="*">
+    <bullet_list>
         <list_item>
             <paragraph>
-                item 1
-    <system_message level="2" line="8" source="test data" type="WARNING">
-        <paragraph>
-            Bullet list ends without a blank line; unexpected unindent.
-    <bullet_list bullet="-">
+                no blank line
+    <bullet_list>
         <list_item>
             <paragraph>
-                item 1
+                required between lists
 """],
 ["""\
-- item
-no blank line
+- item 1
+continuation of item 1
 """,
 """\
 <document source="test data">
-    <bullet_list bullet="-">
+    <bullet_list>
         <list_item>
             <paragraph>
-                item
-    <system_message level="2" line="2" source="test data" type="WARNING">
-        <paragraph>
-            Bullet list ends without a blank line; unexpected unindent.
-    <paragraph>
-        no blank line
+                item 1
+                continuation of item 1
 """],
 ["""\
 -
@@ -156,7 +157,7 @@ empty item above
 """,
 """\
 <document source="test data">
-    <bullet_list bullet="-">
+    <bullet_list>
         <list_item>
     <paragraph>
         empty item above
@@ -167,39 +168,30 @@ empty item above, no blank line
 """,
 """\
 <document source="test data">
-    <bullet_list bullet="-">
+    <bullet_list>
         <list_item>
-    <system_message level="2" line="2" source="test data" type="WARNING">
-        <paragraph>
-            Bullet list ends without a blank line; unexpected unindent.
     <paragraph>
         empty item above, no blank line
 """],
 [u"""\
-Unicode bullets:
+Unicode bullets are not supported by CommonMark.
 
-\u2022 BULLET
+• BULLET
 
-\u2023 TRIANGULAR BULLET
+‣ TRIANGULAR BULLET
 
-\u2043 HYPHEN BULLET
+⁃ HYPHEN BULLET
 """,
 u"""\
 <document source="test data">
     <paragraph>
-        Unicode bullets:
-    <bullet_list bullet="\u2022">
-        <list_item>
-            <paragraph>
-                BULLET
-    <bullet_list bullet="\u2023">
-        <list_item>
-            <paragraph>
-                TRIANGULAR BULLET
-    <bullet_list bullet="\u2043">
-        <list_item>
-            <paragraph>
-                HYPHEN BULLET
+        Unicode bullets are not supported by CommonMark.
+    <paragraph>
+        • BULLET
+    <paragraph>
+        ‣ TRIANGULAR BULLET
+    <paragraph>
+        ⁃ HYPHEN BULLET
 """],
 ]
 

@@ -1,9 +1,14 @@
-#! /usr/bin/env python
-# -*- coding: utf-8 -*-
-
-# $Id$
-# Author: David Goodger <goodger@python.org>
-# Copyright: This module has been placed in the public domain.
+#!/usr/bin/env python
+# -*- coding: utf8 -*-
+# :Copyright: © 2020 Günter Milde.
+# :License: Released under the terms of the `2-Clause BSD license`_, in short:
+#
+#    Copying and distribution of this file, with or without modification,
+#    are permitted in any medium without royalty provided the copyright
+#    notice and this notice are preserved.
+#    This file is offered as-is, without any warranty.
+#
+# .. _2-Clause BSD license: https://opensource.org/licenses/BSD-2-Clause
 
 """
 Tests for inline markup in docutils/parsers/rst/states.py.

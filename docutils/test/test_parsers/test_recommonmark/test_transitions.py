@@ -5,7 +5,7 @@
 # Copyright: This module has been placed in the public domain.
 
 """
-Tests for transition markers.
+Tests for transitions (`thematic breaks`).
 """
 from __future__ import absolute_import
 
@@ -15,13 +15,13 @@ from test_parsers import DocutilsTestSupport
 
 
 def suite():
-    s = DocutilsTestSupport.ParserTestSuite()
+    s = DocutilsTestSupport.RecommonmarkParserTestSuite()
     s.generateTests(totest)
     return s
 
 totest = {}
 
-# See DocutilsTestSupport.ParserTestSuite.generateTests for a
+# See DocutilsTestSupport.RecommonmarkParserTestSuite.generateTests for a
 # description of the 'totest' data structure.
 totest['transitions'] = [
 ["""\
@@ -68,78 +68,73 @@ Paragraph 2 in section 2.
             <paragraph>
                 Paragraph 2 in section 2.
 """],
-# TODO: disable this test case, as it endorses non-standard results?
-["""\
---------
-
-According to the DTD, a section or document may not begin with a transition.
-
-Note: There is currently no warning, but in future these
-DTD violations should be prevented or at least trigger a warning.
-Alternatively, the DTD may be relaxed to accomodate for more use cases.
-
-The DTD specifies that two transitions may not
-be adjacent:
-
---------
-
---------
-
---------
-
-The DTD also specifies that a section or document
-may not end with a transition.
-
---------
-""",
-"""\
-<document source="test data">
-    <transition>
-    <paragraph>
-        According to the DTD, a section or document may not begin with a transition.
-    <paragraph>
-        Note: There is currently no warning, but in future these
-        DTD violations should be prevented or at least trigger a warning.
-        Alternatively, the DTD may be relaxed to accomodate for more use cases.
-    <paragraph>
-        The DTD specifies that two transitions may not
-        be adjacent:
-    <transition>
-    <transition>
-    <transition>
-    <paragraph>
-        The DTD also specifies that a section or document
-        may not end with a transition.
-    <transition>
-"""],
-["""\
-Test unexpected transition markers.
-
-    Block quote.
-
-    --------
-
-    Paragraph.
-""",
-"""\
-<document source="test data">
-    <paragraph>
-        Test unexpected transition markers.
-    <block_quote>
-        <paragraph>
-            Block quote.
-        <system_message level="4" line="5" source="test data" type="SEVERE">
-            <paragraph>
-                Unexpected section title or transition.
-            <literal_block xml:space="preserve">
-                --------
-        <paragraph>
-            Paragraph.
-"""],
+# ["""\
+# --------
+# 
+# A section or document may not begin with a transition.
+# 
+# The DTD specifies that two transitions may not
+# be adjacent:
+# 
+# --------
+# 
+# --------
+# 
+# --------
+# 
+# The DTD also specifies that a section or document
+# may not end with a transition.
+# 
+# --------
+# """,
+# """\
+# <document source="test data">
+#     <transition>
+#     <paragraph>
+#         A section or document may not begin with a transition.
+#     <paragraph>
+#         The DTD specifies that two transitions may not
+#         be adjacent:
+#     <transition>
+#     <transition>
+#     <transition>
+#     <paragraph>
+#         The DTD also specifies that a section or document
+#         may not end with a transition.
+#     <transition>
+# """],
+# TODO: should we allow transitions in block elements?
+# +1  Other document formats allow this (HTML, markdown, LaTeX)
+#     and a quoted text may contain a transition.
+# -1  Requires changing the document model.
+# ["""\
+# Test unexpected transition markers.
+#
+# > Block quote.
+# >
+# > --------
+# >
+# > Paragraph.
+# """,
+# """\
+# <document source="test data">
+#     <paragraph>
+#         Test unexpected transition markers.
+#     <block_quote>
+#         <paragraph>
+#             Block quote.
+#         <transition>
+#         <paragraph>
+#             Paragraph.
+# """],
 ["""\
 Short transition marker.
 
 ---
+
+Too short transition marker.
+
+--
 
 Paragraph
 """,
@@ -147,8 +142,11 @@ Paragraph
 <document source="test data">
     <paragraph>
         Short transition marker.
+    <transition>
     <paragraph>
-        ---
+        Too short transition marker.
+    <paragraph>
+        --
     <paragraph>
         Paragraph
 """],
