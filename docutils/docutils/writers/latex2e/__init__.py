@@ -3132,6 +3132,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
                                     title)
                 self.out.append('\n\\tableofcontents\n')
                 self.has_latex_toc = True
+                # ignore rest of node content
+                raise nodes.SkipNode
             else: # Docutils generated contents list
                 # set flag for visit_bullet_list() and visit_title()
                 self.is_toc_list = True
