@@ -121,15 +121,22 @@ class UnfilteredWriter(Writer):
 _writer_aliases = {
       'html': 'html4css1',  # may change to html5 some day
       'html4': 'html4css1',
+      'xhtml10': 'html4css1',
       'html5': 'html5_polyglot',
+      'xhtml': 'html5_polyglot',
+      's5': 's5_html',
       'latex': 'latex2e',
+      'xelatex': 'xetex',
+      'luatex': 'xetex',
+      'lualatex': 'xetex',
+      'odf': 'odf_odt',                   
+      'odt': 'odf_odt',                   
+      'ooffice': 'odf_odt',                   
+      'openoffice': 'odf_odt',                   
+      'libreoffice': 'odf_odt',                   
       'pprint': 'pseudoxml',
       'pformat': 'pseudoxml',
       'pdf': 'rlpdf',
-      's5': 's5_html',
-      'xelatex': 'xetex',
-      'xhtml': 'html5_polyglot',
-      'xhtml10': 'html4css1',
       'xml': 'docutils_xml'}
 
 def get_writer_class(writer_name):
