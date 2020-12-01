@@ -89,14 +89,13 @@ Changes Since 0.16
 
     .. _legacy_class_functions: docs/user/config.html#legacy-class-functions
 
-
   - Remove backwards compatibility code for the deprecated
     `styling command`__ prefix ``\docutilsrole``.
 
     __ docs/user/latex.html#custom-interpreted-text-roles
 
   - Support the `memoir` LaTeX document class.
-    Fixes #390, #391, and #392.
+    Fixes bugs #390, #391, and #392.
 
   - The special value "auto" for the `graphicx_option`_ setting
     is no longer supported (it never worked for xetex/luatex).
@@ -115,10 +114,13 @@ Changes Since 0.16
 
   - Fix bug #408 "Incorrect assert in latex writer
     for multiple citation references".
-    
+
   - Apply patch #175 "Fix alignment of nested tables",
     additional fixes to table alignment.
-  
+
+  - Do not write Docutils-generated ToC, when ``use_latex_toc``
+    is True. (This did happen when publishing from a doctree.)
+
 * docutils/writers/manpage.py
 
   - Fix #394 fix missing new line after rubric.
