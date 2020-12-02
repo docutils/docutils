@@ -2849,11 +2849,8 @@ Front-End Tools
 
   d) _`Dynamic`: Reader and/or Writer are specified by options, with
      defaults if unspecified (e.g. ``publish --writer pdf
-     [options]``).  Is this possible?  The option parser would have
-     to be told about new options it needs to handle, on the fly.
-     Component-specific options would have to be specified *after*
-     the component-specifying option.
-
+     [options]``). 
+     
   Allow common options before subcommands, as in CVS?  Or group all
   options together?  In the case of the `fully qualified`_
   front ends, all the options will have to be grouped together
@@ -2871,13 +2868,10 @@ Front-End Tools
   directive should override the ``--no-section-numbering`` command
   line option then.
 
-* Create a single dynamic_ or unqualified_ front end that can be
-  installed?
-
-  The "new" `argparse` module supports `partial parsing`_, so a
-  generic front end may parse and remove additional options to select
-  the reader/parser/writer and leave the remaining arguments intact
-  for ``publish_cmdline()``.
+The dynamic_ front end ``tools/docutils-frontend.py`` (new in 0.17) is an
+implementation of concept c). It uses 2-stage argument parsing
+via the "new" `argparse` module supports `partial parsing`_.
+It still needs some polishing and a better name.
 
 .. _partial parsing:
    https://docs.python.org/3/library/argparse.html#partial-parsing
