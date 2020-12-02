@@ -25,7 +25,9 @@ Changes Since 0.16
   - Installing with ``setup.py`` now requires ``setuptools``.
     Alternatively, install with `pip`_ (or "manually").
   - Apply patch for bug #399 Fixes in Korean translation.
-  - Implement feature request #40 `Option to embed images as data URI`.
+  
+  .. _pip: https://pypi.org/project/pip/
+
 
 * docutils/MANIFEST.in
 
@@ -41,6 +43,13 @@ Changes Since 0.16
     (by Takeshi KOMIYA).
   - Apply version of patch #167: Let document.set_id() register all
     existing IDs (thanks to Takeshi KOMIYA).
+    
+* docutils/parsers/recommonmark_wrapper.py
+
+  - New file. An experimental wrapper to integrate the
+    `recommonmark`__ Markdown parser for use with stock Docutils.
+
+    __ https://pypi.org/project/recommonmark/  
 
 * docutils/parsers/rst/directives/body.py
 
@@ -57,6 +66,10 @@ Changes Since 0.16
 * docutils/utils/smartquotes.py
 
   - Fix bug #383: Smart quotes around opening and separator characters.
+
+* docutils/writers/html*
+
+  - Implement feature request #40 `Option to embed images as data URI`.
 
 * docutils/writers/html5_polyglot/
 
@@ -132,7 +145,10 @@ Changes Since 0.16
 
   - Run python3 test like python2 against source not the build/-directory
 
-.. _pip: https://pypi.org/project/pip/
+* tools/docutils_frontend.py
+
+  - New generic front end that allows the selection of reader, parser,
+    and writer components from the command line.
 
 
 Release 0.16
