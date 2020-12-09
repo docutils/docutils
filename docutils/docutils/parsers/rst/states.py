@@ -2925,9 +2925,12 @@ class Line(SpecializedText):
         elif len(marker) < 4:
             self.state_correction(context)
         if self.eofcheck:               # ignore EOFError with sections
-            lineno = self.state_machine.abs_line_number() - 1
+            src, srcline = self.state_machine.get_source_and_line()
+            # lineno = self.state_machine.abs_line_number() - 1
             transition = nodes.transition(rawsource=context[0])
-            transition.line = lineno
+            transition.source = src
+            transition.line = srcline - 1
+            # transition.line = lineno
             self.parent += transition
         self.eofcheck = 1
         return []

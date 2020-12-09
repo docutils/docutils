@@ -2997,7 +2997,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_title(self, node):
         """Append section and other titles."""
         # Document title
-        if node.parent.tagname == 'document':
+        if isinstance(node.parent, nodes.document):
             self.push_output_collector(self.title)
             self.context.append('')
             self.pdfinfo.append('  pdftitle={%s},' %
@@ -3064,8 +3064,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def depart_title(self, node):
         self.out.append(self.context.pop())
-        if (isinstance(node.parent, nodes.table) or
-            node.parent.tagname == 'document'):
+        if isinstance(node.parent, (nodes.table, nodes.document)):
             self.pop_output_collector()
 
     def minitoc(self, node, title, depth):
