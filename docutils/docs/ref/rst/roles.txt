@@ -177,7 +177,7 @@ on mathematical notation in reStructuredText.
 
 The ``:pep-reference:`` role is used to create an HTTP reference to a
 PEP (Python Enhancement Proposal).  The ``:PEP:`` alias is usually
-used.  For example::
+used.  The content must be a number, for example::
 
     See :PEP:`287` for more information about reStructuredText.
 
@@ -199,7 +199,7 @@ This is equivalent to::
 
 The ``:rfc-reference:`` role is used to create an HTTP reference to an
 RFC (Internet Request for Comments).  The ``:RFC:`` alias is usually
-used.  For example::
+used.  The content must be a number [#]_, for example::
 
     See :RFC:`2822` for information about email headers.
 
@@ -207,10 +207,18 @@ This is equivalent to::
 
     See `RFC 2822`__ for information about email headers.
 
-    __ http://www.faqs.org/rfcs/rfc2822.html
+    __ http://tools.ietf.org/html/rfc2822.html
 
-You can link to a specific section by saying ``:rfc:`number#anchor``` (new in
-Docutils 0.15).
+.. [#] You can link to a specific section by saying
+   ``:rfc:`number#anchor```. (New in Docutils 0.15.)
+
+   .. Warning:: The anchor (anything follwing a ``#``) is appended to
+      the reference without any checks and not shown in the link text.
+
+      It is recommended to use `hyperlink references`_ for
+      anything more complex than a single RFC number.
+
+.. _hyperlink references: restructuredtext.html#hyperlink-references
 
 
 ``:strong:``
