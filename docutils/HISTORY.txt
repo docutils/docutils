@@ -25,7 +25,7 @@ Changes Since 0.16
   - Installing with ``setup.py`` now requires ``setuptools``.
     Alternatively, install with `pip`_ (or "manually").
   - Apply patch for bug #399 Fixes in Korean translation.
-  
+
   .. _pip: https://pypi.org/project/pip/
 
 
@@ -43,13 +43,15 @@ Changes Since 0.16
     (by Takeshi KOMIYA).
   - Apply version of patch #167: Let document.set_id() register all
     existing IDs (thanks to Takeshi KOMIYA).
-    
+  - Fix bug #410: Use a "property" function to recursively fetch
+    `Node.document` value from parent node.
+
 * docutils/parsers/recommonmark_wrapper.py
 
   - New file. An experimental wrapper to integrate the
     `recommonmark`__ Markdown parser for use with stock Docutils.
 
-    __ https://pypi.org/project/recommonmark/  
+    __ https://pypi.org/project/recommonmark/
 
 * docutils/parsers/rst/directives/body.py
 

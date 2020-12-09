@@ -73,14 +73,27 @@ class Node(object):
     parent = None
     """Back-reference to the Node immediately containing this Node."""
 
-    document = None
-    """The `document` node at the root of the tree containing this Node."""
-
     source = None
     """Path or description of the input source which generated this Node."""
 
     line = None
     """The line number (1-based) of the beginning of this Node in `source`."""
+
+    _document = None
+
+    @property
+    def document(self):
+        """
+        Return the `document` node at the root of the tree containing this Node.
+        """
+        try:
+            return self._document or self.parent.document
+        except AttributeError:
+            return None
+
+    @document.setter
+    def document(self, value):
+        self._document = value
 
     def __bool__(self):
         """
@@ -1062,7 +1075,7 @@ class Element(Node):
 
     def copy(self):
         obj = self.__class__(rawsource=self.rawsource, **self.attributes)
-        obj.document = self.document
+        obj._document = self._document
         obj.source = self.source
         obj.line = self.line
         return obj
@@ -1344,7 +1357,7 @@ class document(Root, Structural, Element):
         self.decoration = None
         """Document's `decoration` node."""
 
-        self.document = self
+        self._document = self
 
     def __getstate__(self):
         """
@@ -1864,7 +1877,7 @@ class pending(Special, Invisible, Element):
     def copy(self):
         obj = self.__class__(self.transform, self.details, self.rawsource,
                               **self.attributes)
-        obj.document = self.document
+        obj._document = self._document
         obj.source = self.source
         obj.line = self.line
         return obj
