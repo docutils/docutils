@@ -2470,7 +2470,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         #       Check parent node instead?
         _autowidth_table = _in_table and self.active_table.colwidths_auto
         _use_env = _plaintext and not isinstance(node.parent,
-                                        (nodes.footnote, nodes.admonition))
+                    (nodes.footnote, nodes.admonition, nodes.system_message))
         _use_listings = (literal_env == 'lstlisting') and _use_env
 
         # Labels and classes:
@@ -2862,13 +2862,16 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.fallbacks['title'] = PreambleCmds.title_legacy
         node['classes'] = ['system-message']
         self.visit_admonition(node)
-        self.out.append('\n\\DUtitle[system-message]{system-message}\n')
+        if self.settings.legacy_class_functions:
+            self.out.append('\n\\DUtitle[system-message]{system-message\n')
+        else:
+            self.out.append('\n\\DUtitle{system-message\n')
         self.append_hypertargets(node)
         try:
             line = ', line~%s' % node['line']
         except KeyError:
             line = ''
-        self.out.append('\n\n{\\color{red}%s/%s} in \\texttt{%s}%s\n' %
+        self.out.append('}\n\n{\\color{red}%s/%s} in \\texttt{%s}%s\n' %
                          (node['type'], node['level'],
                           self.encode(node['source']), line))
         if len(node['backrefs']) == 1:
