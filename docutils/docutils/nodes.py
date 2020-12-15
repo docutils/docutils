@@ -455,6 +455,14 @@ class Text(Node, reprunicode):
         return self.copy()
 
     def pformat(self, indent='    ', level=0):
+        try:
+            if self.document.settings.detailled:
+                lines = ['%s%s' % (indent * level, '<#text>')
+                        ] + [indent*(level+1) + repr(line)
+                             for line in self.splitlines(keepends=True)]
+                return '\n'.join(lines) + '\n'
+        except AttributeError:
+            pass
         indent = indent * level
         lines = [indent+line for line in self.astext().splitlines()]
         if not lines:
