@@ -27,7 +27,7 @@ Future changes
 
 * `html5` writer:
     Use <blockquote> instead of <div> tags for topics and admonitions.
-    
+
     Use <summary> and <details> tags for term and definition of a
     definition list with class value "details".
 
@@ -78,7 +78,10 @@ Release 0.17
 
 * Installing with ``setup.py`` now requires setuptools_.
   Alternatively, install with pip_.
-  
+
+* The generic command line front end ``docutils-cli.py`` allows the
+  free selection of reader, parser, and writer components.
+
 * HTML writers: new option to embed images.
 
 * HTML5 writer:
@@ -89,7 +92,7 @@ Release 0.17
 
     Change the `initial_header_level`_ setting's default to "2", as browsers
     use the `same style for <h1> and <h2> when nested in a section`__.
-    
+
   - Use HTML text-level tags <small>, <s>, <q>, <dfn>, <var>, <samp>, <kbd>,
     <i>, <b>, <u>, <mark>, and <bdi> if a matching class value
     is found in `inline` and `literal` elements.
@@ -118,9 +121,9 @@ Release 0.17
   - Most helper commands and element definitions are now defined in the
     LaTeX package `docutils.sty`_ and only inserted in the document
     preamble if the stylesheet__ setting does not lists "docutils".
-    
+
     __ docs/user/config.html#stylesheet-latex-writers
-    
+
 .. _setuptools: https://pypi.org/project/setuptools/
 .. _pip: https://pypi.org/project/pip/
 .. _legacy_class_functions: docs/user/config.html#legacy-class-functions
