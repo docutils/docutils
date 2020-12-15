@@ -138,7 +138,7 @@ class Parser(docutils.parsers.Parser):
           {'metavar': '<length>', 'type': 'int', 'default': 10000,
            'validator': frontend.validate_nonnegative_int}),
          ('Token name set for parsing code with Pygments: one of '
-          '"long", "short", or "none (no parsing)". Default is "long".',
+          '"long", "short", or "none" (no parsing). Default is "long".',
           ['--syntax-highlight'],
           {'choices': ['long', 'short', 'none'],
            'default': 'long', 'metavar': '<format>'}),
