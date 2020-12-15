@@ -38,6 +38,7 @@ _also emphasis_
     <paragraph>
         <emphasis>
             emphasis
+        \n\
         <emphasis>
             also emphasis
 """],
@@ -69,8 +70,7 @@ across lines*
 """\
 <document source="test data">
     <paragraph>
-        *
-        no emphasis without closing asterisk
+        *no emphasis without closing asterisk
 """],
 [r"""
 No markup when \*escaped or unbalanced *.
@@ -81,22 +81,16 @@ Unbalanced _markup__ is kept as-is without warning.
 """\
 <document source="test data">
     <paragraph>
-        No markup when \n\
-        *
-        escaped or unbalanced \n\
-        *
-        .
+        No markup when *escaped or unbalanced *.
     <paragraph>
         What about \n\
         <emphasis>
             this
-        *
-        ?
+        *?
         Unbalanced \n\
         <emphasis>
             markup
-        _
-         is kept as-is without warning.
+        _ is kept as-is without warning.
 """],
 [r"""
 Emphasized asterisk: *\**
@@ -112,8 +106,7 @@ Emphasized double asterisk: *\*\**
     <paragraph>
         Emphasized double asterisk: \n\
         <emphasis>
-            *
-            *
+            **
 """],
 ]
 
@@ -127,6 +120,7 @@ __also strong__
     <paragraph>
         <strong>
             strong
+        \n\
         <strong>
             also strong
 """],
@@ -144,8 +138,7 @@ Strong double asterisk: **\\*\\***
     <paragraph>
         Strong double asterisk: \n\
         <strong>
-            *
-            *
+            **
 """],
 ["""\
 **not strong without closing asterisks
@@ -153,8 +146,7 @@ Strong double asterisk: **\\*\\***
 """\
 <document source="test data">
     <paragraph>
-        **
-        not strong without closing asterisks
+        **not strong without closing asterisks
 """],
 ]
 
@@ -277,13 +269,10 @@ No warning for `standalone TeX quotes' or other *unbalanced markup**.
             literal
         no literal
     <paragraph>
-        No warning for \n\
-        `
-        standalone TeX quotes\' or other \n\
+        No warning for `standalone TeX quotes\' or other \n\
         <emphasis>
             unbalanced markup
-        *
-        .
+        *.
 """],
 ["""\
 ``not literal without closing backquotes
@@ -291,8 +280,7 @@ No warning for `standalone TeX quotes' or other *unbalanced markup**.
 """\
 <document source="test data">
     <paragraph>
-        ``
-        not literal without closing backquotes
+        ``not literal without closing backquotes
 """],
 [r"""
 Python ``list``s use square bracket syntax.
@@ -311,9 +299,7 @@ Blank after opening `` not allowed.
 """\
 <document source="test data">
     <paragraph>
-        Blank after opening \n\
-        ``
-         not allowed.
+        Blank after opening `` not allowed.
 """],
 [r"""
 no blank ``after closing``still ends a literal.
@@ -351,6 +337,7 @@ in a paragraph.
     <paragraph>
         Inline image \n\
         <image alt="foo " title="train & tracks" uri="train.jpg">
+        \n\
         in a paragraph.
 """],
 ["""\
@@ -429,9 +416,7 @@ Inline image ![foo](/url "title") more text.
 """\
 <document source="test data">
     <paragraph>
-        [
-        URI must follow immediately
-        ]
+        [URI must follow immediately]
         (http://example.com)
 """],
 ["""\
@@ -504,9 +489,9 @@ a backslash before the line ending.
 <document source="test data">
     <paragraph>
         Hard line breaks are not supported by Docutils.
-        Not the soft line break preceded by two or more spaces,
-        nor the more visible alternative,
-        a backslash before the line ending.
+        Not the soft line break preceded by two or more spaces,\
+nor the more visible alternative,\
+a backslash before the line ending.
 """],
 ]
 
@@ -525,10 +510,7 @@ works except for underline.
             r
         <literal classes="code">
             k
-        _
-        u
-        _
-        p
+        _u_p
         works except for underline.
 """],
 ]

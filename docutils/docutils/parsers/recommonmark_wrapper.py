@@ -62,11 +62,17 @@ class Parser(_recommonmarkParser):
         # Post-Processing
         # ---------------
 
-        # remove spurious empty lines
+        # merge adjoining Text nodes:
         for node in document.traverse(nodes.TextElement):
-            node.children = [child for child in node.children
-                                if not (isinstance(child, nodes.Text)
-                                        and str(child) == '\n')]
+            children = node.children
+            i = 0
+            while i+1 < len(children):
+                if (isinstance(children[i], nodes.Text)
+                    and isinstance(children[i+1], nodes.Text)):
+                    children[i] = nodes.Text(children[i]+children.pop(i+1))
+                    children[i].parent = node
+                else:
+                    i += 1
 
         # add "code" class argument to inline literal (code spans)
         for node in document.traverse(lambda n: isinstance(n,
@@ -85,7 +91,7 @@ class Parser(_recommonmarkParser):
             if node.children or [v for v in node.attributes.values() if v]:
                 continue
             node.parent.remove(node)
-        
+
         # replace raw nodes if raw is not allowed
         if not document.settings.raw_enabled:
             for node in document.traverse(nodes.raw):
