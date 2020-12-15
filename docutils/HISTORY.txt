@@ -147,10 +147,10 @@ Changes Since 0.16
 
   - Run python3 test like python2 against source not the build/-directory
 
-* tools/docutils_frontend.py
+* tools/docutils_cli.py
 
-  - New generic front end that allows the selection of reader, parser,
-    and writer components from the command line.
+  - New generic command line front end that allows the free selection of
+    reader, parser, and writer components.
 
 
 Release 0.16
