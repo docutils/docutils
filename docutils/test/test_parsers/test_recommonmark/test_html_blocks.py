@@ -68,8 +68,10 @@ A paragraph:
     <paragraph>
         <raw format="html" xml:space="preserve">
             <a href="foo">
+        \n\
         <emphasis>
             bar
+        \n\
         <raw format="html" xml:space="preserve">
             </a>
 """],
