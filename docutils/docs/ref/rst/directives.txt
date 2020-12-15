@@ -1449,8 +1449,8 @@ Including an External Document Fragment
    .. _file_insertion_enabled: ../../user/config.html#file-insertion-enabled
 
 The "include" directive reads a text file. The directive argument is
-the path to the file to be included, relative to the document
-containing the directive. Unless the options ``literal`` or ``code``
+the path to the file to be included, relative to the document containing
+the directive. Unless the options ``literal``, ``code``, or ``parser``
 are given, the file is parsed in the current document's context at the
 point of the directive. For example::
 
@@ -1502,12 +1502,16 @@ The following options are recognized:
     Only the content before the first occurrence of the specified text
     (but after any ``after`` text) will be included.
 
+``parser`` :  parser name
+    Parse the included content with the specified parser.
+    (New in Docutils 0.17)
+
 ``literal`` : flag (empty)
     The entire included text is inserted into the document as a single
     literal block.
 
 ``code`` : formal language (optional)
-    The argument and the content of the included file are passed to
+    The argument and the included content are passed to
     the code_ directive (useful for program listings).
     (New in Docutils 0.9)
 
@@ -1529,7 +1533,6 @@ The following options are recognized:
     tab_width_ configuration setting.
 
     .. _tab_width: ../../user/config.html#tab-width
-
 
 With ``code`` or ``literal`` the common options `:class:`_ and
 `:name:`_ are recognized as well.

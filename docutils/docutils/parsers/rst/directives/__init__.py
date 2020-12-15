@@ -13,7 +13,7 @@ import codecs
 import sys
 from importlib import import_module
 
-from docutils import nodes
+from docutils import nodes, parsers
 from docutils.utils import split_escaped_whitespace, escape2null, unescape
 from docutils.parsers.rst.languages import en as _fallback_language_module
 
@@ -217,6 +217,7 @@ def nonnegative_int(argument):
 def percentage(argument):
     """
     Check for an integer percentage value with optional percent sign.
+    (Directive option conversion function.)
     """
     try:
         argument = argument.rstrip(' %')
@@ -231,6 +232,7 @@ def get_measure(argument, units):
     Check for a positive argument of one of the units and return a
     normalized string of the form "<value><unit>" (without space in
     between).
+    (Directive option conversion function.)
 
     To be called from directive option conversion functions.
     """
@@ -249,6 +251,7 @@ def length_or_unitless(argument):
 def length_or_percentage_or_unitless(argument, default=''):
     """
     Return normalized string of a length or percentage unit.
+    (Directive option conversion function.)
 
     Add <default> if there is no unit. Raise ValueError if the argument is not
     a positive measure of one of the valid CSS units (or without unit).
@@ -409,6 +412,8 @@ def format_values(values):
 
 def value_or(values, other):
     """
+    Directive option conversion function.
+    
     The argument can be any of `values` or `argument_type`.
     """
     def auto_or_other(argument):
@@ -418,3 +423,16 @@ def value_or(values, other):
             return other(argument)
     return auto_or_other
 
+def parser_name(argument):
+    """
+    Return a docutils parser whose name matches the argument.
+    (Directive option conversion function.)
+
+    Return `None`, if the argument evaluates to `False`.
+    """
+    if not argument:
+        return None
+    try:
+        return parsers.get_parser_class(argument)
+    except ImportError:
+        raise ValueError('Unknown parser name "%s".'%argument)

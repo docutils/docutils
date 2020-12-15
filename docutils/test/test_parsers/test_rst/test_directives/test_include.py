@@ -15,8 +15,8 @@ if __name__ == '__main__':
     import __init__
 from test_parsers import DocutilsTestSupport
 from docutils.parsers.rst import states
+from docutils.parsers.recommonmark_wrapper import with_recommonmark
 from docutils.utils.code_analyzer import with_pygments
-
 
 if sys.version_info >= (3, 0):
     unichr = chr  # noqa
@@ -49,6 +49,7 @@ include14 = mydir('includes/include14.txt')
 include15 = mydir('includes/include15.txt')
 include16 = mydir('includes/include16.txt')
 include_literal = mydir('include_literal.txt')
+include_md = mydir('include.md')
 utf_16_file = mydir('utf-16.csv')
 utf_16_error_str = ("UnicodeDecodeError: 'ascii' codec can't decode byte 0xfe "
                     "in position 0: ordinal not in range(128)")
@@ -72,6 +73,32 @@ except:
     errstr_8bit_path = u"""\
 InputError: [Errno 2] No such file or directory: '\u043c\u0438\u0440.txt'.\
 """
+
+# Parsing with Markdown (recommonmark) is an optional feature depending
+# on 3rd-party modules:
+if with_recommonmark:
+    markdown_parsing_result = """\
+    <section ids="title-1" names="title\\ 1">
+        <title>
+            Title 1
+        <paragraph>
+            <emphasis>
+                emphasis
+             and \n\
+            <emphasis>
+                also emphasis
+        <paragraph>
+            No whitespace required around a
+            <reference name="phrase reference" refuri="/uri">
+                phrase reference
+            ."""
+else:
+    markdown_parsing_result = """\
+    <system_message level="2" source="test_parsers/test_rst/test_directives/include.md" type="WARNING">
+        <paragraph>
+            Missing dependency: MarkDown input is processed by a 3rd party parser but Python did not find the required module "recommonmark" (https://pypi.org/project/recommonmark/).\
+"""
+
 
 totest = {}
 
@@ -192,6 +219,22 @@ Include code, add line numbers
             4 \n\
         This file is used by ``test_include.py``.
 """ % reldir(include1)],
+["""\
+Include markdown (recommonmark).
+
+.. include:: %s
+   :parser: markdown
+
+A paragraph.
+""" % include_md,
+"""\
+<document source="test data">
+    <paragraph>
+        Include markdown (recommonmark).
+%s
+    <paragraph>
+        A paragraph.
+""" % markdown_parsing_result],
 ["""\
 Let's test the parse context.
 
