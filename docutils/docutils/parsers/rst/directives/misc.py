@@ -37,6 +37,7 @@ class Include(Directive):
     option_spec = {'literal': directives.flag,
                    'code': directives.unchanged,
                    'encoding': directives.encoding,
+                   'parser': directives.parser_name,
                    'tab-width': int,
                    'start-line': int,
                    'end-line': int,
@@ -165,6 +166,13 @@ class Include(Directive):
                                   self.state,
                                   self.state_machine)
             return codeblock.run()
+
+        if 'parser' in self.options:
+            parser = self.options['parser']()
+            # parse into a new (dummy) document
+            document = utils.new_document(path, self.state.document.settings)
+            parser.parse('\n'.join(include_lines), document)
+            return document.children
 
         # include as rST source
         #
