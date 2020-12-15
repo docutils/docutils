@@ -831,7 +831,7 @@ sectsubtitle_xform
 Enable or disable the promotion of the title of a lone subsection
 to a subtitle (docutils.transforms.frontmatter.SectSubTitle).
 
-Default: disabled (0).  Options: ``--section-subtitles,
+Default: disabled (False).  Options: ``--section-subtitles,
 --no-section-subtitles``.
 
 
@@ -869,7 +869,7 @@ doctype_declaration
 
 Generate XML with a DOCTYPE declaration.
 
-Default: do (1).  Options: ``--no-doctype``.
+Default: do (True).  Options: ``--no-doctype``.
 
 indents
 ~~~~~~~
@@ -894,7 +894,7 @@ xml_declaration
 Generate XML with an XML declaration.
 See also `xml_declaration [html writers]`_.
 
-Default: do (1).  Options: ``--no-xml-declaration``.
+Default: do (True).  Options: ``--no-xml-declaration``.
 
 
 [html writers]
@@ -1234,7 +1234,7 @@ See also `xml_declaration [docutils_xml writer]`_.
    encoding is not UTF-8 or ASCII and the XML declaration is missing,
    standard tools may be unable to read the generated XHTML.
 
-Default: do (1).  Options: ``--no-xml-declaration``.
+Default: do (True).  Options: ``--no-xml-declaration``.
 
 
 
@@ -1370,7 +1370,7 @@ hidden_controls
 Auto-hide the presentation controls in slideshow mode, or or keep
 them visible at all times.
 
-Default: auto-hide (1).  Options: ``--hidden-controls``,
+Default: auto-hide (True).  Options: ``--hidden-controls``,
 ``--visible-controls``.
 
 current_slide
@@ -1978,7 +1978,12 @@ details.
 [pseudoxml writer]
 ------------------
 
-This writer does not define specific settings.
+detailled
+~~~~~~~~~
+
+Pretty-print <#text> nodes.
+
+Default:  False.  Options: ``--detailled``.
 
 
 [applications]
@@ -2012,7 +2017,7 @@ ignore.  To specify multiple patterns, use colon-separated patterns (in
 configuration files or on the command line); on the command line, the
 option may also be used more than once.
 
-Default: none.  Options: ``--ignore``.
+Default: None.  Options: ``--ignore``.
 
 prune
 ~~~~~
@@ -2030,7 +2035,7 @@ recurse
 
 Recursively scan subdirectories, or ignore subdirectories.
 
-Default: recurse (1).  Options: ``--recurse, --local``.
+Default: recurse (True).  Options: ``--recurse, --local``.
 
 silent
 ~~~~~~

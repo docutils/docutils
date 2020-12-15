@@ -143,6 +143,12 @@ Changes Since 0.16
   - Fix #126 manpage title with spaces.
   - Fix #380 commandline option problem in sphinx.
 
+* docutils/writers/pseudoxml.py:
+
+  - New option `detailled`__.
+
+    __ docs/user/config.html#detailled
+
 * test/DocutilsTestSupport.py
 
   - Run python3 test like python2 against source not the build/-directory

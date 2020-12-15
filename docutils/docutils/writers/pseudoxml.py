@@ -9,13 +9,21 @@ Simple internal document tree Writer, writes indented pseudo-XML.
 __docformat__ = 'reStructuredText'
 
 
-from docutils import writers
+from docutils import writers, frontend
 
 
 class Writer(writers.Writer):
 
     supported = ('pprint', 'pformat', 'pseudoxml')
     """Formats this writer supports."""
+    
+    settings_spec = (
+        '"Docutils pseudo-XML" Writer Options',
+        None,
+        (('Pretty-print <#text> nodes.',
+          ['--detailled'],
+          {'action': 'store_true', 'validator': frontend.validate_boolean}),
+        ))
 
     config_section = 'pseudoxml writer'
     config_section_dependencies = ('writers',)
