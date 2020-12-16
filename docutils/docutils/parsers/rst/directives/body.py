@@ -158,7 +158,11 @@ class CodeBlock(Directive):
             tokens = Lexer(u'\n'.join(self.content), language,
                            self.state.document.settings.syntax_highlight)
         except LexerError as error:
-            raise self.warning(error)
+            if self.state.document.settings.report_level > 2:
+                # don't report warnings -> insert without syntax highligt
+                tokens = Lexer(u'\n'.join(self.content), language, 'none')
+            else:
+                raise self.warning(error)
 
         if 'number-lines' in self.options:
             # optional argument `startline`, defaults to 1
