@@ -37,7 +37,7 @@ class Lexer(object):
 
       code       -- string of source code to parse,
       language   -- formal language the code is written in,
-      tokennames -- either 'long', 'short', or '' (see below).
+      tokennames -- either 'long', 'short', or 'none' (see below).
 
     Merge subsequent tokens of the same token-type.
 
@@ -47,7 +47,7 @@ class Lexer(object):
       'long':  downcased full token type name,
       'short': short name defined by pygments.token.STANDARD_TYPES
                (= class argument used in pygments html output),
-      'none':      skip lexical analysis.
+      'none':  skip lexical analysis.
     """
 
     def __init__(self, code, language, tokennames='short'):
