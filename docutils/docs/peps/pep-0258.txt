@@ -273,12 +273,12 @@ Examples:
 
   - DocBook (being implemented in the Docutils sandbox).
 
-* HTML (XHTML implemented as ``docutils.writers.html4css1``).
+* HTML (XHTML 1.4 transitional implemented as ``docutils.writers.html4css1``).
 
 * PDF (a ReportLabs interface is being developed in the Docutils
   sandbox).
 
-* TeX (a LaTeX Writer is being implemented in the sandbox).
+* LaTeX (implemented as ``docutils.writers.latex2e``).
 
 * Docutils-native pseudo-XML (implemented as
   ``docutils.writers.pseudoxml``, used for testing).
