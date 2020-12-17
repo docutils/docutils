@@ -409,10 +409,9 @@ General
   .. _2004-02-18 "rest checking and source path":
      http://thread.gmane.org/gmane.text.docutils.user/1112
 
-* Add a "disable_transforms" setting?  And a dummy Writer subclass
-  that does nothing when its .write() method is called?  Would allow
-  for easy syntax checking.  See the `2004-02-18 "rest checking and
-  source path"`_ thread.
+* Add a "disable_transforms" setting? Would allow for easy syntax
+  checking. Where ("null" writer, generic, parser(s), docutils-cli.py)?
+  Cf. the `2004-02-18 "rest checking and source path"`_ thread.
 
 * Add a generic meta-stylesheet mechanism?  An external file could
   associate style names ("class" attributes) with specific elements.
@@ -647,7 +646,7 @@ Developer Docs
 * Document the ``pending`` elements, how they're generated and what
   they do.
 
-* Document the transforms (perhaps in docstrings?): how they're used,
+* Document the transforms_ (perhaps in docstrings?): how they're used,
   what they do, dependencies & order considerations.
 
 * Document the HTML classes used by html4css1.py.
@@ -670,7 +669,7 @@ How-Tos
 
 * Creating Docutils Readers
 
-* Creating Docutils Transforms
+* Creating Docutils Transforms_
 
 * Creating Docutils Parsers
 
@@ -1169,22 +1168,26 @@ Handle documents only, or objects (images, etc.) also?
   supports ".svg" but not ".pdf", pdfLaTeX supports ".pdf" but not ".svg",
   LaTeX supports only ".eps").
 
-  This is less urgent 2020 than previously, as `pdflatex` and
-  `lualatex` are now standard and support most image formats. Also, a
-  wrapper like `rubber`__ that provide on-the-fly image conversion
-  depend on the "wrong" extension in the LaTeX source.
+  This is less urgent 2020 than 2004, as `pdflatex` and `lualatex` are
+  now standard and support most image formats. Also, a wrapper like
+  `rubber`__ that provides on-the-fly image conversion depends on the
+  "wrong" extension in the LaTeX source.
 
   __ https://pypi.org/project/rubber/
 
 At what point should the extensions be substituted?
 
-  Transformations:
-    Fits well in the Docutils processing framework.  (Writer-specific
-    configuration is still possible in the respective sections of the
-    configuration_ file.)
-
-  Writers:
-    May be simpler to code.
+  Transforms_: 
+    Fits well in the `Reader → Transformer → Writer`__ processing framework.
+    
+    * Filename/URL extension replacement can be done walking over the
+      Document tree transforming the document tree from a valid state
+      to another valid state.
+    
+    * Writer-specific configuration is still possible in the
+      respective sections of the configuration_ file.
+      
+    __ ../peps/pep-0258.html#id24
 
   Pre- or post-processing:
     Can be implemented independent of Docutils -- keeps Docutils simple.
@@ -1270,7 +1273,7 @@ Idea from Jim Fulton: an external lookup table of targets:
     That is, name the files for which extensions should be converted.
 
     Note that I want to refer to original files in the original text
-    (another.txt rather than another.txt) because I want the
+    (another.txt rather than another.*) because I want the
     unconverted text to stand on its own.
 
     Note that in most cases, people will be able to use globs::
@@ -1281,8 +1284,7 @@ Idea from Jim Fulton: an external lookup table of targets:
 
       rst2html.py --convert-link-extensions-for *.txt -- foo.txt
 
-    | > Handle documents only, or objects
-    | > (images, etc.) also?
+    > Handle documents only, or objects (images, etc.) also?
 
     No, documents only, but there really is no need for guesswork.
     Just get the file names as command-line arguments.  EIBTI
@@ -2876,7 +2878,9 @@ It still needs some polishing and a better name.
 .. _partial parsing:
    https://docs.python.org/3/library/argparse.html#partial-parsing
 
+
 .. _configuration: ../user/config.html
+.. _transforms: ../ref/transforms.html
 
 
 ..
