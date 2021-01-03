@@ -15,7 +15,8 @@ from test_parsers import DocutilsTestSupport
 from docutils.utils.code_analyzer import with_pygments
 
 def suite():
-    s = DocutilsTestSupport.ParserTestSuite(suite_settings={'syntax_highlight':'long'})
+    settings = {'syntax_highlight':'long'}
+    s = DocutilsTestSupport.ParserTestSuite(suite_settings=settings)
     if with_pygments:
         s.generateTests(totest)
     return s

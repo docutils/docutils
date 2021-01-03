@@ -214,6 +214,8 @@ totest['code-parsing'] = [
         This is a code block with text.
 """],
 ["""\
+Code not parsed but warning silenced in ParserTestCase.
+
 .. code:: s-lang
 
    % abc.sl
@@ -221,14 +223,11 @@ totest['code-parsing'] = [
 """,
 """\
 <document source="test data">
-    <system_message level="2" line="1" source="test data" type="WARNING">
-        <paragraph>
-            Cannot analyze code. No Pygments lexer found for "s-lang".
-        <literal_block xml:space="preserve">
-            .. code:: s-lang
-            \n\
-               % abc.sl
-               autoload("abc_mode", "abc");
+    <paragraph>
+        Code not parsed but warning silenced in ParserTestCase.
+    <literal_block classes="code s-lang" xml:space="preserve">
+        % abc.sl
+        autoload("abc_mode", "abc");
 """],
 ["""\
 Place the language name in a class argument to avoid the no-lexer warning:
