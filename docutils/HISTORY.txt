@@ -37,6 +37,11 @@ Changes Since 0.16
 
   - VersionInfo: ValueError for invalid values, fix comparison to tuples.
 
+*  docutils/languages/ar.py
+   docutils/parsers/rst/languages/ar.py:
+
+  - Apply patch # 177 Arabic mappings by Shahin.
+
 * docutils/nodes.py
 
   - Apply patch #165: Fix error when copying `system_message` node
@@ -281,8 +286,8 @@ Release 0.15 (2019-07-20)
   - Fix [ 348 ] Since Python 3.4, the 'U' universal newlines mode has been
     deprecated (thanks to hugovk).
 
-*  docutils/languages/la.py
-   docutils/parsers/rst/languages/la.py:
+*  docutils/languages/ko.py
+   docutils/parsers/rst/languages/ko.py:
 
   - Apply [ 153 ] Korean mappings by Thomas Sungjin Kang.
 

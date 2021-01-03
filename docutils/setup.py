@@ -102,6 +102,7 @@ what-you-see-is-what-you-get plaintext markup syntax.""",  # wrap at col 60
         'Topic :: Text Processing',
         'Natural Language :: English',  # main/default language, keep first
         'Natural Language :: Afrikaans',
+        'Natural Language :: Arabic',
         'Natural Language :: Catalan',
         'Natural Language :: Chinese (Simplified)',
         'Natural Language :: Chinese (Traditional)',
