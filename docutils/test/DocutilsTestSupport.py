@@ -537,13 +537,9 @@ class RecommonmarkParserTestSuite(ParserTestSuite):
     """A collection of RecommonmarkParserTestCases."""
 
     test_case_class = RecommonmarkParserTestCase
-    skip_message = 'skip "%s" (module `recommonmark` not found)'
 
     def generateTests(self, dict, dictname='totest'):
         if 'recommonmark' not in recommonmark_wrapper.Parser.supported:
-            if RecommonmarkParserTestSuite.skip_message: # warn (only once)
-                print(self.skip_message%self.id)
-                RecommonmarkParserTestSuite.skip_message = ''
             return
         # suppress UserWarnings from recommonmark parser
         warnings.filterwarnings('ignore', message='Unsupported.*type')
