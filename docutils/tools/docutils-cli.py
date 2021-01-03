@@ -1,6 +1,6 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf8 -*-
-# :Copyright: © 2015 Günter Milde.
+# :Copyright: © 2020 Günter Milde.
 # :License: Released under the terms of the `2-Clause BSD license`_, in short:
 #
 #    Copying and distribution of this file, with or without modification,
@@ -49,8 +49,8 @@ parser.add_argument('--writer',
                     # choices=('html', 'html4', 'html5', 'latex', 'xelatex',
                     #          'odt', 'xml', 'pseudoxml', 'manpage',
                     #          'pep_html', 's5_html'),
-                    help=u'Writer name (default "pseudoxml").',
-                    default='pseudoxml')
+                    help=u'Writer name (default "html5").',
+                    default='html5')
 
 (args, remainder) = parser.parse_known_args()
 
