@@ -34,7 +34,7 @@ totest['meta'] = [
              .transform: docutils.transforms.components.Filter
              .details:
                component: 'writer'
-               format: 'html'
+               format: 'html,latex,odt'
                nodes:
                  <meta content="The reStructuredText plaintext markup language" name="description">
     <pending>
@@ -42,7 +42,7 @@ totest['meta'] = [
              .transform: docutils.transforms.components.Filter
              .details:
                component: 'writer'
-               format: 'html'
+               format: 'html,latex,odt'
                nodes:
                  <meta content="plaintext,markup language" name="keywords">
 """],
@@ -58,7 +58,7 @@ totest['meta'] = [
              .transform: docutils.transforms.components.Filter
              .details:
                component: 'writer'
-               format: 'html'
+               format: 'html,latex,odt'
                nodes:
                  <meta content="An amusing story" lang="en" name="description">
     <pending>
@@ -66,7 +66,7 @@ totest['meta'] = [
              .transform: docutils.transforms.components.Filter
              .details:
                component: 'writer'
-               format: 'html'
+               format: 'html,latex,odt'
                nodes:
                  <meta content="Un histoire amusant" lang="fr" name="description">
 """],
@@ -81,7 +81,7 @@ totest['meta'] = [
              .transform: docutils.transforms.components.Filter
              .details:
                component: 'writer'
-               format: 'html'
+               format: 'html,latex,odt'
                nodes:
                  <meta content="text/html; charset=ISO-8859-1" http-equiv="Content-Type">
 """],
@@ -97,7 +97,7 @@ totest['meta'] = [
              .transform: docutils.transforms.components.Filter
              .details:
                component: 'writer'
-               format: 'html'
+               format: 'html,latex,odt'
                nodes:
                  <meta content="content over multiple lines" name="name">
 """],
@@ -116,7 +116,7 @@ Paragraph
              .transform: docutils.transforms.components.Filter
              .details:
                component: 'writer'
-               format: 'html'
+               format: 'html,latex,odt'
                nodes:
                  <meta content="content" name="name">
 """],
@@ -169,7 +169,7 @@ Paragraph
              .transform: docutils.transforms.components.Filter
              .details:
                component: 'writer'
-               format: 'html'
+               format: 'html,latex,odt'
                nodes:
                  <meta content="content" name="name">
     <system_message level="3" line="1" source="test data" type="ERROR">
@@ -194,7 +194,7 @@ Paragraph
              .transform: docutils.transforms.components.Filter
              .details:
                component: 'writer'
-               format: 'html'
+               format: 'html,latex,odt'
                nodes:
                  <meta content="content" name="name">
     <pending>
@@ -202,7 +202,7 @@ Paragraph
              .transform: docutils.transforms.components.Filter
              .details:
                component: 'writer'
-               format: 'html'
+               format: 'html,latex,odt'
                nodes:
                  <meta content="content" name="name">
     <system_message level="3" line="1" source="test data" type="ERROR">
@@ -239,15 +239,15 @@ Paragraph
              .transform: docutils.transforms.components.Filter
              .details:
                component: 'writer'
-               format: 'html'
+               format: 'html,latex,odt'
                nodes:
                  <meta content="escaped linebreak" name="name:with:colons">
     <pending>
         .. internal attributes:
              .transform: docutils.transforms.components.Filter
              .details:
-               component: \'writer\'
-               format: \'html\'
+               component: 'writer'
+               format: 'html,latex,odt'
                nodes:
                  <meta content="content" name="unescaped:embedded:colons">
 """],

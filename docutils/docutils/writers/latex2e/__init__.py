@@ -2541,21 +2541,12 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.out.append(self.context.pop())
         self.duclass_close(node)
 
-    ## def visit_meta(self, node):
-    ##     self.out.append('[visit_meta]\n')
-        # TODO: set keywords for pdf?
-        # But:
-        #  The reStructuredText "meta" directive creates a "pending" node,
-        #  which contains knowledge that the embedded "meta" node can only
-        #  be handled by HTML-compatible writers. The "pending" node is
-        #  resolved by the docutils.transforms.components.Filter transform,
-        #  which checks that the calling writer supports HTML; if it doesn't,
-        #  the "pending" node (and enclosed "meta" node) is removed from the
-        #  document.
-        #  --- docutils/docs/peps/pep-0258.html#transformer
+    def visit_meta(self, node):
+        # TODO: set keywords for pdf or write info for dropped content?
+        pass
 
-    ## def depart_meta(self, node):
-    ##     self.out.append('[depart_meta]\n')
+    def depart_meta(self, node):
+        pass
 
     def visit_math(self, node, math_env='$'):
         """math role"""
