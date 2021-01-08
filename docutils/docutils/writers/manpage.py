@@ -860,11 +860,12 @@ class Translator(nodes.NodeVisitor):
     def depart_math_block(self, node):
         self.depart_literal_block(node)
 
-    def visit_meta(self, node):
-        raise NotImplementedError(node.astext())
+    # <meta> shall become an optional standard node:
+    # def visit_meta(self, node):
+    #     raise NotImplementedError(node.astext())
 
-    def depart_meta(self, node):
-        pass
+    # def depart_meta(self, node):
+    #     pass
 
     def visit_note(self, node):
         self.visit_admonition(node, 'note')

@@ -35,6 +35,17 @@ Future changes
     Remove the IE PNG Fix by Angus Turnbull. IE has native PNG
     support since version 7.
 
+* Make <meta> a standard Docutils doctree node.
+
+  The `meta directive`__ will insert <meta> instead of pending nodes.
+  Writers may ignore some or all <meta> elements if they are not
+  supported by the output format.
+
+  The ``transforms/components.Filter`` class will become obsolete by
+  this change and may be removed in future.
+
+  __ docs/ref/rst/directives.html#meta
+
 * ``Node.traverse()`` will return an iterator instead of a list.
 
 * Remove ``utils.unique_combinations``
@@ -70,7 +81,7 @@ Future changes
 .. _auto_id_prefix: docs/user/config.html#auto-id-prefix
 .. _rst2html.py: docs/user/tools.html#rst2html-py
 .. _reference name: docs/ref/rst/restructuredtext.html#reference-names
-.. _identifier normalization: directives.html#identifier-normalization
+.. _identifier normalization: docs/ref/rst/directives.html#identifier-normalization
 
 
 Release 0.17

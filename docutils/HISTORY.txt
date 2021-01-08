@@ -62,6 +62,11 @@ Changes Since 0.16
 
   - Make the sidebar's "title" argument optional (feature request #69).
 
+* docutils/parsers/rst/directives/html.py
+
+  - Make "meta" elements available for "latex" and "odt".
+    (Basic "odt" support exists, "latex" support is planned.)
+
 * docutils/parsers/rst/directives/misc.py
 
   - Prevent infinite inclusion loops.
@@ -73,6 +78,10 @@ Changes Since 0.16
 * docutils/utils/smartquotes.py
 
   - Fix bug #383: Smart quotes around opening and separator characters.
+
+* docutils/transforms/components.py
+
+  - Allow a comma-separated list of formats for the Filter transform.
 
 * docutils/writers/html*
 
