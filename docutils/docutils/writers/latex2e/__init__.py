@@ -1119,7 +1119,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             (none,
              self.literal_block_env,
              self.literal_block_options,
-             none ) = re.split(r'(\w+)(.*)', settings.literal_block_env)
+             none) = re.split(r'(\w+)(.*)', settings.literal_block_env)
         elif settings.use_verbatim_when_possible:
             self.literal_block_env = 'verbatim'
         #
@@ -1645,24 +1645,24 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_block_quote(self, node):
         self.duclass_open(node)
-        self.out.append( '\\begin{quote}')
+        self.out.append('\\begin{quote}')
 
     def depart_block_quote(self, node):
-        self.out.append( '\\end{quote}\n')
+        self.out.append('\\end{quote}\n')
         self.duclass_close(node)
 
     def visit_bullet_list(self, node):
         self.duclass_open(node)
         if self.is_toc_list:
-            self.out.append( '\\begin{list}{}{}' )
+            self.out.append('\\begin{list}{}{}')
         else:
-            self.out.append( '\\begin{itemize}' )
+            self.out.append('\\begin{itemize}')
 
     def depart_bullet_list(self, node):
         if self.is_toc_list:
-            self.out.append( '\\end{list}\n' )
+            self.out.append('\\end{list}\n')
         else:
-            self.out.append( '\\end{itemize}\n' )
+            self.out.append('\\end{itemize}\n')
         self.duclass_close(node)
 
     def visit_superscript(self, node):
@@ -1701,7 +1701,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def depart_title_reference(self, node):
         if node['classes']:
             self.depart_inline(node)
-        self.out.append( '}' )
+        self.out.append('}')
 
     def visit_citation(self, node):
         if self._use_latex_citations:
@@ -1758,10 +1758,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.out.append(']}')
 
     def visit_classifier(self, node):
-        self.out.append( '(\\textbf{' )
+        self.out.append('(\\textbf{')
 
     def depart_classifier(self, node):
-        self.out.append( '})' )
+        self.out.append('})')
 
     def visit_colspec(self, node):
         self.active_table.visit_colspec(node)
@@ -1827,10 +1827,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_definition_list(self, node):
         self.duclass_open(node)
-        self.out.append( '\\begin{description}\n' )
+        self.out.append('\\begin{description}\n')
 
     def depart_definition_list(self, node):
-        self.out.append( '\\end{description}\n' )
+        self.out.append('\\end{description}\n')
         self.duclass_close(node)
 
     def visit_definition_list_item(self, node):
@@ -2122,7 +2122,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self._enumeration_counters.pop()
 
     def visit_field(self, node):
-        # output is done in field_argument, field_body, field_name
+        # output is done in field_body, field_name
         pass
 
     def depart_field(self, node):
@@ -2649,16 +2649,18 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_paragraph(self, node):
         # insert blank line, unless
-        # * the paragraph is first in a list item or compound,
+        # * the paragraph is first in a list item, compound, or container
         # * follows a non-paragraph node in a compound,
         # * is in a table with auto-width columns
         index = node.parent.index(node)
         if index == 0 and isinstance(node.parent,
-                (nodes.list_item, nodes.description, nodes.compound)):
+                (nodes.list_item, nodes.description,
+                 nodes.compound, nodes.container)):
             pass
-        elif (index > 0 and isinstance(node.parent, nodes.compound) and
-              not isinstance(node.parent[index - 1], nodes.paragraph) and
-              not isinstance(node.parent[index - 1], nodes.compound)):
+        elif (index > 0
+              and isinstance(node.parent, nodes.compound)
+              and not isinstance(node.parent[index - 1],
+                                 (nodes.paragraph, nodes.compound))):
             pass
         elif self.active_table.colwidths_auto:
             if index == 1: # second paragraph
@@ -2971,8 +2973,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.out.append('}] \\leavevmode ')
 
     def visit_tgroup(self, node):
-        #self.out.append(self.starttag(node, 'colgroup'))
-        #self.context.append('</colgroup>\n')
         pass
 
     def depart_tgroup(self, node):

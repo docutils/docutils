@@ -371,7 +371,6 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
     def visit_meta(self, node):
         if node.hasattr('lang'):
             node['xml:lang'] = node['lang']
-            # del(node['lang'])
         meta = self.emptytag(node, 'meta', **node.non_default_attributes())
         self.add_meta(meta)
     def depart_meta(self, node):

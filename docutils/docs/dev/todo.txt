@@ -807,6 +807,12 @@ Also see the `... Or Not To Do?`__ list.
 
 __ rst/alternatives.html#or-not-to-do
 
+Bugs
+----
+
+* A container directive with ``:class:`` option gets the spurious
+  class value "class".
+
 Misc
 ----
 
