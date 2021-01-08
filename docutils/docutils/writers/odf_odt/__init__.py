@@ -328,23 +328,6 @@ def escape_cdata(text):
     return ascii
 
 
-WORD_SPLIT_PAT1 = re.compile(r'\b(\w*)\b\W*')
-
-
-def split_words(line):
-    # We need whitespace at the end of the string for our regexpr.
-    line += ' '
-    words = []
-    pos1 = 0
-    mo = WORD_SPLIT_PAT1.search(line, pos1)
-    while mo is not None:
-        word = mo.groups()[0]
-        words.append(word)
-        pos1 = mo.end()
-        mo = WORD_SPLIT_PAT1.search(line, pos1)
-    return words
-
-
 #
 # Classes
 #
@@ -808,17 +791,24 @@ class Writer(writers.Writer):
             el1.text = title
         else:
             el1.text = '[no title]'
-        meta_dict = self.visitor.get_meta_dict()
-        keywordstr = meta_dict.get('keywords')
-        if keywordstr is not None:
-            keywords = split_words(keywordstr)
-            for keyword in keywords:
-                el1 = SubElement(root, 'meta:keyword', nsdict=METNSD)
-                el1.text = keyword
-        description = meta_dict.get('description')
-        if description is not None:
-            el1 = SubElement(root, 'dc:description', nsdict=METNSD)
-            el1.text = description
+        for prop, value in self.visitor.get_meta_dict().items():
+            # 'keywords', 'description', and 'subject' have their own fields:
+            if prop == 'keywords':
+                keywords = re.split(', *', value)
+                for keyword in keywords:
+                    el1 = SubElement(root, 'meta:keyword', nsdict=METNSD)
+                    el1.text = keyword
+            elif prop == 'description':
+                el1 = SubElement(root, 'dc:description', nsdict=METNSD)
+                el1.text = value
+            # TODO: handle "subject" (which element is it?)
+            ## elif prop == 'subject':
+            ##     el1 = SubElement(root, 'xxxxxxxx', nsdict=METNSD)
+            ##     el1.text = value
+            else: # Store remaining properties as custom/user-defined
+                el1 = SubElement(root, 'meta:user-defined',
+                                 attrib={'meta:name': prop}, nsdict=METNSD)
+                el1.text = value
         s1 = ToString(doc)
         #doc = minidom.parseString(s1)
         #s1 = doc.toprettyxml('  ')

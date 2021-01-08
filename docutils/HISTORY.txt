@@ -157,6 +157,12 @@ Changes Since 0.16
   - Fix #126 manpage title with spaces.
   - Fix #380 commandline option problem in sphinx.
 
+* docutils/writers/odf_odt/__init__.py:
+
+  - Fix/improve metadata handling:
+    fix "keyword" splitting, 
+    allow generic fields (stored as "Custom Properties").
+
 * docutils/writers/pseudoxml.py:
 
   - New option `detailled`__.
