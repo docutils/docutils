@@ -210,6 +210,22 @@ General
 
 * Perhaps the ``Component.supports`` method should deal with
   individual features ("meta" etc.) instead of formats ("html" etc.)?
+  Currently, only the `<meta> node`_ requires the framework.
+  
+  Do we need it at all?  Or rather let the writers just ignore some
+  nodes (like we already do for "class" values)?
+  
+  The current implementation of the framework also leads to bug
+  `bug #241`__ "doctree-based publishing != publish_string".
+  The "components.Filter" transform is run by publish_doctree(). When
+  filtering based on the output format, it should be run by
+  publish_from_doctree() instead because only then the writer is
+  known.
+  
+  So we need to either remove or fix the framework.
+  
+  __ https://sourceforge.net/p/docutils/bugs/241/
+
 
 * Think about _`large documents` made up of multiple subdocument
   files.  Issues: continuity (`persistent sequences`_ above),
@@ -608,6 +624,18 @@ See also the `Modified rst2html
 <http://www.loria.fr/~rougier/coding/article/rst2html.py>`__
 by Nicolas Rougier for a sample implementation.
 
+<meta> node
+-----------
+
+Up to 0.17, <meta> nodes are non-standard (not part of the Docutils
+document tree specification).
+
+The "Filter" transform removes "meta" nodes from the doctree unless the
+output format is "html" (rsp. "html", "latex", or "odt" since 0.17).
+
+Suggestion:
+  Make "meta" a generic directive and <meta> nodes standard nodes that
+  are kept in the doctree. Allow writers to ignore <meta> nodes.
 
 Documentation
 =============
@@ -2692,14 +2720,6 @@ Missing features
   a figure in LaTeX is 100 % of the text width, setting the 'align'
   argument has currently no effect on the LaTeX output.
 
-
-* Let `meta` directive insert PDF-keywords into header?
-
-  See https://tex.stackexchange.com/questions/26529/how-can-i-generate-pdf-metadata-from-latex#26530
-  https://tex.stackexchange.com/questions/161094/adding-custom-metadata-values-to-a-pdf-file
-
-
-
 * Multiple author entries in docinfo (same thing as in html).
 
 * Consider supporting the "compact" option and class argument (from
@@ -2834,7 +2854,12 @@ Front-End Tools
 
 * What about if we don't know which Reader and/or Writer we are
   going to use?  If the Reader/Writer is specified on the
-  command-line?  (Will this ever happen?)
+  command-line?
+  
+  The dynamic_ front end ``tools/docutils-cli.py`` (new in 0.17) is an
+  implementation of concept d) below. It uses 2-stage argument parsing
+  via the `argparse` module's `partial parsing`_. It still needs some
+  polishing.  
 
   Perhaps have different types of front ends:
 
@@ -2856,7 +2881,7 @@ Front-End Tools
      probably only useful for testing purposes.
 
   d) _`Dynamic`: Reader and/or Writer are specified by options, with
-     defaults if unspecified (e.g. ``publish --writer pdf
+     defaults if unspecified (e.g. ``publish --writer manpage
      [options]``). 
      
   Allow common options before subcommands, as in CVS?  Or group all
@@ -2875,11 +2900,6 @@ Front-End Tools
 * Add ``--section-numbering`` command line option.  The "sectnum"
   directive should override the ``--no-section-numbering`` command
   line option then.
-
-The dynamic_ front end ``tools/docutils-frontend.py`` (new in 0.17) is an
-implementation of concept c). It uses 2-stage argument parsing
-via the "new" `argparse` module supports `partial parsing`_.
-It still needs some polishing and a better name.
 
 .. _partial parsing:
    https://docs.python.org/3/library/argparse.html#partial-parsing

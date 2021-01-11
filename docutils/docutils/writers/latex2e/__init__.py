@@ -1190,9 +1190,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.date = []
 
         # PDF properties: pdftitle, pdfauthor
-        # TODO?: pdfcreator, pdfproducer, pdfsubject, pdfkeywords
-        self.pdfinfo = []
         self.pdfauthor = []
+        self.pdfinfo = []
+        if settings.language_code != 'en':
+            self.pdfinfo.append('  pdflang={%s},'%settings.language_code)
 
         # Stack of section counters so that we don't have to use_latex_toc.
         # This will grow and shrink as processing occurs.
@@ -2542,8 +2543,18 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.duclass_close(node)
 
     def visit_meta(self, node):
-        # TODO: set keywords for pdf or write info for dropped content?
-        pass
+        name = node.attributes.get('name')
+        content = node.attributes.get('content')
+        if not name or not content:
+            return
+        if name in ('author', 'creator', 'keywords', 'subject', 'title'):
+            # fields with dedicated hyperref options:
+            self.pdfinfo.append('  pdf%s={%s},'%(name, content))
+        elif name == 'producer':
+            self.pdfinfo.append('  addtopdfproducer={%s},'%content)
+        else:
+            # generic interface (case sensitive!)
+            self.pdfinfo.append('  pdfinfo={%s={%s}},'%(name, content))
 
     def depart_meta(self, node):
         pass

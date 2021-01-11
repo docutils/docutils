@@ -149,6 +149,8 @@ Changes Since 0.16
 
   - Do not write Docutils-generated ToC, when ``use_latex_toc``
     is True. (This did happen when publishing from a doctree.)
+    
+  - Set PDF document properties from "meta" directive content.
 
 * docutils/writers/manpage.py
 
