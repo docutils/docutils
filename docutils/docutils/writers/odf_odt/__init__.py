@@ -801,10 +801,9 @@ class Writer(writers.Writer):
             elif prop == 'description':
                 el1 = SubElement(root, 'dc:description', nsdict=METNSD)
                 el1.text = value
-            # TODO: handle "subject" (which element is it?)
-            ## elif prop == 'subject':
-            ##     el1 = SubElement(root, 'xxxxxxxx', nsdict=METNSD)
-            ##     el1.text = value
+            elif prop == 'subject':
+                el1 = SubElement(root, 'dc:subject', nsdict=METNSD)
+                el1.text = value
             else: # Store remaining properties as custom/user-defined
                 el1 = SubElement(root, 'meta:user-defined',
                                  attrib={'meta:name': prop}, nsdict=METNSD)
