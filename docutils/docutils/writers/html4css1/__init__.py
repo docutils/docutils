@@ -17,7 +17,6 @@ __docformat__ = 'reStructuredText'
 import os.path
 import re
 import sys
-
 import docutils
 from docutils import frontend, nodes, writers, io
 from docutils.transforms import writer_aux
@@ -538,13 +537,13 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
     def visit_generated(self, node):
         pass
 
-    # Image types to place in an <object> element
+    # Use <object> instead of <img> for some image types:
+    
     # SVG not supported by IE up to version 8
     # (html4css1 strives for IE6 compatibility)
     object_image_types = {'.svg': 'image/svg+xml',
                          '.swf': 'application/x-shockwave-flash'}
 
-    # do not wrap block-level images in <p></p> (for backwards compatibility)
     def visit_image(self, node):
         atts = {}
         uri = node['uri']
@@ -746,32 +745,6 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
 
     def depart_paragraph(self, node):
         self.body.append(self.context.pop())
-
-    # do not wrap images in paragraphs (for backwards compatibility)
-    def visit_reference(self, node):
-        atts = {'class': 'reference'}
-        if 'refuri' in node:
-            atts['href'] = node['refuri']
-            if ( self.settings.cloak_email_addresses
-                 and atts['href'].startswith('mailto:')):
-                atts['href'] = self.cloak_mailto(atts['href'])
-                self.in_mailto = True
-            atts['class'] += ' external'
-        else:
-            assert 'refid' in node, \
-                   'References must have "refuri" or "refid" attribute.'
-            atts['href'] = '#' + node['refid']
-            atts['class'] += ' internal'
-        if not isinstance(node.parent, nodes.TextElement):
-            assert len(node) == 1 and isinstance(node[0], nodes.image)
-            atts['class'] += ' image-reference'
-        self.body.append(self.starttag(node, 'a', '', **atts))
-
-    def depart_reference(self, node):
-        self.body.append('</a>')
-        if not isinstance(node.parent, nodes.TextElement):
-            self.body.append('\n')
-        self.in_mailto = False
 
     # ersatz for first/last pseudo-classes
     def visit_sidebar(self, node):

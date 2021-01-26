@@ -104,8 +104,7 @@ Changes Since 0.16
     Use <ins> and <del> if a matching class value
     is found in `inline`, `literal`, or `container` elements.
 
-  - Wrap block-level image elements in <p> (except for figures).
-    Move non-essential styling from ``minimal.css`` to ``plain.css``.
+  - Move non-essential styling from ``minimal.css`` to ``plain.css``.
     Support numbered figures in ``plain.css``.
 
   - Fix bug #398: properly close link tag to "schema.dcterms".
