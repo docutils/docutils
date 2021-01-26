@@ -868,7 +868,7 @@ Python-specific usage examples; begun with "&gt;&gt;&gt;"
                         <paragraph>This paragraph is also part of the legend.</paragraph>
                     </legend>
                 </figure>
-                <paragraph>A left-aligned figure:</paragraph>
+                <paragraph>A left-aligned figure, 70% wide:</paragraph>
                 <figure align="left" classes="figclass1 figclass2" width="70%">
                     <image alt="reStructuredText, the markup syntax" classes="class1 class2" uri="../../../docs/user/rst/images/biohazard.png" width="40px"></image>
                     <caption>This is the caption.</caption>
