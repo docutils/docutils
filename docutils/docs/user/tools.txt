@@ -17,7 +17,8 @@
 
 Once the Docutils package is unpacked, you will discover a "``tools``"
 directory containing several front ends for common Docutils
-processing.  Rather than a single all-purpose program, Docutils has
+processing.
+In addition to the all-purpose program docutils_cli.py_, Docutils has
 many small front ends, each specialized for a specific "Reader" (which
 knows how to interpret a file in context), a "Parser" (which
 understands the syntax of the text), and a "Writer" (which knows how
@@ -55,6 +56,19 @@ list.
 -----------
  The Tools
 -----------
+
+Generic Command Line Front End
+==============================
+
+docutils_cli.py
+---------------
+
+:Readers: Standalone, PEP
+:Parser: reStructuredText, Markdown (reCommonMark)
+:Writers: html_, html4css1_, html5_, pep_html_, s5_html_, 
+          latex__, xelatex_, xml_, odt_, Pseudo-XML_
+
+__ `Generating LaTeX with Docutils`_
 
 HTML-Generating Tools
 =====================
@@ -164,7 +178,7 @@ rst2html5.py
 
 :Reader: Standalone
 :Parser: reStructuredText
-:Writer: html5 (html5_polyglot_)
+:Writer: _`html5` (html5_polyglot_)
 
 The ``rst2html5.py`` front end reads standalone reStructuredText source
 files and produces `HTML 5`_ output.
@@ -335,7 +349,7 @@ rst2xetex.py
 
 :Reader: Standalone
 :Parser: reStructuredText
-:Writer: xetex
+:Writer: _`xelatex`
 
 The ``rst2xetex.py`` front end reads standalone reStructuredText source
 files and produces `LaTeX` output for processing with unicode-aware
@@ -363,7 +377,7 @@ rst2xml.py
 
 :Reader: Standalone
 :Parser: reStructuredText
-:Writer: XML (Docutils native)
+:Writer: _`XML` (Docutils native)
 
 The ``rst2xml.py`` front end produces Docutils-native XML output.
 This can be transformed with standard XML tools such as XSLT
@@ -381,17 +395,19 @@ rst2odt.py
 
 :Reader: Standalone
 :Parser: reStructuredText
-:Writer: ODF/.odt
+:Writer: ODF/odt
 
 The ``rst2odt.py`` front end reads standalone reStructuredText
 source files and produces ODF/.odt files that can be read, edited,
-printed, etc with OpenOffice ``oowriter``
+printed, etc with OpenOffice ``oowriter`` or LibreOffice.
 (http://www.openoffice.org/).  A stylesheet file is required.  A
 stylesheet file is an OpenOffice .odt file containing definitions
 of the styles required for ``rst2odt.py``.  You can learn more
 about how to use ``rst2odt.py``, the styles used ``rst2odt.py``,
-etc from `Odt Writer for Docutils <odt.html>`_.
+etc from `Odt Writer for Docutils`_.
 
+.. _Odt Writer for Docutils:
+.. _odt: odt.html
 
 reStructuredText-Generating Tools
 =================================
@@ -411,7 +427,7 @@ rst2pseudoxml.py
 
 :Reader: Standalone
 :Parser: reStructuredText
-:Writer: Pseudo-XML
+:Writer: _`Pseudo-XML`
 
 ``rst2pseudoxml.py`` is used for debugging the Docutils "Reader to
 Transform to Writer" pipeline.  It produces a compact pretty-printed

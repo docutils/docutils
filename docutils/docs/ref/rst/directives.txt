@@ -800,7 +800,7 @@ The following options are recognized:
 
 and the common options `:class:`_ and `:name:`_.
 
-.. _table_style: ../../user/config.html#table-style-html4css1-writer
+.. _table_style: ../../user/config.html#table-style
 
 .. _csv-table:
 
