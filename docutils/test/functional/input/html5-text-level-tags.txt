@@ -216,6 +216,13 @@ __ https://html.spec.whatwg.org/#text-level-semantics
 
     www.simply​​\ |wbr|\orange\ |wbr|\juice.com
 
+.. [#attribute-optional] Would gain from support for attributes/arguments
+   to inline roles. See TODO_
+
+.. [#attribute-required] Requires support for attributes to inline
+   roles to make sense.
+
+
 Indicating Edits
 ----------------
 
@@ -230,11 +237,10 @@ __ https://html.spec.whatwg.org/multipage/edits.html
     .. role:: ins
 
     This text has "always" been here. :ins:`This text has been inserted.`
-    
+
     .. container:: ins
-    
+
       This paragraph has been inserted.
-      
 
 :del:
   Removed content [#attribute-optional]_
@@ -244,15 +250,7 @@ __ https://html.spec.whatwg.org/multipage/edits.html
     :del:`This text has been deleted`, here is the rest of the paragraph.
 
     .. container:: del
-    
+
       This paragraph has been deleted.
-
-
-.. [#attribute-optional] Would gain from support for attributes/arguments
-   to inline roles. See TODO_
-
-.. [#attribute-required] Requires support for attributes to inline
-   roles to make sense.
-
 
 .. _TODO: http://docutils.sourceforge.net/docs/dev/todo.html#interpreted-text
