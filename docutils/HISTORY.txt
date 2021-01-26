@@ -106,6 +106,7 @@ Changes Since 0.16
 
   - Move non-essential styling from ``minimal.css`` to ``plain.css``.
     Support numbered figures in ``plain.css``.
+    Support "captionbelow" class value for tables in ``minimal.css``.
 
   - Fix bug #398: properly close link tag to "schema.dcterms".
 

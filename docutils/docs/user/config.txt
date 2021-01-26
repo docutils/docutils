@@ -1189,20 +1189,23 @@ See also `table_style [latex writers]`_.
 
 The default CSS sylesheet defines:
 
-borderless
-  No borders around the table.
-
-booktabs
-  Lines above and below the table and a thin line after the head.
-
-align-left, align-center, align-right
-  Align the tables
-
-colwidths-auto
-  Delegate the determination of table column widths to the backend
-  (Leave out the ``<colgroup>`` column specification.)
-
-  Cf. the `table directive`_.
+  borderless
+    No borders around the table.
+  
+  booktabs
+    Lines above and below the table and a thin line after the head.
+  
+  align-left, align-center, align-right
+    Align the tables
+    
+  colwidths-auto
+    Delegate the determination of table column widths to the backend
+    (leave out the ``<colgroup>`` column specification).
+    See also the "widths" option of the `table directive`_.
+  
+  captionbelow
+    Place the table caption below the table
+    (only with the `HTML5 writer`_, new in 0.17).
 
 Default: "".  Option: ``--table-style``.
 

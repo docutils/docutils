@@ -43,7 +43,7 @@ h1 + p.subtitle,
 h2 + p.section-subtitle {
   font-size: 1.6em;
 }
-h3 + p.section-subtitle { 
+h3 + p.section-subtitle {
   font-size: 1.28em;
 }
 p.subtitle,
@@ -247,7 +247,11 @@ td > p, th > p { margin-bottom: 0; }
 
 table > caption {
   text-align: left;
-  margin-bottom: 0.25em
+  margin-top: 0.2em;
+  margin-bottom: 0.2em;
+}
+table.captionbelow {
+  caption-side: bottom;
 }
 
 table.borderless td, table.borderless th {
