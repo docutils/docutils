@@ -139,6 +139,8 @@ BetaRelease 0.17b1 (2021-02-10) to test.pypi
 * commit to code.sf
 * run sandbox/infrastructure/docutils-update.local
 
+.. note:: final release has some extra steps
+
 Release 0.16 (2020-01-12)
 =========================
 
