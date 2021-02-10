@@ -92,8 +92,6 @@ BetaRelease 0.17b1 (2021-02-10) to test.pypi
     python2 test/alltests.py
     # IGNORE stylesheet path differences ?
 
-    deactivate ; cd .. ; rm -rf du2
-
   Test in venv ::
 
     python3 -m venv du3 ; cd du3
@@ -109,6 +107,37 @@ BetaRelease 0.17b1 (2021-02-10) to test.pypi
     # IGNORE stylesheet path differences ?
 
 * commit 0.17b1 to code.sf
+
+* Now upload to pypi::
+
+    python3 -m twine upload  dist/docutils-0.17b1*
+
+* and test::
+
+    python3 -m venv du3 ; cd du3
+    export PYTHONPATH= ; . bin/activate
+
+    pip install --no-deps --pre docutils
+    # 0.17b1
+    cp -r ~/projects/docutils-code/docutils/test .
+    cp -r ~/projects/docutils-code/docutils/docs .
+    python test/alltests.py
+    # css paths fail
+
+* Notify to docutils-developer and user.
+
+* tag 0.16 (Note: only directory docutils is copied)::
+
+    svn copy svn+ssh://grubert@svn.code.sf.net/p/docutils/code/trunk/docutils \
+             svn+ssh://grubert@svn.code.sf.net/p/docutils/code/tags/docutils-0.16 \
+             -m "tagging release 0.16"
+
+* run sandbox/infrastructure/docutils-update.local
+
+* set version 0.17b2.dev
+* test with tox: py27 and py38 39
+* commit to code.sf
+* run sandbox/infrastructure/docutils-update.local
 
 Release 0.16 (2020-01-12)
 =========================
