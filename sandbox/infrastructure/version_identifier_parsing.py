@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # version_identifier_parsing.py: parse and sort Docutils version indentifiers
 # ===========================================================================
 
@@ -131,16 +131,16 @@ def change_version_info_definition(version, source):
 def test_parse(identifier):
 
     segments = parse_version_identifier(identifier)
-    print identifier
-    print 'release:', segments['release']
-    print '    major:', segments['major']
-    print '    minor:', segments['minor']
-    print '    micro:', segments['micro']
-    print '  pre:', segments['pre']
-    print '    pre_l:', segments['pre_l']
-    print '    pre_n:', segments['pre_n']
-    print '  dev:', segments['dev']
-    print
+    print(identifier)
+    print('release:', segments['release'])
+    print('    major:', segments['major'])
+    print('    minor:', segments['minor'])
+    print('    micro:', segments['micro'])
+    print('  pre:', segments['pre'])
+    print('    pre_l:', segments['pre_l'])
+    print('    pre_n:', segments['pre_n'])
+    print('  dev:', segments['dev'])
+    print('')
 
 def selftest(version=__version__):
     """Run a test on version identification parsing and transforming."""
@@ -168,32 +168,32 @@ def selftest(version=__version__):
                     for identifier in identifiers]
 
     for vi in version_infos:
-        print vi
-    print
+        print(vi)
+    print('')
 
     # test sort order:
 
     sorted_version_infos = sorted(version_infos)
 
     if sorted_version_infos == version_infos:
-        print "Version order preserved by sorting."
+        print("Version order preserved by sorting.")
     else:
-        print "Version order changed by sorting."
+        print("Version order changed by sorting.")
         for vi in sorted_version_infos:
-            print vi
-    print
+            print(vi)
+    print('')
 
     # (re)convert version_info to PEP 440 version identifier:
 
     ids = [version_info2identifier(vi) for vi in version_infos]
 
     if ids == identifiers:
-        print "Round trip conversion OK."
+        print("Round trip conversion OK.")
     else:
-        print ids
+        print(ids)
 
 
-    print version_info_definition(version)
+    print(version_info_definition(version))
 
 
 if __name__ == '__main__':
@@ -223,6 +223,6 @@ if __name__ == '__main__':
         from pprint import pprint
         pprint(_version_regexp.match(version_identifier).groupdict())
     elif args.version_info:
-        print version_info_definition(version_identifier)
+        print(version_info_definition(version_identifier))
     elif args.source:
-        print change_version_info_definition(version_identifier, args.source)
+        print(change_version_info_definition(version_identifier, args.source))
