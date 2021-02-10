@@ -17,6 +17,8 @@
 Changes Since 0.16
 ==================
 
+Version 0.17b1
+
 * General
 
   - Fix bug #385: Import of language modules.

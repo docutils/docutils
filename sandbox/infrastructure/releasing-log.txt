@@ -24,76 +24,91 @@ Problems
 
   But not for 3.8.1 on Linux .
   
-BetaRelease 0.17b.dev (2020-11-23) to test.pypi
-===============================================
+BetaRelease 0.17b1 (2021-02-10) to test.pypi
+============================================
 
-Do not change version: 0.17b.dev
+* tox with 2.7 3.8 and 3.9 ::
 
-``python3 setup.py clean`` tells ::
+    functional/expected/standalone_rst_html5.html
 
-  setuptools/dist.py:473: UserWarning: Normalizing '0.17b.dev' to '0.17b0.dev0'.
+    -<dl class="footnote brackets">
+    ...
+    -<dd><p>Requires support for attributes to inline
+    -roles to make sense.</p>
+    -</dd>
+    -</dl>
 
-TODO check on version numbering
+  seams to be a moved chunk in test input but not in expected
 
-test ::
+* Version numbering
 
-  export PYTHONPATH=.
-  export PYTHONWARNINGS=default
-  python2 test/alltests.py
+  ``python3 setup.py clean`` tells ::
 
-``python3 test/alltests.pypython3`` has some DeprecationWarning::
+    setuptools/dist.py:473: UserWarning: Normalizing '0.17b.dev' to '0.17b0.dev0'.
 
-  docutils/utils/smartquotes.py:639: DeprecationWarning: invalid escape sequence \[
-  ch_classes = {'open': u'[(\[{]', # opening braces
+  Acchording to https://www.python.org/dev/peps/pep-0440/#pre-releases
 
-  docutils/parsers/rst/directives/images.py:145: ResourceWarning: 
-    unclosed file <_io.BufferedReader name=b'../docs/user/rst/images/title.png'>
-  del img
+  set_version 0.17b1
 
-  docutils/writers/html4css1/__init__.py:570: ResourceWarning: 
-    unclosed file <_io.BufferedReader name=b'../docs/user/rst/images/biohazard.png'>
-  del img
+* test ::
 
-YET TODO
+    export PYTHONPATH=
+    export PYTHONWARNINGS=default
+    python2 test/alltests.py
 
-  ``invalid escape sequence \[`` does not come always ???
+    Ran 1454 tests 
+    OK (skipped=3)
 
-Upload universal wheel and source to test.pypi::
+    python3 test/alltests.py
+    Ran 1442 tests
+    OK (skipped=5)
 
-  python3 setup.py sdist
-  python3 setup.py bdist_wheel --universal
-  python3 -m twine upload --repository-url https://test.pypi.org/legacy/ dist/*
+  python has some ResourceWarning::
 
-Wait some minutes to test in virtualenv ::
+    docutils/parsers/rst/directives/images.py:145: ResourceWarning: 
+      unclosed file <_io.BufferedReader name=b'../docs/user/rst/images/title.png'>
+      del img
 
-  python2 -m virtualenv du2 ; cd du2
-  export PYTHONPATH= ; . bin/activate
+    docutils/writers/html4css1/__init__.py:578: ResourceWarning: 
+      unclosed file <_io.BufferedReader name=b'../docs/user/rst/images/biohazard.png'>
+      del img
 
-  python -m pip install --index-url https://test.pypi.org/simple/ --no-deps docutils
-  # Successfully installed docutils-0.16
+* Upload universal wheel and source to test.pypi::
 
-  cp -r ~/projects/docutils-code/docutils/test .
-  python2 test/alltests.py
-  # IGNORE stylesheet path differences ?
+    python3 setup.py sdist
+    python3 setup.py bdist_wheel --universal
+    python3 -m twine upload --repository-url https://test.pypi.org/legacy/ dist/*
 
-  python -m pip uninstall docutils
-  deactivate ; cd .. ; rm -rf du2
+  Wait some minutes to test in virtualenv ::
 
-Test in venv ::
+    python2 -m virtualenv du2 ; cd du2
+    export PYTHONPATH= ; . bin/activate
 
-  python3 -m venv du3 ; cd du3
-  export PYTHONPATH= ; . bin/activate
+    python -m pip install --index-url https://test.pypi.org/simple/ --no-deps --pre docutils
+    # Successfully installed docutils-0.17b1
 
-  python3 -m pip install --index-url https://test.pypi.org/simple/ --no-deps docutils
-  # Successfully installed docutils-0.16
+    cp -r ~/projects/docutils-code/docutils/test .
+    # copy docs too for inlined images to be found
+    python2 test/alltests.py
+    # IGNORE stylesheet path differences ?
 
-  cp -r ~/projects/docutils-code/docutils/test .
-  python test/alltests.py
-  # IGNORE stylesheet path differences ?
-  # FAIL: test_find_file_in_dirs (test_utils.HelperFunctionTests)
-  # FAIL: test_rst/ interpreted directives/code ...
-  #  classes="keyword" is "name builtin" in 3.8.0b3 on Darwin 15.6.0
+    deactivate ; cd .. ; rm -rf du2
 
+  Test in venv ::
+
+    python3 -m venv du3 ; cd du3
+    export PYTHONPATH= ; . bin/activate
+
+    python3 -m pip install --index-url https://test.pypi.org/simple/ --no-deps --pre docutils
+    # Successfully installed docutils-0.17b1
+
+    cp -r ~/projects/docutils-code/docutils/test .
+    cp -r ~/projects/docutils-code/docutils/docs .
+    python test/alltests.py
+    # Python 3.8.5 Linux 5.4.0
+    # IGNORE stylesheet path differences ?
+
+* commit 0.17b1 to code.sf
 
 Release 0.16 (2020-01-12)
 =========================
