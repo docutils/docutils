@@ -30,7 +30,7 @@ if [ -z "$1" ] ; then
     exit
 fi
 
-old_ver="`python -c 'import docutils; print docutils.__version__'`"
+old_ver="`python3 -c 'import docutils; print(docutils.__version__)'`"
 new_ver=$1
 
 echo "from current Docutils version ${old_ver} to ${new_ver}"
