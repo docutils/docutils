@@ -540,14 +540,14 @@ class HTMLTranslator(nodes.NodeVisitor):
     def depart_caption(self, node):
         self.body.append('</p>\n')
 
-    # citations
-    # ---------
-    # Use definition list instead of table for bibliographic references.
-    # Join adjacent citation entries.
-
     def visit_citation(self, node):
+        # Use definition list for bibliographic references.
+        # Join adjacent citation entries.
         if not self.in_footnote_list:
-            self.body.append('<dl class="citation">\n')
+            listnode = node.copy()
+            listnode['ids'] = []
+            self.body.append(self.starttag(listnode, 'dl', CLASS='citation'))
+            # self.body.append('<dl class="citation">\n')
             self.in_footnote_list = True
 
     def depart_citation(self, node):
@@ -855,15 +855,14 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body_suffix[:0] = footer
         del self.body[start:]
 
-    # footnotes
-    # ---------
-    # use definition list instead of table for footnote text
-
     # TODO: use the new HTML5 element <aside>? (Also for footnote text)
     def visit_footnote(self, node):
         if not self.in_footnote_list:
+            listnode = node.copy()
+            listnode['ids'] = []
             classes = 'footnote ' + self.settings.footnote_references
-            self.body.append('<dl class="%s">\n'%classes)
+            self.body.append(self.starttag(listnode, 'dl', CLASS=classes))
+            # self.body.append('<dl class="%s">\n'%classes)
             self.in_footnote_list = True
 
     def depart_footnote(self, node):
