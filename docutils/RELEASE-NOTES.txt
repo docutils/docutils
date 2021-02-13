@@ -26,7 +26,9 @@ Future changes
     and/or ``\DUtitle`` or set to "True".
 
 * `html5` writer:
-    Use <blockquote> instead of <div> tags for topics and admonitions.
+    Use <blockquote> instead of <div> tags for topics and admonitions,
+    <aside> instad of <dl> for footnote text and citations,
+    and <nav> instead of <div> for the Table of Contents.
 
     Use <summary> and <details> tags for term and definition of a
     definition list with class value "details".

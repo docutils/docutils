@@ -543,6 +543,7 @@ class HTMLTranslator(nodes.NodeVisitor):
     def visit_citation(self, node):
         # Use definition list for bibliographic references.
         # Join adjacent citation entries.
+        # TODO: use <aside>.
         if not self.in_footnote_list:
             listnode = node.copy()
             listnode['ids'] = []
@@ -855,7 +856,9 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body_suffix[:0] = footer
         del self.body[start:]
 
-    # TODO: use the new HTML5 element <aside>? (Also for footnote text)
+    # TODO: use the new HTML5 element <aside> for footnote text
+    # (allows better styling with CSS, the current <dl> list styling
+    # with "float" interferes with sidebars).
     def visit_footnote(self, node):
         if not self.in_footnote_list:
             listnode = node.copy()
