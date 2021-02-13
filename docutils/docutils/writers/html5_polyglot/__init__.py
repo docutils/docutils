@@ -183,13 +183,15 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
     def depart_authors(self, node):
         self.depart_docinfo_item()
 
-    # don't add 'caption' class value
+    # use the <figcaption> semantic tag.
     def visit_caption(self, node):
-        self.body.append('<figcaption>\n')
+        if isinstance(node.parent, nodes.figure):
+            self.body.append('<figcaption>\n')
         self.body.append(self.starttag(node, 'p', ''))
 
     def depart_caption(self, node):
         self.body.append('</p>\n')
+        # <figcaption> is closed in depart_figure(), as legend may follow.
 
     # use HTML block-level tags if matching class value found
     supported_block_tags = set(('ins', 'del'))
@@ -305,8 +307,7 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
                                  'bdi', 'del', 'ins', 'mark', 'small',
                                  'b', 'i', 'q', 's', 'u'))
     def visit_inline(self, node):
-        # Use "supported inline tag" as tag name if found in class values
-        # (first: 
+        # Use `supported_inline_tags` if found in class values
         classes = node.get('classes', [])
         tags = [cls for cls in self.supported_inline_tags
                 if cls in classes]
