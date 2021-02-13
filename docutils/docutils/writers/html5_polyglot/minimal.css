@@ -29,7 +29,8 @@
 .align-bottom { vertical-align: bottom; }
 
 /* titles */
-h1.title, p.subtitle {
+h1.title,
+p.subtitle {
   text-align: center;
 }
 p.topic-title,
@@ -39,21 +40,18 @@ p.admonition-title,
 p.system-message-title {
   font-weight: bold;
 }
-h1 + p.subtitle,
-h2 + p.section-subtitle {
+h1 + p.subtitle {
   font-size: 1.6em;
 }
-h3 + p.section-subtitle {
-  font-size: 1.28em;
+h2 + p.section-subtitle,
+p.sidebar-title {
+  font-size: 1.2em;
 }
 p.subtitle,
 p.section-subtitle,
 p.sidebar-subtitle {
   font-weight: bold;
   margin-top: -0.5em;
-}
-p.sidebar-title {
-  font-size: larger;
 }
 p.rubric {
   font-size: larger;
@@ -146,7 +144,10 @@ dl.docinfo > dt:after {
 }
 
 /* Bibliographic Fields (docinfo) */
-pre.address { font: inherit; }
+pre.address { 
+  font: inherit; 
+  margin: 0.5em 0;
+}
 dd.authors > p { margin: 0; }
 
 /* Option Lists */
@@ -157,7 +158,7 @@ span.option { white-space: nowrap; }
 /* Footnotes and Citations  */
 dl.footnote.superscript > dd {margin-left: 1em; }
 dl.footnote.brackets > dd {margin-left: 2em; }
-dl > dt.label { font-weight: normal; }
+dl.footnote > dt { font-weight: normal; }
 a.footnote-reference.brackets:before,
 dt.label > span.brackets:before { content: "["; }
 a.footnote-reference.brackets:after,
@@ -165,18 +166,10 @@ dt.label > span.brackets:after { content: "]"; }
 a.footnote-reference.superscript,
 dl.footnote.superscript > dt.label {
   vertical-align: super;
-  font-size: smaller;
+  font-size: small;
 }
 dt.label > span.fn-backref { margin-left: 0.2em; }
 dt.label > span.fn-backref > a { font-style: italic; }
-
-/* Line Blocks */
-div.line-block { display: block; }
-div.line-block div.line-block {
-  margin-top: 0;
-  margin-bottom: 0;
-  margin-left: 40px;
-}
 
 /* Figures, Images, and Tables */
 .figure.align-left,
@@ -224,15 +217,17 @@ aside.sidebar {
 blockquote,
 div.topic,
 div.admonition,
-div.system-message,
-pre.literal-block,
-pre.doctest-block,
-pre.math,
-pre.code {
-  margin-left: 1.5em;
-  margin-right: 1.5em;
+div.system-message {
+  margin-left: 2em;
+  margin-right: 2em;
 }
+div.line-block { display: block; }
+div.line-block div.line-block {
+  margin: 0 0 0 2em;
+}
+pre { margin-left: 2em; }
 pre.code .ln { color: gray; } /* line numbers */
+
 
 /* Tables */
 table { border-collapse: collapse; }

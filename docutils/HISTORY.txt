@@ -106,10 +106,13 @@ Version 0.17b1
     Use <ins> and <del> if a matching class value
     is found in `inline`, `literal`, or `container` elements.
 
-  - Move non-essential styling from ``minimal.css`` to ``plain.css``.
-    Support numbered figures in ``plain.css``.
-    Support "captionbelow" class value for tables in ``minimal.css``.
+  - ``minimal.css``:
+      Move non-essential styling from  to ``plain.css``.
+      Support "captionbelow" class value for tables.
+      Small fixes and tweaks.
 
+    ``plain.css``: Support numbered figures.
+    
   - Fix bug #398: properly close link tag to "schema.dcterms".
 
 * docutils/writers/latex2e/__init__.py:
