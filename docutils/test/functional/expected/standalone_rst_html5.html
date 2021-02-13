@@ -140,22 +140,22 @@ They are transformed from section titles after parsing. -->
 <li><p><a class="reference internal" href="#custom-roles" id="toc-entry-41"><span class="sectnum">2.23</span> Custom Roles</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#html-specific" id="toc-entry-42"><span class="sectnum">3</span> HTML specific</a></p>
+<li><p><a class="reference internal" href="#html-specific" id="toc-entry-42"><span class="sectnum">3</span> HTML Specific</a></p>
 <ul class="auto-toc">
 <li><p><a class="reference internal" href="#svg-images" id="toc-entry-43"><span class="sectnum">3.1</span> SVG Images</a></p></li>
 <li><p><a class="reference internal" href="#swf-images" id="toc-entry-44"><span class="sectnum">3.2</span> SWF Images</a></p></li>
-<li><p><a class="reference internal" href="#text-level-semantics" id="toc-entry-45"><span class="sectnum">3.3</span> Text-level semantics</a></p></li>
+<li><p><a class="reference internal" href="#text-level-semantics" id="toc-entry-45"><span class="sectnum">3.3</span> Text-Level Semantics</a></p></li>
 <li><p><a class="reference internal" href="#indicating-edits" id="toc-entry-46"><span class="sectnum">3.4</span> Indicating Edits</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#changes-to-the-html4css1-writer" id="toc-entry-47"><span class="sectnum">4</span> Changes to the html4css1 writer</a></p>
+<li><p><a class="reference internal" href="#changes-to-the-html4css1-writer" id="toc-entry-47"><span class="sectnum">4</span> Changes to the <cite>html4css1</cite> Writer</a></p>
 <ul class="auto-toc">
-<li><p><a class="reference internal" href="#field-list-handling" id="toc-entry-48"><span class="sectnum">4.1</span> Field list handling</a></p></li>
-<li><p><a class="reference internal" href="#styling-with-class-arguments" id="toc-entry-49"><span class="sectnum">4.2</span> Styling with class arguments</a></p>
+<li><p><a class="reference internal" href="#field-list-rendering" id="toc-entry-48"><span class="sectnum">4.1</span> Field List Rendering</a></p></li>
+<li><p><a class="reference internal" href="#styling-with-class-arguments" id="toc-entry-49"><span class="sectnum">4.2</span> Styling with Class Arguments</a></p>
 <ul class="auto-toc">
-<li><p><a class="reference internal" href="#description-lists" id="toc-entry-50"><span class="sectnum">4.2.1</span> Description lists</a></p></li>
-<li><p><a class="reference internal" href="#field-list-variants" id="toc-entry-51"><span class="sectnum">4.2.2</span> Field list variants</a></p></li>
-<li><p><a class="reference internal" href="#table-variants" id="toc-entry-52"><span class="sectnum">4.2.3</span> Table variants</a></p></li>
+<li><p><a class="reference internal" href="#description-lists" id="toc-entry-50"><span class="sectnum">4.2.1</span> Description Lists</a></p></li>
+<li><p><a class="reference internal" href="#field-list-variants" id="toc-entry-51"><span class="sectnum">4.2.2</span> Field List Variants</a></p></li>
+<li><p><a class="reference internal" href="#table-variants" id="toc-entry-52"><span class="sectnum">4.2.3</span> Table Variants</a></p></li>
 <li><p><a class="reference internal" href="#numbered-figures" id="toc-entry-53"><span class="sectnum">4.2.4</span> Numbered Figures</a></p></li>
 </ul>
 </li>
@@ -1241,7 +1241,7 @@ crunchy, now would it?</p></td>
 </section>
 </section>
 <section id="html-specific">
-<h2><a class="toc-backref" href="#toc-entry-42"><span class="sectnum">3</span> HTML specific</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-42"><span class="sectnum">3</span> HTML Specific</a></h2>
 <section id="svg-images">
 <h3><a class="toc-backref" href="#toc-entry-43"><span class="sectnum">3.1</span> SVG Images</a></h3>
 <img alt="../../../docs/user/rst/images/biohazard.svg" class="align-left" src="../../../docs/user/rst/images/biohazard.svg" style="width: 48px; height: 48px;" />
@@ -1341,10 +1341,10 @@ For complete control over display options use raw HTML.</p>
 <p>An inline SWF image <object data="../../../docs/user/rst/images/biohazard.swf" style="width: 0.8em; height: 0.8em;" type="application/x-shockwave-flash">inline-swf</object> scaled to 0.8 em x 0.8 em.</p>
 </section>
 <section id="text-level-semantics">
-<h3><a class="toc-backref" href="#toc-entry-45"><span class="sectnum">3.3</span> Text-level semantics</a></h3>
-<p><a class="reference external" href="https://html.spec.whatwg.org/#text-level-semantics">HTML 5 tags for representation of text-level semantics</a> <a class="footnote-reference brackets" href="#footnote-13" id="footnote-reference-27">13</a> and their
-reStructuredText equivalents.</p>
-<dl class="narrow field-list">
+<h3><a class="toc-backref" href="#toc-entry-45"><span class="sectnum">3.3</span> Text-Level Semantics</a></h3>
+<p>This section describes the <a class="reference external" href="https://html.spec.whatwg.org/#text-level-semantics">HTML 5 tags for representation of text-level
+semantics</a> <a class="footnote-reference brackets" href="#footnote-13" id="footnote-reference-27">13</a> and their reStructuredText equivalents.</p>
+<dl class="description">
 <dt>a</dt>
 <dd><p>Hyperlinks</p>
 <blockquote>
@@ -1415,22 +1415,16 @@ advised to use &lt;abbr&gt; instead. The HTML5 writer uses &lt;abbr&gt; for Docu
 <dt>ruby, rt, rp</dt>
 <dd><p>Ruby annotations</p>
 <p>Require inline nesting, currently not supported in rST.</p>
-<blockquote>
-<p>&lt;ruby&gt; OJ &lt;rp&gt;(&lt;/rp&gt;&lt;rt&gt;Orange Juice&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;&lt;/ruby&gt;</p>
-</blockquote>
+<!-- <ruby> OJ <rp>(</rp><rt>Orange Juice</rt><rp>)</rp></ruby> -->
 </dd>
 <dt>data</dt>
 <dd><p>Machine-readable equivalent <a class="footnote-reference brackets" href="#attribute-required" id="footnote-reference-12">6</a></p>
-<blockquote>
-<p>Available starting today! &lt;data value=&quot;UPC:022014640201&quot;&gt;North Coast
-Organic Apple Cider&lt;/data&gt;</p>
-</blockquote>
+<!-- Available starting today! <data value="UPC:022014640201">North Coast
+Organic Apple Cider</data> -->
 </dd>
 <dt>time</dt>
 <dd><p>Machine-readable equivalent of date- or time-related data <a class="footnote-reference brackets" href="#attribute-required" id="footnote-reference-13">6</a></p>
-<blockquote>
-<p>Available starting on &lt;time datetime=&quot;2011-11-18&quot;&gt;November 18th&lt;/time&gt;!</p>
-</blockquote>
+<!-- Available starting on <time datetime="2011-11-18">November 18th</time>! -->
 </dd>
 <dt>code</dt>
 <dd><p>Computer code</p>
@@ -1505,11 +1499,9 @@ element.</p>
 </dd>
 <dt>bdo</dt>
 <dd><p>Text directionality formatting <a class="footnote-reference brackets" href="#attribute-required" id="footnote-reference-15">6</a></p>
-<blockquote>
-<p>The proposal is to write English, but in reverse order. &quot;Juice&quot; would
-become &quot;&lt;bdo dir=rtl&gt;Juice&lt;/bdo&gt;&quot;&gt;</p>
-</blockquote>
-<p>Authors must specify the dir attribute on this element.</p>
+<!-- The proposal is to write English, but in reverse order. "Juice" would
+become "<bdo dir=rtl>Juice</bdo>"> -->
+<p>Authors <em>must</em> specify the dir attribute on this element.</p>
 </dd>
 <dt>span</dt>
 <dd><p>Other</p>
@@ -1557,9 +1549,9 @@ roles to make sense.</p>
 </section>
 <section id="indicating-edits">
 <h3><a class="toc-backref" href="#toc-entry-46"><span class="sectnum">3.4</span> Indicating Edits</a></h3>
-<p><a class="reference external" href="https://html.spec.whatwg.org/multipage/edits.html">HTML tags for representation of edits to the document</a> <a class="footnote-reference brackets" href="#footnote-14" id="footnote-reference-28">14</a> and their
-reStructuredText equivalents.</p>
-<dl class="field-list">
+<p>The <a class="reference external" href="https://html.spec.whatwg.org/multipage/edits.html">HTML tags for representation of edits to the document</a> <a class="footnote-reference brackets" href="#footnote-14" id="footnote-reference-28">14</a> and their
+reStructuredText equivalents are:</p>
+<dl class="description">
 <dt>ins</dt>
 <dd><p>Additions <a class="footnote-reference brackets" href="#attribute-optional" id="footnote-reference-16">5</a></p>
 <blockquote>
@@ -1582,7 +1574,7 @@ reStructuredText equivalents.</p>
 </section>
 </section>
 <section id="changes-to-the-html4css1-writer">
-<h2><a class="toc-backref" href="#toc-entry-47"><span class="sectnum">4</span> Changes to the html4css1 writer</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-47"><span class="sectnum">4</span> Changes to the <cite>html4css1</cite> Writer</a></h2>
 <ul class="simple">
 <li><p>Use only meta keywords recognized by HTML 5.</p></li>
 <li><p>Set table column widths with &lt;style=&quot;width: ...&quot;&gt;, not &quot;width&quot; argument.</p></li>
@@ -1592,36 +1584,16 @@ reStructuredText equivalents.</p>
 space.</p></li>
 <li><p>Put subtitles in &lt;p&gt; elements.</p></li>
 </ul>
-<section id="field-list-handling">
-<h3><a class="toc-backref" href="#toc-entry-48"><span class="sectnum">4.1</span> Field list handling</a></h3>
-<p>The following list demonstrates the problems with the html4css1
-approach: the <cite>field-name-limit</cite> setting is given in &quot;number of
-characters&quot; but the field name uses a proportional font.</p>
-<dl class="field-list simple">
-<dt>The field name</dt>
-<dd><p>is typeset on the same line, unless it is &quot;long&quot;.</p>
-</dd>
-<dt>this field name</dt>
-<dd><p>is considered &quot;long&quot; in the html table rendering by
-the html4css1 writer with the default setting of
-<span class="docutils literal"><span class="pre">--field-name-limit=14</span></span>.</p>
-</dd>
-<dt>iiiiiiiiiiiiiii</dt>
-<dd><p>a field name that is considered &quot;long&quot; by html4css1
-with the default setting of <cite>field-name-limit: 14</cite>.</p>
-</dd>
-<dt>MMMMMMMMMMMMMM</dt>
-<dd><p>a field name that is actually longer than the
-previous one but regarded &quot;short&quot; by html4css1.</p>
-</dd>
-</dl>
-<p>With <span class="docutils literal">html_plain</span>, a <cite>field list</cite> is typeset as CSS-styled <cite>definition
-list</cite>. The default layout is similar to the look with <cite>html4css1</cite>:</p>
+<section id="field-list-rendering">
+<h3><a class="toc-backref" href="#toc-entry-48"><span class="sectnum">4.1</span> Field List Rendering</a></h3>
+<p>A <cite>field list</cite> is converted to a HTML <cite>definition list</cite> and given the
+<span class="docutils literal"><span class="pre">field-list</span></span> class argument value to allow CSS styling.
+With <span class="docutils literal">html_plain.css</span>, the layout is similar to <cite>html4css1</cite>:</p>
 <dl class="open field-list">
 <dt>A long field name</dt>
 <dd><p>sticks into the field body.</p>
-<p>The field body is pushed to the next line (you can suppress
-this behaviour with the <a class="reference internal" href="#run-in">run-in</a> class argument).</p>
+<p>The field body is pushed to the next line (you can suppress this
+behaviour with the <a class="reference internal" href="#run-in">run-in</a> class argument).</p>
 </dd>
 <dt>Customization</dt>
 <dd><p>of the field name width is possible with CSS instead
@@ -1637,27 +1609,50 @@ example:</p>
 </dl>
 </section>
 <section id="styling-with-class-arguments">
-<h3><a class="toc-backref" href="#toc-entry-49"><span class="sectnum">4.2</span> Styling with class arguments</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-49"><span class="sectnum">4.2</span> Styling with Class Arguments</a></h3>
 <p>The <span class="docutils literal">plain.css</span> style sheet comes with some pre-defined style variants
 that can be choosen via a class argument.</p>
 <section id="description-lists">
-<h4><a class="toc-backref" href="#toc-entry-50"><span class="sectnum">4.2.1</span> Description lists</a></h4>
+<h4><a class="toc-backref" href="#toc-entry-50"><span class="sectnum">4.2.1</span> Description Lists</a></h4>
 <p>Definition lists with the &quot;description&quot; class argument:</p>
-<dl class="description simple">
+<dl class="description">
 <dt>description lists</dt>
 <dd><p>Definition lists that are styled like in most dictionaries,
 encyclopedias etc. (as well as the LaTeX <cite>description</cite> environment).</p>
 </dd>
 <dt>label</dt>
-<dd><p>The term to be described. Put in boldface.</p>
+<dd><p>The term to be described. Put in boldface or italic.</p>
 </dd>
-<dt>content</dt>
-<dd><p>Starts on the same line and has a hanging indent.</p>
+<dt>Content</dt>
+<dd><p>starts on the same line and has a hanging indent.</p>
+</dd>
+<dt>A label without content</dt>
+<dd><!--  -->
+</dd>
+<dt>and the next label</dt>
+<dd><p>must align.</p>
+</dd>
+<dt>as well</dt>
+<dd><p>as content containing more than one</p>
+<p>paragraph</p>
+</dd>
+<dt>or</dt>
+<dd><ul class="simple">
+<li><p>nested lists</p></li>
+<li><p>item 2</p></li>
+</ul>
+</dd>
+<dt>or</dt>
+<dd><dl class="simple">
+<dt>nested</dt>
+<dd><p>definition lists</p>
+</dd>
+</dl>
 </dd>
 </dl>
 </section>
 <section id="field-list-variants">
-<h4><a class="toc-backref" href="#toc-entry-51"><span class="sectnum">4.2.2</span> Field list variants</a></h4>
+<h4><a class="toc-backref" href="#toc-entry-51"><span class="sectnum">4.2.2</span> Field List Variants</a></h4>
 <p>For field lists, the &quot;compact/open&quot;, &quot;narrow&quot; and &quot;run-in&quot; styles are defined
 in the style sheet <span class="docutils literal">plain.css</span>.</p>
 <dl class="simple">
@@ -1724,7 +1719,7 @@ body is wrapped and aligns with other fields.</p>
 </dl>
 </section>
 <section id="table-variants">
-<h4><a class="toc-backref" href="#toc-entry-52"><span class="sectnum">4.2.3</span> Table variants</a></h4>
+<h4><a class="toc-backref" href="#toc-entry-52"><span class="sectnum">4.2.3</span> Table Variants</a></h4>
 <p>The following styles can be applied to individual tables via a class
 argument or as document wide setting with the <a class="reference external" href="http://docutils.sourceforge.net/docs/user/config.html#table-style">table-style</a> <a class="footnote-reference brackets" href="#footnote-10" id="footnote-reference-23">10</a> configuration
 setting (or command line argument).</p>
@@ -1806,14 +1801,12 @@ from the <a class="reference external" href="http://tug.ctan.org/tex-archive/mac
 <section id="numbered-figures">
 <h4><a class="toc-backref" href="#toc-entry-53"><span class="sectnum">4.2.4</span> Numbered Figures</a></h4>
 <p>Numbered figures can be achieved with the &quot;numbered&quot; <span class="docutils literal">:figclass:</span> option:</p>
-<blockquote>
 <figure class="numbered">
-<img alt="reStructuredText, the markup syntax" src="../../../docs/user/rst/images/title.svg" />
+<img alt="reStructuredText, the markup syntax" src="../../../docs/user/rst/images/title.svg" style="width: 100%;" />
 <figcaption>
 <p>SVG image in a numbered figure.</p>
 </figcaption>
 </figure>
-</blockquote>
 </section>
 </section>
 </section>
