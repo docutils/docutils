@@ -1,29 +1,29 @@
-Text-level semantics
+Text-Level Semantics
 --------------------
 
-`HTML 5 tags for representation of text-level semantics`__ and their
-reStructuredText equivalents.
+This section describes the `HTML 5 tags for representation of text-level
+semantics`__ and their reStructuredText equivalents.
 
 __ https://html.spec.whatwg.org/#text-level-semantics
 
-.. class:: narrow
+.. class:: description
 
-:a:
+a
   Hyperlinks
 
     Visit my `drinks <example.org:drinks.html>`_ page.
 
-:em:
+em
   Stress emphasis
 
     I must say I *adore* lemonade. I's :emphasis:`sooo` sweet.
 
-:strong:
+strong
   Importance
 
     **Warning**: This tea is :strong:`very hot`.
 
-:small:
+small
   Side comments
 
     .. role:: small
@@ -31,7 +31,7 @@ __ https://html.spec.whatwg.org/#text-level-semantics
     These grapes are made into wine.
     :small:`Alcohol is addictive.`
 
-:s:
+s
   Inaccurate text
 
     .. role:: strikeout
@@ -39,13 +39,13 @@ __ https://html.spec.whatwg.org/#text-level-semantics
 
     Price: :strikeout:`£4.50` £2.00!
 
-:cite:
+cite
   Titles of works
 
     The case `Hugo v. Danielle` is relevant here.
     I recommend reading :title:`Harry Potter`.
 
-:q:
+q
   Quotations
 
     .. role:: quotation
@@ -54,7 +54,7 @@ __ https://html.spec.whatwg.org/#text-level-semantics
     The judge said :quotation:`You can drink water from the fish tank`
     but advised against it.
 
-:dfn:
+dfn
   Defining instance
 
     .. role:: dfn
@@ -62,7 +62,7 @@ __ https://html.spec.whatwg.org/#text-level-semantics
     The term :dfn:`organic food` refers to food produced without synthetic
     chemicals.
 
-:abbr:
+abbr
   Abbreviations [#attribute-optional]_
 
     Organic food in Ireland is certified by the :acronym:`IOFGA` [*]_
@@ -74,30 +74,34 @@ __ https://html.spec.whatwg.org/#text-level-semantics
 
   .. [*] Irish Organic Farmers and Growers Association
 
-:ruby, rt, rp: Ruby annotations
+ruby, rt, rp
+  Ruby annotations
 
   Require inline nesting, currently not supported in rST.
 
+  ..
     <ruby> OJ <rp>(</rp><rt>Orange Juice</rt><rp>)</rp></ruby>
 
-:data:
+data
   Machine-readable equivalent [#attribute-required]_
 
+  ..
     Available starting today! <data value="UPC:022014640201">North Coast
     Organic Apple Cider</data>
 
 
-:time:
+time
   Machine-readable equivalent of date- or time-related data [#attribute-required]_
 
+  ..
     Available starting on <time datetime="2011-11-18">November 18th</time>!
 
-:code:
+code
   Computer code
 
     The :code:`fruitdb` program can be used for tracking fruit production.
 
-:var:
+var
   Variables
 
     .. role:: var
@@ -105,31 +109,31 @@ __ https://html.spec.whatwg.org/#text-level-semantics
     If there are :var:`n` fruit in the bowl, at least :var:`n`\ ÷2 will be
     ripe.
 
-:samp:
+samp
   Computer output
 
     .. role:: samp(literal)
 
     The computer said :samp:`Unknown error -3`.
 
-:kbd:
+kbd
   User input
 
     .. role:: kbd
 
     Hit :kbd:`F1` to continue.
 
-:sub:
+sub
   Subscripts
 
     Water is H\ :sub:`2`\O.
 
-:sup:
+sup
   Superscripts
 
     The Hydrogen in heavy water is usually :sup:`2`\H.
 
-:i:
+i
   Alternative voice
 
     .. role:: alternative-voice
@@ -137,14 +141,14 @@ __ https://html.spec.whatwg.org/#text-level-semantics
 
     Lemonade consists primarily of :alternative-voice:`Citrus limon`.
 
-:b:
+b
   Keywords
 
     .. role:: b
 
     Take a :b:`lemon` and squeeze it with a :b:`juicer`.
 
-:u:
+u
   Annotations
 
     .. role:: spelling
@@ -153,7 +157,7 @@ __ https://html.spec.whatwg.org/#text-level-semantics
     The mixture of apple juice and :spelling:`eldeflower` juice is very
     pleasant.
 
-:mark:
+mark
   Highlight
 
     .. role:: mark
@@ -161,7 +165,7 @@ __ https://html.spec.whatwg.org/#text-level-semantics
     Elderflower cordial, with one :mark:`part` cordial to ten
     :mark:`part`\ s water, stands a\ :mark:`part` from the rest.
 
-:bdi:
+bdi
   Text directionality isolation [#attribute-optional]_
 
     .. role:: bdi
@@ -171,22 +175,23 @@ __ https://html.spec.whatwg.org/#text-level-semantics
   The `dir` global attribute defaults to "auto" (not "inherit") on this
   element.
 
-:bdo:
+bdo
   Text directionality formatting [#attribute-required]_
 
+  ..
     The proposal is to write English, but in reverse order. "Juice" would
     become "<bdo dir=rtl>Juice</bdo>">
 
-  Authors must specify the dir attribute on this element.
+  Authors *must* specify the dir attribute on this element.
 
-:span:
+span
   Other
 
     .. role:: language-fr
 
     In French we call it :language-fr:`sirop de sureau`.
 
-:br:
+br
   Line break
 
   For complete paragraphs, use a line-block:
@@ -206,7 +211,7 @@ __ https://html.spec.whatwg.org/#text-level-semantics
     linebreaks in this paragraph according to the width of the containing
     block.
 
-:wbr:
+wbr
   Line breaking opportunity
 
   Not supported by rST. You may use a ZWSP character (u200B), literal or via
@@ -222,16 +227,18 @@ __ https://html.spec.whatwg.org/#text-level-semantics
 .. [#attribute-required] Requires support for attributes to inline
    roles to make sense.
 
+.. _TODO: http://docutils.sourceforge.net/docs/dev/todo.html#interpreted-text
+
 
 Indicating Edits
 ----------------
 
-`HTML tags for representation of edits to the document`__ and their
-reStructuredText equivalents.
+The `HTML tags for representation of edits to the document`__ and their
+reStructuredText equivalents are:
 
-__ https://html.spec.whatwg.org/multipage/edits.html
+.. class:: description
 
-:ins:
+ins
   Additions [#attribute-optional]_
 
     .. role:: ins
@@ -242,7 +249,7 @@ __ https://html.spec.whatwg.org/multipage/edits.html
 
       This paragraph has been inserted.
 
-:del:
+del
   Removed content [#attribute-optional]_
 
     .. role:: del
@@ -253,4 +260,4 @@ __ https://html.spec.whatwg.org/multipage/edits.html
 
       This paragraph has been deleted.
 
-.. _TODO: http://docutils.sourceforge.net/docs/dev/todo.html#interpreted-text
+__ https://html.spec.whatwg.org/multipage/edits.html

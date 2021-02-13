@@ -1,0 +1,173 @@
+Field List Rendering
+--------------------
+
+A `field list` is converted to a HTML `definition list` and given the
+``field-list`` class argument value to allow CSS styling.
+With ``html_plain.css``, the layout is similar to `html4css1`:
+
+.. class:: open
+
+:A long field name: sticks into the field body.
+
+    The field body is pushed to the next line (you can suppress this
+    behaviour with the `run-in`_ class argument).
+
+:Customization: of the field name width is possible with CSS instead
+    of the `field-name-limit` configuration setting, for
+    example::
+
+      dl.field-list > dd { margin-left: 6em; }
+
+:Empty:
+
+:fields:  must not lead to misalignment of the following content.
+
+Styling with Class Arguments
+----------------------------
+
+The ``plain.css`` style sheet comes with some pre-defined style variants
+that can be choosen via a class argument.
+
+Description Lists
+`````````````````
+
+Definition lists with the "description" class argument:
+
+.. class:: description
+
+description lists
+    Definition lists that are styled like in most dictionaries,
+    encyclopedias etc. (as well as the LaTeX `description` environment).
+label
+    The term to be described. Put in boldface or italic.
+Content
+    starts on the same line and has a hanging indent.
+A label without content
+    ..
+and the next label
+    must align.
+
+as well
+    as content containing more than one
+
+    paragraph
+
+or
+    * nested lists
+    * item 2
+or
+    nested
+      definition lists
+
+
+Field List Variants
+```````````````````
+
+For field lists, the "compact/open", "narrow" and "run-in" styles are defined
+in the style sheet ``plain.css``.
+
+*compact*
+  .. class:: compact
+
+  :Feature: No additional space between list items.
+
+  :Option: The ``--compact-field-lists`` command line option (and the
+           corresponding configuration setting) set the `compact`
+           class argument on all "simple" field lists, if not
+           overridden with `open`.
+
+  :Use:  For lists with short field body.
+
+*open*
+  .. class:: open
+
+  :Feature: Additional space between list items also in "simple" lists.
+            (Overrides the ``--compact-field-lists`` command line
+            option and the corresponding configuration setting)
+
+  :Use: For "simple" lists that should keep the space between list items.
+
+*narrow*
+  .. class:: narrow
+
+  :Feature: Less indented field body.
+  :Use:   For lists with short field names.
+  :A long field name:
+       sticks into the field body and the field body starts on a
+       new line (if not combined with `run-in`_).
+
+.. _`run-in`:
+
+*run-in*
+  .. class:: run-in
+
+  :Feature: Field body starts on the same line also after long field
+            names.
+
+  :A long field name: sticks into the field body which continues on
+                         the same line.
+
+  :The next field name:  and field body should align. Long text in the field
+                         body is wrapped and aligns with other fields.
+
+Table Variants
+``````````````
+
+The following styles can be applied to individual tables via a class
+argument or as document wide setting with the table-style_ configuration
+setting (or command line argument).
+
+* Numbered tables can be achieved with the "numbered" class option:
+
+  .. table:: truth values
+     :class: numbered
+
+     ======= ======= ==========
+     A       B       A or B
+     ======= ======= ==========
+     False   False   False
+     True    False   True
+     False   True    True
+     True    True    True
+     ======= ======= ==========
+
+  Currently, referencing to the table by number is not supported. This is a
+  common request and already on the `TODO list`.
+
+* A table with "booktabs" class value, is rendered similar to the style
+  from the booktabs_ LaTeX package.
+
+  .. _table-style:
+     http://docutils.sourceforge.net/docs/user/config.html#table-style
+  .. _booktabs:
+     http://tug.ctan.org/tex-archive/macros/latex/contrib/booktabs/booktabs.pdf
+
+"Booktabs" style table, numbered, centre-aligned, with auto-sized columns:
+
+  .. table:: I/O values
+     :class: booktabs numbered
+     :align: center
+     :widths: auto
+
+     ======= ======= ==========
+     Input           Output
+     --------------- ----------
+     A       B       A or B
+     ======= ======= ==========
+     False   False   False
+     True    False   True
+     False   True    True
+     True    True    True
+     ======= ======= ==========
+
+Numbered Figures
+````````````````
+
+Numbered figures can be achieved with the "numbered" ``:figclass:`` option:
+
+.. figure:: ../../../docs/user/rst/images/title.svg
+   :alt: reStructuredText, the markup syntax
+   :figclass: numbered
+   :width: 100%
+
+   SVG image in a numbered figure.
