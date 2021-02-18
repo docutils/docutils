@@ -1577,6 +1577,30 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def pop_output_collector(self):
         self.out = self.out_stack.pop()
 
+    def term_postfix(self, node):
+        """
+        Return LaTeX code required between term or field name and content.
+
+        In a LaTeX "description" environment (used for definition
+        lists and non-docinfo field lists), a ``\\leavevmode``
+        between an item's label and content ensures the correct
+        placement of certain block constructs.
+        """
+        for child in node:
+            if not isinstance(child, (nodes.Invisible, nodes.footnote,
+                                      nodes.citation)):
+                break
+        else:
+            return ''
+        if isinstance(child, (nodes.image)):
+            return '\\leavevmode\n' # Images get an additional newline.
+        if isinstance(child, (nodes.container, nodes.compound)):
+            return self.term_postfix(child)
+        if not isinstance(child,
+                          (nodes.paragraph, nodes.math_block)):
+            return r'\leavevmode'
+        return ''
+
     # Visitor methods
     # ---------------
 
@@ -2130,7 +2154,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
         pass
 
     def visit_field_body(self, node):
-        pass
+        if not isinstance(node.parent.parent, nodes.docinfo):
+            self.out.append(self.term_postfix(node))
 
     def depart_field_body(self, node):
         if self.out is self.docinfo:
@@ -2970,9 +2995,12 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.out.append('\\item[{')
 
     def depart_term(self, node):
-        # \leavevmode results in a line break if the
-        # term is followed by an item list.
-        self.out.append('}] \\leavevmode ')
+        self.out.append('}] ')
+        # Do we need a \leavevmode (line break if the field body begins
+        # with a list or environment)?
+        next_node = node.next_node(descend=False, siblings=True)
+        if not isinstance(next_node, nodes.classifier):
+            self.out.append(self.term_postfix(next_node))
 
     def visit_tgroup(self, node):
         pass
