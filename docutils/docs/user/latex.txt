@@ -152,7 +152,7 @@ _`rubber`
   This includes processing bibliographic references or indices, as well as
   compilation or conversion of figures.
 
-__ https://launchpad.net/rubber/
+__ https://gitlab.com/latex-rubber/rubber/
 
 
 Configuration
@@ -1967,8 +1967,7 @@ This can be solved with the "unicode" hyperref_option_ setting::
   --hyperref-option=unicode
 
 (works also with non-unicode input/output encoding (e.g. "koi8r" or
-"latin1"). Newer versions of hyperref default to "unicode=true" if the
-document language is "russian".
+"latin1"). Newer versions of hyperref default to "unicode=true".
 
 .. _hyperref_option: config.html#stylesheet-latex-writers
 

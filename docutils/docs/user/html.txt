@@ -95,14 +95,14 @@ html5_polyglot
 
 The ``html5_polyglot`` writer generates `polyglot HTML`_ [#]_ output, valid
 XML [#safetext]_ that is compatible with `HTML5`_. New features and elements
-will only be used if they are widely supported to make documents `viewable
-with any browser`_.
+are used if they are widely supported.
 
-There is no hard-coded formatting information in the HTML document. Correct
-rendering of elements not directly supported by HTML depends on a CSS_ style
-sheet. The provided style sheets minimal.css_ and plain.css_ define required
-and optional styling rules respectively. Adaption of the layout is possible
-with `custom style sheets`_. [#safetext]_
+There is no hard-coded formatting information in the HTML document.
+Correct rendering of elements not directly supported by HTML depends
+on a CSS_ style sheet. The provided style sheet minimal.css_ defines
+required and styling rules, plain.css_ and responsive.css_ add
+optional rules for better legibility. Adaption of the layout is
+possible with `custom style sheets`_. [#safetext]_
 
 New in Docutils 0.13
 
@@ -114,6 +114,7 @@ New in Docutils 0.13
 .. _[html5 writer]: config.html#html5-writer
 .. _minimal.css: ../../docutils/writers/html5_polyglot/minimal.css
 .. _plain.css: ../../docutils/writers/html5_polyglot/plain.css
+.. _responsive.css: ../../docutils/writers/html5_polyglot/responsive.css
 .. _custom style sheets: ../howto/html-stylesheets.html
 .. _viewable with any browser: http://www.anybrowser.org/campaign
 .. _Benefits of polyglot XHTML5: http://xmlplease.com/xhtml/xhtml5polyglot/
