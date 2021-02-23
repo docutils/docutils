@@ -1,3 +1,36 @@
+Changes to the `html4css1` Writer
+=================================
+
+* Use only meta keywords recognized by HTML 5.
+  Add HTML5-compatible meta tags for docinfo items
+  "authors", "date", and "copyright".
+
+* Set table column widths with <style="width: ...">, not "width" argument.
+
+* Horizontal alignment of table heads with CSS.
+
+* Field lists as styled definition lists.
+
+* Do not drop paragraph objects, use CSS rules to prevent unwanted vertical
+  space.
+
+* Put subtitles in <p> elements.
+
+* Use the new semantic tags <main>, <section>, <header>,
+  <footer>, <aside>, <figure>, and <figcaption>.
+  See ``minimal.css`` and ``responsive.css`` for styling rule examples.
+
+  Change the `initial_header_level` setting default to "2", as browsers
+  use the `same style for <h1> and <h2> when nested in a <section\>`__.
+
+  __ https://stackoverflow.com/questions/39547412/same-font-size-for-h1-and-h2-in-article
+
+* Use HTML text-level tags <small>, <s>, <q>, <dfn>, <var>, <samp>, <kbd>,
+  <i>, <b>, <u>, <mark>, and <bdi> if a matching class value
+  is found in `inline` and `literal` elements.
+  Use <ins> and <del> if a matching class value
+  is found in `inline`, `literal`, or `container` elements.
+
 Field List Rendering
 --------------------
 

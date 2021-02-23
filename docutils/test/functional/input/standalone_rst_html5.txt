@@ -6,30 +6,10 @@
 .. include:: data/list_table.txt
 .. include:: data/custom_roles.txt
 
-HTML Specific
-=============
-
-.. include:: data/svg_images.txt
-.. include:: data/swf_images.txt
-.. include:: data/html5-text-level-tags.txt
-
-Changes to the `html4css1` Writer
-=================================
-
-* Use only meta keywords recognized by HTML 5.
-
-* Set table column widths with <style="width: ...">, not "width" argument.
-
-* Horizontal alignment of table heads with CSS.
-
-* Field lists as styled definition lists.
-
-* Do not drop paragraph objects, use CSS rules to prevent unwanted vertical
-  space.
-
-* Put subtitles in <p> elements.
+.. HTML Specific
 
 .. include:: data/html5-features.txt
+.. include:: data/html5-text-level-tags.txt
 
 .. include:: data/errors.txt
 
