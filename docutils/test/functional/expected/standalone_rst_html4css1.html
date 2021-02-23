@@ -124,22 +124,23 @@ They are transformed from section titles after parsing. -->
 <li><a class="reference internal" href="#compound-paragraph" id="toc-entry-30">2.14.8&nbsp;&nbsp;&nbsp;Compound Paragraph</a></li>
 <li><a class="reference internal" href="#parsed-literal-blocks" id="toc-entry-31">2.14.9&nbsp;&nbsp;&nbsp;Parsed Literal Blocks</a></li>
 <li><a class="reference internal" href="#code" id="toc-entry-32">2.14.10&nbsp;&nbsp;&nbsp;Code</a></li>
+<li><a class="reference internal" href="#meta" id="toc-entry-33">2.14.11&nbsp;&nbsp;&nbsp;Meta</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#substitution-definitions" id="toc-entry-33">2.15&nbsp;&nbsp;&nbsp;Substitution Definitions</a></li>
-<li><a class="reference internal" href="#comments" id="toc-entry-34">2.16&nbsp;&nbsp;&nbsp;Comments</a></li>
-<li><a class="reference internal" href="#raw-text" id="toc-entry-35">2.17&nbsp;&nbsp;&nbsp;Raw text</a></li>
-<li><a class="reference internal" href="#container" id="toc-entry-36">2.18&nbsp;&nbsp;&nbsp;Container</a></li>
-<li><a class="reference internal" href="#colspanning-tables" id="toc-entry-37">2.19&nbsp;&nbsp;&nbsp;Colspanning tables</a></li>
-<li><a class="reference internal" href="#rowspanning-tables" id="toc-entry-38">2.20&nbsp;&nbsp;&nbsp;Rowspanning tables</a></li>
-<li><a class="reference internal" href="#complex-tables" id="toc-entry-39">2.21&nbsp;&nbsp;&nbsp;Complex tables</a></li>
-<li><a class="reference internal" href="#list-tables" id="toc-entry-40">2.22&nbsp;&nbsp;&nbsp;List Tables</a></li>
-<li><a class="reference internal" href="#custom-roles" id="toc-entry-41">2.23&nbsp;&nbsp;&nbsp;Custom Roles</a></li>
-<li><a class="reference internal" href="#svg-images" id="toc-entry-42">2.24&nbsp;&nbsp;&nbsp;SVG Images</a></li>
-<li><a class="reference internal" href="#swf-images" id="toc-entry-43">2.25&nbsp;&nbsp;&nbsp;SWF Images</a></li>
+<li><a class="reference internal" href="#substitution-definitions" id="toc-entry-34">2.15&nbsp;&nbsp;&nbsp;Substitution Definitions</a></li>
+<li><a class="reference internal" href="#comments" id="toc-entry-35">2.16&nbsp;&nbsp;&nbsp;Comments</a></li>
+<li><a class="reference internal" href="#raw-text" id="toc-entry-36">2.17&nbsp;&nbsp;&nbsp;Raw text</a></li>
+<li><a class="reference internal" href="#container" id="toc-entry-37">2.18&nbsp;&nbsp;&nbsp;Container</a></li>
+<li><a class="reference internal" href="#colspanning-tables" id="toc-entry-38">2.19&nbsp;&nbsp;&nbsp;Colspanning tables</a></li>
+<li><a class="reference internal" href="#rowspanning-tables" id="toc-entry-39">2.20&nbsp;&nbsp;&nbsp;Rowspanning tables</a></li>
+<li><a class="reference internal" href="#complex-tables" id="toc-entry-40">2.21&nbsp;&nbsp;&nbsp;Complex tables</a></li>
+<li><a class="reference internal" href="#list-tables" id="toc-entry-41">2.22&nbsp;&nbsp;&nbsp;List Tables</a></li>
+<li><a class="reference internal" href="#custom-roles" id="toc-entry-42">2.23&nbsp;&nbsp;&nbsp;Custom Roles</a></li>
+<li><a class="reference internal" href="#svg-images" id="toc-entry-43">2.24&nbsp;&nbsp;&nbsp;SVG Images</a></li>
+<li><a class="reference internal" href="#swf-images" id="toc-entry-44">2.25&nbsp;&nbsp;&nbsp;SWF Images</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#error-handling" id="toc-entry-44">3&nbsp;&nbsp;&nbsp;Error Handling</a></li>
+<li><a class="reference internal" href="#error-handling" id="toc-entry-45">3&nbsp;&nbsp;&nbsp;Error Handling</a></li>
 </ul>
 </div>
 <div class="section" id="structural-elements">
@@ -174,9 +175,9 @@ activated with the <tt class="docutils literal"><span class="pre">--section-subt
 (<a class="reference external" href="http://www.python.org">http://www.python.org</a>), external hyperlinks (<a class="reference external" href="http://www.python.org/">Python</a> <a class="footnote-reference" href="#footnote-6" id="footnote-reference-10">[5]</a>), internal
 cross-references (<a class="reference internal" href="#example">example</a>), external hyperlinks with embedded URIs
 (<a class="reference external" href="http://www.python.org">Python web site</a>), <a class="reference external" href="http://www.python.org/">anonymous hyperlink
-references</a> <a class="footnote-reference" href="#footnote-6" id="footnote-reference-14">[5]</a> (<a class="reference external" href="http://docutils.sourceforge.net/">a second reference</a> <a class="footnote-reference" href="#footnote-8" id="footnote-reference-15">[7]</a>), footnote references (manually
+references</a> <a class="footnote-reference" href="#footnote-6" id="footnote-reference-14">[5]</a> (<a class="reference external" href="https://docutils.sourceforge.io/">a second reference</a> <a class="footnote-reference" href="#footnote-8" id="footnote-reference-15">[7]</a>), footnote references (manually
 numbered <a class="footnote-reference" href="#footnote-1" id="footnote-reference-1">[1]</a>, anonymous auto-numbered <a class="footnote-reference" href="#footnote-2" id="footnote-reference-2">[3]</a>, labeled auto-numbered
-<a class="footnote-reference" href="#label" id="footnote-reference-3">[2]</a>, or symbolic <a class="footnote-reference" href="#footnote-3" id="footnote-reference-4">[*]</a>), citation references (<a class="citation-reference" href="#cit2002" id="citation-reference-1">[CIT2002]</a>),
+<a class="footnote-reference" href="#label" id="footnote-reference-3">[2]</a>, or symbolic <a class="footnote-reference" href="#footnote-3" id="footnote-reference-4">[*]</a>), citation references (see <a class="citation-reference" href="#cit2002" id="citation-reference-1">[CIT2002]</a>),
 substitution references (<img alt="EXAMPLE" src="../../../docs/user/rst/images/biohazard.png" /> &amp;
 a <em>trimmed heart</em> <tt class="docutils literal">(U+2665):</tt>♥), and <span class="target" id="inline-hyperlink-targets">inline hyperlink targets</span>
 (see <a class="reference internal" href="#targets">Targets</a> below for a reference back to here).  Character-level
@@ -554,33 +555,33 @@ this: <a href="#system-message-5"><span class="problematic" id="problematic-3">`
 <h2><a class="toc-backref" href="#toc-entry-22">2.14&nbsp;&nbsp;&nbsp;Directives</a></h2>
 <div class="contents local topic" id="contents">
 <ul class="auto-toc simple">
-<li><a class="reference internal" href="#document-parts" id="toc-entry-45">2.14.1&nbsp;&nbsp;&nbsp;Document Parts</a></li>
-<li><a class="reference internal" href="#images-and-figures" id="toc-entry-46">2.14.2&nbsp;&nbsp;&nbsp;Images and Figures</a></li>
-<li><a class="reference internal" href="#tables" id="toc-entry-47">2.14.3&nbsp;&nbsp;&nbsp;Tables</a></li>
-<li><a class="reference internal" href="#admonitions" id="toc-entry-48">2.14.4&nbsp;&nbsp;&nbsp;Admonitions</a></li>
-<li><a class="reference internal" href="#topics-sidebars-and-rubrics" id="toc-entry-49">2.14.5&nbsp;&nbsp;&nbsp;Topics, Sidebars, and Rubrics</a></li>
-<li><a class="reference internal" href="#target-footnotes" id="toc-entry-50">2.14.6&nbsp;&nbsp;&nbsp;Target Footnotes</a></li>
-<li><a class="reference internal" href="#replacement-text" id="toc-entry-51">2.14.7&nbsp;&nbsp;&nbsp;Replacement Text</a></li>
-<li><a class="reference internal" href="#compound-paragraph" id="toc-entry-52">2.14.8&nbsp;&nbsp;&nbsp;Compound Paragraph</a></li>
-<li><a class="reference internal" href="#parsed-literal-blocks" id="toc-entry-53">2.14.9&nbsp;&nbsp;&nbsp;Parsed Literal Blocks</a></li>
-<li><a class="reference internal" href="#code" id="toc-entry-54">2.14.10&nbsp;&nbsp;&nbsp;Code</a></li>
+<li><a class="reference internal" href="#document-parts" id="toc-entry-46">2.14.1&nbsp;&nbsp;&nbsp;Document Parts</a></li>
+<li><a class="reference internal" href="#images-and-figures" id="toc-entry-47">2.14.2&nbsp;&nbsp;&nbsp;Images and Figures</a></li>
+<li><a class="reference internal" href="#tables" id="toc-entry-48">2.14.3&nbsp;&nbsp;&nbsp;Tables</a></li>
+<li><a class="reference internal" href="#admonitions" id="toc-entry-49">2.14.4&nbsp;&nbsp;&nbsp;Admonitions</a></li>
+<li><a class="reference internal" href="#topics-sidebars-and-rubrics" id="toc-entry-50">2.14.5&nbsp;&nbsp;&nbsp;Topics, Sidebars, and Rubrics</a></li>
+<li><a class="reference internal" href="#target-footnotes" id="toc-entry-51">2.14.6&nbsp;&nbsp;&nbsp;Target Footnotes</a></li>
+<li><a class="reference internal" href="#replacement-text" id="toc-entry-52">2.14.7&nbsp;&nbsp;&nbsp;Replacement Text</a></li>
+<li><a class="reference internal" href="#compound-paragraph" id="toc-entry-53">2.14.8&nbsp;&nbsp;&nbsp;Compound Paragraph</a></li>
+<li><a class="reference internal" href="#parsed-literal-blocks" id="toc-entry-54">2.14.9&nbsp;&nbsp;&nbsp;Parsed Literal Blocks</a></li>
+<li><a class="reference internal" href="#code" id="toc-entry-55">2.14.10&nbsp;&nbsp;&nbsp;Code</a></li>
+<li><a class="reference internal" href="#meta" id="toc-entry-56">2.14.11&nbsp;&nbsp;&nbsp;Meta</a></li>
 </ul>
 </div>
 <p>These are just a sample of the many reStructuredText Directives.  For
-others, please see
-<a class="reference external" href="http://docutils.sourceforge.net/docs/ref/rst/directives.html">http://docutils.sourceforge.net/docs/ref/rst/directives.html</a>.</p>
+others, please see <a class="reference external" href="https://docutils.sourceforge.io/docs/ref/rst/directives.html">reStructuredText Directives</a> <a class="footnote-reference" href="#footnote-9" id="footnote-reference-16">[8]</a>.</p>
 <div class="section" id="document-parts">
-<h3><a class="toc-backref" href="#toc-entry-45">2.14.1&nbsp;&nbsp;&nbsp;Document Parts</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-46">2.14.1&nbsp;&nbsp;&nbsp;Document Parts</a></h3>
 <p>An example of the &quot;contents&quot; directive can be seen above this section
 (a local, untitled table of <a class="reference internal" href="#contents">contents</a>) and at the beginning of the
 document (a document-wide <a class="reference internal" href="#table-of-contents">table of contents</a>).</p>
 </div>
 <div class="section" id="images-and-figures">
-<h3><a class="toc-backref" href="#toc-entry-46">2.14.2&nbsp;&nbsp;&nbsp;Images and Figures</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-47">2.14.2&nbsp;&nbsp;&nbsp;Images and Figures</a></h3>
 <p>An image directive (also clickable -- a hyperlink reference):</p>
-<a class="reference internal image-reference" href="#directives"><img alt="../../../docs/user/rst/images/title.png" class="class1 class2" src="../../../docs/user/rst/images/title.png" /></a>
+<a class="reference internal image-reference" href="#directives"><img alt="../../../docs/user/rst/images/title.png" class="class1 class2" src="../../../docs/user/rst/images/title.png" style="width: 70%;" /></a>
 <p>Image with multiple IDs:</p>
-<span id="image-target-2"></span><span id="image-target-1"></span><img alt="../../../docs/user/rst/images/title.png" id="image-target-3" src="../../../docs/user/rst/images/title.png" />
+<span id="image-target-2"></span><span id="image-target-1"></span><img alt="../../../docs/user/rst/images/biohazard.png" id="image-target-3" src="../../../docs/user/rst/images/biohazard.png" />
 <p>A centered image:</p>
 <img alt="../../../docs/user/rst/images/biohazard.png" class="align-center" src="../../../docs/user/rst/images/biohazard.png" />
 <p>A left-aligned image:</p>
@@ -597,12 +598,11 @@ the browser or rendering software used.</p>
 <p>Image size:</p>
 <p>An image 2 em wide:</p>
 <img alt="../../../docs/user/rst/images/biohazard.png" src="../../../docs/user/rst/images/biohazard.png" style="width: 2em;" />
-<p>An image 2 em wide and 15 pixel high:</p>
-<img alt="../../../docs/user/rst/images/biohazard.png" src="../../../docs/user/rst/images/biohazard.png" style="width: 2em; height: 15px;" />
-<p>An image occupying 50% of the line width:</p>
+<p>An image 2 cm wide and 15 pixel high:</p>
+<img alt="../../../docs/user/rst/images/biohazard.png" src="../../../docs/user/rst/images/biohazard.png" style="width: 2cm; height: 15px;" />
+<p>Relative units allow adaption of the image to the screen or paper size.
+An image occupying 50% of the line width:</p>
 <img alt="../../../docs/user/rst/images/title.png" src="../../../docs/user/rst/images/title.png" style="width: 50%;" />
-<p>An image 2 cm high:</p>
-<img alt="../../../docs/user/rst/images/biohazard.png" src="../../../docs/user/rst/images/biohazard.png" style="height: 2cm;" />
 <p>A <em>figure</em> is an image with a caption and/or a legend.  With page-based output
 media, figures might float to a different position if this helps the page
 layout.</p>
@@ -667,7 +667,7 @@ rendering software used.</p>
 upon the style sheet and the browser or rendering software used.</p>
 </div>
 <div class="section" id="tables">
-<h3><a class="toc-backref" href="#toc-entry-47">2.14.3&nbsp;&nbsp;&nbsp;Tables</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-48">2.14.3&nbsp;&nbsp;&nbsp;Tables</a></h3>
 <p>Tables may be given titles and additional arguments with the <em>table</em>
 directive:</p>
 <table border="1" class="docutils align-left">
@@ -761,7 +761,7 @@ writer/backend).</p>
 </table>
 </div>
 <div class="section" id="admonitions">
-<h3><a class="toc-backref" href="#toc-entry-48">2.14.4&nbsp;&nbsp;&nbsp;Admonitions</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-49">2.14.4&nbsp;&nbsp;&nbsp;Admonitions</a></h3>
 <div class="admonition attention">
 <p class="first admonition-title">Attention!</p>
 <p class="last">Directives at large.</p>
@@ -810,7 +810,7 @@ Reader discretion is strongly advised.</p>
 </div>
 </div>
 <div class="section" id="topics-sidebars-and-rubrics">
-<h3><a class="toc-backref" href="#toc-entry-49">2.14.5&nbsp;&nbsp;&nbsp;Topics, Sidebars, and Rubrics</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-50">2.14.5&nbsp;&nbsp;&nbsp;Topics, Sidebars, and Rubrics</a></h3>
 <p><em>Sidebars</em> are like miniature, parallel documents.</p>
 <div class="sidebar">
 <p class="first sidebar-title">Optional Sidebar Title</p>
@@ -834,7 +834,7 @@ document's structure. It is typically highlighted in red (hence the name).</p>
 allowed (e.g. inside a directive).</p>
 </div>
 <div class="section" id="target-footnotes">
-<h3><a class="toc-backref" href="#toc-entry-50">2.14.6&nbsp;&nbsp;&nbsp;Target Footnotes</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-51">2.14.6&nbsp;&nbsp;&nbsp;Target Footnotes</a></h3>
 <table class="docutils footnote" frame="void" id="footnote-6" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
@@ -850,16 +850,28 @@ allowed (e.g. inside a directive).</p>
 <table class="docutils footnote" frame="void" id="footnote-8" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#footnote-reference-15">[7]</a></td><td><a class="reference external" href="http://docutils.sourceforge.net/">http://docutils.sourceforge.net/</a></td></tr>
+<tr><td class="label"><a class="fn-backref" href="#footnote-reference-15">[7]</a></td><td><a class="reference external" href="https://docutils.sourceforge.io/">https://docutils.sourceforge.io/</a></td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="footnote-9" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#footnote-reference-16">[8]</a></td><td><a class="reference external" href="https://docutils.sourceforge.io/docs/ref/rst/directives.html">https://docutils.sourceforge.io/docs/ref/rst/directives.html</a></td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="footnote-10" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#footnote-reference-17">[9]</a></td><td><a class="reference external" href="https://docutils.sourceforge.io/docs/ref/rst/directives.html#metadata">https://docutils.sourceforge.io/docs/ref/rst/directives.html#metadata</a></td></tr>
 </tbody>
 </table>
 </div>
 <div class="section" id="replacement-text">
-<h3><a class="toc-backref" href="#toc-entry-51">2.14.7&nbsp;&nbsp;&nbsp;Replacement Text</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-52">2.14.7&nbsp;&nbsp;&nbsp;Replacement Text</a></h3>
 <p>I recommend you try <a class="reference external" href="http://www.python.org/">Python, <em>the</em> best language around</a> <a class="footnote-reference" href="#footnote-6" id="footnote-reference-12">[5]</a>.</p>
 </div>
 <div class="section" id="compound-paragraph">
-<h3><a class="toc-backref" href="#toc-entry-52">2.14.8&nbsp;&nbsp;&nbsp;Compound Paragraph</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-53">2.14.8&nbsp;&nbsp;&nbsp;Compound Paragraph</a></h3>
 <p>The <em>compound</em> directive is used to create a &quot;compound paragraph&quot;, which
 is a single logical paragraph containing multiple physical body
 elements. For example:</p>
@@ -979,7 +991,7 @@ a quote and</blockquote>
 </div>
 </div>
 <div class="section" id="parsed-literal-blocks">
-<h3><a class="toc-backref" href="#toc-entry-53">2.14.9&nbsp;&nbsp;&nbsp;Parsed Literal Blocks</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-54">2.14.9&nbsp;&nbsp;&nbsp;Parsed Literal Blocks</a></h3>
 <pre class="literal-block">
 This is a parsed literal block.
     This line is indented.  The next line is blank.
@@ -991,7 +1003,7 @@ footnotes <a class="footnote-reference" href="#footnote-1" id="footnote-referenc
 </pre>
 </div>
 <div class="section" id="code">
-<h3><a class="toc-backref" href="#toc-entry-54">2.14.10&nbsp;&nbsp;&nbsp;Code</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-55">2.14.10&nbsp;&nbsp;&nbsp;Code</a></h3>
 <p>Blocks of source code can be set with the <cite>code</cite> directive. If the code
 language is specified, the content is parsed and tagged by the <a class="reference external" href="http://pygments.org/">Pygments</a> <a class="footnote-reference" href="#footnote-7" id="footnote-reference-13">[6]</a>
 syntax highlighter and can be formatted with a style sheet. (Code parsing
@@ -1021,15 +1033,20 @@ as a code block, here the rst file <tt class="docutils literal">header_footer.tx
 <span class="ln">2 </span>.. footer:: Document footer
 </pre>
 </div>
+<div class="section" id="meta">
+<h3><a class="toc-backref" href="#toc-entry-56">2.14.11&nbsp;&nbsp;&nbsp;Meta</a></h3>
+<p>The <a class="reference external" href="https://docutils.sourceforge.io/docs/ref/rst/directives.html#metadata">“meta” directive</a> <a class="footnote-reference" href="#footnote-10" id="footnote-reference-17">[9]</a> is used to specify metadata to be stored in,
+e.g., HTML META tags or ODT file properties.</p>
+</div>
 </div>
 <div class="section" id="substitution-definitions">
-<h2><a class="toc-backref" href="#toc-entry-33">2.15&nbsp;&nbsp;&nbsp;Substitution Definitions</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-34">2.15&nbsp;&nbsp;&nbsp;Substitution Definitions</a></h2>
 <p>An inline image (<img alt="EXAMPLE" src="../../../docs/user/rst/images/biohazard.png" />) example:</p>
 <p>A Unicode example:</p>
 <p>(Substitution definitions are not visible in the HTML source.)</p>
 </div>
 <div class="section" id="comments">
-<h2><a class="toc-backref" href="#toc-entry-34">2.16&nbsp;&nbsp;&nbsp;Comments</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-35">2.16&nbsp;&nbsp;&nbsp;Comments</a></h2>
 <p>Here's one:</p>
 <!-- Comments begin with two dots and a space. Anything may
 follow, except for the syntax of footnotes, hyperlink
@@ -1041,20 +1058,20 @@ Comments may contain non-ASCII characters: ä ö ü æ ø å -->
 <p>(View the HTML source to see the comment.)</p>
 </div>
 <div class="section" id="raw-text">
-<h2><a class="toc-backref" href="#toc-entry-35">2.17&nbsp;&nbsp;&nbsp;Raw text</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-36">2.17&nbsp;&nbsp;&nbsp;Raw text</a></h2>
 <p>This does not necessarily look nice, because there may be missing white space.</p>
 <p>It's just there to freeze the behavior.</p>
 A test.Second test.<div class="myclass">Another test with myclass set.</div><p>This is the <span class="myrawroleclass">fourth test</span> with myrawroleclass set.</p>
 Fifth test in HTML.<br />Line two.</div>
 <div class="section" id="container">
-<h2><a class="toc-backref" href="#toc-entry-36">2.18&nbsp;&nbsp;&nbsp;Container</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-37">2.18&nbsp;&nbsp;&nbsp;Container</a></h2>
 <div class="custom docutils container">
 <p>paragraph 1</p>
 <p>paragraph 2</p>
 </div>
 </div>
 <div class="section" id="colspanning-tables">
-<h2><a class="toc-backref" href="#toc-entry-37">2.19&nbsp;&nbsp;&nbsp;Colspanning tables</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-38">2.19&nbsp;&nbsp;&nbsp;Colspanning tables</a></h2>
 <p>This table has a cell spanning two columns:</p>
 <table border="1" class="docutils">
 <colgroup>
@@ -1092,7 +1109,7 @@ Fifth test in HTML.<br />Line two.</div>
 </table>
 </div>
 <div class="section" id="rowspanning-tables">
-<h2><a class="toc-backref" href="#toc-entry-38">2.20&nbsp;&nbsp;&nbsp;Rowspanning tables</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-39">2.20&nbsp;&nbsp;&nbsp;Rowspanning tables</a></h2>
 <p>Here's a table with cells spanning several rows:</p>
 <table border="1" class="docutils">
 <colgroup>
@@ -1125,7 +1142,7 @@ cell.</td>
 </table>
 </div>
 <div class="section" id="complex-tables">
-<h2><a class="toc-backref" href="#toc-entry-39">2.21&nbsp;&nbsp;&nbsp;Complex tables</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-40">2.21&nbsp;&nbsp;&nbsp;Complex tables</a></h2>
 <p>Here's a complex table, which should test all features.</p>
 <table border="1" class="docutils">
 <colgroup>
@@ -1174,14 +1191,14 @@ empty: <tt class="docutils literal"><span class="pre">--&gt;</span></tt></td>
 </table>
 </div>
 <div class="section" id="list-tables">
-<h2><a class="toc-backref" href="#toc-entry-40">2.22&nbsp;&nbsp;&nbsp;List Tables</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-41">2.22&nbsp;&nbsp;&nbsp;List Tables</a></h2>
 <p>Here's a list table exercising all features:</p>
-<table border="1" class="colwidths-given test docutils" style="width: 40em">
+<table border="1" class="colwidths-given test docutils" style="width: 95%">
 <caption>list table with integral header</caption>
 <colgroup>
-<col width="17%" />
-<col width="33%" />
-<col width="50%" />
+<col width="26%" />
+<col width="21%" />
+<col width="53%" />
 </colgroup>
 <thead valign="bottom">
 <tr><th class="head stub">Treat</th>
@@ -1221,7 +1238,7 @@ crunchy, now would it?</td>
 </table>
 </div>
 <div class="section" id="custom-roles">
-<h2><a class="toc-backref" href="#toc-entry-41">2.23&nbsp;&nbsp;&nbsp;Custom Roles</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-42">2.23&nbsp;&nbsp;&nbsp;Custom Roles</a></h2>
 <ul>
 <li><p class="first">A role based on an existing role.</p>
 <p><tt class="custom docutils literal">one</tt> <tt class="custom docutils literal">two</tt> <tt class="custom docutils literal">three</tt></p>
@@ -1251,7 +1268,7 @@ crunchy, now would it?</td>
 </ul>
 </div>
 <div class="section" id="svg-images">
-<h2><a class="toc-backref" href="#toc-entry-42">2.24&nbsp;&nbsp;&nbsp;SVG Images</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-43">2.24&nbsp;&nbsp;&nbsp;SVG Images</a></h2>
 <object class="align-left" data="../../../docs/user/rst/images/biohazard.svg" style="width: 48px; height: 48px;" type="image/svg+xml">../../../docs/user/rst/images/biohazard.svg</object>
 <p>Scalable vector graphics (SVG) images are the only standards-compliable way
 to include vector graphics in HTML documents. However, they are not
@@ -1338,7 +1355,7 @@ tags.</p>
 </blockquote>
 </div>
 <div class="section" id="swf-images">
-<h2><a class="toc-backref" href="#toc-entry-43">2.25&nbsp;&nbsp;&nbsp;SWF Images</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-44">2.25&nbsp;&nbsp;&nbsp;SWF Images</a></h2>
 <p>Shockwave Flash is an image/movie format that most modern web browsers
 support via a plugin. It is sometimes blocked due to privacy/security
 concerns.</p>
@@ -1350,7 +1367,7 @@ For complete control over display options use raw HTML.</p>
 </div>
 </div>
 <div class="section" id="error-handling">
-<h1><a class="toc-backref" href="#toc-entry-44">3&nbsp;&nbsp;&nbsp;Error Handling</a></h1>
+<h1><a class="toc-backref" href="#toc-entry-45">3&nbsp;&nbsp;&nbsp;Error Handling</a></h1>
 <p>Any errors caught during processing will generate system messages.</p>
 <p>There should be five messages in the following, auto-generated
 section, &quot;Docutils System Messages&quot;:</p>
@@ -1359,19 +1376,19 @@ section, &quot;Docutils System Messages&quot;:</p>
 <div class="system-messages section">
 <h1>Docutils System Messages</h1>
 <div class="system-message" id="system-message-1">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">functional/input/data/standard.txt</tt>, line 104); <em><a href="#problematic-1">backlink</a></em></p>
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">functional/input/data/standard.txt</tt>, line 99); <em><a href="#problematic-1">backlink</a></em></p>
 Undefined substitution referenced: &quot;problematic&quot;.</div>
 <div class="system-message" id="system-message-2">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">functional/input/data/standard.txt</tt>, line 392); <em><a href="#footnote-reference-8">backlink</a></em></p>
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">functional/input/data/standard.txt</tt>, line 387); <em><a href="#footnote-reference-8">backlink</a></em></p>
 Unknown target name: &quot;5&quot;.</div>
 <div class="system-message" id="system-message-3">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">functional/input/data/standard.txt</tt>, line 401); <em><a href="#citation-reference-3">backlink</a></em></p>
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">functional/input/data/standard.txt</tt>, line 396); <em><a href="#citation-reference-3">backlink</a></em></p>
 Unknown target name: &quot;nonexistent&quot;.</div>
 <div class="system-message" id="system-message-4">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">functional/input/data/standard.txt</tt>, line 428); <em><a href="#problematic-2">backlink</a></em></p>
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">functional/input/data/standard.txt</tt>, line 423); <em><a href="#problematic-2">backlink</a></em></p>
 Unknown target name: &quot;hyperlink reference without a target&quot;.</div>
 <div class="system-message" id="system-message-5">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">functional/input/data/standard.txt</tt>, line 441); <em><a href="#problematic-3">backlink</a></em></p>
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">functional/input/data/standard.txt</tt>, line 436); <em><a href="#problematic-3">backlink</a></em></p>
 Duplicate target name, cannot be used as a unique reference: &quot;duplicate target names&quot;.</div>
 </div>
 </div>

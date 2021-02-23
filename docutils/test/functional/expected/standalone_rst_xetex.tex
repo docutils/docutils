@@ -200,8 +200,8 @@ Paragraphs contain text and may contain inline markup: \emph{emphasis},
 (\url{http://www.python.org}), external hyperlinks (\href{http://www.python.org/}{Python}\DUfootnotemark{footnote-reference-10}{footnote-6}{5}), internal
 cross-references (\hyperref[example]{example}), external hyperlinks with embedded URIs
 (\href{http://www.python.org}{Python web site}), \href{http://www.python.org/}{anonymous hyperlink
-references}\DUfootnotemark{footnote-reference-17}{footnote-6}{5} (\href{http://docutils.sourceforge.net/}{a second reference}\DUfootnotemark{footnote-reference-18}{footnote-10}{9}), footnote references (manually
-numbered\DUfootnotemark{footnote-reference-1}{footnote-1}{1}, anonymous auto-numbered\DUfootnotemark{footnote-reference-2}{footnote-2}{3}, labeled auto-numbered\DUfootnotemark{footnote-reference-3}{label}{2}, or symbolic\DUfootnotemark{footnote-reference-4}{footnote-3}{*}), citation references (\hyperlink{cit2002}{[CIT2002]}),
+references}\DUfootnotemark{footnote-reference-17}{footnote-6}{5} (\href{https://docutils.sourceforge.io/}{a second reference}\DUfootnotemark{footnote-reference-18}{footnote-10}{9}), footnote references (manually
+numbered\DUfootnotemark{footnote-reference-1}{footnote-1}{1}, anonymous auto-numbered\DUfootnotemark{footnote-reference-2}{footnote-2}{3}, labeled auto-numbered\DUfootnotemark{footnote-reference-3}{label}{2}, or symbolic\DUfootnotemark{footnote-reference-4}{footnote-3}{*}), citation references (see \hyperlink{cit2002}{[CIT2002]}),
 substitution references (\includegraphics{../../../docs/user/rst/images/biohazard.png} \&
 a \emph{trimmed heart} \texttt{(U+2665):}♥), and %
 \phantomsection\label{inline-hyperlink-targets}inline hyperlink targets
@@ -673,8 +673,7 @@ this: %
 
 \phantomsection\label{contents}
 These are just a sample of the many reStructuredText Directives.  For
-others, please see
-\url{http://docutils.sourceforge.net/docs/ref/rst/directives.html}.
+others, please see \href{https://docutils.sourceforge.io/docs/ref/rst/directives.html}{reStructuredText Directives}\DUfootnotemark{footnote-reference-19}{footnote-11}{10}.
 
 
 \subsubsection{2.14.1   Document Parts%
@@ -692,11 +691,11 @@ document (a document-wide \hyperref[table-of-contents]{table of contents}).
 
 An image directive (also clickable – a hyperlink reference):
 
-\hyperref[directives]{\includegraphics{../../../docs/user/rst/images/title.png}}
+\hyperref[directives]{\includegraphics[width=0.700\linewidth]{../../../docs/user/rst/images/title.png}}
 
 Image with multiple IDs:
 
-\includegraphics{../../../docs/user/rst/images/title.png}
+\includegraphics{../../../docs/user/rst/images/biohazard.png}
 \phantomsection\label{image-target-3}\label{image-target-2}\label{image-target-1}
 
 A centered image:
@@ -727,17 +726,14 @@ An image 2 em wide:
 
 \includegraphics[width=2em]{../../../docs/user/rst/images/biohazard.png}
 
-An image 2 em wide and 15 pixel high:
+An image 2 cm wide and 15 pixel high:
 
-\includegraphics[height=15\pdfpxdimen,width=2em]{../../../docs/user/rst/images/biohazard.png}
+\includegraphics[height=15\pdfpxdimen,width=2cm]{../../../docs/user/rst/images/biohazard.png}
 
+Relative units allow adaption of the image to the screen or paper size.
 An image occupying 50\% of the line width:
 
 \includegraphics[width=0.500\linewidth]{../../../docs/user/rst/images/title.png}
-
-An image 2 cm high:
-
-\includegraphics[height=2cm]{../../../docs/user/rst/images/biohazard.png}
 
 A \emph{figure} is an image with a caption and/or a legend.  With page-based output
 media, figures might float to a different position if this helps the page
@@ -1133,10 +1129,18 @@ allowed (e.g. inside a directive).
 }
 %
 \DUfootnotetext{footnote-10}{footnote-reference-18}{9}{%
-\url{http://docutils.sourceforge.net/}
+\url{https://docutils.sourceforge.io/}
 }
 %
 \DUfootnotetext{footnote-11}{footnote-reference-19}{10}{%
+\url{https://docutils.sourceforge.io/docs/ref/rst/directives.html}
+}
+%
+\DUfootnotetext{footnote-12}{footnote-reference-20}{11}{%
+\url{https://docutils.sourceforge.io/docs/ref/rst/directives.html\#metadata}
+}
+%
+\DUfootnotetext{footnote-13}{footnote-reference-21}{12}{%
 \url{A:DOS\\path\\}
 }
 
@@ -1360,6 +1364,14 @@ as a code block, here the rst file \texttt{header\_footer.txt} with line numbers
 \end{DUclass}
 
 
+\subsubsection{2.14.11   Meta%
+  \label{meta}%
+}
+
+The \href{https://docutils.sourceforge.io/docs/ref/rst/directives.html\#metadata}{“meta” directive}\DUfootnotemark{footnote-reference-20}{footnote-12}{11} is used to specify metadata to be stored in,
+e.g., HTML META tags or ODT file properties.
+
+
 \subsection{2.15   Substitution Definitions%
   \label{substitution-definitions}%
 }
@@ -1565,8 +1577,8 @@ body row 3
 Here’s a list table exercising all features:
 
 \begin{DUclass}{test}
-\setlength{\DUtablewidth}{40em}%
-\begin{longtable}{|p{0.133\DUtablewidth}|p{0.249\DUtablewidth}|p{0.365\DUtablewidth}|}
+\setlength{\DUtablewidth}{0.950\linewidth}%
+\begin{longtable}{|p{0.133\DUtablewidth}|p{0.110\DUtablewidth}|p{0.249\DUtablewidth}|}
 \caption{list table with integral header}\\
 \hline
 \textbf{%
@@ -2638,7 +2650,7 @@ Handling by the LaTeX writer:
 \url{http://www.w3.org/XML/Schema\#dev}
 \item[] \href{http://www.w3.org/XML/Schema\%dev}{URL with \%}
 \url{http://example.org/Schema\%dev}
-\item[] \href{A:DOS\\path\\}{file with DOS path}\DUfootnotemark{footnote-reference-19}{footnote-11}{10} \url{A:DOS\\path\\}\DUfootnotemark{footnote-reference-20}{footnote-11}{10}
+\item[] \href{A:DOS\\path\\}{file with DOS path}\DUfootnotemark{footnote-reference-21}{footnote-13}{12} \url{A:DOS\\path\\}\DUfootnotemark{footnote-reference-22}{footnote-13}{12}
 \end{DUlineblock}
 
 \begin{DUclass}{note}
@@ -2650,7 +2662,7 @@ These URLs are typeset inside a LaTeX command without error.
 \begin{DUlineblock}{0em}
 \item[] \url{http://www.w3.org/XML/Schema\#dev}
 \item[] \url{http://example.org/Schema\%dev}
-\item[] \url{A:DOS\\path\\}\DUfootnotemark{footnote-reference-21}{footnote-11}{10}
+\item[] \url{A:DOS\\path\\}\DUfootnotemark{footnote-reference-23}{footnote-13}{12}
 \end{DUlineblock}
 \end{DUadmonition}
 \end{DUclass}
@@ -2771,7 +2783,7 @@ section, “Docutils System Messages”:
 \DUtitle{system-message
 \raisebox{1em}{\hypertarget{system-message-1}{}}}
 
-{\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~104
+{\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~99
 
 \hyperlink{problematic-1}{
 Undefined substitution referenced: \textquotedbl{}problematic\textquotedbl{}.
@@ -2783,7 +2795,7 @@ Undefined substitution referenced: \textquotedbl{}problematic\textquotedbl{}.
 \DUtitle{system-message
 \raisebox{1em}{\hypertarget{system-message-2}{}}}
 
-{\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~392
+{\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~387
 
 \hyperlink{footnote-reference-8}{
 Unknown target name: \textquotedbl{}5\textquotedbl{}.
@@ -2795,7 +2807,7 @@ Unknown target name: \textquotedbl{}5\textquotedbl{}.
 \DUtitle{system-message
 \raisebox{1em}{\hypertarget{system-message-3}{}}}
 
-{\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~401
+{\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~396
 
 \hyperlink{citation-reference-3}{
 Unknown target name: \textquotedbl{}nonexistent\textquotedbl{}.
@@ -2807,7 +2819,7 @@ Unknown target name: \textquotedbl{}nonexistent\textquotedbl{}.
 \DUtitle{system-message
 \raisebox{1em}{\hypertarget{system-message-4}{}}}
 
-{\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~428
+{\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~423
 
 \hyperlink{problematic-2}{
 Unknown target name: \textquotedbl{}hyperlink reference without a target\textquotedbl{}.
@@ -2819,7 +2831,7 @@ Unknown target name: \textquotedbl{}hyperlink reference without a target\textquo
 \DUtitle{system-message
 \raisebox{1em}{\hypertarget{system-message-5}{}}}
 
-{\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~441
+{\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~436
 
 \hyperlink{problematic-3}{
 Duplicate target name, cannot be used as a unique reference: \textquotedbl{}duplicate target names\textquotedbl{}.

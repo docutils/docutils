@@ -5,8 +5,8 @@ Here's a list table exercising all features:
 
 .. list-table:: list table with integral header
    :class: test
-   :width: 40em
-   :widths: 10 20 30
+   :width: 95%
+   :widths: 10 8 20
    :header-rows: 1
    :stub-columns: 1
 
