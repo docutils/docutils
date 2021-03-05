@@ -211,19 +211,19 @@ General
 * Perhaps the ``Component.supports`` method should deal with
   individual features ("meta" etc.) instead of formats ("html" etc.)?
   Currently, only the `<meta> node`_ requires the framework.
-  
+
   Do we need it at all?  Or rather let the writers just ignore some
   nodes (like we already do for "class" values)?
-  
+
   The current implementation of the framework also leads to bug
   `bug #241`__ "doctree-based publishing != publish_string".
   The "components.Filter" transform is run by publish_doctree(). When
   filtering based on the output format, it should be run by
   publish_from_doctree() instead because only then the writer is
   known.
-  
+
   So we need to either remove or fix the framework.
-  
+
   __ https://sourceforge.net/p/docutils/bugs/241/
 
 
@@ -1211,16 +1211,16 @@ Handle documents only, or objects (images, etc.) also?
 
 At what point should the extensions be substituted?
 
-  Transforms_: 
+  Transforms_:
     Fits well in the `Reader → Transformer → Writer`__ processing framework.
-    
+
     * Filename/URL extension replacement can be done walking over the
       Document tree transforming the document tree from a valid state
       to another valid state.
-    
+
     * Writer-specific configuration is still possible in the
       respective sections of the configuration_ file.
-      
+
     __ ../peps/pep-0258.html#id24
 
   Pre- or post-processing:
@@ -2855,11 +2855,11 @@ Front-End Tools
 * What about if we don't know which Reader and/or Writer we are
   going to use?  If the Reader/Writer is specified on the
   command-line?
-  
+
   The dynamic_ front end ``tools/docutils-cli.py`` (new in 0.17) is an
   implementation of concept d) below. It uses 2-stage argument parsing
   via the `argparse` module's `partial parsing`_. It still needs some
-  polishing.  
+  polishing.
 
   Perhaps have different types of front ends:
 
@@ -2882,8 +2882,8 @@ Front-End Tools
 
   d) _`Dynamic`: Reader and/or Writer are specified by options, with
      defaults if unspecified (e.g. ``publish --writer manpage
-     [options]``). 
-     
+     [options]``).
+
   Allow common options before subcommands, as in CVS?  Or group all
   options together?  In the case of the `fully qualified`_
   front ends, all the options will have to be grouped together

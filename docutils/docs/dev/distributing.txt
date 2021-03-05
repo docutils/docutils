@@ -33,17 +33,22 @@ Docutils has the following dependencies:
 
 * Docutils may optionally make use of the PIL (`Python Imaging
   Library`_ or Pillow_).  If PIL is present, it is automatically
-  detected by Docutils.
+  detected by Docutils.  
 
 * Docutils recommends the `Pygments`_ syntax hightlighter. If available, it
   is used for highlighting the content of `code directives`_ and roles as
   well as included source code files (with the "code" option to the include_
   directive).
 
+* Docutils can use the `recommonmark`_ parser to parse input in
+  the Markdown format (new in 0.17).
+
 .. _Python Imaging Library: 
     https://en.wikipedia.org/wiki/Python_Imaging_Library
 .. _Pillow: https://pypi.org/project/Pillow/
 .. _Pygments: http://pygments.org/
+.. _recommonmark: https://pypi.org/project/recommonmark/
+
 .. _code directives: ../ref/rst/directives.html#code
 .. _include: ../ref/rst/directives.html#include
 

@@ -1,5 +1,5 @@
 ==============================
- manpage writer for Docutils_ 
+ manpage writer for Docutils_
 ==============================
 
 :Author: Engelbert Gruber
@@ -8,9 +8,12 @@
 :Date: $Date$
 :Copyright: This document has been placed in the public domain.
 
-This tries to explore the posibilities to generate man-pages from
+This writer explores the posibilities to generate man-pages from
 reStructuredText. Man pages are the way for Unix systems to provide
 help to the user. GNU does this with (TeX)info-pages.
+
+.. contents::
+
 
 Module information
 ''''''''''''''''''
@@ -26,17 +29,17 @@ Also man pages have a defined set of sections, that are more or less
 mandatory, see References_.
 
 man pages look like::
-       
+
    man(1)     Man Pager Utils     man(1)
-       
+
    NAME
        man - an interface to the on-line reference manuals
-       
+
    SYNOPSIS
        man [-c|-w|-tZT device] [-adhu7V] [-m system[,...]] [-L locale]
-     
+
 in roff formatting::
-     
+
      .TH man 1 "14 May 2001" "2.3.19" "Manual pager utils"
      .SH NAME
      man \- an interface to the on-line reference manuals
@@ -46,9 +49,9 @@ in roff formatting::
      .RB [\| \-c \||\| \-w \||\| \-tZT
      .IR device \|]
 
-This means we have 
+This means we have
 
-* a title "man" 
+* a title "man"
 * a subtitle "an interface to the on-line reference manuals"
 * a manual section "1"
 * a manual group "Manual pager utils"
@@ -65,7 +68,7 @@ man pages from section 7, ``man`` and ``man-pages``.
 Conventions
 '''''''''''
 
-* man pages have a special structure and organization. From the manpage 
+* man pages have a special structure and organization. From the manpage
   to *man*::
 
     The table below shows the section numbers of the manual followed  by  the
@@ -105,17 +108,17 @@ Conventions
 * new lines in general.
 
   Consecutive blank lines are merged by the viewer but not on printouts.
-  So one has to be cautious. This is most disturbing when printing 
+  So one has to be cautious. This is most disturbing when printing
   postscript.
 
   .. NOTE::
 
     1. Roff requests only work when at line start.
-    2. But consecutive blank lines are merged by the viewer but not on 
+    2. But consecutive blank lines are merged by the viewer but not on
        printouts.
 
-    So try the rule start new lines in ``visit_``-functions, but only if 
-    necessary. E.g. ``field-names`` are already on a new line because of 
+    So try the rule start new lines in ``visit_``-functions, but only if
+    necessary. E.g. ``field-names`` are already on a new line because of
     docutils structure.
 
 * Indentation, left margin:
@@ -150,7 +153,7 @@ Open issues
 * How to write long syntax lines.
 * Line ends around email or web addresses in texts.
   How to distinguish something is inline or not ?
-  
+
 * Images and equations are discouraged.
 * Lists in admonitions are not intended.
 * Encoding declaration ``'\" t -*- coding: ISO-8859-1 -*-``
@@ -159,5 +162,5 @@ Open issues
   BUT if UTF-8 is declared tables are no longer processed.
 
 * Input and output encoding are problematic at least.
- 
+
 .. _Docutils: http://docutils.sourceforge.net/

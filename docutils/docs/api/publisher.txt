@@ -95,8 +95,7 @@ details about individual settings.
 Encodings
 ---------
 
-The default output encoding of Docutils is UTF-8.  If you have any
-non-ASCII in your input text, you may have to do a bit more setup.
+The default output encoding of Docutils is UTF-8.
 Docutils may introduce some non-ASCII text if you use
 `auto-symbol footnotes`_ or the `"contents" directive`_.
 
@@ -130,10 +129,11 @@ _`whole`
     ``parts['whole']`` contains the entire formatted document.
 
 
-.. _HTML writer:
+Parts Provided By the HTML Writers
+----------------------------------
 
-Parts Provided By the HTML Writer
----------------------------------
+HTML4 Writer
+````````````
 
 _`body`
     ``parts['body']`` is equivalent to parts['fragment_'].  It is
@@ -254,20 +254,28 @@ _`title`
     tags.
 
 
-Parts Provided by the PEP/HTML Writer
-`````````````````````````````````````
+PEP/HTML Writer
+```````````````
 
-The PEP/HTML writer provides the same parts as the `HTML writer`_,
+The PEP/HTML writer provides the same parts as the `HTML4 writer`_,
 plus the following:
 
 _`pepnum`
     ``parts['pepnum']`` contains
 
 
-Parts Provided by the S5/HTML Writer
-````````````````````````````````````
+S5/HTML Writer
+``````````````
 
-The S5/HTML writer provides the same parts as the `HTML writer`_.
+The S5/HTML writer provides the same parts as the `HTML4 writer`_.
+
+
+HTML5 Writer
+````````````
+
+The HTML5 writer provides the same parts as the `HTML4 writer`_.
+However, it uses semantic HTML5 elements for the document, header and
+footer.
 
 
 Parts Provided by the LaTeX2e Writer

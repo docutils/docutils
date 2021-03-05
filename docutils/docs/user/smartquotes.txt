@@ -88,6 +88,8 @@ current block element and the value of the `"smart_quotes" setting`_.\
 [#x-altquot]_
 There is built-in support for the following languages:\ [#smartquotes-locales]_
 
+.. class:: run-in
+
 :af: .. class:: language-af
 
     "'Afrikaans' quotes"
@@ -142,8 +144,7 @@ There is built-in support for the following languages:\ [#smartquotes-locales]_
 
 :en-uk-x-altquot: .. class:: language-en-uk-x-altquot
 
-    "'British' alternative quotes"
-    (swaps single and double quotes: ``"`` → ‘ and ``'`` → “)
+    "'British' alternative quotes" (swaps single and double quotes)
 
 :eo: .. class:: language-eo
 
@@ -262,7 +263,7 @@ There is built-in support for the following languages:\ [#smartquotes-locales]_
 
     "'Dutch' alternative quotes"
 
-.. # 'nl-x-altquot2': u'””’’',
+    .. # 'nl-x-altquot2': u'””’’',
 
 :pl: .. class:: language-pl
 

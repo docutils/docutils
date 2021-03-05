@@ -108,7 +108,7 @@ New in Docutils 0.13
 
 .. [#] see also `Benefits of polyglot XHTML5`_
 .. [#safetext] The validity of raw HTML and custom stylesheets must be
-   ensured by the author (e.g. using `safe text content`_).
+   ensured by the author.
 
 .. _rst2html5.py: tools.html#rst2html5-py
 .. _[html5 writer]: config.html#html5-writer
@@ -118,55 +118,27 @@ New in Docutils 0.13
 .. _custom style sheets: ../howto/html-stylesheets.html
 .. _viewable with any browser: http://www.anybrowser.org/campaign
 .. _Benefits of polyglot XHTML5: http://xmlplease.com/xhtml/xhtml5polyglot/
-.. _safe text content:
-     https://www.w3.org/TR/html-polyglot/#dfn-safe-text-content
 
 
 HTML writers in the sandbox
 ---------------------------
 
-There are two more HTML writers in the sandbox_:
+.. _xhtml11:
+
+There are two more HTML writers in the sandbox_, the `xhtml11 writer`_
+and the `HTML writer for lightweight browsers`_ (_`html4trans`).
 
 .. _sandbox: ../dev/policies.html#the-sandbox
-
-xhtml11
-~~~~~~~
-:aliases:   xhtml, html4strict
-:front-end: rst2xhtml.py
-:config:    `[xhtml11 writer]`
-
-`XHTML 1.1`_ is the latest version of the XML based `extensible
-Hypertext Markup Language` with an official DTD.
-
-The `xhtml11 writer`_ lives in the Docutils sandbox_ since 2008. The output
-conforms to the strict requirements of `XHTML 1.1`_.
-
 .. _xhtml11 writer: ../../../sandbox/html4strict/README.html
-
-
-html4trans
-~~~~~~~~~~
-
-:front-end: rst2html_trans.py_
-
-The `HTML writer for lightweight browsers`_ lives in the Docutils sandbox
-(`sandbox/html4trans`_) since 2008. It removes the dependency on CSS. The
-output conforms to `XHTML 1 Transitional`_ and contains sufficient
-formatting information for rendering without style sheet. (Of course, this
-has some drawbacks_.)
-
 .. _HTML writer for lightweight browsers:
    ../../../sandbox/html4trans/README.html
-.. _drawbacks: ../../../sandbox/html4trans/README.html#drawbacks
-.. _sandbox/html4trans: ../../../sandbox/html4trans
-.. _rst2html_trans.py: ../../../sandbox/html4trans/tools/rst2html_trans.py
 
 
 Overview
 --------
 
 =============== =========== ============== ================= ===========
-name            alias(es)   `front-end`_   HTML version      CSS version
+name            aliases     `front-end`_   HTML version      CSS version
 =============== =========== ============== ================= ===========
 html4css1_      html4,      rst2html4.py,  `XHTML 1          `CSS 1`_
                 html_       rst2html.py    Transitional`_
@@ -182,7 +154,7 @@ html5_polyglot_ html5       rst2html5.py   `HTML5`_          `CSS 3`_
 xhtml11_        xhtml,      rst2xhtml.py   `XHTML 1.1`_      `CSS 3`_
                 html4strict
 
-html4trans_ ..              rst2html_trans `XHTML 1          no CSS
+html4trans_     ..          rst2html_trans `XHTML 1          no CSS
                                            Transitional`_    required
 =============== =========== ============== ================= ===========
 

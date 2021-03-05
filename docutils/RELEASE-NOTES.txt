@@ -94,6 +94,11 @@ Release 0.17
 
 * The generic command line front end ``docutils-cli.py`` allows the
   free selection of reader, parser, and writer components.
+  
+* New, experimental wrapper to integrate the
+  `recommonmark`__ Markdown parser for use with Docutils.
+
+  __ https://pypi.org/project/recommonmark/
 
 * HTML writers: new option to embed images.
 
@@ -112,9 +117,9 @@ Release 0.17
     Use <ins> and <del> if a matching class value
     is found in `inline`, `literal`, or `container` elements.
 
-  - Wrap block-level image elements in <p> (except for figures).
-    Move non-essential styling from ``minimal.css`` to ``plain.css``.
-    Support numbered figures in ``plain.css``.
+  - New optional style ``responsive.css``, adapts to different screen
+    sizes.
+
 
   .. _initial_header_level: docs/user/config.html#initial-header-level
   __ https://stackoverflow.com/questions/39547412/same-font-size-for-h1-and-h2-in-article

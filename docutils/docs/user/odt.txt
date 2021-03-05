@@ -67,7 +67,8 @@ Examples::
 
     $ rst2odt.py -s -g python_comments.txt python_comments.odt
 
-    $ rst2odt.py --source-url=odtwriter.txt --generator --stylesheet=/myconfigs/styles.odt odtwriter.txt odtwriter.odt
+    $ rst2odt.py --source-url=odtwriter.txt --generator \
+        --stylesheet=/myconfigs/styles.odt odtwriter.txt odtwriter.odt
 
 
 Configuration file
@@ -744,7 +745,8 @@ contain them, do the following:
    using the ``--stylesheet`` option in order to include your
    custom style definitions.  For example::
 
-       rst2odt.py --odf-config-file=mymappingfile.ini --stylesheet=mystyles.odt mydoc.txt mydoc.odt
+       rst2odt.py --odf-config-file=mymappingfile.ini \
+         --stylesheet=mystyles.odt mydoc.txt mydoc.odt
 
 
 Classes
@@ -1013,15 +1015,20 @@ Here is an example::
 
     .. raw:: odt
 
-        <text:p text:style-name="rststyle-textbody">Determining <text:span text:style-name="rststyle-emphasis">which</text:span> namespace a name is in is static.  It can be
-        determined by a lexical scan of the code.  If a variable is assigned a
-        value <text:span text:style-name="rststyle-emphasis">anywhere</text:span> in a scope (specifically within a function or method
-        body), then that variable is local to that scope.  If Python does not
-        find a variable in the local scope, then it looks next in the global
-        scope (also sometimes called the module scope) and then in the
-        built-ins scope.  But, the <text:span text:style-name="rststyle-inlineliteral">global</text:span> statement can be used to force
-        Python to find and use a global variable (a variable defined at top
-        level in a module) rather than create a local one.</text:p>
+        <text:p text:style-name="rststyle-textbody">Determining
+        <text:span text:style-name="rststyle-emphasis">which</text:span>
+        namespace a name is in is static.  It can be determined by a
+        lexical scan of the code.  If a variable is assigned a value
+        <text:span text:style-name="rststyle-emphasis">anywhere</text:span>
+        in a scope (specifically within a function or method body),
+        then that variable is local to that scope.  If Python does
+        not find a variable in the local scope, then it looks next
+        in the global scope (also sometimes called the module scope)
+        and then in the built-ins scope.  But, the
+        <text:span text:style-name="rststyle-inlineliteral">global</text:span>
+        statement can be used to force Python to find and use a global
+        variable (a variable defined at top level in a module) rather
+        than create a local one.</text:p>
 
 
 The meta directive

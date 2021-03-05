@@ -78,7 +78,7 @@ buildhtml.py
 
 :Readers: Standalone, PEP
 :Parser: reStructuredText
-:Writers: html_, pep_html_
+:Writers: html_, html5_, pep_html_
 
 Use ``buildhtml.py`` to generate ``*.html`` from all the ``*.txt`` files
 (including PEPs) in each <directory> given, and their subdirectories
@@ -178,7 +178,7 @@ rst2html5.py
 
 :Reader: Standalone
 :Parser: reStructuredText
-:Writer: _`html5` (html5_polyglot_)
+:Writer: html5_
 
 The ``rst2html5.py`` front end reads standalone reStructuredText source
 files and produces `HTML 5`_ output.
@@ -186,7 +186,7 @@ Correct rendering of elements not directly supported by HTML depends on a
 CSS style sheet. The provided style sheets ``minimal.css`` and ``plain.css``
 define required and optional styling rules respectively.
 
-.. _html5_polyglot: html.html#html5-polyglot
+.. _html5: html.html#html5-polyglot
 
 rstpep2html.py
 --------------
