@@ -461,10 +461,11 @@ the "document title" can become the document subtitle.  The rest of
 the sections are then lifted up a level or two.  See the `DocTitle
 transform`_ for details.
 
-.. [#] The `title`_ configuration setting can set a document title that does
-   not become part of the document body.
+.. [#] The `title configuration setting`__ and the `title directive`__
+   set a document title that does not become part of the document body.
 
-.. _title: ../../user/config.html#title
+   __ ../../user/config.html#title
+   __ directives.html#metadata-document-title
 
 
 Sections
@@ -3176,6 +3177,7 @@ Markup errors are handled according to the specification in `PEP
 .. _colspec: ../doctree.html#colspec
 .. _thead: ../doctree.html#thead
 .. _tbody: ../doctree.html#tbody
+.. _title: ../doctree.html#title
 .. _row: ../doctree.html#row
 .. _entry: ../doctree.html#entry
 .. _identifier key: ../doctree.html#identifier-keys

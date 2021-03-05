@@ -22,7 +22,7 @@ management systems, and others), several security issues arose and
 have been addressed.  This document provides instructions to help you
 secure the Docutils software in your applications.
 
-Docutils does not come in a through-the-web secure state, because this
+**Docutils does not come in a through-the-web secure state**, because this
 would inconvenience ordinary users.
 
 __ ../../FAQ.html#are-there-any-weblog-blog-projects-that-use-restructuredtext-syntax

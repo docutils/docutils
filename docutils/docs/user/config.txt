@@ -710,7 +710,7 @@ are selected according to the language of the current block element (see
 language_code_, smartquotes_locales_, and the `pre-defined quote sets`__).
 
 Also changes consecutive runs of hyphen-minus and full stops (``---``,
-``--``, ``...``) to em-dash, en-dash and ellipsis Unicode characters
+``--``, ``...``) to em-dash, en-dash, and ellipsis Unicode characters
 respectively.
 
 Supported values:
@@ -1573,12 +1573,11 @@ When possible\ [#]_, use the specified environment for `literal blocks`_.
 Default: "" (quoting of whitespace and special chars).
 Option: ``--literal-block-env``.
 
-.. [#] A literal-block element, when processed by a Docutils writer might
-   have it's origin in literal block following "::" or a
-   ``.. parsed-literal::`` directive.
+.. [#] A literal-block element may originate from a `parsed literal`_.
+   A LaTeX verbatim environment is only usable it does not contain
+   inline elements.
 
-   A LaTeX verbatim environment is only usable if there is no other
-   markup contained in the literal-block.
+.. _parsed literal: ../ref/rst/directives.html#parsed-literal
 
 reference_label
 ~~~~~~~~~~~~~~~

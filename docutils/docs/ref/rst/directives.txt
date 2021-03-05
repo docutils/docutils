@@ -333,7 +333,7 @@ In addition, the following options are recognized:
     Set a `"classes"`_ attribute value on the figure element.  See the
     class_ directive below.
 
-.. _Python Imaging Library: 
+.. _Python Imaging Library:
     https://en.wikipedia.org/wiki/Python_Imaging_Library
 .. _Pillow: https://pypi.org/project/Pillow/
 
@@ -1875,8 +1875,8 @@ dropped by the writer.
 .. note:: Data from some `bibliographic fields`_ is automatically
    extracted and stored in META tags, too. However, Bibliographic
    Fields are also visible in the document's screen rendering or
-   printout. 
-   
+   printout.
+
    For an "invisible" *document title*, see the `metadata document
    title`_ directive below.
 
@@ -1988,7 +1988,7 @@ _`:name:` : text
 
       .. image:: bild.png
 
-    New in Docutils 0.8.
+    (New in Docutils 0.8.)
 
 
 .. _reference name:

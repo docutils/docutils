@@ -100,7 +100,7 @@ sectnum           Automatically number sections, subsections, etc.
 header, footer    Create document decorations [0.3.8]
 target-notes      Create an explicit footnote for each external target
 math              Mathematical notation (input in LaTeX format)
-meta              HTML-specific metadata
+meta              Document metadata
 include           Read an external reST file as if it were inline
 raw               Non-reST data passed untouched to the Writer
 replace           Replacement text for substitution definitions
