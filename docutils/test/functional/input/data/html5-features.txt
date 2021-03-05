@@ -5,6 +5,16 @@ Changes to the `html4css1` Writer
   Add HTML5-compatible meta tags for docinfo items
   "authors", "date", and "copyright".
 
+  .. hint::
+  
+    Use a `viewport meta tag`__ to tell mobile browsers
+    to use the device-width as viewport.
+
+    .. meta::
+       :viewport: width=device-width, initial-scale=1
+
+    __ https://developer.mozilla.org/en-US/docs/Web/HTML/Viewport_meta_tag
+
 * Set table column widths with <style="width: ...">, not "width" argument.
 
 * Horizontal alignment of table heads with CSS.
