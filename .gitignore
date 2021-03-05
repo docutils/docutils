@@ -8,6 +8,7 @@ build
 *.egg-info
 __pycache__
 
+docutils/*.html
 docutils/docs/**/*.html
 
 /docutils/test/alltests.out
