@@ -1868,12 +1868,13 @@ Metadata
 :Directive Content: Must contain a flat field list.
 
 The "meta" directive is used to specify metadata\ [#]_ to be stored
-in, e.g., HTML META tags or as ODT file properties.  If the output
-format does not support "invisible" metadata, it is silently
-dropped by the writer.
+in, e.g., `HTML meta elements`_ or as `ODT file properties`_. The
+LaTeX writer passes it to the ``pdfinfo`` option of the hyperref_
+package. If an output format does not support "invisible" metadata,
+content is silently dropped by the writer.
 
 .. note:: Data from some `bibliographic fields`_ is automatically
-   extracted and stored in META tags, too. However, Bibliographic
+   extracted and stored as metadata, too. However, Bibliographic
    Fields are also visible in the document's screen rendering or
    printout.
 
@@ -1920,11 +1921,18 @@ HTML equivalent::
     <meta http-equiv="Content-Type"
          content="text/html; charset=ISO-8859-1">
 
+
 .. [#] "Metadata" is data about data, in this case data about the
    document. Metadata is, e.g., used to describe and classify web
    pages in the World Wide Web, in a form that is easy for search
    engines to extract and collate.
 
+
+.. _HTML meta elements:
+   https://html.spec.whatwg.org/multipage/semantics.html#the-meta-element
+.. _ODT file properties:
+   https://en.wikipedia.org/wiki/OpenDocument_technical_specification#Metadata
+.. _hyperref: http://ctan.org/pkg/hyperref
 .. _bibliographic fields: restructuredtext.html#bibliographic-fields
 
 

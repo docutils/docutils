@@ -36,11 +36,11 @@ Version 0.17b1
 
   - VersionInfo: ValueError for invalid values, fix comparison to tuples.
 
-* docutils/languages/  
+* docutils/languages/
   docutils/parsers/rst/languages/
 
   - Apply patch # 177 Arabic mappings by Shahin.
-  - Apply patch for bug #399 Fixes in Korean translation.
+  - Apply patch for bug #399 Fixes in Korean translation by Shinjo Park.
 
 * docutils/nodes.py
 
@@ -72,7 +72,8 @@ Version 0.17b1
 
 * docutils/parsers/rst/roles.py
 
-  - Apply patch #174 Lowercase new role names on registration
+  - Apply patch #174 `Lowercase new role names on registration`
+    by John Thorvald Wodder II.
 
 * docutils/utils/smartquotes.py
 
@@ -102,14 +103,12 @@ Version 0.17b1
     is found in `inline` and `literal` elements.
     Use <ins> and <del> if a matching class value
     is found in `inline`, `literal`, or `container` elements.
-    
+
+  - Fix bug #398: properly close link tag to "schema.dcterms".
+
   - Add a `viewport meta tag`__ to fix rendering in mobile browsers.
 
     __ https://developer.mozilla.org/en-US/docs/Web/HTML/Viewport_meta_tag
-
-* docutils/writers/html5_polyglot/responsive.css
-
-  - New optional stylesheet that adapts to different screen sizes.
 
 * docutils/writers/html5_polyglot/minimal.css
 
@@ -120,22 +119,10 @@ Version 0.17b1
 * docutils/writers/html5_polyglot/plain.css
 
   - Support numbered figures.
-  - Fix bug #398: properly close link tag to "schema.dcterms".
 
 * docutils/writers/html5_polyglot/responsive.css
 
-  - New optional stylesheet for better readability on different
-    screens.
-
-* docutils/writers/html5_polyglot/minimal.css
-
-  - Move non-essential styling from  to ``plain.css``.
-    Support "captionbelow" class value for tables.
-    Small fixes and tweaks.
-
-* docutils/writers/html5_polyglot/plain.css
-
-  - Support numbered figures.
+  - New optional style that adapts to different screen sizes.
 
 * docutils/writers/latex2e/__init__.py:
 
@@ -151,9 +138,9 @@ Version 0.17b1
     __ docs/user/latex.html#custom-interpreted-text-roles
 
   - Remove legacy LaTeX stylesheet ``docutils-05-compat.sty``.
-  
+
   - Support the `memoir` LaTeX document class.
-    Fixes bugs #390, #391, and #392.
+    Fixes bugs #390, #391, and #392. Thanks to John Thorvald Wodder II.
 
   - The special value "auto" for the `graphicx_option`_ setting
     is no longer supported (it never worked for xetex/luatex).
@@ -173,14 +160,14 @@ Version 0.17b1
   - Fix bug #408 "Incorrect assert in latex writer
     for multiple citation references".
 
-  - Apply patch #175 "Fix alignment of nested tables",
-    additional fixes to table alignment.
+  - Apply patch #175 "Fix alignment of nested tables"
+    by John Thorvald Wodder II. Additional fixes to table alignment.
 
   - Do not write Docutils-generated ToC, when ``use_latex_toc``
     is True. (This did happen when publishing from a doctree.)
-    
+
   - Set PDF document properties from "meta" directive content.
-  
+
   - Apply version of patch #176 "LaTeX writer: Append \leavevmode to
     non-docinfo field names" by John Thorvald Wodder II.
 
@@ -194,7 +181,7 @@ Version 0.17b1
 * docutils/writers/odf_odt/__init__.py:
 
   - Fix/improve metadata handling:
-    fix "keyword" splitting, 
+    fix "keyword" splitting,
     allow generic fields (stored as "Custom Properties").
 
 * docutils/writers/pseudoxml.py:
