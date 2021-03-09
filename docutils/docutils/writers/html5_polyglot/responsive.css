@@ -64,9 +64,7 @@ div.topic > table {
 }
 
 /* Indented Blocks */
-blockquote,
-figure,
-div.topic {
+blockquote, figure, div.topic {
   margin: 1em 2%;
   padding-left: 1em;
 }
@@ -84,11 +82,9 @@ aside.sidebar, .marginal {
 }
 
 /* Frontmatter */
-blockquote.dedication,
 div.topic.dedication {
   padding: 0;
   margin: 1.4em 0;
-  /* text-align: center; */
   font-style: italic;
   font-size: large;
 }
@@ -102,6 +98,7 @@ div.topic p.attribution {
 }
 
 /* Table of Contents */
+nav.contents,
 div.topic.contents {
   padding: 0;
 }
@@ -109,6 +106,7 @@ ul.auto-toc > li > p {
   padding-left: 1em;
   text-indent: -1em;
 }
+nav.contents ul,
 div.topic.contents ul {
   padding-left: 1em;
 }
@@ -173,23 +171,6 @@ figure > img, figure > a > img {
   display: inline;
 }
 
-table tr {
-  text-align: left;
-}
-
-/* th { vertical-align: bottom; } */
-/* "booktabs" style (no vertical lines) */
-table.booktabs {
-  border-top: 2px solid;
-  border-bottom: 2px solid;
-}
-table.booktabs * {
-  border: 0;
-}
-table.booktabs th {
-  border-bottom: thin solid;
-}
-
 figcaption,
 table > caption {
   /*   font-size: small; */
@@ -199,12 +180,26 @@ figcaption > .legend {
   font-size: small;
   font-style: initial;
 }
-
 figure.numbered > figcaption > p:before {
   counter-increment: figure;
   content: "Figure " counter(figure) ": ";
   font-weight: bold;
   font-style: initial;
+}
+
+table tr {
+  text-align: left;
+  vertical-align: baseline;
+}
+table.booktabs { /* "booktabs" style (no vertical lines) */
+  border-top: 2px solid;
+  border-bottom: 2px solid;
+}
+table.booktabs * {
+  border: 0;
+}
+table.booktabs th {
+  border-bottom: thin solid;
 }
 table.numbered > caption:before {
   counter-increment: table;
@@ -244,16 +239,10 @@ pre.code .name.builtin, code .name.builtin { color: #352B84 }
 pre.code .deleted, code .deleted { background-color: #DEB0A1}
 pre.code .inserted, code .inserted { background-color: #A3D289}
 
-.sans {
-    font-family: "Gill Sans", "Gill Sans MT", Calibri, "Lucida Sans", "Noto Sans", sans-serif;
-    letter-spacing: .02em;
-}
-
 /* Hyperlink References */
-/* underline that clears descenders */
 a {
   text-decoration: none;
-  text-decoration-skip-ink: auto; /* nonstandard selector */
+  text-decoration-skip-ink: auto; /* underline that clears descenders (nonstandard) */
 }
 /* Wrap links at any place, if this is the only way to prevent overflow */
 a:link{
@@ -262,7 +251,6 @@ a:link{
 .contents a, a.toc-backref, a.citation-reference {
   overflow-wrap: inherit;
 }
-
 /* Undecorated Links */
 /* a.footnote-reference, a.fn-backref, .fn-backref a, */
 /* a.citation-reference, */
@@ -273,7 +261,6 @@ a:link{
 a:link:hover {
   text-decoration: underline;
 }
-
 /* highlight the active ToC entry */
 .auto-toc :target {
   background-color: orange;
@@ -324,10 +311,11 @@ aside.sidebar {
 }
 
 /* Adaptive page layout */
+/* ==================== */
 
-/* smaller margins and no floating elements for small screens */
-/* main text less than 40 characters/line */
 @media (max-width: 30em) {
+  /* Smaller margins and no floating elements for small screens */
+  /* (main text less than 40 characters/line) */
   main, header, footer {
     padding: 0.5rem 5%;
     line-height: 1.4
@@ -357,14 +345,13 @@ aside.sidebar {
   }
 }
 
-/* Move ToC to the left */
-/* Main text width before: 70% ≙ 35em ≙ 75…95 chrs (Dejavu/Times) */
-/*                 after:      ≳ 30em ≙ 54…70 chrs (Dejavu/Times) */
 @media (min-width: 54em) {
+  /* Move ToC to the left */
+  /* Main text width before: 70% ≙ 35em ≙ 75…95 chrs (Dejavu/Times) */
+  /*                 after:      ≳ 30em ≙ 54…70 chrs (Dejavu/Times) */
   main, header, footer {
-    margin-left: min(15%, 18rem);
-    padding-left: 15%;
-/*     padding-right: 14%; */
+    margin-left: 10%;
+    padding-left: min(20%, 18rem);
     padding-right: 7%;
   }
   main > div.topic.contents {
@@ -383,7 +370,6 @@ aside.sidebar {
   }
   main > div.topic.contents ul:not(.auto-toc) {
     list-style-type: square;
-/*     padding-left: 1em; */
   }
   div.topic.contents ul > li::marker {
     color: grey;
@@ -395,9 +381,10 @@ aside.sidebar {
   dl.docinfo > dd {
     margin-left: 9em;
   }
+}
 
-/* limit main text to 50em ≙ 85…100 characters DejaVu rsp. …120 Times */
 @media (min-width: 80em) {
+  /* limit main text to 50em ≙ 85…100 characters DejaVu rsp. …120 Times */
   main, header, footer {
     padding-right: calc(70% - 50em);
   }
