@@ -1,25 +1,18 @@
 Changes to the `html4css1` Writer
 =================================
 
-* Use only meta keywords recognized by HTML 5.
+* Use only meta_ keywords recognized by HTML 5.
   Add HTML5-compatible meta tags for docinfo items
   "authors", "date", and "copyright".
 
-  .. hint::
-  
-    Use a `viewport meta tag`__ to tell mobile browsers
-    to use the device-width as viewport.
+  Add a `viewport meta tag`__ to tell mobile browsers
+  to use the device-width as viewport.
 
-    .. meta::
-       :viewport: width=device-width, initial-scale=1
-
-    __ https://developer.mozilla.org/en-US/docs/Web/HTML/Viewport_meta_tag
+  __ https://developer.mozilla.org/en-US/docs/Web/HTML/Viewport_meta_tag
 
 * Set table column widths with <style="width: ...">, not "width" argument.
 
 * Horizontal alignment of table heads with CSS.
-
-* Field lists as styled definition lists.
 
 * Do not drop paragraph objects, use CSS rules to prevent unwanted vertical
   space.
@@ -35,11 +28,12 @@ Changes to the `html4css1` Writer
 
   __ https://stackoverflow.com/questions/39547412/same-font-size-for-h1-and-h2-in-article
 
-* Use HTML text-level tags <small>, <s>, <q>, <dfn>, <var>, <samp>, <kbd>,
+* Use HTML5 tags <small>, <s>, <q>, <dfn>, <var>, <samp>, <kbd>,
   <i>, <b>, <u>, <mark>, and <bdi> if a matching class value
   is found in `inline` and `literal` elements.
   Use <ins> and <del> if a matching class value
   is found in `inline`, `literal`, or `container` elements.
+  (See `text-level semantics`_ and `indicating edits`_.)
 
 Field List Rendering
 --------------------
