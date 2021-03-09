@@ -102,6 +102,10 @@ Version 0.17b1
     is found in `inline` and `literal` elements.
     Use <ins> and <del> if a matching class value
     is found in `inline`, `literal`, or `container` elements.
+    
+  - Add a `viewport meta tag`__ to fix rendering in mobile browsers.
+
+    __ https://developer.mozilla.org/en-US/docs/Web/HTML/Viewport_meta_tag
 
 * docutils/writers/html5_polyglot/responsive.css
 

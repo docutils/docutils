@@ -164,6 +164,10 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
     and examples.
     """
 
+    # meta tag to fix rendering in mobile browsers
+    viewport = ('<meta name="viewport" '
+                'content="width=device-width, initial-scale=1" />\n')
+
     # <acronym> tag obsolete in HTML5. Use the <abbr> tag instead.
     def visit_acronym(self, node):
         # @@@ implementation incomplete ("title" attribute)
@@ -242,6 +246,8 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
                                  self.head_prefix_template %
                                  {'lang': self.settings.language_code}])
         self.html_prolog.append(self.doctype)
+        self.meta.insert(0, self.viewport)
+        self.head.insert(0, self.viewport)
         self.meta.insert(0, self.content_type % self.settings.output_encoding)
         self.head.insert(0, self.content_type % self.settings.output_encoding)
         if 'name="dcterms.' in ''.join(self.meta):

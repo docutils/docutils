@@ -26,11 +26,14 @@ class Html5WriterPublishPartsTestCase(HtmlWriterPublishPartsTestCase):
 
     writer_name = 'html5'
     standard_content_type_template = ('<meta charset="%s"/>\n')
-    standard_generator_template = (
-        '<meta name="generator"'
+    standard_generator_template = ('<meta name="generator"'
         ' content="Docutils %s: http://docutils.sourceforge.net/" />\n')
+    standard_viewport_template = ('<meta name="viewport"'
+        ' content="width=device-width, initial-scale=1" />\n')
+
     standard_html_meta_value = (standard_content_type_template
-                        + standard_generator_template % __version__)
+                                + standard_viewport_template
+                                + standard_generator_template % __version__)
     standard_meta_value = standard_html_meta_value % 'utf-8'
     standard_html_prolog = '<!DOCTYPE html>\n'
 

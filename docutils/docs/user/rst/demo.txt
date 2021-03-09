@@ -523,15 +523,10 @@ Meta
 The `“meta” directive`__ is used to specify metadata to be stored in,
 e.g., HTML META tags or ODT file properties.
 
-.. hint::
-    Use a `viewport meta tag`__ to tell mobile browsers
-    to use the device-width as viewport.
-
 .. meta::
    :keywords: reStructuredText, test, parser
    :description lang=en: A test document, containing at least one
        example of each reStructuredText construct.
-   :viewport: width=device-width, initial-scale=1
 
 __ https://docutils.sourceforge.io/docs/ref/rst/directives.html#metadata
 __ https://developer.mozilla.org/en-US/docs/Web/HTML/Viewport_meta_tag

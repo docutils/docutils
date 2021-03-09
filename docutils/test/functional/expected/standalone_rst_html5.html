@@ -2,6 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="generator" content="Docutils 0.17b2.dev: http://docutils.sourceforge.net/" />
 <title>reStructuredText Test Document</title>
 <meta name="author" content="David Goodger" />
@@ -12,7 +13,6 @@
 <meta name="dcterms.rights" content="This document has been placed in the public domain. You may do with it as you wish. You may copy, modify, redistribute, reattribute, sell, buy, rent, lease, destroy, or improve it, quote it at length, excerpt, incorporate, collate, fold, staple, or mutilate it, or do anything else to it that your or anyone else's heart desires." />
 <meta content="reStructuredText, test, parser" name="keywords" />
 <meta content="A test document, containing at least one example of each reStructuredText construct." lang="en" name="description" xml:lang="en" />
-<meta content="width=device-width, initial-scale=1" name="viewport" />
 <link rel="schema.dcterms" href="http://purl.org/dc/terms/"/>
 <link rel="stylesheet" href="../input/data/minimal.css" type="text/css" />
 <link rel="stylesheet" href="../input/data/plain.css" type="text/css" />
@@ -1256,18 +1256,14 @@ crunchy, now would it?</p></td>
 <section id="changes-to-the-html4css1-writer">
 <h2><a class="toc-backref" href="#toc-entry-43"><span class="sectnum">3</span> Changes to the <cite>html4css1</cite> Writer</a></h2>
 <ul>
-<li><p>Use only meta keywords recognized by HTML 5.
+<li><p>Use only <a class="reference internal" href="#meta">meta</a> keywords recognized by HTML 5.
 Add HTML5-compatible meta tags for docinfo items
 &quot;authors&quot;, &quot;date&quot;, and &quot;copyright&quot;.</p>
-<div class="admonition hint">
-<p class="admonition-title">Hint</p>
-<p>Use a <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/HTML/Viewport_meta_tag">viewport meta tag</a> <a class="footnote-reference brackets" href="#footnote-15" id="footnote-reference-29">15</a> to tell mobile browsers
+<p>Add a <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/HTML/Viewport_meta_tag">viewport meta tag</a> <a class="footnote-reference brackets" href="#footnote-15" id="footnote-reference-29">15</a> to tell mobile browsers
 to use the device-width as viewport.</p>
-</div>
 </li>
 <li><p>Set table column widths with &lt;style=&quot;width: ...&quot;&gt;, not &quot;width&quot; argument.</p></li>
 <li><p>Horizontal alignment of table heads with CSS.</p></li>
-<li><p>Field lists as styled definition lists.</p></li>
 <li><p>Do not drop paragraph objects, use CSS rules to prevent unwanted vertical
 space.</p></li>
 <li><p>Put subtitles in &lt;p&gt; elements.</p></li>
@@ -1277,11 +1273,12 @@ See <span class="docutils literal">minimal.css</span> and <span class="docutils 
 <p>Change the <cite>initial_header_level</cite> setting default to &quot;2&quot;, as browsers
 use the <a class="reference external" href="https://stackoverflow.com/questions/39547412/same-font-size-for-h1-and-h2-in-article">same style for &lt;h1&gt; and &lt;h2&gt; when nested in a &lt;section&gt;</a> <a class="footnote-reference brackets" href="#footnote-16" id="footnote-reference-30">16</a>.</p>
 </li>
-<li><p>Use HTML text-level tags &lt;small&gt;, &lt;s&gt;, &lt;q&gt;, &lt;dfn&gt;, &lt;var&gt;, &lt;samp&gt;, &lt;kbd&gt;,
+<li><p>Use HTML5 tags &lt;small&gt;, &lt;s&gt;, &lt;q&gt;, &lt;dfn&gt;, &lt;var&gt;, &lt;samp&gt;, &lt;kbd&gt;,
 &lt;i&gt;, &lt;b&gt;, &lt;u&gt;, &lt;mark&gt;, and &lt;bdi&gt; if a matching class value
 is found in <cite>inline</cite> and <cite>literal</cite> elements.
 Use &lt;ins&gt; and &lt;del&gt; if a matching class value
-is found in <cite>inline</cite>, <cite>literal</cite>, or <cite>container</cite> elements.</p></li>
+is found in <cite>inline</cite>, <cite>literal</cite>, or <cite>container</cite> elements.
+(See <a class="reference internal" href="#text-level-semantics">text-level semantics</a> and <a class="reference internal" href="#indicating-edits">indicating edits</a>.)</p></li>
 </ul>
 <section id="field-list-rendering">
 <h3><a class="toc-backref" href="#toc-entry-44"><span class="sectnum">3.1</span> Field List Rendering</a></h3>

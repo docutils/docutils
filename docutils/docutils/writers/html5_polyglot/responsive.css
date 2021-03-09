@@ -234,10 +234,6 @@ div.system-message > p > span.literal {
 }
 
 /* Literal and Code */
-pre {
-  font-size: 0.9;
-  /* overflow: auto; */
-}
 pre.code .ln { color: gray; } /* line numbers */
 /* basic highlighting: for a complete scheme, see */
 /* http://docutils.sourceforge.net/sandbox/stylesheets/ */
@@ -354,6 +350,10 @@ aside.sidebar {
   dl.docinfo > dd,
   dl.option-list > dd {
     margin-left: 2.4em;
+  }
+  pre, pre * {
+  font-size: 0.9em;
+  /* overflow: auto; */
   }
 }
 
