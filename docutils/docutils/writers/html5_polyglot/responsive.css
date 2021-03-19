@@ -225,7 +225,6 @@ div.system-message > p > span.literal {
 }
 
 /* Literal and Code */
-pre.code .ln { color: gray; } /* line numbers */
 /* basic highlighting: for a complete scheme, see */
 /* http://docutils.sourceforge.net/sandbox/stylesheets/ */
 pre.code .comment, code .comment { color: #5C6576 }

@@ -109,6 +109,10 @@ Version 0.17b1
   - Add a `viewport meta tag`__ to fix rendering in mobile browsers.
 
     __ https://developer.mozilla.org/en-US/docs/Web/HTML/Viewport_meta_tag
+    
+  - Add code line numbers as "data-*" arguments.
+    This way, they may be skipped when copying text from code blocks
+    (see minimal.css). Solves feature request #32.
 
 * docutils/writers/html5_polyglot/minimal.css
 

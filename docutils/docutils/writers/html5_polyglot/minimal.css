@@ -145,8 +145,8 @@ dl.option-list > dt { font-weight: normal; }
 span.option { white-space: nowrap; }
 
 /* Footnotes and Citations  */
-dl.footnote.superscript > dd {margin-left: 1em; }
-dl.footnote.brackets > dd {margin-left: 2em; }
+dl.footnote.superscript > dd { margin-left: 1em; }
+dl.footnote.brackets > dd { margin-left: 2em; }
 dl.footnote > dt { font-weight: normal; }
 a.footnote-reference.brackets:before,
 dt.label > span.brackets:before { content: "["; }
@@ -209,7 +209,13 @@ aside.topic {
 }
 div.line-block { display: block; }
 div.line-block div.line-block, pre { margin-left: 2em; }
-pre.code .ln { color: gray; } /* line numbers */
+
+/* Code line numbers: dropped when copying text from the page */
+pre.code .ln { display: none; }
+pre.code code:before {
+  content: attr(data-lineno); /* …, none) fallback not supported by any browser */
+  color: gray;
+}
 
 /* Tables */
 table {

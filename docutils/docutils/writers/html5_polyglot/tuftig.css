@@ -299,7 +299,6 @@ pre.math, pre.code {
   /* font-size: 0.9em; */
   overflow: auto;
 }
-pre.code .ln { color: gray; } /* line numbers */
 /* basic highlighting: for a complete scheme, see */
 /* http://docutils.sourceforge.net/sandbox/stylesheets/ */
 pre.code .comment, code .comment { color: #5C6576 }
