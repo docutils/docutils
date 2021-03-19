@@ -27,15 +27,18 @@
 body {
   background-color: #fafaf6;
   margin: auto;
+  --field-indent: 6.6em; /* indent of fields in field lists */
+  --sidebar-margin-right: 0; /* adapted in media queries below */
 }
 main {
   counter-reset: figure table;
 }
-main, header, footer {
+body > * {
   background-color: white;
   line-height: 1.6;
-  /* smooth transition from 5% to 15% (see media queries below) */
-  padding: 0.5rem calc(25% - 5.8rem);
+  padding: 0.5rem calc(29% - 7.2rem); /* go from 5% to 15% (8.15em/54em) */
+  margin: auto;
+  max-width: 100rem;
 }
 
 /* Vertical Space (Parskip) */
@@ -49,13 +52,6 @@ table {
 h1, h2, h3, h4, h5, h6,
 dl > dd {
   margin-bottom: 0.5em;
-}
-/* exceptions */
-p:first-child {
-  margin-top: 0;
-}
-p:last-child {
-  margin-bottom: 0;
 }
 blockquote > table,
 div.topic > table {
@@ -119,11 +115,11 @@ hr {
 /* Lists */
 
 ul, ol {
-  padding-left: 1.1em;
+  padding-left: 1.1em; /* indent by bullet width (Firefox, DejaVu fonts) */
 }
 dl.field-list > dd,
 dl.docinfo > dd {
-  margin-left: 6.4em;
+  margin-left: var(--field-indent); /* adapted in media queries or HTML */
 }
 dl.option-list > dd {
   margin-left: 20%;
@@ -160,6 +156,8 @@ dl.footnote {
   padding-left: 0.5em;
   border-left: solid;
   border-left-width: thin;
+}
+dt.label > span.fn-backref {
 }
 
 /* Images, Figures, and Tables */
@@ -209,18 +207,16 @@ table.numbered > caption:before {
 }
 
 /* Admonitions and System Messages */
-div.admonition,
+.admonition,
 div.system-message {
-  border-style: solid;
-  border-color: silver;
-  border-width: thin;
+  border: thin solid silver;
   margin: 1em 2%;
   padding: 0.5em;
 }
-div.caution p.admonition-title,
-div.attention p.admonition-title,
-div.danger p.admonition-title,
-div.warning p.admonition-title,
+.caution p.admonition-title,
+.attention p.admonition-title,
+.danger p.admonition-title,
+.warning p.admonition-title,
 div.error {
   color: maroon;
 }
@@ -242,7 +238,7 @@ pre.code .inserted, code .inserted { background-color: #A3D289}
 /* Hyperlink References */
 a {
   text-decoration: none;
-  text-decoration-skip-ink: auto; /* underline that clears descenders (nonstandard) */
+  /* text-decoration-skip-ink: auto; !!nonstandard, default in modern browsers */
 }
 /* Wrap links at any place, if this is the only way to prevent overflow */
 a:link{
@@ -277,6 +273,7 @@ h1, h2, h3 {
 }
 
 img.align-left,
+video.align-left,
 figure.align-left,
 table.align-left {
   margin-left: 0;
@@ -286,6 +283,7 @@ table.align-left {
   float: left;
 }
 img.align-right,
+video.align-right,
 figure.align-right,
 table.align-right {
   margin-left: 0.5em;
@@ -299,9 +297,10 @@ table.align-right {
 aside.sidebar,
 .marginal,
 .admonition.marginal {
-  max-width: min(40%, 20rem);
+  max-width: 40%;
+  border: none;
   background-color: #efefea;
-  margin: 0.5em 0 0.5em 1em;
+  margin: 0.5em var(--sidebar-margin-right) 0.5em 1em;
   padding: 0.5em;
   clear: right;
   float: right;
@@ -316,7 +315,7 @@ aside.sidebar {
 @media (max-width: 30em) {
   /* Smaller margins and no floating elements for small screens */
   /* (main text less than 40 characters/line) */
-  main, header, footer {
+  body > * {
     padding: 0.5rem 5%;
     line-height: 1.4
   }
@@ -331,13 +330,11 @@ aside.sidebar {
   pre {
     margin-left: 0;
   }
-  dl.field-list > dd {
-    margin-left: 4em;
+  body {
+    --field-indent: 4em;
   }
-  dl.field-list.narrow > dd,
-  dl.docinfo > dd,
-  dl.option-list > dd {
-    margin-left: 2.4em;
+  dl.field-list.narrow, dl.docinfo, dl.option-list {
+    --field-indent: 2.4em;
   }
   pre, pre * {
   font-size: 0.9em;
@@ -348,17 +345,21 @@ aside.sidebar {
 @media (min-width: 54em) {
   /* Move ToC to the left */
   /* Main text width before: 70% ≙ 35em ≙ 75…95 chrs (Dejavu/Times) */
-  /*                 after:      ≳ 30em ≙ 54…70 chrs (Dejavu/Times) */
-  main, header, footer {
-    margin-left: 10%;
-    padding-left: min(20%, 18rem);
+  /*                  after:      ≳ 30em ≙ 54…70 chrs (Dejavu/Times) */
+  body.with-toc {
+    padding-left: 8%;
+  }
+  body.with-toc > * {
+    margin-left: 0;
+    padding-left: 22rem; /* fallback for webkit */
+    padding-left: min(22%, 22rem);
     padding-right: 7%;
   }
-  main > div.topic.contents {
+  main > div.topic.contents { /* exclude local ToCs */
     position: fixed;
     top: 0;
     left: 0;
-    width: min(25%, 28em);
+    width: min(25%, 25em);
     height: 100vh;
     margin: 0;
     background-color: #fafaf6;
@@ -377,57 +378,69 @@ aside.sidebar {
 }
 
 @media (min-width: 70em) {
-  dl.field-list > dd,
-  dl.docinfo > dd {
-    margin-left: 9em;
+  body {
+    --field-indent: 9em;
   }
 }
 
-@media (min-width: 80em) {
-  /* limit main text to 50em ≙ 85…100 characters DejaVu rsp. …120 Times */
-  main, header, footer {
-    padding-right: calc(70% - 50em);
+@media (min-width: 77em) {
+  /* Move marginalia to 6rem from right border       */
+  /* aside.sidebar,	                             */
+  /* .marginal,		    	                     */
+  /* .admonition.marginal { 	                     */
+  /*   margin-right: calc(6rem - 15%);               */
+  /* } 		     	       	 	             */
+  /* BUG: margin is calculated for break point width */
+  /* workaround: variable + many breakpoints         */
+  body > * {
+    padding-left: 18%;
+    padding-right: 28%; /* fallback for webkit */
+    padding-right: min(28%, 28rem);
+    --sidebar-margin-right: -20rem;
   }
-  /* Move marginalia to 6rem from right border */
-  /* TODO: why does this fail ??  	       */
-  /* aside.sidebar,	                       */
-  /* .marginal,		    	               */
-  /* .admonition.marginal { 	               */
-  /*   margin-right: calc(6rem - 15vh);        */
-  /* } 		     	       	 	       */
+  /* limit main text to ~ 50em ≙ 85…100 characters DejaVu rsp. …120 Times */
+  body.with-toc > * {
+    padding-left: min(22%, 22rem);
+    padding-right: calc(78% - 50rem); /* fallback for webkit */
+    padding-right: min(78% - 50rem, 28rem);
+    --sidebar-margin-right: 0;
+  }
 }
 
-@media (min-width: 92em) {
+@media (min-width: 85em) {
+  body.with-toc > * {
+    --sidebar-margin-right: -9rem;
+  }
+}
+
+@media (min-width: 90em) {
   /* move marginalia into the margin */
-  aside.sidebar,
-  .admonition.marginal,
-  .marginal {
-    margin-right: -12rem;
+  body > * {
+    padding-left: min(22%, 22rem);
+    --sidebar-margin-right: -23rem;
+  }
+  body.with-toc > * {
+    --sidebar-margin-right: -14rem;
   }
 }
 
-@media (min-width: 106em) {
+@media (min-width: 99em) {
   /* move marginalia out of main text area */
-  aside.sidebar,
+  body.with-toc > * {
+    --sidebar-margin-right: -20rem;
+  }
+  body > *, body.with-toc > * { /* for webkit */
+    padding-left: 22rem; 
+    padding-right: 28rem; 
+  }
   .admonition.marginal,
   .marginal {
-    width: 20rem;
-    /* background-color: inherit; */
-    margin-right: -22rem;
+    width: 40%; /* make marginal figures, ... "full width" */
   }
 }
 
-@media (min-width: 117em) {
-  /* maximal sensible width of main area reached */
-  main, header, footer {
-    width: 98rem;
-    margin-right: 0;
-    padding-left: 18rem;
-    padding-right: 30rem;
-  }
-  aside.sidebar,
-  .marginal,
-  .admonition.marginal {
-    margin-right: -24rem; /* move into the padding, 6rem from border */
+@media (min-width: 104em) {
+  body.with-toc > * {
+    --sidebar-margin-right: -23rem;
   }
 }

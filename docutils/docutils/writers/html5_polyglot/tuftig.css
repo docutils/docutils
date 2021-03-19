@@ -25,11 +25,6 @@
 /* General Settings */
 /* ================ */
 
-@viewport {
-  zoom: 1.0;
-  width: extend-to-zoom;
-}
-
 body {
   font-family: et-book, Palatino, Georgia, serif;
   background-color: #fafaf6;
@@ -281,7 +276,7 @@ table.numbered > caption:before {
 }
 
 /* Admonitions and System Messages */
-div.admonition,
+.admonition,
 div.system-message {
   border-style: solid;
   border-color: silver;
@@ -289,10 +284,10 @@ div.system-message {
   margin: 1em 0;
   padding: 0.5em;
 }
-div.caution p.admonition-title,
-div.attention p.admonition-title,
-div.danger p.admonition-title,
-div.warning p.admonition-title,
+.caution p.admonition-title,
+.attention p.admonition-title,
+.danger p.admonition-title,
+.warning p.admonition-title,
 div.error {
   color: maroon;
 }
@@ -326,7 +321,7 @@ a {
 }
 a:link {
   text-decoration: underline;
-  text-decoration-skip-ink: auto; /* nonstandard selector */
+  /* text-decoration-skip-ink: auto; nonstandard selector */
 }
 /* undecorated links */
 .contents a:link, a.toc-backref:link, a.image-reference:link,
