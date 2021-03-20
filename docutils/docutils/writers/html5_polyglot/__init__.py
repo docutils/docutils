@@ -27,11 +27,14 @@ the style sheet "plain.css" improves reading experience.
 """
 __docformat__ = 'reStructuredText'
 
+import mimetypes
 import os.path
+
 import docutils
 from docutils import frontend, nodes, writers, io
 from docutils.transforms import writer_aux
 from docutils.writers import _html_base
+from docutils.writers._html_base import PIL, url2pathname
 
 class Writer(writers._html_base.Writer):
 
@@ -307,6 +310,40 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
         self.body_prefix.extend(header)
         self.header.extend(header)
         del self.body[start:]
+        
+    # MIME types supported by the HTML5 <video> element
+    videotypes = ('video/mp4', 'video/webm', 'video/ogg')
+
+    def visit_image(self, node):
+        atts = {}
+        uri = node['uri']
+        mimetype = mimetypes.guess_type(uri)[0]
+        if mimetype not in self.videotypes:
+            return super(HTMLTranslator, self).visit_image(node)
+        # image size
+        if 'width' in node:
+            atts['width'] = node['width'].replace('px', '')
+        if 'height' in node:
+            atts['height'] = node['height'].replace('px', '')
+        if 'align' in node:
+            atts['class'] = 'align-%s' % node['align']
+        if 'controls' in node.get('classes', []):
+            atts['controls'] = 'controls'
+        atts['title'] = node.get('alt', uri)
+        
+        # No newline in inline context or if surrounded by <a>...</a>.
+        if (isinstance(node.parent, nodes.TextElement) or
+            (isinstance(node.parent, nodes.reference) and
+             not isinstance(node.parent.parent, nodes.TextElement))):
+            suffix = ''
+        else:
+            suffix = '\n'
+        self.body.append('%s<a href="%s">%s</a>%s</video>%s'
+            % (self.starttag(node, 'video', suffix, src=uri, **atts),
+               uri, node.get('alt', uri), suffix, suffix))
+
+    def depart_image(self, node):
+        pass
 
     # use HTML text-level tags if matching class value found
     supported_inline_tags = set(('code', 'kbd', 'dfn', 'samp', 'var',
