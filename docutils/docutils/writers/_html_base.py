@@ -312,7 +312,7 @@ class HTMLTranslator(nodes.NodeVisitor):
                                        encoding='utf-8').read()
                 self.settings.record_dependencies.add(path)
             except IOError as err:
-                msg = u"Cannot embed stylesheet '%s': %s." % (
+                msg = u"Cannot embed stylesheet '%r': %s." % (
                                 path, SafeString(err.strerror))
                 self.document.reporter.error(msg)
                 return '<--- %s --->\n' % msg
@@ -966,24 +966,26 @@ class HTMLTranslator(nodes.NodeVisitor):
         if self.settings.embed_images or ('embed' in node):
             err_msg = ''
             if not mimetype:
-                err_msg = 'unknown MIME type for "%s"' % uri
+                err_msg = 'unknown MIME type'
             if not self.settings.file_insertion_enabled:
                 err_msg = 'file insertion disabled.'
             try:
                 with open(url2pathname(uri), 'rb') as imagefile:
                     imagedata = imagefile.read()
             except IOError as err:
-                err_msg = str(err)
-            if not err_msg:
+                err_msg = err.strerror
+            if err_msg:
+                self.document.reporter.error('Cannot embed image %r: %s'
+                                             %(uri, err_msg))
+            else:
+                self.settings.record_dependencies.add(
+                                            uri.replace('\\', '/'))
                 # TODO: insert SVG as-is?
                 # if mimetype == 'image/svg+xml':
                   # read/parse, apply arguments,
                   # insert as <svg ....> ... </svg> # (about 1/3 less data)
                 data64 = base64.b64encode(imagedata).decode()
                 uri = u'data:%s;base64,%s' % (mimetype, data64)
-            else:
-                # raise NotImplementedError(os.getcwd() + err_msg)
-                self.document.reporter.error("Cannot embed image\n "+err_msg)
         if mimetype == 'application/x-shockwave-flash':
             atts['type'] = mimetype
             # do NOT use an empty tag: incorrect rendering in browsers
