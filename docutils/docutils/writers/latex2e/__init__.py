@@ -1334,7 +1334,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
                                        encoding='utf-8').read()
                 self.settings.record_dependencies.add(path)
             except IOError as err:
-                msg = u"Cannot embed stylesheet '%s':\n  %s." % (
+                msg = u'Cannot embed stylesheet %r:\n  %s.' % (
                                 path, SafeString(err.strerror))
                 self.document.reporter.error(msg)
                 return '% ' + msg.replace('\n', '\n% ')
