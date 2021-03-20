@@ -320,19 +320,22 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
         if len(tags):
             node.html5tagname = tags[0]
             classes.remove(tags[0])
-        else:
-            node.html5tagname = 'span'
-        if (classes == ['ln'] and isinstance(node.parent, nodes.literal_block)
+        elif (classes == ['ln'] and isinstance(node.parent, nodes.literal_block)
             and 'code' in node.parent.get('classes')):
             if self.body[-1] == '<code>':
-                self.body[-1] = '<code data-lineno="%s">'%node.astext()
+                del(self.body[-1])
             else:
-                self.body.append('</code><code data-lineno="%s">'
-                                 % node.astext())
+                self.body.append('</code>')
+            node.html5tagname = 'small'
+        else:
+            node.html5tagname = 'span'
         self.body.append(self.starttag(node, node.html5tagname, ''))
 
     def depart_inline(self, node):
         self.body.append('</%s>' % node.html5tagname)
+        if (node.html5tagname == 'small' and node.get('classes') == ['ln']
+            and isinstance(node.parent, nodes.literal_block)):
+            self.body.append('<code data-lineno="%s">' % node.astext())
         del(node.html5tagname)
 
     # place inside HTML5 <figcaption> element (together with caption)
