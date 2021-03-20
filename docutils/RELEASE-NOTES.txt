@@ -26,8 +26,14 @@ Future changes
     and/or ``\DUtitle`` or set to "True".
 
 * `html5` writer:
-    Use <aside> instad of <dl> for footnote text and citations
-    and <nav> instead of <div> for the Table of Contents.
+    Semantic tags:
+    Use <aside> instad of <dl> for footnote text and citations,
+    <aside> for topics (except abstract), admonitions, and system messages, 
+    and <nav> for the Table of Contents.
+    
+    Write footnote brackets and field term colons to HTML, so that
+    they are present also without CSS and when copying text. 
+    Hide with CSS if required. 
 
     Use <summary> and <details> tags for term and definition of a
     definition list with class value "details".
