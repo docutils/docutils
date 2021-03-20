@@ -537,13 +537,15 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
     def visit_generated(self, node):
         pass
 
-    # Use <object> instead of <img> for some image types:
-    
-    # SVG not supported by IE up to version 8
-    # (html4css1 strives for IE6 compatibility)
+    # Backwards-compatibility implementation:
+    # * Do not use <video>,
+    # * don't embed images,
+    # * use <object> instead of <img> for SVG.
+    #   (SVG not supported by IE up to version 8,
+    #   html4css1 strives for IE6 compatibility.)
     object_image_types = {'.svg': 'image/svg+xml',
                          '.swf': 'application/x-shockwave-flash'}
-
+    #
     def visit_image(self, node):
         atts = {}
         uri = node['uri']
@@ -620,7 +622,6 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
 
     def depart_label(self, node):
         self.body.append(']%s</td><td>%s' % (self.context.pop(), self.context.pop()))
-
 
     # ersatz for first/last pseudo-classes
     def visit_list_item(self, node):

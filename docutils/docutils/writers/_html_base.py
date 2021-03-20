@@ -244,7 +244,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         Used by visit_* and depart_* functions in conjunction with the tree
         traversal. Make sure that the pops correspond to the pushes."""
 
-        self.topic_classes = [] # TODO: replace with self_in_contents
+        self.topic_classes = []
         self.colspecs = []
         self.compact_p = True
         self.compact_simple = False
@@ -515,7 +515,8 @@ class HTMLTranslator(nodes.NodeVisitor):
             and not self.settings.compact_lists):
             return False
         # more special cases:
-        if (self.topic_classes == ['contents']): # TODO: self.in_contents
+        if (self.topic_classes == ['contents']):
+            # TODO: look for "auto-toc" instead and remove self.topic_classes
             return True
         # check the list items:
         return self.check_simple_list(node)
@@ -973,14 +974,16 @@ class HTMLTranslator(nodes.NodeVisitor):
                     imagedata = imagefile.read()
             except IOError as err:
                 err_msg = str(err)
-            if not err_msg: 
-                # TODO (test mimetype for SVG and insert directly)
+            if not err_msg:
+                # TODO: insert SVG as-is?
+                # if mimetype == 'image/svg+xml':
+                  # read/parse, apply arguments,
+                  # insert as <svg ....> ... </svg> # (about 1/3 less data)
                 data64 = base64.b64encode(imagedata).decode()
                 uri = u'data:%s;base64,%s' % (mimetype, data64)
             else:
                 # raise NotImplementedError(os.getcwd() + err_msg)
                 self.document.reporter.error("Cannot embed image\n "+err_msg)
-
         if mimetype == 'application/x-shockwave-flash':
             atts['type'] = mimetype
             # do NOT use an empty tag: incorrect rendering in browsers
@@ -1373,7 +1376,6 @@ class HTMLTranslator(nodes.NodeVisitor):
     def depart_rubric(self, node):
         self.body.append('</p>\n')
 
-    # TODO: use the new HTML 5 element <section>?
     def visit_section(self, node):
         self.section_level += 1
         self.body.append(
@@ -1383,7 +1385,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.section_level -= 1
         self.body.append('</div>\n')
 
-    # TODO: use the new HTML5 element <aside>? (Also for footnote text)
+    # TODO: use the new HTML5 element <aside>
     def visit_sidebar(self, node):
         self.body.append(
             self.starttag(node, 'div', CLASS='sidebar'))
@@ -1586,17 +1588,13 @@ class HTMLTranslator(nodes.NodeVisitor):
     def depart_title_reference(self, node):
         self.body.append('</cite>')
 
-    # TODO: use the new HTML5 element <aside>? (Also for footnote text)
     def visit_topic(self, node):
         self.body.append(self.starttag(node, 'div', CLASS='topic'))
         self.topic_classes = node['classes']
-        # TODO: replace with ::
-        #   self.in_contents = 'contents' in node['classes']
 
     def depart_topic(self, node):
         self.body.append('</div>\n')
         self.topic_classes = []
-        # TODO self.in_contents = False
 
     def visit_transition(self, node):
         self.body.append(self.emptytag(node, 'hr', CLASS='docutils'))
