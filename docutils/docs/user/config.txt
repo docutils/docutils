@@ -58,7 +58,7 @@ Paths are interpreted relative to the current working directory.
 Empty path items are ignored.
 
 In addition, a configuration file may be explicitly specified with the
-"--config" command-line option.  This configuration file is read after
+``--config`` command-line option.  This configuration file is read after
 the three implicit ones listed above (or the ones defined by the
 ``DOCUTILSCONFIG`` environment variable), and its entries will have
 priority.
@@ -956,21 +956,6 @@ attributes (values "compact" and "open") in the document.
 Default: enabled (True).
 Options: ``--compact-field-lists, --no-compact-field-lists``.
 
-embed_images
-~~~~~~~~~~~~
-
-Embed images in the output HTML file. If the image can be read from
-the local file system and its MIME type can be determined, it is
-base64_ encoded and included as a `data URI`_.
-
-Default: disabled (False).
-Options: ``--embed-images``, ``--link-images``
-
-New in Docutils 0.17.
-
-.. _base64: https://en.wikipedia.org/wiki/Base64
-.. _data URI: https://en.wikipedia.org/wiki/Data_URI_scheme
-
 
 .. _embed_stylesheet [html writers]:
 
@@ -1304,6 +1289,21 @@ __  https://www.w3.org/TR/html53/sections.html#the-h1-h2-h3-h4-h5-and-h6-element
 .. _HTML5 Writer: html.html#html5-polyglot
 .. _HTML5: http://www.w3.org/TR/html5/
 
+
+embed_images
+""""""""""""
+
+Embed images in the output HTML file. If the image can be read from
+the local file system and its MIME type can be determined, it is
+base64_ encoded and included as a `data URI`_.
+
+Default: disabled (False).
+Options: ``--embed-images``, ``--link-images``
+
+New in Docutils 0.17.
+
+.. _base64: https://en.wikipedia.org/wiki/Base64
+.. _data URI: https://en.wikipedia.org/wiki/Data_URI_scheme
 
 
 [pep_html writer]
@@ -1738,7 +1738,7 @@ use_bibtex
 Specify style and database for the experimental `BibTeX` support, for
 example::
 
- --use-bibtex=mystyle,mydb1,mydb2
+  --use-bibtex=mystyle,mydb1,mydb2
 
 Default: "" (don't use BibTeX).  Option ``--use-bibtex``.
 
@@ -1855,8 +1855,8 @@ template__:
   "xelatex.tex" in the ``docutils/writers/latex2e/`` directory
   (installed automatically).
 
-  .. TODO: show full path with --help (like in the HTML writers) and
-     add the following line:
+  .. TODO: show full path with ``--help`` (like in the HTML writers)
+     and add the following line:
      for the exact machine-specific path, use the ``--help`` option).
 
   __ `template [latex writers]`_
