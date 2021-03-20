@@ -27,7 +27,7 @@ to generate a specific data format).
 Most front ends have common options and the same command-line usage
 pattern::
 
-    toolname [options] [<source> [<destination]]
+    toolname [options] [<source> [<destination>]]
 
 (The exceptions are buildhtml.py_ and rstpep2html.py_.)  See
 rst2html.py_ for concrete examples.  Each tool has a "``--help``"
