@@ -103,6 +103,7 @@ Version 0.17b1
     is found in `inline` and `literal` elements.
     Use <ins> and <del> if a matching class value
     is found in `inline`, `literal`, or `container` elements.
+    Use <small> for generated code line numbers.
 
   - Fix bug #398: properly close link tag to "schema.dcterms".
 
@@ -110,7 +111,7 @@ Version 0.17b1
 
     __ https://developer.mozilla.org/en-US/docs/Web/HTML/Viewport_meta_tag
     
-  - Use <small> for code line numbers and also add them as "data-*" arguments.
+  - Use <video> for images with video MIME types supported by HTML5.
 
 * docutils/writers/html5_polyglot/minimal.css
 
