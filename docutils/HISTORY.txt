@@ -110,15 +110,17 @@ Version 0.17b1
 
     __ https://developer.mozilla.org/en-US/docs/Web/HTML/Viewport_meta_tag
     
-  - Add code line numbers as "data-*" arguments.
-    This way, they may be skipped when copying text from code blocks
-    (see minimal.css). Solves feature request #32.
+  - Use <small> for code line numbers and also add them as "data-*" arguments.
 
 * docutils/writers/html5_polyglot/minimal.css
 
   - Move non-essential styling to ``plain.css``.
-    Support "captionbelow" class value for tables.
     Small fixes and tweaks.
+    
+  - Support "captionbelow" class value for tables.
+  
+  - Display code line numbers as pseudo-elements which are skipped
+    when copying text from code blocks. Solves feature request #32.
 
 * docutils/writers/html5_polyglot/plain.css
 
