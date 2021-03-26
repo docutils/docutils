@@ -51,12 +51,12 @@ template::
     h1, h2, h3, h4, h5, h6, p.topic-title {
       font-family: sans-serif }
 
-For help on the CSS syntax, please see `the WDG's guide to Cascading
-Style Sheets`__ and, in particular, their `list of CSS properties`__.
-Another good reference site is http://selfhtml.org (German and French).
+For help on the CSS syntax, see, e.g., the `W3C Specification`_, the
+`WDG's guide to Cascading Style Sheets`__, or the `MDN Web Docs`__.
 
+.. _W3C Specification: https://www.w3.org/Style/CSS/#specs
 __ http://www.htmlhelp.com/reference/css/
-__ http://www.htmlhelp.com/reference/css/all-properties.html
+__ https://developer.mozilla.org/en-US/docs/Web/CSS
 
 It is important that you do not edit a copy of ``html4css1.css``
 directly because ``html4css1.css`` is frequently updated with each new

@@ -159,11 +159,14 @@ of the various locations, and ``DOCUTILSCONFIG`` are available in the
 `"Configuration Files"`_ section of `Docutils Configuration`_.
 
 To fully secure a recent Docutils installation, the configuration file
-should contain the following lines::
+should contain the following lines ::
 
     [general]
     file-insertion-enabled: off
     raw-enabled: no
+
+and untrusted users must be prevented to modify or create local
+configuration files that overwrite these settings.
 
 .. _Docutils front-end tools: ../user/tools.html
 .. _"Configuration Files": ../user/config.html#configuration-files
@@ -173,18 +176,20 @@ should contain the following lines::
 Version Applicability
 =====================
 
-The ``file_insertion_enabled`` & ``raw_enabled`` settings were added
-to Docutils 0.3.9; previous versions will ignore these settings. 
+The "file_insertion_enabled_" and "raw_enabled_" settings were added
+to Docutils 0.3.9; previous versions will ignore these settings.
 
 A bug existed in the configuration file handling of these settings in
-Docutils 0.4 and earlier: the right-hand-side of the  (the
-values) needed to be left blank::
-   
+Docutils 0.4 and earlier: the right-hand-side needed to be left blank
+(no values)::
+
        [general]
        file-insertion-enabled:
        raw-enabled:
 
 The bug was fixed with the 0.4.1 release on 2006-11-12.
+
+The "line_length_limit_" is new in Docutils 0.17.
 
 
 Related Documents

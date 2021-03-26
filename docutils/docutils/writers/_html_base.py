@@ -514,9 +514,9 @@ class HTMLTranslator(nodes.NodeVisitor):
         if (isinstance(node, (nodes.enumerated_list, nodes.bullet_list))
             and not self.settings.compact_lists):
             return False
-        # more special cases:
+        # Table of Contents:
         if (self.topic_classes == ['contents']):
-            # TODO: look for "auto-toc" instead and remove self.topic_classes
+            # TODO: look in parent nodes, remove self.topic_classes?
             return True
         # check the list items:
         return self.check_simple_list(node)

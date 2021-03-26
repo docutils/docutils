@@ -69,6 +69,8 @@ docutils_cli.py
           latex__, xelatex_, xml_, odt_, Pseudo-XML_
 
 __ `Generating LaTeX with Docutils`_
+.. _Generating LaTeX with Docutils: latex.html
+
 
 HTML-Generating Tools
 =====================
@@ -464,15 +466,11 @@ document.  Various forms output are possible:
 Command-Line Options
 ====================
 
-Each front-end tool supports command-line options for one-off
-customization.  For persistent customization, use `configuration
-files`_.  Command-line options take priority over configuration file
-settings.
+Command-line options are intended for one-off customization.
+They take priority over configuration file settings.
 
 Use the "--help" option on each of the front ends to list the
-command-line options it supports.  Command-line options and their
-corresponding configuration file entry names are listed in the
-`Docutils Configuration Files`_ document.
+command-line options it supports.  
 
 
 .. _configuration file:
@@ -483,10 +481,11 @@ Configuration Files
 Configuration files are used for persistent customization; they can be
 set once and take effect every time you use a front-end tool.
 
-For details, see `Docutils Configuration Files`_.
+Command-line options and their corresponding configuration file entry
+names are listed in the `Docutils Configuration Files`_ document.
 
 .. _Docutils Configuration Files: config.html
-.. _Generating LaTeX with Docutils: latex.html
+
 
 ..
    Local Variables:

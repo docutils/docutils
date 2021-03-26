@@ -28,19 +28,19 @@ Future changes
 * `html5` writer:
     Semantic tags:
     Use <aside> instad of <dl> for footnote text and citations,
-    <aside> for topics (except abstract), admonitions, and system messages, 
+    <aside> for topics (except abstract), admonitions, and system messages,
     and <nav> for the Table of Contents.
-    
+
     Write footnote brackets and field term colons to HTML, so that
-    they are present also without CSS and when copying text. 
-    Hide with CSS if required. 
+    they are present also without CSS and when copying text.
+    Hide with CSS if required.
 
     Use <summary> and <details> tags for term and definition of a
     definition list with class value "details".
-    
+
     Move attribution behind the blockquote to comply with
     https://html.spec.whatwg.org/#the-blockquote-element.
-    
+
 * `s5_html` writer:
     Remove the IE PNG Fix by Angus Turnbull. IE has native PNG
     support since version 7.
@@ -75,7 +75,8 @@ Future changes
 
 * The default value for auto_id_prefix_ will change to "%". This means
   auto-generated IDs will use the tag name as prefix. Set auto_id_prefix_ to
-  "id" if you want unchanged auto-IDs or to "%" if you want descriptive IDs.
+  "id" if you want unchanged auto-IDs or to "%" if you want the new
+  feature already in 0.17.
 
 * The default HTML writer "html" with frontend ``rst2html.py`` may change
   from "html4css1" to "html5".
@@ -83,9 +84,9 @@ Future changes
   Use ``get_writer_by_name('html')`` or the rst2html.py_ front end, if you
   want the output to be up-to-date automatically.
 
-  Use a specific writer name or front end, if you depend on stability of the
-  generated HTML code, e.g. because you use a custom style sheet or
-  post-processing that may break otherwise.
+  Use the "html4" writer or ``rst2html4.py``, if you depend on
+  stability of the generated HTML code, e.g. because you use a custom
+  style sheet or post-processing that may break otherwise.
 
 .. _id_prefix: docs/user/config.html#id-prefix
 .. _auto_id_prefix: docs/user/config.html#auto-id-prefix
@@ -100,9 +101,9 @@ Release 0.17
 * Installing with ``setup.py`` now requires setuptools_.
   Alternatively, install with pip_.
 
-* The generic command line front end ``docutils-cli.py`` allows the
-  free selection of reader, parser, and writer components.
-  
+* The generic command line front end tool docutils_cli.py_ allows
+  the free selection of reader, parser, and writer components.
+
 * New, experimental wrapper to integrate the
   `recommonmark`__ Markdown parser for use with Docutils.
 
@@ -128,7 +129,6 @@ Release 0.17
   - New optional style ``responsive.css``, adapts to different screen
     sizes.
 
-
   .. _initial_header_level: docs/user/config.html#initial-header-level
   __ https://stackoverflow.com/questions/39547412/same-font-size-for-h1-and-h2-in-article
 
@@ -152,6 +152,7 @@ Release 0.17
 
 .. _setuptools: https://pypi.org/project/setuptools/
 .. _pip: https://pypi.org/project/pip/
+.. _docutils_cli.py: docs/user/tools.html#docutils-cli-py
 .. _legacy_class_functions: docs/user/config.html#legacy-class-functions
 .. _graphicx_option: docs/user/config.html#graphicx-option
 .. _docutils.sty: https://ctan.org/pkg/docutils
