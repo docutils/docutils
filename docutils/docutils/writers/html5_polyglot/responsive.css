@@ -73,7 +73,7 @@ pre, dd, dl.option-list {
 /* ============== */
 
 footer, header,
-aside.sidebar, .marginal {
+.sidebar, .marginal {
   font-size: small;
 }
 
@@ -106,6 +106,25 @@ nav.contents ul,
 div.topic.contents ul {
   padding-left: 1em;
 }
+main > div.topic.contents  ul:not(.auto-toc) {
+  list-style-type: square;
+}
+main > div.topic.contents  ul ul:not(.auto-toc) {
+  list-style-type: disc;
+}
+main > div.topic.contents  ul ul ul:not(.auto-toc) {
+  list-style-type: '\2023\ ';
+}
+main > div.topic.contents  ul ul ul ul:not(.auto-toc) {
+  list-style-type: '\2B29\ ';
+}
+main > div.topic.contents  ul ul ul ul ul:not(.auto-toc) {
+  list-style-type: '\00B7\ ';
+}
+div.topic.contents ul > li::marker {
+  color: grey;
+}
+
 
 /* Transitions */
 hr {
@@ -211,7 +230,7 @@ table.numbered > caption:before {
 div.system-message {
   border: thin solid silver;
   margin: 1em 2%;
-  padding: 0.5em;
+  padding: 0.5em 1em;
 }
 .caution p.admonition-title,
 .attention p.admonition-title,
@@ -254,11 +273,10 @@ a:link{
   color: inherit;
 }
 a:link:hover {
-  text-decoration: underline;
-}
+  text-decoration: underline;}
 /* highlight the active ToC entry */
-.auto-toc :target {
-  background-color: orange;
+.topic.contents :target {
+  background-color: #d2e6ec;
 }
 
 /* Block Alignment */
@@ -293,7 +311,7 @@ table.align-right {
 
 /* Margin Elements */
 /* see below for screen size dependent rules */
-aside.sidebar,
+.sidebar,
 .marginal,
 .admonition.marginal {
   max-width: 40%;
@@ -304,7 +322,7 @@ aside.sidebar,
   clear: right;
   float: right;
 }
-aside.sidebar {
+.sidebar {
   width: 40%;
 }
 
@@ -318,7 +336,7 @@ aside.sidebar {
     padding: 0.5rem 5%;
     line-height: 1.4
   }
-  aside.sidebar,
+  .sidebar,
   .marginal,
   .admonition.marginal {
     width: auto;
@@ -368,12 +386,6 @@ aside.sidebar {
   main > div.topic.contents > * {
     padding-left: 0;
   }
-  main > div.topic.contents ul:not(.auto-toc) {
-    list-style-type: square;
-  }
-  div.topic.contents ul > li::marker {
-    color: grey;
-  }
 }
 
 @media (min-width: 70em) {
@@ -384,11 +396,11 @@ aside.sidebar {
 
 @media (min-width: 77em) {
   /* Move marginalia to 6rem from right border       */
-  /* aside.sidebar,	                             */
-  /* .marginal,		    	                     */
-  /* .admonition.marginal { 	                     */
+  /* .sidebar,                                       */
+  /* .marginal,                                      */
+  /* .admonition.marginal {                          */
   /*   margin-right: calc(6rem - 15%);               */
-  /* } 		     	       	 	             */
+  /* }                                               */
   /* BUG: margin is calculated for break point width */
   /* workaround: variable + many breakpoints         */
   body > * {
@@ -429,8 +441,8 @@ aside.sidebar {
     --sidebar-margin-right: -20rem;
   }
   body > *, body.with-toc > * { /* for webkit */
-    padding-left: 22rem; 
-    padding-right: 28rem; 
+    padding-left: 22rem;
+    padding-right: 28rem;
   }
   .admonition.marginal,
   .marginal {
