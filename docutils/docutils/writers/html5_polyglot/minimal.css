@@ -80,7 +80,7 @@ td > p, th > p { margin-bottom: 0; }
 
 /* Table of Contents */
 .topic.contents { margin: 0.5em 0; }
-.topic.contents ul {
+.topic.contents ul.auto-toc {
   list-style-type: none;
   padding-left: 1.5em;
 }
