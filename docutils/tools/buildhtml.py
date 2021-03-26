@@ -75,12 +75,17 @@ class SettingsSpec(docutils.SettingsSpec):
           {'metavar': '<patterns>', 'action': 'append',
            'default': [],
            'validator': frontend.validate_colon_separated_string_list}),
-         ('HTML version, one of "html", "html4", "html5". '
+         ('Docutils writer, one of "html", "html4", "html5". '
           'Default: "html" (use Docutils\' default HTML writer).',
-          ['--html-writer'],
-          {'metavar': '<html_writer>',
+          ['--writer'],
+          {'metavar': '<writer>',
            'choices': ['html', 'html4', 'html5'],
            'default': 'html'}),
+         ('Obsoleted by "--writer".',
+          ['--html-writer'],
+          {'dest': 'writer',
+           'metavar': '<writer>',
+           'choices': ['html', 'html4', 'html5'],}),
          ('Work silently (no progress messages).  Independent of "--quiet".',
           ['--silent'],
           {'action': 'store_true', 'validator': frontend.validate_boolean}),
@@ -235,7 +240,7 @@ class Builder(object):
         if name.startswith('pep-'):
             publisher = 'PEPs'
         else:
-            publisher = self.initial_settings.html_writer
+            publisher = self.initial_settings.writer
         settings = self.get_settings(publisher, directory)
         errout = ErrorOutput(encoding=settings.error_encoding)
         pub_struct = self.publishers[publisher]
