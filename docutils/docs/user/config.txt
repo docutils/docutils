@@ -116,8 +116,8 @@ strip whitespace::
 Example
 =======
 
-This is the contents of the ``tools/docutils.conf`` configuration file
-supplied with Docutils::
+This is from the ``tools/docutils.conf`` configuration file supplied
+with Docutils::
 
     # These entries affect all processing:
     [general]
@@ -126,11 +126,16 @@ supplied with Docutils::
     generator: on
 
     # These entries affect HTML output:
-    [html4css1 writer]
-    # Required for docutils-update, the website build system:
-    stylesheet-path: ../docutils/writers/html4css1/html4css1.css
+    [html writers]
     embed-stylesheet: no
+
+    [html4css1 writer]
+    stylesheet-path: docutils/writers/html4css1/html4css1.css
     field-name-limit: 20
+
+    [html5 writer]
+    stylesheet-dirs: docutils/writers/html5_polyglot/
+    stylesheet-path: minimal.css, responsive.css
 
 Individual configuration sections and settings are described in the
 following section.
@@ -602,7 +607,7 @@ Docutils currently supports only one parser, for reStructuredText.
 character_level_inline_markup
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Experimental setting to relax the `inline markup recognition rules`_
+Relax the `inline markup recognition rules`_
 requiring whitespace or punctuation around inline markup.
 
 Allows character level inline markup without escaped whithespace and is
@@ -646,7 +651,7 @@ Maximal number of characters in an input line or `substitution`_
 definition. To prevent extraordinary high processing times or memory
 usage for certain input constructs, a "warning" system message is
 inserted instead.
-          
+
 Default: 10 000.
 Option: ``--line-length-limit``
 
@@ -1052,7 +1057,7 @@ the output document. Supported values are (case insensitive):
          https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
 
     See https://www.jsdelivr.com/ for details and terms of use.
-    
+
     __ https://www.mathjax.org/#gettingstarted
 
   * Use a local MathJax installation on the *client* machine, e.g.::
@@ -1176,18 +1181,18 @@ The default CSS sylesheet defines:
 
   borderless
     No borders around the table.
-  
+
   booktabs
     Lines above and below the table and a thin line after the head.
-  
+
   align-left, align-center, align-right
     Align the tables
-    
+
   colwidths-auto
     Delegate the determination of table column widths to the backend
     (leave out the ``<colgroup>`` column specification).
     See also the "widths" option of the `table directive`_.
-  
+
   captionbelow
     Place the table caption below the table
     (only with the `HTML5 writer`_, new in 0.17).

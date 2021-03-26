@@ -1263,7 +1263,7 @@ markup) continues within the block quote::
         -- Sherlock Holmes
 
 A block quote may end with an attribution: a text block beginning with
-"--", "---", or a true em-dash, flush left within the block quote.  If
+``--``, ``---``, or a true em-dash, flush left within the block quote.  If
 the attribution consists of multiple lines, the left edges of the
 second and subsequent lines must align.
 
@@ -2472,12 +2472,12 @@ the following conditions are met:
 5. If an inline markup start-string is immediately preceded by one of the
    ASCII characters ``' " < ( [ {`` or a similar
    non-ASCII character [#openers]_, it must not be followed by the
-   corresponding closing character from ``' " ) ] } >`` or a similar non-ASCII
-   character [#closers]_. (For quotes, matching characters can be any of
-   the `quotation marks in international usage`_.)
+   corresponding closing character from ``' " > ) ] }`` or a similar
+   non-ASCII character [#closers]_. (For quotes, matching characters can
+   be any of the `quotation marks in international usage`_.)
 
-If the configuration setting `simple-inline-markup`_ is False (default),
-additional conditions apply to the characters "around" the
+If the configuration setting `character-level-inline-markup`_ is False
+(default), additional conditions apply to the characters "around" the
 inline markup:
 
 6. Inline markup start-strings must start a text block or be
@@ -2548,13 +2548,13 @@ inline markup characters can be escaped::
 
 
 For languages that don't use whitespace between words (e.g. Japanese or
-Chinese) it is recommended to set `simple-inline-markup`_ to True and
-eventually escape inline markup characters.
+Chinese) it is recommended to set `character-level-inline-markup`_ to
+True and eventually escape inline markup characters.
 The examples breaking rules 6 and 7 above show which constructs may need
 special attention.
 
-
-.. _simple-inline-markup: ../../user/config.html#simple-inline-markup
+.. _character-level-inline-markup:
+   ../../user/config.html#character-level-inline-markup
 
 
 Recognition order

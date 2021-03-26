@@ -208,8 +208,8 @@ Also see the `SourceForge Bug Tracker`_.
   over implicit targets.  But if an explicit target comes after an
   implicit target with the same name, the ID of the first (implicit)
   target remains based on the implicit name.  Since HTML fragment
-  identifiers based on the IDs, the first target keeps the name.  For
-  example::
+  identifiers are based on the IDs, the first target keeps the name. 
+  For example::
 
       .. contents::
 

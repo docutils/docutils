@@ -93,7 +93,7 @@ How to make code contributions that are easily accepted:
 * Look at the Docutils sources to see how similar features are implemented,
   learn to do it "the Docutils way".
 
-* Prepare the a patch or an addition to the existing documentation.
+* Prepare a patch or an addition to the existing documentation.
   Include links.
 
 * If you are familiar with version control, consider creating a `feature
@@ -634,13 +634,10 @@ ways to keep the Docutils code accessible during development:
    For the bash shell, add this to your ``~/.profile``::
 
        PYTHONPATH=$HOME/projects/docutils/docutils
-       PYTHONPATH=$PYTHONPATH:$HOME/projects/docutils/docutils
        export PYTHONPATH
 
    The first line points to the directory containing the ``docutils``
-   package.  The second line adds the directory containing the
-   third-party modules Docutils depends on.  The third line exports
-   this environment variable.
+   package.  The second line exports this environment variable.
 
    You many also want to add the ``tools`` directory to your binary ``PATH``::
 
@@ -656,9 +653,9 @@ ways to keep the Docutils code accessible during development:
           /usr/local/lib/python2.7/site-packages/
 
    Alternatively, use a `path configuration file`__.
-   
+
    __ https://docs.python.org/library/site.html
-   
+
    You may also want to copy or link the front-end tools in
    ``docutils/tools`` to a suitable place in your binary PATH, e.g., ::
 

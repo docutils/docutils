@@ -44,8 +44,8 @@ Purpose
 
 The purpose of the Docutils project is to create a set of tools for
 processing plaintext documentation into useful formats, such as HTML,
-XML, and LaTeX.  Support for the following sources has been
-implemented:
+LaTeX, troff (man pages), OpenOffice, and native XML.  Support for the
+following sources has been implemented:
 
 * Standalone files.
 
