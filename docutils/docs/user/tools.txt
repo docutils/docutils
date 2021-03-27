@@ -18,7 +18,7 @@
 Once the Docutils package is unpacked, you will discover a "``tools``"
 directory containing several front ends for common Docutils
 processing.
-In addition to the all-purpose program docutils_cli.py_, Docutils has
+In addition to the all-purpose program docutils-cli.py_, Docutils has
 many small front ends, each specialized for a specific "Reader" (which
 knows how to interpret a file in context), a "Parser" (which
 understands the syntax of the text), and a "Writer" (which knows how
@@ -60,7 +60,7 @@ list.
 Generic Command Line Front End
 ==============================
 
-docutils_cli.py
+docutils-cli.py
 ---------------
 
 :Readers: Standalone, PEP

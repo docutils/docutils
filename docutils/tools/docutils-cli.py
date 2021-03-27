@@ -28,8 +28,8 @@ import sys
 
 from docutils.core import publish_cmdline, default_description
 
-description = (u'Generate documents from reStructuredText sources.'
-              )
+description = u'Generate documents from reStructuredText or Markdown sources.'
+              
 epilog = (u'Currently, the component selection cannot be specified in the '
           u'configuration file. '
           u'The availability of some options depends on the selected '

@@ -201,7 +201,7 @@ Version 0.17b1
 
   - Run python3 test like python2 against source not the build/-directory
 
-* tools/docutils_cli.py
+* tools/docutils-cli.py
 
   - New generic command line front end that allows the free selection of
     reader, parser, and writer components.

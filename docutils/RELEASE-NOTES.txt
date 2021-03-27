@@ -101,7 +101,7 @@ Release 0.17
 * Installing with ``setup.py`` now requires setuptools_.
   Alternatively, install with pip_.
 
-* The generic command line front end tool docutils_cli.py_ allows
+* The generic command line front end tool docutils-cli.py_ allows
   the free selection of reader, parser, and writer components.
 
 * New, experimental wrapper to integrate the
@@ -152,7 +152,7 @@ Release 0.17
 
 .. _setuptools: https://pypi.org/project/setuptools/
 .. _pip: https://pypi.org/project/pip/
-.. _docutils_cli.py: docs/user/tools.html#docutils-cli-py
+.. _docutils-cli.py: docs/user/tools.html#docutils-cli-py
 .. _legacy_class_functions: docs/user/config.html#legacy-class-functions
 .. _graphicx_option: docs/user/config.html#graphicx-option
 .. _docutils.sty: https://ctan.org/pkg/docutils
