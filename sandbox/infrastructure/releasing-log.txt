@@ -126,7 +126,7 @@ BetaRelease 0.17b1 (2021-02-10) to test.pypi
 
 * Notify to docutils-developer and user.
 
-* tag 0.16 (Note: only directory docutils is copied)::
+* ON RELEASE then: tag 0.16 (Note: only directory docutils is copied)::
 
     svn copy svn+ssh://grubert@svn.code.sf.net/p/docutils/code/trunk/docutils \
              svn+ssh://grubert@svn.code.sf.net/p/docutils/code/tags/docutils-0.16 \
