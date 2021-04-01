@@ -40,10 +40,13 @@ Future changes
 
     Move attribution behind the blockquote to comply with
     https://html.spec.whatwg.org/#the-blockquote-element.
+    
+* `htm4css1` writer:    
+  Support the embed_images_ option.
 
 * `s5_html` writer:
-    Remove the IE PNG Fix by Angus Turnbull. IE has native PNG
-    support since version 7.
+  Remove the IE PNG Fix by Angus Turnbull. IE has native PNG
+  support since version 7.
 
 * Make <meta> a standard Docutils doctree node.
 
@@ -109,8 +112,6 @@ Release 0.17
 
   __ https://pypi.org/project/recommonmark/
 
-* HTML writers: new option to embed images.
-
 * HTML5 writer:
 
   - Use the new semantic tags <main>, <section>, <header>,
@@ -129,8 +130,11 @@ Release 0.17
   - New optional style ``responsive.css``, adapts to different screen
     sizes.
 
+  - New option embed_images_.
+  
   .. _initial_header_level: docs/user/config.html#initial-header-level
   __ https://stackoverflow.com/questions/39547412/same-font-size-for-h1-and-h2-in-article
+  .. _embed_images: docs/user/config.html#embed-images
 
 * LaTeX writer:
 
