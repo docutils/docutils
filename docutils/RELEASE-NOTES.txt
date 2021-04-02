@@ -136,6 +136,13 @@ Release 0.17
   __ https://stackoverflow.com/questions/39547412/same-font-size-for-h1-and-h2-in-article
   .. _embed_images: docs/user/config.html#embed-images
 
+* docutils/writers/html5_polyglot/
+
+  - ``minimal.css``: Move non-essential styling to ``plain.css``.
+    Code line numbers as pseudo-elements which are skipped when
+    copying text.
+  - ``plain.css``: Support numbered figures.
+
 * LaTeX writer:
 
   - New configuration setting `legacy_class_functions`_.
@@ -153,6 +160,26 @@ Release 0.17
     preamble if the stylesheet__ setting does not lists "docutils".
 
     __ docs/user/config.html#stylesheet-latex-writers
+
+  - Remove legacy LaTeX stylesheet ``docutils-05-compat.sty``.
+
+  - Fixes (thanks to) from John Thorvald Wodder II: 
+    alignment of nested tables, support memoir document class,
+
+* pseudoxml-writer got a ``--detailled`` option for pretty printing text nodes.
+
+* odf/odt-writer improved metadata handling.
+
+* manpage-writer fixes #380 commandline option in spinx, #126 title with spaces,
+  #168 empty citation, #394 newline after rubric.
+
+* Miscellaneous:
+
+  - Fixes in Arabic mappings and Korean translations.
+  - directives: Prevent infinte inclusion loops.
+  - roles: Apply patch #174 `Lowercase new role names on registration`
+    by John Thorvald Wodder II.
+
 
 .. _setuptools: https://pypi.org/project/setuptools/
 .. _pip: https://pypi.org/project/pip/
