@@ -221,7 +221,7 @@ while read -r txtfile ; do
 done
 )
 
-#    for any file in htmlfilelist
+#    for any file in htmlfilelist create missing files with old mtime
 while read -r htmlfile ; do
     if [ ! -d `dirname $htmlfile` ] ; then
         print_feedback "Old htmlfile entry: $htmlfile"
@@ -233,6 +233,8 @@ done < $htmlfilelist
 
 # 3. re/generate html from txt
 cd $htdocsdest/tools
+
+# TODO use buildhtml.py ?
 
 for htmlfile in `find .. -name '*.html'` ; do
     dir=`dirname $htmlfile`
@@ -255,7 +257,7 @@ for htmlfile in `find .. -name '*.html'` ; do
                 haschanges=1
             else
                 print_feedback "$txtfile"
-                python $lib/tools/rst2html.py --config=$dir/docutils.conf $txtfile $htmlfile
+                python $lib/tools/rst2html5.py --config=$dir/docutils.conf $txtfile $htmlfile
                 haschanges=1
             fi
         fi
