@@ -24,6 +24,42 @@ Problems
 
   But not for 3.8.1 on Linux .
   
+Release 0.17 (2021-04-03 ...)
+=============================
+
+* tox with 2.7 3.8, 3.9
+
+  3.10a6 misses _ctypes.
+
+* copy more things from HISTORY to RELEASE-NOTES
+
+* ``set_version.sh 0.17``
+
+* Run tests manually and via tox:
+
+  ======== ======
+   pyvers   time
+  ======== ======
+     2.7    7.3
+     3.8    6.5
+     3.9    6.5
+     3.10   7.2
+  ======== ======
+
+* Generate universal wheel and source-distribution.
+* Upload universal wheel and source to test.pypi.
+  Wait some minutes to test in python2 virtualenv.
+
+  Test in python3.10 venv.
+
+  Stylesheet paths are different and image embedding fails
+  because images are not found. 
+
+  After copying ``docs/user/rst/images`` from docutils into the 
+  venv-directory/docs/user/rst/images image embedding works.
+
+* Commit changes to version control system.
+
 BetaRelease 0.17b1 (2021-02-10) to test.pypi
 ============================================
 
