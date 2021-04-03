@@ -59,6 +59,19 @@ Release 0.17 (2021-04-03 ...)
   venv-directory/docs/user/rst/images image embedding works.
 
 * Commit changes to version control system.
+* tag 0.17 (Note: only directory docutils is copied)::
+
+    svn copy svn+ssh://grubert@svn.code.sf.net/p/docutils/code/trunk/docutils \
+             svn+ssh://grubert@svn.code.sf.net/p/docutils/code/tags/docutils-0.17 \
+             -m "tagging release 0.17"
+
+* Generate universal wheel and source-distribution.
+  Do it again and check for differences: svn-numbers and sha-fingerprints
+
+* Now upload to pypi (the newly created s- and bdist).
+* and test in venv and virtualenv.
+* Notify to docutils-developer and user.
+
 
 BetaRelease 0.17b1 (2021-02-10) to test.pypi
 ============================================
