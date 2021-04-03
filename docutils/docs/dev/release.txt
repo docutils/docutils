@@ -8,245 +8,125 @@
 :Revision: $Revision$
 :Copyright: This document has been placed in the public domain.
 
-.. _Docutils: http://docutils.sourceforge.net/
+.. _Docutils: http://docutils.sourceforge.io/
 
-Releasing
----------
+Releasing (post 2020)
+---------------------
 
-Version identifier
-~~~~~~~~~~~~~~~~~~
+* Announce the upcoming release on docutils-develop list.
 
-For details, see `Version Numbering in Docutils Project Policies`__.
+  Consider **feature freeze** or/and **check-in freeze** .
 
-__ policies.html#version-numbering
+* Update RELEASE-NOTES.txt.
 
+  Consult HISTORY.txt for important changes.
 
-How to change the version identifier
-""""""""""""""""""""""""""""""""""""
+  Change the ``Changes Since <previous release>`` to ``Release <version>``.
 
-The *version identifier* ``docutils.__version__`` is defined in
-``docutils/docutils/__init__.py`` and used in in the following files::
+* Set new version with ``sandbox/infrastructure/set:version.sh``
 
-    docutils/setup.py
-    docutils/test/functional/expected/* ("Generator: Docutils X.Y[.Z]")
-    docutils/README.txt
-    web/index.txt
+  Check what was changed with version control system
 
-You can use the script ``set_version.sh`` to change the version
-identifier:
+  run tests ::
 
-#. ``cd`` to the "docutils" subdirectory in the repository checkout,
+    export PYTHONWARNINGS=default
+    python2 test/alltests.py
+    python3 test/alltests.py
 
-#. call ::
+* Generate universal wheel and source-distribution::
 
-     ../sandbox/infrastructure/set_release.sh <new_version>
+    python3 setup.py sdist
+    python3 setup.py bdist_wheel --universal
 
-   where ``<new_version>`` is major.minor[.micro][<pre>][.dev].
+* Upload universal wheel and source to test.pypi::
 
-   This also changes ``__version_info__`` in
-   ``docutils/docutils/__init__.py``.
+    python3 -m twine upload --repository-url https://test.pypi.org/legacy/ dist/*
 
-Run the test suite after changing the codebase version to ensure
-accuracy and consistency.
+  Wait some minutes to test in virtualenv ::
 
+    python2 -m virtualenv du2 ; cd du2
+    export PYTHONPATH= ; . bin/activate
 
-Release steps
-~~~~~~~~~~~~~
+    python -m pip install --index-url https://test.pypi.org/simple/ --no-deps docutils
+    # Successfully installed docutils-0.##
 
-REWORK FOR SOURCEFORGE REPO
+    cp -r ../docutils-code/docutils/test .
+    python2 test/alltests.py
+    # IGNORE stylesheet path differences ?
 
+    python -m pip uninstall docutils
+    deactivate ; cd .. ; rm -rf du2
 
-.. WARNING:: Steps in boldface text are *not* covered by the release script
-   at sandbox/infrastructure/release.sh.  "Not covered" means that you
-   aren't even reminded of them.
+  Test in venv ::
 
-.. Note:: This document does not cover branching and tagging, but the
-   release script does.
+    python3 -m venv du3 ; cd du3
+    export PYTHONPATH= ; . bin/activate
 
-* **Announce**
+    python3 -m pip install --index-url https://test.pypi.org/simple/ --no-deps docutils
+    # Successfully installed docutils-0.16
 
-  On the Docutils-develop mailing list, announce that the release is
-  going to be made, update the release notes (consult HISTORY.TXT for
-  important changes) and ask for additions.
+    cp -r ../docutils-code/docutils/test .
+    python test/alltests.py
+    # IGNORE stylesheet path differences ?
 
-  Announce the upcoming release at the Sphinx-devel mailing list
-  and ask for testing with Sphinx.
-  (This step can be skipped for bugfix releases and pre-releases.)
+    python -m pip uninstall docutils
+    deactivate ; cd .. ; rm -rf du3
 
-  Announce the date of the feature freeze – at least a week ahead!
+* Now upload to pypi::
 
-* **Feature freeze** From now on, only bug-fix commits are allowed.
+    python3 -m twine upload  dist/docutils-0.##*
 
-  Update the `pre-release segment` of the `version identifier`_
-  (``b``, ``rcN`` or empty) to match the level of the upcoming release
-  (beta, candidate or final). Ensure ``docutils.__version_info__`` matches
-  the version identifier. (See also `How to change the version
-  identifier`_.)
+  and test::
 
-* **Announce** the check-in freeze date on Docutils-develop – at least a
-  week ahead.
+    python3 -m venv du3 ; cd du3
+    export PYTHONPATH= ; . bin/activate
 
-* **Check-in freeze**
+    pip install --no-deps docutils
+    cp -r ../docutils-code/docutils/test .
+    python test/alltests.py
+    # css paths fail
 
-  for example it was 0.14b.dev and is changed to 0.15
+    python2 -m virtualenv du2 ; cd du2
+    export PYTHONPATH= ; . bin/activate
 
-  **Update the version identifier**:
-  Remove the `development release segment` (``.dev``) from the `version
-  identifier`_ and set ``docutils.__version_info__.release`` to True.
+    pip install --no-deps docutils
+    cp -r ../docutils-code/docutils/test .
+    python test/alltests.py
+    # css paths fail
 
-  Check the `version identifier` in the following files (should be
-  already correct if set according to `How to change the version
-  identifier`_):
+* Notify to docutils-developer and user.
 
-  + docutils/setup.py
-  + docutils/docutils/__init__.py
-  + docutils/test/functional/expected/* ("Generator: Docutils X.Y[.Z]")
-  + docutils/README.txt
-  + web/index.txt
+* tag 0.## (Note: only directory docutils is copied)::
 
-* See what ``sandbox/infrastructure/release.sh`` can aid
+    svn copy svn+ssh://grubert@svn.code.sf.net/p/docutils/code/trunk/docutils \
+             svn+ssh://grubert@svn.code.sf.net/p/docutils/code/tags/docutils-0.## \
+             -m "tagging release 0.##"
 
-  .. Note:: *BUG* test tarball requires root password, but it is possible to
-     skip this stage interactively, and testing should be done before
-     release.
+* upload doc/0.## ::
 
+    mkdir tmp1
+    cd tmp1
+    tar xzvf ../dist/docutils-0.##.tar.gz
+    cd docutils-0.##/
+    tools/buildhtml.py .
+    find . -name \*.pyc -exec rm {} \;
+    rm -rf docutils.egg-info
+    rsync -e ssh -r -t ./ web.sourceforge.net:/home/project-web/docutils/htdocs/0.##
 
-* Close the "Changes Since ..." section in docutils/HISTORY.txt.
+* change web index.txt
+* run sandbox/infrastructure/docutils-update.local
 
-* Clear/unset the PYTHONPATH environment variable.
+* set version 0.##+1b.dev
+* test with py2 and py3
+* run sandbox/infrastructure/docutils-update.local
 
-* Create the release tarball:
+* docutils/HISTORY.txt: add title "Changes Since 0.##"
 
-  (a) Create a new empty directory and ``cd`` into it.
+* Release to sourceforge.
 
-  (b) Get a clean snapshot of the main tree::
-
-          svn export svn://svn.code.sf.net/p/docutils/code/trunk/docutils
-
-      or via the [Download Snapshot] button at
-      http://sourceforge.net/p/docutils/code/HEAD/tree/trunk/docutils/
-
-  (c) Use `setuptools` to create the release tarball::
-
-          cd docutils
-          python setup.py sdist
-
-* Expand and _`install` the release tarball in isolation:
-
-  (a) Expand the tarball in a new location, not over any existing
-      files.
-
-  (b) Remove the old installation from site-packages (including
-      roman.py, and optparse.py, textwrap.py).
-
-      "remove" might fail, see _`Assumptions and their failure`
-
-      Install from expanded directory::
-
-          cd docutils-X.Y.Z
-          python setup.py install
-
-      The "install" command may require root permissions.
-
-  (c) Repeat step b) for all supported Python versions.
-
-* Run the _`test suite` from the expanded archive directory with all
-  supported Python versions on all available platforms (GNU/Linux, Mac
-  OS X, Windows)::
-
-      cd test ; python -u alltests.py
-
-* Add a directory X.Y.Z (where X.Y.Z is the current version number
-  of Docutils) in the webroot (i.e. the ``htdocs/`` directory).
-  Put all documentation files into it::
-
-      cd docutils-X.Y.Z
-      rm -rf build
-      cd tools/
-      ./buildhtml.py ..
-      cd ..
-      find -name test -type d -prune -o -name \*.css -print0 \
-          -o -name \*.html -print0 -o -name \*.txt -print0 \
-          | tar -cjvf docutils-docs.tar.bz2 -T - --null
-      scp docutils-docs.tar.bz2 <username>@shell.sourceforge.net:
-
-  Now log in to shell.sourceforge.net and::
-
-      cd /home/groups/d/do/docutils/htdocs/
-      mkdir -m g+rwxs X.Y.Z
-      cd X.Y.Z
-      tar -xjvf ~/docutils-docs.tar.bz2
-      rm ~/docutils-docs.tar.bz2
-
-* Upload the release tarball, release.sh tries with scp.
-
-* Access the _`file release system` on SourceForge (Admin
-  interface).
-
-  ``https://sourceforge.net/projects/docutils/files/docutils/``
-
-  * change into the released version's directory
-  * click ``(i)`` button of the tar.gz-file
-  * select as default download for all operating systems.
-
-* Submit a notification on project news.
-
-* For verifying the integrity of the release, download the release
-  tarball (you may need to wait up to 30 minutes), install_ it, and
-  re-run the `test suite`_.
-
-* Register with PyPI (``python setup.py register``).
-
-  (2019-07-21 still ?) Set the download-url so eggs can access older releases.
-
-* **build wheels**::
-
-    python setup.py bdist_wheel
-
-  This builds wheels_ by downloading the new release from pypi.
-
-  Upload the wheels to PyPI::
-
-    twine upload dist/*
-
-* **Lift the freeze**
-
-  Set the `version identifier`_ and ``__version_info__.releaselevel`` in
-  docutils/docutils/__init__.py to mark the repository version as
-  "in development", usually ``<major>.<minor+1>b.dev`` (cf. `How to change
-  the version identifier`_).
-
-* After a final release, add a new empty section "Changes Since ..." in
-  HISTORY.txt.
-
-* Update the web page (web/index.txt)::
-
-    cd sandbox/infrastructure/
-    ./docutils-update.local
-
-  Running on sf-server no longer works.
-
-* set svn version e.g. 0.16b.dev
-
-* **Run alltests.py with svn version**
-
-* **Send announcement email to:**
-
-  * docutils-develop@lists.sourceforge.net (also announcing the end of
-    the check-in freeze)
-  * docutils-users@lists.sourceforge.net
-  * doc-sig@python.org
-  * python-announce@python.org
-
-* **Add a** `SourceForge News item`__, **with title "Docutils X.Y.Z released"**
-
-  __ https://sourceforge.net/p/docutils/news
-
-  **Mark as default download for all platforms.**
-
-.. _wheels: https://packaging.python.org/en/latest/distributing.html#wheels
-.. _pure Python wheels:
-   https://packaging.python.org/en/latest/distributing.html#pure-python-wheels
+  - Remove test/outputs from tar.gz.
+  - Upload tar.gz and 0.16 release notes to sourceforge.
+  - Select docutils-0.16.tar.gz as default for all OS.  
 
 
 ..
