@@ -106,7 +106,7 @@ Releasing (post 2020)
 
 * Notify to docutils-developer and user.
 
-* upload doc/0.## ::
+* upload to sf htdocs/0.## ::
 
     mkdir tmp1
     cd tmp1
