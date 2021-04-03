@@ -14,10 +14,11 @@
 .. contents::
 
 
-Changes Since 0.16
+Changes Since 0.17
 ==================
 
-Version 0.17b1
+Release 0.17 (2021-04-03)
+=========================
 
 * General
 

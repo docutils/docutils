@@ -69,9 +69,23 @@ Release 0.17 (2021-04-03 ...)
   Do it again and check for differences: svn-numbers and sha-fingerprints
 
 * Now upload to pypi (the newly created s- and bdist).
-* and test in venv and virtualenv.
+* ... and test in venv and virtualenv.
 * Notify to docutils-developer and user.
+* Upload source and html to sf-htdocs/0.17
 
+* Check web/index.txt for necessary corrections: nothing to do.
+
+* Run sandbox/infrastructure/docutils-update.local to update web-content.
+* Release to sourceforge.
+
+  - Upload tar.gz and 0.17 release notes to sourceforge.
+  - Select docutils-0.17.tar.gz as default for all OS.  
+
+* set_version 0.18b.dev
+* test with py2 and py3
+* docutils/HISTORY.txt: add title "Changes Since 0.17"
+
+* run sandbox/infrastructure/docutils-update.local
 
 BetaRelease 0.17b1 (2021-02-10) to test.pypi
 ============================================
