@@ -23,15 +23,19 @@ Releasing (post 2020)
 
   Change the ``Changes Since <previous release>`` to ``Release <version>``.
 
-* Set new version with ``sandbox/infrastructure/set:version.sh``
+* Set new version with ``sandbox/infrastructure/set_version.sh <version>``
 
   Check what was changed with version control system
 
-  run tests ::
+  Run tests ::
 
     export PYTHONWARNINGS=default
     python2 test/alltests.py
     python3 test/alltests.py
+
+  or use tox.
+    
+  ``export PYTHONWARNINGS=default`` prints DeprecationWarnings in python3.
 
 * Generate universal wheel and source-distribution::
 
