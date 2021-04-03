@@ -74,6 +74,14 @@ Releasing (post 2020)
     python -m pip uninstall docutils
     deactivate ; cd .. ; rm -r du3
 
+* Commit changes ... the changed version number.
+
+* tag 0.## (Note: only directory docutils is copied)::
+
+    svn copy svn+ssh://grubert@svn.code.sf.net/p/docutils/code/trunk/docutils \
+             svn+ssh://grubert@svn.code.sf.net/p/docutils/code/tags/docutils-0.## \
+             -m "tagging release 0.##"
+
 * Now upload to pypi::
 
     python3 -m twine upload  dist/docutils-0.##*
@@ -97,12 +105,6 @@ Releasing (post 2020)
     # css paths fail
 
 * Notify to docutils-developer and user.
-
-* tag 0.## (Note: only directory docutils is copied)::
-
-    svn copy svn+ssh://grubert@svn.code.sf.net/p/docutils/code/trunk/docutils \
-             svn+ssh://grubert@svn.code.sf.net/p/docutils/code/tags/docutils-0.## \
-             -m "tagging release 0.##"
 
 * upload doc/0.## ::
 
