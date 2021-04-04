@@ -17,6 +17,10 @@
 Changes Since 0.17
 ==================
 
+* manpage writer
+
+  - Apply patch #160: move macro defs above .TH (thanks Willie and sorry for the delay).
+
 Release 0.17 (2021-04-03)
 =========================
 

@@ -385,10 +385,11 @@ class Translator(nodes.NodeVisitor):
         """append header with .TH and .SH NAME"""
         # NOTE before everything
         # .TH title_upper section date source manual
+        # BUT macros before .TH for whatis database generators.
         if self.header_written:
             return
-        self.head.append(self.header())
         self.head.append(MACRO_DEF)
+        self.head.append(self.header())
         self.header_written = 1
 
     def visit_address(self, node):
