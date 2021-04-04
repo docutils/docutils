@@ -1,8 +1,5 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "MAN" 1 "2008-01-28" "2.5.1" "Manual Hilfsprogramme"
-.SH NAME
-man \- Programm zum Einsehen der Online-Manuale
 .
 .nr rst2man-indent-level 0
 .
@@ -30,6 +27,9 @@ level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .in \\n[rst2man-indent\\n[rst2man-indent-level]]u
 ..
+.TH "MAN" 1 "2008-01-28" "2.5.1" "Manual Hilfsprogramme"
+.SH NAME
+man \- Programm zum Einsehen der Online-Manuale
 .SH SYNTAX
 .INDENT 0.0
 .INDENT 3.5
