@@ -1,8 +1,5 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "SPECIAL-CHARACTERS"  "" "" ""
-.SH NAME
-special-characters \- test special characters
 .
 .nr rst2man-indent-level 0
 .
@@ -30,6 +27,9 @@ level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .in \\n[rst2man-indent\\n[rst2man-indent-level]]u
 ..
+.TH "SPECIAL-CHARACTERS"  "" "" ""
+.SH NAME
+special-characters \- test special characters
 .SH SEE ALSO
 .sp
 In mercurial the following substitutions are in use:
