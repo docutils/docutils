@@ -12,3 +12,7 @@ writer_name = "html5"
 settings_overrides['smart_quotes'] = 'yes'
 settings_overrides['embed_images'] = 'yes'
 
+# local copy of stylesheets:
+# (Test runs in ``docutils/test/``, we need relative path from there.)
+settings_overrides['stylesheet_dirs'] = ('.', 'functional/input/data')
+
