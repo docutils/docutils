@@ -53,9 +53,8 @@ Releasing (post 2020)
 
     python -m pip install --index-url https://test.pypi.org/simple/ --no-deps docutils
 
-    cp -r ../docutils-code/docutils/test .
+    cp -Lr ../docutils-code/docutils/test .
     python2 test/alltests.py
-    # IGNORE stylesheet path differences ?
 
     python -m pip uninstall docutils
     deactivate ; cd .. ; rm -r du2
@@ -67,9 +66,8 @@ Releasing (post 2020)
 
     python3 -m pip install --index-url https://test.pypi.org/simple/ --no-deps docutils
 
-    cp -r ../docutils-code/docutils/test .
+    cp -Lr ../docutils-code/docutils/test .
     python test/alltests.py
-    # IGNORE stylesheet path differences ?
 
     python -m pip uninstall docutils
     deactivate ; cd .. ; rm -r du3
@@ -92,17 +90,15 @@ Releasing (post 2020)
     export PYTHONPATH= ; . bin/activate
 
     pip install --no-deps docutils
-    cp -r ../docutils-code/docutils/test .
+    cp -Lr ../docutils-code/docutils/test .
     python test/alltests.py
-    # css paths fail
 
     python2 -m virtualenv du2 ; cd du2
     export PYTHONPATH= ; . bin/activate
 
     pip install --no-deps docutils
-    cp -r ../docutils-code/docutils/test .
+    cp -Lr ../docutils-code/docutils/test .
     python test/alltests.py
-    # css paths fail
 
 * Notify to docutils-developer and user.
 
