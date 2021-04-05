@@ -21,6 +21,16 @@ Problems
   - finding ``HISTORY.txt`` in test_utils.py fails.
     Create a HISTORY.txt file to avoid.
 
+Release 0.17 aftermath
+======================
+
+:2021-04-05: Fixed: on-ASCII characters in docutils/writers/latex2e/docutils.sty
+
+:2021-04-04: Open: [readthedocs/recommonmark] 
+             AttributeError: 'Values' object has no attribute 'tab_width' (#220)
+
+             pinning to docutils 0.16 helped ... why ?
+
 Release 0.17 (2021-04-03 ...)
 =============================
 
