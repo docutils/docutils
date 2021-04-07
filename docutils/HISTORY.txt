@@ -16,15 +16,20 @@
 Changes Since 0.17
 ==================
 
-* manpage writer
+* docutils/writers/latex2e/__init__.py:
 
-  - Apply patch #160: move macro defs above ``.TH``
-    (thanks Willie and sorry for the delay).
+  - Open "docutils.sty" with encoding set to "utf8".
+    Fixes bug #414: error with Py3k when locale encoding is "ascii".
 
 * docutils/parsers/*.py, docutils/transforms/*.py
 
   - Provide fallbacks for parser config settings
     to facilitate programmatic use.
+
+* docutils/writers/manpage.py
+
+  - Apply patch #160: move macro defs above ``.TH``
+    (thanks Willie and sorry for the delay).
 
 Release 0.17 (2021-04-03)
 =========================

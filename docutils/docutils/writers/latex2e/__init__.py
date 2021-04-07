@@ -13,17 +13,19 @@ __docformat__ = 'reStructuredText'
 #
 # convention deactivate code by two # i.e. ##.
 
-import sys
+from io import open
 import os
 import re
 import string
+import sys
 
 try:
     import roman
 except ImportError:
     import docutils.utils.roman as roman
 
-from docutils import frontend, nodes, languages, writers, utils, io
+import docutils
+from docutils import frontend, nodes, languages, writers, utils
 from docutils.utils.error_reporting import SafeString
 from docutils.transforms import writer_aux
 from docutils.utils.math import pick_math_environment, unichar2tex
@@ -571,7 +573,7 @@ def _read_block(fp):
 
 _du_sty = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                       'docutils.sty')
-with open(_du_sty) as fp:
+with open(_du_sty, encoding='utf8') as fp:
     for line in fp:
         line = line.strip('% \n')
         if not line.endswith('::'):
@@ -1330,7 +1332,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             if is_package:
                 path = base + '.sty' # ensure extension
             try:
-                content = io.FileInput(source_path=path,
+                content = docutils.io.FileInput(source_path=path,
                                        encoding='utf-8').read()
                 self.settings.record_dependencies.add(path)
             except IOError as err:
