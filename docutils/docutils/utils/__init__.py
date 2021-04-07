@@ -434,7 +434,7 @@ def new_document(source_path, settings=None):
             Runtime settings.  If none are provided, a default core set will
             be used.  If you will use the document object with any Docutils
             components, you must provide their default settings as well.  For
-            example, if parsing, at least provide the parser settings,
+            example, if parsing rST, at least provide the rst-parser settings,
             obtainable as follows::
 
                 settings = docutils.frontend.OptionParser(

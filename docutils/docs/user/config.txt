@@ -466,6 +466,10 @@ command with a call to a converter, e.g.::
 
 Default: None.  Option: ``--record-dependencies``.
 
+.. [#dependencies] Images are only added to the dependency list if they
+   are embedded into the output or the reStructuredText parser extracted
+   image dimensions from the file.
+
 report_level
 ------------
 
@@ -598,7 +602,45 @@ Default: stderr (None).  Options: ``--warnings``.
 [parsers]
 =========
 
-Docutils currently supports only one parser, for reStructuredText.
+Generic parser options:
+
+file_insertion_enabled
+----------------------
+
+Enable or disable directives or directive that insert the contents of
+external files, such as "include_" or "raw_" with option "url".
+A "warning" system message (including the directive text) is inserted
+instead.  (See also raw_enabled_ for another security-relevant setting.)
+
+Default: enabled (True).
+Options: ``--file-insertion-enabled, --no-file-insertion``.
+
+.. _include: ../ref/rst/directives.html#include
+.. _raw: ../ref/rst/directives.html#raw
+
+line_length_limit
+-----------------
+
+Maximal number of characters in an input line or `substitution`_
+definition. To prevent extraordinary high processing times or memory
+usage for certain input constructs, a "warning" system message is
+inserted instead.
+
+Default: 10 000.
+Option: ``--line-length-limit``
+
+New in Docutils 0.17.
+
+.. _substitution: ../ref/rst/directives.html#substitution
+
+raw_enabled
+-----------
+
+Enable or disable the "raw_" directive.  A "warning" system message
+(including the directive text) is inserted instead.  See also
+file_insertion_enabled_ for another security-relevant setting.
+
+Default: enabled (True).  Options: ``--raw-enabled, --no-raw``.
 
 
 [restructuredtext parser]
@@ -630,35 +672,6 @@ Options: ``--character-level-inline-markup, --word-level-inline-markup``.
 
 New in Docutils 0.13.
 
-file_insertion_enabled
-~~~~~~~~~~~~~~~~~~~~~~
-
-Enable or disable directives that insert the contents of external
-files, such as the "include_" & "raw_".  A "warning" system
-message (including the directive text) is inserted instead.  (See
-also raw_enabled_ for another security-relevant setting.)
-
-Default: enabled (True).
-Options: ``--file-insertion-enabled, --no-file-insertion``.
-
-.. _include: ../ref/rst/directives.html#include
-.. _raw: ../ref/rst/directives.html#raw
-
-line_length_limit
-~~~~~~~~~~~~~~~~~
-
-Maximal number of characters in an input line or `substitution`_
-definition. To prevent extraordinary high processing times or memory
-usage for certain input constructs, a "warning" system message is
-inserted instead.
-
-Default: 10 000.
-Option: ``--line-length-limit``
-
-New in Docutils 0.17.
-
-.. _substitution: ../ref/rst/directives.html#substitution
-
 pep_references
 ~~~~~~~~~~~~~~
 
@@ -681,15 +694,6 @@ Template for PEP file part of URL, interpolated with the PEP
 number and appended to pep_base_url_.
 
 Default: "pep-%04d".  Option: ``--pep-file-url``.
-
-raw_enabled
-~~~~~~~~~~~
-
-Enable or disable the "raw_" directive.  A "warning" system message
-(including the directive text) is inserted instead.  See also
-file_insertion_enabled_ for another security-relevant setting.
-
-Default: enabled (True).  Options: ``--raw-enabled, --no-raw``.
 
 rfc_references
 ~~~~~~~~~~~~~~
@@ -794,17 +798,22 @@ Default: 8.  Options: ``--tab-width``.
 trim_footnote_reference_space
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Remove spaces before `footnote references`_. [#]_
+Remove spaces before `footnote references`_?
 
-Default: don't (None) rsp. depending on the writer-specific
-`footnote_references setting`_. [#footnote_space]_
+Default: None [#]_
 
 Options: ``--trim-footnote-reference-space, --leave-footnote-reference-space``.
 
-.. [#] The footnote space is trimmed if the reference style is
-   "superscript", and it is left if the reference style is "brackets".
+.. [#] Depending on the writer-specific `footnote_references setting`_.
+   The footnote space is trimmed if the reference style is "superscript",
+   and it is left if the reference style is "brackets".
 
+[markdown parser]
+-----------------
 
+based on recommonmark_
+
+.. _recommonmark: https://pypi.org/project/recommonmark/
 
 [readers]
 =========
@@ -985,8 +994,8 @@ footnote_references
 Format for `footnote references`_, one of "superscript" or "brackets".
 See also `footnote_references [latex writers]`_.
 
-Overrides [#override]_ trim_footnote_reference_space_, if
-applicable. [#footnote_space]_
+Overrides [#override]_ trim_footnote_reference_space_,
+if the parser supports this option.
 
 Default: "brackets".  Option: ``--footnote-references``.
 
@@ -1501,8 +1510,8 @@ footnote_references
 Format for `footnote references`_: one of "superscript" or "brackets".
 See also `footnote_references [html writers]`_.
 
-Overrides [#override]_ trim_footnote_reference_space_, if
-applicable. [#footnote_space]_
+Overrides [#override]_ trim_footnote_reference_space_,
+if the parser supports this option.
 
 Default: "superscript".  Option: ``--footnote-references``.
 
@@ -2128,6 +2137,7 @@ Path to input source, set from positional arguments.
 
 Default: stdin (None).  No command-line options.
 
+--------------------------------------------------------------------------
 
 .. _language tag: http://www.w3.org/International/articles/language-tags/
 .. _BCP 47: http://www.rfc-editor.org/rfc/bcp/bcp47.txt
@@ -2143,12 +2153,6 @@ Default: stdin (None).  No command-line options.
    programs which specify defaults that override other settings must
    do the overriding explicitly, by assigning ``None`` to the other
    settings.
-
-.. [#dependencies] Images are only added to the dependency list if the
-   reStructuredText parser extracted image dimensions from the file.
-
-.. [#footnote_space] The overriding only happens if the parser supports
-   the trim_footnote_reference_space option.
 
 
 ------------------------------

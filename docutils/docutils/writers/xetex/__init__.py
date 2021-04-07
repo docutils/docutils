@@ -63,7 +63,7 @@ class Writer(latex2e.Writer):
 
     def __init__(self):
         latex2e.Writer.__init__(self)
-        self.settings_defaults.update({'fontencoding': ''}) # use default (EU1 or EU2)
+        self.settings_defaults.update({'fontencoding': ''}) # use default (TU)
         self.translator_class = XeLaTeXTranslator
 
 
