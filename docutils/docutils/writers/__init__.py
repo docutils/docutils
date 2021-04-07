@@ -16,7 +16,6 @@ import docutils
 from docutils import languages, Component
 from docutils.transforms import universal
 
-
 class Writer(Component):
 
     """
@@ -147,5 +146,8 @@ def get_writer_class(writer_name):
     try:
         module = import_module('docutils.writers.'+writer_name)
     except ImportError:
-        module = import_module(writer_name)
+        try:
+            module = import_module(writer_name)
+        except ImportError as err:
+            raise ImportError('No writer named "%s".' % writer_name) 
     return module.Writer
