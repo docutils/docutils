@@ -332,6 +332,13 @@ class Values(optparse.Values):
     def copy(self):
         """Return a shallow copy of `self`."""
         return self.__class__(defaults=self.__dict__)
+    
+    def setdefault(self, name, default):
+        """V.setdefault(n[,d]) -> getattr(V,n,d), also set D.n=d if n not in D or None.
+        """
+        if getattr(self, name, None) is None:
+            setattr(self, name, default)
+        return getattr(self, name)
 
 
 class Option(optparse.Option):
@@ -637,7 +644,7 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
                     option = group.add_option(help=help_text, *option_strings,
                                               **kwargs)
                     if kwargs.get('action') == 'append':
-                        self.lists[option.dest] = 1
+                        self.lists[option.dest] = True
                 if component.settings_defaults:
                     self.defaults.update(component.settings_defaults)
         for component in components:

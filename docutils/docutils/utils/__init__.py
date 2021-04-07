@@ -552,9 +552,8 @@ def get_trim_footnote_ref_space(settings):
     If trim_footnote_reference_space is None, return False unless the
     footnote reference style is 'superscript'.
     """
-    if settings.trim_footnote_reference_space is None:
-        return hasattr(settings, 'footnote_references') and \
-               settings.footnote_references == 'superscript'
+    if settings.setdefault('trim_footnote_reference_space', None) is None:
+        return getattr(settings, 'footnote_references', None) == 'superscript'
     else:
         return settings.trim_footnote_reference_space
 

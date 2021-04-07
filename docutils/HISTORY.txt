@@ -8,22 +8,23 @@
 :Contact: docutils-develop@lists.sourceforge.net
 :Date: $Date$
 :Revision: $Revision$
-:Web site: http://docutils.sourceforge.net/
+:Web site: https://docutils.sourceforge.io/
 :Copyright: This document has been placed in the public domain.
 
 .. contents::
 
-
 Changes Since 0.17
 ==================
 
-* latex docutils.sty
-
-  - replace unicode copyright by ``(c)``.
-
 * manpage writer
 
-  - Apply patch #160: move macro defs above .TH (thanks Willie and sorry for the delay).
+  - Apply patch #160: move macro defs above ``.TH``
+    (thanks Willie and sorry for the delay).
+
+* docutils/parsers/*.py, docutils/transforms/*.py
+
+  - Provide fallbacks for parser config settings
+    to facilitate programmatic use.
 
 Release 0.17 (2021-04-03)
 =========================

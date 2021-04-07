@@ -51,6 +51,10 @@ class Parser(Component):
     def setup_parse(self, inputstring, document):
         """Initial parse setup.  Call at start of `self.parse()`."""
         self.inputstring = inputstring
+        # provide fallbacks in case the document has only generic settings
+        document.settings.setdefault('file_insertion_enabled', False)
+        document.settings.setdefault('raw_enabled', False)
+        document.settings.setdefault('line_length_limit', 10000)
         self.document = document
         document.reporter.attach_observer(document.note_parse_message)
 

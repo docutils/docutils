@@ -260,7 +260,8 @@ class SmartQuotes(Transform):
                 yield ('plain', txt)
 
     def apply(self):
-        smart_quotes = self.document.settings.smart_quotes
+        smart_quotes = self.document.settings.setdefault('smart_quotes',
+                                                           False)
         if not smart_quotes:
             return
         try:

@@ -86,10 +86,8 @@ class Contents(Transform):
     default_priority = 720
 
     def apply(self):
-        try: # let the writer (or output software) build the contents list?
-            toc_by_writer = self.document.settings.use_latex_toc
-        except AttributeError:
-            toc_by_writer = False
+        # let the writer (or output software) build the contents list?
+        toc_by_writer = getattr(self.document.settings, 'use_latex_toc', False)
         details = self.startnode.details
         if 'local' in details:
             startnode = self.startnode.parent.parent
