@@ -15,7 +15,7 @@ if __name__ == '__main__':
     import __init__
 from test_parsers import DocutilsTestSupport
 from docutils.parsers.rst import states
-from docutils.parsers.recommonmark_wrapper import with_recommonmark
+from docutils.parsers import recommonmark_wrapper
 from docutils.utils.code_analyzer import with_pygments
 
 if sys.version_info >= (3, 0):
@@ -76,7 +76,7 @@ InputError: [Errno 2] No such file or directory: '\u043c\u0438\u0440.txt'.\
 
 # Parsing with Markdown (recommonmark) is an optional feature depending
 # on 3rd-party modules:
-if with_recommonmark:
+if recommonmark_wrapper.CommonMarkParser:
     markdown_parsing_result = """\
     <section ids="title-1" names="title\\ 1">
         <title>
@@ -1047,6 +1047,89 @@ Included code
             ``test_include.py``
         .
 """ % reldir(include1)],
+["""\
+TAB expansion with included code:
+
+.. include:: %s
+   :code: rst
+""" % include_literal,
+"""\
+<document source="test data">
+    <paragraph>
+        TAB expansion with included code:
+    <literal_block classes="code rst" source="%s" xml:space="preserve">
+        Literal included this should \n\
+        <inline classes="generic strong">
+            **not**
+         be \n\
+        <inline classes="generic emph">
+            *marked*
+         \n\
+        <inline classes="name variable">
+            `up`
+        .
+                <- leading raw tab.
+        \n\
+        Newlines
+        are
+        normalized.
+""" % include_literal],
+["""\
+Custom TAB expansion with included code:
+
+.. include:: %s
+   :code: rst
+   :tab-width: 2
+""" % include_literal,
+"""\
+<document source="test data">
+    <paragraph>
+        Custom TAB expansion with included code:
+    <literal_block classes="code rst" source="%s" xml:space="preserve">
+        Literal included this should \n\
+        <inline classes="generic strong">
+            **not**
+         be \n\
+        <inline classes="generic emph">
+            *marked*
+         \n\
+        <inline classes="name variable">
+            `up`
+        .
+          <- leading raw tab.
+        \n\
+        Newlines
+        are
+        normalized.
+""" % include_literal],
+["""\
+Custom TAB expansion with included code:
+
+.. include:: %s
+   :code: rst
+   :tab-width: -1
+""" % include_literal,
+"""\
+<document source="test data">
+    <paragraph>
+        Custom TAB expansion with included code:
+    <literal_block classes="code rst" source="%s" xml:space="preserve">
+        Literal included this should \n\
+        <inline classes="generic strong">
+            **not**
+         be \n\
+        <inline classes="generic emph">
+            *marked*
+         \n\
+        <inline classes="name variable">
+            `up`
+        .
+        \t<- leading raw tab.
+        \n\
+        Newlines
+        are
+        normalized.
+""" % include_literal],
 ["""\
 Including includes/include14.txt
 

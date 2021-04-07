@@ -15,16 +15,25 @@ from docutils import Component, frontend
 
 
 class Parser(Component):
-
     settings_spec = (
         'Generic Parser Options',
         None,
-        (('Disable the "raw" directives; replaced with a "warning" '
-          'system message.',
+        (('Disable directives that insert the contents of an external file; '
+          'replaced with a "warning" system message.',
+          ['--no-file-insertion'],
+          {'action': 'store_false', 'default': 1,
+           'dest': 'file_insertion_enabled',
+           'validator': frontend.validate_boolean}),
+         ('Enable directives that insert the contents '
+          'of an external file. (default)',
+          ['--file-insertion-enabled'],
+          {'action': 'store_true'}),
+         ('Disable the "raw" directive; '
+          'replaced with a "warning" system message.',
           ['--no-raw'],
           {'action': 'store_false', 'default': 1, 'dest': 'raw_enabled',
            'validator': frontend.validate_boolean}),
-         ('Enable the "raw" directive.  Enabled by default.',
+         ('Enable the "raw" directive. (default)',
           ['--raw-enabled'],
           {'action': 'store_true'}),
          ('Maximal number of characters in an input line. Default 10 000.',
