@@ -163,6 +163,9 @@ class Parser(docutils.parsers.Parser):
     def parse(self, inputstring, document):
         """Parse `inputstring` and populate `document`, a document tree."""
         self.setup_parse(inputstring, document)
+        # provide fallbacks in case the document has only generic settings
+        self.document.settings.setdefault('tab_width', 8)
+        self.document.settings.setdefault('syntax_highlight', 'long')
         self.statemachine = states.RSTStateMachine(
               state_classes=self.state_classes,
               initial_state=self.initial_state,
