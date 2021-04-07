@@ -84,7 +84,7 @@ class Parser(docutils.parsers.Parser):
     supported = ('restructuredtext', 'rst', 'rest', 'restx', 'rtxt', 'rstx')
     """Aliases this parser supports."""
 
-    settings_spec = (
+    settings_spec = docutils.parsers.Parser.settings_spec + (
         'reStructuredText Parser Options',
         None,
         (('Recognize and link to standalone PEP references (like "PEP 258").',
@@ -115,28 +115,6 @@ class Parser(docutils.parsers.Parser):
          ('Leave spaces before footnote references.',
           ['--leave-footnote-reference-space'],
           {'action': 'store_false', 'dest': 'trim_footnote_reference_space'}),
-         ('Disable directives that insert the contents of external file '
-          '("include" & "raw"); replaced with a "warning" system message.',
-          ['--no-file-insertion'],
-          {'action': 'store_false', 'default': 1,
-           'dest': 'file_insertion_enabled',
-           'validator': frontend.validate_boolean}),
-         ('Enable directives that insert the contents of external file '
-          '("include" & "raw").  Enabled by default.',
-          ['--file-insertion-enabled'],
-          {'action': 'store_true'}),
-         ('Disable the "raw" directives; replaced with a "warning" '
-          'system message.',
-          ['--no-raw'],
-          {'action': 'store_false', 'default': 1, 'dest': 'raw_enabled',
-           'validator': frontend.validate_boolean}),
-         ('Enable the "raw" directive.  Enabled by default.',
-          ['--raw-enabled'],
-          {'action': 'store_true'}),
-         ('Maximal number of characters in an input line. Default 10 000.',
-          ['--line-length-limit'],
-          {'metavar': '<length>', 'type': 'int', 'default': 10000,
-           'validator': frontend.validate_nonnegative_int}),
          ('Token name set for parsing code with Pygments: one of '
           '"long", "short", or "none" (no parsing). Default is "long".',
           ['--syntax-highlight'],

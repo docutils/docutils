@@ -50,7 +50,7 @@ skip_msg = 'optional module "recommonmark" not found'
 
 class reCommonMarkParserTests(unittest.TestCase):
 
-    @unittest.skipUnless(recommonmark_wrapper.with_recommonmark, skip_msg)
+    @unittest.skipUnless(recommonmark_wrapper.CommonMarkParser, skip_msg)
     def test_parsing_error(self):
         output = publish_string(sample1, parser_name='recommonmark',
                                 settings_overrides={'warning_stream': ''})
@@ -58,7 +58,7 @@ class reCommonMarkParserTests(unittest.TestCase):
         self.assertIn(b'Parsing with "recommonmark" returned the error:',
                       output)
 
-    @unittest.skipUnless(recommonmark_wrapper.with_recommonmark, skip_msg)
+    @unittest.skipUnless(recommonmark_wrapper.CommonMarkParser, skip_msg)
     def test_raw_disabled(self):
         output = publish_string(sample_with_html, parser_name='recommonmark',
                                 settings_overrides={'warning_stream': '',
@@ -67,7 +67,7 @@ class reCommonMarkParserTests(unittest.TestCase):
         self.assertIn(b'<system_message', output)
         self.assertIn(b'Raw content disabled.', output)
 
-    @unittest.skipUnless(recommonmark_wrapper.with_recommonmark, skip_msg)
+    @unittest.skipUnless(recommonmark_wrapper.CommonMarkParser, skip_msg)
     def test_raw_disabled_inline(self):
         output = publish_string('foo <a href="uri">', parser_name='recommonmark',
                                 settings_overrides={'warning_stream': '',
@@ -78,7 +78,7 @@ class reCommonMarkParserTests(unittest.TestCase):
         self.assertIn(b'Raw content disabled.', output)
 
 
-    @unittest.skipUnless(recommonmark_wrapper.with_recommonmark, skip_msg)
+    @unittest.skipUnless(recommonmark_wrapper.CommonMarkParser, skip_msg)
     def test_raw_disabled(self):
         output = publish_string(sample_with_html, parser_name='recommonmark',
                                 settings_overrides={'warning_stream': '',
@@ -88,7 +88,7 @@ class reCommonMarkParserTests(unittest.TestCase):
         self.assertNotIn(b'<raw>', output)
         self.assertNotIn(b'<system_message', output)
 
-    @unittest.skipIf(recommonmark_wrapper.with_recommonmark,
+    @unittest.skipIf(recommonmark_wrapper.CommonMarkParser,
                      'recommonmark_wrapper: parser found, fallback not used')
     def test_fallback_parser(self):
         output = publish_string(sample1, parser_name='recommonmark',
