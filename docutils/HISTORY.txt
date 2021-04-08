@@ -16,6 +16,10 @@
 Changes Since 0.17
 ==================
 
+* docutils/utils/math/latex2mathml.py
+
+  - Fix bug #406 (MathML translation of ``\mathbf``).
+
 * docutils/writers/latex2e/__init__.py:
 
   - Open "docutils.sty" with encoding set to "utf8".

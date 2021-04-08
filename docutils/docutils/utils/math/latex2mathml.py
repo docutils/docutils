@@ -524,7 +524,7 @@ def handle_keyword(name, node, string):
         node = node.append(mo(negatables[operator]))
         skip += len(operator)
     elif name == 'mathbf':
-        style = mstyle(nchildren=1, fontweight='bold')
+        style = mstyle(nchildren=1, mathvariant='bold')
         node.append(style)
         node = style
     elif name == 'mathbb':
