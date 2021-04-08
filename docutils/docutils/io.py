@@ -376,7 +376,7 @@ class FileOutput(Output):
 
         try:
             self.destination.write(data)
-        except TypeError as e:
+        except TypeError as err:
             if sys.version_info >= (3, 0) and isinstance(data, bytes):
                 try:
                     self.destination.buffer.write(data)
@@ -388,7 +388,7 @@ class FileOutput(Output):
                             (self.destination_path or 'destination',
                             self.destination.encoding, self.encoding))
                     else:
-                        raise e
+                        raise err
         except (UnicodeError, LookupError) as err:
             raise UnicodeError(
                 'Unable to encode output data. output-encoding is: '

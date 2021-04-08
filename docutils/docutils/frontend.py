@@ -783,7 +783,7 @@ Skipping "%s" configuration file.
             filenames = [filenames]
         for filename in filenames:
             try:
-                # Config files must be UTF-8-encoded:
+                # Config files are UTF-8-encoded:
                 fp = codecs.open(filename, 'r', 'utf-8')
             except IOError:
                 continue
