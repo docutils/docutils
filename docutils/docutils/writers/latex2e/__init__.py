@@ -13,11 +13,16 @@ __docformat__ = 'reStructuredText'
 #
 # convention deactivate code by two # i.e. ##.
 
-from io import open
 import os
 import re
 import string
 import sys
+
+if sys.version_info < (3, 0):
+    from io import open
+    from urllib import url2pathname
+else:
+    from urllib.request import url2pathname
 
 try:
     import roman
@@ -29,11 +34,6 @@ from docutils import frontend, nodes, languages, writers, utils
 from docutils.utils.error_reporting import SafeString
 from docutils.transforms import writer_aux
 from docutils.utils.math import pick_math_environment, unichar2tex
-
-if sys.version_info >= (3, 0):
-    from urllib.request import url2pathname
-else:
-    from urllib import url2pathname
 
 if sys.version_info >= (3, 0):
     unicode = str  # noqa
@@ -268,11 +268,12 @@ class Writer(writers.Writer):
             setattr(self, part, getattr(visitor, part))
         # get template string from file
         try:
-            template_file = open(self.document.settings.template, 'rb')
+            template_file = open(self.document.settings.template,
+                                 encoding='utf8')
         except IOError:
             template_file = open(os.path.join(self.default_template_path,
-                                     self.document.settings.template), 'rb')
-        template = string.Template(unicode(template_file.read(), 'utf-8'))
+                    self.document.settings.template), encoding= 'utf8')
+        template = string.Template(template_file.read())
         template_file.close()
         # fill template
         self.assemble_parts() # create dictionary of parts
