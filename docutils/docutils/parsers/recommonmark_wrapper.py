@@ -23,7 +23,7 @@ from docutils import nodes, Component
 
 try:
     from recommonmark.parser import CommonMarkParser
-    from recommonmark.transform import AutoStructify
+    # from recommonmark.transform import AutoStructify
 except ImportError as err:
     CommonMarkParser = None
     class Parser(docutils.parsers.Parser):
@@ -42,8 +42,7 @@ if CommonMarkParser:
         # settings_spec = docutils.parsers.Parser.settings_spec + (
         # see https://recommonmark.readthedocs.io/en/latest/#autostructify
 
-        supported = ('recommonmark', 'commonmark',
-                     'markdown', 'md')
+        supported = ('recommonmark', 'commonmark', 'markdown', 'md')
         config_section = 'recommonmark parser'
         config_section_dependencies = ('parsers',)
 
