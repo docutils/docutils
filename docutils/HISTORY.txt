@@ -72,8 +72,9 @@ Release 0.17 (2021-04-03)
 
 * docutils/parsers/recommonmark_wrapper.py
 
-  - New, experimental wrapper to integrate the
+  - New, **experimental** wrapper to integrate the
     `recommonmark`__ Markdown parser for use with Docutils.
+    Currently only tested with recommonmark version 0.4.0.
 
     __ https://pypi.org/project/recommonmark/
 

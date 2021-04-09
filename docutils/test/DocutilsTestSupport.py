@@ -541,6 +541,10 @@ class RecommonmarkParserTestSuite(ParserTestSuite):
     def generateTests(self, dict, dictname='totest'):
         if 'recommonmark' not in recommonmark_wrapper.Parser.supported:
             return
+        # TODO: currently the tests are too version-specific
+        from recommonmark import __version__ as recommonmark_version
+        if recommonmark_version != '0.4.0':
+            return        
         # suppress UserWarnings from recommonmark parser
         warnings.filterwarnings('ignore', message='Unsupported.*type')
         ParserTestSuite.generateTests(self, dict, dictname='totest')
