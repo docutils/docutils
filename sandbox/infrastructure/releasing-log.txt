@@ -31,8 +31,8 @@ Release 0.17 aftermath
 
              pinning to docutils 0.16 helped ... why ?
 
-Release 0.17.1b (2021-04-09)
-============================
+Release 0.17.1b1 (2021-04-09)
+=============================
 
 * tox with 2.7 3.5, 3.6, 3.8, 3.9
 
@@ -102,7 +102,22 @@ Release 0.17.1b (2021-04-09)
 * New version 0.17.1b1.dev because pypi does not allow changing uploads.
 * Run tox and python3.10 test.
 * Commit new version number
+* build sdist and universal wheel with py39.
+* Install wheel from dist into venv py39.
 
+  Test passes (embedding fails because images are missing).
+
+* Upload universal wheel and source to test.pypi.
+* Install into py39 venv : This time install the --pre release
+  tests pass.
+
+* upload to pypi.
+* test in py39 venv. Passed
+* test in py39 venv with LC_ALL=C. Passed
+* test in venv with recommonmark==0.4: fails . requires module html.
+
+* notify docutils-develop and user and sphinx.
+* New version 0.17.1b2.dev 
 
 Release 0.17 (2021-04-03 ...)
 =============================
