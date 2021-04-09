@@ -54,7 +54,7 @@ Releasing (post 2020)
     python -m pip install --index-url https://test.pypi.org/simple/ --no-deps docutils
 
     cp -Lr ../docutils-code/docutils/test .
-    python2 test/alltests.py
+    python test/alltests.py
 
     python -m pip uninstall docutils
     deactivate ; cd .. ; rm -r du2
@@ -64,7 +64,7 @@ Releasing (post 2020)
     python3 -m venv du3 ; cd du3
     export PYTHONPATH= ; . bin/activate
 
-    python3 -m pip install --index-url https://test.pypi.org/simple/ --no-deps docutils
+    python -m pip install --index-url https://test.pypi.org/simple/ --no-deps docutils
 
     cp -Lr ../docutils-code/docutils/test .
     python test/alltests.py
