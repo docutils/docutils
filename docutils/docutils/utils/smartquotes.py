@@ -636,7 +636,7 @@ def educateQuotes(text, language='en'):
     """
 
     smart = smartchars(language)
-    ch_classes = {'open': u'[(\[{]', # opening braces
+    ch_classes = {'open': u'[([{]', # opening braces
                   'close': r'[^\s]', # everything except whitespace
                   'punct': r"""[-!"#\$\%'()*+,.\/:;<=>?\@\[\\\]\^_`{|}~]""",
                   'dash': u'[-–—]' # hyphen and em/en dashes
