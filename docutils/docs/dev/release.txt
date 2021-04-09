@@ -25,7 +25,7 @@ Releasing (post 2020)
 
 * Set new version with ``sandbox/infrastructure/set_version.sh <version>``
 
-  Check what was changed with version control system
+  Check what was changed with version control system by ``set_version.sh``
 
   Run tests ::
 
