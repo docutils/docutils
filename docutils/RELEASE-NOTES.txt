@@ -20,33 +20,30 @@ For a more detailed list of changes, please see the Docutils `HISTORY`_.
 Future changes
 ==============
 
-* `latex` writer:
-    The default for the configuration setting `legacy_class_functions`_ will
-    change to "False". Adapt stylesheets modifying ``\DUadmonition``
-    and/or ``\DUtitle`` or set to "True".
+* `latex` writer: The default for the configuration setting
+  `legacy_class_functions`_ will change to "False". Adapt stylesheets
+  modifying ``\DUadmonition`` and/or ``\DUtitle`` or set to "True".
 
 * `html5` writer:
-    Semantic tags:
-    Use <aside> instad of <dl> for footnote text and citations,
-    <aside> for topics (except abstract), admonitions, and system messages,
-    and <nav> for the Table of Contents.
 
-    Write footnote brackets and field term colons to HTML, so that
+  - Use semantic tags <aside> for footnote text, citations, for topics
+    (except abstract), admonitions, and system messages, and <nav> for
+    the Table of Contents.
+
+  - Use <summary> and <details> tags for term and definition of a
+    definition list with class value "details".
+
+  - Write footnote brackets and field term colons to HTML, so that
     they are present also without CSS and when copying text.
     Hide with CSS if required.
 
-    Use <summary> and <details> tags for term and definition of a
-    definition list with class value "details".
-
-    Move attribution behind the blockquote to comply with
+  - Move attribution behind the blockquote to comply with
     https://html.spec.whatwg.org/#the-blockquote-element.
-    
-* `htm4css1` writer:    
-  Support the embed_images_ option.
 
-* `s5_html` writer:
-  Remove the IE PNG Fix by Angus Turnbull. IE has native PNG
-  support since version 7.
+* `htm4css1` writer: Support the embed_images_ option.
+
+* `s5_html` writer: Remove the IE PNG Fix by Angus Turnbull. IE has
+  native PNG support since version 7.
 
 * Make <meta> a standard Docutils doctree node.
 
@@ -95,11 +92,19 @@ Future changes
 .. _auto_id_prefix: docs/user/config.html#auto-id-prefix
 .. _rst2html.py: docs/user/tools.html#rst2html-py
 .. _reference name: docs/ref/rst/restructuredtext.html#reference-names
-.. _identifier normalization: docs/ref/rst/directives.html#identifier-normalization
+.. _identifier normalization:
+   docs/ref/rst/directives.html#identifier-normalization
 
+Release 0.17.1b.dev
+==========================
+
+* Bug fixes (for details see the Docutils `HISTORY`_).
 
 Release 0.17 (2021-04-03)
 =========================
+
+* Numerous bug fixes and improvements
+  (for details see the Docutils `HISTORY`_).
 
 * Installing with ``setup.py`` now requires setuptools_.
   Alternatively, install with pip_.
@@ -107,41 +112,35 @@ Release 0.17 (2021-04-03)
 * The generic command line front end tool docutils-cli.py_ allows
   the free selection of reader, parser, and writer components.
 
-* New, experimental wrapper to integrate the
-  `recommonmark`__ Markdown parser for use with Docutils.
+* Support Arabic language.
+
+* New, **experimental** wrapper to integrate the `recommonmark`__
+  Markdown parser for use with Docutils.
+  Currently only tested with recommonmark version 0.4.0.
 
   __ https://pypi.org/project/recommonmark/
 
 * HTML5 writer:
 
-  - Use the new semantic tags <main>, <section>, <header>,
-    <footer>, <aside>, <figure>, and <figcaption>.
-    See ``minimal.css`` and ``plain.css`` for styling rule examples.
+  - New option embed_images_.
 
-    Change the `initial_header_level`_ setting's default to "2", as browsers
+  - Use semantic tags (for details see the Docutils `HISTORY`_).
+
+  - Change the `initial_header_level`_ setting's default to "2", as browsers
     use the `same style for <h1> and <h2> when nested in a section`__.
-
-  - Use HTML text-level tags <small>, <s>, <q>, <dfn>, <var>, <samp>, <kbd>,
-    <i>, <b>, <u>, <mark>, and <bdi> if a matching class value
-    is found in `inline` and `literal` elements.
-    Use <ins> and <del> if a matching class value
-    is found in `inline`, `literal`, or `container` elements.
 
   - New optional style ``responsive.css``, adapts to different screen
     sizes.
 
-  - New option embed_images_.
-  
+  - Move non-essential styling from ``minimal.css`` to ``plain.css``
+    rsp. ``responsive.css``.
+
+  - Show code line numbers as pseudo-elements so they are skipped when
+    copying the code block from the page.
+
   .. _initial_header_level: docs/user/config.html#initial-header-level
   __ https://stackoverflow.com/questions/39547412/same-font-size-for-h1-and-h2-in-article
   .. _embed_images: docs/user/config.html#embed-images
-
-* docutils/writers/html5_polyglot/
-
-  - ``minimal.css``: Move non-essential styling to ``plain.css``.
-    Code line numbers as pseudo-elements which are skipped when
-    copying text.
-  - ``plain.css``: Support numbered figures.
 
 * LaTeX writer:
 
@@ -162,24 +161,6 @@ Release 0.17 (2021-04-03)
     __ docs/user/config.html#stylesheet-latex-writers
 
   - Remove legacy LaTeX stylesheet ``docutils-05-compat.sty``.
-
-  - Fixes (thanks to) from John Thorvald Wodder II: 
-    alignment of nested tables, support memoir document class,
-
-* pseudoxml-writer got a ``--detailled`` option for pretty printing text nodes.
-
-* odf/odt-writer improved metadata handling.
-
-* manpage-writer fixes #380 commandline option in spinx, #126 title with spaces,
-  #168 empty citation, #394 newline after rubric.
-
-* Miscellaneous:
-
-  - Fixes in Arabic mappings and Korean translations.
-  - directives: Prevent infinte inclusion loops.
-  - roles: Apply patch #174 `Lowercase new role names on registration`
-    by John Thorvald Wodder II.
-
 
 .. _setuptools: https://pypi.org/project/setuptools/
 .. _pip: https://pypi.org/project/pip/
