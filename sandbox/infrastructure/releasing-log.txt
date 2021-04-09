@@ -31,6 +31,41 @@ Release 0.17 aftermath
 
              pinning to docutils 0.16 helped ... why ?
 
+Release 0.17.1b (2021-04-09)
+============================
+
+* tox with 2.7 3.5, 3.6, 3.8, 3.9
+
+* with LC_ALL=C and PYTHONWARNINGS=default
+
+  python3.6 and python3.10.0a ::
+
+    docutils/utils/smartquotes.py:639: DeprecationWarning: invalid escape sequence \[
+        ch_classes = {'open': u'[(\[{]', # opening braces
+    docutils/test/test_writers/test_manpage.py:62: DeprecationWarning: invalid escape sequence \-
+    ... several of the same
+
+* recommonmark tests::
+
+    python3.6 -m pip install --user recommonmark 
+    # 0.7.1
+ 
+    python3.6 test/alltests.py
+    FAILED (failures=17, errors=17, skipped=1)
+
+    input:
+    b'\nExternal hyperlink [target]s:\n\n[target]: http://www.python.org/\n'
+    -: expected
+    +: output
+      <document source="test data">
+          <paragraph>
+              External hyperlink
+    -         <reference name="target" refuri="http://www.python.org/">
+    ?                   --------------
+    +         <reference refuri="http://www.python.org/">
+                  target
+              s:
+
 Release 0.17 (2021-04-03 ...)
 =============================
 
