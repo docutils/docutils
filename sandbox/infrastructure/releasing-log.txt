@@ -99,7 +99,9 @@ Release 0.17.1b (2021-04-09)
   Install the whl from dist-directory into py38 venv.
   Ok.
 
-o try uploading with different name : docutils-0.17.1b1.dev0-py2.py3-none-any.whl
+* New version 0.17.1b1.dev because pypi does not allow changing uploads.
+* Run tox and python3.10 test.
+* Commit new version number
 
 
 Release 0.17 (2021-04-03 ...)
