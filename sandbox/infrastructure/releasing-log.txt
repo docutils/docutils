@@ -66,6 +66,42 @@ Release 0.17.1b (2021-04-09)
                   target
               s:
 
+  only works with recommonmark 0.4
+
+* Generate universal wheel and source-distribution with py38.
+* Upload universal wheel and source to test.pypi.
+* Test in python3.8 venv 
+
+  Fails.
+
+  Inside virtualenv ::
+
+    >>> import docutils.parsers.recommonmark_wrapper as rw                      
+    >>> dir(rw)
+    ['Parser', '__builtins__', '__cached__', '__doc__', '__file__', 
+     '__loader__', '__name__', '__package__', '__spec__', 
+     '_recommonmarkParser', 'docutils', 'nodes', 'with_recommonmark']
+
+  In development directory ::
+
+    >>> import docutils.parsers.recommonmark_wrapper as rw
+    >>> dir(rw)
+    ['CommonMarkParser', 'Component', 'Parser', '__builtins__',
+     '__cached__', '__doc__', '__file__', '__loader__',
+     '__name__', '__package__', '__spec__', 'docutils', 'nodes']
+
+  Depending on recommonmark being installed in the running python
+  version or not ``CommonMarkParser`` is a class or None.
+
+* Rebuild the wheel after running tox (this cleans caches). 
+  Cannot be uploaded to testpypi because it is the same name. 
+
+  Install the whl from dist-directory into py38 venv.
+  Ok.
+
+o try uploading with different name : docutils-0.17.1b1.dev0-py2.py3-none-any.whl
+
+
 Release 0.17 (2021-04-03 ...)
 =============================
 
