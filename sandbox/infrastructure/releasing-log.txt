@@ -31,6 +31,20 @@ Release 0.17 aftermath
 
              pinning to docutils 0.16 helped ... why ?
 
+Release 0.17.1 (2021-04-12 ...)
+===============================
+
+* tox with 2.7 3.5, 3.6, 3.7, 3.8, 3.9, 3.10
+
+  - 3.7 and 3.10 fail. Both with ::
+
+     from _ctypes import Union, Structure, Array
+       ModuleNotFoundError: No module named '_ctypes'
+
+  testing against development source passes.
+
+  too late to release maybe tomorrow.
+
 Release 0.17.1b1 (2021-04-09)
 =============================
 
