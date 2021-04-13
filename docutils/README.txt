@@ -21,14 +21,15 @@ This is for those who want to get up & running quickly.
 
    See Requirements_ below for details.
 
-2. Install the latest release from PyPi with pip_::
+2. Install the latest stable release from PyPi with pip_::
 
        python -m pip install docutils
 
-   To install a `development version`_, follow
-   the instructions in section `Installation`_ below.
+   To install a pre-relase, append the option ``--pre``.
+   To install a `development version`_, follow the instructions in
+   section `Installation`_ below.
 
-3. Use the front-end scripts to convert reStructuredText documents.
+3. Use the `front-end scripts`_ to convert reStructuredText documents.
    Try for example::
 
        rst2html.py FAQ.txt FAQ.html         (Unix)
@@ -73,26 +74,41 @@ Requirements
 ============
 
 To run the code, Python_ must be installed.
-Docutils is compatible with Python versions 2.7 and 3.5 to 3.7.
-Starting with Docutils 0.16, the code base supports both Python 2.7
-and 3.5+ natively. [#]_
 
-.. [#] Up to version 0.15, the Docutils codebase was translated "on-demand"
-   using the 2to3 tool.
+* Docutils 0.16 and later supports Python 2.7 and 3.5+ natively.  [#2to3]_
+* Docutils 0.14 dropped Python 2.4, 2.5, 3.1 and 3.2 support.
+* Docutils 0.10 dropped Python 2.3 support.
+* From version 0.6, Docutils is compatible with Python 3. [#2to3]_
+* For Docutils 0.5, Python 2.2.1+ is required.
+* Up to Docutils 0.4, Python 2.1 is required.
 
-Docutils uses the following packages for enhanced functionality,
-if they are installed:
+.. [#2to3] Up to version 0.15, the Docutils codebase was translated
+   "on-demand" using the 2to3 tool.
+
+Recommendations
+---------------
+
+Docutils uses the following packages for enhanced functionality, if they
+are installed:
+
+* Installation_ is usually done with pip_ or setuptools_.
 
 * The `Python Imaging Library`_, or PIL, is used for some image
   manipulation operations.
 
-* The `Pygments`_ syntax highlighter is used for content of `code`
-  directives and roles.
+* The `Pygments`_ package provides syntax highlight of "code" directives
+  and roles.
+
+* The `recommonmark`_ parser is used to parse input in Markdown format.
+
+The `Docutils Link List <docs/user/links.html>`__ records projects that
+users of Docutils and reStructuredText may find useful.
 
 .. _Python: http://www.python.org/.
 .. _Python Imaging Library: http://www.pythonware.com/products/pil/
 .. _Pygments: https://pypi.org/project/Pygments/
 .. _setuptools: https://pypi.org/project/setuptools/
+.. _recommonmark: https://github.com/rtfd/recommonmark
 
 
 Development version
@@ -136,9 +152,9 @@ Steps to install Docutils from source:
 .. [#setup-requires-setuptools] ``setup.py`` requires the `setuptools`_
    package. For a manual install see the options in `Setting up for Docutils
    development`__.
-   
+
    __ docs/dev/policies.html#setting-up-for-docutils-development
-   
+
 Optional steps:
 
 * `running the test suite`_
@@ -209,9 +225,9 @@ There are many front-end tools in the unpacked "tools" subdirectory.
 Installation under Unix places copies in the PATH.
 You may want to begin with the "rst2html.py" front-end tool.  Most
 tools take up to two arguments, the source path and destination path,
-with STDIN and STDOUT being the defaults.  Use the "--help" option to
+with STDIN and STDOUT being the defaults.  Use the ``--help`` option to
 the front-end tools for details on options and arguments.  See
-Docutils Front-End Tools (``docs/user/tools.txt``) for full documentation.
+`Docutils Front-End Tools`_ for full documentation.
 
 The package modules are continually growing and evolving.  The
 ``docutils.statemachine`` module is usable independently.  It contains
@@ -219,6 +235,8 @@ extensive inline documentation (in reStructuredText format of course).
 
 Contributions are welcome!
 
+.. _front-end scripts:
+.. _Docutils Front-End Tools: docs/user/tools.html
 
 Project Files & Directories
 ===========================

@@ -811,7 +811,7 @@ Options: ``--trim-footnote-reference-space, --leave-footnote-reference-space``.
 [markdown parser]
 -----------------
 
-based on recommonmark_
+Experimental, based on recommonmark_.
 
 .. _recommonmark: https://pypi.org/project/recommonmark/
 
