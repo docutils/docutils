@@ -7,7 +7,7 @@
 
 Docutils is an open-source text processing system for processing
 plaintext documentation into useful formats, such as HTML, LaTeX,
-man-pages, open-document or XML.
+man-pages, OpenDocument, or XML.
 It includes reStructuredText_, the easy to read, easy to use,
 what-you-see-is-what-you-get plaintext markup language.
 
@@ -18,42 +18,31 @@ Overview
 ========
 
 **To get up & running quickly**, see the Quick-Start_ section of the
-README_ file.
+README_ file. The only requirement_ for running Docutils is Python_.
 
-All **documentation** can be reached from the `Docutils Project
-Documentation Overview`_.
+All **documentation** can be reached from the `Project Documentation
+Overview`_. If something is unclear or missing, ask at the
+docutils-users_ mailing list.
+
+The |sourceforge| `project page`_ has links to the tracker, mailing
+lists, and code repository.
+
+All **discussion** about Docutils takes place on the `mailing lists`_.
 
 To the developers of an open source project, **feedback** is a great
 motivator and is very welcome.  We also rely on feedback for
 determining what features to implement.  Thus, if you tell us what you
-need, you may just get it!  Please post any feedback to the
+need, we may help!  Please post any feedback to the
 docutils-users_ mailing list.
 
-All **discussion** about Docutils takes place on the `mailing lists`_.
+If you find a **bug**, please `file a bug report`_ or mail to the
+docutils-users_ mailing list.
 
-If you find a **bug**, please file a `bug report`_ or send email to
-the docutils-users_ mailing list.  **Patch** submissions should be
-filed in the `patch tracker`_ (preferred) or sent to docutils-develop_
-(where you may be asked to send them to the `patch tracker`_).
-
-We welcome all kinds of **contributions**.  There's a `To Do list`_
-full of interesting ideas awaiting a champion.  If you have any
-questions regarding how to extend Docutils, please feel free to ask on
-the docutils-develop_ mailing list.
-
-The only **requirement** for running Docutils is Python_
-
-* After subversion commit r8378 (thanks to Stephen Finucane) the code is compatible
-  with both Python 2 and Python 3.
-
-* Docutils 0.16 dropped Python 2.6, 3.3, and 3.4 support.
-* Docutils 0.14 dropped Python 2.4, 2.5, 3.1 and 3.2 support.
-* Docutils 0.10 dropped Python 2.3 support.
-* From version 0.6, Docutils is compatible with Python 3 (see README_ for
-  details).
-* For Docutils 0.5, Python 2.2.1+ is required.
-* Up to Docutils 0.4, Python 2.1 is required.
-
+We welcome all kinds of **contributions**.  There's a `To Do list`_ full
+of ideas awaiting a champion.  If you have any questions regarding how to
+extend Docutils, please feel free to ask on the docutils-develop_ mailing
+list. **Patch** submissions should be filed in the `patch tracker`_
+(preferred) or sent to docutils-develop_.
 
 Download
 ========
@@ -62,77 +51,58 @@ Download
 for distributors.  See the `release notes`_ for a list of changes since the
 previous release.
 
-We recommend that you use a snapshot_ from `Docutils' Subversion
+We recommend that you use a snapshot_ [#snapshots]_ from `Docutils' Subversion
 repository`_. The snapshots usually contain *more features* and *fewer bugs*
 than the "official" releases |---| they're not only for developers!
 
-.. Note::
+.. [#snapshots] Snapshots are created on-demand by Sourceforge.  You can
+   download a snapshot of the complete `trunk directory`_ (docutils,
+   sandbox_, prest/perl and web) or any sub-directory. Browse to the
+   desired directory and click the "Download Snapshot" button.
 
-   Snapshots are supported by sourceforge directly.
-   The whole trunk is packed docutils, sandbox, prest/perl and web:
-
-     https://sourceforge.net/p/docutils/code/HEAD/tarball
-
-   or only the docutils package:
-
-     http://sourceforge.net/p/docutils/code/HEAD/tree/trunk/docutils/
-
-  Click the download snapshot button.
-
-  The snapshosts listed below are created on website updates.
-
-.. _release packages: https://pypi.org/project/docutils/#files
-.. _PyPI: https://pypi.org
-
-.. _release notes: RELEASE-NOTES.html
-
-The Sandbox_ contains experimental, contributed code. You can download a
-complete `snapshot of the Sandbox`_ or `browse the Sandbox`_ to download a
-subset.
+----------------------------------------------------------------------
 
 .. class:: credits
 
-Web site, tracker and mailing lists and subversion repository hosted by |SourceForge|_.
+Web site, tracker, mailing lists, and repository hosted by |SourceForge|_.
 Powered by |Python|_.
 
 .. |---| unicode:: U+02014 .. em dash
    :trim:
-.. _snapshot:
-   http://sourceforge.net/p/docutils/code/HEAD/tree/trunk/docutils/
-.. _snapshot of the Sandbox:
-   http://sourceforge.net/p/docutils/code/HEAD/tree/trunk/sandbox/
-.. _browse the Sandbox:
-   http://sourceforge.net/p/docutils/code/HEAD/tree/trunk/sandbox/
 
-.. _bug report: http://docutils.sourceforge.net/BUGS.html
-.. _patch tracker: http://sourceforge.net/p/docutils/patches/
+.. _snapshot:
+   https://sourceforge.net/p/docutils/code/HEAD/tree/trunk/docutils/
+.. _trunk directory: https://sourceforge.net/p/docutils/code/HEAD/tree/trunk/
+.. _patch tracker: https://sourceforge.net/p/docutils/patches/
+.. _file a bug report: BUGS.html#how-to-report-a-bug
 .. _mailing lists: docs/user/mailing-lists.html
 .. _docutils-users: docs/user/mailing-lists.html#docutils-users
 .. _docutils-develop: docs/user/mailing-lists.html#docutils-develop
 .. _sandbox: sandbox/README.html
 .. _reStructuredText: rst.html
-.. _project files page:
-   http://sourceforge.net/project/showfiles.php?group_id=38414
+.. _project page: https://sourceforge.net/p/docutils
 .. _To Do list: docs/dev/todo.html
 .. _README: README.html
 .. _Quick-Start: README.html#quick-start
-.. _Docutils Project Documentation Overview: docs/index.html
+.. _Project Documentation Overview: docs/index.html
 .. _Docutils' Subversion repository: docs/dev/repository.html
+.. _requirement: README.html#requirements
+.. _release packages: https://pypi.org/project/docutils/#files
+.. _PyPI: https://pypi.org
+.. _release notes: RELEASE-NOTES.html
+
 .. |SourceForge| image::
-   http://sourceforge.net/sflogo.php?group_id=38414
-   :alt: SourceForge Logo
+   https://sourceforge.net/sflogo.php?group_id=38414
+   :alt: SourceForge
    :align: middle
-   :class: borderless
-   :width: 88
-   :height: 31
-.. _SourceForge: http://sourceforge.net/
+   :height: 1.5em
+.. _SourceForge: https://sourceforge.net/
+
 .. |Python| image:: python.png
-   :alt: Python Logo
+   :alt: Python
    :align: middle
-   :class: borderless
-   :width: 193
-   :height: 32
-.. _Python: http://www.python.org/
+   :height: 1em
+.. _Python: https://www.python.org/
 
 
 
