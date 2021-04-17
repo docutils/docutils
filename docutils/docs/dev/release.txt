@@ -109,8 +109,9 @@ Releasing (post 2020)
     tar xzvf ../dist/docutils-0.##.tar.gz
     cd docutils-0.##/
     tools/buildhtml.py .
-    find . -name \*.pyc -exec rm {} \;
-    rm -rf docutils.egg-info
+    find . -name \*.pyc -exec rm -v {} \;
+    find . -name __pycache__ -exec rmdir -v {} \;
+    rm -r docutils.egg-info
     rsync -e ssh -r -t ./ web.sourceforge.net:/home/project-web/docutils/htdocs/0.##
 
 * Check web/index.txt for necessary corrections.
@@ -120,7 +121,7 @@ Releasing (post 2020)
   - Upload tar.gz and 0.16 release notes to sourceforge.
   - Select docutils-0.16.tar.gz as default for all OS.  
 
-* set_version 0.##+1b.dev
+* set_version 0.#.#+1b.dev
 * test with py2 and py3
 * docutils/HISTORY.txt: add title "Changes Since 0.##"
 * run sandbox/infrastructure/docutils-update.local
