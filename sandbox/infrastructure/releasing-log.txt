@@ -31,6 +31,22 @@ Release 0.17 aftermath
 
              pinning to docutils 0.16 helped ... why ?
 
+Release 0.17.1 (2021-04-16)
+===========================
+
+* tox with 2.7 3.5, 3.6, 3.7, 3.8, 3.9, 3.10
+* set_version 0.17.1
+* tox again
+* commit : release 0.17.1
+* Generate universal wheel and source-distribution with py38.
+* Upload universal wheel and source to test.pypi.
+* test in venvs ... and then next problem pypi caches 0.17.1b2.
+
+  --no-cache-dir does not help.
+
+  call twice, secodn time with ``--upgrade``.
+
+
 Release 0.17.1 (2021-04-12 ...)
 ===============================
 
@@ -43,7 +59,10 @@ Release 0.17.1 (2021-04-12 ...)
 
   testing against development source passes.
 
-  too late to release maybe tomorrow.
+  Test crosstest, see subdirectory
+
+  3.7 and 3.10 require libffi-dev to build local
+  then tox passes for 3.5 to 3.10.
 
 Release 0.17.1b1 (2021-04-09)
 =============================
