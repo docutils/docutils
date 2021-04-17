@@ -22,17 +22,12 @@ Log
 
   3.7 and 3.10 fail : _ctypes missing
 
-  3.5 whl is different, 3.6, 3.8 and 3.9 have the same md5sum.
+  3.6 and 3.8 have the same md5sum, others differ.
+
+TODO _ctypes for 3.7 and 3.10
 
 * test every wheel in every venv
 
-  3.5 whl is different, 3.6, 3.8 and 3.9 have the same md5sum.
-
-  therefore one wheel should do it.
-
-  then tox should be sufficent.
-
-TODO _ctypes for 3.7 and 3.10
   
 * test with LC_ALL=C
 * test with PYTHONPATH=
