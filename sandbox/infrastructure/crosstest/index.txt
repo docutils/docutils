@@ -24,7 +24,29 @@ Log
 
   3.6 and 3.8 have the same md5sum, others differ.
 
-TODO _ctypes for 3.7 and 3.10
+* missing _ctypes for 3.7 and 3.10
+
+  - install libffi-dev
+
+  python 3.7 works
+
+  but 3.10a6 fails building venv ::
+
+    python3.10 -m venv a
+    Error: subprocess not supported for isolated subinterpreters
+
+    find a
+    a/lib
+    a/lib/python3.10
+    a/lib/python3.10/site-packages
+    a/lib64
+    a/include
+    a/bin
+    a/bin/python3
+    a/bin/python
+    a/bin/python3.10
+    a/pyvenv.cfg
+
 
 * test every wheel in every venv
 
