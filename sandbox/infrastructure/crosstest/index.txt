@@ -30,7 +30,9 @@ Log
 
   therefore one wheel should do it.
 
-TODO
+  then tox should be sufficent.
+
+TODO _ctypes for 3.7 and 3.10
   
 * test with LC_ALL=C
 * test with PYTHONPATH=
