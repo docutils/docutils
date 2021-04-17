@@ -1,0 +1,29 @@
+===================
+docutils cross test
+===================
+
+:Date: $Date$
+
+Testing against/with/through several python installations.
+
+tox does this ... somehow ... trying to do it explicit.
+
+plan
+----
+
+* setup a virtual environment with every python
+* build a wheel with every python (in the venv ?)
+
+  before build clean docutils::
+
+    find . -type f -name "*.pyc" -delete
+
+* test every wheel in every venv
+* test with LC_ALL=C
+* test with PYTHONPATH=
+* test with PYTHONWARNINGS=default
+
+  this shows deprecation warnings.
+
+
+
