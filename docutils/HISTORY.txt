@@ -13,9 +13,11 @@
 
 .. contents::
 
+Changes Since 0.17.1
+====================
+
 Release 0.17.1 (2021-04-16)
 ===========================
-
 
 * docutils/utils/math/latex2mathml.py
 
