@@ -47,6 +47,16 @@ Log
     a/bin/python3.10
     a/pyvenv.cfg
 
+  For now skip 3.10
+
+* test wheel from 3.7 in every venv
+  with
+
+    export LC_ALL=C
+    export PYTHONPATH=
+    export PYTHONWARNINGS=default
+
+MAYBE
 
 * test every wheel in every venv
 
