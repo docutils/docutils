@@ -44,7 +44,19 @@ Release 0.17.1 (2021-04-16)
 
   --no-cache-dir does not help.
 
-  call twice, secodn time with ``--upgrade``.
+  call twice, second time with ``--upgrade``.
+
+* tag release 0.17.1
+* upload to pypi
+* and test
+* Notify docutils-developer and user.
+* upload source and generated html to sf-htdocs/0.17.1
+* Check web/index.txt for necessary corrections : None necessary.
+* Release to sourceforge.
+* set_version 0.17.2b.dev
+* tox
+* docutils/HISTORY.txt: add title "Changes Since 0.17.1"
+* run sandbox/infrastructure/docutils-update.local
 
 
 Release 0.17.1 (2021-04-12 ...)
