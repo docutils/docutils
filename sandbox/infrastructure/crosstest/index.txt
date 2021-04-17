@@ -8,17 +8,30 @@ Testing against/with/through several python installations.
 
 tox does this ... somehow ... trying to do it explicit.
 
-plan
-----
+Log
+---
 
 * setup a virtual environment with every python
+  include wheel
+
 * build a wheel with every python (in the venv ?)
 
   before build clean docutils::
 
     find . -type f -name "*.pyc" -delete
 
+  3.7 and 3.10 fail : _ctypes missing
+
+  3.5 whl is different, 3.6, 3.8 and 3.9 have the same md5sum.
+
 * test every wheel in every venv
+
+  3.5 whl is different, 3.6, 3.8 and 3.9 have the same md5sum.
+
+  therefore one wheel should do it.
+
+TODO
+  
 * test with LC_ALL=C
 * test with PYTHONPATH=
 * test with PYTHONWARNINGS=default
