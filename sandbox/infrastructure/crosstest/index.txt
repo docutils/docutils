@@ -8,6 +8,12 @@ Testing against/with/through several python installations.
 
 tox does this ... somehow ... trying to do it explicit.
 
+* test with PYTHONWARNINGS=default
+
+  this shows deprecation warnings.
+
+* and LC_ALL=C
+
 Log
 ---
 
@@ -59,13 +65,6 @@ Log
 MAYBE
 
 * test every wheel in every venv
-
-  
-* test with LC_ALL=C
-* test with PYTHONPATH=
-* test with PYTHONWARNINGS=default
-
-  this shows deprecation warnings.
 
 
 
