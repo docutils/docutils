@@ -48,7 +48,7 @@ Releasing (post 2020)
 
   Wait some minutes to test in virtualenv ::
 
-    python2 -m virtualenv du2 ; cd du2
+    python2 -m virtualenv py2.7 ; cd py2.7
     export PYTHONPATH= ; . bin/activate
 
     python -m pip install --index-url https://test.pypi.org/simple/ --no-deps docutils
