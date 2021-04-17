@@ -17,6 +17,7 @@ for VDIR in ./py3.* ; do
     find . -type f -name "*.pyc" -delete
     rm -r dist
     rm -r build
+    export PYTHONWARNINGS=default
     python setup.py bdist_wheel --universal
     deactivate
     cd $TESTDIR
