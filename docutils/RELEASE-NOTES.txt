@@ -95,8 +95,11 @@ Future changes
 .. _identifier normalization:
    docs/ref/rst/directives.html#identifier-normalization
 
-Release 0.17.1b.dev
-==========================
+
+Release 0.17.1 (2021-04-16)
+===========================
+
+(Release 0.17.1b.dev)
 
 * Bug fixes (for details see the Docutils `HISTORY`_).
 
