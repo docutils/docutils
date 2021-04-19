@@ -74,9 +74,6 @@ dl > dd {
 /* Lists */
 /* ===== */
 
-/* Separate list entries in compound lists */
-dl > dd, ol > li,
-
 /* Definition Lists */
 /* Indent lists nested in definition lists */
 /* (:only-child is new in CSS 3)           */
