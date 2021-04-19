@@ -517,7 +517,7 @@ __ http://docutils.sourceforge.net/sandbox/stylesheets/
 
 The following options are recognized:
 
-``number-lines`` : [start line number]
+``number-lines`` : [integer]
     Precede every line with a line number.
     The optional argument is the number of the first line (defaut 1).
 
@@ -784,7 +784,7 @@ The following options are recognized:
     The horizontal alignment of the table.
     (New in Docutils 0.13)
 
-``widths`` : "auto", "grid" or a list of integers
+``widths`` : "auto", "grid", or a list of integers
     A comma- or space-separated list of column widths.
     The default is the width of the input columns (in characters).
 
@@ -793,7 +793,7 @@ The following options are recognized:
     (LaTeX, the HTML browser, ...).
     See also the `table_style`_ configuration option.
 
-``width`` : `length`_ or `percentage`_ of the current line width
+``width`` : `length`_ or `percentage`_
     Forces the width of the table to the specified length or percentage
     of the line width.  If omitted, the renderer determines the width
     of the table based on its contents.
@@ -869,7 +869,7 @@ The following options are recognized:
     whether to delegate the determination of column widths to the backend
     (LaTeX, the HTML browser, ...).
 
-``width`` : `length`_ or `percentage`_ of the current line width
+``width`` : `length`_ or `percentage`_
     Forces the width of the table to the specified length or percentage
     of the line width.  If omitted, the renderer determines the width
     of the table based on its contents.
@@ -893,7 +893,7 @@ The following options are recognized:
 ``url`` : string (whitespace removed)
     An Internet URL reference to a CSV data file.
 
-``encoding`` : name of text encoding
+``encoding`` : string
     The text encoding of the external CSV data (file or URL).
     Defaults to the document's encoding (if specified).
 
@@ -909,7 +909,7 @@ The following options are recognized:
     Unicode code point; see the unicode_ directive for syntax
     details.
 
-``keepspace`` : flag
+``keepspace`` : flag (empty)
     Treat whitespace immediately following the delimiter as
     significant.  The default is to ignore such whitespace.
 
@@ -1331,13 +1331,13 @@ results in:
 
 The following options are recognized:
 
-``ltrim`` : flag
+``ltrim`` : flag (empty)
     Whitespace to the left of the substitution reference is removed.
 
-``rtrim`` : flag
+``rtrim`` : flag (empty)
     Whitespace to the right of the substitution reference is removed.
 
-``trim`` : flag
+``trim`` : flag (empty)
     Equivalent to ``ltrim`` plus ``rtrim``; whitespace on both sides
     of the substitution reference is removed.
 
@@ -1454,18 +1454,18 @@ The following options are recognized:
     The entire included text is inserted into the document as a single
     literal block.
 
-``code`` : formal language (optional)
+``code`` : [string] (formal language)
     The argument and the included content are passed to
     the code_ directive (useful for program listings).
     (New in Docutils 0.9)
 
-``number-lines`` : [start line number]
+``number-lines`` : [integer] (start line number)
     Precede every code line with a line number.
     The optional argument is the number of the first line (defaut 1).
     Works only with ``code`` or ``literal``.
     (New in Docutils 0.9)
 
-``encoding`` : name of text encoding
+``encoding`` : string
     The text encoding of the external data file.  Defaults to the
     document's input_encoding_.
 
@@ -1559,7 +1559,7 @@ The following options are recognized:
 ``url`` : string (whitespace removed)
     An Internet URL reference to a raw data file to be included.
 
-``encoding`` : name of text encoding
+``encoding`` : string
     The text encoding of the external raw data (file or URL).
     Defaults to the document's encoding (if specified).
 

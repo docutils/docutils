@@ -4537,9 +4537,8 @@ _`yesorno`
 _`number`
     The attribute value must be a number. Resolves to ``NMTOKEN``.
 
-    Used in the `start`_ and `scale`_ attributes.
+    Used in the `level`_, `morecols`_, `scale`_, and `start`_ attributes.
 
-    .. also ltrim, rtrim
 
 _`measure`
     A number which may be immediately followed by a unit or percent sign.
