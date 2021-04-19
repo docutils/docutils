@@ -88,12 +88,16 @@ Future changes
   stability of the generated HTML code, e.g. because you use a custom
   style sheet or post-processing that may break otherwise.
 
+* The html_writer_ option of the ``buildhtml.py`` application is
+  obsoleted by ``--writer`` and will be removed in future.
+
 .. _id_prefix: docs/user/config.html#id-prefix
 .. _auto_id_prefix: docs/user/config.html#auto-id-prefix
 .. _rst2html.py: docs/user/tools.html#rst2html-py
 .. _reference name: docs/ref/rst/restructuredtext.html#reference-names
 .. _identifier normalization:
    docs/ref/rst/directives.html#identifier-normalization
+.. _html_writer: docs/user/config.html#html-writer
 
 
 Release 0.17.1 (2021-04-16)
