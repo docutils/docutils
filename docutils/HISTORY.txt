@@ -16,6 +16,10 @@
 Changes Since 0.17.1
 ====================
 
+* docutils/writers/pseudoxml.py:
+
+  - Fix option "detailled" under Python 2.7.
+
 Release 0.17.1 (2021-04-16)
 ===========================
 
