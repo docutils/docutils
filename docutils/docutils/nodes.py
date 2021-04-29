@@ -457,9 +457,9 @@ class Text(Node, reprunicode):
     def pformat(self, indent='    ', level=0):
         try:
             if self.document.settings.detailled:
-                lines = ['%s%s' % (indent * level, '<#text>')
-                        ] + [indent*(level+1) + repr(line)
-                             for line in self.splitlines(keepends=True)]
+                lines = ['%s%s' % (indent*level, '<#text>')
+                        ] + [indent*(level+1) + repr(reprunicode(line))
+                             for line in self.splitlines(True)]
                 return '\n'.join(lines) + '\n'
         except AttributeError:
             pass

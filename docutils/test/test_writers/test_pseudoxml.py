@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# $Id$
+# $Id: test_pseudoxml.py 8481 2020-01-31 08:17:24Z milde $
 # Author: Lea Wiemann <LeWiemann@gmail.com>
 # Copyright: This module has been placed in the public domain.
 
@@ -15,20 +15,27 @@ from test_writers import DocutilsTestSupport
 
 
 def suite():
-    s = DocutilsTestSupport.PublishTestSuite('pseudoxml')
+    # Settings dictionary must not be empty for later changes to work.
+    settings = {'expose_internals': []} # default
+    s = DocutilsTestSupport.PublishTestSuite('pseudoxml',
+                                             suite_settings=settings)
     s.generateTests(totest)
+    settings['detailled'] = True
+    s.generateTests(totest_detailled)
     return s
 
 totest = {}
+totest_detailled = {}
 
 totest['basic'] = [
 # input
-["""\
+[r"""
 This is a paragraph.
 
 ----------
 
-This is another paragraph.
+This is a paragraph 
+with \escaped \characters.
 
 A Section
 ---------
@@ -42,12 +49,37 @@ Foo.
         This is a paragraph.
     <transition>
     <paragraph>
-        This is another paragraph.
+        This is a paragraph
+        with escaped characters.
     <section ids="a-section" names="a\\ section">
         <title>
             A Section
         <paragraph>
             Foo.
+"""]
+]
+
+totest_detailled['basic'] = [
+# input                             
+[totest['basic'][0][0],
+# output 
+"""\
+<document source="<string>">
+    <paragraph>
+        <#text>
+            'This is a paragraph.'
+    <transition>
+    <paragraph>
+        <#text>
+            'This is a paragraph\\n'
+            'with \\x00escaped \\x00characters.'
+    <section ids="a-section" names="a\\ section">
+        <title>
+            <#text>
+                'A Section'
+        <paragraph>
+            <#text>
+                'Foo.'
 """]
 ]
 
