@@ -385,8 +385,8 @@ class FormulaConfig(object):
       u'\\&': u'&', u'\\,': u' ', u'\\:': u' ', u'\\;': u' ', u'\\AC': u'∿',
       u'\\APLcomment': u'⍝', u'\\APLdownarrowbox': u'⍗', u'\\APLinput': u'⍞',
       u'\\APLinv': u'⌹', u'\\APLleftarrowbox': u'⍇', u'\\APLlog': u'⍟',
-      u'\\APLrightarrowbox': u'⍈', u'\\APLuparrowbox': u'⍐', u'\\Box': u'□',
-      u'\\Bumpeq': u'≎', u'\\CIRCLE': u'●', u'\\Cap': u'⋒',
+      u'\\APLrightarrowbox': u'⍈', u'\\APLuparrowbox': u'⍐', u'\\Bbbk': u'𝕜',
+      u'\\Box': u'□', u'\\Bumpeq': u'≎', u'\\CIRCLE': u'●', u'\\Cap': u'⋒',
       u'\\CapitalDifferentialD': u'ⅅ', u'\\CheckedBox': u'☑', u'\\Circle': u'○',
       u'\\Coloneqq': u'⩴', u'\\ComplexI': u'ⅈ', u'\\ComplexJ': u'ⅉ',
       u'\\Corresponds': u'≙', u'\\Cup': u'⋓', u'\\Delta': u'Δ', u'\\Diamond': u'◇',
@@ -587,6 +587,7 @@ class FormulaConfig(object):
       u'align': [u'r', u'l',], u'eqnarray': [u'r', u'c', u'l',],
       u'gathered': [u'l', u'l',],
       }
+  
 
   fontfunctions = {
       u'\\boldsymbol': u'b', u'\\mathbb': u'span class="blackboard"',
@@ -606,11 +607,13 @@ class FormulaConfig(object):
       u'\\mathit': u'i', u'\\mathring{A}': u'Å', u'\\mathring{U}': u'Ů',
       u'\\mathring{a}': u'å', u'\\mathring{u}': u'ů', u'\\mathring{w}': u'ẘ',
       u'\\mathring{y}': u'ẙ', u'\\mathrm': u'span class="mathrm"',
-      u'\\mathscr': u'span class="scriptfont"', u'\\mathscr{B}': u'ℬ',
-      u'\\mathscr{E}': u'ℰ', u'\\mathscr{F}': u'ℱ', u'\\mathscr{H}': u'ℋ',
-      u'\\mathscr{I}': u'ℐ', u'\\mathscr{L}': u'ℒ', u'\\mathscr{M}': u'ℳ',
-      u'\\mathscr{R}': u'ℛ', u'\\mathsf': u'span class="mathsf"',
-      u'\\mathtt': u'tt',
+      u'\\mathscr': u'span class="scriptfont"', 
+      u'\\mathscr{B}': u'ℬ', u'\\mathscr{E}': u'ℰ', u'\\mathscr{F}':
+      u'ℱ', u'\\mathscr{H}': u'ℋ', u'\\mathscr{I}': u'ℐ',
+      u'\\mathscr{L}': u'ℒ', u'\\mathscr{M}': u'ℳ', u'\\mathscr{R}': u'ℛ',
+      u'\\mathsf': u'span class="mathsf"',
+      u'\\mathtt': u'span class="mathtt"',
+      u'\\operatorname': u'span class="mathrm"',
       }
 
   hybridfunctions = {

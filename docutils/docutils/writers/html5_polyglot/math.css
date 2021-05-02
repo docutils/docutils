@@ -82,12 +82,13 @@ span.denominator {
 	padding: 0ex;
 	border-top: thin solid;
 }
-sup.numerator, sup.unit {
+sub, sup {
 	font-size: 70%;
+}
+sup.numerator, sup.unit {
 	vertical-align: 80%;
 }
 sub.denominator, sub.unit {
-	font-size: 70%;
 	vertical-align: -20%;
 }
 span.sqrt {
@@ -96,7 +97,6 @@ span.sqrt {
 	padding: 0.1ex;
 }
 sup.root {
-	font-size: 70%;
 	position: relative;
 	left: 1.4ex;
 }
@@ -126,14 +126,17 @@ span.largesymbol {
 span.hugesymbol {
 	font-size: 200%;
 }
+/* vertically stacked sub and superscript */
 span.scripts {
-	display: inline-table;
+	display: inline-flex;
 	vertical-align: middle;
+	flex-direction: column;
 }
-.script {
-	display: table-row;
-	text-align: left;
-	line-height: 150%;
+sup.script {
+	order: 1;
+}
+sub.script {
+	order: 2;
 }
 span.limits {
 	display: inline-table;
@@ -240,6 +243,10 @@ span.mathsf, span.textsf {
 span.mathrm, span.textrm {
 	font-style: normal;
 	font-family: serif;
+}
+span.mathtt, span.texttt {
+	font-style: normal;
+	font-family: monospace;
 }
 span.text, span.textnormal {
 	font-style: normal;
