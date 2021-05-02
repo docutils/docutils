@@ -19,6 +19,13 @@ Changes Since 0.17.1
 * docutils/writers/pseudoxml.py:
 
   - Fix option "detailled" under Python 2.7.
+  
+* docutils/tools/math/math2html, docutils/writers/html5_polyglot/math.css
+
+  - Fix bug #244 Wrong subscript/superscript order with
+    ``--math-output=HTML``.
+  - Don't use <tt> element (deprecated in HTML5).
+  - Support commands ``\Bbbk`` and ``operatorname``.
 
 Release 0.17.1 (2021-04-16)
 ===========================
