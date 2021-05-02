@@ -256,6 +256,7 @@ class SmartQuotes(Transform):
                 yield ('literal', unicode(node))
             else:
                 # SmartQuotes uses backslash escapes instead of null-escapes
+                # Insert backslashes before escaped "active" characters.
                 txt = re.sub('(?<=\x00)([-\\\'".`])', r'\\\1', unicode(node))
                 yield ('plain', txt)
 
