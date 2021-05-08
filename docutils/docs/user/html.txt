@@ -98,11 +98,11 @@ XML [#safetext]_ that is compatible with `HTML5`_. New features and elements
 are used if they are widely supported.
 
 There is no hard-coded formatting information in the HTML document.
-Correct rendering of elements not directly supported by HTML depends
-on a CSS_ style sheet. The provided style sheet minimal.css_ defines
-required and styling rules, plain.css_ and responsive.css_ add
-optional rules for better legibility. Adaption of the layout is
-possible with `custom style sheets`_. [#safetext]_
+Correct rendering of elements not directly supported by HTML depends on a
+CSS_ style sheet. The provided style sheet minimal.css_ defines required
+styling rules; plain.css_ and responsive.css_ add optional rules for
+better legibility. Adaption of the layout is possible with `custom style
+sheets`_. [#safetext]_
 
 New in Docutils 0.13
 
@@ -120,43 +120,31 @@ New in Docutils 0.13
 .. _Benefits of polyglot XHTML5: http://xmlplease.com/xhtml/xhtml5polyglot/
 
 
-HTML writers in the sandbox
----------------------------
-
-.. _xhtml11:
-
-There are two more HTML writers in the sandbox_, the `xhtml11 writer`_
-and the `HTML writer for lightweight browsers`_ (_`html4trans`).
-
-.. _sandbox: ../dev/policies.html#the-sandbox
-.. _xhtml11 writer: ../../../sandbox/html4strict/README.html
-.. _HTML writer for lightweight browsers:
-   ../../../sandbox/html4trans/README.html
-
-
 Overview
 --------
 
-=============== =========== ============== ================= ===========
-name            aliases     `front-end`_   HTML version      CSS version
-=============== =========== ============== ================= ===========
-html4css1_      html4,      rst2html4.py,  `XHTML 1          `CSS 1`_
-                html_       rst2html.py    Transitional`_
+================ =========== ============== ================= ===========
+name             aliases     `front-end`_   HTML version      CSS version
+================ =========== ============== ================= ===========
+html4css1_       html4,      rst2html4.py,  `XHTML 1          `CSS 1`_
+                 html_       rst2html.py    Transitional`_
+                 
+pep_html_        ..          rstpep2html.py `XHTML 1          `CSS 1`_
+                                            Transitional`_
+                 
+s5_html_         s5          rst2s5.py      `XHTML 1          `CSS 1`_
+                                            Transitional`_
+                 
+html5_polyglot_  html5       rst2html5.py   `HTML5`_          `CSS 3`_
 
-pep_html_       ..          rstpep2html.py `XHTML 1          `CSS 1`_
-                                           Transitional`_
+================ =========== ============== ================= ===========
 
-s5_html_        s5          rst2s5.py      `XHTML 1          `CSS 1`_
-                                           Transitional`_
+For additional alternatives, see the `Docutils link list`__ and the
+sandbox_.
 
-html5_polyglot_ html5       rst2html5.py   `HTML5`_          `CSS 3`_
-
-xhtml11_        xhtml,      rst2xhtml.py   `XHTML 1.1`_      `CSS 3`_
-                html4strict
-
-html4trans_     ..          rst2html_trans `XHTML 1          no CSS
-                                           Transitional`_    required
-=============== =========== ============== ================= ===========
+__ https://docutils.sourceforge.io/docs/user/links.html
+   #website-generators-and-html-variants
+.. _sandbox: ../dev/policies.html#the-sandbox
 
 
 References

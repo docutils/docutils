@@ -336,41 +336,54 @@ Escaping Mechanism
 The character set universally available to plaintext documents, 7-bit
 ASCII, is limited.  No matter what characters are used for markup,
 they will already have multiple meanings in written text.  Therefore
-markup characters *will* sometimes appear in text **without being
-intended as markup**.  Any serious markup system requires an escaping
+markup characters will sometimes appear in text without being
+intended as markup.  Any serious markup system requires an escaping
 mechanism to override the default meaning of the characters used for
-the markup.  In reStructuredText we use the backslash, commonly used
+the markup.  In reStructuredText we use the *backslash*, commonly used
 as an escaping character in other domains.
 
-A backslash followed by any character (except whitespace characters
-in non-URI contexts)
-escapes that character.  The escaped character represents the
-character itself, and is prevented from playing a role in any markup
-interpretation.  The backslash is removed from the output.  A literal
-backslash is represented by two backslashes in a row (the first
-backslash "escapes" the second, preventing it being interpreted in an
-"escaping" role).
+A backslash (``\``) escapes the following character.
 
-In non-URI contexts,
-backslash-escaped whitespace characters are removed from the document.
-This allows for character-level `inline markup`_.
+* "Escaping" backslash characters are represented by NULL characters in
+  the `Document Tree`_ and removed from the output document by the
+  Docutils writers_.
 
-In URIs, backslash-escaped whitespace represents a single space.
+* Escaped non-white characters are prevented from playing a role in any
+  markup interpretation. The escaped character represents the character
+  itself. (A literal backslash can be specified by two backslashes in a
+  row -- the first backslash escapes the second. [#caveat]_)
 
-There are two contexts in which backslashes have no special meaning:
-literal blocks and inline literals.  In these contexts, a single
-backslash represents a literal backslash, without having to double up.
+* Escaped whitespace characters are removed from the output document
+  together with the escaping backslash. This allows for `character-level
+  inline markup`_.
 
-Please note that the reStructuredText specification and parser do not
-address the issue of the representation or extraction of text input
-(how and in what form the text actually *reaches* the parser).
-Backslashes and other characters may serve a character-escaping
-purpose in certain contexts and must be dealt with appropriately.  For
-example, Python uses backslashes in strings to escape certain
-characters, but not others.  The simplest solution when backslashes
-appear in Python docstrings is to use raw docstrings::
+  In `URI context` [#uri-context]_, backslash-escaped whitespace
+  represents a single space.
+  
+Backslashes have no special meaning in `literal context` [#literal-context]_.
+Here, a single backslash represents a literal backslash, without having
+to double up. [#caveat]_
 
-    r"""This is a raw docstring.  Backslashes (\) are not touched."""
+.. [#caveat] Please note that the reStructuredText specification and
+   parser do not address the issue of the representation or extraction of
+   text input (how and in what form the text actually *reaches* the
+   parser). Backslashes and other characters may serve a
+   character-escaping purpose in certain contexts and must be dealt with
+   appropriately.  For example, Python uses backslashes in string
+   literals to escape certain characters. The simplest solution when
+   backslashes appear in Python docstrings is to use raw docstrings::
+
+     r"""This is a raw docstring.  Backslashes (\) are not touched."""
+
+.. [#uri-context] In contexts where Docutils expects a URI (the link
+   block of `external hyperlink targets`_ or the argument of an image_ or
+   figure_ directive), whitespace is ignored by default
+
+.. [#literal-context] In literal context (`literal blocks`_ and `inline
+   literals`_, content of the code_, math_, and raw_ directives, content
+   of the `"raw" role`_ and `custom roles`_ based on it),
+   reStructuredText markup characters lose their semantics so there is no
+   reason to escape them.
 
 .. _reference name:
 
@@ -424,10 +437,10 @@ For example, the following `hyperlink references`_ are equivalent::
 Hyperlinks_, footnotes_, and citations_ all share the same namespace
 for reference names.  The labels of citations (simple reference names)
 and manually-numbered footnotes (numbers) are entered into the same
-database as other hyperlink names.  This means that a footnote
-(defined as "``.. [1]``") which can be referred to by a footnote
-reference (``[1]_``), can also be referred to by a plain hyperlink
-reference (1_).  Of course, each type of reference (hyperlink,
+database as other hyperlink names.  This means that a footnote_
+(defined as "``.. [#note]``") which can be referred to by a footnote
+reference (``[#note]_``), can also be referred to by a plain hyperlink
+reference (``note_``).  Of course, each type of reference (hyperlink,
 footnote, citation) may be processed and rendered differently.  Some
 care should be taken to avoid reference name conflicts.
 
@@ -3118,8 +3131,17 @@ Markup errors are handled according to the specification in `PEP
 .. _World Wide Web Consortium: http://www.w3.org/
 .. _HTML Techniques for Web Content Accessibility Guidelines:
    http://www.w3.org/TR/WCAG10-HTML-TECHS/#link-text
+.. _RFC2396: http://www.rfc-editor.org/rfc/rfc2396.txt
+.. _RFC2732: http://www.rfc-editor.org/rfc/rfc2732.txt
+.. _Zope: http://www.zope.com/
+.. _PEP 258: ../../peps/pep-0258.html
+.. _writers: ../../peps/pep-0258.html#writers
+
 .. _reStructuredText Directives: directives.html
 .. _admonition: directives.html#admonitions
+.. _code: directives.html#code
+.. _math: directives.html#math
+.. _raw: directives.html#raw
 .. _figure: directives.html#figure
 .. _image: directives.html#image
 .. _meta: directives.html#metadata
@@ -3128,12 +3150,11 @@ Markup errors are handled according to the specification in `PEP
 .. _table directive: directives.html#table
 .. _list table: directives.html#list-table
 .. _CSV table: directives.html#csv-table
+.. _custom roles: directives.html#role
 .. _reStructuredText Interpreted Text Roles: roles.html
-.. _RFC2396: http://www.rfc-editor.org/rfc/rfc2396.txt
-.. _RFC2732: http://www.rfc-editor.org/rfc/rfc2732.txt
-.. _Zope: http://www.zope.com/
-.. _PEP 258: ../../peps/pep-0258.html
+.. _"raw" role: roles.html#raw
 
+.. _Document Tree:
 .. _The Docutils Document Tree: ../doctree.html
 .. _"classes" attribute:  ../doctree.html#classes
 .. _topic: ../doctree.html#topic
