@@ -4,7 +4,7 @@
 HTML writer for lightweight browsers
 ===============================================
 
-:Author: Guenter Milde <milde@users.BerliOS.de>
+:Author: Guenter Milde <milde@users.sf.net>
 :Date: $Date$
 
 .. contents:: 
