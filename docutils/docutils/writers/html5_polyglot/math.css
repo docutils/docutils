@@ -2,6 +2,7 @@
 *   math2html: convert LaTeX equations to HTML output.
 *
 *   Copyright (C) 2009,2010 Alex Fernández
+*                 2021      Günter Milde
 *
 *   Released under the terms of the `2-Clause BSD license'_, in short:
 *   Copying and distribution of this file, with or without modification,
@@ -13,9 +14,12 @@
 *
 *   Based on eLyXer: convert LyX source files to HTML output.
 *   http://elyxer.nongnu.org/
-*/
-/* --end--
+*
+*
 * CSS file for LaTeX formulas.
+*
+* References: http://www.zipcon.net/~swhite/docs/math/math.html
+*             http://www.cs.tut.fi/~jkorpela/math/
 */
 
 /* Formulas */
@@ -23,6 +27,7 @@
 	text-align: center;
 	font-family: "Droid Serif", "DejaVu Serif", "STIX", serif;
 	margin: 1.2em 0;
+	line-height: 1.4;
 }
 span.formula {
 	white-space: nowrap;
@@ -70,6 +75,7 @@ span.overline, span.bar {
 	vertical-align: middle;
 	text-align: center;
 }
+span.formula .fraction,
 .fraction .fraction {
 	font-size: 80%;
 	line-height: 100%;
@@ -83,7 +89,7 @@ span.denominator {
 	border-top: thin solid;
 }
 sub, sup {
-	font-size: 70%;
+	font-size: 80%;
 }
 sup.numerator, sup.unit {
 	vertical-align: 80%;
@@ -104,12 +110,15 @@ span.radical {
 	display: inline-block;
 	padding: 0ex;
 	font-size: 150%;
+	line-height: 97%;
 	vertical-align: top;
+/* 	vertical-align: middle;	   */
 }
 span.root {
 	display: inline-block;
 	border-top: thin solid;
 	padding: 0ex;
+/* 	margin: 0.25em 0;    */
 	vertical-align: middle;
 }
 span.symbol {
