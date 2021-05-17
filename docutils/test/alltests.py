@@ -21,6 +21,7 @@ import sys
 import atexit
 import os
 import platform
+
 import DocutilsTestSupport              # must be imported before docutils
 import docutils
 
@@ -30,7 +31,10 @@ class Tee(object):
     """Write to a file and a stream (default: stdout) simultaneously."""
 
     def __init__(self, filename, stream=sys.__stdout__):
-        self.file = open(filename, 'w')
+        if sys.version_info >= (3, 0):
+            self.file = open(filename, 'w', errors='backslashreplace')
+        else:
+            self.file = open(filename, 'w')
         atexit.register(self.close)
         self.stream = stream
         self.encoding = getattr(stream, 'encoding', None)
@@ -42,13 +46,11 @@ class Tee(object):
     def write(self, string):
         try:
             self.stream.write(string)
-            if self.file:
-                self.file.write(string)
-        except UnicodeEncodeError:   # Py3k writing to "ascii" stream/file
-            string = string.encode('raw_unicode_escape').decode('ascii')
-            self.stream.write(string)
-            if self.file:
-                self.file.write(string)
+        except UnicodeEncodeError:
+            bstring = string.encode(self.encoding, errors='backslashreplace')
+            self.stream.write(bstring.decode())
+        if self.file:
+            self.file.write(string)
 
     def flush(self):
         self.stream.flush()
