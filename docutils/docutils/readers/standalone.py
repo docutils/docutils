@@ -23,7 +23,7 @@ class Reader(readers.Reader):
     """A single document tree."""
 
     settings_spec = (
-        'Standalone Reader',
+        'Standalone Reader Options',
         None,
         (('Disable the promotion of a lone top-level section title to '
           'document title (and subsequent section title to document '

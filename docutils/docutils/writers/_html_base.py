@@ -34,7 +34,7 @@ except ImportError:
         PIL = None
 
 import docutils
-from docutils import nodes, utils, writers, languages, io
+from docutils import frontend, languages, nodes, utils, writers
 from docutils.utils.error_reporting import SafeString
 from docutils.transforms import writer_aux
 from docutils.utils.math import (unichar2tex, pick_math_environment,
@@ -54,16 +54,99 @@ class Writer(writers.Writer):
     supported = ('html', 'xhtml') # update in subclass
     """Formats this writer supports."""
 
-    # default_stylesheets = [] # set in subclass!
-    # default_stylesheet_dirs = ['.'] # set in subclass!
-    default_template = 'template.txt'
-    # default_template_path = ... # set in subclass!
-    # settings_spec = ... # set in subclass!
+    settings_spec = ('HTML Writer Options', None, (
+         ('Specify the template file (UTF-8 encoded). '
+          '(default: writer dependent)',
+          ['--template'],
+          {'metavar': '<file>'}),
+         ('Comma separated list of stylesheet URLs. '
+          'Overrides previous --stylesheet and --stylesheet-path settings.',
+          ['--stylesheet'],
+          {'metavar': '<URL[,URL,...]>', 'overrides': 'stylesheet_path',
+           'validator': frontend.validate_comma_separated_list}),
+         ('Comma separated list of stylesheet paths. '
+          'Relative paths are expanded if a matching file is found in '
+          'the --stylesheet-dirs. With --link-stylesheet, '
+          'the path is rewritten relative to the output HTML file. '
+          '(default: writer dependent)',
+          ['--stylesheet-path'],
+          {'metavar': '<file[,file,...]>', 'overrides': 'stylesheet',
+           'validator': frontend.validate_comma_separated_list}),
+         ('Comma-separated list of directories where stylesheets are found. '
+          'Used by --stylesheet-path when expanding relative path arguments. '
+          '(default: writer dependent)',
+          ['--stylesheet-dirs'],
+          {'metavar': '<dir[,dir,...]>',
+           'validator': frontend.validate_comma_separated_list}),
+         ('Embed the stylesheet(s) in the output HTML file.  The stylesheet '
+          'files must be accessible during processing. (default)',
+          ['--embed-stylesheet'],
+          {'default': 1, 'action': 'store_true',
+           'validator': frontend.validate_boolean}),
+         ('Link to the stylesheet(s) in the output HTML file. ',
+          ['--link-stylesheet'],
+          {'dest': 'embed_stylesheet', 'action': 'store_false'}),
+         ('Specify the initial header level. '
+          'Does not affect document title & subtitle (see --no-doc-title).'
+          '(default: writer dependent).',
+          ['--initial-header-level'],
+          {'choices': '1 2 3 4 5 6'.split(), 'default': '2',
+           'metavar': '<level>'}),
+         ('Format for footnote references: one of "superscript" or '
+          '"brackets". (default: "brackets")',
+          ['--footnote-references'],
+          {'choices': ['superscript', 'brackets'], 'default': 'brackets',
+           'metavar': '<format>',
+           'overrides': 'trim_footnote_reference_space'}),
+         ('Format for block quote attributions: '
+          'one of "dash" (em-dash prefix), "parentheses"/"parens", or "none". '
+          '(default: "dash")',
+          ['--attribution'],
+          {'choices': ['dash', 'parentheses', 'parens', 'none'],
+           'default': 'dash', 'metavar': '<format>'}),
+         ('Remove extra vertical whitespace between items of "simple" bullet '
+          'lists and enumerated lists. (default)',
+          ['--compact-lists'],
+          {'default': True, 'action': 'store_true',
+           'validator': frontend.validate_boolean}),
+         ('Disable compact simple bullet and enumerated lists.',
+          ['--no-compact-lists'],
+          {'dest': 'compact_lists', 'action': 'store_false'}),
+         ('Remove extra vertical whitespace between items of simple field '
+          'lists. (default)',
+          ['--compact-field-lists'],
+          {'default': True, 'action': 'store_true',
+           'validator': frontend.validate_boolean}),
+         ('Disable compact simple field lists.',
+          ['--no-compact-field-lists'],
+          {'dest': 'compact_field_lists', 'action': 'store_false'}),
+         ('Added to standard table classes. '
+          'Defined styles: borderless, booktabs, '
+          'align-left, align-center, align-right, colwidths-auto. ',
+          ['--table-style'],
+          {'default': ''}),
+         ('Math output format (one of "MathML", "HTML", "MathJax", '
+          'or "LaTeX") and option(s). '
+          '(default: "HTML math.css")',
+          ['--math-output'],
+          {'default': 'HTML math.css'}),
+         ('Prepend an XML declaration. ',
+          ['--xml-declaration'],
+          {'default': False, 'action': 'store_true',
+           'validator': frontend.validate_boolean}),
+         ('Omit the XML declaration.',
+          ['--no-xml-declaration'],
+          {'dest': 'xml_declaration', 'action': 'store_false'}),
+         ('Obfuscate email addresses to confuse harvesters while still '
+          'keeping email links usable with standards-compliant browsers.',
+          ['--cloak-email-addresses'],
+          {'action': 'store_true', 'validator': frontend.validate_boolean}),
+        ))
 
     settings_defaults = {'output_encoding_error_handler': 'xmlcharrefreplace'}
 
-    # config_section = ... # set in subclass!
-    config_section_dependencies = ('writers', 'html writers')
+    config_section = 'html writers'
+    config_section_dependencies = ('writers', )
 
     visitor_attributes = (
         'head_prefix', 'head', 'stylesheet', 'body_prefix',
@@ -308,8 +391,8 @@ class HTMLTranslator(nodes.NodeVisitor):
         """Return code to reference or embed stylesheet file `path`"""
         if self.settings.embed_stylesheet:
             try:
-                content = io.FileInput(source_path=path,
-                                       encoding='utf-8').read()
+                content = docutils.io.FileInput(source_path=path,
+                                                encoding='utf-8').read()
                 self.settings.record_dependencies.add(path)
             except IOError as err:
                 msg = u"Cannot embed stylesheet '%r': %s." % (
