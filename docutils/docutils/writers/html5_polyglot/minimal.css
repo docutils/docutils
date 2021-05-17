@@ -101,6 +101,13 @@ dt .classifier:before {
 }
 /* Field Lists and similar */
 /* bold field name, content starts on the same line */
+dl.field-list,
+dl.option-list,
+dl.docinfo,
+dl.footnote,
+dl.citation {
+  display: flow-root;
+}
 dl.field-list > dt,
 dl.option-list > dt,
 dl.docinfo > dt,
@@ -111,13 +118,19 @@ dl.citation > dt {
   float: left;
   margin: 0;
   padding: 0;
-  padding-right: 0.5em;
+  padding-right: 0.2em;
 }
 /* Offset for field content (corresponds to the --field-name-limit option) */
 dl.field-list > dd,
 dl.option-list > dd,
 dl.docinfo > dd {
   margin-left:  9em; /* ca. 14 chars in the test examples, fit all Docinfo fields */
+}
+/* start nested lists on new line */
+dd > dl:first-child,
+dd > ul:first-child,
+dd > ol:first-child {
+  clear: left;
 }
 /* start field-body on a new line after long field names */
 dl.field-list > dd > *:first-child,
@@ -145,8 +158,8 @@ dl.option-list > dt { font-weight: normal; }
 span.option { white-space: nowrap; }
 
 /* Footnotes and Citations  */
-dl.footnote.superscript > dd { margin-left: 1em; }
-dl.footnote.brackets > dd { margin-left: 2em; }
+dl.footnote.superscript > dd { margin-left: 0.7em; }
+dl.footnote.brackets > dd { margin-left: 1.6em; }
 dl.footnote > dt { font-weight: normal; }
 a.footnote-reference.brackets:before,
 dt.label > span.brackets:before { content: "["; }
@@ -169,7 +182,6 @@ dt.label > span.fn-backref > a { font-style: italic; }
   margin-right: auto;
 }
 .align-center {
-  clear: both;
   text-align: center;
   margin-left: auto;
   margin-right: auto;
