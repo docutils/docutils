@@ -42,16 +42,16 @@ parser = argparse.ArgumentParser(add_help=False,
                 formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
 parser.add_argument('--reader', choices=('standalone', 'pep'),
-                    help=u'Reader name.',
+                    help=u'reader name',
                     default='standalone')
 parser.add_argument('--parser', choices=('markdown', 'rst'),
-                    help=u'Parser name.',
+                    help=u'parser name',
                     default='rst')
 parser.add_argument('--writer', 
                     # choices=('html', 'html4', 'html5', 'latex', 'xelatex',
                     #          'odt', 'xml', 'pseudoxml', 'manpage',
                     #          'pep_html', 's5_html'),
-                    help=u'Writer name.',
+                    help=u'writer name',
                     default='html5')
 
 (args, remainder) = parser.parse_known_args()
