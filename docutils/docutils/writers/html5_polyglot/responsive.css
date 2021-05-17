@@ -247,6 +247,16 @@ div.system-message > p > span.literal {
 }
 
 /* Literal and Code */
+pre.literal-block, pre.doctest{
+  padding: 0.2em;
+}
+.literal-block, .doctest, span.literal {
+  background-color: #f6f9f8;
+}
+.system-message span.literal {
+  background-color: inherit;
+}
+
 /* basic highlighting: for a complete scheme, see */
 /* http://docutils.sourceforge.net/sandbox/stylesheets/ */
 pre.code .comment, code .comment { color: #5C6576 }
