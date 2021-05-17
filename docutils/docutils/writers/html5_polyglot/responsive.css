@@ -148,24 +148,27 @@ dl.field-list.run-in > dd p {
   display: block;
 }
 /* "description style" like in most dictionaries, encyclopedias etc. */
+dl.description {
+  display: flow-root;
+}
 dl.description > dt {
   clear: left;
   float: left;
   margin: 0;
   padding: 0;
-  padding-right: 0.5em;
+  padding-right: 0.3em;
   font-weight: bold;
 }
 dl.description > dd:after {
-  display: block;
+  display: table;
   content: "";
-  clear: both;
+  clear: left; /* clearfix for empty descriptions */
 }
 /* start lists nested in description/field lists on new line */
 dd > dl:first-child,
 dd > ul:first-child,
 dd > ol:first-child {
-    clear: left;
+  clear: left;
 }
 
 /* Footnotes and Citations */

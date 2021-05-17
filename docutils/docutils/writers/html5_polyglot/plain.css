@@ -55,7 +55,7 @@ hr.docutils {
 /* Paragraphs */
 
 /* vertical space (parskip) */
-p, ol, ul, dl, li, dd,
+p, ol, ul, dl, li,
 div.line-block,
 div.topic,
 table {
@@ -66,8 +66,7 @@ p:first-child { margin-top: 0; }
 /* (:last-child is new in CSS 3) */
 p:last-child  { margin-bottom: 0; }
 
-h1, h2, h3, h4, h5, h6,
-dl > dd {
+h1, h2, h3, h4, h5, h6, dd {
   margin-bottom: 0.5em;
 }
 
@@ -76,18 +75,25 @@ dl > dd {
 
 /* Definition Lists */
 /* Indent lists nested in definition lists */
-/* (:only-child is new in CSS 3)           */
 dd > ul:only-child, dd > ol:only-child { padding-left: 1em; }
 
 /* Description Lists */
 /* styled like in most dictionaries, encyclopedias etc. */
+dl.description {
+  display: flow-root;
+}
 dl.description > dt {
   font-weight: bold;
   clear: left;
   float: left;
   margin: 0;
   padding: 0;
-  padding-right: 0.5em;
+  padding-right: 0.3em;
+}
+dl.description > dd:after {
+  display: table;
+  content: "";
+  clear: left; /* clearfix for empty descriptions */
 }
 
 /* Field Lists */
