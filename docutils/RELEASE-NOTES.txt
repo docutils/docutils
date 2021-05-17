@@ -61,7 +61,7 @@ Future changes
 * Remove ``utils.unique_combinations``
   (obsoleted by ``itertools.combinations``).
 
-* Eventually remove the "rawsource" attribute and argument from nodes.Text:
+* Remove the "rawsource" attribute and argument from nodes.Text:
   we store the null-escaped text in Text nodes since 0.16 so there is no
   additional information in the rawsource.
 
@@ -102,8 +102,6 @@ Future changes
 
 Release 0.17.1 (2021-04-16)
 ===========================
-
-(Release 0.17.1b.dev)
 
 * Bug fixes (for details see the Docutils `HISTORY`_).
 
