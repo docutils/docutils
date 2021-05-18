@@ -143,7 +143,7 @@ class S5HTMLTranslator(html4css1.HTMLTranslator):
     """Names of theme files directly linked to in the output HTML"""
 
     indirect_theme_files = (
-        's5-core.css', 'framing.css', 'pretty.css', 'blank.gif', 'iepngfix.htc')
+        's5-core.css', 'framing.css', 'pretty.css')
     """Names of files used indirectly; imported or used by files in
     `direct_theme_files`."""
 

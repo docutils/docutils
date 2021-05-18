@@ -38,9 +38,6 @@ Future changes
 
 * `htm4css1` writer: Support the embed_images_ option.
 
-* `s5_html` writer: Remove the IE PNG Fix by Angus Turnbull. IE has
-  native PNG support since version 7.
-
 * Make <meta> a standard Docutils doctree node.
 
   The `meta directive`__ will insert <meta> instead of pending nodes.
@@ -100,6 +97,8 @@ Release 0.18.dev
 ================
 
 * Config setting `legacy_class_functions`_: default changed to "False".
+  
+* `s5_html` writer: Removed ``iepngfix.htc`` (workaround for IE 6).
   
 
 Release 0.17.1 (2021-04-16)
