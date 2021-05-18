@@ -216,7 +216,7 @@ class Writer(writers.Writer):
          ('Use legacy functions with class value list for '
           '\\DUtitle and \\DUadmonition (current default). ',
           ['--legacy-class-functions'],
-          {'default': True,
+          {'default': False,
            'action': 'store_true',
            'validator': frontend.validate_boolean}),
          ('Use \\DUrole and "DUclass" wrappers for class values. '

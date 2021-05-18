@@ -41,20 +41,24 @@
   \ifthenelse{\isundefined{#1}}{\newlength{#1}\setlength{#1}{#2}}{}
 }
 
-% abstract title
-\providecommand*{\DUtitleabstract}[1]{\centerline{\textbf{#1}}}
-
-% admonition (specially marked topic)
-\providecommand{\DUadmonition}[2][class-arg]{%
-  % try \DUadmonition#1{#2}:
-  \ifcsname DUadmonition#1\endcsname%
-    \csname DUadmonition#1\endcsname{#2}%
-  \else
-    \begin{center}
-      \fbox{\parbox{0.9\linewidth}{#2}}
-    \end{center}
-  \fi
+\providecommand*{\DUCLASSabstract}{
+  \renewcommand{\DUtitle}[1]{\centerline{\textbf{##1}}}
 }
+
+% admonition environment (specially marked topic)
+\ifx\DUadmonition\undefined % poor man's "provideenvironment"
+ \newbox{\DUadmonitionbox}
+ \newenvironment{DUadmonition}%
+  {\begin{center}
+     \begin{lrbox}{\DUadmonitionbox}
+       \begin{minipage}{0.9\linewidth}
+  }%
+  {    \end{minipage}
+     \end{lrbox}
+     \fbox{\usebox{\DUadmonitionbox}}
+   \end{center}
+  }
+\fi
 
 % width of docinfo table
 \DUprovidelength{\DUdocinfowidth}{0.9\linewidth}
@@ -123,14 +127,8 @@
 \providecommand*{\DUrubric}[1]{\subsubsection*{\emph{#1}}}
 
 % title for topics, admonitions, unsupported section levels, and sidebar
-\providecommand*{\DUtitle}[2][class-arg]{%
-  % call \DUtitle#1{#2} if it exists:
-  \ifcsname DUtitle#1\endcsname%
-    \csname DUtitle#1\endcsname{#2}%
-  \else
-    \smallskip\noindent\textbf{#2}\smallskip%
-  \fi
-}
+\providecommand*{\DUtitle}[1]{%
+  \smallskip\noindent\textbf{#1}\smallskip}
 
 % titlereference standard role
 \providecommand*{\DUroletitlereference}[1]{\textsl{#1}}
@@ -177,7 +175,7 @@ Example, EX  Canada } \\
 
 \begin{DUclass}{abstract}
 \begin{quote}
-\DUtitle[abstract]{Abstract}
+\DUtitle{Abstract}
 
 Test that \texttt{\textbackslash{}leavevmode} is inserted after the term or field-name
 when required for correct placement of the item.
@@ -305,15 +303,17 @@ so that all lines start with the same indent.
 \DUrubric{A Rubric}
 
 \item[{Admonition}] \leavevmode
-\DUadmonition[note]{
-\DUtitle[note]{Note}
+\begin{DUclass}{note}
+\begin{DUadmonition}
+\DUtitle{Note}
 
 Admonitions need to be preceded by \texttt{\textbackslash{}leavevmode}.
 Otherwise, the term ends up centered above the admonition box.
 
 So do \emph{System Messages}, as they use the “DUadmonition”
 LaTeX environment.
-}
+\end{DUadmonition}
+\end{DUclass}
 
 \end{description}
 
