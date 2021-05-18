@@ -27,6 +27,10 @@ Changes Since 0.17.1
   - Don't use <tt> element (deprecated in HTML5).
   - Support commands ``\Bbbk`` and ``operatorname``.
 
+* docutils/utils/__init__.py
+
+  - Removed ``unique_combinations`` (obsoleted by ``itertools.combinations``).
+
 * docutils/writers/latex2e/__init__.py
 
   - The setting `legacy_class_functions`_ now defaults to "False". 

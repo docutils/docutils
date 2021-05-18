@@ -655,13 +655,6 @@ def uniq(L):
              r.append(item)
      return r
 
-def unique_combinations(items, n):
-    """Return `itertools.combinations`."""
-    warnings.warn('docutils.utils.unique_combinations is deprecated; '
-                  'use itertools.combinations directly.',
-                      DeprecationWarning, stacklevel=2)
-    return itertools.combinations(items, n)
-
 def normalize_language_tag(tag):
     """Return a list of normalized combinations for a `BCP 47` language tag.
 
