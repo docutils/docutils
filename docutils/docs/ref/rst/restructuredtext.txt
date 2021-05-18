@@ -905,11 +905,16 @@ Doctree elements: docinfo_, address_, author_, authors_, contact_,
 copyright_, date_, organization_, revision_, status_, topic_,
 version_.
 
-When a field list is the first non-comment element in a document
-(after the document title, if there is one), it may have its fields
+When a field list is the first element in a document
+(after the document title, if there is one) [#]_, it may have its fields
 transformed to document bibliographic data.  This bibliographic data
 corresponds to the front matter of a book, such as the title page and
 copyright page.
+
+.. [#] In additon to the document title and subtitle, also comments_,
+   `substitution definitions`_, `hyperlink targets`_, and "header",
+   "footer", "meta", and "raw" directives_ may be placed before the
+   bibliographic fields.
 
 Certain registered field names (listed below) are recognized and
 transformed to the corresponding doctree elements, most becoming child
@@ -975,15 +980,16 @@ RCS Keywords
 
 `Bibliographic fields`_ recognized by the parser are normally checked
 for RCS [#]_ keywords and cleaned up [#]_.  RCS keywords may be
-entered into source files as "$keyword$", and once stored under RCS or
-CVS [#]_, they are expanded to "$keyword: expansion text $".  For
-example, a "Status" field will be transformed to a "status" element::
+entered into source files as "$keyword$", and once stored under RCS,
+CVS [#]_, or SVN [#]_, they are expanded to "$keyword: expansion text $".
+For example, a "Status" field will be transformed to a "status" element::
 
     :Status: $keyword: expansion text $
 
 .. [#] Revision Control System.
 .. [#] RCS keyword processing can be turned off (unimplemented).
 .. [#] Concurrent Versions System.  CVS uses the same keywords as RCS.
+.. [#] Subversion Versions System. Uses the same keywords as RCS.
 
 Processed, the "status" element's text will become simply "expansion
 text".  The dollar sign delimiters and leading RCS keyword name are
