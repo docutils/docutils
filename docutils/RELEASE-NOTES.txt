@@ -49,9 +49,6 @@ Future changes
 
   __ docs/ref/rst/directives.html#meta
 
-* Remove ``utils.unique_combinations``
-  (obsoleted by ``itertools.combinations``).
-
 * Remove the "rawsource" attribute and argument from nodes.Text:
   we store the null-escaped text in Text nodes since 0.16 so there is no
   additional information in the rawsource.
@@ -101,6 +98,9 @@ Release 0.18.dev
   - ``iepngfix.htc`` and ``blank.gif`` (IE 6 workaround for `s5_html`).
 
 * ``nodes.Node.traverse()`` returns an iterator instead of a list.
+
+* Removed ``utils.unique_combinations`` 
+  (obsoleted by ``itertools.combinations``).
   
 
 Release 0.17.1 (2021-04-16)
