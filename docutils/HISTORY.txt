@@ -36,6 +36,11 @@ Changes Since 0.17.1
 
   - Fix option "detailled" under Python 2.7.
 
+* docutils/writers/s5_html/themes/default
+
+  - Remove IE 6 compatibility workarounds ``iepngfix.htc`` and
+    ``blank.gif`` (fixes bug #169).
+
 Release 0.17.1 (2021-04-16)
 ===========================
 

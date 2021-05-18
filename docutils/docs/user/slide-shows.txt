@@ -645,12 +645,6 @@ stylesheets, JavaScript, and graphics:
      code also manages the fallback to Opera Show if you're using
      the Opera web browser.
 
-     Two files are included to support PNG transparency (alpha
-     channels) in Internet Explorer:
-
-     - iepngfix.htc
-     - blank.gif
-
 
 Making a Custom Theme
 =====================
