@@ -8,10 +8,15 @@
 Transforms needed by most or all documents:
 
 - `Decorations`: Generate a document's header & footer.
-- `Messages`: Placement of system messages stored in
-  `nodes.document.transform_messages`.
+- `ExposeInternals`: Expose internal attributes.
+- `Messages`: Placement of system messages generated after parsing.
+- `FilterMessages`: Remove system messages below verbosity threshold.
 - `TestMessages`: Like `Messages`, used on test runs.
-- `FinalReferences`: Resolve remaining references.
+- `StripComments`: Remove comment elements from the document tree.
+- `StripClassesAndElements`: Remove elements with classes
+  in `self.document.settings.strip_elements_with_classes`
+  and class values in `self.document.settings.strip_classes`.
+- `SmartQuotes`: Replace ASCII quotation marks with typographic form.
 """
 
 __docformat__ = 'reStructuredText'
