@@ -49,8 +49,6 @@ Future changes
 
   __ docs/ref/rst/directives.html#meta
 
-* ``Node.traverse()`` will return an iterator instead of a list.
-
 * Remove ``utils.unique_combinations``
   (obsoleted by ``itertools.combinations``).
 
@@ -98,7 +96,11 @@ Release 0.18.dev
 
 * Config setting `legacy_class_functions`_: default changed to "False".
   
-* `s5_html` writer: Removed ``iepngfix.htc`` (workaround for IE 6).
+* Removed files:
+  
+  - ``iepngfix.htc`` and ``blank.gif`` (IE 6 workaround for `s5_html`).
+
+* ``nodes.Node.traverse()`` returns an iterator instead of a list.
   
 
 Release 0.17.1 (2021-04-16)

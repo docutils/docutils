@@ -281,10 +281,10 @@ class SectionSubTitle(TitlePromoter):
     def apply(self):
         if not self.document.settings.setdefault('sectsubtitle_xform', True):
             return
-        for section in self.document._traverse(nodes.section):
+        for section in self.document.traverse(nodes.section):
             # On our way through the node tree, we are modifying it
             # but only the not-yet-visited part, so that the iterator
-            # returned by _traverse() is not corrupted.
+            # returned by traverse() is not corrupted.
             self.promote_subtitle(section)
 
 

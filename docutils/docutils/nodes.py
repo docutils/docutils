@@ -34,33 +34,6 @@ if sys.version_info >= (3, 0):
     unicode = str  # noqa
     basestring = str  # noqa
 
-class _traversal_list(list):
-    # auxiliary class to report a FutureWarning
-    done = False
-    def _warning_decorator(fun):
-        msg = ("\n   The iterable returned by Node.traverse()"
-               "\n   will become an iterator instead of a list in "
-               "Docutils > 0.16.")
-        def wrapper(self, *args, **kwargs):
-            if not self.done:
-                warnings.warn(msg, FutureWarning, stacklevel=2)
-            self.done = True
-            return fun(self, *args, **kwargs)
-        return wrapper
-
-    __add__ = _warning_decorator(list.__add__)
-    __contains__ = _warning_decorator(list.__contains__)
-    __getitem__ = _warning_decorator(list.__getitem__)
-    __reversed__ = _warning_decorator(list.__reversed__)
-    __setitem__ = _warning_decorator(list.__setitem__)
-    append = _warning_decorator(list.append)
-    count = _warning_decorator(list.count)
-    extend = _warning_decorator(list.extend)
-    index = _warning_decorator(list.index)
-    insert = _warning_decorator(list.insert)
-    pop = _warning_decorator(list.pop)
-    reverse = _warning_decorator(list.reverse)
-
 
 # ==============================
 #  Functional Node Base Classes
@@ -258,7 +231,7 @@ class Node(object):
     def traverse(self, condition=None, include_self=True, descend=True,
                  siblings=False, ascend=False):
         """
-        Return an iterable containing
+        Return an iterator yielding
 
         * self (if include_self is true)
         * all descendants in tree traversal order (if descend is true)
@@ -267,7 +240,7 @@ class Node(object):
         * the siblings of the parent (if ascend is true) and their
           descendants (if also descend is true), and so on
 
-        If `condition` is not None, the iterable contains only nodes
+        If `condition` is not None, the iterator yields only nodes
         for which ``condition(node)`` is true.  If `condition` is a
         node class ``cls``, it is equivalent to a function consisting
         of ``return isinstance(node, cls)``.
@@ -292,16 +265,7 @@ class Node(object):
 
             [<strong>, <#text: Foo>, <#text: Bar>, <reference>, <#text: Baz>]
         """
-        # Although the documented API only promises an "iterable" as return
-        # value, the implementation returned a list up to v. 0.15. Some 3rd
-        # party code still relies on this (e.g. Sphinx as of 2019-09-07).
-        # Therefore, let's return a list until this is sorted out:
-        return _traversal_list(self._traverse(condition, include_self,
-                                   descend, siblings, ascend))
 
-    def _traverse(self, condition=None, include_self=True, descend=True,
-                  siblings=False, ascend=False):
-        """Return iterator over nodes following `self`. See `traverse()`."""
         if ascend:
             siblings=True
         # Check for special argument combinations that allow using an
@@ -327,7 +291,7 @@ class Node(object):
             yield self
         if descend and len(self.children):
             for child in self:
-                for subnode in child._traverse(condition=condition,
+                for subnode in child.traverse(condition=condition,
                                     include_self=True, descend=True,
                                     siblings=False, ascend=False):
                     yield subnode
@@ -336,7 +300,7 @@ class Node(object):
             while node.parent:
                 index = node.parent.index(node)
                 for sibling in node.parent[index+1:]:
-                    for subnode in sibling._traverse(condition=condition,
+                    for subnode in sibling.traverse(condition=condition,
                                         include_self=True, descend=descend,
                                         siblings=False, ascend=False):
                         yield subnode
@@ -348,13 +312,13 @@ class Node(object):
     def next_node(self, condition=None, include_self=False, descend=True,
                   siblings=False, ascend=False):
         """
-        Return the first node in the iterable returned by traverse(),
+        Return the first node in the iterator returned by traverse(),
         or None if the iterable is empty.
 
         Parameter list is the same as of traverse.  Note that
         include_self defaults to False, though.
         """
-        node_iterator = self._traverse(condition, include_self,
+        node_iterator = self.traverse(condition, include_self,
                                       descend, siblings, ascend)
         try:
             return next(node_iterator)
