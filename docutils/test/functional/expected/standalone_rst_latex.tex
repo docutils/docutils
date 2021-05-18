@@ -52,20 +52,24 @@
   \ifthenelse{\isundefined{#1}}{\newlength{#1}\setlength{#1}{#2}}{}
 }
 
-% abstract title
-\providecommand*{\DUtitleabstract}[1]{\centerline{\textbf{#1}}}
-
-% admonition (specially marked topic)
-\providecommand{\DUadmonition}[2][class-arg]{%
-  % try \DUadmonition#1{#2}:
-  \ifcsname DUadmonition#1\endcsname%
-    \csname DUadmonition#1\endcsname{#2}%
-  \else
-    \begin{center}
-      \fbox{\parbox{0.9\linewidth}{#2}}
-    \end{center}
-  \fi
+\providecommand*{\DUCLASSabstract}{
+  \renewcommand{\DUtitle}[1]{\centerline{\textbf{##1}}}
 }
+
+% admonition environment (specially marked topic)
+\ifx\DUadmonition\undefined % poor man's "provideenvironment"
+ \newbox{\DUadmonitionbox}
+ \newenvironment{DUadmonition}%
+  {\begin{center}
+     \begin{lrbox}{\DUadmonitionbox}
+       \begin{minipage}{0.9\linewidth}
+  }%
+  {    \end{minipage}
+     \end{lrbox}
+     \fbox{\usebox{\DUadmonitionbox}}
+   \end{center}
+  }
+\fi
 
 % special topic for dedications
 \providecommand*{\DUCLASSdedication}{%
@@ -79,8 +83,7 @@
 \providecommand*{\DUdocumentsubtitle}[1]{{\large #1}}
 \newcounter{enumv}
 
-% error admonition title
-\providecommand*{\DUtitleerror}[1]{\DUtitle{\color{red}#1}}
+\providecommand*{\DUCLASSerror}{\color{red}}
 
 % field list environment (for separate configuration of `field lists`)
 \ifthenelse{\isundefined{\DUfieldlist}}{
@@ -161,14 +164,8 @@
 \providecommand*{\DUsubtitle}[1]{\par\emph{#1}\smallskip}
 
 % title for topics, admonitions, unsupported section levels, and sidebar
-\providecommand*{\DUtitle}[2][class-arg]{%
-  % call \DUtitle#1{#2} if it exists:
-  \ifcsname DUtitle#1\endcsname%
-    \csname DUtitle#1\endcsname{#2}%
-  \else
-    \smallskip\noindent\textbf{#2}\smallskip%
-  \fi
-}
+\providecommand*{\DUtitle}[1]{%
+  \smallskip\noindent\textbf{#1}\smallskip}
 
 % titlereference standard role
 \providecommand*{\DUroletitlereference}[1]{\textsl{#1}}
@@ -254,7 +251,7 @@ Like this.
 
 \begin{DUclass}{dedication}
 \begin{quote}
-\DUtitle[dedication]{Dedication}
+\DUtitle{Dedication}
 
 For Docutils users \& co-developers.
 \end{quote}
@@ -262,7 +259,7 @@ For Docutils users \& co-developers.
 
 \begin{DUclass}{abstract}
 \begin{quote}
-\DUtitle[abstract]{Abstract}
+\DUtitle{Abstract}
 
 This is a test document, containing at least one example of each
 reStructuredText construct.
@@ -1119,38 +1116,49 @@ True & True & True \\
   \label{admonitions}%
 }
 
-\DUadmonition[attention]{
-\DUtitle[attention]{Attention!}
+\begin{DUclass}{attention}
+\begin{DUadmonition}
+\DUtitle{Attention!}
 
 Directives at large.
-}
+\end{DUadmonition}
+\end{DUclass}
 
-\DUadmonition[caution]{
-\DUtitle[caution]{Caution!}
+\begin{DUclass}{caution}
+\begin{DUadmonition}
+\DUtitle{Caution!}
 
 Don’t take any wooden nickels.
-}
+\end{DUadmonition}
+\end{DUclass}
 
-\DUadmonition[danger]{
-\DUtitle[danger]{!DANGER!}
+\begin{DUclass}{danger}
+\begin{DUadmonition}
+\DUtitle{!DANGER!}
 
 Mad scientist at work!
-}
+\end{DUadmonition}
+\end{DUclass}
 
-\DUadmonition[error]{
-\DUtitle[error]{Error}
+\begin{DUclass}{error}
+\begin{DUadmonition}
+\DUtitle{Error}
 
 Does not compute.
-}
+\end{DUadmonition}
+\end{DUclass}
 
-\DUadmonition[hint]{
-\DUtitle[hint]{Hint}
+\begin{DUclass}{hint}
+\begin{DUadmonition}
+\DUtitle{Hint}
 
 It’s bigger than a bread box.
-}
+\end{DUadmonition}
+\end{DUclass}
 
-\DUadmonition[important]{
-\DUtitle[important]{Important}
+\begin{DUclass}{important}
+\begin{DUadmonition}
+\DUtitle{Important}
 
 \begin{itemize}
 \item Wash behind your ears.
@@ -1161,32 +1169,41 @@ It’s bigger than a bread box.
 
 \item Back up your data.
 \end{itemize}
-}
+\end{DUadmonition}
+\end{DUclass}
 
-\DUadmonition[note]{
-\DUtitle[note]{Note}
+\begin{DUclass}{note}
+\begin{DUadmonition}
+\DUtitle{Note}
 
 This is a note.
-}
+\end{DUadmonition}
+\end{DUclass}
 
-\DUadmonition[tip]{
-\DUtitle[tip]{Tip}
+\begin{DUclass}{tip}
+\begin{DUadmonition}
+\DUtitle{Tip}
 
 15\% if the service is good.
-}
+\end{DUadmonition}
+\end{DUclass}
 
-\DUadmonition[warning]{
-\DUtitle[warning]{Warning}
+\begin{DUclass}{warning}
+\begin{DUadmonition}
+\DUtitle{Warning}
 
 Strong prose may provoke extreme mental exertion.
 Reader discretion is strongly advised.
-}
+\end{DUadmonition}
+\end{DUclass}
 
-\DUadmonition[admonition-and-by-the-way]{
-\DUtitle[admonition-and-by-the-way]{And, by the way…}
+\begin{DUclass}{admonition-and-by-the-way}
+\begin{DUadmonition}
+\DUtitle{And, by the way…}
 
 You can make up your own admonition too.
-}
+\end{DUadmonition}
+\end{DUclass}
 
 
 \subsubsection{2.14.5   Topics, Sidebars, and Rubrics%
@@ -1196,7 +1213,7 @@ You can make up your own admonition too.
 \emph{Sidebars} are like miniature, parallel documents.
 
 \DUsidebar{
-\DUtitle[sidebar]{Optional Sidebar Title}
+\DUtitle{Optional Sidebar Title}
 
 \DUsubtitle{Optional Subtitle}
 
@@ -1214,7 +1231,7 @@ with no subsections.
 
 \begin{DUclass}{topic}
 \begin{quote}
-\DUtitle[topic]{Topic Title}
+\DUtitle{Topic Title}
 
 This is a topic.
 \end{quote}
@@ -1396,12 +1413,13 @@ a paragraph,
 a paragraph followed by a comment,
 % this is a comment
 a paragraph, a
-
-\DUadmonition[note]{
-\DUtitle[note]{Note}
+\begin{DUclass}{note}
+\begin{DUadmonition}
+\DUtitle{Note}
 
 with content
-}
+\end{DUadmonition}
+\end{DUclass}
 and the final paragraph of the compound 7.
 \end{DUclass}
 
@@ -2769,8 +2787,9 @@ Handling by the LaTeX writer:
 \item[] \href{A:DOS\\path\\}{file with DOS path}\DUfootnotemark{footnote-reference-20}{footnote-12}{11} \url{A:DOS\\path\\}\DUfootnotemark{footnote-reference-21}{footnote-12}{11}
 \end{DUlineblock}
 
-\DUadmonition[note]{
-\DUtitle[note]{Note}
+\begin{DUclass}{note}
+\begin{DUadmonition}
+\DUtitle{Note}
 
 These URLs are typeset inside a LaTeX command without error.
 
@@ -2779,7 +2798,8 @@ These URLs are typeset inside a LaTeX command without error.
 \item[] \url{http://example.org/Schema\%dev}
 \item[] \url{A:DOS\\path\\}\DUfootnotemark{footnote-reference-22}{footnote-12}{11}
 \end{DUlineblock}
-}
+\end{DUadmonition}
+\end{DUclass}
 \end{itemize}
 
 \begin{itemize}
@@ -2851,9 +2871,11 @@ reach at some level
 (depending on the document class)
 
 
-\DUtitle[sectionVI]{3.11.1.1.1.1   level 6%
+\begin{DUclass}{sectionVI}
+\DUtitle{3.11.1.1.1.1   level 6%
   \label{level-6}%
 }
+\end{DUclass}
 
 an unsupported level.
 
@@ -2878,54 +2900,64 @@ section, “Docutils System Messages”:
 \section[Docutils System Messages]{\color{red}Docutils System Messages%
 }
 
-\DUadmonition[system-message]{
-\DUtitle[system-message]{system-message
+\begin{DUclass}{system-message}
+\begin{DUadmonition}
+\DUtitle{system-message
 \raisebox{1em}{\hypertarget{system-message-1}{}}}
 
 {\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~99
 
 \hyperlink{problematic-1}{
 Undefined substitution referenced: \textquotedbl{}problematic\textquotedbl{}.
-}}
+}\end{DUadmonition}
+\end{DUclass}
 
-\DUadmonition[system-message]{
-\DUtitle[system-message]{system-message
+\begin{DUclass}{system-message}
+\begin{DUadmonition}
+\DUtitle{system-message
 \raisebox{1em}{\hypertarget{system-message-2}{}}}
 
 {\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~387
 
 \hyperlink{footnote-reference-8}{
 Unknown target name: \textquotedbl{}5\textquotedbl{}.
-}}
+}\end{DUadmonition}
+\end{DUclass}
 
-\DUadmonition[system-message]{
-\DUtitle[system-message]{system-message
+\begin{DUclass}{system-message}
+\begin{DUadmonition}
+\DUtitle{system-message
 \raisebox{1em}{\hypertarget{system-message-3}{}}}
 
 {\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~396
 
 \hyperlink{citation-reference-3}{
 Unknown target name: \textquotedbl{}nonexistent\textquotedbl{}.
-}}
+}\end{DUadmonition}
+\end{DUclass}
 
-\DUadmonition[system-message]{
-\DUtitle[system-message]{system-message
+\begin{DUclass}{system-message}
+\begin{DUadmonition}
+\DUtitle{system-message
 \raisebox{1em}{\hypertarget{system-message-4}{}}}
 
 {\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~423
 
 \hyperlink{problematic-2}{
 Unknown target name: \textquotedbl{}hyperlink reference without a target\textquotedbl{}.
-}}
+}\end{DUadmonition}
+\end{DUclass}
 
-\DUadmonition[system-message]{
-\DUtitle[system-message]{system-message
+\begin{DUclass}{system-message}
+\begin{DUadmonition}
+\DUtitle{system-message
 \raisebox{1em}{\hypertarget{system-message-5}{}}}
 
 {\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~436
 
 \hyperlink{problematic-3}{
 Duplicate target name, cannot be used as a unique reference: \textquotedbl{}duplicate target names\textquotedbl{}.
-}}
+}\end{DUadmonition}
+\end{DUclass}
 
 \end{document}

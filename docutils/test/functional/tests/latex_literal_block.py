@@ -9,5 +9,4 @@ writer_name = "latex"
 
 # Extra setting we need
 settings_overrides['syntax_highlight'] = 'none'
-settings_overrides['legacy_class_functions'] = False
 settings_overrides['stylesheet'] = 'docutils'

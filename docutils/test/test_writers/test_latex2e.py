@@ -189,18 +189,12 @@ head_template.substitute(dict(parts,
     requirements=parts['requirements'] + '\\setcounter{secnumdepth}{0}\n',
     fallbacks=r"""
 % title for topics, admonitions, unsupported section levels, and sidebar
-\providecommand*{\DUtitle}[2][class-arg]{%
-  % call \DUtitle#1{#2} if it exists:
-  \ifcsname DUtitle#1\endcsname%
-    \csname DUtitle#1\endcsname{#2}%
-  \else
-    \smallskip\noindent\textbf{#2}\smallskip%
-  \fi
-}
+\providecommand*{\DUtitle}[1]{%
+  \smallskip\noindent\textbf{#1}\smallskip}
 """)) + r"""
 \phantomsection\label{table-of-contents}
 \pdfbookmark[1]{Table of Contents}{table-of-contents}
-\DUtitle[contents]{Table of Contents}
+\DUtitle{Table of Contents}
 
 \begin{list}{}{}
 \item \hyperref[title-1]{Title 1}

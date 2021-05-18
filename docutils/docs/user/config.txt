@@ -1581,7 +1581,7 @@ comma-separated list of class values as optional argument. If `False`, class
 values are handled with wrappers and admonitions use the ``DUadmonition``
 environment. See `Generating LaTeX with Docutils`__ for details.
 
-Default: True (this will change to False in version 0.18).
+Default: False.
 Options: ``--legacy-class-functions``, ``--new-class-functions``.
 
 New in Docutils 0.17.

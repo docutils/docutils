@@ -20,10 +20,6 @@ For a more detailed list of changes, please see the Docutils `HISTORY`_.
 Future changes
 ==============
 
-* `latex` writer: The default for the configuration setting
-  `legacy_class_functions`_ will change to "False". Adapt stylesheets
-  modifying ``\DUadmonition`` and/or ``\DUtitle`` or set to "True".
-
 * `html5` writer:
 
   - Use semantic tags <aside> for footnote text, citations, for topics
@@ -99,6 +95,12 @@ Future changes
    docs/ref/rst/directives.html#identifier-normalization
 .. _html_writer: docs/user/config.html#html-writer
 
+
+Release 0.18.dev
+================
+
+* Config setting `legacy_class_functions`_: default changed to "False".
+  
 
 Release 0.17.1 (2021-04-16)
 ===========================

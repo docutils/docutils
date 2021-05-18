@@ -16,16 +16,25 @@
 Changes Since 0.17.1
 ====================
 
-* docutils/writers/pseudoxml.py:
-
-  - Fix option "detailled" under Python 2.7.
-  
 * docutils/tools/math/math2html, docutils/writers/html5_polyglot/math.css
 
   - Fix bug #244 Wrong subscript/superscript order with
     ``--math-output=HTML``.
   - Don't use <tt> element (deprecated in HTML5).
   - Support commands ``\Bbbk`` and ``operatorname``.
+
+* docutils/writers/latex2e/__init__.py
+
+  - The setting `legacy_class_functions`_ now defaults to "False". 
+    Adapt stylesheets modifying ``\DUadmonition`` and/or ``\DUtitle``.
+
+* docutils/writers/latex2e/docutils.sty
+    
+  - Fix excessive padding above sidebar titles.
+
+* docutils/writers/pseudoxml.py:
+
+  - Fix option "detailled" under Python 2.7.
 
 Release 0.17.1 (2021-04-16)
 ===========================
@@ -144,16 +153,16 @@ Release 0.17 (2021-04-03)
   - Add a `viewport meta tag`__ to fix rendering in mobile browsers.
 
     __ https://developer.mozilla.org/en-US/docs/Web/HTML/Viewport_meta_tag
-    
+
   - Use <video> for images with video MIME types supported by HTML5.
 
 * docutils/writers/html5_polyglot/minimal.css
 
   - Move non-essential styling to ``plain.css``.
     Small fixes and tweaks.
-    
+
   - Support "captionbelow" class value for tables.
-  
+
   - Display code line numbers as pseudo-elements which are skipped
     when copying text from code blocks. Solves feature request #32.
 

@@ -17,7 +17,7 @@
 
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{docutils}
-  [2020/08/28 macros for Docutils LaTeX output]
+  [2021/05/18 macros for Docutils LaTeX output]
 
 % Helpers
 % -------
@@ -196,7 +196,8 @@
 % title::
 
 % title for topics, admonitions, unsupported section levels, and sidebar
-\providecommand*{\DUtitle}[1]{\subsubsection*{#1}}
+\providecommand*{\DUtitle}[1]{%
+  \smallskip\noindent\textbf{#1}\smallskip}
 
 % subtitle::
 
