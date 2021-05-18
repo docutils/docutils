@@ -94,7 +94,7 @@ if CommonMarkParser:
                     del node['language']
 
             # remove empty target nodes
-            for node in document.traverse(nodes.target):
+            for node in list(document.traverse(nodes.target)):
                 # remove empty name
                 node['names'] = [v for v in node['names'] if v]
                 if node.children or [v for v in node.attributes.values() if v]:

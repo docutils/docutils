@@ -16,6 +16,10 @@
 Changes Since 0.17.1
 ====================
 
+* docutils/nodes.py
+
+  - ``Node.traverse()`` returns an iterator instead of a list.
+
 * docutils/tools/math/math2html, docutils/writers/html5_polyglot/math.css
 
   - Fix bug #244 Wrong subscript/superscript order with
