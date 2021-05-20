@@ -222,12 +222,10 @@ class math(object):
 
         self.children = []
         if children is not None:
-            if isinstance(children, list):
-                for child in children:
-                    self.append(child)
-            else:
-                # Only one child:
-                self.append(children)
+            if not isinstance(children, list):
+                children = [children]
+            for child in children:
+                self.append(child)
 
         self.attributes = collections.OrderedDict()
         if inline is not None:
@@ -547,19 +545,31 @@ def handle_keyword(name, node, string):
         string = string[1:]
         skip = 1
     if name == 'begin':
-        if not string.startswith('{matrix}'):
+        if string.startswith('{matrix}'):
+            skip += 8
+            entry = mtd()
+            table = mtable(mtr(entry))
+            node.append(table)
+            node = entry
+        elif string.startswith('{cases}'):
+            skip += 7
+            entry = mtd()
+            cases = mrow([mo('{'), mtable(mtr(entry))])
+            node.append(cases)
+            node = entry
+        else:
             raise SyntaxError(u'Environment not supported! '
-                              u'Supported environment: "matrix".')
-        skip += 8
-        entry = mtd()
-        table = mtable(mtr(entry))
-        node.append(table)
-        node = entry
+                        u'Supported environments: "matrix", "cases".')
     elif name == 'end':
-        if not string.startswith('{matrix}'):
-            raise SyntaxError(u'Expected "\\end{matrix}"!')
-        skip += 8
-        node = node.close().close().close()
+        if string.startswith('{matrix}'):
+            skip += 8
+            node = node.close().close().close()
+        elif string.startswith('{cases}'):
+            skip += 7
+            node = node.close().close().close().close()
+        else:
+            raise SyntaxError(u'Environment not supported! '
+                        u'Supported environments: "matrix", "cases".')
     elif name in ('text', 'mathrm'):
         if string[0] != '{':
             raise SyntaxError(u'Expected "\\text{...}"!')
@@ -585,7 +595,8 @@ def handle_keyword(name, node, string):
         row = mrow()
         node.append(row)
         node = row
-        node.append(mo(fence_args[par]))
+        if par != '.':
+            node.append(mo(fence_args[par]))
         skip += len(par)
     elif name == 'right':
         for par in fence_args.keys():
@@ -593,7 +604,8 @@ def handle_keyword(name, node, string):
                 break
         else:
             raise SyntaxError(u'Missing right-brace!')
-        node.append(mo(fence_args[par]))
+        if par != '.':
+            node.append(mo(fence_args[par]))
         node = node.close()
         skip += len(par)
     elif name == 'not':
