@@ -213,6 +213,7 @@ class math(object):
 
     nchildren = 1000000
     """Required number of children"""
+    _level = 0 # indentation level (static class variable)
 
     def __init__(self, children=None, inline=None, **kwargs):
         """math([children]) -> MathML element
@@ -291,61 +292,68 @@ class math(object):
         return self.xml_start() + self.xml_body() + self.xml_end()
 
     def xml_start(self):
-        # MathML uses only lowercase attributes, allow CLASS for class (Python keyword)
+        # Use k.lower() to allow argument `CLASS` for attribute `class`
+        # (Python keyword). MathML uses only lowercase attributes.
         attrs = ['%s="%s"'%(k.lower(), v) for k, v
                  in getattr(self, 'attributes', {}).items()]
+        if not isinstance(self, mx): # token elements
+            math._level += 1
         return ['<%s>' % ' '.join([self.__class__.__name__] + attrs)]
 
     def xml_end(self):
-        return ['</%s>' % self.__class__.__name__]
+        xml = []
+        if not isinstance(self, mx): # except token elements
+            math._level -= 1
+            xml.append('\n' + '  ' * math._level)
+        xml.append('</%s>' % self.__class__.__name__)
+        return xml
 
     def xml_body(self):
         xml = []
+        last_child = None
         for child in self.children:
+            if not (isinstance(last_child, mx) and isinstance(child, mx)):
+                xml.append('\n' + '  ' * math._level)
             xml.extend(child.xml())
+            last_child = child
         return xml
 
 # >>> l2m.math(l2m.mn(2))
 # math(mn(2))
 # >>> l2m.math(l2m.mn(2)).xml()
-# ['<math>', '<mn>', 2, '</mn>', '</math>']
+# ['<math>', '\n  ', '<mn>', '2', '</mn>', '\n', '</math>']
 #
 # >>> l2m.math(id='eq3')
 # math(id='eq3')
 # >>> l2m.math(id='eq3').xml()
-# ['<math id="eq3">', '</math>']
+# ['<math id="eq3">', '\n', '</math>']
 #
 # use CLASS to get "class" in XML
 # >>> l2m.math(CLASS='test')
 # math(CLASS='test')
 # >>> l2m.math(CLASS='test').xml()
-# ['<math class="test">', '</math>']
+# ['<math class="test">', '\n', '</math>']
 
 # >>> l2m.math(inline=True)
 # math(xmlns='http://www.w3.org/1998/Math/MathML')
 # >>> l2m.math(inline=True).xml()
-# ['<math xmlns="http://www.w3.org/1998/Math/MathML">', '</math>']
+# ['<math xmlns="http://www.w3.org/1998/Math/MathML">', '\n', '</math>']
 # >>> l2m.math(inline=False)
 # math(xmlns='http://www.w3.org/1998/Math/MathML', display='block')
 # >>> l2m.math(inline=False).xml()
-# ['<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">', '</math>']
+# ['<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">', '\n', '</math>']
 
-class mrow(math):
-    def xml_start(self):
-        return ['\n'] + super(mrow, self).xml_start()
+class mrow(math): pass
 
 # >>> l2m.mrow(displaystyle='false')
 # mrow(displaystyle='false')
 
-class mtable(math):
-    def xml_start(self):
-        return ['\n'] + super(mtable, self).xml_start()
+class mtable(math): pass
 
 # >>> l2m.mtable(displaystyle='true')
 # mtable(displaystyle='true')
 # >>> l2m.math(l2m.mtable(displaystyle='true')).xml()
-# ['<math>', '\n', '<mtable displaystyle="true">', '</mtable>', '</math>']
-
+# ['<math>', '\n  ', '<mtable displaystyle="true">', '\n  ', '</mtable>', '\n', '</math>']
 class mtr(mrow): pass
 class mtd(mrow): pass
 
@@ -364,6 +372,7 @@ class mx(math):
 class mi(mx): pass
 class mn(mx): pass
 class mo(mx): pass
+class mtext(mx): pass
 
 # >>> l2m.mo(u'<')
 # mo(<)
@@ -393,10 +402,10 @@ class msubsup(math):
 
     def xml(self):
         if self.reversed:
-##            self.children[1:3] = self.children[2:0:-1]
+            ## self.children[1:3] = self.children[2:0:-1]
             self.children[1:3] = [self.children[2], self.children[1]]
             self.reversed = False
-        return math.xml(self)
+        return super(msubsup, self).xml()
 
 class mspace(math):
     nchildren = 0
@@ -406,11 +415,7 @@ class mstyle(math):
         if nchildren is not None:
             self.nchildren = nchildren
         math.__init__(self, children)
-        self.attrs = kwargs
-
-    def xml_start(self):
-        return ['<mstyle '] + ['%s="%s"' % item
-                               for item in self.attrs.items()] + ['>']
+        self.attributes = kwargs
 
 class mover(math):
     nchildren = 2
@@ -431,15 +436,6 @@ class munderover(math):
     nchildren = 3
     def __init__(self, children=None):
         math.__init__(self, children)
-
-class mtext(math):
-    nchildren = 0
-    def __init__(self, text):
-        self.text = text
-
-    def xml_body(self):
-        return [self.text]
-
 
 # LaTeX to MathML translation
 # ---------------------------
