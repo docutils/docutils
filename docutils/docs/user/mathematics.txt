@@ -40,7 +40,7 @@ Inline formulas and displayed equations
 The **math role** can be used for inline mathematical expressions:
 ``:math:`\psi(r) = \exp(-2r)``` will produce :m:`\psi(r)=\exp(-2r)`.
 Inside the backtics you can write anything you would write between dollar
-signs in a LaTeX document.
+signs in a LaTeX document.  [#math-syntax]_
 
 .. tip::
 
@@ -286,14 +286,6 @@ Mathematical Alphabets
 For mathematical variables where style variations are important semantically,
 select an appropriate *math alphabet* [#]_.
 
-.. [#] TeX’s *math alphabets* correspond to the `mathematical
-   alphanumeric symbols`__ block in Unicode and the "mathvariant" `style
-   attribute`__ in MathML.
-
-
-__ https://en.wikipedia.org/wiki/Mathematical_Alphanumeric_Symbols
-__ https://developer.mozilla.org/en-US/docs/Web/MathML/Attribute
-
 .. class:: colwidths-auto
 
   ===============  ============================  ==========================
@@ -308,6 +300,13 @@ __ https://developer.mozilla.org/en-US/docs/Web/MathML/Attribute
   ``\mathsf``      ``\mathsf x``                 `\mathsf x`
   ``\mathtt``      ``\mathtt{0.12}``             `\mathtt{0.12}`
   ===============  ============================  ==========================
+
+.. [#] TeX’s *math alphabets* correspond to the `mathematical
+   alphanumeric symbols`__ block in Unicode and the "mathvariant" `style
+   attribute`__ in MathML.
+
+   __ https://en.wikipedia.org/wiki/Mathematical_Alphanumeric_Symbols
+   __ https://developer.mozilla.org/en-US/docs/Web/MathML/Attribute
 
 Additional alphabets are defined in LaTeX packages, e.g.
 
@@ -324,7 +323,7 @@ Additional alphabets are defined in LaTeX packages, e.g.
 .. _isomath: https://www.ctan.org/pkg/isomath
 .. _mathrsfs: https://www.ctan.org/pkg/mathrsfs
 
-This can be used to typeset vector symbols in **bold** *italic*
+This can be used to typeset vector symbols in bold italic
 in line with the International Standard [ISO-80000-2].
 
 .. ``\mathbfit{r}^2=x^2+y^2+z^2`` becomes
@@ -397,7 +396,7 @@ Punctuation
 ======== ===============
 
 .. [#] Punctuation (not ratio):
-       Compare spacing in `a\colon b\to c` and `a:b = c`.
+       Compare spacing in `a\colon b\to c` to `a:b = c`.
 
 
 Relation symbols
