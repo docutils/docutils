@@ -38,7 +38,7 @@ role specificator, <math xmlns="http://www.w3.org/1998/Math/MathML">
 </math>, as well as displayed math via the
 <cite>math</cite> directive:</p>
 <div>
-<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
   <mtable class="align" displaystyle="true">
     <mtr>
       <mtd>
@@ -73,7 +73,7 @@ role specificator, <math xmlns="http://www.w3.org/1998/Math/MathML">
 </div>
 <p>Content may start on the first line of the directive, e.g.</p>
 <div>
-<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
   <mtable class="align" displaystyle="true">
     <mtr>
       <mtd>
@@ -95,7 +95,7 @@ role specificator, <math xmlns="http://www.w3.org/1998/Math/MathML">
 See <a class="reference internal" href="#eq-m">eq:M</a> and <a class="reference internal" href="#eq-schrodinger">eq:schrödinger</a> below.</p>
 <p>The determinant of the matrix</p>
 <div id="eq-m">
-<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
   <mtable class="align" displaystyle="true">
     <mtr>
       <mtd>
@@ -133,12 +133,12 @@ See <a class="reference internal" href="#eq-m">eq:M</a> and <a class="reference 
 <p>More than one display math block can be put in one math directive.
 For example, the following sum and integral with limits:</p>
 <div>
-<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
   <mtable class="align" displaystyle="true">
     <mtr>
       <mtd>
         <munderover>
-          <mo>∫</mo><mn>0</mn><mn>1</mn>
+          <mo movablelimits="true">∫</mo><mn>0</mn><mn>1</mn>
         </munderover>
         <msup>
           <mi>x</mi><mi>n</mi>
@@ -158,12 +158,12 @@ For example, the following sum and integral with limits:</p>
 </math>
 </div>
 <div>
-<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
   <mtable class="align" displaystyle="true">
     <mtr>
       <mtd>
         <munderover>
-          <mo>∑</mo>
+          <mo movablelimits="true">∑</mo>
           <mrow>
             <mi>n</mi><mo>=</mo><mn>1</mn>
           </mrow>
@@ -187,7 +187,7 @@ For example, the following sum and integral with limits:</p>
 directives:</p>
 <p>The Schrödinger equation</p>
 <div id="eq-schrodinger">
-<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
   <mtable class="align" displaystyle="true">
     <mtr>
       <mtd>
@@ -201,11 +201,11 @@ directives:</p>
           </mrow>
         </mfrac>
         <mi class="capital-greek">Ψ</mi><mo>=</mo>
-        <mover>
+        <mover accent="true">
           <mrow>
             <mi>H</mi>
           </mrow>
-          <mo>^</mo>
+          <mo>ˆ</mo>
         </mover>
         <mi class="capital-greek">Ψ</mi><mo>,</mo>
       </mtd>
@@ -227,7 +227,7 @@ physical system changes in time.</p>
 </colgroup>
 <tbody>
 <tr><td><p><math xmlns="http://www.w3.org/1998/Math/MathML">
-  <mover>
+  <mover accent="true">
     <mrow>
       <mi>a</mi>
     </mrow>
@@ -235,24 +235,24 @@ physical system changes in time.</p>
   </mover>
 </math>      <span class="docutils literal">\acute{a}</span></p></td>
 <td><p><math xmlns="http://www.w3.org/1998/Math/MathML">
-  <mover>
+  <mover accent="true">
     <mrow>
       <mi>t</mi>
     </mrow>
-    <mo>·</mo>
+    <mo>˙</mo>
   </mover>
 </math>        <span class="docutils literal">\dot{t}</span></p></td>
 <td><p><math xmlns="http://www.w3.org/1998/Math/MathML">
-  <mover>
+  <mover accent="true">
     <mrow>
       <mi>γ</mi>
     </mrow>
-    <mo>^</mo>
+    <mo>ˆ</mo>
   </mover>
 </math>   <span class="docutils literal"><span class="pre">\hat{\gamma}</span></span></p></td>
 </tr>
 <tr><td><p><math xmlns="http://www.w3.org/1998/Math/MathML">
-  <mover>
+  <mover accent="true">
     <mrow>
       <mi>a</mi>
     </mrow>
@@ -260,24 +260,24 @@ physical system changes in time.</p>
   </mover>
 </math>      <span class="docutils literal">\grave{a}</span></p></td>
 <td><p><math xmlns="http://www.w3.org/1998/Math/MathML">
-  <mover>
+  <mover accent="true">
     <mrow>
       <mi>t</mi>
     </mrow>
-    <mo>··</mo>
+    <mo>¨</mo>
   </mover>
 </math>       <span class="docutils literal">\ddot{t}</span></p></td>
 <td><p><math xmlns="http://www.w3.org/1998/Math/MathML">
-  <mover>
+  <mover accent="true">
     <mrow>
       <mi>α</mi>
     </mrow>
-    <mo>∼</mo>
+    <mo>˜</mo>
   </mover>
 </math> <span class="docutils literal"><span class="pre">\tilde{\alpha}</span></span></p></td>
 </tr>
 <tr><td><p><math xmlns="http://www.w3.org/1998/Math/MathML">
-  <mover>
+  <mover accent="true">
     <mrow>
       <mi>x</mi>
     </mrow>
@@ -285,24 +285,24 @@ physical system changes in time.</p>
   </mover>
 </math>      <span class="docutils literal">\breve{x}</span></p></td>
 <td><p><math xmlns="http://www.w3.org/1998/Math/MathML">
-  <mover>
+  <mover accent="true">
     <mrow>
       <mi>t</mi>
     </mrow>
-    <mo>···</mo>
+    <mo>⃛</mo>
   </mover>
 </math>      <span class="docutils literal">\dddot{t}</span></p></td>
 <td><p><math xmlns="http://www.w3.org/1998/Math/MathML">
-  <mover>
+  <mover accent="false">
     <mrow>
       <mi>ı</mi>
     </mrow>
-    <mo>⃗</mo>
+    <mo>→</mo>
   </mover>
 </math>   <span class="docutils literal"><span class="pre">\vec{\imath}</span></span></p></td>
 </tr>
 <tr><td><p><math xmlns="http://www.w3.org/1998/Math/MathML">
-  <mover>
+  <mover accent="true">
     <mrow>
       <mi>a</mi>
     </mrow>
@@ -310,19 +310,19 @@ physical system changes in time.</p>
   </mover>
 </math>      <span class="docutils literal">\check{a}</span></p></td>
 <td><p><math xmlns="http://www.w3.org/1998/Math/MathML">
-  <mover>
+  <mover accent="true">
     <mrow>
       <mi>a</mi>
     </mrow>
-    <mo>-</mo>
+    <mo>ˉ</mo>
   </mover>
 </math>        <span class="docutils literal">\bar{a}</span></p></td>
 <td><p><math xmlns="http://www.w3.org/1998/Math/MathML">
-  <mover>
+  <mover accent="false">
     <mrow>
       <mi>R</mi>
     </mrow>
-    <mo>⃗</mo>
+    <mo>→</mo>
   </mover>
 </math>        <span class="docutils literal">\vec{R}</span></p></td>
 </tr>
@@ -334,7 +334,7 @@ physical system changes in time.</p>
 \widehat{xxx} -->
 <p>Modulation Transfer Function:</p>
 <div>
-<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
   <mtable class="align" displaystyle="true">
     <mtr>
       <mtd>
@@ -369,7 +369,7 @@ physical system changes in time.</p>
           <mfrac>
             <mrow>
               <munderover>
-                <mo>∫</mo>
+                <mo movablelimits="true">∫</mo>
                 <mrow>
                   <mo>−</mo><mo>∞</mo>
                 </mrow>
@@ -398,7 +398,7 @@ physical system changes in time.</p>
             </mrow>
             <mrow>
               <munderover>
-                <mo>∫</mo>
+                <mo movablelimits="true">∫</mo>
                 <mrow>
                   <mo>−</mo><mo>∞</mo>
                 </mrow>
@@ -424,7 +424,7 @@ physical system changes in time.</p>
 <span class="docutils literal"><span class="pre">\begin{...}</span> <span class="pre">\end{...}</span></span> pair, the math code is wrapped in an <a class="reference external" href="ftp://ftp.ams.org/ams/doc/amsmath/short-math-guide.pdf">AMSmath</a>
 <span class="docutils literal">align</span> environment:</p>
 <div>
-<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
   <mtable class="align" displaystyle="true">
     <mtr>
       <mtd>
@@ -474,7 +474,7 @@ physical system changes in time.</p>
 </div>
 <p>Cases with the <a class="reference external" href="ftp://ftp.ams.org/ams/doc/amsmath/short-math-guide.pdf">AMSmath</a> <span class="docutils literal">cases</span> environment:</p>
 <div>
-<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
   <mtable class="align" displaystyle="true">
     <mtr>
       <mtd>

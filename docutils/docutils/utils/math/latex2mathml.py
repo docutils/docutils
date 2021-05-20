@@ -54,7 +54,7 @@ greek_capitals = {
 functions = ['arccos', 'arcsin', 'arctan', 'arg', 'cos',  'cosh',
              'cot',    'coth',   'csc',    'deg', 'det',  'dim',
              'exp',    'gcd',    'hom',    'inf', 'ker',  'lg',
-             'lim',    'ln',     'log',    'max', 'min',  'Pr',
+             'ln',     'log',    'max', 'min',  'Pr',
              'sec',    'sin',    'sinh',   'sup', 'tan',  'tanh']
 functions = dict((name, name) for name in functions)
 functions.update({# functions with a space in the name
@@ -100,10 +100,9 @@ operators.update({# negated symbols without pre-composed Unicode character
                   'ngeqslant':  u'\u2a7e\u0338', # ⩾̸
                   'nsubseteqq': u'\u2AC5\u0338', # ⫅̸
                   'nsupseteqq': u'\u2AC6\u0338', # ⫆̸
+                  # use <mo> to allow "movablelimits" attribute
+                  'lim':        u'lim',
                  })
-
-# >>> '{' in operators.values()
-# True
 
 # special cases
 
@@ -132,11 +131,12 @@ right_delimiters = {# lspace='0', rspace='0.22em'
                     'rVert': u'\u2016', # ‖ DOUBLE VERTICAL LINE
                    }
 
-sumintprod = ''.join([operators[symbol] for symbol in
-                      ['sum', 'int', 'oint', 'prod']])
-
-# >>> print(sumintprod)
-# ∑∫∮∏
+# operators with limits either over/under or in index position
+sumintprod = ['coprod', 'fatsemi', 'fint', 'iiiint', 'iiint',
+              'iint', 'int', 'oiint', 'oint', 'ointctrclockwise',
+              'prod', 'sqint', 'sum', 'varointclockwise']
+sumintprod += [operators[name] for name in sumintprod]
+sumintprod.append('lim')
 
 # pre-composed characters for negated symbols
 # see https://www.w3.org/TR/xml-entity-names/#combining
@@ -195,34 +195,35 @@ spaces = {'qquad':         '2em',       # two \quad
           '!':             '-0.1667em', # negthinspace
          }
 
-# accents -> <mover>
+# accents -> <mover accent="true">
 #        TeX        spacing    combining
-over = {'acute':    u'´',      # u'\u0301',
-        'bar':      u'-',      # u'\u0304',
-        'breve':    u'˘',      # u'\u0306',
-        'check':    u'ˇ',      # u'\u030C',
-        'dot':      u'·',      # u'\u0307',
-        'ddot':     u'··',     # u'\u0308',
-        'dddot':    u'···',    # u'\u20DB',
-        'grave':    u'`',      # u'\u0300',
-        'hat':      u'^',      # u'\u0302',
-        'mathring': u'°',      # u'\u030A',
-        'tilde':    u'\u223C', # u'\u0303',
-        'vec':                 u'\u20D7',
+accents = {'acute':    u'´',      # u'\u0301',
+           'bar':      u'ˉ',      # u'\u0304',
+           'breve':    u'˘',      # u'\u0306',
+           'check':    u'ˇ',      # u'\u030C',
+           'dot':      u'˙',      # u'\u0307',
+           'ddot':     u'¨',      # u'\u0308',
+           'dddot':               u'\u20DB',  # '…' too wide
+           'grave':    u'`',      # u'\u0300',
+           'hat':      u'ˆ',      # u'\u0302',
+           'mathring': u'˚',      # u'\u030A',
+           'tilde':    u'˜',      # u'\u0303',
        }
 
-wideover = {'overbrace':            u'\u23DE', # TOP CURLY BRACKET
-            'overleftarrow':        u'\u2190',
-            'overleftrightarrow':   u'\u2194',
-            'overline':             u'¯',
-            'overrightarrow':       u'\u2192',
-            'widehat':              u'^',
-            'widetilde':            u'~'}
-wideunder = {'underbrace':          u'\u23DF',
-             'underleftarrow':      u'\u2190',
-             'underleftrightarrow': u'\u2194',
-             'underline':           u'_',
-             'underrightarrow':     u'\u2192'}
+# limits etc. -> <mover> rsp. <munder>
+over = {'overbrace':            u'\u23DE', # TOP CURLY BRACKET
+        'overleftarrow':        u'\u2190',
+        'overleftrightarrow':   u'\u2194',
+        'overline':             u'¯',
+        'overrightarrow':       u'\u2192',
+        'vec':                  u'\u2192', # → (too heavy if accent="true")
+        'widehat':              u'^',
+        'widetilde':            u'~'}
+under = {'underbrace':          u'\u23DF',
+         'underleftarrow':      u'\u2190',
+         'underleftrightarrow': u'\u2194',
+         'underline':           u'_',
+         'underrightarrow':     u'\u2192'}
 
 # Character translations
 # ----------------------
@@ -257,32 +258,26 @@ class math(object):
     """Parent node in MathML DOM tree."""
     _level = 0 # indentation level (static class variable)
 
-    def __init__(self, children=None, inline=None, **kwargs):
-        """math([children]) -> MathML element
-
-        children can be one child or a list of children."""
+    def __init__(self, *children, **attributes):
+        """math(*children **attributes) -> MathML element
+        """
 
         self.children = []
-        if children is not None:
-            if not isinstance(children, (list, tuple)):
-                children = [children]
-            for child in children:
-                self.append(child)
+        for child in children:
+            self.append(child)
 
         self.attributes = collections.OrderedDict()
-        if inline is not None:
-            self.attributes['xmlns'] = 'http://www.w3.org/1998/Math/MathML'
-        if inline is False:
-            self.attributes['display'] = 'block'
-        # sort kwargs for predictable functional tests
-        # as self.attributes.update(kwargs) does not keep order in Python < 3.6
-        for key in sorted(kwargs.keys()):
-            self.attributes.setdefault(key, kwargs[key])
+        # sort attributes for predictable functional tests
+        # as self.attributes.update(attributes) does not keep order in Python < 3.6
+        for key in sorted(attributes.keys()):
+            self.attributes.setdefault(key, attributes[key])
 
     def __repr__(self):
         content = [repr(item) for item in getattr(self, 'children', [])]
         if hasattr(self, 'data'):
             content.append(repr(self.data))
+        if isinstance(self, MathScriptOrLimit) and self.reversed:
+            content.append('reversed=True')
         if hasattr(self, 'attributes'):
             content += ["%s='%s'"%(k, v) for k, v in self.attributes.items()]
         return self.__class__.__name__ + '(%s)' % ', '.join(content)
@@ -306,15 +301,6 @@ class math(object):
             node = node.parent
         return node
 
-    def delete_child(self):
-        """delete_child() -> child
-
-        Delete last child and return it."""
-
-        child = self.children[-1]
-        del self.children[-1]
-        return child
-
     def close(self):
         """close() -> parent
 
@@ -335,13 +321,13 @@ class math(object):
         # (Python keyword). MathML uses only lowercase attributes.
         attrs = ['%s="%s"'%(k.lower(), v) for k, v
                  in getattr(self, 'attributes', {}).items()]
-        if not isinstance(self, mx): # token elements
+        if not isinstance(self, MathToken): # token elements
             math._level += 1
         return ['<%s>' % ' '.join([self.__class__.__name__] + attrs)]
 
     def xml_end(self):
         xml = []
-        if not isinstance(self, mx): # except token elements
+        if not isinstance(self, MathToken): # except token elements
             math._level -= 1
             xml.append('\n' + '  ' * math._level)
         xml.append('</%s>' % self.__class__.__name__)
@@ -351,7 +337,7 @@ class math(object):
         xml = []
         last_child = None
         for child in self.children:
-            if not (isinstance(last_child, mx) and isinstance(child, mx)):
+            if not (isinstance(last_child, MathToken) and isinstance(child, MathToken)):
                 xml.append('\n' + '  ' * math._level)
             xml.extend(child.xml())
             last_child = child
@@ -373,22 +359,11 @@ class math(object):
 # >>> math(CLASS='test').xml()
 # ['<math class="test">', '\n', '</math>']
 
-# >>> math(inline=True)
-# math(xmlns='http://www.w3.org/1998/Math/MathML')
-# >>> math(inline=True).xml()
+# >>> math(xmlns='http://www.w3.org/1998/Math/MathML').xml()
 # ['<math xmlns="http://www.w3.org/1998/Math/MathML">', '\n', '</math>']
-# >>> math(inline=False)
-# math(xmlns='http://www.w3.org/1998/Math/MathML', display='block')
-# >>> math(inline=False).xml()
-# ['<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">', '\n', '</math>']
 
 class mrow(math):
-    """Group sub-expressions as a horizontal row.
-    """
-    def __init__(self, children=None, nchildren=None, **kwargs):
-        self.nchildren = nchildren
-        math.__init__(self, children)
-        self.attributes = kwargs
+    """Group sub-expressions as a horizontal row."""
 
 # >>> mrow(displaystyle='false')
 # mrow(displaystyle='false')
@@ -409,34 +384,62 @@ class mstyle(mrow): pass
 class mtr(mrow): pass
 class mtd(mrow): pass
 
-class mx(math):
+class MathToken(math):
     """Token Element: Base class for mo, mi, and mn.
     """
     nchildren = 0
     entity_table = {ord('<'): u'&lt;', ord('>'): u'&gt;'}
 
-    def __init__(self, data, **kwargs):
+    def __init__(self, data, **attributes):
         self.data = data
-        super(mx, self).__init__(**kwargs)
+        super(MathToken, self).__init__(**attributes)
 
     def xml_body(self):
         return [unicode(self.data).translate(self.entity_table)]
 
-class mi(mx): pass
-class mn(mx): pass
-class mo(mx): pass
-class mtext(mx): pass
+class mi(MathToken): pass
+class mn(MathToken): pass
+class mo(MathToken): pass
+class mtext(MathToken): pass
 
 # >>> mo(u'<')
 # mo('<')
 # >>> mo(u'<').xml()
 # ['<mo>', '&lt;', '</mo>']
 
-class msub(math):
+class MathScriptOrLimit(math):
+    """Base class for script and limit schemata."""
     nchildren = 2
 
-class msup(math):
-    nchildren = 2
+    def __init__(self, *children, **kwargs):
+        self.reversed = kwargs.pop('reversed', False)
+        math.__init__(self, *children, **kwargs)
+
+    def xml(self):
+        if self.reversed:
+            self.children.reverse()
+            self.reversed = False
+        return super(MathScriptOrLimit, self).xml()
+
+class msub(MathScriptOrLimit): pass
+class msup(MathScriptOrLimit): pass
+class msubsup(MathScriptOrLimit):
+    nchildren = 3
+
+class munder(MathScriptOrLimit): pass
+class mover(MathScriptOrLimit): pass
+class munderover(MathScriptOrLimit):
+    nchildren = 3
+
+# >>> munder(mi('lim'), mo('-'), accent='false')
+# munder(mi('lim'), mo('-'), accent='false')
+# >>> munder(mo('-'), mi('lim'), accent='false', reversed=True)
+# munder(mo('-'), mi('lim'), reversed=True, accent='false')
+# >>> ''.join(munder(mo('-'), mi('lim'), accent='false', reversed=True).xml())
+# '<munder accent="false">\n  <mi>lim</mi><mo>-</mo>\n</munder>'
+# >>> msub(mi('x'), mo('-'))
+# msub(mi('x'), mo('-'))
+
 
 class mroot(math):
     nchildren = 2
@@ -444,44 +447,8 @@ class mroot(math):
 class mfrac(math):
     nchildren = 2
 
-class msubsup(math):
-    nchildren = 3
-    def __init__(self, children=None, reversed=False):
-        self.reversed = reversed
-        math.__init__(self, children)
-
-    def xml(self):
-        if self.reversed:
-            ## self.children[1:3] = self.children[2:0:-1]
-            self.children[1:3] = [self.children[2], self.children[1]]
-            self.reversed = False
-        return super(msubsup, self).xml()
-
 class mspace(math):
     nchildren = 0
-
-class mover(math):
-    nchildren = 2
-    def __init__(self, children=None, reversed=False, **kwargs):
-        self.reversed = reversed
-        math.__init__(self, children, **kwargs)
-
-    def xml(self):
-        if self.reversed:
-            self.children.reverse()
-            self.reversed = False
-        return math.xml(self)
-
-# >>> mover(children=[mi('lim'), mo('-')], accent='false')
-# mover(mi('lim'), mo('-'), accent='false')
-
-class munder(mover):
-    nchildren = 2
-
-class munderover(math):
-    nchildren = 3
-    def __init__(self, children=None):
-        math.__init__(self, children)
 
 
 # LaTeX to MathML translation
@@ -584,13 +551,14 @@ def parse_latex_math(string, inline=True):
 
     # Set up: tree is the whole tree and node is the current element.
     if inline:
-        node = math(inline=True)
+        node = math(xmlns='http://www.w3.org/1998/Math/MathML')
         tree = node
     else:
         # block: emulate align* environment with a math table
         node = mtd()
-        content = mtable(mtr(node), displaystyle='true', CLASS='align')
-        tree = math(content, inline=False)
+        lines = mtable(mtr(node), displaystyle='true', CLASS='align')
+        tree = math(lines, display='block',
+                    xmlns='http://www.w3.org/1998/Math/MathML')
 
     while len(string) > 0:
         # Take of first character:
@@ -614,24 +582,26 @@ def parse_latex_math(string, inline=True):
         elif c in "+*=<>,.!?';@":
             node = node.append(mo(c))
         elif c == '_':
-            child = node.delete_child()
+            child = node.children.pop()
             if isinstance(child, msup):
-                sub = msubsup(child.children, reversed=True)
-            elif isinstance(child, mo) and child.data in sumintprod:
+                sub = msubsup(*child.children, reversed=True)
+            elif isinstance(child, MathToken) and child.data in sumintprod:
+                child.attributes['movablelimits'] = 'true'
                 sub = munder(child)
             else:
                 sub = msub(child)
             node.append(sub)
             node = sub
         elif c == '^':
-            child = node.delete_child()
+            child = node.children.pop()
             if isinstance(child, msub):
-                sup = msubsup(child.children)
-            elif isinstance(child, mo) and child.data in sumintprod:
+                sup = msubsup(*child.children)
+            elif isinstance(child, MathToken) and child.data in sumintprod:
+                child.attributes['movablelimits'] = 'true'
                 sup = mover(child)
             elif (isinstance(child, munder) and
                   child.children[0].data in sumintprod):
-                sup = munderover(child.children)
+                sup = munderover(*child.children)
             else:
                 sup = msup(child)
             node.append(sup)
@@ -653,10 +623,14 @@ def parse_latex_math(string, inline=True):
 
 # Test:
 
+# >>> parse_latex_math('', inline=True)
+# math(xmlns='http://www.w3.org/1998/Math/MathML')
+# >>> parse_latex_math('', inline=False)
+# math(mtable(mtr(mtd()), CLASS='align', displaystyle='true'), display='block', xmlns='http://www.w3.org/1998/Math/MathML')
 # >>> parse_latex_math(' \\sqrt{ \\alpha}')
 # math(msqrt(mi('α')), xmlns='http://www.w3.org/1998/Math/MathML')
 # >>> parse_latex_math('\\alpha', inline=False)
-# math(mtable(mtr(mtd(mi('α'))), CLASS='align', displaystyle='true'), xmlns='http://www.w3.org/1998/Math/MathML', display='block')
+# math(mtable(mtr(mtd(mi('α'))), CLASS='align', displaystyle='true'), display='block', xmlns='http://www.w3.org/1998/Math/MathML')
 # >>> parse_latex_math('\\sqrt 2 \\ne 3')
 # math(msqrt(mn('2')), mo('≠'), mn('3'), xmlns='http://www.w3.org/1998/Math/MathML')
 # >>> parse_latex_math('\\sqrt{2 + 3} < 3')
@@ -701,13 +675,13 @@ def handle_keyword(name, node, string):
             identifier = mi(functions[name])
         # functions with embellished names
         if name == 'varliminf':    # \underline\lim
-            identifier = munder([identifier, mo(u'_')], accent='false')
+            identifier = munder(identifier, mo(u'_'))
         elif name == 'varlimsup':  # \overline\lim
-            identifier = mover([identifier, mo(u'¯')], accent='false')
+            identifier = mover(identifier, mo(u'¯'), accent='false')
         elif name == 'varprojlim': # \underleftarrow\lim
-            identifier = munder([identifier, mo(u'\u2190')], accent='false')
+            identifier = munder(identifier, mo(u'\u2190'))
         elif name == 'varinjlim':  # \underrightarrow\lim
-            identifier = munder([identifier, mo(u'\u2192')], accent='false')
+            identifier = munder(identifier, mo(u'\u2192'))
 
         node = node.append(identifier)
         # TODO: only add ApplyFunction when appropriate (not \sin ^2(x), say)
@@ -726,25 +700,26 @@ def handle_keyword(name, node, string):
             arg = letters.get(arg[1:], arg)
 
         if name == 'boldsymbol':
-            kwargs = {'style': 'font-weight: bold'}
+            attributes = {'style': 'font-weight: bold'}
         else:
-            kwargs = {'mathvariant': math_alphabets[name]}
+            attributes = {'mathvariant': math_alphabets[name]}
         if name == 'mathscr':
-            kwargs['style'] = 'font-family: STIX' # alternative script letter shapes
+            # alternative script letter shapes
+            attributes['style'] = 'font-family: STIX'
 
         # one symbol (single letter, name, or number)
         if arg.isalpha():
-            node = node.append(mi(arg, **kwargs))
+            node = node.append(mi(arg, **attributes))
             return node, remainder
         if arg.replace('.', '').replace(',', '').isdigit():
-            node = node.append(mn(arg, **kwargs))
+            node = node.append(mn(arg, **attributes))
             return node, remainder
         if len(arg) == 1 and arg != '{':
-            node = node.append(mo(arg, **kwargs))
+            node = node.append(mo(arg, **attributes))
             return node, remainder
 
         # Wrap in <style>
-        style = mstyle(**kwargs)
+        style = mstyle(**attributes)
         node.append(style)
         return style, string[1:] # take of the opening '{', <mrow> is inferred
 
@@ -769,6 +744,10 @@ def handle_keyword(name, node, string):
 
     if name in small_operators:
         node = node.append(mo(small_operators[name], mathsize='75%'))
+        return node, string
+
+    if name in sumintprod:
+        node = node.append(mo(operators[name]))
         return node, string
 
     if name in operators:
@@ -823,11 +802,11 @@ def handle_keyword(name, node, string):
     # ==================================
 
     if name == 'sqrt':
+        sqrt = msqrt()
         if string.startswith('{'): # argument is a group
             string = string[1:] # mrow implied, skip opening bracket
-            sqrt = msqrt()
         else: # no group, enclose only one element
-            sqrt = msqrt(nchildren=1)
+            sqrt.nchildren = 1
         node.append(sqrt)
         return sqrt, string
 
@@ -840,23 +819,23 @@ def handle_keyword(name, node, string):
         entry = mtd()
         row = mtr(entry)
         node.close().close().append(row)
-        node = entry
-        return node, string
+        return entry, string
 
-    if name in over or name in wideover:
+    if name in accents or name in over:
         try:
-            ovr = mover(mo(over[name]), reversed=True)
+            ch = over[name]
+            acc = 'false'
         except KeyError:
-            ovr = mover(mo(wideover[name]), reversed=True, accent='false')
+            ch = accents[name]
+            acc = 'true'
+        ovr = mover(mo(ch), reversed=True, accent=acc)
         node.append(ovr)
-        node = ovr
-        return node, string
+        return ovr, string
 
-    if name in wideunder:
-        ovr = munder(mo(wideunder[name]), reversed=True, accent='false')
+    if name in under:
+        ovr = munder(mo(under[name]), reversed=True)
         node.append(ovr)
-        node = ovr
-        return node, string
+        return ovr, string
 
     if name == 'begin':
         env_name, string = tex_token(string)
@@ -867,7 +846,7 @@ def handle_keyword(name, node, string):
             node = entry
         elif env_name == 'cases':
             entry = mtd()
-            cases = mrow([mo('{'), mtable(mtr(entry))])
+            cases = mrow(mo('{'), mtable(mtr(entry)))
             node.append(cases)
             node = entry
         else:
@@ -916,7 +895,9 @@ def handle_keyword(name, node, string):
 # >>> handle_keyword('mathrm', math(), '{out} = 3')
 # (math(mi('out', mathvariant='normal')), ' = 3')
 # >>> handle_keyword('overline', math(), '{981}')
-# (mover(mo('¯'), accent='false'), '{981}')
+# (mover(mo('¯'), reversed=True, accent='false'), '{981}')
+# >>> handle_keyword('bar', math(), '{x}')
+# (mover(mo('ˉ'), reversed=True, accent='true'), '{x}')
 
 
 def tex2mathml(tex_math, inline=True):
