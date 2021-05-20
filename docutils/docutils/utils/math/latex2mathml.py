@@ -22,11 +22,20 @@
 #
 # Usage:
 #
-# >>> import latex2mathml
+# >>> import latex2mathml as l2m
 
-import docutils.utils.math.tex2unichar as tex2unichar
+import collections
+import sys
+if sys.version_info >= (3, 0):
+    unicode = str  # noqa
 
-#        TeX      spacing    combining
+from docutils.utils.math import tex2unichar
+
+
+# Metadata
+# --------
+
+#        TeX        spacing    combining
 over = {'acute':    u'\u00B4', # u'\u0301',
         'bar':      u'\u00AF', # u'\u0304',
         'breve':    u'\u02D8', # u'\u0306',
@@ -61,7 +70,7 @@ special.update(tex2unichar.mathfence)
 sumintprod = ''.join([special[symbol] for symbol in
                       ['sum', 'int', 'oint', 'prod']])
 
-# >>> print(latex2mathml.sumintprod)
+# >>> print(l2m.sumintprod)
 # ∑∫∮∏
 
 functions = ['arccos', 'arcsin', 'arctan', 'arg', 'cos',  'cosh',
@@ -158,7 +167,7 @@ mathscr = {
            'z': u'\U0001D4CF',
           }
 
-# >>> print(''.join(latex2mathml.mathscr.values()))
+# >>> print(''.join(l2m.mathscr.values()))
 # 𝒜ℬ𝒞𝒟ℰℱ𝒢ℋℐ𝒥𝒦ℒℳ𝒩𝒪𝒫𝒬ℛ𝒮𝒯𝒰𝒱𝒲𝒳𝒴𝒵𝒶𝒷𝒸𝒹ℯ𝒻ℊ𝒽𝒾𝒿𝓀𝓁𝓂𝓃ℴ𝓅𝓆𝓇𝓈𝓉𝓊𝓋𝓌𝓍𝓎𝓏
 
 negatables = {'=': u'\u2260',
@@ -195,14 +204,17 @@ for (key, value) in tex2unichar.mathclose.items():
 #                          **tex2unichar.mathfence}.items():
 #         fence_args['\\'+key] = value
 
-# LaTeX to MathML translation stuff:
+
+# MathML element classes
+# ----------------------
+
 class math(object):
     """Base class for MathML elements."""
 
     nchildren = 1000000
     """Required number of children"""
 
-    def __init__(self, children=None, inline=None):
+    def __init__(self, children=None, inline=None, **kwargs):
         """math([children]) -> MathML element
 
         children can be one child or a list of children."""
@@ -216,15 +228,24 @@ class math(object):
                 # Only one child:
                 self.append(children)
 
+        self.attributes = collections.OrderedDict()
         if inline is not None:
-            self.inline = inline
+            self.attributes['xmlns'] = 'http://www.w3.org/1998/Math/MathML'
+        if inline is False:
+            self.attributes['display'] = 'block'
+            # self.attributes['displaystyle'] = 'true'
+        # sort kwargs for predictable functional tests
+        # as self.attributes.update(kwargs) does not keep order in Python < 3.6
+        for key in sorted(kwargs.keys()):
+            self.attributes.setdefault(key, kwargs[key])
 
     def __repr__(self):
-        if hasattr(self, 'children'):
-            return self.__class__.__name__ + '(%s)' % \
-                   ','.join([repr(child) for child in self.children])
-        else:
-            return self.__class__.__name__
+        content = [repr(item) for item in getattr(self, 'children', [])]
+        if hasattr(self, 'data'):
+            content.append(str(self.data))
+        if hasattr(self, 'attributes'):
+            content += ["%s='%s'"%(k, v) for k, v in self.attributes.items()]
+        return self.__class__.__name__ + '(%s)' % ', '.join(content)
 
     def full(self):
         """Room for more children?"""
@@ -270,14 +291,10 @@ class math(object):
         return self.xml_start() + self.xml_body() + self.xml_end()
 
     def xml_start(self):
-        if not hasattr(self, 'inline'):
-            return ['<%s>' % self.__class__.__name__]
-        xmlns = 'http://www.w3.org/1998/Math/MathML'
-        if self.inline:
-            args = 'displaystyle="false"'
-        else:
-            args = 'display="block"'
-        return ['<math xmlns="%s" %s>' % (xmlns, args)]
+        # MathML uses only lowercase attributes, allow CLASS for class (Python keyword)
+        attrs = ['%s="%s"'%(k.lower(), v) for k, v
+                 in getattr(self, 'attributes', {}).items()]
+        return ['<%s>' % ' '.join([self.__class__.__name__] + attrs)]
 
     def xml_end(self):
         return ['</%s>' % self.__class__.__name__]
@@ -288,37 +305,70 @@ class math(object):
             xml.extend(child.xml())
         return xml
 
+# >>> l2m.math(l2m.mn(2))
+# math(mn(2))
+# >>> l2m.math(l2m.mn(2)).xml()
+# ['<math>', '<mn>', 2, '</mn>', '</math>']
+#
+# >>> l2m.math(id='eq3')
+# math(id='eq3')
+# >>> l2m.math(id='eq3').xml()
+# ['<math id="eq3">', '</math>']
+#
+# use CLASS to get "class" in XML
+# >>> l2m.math(CLASS='test')
+# math(CLASS='test')
+# >>> l2m.math(CLASS='test').xml()
+# ['<math class="test">', '</math>']
+
+# >>> l2m.math(inline=True)
+# math(xmlns='http://www.w3.org/1998/Math/MathML')
+# >>> l2m.math(inline=True).xml()
+# ['<math xmlns="http://www.w3.org/1998/Math/MathML">', '</math>']
+# >>> l2m.math(inline=False)
+# math(xmlns='http://www.w3.org/1998/Math/MathML', display='block')
+# >>> l2m.math(inline=False).xml()
+# ['<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">', '</math>']
+
 class mrow(math):
     def xml_start(self):
-        return ['\n<%s>' % self.__class__.__name__]
+        return ['\n'] + super(mrow, self).xml_start()
+
+# >>> l2m.mrow(displaystyle='false')
+# mrow(displaystyle='false')
 
 class mtable(math):
     def xml_start(self):
-        return ['\n<%s>' % self.__class__.__name__]
+        return ['\n'] + super(mtable, self).xml_start()
+
+# >>> l2m.mtable(displaystyle='true')
+# mtable(displaystyle='true')
+# >>> l2m.math(l2m.mtable(displaystyle='true')).xml()
+# ['<math>', '\n', '<mtable displaystyle="true">', '</mtable>', '</math>']
 
 class mtr(mrow): pass
 class mtd(mrow): pass
 
 class mx(math):
-    """Base class for mo, mi, and mn"""
-
+    """Token Element: Base class for mo, mi, and mn.
+    """
     nchildren = 0
+    entity_table = {ord('<'): u'&lt;', ord('>'): u'&gt;'}
+
     def __init__(self, data):
         self.data = data
 
     def xml_body(self):
-        return [self.data]
-
-class mo(mx):
-    translation = {ord('<'): u'&lt;', ord('>'): u'&gt;'}
-    def xml_body(self):
-        return [self.data.translate(self.translation)]
-
-# >>> latex2mathml.mo(u'<').xml()
-# ['<mo>', '&lt;', '</mo>']
+        return [unicode(self.data).translate(self.entity_table)]
 
 class mi(mx): pass
 class mn(mx): pass
+class mo(mx): pass
+
+# >>> l2m.mo(u'<')
+# mo(<)
+# >>> l2m.mo(u'<').xml()
+# ['<mo>', '&lt;', '</mo>']
 
 class msub(math):
     nchildren = 2
@@ -390,6 +440,10 @@ class mtext(math):
     def xml_body(self):
         return [self.text]
 
+
+# LaTeX to MathML translation
+# ---------------------------
+
 def parse_latex_math(string, inline=True):
     """parse_latex_math(string [,inline]) -> MathML-tree
 
@@ -406,7 +460,8 @@ def parse_latex_math(string, inline=True):
         tree = math(node, inline=True)
     else:
         node = mtd()
-        tree = math(mtable(mtr(node)), inline=False)
+        content = mtable(mtr(node), displaystyle='true', CLASS='align')
+        tree = math(content, inline=False)
 
     while len(string) > 0:
         n = len(string)

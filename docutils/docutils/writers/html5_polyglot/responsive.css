@@ -45,6 +45,7 @@ body > * {
 p, ol, ul, dl, li,
 div.line-block,
 div.topic,
+div > math,
 table {
   margin-top: 0.5em;
   margin-bottom: 0.5em;
@@ -337,6 +338,12 @@ table.align-right {
 }
 .sidebar {
   width: 40%;
+}
+
+/* Math */
+/* for math-output=MathML (for math-output=HTML, see math.css) */
+mtable.align > mtr > mtd { /* emulate AMS "align" environment. */
+  text-align: left;   
 }
 
 /* Adaptive page layout */
