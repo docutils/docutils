@@ -295,6 +295,7 @@ mathord = {
     'angle': u'\u2220', # ∠ ANGLE
     'aquarius': u'\u2652', # ♒ AQUARIUS
     'aries': u'\u2648', # ♈ ARIES
+    'arrowvert': u'\u23d0', # ⏐ VERTICAL LINE EXTENSION
     'ast': u'*', # * ASTERISK
     'backepsilon': u'\u03f6', # ϶ GREEK REVERSED LUNATE EPSILON SYMBOL
     'backprime': u'\u2035', # ‵ REVERSED PRIME
@@ -307,6 +308,7 @@ mathord = {
     'blacksquare': u'\u25fc', # ◼ BLACK MEDIUM SQUARE
     'bot': u'\u22a5', # ⊥ UP TACK
     'boy': u'\u2642', # ♂ MALE SIGN
+    'bracevert': u'\u23aa', # ⎪ CURLY BRACKET EXTENSION
     'cancer': u'\u264b', # ♋ CANCER
     'capricornus': u'\u2651', # ♑ CAPRICORN
     'cdots': u'\u22ef', # ⋯ MIDLINE HORIZONTAL ELLIPSIS
@@ -347,6 +349,7 @@ mathord = {
     'leftturn': u'\u21ba', # ↺ ANTICLOCKWISE OPEN CIRCLE ARROW
     'leo': u'\u264c', # ♌ LEO
     'libra': u'\u264e', # ♎ LIBRA
+    'lmoustache': u'\u23b0', # ⎰ UPPER LEFT OR LOWER RIGHT CURLY BRACKET SECTION
     'lnot': u'\xac', # ¬ NOT SIGN
     'lozenge': u'\u25ca', # ◊ LOZENGE
     'male': u'\u2642', # ♂ MALE SIGN
@@ -369,6 +372,7 @@ mathord = {
     'quarternote': u'\u2669', # ♩ QUARTER NOTE
     'rightmoon': u'\u263d', # ☽ FIRST QUARTER MOON
     'rightturn': u'\u21bb', # ↻ CLOCKWISE OPEN CIRCLE ARROW
+    'rmoustache': u'\u23b1', # ⎱ UPPER RIGHT OR LOWER LEFT CURLY BRACKET SECTION
     'sagittarius': u'\u2650', # ♐ SAGITTARIUS
     'saturn': u'\u2644', # ♄ SATURN
     'scorpio': u'\u264f', # ♏ SCORPIUS

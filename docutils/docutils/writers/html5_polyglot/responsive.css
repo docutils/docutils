@@ -345,6 +345,9 @@ table.align-right {
 mtable.align > mtr > mtd { /* emulate AMS "align" environment. */
   text-align: left;   
 }
+mstyle.mathscr, mi.mathscr {
+  font-family: STIX;
+}
 
 /* Adaptive page layout */
 /* ==================== */
