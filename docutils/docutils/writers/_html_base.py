@@ -35,6 +35,7 @@ except ImportError:
 
 import docutils
 from docutils import frontend, languages, nodes, utils, writers
+from docutils.parsers.rst.directives import length_or_percentage_or_unitless
 from docutils.utils.error_reporting import SafeString
 from docutils.transforms import writer_aux
 from docutils.utils.math import (unichar2tex, pick_math_environment,
@@ -742,9 +743,8 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('</dd>\n')
 
     def visit_definition_list(self, node):
-        classes = node.setdefault('classes', [])
         if self.is_compactable(node):
-            classes.append('simple')
+            node.setdefault('classes', []).append('simple')
         self.body.append(self.starttag(node, 'dl'))
 
     def depart_definition_list(self, node):
@@ -879,12 +879,22 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('</ol>\n')
 
     def visit_field_list(self, node):
-        # Keep simple paragraphs in the field_body to enable CSS
-        # rule to start body on new line if the label is too long
-        classes = 'field-list'
+        atts = {}
+        classes = node.setdefault('classes', []) 
+        for i, cls in enumerate(classes):
+            if cls.startswith('field-indent-'):
+                try:
+                    indent_length = length_or_percentage_or_unitless(
+                                                        cls[13:], 'px')
+                except ValueError:
+                    break
+                atts['style'] = '--field-indent: %s;' % indent_length
+                classes.pop(i)
+                break
+        classes.append('field-list')
         if (self.is_compactable(node)):
-            classes += ' simple'
-        self.body.append(self.starttag(node, 'dl', CLASS=classes))
+            classes.append('simple')
+        self.body.append(self.starttag(node, 'dl', **atts))
 
     def depart_field_list(self, node):
         self.body.append('</dl>\n')
@@ -945,7 +955,6 @@ class HTMLTranslator(nodes.NodeVisitor):
             listnode['ids'] = []
             classes = 'footnote ' + self.settings.footnote_references
             self.body.append(self.starttag(listnode, 'dl', CLASS=classes))
-            # self.body.append('<dl class="%s">\n'%classes)
             self.in_footnote_list = True
 
     def depart_footnote(self, node):
@@ -1147,13 +1156,12 @@ class HTMLTranslator(nodes.NodeVisitor):
         classes = node.get('classes', [])
         if 'code' in classes:
             # filter 'code' from class arguments
-            node['classes'] = [cls for cls in classes if cls != 'code']
+            classes.pop(classes.index('code'))
             self.body.append(self.starttag(node, 'code', ''))
             return
         self.body.append(
             self.starttag(node, 'span', '', CLASS='docutils literal'))
         text = node.astext()
-        # remove hard line breaks (except if in a parsed-literal block)
         if not isinstance(node.parent, nodes.literal_block):
             text = text.replace('\n', ' ')
         # Protect text like ``--an-option`` and the regular expression
@@ -1165,8 +1173,7 @@ class HTMLTranslator(nodes.NodeVisitor):
             else:
                 self.body.append(self.encode(token))
         self.body.append('</span>')
-        # Content already processed:
-        raise nodes.SkipNode
+        raise nodes.SkipNode # content already processed
 
     def depart_literal(self, node):
         # skipped unless literal element is from "code" role:
@@ -1563,13 +1570,14 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_table(self, node):
         atts = {}
-        classes = [cls.strip(u' \t\n')
-                   for cls in self.settings.table_style.split(',')]
+        classes = node.setdefault('classes', [])
+        classes += [cls.strip(u' \t\n')
+                    for cls in self.settings.table_style.split(',')]
         if 'align' in node:
             classes.append('align-%s' % node['align'])
         if 'width' in node:
-            atts['style'] = 'width: %s' % node['width']
-        tag = self.starttag(node, 'table', CLASS=' '.join(classes), **atts)
+            atts['style'] = 'width: %s;' % node['width']
+        tag = self.starttag(node, 'table', **atts)
         self.body.append(tag)
 
     def depart_table(self, node):

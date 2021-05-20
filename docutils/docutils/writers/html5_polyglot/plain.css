@@ -24,6 +24,7 @@
 body {
   margin: 0;
   background-color: #dbdbdb;
+  --field-indent: 9em; /* default indent of fields in field lists */
 }
 main, footer, header {
   line-height:1.3;
@@ -98,9 +99,14 @@ dl.description > dd:after {
 
 /* Field Lists */
 
+dl.field-list > dd,
+dl.docinfo > dd {
+  margin-left: var(--field-indent); /* adapted in media queries or HTML */
+}
+
 /* example for custom field-name width */
 dl.field-list.narrow > dd {
-  margin-left: 5em;
+  --field-indent: 5em;
 }
 /* run-in: start field-body on same line after long field names */
 dl.field-list.run-in > dd p {

@@ -1179,7 +1179,7 @@ empty: <span class="docutils literal"><span class="pre">--&gt;</span></span></p>
 <section id="list-tables">
 <h3><a class="toc-backref" href="#toc-entry-41"><span class="sectnum">2.22</span> List Tables</a></h3>
 <p>Here's a list table exercising all features:</p>
-<table class="colwidths-given test" style="width: 95%">
+<table class="colwidths-given test" style="width: 95%;">
 <caption>list table with integral header</caption>
 <colgroup>
 <col style="width: 26%" />
@@ -1350,7 +1350,7 @@ encyclopedias etc. (as well as the LaTeX <cite>description</cite> environment).<
 <section id="field-list-variants">
 <h4><a class="toc-backref" href="#toc-entry-47"><span class="sectnum">3.2.2</span> Field List Variants</a></h4>
 <p>For field lists, the &quot;compact/open&quot;, &quot;narrow&quot; and &quot;run-in&quot; styles are defined
-in the style sheet <span class="docutils literal">plain.css</span>.</p>
+in the style sheets <span class="docutils literal">plain.css</span> and <span class="docutils literal">responsive.css</span>.</p>
 <dl class="simple">
 <dt><em>compact</em></dt>
 <dd><dl class="compact field-list simple">
@@ -1391,6 +1391,20 @@ option and the corresponding configuration setting)</p>
 <dt>A long field name<span class="colon">:</span></dt>
 <dd><p>sticks into the field body and the field body starts on a
 new line (if not combined with <a class="reference internal" href="#run-in">run-in</a>).</p>
+</dd>
+</dl>
+</dd>
+<dt>custom <em>field-indent</em></dt>
+<dd><dl class="field-list simple" style="--field-indent: 3em;">
+<dt>Feature<span class="colon">:</span></dt>
+<dd><p>Field body indented by custom amount.</p>
+</dd>
+<dt>Use<span class="colon">:</span></dt>
+<dd><p>class value starting with <span class="docutils literal"><span class="pre">field-indent-</span></span> followed by
+a valid lenght, e.g. <span class="docutils literal"><span class="pre">field-indent-3em</span></span>.</p>
+</dd>
+<dt>The writer<span class="colon">:</span></dt>
+<dd><p>will convert this class value to a <span class="docutils literal">style</span> attribute setting.</p>
 </dd>
 </dl>
 </dd>
