@@ -34,7 +34,14 @@ from docutils.utils.math import tex2unichar
 
 # Character data
 # --------------
-#
+
+# Named XML entities for invalid and invisible characters
+xml_entities = {ord('<'): u'&lt;',
+                ord('>'): u'&gt;',
+                ord('&'): u'&amp;',
+                0x2061:   u'&ApplyFunction;',
+               }
+
 # LaTeX math macro to Unicode mappings.
 # Character categories.
 
@@ -253,12 +260,21 @@ class math(object):
 
     nchildren = None
     """Expected number of children or None"""
+    # cf. https://www.w3.org/TR/MathML3/chapter3.html#id.3.1.3.2
     parent = None
     """Parent node in MathML DOM tree."""
     _level = 0 # indentation level (static class variable)
 
     def __init__(self, *children, **attributes):
-        """Set up node with `children` and `attributes`."""
+        """Set up node with `children` and `attributes`.
+
+        Attributes are downcased: Use CLASS to get "class" in XML
+        >>> math(mn(3), CLASS='test')
+        math(mn(3), CLASS='test')
+        >>> math(CLASS='test').toprettyxml()
+        '<math class="test">\n</math>'
+
+        """
         self.children = []
         for child in children:
             self.append(child)
@@ -279,36 +295,39 @@ class math(object):
             content += ["%s='%s'"%(k, v) for k, v in self.attributes.items()]
         return self.__class__.__name__ + '(%s)' % ', '.join(content)
 
+    def __len__(self):
+        return len(self.children)
+
     def full(self):
         """Return boolean indicating whether children may be appended."""
         return (self.nchildren is not None
-                and len(self.children) >= self.nchildren)
+                and len(self) >= self.nchildren)
 
     def append(self, child):
         """Append child and return self or first non-full parent.
-        
+
         If self is full, go up the tree and return first non-full node or
         `None`.
         """
-        assert not self.full()
+        if self.full():
+            raise SyntaxError('Node %s already full!' % self)
         self.children.append(child)
         child.parent = self
-        node = self
-        while node is not None and node.full():
-            node = node.parent
-        return node
+        if self.full():
+            return self.close()
+        return self
 
     def close(self):
-        """Close element and return first non-full parent."""
+        """Close element and return first non-full parent or None."""
         parent = self.parent
-        while parent.full():
+        while parent is not None and parent.full():
             parent = parent.parent
         return parent
-    
+
     def toprettyxml(self):
         """Return XML representation of self as string."""
         return ''.join(self._xml())
-                       
+
     def _xml(self, level=0):
         return ([self.xml_starttag()]
                 + self._xml_body(level)
@@ -328,24 +347,22 @@ class math(object):
         xml.extend(['\n', '  ' * level])
         return xml
 
-# >>> math(mn(2))
+# >>> n2 = math(mn(2))
+# >>> n2
 # math(mn(2))
-# >>> math(mn(2)).toprettyxml()
+# >>> n2.toprettyxml()
 # '<math>\n  <mn>2</mn>\n</math>'
-#
-# >>> math(id='eq3')
+# >>> len(n2)
+# 1
+# >>> eq3 = math(id='eq3')
+# >>> eq3
 # math(id='eq3')
-# >>> math(id='eq3').toprettyxml()
+# >>> eq3.toprettyxml()
 # '<math id="eq3">\n</math>'
-#
-# use CLASS to get "class" in XML
-# >>> math(CLASS='test')
-# math(CLASS='test')
-# >>> math(CLASS='test').toprettyxml()
-# '<math class="test">\n</math>'
-
-# >>> math(xmlns='http://www.w3.org/1998/Math/MathML').toprettyxml()
-# '<math xmlns="http://www.w3.org/1998/Math/MathML">\n</math>'
+# >>> len(eq3)
+# 0
+# >>> math(CLASS='bold').xml_starttag()
+# '<math class="bold">'
 
 class mrow(math):
     """Group sub-expressions as a horizontal row."""
@@ -369,16 +386,18 @@ class mtr(mrow): pass
 class mtd(mrow): pass
 
 class MathToken(math):
-    """Token Element: Base class for mo, mi, and mn."""
+    """Token Element: contains data instead of children.
+
+    Base class for mo, mi, and mn.
+    """
     nchildren = 0
-    entity_table = {ord('<'): u'&lt;', ord('>'): u'&gt;'}
 
     def __init__(self, data, **attributes):
         self.data = data
         super(MathToken, self).__init__(**attributes)
 
     def _xml_body(self, level=0):
-        return [unicode(self.data).translate(self.entity_table)]
+        return [unicode(self.data).translate(xml_entities)]
 
 class mi(MathToken): pass
 class mn(MathToken): pass
@@ -396,19 +415,21 @@ class MathScriptOrLimit(math):
 
     def __init__(self, *children, **kwargs):
         """Set up sub/superscript or limit elements.
-        
+
         The special attribute `reversed` tells that the
         base and index sub-elements are in reversed order
         (i.e. as in LaTeX) and will be switched on XML-export.
         """
         self.reversed = kwargs.pop('reversed', False)
         math.__init__(self, *children, **kwargs)
-        
-    def _xml(self, level=0):
-        if self.reversed:
+
+    def append(self, child):
+        new_current = super(MathScriptOrLimit, self).append(child)
+        # normalize order if full
+        if self.reversed and self.full():
             self.children.reverse()
             self.reversed = False
-        return super(MathScriptOrLimit, self)._xml(level)
+        return new_current
 
 class msub(MathScriptOrLimit): pass
 class msup(MathScriptOrLimit): pass
@@ -422,8 +443,15 @@ class munderover(MathScriptOrLimit):
 
 # >>> munder(mi('lim'), mo('-'), accent='false')
 # munder(mi('lim'), mo('-'), accent='false')
-# >>> munder(mo('-'), mi('lim'), accent='false', reversed=True)
-# munder(mo('-'), mi('lim'), reversed=True, accent='false')
+# >>> mu = munder(mo('-'), accent='false', reversed=True)
+# >>> mu
+# munder(mo('-'), reversed=True, accent='false')
+# >>> mu.append(mi('lim'))
+# >>> mu
+# munder(mi('lim'), mo('-'), accent='false')
+# >>> mu.append(mi('lim'))
+# Traceback (most recent call last):
+# SyntaxError: Node munder(mi('lim'), mo('-'), accent='false') already full!
 # >>> munder(mo('-'), mi('lim'), accent='false', reversed=True).toprettyxml()
 # '<munder accent="false">\n  <mi>lim</mi>\n  <mo>-</mo>\n</munder>'
 # >>> msub(mi('x'), mo('-'))
@@ -473,9 +501,6 @@ def tex_cmdname(string):
 # >>> tex_cmdname('') # empty string
 # ('', '')
 
-#
-# --- https://www.w3.org/TR/MathML3/chapter3.html#id.3.1.3.2
-
 def tex_token(string):
     """Return first simple TeX token and remainder of `string`.
 
@@ -485,7 +510,7 @@ def tex_token(string):
     ('\\command', '{without argument}')
     >>> tex_token(' first non-white character')
     ('f', 'irst non-white character')
-    
+
     """
     m = re.match(r"""\s*                  # leading whitespace
                  {(?P<token>(\\}|[^{}]|\\{)*)} # {group} without nested groups
@@ -521,29 +546,51 @@ def tex_token(string):
 # >>> tex_token('') # empty string.
 # ('', '')
 
+def tex_optarg(string):
+    """Return optional argument and remainder.
 
-def parse_latex_math(string, inline=True):
-    """Return a MathML-tree parsed from `string`.
+    >>> tex_optarg('[optional argument] returned without brackets')
+    ('optional argument', ' returned without brackets')
+    >>> tex_optarg('{empty string, if there is no optional arg}')
+    ('', '{empty string, if there is no optional arg}')
 
-    >>> parse_latex_math('\\alpha')
-    math(mi('α'), xmlns='http://www.w3.org/1998/Math/MathML')
+    """
+    m = re.match(r"""\s*                            # leading whitespace
+                 \[(?P<optarg>(\\]|[^\[\]]|\\])*)\] # [group] without nested groups
+                 (?P<remainder>.*$)
+                 """, string, re.VERBOSE)
+    if m is None and not string.startswith('['):
+        return '', string
+    try:
+        return m.group('optarg'), m.group('remainder')
+    except AttributeError:
+        raise SyntaxError('Could not extract optional argument from %r' % string)
+
+# Test:
+# >>> tex_optarg('[optional argument] after whitespace')
+# ('optional argument', ' after whitespace')
+# >>> tex_optarg('[missing right bracket')
+# Traceback (most recent call last):
+# SyntaxError: Could not extract optional argument from '[missing right bracket'
+# >>> tex_optarg('[group with [nested group]]')
+# Traceback (most recent call last):
+# SyntaxError: Could not extract optional argument from '[group with [nested group]]'
+
+
+def parse_latex_math(node, string):
+    """Append MathML conversion of `string` to `node`.
+
+    Return current node.
+
+    >>> parse_latex_math(math(), r'\alpha')
+    math(mi('α'))
+    >>> parse_latex_math(math(), r'{')
+    mrow()
 
     Set `inline` to False for displayed math.
     """
-
     # Normalize white-space:
     string = ' '.join(string.split())
-
-    # Set up: tree is the whole tree and node is the current element.
-    if inline:
-        node = math(xmlns='http://www.w3.org/1998/Math/MathML')
-        tree = node
-    else:
-        # block: emulate align* environment with a math table
-        node = mtd()
-        lines = mtable(mtr(node), displaystyle='true', CLASS='align')
-        tree = math(lines, display='block',
-                    xmlns='http://www.w3.org/1998/Math/MathML')
 
     while len(string) > 0:
         # Take of first character:
@@ -603,28 +650,25 @@ def parse_latex_math(string, inline=True):
             node = entry
         else:
             raise SyntaxError(u'Illegal character: "%s"' % c)
-    return tree
+    return node
 
 # Test:
 
-# >>> parse_latex_math('', inline=True)
+# >>> parse_latex_math(math(xmlns='http://www.w3.org/1998/Math/MathML'), '')
 # math(xmlns='http://www.w3.org/1998/Math/MathML')
-# >>> parse_latex_math('', inline=False)
-# math(mtable(mtr(mtd()), CLASS='align', displaystyle='true'), display='block', xmlns='http://www.w3.org/1998/Math/MathML')
-# >>> parse_latex_math(' \\sqrt{ \\alpha}')
-# math(msqrt(mi('α')), xmlns='http://www.w3.org/1998/Math/MathML')
-# >>> parse_latex_math('\\alpha', inline=False)
-# math(mtable(mtr(mtd(mi('α'))), CLASS='align', displaystyle='true'), display='block', xmlns='http://www.w3.org/1998/Math/MathML')
-# >>> parse_latex_math('\\sqrt 2 \\ne 3')
-# math(msqrt(mn('2')), mo('≠'), mn('3'), xmlns='http://www.w3.org/1998/Math/MathML')
-# >>> parse_latex_math('\\sqrt{2 + 3} < 3')
-# math(msqrt(mn('2'), mo('+'), mn('3')), mo('<'), mn('3'), xmlns='http://www.w3.org/1998/Math/MathML')
+# >>> parse_latex_math(math(), ' \\sqrt{ \\alpha}')
+# math(msqrt(mi('α')))
+# >>> parse_latex_math(math(), '\\sqrt 2 \\ne 3')
+# math(msqrt(mn('2')), mo('≠'), mn('3'))
+# >>> parse_latex_math(math(), '\\sqrt{2 + 3} < 3')
+# math(msqrt(mn('2'), mo('+'), mn('3')), mo('<'), mn('3'))
 
 def handle_keyword(name, node, string):
-    """Process LaTeX macro `name` followed by `string`.
+    """Process LaTeX command `name` followed by `string`.
 
-    If needed, parse `string` for macro argument.
-    Return updated current node and remainder of `string`:
+    Append result to `node`.
+    If needed, parse `string` for command argument.
+    Return new current node and remainder of `string`:
 
     >>> handle_keyword('hbar', math(), r' \frac')
     (math(mi('ℏ')), ' \\frac')
@@ -654,26 +698,25 @@ def handle_keyword(name, node, string):
         if name == 'operatorname':
             # custom function name ``\operatorname{abs}(x)``
             arg, string = tex_token(string)
-            identifier = mi(arg, mathvariant='normal')
+            new_node = mi(arg, mathvariant='normal')
         else:
-            identifier = mi(functions[name])
+            new_node = mi(functions[name])
         # functions with embellished names
         if name == 'varliminf':    # \underline\lim
-            identifier = munder(identifier, mo(u'_'))
+            new_node = munder(new_node, mo(u'_'))
         elif name == 'varlimsup':  # \overline\lim
-            identifier = mover(identifier, mo(u'¯'), accent='false')
+            new_node = mover(new_node, mo(u'¯'), accent='false')
         elif name == 'varprojlim': # \underleftarrow\lim
-            identifier = munder(identifier, mo(u'\u2190'))
+            new_node = munder(new_node, mo(u'\u2190'))
         elif name == 'varinjlim':  # \underrightarrow\lim
-            identifier = munder(identifier, mo(u'\u2192'))
+            new_node = munder(new_node, mo(u'\u2192'))
 
-        node = node.append(identifier)
-        # TODO: only add ApplyFunction when appropriate (not \sin ^2(x), say)
-        arg, remainder = tex_token(string)
-        if arg not in ('^', '_'):
-            node = node.append(mo('&ApplyFunction;')) # '\u2061'
+        node = node.append(new_node)
+        # add ApplyFunction when appropriate (not \sin^2(x), say)
+        # cf. https://www.w3.org/TR/MathML3/chapter3.html#presm.mi
+        if string and string[0] not in ('^', '_'):
+            node = node.append(mo(u'\u2061')) # &ApplyFunction;
         return node, string
-
 
     if name in math_alphabets:
         arg, remainder = tex_token(string)
@@ -764,8 +807,7 @@ def handle_keyword(name, node, string):
 
     if name in ('text', 'mbox', 'textrm'):
         arg, string = tex_token(string)
-        # text = arg.replace(' ', '&nbsp;', 1).replace(' ', '&nbsp;', 1)
-        text = re.sub('(^ | $)', '&nbsp;', arg)
+        text = re.sub('(^ | $)', u'\u00a0', arg)
         node = node.append(mtext(text))
         return node, string
 
@@ -784,23 +826,23 @@ def handle_keyword(name, node, string):
     # ==================================
 
     if name == 'sqrt':
-        sqrt = msqrt()
+        new_node = msqrt()
         if string.startswith('{'): # argument is a group
             string = string[1:] # mrow implied, skip opening bracket
         else: # no group, enclose only one element
-            sqrt.nchildren = 1
-        node.append(sqrt)
-        return sqrt, string
+            new_node.nchildren = 1
+        node.append(new_node)
+        return new_node, string
 
     if name == 'frac':
-        frac = mfrac()
-        node.append(frac)
-        return frac, string
+        new_node = mfrac()
+        node.append(new_node)
+        return new_node, string
 
     if name == '\\': # end of a row
         entry = mtd()
-        row = mtr(entry)
-        node.close().close().append(row)
+        new_node = mtr(entry)
+        node.close().close().append(new_node)
         return entry, string
 
     if name in accents or name in over:
@@ -810,14 +852,39 @@ def handle_keyword(name, node, string):
         except KeyError:
             ch = accents[name]
             acc = 'true'
-        ovr = mover(mo(ch), reversed=True, accent=acc)
-        node.append(ovr)
-        return ovr, string
+        new_node = mover(mo(ch), reversed=True, accent=acc)
+        node.append(new_node)
+        return new_node, string
+
+    if name == 'overset':
+        new_node = mover(reversed=True)
+        node.append(new_node)
+        return new_node, string
 
     if name in under:
-        ovr = munder(mo(under[name]), reversed=True)
-        node.append(ovr)
-        return ovr, string
+        new_node = munder(mo(under[name]), reversed=True)
+        node.append(new_node)
+        return new_node, string
+
+    if name == 'underset':
+        new_node = munder(reversed=True)
+        node.append(new_node)
+        return new_node, string
+
+    if name in ('xleftarrow', 'xrightarrow'):
+        subscript, string = tex_optarg(string)
+        base = mo(operators[name[1:]])
+        if subscript:
+            new_node = munderover(base)
+            sub_node = mrow()
+            parse_latex_math(sub_node, subscript)
+            if len(sub_node) == 1:
+                sub_node = sub_node.children[0]
+            new_node.append(sub_node)
+        else:
+            new_node = mover(base)
+        node.append(new_node)
+        return new_node, string
 
     if name == 'begin':
         env_name, string = tex_token(string)
@@ -859,7 +926,7 @@ def handle_keyword(name, node, string):
 # >>> handle_keyword('not', math(), '\\equiv \\alpha)') # cmd
 # (math(mo('≢')), '\\alpha)')
 # >>> handle_keyword('text', math(), '{ for } i>0') # group
-# (math(mtext('&nbsp;for&nbsp;')), ' i>0')
+# (math(mtext('\xa0for\xa0')), ' i>0')
 # >>> handle_keyword('text', math(), '{B}T') # group
 # (math(mtext('B')), 'T')
 # >>> handle_keyword('text', math(), '{number of apples}}') # group
@@ -867,11 +934,11 @@ def handle_keyword(name, node, string):
 # >>> handle_keyword('text', math(), 'i \\sin(x)') # single char
 # (math(mtext('i')), ' \\sin(x)')
 # >>> handle_keyword('sin', math(), '(\\alpha)')
-# (math(mi('sin'), mo('&ApplyFunction;')), '(\\alpha)')
+# (math(mi('sin'), mo('\u2061')), '(\\alpha)')
 # >>> handle_keyword('sin', math(), ' \\alpha')
-# (math(mi('sin'), mo('&ApplyFunction;')), ' \\alpha')
+# (math(mi('sin'), mo('\u2061')), ' \\alpha')
 # >>> handle_keyword('operatorname', math(), '{abs}(x)')
-# (math(mi('abs', mathvariant='normal'), mo('&ApplyFunction;')), '(x)')
+# (math(mi('abs', mathvariant='normal'), mo('\u2061')), '(x)')
 # >>> handle_keyword('mathrm', math(), '\\alpha')
 # (math(mi('α', mathvariant='normal')), '')
 # >>> handle_keyword('mathrm', math(), '{out} = 3')
@@ -880,6 +947,10 @@ def handle_keyword(name, node, string):
 # (mover(mo('¯'), reversed=True, accent='false'), '{981}')
 # >>> handle_keyword('bar', math(), '{x}')
 # (mover(mo('ˉ'), reversed=True, accent='true'), '{x}')
+# >>> handle_keyword('xleftarrow', math(), r'[\alpha]{10}')
+# (munderover(mo('←'), mi('α')), '{10}')
+# >>> handle_keyword('xleftarrow', math(), r'[\alpha=5]{10}')
+# (munderover(mo('←'), mrow(mi('α'), mo('='), mn('5'))), '{10}')
 
 
 def tex2mathml(tex_math, inline=True):
@@ -887,6 +958,28 @@ def tex2mathml(tex_math, inline=True):
 
     Set `inline` to False for displayed math.
     """
+    # Set up tree
+    tree = node = math(xmlns='http://www.w3.org/1998/Math/MathML')
+    if not inline:
+        # block: emulate align* environment with a math table
+        tree.attributes['display']='block'
+        node = mtd()
+        tree.append(mtable(mtr(node), displaystyle='true', CLASS='align'))
 
-    mathml_tree = parse_latex_math(tex_math, inline=inline)
-    return mathml_tree.toprettyxml()
+    parse_latex_math(node, tex_math)
+    return tree.toprettyxml()
+
+# >>> print(tex2mathml('3'))
+# <math xmlns="http://www.w3.org/1998/Math/MathML">
+#   <mn>3</mn>
+# </math>
+# >>> print(tex2mathml('3', inline=False))
+# <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+#   <mtable class="align" displaystyle="true">
+#     <mtr>
+#       <mtd>
+#         <mn>3</mn>
+#       </mtd>
+#     </mtr>
+#   </mtable>
+# </math>

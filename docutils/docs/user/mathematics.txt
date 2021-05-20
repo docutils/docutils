@@ -380,9 +380,14 @@ Named operators
   ========= ===========  ========= ===========  ============= ================
 
 Named operators outside the above list can be typeset with
-``\operatorname{name}``, e.g. `\operatorname{sgn}(-3) = -1`.
+``\operatorname{name}``, e.g.
 
-.. TODO: ``\DeclareMathOperator``
+.. math:: \operatorname{sgn}(-3) = -1.
+
+The ``\DeclareMathOperator`` command can only be used in the
+`LaTeX preamble`_.
+
+.. _LaTeX preamble: latex.html#latex-preamble
 
 Punctuation
 -----------
@@ -406,25 +411,45 @@ Arrows
 ~~~~~~
 .. class:: colwidths-auto
 
-  ===================== =======================  ===================== =======================
-  `\leftarrow`          ``\leftarrow``           `\Leftarrow`          ``\Leftarrow``
-  `\rightarrow`         ``\rightarrow``          `\Rightarrow`         ``\Rightarrow``
-  `\leftrightarrow`     ``\leftrightarrow``      `\Leftrightarrow`     ``\Leftrightarrow``
+  ====================== ========================  ===================== =======================
+  `\circlearrowleft`     ``\circlearrowleft``      `\circlearrowright`   ``\circlearrowright``
+  `\curvearrowleft`      ``\curvearrowleft``       `\curvearrowright`    ``\curvearrowright``
+  `\hookleftarrow`       ``\hookleftarrow``        `\hookrightarrow`     ``\hookrightarrow``
+  `\leftarrow`           ``\leftarrow``            `\rightarrow`         ``\rightarrow``
+  `\Leftarrow`           ``\Leftarrow``            `\Rightarrow`         ``\Rightarrow``
+  `\leftarrowtail`       ``\leftarrowtail``        `\rightarrowtail`     ``\rightarrowtail``
+  `\leftharpoondown`     ``\leftharpoondown``      `\rightharpoondown`   ``\rightharpoondown``
+  `\leftharpoonup`       ``\leftharpoonup``        `\rightharpoonup`     ``\rightharpoonup``
+  `\leftleftarrows`      ``\leftleftarrows``       `\rightrightarrows`   ``\rightrightarrows``
+  `\leftrightarrow`      ``\leftrightarrow``       `\Leftrightarrow`     ``\Leftrightarrow``
+  `\leftrightarrows`     ``\leftrightarrows``      `\rightleftarrows`    ``\rightleftarrows``
+  `\leftrightharpoons`   ``\leftrightharpoons``    `\rightleftharpoons`  ``\rightleftharpoons``
+  `\leftrightsquigarrow` ``\leftrightsquigarrow``  `\rightsquigarrow`    ``\rightsquigarrow``
+  `\Lleftarrow`          ``\Lleftarrow``           `\Rrightarrow`        ``\Rrightarrow``
+  `\longleftarrow`       ``\longleftarrow``        `\longrightarrow`     ``\longrightarrow``
+  `\Longleftarrow`       ``\Longleftarrow``        `\Longrightarrow`     ``\Longrightarrow``
+  `\longleftrightarrow`  ``\longleftrightarrow``   `\Longleftrightarrow` ``\Longleftrightarrow``
+  `\looparrowleft`       ``\looparrowleft``        `\looparrowright`     ``\looparrowright``
+  `\Lsh`                 ``\Lsh``                  `\Rsh`                ``\Rsh``
+  `\mapsto`              ``\mapsto``               `\longmapsto`         ``\longmapsto``
+  `\multimap`            ``\multimap``
+  `\nleftarrow`          ``\nleftarrow``           `\nrightarrow`        ``\nrightarrow``
+  `\nLeftarrow`          ``\nLeftarrow``           `\nRightarrow`        ``\nRightarrow``
+  `\nleftrightarrow`     ``\nleftrightarrow``      `\nLeftrightarrow`    ``\nLeftrightarrow``
+  `\nwarrow`             ``\nwarrow``              `\nearrow`            ``\nearrow``               
+  `\swarrow`             ``\swarrow``              `\searrow`            ``\searrow``               
+  `\twoheadleftarrow`    ``\twoheadleftarrow``     `\twoheadrightarrow`  ``\twoheadrightarrow``
+  `\upharpoonleft`       ``\upharpoonleft``        `\upharpoonright`     ``\upharpoonright``
+  `\downharpoonleft`     ``\downharpoonleft``      `\downharpoonright`   ``\downharpoonright``
+  `\upuparrows`          ``\upuparrows``           `\downdownarrows`     ``\downdownarrows``       
+  ====================== ========================  ===================== =======================
 
-  `\longleftarrow`      ``\longleftarrow``       `\Longleftarrow`      ``\Longleftarrow``
-  `\longrightarrow`     ``\longrightarrow``      `\Longrightarrow`     ``\Longrightarrow``
-  `\longleftrightarrow` ``\longleftrightarrow``  `\Longleftrightarrow` ``\Longleftrightarrow``
 
-  `\nearrow`            ``\nearrow``             `\leftharpoonup`      ``\leftharpoonup``
-  `\searrow`            ``\searrow``             `\rightharpoonup`     ``\rightharpoonup``
-  `\swarrow`            ``\swarrow``             `\leftharpoondown`    ``\leftharpoondown``
-  `\nwarrow`            ``\nwarrow``             `\rightharpoondown`   ``\rightharpoondown``
 
-  `\mapsto`             ``\mapsto``              `\hookleftarrow`      ``\hookleftarrow``
-  `\longmapsto`         ``\longmapsto``          `\hookrightarrow`     ``\hookrightarrow``
-  ===================== =======================  ===================== =======================
 
-.. TODO: amsmath arrows (see math-guide)
+
+Synonyms: `\gets` ``\gets``, `\to` ``\to``, `\restriction` ``\restriction``.
+
 
 Comparison
 ~~~~~~~~~~
@@ -533,18 +558,20 @@ accommodate unusually wide subscripts or superscripts. These commands
 take one optional argument (the subscript) and one mandatory argument
 (the superscript, possibly empty)::
 
-  \xleftarrow{n+\mu-1}\quad \xrightarrow[T]{n\pm i-1}
+  A \xleftarrow{n+\mu-1} B \xrightarrow[T]{n\pm i-1} C
 
-TODO
+results in 
+
+.. math:: A \xleftarrow{n+\mu-1} B \xrightarrow[T]{n\pm i-1} C
 
 Affixing symbols to other symbols
 ---------------------------------
 
-In addition to the standard `accents and embellishments`_, other symbols can
-be placed above or below a base symbol with the \overset and \underset
-commands.
+In addition to the standard `accents and embellishments`_, other symbols
+can be placed above or below a base symbol with the ``\overset`` and
+``\underset`` commands. For example, writing ``\overset{*}{X}`` becomes
+`\overset{*}{X}` and ``\underset{+}{M}`` becomes `\underset{+}{M}`.
 
-TODO
 
 Matrices
 --------
@@ -561,8 +588,8 @@ Result:
 .. math::
 
   \left(\begin{matrix} a & b \\ c & d \end{matrix}\right)
-  
-.. TODO: small matrices, matrices with delimiters built in?  
+
+.. TODO: small matrices, matrices with delimiters built in?
 
 For piecewise function definitions there is a cases environment:
 
@@ -670,20 +697,15 @@ The elements <msqrt>, <mstyle>, <merror>, <mpadded>, <mphantom>, <menclose>,
 <mtd>, <mscarry>, and <math> treat their contents as a single inferred mrow
 formed from all their children.
 
-.. math:: a = \sqrt 2 + x, b = \sqrt{1+x^2}, c = \sqrt\frac{sin(x)}{23},
+.. math:: a = \sqrt 2 + x, b = \sqrt{1+x^2}, c = \sqrt\frac{\sin(x)}{23},
 
 
-inline: :math:`a = \sqrt 2 + x, b = \sqrt{1+x^2}, c = \sqrt\frac{sin(x)}{23}`.
+inline: :math:`a = \sqrt 2 + x, b = \sqrt{1+x^2}, c = \sqrt\frac{\sin(x)}{23}`.
 
 Accents vs. embellishments
 --------------------------
 
-MathML with Firefox 78 drops dots on "i" and "j" with accents:
-
-.. math:: \vec i \ne \overrightarrow i
-          \text{ and } \vec\lim \ne \overrightarrow\lim.
-
-Accents should be nearer to the base (in MathML Firefox 78, it's vice versa!): 
+Accents should be nearer to the base (in MathML Firefox 78, it's vice versa!):
 `\vec a \overrightarrow a, \vec l \overrightarrow l, \vec i \overrightarrow i`
 and `\bar a \overline a, \bar l \overline l, \bar i \overline i`.
 
