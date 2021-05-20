@@ -180,18 +180,15 @@ Extensible delimiters
 ---------------------
 Unless you indicate otherwise, delimiters in math formulas remain at the
 standard size regardless of the height of the enclosed material. To get
-adaptable sizes, use ``\left`` and ``\right`` prefixes.
+adaptable sizes, use ``\left`` and ``\right`` prefixes, for example
+`g(A,B,Y) = f \left(A,B,X=h^{[X]}(Y)\right)` or
 
-.. math::
-
-   g(A,B,Y) = f \left(A,B,X=h^{[X]}(Y)\right)
+.. math:: a_n = \left(\frac{1}{2}\right)^n
 
 Use ``.`` for "empty" delimiters:
 
-.. math::
+.. math:: A = \left . \frac{1}{1-n}\, \right |_{n=0}^\infty
 
-   A = \left . \frac{1}{1-n}\, \right |_{n=0}^\infty
-   
 The following symbols extend when used with ``\left`` and ``\right``:
 
 Pairing delimiters
@@ -225,10 +222,9 @@ Nonpairing delimiters
 
 The use of ``|`` and ``\|`` for pairs of vertical bars may produce
 incorrect spacing, e.g., ``|k|=|-k|`` produces `|k| = |−k|` and
-``|\sin(x)|`` produces `|\sin(x)|`. The pairing delimiters, e.g. 
-`\lvert -k\rvert` 
-and `\lvert\sin(x)\rvert`, prevent this problem (in LaTeX and
-MathJax).
+``|\sin(x)|`` produces `|\sin(x)|`. The pairing delimiters, e.g.
+`\lvert -k\rvert` and `\lvert\sin(x)\rvert`, prevent this problem
+(in LaTeX and MathJax).
 
 Vertical Arrows
 ~~~~~~~~~~~~~~~
@@ -437,12 +433,12 @@ Arrows
   `\nleftarrow`          ``\nleftarrow``           `\nrightarrow`        ``\nrightarrow``
   `\nLeftarrow`          ``\nLeftarrow``           `\nRightarrow`        ``\nRightarrow``
   `\nleftrightarrow`     ``\nleftrightarrow``      `\nLeftrightarrow`    ``\nLeftrightarrow``
-  `\nwarrow`             ``\nwarrow``              `\nearrow`            ``\nearrow``               
-  `\swarrow`             ``\swarrow``              `\searrow`            ``\searrow``               
+  `\nwarrow`             ``\nwarrow``              `\nearrow`            ``\nearrow``
+  `\swarrow`             ``\swarrow``              `\searrow`            ``\searrow``
   `\twoheadleftarrow`    ``\twoheadleftarrow``     `\twoheadrightarrow`  ``\twoheadrightarrow``
   `\upharpoonleft`       ``\upharpoonleft``        `\upharpoonright`     ``\upharpoonright``
   `\downharpoonleft`     ``\downharpoonleft``      `\downharpoonright`   ``\downharpoonright``
-  `\upuparrows`          ``\upuparrows``           `\downdownarrows`     ``\downdownarrows``       
+  `\upuparrows`          ``\upuparrows``           `\downdownarrows`     ``\downdownarrows``
   ====================== ========================  ===================== =======================
 
 
@@ -561,7 +557,7 @@ take one optional argument (the subscript) and one mandatory argument
 
   A \xleftarrow{n+\mu-1} B \xrightarrow[T]{n\pm i-1} C
 
-results in 
+results in
 
 .. math:: A \xleftarrow{n+\mu-1} B \xrightarrow[T]{n\pm i-1} C
 
@@ -624,13 +620,13 @@ Roots and Fractions
 
 .. class:: colwidths-auto
 
-  =====================  ==============================  ============================
-  command                example                         result
-  =====================  ==============================  ============================
-  ``\sqrt``              ``\sqrt{x^2-1}``                `\sqrt{x^2-1}`
-  ``\frac``              ``\frac{1}{2}``                 `\frac{1}{2}`
-  ``\left``, ``\right``  ``\left(\frac{1}{2}\right)^n``  `\left(\frac{1}{2}\right)^n`
-  =====================  ==============================  ============================
+  =========  ====================  ==================
+  command    example               result
+  =========  ====================  ==================
+  ``\sqrt``  ``\sqrt{x^2-1}``      `\sqrt{x^2-1}`
+  ..         ``\sqrt[3n]{x^2-1}``  `\sqrt[3n]{x^2-1}`
+  ``\frac``  ``\frac{1}{1-x}``       `\frac{1}{1-x}`
+  =========  ====================  ==================
 
 Text
 ====
@@ -648,8 +644,6 @@ Whitespace is kept inside the argument:
 Currently, math in text is not supported by LaTeX2MathML.
 
 
-
-
 ToDo
 ====
 
@@ -657,10 +651,9 @@ internal LaTeX2MathML
 
 * Math inside text: ``n - 1 \text{if $n$ is odd}``.
 * Remove circular refs.
-* Decimal numbers.
-* Implement ``\circledS``? (in short-math-guide.pdf but not in
-  the Unicode `Mathematical Character Repertoire`__)
-* ``\DeclareMathOperator``
+* Implement ``\circledS``? Ⓢ (and other characters
+  in the short-math-guide.pdf but not in the
+  Unicode `Mathematical Character Repertoire`__)
 
 __ http://www.unicode.org/reports/tr25/
 
