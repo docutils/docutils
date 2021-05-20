@@ -109,12 +109,12 @@ operators.update({# negated symbols without pre-composed Unicode character
                   'nsubseteqq': u'\u2AC5\u0338', # ⫅̸
                   'nsupseteqq': u'\u2AC6\u0338', # ⫆̸
                   # pairing delimiters
-                  'lvert': '|',
+                  'lvert': u'|',
                   'lVert': u'\u2016', # ‖
-                  'rvert': '|',
+                  'rvert': u'|',
                   'rVert': u'\u2016',
                   # use <mo> to allow "movablelimits" attribute
-                  'lim':        u'lim',
+                  'lim':   u'lim',
                  })
 
 # special cases
@@ -140,6 +140,7 @@ sumintprod = [operators[name] for name in
                'iint', 'int', 'oiint', 'oint', 'ointctrclockwise',
                'prod', 'sqint', 'sum', 'varointclockwise')
              ] + ['lim']
+             # TODO: 'sup', 'inf', 'max', 'min
 
 # pre-composed characters for negated symbols
 # see https://www.w3.org/TR/xml-entity-names/#combining
@@ -460,7 +461,7 @@ class munderover(MathScriptOrLimit):
 # >>> msubsup(mi('base'), mi('super'), mi('sub'), switch=True)
 # msubsup(mi('base'), mi('sub'), mi('super'))
 
-class mroot(math):
+class mroot(MathScriptOrLimit):
     nchildren = 2
 
 class mfrac(math):
@@ -502,6 +503,27 @@ def tex_cmdname(string):
 # ('1', ' 2')
 # >>> tex_cmdname('') # empty string
 # ('', '')
+
+def tex_number(string):
+    """Return first number literal and remainder of `string`.
+    
+    >>> tex_number('123.4')
+    ('123.4', '')
+    
+    """
+    m = re.match(r'([0-9.,]+)(.*)', string)
+    if m is None:
+        return '', string
+    return m.group(1), m.group(2)
+
+# Test:
+#     
+# >>> tex_number(' 123.4')
+# ('', ' 123.4')
+# >>> tex_number('23,400')
+# ('23,400', '')
+# >>> tex_number('1 000.4')
+# ('1', ' 000.4')
 
 def tex_token(string):
     """Return first simple TeX token and remainder of `string`.
@@ -579,6 +601,8 @@ def tex_optarg(string):
 # SyntaxError: Could not extract optional argument from '[group with [nested group]]'
 
 
+
+
 def parse_latex_math(node, string):
     """Append MathML conversion of `string` to `node`.
 
@@ -618,7 +642,8 @@ def parse_latex_math(node, string):
         elif c.isalpha():
             node = node.append(mi(c))
         elif c.isdigit():
-            node = node.append(mn(c))
+            number, string = tex_number(string)
+            node = node.append(mn(c+number))
         elif c in "/()[]|":
             node = node.append(mo(c, stretchy='false'))
         # use dedicated mathematical operator characters
@@ -636,6 +661,8 @@ def parse_latex_math(node, string):
 # math(xmlns='http://www.w3.org/1998/Math/MathML')
 # >>> parse_latex_math(math(), ' \\sqrt{ \\alpha}')
 # math(msqrt(mi('α')))
+# >>> parse_latex_math(math(), '23.4x')
+# math(mn('23.4'), mi('x'))
 # >>> parse_latex_math(math(), '\\sqrt 2 \\ne 3')
 # math(msqrt(mn('2')), mo('≠'), mn('3'))
 # >>> parse_latex_math(math(), '\\sqrt{2 + 3} < 3')
@@ -800,11 +827,18 @@ def handle_cmdname(name, node, string):
     # ==================================
 
     if name == 'sqrt':
-        new_node = msqrt()
-        if string.startswith('{'): # argument is a group
-            string = string[1:] # mrow implied, skip opening bracket
-        else: # no group, enclose only one element
-            new_node.nchildren = 1
+        # TODO: optional arg -> <mroot> <mn>2</mn> <mn>3</mn> </mroot>
+        degree, string = tex_optarg(string)
+        if degree:
+            indexnode = mrow()
+            parse_latex_math(indexnode, degree)
+            new_node = mroot(indexnode, switch=True)
+        else:
+            new_node = msqrt()
+            if string.startswith('{'): # argument is a group
+                string = string[1:] # mrow implied, skip opening bracket
+            else: # no group, enclose only one element
+                new_node.nchildren = 1
         node.append(new_node)
         return new_node, string
 
