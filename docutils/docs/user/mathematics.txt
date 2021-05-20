@@ -191,7 +191,7 @@ Use ``.`` for "empty" delimiters:
 .. math::
 
    A = \left . \frac{1}{1-n}\, \right |_{n=0}^\infty
-
+   
 The following symbols extend when used with ``\left`` and ``\right``:
 
 Pairing delimiters
@@ -225,8 +225,9 @@ Nonpairing delimiters
 
 The use of ``|`` and ``\|`` for pairs of vertical bars may produce
 incorrect spacing, e.g., ``|k|=|-k|`` produces `|k| = |−k|` and
-``|\sin(x)|`` produces `|\sin(x)|`. The pairing delimiters, e.g. `\lvert
--k\rvert` and `\lvert\sin(x)\rvert`, prevent this problem (in LaTeX and
+``|\sin(x)|`` produces `|\sin(x)|`. The pairing delimiters, e.g. 
+`\lvert -k\rvert` 
+and `\lvert\sin(x)\rvert`, prevent this problem (in LaTeX and
 MathJax).
 
 Vertical Arrows
@@ -702,14 +703,18 @@ formed from all their children.
 
 inline: :math:`a = \sqrt 2 + x, b = \sqrt{1+x^2}, c = \sqrt\frac{\sin(x)}{23}`.
 
-Accents vs. embellishments
---------------------------
+Scripts and Limits
+------------------
 
 Accents should be nearer to the base (in MathML Firefox 78, it's vice versa!):
-`\vec a \overrightarrow a, \vec l \overrightarrow l, \vec i \overrightarrow i`
-and `\bar a \overline a, \bar l \overline l, \bar i \overline i`.
+`\bar a \overline a, \bar l \overline l, \bar i \overline i`.
 
 In inline formulas and fractions, the limits on lim, sum and integral should
 move to index postions: `\lim_{c\to0} \oint_c f(x) \mathrm{d}x` vs.
 
 .. math:: \lim_{c\to0} \oint_c f(x) \mathrm{d}x
+
+Sub- and superscript may be given in any order:
+`x_i^j = x^j_i` and `\int_0^1 = \int^1_0`.
+
+Double exponent: `x^{10}^4`, `r_T_\mathrm{in}` and `x_i^n^2`.

@@ -66,9 +66,11 @@ functions = dict((name, name) for name in functions)
 functions.update({# functions with a space in the name
                   'liminf': u'lim\u202finf', 'limsup': u'lim\u202fsup',
                   'injlim': u'inj\u202flim', 'projlim': u'proj\u202flim',
-                  # embellished function names (see handle_keyword() below)
+                  # embellished function names (see handle_cmdname() below)
                   'varlimsup': 'lim', 'varliminf': 'lim',
-                  'varprojlim': 'lim', 'varinjlim': 'lim'})
+                  'varprojlim': 'lim', 'varinjlim': 'lim',
+                  # custom function name
+                  'operatorname': None})
 
 # math font selection -> <mi mathvariant=...> or <mstyle mathvariant=...>
 math_alphabets = {# 'cmdname': 'mathvariant value'  # package
@@ -106,6 +108,11 @@ operators.update({# negated symbols without pre-composed Unicode character
                   'ngeqslant':  u'\u2a7e\u0338', # ⩾̸
                   'nsubseteqq': u'\u2AC5\u0338', # ⫅̸
                   'nsupseteqq': u'\u2AC6\u0338', # ⫆̸
+                  # pairing delimiters
+                  'lvert': '|',
+                  'lVert': u'\u2016', # ‖
+                  'rvert': '|',
+                  'rVert': u'\u2016',
                   # use <mo> to allow "movablelimits" attribute
                   'lim':        u'lim',
                  })
@@ -127,22 +134,12 @@ small_operators = {# mathsize='75%'
                    'smallint':   u'\u222b', # ∫ INTEGRAL
                   }
 
-left_delimiters = {# rspace='0', lspace='0.22em'
-                   'lvert': '|',
-                   'lVert': u'\u2016' # ‖ DOUBLE VERTICAL LINE
-                  }
-
-right_delimiters = {# lspace='0', rspace='0.22em'
-                    'rvert': '|',
-                    'rVert': u'\u2016', # ‖ DOUBLE VERTICAL LINE
-                   }
-
 # operators with limits either over/under or in index position
-sumintprod = ['coprod', 'fatsemi', 'fint', 'iiiint', 'iiint',
-              'iint', 'int', 'oiint', 'oint', 'ointctrclockwise',
-              'prod', 'sqint', 'sum', 'varointclockwise']
-sumintprod += [operators[name] for name in sumintprod]
-sumintprod.append('lim')
+sumintprod = [operators[name] for name in
+              ('coprod', 'fatsemi', 'fint', 'iiiint', 'iiint',
+               'iint', 'int', 'oiint', 'oint', 'ointctrclockwise',
+               'prod', 'sqint', 'sum', 'varointclockwise')
+             ] + ['lim']
 
 # pre-composed characters for negated symbols
 # see https://www.w3.org/TR/xml-entity-names/#combining
@@ -234,6 +231,7 @@ under = {'underbrace':          u'\u23DF',
 # Character translations
 # ----------------------
 # characters with preferred alternative in mathematical use
+# cf. https://www.w3.org/TR/MathML3/chapter7.html#chars.anomalous
 anomalous_chars = {'-': u'\u2212', # HYPHEN-MINUS -> MINUS SIGN
                    ':': u'\u2236', # COLON -> RATIO
                   }
@@ -289,8 +287,8 @@ class math(object):
         content = [repr(item) for item in getattr(self, 'children', [])]
         if hasattr(self, 'data'):
             content.append(repr(self.data))
-        if isinstance(self, MathScriptOrLimit) and self.reversed:
-            content.append('reversed=True')
+        if isinstance(self, MathScriptOrLimit) and self.switch:
+            content.append('switch=True')
         if hasattr(self, 'attributes'):
             content += ["%s='%s'"%(k, v) for k, v in self.attributes.items()]
         return self.__class__.__name__ + '(%s)' % ', '.join(content)
@@ -416,19 +414,20 @@ class MathScriptOrLimit(math):
     def __init__(self, *children, **kwargs):
         """Set up sub/superscript or limit elements.
 
-        The special attribute `reversed` tells that the
-        base and index sub-elements are in reversed order
-        (i.e. as in LaTeX) and will be switched on XML-export.
+        The special attribute `switch` tells that the
+        last two child elements are in reversed order
+        and must be switched before XML-export.
         """
-        self.reversed = kwargs.pop('reversed', False)
+        self.switch = kwargs.pop('switch', False)
         math.__init__(self, *children, **kwargs)
 
     def append(self, child):
         new_current = super(MathScriptOrLimit, self).append(child)
         # normalize order if full
-        if self.reversed and self.full():
-            self.children.reverse()
-            self.reversed = False
+        if self.switch and self.full():
+            self.children[-1], self.children[-2] = self.children[-2], self.children[-1]
+            # self.children.reverse()
+            self.switch = False
         return new_current
 
 class msub(MathScriptOrLimit): pass
@@ -443,20 +442,23 @@ class munderover(MathScriptOrLimit):
 
 # >>> munder(mi('lim'), mo('-'), accent='false')
 # munder(mi('lim'), mo('-'), accent='false')
-# >>> mu = munder(mo('-'), accent='false', reversed=True)
+# >>> mu = munder(mo('-'), accent='false', switch=True)
 # >>> mu
-# munder(mo('-'), reversed=True, accent='false')
+# munder(mo('-'), switch=True, accent='false')
 # >>> mu.append(mi('lim'))
 # >>> mu
 # munder(mi('lim'), mo('-'), accent='false')
 # >>> mu.append(mi('lim'))
 # Traceback (most recent call last):
 # SyntaxError: Node munder(mi('lim'), mo('-'), accent='false') already full!
-# >>> munder(mo('-'), mi('lim'), accent='false', reversed=True).toprettyxml()
+# >>> munder(mo('-'), mi('lim'), accent='false', switch=True).toprettyxml()
 # '<munder accent="false">\n  <mi>lim</mi>\n  <mo>-</mo>\n</munder>'
 # >>> msub(mi('x'), mo('-'))
 # msub(mi('x'), mo('-'))
-
+# >>> msubsup(mi('base'), mi('sub'), mi('super'))
+# msubsup(mi('base'), mi('sub'), mi('super'))
+# >>> msubsup(mi('base'), mi('super'), mi('sub'), switch=True)
+# msubsup(mi('base'), mi('sub'), mi('super'))
 
 class mroot(math):
     nchildren = 2
@@ -598,10 +600,21 @@ def parse_latex_math(node, string):
 
         if c == ' ':
             continue  # whitespace is ignored in LaTeX math mode
-
         if c == '\\': # start of a LaTeX macro
             cmdname, string = tex_cmdname(string)
-            node, string = handle_keyword(cmdname, node, string)
+            node, string = handle_cmdname(cmdname, node, string)
+        elif c in "_^":
+            node = handle_script_or_limit(node, c)
+        elif c == '{':
+            new_node = mrow()
+            node.append(new_node)
+            node = new_node
+        elif c == '}':
+            node = node.close()
+        elif c == '&':
+            new_node = mtd()
+            node.close().append(new_node)
+            node = new_node
         elif c.isalpha():
             node = node.append(mi(c))
         elif c.isdigit():
@@ -613,41 +626,6 @@ def parse_latex_math(node, string):
             node = node.append(mo(anomalous_chars[c]))
         elif c in "+*=<>,.!?';@":
             node = node.append(mo(c))
-        elif c == '_':
-            child = node.children.pop()
-            if isinstance(child, msup):
-                sub = msubsup(*child.children, reversed=True)
-            elif isinstance(child, MathToken) and child.data in sumintprod:
-                child.attributes['movablelimits'] = 'true'
-                sub = munder(child)
-            else:
-                sub = msub(child)
-            node.append(sub)
-            node = sub
-        elif c == '^':
-            child = node.children.pop()
-            if isinstance(child, msub):
-                sup = msubsup(*child.children)
-            elif isinstance(child, MathToken) and child.data in sumintprod:
-                child.attributes['movablelimits'] = 'true'
-                sup = mover(child)
-            elif (isinstance(child, munder) and
-                  child.children[0].data in sumintprod):
-                sup = munderover(*child.children)
-            else:
-                sup = msup(child)
-            node.append(sup)
-            node = sup
-        elif c == '{':
-            row = mrow()
-            node.append(row)
-            node = row
-        elif c == '}':
-            node = node.close()
-        elif c == '&':
-            entry = mtd()
-            node.close().append(entry)
-            node = entry
         else:
             raise SyntaxError(u'Illegal character: "%s"' % c)
     return node
@@ -662,17 +640,21 @@ def parse_latex_math(node, string):
 # math(msqrt(mn('2')), mo('≠'), mn('3'))
 # >>> parse_latex_math(math(), '\\sqrt{2 + 3} < 3')
 # math(msqrt(mn('2'), mo('+'), mn('3')), mo('<'), mn('3'))
+# >>> parse_latex_math(math(), 'x^j_i') # ensure correct order: base, sub, sup
+# math(msubsup(mi('x'), mi('i'), mi('j')))
+# >>> parse_latex_math(math(), '\int^j_i') # ensure correct order
+# math(munderover(mo('∫', movablelimits='true'), mi('i'), mi('j')))
 
-def handle_keyword(name, node, string):
+def handle_cmdname(name, node, string):
     """Process LaTeX command `name` followed by `string`.
 
     Append result to `node`.
     If needed, parse `string` for command argument.
     Return new current node and remainder of `string`:
 
-    >>> handle_keyword('hbar', math(), r' \frac')
+    >>> handle_cmdname('hbar', math(), r' \frac')
     (math(mi('ℏ')), ' \\frac')
-    >>> handle_keyword('hspace', math(), r'{1ex} (x)')
+    >>> handle_cmdname('hspace', math(), r'{1ex} (x)')
     (math(mspace(width='1ex')), ' (x)')
 
     """
@@ -692,7 +674,7 @@ def handle_keyword(name, node, string):
             node = node.append(mi(letters[name]))
         return node, string
 
-    if (name in functions or name == 'operatorname'):
+    if (name in functions):
         # use <mi> followed by invisible function applicator character
         # (see https://www.w3.org/TR/MathML3/chapter3.html#presm.mi)
         if name == 'operatorname':
@@ -701,7 +683,7 @@ def handle_keyword(name, node, string):
             new_node = mi(arg, mathvariant='normal')
         else:
             new_node = mi(functions[name])
-        # functions with embellished names
+        # compound function symbols:
         if name == 'varliminf':    # \underline\lim
             new_node = munder(new_node, mo(u'_'))
         elif name == 'varlimsup':  # \overline\lim
@@ -755,14 +737,6 @@ def handle_keyword(name, node, string):
 
     # operator, fence, or separator  ->  <mo>
 
-    if name in left_delimiters: # opening delimiters
-        node = node.append(mo(left_delimiters[name], rspace='0'))
-        return node, string
-
-    if name in right_delimiters: # closing delimiters
-        node = node.append(mo(right_delimiters[name], lspace='0', ))
-        return node, string
-
     if name == 'colon': # trailing punctuation, not binary relation
         node = node.append(mo(':', lspace='0', rspace='0.28em'))
         return node, string
@@ -789,7 +763,7 @@ def handle_keyword(name, node, string):
             row = mrow()
             node.append(row)
             node = row
-        if delimiter:
+        if delimiter: # may be empty (source '.')
             node.append(mo(delimiter))
         if name == 'right':
             node = node.close()
@@ -852,22 +826,22 @@ def handle_keyword(name, node, string):
         except KeyError:
             ch = accents[name]
             acc = 'true'
-        new_node = mover(mo(ch), reversed=True, accent=acc)
+        new_node = mover(mo(ch), switch=True, accent=acc)
         node.append(new_node)
         return new_node, string
 
     if name == 'overset':
-        new_node = mover(reversed=True)
+        new_node = mover(switch=True)
         node.append(new_node)
         return new_node, string
 
     if name in under:
-        new_node = munder(mo(under[name]), reversed=True)
+        new_node = munder(mo(under[name]), switch=True)
         node.append(new_node)
         return new_node, string
 
     if name == 'underset':
-        new_node = munder(reversed=True)
+        new_node = munder(switch=True)
         node.append(new_node)
         return new_node, string
 
@@ -917,40 +891,68 @@ def handle_keyword(name, node, string):
     raise SyntaxError(u'Unknown LaTeX command: ' + name)
 
 
-# >>> handle_keyword('left', math(), '[a\\right]')
+# >>> handle_cmdname('left', math(), '[a\\right]')
 # (mrow(mo('[')), 'a\\right]')
-# >>> handle_keyword('left', math(), '. a)') # emtpy \left
+# >>> handle_cmdname('left', math(), '. a)') # emtpy \left
 # (mrow(), ' a)')
-# >>> handle_keyword('left', math(), '\\uparrow a)') # cmd
+# >>> handle_cmdname('left', math(), '\\uparrow a)') # cmd
 # (mrow(mo('↑')), 'a)')
-# >>> handle_keyword('not', math(), '\\equiv \\alpha)') # cmd
+# >>> handle_cmdname('not', math(), '\\equiv \\alpha)') # cmd
 # (math(mo('≢')), '\\alpha)')
-# >>> handle_keyword('text', math(), '{ for } i>0') # group
+# >>> handle_cmdname('text', math(), '{ for } i>0') # group
 # (math(mtext('\xa0for\xa0')), ' i>0')
-# >>> handle_keyword('text', math(), '{B}T') # group
+# >>> handle_cmdname('text', math(), '{B}T') # group
 # (math(mtext('B')), 'T')
-# >>> handle_keyword('text', math(), '{number of apples}}') # group
+# >>> handle_cmdname('text', math(), '{number of apples}}') # group
 # (math(mtext('number of apples')), '}')
-# >>> handle_keyword('text', math(), 'i \\sin(x)') # single char
+# >>> handle_cmdname('text', math(), 'i \\sin(x)') # single char
 # (math(mtext('i')), ' \\sin(x)')
-# >>> handle_keyword('sin', math(), '(\\alpha)')
+# >>> handle_cmdname('sin', math(), '(\\alpha)')
 # (math(mi('sin'), mo('\u2061')), '(\\alpha)')
-# >>> handle_keyword('sin', math(), ' \\alpha')
+# >>> handle_cmdname('sin', math(), ' \\alpha')
 # (math(mi('sin'), mo('\u2061')), ' \\alpha')
-# >>> handle_keyword('operatorname', math(), '{abs}(x)')
+# >>> handle_cmdname('operatorname', math(), '{abs}(x)')
 # (math(mi('abs', mathvariant='normal'), mo('\u2061')), '(x)')
-# >>> handle_keyword('mathrm', math(), '\\alpha')
+# >>> handle_cmdname('mathrm', math(), '\\alpha')
 # (math(mi('α', mathvariant='normal')), '')
-# >>> handle_keyword('mathrm', math(), '{out} = 3')
+# >>> handle_cmdname('mathrm', math(), '{out} = 3')
 # (math(mi('out', mathvariant='normal')), ' = 3')
-# >>> handle_keyword('overline', math(), '{981}')
-# (mover(mo('¯'), reversed=True, accent='false'), '{981}')
-# >>> handle_keyword('bar', math(), '{x}')
-# (mover(mo('ˉ'), reversed=True, accent='true'), '{x}')
-# >>> handle_keyword('xleftarrow', math(), r'[\alpha]{10}')
+# >>> handle_cmdname('overline', math(), '{981}')
+# (mover(mo('¯'), switch=True, accent='false'), '{981}')
+# >>> handle_cmdname('bar', math(), '{x}')
+# (mover(mo('ˉ'), switch=True, accent='true'), '{x}')
+# >>> handle_cmdname('xleftarrow', math(), r'[\alpha]{10}')
 # (munderover(mo('←'), mi('α')), '{10}')
-# >>> handle_keyword('xleftarrow', math(), r'[\alpha=5]{10}')
+# >>> handle_cmdname('xleftarrow', math(), r'[\alpha=5]{10}')
 # (munderover(mo('←'), mrow(mi('α'), mo('='), mn('5'))), '{10}')
+
+
+def handle_script_or_limit(node, c):
+    """Append script or limit element to `node`."""
+    child = node.children.pop()
+    if c == '_':
+        if isinstance(child, msup):
+            new_node = msubsup(*child.children, switch=True)
+        elif isinstance(child, mover):
+            new_node = munderover(*child.children, switch=True)
+        # elif isinstance(child, MathToken) and child.data in sumintprod:
+        elif getattr(child, 'data', '') in sumintprod:
+            child.attributes['movablelimits'] = 'true'
+            new_node = munder(child)
+        else:
+            new_node = msub(child)
+    elif c == '^':
+        if isinstance(child, msub):
+            new_node = msubsup(*child.children)
+        elif isinstance(child, munder):
+            new_node = munderover(*child.children)
+        elif isinstance(child, MathToken) and child.data in sumintprod:
+            child.attributes['movablelimits'] = 'true'
+            new_node = mover(child)
+        else:
+            new_node = msup(child)
+    node.append(new_node)
+    return new_node
 
 
 def tex2mathml(tex_math, inline=True):
