@@ -183,14 +183,14 @@ Some stuff
 """,
 """\
 {'docinfo': '''<dl class="docinfo simple">
-<dt class="author">Author</dt>
+<dt class="author">Author<span class="colon">:</span></dt>
 <dd class="author"><p>me</p></dd>
 </dl>\\n''',
  'fragment': '''<p>Some stuff</p>\\n''',
  'html_body': '''<main id="title">
 <h1 class="title">Title</h1>
 <dl class="docinfo simple">
-<dt class="author">Author</dt>
+<dt class="author">Author<span class="colon">:</span></dt>
 <dd class="author"><p>me</p></dd>
 </dl>
 <p>Some stuff</p>
@@ -391,28 +391,28 @@ Not a docinfo.
 """\
 {'fragment': '''<p>Not a docinfo.</p>
 <dl class="field-list simple">
-<dt>This</dt>
+<dt>This<span class="colon">:</span></dt>
 <dd><p id="target">is</p>
 </dd>
-<dt>a</dt>
+<dt>a<span class="colon">:</span></dt>
 <dd><p></p></dd>
-<dt>simple</dt>
+<dt>simple<span class="colon">:</span></dt>
 <dd><p></p></dd>
-<dt>field</dt>
+<dt>field<span class="colon">:</span></dt>
 <dd><p>list</p>
 </dd>
 </dl>\\n''',
  'html_body': '''<main>
 <p>Not a docinfo.</p>
 <dl class="field-list simple">
-<dt>This</dt>
+<dt>This<span class="colon">:</span></dt>
 <dd><p id="target">is</p>
 </dd>
-<dt>a</dt>
+<dt>a<span class="colon">:</span></dt>
 <dd><p></p></dd>
-<dt>simple</dt>
+<dt>simple<span class="colon">:</span></dt>
 <dd><p></p></dd>
-<dt>field</dt>
+<dt>field<span class="colon">:</span></dt>
 <dd><p>list</p>
 </dd>
 </dl>
@@ -429,10 +429,10 @@ Not a docinfo.
 {'fragment': '''\
 <p>Not a docinfo.</p>
 <dl class="field-list simple">
-<dt>This is</dt>
+<dt>This is<span class="colon">:</span></dt>
 <dd><p>a</p>
 </dd>
-<dt>simple field list with loooong field</dt>
+<dt>simple field list with loooong field<span class="colon">:</span></dt>
 <dd><p>names</p>
 </dd>
 </dl>\\n''',
@@ -440,10 +440,10 @@ Not a docinfo.
 <main>
 <p>Not a docinfo.</p>
 <dl class="field-list simple">
-<dt>This is</dt>
+<dt>This is<span class="colon">:</span></dt>
 <dd><p>a</p>
 </dd>
-<dt>simple field list with loooong field</dt>
+<dt>simple field list with loooong field<span class="colon">:</span></dt>
 <dd><p>names</p>
 </dd>
 </dl>

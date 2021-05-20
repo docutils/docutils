@@ -29,12 +29,12 @@ Future changes
   - Use <summary> and <details> tags for term and definition of a
     definition list with class value "details".
 
-  - Write footnote brackets and field term colons to HTML, so that
-    they are present also without CSS and when copying text.
-    Hide with CSS if required.
+  - Move attribution behind the blockquote to comply with the
+    __`"living standard"`?
+    HTML5__ allows <cite> elements inside a blockquote (cf. Example 16).
 
-  - Move attribution behind the blockquote to comply with
-    https://html.spec.whatwg.org/#the-blockquote-element.
+    __ https://html.spec.whatwg.org/#the-blockquote-element
+    __ https://www.w3.org/TR/html52/grouping-content.html#the-blockquote-element
 
 * `htm4css1` writer: Support the embed_images_ option.
 
@@ -91,16 +91,22 @@ Future changes
 Release 0.18.dev
 ================
 
-* Config setting `legacy_class_functions`_: default changed to "False".
-  
 * Removed files:
   
   - ``iepngfix.htc`` and ``blank.gif`` (IE 6 workaround for `s5_html`).
 
+* Removed function: ``utils.unique_combinations`` 
+  (obsoleted by ``itertools.combinations``).
+
+* HTML5 writer: changes to HTML output
+
+  - Write footnote brackets and field term colons to HTML, so that
+    they are present also without CSS and when copying text.
+
+* LaTeX writer: `legacy_class_functions`_ setting default changed to "False".
+
 * ``nodes.Node.traverse()`` returns an iterator instead of a list.
 
-* Removed ``utils.unique_combinations`` 
-  (obsoleted by ``itertools.combinations``).
   
 
 Release 0.17.1 (2021-04-16)
