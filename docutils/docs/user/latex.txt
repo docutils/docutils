@@ -2,7 +2,7 @@
  Generating LaTeX with Docutils
 ================================
 
-:Author: Engelbert Gruber, Guenter Milde
+:Author: Engelbert Gruber, Günter Milde
 :Contact: docutils-develop@lists.sourceforge.net
 :Revision: $Revision$
 :Date: $Date$
@@ -134,7 +134,7 @@ _`pdflatex`
 
 _`xelatex` or _`lualatex`
   The `XeTeX`_ and LuaTeX_ engines work with input files in UTF-8 encoding
-  and system fonts. Export your document with the _`XeTeX writer` (writer
+  and system fonts. Export your document with the _`XeLaTeX writer` (writer
   name "``xetex``", frontend tool rst2xetex.py_).
 
 You may need to call latex two or three times to get internal references
@@ -174,8 +174,7 @@ Options can be specified as
 Run ``rst2latex.py --help`` to get a list of available options;
 see `Docutils Configuration`_ for details.
 
-.. _Docutils Configuration:
-   config.html
+.. _Docutils Configuration: config.html
 
 Classes
 -------
@@ -327,12 +326,9 @@ Stylesheet Repository
   There is a `repository of user-contributed style sheets`_ in the
   Docutils Sandbox_.
 
-.. _clsguide:
-   http://mirrors.ctan.org/macros/latex/base/clsguide.pdf
-.. _stylesheet:
-   config.html#stylesheet-latex-writers
-.. _embed-stylesheet:
-   config.html#embed-stylesheet-latex-writers
+.. _clsguide: http://mirrors.ctan.org/macros/latex/base/clsguide.pdf
+.. _stylesheet: config.html#stylesheet-latex-writers
+.. _embed-stylesheet: config.html#embed-stylesheet-latex-writers
 .. _repository of user-contributed style sheets:
    ../../../sandbox/stylesheets/
 .. _sandbox: ../../../sandbox/
@@ -360,12 +356,9 @@ Example:
                      \usepackage{mathptmx}          % Times
                      \usepackage[scaled=.92]{helvet}  % Helvetica
 
-.. _latex-preamble:
-   config.html#latex-preamble
-.. _PDF standard fonts:
-   http://en.wikipedia.org/wiki/PDF#Standard_Type_1_Fonts
-.. _Linux Libertine:
-   http://www.linuxlibertine.org/index.php?id=1&L=1
+.. _latex-preamble: config.html#latex-preamble
+.. _PDF standard fonts: http://en.wikipedia.org/wiki/PDF#Standard_Type_1_Fonts
+.. _Linux Libertine: http://www.linuxlibertine.org
 
 
 Templates
@@ -428,11 +421,8 @@ See also:
   * Defining a macro for a `custom role`_.
   * Forcing `page breaks`_.
 
-.. _raw directive:
-   ../ref/rst/directives.html#raw
-.. _math directive:
-   ../ref/rst/directives.html#math
-
+.. _raw directive: ../ref/rst/directives.html#raw
+.. _math directive: ../ref/rst/directives.html#math
 
 
 How to configure the ...
@@ -452,10 +442,10 @@ Command:
 Environment:
   ``DUadmonition`` (with new-class-functions_)
 
-  .. _new-class-functions: legacy-class-functions_
-
 Default:
   Typeset in a frame (90 % of text width).
+
+.. _new-class-functions: legacy-class-functions_
 
 The admonition title is typeset with the ``\DUtitle`` command (see `titles`_).
 
@@ -502,9 +492,7 @@ Example 3:
   Make sure there is enough space to fit the note.
 
 
-.. _marginnote:
-   http://ctan.org/pkg/marginnote
-   http://ctan.org/pkg/marginnote
+.. _marginnote: http://ctan.org/pkg/marginnote
 
 
 .. _custom role:
@@ -579,14 +567,9 @@ Example 3:
 .. [#] Leave out the ``\makeatletter`` - ``\makeatother`` pair if the style
    sheet is a LaTeX package (``*.sty``).
 
-.. _role directive:
-   ../ref/rst/directives.html#role
-
-.. _text roles:
-   ../ref/rst/roles.html
-
-.. _class directive:
-   ../ref/rst/directives.html#class
+.. _role directive: ../ref/rst/directives.html#role
+.. _text roles: ../ref/rst/roles.html
+.. _class directive: ../ref/rst/directives.html#class
 
 definition lists
 ----------------
@@ -625,12 +608,9 @@ Popular document classes:
 Option:
   documentclass_
 
-.. _KOMA-script:
-   http://ctan.org/pkg/koma-script
-.. _memoir:
-   http://ctan.org/pkg/memoir
-.. _documentclass:
-   config.html#documentclass
+.. _KOMA-script: http://ctan.org/pkg/koma-script
+.. _memoir: http://ctan.org/pkg/memoir
+.. _documentclass: config.html#documentclass
 
 
 document info
@@ -656,10 +636,8 @@ Example:
 
 __ ../ref/rst/restructuredtext.html#bibliographic-fields
 
-.. _use-latex-docinfo:
-   config.html#use-latex-docinfo
-.. _use-latex-abstract:
-   config.html#use-latex-abstract
+.. _use-latex-docinfo: config.html#use-latex-docinfo
+.. _use-latex-abstract: config.html#use-latex-abstract
 
 
 document title
@@ -712,9 +690,7 @@ Example:
    The `KOMA-script`_ classes provide a similar environment under the name
    `labeling`.
 
-.. _enumitem:
-   http://ctan.org/pkg/enumitem
-
+.. _enumitem: http://ctan.org/pkg/enumitem
 __ ../ref/rst/restructuredtext.html#field-lists
 
 
@@ -736,10 +712,8 @@ Example
     \usepackage{caption}
     \captionsetup{justification=raggedleft,singlelinecheck=false}
 
-.. _caption:
-   http://ctan.org/pkg/caption
-.. _chngcntr:
-   http://ctan.org/pkg/chngcntr
+.. _caption: http://ctan.org/pkg/caption
+.. _chngcntr: http://ctan.org/pkg/chngcntr
 __ http://www.tex.ac.uk/cgi-bin/texfaq2html?label=running-nos
 
 
@@ -777,10 +751,9 @@ Example 2:
         \floatplacement{figure}{tb}
 
 .. _figures: ../ref/rst/directives.html#figure
-.. _float:
-   http://ctan.org/pkg/float
-.. _float.pdf:
-   http://mirrors.ctan.org/macros/latex/contrib/float/float.pdf
+.. _float: http://ctan.org/pkg/float
+.. _float.pdf: http://mirrors.ctan.org/macros/latex/contrib/float/float.pdf
+
 
 .. _font setup:
 
@@ -1008,28 +981,21 @@ d) PSNFSS_ Postscript fonts
        which is part of, e.g., `TeX Live`_.
 
 
-.. _LaTeX Font Catalogue:
-   http://www.tug.dk/FontCatalogue/
-.. _Latin Modern:
-   http://ctan.org/pkg/lm
-.. _CM-Super:
-   http://ctan.org/pkg/cm-super
-.. _bera:
-   http://ctan.org/pkg/bera
+.. _LaTeX Font Catalogue: http://www.tug.dk/FontCatalogue/
+.. _Latin Modern: http://ctan.org/pkg/lm
+.. _CM-Super: http://ctan.org/pkg/cm-super
+.. _bera: http://ctan.org/pkg/bera
 .. _TeX Gyre: http://www.gust.org.pl/projects/e-foundry/tex-gyre
-.. _PSNFSS:
-   http://ctan.org/pkg/psnfss
+.. _PSNFSS: http://ctan.org/pkg/psnfss
 .. _Using common PostScript fonts with LaTeX:
    http://mirrors.ctan.org/macros/latex/required/psnfss/psnfss2e.pdf
 .. _TeX Live: http://tug.org/texlive/
-.. _txfonts:
-   http://ctan.org/pkg/txfonts
+.. _txfonts: http://ctan.org/pkg/txfonts
 .. _PDF Standard Font:
    http://en.wikipedia.org/wiki/PDF#Standard_Type_1_Fonts
 .. _testflow:
    http://www.tex.ac.uk/tex-archive/help/Catalogue/entries/testflow.html
-.. _Good Libre Fonts:
-   http://typophile.com/node/18207
+.. _Good Libre Fonts: http://typophile.com/node/18207
 .. _25 Best Free Quality Fonts:
    http://www.alvit.de/blog/article/20-best-license-free-official-fonts
 .. _19 More Free Quality Fonts:
@@ -1069,12 +1035,9 @@ Example 2:
 
     --font-encoding=LGR,T1 --stylesheet=lmodern
 
-.. _encguide:
-   http://mirrors.ctan.org/macros/latex/base/encguide.pdf
-.. _font-encoding:
-   config.html#font-encoding
-.. _fontenc:
-   http://ctan.org/pkg/fontenc
+.. _encguide: http://mirrors.ctan.org/macros/latex/base/encguide.pdf
+.. _font-encoding: config.html#font-encoding
+.. _fontenc: http://ctan.org/pkg/fontenc
 
 
 font size
@@ -1084,8 +1047,7 @@ Add font size in points to the document options, e.g.
 ``--documentoptions=12``, use e.g. the document classes provided by
 extsizes_ for values other than [10,11,12].
 
-.. _extsizes:
-   http://ctan.org/pkg/extsizes
+.. _extsizes: http://ctan.org/pkg/extsizes
 
 
 footnotes
@@ -1148,10 +1110,8 @@ Example 3:
        \hangpara{\parindent}{1}#4%
      }
 
-.. _footmisc:
-   http://ctan.org/pkg/footmisc
-.. _hanging:
-   http://ctan.org/pkg/hanging
+.. _footmisc: http://ctan.org/pkg/footmisc
+.. _hanging: http://ctan.org/pkg/hanging
 
 
 hyphenation
@@ -1202,10 +1162,8 @@ Example:
 
 See also `non-breaking hyperlinks`_.
 
-.. _hyperlink-color:
-   config.html#hyperlink-color
-.. _hyperref-options:
-   config.html#hyperref-options
+.. _hyperlink-color: config.html#hyperlink-color
+.. _hyperref-options: config.html#hyperref-options
 
 
 disable hyperlinks
@@ -1224,8 +1182,7 @@ Option:
   \usepackage{nohyperref,url}
   \urlstyle{same}
 
-.. _hyperref:
-   http://ctan.org/pkg/hyperref
+.. _hyperref: http://ctan.org/pkg/hyperref
 
 line blocks
 -----------
@@ -1315,8 +1272,7 @@ Example:
     \lstset{xleftmargin=-2em}
 
 __ ../ref/rst/restructuredtext.html#literal-blocks
-.. _literal-block-env:
-   config.html#literal-block-env
+.. _literal-block-env: config.html#literal-block-env
 .. _listings.pdf:
    http://mirrors.ctan.org/macros/latex/contrib/listings/listings.pdf
 
@@ -1445,12 +1401,10 @@ Example 2:
     \geometry{hmargin={3cm,0.8in},height=8in}
     \geometry{height=10in}.
 
-.. _typearea:
-   http://ctan.org/pkg/typearea
+.. _typearea: http://ctan.org/pkg/typearea
+.. _geometry: http://ctan.org/pkg/geometry
 .. _KOMA-Script Guide:
    http://mirrors.ctan.org/macros/latex/contrib/koma-script/doc/scrguien.pdf
-.. _geometry:
-   http://ctan.org/pkg/geometry
 .. _geometry manual:
    http://mirrors.ctan.org/macros/latex/contrib/geometry/geometry.pdf
 
@@ -1490,8 +1444,7 @@ Example:
 
   See the `chappg documentation`_ for details.
 
-.. _chappg:
-   http://ctan.org/pkg/chappg
+.. _chappg: http://ctan.org/pkg/chappg
 .. _chappg documentation:
    http://mirrors.ctan.org/macros/latex/contrib/chappg/chappg.pdf
 
@@ -1769,8 +1722,7 @@ With use-latex-toc (default since release 0.6):
 
 .. _use-latex-toc: config.html#use-latex-toc
 .. _contents directive: ../ref/rst/directives.html#contents
-.. _minitoc:
-   http://ctan.org/pkg/minitoc
+.. _minitoc: http://ctan.org/pkg/minitoc
 .. _minitoc documentation:
    http://mirrors.ctan.org/macros/latex/contrib/minitoc/minitoc.pdf
 
@@ -1791,12 +1743,10 @@ Example:
 
     \newcommand{\DUroletitlereference}[1]{\texttt{\textbf{#1}}}
 
-.. _title reference:
-   ../ref/rst/roles.html#title-reference
+.. _title reference: ../ref/rst/roles.html#title-reference
 .. _default role:
    ../ref/rst/directives.html#setting-the-default-interpreted-text-role
-.. _interpreted text:
-   ../ref/rst/restructuredtext.html#interpreted-text
+.. _interpreted text: ../ref/rst/restructuredtext.html#interpreted-text
 
 
 text encoding
@@ -1839,10 +1789,8 @@ Note:
 
 .. _LaTeX Unicode: http://www.unruh.de/DniQ/latex/unicode/
 .. _output-encoding: config.html#output-encoding
-.. _inputenc:
-   http://ctan.org/pkg/inputenc
-.. _ucs:
-   http://ctan.org/pkg/unicode
+.. _inputenc: http://ctan.org/pkg/inputenc
+.. _ucs: http://ctan.org/pkg/unicode
 
 
 transition element
@@ -1872,7 +1820,6 @@ Example 2:
     \newcommand*{\DUtransition}{\vspace{2ex}}
 
 __ http://docutils.sf.net/docutils/docs/ref/rst/restructuredtext.html#transitions
-
 .. _transition-stars.sty: ../../../sandbox/stylesheets/transition-stars.sty
 
 
@@ -1945,9 +1892,7 @@ Right:
 
 See also the `Link text doesn’t break at end line`_ LaTeX FAQ entry.
 
-.. _breakurl:
-   http://ctan.org/pkg/breakurl
-
+.. _breakurl: http://ctan.org/pkg/breakurl
 .. _Link text doesn’t break at end line:
    http://www.tex.ac.uk/cgi-bin/texfaq2html?label=breaklinks
 
@@ -2002,7 +1947,6 @@ __ ../ref/rst/directives.html#images
    http://mirrors.ctan.org/macros/latex/required/graphics/grfguide.pdf
 .. _grffile: http://ctan.org/pkg/grffile
 .. _graphicx-option: config.html#graphicx-option
-
 
 
 Why are my images too big?
@@ -2070,7 +2014,6 @@ It may help to load the `cmap` package (via `style sheets`_ or the custom
 
 .. _Searching PDF files:
    http://www.tex.ac.uk/cgi-bin/texfaq2html?label=srchpdf
-
 .. _Proper use of cmap and mmmap:
    https://tex.stackexchange.com/questions/64409/proper-use-of-cmap-and-mmap
 
@@ -2089,9 +2032,7 @@ With "traditional" TeX engines (e.g. pdflatex_):
 Unfortunately, this defines only a subset of the characters
 (see pmboxdraw.pdf_ for a list).
 
-.. _pmboxdraw:
-   http://ctan.org/pkg/pmboxdraw
-
+.. _pmboxdraw: http://ctan.org/pkg/pmboxdraw
 .. _pmboxdraw.pdf:
    http://mirrors.ctan.org/macros/latex/contrib/pmboxdraw/pmboxdraw.pdf
 
@@ -2105,8 +2046,7 @@ the BUGS_ documentation and the `SourceForge Bug Tracker`_.
 
 .. _Docutils TODO list: ../dev/todo.html#latex-writer
 .. _bugs: ../../BUGS.html
-.. _SourceForge Bug Tracker:
-   http://sf.net/tracker/?group_id=38414&atid=422030
+.. _SourceForge Bug Tracker: https://sourceforge.net/p/docutils/bugs/
 
 
 Footnotes and citations
@@ -2171,8 +2111,7 @@ Figures
 * Wrapping text around figures is currently not supported. (Requires the
   `wrapfig`_ package.)
 
-.. _wrapfig:
-   http://ctan.org/pkg/wrapfig
+.. _wrapfig: http://ctan.org/pkg/wrapfig
 
 
 Miscellaneous
