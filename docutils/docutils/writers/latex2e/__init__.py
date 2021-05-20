@@ -630,23 +630,27 @@ class CharMaps(object):
     unsupported_unicode = {
         # TODO: ensure white space also at the beginning of a line?
         # 0x00A0: u'\\leavevmode\\nobreak\\vadjust{}~'
-        0x2000: u'\\enskip', # EN QUAD
-        0x2001: u'\\quad', # EM QUAD
-        0x2002: u'\\enskip', # EN SPACE
-        0x2003: u'\\quad', # EM SPACE
-        0x2008: u'\\,', # PUNCTUATION SPACE   
+        0x2000: u'\\enskip',      # EN QUAD
+        0x2001: u'\\quad',        # EM QUAD
+        0x2002: u'\\enskip',      # EN SPACE
+        0x2003: u'\\quad',        # EM SPACE
+        0x2008: u'\\,',           # PUNCTUATION SPACE   
         0x200b: u'\\hspace{0pt}', # ZERO WIDTH SPACE
-        0x202F: u'\\,', # NARROW NO-BREAK SPACE
-        # 0x02d8: u'\\\u{ }', # BREVE
-        0x2011: u'\\hbox{-}', # NON-BREAKING HYPHEN
-        0x212b: u'\\AA', # ANGSTROM SIGN
-        0x21d4: u'\\ensuremath{\\Leftrightarrow}',
+        0x202F: u'\\,',           # NARROW NO-BREAK SPACE
+        # 0x02d8: u'\\\u{ }',     # BREVE
+        0x2011: u'\\hbox{-}',     # NON-BREAKING HYPHEN
+        0x212b: u'\\AA',          # ANGSTROM SIGN
+        0x21d4: u'\\ensuremath{\\Leftrightarrow}', # LEFT RIGHT DOUBLE ARROW
+        0x2260: u'\\ensuremath{\\neq}',   # NOT EQUAL TO
+        0x2261: u'\\ensuremath{\\equiv}', # IDENTICAL TO
+        0x2264: u'\\ensuremath{\\le}',    # LESS-THAN OR EQUAL TO
+        0x2265: u'\\ensuremath{\\ge}',    # GREATER-THAN OR EQUAL TO
         # Docutils footnote symbols:
         0x2660: u'\\ensuremath{\\spadesuit}',
         0x2663: u'\\ensuremath{\\clubsuit}',
-        0xfb00: u'ff', # LATIN SMALL LIGATURE FF
-        0xfb01: u'fi', # LATIN SMALL LIGATURE FI
-        0xfb02: u'fl', # LATIN SMALL LIGATURE FL
+        0xfb00: u'ff',  # LATIN SMALL LIGATURE FF
+        0xfb01: u'fi',  # LATIN SMALL LIGATURE FI
+        0xfb02: u'fl',  # LATIN SMALL LIGATURE FL
         0xfb03: u'ffi', # LATIN SMALL LIGATURE FFI
         0xfb04: u'ffl', # LATIN SMALL LIGATURE FFL
     }
