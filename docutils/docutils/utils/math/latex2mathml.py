@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 
 # :Id: $Id$
-# :Copyright: © 2010 Günter Milde.
-#             Based on rst2mathml.py from the latex_math sandbox project
-#             © 2005 Jens Jørgen Mortensen
+# :Copyright: © 2005 Jens Jørgen Mortensen [1]_
+#             © 2010, 2021 Günter Milde.
+#
 # :License: Released under the terms of the `2-Clause BSD license`_, in short:
 #
 #    Copying and distribution of this file, with or without modification,
@@ -15,9 +15,14 @@
 # .. _2-Clause BSD license: https://opensource.org/licenses/BSD-2-Clause
 
 
-"""Convert LaTex math code into presentational MathML"""
+"""Convert LaTex maths code into presentational MathML.
+"""
 
-# Based on the `latex_math` sandbox project by Jens Jørgen Mortensen
+# .. [1] the original `rst2mathml.py` in `sandbox/jensj/latex_math`
+#
+# Usage:
+#
+# >>> import latex2mathml
 
 import docutils.utils.math.tex2unichar as tex2unichar
 
@@ -55,6 +60,9 @@ special.update(tex2unichar.mathfence)
 
 sumintprod = ''.join([special[symbol] for symbol in
                       ['sum', 'int', 'oint', 'prod']])
+
+# >>> print(latex2mathml.sumintprod)
+# ∑∫∮∏
 
 functions = ['arccos', 'arcsin', 'arctan', 'arg', 'cos',  'cosh',
              'cot',    'coth',   'csc',    'deg', 'det',  'dim',
@@ -150,9 +158,42 @@ mathscr = {
            'z': u'\U0001D4CF',
           }
 
+# >>> print(''.join(latex2mathml.mathscr.values()))
+# 𝒜ℬ𝒞𝒟ℰℱ𝒢ℋℐ𝒥𝒦ℒℳ𝒩𝒪𝒫𝒬ℛ𝒮𝒯𝒰𝒱𝒲𝒳𝒴𝒵𝒶𝒷𝒸𝒹ℯ𝒻ℊ𝒽𝒾𝒿𝓀𝓁𝓂𝓃ℴ𝓅𝓆𝓇𝓈𝓉𝓊𝓋𝓌𝓍𝓎𝓏
+
 negatables = {'=': u'\u2260',
               r'\in': u'\u2209',
               r'\equiv': u'\u2262'}
+
+# cmds/characters allowed in left/right cmds
+fence_args = {'(': '(',
+              ')': ')',
+              '[': '[',
+              ']': ']',
+              '/': '/',
+              r'\backslash': '\\',
+              '|': '|',
+              '.': '', # emty fence
+              r'\uparrow': u'\u2191', # ↑ UPWARDS ARROW
+              r'\downarrow': u'\u2193', # ↓ DOWNWARDS ARROW
+              r'\updownarrow': u'\u2195', # ↕ UP DOWN ARROW
+              r'\Uparrow': u'\u21d1', # ⇑ UPWARDS DOUBLE ARROW
+              r'\Downarrow': u'\u21d3', # ⇓ DOWNWARDS DOUBLE ARROW
+              r'\Updownarrow': u'\u21d5', # ⇕ UP DOWN DOUBLE ARROW
+
+             }
+for (key, value) in tex2unichar.mathfence.items():
+    fence_args['\\'+key] = value
+for (key, value) in tex2unichar.mathopen.items():
+    fence_args['\\'+key] = value
+for (key, value) in tex2unichar.mathclose.items():
+    fence_args['\\'+key] = value
+# shorter with {**something} syntax, new in 3.5
+# if sys.version_info >= (3, 5):
+#     for (key, value) in {**tex2unichar.mathclose,
+#                          **tex2unichar.mathopen,
+#                          **tex2unichar.mathfence}.items():
+#         fence_args['\\'+key] = value
 
 # LaTeX to MathML translation stuff:
 class math(object):
@@ -233,9 +274,10 @@ class math(object):
             return ['<%s>' % self.__class__.__name__]
         xmlns = 'http://www.w3.org/1998/Math/MathML'
         if self.inline:
-            return ['<math xmlns="%s" displaystyle="false">' % xmlns]
+            args = 'displaystyle="false"'
         else:
-            return ['<math xmlns="%s" display="block">' % xmlns]
+            args = 'display="block"'
+        return ['<math xmlns="%s" %s>' % (xmlns, args)]
 
     def xml_end(self):
         return ['</%s>' % self.__class__.__name__]
@@ -268,9 +310,12 @@ class mx(math):
         return [self.data]
 
 class mo(mx):
-    translation = {'<': '&lt;', '>': '&gt;'}
+    translation = {ord('<'): u'&lt;', ord('>'): u'&gt;'}
     def xml_body(self):
-        return [self.translation.get(self.data, self.data)]
+        return [self.data.translate(self.translation)]
+
+# >>> latex2mathml.mo(u'<').xml()
+# ['<mo>', '&lt;', '</mo>']
 
 class mi(mx): pass
 class mn(mx): pass
@@ -302,19 +347,6 @@ class msubsup(math):
             self.children[1:3] = [self.children[2], self.children[1]]
             self.reversed = False
         return math.xml(self)
-
-class mfenced(math):
-    translation = {'\\{': '{', '\\langle': u'\u2329',
-                   '\\}': '}', '\\rangle': u'\u232A',
-                   '.': ''}
-    def __init__(self, par):
-        self.openpar = par
-        math.__init__(self)
-
-    def xml_start(self):
-        open = self.translation.get(self.openpar, self.openpar)
-        close = self.translation.get(self.closepar, self.closepar)
-        return ['<mfenced open="%s" close="%s">' % (open, close)]
 
 class mspace(math):
     nchildren = 0
@@ -494,25 +526,23 @@ def handle_keyword(name, node, string):
         node.append(frac)
         node = frac
     elif name == 'left':
-        for par in ['(', '[', '|', '\\{', '\\langle', '.']:
+        for par in fence_args.keys():
             if string.startswith(par):
                 break
         else:
             raise SyntaxError(u'Missing left-brace!')
-        fenced = mfenced(par)
-        node.append(fenced)
         row = mrow()
-        fenced.append(row)
+        node.append(row)
         node = row
+        node.append(mo(fence_args[par]))
         skip += len(par)
     elif name == 'right':
-        for par in [')', ']', '|', '\\}', '\\rangle', '.']:
+        for par in fence_args.keys():
             if string.startswith(par):
                 break
         else:
             raise SyntaxError(u'Missing right-brace!')
-        node = node.close()
-        node.closepar = par
+        node.append(mo(fence_args[par]))
         node = node.close()
         skip += len(par)
     elif name == 'not':

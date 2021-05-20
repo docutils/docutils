@@ -25,10 +25,10 @@ role specificator, <math xmlns="http://www.w3.org/1998/Math/MathML" displaystyle
 <mtr>
 <mtd><mi>f</mi><mo>(</mo><mi>ϵ</mi><mo>)</mo><mo>=</mo><mfrac>
 <mrow><mn>1</mn></mrow>
-<mrow><mn>1</mn><mo>+</mo><mo>exp</mo><mfenced open="(" close=")">
-<mrow><mfrac>
+<mrow><mn>1</mn><mo>+</mo><mo>exp</mo>
+<mrow><mo>(</mo><mfrac>
 <mrow><mi>ε</mi></mrow>
-<mrow><msub><mi>k</mi><mtext>B</mtext></msub><mi>T</mi></mrow></mfrac></mrow></mfenced></mrow></mfrac></mtd></mtr></mtable></math>
+<mrow><msub><mi>k</mi><mtext>B</mtext></msub><mi>T</mi></mrow></mfrac><mo>)</mo></mrow></mrow></mfrac></mtd></mtr></mtable></math>
 </div>
 <p>Content may start on the first line of the directive, e.g.</p>
 <div>
@@ -47,15 +47,15 @@ See <a class="reference internal" href="#eq-m">eq:M</a> and <a class="reference 
 <mtable>
 <mtr>
 <mtd><mstyle mathvariant="bold">
-<mrow><mi>M</mi></mrow></mstyle><mo>=</mo><mfenced open="(" close=")">
-<mrow>
+<mrow><mi>M</mi></mrow></mstyle><mo>=</mo>
+<mrow><mo>(</mo>
 <mtable>
 <mtr>
 <mtd><mi>a</mi></mtd>
 <mtd><mi>b</mi></mtd></mtr>
 <mtr>
 <mtd><mi>c</mi></mtd>
-<mtd><mi>d</mi></mtd></mtr></mtable></mrow></mfenced></mtd></mtr></mtable></math>
+<mtd><mi>d</mi></mtd></mtr></mtable><mo>)</mo></mrow></mtd></mtr></mtable></math>
 </div>
 <p>is <math xmlns="http://www.w3.org/1998/Math/MathML" displaystyle="false">
 <mrow><mo>|</mo><mstyle mathvariant="bold">
@@ -154,13 +154,13 @@ physical system changes in time.</p>
 <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
 <mtable>
 <mtr>
-<mtd><mtext>MTF</mtext><mo>=</mo><mfenced open="|" close="|">
-<mrow><mfrac>
+<mtd><mtext>MTF</mtext><mo>=</mo>
+<mrow><mo>|</mo><mfrac>
 <mrow><mi>ℱ</mi><mo>{</mo><mi>s</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>}</mo></mrow>
 <mrow><mi>ℱ</mi><mo>{</mo><mi>s</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>}</mo><msub><mo>|</mo>
 <mrow><msub><mi>ω</mi>
-<mrow><mi>x</mi></mrow></msub><mo>=</mo><mn>0</mn></mrow></msub></mrow></mfrac></mrow></mfenced><mo>=</mo><mtext>abs</mtext><mfenced open="(" close=")">
-<mrow><mfrac>
+<mrow><mi>x</mi></mrow></msub><mo>=</mo><mn>0</mn></mrow></msub></mrow></mfrac><mo>|</mo></mrow><mo>=</mo><mtext>abs</mtext>
+<mrow><mo>(</mo><mfrac>
 <mrow><munderover><mo>∫</mo>
 <mrow><mo>-</mo><mo>∞</mo></mrow>
 <mrow><mo>∞</mo></mrow></munderover><mi>s</mi><mo>(</mo><mi>x</mi><mo>)</mo><msup><mtext>e</mtext>
@@ -170,7 +170,7 @@ physical system changes in time.</p>
 <mrow><munderover><mo>∫</mo>
 <mrow><mo>-</mo><mo>∞</mo></mrow>
 <mrow><mo>∞</mo></mrow></munderover><mi>s</mi><mo>(</mo><mi>x</mi><mo>)</mo><mtext>d</mtext>
-<mrow><mi>x</mi></mrow></mrow></mfrac></mrow></mfenced><mo>.</mo></mtd></mtr></mtable></math>
+<mrow><mi>x</mi></mrow></mrow></mfrac><mo>)</mo></mrow><mo>.</mo></mtd></mtr></mtable></math>
 </div>
 <p>Math split over two lines: If a double backslash is detected outside a
 <span class="docutils literal"><span class="pre">\begin{...}</span> <span class="pre">\end{...}</span></span> pair, the math code is wrapped in an <a class="reference external" href="ftp://ftp.ams.org/ams/doc/amsmath/short-math-guide.pdf">AMSmath</a>
@@ -193,15 +193,15 @@ physical system changes in time.</p>
 <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
 <mtable>
 <mtr>
-<mtd><mtext>sgn</mtext><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mfenced open="{" close="">
-<mrow>
+<mtd><mtext>sgn</mtext><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo>
+<mrow><mo>{</mo>
 <mtable>
 <mtr>
 <mtd><mo>-</mo><mn>1</mn></mtd>
 <mtd><mi>x</mi><mo>&lt;</mo><mn>0</mn></mtd></mtr>
 <mtr>
 <mtd><mn>1</mn></mtd>
-<mtd><mi>x</mi><mo>&gt;</mo><mn>0</mn></mtd></mtr></mtable></mrow></mfenced></mtd></mtr></mtable></math>
+<mtd><mi>x</mi><mo>&gt;</mo><mn>0</mn></mtd></mtr></mtable><mo></mo></mrow></mtd></mtr></mtable></math>
 </div>
 <p>Cases with the <a class="reference external" href="ftp://ftp.ams.org/ams/doc/amsmath/short-math-guide.pdf">AMSmath</a> <span class="docutils literal">cases</span> environment (not (yet) supported by
 HTML writers with <span class="docutils literal"><span class="pre">--math-output=MathML</span></span>):</p>
