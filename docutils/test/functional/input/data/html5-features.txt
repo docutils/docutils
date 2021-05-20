@@ -101,7 +101,7 @@ Field List Variants
 ```````````````````
 
 For field lists, the "compact/open", "narrow" and "run-in" styles are defined
-in the style sheet ``plain.css``.
+in the style sheets ``plain.css`` and ``responsive.css``.
 
 *compact*
   .. class:: compact
@@ -132,6 +132,15 @@ in the style sheet ``plain.css``.
   :A long field name:
        sticks into the field body and the field body starts on a
        new line (if not combined with `run-in`_).
+
+custom *field-indent*
+  .. class:: field-indent-3em
+
+  :Feature: Field body indented by custom amount.
+  :Use:     class value starting with ``field-indent-`` followed by
+            a valid lenght, e.g. ``field-indent-3em``.
+  :The writer:
+            will convert this class value to a ``style`` attribute setting.
 
 .. _`run-in`:
 

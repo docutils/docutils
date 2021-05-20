@@ -451,6 +451,71 @@ Not a docinfo.
  'html_head': '''...<title>&lt;string&gt;</title>\\n'''}
 """],
 ["""\
+Not a docinfo.
+
+.. class:: field-indent-200
+
+:This: is a
+:simple: field list with custom indent.
+""",
+"""\
+{'fragment': '''<p>Not a docinfo.</p>
+<dl class="field-list simple" style="--field-indent: 200px;">
+<dt>This<span class="colon">:</span></dt>
+<dd><p>is a</p>
+</dd>
+<dt>simple<span class="colon">:</span></dt>
+<dd><p>field list with custom indent.</p>
+</dd>
+</dl>\\n''',
+ 'html_body': '''<main>
+<p>Not a docinfo.</p>
+<dl class="field-list simple" style="--field-indent: 200px;">
+<dt>This<span class="colon">:</span></dt>
+<dd><p>is a</p>
+</dd>
+<dt>simple<span class="colon">:</span></dt>
+<dd><p>field list with custom indent.</p>
+</dd>
+</dl>
+</main>\\n''',
+ 'html_head': '''...<title>&lt;string&gt;</title>\\n'''}
+"""],
+["""\
+Not a docinfo.
+
+.. class:: field-indent-200uf
+
+:This: is a
+:simple: field list without custom indent,
+         because the unit "uf" is invalid.
+""",
+"""\
+{'fragment': '''<p>Not a docinfo.</p>
+<dl class="field-indent-200uf field-list simple">
+<dt>This<span class="colon">:</span></dt>
+<dd><p>is a</p>
+</dd>
+<dt>simple<span class="colon">:</span></dt>
+<dd><p>field list without custom indent,
+because the unit &quot;uf&quot; is invalid.</p>
+</dd>
+</dl>\\n''',
+ 'html_body': '''<main>
+<p>Not a docinfo.</p>
+<dl class="field-indent-200uf field-list simple">
+<dt>This<span class="colon">:</span></dt>
+<dd><p>is a</p>
+</dd>
+<dt>simple<span class="colon">:</span></dt>
+<dd><p>field list without custom indent,
+because the unit &quot;uf&quot; is invalid.</p>
+</dd>
+</dl>
+</main>\\n''',
+ 'html_head': '''...<title>&lt;string&gt;</title>\\n'''}
+"""],
+["""\
 .. figure:: dummy.png
 
    The figure's caption.
