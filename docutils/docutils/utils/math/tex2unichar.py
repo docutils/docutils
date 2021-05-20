@@ -315,7 +315,8 @@ mathord = {
     'checkmark': u'\u2713', # ✓ CHECK MARK
     'circlearrowleft': u'\u21ba', # ↺ ANTICLOCKWISE OPEN CIRCLE ARROW
     'circlearrowright': u'\u21bb', # ↻ CLOCKWISE OPEN CIRCLE ARROW
-    'circledR': u'\xae', # ® REGISTERED SIGN
+    'circledR': u'\u24c7', # Ⓡ CIRCLED LATIN CAPITAL LETTER R
+    'circledS': u'\u24c8', # Ⓢ CIRCLED LATIN CAPITAL LETTER S
     'circledcirc': u'\u25ce', # ◎ BULLSEYE
     'clubsuit': u'\u2663', # ♣ BLACK CLUB SUIT
     'complement': u'\u2201', # ∁ COMPLEMENT
@@ -383,7 +384,9 @@ mathord = {
     'sptilde': u'~', # ~ TILDE
     'square': u'\u25fb', # ◻ WHITE MEDIUM SQUARE
     'sun': u'\u263c', # ☼ WHITE SUN WITH RAYS
+    'surd': u'\u221a', # √ SQUARE ROOT
     'taurus': u'\u2649', # ♉ TAURUS
+    'textregistered': u'\u24c7', # Ⓡ CIRCLED LATIN CAPITAL LETTER R
     'therefore': u'\u2234', # ∴ THEREFORE
     'third': u'\u2034', # ‴ TRIPLE PRIME
     'top': u'\u22a4', # ⊤ DOWN TACK
@@ -614,8 +617,6 @@ mathrel = {
     'searrow': u'\u2198', # ↘ SOUTH EAST ARROW
     'sim': u'\u223c', # ∼ TILDE OPERATOR
     'simeq': u'\u2243', # ≃ ASYMPTOTICALLY EQUAL TO
-    'smallfrown': u'\u2322', # ⌢ FROWN
-    'smallsmile': u'\u2323', # ⌣ SMILE
     'smile': u'\u2323', # ⌣ SMILE
     'sqsubset': u'\u228f', # ⊏ SQUARE IMAGE OF
     'sqsubseteq': u'\u2291', # ⊑ SQUARE IMAGE OF OR EQUAL TO

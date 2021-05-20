@@ -99,13 +99,6 @@ The result is:
    a & = (x + y)^2 \\
      & = x^2 + 2xy + y^2
 
-
-Not *all* math syntax constructs work with every output format, but basic
-everyday-math should work.
-
-If a command or a special symbol is not desribed in this document, then
-it is probably not implemented in the internal LaTeX -> MathML converter.
-
 .. _hyperlink references: ../ref/rst/restructuredtext.html#hyperlink-references
 
 
@@ -268,13 +261,14 @@ Letterlike symbols
 ------------------
 .. class:: colwidths-auto
 
-============= ===============  ========= ===========  ========= ===========  ========== ============
-`\aleph`      ``\aleph``       `\ell`    ``\ell``     `\Game`   ``\Game``    `\Bbbk`    ``\Bbbk``
-`\beth`       ``\beth``        `\eth`    ``\eth``     `\hbar`   ``\hbar``    `\mho`     ``\mho``
-`\gimel`      ``\gimel``       `\exists` ``\exists``  `\hslash` ``\hslash``  `\partial` ``\partial``
-`\daleth`     ``\daleth``      `\Finv`   ``\Finv``    `\Im`     ``\Im``      `\Re`      ``\Re``
-`\complement` ``\complement``  `\forall` ``\forall``  `\imath`  ``\imath``   `\wp`      ``\wp``
-============= ===============  ========= ===========  ========= ===========  ========== ============
+========== ============  ============= ===============  ========= ===========  =========== =============
+`\aleph`   ``\aleph``    `\forall`     ``\forall``      `\hbar`   ``\hbar``    `\ell`      ``\ell``   
+`\beth`    ``\beth``     `\complement` ``\complement``  `\hslash` ``\hslash``  `\wp`       ``\wp``      
+`\gimel`   ``\gimel``    `\exists`     ``\exists``      `\Im`     ``\Im``      `\Re`       ``\Re``      
+`\daleth`  ``\daleth``   `\Finv`       ``\Finv``        `\imath`  ``\imath``   `\circledR` ``\circledR``
+`\partial` ``\partial``  `\Game`       ``\Game``        `\Bbbk`   ``\Bbbk``    `\circledS` ``\circledS``
+`\eth`     ``\eth``                                                            `\mho`      ``\mho``     
+========== ============  ============= ===============  ========= ===========  =========== =============
 
 
 Mathematical Alphabets
@@ -607,6 +601,7 @@ Horizontal space
   :m:`|\quad|`       ``|\quad|``         1 em
   :m:`|\;|`          ``|\;|``            thick
   :m:`|\ |`          ``|\ |``            standard
+  :m:`|~|`           ``|~|``             non-break
   :m:`|\:|`          ``|\:|``            medium
   :m:`|\,|`          ``|\,|``            thin
   :m:`|  |`          ``|  |``            none
@@ -651,9 +646,9 @@ internal LaTeX2MathML
 
 * Math inside text: ``n - 1 \text{if $n$ is odd}``.
 * Remove circular refs.
-* Implement ``\circledS``? Ⓢ (and other characters
+* Document ``\circledS``, \circledR, implement other characters
   in the short-math-guide.pdf but not in the
-  Unicode `Mathematical Character Repertoire`__)
+  Unicode `Mathematical Character Repertoire`__
 
 __ http://www.unicode.org/reports/tr25/
 
@@ -702,10 +697,11 @@ Scripts and Limits
 Accents should be nearer to the base (in MathML Firefox 78, it's vice versa!):
 `\bar a \overline a, \bar l \overline l, \bar i \overline i`.
 
-In inline formulas and fractions, the limits on lim, sum and integral should
-move to index postions: `\lim_{c\to0} \oint_c f(x) \mathrm{d}x` vs.
+In inline formulas and fractions, the limits on lim, sum and integrals,
 
-.. math:: \lim_{c\to0} \oint_c f(x) \mathrm{d}x
+.. math:: \lim_{c\to0} \oint_c f(x) \mathrm{d}x,
+
+should move to index postions: `\lim_{c\to0} \oint_c f(x) \mathrm{d}x`.
 
 Sub- and superscript may be given in any order:
 `x_i^j = x^j_i` and `\int_0^1 = \int^1_0`.
