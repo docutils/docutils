@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- coding: utf8 -*-
 
 # LaTeX math to Unicode symbols translation dictionaries.
 # Generated with ``write_tex2unichar.py`` from the data in
@@ -7,30 +7,30 @@
 # Includes commands from: wasysym, stmaryrd, mathdots, mathabx, esint, bbold, amsxtra, amsmath, amssymb, standard LaTeX
 
 mathaccent = {
-    'acute': u'\u0301', # x́ COMBINING ACUTE ACCENT
-    'bar': u'\u0304', # x̄ COMBINING MACRON
-    'breve': u'\u0306', # x̆ COMBINING BREVE
-    'check': u'\u030c', # x̌ COMBINING CARON
+    'acute': u'\u0301', #  ́ COMBINING ACUTE ACCENT
+    'bar': u'\u0304', #  ̄ COMBINING MACRON
+    'breve': u'\u0306', #  ̆ COMBINING BREVE
+    'check': u'\u030c', #  ̌ COMBINING CARON
     'ddddot': u'\u20dc', # x⃜ COMBINING FOUR DOTS ABOVE
     'dddot': u'\u20db', # x⃛ COMBINING THREE DOTS ABOVE
-    'ddot': u'\u0308', # ẍ COMBINING DIAERESIS
-    'dot': u'\u0307', # ẋ COMBINING DOT ABOVE
-    'grave': u'\u0300', # x̀ COMBINING GRAVE ACCENT
-    'hat': u'\u0302', # x̂ COMBINING CIRCUMFLEX ACCENT
-    'mathring': u'\u030a', # x̊ COMBINING RING ABOVE
-    'not': u'\u0338', # x̸ COMBINING LONG SOLIDUS OVERLAY
+    'ddot': u'\u0308', #  ̈ COMBINING DIAERESIS
+    'dot': u'\u0307', #  ̇ COMBINING DOT ABOVE
+    'grave': u'\u0300', #  ̀ COMBINING GRAVE ACCENT
+    'hat': u'\u0302', #  ̂ COMBINING CIRCUMFLEX ACCENT
+    'mathring': u'\u030a', #  ̊ COMBINING RING ABOVE
+    'not': u'\u0338', #  ̸ COMBINING LONG SOLIDUS OVERLAY
     'overleftarrow': u'\u20d6', # x⃖ COMBINING LEFT ARROW ABOVE
     'overleftrightarrow': u'\u20e1', # x⃡ COMBINING LEFT RIGHT ARROW ABOVE
-    'overline': u'\u0305', # x̅ COMBINING OVERLINE
+    'overline': u'\u0305', #  ̅ COMBINING OVERLINE
     'overrightarrow': u'\u20d7', # x⃗ COMBINING RIGHT ARROW ABOVE
-    'tilde': u'\u0303', # x̃ COMBINING TILDE
-    'underbar': u'\u0331', # x̱ COMBINING MACRON BELOW
+    'tilde': u'\u0303', #  ̃ COMBINING TILDE
+    'underbar': u'\u0331', #  ̱ COMBINING MACRON BELOW
     'underleftarrow': u'\u20ee', # x⃮ COMBINING LEFT ARROW BELOW
-    'underline': u'\u0332', # x̲ COMBINING LOW LINE
+    'underline': u'\u0332', #  ̲ COMBINING LOW LINE
     'underrightarrow': u'\u20ef', # x⃯ COMBINING RIGHT ARROW BELOW
     'vec': u'\u20d7', # x⃗ COMBINING RIGHT ARROW ABOVE
-    'widehat': u'\u0302', # x̂ COMBINING CIRCUMFLEX ACCENT
-    'widetilde': u'\u0303', # x̃ COMBINING TILDE
+    'widehat': u'\u0302', #  ̂ COMBINING CIRCUMFLEX ACCENT
+    'widetilde': u'\u0303', #  ̃ COMBINING TILDE
     }
 mathalpha = {
     'Bbbk': u'\U0001d55c', # 𝕜 MATHEMATICAL DOUBLE-STRUCK SMALL K
@@ -54,7 +54,7 @@ mathalpha = {
     'chi': u'\u03c7', # χ GREEK SMALL LETTER CHI
     'daleth': u'\u2138', # ℸ DALET SYMBOL
     'delta': u'\u03b4', # δ GREEK SMALL LETTER DELTA
-    'digamma': u'\u03dc', # Ϝ GREEK LETTER DIGAMMA
+    'digamma': u'\u03dd', # ϝ GREEK SMALL LETTER DIGAMMA
     'ell': u'\u2113', # ℓ SCRIPT SMALL L
     'epsilon': u'\u03f5', # ϵ GREEK LUNATE EPSILON SYMBOL
     'eta': u'\u03b7', # η GREEK SMALL LETTER ETA
@@ -91,7 +91,7 @@ mathalpha = {
     'varUpsilon': u'\U0001d6f6', # 𝛶 MATHEMATICAL ITALIC CAPITAL UPSILON
     'varXi': u'\U0001d6ef', # 𝛯 MATHEMATICAL ITALIC CAPITAL XI
     'varepsilon': u'\u03b5', # ε GREEK SMALL LETTER EPSILON
-    'varkappa': u'\U0001d718', # 𝜘 MATHEMATICAL ITALIC KAPPA SYMBOL
+    'varkappa': u'\u03f0', # ϰ GREEK KAPPA SYMBOL
     'varphi': u'\u03c6', # φ GREEK SMALL LETTER PHI
     'varpi': u'\u03d6', # ϖ GREEK PI SYMBOL
     'varrho': u'\u03f1', # ϱ GREEK RHO SYMBOL
@@ -110,10 +110,12 @@ mathbin = {
     'amalg': u'\u2a3f', # ⨿ AMALGAMATION OR COPRODUCT
     'ast': u'\u2217', # ∗ ASTERISK OPERATOR
     'barwedge': u'\u22bc', # ⊼ NAND
+    'bigcirc': u'\u25ef', # ◯ LARGE CIRCLE
     'bigtriangledown': u'\u25bd', # ▽ WHITE DOWN-POINTING TRIANGLE
     'bigtriangleup': u'\u25b3', # △ WHITE UP-POINTING TRIANGLE
     'bindnasrepma': u'\u214b', # ⅋ TURNED AMPERSAND
     'blacklozenge': u'\u29eb', # ⧫ BLACK LOZENGE
+    'blacktriangle': u'\u25b4', # ▴ BLACK UP-POINTING SMALL TRIANGLE
     'blacktriangledown': u'\u25be', # ▾ BLACK DOWN-POINTING SMALL TRIANGLE
     'blacktriangleleft': u'\u25c2', # ◂ BLACK LEFT-POINTING SMALL TRIANGLE
     'blacktriangleright': u'\u25b8', # ▸ BLACK RIGHT-POINTING SMALL TRIANGLE
@@ -128,7 +130,7 @@ mathbin = {
     'boxplus': u'\u229e', # ⊞ SQUARED PLUS
     'boxslash': u'\u29c4', # ⧄ SQUARED RISING DIAGONAL SLASH
     'boxtimes': u'\u22a0', # ⊠ SQUARED TIMES
-    'bullet': u'\u2219', # ∙ BULLET OPERATOR
+    'bullet': u'\u2022', # • BULLET
     'cap': u'\u2229', # ∩ INTERSECTION
     'cdot': u'\u22c5', # ⋅ DOT OPERATOR
     'circ': u'\u2218', # ∘ RING OPERATOR
@@ -320,9 +322,12 @@ mathord = {
     'dasharrow': u'\u21e2', # ⇢ RIGHTWARDS DASHED ARROW
     'dashleftarrow': u'\u21e0', # ⇠ LEFTWARDS DASHED ARROW
     'dashrightarrow': u'\u21e2', # ⇢ RIGHTWARDS DASHED ARROW
+    'diagdown': u'\u27cd', # ⟍ 
+    'diagup': u'\u27cb', # ⟋ 
     'diameter': u'\u2300', # ⌀ DIAMETER SIGN
     'diamondsuit': u'\u2662', # ♢ WHITE DIAMOND SUIT
     'earth': u'\u2641', # ♁ EARTH
+    'emptyset': u'\u2205', # ∅ EMPTY SET
     'exists': u'\u2203', # ∃ THERE EXISTS
     'female': u'\u2640', # ♀ FEMALE SIGN
     'flat': u'\u266d', # ♭ MUSIC FLAT SIGN
@@ -333,6 +338,7 @@ mathord = {
     'girl': u'\u2640', # ♀ FEMALE SIGN
     'heartsuit': u'\u2661', # ♡ WHITE HEART SUIT
     'infty': u'\u221e', # ∞ INFINITY
+    'invdiameter': u'\u2349', # ⍉ APL FUNCTIONAL SYMBOL CIRCLE BACKSLASH
     'invneg': u'\u2310', # ⌐ REVERSED NOT SIGN
     'jupiter': u'\u2643', # ♃ JUPITER
     'ldots': u'\u2026', # … HORIZONTAL ELLIPSIS
@@ -386,7 +392,7 @@ mathord = {
     'twonotes': u'\u266b', # ♫ BEAMED EIGHTH NOTES
     'uranus': u'\u2645', # ♅ URANUS
     'varEarth': u'\u2641', # ♁ EARTH
-    'varnothing': u'\u2205', # ∅ EMPTY SET
+    'varnothing': u'\u2300', # ⌀ DIAMETER SIGN
     'virgo': u'\u264d', # ♍ VIRGO
     'wasylozenge': u'\u2311', # ⌑ SQUARE LOZENGE
     'wasytherefore': u'\u2234', # ∴ THEREFORE
@@ -397,7 +403,6 @@ mathover = {
     'wideparen': u'\u23dc', # ⏜ TOP PARENTHESIS
     }
 mathradical = {
-    'sqrt': u'\u221a', # √ SQUARE ROOT
     'sqrt[3]': u'\u221b', # ∛ CUBE ROOT
     'sqrt[4]': u'\u221c', # ∜ FOURTH ROOT
     }
@@ -476,6 +481,7 @@ mathrel = {
     'gg': u'\u226b', # ≫ MUCH GREATER-THAN
     'ggcurly': u'\u2abc', # ⪼ DOUBLE SUCCEEDS
     'ggg': u'\u22d9', # ⋙ VERY MUCH GREATER-THAN
+    'gggtr': u'\u22d9', # ⋙ VERY MUCH GREATER-THAN
     'gnapprox': u'\u2a8a', # ⪊ GREATER-THAN AND NOT APPROXIMATE
     'gneq': u'\u2a88', # ⪈ GREATER-THAN AND SINGLE-LINE NOT EQUAL TO
     'gneqq': u'\u2269', # ≩ GREATER-THAN BUT NOT EQUAL TO
@@ -523,6 +529,7 @@ mathrel = {
     'll': u'\u226a', # ≪ MUCH LESS-THAN
     'llcurly': u'\u2abb', # ⪻ DOUBLE PRECEDES
     'lll': u'\u22d8', # ⋘ VERY MUCH LESS-THAN
+    'llless': u'\u22d8', # ⋘ VERY MUCH LESS-THAN
     'lnapprox': u'\u2a89', # ⪉ LESS-THAN AND NOT APPROXIMATE
     'lneq': u'\u2a87', # ⪇ LESS-THAN AND SINGLE-LINE NOT EQUAL TO
     'lneqq': u'\u2268', # ≨ LESS-THAN BUT NOT EQUAL TO
@@ -585,6 +592,7 @@ mathrel = {
     'preccurlyeq': u'\u227c', # ≼ PRECEDES OR EQUAL TO
     'preceq': u'\u2aaf', # ⪯ PRECEDES ABOVE SINGLE-LINE EQUALS SIGN
     'precnapprox': u'\u2ab9', # ⪹ PRECEDES ABOVE NOT ALMOST EQUAL TO
+    'precneqq': u'\u2ab5', # ⪵ PRECEDES ABOVE NOT EQUAL TO
     'precnsim': u'\u22e8', # ⋨ PRECEDES BUT NOT EQUIVALENT TO
     'precsim': u'\u227e', # ≾ PRECEDES OR EQUIVALENT TO
     'propto': u'\u221d', # ∝ PROPORTIONAL TO
@@ -623,6 +631,7 @@ mathrel = {
     'succcurlyeq': u'\u227d', # ≽ SUCCEEDS OR EQUAL TO
     'succeq': u'\u2ab0', # ⪰ SUCCEEDS ABOVE SINGLE-LINE EQUALS SIGN
     'succnapprox': u'\u2aba', # ⪺ SUCCEEDS ABOVE NOT ALMOST EQUAL TO
+    'succneqq': u'\u2ab6', # ⪶ SUCCEEDS ABOVE NOT EQUAL TO
     'succnsim': u'\u22e9', # ⋩ SUCCEEDS BUT NOT EQUIVALENT TO
     'succsim': u'\u227f', # ≿ SUCCEEDS OR EQUIVALENT TO
     'supset': u'\u2283', # ⊃ SUPERSET OF

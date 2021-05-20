@@ -22,7 +22,7 @@
 #
 # Usage:
 #
-# >>> import latex2mathml as l2m
+# >>> from latex2mathml import *
 
 import collections
 import re
@@ -54,12 +54,17 @@ greek_capitals = {
 functions = ['arccos', 'arcsin', 'arctan', 'arg', 'cos',  'cosh',
              'cot',    'coth',   'csc',    'deg', 'det',  'dim',
              'exp',    'gcd',    'hom',    'inf', 'ker',  'lg',
-             'lim',    'liminf', 'limsup', 'ln',  'log',  'max',
-             'min',    'Pr',     'sec',    'sin', 'sinh', 'sup',
-             'tan',    'tanh',   'injlim', 'varinjlim',   'projlim',
-             'varlimsup', 'varliminf', 'varprojlim']
+             'lim',    'ln',     'log',    'max', 'min',  'Pr',
+             'sec',    'sin',    'sinh',   'sup', 'tan',  'tanh']
+functions = dict((name, name) for name in functions)
+functions.update({# functions with a space in the name
+                  'liminf': u'lim\u202finf', 'limsup': u'lim\u202fsup',
+                  'injlim': u'inj\u202flim', 'projlim': u'proj\u202flim',
+                  # embellished function names (see handle_keyword() below)
+                  'varlimsup': 'lim', 'varliminf': 'lim',
+                  'varprojlim': 'lim', 'varinjlim': 'lim'})
 
-# font selection -> <mi mathvariant=...>
+# math font selection -> <mi mathvariant=...> or <mstyle mathvariant=...>
 math_alphabets = {# 'cmdname': 'mathvariant value'  # package
                   'boldsymbol': 'bold',
                   'mathbb': 'double-struck',        # amssymb
@@ -79,19 +84,6 @@ math_alphabets = {# 'cmdname': 'mathvariant value'  # package
                   #              bold-sans-serif
                  }
 
-# blackboar bold (Greek characters not working with "mathvariant" (Firefox 78)
-mathbb = {u'Γ': u'\u213E',    # ℾ
-          u'Π': u'\u213F',    # ℿ
-          u'Σ': u'\u2140',    # ⅀
-          u'γ': u'\u213D',    # ℽ
-          u'π': u'\u213C',    # ℼ
-          r'\Gamma': u'\u213E', # ℾ
-          r'\Pi':    u'\u213F', # ℿ
-          r'\Sigma': u'\u2140', # ⅀
-          r'\gamma': u'\u213D', # ℽ
-          r'\pi':    u'\u213C', # ℼ
-         }
-
 # operator, fence, or separator -> <mo>
 
 operators = tex2unichar.mathbin         # Binary symbols
@@ -101,24 +93,58 @@ operators.update(tex2unichar.mathop)    # Variable-sized symbols
 operators.update(tex2unichar.mathopen)  # Braces
 operators.update(tex2unichar.mathclose) # Braces
 operators.update(tex2unichar.mathfence)
+operators.update({# negated symbols without pre-composed Unicode character
+                  'nleqq':      u'\u2266\u0338', # ≦̸
+                  'ngeqq':      u'\u2267\u0338', # ≧̸
+                  'nleqslant':  u'\u2a7d\u0338', # ⩽̸
+                  'ngeqslant':  u'\u2a7e\u0338', # ⩾̸
+                  'nsubseteqq': u'\u2AC5\u0338', # ⫅̸
+                  'nsupseteqq': u'\u2AC6\u0338', # ⫆̸
+                 })
 
-# >>> '{' in l2m.operators.values()
+# >>> '{' in operators.values()
 # True
 
 # special cases
 
+thick_operators = {# style='font-weight: bold;'
+                   'thicksim':   u'\u223C', # ∼
+                   'thickapprox':u'\u2248', # ≈
+                  }
+
+small_operators = {# mathsize='75%'
+                   'shortmid':       u'\u2223', # ∣
+                   'shortparallel':  u'\u2225', # ∥
+                   'nshortmid':      u'\u2224', # ∤
+                   'nshortparallel': u'\u2226', # ∦
+                   'smallfrown': u'\u2322', # ⌢ FROWN
+                   'smallsmile': u'\u2323', # ⌣ SMILE
+                   'smallint':   u'\u222b', # ∫ INTEGRAL
+                  }
+
+left_delimiters = {# rspace='0', lspace='0.22em'
+                   'lvert': '|',
+                   'lVert': u'\u2016' # ‖ DOUBLE VERTICAL LINE
+                  }
+
+right_delimiters = {# lspace='0', rspace='0.22em'
+                    'rvert': '|',
+                    'rVert': u'\u2016', # ‖ DOUBLE VERTICAL LINE
+                   }
+
 sumintprod = ''.join([operators[symbol] for symbol in
                       ['sum', 'int', 'oint', 'prod']])
 
-# >>> print(l2m.sumintprod)
+# >>> print(sumintprod)
 # ∑∫∮∏
 
-#
+# pre-composed characters for negated symbols
+# see https://www.w3.org/TR/xml-entity-names/#combining
 negatables = {'=': u'\u2260',
               r'\in': u'\u2209',
               r'\equiv': u'\u2262'}
 
-# cmds/characters allowed in left/right cmds
+# extensible delimiters allowed in left/right cmds
 stretchables = {'(': '(',
                 ')': ')',
                 '[': '[',
@@ -147,7 +173,7 @@ for (key, value) in tex2unichar.mathclose.items():
 #                          **tex2unichar.mathfence}.items():
 #         stretchables['\\'+key] = value
 
-# >>> print(' '.join(sorted(set(l2m.stretchables.values()))))
+# >>> print(' '.join(sorted(set(stretchables.values()))))
 #  ( ) / [ \ ] { | } ‖ ↑ ↓ ↕ ⇑ ⇓ ⇕ ⌈ ⌉ ⌊ ⌋ ⌜ ⌝ ⌞ ⌟ ⟅ ⟆ ⟦ ⟧ ⟨ ⟩ ⟮ ⟯ ⦇ ⦈
 
 
@@ -171,33 +197,53 @@ spaces = {'qquad':         '2em',       # two \quad
 
 # accents -> <mover>
 #        TeX        spacing    combining
-over = {'acute':    u'\u00B4', # u'\u0301',
-        'bar':      u'\u00AF', # u'\u0304',
-        'breve':    u'\u02D8', # u'\u0306',
-        'check':    u'\u02C7', # u'\u030C',
-        'dot':      u'\u02D9', # u'\u0307',
-        'ddot':     u'\u00A8', # u'\u0308',
-        'dddot':               u'\u20DB',
+over = {'acute':    u'´',      # u'\u0301',
+        'bar':      u'-',      # u'\u0304',
+        'breve':    u'˘',      # u'\u0306',
+        'check':    u'ˇ',      # u'\u030C',
+        'dot':      u'·',      # u'\u0307',
+        'ddot':     u'··',     # u'\u0308',
+        'dddot':    u'···',    # u'\u20DB',
         'grave':    u'`',      # u'\u0300',
         'hat':      u'^',      # u'\u0302',
-        'mathring': u'\u02DA', # u'\u030A',
-        'overleftrightarrow':  u'\u20e1',
-        # 'overline':        # u'\u0305',
-        'tilde':    u'\u02DC', # u'\u0303',
-        'vec':               u'\u20D7'}
+        'mathring': u'°',      # u'\u030A',
+        'tilde':    u'\u223C', # u'\u0303',
+        'vec':                 u'\u20D7',
+       }
 
+wideover = {'overbrace':            u'\u23DE', # TOP CURLY BRACKET
+            'overleftarrow':        u'\u2190',
+            'overleftrightarrow':   u'\u2194',
+            'overline':             u'¯',
+            'overrightarrow':       u'\u2192',
+            'widehat':              u'^',
+            'widetilde':            u'~'}
+wideunder = {'underbrace':          u'\u23DF',
+             'underleftarrow':      u'\u2190',
+             'underleftrightarrow': u'\u2194',
+             'underline':           u'_',
+             'underrightarrow':     u'\u2192'}
 
-# all supported math-characters:
-#mathcharacters = dict(letters)
-#mathcharacters.update(operators)
-#mathcharacters.update(tex2unichar.space)
-#
-## >>> l2m.mathcharacters['alpha']
-## 'α'
-## >>> l2m.mathcharacters['{']
-## '{'
-## >>> l2m.mathcharacters['pm']
-## '±'
+# Character translations
+# ----------------------
+# characters with preferred alternative in mathematical use
+anomalous_chars = {'-': u'\u2212', # HYPHEN-MINUS -> MINUS SIGN
+                   ':': u'\u2236', # COLON -> RATIO
+                  }
+
+# blackboard bold (Greek characters not working with "mathvariant" (Firefox 78)
+mathbb = {u'Γ': u'\u213E',    # ℾ
+          u'Π': u'\u213F',    # ℿ
+          u'Σ': u'\u2140',    # ⅀
+          u'γ': u'\u213D',    # ℽ
+          u'π': u'\u213C',    # ℼ
+          r'\Gamma': u'\u213E', # ℾ
+          r'\Pi':    u'\u213F', # ℿ
+          r'\Sigma': u'\u2140', # ⅀
+          r'\gamma': u'\u213D', # ℽ
+          r'\pi':    u'\u213C', # ℼ
+         }
+
 
 # MathML element classes
 # ----------------------
@@ -205,8 +251,10 @@ over = {'acute':    u'\u00B4', # u'\u0301',
 class math(object):
     """Base class for MathML elements."""
 
-    nchildren = 1000000
-    """Required/Supported number of children"""
+    nchildren = None
+    """Expected number of children or None"""
+    parent = None
+    """Parent node in MathML DOM tree."""
     _level = 0 # indentation level (static class variable)
 
     def __init__(self, children=None, inline=None, **kwargs):
@@ -216,7 +264,7 @@ class math(object):
 
         self.children = []
         if children is not None:
-            if not isinstance(children, list):
+            if not isinstance(children, (list, tuple)):
                 children = [children]
             for child in children:
                 self.append(child)
@@ -226,7 +274,6 @@ class math(object):
             self.attributes['xmlns'] = 'http://www.w3.org/1998/Math/MathML'
         if inline is False:
             self.attributes['display'] = 'block'
-            # self.attributes['displaystyle'] = 'true'
         # sort kwargs for predictable functional tests
         # as self.attributes.update(kwargs) does not keep order in Python < 3.6
         for key in sorted(kwargs.keys()):
@@ -242,8 +289,8 @@ class math(object):
 
     def full(self):
         """Room for more children?"""
-
-        return len(self.children) >= self.nchildren
+        return (self.nchildren is not None
+                and len(self.children) >= self.nchildren)
 
     def append(self, child):
         """append(child) -> element
@@ -255,7 +302,7 @@ class math(object):
         self.children.append(child)
         child.parent = self
         node = self
-        while node.full():
+        while node is not None and node.full():
             node = node.parent
         return node
 
@@ -310,42 +357,55 @@ class math(object):
             last_child = child
         return xml
 
-# >>> l2m.math(l2m.mn(2))
+# >>> math(mn(2))
 # math(mn(2))
-# >>> l2m.math(l2m.mn(2)).xml()
+# >>> math(mn(2)).xml()
 # ['<math>', '\n  ', '<mn>', '2', '</mn>', '\n', '</math>']
 #
-# >>> l2m.math(id='eq3')
+# >>> math(id='eq3')
 # math(id='eq3')
-# >>> l2m.math(id='eq3').xml()
+# >>> math(id='eq3').xml()
 # ['<math id="eq3">', '\n', '</math>']
 #
 # use CLASS to get "class" in XML
-# >>> l2m.math(CLASS='test')
+# >>> math(CLASS='test')
 # math(CLASS='test')
-# >>> l2m.math(CLASS='test').xml()
+# >>> math(CLASS='test').xml()
 # ['<math class="test">', '\n', '</math>']
 
-# >>> l2m.math(inline=True)
+# >>> math(inline=True)
 # math(xmlns='http://www.w3.org/1998/Math/MathML')
-# >>> l2m.math(inline=True).xml()
+# >>> math(inline=True).xml()
 # ['<math xmlns="http://www.w3.org/1998/Math/MathML">', '\n', '</math>']
-# >>> l2m.math(inline=False)
+# >>> math(inline=False)
 # math(xmlns='http://www.w3.org/1998/Math/MathML', display='block')
-# >>> l2m.math(inline=False).xml()
+# >>> math(inline=False).xml()
 # ['<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">', '\n', '</math>']
 
-class mrow(math): pass
+class mrow(math):
+    """Group sub-expressions as a horizontal row.
+    """
+    def __init__(self, children=None, nchildren=None, **kwargs):
+        self.nchildren = nchildren
+        math.__init__(self, children)
+        self.attributes = kwargs
 
-# >>> l2m.mrow(displaystyle='false')
+# >>> mrow(displaystyle='false')
 # mrow(displaystyle='false')
 
 class mtable(math): pass
 
-# >>> l2m.mtable(displaystyle='true')
+# >>> mtable(displaystyle='true')
 # mtable(displaystyle='true')
-# >>> l2m.math(l2m.mtable(displaystyle='true')).xml()
+# >>> math(mtable(displaystyle='true')).xml()
 # ['<math>', '\n  ', '<mtable displaystyle="true">', '\n  ', '</mtable>', '\n', '</math>']
+
+
+# The elements <msqrt>, <mstyle>, <merror>, <mpadded>, <mphantom>, <menclose>,
+# <mtd>, <mscarry>, and <math> treat their contents as a single inferred mrow
+# formed from all their children.
+class msqrt(mrow): pass
+class mstyle(mrow): pass
 class mtr(mrow): pass
 class mtd(mrow): pass
 
@@ -367,9 +427,9 @@ class mn(mx): pass
 class mo(mx): pass
 class mtext(mx): pass
 
-# >>> l2m.mo(u'<')
+# >>> mo(u'<')
 # mo('<')
-# >>> l2m.mo(u'<').xml()
+# >>> mo(u'<').xml()
 # ['<mo>', '&lt;', '</mo>']
 
 class msub(math):
@@ -377,9 +437,6 @@ class msub(math):
 
 class msup(math):
     nchildren = 2
-
-class msqrt(math):
-    nchildren = 1
 
 class mroot(math):
     nchildren = 2
@@ -403,18 +460,11 @@ class msubsup(math):
 class mspace(math):
     nchildren = 0
 
-class mstyle(math):
-    def __init__(self, children=None, nchildren=None, **kwargs):
-        if nchildren is not None:
-            self.nchildren = nchildren
-        math.__init__(self, children)
-        self.attributes = kwargs
-
 class mover(math):
     nchildren = 2
-    def __init__(self, children=None, reversed=False):
+    def __init__(self, children=None, reversed=False, **kwargs):
         self.reversed = reversed
-        math.__init__(self, children)
+        math.__init__(self, children, **kwargs)
 
     def xml(self):
         if self.reversed:
@@ -422,7 +472,10 @@ class mover(math):
             self.reversed = False
         return math.xml(self)
 
-class munder(math):
+# >>> mover(children=[mi('lim'), mo('-')], accent='false')
+# mover(mi('lim'), mo('-'), accent='false')
+
+class munder(mover):
     nchildren = 2
 
 class munderover(math):
@@ -440,11 +493,11 @@ class munderover(math):
 def tex_cmdname(string):
     """Return leading TeX command name from `string`.
 
-      >>> l2m.tex_cmdname('name2') # up to first non-letter
+      >>> tex_cmdname('name2') # up to first non-letter
       ('name', '2')
-      >>> l2m.tex_cmdname('name 2') # strip trailing whitespace
+      >>> tex_cmdname('name 2') # strip trailing whitespace
       ('name', '2')
-      >>> l2m.tex_cmdname('_2') # single non-letter character
+      >>> tex_cmdname('_2') # single non-letter character
       ('_', '2')
 
     """
@@ -455,21 +508,15 @@ def tex_cmdname(string):
 
 # Test:
 #
-# >>> l2m.tex_cmdname('name_2') # first non-letter terminates
+# >>> tex_cmdname('name_2') # first non-letter terminates
 # ('name', '_2')
-# >>> l2m.tex_cmdname(' next') # leading whitespace is returned
+# >>> tex_cmdname(' next') # leading whitespace is returned
 # (' ', 'next')
-# >>> l2m.tex_cmdname('1 2') # whitespace after non-letter is kept
+# >>> tex_cmdname('1 2') # whitespace after non-letter is kept
 # ('1', ' 2')
-# >>> l2m.tex_cmdname('') # empty string
+# >>> tex_cmdname('') # empty string
 # ('', '')
 
-
-# TODO: check for Inferred <mrow>s:
-
-# The elements <msqrt>, <mstyle>, <merror>, <mpadded>, <mphantom>, <menclose>,
-# <mtd, mscarry>, and <math> treat their contents as a single inferred mrow
-# formed from all their children
 #
 # --- https://www.w3.org/TR/MathML3/chapter3.html#id.3.1.3.2
 
@@ -478,11 +525,11 @@ def tex_token(string):
 
     Return token and remainder.
 
-      >>> l2m.tex_token('{first simple group} {without brackets}')
+      >>> tex_token('{first simple group} {without brackets}')
       ('first simple group', ' {without brackets}')
-      >>> l2m.tex_token('\\command{without argument}')
+      >>> tex_token('\\command{without argument}')
       ('\\command', '{without argument}')
-      >>> l2m.tex_token(' first non-white character')
+      >>> tex_token(' first non-white character')
       ('f', 'irst non-white character')
 
     """
@@ -505,19 +552,19 @@ def tex_token(string):
 
 # Test:
 #
-# >>> l2m.tex_token('{opening bracket of group with {nested group}}')
+# >>> tex_token('{opening bracket of group with {nested group}}')
 # ('{', 'opening bracket of group with {nested group}}')
-# >>> l2m.tex_token('{group with \\{escaped\\} brackets}')
+# >>> tex_token('{group with \\{escaped\\} brackets}')
 # ('group with \\{escaped\\} brackets', '')
-# >>> l2m.tex_token('{group followed by closing bracket}} from outer group')
+# >>> tex_token('{group followed by closing bracket}} from outer group')
 # ('group followed by closing bracket', '} from outer group')
-# >>> l2m.tex_token(' {skip leading whitespace}')
+# >>> tex_token(' {skip leading whitespace}')
 # ('skip leading whitespace', '')
-# >>> l2m.tex_token('  \\skip{leading whitespace}')
+# >>> tex_token('  \\skip{leading whitespace}')
 # ('\\skip', '{leading whitespace}')
-# >>> l2m.tex_token('\\skip whitespace after macro name')
+# >>> tex_token('\\skip whitespace after macro name')
 # ('\\skip', 'whitespace after macro name')
-# >>> l2m.tex_token('') # empty string.
+# >>> tex_token('') # empty string.
 # ('', '')
 
 
@@ -527,8 +574,8 @@ def parse_latex_math(string, inline=True):
     Return a MathML-tree parsed from `string`.
     Set `inline` to False for displayed math.
 
-      >>> l2m.parse_latex_math('\\alpha')
-      math(mrow(mi('α')), xmlns='http://www.w3.org/1998/Math/MathML')
+      >>> parse_latex_math('\\alpha')
+      math(mi('α'), xmlns='http://www.w3.org/1998/Math/MathML')
 
     """
 
@@ -537,8 +584,8 @@ def parse_latex_math(string, inline=True):
 
     # Set up: tree is the whole tree and node is the current element.
     if inline:
-        node = mrow()
-        tree = math(node, inline=True)
+        node = math(inline=True)
+        tree = node
     else:
         # block: emulate align* environment with a math table
         node = mtd()
@@ -550,7 +597,7 @@ def parse_latex_math(string, inline=True):
         c, string = string[0], string[1:]
 
         if c == ' ':
-            continue
+            continue  # whitespace is ignored in LaTeX math mode
 
         if c == '\\': # start of a LaTeX macro
             cmdname, string = tex_cmdname(string)
@@ -561,7 +608,10 @@ def parse_latex_math(string, inline=True):
             node = node.append(mn(c))
         elif c in "/()[]|":
             node = node.append(mo(c, stretchy='false'))
-        elif c in "+-*=<>,.!?':;@":
+        # use dedicated mathematical operator characters
+        elif c in anomalous_chars:
+            node = node.append(mo(anomalous_chars[c]))
+        elif c in "+*=<>,.!?';@":
             node = node.append(mo(c))
         elif c == '_':
             child = node.delete_child()
@@ -603,11 +653,14 @@ def parse_latex_math(string, inline=True):
 
 # Test:
 
-# >>> l2m.parse_latex_math(' \\sqrt{ \\alpha}')
-# math(mrow(msqrt(mrow(mi('α')))), xmlns='http://www.w3.org/1998/Math/MathML')
-# >>> l2m.parse_latex_math('\\alpha', inline=False)
+# >>> parse_latex_math(' \\sqrt{ \\alpha}')
+# math(msqrt(mi('α')), xmlns='http://www.w3.org/1998/Math/MathML')
+# >>> parse_latex_math('\\alpha', inline=False)
 # math(mtable(mtr(mtd(mi('α'))), CLASS='align', displaystyle='true'), xmlns='http://www.w3.org/1998/Math/MathML', display='block')
-
+# >>> parse_latex_math('\\sqrt 2 \\ne 3')
+# math(msqrt(mn('2')), mo('≠'), mn('3'), xmlns='http://www.w3.org/1998/Math/MathML')
+# >>> parse_latex_math('\\sqrt{2 + 3} < 3')
+# math(msqrt(mn('2'), mo('+'), mn('3')), mo('<'), mn('3'), xmlns='http://www.w3.org/1998/Math/MathML')
 
 def handle_keyword(name, node, string):
     """Process LaTeX macro `name` followed by `string`.
@@ -615,9 +668,9 @@ def handle_keyword(name, node, string):
     If needed, parse `string` for macro argument.
     Return updated current node and remainder:
 
-      >>> l2m.handle_keyword('hbar', l2m.math(), r' \frac')
+      >>> handle_keyword('hbar', math(), r' \frac')
       (math(mi('ℏ')), ' \\frac')
-      >>> l2m.handle_keyword('hspace', l2m.math(), r'{1ex} (x)')
+      >>> handle_keyword('hspace', math(), r'{1ex} (x)')
       (math(mspace(width='1ex')), ' (x)')
 
     """
@@ -637,19 +690,30 @@ def handle_keyword(name, node, string):
             node = node.append(mi(letters[name]))
         return node, string
 
-    if name in functions:
+    if (name in functions or name == 'operatorname'):
         # use <mi> followed by invisible function applicator character
         # (see https://www.w3.org/TR/MathML3/chapter3.html#presm.mi)
-        node = node.append(mi(name))
-        node = node.append(mo('&ApplyFunction;'))
-        return node, string
+        if name == 'operatorname':
+            # custom function name ``\operatorname{abs}(x)``
+            arg, string = tex_token(string)
+            identifier = mi(arg, mathvariant='normal')
+        else:
+            identifier = mi(functions[name])
+        # functions with embellished names
+        if name == 'varliminf':    # \underline\lim
+            identifier = munder([identifier, mo(u'_')], accent='false')
+        elif name == 'varlimsup':  # \overline\lim
+            identifier = mover([identifier, mo(u'¯')], accent='false')
+        elif name == 'varprojlim': # \underleftarrow\lim
+            identifier = munder([identifier, mo(u'\u2190')], accent='false')
+        elif name == 'varinjlim':  # \underrightarrow\lim
+            identifier = munder([identifier, mo(u'\u2192')], accent='false')
 
-    if name == 'operatorname':
-        # custom function name ``\operatorname{abs}(x)``
-        arg, string = tex_token(string)
-        node = node.append(mi(arg, mathvariant='normal'))
+        node = node.append(identifier)
+        # TODO: only add ApplyFunction when appropriate (not \sin ^2(x), say)
         node = node.append(mo('&ApplyFunction;')) # '\u2061'
         return node, string
+
 
     if name in math_alphabets:
         arg, remainder = tex_token(string)
@@ -665,6 +729,8 @@ def handle_keyword(name, node, string):
             kwargs = {'style': 'font-weight: bold'}
         else:
             kwargs = {'mathvariant': math_alphabets[name]}
+        if name == 'mathscr':
+            kwargs['style'] = 'font-family: STIX' # alternative script letter shapes
 
         # one symbol (single letter, name, or number)
         if arg.isalpha():
@@ -685,8 +751,24 @@ def handle_keyword(name, node, string):
 
     # operator, fence, or separator  ->  <mo>
 
-    if name == 'colon': # "normal" colon, not binary operator
+    if name in left_delimiters: # opening delimiters
+        node = node.append(mo(left_delimiters[name], rspace='0'))
+        return node, string
+
+    if name in right_delimiters: # closing delimiters
+        node = node.append(mo(right_delimiters[name], lspace='0', ))
+        return node, string
+
+    if name == 'colon': # trailing punctuation, not binary relation
         node = node.append(mo(':', lspace='0', rspace='0.28em'))
+        return node, string
+
+    if name in thick_operators:
+        node = node.append(mo(thick_operators[name], style='font-weight: bold'))
+        return node, string
+
+    if name in small_operators:
+        node = node.append(mo(small_operators[name], mathsize='75%'))
         return node, string
 
     if name in operators:
@@ -714,7 +796,7 @@ def handle_keyword(name, node, string):
         try:
             node = node.append(mo(negatables[arg]))
         except KeyError:
-            raise SyntaxError(u'Expected something to negate: "\\not ..."!')
+            raise SyntaxError(u'"\\not: Cannot negate: %s!'%arg)
         return node, string
 
     # arbitrary text (usually comments)  ->  <mtext>
@@ -741,7 +823,11 @@ def handle_keyword(name, node, string):
     # ==================================
 
     if name == 'sqrt':
-        sqrt = msqrt()
+        if string.startswith('{'): # argument is a group
+            string = string[1:] # mrow implied, skip opening bracket
+            sqrt = msqrt()
+        else: # no group, enclose only one element
+            sqrt = msqrt(nchildren=1)
         node.append(sqrt)
         return sqrt, string
 
@@ -757,8 +843,17 @@ def handle_keyword(name, node, string):
         node = entry
         return node, string
 
-    if name in over:
-        ovr = mover(mo(over[name]), reversed=True)
+    if name in over or name in wideover:
+        try:
+            ovr = mover(mo(over[name]), reversed=True)
+        except KeyError:
+            ovr = mover(mo(wideover[name]), reversed=True, accent='false')
+        node.append(ovr)
+        node = ovr
+        return node, string
+
+    if name in wideunder:
+        ovr = munder(mo(wideunder[name]), reversed=True, accent='false')
         node.append(ovr)
         node = ovr
         return node, string
@@ -794,32 +889,35 @@ def handle_keyword(name, node, string):
     raise SyntaxError(u'Unknown LaTeX command: ' + name)
 
 
-# >>> l2m.handle_keyword('left', l2m.math(), '[a\\right]')
+# >>> handle_keyword('left', math(), '[a\\right]')
 # (mrow(mo('[')), 'a\\right]')
-# >>> l2m.handle_keyword('left', l2m.math(), '. a)') # emtpy \left
+# >>> handle_keyword('left', math(), '. a)') # emtpy \left
 # (mrow(), ' a)')
-# >>> l2m.handle_keyword('left', l2m.math(), '\\uparrow a)') # cmd
+# >>> handle_keyword('left', math(), '\\uparrow a)') # cmd
 # (mrow(mo('↑')), 'a)')
-# >>> l2m.handle_keyword('not', l2m.math(), '\\equiv \\alpha)') # cmd
+# >>> handle_keyword('not', math(), '\\equiv \\alpha)') # cmd
 # (math(mo('≢')), '\\alpha)')
-# >>> l2m.handle_keyword('text', l2m.math(), '{ for } i>0') # group
+# >>> handle_keyword('text', math(), '{ for } i>0') # group
 # (math(mtext('&nbsp;for&nbsp;')), ' i>0')
-# >>> l2m.handle_keyword('text', l2m.math(), '{B}T') # group
+# >>> handle_keyword('text', math(), '{B}T') # group
 # (math(mtext('B')), 'T')
-# >>> l2m.handle_keyword('text', l2m.math(), '{number of apples}}') # group
+# >>> handle_keyword('text', math(), '{number of apples}}') # group
 # (math(mtext('number of apples')), '}')
-# >>> l2m.handle_keyword('text', l2m.math(), 'i \\sin(x)') # single char
+# >>> handle_keyword('text', math(), 'i \\sin(x)') # single char
 # (math(mtext('i')), ' \\sin(x)')
-# >>> l2m.handle_keyword('sin', l2m.math(), '(\\alpha)')
+# >>> handle_keyword('sin', math(), '(\\alpha)')
 # (math(mi('sin'), mo('&ApplyFunction;')), '(\\alpha)')
-# >>> l2m.handle_keyword('sin', l2m.math(), ' \\alpha')
+# >>> handle_keyword('sin', math(), ' \\alpha')
 # (math(mi('sin'), mo('&ApplyFunction;')), ' \\alpha')
-# >>> l2m.handle_keyword('operatorname', l2m.math(), '{abs}(x)')
+# >>> handle_keyword('operatorname', math(), '{abs}(x)')
 # (math(mi('abs', mathvariant='normal'), mo('&ApplyFunction;')), '(x)')
-# >>> l2m.handle_keyword('mathrm', l2m.math(), '\\alpha')
+# >>> handle_keyword('mathrm', math(), '\\alpha')
 # (math(mi('α', mathvariant='normal')), '')
-# >>> l2m.handle_keyword('mathrm', l2m.math(), '{out} = 3')
+# >>> handle_keyword('mathrm', math(), '{out} = 3')
 # (math(mi('out', mathvariant='normal')), ' = 3')
+# >>> handle_keyword('overline', math(), '{981}')
+# (mover(mo('¯'), accent='false'), '{981}')
+
 
 def tex2mathml(tex_math, inline=True):
     """Return string with MathML code corresponding to `tex_math`.
