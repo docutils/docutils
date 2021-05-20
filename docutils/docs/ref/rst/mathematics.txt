@@ -25,7 +25,7 @@ Unicode symbols.
    configuration setting (or the corresponding ``--math-output`` command
    line option) selects between alternative output formats with different
    subsets of supported elements. If a writer does not support math
-   typesetting at all, the content is inserted verbatim.
+   typesetting, the content is inserted verbatim.
 
 __ https://docutils.sourceforge.io/docs/ref/rst/directives.html#math
 __ https://docutils.sourceforge.io/docs/ref/rst/roles.html#math

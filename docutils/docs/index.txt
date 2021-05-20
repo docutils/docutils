@@ -138,6 +138,8 @@ reStructuredText_:
 * `reStructuredText Interpreted Text Roles <ref/rst/roles.html>`__
 * `reStructuredText Standard Definition Files
   <ref/rst/definitions.html>`_
+* `LaTeX syntax for mathematics <ref/rst/mathematics.html>`__ 
+  (syntax used in "math" directive and role)
 
 Prehistoric:
 

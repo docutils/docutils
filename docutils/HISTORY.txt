@@ -29,6 +29,11 @@ Changes Since 0.17.1
 
   - Removed ``unique_combinations`` (obsoleted by ``itertools.combinations``).
 
+* docutils/utils/latex2mathml.py
+
+  - Major update (fixes and support for additional commands and symbols).
+    Fixes bug #407.
+
 * docutils/writers/_html_base.py
 
   - Write footnote brackets and field term colons to HTML, so that

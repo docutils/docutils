@@ -546,8 +546,7 @@ Math
 
 The "math" directive inserts blocks with mathematical content
 (display formulas, equations) into the document. The input format is
-*LaTeX math syntax*\ [#math-syntax]_ with support for Unicode
-symbols, for example::
+`LaTeX math syntax`_ with support for Unicode symbols, for example::
 
   .. math::
 
@@ -558,18 +557,14 @@ required for many output formats.  For HTML, the `math_output`_
 configuration setting (or the corresponding ``--math-output``
 command line option) select between alternative output formats with
 different subsets of supported elements. If a writer does not
-support math typesetting at all, the content is inserted verbatim.
-
-.. [#math-syntax] The supported LaTeX commands include AMS extensions
-   (see, e.g., the `Short Math Guide`_).
-
+support math typesetting, the content is inserted verbatim.
 
 For inline formulas, use the `"math" role`_.
 
-.. _Short Math Guide:
-   http://mirrors.ctan.org/info/short-math-guide/short-math-guide.pdf
+.. _LaTeX math syntax: ../../ref/rst/mathematics.html
 .. _"math" role: roles.html#math
 .. _math_output: ../../user/config.html#math-output
+
 
 Rubric
 ======
