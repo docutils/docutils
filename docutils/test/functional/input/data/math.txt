@@ -91,17 +91,7 @@ Math split over two lines: If a double backslash is detected outside a
    s_{\mathrm{out}}(x) & = s_{\mathrm{in}}(x') * s_δ(x-x') \\
                        & = ∫ s_{\mathrm{in}}(x')s_δ(x-x')\mathrm{d}x'
 
-Cases ("manually", with ``matrix`` environment):
-
-.. math::
-
-   \mathrm{sgn}(x) = \left\{\begin{matrix}
-                       -1 & x<0\\
-                       1 & x>0
-                     \end{matrix}\right.
-
-Cases with the AMSmath_ ``cases`` environment (not (yet) supported by
-HTML writers with ``--math-output=MathML``):
+Cases with the AMSmath_ ``cases`` environment:
 
 .. math::
 
