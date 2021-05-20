@@ -25,6 +25,7 @@
 # >>> import latex2mathml as l2m
 
 import collections
+import re
 import sys
 if sys.version_info >= (3, 0):
     unicode = str  # noqa
@@ -32,8 +33,8 @@ if sys.version_info >= (3, 0):
 from docutils.utils.math import tex2unichar
 
 
-# Metadata
-# --------
+# Command lists and dictionaries
+# ------------------------------
 
 #        TeX        spacing    combining
 over = {'acute':    u'\u00B4', # u'\u0301',
@@ -51,7 +52,7 @@ over = {'acute':    u'\u00B4', # u'\u0301',
         'tilde':    u'\u02DC', # u'\u0303',
         'vec':               u'\u20D7'}
 
-Greek = { # Capital Greek letters: (upright in TeX style)
+greek_capitals = { # Capital Greek letters: (upright in TeX style)
     'Phi':u'\u03a6', 'Xi':u'\u039e', 'Sigma':u'\u03a3',
     'Psi':u'\u03a8', 'Delta':u'\u0394', 'Theta':u'\u0398',
     'Upsilon':u'\u03d2', 'Pi':u'\u03a0', 'Omega':u'\u03a9',
@@ -230,7 +231,6 @@ stretchables = {'(': '(',
                 r'\Uparrow': u'\u21d1', # ⇑ UPWARDS DOUBLE ARROW
                 r'\Downarrow': u'\u21d3', # ⇓ DOWNWARDS DOUBLE ARROW
                 r'\Updownarrow': u'\u21d5', # ⇕ UP DOWN DOUBLE ARROW
-
              }
 for (key, value) in tex2unichar.mathfence.items():
     stretchables['\\'+key] = value
@@ -248,6 +248,7 @@ for (key, value) in tex2unichar.mathclose.items():
 # >>> print(' '.join(sorted(set(l2m.stretchables.values()))))
 #  ( ) / [ \ ] { | } ‖ ↑ ↓ ↕ ⇑ ⇓ ⇕ ⌈ ⌉ ⌊ ⌋ ⌜ ⌝ ⌞ ⌟ ⟅ ⟆ ⟦ ⟧ ⟨ ⟩ ⟮ ⟯ ⦇ ⦈
 
+
 # MathML element classes
 # ----------------------
 
@@ -255,7 +256,7 @@ class math(object):
     """Base class for MathML elements."""
 
     nchildren = 1000000
-    """Required number of children"""
+    """Required/Supported number of children"""
     _level = 0 # indentation level (static class variable)
 
     def __init__(self, children=None, inline=None, **kwargs):
@@ -284,7 +285,7 @@ class math(object):
     def __repr__(self):
         content = [repr(item) for item in getattr(self, 'children', [])]
         if hasattr(self, 'data'):
-            content.append(str(self.data))
+            content.append(repr(self.data))
         if hasattr(self, 'attributes'):
             content += ["%s='%s'"%(k, v) for k, v in self.attributes.items()]
         return self.__class__.__name__ + '(%s)' % ', '.join(content)
@@ -417,7 +418,7 @@ class mo(mx): pass
 class mtext(mx): pass
 
 # >>> l2m.mo(u'<')
-# mo(<)
+# mo('<')
 # >>> l2m.mo(u'<').xml()
 # ['<mo>', '&lt;', '</mo>']
 
@@ -479,24 +480,75 @@ class munderover(math):
     def __init__(self, children=None):
         math.__init__(self, children)
 
+
 # LaTeX to MathML translation
 # ---------------------------
+
+# auxiliary functions
+# ~~~~~~~~~~~~~~~~~~~
+
+def tex_cmdname(string):
+    """Return leading TeX command name from `string`.
+    """
+    name = re.match(r'([a-zA-Z]+|.?)', string)
+    return name.group(0)
+
+# >>> l2m.tex_cmdname('m2') # first non-letter terminates
+# 'm'
+# >>> l2m.tex_cmdname('m_2') # first non-letter terminates
+# 'm'
+# >>> l2m.tex_cmdname('m 2') # first non-letter terminates
+# 'm'
+# >>> l2m.tex_cmdname('_2') # single non-letter character
+# '_'
+# >>> l2m.tex_cmdname(' 2') # single non-letter character
+# ' '
+# >>> l2m.tex_cmdname('') # empty string
+# ''
+
+def tex_token(string):
+    """Return first simple TeX token from `string`.
+    """
+    token = re.match(r"""({([^{]|\\{)*}       # {group} without nested groups
+                          |\\([a-zA-Z]+|.)    # or \cmdname
+                          |.?)                # or first character or empty
+                     """, string, re.VERBOSE)
+    return token.group(0)
+
+# What is returned?
+#
+# >>> l2m.tex_token(r'\command{without argument}')
+# '\\command'
+# >>> l2m.tex_token('\\nor trailing whitespace, or')
+# '\\nor'
+# >>> l2m.tex_token('{first simple group} or') 
+# '{first simple group}'
+# >>> l2m.tex_token('{opening bracket of group with {nested group}} or')
+# '{'
+# >>> l2m.tex_token('{group with \\{escaped\\} brackets} or')
+# '{group with \\{escaped\\} brackets}'
+# >>> l2m.tex_token('first character, or')
+# 'f'
+# >>> l2m.tex_token('') # empty string
+# ''
+
 
 def parse_latex_math(string, inline=True):
     """parse_latex_math(string [,inline]) -> MathML-tree
 
     Returns a MathML-tree parsed from string.  inline=True is for
     inline math and inline=False is for displayed math.
-
-    tree is the whole tree and node is the current element."""
+    """
 
     # Normalize white-space:
     string = ' '.join(string.split())
 
+    # Set up: tree is the whole tree and node is the current element.
     if inline:
         node = mrow()
         tree = math(node, inline=True)
     else:
+        # block: emulate align* environment with a math table
         node = mtd()
         content = mtable(mtr(node), displaystyle='true', CLASS='align')
         tree = math(content, inline=False)
@@ -505,13 +557,14 @@ def parse_latex_math(string, inline=True):
         n = len(string)
         c = string[0]
         skip = 1  # number of characters consumed
-        if n > 1:
-            c2 = string[1]
-        else:
-            c2 = ''
+            
         if c == ' ':
             pass
         elif c == '\\':
+            if n > 1:
+                c2 = string[1]
+            else:
+                c2 = ''
             if c2 in '{}':
                 node = node.append(mo(c2))
                 skip = 2
@@ -584,12 +637,18 @@ def parse_latex_math(string, inline=True):
         string = string[skip:]
     return tree
 
+# >>> l2m.parse_latex_math('\\alpha')
+# math(mrow(mi('α')), xmlns='http://www.w3.org/1998/Math/MathML')
+# >>> l2m.parse_latex_math(' \\sqrt{ \\alpha}')
+# math(mrow(msqrt(mrow(mi('α')))), xmlns='http://www.w3.org/1998/Math/MathML')
 
 def handle_keyword(name, node, string):
     skip = 0
-    if len(string) > 0 and string[0] == ' ':
+    if string.startswith(' '): 
+        # remove leading whitespace (already normalized to " "):
         string = string[1:]
         skip = 1
+        
     if name == 'begin':
         if string.startswith('{matrix}'):
             skip += 8
@@ -630,40 +689,37 @@ def handle_keyword(name, node, string):
         frac = mfrac()
         node.append(frac)
         node = frac
-    elif name == 'left':
-        for par in stretchables.keys():
-            if string.startswith(par):
-                break
-        else:
-            raise SyntaxError(u'Missing left-brace!')
-        row = mrow()
-        node.append(row)
-        node = row
-        if par != '.':
-            node.append(mo(stretchables[par]))
-        skip += len(par)
-    elif name == 'right':
-        for par in stretchables.keys():
-            if string.startswith(par):
-                break
-        else:
-            raise SyntaxError(u'Missing right-brace!')
-        if par != '.':
-            node.append(mo(stretchables[par]))
-        node = node.close()
-        skip += len(par)
+    elif name in ('left', 'right'):
+        arg = tex_token(string)
+        try:
+            delimiter = stretchables[arg]
+        except KeyError:
+            raise SyntaxError(u'Missing %s delimiter!' % name)
+        if name == 'left':
+            row = mrow()
+            node.append(row)
+            node = row
+        if delimiter:
+            node.append(mo(delimiter))
+        if name == 'right':
+            node = node.close()
+        skip += len(arg)
     elif name == 'not':
-        for operator in negatables:
-            if string.startswith(operator):
-                break
-        else:
+        arg = tex_token(string)
+        try:
+            node = node.append(mo(negatables[arg.rstrip()]))
+        except KeyError:
             raise SyntaxError(u'Expected something to negate: "\\not ..."!')
-        node = node.append(mo(negatables[operator]))
-        skip += len(operator)
+        skip += len(arg)
     elif name == 'mathbf':
-        style = mstyle(nchildren=1, mathvariant='bold')
+        if string.startswith('{'):
+            nchildren = None
+        else:
+            nchildren = 1
+        style = mstyle(nchildren=nchildren, mathvariant='bold')
         node.append(style)
         node = style
+        skip += 1
     elif name == 'mathbb':
         i = string.find('}')
         if string[0] != '{' or i == -1:
@@ -688,8 +744,8 @@ def handle_keyword(name, node, string):
         skip += i + 1
     elif name == 'colon': # "normal" colon, not binary operator
         node = node.append(mo(':')) # TODO: add ``lspace="0pt"``
-    elif name in Greek:   # Greek capitals (upright in "TeX style")
-        node = node.append(mi(Greek[name], mathvariant='normal'))
+    elif name in greek_capitals:   # Greek capitals (upright in "TeX style")
+        node = node.append(mi(greek_capitals[name], mathvariant='normal'))
         # TODO: "ISO style" sets them italic. Could we use a class argument?
         # Unfortunately CSS styling does not change the font style in Firefox 78
     elif name in letters:
@@ -706,6 +762,20 @@ def handle_keyword(name, node, string):
         raise SyntaxError(u'Unknown LaTeX command: ' + name)
 
     return node, skip
+
+# >>> l2m.handle_keyword('left', l2m.math(), '[a\right]')
+# (mrow(mo('[')), 1)
+# >>> l2m.handle_keyword('left', l2m.math(), '(a)')[0].xml()
+# ['<mrow>', '\n  ', '<mo>', '(', '</mo>', '\n', '</mrow>']
+# >>> l2m.handle_keyword('left', l2m.math(), '. a)') # emtpy \left
+# (mrow(), 1)
+# >>> l2m.handle_keyword('left', l2m.math(), r'\uparrow. a)') # cmd
+# (mrow(mo('↑')), 8)
+# >>> l2m.handle_keyword('not', l2m.math(), r'\equiv a)') # cmd
+# (math(mo('≢')), 6)
+# >>> l2m.handle_keyword('text', l2m.math(), r'{for} i \in S)') # cmd
+# (math(mtext('for')), 5)
+
 
 def tex2mathml(tex_math, inline=True):
     """Return string with MathML code corresponding to `tex_math`.
