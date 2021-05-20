@@ -132,8 +132,7 @@ The "narrow" accents are intended for a single-letter base.
   =========== =============  =========== =============  ============== ================
 
 When adding an accent to an i or j in math, dotless variants can be
-obtained with ``\imath`` and ``\jmath``: `\bar \imath`, `\hat{\jmath}`
-(MathML drops the dot automatically).
+obtained with ``\imath`` and ``\jmath``: `\hat \imath`, `\vec{\jmath}`.
 
 For embellishments that span multiple symbols, use:
 
@@ -669,23 +668,27 @@ Inferred <mrow>s in MathML
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The elements <msqrt>, <mstyle>, <merror>, <mpadded>, <mphantom>, <menclose>,
-<mtd, mscarry>, and <math> treat their contents as a single inferred mrow
+<mtd>, <mscarry>, and <math> treat their contents as a single inferred mrow
 formed from all their children.
 
-.. math:: a = \sqrt 2, b = \sqrt{1+x^2}, c = \sqrt\frac{sin(x)}{23}
+.. math:: a = \sqrt 2 + x, b = \sqrt{1+x^2}, c = \sqrt\frac{sin(x)}{23},
 
-inline: :math:`a = \sqrt 2, b = \sqrt{1+x^2}, c = \sqrt\frac{sin(x)}{23}`.
+
+inline: :math:`a = \sqrt 2 + x, b = \sqrt{1+x^2}, c = \sqrt\frac{sin(x)}{23}`.
 
 Accents vs. embellishments
 --------------------------
 
-MathML with Firefox 78 drobs dots on "i" and "j" with accents:
+MathML with Firefox 78 drops dots on "i" and "j" with accents:
 
 .. math:: \vec i \ne \overrightarrow i
           \text{ and } \vec\lim \ne \overrightarrow\lim.
 
-Accents should be nearer to the base (in MathML Firefox 78, it's vice versa!):
+Accents should be nearer to the base (in MathML Firefox 78, it's vice versa!): 
+`\vec a \overrightarrow a, \vec l \overrightarrow l, \vec i \overrightarrow i`
+and `\bar a \overline a, \bar l \overline l, \bar i \overline i`.
 
-.. math:: \vec a \vec l \ne \overrightarrow a \overrightarrow l
+In inline formulas and fractions, the limits on lim, sum and integral should
+move to index postions: `\lim_{c\to0} \oint_c f(x) \mathrm{d}x` vs.
 
-          \bar a \bar l \ne \overline a \overline l
+.. math:: \lim_{c\to0} \oint_c f(x) \mathrm{d}x
