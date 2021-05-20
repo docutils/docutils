@@ -1,0 +1,691 @@
+============================
+LaTeX syntax for mathematics
+============================
+
+.. role:: m(math)
+.. default-role:: math
+.. |latex| replace:: L\ :sup:`A`\ T\ :sub:`E`\ X
+
+.. contents::
+
+Introduction
+============
+
+Since version 0.8, Docutils supports mathematical content with a `"math"
+directive`__ and `role`__.
+The input format is *LaTeX math syntax*\ [#math-syntax]_ with support for
+Unicode symbols.
+
+
+.. [#math-syntax] The supported LaTeX commands include AMS extensions
+   (see, e.g., the `Short Math Guide`_).
+
+   The support is limited to a subset of *LaTeX math* by the conversion
+   required for many output formats.  For HTML, the `math_output`_
+   configuration setting (or the corresponding ``--math-output`` command
+   line option) selects between alternative output formats with different
+   subsets of supported elements. If a writer does not support math
+   typesetting at all, the content is inserted verbatim.
+
+__ https://docutils.sourceforge.io/docs/ref/rst/directives.html#math
+__ https://docutils.sourceforge.io/docs/ref/rst/roles.html#math
+.. _Short Math Guide:
+   http://mirrors.ctan.org/info/short-math-guide/short-math-guide.pdf
+.. _math_output:
+   https://docutils.sourceforge.io/docs/user/config.html#math-output
+
+Inline formulas and displayed equations
+=======================================
+
+The **math role** can be used for inline mathematical expressions:
+``:math:`\psi(r) = \exp(-2r)``` will produce :m:`\psi(r)=\exp(-2r)`.
+Inside the backtics you can write anything you would write between dollar
+signs in a LaTeX document.
+
+.. tip::
+
+  If you put ``.. default-role:: math`` at the top of your
+  document, you can write ```x^2``` instead of the longer
+  version: ``:math:`x^2```.  You can also introduce an
+  abreviation like this ``.. role:: m(math)``.  That will allow
+  you to write ``:m:`x^2``` or ```x^2`:m:``.
+
+
+The **math directive** is used for displayed equations. It corresponds to
+an ``equation*`` or ``align*`` environment in a LaTeX document. If you
+write::
+
+  .. math:: \psi(r) = e^{-2r}
+
+you will get:
+
+.. math:: \psi(r) = e^{-2r}
+
+A more complex example is the definition of the `Fourier transform`_::
+
+  .. math::
+     :name: Fourier transform
+
+     (\mathcal{F}f)(y)
+      = \frac{1}{\sqrt{2\pi}^{\ n}}
+        \int_{\mathbb{R}^n} f(x)\,
+        e^{-\mathrm{i} y \cdot x} \,\mathrm{d} x.
+
+which is rendered as:
+
+.. math::
+   :name: Fourier transform
+
+     (\mathcal{F}f)(y)
+      = \frac{1}{\sqrt{2\pi}^{\ n}}
+        \int_{\mathbb{R}^n} f(x)\,
+        e^{-\mathrm{i} y \cdot x} \,\mathrm{d} x.
+
+The ``:name:`` option puts a label on the equation that can be
+linked to by `hyperlink references`_.
+
+Displayed equations can use ``\\`` and ``&`` for line shifts and alignments::
+
+  .. math::
+
+     a & = (x + y)^2 \\
+       & = x^2 + 2xy + y^2
+
+LaTeX output will wrap it in an ``align*`` environment.
+The result is:
+
+.. math::
+
+   a & = (x + y)^2 \\
+     & = x^2 + 2xy + y^2
+
+
+Not *all* math syntax constructs work with every output format, but basic
+everyday-math should work.
+
+If a command or a special symbol is not desribed in this document, then
+it is probably not implemented in the internal LaTeX -> MathML converter.
+
+.. _hyperlink references: ../ref/rst/restructuredtext.html#hyperlink-references
+
+
+Mathematical symbols
+====================
+
+The following tables are adapted from the first edition of
+"The LaTeX Companion" (Goossens, Mittelbach, Samarin) and the
+AMS `Short Math Guide`_.
+
+
+Accents and embellishments
+--------------------------
+
+The "narrow" accents are intended for a single-letter base.
+
+.. class:: colwidths-auto
+
+  =========== =============  =========== =============  ============== ================
+  `\acute{x}` ``\acute{x}``  `\dot{t}`   ``\dot{t}``    `\hat{H}`      ``\hat{H}``
+  `\bar{v}`   ``\bar{v}``    `\ddot{t}`  ``\ddot{t}``   `\mathring{x}` ``\mathring{x}``
+  `\breve{x}` ``\breve{x}``  `\dddot{t}` ``\dddot{t}``  `\tilde{n}`    ``\tilde{n}``
+  `\check{x}` ``\check{x}``  `\grave{x}` ``\grave{x}``  `\vec{x}`      ``\vec{x}``
+  =========== =============  =========== =============  ============== ================
+
+When adding an accent to an i or j in math, dotless variants can be
+obtained with ``\imath`` and ``\jmath``: `\bar \imath`, `\hat{\jmath}`
+(MathML drops the dot automatically).
+
+For embellishments that span multiple symbols, use:
+
+.. class:: colwidths-auto
+
+  ========================== ============================  =========================== =============================
+  `\widetilde{abi}`          ``\widetilde{abi}``           `\widehat{abi}`             ``\widehat{abi}``
+  `\overline{abi}`           ``\overline{abi}``            `\underline{abi}`           ``\underline{abi}``
+  `\overbrace{abi}`          ``\overbrace{abi}``           `\underbrace{abi}`          ``\underbrace{abi}``
+  `\overleftarrow{abi}`      ``\overleftarrow{abi}``       `\underleftarrow{abi}`      ``\underleftarrow{abi}``
+  `\overrightarrow{abi}`     ``\overrightarrow{abi}``      `\underrightarrow{abi}`     ``\underrightarrow{abi}``
+  `\overleftrightarrow{abi}` ``\overleftrightarrow{abi}``  `\underleftrightarrow{abi}` ``\underleftrightarrow{abi}``
+  ========================== ============================  =========================== =============================
+
+
+Binary operators
+----------------
+.. class:: colwidths-auto
+
+  ================== ====================  ================= ===================  ================== ====================
+  `*`                ``*``                 `\circledast`     ``\circledast``      `\ominus`          ``\ominus``
+  `+`                ``+``                 `\circledcirc`    ``\circledcirc``     `\oplus`           ``\oplus``
+  `-`                ``-``                 `\circleddash`    ``\circleddash``     `\oslash`          ``\oslash``
+  `:`                ``:``                 `\cup`            ``\cup``             `\otimes`          ``\otimes``
+  `\Cap`             ``\Cap``              `\curlyvee`       ``\curlyvee``        `\pm`              ``\pm``
+  `\Cup`             ``\Cup``              `\curlywedge`     ``\curlywedge``      `\rightthreetimes` ``\rightthreetimes``
+  `\amalg`           ``\amalg``            `\dagger`         ``\dagger``          `\rtimes`          ``\rtimes``
+  `\ast`             ``\ast``              `\ddagger`        ``\ddagger``         `\setminus`        ``\setminus``
+  `\bigcirc`         ``\bigcirc``          `\diamond`        ``\diamond``         `\smallsetminus`   ``\smallsetminus``
+  `\bigtriangledown` ``\bigtriangledown``  `\div`            ``\div``             `\sqcap`           ``\sqcap``
+  `\bigtriangleup`   ``\bigtriangleup``    `\divideontimes`  ``\divideontimes``   `\sqcup`           ``\sqcup``
+  `\boxdot`          ``\boxdot``           `\dotplus`        ``\dotplus``         `\star`            ``\star``
+  `\boxminus`        ``\boxminus``         `\doublebarwedge` ``\doublebarwedge``  `\times`           ``\times``
+  `\boxplus`         ``\boxplus``          `\gtrdot`         ``\gtrdot``          `\triangleleft`    ``\triangleleft``
+  `\boxtimes`        ``\boxtimes``         `\intercal`       ``\intercal``        `\triangleright`   ``\triangleright``
+  `\bullet`          ``\bullet``           `\leftthreetimes` ``\leftthreetimes``  `\uplus`           ``\uplus``
+  `\cap`             ``\cap``              `\lessdot`        ``\lessdot``         `\vee`             ``\vee``
+  `\cdot`            ``\cdot``             `\ltimes`         ``\ltimes``          `\veebar`          ``\veebar``
+  `\centerdot`       ``\centerdot``        `\mp`             ``\mp``              `\wedge`           ``\wedge``
+  `\circ`            ``\circ``             `\odot`            ``\odot``           `\wr`              ``\wr``
+  ================== ====================  ================= ===================  ================== ====================
+
+
+Extensible delimiters
+---------------------
+Unless you indicate otherwise, delimiters in math formulas remain at the
+standard size regardless of the height of the enclosed material. To get
+adaptable sizes, use ``\left`` and ``\right`` prefixes.
+
+.. math::
+
+   g(A,B,Y) = f \left(A,B,X=h^{[X]}(Y)\right)
+
+Use ``.`` for "empty" delimiters:
+
+.. math::
+
+   A = \left . \frac{1}{1-n}\, \right |_{n=0}^\infty
+
+The following symbols extend when used with ``\left`` and ``\right``:
+
+Pairing delimiters
+~~~~~~~~~~~~~~~~~~
+.. class:: colwidths-auto
+
+  =============== =================   ========================= ===========================
+  `( )`           ``( )``             `\langle \rangle`         ``\langle \rangle``
+  `[ ]`           ``[ ]``             `\lceil \rceil`           ``\lceil \rceil``
+  `\{ \}`         ``\{ \}``           `\lfloor \rfloor`         ``\lfloor \rfloor``
+  `\lvert \rvert` ``\lvert \rvert``   `\lVert \rVert`           ``\lVert \rVert``
+  =============== =================   ========================= ===========================
+
+.. The "math-guide" also lists macros for parts of extensible delimiters:
+
+   =============  =  =============  =  ============  =
+   `\lmoustache`  ⎰  `\rmoustache`  ⎱  `\bracevert`  ⎪
+   `\lgroup`      ⟮  `\rgroup`      ⟯  `\arrowvert`  ⏐
+   ..                                  `\Arrowvert`  ‖
+   =============  =  =============  =  ============  =
+
+Nonpairing delimiters
+~~~~~~~~~~~~~~~~~~~~~
+.. class:: colwidths-auto
+
+  ===========  ===========================
+  `|`  ``|``   `\vert`      ``\vert``
+  `\|` ``\|``  `\Vert`      ``\Vert``
+  `/`  ``/``   `\backslash` ``\backslash``
+  ===========  ===========================
+
+The use of ``|`` and ``\|`` for pairs of vertical bars may produce
+incorrect spacing, e.g., ``|k|=|-k|`` produces `|k| = |−k|` and
+``|\sin(x)|`` produces `|\sin(x)|`. The pairing delimiters, e.g. `\lvert
+-k\rvert` and `\lvert\sin(x)\rvert`, prevent this problem (in LaTeX and
+MathJax).
+
+Vertical Arrows
+~~~~~~~~~~~~~~~
+.. class:: colwidths-auto
+
+  ===============================  ======================================
+  `\uparrow`     ``\uparrow``      `\Uparrow`     ``\Uparrow``
+  `\downarrow`   ``\downarrow``    `\Downarrow`   ``\Downarrow``
+  `\updownarrow` ``\updownarrow``  `\Updownarrow` ``\Updownarrow``
+  ===============================  ======================================
+
+Greek letters
+-------------
+
+In LaTeX, the default font for capital Greek letters is upright/roman.
+Italic capital Greek letters can be obtained by loading a `package
+providing the "ISO" math style`__. They are used by default in MathML.
+
+Greek letters that have Latin look-alikes are rarely used in math
+formulas and not supported by LaTeX.
+
+.. class:: colwidths-auto
+
+  ========== ============  ========== ============  ========== ============  ============== ===============
+  `\Gamma`   ``\Gamma``    `\alpha`   ``\alpha``    `\mu`      ``\mu``       `\omega`       ``\omega``
+  `\Delta`   ``\Delta``    `\beta`    ``\beta``     `\nu`      ``\nu``       `\backepsilon` ``\backepsilon``
+  `\Lambda`  ``\Lambda``   `\gamma`   ``\gamma``    `\xi`      ``\xi``       `\digamma`     ``\digamma``
+  `\Omega`   ``\Omega``    `\delta`   ``\delta``    `\pi`      ``\pi``       `\varepsilon`  ``\varepsilon``
+  `\Phi`     ``\Phi``      `\epsilon` ``\epsilon``  `\rho`     ``\rho``      `\varkappa`    ``\varkappa``
+  `\Pi`      ``\Pi``       `\zeta`    ``\zeta``     `\sigma`   ``\sigma``    `\varphi`      ``\varphi``
+  `\Psi`     ``\Psi``      `\eta`     ``\eta``      `\tau`     ``\tau``      `\varpi`       ``\varpi``
+  `\Sigma`   ``\Sigma``    `\theta`   ``\theta``    `\upsilon` ``\upsilon``  `\varrho`      ``\varrho``
+  `\Theta`   ``\Theta``    `\iota`    ``\iota``     `\phi`     ``\phi``      `\varsigma`    ``\varsigma``
+  `\Upsilon` ``\Upsilon``  `\kappa`   ``\kappa``    `\chi`     ``\chi``      `\vartheta`    ``\vartheta``
+  `\Xi`      ``\Xi``       `\lambda`  ``\lambda``   `\psi`     ``\psi``
+  ========== ============  ========== ============  ========== ============  ============== ===============
+
+__ http://mirrors.ctan.org/macros/latex/contrib/isomath/isomath.html#table-2
+
+Letterlike symbols
+------------------
+.. class:: colwidths-auto
+
+============= ===============  ========= ===========  ========= ===========  ========== ============
+`\aleph`      ``\aleph``       `\ell`    ``\ell``     `\Game`   ``\Game``    `\Bbbk`    ``\Bbbk``
+`\beth`       ``\beth``        `\eth`    ``\eth``     `\hbar`   ``\hbar``    `\mho`     ``\mho``
+`\gimel`      ``\gimel``       `\exists` ``\exists``  `\hslash` ``\hslash``  `\partial` ``\partial``
+`\daleth`     ``\daleth``      `\Finv`   ``\Finv``    `\Im`     ``\Im``      `\Re`      ``\Re``
+`\complement` ``\complement``  `\forall` ``\forall``  `\imath`  ``\imath``   `\wp`      ``\wp``
+============= ===============  ========= ===========  ========= ===========  ========== ============
+
+
+Mathematical Alphabets
+----------------------
+
+For mathematical variables where style variations are important semantically,
+select an appropriate *math alphabet* [#]_.
+
+.. [#] TeX’s *math alphabets* correspond to the `mathematical
+   alphanumeric symbols`__ block in Unicode and the "mathvariant" `style
+   attribute`__ in MathML.
+
+
+__ https://en.wikipedia.org/wiki/Mathematical_Alphanumeric_Symbols
+__ https://developer.mozilla.org/en-US/docs/Web/MathML/Attribute
+
+.. class:: colwidths-auto
+
+  ===============  ============================  ==========================
+  command          example                       result
+  ===============  ============================  ==========================
+  ``\mathbf``      ``\mathbf{r}^2=x^2+y^2+z^2``  `\mathbf{r}^2=x^2+y^2+z^2`
+  ``\mathbb``      ``\mathbb{R \subset C}``      `\mathbb{R \subset C}`
+  ``\mathcal``     ``\mathcal{F}f(x)``           `\mathcal{F}f(x)`
+  ``\mathfrak``    ``\mathfrak{a}``              `\mathfrak{a}`
+  ``\mathit``      ``\mathit{\Gamma}``           `\mathit{\Gamma}`
+  ``\mathrm``      ``s_\mathrm{out}``            `s_\mathrm{out}`
+  ``\mathsf``      ``\mathsf x``                 `\mathsf x`
+  ``\mathtt``      ``\mathtt{0.12}``             `\mathtt{0.12}`
+  ===============  ============================  ==========================
+
+Additional alphabets are defined in LaTeX packages, e.g.
+
+.. class:: colwidths-auto
+
+  ===========  =============  ======================
+  TeX command  LaTeX package  MathML "mathvariant"
+  ===========  =============  ======================
+  mathbfit     isomath_       bold-italic
+  mathsfit     isomath_       sans-serif-italic
+  mathsfbfit   isomath_       sans-serif-bold-italic
+  mathscr      mathrsfs_      script
+  ===========  =============  ======================
+.. _isomath: https://www.ctan.org/pkg/isomath
+.. _mathrsfs: https://www.ctan.org/pkg/mathrsfs
+
+This can be used to typeset vector symbols in **bold** *italic*
+in line with the International Standard [ISO-80000-2].
+
+.. ``\mathbfit{r}^2=x^2+y^2+z^2`` becomes
+
+   .. math:: \mathbfit{r}^2=x^2+y^2+z^2.
+
+
+In contrast to the math alphabet selectors, ``\boldsymbol`` only changes
+the *font weight*. In LaTeX, it can be used to get a bold version of any
+mathematical symbol (for other output formats, results are mixed):
+
+.. math::
+     \boldsymbol{abs(x) \pm \alpha \approx 3 \Gamma \quad \forall x \in R}
+
+
+Miscellaneous symbols
+---------------------
+.. class:: colwidths-auto
+
+==================== ======================  ================ ==================  ================= ===================
+`\#`                 ``\#``                  `\clubsuit`      ``\clubsuit``       `\neg`            ``\neg``
+`\&`                 ``\&``                  `\diamondsuit`   ``\diamondsuit``    `\nexists`        ``\nexists``
+`\angle`             ``\angle``              `\emptyset`      ``\emptyset``       `\prime`          ``\prime``
+`\backprime`         ``\backprime``          `\exists`        ``\exists``         `\sharp`          ``\sharp``
+`\bigstar`           ``\bigstar``            `\flat`          ``\flat``           `\spadesuit`      ``\spadesuit``
+`\blacklozenge`      ``\blacklozenge``       `\forall`        ``\forall``         `\sphericalangle` ``\sphericalangle``
+`\blacksquare`       ``\blacksquare``        `\heartsuit`     ``\heartsuit``      `\square`         ``\square``
+`\blacktriangle`     ``\blacktriangle``      `\infty`         ``\infty``          `\surd`           ``\surd``
+`\blacktriangledown` ``\blacktriangledown``  `\lozenge`       ``\lozenge``        `\top`            ``\top``
+`\bot`               ``\bot``                `\measuredangle` ``\measuredangle``  `\triangle`       ``\triangle``
+`\diagdown`          ``\diagdown``           `\nabla`         ``\nabla``          `\triangledown`   ``\triangledown``
+`\diagup`            ``\diagup``             `\natural`       ``\natural``        `\varnothing`     ``\varnothing``
+==================== ======================  ================ ==================  ================= ===================
+
+
+Named operators
+---------------
+.. class:: colwidths-auto
+
+  ========= ===========  ========= ===========  ============= ================
+  `\arccos` ``\arccos``  `\gcd`    ``\gcd``     `\Pr`         ``\Pr``
+  `\arcsin` ``\arcsin``  `\hom`    ``\hom``     `\projlim`    ``\projlim``
+  `\arctan` ``\arctan``  `\inf`    ``\inf``     `\sec`        ``\sec``
+  `\arg`    ``\arg``     `\injlim` ``\injlim``  `\sin`        ``\sin``
+  `\cos`    ``\cos``     `\ker`    ``\ker``     `\sinh`       ``\sinh``
+  `\cosh`   ``\cosh``    `\lg`     ``\lg``      `\sup`        ``\sup``
+  `\cot`    ``\cot``     `\lim`    ``\lim``     `\tan`        ``\tan``
+  `\coth`   ``\coth``    `\liminf` ``\liminf``  `\tanh`       ``\tanh``
+  `\csc`    ``\csc``     `\limsup` ``\limsup``  `\varlimsup`  ``\varlimsup``
+  `\deg`    ``\deg``     `\ln`     ``\ln``      `\varliminf`  ``\varliminf``
+  `\det`    ``\det``     `\log`    ``\log``     `\varprojlim` ``\varprojlim``
+  `\dim`    ``\dim``     `\max`    ``\max``     `\varinjlim`  ``\varinjlim``
+  `\exp`    ``\exp``     `\min`    ``\min``
+  ========= ===========  ========= ===========  ============= ================
+
+Named operators outside the above list can be typeset with
+``\operatorname{name}``, e.g. `\operatorname{sgn}(-3) = -1`.
+
+.. TODO: ``\DeclareMathOperator``
+
+Punctuation
+-----------
+.. class:: colwidths-auto
+
+======== ===============
+`\colon` ``\colon`` [#]_
+`\cdots` ``\cdots``
+`\ddots` ``\ddots``
+`\ddots` ``\ddots``
+======== ===============
+
+.. [#] Punctuation (not ratio):
+       Compare spacing in `a\colon b\to c` and `a:b = c`.
+
+
+Relation symbols
+----------------
+
+Arrows
+~~~~~~
+.. class:: colwidths-auto
+
+  ===================== =======================  ===================== =======================
+  `\leftarrow`          ``\leftarrow``           `\Leftarrow`          ``\Leftarrow``
+  `\rightarrow`         ``\rightarrow``          `\Rightarrow`         ``\Rightarrow``
+  `\leftrightarrow`     ``\leftrightarrow``      `\Leftrightarrow`     ``\Leftrightarrow``
+
+  `\longleftarrow`      ``\longleftarrow``       `\Longleftarrow`      ``\Longleftarrow``
+  `\longrightarrow`     ``\longrightarrow``      `\Longrightarrow`     ``\Longrightarrow``
+  `\longleftrightarrow` ``\longleftrightarrow``  `\Longleftrightarrow` ``\Longleftrightarrow``
+
+  `\nearrow`            ``\nearrow``             `\leftharpoonup`      ``\leftharpoonup``
+  `\searrow`            ``\searrow``             `\rightharpoonup`     ``\rightharpoonup``
+  `\swarrow`            ``\swarrow``             `\leftharpoondown`    ``\leftharpoondown``
+  `\nwarrow`            ``\nwarrow``             `\rightharpoondown`   ``\rightharpoondown``
+
+  `\mapsto`             ``\mapsto``              `\hookleftarrow`      ``\hookleftarrow``
+  `\longmapsto`         ``\longmapsto``          `\hookrightarrow`     ``\hookrightarrow``
+  ===================== =======================  ===================== =======================
+
+.. TODO: amsmath arrows (see math-guide)
+
+Comparison
+~~~~~~~~~~
+
+.. class:: colwidths-auto
+
+================ ==================  ============= ===============  ============= ===============  =============== =================
+`<`              ``<``               `\geq`           ``\geq``      `\ll`         ``\ll``          `\prec`         ``\prec``
+`=`              ``=``               `\geqq`       ``\geqq``        `\lll`        ``\lll``         `\precapprox`   ``\precapprox``
+`>`              ``>``               `\geqslant`   ``\geqslant``    `\lnapprox`   ``\lnapprox``    `\preccurlyeq`  ``\preccurlyeq``
+`\approx`        ``\approx``         `\gg`         ``\gg``          `\lneq`       ``\lneq``        `\preceq`       ``\preceq``
+`\approxeq`      ``\approxeq``       `\ggg`        ``\ggg``         `\lneqq`      ``\lneqq``       `\precnapprox`  ``\precnapprox``
+`\asymp`         ``\asymp``          `\gnapprox`   ``\gnapprox``    `\lnsim`      ``\lnsim``       `\precneqq`     ``\precneqq``
+`\backsim`       ``\backsim``        `\gneq`       ``\gneq``        `\ncong`      ``\ncong``       `\precnsim`     ``\precnsim``
+`\backsimeq`     ``\backsimeq``      `\gneqq`      ``\gneqq``       `\neq`        ``\neq``         `\precsim`      ``\precsim``
+`\bumpeq`        ``\bumpeq``         `\gnsim`      ``\gnsim``       `\ngeq`       ``\ngeq``        `\risingdotseq` ``\risingdotseq``
+`\Bumpeq`        ``\Bumpeq``         `\gtrapprox`  ``\gtrapprox``   `\ngeqq`      ``\ngeqq``       `\sim`          ``\sim``
+`\circeq`        ``\circeq``         `\gtreqless`  ``\gtreqless``   `\ngeqslant`  ``\ngeqslant``   `\simeq`        ``\simeq``
+`\cong`          ``\cong``           `\gtreqqless` ``\gtreqqless``  `\ngtr`       ``\ngtr``        `\succ`         ``\succ``
+`\curlyeqprec`   ``\curlyeqprec``    `\gtrless`    ``\gtrless``     `\nleq`       ``\nleq``        `\succapprox`   ``\succapprox``
+`\curlyeqsucc`   ``\curlyeqsucc``    `\gtrsim`     ``\gtrsim``      `\nleqq`      ``\nleqq``       `\succcurlyeq`  ``\succcurlyeq``
+`\doteq`         ``\doteq``          `\leq`        ``\leq``         `\nleqslant`  ``\nleqslant``   `\succeq`       ``\succeq``
+`\doteqdot`      ``\doteqdot``       `\leqq`       ``\leqq``        `\nless`      ``\nless``       `\succnapprox`  ``\succnapprox``
+`\eqcirc`        ``\eqcirc``         `\leqslant`   ``\leqslant``    `\nprec`      ``\nprec``       `\succneqq`     ``\succneqq``
+`\eqsim`         ``\eqsim``          `\lessapprox` ``\lessapprox``  `\npreceq`    ``\npreceq``     `\succnsim`     ``\succnsim``
+`\eqslantgtr`    ``\eqslantgtr``     `\lesseqgtr`  ``\lesseqgtr``   `\nsim`       ``\nsim``        `\succsim`      ``\succsim``
+`\eqslantless`   ``\eqslantless``    `\lesseqqgtr` ``\lesseqqgtr``  `\nsucc`      ``\nsucc``       `\thickapprox`  ``\thickapprox``
+`\equiv`         ``\equiv``          `\lessgtr`    ``\lessgtr``     `\nsucceq`    ``\nsucceq``     `\thicksim`     ``\thicksim``
+`\fallingdotseq` ``\fallingdotseq``  `\lesssim`    ``\lesssim``                                    `\triangleq`    ``\triangleq``
+================ ==================  ============= ===============  ============= ===============  =============== =================
+
+The commands ``\lvertneqq`` and ``\gvertneqq`` are not supported by
+LateX2MathML, as there is no corresponding Unicode character.
+
+Synonyms: `\ne` ``\ne``, `\le` ``\le``, `\ge` ``\ge``, `\Doteq`
+``\Doteq``, `\llless` ``\llless``, `\gggtr` ``\gggtr``,
+`\not =` ``\not =``, `\not \equiv` ``\not \equiv``.
+
+
+Miscellaneous relations
+~~~~~~~~~~~~~~~~~~~~~~~
+.. class:: colwidths-auto
+
+  ===================== =======================  =================== =====================  =================== =====================
+  `\backepsilon`        ``\backepsilon``         `\ntrianglelefteq`  ``\ntrianglelefteq``   `\subseteq`         ``\subseteq``
+  `\because`            ``\because``             `\ntriangleright`   ``\ntriangleright``    `\subseteqq`        ``\subseteqq``
+  `\between`            ``\between``             `\ntrianglerighteq` ``\ntrianglerighteq``  `\subsetneq`        ``\subsetneq``
+  `\blacktriangleleft`  ``\blacktriangleleft``   `\nvdash`           ``\nvdash``            `\subsetneqq`       ``\subsetneqq``
+  `\blacktriangleright` ``\blacktriangleright``  `\nVdash`           ``\nVdash``            `\supset`           ``\supset``
+  `\bowtie`             ``\bowtie``              `\nvDash`           ``\nvDash``            `\Supset`           ``\Supset``
+  `\dashv`              ``\dashv``               `\nVDash`           ``\nVDash``            `\supseteq`         ``\supseteq``
+  `\frown`              ``\frown``               `\parallel`         ``\parallel``          `\supseteqq`        ``\supseteqq``
+  `\in`                 ``\in``                  `\perp`             ``\perp``              `\supsetneq`        ``\supsetneq``
+  `\mid`                ``\mid``                 `\pitchfork`        ``\pitchfork``         `\supsetneqq`       ``\supsetneqq``
+  `\models`             ``\models``              `\propto`           ``\propto``            `\therefore`        ``\therefore``
+  `\ni`                 ``\ni``                  `\shortmid`         ``\shortmid``          `\trianglelefteq`   ``\trianglelefteq``
+  `\nmid`               ``\nmid``                `\shortparallel`    ``\shortparallel``     `\trianglerighteq`  ``\trianglerighteq``
+  `\notin`              ``\notin``               `\smallfrown`       ``\smallfrown``        `\varpropto`        ``\varpropto``
+  `\nparallel`          ``\nparallel``           `\smallsmile`       ``\smallsmile``        `\vartriangle`      ``\vartriangle``
+  `\nshortmid`          ``\nshortmid``           `\smile`            ``\smile``             `\vartriangleleft`  ``\vartriangleleft``
+  `\nshortparallel`     ``\nshortparallel``      `\sqsubset`         ``\sqsubset``          `\vartriangleright` ``\vartriangleright``
+  `\nsubseteq`          ``\nsubseteq``           `\sqsubseteq`       ``\sqsubseteq``        `\vdash`            ``\vdash``
+  `\nsubseteqq`         ``\nsubseteqq``          `\sqsupset`         ``\sqsupset``          `\Vdash`            ``\Vdash``
+  `\nsupseteq`          ``\nsupseteq``           `\sqsupseteq`       ``\sqsupseteq``        `\vDash`            ``\vDash``
+  `\nsupseteqq`         ``\nsupseteqq``          `\subset`           ``\subset``            `\Vvdash`           ``\Vvdash``
+  `\ntriangleleft`      ``\ntriangleleft``       `\Subset`           ``\Subset``
+  ===================== =======================  =================== =====================  =================== =====================
+
+Synonyms: `\owns` ``\owns``, `\not\in` ``\not\in``.
+
+The commands ``\varsubsetneq``, ``\varsubsetneqq``, ``\varsupsetneq``,
+and ``\varsupsetneqq`` are not supported by LateX2MathML, as there is no
+corresponding Unicode character.
+
+Variable-sized operators
+------------------------
+.. class:: colwidths-auto
+
+  =========================  =========================  =========================  ===========================
+  `\sum`      ``\sum``       `\prod` ``\prod``          `\bigcap`   ``\bigcap``    `\bigodot` ``\bigodot``
+  `\int`      ``\int``       `\coprod` ``\coprod``      `\bigcup`   ``\bigcup``    `\bigoplus` ``\bigoplus``
+  `\oint`     ``\oint``      `\bigwedge` ``\bigwedge``  `\biguplus` ``\biguplus``  `\bigotimes` ``\bigotimes``
+  `\smallint` ``\smallint``  `\bigvee` ``\bigvee``      `\bigsqcup` ``\bigsqcup``
+  =========================  =========================  =========================  ===========================
+
+Larger symbols are used in displayed formulas:
+
+.. math::
+
+   \sum\ \int\ \oint \bigcap \prod \ldots
+
+
+Notations
+=========
+
+Top and bottom embellishments
+-----------------------------
+
+See `Accents and embellishments`_.
+
+Extensible arrows
+-----------------
+
+\xleftarrow and \xrightarrow produce arrows that extend automatically to
+accommodate unusually wide subscripts or superscripts. These commands
+take one optional argument (the subscript) and one mandatory argument
+(the superscript, possibly empty)::
+
+  \xleftarrow{n+\mu-1}\quad \xrightarrow[T]{n\pm i-1}
+
+TODO
+
+Affixing symbols to other symbols
+---------------------------------
+
+In addition to the standard `accents and embellishments`_, other symbols can
+be placed above or below a base symbol with the \overset and \underset
+commands.
+
+TODO
+
+Matrices
+--------
+
+The ``matrix`` and ``cases`` environments can also contain ``\\`` and
+``&``::
+
+  .. math::
+
+    \left(\begin{matrix} a & b \\ c & d \end{matrix}\right)
+
+Result:
+
+.. math::
+
+  \left(\begin{matrix} a & b \\ c & d \end{matrix}\right)
+  
+.. TODO: small matrices, matrices with delimiters built in?  
+
+For piecewise function definitions there is a cases environment:
+
+.. math::
+
+   \mathrm{sgn}(x) = \begin{cases}
+                       -1 & x<0\\
+                        1 & x>0
+                     \end{cases}
+
+Horizontal space
+----------------
+
+.. class:: colwidths-auto
+
+  =================  ==================  =============
+  :m:`|\qquad|`      ``|\qquad|``        2 em
+  :m:`|\quad|`       ``|\quad|``         1 em
+  :m:`|\;|`          ``|\;|``            thick
+  :m:`|\ |`          ``|\ |``            standard
+  :m:`|\:|`          ``|\:|``            medium
+  :m:`|\,|`          ``|\,|``            thin
+  :m:`|  |`          ``|  |``            none
+  :m:`|\!|`          ``|\!|``            thin negative
+  `|\hspace{1ex}|`   ``|\hspace{1ex}|``  custom
+  =================  ==================  =============
+
+
+Roots and Fractions
+-------------------
+
+.. class:: colwidths-auto
+
+  =====================  ==============================  ============================
+  command                example                         result
+  =====================  ==============================  ============================
+  ``\sqrt``              ``\sqrt{x^2-1}``                `\sqrt{x^2-1}`
+  ``\frac``              ``\frac{1}{2}``                 `\frac{1}{2}`
+  ``\left``, ``\right``  ``\left(\frac{1}{2}\right)^n``  `\left(\frac{1}{2}\right)^n`
+  =====================  ==============================  ============================
+
+Text
+====
+
+The main use of the command ``\text`` is for words or phrases in a
+display. It is similar to ``\mbox`` in its effects but, unlike ``\mbox``,
+automatically produces subscript-size text if used in a subscript,
+``k_{\text{B}}T`` becomes `k_{\text{B}}T`.
+
+Whitespace is kept inside the argument:
+
+.. Math:: f_{[x_{i-1},x_i]} \text{ is monotonic for }  i = 1,\,…,\,c+1
+
+
+Currently, math in text is not supported by LaTeX2MathML.
+
+
+
+
+ToDo
+====
+
+internal LaTeX2MathML
+
+* Math inside text: ``n - 1 \text{if $n$ is odd}``.
+* Remove circular refs.
+* Decimal numbers.
+* Implement ``\circledS``? (in short-math-guide.pdf but not in
+  the Unicode `Mathematical Character Repertoire`__)
+* ``\DeclareMathOperator``
+
+__ http://www.unicode.org/reports/tr25/
+
+Tests
+==========
+
+Font changes
+------------
+
+Math alphabet macros change the default alphabet ("mathvariant" in
+MathML), leaving some symbols unchanged:
+
+:normal: `abs(x) \pm \alpha \approx 3 \Gamma  \quad \forall x \in R`
+:mathrm: `\mathrm{abs(x) \pm \alpha \approx 3 \Gamma  \quad \forall x \in R}`
+:mathit: `\mathit{abs(x) \pm \alpha \approx 3 \Gamma  \quad \forall x \in R}`
+:mathsf: `\mathsf{abs(x) \pm \alpha \approx 3 \Gamma  \quad \forall x \in R}`
+:mathbb: `\mathbb{abs(x) \pm \alpha \approx 3 \Gamma  \quad \forall x \in R}`
+:mathbf: `\mathbf{abs(x) \pm \alpha \approx 3 \Gamma  \quad \forall x \in R}`
+
+Unicode supports the following blackboard-bold characters:
+`\mathbb{a \ldots z A \ldots Z 0 \ldots 9
+\mathbb\Gamma \mathbb{\Pi} \mathbb {\Sigma}\mathbb\gamma \mathbb\pi}`.
+
+The package mathrsfs_ (and some drop-in replacements) define the ``\mathscr``
+macro that selects a differently shaped "script" alphabet.
+Compare `\mathscr{A, B, …, Z, a, b, …, z}`
+with `\mathcal{A, B, …, Z, a, b, …, z}`.
+
+.. _rsfs: https://ctan.org/pkg/mathrsfs
+
+Inferred <mrow>s in MathML
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The elements <msqrt>, <mstyle>, <merror>, <mpadded>, <mphantom>, <menclose>,
+<mtd, mscarry>, and <math> treat their contents as a single inferred mrow
+formed from all their children.
+
+.. math:: a = \sqrt 2, b = \sqrt{1+x^2}, c = \sqrt\frac{sin(x)}{23}
+
+inline: :math:`a = \sqrt 2, b = \sqrt{1+x^2}, c = \sqrt\frac{sin(x)}{23}`.
+
+Accents vs. embellishments
+--------------------------
+
+MathML with Firefox 78 drobs dots on "i" and "j" with accents:
+
+.. math:: \vec i \ne \overrightarrow i
+          \text{ and } \vec\lim \ne \overrightarrow\lim.
+
+Accents should be nearer to the base (in MathML Firefox 78, it's vice versa!):
+
+.. math:: \vec a \vec l \ne \overrightarrow a \overrightarrow l
+
+          \bar a \bar l \ne \overline a \overline l
