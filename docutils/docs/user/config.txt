@@ -1022,8 +1022,8 @@ the output document. Supported values are (case insensitive):
   `stylesheet directory <stylesheet_dirs [html writers]_>`__)
 
   A `stylesheet_path <stylesheet_path [html writers]_>`__
-  can be appended after whitespace, the specified
-  stylesheet(s) will only be referenced or embedded, if required
+  can be appended after whitespace. The specified
+  stylesheet(s) will only be referenced or embedded if required
   (i.e. if there is mathematical content in the document).
 
 :MathJax:
@@ -1035,7 +1035,7 @@ the output document. Supported values are (case insensitive):
 
     Large set of `supported LaTeX math commands and constructs`__
 
-    __ http://docs.mathjax.org/en/latest/tex.html#supported-latex-commands
+    __ http://docs.mathjax.org/en/latest/input/tex/macros/index.html
 
   Con:
     Rendering requires JavaScript and an Internet connection or local
@@ -1084,12 +1084,19 @@ the output document. Supported values are (case insensitive):
     Self-contained documents (no JavaScript, no external downloads).
 
   Con:
-    Docutil's latex2mathml converter supports only a small
-    subset of LaTeX syntax.
+    Limited `browser support`__.
+
+    Docutil's latex2mathml converter supports only a
+    `subset of LaTeX math syntax`__.
 
     With the "html4css1" writer, the resulting HTML document does
     not validate, as there is no DTD for `MathML + XHTML Transitional`.
     However, MathML-enabled browsers will render it fine.
+    
+    __ https://developer.mozilla.org/en-US/docs/Web/MathML
+       #browser_compatibility
+    __ ../ref/rst/mathematics.html
+
 
   An external converter can be appended after whitespace, e.g.,
   ``--math-output="MathML latexml"``:
@@ -1263,7 +1270,7 @@ Writer Specific Defaults
   2 (for "<h2>", cf. the `HTML5.3 Working Draft`__)
 
 `stylesheet_path <stylesheet_path [html writers]_>`__:
-  "minimal.css,plain.css"
+  "minimal.css, plain.css"
 
 embed_images
 """"""""""""
