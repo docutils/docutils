@@ -19,7 +19,7 @@ It contains various modules for conversion between different math formats
 :latex2mathml: LaTeX math -> presentational MathML
 :unichar2tex:  Unicode character to LaTeX math translation table
 :tex2unichar:  LaTeX math to Unicode character translation dictionaries
-:tex2mathml_extern: Wrapper for TeX -> MathML command line converters
+:tex2mathml_extern: Wrapper for 3rd party TeX -> MathML converters
 """
 
 # helpers for Docutils math support

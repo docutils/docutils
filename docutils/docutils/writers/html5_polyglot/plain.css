@@ -59,6 +59,7 @@ hr.docutils {
 p, ol, ul, dl, li,
 div.line-block,
 div.topic,
+div > math,
 table {
   margin-top: 0.5em;
   margin-bottom: 0.5em;
@@ -260,7 +261,10 @@ pre.code .deleted, code .deleted { background-color: #DEB0A1}
 pre.code .inserted, code .inserted { background-color: #A3D289}
 
 /* Math */
-/* styled separately (see math.css for math-output=HTML) */
+/* for math-output=MathML (for math-output=HTML, see math.css) */
+mtable.align > mtr > mtd { /* emulate AMS "align" environment. */
+  text-align: left;   
+}
 
 /* Epigraph           */
 /* Highlights         */
