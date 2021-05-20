@@ -233,9 +233,9 @@ class math(object):
             return ['<%s>' % self.__class__.__name__]
         xmlns = 'http://www.w3.org/1998/Math/MathML'
         if self.inline:
-            return ['<math xmlns="%s">' % xmlns]
+            return ['<math xmlns="%s" displaystyle="false">' % xmlns]
         else:
-            return ['<math xmlns="%s" mode="display">' % xmlns]
+            return ['<math xmlns="%s" display="block">' % xmlns]
 
     def xml_end(self):
         return ['</%s>' % self.__class__.__name__]
