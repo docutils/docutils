@@ -57,7 +57,7 @@ greek_capitals = {
     'Gamma':u'\u0393', 'Lambda':u'\u039b'}
 
 # functions -> <mi>
-functions = dict((name, name) for name in 
+functions = dict((name, name) for name in
                  ('arccos', 'arcsin', 'arctan', 'arg', 'cos',  'cosh',
                   'cot',    'coth',   'csc',    'deg', 'det',  'dim',
                   'exp',    'gcd',    'hom',    'inf', 'ker',  'lg',
@@ -73,7 +73,7 @@ functions.update({# functions with a space in the name
                   'operatorname': None})
 
 # function with limits, use <mo> to allow "movablelimits" attribute
-functions_with_limits = dict((name, name) for name in 
+functions_with_limits = dict((name, name) for name in
                              ('lim', 'sup', 'inf', 'max', 'min'))
 
 # math font selection -> <mi mathvariant=...> or <mstyle mathvariant=...>
@@ -114,10 +114,16 @@ operators.update({# negated symbols without pre-composed Unicode character
                   'nsubseteqq': u'\u2AC5\u0338', # ⫅̸
                   'nsupseteqq': u'\u2AC6\u0338', # ⫆̸
                   # alias commands:
-                  'lvert': u'|',      # pairing delimiters
-                  'lVert': u'\u2016', # ‖
-                  'rvert': u'|',
-                  'rVert': u'\u2016',
+                  'lvert':      u'|',      # left  |
+                  'lVert':      u'\u2016', # left  ‖
+                  'rvert':      u'|',      # right |
+                  'rVert':      u'\u2016', # right ‖
+                  'Arrowvert':  u'\u2016', # ‖
+                  'dotsb':      u'\u22ef', # ⋯ with binary operators/relations
+                  'dotsc':      u'\u2026', # … with commas
+                  'dotsi':      u'\u22ef', # ⋯ with integrals
+                  'dotsm':      u'\u22ef', # ⋯ multiplication dots
+                  'dotso':      u'\u2026', # … other dots
                  })
 
 # special cases
@@ -132,14 +138,14 @@ small_operators = {# mathsize='75%'
                    'shortparallel':  u'\u2225', # ∥
                    'nshortmid':      u'\u2224', # ∤
                    'nshortparallel': u'\u2226', # ∦
-                   'smallfrown': u'\u2322', # ⌢ FROWN
-                   'smallsmile': u'\u2323', # ⌣ SMILE
-                   'smallint':   u'\u222b', # ∫ INTEGRAL
+                   'smallfrown':     u'\u2322', # ⌢ FROWN
+                   'smallsmile':     u'\u2323', # ⌣ SMILE
+                   'smallint':       u'\u222b', # ∫ INTEGRAL
                   }
 
 # Operators and functions with limits
-# over/under in display formulas and in index position inline
-sumintprod = [operators[name] for name in
+# above/below in display formulas and in index position inline
+with_limits = [operators[name] for name in
               ('coprod', 'fatsemi', 'fint', 'iiiint', 'iiint',
                'iint', 'int', 'oiint', 'oint', 'ointctrclockwise',
                'prod', 'sqint', 'sum', 'varointclockwise',
@@ -249,11 +255,6 @@ mathbb = {u'Γ': u'\u213E',    # ℾ
           u'Σ': u'\u2140',    # ⅀
           u'γ': u'\u213D',    # ℽ
           u'π': u'\u213C',    # ℼ
-          r'\Gamma': u'\u213E', # ℾ
-          r'\Pi':    u'\u213F', # ℿ
-          r'\Sigma': u'\u2140', # ⅀
-          r'\gamma': u'\u213D', # ℽ
-          r'\pi':    u'\u213C', # ℼ
          }
 
 
@@ -369,12 +370,6 @@ class math(object):
 # >>> math(CLASS='bold').xml_starttag()
 # '<math class="bold">'
 
-class mrow(math):
-    """Group sub-expressions as a horizontal row."""
-
-# >>> mrow(displaystyle='false')
-# mrow(displaystyle='false')
-
 class mtable(math): pass
 
 # >>> mtable(displaystyle='true')
@@ -382,13 +377,41 @@ class mtable(math): pass
 # >>> math(mtable(displaystyle='true')).toprettyxml()
 # '<math>\n  <mtable displaystyle="true">\n  </mtable>\n</math>'
 
+class mrow(math):
+    """Group sub-expressions as a horizontal row."""
+
+    def close(self):
+        """Close element and return first non-full parent or None.
+
+        Remove <mrow>, if it is single child and the parent inferres an mrow
+        or if it has only one child element.
+        """
+        parent = self.parent
+        if isinstance(parent, MathRowInferred) and parent.nchildren == 1:
+            parent.nchildren = None
+            parent.children = self.children
+            return parent.close()
+        if len(self) == 1:
+            try:
+                parent.children[parent.children.index(self)] = self.children[0]
+            except (AttributeError, ValueError):
+                return self.children[0]
+        return super(mrow, self).close()
+
+# >>> mrow(displaystyle='false')
+# mrow(displaystyle='false')
+
 # The elements <msqrt>, <mstyle>, <merror>, <mpadded>, <mphantom>, <menclose>,
 # <mtd>, <mscarry>, and <math> treat their contents as a single inferred mrow
 # formed from all their children.
-class msqrt(mrow): pass
-class mstyle(mrow): pass
-class mtr(mrow): pass
-class mtd(mrow): pass
+class MathRowInferred(math):
+    """Base class for elements treating content as a single inferred mrow."""
+class mtr(MathRowInferred): pass
+class mtd(MathRowInferred): pass
+class mstyle(MathRowInferred):
+    nchildren = 1
+class msqrt(MathRowInferred):
+    nchildren = 1
 
 class MathToken(math):
     """Token Element: contains data instead of children.
@@ -511,23 +534,27 @@ def tex_cmdname(string):
 # ('', '')
 
 def tex_number(string):
-    """Return first number literal and remainder of `string`.
+    """Return leading number literal and remainder of `string`.
 
     >>> tex_number('123.4')
     ('123.4', '')
 
     """
-    m = re.match(r'([0-9.,]+)(.*)', string)
+    m = re.match(r'([0-9.,]*[0-9]+)(.*)', string)
     if m is None:
         return '', string
     return m.group(1), m.group(2)
 
 # Test:
 #
-# >>> tex_number(' 123.4')
-# ('', ' 123.4')
-# >>> tex_number('23,400')
-# ('23,400', '')
+# >>> tex_number(' 23.4b') # leading whitespace -> no number
+# ('', ' 23.4b')
+# >>> tex_number('23,400/2') # comma separator included
+# ('23,400', '/2')
+# >>> tex_number('23. 4/2') # trailing separator not included
+# ('23', '. 4/2')
+# >>> tex_number('4, 2') # trailing separator not included
+# ('4', ', 2')
 # >>> tex_number('1 000.4')
 # ('1', ' 000.4')
 
@@ -650,15 +677,15 @@ def parse_latex_math(node, string):
         elif c.isdigit():
             number, string = tex_number(string)
             node = node.append(mn(c+number))
+        elif c in anomalous_chars:
+            # characters with a special meaning in LaTeX math mode
+            node = node.append(mo(anomalous_chars[c]))
         elif c in "/()[]|":
             node = node.append(mo(c, stretchy='false'))
-        # use dedicated mathematical operator characters
-        elif c in anomalous_chars:
-            node = node.append(mo(anomalous_chars[c]))
         elif c in "+*=<>,.!?';@":
             node = node.append(mo(c))
         else:
-            raise SyntaxError(u'Illegal character: "%s"' % c)
+            raise SyntaxError(u'Unsupported character: "%s"' % c)
     return node
 
 # Test:
@@ -673,6 +700,8 @@ def parse_latex_math(node, string):
 # math(msqrt(mn('2')), mo('≠'), mn('3'))
 # >>> parse_latex_math(math(), '\\sqrt{2 + 3} < 3')
 # math(msqrt(mn('2'), mo('+'), mn('3')), mo('<'), mn('3'))
+# >>> parse_latex_math(math(), '\\sqrt[3]{2 + 3}')
+# math(mroot(mrow(mn('2'), mo('+'), mn('3')), mn('3')))
 # >>> parse_latex_math(math(), '\max_x') # function takes limits
 # math(munder(mi('max', movablelimits='true'), mi('x')))
 # >>> parse_latex_math(math(), 'x^j_i') # ensure correct order: base, sub, sup
@@ -701,10 +730,10 @@ def handle_cmdname(name, node, string):
 
     if name in letters:
         if name in greek_capitals:
-            node = node.append(mi(greek_capitals[name], CLASS='capital-greek'))
             # upright in "TeX style" but MathML sets them italic ("ISO style").
             # CSS styling does not change the font style in Firefox 78.
             # Use 'mathvariant="normal"'?
+            node = node.append(mi(greek_capitals[name], CLASS='capital-greek'))
         else:
             node = node.append(mi(letters[name]))
         return node, string
@@ -718,7 +747,7 @@ def handle_cmdname(name, node, string):
             new_node = mi(arg, mathvariant='normal')
         else:
             new_node = mi(functions[name])
-        # compound function symbols:
+        # embellished function names:
         if name == 'varliminf':    # \underline\lim
             new_node = munder(new_node, mo(u'_'))
         elif name == 'varlimsup':  # \overline\lim
@@ -738,36 +767,27 @@ def handle_cmdname(name, node, string):
     if name in math_alphabets:
         arg, remainder = tex_token(string)
         if arg[0] == '\\':
-            if name == 'mathbb':
-                # mathvariant="double-struck" is ignored for Greek letters
-                # (tested in Firefox 78). Use literal Unicode characters.
-                arg = mathbb.get(arg, arg)
-            # convert single letters (so they can be set with <mi>)
+            # convert single letters (so the isalpha() test below works).
             arg = letters.get(arg[1:], arg)
-
+        if name == 'mathbb':
+            # mathvariant="double-struck" is ignored for Greek letters
+            # (tested in Firefox 78). Use literal Unicode characters.
+            arg = mathbb.get(arg, arg)
         if name == 'boldsymbol':
             attributes = {'style': 'font-weight: bold'}
         else:
             attributes = {'mathvariant': math_alphabets[name]}
         if name == 'mathscr':
-            # alternative script letter shapes
-            attributes['style'] = 'font-family: STIX'
+            attributes['class'] = 'mathscr'
 
-        # one symbol (single letter, name, or number)
-        if arg.isalpha():
+        # one symbol (single letter, name, or ⅀)
+        if arg.isalpha() or arg == u'\u2140':
             node = node.append(mi(arg, **attributes))
             return node, remainder
-        if arg.replace('.', '').replace(',', '').isdigit():
-            node = node.append(mn(arg, **attributes))
-            return node, remainder
-        if len(arg) == 1 and arg != '{':
-            node = node.append(mo(arg, **attributes))
-            return node, remainder
-
         # Wrap in <style>
         style = mstyle(**attributes)
         node.append(style)
-        return style, string[1:] # take of the opening '{', <mrow> is inferred
+        return style, string
 
 
     # operator, fence, or separator  ->  <mo>
@@ -798,7 +818,7 @@ def handle_cmdname(name, node, string):
             row = mrow()
             node.append(row)
             node = row
-        if delimiter: # may be empty (source '.')
+        if delimiter: # may be empty
             node.append(mo(delimiter))
         if name == 'right':
             node = node.close()
@@ -813,7 +833,6 @@ def handle_cmdname(name, node, string):
         return node, string
 
     # arbitrary text (usually comments)  ->  <mtext>
-
     if name in ('text', 'mbox', 'textrm'):
         arg, string = tex_token(string)
         text = re.sub('(^ | $)', u'\u00a0', arg)
@@ -821,7 +840,6 @@ def handle_cmdname(name, node, string):
         return node, string
 
     # horizontal space -> <mspace>
-
     if name in spaces:
         node = node.append(mspace(width='%s'%spaces[name]))
         return node, string
@@ -835,18 +853,14 @@ def handle_cmdname(name, node, string):
     # ==================================
 
     if name == 'sqrt':
-        # TODO: optional arg -> <mroot> <mn>2</mn> <mn>3</mn> </mroot>
-        degree, string = tex_optarg(string)
-        if degree:
+        radix, string = tex_optarg(string)
+        if radix:
             indexnode = mrow()
-            parse_latex_math(indexnode, degree)
             new_node = mroot(indexnode, switch=True)
+            parse_latex_math(indexnode, radix)
+            indexnode.close()
         else:
             new_node = msqrt()
-            if string.startswith('{'): # argument is a group
-                string = string[1:] # mrow implied, skip opening bracket
-            else: # no group, enclose only one element
-                new_node.nchildren = 1
         node.append(new_node)
         return new_node, string
 
@@ -977,8 +991,7 @@ def handle_script_or_limit(node, c):
             new_node = msubsup(*child.children, switch=True)
         elif isinstance(child, mover):
             new_node = munderover(*child.children, switch=True)
-        # elif isinstance(child, MathToken) and child.data in sumintprod:
-        elif getattr(child, 'data', '') in sumintprod:
+        elif getattr(child, 'data', '') in with_limits:
             child.attributes['movablelimits'] = 'true'
             new_node = munder(child)
         else:
@@ -988,7 +1001,7 @@ def handle_script_or_limit(node, c):
             new_node = msubsup(*child.children)
         elif isinstance(child, munder):
             new_node = munderover(*child.children)
-        elif isinstance(child, MathToken) and child.data in sumintprod:
+        elif getattr(child, 'data', '') in with_limits:
             child.attributes['movablelimits'] = 'true'
             new_node = mover(child)
         else:

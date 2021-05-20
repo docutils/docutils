@@ -118,7 +118,7 @@ The "narrow" accents are intended for a single-letter base.
 .. class:: colwidths-auto
 
   =========== =============  =========== =============  ============== ================
-  `\acute{x}` ``\acute{x}``  `\dot{t}`   ``\dot{t}``    `\hat{H}`      ``\hat{H}``
+  `\acute{x}` ``\acute{x}``  `\dot{t}`   ``\dot{t}``    `\hat{x}`      ``\hat{x}``
   `\bar{v}`   ``\bar{v}``    `\ddot{t}`  ``\ddot{t}``   `\mathring{x}` ``\mathring{x}``
   `\breve{x}` ``\breve{x}``  `\dddot{t}` ``\dddot{t}``  `\tilde{n}`    ``\tilde{n}``
   `\check{x}` ``\check{x}``  `\grave{x}` ``\grave{x}``  `\vec{x}`      ``\vec{x}``
@@ -190,28 +190,22 @@ Pairing delimiters
 
   =============== =================   ========================= ===========================
   `( )`           ``( )``             `\langle \rangle`         ``\langle \rangle``
-  `[ ]`           ``[ ]``             `\lceil \rceil`           ``\lceil \rceil``
+  `[ ]`           ``[ ]``             `\lceil  \rceil`          ``\lceil \rceil``
   `\{ \}`         ``\{ \}``           `\lfloor \rfloor`         ``\lfloor \rfloor``
-  `\lvert \rvert` ``\lvert \rvert``   `\lVert \rVert`           ``\lVert \rVert``
+  `\lvert \rvert` ``\lvert \rvert``   `\lgroup \rgroup`         ``\lgroup \rgroup``
+  `\lVert \rVert` ``\lVert \rVert``   `\lmoustache \rmoustache` ``\lmoustache \rmoustache``
   =============== =================   ========================= ===========================
 
-.. The "math-guide" also lists macros for parts of extensible delimiters:
-
-   =============  =  =============  =  ============  =
-   `\lmoustache`  ⎰  `\rmoustache`  ⎱  `\bracevert`  ⎪
-   `\lgroup`      ⟮  `\rgroup`      ⟯  `\arrowvert`  ⏐
-   ..                                  `\Arrowvert`  ‖
-   =============  =  =============  =  ============  =
 
 Nonpairing delimiters
 ~~~~~~~~~~~~~~~~~~~~~
 .. class:: colwidths-auto
 
-  ===========  ===========================
-  `|`  ``|``   `\vert`      ``\vert``
-  `\|` ``\|``  `\Vert`      ``\Vert``
-  `/`  ``/``   `\backslash` ``\backslash``
-  ===========  ===========================
+  ==== ======  ============ ==============  ============ ==============
+  `|`  ``|``   `\vert`      ``\vert``       `\arrowvert` ``\arrowvert``
+  `\|` ``\|``  `\Vert`      ``\Vert``       `\Arrowvert` ``\Arrowvert``
+  `/`  ``/``   `\backslash` ``\backslash``  `\bracevert` ``\bracevert``
+  ==== ======  ============ ==============  ============ ==============
 
 The use of ``|`` and ``\|`` for pairs of vertical bars may produce
 incorrect spacing, e.g., ``|k|=|-k|`` produces `|k| = |−k|` and
@@ -229,6 +223,37 @@ Vertical Arrows
   `\updownarrow` ``\updownarrow``  `\Updownarrow` ``\Updownarrow``
   ===============================  ======================================
 
+Functions (named operators)
+---------------------------
+.. class:: colwidths-auto
+
+  ========= ===========  ========= ===========  ============= ================
+  `\arccos` ``\arccos``  `\gcd`    ``\gcd``     `\Pr`         ``\Pr``
+  `\arcsin` ``\arcsin``  `\hom`    ``\hom``     `\projlim`    ``\projlim``
+  `\arctan` ``\arctan``  `\inf`    ``\inf``     `\sec`        ``\sec``
+  `\arg`    ``\arg``     `\injlim` ``\injlim``  `\sin`        ``\sin``
+  `\cos`    ``\cos``     `\ker`    ``\ker``     `\sinh`       ``\sinh``
+  `\cosh`   ``\cosh``    `\lg`     ``\lg``      `\sup`        ``\sup``
+  `\cot`    ``\cot``     `\lim`    ``\lim``     `\tan`        ``\tan``
+  `\coth`   ``\coth``    `\liminf` ``\liminf``  `\tanh`       ``\tanh``
+  `\csc`    ``\csc``     `\limsup` ``\limsup``  `\varlimsup`  ``\varlimsup``
+  `\deg`    ``\deg``     `\ln`     ``\ln``      `\varliminf`  ``\varliminf``
+  `\det`    ``\det``     `\log`    ``\log``     `\varprojlim` ``\varprojlim``
+  `\dim`    ``\dim``     `\max`    ``\max``     `\varinjlim`  ``\varinjlim``
+  `\exp`    ``\exp``     `\min`    ``\min``
+  ========= ===========  ========= ===========  ============= ================
+
+Named operators outside the above list can be typeset with
+``\operatorname{name}``, e.g.
+
+.. math:: \operatorname{sgn}(-3) = -1.
+
+The ``\DeclareMathOperator`` command can only be used in the
+`LaTeX preamble`_.
+
+.. _LaTeX preamble: latex.html#latex-preamble
+
+
 Greek letters
 -------------
 
@@ -243,16 +268,16 @@ formulas and not supported by LaTeX.
 
   ========== ============  ========== ============  ========== ============  ============== ===============
   `\Gamma`   ``\Gamma``    `\alpha`   ``\alpha``    `\mu`      ``\mu``       `\omega`       ``\omega``
-  `\Delta`   ``\Delta``    `\beta`    ``\beta``     `\nu`      ``\nu``       `\backepsilon` ``\backepsilon``
-  `\Lambda`  ``\Lambda``   `\gamma`   ``\gamma``    `\xi`      ``\xi``       `\digamma`     ``\digamma``
-  `\Omega`   ``\Omega``    `\delta`   ``\delta``    `\pi`      ``\pi``       `\varepsilon`  ``\varepsilon``
-  `\Phi`     ``\Phi``      `\epsilon` ``\epsilon``  `\rho`     ``\rho``      `\varkappa`    ``\varkappa``
-  `\Pi`      ``\Pi``       `\zeta`    ``\zeta``     `\sigma`   ``\sigma``    `\varphi`      ``\varphi``
-  `\Psi`     ``\Psi``      `\eta`     ``\eta``      `\tau`     ``\tau``      `\varpi`       ``\varpi``
-  `\Sigma`   ``\Sigma``    `\theta`   ``\theta``    `\upsilon` ``\upsilon``  `\varrho`      ``\varrho``
-  `\Theta`   ``\Theta``    `\iota`    ``\iota``     `\phi`     ``\phi``      `\varsigma`    ``\varsigma``
-  `\Upsilon` ``\Upsilon``  `\kappa`   ``\kappa``    `\chi`     ``\chi``      `\vartheta`    ``\vartheta``
-  `\Xi`      ``\Xi``       `\lambda`  ``\lambda``   `\psi`     ``\psi``
+  `\Delta`   ``\Delta``    `\beta`    ``\beta``     `\nu`      ``\nu``       `\digamma`     ``\digamma``
+  `\Lambda`  ``\Lambda``   `\gamma`   ``\gamma``    `\xi`      ``\xi``       `\backepsilon` ``\backepsilon``
+  `\Phi`     ``\Phi``      `\delta`   ``\delta``    `\pi`      ``\pi``       `\varepsilon`  ``\varepsilon``
+  `\Pi`      ``\Pi``       `\epsilon` ``\epsilon``  `\rho`     ``\rho``      `\varkappa`    ``\varkappa``
+  `\Psi`     ``\Psi``      `\zeta`    ``\zeta``     `\sigma`   ``\sigma``    `\varphi`      ``\varphi``
+  `\Sigma`   ``\Sigma``    `\eta`     ``\eta``      `\tau`     ``\tau``      `\varpi`       ``\varpi``
+  `\Theta`   ``\Theta``    `\theta`   ``\theta``    `\upsilon` ``\upsilon``  `\varrho`      ``\varrho``
+  `\Upsilon` ``\Upsilon``  `\iota`    ``\iota``     `\phi`     ``\phi``      `\varsigma`    ``\varsigma``
+  `\Xi`      ``\Xi``       `\kappa`   ``\kappa``    `\chi`     ``\chi``      `\vartheta`    ``\vartheta``
+  `\Omega`   ``\Omega``    `\lambda`  ``\lambda``   `\psi`     ``\psi``
   ========== ============  ========== ============  ========== ============  ============== ===============
 
 __ http://mirrors.ctan.org/macros/latex/contrib/isomath/isomath.html#table-2
@@ -262,20 +287,21 @@ Letterlike symbols
 .. class:: colwidths-auto
 
 ========== ============  ============= ===============  ========= ===========  =========== =============
-`\aleph`   ``\aleph``    `\forall`     ``\forall``      `\hbar`   ``\hbar``    `\ell`      ``\ell``   
-`\beth`    ``\beth``     `\complement` ``\complement``  `\hslash` ``\hslash``  `\wp`       ``\wp``      
-`\gimel`   ``\gimel``    `\exists`     ``\exists``      `\Im`     ``\Im``      `\Re`       ``\Re``      
+`\aleph`   ``\aleph``    `\forall`     ``\forall``      `\hbar`   ``\hbar``    `\ell`      ``\ell``
+`\beth`    ``\beth``     `\complement` ``\complement``  `\hslash` ``\hslash``  `\wp`       ``\wp``
+`\gimel`   ``\gimel``    `\exists`     ``\exists``      `\Im`     ``\Im``      `\Re`       ``\Re``
 `\daleth`  ``\daleth``   `\Finv`       ``\Finv``        `\imath`  ``\imath``   `\circledR` ``\circledR``
 `\partial` ``\partial``  `\Game`       ``\Game``        `\Bbbk`   ``\Bbbk``    `\circledS` ``\circledS``
-`\eth`     ``\eth``                                                            `\mho`      ``\mho``     
+`\eth`     ``\eth``                                                            `\mho`      ``\mho``
 ========== ============  ============= ===============  ========= ===========  =========== =============
 
 
 Mathematical Alphabets
 ----------------------
 
-For mathematical variables where style variations are important semantically,
-select an appropriate *math alphabet* [#]_.
+Mathematical alphabets select a combination of font attributes (shape,
+weight, family) [#]_. They are intended for mathematical variables where
+style variations are important semantically.
 
 .. class:: colwidths-auto
 
@@ -321,6 +347,11 @@ in line with the International Standard [ISO-80000-2].
 
    .. math:: \mathbfit{r}^2=x^2+y^2+z^2.
 
+The package mathrsfs_ (and some drop-in replacements) define the ``\mathscr``
+macro that selects a differently shaped "script" alphabet.
+Compare `\mathscr{A, B, …, Z, a, b, …, z}`
+with `\mathcal{A, B, …, Z, a, b, …, z}`.
+
 
 In contrast to the math alphabet selectors, ``\boldsymbol`` only changes
 the *font weight*. In LaTeX, it can be used to get a bold version of any
@@ -350,46 +381,18 @@ Miscellaneous symbols
 ==================== ======================  ================ ==================  ================= ===================
 
 
-Named operators
----------------
-.. class:: colwidths-auto
-
-  ========= ===========  ========= ===========  ============= ================
-  `\arccos` ``\arccos``  `\gcd`    ``\gcd``     `\Pr`         ``\Pr``
-  `\arcsin` ``\arcsin``  `\hom`    ``\hom``     `\projlim`    ``\projlim``
-  `\arctan` ``\arctan``  `\inf`    ``\inf``     `\sec`        ``\sec``
-  `\arg`    ``\arg``     `\injlim` ``\injlim``  `\sin`        ``\sin``
-  `\cos`    ``\cos``     `\ker`    ``\ker``     `\sinh`       ``\sinh``
-  `\cosh`   ``\cosh``    `\lg`     ``\lg``      `\sup`        ``\sup``
-  `\cot`    ``\cot``     `\lim`    ``\lim``     `\tan`        ``\tan``
-  `\coth`   ``\coth``    `\liminf` ``\liminf``  `\tanh`       ``\tanh``
-  `\csc`    ``\csc``     `\limsup` ``\limsup``  `\varlimsup`  ``\varlimsup``
-  `\deg`    ``\deg``     `\ln`     ``\ln``      `\varliminf`  ``\varliminf``
-  `\det`    ``\det``     `\log`    ``\log``     `\varprojlim` ``\varprojlim``
-  `\dim`    ``\dim``     `\max`    ``\max``     `\varinjlim`  ``\varinjlim``
-  `\exp`    ``\exp``     `\min`    ``\min``
-  ========= ===========  ========= ===========  ============= ================
-
-Named operators outside the above list can be typeset with
-``\operatorname{name}``, e.g.
-
-.. math:: \operatorname{sgn}(-3) = -1.
-
-The ``\DeclareMathOperator`` command can only be used in the
-`LaTeX preamble`_.
-
-.. _LaTeX preamble: latex.html#latex-preamble
-
 Punctuation
 -----------
 .. class:: colwidths-auto
 
-======== ===============
-`\colon` ``\colon`` [#]_
-`\cdots` ``\cdots``
-`\ddots` ``\ddots``
-`\ddots` ``\ddots``
-======== ===============
+=== =====  ======== ===============  ======== ==========
+`.` ``.``  `!`      ``!``            `?`      ``?``
+`/` ``/``  `\colon` ``\colon`` [#]_  `\dotsb` ``\dotsb``
+`|` ``|``  `\cdots` ``\cdots``       `\dotsc` ``\dotsc``
+`'` ``'``  `\ddots` ``\ddots``       `\dotsi` ``\dotsi``
+`;` ``;``  `\ldots` ``\ldots``       `\dotsm` ``\dotsm``
+`:` ``:``  `\vdots` ``\vdots``       `\dotso` ``\dotso``
+=== =====  ======== ===============  ======== ==========
 
 .. [#] Punctuation (not ratio):
        Compare spacing in `a\colon b\to c` to `a:b = c`.
@@ -582,6 +585,9 @@ Result:
 
 .. TODO: small matrices, matrices with delimiters built in?
 
+   The environments pmatrix, bmatrix, Bmatrix, vmatrix, and Vmatrix have
+   (respectively) ( ), [ ], { }, | |, and k k delimiters built in.
+
 For piecewise function definitions there is a cases environment:
 
 .. math::
@@ -596,19 +602,22 @@ Horizontal space
 
 .. class:: colwidths-auto
 
-  =================  ==================  =============
-  :m:`|\qquad|`      ``|\qquad|``        2 em
-  :m:`|\quad|`       ``|\quad|``         1 em
-  :m:`|\;|`          ``|\;|``            thick
-  :m:`|\ |`          ``|\ |``            standard
-  :m:`|~|`           ``|~|``             non-break
-  :m:`|\:|`          ``|\:|``            medium
-  :m:`|\,|`          ``|\,|``            thin
-  :m:`|  |`          ``|  |``            none
-  :m:`|\!|`          ``|\!|``            thin negative
-  `|\hspace{1ex}|`   ``|\hspace{1ex}|``  custom
-  =================  ==================  =============
+  =====================  ========  =======================
+  :m:`|\qquad|`                    ``|\qquad|`` (2em)
+  :m:`|\quad|`                     ``|\quad|``  (1em)
+  :m:`|~|`               ``|~|``   ``|\nobreakspace|``
+  :m:`|\ |`              ``|\ |``  escaped space
+  :m:`|\;|`              ``|\;|``  ``|\thickspace|``
+  :m:`|\:|`              ``|\:|``  ``|\medspace|``
+  :m:`|\,|`              ``|\,|``  ``|\thinspace|``
+  :m:`|  |`              ``|  |``  regular space (ignored)
+  :m:`|\!|`              ``|\!|``  ``|\negthinspace|``
+  :m:`|\negmedspace|`              ``|\negmedspace|``
+  :m:`|\negthickspace|`            ``|\negthickspace|``
+  `|\hspace{1ex}|`                 ``|\hspace{1ex}|``
+  =====================  ========  =======================
 
+.. TODO: \phantom \hphantom, \vphantom
 
 Roots and Fractions
 -------------------
@@ -622,6 +631,8 @@ Roots and Fractions
   ..         ``\sqrt[3n]{x^2-1}``  `\sqrt[3n]{x^2-1}`
   ``\frac``  ``\frac{1}{1-x}``       `\frac{1}{1-x}`
   =========  ====================  ==================
+
+.. TODO: \dfrac, \tfrac, \binom, \dbinom, \tbinom
 
 Text
 ====
@@ -638,22 +649,11 @@ Whitespace is kept inside the argument:
 
 Currently, math in text is not supported by LaTeX2MathML.
 
+.. TODO: Math inside text: ``n - 1 \text{if $n$ is odd}``.
 
-ToDo
-====
-
-internal LaTeX2MathML
-
-* Math inside text: ``n - 1 \text{if $n$ is odd}``.
-* Remove circular refs.
-* Document ``\circledS``, \circledR, implement other characters
-  in the short-math-guide.pdf but not in the
-  Unicode `Mathematical Character Repertoire`__
-
-__ http://www.unicode.org/reports/tr25/
 
 Tests
-==========
+=====
 
 Font changes
 ------------
@@ -670,14 +670,7 @@ MathML), leaving some symbols unchanged:
 
 Unicode supports the following blackboard-bold characters:
 `\mathbb{a \ldots z A \ldots Z 0 \ldots 9
-\mathbb\Gamma \mathbb{\Pi} \mathbb {\Sigma}\mathbb\gamma \mathbb\pi}`.
-
-The package mathrsfs_ (and some drop-in replacements) define the ``\mathscr``
-macro that selects a differently shaped "script" alphabet.
-Compare `\mathscr{A, B, …, Z, a, b, …, z}`
-with `\mathcal{A, B, …, Z, a, b, …, z}`.
-
-.. _rsfs: https://ctan.org/pkg/mathrsfs
+\mathbb\Gamma \mathbb{\Pi} \mathbb {\Sigma} \mathbb\gamma \mathbb\pi}`.
 
 Inferred <mrow>s in MathML
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -707,3 +700,5 @@ Sub- and superscript may be given in any order:
 `x_i^j = x^j_i` and `\int_0^1 = \int^1_0`.
 
 Double exponent: `x^{10}^4`, `r_T_\mathrm{in}` and `x_i^n^2`.
+
+Binary vs. unary minus operator: `a - b = -c`
