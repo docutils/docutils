@@ -57,12 +57,12 @@ greek_capitals = {
     'Gamma':u'\u0393', 'Lambda':u'\u039b'}
 
 # functions -> <mi>
-functions = ['arccos', 'arcsin', 'arctan', 'arg', 'cos',  'cosh',
-             'cot',    'coth',   'csc',    'deg', 'det',  'dim',
-             'exp',    'gcd',    'hom',    'inf', 'ker',  'lg',
-             'ln',     'log',    'max', 'min',  'Pr',
-             'sec',    'sin',    'sinh',   'sup', 'tan',  'tanh']
-functions = dict((name, name) for name in functions)
+functions = dict((name, name) for name in 
+                 ('arccos', 'arcsin', 'arctan', 'arg', 'cos',  'cosh',
+                  'cot',    'coth',   'csc',    'deg', 'det',  'dim',
+                  'exp',    'gcd',    'hom',    'inf', 'ker',  'lg',
+                  'ln',     'log',    'max', 'min',  'Pr',
+                  'sec',    'sin',    'sinh',   'sup', 'tan',  'tanh'))
 functions.update({# functions with a space in the name
                   'liminf': u'lim\u202finf', 'limsup': u'lim\u202fsup',
                   'injlim': u'inj\u202flim', 'projlim': u'proj\u202flim',
@@ -71,6 +71,10 @@ functions.update({# functions with a space in the name
                   'varprojlim': 'lim', 'varinjlim': 'lim',
                   # custom function name
                   'operatorname': None})
+
+# function with limits, use <mo> to allow "movablelimits" attribute
+functions_with_limits = dict((name, name) for name in 
+                             ('lim', 'sup', 'inf', 'max', 'min'))
 
 # math font selection -> <mi mathvariant=...> or <mstyle mathvariant=...>
 math_alphabets = {# 'cmdname': 'mathvariant value'  # package
@@ -101,6 +105,7 @@ operators.update(tex2unichar.mathop)    # Variable-sized symbols
 operators.update(tex2unichar.mathopen)  # Braces
 operators.update(tex2unichar.mathclose) # Braces
 operators.update(tex2unichar.mathfence)
+operators.update(functions_with_limits)
 operators.update({# negated symbols without pre-composed Unicode character
                   'nleqq':      u'\u2266\u0338', # ≦̸
                   'ngeqq':      u'\u2267\u0338', # ≧̸
@@ -108,13 +113,11 @@ operators.update({# negated symbols without pre-composed Unicode character
                   'ngeqslant':  u'\u2a7e\u0338', # ⩾̸
                   'nsubseteqq': u'\u2AC5\u0338', # ⫅̸
                   'nsupseteqq': u'\u2AC6\u0338', # ⫆̸
-                  # pairing delimiters
-                  'lvert': u'|',
+                  # alias commands:
+                  'lvert': u'|',      # pairing delimiters
                   'lVert': u'\u2016', # ‖
                   'rvert': u'|',
                   'rVert': u'\u2016',
-                  # use <mo> to allow "movablelimits" attribute
-                  'lim':   u'lim',
                  })
 
 # special cases
@@ -134,13 +137,13 @@ small_operators = {# mathsize='75%'
                    'smallint':   u'\u222b', # ∫ INTEGRAL
                   }
 
-# operators with limits either over/under or in index position
+# Operators and functions with limits
+# over/under in display formulas and in index position inline
 sumintprod = [operators[name] for name in
               ('coprod', 'fatsemi', 'fint', 'iiiint', 'iiint',
                'iint', 'int', 'oiint', 'oint', 'ointctrclockwise',
-               'prod', 'sqint', 'sum', 'varointclockwise')
-             ] + ['lim']
-             # TODO: 'sup', 'inf', 'max', 'min
+               'prod', 'sqint', 'sum', 'varointclockwise',
+               'lim', 'sup', 'inf', 'max', 'min')]
 
 # pre-composed characters for negated symbols
 # see https://www.w3.org/TR/xml-entity-names/#combining
@@ -214,13 +217,15 @@ accents = {'acute':    u'´',      # u'\u0301',
            'tilde':    u'˜',      # u'\u0303',
        }
 
-# limits etc. -> <mover> rsp. <munder>
-over = {'overbrace':            u'\u23DE', # TOP CURLY BRACKET
+# limits etc. -> <mover accent="false"> or <munder>
+over = {# 'ddot':     u'..',
+        # 'dddot':                u'…',  # too wide if accent="true"
+        'overbrace':            u'\u23DE', # TOP CURLY BRACKET
         'overleftarrow':        u'\u2190',
         'overleftrightarrow':   u'\u2194',
         'overline':             u'¯',
         'overrightarrow':       u'\u2192',
-        'vec':                  u'\u2192', # → (too heavy if accent="true")
+        'vec':                  u'\u2192', # → too heavy if accent="true"
         'widehat':              u'^',
         'widetilde':            u'~'}
 under = {'underbrace':          u'\u23DF',
@@ -235,6 +240,7 @@ under = {'underbrace':          u'\u23DF',
 # cf. https://www.w3.org/TR/MathML3/chapter7.html#chars.anomalous
 anomalous_chars = {'-': u'\u2212', # HYPHEN-MINUS -> MINUS SIGN
                    ':': u'\u2236', # COLON -> RATIO
+                   '~': u'\u00a0', # NO-BREAK SPACE
                   }
 
 # blackboard bold (Greek characters not working with "mathvariant" (Firefox 78)
@@ -506,10 +512,10 @@ def tex_cmdname(string):
 
 def tex_number(string):
     """Return first number literal and remainder of `string`.
-    
+
     >>> tex_number('123.4')
     ('123.4', '')
-    
+
     """
     m = re.match(r'([0-9.,]+)(.*)', string)
     if m is None:
@@ -517,7 +523,7 @@ def tex_number(string):
     return m.group(1), m.group(2)
 
 # Test:
-#     
+#
 # >>> tex_number(' 123.4')
 # ('', ' 123.4')
 # >>> tex_number('23,400')
@@ -667,6 +673,8 @@ def parse_latex_math(node, string):
 # math(msqrt(mn('2')), mo('≠'), mn('3'))
 # >>> parse_latex_math(math(), '\\sqrt{2 + 3} < 3')
 # math(msqrt(mn('2'), mo('+'), mn('3')), mo('<'), mn('3'))
+# >>> parse_latex_math(math(), '\max_x') # function takes limits
+# math(munder(mi('max', movablelimits='true'), mi('x')))
 # >>> parse_latex_math(math(), 'x^j_i') # ensure correct order: base, sub, sup
 # math(msubsup(mi('x'), mi('i'), mi('j')))
 # >>> parse_latex_math(math(), '\int^j_i') # ensure correct order
