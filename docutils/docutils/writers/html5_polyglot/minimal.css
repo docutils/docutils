@@ -140,11 +140,6 @@ dl.option-list > dd > *:first-child
   width: 100%;
   margin: 0;
 }
-/* field names followed by a colon */
-dl.field-list > dt:after,
-dl.docinfo > dt:after {
-  content: ":";
-}
 
 /* Bibliographic Fields (docinfo) */
 dl.docinfo pre.address {
@@ -161,14 +156,14 @@ span.option { white-space: nowrap; }
 dl.footnote.superscript > dd { margin-left: 0.7em; }
 dl.footnote.brackets > dd { margin-left: 1.6em; }
 dl.footnote > dt { font-weight: normal; }
-a.footnote-reference.brackets:before,
-dt.label > span.brackets:before { content: "["; }
-a.footnote-reference.brackets:after,
-dt.label > span.brackets:after { content: "]"; }
 a.footnote-reference.superscript,
 dl.footnote.superscript > dt.label {
   vertical-align: super;
   font-size: small;
+}
+a.footnote-reference.superscript > span.fn-bracket,
+dl.footnote.superscript > dt.label span.fn-bracket {
+  display: none;
 }
 dt.label > span.fn-backref {
   margin-left: 0.2em;

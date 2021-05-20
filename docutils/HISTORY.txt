@@ -1,5 +1,3 @@
-.. -*- coding: utf-8 -*-
-
 ==================
  Docutils History
 ==================
@@ -31,13 +29,19 @@ Changes Since 0.17.1
 
   - Removed ``unique_combinations`` (obsoleted by ``itertools.combinations``).
 
+* docutils/writers/_html_base.py
+
+  - Write footnote brackets and field term colons to HTML, so that
+    they are present also without CSS and when copying text.
+    Adapt ``minimal.css``.
+
 * docutils/writers/latex2e/__init__.py
 
-  - The setting `legacy_class_functions`_ now defaults to "False". 
+  - The setting `legacy_class_functions`_ now defaults to "False".
     Adapt stylesheets modifying ``\DUadmonition`` and/or ``\DUtitle``.
 
 * docutils/writers/latex2e/docutils.sty
-    
+
   - Fix excessive padding above sidebar titles.
 
 * docutils/writers/pseudoxml.py:

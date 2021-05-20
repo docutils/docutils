@@ -432,9 +432,7 @@ class HTMLTranslator(nodes.NodeVisitor):
             atts['class'] = ' '.join(classes)
         assert 'id' not in atts
         ids.extend(node.get('ids', []))
-        if 'ids' in atts:
-            ids.extend(atts['ids'])
-            del atts['ids']
+        ids.extend(atts.pop('ids', []))
         if ids:
             atts['id'] = ids[0]
             for id in ids[1:]:
@@ -788,8 +786,9 @@ class HTMLTranslator(nodes.NodeVisitor):
             meta_tag = '<meta name="%s" content="%s" />\n' \
                        % (name, self.attval(node.astext()))
             self.add_meta(meta_tag)
-        self.body.append('<dt class="%s">%s</dt>\n'
-                         % (name, self.language.labels[name]))
+        self.body.append(
+            '<dt class="%s">%s<span class="colon">:</span></dt>\n'
+            % (name, self.language.labels[name]))
         self.body.append(self.starttag(node, 'dd', '', CLASS=name))
 
     def depart_docinfo_item(self):
@@ -903,7 +902,7 @@ class HTMLTranslator(nodes.NodeVisitor):
                                        CLASS=''.join(node.parent['classes'])))
 
     def depart_field_name(self, node):
-        self.body.append('</dt>\n')
+        self.body.append('<span class="colon">:</span></dt>\n')
 
     def visit_field_body(self, node):
         self.body.append(self.starttag(node, 'dd', '',
@@ -940,9 +939,6 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body_suffix[:0] = footer
         del self.body[start:]
 
-    # TODO: use the new HTML5 element <aside> for footnote text
-    # (allows better styling with CSS, the current <dl> list styling
-    # with "float" interferes with sidebars).
     def visit_footnote(self, node):
         if not self.in_footnote_list:
             listnode = node.copy()
@@ -962,10 +958,12 @@ class HTMLTranslator(nodes.NodeVisitor):
     def visit_footnote_reference(self, node):
         href = '#' + node['refid']
         classes = 'footnote-reference ' + self.settings.footnote_references
-        self.body.append(self.starttag(node, 'a', '', #suffix,
+        self.body.append(self.starttag(node, 'a', suffix='',
                                        CLASS=classes, href=href))
+        self.body.append('<span class="fn-bracket">[</span>')
 
     def depart_footnote_reference(self, node):
+        self.body.append('<span class="fn-bracket">]</span>')
         self.body.append('</a>')
 
     # Docutils-generated text: put section numbers in a span for CSS styling:
@@ -1090,31 +1088,31 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     # footnote and citation labels:
     def visit_label(self, node):
-        if (isinstance(node.parent, nodes.footnote)):
-            classes = self.settings.footnote_references
-        else:
-            classes = 'brackets'
         # pass parent node to get id into starttag:
         self.body.append(self.starttag(node.parent, 'dt', '', CLASS='label'))
-        self.body.append(self.starttag(node, 'span', '', CLASS=classes))
-        # footnote/citation backrefs:
+        # backlinks to the footnote/citation reference(s):
         if self.settings.footnote_backlinks:
             backrefs = node.parent['backrefs']
             if len(backrefs) == 1:
                 self.body.append('<a class="fn-backref" href="#%s">'
                                  % backrefs[0])
+        # bracket (hidden by CSS for superscript footnotes)
+        self.body.append('<span class="fn-bracket">[</span>')
 
     def depart_label(self, node):
+        self.body.append('<span class="fn-bracket">]</span>')
+        # backlinks to the footnote/citation reference(s):
         if self.settings.footnote_backlinks:
             backrefs = node.parent['backrefs']
-            if len(backrefs) == 1:
-                self.body.append('</a>')
-        self.body.append('</span>')
-        if self.settings.footnote_backlinks and len(backrefs) > 1:
+        else:
+            backrefs = []
+        if len(backrefs) == 1:
+            self.body.append('</a>')
+        if len(backrefs) > 1:
             backlinks = ['<a href="#%s">%s</a>' % (ref, i)
-                            for (i, ref) in enumerate(backrefs, 1)]
+                         for (i, ref) in enumerate(backrefs, 1)]
             self.body.append('<span class="fn-backref">(%s)</span>'
-                                % ','.join(backlinks))
+                             % ','.join(backlinks))
         self.body.append('</dt>\n<dd>')
 
     def visit_legend(self, node):
@@ -1599,10 +1597,8 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append(self.starttag(node, 'dt', ''))
 
     def depart_term(self, node):
-        """
-        Leave the end tag to `self.visit_definition()`, in case there's a
-        classifier.
-        """
+        # Leave the end tag to `self.visit_definition()`,
+        # in case there's a classifier.
         pass
 
     def visit_tgroup(self, node):

@@ -172,15 +172,16 @@ dd > ol:first-child {
 }
 
 /* Footnotes and Citations */
-/* TODO: use <aside> */
 dl.footnote {
   font-size: small;
   padding-left: 0.5em;
   border-left: solid;
   border-left-width: thin;
 }
-dt.label > span.fn-backref {
+dl.citation > dt.label span.fn-bracket {
+  display: none;
 }
+
 
 /* Images, Figures, and Tables */
 img {
@@ -296,7 +297,6 @@ a:link:hover {
 /* Let content flow to the side of aligned images and figures */
 
 /* no floats around this elements */
-dl.footnote, dl.citation, /* errors with internal floats */
 footer, header, hr,
 h1, h2, h3 {
   clear: both;
