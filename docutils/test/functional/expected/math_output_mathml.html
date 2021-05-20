@@ -15,11 +15,11 @@
 <p>Docutils supports inline math with the prefix or postfix <span class="docutils literal">:math:</span>
 role specificator, <math xmlns="http://www.w3.org/1998/Math/MathML">
   <mrow>
-    <mi>n</mi><mo>!</mo><mo>+</mo><mo>sin</mo><mo>(</mo>
+    <mi>n</mi><mo>!</mo><mo>+</mo><mo>sin</mo><mo stretchy="false">(</mo>
     <msubsup>
       <mi>x</mi><mi>n</mi><mn>2</mn>
     </msubsup>
-    <mo>)</mo>
+    <mo stretchy="false">)</mo>
   </mrow>
 </math> and <math xmlns="http://www.w3.org/1998/Math/MathML">
   <mrow>
@@ -46,7 +46,7 @@ role specificator, <math xmlns="http://www.w3.org/1998/Math/MathML">
   <mtable class="align" displaystyle="true">
     <mtr>
       <mtd>
-        <mi>f</mi><mo>(</mo><mi>ϵ</mi><mo>)</mo><mo>=</mo>
+        <mi>f</mi><mo stretchy="false">(</mo><mi>ϵ</mi><mo stretchy="false">)</mo><mo>=</mo>
         <mfrac>
           <mrow>
             <mn>1</mn>
@@ -138,13 +138,13 @@ See <a class="reference internal" href="#eq-m">eq:M</a> and <a class="reference 
 </div>
 <p>is <math xmlns="http://www.w3.org/1998/Math/MathML">
   <mrow>
-    <mo>|</mo>
+    <mo stretchy="false">|</mo>
     <mstyle mathvariant="bold">
       <mrow>
         <mi>M</mi>
       </mrow>
     </mstyle>
-    <mo>|</mo><mo>=</mo><mi>a</mi><mi>d</mi><mo>-</mo><mi>b</mi><mi>c</mi>
+    <mo stretchy="false">|</mo><mo>=</mo><mi>a</mi><mi>d</mi><mo>-</mo><mi>b</mi><mi>c</mi>
   </mrow>
 </math>.</p>
 <p>More than one display math block can be put in one math directive.
@@ -189,7 +189,7 @@ For example, the following sum and integral with limits:</p>
         <mi>n</mi><mo>=</mo>
         <mfrac>
           <mrow>
-            <mi>m</mi><mo>(</mo><mi>m</mi><mo>+</mo><mn>1</mn><mo>)</mo>
+            <mi>m</mi><mo stretchy="false">(</mo><mi>m</mi><mo>+</mo><mn>1</mn><mo stretchy="false">)</mo>
           </mrow>
           <mrow>
             <mn>2</mn>
@@ -386,12 +386,12 @@ physical system changes in time.</p>
           <mo>|</mo>
           <mfrac>
             <mrow>
-              <mi>ℱ</mi><mo>{</mo><mi>s</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>}</mo>
+              <mi>ℱ</mi><mo>{</mo><mi>s</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo>}</mo>
             </mrow>
             <mrow>
-              <mi>ℱ</mi><mo>{</mo><mi>s</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>}</mo>
+              <mi>ℱ</mi><mo>{</mo><mi>s</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo>}</mo>
               <msub>
-                <mo>|</mo>
+                <mo stretchy="false">|</mo>
                 <mrow>
                   <msub>
                     <mi>ω</mi>
@@ -420,7 +420,7 @@ physical system changes in time.</p>
                   <mo>∞</mo>
                 </mrow>
               </munderover>
-              <mi>s</mi><mo>(</mo><mi>x</mi><mo>)</mo>
+              <mi>s</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo>
               <msup>
                 <mtext>e</mtext>
                 <mrow>
@@ -449,7 +449,7 @@ physical system changes in time.</p>
                   <mo>∞</mo>
                 </mrow>
               </munderover>
-              <mi>s</mi><mo>(</mo><mi>x</mi><mo>)</mo><mtext>d</mtext>
+              <mi>s</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mtext>d</mtext>
               <mrow>
                 <mi>x</mi>
               </mrow>
@@ -477,7 +477,7 @@ physical system changes in time.</p>
             <mtext>out</mtext>
           </mrow>
         </msub>
-        <mo>(</mo><mi>x</mi><mo>)</mo>
+        <mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo>
       </mtd>
       <mtd>
         <mo>=</mo>
@@ -487,11 +487,11 @@ physical system changes in time.</p>
             <mtext>in</mtext>
           </mrow>
         </msub>
-        <mo>(</mo><mi>x</mi><mo>'</mo><mo>)</mo><mo>*</mo>
+        <mo stretchy="false">(</mo><mi>x</mi><mo>'</mo><mo stretchy="false">)</mo><mo>*</mo>
         <msub>
           <mi>s</mi><mi>δ</mi>
         </msub>
-        <mo>(</mo><mi>x</mi><mo>-</mo><mi>x</mi><mo>'</mo><mo>)</mo>
+        <mo stretchy="false">(</mo><mi>x</mi><mo>-</mo><mi>x</mi><mo>'</mo><mo stretchy="false">)</mo>
       </mtd>
     </mtr>
     <mtr>
@@ -505,11 +505,11 @@ physical system changes in time.</p>
             <mtext>in</mtext>
           </mrow>
         </msub>
-        <mo>(</mo><mi>x</mi><mo>'</mo><mo>)</mo>
+        <mo stretchy="false">(</mo><mi>x</mi><mo>'</mo><mo stretchy="false">)</mo>
         <msub>
           <mi>s</mi><mi>δ</mi>
         </msub>
-        <mo>(</mo><mi>x</mi><mo>-</mo><mi>x</mi><mo>'</mo><mo>)</mo><mtext>d</mtext><mi>x</mi><mo>'</mo>
+        <mo stretchy="false">(</mo><mi>x</mi><mo>-</mo><mi>x</mi><mo>'</mo><mo stretchy="false">)</mo><mtext>d</mtext><mi>x</mi><mo>'</mo>
       </mtd>
     </mtr>
   </mtable>
@@ -521,7 +521,7 @@ physical system changes in time.</p>
   <mtable class="align" displaystyle="true">
     <mtr>
       <mtd>
-        <mtext>sgn</mtext><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo>
+        <mtext>sgn</mtext><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo>=</mo>
         <mrow>
           <mo>{</mo>
           <mtable>
