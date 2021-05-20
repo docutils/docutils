@@ -80,70 +80,7 @@ math_alphabets = {# 'cmdname': 'mathvariant value'  # package
                  }
 
 # blackboar bold (Greek characters not working with "mathvariant" (Firefox 78)
-mathbb = {
-          '0': u'\U0001D7D8', # 𝟘
-          '1': u'\U0001D7D9', # 𝟙
-          '2': u'\U0001D7DA', # 𝟚
-          '3': u'\U0001D7DB', # 𝟛
-          '4': u'\U0001D7DC', # 𝟜
-          '5': u'\U0001D7DD', # 𝟝
-          '6': u'\U0001D7DE', # 𝟞
-          '7': u'\U0001D7DF', # 𝟟
-          '8': u'\U0001D7E0', # 𝟠
-          '9': u'\U0001D7E1', # 𝟡
-          'A': u'\U0001D538', # 𝔸
-          'B': u'\U0001D539', # 𝔹
-          'C': u'\u2102',     # ℂ
-          'D': u'\U0001D53B', # 𝔻
-          'E': u'\U0001D53C', # 𝔼
-          'F': u'\U0001D53D', # 𝔽
-          'G': u'\U0001D53E', # 𝔾
-          'H': u'\u210D',     # ℍ
-          'I': u'\U0001D540', # 𝕀
-          'J': u'\U0001D541', # 𝕁
-          'K': u'\U0001D542', # 𝕂
-          'L': u'\U0001D543', # 𝕃
-          'M': u'\U0001D544', # 𝕄
-          'N': u'\u2115',     # ℕ
-          'O': u'\U0001D546', # 𝕆
-          'P': u'\u2119',     # ℙ
-          'Q': u'\u211A',     # ℚ
-          'R': u'\u211D',     # ℝ
-          'S': u'\U0001D54A', # 𝕊
-          'T': u'\U0001D54B', # 𝕋
-          'U': u'\U0001D54C', # 𝕌
-          'V': u'\U0001D54D', # 𝕍
-          'W': u'\U0001D54E', # 𝕎
-          'X': u'\U0001D54F', # 𝕏
-          'Y': u'\U0001D550', # 𝕐
-          'Z': u'\u2124',     # ℤ
-          'a': u'\U0001D552', # 𝕒
-          'b': u'\U0001D553', # 𝕓
-          'c': u'\U0001D554', # 𝕔
-          'd': u'\U0001D555', # 𝕕
-          'e': u'\U0001D556', # 𝕖
-          'f': u'\U0001D557', # 𝕗
-          'g': u'\U0001D558', # 𝕘
-          'h': u'\U0001D559', # 𝕙
-          'i': u'\U0001D55A', # 𝕚
-          'j': u'\U0001D55B', # 𝕛
-          'k': u'\U0001D55C', # 𝕜
-          'l': u'\U0001D55D', # 𝕝
-          'm': u'\U0001D55E', # 𝕞
-          'n': u'\U0001D55F', # 𝕟
-          'o': u'\U0001D560', # 𝕠
-          'p': u'\U0001D561', # 𝕡
-          'q': u'\U0001D562', # 𝕢
-          'r': u'\U0001D563', # 𝕣
-          's': u'\U0001D564', # 𝕤
-          't': u'\U0001D565', # 𝕥
-          'u': u'\U0001D566', # 𝕦
-          'v': u'\U0001D567', # 𝕧
-          'w': u'\U0001D568', # 𝕨
-          'x': u'\U0001D569', # 𝕩
-          'y': u'\U0001D56A', # 𝕪
-          'z': u'\U0001D56B', # 𝕫
-          u'Γ': u'\u213E',    # ℾ
+mathbb = {u'Γ': u'\u213E',    # ℾ
           u'Π': u'\u213F',    # ℿ
           u'Σ': u'\u2140',    # ⅀
           u'γ': u'\u213D',    # ℽ
@@ -249,6 +186,18 @@ over = {'acute':    u'\u00B4', # u'\u0301',
         'tilde':    u'\u02DC', # u'\u0303',
         'vec':               u'\u20D7'}
 
+
+# all supported math-characters:
+#mathcharacters = dict(letters)
+#mathcharacters.update(operators)
+#mathcharacters.update(tex2unichar.space)
+#
+## >>> l2m.mathcharacters['alpha']
+## 'α'
+## >>> l2m.mathcharacters['{']
+## '{'
+## >>> l2m.mathcharacters['pm']
+## '±'
 
 # MathML element classes
 # ----------------------
@@ -491,26 +440,38 @@ class munderover(math):
 def tex_cmdname(string):
     """Return leading TeX command name from `string`.
 
-      >>> l2m.tex_cmdname('name2') # first non-letter terminates
+      >>> l2m.tex_cmdname('name2') # up to first non-letter
+      ('name', '2')
+      >>> l2m.tex_cmdname('name 2') # strip trailing whitespace
       ('name', '2')
       >>> l2m.tex_cmdname('_2') # single non-letter character
       ('_', '2')
 
     """
-    cmdname = re.match(r'([a-zA-Z]+|.?)(.*)', string)
-    return cmdname.group(1), cmdname.group(2)
+    m = re.match(r'([a-zA-Z]+) *(.*)', string)
+    if m is None:
+        m = re.match(r'(.?)(.*)', string)
+    return m.group(1), m.group(2)
 
 # Test:
 #
-# >>> l2m.tex_cmdname('name 2') # first non-letter terminates
-# ('name', ' 2')
 # >>> l2m.tex_cmdname('name_2') # first non-letter terminates
 # ('name', '_2')
-# >>> l2m.tex_cmdname(' 2') # leading whitespace is returned
-# (' ', '2')
+# >>> l2m.tex_cmdname(' next') # leading whitespace is returned
+# (' ', 'next')
+# >>> l2m.tex_cmdname('1 2') # whitespace after non-letter is kept
+# ('1', ' 2')
 # >>> l2m.tex_cmdname('') # empty string
 # ('', '')
 
+
+# TODO: check for Inferred <mrow>s:
+
+# The elements <msqrt>, <mstyle>, <merror>, <mpadded>, <mphantom>, <menclose>,
+# <mtd, mscarry>, and <math> treat their contents as a single inferred mrow
+# formed from all their children
+#
+# --- https://www.w3.org/TR/MathML3/chapter3.html#id.3.1.3.2
 
 def tex_token(string):
     """Take first simple TeX token from `string`.
@@ -526,20 +487,21 @@ def tex_token(string):
 
     """
     m = re.match(r"""\s*                  # leading whitespace
-                     (?P<token>
-                      ({(\\}|[^{}]|\\{)*} # {group} without nested groups
-                       |\\([a-zA-Z]+|.)   # \cmdname
-                       |.?)               # first character or empty string
-                      )
+                 {(?P<token>(\\}|[^{}]|\\{)*)} # {group} without nested groups
+                 (?P<remainder>.*$)
+                 """, string, re.VERBOSE)
+    if m is None:
+        m = re.match(r"""\s*              # leading whitespace
+                      (?P<token>\\([a-zA-Z]+))\s*   # \cmdname
                       (?P<remainder>.*$)
                  """, string, re.VERBOSE)
+    if m is None:
+        m = re.match(r"""\s*              # leading whitespace
+                     (?P<token>.?)        # first character or empty string
+                     (?P<remainder>.*$)
+                 """, string, re.VERBOSE)
 
-    # strip {brackets}
-    token = m.group('token')
-    if token.startswith('{') and token.endswith('}'):
-        token =  token[1:-1]
-
-    return token, m.group('remainder')
+    return m.group('token'), m.group('remainder')
 
 # Test:
 #
@@ -553,8 +515,8 @@ def tex_token(string):
 # ('skip leading whitespace', '')
 # >>> l2m.tex_token('  \\skip{leading whitespace}')
 # ('\\skip', '{leading whitespace}')
-# >>> l2m.tex_token('\\leave trailing whitespace')
-# ('\\leave', ' trailing whitespace')
+# >>> l2m.tex_token('\\skip whitespace after macro name')
+# ('\\skip', 'whitespace after macro name')
 # >>> l2m.tex_token('') # empty string.
 # ('', '')
 
@@ -689,34 +651,36 @@ def handle_keyword(name, node, string):
         node = node.append(mo('&ApplyFunction;')) # '\u2061'
         return node, string
 
-    if name == 'mathrm':
-        # typically used for multi-character identifier ``s_\mathrm{out}``
-        # https://www.w3.org/TR/MathML3/chapter3.html#presm.mi
-        # TODO: too much space after d in ``\int f(x) \mathrm{d}x``.
-        arg, string = tex_token(string)
-        node = node.append(mi(arg, mathvariant='normal'))
-        # node = node.append(mo(arg))
-        return node, string
-
-    if name == 'mathbb':
-        arg, string = tex_token(string)
-        chs = arg
-        while chs:
-            c, chs = tex_token(chs)
-            try:
-                node = node.append(mi(mathbb[c]))
-            except KeyError:
-                raise SyntaxError(u'Character "%s" not supported '
-                                  u'in "\\mathbb{}"!' % chs)
-        return node, string
-
     if name in math_alphabets:
-        # TODO: use <mi> if it applies to just 1 character
-        # Wrap in <style> (implies <mgroup>)
-        n_c = None if string.startswith('{') else 1
-        style = mstyle(nchildren=n_c, mathvariant=math_alphabets[name])
+        arg, remainder = tex_token(string)
+        if arg[0] == '\\':
+            if name == 'mathbb':
+                # mathvariant="double-struck" is ignored for Greek letters
+                # (tested in Firefox 78). Use literal Unicode characters.
+                arg = mathbb.get(arg, arg)
+            # convert single letters (so they can be set with <mi>)
+            arg = letters.get(arg[1:], arg)
+
+        if name == 'boldsymbol':
+            kwargs = {'style': 'font-weight: bold'}
+        else:
+            kwargs = {'mathvariant': math_alphabets[name]}
+
+        # one symbol (single letter, name, or number)
+        if arg.isalpha():
+            node = node.append(mi(arg, **kwargs))
+            return node, remainder
+        if arg.replace('.', '').replace(',', '').isdigit():
+            node = node.append(mn(arg, **kwargs))
+            return node, remainder
+        if len(arg) == 1 and arg != '{':
+            node = node.append(mo(arg, **kwargs))
+            return node, remainder
+
+        # Wrap in <style>
+        style = mstyle(**kwargs)
         node.append(style)
-        return style, string[1:]
+        return style, string[1:] # take of the opening '{', <mrow> is inferred
 
 
     # operator, fence, or separator  ->  <mo>
@@ -835,9 +799,9 @@ def handle_keyword(name, node, string):
 # >>> l2m.handle_keyword('left', l2m.math(), '. a)') # emtpy \left
 # (mrow(), ' a)')
 # >>> l2m.handle_keyword('left', l2m.math(), '\\uparrow a)') # cmd
-# (mrow(mo('↑')), ' a)')
+# (mrow(mo('↑')), 'a)')
 # >>> l2m.handle_keyword('not', l2m.math(), '\\equiv \\alpha)') # cmd
-# (math(mo('≢')), ' \\alpha)')
+# (math(mo('≢')), '\\alpha)')
 # >>> l2m.handle_keyword('text', l2m.math(), '{ for } i>0') # group
 # (math(mtext('&nbsp;for&nbsp;')), ' i>0')
 # >>> l2m.handle_keyword('text', l2m.math(), '{B}T') # group
@@ -852,7 +816,10 @@ def handle_keyword(name, node, string):
 # (math(mi('sin'), mo('&ApplyFunction;')), ' \\alpha')
 # >>> l2m.handle_keyword('operatorname', l2m.math(), '{abs}(x)')
 # (math(mi('abs', mathvariant='normal'), mo('&ApplyFunction;')), '(x)')
-
+# >>> l2m.handle_keyword('mathrm', l2m.math(), '\\alpha')
+# (math(mi('α', mathvariant='normal')), '')
+# >>> l2m.handle_keyword('mathrm', l2m.math(), '{out} = 3')
+# (math(mi('out', mathvariant='normal')), ' = 3')
 
 def tex2mathml(tex_math, inline=True):
     """Return string with MathML code corresponding to `tex_math`.
