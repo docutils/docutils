@@ -175,35 +175,37 @@ negatables = {'=': u'\u2260',
               r'\equiv': u'\u2262'}
 
 # cmds/characters allowed in left/right cmds
-fence_args = {'(': '(',
-              ')': ')',
-              '[': '[',
-              ']': ']',
-              '/': '/',
-              r'\backslash': '\\',
-              '|': '|',
-              '.': '', # emty fence
-              r'\uparrow': u'\u2191', # ↑ UPWARDS ARROW
-              r'\downarrow': u'\u2193', # ↓ DOWNWARDS ARROW
-              r'\updownarrow': u'\u2195', # ↕ UP DOWN ARROW
-              r'\Uparrow': u'\u21d1', # ⇑ UPWARDS DOUBLE ARROW
-              r'\Downarrow': u'\u21d3', # ⇓ DOWNWARDS DOUBLE ARROW
-              r'\Updownarrow': u'\u21d5', # ⇕ UP DOWN DOUBLE ARROW
+stretchables = {'(': '(',
+                ')': ')',
+                '[': '[',
+                ']': ']',
+                '/': '/',
+                r'\backslash': '\\',
+                '|': '|',
+                '.': '', # emty fence
+                r'\uparrow': u'\u2191', # ↑ UPWARDS ARROW
+                r'\downarrow': u'\u2193', # ↓ DOWNWARDS ARROW
+                r'\updownarrow': u'\u2195', # ↕ UP DOWN ARROW
+                r'\Uparrow': u'\u21d1', # ⇑ UPWARDS DOUBLE ARROW
+                r'\Downarrow': u'\u21d3', # ⇓ DOWNWARDS DOUBLE ARROW
+                r'\Updownarrow': u'\u21d5', # ⇕ UP DOWN DOUBLE ARROW
 
              }
 for (key, value) in tex2unichar.mathfence.items():
-    fence_args['\\'+key] = value
+    stretchables['\\'+key] = value
 for (key, value) in tex2unichar.mathopen.items():
-    fence_args['\\'+key] = value
+    stretchables['\\'+key] = value
 for (key, value) in tex2unichar.mathclose.items():
-    fence_args['\\'+key] = value
+    stretchables['\\'+key] = value
 # shorter with {**something} syntax, new in 3.5
 # if sys.version_info >= (3, 5):
 #     for (key, value) in {**tex2unichar.mathclose,
 #                          **tex2unichar.mathopen,
 #                          **tex2unichar.mathfence}.items():
-#         fence_args['\\'+key] = value
+#         stretchables['\\'+key] = value
 
+# >>> print(' '.join(sorted(set(l2m.stretchables.values()))))
+#  ( ) / [ \ ] { | } ‖ ↑ ↓ ↕ ⇑ ⇓ ⇕ ⌈ ⌉ ⌊ ⌋ ⌜ ⌝ ⌞ ⌟ ⟅ ⟆ ⟦ ⟧ ⟨ ⟩ ⟮ ⟯ ⦇ ⦈
 
 # MathML element classes
 # ----------------------
@@ -361,8 +363,9 @@ class mx(math):
     nchildren = 0
     entity_table = {ord('<'): u'&lt;', ord('>'): u'&gt;'}
 
-    def __init__(self, data):
+    def __init__(self, data, **kwargs):
         self.data = data
+        super(mx, self).__init__(**kwargs)
 
     def xml_body(self):
         return [unicode(self.data).translate(self.entity_table)]
@@ -498,7 +501,9 @@ def parse_latex_math(string, inline=True):
             node = node.append(mi(c))
         elif c.isdigit():
             node = node.append(mn(c))
-        elif c in "+-*/=()[]|<>,.!?':;@":
+        elif c in "/()[]|":
+            node = node.append(mo(c, stretchy='false'))
+        elif c in "+-*=<>,.!?':;@":
             node = node.append(mo(c))
         elif c == '_':
             child = node.delete_child()
@@ -587,7 +592,7 @@ def handle_keyword(name, node, string):
         node.append(frac)
         node = frac
     elif name == 'left':
-        for par in fence_args.keys():
+        for par in stretchables.keys():
             if string.startswith(par):
                 break
         else:
@@ -596,16 +601,16 @@ def handle_keyword(name, node, string):
         node.append(row)
         node = row
         if par != '.':
-            node.append(mo(fence_args[par]))
+            node.append(mo(stretchables[par]))
         skip += len(par)
     elif name == 'right':
-        for par in fence_args.keys():
+        for par in stretchables.keys():
             if string.startswith(par):
                 break
         else:
             raise SyntaxError(u'Missing right-brace!')
         if par != '.':
-            node.append(mo(fence_args[par]))
+            node.append(mo(stretchables[par]))
         node = node.close()
         skip += len(par)
     elif name == 'not':
