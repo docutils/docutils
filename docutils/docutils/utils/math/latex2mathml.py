@@ -689,9 +689,9 @@ def handle_keyword(name, node, string):
     elif name == 'colon': # "normal" colon, not binary operator
         node = node.append(mo(':')) # TODO: add ``lspace="0pt"``
     elif name in Greek:   # Greek capitals (upright in "TeX style")
-        node = node.append(mo(Greek[name]))
-        # TODO: "ISO style" sets them italic. Could we use a class argument
-        # to enable styling via CSS?
+        node = node.append(mi(Greek[name], mathvariant='normal'))
+        # TODO: "ISO style" sets them italic. Could we use a class argument?
+        # Unfortunately CSS styling does not change the font style in Firefox 78
     elif name in letters:
         node = node.append(mi(letters[name]))
     elif name in special:
