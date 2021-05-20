@@ -33,47 +33,24 @@ if sys.version_info >= (3, 0):
 from docutils.utils.math import tex2unichar
 
 
-# Command lists and dictionaries
-# ------------------------------
+# Character data
+# --------------
+#
+# LaTeX math macro to Unicode mappings.
+# Character categories.
 
-#        TeX        spacing    combining
-over = {'acute':    u'\u00B4', # u'\u0301',
-        'bar':      u'\u00AF', # u'\u0304',
-        'breve':    u'\u02D8', # u'\u0306',
-        'check':    u'\u02C7', # u'\u030C',
-        'dot':      u'\u02D9', # u'\u0307',
-        'ddot':     u'\u00A8', # u'\u0308',
-        'dddot':               u'\u20DB',
-        'grave':    u'`',      # u'\u0300',
-        'hat':      u'^',      # u'\u0302',
-        'mathring': u'\u02DA', # u'\u030A',
-        'overleftrightarrow':  u'\u20e1',
-        # 'overline':        # u'\u0305',
-        'tilde':    u'\u02DC', # u'\u0303',
-        'vec':               u'\u20D7'}
+# identifiers -> <mi>
 
-greek_capitals = { # Capital Greek letters: (upright in TeX style)
+letters = tex2unichar.mathalpha
+
+# special case: Capital Greek letters: (upright in TeX style)
+greek_capitals = {
     'Phi':u'\u03a6', 'Xi':u'\u039e', 'Sigma':u'\u03a3',
     'Psi':u'\u03a8', 'Delta':u'\u0394', 'Theta':u'\u0398',
     'Upsilon':u'\u03d2', 'Pi':u'\u03a0', 'Omega':u'\u03a9',
     'Gamma':u'\u0393', 'Lambda':u'\u039b'}
 
-letters = tex2unichar.mathalpha
-
-special = tex2unichar.mathbin         # Binary symbols
-special.update(tex2unichar.mathrel)   # Relation symbols, arrow symbols
-special.update(tex2unichar.mathord)   # Miscellaneous symbols
-special.update(tex2unichar.mathop)    # Variable-sized symbols
-special.update(tex2unichar.mathopen)  # Braces
-special.update(tex2unichar.mathclose) # Braces
-special.update(tex2unichar.mathfence)
-
-sumintprod = ''.join([special[symbol] for symbol in
-                      ['sum', 'int', 'oint', 'prod']])
-
-# >>> print(l2m.sumintprod)
-# ∑∫∮∏
-
+# functions -> <mi> + ApplyFunction
 functions = ['arccos', 'arcsin', 'arctan', 'arg', 'cos',  'cosh',
              'cot',    'coth',   'csc',    'deg', 'det',  'dim',
              'exp',    'gcd',    'hom',    'inf', 'ker',  'lg',
@@ -82,7 +59,7 @@ functions = ['arccos', 'arcsin', 'arctan', 'arg', 'cos',  'cosh',
              'tan',    'tanh',   'injlim', 'varinjlim',   'projlim',
              'varlimsup', 'varliminf', 'varprojlim']
 
-
+# font selection -> <mi mathvariant=...>
 math_alphabets = {# 'cmdname': 'mathvariant value'  # package
                   'boldsymbol': 'bold',
                   'mathbb': 'double-struck',        # amssymb
@@ -102,6 +79,7 @@ math_alphabets = {# 'cmdname': 'mathvariant value'  # package
                   #              bold-sans-serif
                  }
 
+# blackboar bold (Greek characters not working with "mathvariant" (Firefox 78)
 mathbb = {
           '0': u'\U0001D7D8', # 𝟘
           '1': u'\U0001D7D9', # 𝟙
@@ -177,6 +155,28 @@ mathbb = {
           r'\pi':    u'\u213C', # ℼ
          }
 
+# operator, fence, or separator -> <mo>
+
+operators = tex2unichar.mathbin         # Binary symbols
+operators.update(tex2unichar.mathrel)   # Relation symbols, arrow symbols
+operators.update(tex2unichar.mathord)   # Miscellaneous symbols
+operators.update(tex2unichar.mathop)    # Variable-sized symbols
+operators.update(tex2unichar.mathopen)  # Braces
+operators.update(tex2unichar.mathclose) # Braces
+operators.update(tex2unichar.mathfence)
+
+# >>> '{' in l2m.operators.values()
+# True
+
+# special cases
+
+sumintprod = ''.join([operators[symbol] for symbol in
+                      ['sum', 'int', 'oint', 'prod']])
+
+# >>> print(l2m.sumintprod)
+# ∑∫∮∏
+
+#
 negatables = {'=': u'\u2260',
               r'\in': u'\u2209',
               r'\equiv': u'\u2262'}
@@ -213,6 +213,9 @@ for (key, value) in tex2unichar.mathclose.items():
 # >>> print(' '.join(sorted(set(l2m.stretchables.values()))))
 #  ( ) / [ \ ] { | } ‖ ↑ ↓ ↕ ⇑ ⇓ ⇕ ⌈ ⌉ ⌊ ⌋ ⌜ ⌝ ⌞ ⌟ ⟅ ⟆ ⟦ ⟧ ⟨ ⟩ ⟮ ⟯ ⦇ ⦈
 
+
+# horizontal space -> <mspace>
+
 spaces = {'qquad':         '2em',       # two \quad
           'quad':          '1em',       # 18 mu
           'qquad':         '2em',       # two \quad
@@ -228,6 +231,24 @@ spaces = {'qquad':         '2em',       # two \quad
           ',':             '0.1667em',  # thinspace
           '!':             '-0.1667em', # negthinspace
          }
+
+# accents -> <mover>
+#        TeX        spacing    combining
+over = {'acute':    u'\u00B4', # u'\u0301',
+        'bar':      u'\u00AF', # u'\u0304',
+        'breve':    u'\u02D8', # u'\u0306',
+        'check':    u'\u02C7', # u'\u030C',
+        'dot':      u'\u02D9', # u'\u0307',
+        'ddot':     u'\u00A8', # u'\u0308',
+        'dddot':               u'\u20DB',
+        'grave':    u'`',      # u'\u0300',
+        'hat':      u'^',      # u'\u0302',
+        'mathring': u'\u02DA', # u'\u030A',
+        'overleftrightarrow':  u'\u20e1',
+        # 'overline':        # u'\u0305',
+        'tilde':    u'\u02DC', # u'\u0303',
+        'vec':               u'\u20D7'}
+
 
 # MathML element classes
 # ----------------------
@@ -469,74 +490,84 @@ class munderover(math):
 
 def tex_cmdname(string):
     """Return leading TeX command name from `string`.
-    """
-    name = re.match(r'([a-zA-Z]+|.?)', string)
-    return name.group(0)
 
-# >>> l2m.tex_cmdname('m2') # first non-letter terminates
-# 'm'
-# >>> l2m.tex_cmdname('m_2') # first non-letter terminates
-# 'm'
-# >>> l2m.tex_cmdname('m 2') # first non-letter terminates
-# 'm'
-# >>> l2m.tex_cmdname('_2') # single non-letter character
-# '_'
-# >>> l2m.tex_cmdname(' 2') # single non-letter character
-# ' '
+      >>> l2m.tex_cmdname('name2') # first non-letter terminates
+      ('name', '2')
+      >>> l2m.tex_cmdname('_2') # single non-letter character
+      ('_', '2')
+
+    """
+    cmdname = re.match(r'([a-zA-Z]+|.?)(.*)', string)
+    return cmdname.group(1), cmdname.group(2)
+
+# Test:
+#
+# >>> l2m.tex_cmdname('name 2') # first non-letter terminates
+# ('name', ' 2')
+# >>> l2m.tex_cmdname('name_2') # first non-letter terminates
+# ('name', '_2')
+# >>> l2m.tex_cmdname(' 2') # leading whitespace is returned
+# (' ', '2')
 # >>> l2m.tex_cmdname('') # empty string
-# ''
+# ('', '')
+
 
 def tex_token(string):
-    """Return first simple TeX token from `string`.
+    """Take first simple TeX token from `string`.
+
+    Return token and remainder.
+
+      >>> l2m.tex_token('{first simple group} {without brackets}')
+      ('first simple group', ' {without brackets}')
+      >>> l2m.tex_token('\\command{without argument}')
+      ('\\command', '{without argument}')
+      >>> l2m.tex_token(' first non-white character')
+      ('f', 'irst non-white character')
+
     """
-    token = re.match(r"""({(\\}|[^{}]|\\{)*} # {group} without nested groups
-                          |\\([a-zA-Z]+|.)   # or \cmdname
-                          |.?)               # or first character/empty string
-                     """, string, re.VERBOSE)
-    return token.group(0)
+    m = re.match(r"""\s*                  # leading whitespace
+                     (?P<token>
+                      ({(\\}|[^{}]|\\{)*} # {group} without nested groups
+                       |\\([a-zA-Z]+|.)   # \cmdname
+                       |.?)               # first character or empty string
+                      )
+                      (?P<remainder>.*$)
+                 """, string, re.VERBOSE)
 
-# What is returned?
+    # strip {brackets}
+    token = m.group('token')
+    if token.startswith('{') and token.endswith('}'):
+        token =  token[1:-1]
+
+    return token, m.group('remainder')
+
+# Test:
 #
-# >>> l2m.tex_token(r'\command{without argument}')
-# '\\command'
-# >>> l2m.tex_token('\\nor trailing whitespace, or')
-# '\\nor'
-# >>> l2m.tex_token('{first simple group} or')
-# '{first simple group}'
-# >>> l2m.tex_token('{opening bracket of group with {nested group}} or')
-# '{'
-# >>> l2m.tex_token('{group with \\{escaped\\} brackets} or')
-# '{group with \\{escaped\\} brackets}'
-# >>> l2m.tex_token('first character, or')
-# 'f'
-# >>> l2m.tex_token('') # empty string
-# ''
-#
-# test:
+# >>> l2m.tex_token('{opening bracket of group with {nested group}}')
+# ('{', 'opening bracket of group with {nested group}}')
+# >>> l2m.tex_token('{group with \\{escaped\\} brackets}')
+# ('group with \\{escaped\\} brackets', '')
 # >>> l2m.tex_token('{group followed by closing bracket}} from outer group')
-# '{group followed by closing bracket}'
-
-def strip_brackets(string):
-    """Strip outer brackets from `string`."""
-    if string.startswith('{') and string.endswith('}'):
-        return string[1:-1]
-    return string
-
-# >>> l2m.strip_brackets('{a}')
-# 'a'
-# >>> l2m.strip_brackets('a')
-# 'a'
-# >>> l2m.strip_brackets('{a')
-# '{a'
-# >>> l2m.strip_brackets('{a}}')
-# 'a}'
+# ('group followed by closing bracket', '} from outer group')
+# >>> l2m.tex_token(' {skip leading whitespace}')
+# ('skip leading whitespace', '')
+# >>> l2m.tex_token('  \\skip{leading whitespace}')
+# ('\\skip', '{leading whitespace}')
+# >>> l2m.tex_token('\\leave trailing whitespace')
+# ('\\leave', ' trailing whitespace')
+# >>> l2m.tex_token('') # empty string.
+# ('', '')
 
 
 def parse_latex_math(string, inline=True):
     """parse_latex_math(string [,inline]) -> MathML-tree
 
-    Returns a MathML-tree parsed from string.  inline=True is for
-    inline math and inline=False is for displayed math.
+    Return a MathML-tree parsed from `string`.
+    Set `inline` to False for displayed math.
+
+      >>> l2m.parse_latex_math('\\alpha')
+      math(mrow(mi('α')), xmlns='http://www.w3.org/1998/Math/MathML')
+
     """
 
     # Normalize white-space:
@@ -555,13 +586,13 @@ def parse_latex_math(string, inline=True):
     while len(string) > 0:
         # Take of first character:
         c, string = string[0], string[1:]
+
         if c == ' ':
-            pass
-        elif c == '\\': # start of a LaTeX macro
-            name = tex_cmdname(string)
-            string = string[len(name):]
-            node, skip = handle_keyword(name, node, string)
-            string = string[skip:]
+            continue
+
+        if c == '\\': # start of a LaTeX macro
+            cmdname, string = tex_cmdname(string)
+            node, string = handle_keyword(cmdname, node, string)
         elif c.isalpha():
             node = node.append(mi(c))
         elif c.isdigit():
@@ -607,91 +638,99 @@ def parse_latex_math(string, inline=True):
             raise SyntaxError(u'Illegal character: "%s"' % c)
     return tree
 
-# >>> l2m.parse_latex_math('\\alpha')
-# math(mrow(mi('α')), xmlns='http://www.w3.org/1998/Math/MathML')
+
+# Test:
+
 # >>> l2m.parse_latex_math(' \\sqrt{ \\alpha}')
 # math(mrow(msqrt(mrow(mi('α')))), xmlns='http://www.w3.org/1998/Math/MathML')
+# >>> l2m.parse_latex_math('\\alpha', inline=False)
+# math(mtable(mtr(mtd(mi('α'))), CLASS='align', displaystyle='true'), xmlns='http://www.w3.org/1998/Math/MathML', display='block')
+
 
 def handle_keyword(name, node, string):
-    skip = 0
-    if string.startswith(' '):
-        # remove leading whitespace (already normalized to " "):
-        string = string[1:]
-        skip = 1
-    arg = tex_token(string) # argument: single letter, \cmd, or {group}
+    """Process LaTeX macro `name` followed by `string`.
 
-    if name == 'begin':
-        if string.startswith('{matrix}'):
-            entry = mtd()
-            table = mtable(mtr(entry))
-            node.append(table)
-            node = entry
-        elif string.startswith('{cases}'):
-            entry = mtd()
-            cases = mrow([mo('{'), mtable(mtr(entry))])
-            node.append(cases)
-            node = entry
+    If needed, parse `string` for macro argument.
+    Return updated current node and remainder:
+
+      >>> l2m.handle_keyword('hbar', l2m.math(), r' \frac')
+      (math(mi('ℏ')), ' \\frac')
+      >>> l2m.handle_keyword('hspace', l2m.math(), r'{1ex} (x)')
+      (math(mspace(width='1ex')), ' (x)')
+
+    """
+
+    # Token elements
+    # ==============
+
+    # identifier  ->  <mi>
+
+    if name in letters:
+        if name in greek_capitals:
+            node = node.append(mi(greek_capitals[name], CLASS='capital-greek'))
+            # upright in "TeX style" but MathML sets them italic ("ISO style").
+            # CSS styling does not change the font style in Firefox 78.
+            # Use 'mathvariant="normal"'?
         else:
-            raise SyntaxError(u'Environment not supported! '
-                        u'Supported environments: "matrix", "cases".')
-        skip += len(arg)
-    elif name == 'end':
-        if string.startswith('{matrix}'):
-            node = node.close().close().close()
-        elif string.startswith('{cases}'):
-            node = node.close().close().close().close()
-        else:
-            raise SyntaxError(u'Environment not supported! '
-                        u'Supported environments: "matrix", "cases".')
-        skip += len(arg)
-    elif name in ('text', 'mbox', 'textrm'):
-        text = arg.replace('{ ', '&nbsp;', 1).replace(' }', '&nbsp;', 1)
-        node = node.append(mtext(strip_brackets(text)))
-        skip += len(arg)
-    elif name == 'mathrm': # upright identifier
-        # https://www.w3.org/TR/MathML3/chapter3.html#presm.mi
-        node = node.append(mi(strip_brackets(arg), mathvariant='normal'))
-        # node = node.append(mo(strip_brackets(arg)))
-        skip += len(arg)
-    elif name == 'operatorname':
-        # use <mi> (see https://www.w3.org/TR/MathML3/chapter3.html#presm.mi)
-        node = node.append(mi(strip_brackets(arg), mathvariant='normal'))
+            node = node.append(mi(letters[name]))
+        return node, string
+
+    if name in functions:
+        # use <mi> followed by invisible function applicator character
+        # (see https://www.w3.org/TR/MathML3/chapter3.html#presm.mi)
+        node = node.append(mi(name))
         node = node.append(mo('&ApplyFunction;'))
-        skip += len(arg)
-    elif name == 'mathbb':
-        chs = strip_brackets(arg)
+        return node, string
+
+    if name == 'operatorname':
+        # custom function name ``\operatorname{abs}(x)``
+        arg, string = tex_token(string)
+        node = node.append(mi(arg, mathvariant='normal'))
+        node = node.append(mo('&ApplyFunction;')) # '\u2061'
+        return node, string
+
+    if name == 'mathrm':
+        # typically used for multi-character identifier ``s_\mathrm{out}``
+        # https://www.w3.org/TR/MathML3/chapter3.html#presm.mi
+        # TODO: too much space after d in ``\int f(x) \mathrm{d}x``.
+        arg, string = tex_token(string)
+        node = node.append(mi(arg, mathvariant='normal'))
+        # node = node.append(mo(arg))
+        return node, string
+
+    if name == 'mathbb':
+        arg, string = tex_token(string)
+        chs = arg
         while chs:
-            c = tex_token(chs)
-            chs = chs[len(c):]
+            c, chs = tex_token(chs)
             try:
                 node = node.append(mi(mathbb[c]))
             except KeyError:
                 raise SyntaxError(u'Character "%s" not supported '
-                                  u'in "\\mathbb{}"!' % c)
-        skip += len(arg)
-    elif name in math_alphabets.keys():
+                                  u'in "\\mathbb{}"!' % chs)
+        return node, string
+
+    if name in math_alphabets:
+        # TODO: use <mi> if it applies to just 1 character
+        # Wrap in <style> (implies <mgroup>)
         n_c = None if string.startswith('{') else 1
         style = mstyle(nchildren=n_c, mathvariant=math_alphabets[name])
         node.append(style)
-        node = style
-        skip += 1
-    elif name == 'sqrt':
-        sqrt = msqrt()
-        node.append(sqrt)
-        node = sqrt
-    elif name == 'frac':
-        frac = mfrac()
-        node.append(frac)
-        node = frac
-    elif name in '{}':
-        node = node.append(mo(name))
-    elif name == '\\':
-        # End of a row:
-        entry = mtd()
-        row = mtr(entry)
-        node.close().close().append(row)
-        node = entry
-    elif name in ('left', 'right'):
+        return style, string[1:]
+
+
+    # operator, fence, or separator  ->  <mo>
+
+    if name == 'colon': # "normal" colon, not binary operator
+        node = node.append(mo(':', lspace='0', rspace='0.28em'))
+        return node, string
+
+    if name in operators:
+        node = node.append(mo(operators[name]))
+        return node, string
+
+    if name in ('left', 'right'):
+        arg, string = tex_token(string)
         try:
             delimiter = stretchables[arg]
         except KeyError:
@@ -704,66 +743,116 @@ def handle_keyword(name, node, string):
             node.append(mo(delimiter))
         if name == 'right':
             node = node.close()
-        skip += len(arg)
-    elif name == 'not':
+        return node, string
+
+    if name == 'not':
+        arg, string = tex_token(string)
         try:
-            node = node.append(mo(negatables[strip_brackets(arg)]))
+            node = node.append(mo(negatables[arg]))
         except KeyError:
             raise SyntaxError(u'Expected something to negate: "\\not ..."!')
-        skip += len(arg)
-    elif name == 'colon': # "normal" colon, not binary operator
-        node = node.append(mo(':', lspace='0', rspace='0.28em'))
-    elif name in spaces.keys():
+        return node, string
+
+    # arbitrary text (usually comments)  ->  <mtext>
+
+    if name in ('text', 'mbox', 'textrm'):
+        arg, string = tex_token(string)
+        # text = arg.replace(' ', '&nbsp;', 1).replace(' ', '&nbsp;', 1)
+        text = re.sub('(^ | $)', '&nbsp;', arg)
+        node = node.append(mtext(text))
+        return node, string
+
+    # horizontal space -> <mspace>
+
+    if name in spaces:
         node = node.append(mspace(width='%s'%spaces[name]))
-    elif name == 'hspace':
-        node = node.append(mspace(width='%s'%strip_brackets(arg)))
-        skip += len(arg)
-    elif name in greek_capitals:   # Greek capitals (upright in "TeX style")
-        node = node.append(mi(greek_capitals[name], CLASS='capital-greek'))
-        # TODO: Use 'mathvariant="normal"'?
-        # MathML sets them italic (ISO style).
-        # CSS styling does not change the font style in Firefox 78.
-    elif name in letters:
-        node = node.append(mi(letters[name]))
-    elif name in special:
-        node = node.append(mo(special[name]))
-    elif name in functions:
-        # use <mi> (see https://www.w3.org/TR/MathML3/chapter3.html#presm.mi)
-        node = node.append(mi(name))
-        node = node.append(mo('&ApplyFunction;'))
-    elif name in over:
+        return node, string
+
+    if name == 'hspace':
+        arg, string = tex_token(string)
+        node = node.append(mspace(width='%s'%arg))
+        return node, string
+
+    # Complex elements (Layout schemata)
+    # ==================================
+
+    if name == 'sqrt':
+        sqrt = msqrt()
+        node.append(sqrt)
+        return sqrt, string
+
+    if name == 'frac':
+        frac = mfrac()
+        node.append(frac)
+        return frac, string
+
+    if name == '\\': # end of a row
+        entry = mtd()
+        row = mtr(entry)
+        node.close().close().append(row)
+        node = entry
+        return node, string
+
+    if name in over:
         ovr = mover(mo(over[name]), reversed=True)
         node.append(ovr)
         node = ovr
-    else:
-        raise SyntaxError(u'Unknown LaTeX command: ' + name)
+        return node, string
 
-    return node, skip
+    if name == 'begin':
+        env_name, string = tex_token(string)
+        if env_name == 'matrix':
+            entry = mtd()
+            table = mtable(mtr(entry))
+            node.append(table)
+            node = entry
+        elif env_name == 'cases':
+            entry = mtd()
+            cases = mrow([mo('{'), mtable(mtr(entry))])
+            node.append(cases)
+            node = entry
+        else:
+            raise SyntaxError(u'Environment not supported! '
+                        u'Supported environments: "matrix", "cases".')
+        return node, string
 
-# >>> l2m.handle_keyword('left', l2m.math(), '[a\right]')
-# (mrow(mo('[')), 1)
-# >>> l2m.handle_keyword('left', l2m.math(), '(a)')[0].xml()
-# ['<mrow>', '\n  ', '<mo>', '(', '</mo>', '\n', '</mrow>']
+    if name == 'end':
+        env_name, string = tex_token(string)
+        if env_name == 'matrix':
+            node = node.close().close().close()
+        elif env_name == 'cases':
+            node = node.close().close().close().close()
+        else:
+            raise SyntaxError(u'Environment not supported! '
+                        u'Supported environments: "matrix", "cases".')
+        return node, string
+
+    raise SyntaxError(u'Unknown LaTeX command: ' + name)
+
+
+# >>> l2m.handle_keyword('left', l2m.math(), '[a\\right]')
+# (mrow(mo('[')), 'a\\right]')
 # >>> l2m.handle_keyword('left', l2m.math(), '. a)') # emtpy \left
-# (mrow(), 1)
-# >>> l2m.handle_keyword('left', l2m.math(), r'\uparrow. a)') # cmd
-# (mrow(mo('↑')), 8)
-# >>> l2m.handle_keyword('not', l2m.math(), r'\equiv a)') # cmd
-# (math(mo('≢')), 6)
-# >>> l2m.handle_keyword('text', l2m.math(), r'{ for } i>0)') # group
-# (math(mtext('&nbsp;for&nbsp;')), 7)
-# >>> l2m.handle_keyword('text', l2m.math(), r'{B}T') # group
-# (math(mtext('B')), 3)
-# >>> l2m.handle_keyword('text', l2m.math(), r'{number of apples}}') # group
-# (math(mtext('number of apples')), 18)
-# >>> l2m.handle_keyword('text', l2m.math(), r'i \sin(x)') # single char
-# (math(mtext('i')), 1)
-# >>> l2m.handle_keyword('operatorname', l2m.math(), r'{abs}(x)')
-# (math(mi('abs', mathvariant='normal'), mo('&ApplyFunction;')), 5)
-# >>> l2m.handle_keyword('hspace', l2m.math(), r'{1ex} (x)')
-# (math(mspace(width='1ex')), 5)
-# >>> l2m.handle_keyword('not', l2m.math(), r'{=} x')
-# (math(mo('≠')), 3)
+# (mrow(), ' a)')
+# >>> l2m.handle_keyword('left', l2m.math(), '\\uparrow a)') # cmd
+# (mrow(mo('↑')), ' a)')
+# >>> l2m.handle_keyword('not', l2m.math(), '\\equiv \\alpha)') # cmd
+# (math(mo('≢')), ' \\alpha)')
+# >>> l2m.handle_keyword('text', l2m.math(), '{ for } i>0') # group
+# (math(mtext('&nbsp;for&nbsp;')), ' i>0')
+# >>> l2m.handle_keyword('text', l2m.math(), '{B}T') # group
+# (math(mtext('B')), 'T')
+# >>> l2m.handle_keyword('text', l2m.math(), '{number of apples}}') # group
+# (math(mtext('number of apples')), '}')
+# >>> l2m.handle_keyword('text', l2m.math(), 'i \\sin(x)') # single char
+# (math(mtext('i')), ' \\sin(x)')
+# >>> l2m.handle_keyword('sin', l2m.math(), '(\\alpha)')
+# (math(mi('sin'), mo('&ApplyFunction;')), '(\\alpha)')
+# >>> l2m.handle_keyword('sin', l2m.math(), ' \\alpha')
+# (math(mi('sin'), mo('&ApplyFunction;')), ' \\alpha')
+# >>> l2m.handle_keyword('operatorname', l2m.math(), '{abs}(x)')
+# (math(mi('abs', mathvariant='normal'), mo('&ApplyFunction;')), '(x)')
+
 
 def tex2mathml(tex_math, inline=True):
     """Return string with MathML code corresponding to `tex_math`.
