@@ -84,32 +84,73 @@ functions = ['arccos', 'arcsin', 'arctan', 'arg', 'cos',  'cosh',
 
 
 mathbb = {
-          'A': u'\U0001D538',
-          'B': u'\U0001D539',
-          'C': u'\u2102',
-          'D': u'\U0001D53B',
-          'E': u'\U0001D53C',
-          'F': u'\U0001D53D',
-          'G': u'\U0001D53E',
-          'H': u'\u210D',
-          'I': u'\U0001D540',
-          'J': u'\U0001D541',
-          'K': u'\U0001D542',
-          'L': u'\U0001D543',
-          'M': u'\U0001D544',
-          'N': u'\u2115',
-          'O': u'\U0001D546',
-          'P': u'\u2119',
-          'Q': u'\u211A',
-          'R': u'\u211D',
-          'S': u'\U0001D54A',
-          'T': u'\U0001D54B',
-          'U': u'\U0001D54C',
-          'V': u'\U0001D54D',
-          'W': u'\U0001D54E',
-          'X': u'\U0001D54F',
-          'Y': u'\U0001D550',
-          'Z': u'\u2124',
+          '0': u'\U0001D7D8', # 𝟘
+          '1': u'\U0001D7D9', # 𝟙
+          '2': u'\U0001D7DA', # 𝟚
+          '3': u'\U0001D7DB', # 𝟛
+          '4': u'\U0001D7DC', # 𝟜
+          '5': u'\U0001D7DD', # 𝟝
+          '6': u'\U0001D7DE', # 𝟞
+          '7': u'\U0001D7DF', # 𝟟
+          '8': u'\U0001D7E0', # 𝟠
+          '9': u'\U0001D7E1', # 𝟡
+          'A': u'\U0001D538', # 𝔸
+          'B': u'\U0001D539', # 𝔹
+          'C': u'\u2102',     # ℂ
+          'D': u'\U0001D53B', # 𝔻
+          'E': u'\U0001D53C', # 𝔼
+          'F': u'\U0001D53D', # 𝔽
+          'G': u'\U0001D53E', # 𝔾
+          'H': u'\u210D',     # ℍ
+          'I': u'\U0001D540', # 𝕀
+          'J': u'\U0001D541', # 𝕁
+          'K': u'\U0001D542', # 𝕂
+          'L': u'\U0001D543', # 𝕃
+          'M': u'\U0001D544', # 𝕄
+          'N': u'\u2115',     # ℕ
+          'O': u'\U0001D546', # 𝕆
+          'P': u'\u2119',     # ℙ
+          'Q': u'\u211A',     # ℚ
+          'R': u'\u211D',     # ℝ
+          'S': u'\U0001D54A', # 𝕊
+          'T': u'\U0001D54B', # 𝕋
+          'U': u'\U0001D54C', # 𝕌
+          'V': u'\U0001D54D', # 𝕍
+          'W': u'\U0001D54E', # 𝕎
+          'X': u'\U0001D54F', # 𝕏
+          'Y': u'\U0001D550', # 𝕐
+          'Z': u'\u2124',     # ℤ
+          'a': u'\U0001D552', # 𝕒
+          'b': u'\U0001D553', # 𝕓
+          'c': u'\U0001D554', # 𝕔
+          'd': u'\U0001D555', # 𝕕
+          'e': u'\U0001D556', # 𝕖
+          'f': u'\U0001D557', # 𝕗
+          'g': u'\U0001D558', # 𝕘
+          'h': u'\U0001D559', # 𝕙
+          'i': u'\U0001D55A', # 𝕚
+          'j': u'\U0001D55B', # 𝕛
+          'k': u'\U0001D55C', # 𝕜
+          'l': u'\U0001D55D', # 𝕝
+          'm': u'\U0001D55E', # 𝕞
+          'n': u'\U0001D55F', # 𝕟
+          'o': u'\U0001D560', # 𝕠
+          'p': u'\U0001D561', # 𝕡
+          'q': u'\U0001D562', # 𝕢
+          'r': u'\U0001D563', # 𝕣
+          's': u'\U0001D564', # 𝕤
+          't': u'\U0001D565', # 𝕥
+          'u': u'\U0001D566', # 𝕦
+          'v': u'\U0001D567', # 𝕧
+          'w': u'\U0001D568', # 𝕨
+          'x': u'\U0001D569', # 𝕩
+          'y': u'\U0001D56A', # 𝕪
+          'z': u'\U0001D56B', # 𝕫
+          u'Γ': u'\u213E',    # ℾ
+          u'Π': u'\u213F',    # ℿ
+          u'Σ': u'\u2140',    # ⅀
+          u'γ': u'\u213D',    # ℽ
+          u'π': u'\u213C',    # ℼ
          }
 
 mathscr = {
@@ -575,12 +616,10 @@ def handle_keyword(name, node, string):
         else:
             raise SyntaxError(u'Environment not supported! '
                         u'Supported environments: "matrix", "cases".')
-    elif name in ('text', 'mathrm'):
-        if string[0] != '{':
-            raise SyntaxError(u'Expected "\\text{...}"!')
+    elif name in ('text', 'mbox', 'mathrm'):
         i = string.find('}')
-        if i == -1:
-            raise SyntaxError(u'Expected "\\text{...}"!')
+        if string[0] != '{' or i == -1:
+            raise SyntaxError(u'Expected "\\%s{...}"!'%name)
         node = node.append(mtext(string[1:i]))
         skip += i + 1
     elif name == 'sqrt':
@@ -626,15 +665,27 @@ def handle_keyword(name, node, string):
         node.append(style)
         node = style
     elif name == 'mathbb':
-        if string[0] != '{' or not string[1].isupper() or string[2] != '}':
-            raise SyntaxError(u'Expected something like "\\mathbb{A}"!')
-        node = node.append(mi(mathbb[string[1]]))
-        skip += 3
+        i = string.find('}')
+        if string[0] != '{' or i == -1:
+            raise SyntaxError(u'Expected "\\mathbb{...}"!')
+        try:
+            bbchars = ''.join(mathbb[c] for c in string[1:i])
+        except KeyError:
+            raise SyntaxError(u'Character "%s" not supportd in "\\mathbb{}"!'
+                             %[c for c in string[1:i] if c not in mathbb][0])
+        node = node.append(mi(bbchars))
+        skip += i + 1
     elif name in ('mathscr', 'mathcal'):
-        if string[0] != '{' or string[2] != '}':
-            raise SyntaxError(u'Expected something like "\\mathscr{A}"!')
-        node = node.append(mi(mathscr[string[1]]))
-        skip += 3
+        i = string.find('}')
+        if string[0] != '{' or i == -1:
+            raise SyntaxError(u'Expected "\\%s{...}"!'%name)
+        try:
+            scrchars = ''.join(mathscr[c] for c in string[1:i])
+        except KeyError:
+            raise SyntaxError(u'Character "%s" not supportd in "\\%s{}"!'
+                    %([c for c in string[1:i] if c not in mathscr][0], name))
+        node = node.append(mi(scrchars))
+        skip += i + 1
     elif name == 'colon': # "normal" colon, not binary operator
         node = node.append(mo(':')) # TODO: add ``lspace="0pt"``
     elif name in Greek:   # Greek capitals (upright in "TeX style")
