@@ -57,24 +57,28 @@ greek_capitals = {
     'Gamma':u'\u0393', 'Lambda':u'\u039b'}
 
 # functions -> <mi>
-functions = dict((name, name) for name in
-                 ('arccos', 'arcsin', 'arctan', 'arg', 'cos',  'cosh',
-                  'cot',    'coth',   'csc',    'deg', 'det',  'dim',
-                  'exp',    'gcd',    'hom',    'inf', 'ker',  'lg',
-                  'ln',     'log',    'max', 'min',  'Pr',
-                  'sec',    'sin',    'sinh',   'sup', 'tan',  'tanh'))
-functions.update({# functions with a space in the name
-                  'liminf': u'lim\u202finf', 'limsup': u'lim\u202fsup',
-                  'injlim': u'inj\u202flim', 'projlim': u'proj\u202flim',
-                  # embellished function names (see handle_cmdname() below)
-                  'varlimsup': 'lim', 'varliminf': 'lim',
-                  'varprojlim': 'lim', 'varinjlim': 'lim',
-                  # custom function name
-                  'operatorname': None})
+functions = {# functions with a space in the name
+             'liminf': u'lim\u202finf',
+             'limsup': u'lim\u202fsup',
+             'injlim': u'inj\u202flim',
+             'projlim': u'proj\u202flim',
+             # embellished function names (see handle_cmd() below)
+             'varlimsup': 'lim',
+             'varliminf': 'lim',
+             'varprojlim': 'lim',
+             'varinjlim': 'lim',
+             # custom function name
+             'operatorname': None,
+            }
+functions.update((name, name) for name in
+                 ('arccos', 'arcsin', 'arctan', 'arg',  'cos',
+                  'cosh',   'cot',    'coth',   'csc',  'deg',
+                  'det',    'dim',    'exp',    'gcd',  'hom',
+                  'ker',    'lg',     'ln',     'log',  'Pr',
+                  'sec',    'sin',    'sinh',   'tan',  'tanh'))
+# Function with limits: 'lim', 'sup', 'inf', 'max', 'min':
+# use <mo> to allow "movablelimits" attribute (see below).
 
-# function with limits, use <mo> to allow "movablelimits" attribute
-functions_with_limits = dict((name, name) for name in
-                             ('lim', 'sup', 'inf', 'max', 'min'))
 
 # math font selection -> <mi mathvariant=...> or <mstyle mathvariant=...>
 math_alphabets = {# 'cmdname': 'mathvariant value'  # package
@@ -98,6 +102,15 @@ math_alphabets = {# 'cmdname': 'mathvariant value'  # package
 
 # operator, fence, or separator -> <mo>
 
+
+math_fences = {# mathfence aliases with adapted spacing
+               'lvert':      u'|',      # left  |
+               'lVert':      u'\u2016', # left  ‖
+               'rvert':      u'|',      # right |
+               'rVert':      u'\u2016', # right ‖
+               'Arrowvert':  u'\u2016', # ‖
+              }
+
 operators = tex2unichar.mathbin         # Binary symbols
 operators.update(tex2unichar.mathrel)   # Relation symbols, arrow symbols
 operators.update(tex2unichar.mathord)   # Miscellaneous symbols
@@ -105,7 +118,7 @@ operators.update(tex2unichar.mathop)    # Variable-sized symbols
 operators.update(tex2unichar.mathopen)  # Braces
 operators.update(tex2unichar.mathclose) # Braces
 operators.update(tex2unichar.mathfence)
-operators.update(functions_with_limits)
+operators.update(math_fences)
 operators.update({# negated symbols without pre-composed Unicode character
                   'nleqq':      u'\u2266\u0338', # ≦̸
                   'ngeqq':      u'\u2267\u0338', # ≧̸
@@ -114,16 +127,17 @@ operators.update({# negated symbols without pre-composed Unicode character
                   'nsubseteqq': u'\u2AC5\u0338', # ⫅̸
                   'nsupseteqq': u'\u2AC6\u0338', # ⫆̸
                   # alias commands:
-                  'lvert':      u'|',      # left  |
-                  'lVert':      u'\u2016', # left  ‖
-                  'rvert':      u'|',      # right |
-                  'rVert':      u'\u2016', # right ‖
-                  'Arrowvert':  u'\u2016', # ‖
-                  'dotsb':      u'\u22ef', # ⋯ with binary operators/relations
-                  'dotsc':      u'\u2026', # … with commas
-                  'dotsi':      u'\u22ef', # ⋯ with integrals
-                  'dotsm':      u'\u22ef', # ⋯ multiplication dots
-                  'dotso':      u'\u2026', # … other dots
+                  'dotsb': u'\u22ef', # ⋯ with binary operators/relations
+                  'dotsc': u'\u2026', # … with commas
+                  'dotsi': u'\u22ef', # ⋯ with integrals
+                  'dotsm': u'\u22ef', # ⋯ multiplication dots
+                  'dotso': u'\u2026', # … other dots
+                  # functions with movable limits (requires <mo>)
+                  'lim': 'lim',
+                  'sup': 'sup',
+                  'inf': 'inf',
+                  'max': 'max',
+                  'min': 'min',
                  })
 
 # special cases
@@ -143,13 +157,22 @@ small_operators = {# mathsize='75%'
                    'smallint':       u'\u222b', # ∫ INTEGRAL
                   }
 
-# Operators and functions with limits
-# above/below in display formulas and in index position inline
-with_limits = [operators[name] for name in
-              ('coprod', 'fatsemi', 'fint', 'iiiint', 'iiint',
-               'iint', 'int', 'oiint', 'oint', 'ointctrclockwise',
-               'prod', 'sqint', 'sum', 'varointclockwise',
-               'lim', 'sup', 'inf', 'max', 'min')]
+# Operators and functions with limits above/below in display formulas
+# and in index position inline (movablelimits="true")
+displaylimits = [operators[name] for name in
+                 ('bigcap', 'bigcup', 'bigodot', 'bigoplus', 'bigotimes',
+                  'bigsqcup', 'biguplus', 'bigvee', 'bigwedge',
+                  'coprod', 'prod', 'sum',
+                  'lim', 'max', 'min', 'sup', 'inf')]
+# Depending on settings, integrals may also be in this category.
+# (e.g. if "amsmath" is loaded with option "intlimits", see
+#  http://mirror.ctan.org/macros/latex/required/amsmath/amsldoc.pdf)
+# displaylimits.extend(('fint', 'iiiint', 'iiint', 'iint', 'int', 'oiint',
+#                       'oint', 'ointctrclockwise', 'sqint',
+#                       'varointclockwise',))
+
+# >>> print(' '.join(displaylimits))
+# ⋂ ⋃ ⨀ ⨁ ⨂ ⨆ ⨄ ⋁ ⋀ ∐ ∏ ∑ lim max min sup inf
 
 # pre-composed characters for negated symbols
 # see https://www.w3.org/TR/xml-entity-names/#combining
@@ -158,36 +181,21 @@ negatables = {'=': u'\u2260',
               r'\equiv': u'\u2262'}
 
 # extensible delimiters allowed in left/right cmds
-stretchables = {'(': '(',
-                ')': ')',
-                '[': '[',
-                ']': ']',
-                '/': '/',
-                r'\backslash': '\\',
-                '|': '|',
-                '.': '', # emty fence
-                r'\uparrow': u'\u2191', # ↑ UPWARDS ARROW
-                r'\downarrow': u'\u2193', # ↓ DOWNWARDS ARROW
-                r'\updownarrow': u'\u2195', # ↕ UP DOWN ARROW
-                r'\Uparrow': u'\u21d1', # ⇑ UPWARDS DOUBLE ARROW
-                r'\Downarrow': u'\u21d3', # ⇓ DOWNWARDS DOUBLE ARROW
-                r'\Updownarrow': u'\u21d5', # ⇕ UP DOWN DOUBLE ARROW
-             }
-for (key, value) in tex2unichar.mathfence.items():
-    stretchables['\\'+key] = value
-for (key, value) in tex2unichar.mathopen.items():
-    stretchables['\\'+key] = value
-for (key, value) in tex2unichar.mathclose.items():
-    stretchables['\\'+key] = value
-# shorter with {**something} syntax, new in 3.5
-# if sys.version_info >= (3, 5):
-#     for (key, value) in {**tex2unichar.mathclose,
-#                          **tex2unichar.mathopen,
-#                          **tex2unichar.mathfence}.items():
-#         stretchables['\\'+key] = value
+stretchables = {'backslash':   '\\',
+                'uparrow':     u'\u2191', # ↑ UPWARDS ARROW
+                'downarrow':   u'\u2193', # ↓ DOWNWARDS ARROW
+                'updownarrow': u'\u2195', # ↕ UP DOWN ARROW
+                'Uparrow':     u'\u21d1', # ⇑ UPWARDS DOUBLE ARROW
+                'Downarrow':   u'\u21d3', # ⇓ DOWNWARDS DOUBLE ARROW
+                'Updownarrow': u'\u21d5', # ⇕ UP DOWN DOUBLE ARROW
+               }
+stretchables.update(tex2unichar.mathfence)
+stretchables.update(tex2unichar.mathopen)
+stretchables.update(tex2unichar.mathclose)
+stretchables.update(math_fences)
 
 # >>> print(' '.join(sorted(set(stretchables.values()))))
-#  ( ) / [ \ ] { | } ‖ ↑ ↓ ↕ ⇑ ⇓ ⇕ ⌈ ⌉ ⌊ ⌋ ⌜ ⌝ ⌞ ⌟ ⟅ ⟆ ⟦ ⟧ ⟨ ⟩ ⟮ ⟯ ⦇ ⦈
+# [ \ ] { | } ‖ ↑ ↓ ↕ ⇑ ⇓ ⇕ ⌈ ⌉ ⌊ ⌋ ⌜ ⌝ ⌞ ⌟ ⟅ ⟆ ⟦ ⟧ ⟨ ⟩ ⟮ ⟯ ⦇ ⦈
 
 
 # horizontal space -> <mspace>
@@ -258,6 +266,47 @@ mathbb = {u'Γ': u'\u213E',    # ℾ
          }
 
 
+matrices = {'matrix':  ('', ''),
+            'smallmatrix':  ('', ''), # smaller, see begin_environment()!
+            'pmatrix': ('(', ')'),
+            'bmatrix': ('[', ']'),
+            'Bmatrix': ('{', '}'),
+            'vmatrix': ('|', '|'),
+            'Vmatrix': (u'\u2016', u'\u2016'), # ‖
+            'cases':   ('{', ''),
+           }
+
+layout_styles = {
+    'displaystyle':      {'displaystyle': 'true',  'scriptlevel': '0'},
+    'textstyle':         {'displaystyle': 'false', 'scriptlevel': '0'},
+    'scriptstyle':       {'displaystyle': 'false', 'scriptlevel': '1'},
+    'scriptscriptstyle': {'displaystyle': 'false', 'scriptlevel': '2'},
+    }
+# See also https://www.w3.org/TR/MathML3/chapter3.html#presm.scriptlevel
+
+fractions = {# name:   style_attrs, frac_attrs
+             'frac':   ({}, {}),
+             'cfrac':  ({'displaystyle': 'true',  'scriptlevel': '0',
+                         'CLASS': 'cfrac'}, {}), # in LaTeX with padding
+             'dfrac':  (layout_styles['displaystyle'], {}),
+             'tfrac':  (layout_styles['textstyle'], {}),
+             'binom':  ({}, {'linethickness': 0}),
+             'dbinom': (layout_styles['displaystyle'], {'linethickness': 0}),
+             'tbinom': (layout_styles['textstyle'], {'linethickness': 0}),
+            }
+
+delimiter_sizes = {'left':  '',
+                   'right': '',
+                   'bigl':  '1.2em',
+                   'bigr':  '1.2em',
+                   'Bigl':  '1.623em',
+                   'Bigr':  '1.623em',
+                   'biggl': '2.047em',
+                   'biggr': '2.047em',
+                   'Biggl': '2.470em',
+                   'Biggr': '2.470em',
+                  }
+
 # MathML element classes
 # ----------------------
 
@@ -282,8 +331,7 @@ class math(object):
 
         """
         self.children = []
-        for child in children:
-            self.append(child)
+        self.extend(children)
 
         self.attributes = collections.OrderedDict()
         # sort attributes for predictable functional tests
@@ -295,7 +343,7 @@ class math(object):
         content = [repr(item) for item in getattr(self, 'children', [])]
         if hasattr(self, 'data'):
             content.append(repr(self.data))
-        if isinstance(self, MathScriptOrLimit) and self.switch:
+        if isinstance(self, MathSchema) and self.switch:
             content.append('switch=True')
         if hasattr(self, 'attributes'):
             content += ["%s='%s'"%(k, v) for k, v in self.attributes.items()]
@@ -303,6 +351,13 @@ class math(object):
 
     def __len__(self):
         return len(self.children)
+
+    # emulate dictionary-like access to attributes
+    # see `docutils.nodes.Element` for dict/list interface
+    def __getitem__(self, key):
+        return self.attributes[key]
+    def __setitem__(self, key, item):
+        self.attributes[key] = item
 
     def full(self):
         """Return boolean indicating whether children may be appended."""
@@ -321,6 +376,11 @@ class math(object):
         child.parent = self
         if self.full():
             return self.close()
+        return self
+
+    def extend(self, children):
+        for child in children:
+            self.append(child)
         return self
 
     def close(self):
@@ -383,17 +443,20 @@ class mrow(math):
     def close(self):
         """Close element and return first non-full parent or None.
 
-        Remove <mrow>, if it is single child and the parent inferres an mrow
+        Remove <mrow>, if it is single child and the parent infers an mrow
         or if it has only one child element.
         """
         parent = self.parent
-        if isinstance(parent, MathRowInferred) and parent.nchildren == 1:
+        if isinstance(parent, MathRowSchema) and parent.nchildren == 1:
             parent.nchildren = None
             parent.children = self.children
+            for child in self.children:
+                child.parent = parent
             return parent.close()
         if len(self) == 1:
             try:
                 parent.children[parent.children.index(self)] = self.children[0]
+                self.children[0].parent = parent
             except (AttributeError, ValueError):
                 return self.children[0]
         return super(mrow, self).close()
@@ -404,17 +467,21 @@ class mrow(math):
 # The elements <msqrt>, <mstyle>, <merror>, <mpadded>, <mphantom>, <menclose>,
 # <mtd>, <mscarry>, and <math> treat their contents as a single inferred mrow
 # formed from all their children.
-class MathRowInferred(math):
+class MathRowSchema(math):
     """Base class for elements treating content as a single inferred mrow."""
-class mtr(MathRowInferred): pass
-class mtd(MathRowInferred): pass
-class mstyle(MathRowInferred):
-    nchildren = 1
-class msqrt(MathRowInferred):
-    nchildren = 1
+class mtr(MathRowSchema): pass
+class mtd(MathRowSchema): pass
+class mphantom(MathRowSchema):
+    nchildren = 1 # \phantom expects one argument or a group
+class mstyle(MathRowSchema):
+    nchildren = 1 # \mathrm, ... expect one argument or a group
+class msqrt(MathRowSchema):
+    nchildren = 1 # \sqrt expects one argument or a group
+class menclose(MathRowSchema):
+    nchildren = 1 # \boxed expects one argument or a group
 
 class MathToken(math):
-    """Token Element: contains data instead of children.
+    """Token Element: contains textual data instead of children.
 
     Base class for mo, mi, and mn.
     """
@@ -437,22 +504,21 @@ class mtext(MathToken): pass
 # >>> mo(u'<')._xml()
 # ['<mo>', '&lt;', '</mo>']
 
-class MathScriptOrLimit(math):
-    """Base class for script and limit schemata."""
+class MathSchema(math):
+    """Base class for schemata expecting 2 or more children.
+
+    The special attribute `switch` indicates that the last two child
+    elements are in reversed order and must be switched before XML-export.
+    """
+
     nchildren = 2
 
     def __init__(self, *children, **kwargs):
-        """Set up sub/superscript or limit elements.
-
-        The special attribute `switch` tells that the
-        last two child elements are in reversed order
-        and must be switched before XML-export.
-        """
         self.switch = kwargs.pop('switch', False)
         math.__init__(self, *children, **kwargs)
 
     def append(self, child):
-        new_current = super(MathScriptOrLimit, self).append(child)
+        new_current = super(MathSchema, self).append(child)
         # normalize order if full
         if self.switch and self.full():
             self.children[-1], self.children[-2] = self.children[-2], self.children[-1]
@@ -460,14 +526,14 @@ class MathScriptOrLimit(math):
             self.switch = False
         return new_current
 
-class msub(MathScriptOrLimit): pass
-class msup(MathScriptOrLimit): pass
-class msubsup(MathScriptOrLimit):
+class msub(MathSchema): pass
+class msup(MathSchema): pass
+class msubsup(MathSchema):
     nchildren = 3
 
-class munder(MathScriptOrLimit): pass
-class mover(MathScriptOrLimit): pass
-class munderover(MathScriptOrLimit):
+class munder(MathSchema): pass
+class mover(MathSchema): pass
+class munderover(MathSchema):
     nchildren = 3
 
 # >>> munder(mi('lim'), mo('-'), accent='false')
@@ -490,7 +556,7 @@ class munderover(MathScriptOrLimit):
 # >>> msubsup(mi('base'), mi('super'), mi('sub'), switch=True)
 # msubsup(mi('base'), mi('sub'), mi('super'))
 
-class mroot(MathScriptOrLimit):
+class mroot(MathSchema):
     nchildren = 2
 
 class mfrac(math):
@@ -624,7 +690,7 @@ def tex_optarg(string):
         raise SyntaxError('Could not extract optional argument from %r' % string)
 
 # Test:
-# >>> tex_optarg('[optional argument] after whitespace')
+# >>> tex_optarg(' [optional argument] after whitespace')
 # ('optional argument', ' after whitespace')
 # >>> tex_optarg('[missing right bracket')
 # Traceback (most recent call last):
@@ -634,22 +700,18 @@ def tex_optarg(string):
 # SyntaxError: Could not extract optional argument from '[group with [nested group]]'
 
 
-
-
 def parse_latex_math(node, string):
-    """Append MathML conversion of `string` to `node`.
-
-    Return current node.
+    """Append MathML conversion of `string` to `node` and return it.
 
     >>> parse_latex_math(math(), r'\alpha')
     math(mi('α'))
-    >>> parse_latex_math(math(), r'{')
-    mrow()
+    >>> parse_latex_math(mrow(), r'x_{n}')
+    mrow(msub(mi('x'), mi('n')))
 
-    Set `inline` to False for displayed math.
     """
     # Normalize white-space:
     string = ' '.join(string.split())
+    tree = node
 
     while len(string) > 0:
         # Take of first character:
@@ -659,7 +721,7 @@ def parse_latex_math(node, string):
             continue  # whitespace is ignored in LaTeX math mode
         if c == '\\': # start of a LaTeX macro
             cmdname, string = tex_cmdname(string)
-            node, string = handle_cmdname(cmdname, node, string)
+            node, string = handle_cmd(cmdname, node, string)
         elif c in "_^":
             node = handle_script_or_limit(node, c)
         elif c == '{':
@@ -680,18 +742,20 @@ def parse_latex_math(node, string):
         elif c in anomalous_chars:
             # characters with a special meaning in LaTeX math mode
             node = node.append(mo(anomalous_chars[c]))
+            # TODO: fix spacing before "unary" minus.
+            # set form='prefix' if preceded by "(", "{", ...?
         elif c in "/()[]|":
             node = node.append(mo(c, stretchy='false'))
         elif c in "+*=<>,.!?';@":
             node = node.append(mo(c))
         else:
             raise SyntaxError(u'Unsupported character: "%s"' % c)
-    return node
+    return tree
 
 # Test:
 
-# >>> parse_latex_math(math(xmlns='http://www.w3.org/1998/Math/MathML'), '')
-# math(xmlns='http://www.w3.org/1998/Math/MathML')
+# >>> print(parse_latex_math(math(), ''))
+# math()
 # >>> parse_latex_math(math(), ' \\sqrt{ \\alpha}')
 # math(msqrt(mi('α')))
 # >>> parse_latex_math(math(), '23.4x')
@@ -703,22 +767,26 @@ def parse_latex_math(node, string):
 # >>> parse_latex_math(math(), '\\sqrt[3]{2 + 3}')
 # math(mroot(mrow(mn('2'), mo('+'), mn('3')), mn('3')))
 # >>> parse_latex_math(math(), '\max_x') # function takes limits
-# math(munder(mi('max', movablelimits='true'), mi('x')))
+# math(munder(mo('max', movablelimits='true'), mi('x')))
 # >>> parse_latex_math(math(), 'x^j_i') # ensure correct order: base, sub, sup
 # math(msubsup(mi('x'), mi('i'), mi('j')))
 # >>> parse_latex_math(math(), '\int^j_i') # ensure correct order
-# math(munderover(mo('∫', movablelimits='true'), mi('i'), mi('j')))
+# math(msubsup(mo('∫'), mi('i'), mi('j')))
+# >>> parse_latex_math(math(), 'x_{\\alpha}')
+# math(msub(mi('x'), mi('α')))
+# >>> parse_latex_math(math(), 'x_\\text{in}')
+# math(msub(mi('x'), mtext('in')))
 
-def handle_cmdname(name, node, string):
+def handle_cmd(name, node, string):
     """Process LaTeX command `name` followed by `string`.
 
     Append result to `node`.
     If needed, parse `string` for command argument.
     Return new current node and remainder of `string`:
 
-    >>> handle_cmdname('hbar', math(), r' \frac')
+    >>> handle_cmd('hbar', math(), r' \frac')
     (math(mi('ℏ')), ' \\frac')
-    >>> handle_cmdname('hspace', math(), r'{1ex} (x)')
+    >>> handle_cmd('hspace', math(), r'{1ex} (x)')
     (math(mspace(width='1ex')), ' (x)')
 
     """
@@ -742,7 +810,8 @@ def handle_cmdname(name, node, string):
         # use <mi> followed by invisible function applicator character
         # (see https://www.w3.org/TR/MathML3/chapter3.html#presm.mi)
         if name == 'operatorname':
-            # custom function name ``\operatorname{abs}(x)``
+            # custom function name, e.g. ``\operatorname{abs}(x)``
+            # TODO: \operatorname* -> with limits
             arg, string = tex_token(string)
             new_node = mi(arg, mathvariant='normal')
         else:
@@ -793,7 +862,7 @@ def handle_cmdname(name, node, string):
     # operator, fence, or separator  ->  <mo>
 
     if name == 'colon': # trailing punctuation, not binary relation
-        node = node.append(mo(':', lspace='0', rspace='0.28em'))
+        node = node.append(mo(':', form='postfix', lspace='0', rspace='0.28em'))
         return node, string
 
     if name in thick_operators:
@@ -808,19 +877,25 @@ def handle_cmdname(name, node, string):
         node = node.append(mo(operators[name]))
         return node, string
 
-    if name in ('left', 'right'):
-        arg, string = tex_token(string)
-        try:
-            delimiter = stretchables[arg]
-        except KeyError:
-            raise SyntaxError(u'Missing %s delimiter!' % name)
-        if name == 'left':
+    if name in delimiter_sizes:
+        delimiter_attributes = {}
+        size = delimiter_sizes[name]
+        delimiter, string = tex_token(string)
+        if delimiter not in '()[]/|.':
+            try:
+                delimiter = stretchables[delimiter.lstrip('\\')]
+            except KeyError:
+                raise SyntaxError(u'Missing "\\%s" delimiter!' % name)
+        if size:
+            delimiter_attributes['maxsize'] = size
+            delimiter_attributes['minsize'] = size
+        if name == 'left' or name.endswith('l'):
             row = mrow()
             node.append(row)
             node = row
-        if delimiter: # may be empty
-            node.append(mo(delimiter))
-        if name == 'right':
+        if delimiter != '.': # '.' stands for "empty delimiter"
+            node.append(mo(delimiter, **delimiter_attributes))
+        if name == 'right' or name.endswith('r'):
             node = node.close()
         return node, string
 
@@ -835,8 +910,13 @@ def handle_cmdname(name, node, string):
     # arbitrary text (usually comments)  ->  <mtext>
     if name in ('text', 'mbox', 'textrm'):
         arg, string = tex_token(string)
-        text = re.sub('(^ | $)', u'\u00a0', arg)
-        node = node.append(mtext(text))
+        parts = arg.split('$') # extract inline math
+        for i, part in enumerate(parts):
+            if i % 2 == 0: # i is even
+                part = re.sub('(^ | $)', u'\u00a0', part)
+                node = node.append(mtext(part))
+            else:
+                parse_latex_math(node, part)
         return node, string
 
     # horizontal space -> <mspace>
@@ -848,6 +928,17 @@ def handle_cmdname(name, node, string):
         arg, string = tex_token(string)
         node = node.append(mspace(width='%s'%arg))
         return node, string
+
+    if name == 'phantom':
+        new_node = mphantom()
+        node.append(new_node)
+        return new_node, string
+
+    if name == 'boxed':
+        new_node = menclose(notation='box')
+        node.append(new_node)
+        return new_node, string
+
 
     # Complex elements (Layout schemata)
     # ==================================
@@ -864,10 +955,22 @@ def handle_cmdname(name, node, string):
         node.append(new_node)
         return new_node, string
 
-    if name == 'frac':
-        new_node = mfrac()
+    if name in fractions:
+        (style_atts, frac_atts) = fractions[name]
+        if name == 'cfrac':
+            optarg, string = tex_optarg(string)
+            optargs = {'l': 'left', 'r': 'right'}
+            if optarg in optargs:
+                frac_atts = frac_atts.copy()
+                frac_atts['numalign'] = optargs[optarg]
+        new_node = frac = mfrac(**frac_atts)
+        if name.endswith('binom'):
+            new_node = mrow(mo('('), new_node, mo(')'))
+            new_node.close()
+        if style_atts:
+            new_node = mstyle(new_node, **style_atts)
         node.append(new_node)
-        return new_node, string
+        return frac, string
 
     if name == '\\': # end of a row
         entry = mtd()
@@ -906,8 +1009,7 @@ def handle_cmdname(name, node, string):
         base = mo(operators[name[1:]])
         if subscript:
             new_node = munderover(base)
-            sub_node = mrow()
-            parse_latex_math(sub_node, subscript)
+            sub_node = parse_latex_math(mrow(), subscript)
             if len(sub_node) == 1:
                 sub_node = sub_node.children[0]
             new_node.append(sub_node)
@@ -916,83 +1018,92 @@ def handle_cmdname(name, node, string):
         node.append(new_node)
         return new_node, string
 
-    if name == 'begin':
-        env_name, string = tex_token(string)
-        if env_name == 'matrix':
-            entry = mtd()
-            table = mtable(mtr(entry))
-            node.append(table)
-            node = entry
-        elif env_name == 'cases':
-            entry = mtd()
-            cases = mrow(mo('{'), mtable(mtr(entry)))
-            node.append(cases)
-            node = entry
+    if name in layout_styles: # 'displaystyle', 'textstyle', ...
+        new_node = mstyle(**layout_styles[name])
+        new_node.nchildren = None
+        if isinstance(node, mrow) and len(node) == 0:
+            # replace node with new_node
+            node.parent.children[node.parent.children.index(node)] = new_node
+            new_node.parent = node.parent
+        elif node.__class__.__name__ == 'math':
+            node.append(new_node)
         else:
-            raise SyntaxError(u'Environment not supported! '
-                        u'Supported environments: "matrix", "cases".')
+            raise SyntaxError(u'Declaration "\\%s" must be first command '
+                              u'in a group.' % name)
+        return new_node, string
+
+    if name.endswith('limits'):
+        arg, remainder = tex_token(string)
+        if arg in '_^': # else ignore
+            string = remainder
+            node = handle_script_or_limit(node, arg, limits=name)
         return node, string
 
+    # Environments
+
+    if name == 'begin':
+        return begin_environment(node, string)
+
     if name == 'end':
-        env_name, string = tex_token(string)
-        if env_name == 'matrix':
-            node = node.close().close().close()
-        elif env_name == 'cases':
-            node = node.close().close().close().close()
-        else:
-            raise SyntaxError(u'Environment not supported! '
-                        u'Supported environments: "matrix", "cases".')
-        return node, string
+        return end_environment(node, string)
+
+
 
     raise SyntaxError(u'Unknown LaTeX command: ' + name)
 
-
-# >>> handle_cmdname('left', math(), '[a\\right]')
+# >>> handle_cmd('left', math(), '[a\\right]')
 # (mrow(mo('[')), 'a\\right]')
-# >>> handle_cmdname('left', math(), '. a)') # emtpy \left
+# >>> handle_cmd('left', math(), '. a)') # emtpy \left
 # (mrow(), ' a)')
-# >>> handle_cmdname('left', math(), '\\uparrow a)') # cmd
+# >>> handle_cmd('left', math(), '\\uparrow a)') # cmd
 # (mrow(mo('↑')), 'a)')
-# >>> handle_cmdname('not', math(), '\\equiv \\alpha)') # cmd
+# >>> handle_cmd('not', math(), '\\equiv \\alpha)') # cmd
 # (math(mo('≢')), '\\alpha)')
-# >>> handle_cmdname('text', math(), '{ for } i>0') # group
+# >>> handle_cmd('text', math(), '{ for } i>0') # group
 # (math(mtext('\xa0for\xa0')), ' i>0')
-# >>> handle_cmdname('text', math(), '{B}T') # group
+# >>> handle_cmd('text', math(), '{B}T') # group
 # (math(mtext('B')), 'T')
-# >>> handle_cmdname('text', math(), '{number of apples}}') # group
+# >>> handle_cmd('text', math(), '{number of apples}}') # group
 # (math(mtext('number of apples')), '}')
-# >>> handle_cmdname('text', math(), 'i \\sin(x)') # single char
+# >>> handle_cmd('text', math(), 'i \\sin(x)') # single char
 # (math(mtext('i')), ' \\sin(x)')
-# >>> handle_cmdname('sin', math(), '(\\alpha)')
+# >>> handle_cmd('sin', math(), '(\\alpha)')
 # (math(mi('sin'), mo('\u2061')), '(\\alpha)')
-# >>> handle_cmdname('sin', math(), ' \\alpha')
+# >>> handle_cmd('sin', math(), ' \\alpha')
 # (math(mi('sin'), mo('\u2061')), ' \\alpha')
-# >>> handle_cmdname('operatorname', math(), '{abs}(x)')
+# >>> handle_cmd('operatorname', math(), '{abs}(x)')
 # (math(mi('abs', mathvariant='normal'), mo('\u2061')), '(x)')
-# >>> handle_cmdname('mathrm', math(), '\\alpha')
+# >>> handle_cmd('mathrm', math(), '\\alpha')
 # (math(mi('α', mathvariant='normal')), '')
-# >>> handle_cmdname('mathrm', math(), '{out} = 3')
+# >>> handle_cmd('mathrm', math(), '{out} = 3')
 # (math(mi('out', mathvariant='normal')), ' = 3')
-# >>> handle_cmdname('overline', math(), '{981}')
+# >>> handle_cmd('overline', math(), '{981}')
 # (mover(mo('¯'), switch=True, accent='false'), '{981}')
-# >>> handle_cmdname('bar', math(), '{x}')
+# >>> handle_cmd('bar', math(), '{x}')
 # (mover(mo('ˉ'), switch=True, accent='true'), '{x}')
-# >>> handle_cmdname('xleftarrow', math(), r'[\alpha]{10}')
+# >>> handle_cmd('xleftarrow', math(), r'[\alpha]{10}')
 # (munderover(mo('←'), mi('α')), '{10}')
-# >>> handle_cmdname('xleftarrow', math(), r'[\alpha=5]{10}')
+# >>> handle_cmd('xleftarrow', math(), r'[\alpha=5]{10}')
 # (munderover(mo('←'), mrow(mi('α'), mo('='), mn('5'))), '{10}')
 
 
-def handle_script_or_limit(node, c):
+def handle_script_or_limit(node, c, limits=''):
     """Append script or limit element to `node`."""
     child = node.children.pop()
+    if limits == 'limits':
+        child['movablelimits'] = 'false'
+    elif (limits == 'displaylimits'
+          or getattr(child, 'data', '') in displaylimits):
+        child['movablelimits'] = 'true'
+
     if c == '_':
         if isinstance(child, msup):
             new_node = msubsup(*child.children, switch=True)
         elif isinstance(child, mover):
             new_node = munderover(*child.children, switch=True)
-        elif getattr(child, 'data', '') in with_limits:
-            child.attributes['movablelimits'] = 'true'
+        elif (limits in ('limits', 'displaylimits')
+              or limits == ''
+              and getattr(child, 'data', '') in displaylimits):
             new_node = munder(child)
         else:
             new_node = msub(child)
@@ -1001,13 +1112,52 @@ def handle_script_or_limit(node, c):
             new_node = msubsup(*child.children)
         elif isinstance(child, munder):
             new_node = munderover(*child.children)
-        elif getattr(child, 'data', '') in with_limits:
-            child.attributes['movablelimits'] = 'true'
+        elif (limits in ('limits', 'displaylimits')
+              or limits == ''
+              and getattr(child, 'data', '') in displaylimits):
             new_node = mover(child)
         else:
             new_node = msup(child)
     node.append(new_node)
     return new_node
+
+
+def begin_environment(node, string):
+    name, string = tex_token(string)
+    if name in matrices:
+        left_delimiter = matrices[name][0]
+        attributes = {}
+        if left_delimiter:
+            wrapper = mrow(mo(left_delimiter))
+            node.append(wrapper)
+            node = wrapper
+        elif name == 'smallmatrix':
+            attributes['rowspacing'] = '0.2em' # unimplemented in Firefox!
+            attributes['columnspacing'] = '0.333em'
+            wrapper = mstyle(scriptlevel=1)
+            node.append(wrapper)
+            node = wrapper
+        entry = mtd()
+        node.append(mtable(mtr(entry), **attributes))
+        node = entry
+    else:
+        raise SyntaxError(u'Environment not supported!')
+    return node, string
+
+
+def end_environment(node, string):
+    name, string = tex_token(string)
+    if name in matrices:
+        node = node.close().close().close() # close: mtd, mdr, mtable
+        right_delimiter = matrices[name][1]
+        if right_delimiter:
+            node = node.append(mo(right_delimiter))
+            node = node.close()
+        elif name == 'cases':
+            node = node.close()
+    else:
+        raise SyntaxError(u'Environment not supported!')
+    return node, string
 
 
 def tex2mathml(tex_math, inline=True):
@@ -1016,10 +1166,12 @@ def tex2mathml(tex_math, inline=True):
     Set `inline` to False for displayed math.
     """
     # Set up tree
-    tree = node = math(xmlns='http://www.w3.org/1998/Math/MathML')
-    if not inline:
+    tree = math(xmlns='http://www.w3.org/1998/Math/MathML')
+    if inline:
+        node = tree
+    else:
         # block: emulate align* environment with a math table
-        tree.attributes['display']='block'
+        tree['display'] = 'block'
         node = mtd()
         tree.append(mtable(mtr(node), displaystyle='true', CLASS='align'))
 
@@ -1040,3 +1192,41 @@ def tex2mathml(tex_math, inline=True):
 #     </mtr>
 #   </mtable>
 # </math>
+
+# TODO: look up more symbols from tr25, e.g.
+#
+#
+# Table 2.8 Using Vertical Line or Solidus Overlay
+#   some of the negated forms of mathematical relations that can only be
+#   encoded by using either U+0338 COMBINING LONG SOLIDUS OVERLAY or U+20D2
+#   COMBINING LONG VERTICAL LINE OVERLAY . (For issues with using 0338 in
+#   MathML, see Section 3.2.7, Combining Marks.
+#
+# Table 2.9 Variants of Mathematical Symbols using VS1?
+#
+# Sequence      Description
+# 0030 + VS1    DIGIT ZERO - short diagonal stroke form
+# 2205 + VS1    EMPTY SET - zero with long diagonal stroke overlay form
+# 2229 + VS1    INTERSECTION - with serifs
+# 222A + VS1    UNION - with serifs
+# 2268 + VS1    LESS-THAN BUT NOT EQUAL TO - with vertical stroke
+# 2269 + VS1    GREATER-THAN BUT NOT EQUAL TO - with vertical stroke
+# 2272 + VS1    LESS-THAN OR EQUIVALENT TO - following the slant of the lower leg
+# 2273 + VS1    GREATER-THAN OR EQUIVALENT TO - following the slant of the lower leg
+# 228A + VS1    SUBSET OF WITH NOT EQUAL TO - variant with stroke through bottom members
+# 228B + VS1    SUPERSET OF WITH NOT EQUAL TO - variant with stroke through bottom members
+# 2293 + VS1    SQUARE CAP - with serifs
+# 2294 + VS1    SQUARE CUP - with serifs
+# 2295 + VS1    CIRCLED PLUS - with white rim
+# 2297 + VS1    CIRCLED TIMES - with white rim
+# 229C + VS1    CIRCLED EQUALS - equal sign inside and touching the circle
+# 22DA + VS1    LESS-THAN slanted EQUAL TO OR GREATER-THAN
+# 22DB + VS1    GREATER-THAN slanted EQUAL TO OR LESS-THAN
+# 2A3C + VS1    INTERIOR PRODUCT - tall variant with narrow foot
+# 2A3D + VS1    RIGHTHAND INTERIOR PRODUCT - tall variant with narrow foot
+# 2A9D + VS1    SIMILAR OR LESS-THAN - following the slant of the upper leg
+# 2A9E + VS1    SIMILAR OR GREATER-THAN - following the slant of the upper leg
+# 2AAC + VS1    SMALLER THAN OR slanted EQUAL
+# 2AAD + VS1    LARGER THAN OR slanted EQUAL
+# 2ACB + VS1    SUBSET OF ABOVE NOT EQUAL TO - variant with stroke through bottom members
+# 2ACC + VS1    SUPERSET OF ABOVE NOT EQUAL TO - variant with stroke through bottom members
