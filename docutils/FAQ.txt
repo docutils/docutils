@@ -983,8 +983,20 @@ without H2).
 .. note:: For the html5 writer, `initial_header_level`_ defaults to
    ``2`` because this is what the `HTML5 standard`__ expects as
    start value for headings nested in <section> elements.
+   
+   .. Sectioning content elements are always considered subsections of
+      their nearest ancestor *sectioning root* [#]_ or their nearest
+      ancestor element of *sectioning content*  [#]_, whichever is nearest,
+      [...]
+      
+      .. [#] <blockquote>, <body>, <details>, <dialog>, <fieldset>,
+             <figure>, <td>
+      .. [#] <article>, <aside>, <nav>, <section> 
+      
+      I.e., a top-level <section> is a subsection of <body>.
 
    __ https://www.w3.org/TR/html53/sections.html#headings-and-sections
+
 
 
 How are lists formatted in HTML?

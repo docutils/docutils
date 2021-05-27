@@ -1106,7 +1106,7 @@ the output document. Supported values are (case insensitive):
     "align" (or other equation-aligning) environment. (C++)
 
   LaTeXML_
-    Comprehensive macro support but very slow. (Perl)
+    Comprehensive macro support but *very* slow. (Perl)
 
   TtM_
     No "matrix", "align" and  "cases" environments. Support may be removed.
