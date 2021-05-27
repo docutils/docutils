@@ -880,7 +880,7 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_field_list(self, node):
         atts = {}
-        classes = node.setdefault('classes', []) 
+        classes = node.setdefault('classes', [])
         for i, cls in enumerate(classes):
             if cls.startswith('field-indent-'):
                 try:
@@ -1628,9 +1628,11 @@ class HTMLTranslator(nodes.NodeVisitor):
         if isinstance(node.parent, nodes.topic):
             self.body.append(
                   self.starttag(node, 'p', '', CLASS='topic-title'))
+                  # TODO: use role="heading" or <h1>? (HTML5 only)
         elif isinstance(node.parent, nodes.sidebar):
             self.body.append(
                   self.starttag(node, 'p', '', CLASS='sidebar-title'))
+                  # TODO: use role="heading" or <h1>? (HTML5 only)
         elif isinstance(node.parent, nodes.Admonition):
             self.body.append(
                   self.starttag(node, 'p', '', CLASS='admonition-title'))
@@ -1645,6 +1647,8 @@ class HTMLTranslator(nodes.NodeVisitor):
         else:
             assert isinstance(node.parent, nodes.section)
             h_level = self.section_level + self.initial_header_level - 1
+            # TODO: use '<h6 aria-level="%s">' % h_level
+            # for h_level > 6 (HTML5 only)
             atts = {}
             if (len(node.parent) >= 2 and
                 isinstance(node.parent[1], nodes.subtitle)):
