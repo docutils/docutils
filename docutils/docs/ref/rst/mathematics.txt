@@ -6,6 +6,7 @@ LaTeX syntax for mathematics
 .. default-role:: math
 .. |latex| replace:: L\ :sup:`A`\ T\ :sub:`E`\ X
 
+.. sectnum::
 .. contents::
 
 Introduction
@@ -248,6 +249,8 @@ Named operators outside the above list can be typeset with
 
 .. math:: \operatorname{sgn}(-3) = -1.
 
+.. TODO: \operatorname* for function name with limits.
+
 The ``\DeclareMathOperator`` command can only be used in the
 `LaTeX preamble`_.
 
@@ -358,7 +361,7 @@ the *font weight*. In LaTeX, it can be used to get a bold version of any
 mathematical symbol (for other output formats, results are mixed):
 
 .. math::
-     \boldsymbol{abs(x) \pm \alpha \approx 3 \Gamma \quad \forall x \in R}
+   \boldsymbol{abs(x)\pm\alpha \approx 3\Gamma \quad \forall x\in\mathbb{R}}
 
 
 Miscellaneous symbols
@@ -523,18 +526,18 @@ Variable-sized operators
 .. class:: colwidths-auto
 
   =========================  =========================  =========================  ===========================
-  `\sum`      ``\sum``       `\prod` ``\prod``          `\bigcap`   ``\bigcap``    `\bigodot` ``\bigodot``
-  `\int`      ``\int``       `\coprod` ``\coprod``      `\bigcup`   ``\bigcup``    `\bigoplus` ``\bigoplus``
+  `\sum`      ``\sum``       `\prod`     ``\prod``      `\bigcap`   ``\bigcap``    `\bigodot`   ``\bigodot``
+  `\int`      ``\int``       `\coprod`   ``\coprod``    `\bigcup`   ``\bigcup``    `\bigoplus`  ``\bigoplus``
   `\oint`     ``\oint``      `\bigwedge` ``\bigwedge``  `\biguplus` ``\biguplus``  `\bigotimes` ``\bigotimes``
-  `\smallint` ``\smallint``  `\bigvee` ``\bigvee``      `\bigsqcup` ``\bigsqcup``
+  `\smallint` ``\smallint``  `\bigvee`   ``\bigvee``    `\bigsqcup` ``\bigsqcup``
   =========================  =========================  =========================  ===========================
 
-Larger symbols are used in displayed formulas:
+Larger symbols are used in displayed formulas, sum-like symbols have
+indices above/below the symbol (see also `scripts and limits`_):
 
-.. math::
-
-   \sum\ \int\ \oint \bigcap \prod \ldots
-
+.. math:: \sum_{n=1}^N a_n \qquad
+          \int_0^1f(x)\,dx \qquad
+          \prod_{i=1}^{10} b_i \ldots
 
 Notations
 =========
@@ -574,53 +577,73 @@ The ``matrix`` and ``cases`` environments can also contain ``\\`` and
 ``&``::
 
   .. math::
-
-    \left(\begin{matrix} a & b \\ c & d \end{matrix}\right)
+     \left(\begin{matrix} a & b \\ c & d \end{matrix}\right)
 
 Result:
 
 .. math::
+   \left(\begin{matrix} a & b \\ c & d \end{matrix}\right)
 
-  \left(\begin{matrix} a & b \\ c & d \end{matrix}\right)
+The environments ``pmatrix``, ``bmatrix``, ``Bmatrix``, ``vmatrix``, and
+``Vmatrix`` have (respectively) ( ), [ ], { }, \| \|, and `\Vert\ \Vert`
+delimiters built in, e.g.
 
-.. TODO: small matrices, matrices with delimiters built in?
+.. math:: \begin{pmatrix} a & b \\ c & d \end{pmatrix} \qquad
+          \begin{bmatrix} a & b \\ c & d \end{bmatrix} \qquad
+          \begin{Vmatrix} a & b \\ c & d \end{Vmatrix}
 
-   The environments pmatrix, bmatrix, Bmatrix, vmatrix, and Vmatrix have
-   (respectively) ( ), [ ], { }, | |, and k k delimiters built in.
+To produce a small matrix suitable for use in text, there is a
+``smallmatrix`` environment
+`\bigl(\begin{smallmatrix} a & b \\ c & d \end{smallmatrix}\bigr)`
+that comes closer to fitting within a single text line than a normal
+matrix.
 
-For piecewise function definitions there is a cases environment:
 
-.. math::
+For piecewise function definitions there is a ``cases`` environment:
 
-   \mathrm{sgn}(x) = \begin{cases}
-                       -1 & x<0\\
-                        1 & x>0
-                     \end{cases}
+.. math:: \mathrm{sgn}(x) = \begin{cases}
+                               -1 & x<0\\
+                                1 & x>0
+                            \end{cases}
 
-Horizontal space
+Spacing commands
 ----------------
+
+Horizontal spacing of elements can be controled with the following
+commands:
 
 .. class:: colwidths-auto
 
   =====================  ========  =======================
-  :m:`|\qquad|`                    ``|\qquad|`` (2em)
-  :m:`|\quad|`                     ``|\quad|``  (1em)
-  :m:`|~|`               ``|~|``   ``|\nobreakspace|``
-  :m:`|\ |`              ``|\ |``  escaped space
-  :m:`|\;|`              ``|\;|``  ``|\thickspace|``
-  :m:`|\:|`              ``|\:|``  ``|\medspace|``
-  :m:`|\,|`              ``|\,|``  ``|\thinspace|``
-  :m:`|  |`              ``|  |``  regular space (ignored)
-  :m:`|\!|`              ``|\!|``  ``|\negthinspace|``
-  :m:`|\negmedspace|`              ``|\negmedspace|``
-  :m:`|\negthickspace|`            ``|\negthickspace|``
-  `|\hspace{1ex}|`                 ``|\hspace{1ex}|``
+  :m:`3\qquad8`                    ``3\qquad8`` (2em)
+  :m:`3\quad8`                     ``3\quad8``  (1em)
+  :m:`3~8`               ``3~8``   ``3\nobreakspace8``
+  :m:`3\ 8`              ``3\ 8``  escaped space
+  :m:`3\;8`              ``3\;8``  ``3\thickspace8``
+  :m:`3\:8`              ``3\:8``  ``3\medspace8``
+  :m:`3\,8`              ``3\,8``  ``3\thinspace8``
+  :m:`3  8`              ``3  8``  regular space (ignored)
+  :m:`3\!8`              ``3\!8``  ``3\negthinspace8``
+  :m:`3\negmedspace8`              ``3\negmedspace8``
+  :m:`3\negthickspace8`            ``3\negthickspace8``
+  `3\hspace{1ex}8`                 ``3\hspace{1ex}8``
   =====================  ========  =======================
 
-.. TODO: \phantom \hphantom, \vphantom
+Whitespace is ignored in LaTeX math mode.
+Negative spacing does not work with MathML (in Firefox 78).
 
-Roots and Fractions
--------------------
+There are also three commands that leave a space equal to the height and
+width of its argument. For example ``\phantom{XXX}`` results in space as
+wide and high as three X’s:
+
+.. math:: \frac{\phantom{XXX}+1}{XXX-1}
+
+The commands ``\hphantom`` and ``\vphantom`` insert space with the heigth
+rsp. width of the argument. They are not supported with `math_output`_
+MathML.
+
+Roots
+-----
 
 .. class:: colwidths-auto
 
@@ -629,10 +652,115 @@ Roots and Fractions
   =========  ====================  ==================
   ``\sqrt``  ``\sqrt{x^2-1}``      `\sqrt{x^2-1}`
   ..         ``\sqrt[3n]{x^2-1}``  `\sqrt[3n]{x^2-1}`
-  ``\frac``  ``\frac{1}{1-x}``       `\frac{1}{1-x}`
+  ..         ``\sqrt\frac{1}{2}``  `\sqrt\frac{1}{2}`
   =========  ====================  ==================
 
-.. TODO: \dfrac, \tfrac, \binom, \dbinom, \tbinom
+Boxed formulas
+--------------
+
+The command ``\boxed`` puts a box around its argument:
+
+.. math:: \boxed{\eta \leq C(\delta(\eta) +\Lambda_M(0,\delta))}
+
+
+
+Fractions and related constructions
+===================================
+
+The ``\frac`` command takes two ar guments, numerator and denominator,
+and typesets them in normal fraction form. Use ``\dfrac`` or ``\tfrac`` to
+force text style and display style respectively.
+
+.. math:: \frac{x+1}{x-1}  \quad
+          \dfrac{x+1}{x-1} \quad
+          \tfrac{x+1}{x-1}
+
+and in text: `\frac{x+1}{x-1}`, `\dfrac{x+1}{x-1}`, `\tfrac{x+1}{x-1}`.
+
+For binomial expressions such as `\binom{n}{k}`,
+there are ``\binom``, ``\dbinom`` and ``\tbinom`` commands::
+
+  2^k-\binom{k}{1}2^{k-1}+\binom{k}{2}2^{k-2}
+
+prints
+
+.. math::  2^k-\binom{k}{1}2^{k-1}+\binom{k}{2}2^{k-2}
+
+The ``\cfrac`` command for continued fractions uses displaystyle and
+padding for sub-fractions:
+
+.. math:: \cfrac{1}{\sqrt{2}+
+          \cfrac{1}{\sqrt{2}+
+          \cfrac{1}{\sqrt{2}+\dotsb
+          }}}
+          \text{ vs. }
+          \frac{1}{\sqrt{2}+
+          \frac{1}{\sqrt{2}+
+          \frac{1}{\sqrt{2}+\dotsb
+          }}}
+
+It supports the optional argument ``[l]`` or ``[r]`` for
+left or right placement of the numerator:
+
+.. math::  \cfrac[l]{x}{x-1} \quad
+           \cfrac{x}{x-1}    \quad
+           \cfrac[r]{x}{x-1}
+
+
+Delimiter sizes
+===============
+
+Besides the automatic scaling of `extensible delimiters`_ with ``\left``
+and ``\right``, there are four commands to manually select delimiters of
+fixed size:
+
+.. class:: colwidths-auto
+
+  =========  ==============  ==============  ==============  ==============  ===============  ===============
+  Sizing     no              ``\left``       ``\bigl``       ``\Bigl``       ``\biggl``       ``\Biggl``
+  command                    ``\right``      ``\bigr``       ``\Bigr``       ``\biggr``       ``\Biggr``
+  ---------  --------------  --------------  --------------  --------------  ---------------  ---------------
+  Result     `\displaystyle  `\displaystyle  `\displaystyle  `\displaystyle  `\displaystyle   `\displaystyle
+             (b)             \left(b\right)  \bigl(b\bigr)   \Bigl(b\Bigr)   \biggl(b\biggr)  \Biggl(b\Biggr)
+             (\frac{c}{d})`  \left(\frac{c}  \bigl(\frac{c}  \Bigl(\frac{c}  \biggl(\frac{c}  \Biggl(\frac{c}
+                             {d}\right)`     {d}\bigr)`      {d}\Bigr)`      {d}\biggr)`      {d}\Biggr)`
+  =========  ==============  ==============  ==============  ==============  ===============  ===============
+
+There are two or three situations where the delimiter size is commonly
+adjusted using these commands:
+
+The first kind of adjustment is done for cumulative operators with
+limits, such as summation signs. With ``\left`` and ``\right`` the
+delimiters usually turn out larger than necessary, and using the ``Big``
+or ``bigg`` sizes instead gives better results:
+
+.. math::
+   \left[\sum_i a_i\left\lvert\sum_j x_{ij}\right\rvert^p\right]^{1/p}
+   \text{ versus }
+   \biggl[\sum_i a_i\Bigl\lvert\sum_j x_{ij}\Bigr\rvert^p\biggr]^{1/p}
+
+The second kind of situation is clustered pairs of delimiters, where
+\left and \right make them all the same size (because that is adequate to
+cover the encompassed material), but what you really want is to make some
+of the delimiters slightly larger to make the nesting easier to see.
+
+.. math:: \left((a_1 b_1) - (a_2 b_2)\right)
+          \left((a_2 b_1) + (a_1 b_2)\right)
+          \quad\text{versus}\quad
+          \bigl((a_1 b_1) - (a_2 b_2)\bigr)
+          \bigl((a_2 b_1) + (a_1 b_2)\bigr)
+
+The third kind of situation is a slightly oversize object in running
+text, such as `\left|\frac{b'}{d'}\right|` where the delimiters produced
+by ``\left`` and ``\right`` cause too much line spreading. [#]_ In that case
+``\bigl`` and ``\bigr`` can be used to produce delimiters that are larger
+than the base size but still able to fit within the normal line spacing:
+`\bigl|\frac{b'}{d'}\bigr|`.
+
+.. [#] With MathML, an example would be parentheses
+   around a ``smallmatrix`` environment
+   `\left(\begin{smallmatrix} a & b \\ c & d \end{smallmatrix}\right)`
+   vs. `\Bigl(\begin{smallmatrix} a & b \\ c & d \end{smallmatrix}\Bigr)`.
 
 Text
 ====
@@ -647,13 +775,92 @@ Whitespace is kept inside the argument:
 .. Math:: f_{[x_{i-1},x_i]} \text{ is monotonic for }  i = 1,\,…,\,c+1
 
 
-Currently, math in text is not supported by LaTeX2MathML.
+``$`` signs can be used for math commands inside the text, e.g.
 
-.. TODO: Math inside text: ``n - 1 \text{if $n$ is odd}``.
+.. math:: (-1)^n = \begin{cases} -1 \quad \text{if $n$ is odd} \\
+                                 +1 \quad \text{if $n$ is even.}
+                   \end{cases}
+
+.. TODO: ``\mod`` and its relatives
+         --------------------------
+
+  Commands ``\mod``, ``\bmod``, ``\pmod``, ``\pod`` deal with the special
+  spacing conventions of “mod” notation. ``\mod`` and ``\pod`` are
+  variants of ``\pmod`` preferred by some authors; ``\mod`` omits the
+  parentheses, whereas ``\pod`` omits the “mod” and retains the
+  parentheses.
+
+  \gcd(n,m\bmod n) ;\quad x\equiv y\pmod b
+  ;\quad x\equiv y\mod c ;\quad x\equiv y\pod d
 
 
-Tests
-=====
+Integrals and sums
+==================
+
+The limits on integrals, sums, and similar symbols are placed either to
+the side of or above and below the base symbol, depending on convention
+and context. In inline formulas and fractions, the limits on sums, and
+similar symbols like
+
+.. math:: \lim_{n\to\infty} \sum_1^n \frac{1}{n}
+
+move to index postions: `\lim_{n\to\infty} \sum_1^n \frac{1}{n}`.
+
+The commands ``\limits`` and ``\nolimits`` override the automatic
+placement of the limits; ``\displaylimits`` means to use standard
+positioning as for the \sum command. They should follow immediately after
+the operator to which they apply.
+
+Compare the same term with default positions, ``\limits``, and
+``\nolimits`` in inline and display mode: `\lim_{x\to0}f(x)`,
+`\lim\limits_{x\to0}f(x)`, `\lim\nolimits_{x\to0}f(x)`, vs.
+
+.. math:: \lim_{x\to0}f(x), \quad
+          \lim\limits_{x\to0}f(x) \quad
+          \lim\nolimits_{x\to0}f(x).
+
+.. TODO: \substack
+
+.. TODO: \sideset
+
+
+Changing the size of elements in a formula
+==========================================
+
+The declarations [#]_ ``\displaystyle``, ``\textstyle``,
+``\scriptstyle``, and ``\scriptscriptstyle``, select a symbol size and
+spacing that would be applied in (respectively) display math, inline
+math, first-order subscript, or second-order subscript, even when the
+current context would normally yield some other size.
+
+For example ``:math:`\displaystyle \sum_{n=0}^\infty
+\frac{1}{n}``` is printed as `\displaystyle \sum_{n=0}^\infty \frac{1}{n}`
+rather than `\sum_{n=0}^\infty \frac{1}{n}` and ::
+
+  \frac{\scriptstyle\sum_{n > 0} z^n}
+  {\displaystyle\prod_{1\leq k\leq n} (1-q^k)}
+
+yields
+
+.. math::
+
+  \frac{\scriptstyle\sum_{n > 0} z^n}
+  {\displaystyle\prod_{1\leq k\leq n} (1-q^k)}
+  \text{ instead of the default }
+  \frac{\sum_{n > 0} z^n}
+  {\prod_{1\leq k\leq n} (1-q^k)}.
+
+.. [#] "Declarations" are commands that affect processing of the current
+   "group". In particular, notice where the braces fall that delimit the
+   effect of the command: Right: ``{\displaystyle ...}`` Wrong:
+   ``\displaystyle{...}``.
+
+   With math_output_ MathML, the declaration must be the first element
+   after the opening bracket.
+
+
+Appendix: Tests
+===============
 
 Font changes
 ------------
@@ -690,15 +897,9 @@ Scripts and Limits
 Accents should be nearer to the base (in MathML Firefox 78, it's vice versa!):
 `\bar a \overline a, \bar l \overline l, \bar i \overline i`.
 
-In inline formulas and fractions, the limits on lim, sum and integrals,
-
-.. math:: \lim_{c\to0} \oint_c f(x) \mathrm{d}x,
-
-should move to index postions: `\lim_{c\to0} \oint_c f(x) \mathrm{d}x`.
-
 Sub- and superscript may be given in any order:
 `x_i^j = x^j_i` and `\int_0^1 = \int^1_0`.
 
-Double exponent: `x^{10}^4`, `r_T_\mathrm{in}` and `x_i^n^2`.
+Double exponent: `x^{10^4}`, `r_{T_\mathrm{in}}` and `x_i^{n^2}`.
 
 Binary vs. unary minus operator: `a - b = -c`
