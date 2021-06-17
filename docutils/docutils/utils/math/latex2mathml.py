@@ -26,6 +26,7 @@
 import collections
 import re
 import sys
+import unicodedata
 if sys.version_info >= (3, 0):
     unicode = str  # noqa
 
@@ -34,13 +35,6 @@ from docutils.utils.math import tex2unichar, toplevel_code
 
 # Character data
 # --------------
-
-# Named XML entities for invalid and invisible characters
-xml_entities = {ord('<'): u'&lt;',
-                ord('>'): u'&gt;',
-                ord('&'): u'&amp;',
-                0x2061:   u'&ApplyFunction;',
-               }
 
 # LaTeX math macro to Unicode mappings.
 # Character categories.
@@ -103,42 +97,59 @@ math_alphabets = {# 'cmdname': 'mathvariant value'  # package
 # operator, fence, or separator -> <mo>
 
 
-math_fences = {# mathfence aliases with adapted spacing
-               'lvert':      u'|',      # left  |
-               'lVert':      u'\u2016', # left  ‖
-               'rvert':      u'|',      # right |
-               'rVert':      u'\u2016', # right ‖
-               'Arrowvert':  u'\u2016', # ‖
-              }
+stretchables = {# extensible delimiters allowed in left/right cmds
+                'backslash':   '\\',
+                'uparrow':     u'\u2191', # ↑ UPWARDS ARROW
+                'downarrow':   u'\u2193', # ↓ DOWNWARDS ARROW
+                'updownarrow': u'\u2195', # ↕ UP DOWN ARROW
+                'Uparrow':     u'\u21d1', # ⇑ UPWARDS DOUBLE ARROW
+                'Downarrow':   u'\u21d3', # ⇓ DOWNWARDS DOUBLE ARROW
+                'Updownarrow': u'\u21d5', # ⇕ UP DOWN DOUBLE ARROW
+                'lmoustache':  u'\u23b0', # ⎰ UPPER LEFT OR LOWER RIGHT CURLY BRACKET SECTION
+                'rmoustache':  u'\u23b1', # ⎱ UPPER RIGHT OR LOWER LEFT CURLY BRACKET SECTION
+                'arrowvert':   u'\u23d0', # ⏐ VERTICAL LINE EXTENSION
+                'bracevert':   u'\u23aa', # ⎪ CURLY BRACKET EXTENSION
+                'lvert':      u'|',      # left  |
+                'lVert':      u'\u2016', # left  ‖
+                'rvert':      u'|',      # right |
+                'rVert':      u'\u2016', # right ‖
+                'Arrowvert':  u'\u2016', # ‖
+               }
+stretchables.update(tex2unichar.mathfence)
+stretchables.update(tex2unichar.mathopen)  # Braces
+stretchables.update(tex2unichar.mathclose) # Braces
 
-operators = tex2unichar.mathbin         # Binary symbols
+# >>> print(' '.join(sorted(set(stretchables.values()))))
+# [ \ ] { | } ‖ ↑ ↓ ↕ ⇑ ⇓ ⇕ ⌈ ⌉ ⌊ ⌋ ⌜ ⌝ ⌞ ⌟ ⎪ ⎰ ⎱ ⏐ ⟅ ⟆ ⟦ ⟧ ⟨ ⟩ ⟮ ⟯ ⦇ ⦈
+
+operators = {# negated symbols without pre-composed Unicode character
+             'nleqq':      u'\u2266\u0338', # ≦̸
+             'ngeqq':      u'\u2267\u0338', # ≧̸
+             'nleqslant':  u'\u2a7d\u0338', # ⩽̸
+             'ngeqslant':  u'\u2a7e\u0338', # ⩾̸
+             'ngtrless':   u'\u2277\u0338', # txfonts
+             'nlessgtr':   u'\u2276\u0338', # txfonts
+             'nsubseteqq': u'\u2AC5\u0338', # ⫅̸
+             'nsupseteqq': u'\u2AC6\u0338', # ⫆̸
+             # alias commands:
+             'dotsb': u'\u22ef', # ⋯ with binary operators/relations
+             'dotsc': u'\u2026', # … with commas
+             'dotsi': u'\u22ef', # ⋯ with integrals
+             'dotsm': u'\u22ef', # ⋯ multiplication dots
+             'dotso': u'\u2026', # … other dots
+             # functions with movable limits (requires <mo>)
+             'lim': 'lim',
+             'sup': 'sup',
+             'inf': 'inf',
+             'max': 'max',
+             'min': 'min',
+            }
+operators.update(tex2unichar.mathbin)   # Binary symbols
 operators.update(tex2unichar.mathrel)   # Relation symbols, arrow symbols
 operators.update(tex2unichar.mathord)   # Miscellaneous symbols
 operators.update(tex2unichar.mathop)    # Variable-sized symbols
-operators.update(tex2unichar.mathopen)  # Braces
-operators.update(tex2unichar.mathclose) # Braces
-operators.update(tex2unichar.mathfence)
-operators.update(math_fences)
-operators.update({# negated symbols without pre-composed Unicode character
-                  'nleqq':      u'\u2266\u0338', # ≦̸
-                  'ngeqq':      u'\u2267\u0338', # ≧̸
-                  'nleqslant':  u'\u2a7d\u0338', # ⩽̸
-                  'ngeqslant':  u'\u2a7e\u0338', # ⩾̸
-                  'nsubseteqq': u'\u2AC5\u0338', # ⫅̸
-                  'nsupseteqq': u'\u2AC6\u0338', # ⫆̸
-                  # alias commands:
-                  'dotsb': u'\u22ef', # ⋯ with binary operators/relations
-                  'dotsc': u'\u2026', # … with commas
-                  'dotsi': u'\u22ef', # ⋯ with integrals
-                  'dotsm': u'\u22ef', # ⋯ multiplication dots
-                  'dotso': u'\u2026', # … other dots
-                  # functions with movable limits (requires <mo>)
-                  'lim': 'lim',
-                  'sup': 'sup',
-                  'inf': 'inf',
-                  'max': 'max',
-                  'min': 'min',
-                 })
+operators.update(stretchables)
+
 
 # special cases
 
@@ -171,38 +182,10 @@ displaylimits = ('bigcap', 'bigcup', 'bigodot', 'bigoplus', 'bigotimes',
 #                       'varointclockwise',))
 
 
-# pre-composed characters for negated symbols
-# see https://www.w3.org/TR/xml-entity-names/#combining
-negatables = {'=': u'\u2260',
-              r'\in': u'\u2209',
-              r'\equiv': u'\u2262'}
-
-# extensible delimiters allowed in left/right cmds
-stretchables = {'backslash':   '\\',
-                'uparrow':     u'\u2191', # ↑ UPWARDS ARROW
-                'downarrow':   u'\u2193', # ↓ DOWNWARDS ARROW
-                'updownarrow': u'\u2195', # ↕ UP DOWN ARROW
-                'Uparrow':     u'\u21d1', # ⇑ UPWARDS DOUBLE ARROW
-                'Downarrow':   u'\u21d3', # ⇓ DOWNWARDS DOUBLE ARROW
-                'Updownarrow': u'\u21d5', # ⇕ UP DOWN DOUBLE ARROW
-                'lmoustache':  u'\u23b0', # ⎰ UPPER LEFT OR LOWER RIGHT CURLY BRACKET SECTION
-                'rmoustache':  u'\u23b1', # ⎱ UPPER RIGHT OR LOWER LEFT CURLY BRACKET SECTION
-                'arrowvert':   u'\u23d0', # ⏐ VERTICAL LINE EXTENSION
-                'bracevert':   u'\u23aa', # ⎪ CURLY BRACKET EXTENSION
-               }
-stretchables.update(tex2unichar.mathfence)
-stretchables.update(tex2unichar.mathopen)
-stretchables.update(tex2unichar.mathclose)
-stretchables.update(math_fences)
-
-# >>> print(' '.join(sorted(set(stretchables.values()))))
-# [ \ ] { | } ‖ ↑ ↓ ↕ ⇑ ⇓ ⇕ ⌈ ⌉ ⌊ ⌋ ⌜ ⌝ ⌞ ⌟ ⎪ ⎰ ⎱ ⏐ ⟅ ⟆ ⟦ ⟧ ⟨ ⟩ ⟮ ⟯ ⦇ ⦈
-
 # horizontal space -> <mspace>
 
 spaces = {'qquad':         '2em',       # two \quad
           'quad':          '1em',       # 18 mu
-          'qquad':         '2em',       # two \quad
           'thickspace':    '0.2778em',  # 5mu = 5/18em
           'medspace':      '0.2222em',  # 4mu = 2/9em
           'thinspace':     '0.1667em',  # 3mu = 1/6em
@@ -210,9 +193,9 @@ spaces = {'qquad':         '2em',       # two \quad
           'negmedspace':   '-0.2222em', # -4mu = -2/9em
           'negthickspace': '-0.2778em', # -5mu = -5/18em
           ' ':             '0.25em',    # inter word space
-          ';':             '0.2778em',  # thickspace
-          ':':             '0.2222em',  # medspace
-          ',':             '0.1667em',  # thinspace
+          ';':             '0.2778em',  # 5mu thickspace
+          ':':             '0.2222em',  # 4mu medspace
+          ',':             '0.1667em',  # 3mu thinspace
           '!':             '-0.1667em', # negthinspace
          }
 
@@ -320,6 +303,12 @@ class math(object):
     parent = None
     """Parent node in MathML DOM tree."""
     _level = 0 # indentation level (static class variable)
+    xml_entities = { # for invalid and invisible characters
+                    ord('<'): u'&lt;',
+                    ord('>'): u'&gt;',
+                    ord('&'): u'&amp;',
+                    0x2061:   u'&ApplyFunction;',
+                   }
 
     def __init__(self, *children, **attributes):
         """Set up node with `children` and `attributes`.
@@ -495,7 +484,7 @@ class MathToken(math):
         super(MathToken, self).__init__(**attributes)
 
     def _xml_body(self, level=0):
-        return [unicode(self.data).translate(xml_entities)]
+        return [unicode(self.data).translate(self.xml_entities)]
 
 class mi(MathToken): pass
 class mn(MathToken): pass
@@ -773,7 +762,7 @@ def parse_latex_math(node, string):
     tree = node
 
     while len(string) > 0:
-        # Take of first character:
+        # Take off first character:
         c, string = string[0], string[1:]
 
         if c == ' ':
@@ -964,11 +953,16 @@ def handle_cmd(name, node, string):
         return node, string
 
     if name == 'not':
-        arg, string = tex_token_or_group(string)
-        try:
-            node = node.append(mo(negatables[arg]))
-        except KeyError:
-            raise SyntaxError(u'"\\not: Cannot negate: %s!'%arg)
+        arg, string = tex_token(string)
+        if arg == '{':
+            return node, '{\\not ' + string
+        if arg.startswith('\\'): # LaTeX macro
+            try:
+                arg = operators[arg[1:]]
+            except KeyError:
+                raise SyntaxError(u'\\not: Cannot negate: "%s"!'%arg)
+        arg = unicodedata.normalize('NFC', arg+u'\u0338')
+        node = node.append(mo(arg))
         return node, string
 
     # arbitrary text (usually comments)  ->  <mtext>
@@ -1334,16 +1328,16 @@ def tex2mathml(tex_math, inline=True):
 
 
 # TODO: look up more symbols from tr25, e.g.
-# 
-# 
+#
+#
 # Table 2.8 Using Vertical Line or Solidus Overlay
 #   some of the negated forms of mathematical relations that can only be
 #   encoded by using either U+0338 COMBINING LONG SOLIDUS OVERLAY or U+20D2
 #   COMBINING LONG VERTICAL LINE OVERLAY . (For issues with using 0338 in
 #   MathML, see Section 3.2.7, Combining Marks.
-# 
+#
 # Table 2.9 Variants of Mathematical Symbols using VS1?
-# 
+#
 # Sequence      Description
 # 0030 + VS1    DIGIT ZERO - short diagonal stroke form
 # 2205 + VS1    EMPTY SET - zero with long diagonal stroke overlay form
@@ -1370,4 +1364,3 @@ def tex2mathml(tex_math, inline=True):
 # 2AAD + VS1    LARGER THAN OR slanted EQUAL
 # 2ACB + VS1    SUBSET OF ABOVE NOT EQUAL TO - variant with stroke through bottom members
 # 2ACC + VS1    SUPERSET OF ABOVE NOT EQUAL TO - variant with stroke through bottom members
-
