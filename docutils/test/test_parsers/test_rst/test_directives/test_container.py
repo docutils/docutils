@@ -79,7 +79,7 @@ totest['container'] = [
 <document source="test data">
     <container ids="my-name" names="my\\ name">
         <paragraph>
-            The name argument allows hyperlinks to 
+            The name argument allows hyperlinks to \n\
             <reference name="my name" refname="my name">
                 my name
             .

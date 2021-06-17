@@ -84,12 +84,12 @@ totest['raw'] = [
         <literal_block xml:space="preserve">
             .. raw:: html
                :file: rawfile.html
-            
+            \n\
                <p>Can't have both content and file attribute.</p>
 """],
 [r"""
 .. raw:: latex html
- 
+
    \[ \sum_{n=1}^\infty \frac{1}{n} \text{ etc.} \]
 """,
 """\

@@ -137,7 +137,7 @@ totest['figures'] = [
         <literal_block xml:space="preserve">
             .. figure:: picture.png
                :align: top
-            
+            \n\
                A figure with wrong alignment.
 """],
 ["""\

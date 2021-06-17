@@ -87,7 +87,7 @@ totest['contents'] = [
         <title>
             <emphasis>
                 Table
-             of 
+             of \n\
             <literal>
                 Contents
         <pending>

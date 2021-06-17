@@ -303,7 +303,7 @@ A paragraph.
             <title>
                 Inclusion 1
             <paragraph>
-                This file is used by 
+                This file is used by \n\
                 <literal>
                     test_include.py
                 .
@@ -314,7 +314,7 @@ A paragraph.
                 <paragraph>
                     Duplicate implicit target name: "inclusion 1".
             <paragraph>
-                This file is used by 
+                This file is used by \n\
                 <literal>
                     test_include.py
                 .
@@ -386,7 +386,7 @@ In test data
         In includes/sibling/include7.txt
     <literal_block source="test_parsers/test_rst/test_directives/includes/include5.txt" xml:space="preserve">
         In includes/include5.txt
-        
+        \n\
         .. include:: more/include6.txt
     <table>
         <tgroup cols="2">
@@ -432,7 +432,7 @@ Section
             In includes/sibling/include7.txt
         <literal_block source="test_parsers/test_rst/test_directives/includes/include5.txt" xml:space="preserve">
             In includes/include5.txt
-            
+            \n\
             .. include:: more/include6.txt
         <table>
             <tgroup cols="2">
@@ -609,7 +609,7 @@ Testing errors in included file:
                 1 argument(s) required, 0 supplied.
             <literal_block xml:space="preserve">
                 .. admonition::
-                
+                \n\
                    without title and content following a blank line
     <section ids="section-underline-too-short" names="section\\ underline\\ too\\ short">
         <title>
@@ -700,8 +700,8 @@ Testing errors in included file:
         <paragraph>
             <problematic ids="id3" refid="id2">
                 :unknown-role:`role`
-            
-            and 
+            \n\
+            and \n\
             <problematic ids="id5" refid="id4">
                 *
             unbalanced
@@ -946,7 +946,7 @@ TAB expansion with literal include:
     <literal_block source="%s" xml:space="preserve">
         Literal included this should **not** be *marked* `up`.
                 <- leading raw tab.
-        
+        \n\
         Newlines
         are
         normalized.
@@ -965,7 +965,7 @@ Custom TAB expansion with literal include:
     <literal_block source="%s" xml:space="preserve">
         Literal included this should **not** be *marked* `up`.
           <- leading raw tab.
-        
+        \n\
         Newlines
         are
         normalized.
@@ -984,7 +984,7 @@ No TAB expansion with literal include:
     <literal_block source="%s" xml:space="preserve">
         Literal included this should **not** be *marked* `up`.
         \t<- leading raw tab.
-        
+        \n\
         Newlines
         are
         normalized.

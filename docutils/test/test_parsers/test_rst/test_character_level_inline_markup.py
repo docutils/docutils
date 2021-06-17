@@ -72,13 +72,13 @@ Also *this**.
         } (open/close pairs)
         <emphasis>
             emphasis
-        ., 
+        ., \n\
         <emphasis>
             emphasis
-        ,, 
+        ,, \n\
         <emphasis>
             emphasis
-        !, and 
+        !, and \n\
         <emphasis>
             emphasis
         (closing delimiters),
@@ -108,7 +108,7 @@ Also *this**.
         but not
         (*), [*], '*' or '"*"' ("quoted" start-string),
         *args or * (escaped; whitespace behind start-string),
-        or 
+        or \n\
         <emphasis>
             the* *stars* *inside
          (escaped; whitespace before end-string).
@@ -121,7 +121,7 @@ Also *this**.
         <paragraph>
             Inline emphasis start-string without end-string.
     <paragraph>
-        Also 
+        Also \n\
         <emphasis>
             this
         <problematic ids="id4" refid="id3">
@@ -186,12 +186,12 @@ require escaping with simple-inline-markup.
         Strong asterisk: \n\
         <strong>
             *
-        
+        \n\
         and
-        strong double asterisk: 
+        strong double asterisk: \n\
         <strong>
             **
-        
+        \n\
         require escaping with simple-inline-markup.
 """],
 ]
@@ -203,7 +203,7 @@ With simple-inline-markup, this is ```interpreted text``` in backquotes!
 """\
 <document source="test data">
     <paragraph>
-        With simple-inline-markup, this is 
+        With simple-inline-markup, this is \n\
         <literal>
             `interpreted text
         ` in backquotes!
@@ -308,7 +308,7 @@ underscore.
     <paragraph>
         This isn't a _target; targets require backquotes.
     <paragraph>
-        With simple-inline-markup, 
+        With simple-inline-markup, \n\
         <target ids="this" names="this">
             this
         _ is a a target followed by an
@@ -330,11 +330,11 @@ Adjacent footnote refs are possible with simple-inline-markup:
         Adjacent footnote refs are possible with simple-inline-markup:
         <footnote_reference auto="*" ids="id1">
         <footnote_reference auto="1" ids="id2" refname="label">
-         
+         \n\
         <footnote_reference auto="1" ids="id3">
         <footnote_reference ids="id4" refname="2">
             2
-         
+         \n\
         <footnote_reference ids="id5" refname="1">
             1
         <footnote_reference auto="*" ids="id6">

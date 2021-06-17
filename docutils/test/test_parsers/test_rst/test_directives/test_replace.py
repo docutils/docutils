@@ -55,7 +55,7 @@ Test the |name| directive.
             Substitution definition "name" empty or invalid.
         <literal_block xml:space="preserve">
             .. |name| replace:: paragraph 1
-            
+            \n\
                                 paragraph 2
 """],
 ["""\
@@ -84,13 +84,13 @@ I recommend you try |Python|_.
 """\
 <document source="test data">
     <substitution_definition names="Python">
-        Python, 
+        Python, \n\
         <emphasis>
             the
          best language around
     <target ids="python" names="python" refuri="http://www.python.org/">
     <paragraph>
-        I recommend you try 
+        I recommend you try \n\
         <reference refname="python">
             <substitution_reference refname="Python">
                 Python

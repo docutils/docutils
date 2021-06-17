@@ -167,12 +167,12 @@ Some ambiguous-width characters:
 » right pointing guillemet
 – en-dash
 — em-dash
-‘ single turned comma quotation mark 
-’ single comma quotation mark 
-‚ low single comma quotation mark 
-“ double turned comma quotation mark 
-” double comma quotation mark 
-„ low double comma quotation mark 
+‘ single turned comma quotation mark
+’ single comma quotation mark
+‚ low single comma quotation mark
+“ double turned comma quotation mark
+” double comma quotation mark
+„ low double comma quotation mark
 † dagger
 ‡ double dagger
 … ellipsis

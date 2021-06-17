@@ -44,7 +44,7 @@ totest['target-notes'] = [
                class: ['custom']
 """],
 ["""\
-.. target-notes:: 
+.. target-notes::
    :class: custom
    :name: targets
 """,
