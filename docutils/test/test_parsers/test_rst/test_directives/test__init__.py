@@ -25,7 +25,6 @@ import docutils.parsers.null
 from docutils.parsers.rst import directives
 
 
-
 class DirectiveOptionConversionTestCase(DocutilsTestSupport.StandardTestCase):
 
     def test_flag(self):
@@ -43,16 +42,16 @@ class DirectiveOptionConversionTestCase(DocutilsTestSupport.StandardTestCase):
         self.assertTrue('something' == directives.unchanged('something'))
         self.assertEqual(3, directives.unchanged(3))
         self.assertEqual([3], directives.unchanged([3]))
-        
-    # ... 13 more direcive option conversion functions.
+
+    # TODO: 13 more directive option conversion functions.
 
     def test_parser_name(self):
         self.assertEqual(None, directives.parser_name(None))
-        self.assertEqual(docutils.parsers.null.Parser, 
+        self.assertEqual(docutils.parsers.null.Parser,
                          directives.parser_name('null'))
-        self.assertEqual(docutils.parsers.rst.Parser, 
+        self.assertEqual(docutils.parsers.rst.Parser,
                          directives.parser_name('rst'))
-        self.assertEqual(docutils.parsers.recommonmark_wrapper.Parser, 
+        self.assertEqual(docutils.parsers.recommonmark_wrapper.Parser,
                          directives.parser_name('markdown'))
         self.assertRaises(ValueError, directives.parser_name, 'fantasy')
 
@@ -60,4 +59,3 @@ class DirectiveOptionConversionTestCase(DocutilsTestSupport.StandardTestCase):
 if __name__ == '__main__':
     import unittest
     unittest.main()
-

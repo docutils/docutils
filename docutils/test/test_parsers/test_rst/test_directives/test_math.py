@@ -81,7 +81,7 @@ totest['content with blank line'] = [
 .. math::
 
   1+1=2
-  
+
   E = mc^2
 """,
 """\

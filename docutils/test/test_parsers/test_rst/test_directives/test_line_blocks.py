@@ -47,7 +47,7 @@ totest['line_blocks'] = [
 .. line-block::
    :class: linear
    :name:  cit:short
-   
+
    This is a line block with options.
 """,
 """\

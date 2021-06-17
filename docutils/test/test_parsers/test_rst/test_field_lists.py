@@ -661,7 +661,7 @@ Not recognized as field list items:
                     works only when the role follows the text
         <field>
             <field_name>
-                a 
+                a \n\
                 <literal classes="code">
                     complex
                  field name

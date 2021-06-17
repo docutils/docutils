@@ -130,10 +130,10 @@ u"""\
     <paragraph>
         Testing comments and extra text.
     <paragraph>
-        Copyright 
+        Copyright \n\
         <substitution_reference refname="copy">
             copy
-         2003, 
+         2003, \n\
         <substitution_reference refname="BogusMegaCorp (TM)">
             BogusMegaCorp (TM)
         .

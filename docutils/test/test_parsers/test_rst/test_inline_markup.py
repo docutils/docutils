@@ -1180,7 +1180,7 @@ phrase_>`__
             embedded alias across lines
 """],
 ["""\
-`embedded alias with whitespace <alias 
+`embedded alias with whitespace <alias
 long  phrase_>`__
 """,
 """\
@@ -1830,7 +1830,7 @@ inline markup separated by non-ASCII whitespace
 \xa0**NO-BREAK SPACE**\xa0, \xa0``NO-BREAK SPACE``\xa0, \xa0`NO-BREAK SPACE`\xa0,
 \u2000**EN QUAD**\u2000, \u2000``EN QUAD``\u2000, \u2000`EN QUAD`\u2000,
 \u202f**NARROW NBSP**\u202f, \u202f``NARROW NBSP``\u202f, \u202f`NARROW NBSP`\u202f,
-""",                                      
+""",
 u"""\
 <document source="test data">
     <paragraph>

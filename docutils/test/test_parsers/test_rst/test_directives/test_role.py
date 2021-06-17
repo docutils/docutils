@@ -64,7 +64,7 @@ Now that it's defined, :custom:`interpreted` works.
 """\
 <document source="test data">
     <paragraph>
-        Must define 
+        Must define \n\
         <problematic ids="id2" refid="id1">
             :custom:`interpreted`
          before using it.
@@ -207,9 +207,9 @@ Empty :custom:`\\ ` and empty `\\ `:special:
 """\
 <document source="test data">
     <paragraph>
-        Empty 
+        Empty \n\
         <inline classes="custom">
-         and empty 
+         and empty \n\
         <inline classes="special">
 """],
 ["""\
