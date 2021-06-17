@@ -262,10 +262,6 @@ The ``\DeclareMathOperator`` command can only be used in the
 Greek letters
 -------------
 
-In LaTeX, the default font for capital Greek letters is upright/roman.
-*Italic* capital Greek letters can be obtained by loading a `package
-providing the "ISO" math style`__. They are used by default in MathML.
-
 Greek letters that have Latin look-alikes are rarely used in math
 formulas and not supported by LaTeX.
 
@@ -285,7 +281,18 @@ formulas and not supported by LaTeX.
   `\Omega`   ``\Omega``    `\lambda`  ``\lambda``   `\psi`     ``\psi``
   ========== ============  ========== ============  ========== ============  ============== ===============
 
+In LaTeX, the default font for capital Greek letters is upright/roman.
+*Italic* capital Greek letters can be obtained by loading a `package
+providing the "ISO" math style`__. They are used by default in MathML.
+
+Individual Greek italic capitals can also be achieved preceding the
+letter name with ``var`` like ``\varPhi``:
+`\varGamma\ \varDelta\ \varLambda\ \varPhi\ \varPi\ \varPsi\ \varSigma\
+\varTheta\ \varUpsilon\ \varXi\ \varOmega`
+
+
 __ http://mirrors.ctan.org/macros/latex/contrib/isomath/isomath.html#table-2
+
 
 Letterlike symbols
 ------------------
@@ -481,9 +488,9 @@ Comparison
 The commands ``\lvertneqq`` and ``\gvertneqq`` are not supported by
 LateX2MathML, as there is no corresponding Unicode character.
 
-Synonyms: `\ne` ``\ne``, `\le` ``\le``, `\ge` ``\ge``, `\Doteq`
-``\Doteq``, `\llless` ``\llless``, `\gggtr` ``\gggtr``,
-`\not =` ``\not =``, `\not \equiv` ``\not \equiv``.
+Synonyms: `\ne` ``\ne``, `\le` ``\le``, `\ge` ``\ge``,
+`\Doteq` ``\Doteq``, `\llless` ``\llless``, `\gggtr` ``\gggtr``,
+`\not=` ``\not=``, `\not\equiv` ``\not\equiv``.
 
 
 Miscellaneous relations
@@ -974,4 +981,3 @@ with extensible delimiters.
    \quad
    \left.\vert \frac{b}{a}\right\Vert\ \bigl\vert b\Bigr\Vert\ \biggl\vert b\Biggr\Vert
    \quad
-   
