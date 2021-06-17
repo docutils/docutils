@@ -489,9 +489,11 @@ The commands ``\lvertneqq`` and ``\gvertneqq`` are not supported by
 LateX2MathML, as there is no corresponding Unicode character.
 
 Synonyms: `\ne` ``\ne``, `\le` ``\le``, `\ge` ``\ge``,
-`\Doteq` ``\Doteq``, `\llless` ``\llless``, `\gggtr` ``\gggtr``,
-`\not=` ``\not=``, `\not\equiv` ``\not\equiv``.
+`\Doteq` ``\Doteq``, `\llless` ``\llless``, `\gggtr` ``\gggtr``.
 
+Symbols can be negated prepending ``\not``, e.g.
+`\not=` ``\not=``, `\not\equiv` ``\not\equiv``,
+`\not\gtrless` ``\not\gtrless``, `\not\lessgtr` ``\not\lessgtr``.
 
 Miscellaneous relations
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -522,7 +524,10 @@ Miscellaneous relations
   `\ntriangleleft`      ``\ntriangleleft``       `\Subset`           ``\Subset``
   ===================== =======================  =================== =====================  =================== =====================
 
-Synonyms: `\owns` ``\owns``, `\not\in` ``\not\in``.
+Synonyms: `\owns` ``\owns``.
+
+Symbols can be negated prepending ``\not``, e.g.
+`\not\in` ``\not\in``, `\not\ni` ``\not\ni``.
 
 The commands ``\varsubsetneq``, ``\varsubsetneqq``, ``\varsupsetneq``,
 and ``\varsupsetneqq`` are not supported by LateX2MathML, as there is no
@@ -790,13 +795,13 @@ Whitespace is kept inside the argument:
 
 The text may contain math commands wrapped in ``$`` signs, e.g.
 
-.. math:: (-1)^{n_i} = \begin{cases} -1 \quad \text{if $n_i$ is odd} \\
+.. math:: (-1)^{n_i} = \begin{cases} -1 \quad \text{if $n_i$ is odd,} \\
                                      +1 \quad \text{if $n_i$ is even.}
                        \end{cases}
 
 .. TODO ignore {}, handle text-mode commands
 
-
+ 
 .. TODO: ``\mod`` and its relatives
          --------------------------
 
@@ -917,7 +922,9 @@ The elements <msqrt>, <mstyle>, <merror>, <mpadded>, <mphantom>, <menclose>,
 <mtd>, <mscarry>, and <math> treat their contents as a single inferred mrow
 formed from all their children.
 
-.. math:: a = \sqrt 2 + x, b = \sqrt{1+x^2}, c = \sqrt\frac{\sin(x)}{23},
+.. math:: a = \sqrt 2 + x,\quad
+          b = \sqrt{1+x^2},\quad
+          c = \sqrt\frac{\sin(x)}{23},
 
 inline: :math:`a = \sqrt 2 + x, b = \sqrt{1+x^2}, c = \sqrt\frac{\sin(x)}{23}`.
 
@@ -942,8 +949,8 @@ tex-token returns "{" for nested groups:
 .. math:: \text{das ist ein  {toller} text (unescaped \{ and \} is
                 ignored by LaTeX)}
 
-Big delimiters
-~~~~~~~~~~~~~~
+Big delimiters and symbols
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Test ``\left``, ``\right``, and the  \bigl/\bigr, … size commands
 with extensible delimiters.
@@ -981,3 +988,20 @@ with extensible delimiters.
    \quad
    \left.\vert \frac{b}{a}\right\Vert\ \bigl\vert b\Bigr\Vert\ \biggl\vert b\Biggr\Vert
    \quad
+
+
+Variable-sized operators:
+
+Inline: `\sum\ \int\ \oint\ \smallint\ \prod\ \coprod\ \bigwedge\
+\bigvee\ \bigcap\ \bigcup\ \biguplus\ \bigsqcup\ \bigodot\ \bigoplus\
+\bigotimes` and Display:
+
+.. math:: \sum\ \int\ \oint\ \smallint\ \prod\ \coprod\ \bigwedge
+          \ \bigvee\ \bigcap\ \bigcup\ \biguplus\ \bigsqcup\ \bigodot
+          \ \bigoplus\ \bigotimes
+          \ \iiint\ \iiiint
+
+Text
+~~~~
+
+The text may contain non-ASCII characters: `n_\text{Stoß}`.
