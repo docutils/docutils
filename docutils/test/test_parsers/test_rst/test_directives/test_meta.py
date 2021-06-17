@@ -29,22 +29,8 @@ totest['meta'] = [
 """,
 """\
 <document source="test data">
-    <pending>
-        .. internal attributes:
-             .transform: docutils.transforms.components.Filter
-             .details:
-               component: 'writer'
-               format: 'html,latex,odt'
-               nodes:
-                 <meta content="The reStructuredText plaintext markup language" name="description">
-    <pending>
-        .. internal attributes:
-             .transform: docutils.transforms.components.Filter
-             .details:
-               component: 'writer'
-               format: 'html,latex,odt'
-               nodes:
-                 <meta content="plaintext,markup language" name="keywords">
+    <meta content="The reStructuredText plaintext markup language" name="description">
+    <meta content="plaintext,markup language" name="keywords">
 """],
 ["""\
 .. meta::
@@ -53,22 +39,8 @@ totest['meta'] = [
 """,
 """\
 <document source="test data">
-    <pending>
-        .. internal attributes:
-             .transform: docutils.transforms.components.Filter
-             .details:
-               component: 'writer'
-               format: 'html,latex,odt'
-               nodes:
-                 <meta content="An amusing story" lang="en" name="description">
-    <pending>
-        .. internal attributes:
-             .transform: docutils.transforms.components.Filter
-             .details:
-               component: 'writer'
-               format: 'html,latex,odt'
-               nodes:
-                 <meta content="Un histoire amusant" lang="fr" name="description">
+    <meta content="An amusing story" lang="en" name="description">
+    <meta content="Un histoire amusant" lang="fr" name="description">
 """],
 ["""\
 .. meta::
@@ -76,14 +48,7 @@ totest['meta'] = [
 """,
 """\
 <document source="test data">
-    <pending>
-        .. internal attributes:
-             .transform: docutils.transforms.components.Filter
-             .details:
-               component: 'writer'
-               format: 'html,latex,odt'
-               nodes:
-                 <meta content="text/html; charset=ISO-8859-1" http-equiv="Content-Type">
+    <meta content="text/html; charset=ISO-8859-1" http-equiv="Content-Type">
 """],
 ["""\
 .. meta::
@@ -92,14 +57,7 @@ totest['meta'] = [
 """,
 """\
 <document source="test data">
-    <pending>
-        .. internal attributes:
-             .transform: docutils.transforms.components.Filter
-             .details:
-               component: 'writer'
-               format: 'html,latex,odt'
-               nodes:
-                 <meta content="content over multiple lines" name="name">
+    <meta content="content over multiple lines" name="name">
 """],
 ["""\
 Paragraph
@@ -111,14 +69,7 @@ Paragraph
 <document source="test data">
     <paragraph>
         Paragraph
-    <pending>
-        .. internal attributes:
-             .transform: docutils.transforms.components.Filter
-             .details:
-               component: 'writer'
-               format: 'html,latex,odt'
-               nodes:
-                 <meta content="content" name="name">
+    <meta content="content" name="name">
 """],
 ["""\
 .. meta::
@@ -164,14 +115,7 @@ Paragraph
 """,
 """\
 <document source="test data">
-    <pending>
-        .. internal attributes:
-             .transform: docutils.transforms.components.Filter
-             .details:
-               component: 'writer'
-               format: 'html,latex,odt'
-               nodes:
-                 <meta content="content" name="name">
+    <meta content="content" name="name">
     <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
             Invalid meta directive.
@@ -189,22 +133,8 @@ Paragraph
 """,
 """\
 <document source="test data">
-    <pending>
-        .. internal attributes:
-             .transform: docutils.transforms.components.Filter
-             .details:
-               component: 'writer'
-               format: 'html,latex,odt'
-               nodes:
-                 <meta content="content" name="name">
-    <pending>
-        .. internal attributes:
-             .transform: docutils.transforms.components.Filter
-             .details:
-               component: 'writer'
-               format: 'html,latex,odt'
-               nodes:
-                 <meta content="content" name="name">
+    <meta content="content" name="name">
+    <meta content="content" name="name">
     <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
             Invalid meta directive.
@@ -234,22 +164,8 @@ Paragraph
 """,
 """\
 <document source="test data">
-    <pending>
-        .. internal attributes:
-             .transform: docutils.transforms.components.Filter
-             .details:
-               component: 'writer'
-               format: 'html,latex,odt'
-               nodes:
-                 <meta content="escaped linebreak" name="name:with:colons">
-    <pending>
-        .. internal attributes:
-             .transform: docutils.transforms.components.Filter
-             .details:
-               component: 'writer'
-               format: 'html,latex,odt'
-               nodes:
-                 <meta content="content" name="unescaped:embedded:colons">
+    <meta content="escaped linebreak" name="name:with:colons">
+    <meta content="content" name="unescaped:embedded:colons">
 """],
 ]
 

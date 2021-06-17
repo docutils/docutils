@@ -359,7 +359,7 @@ A backslash (``\``) escapes the following character.
 
   In `URI context` [#uri-context]_, backslash-escaped whitespace
   represents a single space.
-  
+
 Backslashes have no special meaning in `literal context` [#literal-context]_.
 Here, a single backslash represents a literal backslash, without having
 to double up. [#caveat]_
@@ -474,9 +474,11 @@ the "document title" can become the document subtitle.  The rest of
 the sections are then lifted up a level or two.  See the `DocTitle
 transform`_ for details.
 
-.. [#] The `title configuration setting`__ and the `title directive`__
-   set a document title that does not become part of the document body.
+.. [#] The `"title" configuration setting`__ and the `"title"
+   directive`__ set the document's `title attribute`_ that does not
+   become part of the document body.
 
+   .. _title attribute: ../doctree.html#title-attribute
    __ ../../user/config.html#title
    __ directives.html#metadata-document-title
 

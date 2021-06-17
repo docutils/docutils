@@ -92,7 +92,7 @@ universal.StripComments         Reader (r)                    740
 
 peps.PEPZero                    peps.Headers (t/p)            760
 
-components.Filter               "meta" (d/p)                  780
+components.Filter               *not used*                    780
 
 universal.Decorations           Reader (r)                    820
 

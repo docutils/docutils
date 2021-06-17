@@ -76,7 +76,7 @@ Specific Admonitions
 :Directive Types: "attention", "caution", "danger", "error", "hint",
                   "important", "note", "tip", "warning", "admonition"
 :Doctree Elements: attention, caution, danger, error, hint, important,
-                   note, tip, warning, admonition_, title
+                   note, tip, warning, admonition_, title_
 :Directive Arguments: None.
 :Directive Options: `:class:`_, `:name:`_
 :Directive Content: Interpreted as body elements.
@@ -128,7 +128,7 @@ Generic Admonition
 ==================
 
 :Directive Type: "admonition"
-:Doctree Elements: admonition_, title
+:Doctree Elements: admonition_, title_
 :Directive Arguments: One, required (admonition title)
 :Directive Options: `:class:`_, `:name:`_
 :Directive Content: Interpreted as body elements.
@@ -512,7 +512,7 @@ __ http://docutils.sourceforge.net/sandbox/stylesheets/
 
 The following options are recognized:
 
-``number-lines`` : [integer]
+``number-lines`` : [integer] (start line number)
     Precede every line with a line number.
     The optional argument is the number of the first line (defaut 1).
 
@@ -1853,7 +1853,7 @@ Metadata
 ========
 
 :Directive Type: "meta"
-:Doctree Element: pending_, meta (non-standard)
+:Doctree Element: meta_
 :Directive Arguments: None.
 :Directive Options: None.
 :Directive Content: Must contain a flat field list.
@@ -1866,7 +1866,7 @@ content is silently dropped by the writer.
 
 .. note:: Data from some `bibliographic fields`_ is automatically
    extracted and stored as metadata, too. However, Bibliographic
-   Fields are also visible in the document's screen rendering or
+   Fields are also displayed in the document's screen rendering or
    printout.
 
    For an "invisible" *document title*, see the `metadata document
@@ -1912,12 +1912,10 @@ HTML equivalent::
     <meta http-equiv="Content-Type"
          content="text/html; charset=ISO-8859-1">
 
-
 .. [#] "Metadata" is data about data, in this case data about the
    document. Metadata is, e.g., used to describe and classify web
    pages in the World Wide Web, in a form that is easy for search
    engines to extract and collate.
-
 
 .. _HTML meta elements:
    https://html.spec.whatwg.org/multipage/semantics.html#the-meta-element
@@ -1931,16 +1929,19 @@ Metadata Document Title
 =======================
 
 :Directive Type: "title"
-:Doctree Element: None.
+:Doctree Element: Sets the document's `title attribute`_.
 :Directive Arguments: One, required (the title text).
 :Directive Options: None.
 :Directive Content: None.
 
 The "title" directive specifies the document title as metadata, which
-does not become part of the document body.  It overrides a
-document-supplied title.  For example, in HTML output the metadata
-document title appears in the title bar of the browser window.
+does not become part of the document body. It overrides the
+document-supplied `document title`_ and the `"title" configuration
+setting`_. For example, in HTML output the metadata document title
+appears in the title bar of the browser window.
 
+.. _document title: restructuredtext.html#document-title
+.. _"title" configuration setting: ../../user/config.html#title
 
 Restructuredtext-Test-Directive
 ===============================
@@ -2017,6 +2018,7 @@ _`:name:` : text
 .. _length: restructuredtext.html#length-units
 .. _line_block: ../doctree.html#line-block
 .. _math_block: ../doctree.html#math-block
+.. _meta: ../doctree.html#meta
 .. _pending: ../doctree.html#pending
 .. _percentage: restructuredtext.html#percentage-units
 .. _raw: ../doctree.html#raw
@@ -2024,6 +2026,7 @@ _`:name:` : text
 .. _sidebar: ../doctree.html#sidebar
 .. _table: ../doctree.html#table
 .. _title: ../doctree.html#title
+.. _title attribute: ../doctree.html#title-attribute
 .. _topic: ../doctree.html#topic
 
 

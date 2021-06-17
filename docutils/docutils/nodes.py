@@ -40,7 +40,6 @@ if sys.version_info >= (3, 0):
 # ==============================
 
 class Node(object):
-
     """Abstract base class of nodes in a document tree."""
 
     parent = None
@@ -1590,6 +1589,13 @@ class subtitle(Titular, PreBibliographic, TextElement): pass
 class rubric(Titular, TextElement): pass
 
 
+# ==================
+#  Meta-Data Element
+# ==================
+
+class meta(PreBibliographic, Element):
+    """Container for "invisible" bibliographic data, or meta-data."""
+
 # ========================
 #  Bibliographic Elements
 # ========================
@@ -1914,7 +1920,7 @@ node_class_names = """
     header hint
     image important inline
     label legend line line_block list_item literal literal_block
-    math math_block
+    math math_block meta
     note
     option option_argument option_group option_list option_list_item
         option_string organization
@@ -1945,9 +1951,9 @@ class NodeVisitor(object):
     "``depart_`` + node class name", resp.
 
     This is a base class for visitors whose ``visit_...`` & ``depart_...``
-    methods should be implemented for *all* node types encountered (such as
-    for `docutils.writers.Writer` subclasses).  Unimplemented methods will
-    raise exceptions.
+    methods must be implemented for *all* compulsory node types encountered
+    (such as for `docutils.writers.Writer` subclasses).
+    Unimplemented methods will raise exceptions (except for optional nodes).
 
     For sparse traversals, where only certain node types are of interest, use
     subclass `SparseNodeVisitor` instead.  When (mostly or entirely) uniform
@@ -1958,7 +1964,7 @@ class NodeVisitor(object):
        1995.
     """
 
-    optional = ()
+    optional = (meta)
     """
     Tuple containing node class names (as strings).
 

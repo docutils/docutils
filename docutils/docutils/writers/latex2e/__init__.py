@@ -2586,6 +2586,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.pdfinfo.append('  addtopdfproducer={%s},'%content)
         else:
             # generic interface (case sensitive!)
+            # TODO: filter irrelevant nodes ("http-equiv", ...)?
             self.pdfinfo.append('  pdfinfo={%s={%s}},'%(name, content))
 
     def depart_meta(self, node):

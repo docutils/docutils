@@ -38,17 +38,6 @@ Future changes
 
 * `htm4css1` writer: Support the embed_images_ option.
 
-* Make <meta> a standard Docutils doctree node.
-
-  The `meta directive`__ will insert <meta> instead of pending nodes.
-  Writers may ignore some or all <meta> elements if they are not
-  supported by the output format.
-
-  The ``transforms/components.Filter`` class will become obsolete by
-  this change and may be removed in future.
-
-  __ docs/ref/rst/directives.html#meta
-
 * Remove the "rawsource" attribute and argument from nodes.Text:
   we store the null-escaped text in Text nodes since 0.16 so there is no
   additional information in the rawsource.
@@ -108,6 +97,10 @@ Release 0.18.dev
 * ``nodes.Node.traverse()`` returns an iterator instead of a list.
 
   
+* Make meta__ a standard Docutils doctree node.
+
+  __ docs/ref/doctree.html#meta
+
 
 Release 0.17.1 (2021-04-16)
 ===========================

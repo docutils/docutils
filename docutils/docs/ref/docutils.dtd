@@ -254,6 +254,7 @@ http://www.oasis-open.org/html/tm9901.htm).
 <!ELEMENT document
     ( (title, subtitle?)?,
       decoration?,
+      meta?,
       (docinfo, transition?)?,
       %structure.model; )>
 <!ATTLIST document
@@ -281,7 +282,7 @@ http://www.oasis-open.org/html/tm9901.htm).
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 -->
 
-<!-- Container for bibliographic elements. May not be empty. -->
+<!-- Container for bibliographic elements. Must not be empty. -->
 <!ELEMENT docinfo (%bibliographic.elements;)+>
 <!ATTLIST docinfo %basic.atts;>
 
@@ -321,6 +322,10 @@ Eventual replacement for docinfo? -->
 
 <!ELEMENT copyright %text.model;>
 <!ATTLIST copyright %basic.atts;>
+
+<!-- Container for "hidden" meta-data. Must not be empty. -->
+<!ELEMENT meta (field_list+)>
+<!ATTLIST meta %basic.atts;>
 
 <!--
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
