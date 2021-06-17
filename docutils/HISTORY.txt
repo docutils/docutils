@@ -58,6 +58,9 @@ Changes Since 0.17.1
 
   - The setting `legacy_class_functions`_ now defaults to "False".
     Adapt stylesheets modifying ``\DUadmonition`` and/or ``\DUtitle``.
+    
+  - Apply patch #181 "Fix tocdepth when chapter/part in use" by
+    John Thorvald Wodder II.
 
 * docutils/writers/latex2e/docutils.sty
 

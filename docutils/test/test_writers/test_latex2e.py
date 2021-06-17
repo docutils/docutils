@@ -23,6 +23,9 @@ def suite():
     s.generateTests(totest)
     settings['use_latex_toc'] = True
     s.generateTests(totest_latex_toc)
+    settings['documentclass'] = 'book'
+    s.generateTests(totest_latex_toc_book)
+    del settings['documentclass']
     settings['use_latex_toc'] = False
     settings['sectnum_xform'] = False
     s.generateTests(totest_latex_sectnum)
@@ -120,6 +123,7 @@ r"""\usepackage{alltt}
 
 totest = {}
 totest_latex_toc = {}
+totest_latex_toc_book = {}
 totest_latex_sectnum = {}
 totest_latex_citations = {}
 totest_stylesheet = {}
@@ -309,6 +313,64 @@ head_template.substitute(dict(parts,
 
 \section{1   first section%
   \label{first-section}%
+}
+
+\end{document}
+"""],
+]
+
+totest_latex_toc['depth'] = [
+# input
+["""\
+.. contents::
+    :depth: 1
+
+first section
+-------------
+""",
+## # expected output
+head_template.substitute(dict(parts,
+    requirements=parts['requirements'] + '\\setcounter{secnumdepth}{0}\n'
+)) + r"""
+\phantomsection\label{contents}
+\pdfbookmark[1]{Contents}{contents}
+\setcounter{tocdepth}{1}
+
+\tableofcontents
+
+
+\section{first section%
+  \label{first-section}%
+}
+
+\end{document}
+"""],
+]
+
+totest_latex_toc_book['depth'] = [
+# input
+["""\
+.. contents::
+    :depth: 1
+
+first chapter
+-------------
+""",
+## # expected output
+head_template.substitute(dict(parts,
+    head_prefix=r"""\documentclass[a4paper]{book}
+""",
+    requirements=parts['requirements'] + '\\setcounter{secnumdepth}{0}\n'
+)) + r"""
+\phantomsection\label{contents}
+\pdfbookmark[1]{Contents}{contents}
+\setcounter{tocdepth}{0}
+
+\tableofcontents
+
+
+\chapter{first chapter%
+  \label{first-chapter}%
 }
 
 \end{document}

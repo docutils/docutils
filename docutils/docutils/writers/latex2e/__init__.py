@@ -794,6 +794,21 @@ class DocumentClass(object):
         # unsupported levels
         return 'DUtitle'
 
+    def latex_section_depth(self, depth):
+        """
+        Return LaTeX equivalent of Docutils section level `depth`.
+        
+        Given the value of the ``:depth:`` option of the "contents" or
+        "sectnum" directive, return the corresponding value for the
+        LaTeX ``tocdepth`` or ``secnumdepth`` counters.        
+        """
+        depth = min(depth, len(self.sections)) # limit to supported levels
+        if 'chapter' in self.sections:
+            depth -= 1
+        if self.sections[0] == 'part':
+            depth -= 1
+        return depth
+
 
 class Table(object):
     """Manage a table while traversing.
@@ -1283,9 +1298,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # LaTeX Toc
         # include all supported sections in toc and PDF bookmarks
         # (or use documentclass-default (as currently))?
-        ## if self.use_latex_toc:
-        ##    self.requirements['tocdepth'] = (r'\setcounter{tocdepth}{%d}' %
-        ##                                     len(self.d_class.sections))
 
         # Section numbering
         if settings.sectnum_xform: # section numbering by Docutils
@@ -1304,16 +1316,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
             #        4  paragraph
             #        5  subparagraph
             if secnumdepth is not None:
-                # limit to supported levels
-                secnumdepth = min(secnumdepth, len(self.d_class.sections))
-                # adjust to document class and use_part_section settings
-                if 'chapter' in  self.d_class.sections:
-                    secnumdepth -= 1
-                if self.d_class.sections[0] == 'part':
-                    secnumdepth -= 1
-                PreambleCmds.secnumdepth = \
-                    r'\setcounter{secnumdepth}{%d}' % secnumdepth
-
+                PreambleCmds.secnumdepth = (r'\setcounter{secnumdepth}{%d}'
+                            % self.d_class.latex_section_depth(secnumdepth))
             # start with specified number:
             if (hasattr(settings, 'sectnum_start') and
                 settings.sectnum_start != 1):
@@ -3166,10 +3170,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
                     self.minitoc(node, title, depth)
                     return
                 if depth:
-                    self.out.append('\\setcounter{tocdepth}{%d}\n' % depth)
+                    self.out.append('\n\\setcounter{tocdepth}{%d}\n'
+                                    % self.d_class.latex_section_depth(depth))
                 if title != 'Contents':
-                    self.out.append('\n\\renewcommand{\\contentsname}{%s}' %
-                                    title)
+                    self.out.append('\n\\renewcommand{\\contentsname}{%s}'
+                                    % title)
                 self.out.append('\n\\tableofcontents\n')
                 self.has_latex_toc = True
                 # ignore rest of node content
