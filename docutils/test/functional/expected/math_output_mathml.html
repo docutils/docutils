@@ -44,57 +44,45 @@ role specificator, <math xmlns="http://www.w3.org/1998/Math/MathML">
 <cite>math</cite> directive:</p>
 <div>
 <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-  <mtable class="align" displaystyle="true">
-    <mtr>
-      <mtd>
-        <mi>f</mi>
-        <mo stretchy="false">(</mo>
-        <mi>ϵ</mi>
-        <mo stretchy="false">)</mo>
-        <mo>=</mo>
+  <mi>f</mi>
+  <mo stretchy="false">(</mo>
+  <mi>ϵ</mi>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mfrac>
+    <mn>1</mn>
+    <mrow>
+      <mn>1</mn>
+      <mo>+</mo>
+      <mi>exp</mi>
+      <mo>&ApplyFunction;</mo>
+      <mrow>
+        <mo>(</mo>
         <mfrac>
-          <mn>1</mn>
+          <mi>ε</mi>
           <mrow>
-            <mn>1</mn>
-            <mo>+</mo>
-            <mi>exp</mi>
-            <mo>&ApplyFunction;</mo>
-            <mrow>
-              <mo>(</mo>
-              <mfrac>
-                <mi>ε</mi>
-                <mrow>
-                  <msub>
-                    <mi>k</mi>
-                    <mtext>B</mtext>
-                  </msub>
-                  <mi>T</mi>
-                </mrow>
-              </mfrac>
-              <mo>)</mo>
-            </mrow>
+            <msub>
+              <mi>k</mi>
+              <mtext>B</mtext>
+            </msub>
+            <mi>T</mi>
           </mrow>
         </mfrac>
-      </mtd>
-    </mtr>
-  </mtable>
+        <mo>)</mo>
+      </mrow>
+    </mrow>
+  </mfrac>
 </math>
 </div>
 <p>Content may start on the first line of the directive, e.g.</p>
 <div>
 <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-  <mtable class="align" displaystyle="true">
-    <mtr>
-      <mtd>
-        <mi>N</mi>
-        <mo>=</mo>
-        <mfrac>
-          <mtext>number of apples</mtext>
-          <mn>7</mn>
-        </mfrac>
-      </mtd>
-    </mtr>
-  </mtable>
+  <mi>N</mi>
+  <mo>=</mo>
+  <mfrac>
+    <mtext>number of apples</mtext>
+    <mn>7</mn>
+  </mfrac>
 </math>
 </div>
 <p>Equations can be labeled with a reference name using the <span class="docutils literal">:name:</span> option.
@@ -102,36 +90,30 @@ See <a class="reference internal" href="#eq-m">eq:M</a> and <a class="reference 
 <p>The determinant of the matrix</p>
 <div id="eq-m">
 <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-  <mtable class="align" displaystyle="true">
-    <mtr>
-      <mtd>
-        <mi mathvariant="bold">M</mi>
-        <mo>=</mo>
-        <mrow>
-          <mo>(</mo>
-          <mtable>
-            <mtr>
-              <mtd>
-                <mi>a</mi>
-              </mtd>
-              <mtd>
-                <mi>b</mi>
-              </mtd>
-            </mtr>
-            <mtr>
-              <mtd>
-                <mi>c</mi>
-              </mtd>
-              <mtd>
-                <mi>d</mi>
-              </mtd>
-            </mtr>
-          </mtable>
-          <mo>)</mo>
-        </mrow>
-      </mtd>
-    </mtr>
-  </mtable>
+  <mi mathvariant="bold">M</mi>
+  <mo>=</mo>
+  <mrow>
+    <mo>(</mo>
+    <mtable>
+      <mtr>
+        <mtd>
+          <mi>a</mi>
+        </mtd>
+        <mtd>
+          <mi>b</mi>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd>
+          <mi>c</mi>
+        </mtd>
+        <mtd>
+          <mi>d</mi>
+        </mtd>
+      </mtr>
+    </mtable>
+    <mo>)</mo>
+  </mrow>
 </math>
 </div>
 <p>is <math xmlns="http://www.w3.org/1998/Math/MathML">
@@ -149,64 +131,52 @@ See <a class="reference internal" href="#eq-m">eq:M</a> and <a class="reference 
 For example, the following sum and integral with limits:</p>
 <div>
 <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-  <mtable class="align" displaystyle="true">
-    <mtr>
-      <mtd>
-        <msubsup>
-          <mo>∫</mo>
-          <mn>0</mn>
-          <mn>1</mn>
-        </msubsup>
-        <msup>
-          <mi>x</mi>
-          <mi>n</mi>
-        </msup>
-        <mi>d</mi>
-        <mi>x</mi>
-        <mo>=</mo>
-        <mfrac>
-          <mn>1</mn>
-          <mrow>
-            <mi>n</mi>
-            <mo>+</mo>
-            <mn>1</mn>
-          </mrow>
-        </mfrac>
-      </mtd>
-    </mtr>
-  </mtable>
+  <msubsup>
+    <mo>∫</mo>
+    <mn>0</mn>
+    <mn>1</mn>
+  </msubsup>
+  <msup>
+    <mi>x</mi>
+    <mi>n</mi>
+  </msup>
+  <mi>d</mi>
+  <mi>x</mi>
+  <mo>=</mo>
+  <mfrac>
+    <mn>1</mn>
+    <mrow>
+      <mi>n</mi>
+      <mo>+</mo>
+      <mn>1</mn>
+    </mrow>
+  </mfrac>
 </math>
 </div>
 <div>
 <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-  <mtable class="align" displaystyle="true">
-    <mtr>
-      <mtd>
-        <munderover>
-          <mo movablelimits="true">∑</mo>
-          <mrow>
-            <mi>n</mi>
-            <mo>=</mo>
-            <mn>1</mn>
-          </mrow>
-          <mi>m</mi>
-        </munderover>
-        <mi>n</mi>
-        <mo>=</mo>
-        <mfrac>
-          <mrow>
-            <mi>m</mi>
-            <mo stretchy="false">(</mo>
-            <mi>m</mi>
-            <mo>+</mo>
-            <mn>1</mn>
-            <mo stretchy="false">)</mo>
-          </mrow>
-          <mn>2</mn>
-        </mfrac>
-      </mtd>
-    </mtr>
-  </mtable>
+  <munderover>
+    <mo movablelimits="true">∑</mo>
+    <mrow>
+      <mi>n</mi>
+      <mo>=</mo>
+      <mn>1</mn>
+    </mrow>
+    <mi>m</mi>
+  </munderover>
+  <mi>n</mi>
+  <mo>=</mo>
+  <mfrac>
+    <mrow>
+      <mi>m</mi>
+      <mo stretchy="false">(</mo>
+      <mi>m</mi>
+      <mo>+</mo>
+      <mn>1</mn>
+      <mo stretchy="false">)</mo>
+    </mrow>
+    <mn>2</mn>
+  </mfrac>
 </math>
 </div>
 <p>LaTeX-supported Unicode math symbols can be used in math roles and
@@ -214,29 +184,23 @@ directives:</p>
 <p>The Schrödinger equation</p>
 <div id="eq-schrodinger">
 <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-  <mtable class="align" displaystyle="true">
-    <mtr>
-      <mtd>
-        <mi>i</mi>
-        <mi>ℏ</mi>
-        <mfrac>
-          <mo>∂</mo>
-          <mrow>
-            <mo>∂</mo>
-            <mi>t</mi>
-          </mrow>
-        </mfrac>
-        <mi class="capital-greek">Ψ</mi>
-        <mo>=</mo>
-        <mover accent="true">
-          <mi>H</mi>
-          <mo>ˆ</mo>
-        </mover>
-        <mi class="capital-greek">Ψ</mi>
-        <mo>,</mo>
-      </mtd>
-    </mtr>
-  </mtable>
+  <mi>i</mi>
+  <mi>ℏ</mi>
+  <mfrac>
+    <mo>∂</mo>
+    <mrow>
+      <mo>∂</mo>
+      <mi>t</mi>
+    </mrow>
+  </mfrac>
+  <mi class="capital-greek">Ψ</mi>
+  <mo>=</mo>
+  <mover accent="true">
+    <mi>H</mi>
+    <mo>ˆ</mo>
+  </mover>
+  <mi class="capital-greek">Ψ</mi>
+  <mo>,</mo>
 </math>
 </div>
 <p>with the <em>wave function</em> <math xmlns="http://www.w3.org/1998/Math/MathML">
@@ -337,101 +301,95 @@ physical system changes in time.</p>
 <p>Modulation Transfer Function:</p>
 <div>
 <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-  <mtable class="align" displaystyle="true">
-    <mtr>
-      <mtd>
-        <mtext>MTF</mtext>
-        <mo>=</mo>
-        <mrow>
-          <mo>|</mo>
-          <mfrac>
-            <mrow>
-              <mi mathvariant="script">F</mi>
-              <mo>{</mo>
-              <mi>s</mi>
-              <mo stretchy="false">(</mo>
+  <mtext>MTF</mtext>
+  <mo>=</mo>
+  <mrow>
+    <mo>|</mo>
+    <mfrac>
+      <mrow>
+        <mi mathvariant="script">F</mi>
+        <mo>{</mo>
+        <mi>s</mi>
+        <mo stretchy="false">(</mo>
+        <mi>x</mi>
+        <mo stretchy="false">)</mo>
+        <mo>}</mo>
+      </mrow>
+      <mrow>
+        <mi mathvariant="script">F</mi>
+        <mo>{</mo>
+        <mi>s</mi>
+        <mo stretchy="false">(</mo>
+        <mi>x</mi>
+        <mo stretchy="false">)</mo>
+        <mo>}</mo>
+        <msub>
+          <mo stretchy="false">|</mo>
+          <mrow>
+            <msub>
+              <mi>ω</mi>
               <mi>x</mi>
-              <mo stretchy="false">)</mo>
-              <mo>}</mo>
-            </mrow>
-            <mrow>
-              <mi mathvariant="script">F</mi>
-              <mo>{</mo>
-              <mi>s</mi>
-              <mo stretchy="false">(</mo>
+            </msub>
+            <mo>=</mo>
+            <mn>0</mn>
+          </mrow>
+        </msub>
+      </mrow>
+    </mfrac>
+    <mo>|</mo>
+  </mrow>
+  <mo>=</mo>
+  <mi mathvariant="normal">abs</mi>
+  <mrow>
+    <mo>(</mo>
+    <mfrac>
+      <mrow>
+        <msubsup>
+          <mo>∫</mo>
+          <mrow>
+            <mo>−</mo>
+            <mo>∞</mo>
+          </mrow>
+          <mo>∞</mo>
+        </msubsup>
+        <mi>s</mi>
+        <mo stretchy="false">(</mo>
+        <mi>x</mi>
+        <mo stretchy="false">)</mo>
+        <msup>
+          <mi mathvariant="normal">e</mi>
+          <mrow>
+            <mi mathvariant="normal">i</mi>
+            <msub>
+              <mi>ω</mi>
               <mi>x</mi>
-              <mo stretchy="false">)</mo>
-              <mo>}</mo>
-              <msub>
-                <mo stretchy="false">|</mo>
-                <mrow>
-                  <msub>
-                    <mi>ω</mi>
-                    <mi>x</mi>
-                  </msub>
-                  <mo>=</mo>
-                  <mn>0</mn>
-                </mrow>
-              </msub>
-            </mrow>
-          </mfrac>
-          <mo>|</mo>
-        </mrow>
-        <mo>=</mo>
-        <mi mathvariant="normal">abs</mi>
-        <mrow>
-          <mo>(</mo>
-          <mfrac>
-            <mrow>
-              <msubsup>
-                <mo>∫</mo>
-                <mrow>
-                  <mo>−</mo>
-                  <mo>∞</mo>
-                </mrow>
-                <mo>∞</mo>
-              </msubsup>
-              <mi>s</mi>
-              <mo stretchy="false">(</mo>
-              <mi>x</mi>
-              <mo stretchy="false">)</mo>
-              <msup>
-                <mi mathvariant="normal">e</mi>
-                <mrow>
-                  <mi mathvariant="normal">i</mi>
-                  <msub>
-                    <mi>ω</mi>
-                    <mi>x</mi>
-                  </msub>
-                  <mi>x</mi>
-                </mrow>
-              </msup>
-              <mi mathvariant="normal">d</mi>
-              <mi>x</mi>
-            </mrow>
-            <mrow>
-              <msubsup>
-                <mo>∫</mo>
-                <mrow>
-                  <mo>−</mo>
-                  <mo>∞</mo>
-                </mrow>
-                <mo>∞</mo>
-              </msubsup>
-              <mi>s</mi>
-              <mo stretchy="false">(</mo>
-              <mi>x</mi>
-              <mo stretchy="false">)</mo>
-              <mi mathvariant="normal">d</mi>
-              <mi>x</mi>
-            </mrow>
-          </mfrac>
-          <mo>)</mo>
-        </mrow>
-        <mo>.</mo>
-      </mtd>
-    </mtr>
-  </mtable>
+            </msub>
+            <mi>x</mi>
+          </mrow>
+        </msup>
+        <mi mathvariant="normal">d</mi>
+        <mi>x</mi>
+      </mrow>
+      <mrow>
+        <msubsup>
+          <mo>∫</mo>
+          <mrow>
+            <mo>−</mo>
+            <mo>∞</mo>
+          </mrow>
+          <mo>∞</mo>
+        </msubsup>
+        <mi>s</mi>
+        <mo stretchy="false">(</mo>
+        <mi>x</mi>
+        <mo stretchy="false">)</mo>
+        <mi mathvariant="normal">d</mi>
+        <mi>x</mi>
+      </mrow>
+    </mfrac>
+    <mo>)</mo>
+  </mrow>
+  <mo>.</mo>
 </math>
 </div>
 <p>Math split over two lines: If a double backslash is detected outside a
@@ -439,7 +397,7 @@ physical system changes in time.</p>
 <span class="docutils literal">align</span> environment:</p>
 <div>
 <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-  <mtable class="align" displaystyle="true">
+  <mtable class="alignat" columnalign="right left" columnspacing="0" displaystyle="true">
     <mtr>
       <mtd>
         <msub>
@@ -508,43 +466,37 @@ physical system changes in time.</p>
 <p>Cases with the <a class="reference external" href="ftp://ftp.ams.org/ams/doc/amsmath/short-math-guide.pdf">AMSmath</a> <span class="docutils literal">cases</span> environment:</p>
 <div>
 <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-  <mtable class="align" displaystyle="true">
-    <mtr>
-      <mtd>
-        <mi mathvariant="normal">sgn</mi>
-        <mo stretchy="false">(</mo>
-        <mi>x</mi>
-        <mo stretchy="false">)</mo>
-        <mo>=</mo>
-        <mrow>
-          <mo>{</mo>
-          <mtable>
-            <mtr>
-              <mtd>
-                <mo>−</mo>
-                <mn>1</mn>
-              </mtd>
-              <mtd>
-                <mi>x</mi>
-                <mo>&lt;</mo>
-                <mn>0</mn>
-              </mtd>
-            </mtr>
-            <mtr>
-              <mtd>
-                <mn>1</mn>
-              </mtd>
-              <mtd>
-                <mi>x</mi>
-                <mo>&gt;</mo>
-                <mn>0</mn>
-              </mtd>
-            </mtr>
-          </mtable>
-        </mrow>
-      </mtd>
-    </mtr>
-  </mtable>
+  <mi mathvariant="normal">sgn</mi>
+  <mo stretchy="false">(</mo>
+  <mi>x</mi>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mrow>
+    <mo>{</mo>
+    <mtable>
+      <mtr>
+        <mtd>
+          <mo>−</mo>
+          <mn>1</mn>
+        </mtd>
+        <mtd>
+          <mi>x</mi>
+          <mo>&lt;</mo>
+          <mn>0</mn>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd>
+          <mn>1</mn>
+        </mtd>
+        <mtd>
+          <mi>x</mi>
+          <mo>&gt;</mo>
+          <mn>0</mn>
+        </mtd>
+      </mtr>
+    </mtable>
+  </mrow>
 </math>
 </div>
 </main>

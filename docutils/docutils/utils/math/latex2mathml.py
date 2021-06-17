@@ -29,7 +29,7 @@ import sys
 if sys.version_info >= (3, 0):
     unicode = str  # noqa
 
-from docutils.utils.math import tex2unichar
+from docutils.utils.math import tex2unichar, toplevel_code
 
 
 # Character data
@@ -159,11 +159,10 @@ small_operators = {# mathsize='75%'
 
 # Operators and functions with limits above/below in display formulas
 # and in index position inline (movablelimits="true")
-displaylimits = [operators[name] for name in
-                 ('bigcap', 'bigcup', 'bigodot', 'bigoplus', 'bigotimes',
+displaylimits = ('bigcap', 'bigcup', 'bigodot', 'bigoplus', 'bigotimes',
                   'bigsqcup', 'biguplus', 'bigvee', 'bigwedge',
-                  'coprod', 'prod', 'sum',
-                  'lim', 'max', 'min', 'sup', 'inf')]
+                  'coprod', 'intop', 'ointop', 'prod', 'sum',
+                  'lim', 'max', 'min', 'sup', 'inf')
 # Depending on settings, integrals may also be in this category.
 # (e.g. if "amsmath" is loaded with option "intlimits", see
 #  http://mirror.ctan.org/macros/latex/required/amsmath/amsldoc.pdf)
@@ -171,8 +170,6 @@ displaylimits = [operators[name] for name in
 #                       'oint', 'ointctrclockwise', 'sqint',
 #                       'varointclockwise',))
 
-# >>> print(' '.join(displaylimits))
-# ⋂ ⋃ ⨀ ⨁ ⨂ ⨆ ⨄ ⋁ ⋀ ∐ ∏ ∑ lim max min sup inf
 
 # pre-composed characters for negated symbols
 # see https://www.w3.org/TR/xml-entity-names/#combining
@@ -188,6 +185,10 @@ stretchables = {'backslash':   '\\',
                 'Uparrow':     u'\u21d1', # ⇑ UPWARDS DOUBLE ARROW
                 'Downarrow':   u'\u21d3', # ⇓ DOWNWARDS DOUBLE ARROW
                 'Updownarrow': u'\u21d5', # ⇕ UP DOWN DOUBLE ARROW
+                'lmoustache':  u'\u23b0', # ⎰ UPPER LEFT OR LOWER RIGHT CURLY BRACKET SECTION
+                'rmoustache':  u'\u23b1', # ⎱ UPPER RIGHT OR LOWER LEFT CURLY BRACKET SECTION
+                'arrowvert':   u'\u23d0', # ⏐ VERTICAL LINE EXTENSION
+                'bracevert':   u'\u23aa', # ⎪ CURLY BRACKET EXTENSION
                }
 stretchables.update(tex2unichar.mathfence)
 stretchables.update(tex2unichar.mathopen)
@@ -195,8 +196,7 @@ stretchables.update(tex2unichar.mathclose)
 stretchables.update(math_fences)
 
 # >>> print(' '.join(sorted(set(stretchables.values()))))
-# [ \ ] { | } ‖ ↑ ↓ ↕ ⇑ ⇓ ⇕ ⌈ ⌉ ⌊ ⌋ ⌜ ⌝ ⌞ ⌟ ⟅ ⟆ ⟦ ⟧ ⟨ ⟩ ⟮ ⟯ ⦇ ⦈
-
+# [ \ ] { | } ‖ ↑ ↓ ↕ ⇑ ⇓ ⇕ ⌈ ⌉ ⌊ ⌋ ⌜ ⌝ ⌞ ⌟ ⎪ ⎰ ⎱ ⏐ ⟅ ⟆ ⟦ ⟧ ⟨ ⟩ ⟮ ⟯ ⦇ ⦈
 
 # horizontal space -> <mspace>
 
@@ -216,7 +216,7 @@ spaces = {'qquad':         '2em',       # two \quad
           '!':             '-0.1667em', # negthinspace
          }
 
-# accents -> <mover accent="true">
+# accents -> <mover accent="true"> # TODO: stretchy="false"
 #        TeX        spacing    combining
 accents = {'acute':    u'´',      # u'\u0301',
            'bar':      u'ˉ',      # u'\u0304',
@@ -225,6 +225,7 @@ accents = {'acute':    u'´',      # u'\u0301',
            'dot':      u'˙',      # u'\u0307',
            'ddot':     u'¨',      # u'\u0308',
            'dddot':               u'\u20DB',  # '…' too wide
+           # TODO: ddddot
            'grave':    u'`',      # u'\u0300',
            'hat':      u'ˆ',      # u'\u0302',
            'mathring': u'˚',      # u'\u030A',
@@ -358,6 +359,8 @@ class math(object):
         return self.attributes[key]
     def __setitem__(self, key, item):
         self.attributes[key] = item
+    def get(self, *args, **kwargs):
+        return self.attributes.get(*args, **kwargs)
 
     def full(self):
         """Return boolean indicating whether children may be appended."""
@@ -627,47 +630,103 @@ def tex_number(string):
 def tex_token(string):
     """Return first simple TeX token and remainder of `string`.
 
-    >>> tex_token('{first simple group} returned without brackets')
-    ('first simple group', ' returned without brackets')
     >>> tex_token('\\command{without argument}')
     ('\\command', '{without argument}')
-    >>> tex_token(' first non-white character')
-    ('f', 'irst non-white character')
+    >>> tex_token('or first character')
+    ('o', 'r first character')
 
     """
-    m = re.match(r"""\s*                  # leading whitespace
-                 {(?P<token>(\\}|[^{}]|\\{)*)} # {group} without nested groups
-                 (?P<remainder>.*$)
+    m = re.match(r"""((?P<cmd>\\[a-zA-Z]+)\s* # TeX command, skip whitespace
+                      |(?P<chcmd>\\.)          # one-character TeX command
+                      |(?P<ch>.?))            # first character (or empty)
+                     (?P<remainder>.*$)    # remaining part of string
                  """, string, re.VERBOSE)
-    if m is None:
-        m = re.match(r"""\s*              # leading whitespace
-                      (?P<token>\\([a-zA-Z]+))\s*   # \cmdname
-                      (?P<remainder>.*$)
-                 """, string, re.VERBOSE)
-    if m is None:
-        m = re.match(r"""\s*              # leading whitespace
-                     (?P<token>.?)        # first character or empty string
-                     (?P<remainder>.*$)
-                 """, string, re.VERBOSE)
-
-    return m.group('token'), m.group('remainder')
+    cmd, chcmd, ch, remainder = m.group('cmd', 'chcmd', 'ch', 'remainder')
+    return cmd or chcmd or ch, remainder
 
 # Test:
 #
-# >>> tex_token('{opening bracket of group with {nested group}}')
-# ('{', 'opening bracket of group with {nested group}}')
-# >>> tex_token('{group with \\{escaped\\} brackets}')
-# ('group with \\{escaped\\} brackets', '')
-# >>> tex_token('{group followed by closing bracket}} from outer group')
-# ('group followed by closing bracket', '} from outer group')
-# >>> tex_token(' {skip leading whitespace}')
-# ('skip leading whitespace', '')
-# >>> tex_token('  \\skip{leading whitespace}')
-# ('\\skip', '{leading whitespace}')
+# >>> tex_token('{opening bracket of group}')
+# ('{', 'opening bracket of group}')
 # >>> tex_token('\\skip whitespace after macro name')
 # ('\\skip', 'whitespace after macro name')
+# >>> tex_token('. but not after single char')
+# ('.', ' but not after single char')
 # >>> tex_token('') # empty string.
 # ('', '')
+# >>> tex_token('\{escaped bracket')
+# ('\\{', 'escaped bracket')
+
+def tex_group(string):
+    """Return first TeX group or token and remainder of `string`.
+
+    >>> tex_group('{first group} returned without brackets')
+    ('first group', ' returned without brackets')
+
+    """
+    split_index = 0
+    nest_level = 0   # level of {{nested} groups}
+    escape = False   # the next character is escaped (\)
+
+    if not string.startswith('{'):
+        # special case: there is no group, return first token and remainder
+        return string[:1], string[1:]
+    for c in string:
+        split_index += 1
+        if escape:
+            escape = False
+        elif c == '\\':
+            escape = True
+        elif c == '{':
+            nest_level += 1
+        elif c == '}':
+            nest_level -= 1
+        if nest_level == 0:
+            break
+    else:
+        raise SyntaxError('Group without closing bracket')
+    return string[1:split_index-1], string[split_index:]
+
+
+
+# >>> tex_group('{} empty group')
+# ('', ' empty group')
+# >>> tex_group('{group with {nested} group} ')
+# ('group with {nested} group', ' ')
+# >>> tex_group('{group with {nested group}} at the end')
+# ('group with {nested group}', ' at the end')
+# >>> tex_group('{{group} {with {{complex }nesting}} constructs}')
+# ('{group} {with {{complex }nesting}} constructs', '')
+# >>> tex_group('{group with \\{escaped\\} brackets}')
+# ('group with \\{escaped\\} brackets', '')
+# >>> tex_group('{group followed by closing bracket}} from outer group')
+# ('group followed by closing bracket', '} from outer group')
+# >>> tex_group('No group? Return first character.')
+# ('N', 'o group? Return first character.')
+# >>> tex_group(' {also whitespace}')
+# (' ', '{also whitespace}')
+
+
+def tex_token_or_group(string):
+    """Return first TeX group or token and remainder of `string`.
+
+    >>> tex_token_or_group('\\command{without argument}')
+    ('\\command', '{without argument}')
+    >>> tex_token_or_group('first character')
+    ('f', 'irst character')
+    >>> tex_token_or_group(' also whitespace')
+    (' ', 'also whitespace')
+    >>> tex_token_or_group('{first group} keep rest')
+    ('first group', ' keep rest')
+
+    """
+    arg, remainder = tex_token(string)
+    if arg == '{':
+        arg, remainder = tex_group(string.lstrip())
+    return arg, remainder
+
+# >>> tex_token_or_group('\{no group but left bracket')
+# ('\\{', 'no group but left bracket')
 
 def tex_optarg(string):
     """Return optional argument and remainder.
@@ -797,13 +856,13 @@ def handle_cmd(name, node, string):
     # identifier  ->  <mi>
 
     if name in letters:
+        new_node = mi(letters[name])
         if name in greek_capitals:
             # upright in "TeX style" but MathML sets them italic ("ISO style").
             # CSS styling does not change the font style in Firefox 78.
             # Use 'mathvariant="normal"'?
-            node = node.append(mi(greek_capitals[name], CLASS='capital-greek'))
-        else:
-            node = node.append(mi(letters[name]))
+            new_node['class'] = 'capital-greek'
+        node = node.append(new_node)
         return node, string
 
     if (name in functions):
@@ -812,7 +871,7 @@ def handle_cmd(name, node, string):
         if name == 'operatorname':
             # custom function name, e.g. ``\operatorname{abs}(x)``
             # TODO: \operatorname* -> with limits
-            arg, string = tex_token(string)
+            arg, string = tex_token_or_group(string)
             new_node = mi(arg, mathvariant='normal')
         else:
             new_node = mi(functions[name])
@@ -834,22 +893,22 @@ def handle_cmd(name, node, string):
         return node, string
 
     if name in math_alphabets:
-        arg, remainder = tex_token(string)
-        if arg[0] == '\\':
-            # convert single letters (so the isalpha() test below works).
-            arg = letters.get(arg[1:], arg)
-        if name == 'mathbb':
-            # mathvariant="double-struck" is ignored for Greek letters
-            # (tested in Firefox 78). Use literal Unicode characters.
-            arg = mathbb.get(arg, arg)
         if name == 'boldsymbol':
             attributes = {'style': 'font-weight: bold'}
         else:
             attributes = {'mathvariant': math_alphabets[name]}
         if name == 'mathscr':
             attributes['class'] = 'mathscr'
-
-        # one symbol (single letter, name, or ⅀)
+        # Check for single symbol (letter, name, or ⅀)
+        arg, remainder = tex_token_or_group(string)
+        if arg.startswith('\\'):
+            # convert single letters (so the isalpha() test below works).
+            # TODO: convert all LICRs in a group (\matrm{\mu\Omega})
+            arg = letters.get(arg[1:], arg)
+        if name == 'mathbb':
+            # mathvariant="double-struck" is ignored for Greek letters
+            # (tested in Firefox 78). Use literal Unicode characters.
+            arg = mathbb.get(arg, arg)
         if arg.isalpha() or arg == u'\u2140':
             node = node.append(mi(arg, **attributes))
             return node, remainder
@@ -874,21 +933,26 @@ def handle_cmd(name, node, string):
         return node, string
 
     if name in operators:
-        node = node.append(mo(operators[name]))
+        if name in displaylimits and string and string[0] in ' _^':
+            node = node.append(mo(operators[name], movablelimits = 'true'))
+        else:
+            node = node.append(mo(operators[name]))
         return node, string
 
     if name in delimiter_sizes:
         delimiter_attributes = {}
         size = delimiter_sizes[name]
-        delimiter, string = tex_token(string)
+        delimiter, string = tex_token_or_group(string)
         if delimiter not in '()[]/|.':
             try:
                 delimiter = stretchables[delimiter.lstrip('\\')]
             except KeyError:
-                raise SyntaxError(u'Missing "\\%s" delimiter!' % name)
+                raise SyntaxError(u'Unsupported "\\%s" delimiter "%s"!'
+                                  % (name, delimiter))
         if size:
             delimiter_attributes['maxsize'] = size
             delimiter_attributes['minsize'] = size
+            delimiter_attributes['symmetric'] = 'true'
         if name == 'left' or name.endswith('l'):
             row = mrow()
             node.append(row)
@@ -900,7 +964,7 @@ def handle_cmd(name, node, string):
         return node, string
 
     if name == 'not':
-        arg, string = tex_token(string)
+        arg, string = tex_token_or_group(string)
         try:
             node = node.append(mo(negatables[arg]))
         except KeyError:
@@ -909,7 +973,7 @@ def handle_cmd(name, node, string):
 
     # arbitrary text (usually comments)  ->  <mtext>
     if name in ('text', 'mbox', 'textrm'):
-        arg, string = tex_token(string)
+        arg, string = tex_token_or_group(string)
         parts = arg.split('$') # extract inline math
         for i, part in enumerate(parts):
             if i % 2 == 0: # i is even
@@ -924,8 +988,10 @@ def handle_cmd(name, node, string):
         node = node.append(mspace(width='%s'%spaces[name]))
         return node, string
 
-    if name == 'hspace':
-        arg, string = tex_token(string)
+    if name in ('hspace', 'mspace'):
+        arg, string = tex_group(string)
+        if arg.endswith('mu'):
+            arg = '%sem' % (float(arg[:-2])/18)
         node = node.append(mspace(width='%s'%arg))
         return node, string
 
@@ -1053,7 +1119,7 @@ def handle_cmd(name, node, string):
 
 # >>> handle_cmd('left', math(), '[a\\right]')
 # (mrow(mo('[')), 'a\\right]')
-# >>> handle_cmd('left', math(), '. a)') # emtpy \left
+# >>> handle_cmd('left', math(), '. a)') # empty \left
 # (mrow(), ' a)')
 # >>> handle_cmd('left', math(), '\\uparrow a)') # cmd
 # (mrow(mo('↑')), 'a)')
@@ -1103,7 +1169,7 @@ def handle_script_or_limit(node, c, limits=''):
             new_node = munderover(*child.children, switch=True)
         elif (limits in ('limits', 'displaylimits')
               or limits == ''
-              and getattr(child, 'data', '') in displaylimits):
+              and child.get('movablelimits', None) == 'true'):
             new_node = munder(child)
         else:
             new_node = msub(child)
@@ -1114,7 +1180,7 @@ def handle_script_or_limit(node, c, limits=''):
             new_node = munderover(*child.children)
         elif (limits in ('limits', 'displaylimits')
               or limits == ''
-              and getattr(child, 'data', '') in displaylimits):
+              and child.get('movablelimits', None) == 'true'):
             new_node = mover(child)
         else:
             new_node = msup(child)
@@ -1123,7 +1189,7 @@ def handle_script_or_limit(node, c, limits=''):
 
 
 def begin_environment(node, string):
-    name, string = tex_token(string)
+    name, string = tex_group(string)
     if name in matrices:
         left_delimiter = matrices[name][0]
         attributes = {}
@@ -1137,6 +1203,8 @@ def begin_environment(node, string):
             wrapper = mstyle(scriptlevel=1)
             node.append(wrapper)
             node = wrapper
+        # TODO: aligned, alignedat
+        # take an optional [t], [b] or the default [c]
         entry = mtd()
         node.append(mtable(mtr(entry), **attributes))
         node = entry
@@ -1146,7 +1214,7 @@ def begin_environment(node, string):
 
 
 def end_environment(node, string):
-    name, string = tex_token(string)
+    name, string = tex_group(string)
     if name in matrices:
         node = node.close().close().close() # close: mtd, mdr, mtable
         right_delimiter = matrices[name][1]
@@ -1160,23 +1228,64 @@ def end_environment(node, string):
     return node, string
 
 
+# Return the number of "equation_columns" in `code_lines`. See "alignat"
+# in http://mirror.ctan.org/macros/latex/required/amsmath/amsldoc.pdf
+def tex_equation_columns(rows):
+    tabs = max(row.count('&') - row.count(r'\&') for row in rows)
+    if tabs == 0:
+        return 0
+    return int(tabs/2 + 1)
+
+# >>> tex_equation_columns(['a = b'])
+# 0
+# >>> tex_equation_columns(['a &= b'])
+# 1
+# >>> tex_equation_columns(['a &= b & a \in S'])
+# 2
+# >>> tex_equation_columns(['a &= b & c &= d'])
+# 2
+
+
+# Return dictionary with attributes to style an <mtable> as align environment:
+def align_attributes(rows):
+    atts = {'class': 'alignat',
+            'displaystyle': 'true'}
+    tabs = max(row.count('&') - row.count(r'\&') for row in rows)
+    if tabs:
+        aligns = ['right', 'left'] * tabs
+        spacing = ['0', '2em'] * tabs
+        atts['columnalign'] = ' '.join(aligns[:tabs+1])
+        atts['columnspacing'] = ' '.join(spacing[:tabs])
+    return atts
+
+# >>> align_attributes(['a = b'])
+# {'class': 'alignat', 'displaystyle': 'true'}
+# >>> align_attributes(['a &= b'])
+# {'class': 'alignat', 'displaystyle': 'true', 'columnalign': 'right left', 'columnspacing': '0'}
+# >>> align_attributes(['a &= b & a \in S'])
+# {'class': 'alignat', 'displaystyle': 'true', 'columnalign': 'right left right', 'columnspacing': '0 2em'}
+# >>> align_attributes(['a &= b & c &= d'])
+# {'class': 'alignat', 'displaystyle': 'true', 'columnalign': 'right left right left', 'columnspacing': '0 2em 0'}
+
+
 def tex2mathml(tex_math, inline=True):
     """Return string with MathML code corresponding to `tex_math`.
 
     Set `inline` to False for displayed math.
     """
     # Set up tree
-    tree = math(xmlns='http://www.w3.org/1998/Math/MathML')
-    if inline:
-        node = tree
-    else:
-        # block: emulate align* environment with a math table
-        tree['display'] = 'block'
-        node = mtd()
-        tree.append(mtable(mtr(node), displaystyle='true', CLASS='align'))
-
+    math_tree = math(xmlns='http://www.w3.org/1998/Math/MathML')
+    node = math_tree
+    if not inline:
+        math_tree['display'] = 'block'
+        rows = toplevel_code(tex_math).split(r'\\')
+        if len(rows) > 1:
+            # emulate align* environment with a math table
+            node = mtd()
+            math_tree.append(mtable(mtr(node),
+                                    **align_attributes(rows)))
     parse_latex_math(node, tex_math)
-    return tree.toprettyxml()
+    return math_tree.toprettyxml()
 
 # >>> print(tex2mathml('3'))
 # <math xmlns="http://www.w3.org/1998/Math/MathML">
@@ -1184,26 +1293,57 @@ def tex2mathml(tex_math, inline=True):
 # </math>
 # >>> print(tex2mathml('3', inline=False))
 # <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-#   <mtable class="align" displaystyle="true">
+#   <mn>3</mn>
+# </math>
+# >>> print(tex2mathml(r'a & b \\ c & d', inline=False))
+# <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+#   <mtable class="alignat" columnalign="right left" columnspacing="0" displaystyle="true">
 #     <mtr>
 #       <mtd>
-#         <mn>3</mn>
+#         <mi>a</mi>
+#       </mtd>
+#       <mtd>
+#         <mi>b</mi>
+#       </mtd>
+#     </mtr>
+#     <mtr>
+#       <mtd>
+#         <mi>c</mi>
+#       </mtd>
+#       <mtd>
+#         <mi>d</mi>
+#       </mtd>
+#     </mtr>
+#   </mtable>
+# </math>
+# >>> print(tex2mathml(r'a \\ b', inline=False))
+# <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+#   <mtable class="alignat" displaystyle="true">
+#     <mtr>
+#       <mtd>
+#         <mi>a</mi>
+#       </mtd>
+#     </mtr>
+#     <mtr>
+#       <mtd>
+#         <mi>b</mi>
 #       </mtd>
 #     </mtr>
 #   </mtable>
 # </math>
 
+
 # TODO: look up more symbols from tr25, e.g.
-#
-#
+# 
+# 
 # Table 2.8 Using Vertical Line or Solidus Overlay
 #   some of the negated forms of mathematical relations that can only be
 #   encoded by using either U+0338 COMBINING LONG SOLIDUS OVERLAY or U+20D2
 #   COMBINING LONG VERTICAL LINE OVERLAY . (For issues with using 0338 in
 #   MathML, see Section 3.2.7, Combining Marks.
-#
+# 
 # Table 2.9 Variants of Mathematical Symbols using VS1?
-#
+# 
 # Sequence      Description
 # 0030 + VS1    DIGIT ZERO - short diagonal stroke form
 # 2205 + VS1    EMPTY SET - zero with long diagonal stroke overlay form
@@ -1230,3 +1370,4 @@ def tex2mathml(tex_math, inline=True):
 # 2AAD + VS1    LARGER THAN OR slanted EQUAL
 # 2ACB + VS1    SUBSET OF ABOVE NOT EQUAL TO - variant with stroke through bottom members
 # 2ACC + VS1    SUPERSET OF ABOVE NOT EQUAL TO - variant with stroke through bottom members
+

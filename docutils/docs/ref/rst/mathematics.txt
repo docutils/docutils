@@ -6,34 +6,16 @@ LaTeX syntax for mathematics
 .. default-role:: math
 .. |latex| replace:: L\ :sup:`A`\ T\ :sub:`E`\ X
 
+:abstract: Docutils supports mathematical content with a `"math"
+           directive`__ and `role`__. The input format is *LaTeX math
+           syntax*\ [#math-syntax]_ with support for Unicode symbols.
+
 .. sectnum::
 .. contents::
 
-Introduction
-============
-
-Since version 0.8, Docutils supports mathematical content with a `"math"
-directive`__ and `role`__.
-The input format is *LaTeX math syntax*\ [#math-syntax]_ with support for
-Unicode symbols.
-
-
-.. [#math-syntax] The supported LaTeX commands include AMS extensions
-   (see, e.g., the `Short Math Guide`_).
-
-   The support is limited to a subset of *LaTeX math* by the conversion
-   required for many output formats.  For HTML, the `math_output`_
-   configuration setting (or the corresponding ``--math-output`` command
-   line option) selects between alternative output formats with different
-   subsets of supported elements. If a writer does not support math
-   typesetting, the content is inserted verbatim.
-
 __ https://docutils.sourceforge.io/docs/ref/rst/directives.html#math
 __ https://docutils.sourceforge.io/docs/ref/rst/roles.html#math
-.. _Short Math Guide:
-   http://mirrors.ctan.org/info/short-math-guide/short-math-guide.pdf
-.. _math_output:
-   https://docutils.sourceforge.io/docs/user/config.html#math-output
+
 
 Inline formulas and displayed equations
 =======================================
@@ -89,18 +71,34 @@ Displayed equations can use ``\\`` and ``&`` for line shifts and alignments::
 
   .. math::
 
-     a & = (x + y)^2 \\
-       & = x^2 + 2xy + y^2
+   a &= (x + y)^2         &\qquad b &= (x - y)^2 \\
+     &= x^2 + 2xy + y^2   &        &= x^2 - 2xy + y^2
 
 LaTeX output will wrap it in an ``align*`` environment.
 The result is:
 
 .. math::
 
-   a & = (x + y)^2 \\
-     & = x^2 + 2xy + y^2
+   a &= (x + y)^2         &  b &= (x - y)^2 \\
+     &= x^2 + 2xy + y^2   &    &= x^2 - 2xy + y^2
 
-.. _hyperlink references: ../ref/rst/restructuredtext.html#hyperlink-references
+
+.. [#math-syntax] The supported LaTeX commands include AMS extensions
+   (see, e.g., the `Short Math Guide`_).
+
+   The support is limited to a subset of *LaTeX math* by the conversion
+   required for many output formats.  For HTML, the `math_output`_
+   configuration setting (or the corresponding ``--math-output`` command
+   line option) selects between alternative output formats with different
+   subsets of supported elements. If a writer does not support math
+   typesetting, the content is inserted verbatim.
+
+.. _hyperlink references:
+   ../ref/rst/restructuredtext.html#hyperlink-references
+.. _Short Math Guide:
+   http://mirrors.ctan.org/info/short-math-guide/short-math-guide.pdf
+.. _math_output:
+   https://docutils.sourceforge.io/docs/user/config.html#math-output
 
 
 Mathematical symbols
@@ -183,6 +181,8 @@ Use ``.`` for "empty" delimiters:
 
 .. math:: A = \left . \frac{1}{1-n}\, \right |_{n=0}^\infty
 
+See also the commands for fixed `delimiter sizes`_ below.
+
 The following symbols extend when used with ``\left`` and ``\right``:
 
 Pairing delimiters
@@ -213,6 +213,8 @@ incorrect spacing, e.g., ``|k|=|-k|`` produces `|k| = |−k|` and
 ``|\sin(x)|`` produces `|\sin(x)|`. The pairing delimiters, e.g.
 `\lvert -k\rvert` and `\lvert\sin(x)\rvert`, prevent this problem
 (in LaTeX and MathJax).
+
+.. TODO: fix spacing before unary minus (see also cases example below).
 
 Vertical Arrows
 ~~~~~~~~~~~~~~~
@@ -261,7 +263,7 @@ Greek letters
 -------------
 
 In LaTeX, the default font for capital Greek letters is upright/roman.
-Italic capital Greek letters can be obtained by loading a `package
+*Italic* capital Greek letters can be obtained by loading a `package
 providing the "ISO" math style`__. They are used by default in MathML.
 
 Greek letters that have Latin look-alikes are rarely used in math
@@ -289,15 +291,14 @@ Letterlike symbols
 ------------------
 .. class:: colwidths-auto
 
-========== ============  ============= ===============  ========= ===========  =========== =============
-`\aleph`   ``\aleph``    `\forall`     ``\forall``      `\hbar`   ``\hbar``    `\ell`      ``\ell``
-`\beth`    ``\beth``     `\complement` ``\complement``  `\hslash` ``\hslash``  `\wp`       ``\wp``
-`\gimel`   ``\gimel``    `\exists`     ``\exists``      `\Im`     ``\Im``      `\Re`       ``\Re``
-`\daleth`  ``\daleth``   `\Finv`       ``\Finv``        `\imath`  ``\imath``   `\circledR` ``\circledR``
-`\partial` ``\partial``  `\Game`       ``\Game``        `\Bbbk`   ``\Bbbk``    `\circledS` ``\circledS``
-`\eth`     ``\eth``                                                            `\mho`      ``\mho``
-========== ============  ============= ===============  ========= ===========  =========== =============
-
+  ============= ===============  ========== ============  ========== ============  =========== =============
+  `\forall`     ``\forall``      `\aleph`   ``\aleph``    `\hbar`    ``\hbar``     `\ell`      ``\ell``
+  `\complement` ``\complement``  `\beth`    ``\beth``     `\hslash`  ``\hslash``   `\wp`       ``\wp``
+  `\exists`     ``\exists``      `\gimel`   ``\gimel``    `\Im`      ``\Im``       `\Re`       ``\Re``
+  `\Finv`       ``\Finv``        `\daleth`  ``\daleth``   `\imath`   ``\imath``    `\circledR` ``\circledR``
+  `\Game`       ``\Game``        `\partial` ``\partial``  `\jmath`   ``\jmath``    `\circledS` ``\circledS``
+  `\mho`        ``\mho``         `\eth`     ``\eth``      `\Bbbk`    ``\Bbbk``
+  ============= ===============  ========== ============  ========== ============  =========== =============
 
 Mathematical Alphabets
 ----------------------
@@ -399,7 +400,6 @@ Punctuation
 
 .. [#] Punctuation (not ratio):
        Compare spacing in `a\colon b\to c` to `a:b = c`.
-
 
 Relation symbols
 ----------------
@@ -577,12 +577,12 @@ The ``matrix`` and ``cases`` environments can also contain ``\\`` and
 ``&``::
 
   .. math::
-     \left(\begin{matrix} a & b \\ c & d \end{matrix}\right)
+     \left ( \begin{matrix} a & b \\ c & d \end{matrix}\right)
 
 Result:
 
 .. math::
-   \left(\begin{matrix} a & b \\ c & d \end{matrix}\right)
+     \left ( \begin{matrix} a & b \\ c & d \end{matrix} \right)
 
 The environments ``pmatrix``, ``bmatrix``, ``Bmatrix``, ``vmatrix``, and
 ``Vmatrix`` have (respectively) ( ), [ ], { }, \| \|, and `\Vert\ \Vert`
@@ -602,8 +602,8 @@ matrix.
 For piecewise function definitions there is a ``cases`` environment:
 
 .. math:: \mathrm{sgn}(x) = \begin{cases}
-                               -1 & x<0\\
-                                1 & x>0
+                              \,          -1 & x<0\\
+                              \,\phantom{-}1 & x>0
                             \end{cases}
 
 Spacing commands
@@ -614,22 +614,25 @@ commands:
 
 .. class:: colwidths-auto
 
-  =====================  ========  =======================
-  :m:`3\qquad8`                    ``3\qquad8`` (2em)
-  :m:`3\quad8`                     ``3\quad8``  (1em)
-  :m:`3~8`               ``3~8``   ``3\nobreakspace8``
-  :m:`3\ 8`              ``3\ 8``  escaped space
-  :m:`3\;8`              ``3\;8``  ``3\thickspace8``
-  :m:`3\:8`              ``3\:8``  ``3\medspace8``
-  :m:`3\,8`              ``3\,8``  ``3\thinspace8``
-  :m:`3  8`              ``3  8``  regular space (ignored)
-  :m:`3\!8`              ``3\!8``  ``3\negthinspace8``
-  :m:`3\negmedspace8`              ``3\negmedspace8``
-  :m:`3\negthickspace8`            ``3\negthickspace8``
-  `3\hspace{1ex}8`                 ``3\hspace{1ex}8``
-  =====================  ========  =======================
+  ======================  ========  =====================  ==================
+  :m:`3\qquad |`                    ``3\qquad |``          = 2em
+  :m:`3\quad |`                     ``3\quad |``           = 1em
+  :m:`3~|`                ``3~|``   ``3\nobreakspace |``
+  :m:`3\ |`               ``3\ |``                         escaped space
+  :m:`3\;|`               ``3\;|``  ``3\thickspace |``
+  :m:`3\:|`               ``3\:|``  ``3\medspace |``
+  :m:`3\,|`               ``3\,|``  ``3\thinspace |``
+  :m:`3  |`               ``3  |``                         regular space [#]_
+  :m:`3\!|`               ``3\!|``  ``3\negthinspace |``
+  :m:`3\negmedspace |`              ``3\negmedspace |``
+  :m:`3\negthickspace |`            ``3\negthickspace |``
+  `3\hspace{1ex}|`                  ``3\hspace{1ex}|``     custom length
+  `3\mspace{20mu}|`                 ``3\mspace{20mu}|``    custom length [#]_
+  ======================  ========  =====================  ==================
 
-Whitespace is ignored in LaTeX math mode.
+.. [#] Whitespace characters are ignored in LaTeX math mode.
+.. [#] Unit must be 'mu' (1 mu = 1/18em).
+
 Negative spacing does not work with MathML (in Firefox 78).
 
 There are also three commands that leave a space equal to the height and
@@ -638,8 +641,8 @@ wide and high as three X’s:
 
 .. math:: \frac{\phantom{XXX}+1}{XXX-1}
 
-The commands ``\hphantom`` and ``\vphantom`` insert space with the heigth
-rsp. width of the argument. They are not supported with `math_output`_
+The commands ``\hphantom`` and ``\vphantom`` insert space with the
+width or height of the argument. They are not supported with `math_output`_
 MathML.
 
 Roots
@@ -668,7 +671,8 @@ Fractions and related constructions
 ===================================
 
 The ``\frac`` command takes two ar guments, numerator and denominator,
-and typesets them in normal fraction form. Use ``\dfrac`` or ``\tfrac`` to
+and typesets them in normal fraction form. For example, ``U = \frac{R}{I}``
+produces `U = \frac{R}{I}`. Use ``\dfrac`` or ``\tfrac`` to
 force text style and display style respectively.
 
 .. math:: \frac{x+1}{x-1}  \quad
@@ -689,15 +693,17 @@ prints
 The ``\cfrac`` command for continued fractions uses displaystyle and
 padding for sub-fractions:
 
-.. math:: \cfrac{1}{\sqrt{2}+
-          \cfrac{1}{\sqrt{2}+
-          \cfrac{1}{\sqrt{2}+\dotsb
-          }}}
-          \text{ vs. }
-          \frac{1}{\sqrt{2}+
-          \frac{1}{\sqrt{2}+
-          \frac{1}{\sqrt{2}+\dotsb
-          }}}
+.. math:: \frac{\pi}{4} = 1 + \cfrac{1^2}{
+                              2 + \cfrac{3^2}{
+                                  2 + \cfrac{5^2}{
+                                      2 + \cfrac{7^2}{2 + \cdots}
+                              }}}
+          \qquad \text{vs.}\qquad
+          \frac{\pi}{4} = 1 + \frac{1^2}{
+                              2 + \frac{3^2}{
+                                  2 + \frac{5^2}{
+                                      2 + \frac{7^2}{2 + \cdots}
+                              }}}
 
 It supports the optional argument ``[l]`` or ``[r]`` for
 left or right placement of the numerator:
@@ -775,11 +781,14 @@ Whitespace is kept inside the argument:
 .. Math:: f_{[x_{i-1},x_i]} \text{ is monotonic for }  i = 1,\,…,\,c+1
 
 
-``$`` signs can be used for math commands inside the text, e.g.
+The text may contain math commands wrapped in ``$`` signs, e.g.
 
-.. math:: (-1)^n = \begin{cases} -1 \quad \text{if $n$ is odd} \\
-                                 +1 \quad \text{if $n$ is even.}
-                   \end{cases}
+.. math:: (-1)^{n_i} = \begin{cases} -1 \quad \text{if $n_i$ is odd} \\
+                                     +1 \quad \text{if $n_i$ is even.}
+                       \end{cases}
+
+.. TODO ignore {}, handle text-mode commands
+
 
 .. TODO: ``\mod`` and its relatives
          --------------------------
@@ -806,8 +815,18 @@ similar symbols like
 
 move to index postions: `\lim_{n\to\infty} \sum_1^n \frac{1}{n}`.
 
-The commands ``\limits`` and ``\nolimits`` override the automatic
-placement of the limits; ``\displaylimits`` means to use standard
+Altering the placement of limits
+--------------------------------
+
+The commands ``\intop`` and ``\ointop`` produce integral signs with
+limits as in sums and similar: `\intop_0^1`, `\ointop_c` and
+
+.. math:: \intop_0^1 \quad \ointop_c
+             \quad \text{vs.} \quad
+          \int^1_0   \quad \oint_c
+
+The commands ``\limits`` and ``\nolimits`` override the default placement
+of the limits for any operator; ``\displaylimits`` forces standard
 positioning as for the \sum command. They should follow immediately after
 the operator to which they apply.
 
@@ -859,11 +878,15 @@ yields
    after the opening bracket.
 
 
-Appendix: Tests
-===============
+Appendix
+========
+
+Tests
+-----
+
 
 Font changes
-------------
+~~~~~~~~~~~~
 
 Math alphabet macros change the default alphabet ("mathvariant" in
 MathML), leaving some symbols unchanged:
@@ -879,6 +902,7 @@ Unicode supports the following blackboard-bold characters:
 `\mathbb{a \ldots z A \ldots Z 0 \ldots 9
 \mathbb\Gamma \mathbb{\Pi} \mathbb {\Sigma} \mathbb\gamma \mathbb\pi}`.
 
+
 Inferred <mrow>s in MathML
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -888,11 +912,11 @@ formed from all their children.
 
 .. math:: a = \sqrt 2 + x, b = \sqrt{1+x^2}, c = \sqrt\frac{\sin(x)}{23},
 
-
 inline: :math:`a = \sqrt 2 + x, b = \sqrt{1+x^2}, c = \sqrt\frac{\sin(x)}{23}`.
 
+
 Scripts and Limits
-------------------
+~~~~~~~~~~~~~~~~~~
 
 Accents should be nearer to the base (in MathML Firefox 78, it's vice versa!):
 `\bar a \overline a, \bar l \overline l, \bar i \overline i`.
@@ -902,4 +926,52 @@ Sub- and superscript may be given in any order:
 
 Double exponent: `x^{10^4}`, `r_{T_\mathrm{in}}` and `x_i^{n^2}`.
 
-Binary vs. unary minus operator: `a - b = -c`
+
+Nested groups
+~~~~~~~~~~~~~
+
+tex-token returns "{" for nested groups:
+
+.. math:: \text{das ist ein  {toller} text (unescaped \{ and \} is
+                ignored by LaTeX)}
+
+Big delimiters
+~~~~~~~~~~~~~~
+
+Test ``\left``, ``\right``, and the  \bigl/\bigr, … size commands
+with extensible delimiters.
+
+.. math::
+   \left.(b\right)\ \bigl(b\Bigr)\ \biggl(b\Biggr)
+   \quad
+   \left.[b\right]\ \bigl[b\Bigr]\ \biggl[b\Biggr]
+   \quad
+   \left.\{b\right \} \ \bigl\{b\Bigr \} \ \biggl\{b\Biggr \}
+   \quad
+   \left.\langle b\right\rangle\ \bigl\langle b\Bigr\rangle\ \biggl\langle b\Biggr\rangle
+   \quad
+   \left.\lceil b\right\rceil\ \bigl\lceil b\Bigr\rceil\ \biggl\lceil b\Biggr\rceil
+
+   \left.\lfloor b\right\rfloor\ \bigl\lfloor b\Bigr\rfloor\ \biggl\lfloor b\Biggr\rfloor
+   \quad
+   \left.\lgroup b\right\rgroup\ \bigl\lgroup b\Bigr\rgroup\ \biggl\lgroup b\Biggr\rgroup
+   \quad
+   \left.\lmoustache b\right\rmoustache\ \bigl\lmoustache b\Bigr\rmoustache\ \biggl\lmoustache b\Biggr\rmoustache
+   \quad
+   \left.\lvert b\right\rvert\ \bigl\lvert b\Bigr\rvert\ \biggl\lvert b\Biggr\rvert
+   \quad
+   \left.\lVert b\right\rVert\ \bigl\lVert b\Bigr\rVert\ \biggl\lVert b\Biggr\rVert
+
+   \left.|b\right\|\ \bigl|b\Bigr\|\ \biggl|b\Biggr\|
+   \quad
+   \left./b\right\backslash\ \bigl/b\Bigr\backslash\ \biggl/b\Biggr\backslash
+   \quad
+   \left.(b\right)\ \bigl(b\Bigr)\ \biggl(b\Biggr)
+   \quad
+   \left.\arrowvert b\right\Arrowvert\ \bigl\arrowvert b\Bigr\Arrowvert\ \biggl\arrowvert b\Biggr\Arrowvert
+
+   \left.\bracevert b\right\bracevert\ \bigl\bracevert b\Bigr\bracevert\ \biggl\bracevert b\Biggr\bracevert
+   \quad
+   \left.\vert \frac{b}{a}\right\Vert\ \bigl\vert b\Bigr\Vert\ \biggl\vert b\Biggr\Vert
+   \quad
+   

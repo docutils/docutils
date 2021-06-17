@@ -227,9 +227,11 @@ mathop = {
     'iiint': u'\u222d', # ∭ TRIPLE INTEGRAL
     'iint': u'\u222c', # ∬ DOUBLE INTEGRAL
     'int': u'\u222b', # ∫ INTEGRAL
+    'intop': u'\u222b', # ∫ INTEGRAL
     'oiint': u'\u222f', # ∯ SURFACE INTEGRAL
     'oint': u'\u222e', # ∮ CONTOUR INTEGRAL
     'ointctrclockwise': u'\u2233', # ∳ ANTICLOCKWISE CONTOUR INTEGRAL
+    'ointop': u'\u222e', # ∮ CONTOUR INTEGRAL
     'prod': u'\u220f', # ∏ N-ARY PRODUCT
     'sqint': u'\u2a16', # ⨖ QUATERNION INTEGRAL OPERATOR
     'sum': u'\u2211', # ∑ N-ARY SUMMATION
@@ -325,8 +327,8 @@ mathord = {
     'dasharrow': u'\u21e2', # ⇢ RIGHTWARDS DASHED ARROW
     'dashleftarrow': u'\u21e0', # ⇠ LEFTWARDS DASHED ARROW
     'dashrightarrow': u'\u21e2', # ⇢ RIGHTWARDS DASHED ARROW
-    'diagdown': u'\u27cd', # ⟍ 
-    'diagup': u'\u27cb', # ⟋ 
+    'diagdown': u'\u27cd', # ⟍
+    'diagup': u'\u27cb', # ⟋
     'diameter': u'\u2300', # ⌀ DIAMETER SIGN
     'diamondsuit': u'\u2662', # ♢ WHITE DIAMOND SUIT
     'earth': u'\u2641', # ♁ EARTH
