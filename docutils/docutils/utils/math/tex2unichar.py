@@ -4,33 +4,31 @@
 # Generated with ``write_tex2unichar.py`` from the data in
 # http://milde.users.sourceforge.net/LUCR/Math/
 
-# Includes commands from: wasysym, stmaryrd, mathdots, mathabx, esint, bbold, amsxtra, amsmath, amssymb, standard LaTeX
+# Includes commands from: wasysym, stmaryrd, txfonts, mathdots, mathabx, esint, bbold, amsxtra, amsmath, amssymb, standard LaTeX
 
 mathaccent = {
     'acute': u'\u0301', #  ́ COMBINING ACUTE ACCENT
     'bar': u'\u0304', #  ̄ COMBINING MACRON
     'breve': u'\u0306', #  ̆ COMBINING BREVE
     'check': u'\u030c', #  ̌ COMBINING CARON
-    'ddddot': u'\u20dc', # x⃜ COMBINING FOUR DOTS ABOVE
-    'dddot': u'\u20db', # x⃛ COMBINING THREE DOTS ABOVE
+    'ddddot': u'\u20dc', #  ⃜ COMBINING FOUR DOTS ABOVE
+    'dddot': u'\u20db', #  ⃛ COMBINING THREE DOTS ABOVE
     'ddot': u'\u0308', #  ̈ COMBINING DIAERESIS
     'dot': u'\u0307', #  ̇ COMBINING DOT ABOVE
     'grave': u'\u0300', #  ̀ COMBINING GRAVE ACCENT
     'hat': u'\u0302', #  ̂ COMBINING CIRCUMFLEX ACCENT
     'mathring': u'\u030a', #  ̊ COMBINING RING ABOVE
     'not': u'\u0338', #  ̸ COMBINING LONG SOLIDUS OVERLAY
-    'overleftarrow': u'\u20d6', # x⃖ COMBINING LEFT ARROW ABOVE
-    'overleftrightarrow': u'\u20e1', # x⃡ COMBINING LEFT RIGHT ARROW ABOVE
+    'overleftarrow': u'\u20d6', #  ⃖ COMBINING LEFT ARROW ABOVE
+    'overleftrightarrow': u'\u20e1', #  ⃡ COMBINING LEFT RIGHT ARROW ABOVE
     'overline': u'\u0305', #  ̅ COMBINING OVERLINE
-    'overrightarrow': u'\u20d7', # x⃗ COMBINING RIGHT ARROW ABOVE
+    'overrightarrow': u'\u20d7', #  ⃗ COMBINING RIGHT ARROW ABOVE
     'tilde': u'\u0303', #  ̃ COMBINING TILDE
     'underbar': u'\u0331', #  ̱ COMBINING MACRON BELOW
-    'underleftarrow': u'\u20ee', # x⃮ COMBINING LEFT ARROW BELOW
+    'underleftarrow': u'\u20ee', #  ⃮ COMBINING LEFT ARROW BELOW
     'underline': u'\u0332', #  ̲ COMBINING LOW LINE
-    'underrightarrow': u'\u20ef', # x⃯ COMBINING RIGHT ARROW BELOW
-    'vec': u'\u20d7', # x⃗ COMBINING RIGHT ARROW ABOVE
-    'widehat': u'\u0302', #  ̂ COMBINING CIRCUMFLEX ACCENT
-    'widetilde': u'\u0303', #  ̃ COMBINING TILDE
+    'underrightarrow': u'\u20ef', #  ⃯ COMBINING RIGHT ARROW BELOW
+    'vec': u'\u20d7', #  ⃗ COMBINING RIGHT ARROW ABOVE
     }
 mathalpha = {
     'Bbbk': u'\U0001d55c', # 𝕜 MATHEMATICAL DOUBLE-STRUCK SMALL K
@@ -115,10 +113,8 @@ mathbin = {
     'bigtriangleup': u'\u25b3', # △ WHITE UP-POINTING TRIANGLE
     'bindnasrepma': u'\u214b', # ⅋ TURNED AMPERSAND
     'blacklozenge': u'\u29eb', # ⧫ BLACK LOZENGE
-    'blacktriangle': u'\u25b4', # ▴ BLACK UP-POINTING SMALL TRIANGLE
-    'blacktriangledown': u'\u25be', # ▾ BLACK DOWN-POINTING SMALL TRIANGLE
-    'blacktriangleleft': u'\u25c2', # ◂ BLACK LEFT-POINTING SMALL TRIANGLE
-    'blacktriangleright': u'\u25b8', # ▸ BLACK RIGHT-POINTING SMALL TRIANGLE
+    'blacktriangleleft': u'\u25c0', # ◀ BLACK LEFT-POINTING TRIANGLE
+    'blacktriangleright': u'\u25b6', # ▶ BLACK RIGHT-POINTING TRIANGLE
     'blacktriangleup': u'\u25b4', # ▴ BLACK UP-POINTING SMALL TRIANGLE
     'boxast': u'\u29c6', # ⧆ SQUARED ASTERISK
     'boxbar': u'\u25eb', # ◫ WHITE SQUARE WITH VERTICAL BISECTING LINE
@@ -135,8 +131,11 @@ mathbin = {
     'cdot': u'\u22c5', # ⋅ DOT OPERATOR
     'circ': u'\u2218', # ∘ RING OPERATOR
     'circledast': u'\u229b', # ⊛ CIRCLED ASTERISK OPERATOR
+    'circledbslash': u'\u29b8', # ⦸ CIRCLED REVERSE SOLIDUS
     'circledcirc': u'\u229a', # ⊚ CIRCLED RING OPERATOR
     'circleddash': u'\u229d', # ⊝ CIRCLED DASH
+    'circledgtr': u'\u29c1', # ⧁ CIRCLED GREATER-THAN
+    'circledless': u'\u29c0', # ⧀ CIRCLED LESS-THAN
     'cup': u'\u222a', # ∪ UNION
     'curlyvee': u'\u22ce', # ⋎ CURLY LOGICAL OR
     'curlywedge': u'\u22cf', # ⋏ CURLY LOGICAL AND
@@ -145,13 +144,14 @@ mathbin = {
     'diamond': u'\u22c4', # ⋄ DIAMOND OPERATOR
     'div': u'\xf7', # ÷ DIVISION SIGN
     'divideontimes': u'\u22c7', # ⋇ DIVISION TIMES
+    'dotdiv': u'\u2238', # ∸ DOT MINUS
     'dotplus': u'\u2214', # ∔ DOT PLUS
     'doublebarwedge': u'\u2a5e', # ⩞ LOGICAL AND WITH DOUBLE OVERBAR
     'intercal': u'\u22ba', # ⊺ INTERCALATE
     'interleave': u'\u2af4', # ⫴ TRIPLE VERTICAL BAR BINARY RELATION
+    'invamp': u'\u214b', # ⅋ TURNED AMPERSAND
     'land': u'\u2227', # ∧ LOGICAL AND
     'leftthreetimes': u'\u22cb', # ⋋ LEFT SEMIDIRECT PRODUCT
-    'lhd': u'\u25c1', # ◁ WHITE LEFT-POINTING TRIANGLE
     'lor': u'\u2228', # ∨ LOGICAL OR
     'ltimes': u'\u22c9', # ⋉ LEFT NORMAL FACTOR SEMIDIRECT PRODUCT
     'mp': u'\u2213', # ∓ MINUS-OR-PLUS SIGN
@@ -161,7 +161,6 @@ mathbin = {
     'oslash': u'\u2298', # ⊘ CIRCLED DIVISION SLASH
     'otimes': u'\u2297', # ⊗ CIRCLED TIMES
     'pm': u'\xb1', # ± PLUS-MINUS SIGN
-    'rhd': u'\u25b7', # ▷ WHITE RIGHT-POINTING TRIANGLE
     'rightthreetimes': u'\u22cc', # ⋌ RIGHT SEMIDIRECT PRODUCT
     'rtimes': u'\u22ca', # ⋊ RIGHT NORMAL FACTOR SEMIDIRECT PRODUCT
     'setminus': u'\u29f5', # ⧵ REVERSE SOLIDUS OPERATOR
@@ -178,10 +177,11 @@ mathbin = {
     'talloblong': u'\u2afe', # ⫾ WHITE VERTICAL BAR
     'times': u'\xd7', # × MULTIPLICATION SIGN
     'triangle': u'\u25b3', # △ WHITE UP-POINTING TRIANGLE
-    'triangledown': u'\u25bf', # ▿ WHITE DOWN-POINTING SMALL TRIANGLE
-    'triangleleft': u'\u25c3', # ◃ WHITE LEFT-POINTING SMALL TRIANGLE
-    'triangleright': u'\u25b9', # ▹ WHITE RIGHT-POINTING SMALL TRIANGLE
+    'triangledown': u'\u25bd', # ▽ WHITE DOWN-POINTING TRIANGLE
+    'triangleleft': u'\u25c1', # ◁ WHITE LEFT-POINTING TRIANGLE
+    'triangleright': u'\u25b7', # ▷ WHITE RIGHT-POINTING TRIANGLE
     'uplus': u'\u228e', # ⊎ MULTISET UNION
+    'varparallel': u'\u2afd', # ⫽ DOUBLE SOLIDUS OPERATOR
     'vartriangle': u'\u25b3', # △ WHITE UP-POINTING TRIANGLE
     'vee': u'\u2228', # ∨ LOGICAL OR
     'veebar': u'\u22bb', # ⊻ XOR
@@ -209,13 +209,13 @@ mathfence = {
     '|': u'\u2016', # ‖ DOUBLE VERTICAL LINE
     }
 mathop = {
-    'Join': u'\u2a1d', # ⨝ JOIN
     'bigcap': u'\u22c2', # ⋂ N-ARY INTERSECTION
     'bigcup': u'\u22c3', # ⋃ N-ARY UNION
     'biginterleave': u'\u2afc', # ⫼ LARGE TRIPLE VERTICAL BAR OPERATOR
     'bigodot': u'\u2a00', # ⨀ N-ARY CIRCLED DOT OPERATOR
     'bigoplus': u'\u2a01', # ⨁ N-ARY CIRCLED PLUS OPERATOR
     'bigotimes': u'\u2a02', # ⨂ N-ARY CIRCLED TIMES OPERATOR
+    'bigsqcap': u'\u2a05', # ⨅ N-ARY SQUARE INTERSECTION OPERATOR
     'bigsqcup': u'\u2a06', # ⨆ N-ARY SQUARE UNION OPERATOR
     'biguplus': u'\u2a04', # ⨄ N-ARY UNION OPERATOR WITH PLUS
     'bigvee': u'\u22c1', # ⋁ N-ARY LOGICAL OR
@@ -228,6 +228,7 @@ mathop = {
     'iint': u'\u222c', # ∬ DOUBLE INTEGRAL
     'int': u'\u222b', # ∫ INTEGRAL
     'intop': u'\u222b', # ∫ INTEGRAL
+    'oiiint': u'\u2230', # ∰ VOLUME INTEGRAL
     'oiint': u'\u222f', # ∯ SURFACE INTEGRAL
     'oint': u'\u222e', # ∮ CONTOUR INTEGRAL
     'ointctrclockwise': u'\u2233', # ∳ ANTICLOCKWISE CONTOUR INTEGRAL
@@ -236,6 +237,7 @@ mathop = {
     'sqint': u'\u2a16', # ⨖ QUATERNION INTEGRAL OPERATOR
     'sum': u'\u2211', # ∑ N-ARY SUMMATION
     'varointclockwise': u'\u2232', # ∲ CLOCKWISE CONTOUR INTEGRAL
+    'varprod': u'\u2a09', # ⨉ N-ARY TIMES OPERATOR
     }
 mathopen = {
     'Lbag': u'\u27c5', # ⟅ LEFT S-SHAPED BAG DELIMITER
@@ -267,9 +269,12 @@ mathord = {
     'APLrightarrowbox': u'\u2348', # ⍈ APL FUNCTIONAL SYMBOL QUAD RIGHTWARDS ARROW
     'APLuparrowbox': u'\u2350', # ⍐ APL FUNCTIONAL SYMBOL QUAD UPWARDS ARROW
     'Aries': u'\u2648', # ♈ ARIES
+    'Box': u'\u2b1c', # ⬜ WHITE LARGE SQUARE
     'CIRCLE': u'\u25cf', # ● BLACK CIRCLE
     'CheckedBox': u'\u2611', # ☑ BALLOT BOX WITH CHECK
     'Diamond': u'\u25c7', # ◇ WHITE DIAMOND
+    'Diamondblack': u'\u25c6', # ◆ BLACK DIAMOND
+    'Diamonddot': u'\u27d0', # ⟐ WHITE DIAMOND WITH CENTRED DOT
     'Finv': u'\u2132', # Ⅎ TURNED CAPITAL F
     'Game': u'\u2141', # ⅁ TURNED SANS-SERIF CAPITAL G
     'Gemini': u'\u264a', # ♊ GEMINI
@@ -281,9 +286,11 @@ mathord = {
     'Mars': u'\u2642', # ♂ MALE SIGN
     'Mercury': u'\u263f', # ☿ MERCURY
     'Neptune': u'\u2646', # ♆ NEPTUNE
+    'P': u'\xb6', # ¶ PILCROW SIGN
     'Pluto': u'\u2647', # ♇ PLUTO
     'RIGHTCIRCLE': u'\u25d7', # ◗ RIGHT HALF BLACK CIRCLE
     'RIGHTcircle': u'\u25d1', # ◑ CIRCLE WITH RIGHT HALF BLACK
+    'S': u'\xa7', # § SECTION SIGN
     'Saturn': u'\u2644', # ♄ SATURN
     'Scorpio': u'\u264f', # ♏ SCORPIUS
     'Square': u'\u2610', # ☐ BALLOT BOX
@@ -308,6 +315,8 @@ mathord = {
     'blacklozenge': u'\u2b27', # ⬧ BLACK MEDIUM LOZENGE
     'blacksmiley': u'\u263b', # ☻ BLACK SMILING FACE
     'blacksquare': u'\u25fc', # ◼ BLACK MEDIUM SQUARE
+    'blacktriangle': u'\u25b2', # ▲ BLACK UP-POINTING TRIANGLE
+    'blacktriangledown': u'\u25bc', # ▼ BLACK DOWN-POINTING TRIANGLE
     'bot': u'\u22a5', # ⊥ UP TACK
     'boy': u'\u2642', # ♂ MALE SIGN
     'bracevert': u'\u23aa', # ⎪ CURLY BRACKET EXTENSION
@@ -324,11 +333,8 @@ mathord = {
     'circledcirc': u'\u25ce', # ◎ BULLSEYE
     'clubsuit': u'\u2663', # ♣ BLACK CLUB SUIT
     'complement': u'\u2201', # ∁ COMPLEMENT
-    'dasharrow': u'\u21e2', # ⇢ RIGHTWARDS DASHED ARROW
-    'dashleftarrow': u'\u21e0', # ⇠ LEFTWARDS DASHED ARROW
-    'dashrightarrow': u'\u21e2', # ⇢ RIGHTWARDS DASHED ARROW
-    'diagdown': u'\u27cd', # ⟍
-    'diagup': u'\u27cb', # ⟋
+    'diagdown': u'\u27cd', # ⟍ MATHEMATICAL FALLING DIAGONAL
+    'diagup': u'\u27cb', # ⟋ MATHEMATICAL RISING DIAGONAL
     'diameter': u'\u2300', # ⌀ DIAMETER SIGN
     'diamondsuit': u'\u2662', # ♢ WHITE DIAMOND SUIT
     'earth': u'\u2641', # ♁ EARTH
@@ -356,8 +362,12 @@ mathord = {
     'lozenge': u'\u25ca', # ◊ LOZENGE
     'male': u'\u2642', # ♂ MALE SIGN
     'maltese': u'\u2720', # ✠ MALTESE CROSS
+    'mathcent': u'\xa2', # ¢ CENT SIGN
     'mathdollar': u'$', # $ DOLLAR SIGN
+    'mathsterling': u'\xa3', # £ POUND SIGN
     'measuredangle': u'\u2221', # ∡ MEASURED ANGLE
+    'medbullet': u'\u26ab', # ⚫ MEDIUM BLACK CIRCLE
+    'medcirc': u'\u26aa', # ⚪ MEDIUM WHITE CIRCLE
     'mercury': u'\u263f', # ☿ MERCURY
     'mho': u'\u2127', # ℧ INVERTED OHM SIGN
     'nabla': u'\u2207', # ∇ NABLA
@@ -380,7 +390,6 @@ mathord = {
     'scorpio': u'\u264f', # ♏ SCORPIUS
     'second': u'\u2033', # ″ DOUBLE PRIME
     'sharp': u'\u266f', # ♯ MUSIC SHARP SIGN
-    'sim': u'~', # ~ TILDE
     'slash': u'/', # / SOLIDUS
     'smiley': u'\u263a', # ☺ WHITE SMILING FACE
     'spadesuit': u'\u2660', # ♠ BLACK SPADE SUIT
@@ -392,7 +401,6 @@ mathord = {
     'sun': u'\u263c', # ☼ WHITE SUN WITH RAYS
     'surd': u'\u221a', # √ SQUARE ROOT
     'taurus': u'\u2649', # ♉ TAURUS
-    'textregistered': u'\u24c7', # Ⓡ CIRCLED LATIN CAPITAL LETTER R
     'therefore': u'\u2234', # ∴ THEREFORE
     'third': u'\u2034', # ‴ TRIPLE PRIME
     'top': u'\u22a4', # ⊤ DOWN TACK
@@ -401,7 +409,12 @@ mathord = {
     'twonotes': u'\u266b', # ♫ BEAMED EIGHTH NOTES
     'uranus': u'\u2645', # ♅ URANUS
     'varEarth': u'\u2641', # ♁ EARTH
+    'varclubsuit': u'\u2667', # ♧ WHITE CLUB SUIT
+    'vardiamondsuit': u'\u2666', # ♦ BLACK DIAMOND SUIT
+    'varheartsuit': u'\u2665', # ♥ BLACK HEART SUIT
     'varnothing': u'\u2300', # ⌀ DIAMETER SIGN
+    'varspadesuit': u'\u2664', # ♤ WHITE SPADE SUIT
+    'vdots': u'\u22ee', # ⋮ VERTICAL ELLIPSIS
     'virgo': u'\u264d', # ♍ VIRGO
     'wasylozenge': u'\u2311', # ⌑ SQUARE LOZENGE
     'wasytherefore': u'\u2234', # ∴ THEREFORE
@@ -416,7 +429,9 @@ mathradical = {
     'sqrt[4]': u'\u221c', # ∜ FOURTH ROOT
     }
 mathrel = {
+    'Bot': u'\u2aeb', # ⫫ DOUBLE UP TACK
     'Bumpeq': u'\u224e', # ≎ GEOMETRICALLY EQUIVALENT TO
+    'Coloneqq': u'\u2a74', # ⩴ DOUBLE COLON EQUAL
     'Doteq': u'\u2251', # ≑ GEOMETRICALLY EQUAL TO
     'Downarrow': u'\u21d3', # ⇓ DOWNWARDS DOUBLE ARROW
     'Leftarrow': u'\u21d0', # ⇐ LEFTWARDS DOUBLE ARROW
@@ -430,11 +445,17 @@ mathrel = {
     'Lsh': u'\u21b0', # ↰ UPWARDS ARROW WITH TIP LEFTWARDS
     'Mapsfrom': u'\u2906', # ⤆ LEFTWARDS DOUBLE ARROW FROM BAR
     'Mapsto': u'\u2907', # ⤇ RIGHTWARDS DOUBLE ARROW FROM BAR
+    'Nearrow': u'\u21d7', # ⇗ NORTH EAST DOUBLE ARROW
+    'Nwarrow': u'\u21d6', # ⇖ NORTH WEST DOUBLE ARROW
+    'Perp': u'\u2aeb', # ⫫ DOUBLE UP TACK
     'Rightarrow': u'\u21d2', # ⇒ RIGHTWARDS DOUBLE ARROW
     'Rrightarrow': u'\u21db', # ⇛ RIGHTWARDS TRIPLE ARROW
     'Rsh': u'\u21b1', # ↱ UPWARDS ARROW WITH TIP RIGHTWARDS
+    'Searrow': u'\u21d8', # ⇘ SOUTH EAST DOUBLE ARROW
     'Subset': u'\u22d0', # ⋐ DOUBLE SUBSET
     'Supset': u'\u22d1', # ⋑ DOUBLE SUPERSET
+    'Swarrow': u'\u21d9', # ⇙ SOUTH WEST DOUBLE ARROW
+    'Top': u'\u2aea', # ⫪ DOUBLE DOWN TACK
     'Uparrow': u'\u21d1', # ⇑ UPWARDS DOUBLE ARROW
     'Updownarrow': u'\u21d5', # ⇕ UP DOWN DOUBLE ARROW
     'VDash': u'\u22ab', # ⊫ DOUBLE VERTICAL BAR DOUBLE RIGHT TURNSTILE
@@ -455,12 +476,16 @@ mathrel = {
     'bumpeq': u'\u224f', # ≏ DIFFERENCE BETWEEN
     'circeq': u'\u2257', # ≗ RING EQUAL TO
     'coloneq': u'\u2254', # ≔ COLON EQUALS
+    'coloneqq': u'\u2254', # ≔ COLON EQUALS
     'cong': u'\u2245', # ≅ APPROXIMATELY EQUAL TO
     'corresponds': u'\u2259', # ≙ ESTIMATES
     'curlyeqprec': u'\u22de', # ⋞ EQUAL TO OR PRECEDES
     'curlyeqsucc': u'\u22df', # ⋟ EQUAL TO OR SUCCEEDS
     'curvearrowleft': u'\u21b6', # ↶ ANTICLOCKWISE TOP SEMICIRCLE ARROW
     'curvearrowright': u'\u21b7', # ↷ CLOCKWISE TOP SEMICIRCLE ARROW
+    'dasharrow': u'\u21e2', # ⇢ RIGHTWARDS DASHED ARROW
+    'dashleftarrow': u'\u21e0', # ⇠ LEFTWARDS DASHED ARROW
+    'dashrightarrow': u'\u21e2', # ⇢ RIGHTWARDS DASHED ARROW
     'dashv': u'\u22a3', # ⊣ LEFT TACK
     'ddots': u'\u22f1', # ⋱ DOWN RIGHT DIAGONAL ELLIPSIS
     'dlsh': u'\u21b2', # ↲ DOWNWARDS ARROW WITH TIP LEFTWARDS
@@ -476,6 +501,7 @@ mathrel = {
     'drsh': u'\u21b3', # ↳ DOWNWARDS ARROW WITH TIP RIGHTWARDS
     'eqcirc': u'\u2256', # ≖ RING IN EQUAL TO
     'eqcolon': u'\u2255', # ≕ EQUALS COLON
+    'eqqcolon': u'\u2255', # ≕ EQUALS COLON
     'eqsim': u'\u2242', # ≂ MINUS TILDE
     'eqslantgtr': u'\u2a96', # ⪖ SLANTED EQUAL TO OR GREATER-THAN
     'eqslantless': u'\u2a95', # ⪕ SLANTED EQUAL TO OR LESS-THAN
@@ -509,6 +535,7 @@ mathrel = {
     'implies': u'\u27f9', # ⟹ LONG RIGHTWARDS DOUBLE ARROW
     'in': u'\u2208', # ∈ ELEMENT OF
     'le': u'\u2264', # ≤ LESS-THAN OR EQUAL TO
+    'leadsto': u'\u2933', # ⤳ WAVE ARROW POINTING DIRECTLY RIGHT
     'leftarrow': u'\u2190', # ← LEFTWARDS ARROW
     'leftarrowtail': u'\u21a2', # ↢ LEFTWARDS ARROW WITH TAIL
     'leftarrowtriangle': u'\u21fd', # ⇽ LEFTWARDS OPEN-HEADED ARROW
@@ -534,6 +561,7 @@ mathrel = {
     'lesseqqgtr': u'\u2a8b', # ⪋ LESS-THAN ABOVE DOUBLE-LINE EQUAL ABOVE GREATER-THAN
     'lessgtr': u'\u2276', # ≶ LESS-THAN OR GREATER-THAN
     'lesssim': u'\u2272', # ≲ LESS-THAN OR EQUIVALENT TO
+    'lhd': u'\u22b2', # ⊲ NORMAL SUBGROUP OF
     'lightning': u'\u21af', # ↯ DOWNWARDS ZIGZAG ARROW
     'll': u'\u226a', # ≪ MUCH LESS-THAN
     'llcurly': u'\u2abb', # ⪻ DOUBLE PRECEDES
@@ -550,11 +578,16 @@ mathrel = {
     'longrightarrow': u'\u27f6', # ⟶ LONG RIGHTWARDS ARROW
     'looparrowleft': u'\u21ab', # ↫ LEFTWARDS ARROW WITH LOOP
     'looparrowright': u'\u21ac', # ↬ RIGHTWARDS ARROW WITH LOOP
+    'lrtimes': u'\u22c8', # ⋈ BOWTIE
     'mapsfrom': u'\u21a4', # ↤ LEFTWARDS ARROW FROM BAR
     'mapsto': u'\u21a6', # ↦ RIGHTWARDS ARROW FROM BAR
     'mid': u'\u2223', # ∣ DIVIDES
     'models': u'\u22a7', # ⊧ MODELS
     'multimap': u'\u22b8', # ⊸ MULTIMAP
+    'multimapboth': u'\u29df', # ⧟ DOUBLE-ENDED MULTIMAP
+    'multimapdotbothA': u'\u22b6', # ⊶ ORIGINAL OF
+    'multimapdotbothB': u'\u22b7', # ⊷ IMAGE OF
+    'multimapinv': u'\u27dc', # ⟜ LEFT MULTIMAP
     'nLeftarrow': u'\u21cd', # ⇍ LEFTWARDS DOUBLE ARROW WITH STROKE
     'nLeftrightarrow': u'\u21ce', # ⇎ LEFT RIGHT DOUBLE ARROW WITH STROKE
     'nRightarrow': u'\u21cf', # ⇏ RIGHTWARDS DOUBLE ARROW WITH STROKE
@@ -574,6 +607,7 @@ mathrel = {
     'nmid': u'\u2224', # ∤ DOES NOT DIVIDE
     'notasymp': u'\u226d', # ≭ NOT EQUIVALENT TO
     'notin': u'\u2209', # ∉ NOT AN ELEMENT OF
+    'notni': u'\u220c', # ∌ DOES NOT CONTAIN AS MEMBER
     'notowner': u'\u220c', # ∌ DOES NOT CONTAIN AS MEMBER
     'notslash': u'\u233f', # ⌿ APL FUNCTIONAL SYMBOL SLASH BAR
     'nparallel': u'\u2226', # ∦ NOT PARALLEL TO
@@ -581,6 +615,7 @@ mathrel = {
     'npreceq': u'\u22e0', # ⋠ DOES NOT PRECEDE OR EQUAL
     'nrightarrow': u'\u219b', # ↛ RIGHTWARDS ARROW WITH STROKE
     'nsim': u'\u2241', # ≁ NOT TILDE
+    'nsimeq': u'\u2244', # ≄ NOT ASYMPTOTICALLY EQUAL TO
     'nsubseteq': u'\u2288', # ⊈ NEITHER A SUBSET OF NOR EQUAL TO
     'nsucc': u'\u2281', # ⊁ DOES NOT SUCCEED
     'nsucceq': u'\u22e1', # ⋡ DOES NOT SUCCEED OR EQUAL
@@ -600,12 +635,14 @@ mathrel = {
     'precapprox': u'\u2ab7', # ⪷ PRECEDES ABOVE ALMOST EQUAL TO
     'preccurlyeq': u'\u227c', # ≼ PRECEDES OR EQUAL TO
     'preceq': u'\u2aaf', # ⪯ PRECEDES ABOVE SINGLE-LINE EQUALS SIGN
+    'preceqq': u'\u2ab3', # ⪳ PRECEDES ABOVE EQUALS SIGN
     'precnapprox': u'\u2ab9', # ⪹ PRECEDES ABOVE NOT ALMOST EQUAL TO
     'precneqq': u'\u2ab5', # ⪵ PRECEDES ABOVE NOT EQUAL TO
     'precnsim': u'\u22e8', # ⋨ PRECEDES BUT NOT EQUIVALENT TO
     'precsim': u'\u227e', # ≾ PRECEDES OR EQUIVALENT TO
     'propto': u'\u221d', # ∝ PROPORTIONAL TO
     'restriction': u'\u21be', # ↾ UPWARDS HARPOON WITH BARB RIGHTWARDS
+    'rhd': u'\u22b3', # ⊳ CONTAINS AS NORMAL SUBGROUP
     'rightarrow': u'\u2192', # → RIGHTWARDS ARROW
     'rightarrowtail': u'\u21a3', # ↣ RIGHTWARDS ARROW WITH TAIL
     'rightarrowtriangle': u'\u21fe', # ⇾ RIGHTWARDS OPEN-HEADED ARROW
@@ -628,6 +665,8 @@ mathrel = {
     'sqsubseteq': u'\u2291', # ⊑ SQUARE IMAGE OF OR EQUAL TO
     'sqsupset': u'\u2290', # ⊐ SQUARE ORIGINAL OF
     'sqsupseteq': u'\u2292', # ⊒ SQUARE ORIGINAL OF OR EQUAL TO
+    'strictfi': u'\u297c', # ⥼ LEFT FISH TAIL
+    'strictif': u'\u297d', # ⥽ RIGHT FISH TAIL
     'subset': u'\u2282', # ⊂ SUBSET OF
     'subseteq': u'\u2286', # ⊆ SUBSET OF OR EQUAL TO
     'subseteqq': u'\u2ac5', # ⫅ SUBSET OF ABOVE EQUALS SIGN
@@ -637,6 +676,7 @@ mathrel = {
     'succapprox': u'\u2ab8', # ⪸ SUCCEEDS ABOVE ALMOST EQUAL TO
     'succcurlyeq': u'\u227d', # ≽ SUCCEEDS OR EQUAL TO
     'succeq': u'\u2ab0', # ⪰ SUCCEEDS ABOVE SINGLE-LINE EQUALS SIGN
+    'succeqq': u'\u2ab4', # ⪴ SUCCEEDS ABOVE EQUALS SIGN
     'succnapprox': u'\u2aba', # ⪺ SUCCEEDS ABOVE NOT ALMOST EQUAL TO
     'succneqq': u'\u2ab6', # ⪶ SUCCEEDS ABOVE NOT EQUAL TO
     'succnsim': u'\u22e9', # ⋩ SUCCEEDS BUT NOT EQUIVALENT TO
@@ -666,13 +706,17 @@ mathrel = {
     'vartriangleleft': u'\u22b2', # ⊲ NORMAL SUBGROUP OF
     'vartriangleright': u'\u22b3', # ⊳ CONTAINS AS NORMAL SUBGROUP
     'vdash': u'\u22a2', # ⊢ RIGHT TACK
-    'vdots': u'\u22ee', # ⋮ VERTICAL ELLIPSIS
     }
 mathunder = {
     'underbrace': u'\u23df', # ⏟ BOTTOM CURLY BRACKET
     }
 space = {
+    ' ': u' ', #   SPACE
+    ',': u'\u2006', #   SIX-PER-EM SPACE
     ':': u'\u205f', #   MEDIUM MATHEMATICAL SPACE
+    ';': u'\u2004', #   THREE-PER-EM SPACE
     'medspace': u'\u205f', #   MEDIUM MATHEMATICAL SPACE
-    'quad': u'\u2001', #   EM QUAD
+    'quad': u'\u2003', #   EM SPACE
+    'thickspace': u'\u2004', #   THREE-PER-EM SPACE
+    'thinspace': u'\u2006', #   SIX-PER-EM SPACE
     }
