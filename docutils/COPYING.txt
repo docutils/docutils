@@ -70,12 +70,24 @@ Exceptions
 
 The exceptions to the `Public Domain Dedication`_ above are:
 
-* docutils/utils/math/__init__.py,
-  docutils/utils/math/latex2mathml.py,
-  docutils/writers/xetex/__init__.py,
-  docutils/utils/error_reporting.py,
-  docutils/test/transforms/test_smartquotes.py:
-
+* docutils/parsers/recommonmark_wrapper.py
+  docutils/utils/error_reporting.py
+  docutils/utils/math/__init__.py
+  docutils/utils/math/latex2mathml.py
+  docutils/utils/math/tex2mathml_extern.py
+  docutils/utils/punctuation_chars.py
+  docutils/writers/html5_polyglot/__init__.py
+  docutils/writers/xetex/__init__.py
+  test/test_parsers/test_recommonmark/*.py
+  test/test_parsers/test_rst/test_directives/test__init__.py
+  test/test_parsers/test_rst/test_directives/test_code_parsing.py
+  test/test_parsers/test_rst/test_line_length_limit_default.py
+  test/test_parsers/test_rst/test_line_length_limit.py
+  test/test_writers/test_latex2e_misc.py
+  test/transforms/test_smartquotes.py
+  tools/docutils-cli.py
+  tools/rst2html5.py
+  
   Copyright © Günter Milde.
   Released under the terms of the `2-Clause BSD license`_
   (`local copy <licenses/BSD-2-Clause.txt>`__).
@@ -91,7 +103,13 @@ The exceptions to the `Public Domain Dedication`_ above are:
 
   .. _SmartyPants: http://daringfireball.net/projects/smartypants/
 
-* docutils/utils/math/math2html.py,
+* docutils/utils/math/latex2mathml
+
+  Copyright © Jens Jørgen Mortensen, Günter Milde
+  Released under the terms of the `2-Clause BSD license`_
+  (`local copy <licenses/BSD-2-Clause.txt>`__).
+
+* docutils/utils/math/math2html.py
   docutils/writers/html4css1/math.css
 
   Copyright © Alex Fernández
@@ -102,14 +120,18 @@ The exceptions to the `Public Domain Dedication`_ above are:
 
   .. _eLyXer: http://www.nongnu.org/elyxer/
 
-* docutils/utils/roman.py, copyright by Mark Pilgrim, released under the
+* docutils/utils/roman.py
+
+  copyright by Mark Pilgrim, released under the
   `Python 2.1.1 license`_ (`local copy`__).
 
   __ licenses/python-2-1-1.txt
 
-* tools/editors/emacs/rst.el, copyright by Free Software Foundation,
-  Inc., released under the `GNU General Public License`_ version 3 or
-  later (`local copy`__).
+* tools/editors/emacs/rst.el
+
+  copyright by Free Software Foundation, Inc., 
+  released under the `GNU General Public License`_ version 3 or later
+  (`local copy`__).
 
   __ licenses/gpl-3-0.txt
 
