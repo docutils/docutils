@@ -92,6 +92,10 @@ text data and inline elements may be intermixed.  This is unlike the
 much looser HTML_ document model, where paragraphs and text data may
 occur at the same level.
 
+.. _HTML: https://www.w3.org/TR/html52/
+.. _DocBook: https://tdg.docbook.org/tdg/5.1/
+.. _XMLSpec: http://www.w3.org/XML/1998/06/xmlspec-report.htm
+
 
 Structural Elements
 ===================
@@ -209,11 +213,6 @@ Category members: abbreviation_, acronym_, citation_reference_,
 emphasis_, footnote_reference_, generated_, image_, inline_, literal_,
 math_, problematic_, reference_, strong_, subscript_,
 substitution_reference_, superscript_, target_, title_reference_, raw_
-
-
-.. _HTML: http://www.w3.org/MarkUp/
-.. _DocBook: http://docbook.org/tdg/en/html/docbook.html
-.. _XMLSpec: http://www.w3.org/XML/1998/06/xmlspec-report.htm
 
 
 -------------------
@@ -2355,13 +2354,170 @@ setting has been supplied::
 ``footnote``
 ============
 
-`To be completed`_.
+The ``footnote`` element contains notes_ that provides additional context
+to a passage of text. For the corresponding footnote mark, a
+`footnote_reference`_ element is required.
+
+.. _notes: https://en.wikipedia.org/wiki/Note_(typography)
+
+
+Details
+-------
+
+:Category:
+    `Compound Body Elements`_
+
+:Parents:
+    All elements employing the `%body.elements;`_ or
+    `%structure.model;`_ parameter entities in their content models
+    may contain ``footnote``.
+
+:Children:
+    ``footnote`` elements may contain `body elements`_.
+
+:Analogues:
+    ``footnote`` is similar to the `DocBook "footnote"`_ element but does
+    not create a footnote_reference_.
+
+    There is `no equivalent in HTML`__. The ARIA_ role `"note"`__, or the
+    DPub-ARIA role `"doc-footnote"`__ may be used semantically represent
+    footnotes in HTML. As the spatial positioning is not determined,
+    the corresponding `epub:type`__ is the deprecated "note" (rather
+    than "footnote" or "endnote").
+
+    __ https://www.w3.org/TR/html51/common-idioms-without-dedicated-elements.html#footnotes
+    __ https://www.w3.org/TR/wai-aria-1.1/#note
+    __ https://www.w3.org/TR/dpub-aria-1.0/#doc-footnote
+    __ https://idpf.github.io/epub-vocabs/structure/#notes
+
+:Processing:
+    A ``footnote`` element should be set off from the rest of the
+    document, e.g. with a border or using a smaller font size.
+
+    Footnotes may "float" to the bottom or margin of a page or a
+    dedicated section.
+
+.. _DocBook "footnote":
+   https://tdg.docbook.org/tdg/publishers/5.1/footnote.html
+.. _ARIA: https://www.w3.org/TR/html-aria/
+
+
+Content Model
+-------------
+
+.. parsed-literal::
+
+    (label_?, (`%body.elements;`_)+)
+
+:Attributes:
+    The ``footnote`` element contains the `common attributes`_
+    (ids_, names_, dupnames_, source_, and classes_),
+    plus auto_ and backrefs_.
+
+:Parameter Entities:
+    The `%body.elements;`_ parameter entity directly includes
+    ``footnote``.  The `%structure.model;`_ parameter entity indirectly
+    includes ``footnote``.
+
+
+Examples
+--------
+
+reStructuredText_ uses `explicit markup blocks`_ for footnotes::
+
+    .. [1] This is a footnote.
+
+Pseudo-XML_ fragment from simple parsing::
+
+    <footnote ids="id1" names="1">
+        <label>
+            1
+        <paragraph>
+            This is a footnote.
+
+.. _explicit markup blocks: rst/restructuredtext.html#explicit-markup-blocks
 
 
 ``footnote_reference``
 ======================
 
-`To be completed`_.
+The ``footnote_reference`` element represents a footnote mark in running
+text pointing to a footnote_.
+
+
+Details
+-------
+
+:Category:
+    `Inline Elements`_
+
+:Parents:
+    All elements employing the `%inline.elements;`_ parameter entities in
+    their content models may contain ``footnote-reference``.
+
+:Children:
+    ``footnote_reference`` elements may contain text data.
+
+:Analogues:
+    The ``footnote_reference`` element resembles the
+    `DocBook "footnoteref"`_ element.
+
+    There is no equivalent in HTML. The ``<a>`` element can be used
+    to provide a link to the corresponding footnote.
+
+:Processing:
+    A ``footnote_reference`` should generate a mark matching the label_
+    of the referenced footnote. The mark is typically formatted as
+    superscript or enclosed i square brackets.
+
+.. _DocBook "footnoteref":
+   https://tdg.docbook.org/tdg/publishers/5.1/footnoteref.html
+
+
+Content Model
+-------------
+
+.. parsed-literal::
+
+    (#PCDATA)
+
+:Attributes:
+    The ``footnote_reference`` element contains the `common attributes`_
+    (ids_, names_, dupnames_, source_, and classes_),
+    plus auto_, refid_, and refname_.
+
+
+Examples
+--------
+
+reStructuredText source fragment::
+
+    [#]_ is an auto-numbered footnote reference.
+
+    .. [#] Auto-numbered footnote 1.
+
+Pseudo-XML_ fragment from simple parsing::
+
+    <paragraph>
+        <footnote_reference auto="1" ids="id1">
+         is an auto-numbered footnote reference.
+    <footnote auto="1" ids="id3">
+        <paragraph>
+            Auto-numbered footnote 1.
+
+The ``references.Footnotes`` Docutils transform_ resolves this to::
+
+    <paragraph>
+        <footnote_reference auto="1" ids="id1" refid="id2">
+            1
+         is an auto-numbered footnote reference.
+    <footnote auto="1" backrefs="id1" ids="id2" names="1">
+        <label>
+            1
+        <paragraph>
+            Auto-numbered footnote 1.
+
+.. _transform: transforms.html
 
 
 ``generated``
@@ -4583,7 +4739,7 @@ _`yesorno`
 _`number`
     The attribute value must be a number. Resolves to ``NMTOKEN``.
 
-    Used in the `scale`_, and `start`_ attributes.
+    Used in the `level`_, `morecols`_, `scale`_, and `start`_ attributes.
 
 _`measure`
     A number which may be immediately followed by a unit or percent sign.
@@ -4809,6 +4965,19 @@ elements.
    * Keep additional keys in `ids`
      or in the preceding target elements?
 
+``level``
+=========
+
+Attribute type: number_.  Default value: none.
+
+The ``level`` attribute is used in the system_message_ element.
+
+``morecols``
+============
+
+Attribute type: number_.  Default value: none.
+
+The ``morecols`` attribute is used in the table_ element.
 
 ``names``
 =========
