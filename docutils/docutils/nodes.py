@@ -1572,7 +1572,7 @@ class document(Root, Structural, Element):
     def get_decoration(self):
         if not self.decoration:
             self.decoration = decoration()
-            index = self.first_child_not_matching_class(Titular)
+            index = self.first_child_not_matching_class((Titular, meta))
             if index is None:
                 self.append(self.decoration)
             else:

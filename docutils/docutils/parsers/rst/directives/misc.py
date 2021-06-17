@@ -544,7 +544,6 @@ class MetaBody(states.SpecializedBody):
                       'Error parsing meta tag attribute "%s": %s.'
                       % (token, detail), nodes.literal_block(line, line))
                 return msg, blank_finish
-        # self.document.note_pending(pending)
         return node, blank_finish
 
 
@@ -568,7 +567,11 @@ class Meta(Directive):
                 nodes.literal_block(self.block_text, self.block_text),
                 line=self.lineno)
             node += error
-        return node.children
+        # insert at begin of document
+        index = self.state.document.first_child_not_matching_class(
+                                        (nodes.Titular, nodes.meta)) or 0
+        self.state.document[index:index] = node.children
+        return []
 
 
 class Date(Directive):

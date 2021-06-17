@@ -67,9 +67,9 @@ Paragraph
 """,
 """\
 <document source="test data">
+    <meta content="content" name="name">
     <paragraph>
         Paragraph
-    <meta content="content" name="name">
 """],
 ["""\
 .. meta::

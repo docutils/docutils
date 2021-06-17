@@ -3,6 +3,8 @@
         reStructuredText Test Document
     <subtitle ids="examples-of-syntax-constructs subtitle" names="examples\ of\ syntax\ constructs subtitle">
         Examples of Syntax Constructs
+    <meta content="reStructuredText, test, parser" name="keywords">
+    <meta content="A test document, containing at least one example of each reStructuredText construct." lang="en" name="description">
     <decoration>
         <header>
             <paragraph>
@@ -1995,8 +1997,6 @@
                         9
                      is used to specify metadata to be stored in,
                     e.g., HTML META tags or ODT file properties.
-                <meta content="reStructuredText, test, parser" name="keywords">
-                <meta content="A test document, containing at least one example of each reStructuredText construct." lang="en" name="description">
                 <target anonymous="1" ids="target-6" refuri="https://docutils.sourceforge.io/docs/ref/rst/directives.html#metadata">
         <section ids="substitution-definitions" names="substitution\ definitions">
             <title auto="1" refid="toc-entry-34">
