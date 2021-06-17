@@ -559,14 +559,19 @@ Default: disabled (None).  Option: ``--strip-element-with-class``.
 title
 -----
 
-The `document title`_ as metadata, which does not become part of the
-document body.  It overrides a document-supplied title.  For
-example, in HTML output the metadata document title appears in the
-title bar of the browser window.
+The `document title` as metadata which does not become part of the
+document body. Stored as the document's `title attribute`_.
+For example, in HTML output the metadata document title
+appears in the title bar of the browser window.
+
+This setting overrides a displayed `document title`_ and
+is overridden by a `"title" directive`_.
 
 Default: none.  Option: ``--title``.
 
+.. _title attribute: ../ref/doctree.html#title-attribute
 .. _document title: ../ref/rst/restructuredtext.html#document-title
+.. _"title" directive: ../ref/rst/directives.html#metadata-document-title
 
 toc_backlinks
 -------------
@@ -1092,7 +1097,7 @@ the output document. Supported values are (case insensitive):
     With the "html4css1" writer, the resulting HTML document does
     not validate, as there is no DTD for `MathML + XHTML Transitional`.
     However, MathML-enabled browsers will render it fine.
-    
+
     __ https://developer.mozilla.org/en-US/docs/Web/MathML
        #browser_compatibility
     __ ../ref/rst/mathematics.html

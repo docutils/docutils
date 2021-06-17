@@ -57,7 +57,7 @@ _directive_registry = {
       #'footnotes': ('parts', 'footnotes'),
       #'citations': ('parts', 'citations'),
       'target-notes': ('references', 'TargetNotes'),
-      'meta': ('html', 'Meta'),
+      'meta': ('misc', 'Meta'),
       #'imagemap': ('html', 'imagemap'),
       'raw': ('misc', 'Raw'),
       'include': ('misc', 'Include'),

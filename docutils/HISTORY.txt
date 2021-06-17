@@ -18,6 +18,20 @@ Changes Since 0.17.1
 
   - ``Node.traverse()`` returns an iterator instead of a list.
 
+  - Make meta__ a standard Docutils doctree node. Writers may ignore
+    "meta" nodes if they are not supported by the output format.
+
+  __ docs/ref/doctree.html#meta
+
+* docutils/parsers/rst/directives/html.py
+
+  - Removed. (Meta directive moved to ``misc.py``.)
+
+* docutils/parsers/rst/directives/misc.py
+
+  - `Meta` directive class (moved from html.py) inserts `meta`
+    (instead of `pending`) nodes.
+
 * docutils/tools/math/math2html, docutils/writers/html5_polyglot/math.css
 
   - Fix bug #244 Wrong subscript/superscript order with
@@ -58,6 +72,7 @@ Changes Since 0.17.1
   - Remove IE 6 compatibility workarounds ``iepngfix.htc`` and
     ``blank.gif`` (fixes bug #169).
 
+
 Release 0.17.1 (2021-04-16)
 ===========================
 
@@ -79,6 +94,7 @@ Release 0.17.1 (2021-04-16)
 
   - Apply patch #160: move macro defs above ``.TH``
     (thanks Willie and sorry for the delay).
+
 
 Release 0.17 (2021-04-03)
 =========================

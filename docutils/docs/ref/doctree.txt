@@ -111,7 +111,7 @@ Structural subelements are child elements of structural elements.
 Simple structuctural subelements (title_, subtitle_) contain text
 data; the others are compound and do not directly contain text data.
 
-Category members: title_, subtitle_, decoration_, docinfo_,
+Category members: title_, subtitle_, decoration_, docinfo_, meta_,
 transition_
 
 
@@ -1607,10 +1607,11 @@ See the examples for the option_list_ element.
 ``docinfo``
 ===========
 
-The ``docinfo`` element is a container for document bibliographic
+The ``docinfo`` element is a container for displayed document bibliographic
 data, or meta-data (data about the document).  It corresponds to the
 front matter of a book, such as the title page and copyright page.
 
+See also the meta_ element (for "hidden" meta-data).
 
 Details
 -------
@@ -1839,11 +1840,8 @@ of a ``document``.
 
 :Attributes:
     The ``document`` element contains the `common attributes`_ (ids_,
-    names_, dupnames_, source_, and classes_), plus an optional title__
-    attribute which stores the document title metadata.
-
-    __ `title (attribute)`_
-
+    names_, dupnames_, source_, and classes_), plus an optional
+    `title attribute`_ which stores the document title metadata.
 
 Examples
 --------
@@ -2705,7 +2703,6 @@ Content Model
 Examples
 --------
 
-reStructuredText uses a directive to indicate a ``line_block``.
 Example source::
 
     Take it away, Eric the Orchestra Leader!
@@ -3005,6 +3002,55 @@ Content Model
 :Attributes:
     The ``math`` element contains the `common attributes`_
     (ids_, names_, dupnames_, source_, and classes_).
+
+``meta``
+========
+
+The ``meta`` element is a container for "hidden" document
+bibliographic data, or meta-data (data about the document).
+It corresponds to HTML META tags.
+
+See also the docinfo_ element for displayed meta-data.
+The document's `title attribute`_ stores the metadate document title.
+
+
+Details
+-------
+
+:Category:
+    `Structural Subelements`_
+
+:Parents:
+    Only the document_ element contains ``meta``.
+
+:Children:
+    None.
+
+:Analogues:
+    ``meta`` is analogous to the HTML "meta" element
+    or the file properties in ODT or PDF documents.
+
+:Processing:
+    The ``meta`` element is stored as metadata if the export format
+    supports this. It is typically invisible and may be omitted from
+    the processed output.
+
+    Meta-data may also be extracted from docinfo_ children
+    or the document_ attributes (title).
+
+The `"meta" directive`_ is used to create a ``meta`` element.
+reStructuredText_ source::
+
+    .. meta::
+       :description lang=en: An amusing story
+       :description lang=fr: Un histoire amusant
+
+Pseudo-XML_ fragment from simple parsing::
+
+    <meta content="An amusing story" lang="en" name="description">
+    <meta content="Un histoire amusant" lang="fr" name="description">
+
+.. _"meta" directive: rst/directives.html#meta
 
 
 ``note``
@@ -4537,8 +4583,7 @@ _`yesorno`
 _`number`
     The attribute value must be a number. Resolves to ``NMTOKEN``.
 
-    Used in the `level`_, `morecols`_, `scale`_, and `start`_ attributes.
-
+    Used in the `scale`_, and `start`_ attributes.
 
 _`measure`
     A number which may be immediately followed by a unit or percent sign.
@@ -4887,6 +4932,18 @@ Attribute type: `CDATA`_.  Default value: none.
 The ``suffix`` attribute is used in the enumerated_list_ element.
 
 
+.. _title attribute:
+
+``title``
+=========
+
+Attribute type: `CDATA`_.  Default value: none.
+
+The ``title`` attribute stores the title metadata of a document_.  This
+title is typically not part of the rendered document.  It may for
+example be used in HTML's ``title`` element.
+
+
 ``width``
 ==========
 
@@ -4908,18 +4965,6 @@ line_block_, doctest_block_, comment_, and raw_ elements (via the
 to communicate to an XML parser that the element contains significant
 whitespace.  The attribute value should not be set in a document
 instance.
-
-
-.. _title (attribute):
-
-``title``
-=========
-
-Attribute type: `CDATA`_.  Default value: none.
-
-The ``title`` attribute stores the title metadata of a document.  This
-title is typically not part of the rendered document.  It may for
-example be used in HTML's ``title`` element.
 
 
 ----------------------------
@@ -5252,7 +5297,7 @@ The following restrictions are imposed by this model:
 
    An additional restriction, which cannot be expressed in the language
    of DTDs, is imposed by software:
-   
+
    * A transition may not occur at the end of a document or section.
 
 The `%structure.model;`_ parameter entity is directly employed in the
