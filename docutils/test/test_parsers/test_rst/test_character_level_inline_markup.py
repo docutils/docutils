@@ -114,20 +114,20 @@ Also *this**.
          (escaped; whitespace before end-string).
     <paragraph>
         However, '
-        <problematic ids="id2" refid="id1">
+        <problematic ids="problematic-1" refid="system-message-1">
             *
         args' triggers a warning.
-    <system_message backrefs="id2" ids="id1" level="2" line="15" source="test data" type="WARNING">
+    <system_message backrefs="problematic-1" ids="system-message-1" level="2" line="15" source="test data" type="WARNING">
         <paragraph>
             Inline emphasis start-string without end-string.
     <paragraph>
         Also \n\
         <emphasis>
             this
-        <problematic ids="id4" refid="id3">
+        <problematic ids="problematic-2" refid="system-message-2">
             *
         .
-    <system_message backrefs="id4" ids="id3" level="2" line="17" source="test data" type="WARNING">
+    <system_message backrefs="problematic-2" ids="system-message-2" level="2" line="17" source="test data" type="WARNING">
         <paragraph>
             Inline emphasis start-string without end-string.
 """],
@@ -214,10 +214,10 @@ With simple-inline-markup, this is ```interpreted text``` in backquotes!
 """\
 <document source="test data">
     <paragraph>
-        <problematic ids="id2" refid="id1">
+        <problematic ids="problematic-1" refid="system-message-1">
             ``
         literal without closing backquotes
-    <system_message backrefs="id2" ids="id1" level="2" line="1" source="test data" type="WARNING">
+    <system_message backrefs="problematic-1" ids="system-message-1" level="2" line="1" source="test data" type="WARNING">
         <paragraph>
             Inline literal start-string without end-string.
 """],
@@ -328,20 +328,20 @@ Adjacent footnote refs are possible with simple-inline-markup:
 <document source="test data">
     <paragraph>
         Adjacent footnote refs are possible with simple-inline-markup:
-        <footnote_reference auto="*" ids="id1">
-        <footnote_reference auto="1" ids="id2" refname="label">
+        <footnote_reference auto="*" ids="footnote-reference-1">
+        <footnote_reference auto="1" ids="footnote-reference-2" refname="label">
          \n\
-        <footnote_reference auto="1" ids="id3">
-        <footnote_reference ids="id4" refname="2">
+        <footnote_reference auto="1" ids="footnote-reference-3">
+        <footnote_reference ids="footnote-reference-4" refname="2">
             2
          \n\
-        <footnote_reference ids="id5" refname="1">
+        <footnote_reference ids="footnote-reference-5" refname="1">
             1
-        <footnote_reference auto="*" ids="id6">
-    <footnote auto="1" ids="id7">
+        <footnote_reference auto="*" ids="footnote-reference-6">
+    <footnote auto="1" ids="footnote-1">
         <paragraph>
             test1
-    <footnote auto="*" ids="id8">
+    <footnote auto="*" ids="footnote-2">
         <paragraph>
             test2
 """],
@@ -356,9 +356,9 @@ Adjacent citation refs are possible with simple-inline-markup:
 <document source="test data">
     <paragraph>
         Adjacent citation refs are possible with simple-inline-markup:
-        <citation_reference ids="id1" refname="citation">
+        <citation_reference ids="citation-reference-1" refname="citation">
             citation
-        <citation_reference ids="id2" refname="cit1">
+        <citation_reference ids="citation-reference-2" refname="cit1">
             CIT1
 """],
 ]
@@ -399,7 +399,7 @@ http://example.com/rST_for_all.html
     <paragraph>
         <reference refuri="http://example.com/*content">
             http://example.com/*content
-        <problematic ids="id2" refid="id1">
+        <problematic ids="problematic-1" refid="system-message-1">
             *
         /whatever
         <reference refuri="http://example.com/">
@@ -407,7 +407,7 @@ http://example.com/rST_for_all.html
         <reference name="rST_for" refname="rst_for">
             rST_for
         all.html
-    <system_message backrefs="id2" ids="id1" level="2" line="8" source="test data" type="WARNING">
+    <system_message backrefs="problematic-1" ids="system-message-1" level="2" line="8" source="test data" type="WARNING">
         <paragraph>
             Inline emphasis start-string without end-string.
 """],

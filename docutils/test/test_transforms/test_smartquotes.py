@@ -335,7 +335,7 @@ u"""\
         .
     <paragraph>
         Test around inline elements:
-        <footnote_reference auto="*" ids="id1">
+        <footnote_reference auto="*" ids="footnote-reference-1">
     <paragraph>
         <emphasis>
             emphasized
@@ -355,7 +355,7 @@ u"""\
             O and \n\
             <math>
                 x^2
-        <footnote auto="*" ids="id2">
+        <footnote auto="*" ids="footnote-1">
             <paragraph>
                 and footnotes
 """],

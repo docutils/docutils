@@ -155,7 +155,7 @@ totest['table'] = [
     <table>
         <title>
             title with an \n\
-            <problematic ids="id2" refid="id1">
+            <problematic ids="problematic-1" refid="system-message-1">
                 *
             error
         <tgroup cols="2">
@@ -169,7 +169,7 @@ totest['table'] = [
                     <entry>
                         <paragraph>
                             table
-    <system_message backrefs="id2" ids="id1" level="2" line="1" source="test data" type="WARNING">
+    <system_message backrefs="problematic-1" ids="system-message-1" level="2" line="1" source="test data" type="WARNING">
         <paragraph>
             Inline emphasis start-string without end-string.
 """],
@@ -766,7 +766,7 @@ u"""\
     <table>
         <title>
             error in the \n\
-            <problematic ids="id2" refid="id1">
+            <problematic ids="problematic-1" refid="system-message-1">
                 *
             title
         <tgroup cols="3">
@@ -784,7 +784,7 @@ u"""\
                     <entry>
                         <paragraph>
                             data
-    <system_message backrefs="id2" ids="id1" level="2" line="1" source="test data" type="WARNING">
+    <system_message backrefs="problematic-1" ids="system-message-1" level="2" line="1" source="test data" type="WARNING">
         <paragraph>
             Inline emphasis start-string without end-string.
 """],

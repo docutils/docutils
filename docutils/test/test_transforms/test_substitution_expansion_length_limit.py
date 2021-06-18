@@ -56,10 +56,10 @@ The billion laughs attack for ReStructuredText:
     <paragraph>
         lol
          \n\
-        <problematic ids="id2" refid="id1">
+        <problematic ids="problematic-1" refid="system-message-1">
             |c|
          continuation text
-    <system_message backrefs="id2" ids="id1" level="3" line="9" source="test data" type="ERROR">
+    <system_message backrefs="problematic-1" ids="system-message-1" level="3" line="9" source="test data" type="ERROR">
         <paragraph>
             Substitution definition "c" exceeds the line-length-limit.
 """.format(b, c)],

@@ -252,13 +252,13 @@ head_template.substitute(dict(parts,
   \endgroup%
 }
 """)) + r"""%
-\DUfootnotetext{id1}{id1}{1}{%
+\DUfootnotetext{footnote-1}{footnote-1}{1}{%
 paragraph
 }
 %
-\DUfootnotetext{id2}{id2}{2}{}
+\DUfootnotetext{footnote-2}{footnote-2}{2}{}
 %
-\DUfootnotetext{id3}{id3}{3}{
+\DUfootnotetext{footnote-3}{footnote-3}{3}{
 \begin{enumerate}
 \item enumeration
 \end{enumerate}

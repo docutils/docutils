@@ -105,10 +105,10 @@ totest['basics'] = [
 """\
 <document source="test data">
     <paragraph>
-        <problematic ids="id2" refid="id1">
+        <problematic ids="problematic-1" refid="system-message-1">
             `
         interpreted without closing backquote
-    <system_message backrefs="id2" ids="id1" level="2" line="1" source="test data" type="WARNING">
+    <system_message backrefs="problematic-1" ids="system-message-1" level="2" line="1" source="test data" type="WARNING">
         <paragraph>
             Inline interpreted text or phrase reference start-string without end-string.
 """],
@@ -164,10 +164,10 @@ totest['basics'] = [
 <document source="test data">
     <paragraph>
         :title:
-        <problematic ids="id2" refid="id1">
+        <problematic ids="problematic-1" refid="system-message-1">
             `
          ` (trailing unquoted space)
-    <system_message backrefs="id2" ids="id1" level="2" line="1" source="test data" type="WARNING">
+    <system_message backrefs="problematic-1" ids="system-message-1" level="2" line="1" source="test data" type="WARNING">
         <paragraph>
             Inline interpreted text or phrase reference start-string without end-string.
 """],
@@ -311,9 +311,9 @@ totest['references'] = [
 """\
 <document source="test data">
     <paragraph>
-        <problematic ids="id2" refid="id1">
+        <problematic ids="problematic-1" refid="system-message-1">
             :PEP:`-1`
-    <system_message backrefs="id2" ids="id1" level="3" line="1" source="test data" type="ERROR">
+    <system_message backrefs="problematic-1" ids="system-message-1" level="3" line="1" source="test data" type="ERROR">
         <paragraph>
             PEP number must be a number from 0 to 9999; "-1" is invalid.
 """],
@@ -332,9 +332,9 @@ totest['references'] = [
 """\
 <document source="test data">
     <paragraph>
-        <problematic ids="id2" refid="id1">
+        <problematic ids="problematic-1" refid="system-message-1">
             :RFC:`0`
-    <system_message backrefs="id2" ids="id1" level="3" line="1" source="test data" type="ERROR">
+    <system_message backrefs="problematic-1" ids="system-message-1" level="3" line="1" source="test data" type="ERROR">
         <paragraph>
             RFC number must be a number greater than or equal to 1; "0" is invalid.
 """],
@@ -356,13 +356,13 @@ totest['unknown_roles'] = [
 """\
 <document source="test data">
     <paragraph>
-        <problematic ids="id2" refid="id1">
+        <problematic ids="problematic-1" refid="system-message-1">
             :role:`interpreted`
     <system_message level="1" line="1" source="test data" type="INFO">
         <paragraph>
             No role entry for "role" in module "docutils.parsers.rst.languages.en".
             Trying "role" as canonical role name.
-    <system_message backrefs="id2" ids="id1" level="3" line="1" source="test data" type="ERROR">
+    <system_message backrefs="problematic-1" ids="system-message-1" level="3" line="1" source="test data" type="ERROR">
         <paragraph>
             Unknown interpreted text role "role".
 """],
@@ -372,13 +372,13 @@ totest['unknown_roles'] = [
 """\
 <document source="test data">
     <paragraph>
-        <problematic ids="id2" refid="id1">
+        <problematic ids="problematic-1" refid="system-message-1">
             `interpreted`:role:
     <system_message level="1" line="1" source="test data" type="INFO">
         <paragraph>
             No role entry for "role" in module "docutils.parsers.rst.languages.en".
             Trying "role" as canonical role name.
-    <system_message backrefs="id2" ids="id1" level="3" line="1" source="test data" type="ERROR">
+    <system_message backrefs="problematic-1" ids="system-message-1" level="3" line="1" source="test data" type="ERROR">
         <paragraph>
             Unknown interpreted text role "role".
 """],
@@ -388,9 +388,9 @@ totest['unknown_roles'] = [
 """\
 <document source="test data">
     <paragraph>
-        <problematic ids="id2" refid="id1">
+        <problematic ids="problematic-1" refid="system-message-1">
             :role:`interpreted`:role:
-    <system_message backrefs="id2" ids="id1" level="2" line="1" source="test data" type="WARNING">
+    <system_message backrefs="problematic-1" ids="system-message-1" level="2" line="1" source="test data" type="WARNING">
         <paragraph>
             Multiple roles in interpreted text (both prefix and suffix present; only one allowed).
 """],
@@ -400,13 +400,13 @@ totest['unknown_roles'] = [
 """\
 <document source="test data">
     <paragraph>
-        <problematic ids="id2" refid="id1">
+        <problematic ids="problematic-1" refid="system-message-1">
             :very.long-role_name:`interpreted`
     <system_message level="1" line="1" source="test data" type="INFO">
         <paragraph>
             No role entry for "very.long-role_name" in module "docutils.parsers.rst.languages.en".
             Trying "very.long-role_name" as canonical role name.
-    <system_message backrefs="id2" ids="id1" level="3" line="1" source="test data" type="ERROR">
+    <system_message backrefs="problematic-1" ids="system-message-1" level="3" line="1" source="test data" type="ERROR">
         <paragraph>
             Unknown interpreted text role "very.long-role_name".
 """],
@@ -416,13 +416,13 @@ totest['unknown_roles'] = [
 """\
 <document source="test data">
     <paragraph>
-        <problematic ids="id2" refid="id1">
+        <problematic ids="problematic-1" refid="system-message-1">
             :restructuredtext-unimplemented-role:`interpreted`
     <system_message level="1" line="1" source="test data" type="INFO">
         <paragraph>
             No role entry for "restructuredtext-unimplemented-role" in module "docutils.parsers.rst.languages.en".
             Trying "restructuredtext-unimplemented-role" as canonical role name.
-    <system_message backrefs="id2" ids="id1" level="3" line="1" source="test data" type="ERROR">
+    <system_message backrefs="problematic-1" ids="system-message-1" level="3" line="1" source="test data" type="ERROR">
         <paragraph>
             Interpreted text role "restructuredtext-unimplemented-role" not implemented.
 """],

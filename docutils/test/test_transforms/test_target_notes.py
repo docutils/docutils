@@ -47,9 +47,9 @@ A reference to a target_.
         <reference name="target" refuri="http://example.org">
             target
          \n\
-        <footnote_reference auto="1" ids="id2" refid="id1">
+        <footnote_reference auto="1" ids="footnote-reference-1" refid="footnote-1">
         .
-    <footnote auto="1" ids="id1" names="TARGET_NOTE:\\ id1">
+    <footnote auto="1" ids="footnote-1" names="TARGET_NOTE:\\ footnote-1">
         <paragraph>
             <reference refuri="http://example.org">
                 http://example.org
@@ -70,9 +70,9 @@ A reference to a target_.
             target
         <inline classes="custom">
              \n\
-        <footnote_reference auto="1" classes="custom" ids="id2" refid="id1">
+        <footnote_reference auto="1" classes="custom" ids="footnote-reference-1" refid="footnote-1">
         .
-    <footnote auto="1" ids="id1" names="TARGET_NOTE:\\ id1">
+    <footnote auto="1" ids="footnote-1" names="TARGET_NOTE:\\ footnote-1">
         <paragraph>
             <reference refuri="http://example.org">
                 http://example.org

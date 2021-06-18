@@ -307,10 +307,10 @@ A paragraph.
                 <literal>
                     test_include.py
                 .
-        <section dupnames="inclusion\\ 1" ids="id1">
+        <section dupnames="inclusion\\ 1" ids="inclusion-1-1">
             <title>
                 Inclusion 1
-            <system_message backrefs="id1" level="1" line="2" source="%s" type="INFO">
+            <system_message backrefs="inclusion-1-1" level="1" line="2" source="%s" type="INFO">
                 <paragraph>
                     Duplicate implicit target name: "inclusion 1".
             <paragraph>
@@ -347,10 +347,10 @@ A paragraph.
                     test_include.py
                 .
             <transition>
-        <section dupnames="inclusion\\ 1" ids="id1">
+        <section dupnames="inclusion\\ 1" ids="inclusion-1-1">
             <title>
                 Inclusion 1
-            <system_message backrefs="id1" level="1" line="2" source="%s" type="INFO">
+            <system_message backrefs="inclusion-1-1" level="1" line="2" source="%s" type="INFO">
                 <paragraph>
                     Duplicate implicit target name: "inclusion 1".
             <paragraph>
@@ -551,10 +551,10 @@ Testing errors in included file:
                 Block quote ends without a blank line; unexpected unindent.
         <paragraph>
             error
-    <section dupnames="hi" ids="id1">
+    <section dupnames="hi" ids="hi-1">
         <title>
             hi
-        <system_message backrefs="id1" level="1" line="10" source="%(source)s" type="INFO">
+        <system_message backrefs="hi-1" level="1" line="10" source="%(source)s" type="INFO">
             <paragraph>
                 Duplicate implicit target name: "hi".
         <system_message level="4" line="12" source="%(source)s" type="SEVERE">
@@ -698,39 +698,39 @@ Testing errors in included file:
         <paragraph>
             $ with inconsistent quoting.
         <paragraph>
-            <problematic ids="id3" refid="id2">
+            <problematic ids="problematic-1" refid="system-message-1">
                 :unknown-role:`role`
             \n\
             and \n\
-            <problematic ids="id5" refid="id4">
+            <problematic ids="problematic-2" refid="system-message-2">
                 *
             unbalanced
-            <problematic ids="id7" refid="id6">
+            <problematic ids="problematic-3" refid="system-message-3">
                 `
             inline
-            <problematic ids="id9" refid="id8">
+            <problematic ids="problematic-4" refid="system-message-4">
                 **
             markup
         <system_message level="1" line="63" source="%(source)s" type="INFO">
             <paragraph>
                 No role entry for "unknown-role" in module "docutils.parsers.rst.languages.en".
                 Trying "unknown-role" as canonical role name.
-        <system_message backrefs="id3" ids="id2" level="3" line="63" source="%(source)s" type="ERROR">
+        <system_message backrefs="problematic-1" ids="system-message-1" level="3" line="63" source="%(source)s" type="ERROR">
             <paragraph>
                 Unknown interpreted text role "unknown-role".
-        <system_message backrefs="id5" ids="id4" level="2" line="63" source="%(source)s" type="WARNING">
+        <system_message backrefs="problematic-2" ids="system-message-2" level="2" line="63" source="%(source)s" type="WARNING">
             <paragraph>
                 Inline emphasis start-string without end-string.
-        <system_message backrefs="id7" ids="id6" level="2" line="63" source="%(source)s" type="WARNING">
+        <system_message backrefs="problematic-3" ids="system-message-3" level="2" line="63" source="%(source)s" type="WARNING">
             <paragraph>
                 Inline interpreted text or phrase reference start-string without end-string.
-        <system_message backrefs="id9" ids="id8" level="2" line="63" source="%(source)s" type="WARNING">
+        <system_message backrefs="problematic-4" ids="system-message-4" level="2" line="63" source="%(source)s" type="WARNING">
             <paragraph>
                 Inline strong start-string without end-string.
         <paragraph>
-            <problematic ids="id11" refid="id10">
+            <problematic ids="problematic-5" refid="system-message-5">
                 :PEP:`-1`
-        <system_message backrefs="id11" ids="id10" level="3" line="68" source="%(source)s" type="ERROR">
+        <system_message backrefs="problematic-5" ids="system-message-5" level="3" line="68" source="%(source)s" type="ERROR">
             <paragraph>
                 PEP number must be a number from 0 to 9999; "-1" is invalid.
         <system_message level="1" line="66" source="%(source)s" type="INFO">

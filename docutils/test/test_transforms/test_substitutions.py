@@ -46,10 +46,10 @@ Here's an |unknown| substitution.
 <document source="test data">
     <paragraph>
         Here's an \n\
-        <problematic ids="id2" refid="id1">
+        <problematic ids="problematic-1" refid="system-message-1">
             |unknown|
          substitution.
-    <system_message backrefs="id2" ids="id1" level="3" line="1" source="test data" type="ERROR">
+    <system_message backrefs="problematic-1" ids="system-message-1" level="3" line="1" source="test data" type="ERROR">
         <paragraph>
             Undefined substitution referenced: "unknown".
 """],
@@ -205,28 +205,28 @@ Use |sub| and |indirect1| and |sub| again (and |sub| one more time).
             .. |sub| replace:: |indirect1|
     <paragraph>
         Use \n\
-        <problematic ids="id8" refid="id7">
+        <problematic ids="problematic-4" refid="system-message-4">
             |Sub|
          and \n\
-        <problematic ids="id2" refid="id1">
+        <problematic ids="problematic-1" refid="system-message-1">
             |indirect1|
          and \n\
-        <problematic ids="id4" refid="id3">
+        <problematic ids="problematic-2" refid="system-message-2">
             |sub|
          again (and \n\
-        <problematic ids="id6" refid="id5">
+        <problematic ids="problematic-3" refid="system-message-3">
             |sub|
          one more time).
-    <system_message backrefs="id2" ids="id1" level="3" line="5" source="test data" type="ERROR">
+    <system_message backrefs="problematic-1" ids="system-message-1" level="3" line="5" source="test data" type="ERROR">
         <paragraph>
             Circular substitution definition referenced: "indirect1".
-    <system_message backrefs="id4" ids="id3" level="3" line="5" source="test data" type="ERROR">
+    <system_message backrefs="problematic-2" ids="system-message-2" level="3" line="5" source="test data" type="ERROR">
         <paragraph>
             Circular substitution definition referenced: "sub".
-    <system_message backrefs="id6" ids="id5" level="3" line="5" source="test data" type="ERROR">
+    <system_message backrefs="problematic-3" ids="system-message-3" level="3" line="5" source="test data" type="ERROR">
         <paragraph>
             Circular substitution definition referenced: "sub".
-    <system_message backrefs="id8" ids="id7" level="3" line="5" source="test data" type="ERROR">
+    <system_message backrefs="problematic-4" ids="system-message-4" level="3" line="5" source="test data" type="ERROR">
         <paragraph>
             Circular substitution definition referenced: "Sub".
 """],
@@ -347,9 +347,9 @@ Make sure this substitution definition is not registered: |target|
             .. |target| replace:: _`target`
     <paragraph>
         Make sure this substitution definition is not registered: \n\
-        <problematic ids="id2" refid="id1">
+        <problematic ids="problematic-1" refid="system-message-1">
             |target|
-    <system_message backrefs="id2" ids="id1" level="3" line="5" source="test data" type="ERROR">
+    <system_message backrefs="problematic-1" ids="system-message-1" level="3" line="5" source="test data" type="ERROR">
         <paragraph>
             Undefined substitution referenced: "target".
 """],

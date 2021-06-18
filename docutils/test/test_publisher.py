@@ -33,12 +33,12 @@ pseudoxml_output = b"""\
         Test Document
     <paragraph>
         This is a test document with a broken reference: \n\
-        <problematic ids="id2" refid="id1">
+        <problematic ids="problematic-1" refid="system-message-1">
             nonexistent_
     <section classes="system-messages">
         <title>
             Docutils System Messages
-        <system_message backrefs="id2" ids="id1" level="3" line="4" source="<string>" type="ERROR">
+        <system_message backrefs="problematic-1" ids="system-message-1" level="3" line="4" source="<string>" type="ERROR">
             <paragraph>
                 Unknown target name: "nonexistent".
 """
@@ -50,12 +50,12 @@ exposed_pseudoxml_output = (b"""\
         Test Document
     <paragraph>
         This is a test document with a broken reference: \n\
-        <problematic ids="id2" refid="id1">
+        <problematic ids="problematic-1" refid="system-message-1">
             nonexistent_
     <section classes="system-messages">
         <title>
             Docutils System Messages
-        <system_message backrefs="id2" ids="id1" level="3" line="4" source="<string>" type="ERROR">
+        <system_message backrefs="problematic-1" ids="system-message-1" level="3" line="4" source="<string>" type="ERROR">
             <paragraph>
                 Unknown target name: "nonexistent".
 """) # % u_prefix # %-expansion not supported in bytes in 3.3 and 3.4

@@ -288,7 +288,7 @@ Elements that are prohibited inside of substitution definitions:
         <paragraph>
             Substitution definition contains illegal element <footnote_reference>:
         <literal_block xml:space="preserve">
-            <footnote_reference auto="1" ids="id1">
+            <footnote_reference auto="1" ids="footnote-reference-1">
         <literal_block xml:space="preserve">
             .. |auto-numbered footnote| replace:: [#]_
 """],
