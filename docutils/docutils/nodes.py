@@ -1363,10 +1363,13 @@ class document(Root, Structural, Element):
         base_id = ''
         id = ''
         for name in node['names']:
-            base_id = make_id(name)
+            if id_prefix:
+                # allow names starting with numbers if `id_prefix`
+                base_id = make_id('x'+name)[1:]
+            else:
+                base_id = make_id(name)
+            # TODO: normalize id-prefix? (would make code simpler)
             id = id_prefix + base_id
-            # TODO: allow names starting with numbers if `id_prefix`
-            # is non-empty:  id = make_id(id_prefix + name)
             if base_id and id not in self.ids:
                 break
         else:

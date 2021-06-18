@@ -30,8 +30,8 @@ Future changes
     definition list with class value "details".
 
   - Move attribution behind the blockquote to comply with the
-    __`"living standard"`?
-    HTML5__ allows <cite> elements inside a blockquote (cf. Example 16).
+    `"living standard"`__?
+    (HTML5__ allows <cite> elements inside a blockquote, cf. Example 16.)
 
     __ https://html.spec.whatwg.org/#the-blockquote-element
     __ https://www.w3.org/TR/html52/grouping-content.html#the-blockquote-element
@@ -41,14 +41,6 @@ Future changes
 * Remove the "rawsource" attribute and argument from nodes.Text:
   we store the null-escaped text in Text nodes since 0.16 so there is no
   additional information in the rawsource.
-
-* If the id_prefix_ setting is non-empty, leading number and hyphen characters
-  will not be stripped from a `reference name`_ during `identifier
-  normalization`_. This may change generated `identifier keys`.
-
-  Example: with ``--id-prefix="DU-"``, a section with title "34. May"
-  currently gets the identifier key ``DU-may`` and after the change the
-  identifier key ``DU-34-may``.
 
 * The default value for auto_id_prefix_ will change to "%". This means
   auto-generated IDs will use the tag name as prefix. Set auto_id_prefix_ to
@@ -72,34 +64,48 @@ Future changes
 .. _auto_id_prefix: docs/user/config.html#auto-id-prefix
 .. _rst2html.py: docs/user/tools.html#rst2html-py
 .. _reference name: docs/ref/rst/restructuredtext.html#reference-names
-.. _identifier normalization:
-   docs/ref/rst/directives.html#identifier-normalization
 .. _html_writer: docs/user/config.html#html-writer
 
 
 Release 0.18.dev
 ================
 
-* Removed files:
-  
-  - ``iepngfix.htc`` and ``blank.gif`` (IE 6 workaround for `s5_html`).
+* Output changes:
 
-* Removed function: ``utils.unique_combinations`` 
-  (obsoleted by ``itertools.combinations``).
+  Identifiers:
+    If the id_prefix_ setting is non-empty, leading number and hyphen
+    characters will not be stripped from a `reference name`_ during
+    `identifier normalization`_.
 
-* HTML5 writer: changes to HTML output
+    Example: with ``--id-prefix="DU-"``, a section with title "34. May"
+    currently gets the identifier key ``DU-may`` and after the change the
+    identifier key ``DU-34-may``.
 
-  - Write footnote brackets and field term colons to HTML, so that
-    they are present also without CSS and when copying text.
+  HTML5:
+    Write footnote brackets and field term colons to HTML, so that they
+    are present also without CSS and when copying text.
 
-* LaTeX writer: `legacy_class_functions`_ setting default changed to "False".
+  LaTeX:
+     `legacy_class_functions`_ setting default changed to
+     "False", admonitions are now environments.
 
 * ``nodes.Node.traverse()`` returns an iterator instead of a list.
 
-  
 * Make meta__ a standard Docutils doctree node.
 
   __ docs/ref/doctree.html#meta
+
+* Removed files:
+
+  - ``iepngfix.htc`` and ``blank.gif`` (IE 6 workaround for `s5_html`).
+
+* Removed function: ``utils.unique_combinations``
+  (obsoleted by ``itertools.combinations``).
+
+* Various bugfixes and improvements (see HISTORY_).
+
+.. _identifier normalization:
+   docs/ref/rst/directives.html#identifier-normalization
 
 
 Release 0.17.1 (2021-04-16)
