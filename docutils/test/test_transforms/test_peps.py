@@ -48,14 +48,14 @@ A "References" section should be generated.
         <reference name="reference" refname="reference">
             reference
          \n\
-        <footnote_reference auto="1" ids="id3" refname="TARGET_NOTE: id2">
+        <footnote_reference auto="1" ids="footnote-reference-1" refname="TARGET_NOTE: footnote-1">
         .
         A "References" section should be generated.
     <target ids="reference" names="reference" refuri="http://www.example.org">
-    <section ids="id1">
+    <section ids="section-1">
         <title>
             References
-        <footnote auto="1" ids="id2" names="TARGET_NOTE:\\ id2">
+        <footnote auto="1" ids="footnote-1" names="TARGET_NOTE:\\ footnote-1">
             <paragraph>
                 <reference refuri="http://www.example.org">
                     http://www.example.org

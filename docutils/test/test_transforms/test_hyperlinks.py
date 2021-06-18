@@ -141,13 +141,13 @@ circular_ indirect reference
 """\
 <document source="test data">
     <paragraph>
-        <problematic ids="id2" refid="id1">
+        <problematic ids="problematic-1" refid="system-message-1">
             circular_
          indirect reference
     <target ids="circular" names="circular" refid="circular">
-    <problematic ids="id3 indirect" names="indirect" refid="id1">
+    <problematic ids="problematic-2 indirect" names="indirect" refid="system-message-1">
         .. _indirect: circular_
-    <system_message backrefs="id2 id3" ids="id1" level="3" line="3" source="test data" type="ERROR">
+    <system_message backrefs="problematic-1 problematic-2" ids="system-message-1" level="3" line="3" source="test data" type="ERROR">
         <paragraph>
             Indirect hyperlink target "circular" (id="circular") refers to target "indirect", forming a circular reference.
 """],
@@ -173,25 +173,25 @@ Direct internal reference: Implicit_
             Implicit
         <paragraph>
             Duplicate implicit targets.
-    <section dupnames="implicit" ids="id1">
+    <section dupnames="implicit" ids="implicit-1">
         <title>
             Implicit
-        <system_message backrefs="id1" level="1" line="7" source="test data" type="INFO">
+        <system_message backrefs="implicit-1" level="1" line="7" source="test data" type="INFO">
             <paragraph>
                 Duplicate implicit target name: "implicit".
         <paragraph>
-            <problematic ids="id3" refid="id2">
+            <problematic ids="problematic-1" refid="system-message-1">
                 indirect_
              internal
         <target ids="indirect" names="indirect" refname="implicit">
         <paragraph>
             Direct internal reference: 
-            <problematic ids="id5" refid="id4">
+            <problematic ids="problematic-2" refid="system-message-2">
                 Implicit_
-    <system_message backrefs="id3" ids="id2" level="3" line="11" source="test data" type="ERROR">
+    <system_message backrefs="problematic-1" ids="system-message-1" level="3" line="11" source="test data" type="ERROR">
         <paragraph>
             Indirect hyperlink target "indirect" (id="indirect") refers to target "implicit", which is a duplicate, and cannot be used as a unique reference.
-    <system_message backrefs="id5" ids="id4" level="3" line="13" source="test data" type="ERROR">
+    <system_message backrefs="problematic-2" ids="system-message-2" level="3" line="13" source="test data" type="ERROR">
         <paragraph>
             Duplicate target name, cannot be used as a unique reference: "implicit".
 """],
@@ -205,7 +205,7 @@ __ http://direct
     <paragraph>
         <reference anonymous="1" name="direct external" refuri="http://direct">
             direct external
-    <target anonymous="1" ids="id1" refuri="http://direct">
+    <target anonymous="1" ids="target-1" refuri="http://direct">
 """],
 ["""\
 `indirect external`__
@@ -218,7 +218,7 @@ __ xtarget_
     <paragraph>
         <reference anonymous="1" name="indirect external" refuri="http://indirect">
             indirect external
-    <target anonymous="1" ids="id1" refuri="http://indirect">
+    <target anonymous="1" ids="target-1" refuri="http://indirect">
     <target ids="xtarget" names="xtarget" refuri="http://indirect">
 """],
 ["""\
@@ -228,9 +228,9 @@ __
 """,
 """\
 <document source="test data">
-    <target anonymous="1" refid="id1">
-    <paragraph ids="id1">
-        <reference anonymous="1" name="direct internal" refid="id1">
+    <target anonymous="1" refid="target-1">
+    <paragraph ids="target-1">
+        <reference anonymous="1" name="direct internal" refid="target-1">
             direct internal
 """],
 ["""\
@@ -246,7 +246,7 @@ __ ztarget_
     <paragraph ids="ztarget" names="ztarget">
         <reference anonymous="1" name="indirect internal" refid="ztarget">
             indirect internal
-    <target anonymous="1" ids="id1" refid="ztarget">
+    <target anonymous="1" ids="target-1" refid="ztarget">
 """],
 ["""\
 .. _ztarget:
@@ -266,19 +266,19 @@ __ ztarget_
     <target dupnames="ztarget" refid="ztarget">
     <paragraph ids="ztarget">
         First
-    <system_message backrefs="id1" level="2" line="5" source="test data" type="WARNING">
+    <system_message backrefs="ztarget-1" level="2" line="5" source="test data" type="WARNING">
         <paragraph>
             Duplicate explicit target name: "ztarget".
-    <target dupnames="ztarget" refid="id1">
-    <paragraph ids="id1">
+    <target dupnames="ztarget" refid="ztarget-1">
+    <paragraph ids="ztarget-1">
         Second
     <paragraph>
-        <problematic ids="id4" refid="id3">
+        <problematic ids="problematic-1" refid="system-message-1">
             `indirect internal`__
-    <target anonymous="1" ids="id2" refname="ztarget">
-    <system_message backrefs="id4" ids="id3" level="3" line="11" source="test data" type="ERROR">
+    <target anonymous="1" ids="target-1" refname="ztarget">
+    <system_message backrefs="problematic-1" ids="system-message-1" level="3" line="11" source="test data" type="ERROR">
         <paragraph>
-            Indirect hyperlink target (id="id2") refers to target "ztarget", which is a duplicate, and cannot be used as a unique reference.
+            Indirect hyperlink target (id="target-1") refers to target "ztarget", which is a duplicate, and cannot be used as a unique reference.
 """],
 ["""\
 The next anonymous hyperlink reference is parsed (and discarded) at
@@ -308,7 +308,7 @@ __ URL
     <paragraph>
         <reference anonymous="1" name="hyperlink" refuri="URL">
             hyperlink
-    <target anonymous="1" ids="id1" refuri="URL">
+    <target anonymous="1" ids="target-1" refuri="URL">
 """],
 ["""\
 An `embedded uri <http://direct>`_.
@@ -383,14 +383,14 @@ An `embedded alias <alias_>`_ with unknown reference.
 <document source="test data">
     <paragraph>
         An \n\
-        <problematic ids="id3" refid="id2">
+        <problematic ids="problematic-1" refid="system-message-2">
             `embedded alias <alias_>`_
         <target names="embedded\\ alias" refname="alias">
          with unknown reference.
-    <system_message ids="id1" level="3" line="1" source="test data" type="ERROR">
+    <system_message ids="system-message-1" level="3" line="1" source="test data" type="ERROR">
         <paragraph>
             Indirect hyperlink target "embedded alias"  refers to target "alias", which does not exist.
-    <system_message backrefs="id3" ids="id2" level="3" line="1" source="test data" type="ERROR">
+    <system_message backrefs="problematic-1" ids="system-message-2" level="3" line="1" source="test data" type="ERROR">
         <paragraph>
             Unknown target name: "alias".
     <system_message level="1" line="1" source="test data" type="INFO">
@@ -445,7 +445,7 @@ See `Element \\<a>`_, `Element <b\\>`_, and `Element <c>\\ `_.
 """\
 <document source="test data">
     <target ids="target" names="target">
-    <footnote ids="id1" names="1">
+    <footnote ids="footnote-1" names="1">
         <label>
             1
         <paragraph>
@@ -530,7 +530,7 @@ Anonymous__ and chained_ both refer to the same URI.
 """\
 <document source="test data">
     <target refid="chained">
-    <target anonymous="1" ids="id1 chained" names="chained" refuri="http://anonymous">
+    <target anonymous="1" ids="target-1 chained" names="chained" refuri="http://anonymous">
     <paragraph>
         <reference anonymous="1" name="Anonymous" refuri="http://anonymous">
             Anonymous
@@ -704,13 +704,13 @@ __
 """,
 """\
 <document source="test data">
-    <target anonymous="1" ids="id1" refuri="http://full">
-    <target anonymous="1" refid="id2">
-    <target anonymous="1" ids="id3 id2" refuri="http://simplified">
+    <target anonymous="1" ids="target-1" refuri="http://full">
+    <target anonymous="1" refid="target-2">
+    <target anonymous="1" ids="target-3 target-2" refuri="http://simplified">
     <target ids="external" names="external" refuri="http://indirect.external">
-    <target anonymous="1" ids="id4" refuri="http://indirect.external">
-    <target anonymous="1" refid="id5">
-    <paragraph ids="id5">
+    <target anonymous="1" ids="target-4" refuri="http://indirect.external">
+    <target anonymous="1" refid="target-5">
+    <paragraph ids="target-5">
         <reference anonymous="1" name="Full syntax anonymous external hyperlink reference" refuri="http://full">
             Full syntax anonymous external hyperlink reference
         ,
@@ -723,7 +723,7 @@ __
         <reference anonymous="1" name="indirect anonymous hyperlink reference" refuri="http://indirect.external">
             indirect anonymous hyperlink reference
         ,
-        <reference anonymous="1" name="internal anonymous hyperlink reference" refid="id5">
+        <reference anonymous="1" name="internal anonymous hyperlink reference" refid="target-5">
             internal anonymous hyperlink reference
         .
 """],
@@ -738,15 +738,15 @@ Duplicate external target_'s (different URIs):
 <document source="test data">
     <paragraph>
         Duplicate external \n\
-        <problematic ids="id3" refid="id2">
+        <problematic ids="problematic-1" refid="system-message-1">
             target_
         's (different URIs):
     <target dupnames="target" ids="target" refuri="first">
-    <system_message backrefs="id1" level="2" line="5" source="test data" type="WARNING">
+    <system_message backrefs="target-1" level="2" line="5" source="test data" type="WARNING">
         <paragraph>
             Duplicate explicit target name: "target".
-    <target dupnames="target" ids="id1" refuri="second">
-    <system_message backrefs="id3" ids="id2" level="3" line="1" source="test data" type="ERROR">
+    <target dupnames="target" ids="target-1" refuri="second">
+    <system_message backrefs="problematic-1" ids="system-message-1" level="3" line="1" source="test data" type="ERROR">
         <paragraph>
             Duplicate target name, cannot be used as a unique reference: "target".
 """],
@@ -762,10 +762,10 @@ Duplicate external targets (different URIs) without reference:
     <paragraph>
         Duplicate external targets (different URIs) without reference:
     <target dupnames="target" ids="target" refuri="first">
-    <system_message backrefs="id1" level="2" line="5" source="test data" type="WARNING">
+    <system_message backrefs="target-1" level="2" line="5" source="test data" type="WARNING">
         <paragraph>
             Duplicate explicit target name: "target".
-    <target dupnames="target" ids="id1" refuri="second">
+    <target dupnames="target" ids="target-1" refuri="second">
 """],
 ["""\
 Several__ anonymous__ hyperlinks__, but not enough targets.
@@ -775,17 +775,17 @@ __ http://example.org
 """\
 <document source="test data">
     <paragraph>
-        <problematic ids="id3" refid="id2">
+        <problematic ids="problematic-1" refid="system-message-1">
             Several__
          \n\
-        <problematic ids="id4" refid="id2">
+        <problematic ids="problematic-2" refid="system-message-1">
             anonymous__
          \n\
-        <problematic ids="id5" refid="id2">
+        <problematic ids="problematic-3" refid="system-message-1">
             hyperlinks__
         , but not enough targets.
-    <target anonymous="1" ids="id1" refuri="http://example.org">
-    <system_message backrefs="id3 id4 id5" ids="id2" level="3" source="test data" type="ERROR">
+    <target anonymous="1" ids="target-1" refuri="http://example.org">
+    <system_message backrefs="problematic-1 problematic-2 problematic-3" ids="system-message-1" level="3" source="test data" type="ERROR">
         <paragraph>
             Anonymous hyperlink mismatch: 3 references but 1 targets.
             See "backrefs" attribute for IDs.
@@ -833,11 +833,11 @@ Testing an `indirect reference to the table of contents`_.
         <bullet_list>
             <list_item>
                 <paragraph>
-                    <reference ids="id1" refid="section">
+                    <reference ids="toc-entry-1" refid="section">
                         Section
     <target ids="indirect-reference-to-the-table-of-contents" names="indirect\\ reference\\ to\\ the\\ table\\ of\\ contents" refid="table-of-contents">
     <section ids="section" names="section">
-        <title refid="id1">
+        <title refid="toc-entry-1">
             Section
         <paragraph>
             Testing an 
@@ -896,10 +896,10 @@ Unknown reference_.
 <document source="test data">
     <paragraph>
         Unknown \n\
-        <problematic ids="id2" refid="id1">
+        <problematic ids="problematic-1" refid="system-message-1">
             reference_
         .
-    <system_message backrefs="id2" ids="id1" level="3" line="1" source="test data" type="ERROR">
+    <system_message backrefs="problematic-1" ids="system-message-1" level="3" line="1" source="test data" type="ERROR">
         <paragraph>
             Unknown target name: "reference".
 """],
@@ -914,23 +914,23 @@ Duplicate manual footnote labels, with reference ([1]_):
 <document source="test data">
     <paragraph>
         Duplicate manual footnote labels, with reference (
-        <problematic ids="id1" refid="id4">
+        <problematic ids="footnote-reference-1" refid="system-message-1">
             [1]_
         ):
-    <footnote dupnames="1" ids="id2">
+    <footnote dupnames="1" ids="footnote-1">
         <label>
             1
         <paragraph>
             Footnote.
-    <footnote dupnames="1" ids="id3">
+    <footnote dupnames="1" ids="footnote-2">
         <label>
             1
-        <system_message backrefs="id3" level="2" line="5" source="test data" type="WARNING">
+        <system_message backrefs="footnote-2" level="2" line="5" source="test data" type="WARNING">
             <paragraph>
                 Duplicate explicit target name: "1".
         <paragraph>
             Footnote.
-    <system_message backrefs="id1" ids="id4" level="3" line="1" source="test data" type="ERROR">
+    <system_message backrefs="footnote-reference-1" ids="system-message-1" level="3" line="1" source="test data" type="ERROR">
         <paragraph>
             Duplicate target name, cannot be used as a unique reference: "1".
 """],

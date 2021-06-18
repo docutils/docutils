@@ -248,16 +248,16 @@ This is not
 """\
 <document source="test data">
     <paragraph>
-        <problematic ids="id2" refid="id1">
+        <problematic ids="problematic-1" refid="system-message-1">
             |
         This is not
-        <problematic ids="id4" refid="id3">
+        <problematic ids="problematic-2" refid="system-message-2">
             |
         a line block
-    <system_message backrefs="id2" ids="id1" level="2" line="1" source="test data" type="WARNING">
+    <system_message backrefs="problematic-1" ids="system-message-1" level="2" line="1" source="test data" type="WARNING">
         <paragraph>
             Inline substitution_reference start-string without end-string.
-    <system_message backrefs="id4" ids="id3" level="2" line="1" source="test data" type="WARNING">
+    <system_message backrefs="problematic-2" ids="system-message-2" level="2" line="1" source="test data" type="WARNING">
         <paragraph>
             Inline substitution_reference start-string without end-string.
     <line_block>
@@ -267,10 +267,10 @@ This is not
         <paragraph>
             Line block ends without a blank line.
     <paragraph>
-        <problematic ids="id6" refid="id5">
+        <problematic ids="problematic-3" refid="system-message-3">
             |
         incomplete line block.
-    <system_message backrefs="id6" ids="id5" level="2" line="5" source="test data" type="WARNING">
+    <system_message backrefs="problematic-3" ids="system-message-3" level="2" line="5" source="test data" type="WARNING">
         <paragraph>
             Inline substitution_reference start-string without end-string.
 """],
@@ -283,12 +283,12 @@ This is not
     <line_block>
         <line>
             Inline markup \n\
-            <problematic ids="id2" refid="id1">
+            <problematic ids="problematic-1" refid="system-message-1">
                 *
             may not
         <line>
             wrap* over several lines.
-    <system_message backrefs="id2" ids="id1" level="2" line="1" source="test data" type="WARNING">
+    <system_message backrefs="problematic-1" ids="system-message-1" level="2" line="1" source="test data" type="WARNING">
         <paragraph>
             Inline emphasis start-string without end-string.
 """],
@@ -319,13 +319,13 @@ System messages can appear in place of lines:
             <reference name="uff" refuri="test1">
                 uff
             <target dupnames="uff" ids="uff" refuri="test1">
-        <system_message backrefs="id1" level="2" line="3" source="test data" type="WARNING">
+        <system_message backrefs="uff-1" level="2" line="3" source="test data" type="WARNING">
             <paragraph>
                 Duplicate explicit target name: "uff".
         <line>
             <reference name="uff" refuri="test2">
                 uff
-            <target dupnames="uff" ids="id1" refuri="test2">
+            <target dupnames="uff" ids="uff-1" refuri="test2">
 """],
 ]
 

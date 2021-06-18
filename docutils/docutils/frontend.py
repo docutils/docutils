@@ -556,7 +556,7 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
           ['--help', '-h'], {'action': 'help'}),
          # Typically not useful for non-programmatical use:
          (SUPPRESS_HELP, ['--id-prefix'], {'default': ''}),
-         (SUPPRESS_HELP, ['--auto-id-prefix'], {'default': 'id'}),
+         (SUPPRESS_HELP, ['--auto-id-prefix'], {'default': '%'}),
          # Hidden options, for development use only:
          (SUPPRESS_HELP, ['--dump-settings'], {'action': 'store_true'}),
          (SUPPRESS_HELP, ['--dump-internals'], {'action': 'store_true'}),

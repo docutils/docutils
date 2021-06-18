@@ -53,26 +53,26 @@ Paragraph 4.
         <bullet_list>
             <list_item>
                 <paragraph>
-                    <reference ids="id1" refid="title-1">
+                    <reference ids="toc-entry-1" refid="title-1">
                         Title 1
                 <bullet_list>
                     <list_item>
                         <paragraph>
-                            <reference ids="id2" refid="title-2">
+                            <reference ids="toc-entry-2" refid="title-2">
                                 Title
                                  2
                         <bullet_list>
                             <list_item>
                                 <paragraph>
-                                    <reference ids="id3" refid="title-3">
+                                    <reference ids="toc-entry-3" refid="title-3">
                                         Title
                                          3
                     <list_item>
                         <paragraph>
-                            <reference ids="id4" refid="title-4">
+                            <reference ids="toc-entry-4" refid="title-4">
                                 Title 4
     <section ids="title-1" names="title\\ 1">
-        <title refid="id1">
+        <title refid="toc-entry-1">
             Title 1
         <paragraph>
             Paragraph 1.
@@ -84,14 +84,14 @@ Paragraph 4.
             <paragraph>
                 Paragraph 2.
             <section ids="title-3" names="title\\ 3">
-                <title refid="id3">
+                <title refid="toc-entry-3">
                     <target ids="title" names="title">
                         Title
                      3
                 <paragraph>
                     Paragraph 3.
         <section ids="title-4" names="title\\ 4">
-            <title refid="id4">
+            <title refid="toc-entry-4">
                 Title 4
             <paragraph>
                 Paragraph 4.
@@ -115,20 +115,20 @@ Paragraph 2.
         <bullet_list>
             <list_item>
                 <paragraph>
-                    <reference ids="id1" refid="title-1">
+                    <reference ids="toc-entry-1" refid="title-1">
                         Title 1
                 <bullet_list>
                     <list_item>
                         <paragraph>
-                            <reference ids="id2" refid="title-2">
+                            <reference ids="toc-entry-2" refid="title-2">
                                 Title 2
     <section ids="title-1" names="title\\ 1">
-        <title refid="id1">
+        <title refid="toc-entry-1">
             Title 1
         <paragraph>
             Paragraph 1.
         <section ids="title-2" names="title\\ 2">
-            <title refid="id2">
+            <title refid="toc-entry-2">
                 Title 2
             <paragraph>
                 Paragraph 2.
@@ -154,19 +154,19 @@ Paragraph 2.
         <bullet_list>
             <list_item>
                 <paragraph>
-                    <reference ids="id1" refid="title-1">
+                    <reference ids="toc-entry-1" refid="title-1">
                         Title 1
             <list_item>
                 <paragraph>
-                    <reference ids="id2" refid="title-2">
+                    <reference ids="toc-entry-2" refid="title-2">
                         Title 2
     <section ids="title-1" names="title\\ 1">
-        <title refid="id1">
+        <title refid="toc-entry-1">
             Title 1
         <paragraph>
             Paragraph 1.
     <section ids="title-2" names="title\\ 2">
-        <title refid="id2">
+        <title refid="toc-entry-2">
             <image alt="Title 2" uri="title2.png">
         <paragraph>
             Paragraph 2.
@@ -201,24 +201,24 @@ Paragraph 4.
         <bullet_list>
             <list_item>
                 <paragraph>
-                    <reference ids="id1" refid="title-1">
+                    <reference ids="toc-entry-1" refid="title-1">
                         Title 1
                 <bullet_list>
                     <list_item>
                         <paragraph>
-                            <reference ids="id2" refid="title-2">
+                            <reference ids="toc-entry-2" refid="title-2">
                                 Title 2
                     <list_item>
                         <paragraph>
-                            <reference ids="id3" refid="title-4">
+                            <reference ids="toc-entry-3" refid="title-4">
                                 Title 4
     <section ids="title-1" names="title\\ 1">
-        <title refid="id1">
+        <title refid="toc-entry-1">
             Title 1
         <paragraph>
             Paragraph 1.
         <section ids="title-2" names="title\\ 2">
-            <title refid="id2">
+            <title refid="toc-entry-2">
                 Title 2
             <paragraph>
                 Paragraph 2.
@@ -228,7 +228,7 @@ Paragraph 4.
                 <paragraph>
                     Paragraph 3.
         <section ids="title-4" names="title\\ 4">
-            <title refid="id3">
+            <title refid="toc-entry-3">
                 Title 4
             <paragraph>
                 Paragraph 4.
@@ -263,31 +263,31 @@ Paragraph 4.
             <bullet_list>
                 <list_item>
                     <paragraph>
-                        <reference ids="id1" refid="title-2">
+                        <reference ids="toc-entry-1" refid="title-2">
                             Title 2
                     <bullet_list>
                         <list_item>
                             <paragraph>
-                                <reference ids="id2" refid="title-3">
+                                <reference ids="toc-entry-2" refid="title-3">
                                     Title 3
                 <list_item>
                     <paragraph>
-                        <reference ids="id3" refid="title-4">
+                        <reference ids="toc-entry-3" refid="title-4">
                             Title 4
         <paragraph>
             Paragraph 1.
         <section ids="title-2" names="title\\ 2">
-            <title refid="id1">
+            <title refid="toc-entry-1">
                 Title 2
             <paragraph>
                 Paragraph 2.
             <section ids="title-3" names="title\\ 3">
-                <title refid="id2">
+                <title refid="toc-entry-2">
                     Title 3
                 <paragraph>
                     Paragraph 3.
         <section ids="title-4" names="title\\ 4">
-            <title refid="id3">
+            <title refid="toc-entry-3">
                 Title 4
             <paragraph>
                 Paragraph 4.
@@ -308,12 +308,12 @@ Paragraph.
         <bullet_list>
             <list_item>
                 <paragraph>
-                    <reference ids="id1" refid="section">
+                    <reference ids="toc-entry-1" refid="section">
                         Section
     <paragraph>
         Test duplicate name "Contents".
     <section ids="section" names="section">
-        <title refid="id1">
+        <title refid="toc-entry-1">
             Section
         <paragraph>
             Paragraph.
@@ -334,7 +334,7 @@ Paragraph.
         <bullet_list>
             <list_item>
                 <paragraph>
-                    <reference ids="id1" refid="section">
+                    <reference ids="toc-entry-1" refid="section">
                         Section
     <section ids="section" names="section">
         <title refid="contents">
@@ -358,7 +358,7 @@ Paragraph.
         <bullet_list>
             <list_item>
                 <paragraph>
-                    <reference ids="id1" refid="section">
+                    <reference ids="toc-entry-1" refid="section">
                         Section
     <section ids="section" names="section">
         <title>
@@ -409,20 +409,20 @@ Paragraph 3.
                 <bullet_list>
                     <list_item>
                         <paragraph>
-                            <reference ids="id1" refid="title-2">
+                            <reference ids="toc-entry-1" refid="title-2">
                                 Title 2
                         <bullet_list>
                             <list_item>
                                 <paragraph>
-                                    <reference ids="id2" refid="title-3">
+                                    <reference ids="toc-entry-2" refid="title-3">
                                         Title 3
         <section ids="title-2" names="title\\ 2">
-            <title refid="id1">
+            <title refid="toc-entry-1">
                 Title 2
             <paragraph>
                 Paragraph 2.
             <section ids="title-3" names="title\\ 3">
-                <title refid="id2">
+                <title refid="toc-entry-2">
                     Title 3
                 <paragraph>
                     Paragraph 3.

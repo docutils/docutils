@@ -42,11 +42,6 @@ Future changes
   we store the null-escaped text in Text nodes since 0.16 so there is no
   additional information in the rawsource.
 
-* The default value for auto_id_prefix_ will change to "%". This means
-  auto-generated IDs will use the tag name as prefix. Set auto_id_prefix_ to
-  "id" if you want unchanged auto-IDs or to "%" if you want the new
-  feature already in 0.17.
-
 * The default HTML writer "html" with frontend ``rst2html.py`` may change
   from "html4css1" to "html5".
 
@@ -60,8 +55,6 @@ Future changes
 * The html_writer_ option of the ``buildhtml.py`` application is
   obsoleted by ``--writer`` and will be removed in future.
 
-.. _id_prefix: docs/user/config.html#id-prefix
-.. _auto_id_prefix: docs/user/config.html#auto-id-prefix
 .. _rst2html.py: docs/user/tools.html#rst2html-py
 .. _reference name: docs/ref/rst/restructuredtext.html#reference-names
 .. _html_writer: docs/user/config.html#html-writer
@@ -77,9 +70,14 @@ Release 0.18.dev
     characters will not be stripped from a `reference name`_ during
     `identifier normalization`_.
 
-    Example: with ``--id-prefix="DU-"``, a section with title "34. May"
-    currently gets the identifier key ``DU-may`` and after the change the
-    identifier key ``DU-34-may``.
+    Example: 
+      with ``--id-prefix="DU-"``, a section with title "34. May"
+      currently gets the identifier key ``DU-may`` and after the
+      change the identifier key ``DU-34-may``.
+
+    The default value for the auto_id_prefix_ setting changed to "%":
+    use the tag name as prefix for auto-generated IDs.
+    Set auto_id_prefix_ to "id" if you want unchanged auto-IDs.
 
   HTML5:
     Write footnote brackets and field term colons to HTML, so that they
@@ -93,8 +91,6 @@ Release 0.18.dev
 
 * Make meta__ a standard Docutils doctree node.
 
-  __ docs/ref/doctree.html#meta
-
 * Removed files:
 
   - ``iepngfix.htc`` and ``blank.gif`` (IE 6 workaround for `s5_html`).
@@ -104,8 +100,11 @@ Release 0.18.dev
 
 * Various bugfixes and improvements (see HISTORY_).
 
+__ docs/ref/doctree.html#meta
 .. _identifier normalization:
    docs/ref/rst/directives.html#identifier-normalization
+.. _id_prefix: docs/user/config.html#id-prefix
+.. _auto_id_prefix: docs/user/config.html#auto-id-prefix
 
 
 Release 0.17.1 (2021-04-16)

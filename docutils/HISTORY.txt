@@ -14,17 +14,22 @@
 Changes Since 0.17.1
 ====================
 
+* docutils/frontend.py
+
+  - The default value for the "auto_id_prefix" setting changed to "%":
+    auto-generated IDs use the tag name as prefix.
+
 * docutils/nodes.py
 
   - Make meta__ a standard Docutils doctree node. Writers may ignore
     "meta" nodes if they are not supported by the output format.
 
-  - ``Node.traverse()`` returns an iterator instead of a list.
-  
-  - document.make_id(): Keep leading number and hyphen characters from `name`
-    if the id_prefix setting is non-empty.
+    __ docs/ref/doctree.html#meta
+    
+  - document.make_id(): Keep leading number and hyphen characters
+    from `name` if the id_prefix setting is non-empty.
 
-  __ docs/ref/doctree.html#meta
+  - ``Node.traverse()`` returns an iterator instead of a list.
 
 * docutils/parsers/rst/directives/html.py
 

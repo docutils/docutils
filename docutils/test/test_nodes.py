@@ -686,7 +686,8 @@ class SetIdTests(unittest.TestCase):
         for element in self.elements:
             self.document.set_id(element)
         ids = [element['ids'] for element in self.elements]
-        self.assertEqual(ids, [['test'], ['id1'], ['id2'], ['id3']])
+        self.assertEqual(ids, [['test'], ['section-1'],
+                               ['test-1'], ['footnote-1']])
 
     def test_set_id_custom(self):
         # Custom prefixes.

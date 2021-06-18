@@ -156,7 +156,7 @@ isolated internals : ``.-_``.
             citation.withdot
         <paragraph>
             one dot
-    <citation ids="id1" names="citation-withdot">
+    <citation ids="citation-withdot-1" names="citation-withdot">
         <label>
             citation-withdot
         <paragraph>

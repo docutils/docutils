@@ -39,10 +39,10 @@ totest['double-width'] = [
 """,
 u"""\
 <document source="test data">
-    <section ids="id1" names="タイトル1">
+    <section ids="section-1" names="タイトル1">
         <title>
             タイトル1
-    <section ids="id2" names="タイトル2">
+    <section ids="section-2" names="タイトル2">
         <title>
             タイトル2
         <system_message level="2" line="5" source="test data" type="WARNING">

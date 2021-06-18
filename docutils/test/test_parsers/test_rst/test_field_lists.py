@@ -446,11 +446,11 @@ Nested field lists on one line:
         <field>
             <field_name>
                 Field name with \n\
-                <problematic ids="id2" refid="id1">
+                <problematic ids="problematic-1" refid="system-message-1">
                     *
                 bad inline markup
             <field_body>
-                <system_message backrefs="id2" ids="id1" level="2" line="1" source="test data" type="WARNING">
+                <system_message backrefs="problematic-1" ids="system-message-1" level="2" line="1" source="test data" type="WARNING">
                     <paragraph>
                         Inline emphasis start-string without end-string.
                 <paragraph>

@@ -72,10 +72,10 @@ across lines*
 """\
 <document source="test data">
     <paragraph>
-        <problematic ids="id2" refid="id1">
+        <problematic ids="problematic-1" refid="system-message-1">
             *
         emphasis without closing asterisk
-    <system_message backrefs="id2" ids="id1" level="2" line="1" source="test data" type="WARNING">
+    <system_message backrefs="problematic-1" ids="system-message-1" level="2" line="1" source="test data" type="WARNING">
         <paragraph>
             Inline emphasis start-string without end-string.
 """],
@@ -146,10 +146,10 @@ what about *this**?
          (escaped, whitespace before end-string).
     <paragraph>
         However, '
-        <problematic ids="id2" refid="id1">
+        <problematic ids="problematic-1" refid="system-message-1">
             *
         args' will trigger a warning and may be problematic.
-    <system_message backrefs="id2" ids="id1" level="2" line="13" source="test data" type="WARNING">
+    <system_message backrefs="problematic-1" ids="system-message-1" level="2" line="13" source="test data" type="WARNING">
         <paragraph>
             Inline emphasis start-string without end-string.
     <paragraph>
@@ -360,10 +360,10 @@ u"""\
         ) but not (**) or '(** ' or x**2 or **kwargs or **
     <paragraph>
         (however, '
-        <problematic ids="id2" refid="id1">
+        <problematic ids="problematic-1" refid="system-message-1">
             **
         kwargs' will trigger a warning and may be problematic)
-    <system_message backrefs="id2" ids="id1" level="2" line="4" source="test data" type="WARNING">
+    <system_message backrefs="problematic-1" ids="system-message-1" level="2" line="4" source="test data" type="WARNING">
         <paragraph>
             Inline strong start-string without end-string.
 """],
@@ -389,10 +389,10 @@ Strong double asterisk: ******
 """\
 <document source="test data">
     <paragraph>
-        <problematic ids="id2" refid="id1">
+        <problematic ids="problematic-1" refid="system-message-1">
             **
         strong without closing asterisks
-    <system_message backrefs="id2" ids="id1" level="2" line="1" source="test data" type="WARNING">
+    <system_message backrefs="problematic-1" ids="system-message-1" level="2" line="1" source="test data" type="WARNING">
         <paragraph>
             Inline strong start-string without end-string.
 """],
@@ -514,11 +514,11 @@ and may be problematic)
          but not "``" or ``
     <paragraph>
         (however, \n\
-        <problematic ids="id2" refid="id1">
+        <problematic ids="problematic-1" refid="system-message-1">
             ``
         standalone TeX quotes'' will trigger a warning
         and may be problematic)
-    <system_message backrefs="id2" ids="id1" level="2" line="4" source="test data" type="WARNING">
+    <system_message backrefs="problematic-1" ids="system-message-1" level="2" line="4" source="test data" type="WARNING">
         <paragraph>
             Inline literal start-string without end-string.
 """],
@@ -539,10 +539,10 @@ Find the ```interpreted text``` in this paragraph!
 """\
 <document source="test data">
     <paragraph>
-        <problematic ids="id2" refid="id1">
+        <problematic ids="problematic-1" refid="system-message-1">
             ``
         literal without closing backquotes
-    <system_message backrefs="id2" ids="id1" level="2" line="1" source="test data" type="WARNING">
+    <system_message backrefs="problematic-1" ids="system-message-1" level="2" line="1" source="test data" type="WARNING">
         <paragraph>
             Inline literal start-string without end-string.
 """],
@@ -909,9 +909,9 @@ Invalid phrase reference:
     <paragraph>
         Invalid phrase reference:
     <paragraph>
-        <problematic ids="id2" refid="id1">
+        <problematic ids="problematic-1" refid="system-message-1">
             :role:`phrase reference`_
-    <system_message backrefs="id2" ids="id1" level="2" line="3" source="test data" type="WARNING">
+    <system_message backrefs="problematic-1" ids="system-message-1" level="2" line="3" source="test data" type="WARNING">
         <paragraph>
             Mismatch: both interpreted text role prefix and reference suffix.
 """],
@@ -925,9 +925,9 @@ Invalid phrase reference:
     <paragraph>
         Invalid phrase reference:
     <paragraph>
-        <problematic ids="id2" refid="id1">
+        <problematic ids="problematic-1" refid="system-message-1">
             `phrase reference`:role:_
-    <system_message backrefs="id2" ids="id1" level="2" line="3" source="test data" type="WARNING">
+    <system_message backrefs="problematic-1" ids="system-message-1" level="2" line="3" source="test data" type="WARNING">
         <paragraph>
             Mismatch: both interpreted text role suffix and reference suffix.
 """],
@@ -937,13 +937,13 @@ Invalid phrase reference:
 """\
 <document source="test data">
     <paragraph>
-        <problematic ids="id2" refid="id1">
+        <problematic ids="problematic-1" refid="system-message-1">
             `
         phrase \n\
         <reference name="reference" refname="reference">
             reference
          without closing backquote
-    <system_message backrefs="id2" ids="id1" level="2" line="1" source="test data" type="WARNING">
+    <system_message backrefs="problematic-1" ids="system-message-1" level="2" line="1" source="test data" type="WARNING">
         <paragraph>
             Inline interpreted text or phrase reference start-string without end-string.
 """],
@@ -953,13 +953,13 @@ Invalid phrase reference:
 """\
 <document source="test data">
     <paragraph>
-        <problematic ids="id2" refid="id1">
+        <problematic ids="problematic-1" refid="system-message-1">
             `
         anonymous phrase \n\
         <reference anonymous="1" name="reference">
             reference
          without closing backquote
-    <system_message backrefs="id2" ids="id1" level="2" line="1" source="test data" type="WARNING">
+    <system_message backrefs="problematic-1" ids="system-message-1" level="2" line="1" source="test data" type="WARNING">
         <paragraph>
             Inline interpreted text or phrase reference start-string without end-string.
 """],
@@ -1336,10 +1336,10 @@ And _`this`_ is just plain confusing.
         But this isn't a _target; targets require backquotes.
     <paragraph>
         And \n\
-        <problematic ids="id2" refid="id1">
+        <problematic ids="problematic-1" refid="system-message-1">
             _`
         this`_ is just plain confusing.
-    <system_message backrefs="id2" ids="id1" level="2" line="3" source="test data" type="WARNING">
+    <system_message backrefs="problematic-1" ids="system-message-1" level="2" line="3" source="test data" type="WARNING">
         <paragraph>
             Inline target start-string without end-string.
 """],
@@ -1349,10 +1349,10 @@ _`inline target without closing backquote
 """\
 <document source="test data">
     <paragraph>
-        <problematic ids="id2" refid="id1">
+        <problematic ids="problematic-1" refid="system-message-1">
             _`
         inline target without closing backquote
-    <system_message backrefs="id2" ids="id1" level="2" line="1" source="test data" type="WARNING">
+    <system_message backrefs="problematic-1" ids="system-message-1" level="2" line="1" source="test data" type="WARNING">
         <paragraph>
             Inline target start-string without end-string.
 """],
@@ -1365,7 +1365,7 @@ totest['footnote_reference'] = [
 """\
 <document source="test data">
     <paragraph>
-        <footnote_reference ids="id1" refname="1">
+        <footnote_reference ids="footnote-reference-1" refname="1">
             1
 """],
 ["""\
@@ -1374,7 +1374,7 @@ totest['footnote_reference'] = [
 """\
 <document source="test data">
     <paragraph>
-        <footnote_reference auto="1" ids="id1">
+        <footnote_reference auto="1" ids="footnote-reference-1">
 """],
 ["""\
 [#label]_
@@ -1382,7 +1382,7 @@ totest['footnote_reference'] = [
 """\
 <document source="test data">
     <paragraph>
-        <footnote_reference auto="1" ids="id1" refname="label">
+        <footnote_reference auto="1" ids="footnote-reference-1" refname="label">
 """],
 ["""\
 [*]_
@@ -1390,7 +1390,7 @@ totest['footnote_reference'] = [
 """\
 <document source="test data">
     <paragraph>
-        <footnote_reference auto="*" ids="id1">
+        <footnote_reference auto="*" ids="footnote-reference-1">
 """],
 ["""\
 Adjacent footnote refs are not possible: [*]_[#label]_ [#]_[2]_ [1]_[*]_
@@ -1409,7 +1409,7 @@ totest['citation_reference'] = [
 """\
 <document source="test data">
     <paragraph>
-        <citation_reference ids="id1" refname="citation">
+        <citation_reference ids="citation-reference-1" refname="citation">
             citation
 """],
 ["""\
@@ -1418,16 +1418,16 @@ totest['citation_reference'] = [
 """\
 <document source="test data">
     <paragraph>
-        <citation_reference ids="id1" refname="citation">
+        <citation_reference ids="citation-reference-1" refname="citation">
             citation
          and \n\
-        <citation_reference ids="id2" refname="cit-ation">
+        <citation_reference ids="citation-reference-2" refname="cit-ation">
             cit-ation
          and \n\
-        <citation_reference ids="id3" refname="cit.ation">
+        <citation_reference ids="citation-reference-3" refname="cit.ation">
             cit.ation
          and \n\
-        <citation_reference ids="id4" refname="cit1">
+        <citation_reference ids="citation-reference-4" refname="cit1">
             CIT1
          but not [CIT 1]_
 """],
@@ -1491,10 +1491,10 @@ reference|
 """\
 <document source="test data">
     <paragraph>
-        <problematic ids="id2" refid="id1">
+        <problematic ids="problematic-1" refid="system-message-1">
             |
         substitution reference without closing verbar
-    <system_message backrefs="id2" ids="id1" level="2" line="1" source="test data" type="WARNING">
+    <system_message backrefs="problematic-1" ids="system-message-1" level="2" line="1" source="test data" type="WARNING">
         <paragraph>
             Inline substitution_reference start-string without end-string.
 """],

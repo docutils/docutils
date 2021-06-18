@@ -807,17 +807,17 @@ Paragraph
         <paragraph>
             Possible incomplete section title.
             Treating the overline as ordinary text because it's so short.
-    <section dupnames="..." ids="id1">
+    <section dupnames="..." ids="section-1">
         <title>
             ...
         <system_message level="1" line="4" source="test data" type="INFO">
             <paragraph>
                 Possible incomplete section title.
                 Treating the overline as ordinary text because it's so short.
-        <section dupnames="..." ids="id2">
+        <section dupnames="..." ids="section-2">
             <title>
                 ...
-            <system_message backrefs="id2" level="1" line="5" source="test data" type="INFO">
+            <system_message backrefs="section-2" level="1" line="5" source="test data" type="INFO">
                 <paragraph>
                     Duplicate implicit target name: "...".
             <system_message level="1" line="7" source="test data" type="INFO">
@@ -828,10 +828,10 @@ Paragraph
         <paragraph>
             Possible incomplete section title.
             Treating the overline as ordinary text because it's so short.
-    <section dupnames="..." ids="id3">
+    <section dupnames="..." ids="section-3">
         <title>
             ...
-        <system_message backrefs="id3" level="1" line="8" source="test data" type="INFO">
+        <system_message backrefs="section-3" level="1" line="8" source="test data" type="INFO">
             <paragraph>
                 Duplicate implicit target name: "...".
         <paragraph>

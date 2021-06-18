@@ -107,10 +107,10 @@ Paragraph.
             Title
         <paragraph>
             Paragraph.
-    <section dupnames="title" ids="id1">
+    <section dupnames="title" ids="title-1">
         <title>
             Title
-        <system_message backrefs="id1" level="1" line="8" source="test data" type="INFO">
+        <system_message backrefs="title-1" level="1" line="8" source="test data" type="INFO">
             <paragraph>
                 Duplicate implicit target name: "title".
         <paragraph>

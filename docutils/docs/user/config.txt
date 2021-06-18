@@ -210,7 +210,7 @@ the `identifier normalization`_.
 
 A trailing "%" is replaced with the tag name (new in Docutils 0.16).
 
-Default: "id" (`will change to "%" in future`__).
+Default: "%" (changed in 0.18 from "id").
 Option: ``--auto-id-prefix`` (hidden, intended mainly for programmatic use).
 
 .. _identifier normalization:

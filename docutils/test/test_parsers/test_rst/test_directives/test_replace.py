@@ -101,20 +101,20 @@ I recommend you try |Python|_.
 """,
 """\
 <document source="test data">
-    <system_message ids="id1" level="2" line="1" source="test data" type="WARNING">
+    <system_message ids="system-message-1" level="2" line="1" source="test data" type="WARNING">
         <paragraph>
             Inline emphasis start-string without end-string.
-    <system_message ids="id3" level="2" line="1" source="test data" type="WARNING">
+    <system_message ids="system-message-2" level="2" line="1" source="test data" type="WARNING">
         <paragraph>
             Inline strong start-string without end-string.
-    <system_message ids="id5" level="2" line="1" source="test data" type="WARNING">
+    <system_message ids="system-message-3" level="2" line="1" source="test data" type="WARNING">
         <paragraph>
             Inline literal start-string without end-string.
     <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
             Substitution definition contains illegal element <problematic>:
         <literal_block xml:space="preserve">
-            <problematic ids="id2" refid="id1">
+            <problematic ids="problematic-1" refid="system-message-1">
                 *
         <literal_block xml:space="preserve">
             .. |name| replace::  *error in **inline ``markup
