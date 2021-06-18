@@ -701,7 +701,7 @@ class SetIdTests(unittest.TestCase):
         self.assertEqual(ids, [['P-test'],
                                ['P-auto1'],
                                ['P-auto2'],
-                               ['P-auto3']])
+                               ['P-2019-10-30']])
 
     def test_set_id_descriptive_auto_id(self):
         # Use name or tag-name for auto-id.
@@ -730,7 +730,7 @@ class SetIdTests(unittest.TestCase):
         self.assertEqual(ids, [['P:test'],
                                ['P:a-section-1'],
                                ['P:test-1'],
-                               ['P:a-footnote-1']])
+                               ['P:2019-10-30']])
 
 
 class MiscFunctionTests(unittest.TestCase):
