@@ -328,7 +328,6 @@ class HTMLTranslator(nodes.NodeVisitor):
         Used by visit_* and depart_* functions in conjunction with the tree
         traversal. Make sure that the pops correspond to the pushes."""
 
-        self.topic_classes = []
         self.colspecs = []
         self.compact_p = True
         self.compact_simple = False
@@ -521,8 +520,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.depart_docinfo_item()
 
     def visit_admonition(self, node):
-        node['classes'].insert(0, 'admonition')
-        self.body.append(self.starttag(node, 'div'))
+        self.body.append(self.starttag(node, 'div', classes=['admonition']))
 
     def depart_admonition(self, node=None):
         self.body.append('</div>\n')
@@ -596,8 +594,7 @@ class HTMLTranslator(nodes.NodeVisitor):
             and not self.settings.compact_lists):
             return False
         # Table of Contents:
-        if (self.topic_classes == ['contents']):
-            # TODO: look in parent nodes, remove self.topic_classes?
+        if 'contents' in node.parent['classes']:
             return True
         # check the list items:
         return self.check_simple_list(node)
@@ -683,11 +680,6 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_compound(self, node):
         self.body.append(self.starttag(node, 'div', CLASS='compound'))
-        if len(node) > 1:
-            node[0]['classes'].append('compound-first')
-            node[-1]['classes'].append('compound-last')
-            for child in node[1:-1]:
-                child['classes'].append('compound-middle')
 
     def depart_compound(self, node):
         self.body.append('</div>\n')
@@ -730,21 +722,14 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('</dd>\n')
 
     def visit_definition_list(self, node):
-        if self.is_compactable(node):
-            node.setdefault('classes', []).append('simple')
-        self.body.append(self.starttag(node, 'dl'))
+        classes = ['simple'] if self.is_compactable(node) else []
+        self.body.append(self.starttag(node, 'dl', classes=classes))
 
     def depart_definition_list(self, node):
         self.body.append('</dl>\n')
 
     def visit_definition_list_item(self, node):
-        # pass class arguments, ids and names to definition term:
-        node.children[0]['classes'] = (
-            node.get('classes', []) + node.children[0].get('classes', []))
-        node.children[0]['ids'] = (
-            node.get('ids', []) + node.children[0].get('ids', []))
-        node.children[0]['names'] = (
-            node.get('names', []) + node.children[0].get('names', []))
+        pass
 
     def depart_definition_list_item(self, node):
         pass
@@ -757,10 +742,10 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_docinfo(self, node):
         self.context.append(len(self.body))
-        classes = 'docinfo'
+        classes = ['docinfo']
         if (self.is_compactable(node)):
-            classes += ' simple'
-        self.body.append(self.starttag(node, 'dl', CLASS=classes))
+            classes.append('simple')
+        self.body.append(self.starttag(node, 'dl', classes=classes))
 
     def depart_docinfo(self, node):
         self.body.append('</dl>\n')
@@ -783,7 +768,7 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_doctest_block(self, node):
         self.body.append(self.starttag(node, 'pre', suffix='',
-                                       CLASS='code python doctest'))
+                                       classes=['code', 'python', 'doctest']))
 
     def depart_doctest_block(self, node):
         self.body.append('\n</pre>\n')
@@ -825,18 +810,16 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('</em>')
 
     def visit_entry(self, node):
-        atts = {'class': []}
+        atts = {'classes': []}
         if isinstance(node.parent.parent, nodes.thead):
-            atts['class'].append('head')
+            atts['classes'].append('head')
         if node.parent.parent.parent.stubs[node.parent.column]:
             # "stubs" list is an attribute of the tgroup element
-            atts['class'].append('stub')
-        if atts['class']:
+            atts['classes'].append('stub')
+        if atts['classes']:
             tagname = 'th'
-            atts['class'] = ' '.join(atts['class'])
         else:
             tagname = 'td'
-            del atts['class']
         node.parent.column += 1
         if 'morerows' in node:
             atts['rowspan'] = node['morerows'] + 1
@@ -845,21 +828,18 @@ class HTMLTranslator(nodes.NodeVisitor):
             node.parent.column += node['morecols']
         self.body.append(self.starttag(node, tagname, '', **atts))
         self.context.append('</%s>\n' % tagname.lower())
-        # TODO: why does the html4css1 writer insert an NBSP into empty cells?
-        # if len(node) == 0:              # empty cell
-        #     self.body.append('&#0160;') # no-break space
 
     def depart_entry(self, node):
         self.body.append(self.context.pop())
 
     def visit_enumerated_list(self, node):
-        atts = {}
+        atts = {'classes': []}
         if 'start' in node:
             atts['start'] = node['start']
         if 'enumtype' in node:
-            atts['class'] = node['enumtype']
+            atts['classes'].append(node['enumtype'])
         if self.is_compactable(node):
-            atts['class'] = (atts.get('class', '') + ' simple').strip()
+            atts['classes'].append('simple')
         self.body.append(self.starttag(node, 'ol', **atts))
 
     def depart_enumerated_list(self, node):
@@ -893,17 +873,16 @@ class HTMLTranslator(nodes.NodeVisitor):
         pass
 
     # as field is ignored, pass class arguments to field-name and field-body:
-
     def visit_field_name(self, node):
         self.body.append(self.starttag(node, 'dt', '',
-                                       CLASS=''.join(node.parent['classes'])))
+                                       classes=node.parent['classes']))
 
     def depart_field_name(self, node):
         self.body.append('<span class="colon">:</span></dt>\n')
 
     def visit_field_body(self, node):
         self.body.append(self.starttag(node, 'dd', '',
-                                       CLASS=''.join(node.parent['classes'])))
+                                       classes=node.parent['classes']))
         # prevent misalignment of following content if the field is empty:
         if not node.children:
             self.body.append('<p></p>')
@@ -949,9 +928,9 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_footnote_reference(self, node):
         href = '#' + node['refid']
-        classes = 'footnote-reference ' + self.settings.footnote_references
+        classes = ['footnote-reference', self.settings.footnote_references]
         self.body.append(self.starttag(node, 'a', suffix='',
-                                       CLASS=classes, href=href))
+                                       classes=classes, href=href))
         self.body.append('<span class="fn-bracket">[</span>')
 
     def depart_footnote_reference(self, node):
@@ -1130,7 +1109,7 @@ class HTMLTranslator(nodes.NodeVisitor):
     # inline literal
     def visit_literal(self, node):
         # special case: "code" role
-        classes = node.get('classes', [])
+        classes = node['classes']
         if 'code' in classes:
             # filter 'code' from class arguments
             classes.pop(classes.index('code'))
@@ -1158,11 +1137,11 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_literal_block(self, node):
         self.body.append(self.starttag(node, 'pre', '', CLASS='literal-block'))
-        if 'code' in node.get('classes', []):
+        if 'code' in node['classes']:
             self.body.append('<code>')
 
     def depart_literal_block(self, node):
-        if 'code' in node.get('classes', []):
+        if 'code' in node['classes']:
             self.body.append('</code>')
         self.body.append('</pre>\n')
 
@@ -1388,12 +1367,15 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_raw(self, node):
         if 'html' in node.get('format', '').split():
-            t = isinstance(node.parent, nodes.TextElement) and 'span' or 'div'
+            if isinstance(node.parent, nodes.TextElement):
+                tagname = 'span'
+            else:
+                tagname = 'div'
             if node['classes']:
-                self.body.append(self.starttag(node, t, suffix=''))
+                self.body.append(self.starttag(node, tagname, suffix=''))
             self.body.append(node.astext())
             if node['classes']:
-                self.body.append('</%s>' % t)
+                self.body.append('</%s>' % tagname)
         # Keep non-HTML raw text out of output:
         raise nodes.SkipNode
 
@@ -1490,16 +1472,16 @@ class HTMLTranslator(nodes.NodeVisitor):
     # h1–h6 elements must not be used to markup subheadings, subtitles,
     # alternative titles and taglines unless intended to be the heading for a
     # new section or subsection.
-    # -- http://www.w3.org/TR/html/sections.html#headings-and-sections
+    # -- http://www.w3.org/TR/html51/sections.html#headings-and-sections
     def visit_subtitle(self, node):
         if isinstance(node.parent, nodes.sidebar):
-            classes = 'sidebar-subtitle'
+            classes = ['sidebar-subtitle']
         elif isinstance(node.parent, nodes.document):
-            classes = 'subtitle'
+            classes = ['subtitle']
             self.in_document_title = len(self.body)+1
         elif isinstance(node.parent, nodes.section):
-            classes = 'section-subtitle'
-        self.body.append(self.starttag(node, 'p', '', CLASS=classes))
+            classes = ['section-subtitle']
+        self.body.append(self.starttag(node, 'p', '', classes=classes))
 
     def depart_subtitle(self, node):
         self.body.append('</p>\n')
@@ -1546,12 +1528,9 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('</div>\n')
 
     def visit_table(self, node):
-        atts = {}
-        classes = node.setdefault('classes', [])
-        classes += [cls.strip(u' \t\n')
-                    for cls in self.settings.table_style.split(',')]
+        atts = {'classes': self.settings.table_style.replace(',', ' ').split()}
         if 'align' in node:
-            classes.append('align-%s' % node['align'])
+            atts['classes'].append('align-%s' % node['align'])
         if 'width' in node:
             atts['style'] = 'width: %s;' % node['width']
         tag = self.starttag(node, 'table', **atts)
@@ -1579,7 +1558,10 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('</tbody>\n')
 
     def visit_term(self, node):
-        self.body.append(self.starttag(node, 'dt', ''))
+        # The parent node (definition_list_item) is omitted in HTML.
+        self.body.append(self.starttag(node, 'dt', '',
+                                       classes=node.parent['classes'],
+                                       ids=node.parent['ids']))
 
     def depart_term(self, node):
         # Leave the end tag to `self.visit_definition()`,
@@ -1660,11 +1642,9 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_topic(self, node):
         self.body.append(self.starttag(node, 'div', CLASS='topic'))
-        self.topic_classes = node['classes']
 
     def depart_topic(self, node):
         self.body.append('</div>\n')
-        self.topic_classes = []
 
     def visit_transition(self, node):
         self.body.append(self.emptytag(node, 'hr', CLASS='docutils'))

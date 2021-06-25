@@ -151,7 +151,7 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
     def visit_container(self, node):
         # If there is exactly one of the "supported block tags" in
         # the list of class values, use it as tag name:
-        classes = node.get('classes', [])
+        classes = node['classes']
         tags = [cls for cls in classes
                 if cls in self.supported_block_tags]
         if len(tags) == 1:
@@ -256,7 +256,7 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
         self.body_prefix.extend(header)
         self.header.extend(header)
         del self.body[start:]
-        
+
     # MIME types supported by the HTML5 <video> element
     videotypes = ('video/mp4', 'video/webm', 'video/ogg')
 
@@ -273,7 +273,7 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
             atts['height'] = node['height'].replace('px', '')
         if 'align' in node:
             atts['class'] = 'align-%s' % node['align']
-        if 'controls' in node.get('classes', []):
+        if 'controls' in node['classes']:
             atts['controls'] = 'controls'
         atts['title'] = node.get('alt', uri)
 
@@ -297,7 +297,7 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
                                  'b', 'i', 'q', 's', 'u'))
     def visit_inline(self, node):
         # Use `supported_inline_tags` if found in class values
-        classes = node.get('classes', [])
+        classes = node['classes']
         tags = [cls for cls in self.supported_inline_tags
                 if cls in classes]
         if len(tags):
@@ -333,7 +333,7 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
 
     # use HTML text-level tags if matching class value found
     def visit_literal(self, node):
-        classes = node.get('classes', [])
+        classes = node['classes']
         tags = [cls for cls in self.supported_inline_tags
                 if cls in classes]
         if len(tags):
@@ -410,8 +410,6 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
             and isinstance(node.parent, nodes.document)):
             self.body_prefix[0] = '</head>\n<body class="with-toc">\n'
         self.body.append(self.starttag(node, 'div', CLASS='topic'))
-        self.topic_classes = node['classes'] # TODO: remove?
 
     def depart_topic(self, node):
         self.body.append('</div>\n')
-        self.topic_classes = []

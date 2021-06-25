@@ -896,45 +896,45 @@ allowed (e.g. inside a directive).</p>
 is a single logical paragraph containing multiple physical body
 elements. For example:</p>
 <div class="compound">
-<p class="compound-first">The 'rm' command is very dangerous.  If you are logged
+<p>The 'rm' command is very dangerous.  If you are logged
 in as root and enter</p>
-<pre class="compound-middle literal-block">cd /
+<pre class="literal-block">cd /
 rm -rf *</pre>
-<p class="compound-last">you will erase the entire contents of your file system.</p>
+<p>you will erase the entire contents of your file system.</p>
 </div>
 <p>Test the handling and display of compound paragraphs:</p>
 <div class="some-class compound">
-<p class="compound-first">Compound 2, paragraph 1,</p>
-<p class="compound-middle">compound 2, paragraph 2,</p>
-<ul class="compound-middle simple">
+<p>Compound 2, paragraph 1,</p>
+<p>compound 2, paragraph 2,</p>
+<ul class="simple">
 <li><p>list item 1,</p></li>
 <li><p>list item 2,</p></li>
 </ul>
-<p class="compound-last">compound 2, paragraph 3.</p>
+<p>compound 2, paragraph 3.</p>
 </div>
 <div class="compound">
 <p>Compound 3, only consisting of one paragraph.</p>
 </div>
 <div class="compound">
-<pre class="compound-first literal-block">Compound 4.
+<pre class="literal-block">Compound 4.
 This one starts with a literal block.</pre>
-<p class="compound-last">Compound 4, paragraph following the literal block.</p>
+<p>Compound 4, paragraph following the literal block.</p>
 </div>
 <p>Now something <em>really</em> perverted -- a nested compound block.  This is
 just to test that it works at all; the results don't have to be
 meaningful.</p>
 <div class="compound">
-<p class="compound-first">Compound 5, block 1 (a paragraph).</p>
-<div class="compound-middle compound">
-<p class="compound-first">Compound 6 is block 2 in compound 5.</p>
-<p class="compound-last">Compound 6, another paragraph.</p>
+<p>Compound 5, block 1 (a paragraph).</p>
+<div class="compound">
+<p>Compound 6 is block 2 in compound 5.</p>
+<p>Compound 6, another paragraph.</p>
 </div>
-<p class="compound-last">Compound 5, block 3 (a paragraph).</p>
+<p>Compound 5, block 3 (a paragraph).</p>
 </div>
 <div class="compound">
-<p class="compound-first">Compound 7, tests the inclusion of various block-level
+<p>Compound 7, tests the inclusion of various block-level
 elements in one logical paragraph. First a table,</p>
-<table class="compound-middle">
+<table>
 <colgroup>
 <col style="width: 33%" />
 <col style="width: 33%" />
@@ -957,48 +957,48 @@ paragraph.</p></td>
 </tr>
 </tbody>
 </table>
-<p class="compound-middle">followed by a paragraph. This physical paragraph is
+<p>followed by a paragraph. This physical paragraph is
 actually a continuation of the paragraph before the table. It is followed
 by</p>
-<blockquote class="compound-middle">
+<blockquote>
 <p>a quote and</p>
 </blockquote>
-<ol class="compound-middle arabic simple">
+<ol class="arabic simple">
 <li><p>an enumerated list,</p></li>
 </ol>
-<p class="compound-middle">a paragraph,</p>
-<dl class="compound-middle option-list">
+<p>a paragraph,</p>
+<dl class="option-list">
 <dt><kbd><span class="option">--an</span></kbd></dt>
 <dd><p>option list,</p>
 </dd>
 </dl>
-<p class="compound-middle">a paragraph,</p>
-<dl class="compound-middle field-list simple">
+<p>a paragraph,</p>
+<dl class="field-list simple">
 <dt>a field<span class="colon">:</span></dt>
 <dd><p>list,</p>
 </dd>
 </dl>
-<p class="compound-middle">a paragraph,</p>
-<dl class="compound-middle simple">
+<p>a paragraph,</p>
+<dl class="simple">
 <dt>a definition</dt>
 <dd><p>list,</p>
 </dd>
 </dl>
-<p class="compound-middle">a paragraph, an image:</p>
-<img alt="../../../docs/user/rst/images/biohazard.png" class="compound-middle" src="../../../docs/user/rst/images/biohazard.png" />
-<p class="compound-middle">a paragraph,</p>
-<div class="compound-middle line-block">
+<p>a paragraph, an image:</p>
+<img alt="../../../docs/user/rst/images/biohazard.png" src="../../../docs/user/rst/images/biohazard.png" />
+<p>a paragraph,</p>
+<div class="line-block">
 <div class="line">a line</div>
 <div class="line">block,</div>
 </div>
-<p class="compound-middle">a paragraph followed by a comment,</p>
+<p>a paragraph followed by a comment,</p>
 <!-- this is a comment -->
-<p class="compound-middle">a paragraph, a</p>
-<div class="admonition note compound-middle">
+<p>a paragraph, a</p>
+<div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>with content</p>
 </div>
-<p class="compound-last">and the final paragraph of the compound 7.</p>
+<p>and the final paragraph of the compound 7.</p>
 </div>
 </section>
 <section id="parsed-literal-blocks">
@@ -1225,7 +1225,7 @@ crunchy, now would it?</p></td>
 </tr>
 </tbody>
 </table>
-<table class="colwidths-auto align-center">
+<table class="align-center colwidths-auto">
 <caption>center aligned list table</caption>
 <tbody>
 <tr><td><p>Albatross</p></td>
@@ -1493,7 +1493,7 @@ from the <a class="reference external" href="http://tug.ctan.org/tex-archive/mac
 </ul>
 <p>&quot;Booktabs&quot; style table, numbered, centre-aligned, with auto-sized columns:</p>
 <blockquote>
-<table class="booktabs numbered colwidths-auto align-center">
+<table class="align-center booktabs numbered colwidths-auto">
 <caption>I/O values</caption>
 <thead>
 <tr><th class="head" colspan="2"><p>Input</p></th>
