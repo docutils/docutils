@@ -335,7 +335,6 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.compact_field_list = False
         self.in_docinfo = False
         self.in_sidebar = False
-        self.in_footnote_list = False
         self.title = []
         self.subtitle = []
         self.header = []
@@ -624,22 +623,10 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('</p>\n')
 
     def visit_citation(self, node):
-        # Use definition list for bibliographic references.
-        # Join adjacent citation entries.
-        # TODO: use <aside>.
-        if not self.in_footnote_list:
-            listnode = node.copy()
-            listnode['ids'] = []
-            self.body.append(self.starttag(listnode, 'dl', CLASS='citation'))
-            # self.body.append('<dl class="citation">\n')
-            self.in_footnote_list = True
+        self.visit_footnote(node)
 
     def depart_citation(self, node):
-        self.body.append('</dd>\n')
-        if not isinstance(node.next_node(descend=False, siblings=True),
-                          nodes.citation):
-            self.body.append('</dl>\n')
-            self.in_footnote_list = False
+        self.depart_footnote(node)
 
     def visit_citation_reference(self, node):
         href = '#'
@@ -935,7 +922,6 @@ class HTMLTranslator(nodes.NodeVisitor):
     def depart_figure(self, node):
         self.body.append('</div>\n')
 
-    # use HTML 5 <footer> element?
     def visit_footer(self, node):
         self.context.append(len(self.body))
 
@@ -950,19 +936,21 @@ class HTMLTranslator(nodes.NodeVisitor):
         del self.body[start:]
 
     def visit_footnote(self, node):
-        if not self.in_footnote_list:
+        previous_node = node.parent[node.parent.index(node)-1]
+        if not isinstance(previous_node, type(node)):
             listnode = node.copy()
             listnode['ids'] = []
-            classes = 'footnote ' + self.settings.footnote_references
+            if isinstance(node, nodes.citation):
+                classes = 'citation'
+            else:
+                classes = 'footnote ' + self.settings.footnote_references
             self.body.append(self.starttag(listnode, 'dl', CLASS=classes))
-            self.in_footnote_list = True
 
     def depart_footnote(self, node):
         self.body.append('</dd>\n')
         if not isinstance(node.next_node(descend=False, siblings=True),
-                          nodes.footnote):
+                          type(node)):
             self.body.append('</dl>\n')
-            self.in_footnote_list = False
 
     def visit_footnote_reference(self, node):
         href = '#' + node['refid']

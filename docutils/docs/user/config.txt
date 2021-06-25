@@ -215,7 +215,6 @@ Option: ``--auto-id-prefix`` (hidden, intended mainly for programmatic use).
 
 .. _identifier normalization:
    ../ref/rst/directives.html#identifier-normalization
-__ ../../RELEASE-NOTES.html#future-changes
 
 datestamp
 ---------
