@@ -88,7 +88,7 @@ span.denominator {
 	padding: 0ex;
 	border-top: thin solid;
 }
-sub, sup {
+math sub, math sup {
 	font-size: 80%;
 }
 sup.numerator, sup.unit {

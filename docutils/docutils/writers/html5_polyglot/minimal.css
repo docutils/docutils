@@ -1,8 +1,8 @@
 /* Minimal style sheet for the HTML output of Docutils.                    */
 /*                                                                         */
 /* :Author: Günter Milde, based on html4css1.css by David Goodger          */
-/* :Id: $Id$               */
-/* :Copyright: © 2015 Günter Milde.                                        */
+/* :Id: $Id$                                                               */
+/* :Copyright: © 2015, 2021 Günter Milde.                                  */
 /* :License: Released under the terms of the `2-Clause BSD license`_,      */
 /*    in short:                                                            */
 /*                                                                         */
@@ -14,11 +14,10 @@
 /*                                                                         */
 /* .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause     */
 
-/* This CSS2.1_ stylesheet defines rules for Docutils elements without    */
-/* HTML equivalent. It is required to make the document semantic visible. */
-/*                                                                        */
-/* .. _CSS2.1: http://www.w3.org/TR/CSS2                                  */
-/* .. _validates: http://jigsaw.w3.org/css-validator/validator$link       */
+/* This CSS3 stylesheet defines rules for Docutils elements without        */
+/* HTML equivalent. It is required to make the document semantics visible. */
+/*                                                                         */
+/* .. _validates: http://jigsaw.w3.org/css-validator/validator$link        */
 
 /* titles */
 p.topic-title,
@@ -76,7 +75,6 @@ span.problematic {
 /* Nested Paragraphs */
 p:first-child { margin-top: 0; }
 p:last-child { margin-bottom: 0; }
-td > p, th > p { margin-bottom: 0; }
 
 /* Table of Contents */
 .topic.contents { margin: 0.5em 0; }

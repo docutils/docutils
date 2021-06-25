@@ -40,11 +40,15 @@ body > * {
   margin: auto;
   max-width: 100rem;
 }
+sup, sub { /* avoid additional inter-line space for lines with sup/sub */
+  line-height: 1;
+}
 
 /* Vertical Space (Parskip) */
 p, ol, ul, dl, li,
 div.line-block,
 div.topic,
+.footnote, .citation,
 div > math,
 table {
   margin-top: 0.5em;
@@ -173,16 +177,9 @@ dd > ol:first-child {
 }
 
 /* Footnotes and Citations */
-dl.footnote {
+.footnote {
   font-size: small;
-  padding-left: 0.5em;
-  border-left: solid;
-  border-left-width: thin;
 }
-dl.citation > dt.label span.fn-bracket {
-  display: none;
-}
-
 
 /* Images, Figures, and Tables */
 img {
@@ -281,10 +278,10 @@ a:link{
   overflow-wrap: inherit;
 }
 /* Undecorated Links */
-/* a.footnote-reference, a.fn-backref, .fn-backref a, */
 /* a.citation-reference, */
+/* .contents a, */
 .citation a.fn-backref,
-.contents a, a.toc-backref {
+a.toc-backref {
   color: inherit;
 }
 a:link:hover {

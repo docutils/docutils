@@ -2379,16 +2379,27 @@ Details
     ``footnote`` is similar to the `DocBook "footnote"`_ element but does
     not create a footnote_reference_.
 
-    There is `no equivalent in HTML`__. The ARIA_ role `"note"`__, or the
-    DPub-ARIA role `"doc-footnote"`__ may be used semantically represent
-    footnotes in HTML. As the spatial positioning is not determined,
-    the corresponding `epub:type`__ is the deprecated "note" (rather
-    than "footnote" or "endnote").
+    There is `no equivalent in HTML`__. The ARIA role `"note"`__ may be
+    used to mark an `<aside> or <section> element`__ as "a section whose
+    content is parenthetic or ancillary to the main content of the
+    resource".
+
+    ``footnote`` elements can be used for both,
+
+    * notes that occur within the body of the document (`epub:type`__
+      *footnote* or DPub-ARIA role `"doc-footnote"`__) or
+
+    * collections of notes that occur at the end of a section or the
+      document (`epub:type` *endnote*,DPub-ARIA role
+      `"doc-endnotes"`__).
+
 
     __ https://www.w3.org/TR/html51/common-idioms-without-dedicated-elements.html#footnotes
     __ https://www.w3.org/TR/wai-aria-1.1/#note
-    __ https://www.w3.org/TR/dpub-aria-1.0/#doc-footnote
+    __ https://www.w3.org/TR/html-aria/#docconformance
     __ https://idpf.github.io/epub-vocabs/structure/#notes
+    __ https://www.w3.org/TR/dpub-aria-1.0/#doc-footnote
+    __ https://www.w3.org/TR/dpub-aria-1.0/#doc-endnotes
 
 :Processing:
     A ``footnote`` element should be set off from the rest of the

@@ -328,7 +328,7 @@ class RSTState(StateWS):
 
     def check_subsection(self, source, style, lineno):
         """
-        Check for a valid subsection header.  Return 1 (true) or None (false).
+        Check for a valid subsection header.  Return True or False.
 
         When a new section is reached that isn't a subsection of the current
         section, back up the line count (use ``previous_line(-x)``), then
@@ -350,10 +350,10 @@ class RSTState(StateWS):
         except ValueError:              # new title style
             if len(title_styles) == memo.section_level: # new subsection
                 title_styles.append(style)
-                return 1
+                return True
             else:                       # not at lowest level
                 self.parent += self.title_inconsistent(source, lineno)
-                return None
+                return False
         if level <= mylevel:            # sibling or supersection
             memo.section_level = level   # bubble up to parent section
             if len(style) == 2:
@@ -362,10 +362,10 @@ class RSTState(StateWS):
             self.state_machine.previous_line(len(style) + 1)
             raise EOFError              # let parent section re-evaluate
         if level == mylevel + 1:        # immediate subsection
-            return 1
+            return True
         else:                           # invalid subsection
             self.parent += self.title_inconsistent(source, lineno)
-            return None
+            return False
 
     def title_inconsistent(self, sourcetext, lineno):
         error = self.reporter.severe(
