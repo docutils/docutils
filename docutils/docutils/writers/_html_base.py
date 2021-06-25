@@ -619,12 +619,23 @@ class HTMLTranslator(nodes.NodeVisitor):
     def depart_caption(self, node):
         self.body.append('</p>\n')
 
+    # Use semantic tag and DPub role (HTML4 uses a table)
     def visit_citation(self, node):
-        self.visit_footnote(node)
+        # role 'doc-bibloentry' requires wrapping in an element with
+        # role 'list' and an element with role 'doc-bibliography'
+        # https://www.w3.org/TR/dpub-aria-1.0/#doc-biblioentry)
+        if not isinstance(node.previous_sibling(), type(node)):
+            self.body.append('<div role="list" class="citation-list">\n')
+        self.body.append(self.starttag(node, 'div', classes=[node.tagname],
+                                       role="doc-biblioentry"))
 
     def depart_citation(self, node):
-        self.depart_footnote(node)
+        self.body.append('</div>\n')
+        next_node = node.next_node(descend=False, siblings=True)
+        if not isinstance(next_node, type(node)):
+            self.body.append('</div>\n')
 
+    # Use DPub role (overwritten in HTML4)
     def visit_citation_reference(self, node):
         href = '#'
         if 'refid' in node:
@@ -633,9 +644,9 @@ class HTMLTranslator(nodes.NodeVisitor):
             href += self.document.nameids[node['refname']]
         # else: # TODO system message (or already in the transform)?
         # 'Citation reference missing.'
-        self.body.append(self.starttag(
-            node, 'a', '[', CLASS='citation-reference', href=href))
-            # TODO: role='doc-biblioref' # HTML5 only
+        self.body.append(self.starttag(node, 'a', suffix='[', href=href,
+                                       classes=['citation-reference'],
+                                       role='doc-biblioref'))
 
     def depart_citation_reference(self, node):
         self.body.append(']</a>')
@@ -916,16 +927,11 @@ class HTMLTranslator(nodes.NodeVisitor):
         del self.body[start:]
 
     # use HTML5 element <aside> with ARIA role "note" for footnote text
-    # (the html4css1 writer uses a table instead).
-    # TODO: role='doc-biblioentry' for citations
-    # (requires wrapping in an element with role='list'
-    # https://www.w3.org/TR/dpub-aria-1.0/#doc-biblioentry)
+    # (the html4css1 writer uses a table).
     def visit_footnote(self, node):
-        classes = [node.tagname]
-        if isinstance(node, nodes.footnote):
-            classes.append(self.settings.footnote_references)
-        self.body.append(self.starttag(node, 'aside',
-                                       classes=classes, role="note"))
+        classes = [node.tagname, self.settings.footnote_references]
+        self.body.append(self.starttag(node, 'aside', classes=classes,
+                                       role="note"))
 
     def depart_footnote(self, node):
         self.body.append('</aside>\n')
@@ -1076,8 +1082,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         backrefs = node.parent.get('backrefs', [])
         if len(backrefs) == 1:
             self.body.append('</a>')
-        self.body.append('<span class="fn-bracket">]</span>')
-        self.body.append('</span>\n')
+        self.body.append('<span class="fn-bracket">]</span></span>\n')
         if len(backrefs) > 1:
             backlinks = ['<a role="doc-backlink" href="#%s">%s</a>' % (ref, i)
                          for (i, ref) in enumerate(backrefs, 1)]

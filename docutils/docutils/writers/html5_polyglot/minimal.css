@@ -146,16 +146,14 @@ span.option { white-space: nowrap; }
 
 /* Footnotes and Citations  */
 
-.footnote, .citation {
-  margin: 1em 0; /* default paragraph skip (Firefox) */
-}
+.footnote, .citation { margin: 1em 0; } /* default paragraph skip (Firefox) */
 /* hanging indent */
-.footnote { padding-left: 1.7em; }
 .citation { padding-left: 2em; }
-.footnote.superscript { padding-left: 1em; }
-.footnote > .label { margin-left: -1.7em; }
+.footnote { padding-left: 1.7em; }
+.footnote.superscript { padding-left: 0.9em; }
 .citation > .label { margin-left: -2em; }
-.footnote.superscript > .label { margin-left: -1em; }
+.footnote > .label { margin-left: -1.7em; }
+.footnote.superscript > .label { margin-left: -0.9em; }
 
 .footnote > .label + *,
 .citation > .label + * {

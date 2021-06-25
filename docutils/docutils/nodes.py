@@ -324,6 +324,13 @@ class Node(object):
         except StopIteration:
             return None
 
+    def previous_sibling(self):
+        """Return preceding sibling node or ``None``."""
+        try:
+            return self.parent[self.parent.index(self)-1]
+        except (AttributeError, IndexError):
+            return None
+
 if sys.version_info < (3, 0):
     class reprunicode(unicode):
         """
