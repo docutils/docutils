@@ -16,7 +16,7 @@ Here's a reference to the above, [CIT2002]_.
 
 .. [5] this footnote is missing in the standard example document.
 
-Footnotes may contain block elements like lists [#list-note]_ [#]_,
+Footnotes may contain block elements like lists  [#]_ [#list-note]_ [#]_,
 admonitions [#]_, or tables [#]_.
 
 .. [#] #. An ordered list

@@ -260,6 +260,18 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
         self.body.append('</td></tr>\n'
                          '</tbody>\n</table>\n')
 
+    def visit_citation_reference(self, node):
+        href = '#'
+        if 'refid' in node:
+            href += node['refid']
+        elif 'refname' in node:
+            href += self.document.nameids[node['refname']]
+        self.body.append(self.starttag(node, 'a', suffix='[', href=href,
+                                       classes=['citation-reference']))
+
+    def depart_citation_reference(self, node):
+        self.body.append(']</a>')
+
     # insert classifier-delimiter (not required with CSS2)
     def visit_classifier(self, node):
         self.body.append(' <span class="classifier-delimiter">:</span> ')
@@ -345,7 +357,7 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
 
     def depart_doctest_block(self, node):
         self.body.append('\n</pre>\n')
-    
+
     # insert an NBSP into empty cells, ersatz for first/last
     def visit_entry(self, node):
         writers._html_base.HTMLTranslator.visit_entry(self, node)
