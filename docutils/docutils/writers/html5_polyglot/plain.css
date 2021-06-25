@@ -53,6 +53,12 @@ ul.auto-toc > li > p {
 nav.contents ul {
   padding-left: 1em;
 }
+main > nav.contents ul ul ul ul:not(.auto-toc) {
+  list-style-type: '\2B29\ ';
+}
+main > nav.contents ul ul ul ul ul:not(.auto-toc) {
+  list-style-type: '\2B1D\ ';
+}
 
 /* Transitions */
 hr.docutils {
@@ -252,10 +258,13 @@ div.error {
 aside.sidebar {
   width: 30%;
   max-width: 26em;
+  float: right;
+  clear: right;
   margin-left: 1em;
-  margin-right: -2%;
-  background-color: #ffffee;
+  margin-right: -1%;
+  background-color: #fffffa;
 }
+
 
 /* Code */
 pre.code { padding: 0.7ex }
@@ -271,9 +280,6 @@ pre.code .inserted, code .inserted { background-color: #A3D289}
 
 /* Math */
 /* for math-output=MathML (for math-output=HTML, see math.css) */
-mtable.align > mtr > mtd { /* emulate AMS "align" environment. */
-  text-align: left;
-}
 mstyle.mathscr, mi.mathscr {
   font-family: STIX;
 }

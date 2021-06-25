@@ -226,12 +226,6 @@ table.align-left, table.align-center, table.align-right {
   border: thin solid;
   padding: 0.5em 1em;
 }
-.sidebar {
-  width: 30%;
-  max-width: 26em;
-  float: right;
-  clear: right;
-}
 div.line-block { display: block; }
 div.line-block div.line-block, pre { margin-left: 2em; }
 

@@ -72,8 +72,7 @@ pre, dd, dl.option-list {
 /* Object styling */
 /* ============== */
 
-footer, header,
-.sidebar, .marginal {
+footer, header {
   font-size: small;
 }
 
@@ -94,12 +93,12 @@ blockquote p.attribution,
 }
 
 /* Table of Contents */
-ul.auto-toc > li > p {
-  padding-left: 1em;
-  text-indent: -1em;
-}
 nav.contents ul {
   padding-left: 1em;
+}
+ul.auto-toc > li > p { /* hanging indent */
+  padding-left: 1em;
+  text-indent: -1em;
 }
 main > nav.contents  ul:not(.auto-toc) {
   list-style-type: square;
@@ -108,13 +107,13 @@ main > nav.contents  ul ul:not(.auto-toc) {
   list-style-type: disc;
 }
 main > nav.contents  ul ul ul:not(.auto-toc) {
-  list-style-type: '\2023\ ';
-}
-main > nav.contents  ul ul ul ul:not(.auto-toc) {
   list-style-type: '\2B29\ ';
 }
+main > nav.contents  ul ul ul ul:not(.auto-toc) {
+  list-style-type: '\2B1D\ ';
+}
 main > nav.contents  ul ul ul ul ul:not(.auto-toc) {
-  list-style-type: '\00B7\ ';
+  list-style-type: '\2B2A\ ';
 }
 nav.contents ul > li::marker {
   color: grey;
@@ -269,7 +268,7 @@ a:link{
 }
 /* Undecorated Links (see also minimal.css) */
 /* a.citation-reference, */
-/* .contents a, */
+.contents a,
 .citation a.fn-backref {
   color: inherit;
 }
@@ -319,8 +318,10 @@ table.align-right {
   background-color: #efefea;
   margin: 0.5em var(--sidebar-margin-right) 0.5em 1em;
   padding: 0.5em;
+  padding-left: 0.7em;
   clear: right;
   float: right;
+  font-size: small;
 }
 .sidebar {
   width: 40%;
@@ -394,6 +395,7 @@ mstyle.mathscr, mi.mathscr {
   }
   main > nav.contents > * {
     padding-left: 0;
+    line-height: 1.4;
   }
 }
 
