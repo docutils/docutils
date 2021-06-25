@@ -47,7 +47,7 @@ sup, sub { /* avoid additional inter-line space for lines with sup/sub */
 /* Vertical Space (Parskip) */
 p, ol, ul, dl, li,
 div.line-block,
-div.topic,
+.topic,
 .footnote, .citation,
 div > math,
 table {
@@ -58,14 +58,9 @@ h1, h2, h3, h4, h5, h6,
 dl > dd {
   margin-bottom: 0.5em;
 }
-blockquote > table,
-div.topic > table {
-  margin-top: 0;
-  margin-bottom: 0;
-}
 
 /* Indented Blocks */
-blockquote, figure, div.topic {
+blockquote, figure, .topic {
   margin: 1em 2%;
   padding-left: 1em;
 }
@@ -83,7 +78,7 @@ footer, header,
 }
 
 /* Frontmatter */
-div.topic.dedication {
+div.dedication {
   padding: 0;
   margin: 1.4em 0;
   font-style: italic;
@@ -94,39 +89,34 @@ div.topic.dedication {
 }
 
 blockquote p.attribution,
-div.topic p.attribution {
+.topic p.attribution {
   text-align: right;
 }
 
 /* Table of Contents */
-nav.contents,
-div.topic.contents {
-  padding: 0;
-}
 ul.auto-toc > li > p {
   padding-left: 1em;
   text-indent: -1em;
 }
-nav.contents ul,
-div.topic.contents ul {
+nav.contents ul {
   padding-left: 1em;
 }
-main > div.topic.contents  ul:not(.auto-toc) {
+main > nav.contents  ul:not(.auto-toc) {
   list-style-type: square;
 }
-main > div.topic.contents  ul ul:not(.auto-toc) {
+main > nav.contents  ul ul:not(.auto-toc) {
   list-style-type: disc;
 }
-main > div.topic.contents  ul ul ul:not(.auto-toc) {
+main > nav.contents  ul ul ul:not(.auto-toc) {
   list-style-type: '\2023\ ';
 }
-main > div.topic.contents  ul ul ul ul:not(.auto-toc) {
+main > nav.contents  ul ul ul ul:not(.auto-toc) {
   list-style-type: '\2B29\ ';
 }
-main > div.topic.contents  ul ul ul ul ul:not(.auto-toc) {
+main > nav.contents  ul ul ul ul ul:not(.auto-toc) {
   list-style-type: '\00B7\ ';
 }
-div.topic.contents ul > li::marker {
+nav.contents ul > li::marker {
   color: grey;
 }
 
@@ -277,17 +267,16 @@ a:link{
 .contents a, a.toc-backref, a.citation-reference {
   overflow-wrap: inherit;
 }
-/* Undecorated Links */
+/* Undecorated Links (see also minimal.css) */
 /* a.citation-reference, */
 /* .contents a, */
-.citation a.fn-backref,
-a.toc-backref {
+.citation a.fn-backref {
   color: inherit;
 }
 a:link:hover {
   text-decoration: underline;}
 /* highlight the active ToC entry */
-.topic.contents :target {
+.contents :target {
   background-color: #d2e6ec;
 }
 
@@ -392,7 +381,7 @@ mstyle.mathscr, mi.mathscr {
     padding-left: min(22%, 22rem);
     padding-right: 7%;
   }
-  main > div.topic.contents { /* exclude local ToCs */
+  main > nav.contents { /* global ToC */
     position: fixed;
     top: 0;
     left: 0;
@@ -403,7 +392,7 @@ mstyle.mathscr, mi.mathscr {
     padding: 1em 2% 0 2%;
     overflow: auto;
   }
-  main > div.topic.contents > * {
+  main > nav.contents > * {
     padding-left: 0;
   }
 }

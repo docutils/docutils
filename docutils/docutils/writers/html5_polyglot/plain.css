@@ -45,6 +45,15 @@ footer, header {
   border: none;
 }
 
+/* Table of Contents */
+ul.auto-toc > li > p {
+  padding-left: 1em;
+  text-indent: -1em;
+}
+nav.contents ul {
+  padding-left: 1em;
+}
+
 /* Transitions */
 hr.docutils {
   width: 80%;
@@ -58,7 +67,6 @@ hr.docutils {
 /* vertical space (parskip) */
 p, ol, ul, dl, li,
 div.line-block,
-div.topic,
 .footnote, .citation,
 div > math,
 table {
@@ -114,8 +122,8 @@ dl.field-list.run-in > dd p {
 
 /* Bibliographic Fields */
 
-/* generally, bibliographic fields use special definition list dl.docinfo */
-/* but dedication and abstract are placed into "topic" divs */
+/* generally, bibliographic fields use dl.docinfo */
+/* but dedication and abstract are placed into divs */
 div.abstract p.topic-title {
   text-align: center;
 }
@@ -137,14 +145,10 @@ pre.math, pre.code {
   font-family: monospace;
 }
 
-/* Block Quotes */
-blockquote > table,
-div.topic > table {
-  margin-top: 0;
-  margin-bottom: 0;
-}
+/* Block Quotes and Topics */
+bockquote { margin: 1em 2em; }
 blockquote p.attribution,
-div.topic p.attribution {
+.topic p.attribution {
   text-align: right;
   margin-left: 20%;
 }

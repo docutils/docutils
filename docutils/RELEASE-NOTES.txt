@@ -22,10 +22,6 @@ Future changes
 
 * `html5` writer:
 
-  - Use semantic tags <aside> for topics
-    (except abstract), admonitions, and system messages, and <nav> for
-    the Table of Contents.
-
   - Use <summary> and <details> tags for term and definition of a
     definition list with class value "details".
 
@@ -83,7 +79,9 @@ Release 0.18.dev
     Write footnote brackets and field term colons to HTML, so that they
     are present also without CSS and when copying text.
 
-    Use semantic tag <aside> for footnote text and citations.
+    Use semantic tag <aside> for footnote text and citations, 
+    topics (except abstract and toc), admonitions, and system messages
+    Use <nav> for the Table of Contents.
 
     Do not add "compound-first", "compound-middle", or "compound-last" to
     elements nested in a compound. Use child selector and "first-child",

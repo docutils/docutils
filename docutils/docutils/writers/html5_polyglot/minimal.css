@@ -42,8 +42,8 @@ p.sidebar-subtitle {
 h1 + p.subtitle {
   font-size: 1.6em;
 }
-h2 + p.section-subtitle, a.toc-backref {
-  color: black;
+a.toc-backref {
+  color: inherit;
   text-decoration: none;
 }
 
@@ -77,10 +77,8 @@ p:first-child { margin-top: 0; }
 p:last-child { margin-bottom: 0; }
 
 /* Table of Contents */
-.topic.contents { margin: 0.5em 0; }
-.topic.contents ul.auto-toc {
+.contents ul.auto-toc { /* section numbers present */
   list-style-type: none;
-  padding-left: 1.5em;
 }
 
 /* Enumerated Lists */
@@ -222,16 +220,12 @@ table.align-left, table.align-center, table.align-right {
 }
 
 /* Text Blocks */
-blockquote,
-div.topic,
-aside.topic {
-  margin: 1em 2em;
-}
+.topic { margin: 1em 2em; }
 .sidebar,
 .admonition,
 .system-message {
-  border: thin solid;
   margin: 1em 2em;
+  border: thin solid;
   padding: 0.5em 1em;
 }
 .sidebar {
