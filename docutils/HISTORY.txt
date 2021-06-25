@@ -65,11 +65,21 @@ Changes Since 0.17.1
   - Use semantic tags <aside> and <nav> for footnote text and citations,
     topics, admonitions, and system-messages.
 
-  - Do not add "compound-first", "compound-middle", or "compound-last" to
-    elements nested in a compound (no change with `html4css1`).
+  - Use ARIA roles to enable accessible HTML for abstract, dedication,
+    the table of contents, footnote, references, footnotes, citations,
+    and backlinks.
+
+  - Do not set classes "compound-first", "compound-middle", or
+    "compound-last" to elements nested in a compound.
+    Use class value "backrefs" instead of "fn-backref" for a span of
+    back-references.
 
   - Removed attribute ``HTMLTranslator.topic_classes``
 
+* docutils/writers/html4css1/__init__.py:
+
+  - Overwrite methods using semantic tags and roles to keep backwards
+    compatibility.
 
 * docutils/writers/latex2e/__init__.py
 

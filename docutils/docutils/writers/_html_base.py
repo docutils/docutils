@@ -635,6 +635,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         # 'Citation reference missing.'
         self.body.append(self.starttag(
             node, 'a', '[', CLASS='citation-reference', href=href))
+            # TODO: role='doc-biblioref' # HTML5 only
 
     def depart_citation_reference(self, node):
         self.body.append(']</a>')
@@ -916,6 +917,9 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     # use HTML5 element <aside> with ARIA role "note" for footnote text
     # (the html4css1 writer uses a table instead).
+    # TODO: role='doc-biblioentry' for citations
+    # (requires wrapping in an element with role='list'
+    # https://www.w3.org/TR/dpub-aria-1.0/#doc-biblioentry)
     def visit_footnote(self, node):
         classes = [node.tagname]
         if isinstance(node, nodes.footnote):
@@ -929,8 +933,8 @@ class HTMLTranslator(nodes.NodeVisitor):
     def visit_footnote_reference(self, node):
         href = '#' + node['refid']
         classes = ['footnote-reference', self.settings.footnote_references]
-        self.body.append(self.starttag(node, 'a', suffix='',
-                                       classes=classes, href=href))
+        self.body.append(self.starttag(node, 'a', suffix='', classes=classes,
+                                       role='doc-noteref', href=href))
         self.body.append('<span class="fn-bracket">[</span>')
 
     def depart_footnote_reference(self, node):
@@ -1063,10 +1067,10 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('<span class="fn-bracket">[</span>')
         # footnote/citation backrefs:
         if self.settings.footnote_backlinks:
-            backrefs = node.parent['backrefs']
+            backrefs = node.parent.get('backrefs', [])
             if len(backrefs) == 1:
-                self.body.append('<a class="fn-backref" href="#%s">'
-                                 % backrefs[0])
+                self.body.append('<a role="doc-backlink"'
+                                 ' href="#%s">' % backrefs[0])
 
     def depart_label(self, node):
         backrefs = node.parent.get('backrefs', [])
@@ -1075,9 +1079,9 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('<span class="fn-bracket">]</span>')
         self.body.append('</span>\n')
         if len(backrefs) > 1:
-            backlinks = ['<a href="#%s">%s</a>' % (ref, i)
+            backlinks = ['<a role="doc-backlink" href="#%s">%s</a>' % (ref, i)
                          for (i, ref) in enumerate(backrefs, 1)]
-            self.body.append('<span class="fn-backref">(%s)</span>\n'
+            self.body.append('<span class="backrefs">(%s)</span>\n'
                              % ','.join(backlinks))
 
     def visit_legend(self, node):
@@ -1617,6 +1621,7 @@ class HTMLTranslator(nodes.NodeVisitor):
             atts = {}
             if node.hasattr('refid'):
                 atts['class'] = 'toc-backref'
+                # atts['role'] = 'doc-backlink' # HTML5 only
                 atts['href'] = '#' + node['refid']
             if atts:
                 self.body.append(self.starttag({}, 'a', '', **atts))
