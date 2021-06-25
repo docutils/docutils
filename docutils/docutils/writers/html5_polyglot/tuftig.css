@@ -46,7 +46,8 @@ main, header, footer {
 /* vertical space (parskip) */
 p, ol, ul, dl, li,
 div.line-block,
-div.topic,
+.topic,
+.footnote, .citation,
 table {
   margin-top: 0.5em;
   margin-bottom: 0.5em;
@@ -249,6 +250,9 @@ figure.fullwidth > img {
 figcaption {
   font-size: 0.8em;
 }
+.fullwidth > figcaption {
+  font-size: inherit;
+}
 figure.numbered > figcaption > p:before {
   counter-increment: figure;
   content: "Figure " counter(figure) ": ";
@@ -276,8 +280,7 @@ table.numbered > caption:before {
 }
 
 /* Admonitions and System Messages */
-.admonition,
-div.system-message {
+.admonition, .system-message {
   border-style: solid;
   border-color: silver;
   border-width: thin;
@@ -324,7 +327,7 @@ a:link {
 }
 /* undecorated links */
 .contents a:link, a.toc-backref:link, a.image-reference:link,
-a.footnote-reference:link, a.fn-backref:link, .fn-backref a:link,
+a[role="doc-noteref"]:link, a[role="doc-backlink"]:link, .backrefs a:link,
 a.citation-reference:link,
 a[href^="#system-message"] {
   text-decoration: none;
@@ -408,11 +411,8 @@ aside.sidebar,
 figure.marginal > figcaption {
   font-size: 1em;
 }
-dl.footnote {
-  font-size: 0.8em;
-  padding-left: 1ex;
-  border-left: solid;
-  border-left-width: thin;
+.footnote {
+  font-size: smaller;
   overflow: auto;
 }
 
@@ -463,11 +463,11 @@ dl.footnote {
   /* Main text elements */
   main > *, section > *,
   figure > img,
-  dl.footnote.align-left, /* override the placement in the margin */
-  dl.citation.align-left {
+  .footnote.align-left, /* override the placement in the margin */
+  .citation.align-left {
     grid-column: content-start / content-end;
   }
-  dl.citation.align-left {
+  .citation.align-left {
     font-size: 1em;
   }
   figure > img { /* indent */
@@ -478,8 +478,8 @@ dl.footnote {
   /* Margin Elements */
   /* Sidebar, Footnotes, Citations, Captions */
   aside.sidebar,
-  dl.footnote,
-  dl.citation,
+  .footnote,
+  .citation,
   figcaption,
   /* table > caption,  does not work :(*/
   .marginal,
@@ -490,6 +490,7 @@ dl.footnote {
     width: auto;
     max-width: 55em;
     margin: 0.5em 0;
+    border: none;
     padding: 0;
     font-size: 0.8em;
     text-align: initial; /* overwrite align-* */
@@ -502,13 +503,15 @@ dl.footnote {
     display: block;
     margin: 0.5em 0;
   }
-  dl.footnote {
+  .footnote {
     padding-left: 0;
     border-left: none;
   }
-  dl.citation > dd,
-  dl.footnote.superscript > dd {
-    margin-left: 0;
+  .citation {
+    padding-left: 1em;
+  }
+  .citation .label {
+    margin-left: -1em;
   }
 
   /* Fullwidth Elements */
@@ -520,7 +523,8 @@ dl.footnote {
   div.system-message,
   pre,
   .fullwidth,
-  .fullwidth img {
+  .fullwidth img,
+  .fullwidth figcaption {
     /* background-color: Linen; */
     grid-column: content-start / end;
     margin-right: calc(10% - 3rem);

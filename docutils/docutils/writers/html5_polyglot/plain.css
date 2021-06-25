@@ -184,10 +184,17 @@ table.numbered > caption:before {
 /* ----------------------- */
 
 /* line on the left */
-dl.footnote {
-  padding-left: 1ex;
-  border-left: solid;
-  border-left-width: thin;
+.footnote {
+  border-left: solid thin;
+  padding-left: 2.1em;
+  margin-bottom: 0;
+}
+.footnote + .footnote {
+  padding-top: 0.5em;
+  margin-top: 0;
+}
+.footnote.superscript {
+  padding-left: 1.2em;
 }
 
 /* Directives */
@@ -261,7 +268,7 @@ pre.code .inserted, code .inserted { background-color: #A3D289}
 /* Math */
 /* for math-output=MathML (for math-output=HTML, see math.css) */
 mtable.align > mtr > mtd { /* emulate AMS "align" environment. */
-  text-align: left;   
+  text-align: left;
 }
 mstyle.mathscr, mi.mathscr {
   font-family: STIX;
