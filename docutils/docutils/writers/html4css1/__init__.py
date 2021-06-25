@@ -177,12 +177,18 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
         self.visit_docinfo_item(node, 'address', meta=False)
         self.body.append(self.starttag(node, 'pre', CLASS='address'))
 
+    def depart_address(self, node):
+        self.body.append('\n</pre>\n')
+        self.depart_docinfo_item()
 
     # ersatz for first/last pseudo-classes
     def visit_admonition(self, node):
         node['classes'].insert(0, 'admonition')
         self.body.append(self.starttag(node, 'div'))
         self.set_first_last(node)
+
+    def depart_admonition(self, node=None):
+        self.body.append('</div>\n')
 
     # author, authors: use <br> instead of paragraphs
     def visit_author(self, node):
@@ -259,6 +265,9 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
         self.body.append(' <span class="classifier-delimiter">:</span> ')
         self.body.append(self.starttag(node, 'span', '', CLASS='classifier'))
 
+    def depart_classifier(self, node):
+        self.body.append('</span>')
+
     # ersatz for first/last pseudo-classes
     def visit_compound(self, node):
         self.body.append(self.starttag(node, 'div', CLASS='compound'))
@@ -277,9 +286,15 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
         self.body.append(self.starttag(node, 'dd', ''))
         self.set_first_last(node)
 
+    def depart_definition(self, node):
+        self.body.append('</dd>\n')
+
     # don't add "simple" class value
     def visit_definition_list(self, node):
         self.body.append(self.starttag(node, 'dl', CLASS='docutils'))
+
+    def depart_definition_list(self, node):
+        self.body.append('</dl>\n')
 
     # use a table for description lists
     def visit_description(self, node):
@@ -328,12 +343,18 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
     def visit_doctest_block(self, node):
         self.body.append(self.starttag(node, 'pre', CLASS='doctest-block'))
 
+    def depart_doctest_block(self, node):
+        self.body.append('\n</pre>\n')
+    
     # insert an NBSP into empty cells, ersatz for first/last
     def visit_entry(self, node):
         writers._html_base.HTMLTranslator.visit_entry(self, node)
         if len(node) == 0:              # empty cell
             self.body.append('&nbsp;')
         self.set_first_last(node)
+
+    def depart_entry(self, node):
+        self.body.append(self.context.pop())
 
     # ersatz for first/last pseudo-classes
     def visit_enumerated_list(self, node):
@@ -474,7 +495,7 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
         self.body.append('</td></tr>\n'
                          '</tbody>\n</table>\n')
 
-    # insert markers in text as pseudo-classes are not supported in CSS1:
+    # insert markers in text (pseudo-classes are not supported in CSS1):
     def visit_footnote_reference(self, node):
         href = '#' + node['refid']
         format = self.settings.footnote_references
@@ -587,6 +608,9 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
         if len(node):
             node[0]['classes'].append('first')
 
+    def depart_list_item(self, node):
+        self.body.append('</li>\n')
+
     # use <tt> (not supported by HTML5),
     # cater for limited styling options in CSS1 using hard-coded NBSPs
     def visit_literal(self, node):
@@ -619,11 +643,14 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
         # Content already processed:
         raise nodes.SkipNode
 
-    # add newline after opening tag, don't use <code> for code
+    def depart_literal(self, node):
+        # skipped unless literal element is from "code" role:
+        self.body.append('</code>')
+
+    # add newline after wrapper tags, don't use <code> for code
     def visit_literal_block(self, node):
         self.body.append(self.starttag(node, 'pre', CLASS='literal-block'))
 
-    # add newline
     def depart_literal_block(self, node):
         self.body.append('\n</pre>\n')
 
@@ -712,6 +739,10 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
         self.set_first_last(node)
         self.in_sidebar = True
 
+    def depart_sidebar(self, node):
+        self.body.append('</div>\n')
+        self.in_sidebar = False
+
     # <sub> not allowed in <pre>
     def visit_subscript(self, node):
         if isinstance(node.parent, nodes.literal_block):
@@ -792,6 +823,9 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
                          '(<tt class="docutils">%s</tt>%s)%s</p>\n'
                          % (node['type'], node['level'],
                             self.encode(node['source']), line, backref_text))
+
+    def depart_system_message(self, node):
+        self.body.append('</div>\n')
 
     # "hard coded" border setting
     def visit_table(self, node):
