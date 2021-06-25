@@ -236,7 +236,7 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
                 or (self.settings.compact_lists
                     and 'open' not in node['classes']
                     and (self.compact_simple
-                         or self.topic_classes == ['contents']
+                         or 'contents' in node.parent['classes']
                          # TODO: self.in_contents
                          or self.check_simple_list(node))))
 
@@ -258,6 +258,18 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
     def visit_classifier(self, node):
         self.body.append(' <span class="classifier-delimiter">:</span> ')
         self.body.append(self.starttag(node, 'span', '', CLASS='classifier'))
+
+    # ersatz for first/last pseudo-classes
+    def visit_compound(self, node):
+        self.body.append(self.starttag(node, 'div', CLASS='compound'))
+        if len(node) > 1:
+            node[0]['classes'].append('compound-first')
+            node[-1]['classes'].append('compound-last')
+            for child in node[1:-1]:
+                child['classes'].append('compound-middle')
+
+    def depart_compound(self, node):
+        self.body.append('</div>\n')
 
     # ersatz for first/last pseudo-classes
     def visit_definition(self, node):
@@ -579,7 +591,7 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
     # cater for limited styling options in CSS1 using hard-coded NBSPs
     def visit_literal(self, node):
         # special case: "code" role
-        classes = node.get('classes', [])
+        classes = node['classes']
         if 'code' in classes:
             # filter 'code' from class arguments
             node['classes'] = [cls for cls in classes if cls != 'code']

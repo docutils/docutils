@@ -797,10 +797,10 @@ class DocumentClass(object):
     def latex_section_depth(self, depth):
         """
         Return LaTeX equivalent of Docutils section level `depth`.
-        
+
         Given the value of the ``:depth:`` option of the "contents" or
         "sectnum" directive, return the corresponding value for the
-        LaTeX ``tocdepth`` or ``secnumdepth`` counters.        
+        LaTeX ``tocdepth`` or ``secnumdepth`` counters.
         """
         depth = min(depth, len(self.sections)) # limit to supported levels
         if 'chapter' in self.sections:
@@ -1525,7 +1525,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         If `set_anchor` is True, an anchor is set with \\phantomsection.
         If `protect` is True, the \\label cmd is made robust.
         """
-        labels = ['\\label{%s}' % id for id in node.get('ids', [])]
+        labels = ['\\label{%s}' % id for id in node['ids']]
         if protect:
             labels = ['\\protect'+label for label in labels]
         if set_anchor and labels:
@@ -2211,7 +2211,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.out.append('\\begin{figure} %% align = "%s"\n' % alignment)
         else:
             self.out.append('\\begin{figure}\n')
-        if node.get('ids'):
+        if node['ids']:
             self.out += self.ids_to_labels(node) + ['\n']
 
     def depart_figure(self, node):
@@ -2395,7 +2395,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.out.extend(post)
 
     def depart_image(self, node):
-        if node.get('ids'):
+        if node['ids']:
             self.out += self.ids_to_labels(node) + ['\n']
 
     def visit_inline(self, node): # <span>, i.e. custom roles
@@ -2511,7 +2511,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         _use_listings = (literal_env == 'lstlisting') and _use_env
 
         # Labels and classes:
-        if node.get('ids'):
+        if node['ids']:
             self.out += ['\n'] + self.ids_to_labels(node)
         self.duclass_open(node)
         # Highlight code?
@@ -2602,7 +2602,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.visit_inline(node)
         self.requirements['amsmath'] = r'\usepackage{amsmath}'
         math_code = node.astext().translate(unichar2tex.uni2tex_table)
-        if node.get('ids'):
+        if node['ids']:
             math_code = '\n'.join([math_code] + self.ids_to_labels(node))
         if math_env == '$':
             if self.alltt:
@@ -2709,7 +2709,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 self.out.append('\n')
         else:
             self.out.append('\n')
-        if node.get('ids'):
+        if node['ids']:
             self.out += self.ids_to_labels(node) + ['\n']
         if node['classes']:
             self.visit_inline(node)
@@ -2970,7 +2970,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.active_table = self.table_stack.pop()
         # Insert hyperlabel after (long)table, as
         # other places (beginning, caption) result in LaTeX errors.
-        if node.get('ids'):
+        if node['ids']:
             self.out += self.ids_to_labels(node, set_anchor=False) + ['\n']
         self.duclass_close(node)
 

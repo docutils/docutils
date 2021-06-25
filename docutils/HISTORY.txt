@@ -25,7 +25,7 @@ Changes Since 0.17.1
     "meta" nodes if they are not supported by the output format.
 
     __ docs/ref/doctree.html#meta
-    
+
   - document.make_id(): Keep leading number and hyphen characters
     from `name` if the id_prefix setting is non-empty.
 
@@ -62,11 +62,19 @@ Changes Since 0.17.1
     they are present also without CSS and when copying text.
     Adapt ``minimal.css``.
 
+  - Use semantic tag <aside> for footnote text and citations.
+
+  - Do not add "compound-first", "compound-middle", or "compound-last" to
+    elements nested in a compound (no change with `html4css1`).
+
+  - Removed attribute ``HTMLTranslator.topic_classes``
+
+
 * docutils/writers/latex2e/__init__.py
 
   - The setting `legacy_class_functions`_ now defaults to "False".
     Adapt stylesheets modifying ``\DUadmonition`` and/or ``\DUtitle``.
-    
+
   - Apply patch #181 "Fix tocdepth when chapter/part in use" by
     John Thorvald Wodder II.
 

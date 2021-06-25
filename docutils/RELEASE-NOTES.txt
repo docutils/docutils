@@ -85,6 +85,10 @@ Release 0.18.dev
 
     Use semantic tag <aside> for footnote text and citations.
 
+    Do not add "compound-first", "compound-middle", or "compound-last" to
+    elements nested in a compound. Use child selector and "first-child",
+    "last-child" pseudo classes instead.
+
   LaTeX:
      `legacy_class_functions`_ setting default changed to
      "False", admonitions are now environments.
@@ -99,6 +103,9 @@ Release 0.18.dev
 
 * Removed function: ``utils.unique_combinations``
   (obsoleted by ``itertools.combinations``).
+
+* Removed attribute: ``HTMLTranslator.topic_classes``
+  (check node.parent.classes instead).
 
 * Various bugfixes and improvements (see HISTORY_).
 
