@@ -301,6 +301,6 @@ a { text-decoration: none; }
 /* Internal Targets       */
 /*   span.target.internal */
 /* Footnote References    */
-/*   a.footnote-reference */
+/*   a[role="doc-noteref"] */
 /* Citation References    */
 /*   a.citation-reference */

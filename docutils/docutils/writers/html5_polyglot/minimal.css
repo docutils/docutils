@@ -163,34 +163,34 @@ span.option { white-space: nowrap; }
   margin-top: 0;
   vertical-align: top;
 }
-.footnote > .fn-backref + *,
-.citation > .fn-backref + * {
+.footnote > .backrefs + *,
+.citation > .backrefs + * {
   margin-top: 0;
 }
-.footnote > .label + p, .footnote > .fn-backref + p,
-.citation > .label + p, .citation > .fn-backref + p {
+.footnote > .label + p, .footnote > .backrefs + p,
+.citation > .label + p, .citation > .backrefs + p {
   display: inline;
   vertical-align: inherit;
 }
 
-.fn-backref > a { font-style: italic; }
+.backrefs > a { font-style: italic; }
 
 /* superscript footnotes */
-a.footnote-reference.superscript,
+a[role="doc-noteref"].superscript,
 .footnote.superscript > .label,
-.footnote.superscript > .fn-backref {
+.footnote.superscript > .backrefs {
   vertical-align: super;
   font-size: smaller;
   line-height: 1;
 }
-a.footnote-reference.superscript > .fn-bracket,
+a[role="doc-noteref"].superscript > .fn-bracket,
 .footnote.superscript > .label > .fn-bracket {
   /* hide brackets in display but leave for copy/paste */
   display: inline-block;
   width: 0;
   overflow: hidden;
 }
-.footnote-reference.superscript + .footnote-reference.superscript {
+[role="doc-noteref"].superscript + [role="doc-noteref"].superscript {
   padding-left: 0.15em; /* separate consecutive footnote references */
   /* TODO: unfortunately, "+" also selects with text between the references. */
 }
