@@ -256,7 +256,7 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
         self.body_prefix.extend(header)
         self.header.extend(header)
         del self.body[start:]
-
+        
     # MIME types supported by the HTML5 <video> element
     videotypes = ('video/mp4', 'video/webm', 'video/ogg')
 

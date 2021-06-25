@@ -417,7 +417,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         ids = []
         for (name, value) in attributes.items():
             atts[name.lower()] = value
-        classes = []
+        classes = atts.pop('classes', [])
         languages = []
         # unify class arguments and move language specification
         for cls in node.get('classes', []) + atts.pop('class', '').split():
@@ -935,22 +935,17 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body_suffix[:0] = footer
         del self.body[start:]
 
+    # use HTML5 element <aside> with ARIA role "note" for footnote text
+    # (the html4css1 writer uses a table instead).
     def visit_footnote(self, node):
-        previous_node = node.parent[node.parent.index(node)-1]
-        if not isinstance(previous_node, type(node)):
-            listnode = node.copy()
-            listnode['ids'] = []
-            if isinstance(node, nodes.citation):
-                classes = 'citation'
-            else:
-                classes = 'footnote ' + self.settings.footnote_references
-            self.body.append(self.starttag(listnode, 'dl', CLASS=classes))
+        classes = [node.tagname]
+        if isinstance(node, nodes.footnote):
+            classes.append(self.settings.footnote_references)
+        self.body.append(self.starttag(node, 'aside',
+                                       classes=classes, role="note"))
 
     def depart_footnote(self, node):
-        self.body.append('</dd>\n')
-        if not isinstance(node.next_node(descend=False, siblings=True),
-                          type(node)):
-            self.body.append('</dl>\n')
+        self.body.append('</aside>\n')
 
     def visit_footnote_reference(self, node):
         href = '#' + node['refid']
@@ -1085,32 +1080,26 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     # footnote and citation labels:
     def visit_label(self, node):
-        # pass parent node to get id into starttag:
-        self.body.append(self.starttag(node.parent, 'dt', '', CLASS='label'))
-        # backlinks to the footnote/citation reference(s):
+        self.body.append('<span class="label">')
+        self.body.append('<span class="fn-bracket">[</span>')
+        # footnote/citation backrefs:
         if self.settings.footnote_backlinks:
             backrefs = node.parent['backrefs']
             if len(backrefs) == 1:
                 self.body.append('<a class="fn-backref" href="#%s">'
                                  % backrefs[0])
-        # bracket (hidden by CSS for superscript footnotes)
-        self.body.append('<span class="fn-bracket">[</span>')
 
     def depart_label(self, node):
-        self.body.append('<span class="fn-bracket">]</span>')
-        # backlinks to the footnote/citation reference(s):
-        if self.settings.footnote_backlinks:
-            backrefs = node.parent['backrefs']
-        else:
-            backrefs = []
+        backrefs = node.parent.get('backrefs', [])
         if len(backrefs) == 1:
             self.body.append('</a>')
+        self.body.append('<span class="fn-bracket">]</span>')
+        self.body.append('</span>\n')
         if len(backrefs) > 1:
             backlinks = ['<a href="#%s">%s</a>' % (ref, i)
                          for (i, ref) in enumerate(backrefs, 1)]
-            self.body.append('<span class="fn-backref">(%s)</span>'
+            self.body.append('<span class="fn-backref">(%s)</span>\n'
                              % ','.join(backlinks))
-        self.body.append('</dt>\n<dd>')
 
     def visit_legend(self, node):
         self.body.append(self.starttag(node, 'div', CLASS='legend'))

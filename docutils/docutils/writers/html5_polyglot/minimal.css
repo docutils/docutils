@@ -101,16 +101,12 @@ dt .classifier:before {
 /* bold field name, content starts on the same line */
 dl.field-list,
 dl.option-list,
-dl.docinfo,
-dl.footnote,
-dl.citation {
+dl.docinfo {
   display: flow-root;
 }
 dl.field-list > dt,
 dl.option-list > dt,
-dl.docinfo > dt,
-dl.footnote > dt,
-dl.citation > dt {
+dl.docinfo > dt {
   font-weight: bold;
   clear: left;
   float: left;
@@ -151,23 +147,55 @@ dl.option-list > dt { font-weight: normal; }
 span.option { white-space: nowrap; }
 
 /* Footnotes and Citations  */
-dl.footnote.superscript > dd { margin-left: 0.7em; }
-dl.footnote.brackets > dd { margin-left: 1.6em; }
-dl.footnote > dt { font-weight: normal; }
+
+.footnote, .citation {
+  margin: 1em 0; /* default paragraph skip (Firefox) */
+}
+/* hanging indent */
+.footnote { padding-left: 1.7em; }
+.citation { padding-left: 2em; }
+.footnote.superscript { padding-left: 1em; }
+.footnote > .label { margin-left: -1.7em; }
+.citation > .label { margin-left: -2em; }
+.footnote.superscript > .label { margin-left: -1em; }
+
+.footnote > .label + *,
+.citation > .label + * {
+  display: inline-block;
+  margin-top: 0;
+  vertical-align: top;
+}
+.footnote > .fn-backref + *,
+.citation > .fn-backref + * {
+  margin-top: 0;
+}
+.footnote > .label + p, .footnote > .fn-backref + p,
+.citation > .label + p, .citation > .fn-backref + p {
+  display: inline;
+  vertical-align: inherit;
+}
+
+.fn-backref > a { font-style: italic; }
+
+/* superscript footnotes */
 a.footnote-reference.superscript,
-dl.footnote.superscript > dt.label {
+.footnote.superscript > .label,
+.footnote.superscript > .fn-backref {
   vertical-align: super;
-  font-size: small;
+  font-size: smaller;
+  line-height: 1;
 }
-a.footnote-reference.superscript > span.fn-bracket,
-dl.footnote.superscript > dt.label span.fn-bracket {
-  display: none;
+a.footnote-reference.superscript > .fn-bracket,
+.footnote.superscript > .label > .fn-bracket {
+  /* hide brackets in display but leave for copy/paste */
+  display: inline-block;
+  width: 0;
+  overflow: hidden;
 }
-dt.label > span.fn-backref {
-  margin-left: 0.2em;
-  font-weight: normal;
+.footnote-reference.superscript + .footnote-reference.superscript {
+  padding-left: 0.15em; /* separate consecutive footnote references */
+  /* TODO: unfortunately, "+" also selects with text between the references. */
 }
-dt.label > span.fn-backref > a { font-style: italic; }
 
 /* Alignment */
 .align-left   {
