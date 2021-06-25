@@ -386,12 +386,6 @@ figure.align-center > img {
 
 /* Margin Elements */
 /* see below for screen size dependent rules */
-aside.sidebar {
-  /* overwrite minimal.css */
-  width: auto;
-  max-width: 100%;
-  float: none;
-}
 aside.sidebar,
 .marginal,
 .admonition.marginal,
@@ -402,6 +396,9 @@ aside.sidebar,
   margin-right: 0;
   padding: 0.5em;
   font-size: 0.8em;
+}
+aside.sidebar {
+  background-color: inherit;
 }
 figure.marginal > figcaption {
   font-size: 1em;
