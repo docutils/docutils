@@ -520,10 +520,10 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.depart_docinfo_item()
 
     def visit_admonition(self, node):
-        self.body.append(self.starttag(node, 'div', classes=['admonition']))
+        self.body.append(self.starttag(node, 'aside', classes=['admonition']))
 
     def depart_admonition(self, node=None):
-        self.body.append('</div>\n')
+        self.body.append('</aside>\n')
 
     attribution_formats = {'dash': (u'\u2014', ''),
                            'parentheses': ('(', ')'),
@@ -1499,7 +1499,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('</sup>')
 
     def visit_system_message(self, node):
-        self.body.append(self.starttag(node, 'div', CLASS='system-message'))
+        self.body.append(self.starttag(node, 'aside', CLASS='system-message'))
         self.body.append('<p class="system-message-title">')
         backref_text = ''
         if len(node['backrefs']):
@@ -1525,7 +1525,7 @@ class HTMLTranslator(nodes.NodeVisitor):
                             self.encode(node['source']), line, backref_text))
 
     def depart_system_message(self, node):
-        self.body.append('</div>\n')
+        self.body.append('</aside>\n')
 
     def visit_table(self, node):
         atts = {'classes': self.settings.table_style.replace(',', ' ').split()}

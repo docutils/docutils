@@ -40,7 +40,7 @@ Changes Since 0.17.1
   - `Meta` directive class (moved from html.py) inserts `meta`
     (instead of `pending`) nodes.
 
-* docutils/tools/math/math2html, docutils/writers/html5_polyglot/math.css
+* docutils/tools/math/math2html;
 
   - Fix bug #244 Wrong subscript/superscript order with
     ``--math-output=HTML``.
@@ -62,7 +62,8 @@ Changes Since 0.17.1
     they are present also without CSS and when copying text.
     Adapt ``minimal.css``.
 
-  - Use semantic tag <aside> for footnote text and citations.
+  - Use semantic tags <aside> and <nav> for footnote text and citations,
+    topics, admonitions, and system-messages.
 
   - Do not add "compound-first", "compound-middle", or "compound-last" to
     elements nested in a compound (no change with `html4css1`).

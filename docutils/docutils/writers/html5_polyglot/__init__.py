@@ -402,14 +402,27 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
         self.body.append('</aside>\n')
         self.in_sidebar = False
 
+    # Use new HTML5 element <aside> or <nav>
     # Add class value to <body>, if there is a ToC in the document
-    # (see responsive.css how this is used for sidebar navigation).
-    # TODO: use the new HTML5 element <aside>?
+    # (see responsive.css how this is used for a navigation sidebar).
     def visit_topic(self, node):
-        if ('contents' in node['classes']
-            and isinstance(node.parent, nodes.document)):
-            self.body_prefix[0] = '</head>\n<body class="with-toc">\n'
-        self.body.append(self.starttag(node, 'div', CLASS='topic'))
+        atts = {'classes': ['topic']}
+        if 'contents' in node['classes']:
+            node.html_tagname = 'nav'
+            del(atts['classes'])
+            if isinstance(node.parent, nodes.document):
+                atts['role'] = 'doc-toc'
+                self.body_prefix[0] = '</head>\n<body class="with-toc">\n'
+        elif 'abstract' in node['classes']:
+            node.html_tagname = 'div'
+            atts['role'] = 'doc-abstract'
+        elif 'dedication' in node['classes']:
+            node.html_tagname = 'div'
+            atts['role'] = 'doc-dedication'
+        else:
+            node.html_tagname = 'aside'
+        self.body.append(self.starttag(node, node.html_tagname, **atts))
 
     def depart_topic(self, node):
-        self.body.append('</div>\n')
+        self.body.append('</%s>\n'%node.html_tagname)
+        del(node.html_tagname)
