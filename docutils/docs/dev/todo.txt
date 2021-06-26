@@ -2447,29 +2447,39 @@ Bug fixes
 
 * Paragraph following field-list or table in compound is indented.
 
-  This is a problem with the current DUfieldlist definition and with
-  the use of "longtable" for tables.
-  See `LaTeX constructs and packages instead of re-implementations`_ for
-  alternatives.
+  This is a problem with the current DUfieldlist definition and with the
+  use of "longtable" for tables. See `other LaTeX constructs and packages
+  instead of re-implementations`_ for alternatives.
 
 
 Generate clean and configurable LaTeX source
 ----------------------------------------------
 
-* Check the generated source with package `nag`.
+Which packages do we want to use?
+
++ base and "recommended" packages
+
+  (packages that should be in a "reasonably sized and reasonably modern
+  LaTeX installation like the `texlive-latex-recommended` Debian package,
+  say):
+
++ No "fancy" or "exotic" requirements.
+
++ pointers to advanced packages and their use in the `latex writer
+  documentation`_.
 
 Configurable placement of figure and table floats
 `````````````````````````````````````````````````
 
 * Special class argument to individually place figures?
 
-  Either:
+  Example::
 
-    placement-<optional arg>  -> \figure[<optional arg>]{...}
+    .. figure:: foo.pdf
+       :class: place-here-if-possible place-top place-bottom
 
-  e.g. ``.. class::  placement-htb``,
-
-  or more verbose:
+  would be written as ``\figure[htb]{...}`` with
+  the optional args:
 
   :H: place-here
   :h: place-here-if-possible
@@ -2477,120 +2487,78 @@ Configurable placement of figure and table floats
   :b: place-bottom
   :p: place-on-extra-page
 
-  e.g.: ``.. class:: place-here-if-possible place-top place-bottom``
+  Alternative: class value = "place-" + optional arg, e.g. ``:class:
+  place-htb``.
 
-  Maybe support both variants?
+Footnotes
+`````````
+
++ True footnotes with LaTeX auto-numbering (as option ``--latex-footnotes``)
+  (also for target-footnotes):
+  Write ``\footnote{<footnote content>}`` at the place of the
+  ``<footnote_reference>`` node.
+
++ Open questions:
+
+  - Load hyperref_ with option "hyperfootnotes" and/or
+    package footnotebackref_ or leave this to the user?
+
+  - Consider cases where LaTeX does not support footnotes
+    (inside tables__, headings__, caption, ...).
+    Use ftnxtra_, tabularx_, tabulary_, longtable_?
+
+    __ http://www.tex.ac.uk/cgi-bin/texfaq2html?label=footintab
+    __ http://www.tex.ac.uk/cgi-bin/texfaq2html?label=ftnsect
+
+  - Consider `multiple footnote refs to common footnote text`__.
+
+    KOMA-script classes and the KOMA scrextend_ package provide
+    ``\footref`` that can be used for additional references to a
+    ``\label``-ed footnote. Since 2021-05-01, ``\footref`` is provided
+    by the LaTeX core, too.
+
+    __ http://www.tex.ac.uk/cgi-bin/texfaq2html?label=multfoot
+
+  - Consider numbered vs. symbolic footnotes.
+
++ document customization (links to how-to and packages)
+
+.. Footnote packages at CTAN (www.ctan.org/pkg/<packagename>):
+
+   :footnote: provides a "savenotes" environment which collects all
+              footnotes and emits them at ``end{savenotes}``
+              (texlive-latex-recommended)
+
+   :ftnxtra_: fixes the issue of footnote inside \caption{},
+             tabular environment and \section{} like commands.
+
+   :footnotebackref_: bidirectional links to/from footnote mark to
+                      footnote text.
+
+.. Footnote Discussion:
+
+   `German tutorial
+   <http://www2.informatik.hu-berlin.de/~ahamann/studies/footnotes.pdf>`__
+
+   `wikibooks: footnote workarounds
+   <https://en.wikibooks.org/wiki/LaTeX/Footnotes_and_Margin_Notes#Common_problems_and_workarounds>`__
+
+.. _footnotebackref: https://www.ctan.org/pkg/footnotebackref
+.. _ftnxtra: https://www.ctan.org/pkg/ftnxtra
+.. _hyperref: https://www.ctan.org/pkg/hyperref
+.. _longtable: https://www.ctan.org/pkg/longtable
+.. _scrextend: https://www.ctan.org/pkg/longtable
+.. _tabularx: https://www.ctan.org/pkg/tabularx
 
 
-LaTeX constructs and packages instead of re-implementations
-```````````````````````````````````````````````````````````
+Other LaTeX constructs and packages instead of re-implementations
+`````````````````````````````````````````````````````````````````
 
-Which packages do we want to use?
+* Check the generated source with package `nag`.
 
-  + base and "recommended" packages
+* enumitem_ (texlive-latex-extra) for field-lists?
 
-    (packages that should be in a "reasonably sized and reasonably modern
-    LaTeX installation like the `texlive-latex-recommended` Debian package,
-    say):
-
-  + No "fancy" or "exotic" requirements.
-
-  + pointers to advanced packages and their use in the `latex writer
-    documentation`_.
-
-* footnotes
-
-  + True footnotes with LaTeX auto-numbering (as option ``--latex-footnotes``)
-    (also for target-footnotes):
-
-    - attach footnote text to footnote-symobol node
-    - write \footnote{<footnote text>}
-    - consider cases where LaTeX does not support footnotes
-      (inside tables, headings, ...)?
-    - consider multiple footnote refs to common footnote text.
-
-    .. Quote:
-
-     If the symbol you want is not one of the ones listed, you'll need to
-     redefine ``\@fnsymbol`` and add it, e.g. perhaps like::
-
-      \def\@fnsymbol#1{\ifcase#1\hbox{}\or *\or \dagger\or \ddagger\or
-      \mathchar "278\or \mathchar "27B\or \|\or **\or \dagger\dagger \or
-      \ddagger\ddagger \or \mathchar"27C \else\@ctrerr\fi\relax}
-
-     which would allow \symbolfootnote[10]{footnote} to have a club as its
-     mark.
-
-  + document customization (links to how-to and packages):
-
-  .. Footnote packages:
-
-     :footnote: texlive-latex-recommended % savenotes environment
-     :footmisc: texlive-latex-extra       % formatting options
-     :manyfoot: texlive-latex-extra
-     :bigfoot: texlive-latex-extra
-     :perpage: texlive-latex-extra
-     :ftnxtra: new on CTAN
-               fixes the issue of footnote inside \caption{},
-               tabular environment and \section{} like commands.
-
-
-     German tutorial:
-     http://www2.informatik.hu-berlin.de/~ahamann/studies/footnotes.pdf
-
-  .. Footnote FAQs:
-
-     `Footnotes whose texts are identical
-     <http://www.tex.ac.uk/cgi-bin/texfaq2html?label=repfootnote>`__
-
-     * label per hand or use footmisc
-
-     `More than one sequence of footnotes
-     <http://www.tex.ac.uk/cgi-bin/texfaq2html?label=multfoot>`__
-
-     * manyfoot, bigfoot
-
-     `Footnotes in tables
-     <http://www.tex.ac.uk/cgi-bin/texfaq2html?label=footintab>`__
-
-     * `tabularx` and longtable allow footnotes.
-     * `footnote` provides a "savenotes" environment which collects all
-       footnotes and emits them at ``end{savenotes}``
-
-     `Footnotes in LaTeX section headings
-     <http://www.tex.ac.uk/cgi-bin/texfaq2html?label=ftnsect>`__
-
-     * Take advantage of the fact that the mandatory argument doesn't
-       move if the optional argument is present::
-
-           \section[title] {title\footnote{title ftnt}}
-
-     * Use the footmisc package, with package option stable - this modifies
-       footnotes so that they softly and silently vanish away if used in a
-       moving argument.
-
-     * Use ftnxtra.
-
-     `Footnotes numbered per page
-     <http://www.tex.ac.uk/cgi-bin/texfaq2html?label=footnpp>`__
-
-     * perpage provides a general mechanism for resetting counters per page
-     * footmisc provides a package option perpage
-
-* use `eqlist` or `enumitem` (texlive-latex-extra) for field-lists?
-
-* ``--use-latex-when-possible`` »super option« that would set the
-  following::
-
-      --no-section-numbering
-      --use-latex-toc
-      --use-latex-docinfo
-      --use-latex-abstract
-      --use-latex-footnotes
-      --use-latex-citations
-
-   ? (My preference is to default to use-latex-* whenever possible [GM])
-
+.. _enumitem: https://www.ctan.org/pkg/enumitem
 
 Default layout
 --------------
@@ -2624,12 +2592,8 @@ Default layout
      -  \\ % subtitle%
      +  \\[0.5em] % subtitle%
 
-.. _PSNFSS documentation:
-   http://mirror.ctan.org/macros/latex/required/psnfss/psnfss2e.pdf
 .. _compound paragraph:
    ../ref/rst/directives.html#compound-paragraph
-.. _fixltx2e:
-   http://mirror.ctan.org/help/Catalogue/entries/fixltx2e.html
 
 Tables
 ``````
@@ -2642,8 +2606,7 @@ Tables
   + use tabularx column type ``X`` and let LaTeX decide width, or
   + use tabulary_?
 
-  .. _tabulary:
-     http://tug.ctan.org/cgi-bin/ctanPackageInformation.py?id=tabulary
+  .. _tabulary: https://www.ctan.org/pkg/tabulary
 
 * From comp.text.tex (13. 4. 2011):
 
@@ -2751,22 +2714,6 @@ that lists LaTeX counterparts for a wide range of Unicode characters.
 
 .. _bibstuff: http://code.google.com/p/bibstuff/
 
-Allow choice between utf8 (standard) and utf8x (extended) encodings
-```````````````````````````````````````````````````````````````````
-
-* Allow the user to select *utf8* or *utf8x* LaTeX encoding. (Docutil's
-  output encoding becomes LaTeX's input encoding.)
-
-The `ucs` package provides extended support for UTF-8 encoding in LaTeX
-via the `inputenc`-option ``utf8x``.  It is, however, a non-standard
-extension and no longer developed.
-
-Ideas:
-  a) Python has 4 names for the UTF-8 encoding (``utf_8, U8, UTF, utf8``)
-     give a special meaning to one of the aliases,
-
-  b) scan "stylesheets" and "latex-preamble" options and use ``utf8x``
-     if it contains ``ucs``
 
 XeTeX writer
 ````````````
