@@ -2257,15 +2257,14 @@ class LaTeXTranslator(nodes.NodeVisitor):
         elif 'refname' in node:
             href = self.document.nameids[node['refname']]
         # if not self.docutils_footnotes:
-            # TODO: insert footnote content at (or near) this place
-            # print("footnote-ref to", node['refid'])
-            # footnotes = (self.document.footnotes +
-            #              self.document.autofootnotes +
-            #              self.document.symbol_footnotes)
-            # for footnote in footnotes:
-            #     # print(footnote['ids'])
-            #     if node.get('refid', '') in footnote['ids']:
-            #         print('matches', footnote['ids'])
+        #     # TODO: insert footnote content at (or near) this place
+        #     #       see also docs/dev/todo.txt
+        #     try:
+        #         referenced_node = self.document.ids[node['refid']]
+        #     except (AttributeError, KeyError):
+        #         self.document.reporter.error(
+        #             'unresolved footnote-reference %s' % node)
+        #     print('footnote-ref to %s' % referenced_node)
         format = self.settings.footnote_references
         if format == 'brackets':
             self.append_hypertargets(node)
