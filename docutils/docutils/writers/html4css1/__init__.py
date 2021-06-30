@@ -870,13 +870,6 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
     def depart_tbody(self, node):
         self.body.append('</tbody>\n')
 
-    # hard-coded vertical alignment
-    def visit_thead(self, node):
-        self.body.append(self.starttag(node, 'thead', valign='bottom'))
-    #
-    def depart_thead(self, node):
-        self.body.append('</thead>\n')
-
     # no special handling of "details" in definition list
     def visit_term(self, node):
         self.body.append(self.starttag(node, 'dt', '',
@@ -885,6 +878,35 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
 
     def depart_term(self, node):
         pass
+
+    # hard-coded vertical alignment
+    def visit_thead(self, node):
+        self.body.append(self.starttag(node, 'thead', valign='bottom'))
+    #
+    def depart_thead(self, node):
+        self.body.append('</thead>\n')
+
+    # auxilliary method, called by visit_title()
+    # "with-subtitle" class, no ARIA roles
+    def section_title_tags(self, node):
+        classes = []
+        h_level = self.section_level + self.initial_header_level - 1
+        if (len(node.parent) >= 2
+            and isinstance(node.parent[1], nodes.subtitle)):
+            classes.append('with-subtitle')
+        if h_level > 6:
+            classes.append('h%i' % h_level)
+        tagname = 'h%i' % min(h_level, 6)
+        start_tag = self.starttag(node, tagname, '', classes=classes)
+        if node.hasattr('refid'):
+            atts = {}
+            atts['class'] = 'toc-backref'
+            atts['href'] = '#' + node['refid']
+            start_tag += self.starttag({}, 'a', '', **atts)
+            close_tag = '</a></%s>\n' % tagname
+        else:
+            close_tag = '</%s>\n' % tagname
+        return start_tag, close_tag
 
 
 class SimpleListChecker(writers._html_base.SimpleListChecker):
