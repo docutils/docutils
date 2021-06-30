@@ -1043,7 +1043,7 @@ class Inliner(object):
                             self.implicit_inline(text[match.end():], lineno))
                 except MarkupMismatch:
                     pass
-        return [nodes.Text(text, unescape(text, True))]
+        return [nodes.Text(text)]
 
     dispatch = {'*': emphasis,
                 '**': strong,

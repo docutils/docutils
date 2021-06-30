@@ -321,7 +321,6 @@ class SmartQuotes(Transform):
                                 attr=self.smartquotes_action, language=lang)
 
             for txtnode, newtext in zip(txtnodes, teacher):
-                txtnode.parent.replace(txtnode, nodes.Text(newtext,
-                                       rawsource=txtnode.rawsource))
+                txtnode.parent.replace(txtnode, nodes.Text(newtext))
 
         self.unsupported_languages = set() # reset

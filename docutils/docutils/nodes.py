@@ -381,18 +381,16 @@ class Text(Node, reprunicode):
 
     if sys.version_info > (3, 0):
         def __new__(cls, data, rawsource=None):
-            """Prevent the rawsource argument from propagating to str."""
+            """Assert that `data` is not an array of bytes."""
             if isinstance(data, bytes):
                 raise TypeError('expecting str data, not bytes')
             return reprunicode.__new__(cls, data)
     else:
         def __new__(cls, data, rawsource=None):
-            """Prevent the rawsource argument from propagating to str."""
             return reprunicode.__new__(cls, data)
 
-    def __init__(self, data, rawsource=''):
-        self.rawsource = rawsource
-        """The raw text from which this element was constructed."""
+    def __init__(self, data, rawsource=None):
+        """The `rawsource` argument is ignored and deprecated."""
 
     def shortrepr(self, maxlen=18):
         data = self
@@ -419,7 +417,7 @@ class Text(Node, reprunicode):
     # an infinite loop
 
     def copy(self):
-        return self.__class__(reprunicode(self), rawsource=self.rawsource)
+        return self.__class__(reprunicode(self))
 
     def deepcopy(self):
         return self.copy()
@@ -444,10 +442,10 @@ class Text(Node, reprunicode):
     # taken care of by UserString.
 
     def rstrip(self, chars=None):
-        return self.__class__(reprunicode.rstrip(self, chars), self.rawsource)
+        return self.__class__(reprunicode.rstrip(self, chars))
 
     def lstrip(self, chars=None):
-        return self.__class__(reprunicode.lstrip(self, chars), self.rawsource)
+        return self.__class__(reprunicode.lstrip(self, chars))
 
 class Element(Node):
 
