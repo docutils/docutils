@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="generator" content="Docutils 0.18b.dev: http://docutils.sourceforge.net/" />
+<title>Additional tests with HTML 5</title>
+<link rel="stylesheet" href="../../../docutils/writers/html5_polyglot/minimal.css" type="text/css" />
+<link rel="stylesheet" href="../../../docutils/writers/html5_polyglot/plain.css" type="text/css" />
+<link rel="stylesheet" href="../../../docutils/writers/html5_polyglot/math.css" type="text/css" />
+</head>
+<body>
+<main id="additional-tests-with-html-5">
+<h1 class="title">Additional tests with HTML 5</h1>
+
+<section id="section-heading-levels">
+<h2>Section heading levels</h2>
+</section>
+<section id="level-1">
+<h2>Level 1</h2>
+<p>Nested sections</p>
+<section id="level-2">
+<h3>Level 2</h3>
+<p>reach at some level</p>
+<section id="level-3">
+<h4>Level 3</h4>
+<p>(depending on the document class and output format)</p>
+<section id="level-4">
+<h5>level 4</h5>
+<p>a level</p>
+<section id="level-5">
+<h6>level 5</h6>
+<p>that is not supported by the output format.</p>
+<section id="level-6">
+<h6 aria-level="7">level 6</h6>
+<p>Unsupported in LaTeX and HTML5
+(HTML5 reserves the 1st level for the document title).</p>
+<section id="level-7">
+<h6 aria-level="8">level 7</h6>
+<p>Unsupported in HTML4.</p>
+<section id="level-8">
+<h6 aria-level="9">level 8</h6>
+<p>Unsupported in ODT.</p>
+</section>
+</section>
+</section>
+</section>
+</section>
+</section>
+</section>
+</section>
+<section id="section-titles-with-inline-markup">
+<span id="references"></span><h2>Section titles with inline markup</h2>
+<section id="emphasized-h2o-x-2-and-references">
+<h3><em>emphasized</em>, H<sub>2</sub>O, <span class="formula"><i>x</i><sup>2</sup></span>, and <a class="reference internal" href="#references">references</a></h3>
+</section>
+<section id="substitutions-fail">
+<h3>Substitutions work</h3>
+</section>
+</section>
+<section id="embedded-images">
+<h2>Embedded Images</h2>
+<p>The “embed” flag tells Docutils that it should
+try to embed the image in the output document.</p>
+<p>If the image can be read from the local file system, it is <a class="reference external" href="https://en.wikipedia.org/wiki/Base64">base64</a>
+encoded and included as a <a class="reference external" href="https://en.wikipedia.org/wiki/Data_URI_scheme">data URI</a>.
+In future, SVG images may be directly inserted into HTML5.</p>
+<figure class="align-center">
+<img alt="biohazard" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQAQMAAAAlPW0iAAAABGdBTUEAANkE3LLaAgAAAAlwSFlzAAAOxAAADsQBlSsOGwAAAAZQTFRF////AAAAVcLTfgAAAAF0Uk5TAEDm2GYAAAA2SURBVHicYmBRYOAQYJCQYJC+wSBjAUL2fxjq6hgueTNM7AQh3g0MzAdAiP0BUBYAAAD//wMA4pkLDrFBDzUAAAAASUVORK5CYII=" />
+<figcaption>
+<p>Embedded image in a figure.</p>
+</figcaption>
+</figure>
+<p>Embedded inline image <img alt="inline-embedded" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQAQMAAAAlPW0iAAAABGdBTUEAANkE3LLaAgAAAAlwSFlzAAAOxAAADsQBlSsOGwAAAAZQTFRF////AAAAVcLTfgAAAAF0Uk5TAEDm2GYAAAA2SURBVHicYmBRYOAQYJCQYJC+wSBjAUL2fxjq6hgueTNM7AQh3g0MzAdAiP0BUBYAAAD//wMA4pkLDrFBDzUAAAAASUVORK5CYII=" style="height: 0.8em;" /> scaled to a height of 0.8 em.</p>
+</section>
+<section id="moving-images-video">
+<h2>Moving images (video)</h2>
+<p>If the URL given to <cite>images and figures</cite> hints to a video format
+supported by HTML 5 (MIME types ‘video/mp4’, ‘video/webm’, or
+‘video/ogg’), the HTML5 writer will place it in a <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/video">video element</a>.</p>
+<video class="align-left" src="../../../docs/user/rst/images/pens.mp4" title="left-aligned test video">
+<a href="../../../docs/user/rst/images/pens.mp4">left-aligned test video</a>
+</video>
+<p>A class option value “controls” tells the browser to display controls
+for video playback.</p>
+<p>It is a good idea to include width and height attributes. If
+height and width are not set, the page might flicker while the video
+loads. According to the <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/video">HTML5 spec</a>, hight and width must be
+specified as pixel values.</p>
+<figure class="align-center">
+<video class="controls" controls="controls" src="../../../docs/user/rst/images/pens.mp4" title="test video in a figure" width="200">
+<a href="../../../docs/user/rst/images/pens.mp4">test video in a figure</a>
+</video>
+<figcaption>
+<p>Simple test video in a centered figure</p>
+</figcaption>
+</figure>
+<p>A video like this <video src="../../../docs/user/rst/images/pens.mp4" title="rotating pens video" width="60"><a href="../../../docs/user/rst/images/pens.mp4">rotating pens video</a></video> can be included inline via substitution.</p>
+</section>
+</main>
+</body>
+</html>

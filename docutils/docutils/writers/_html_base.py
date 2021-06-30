@@ -1606,30 +1606,25 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('</thead>\n')
 
     def section_title_tags(self, node):
-        classes = []
+        atts = {}
         h_level = self.section_level + self.initial_header_level - 1
-        if (len(node.parent) >= 2
-            and isinstance(node.parent[1], nodes.subtitle)):
-            classes.append('with-subtitle')
-        # TODO: use '<h6 aria-level="%s">' % h_level
-        # for h_level > 6 (HTML5 only)
-        if h_level > 6:
-            classes.append('h%i' % h_level)
+        # Only 6 heading levels have dedicated HTML tags.
         tagname = 'h%i' % min(h_level, 6)
-        start_tag = self.starttag(node, tagname, '', classes=classes)
+        if h_level > 6:
+            atts['aria-level'] = h_level
+        start_tag = self.starttag(node, tagname, '', **atts)
         if node.hasattr('refid'):
             atts = {}
             atts['class'] = 'toc-backref'
-            # atts['role'] = 'doc-backlink' # HTML5 only
+            atts['role'] = 'doc-backlink' # HTML5 only
             atts['href'] = '#' + node['refid']
-            start_tag += self.starttag({}, 'a', '', **atts)
+            start_tag += self.starttag(nodes.reference(), 'a', '', **atts)
             close_tag = '</a></%s>\n' % tagname
         else:
             close_tag = '</%s>\n' % tagname
         return start_tag, close_tag
 
     def visit_title(self, node):
-        """Only 6 section levels are supported by HTML."""
         close_tag = '</p>\n'
         if isinstance(node.parent, nodes.topic):
             self.body.append(
@@ -1652,6 +1647,7 @@ class HTMLTranslator(nodes.NodeVisitor):
             self.in_document_title = len(self.body)
         else:
             assert isinstance(node.parent, nodes.section)
+            # Get correct heading and evt. backlink tags
             start_tag, close_tag = self.section_title_tags(node)
             self.body.append(start_tag)
         self.context.append(close_tag)

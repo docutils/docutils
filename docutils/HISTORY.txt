@@ -69,6 +69,9 @@ Changes Since 0.17.1
     the table of contents, footnote, references, footnotes, citations,
     and backlinks.
 
+  - Use "aria-level" attribute instead of invalid tags <h7>, <h8>, ...
+    for headings of deeply nested sections.
+ 
   - Do not set classes "compound-first", "compound-middle", or
     "compound-last" to elements nested in a compound.
     Use class value "backrefs" instead of "fn-backref" for a span of
@@ -77,12 +80,13 @@ Changes Since 0.17.1
   - Removed attribute ``HTMLTranslator.topic_classes``
 
   - Items of a definition list with class argument "details" are
-    converted to `details disclosure elements` (not with HTML4).
+    converted to `details disclosure elements`.
 
 * docutils/writers/html4css1/__init__.py:
 
-  - Overwrite methods in _html_base.HTMLTranslator that use HTM5 tags.
-    
+  - Overwrite methods in _html_base.HTMLTranslator that use HTM5 tags
+    (details, aside, nav, ...) and attributes (role, aria-level).
+
 
 * docutils/writers/latex2e/__init__.py
 
