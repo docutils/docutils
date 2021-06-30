@@ -1,5 +1,5 @@
 Monospaced non-alphanumeric characters
---------------------------------------
+======================================
 
 These are all ASCII characters except a-zA-Z0-9 and space:
 

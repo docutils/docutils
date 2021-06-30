@@ -1,5 +1,5 @@
 Hyperlinks and -targets
------------------------
+=======================
 
 In LaTeX, we must set an explicit anchor (``\phantomsection``) for a
 _`hypertarget in plain text` or in a figure but not in a longtable or

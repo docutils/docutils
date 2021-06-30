@@ -1,11 +1,21 @@
-Some Tests for the LaTeX Writer
-===============================
+Additional Tests for the LaTeX Writer
+=====================================
 
-These tests contain unusual combinations of syntax elements which may cause
-trouble for the LaTeX writer but do not need to be tested with other writers.
+These tests contain syntax elements and combinations which may cause
+trouble for the LaTeX writer.
+
+.. include:: data/section_titles.txt
+.. include:: data/tables_latex.txt
+.. include:: data/option_lists.txt
+.. include:: data/nonalphanumeric.txt
+.. include:: data/unicode.txt
+.. include:: data/latex_encoding.txt
+.. include:: data/hyperlinking.txt
+.. include:: data/urls.txt
+
 
 Block Quotes
-------------
+============
 
     This block quote comes directly after the section heading and is
     followed by a paragraph.
@@ -26,7 +36,7 @@ This is another paragraph.
 
 
 More Block Quotes
------------------
+=================
 
     Block quote followed by a transition.
 
@@ -36,7 +46,7 @@ More Block Quotes
 
 
 Images
-------
+======
 
 Image with 20% width:
 
@@ -50,7 +60,7 @@ Image with 100% width:
 
 
 Rowspanning tables
-------------------
+==================
 
 Several rowspanning cells in a table.
 
@@ -138,7 +148,7 @@ LaTeX writer needs bookkeeping to write out the required number of extra
 +-------+----+
 
 Nested tables
--------------
+=============
 
 TODO:
 Set alignment of nested tables without creating too much vertical space.
@@ -211,4 +221,3 @@ Set alignment of nested tables without creating too much vertical space.
   +-----------------------------------------+-----------------+
   |                                         |       cell 3, 2 |
   +-----------------------------------------+-----------------+
-

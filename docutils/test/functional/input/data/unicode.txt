@@ -1,5 +1,5 @@
 Non-ASCII characters
---------------------
+====================
 
 Punctuation and footnote symbols
 

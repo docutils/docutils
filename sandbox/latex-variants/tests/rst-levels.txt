@@ -1,0 +1,166 @@
+.. -*- rst-mode -*-
+
+The Level Test
+**************
+
+The Subtitle
+============
+
+.. sectnum::
+   :depth: 10
+   :start: 3
+
+.. contents::
+
+:abstract: Docutils sets no limit to section and list levels.
+           LaTeX and HTML restrict their number, so we need a way to
+           deal with this limitation.
+
+1st level heading
+-----------------
+
+2nd level heading
+~~~~~~~~~~~~~~~~~
+
+3rd level heading
+"""""""""""""""""
+
+4th level heading
+'''''''''''''''''
+
+5th level heading
+`````````````````
+
+6th level heading
+^^^^^^^^^^^^^^^^^
+
+7th level heading
+:::::::::::::::::
+
+8th level heading
++++++++++++++++++
+
+9th level heading
+#################
+
+10th level heading
+<<<<<<<<<<<<<<<<<<
+
+
+Section headings with Docutils 0.6
+----------------------------------
+
+:HTML:      There are six levels of headings in HTML with H1 as the most
+            important and H6 as the least.
+            (`HTML 4.01 Specification
+            <http://www.w3.org/TR/html401/struct/global.html#h-7.5.5>`__)
+
+            The html4css1 writer uses heading elements up to ``<h10>``!
+
+            Firefox shows them as normal text.
+
+:LaTeX:     The number of supported levels is 5 to 7, depending on
+            documentclass and use of "part" sections.
+
+            The latex2e writer uses the lowest level command
+            (``\subparagraph``) for all non-supported levels.
+
+:odtwriter: ??
+
+:rst2pdf (reportlab): ??
+
+.. admonition:: Problematic
+
+    * No warnings are given.
+    * Styling of unsupported levels in a style sheet is not easily
+      possible.
+
+
+Nested Elements
+---------------
+
+* level 1
+
+  * level 2
+
+    * level 3
+
+      * level 4
+
+        .. * level 5
+
+          .. * level 6
+
+#. Level 1 enumerated
+   
+   Second paragraph of level 1.
+
+   #. level 2
+   
+      #. level 3 which is also long and should wrap to the second line 
+         showing a hanging indent.
+         
+         with a second paragraph which is also long and should wrap to the
+         second line showing a hanging indent.
+
+         #. level 4
+            
+            with a second paragraph
+            
+            and a third paragraph
+
+            3. level 5. (start number 3)
+            
+            #. next item level 5
+
+               .. #. level 6
+
+
+level 1
+  level 2
+    level 3
+      level 4
+        level 5
+          level 6
+            .. level 7
+            ..   description list
+
+:HTML:  No limit to nesting of lists. 
+
+        Ordered lists have only 3 distinctive markers by default.
+        Styling possible with CSS.
+
+:LaTeX: ``LaTeX Error: Too deeply nested.`` for:
+
+        * unordered list (``itemize``) above level 4
+        * ordered list (``list``) above level 5
+        * definition list (``description``) above level 6
+
+:ODT:   Heading/section levels greater than 7 not supported.
+        The odtwriter emits a warning and produces no output.
+        TODO: make this an error or provide a workaround.
+   
+
+Suggestion
+~~~~~~~~~~
+
+How to handle Docutils features that are not supported in the output format:
+
+a) Error:
+   
+   +1  no surprises, no hidden problems,
+   -1  document becomes uncompilable.
+
+b) Workaround:
+
+  * Use a fallback (e.g. the lowest supported section level).
+  
+  * If possible, support custom styling (e.g. add a special class argument). 
+  
+  * Warn user.
+  
+    A writer can emit a warning with code like::
+  
+      warn = self.document.reporter.warning
+      warn('Section level  %s not supported by HTML.\n' % section_level +
+           '  Fall back to level 6 header <h6 class=h7>')
