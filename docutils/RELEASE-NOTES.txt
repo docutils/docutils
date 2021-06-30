@@ -22,9 +22,6 @@ Future changes
 
 * `html5` writer:
 
-  - Use <summary> and <details> tags for term and definition of a
-    definition list with class value "details".
-
   - Do not longer set the "footnote-reference" class value for footnote
     references. Since 0.18, you can use the CSS selector
     ``[role="doc-noteref"]`` instead of ``.footnote-reference``
@@ -94,6 +91,9 @@ Release 0.18.dev
     Use class value "backrefs" instead of "fn-backref" for a span of
     back-references.
 
+    Items of a definition list with class argument "details" are
+    converted to `details disclosure elements`_.
+
   LaTeX:
      `legacy_class_functions`_ setting default changed to "False":
      admonitions are now environments.
@@ -119,6 +119,8 @@ __ docs/ref/doctree.html#meta
    docs/ref/rst/directives.html#identifier-normalization
 .. _id_prefix: docs/user/config.html#id-prefix
 .. _auto_id_prefix: docs/user/config.html#auto-id-prefix
+.. _details disclosure elements:
+   https://www.w3.org/TR/html52/interactive-elements.html#the-details-element
 
 
 Release 0.17.1 (2021-04-16)

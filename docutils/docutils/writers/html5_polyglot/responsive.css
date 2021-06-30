@@ -55,7 +55,7 @@ table {
   margin-bottom: 0.5em;
 }
 h1, h2, h3, h4, h5, h6,
-dl > dd {
+dl > dd, details > p:last-child {
   margin-bottom: 0.5em;
 }
 
@@ -164,6 +164,10 @@ dd > ul:first-child,
 dd > ol:first-child {
   clear: left;
 }
+
+/* disclosures */
+details { padding-left: 1em; }
+summary { margin-left: -1em; }
 
 /* Footnotes and Citations */
 .footnote {

@@ -96,6 +96,25 @@ or
     nested
       definition lists
 
+Details disclosure elements
+```````````````````````````
+
+Items of `definition lists`_ with class argument "details" are converted
+to `details`_ disclosure elements with the term becoming the "summary".
+
+.. class:: details
+
+A summary
+  with details only visible after user interaction.
+
+.. class:: details open
+
+Another summary
+  with open details because the source list has the additional class
+  value "open".
+
+.. _details:
+   https://www.w3.org/TR/html52/interactive-elements.html#the-details-element
 
 Field List Variants
 ```````````````````
