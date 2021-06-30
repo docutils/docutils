@@ -75,6 +75,7 @@ span.problematic {
 /* Nested Paragraphs */
 p:first-child { margin-top: 0; }
 p:last-child { margin-bottom: 0; }
+details > p:last-child { margin-bottom: 1em; }
 
 /* Table of Contents */
 .contents ul.auto-toc { /* section numbers present */
@@ -265,7 +266,7 @@ footer { border-top: 1px solid black; }
 
 /* Images are block-level by default in Docutils */
 /* New HTML5 block elements: set display for older browsers */
-img, header, section, footer, aside, nav, main, article, figure, video {
+img, header, footer, main, aside, nav, section, figure, video, details {
   display: block;
 }
 /* inline images */

@@ -292,7 +292,7 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
     def depart_compound(self, node):
         self.body.append('</div>\n')
 
-    # ersatz for first/last pseudo-classes
+    # ersatz for first/last pseudo-classes, no special handling of "details"
     def visit_definition(self, node):
         self.body.append('</dt>\n')
         self.body.append(self.starttag(node, 'dd', ''))
@@ -307,6 +307,13 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
 
     def depart_definition_list(self, node):
         self.body.append('</dl>\n')
+
+    # no special handling of "details"
+    def visit_definition_list_item(self, node):
+        pass
+
+    def depart_definition_list_item(self, node):
+        pass
 
     # use a table for description lists
     def visit_description(self, node):
@@ -869,6 +876,15 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
     #
     def depart_thead(self, node):
         self.body.append('</thead>\n')
+
+    # no special handling of "details" in definition list
+    def visit_term(self, node):
+        self.body.append(self.starttag(node, 'dt', '',
+                                       classes=node.parent['classes'],
+                                       ids=node.parent['ids']))
+
+    def depart_term(self, node):
+        pass
 
 
 class SimpleListChecker(writers._html_base.SimpleListChecker):

@@ -727,24 +727,36 @@ class HTMLTranslator(nodes.NodeVisitor):
         pass
 
     def visit_definition(self, node):
-        self.body.append('</dt>\n')
-        self.body.append(self.starttag(node, 'dd', ''))
+        if "details" in node.parent.parent['classes']:
+            self.body.append('</summary>\n')
+        else:
+            self.body.append('</dt>\n')
+            self.body.append(self.starttag(node, 'dd', ''))
 
     def depart_definition(self, node):
-        self.body.append('</dd>\n')
+        if "details" not in node.parent.parent['classes']:
+            self.body.append('</dd>\n')
 
     def visit_definition_list(self, node):
-        classes = ['simple'] if self.is_compactable(node) else []
-        self.body.append(self.starttag(node, 'dl', classes=classes))
+        if "details" not in node['classes']:
+            classes = ['simple'] if self.is_compactable(node) else []
+            self.body.append(self.starttag(node, 'dl', classes=classes))
 
     def depart_definition_list(self, node):
-        self.body.append('</dl>\n')
+        if "details" not in node['classes']:
+            self.body.append('</dl>\n')
 
+    # Use a "details" disclosure element if parent has "class" arg "details".
     def visit_definition_list_item(self, node):
-        pass
+        if "details" in node.parent['classes']:
+            atts = {}
+            if "open" in node.parent['classes']:
+                atts['open'] = 'open'
+            self.body.append(self.starttag(node, 'details', **atts))
 
     def depart_definition_list_item(self, node):
-        pass
+        if "details" in node.parent['classes']:
+            self.body.append('</details>\n')
 
     def visit_description(self, node):
         self.body.append(self.starttag(node, 'dd', ''))
@@ -1567,10 +1579,13 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('</tbody>\n')
 
     def visit_term(self, node):
-        # The parent node (definition_list_item) is omitted in HTML.
-        self.body.append(self.starttag(node, 'dt', '',
-                                       classes=node.parent['classes'],
-                                       ids=node.parent['ids']))
+        if "details" in node.parent.parent['classes']:
+            self.body.append(self.starttag(node, 'summary', ''))
+        else:
+            # The parent node (definition_list_item) is omitted in HTML.
+            self.body.append(self.starttag(node, 'dt', '',
+                                           classes=node.parent['classes'],
+                                           ids=node.parent['ids']))
 
     def depart_term(self, node):
         # Leave the end tag to `self.visit_definition()`,

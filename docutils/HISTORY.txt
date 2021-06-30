@@ -76,10 +76,13 @@ Changes Since 0.17.1
 
   - Removed attribute ``HTMLTranslator.topic_classes``
 
+  - Items of a definition list with class argument "details" are
+    converted to `details disclosure elements` (not with HTML4).
+
 * docutils/writers/html4css1/__init__.py:
 
-  - Overwrite methods using semantic tags and roles to keep backwards
-    compatibility.
+  - Overwrite methods in _html_base.HTMLTranslator that use HTM5 tags.
+    
 
 * docutils/writers/latex2e/__init__.py
 
