@@ -1,5 +1,5 @@
 Encoding special chars
-----------------------
+======================
 
 The LaTeX Info pages lists under "2.18 Special Characters"
 
@@ -34,8 +34,6 @@ simple
 [bracketed]
   description term
 
-The OT1 font-encoding has different characters for the less-than,
-greater-than and bar, < | >, except for typewriter font `cmtt`::
-
-   < | >
-
+The OT1 font-encoding differs from ASCII for the less-than, greater-than
+and bar characters (< | >) except for typewriter font `cmtt`
+(``< | >``).

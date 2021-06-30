@@ -1,5 +1,5 @@
 External references
--------------------
+===================
 
 Long URLs should be wrapped in the PDF. This can be achieved with the
 ``\url`` command which is used by the LaTeX writer whenever the content
@@ -16,7 +16,7 @@ unbalanced braces.
 
 The characters ^, {, }, and ``\`` are invalid in a "http:" or "ftp:" URL
 and not recognized as part of it:
-  
+
 | http://www.example.org/strange^^name
 | http://www.example.org\\using\\DOS\\paths\\
 | http://www.example.org/XML/strange{n}ame
@@ -32,15 +32,15 @@ Handling by the LaTeX writer:
   | `URL with % <http://www.w3.org/XML/Schema%dev>`__
     http://example.org/Schema%dev
   | `file with DOS path`__ `A:DOS\\path\\`__
-  
+
   .. note:: These URLs are typeset inside a LaTeX command without error.
-  
+
     | http://www.w3.org/XML/Schema#dev
     | http://example.org/Schema%dev
     | `A:DOS\\path\\`__
 
-__  
-__  
+__
+__
 __ A:DOS\\path\\
 
 
@@ -56,7 +56,7 @@ __ A:DOS\\path\\
     `<../strange{name>`__
 
   while balanced braces are suported:
-  
+
   | `<../strange{n}ame>`__
   | `<../st{r}ange{n}ame>`__
   | `<../{st{r}ange{n}ame}>`__

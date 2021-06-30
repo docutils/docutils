@@ -230,6 +230,24 @@ Use |sub| and |indirect1| and |sub| again (and |sub| one more time).
         <paragraph>
             Circular substitution definition referenced: "Sub".
 """],
+[u"""\
+Substitution reference with |reference-in-content|.
+
+.. |reference-in-content| replace:: text and hyperlink-reference_
+""",
+u"""\
+<document source="test data">
+    <paragraph>
+        Substitution reference with 
+        text and 
+        <reference name="hyperlink-reference" refname="hyperlink-reference">
+            hyperlink-reference
+        .
+    <substitution_definition names="reference-in-content">
+        text and 
+        <reference name="hyperlink-reference" refname="hyperlink-reference">
+            hyperlink-reference
+"""],
 ])
 
 totest['unicode'] = ((Substitutions,), [

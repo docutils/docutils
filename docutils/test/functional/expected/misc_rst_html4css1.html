@@ -4,22 +4,60 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="Docutils 0.18b.dev: http://docutils.sourceforge.net/" />
-<title>link_in_substitution.txt</title>
+<title>Additional tests with html4css1</title>
 <link rel="stylesheet" href="foo&amp;bar.css" type="text/css" />
+<link rel="stylesheet" href="/usr/local/src/docutils-git-svn/docutils/docutils/writers/html4css1/html4css1.css" type="text/css" />
+<link rel="stylesheet" href="/usr/local/src/docutils-git-svn/docutils/docutils/writers/html5_polyglot/math.css" type="text/css" />
 </head>
 <body>
-<div class="document">
+<div class="document" id="additional-tests-with-html4css1">
+<h1 class="title">Additional tests with html4css1</h1>
 
-
-<p>Test the interaction of transforms.references.Substitutions and
-transforms.references.ExternalLinks.</p>
-<p><a class="reference external" href="http://docutils.sourceforge.net/rst.html">reStructuredText</a> is cool!</p>
-<p>There is a preferred alternative:</p>
-<p><a class="reference external" href="http://docutils.sourceforge.net/rst.html">reStructuredText</a> is cool!</p>
-<p>This only works for the case where the entire substitution is a
-reference, not when the reference is embedded as part of the
-substitution:</p>
-<p>unstructured <a class="reference external" href="http://docutils.sourceforge.net/rst.html">reStructuredText</a> is uncool!</p>
+<div class="section" id="section-heading-levels">
+<h1>Section heading levels</h1>
+</div>
+<div class="section" id="level-1">
+<h1>Level 1</h1>
+<p>Nested sections</p>
+<div class="section" id="level-2">
+<h2>Level 2</h2>
+<p>reach at some level</p>
+<div class="section" id="level-3">
+<h3>Level 3</h3>
+<p>(depending on the document class and output format)</p>
+<div class="section" id="level-4">
+<h4>level 4</h4>
+<p>a level</p>
+<div class="section" id="level-5">
+<h5>level 5</h5>
+<p>that is not supported by the output format.</p>
+<div class="section" id="level-6">
+<h6>level 6</h6>
+<p>Unsupported in LaTeX and HTML5
+(HTML5 reserves the 1st level for the document title).</p>
+<div class="section" id="level-7">
+<h6 class="h7">level 7</h6>
+<p>Unsupported in HTML4.</p>
+<div class="section" id="level-8">
+<h6 class="h8">level 8</h6>
+<p>Unsupported in ODT.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="section-titles-with-inline-markup">
+<span id="references"></span><h1>Section titles with inline markup</h1>
+<div class="section" id="emphasized-h2o-x-2-and-references">
+<h2><em>emphasized</em>, H<sub>2</sub>O, <span class="formula"><i>x</i><sup>2</sup></span>, and <a class="reference internal" href="#references">references</a></h2>
+</div>
+<div class="section" id="substitutions-fail">
+<h2>Substitutions work</h2>
+</div>
+</div>
 </div>
 </body>
 </html>

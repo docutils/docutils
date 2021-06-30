@@ -4,13 +4,22 @@
 \usepackage{ifthen}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
+\DeclareUnicodeCharacter{21D4}{\ensuremath{\Leftrightarrow}}
+\DeclareUnicodeCharacter{2660}{\ensuremath{\spadesuit}}
+\DeclareUnicodeCharacter{2663}{\ensuremath{\clubsuit}}
+\usepackage{alltt}
+\usepackage{amsmath}
 \usepackage{booktabs}
+\usepackage{float} % extended float configuration
+\floatplacement{figure}{H} % place figures here definitely
 \usepackage{graphicx}
 \usepackage{multirow}
+\usepackage{pifont}
 \setcounter{secnumdepth}{0}
 \usepackage{longtable,ltcaption,array}
 \setlength{\extrarowheight}{2pt}
 \newlength{\DUtablewidth} % internal use in tables
+\usepackage{textcomp} % text symbol macros
 
 %%% Custom LaTeX preamble
 % PDF Standard Fonts
@@ -21,6 +30,79 @@
 %%% User specified packages and stylesheets
 
 %%% Fallback definitions for Docutils-specific commands
+
+% class handling for environments (block-level elements)
+% \begin{DUclass}{spam} tries \DUCLASSspam and
+% \end{DUclass}{spam} tries \endDUCLASSspam
+\ifx\DUclass\undefined % poor man's "provideenvironment"
+ \newenvironment{DUclass}[1]%
+  {% "#1" does not work in end-part of environment.
+   \def\DocutilsClassFunctionName{DUCLASS#1}
+     \csname \DocutilsClassFunctionName \endcsname}%
+  {\csname end\DocutilsClassFunctionName \endcsname}%
+\fi
+
+% Provide a length variable and set default, if it is new
+\providecommand*{\DUprovidelength}[2]{
+  \ifthenelse{\isundefined{#1}}{\newlength{#1}\setlength{#1}{#2}}{}
+}
+
+% admonition environment (specially marked topic)
+\ifx\DUadmonition\undefined % poor man's "provideenvironment"
+ \newbox{\DUadmonitionbox}
+ \newenvironment{DUadmonition}%
+  {\begin{center}
+     \begin{lrbox}{\DUadmonitionbox}
+       \begin{minipage}{0.9\linewidth}
+  }%
+  {    \end{minipage}
+     \end{lrbox}
+     \fbox{\usebox{\DUadmonitionbox}}
+   \end{center}
+  }
+\fi
+
+% legend environment (in figures and formal tables)
+\ifthenelse{\isundefined{\DUlegend}}{
+  \newenvironment{DUlegend}{\small}{}
+}{}
+
+% line block environment
+\DUprovidelength{\DUlineblockindent}{2.5em}
+\ifthenelse{\isundefined{\DUlineblock}}{
+  \newenvironment{DUlineblock}[1]{%
+    \list{}{\setlength{\partopsep}{\parskip}
+            \addtolength{\partopsep}{\baselineskip}
+            \setlength{\topsep}{0pt}
+            \setlength{\itemsep}{0.15\baselineskip}
+            \setlength{\parsep}{0pt}
+            \setlength{\leftmargin}{#1}}
+    \raggedright
+  }
+  {\endlist}
+}{}
+
+% list of command line options
+\providecommand*{\DUoptionlistlabel}[1]{\bfseries #1 \hfill}
+\DUprovidelength{\DUoptionlistindent}{3cm}
+\ifthenelse{\isundefined{\DUoptionlist}}{
+  \newenvironment{DUoptionlist}{%
+    \list{}{\setlength{\labelwidth}{\DUoptionlistindent}
+            \setlength{\rightmargin}{1cm}
+            \setlength{\leftmargin}{\rightmargin}
+            \addtolength{\leftmargin}{\labelwidth}
+            \addtolength{\leftmargin}{\labelsep}
+            \renewcommand{\makelabel}{\DUoptionlistlabel}}
+  }
+  {\endlist}
+}{}
+
+% title for topics, admonitions, unsupported section levels, and sidebar
+\providecommand*{\DUtitle}[1]{%
+  \smallskip\noindent\textbf{#1}\smallskip}
+
+% titlereference standard role
+\providecommand*{\DUroletitlereference}[1]{\textsl{#1}}
 
 % transition (break / fancybreak / anonymous section)
 \providecommand*{\DUtransition}{%
@@ -34,20 +116,824 @@
   \usepackage{bookmark}
   \urlstyle{same} % normal text font (alternatives: tt, rm, sf)
 }{}
-\hypersetup{
-  pdftitle={Some Tests for the LaTeX Writer},
-}
 
 %%% Body
 \begin{document}
-\title{Some Tests for the LaTeX Writer%
-  \label{some-tests-for-the-latex-writer}}
-\author{}
-\date{}
-\maketitle
 
-These tests contain unusual combinations of syntax elements which may cause
-trouble for the LaTeX writer but do not need to be tested with other writers.
+
+\section{Additional Tests for the LaTeX Writer%
+  \label{additional-tests-for-the-latex-writer}%
+}
+
+These tests contain syntax elements and combinations which may cause
+trouble for the LaTeX writer.
+
+
+\section{Section heading levels%
+  \label{section-heading-levels}%
+}
+
+
+\section{Level 1%
+  \label{level-1}%
+}
+
+Nested sections
+
+
+\subsection{Level 2%
+  \label{level-2}%
+}
+
+reach at some level
+
+
+\subsubsection{Level 3%
+  \label{level-3}%
+}
+
+(depending on the document class and output format)
+
+
+\paragraph{level 4%
+  \label{level-4}%
+}
+
+a level
+
+
+\subparagraph{level 5%
+  \label{level-5}%
+}
+
+that is not supported by the output format.
+
+
+\begin{DUclass}{sectionVI}
+\DUtitle{level 6%
+  \label{level-6}%
+}
+\end{DUclass}
+
+Unsupported in LaTeX and HTML5
+(HTML5 reserves the 1st level for the document title).
+
+
+\begin{DUclass}{sectionVII}
+\DUtitle{level 7%
+  \label{level-7}%
+}
+\end{DUclass}
+
+Unsupported in HTML4.
+
+
+\begin{DUclass}{sectionVIII}
+\DUtitle{level 8%
+  \label{level-8}%
+}
+\end{DUclass}
+
+Unsupported in ODT.
+
+
+\section{Section titles with inline markup%
+  \label{section-titles-with-inline-markup}%
+  \label{references}%
+}
+
+
+\subsection{\emph{emphasized}, H\textsubscript{2}O, $x^2$, and \hyperref[references]{references}%
+  \label{emphasized-h2o-x-2-and-references}%
+}
+
+
+\subsection{Substitutions work%
+  \label{substitutions-fail}%
+}
+
+
+\section{More Tables%
+  \label{more-tables}%
+}
+
+A table with multi-paragraph multicolumn cells:
+
+\setlength{\DUtablewidth}{\linewidth}%
+\begin{longtable*}{|p{0.133\DUtablewidth}|p{0.179\DUtablewidth}|p{0.179\DUtablewidth}|p{0.110\DUtablewidth}|p{0.121\DUtablewidth}|p{0.145\DUtablewidth}|}
+\hline
+
+test
+ & 
+\textbf{bold hd}
+ & \multicolumn{3}{p{0.41\DUtablewidth}|}{%
+multicolumn 1
+
+With a second paragraph
+} & 
+\emph{emph hd}
+ \\
+\hline
+\multicolumn{2}{|p{0.31\DUtablewidth}|}{%
+multicolumn 2
+
+With a second paragraph
+} & 
+cell
+ & 
+cell
+ & 
+cell
+ & 
+cell
+ \\
+\hline
+
+cell
+ & \multicolumn{2}{p{0.36\DUtablewidth}|}{%
+multicolumn 3 (one line,
+but very very very very
+very looooong)
+} & 
+cell
+ & 
+cell
+ & 
+cell
+ \\
+\hline
+
+cell
+ & 
+cell
+ & 
+cell
+ & \multicolumn{3}{p{0.38\DUtablewidth}|}{%
+Short multicolumn 4
+} \\
+\hline
+\end{longtable*}
+
+Tables with multi-paragraph multirow cells currently fail due to a LaTeX
+limitation (see \url{https://sourceforge.net/p/docutils/bugs/225/}).
+
+A table with multirow header and column-widths set by LaTeX:
+
+\begin{longtable*}{|l|l|}
+\hline
+\multirow{2}{*}{\textbf{XXX}} & \textbf{Variable Summary} \\
+\cline{2-2}
+ & \textbf{Description} \\
+\hline
+\endfirsthead
+\hline
+\multirow{2}{*}{\textbf{XXX}} & \textbf{Variable Summary} \\
+\cline{2-2}
+ & \textbf{Description} \\
+\hline
+\endhead
+\multicolumn{2}{c}{\hfill ... continued on next page} \\
+\endfoot
+\endlastfoot
+\multicolumn{2}{|l|}{multicollumn cell} \\
+\hline
+\end{longtable*}
+
+In a table with column-widths set by LaTeX, each cell has just one line.
+Paragraphs are merged (a warning is given).
+
+\begin{longtable*}{|l|l|}
+\hline
+11 & first paragraph
+second paragraph
+third paragraph \\
+\hline
+21 & 22 \\
+\hline
+\end{longtable*}
+
+% This file is used by the standalone_rst_latex test.
+
+
+\section{Option lists%
+  \label{option-lists}%
+}
+
+The LaTeX-2e description environment is used for definition lists.
+The definition is continued on the same line as the term, this should
+not happen if an option-list is at the top of the definition.
+
+If the option list is not at the first element in the definition, it
+is contained in a quote
+
+\begin{quote}
+\begin{DUoptionlist}
+\item[-{}-help]  show help
+
+\item[-v]  verbose
+\end{DUoptionlist}
+\end{quote}
+
+\begin{description}
+\item[{In a definition list:}] \leavevmode
+\begin{DUoptionlist}
+\item[-{}-help]  show help
+
+\item[-v]  verbose
+\end{DUoptionlist}
+
+\end{description}
+
+
+\section{Monospaced non-alphanumeric characters%
+  \label{monospaced-non-alphanumeric-characters}%
+}
+
+These are all ASCII characters except a-zA-Z0-9 and space:
+
+\texttt{!!!\textquotedbl{}\textquotedbl{}\textquotedbl{}\#\#\#\$\$\$\%\%\%\&\&\&'{}'{}'((()))***+++,{},{},-{}-{}-...///:::}
+
+\texttt{;;;<{}<{}<===>{}>{}>???@@@{[}{[}{[}\textbackslash{}\textbackslash{}\textbackslash{}{]}{]}{]}\textasciicircum{}\textasciicircum{}\textasciicircum{}\_\_\_`{}`{}`\{\{\{|||\}\}\}\textasciitilde{}\textasciitilde{}\textasciitilde{}}
+
+\texttt{xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx}
+
+The two lines of non-alphanumeric characters should both have the same
+width as the third line.
+
+
+\section{Non-ASCII characters%
+  \label{non-ascii-characters}%
+}
+
+Punctuation and footnote symbols
+
+\setlength{\DUtablewidth}{\linewidth}%
+\begin{longtable*}{|p{0.028\DUtablewidth}|p{0.424\DUtablewidth}|}
+\hline
+
+–
+ & 
+en-dash
+ \\
+\hline
+
+—
+ & 
+em-dash
+ \\
+\hline
+
+‘
+ & 
+single turned comma quotation mark
+ \\
+\hline
+
+’
+ & 
+single comma quotation mark
+ \\
+\hline
+
+‚
+ & 
+low single comma quotation mark
+ \\
+\hline
+
+“
+ & 
+double turned comma quotation mark
+ \\
+\hline
+
+”
+ & 
+double comma quotation mark
+ \\
+\hline
+
+„
+ & 
+low double comma quotation mark
+ \\
+\hline
+
+†
+ & 
+dagger
+ \\
+\hline
+
+‡
+ & 
+double dagger
+ \\
+\hline
+
+\ding{169}
+ & 
+black diamond suit
+ \\
+\hline
+
+\ding{170}
+ & 
+black heart suit
+ \\
+\hline
+
+♠
+ & 
+black spade suit
+ \\
+\hline
+
+♣
+ & 
+black club suit
+ \\
+\hline
+
+…
+ & 
+ellipsis
+ \\
+\hline
+
+™
+ & 
+trade mark sign
+ \\
+\hline
+
+⇔
+ & 
+left-right double arrow
+ \\
+\hline
+\end{longtable*}
+
+The \DUroletitlereference{Latin-1 extended} Unicode block
+
+\setlength{\DUtablewidth}{\linewidth}%
+\begin{longtable*}{|p{0.051\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|}
+\hline
+
+% 
+ & 
+0
+ & 
+1
+ & 
+2
+ & 
+3
+ & 
+4
+ & 
+5
+ & 
+6
+ & 
+7
+ & 
+8
+ & 
+9
+ \\
+\hline
+
+160
+ &  & 
+¡
+ & 
+¢
+ & 
+£
+ &  & 
+¥
+ & 
+¦
+ & 
+§
+ & 
+¨
+ & 
+©
+ \\
+\hline
+
+170
+ & 
+ª
+ & 
+«
+ & 
+¬
+ & 
+\-
+ & 
+®
+ & 
+¯
+ & 
+°
+ & 
+±
+ & 
+²
+ & 
+³
+ \\
+\hline
+
+180
+ & 
+´
+ & 
+µ
+ & 
+¶
+ & 
+·
+ & 
+¸
+ & 
+¹
+ & 
+º
+ & 
+»
+ & 
+¼
+ & 
+½
+ \\
+\hline
+
+190
+ & 
+¾
+ & 
+¿
+ & 
+À
+ & 
+Á
+ & 
+Â
+ & 
+Ã
+ & 
+Ä
+ & 
+Å
+ & 
+Æ
+ & 
+Ç
+ \\
+\hline
+
+200
+ & 
+È
+ & 
+É
+ & 
+Ê
+ & 
+Ë
+ & 
+Ì
+ & 
+Í
+ & 
+Î
+ & 
+Ï
+ & 
+Ð
+ & 
+Ñ
+ \\
+\hline
+
+210
+ & 
+Ò
+ & 
+Ó
+ & 
+Ô
+ & 
+Õ
+ & 
+Ö
+ & 
+×
+ & 
+Ø
+ & 
+Ù
+ & 
+Ú
+ & 
+Û
+ \\
+\hline
+
+220
+ & 
+Ü
+ & 
+Ý
+ & 
+Þ
+ & 
+ß
+ & 
+à
+ & 
+á
+ & 
+â
+ & 
+ã
+ & 
+ä
+ & 
+å
+ \\
+\hline
+
+230
+ & 
+æ
+ & 
+ç
+ & 
+è
+ & 
+é
+ & 
+ê
+ & 
+ë
+ & 
+ì
+ & 
+í
+ & 
+î
+ & 
+ï
+ \\
+\hline
+
+240
+ & 
+ð
+ & 
+ñ
+ & 
+ò
+ & 
+ó
+ & 
+ô
+ & 
+õ
+ & 
+ö
+ & 
+÷
+ & 
+ø
+ & 
+ù
+ \\
+\hline
+
+250
+ & 
+ú
+ & 
+û
+ & 
+ü
+ & 
+ý
+ & 
+þ
+ & 
+ÿ
+ &  &  &  &  \\
+\hline
+\end{longtable*}
+
+\begin{itemize}
+\item The following line should not be wrapped, because it uses
+no-break spaces (\textbackslash{}u00a0):
+
+X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X
+
+\item Line wrapping with/without breakpoints marked by soft hyphens
+(\textbackslash{}u00ad):
+
+pdn\-derd\-mdtd\-ri\-schpdn\-derd\-mdtd\-ri\-schpdn\-derd\-mdtd\-ri\-schpdn\-derd\-mdtd\-ri\-schpdn\-derd\-mdtd\-ri\-sch
+
+pdnderdmdtdrischpdnderdmdtdrischpdnderdmdtdrischpdnderdmdtdrischpdnderdmdtdrisch
+\end{itemize}
+
+
+\section{Encoding special chars%
+  \label{encoding-special-chars}%
+}
+
+The LaTeX Info pages lists under \textquotedbl{}2.18 Special Characters\textquotedbl{}
+
+\begin{quote}
+The following characters play a special role in LaTeX and are called
+\textquotedbl{}special printing characters\textquotedbl{}, or simply \textquotedbl{}special characters\textquotedbl{}.
+
+\begin{quote}
+\# \$ \% \& \textasciitilde{} \_ \textasciicircum{} \textbackslash{} \{ \}
+\end{quote}
+\end{quote}
+
+The special chars verbatim:
+
+\begin{quote}
+\begin{alltt}
+# $ % & ~ _ ^ \textbackslash{} \{ \}
+\end{alltt}
+\end{quote}
+
+However also \emph{square brackets} {[}{]} need special care.
+
+\begin{quote}
+Commands with optional arguments (e.g. \texttt{\textbackslash{}item}) check
+if the token right after the macro name is an opening bracket.
+In that case the contents between that bracket and the following
+closing bracket on the same grouping level are taken as the
+optional argument. What makes this unintuitive is the fact that
+the square brackets aren't grouping characters themselves, so in
+your last example \texttt{\textbackslash{}item{[}{[}...{]}{]}} the optional argument consists of
+{[}... (without the closing bracket).
+\end{quote}
+
+Compare the items in the following lists:
+
+\begin{itemize}
+\item simple item
+
+\item {[}bracketed{]} item
+\end{itemize}
+
+\begin{description}
+\item[{simple}] 
+description term
+
+\item[{{[}bracketed{]}}] 
+description term
+
+\end{description}
+
+The OT1 font-encoding differs from ASCII for the less-than, greater-than
+and bar characters (< | >) except for typewriter font \DUroletitlereference{cmtt}
+(\texttt{< | >}).
+
+
+\section{Hyperlinks and -targets%
+  \label{hyperlinks-and-targets}%
+}
+
+In LaTeX, we must set an explicit anchor (\texttt{\textbackslash{}phantomsection}) for a
+%
+\phantomsection\label{hypertarget-in-plain-text}hypertarget in plain text or in a figure but not in a longtable or
+caption:
+
+\setlength{\DUtablewidth}{\linewidth}%
+\begin{longtable}{|p{0.075\DUtablewidth}|p{0.075\DUtablewidth}|p{0.075\DUtablewidth}|}
+\caption{Table with %
+\label{hypertarget-in-table-title}hypertarget in table title.}\\
+\hline
+
+False
+ & 
+True
+ & 
+None
+ \\
+\hline
+\end{longtable}
+\label{table-label}
+
+\begin{figure}
+\phantomsection\label{figure-label}
+\noindent\makebox[\linewidth][c]{\includegraphics{../../../docs/user/rst/images/biohazard.png}}
+\caption{Figure with %
+\label{hypertarget-in-figure-caption}hypertarget in figure caption.}
+\begin{DUlegend}
+Legend with %
+\phantomsection\label{hypertarget-in-figure-legend}hypertarget in figure legend.
+\end{DUlegend}
+\end{figure}
+
+\includegraphics{../../../docs/user/rst/images/biohazard.png}
+\phantomsection\label{image-label}
+
+See \hyperref[hypertarget-in-plain-text]{hypertarget in plain text},
+\hyperref[table-label]{table label}, \hyperref[hypertarget-in-table-title]{hypertarget in table title},
+\hyperref[figure-label]{figure label}, \hyperref[hypertarget-in-figure-caption]{hypertarget in figure caption},
+\hyperref[hypertarget-in-figure-legend]{hypertarget in figure legend}, and
+\hyperref[image-label]{image label}.
+
+
+\section{External references%
+  \label{external-references}%
+}
+
+Long URLs should be wrapped in the PDF. This can be achieved with the
+\texttt{\textbackslash{}url} command which is used by the LaTeX writer whenever the content
+(name) of a reference node equals the link URL.
+
+\begin{description}
+\item[{Example:}] 
+a long URL that should wrap in the output
+\url{http://docutils.sourceforge.net/docs/user/latex.html\#id79}
+
+\end{description}
+
+If the argument contains any \textquotedbl{}\%\textquotedbl{}, \textquotedbl{}\#\textquotedbl{}, or \textquotedbl{}\textasciicircum{}\textasciicircum{}\textquotedbl{}, or ends with \texttt{\textbackslash{}}, it can't
+be used in the argument to another command. The argument must not contain
+unbalanced braces.
+
+The characters \textasciicircum{}, \{, \}, and \texttt{\textbackslash{}} are invalid in a \textquotedbl{}http:\textquotedbl{} or \textquotedbl{}ftp:\textquotedbl{} URL
+and not recognized as part of it:
+
+\begin{DUlineblock}{0em}
+\item[] \url{http://www.example.org}/strange\textasciicircum{}\textasciicircum{}name
+\item[] \url{http://www.example.org}\textbackslash{}using\textbackslash{}DOS\textbackslash{}paths\textbackslash{}
+\item[] \url{http://www.example.org/XML}/strange\{n\}ame
+\end{DUlineblock}
+
+They can, however be used in paths and/or filenames.
+
+Handling by the LaTeX writer:
+
+\begin{itemize}
+\item \texttt{\#}, \texttt{\textbackslash{}} and \texttt{\%} are escaped:
+
+\begin{DUlineblock}{0em}
+\item[] \href{http://www.w3.org/XML/Schema\#dev}{URL with \#}
+\url{http://www.w3.org/XML/Schema\#dev}
+\item[] \href{http://www.w3.org/XML/Schema\%dev}{URL with \%}
+\url{http://example.org/Schema\%dev}
+\item[] \href{A:DOS\\path\\}{file with DOS path} \url{A:DOS\\path\\}
+\end{DUlineblock}
+
+\begin{DUclass}{note}
+\begin{DUadmonition}
+\DUtitle{Note}
+
+These URLs are typeset inside a LaTeX command without error.
+
+\begin{DUlineblock}{0em}
+\item[] \url{http://www.w3.org/XML/Schema\#dev}
+\item[] \url{http://example.org/Schema\%dev}
+\item[] \url{A:DOS\\path\\}
+\end{DUlineblock}
+\end{DUadmonition}
+\end{DUclass}
+\end{itemize}
+
+\begin{itemize}
+\item \texttt{\textasciicircum{}\textasciicircum{}} LaTeX's special syntax for characters results in \textquotedbl{}strange\textquotedbl{} replacements
+(both with \texttt{\textbackslash{}href} and \texttt{\textbackslash{}url}). A warning is given.
+
+\href{../strange^^name}{file with \textasciicircum{}\textasciicircum{}}:
+\url{../strange^^name}
+
+\item Unbalanced braces, \{ or \}, will fail (both with \texttt{\textbackslash{}href} and \texttt{\textbackslash{}url}):
+
+\begin{quote}
+\begin{alltt}
+`file with \{ <../strange\{name>`__
+`<../strange\{name>`__
+\end{alltt}
+\end{quote}
+
+while balanced braces are suported:
+
+\begin{DUlineblock}{0em}
+\item[] \url{../strange{n}ame}
+\item[] \url{../st{r}ange{n}ame}
+\item[] \url{../{st{r}ange{n}ame}}
+\end{DUlineblock}
+\end{itemize}
 
 
 \section{Block Quotes%

@@ -1,28 +1,46 @@
-Section titles with `inline markup`_ 
-------------------------------------
+Section heading levels
+======================
 
-*emphasized*, H\ :sub:`2`\ O and :math:`x^2`
-````````````````````````````````````````````
-Substitutions |fail|
-````````````````````
-.. |fail| replace:: work
+Level 1
+=======
+Nested sections
 
-Deeply nested sections
-----------------------
-In LaTeX and HTML,
+Level 2
+-------
+reach at some level
 
 Level 3
 ```````
-nested sections
+(depending on the document class and output format)
 
 level 4
 ^^^^^^^
-reach at some level 
+a level
 
 level 5
-:::::::
-(depending on the document class)
++++++++
+that is not supported by the output format.
 
 level 6
-+++++++
-an unsupported level.
+:::::::
+Unsupported in LaTeX and HTML5
+(HTML5 reserves the 1st level for the document title).
+
+level 7
+#######
+Unsupported in HTML4.
+
+level 8
+<<<<<<<
+Unsupported in ODT.
+
+.. _references:
+
+Section titles with inline markup
+==================================
+
+*emphasized*, H\ :sub:`2`\ O, :math:`x^2`, and references_
+----------------------------------------------------------
+Substitutions |fail|
+--------------------
+.. |fail| replace:: work

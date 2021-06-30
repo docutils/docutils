@@ -1506,6 +1506,23 @@ first | then || and finally |||
     <paragraph>
         first | then || and finally |||
 """],
+["""\
+Substitution reference with |mix|.
+
+.. |mix| replace:: text and hyperlink-reference_
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        Substitution reference with \n\
+        <substitution_reference refname="mix">
+            mix
+        .
+    <substitution_definition names="mix">
+        text and \n\
+        <reference name="hyperlink-reference" refname="hyperlink-reference">
+            hyperlink-reference
+"""],
 ]
 
 totest['standalone_hyperlink'] = [
