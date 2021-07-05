@@ -1253,45 +1253,6 @@ Default: writer dependent.
 Options: ``--xml-declaration``, ``--no-xml-declaration``.
 
 
-[html5 writer]
-~~~~~~~~~~~~~~
-
-The `HTML5 Writer`_ generates valid XML that is compatible with `HTML5`_.
-It shares all settings defined in the `[html writers]`_
-`configuration section`_.
-
-New in Docutils 0.13.
-
-__  https://www.w3.org/TR/html53/sections.html#the-h1-h2-h3-h4-h5-and-h6-elements
-.. _HTML5 Writer: html.html#html5-polyglot
-.. _HTML5: http://www.w3.org/TR/html5/
-
-
-Writer Specific Defaults
-""""""""""""""""""""""""
-
-`initial_header_level`_
-  2 (for "<h2>", cf. the `HTML5.3 Working Draft`__)
-
-`stylesheet_path <stylesheet_path [html writers]_>`__:
-  "minimal.css, plain.css"
-
-embed_images
-""""""""""""
-
-Embed images in the output HTML file. If the image can be read from
-the local file system and its MIME type can be determined, it is
-base64_ encoded and included as a `data URI`_.
-
-Default: disabled (False).
-Options: ``--embed-images``, ``--link-images``.
-
-New in Docutils 0.17.
-
-.. _base64: https://en.wikipedia.org/wiki/Base64
-.. _data URI: https://en.wikipedia.org/wiki/Data_URI_scheme
-
-
 [html4css1 writer]
 ~~~~~~~~~~~~~~~~~~
 
@@ -1336,6 +1297,58 @@ the option list.  0 indicates "no limit".
 See also field_name_limit_.
 
 Default: 14 (i.e. 14 characters).  Option: ``--option-limit``.
+
+
+[html5 writer]
+~~~~~~~~~~~~~~
+
+The `HTML5 Writer`_ generates valid XML that is compatible with `HTML5`_.
+It shares all settings defined in the `[html writers]`_
+`configuration section`_.
+
+New in Docutils 0.13.
+
+__  https://www.w3.org/TR/html53/sections.html#the-h1-h2-h3-h4-h5-and-h6-elements
+.. _HTML5 Writer: html.html#html5-polyglot
+.. _HTML5: http://www.w3.org/TR/html5/
+
+
+Writer Specific Defaults
+""""""""""""""""""""""""
+
+`initial_header_level`_
+  2 (for "<h2>", cf. the `HTML5.3 Working Draft`__)
+
+`stylesheet_path <stylesheet_path [html writers]_>`__:
+  "minimal.css, plain.css"
+
+embed_images
+""""""""""""
+
+Embed images in the output HTML file. If the image can be read from
+the local file system and its MIME type can be determined, it is
+base64_ encoded and included as a `data URI`_.
+
+Default: disabled (False).
+Options: ``--embed-images``, ``--link-images``.
+
+New in Docutils 0.17.
+
+.. _base64: https://en.wikipedia.org/wiki/Base64
+.. _data URI: https://en.wikipedia.org/wiki/Data_URI_scheme
+
+
+section_self_link
+"""""""""""""""""
+
+Append an empty anchor element with a ``href`` to the section to
+section headings. See ``responsive.css`` for an example how this can be
+styled to show a symbol allowing users to copy the section's URL.
+
+Default: disabled (False).
+Options: ``--section-self-link``, ``--no-section-self-link``.
+
+New in Docutils 0.18.
 
 
 [pep_html writer]
@@ -2036,22 +2049,6 @@ Do not process files, show files that would be processed.
 
 Default:  False.  Option: ``--dry-run``.
 
-.. _html_writer:
-.. _writer [buildhtml application]:
-
-writer
-~~~~~~
-
-`HTML writer`_ version. One of "html", "html4", "html5".
-
-Default: "html" (use Docutils' default HTML writer).
-Option: ``--writer``
-
-New in 0.17. Obsoletes the ``html_writer`` option.
-
-.. _HTML writer: html.html
-
-
 ignore
 ~~~~~~
 
@@ -2088,11 +2085,20 @@ Work silently (no progress messages).  Independent of
 
 Default: show progress (None).  Option: ``--silent``.
 
+.. _html_writer:
+.. _writer [buildhtml application]:
 
-[docfactory application]
-------------------------
+writer
+~~~~~~
 
-(To be completed.)
+`HTML writer`_ version. One of "html", "html4", "html5".
+
+Default: "html" (use Docutils' default HTML writer).
+Option: ``--writer``
+
+New in 0.17. Obsoletes the ``html_writer`` option.
+
+.. _HTML writer: html.html
 
 
 Other Settings

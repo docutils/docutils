@@ -90,10 +90,15 @@ class Writer(writers._html_base.Writer):
           ['--embed-images'],
           {'default': 0, 'action': 'store_true',
            'validator': frontend.validate_boolean}),
-         ('Link to images in the output HTML file. '
-          'This is the default.',
+         ('Link to images in the output HTML file. (default)',
           ['--link-images'],
           {'dest': 'embed_images', 'action': 'store_false'}),
+         ('Append a self-link to section headings.',
+          ['--section-self-link'],
+          {'default': 0, 'action': 'store_true'}),
+         ('Do not append a self-link to section headings. (default)',
+          ['--no-section-self-link'],
+          {'dest': 'section_self_link', 'action': 'store_false'}),
         ))
 
     config_section = 'html5 writer'
@@ -426,3 +431,15 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
     def depart_topic(self, node):
         self.body.append('</%s>\n'%node.html_tagname)
         del(node.html_tagname)
+
+    # append self-link
+    def section_title_tags(self, node):
+        start_tag, close_tag = super(HTMLTranslator,
+                                     self).section_title_tags(node)
+        ids = node.parent['ids']
+        if (ids and self.settings.section_self_link
+            and not isinstance(node.parent, nodes.document)):
+            self_link = ('<a class="self-link" title="link to this section"'
+                        ' href="#%s"></a>' % ids[0])
+            close_tag = close_tag.replace('</h', self_link + '</h')
+        return start_tag, close_tag
