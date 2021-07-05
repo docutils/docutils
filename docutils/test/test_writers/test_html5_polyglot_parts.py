@@ -25,6 +25,9 @@ class Html5WriterPublishPartsTestCase(HtmlWriterPublishPartsTestCase):
     """Test case for HTML5 writer via the publish_parts interface."""
 
     writer_name = 'html5'
+    settings_default_overrides = HtmlWriterPublishPartsTestCase.settings_default_overrides.copy()
+    settings_default_overrides['section_self_link'] = True
+
     standard_content_type_template = ('<meta charset="%s"/>\n')
     standard_generator_template = ('<meta name="generator"'
         ' content="Docutils %s: http://docutils.sourceforge.net/" />\n')
@@ -146,10 +149,10 @@ And even more stuff
 """\
 {'fragment': '''<p>Some stuff</p>
 <section id="section">
-<h2>Section</h2>
+<h2>Section<a class="self-link" title="link to this section" href="#section"></a></h2>
 <p>Some more stuff</p>
 <section id="another-section">
-<h3>Another Section</h3>
+<h3>Another Section<a class="self-link" title="link to this section" href="#another-section"></a></h3>
 <p>And even more stuff</p>
 </section>
 </section>\\n''',
@@ -158,10 +161,10 @@ And even more stuff
 <p class="subtitle" id="subtitle">Subtitle</p>
 <p>Some stuff</p>
 <section id="section">
-<h2>Section</h2>
+<h2>Section<a class="self-link" title="link to this section" href="#section"></a></h2>
 <p>Some more stuff</p>
 <section id="another-section">
-<h3>Another Section</h3>
+<h3>Another Section<a class="self-link" title="link to this section" href="#another-section"></a></h3>
 <p>And even more stuff</p>
 </section>
 </section>
@@ -285,15 +288,15 @@ And even more stuff
 """,
 """\
 {'fragment': '''<section id="title">
-<h2>Title</h2>
+<h2>Title<a class="self-link" title="link to this section" href="#title"></a></h2>
 <section id="not-a-subtitle">
-<h3>Not A Subtitle</h3>
+<h3>Not A Subtitle<a class="self-link" title="link to this section" href="#not-a-subtitle"></a></h3>
 <p>Some stuff</p>
 <section id="section">
-<h4>Section</h4>
+<h4>Section<a class="self-link" title="link to this section" href="#section"></a></h4>
 <p>Some more stuff</p>
 <section id="another-section">
-<h5>Another Section</h5>
+<h5>Another Section<a class="self-link" title="link to this section" href="#another-section"></a></h5>
 <p>And even more stuff</p>
 </section>
 </section>
@@ -301,15 +304,15 @@ And even more stuff
 </section>\\n''',
  'html_body': '''<main>
 <section id="title">
-<h2>Title</h2>
+<h2>Title<a class="self-link" title="link to this section" href="#title"></a></h2>
 <section id="not-a-subtitle">
-<h3>Not A Subtitle</h3>
+<h3>Not A Subtitle<a class="self-link" title="link to this section" href="#not-a-subtitle"></a></h3>
 <p>Some stuff</p>
 <section id="section">
-<h4>Section</h4>
+<h4>Section<a class="self-link" title="link to this section" href="#section"></a></h4>
 <p>Some more stuff</p>
 <section id="another-section">
-<h5>Another Section</h5>
+<h5>Another Section<a class="self-link" title="link to this section" href="#another-section"></a></h5>
 <p>And even more stuff</p>
 </section>
 </section>

@@ -14,3 +14,4 @@ writer_name = "html5"
 settings_overrides['stylesheet_dirs'] = ('.', 'functional/input/data')
 settings_overrides['stylesheet_path'] = 'minimal.css,responsive.css'
 settings_overrides['footnote_references'] = 'superscript'
+settings_overrides['section_self_link'] = True

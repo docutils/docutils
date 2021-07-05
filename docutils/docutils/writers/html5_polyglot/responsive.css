@@ -280,6 +280,12 @@ a:hover {
   content: " \2191"; /* ↑ UPWARDS ARROW */
   color: grey;
 }
+*:hover > a.self-link:after {
+  content: "\1F517"; /* LINK SYMBOL */
+  color: grey;
+  font-size: smaller;
+  margin-left: 0.2em;
+}
 /* highlight the target of the current URL */
 /* section:target > h2, section:target > h3, section:target > h4, */
 /* section:target > h5, section:target > h6,			  */
