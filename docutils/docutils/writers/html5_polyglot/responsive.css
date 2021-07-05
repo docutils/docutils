@@ -260,11 +260,8 @@ pre.code .inserted, code .inserted { background-color: #A3D289}
 
 /* Hyperlink References */
 a {
-  text-decoration: none;
-  /* text-decoration-skip-ink: auto; !!nonstandard, default in modern browsers */
-}
-/* Wrap links at any place, if this is the only way to prevent overflow */
-a:link{
+  text-decoration: none; /* for chromium */
+  /* Wrap links at any place, if this is the only way to prevent overflow */
   overflow-wrap: break-word;
 }
 .contents a, a.toc-backref, a.citation-reference {
@@ -276,10 +273,22 @@ a:link{
 .citation a.fn-backref {
   color: inherit;
 }
-a:link:hover {
-  text-decoration: underline;}
-/* highlight the active ToC entry */
-.contents :target {
+a:hover {
+  text-decoration: underline;
+}
+*:hover > a.toc-backref:after {
+  content: " \2191"; /* ↑ UPWARDS ARROW */
+  color: grey;
+}
+/* highlight the target of the current URL */
+/* section:target > h2, section:target > h3, section:target > h4, */
+/* section:target > h5, section:target > h6,			  */
+.contents :target,
+.contents:target > .topic-title,
+[role="doc-biblioentry"]:target > .label,
+[role="doc-biblioref"]:target,
+[role="note"]:target > .label,
+[role="doc-noteref"]:target {
   background-color: #d2e6ec;
 }
 

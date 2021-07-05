@@ -62,8 +62,9 @@ Changes Since 0.17.1
     they are present also without CSS and when copying text.
     Adapt ``minimal.css``.
 
-  - Use semantic tags <aside> and <nav> for footnote text and citations,
-    topics, admonitions, and system-messages.
+  - Use semantic tags <aside> for footnote text, topics, admonitions, 
+    and system-messages and <nav> for the table of contents. Use <div>
+    for citations.
 
   - Use ARIA roles to enable accessible HTML for abstract, dedication,
     the table of contents, footnote, references, footnotes, citations,
@@ -76,6 +77,9 @@ Changes Since 0.17.1
     "compound-last" to elements nested in a compound.
     Use class value "backrefs" instead of "fn-backref" for a span of
     back-references.
+    
+  - Move space character between section number and heading into
+    "sectnum" span.
 
   - Removed attribute ``HTMLTranslator.topic_classes``
 
