@@ -413,7 +413,6 @@ class HTMLTranslator(nodes.NodeVisitor):
         tagname = tagname.lower()
         prefix = []
         atts = {}
-        ids = []
         for (name, value) in attributes.items():
             atts[name.lower()] = value
         classes = atts.pop('classes', [])
@@ -430,7 +429,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         if classes:
             atts['class'] = ' '.join(classes)
         assert 'id' not in atts
-        ids.extend(node.get('ids', []))
+        ids = node.get('ids', [])
         ids.extend(atts.pop('ids', []))
         if ids:
             atts['id'] = ids[0]
@@ -964,7 +963,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         if 'sectnum' in node['classes']:
             # get section number (strip trailing no-break-spaces)
             sectnum = node.astext().rstrip(u' ')
-            self.body.append('<span class="sectnum">%s</span> '
+            self.body.append('<span class="sectnum">%s </span>'
                                     % self.encode(sectnum))
             # Content already processed:
             raise nodes.SkipNode

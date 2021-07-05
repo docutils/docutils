@@ -93,6 +93,9 @@ Release 0.18.dev
 
     Items of a definition list with class argument "details" are
     converted to `details disclosure elements`_.
+    
+    Move space character between section number and heading into
+    "sectnum" span.
 
   LaTeX:
      `legacy_class_functions`_ setting default changed to "False":
