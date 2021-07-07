@@ -232,12 +232,8 @@ cd $htdocsdest
 for htmlfile in `find . -name '*.html'` ; do
     dir=`dirname $htmlfile`
     base=`basename $htmlfile .html`
-    # functional tests: reST in input htm in expected or output
+    # functional tests and sandbox might not have reST and html in same directory
     if [ "$base" == "standalone_rst_html4strict" ] ; then
-        # breaks web update
-        print_feedback "skipped: $dir $base"
-    elif [ "$dir" == "./test/functional/expected" ] ; then
-        # breaks web update
         print_feedback "skipped: $dir $base"
     else
         txtfile=$dir/$base.txt
@@ -247,15 +243,19 @@ for htmlfile in `find . -name '*.html'` ; do
         if [ ! -e $txtfile  ] ; then
             txtfile=$dir/$base
         fi
-        if [ $unconditional -eq 1 -o $txtfile -nt $htmlfile ] ; then
-            if [ "${base:0:4}" == "pep-" ] ; then
-                print_feedback "$txtfile (PEP)"
-                python $lib/tools/rstpep2html.py --config=$dir/docutils.conf $txtfile $htmlfile
-                haschanges=1
-            else
-                print_feedback "$txtfile"
-                python $lib/tools/rst2html5.py --config=$dir/docutils.conf $txtfile $htmlfile
-                haschanges=1
+        if [ ! -e $txtfile  ] ; then
+            print_feedback "warn: no input found: $dir $base"
+        else
+            if [ $unconditional -eq 1 -o $txtfile -nt $htmlfile ] ; then
+                if [ "${base:0:4}" == "pep-" ] ; then
+                    print_feedback "$txtfile (PEP)"
+                    python $lib/tools/rstpep2html.py --config=$dir/docutils.conf $txtfile $htmlfile
+                    haschanges=1
+                else
+                    print_feedback "$txtfile"
+                    python $lib/tools/rst2html5.py --config=$dir/docutils.conf $txtfile $htmlfile
+                    haschanges=1
+                fi
             fi
         fi
     fi
