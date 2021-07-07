@@ -12,14 +12,6 @@
 #
 # * and ``trunk/sandbox``.
 #
-# TODO
-# 
-# * sourceforge does not offer cron, but shell or web instead:
-#   maybe use cgi-bin script to rebuild the website now and then,
-#   e.g. if accessed and more than one day old and svn is newer.
-# * this file might become easier if cleanest cron task handling is
-#   cut out, as it is not run by cron.
-#
 # ATTENTION
 #
 # Any .html document with a corresponding .txt file is regenerated 
@@ -59,7 +51,7 @@ if [ ! -e $basedir ] ; then
     test -d $basedir || mkdir $basedir
 fi
 project=docutils
-# $auxdir is non-public.
+# $auxdir is non-public ... and unnecessary if run locally 
 auxdir=$basedir/aux
 test -d $auxdir || mkdir $auxdir
 # $htdocsdest is the destination for htdocs and will be moved to
@@ -81,6 +73,7 @@ lib=$pylib/$project
 lockdir=$auxdir/lock
 
 # Project base URL (for sitemap) without trailing slash.
+# TODO change to .io ?
 baseurl="http://docutils.sourceforge.net"
 
 export PYTHONPATH=$pylib:$lib:$lib/extras
