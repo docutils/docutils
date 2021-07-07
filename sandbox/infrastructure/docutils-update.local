@@ -232,7 +232,11 @@ cd $htdocsdest
 for htmlfile in `find . -name '*.html'` ; do
     dir=`dirname $htmlfile`
     base=`basename $htmlfile .html`
+    # functional tests: reST in input htm in expected or output
     if [ "$base" == "standalone_rst_html4strict" ] ; then
+        # breaks web update
+        print_feedback "skipped: $dir $base"
+    elif [ "$dir" == "./test/functional/expected" ] ; then
         # breaks web update
         print_feedback "skipped: $dir $base"
     else
