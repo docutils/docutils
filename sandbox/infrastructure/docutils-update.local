@@ -225,11 +225,11 @@ while read -r htmlfile ; do
 done < $htmlfilelist
 
 # 3. re/generate html from txt
-cd $htdocsdest/tools
+cd $htdocsdest
 
 # TODO use buildhtml.py ?
 
-for htmlfile in `find .. -name '*.html'` ; do
+for htmlfile in `find . -name '*.html'` ; do
     dir=`dirname $htmlfile`
     base=`basename $htmlfile .html`
     if [ "$base" == "standalone_rst_html4strict" ] ; then
