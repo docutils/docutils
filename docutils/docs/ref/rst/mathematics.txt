@@ -369,7 +369,7 @@ the *font weight*. In LaTeX, it can be used to get a bold version of any
 mathematical symbol (for other output formats, results are mixed):
 
 .. math::
-   \boldsymbol{abs(x)\pm\alpha \approx 3\Gamma \quad \forall x\in\mathbb{R}}
+   \boldsymbol{\cos(x)\pm\alpha \approx 3\Gamma \quad \forall x\in\mathbb{R}}
 
 
 Miscellaneous symbols
