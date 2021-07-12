@@ -42,6 +42,8 @@ from docutils.utils.math import tex2unichar, toplevel_code
 # identifiers -> <mi>
 
 letters = tex2unichar.mathalpha
+letters['hbar'] = u'\u210F' # compatiblity mapping to ℏ (\hslash).
+# (ħ LATIN SMALL LETTER H WITH STROKE is upright)
 
 # special case: Capital Greek letters: (upright in TeX style)
 greek_capitals = {
@@ -131,6 +133,12 @@ operators = {# negated symbols without pre-composed Unicode character
              'nlessgtr':   u'\u2276\u0338', # txfonts
              'nsubseteqq': u'\u2AC5\u0338', # ⫅̸
              'nsupseteqq': u'\u2AC6\u0338', # ⫆̸
+             # compatibility definitions:
+             'centerdot': u'\u2B1D', # BLACK VERY SMALL SQUARE | mathbin
+             'varnothing': u'\u2300', # ⌀ DIAMETER SIGN | empty set
+             'varpropto': u'\u221d', # ∝ PROPORTIONAL TO | sans serif
+             'triangle': u'\u25B3', # WHITE UP-POINTING TRIANGLE | mathord
+             'triangledown': u'\u25BD', # WHITE DOWN-POINTING TRIANGLE | mathord
              # alias commands:
              'dotsb': u'\u22ef', # ⋯ with binary operators/relations
              'dotsc': u'\u2026', # … with commas
@@ -147,6 +155,7 @@ operators = {# negated symbols without pre-composed Unicode character
 operators.update(tex2unichar.mathbin)   # Binary symbols
 operators.update(tex2unichar.mathrel)   # Relation symbols, arrow symbols
 operators.update(tex2unichar.mathord)   # Miscellaneous symbols
+operators.update(tex2unichar.mathpunct) # Punctuation
 operators.update(tex2unichar.mathop)    # Variable-sized symbols
 operators.update(stretchables)
 
@@ -177,9 +186,9 @@ displaylimits = ('bigcap', 'bigcup', 'bigodot', 'bigoplus', 'bigotimes',
 # Depending on settings, integrals may also be in this category.
 # (e.g. if "amsmath" is loaded with option "intlimits", see
 #  http://mirror.ctan.org/macros/latex/required/amsmath/amsldoc.pdf)
-# displaylimits.extend(('fint', 'iiiint', 'iiint', 'iint', 'int', 'oiint',
-#                       'oint', 'ointctrclockwise', 'sqint',
-#                       'varointclockwise',))
+# displaylimits.extend(('fint', 'idotsint', 'iiiint', 'iiint', 'iint',
+#                       'int', 'oiint', 'oint', 'ointctrclockwise',
+#                       'sqint', 'varointclockwise',))
 
 
 # horizontal space -> <mspace>
@@ -912,6 +921,10 @@ def handle_cmd(name, node, string):
     if name == 'colon': # trailing punctuation, not binary relation
         node = node.append(mo(':', form='postfix', lspace='0', rspace='0.28em'))
         return node, string
+    
+    if name == 'idotsint':
+        node = parse_latex_math(node, '\int\dotsi\int')
+        return node, string
 
     if name in thick_operators:
         node = node.append(mo(thick_operators[name], style='font-weight: bold'))
@@ -1106,8 +1119,6 @@ def handle_cmd(name, node, string):
 
     if name == 'end':
         return end_environment(node, string)
-
-
 
     raise SyntaxError(u'Unknown LaTeX command: ' + name)
 

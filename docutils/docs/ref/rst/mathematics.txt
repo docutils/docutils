@@ -83,7 +83,9 @@ The result is:
 
 
 .. [#math-syntax] The supported LaTeX commands include AMS extensions
-   (see, e.g., the `Short Math Guide`_).
+   (see, e.g., the `Short Math Guide`_). Some of the shown symbols
+   require the "amssymb" `LaTeX package`_ (or another package providing
+   the AMS symbol macros) when exported with the "latex" writer.
 
    The support is limited to a subset of *LaTeX math* by the conversion
    required for many output formats.  For HTML, the `math_output`_
@@ -98,6 +100,8 @@ The result is:
    http://mirrors.ctan.org/info/short-math-guide/short-math-guide.pdf
 .. _math_output:
    https://docutils.sourceforge.io/docs/user/config.html#math-output
+.. _LaTeX package:
+   ../../user/latex.html#latex-document-classes-and-packages
 
 
 Mathematical symbols
@@ -215,8 +219,8 @@ incorrect spacing, e.g., ``|k|=|-k|`` produces `|k| = |−k|` and
 
 .. TODO: fix spacing before unary minus (see also cases example below).
 
-Vertical Arrows
-~~~~~~~~~~~~~~~
+Extensible vertical arrows
+--------------------------
 .. class:: colwidths-auto
 
   ===============================  ======================================
@@ -224,6 +228,7 @@ Vertical Arrows
   `\downarrow`   ``\downarrow``    `\Downarrow`   ``\Downarrow``
   `\updownarrow` ``\updownarrow``  `\Updownarrow` ``\Updownarrow``
   ===============================  ======================================
+
 
 Functions (named operators)
 ---------------------------
@@ -269,14 +274,14 @@ formulas and not supported by LaTeX.
   ========== ============  ========== ============  ========== ============  ============== ===============
   `\Gamma`   ``\Gamma``    `\alpha`   ``\alpha``    `\mu`      ``\mu``       `\omega`       ``\omega``
   `\Delta`   ``\Delta``    `\beta`    ``\beta``     `\nu`      ``\nu``       `\digamma`     ``\digamma``
-  `\Lambda`  ``\Lambda``   `\gamma`   ``\gamma``    `\xi`      ``\xi``       `\backepsilon` ``\backepsilon``
-  `\Phi`     ``\Phi``      `\delta`   ``\delta``    `\pi`      ``\pi``       `\varepsilon`  ``\varepsilon``
-  `\Pi`      ``\Pi``       `\epsilon` ``\epsilon``  `\rho`     ``\rho``      `\varkappa`    ``\varkappa``
-  `\Psi`     ``\Psi``      `\zeta`    ``\zeta``     `\sigma`   ``\sigma``    `\varphi`      ``\varphi``
-  `\Sigma`   ``\Sigma``    `\eta`     ``\eta``      `\tau`     ``\tau``      `\varpi`       ``\varpi``
-  `\Theta`   ``\Theta``    `\theta`   ``\theta``    `\upsilon` ``\upsilon``  `\varrho`      ``\varrho``
-  `\Upsilon` ``\Upsilon``  `\iota`    ``\iota``     `\phi`     ``\phi``      `\varsigma`    ``\varsigma``
-  `\Xi`      ``\Xi``       `\kappa`   ``\kappa``    `\chi`     ``\chi``      `\vartheta`    ``\vartheta``
+  `\Lambda`  ``\Lambda``   `\gamma`   ``\gamma``    `\xi`      ``\xi``       `\varepsilon`  ``\varepsilon``
+  `\Phi`     ``\Phi``      `\delta`   ``\delta``    `\pi`      ``\pi``       `\varkappa`    ``\varkappa``
+  `\Pi`      ``\Pi``       `\epsilon` ``\epsilon``  `\rho`     ``\rho``      `\varphi`      ``\varphi``
+  `\Psi`     ``\Psi``      `\zeta`    ``\zeta``     `\sigma`   ``\sigma``    `\varpi`       ``\varpi``
+  `\Sigma`   ``\Sigma``    `\eta`     ``\eta``      `\tau`     ``\tau``      `\varrho`      ``\varrho``
+  `\Theta`   ``\Theta``    `\theta`   ``\theta``    `\upsilon` ``\upsilon``  `\varsigma`    ``\varsigma``
+  `\Upsilon` ``\Upsilon``  `\iota`    ``\iota``     `\phi`     ``\phi``      `\vartheta`    ``\vartheta``
+  `\Xi`      ``\Xi``       `\kappa`   ``\kappa``    `\chi`     ``\chi``
   `\Omega`   ``\Omega``    `\lambda`  ``\lambda``   `\psi`     ``\psi``
   ========== ============  ========== ============  ========== ============  ============== ===============
 
@@ -447,12 +452,7 @@ Arrows
   `\upuparrows`          ``\upuparrows``           `\downdownarrows`     ``\downdownarrows``
   ====================== ========================  ===================== =======================
 
-
-
-
-
 Synonyms: `\gets` ``\gets``, `\to` ``\to``, `\restriction` ``\restriction``.
-
 
 Comparison
 ~~~~~~~~~~
@@ -626,19 +626,19 @@ commands:
 .. class:: colwidths-auto
 
   ======================  ========  =====================  ==================
-  :m:`3\qquad |`                    ``3\qquad |``          = 2em
-  :m:`3\quad |`                     ``3\quad |``           = 1em
-  :m:`3~|`                ``3~|``   ``3\nobreakspace |``
-  :m:`3\ |`               ``3\ |``                         escaped space
-  :m:`3\;|`               ``3\;|``  ``3\thickspace |``
-  :m:`3\:|`               ``3\:|``  ``3\medspace |``
-  :m:`3\,|`               ``3\,|``  ``3\thinspace |``
-  :m:`3  |`               ``3  |``                         regular space [#]_
-  :m:`3\!|`               ``3\!|``  ``3\negthinspace |``
-  :m:`3\negmedspace |`              ``3\negmedspace |``
-  :m:`3\negthickspace |`            ``3\negthickspace |``
-  `3\hspace{1ex}|`                  ``3\hspace{1ex}|``     custom length
-  `3\mspace{20mu}|`                 ``3\mspace{20mu}|``    custom length [#]_
+  :m:`3\qquad 4`                    ``3\qquad 4``          = 2em
+  :m:`3\quad 4`                     ``3\quad 4``           = 1em
+  :m:`3~4`                ``3~4``   ``3\nobreakspace 4``
+  :m:`3\ 4`               ``3\ 4``                         escaped space
+  :m:`3\;4`               ``3\;4``  ``3\thickspace 4``
+  :m:`3\:4`               ``3\:4``  ``3\medspace 4``
+  :m:`3\,4`               ``3\,4``  ``3\thinspace 4``
+  :m:`3  4`               ``3  4``                         regular space [#]_
+  :m:`3\!4`               ``3\!4``  ``3\negthinspace 4``
+  :m:`3\negmedspace 4`              ``3\negmedspace 4``
+  :m:`3\negthickspace 4`            ``3\negthickspace 4``
+  `3\hspace{1ex}4`                  ``3\hspace{1ex}4``     custom length
+  `3\mspace{20mu}4`                 ``3\mspace{20mu}4``    custom length [#]_
   ======================  ========  =====================  ==================
 
 .. [#] Whitespace characters are ignored in LaTeX math mode.
@@ -962,36 +962,34 @@ with extensible delimiters.
    \left.\{b\right \} \ \bigl\{b\Bigr \} \ \biggl\{b\Biggr \}
    \quad
    \left.\langle b\right\rangle\ \bigl\langle b\Bigr\rangle\ \biggl\langle b\Biggr\rangle
-   \quad
-   \left.\lceil b\right\rceil\ \bigl\lceil b\Bigr\rceil\ \biggl\lceil b\Biggr\rceil
 
+   \left.\lceil b\right\rceil\ \bigl\lceil b\Bigr\rceil\ \biggl\lceil b\Biggr\rceil
+   \quad
    \left.\lfloor b\right\rfloor\ \bigl\lfloor b\Bigr\rfloor\ \biggl\lfloor b\Biggr\rfloor
-   \quad
-   \left.\lgroup b\right\rgroup\ \bigl\lgroup b\Bigr\rgroup\ \biggl\lgroup b\Biggr\rgroup
-   \quad
-   \left.\lmoustache b\right\rmoustache\ \bigl\lmoustache b\Bigr\rmoustache\ \biggl\lmoustache b\Biggr\rmoustache
    \quad
    \left.\lvert b\right\rvert\ \bigl\lvert b\Bigr\rvert\ \biggl\lvert b\Biggr\rvert
    \quad
    \left.\lVert b\right\rVert\ \bigl\lVert b\Bigr\rVert\ \biggl\lVert b\Biggr\rVert
 
-   \left.|b\right\|\ \bigl|b\Bigr\|\ \biggl|b\Biggr\|
+   \left.\lgroup b\right\rgroup\ \bigl\lgroup b\Bigr\rgroup\ \biggl\lgroup b\Biggr\rgroup
+   \quad
+   \left.\lmoustache b\right\rmoustache\ \bigl\lmoustache b\Bigr\rmoustache\ \biggl\lmoustache b\Biggr\rmoustache
    \quad
    \left./b\right\backslash\ \bigl/b\Bigr\backslash\ \biggl/b\Biggr\backslash
+
+   \left.|b\right\|\ \bigl|b\Bigr\|\ \biggl|b\Biggr\|
    \quad
-   \left.(b\right)\ \bigl(b\Bigr)\ \biggl(b\Biggr)
+   \left.\vert b\right\Vert\ \bigl\vert b\Bigr\Vert\ \biggl\vert b\Biggr\Vert
    \quad
    \left.\arrowvert b\right\Arrowvert\ \bigl\arrowvert b\Bigr\Arrowvert\ \biggl\arrowvert b\Biggr\Arrowvert
-
-   \left.\bracevert b\right\bracevert\ \bigl\bracevert b\Bigr\bracevert\ \biggl\bracevert b\Biggr\bracevert
    \quad
-   \left.\vert \frac{b}{a}\right\Vert\ \bigl\vert b\Bigr\Vert\ \biggl\vert b\Biggr\Vert
+   \left.\bracevert b\right\bracevert\ \bigl\bracevert b\Bigr\bracevert\ \biggl\bracevert b\Biggr\bracevert
    \quad
 
 
 Variable-sized operators:
 
-Inline: `\sum\ \int\ \iint\ \iiint\ \iiiint\ \idotsint\ \oint\ \smallint\
+Inline: `\sum\ \int\ \iint\ \iiint\ \iiiint\ \idotsint \oint\ \smallint\
 \prod\ \coprod\ \bigwedge\ \bigvee\ \bigcap\ \bigcup\ \biguplus\
 \bigsqcup\ \bigodot\ \bigoplus\ \bigotimes` and Display:
 
@@ -999,16 +997,16 @@ Inline: `\sum\ \int\ \iint\ \iiint\ \iiiint\ \idotsint\ \oint\ \smallint\
    \sum\ \prod\ \coprod\ \bigwedge\ \bigvee\ \bigcap\ \bigcup\
    \biguplus\ \bigsqcup\ \bigodot\ \bigoplus\ \bigotimes
 
-.. math:: \int_1 f\ \intop_1 f\ \iint_1 f\ \smallint_1 f\ \sum_1 \
-   \prod_1 \ \bigwedge_1 \ \bigcap_1 \ \biguplus_1 \ \bigodot_1 \ \int^N
-   \ \intop^N \ \iiiint^N \ \oint^N \ \smallint^N \ \sum^N \ \coprod^N \
-   \bigvee^N \ \bigcup^N \ \bigsqcup^N \ \bigotimes^N \
+.. math:: \int_1 f\ \intop_1 f\ \iint_1 f\ \smallint_1 f\ \sum_1\
+   \prod_1\ \bigwedge_1\ \bigcap_1\ \biguplus_1\ \bigodot_1\ \int^N\
+   \intop^N\ \iiiint^N\ \oint^N\ \smallint^N\ \sum^N\ \coprod^N\
+   \bigvee^N\ \bigcup^N\ \bigsqcup^N\ \bigotimes^N
 
-.. math:: \int_1^N \ \intop_1^N \ \iint_1^N \ \iiint_1^N \ \iiiint_1^N \
-   \idotsint_1^N \ \oint_1^N \ \smallint_1^N \ \sum_1^N \ \prod_1^N \
-   \coprod_1^N \ \bigwedge_1^N \ \bigvee_1^N \ \bigcap_1^N \ \bigcup_1^N
-   \ \biguplus_1^N \ \bigsqcup_1^N \ \bigodot_1^N \ \bigoplus_1^N \
-   \bigotimes_1^N \
+.. math:: \int_1^N\ \intop_1^N\ \iint_1^N\ \iiint_1^N\ \iiiint_1^N\
+   \idotsint_1^N\ \oint_1^N\ \smallint_1^N\ \sum_1^N\ \prod_1^N\
+   \coprod_1^N\ \bigwedge_1^N\ \bigvee_1^N\ \bigcap_1^N\ \bigcup_1^N
+   \ \biguplus_1^N\ \bigsqcup_1^N\ \bigodot_1^N\ \bigoplus_1^N\
+   \bigotimes_1^N
 
 
 

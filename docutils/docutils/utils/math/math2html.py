@@ -206,6 +206,7 @@ class FormulaConfig(object):
       '\\\\': u'<br/>',
       '\\\n': u' ', # escaped whitespace
       '\\\t': u' ', # escaped whitespace
+      '\\centerdot': u'\u2B1D', # BLACK VERY SMALL SQUARE, mathbin
       '\\colon': u': ',
       '\\copyright': u'©',
       '\\dotminus': u'∸',
@@ -218,6 +219,7 @@ class FormulaConfig(object):
       '\\euro': u'€',
       '\\guillemotleft': u'«',
       '\\guillemotright': u'»',
+      '\\hbar': u'<i>\u0127</i>', # ħ LATIN SMALL LETTER H WITH STROKE
       '\\lVert': u'‖',
       '\\Arrowvert':  u'\u2016', # ‖
       '\\lvert': u'|',
@@ -228,12 +230,6 @@ class FormulaConfig(object):
       '\\qquad': u'  ',
       '\\rVert': u'‖',
       '\\rvert': u'|',
-      '\\shortmid': u'<span class="smallsymbol">∣</span>',
-      '\\shortparallel': u'<span class="smallsymbol">∥</span>',
-      '\\nshortmid': u'<span class="smallsymbol">∤</span>',
-      '\\nshortparallel': u'<span class="smallsymbol">∦</span>',
-      '\\smallfrown': u'<span class="smallsymbol">⌢</span>',
-      '\\smallsmile': u'<span class="smallsymbol">⌣</span>',
       '\\textasciicircum': u'^',
       '\\textasciitilde': u'~',
       '\\textbackslash': u'\\',
@@ -256,8 +252,11 @@ class FormulaConfig(object):
       '\\texttrademark': u'™',
       '\\texttwosuperior': u'²',
       '\\textvisiblespace': u' ',
-      '\\thickapprox': u'<b>≈</b>',
-      '\\thicksim':    u'<b>∼</b>',
+      '\\thickspace': u'<span class="thickspace"> </span>', # 5/13 em
+      '\\;': u'<span class="thickspace"> </span>', # 5/13 em
+      '\\triangle': u'\u25B3', # WHITE UP-POINTING TRIANGLE, mathord
+      '\\triangledown': u'\u25BD', # WHITE DOWN-POINTING TRIANGLE, mathord
+      '\\varnothing': u'\u2300', # ⌀ DIAMETER SIGN
       # functions
       '\\Pr': u'Pr',
       '\\arccos': u'arccos',
@@ -290,11 +289,12 @@ class FormulaConfig(object):
       '\\tanh': u'tanh',
   }
   cmddict = {}
-  cmddict.update(tex2unichar.mathbin)
+  cmddict.update(tex2unichar.mathbin) # TODO: spacing around binary operators
   cmddict.update(tex2unichar.mathopen)
   cmddict.update(tex2unichar.mathclose)
   cmddict.update(tex2unichar.mathfence)
   cmddict.update(tex2unichar.mathord)
+  cmddict.update(tex2unichar.mathpunct)
   cmddict.update(tex2unichar.space)
   commands.update(('\\' + key, value) for key, value in cmddict.items())
 
@@ -341,7 +341,6 @@ class FormulaConfig(object):
       u'smallmatrix': [u'c', u'c',],
       }
 
-
   fontfunctions = {
       u'\\boldsymbol': u'b', u'\\mathbb': u'span class="blackboard"',
       u'\\mathbb{A}': u'𝔸', u'\\mathbb{B}': u'𝔹', u'\\mathbb{C}': u'ℂ',
@@ -351,19 +350,22 @@ class FormulaConfig(object):
       u'\\mathbb{O}': u'𝕆', u'\\mathbb{P}': u'ℙ', u'\\mathbb{Q}': u'ℚ',
       u'\\mathbb{R}': u'ℝ', u'\\mathbb{S}': u'𝕊', u'\\mathbb{T}': u'𝕋',
       u'\\mathbb{W}': u'𝕎', u'\\mathbb{Z}': u'ℤ', u'\\mathbf': u'b',
-      u'\\mathcal': u'span class="scriptfont"', u'\\mathcal{B}': u'ℬ',
-      u'\\mathcal{E}': u'ℰ', u'\\mathcal{F}': u'ℱ', u'\\mathcal{H}': u'ℋ',
-      u'\\mathcal{I}': u'ℐ', u'\\mathcal{L}': u'ℒ', u'\\mathcal{M}': u'ℳ',
-      u'\\mathcal{R}': u'ℛ', u'\\mathfrak': u'span class="fraktur"',
+      u'\\mathcal': u'span class="scriptfont"',
+      u'\\mathcal{B}': u'ℬ', u'\\mathcal{E}': u'ℰ', u'\\mathcal{F}':
+      u'ℱ', u'\\mathcal{H}': u'ℋ', u'\\mathcal{I}': u'ℐ',
+      u'\\mathcal{L}': u'ℒ', u'\\mathcal{M}': u'ℳ', u'\\mathcal{R}': u'ℛ',
+      u'\\mathfrak': u'span class="fraktur"',
       u'\\mathfrak{C}': u'ℭ', u'\\mathfrak{F}': u'𝔉', u'\\mathfrak{H}': u'ℌ',
       u'\\mathfrak{I}': u'ℑ', u'\\mathfrak{R}': u'ℜ', u'\\mathfrak{Z}': u'ℨ',
-      u'\\mathit': u'i', u'\\mathring{A}': u'Å', u'\\mathring{U}': u'Ů',
+      u'\\mathit': u'i',
+      u'\\mathring{A}': u'Å', u'\\mathring{U}': u'Ů',
       u'\\mathring{a}': u'å', u'\\mathring{u}': u'ů', u'\\mathring{w}': u'ẘ',
-      u'\\mathring{y}': u'ẙ', u'\\mathrm': u'span class="mathrm"',
-      u'\\mathscr': u'span class="scriptfont"',
-      u'\\mathscr{B}': u'ℬ', u'\\mathscr{E}': u'ℰ', u'\\mathscr{F}':
-      u'ℱ', u'\\mathscr{H}': u'ℋ', u'\\mathscr{I}': u'ℐ',
-      u'\\mathscr{L}': u'ℒ', u'\\mathscr{M}': u'ℳ', u'\\mathscr{R}': u'ℛ',
+      u'\\mathring{y}': u'ẙ',
+      u'\\mathrm': u'span class="mathrm"',
+      u'\\mathscr': u'span class="mathscr"',
+      u'\\mathscr{B}': u'ℬ', u'\\mathscr{E}': u'ℰ', u'\\mathscr{F}': u'ℱ',
+      u'\\mathscr{H}': u'ℋ', u'\\mathscr{I}': u'ℐ', u'\\mathscr{L}': u'ℒ',
+      u'\\mathscr{M}': u'ℳ', u'\\mathscr{R}': u'ℛ',
       u'\\mathsf': u'span class="mathsf"',
       u'\\mathtt': u'span class="mathtt"',
       u'\\operatorname': u'span class="mathrm"',
@@ -510,13 +512,20 @@ class FormulaConfig(object):
       '\\ngeqslant':  u'\u2a7e\u0338', # ⩾̸
       '\\nsubseteqq': u'\u2AC5\u0338', # ⫅̸
       '\\nsupseteqq': u'\u2AC6\u0338', # ⫆̸
-      '\\ngtrless':   u'\u2277\u0338', # ≹
-      '\\nlessgtr':   u'\u2276\u0338', # ≸
       '\\nsqsubset':  u'\u2276\u228F', # ⊏̸
+      # modified glyphs
+      '\\shortmid': u'<span class="smallsymbol">∣</span>',
+      '\\shortparallel': u'<span class="smallsymbol">∥</span>',
+      '\\nshortmid': u'<span class="smallsymbol">∤</span>',
+      '\\nshortparallel': u'<span class="smallsymbol">∦</span>',
+      '\\smallfrown': u'<span class="smallsymbol">⌢</span>',
+      '\\smallsmile': u'<span class="smallsymbol">⌣</span>',
+      '\\thickapprox': u'<span class="boldsymbol">≈</span>',
+      '\\thicksim': u'<span class="boldsymbol">∼</span>',
+      '\\varpropto': u'<span class="mathsf">\u221d</span>', # ∝ PROPORTIONAL TO
       }
   for key, value in tex2unichar.mathrel.items():
       spacedcommands['\\'+key] = value
-
   starts = {
       u'beginafter': u'}', u'beginbefore': u'\\begin{', u'bracket': u'{',
       u'command': u'\\', u'comment': u'%', u'complex': u'\\[', u'simple': u'$',
@@ -530,14 +539,14 @@ class FormulaConfig(object):
   textfunctions = {
       u'\\mbox': u'span class="mbox"',
       u'\\text': u'span class="text"',
-      u'\\textbf': u'b',
-      u'\\textit': u'i',
+      u'\\textbf': u'span class="textbf"',
+      u'\\textit': u'span class="textit"',
       u'\\textnormal': u'span class="textnormal"',
       u'\\textrm': u'span class="textrm"',
       u'\\textsc': u'span class="textsc"',
       u'\\textsf': u'span class="textsf"',
-      u'\\textsl': u'i',
-      u'\\texttt': u'tt',
+      u'\\textsl': u'span class="textsl"',
+      u'\\texttt': u'span class="texttt"',
       u'\\textup': u'span class="normal"',
       }
 

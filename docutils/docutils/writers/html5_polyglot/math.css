@@ -108,6 +108,9 @@ span.smallsymbol {
 	font-size: 75%;
 	line-height: 75%;
 }
+span.boldsymbol {
+	font-weight: bold;
+}
 span.sqrt {
 	display: inline-block;
 	vertical-align: middle;
@@ -278,25 +281,17 @@ span.bracket {
 	font-family: "DejaVu Serif", serif;
 }
 span.mathsf, span.textsf {
-	font-style: normal;
 	font-family: sans-serif;
 }
 span.mathrm, span.textrm {
-	font-style: normal;
 	font-family: STIX, "DejaVu Serif", "DejaVu Math TeX Gyre", serif;
 }
 span.mathtt, span.texttt {
-	font-style: normal;
 	font-family: monospace;
 }
-span.textsc {
-	font-variant: small-caps;
-}
-span.text, span.textnormal {
+span.text, span.textnormal,
+span.mathsf, span.mathtt, span.mathrm {
 	font-style: normal;
-}
-span.textipa {
-	color: #008080;
 }
 span.fraktur {
 	font-family: "Lucida Blackletter", eufm10, blackletter;
@@ -307,6 +302,16 @@ span.blackboard {
 span.scriptfont {
 	font-family: "Monotype Corsiva", "Apple Chancery", "URW Chancery L", cursive;
 	font-style: italic;
+}
+span.mathscr {
+  font-family: MathJax_Script, rsfs10,  cursive;
+  font-style: italic;
+}
+span.textsc {
+	font-variant: small-caps;
+}
+span.textsl {
+	font-style: obligue;
 }
 
 /* Colors */
