@@ -16,7 +16,6 @@ LaTeX syntax for mathematics
 __ https://docutils.sourceforge.io/docs/ref/rst/directives.html#math
 __ https://docutils.sourceforge.io/docs/ref/rst/roles.html#math
 
-
 Inline formulas and displayed equations
 =======================================
 
@@ -24,7 +23,7 @@ The **math role** can be used for inline mathematical expressions:
 ``:math:`\psi(r) = \exp(-2r)``` will produce :m:`\psi(r)=\exp(-2r)`.
 Inside the backtics you can write anything you would write between dollar
 signs in a LaTeX document.  [#math-syntax]_
-
+ 
 .. tip::
 
   If you put ``.. default-role:: math`` at the top of your
@@ -992,14 +991,26 @@ with extensible delimiters.
 
 Variable-sized operators:
 
-Inline: `\sum\ \int\ \oint\ \smallint\ \prod\ \coprod\ \bigwedge\
-\bigvee\ \bigcap\ \bigcup\ \biguplus\ \bigsqcup\ \bigodot\ \bigoplus\
-\bigotimes` and Display:
+Inline: `\sum\ \int\ \iint\ \iiint\ \iiiint\ \idotsint\ \oint\ \smallint\
+\prod\ \coprod\ \bigwedge\ \bigvee\ \bigcap\ \bigcup\ \biguplus\
+\bigsqcup\ \bigodot\ \bigoplus\ \bigotimes` and Display:
 
-.. math:: \sum\ \int\ \oint\ \smallint\ \prod\ \coprod\ \bigwedge
-          \ \bigvee\ \bigcap\ \bigcup\ \biguplus\ \bigsqcup\ \bigodot
-          \ \bigoplus\ \bigotimes
-          \ \iiint\ \iiiint
+.. math:: \int\ \iint\ \iiint\ \iiiint\ \idotsint\ \oint\ \smallint\
+   \sum\ \prod\ \coprod\ \bigwedge\ \bigvee\ \bigcap\ \bigcup\
+   \biguplus\ \bigsqcup\ \bigodot\ \bigoplus\ \bigotimes
+
+.. math:: \int_1 f\ \intop_1 f\ \iint_1 f\ \smallint_1 f\ \sum_1 \
+   \prod_1 \ \bigwedge_1 \ \bigcap_1 \ \biguplus_1 \ \bigodot_1 \ \int^N
+   \ \intop^N \ \iiiint^N \ \oint^N \ \smallint^N \ \sum^N \ \coprod^N \
+   \bigvee^N \ \bigcup^N \ \bigsqcup^N \ \bigotimes^N \
+
+.. math:: \int_1^N \ \intop_1^N \ \iint_1^N \ \iiint_1^N \ \iiiint_1^N \
+   \idotsint_1^N \ \oint_1^N \ \smallint_1^N \ \sum_1^N \ \prod_1^N \
+   \coprod_1^N \ \bigwedge_1^N \ \bigvee_1^N \ \bigcap_1^N \ \bigcup_1^N
+   \ \biguplus_1^N \ \bigsqcup_1^N \ \bigodot_1^N \ \bigoplus_1^N \
+   \bigotimes_1^N \
+
+
 
 Text
 ~~~~
