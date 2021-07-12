@@ -99,17 +99,18 @@ class ContainerConfig(object):
                      u'Bracket',
                      u'BracketCommand',
                      u'CombiningFunction',
-                     u'DecoratingFunction',
                      u'EmptyCommand',
                      u'FontFunction',
                      u'Formula',
                      u'FormulaNumber',
                      u'FormulaSymbol',
                      u'OneParamFunction',
+                     u'OversetFunction',
                      u'RawText',
                      u'SpacedCommand',
                      u'SymbolFunction',
                      u'TextFunction',
+                     u'UndersetFunction',
                     ],
       }
 
@@ -306,15 +307,33 @@ class FormulaConfig(object):
   cmddict.update(tex2unichar.space)
   commands.update(('\\' + key, value) for key, value in cmddict.items())
 
-  decoratedcommand = {
-      }
+  oversetfunctions = {
+      # math accents (cf. combiningfunctions)
+      # '\\acute':    u'´',
+      '\\bar':      u'‒',  # FIGURE DASH
+      # '\\breve':    u'˘',
+      # '\\check':    u'ˇ',
+      '\\dddot':    u'<span class="smallsymbol">⋯</span>',
+      # '\\ddot':     u'··', # ¨ too high
+      # '\\dot':      u'·',
+      # '\\grave':    u'`',
+      # '\\hat':      u'^',
+      # '\\mathring': u'˚',
+      # '\\tilde':    u'~',
+      '\\vec':      u'<span class="smallsymbol">→</span>',
+      # embellishments
+      '\\overleftarrow': u'⟵',
+      '\\overleftrightarrow': u'⟷',
+      '\\overrightarrow': u'⟶',
+      '\\widehat': u'^',
+      '\\widetilde': u'～',
+  }
 
-  decoratingfunctions = {u'\\overleftarrow': u'⟵',
-                         u'\\overrightarrow': u'⟶',
-                         u'\\overleftrightarrow': u'⟷',
-                         u'\\widehat': u'^',
-                         u'\\widetilde': u'～',
-      }
+  undersetfunctions = {
+      '\\underleftarrow': u'⟵',
+      '\\underleftrightarrow': u'⟷',
+      '\\underrightarrow': u'⟶',
+  }
 
   endings = {
       u'bracket': u'}',
@@ -456,28 +475,30 @@ class FormulaConfig(object):
       }
 
   onefunctions = {
-      '\\Big': u'span class="bigsymbol"',
-      '\\Bigl': u'span class="bigsymbol"',
-      '\\Bigr': u'span class="bigsymbol"',
-      '\\Bigg': u'span class="hugesymbol"',
-      '\\Biggl': u'span class="hugesymbol"',
-      '\\Biggr': u'span class="hugesymbol"',
-      '\\bar': u'span class="bar"', u'\\begin{array}': u'span class="arraydef"',
-      '\\big': u'span class="symbol"', u'\\bigg': u'span class="largesymbol"',
-      '\\bigl': u'span class="symbol"',
-      '\\bigr': u'span class="symbol"',
-      '\\biggl': u'span class="largesymbol"',
-      '\\biggr': u'span class="largesymbol"',
-      '\\centering': u'span class="align-center"',
-      '\\ensuremath': u'span class="ensuremath"',
-      '\\hphantom': u'span class="phantom"',
-      '\\noindent': u'span class="noindent"',
-      '\\overbrace': u'span class="overbrace"',
-      '\\overline': u'span class="overline"',
-      '\\phantom': u'span class="phantom"',
-      '\\underbrace': u'span class="underbrace"',
-      '\\underline': u'u',
-      '\\vphantom': u'span class="phantom"',
+      '\\Big': 'span class="bigsymbol"',
+      '\\Bigl': 'span class="bigsymbol"',
+      '\\Bigr': 'span class="bigsymbol"',
+      '\\Bigg': 'span class="hugesymbol"',
+      '\\Biggl': 'span class="hugesymbol"',
+      '\\Biggr': 'span class="hugesymbol"',
+      # '\\bar': 'span class="bar"',
+      '\\begin{array}': 'span class="arraydef"',
+      '\\big': 'span class="symbol"', 
+      '\\bigl': 'span class="symbol"',
+      '\\bigr': 'span class="symbol"',
+      '\\bigg': 'span class="largesymbol"',
+      '\\biggl': 'span class="largesymbol"',
+      '\\biggr': 'span class="largesymbol"',
+      '\\centering': 'span class="align-center"',
+      '\\ensuremath': 'span class="ensuremath"',
+      '\\hphantom': 'span class="phantom"',
+      '\\noindent': 'span class="noindent"',
+      '\\overbrace': 'span class="overbrace"',
+      '\\overline': 'span class="overline"',
+      '\\phantom': 'span class="phantom"',
+      '\\underbrace': 'span class="underbrace"',
+      '\\underline': 'u',
+      '\\vphantom': 'span class="phantom"',
       }
 
   # relations (put additional space before and after the symbol)
@@ -2697,7 +2718,6 @@ class CombiningFunction(OneParamFunction):
         i = 1
     parameter.string = parameter.string[:i] + combining + parameter.string[i:]
     # Use pre-composed characters if possible: \not{=} -> ≠, say.
-    # TODO: use overset for mathematical accents.
     parameter.string = unicodedata.normalize('NFC', parameter.string)
 
   def parsesingleparameter(self, pos):
@@ -2707,20 +2727,34 @@ class CombiningFunction(OneParamFunction):
       return None
     return self.parseparameter(pos)
 
-class DecoratingFunction(OneParamFunction):
-  "A function that decorates some bit of text"
+class OversetFunction(OneParamFunction):
+  "A function that decorates some bit of text with an overset."
 
-  commandmap = FormulaConfig.decoratingfunctions
+  commandmap = FormulaConfig.oversetfunctions
 
   def parsebit(self, pos):
-    "Parse a decorating function"
-    self.type = 'alpha'
+    "Parse an overset-function"
     symbol = self.translated
-    self.symbol = TaggedBit().constant(symbol, 'span class="symbolover"')
+    self.symbol = TaggedBit().constant(symbol, 'sup')
     self.parameter = self.parseparameter(pos)
-    self.output = TaggedOutput().settag('span class="withsymbol"')
+    self.output = TaggedOutput().settag('span class="embellished"')
     self.contents.insert(0, self.symbol)
-    self.parameter.output = TaggedOutput().settag('span class="undersymbol"')
+    self.parameter.output = TaggedOutput().settag('span class="base"')
+    self.simplifyifpossible()
+
+class UndersetFunction(OneParamFunction):
+  "A function that decorates some bit of text with an underset."
+
+  commandmap = FormulaConfig.undersetfunctions
+
+  def parsebit(self, pos):
+    "Parse an underset-function"
+    symbol = self.translated
+    self.symbol = TaggedBit().constant(symbol, 'sub')
+    self.parameter = self.parseparameter(pos)
+    self.output = TaggedOutput().settag('span class="embellished"')
+    self.contents.insert(0, self.symbol)
+    self.parameter.output = TaggedOutput().settag('span class="base"')
     self.simplifyifpossible()
 
 class LimitCommand(EmptyCommand):
@@ -2899,9 +2933,8 @@ class BracketProcessor(MathsProcessor):
     command.contents = bracket.getcontents()
 
 
-FormulaCommand.types += [
-    DecoratingFunction, CombiningFunction, LimitCommand, BracketCommand,
-    ]
+FormulaCommand.types += [OversetFunction, UndersetFunction,
+                         CombiningFunction, LimitCommand, BracketCommand]
 
 FormulaProcessor.processors += [
     LimitsProcessor(), BracketProcessor(),
