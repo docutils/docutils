@@ -82,16 +82,17 @@ span.overline, span.bar {
 }
 span.formula .fraction,
 .textfraction,
-.fraction .fraction,
 span.smallmatrix {
 	font-size: 80%;
-	line-height: 100%;
+	line-height: 1;
 }
 span.numerator {
 	display: block;
+	line-height: 1;
 }
 span.denominator {
 	display: block;
+	line-height: 1;
 	padding: 0ex;
 	border-top: thin solid;
 }
@@ -138,8 +139,8 @@ span.root {
 div.formula .bigoperator,
 .displaystyle .bigoperator,
 .displaystyle .bigoperator {
-	line-height: 130%;
-	font-size: 150%;
+	line-height: 120%;
+	font-size: 140%;
 	padding-right: 0.2ex;
 }
 span.fraction .bigoperator,

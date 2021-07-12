@@ -401,12 +401,12 @@ Punctuation
 .. class:: colwidths-auto
 
 === =====  ======== ===============  ======== ==========
-`.` ``.``  `!`      ``!``            `?`      ``?``
-`/` ``/``  `\colon` ``\colon`` [#]_  `\dotsb` ``\dotsb``
-`|` ``|``  `\cdots` ``\cdots``       `\dotsc` ``\dotsc``
-`'` ``'``  `\ddots` ``\ddots``       `\dotsi` ``\dotsi``
-`;` ``;``  `\ldots` ``\ldots``       `\dotsm` ``\dotsm``
-`:` ``:``  `\vdots` ``\vdots``       `\dotso` ``\dotso``
+`.` ``.``  `!`      ``!``            `\vdots` ``\vdots``
+`/` ``/``  `?`      ``?``            `\dotsb` ``\dotsb``
+`|` ``|``  `\colon` ``\colon`` [#]_  `\dotsc` ``\dotsc``
+`'` ``'``  `\cdots` ``\cdots``       `\dotsi` ``\dotsi``
+`;` ``;``  `\ddots` ``\ddots``       `\dotsm` ``\dotsm``
+`:` ``:``  `\ldots` ``\ldots``       `\dotso` ``\dotso``
 === =====  ======== ===============  ======== ==========
 
 .. [#] Punctuation (not ratio):
@@ -989,8 +989,8 @@ with extensible delimiters.
 
 Variable-sized operators:
 
-Inline: `\sum\ \int\ \iint\ \iiint\ \iiiint\ \idotsint \oint\ \smallint\
-\prod\ \coprod\ \bigwedge\ \bigvee\ \bigcap\ \bigcup\ \biguplus\
+Inline: `\int\ \iint\ \iiint\ \iiiint\ \idotsint \oint\ \smallint\
+\sum\ \prod\ \coprod\ \bigwedge\ \bigvee\ \bigcap\ \bigcup\ \biguplus\
 \bigsqcup\ \bigodot\ \bigoplus\ \bigotimes` and Display:
 
 .. math:: \int\ \iint\ \iiint\ \iiiint\ \idotsint\ \oint\ \smallint\
