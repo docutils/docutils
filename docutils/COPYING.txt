@@ -87,7 +87,7 @@ The exceptions to the `Public Domain Dedication`_ above are:
   test/transforms/test_smartquotes.py
   tools/docutils-cli.py
   tools/rst2html5.py
-  
+
   Copyright © Günter Milde.
   Released under the terms of the `2-Clause BSD license`_
   (`local copy <licenses/BSD-2-Clause.txt>`__).
@@ -129,7 +129,7 @@ The exceptions to the `Public Domain Dedication`_ above are:
 
 * tools/editors/emacs/rst.el
 
-  copyright by Free Software Foundation, Inc., 
+  copyright by Free Software Foundation, Inc.,
   released under the `GNU General Public License`_ version 3 or later
   (`local copy`__).
 

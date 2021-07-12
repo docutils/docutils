@@ -229,11 +229,14 @@ Release 0.17 (2021-04-03)
     __ https://stackoverflow.com/questions/39547412/same-font-size-for-h1-and-h2-in-article
 
   - Use HTML text-level tags <small>, <s>, <q>, <dfn>, <var>, <samp>, <kbd>,
-    <i>, <b>, <u>, <mark>, and <bdi> if a matching class value
-    is found in `inline` and `literal` elements.
-    Use <ins> and <del> if a matching class value
+    <i>, <b>, <u>, <mark>, and <bdi> if a unique matching class value
+    is found in `inline`__ and `literal`__ elements.
+    Use <ins> and <del> if a unique matching class value
     is found in `inline`, `literal`, or `container` elements.
     Use <small> for generated code line numbers.
+
+    __ docs/ref/doctree.html#inline
+    __ docs/ref/doctree.html#literal
 
   - Fix bug #398: properly close link tag to "schema.dcterms".
 

@@ -579,16 +579,17 @@ No such mechanism exists in HTML.
       .. figure:: image.png
          :name: figure name
 
-  Improve the mapping of "phrase references" to IDs/labels with
-  Literal transcription (i.e. ü -> ue, ß -> ss, å -> aa) instead of just
-  stripping the accents and other non-ASCII chars.
-  Use http://pypi.python.org/pypi/Unidecode?
+  Improve the mapping of "phrase references" to IDs/labels with Literal
+  transcription (i.e. ü -> ue, ß -> ss, å -> aa) instead of just
+  stripping the accents and other non-ASCII chars. See also the feature
+  request `allow more characters when transforming "names" to "ids"`__.
 
   A "table" directive has been implemented, supporting table titles.
 
   Perhaps the name could derive from the title/caption?
 
   .. _reference names: ../ref/rst/restructuredtext.html#reference-names
+  __ https://sourceforge.net/p/docutils/feature-requests/66/
 
 * We need syntax for object references.  Cf. `OpenOffice.org XML`_
   "reference fields":

@@ -2449,8 +2449,8 @@ Pseudo-XML_ fragment from simple parsing::
 ``footnote_reference``
 ======================
 
-The ``footnote_reference`` element represents a cross reference to a
-footnote_ in running text (a footnote mark).
+The ``footnote_reference`` element is an inline element representing a
+cross reference to a footnote_ (a footnote mark).
 
 
 Details
@@ -2751,7 +2751,69 @@ Pseudo-XML_ fragment from simple parsing::
 ``inline``
 ==========
 
-`To be completed`_.
+The ``inline`` element is a generic inline container.
+
+Details
+-------
+
+:Category:
+    `Inline Elements`_
+
+:Parents:
+    All elements employing the `%inline.elements;`_ parameter entities in
+    their content models may contain ``inline``.
+
+:Children:
+    ``inline`` elements may contain text data plus `inline elements`_.
+
+:Analogues:
+    ``inline`` is analogous to the HTML "span" element.
+
+:Processing:
+    Writers typically pass the classes_ attribute to the output document
+    and leave styling to the backend or a custom stylesheet_. They may
+    also process the classes_ attribute and convert the ``inline``
+    element to a specific element or render the content distinctly
+    for specific class values. Moreover, writers may ignore the classes
+    attribute and render the content as ordinary text.
+
+
+Content Model
+-------------
+
+.. parsed-literal::
+
+    `%text.model;`_
+
+:Attributes:
+    The ``inline`` element contains the `common attributes`_
+    (ids_, names_, dupnames_, source_, and classes_).
+
+
+Examples
+--------
+
+`Custom interpreted text roles`_ create ``inline`` elements (unless they
+are based on a `standard role`_).
+
+reStructuredText source fragment::
+
+    .. role:: custom
+
+    An example of using :custom:`interpreted text`
+
+Pseudo-XML_ fragment from simple parsing::
+
+
+    <paragraph>
+        An example of using
+        <inline classes="custom">
+            interpreted text
+
+.. _stylesheet: ../user/config.html#stylesheet
+.. _custom interpreted text roles:
+   rst/directives.html#custom-interpreted-text-roles
+.. _standard role: rst/roles.html
 
 
 ``label``
