@@ -25,8 +25,6 @@
 /* Formulas */
 .formula {
 	text-align: center;
-	font-family: "DejaVu Serif", STIX, serif;
-	/* "DejaVu Math TeX Gyre", (brace pieces don't fit) */
 	margin: 1.2em 0;
 	line-height: 1.4;
 }
@@ -97,7 +95,7 @@ span.denominator {
 	padding: 0ex;
 	border-top: thin solid;
 }
-math sub, math sup {
+.formula sub, .formula sup {
 	font-size: 80%;
 }
 sup.numerator, sup.unit {
@@ -108,6 +106,7 @@ sub.denominator, sub.unit {
 }
 span.smallsymbol {
 	font-size: 75%;
+	line-height: 75%;
 }
 span.sqrt {
 	display: inline-block;
@@ -121,7 +120,7 @@ sup.root {
 span.radical {
 	display: inline-block;
 	padding: 0ex;
-	font-size: 160%;
+	/* font-size: 160%; for DejaVu, not required with STIX */
 	line-height: 100%;
 	vertical-align: top;
 	vertical-align: middle;
@@ -133,41 +132,44 @@ span.root {
 	padding: 0ex;
 	vertical-align: middle;
 }
-span.symbol {
-	line-height: 125%;
-	font-size: 125%;
-}
 div.formula .bigoperator,
 .displaystyle .bigoperator,
 .displaystyle .bigoperator {
-	line-height: 150%;
+	line-height: 130%;
 	font-size: 150%;
+	padding-right: 0.2ex;
 }
 span.fraction .bigoperator,
 span.scriptstyle .bigoperator {
 	line-height: inherit;
 	font-size: inherit;
+	padding-right: 0;
 }
 span.bigdelimiter {
 	display: inline-block;
-	vertical-align: text-bottom;
 }
 span.bigdelimiter.size1 {
 	transform: scale(1, 1.2);
+	line-height: 1.2;
 }
 span.bigdelimiter.size2 {
 	transform: scale(1, 1.62);
+	line-height: 1.62%;
+
 }
 span.bigdelimiter.size3 {
 	transform: scale(1, 2.05);
+	line-height: 2.05%;
 }
 span.bigdelimiter.size4 {
 	transform: scale(1, 2.47);
+	line-height: 2.47%;
 }
 /* vertically stacked sub and superscript */
 span.scripts {
 	display: inline-table;
 	vertical-align: middle;
+	padding-right: 0.2ex;
 }
 .script {
 	display: table-row;
@@ -221,10 +223,6 @@ span.arraycell, span.bracket, span.case, span.binomcell, span.environmentcell {
 .environment.align > .arrayrow > .arraycell.align-l {
 	padding-right: 2em;
 }
-/*
-* CSS file for LaTeX formulas, extra stuff:
-* binomials, vertical braces, stackrel, fonts and colors.
-*/
 
 /* Inline binomials */
 span.binom {
@@ -267,13 +265,25 @@ span.downstackrel {
 }
 
 /* Fonts */
+.formula {
+	font-family: STIX, "DejaVu Serif", "DejaVu Math TeX Gyre", serif;
+}
+span.radical,   /* ensure correct size of square-root sign */
+span.integral { /* upright integral signs for better alignment of indices */
+	font-family: "STIXIntegralsUp", STIX;
+	/* font-size: 115%; match apparent size with DejaVu */
+}
+span.bracket {
+  /* some "STIX" and "DejaVu Math TeX Gyre" bracket pieces don't fit */
+	font-family: "DejaVu Serif", serif;
+}
 span.mathsf, span.textsf {
 	font-style: normal;
 	font-family: sans-serif;
 }
 span.mathrm, span.textrm {
 	font-style: normal;
-	font-family: serif;
+	font-family: STIX, "DejaVu Serif", "DejaVu Math TeX Gyre", serif;
 }
 span.mathtt, span.texttt {
 	font-style: normal;

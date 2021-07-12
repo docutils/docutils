@@ -171,15 +171,18 @@ class FormulaConfig(object):
                  u'{': [u'⎧', u'⎪', u'⎨', u'⎩',],
                  u'}': [u'⎫', u'⎪', u'⎬', u'⎭',],
                  # TODO: 2-row brackets with ⎰⎱ (\lmoustache \rmoustache)
-                 u'|': [u'|',],
-                 u'∥': [u'∥',],
+                 u'|': [u'|',], # 007C VERTICAL LINE
+                 # u'|': [u'⎮',], # 23AE INTEGRAL EXTENSION
+                 # u'|': [u'⎪',], # 23AA CURLY BRACKET EXTENSION
+                 u'‖': [u'‖'], # 2016 DOUBLE VERTICAL LINE
+                 # u'∥': [u'∥'], # 2225 PARALLEL TO
                 }
 
   bracketcommands = {
-      u'\\left': u'span class="bigdelimiter size2"',
+      u'\\left': u'span class="stretchy"',
       u'\\left.': u'<span class="leftdot"></span>',
-      u'\\middle': u'span class="bigdelimiter size2"',
-      u'\\right': u'span class="bigdelimiter size2"',
+      u'\\middle': u'span class="stretchy"',
+      u'\\right': u'span class="stretchy"',
       u'\\right.': u'<span class="rightdot"></span>',
       }
 
@@ -215,32 +218,22 @@ class FormulaConfig(object):
       '\\euro': u'€',
       '\\guillemotleft': u'«',
       '\\guillemotright': u'»',
-      '\\idotsint': u'<span class="bigoperator">∫⋯∫</span>',
-      '\\iiiint': u'<span class="bigoperator">⨌</span>',
-      '\\iiint': u'<span class="bigoperator">∭</span>',
-      '\\iint': u'<span class="bigoperator">∬</span>',
-      '\\lVert': u'∥',
+      '\\lVert': u'‖',
       '\\Arrowvert':  u'\u2016', # ‖
-      '\\lvert': u'∣',
+      '\\lvert': u'|',
       '\\newline': u'<br/>',
       '\\nobreakspace': u' ',
       '\\nolimits': u'',
       '\\nonumber': u'',
-      '\\oiiint': u'<span class="bigoperator">∰</span>',
-      '\\oiint': u'<span class="bigoperator">∯</span>',
-      '\\oint': u'<span class="bigoperator">∮</span>',
-      '\\ointclockwise': u'<span class="bigoperator">∲</span>',
-      '\\ointctrclockwise': u'<span class="bigoperator">∳</span>',
       '\\qquad': u'  ',
-      '\\rVert': u'∥',
-      '\\rvert': u'∣',
+      '\\rVert': u'‖',
+      '\\rvert': u'|',
       '\\shortmid': u'<span class="smallsymbol">∣</span>',
       '\\shortparallel': u'<span class="smallsymbol">∥</span>',
       '\\nshortmid': u'<span class="smallsymbol">∤</span>',
       '\\nshortparallel': u'<span class="smallsymbol">∦</span>',
       '\\smallfrown': u'<span class="smallsymbol">⌢</span>',
       '\\smallsmile': u'<span class="smallsymbol">⌣</span>',
-      '\\smallint': u'<span class="smallsymbol">∫</span>',
       '\\textasciicircum': u'^',
       '\\textasciitilde': u'~',
       '\\textbackslash': u'\\',
@@ -409,6 +402,7 @@ class FormulaConfig(object):
       u'\\rule': [u'[$v!]{$w!}{$h!}', u'f0/', u'hr class="line" style="width: $w; height: $h;"',],
       u'\\scriptscriptstyle': [u'{$1}', u'f0{$1}', u'span class="scriptscriptstyle"',],
       u'\\scriptstyle': [u'{$1}', u'f0{$1}', u'span class="scriptstyle"',],
+      # TODO: increase √-size with argument (\frac in display mode, ...)
       u'\\sqrt': [u'[$0]{$1}', u'f0{f1{$0}f2{√}f4{(}f3{$1}f4{)}}', u'span class="sqrt"', u'sup class="root"', u'span class="radical"', u'span class="root"', u'span class="ignored"',],
       u'\\stackrel': [u'{$1}{$2}', u'f0{f1{$1}f2{$2}}', u'span class="stackrel"', u'span class="upstackrel"', u'span class="downstackrel"',],
       u'\\tbinom': [u'{$1}{$2}', u'(f0{f1{f2{$1}}f1{f2{ }}f1{f2{$2}}})', u'span class="binomial"', u'span class="binomrow"', u'span class="binomcell"',],
@@ -439,7 +433,7 @@ class FormulaConfig(object):
       '\\max': u'max',
       '\\min': u'min',
       '\\sup': u'sup',
-      '\\ointop':    u'<span class="bigoperator">∮</span>',
+      '\\ointop':    u'<span class="bigoperator integral">∮</span>',
       '\\bigcap':    u'<span class="bigoperator">⋂</span>',
       '\\bigcup':    u'<span class="bigoperator">⋃</span>',
       '\\bigodot':   u'<span class="bigoperator">⨀</span>',
@@ -451,23 +445,33 @@ class FormulaConfig(object):
       '\\bigvee':    u'<span class="bigoperator">⋁</span>',
       '\\bigwedge':  u'<span class="bigoperator">⋀</span>',
       '\\coprod':    u'<span class="bigoperator">∐</span>',
-      '\\intop':     u'<span class="bigoperator">∫</span>',
+      '\\intop':     u'<span class="bigoperator integral">∫</span>',
       '\\prod':      u'<span class="bigoperator">∏</span>',
       '\\sum':       u'<span class="bigoperator">∑</span>',
       '\\varprod':   u'<span class="bigoperator">⨉</span>',
       '\\zcmp': u'⨟', '\\zhide': u'⧹', '\\zpipe': u'⨠', '\\zproject': u'⨡',
       # integrals have limits in index position with LaTeX default settings
       # TODO: move to commands?
-      '\\int': u'<span class="bigoperator">∫</span>',
-      '\\fint': u'<span class="bigoperator">⨏</span>',
-      '\\sqint': u'<span class="bigoperator">⨖</span>',
-      '\\varointclockwise': u'<span class="bigoperator">∲</span>',
+      '\\int': u'<span class="bigoperator integral">∫</span>',
+      '\\iint': u'<span class="bigoperator integral">∬</span>',
+      '\\iiint': u'<span class="bigoperator integral">∭</span>',
+      '\\iiiint': u'<span class="bigoperator integral">⨌</span>',
+      '\\fint': u'<span class="bigoperator integral">⨏</span>',
+      '\\idotsint': u'<span class="bigoperator integral">∫⋯∫</span>',
+      '\\oint': u'<span class="bigoperator integral">∮</span>',
+      '\\oiint': u'<span class="bigoperator integral">∯</span>',
+      '\\oiiint': u'<span class="bigoperator integral">∰</span>',
+      '\\ointclockwise': u'<span class="bigoperator integral">∲</span>',
+      '\\ointctrclockwise': u'<span class="bigoperator integral">∳</span>',
+      '\\smallint': u'<span class="smallsymbol integral">∫</span>',
+      '\\sqint': u'<span class="bigoperator integral">⨖</span>',
+      '\\varointclockwise': u'<span class="bigoperator integral">∲</span>',
       }
 
   modified = {
-      u'\n': u'', u' ': u'', u'$': u'', u'&': u'	', u'\'': u'’', u'+': u' + ',
-      u',': u', ', u'-': u' − ', u'/': u' ⁄ ', u':': u' : ', u'<': u' &lt; ',
-      u'=': u' = ', u'>': u' &gt; ', u'@': u'', u'~': u'\u00a0',
+      u'\n': u'', u' ': u'', u'$': u'', u'&': u'	', u'\'': u'’', u'+': u'\u2009+\u2009',
+      u',': u',\u2009', u'-': u'\u2009−\u2009', u'/': u'\u2009⁄\u2009', u':': u' : ', u'<': u'\u2009&lt;\u2009',
+      u'=': u'\u2009=\u2009', u'>': u'\u2009&gt;\u2009', u'@': u'', u'~': u'\u00a0',
       }
 
   onefunctions = {
@@ -1954,7 +1958,7 @@ class FormulaProcessor(object):
       if bit.type == 'alpha':
         self.italicize(bit, contents)
       elif bit.type == 'font' and last and last.type == 'number':
-        bit.contents.insert(0, FormulaConstant(u' '))
+        bit.contents.insert(0, FormulaConstant(u'\u2009'))
       last = bit
 
   def traverse(self, bit):
@@ -2299,8 +2303,10 @@ class SpacedCommand(CommandBit):
 
   def parsebit(self, pos):
     "Place as contents the command translated and spaced."
-    # pad with MEDIUM MATHEMATICAL SPACE
-    self.contents = [FormulaConstant(u'\u205f' + self.translated + u'\u205f')]
+    # pad with MEDIUM MATHEMATICAL SPACE (4/18 em): too wide in STIX fonts :(
+    # self.contents = [FormulaConstant(u'\u205f' + self.translated + u'\u205f')]
+    # pad with THIN SPACE (1/5 em)
+    self.contents = [FormulaConstant(u'\u2009' + self.translated + u'\u2009')]
 
 class AlphaCommand(EmptyCommand):
   """A command without paramters whose result is alphabetical."""
@@ -2460,7 +2466,7 @@ class BigBracket(object):
     "Return the bracket as a single sign."
     if self.original == '.':
       return [TaggedBit().constant('', 'span class="emptydot"')]
-    return [TaggedBit().constant(self.original, 'span class="bigdelimiter size2"')]
+    return [TaggedBit().constant(self.original, 'span class="stretchy"')]
 
 
 class FormulaEquation(CommandBit):
@@ -2683,8 +2689,8 @@ class CombiningFunction(OneParamFunction):
         return
     # Trace.message('  basechar: %r' % parameter.string)
     # Insert combining character after the first character:
-    if parameter.string.startswith(u'\u205f'):
-        i = 2 # skip padding by SpacedCommand
+    if parameter.string.startswith(u'\u2009'):
+        i = 2 # skip padding by SpacedCommand and FormulaConfig.modified
     else:
         i = 1
     parameter.string = parameter.string[:i] + combining + parameter.string[i:]
@@ -2793,7 +2799,7 @@ class LimitsProcessor(MathsProcessor):
     if self.checkscript(contents, index + 1):
       superscript = self.getlimit(contents, index  + 1)
     else:
-      superscript = TaggedBit().constant(u' ', 'sup class="limit"')
+      superscript = TaggedBit().constant(u'\u2009', 'sup class="limit"')
     # fix order if source is x^i
     if subscript.command == '^':
         superscript, subscript = subscript, superscript
