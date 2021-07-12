@@ -1,3 +1,4 @@
+# .. coding: utf-8
 # $Id$
 # Author: David Goodger <goodger@python.org>
 # Copyright: This module has been placed in the public domain.
@@ -475,17 +476,17 @@ class Footnotes(Transform):
           # Entries 1-4 and 6 below are from section 12.51 of
           # The Chicago Manual of Style, 14th edition.
           '*',                          # asterisk/star
-          u'\u2020',                    # dagger &dagger;
-          u'\u2021',                    # double dagger &Dagger;
-          u'\u00A7',                    # section mark &sect;
-          u'\u00B6',                    # paragraph mark (pilcrow) &para;
+          u'\u2020',                    # † &dagger; dagger
+          u'\u2021',                    # ‡ &Dagger; double dagger
+          u'\u00A7',                    # § &sect; section mark
+          u'\u00B6',                    # ¶ &para; paragraph mark (pilcrow)
                                         # (parallels ['||'] in CMoS)
           '#',                          # number sign
           # The entries below were chosen arbitrarily.
-          u'\u2660',                    # spade suit &spades;
-          u'\u2665',                    # heart suit &hearts;
-          u'\u2666',                    # diamond suit &diams;
-          u'\u2663',                    # club suit &clubs;
+          u'\u2660',                    # ♠ &spades; spade suit
+          u'\u2665',                    # ♡ &hearts; heart suit
+          u'\u2666',                    # ♢ &diams; diamond suit
+          u'\u2663',                    # ♣ &clubs; club suit
           ]
 
     def apply(self):
