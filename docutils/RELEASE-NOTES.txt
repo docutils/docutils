@@ -40,6 +40,11 @@ Future changes
   we store the null-escaped text in Text nodes since 0.16 so there is no
   additional information in the rawsource.
 
+* Move math format conversion from docutils/utils/math (called from
+  docutils/writers/_html_base.py) to a transform__.
+
+  __ docs/ref/transforms.html
+
 * The default HTML writer "html" with frontend ``rst2html.py`` may change
   from "html4css1" to "html5".
 
@@ -93,9 +98,15 @@ Release 0.18.dev
 
     Items of a definition list with class argument "details" are
     converted to `details disclosure elements`_.
-    
+
     Move space character between section number and heading into
     "sectnum" span.
+
+  math-output: html
+    Support more commands, fix mapping fo commands to Unicode characters.
+    Scale variable sized operators and big delimiters with CSS.
+    Don't use <tt> element (deprecated in HTML5).
+    Use STIX fonts if available.
 
   LaTeX:
      `legacy_class_functions`_ setting default changed to "False":
@@ -115,6 +126,12 @@ Release 0.18.dev
 * Removed attribute: ``HTMLTranslator.topic_classes``
   (check node.parent.classes instead).
 
+* docutils/utils/math/math2html.py,
+  docutils/utils/math/latex2mathml.py
+
+  Major refactoring and fixes/additions
+  (cf. `LaTeX syntax for mathematics`_).
+
 * Various bugfixes and improvements (see HISTORY_).
 
 __ docs/ref/doctree.html#meta
@@ -124,6 +141,7 @@ __ docs/ref/doctree.html#meta
 .. _auto_id_prefix: docs/user/config.html#auto-id-prefix
 .. _details disclosure elements:
    https://www.w3.org/TR/html52/interactive-elements.html#the-details-element
+.. _LaTeX syntax for mathematics: docs/ref/rst/mathematics.html
 
 
 Release 0.17.1 (2021-04-16)

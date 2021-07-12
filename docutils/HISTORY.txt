@@ -40,12 +40,20 @@ Changes Since 0.17.1
   - `Meta` directive class (moved from html.py) inserts `meta`
     (instead of `pending`) nodes.
 
-* docutils/tools/math/math2html;
+* docutils/tools/math/math2html.py,
+  docutils/tools/math/tex2unicode.py,
+  docutils/writers/html5/math.css
 
-  - Fix bug #244 Wrong subscript/superscript order with
-    ``--math-output=HTML``.
+  - Fork from elyxer and remove code that is not requried
+    for math conversion.
+  - Scale variable sized operators and big delimiters with CSS
+  - Support more commands, fix mapping fo commands to Unicode characters
+    (cf. `LaTeX syntax for mathematics`_).
+  - Fix bug #244 Wrong subscript/superscript order.
   - Don't use <tt> element (deprecated in HTML5).
-  - Support commands ``\Bbbk`` and ``operatorname``.
+  - Use STIX fonts if available.
+
+  .. _LaTeX syntax for mathematics: docs/ref/rst/mathematics.html
 
 * docutils/utils/__init__.py
 
@@ -62,7 +70,7 @@ Changes Since 0.17.1
     they are present also without CSS and when copying text.
     Adapt ``minimal.css``.
 
-  - Use semantic tags <aside> for footnote text, topics, admonitions, 
+  - Use semantic tags <aside> for footnote text, topics, admonitions,
     and system-messages and <nav> for the table of contents. Use <div>
     for citations.
 
@@ -72,12 +80,12 @@ Changes Since 0.17.1
 
   - Use "aria-level" attribute instead of invalid tags <h7>, <h8>, ...
     for headings of deeply nested sections.
- 
+
   - Do not set classes "compound-first", "compound-middle", or
     "compound-last" to elements nested in a compound.
     Use class value "backrefs" instead of "fn-backref" for a span of
     back-references.
-    
+
   - Move space character between section number and heading into
     "sectnum" span.
 
