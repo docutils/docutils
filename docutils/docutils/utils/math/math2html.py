@@ -175,11 +175,6 @@ class FormulaConfig(object):
                  u'∥': [u'∥',],
                 }
 
-  bigsymbols = {# u'∑': [u'⎲', u'⎳',], # ⎲ ⌠ ┌
-                # u'∫': [u'⌠', u'⌡',], # ⎳ ⎮ │
-                # u'√': [u'┌', u'⎷',], #   ⌡ ⎷
-               }
-
   bracketcommands = {
       u'\\left': u'span class="bigdelimiter size2"',
       u'\\left.': u'<span class="leftdot"></span>',
@@ -221,6 +216,7 @@ class FormulaConfig(object):
       '\\guillemotleft': u'«',
       '\\guillemotright': u'»',
       '\\idotsint': u'<span class="bigoperator">∫⋯∫</span>',
+      '\\iiiint': u'<span class="bigoperator">⨌</span>',
       '\\iiint': u'<span class="bigoperator">∭</span>',
       '\\iint': u'<span class="bigoperator">∬</span>',
       '\\lVert': u'∥',
@@ -464,7 +460,6 @@ class FormulaConfig(object):
       # TODO: move to commands?
       '\\int': u'<span class="bigoperator">∫</span>',
       '\\fint': u'<span class="bigoperator">⨏</span>',
-      '\\iiiint': u'<span class="bigoperator">⨌</span>',
       '\\sqint': u'<span class="bigoperator">⨖</span>',
       '\\varointclockwise': u'<span class="bigoperator">∲</span>',
       }
@@ -2406,32 +2401,7 @@ FormulaCommand.types = [
     LabelFunction, TextFunction, SpacedCommand]
 
 
-class BigSymbol(object):
-  "A big symbol generator."
-
-  symbols = FormulaConfig.bigsymbols
-
-  def __init__(self, symbol):
-    "Create the big symbol."
-    self.symbol = symbol
-
-  def getpieces(self):
-    "Get an array with all pieces."
-    if not self.symbol in self.symbols:
-      return [self.symbol]
-    if self.smalllimit():
-      return [self.symbol]
-    return self.symbols[self.symbol]
-
-  def smalllimit(self):
-    "Decide if the limit should be a small, one-line symbol."
-    if not DocumentParameters.displaymode:
-      return True
-    if len(self.symbols[self.symbol]) == 1:
-      return True
-    return Options.simplemath
-
-class BigBracket(BigSymbol):
+class BigBracket(object):
   "A big bracket generator."
 
   def __init__(self, size, bracket, alignment='l'):
@@ -2765,10 +2735,9 @@ class LimitCommand(EmptyCommand):
 
   def parsebit(self, pos):
     "Parse a limit command."
-    pieces = BigSymbol(self.translated).getpieces()
     self.output = TaggedOutput().settag('span class="limits"')
-    for piece in pieces:
-      self.contents.append(TaggedBit().constant(piece, 'span class="limit"'))
+    symbol = self.translated
+    self.contents.append(TaggedBit().constant(symbol, 'span class="limit"'))
 
 class LimitPreviousCommand(LimitCommand):
   "A command to limit the previous command."
@@ -2802,6 +2771,7 @@ class LimitsProcessor(MathsProcessor):
 
   def checklimits(self, contents, index):
     "Check if the current position has a limits command."
+    # TODO: check for \limits macro
     if not DocumentParameters.displaymode:
       return False
     if self.checkcommand(contents, index + 1, LimitPreviousCommand):
@@ -2820,11 +2790,14 @@ class LimitsProcessor(MathsProcessor):
     "Modify a limits commands so that the limits appear above and below."
     limited = contents[index]
     subscript = self.getlimit(contents, index + 1)
-    limited.contents.append(subscript)
     if self.checkscript(contents, index + 1):
       superscript = self.getlimit(contents, index  + 1)
     else:
       superscript = TaggedBit().constant(u' ', 'sup class="limit"')
+    # fix order if source is x^i
+    if subscript.command == '^':
+        superscript, subscript = subscript, superscript
+    limited.contents.append(subscript)
     limited.contents.insert(0, superscript)
 
   def getlimit(self, contents, index):
@@ -2838,6 +2811,9 @@ class LimitsProcessor(MathsProcessor):
     subscript = self.getscript(contents, index)
     # subscript removed so instead of index + 1 we get index again
     superscript = self.getscript(contents, index)
+    # super-/subscript are reversed if source is x^i_j
+    if subscript.command == '^':
+        superscript, subscript = subscript, superscript
     scripts = TaggedBit().complete([superscript, subscript], 'span class="scripts"')
     contents.insert(index, scripts)
 

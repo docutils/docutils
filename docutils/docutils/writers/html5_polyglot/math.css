@@ -53,7 +53,7 @@ span.ignored, span.arraydef {
 	display: none;
 }
 .phantom {
-        visibility: hidden;
+	visibility: hidden;
 }
 .formula i {
 	letter-spacing: 0.1ex;
@@ -72,7 +72,7 @@ span.ignored, span.arraydef {
 
 /* Structures */
 span.hspace {
-        display: inline-block;
+	display: inline-block;
 }
 span.overline, span.bar {
 	text-decoration: overline;
@@ -131,7 +131,6 @@ span.root {
 	display: inline-block;
 	border-top: thin solid;
 	padding: 0ex;
-/* 	margin: 0.25em 0;    */
 	vertical-align: middle;
 }
 span.symbol {
@@ -141,11 +140,11 @@ span.symbol {
 div.formula .bigoperator,
 .displaystyle .bigoperator,
 .displaystyle .bigoperator {
-        line-height: 150%;
+	line-height: 150%;
 	font-size: 150%;
 }
 span.fraction .bigoperator,
-span.scriptstyle .bigoperator{
+span.scriptstyle .bigoperator {
 	line-height: inherit;
 	font-size: inherit;
 }
@@ -167,15 +166,13 @@ span.bigdelimiter.size4 {
 }
 /* vertically stacked sub and superscript */
 span.scripts {
-	display: inline-flex;
+	display: inline-table;
 	vertical-align: middle;
-	flex-direction: column;
 }
-sup.script {
-	order: 1;
-}
-sub.script {
-	order: 2;
+.script {
+	display: table-row;
+	text-align: left;
+	line-height: 150%;
 }
 span.limits {
 	display: inline-table;
@@ -183,7 +180,7 @@ span.limits {
 }
 .limit {
 	display: table-row;
-/* 	line-height: 99%;    */
+	line-height: 99%;
 }
 sup.limit, sub.limit {
 	line-height: 100%;
@@ -208,14 +205,12 @@ span.embellished > sub {
 span.array, span.bracketcases, span.binomial, span.environment {
 	display: inline-table;
 	text-align: center;
-	border-collapse: collapse;
-	margin: 0em;
 	vertical-align: middle;
 }
 span.arrayrow, span.binomrow {
 	display: table-row;
-	padding: 0ex;
-	border: 0ex;
+	padding: 0;
+	border: 0;
 }
 span.arraycell, span.bracket, span.case, span.binomcell, span.environmentcell {
 	display: table-cell;
@@ -285,7 +280,7 @@ span.mathtt, span.texttt {
 	font-family: monospace;
 }
 span.textsc {
-        font-variant: small-caps;
+	font-variant: small-caps;
 }
 span.text, span.textnormal {
 	font-style: normal;
