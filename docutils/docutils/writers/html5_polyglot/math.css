@@ -51,6 +51,9 @@ span.unknown {
 span.ignored, span.arraydef {
 	display: none;
 }
+.phantom {
+        visibility: hidden;
+}
 .formula i {
 	letter-spacing: 0.1ex;
 }
@@ -67,16 +70,21 @@ span.ignored, span.arraydef {
 }
 
 /* Structures */
+span.hspace {
+        display: inline-block;
+}
 span.overline, span.bar {
 	text-decoration: overline;
 }
-.fraction, .fullfraction {
+.fraction, .fullfraction, .textfraction {
 	display: inline-block;
 	vertical-align: middle;
 	text-align: center;
 }
 span.formula .fraction,
-.fraction .fraction {
+.textfraction,
+.fraction .fraction,
+span.smallmatrix {
 	font-size: 80%;
 	line-height: 100%;
 }
@@ -112,8 +120,17 @@ span.radical {
 	font-size: 150%;
 	line-height: 97%;
 	vertical-align: top;
-/* 	vertical-align: middle;	   */
+	vertical-align: middle;
 }
+
+/* div.formula span.sqrt span.radical:before { */
+/*         writing-mode: vertical-lr;	       */
+/*  	text-orientation: upright;	       */
+/*         content: "┌│⎷";		       */
+/* }					       */
+/* or use "transform" property				      */
+/* https://developer.mozilla.org/en-US/docs/Web/CSS/transform */
+
 span.root {
 	display: inline-block;
 	border-top: thin solid;
@@ -125,7 +142,8 @@ span.symbol {
 	line-height: 125%;
 	font-size: 125%;
 }
-span.bigsymbol {
+/* TODO: use transform matrix to stretch fences */
+span.bigsymbol, div.formula span.bigoperator {
 	line-height: 150%;
 	font-size: 150%;
 }
@@ -257,6 +275,9 @@ span.mathtt, span.texttt {
 	font-style: normal;
 	font-family: monospace;
 }
+span.textsc {
+        font-variant: small-caps;
+}
 span.text, span.textnormal {
 	font-style: normal;
 }
@@ -289,4 +310,3 @@ span.boxed, span.framebox {
 	border: thin solid black;
 	padding: 5px;
 }
-
