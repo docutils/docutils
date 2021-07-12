@@ -105,6 +105,9 @@ sup.numerator, sup.unit {
 sub.denominator, sub.unit {
 	vertical-align: -20%;
 }
+span.smallsymbol {
+	font-size: 75%;
+}
 span.sqrt {
 	display: inline-block;
 	vertical-align: middle;
@@ -117,8 +120,8 @@ sup.root {
 span.radical {
 	display: inline-block;
 	padding: 0ex;
-	font-size: 150%;
-	line-height: 97%;
+	font-size: 160%;
+	line-height: 100%;
 	vertical-align: top;
 	vertical-align: middle;
 }

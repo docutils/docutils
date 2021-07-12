@@ -24,6 +24,7 @@
 
 import os.path
 import sys
+import unicodedata
 
 if sys.version_info >= (3, 0):
     from urllib.parse import quote_plus
@@ -94,18 +95,21 @@ class ContainerConfig(object):
   extracttext = {
       u'allowed': [u'FormulaConstant',],
       u'extracted': [
-                     u'Formula',
-                     u'Bracket',
-                     u'RawText',
-                     u'FormulaNumber',
                      u'AlphaCommand',
-                     u'EmptyCommand',
-                     u'OneParamFunction',
-                     u'SymbolFunction', u'TextFunction',
-                     u'FontFunction', u'CombiningFunction',
-                     u'DecoratingFunction',
-                     u'FormulaSymbol',
+                     u'Bracket',
                      u'BracketCommand',
+                     u'CombiningFunction',
+                     u'DecoratingFunction',
+                     u'EmptyCommand',
+                     u'FontFunction',
+                     u'Formula',
+                     u'FormulaNumber',
+                     u'FormulaSymbol',
+                     u'OneParamFunction',
+                     u'RawText',
+                     u'SpacedCommand',
+                     u'SymbolFunction',
+                     u'TextFunction',
                     ],
       }
 
@@ -231,6 +235,13 @@ class FormulaConfig(object):
       '\\qquad': u'  ',
       '\\rVert': u'∥',
       '\\rvert': u'∣',
+      '\\shortmid': u'<span class="smallsymbol">∣</span>',
+      '\\shortparallel': u'<span class="smallsymbol">∥</span>',
+      '\\nshortmid': u'<span class="smallsymbol">∤</span>',
+      '\\nshortparallel': u'<span class="smallsymbol">∦</span>',
+      '\\smallfrown': u'<span class="smallsymbol">⌢</span>',
+      '\\smallsmile': u'<span class="smallsymbol">⌣</span>',
+      '\\smallint': u'<span class="smallsymbol">∫</span>',
       '\\textasciicircum': u'^',
       '\\textasciitilde': u'~',
       '\\textbackslash': u'\\',
@@ -471,12 +482,6 @@ class FormulaConfig(object):
 
   # relations (put additional space before and after the symbol)
   spacedcommands = {
-      # precomposed characters for negated symbols
-      '\\not=': u'≠',
-      '\\not<': u'≮',
-      '\\not>': u'≯',
-      # '\\not\\in': u'∉',
-      # '\\not\\equiv': u'≢', # TODO why doesn't this work?
       # negated symbols without pre-composed Unicode character
       '\\nleqq':      u'\u2266\u0338', # ≦̸
       '\\ngeqq':      u'\u2267\u0338', # ≧̸
@@ -665,15 +670,18 @@ class Cloner(object):
   create = classmethod(create)
 
 class ContainerExtractor(object):
-  "A class to extract certain containers."
+  """A class to extract certain containers.
+
+  The config parameter is a map containing three lists:
+  allowed, copied and extracted.
+  Each of the three is a list of class names for containers.
+  Allowed containers are included as is into the result.
+  Cloned containers are cloned and placed into the result.
+  Extracted containers are looked into.
+  All other containers are silently ignored.
+  """
 
   def __init__(self, config):
-    "The config parameter is a map containing three lists: allowed, copied and extracted."
-    "Each of the three is a list of class names for containers."
-    "Allowed containers are included as is into the result."
-    "Cloned containers are cloned and placed into the result."
-    "Extracted containers are looked into."
-    "All other containers are silently ignored."
     self.allowed = config['allowed']
     self.extracted = config['extracted']
 
@@ -718,10 +726,6 @@ class Parser(object):
 
   def parseparameter(self, reader):
     "Parse a parameter"
-    if reader.currentline().strip().startswith('<'):
-      key, value = self.parsexml(reader)
-      self.parameters[key] = value
-      return
     split = reader.currentline().strip().split(' ', 1)
     reader.nextline()
     if len(split) == 0:
@@ -735,31 +739,6 @@ class Parser(object):
       return
     doublesplit = split[1].split('"')
     self.parameters[key] = doublesplit[1]
-
-  def parsexml(self, reader):
-    "Parse a parameter in xml form: <param attr1=value...>"
-    strip = reader.currentline().strip()
-    reader.nextline()
-    if not strip.endswith('>'):
-      Trace.error('XML parameter ' + strip + ' should be <...>')
-    split = strip[1:-1].split()
-    if len(split) == 0:
-      Trace.error('Empty XML parameter <>')
-      return None, None
-    key = split[0]
-    del split[0]
-    if len(split) == 0:
-      return key, dict()
-    attrs = dict()
-    for attr in split:
-      if not '=' in attr:
-        Trace.error('Erroneous attribute for ' + key + ': ' + attr)
-        attr += '="0"'
-      parts = attr.split('=')
-      attrkey = parts[0]
-      value = parts[1].split('"')[1]
-      attrs[attrkey] = value
-    return key, attrs
 
   def parseending(self, reader, process):
     "Parse until the current ending is found"
@@ -867,16 +846,6 @@ class StringParser(Parser):
     contents = reader.currentline()
     reader.nextline()
     return contents
-
-class InsetParser(BoundedParser):
-  "Parses a LyX inset"
-
-  def parse(self, reader):
-    "Parse inset parameters into a dictionary"
-    startcommand = ContainerConfig.string['startcommand']
-    while reader.currentline() != '' and not reader.currentline().startswith(startcommand):
-      self.parseparameter(reader)
-    return BoundedParser.parse(self, reader)
 
 
 
@@ -1409,9 +1378,7 @@ class Container(object):
     "Extract all text from allowed containers."
     result = ''
     constants = ContainerExtractor(ContainerConfig.extracttext).extract(self)
-    for constant in constants:
-      result += constant.string
-    return result
+    return ''.join(constant.string for constant in constants)
 
   def group(self, index, group, isingroup):
     "Group some adjoining elements into a group"
@@ -2315,7 +2282,8 @@ class SpacedCommand(CommandBit):
 
   def parsebit(self, pos):
     "Place as contents the command translated and spaced."
-    self.contents = [FormulaConstant(u' ' + self.translated + u' ')]
+    # pad with MEDIUM MATHEMATICAL SPACE
+    self.contents = [FormulaConstant(u'\u205f' + self.translated + u'\u205f')]
 
 class AlphaCommand(EmptyCommand):
   """A command without paramters whose result is alphabetical."""
@@ -2701,34 +2669,43 @@ class BeginCommand(CommandBit):
 FormulaCommand.types += [BeginCommand]
 
 
-
 class CombiningFunction(OneParamFunction):
 
   commandmap = FormulaConfig.combiningfunctions
 
   def parsebit(self, pos):
     "Parse a combining function."
-    self.type = 'alpha'
     combining = self.translated
     parameter = self.parsesingleparameter(pos)
     if not parameter:
-      Trace.error('Empty parameter for combining function ' + self.command)
-    elif len(parameter.extracttext()) != 1:
-      Trace.error('Applying combining function ' + self.command + ' to invalid string "' + parameter.extracttext() + '"')
-    self.contents.append(Constant(combining))
+      Trace.error('Missing parameter for combining function ' + self.command)
+      return
+    # Trace.message('apply %s to %r'%(self.command, parameter.extracttext()))
+    # parameter.tree()
+    if not isinstance(parameter, FormulaConstant):
+      try:
+        extractor = ContainerExtractor(ContainerConfig.extracttext)
+        parameter = extractor.extract(parameter)[0]
+      except IndexError:
+        Trace.error('No base character found for "%s".' % self.command)
+        return
+    # Trace.message('  basechar: %r' % parameter.string)
+    # Insert combining character after the first character:
+    if parameter.string.startswith(u'\u205f'):
+        i = 2 # skip padding by SpacedCommand
+    else:
+        i = 1
+    parameter.string = parameter.string[:i] + combining + parameter.string[i:]
+    # Use pre-composed characters if possible: \not{=} -> ≠, say.
+    # TODO: use overset for mathematical accents.
+    parameter.string = unicodedata.normalize('NFC', parameter.string)
 
   def parsesingleparameter(self, pos):
     "Parse a parameter, or a single letter."
     self.factory.clearskipped(pos)
     if pos.finished():
-      Trace.error('Error while parsing single parameter at ' + pos.identifier())
       return None
-    if self.factory.detecttype(Bracket, pos) \
-        or self.factory.detecttype(FormulaCommand, pos):
-      return self.parseparameter(pos)
-    letter = FormulaConstant(pos.skipcurrent())
-    self.add(letter)
-    return letter
+    return self.parseparameter(pos)
 
 class DecoratingFunction(OneParamFunction):
   "A function that decorates some bit of text"
