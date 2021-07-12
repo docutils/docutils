@@ -989,6 +989,7 @@ with extensible delimiters.
    \left.\vert \frac{b}{a}\right\Vert\ \bigl\vert b\Bigr\Vert\ \biggl\vert b\Biggr\Vert
    \quad
 
+
 Variable-sized operators:
 
 Inline: `\sum\ \int\ \oint\ \smallint\ \prod\ \coprod\ \bigwedge\

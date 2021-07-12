@@ -175,16 +175,16 @@ class FormulaConfig(object):
                  u'∥': [u'∥',],
                 }
 
-  bigsymbols = {u'∑': [u'⎲', u'⎳',], # ⎲ ⌠ ┌
-                u'∫': [u'⌠', u'⌡',], # ⎳ ⎮ │
-                u'√': [u'┌', u'⎷',], #   ⌡ ⎷
+  bigsymbols = {# u'∑': [u'⎲', u'⎳',], # ⎲ ⌠ ┌
+                # u'∫': [u'⌠', u'⌡',], # ⎳ ⎮ │
+                # u'√': [u'┌', u'⎷',], #   ⌡ ⎷
                }
 
   bracketcommands = {
-      u'\\left': u'span class="symbol"',
+      u'\\left': u'span class="bigdelimiter size2"',
       u'\\left.': u'<span class="leftdot"></span>',
-      u'\\middle': u'span class="symbol"',
-      u'\\right': u'span class="symbol"',
+      u'\\middle': u'span class="bigdelimiter size2"',
+      u'\\right': u'span class="bigdelimiter size2"',
       u'\\right.': u'<span class="rightdot"></span>',
       }
 
@@ -206,6 +206,8 @@ class FormulaConfig(object):
 
   commands = {
       '\\\\': u'<br/>',
+      '\\\n': u' ', # escaped whitespace
+      '\\\t': u' ', # escaped whitespace
       '\\colon': u': ',
       '\\copyright': u'©',
       '\\dotminus': u'∸',
@@ -382,7 +384,7 @@ class FormulaConfig(object):
       u'\\addcontentsline': [u'{$p!}{$q!}{$r!}', u'f0{}', u'ignored',],
       u'\\addtocontents': [u'{$p!}{$q!}', u'f0{}', u'ignored',],
       u'\\backmatter': [u'', u'f0{}', u'ignored',],
-      u'\\binom': [u'{$1}{$2}', u'f2{(}f0{f1{$1}f1{$2}}f2{)}', u'span class="binom"', u'span class="binomstack"', u'span class="bigsymbol"',],
+      u'\\binom': [u'{$1}{$2}', u'f2{(}f0{f1{$1}f1{$2}}f2{)}', u'span class="binom"', u'span class="binomstack"', u'span class="bigdelimiter size2"',],
       u'\\boxed': [u'{$1}', u'f0{$1}', u'span class="boxed"',],
       u'\\cfrac': [u'[$p!]{$1}{$2}', u'f0{f3{(}f1{$1}f3{)/(}f2{$2}f3{)}}', u'span class="fullfraction"', u'span class="numerator align-$p"', u'span class="denominator"', u'span class="ignored"',],
       u'\\color': [u'{$p!}{$1}', u'f0{$1}', u'span style="color: $p;"',],
@@ -437,31 +439,30 @@ class FormulaConfig(object):
   limitcommands = {
       '\\biginterleave': u'⫼',
       '\\inf': u'inf',
-      '\\intop': u'∫', # large operator via pieces from bigsymbols
       '\\lim': u'lim',
       '\\max': u'max',
       '\\min': u'min',
-      '\\sum': u'∑',   # large operator via pieces from bigsymbols
       '\\sup': u'sup',
       '\\ointop':    u'<span class="bigoperator">∮</span>',
-      '\\bigcap':    u'<span class="bigoperator">∩</span>',
-      '\\bigcup':    u'<span class="bigoperator">∪</span>',
-      '\\bigodot':   u'<span class="bigoperator">⊙</span>',
-      '\\bigoplus':  u'<span class="bigoperator">⊕</span>',
-      '\\bigotimes': u'<span class="bigoperator">⊗</span>',
+      '\\bigcap':    u'<span class="bigoperator">⋂</span>',
+      '\\bigcup':    u'<span class="bigoperator">⋃</span>',
+      '\\bigodot':   u'<span class="bigoperator">⨀</span>',
+      '\\bigoplus':  u'<span class="bigoperator">⨁</span>',
+      '\\bigotimes': u'<span class="bigoperator">⨂</span>',
       '\\bigsqcap':  u'<span class="bigoperator">⨅</span>',
-      '\\bigsqcup':  u'<span class="bigoperator">⊔</span>',
-      '\\biguplus':  u'<span class="bigoperator">⊎</span>',
-      '\\bigvee':    u'<span class="bigoperator">∨</span>',
-      '\\bigwedge':  u'<span class="bigoperator">∧</span>',
+      '\\bigsqcup':  u'<span class="bigoperator">⨆</span>',
+      '\\biguplus':  u'<span class="bigoperator">⨄</span>',
+      '\\bigvee':    u'<span class="bigoperator">⋁</span>',
+      '\\bigwedge':  u'<span class="bigoperator">⋀</span>',
       '\\coprod':    u'<span class="bigoperator">∐</span>',
+      '\\intop':     u'<span class="bigoperator">∫</span>',
       '\\prod':      u'<span class="bigoperator">∏</span>',
+      '\\sum':       u'<span class="bigoperator">∑</span>',
       '\\varprod':   u'<span class="bigoperator">⨉</span>',
       '\\zcmp': u'⨟', '\\zhide': u'⧹', '\\zpipe': u'⨠', '\\zproject': u'⨡',
       # integrals have limits in index position with LaTeX default settings
       # TODO: move to commands?
-      '\\int': u'∫',
-      '\\smallint': u'∫',
+      '\\int': u'<span class="bigoperator">∫</span>',
       '\\fint': u'<span class="bigoperator">⨏</span>',
       '\\iiiint': u'<span class="bigoperator">⨌</span>',
       '\\sqint': u'<span class="bigoperator">⨖</span>',
@@ -475,20 +476,20 @@ class FormulaConfig(object):
       }
 
   onefunctions = {
-      '\\Big': 'span class="bigsymbol"',
-      '\\Bigl': 'span class="bigsymbol"',
-      '\\Bigr': 'span class="bigsymbol"',
-      '\\Bigg': 'span class="hugesymbol"',
-      '\\Biggl': 'span class="hugesymbol"',
-      '\\Biggr': 'span class="hugesymbol"',
+      '\\big': 'span class="bigdelimiter size1"',
+      '\\bigl': 'span class="bigdelimiter size1"',
+      '\\bigr': 'span class="bigdelimiter size1"',
+      '\\Big': 'span class="bigdelimiter size2"',
+      '\\Bigl': 'span class="bigdelimiter size2"',
+      '\\Bigr': 'span class="bigdelimiter size2"',
+      '\\bigg': 'span class="bigdelimiter size3"',
+      '\\biggl': 'span class="bigdelimiter size3"',
+      '\\biggr': 'span class="bigdelimiter size3"',
+      '\\Bigg': 'span class="bigdelimiter size4"',
+      '\\Biggl': 'span class="bigdelimiter size4"',
+      '\\Biggr': 'span class="bigdelimiter size4"',
       # '\\bar': 'span class="bar"',
       '\\begin{array}': 'span class="arraydef"',
-      '\\big': 'span class="symbol"', 
-      '\\bigl': 'span class="symbol"',
-      '\\bigr': 'span class="symbol"',
-      '\\bigg': 'span class="largesymbol"',
-      '\\biggl': 'span class="largesymbol"',
-      '\\biggr': 'span class="largesymbol"',
       '\\centering': 'span class="align-center"',
       '\\ensuremath': 'span class="ensuremath"',
       '\\hphantom': 'span class="phantom"',
@@ -2489,7 +2490,7 @@ class BigBracket(BigSymbol):
     "Return the bracket as a single sign."
     if self.original == '.':
       return [TaggedBit().constant('', 'span class="emptydot"')]
-    return [TaggedBit().constant(self.original, 'span class="symbol"')]
+    return [TaggedBit().constant(self.original, 'span class="bigdelimiter size2"')]
 
 
 class FormulaEquation(CommandBit):

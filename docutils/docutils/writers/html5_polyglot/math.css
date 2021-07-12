@@ -25,7 +25,8 @@
 /* Formulas */
 .formula {
 	text-align: center;
-	font-family: "Droid Serif", "DejaVu Serif", STIX, serif;
+	font-family: "DejaVu Serif", STIX, serif;
+	/* "DejaVu Math TeX Gyre", (brace pieces don't fit) */
 	margin: 1.2em 0;
 	line-height: 1.4;
 }
@@ -126,14 +127,6 @@ span.radical {
 	vertical-align: middle;
 }
 
-/* div.formula span.sqrt span.radical:before { */
-/*         writing-mode: vertical-lr;	       */
-/*  	text-orientation: upright;	       */
-/*         content: "┌│⎷";		       */
-/* }					       */
-/* or use "transform" property				      */
-/* https://developer.mozilla.org/en-US/docs/Web/CSS/transform */
-
 span.root {
 	display: inline-block;
 	border-top: thin solid;
@@ -145,16 +138,32 @@ span.symbol {
 	line-height: 125%;
 	font-size: 125%;
 }
-/* TODO: use transform matrix to stretch fences */
-span.bigsymbol, div.formula span.bigoperator {
-	line-height: 150%;
+div.formula .bigoperator,
+.displaystyle .bigoperator,
+.displaystyle .bigoperator {
+        line-height: 150%;
 	font-size: 150%;
 }
-span.largesymbol {
-	font-size: 175%;
+span.fraction .bigoperator,
+span.scriptstyle .bigoperator{
+	line-height: inherit;
+	font-size: inherit;
 }
-span.hugesymbol {
-	font-size: 200%;
+span.bigdelimiter {
+	display: inline-block;
+	vertical-align: text-bottom;
+}
+span.bigdelimiter.size1 {
+	transform: scale(1, 1.2);
+}
+span.bigdelimiter.size2 {
+	transform: scale(1, 1.62);
+}
+span.bigdelimiter.size3 {
+	transform: scale(1, 2.05);
+}
+span.bigdelimiter.size4 {
+	transform: scale(1, 2.47);
 }
 /* vertically stacked sub and superscript */
 span.scripts {
@@ -174,7 +183,7 @@ span.limits {
 }
 .limit {
 	display: table-row;
-	line-height: 99%;
+/* 	line-height: 99%;    */
 }
 sup.limit, sub.limit {
 	line-height: 100%;
@@ -211,8 +220,11 @@ span.arrayrow, span.binomrow {
 span.arraycell, span.bracket, span.case, span.binomcell, span.environmentcell {
 	display: table-cell;
 	padding: 0ex 0.2ex;
-	line-height: 99%;
+	line-height: 1; /* 99%; */
 	border: 0ex;
+}
+.environment.align > .arrayrow > .arraycell.align-l {
+	padding-right: 2em;
 }
 /*
 * CSS file for LaTeX formulas, extra stuff:
