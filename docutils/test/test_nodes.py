@@ -733,6 +733,21 @@ class SetIdTests(unittest.TestCase):
                                ['P:test-1'],
                                ['P:2019-10-30']])
 
+class NodeVisitorTests(unittest.TestCase):
+    def setUp(self):
+        self.document = utils.new_document('test')
+        self.element = nodes.Element()
+        self.visitor = nodes.NodeVisitor(self.document)
+
+    def test_dispatch_visit_unknown(self):
+        # raise exception if no visit/depart methods are defined for node class
+        self.assertRaises(NotImplementedError, 
+                          self.visitor.dispatch_visit, self.element)
+
+    def test_dispatch_visit_optional(self):
+        # silently skip nodes of a calss in tuple nodes.NodeVisitor.optional
+        rv = self.visitor.dispatch_visit(nodes.meta())
+        self.assertIsNone(rv)
 
 class MiscFunctionTests(unittest.TestCase):
 
