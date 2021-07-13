@@ -1972,7 +1972,7 @@ class NodeVisitor(object):
        1995.
     """
 
-    optional = (meta)
+    optional = ('meta',)
     """
     Tuple containing node class names (as strings).
 
