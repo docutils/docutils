@@ -8,10 +8,9 @@ parser_name = "rst"
 writer_name = "html"
 
 # Extra settings
-settings_overrides['math_output'] = 'HTML'
-# stylesheets: 
-settings_overrides['stylesheet_path'] = ( 
-    'functional/input/data/html4css1.css,'
-    'functional/input/data/math.css')
+settings_overrides['math_output'] = 'HTML math.css'
+# local copy of stylesheets:
+# (Test runs in ``docutils/test/``, we need relative path from there.)
+settings_overrides['stylesheet_dirs'] = ('.', 'functional/input/data')
 
     

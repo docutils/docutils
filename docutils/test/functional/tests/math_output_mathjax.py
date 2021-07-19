@@ -8,7 +8,8 @@ parser_name = "rst"
 writer_name = "html"
 
 # Settings
-settings_overrides['math_output'] = 'MathJax /usr/share/javascript/mathjax/MathJax.js'
+settings_overrides['math_output'] \
+    = 'MathJax /usr/share/javascript/mathjax/MathJax.js'
 # local copy of default stylesheet:
-settings_overrides['stylesheet_path'] = (
-    'functional/input/data/html4css1.css')
+# (Test runs in ``docutils/test/``, we need relative path from there.)
+settings_overrides['stylesheet_dirs'] = ('.', 'functional/input/data')

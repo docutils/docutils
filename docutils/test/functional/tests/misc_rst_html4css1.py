@@ -11,4 +11,3 @@ writer_name = "html4css1"
 # test for encoded attribute value in optional stylesheet name:
 settings_overrides['stylesheet'] = 'foo&bar.css, html4css1.css'
 settings_overrides['stylesheet_path'] = ''
-settings_overrides['embed_stylesheet'] = False
