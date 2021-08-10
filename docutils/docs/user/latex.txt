@@ -2082,7 +2082,7 @@ Tables
   *tablewidth* is set relative to this value. If someone produces documents
   with line length of 132 this will lead to suboptimal results.
 
-  You may use the `:width:` option to manually set the table column widths.
+  You may use the `:widths:` option to manually set the table column widths.
 
 * Table: multicol cells are always left aligned.
 
