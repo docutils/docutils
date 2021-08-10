@@ -6,6 +6,8 @@
 
 """LaTeX2e document tree Writer."""
 
+from __future__ import division
+
 __docformat__ = 'reStructuredText'
 
 # code contributions from several people included, thanks to all.
@@ -517,6 +519,10 @@ PreambleCmds.minitoc = r"""%% local table of contents
 PreambleCmds.table = r"""\usepackage{longtable,ltcaption,array}
 \setlength{\extrarowheight}{2pt}
 \newlength{\DUtablewidth} % internal use in tables"""
+# if booktabs:
+#  \newcommand{\DUcolumnwidth}[1]{\dimexpr #1\DUtablewidth-2\tabcolsep\relax}
+# else:
+#  \newcommand{\DUcolumnwidth}[1]{\dimexpr #1\DUtablewidth-2\tabcolsep-\arrayrulewidth\relax}
 
 PreambleCmds.textcomp = r"""\usepackage{textcomp} % text symbol macros"""
 # TODO? Options [force,almostfull] prevent spurious error messages,
@@ -829,13 +835,10 @@ class Table(object):
     def __init__(self, translator, latex_type):
         self._translator = translator
         self._latex_type = latex_type
-        self._open = False
-        # miscellaneous attributes
-        self._attrs = {}
-        self._col_width = []
+        
+        self.close()
+        self._colwidths = []
         self._rowspan = []
-        self.stubs = []
-        self.colwidths_auto = False
         self._in_thead = 0
 
     def open(self):
@@ -844,6 +847,7 @@ class Table(object):
         self.caption = []
         self._attrs = {}
         self._in_head = False # maybe context with search
+
     def close(self):
         self._open = False
         self._col_specs = None
@@ -857,12 +861,9 @@ class Table(object):
 
     def set_table_style(self, table_style, classes):
         borders = [cls.replace('nolines', 'borderless')
-                   for cls in table_style+classes
+                   for cls in ['standard'] + table_style + classes
                    if cls in ('standard', 'booktabs', 'borderless', 'nolines')]
-        try:
-            self.borders = borders[-1]
-        except IndexError:
-            self.borders = 'standard'
+        self.borders = borders[-1]
         self.colwidths_auto = (('colwidths-auto' in classes
                                 and 'colwidths-given' not in table_style)
                                or ('colwidths-auto' in table_style
@@ -876,6 +877,7 @@ class Table(object):
 
     def set(self, attr, value):
         self._attrs[attr] = value
+
     def get(self, attr):
         if attr in self._attrs:
             return self._attrs[attr]
@@ -930,35 +932,31 @@ class Table(object):
         ABC DEF
         === ===
 
-        usually gets to narrow, therefore we add 1 (fiddlefactor).
+        usually gets too narrow, therefore we add 1 (fiddlefactor).
         """
         bar = self.get_vertical_bar()
         self._rowspan= [0] * len(self._col_specs)
-        self._col_width = []
         if self.colwidths_auto:
-            latex_table_spec = (bar+'l')*len(self._col_specs)
-            return latex_table_spec+bar
-        width = 80
-        total_width = 0.0
-        # first see if we get too wide.
-        for node in self._col_specs:
-            colwidth = float(node['colwidth']+1) / width
-            total_width += colwidth
-        # donot make it full linewidth
-        factor = 0.93
-        if total_width > 1.0:
-            factor /= total_width
-        latex_table_spec = ''
-        for node in self._col_specs:
-            colwidth = factor * float(node['colwidth']+1) / width
-            self._col_width.append(colwidth+0.005)
-            latex_table_spec += '%sp{%.3f\\DUtablewidth}' % (bar, colwidth+0.005)
-        return latex_table_spec+bar
+            self._colwidths = []
+            latex_colspecs = ['l'] * len(self._col_specs)
+        else:
+            width = 80 # assumed standard line length
+            # first see if we get too wide.
+            total_width = sum(node['colwidth']+1 for node in self._col_specs)
+            # do not make it full linewidth
+            factor = 0.93
+            if total_width > 80:
+                factor *= width / total_width
+            self._colwidths = [(factor * float(node['colwidth']+1)/width)
+                                + 0.005 for node in self._col_specs]
+            latex_colspecs = ['p{%.3f\\DUtablewidth}' % colwidth
+                              for colwidth in self._colwidths]
+        return bar + bar.join(latex_colspecs) + bar
 
     def get_column_width(self):
         """Return columnwidth for current cell (not multicell)."""
         try:
-            return '%.2f\\DUtablewidth' % self._col_width[self._cell_in_row]
+            return '%.2f\\DUtablewidth' % self._colwidths[self._cell_in_row]
         except IndexError:
             return '*'
 
@@ -966,8 +964,8 @@ class Table(object):
         """Return sum of columnwidths for multicell."""
         try:
             mc_width = sum([width
-                            for width in ([self._col_width[start + co]
-                                           for co in range (len_)])])
+                            for width in ([self._colwidths[start + co]
+                                           for co in range(len_)])])
             return 'p{%.2f\\DUtablewidth}' % mc_width
         except IndexError:
             return 'l'
@@ -1170,10 +1168,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
                                      self.settings.graphicx_option)
         # footnotes: TODO: implement LaTeX footnotes
         self.docutils_footnotes = settings.docutils_footnotes
-        # @@ table_style: list of values from fixed set: warn?
-        # for s in self.settings.table_style:
-        #     if s not in Writer.table_style_values:
-        #         self.warn('Ignoring value "%s" in "table-style" setting.' %s)
 
         # Output collection stacks
         # ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -2956,7 +2950,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         content = self.out
         self.pop_output_collector()
         try:
-            width = self.to_latex_length(node.attributes['width'])
+            width = self.to_latex_length(node['width'])
         except KeyError:
             width = r'\linewidth'
         if isinstance(node.parent, nodes.compound):

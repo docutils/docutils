@@ -1205,11 +1205,6 @@ The default CSS sylesheets define:
   align-left, align-center, align-right
     Align the tables
 
-  colwidths-auto
-    Delegate the determination of table column widths to the backend
-    (leave out the ``<colgroup>`` column specification).
-    See also the "widths" option of the `table directive`_.
-
 The HTML5 stylesheets also define:
 
   booktabs
@@ -1218,6 +1213,13 @@ The HTML5 stylesheets also define:
   captionbelow
     Place the table caption below the table
     (New in 0.17).
+
+In addition, the HTML writers support:
+
+  colwidths-auto
+    Delegate the determination of table column widths to the backend
+    (leave out the ``<colgroup>`` column specification).
+    Overridden by the "widths" option of the `table directive`_.
 
 Default: "".  Option: ``--table-style``.
 
@@ -1746,8 +1748,10 @@ Supported values:
 
 standard
   Borders around all cells.
+
 booktabs
   A line above and below the table and one after the head.
+
 borderless
   No borders.
 
@@ -1755,9 +1759,8 @@ align-left, align-center, align-right
   Align tables.
 
 colwidths-auto, colwidths-given
-  Default value for column width determination by
-  LaTeX or Docutils.
-  Override with the `table directive`_'s :widths: option.
+  Column width determination by LaTeX or Docutils (default).
+  Overridden by the `table directive`_'s :widths: option.
 
   .. warning::
 
