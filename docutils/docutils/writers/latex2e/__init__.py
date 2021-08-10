@@ -835,7 +835,7 @@ class Table(object):
     def __init__(self, translator, latex_type):
         self._translator = translator
         self._latex_type = latex_type
-        
+
         self.close()
         self._colwidths = []
         self._rowspan = []
@@ -1002,8 +1002,8 @@ class Table(object):
                 a.append('\\endfirsthead\n')
             else:
                 a.append('\\endhead\n')
-                a.append(r'\multicolumn{%d}{c}' % len(self._col_specs) +
-                         r'{\hfill ... continued on next page} \\')
+                a.append(r'\multicolumn{%d}{r}' % len(self._col_specs) +
+                         r'{... continued on next page} \\')
                 a.append('\n\\endfoot\n\\endlastfoot\n')
         # for longtable one could add firsthead, foot and lastfoot
         self._in_thead -= 1
