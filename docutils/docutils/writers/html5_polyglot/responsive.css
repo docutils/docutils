@@ -348,8 +348,8 @@ table.align-right {
 
 /* Math */
 /* for math-output=MathML (for math-output=HTML, see math.css) */
-mtable.align > mtr > mtd { /* emulate AMS "align" environment. */
-  text-align: left;
+math .boldsymbol {
+  font-weight: bold;
 }
 mstyle.mathscr, mi.mathscr {
   font-family: STIX;

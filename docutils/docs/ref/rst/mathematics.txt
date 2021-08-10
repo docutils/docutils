@@ -70,8 +70,8 @@ Displayed equations can use ``\\`` and ``&`` for line shifts and alignments::
 
   .. math::
 
-   a &= (x + y)^2         &\qquad b &= (x - y)^2 \\
-     &= x^2 + 2xy + y^2   &        &= x^2 - 2xy + y^2
+   a &= (x + y)^2         &  b &= (x - y)^2 \\
+     &= x^2 + 2xy + y^2   &    &= x^2 - 2xy + y^2
 
 LaTeX output will wrap it in an ``align*`` environment.
 The result is:
@@ -134,12 +134,12 @@ For embellishments that span multiple symbols, use:
 .. class:: colwidths-auto
 
   ========================== ============================  =========================== =============================
-  `\widetilde{abi}`          ``\widetilde{abi}``           `\widehat{abi}`             ``\widehat{abi}``
-  `\overline{abi}`           ``\overline{abi}``            `\underline{abi}`           ``\underline{abi}``
-  `\overbrace{abi}`          ``\overbrace{abi}``           `\underbrace{abi}`          ``\underbrace{abi}``
-  `\overleftarrow{abi}`      ``\overleftarrow{abi}``       `\underleftarrow{abi}`      ``\underleftarrow{abi}``
-  `\overrightarrow{abi}`     ``\overrightarrow{abi}``      `\underrightarrow{abi}`     ``\underrightarrow{abi}``
-  `\overleftrightarrow{abi}` ``\overleftrightarrow{abi}``  `\underleftrightarrow{abi}` ``\underleftrightarrow{abi}``
+  `\widetilde{gbi}`          ``\widetilde{gbi}``           `\widehat{gbi}`             ``\widehat{gbi}``
+  `\overline{gbi}`           ``\overline{gbi}``            `\underline{gbi}`           ``\underline{gbi}``
+  `\overbrace{gbi}`          ``\overbrace{gbi}``           `\underbrace{gbi}`          ``\underbrace{gbi}``
+  `\overleftarrow{gbi}`      ``\overleftarrow{gbi}``       `\underleftarrow{gbi}`      ``\underleftarrow{gbi}``
+  `\overrightarrow{gbi}`     ``\overrightarrow{gbi}``      `\underrightarrow{gbi}`     ``\underrightarrow{gbi}``
+  `\overleftrightarrow{gbi}` ``\overleftrightarrow{gbi}``  `\underleftrightarrow{gbi}` ``\underleftrightarrow{gbi}``
   ========================== ============================  =========================== =============================
 
 
@@ -577,8 +577,9 @@ Affixing symbols to other symbols
 
 In addition to the standard `accents and embellishments`_, other symbols
 can be placed above or below a base symbol with the ``\overset`` and
-``\underset`` commands. For example, writing ``\overset{*}{X}`` becomes
-`\overset{*}{X}` and ``\underset{+}{M}`` becomes `\underset{+}{M}`.
+``\underset`` commands. The symbol is set in "scriptstyle" (smaller font
+size). For example, writing ``\overset{*}{X}`` becomes `\overset{*}{X}`
+and ``\underset{+}{M}`` becomes `\underset{+}{M}`.
 
 
 Matrices
@@ -613,8 +614,8 @@ matrix.
 For piecewise function definitions there is a ``cases`` environment:
 
 .. math:: \mathrm{sgn}(x) = \begin{cases}
-                              \,          -1 & x<0\\
-                              \,\phantom{-}1 & x>0
+                                        -1 & x<0\\
+                              \phantom{-}1 & x>0
                             \end{cases}
 
 Spacing commands
@@ -908,6 +909,8 @@ MathML), leaving some symbols unchanged:
 :mathsf: `\mathsf{abs(x) \pm \alpha \approx 3 \Gamma  \quad \forall x \in R}`
 :mathbb: `\mathbb{abs(x) \pm \alpha \approx 3 \Gamma  \quad \forall x \in R}`
 :mathbf: `\mathbf{abs(x) \pm \alpha \approx 3 \Gamma  \quad \forall x \in R}`
+:mathcal: `\mathcal{abs(x) \pm \alpha \approx 3 \Gamma  \quad \forall x \in R}`
+:mathscr: `\mathscr{abs(x) \pm \alpha \approx 3 \Gamma  \quad \forall x \in R}`
 
 Unicode supports the following blackboard-bold characters:
 `\mathbb{a \ldots z A \ldots Z 0 \ldots 9
@@ -932,7 +935,8 @@ Scripts and Limits
 ~~~~~~~~~~~~~~~~~~
 
 Accents should be nearer to the base (in MathML Firefox 78, it's vice versa!):
-`\bar a \overline a, \bar l \overline l, \bar i \overline i`.
+`\bar a \overline a, \bar l \overline l, \bar i \overline i`,
+`\vec{r}` `\overrightarrow{r}`.
 
 Sub- and superscript may be given in any order:
 `x_i^j = x^j_i` and `\int_0^1 = \int^1_0`.
@@ -950,9 +954,80 @@ tex-token returns "{" for nested groups:
 
 Big delimiters and symbols
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
+Compare automatic sizing with fixed sizes:
+
+.. math:  \left( \frac{\frac1x}{\frac{1}{n}}\right) &= \Biggl(\text{Bigg}\Biggr)\\
+
+
+.. math::
+  \left( 3                          \right)
+  \left( f(x)                       \right)
+  \left( \bar x                     \right)
+  \left( \overline x                \right)
+  \left( n_i                        \right) &= () \\
+  \left( \underline x               \right) &= \bigl(\text{big}\bigr)\\
+  \left( 3^2                        \right)
+  \left( \sqrt{3}                   \right)
+  \left( \sqrt{3^2}                 \right)
+  \left( \sum                       \right)
+  \left( \bigotimes                 \right)
+  \left( \prod                      \right) &= \Bigl(\text{Big}\Bigr)\\
+  \left( \frac{3  }{2}              \right)
+  \left( \frac{3^2}{2^4}            \right)
+  \binom{3  }{2}
+  \begin{pmatrix} a & b \\ c & d \end{pmatrix}  
+  \left( \frac{1}{\sqrt 2}          \right)
+  \left( \int                       \right)
+  \left( \int_0                     \right)
+  \left( \int^1                     \right)
+  \left( \int_0^1                   \right) &= \biggl(\text{bigg}\biggr)\\
+  \left( \frac{\sqrt 2}{2}          \right)
+  \left( \sum_0                     \right)
+  \left( \sum^1                     \right)
+  \left( \sum_0^1                   \right)
+  \left( \frac{\frac1x}{\frac{1}{n}}\right) &= \Biggl(\text{Bigg}\Biggr)\\
+  \left( \intop_0                   \right)
+  \left( \intop^1                   \right)
+  \left( \intop_0^1                 \right)
+
+And in text:
+
+:`()`:                        `\left(3                          \right)
+                              \left( f(x)                       \right)
+                              \left( \bar x                     \right)
+                              \left( \overline x                \right)
+                              \left( n_i                        \right)
+                              \left( \sum                       \right)
+                              \left( \sum_0                     \right)
+                              \left( \prod                      \right)`
+
+                              
+:`\bigl(\text{big}\bigr)`:    `\left(\underline x               \right)
+                              \left( 3^2                        \right)
+                              \binom{3}{2}
+                              \left(\begin{smallmatrix} a & b \\
+                              c & d \end{smallmatrix}           \right)
+                              \left( \bigotimes                 \right)`
+
+:`\Bigl(\text{Big}\Bigr)`:    `\left(\sqrt{3}                   \right)
+                              \left( \sqrt{3^2}                 \right)
+                              \left( \frac{3}{2}                \right)
+                              \left( \frac{3^2}{2^4}            \right)
+                              \left( \frac{\sqrt 2}{2}          \right)
+                              \left( \int                       \right)
+                              \left( \int_0                     \right)
+                              \left( \int^1                     \right)
+                              \left( \int_0^1                   \right)
+                              \left( \sum^1                     \right)
+                              \left( \sum_0^1                   \right)
+                              \left( \frac{\frac1x}{\frac{1}{n}}\right)`
+
+
+
+
 
 Test ``\left``, ``\right``, and the  \bigl/\bigr, … size commands
-with extensible delimiters.
+with all extensible delimiters.
 
 .. math::
    \left.(b\right)\ \bigl(b\Bigr)\ \biggl(b\Biggr)
@@ -967,9 +1042,11 @@ with extensible delimiters.
    \quad
    \left.\lfloor b\right\rfloor\ \bigl\lfloor b\Bigr\rfloor\ \biggl\lfloor b\Biggr\rfloor
    \quad
-   \left.\lvert b\right\rvert\ \bigl\lvert b\Bigr\rvert\ \biggl\lvert b\Biggr\rvert
+   \left.\lvert b\right\rvert\ \bigl\lvert b\Bigr\rvert\
+   \biggl\lvert b\Biggr\rvert
    \quad
-   \left.\lVert b\right\rVert\ \bigl\lVert b\Bigr\rVert\ \biggl\lVert b\Biggr\rVert
+   \left.\lVert b\right\rVert\ \bigl\lVert b\Bigr\rVert\
+   \biggl\lVert b\Biggr\rVert
 
    \left.\lgroup b\right\rgroup\ \bigl\lgroup b\Bigr\rgroup\ \biggl\lgroup b\Biggr\rgroup
    \quad
@@ -985,6 +1062,7 @@ with extensible delimiters.
    \quad
    \left.\bracevert b\right\bracevert\ \bigl\bracevert b\Bigr\bracevert\ \biggl\bracevert b\Biggr\bracevert
    \quad
+   \left.\vert b\right\Vert\ \bigl\vert b\Bigr\Vert\ \biggl\vert b\Biggr\Vert
 
 
 Variable-sized operators:

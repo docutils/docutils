@@ -96,8 +96,8 @@ Cases with the AMSmath_ ``cases`` environment:
 .. math::
 
    \mathrm{sgn}(x) = \begin{cases}
-                       -1 & x<0\\
-                        1 & x>0
+                                -1 & x<0\\
+                       \phantom{-} 1 & x>0
                      \end{cases}
 
 .. _AMSmath: ftp://ftp.ams.org/ams/doc/amsmath/short-math-guide.pdf

@@ -195,9 +195,9 @@ directives:</p>
   </mfrac>
   <mi class="capital-greek">Ψ</mi>
   <mo>=</mo>
-  <mover accent="true">
+  <mover>
     <mi>H</mi>
-    <mo>ˆ</mo>
+    <mo stretchy="false">ˆ</mo>
   </mover>
   <mi class="capital-greek">Ψ</mi>
   <mo>,</mo>
@@ -217,78 +217,78 @@ physical system changes in time.</p>
 </colgroup>
 <tbody>
 <tr><td><p><math xmlns="http://www.w3.org/1998/Math/MathML">
-  <mover accent="true">
+  <mover>
     <mi>a</mi>
-    <mo>´</mo>
+    <mo stretchy="false">´</mo>
   </mover>
 </math>      <span class="docutils literal">\acute{a}</span></p></td>
 <td><p><math xmlns="http://www.w3.org/1998/Math/MathML">
-  <mover accent="true">
+  <mover>
     <mi>t</mi>
-    <mo>˙</mo>
+    <mo stretchy="false">˙</mo>
   </mover>
 </math>        <span class="docutils literal">\dot{t}</span></p></td>
 <td><p><math xmlns="http://www.w3.org/1998/Math/MathML">
-  <mover accent="true">
+  <mover>
     <mi>γ</mi>
-    <mo>ˆ</mo>
+    <mo stretchy="false">ˆ</mo>
   </mover>
 </math>   <span class="docutils literal"><span class="pre">\hat{\gamma}</span></span></p></td>
 </tr>
 <tr><td><p><math xmlns="http://www.w3.org/1998/Math/MathML">
-  <mover accent="true">
+  <mover>
     <mi>a</mi>
-    <mo>`</mo>
+    <mo stretchy="false">`</mo>
   </mover>
 </math>      <span class="docutils literal">\grave{a}</span></p></td>
 <td><p><math xmlns="http://www.w3.org/1998/Math/MathML">
-  <mover accent="true">
+  <mover>
     <mi>t</mi>
-    <mo>¨</mo>
+    <mo stretchy="false">¨</mo>
   </mover>
 </math>       <span class="docutils literal">\ddot{t}</span></p></td>
 <td><p><math xmlns="http://www.w3.org/1998/Math/MathML">
-  <mover accent="true">
+  <mover>
     <mi>α</mi>
-    <mo>˜</mo>
+    <mo stretchy="false">˜</mo>
   </mover>
 </math> <span class="docutils literal"><span class="pre">\tilde{\alpha}</span></span></p></td>
 </tr>
 <tr><td><p><math xmlns="http://www.w3.org/1998/Math/MathML">
-  <mover accent="true">
+  <mover>
     <mi>x</mi>
-    <mo>˘</mo>
+    <mo stretchy="false">˘</mo>
   </mover>
 </math>      <span class="docutils literal">\breve{x}</span></p></td>
 <td><p><math xmlns="http://www.w3.org/1998/Math/MathML">
-  <mover accent="true">
+  <mover>
     <mi>t</mi>
-    <mo>⃛</mo>
+    <mo stretchy="false">⋯</mo>
   </mover>
 </math>      <span class="docutils literal">\dddot{t}</span></p></td>
 <td><p><math xmlns="http://www.w3.org/1998/Math/MathML">
-  <mover accent="false">
+  <mover>
     <mi>ı</mi>
-    <mo>→</mo>
+    <mo stretchy="false" accent="false">→</mo>
   </mover>
 </math>   <span class="docutils literal"><span class="pre">\vec{\imath}</span></span></p></td>
 </tr>
 <tr><td><p><math xmlns="http://www.w3.org/1998/Math/MathML">
-  <mover accent="true">
+  <mover>
     <mi>a</mi>
-    <mo>ˇ</mo>
+    <mo stretchy="false">ˇ</mo>
   </mover>
 </math>      <span class="docutils literal">\check{a}</span></p></td>
 <td><p><math xmlns="http://www.w3.org/1998/Math/MathML">
-  <mover accent="true">
+  <mover>
     <mi>a</mi>
-    <mo>ˉ</mo>
+    <mo stretchy="false">ˉ</mo>
   </mover>
 </math>        <span class="docutils literal">\bar{a}</span></p></td>
 <td><p><math xmlns="http://www.w3.org/1998/Math/MathML">
-  <mover accent="false">
+  <mover>
     <mi>R</mi>
-    <mo>→</mo>
+    <mo stretchy="false" accent="false">→</mo>
   </mover>
 </math>        <span class="docutils literal">\vec{R}</span></p></td>
 </tr>
@@ -397,7 +397,7 @@ physical system changes in time.</p>
 <span class="docutils literal">align</span> environment:</p>
 <div>
 <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-  <mtable class="alignat" columnalign="right left" columnspacing="0" displaystyle="true">
+  <mtable class="align" columnalign="right left" columnspacing="0" displaystyle="true">
     <mtr>
       <mtd>
         <msub>
@@ -472,8 +472,8 @@ physical system changes in time.</p>
   <mo stretchy="false">)</mo>
   <mo>=</mo>
   <mrow>
-    <mo>{</mo>
-    <mtable>
+    <mo rspace="0.17em">{</mo>
+    <mtable columnalign="left">
       <mtr>
         <mtd>
           <mo>−</mo>
@@ -487,6 +487,9 @@ physical system changes in time.</p>
       </mtr>
       <mtr>
         <mtd>
+          <mphantom>
+            <mo>−</mo>
+          </mphantom>
           <mn>1</mn>
         </mtd>
         <mtd>
