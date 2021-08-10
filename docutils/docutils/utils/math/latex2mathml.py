@@ -24,6 +24,7 @@
 # >>> from latex2mathml import *
 
 import collections
+import copy
 import re
 import sys
 import unicodedata
@@ -79,18 +80,18 @@ functions.update((name, name) for name in
 # math font selection -> <mi mathvariant=...> or <mstyle mathvariant=...>
 math_alphabets = {# 'cmdname': 'mathvariant value'  # package
                   'boldsymbol': 'bold',
-                  'mathbb': 'double-struck',        # amssymb
-                  'mathbf': 'bold',
-                  'mathcal': 'script',
-                  'mathfrak': 'fraktur',            # amssymb
-                  'mathit': 'italic',
-                  'mathrm': 'normal',
-                  'mathscr': 'script',              # mathrsfs
-                  'mathsf': 'sans-serif',
-                  'mathtt': 'monospace',
-                  'mathbfit': 'bold-italic',        # isomath
-                  'mathsfit': 'sans-serif-italic',  # isomath
-                  'mathsfbfit': 'sans-serif-bold-italic',  # isomath
+                  'mathbf':     'bold',
+                  'mathit':     'italic',
+                  'mathtt':     'monospace',
+                  'mathrm':     'normal',
+                  'mathsf':     'sans-serif',
+                  'mathcal':    'script',
+                  'mathbfit':   'bold-italic',            # isomath
+                  'mathbb':     'double-struck',          # amssymb
+                  'mathfrak':   'fraktur',                # amssymb
+                  'mathsfit':   'sans-serif-italic',      # isomath
+                  'mathsfbfit': 'sans-serif-bold-italic', # isomath
+                  'mathscr':    'script',                 # mathrsfs
                   # unsupported: bold-fraktur
                   #              bold-script
                   #              bold-sans-serif
@@ -178,18 +179,17 @@ small_operators = {# mathsize='75%'
                   }
 
 # Operators and functions with limits above/below in display formulas
-# and in index position inline (movablelimits="true")
-displaylimits = ('bigcap', 'bigcup', 'bigodot', 'bigoplus', 'bigotimes',
+# and in index position inline (movablelimits=True)
+movablelimits = ('bigcap', 'bigcup', 'bigodot', 'bigoplus', 'bigotimes',
                   'bigsqcup', 'biguplus', 'bigvee', 'bigwedge',
                   'coprod', 'intop', 'ointop', 'prod', 'sum',
                   'lim', 'max', 'min', 'sup', 'inf')
 # Depending on settings, integrals may also be in this category.
 # (e.g. if "amsmath" is loaded with option "intlimits", see
 #  http://mirror.ctan.org/macros/latex/required/amsmath/amsldoc.pdf)
-# displaylimits.extend(('fint', 'idotsint', 'iiiint', 'iiint', 'iint',
-#                       'int', 'oiint', 'oint', 'ointctrclockwise',
-#                       'sqint', 'varointclockwise',))
-
+# movablelimits.extend(('fint', 'iiiint', 'iiint', 'iint', 'int', 'oiint',
+#                       'oint', 'ointctrclockwise', 'sqint',
+#                       'varointclockwise',))
 
 # horizontal space -> <mspace>
 
@@ -208,38 +208,39 @@ spaces = {'qquad':         '2em',       # two \quad
           '!':             '-0.1667em', # negthinspace
          }
 
-# accents -> <mover accent="true"> # TODO: stretchy="false"
-#        TeX        spacing    combining
-accents = {'acute':    u'´',      # u'\u0301',
-           'bar':      u'ˉ',      # u'\u0304',
-           'breve':    u'˘',      # u'\u0306',
-           'check':    u'ˇ',      # u'\u030C',
-           'dot':      u'˙',      # u'\u0307',
-           'ddot':     u'¨',      # u'\u0308',
-           'dddot':               u'\u20DB',  # '…' too wide
+# accents -> <mover stretchy="false">
+accents = {# TeX:      (spacing, combining)
+           'acute':    (u'´', u'\u0301'),
+           'bar':      (u'ˉ', u'\u0304'),
+           'breve':    (u'˘', u'\u0306'),
+           'check':    (u'ˇ', u'\u030C'),
+           'dot':      (u'˙', u'\u0307'),
+           'ddot':     (u'¨', u'\u0308'),
+           'dddot':    (u'⋯', u'\u20DB'),
+           'grave':    (u'`', u'\u0300'),
+           'hat':      (u'ˆ', u'\u0302'),
+           'mathring': (u'˚', u'\u030A'),
+           'tilde':    (u'˜', u'\u0303'), # tilde ~ or small tilde ˜?
+           'vec':      (u'→', u'\u20d7'), # → too heavy, accents="false"
            # TODO: ddddot
-           'grave':    u'`',      # u'\u0300',
-           'hat':      u'ˆ',      # u'\u0302',
-           'mathring': u'˚',      # u'\u030A',
-           'tilde':    u'˜',      # u'\u0303',
        }
 
-# limits etc. -> <mover accent="false"> or <munder>
-over = {# 'ddot':     u'..',
-        # 'dddot':                u'…',  # too wide if accent="true"
-        'overbrace':            u'\u23DE', # TOP CURLY BRACKET
-        'overleftarrow':        u'\u2190',
-        'overleftrightarrow':   u'\u2194',
-        'overline':             u'¯',
-        'overrightarrow':       u'\u2192',
-        'vec':                  u'\u2192', # → too heavy if accent="true"
-        'widehat':              u'^',
-        'widetilde':            u'~'}
-under = {'underbrace':          u'\u23DF',
-         'underleftarrow':      u'\u2190',
-         'underleftrightarrow': u'\u2194',
-         'underline':           u'_',
-         'underrightarrow':     u'\u2192'}
+# limits etc. -> <mover> or <munder>
+over = {# TeX:                  (char,     offset-correction/em)
+        'overbrace':            (u'\u23DE', -0.2), # DejaVu Math -0.6
+        'overleftarrow':        (u'\u2190', -0.2),
+        'overleftrightarrow':   (u'\u2194', -0.2),
+        'overline':             (u'_',      -0.2),   # \u2012' FIGURE DASH does not stretch
+        'overrightarrow':       (u'\u2192', -0.2),
+        'widehat':              (u'^',      -0.5),
+        'widetilde':            (u'~',      -0.3),
+       }
+under = {'underbrace':          (u'\u23DF',  0.1), # DejaVu Math -0.7
+         'underleftarrow':      (u'\u2190', -0.2),
+         'underleftrightarrow': (u'\u2194', -0.2),
+         'underline':           (u'_',      -0.8),
+         'underrightarrow':     (u'\u2192', -0.2),
+        }
 
 # Character translations
 # ----------------------
@@ -258,8 +259,9 @@ mathbb = {u'Γ': u'\u213E',    # ℾ
           u'π': u'\u213C',    # ℼ
          }
 
-
-matrices = {'matrix':  ('', ''),
+# Matrix environments
+matrices = {# name:    fences
+            'matrix':  ('', ''),
             'smallmatrix':  ('', ''), # smaller, see begin_environment()!
             'pmatrix': ('(', ')'),
             'bmatrix': ('[', ']'),
@@ -270,16 +272,16 @@ matrices = {'matrix':  ('', ''),
            }
 
 layout_styles = {
-    'displaystyle':      {'displaystyle': 'true',  'scriptlevel': '0'},
-    'textstyle':         {'displaystyle': 'false', 'scriptlevel': '0'},
-    'scriptstyle':       {'displaystyle': 'false', 'scriptlevel': '1'},
-    'scriptscriptstyle': {'displaystyle': 'false', 'scriptlevel': '2'},
+    'displaystyle':      {'displaystyle': True,  'scriptlevel': 0},
+    'textstyle':         {'displaystyle': False, 'scriptlevel': 0},
+    'scriptstyle':       {'displaystyle': False, 'scriptlevel': 1},
+    'scriptscriptstyle': {'displaystyle': False, 'scriptlevel': 2},
     }
 # See also https://www.w3.org/TR/MathML3/chapter3.html#presm.scriptlevel
 
 fractions = {# name:   style_attrs, frac_attrs
              'frac':   ({}, {}),
-             'cfrac':  ({'displaystyle': 'true',  'scriptlevel': '0',
+             'cfrac':  ({'displaystyle': True,  'scriptlevel': 0,
                          'CLASS': 'cfrac'}, {}), # in LaTeX with padding
              'dfrac':  (layout_styles['displaystyle'], {}),
              'tfrac':  (layout_styles['textstyle'], {}),
@@ -288,17 +290,19 @@ fractions = {# name:   style_attrs, frac_attrs
              'tbinom': (layout_styles['textstyle'], {'linethickness': 0}),
             }
 
-delimiter_sizes = {'left':  '',
-                   'right': '',
-                   'bigl':  '1.2em',
-                   'bigr':  '1.2em',
-                   'Bigl':  '1.623em',
-                   'Bigr':  '1.623em',
-                   'biggl': '2.047em',
-                   'biggr': '2.047em',
-                   'Biggl': '2.470em',
-                   'Biggr': '2.470em',
-                  }
+delimiter_sizes = ['', '1.2em', '1.623em', '2.047em', '2.470em']
+bigdelimiters = {'left':  0,
+                 'right': 0,
+                 'bigl':  1,
+                 'bigr':  1,
+                 'Bigl':  2,
+                 'Bigr':  2,
+                 'biggl': 3,
+                 'biggr': 3,
+                 'Biggl': 4,
+                 'Biggr': 4,
+                }
+
 
 # MathML element classes
 # ----------------------
@@ -318,13 +322,18 @@ class math(object):
                     ord('&'): u'&amp;',
                     0x2061:   u'&ApplyFunction;',
                    }
+    _boolstrings = {True: 'true', False: 'false'}
+    """String representation of boolean MathML attribute values."""
+
+    html_tagname = 'span'
+    """Tag name for HTML representation."""
 
     def __init__(self, *children, **attributes):
         """Set up node with `children` and `attributes`.
 
-        Attributes are downcased: Use CLASS to get "class" in XML
+        Attributes are downcased: Use CLASS to set "class" value.
         >>> math(mn(3), CLASS='test')
-        math(mn(3), CLASS='test')
+        math(mn(3), class='test')
         >>> math(CLASS='test').toprettyxml()
         '<math class="test">\n</math>'
 
@@ -336,7 +345,9 @@ class math(object):
         # sort attributes for predictable functional tests
         # as self.attributes.update(attributes) does not keep order in Python < 3.6
         for key in sorted(attributes.keys()):
-            self.attributes[key] = attributes[key]
+            # Use .lower() to allow argument `CLASS` for attribute `class`
+            # (Python keyword). MathML uses only lowercase attributes.
+            self.attributes[key.lower()] = attributes[key]
 
     def __repr__(self):
         content = [repr(item) for item in getattr(self, 'children', [])]
@@ -344,8 +355,9 @@ class math(object):
             content.append(repr(self.data))
         if isinstance(self, MathSchema) and self.switch:
             content.append('switch=True')
-        if hasattr(self, 'attributes'):
-            content += ["%s='%s'"%(k, v) for k, v in self.attributes.items()]
+        content += ["%s=%r"%(k, v) for k, v in self.attributes.items()
+                    if v is not None]
+
         return self.__class__.__name__ + '(%s)' % ', '.join(content)
 
     def __len__(self):
@@ -401,9 +413,9 @@ class math(object):
                 + ['</%s>' % self.__class__.__name__])
 
     def xml_starttag(self):
-        # Use k.lower() to allow argument `CLASS` for attribute `class`
-        # (Python keyword). MathML uses only lowercase attributes.
-        attrs = ['%s="%s"'%(k.lower(), v) for k, v in self.attributes.items()]
+        attrs = ['%s="%s"' % (k, str(v).replace('True', 'true').replace('False', 'false'))
+                 for k, v in self.attributes.items()
+                 if v is not None]
         return '<%s>' % ' '.join([self.__class__.__name__] + attrs)
 
     def _xml_body(self, level=0):
@@ -421,11 +433,11 @@ class math(object):
 # '<math>\n  <mn>2</mn>\n</math>'
 # >>> len(n2)
 # 1
-# >>> eq3 = math(id='eq3')
+# >>> eq3 = math(id='eq3', display='block')
 # >>> eq3
-# math(id='eq3')
+# math(display='block', id='eq3')
 # >>> eq3.toprettyxml()
-# '<math id="eq3">\n</math>'
+# '<math display="block" id="eq3">\n</math>'
 # >>> len(eq3)
 # 0
 # >>> math(CLASS='bold').xml_starttag()
@@ -433,9 +445,10 @@ class math(object):
 
 class mtable(math): pass
 
-# >>> mtable(displaystyle='true')
-# mtable(displaystyle='true')
-# >>> math(mtable(displaystyle='true')).toprettyxml()
+# >>> mt = mtable(displaystyle=True)
+# >>> mt
+# mtable(displaystyle=True)
+# >>> math(mt).toprettyxml()
 # '<math>\n  <mtable displaystyle="true">\n  </mtable>\n</math>'
 
 class mrow(math):
@@ -449,7 +462,7 @@ class mrow(math):
         """
         parent = self.parent
         if isinstance(parent, MathRowSchema) and parent.nchildren == 1:
-            parent.nchildren = None
+            parent.nchildren = len(parent.children)
             parent.children = self.children
             for child in self.children:
                 child.parent = parent
@@ -462,24 +475,31 @@ class mrow(math):
                 return self.children[0]
         return super(mrow, self).close()
 
-# >>> mrow(displaystyle='false')
-# mrow(displaystyle='false')
+# >>> mrow(displaystyle=False)
+# mrow(displaystyle=False)
 
 # The elements <msqrt>, <mstyle>, <merror>, <mpadded>, <mphantom>, <menclose>,
 # <mtd>, <mscarry>, and <math> treat their contents as a single inferred mrow
 # formed from all their children.
 class MathRowSchema(math):
     """Base class for elements treating content as a single inferred mrow."""
+
 class mtr(MathRowSchema): pass
+
 class mtd(MathRowSchema): pass
-class mphantom(MathRowSchema):
-    nchildren = 1 # \phantom expects one argument or a group
-class mstyle(MathRowSchema):
-    nchildren = 1 # \mathrm, ... expect one argument or a group
-class msqrt(MathRowSchema):
-    nchildren = 1 # \sqrt expects one argument or a group
+
 class menclose(MathRowSchema):
     nchildren = 1 # \boxed expects one argument or a group
+
+class mphantom(MathRowSchema):
+    nchildren = 1 # \phantom expects one argument or a group
+
+class msqrt(MathRowSchema):
+    nchildren = 1 # \sqrt expects one argument or a group
+
+class mstyle(MathRowSchema):
+    nchildren = 1 # \mathrm, ... expect one argument or a group
+
 
 class MathToken(math):
     """Token Element: contains textual data instead of children.
@@ -495,10 +515,10 @@ class MathToken(math):
     def _xml_body(self, level=0):
         return [unicode(self.data).translate(self.xml_entities)]
 
-class mi(MathToken): pass
-class mn(MathToken): pass
-class mo(MathToken): pass
 class mtext(MathToken): pass
+class mi(MathToken): pass
+class mo(MathToken): pass
+class mn(MathToken): pass
 
 # >>> mo(u'<')
 # mo('<')
@@ -519,43 +539,43 @@ class MathSchema(math):
         math.__init__(self, *children, **kwargs)
 
     def append(self, child):
-        new_current = super(MathSchema, self).append(child)
+        current_node = super(MathSchema, self).append(child)
         # normalize order if full
         if self.switch and self.full():
             self.children[-1], self.children[-2] = self.children[-2], self.children[-1]
-            # self.children.reverse()
             self.switch = False
-        return new_current
+        return current_node
 
 class msub(MathSchema): pass
 class msup(MathSchema): pass
 class msubsup(MathSchema):
     nchildren = 3
 
-class munder(MathSchema): pass
-class mover(MathSchema): pass
-class munderover(MathSchema):
-    nchildren = 3
-
-# >>> munder(mi('lim'), mo('-'), accent='false')
-# munder(mi('lim'), mo('-'), accent='false')
-# >>> mu = munder(mo('-'), accent='false', switch=True)
-# >>> mu
-# munder(mo('-'), switch=True, accent='false')
-# >>> mu.append(mi('lim'))
-# >>> mu
-# munder(mi('lim'), mo('-'), accent='false')
-# >>> mu.append(mi('lim'))
-# Traceback (most recent call last):
-# SyntaxError: Node munder(mi('lim'), mo('-'), accent='false') already full!
-# >>> munder(mo('-'), mi('lim'), accent='false', switch=True).toprettyxml()
-# '<munder accent="false">\n  <mi>lim</mi>\n  <mo>-</mo>\n</munder>'
 # >>> msub(mi('x'), mo('-'))
 # msub(mi('x'), mo('-'))
 # >>> msubsup(mi('base'), mi('sub'), mi('super'))
 # msubsup(mi('base'), mi('sub'), mi('super'))
 # >>> msubsup(mi('base'), mi('super'), mi('sub'), switch=True)
 # msubsup(mi('base'), mi('sub'), mi('super'))
+
+class munder(msub): pass
+class mover(msup): pass
+
+# >>> munder(mi('lim'), mo('-'), accent=False)
+# munder(mi('lim'), mo('-'), accent=False)
+# >>> mu = munder(mo('-'), accent=False, switch=True)
+# >>> mu
+# munder(mo('-'), switch=True, accent=False)
+# >>> mu.append(mi('lim'))
+# >>> mu
+# munder(mi('lim'), mo('-'), accent=False)
+# >>> mu.append(mi('lim'))
+# Traceback (most recent call last):
+# SyntaxError: Node munder(mi('lim'), mo('-'), accent=False) already full!
+# >>> munder(mo('-'), mi('lim'), accent=False, switch=True).toprettyxml()
+# '<munder accent="false">\n  <mi>lim</mi>\n  <mo>-</mo>\n</munder>'
+
+class munderover(msubsup): pass
 
 class mroot(MathSchema):
     nchildren = 2
@@ -798,11 +818,16 @@ def parse_latex_math(node, string):
             node = node.append(mn(c+number))
         elif c in anomalous_chars:
             # characters with a special meaning in LaTeX math mode
-            node = node.append(mo(anomalous_chars[c]))
-            # TODO: fix spacing before "unary" minus.
-            # set form='prefix' if preceded by "(", "{", ...?
+            # fix spacing before "unary" minus.
+            attributes = {}
+            if c == '-' and node.children:
+                previous_node = node.children[-1]
+                if (getattr(previous_node, 'data', '-') in '([='
+                    or previous_node.get('class') == 'mathopen'):
+                    attributes['form'] = 'prefix'
+            node = node.append(mo(anomalous_chars[c], **attributes))
         elif c in "/()[]|":
-            node = node.append(mo(c, stretchy='false'))
+            node = node.append(mo(c, stretchy=False))
         elif c in "+*=<>,.!?';@":
             node = node.append(mo(c))
         else:
@@ -824,7 +849,7 @@ def parse_latex_math(node, string):
 # >>> parse_latex_math(math(), '\\sqrt[3]{2 + 3}')
 # math(mroot(mrow(mn('2'), mo('+'), mn('3')), mn('3')))
 # >>> parse_latex_math(math(), '\max_x') # function takes limits
-# math(munder(mo('max', movablelimits='true'), mi('x')))
+# math(munder(mo('max', movablelimits=True), mi('x')))
 # >>> parse_latex_math(math(), 'x^j_i') # ensure correct order: base, sub, sup
 # math(msubsup(mi('x'), mi('i'), mi('j')))
 # >>> parse_latex_math(math(), '\int^j_i') # ensure correct order
@@ -863,7 +888,7 @@ def handle_cmd(name, node, string):
         node = node.append(new_node)
         return node, string
 
-    if (name in functions):
+    if name in functions:
         # use <mi> followed by invisible function applicator character
         # (see https://www.w3.org/TR/MathML3/chapter3.html#presm.mi)
         if name == 'operatorname':
@@ -877,7 +902,7 @@ def handle_cmd(name, node, string):
         if name == 'varliminf':    # \underline\lim
             new_node = munder(new_node, mo(u'_'))
         elif name == 'varlimsup':  # \overline\lim
-            new_node = mover(new_node, mo(u'¯'), accent='false')
+            new_node = mover(new_node, mo(u'¯'), accent=False)
         elif name == 'varprojlim': # \underleftarrow\lim
             new_node = munder(new_node, mo(u'\u2190'))
         elif name == 'varinjlim':  # \underrightarrow\lim
@@ -892,7 +917,7 @@ def handle_cmd(name, node, string):
 
     if name in math_alphabets:
         if name == 'boldsymbol':
-            attributes = {'style': 'font-weight: bold'}
+            attributes = {'class': 'boldsymbol'}
         else:
             attributes = {'mathvariant': math_alphabets[name]}
         if name == 'mathscr':
@@ -921,7 +946,7 @@ def handle_cmd(name, node, string):
     if name == 'colon': # trailing punctuation, not binary relation
         node = node.append(mo(':', form='postfix', lspace='0', rspace='0.28em'))
         return node, string
-    
+
     if name == 'idotsint':
         node = parse_latex_math(node, '\int\dotsi\int')
         return node, string
@@ -935,15 +960,17 @@ def handle_cmd(name, node, string):
         return node, string
 
     if name in operators:
-        if name in displaylimits and string and string[0] in ' _^':
-            node = node.append(mo(operators[name], movablelimits = 'true'))
-        else:
-            node = node.append(mo(operators[name]))
+        attributes = {}
+        if name in movablelimits and string and string[0] in ' _^':
+            attributes['movablelimits'] = True
+        elif name in ('lvert', 'lVert'):
+            attributes['class'] = 'mathopen'
+        node = node.append(mo(operators[name], **attributes))
         return node, string
 
-    if name in delimiter_sizes:
+    if name in bigdelimiters:
         delimiter_attributes = {}
-        size = delimiter_sizes[name]
+        size = delimiter_sizes[bigdelimiters[name]]
         delimiter, string = tex_token_or_group(string)
         if delimiter not in '()[]/|.':
             try:
@@ -954,7 +981,7 @@ def handle_cmd(name, node, string):
         if size:
             delimiter_attributes['maxsize'] = size
             delimiter_attributes['minsize'] = size
-            delimiter_attributes['symmetric'] = 'true'
+            delimiter_attributes['symmetric'] = True
         if name == 'left' or name.endswith('l'):
             row = mrow()
             node.append(row)
@@ -1035,11 +1062,12 @@ def handle_cmd(name, node, string):
             optargs = {'l': 'left', 'r': 'right'}
             if optarg in optargs:
                 frac_atts = frac_atts.copy()
-                frac_atts['numalign'] = optargs[optarg]
+                frac_atts['numalign'] = optargs[optarg] # "numalign" is deprecated
+                frac_atts['class'] = 'numalign-' + optargs[optarg]
         new_node = frac = mfrac(**frac_atts)
         if name.endswith('binom'):
-            new_node = mrow(mo('('), new_node, mo(')'))
-            new_node.close()
+            new_node = mrow(mo('('), new_node, mo(')'), CLASS='binom')
+            new_node.nchildren = 3
         if style_atts:
             new_node = mstyle(new_node, **style_atts)
         node.append(new_node)
@@ -1051,14 +1079,20 @@ def handle_cmd(name, node, string):
         node.close().close().append(new_node)
         return entry, string
 
-    if name in accents or name in over:
-        try:
-            ch = over[name]
-            acc = 'false'
-        except KeyError:
-            ch = accents[name]
-            acc = 'true'
-        new_node = mover(mo(ch), switch=True, accent=acc)
+    if name in accents:
+        new_node = mover(mo(accents[name][0], stretchy=False), switch=True)
+        if name == 'vec':
+            new_node.children[0]['accent'] = False # scale down arrow but drop i-dot
+        new_node.tex_cmd = name # for HTML export
+        node.append(new_node)
+        return new_node, string
+
+    if name in over:
+        # set "accent" to False (otherwise dots on i and j are dropped)
+        # but to True on accent node get "textstyle" (full size) symbols on top
+        new_node = mover(mo(over[name][0], accent=True),
+                         switch=True, accent=False)
+        new_node.tex_cmd = name # for HTML export
         node.append(new_node)
         return new_node, string
 
@@ -1068,7 +1102,8 @@ def handle_cmd(name, node, string):
         return new_node, string
 
     if name in under:
-        new_node = munder(mo(under[name]), switch=True)
+        new_node = munder(mo(under[name][0]), switch=True)
+        new_node.tex_cmd = name # for HTML export
         node.append(new_node)
         return new_node, string
 
@@ -1079,7 +1114,7 @@ def handle_cmd(name, node, string):
 
     if name in ('xleftarrow', 'xrightarrow'):
         subscript, string = tex_optarg(string)
-        base = mo(operators[name[1:]])
+        base = mo(operators['long'+name[1:]])
         if subscript:
             new_node = munderover(base)
             sub_node = parse_latex_math(mrow(), subscript)
@@ -1149,43 +1184,42 @@ def handle_cmd(name, node, string):
 # >>> handle_cmd('mathrm', math(), '{out} = 3')
 # (math(mi('out', mathvariant='normal')), ' = 3')
 # >>> handle_cmd('overline', math(), '{981}')
-# (mover(mo('¯'), switch=True, accent='false'), '{981}')
+# (mover(mo('¯', accent=True), switch=True, accent=False), '{981}')
 # >>> handle_cmd('bar', math(), '{x}')
-# (mover(mo('ˉ'), switch=True, accent='true'), '{x}')
+# (mover(mo('ˉ', stretchy=False), switch=True), '{x}')
 # >>> handle_cmd('xleftarrow', math(), r'[\alpha]{10}')
-# (munderover(mo('←'), mi('α')), '{10}')
+# (munderover(mo('⟵'), mi('α')), '{10}')
 # >>> handle_cmd('xleftarrow', math(), r'[\alpha=5]{10}')
-# (munderover(mo('←'), mrow(mi('α'), mo('='), mn('5'))), '{10}')
-
+# (munderover(mo('⟵'), mrow(mi('α'), mo('='), mn('5'))), '{10}')
 
 def handle_script_or_limit(node, c, limits=''):
     """Append script or limit element to `node`."""
     child = node.children.pop()
     if limits == 'limits':
-        child['movablelimits'] = 'false'
-    elif (limits == 'displaylimits'
-          or getattr(child, 'data', '') in displaylimits):
-        child['movablelimits'] = 'true'
+        child['movablelimits'] = False
+    elif (limits == 'movablelimits'
+          or getattr(child, 'data', '') in movablelimits):
+        child['movablelimits'] = True
 
     if c == '_':
-        if isinstance(child, msup):
-            new_node = msubsup(*child.children, switch=True)
-        elif isinstance(child, mover):
+        if isinstance(child, mover):
             new_node = munderover(*child.children, switch=True)
-        elif (limits in ('limits', 'displaylimits')
+        elif isinstance(child, msup):
+            new_node = msubsup(*child.children, switch=True)
+        elif (limits in ('limits', 'movablelimits')
               or limits == ''
-              and child.get('movablelimits', None) == 'true'):
+              and child.get('movablelimits', None) == True):
             new_node = munder(child)
         else:
             new_node = msub(child)
     elif c == '^':
-        if isinstance(child, msub):
-            new_node = msubsup(*child.children)
-        elif isinstance(child, munder):
+        if isinstance(child, munder):
             new_node = munderover(*child.children)
-        elif (limits in ('limits', 'displaylimits')
+        elif isinstance(child, msub):
+            new_node = msubsup(*child.children)
+        elif (limits in ('limits', 'movablelimits')
               or limits == ''
-              and child.get('movablelimits', None) == 'true'):
+              and child.get('movablelimits', None) == True):
             new_node = mover(child)
         else:
             new_node = msup(child)
@@ -1200,12 +1234,15 @@ def begin_environment(node, string):
         attributes = {}
         if left_delimiter:
             wrapper = mrow(mo(left_delimiter))
+            if name == 'cases':
+                wrapper = mrow(mo(left_delimiter, rspace='0.17em'))
+                attributes['columnalign'] = 'left'
             node.append(wrapper)
             node = wrapper
         elif name == 'smallmatrix':
-            attributes['rowspacing'] = '0.2em' # unimplemented in Firefox!
+            attributes['rowspacing'] = '0.02em'
             attributes['columnspacing'] = '0.333em'
-            wrapper = mstyle(scriptlevel=1)
+            wrapper = mstyle(scriptlevel='1')
             node.append(wrapper)
             node = wrapper
         # TODO: aligned, alignedat
@@ -1233,7 +1270,7 @@ def end_environment(node, string):
     return node, string
 
 
-# Return the number of "equation_columns" in `code_lines`. See "alignat"
+# Return the number of "equation_columns" in `code_lines`. cf. "alignat"
 # in http://mirror.ctan.org/macros/latex/required/amsmath/amsldoc.pdf
 def tex_equation_columns(rows):
     tabs = max(row.count('&') - row.count(r'\&') for row in rows)
@@ -1253,8 +1290,8 @@ def tex_equation_columns(rows):
 
 # Return dictionary with attributes to style an <mtable> as align environment:
 def align_attributes(rows):
-    atts = {'class': 'alignat',
-            'displaystyle': 'true'}
+    atts = {'class': 'align',
+            'displaystyle': True}
     tabs = max(row.count('&') - row.count(r'\&') for row in rows)
     if tabs:
         aligns = ['right', 'left'] * tabs
@@ -1264,13 +1301,13 @@ def align_attributes(rows):
     return atts
 
 # >>> align_attributes(['a = b'])
-# {'class': 'alignat', 'displaystyle': 'true'}
+# {'class': 'align', 'displaystyle': True}
 # >>> align_attributes(['a &= b'])
-# {'class': 'alignat', 'displaystyle': 'true', 'columnalign': 'right left', 'columnspacing': '0'}
+# {'class': 'align', 'displaystyle': True, 'columnalign': 'right left', 'columnspacing': '0'}
 # >>> align_attributes(['a &= b & a \in S'])
-# {'class': 'alignat', 'displaystyle': 'true', 'columnalign': 'right left right', 'columnspacing': '0 2em'}
+# {'class': 'align', 'displaystyle': True, 'columnalign': 'right left right', 'columnspacing': '0 2em'}
 # >>> align_attributes(['a &= b & c &= d'])
-# {'class': 'alignat', 'displaystyle': 'true', 'columnalign': 'right left right left', 'columnspacing': '0 2em 0'}
+# {'class': 'align', 'displaystyle': True, 'columnalign': 'right left right left', 'columnspacing': '0 2em 0'}
 
 
 def tex2mathml(tex_math, inline=True):
@@ -1302,7 +1339,7 @@ def tex2mathml(tex_math, inline=True):
 # </math>
 # >>> print(tex2mathml(r'a & b \\ c & d', inline=False))
 # <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-#   <mtable class="alignat" columnalign="right left" columnspacing="0" displaystyle="true">
+#   <mtable class="align" columnalign="right left" columnspacing="0" displaystyle="true">
 #     <mtr>
 #       <mtd>
 #         <mi>a</mi>
@@ -1323,7 +1360,7 @@ def tex2mathml(tex_math, inline=True):
 # </math>
 # >>> print(tex2mathml(r'a \\ b', inline=False))
 # <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-#   <mtable class="alignat" displaystyle="true">
+#   <mtable class="align" displaystyle="true">
 #     <mtr>
 #       <mtd>
 #         <mi>a</mi>

@@ -285,6 +285,9 @@ pre.code .inserted, code .inserted { background-color: #A3D289}
 
 /* Math */
 /* for math-output=MathML (for math-output=HTML, see math.css) */
+math .boldsymbol {
+  font-weight: bold;
+}
 mstyle.mathscr, mi.mathscr {
   font-family: STIX;
 }
