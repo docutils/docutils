@@ -854,7 +854,7 @@ Title
 } &  \\
 \hline
 \endhead
-\multicolumn{2}{c}{\hfill ... continued on next page} \\
+\multicolumn{2}{r}{... continued on next page} \\
 \endfoot
 \endlastfoot
 
