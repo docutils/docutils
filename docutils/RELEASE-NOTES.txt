@@ -26,7 +26,15 @@ Future changes
     references. Since 0.18, you can use the CSS selector
     ``[role="doc-noteref"]`` instead of ``.footnote-reference``
     (see minimal.css for examples).
-
+    
+  - Do not write a <colgroup> specifying relative column widths with the
+    deprecated ``<col width="...">``.
+    
+    The `html5` writer will default to ``:widths: auto`` and 
+    use ``style="width: ...%"`` if the "widths" option specifies
+    explicite table column widths. Set ``:widths: grid`` to keep
+    the current table default widths.
+    
   - Move attribution behind the blockquote to comply with the
     `"living standard"`__?
     (HTML5__ allows <cite> elements inside a blockquote, cf. Example 16.)
