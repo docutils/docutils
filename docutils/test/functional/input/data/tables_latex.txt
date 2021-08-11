@@ -1,30 +1,128 @@
-More Tables
-===========
+Tables
+======
 
-A table with multi-paragraph multicolumn cells:
+In contrast to HTML, LaTeX does not support line-breaks in tables with
+"automatic" column widths. Each cell has just one line, paragraphs are
+merged (the writer emits a warning).
+To provide for arbitrary cell content, the LaTeX writer defaults to
+specifying column widths computed from the source:
 
-+----------+--------------+---------------------------------+-----------+
-| test     | **bold hd**  | multicolumn 1                   | *emph hd* |
-|          |              |                                 |           |
-|          |              | With a second paragraph         |           |
-+----------+--------------+--------------+--------+---------+-----------+
-| multicolumn 2           | cell         | cell   | cell    | cell      |
-|                         |              |        |         |           |
-| With a second paragraph |              |        |         |           |
-+----------+--------------+--------------+--------+---------+-----------+
-| cell     | multicolumn 3 (one line,    | cell   | cell    | cell      |
-|          | but very very very very     |        |         |           |
-|          | very looooong)              |        |         |           |
-+----------+--------------+--------------+--------+---------+-----------+
-| cell     | cell         | cell         | Short multicolumn 4          |
-+----------+--------------+--------------+------------------------------+
+.. table:: problems with "auto" widths
+   :widths: auto
 
-Tables with multi-paragraph multirow cells currently fail due to a LaTeX
-limitation (see https://sourceforge.net/p/docutils/bugs/225/).
+   +-----------+------------------+
+   | 11        | first paragraph  |
+   |           |                  |
+   |           | second paragraph |
+   +-----------+------------------+
+   | content   | 22               |
+   | with      |                  |
+   | linebreak |                  |
+   +-----------+------------------+
 
-A table with multirow header and column-widths set by LaTeX:
+Docutils stores table column widths in the "doctree" (in characters,
+excluding the separator). In the .tex source, column widths are written
+as percent of the ``\linewidth``, computed on the assumption that an
+average text line is 80 characters wide. An allowance added to the stored
+column widths compensates the padding (``\tabcolsep``) added by LaTeX.
+The algorightm provides a working solution in many cases. [#]_
 
-.. table::
+.. table:: a table with multi-paragraph multicolumn cells
+
+  +----------+--------------+---------------------------------+-----------+
+  | test     | **bold hd**  | multicolumn 1                   | *emph hd* |
+  |          |              |                                 |           |
+  |          |              | With a second paragraph         |           |
+  +----------+--------------+--------------+--------+---------+-----------+
+  | multicolumn 2           | cell         | cell   | cell    | cell      |
+  |                         |              |        |         |           |
+  | With a second paragraph |              |        |         |           |
+  +----------+--------------+--------------+--------+---------+-----------+
+  | cell     | multicolumn 3 (one line,    | cell   | cell    | cell      |
+  |          | but very very very very     |        |         |           |
+  |          | very looooong)              |        |         |           |
+  +----------+--------------+--------------+--------+---------+-----------+
+  | cell     | cell         | cell         | Short multicolumn 4          |
+  +----------+--------------+--------------+------------------------------+
+
+.. [#] Currently, computed column widths are too wide.
+   TODO: Account for the ``\tabcolsep``.
+
+For good typographic results experimenting with the "width" and "widths"
+options of the `table directive`_ may be required. (Unfortunately, the
+interpretation of these values differs between LaTeX writer and HTML
+writer.)
+
+Simple tables use often no padding in the source while grid tables
+without padding look clumsy. Setting ``:widths: auto`` in the source
+whenever possible is recommended. [#]_
+
+.. table:: simple table, not padded in the source
+
+   === = = =
+    A  B C D
+   === = = =
+   100 2 3 4
+   EUR b c d
+   === = = =
+
+.. table:: grid table, padded cells
+
+   +-----+---+---+---+
+   |  A  | B | C | D |
+   +=====+===+===+===+
+   | 100 | 2 | 3 | 4 |
+   +-----+---+---+---+
+   | EUR | b | c | d |
+   +-----+---+---+---+
+
+
+.. table:: grid table, auto-width columns
+   :widths: auto
+
+   +-----+---+---+---+
+   |  A  | B | C | D |
+   +=====+===+===+===+
+   | 100 | 2 | 3 | 4 |
+   +-----+---+---+---+
+   | EUR | b | c | d |
+   +-----+---+---+---+
+
+
+.. [#] Currently, the last column is extra wide because the
+   writer adds a hint "... continued on next page" to longtables with a
+   header row. The hint is only shown if the table does not fit on one
+   page but always affects the table width.
+
+If a specific total width is desired, "auto" column widths fail,
+
+.. table:: 75% wide table with "auto" column widths
+   :widths: auto
+   :width: 75%
+
+   === = = =
+    A  B C D
+   === = = =
+   100 2 3 4
+   EUR b c d
+   === = = =
+
+but "grid" based or explicit column widths should work: [#]_
+
+.. table:: 75% wide table with explicit column widths
+   :width: 75%
+   :widths: 3 2 2 2
+
+   === = = =
+    A  B C D
+   === = = =
+   100 2 3 4
+   EUR b c d
+   === = = =
+
+.. [#] Bug: The table "width" option is currently ignored.
+
+.. table:: table with multirow header and "auto" column-widths
    :widths: auto
 
    +------------+-------------------+
@@ -35,18 +133,15 @@ A table with multirow header and column-widths set by LaTeX:
    | multicollumn cell              |
    +--------------------------------+
 
-In a table with column-widths set by LaTeX, each cell has just one line.
-Paragraphs are merged (a warning is given).
+TODO
+----
 
-.. table::
-   :widths: auto
+Limit the total width of a table to the ``\linewidth``, unless the table
+width is explicitely specified in the source.
 
-   +------------+-------------------+
-   | 11         | first paragraph   |
-   |            |                   |
-   |            | second paragraph  |
-   |            |                   |
-   |            | third paragraph   |
-   +------------+-------------------+
-   | 21         | 22                |
-   +------------+-------------------+
+Tables with multi-paragraph multirow cells currently fail due to a LaTeX
+limitation (see https://sourceforge.net/p/docutils/bugs/225/).
+
+
+.. _table directive:
+   https://docutils.sourceforge.io/docs/ref/rst/directives.html#table
