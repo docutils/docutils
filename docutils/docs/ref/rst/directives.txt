@@ -777,13 +777,12 @@ The following options are recognized:
 
 ``widths`` : "auto", "grid", or a list of integers
     A comma- or space-separated list of column widths.
-    Defaults to the widths of the input columns in characters.
+    Default is "grid", the widths of the input columns in characters.
 
-    The special value "auto" directs writers to delegate the
-    determination of column widths to the backend (LaTeX, the HTML
-    browser, ...), if possible. "grid" forces the default behaviour
-    (overwriting a `table_style`_ configuration setting value
-    "colwidths-auto").
+    The value "auto" directs writers to delegate the determination of
+    column widths to the backend (LaTeX, the HTML browser, ...), if possible.  
+    The value "grid" overrules a `table_style`_ configuration setting
+    value "colwidths-auto".
 
 ``width`` : `length`_ or `percentage`_
     Forces the width of the table to the specified length or percentage

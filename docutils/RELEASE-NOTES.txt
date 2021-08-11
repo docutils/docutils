@@ -27,13 +27,15 @@ Future changes
     ``[role="doc-noteref"]`` instead of ``.footnote-reference``
     (see minimal.css for examples).
     
-  - Do not write a <colgroup> specifying relative column widths with the
-    deprecated ``<col width="...">``.
+  - Do not specify relative column widths with the
+    deprecated ``<colgroup><col width="...">...``.
     
-    The `html5` writer will default to ``:widths: auto`` and 
-    use ``style="width: ...%"`` if the "widths" option specifies
-    explicite table column widths. Set ``:widths: grid`` to keep
-    the current table default widths.
+    The `html5` writer will default to ``:widths: auto`` and use
+    ``style="width: ..%"`` if the `"widths" option`__ sets explicite table
+    column widths. Use ``:widths: grid`` to keep the current default
+    column widths.
+    
+    __  docs/ref/rst/directives.html#table
     
   - Move attribution behind the blockquote to comply with the
     `"living standard"`__?
