@@ -45,7 +45,7 @@ __ A:DOS\\path\\
 
 
 * ``^^`` LaTeX's special syntax for characters results in "strange" replacements
-  (both with ``\href`` and ``\url``). A warning is given.
+  (both with ``\href`` and ``\url``). The writer emits a warning.
 
   `file with ^^ <../strange^^name>`__:
   `<../strange^^name>`__

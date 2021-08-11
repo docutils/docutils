@@ -9,7 +9,6 @@
 \DeclareUnicodeCharacter{2663}{\ensuremath{\clubsuit}}
 \usepackage{alltt}
 \usepackage{amsmath}
-\usepackage{booktabs}
 \usepackage{float} % extended float configuration
 \floatplacement{figure}{H} % place figures here definitely
 \usepackage{graphicx}
@@ -61,6 +60,20 @@
    \end{center}
   }
 \fi
+
+% numerical or symbol footnotes with hyperlinks and backlinks
+\providecommand*{\DUfootnotemark}[3]{%
+  \raisebox{1em}{\hypertarget{#1}{}}%
+  \hyperlink{#2}{\textsuperscript{#3}}%
+}
+\providecommand{\DUfootnotetext}[4]{%
+  \begingroup%
+  \renewcommand{\thefootnote}{%
+    \protect\raisebox{1em}{\protect\hypertarget{#1}{}}%
+    \protect\hyperlink{#2}{#3}}%
+  \footnotetext{#4}%
+  \endgroup%
+}
 
 % legend environment (in figures and formal tables)
 \ifthenelse{\isundefined{\DUlegend}}{
@@ -116,17 +129,24 @@
   \usepackage{bookmark}
   \urlstyle{same} % normal text font (alternatives: tt, rm, sf)
 }{}
+\hypersetup{
+  pdftitle={Additional Tests for the LaTeX Writer},
+}
 
 %%% Body
 \begin{document}
-
-
-\section{Additional Tests for the LaTeX Writer%
-  \label{additional-tests-for-the-latex-writer}%
-}
+\title{Additional Tests for the LaTeX Writer%
+  \label{additional-tests-for-the-latex-writer}}
+\author{}
+\date{}
+\maketitle
 
 These tests contain syntax elements and combinations which may cause
 trouble for the LaTeX writer.
+
+\phantomsection\label{contents}
+\pdfbookmark[1]{Contents}{contents}
+\tableofcontents
 
 
 \section{Section heading levels%
@@ -216,15 +236,129 @@ Note, that the \textquotedbl{}reference name\textquotedbl{} for this section is 
 content \emph{before} substitution. This may be exploited to get intelligible
 IDs after \href{https://docutils.sourceforge.io/docs/ref/rst/directives.html\#identifier-normalization}{identifier normalization} of the section's reference name.
 
+% This file is used by the standalone_rst_latex test.
 
-\section{More Tables%
-  \label{more-tables}%
+
+\section{Option lists%
+  \label{option-lists}%
 }
 
-A table with multi-paragraph multicolumn cells:
+The LaTeX-2e description environment is used for definition lists.
+The definition is continued on the same line as the term, this should
+not happen if an option-list is at the top of the definition.
+
+If the option list is not at the first element in the definition, it
+is contained in a quote
+
+\begin{quote}
+\begin{DUoptionlist}
+\item[-{}-help]  show help
+
+\item[-v]  verbose
+\end{DUoptionlist}
+\end{quote}
+
+\begin{description}
+\item[{In a definition list:}] \leavevmode
+\begin{DUoptionlist}
+\item[-{}-help]  show help
+
+\item[-v]  verbose
+\end{DUoptionlist}
+
+\end{description}
+
+
+\section{Block Quotes%
+  \label{block-quotes}%
+}
+
+\begin{quote}
+This block quote comes directly after the section heading and is
+followed by a paragraph.
+
+This is the second paragraph of the block quote and it contains
+some more text filling up some space which would otherwise be
+empty.
+\nopagebreak
+
+\raggedleft —Attribution
+\end{quote}
+
+This is a paragraph.
+
+\begin{quote}
+This block quote does not have an attribution.
+\end{quote}
+
+This is another paragraph.
+
+\begin{quote}
+Another block quote at the end of the section.
+\end{quote}
+
+
+\section{More Block Quotes%
+  \label{more-block-quotes}%
+}
+
+\begin{quote}
+Block quote followed by a transition.
+\end{quote}
+
+%___________________________________________________________________________
+\DUtransition
+
+\begin{quote}
+Another block quote.
+\end{quote}
+
+
+\section{Images%
+  \label{images}%
+}
+
+Image with 20\% width:
+
+\includegraphics[width=0.200\linewidth]{../../../docs/user/rst/images/title.png}
+
+Image with 100\% width:
+
+\includegraphics[width=1.000\linewidth]{../../../docs/user/rst/images/title.png}
+
+
+\section{Tables%
+  \label{tables}%
+}
+
+In contrast to HTML, LaTeX does not support line-breaks in tables with
+\textquotedbl{}automatic\textquotedbl{} column widths. Each cell has just one line, paragraphs are
+merged (the writer emits a warning).
+To provide for arbitrary cell content, the LaTeX writer defaults to
+specifying column widths computed from the source:
+
+\begin{longtable}{|l|l|}
+\caption{problems with \textquotedbl{}auto\textquotedbl{} widths}\\
+\hline
+11 & first paragraph
+second paragraph \\
+\hline
+content
+with
+linebreak & 22 \\
+\hline
+\end{longtable}
+
+Docutils stores table column widths in the \textquotedbl{}doctree\textquotedbl{} (in characters,
+excluding the separator). In the .tex source, column widths are written
+as percent of the \texttt{\textbackslash{}linewidth}, computed on the assumption that an
+average text line is 80 characters wide. An allowance added to the stored
+column widths compensates the padding (\texttt{\textbackslash{}tabcolsep}) added by LaTeX.
+The algorightm provides a working solution in many cases.\DUfootnotemark{footnote-reference-1}{footnote-1}{1}
 
 \setlength{\DUtablewidth}{\linewidth}%
-\begin{longtable*}{|p{0.133\DUtablewidth}|p{0.179\DUtablewidth}|p{0.179\DUtablewidth}|p{0.110\DUtablewidth}|p{0.121\DUtablewidth}|p{0.145\DUtablewidth}|}
+\begin{longtable}{|p{0.133\DUtablewidth}|p{0.179\DUtablewidth}|p{0.179\DUtablewidth}|p{0.110\DUtablewidth}|p{0.121\DUtablewidth}|p{0.145\DUtablewidth}|}
+\caption{a table with multi-paragraph multicolumn cells}\\
 \hline
 
 test
@@ -276,20 +410,245 @@ cell
 Short multicolumn 4
 } \\
 \hline
-\end{longtable*}
+\end{longtable}
+%
+\DUfootnotetext{footnote-1}{footnote-reference-1}{1}{%
+Currently, computed column widths are too wide.
+TODO: Account for the \texttt{\textbackslash{}tabcolsep}.
+}
 
-Tables with multi-paragraph multirow cells currently fail due to a LaTeX
-limitation (see \url{https://sourceforge.net/p/docutils/bugs/225/}).
+For good typographic results experimenting with the \textquotedbl{}width\textquotedbl{} and \textquotedbl{}widths\textquotedbl{}
+options of the \href{https://docutils.sourceforge.io/docs/ref/rst/directives.html\#table}{table directive} may be required. (Unfortunately, the
+interpretation of these values differs between LaTeX writer and HTML
+writer.)
 
-A table with multirow header and column-widths set by LaTeX:
+Simple tables use often no padding in the source while grid tables
+without padding look clumsy. Setting \texttt{:widths: auto} in the source
+whenever possible is recommended.\DUfootnotemark{footnote-reference-2}{footnote-2}{2}
 
-\begin{longtable*}{|l|l|}
+\setlength{\DUtablewidth}{\linewidth}%
+\begin{longtable}{|p{0.051\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|}
+\caption{simple table, not padded in the source}\\
+\hline
+\textbf{%
+A
+} & \textbf{%
+B
+} & \textbf{%
+C
+} & \textbf{%
+D
+} \\
+\hline
+\endfirsthead
+\caption[]{simple table, not padded in the source (... continued)}\\
+\hline
+\textbf{%
+A
+} & \textbf{%
+B
+} & \textbf{%
+C
+} & \textbf{%
+D
+} \\
+\hline
+\endhead
+\multicolumn{4}{r}{... continued on next page} \\
+\endfoot
+\endlastfoot
+
+100
+ & 
+2
+ & 
+3
+ & 
+4
+ \\
+\hline
+
+EUR
+ & 
+b
+ & 
+c
+ & 
+d
+ \\
+\hline
+\end{longtable}
+
+\setlength{\DUtablewidth}{\linewidth}%
+\begin{longtable}{|p{0.075\DUtablewidth}|p{0.051\DUtablewidth}|p{0.051\DUtablewidth}|p{0.051\DUtablewidth}|}
+\caption{grid table, padded cells}\\
+\hline
+\textbf{%
+A
+} & \textbf{%
+B
+} & \textbf{%
+C
+} & \textbf{%
+D
+} \\
+\hline
+\endfirsthead
+\caption[]{grid table, padded cells (... continued)}\\
+\hline
+\textbf{%
+A
+} & \textbf{%
+B
+} & \textbf{%
+C
+} & \textbf{%
+D
+} \\
+\hline
+\endhead
+\multicolumn{4}{r}{... continued on next page} \\
+\endfoot
+\endlastfoot
+
+100
+ & 
+2
+ & 
+3
+ & 
+4
+ \\
+\hline
+
+EUR
+ & 
+b
+ & 
+c
+ & 
+d
+ \\
+\hline
+\end{longtable}
+
+\begin{longtable}{|l|l|l|l|}
+\caption{grid table, auto-width columns}\\
+\hline
+\textbf{A} & \textbf{B} & \textbf{C} & \textbf{D} \\
+\hline
+\endfirsthead
+\caption[]{grid table, auto-width columns (... continued)}\\
+\hline
+\textbf{A} & \textbf{B} & \textbf{C} & \textbf{D} \\
+\hline
+\endhead
+\multicolumn{4}{r}{... continued on next page} \\
+\endfoot
+\endlastfoot
+100 & 2 & 3 & 4 \\
+\hline
+EUR & b & c & d \\
+\hline
+\end{longtable}
+%
+\DUfootnotetext{footnote-2}{footnote-reference-2}{2}{%
+Currently, the last column is extra wide because the
+writer adds a hint \textquotedbl{}... continued on next page\textquotedbl{} to longtables with a
+header row. The hint is only shown if the table does not fit on one
+page but always affects the table width.
+}
+
+If a specific total width is desired, \textquotedbl{}auto\textquotedbl{} column widths fail,
+
+\begin{longtable}{|l|l|l|l|}
+\caption{75\% wide table with \textquotedbl{}auto\textquotedbl{} column widths}\\
+\hline
+\textbf{A} & \textbf{B} & \textbf{C} & \textbf{D} \\
+\hline
+\endfirsthead
+\caption[]{75\% wide table with \textquotedbl{}auto\textquotedbl{} column widths (... continued)}\\
+\hline
+\textbf{A} & \textbf{B} & \textbf{C} & \textbf{D} \\
+\hline
+\endhead
+\multicolumn{4}{r}{... continued on next page} \\
+\endfoot
+\endlastfoot
+100 & 2 & 3 & 4 \\
+\hline
+EUR & b & c & d \\
+\hline
+\end{longtable}
+
+but \textquotedbl{}grid\textquotedbl{} based or explicit column widths should work:\DUfootnotemark{footnote-reference-3}{footnote-3}{3}
+
+\setlength{\DUtablewidth}{0.750\linewidth}%
+\begin{longtable}{|p{0.051\DUtablewidth}|p{0.040\DUtablewidth}|p{0.040\DUtablewidth}|p{0.040\DUtablewidth}|}
+\caption{75\% wide table with explicit column widths}\\
+\hline
+\textbf{%
+A
+} & \textbf{%
+B
+} & \textbf{%
+C
+} & \textbf{%
+D
+} \\
+\hline
+\endfirsthead
+\caption[]{75\% wide table with explicit column widths (... continued)}\\
+\hline
+\textbf{%
+A
+} & \textbf{%
+B
+} & \textbf{%
+C
+} & \textbf{%
+D
+} \\
+\hline
+\endhead
+\multicolumn{4}{r}{... continued on next page} \\
+\endfoot
+\endlastfoot
+
+100
+ & 
+2
+ & 
+3
+ & 
+4
+ \\
+\hline
+
+EUR
+ & 
+b
+ & 
+c
+ & 
+d
+ \\
+\hline
+\end{longtable}
+%
+\DUfootnotetext{footnote-3}{footnote-reference-3}{3}{%
+Bug: The table \textquotedbl{}width\textquotedbl{} option is currently ignored.
+}
+
+\begin{longtable}{|l|l|}
+\caption{table with multirow header and \textquotedbl{}auto\textquotedbl{} column-widths}\\
 \hline
 \multirow{2}{*}{\textbf{XXX}} & \textbf{Variable Summary} \\
 \cline{2-2}
  & \textbf{Description} \\
 \hline
 \endfirsthead
+\caption[]{table with multirow header and \textquotedbl{}auto\textquotedbl{} column-widths (... continued)}\\
 \hline
 \multirow{2}{*}{\textbf{XXX}} & \textbf{Variable Summary} \\
 \cline{2-2}
@@ -301,52 +660,18 @@ A table with multirow header and column-widths set by LaTeX:
 \endlastfoot
 \multicolumn{2}{|l|}{multicollumn cell} \\
 \hline
-\end{longtable*}
-
-In a table with column-widths set by LaTeX, each cell has just one line.
-Paragraphs are merged (a warning is given).
-
-\begin{longtable*}{|l|l|}
-\hline
-11 & first paragraph
-second paragraph
-third paragraph \\
-\hline
-21 & 22 \\
-\hline
-\end{longtable*}
-
-% This file is used by the standalone_rst_latex test.
+\end{longtable}
 
 
-\section{Option lists%
-  \label{option-lists}%
+\subsection{TODO%
+  \label{todo}%
 }
 
-The LaTeX-2e description environment is used for definition lists.
-The definition is continued on the same line as the term, this should
-not happen if an option-list is at the top of the definition.
+Limit the total width of a table to the \texttt{\textbackslash{}linewidth}, unless the table
+width is explicitely specified in the source.
 
-If the option list is not at the first element in the definition, it
-is contained in a quote
-
-\begin{quote}
-\begin{DUoptionlist}
-\item[-{}-help]  show help
-
-\item[-v]  verbose
-\end{DUoptionlist}
-\end{quote}
-
-\begin{description}
-\item[{In a definition list:}] \leavevmode
-\begin{DUoptionlist}
-\item[-{}-help]  show help
-
-\item[-v]  verbose
-\end{DUoptionlist}
-
-\end{description}
+Tables with multi-paragraph multirow cells currently fail due to a LaTeX
+limitation (see \url{https://sourceforge.net/p/docutils/bugs/225/}).
 
 
 \section{Monospaced non-alphanumeric characters%
@@ -369,373 +694,73 @@ width as the third line.
   \label{non-ascii-characters}%
 }
 
-Punctuation and footnote symbols
-
-\setlength{\DUtablewidth}{\linewidth}%
-\begin{longtable*}{|p{0.028\DUtablewidth}|p{0.424\DUtablewidth}|}
+\begin{longtable}{|l|l|}
+\caption{Punctuation and footnote symbols}\\
 \hline
-
-–
- & 
-en-dash
- \\
+– & en-dash \\
 \hline
-
-—
- & 
-em-dash
- \\
+— & em-dash \\
 \hline
-
-‘
- & 
-single turned comma quotation mark
- \\
+‘ & single turned comma quotation mark \\
 \hline
-
-’
- & 
-single comma quotation mark
- \\
+’ & single comma quotation mark \\
 \hline
-
-‚
- & 
-low single comma quotation mark
- \\
+‚ & low single comma quotation mark \\
 \hline
-
-“
- & 
-double turned comma quotation mark
- \\
+“ & double turned comma quotation mark \\
 \hline
-
-”
- & 
-double comma quotation mark
- \\
+” & double comma quotation mark \\
 \hline
-
-„
- & 
-low double comma quotation mark
- \\
+„ & low double comma quotation mark \\
 \hline
-
-†
- & 
-dagger
- \\
+† & dagger \\
 \hline
-
-‡
- & 
-double dagger
- \\
+‡ & double dagger \\
 \hline
-
-\ding{169}
- & 
-black diamond suit
- \\
+\ding{169} & black diamond suit \\
 \hline
-
-\ding{170}
- & 
-black heart suit
- \\
+\ding{170} & black heart suit \\
 \hline
-
-♠
- & 
-black spade suit
- \\
+♠ & black spade suit \\
 \hline
-
-♣
- & 
-black club suit
- \\
+♣ & black club suit \\
 \hline
-
-…
- & 
-ellipsis
- \\
+… & ellipsis \\
 \hline
-
-™
- & 
-trade mark sign
- \\
+™ & trade mark sign \\
 \hline
-
-⇔
- & 
-left-right double arrow
- \\
+⇔ & left-right double arrow \\
 \hline
-\end{longtable*}
+\end{longtable}
 
-The \DUroletitlereference{Latin-1 extended} Unicode block
-
-\setlength{\DUtablewidth}{\linewidth}%
-\begin{longtable*}{|p{0.051\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|}
+\begin{longtable}{|l|l|l|l|l|l|l|l|l|l|l|}
+\caption{The \DUroletitlereference{Latin-1 extended} Unicode block}\\
 \hline
 
 % 
- & 
-0
- & 
-1
- & 
-2
- & 
-3
- & 
-4
- & 
-5
- & 
-6
- & 
-7
- & 
-8
- & 
-9
- \\
+ & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 \\
 \hline
-
-160
- &  & 
-¡
- & 
-¢
- & 
-£
- &  & 
-¥
- & 
-¦
- & 
-§
- & 
-¨
- & 
-©
- \\
+160 &  & ¡ & ¢ & £ &  & ¥ & ¦ & § & ¨ & © \\
 \hline
-
-170
- & 
-ª
- & 
-«
- & 
-¬
- & 
-\-
- & 
-®
- & 
-¯
- & 
-°
- & 
-±
- & 
-²
- & 
-³
- \\
+170 & ª & « & ¬ & \- & ® & ¯ & ° & ± & ² & ³ \\
 \hline
-
-180
- & 
-´
- & 
-µ
- & 
-¶
- & 
-·
- & 
-¸
- & 
-¹
- & 
-º
- & 
-»
- & 
-¼
- & 
-½
- \\
+180 & ´ & µ & ¶ & · & ¸ & ¹ & º & » & ¼ & ½ \\
 \hline
-
-190
- & 
-¾
- & 
-¿
- & 
-À
- & 
-Á
- & 
-Â
- & 
-Ã
- & 
-Ä
- & 
-Å
- & 
-Æ
- & 
-Ç
- \\
+190 & ¾ & ¿ & À & Á & Â & Ã & Ä & Å & Æ & Ç \\
 \hline
-
-200
- & 
-È
- & 
-É
- & 
-Ê
- & 
-Ë
- & 
-Ì
- & 
-Í
- & 
-Î
- & 
-Ï
- & 
-Ð
- & 
-Ñ
- \\
+200 & È & É & Ê & Ë & Ì & Í & Î & Ï & Ð & Ñ \\
 \hline
-
-210
- & 
-Ò
- & 
-Ó
- & 
-Ô
- & 
-Õ
- & 
-Ö
- & 
-×
- & 
-Ø
- & 
-Ù
- & 
-Ú
- & 
-Û
- \\
+210 & Ò & Ó & Ô & Õ & Ö & × & Ø & Ù & Ú & Û \\
 \hline
-
-220
- & 
-Ü
- & 
-Ý
- & 
-Þ
- & 
-ß
- & 
-à
- & 
-á
- & 
-â
- & 
-ã
- & 
-ä
- & 
-å
- \\
+220 & Ü & Ý & Þ & ß & à & á & â & ã & ä & å \\
 \hline
-
-230
- & 
-æ
- & 
-ç
- & 
-è
- & 
-é
- & 
-ê
- & 
-ë
- & 
-ì
- & 
-í
- & 
-î
- & 
-ï
- \\
+230 & æ & ç & è & é & ê & ë & ì & í & î & ï \\
 \hline
-
-240
- & 
-ð
- & 
-ñ
- & 
-ò
- & 
-ó
- & 
-ô
- & 
-õ
- & 
-ö
- & 
-÷
- & 
-ø
- & 
-ù
- \\
+240 & ð & ñ & ò & ó & ô & õ & ö & ÷ & ø & ù \\
 \hline
-
-250
- & 
-ú
- & 
-û
- & 
-ü
- & 
-ý
- & 
-þ
- & 
-ÿ
- &  &  &  &  \\
+250 & ú & û & ü & ý & þ & ÿ &  &  &  &  \\
 \hline
-\end{longtable*}
+\end{longtable}
 
 \begin{itemize}
 \item The following line should not be wrapped, because it uses
@@ -752,11 +777,11 @@ pdnderdmdtdrischpdnderdmdtdrischpdnderdmdtdrischpdnderdmdtdrischpdnderdmdtdrisch
 \end{itemize}
 
 
-\section{Encoding special chars%
-  \label{encoding-special-chars}%
+\section{Encoding special characters%
+  \label{encoding-special-characters}%
 }
 
-The LaTeX Info pages lists under \textquotedbl{}2.18 Special Characters\textquotedbl{}
+The LaTeX Info pages list under \textquotedbl{}2.18 Special Characters\textquotedbl{}
 
 \begin{quote}
 The following characters play a special role in LaTeX and are called
@@ -916,7 +941,7 @@ These URLs are typeset inside a LaTeX command without error.
 
 \begin{itemize}
 \item \texttt{\textasciicircum{}\textasciicircum{}} LaTeX's special syntax for characters results in \textquotedbl{}strange\textquotedbl{} replacements
-(both with \texttt{\textbackslash{}href} and \texttt{\textbackslash{}url}). A warning is given.
+(both with \texttt{\textbackslash{}href} and \texttt{\textbackslash{}url}). The writer emits a warning.
 
 \href{../strange^^name}{file with \textasciicircum{}\textasciicircum{}}:
 \url{../strange^^name}
@@ -938,459 +963,5 @@ while balanced braces are suported:
 \item[] \url{../{st{r}ange{n}ame}}
 \end{DUlineblock}
 \end{itemize}
-
-
-\section{Block Quotes%
-  \label{block-quotes}%
-}
-
-\begin{quote}
-This block quote comes directly after the section heading and is
-followed by a paragraph.
-
-This is the second paragraph of the block quote and it contains
-some more text filling up some space which would otherwise be
-empty.
-\nopagebreak
-
-\raggedleft —Attribution
-\end{quote}
-
-This is a paragraph.
-
-\begin{quote}
-This block quote does not have an attribution.
-\end{quote}
-
-This is another paragraph.
-
-\begin{quote}
-Another block quote at the end of the section.
-\end{quote}
-
-
-\section{More Block Quotes%
-  \label{more-block-quotes}%
-}
-
-\begin{quote}
-Block quote followed by a transition.
-\end{quote}
-
-%___________________________________________________________________________
-\DUtransition
-
-\begin{quote}
-Another block quote.
-\end{quote}
-
-
-\section{Images%
-  \label{images}%
-}
-
-Image with 20\% width:
-
-\includegraphics[width=0.200\linewidth]{../../../docs/user/rst/images/title.png}
-
-Image with 100\% width:
-
-\includegraphics[width=1.000\linewidth]{../../../docs/user/rst/images/title.png}
-
-
-\section{Rowspanning tables%
-  \label{rowspanning-tables}%
-}
-
-Several rowspanning cells in a table.
-
-Problem:
-
-In LaTeX, \textquotedbl{}overwritten\textquotedbl{} cells need to be defined as empty cells.
-
-Docutils (similarily to HTML) uses is the \textquotedbl{}Exchange Table Model\textquotedbl{} (also known
-as CALS tables, see docs/ref/soextblx.dtd) which defines only the remaining
-cells in a row \textquotedbl{}affected\textquotedbl{} by multirow cells.
-
-Therefore, visit\_entry() is only called for the remaining cells and the
-LaTeX writer needs bookkeeping to write out the required number of extra
-'\&'s.
-
-\setlength{\DUtablewidth}{\linewidth}%
-\begin{longtable*}{|p{0.075\DUtablewidth}|p{0.133\DUtablewidth}|p{0.133\DUtablewidth}|p{0.086\DUtablewidth}|}
-\hline
-
-11
- & 
-12
- & 
-13
- & 
-14
- \\
-\hline
-
-21
- & \multirow{2}{0.13\DUtablewidth}{%
-2/3 2
-} & \multirow{3}{0.13\DUtablewidth}{%
-2…4 3
-} & 
-24
- \\
-\cline{1-1}
-\cline{4-4}
-
-31
- &  &  & 
-34
- \\
-\cline{1-1}
-\cline{2-2}
-\cline{4-4}
-
-41
- & 
-42
- &  & 
-14
- \\
-\hline
-\end{longtable*}
-
-\setlength{\DUtablewidth}{\linewidth}%
-\begin{longtable*}{|p{0.098\DUtablewidth}|p{0.098\DUtablewidth}|p{0.063\DUtablewidth}|}
-\hline
-
-11
- & 
-12
- & 
-13
- \\
-\hline
-\multirow{2}{0.10\DUtablewidth}{%
-2/3 1
-} & \multirow{2}{0.10\DUtablewidth}{%
-2/3 2
-} & 
-23
- \\
-\cline{3-3}
- &  & 
-33
- \\
-\hline
-\end{longtable*}
-
-\setlength{\DUtablewidth}{\linewidth}%
-\begin{longtable*}{|p{0.098\DUtablewidth}|p{0.063\DUtablewidth}|}
-\hline
-
-11
- & 
-12
- \\
-\hline
-\multirow{2}{0.10\DUtablewidth}{%
-2/3 1
-} & 
-22
- \\
-\cline{2-2}
- & 
-32
- \\
-\hline
-\end{longtable*}
-
-\setlength{\DUtablewidth}{\linewidth}%
-\begin{longtable*}{|p{0.063\DUtablewidth}|p{0.110\DUtablewidth}|p{0.063\DUtablewidth}|}
-\hline
-
-11
- & 
-12
- & 
-13
- \\
-\hline
-
-21
- & \multirow{2}{0.11\DUtablewidth}{%
-2/3 2
-} & 
-23
- \\
-\cline{1-1}
-\cline{3-3}
-
-31
- &  & 
-33
- \\
-\hline
-\end{longtable*}
-
-\setlength{\DUtablewidth}{\linewidth}%
-\begin{longtable*}{|p{0.063\DUtablewidth}|p{0.110\DUtablewidth}|}
-\hline
-
-11
- & 
-12
- \\
-\hline
-
-21
- & \multirow{2}{0.11\DUtablewidth}{%
-2/3 1
-} \\
-\cline{1-1}
-
-31
- &  \\
-\hline
-\end{longtable*}
-
-\setlength{\DUtablewidth}{\linewidth}%
-\begin{longtable*}{|p{0.063\DUtablewidth}|p{0.110\DUtablewidth}|}
-\hline
-
-11
- & \multirow{2}{0.11\DUtablewidth}{%
-1/2 1
-} \\
-\cline{1-1}
-
-21
- &  \\
-\hline
-
-31
- & 
-32
- \\
-\hline
-\end{longtable*}
-
-\setlength{\DUtablewidth}{\linewidth}%
-\begin{longtable*}{|p{0.063\DUtablewidth}|p{0.156\DUtablewidth}|p{0.110\DUtablewidth}|}
-\hline
-
-11
- & \multirow{2}{0.16\DUtablewidth}{%
-1/2 2
-} & \multirow{2}{0.11\DUtablewidth}{%
-1/2 3
-} \\
-\cline{1-1}
-
-21
- &  &  \\
-\hline
-\end{longtable*}
-
-\setlength{\DUtablewidth}{\linewidth}%
-\begin{longtable*}{|p{0.098\DUtablewidth}|p{0.063\DUtablewidth}|p{0.110\DUtablewidth}|}
-\hline
-\multirow{2}{0.10\DUtablewidth}{%
-1/2 3
-} & 
-12
- & \multirow{2}{0.11\DUtablewidth}{%
-1/2 3
-} \\
-\cline{2-2}
- & 
-22
- &  \\
-\hline
-\end{longtable*}
-
-\setlength{\DUtablewidth}{\linewidth}%
-\begin{longtable*}{|p{0.098\DUtablewidth}|p{0.063\DUtablewidth}|}
-\hline
-\multirow{2}{0.10\DUtablewidth}{%
-1/2 3
-} & 
-12
- \\
-\cline{2-2}
- & 
-22
- \\
-\hline
-
-31
- & 
-32
- \\
-\hline
-\end{longtable*}
-
-
-\section{Nested tables%
-  \label{nested-tables}%
-}
-
-TODO:
-Set alignment of nested tables without creating too much vertical space.
-
-\setlength{\DUtablewidth}{\linewidth}%
-\begin{longtable*}{|p{0.493\DUtablewidth}|p{0.214\DUtablewidth}|}
-\hline
-
-Lorem ipsum dolor sit amet, consectetur
- & 
-adipisicing elit
- \\
-\hline
-
-\setlength{\DUtablewidth}{\linewidth}%
-\begin{tabular}{|p{0.075\DUtablewidth}|p{0.075\DUtablewidth}|}
-\hline
-
-1
- & 
-2
- \\
-\hline
-\end{tabular}
- & 
-cell 1, 2
- \\
-\hline
-
-\noindent\makebox[\linewidth][l]{%
-\setlength{\DUtablewidth}{\linewidth}%
-\begin{tabular}{|p{0.075\DUtablewidth}|p{0.075\DUtablewidth}|}
-\hline
-
-1
- & 
-2
- \\
-\hline
-\end{tabular}
-}
- & 
-cell 1, 2
- \\
-\hline
-
-\noindent\makebox[\linewidth][c]{%
-\setlength{\DUtablewidth}{\linewidth}%
-\begin{tabular}{|p{0.075\DUtablewidth}|p{0.075\DUtablewidth}|}
-\hline
-
-1
- & 
-2
- \\
-\hline
-\end{tabular}
-}
- & 
-cell 1, 2
- \\
-\hline
-
-\noindent\makebox[\linewidth][r]{%
-\setlength{\DUtablewidth}{\linewidth}%
-\begin{tabular}{|p{0.075\DUtablewidth}|p{0.075\DUtablewidth}|}
-\hline
-
-1
- & 
-2
- \\
-\hline
-\end{tabular}
-}
- & 
-cell 1, 2
- \\
-\hline
-
-\noindent\makebox[\linewidth][r]{%
-\setlength{\DUtablewidth}{\linewidth}%
-\begin{tabular}{|p{0.075\DUtablewidth}|p{0.075\DUtablewidth}|}
-\hline
-
-1
- & 
-2
- \\
-\hline
-\end{tabular}
-}
-
-\begin{description}
-\item[{definition:}] 
-list
-
-\end{description}
- & 
-cell 2, 2
- \\
-\hline
- & 
-cell 3, 2
- \\
-\hline
-\end{longtable*}
-
-\setlength{\DUtablewidth}{\linewidth}%
-\begin{longtable*}{p{0.493\DUtablewidth}p{0.214\DUtablewidth}}
-\toprule
-
-Lorem ipsum dolor sit amet, consectetur
- & 
-adipisicing elit
- \\
-
-\noindent\makebox[\linewidth][r]{%
-\setlength{\DUtablewidth}{\linewidth}%
-\begin{tabular}{|p{0.075\DUtablewidth}|p{0.075\DUtablewidth}|}
-\hline
-
-1
- & 
-2
- \\
-\hline
-\end{tabular}
-}
- & 
-cell 1, 2
- \\
-
-\noindent\makebox[\linewidth][r]{%
-\setlength{\DUtablewidth}{\linewidth}%
-\begin{tabular}{|p{0.075\DUtablewidth}|p{0.075\DUtablewidth}|}
-\hline
-
-1
- & 
-2
- \\
-\hline
-\end{tabular}
-}
-
-\begin{description}
-\item[{definition:}] 
-list
-
-\end{description}
- & 
-cell 2, 2
- \\
- & 
-cell 3, 2
- \\
-\bottomrule
-\end{longtable*}
 
 \end{document}

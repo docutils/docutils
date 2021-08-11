@@ -1,18 +1,13 @@
 Additional Tests for the LaTeX Writer
-=====================================
+*************************************
 
 These tests contain syntax elements and combinations which may cause
 trouble for the LaTeX writer.
 
-.. include:: data/section_titles.txt
-.. include:: data/tables_latex.txt
-.. include:: data/option_lists.txt
-.. include:: data/nonalphanumeric.txt
-.. include:: data/unicode.txt
-.. include:: data/latex_encoding.txt
-.. include:: data/hyperlinking.txt
-.. include:: data/urls.txt
+.. contents::
 
+.. include:: data/section_titles.txt
+.. include:: data/option_lists.txt
 
 Block Quotes
 ============
@@ -58,166 +53,9 @@ Image with 100% width:
 .. image:: ../../../docs/user/rst/images/title.png
    :width: 100%
 
-
-Rowspanning tables
-==================
-
-Several rowspanning cells in a table.
-
-Problem:
-
-In LaTeX, "overwritten" cells need to be defined as empty cells.
-
-Docutils (similarily to HTML) uses is the "Exchange Table Model" (also known
-as CALS tables, see docs/ref/soextblx.dtd) which defines only the remaining
-cells in a row "affected" by multirow cells.
-
-Therefore, visit_entry() is only called for the remaining cells and the
-LaTeX writer needs bookkeeping to write out the required number of extra
-'&'s.
-
-+-----+----------+----------+------+
-| 11  |       12 |       13 |  14  |
-+-----+----------+----------+------+
-| 21  | 2/3 2    |          |  24  |
-+-----+          |          +------+
-| 31  |          | 2…4 3    |  34  |
-+-----+----------+          +------+
-| 41  |       42 |          |  14  |
-+-----+----------+----------+------+
-
-+-------+-------+----+
-| 11    |    12 | 13 |
-+-------+-------+----+
-| 2/3 1 |       | 23 |
-|       |       +----+
-|       | 2/3 2 | 33 |
-+-------+-------+----+
-
-+-------+----+
-| 11    | 12 |
-+-------+----+
-| 2/3 1 | 22 |
-|       +----+
-|       | 32 |
-+-------+----+
-
-+----+--------+----+
-| 11 |    12  | 13 |
-+----+--------+----+
-| 21 | 2/3 2  | 23 |
-+----+        +----+
-| 31 |        | 33 |
-+----+--------+----+
-
-+----+--------+
-| 11 | 12     |
-+----+--------+
-| 21 | 2/3 1  |
-+----+        |
-| 31 |        |
-+----+--------+
-
-
-+----+--------+
-| 11 | 1/2 1  |
-+----+        |
-| 21 |        |
-+----+--------+
-| 31 | 32     |
-+----+--------+
-
-+----+------------+--------+
-| 11 | 1/2 2      |        |
-+----+            | 1/2 3  |
-| 21 |            |        |
-+----+------------+--------+
-
-+-------+----+--------+
-|       | 12 | 1/2 3  |
-| 1/2 3 +----+        |
-|       | 22 |        |
-+-------+----+--------+
-
-+-------+----+
-|       | 12 |
-| 1/2 3 +----+
-|       | 22 |
-+-------+----+
-| 31    | 32 |
-+-------+----+
-
-Nested tables
-=============
-
-TODO:
-Set alignment of nested tables without creating too much vertical space.
-
-+-----------------------------------------+-----------------+
-| Lorem ipsum dolor sit amet, consectetur | adipisicing elit|
-+-----------------------------------------+-----------------+
-| .. table::                              | cell 1, 2       |
-|                                         |                 |
-|     +-----+-----+                       |                 |
-|     |  1  |  2  |                       |                 |
-|     +-----+-----+                       |                 |
-+-----------------------------------------+-----------------+
-| .. table::                              | cell 1, 2       |
-|     :align: left                        |                 |
-|                                         |                 |
-|     +-----+-----+                       |                 |
-|     |  1  |  2  |                       |                 |
-|     +-----+-----+                       |                 |
-+-----------------------------------------+-----------------+
-| .. table::                              | cell 1, 2       |
-|     :align: center                      |                 |
-|                                         |                 |
-|     +-----+-----+                       |                 |
-|     |  1  |  2  |                       |                 |
-|     +-----+-----+                       |                 |
-+-----------------------------------------+-----------------+
-| .. table::                              | cell 1, 2       |
-|     :align: right                       |                 |
-|                                         |                 |
-|     +-----+-----+                       |                 |
-|     |  1  |  2  |                       |                 |
-|     +-----+-----+                       |                 |
-+-----------------------------------------+-----------------+
-| .. table::                              | cell 2, 2       |
-|     :align: right                       |                 |
-|                                         |                 |
-|     +-----+-----+                       |                 |
-|     |  1  |  2  |                       |                 |
-|     +-----+-----+                       |                 |
-|                                         |                 |
-| definition:                             |                 |
-|             list                        |                 |
-+-----------------------------------------+-----------------+
-|                                         |       cell 3, 2 |
-+-----------------------------------------+-----------------+
-
-.. table::
-  :class: booktabs
-
-  +-----------------------------------------+-----------------+
-  | Lorem ipsum dolor sit amet, consectetur | adipisicing elit|
-  +-----------------------------------------+-----------------+
-  | .. table::                              | cell 1, 2       |
-  |     :align: right                       |                 |
-  |                                         |                 |
-  |     +-----+-----+                       |                 |
-  |     |  1  |  2  |                       |                 |
-  |     +-----+-----+                       |                 |
-  +-----------------------------------------+-----------------+
-  | .. table::                              | cell 2, 2       |
-  |     :align: right                       |                 |
-  |                                         |                 |
-  |     +-----+-----+                       |                 |
-  |     |  1  |  2  |                       |                 |
-  |     +-----+-----+                       |                 |
-  |                                         |                 |
-  | definition:                             |                 |
-  |             list                        |                 |
-  +-----------------------------------------+-----------------+
-  |                                         |       cell 3, 2 |
-  +-----------------------------------------+-----------------+
+.. include:: data/tables_latex.txt
+.. include:: data/nonalphanumeric.txt
+.. include:: data/unicode.txt
+.. include:: data/latex_encoding.txt
+.. include:: data/hyperlinking.txt
+.. include:: data/urls.txt
