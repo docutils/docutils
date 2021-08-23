@@ -62,7 +62,7 @@ Even though some items may have only one paragraph.
 .sp
 .INDENT 0.0
 .IP \(bu 2
-This is a simple bullet list, but class="open" is set.
+This is a simple bullet list, but class=\(dqopen\(dq is set.
 .IP \(bu 2
 It should not be made compact.
 .UNINDENT
@@ -79,7 +79,7 @@ This is a bullet list that is not simple.
 .sp
 There are multiple paragraphs in some items.
 .IP \(bu 2
-However, the class="compact" setting will cause
+However, the class=\(dqcompact\(dq setting will cause
 all first paragraph\(aqs <p> & </p> tags to be omitted.
 .IP \(bu 2
 Items with multiple paragraphs will not appear changed.

@@ -121,6 +121,10 @@ Changes Since 0.17.1
   - Remove IE 6 compatibility workarounds ``iepngfix.htc`` and
     ``blank.gif`` (fixes bug #169).
 
+* docutils/writers/manpage.py
+
+  - Fix: double quotes need to be escaped on macro invocation.
+    Done everywhere.
 
 Release 0.17.1 (2021-04-16)
 ===========================

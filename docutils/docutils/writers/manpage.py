@@ -290,6 +290,7 @@ class Translator(nodes.NodeVisitor):
             (u'\'', u'\\(aq'),
             (u'´', u"\\'"),
             (u'`', u'\\(ga'),
+            (u'"', u'\\(dq'),  # double quotes are a problem on macro lines
             ]
         for (in_char, out_markup) in replace_pairs:
             text = text.replace(in_char, out_markup)
