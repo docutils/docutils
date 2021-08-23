@@ -67,7 +67,7 @@ quotes:
 .IP \(bu 2
 straight: \(aq
 .IP \(bu 2
-double: "
+double: \(dq
 .IP \(bu 2
 single: ‘ ’
 .IP \(bu 2

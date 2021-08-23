@@ -342,7 +342,7 @@ Zeichenkette muss folgendes Aussehen haben:
 .sp
 .nf
 .ft C
-\(aq\e" <Zeichenkette>
+\(aq\e\(dq <Zeichenkette>
 .ft P
 .fi
 .UNINDENT

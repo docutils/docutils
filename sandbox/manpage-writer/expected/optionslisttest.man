@@ -100,7 +100,7 @@ The message to display (beaware of \fB,\fP)
 .UNINDENT
 .SH EXAMPLES
 .sp
-The "Examples" section header must not be intented. But this paragraph
+The \(dqExamples\(dq section header must not be intented. But this paragraph
 is indented, as all text in man\-pages. This is level 0.
 .INDENT 0.0
 .IP \(bu 2
