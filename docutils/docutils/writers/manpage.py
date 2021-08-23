@@ -216,7 +216,7 @@ class Translator(nodes.NodeVisitor):
         # Hopefully ``C`` courier too.
         self.defs = {
                 'indent': ('.INDENT %.1f\n', '.UNINDENT\n'),
-                'definition_list_item': ('.TP', ''),
+                'definition_list_item': ('.TP', ''), # paragraph with hanging tag
                 'field_name': ('.TP\n.B ', '\n'),
                 'literal': ('\\fB', '\\fP'),
                 'literal_block': ('.sp\n.nf\n.ft C\n', '\n.ft P\n.fi\n'),
