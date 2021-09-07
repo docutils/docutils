@@ -5,6 +5,7 @@
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
+\usepackage{color}
 \usepackage{graphicx}
 \usepackage{listings}
 \lstset{xleftmargin=\leftmargin}
@@ -110,12 +111,20 @@ test &
 
 A literal block in an admonition:
 
+\begin{lstlisting}
+\sin^2 x
+\end{lstlisting}
+\end{DUadmonition}
+\end{DUclass}
+
+\DUsidebar{
+\DUtitle{Literal Block in a Sidebar}
+
 \begin{quote}
 \ttfamily\raggedright
 \textbackslash{}sin\textasciicircum{}2~x
 \end{quote}
-\end{DUadmonition}
-\end{DUclass}
+}
 
 Parsed literal block with inline markup and leading whitespace:
 

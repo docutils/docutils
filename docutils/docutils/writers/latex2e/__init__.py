@@ -2499,8 +2499,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # TODO: fails if normal text precedes the literal block.
         #       Check parent node instead?
         _autowidth_table = _in_table and self.active_table.colwidths_auto
-        _use_env = _plaintext and not isinstance(node.parent,
-                    (nodes.footnote, nodes.admonition, nodes.system_message))
+        _no_env_nodes = (nodes.footnote, nodes.sidebar)
+        if self.settings.legacy_class_functions:
+            _no_env_nodes += (nodes.admonition, nodes.system_message)
+        _use_env = _plaintext and not isinstance(node.parent, _no_env_nodes)
         _use_listings = (literal_env == 'lstlisting') and _use_env
 
         # Labels and classes:
