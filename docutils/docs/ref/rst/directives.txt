@@ -1484,7 +1484,7 @@ Raw Data Pass-Through
 :Directive Type: "raw"
 :Doctree Element: raw_
 :Directive Arguments: One or more, required (output format types).
-:Directive Options: Possible.
+:Directive Options: Possible (see below).
 :Directive Content: Stored verbatim, uninterpreted.  None (empty) if a
                     "file" or "url" option given.
 :Configuration Setting: raw_enabled_
@@ -1553,6 +1553,9 @@ The following options are recognized:
 ``encoding`` : string
     The text encoding of the external raw data (file or URL).
     Defaults to the document's encoding (if specified).
+
+and the common option `:class:`_.
+
 
 .. _"raw" role: roles.html#raw
 

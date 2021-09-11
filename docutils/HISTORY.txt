@@ -40,6 +40,8 @@ Changes Since 0.17.1
   - `Meta` directive class (moved from html.py) inserts `meta`
     (instead of `pending`) nodes.
 
+  - Add `class` option to `Raw` directive.
+
 * docutils/tools/math/math2html.py,
   docutils/tools/math/tex2unicode.py,
   docutils/writers/html5/math.css
