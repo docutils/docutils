@@ -192,22 +192,44 @@ Paragraph 2.
 head_template.substitute(dict(parts,
     requirements=parts['requirements'] + '\\setcounter{secnumdepth}{0}\n',
     fallbacks=r"""
+% class handling for environments (block-level elements)
+% \begin{DUclass}{spam} tries \DUCLASSspam and
+% \end{DUclass}{spam} tries \endDUCLASSspam
+\ifx\DUclass\undefined % poor man's "provideenvironment"
+ \newenvironment{DUclass}[1]%
+  {% "#1" does not work in end-part of environment.
+   \def\DocutilsClassFunctionName{DUCLASS#1}
+     \csname \DocutilsClassFunctionName \endcsname}%
+  {\csname end\DocutilsClassFunctionName \endcsname}%
+\fi
+
 % title for topics, admonitions, unsupported section levels, and sidebar
 \providecommand*{\DUtitle}[1]{%
   \smallskip\noindent\textbf{#1}\smallskip}
+
+\providecommand*{\DUCLASScontents}{%
+  \renewenvironment{itemize}%
+    {\begin{list}{}{\setlength{\partopsep}{0pt}
+                    \setlength{\parsep}{0pt}}
+                   }%
+    {\end{list}}%
+}
 """)) + r"""
 \phantomsection\label{table-of-contents}
 \pdfbookmark[1]{Table of Contents}{table-of-contents}
 
+\begin{DUclass}{contents}
+
 \DUtitle{Table of Contents}
 
-\begin{list}{}{}
+\begin{itemize}
 \item \hyperref[title-1]{Title 1}
 
-\begin{list}{}{}
+\begin{itemize}
 \item \hyperref[title-2]{Title 2}
-\end{list}
-\end{list}
+\end{itemize}
+\end{itemize}
+\end{DUclass}
 
 
 \section{Title 1%

@@ -141,8 +141,8 @@ class Contents(Transform):
             entries.append(item)
         if entries:
             contents = nodes.bullet_list('', *entries)
-            if auto:
-                contents['classes'].append('auto-toc')
+            if auto: # auto-numbered sections
+                contents['classes'].append('auto-toc') # auto-numbered sections
             return contents
         else:
             return []
