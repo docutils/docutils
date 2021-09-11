@@ -188,7 +188,7 @@ Title 2
 -------
 Paragraph 2.
 """,
-## # expected output
+# expected output
 head_template.substitute(dict(parts,
     requirements=parts['requirements'] + '\\setcounter{secnumdepth}{0}\n',
     fallbacks=r"""
@@ -235,7 +235,7 @@ totest['footnote text'] = [
 
 .. [3] 1. enumeration
 """,
-## # expected output
+# expected output
 head_template.substitute(dict(parts,
     fallbacks=r"""
 % numerical or symbol footnotes with hyperlinks and backlinks
@@ -276,7 +276,7 @@ totest_latex_toc['no_sectnum'] = [
 first section
 -------------
 """,
-## # expected output
+# expected output
 head_template.substitute(dict(parts,
     requirements=parts['requirements'] + '\\setcounter{secnumdepth}{0}\n'
 )) + r"""
@@ -302,7 +302,7 @@ totest_latex_toc['sectnum'] = [
 first section
 -------------
 """,
-## # expected output
+# expected output
 head_template.substitute(dict(parts,
     requirements=parts['requirements'] + '\\setcounter{secnumdepth}{0}\n'
 )) + r"""
@@ -328,7 +328,7 @@ totest_latex_toc['depth'] = [
 first section
 -------------
 """,
-## # expected output
+# expected output
 head_template.substitute(dict(parts,
     requirements=parts['requirements'] + '\\setcounter{secnumdepth}{0}\n'
 )) + r"""
@@ -356,7 +356,7 @@ totest_latex_toc_book['depth'] = [
 first chapter
 -------------
 """,
-## # expected output
+# expected output
 head_template.substitute(dict(parts,
     head_prefix=r"""\documentclass[a4paper]{book}
 """,
@@ -386,7 +386,7 @@ some text
 first section
 -------------
 """,
-## # expected output
+# expected output
 head_template.substitute(dict(parts, requirements = parts['requirements'] +
 r"""\setcounter{secnumdepth}{0}
 """)) + r"""
@@ -411,7 +411,7 @@ some text
 first section
 -------------
 """,
-## # expected output
+# expected output
 head_template.substitute(dict(parts,
     requirements=parts['requirements'] + '\\setcounter{secnumdepth}{0}\n'
 )) + r"""
@@ -434,7 +434,7 @@ Just a test citation [my_cite2006]_.
 .. [my_cite2006]
    The underscore is mishandled.
 """,
-## # expected output
+# expected output
 head + r"""
 Just a test citation \cite{my_cite2006}.
 
@@ -1006,6 +1006,40 @@ A paragraph.
 
 Foo (some raw text)
 same paragraph.
+
+\end{document}
+"""],
+[r""".. compound::
+
+  Compound paragraph
+  
+  .. raw:: LaTeX
+     
+     raw LaTeX block
+  
+  compound paragraph continuation.
+""",
+head_template.substitute(
+    dict(parts,
+         fallbacks = r"""
+% class handling for environments (block-level elements)
+% \begin{DUclass}{spam} tries \DUCLASSspam and
+% \end{DUclass}{spam} tries \endDUCLASSspam
+\ifx\DUclass\undefined % poor man's "provideenvironment"
+ \newenvironment{DUclass}[1]%
+  {% "#1" does not work in end-part of environment.
+   \def\DocutilsClassFunctionName{DUCLASS#1}
+     \csname \DocutilsClassFunctionName \endcsname}%
+  {\csname end\DocutilsClassFunctionName \endcsname}%
+\fi
+"""
+    )
+) + r"""
+\begin{DUclass}{compound}
+Compound paragraph
+raw LaTeX block
+compound paragraph continuation.
+\end{DUclass}
 
 \end{document}
 """],
