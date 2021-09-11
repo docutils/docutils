@@ -113,6 +113,8 @@ Changes Since 0.17.1
   - Fix newlines after/before ids_to_labels() (cf. patch #183).
 
   - Refactor/revise ToC writing.
+  
+  - Don't add ``\phantomsection`` to labels in math-blocks.
 
 * docutils/writers/latex2e/docutils.sty
 

@@ -1513,16 +1513,20 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.out.append('%\n'.join(['\\raisebox{1em}{\\hypertarget{%s}{}}' %
                                     id for id in node['ids']]))
 
-    def ids_to_labels(self, node, set_anchor=True, protect=False):
+    def ids_to_labels(self, node, set_anchor=True, protect=False,
+                      newline=False):
         """Return list of label definitions for all ids of `node`
 
         If `set_anchor` is True, an anchor is set with \\phantomsection.
         If `protect` is True, the \\label cmd is made robust.
+        If `newline` is True, a newline is added if there are labels.
         """
         prefix = '\\protect' if protect else ''
         labels = [prefix + '\\label{%s}' % id for id in node['ids']]
         if set_anchor and labels:
             labels.insert(0, '\\phantomsection')
+        if newline and labels:
+            labels.append('\n')
         return labels
 
     def set_align_from_classes(self, node):
@@ -2195,8 +2199,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.out.append('\\begin{figure} %% align = "%s"\n' % alignment)
         else:
             self.out.append('\\begin{figure}\n')
-        if node['ids']:
-            self.out += self.ids_to_labels(node) + ['\n']
+        self.out += self.ids_to_labels(node, newline=True)
 
     def depart_figure(self, node):
         self.out.append('\\end{figure}\n')
@@ -2378,8 +2381,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.out.extend(post)
 
     def depart_image(self, node):
-        if node['ids']:
-            self.out += self.ids_to_labels(node) + ['\n']
+        self.out += self.ids_to_labels(node, newline=True)
 
     def visit_inline(self, node): # <span>, i.e. custom roles
         for cls in node['classes']:
@@ -2495,8 +2497,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
         # Labels and classes:
         self.duclass_open(node)
-        if node['ids']:
-            self.out += self.ids_to_labels(node) + ['\n']
+        self.out += self.ids_to_labels(node, newline=True)
         # Highlight code?
         if (not _plaintext
             and 'code' in node['classes']
@@ -2584,19 +2585,19 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.visit_inline(node)
         self.requirements['amsmath'] = r'\usepackage{amsmath}'
         math_code = node.astext().translate(unichar2tex.uni2tex_table)
-        if node['ids']:
-            math_code = '\n'.join([math_code] + self.ids_to_labels(node))
         if math_env == '$':
             if self.alltt:
-                wrapper = u'\\(%s\\)'
+                wrapper = ['\\(', '\\)']
             else:
-                wrapper = u'$%s$'
+                wrapper = ['$', '$']
         else:
-            wrapper = u'\n'.join(['%%',
-                                 r'\begin{%s}' % math_env,
-                                 '%s',
-                                 r'\end{%s}' % math_env])
-        self.out.append(wrapper % math_code)
+            labels = self.ids_to_labels(node, set_anchor=False, newline=True)
+            wrapper = ['%%\n\\begin{%s}\n' % math_env,
+                       '\n',
+                       ''.join(labels),
+                       '\\end{%s}' % math_env]
+        wrapper.insert(1, math_code)
+        self.out.extend(wrapper)
         self.depart_inline(node)
         # Content already processed:
         raise nodes.SkipNode
@@ -2690,8 +2691,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 self.out.append('\n')
         else:
             self.out.append('\n')
-        if node['ids']:
-            self.out += self.ids_to_labels(node) + ['\n']
+        self.out += self.ids_to_labels(node, newline=True)
         self.visit_inline(node)
 
     def depart_paragraph(self, node):
@@ -2946,8 +2946,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.active_table = self.table_stack.pop()
         # Insert hyperlabel after (long)table, as
         # other places (beginning, caption) result in LaTeX errors.
-        if node['ids']:
-            self.out += self.ids_to_labels(node, set_anchor=False) + ['\n']
+        self.out += self.ids_to_labels(node, set_anchor=False, newline=True)
         self.duclass_close(node)
 
     def visit_target(self, node):
@@ -3112,16 +3111,15 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
         # labels and PDF bookmark (sidebar entry)
         self.out.append('\n') # start new paragraph
-        if node['names']: # don't add labels for auto-ids
-            self.out += self.ids_to_labels(node) + ['\n']
+        if node['names']: # don't add labels just for auto-ids
+            self.out += self.ids_to_labels(node, newline=True)
         if (isinstance(node.next_node(), nodes.title)
             and 'local' not in node['classes']
             and self.settings.documentclass != 'memoir'):
             self.out.append('\\pdfbookmark[%d]{%s}{%s}\n' %
                             (self.section_level+1,
-                                node.next_node().astext(),
-                                node.get('ids', ['contents'])[0]
-                            ))
+                             node.next_node().astext(),
+                             node.get('ids', ['contents'])[0]))
 
         # Docutils generated contents list (no page numbers)
         if not self.use_latex_toc:
