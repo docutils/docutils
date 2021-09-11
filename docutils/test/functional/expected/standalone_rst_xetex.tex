@@ -39,6 +39,14 @@
 
 \DUprovidelength{\pdfpxdimen}{1bp}
 
+
+\providecommand*{\DUCLASScontents}{%
+  \renewenvironment{itemize}%
+    {\begin{list}{}{\setlength{\partopsep}{0pt}
+                    \setlength{\parsep}{0pt}}
+                   }%
+    {\end{list}}%
+}
 % hyperlinks:
 \ifthenelse{\isundefined{\hypersetup}}{
   \usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue]{hyperref}
@@ -143,32 +151,34 @@ reStructuredText construct.
 \phantomsection\label{table-of-contents}
 \pdfbookmark[1]{Table of Contents}{table-of-contents}
 
+\begin{DUclass}{contents}
+
 \DUtitle{Table of Contents}
 
 \begin{DUclass}{auto-toc}
-\begin{list}{}{}
+\begin{itemize}
 \item \hyperref[structural-elements]{1   Structural Elements}
 
 \begin{DUclass}{auto-toc}
-\begin{list}{}{}
+\begin{itemize}
 \item \hyperref[section-title]{1.1   Section Title}
 
 \item \hyperref[empty-section]{1.2   Empty Section}
 
 \item \hyperref[transitions]{1.3   Transitions}
-\end{list}
+\end{itemize}
 \end{DUclass}
 
 \item \hyperref[body-elements]{2   Body Elements}
 
 \begin{DUclass}{auto-toc}
-\begin{list}{}{}
+\begin{itemize}
 \item \hyperref[paragraphs]{2.1   Paragraphs}
 
 \begin{DUclass}{auto-toc}
-\begin{list}{}{}
+\begin{itemize}
 \item \hyperref[inline-markup]{2.1.1   Inline Markup}
-\end{list}
+\end{itemize}
 \end{DUclass}
 
 \item \hyperref[bullet-lists]{2.2   Bullet Lists}
@@ -196,17 +206,17 @@ reStructuredText construct.
 \item \hyperref[targets]{2.13   Targets}
 
 \begin{DUclass}{auto-toc}
-\begin{list}{}{}
+\begin{itemize}
 \item \hyperref[duplicate-target-names]{2.13.1   Duplicate Target Names}
 
 \item \hyperref[duplicate-target-names-1]{2.13.2   Duplicate Target Names}
-\end{list}
+\end{itemize}
 \end{DUclass}
 
 \item \hyperref[directives]{2.14   Directives}
 
 \begin{DUclass}{auto-toc}
-\begin{list}{}{}
+\begin{itemize}
 \item \hyperref[document-parts]{2.14.1   Document Parts}
 
 \item \hyperref[images-and-figures]{2.14.2   Images and Figures}
@@ -228,7 +238,7 @@ reStructuredText construct.
 \item \hyperref[code]{2.14.10   Code}
 
 \item \hyperref[meta]{2.14.11   Meta}
-\end{list}
+\end{itemize}
 \end{DUclass}
 
 \item \hyperref[substitution-definitions]{2.15   Substitution Definitions}
@@ -248,23 +258,24 @@ reStructuredText construct.
 \item \hyperref[custom-roles]{2.22   Custom Roles}
 
 \item \hyperref[mathematics]{2.23   Mathematics}
-\end{list}
+\end{itemize}
 \end{DUclass}
 
 \item \hyperref[tests-for-the-latex-writer]{3   Tests for the LaTeX writer}
 
 \begin{DUclass}{auto-toc}
-\begin{list}{}{}
+\begin{itemize}
 \item \hyperref[custom-roles-in-latex]{3.1   Custom Roles in LaTeX}
 
 \item \hyperref[class-handling]{3.2   class handling}
-\end{list}
+\end{itemize}
 \end{DUclass}
 
 \item \hyperref[tests-for-the-xetex-writer]{4   Tests for the XeTeX writer}
 
 \item \hyperref[error-handling]{5   Error Handling}
-\end{list}
+\end{itemize}
+\end{DUclass}
 \end{DUclass}
 
 
@@ -797,8 +808,11 @@ this: %
 
 \phantomsection\label{contents}
 
+\begin{DUclass}{contents}
+\begin{DUclass}{local}
+
 \begin{DUclass}{auto-toc}
-\begin{list}{}{}
+\begin{itemize}
 \item \hyperref[document-parts]{2.14.1   Document Parts}
 
 \item \hyperref[images-and-figures]{2.14.2   Images and Figures}
@@ -820,7 +834,9 @@ this: %
 \item \hyperref[code]{2.14.10   Code}
 
 \item \hyperref[meta]{2.14.11   Meta}
-\end{list}
+\end{itemize}
+\end{DUclass}
+\end{DUclass}
 \end{DUclass}
 
 These are just a sample of the many reStructuredText Directives.  For

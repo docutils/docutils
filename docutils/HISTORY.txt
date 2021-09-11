@@ -115,6 +115,9 @@ Changes Since 0.17.1
   - Refactor/revise ToC writing.
   
   - Don't add ``\phantomsection`` to labels in math-blocks.
+  
+  - Improve spacing and allow customization of Docutils-generated table
+    of contents.
 
 * docutils/writers/latex2e/docutils.sty
 

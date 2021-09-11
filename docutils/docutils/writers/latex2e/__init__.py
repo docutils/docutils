@@ -563,6 +563,15 @@ PreambleCmds.title_legacy = r"""
   \fi
 }"""
 
+PreambleCmds.toc_list = r"""
+\providecommand*{\DUCLASScontents}{%
+  \renewenvironment{itemize}%
+    {\begin{list}{}{\setlength{\partopsep}{0pt}
+                    \setlength{\parsep}{0pt}}
+                   }%
+    {\end{list}}%
+}"""
+
 ## PreambleCmds.caption = r"""% configure caption layout
 ## \usepackage{caption}
 ## \captionsetup{singlelinecheck=false}% no exceptions for one-liners"""
@@ -1098,7 +1107,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
     # -------------------
 
     has_latex_toc = False # is there a toc in the doc? (needed by minitoc)
-    is_toc_list = False   # is the current bullet_list a ToC?
     section_level = 0
 
     # Flags to encode():
@@ -1685,16 +1693,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_bullet_list(self, node):
         self.duclass_open(node)
-        if self.is_toc_list:
-            self.out.append('\\begin{list}{}{}')
-        else:
-            self.out.append('\\begin{itemize}')
+        self.out.append('\\begin{itemize}')
 
     def depart_bullet_list(self, node):
-        if self.is_toc_list:
-            self.out.append('\\end{list}\n')
-        else:
-            self.out.append('\\end{itemize}\n')
+        self.out.append('\\end{itemize}\n')
         self.duclass_close(node)
 
     def visit_superscript(self, node):
@@ -2909,8 +2911,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if self.active_table.is_open():
             self.table_stack.append(self.active_table)
             # nesting longtable does not work (e.g. 2007-04-18)
-            # TODO: don't use a longtable or add \noindent before
-            #       the next paragraph, when in a "compound paragraph".
             self.active_table = Table(self, 'tabular')
         # A longtable moves before \paragraph and \subparagraph
         # section titles if it immediately follows them:
@@ -2936,8 +2936,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
             width = self.to_latex_length(node['width'])
         except KeyError:
             width = r'\linewidth'
-        if isinstance(node.parent, nodes.compound):
-            self.out.append('\n')
+        # TODO: Don't use a longtable or add \noindent before
+        #       the next paragraph, when in a "compound paragraph".
+        #       Start a new line or a new paragraph?
+        #       if (isinstance(node.parent, nodes.compound)
+        #       and self._latex_type != 'longtable')?
         self.out.append(self.active_table.get_opening(width))
         self.out += content
         self.out.append(self.active_table.get_closing() + '\n')
@@ -3123,8 +3126,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
         # Docutils generated contents list (no page numbers)
         if not self.use_latex_toc:
-            # set flag for visit_bullet_list()
-            self.is_toc_list = True
+            self.fallbacks['toc-list'] = PreambleCmds.toc_list
+            self.duclass_open(node)
             return
 
         # ToC by LaTeX
@@ -3191,11 +3194,12 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.visit_block_quote(node)
 
     def depart_topic(self, node):
-        self.is_toc_list = False
         if ('abstract' in node['classes']
           and self.settings.use_latex_abstract):
             self.out.append('\\end{abstract}\n')
-        elif not 'contents' in node['classes']:
+        elif 'contents' in node['classes']:
+            self.duclass_close(node)
+        else:
             self.depart_block_quote(node)
         if ('abstract' in node['classes'] or
             'dedication' in node['classes']):
