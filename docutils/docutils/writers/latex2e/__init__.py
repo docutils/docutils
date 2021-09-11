@@ -1697,22 +1697,18 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_superscript(self, node):
         self.out.append(r'\textsuperscript{')
-        if node['classes']:
-            self.visit_inline(node)
+        self.visit_inline(node)
 
     def depart_superscript(self, node):
-        if node['classes']:
-            self.depart_inline(node)
+        self.depart_inline(node)
         self.out.append('}')
 
     def visit_subscript(self, node):
         self.out.append(r'\textsubscript{')
-        if node['classes']:
-            self.visit_inline(node)
+        self.visit_inline(node)
 
     def depart_subscript(self, node):
-        if node['classes']:
-            self.depart_inline(node)
+        self.depart_inline(node)
         self.out.append('}')
 
     def visit_caption(self, node):
@@ -1725,12 +1721,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if not self.fallback_stylesheet:
             self.fallbacks['titlereference'] = PreambleCmds.titlereference
         self.out.append(r'\DUroletitlereference{')
-        if node['classes']:
-            self.visit_inline(node)
+        self.visit_inline(node)
 
     def depart_title_reference(self, node):
-        if node['classes']:
-            self.depart_inline(node)
+        self.depart_inline(node)
         self.out.append('}')
 
     def visit_citation(self, node):
@@ -2007,12 +2001,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_emphasis(self, node):
         self.out.append('\\emph{')
-        if node['classes']:
-            self.visit_inline(node)
+        self.visit_inline(node)
 
     def depart_emphasis(self, node):
-        if node['classes']:
-            self.depart_inline(node)
+        self.depart_inline(node)
         self.out.append('}')
 
     # Append column delimiters and advance column counter,
@@ -2452,13 +2444,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
             if not self.fallback_stylesheet:
                 self.fallbacks['code'] = PreambleCmds.highlight_rules
         self.out.append('\\texttt{')
-        if node['classes']:
-            self.visit_inline(node)
+        self.visit_inline(node)
 
     def depart_literal(self, node):
         self.literal = False
-        if node['classes']:
-            self.depart_inline(node)
+        self.depart_inline(node)
         self.out.append('}')
 
     # Literal blocks are used for '::'-prefixed literal-indented
@@ -2593,8 +2583,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_math(self, node, math_env='$'):
         """math role"""
-        if node['classes']:
-            self.visit_inline(node)
+        self.visit_inline(node)
         self.requirements['amsmath'] = r'\usepackage{amsmath}'
         math_code = node.astext().translate(unichar2tex.uni2tex_table)
         if node['ids']:
@@ -2610,8 +2599,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
                                  '%s',
                                  r'\end{%s}' % math_env])
         self.out.append(wrapper % math_code)
-        if node['classes']:
-            self.depart_inline(node)
+        self.depart_inline(node)
         # Content already processed:
         raise nodes.SkipNode
 
@@ -2706,12 +2694,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.out.append('\n')
         if node['ids']:
             self.out += self.ids_to_labels(node) + ['\n']
-        if node['classes']:
-            self.visit_inline(node)
+        self.visit_inline(node)
 
     def depart_paragraph(self, node):
-        if node['classes']:
-            self.depart_inline(node)
+        self.depart_inline(node)
         if not self.active_table.colwidths_auto:
             self.out.append('\n')
 
@@ -2729,15 +2715,13 @@ class LaTeXTranslator(nodes.NodeVisitor):
             raise nodes.SkipNode
         if not self.is_inline(node):
             self.out.append('\n')
-        if node['classes']:
-            self.visit_inline(node)
+        self.visit_inline(node)
         # append "as-is" skipping any LaTeX-encoding
         self.verbatim = True
 
     def depart_raw(self, node):
         self.verbatim = False
-        if node['classes']:
-            self.depart_inline(node)
+        self.depart_inline(node)
         if not self.is_inline(node):
             self.out.append('\n')
 
@@ -2853,12 +2837,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_strong(self, node):
         self.out.append('\\textbf{')
-        if node['classes']:
-            self.visit_inline(node)
+        self.visit_inline(node)
 
     def depart_strong(self, node):
-        if node['classes']:
-            self.depart_inline(node)
+        self.depart_inline(node)
         self.out.append('}')
 
     def visit_substitution_definition(self, node):
