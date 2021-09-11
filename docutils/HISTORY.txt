@@ -109,6 +109,10 @@ Changes Since 0.17.1
 
   - Apply patch #181 "Fix tocdepth when chapter/part in use" by
     John Thorvald Wodder II.
+    
+  - Fix newlines after/before ids_to_labels() (cf. patch #183).
+
+  - Refactor/revise ToC writing.
 
 * docutils/writers/latex2e/docutils.sty
 
