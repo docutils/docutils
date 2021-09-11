@@ -2713,7 +2713,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_raw(self, node):
         if not 'latex' in node.get('format', '').split():
             raise nodes.SkipNode
-        if not self.is_inline(node):
+        if not (self.is_inline(node)
+                or isinstance(node.parent, nodes.compound)):
             self.out.append('\n')
         self.visit_inline(node)
         # append "as-is" skipping any LaTeX-encoding
