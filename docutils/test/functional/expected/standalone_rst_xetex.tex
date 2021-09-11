@@ -142,8 +142,130 @@ reStructuredText construct.
 
 \phantomsection\label{table-of-contents}
 \pdfbookmark[1]{Table of Contents}{table-of-contents}
-\renewcommand{\contentsname}{Table of Contents}
-\tableofcontents
+
+\DUtitle{Table of Contents}
+
+\begin{DUclass}{auto-toc}
+\begin{list}{}{}
+\item \hyperref[structural-elements]{1   Structural Elements}
+
+\begin{DUclass}{auto-toc}
+\begin{list}{}{}
+\item \hyperref[section-title]{1.1   Section Title}
+
+\item \hyperref[empty-section]{1.2   Empty Section}
+
+\item \hyperref[transitions]{1.3   Transitions}
+\end{list}
+\end{DUclass}
+
+\item \hyperref[body-elements]{2   Body Elements}
+
+\begin{DUclass}{auto-toc}
+\begin{list}{}{}
+\item \hyperref[paragraphs]{2.1   Paragraphs}
+
+\begin{DUclass}{auto-toc}
+\begin{list}{}{}
+\item \hyperref[inline-markup]{2.1.1   Inline Markup}
+\end{list}
+\end{DUclass}
+
+\item \hyperref[bullet-lists]{2.2   Bullet Lists}
+
+\item \hyperref[enumerated-lists]{2.3   Enumerated Lists}
+
+\item \hyperref[definition-lists]{2.4   Definition Lists}
+
+\item \hyperref[field-lists]{2.5   Field Lists}
+
+\item \hyperref[option-lists]{2.6   Option Lists}
+
+\item \hyperref[literal-blocks]{2.7   Literal Blocks}
+
+\item \hyperref[line-blocks]{2.8   Line Blocks}
+
+\item \hyperref[block-quotes]{2.9   Block Quotes}
+
+\item \hyperref[doctest-blocks]{2.10   Doctest Blocks}
+
+\item \hyperref[footnotes]{2.11   Footnotes}
+
+\item \hyperref[citations]{2.12   Citations}
+
+\item \hyperref[targets]{2.13   Targets}
+
+\begin{DUclass}{auto-toc}
+\begin{list}{}{}
+\item \hyperref[duplicate-target-names]{2.13.1   Duplicate Target Names}
+
+\item \hyperref[duplicate-target-names-1]{2.13.2   Duplicate Target Names}
+\end{list}
+\end{DUclass}
+
+\item \hyperref[directives]{2.14   Directives}
+
+\begin{DUclass}{auto-toc}
+\begin{list}{}{}
+\item \hyperref[document-parts]{2.14.1   Document Parts}
+
+\item \hyperref[images-and-figures]{2.14.2   Images and Figures}
+
+\item \hyperref[tables]{2.14.3   Tables}
+
+\item \hyperref[admonitions]{2.14.4   Admonitions}
+
+\item \hyperref[topics-sidebars-and-rubrics]{2.14.5   Topics, Sidebars, and Rubrics}
+
+\item \hyperref[target-footnotes]{2.14.6   Target Footnotes}
+
+\item \hyperref[replacement-text]{2.14.7   Replacement Text}
+
+\item \hyperref[compound-paragraph]{2.14.8   Compound Paragraph}
+
+\item \hyperref[parsed-literal-blocks]{2.14.9   Parsed Literal Blocks}
+
+\item \hyperref[code]{2.14.10   Code}
+
+\item \hyperref[meta]{2.14.11   Meta}
+\end{list}
+\end{DUclass}
+
+\item \hyperref[substitution-definitions]{2.15   Substitution Definitions}
+
+\item \hyperref[comments]{2.16   Comments}
+
+\item \hyperref[raw-text]{2.17   Raw text}
+
+\item \hyperref[container]{2.18   Container}
+
+\item \hyperref[colspanning-tables]{2.19   Colspanning tables}
+
+\item \hyperref[rowspanning-tables]{2.20   Rowspanning tables}
+
+\item \hyperref[list-tables]{2.21   List Tables}
+
+\item \hyperref[custom-roles]{2.22   Custom Roles}
+
+\item \hyperref[mathematics]{2.23   Mathematics}
+\end{list}
+\end{DUclass}
+
+\item \hyperref[tests-for-the-latex-writer]{3   Tests for the LaTeX writer}
+
+\begin{DUclass}{auto-toc}
+\begin{list}{}{}
+\item \hyperref[custom-roles-in-latex]{3.1   Custom Roles in LaTeX}
+
+\item \hyperref[class-handling]{3.2   class handling}
+\end{list}
+\end{DUclass}
+
+\item \hyperref[tests-for-the-xetex-writer]{4   Tests for the XeTeX writer}
+
+\item \hyperref[error-handling]{5   Error Handling}
+\end{list}
+\end{DUclass}
 
 
 \section{1   Structural Elements%
@@ -674,6 +796,33 @@ this: %
 }
 
 \phantomsection\label{contents}
+
+\begin{DUclass}{auto-toc}
+\begin{list}{}{}
+\item \hyperref[document-parts]{2.14.1   Document Parts}
+
+\item \hyperref[images-and-figures]{2.14.2   Images and Figures}
+
+\item \hyperref[tables]{2.14.3   Tables}
+
+\item \hyperref[admonitions]{2.14.4   Admonitions}
+
+\item \hyperref[topics-sidebars-and-rubrics]{2.14.5   Topics, Sidebars, and Rubrics}
+
+\item \hyperref[target-footnotes]{2.14.6   Target Footnotes}
+
+\item \hyperref[replacement-text]{2.14.7   Replacement Text}
+
+\item \hyperref[compound-paragraph]{2.14.8   Compound Paragraph}
+
+\item \hyperref[parsed-literal-blocks]{2.14.9   Parsed Literal Blocks}
+
+\item \hyperref[code]{2.14.10   Code}
+
+\item \hyperref[meta]{2.14.11   Meta}
+\end{list}
+\end{DUclass}
+
 These are just a sample of the many reStructuredText Directives.  For
 others, please see \href{https://docutils.sourceforge.io/docs/ref/rst/directives.html}{reStructuredText Directives}\DUfootnotemark{footnote-reference-19}{footnote-11}{10}.
 

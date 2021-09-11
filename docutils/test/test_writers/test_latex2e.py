@@ -198,6 +198,7 @@ head_template.substitute(dict(parts,
 """)) + r"""
 \phantomsection\label{table-of-contents}
 \pdfbookmark[1]{Table of Contents}{table-of-contents}
+
 \DUtitle{Table of Contents}
 
 \begin{list}{}{}
@@ -335,7 +336,6 @@ head_template.substitute(dict(parts,
 \phantomsection\label{contents}
 \pdfbookmark[1]{Contents}{contents}
 \setcounter{tocdepth}{1}
-
 \tableofcontents
 
 
@@ -365,7 +365,6 @@ head_template.substitute(dict(parts,
 \phantomsection\label{contents}
 \pdfbookmark[1]{Contents}{contents}
 \setcounter{tocdepth}{0}
-
 \tableofcontents
 
 

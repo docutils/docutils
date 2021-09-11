@@ -13,3 +13,5 @@ writer_name = "xetex"
 settings_overrides['smart_quotes'] = True
 # use docutils.sty and up-to-date class functions:
 settings_overrides['stylesheet'] = 'docutils'
+# Test the ToC generation by Docutils:
+settings_overrides['use_latex_toc'] = False

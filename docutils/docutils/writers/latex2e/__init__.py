@@ -1519,9 +1519,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
         If `set_anchor` is True, an anchor is set with \\phantomsection.
         If `protect` is True, the \\label cmd is made robust.
         """
-        labels = ['\\label{%s}' % id for id in node['ids']]
-        if protect:
-            labels = ['\\protect'+label for label in labels]
+        prefix = '\\protect' if protect else ''
+        labels = [prefix + '\\label{%s}' % id for id in node['ids']]
         if set_anchor and labels:
             labels.insert(0, '\\phantomsection')
         return labels
@@ -1597,13 +1596,12 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 break
         else:
             return ''
-        if isinstance(child, (nodes.image)):
-            return '\\leavevmode\n' # Images get an additional newline.
         if isinstance(child, (nodes.container, nodes.compound)):
             return self.term_postfix(child)
-        if not isinstance(child,
-                          (nodes.paragraph, nodes.math_block)):
-            return r'\leavevmode'
+        if isinstance(child, (nodes.image)):
+            return '\\leavevmode\n' # Images get an additional newline.
+        if not isinstance(child, (nodes.paragraph, nodes.math_block)):
+            return '\\leavevmode'
         return ''
 
     # Visitor methods
@@ -2064,7 +2062,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         else:
             self.context.append('')
 
-        # if line ends with '{', mask line break to prevent spurious whitespace
+        # if line ends with '{', mask line break
         if (not self.active_table.colwidths_auto
             and self.out[-1].endswith("{")
             and node.astext()):
@@ -2228,8 +2226,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
                             (node['ids'][0], backref, self.encode(num)))
             if node['ids'] == node['names']:
                 self.out += self.ids_to_labels(node)
-            # mask newline to prevent spurious whitespace if paragraph follows:
-            if node[1:] and isinstance(node[1], nodes.paragraph):
+            # prevent spurious whitespace if footnote starts with paragraph:
+            if len(node) > 1 and isinstance(node[1], nodes.paragraph):
                 self.out.append('%')
         # TODO: "real" LaTeX \footnote{}s (see visit_footnotes_reference())
 
@@ -2496,9 +2494,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
         _use_listings = (literal_env == 'lstlisting') and _use_env
 
         # Labels and classes:
-        if node['ids']:
-            self.out += ['\n'] + self.ids_to_labels(node)
         self.duclass_open(node)
+        if node['ids']:
+            self.out += self.ids_to_labels(node) + ['\n']
         # Highlight code?
         if (not _plaintext
             and 'code' in node['classes']
@@ -3082,7 +3080,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             if (level > len(self.d_class.sections)
                 and not self.settings.legacy_class_functions):
                 self.context[-1] += '\\end{DUclass}\n'
-            # MAYBE postfix paragraph and subparagraph with \leavemode to
+            # MAYBE postfix paragraph and subparagraph with \leavevmode to
             # ensure floats stay in the section and text starts on a new line.
 
     def depart_title(self, node):
@@ -3090,76 +3088,88 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if isinstance(node.parent, (nodes.table, nodes.document)):
             self.pop_output_collector()
 
-    def minitoc(self, node, title, depth):
-        """Generate a local table of contents with LaTeX package minitoc"""
-        section_name = self.d_class.section(self.section_level)
-        # name-prefix for current section level
-        minitoc_names = {'part': 'part', 'chapter': 'mini'}
-        if 'chapter' not in self.d_class.sections:
-            minitoc_names['section'] = 'sect'
-        try:
-            minitoc_name = minitoc_names[section_name]
-        except KeyError: # minitoc only supports part- and toplevel
-            self.warn('Skipping local ToC at %s level.\n' % section_name +
-                      '  Feature not supported with option "use-latex-toc"',
-                      base_node=node)
+    def visit_contents(self, node):
+        """Write the table of contents.
+
+        Called from visit_topic() for "contents" topics.
+        """
+        # requirements/setup for local ToC with package "minitoc",
+        if self.use_latex_toc and 'local' in node['classes']:
+            section_name = self.d_class.section(self.section_level)
+            # minitoc only supports "part" and toplevel sections
+            minitoc_names = {'part': 'part',
+                            'chapter': 'mini',
+                            'section': 'sect'}
+            if 'chapter' in self.d_class.sections:
+                del(minitoc_names['section'])
+            try:
+                mtc_name = minitoc_names[section_name]
+            except KeyError:
+                self.warn('Skipping local ToC at "%s" level.\n'
+                        '  Feature not supported with option "use-latex-toc"'
+                        % section_name, base_node=node)
+                raise nodes.SkipNode
+
+        # labels and PDF bookmark (sidebar entry)
+        self.out.append('\n') # start new paragraph
+        if node['names']: # don't add labels for auto-ids
+            self.out += self.ids_to_labels(node) + ['\n']
+        if (isinstance(node.next_node(), nodes.title)
+            and 'local' not in node['classes']
+            and self.settings.documentclass != 'memoir'):
+            self.out.append('\\pdfbookmark[%d]{%s}{%s}\n' %
+                            (self.section_level+1,
+                                node.next_node().astext(),
+                                node.get('ids', ['contents'])[0]
+                            ))
+
+        # Docutils generated contents list (no page numbers)
+        if not self.use_latex_toc:
+            # set flag for visit_bullet_list()
+            self.is_toc_list = True
             return
-        # Requirements/Setup
-        self.requirements['minitoc'] = PreambleCmds.minitoc
-        self.requirements['minitoc-'+minitoc_name] = (r'\do%stoc' %
-                                                      minitoc_name)
-        # depth: (Docutils defaults to unlimited depth)
+
+        # ToC by LaTeX
+        depth = node.get('depth', 0)
         maxdepth = len(self.d_class.sections)
-        self.requirements['minitoc-%s-depth' % minitoc_name] = (
-            r'\mtcsetdepth{%stoc}{%d}' % (minitoc_name, maxdepth))
-        # Process 'depth' argument (!Docutils stores a relative depth while
-        # minitoc  expects an absolute depth!):
-        offset = {'sect': 1, 'mini': 0, 'part': 0}
-        if 'chapter' in self.d_class.sections:
-            offset['part'] = -1
-        if depth:
-            self.out.append('\\setcounter{%stocdepth}{%d}' %
-                             (minitoc_name, depth + offset[minitoc_name]))
-        # title:
-        self.out.append('\\mtcsettitle{%stoc}{%s}\n' % (minitoc_name, title))
-        # the toc-generating command:
-        self.out.append('\\%stoc\n' % minitoc_name)
+        if isinstance(node.next_node(), nodes.title):
+            title = self.encode(node[0].astext())
+        else:
+            title = ''
+        if 'local' in node['classes']:
+            # use the "minitoc" package
+            self.requirements['minitoc'] = PreambleCmds.minitoc
+            self.requirements['minitoc-'+mtc_name] = r'\do%stoc'%mtc_name
+            self.requirements['minitoc-%s-depth' % mtc_name] = (
+                r'\mtcsetdepth{%stoc}{%d}' % (mtc_name, maxdepth))
+            # "depth" option: Docutils stores a relative depth while
+            # minitoc  expects an absolute depth!:
+            offset = {'sect': 1, 'mini': 0, 'part': 0}
+            if 'chapter' in self.d_class.sections:
+                offset['part'] = -1
+            if depth:
+                self.out.append('\\setcounter{%stocdepth}{%d}' %
+                                (mtc_name, depth + offset[mtc_name]))
+            # title:
+            self.out.append('\\mtcsettitle{%stoc}{%s}\n' % (mtc_name, title))
+            # the toc-generating command:
+            self.out.append('\\%stoc\n' % mtc_name)
+        else:
+            if depth:
+                self.out.append('\\setcounter{tocdepth}{%d}\n'
+                                % self.d_class.latex_section_depth(depth))
+            if title != 'Contents':
+                self.out.append('\\renewcommand{\\contentsname}{%s}\n' % title)
+            self.out.append('\\tableofcontents\n')
+            self.has_latex_toc = True
+        # ignore rest of node content
+        raise nodes.SkipNode
 
     def visit_topic(self, node):
         # Topic nodes can be generic topic, abstract, dedication, or ToC.
         # table of contents:
         if 'contents' in node['classes']:
-            self.out.append('\n')
-            self.out += self.ids_to_labels(node)
-            # add contents to PDF bookmarks sidebar
-            if (isinstance(node.next_node(), nodes.title)
-                and self.settings.documentclass != 'memoir'):
-                self.out.append('\n\\pdfbookmark[%d]{%s}{%s}' %
-                                (self.section_level+1,
-                                 node.next_node().astext(),
-                                 node.get('ids', ['contents'])[0]
-                                ))
-            if self.use_latex_toc:
-                title = ''
-                if isinstance(node.next_node(), nodes.title):
-                    title = self.encode(node.pop(0).astext())
-                depth = node.get('depth', 0)
-                if 'local' in node['classes']:
-                    self.minitoc(node, title, depth)
-                    return
-                if depth:
-                    self.out.append('\n\\setcounter{tocdepth}{%d}\n'
-                                    % self.d_class.latex_section_depth(depth))
-                if title != 'Contents':
-                    self.out.append('\n\\renewcommand{\\contentsname}{%s}'
-                                    % title)
-                self.out.append('\n\\tableofcontents\n')
-                self.has_latex_toc = True
-                # ignore rest of node content
-                raise nodes.SkipNode
-            else: # Docutils generated contents list
-                # set flag for visit_bullet_list() and visit_title()
-                self.is_toc_list = True
+            self.visit_contents(node)
         elif ('abstract' in node['classes'] and
               self.settings.use_latex_abstract):
             self.push_output_collector(self.abstract)
