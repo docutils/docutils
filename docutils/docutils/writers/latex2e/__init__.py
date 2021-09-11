@@ -2096,11 +2096,12 @@ class LaTeXTranslator(nodes.NodeVisitor):
                   'upperalpha':'Alph',
                   'lowerroman':'roman',
                   'upperroman':'Roman'}
-        # the 4 default LaTeX enumeration labels: präfix, enumtype, suffix,
-        labels = [('',  'arabic', '.'), #  1.
-                  ('(', 'alph',   ')'), # (a)
-                  ('',  'roman',  '.'), #  i.
-                  ('',  'Alph',   '.')] #  A.
+        # default LaTeX enumeration labels:
+        default_labels = [# (präfix, enumtype, suffix)
+                          ('',  'arabic', '.'), #  1.
+                          ('(', 'alph',   ')'), # (a)
+                          ('',  'roman',  '.'), #  i.
+                          ('',  'Alph',   '.')] #  A.
 
         prefix = ''
         if self.compound_enumerators:
@@ -2111,11 +2112,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
                                  ) + self.section_enumerator_separator
             if self._enumeration_counters:
                 prefix += self._enumeration_counters[-1]
-        # TODO: use LaTeX default for unspecified label-type?
-        #       (needs change of parser)
         prefix += node.get('prefix', '')
-        enumtype = types[node.get('enumtype' '')]
-        suffix = node.get('suffix', '')
+        enumtype = types[node.get('enumtype', 'arabic')]
+        suffix = node.get('suffix', '.')
 
         enumeration_level = len(self._enumeration_counters)+1
         counter_name = 'enum' + roman.toRoman(enumeration_level).lower()
@@ -2126,7 +2125,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if enumeration_level <= 4:
             self.out.append('\\begin{enumerate}')
             if (prefix, enumtype, suffix
-               ) != labels[enumeration_level-1]:
+               ) != default_labels[enumeration_level-1]:
                 self.out.append('\n\\renewcommand{\\label%s}{%s}' %
                                 (counter_name, label))
         else:
