@@ -26,17 +26,17 @@ Future changes
     references. Since 0.18, you can use the CSS selector
     ``[role="doc-noteref"]`` instead of ``.footnote-reference``
     (see minimal.css for examples).
-    
+
   - Do not specify relative column widths with the
     deprecated ``<colgroup><col width="...">...``.
-    
+
     The `html5` writer will default to ``:widths: auto`` and use
     ``style="width: ..%"`` if the `"widths" option`__ sets explicite table
     column widths. Use ``:widths: grid`` to keep the current default
     column widths.
-    
+
     __  docs/ref/rst/directives.html#table
-    
+
   - Move attribution behind the blockquote to comply with the
     `"living standard"`__?
     (HTML5__ allows <cite> elements inside a blockquote, cf. Example 16.)
@@ -45,6 +45,13 @@ Future changes
     __ https://www.w3.org/TR/html52/grouping-content.html#the-blockquote-element
 
 * `htm4css1` writer: Support the embed_images_ option.
+
+* `latex2e` writer:
+
+  - Change default of ``use_latex_citations`` to True.
+
+  - Remove ``--use-verbatim-when-possible`` option
+    (use ``--literal-block-env=verbatim``).
 
 * Remove the "rawsource" attribute and argument from nodes.Text:
   we store the null-escaped text in Text nodes since 0.16 so there is no
