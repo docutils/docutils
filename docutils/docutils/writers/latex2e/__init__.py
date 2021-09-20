@@ -180,8 +180,7 @@ class Writer(writers.Writer):
           'Default: "" (fall back to "alltt").',
           ['--literal-block-env'],
           {'default': ''}),
-         ('When possible, use "verbatim" for literal-blocks. '
-          'Compatibility alias for "--literal-block-env=verbatim".',
+         ('Deprecated alias for "--literal-block-env=verbatim".',
           ['--use-verbatim-when-possible'],
           {'default': False, 'action': 'store_true',
            'validator': frontend.validate_boolean}),
@@ -216,13 +215,13 @@ class Writer(writers.Writer):
           ['--use-bibtex'],
           {'default': ''}),
          ('Use legacy functions with class value list for '
-          '\\DUtitle and \\DUadmonition (current default). ',
+          '\\DUtitle and \\DUadmonition.',
           ['--legacy-class-functions'],
           {'default': False,
            'action': 'store_true',
            'validator': frontend.validate_boolean}),
          ('Use \\DUrole and "DUclass" wrappers for class values. '
-          'Place admonition content in an environment (future default).',
+          'Place admonition content in an environment (default).',
           ['--new-class-functions'],
           {'dest': 'legacy_class_functions',
            'action': 'store_false',
