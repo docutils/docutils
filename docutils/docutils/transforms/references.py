@@ -42,48 +42,51 @@ class PropagateTargets(Transform):
 
     def apply(self):
         for target in self.document.traverse(nodes.target):
-            # Only block-level targets without reference (like ".. target:"):
+            # Only block-level targets without reference (like ".. _target:"):
             if (isinstance(target.parent, nodes.TextElement) or
                 (target.hasattr('refid') or target.hasattr('refuri') or
                  target.hasattr('refname'))):
                 continue
             assert len(target) == 0, 'error: block-level target has children'
             next_node = target.next_node(ascend=True)
+            # skip system messages (may be removed by universal.FilterMessages)
+            while isinstance(next_node, nodes.system_message):
+                next_node = next_node.next_node(ascend=True, descend=False)
             # Do not move names and ids into Invisibles (we'd lose the
             # attributes) or different Targetables (e.g. footnotes).
-            if (next_node is not None and
-                ((not isinstance(next_node, nodes.Invisible) and
-                  not isinstance(next_node, nodes.Targetable)) or
-                 isinstance(next_node, nodes.target))):
-                next_node['ids'].extend(target['ids'])
-                next_node['names'].extend(target['names'])
-                # Set defaults for next_node.expect_referenced_by_name/id.
-                if not hasattr(next_node, 'expect_referenced_by_name'):
-                    next_node.expect_referenced_by_name = {}
-                if not hasattr(next_node, 'expect_referenced_by_id'):
-                    next_node.expect_referenced_by_id = {}
-                for id in target['ids']:
-                    # Update IDs to node mapping.
-                    self.document.ids[id] = next_node
-                    # If next_node is referenced by id ``id``, this
-                    # target shall be marked as referenced.
-                    next_node.expect_referenced_by_id[id] = target
-                for name in target['names']:
-                    next_node.expect_referenced_by_name[name] = target
-                # If there are any expect_referenced_by_... attributes
-                # in target set, copy them to next_node.
-                next_node.expect_referenced_by_name.update(
-                    getattr(target, 'expect_referenced_by_name', {}))
-                next_node.expect_referenced_by_id.update(
-                    getattr(target, 'expect_referenced_by_id', {}))
-                # Set refid to point to the first former ID of target
-                # which is now an ID of next_node.
-                target['refid'] = target['ids'][0]
-                # Clear ids and names; they have been moved to
-                # next_node.
-                target['ids'] = []
-                target['names'] = []
-                self.document.note_refid(target)
+            if (next_node is None
+                or isinstance(next_node, (nodes.Invisible, nodes.Targetable))
+                and not isinstance(next_node, nodes.target)):
+                continue
+            next_node['ids'].extend(target['ids'])
+            next_node['names'].extend(target['names'])
+            # Set defaults for next_node.expect_referenced_by_name/id.
+            if not hasattr(next_node, 'expect_referenced_by_name'):
+                next_node.expect_referenced_by_name = {}
+            if not hasattr(next_node, 'expect_referenced_by_id'):
+                next_node.expect_referenced_by_id = {}
+            for id in target['ids']:
+                # Update IDs to node mapping.
+                self.document.ids[id] = next_node
+                # If next_node is referenced by id ``id``, this
+                # target shall be marked as referenced.
+                next_node.expect_referenced_by_id[id] = target
+            for name in target['names']:
+                next_node.expect_referenced_by_name[name] = target
+            # If there are any expect_referenced_by_... attributes
+            # in target set, copy them to next_node.
+            next_node.expect_referenced_by_name.update(
+                getattr(target, 'expect_referenced_by_name', {}))
+            next_node.expect_referenced_by_id.update(
+                getattr(target, 'expect_referenced_by_id', {}))
+            # Set refid to point to the first former ID of target
+            # which is now an ID of next_node.
+            target['refid'] = target['ids'][0]
+            # Clear ids and names; they have been moved to
+            # next_node.
+            target['ids'] = []
+            target['names'] = []
+            self.document.note_refid(target)
 
 
 class AnonymousHyperlinks(Transform):

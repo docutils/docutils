@@ -57,6 +57,10 @@ Changes Since 0.17.1
 
   .. _LaTeX syntax for mathematics: docs/ref/rst/mathematics.html
 
+* docutils/transforms/references.py
+
+  - Skip system_messages when propagating targets. Fixes bug #425.
+
 * docutils/utils/__init__.py
 
   - Removed ``unique_combinations`` (obsoleted by ``itertools.combinations``).
@@ -109,13 +113,13 @@ Changes Since 0.17.1
 
   - Apply patch #181 "Fix tocdepth when chapter/part in use" by
     John Thorvald Wodder II.
-    
+
   - Fix newlines after/before ids_to_labels() (cf. patch #183).
 
   - Refactor/revise ToC writing.
-  
+
   - Don't add ``\phantomsection`` to labels in math-blocks.
-  
+
   - Improve spacing and allow customization of Docutils-generated table
     of contents.
 

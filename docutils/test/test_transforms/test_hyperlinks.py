@@ -30,9 +30,8 @@ totest = {}
 # target/reference, direct/indirect, internal/external, and named/anonymous,
 # plus embedded URIs.
 totest['exhaustive_hyperlinks'] = ((PropagateTargets, AnonymousHyperlinks,
-                                    IndirectHyperlinks,
-                                    ExternalTargets, InternalTargets,
-                                    DanglingReferences), [
+                                    IndirectHyperlinks, ExternalTargets,
+                                    InternalTargets, DanglingReferences), [
 ["""\
 direct_ external
 
@@ -185,7 +184,7 @@ Direct internal reference: Implicit_
              internal
         <target ids="indirect" names="indirect" refname="implicit">
         <paragraph>
-            Direct internal reference: 
+            Direct internal reference: \n\
             <problematic ids="problematic-2" refid="system-message-2">
                 Implicit_
     <system_message backrefs="problematic-1" ids="system-message-1" level="3" line="11" source="test data" type="ERROR">
@@ -840,7 +839,7 @@ Testing an `indirect reference to the table of contents`_.
         <title refid="toc-entry-1">
             Section
         <paragraph>
-            Testing an 
+            Testing an \n\
             <reference name="indirect reference to the table of contents" refid="table-of-contents">
                 indirect reference to the table of contents
             .
