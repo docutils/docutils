@@ -752,7 +752,7 @@ Table
 :Doctree Element: table_
 :Directive Arguments: One, optional (table title).
 :Directive Options: Possible (see below).
-:Directive Content: A normal reStructuredText table.
+:Directive Content: A normal `reStructuredText table`_.
 
 (New in Docutils 0.3.1)
 
@@ -780,7 +780,7 @@ The following options are recognized:
     Default is "grid", the widths of the input columns in characters.
 
     The value "auto" directs writers to delegate the determination of
-    column widths to the backend (LaTeX, the HTML browser, ...), if possible.  
+    column widths to the backend (LaTeX, the HTML browser, ...), if possible.
     The value "grid" overrules a `table_style`_ configuration setting
     value "colwidths-auto".
 
@@ -791,7 +791,9 @@ The following options are recognized:
 
 and the common options `:class:`_ and `:name:`_.
 
+.. _reStructuredText table: restructuredtext.html#tables
 .. _table_style: ../../user/config.html#table-style
+
 
 .. _csv-table:
 
