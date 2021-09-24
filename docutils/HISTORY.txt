@@ -42,6 +42,12 @@ Changes Since 0.17.1
 
   - Add `class` option to `Raw` directive.
 
+* docutils/parsers/rst/directives/tables.py:
+
+  - Unify behaviour of "widths" option: check that the lenght of an
+    integer list equals the number of table columns also for the "table"
+    directive.
+
 * docutils/tools/math/math2html.py,
   docutils/tools/math/tex2unicode.py,
   docutils/writers/html5/math.css
