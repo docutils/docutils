@@ -237,7 +237,7 @@ Example 2:
   or ::
 
     \makeatletter
-    \@namedef{DUadmonitionadmonition-test}{…}
+    \@namedef{DUCLASSadmonition-test}{…}
     \makeatother
 
 * Elements can have multiple class arguments. In contrast to HTML/CSS, the
@@ -252,11 +252,9 @@ Example 2:
   * The table element recognizes some special class values. See section
     table_.
 
-  * For "historical reasons", the special macros ``\DUadmonition`` and
-    ``\DUtitle`` are written with a comma separated list of class values as
-    optional argument if the legacy-class-functions_ setting is True.
-
-    See the sections on admonitions_ and titles_ for customization examples.
+  * If the legacy-class-functions_ setting is True, the special macros
+    ``\DUadmonition`` and ``\DUtitle`` are written with a comma separated
+    list of class values as optional argument.
 
 .. _"classes" attribute: ../ref/doctree.html#classes
 .. _legacy-class-functions: config.html#legacy-class-functions
@@ -436,62 +434,43 @@ ordinary body element can.
 
 __ ../ref/rst/directives.html#admonitions
 
-Command:
-  ``\DUadmonition`` (with legacy-class-functions_)
-
 Environment:
-  ``DUadmonition`` (with new-class-functions_)
+  ``DUadmonition``
+
+  (Command ``\DUadmonition`` with legacy-class-functions_.)
 
 Default:
   Typeset in a frame (90 % of text width).
-
-.. _new-class-functions: legacy-class-functions_
 
 The admonition title is typeset with the ``\DUtitle`` command (see `titles`_).
 
 Example 1:
   A lighter layout without the frame::
 
-    \newcommand{\DUadmonition}[2][class-arg]{%
-      % try \DUadmonition#1{#2}:
-      \ifcsname DUadmonition#1\endcsname%
-        \csname DUadmonition#1\endcsname{#2}%
-      \else
-        \begin{quote}
-          #2
-        \end{quote}
-      \fi
-    }
-
-  rsp with new-class-functions_::
-
     \newenvironment{DUadmonition}%
       {\begin{quote}}
       {\end{quote}}
 
-
 Example 2:
-  Print admonitions in the margin::
+  Print all admonitions in the margin::
 
-    \newcommand{\DUadmonition}[2][class-arg]{\marginpar{#2}}
-
-  Make sure there is enough space to fit the note.
-  See also the marginnote_ package.
+    \usepackage{environ}
+    \NewEnviron{DUadmonition}{\marginpar{\BODY}}
 
 Example 3:
   Use the ``.. note::`` admonition for a margin note::
 
-    \newcommand{\DUadmonitionnote}[1]{\marginpar{#1}}
-
-  rsp with new-class-functions_ we re-define the environment in the
-  class-wrapper::
-
+    \usepackage{environ}
     \newcommand{\DUCLASSnote}{%
-      \renewcommand{\DUadmonition}{\marginpar}
+      \RenewEnviron{DUadmonition}{\marginpar{\BODY}}%
+      \renewcommand{\DUtitle}[1]{}% suppress title ("Note")
+    }
 
-  Make sure there is enough space to fit the note.
+.. caution:: Make sure there is enough space in the margin.
+   ``\marginpar`` fails in some places or with some content. See also the
+   environ_ and marginnote_ packages.
 
-
+.. _environ: http://ctan.org/pkg/environ
 .. _marginnote: http://ctan.org/pkg/marginnote
 
 
@@ -1666,25 +1645,31 @@ Example:
 titles
 ------
 
-The titles of admonitions_, sidebar_, and `topic element`_ are defined with
-the ``\DUtitle`` command that also takes a "class" argument.
+The titles of admonitions_, sidebar_, and `topic element`_ use
+the ``\DUtitle`` command.
 
 Example 1:
   a centered and somewhat larger title for topcis::
 
-     \newcommand*{\DUtitletopic}[1]{\subsection*{\centering #1}
+     \newcommand*{\DUCLASStopic}{
+       \renewcommand*{\DUtitle}[1]{\subsection*{\centering #1}
+     }
 
 Example 2:
   a right-pointing hand as title for the "attention" directive::
 
     \usepackage{pifont}
-    \newcommand{\DUtitleattention}[1]{\ding{43}}
+    \newcommand*{\DUCLASSattention}{
+      \renewcommand*{\DUtitle}[1]{\ding{43}}
+    }
 
   The title argument is "swallowed" by the command.
   To have both, hand and title use::
 
     \usepackage{pifont}
-    \newcommand{\DUtitleattention}[1]{\ding{43} #1}
+    \newcommand*{\DUCLASSattention}{
+      \newcommand*{\DUtitle}[1]{\ding{43} #1}
+    }
 
 
 table of contents

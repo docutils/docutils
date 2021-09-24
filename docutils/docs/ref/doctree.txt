@@ -4017,6 +4017,9 @@ The ``table`` element identifies a data arrangement with rows and columns.
 Docutils tables are based on the `Exchange subset of the CALS-table
 model` [exchange-table-model]_. [#]_
 
+.. [#] The interpretation of column widths in colspec_ differs from the
+   specification.
+
 Details
 -------
 
@@ -4058,8 +4061,8 @@ table__, csv-table_, or list-table_ directives or directly as
 `grid table`_ or `simple table`_, e.g. ::
 
     ======== ====
-     bread   ¥20
-     butter  ¥300
+     bread   £2
+     butter  £30
     ======== ====
 
 Pseudo-XML_ fragment from simple parsing::
@@ -4075,14 +4078,14 @@ Pseudo-XML_ fragment from simple parsing::
                             bread
                     <entry>
                         <paragraph>
-                            ¥20
+                            £2
                 <row>
                     <entry>
                         <paragraph>
                             butter
                     <entry>
                         <paragraph>
-                            ¥300
+                            £30
 
 __ rst/directives.html#table
 .. _csv-table: rst/directives.html#csv-table
@@ -4090,12 +4093,8 @@ __ rst/directives.html#table
 .. _grid table: rst/restructuredtext.html#grid-tables
 .. _simple table: rst/restructuredtext.html#simple-tables
 
-.. [exchange-table-model] OASIS Technical Memorandum 9901:1999 "XML Exchange
-   Table Model DTD", http://www.oasis-open.org/html/tm9901.htm).
-
-.. [#] The interpretation of column widths in colspec_ differs from the
-   specification. This may be changed in future.
-
+.. [exchange-table-model] `XML Exchange Table Model DTD`, OASIS Technical
+   Memorandum 9901:1999, http://www.oasis-open.org/html/tm9901.html.
 
 ``target``
 ==========
