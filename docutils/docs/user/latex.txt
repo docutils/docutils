@@ -250,7 +250,7 @@ Example 2:
     ``language-`` set the elements language property.
 
   * The table element recognizes some special class values. See section
-    table_.
+    `table style`_.
 
   * If the legacy-class-functions_ setting is True, the special macros
     ``\DUadmonition`` and ``\DUtitle`` are written with a comma separated
@@ -1614,62 +1614,52 @@ __ http://tex.stackexchange.com/questions/41370/
 .. _CSS length unit ``px``: http://www.w3.org/TR/css-values-3/#px
 .. _reference pixel: http://www.w3.org/TR/css-values-3/#reference-pixel
 
-table
------
+table style
+------------
 
-A pre-configured table style can be globally selected via the table-style_
+A pre-configured *table style* can be globally selected via the table_style_
 setting or set for individual tables via a `class directive`_ or the class
 option of the `table directive`_.
 
-.. _table-style: config.html#table-style-latex-writers
+Supported values:
+
+standard
+  Borders around all cells.
+
+booktabs
+  A line above and below the table and one after the head.
+
+borderless
+  No borders.
+
+colwidths-auto
+  Column width determination by LaTeX.
+  Overridden by the `table directive`_'s "widths" option.
+
+  .. warning::
+
+    ``colwidths-auto`` is only suited for tables with simple cell content.
+
+    LaTeX puts the content of auto-sized columns on one line (merging
+    paragraphs) and may fail with complex content.
+
+.. eventually in future
+
+   align-left, align-center, align-right
+     Align tables.
+
+By default, *column widths* are computed from the source column widths.
+The `legacy_column_widths`_ setting selects the conversion algorithm.
+Custom column widths can be set with the "widths" option of the `table
+directive`_.
+
+See also the section on problems with tables_ below.
+
+.. _new_column_widths:
+.. _legacy_column_widths: config.html#legacy-column-widths
+.. _table_style: config.html#table-style-latex-writers
+.. _"widths" option:
 .. _table directive: ../ref/rst/directives.html#table
-
-topic element
--------------
-
-A topic_ is like a block quote with a title, or a self-contained section
-with no subsections. Topics and rubrics can be used at places where a
-`section title`_ is not allowed (e.g. inside a directive).
-
-Example:
-  Use a standard paragraph for a topic::
-
-    \newcommand{\DUCLASStopic}{%
-      \renewenvironment{quote}{}{}%
-    }
-
-.. _topic: ../ref/rst/directives.html#topic
-.. _section title: ../ref/rst/restructuredtext.html#sections
-
-
-titles
-------
-
-The titles of admonitions_, sidebar_, and `topic element`_ use
-the ``\DUtitle`` command.
-
-Example 1:
-  a centered and somewhat larger title for topcis::
-
-     \newcommand*{\DUCLASStopic}{
-       \renewcommand*{\DUtitle}[1]{\subsection*{\centering #1}
-     }
-
-Example 2:
-  a right-pointing hand as title for the "attention" directive::
-
-    \usepackage{pifont}
-    \newcommand*{\DUCLASSattention}{
-      \renewcommand*{\DUtitle}[1]{\ding{43}}
-    }
-
-  The title argument is "swallowed" by the command.
-  To have both, hand and title use::
-
-    \usepackage{pifont}
-    \newcommand*{\DUCLASSattention}{
-      \newcommand*{\DUtitle}[1]{\ding{43} #1}
-    }
 
 
 table of contents
@@ -1734,6 +1724,36 @@ Example:
 .. _interpreted text: ../ref/rst/restructuredtext.html#interpreted-text
 
 
+titles
+------
+
+The titles of admonitions_, sidebar_, and `topic element`_ use
+the ``\DUtitle`` command.
+
+Example 1:
+  a centered and somewhat larger title for topcis::
+
+     \newcommand*{\DUCLASStopic}{
+       \renewcommand*{\DUtitle}[1]{\subsection*{\centering #1}
+     }
+
+Example 2:
+  a right-pointing hand as title for the "attention" directive::
+
+    \usepackage{pifont}
+    \newcommand*{\DUCLASSattention}{
+      \renewcommand*{\DUtitle}[1]{\ding{43}}
+    }
+
+  The title argument is "swallowed" by the command.
+  To have both, hand and title use::
+
+    \usepackage{pifont}
+    \newcommand*{\DUCLASSattention}{
+      \newcommand*{\DUtitle}[1]{\ding{43} #1}
+    }
+
+
 text encoding
 -------------
 
@@ -1776,6 +1796,24 @@ Note:
 .. _output-encoding: config.html#output-encoding
 .. _inputenc: http://ctan.org/pkg/inputenc
 .. _ucs: http://ctan.org/pkg/unicode
+
+
+topic element
+-------------
+
+A topic_ is like a block quote with a title, or a self-contained section
+with no subsections. Topics and rubrics can be used at places where a
+`section title`_ is not allowed (e.g. inside a directive).
+
+Example:
+  Use a standard paragraph for a topic::
+
+    \newcommand{\DUCLASStopic}{%
+      \renewenvironment{quote}{}{}%
+    }
+
+.. _topic: ../ref/rst/directives.html#topic
+.. _section title: ../ref/rst/restructuredtext.html#sections
 
 
 transition element
@@ -1849,7 +1887,7 @@ footnote is put at the bottom of the page where the footnote text is located,
 maybe far away from the footnote mark (see e.g. `<rst/demo.txt>`_).
 
 To get footnote mark and text at the same page, keep footnote mark and
-footnote text close together!
+footnote text close together.
 
 
 non-breaking hyperlinks
@@ -1908,7 +1946,8 @@ image inclusion
 Images__ are included in LaTeX with the help of the `graphicx` package. The
 supported file formats depend on the used driver:
 
-* pdflatex_ and xelatex_ work with PNG, JPG, or PDF, but **not EPS**.
+* pdflatex_, lualatex, and xelatex_ work with PNG, JPG, or PDF,
+  but **not EPS**.
 * Standard latex_ can include **only EPS** graphics, no other format.
 * latex + dvipdfmx works with EPS and JPG (add 'dvipdfmx' to the
   documentoptions_ or graphicx-option_ setting
@@ -2045,8 +2084,7 @@ This results in footnotes, citations, and figures possibly being mixed at
 page foot.
 
 Workaround:
-  Select footnote and citation handling with the docutils-footnotes_ and
-  use-latex-citations_ options.
+  Select citation handling with the use_latex_citations_ option.
 
 If ``use-latex-citations`` is used, a bibliography is inserted right at
 the end of the document. *This should be customizable*.
@@ -2056,34 +2094,20 @@ only by a single space or a newline) are combined to a single citation
 group, i.e. ``[cite1]_ [cite2]_`` results in ``\cite{cite1,cite2}``.
 The appearance in the output can be configured in a `style sheet`_.
 
-.. _docutils-footnotes: config.html#docutils-footnotes
-.. _use-latex-citations: config.html#use-latex-citations
+.. _use_latex_citations: config.html#use-latex-citations
 
 
 Tables
 ``````
 
-* reST-documents line length is assumed to be 80 characters. The
-  *tablewidth* is set relative to this value. If someone produces documents
-  with line length of 132 this will lead to suboptimal results.
+* Too wide tables (cf. `bug #422`_):
 
-  You may use the `:widths:` option to manually set the table column widths.
-
-* Table: multicol cells are always left aligned.
+  Try the new_column_widths_ algorithm or use the `"widths" option`_ to
+  manually set the table column widths.
 
 * Table cells with both multirow and multicolumn are currently not possible.
 
-* literal-blocks in table cells:
-
-  - If verbatim or flushleft is used one gets vertical space above and below.
-  - This is bad for the topmost paragraph in a cell, therefore the writer
-    uses raggedright.
-  - Ragged right fails on followup paragraphs as the vertical space would be
-    missing.
-
-* ``--table-style=booktabs``, ``..class:: booktab``: `booktabs` version
-  1.00 does not work with `longtable`. This is solved in newer versions
-  (current is 2005/04/14 v1.61803).
+.. _bug #422: https://sourceforge.net/p/docutils/bugs/422/
 
 
 Figures

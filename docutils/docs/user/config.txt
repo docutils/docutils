@@ -1221,6 +1221,13 @@ In addition, the HTML writers support:
     (leave out the ``<colgroup>`` column specification).
     Overridden by the "widths" option of the `table directive`_.
 
+.. TODO: the HTML5 writer also supports
+
+  colwidths-grid
+    Backwards compatibility setting. Write column widths
+    determined from the source to the HTML file.
+    Overridden by the "widths" option of the `table directive`_.
+
 Default: "".  Option: ``--table-style``.
 
 .. _table directive: ../ref/rst/directives.html#table
@@ -1588,6 +1595,7 @@ Default: "".   Option: ``--hyperref-options``.
 
 .. _hyperref TeX package: http://tug.org/applications/hyperref/
 
+
 latex_preamble
 ~~~~~~~~~~~~~~
 
@@ -1607,12 +1615,32 @@ comma-separated list of class values as optional argument. If `False`, class
 values are handled with wrappers and admonitions use the ``DUadmonition``
 environment. See `Generating LaTeX with Docutils`__ for details.
 
-Default: False.
+Default: False (changed in Docutils 0.18).
 Options: ``--legacy-class-functions``, ``--new-class-functions``.
 
 New in Docutils 0.17.
 
 __ latex.html#classes
+
+
+legacy_column_widths
+~~~~~~~~~~~~~~~~~~~~
+
+Use "legacy algorithm" or new algorithm to determine table column widths.
+
+The new algorithm limits the table width to the text width or specified
+table width and keeps the ratio of specified column widths.
+
+Custom table and/or column widths can be set with the respective options
+of the `table directive`_. See also `Generating LaTeX with Docutils`__.
+
+Default: True (will change to False in 0.19).
+Options: ``--legacy-column-widths``, ``--new-column-widths``.
+
+New in Docutils 0.18.
+
+__ latex.html#table-style
+
 
 literal_block_env
 ~~~~~~~~~~~~~~~~~
@@ -1627,6 +1655,7 @@ Option: ``--literal-block-env``.
    inline elements.
 
 .. _parsed literal: ../ref/rst/directives.html#parsed-literal
+
 
 reference_label
 ~~~~~~~~~~~~~~~
@@ -1744,32 +1773,12 @@ table_style
 Specify the default style for tables_.
 See also `table_style [html writers]`_.
 
-Supported values:
-
-standard
-  Borders around all cells.
-
-booktabs
-  A line above and below the table and one after the head.
-
-borderless
-  No borders.
-
-align-left, align-center, align-right
-  Align tables.
-
-colwidths-auto, colwidths-given
-  Column width determination by LaTeX or Docutils (default).
-  Overridden by the `table directive`_'s :widths: option.
-
-  .. warning::
-
-    ``colwidths-auto`` is only suited for tables with simple cell content.
-
-    LaTeX puts the content of auto-sized columns on one line (merging
-    paragraphs) and may fail with complex content.
+Supported values: "booktabs", "borderless", "colwidths-auto", and "standard".
+See `Generating LaTeX with Docutils`__ for details.
 
 Default: "standard".  Option: ``--table-style``.
+
+__ latex.html#tables
 
 
 .. _template [latex writers]:

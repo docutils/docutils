@@ -164,7 +164,7 @@ class RSTTable(Table):
                 colspec['colwidth'] = col_width
         if self.widths == 'auto':
             table_node['classes'] += ['colwidths-auto']
-        elif self.widths: # override "table-style" setting
+        elif self.widths: # "grid" or list of integers
             table_node['classes'] += ['colwidths-given']
         self.add_name(table_node)
         if title:
@@ -485,7 +485,7 @@ class ListTable(Table):
         table = nodes.table()
         if self.widths == 'auto':
             table['classes'] += ['colwidths-auto']
-        elif self.widths:  # override "table-style" setting
+        elif self.widths: # explicitely set column widths
             table['classes'] += ['colwidths-given']
         tgroup = nodes.tgroup(cols=len(col_widths))
         table += tgroup

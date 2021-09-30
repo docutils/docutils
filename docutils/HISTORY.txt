@@ -111,7 +111,6 @@ Changes Since 0.17.1
   - Overwrite methods in _html_base.HTMLTranslator that use HTM5 tags
     (details, aside, nav, ...) and attributes (role, aria-level).
 
-
 * docutils/writers/latex2e/__init__.py
 
   - The setting `legacy_class_functions`_ now defaults to "False".
@@ -128,6 +127,19 @@ Changes Since 0.17.1
 
   - Improve spacing and allow customization of Docutils-generated table
     of contents.
+
+  - New algorithm for table colum widths. Fixes bug #422.
+    New configuration setting legacy_column_widths_.
+
+    Table.set_table_style() arguments changed.
+
+    Only write "continued on next page..." if it fits
+    without making the table columns wider.
+
+    Table `width` option overrides conflicting "auto" column `widths`.
+
+.. _legacy_column_widths: docs/user/config.html#legacy-column-widths
+
 
 * docutils/writers/latex2e/docutils.sty
 
