@@ -31,11 +31,12 @@ Future changes
     deprecated ``<colgroup><col width="...">...``.
 
     The `html5` writer will default to ``:widths: auto`` and use
-    ``style="width: ..%"`` if the `"widths" option`__ sets explicite table
-    column widths. Use ``:widths: grid`` to keep the current default
-    column widths.
+    ``style="width: ..%"`` if the `"widths" option`__ is used.
+    Use the table-style__ setting with value "colwidths-grid" to
+    keep the current default.
 
-    __  docs/ref/rst/directives.html#table
+    __ docs/ref/rst/directives.html#table
+    __ docs/user/config.html#table-style
 
   - Move attribution behind the blockquote to comply with the
     `"living standard"`__?
@@ -48,10 +49,12 @@ Future changes
 
 * `latex2e` writer:
 
-  - Change default of ``use_latex_citations`` to True.
+  - Change default of use_latex_citations_ setting to True.
 
-  - Remove ``--use-verbatim-when-possible`` option
-    (use ``--literal-block-env=verbatim``).
+  - Change default of legacy_column_widths_ setting to False.
+
+  - Remove ``use_verbatim_when_possible`` setting
+    (use literal_block_env_: verbatim).
 
 * Remove the "rawsource" attribute and argument from nodes.Text:
   we store the null-escaped text in Text nodes since 0.16 so there is no
@@ -78,6 +81,8 @@ Future changes
 .. _rst2html.py: docs/user/tools.html#rst2html-py
 .. _reference name: docs/ref/rst/restructuredtext.html#reference-names
 .. _html_writer: docs/user/config.html#html-writer
+.. _literal_block_env: docs/user/config.html#literal-block-env
+.. _use_latex_citations: docs/user/config.html#use-latex-citations
 
 
 Release 0.18.dev
@@ -146,8 +151,10 @@ Release 0.18.dev
 * docutils/utils/math/math2html.py,
   docutils/utils/math/latex2mathml.py
 
-  Major refactoring and fixes/additions
-  (cf. `LaTeX syntax for mathematics`_).
+  - Major refactoring and fixes/additions
+    (cf. `LaTeX syntax for mathematics`_).
+
+* New configuration setting: [latex writers] legacy_column_widths_.
 
 * Various bugfixes and improvements (see HISTORY_).
 
@@ -157,8 +164,9 @@ __ docs/ref/doctree.html#meta
 .. _id_prefix: docs/user/config.html#id-prefix
 .. _auto_id_prefix: docs/user/config.html#auto-id-prefix
 .. _details disclosure elements:
-   https://www.w3.org/TR/html52/interactive-elements.html#the-details-element
+    https://www.w3.org/TR/html52/interactive-elements.html#the-details-element
 .. _LaTeX syntax for mathematics: docs/ref/rst/mathematics.html
+.. _legacy_column_widths: docs/user/config.html#legacy-column-widths
 
 
 Release 0.17.1 (2021-04-16)

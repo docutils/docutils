@@ -978,6 +978,9 @@ Details
        In contrast to the definition in the exchange-table-model_,
        unitless values of the "colwidth" are interpreted as proportional
        values, not fixed values with unit "pt".
+       
+       .. The reference implementation `html4css2` converts column
+          widths values to percentages.
 
        Future versions of Docutils may use the standard form
        ``number*``, e.g., “5*” for 5 times the proportion.

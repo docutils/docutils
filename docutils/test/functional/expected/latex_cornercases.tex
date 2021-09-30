@@ -18,6 +18,7 @@
 \usepackage{longtable,ltcaption,array}
 \setlength{\extrarowheight}{2pt}
 \newlength{\DUtablewidth} % internal use in tables
+\newcommand{\DUcolumnwidth}[1]{\dimexpr#1\DUtablewidth-2\tabcolsep\relax}
 \usepackage{textcomp} % text symbol macros
 
 %%% Custom LaTeX preamble
@@ -60,20 +61,6 @@
    \end{center}
   }
 \fi
-
-% numerical or symbol footnotes with hyperlinks and backlinks
-\providecommand*{\DUfootnotemark}[3]{%
-  \raisebox{1em}{\hypertarget{#1}{}}%
-  \hyperlink{#2}{\textsuperscript{#3}}%
-}
-\providecommand{\DUfootnotetext}[4]{%
-  \begingroup%
-  \renewcommand{\thefootnote}{%
-    \protect\raisebox{1em}{\protect\hypertarget{#1}{}}%
-    \protect\hyperlink{#2}{#3}}%
-  \footnotetext{#4}%
-  \endgroup%
-}
 
 % legend environment (in figures and formal tables)
 \ifthenelse{\isundefined{\DUlegend}}{
@@ -334,8 +321,6 @@ Image with 100\% width:
 In contrast to HTML, LaTeX does not support line-breaks in tables with
 \textquotedbl{}automatic\textquotedbl{} column widths. Each cell has just one line, paragraphs are
 merged (the writer emits a warning).
-To provide for arbitrary cell content, the LaTeX writer defaults to
-specifying column widths computed from the source:
 
 \begin{longtable}{|l|l|}
 \caption{problems with \textquotedbl{}auto\textquotedbl{} widths}\\
@@ -349,22 +334,19 @@ linebreak & 22 \\
 \hline
 \end{longtable}
 
-Docutils stores table column widths in the \textquotedbl{}doctree\textquotedbl{} (in characters,
-excluding the separator). In the .tex source, column widths are written
-as percent of the \texttt{\textbackslash{}linewidth}, computed on the assumption that an
-average text line is 80 characters wide. An allowance added to the stored
-column widths compensates the padding (\texttt{\textbackslash{}tabcolsep}) added by LaTeX.
-The algorightm provides a working solution in many cases.\DUfootnotemark{footnote-reference-1}{footnote-1}{1}
+To provide for arbitrary cell content, the LaTeX writer defaults to
+specifying column widths computed from the source column widths. This
+works sufficiently in many cases:
 
-\setlength{\DUtablewidth}{\linewidth}%
-\begin{longtable}{|p{0.133\DUtablewidth}|p{0.179\DUtablewidth}|p{0.179\DUtablewidth}|p{0.110\DUtablewidth}|p{0.121\DUtablewidth}|p{0.145\DUtablewidth}|}
-\caption{a table with multi-paragraph multicolumn cells}\\
+\setlength{\DUtablewidth}{\dimexpr\linewidth-7\arrayrulewidth\relax}%
+\begin{longtable}{|p{\DUcolumnwidth{0.153}}|p{\DUcolumnwidth{0.208}}|p{\DUcolumnwidth{0.208}}|p{\DUcolumnwidth{0.125}}|p{\DUcolumnwidth{0.139}}|p{\DUcolumnwidth{0.167}}|}
+\caption{a table with multi-paragraph multi-column cells}\\
 \hline
 
 test
  & 
 \textbf{bold hd}
- & \multicolumn{3}{p{0.41\DUtablewidth}|}{%
+ & \multicolumn{3}{p{\DUcolumnwidth{0.472}}|}{%
 multicolumn 1
 
 With a second paragraph
@@ -372,7 +354,7 @@ With a second paragraph
 \emph{emph hd}
  \\
 \hline
-\multicolumn{2}{|p{0.31\DUtablewidth}|}{%
+\multicolumn{2}{|p{\DUcolumnwidth{0.361}}|}{%
 multicolumn 2
 
 With a second paragraph
@@ -388,7 +370,7 @@ cell
 \hline
 
 cell
- & \multicolumn{2}{p{0.36\DUtablewidth}|}{%
+ & \multicolumn{2}{p{\DUcolumnwidth{0.417}}|}{%
 multicolumn 3 (one line,
 but very very very very
 very looooong)
@@ -406,28 +388,17 @@ cell
 cell
  & 
 cell
- & \multicolumn{3}{p{0.38\DUtablewidth}|}{%
+ & \multicolumn{3}{p{\DUcolumnwidth{0.431}}|}{%
 Short multicolumn 4
 } \\
 \hline
 \end{longtable}
-%
-\DUfootnotetext{footnote-1}{footnote-reference-1}{1}{%
-Currently, computed column widths are too wide.
-TODO: Account for the \texttt{\textbackslash{}tabcolsep}.
-}
 
-For good typographic results experimenting with the \textquotedbl{}width\textquotedbl{} and \textquotedbl{}widths\textquotedbl{}
-options of the \href{https://docutils.sourceforge.io/docs/ref/rst/directives.html\#table}{table directive} may be required. (Unfortunately, the
-interpretation of these values differs between LaTeX writer and HTML
-writer.)
+A problem with the source-derived column widths is that simple tables
+often use no padding while grid tables without padding look cramped:
 
-Simple tables use often no padding in the source while grid tables
-without padding look clumsy. Setting \texttt{:widths: auto} in the source
-whenever possible is recommended.\DUfootnotemark{footnote-reference-2}{footnote-2}{2}
-
-\setlength{\DUtablewidth}{\linewidth}%
-\begin{longtable}{|p{0.051\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|}
+\setlength{\DUtablewidth}{\dimexpr\linewidth-5\arrayrulewidth\relax}%
+\begin{longtable}{|p{\DUcolumnwidth{0.100}}|p{\DUcolumnwidth{0.050}}|p{\DUcolumnwidth{0.050}}|p{\DUcolumnwidth{0.050}}|}
 \caption{simple table, not padded in the source}\\
 \hline
 \textbf{%
@@ -454,7 +425,7 @@ D
 } \\
 \hline
 \endhead
-\multicolumn{4}{r}{... continued on next page} \\
+\multicolumn{4}{p{\DUcolumnwidth{0.250}}}{\raggedleft\ldots continued on next page}\\
 \endfoot
 \endlastfoot
 
@@ -479,8 +450,8 @@ d
 \hline
 \end{longtable}
 
-\setlength{\DUtablewidth}{\linewidth}%
-\begin{longtable}{|p{0.075\DUtablewidth}|p{0.051\DUtablewidth}|p{0.051\DUtablewidth}|p{0.051\DUtablewidth}|}
+\setlength{\DUtablewidth}{\dimexpr\linewidth-5\arrayrulewidth\relax}%
+\begin{longtable}{|p{\DUcolumnwidth{0.150}}|p{\DUcolumnwidth{0.100}}|p{\DUcolumnwidth{0.100}}|p{\DUcolumnwidth{0.100}}|}
 \caption{grid table, padded cells}\\
 \hline
 \textbf{%
@@ -507,7 +478,7 @@ D
 } \\
 \hline
 \endhead
-\multicolumn{4}{r}{... continued on next page} \\
+\multicolumn{4}{p{\DUcolumnwidth{0.450}}}{\raggedleft\ldots continued on next page}\\
 \endfoot
 \endlastfoot
 
@@ -531,6 +502,9 @@ d
  \\
 \hline
 \end{longtable}
+
+For better typographic results, setting the \DUroletitlereference{width} and/or
+\DUroletitlereference{widths} options of the \href{https://docutils.sourceforge.io/docs/ref/rst/directives.html\#table}{table directive} is recommended.
 
 \begin{longtable}{|l|l|l|l|}
 \caption{grid table, auto-width columns}\\
@@ -543,7 +517,6 @@ d
 \textbf{A} & \textbf{B} & \textbf{C} & \textbf{D} \\
 \hline
 \endhead
-\multicolumn{4}{r}{... continued on next page} \\
 \endfoot
 \endlastfoot
 100 & 2 & 3 & 4 \\
@@ -551,41 +524,35 @@ d
 EUR & b & c & d \\
 \hline
 \end{longtable}
-%
-\DUfootnotetext{footnote-2}{footnote-reference-2}{2}{%
-Currently, the last column is extra wide because the
-writer adds a hint \textquotedbl{}... continued on next page\textquotedbl{} to longtables with a
-header row. The hint is only shown if the table does not fit on one
-page but always affects the table width.
-}
 
-If a specific total width is desired, \textquotedbl{}auto\textquotedbl{} column widths fail,
-
-\begin{longtable}{|l|l|l|l|}
-\caption{75\% wide table with \textquotedbl{}auto\textquotedbl{} column widths}\\
+\begin{longtable}{|l|l|}
+\caption{table with multi-row header and \textquotedbl{}auto\textquotedbl{} column-widths}\\
 \hline
-\textbf{A} & \textbf{B} & \textbf{C} & \textbf{D} \\
+\multirow{2}{*}{\textbf{XXX}} & \textbf{Variable Summary} \\
+\cline{2-2}
+ & \textbf{Description} \\
 \hline
 \endfirsthead
-\caption[]{75\% wide table with \textquotedbl{}auto\textquotedbl{} column widths (... continued)}\\
+\caption[]{table with multi-row header and \textquotedbl{}auto\textquotedbl{} column-widths (... continued)}\\
 \hline
-\textbf{A} & \textbf{B} & \textbf{C} & \textbf{D} \\
+\multirow{2}{*}{\textbf{XXX}} & \textbf{Variable Summary} \\
+\cline{2-2}
+ & \textbf{Description} \\
 \hline
 \endhead
-\multicolumn{4}{r}{... continued on next page} \\
+\multicolumn{2}{l}{\raggedleft\ldots continued on next page}\\
 \endfoot
 \endlastfoot
-100 & 2 & 3 & 4 \\
-\hline
-EUR & b & c & d \\
+\multicolumn{2}{|l|}{multi-column cell} \\
 \hline
 \end{longtable}
 
-but \textquotedbl{}grid\textquotedbl{} based or explicit column widths should work:\DUfootnotemark{footnote-reference-3}{footnote-3}{3}
+The \DUroletitlereference{width} option overrides \textquotedbl{}auto\textquotedbl{} \DUroletitlereference{widths} as standard LaTeX tables
+don't have a global width setting:
 
-\setlength{\DUtablewidth}{0.750\linewidth}%
-\begin{longtable}{|p{0.051\DUtablewidth}|p{0.040\DUtablewidth}|p{0.040\DUtablewidth}|p{0.040\DUtablewidth}|}
-\caption{75\% wide table with explicit column widths}\\
+\setlength{\DUtablewidth}{\dimexpr0.600\linewidth-5\arrayrulewidth\relax}%
+\begin{longtable}{|p{\DUcolumnwidth{0.400}}|p{\DUcolumnwidth{0.200}}|p{\DUcolumnwidth{0.200}}|p{\DUcolumnwidth{0.200}}|}
+\caption{This table has \DUroletitlereference{widths} \textquotedbl{}auto\textquotedbl{} (ignored) and \DUroletitlereference{width} 60\%.}\\
 \hline
 \textbf{%
 A
@@ -598,7 +565,7 @@ D
 } \\
 \hline
 \endfirsthead
-\caption[]{75\% wide table with explicit column widths (... continued)}\\
+\caption[]{This table has \DUroletitlereference{widths} \textquotedbl{}auto\textquotedbl{} (ignored) and \DUroletitlereference{width} 60\%. (... continued)}\\
 \hline
 \textbf{%
 A
@@ -611,7 +578,7 @@ D
 } \\
 \hline
 \endhead
-\multicolumn{4}{r}{... continued on next page} \\
+\multicolumn{4}{p{\DUcolumnwidth{1.000}}}{\raggedleft\ldots continued on next page}\\
 \endfoot
 \endlastfoot
 
@@ -635,43 +602,105 @@ d
  \\
 \hline
 \end{longtable}
-%
-\DUfootnotetext{footnote-3}{footnote-reference-3}{3}{%
-Bug: The table \textquotedbl{}width\textquotedbl{} option is currently ignored.
+
+
+\subsection{Nested tables%
+  \label{nested-tables}%
 }
 
-\begin{longtable}{|l|l|}
-\caption{table with multirow header and \textquotedbl{}auto\textquotedbl{} column-widths}\\
+\setlength{\DUtablewidth}{\dimexpr\linewidth-3\arrayrulewidth\relax}%
+\begin{longtable*}{|p{\DUcolumnwidth{0.700}}|p{\DUcolumnwidth{0.300}}|}
 \hline
-\multirow{2}{*}{\textbf{XXX}} & \textbf{Variable Summary} \\
-\cline{2-2}
- & \textbf{Description} \\
+
+Lorem ipsum dolor sit amet, consectetur
+ & 
+adipisicing elit
+ \\
 \hline
-\endfirsthead
-\caption[]{table with multirow header and \textquotedbl{}auto\textquotedbl{} column-widths (... continued)}\\
+
+\noindent\makebox[\linewidth][r]{%
+\setlength{\DUtablewidth}{\dimexpr\linewidth-3\arrayrulewidth\relax}%
+\begin{tabular}{|p{\DUcolumnwidth{0.150}}|p{\DUcolumnwidth{0.150}}|}
 \hline
-\multirow{2}{*}{\textbf{XXX}} & \textbf{Variable Summary} \\
-\cline{2-2}
- & \textbf{Description} \\
+
+1
+ & 
+2
+ \\
 \hline
-\endhead
-\multicolumn{2}{r}{... continued on next page} \\
-\endfoot
-\endlastfoot
-\multicolumn{2}{|l|}{multicollumn cell} \\
+\end{tabular}
+}
+ & 
+cell 1, 2
+ \\
 \hline
-\end{longtable}
+
+table width depends on parent column
+
+\noindent\makebox[\linewidth][c]{%
+\setlength{\DUtablewidth}{\dimexpr\linewidth-3\arrayrulewidth\relax}%
+\begin{tabular}{|p{\DUcolumnwidth{0.150}}|p{\DUcolumnwidth{0.150}}|}
+\hline
+
+1
+ & 
+2
+ \\
+\hline
+\end{tabular}
+}
+
+better use \textquotedbl{}auto\textquotedbl{} widths, see below
+ & 
+same table
+
+\setlength{\DUtablewidth}{\dimexpr\linewidth-3\arrayrulewidth\relax}%
+\begin{tabular}{|p{\DUcolumnwidth{0.150}}|p{\DUcolumnwidth{0.150}}|}
+\hline
+
+1
+ & 
+2
+ \\
+\hline
+\end{tabular}
+
+in narrow column
+ \\
+\hline
+
+\noindent\makebox[\linewidth][r]{%
+\begin{tabular}{|l|l|}
+\hline
+1 & 2 \\
+\hline
+\end{tabular}
+}
+
+\begin{description}
+\item[{definition:}] 
+list
+
+\end{description}
+ & 
+cell 3, 2
+ \\
+\hline
+\end{longtable*}
 
 
 \subsection{TODO%
   \label{todo}%
 }
 
-Limit the total width of a table to the \texttt{\textbackslash{}linewidth}, unless the table
-width is explicitely specified in the source.
+\begin{itemize}
+\item Tables with multi-paragraph multi-row cells currently fail due to a
+LaTeX limitation (see \url{https://sourceforge.net/p/docutils/bugs/225/}).
 
-Tables with multi-paragraph multirow cells currently fail due to a LaTeX
-limitation (see \url{https://sourceforge.net/p/docutils/bugs/225/}).
+\item Tweak vertical spacing in table cells containing multiple elements.
+\end{itemize}
+
+See also \texttt{test/functional/input/data/latex-problematic.txt}.
 
 
 \section{Monospaced non-alphanumeric characters%
@@ -844,8 +873,8 @@ In LaTeX, we must set an explicit anchor (\texttt{\textbackslash{}phantomsection
 \phantomsection\label{hypertarget-in-plain-text}hypertarget in plain text or in a figure but not in a longtable or
 caption:
 
-\setlength{\DUtablewidth}{\linewidth}%
-\begin{longtable}{|p{0.075\DUtablewidth}|p{0.075\DUtablewidth}|p{0.075\DUtablewidth}|}
+\setlength{\DUtablewidth}{\dimexpr\linewidth-4\arrayrulewidth\relax}%
+\begin{longtable}{|p{\DUcolumnwidth{0.150}}|p{\DUcolumnwidth{0.150}}|p{\DUcolumnwidth{0.150}}|}
 \caption{Table with %
 \label{hypertarget-in-table-title}hypertarget in table title.}\\
 \hline

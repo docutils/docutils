@@ -52,8 +52,10 @@ class Writer(writers.Writer):
                                   r'\usepackage{mathptmx} % Times',
                                   r'\usepackage[scaled=.90]{helvet}',
                                   r'\usepackage{courier}'])
-    table_style_values = ('standard', 'booktabs', 'nolines', 'borderless',
-                          'colwidths-auto', 'colwidths-given')
+    table_style_values = (# TODO: align-left, align-center, align-right,
+                          'booktabs', 'borderless', 'colwidths-auto',
+                          'colwidths-given', # set by parser if "widths" option is specified
+                          'nolines', 'standard')
 
     settings_spec = (
         'LaTeX-Specific Options',
@@ -224,6 +226,17 @@ class Writer(writers.Writer):
           'Place admonition content in an environment (default).',
           ['--new-class-functions'],
           {'dest': 'legacy_class_functions',
+           'action': 'store_false',
+           'validator': frontend.validate_boolean}),
+         ('Use legacy algorithm to determine table column widths (default).',
+          ['--legacy-column-widths'],
+          {'default': True,
+           'action': 'store_true',
+           'validator': frontend.validate_boolean}),
+         ('Use new algorithm to determine table column widths '
+          '(future default).',
+          ['--new-column-widths'],
+          {'dest': 'legacy_column_widths',
            'action': 'store_false',
            'validator': frontend.validate_boolean}),
          # TODO: implement "latex footnotes" alternative
@@ -498,7 +511,7 @@ class SortableDict(dict):
 class PreambleCmds(object):
     """Building blocks for the latex preamble."""
 
-# Requirements
+# Requirements and Setup
 
 PreambleCmds.color = r"""\usepackage{color}"""
 
@@ -518,10 +531,8 @@ PreambleCmds.minitoc = r"""%% local table of contents
 PreambleCmds.table = r"""\usepackage{longtable,ltcaption,array}
 \setlength{\extrarowheight}{2pt}
 \newlength{\DUtablewidth} % internal use in tables"""
-# if booktabs:
-#  \newcommand{\DUcolumnwidth}[1]{\dimexpr #1\DUtablewidth-2\tabcolsep\relax}
-# else:
-#  \newcommand{\DUcolumnwidth}[1]{\dimexpr #1\DUtablewidth-2\tabcolsep-\arrayrulewidth\relax}
+
+PreambleCmds.table_columnwidth = r"""\newcommand{\DUcolumnwidth}[1]{\dimexpr#1\DUtablewidth-2\tabcolsep\relax}"""
 
 PreambleCmds.textcomp = r"""\usepackage{textcomp} % text symbol macros"""
 # TODO? Options [force,almostfull] prevent spurious error messages,
@@ -827,9 +838,6 @@ class DocumentClass(object):
 class Table(object):
     """Manage a table while traversing.
 
-    Maybe change to a mixin defining the visit/departs, but then
-    class Table internal variables are in the Translator.
-
     Table style might be
 
     :standard:   horizontal and vertical lines
@@ -838,11 +846,11 @@ class Table(object):
     :nolines:    alias for borderless
 
     :colwidths-auto:  column widths determined by LaTeX
-    :colwidths-given: use colum widths from rST source
     """
     def __init__(self, translator, latex_type):
         self._translator = translator
         self._latex_type = latex_type
+        self.legacy_column_widths = False
 
         self.close()
         self._colwidths = []
@@ -867,15 +875,20 @@ class Table(object):
     def is_open(self):
         return self._open
 
-    def set_table_style(self, table_style, classes):
+    def set_table_style(self, node, settings):
+        self.legacy_column_widths = settings.legacy_column_widths
+        if 'align' in node:
+            self.set('align', node['align'])
+        # TODO: elif 'align' in classes/settings.table-style:
+        #           self.set('align', ...)
         borders = [cls.replace('nolines', 'borderless')
-                   for cls in ['standard'] + table_style + classes
-                   if cls in ('standard', 'booktabs', 'borderless', 'nolines')]
+            for cls in ['standard'] + settings.table_style + node['classes']
+            if cls in ('standard', 'booktabs', 'borderless', 'nolines')]
         self.borders = borders[-1]
-        self.colwidths_auto = (('colwidths-auto' in classes
-                                and 'colwidths-given' not in table_style)
-                               or ('colwidths-auto' in table_style
-                                   and ('colwidths-given' not in classes)))
+        self.colwidths_auto = (('colwidths-auto' in node['classes']
+                                or 'colwidths-auto' in settings.table_style)
+                               and 'colwidths-given' not in node['classes']
+                               and 'width' not in node)
 
     def get_latex_type(self):
         if self._latex_type == 'longtable' and not self.caption:
@@ -911,7 +924,12 @@ class Table(object):
         else:
             opening = [r'\begin{%s}%s' % (latex_type, align)]
         if not self.colwidths_auto:
-            opening.insert(-1, r'\setlength{\DUtablewidth}{%s}%%'%width)
+            if self.borders == 'standard' and not self.legacy_column_widths:
+                opening.insert(-1, r'\setlength{\DUtablewidth}'
+                               r'{\dimexpr%s-%i\arrayrulewidth\relax}%%'
+                               % (width, len(self._col_specs)+1))
+            else:
+                opening.insert(-1, r'\setlength{\DUtablewidth}{%s}%%' % width)
         return '\n'.join(opening)
 
     def get_closing(self):
@@ -932,49 +950,67 @@ class Table(object):
 
     def get_colspecs(self, node):
         """Return column specification for longtable.
-
-        Assumes reST line length being 80 characters.
-        Table width is hairy.
-
-        === ===
-        ABC DEF
-        === ===
-
-        usually gets too narrow, therefore we add 1 (fiddlefactor).
         """
         bar = self.get_vertical_bar()
-        self._rowspan= [0] * len(self._col_specs)
+        self._rowspan = [0] * len(self._col_specs)
         if self.colwidths_auto:
             self._colwidths = []
             latex_colspecs = ['l'] * len(self._col_specs)
-        else:
+        elif self.legacy_column_widths:
+            # use old algorithm for backwards compatibility
             width = 80 # assumed standard line length
+            factor = 0.93 # do not make it full linewidth
             # first see if we get too wide.
             total_width = sum(node['colwidth']+1 for node in self._col_specs)
-            # do not make it full linewidth
-            factor = 0.93
-            if total_width > 80:
+            if total_width > width:
                 factor *= width / total_width
-            self._colwidths = [(factor * float(node['colwidth']+1)/width)
+            self._colwidths = [(factor * (node['colwidth']+1)/width)
                                 + 0.005 for node in self._col_specs]
             latex_colspecs = ['p{%.3f\\DUtablewidth}' % colwidth
+                              for colwidth in self._colwidths]
+        else:
+            # No of characters corresponding to table width = 100%
+            #   Characters/line with LaTeX article, A4, Times, default margins
+            #   depends on character:  M: 40, A: 50, x: 70, i: 120.
+            norm_length = 40
+            # Allowance to prevent unpadded columns like
+            #   === ==
+            #   ABC DE
+            #   === ==
+            # getting too narrow:
+            if 'colwidths-given' not in node.parent.parent['classes']:
+                allowance = 1
+            else:
+                allowance = 0 # "widths" option specified, use exact ratio
+            self._colwidths = [(node['colwidth']+allowance)/norm_length
+                               for node in self._col_specs]
+            total_width = sum(self._colwidths)
+            # Limit to 100%, force 100% if table width is specified:
+            if total_width > 1 or 'width' in node.parent.parent.attributes:
+                self._colwidths = [colwidth/total_width
+                                   for colwidth in self._colwidths]
+            latex_colspecs = ['p{\\DUcolumnwidth{%.3f}}' % colwidth
                               for colwidth in self._colwidths]
         return bar + bar.join(latex_colspecs) + bar
 
     def get_column_width(self):
         """Return columnwidth for current cell (not multicell)."""
         try:
-            return '%.2f\\DUtablewidth' % self._colwidths[self._cell_in_row]
+            if self.legacy_column_widths:
+                return '%.2f\\DUtablewidth' % self._colwidths[self._cell_in_row]
+            return '\\DUcolumnwidth{%.2f}' % self._colwidths[self._cell_in_row]
         except IndexError:
             return '*'
 
     def get_multicolumn_width(self, start, len_):
         """Return sum of columnwidths for multicell."""
         try:
-            mc_width = sum([width
-                            for width in ([self._colwidths[start + co]
-                                           for co in range(len_)])])
-            return 'p{%.2f\\DUtablewidth}' % mc_width
+            multicol_width = sum([width
+                                  for width in ([self._colwidths[start + co]
+                                                 for co in range(len_)])])
+            if self.legacy_column_widths:
+                return 'p{%.2f\\DUtablewidth}' % multicol_width
+            return 'p{\\DUcolumnwidth{%.3f}}' % multicol_width
         except IndexError:
             return 'l'
 
@@ -1009,11 +1045,17 @@ class Table(object):
             if 1 == self._translator.thead_depth():
                 a.append('\\endfirsthead\n')
             else:
+                n_c = len(self._col_specs)
                 a.append('\\endhead\n')
-                a.append(r'\multicolumn{%d}{r}' % len(self._col_specs) +
-                         r'{... continued on next page} \\')
-                a.append('\n\\endfoot\n\\endlastfoot\n')
-        # for longtable one could add firsthead, foot and lastfoot
+                # footer on all but last page (if it fits):
+                twidth = sum([node['colwidth']+2 for node in self._col_specs])
+                if twidth > 30 or (twidth > 12 and not self.colwidths_auto):
+                    a.append(r'\multicolumn{%d}{%s}'
+                             % (n_c, self.get_multicolumn_width(0, n_c))
+                             + r'{\raggedleft\ldots continued on next page}\\'
+                             + '\n')
+                a.append('\\endfoot\n\\endlastfoot\n')
+            # for longtable one could add firsthead, foot and lastfoot
         self._in_thead -= 1
         return a
 
@@ -2906,6 +2948,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_table(self, node):
         self.duclass_open(node)
         self.requirements['table'] = PreambleCmds.table
+        if not self.settings.legacy_column_widths:
+            self.requirements['table1'] = PreambleCmds.table_columnwidth
         if self.active_table.is_open():
             self.table_stack.append(self.active_table)
             # nesting longtable does not work (e.g. 2007-04-18)
@@ -2918,10 +2962,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.d_class.section(self.section_level).find('paragraph') != -1):
             self.out.append('\\leavevmode')
         self.active_table.open()
-        self.active_table.set_table_style(self.settings.table_style,
-                                          node['classes'])
-        if 'align' in node:
-            self.active_table.set('align', node['align'])
+        self.active_table.set_table_style(node, self.settings)
         if self.active_table.borders == 'booktabs':
             self.requirements['booktabs'] = r'\usepackage{booktabs}'
         self.push_output_collector([])
