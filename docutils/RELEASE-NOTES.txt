@@ -20,6 +20,8 @@ For a more detailed list of changes, please see the Docutils `HISTORY`_.
 Future changes
 ==============
 
+Drop support for Python 2.7 and 3.5.
+
 * `html5` writer:
 
   - Do not longer set the "footnote-reference" class value for footnote
@@ -77,6 +79,11 @@ Future changes
 Release 0.18.dev
 ================
 
+.. Note::
+
+   Docutils 0.18.x is the last version supporting Python 2.7 and 3.5.
+
+
 * Output changes:
 
   Identifiers:
@@ -97,7 +104,7 @@ Release 0.18.dev
     Use the semantic tag <aside> for footnote text and citations, topics
     (except abstract and toc), admonitions, and system messages.
     Use <nav> for the Table of Contents.
-    
+
     Make "auto" table column widths the default: Only specify column
     widths, if the `"widths" option`_ is set and not "auto".
     The table-style__ setting "colwidths-grid" restores the current default.
@@ -107,9 +114,9 @@ Release 0.18.dev
 
     Items of a definition list with class argument "details" are
     converted to `details disclosure elements`_. Example::
-    
+
       ..class:: details
-      
+
       Summary
         This additional information should be hidden.
 
@@ -149,9 +156,9 @@ Release 0.18.dev
 * Removed attribute: ``HTMLTranslator.topic_classes``
   (check node.parent.classes instead).
 
-* Major refactoring and fixes/additions in 
+* Major refactoring and fixes/additions in
   ``docutils/utils/math/math2html.py`` and
-  ``docutils/utils/math/latex2mathml.py`` 
+  ``docutils/utils/math/latex2mathml.py``
   (mathematical notation in HTML, cf. `LaTeX syntax for mathematics`_).
 
 * ``nodes.Node.traverse()`` returns an iterator instead of a list.
