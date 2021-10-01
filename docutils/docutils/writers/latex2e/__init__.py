@@ -52,10 +52,9 @@ class Writer(writers.Writer):
                                   r'\usepackage{mathptmx} % Times',
                                   r'\usepackage[scaled=.90]{helvet}',
                                   r'\usepackage{courier}'])
-    table_style_values = (# TODO: align-left, align-center, align-right,
+    table_style_values = [# TODO: align-left, align-center, align-right, ??
                           'booktabs', 'borderless', 'colwidths-auto',
-                          'colwidths-given', # set by parser if "widths" option is specified
-                          'nolines', 'standard')
+                          'nolines', 'standard']
 
     settings_spec = (
         'LaTeX-Specific Options',
@@ -1606,7 +1605,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 if language:
                     self.babel.otherlanguages[language] = True
                     self.out.append('\\begin{selectlanguage}{%s}\n' % language)
-            elif isinstance(node, nodes.table) and cls in Writer.table_style_values:
+            elif (isinstance(node, nodes.table)
+                  and cls in Writer.table_style_values + ['colwidths-given']):
                 pass
             else:
                 if not self.fallback_stylesheet:
@@ -1620,7 +1620,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 language = self.babel.language_name(cls[9:])
                 if language:
                     self.out.append('\\end{selectlanguage}\n')
-            elif isinstance(node, nodes.table) and cls in Writer.table_style_values:
+            elif (isinstance(node, nodes.table)
+                  and cls in Writer.table_style_values + ['colwidths-given']):
                 pass
             else:
                 if not self.fallback_stylesheet:

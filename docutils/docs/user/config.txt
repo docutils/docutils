@@ -1221,8 +1221,6 @@ In addition, the HTML writers support:
     (leave out the ``<colgroup>`` column specification).
     Overridden by the "widths" option of the `table directive`_.
 
-.. TODO: the HTML5 writer also supports
-
   colwidths-grid
     Backwards compatibility setting. Write column widths
     determined from the source to the HTML file.
