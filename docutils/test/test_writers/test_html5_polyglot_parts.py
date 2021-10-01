@@ -350,10 +350,6 @@ And even more stuff
 """,
 """\
 {'fragment': '''<table class="align-right">
-<colgroup>
-<col style="width: 50%%" />
-<col style="width: 50%%" />
-</colgroup>
 <tbody>
 <tr><td><p>1</p></td>
 <td><p>2</p></td>
@@ -365,10 +361,6 @@ And even more stuff
 </table>\\n''',
  'html_body': '''<main>
 <table class="align-right">
-<colgroup>
-<col style="width: 50%%" />
-<col style="width: 50%%" />
-</colgroup>
 <tbody>
 <tr><td><p>1</p></td>
 <td><p>2</p></td>

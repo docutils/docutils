@@ -608,10 +608,6 @@ layout.</p>
 <p>Plaintext markup syntax and parser system.</p>
 <div class="legend">
 <table>
-<colgroup>
-<col style="width: 20%" />
-<col style="width: 80%" />
-</colgroup>
 <tbody>
 <tr><td><p>re</p></td>
 <td><p>Revised, revisited, based on 're' module.</p></td>
@@ -676,10 +672,6 @@ upon the style sheet and the browser or rendering software used.</p>
 directive:</p>
 <table class="align-left">
 <caption>left-aligned table</caption>
-<colgroup>
-<col style="width: 50%" />
-<col style="width: 50%" />
-</colgroup>
 <thead>
 <tr><th class="head"><p>A</p></th>
 <th class="head"><p>not A</p></th>
@@ -696,10 +688,6 @@ directive:</p>
 </table>
 <table class="align-center">
 <caption>center-aligned table</caption>
-<colgroup>
-<col style="width: 50%" />
-<col style="width: 50%" />
-</colgroup>
 <thead>
 <tr><th class="head"><p>A</p></th>
 <th class="head"><p>not A</p></th>
@@ -716,10 +704,6 @@ directive:</p>
 </table>
 <table class="align-right">
 <caption>right-aligned table</caption>
-<colgroup>
-<col style="width: 50%" />
-<col style="width: 50%" />
-</colgroup>
 <thead>
 <tr><th class="head"><p>A</p></th>
 <th class="head"><p>not A</p></th>
@@ -737,7 +721,7 @@ directive:</p>
 <p>With the &quot;widths&quot; argument &quot;auto&quot; (or &quot;class&quot; value &quot;colwidths-auto&quot;),
 column widths are determined by the backend (if supported by the
 writer/backend).</p>
-<span id="target1"></span><table class="colwidths-auto" id="target2">
+<span id="target1"></span><table id="target2">
 <thead>
 <tr><th class="head"><p>A</p></th>
 <th class="head"><p>B</p></th>
@@ -942,11 +926,6 @@ meaningful.</p>
 <p>Compound 7, tests the inclusion of various block-level
 elements in one logical paragraph. First a table,</p>
 <table>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 33%" />
-<col style="width: 33%" />
-</colgroup>
 <tbody>
 <tr><td><p>Left cell, first
 paragraph.</p>
@@ -1084,11 +1063,6 @@ Fifth test in HTML.<br />Line two.</section>
 <h3><a class="toc-backref" href="#toc-entry-38" role="doc-backlink"><span class="sectnum">2.19 </span>Colspanning tables</a></h3>
 <p>This table has a cell spanning two columns:</p>
 <table>
-<colgroup>
-<col style="width: 31%" />
-<col style="width: 31%" />
-<col style="width: 38%" />
-</colgroup>
 <thead>
 <tr><th class="head" colspan="2"><p>Inputs</p></th>
 <th class="head"><p>Output</p></th>
@@ -1122,11 +1096,6 @@ Fifth test in HTML.<br />Line two.</section>
 <h3><a class="toc-backref" href="#toc-entry-39" role="doc-backlink"><span class="sectnum">2.20 </span>Rowspanning tables</a></h3>
 <p>Here's a table with cells spanning several rows:</p>
 <table>
-<colgroup>
-<col style="width: 44%" />
-<col style="width: 22%" />
-<col style="width: 33%" />
-</colgroup>
 <thead>
 <tr><th class="head"><p>Header row, column 1
 (header rows optional)</p></th>
@@ -1155,12 +1124,6 @@ cell.</p></td>
 <h3><a class="toc-backref" href="#toc-entry-40" role="doc-backlink"><span class="sectnum">2.21 </span>Complex tables</a></h3>
 <p>Here's a complex table, which should test all features.</p>
 <table>
-<colgroup>
-<col style="width: 43%" />
-<col style="width: 21%" />
-<col style="width: 18%" />
-<col style="width: 18%" />
-</colgroup>
 <thead>
 <tr><th class="head"><p>Header row, column 1
 (header rows optional)</p></th>
@@ -1203,7 +1166,7 @@ empty: <span class="docutils literal"><span class="pre">--&gt;</span></span></p>
 <section id="list-tables">
 <h3><a class="toc-backref" href="#toc-entry-41" role="doc-backlink"><span class="sectnum">2.22 </span>List Tables</a></h3>
 <p>Here's a list table exercising all features:</p>
-<table class="colwidths-given test" style="width: 95%;">
+<table class="test" style="width: 95%;">
 <caption>list table with integral header</caption>
 <colgroup>
 <col style="width: 26%" />
@@ -1232,7 +1195,7 @@ crunchy, now would it?</p></td>
 </tr>
 </tbody>
 </table>
-<table class="align-center colwidths-auto">
+<table class="align-center">
 <caption>center aligned list table</caption>
 <tbody>
 <tr><td><p>Albatross</p></td>
@@ -1475,11 +1438,6 @@ setting (or command line argument).</p>
 <li><p>Numbered tables can be achieved with the &quot;numbered&quot; class option:</p>
 <table class="numbered">
 <caption>truth values</caption>
-<colgroup>
-<col style="width: 29%" />
-<col style="width: 29%" />
-<col style="width: 42%" />
-</colgroup>
 <thead>
 <tr><th class="head"><p>A</p></th>
 <th class="head"><p>B</p></th>
@@ -1514,7 +1472,7 @@ from the <a class="reference external" href="http://tug.ctan.org/tex-archive/mac
 </ul>
 <p>&quot;Booktabs&quot; style table, numbered, centre-aligned, with auto-sized columns:</p>
 <blockquote>
-<table class="align-center booktabs numbered colwidths-auto">
+<table class="align-center booktabs numbered">
 <caption>I/O values</caption>
 <thead>
 <tr><th class="head" colspan="2"><p>Input</p></th>

@@ -768,6 +768,8 @@ The following options are recognized:
     Sets the width of the table to the specified length or percentage
     of the line width.  If omitted, the renderer determines the width
     of the table based on its contents or the column ``widths``.
+    
+    .. _column-widths:
 
 ``widths`` : "auto", "grid", or a list of integers
     A list of relative column widths.

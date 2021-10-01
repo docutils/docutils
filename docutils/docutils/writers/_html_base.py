@@ -123,7 +123,8 @@ class Writer(writers.Writer):
           {'dest': 'compact_field_lists', 'action': 'store_false'}),
          ('Added to standard table classes. '
           'Defined styles: borderless, booktabs, '
-          'align-left, align-center, align-right, colwidths-auto. ',
+          'align-left, align-center, align-right, '
+          'colwidths-auto, colwidths-grid.',
           ['--table-style'],
           {'default': ''}),
          ('Math output format (one of "MathML", "HTML", "MathJax", '
@@ -426,6 +427,10 @@ class HTMLTranslator(nodes.NodeVisitor):
         if languages:
             # attribute name is 'lang' in XHTML 1.0 but 'xml:lang' in 1.1
             atts[self.lang_attribute] = languages[0]
+        # filter classes that are processed by the writer:
+        internal = ('colwidths-auto', 'colwidths-given', 'colwidths-grid')
+        if isinstance(node, nodes.table):
+            classes = [cls for cls in classes if cls not in internal]
         if classes:
             atts['class'] = ' '.join(classes)
         assert 'id' not in atts
@@ -671,8 +676,8 @@ class HTMLTranslator(nodes.NodeVisitor):
                       nodes.colspec):
             return
         if 'colwidths-auto' in node.parent.parent['classes'] or (
-            'colwidths-auto' in self.settings.table_style and
-            ('colwidths-given' not in node.parent.parent['classes'])):
+            'colwidths-grid' not in self.settings.table_style
+            and 'colwidths-given' not in node.parent.parent['classes']):
             return
         total_width = sum(node['colwidth'] for node in self.colspecs)
         self.body.append(self.starttag(node, 'colgroup'))

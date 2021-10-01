@@ -26,7 +26,7 @@ Changes Since 0.17.1
 
     __ docs/ref/doctree.html#meta
 
-  - document.make_id(): Keep leading number and hyphen characters
+  - document.make_id(): Do not strip leading number and hyphen characters
     from `name` if the id_prefix setting is non-empty.
 
   - ``Node.traverse()`` returns an iterator instead of a list.
@@ -44,7 +44,7 @@ Changes Since 0.17.1
 
 * docutils/parsers/rst/directives/tables.py:
 
-  - Unify behaviour of "widths" option: check that the lenght of an
+  - Unify behaviour of `"widths" option`_: check that the lenght of an
     integer list equals the number of table columns also for the "table"
     directive.
 
@@ -86,6 +86,13 @@ Changes Since 0.17.1
     and system-messages and <nav> for the table of contents. Use <div>
     for citations.
 
+  - Only specify table column widths, if the `"widths" option`_ is set
+    and is not "auto" (fixes bug #426).
+    The `table_style`_ setting "colwidths-grid" restores the current default.
+
+    .. _"widths" option: docs/ref/rst/directives.html#column-widths
+    .. _table_style: docs/user/config.html#table-style
+
   - Use ARIA roles to enable accessible HTML for abstract, dedication,
     the table of contents, footnote, references, footnotes, citations,
     and backlinks.
@@ -98,6 +105,10 @@ Changes Since 0.17.1
     Use class value "backrefs" instead of "fn-backref" for a span of
     back-references.
 
+  - Do not write class values handled by the HTML writer
+    ("colwidths-auto", "colwidths-given", "colwidths-grid") to the
+    output.
+
   - Move space character between section number and heading into
     "sectnum" span.
 
@@ -105,6 +116,7 @@ Changes Since 0.17.1
 
   - Items of a definition list with class argument "details" are
     converted to `details disclosure elements`.
+
 
 * docutils/writers/html4css1/__init__.py:
 

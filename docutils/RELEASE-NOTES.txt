@@ -27,17 +27,6 @@ Future changes
     ``[role="doc-noteref"]`` instead of ``.footnote-reference``
     (see minimal.css for examples).
 
-  - Do not specify relative column widths with the
-    deprecated ``<colgroup><col width="...">...``.
-
-    The `html5` writer will default to ``:widths: auto`` and use
-    ``style="width: ..%"`` if the `"widths" option`__ is used.
-    Use the table-style__ setting with value "colwidths-grid" to
-    keep the current default.
-
-    __ docs/ref/rst/directives.html#table
-    __ docs/user/config.html#table-style
-
   - Move attribution behind the blockquote to comply with the
     `"living standard"`__?
     (HTML5__ allows <cite> elements inside a blockquote, cf. Example 16.)
@@ -91,26 +80,38 @@ Release 0.18.dev
 * Output changes:
 
   Identifiers:
-    If the id_prefix_ setting is non-empty, leading number and hyphen
-    characters will not be stripped from a `reference name`_ during
-    `identifier normalization`_.
+    During `identifier normalization`_, leading number and hyphen
+    characters are no longer stripped from a `reference name`_, if the
+    id_prefix_ setting is non-empty.
 
     Example:
       with ``--id-prefix="DU-"``, a section with title "34. May"
       currently gets the identifier key ``DU-may`` and after the
       change the identifier key ``DU-34-may``.
 
-    The default value for the auto_id_prefix_ setting changed to "%":
-    use the tag name as prefix for auto-generated IDs.
-    Set auto_id_prefix_ to "id" if you want unchanged auto-IDs.
+    The default value for the auto_id_prefix_ setting changed to ``%``:
+    "use the tag name as prefix for auto-generated IDs".
+    Set auto_id_prefix_ to ``id`` for unchanged auto-IDs.
 
   HTML5:
-    Write footnote brackets and field term colons to HTML, so that they
-    are present also without CSS and when copying text.
-
-    Use semantic tag <aside> for footnote text and citations,
-    topics (except abstract and toc), admonitions, and system messages
+    Use the semantic tag <aside> for footnote text and citations, topics
+    (except abstract and toc), admonitions, and system messages.
     Use <nav> for the Table of Contents.
+    
+    Make "auto" table column widths the default: Only specify column
+    widths, if the `"widths" option`_ is set and not "auto".
+    The table-style__ setting "colwidths-grid" restores the current default.
+
+    .. _"widths" option: __ docs/ref/rst/directives.html#table
+    __ docs/user/config.html#table-style
+
+    Items of a definition list with class argument "details" are
+    converted to `details disclosure elements`_. Example::
+    
+      ..class:: details
+      
+      Summary
+        This additional information should be hidden.
 
     Do not add "compound-first", "compound-middle", or "compound-last" to
     elements nested in a compound. Use child selector and ":first-child",
@@ -118,14 +119,14 @@ Release 0.18.dev
     Use class value "backrefs" instead of "fn-backref" for a span of
     back-references.
 
-    Items of a definition list with class argument "details" are
-    converted to `details disclosure elements`_.
+    Write footnote brackets and field term colons to HTML, so that they
+    are present also without CSS and when copying text.
 
     Move space character between section number and heading into
     "sectnum" span.
 
   math-output: html
-    Support more commands, fix mapping fo commands to Unicode characters.
+    Support more commands, fix mapping of commands to Unicode characters.
     Scale variable sized operators and big delimiters with CSS.
     Don't use <tt> element (deprecated in HTML5).
     Use STIX fonts if available.
@@ -134,9 +135,9 @@ Release 0.18.dev
      `legacy_class_functions`_ setting default changed to "False":
      admonitions are now environments.
 
-* ``nodes.Node.traverse()`` returns an iterator instead of a list.
+* New standard Docutils doctree node "meta__".
 
-* Make meta__ a standard Docutils doctree node.
+* New configuration setting: [latex writers] legacy_column_widths_.
 
 * Removed files:
 
@@ -148,13 +149,12 @@ Release 0.18.dev
 * Removed attribute: ``HTMLTranslator.topic_classes``
   (check node.parent.classes instead).
 
-* docutils/utils/math/math2html.py,
-  docutils/utils/math/latex2mathml.py
+* Major refactoring and fixes/additions in 
+  ``docutils/utils/math/math2html.py`` and
+  ``docutils/utils/math/latex2mathml.py`` 
+  (mathematical notation in HTML, cf. `LaTeX syntax for mathematics`_).
 
-  - Major refactoring and fixes/additions
-    (cf. `LaTeX syntax for mathematics`_).
-
-* New configuration setting: [latex writers] legacy_column_widths_.
+* ``nodes.Node.traverse()`` returns an iterator instead of a list.
 
 * Various bugfixes and improvements (see HISTORY_).
 
