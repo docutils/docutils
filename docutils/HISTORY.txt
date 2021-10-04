@@ -63,6 +63,11 @@ Changes Since 0.17.1
 
   .. _LaTeX syntax for mathematics: docs/ref/rst/mathematics.html
 
+* docutils/parsers/rst/states.py:
+
+  - Fix source location (line number) for attribution elements.
+    Patch by Mickey Endito.
+
 * docutils/transforms/references.py
 
   - Skip system_messages when propagating targets. Fixes bug #425.

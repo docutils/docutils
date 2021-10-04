@@ -1181,7 +1181,7 @@ class Body(RSTState):
             elements.append(blockquote)
             if attribution_lines:
                 attribution, messages = self.parse_attribution(
-                    attribution_lines, attribution_offset)
+                    attribution_lines, line_offset+attribution_offset)
                 blockquote += attribution
                 elements += messages
             line_offset = new_line_offset
@@ -1251,7 +1251,7 @@ class Body(RSTState):
 
     def parse_attribution(self, indented, line_offset):
         text = '\n'.join(indented).rstrip()
-        lineno = self.state_machine.abs_line_number() + line_offset
+        lineno = 1 + line_offset # line_offset is zero-based
         textnodes, messages = self.inline_text(text, lineno)
         node = nodes.attribution(text, '', *textnodes)
         node.source, node.line = self.state_machine.get_source_and_line(lineno)
