@@ -727,22 +727,39 @@ Testing errors in included file:
         <system_message backrefs="problematic-4" ids="system-message-4" level="2" line="63" source="%(source)s" type="WARNING">
             <paragraph>
                 Inline strong start-string without end-string.
+        <block_quote>
+            <paragraph>
+                A block quote with \n\
+                <problematic ids="problematic-5" refid="system-message-5">
+                    *
+                inline warning
+            <system_message backrefs="problematic-5" ids="system-message-5" level="2" line="68" source="test_parsers/test_rst/test_directives/include10.txt" type="WARNING">
+                <paragraph>
+                    Inline emphasis start-string without end-string.
+            <attribution>
+                attribution with \n\
+                <problematic ids="problematic-6" refid="system-message-6">
+                    *
+                inline warning
+        <system_message backrefs="problematic-6" ids="system-message-6" level="2" line="70" source="test_parsers/test_rst/test_directives/include10.txt" type="WARNING">
+            <paragraph>
+                Inline emphasis start-string without end-string.
         <paragraph>
-            <problematic ids="problematic-5" refid="system-message-5">
+            <problematic ids="problematic-7" refid="system-message-7">
                 :PEP:`-1`
-        <system_message backrefs="problematic-5" ids="system-message-5" level="3" line="68" source="%(source)s" type="ERROR">
+        <system_message backrefs="problematic-7" ids="system-message-7" level="3" line="72" source="%(source)s" type="ERROR">
             <paragraph>
                 PEP number must be a number from 0 to 9999; "-1" is invalid.
-        <system_message level="1" line="66" source="%(source)s" type="INFO">
+        <system_message level="1" line="70" source="%(source)s" type="INFO">
             <paragraph>
                 No directive entry for "unknown" in module "docutils.parsers.rst.languages.en".
                 Trying "unknown" as canonical directive name.
-        <system_message level="3" line="70" source="%(source)s" type="ERROR">
+        <system_message level="3" line="74" source="%(source)s" type="ERROR">
             <paragraph>
                 Unknown directive type "unknown".
             <literal_block xml:space="preserve">
                 .. unknown:: directive (info still reported with wrong line)
-        <system_message level="3" line="72" source="%(source)s" type="ERROR">
+        <system_message level="3" line="76" source="%(source)s" type="ERROR">
             <paragraph>
                 Malformed table.
                 No bottom table border found.

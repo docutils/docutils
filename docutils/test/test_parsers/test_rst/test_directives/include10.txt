@@ -65,6 +65,10 @@ and *unbalanced
 `inline
 **markup
 
+  A block quote with *inline warning
+  
+  -- attribution with *inline warning
+
 :PEP:`-1`
 
 .. unknown:: directive (info still reported with wrong line)
