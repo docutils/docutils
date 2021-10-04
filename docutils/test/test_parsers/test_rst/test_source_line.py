@@ -16,13 +16,12 @@
 """Test internal source and line attributes (for correct error reporting).
 
 This test is to ensure source and line numbers are correct.
-It does not fix the API regarding which nodes have 
-source and line attributes -- additional nodes may grow them, 
-this is regarded a compatible feature additon.
+It does not fix behaviour regarding which nodes have source/line attributes,
+adding them to more nodes is regarded a compatible feature extension.
 """
 
 # Requires the `universal.ExposeInternals` transform (tested in
-# ``test_transforms/test_expose_internals.py``) 
+# ``test_transforms/test_expose_internals.py``)
 # to make internal attributes visible.
 
 from __future__ import absolute_import
@@ -53,10 +52,10 @@ Paragraph starting in line 1.
 With *inline* element in line 2.
 
   Block quote in line 4
-  
-  -- attribution 
+
+  -- attribution
      in line 6
-  
+
 * bullet list in line 9
 * second item in line 10
 
@@ -70,7 +69,7 @@ With *inline* element in line 2.
         <emphasis>
             inline
          element in line 2.
-    <block_quote internal:source="test data">
+    <block_quote internal:line="4" internal:source="test data">
         <paragraph internal:line="4" internal:source="test data">
             Block quote in line 4
         <attribution internal:line="6" internal:source="test data">
@@ -92,14 +91,14 @@ With *inline* element in line 2.
 Paragraph
 
   Block quote in line 3
-  
+
   -- attribution in line 5
 """,
 """\
 <document source="test data">
     <paragraph internal:line="1" internal:source="test data">
         Paragraph
-    <block_quote internal:source="test data">
+    <block_quote internal:line="3" internal:source="test data">
         <paragraph internal:line="3" internal:source="test data">
             Block quote in line 3
         <attribution internal:line="5" internal:source="test data">
@@ -109,32 +108,32 @@ Paragraph
 Paragraph
 
   Block quote in line 3
-  
-     nested block quote 
+
+     nested block quote
      in line 5
-     
+
        double nested quote in line 8
-       
+
        -- double-nested attribution in line 10
-       
+
      line 12
 
      -- nested attribution in line 14
-  
+
   -- attribution in line 16
 """,
 """\
 <document source="test data">
     <paragraph internal:line="1" internal:source="test data">
         Paragraph
-    <block_quote internal:source="test data">
+    <block_quote internal:line="3" internal:source="test data">
         <paragraph internal:line="3" internal:source="test data">
             Block quote in line 3
-        <block_quote>
+        <block_quote internal:line="5" internal:source="test data">
             <paragraph internal:line="5" internal:source="test data">
                 nested block quote
                 in line 5
-            <block_quote>
+            <block_quote internal:line="8" internal:source="test data">
                 <paragraph internal:line="8" internal:source="test data">
                     double nested quote in line 8
                 <attribution internal:line="10" internal:source="test data">
@@ -161,7 +160,7 @@ Paragraph
         <emphasis>
             inline
          element in line 2.
-    <block_quote internal:source="test_parsers/test_rst/includes/include14.txt">
+    <block_quote internal:line="4" internal:source="test_parsers/test_rst/includes/include14.txt">
         <paragraph internal:line="4" internal:source="test_parsers/test_rst/includes/include14.txt">
             Block quote in line 4
         <attribution internal:line="6" internal:source="test_parsers/test_rst/includes/include14.txt">
@@ -178,6 +177,36 @@ Paragraph
         <list_item internal:source="internal padding after test_parsers/test_rst/includes/include14.txt">
             <paragraph internal:line="12" internal:source="test_parsers/test_rst/includes/include14.txt">
                 enumerated list in line 12
+"""],
+["""\
+Paragraph
+
+  Block quote in line 3
+
+  -- attribution in line 5
+
+  Second block quote in line 7
+
+  -- attribution in line 9
+
+Final paragraph in line 11
+""",
+"""\
+<document source="test data">
+    <paragraph internal:line="1" internal:source="test data">
+        Paragraph
+    <block_quote internal:line="3" internal:source="test data">
+        <paragraph internal:line="3" internal:source="test data">
+            Block quote in line 3
+        <attribution internal:line="5" internal:source="test data">
+            attribution in line 5
+    <block_quote internal:line="7" internal:source="test data">
+        <paragraph internal:line="7" internal:source="test data">
+            Second block quote in line 7
+        <attribution internal:line="9" internal:source="test data">
+            attribution in line 9
+    <paragraph internal:line="11" internal:source="test data">
+        Final paragraph in line 11
 """],
 ])
 
