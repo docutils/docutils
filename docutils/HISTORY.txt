@@ -67,6 +67,8 @@ Changes Since 0.17.1
 
   - Fix source location (line number) for attribution elements.
     Patch by Mickey Endito.
+  - Add line, source, and rawsource internal attributes for blockquote
+    elements. Patch by Mickey Endito.
 
 * docutils/transforms/references.py
 

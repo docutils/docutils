@@ -626,6 +626,9 @@ class Inliner(object):
         check it for validity.  If not found or invalid, generate a warning
         and ignore the start-string.  Implicit inline markup (e.g. standalone
         URIs) is found last.
+
+        :text: source string
+        :lineno: absolute line number (cf. statemachine.get_source_and_line())
         """
         self.reporter = memo.reporter
         self.document = memo.document
@@ -1171,12 +1174,14 @@ class Body(RSTState):
     def block_quote(self, indented, line_offset):
         elements = []
         while indented:
+            blockquote = nodes.block_quote(rawsource='\n'.join(indented))
+            (blockquote.source, blockquote.line) = \
+              self.state_machine.get_source_and_line(line_offset+1)
             (blockquote_lines,
              attribution_lines,
              attribution_offset,
              indented,
              new_line_offset) = self.split_attribution(indented, line_offset)
-            blockquote = nodes.block_quote()
             self.nested_parse(blockquote_lines, line_offset, blockquote)
             elements.append(blockquote)
             if attribution_lines:
@@ -1203,8 +1208,8 @@ class Body(RSTState):
         * Every line after that must have consistent indentation.
         * Attributions must be preceded by block quote content.
 
-        Return a tuple of: (block quote content lines, content offset,
-        attribution lines, attribution offset, remaining indented lines).
+        Return a tuple of: (block quote content lines, attribution lines,
+        attribution offset, remaining indented lines, remaining lines offset).
         """
         blank = None
         nonblank_seen = False
