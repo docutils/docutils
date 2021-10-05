@@ -11,8 +11,8 @@
 
 .. contents::
 
-Changes Since 0.17.1
-====================
+Release 0.18b1 (2021-10-05)
+===========================
 
 * docutils/frontend.py
 
@@ -44,7 +44,7 @@ Changes Since 0.17.1
 
 * docutils/parsers/rst/directives/tables.py:
 
-  - Unify behaviour of `"widths" option`_: check that the lenght of an
+  - Unify behaviour of `"widths" option`_: check that the length of an
     integer list equals the number of table columns also for the "table"
     directive.
 
