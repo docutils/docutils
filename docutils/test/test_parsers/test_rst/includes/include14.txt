@@ -1,0 +1,12 @@
+Paragraph starting in line 1.
+With *inline* element in line 2.
+
+  Block quote in line 4
+  
+  -- attribution 
+     in line 6
+  
+* bullet list in line 9
+* second item in line 10
+
+1. enumerated list in line 12
