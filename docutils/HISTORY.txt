@@ -11,6 +11,11 @@
 
 .. contents::
 
+Changes Since 0.18b1
+====================
+
+Will be merged on release.
+
 Release 0.18b1 (2021-10-05)
 ===========================
 
