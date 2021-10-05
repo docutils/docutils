@@ -93,12 +93,16 @@ Releasing (post 2020)
     cp -Lr ../docutils-code/docutils/test .
     python test/alltests.py
 
+    deactivate ; cd .. ; rm -r du3
+
     python2 -m virtualenv du2 ; cd du2
     export PYTHONPATH= ; . bin/activate
 
     pip install --no-deps docutils
     cp -Lr ../docutils-code/docutils/test .
     python test/alltests.py
+
+    deactivate ; cd .. ; rm -r du2
 
 * Notify to docutils-developer and user.
 
