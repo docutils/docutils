@@ -76,8 +76,8 @@ Drop support for Python 2.7 and 3.5.
 .. _use_latex_citations: docs/user/config.html#use-latex-citations
 
 
-Release 0.18.dev
-================
+Release 0.18b1 (2021-10-05)
+===========================
 
 .. Note::
 
