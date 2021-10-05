@@ -57,7 +57,7 @@ Releasing (post 2020)
     python test/alltests.py
 
     python -m pip uninstall docutils
-    deactivate ; cd .. ; rm -r du2
+    deactivate ; cd .. ; rm -r py2.7
 
   Test in venv ::
 
