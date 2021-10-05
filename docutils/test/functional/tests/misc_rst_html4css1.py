@@ -11,3 +11,6 @@ writer_name = "html4css1"
 # test for encoded attribute value in optional stylesheet name:
 settings_overrides['stylesheet'] = 'foo&bar.css, html4css1.css'
 settings_overrides['stylesheet_path'] = ''
+# local copy of stylesheets:
+# (Test runs in ``docutils/test/``, we need relative path from there.)
+settings_overrides['stylesheet_dirs'] = ('.', 'functional/input/data')
