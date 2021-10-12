@@ -77,7 +77,8 @@ Question:
 * Be patient, and be persistent.  None of us are paid to do this,
   it's all in our spare time -- which is precious and rare.
 
-How to make code contributions that are easily accepted:
+How to make code contributions that are easily accepted
+-------------------------------------------------------
 
 * Have a look at the `Python coding conventions`_ and `documentation
   conventions`_ below.
@@ -98,13 +99,17 @@ How to make code contributions that are easily accepted:
 
 * If you are familiar with version control, consider creating a `feature
   branch`_ in a Docutils repository_ checkout. (Working with branches is
-  *much* easier with git_. You can get a git clone of the repository from
+  *much* easier with Git_. You can get a Git clone of the repository from
   http://repo.or.cz/w/docutils.git or with git-svn.)
+  
+* Mail your patch to the Docutils-develop_ mailing list or attach it to the
+  relevant ticket at Docutils' `feature request tracker`_.
+
+  We accept patches created with diff, SVN, or Git.
 
 .. _docutils-develop: ../user/mailing-lists.html#docutils-develop
 .. _feature request tracker:
-   http://sourceforge.net/p/docutils/feature-requests/
-
+    http://sourceforge.net/p/docutils/feature-requests/
 .. _git: http://git-scm.com/
 .. _Docutils testing: testing.html
 

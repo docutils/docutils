@@ -1,5 +1,5 @@
 =====================================
- The Docutils_ Subversion Repository
+ The Docutils_ Version Repository
 =====================================
 
 :Author: Lea Wiemann
@@ -34,12 +34,9 @@ Subversion command line interface, Windows user may want to try
 TortoiseSVN_, a convenient explorer extension.  The instructions apply
 analogously.
 
-There is a git_ mirror at http://repo.or.cz/docutils.git providing
-`web access`_ and the base for `creating a local git clone`_.
-
-and docutils trunk is cloned hourly to github :
-
-  https://github.com/live-clones/docutils/tree/master/docutils
+There is a Git_ mirror at http://repo.or.cz/docutils.git (and one at
+`github <https://github.com/live-clones/docutils/tree/master/docutils>`_).
+Both provide `web access`_ and the base for `creating a local Git clone`_.
 
 For the project policy on repository use (check-in requirements,
 branching, etc.), please see the `Docutils Project Policies`__.
@@ -50,7 +47,7 @@ __ policies.html#subversion-repository
 .. _Subversion Book: http://svnbook.red-bean.com/
 .. _TortoiseSVN: http://tortoisesvn.tigris.org/
 .. _SourceForge.net: http://sourceforge.net/
-.. _git: http://git-scm.com/
+.. _Git: http://git-scm.com/
 
 .. contents::
 
@@ -67,24 +64,35 @@ Web Access
 The repository can be browsed and examined via the web at
 http://sourceforge.net/p/docutils/code
 
-Alternatively, use the web interface of the git mirror at
-http://repo.or.cz/w/docutils.git.
+Alternatively, use the web interface of the Git mirrors at
+http://repo.or.cz/docutils.git or github_.
 
 
 Repository Access Methods
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-To get a checkout of the Docutils repository, first determine the root
-of the repository depending on your preferred protocol:
+Users of Git_ can clone a mirror of the docutils repository with ::
+
+      git clone git://repo.or.cz/docutils.git
+
+and proceed according to the `Git documentation`_.
+Developer access (read and write) is possible with `git svn`_.
+
+.. _Git documentation: https://git.wiki.kernel.org/index.php/GitDocumentation
+.. _git svn: https://git.wiki.kernel.org/index.php/Git-svn
+
+
+To get a checkout with Subversion_, first determine
+the root of the repository depending on your preferred protocol:
 
 anonymous access: (read only)
     ``http://svn.code.sf.net/p/docutils/code``
+    
+    .. _creating a local Git clone:
 
 `developer access`_: (read and write)
     ``svn+ssh://<USERNAME>@svn.code.sf.net/p/docutils/code``
 
-.. git clone: (read only)
-    ``git clone git://repo.or.cz/docutils.git``
 
 Checking Out the Repository
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -118,17 +126,6 @@ If you changed your mind and want to use a different repository root,
 ``cd`` into your working copy and type::
 
     svn switch --relocate OLDROOT NEWROOT
-
-Creating a local git clone
-~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Users of git_ can clone a mirror of the docutils repository with ::
-
-  git clone git://repo.or.cz/docutils.git
-
-and proceed according to the `git documentation`_.
-
-.. _git documentation: http://git-scm.com/documentation
 
 
 .. _developer access:

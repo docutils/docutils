@@ -108,11 +108,8 @@ __ http://homepage.ntlworld.com/tibsnjoan/docutils/STpy.html
 Is there a GUI authoring environment for Docutils?
 --------------------------------------------------
 
-DocFactory_ is under development. See also the links to editors_
-supporting reStructuredText.
+See the links to editors_ supporting reStructuredText.
 
-.. _DocFactory:
-   http://docutils.sf.net/sandbox/gschwant/docfactory/doc/
 .. _editors: docs/user/links.html#editors
 
 
@@ -122,9 +119,9 @@ What is the status of the Docutils project?
 Docutils is mainly stable, with documented APIs and architecture
 subject to change after announcement and a transition period.
 
-We fix bugs as they are reported.  So the latest code from the
-repository_ (or the snapshots_) are almost always the most stable
-as well as the most featureful.
+We fix bugs as they are reported.  This means the code from the
+repository_ (or the snapshots_) is the most stable as well as the most
+featureful most of the time.
 
 
 What is the Docutils project release policy?
@@ -140,6 +137,19 @@ that yet.
 .. _snapshots: https://sourceforge.net/p/docutils/code/HEAD/tree/trunk/docutils/
 .. _repository: docs/dev/repository.html
 
+
+How can I get a new feature into Docutils?
+------------------------------------------
+
+Present your idea at the docutils-develop_ mailing list
+or file a ticket at Docutils' `feature request tracker`_.
+
+See the `Docutils Policies`__ for a more detailled answer.
+
+.. _docutils-develop: docs/user/mailing-lists.html#docutils-develop
+.. _feature request tracker:
+    http://sourceforge.net/p/docutils/feature-requests/
+__ docs/dev/policies.html#how-to-get-a-new-feature-into-docutils
 
 reStructuredText
 ================
