@@ -21,6 +21,16 @@ Will be merged on release.
   - Don't change a list while looping over it (in 
     document.set_name_id_map()). Thanks to Mickey Endito.
 
+* docutils/parsers/rst/directives/misc.py
+
+  - Fix bug #424 Wrong circular inclusion detection.
+    Use a "magic" comment instead of line numbers
+    to keep a log of recursive inclusions.
+
+* docutils/parsers/rst/states.py
+  
+  -  Use a "magic" comment to update the log of recursive inclusions.
+
 
 Release 0.18b1 (2021-10-05)
 ===========================

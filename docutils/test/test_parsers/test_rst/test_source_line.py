@@ -174,7 +174,7 @@ Paragraph
             <paragraph internal:line="10" internal:source="test_parsers/test_rst/includes/include14.txt">
                 second item in line 10
     <enumerated_list enumtype="arabic" internal:line="12" internal:source="test_parsers/test_rst/includes/include14.txt" prefix="" suffix=".">
-        <list_item internal:source="internal padding after test_parsers/test_rst/includes/include14.txt">
+        <list_item internal:source="test_parsers/test_rst/includes/include14.txt">
             <paragraph internal:line="12" internal:source="test_parsers/test_rst/includes/include14.txt">
                 enumerated list in line 12
 """],

@@ -402,6 +402,47 @@ In test data
                             includes/sibling/include7.txt
 """],
 ["""\
+Recursive inclusion with specified parser.
+
+In test data
+
+.. include:: %s
+   :parser: rst
+""" % include3,
+"""\
+<document source="test data">
+    <paragraph>
+        Recursive inclusion with specified parser.
+    <paragraph>
+        In test data
+    <paragraph>
+        In include3.txt
+    <paragraph>
+        In includes/include4.txt
+    <paragraph>
+        In includes/include5.txt
+    <paragraph>
+        In includes/more/include6.txt
+    <paragraph>
+        In includes/sibling/include7.txt
+    <literal_block source="test_parsers/test_rst/test_directives/includes/include5.txt" xml:space="preserve">
+        In includes/include5.txt
+        \n\
+        .. include:: more/include6.txt
+    <table>
+        <tgroup cols="2">
+            <colspec colwidth="50">
+            <colspec colwidth="50">
+            <tbody>
+                <row>
+                    <entry>
+                        <paragraph>
+                            In
+                    <entry>
+                        <paragraph>
+                            includes/sibling/include7.txt
+"""],
+["""\
 In test data
 
 Section
@@ -758,7 +799,7 @@ Testing errors in included file:
             <paragraph>
                 Unknown directive type "unknown".
             <literal_block xml:space="preserve">
-                .. unknown:: directive (info still reported with wrong line)
+                .. unknown:: directive (TODO: info still reported with wrong line)
         <system_message level="3" line="76" source="%(source)s" type="ERROR">
             <paragraph>
                 Malformed table.
@@ -767,6 +808,8 @@ Testing errors in included file:
                 ==============  ======
                 A simple table  with
                 no bottom       border
+                
+                .. end of inclusion from "test_parsers/test_rst/test_directives/include10.txt"
 """ % {'source': reldir(include10), 'nonexistent': reldir(nonexistent),
        'unichr_exception':
        DocutilsTestSupport.exception_data(unichr, int("11111111", 16))[2]
@@ -1223,6 +1266,54 @@ Circular inclusion with clipping.
         File "include15.txt": example of rekursive inclusion.
 """ % (reldir(include16), reldir(include15), reldir(include16),
        reldir(include15), reldir(include16))],
+["""\
+Circular inclusion with specified parser.
+
+.. include:: %s
+   :parser: rst
+""" % include15,
+"""\
+<document source="test data">
+    <paragraph>
+        Circular inclusion with specified parser.
+    <paragraph>
+        File "include15.txt": example of rekursive inclusion.
+    <paragraph>
+        File "include16.txt": example of rekursive inclusion.
+    <system_message level="2" line="3" source="%s" type="WARNING">
+        <paragraph>
+            circular inclusion in "include" directive: %s < %s < %s < test data
+        <literal_block xml:space="preserve">
+            .. include:: include15.txt
+    <paragraph>
+        No loop when clipping before the "include" directive:
+    <paragraph>
+        File "include15.txt": example of rekursive inclusion.
+""" % (reldir(include16), reldir(include15),
+       reldir(include16), reldir(include15))],
+["""\
+No circular inclusion.
+
+============================= =============================
+.. include:: data/include.txt .. include:: data/include.txt
+============================= =============================
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        No circular inclusion.
+    <table>
+        <tgroup cols="2">
+            <colspec colwidth="29">
+            <colspec colwidth="29">
+            <tbody>
+                <row>
+                    <entry>
+                        <paragraph>
+                            Some include text.
+                    <entry>
+                        <paragraph>
+                            Some include text."""],
 ]
 
 if __name__ == '__main__':

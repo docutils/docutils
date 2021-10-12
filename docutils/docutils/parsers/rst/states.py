@@ -2288,9 +2288,14 @@ class Body(RSTState):
         return [error], blank_finish
 
     def comment(self, match):
-        if not match.string[match.end():].strip() \
-              and self.state_machine.is_next_line_blank(): # an empty comment?
-            return [nodes.comment()], 1 # "A tiny but practical wart."
+        if self.state_machine.is_next_line_blank():
+            first_comment_line = match.string[match.end():]
+            if not first_comment_line.strip(): # empty comment
+                return [nodes.comment()], True # "A tiny but practical wart."
+            if first_comment_line.startswith('end of inclusion from "'):
+                # cf. parsers.rst.directives.misc.Include
+                self.document.include_log.pop()
+                return [], True
         indented, indent, offset, blank_finish = \
               self.state_machine.get_first_known_indented(match.end())
         while indented and not indented[-1].strip():
@@ -2704,7 +2709,7 @@ class Text(RSTState):
 
     def blank(self, match, context, next_state):
         """End of paragraph."""
-        # NOTE: self.paragraph returns [ node, system_message(s) ], literalnext
+        # NOTE: self.paragraph returns [node, system_message(s)], literalnext
         paragraph, literalnext = self.paragraph(
               context, self.state_machine.abs_line_number() - 1)
         self.parent += paragraph
