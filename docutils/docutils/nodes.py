@@ -1402,25 +1402,26 @@ class document(Root, Structural, Element):
         booleans representing hyperlink type (True==explicit,
         False==implicit).  This method updates the mappings.
 
-        The following state transition table shows how `self.nameids` ("ids")
-        and `self.nametypes` ("types") change with new input (a call to this
-        method), and what actions are performed ("implicit"-type system
-        messages are INFO/1, and "explicit"-type system messages are ERROR/3):
+        The following state transition table shows how `self.nameids` items
+        ("id") and `self.nametypes` items ("type") change with new input
+        (a call to this method), and what actions are performed
+        ("implicit"-type system messages are INFO/1, and
+        "explicit"-type system messages are ERROR/3):
 
         ====  =====  ========  ========  =======  ====  =====  =====
          Old State    Input          Action        New State   Notes
         -----------  --------  -----------------  -----------  -----
-        ids   types  new type  sys.msg.  dupname  ids   types
+        id    type   new type  sys.msg.  dupname  id    type
         ====  =====  ========  ========  =======  ====  =====  =====
         -     -      explicit  -         -        new   True
         -     -      implicit  -         -        new   False
-        None  False  explicit  -         -        new   True
+        -     False  explicit  -         -        new   True
         old   False  explicit  implicit  old      new   True
-        None  True   explicit  explicit  new      None  True
-        old   True   explicit  explicit  new,old  None  True   [#]_
-        None  False  implicit  implicit  new      None  False
-        old   False  implicit  implicit  new,old  None  False
-        None  True   implicit  implicit  new      None  True
+        -     True   explicit  explicit  new      -     True
+        old   True   explicit  explicit  new,old  -     True   [#]_
+        -     False  implicit  implicit  new      -     False
+        old   False  implicit  implicit  new,old  -     False
+        -     True   implicit  implicit  new      -     True
         old   True   implicit  implicit  new      old   True
         ====  =====  ========  ========  =======  ====  =====  =====
 
@@ -1428,9 +1429,10 @@ class document(Root, Structural, Element):
            both old and new targets are external and refer to identical URIs.
            The new target is invalidated regardless.
         """
-        for name in node['names']:
+        for name in tuple(node['names']):
             if name in self.nameids:
                 self.set_duplicate_name_id(node, id, name, msgnode, explicit)
+                # attention: modifies node['names']
             else:
                 self.nameids[name] = id
                 self.nametypes[name] = explicit
@@ -1483,7 +1485,7 @@ class document(Root, Structural, Element):
     # "note" here is an imperative verb: "take note of".
     def note_implicit_target(self, target, msgnode=None):
         id = self.set_id(target, msgnode)
-        self.set_name_id_map(target, id, msgnode, explicit=None)
+        self.set_name_id_map(target, id, msgnode, explicit=False)
 
     def note_explicit_target(self, target, msgnode=None):
         id = self.set_id(target, msgnode)
