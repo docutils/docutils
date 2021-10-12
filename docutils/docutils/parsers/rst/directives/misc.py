@@ -52,7 +52,11 @@ class Include(Directive):
                                          'include')
 
     def run(self):
-        """Include a file as part of the content of this reST file."""
+        """Include a file as part of the content of this reST file.
+
+        Depending on the options, the file (or a clipping) is
+        converted to nodes and returned or inserted into the input stream.
+        """
         if not self.state.document.settings.file_insertion_enabled:
             raise self.warning('"%s" directive disabled.' % self.name)
         source = self.state_machine.input_lines.source(
@@ -167,36 +171,33 @@ class Include(Directive):
                                   self.state_machine)
             return codeblock.run()
 
+        # Prevent circular inclusion:
+        clip_options = (startline, endline, before_text, after_text)
+        include_log = self.state.document.include_log
+        # log entries are tuples (<source>, <clip-options>)
+        if not include_log: # new document
+            include_log.append((utils.relative_path(None, source),
+                                (None, None, None, None)))
+        if (path, clip_options) in include_log:
+            raise self.warning('circular inclusion in "%s" directive: %s'
+                % (self.name, ' < '.join([path] + [pth for (pth, opt)
+                                                   in include_log[::-1]])))
+
         if 'parser' in self.options:
+            # parse into a dummy document and return created nodes
             parser = self.options['parser']()
-            # parse into a new (dummy) document
             document = utils.new_document(path, self.state.document.settings)
+            document.include_log = include_log + [(path, clip_options)]
             parser.parse('\n'.join(include_lines), document)
             return document.children
 
-        # include as rST source
+        # Include as rST source:
         #
-        # Prevent circular inclusion:
-        source = utils.relative_path(None, source)
-        clip_options = (startline, endline, before_text, after_text)
-        include_log = self.state.document.include_log
-        if not include_log: # new document:
-            # log entries: (<source>, <clip-options>, <insertion end index>)
-            include_log = [(source, (None,None,None,None), sys.maxsize/2)]
-        # cleanup: we may have passed the last inclusion(s):
-        include_log = [entry for entry in include_log
-                       if entry[2] >= self.lineno]
-        if (path, clip_options) in [(pth, opt)
-                                    for (pth, opt, e) in include_log]:
-            raise self.warning('circular inclusion in "%s" directive: %s'
-                % (self.name, ' < '.join([path] + [pth for (pth, opt, e)
-                                                   in include_log[::-1]])))
-        # include as input
+        # mark end (cf. parsers.rst.states.Body.comment())
+        include_lines += ['', '.. end of inclusion from "%s"' % path]
         self.state_machine.insert_input(include_lines, path)
         # update include-log
-        include_log.append((path, clip_options, self.lineno))
-        self.state.document.include_log = [(pth, opt, e+len(include_lines)+2)
-                                           for (pth, opt, e) in include_log]
+        include_log.append((path, clip_options))
         return []
 
 

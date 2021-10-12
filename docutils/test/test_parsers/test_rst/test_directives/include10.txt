@@ -71,7 +71,7 @@ and *unbalanced
 
 :PEP:`-1`
 
-.. unknown:: directive (info still reported with wrong line)
+.. unknown:: directive (TODO: info still reported with wrong line)
 
 ==============  ======
 A simple table  with
