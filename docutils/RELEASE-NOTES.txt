@@ -24,19 +24,21 @@ Drop support for Python 2.7 and 3.5.
 
 * `html5` writer:
 
-  - Do not longer set the "footnote-reference" class value for footnote
+  - Stop setting the "footnote-reference" class value for footnote
     references. Since 0.18, you can use the CSS selector
     ``[role="doc-noteref"]`` instead of ``.footnote-reference``
     (see minimal.css for examples).
+    
+  - Remove option "embed_images" (obsoleted by image_loading_).
+  
+    .. _image_loading: docs/user/config.html#image-loading
 
-  - Move attribution behind the blockquote to comply with the
-    `"living standard"`__?
-    (HTML5__ allows <cite> elements inside a blockquote, cf. Example 16.)
+  - Move attribution behind the blockquote to comply with the `"living
+    standard"`__. (HTML5__ allows <cite> elements inside a blockquote.)
 
     __ https://html.spec.whatwg.org/#the-blockquote-element
-    __ https://www.w3.org/TR/html52/grouping-content.html#the-blockquote-element
-
-* `htm4css1` writer: Support the embed_images_ option.
+    __ https://www.w3.org/TR/2014/REC-html5-20141028/grouping-content.html
+       #the-blockquote-element
 
 * `latex2e` writer:
 
@@ -76,8 +78,8 @@ Drop support for Python 2.7 and 3.5.
 .. _use_latex_citations: docs/user/config.html#use-latex-citations
 
 
-Release 0.18b1 (2021-10-05)
-===========================
+Release 0.18
+============
 
 .. Note::
 
@@ -139,16 +141,17 @@ Release 0.18b1 (2021-10-05)
     Use STIX fonts if available.
 
   LaTeX:
-     `legacy_class_functions`_ setting default changed to "False":
+     `legacy_class_functions`_ setting default changed to "False",
      admonitions are now environments.
 
-* New standard Docutils doctree node "meta__".
+* New standard Docutils doctree node: <meta__>.
 
-* New configuration setting: [latex writers] legacy_column_widths_.
+* New configuration settings: 
+  [latex writers] legacy_column_widths_ and
+  [html5 writer] image_loading_.
 
 * Removed files:
-
-  - ``iepngfix.htc`` and ``blank.gif`` (IE 6 workaround for `s5_html`).
+  ``iepngfix.htc`` and ``blank.gif`` (IE 6 workaround for `s5_html`).
 
 * Removed function: ``utils.unique_combinations``
   (obsoleted by ``itertools.combinations``).

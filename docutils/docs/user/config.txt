@@ -1143,7 +1143,7 @@ See also `stylesheet [latex writers]`_.
 
 Overrides also stylesheet_path_. [#override]_
 
-Default: None.  Options: ``--stylesheet``.
+Default: None.  Option: ``--stylesheet``.
 
 
 .. _stylesheet_dirs [html writers]:
@@ -1212,7 +1212,7 @@ The HTML5 stylesheets also define:
 
   captionbelow
     Place the table caption below the table
-    (New in 0.17).
+    (New in Docutils 0.17).
 
 In addition, the HTML writers support:
 
@@ -1315,34 +1315,49 @@ It shares all settings defined in the `[html writers]`_
 
 New in Docutils 0.13.
 
-__  https://www.w3.org/TR/html53/sections.html#the-h1-h2-h3-h4-h5-and-h6-elements
 .. _HTML5 Writer: html.html#html5-polyglot
-.. _HTML5: http://www.w3.org/TR/html5/
-
+.. _HTML5: https://www.w3.org/TR/2014/REC-html5-20141028/
 
 Writer Specific Defaults
 """"""""""""""""""""""""
 
 `initial_header_level`_
-  2 (for "<h2>", cf. the `HTML5.3 Working Draft`__)
+  2 (for "<h2>", cf. the "`The h1, h2, h3, h4, h5, and h6 elements`__"
+  in the HTML Standard)
 
 `stylesheet_path <stylesheet_path [html writers]_>`__:
   "minimal.css, plain.css"
 
+__ https://html.spec.whatwg.org/multipage/sections.html
+   #the-h1,-h2,-h3,-h4,-h5,-and-h6-elements
+
 embed_images
 """"""""""""
 
-Embed images in the output HTML file. If the image can be read from
-the local file system and its MIME type can be determined, it is
-base64_ encoded and included as a `data URI`_.
+Deprecated. Obsoleted by image_loading_.
 
-Default: disabled (False).
-Options: ``--embed-images``, ``--link-images``.
 
-New in Docutils 0.17.
+image_loading
+"""""""""""""
+
+Suggest at which point images should be loaded.
+
+:embed: If the image can be read from the local file system, it is
+        base64_ encoded and included as a `data URI`_.
+        (In future, SVG images will be converted to inline SVG)
+
+:eager: load image immediately when opening the HTML document (default).
+
+:lazy: Specify the `lazy loading attribute`_ to defer fetching the image.
+
+Default: "eager". Option: ``--image-loading``.
+
+New in Docutils 0.18.
 
 .. _base64: https://en.wikipedia.org/wiki/Base64
 .. _data URI: https://en.wikipedia.org/wiki/Data_URI_scheme
+.. _lazy loading attribute: https://html.spec.whatwg.org/multipage/
+    urls-and-fetching.html#lazy-loading-attributes
 
 
 section_self_link

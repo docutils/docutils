@@ -623,6 +623,40 @@ No caption nor legend.
 """],
 
 
+totest['lazy loading'] = ({'image_loading': 'lazy',
+                           'stylesheet_path': '',
+                           'embed_stylesheet': 0}, [
+
+["""\
+.. image:: dummy.png
+""",
+"""\
+{'fragment': '''\
+<img alt="dummy.png" loading="lazy" src="dummy.png" />\\n''',
+ 'html_body': '''\
+<main>
+<img alt="dummy.png" loading="lazy" src="dummy.png" />
+</main>\\n''',
+ 'html_head': '''...<title>&lt;string&gt;</title>\\n'''}
+"""],
+["""\
+.. figure:: dummy.png
+""",
+"""\
+{'fragment': '''\
+<figure>
+<img alt="dummy.png" loading="lazy" src="dummy.png" />
+</figure>\\n''',
+ 'html_body': '''\
+<main>
+<figure>
+<img alt="dummy.png" loading="lazy" src="dummy.png" />
+</figure>
+</main>\\n''',
+ 'html_head': '''...<title>&lt;string&gt;</title>\\n'''}
+"""],
+])
+
 if __name__ == '__main__':
     import unittest
     unittest.main(defaultTest='suite')
