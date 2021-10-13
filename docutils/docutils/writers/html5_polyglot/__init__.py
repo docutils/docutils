@@ -85,14 +85,18 @@ class Writer(writers._html_base.Writer):
     settings_spec = settings_spec + (
         'HTML5 Writer Options',
         '',
-        (('Embed images in the output HTML file, if the image '
-          'files are accessible during processing.',
+        (('Obsoleted by "--image-loading".',
           ['--embed-images'],
           {'default': 0, 'action': 'store_true',
            'validator': frontend.validate_boolean}),
-         ('Link to images in the output HTML file. (default)',
+         ('Obsoleted by "--image-loading".',
           ['--link-images'],
           {'dest': 'embed_images', 'action': 'store_false'}),
+         ('Suggest at which point images should be loaded: '
+          '"embed", "eager" (default), or "lazy".',
+          ['--image-loading'],
+          {'choices': ('embed', 'eager', 'lazy'),
+           'default': 'eager'}),
          ('Append a self-link to section headings.',
           ['--section-self-link'],
           {'default': 0, 'action': 'store_true'}),
@@ -281,7 +285,8 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
         if 'controls' in node['classes']:
             atts['controls'] = 'controls'
         atts['title'] = node.get('alt', uri)
-
+        if self.settings.image_loading == 'lazy':
+            atts['loading'] = 'lazy'
         # No newline in inline context or if surrounded by <a>...</a>.
         if (isinstance(node.parent, nodes.TextElement) or
             (isinstance(node.parent, nodes.reference) and

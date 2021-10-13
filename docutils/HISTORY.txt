@@ -18,7 +18,7 @@ Will be merged on release.
 
 * docutils/nodes.py
 
-  - Don't change a list while looping over it (in 
+  - Don't change a list while looping over it (in
     document.set_name_id_map()). Thanks to Mickey Endito.
 
 * docutils/parsers/rst/directives/misc.py
@@ -28,8 +28,13 @@ Will be merged on release.
     to keep a log of recursive inclusions.
 
 * docutils/parsers/rst/states.py
-  
+
   -  Use a "magic" comment to update the log of recursive inclusions.
+
+* docutils/writers/html5_polyglot/__init__.py
+
+  - New option "image_loading". Support "lazy" loading of images.
+    Obsoletes "embed_images".
 
 
 Release 0.18b1 (2021-10-05)
@@ -253,7 +258,7 @@ Release 0.17 (2021-04-03)
   - Apply patch #165 "Fix error when copying `system_message` node"
     by Takeshi KOMIYA.
   - Apply version of patch #167 "Let document.set_id() register all
-    existing IDs" (thanks to Takeshi KOMIYA).
+    existing IDs". Thanks to Takeshi KOMIYA.
   - Fix bug #410: Use a "property" function to recursively fetch
     `Node.document` value from parent node.
 
@@ -306,7 +311,7 @@ Release 0.17 (2021-04-03)
     __ https://stackoverflow.com/questions/39547412/same-font-size-for-h1-and-h2-in-article
 
   - Use HTML text-level tags <small>, <s>, <q>, <dfn>, <var>, <samp>, <kbd>,
-    <i>, <b>, <u>, <mark>, and <bdi> if a unique matching class value
+    <i>, <b>, <u>, <mark>, and <bdi> if a unique, matching class value
     is found in `inline`__ and `literal`__ elements.
     Use <ins> and <del> if a unique matching class value
     is found in `inline`, `literal`, or `container` elements.
@@ -537,7 +542,7 @@ Release 0.15 (2019-07-20)
 * docutils/io.py
 
   - Fix [ 348 ] Since Python 3.4, the 'U' universal newlines mode has been
-    deprecated (thanks to hugovk).
+    deprecated. Thanks to hugovk.
 
 *  docutils/languages/ko.py
    docutils/parsers/rst/languages/ko.py:
@@ -1242,8 +1247,8 @@ Release 0.8 (2011-07-07)
 
 * tools/editors/emacs/rst.el:
 
-  - Fix [ 3001100 ] does not handle spaces in filenames
-    (thanks to Jakub Wilk)
+  - Fix [ 3001100 ] does not handle spaces in filenames.
+    Thanks to Jakub Wilk.
 
 * docutils/utils.py:
 

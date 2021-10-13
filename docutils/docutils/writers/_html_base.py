@@ -318,7 +318,11 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body_suffix = ['</body>\n</html>\n']
         self.section_level = 0
         self.initial_header_level = int(settings.initial_header_level)
-
+        # image_loading only defined for HTML5 writer
+        self.image_loading = getattr(settings, 'image_loading', 'eager')
+        if (getattr(settings, 'embed_images', False)
+            and self.image_loading == 'eager'):
+            self.image_loading = 'embed'
         self.math_output = settings.math_output.split()
         self.math_output_options = self.math_output[1:]
         self.math_output = self.math_output[0].lower()
@@ -1041,7 +1045,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         if 'align' in node:
             atts['class'] = 'align-%s' % node['align']
         # Embed image file (embedded SVG or data URI):
-        if self.settings.embed_images or ('embed' in node):
+        if self.image_loading == 'embed':
             err_msg = ''
             if not mimetype:
                 err_msg = 'unknown MIME type'
@@ -1064,6 +1068,8 @@ class HTMLTranslator(nodes.NodeVisitor):
                   # insert as <svg ....> ... </svg> # (about 1/3 less data)
                 data64 = base64.b64encode(imagedata).decode()
                 uri = u'data:%s;base64,%s' % (mimetype, data64)
+        elif self.image_loading == 'lazy':
+            atts['loading'] = 'lazy'
         if mimetype == 'application/x-shockwave-flash':
             atts['type'] = mimetype
             # do NOT use an empty tag: incorrect rendering in browsers
