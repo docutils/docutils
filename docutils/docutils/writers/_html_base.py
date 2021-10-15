@@ -319,9 +319,9 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.section_level = 0
         self.initial_header_level = int(settings.initial_header_level)
         # image_loading only defined for HTML5 writer
-        self.image_loading = getattr(settings, 'image_loading', 'eager')
+        self.image_loading = getattr(settings, 'image_loading', 'link')
         if (getattr(settings, 'embed_images', False)
-            and self.image_loading == 'eager'):
+            and self.image_loading == 'link'):
             self.image_loading = 'embed'
         self.math_output = settings.math_output.split()
         self.math_output_options = self.math_output[1:]
