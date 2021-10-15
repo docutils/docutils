@@ -1342,15 +1342,15 @@ image_loading
 
 Suggest at which point images should be loaded.
 
-:embed: If the image can be read from the local file system, it is
-        base64_ encoded and included as a `data URI`_.
-        (In future, SVG images will be converted to inline SVG)
+:embed: If the image can be read from the local file system,
+        the image data is embedded into the HTML document.
 
-:eager: load image immediately when opening the HTML document (default).
+:link: Link to image in the HTML document (default).
 
-:lazy: Specify the `lazy loading attribute`_ to defer fetching the image.
+:lazy: Link to image. Specify the `lazy loading attribute`_ to defer
+       fetching the image.
 
-Default: "eager". Option: ``--image-loading``.
+Default: "link". Option: ``--image-loading``.
 
 New in Docutils 0.18.
 

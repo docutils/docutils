@@ -93,10 +93,10 @@ class Writer(writers._html_base.Writer):
           ['--link-images'],
           {'dest': 'embed_images', 'action': 'store_false'}),
          ('Suggest at which point images should be loaded: '
-          '"embed", "eager" (default), or "lazy".',
+          '"embed", "link" (default), or "lazy".',
           ['--image-loading'],
-          {'choices': ('embed', 'eager', 'lazy'),
-           'default': 'eager'}),
+          {'choices': ('embed', 'link', 'lazy'),
+           'default': 'link'}),
          ('Append a self-link to section headings.',
           ['--section-self-link'],
           {'default': 0, 'action': 'store_true'}),
