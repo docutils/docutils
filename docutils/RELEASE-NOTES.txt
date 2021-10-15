@@ -20,7 +20,7 @@ For a more detailed list of changes, please see the Docutils `HISTORY`_.
 Future changes
 ==============
 
-Drop support for Python 2.7 and 3.5.
+Drop support for Python 2.7, 3.5, and 3.6.
 
 * `html5` writer:
 
@@ -28,9 +28,9 @@ Drop support for Python 2.7 and 3.5.
     references. Since 0.18, you can use the CSS selector
     ``[role="doc-noteref"]`` instead of ``.footnote-reference``
     (see minimal.css for examples).
-    
-  - Remove option "embed_images" (obsoleted by image_loading_).
-  
+
+  - Remove option "embed_images" (obsoleted by "image_loading_").
+
     .. _image_loading: docs/user/config.html#image-loading
 
   - Move attribution behind the blockquote to comply with the `"living
@@ -68,22 +68,22 @@ Drop support for Python 2.7 and 3.5.
   stability of the generated HTML code, e.g. because you use a custom
   style sheet or post-processing that may break otherwise.
 
-* The html_writer_ option of the ``buildhtml.py`` application is
-  obsoleted by ``--writer`` and will be removed in future.
+* Remove the "html_writer" option of the ``buildhtml.py`` application
+  (obsoleted by "writer__").
 
 .. _rst2html.py: docs/user/tools.html#rst2html-py
 .. _reference name: docs/ref/rst/restructuredtext.html#reference-names
-.. _html_writer: docs/user/config.html#html-writer
+__ docs/user/config.html#writer
 .. _literal_block_env: docs/user/config.html#literal-block-env
 .. _use_latex_citations: docs/user/config.html#use-latex-citations
 
 
-Release 0.18
-============
+Release 0.18 (unpublished)
+==========================
 
 .. Note::
 
-   Docutils 0.18.x is the last version supporting Python 2.7 and 3.5.
+   Docutils 0.18.x is the last version supporting Python 2.7, 3.5, and 3.6.
 
 
 * Output changes:
@@ -146,7 +146,7 @@ Release 0.18
 
 * New standard Docutils doctree node: <meta__>.
 
-* New configuration settings: 
+* New configuration settings:
   [latex writers] legacy_column_widths_ and
   [html5 writer] image_loading_.
 
