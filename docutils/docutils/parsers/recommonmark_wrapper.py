@@ -23,7 +23,6 @@ from docutils import nodes, Component
 
 try:
     from recommonmark.parser import CommonMarkParser
-    # from recommonmark.transform import AutoStructify
 except ImportError as err:
     CommonMarkParser = None
     class Parser(docutils.parsers.Parser):
@@ -34,20 +33,27 @@ except ImportError as err:
                 '"recommonmark" (https://pypi.org/project/recommonmark/).')
             document.append(error)
 
+# recommonmark 0.5.0 introduced a hard dependency on Sphinx
+# https://github.com/readthedocs/recommonmark/issues/202
+# There is a PR to change this to an optional dependency
+# https://github.com/readthedocs/recommonmark/pull/218
+try:
+    from sphinx import addnodes
+except ImportError:
+    # create a stub
+    class addnodes(nodes.pending): pass
+
 
 if CommonMarkParser:
     class Parser(CommonMarkParser):
         """MarkDown parser based on recommonmark."""
-        # TODO: settings for AutoStructify
-        # settings_spec = docutils.parsers.Parser.settings_spec + (
-        # see https://recommonmark.readthedocs.io/en/latest/#autostructify
-
+        
         supported = ('recommonmark', 'commonmark', 'markdown', 'md')
         config_section = 'recommonmark parser'
         config_section_dependencies = ('parsers',)
 
-        # def get_transforms(self):
-        #     return Component.get_transforms(self) + [AutoStructify]
+        def get_transforms(self):
+            return Component.get_transforms(self) # + [AutoStructify]
 
         def parse(self, inputstring, document):
             """Use the upstream parser and clean up afterwards.
@@ -112,18 +118,29 @@ if CommonMarkParser:
                 # remove spurious IDs (first may be from duplicate name)
                 if len(node['ids']) > 1:
                     node['ids'].pop()
-                # fix section levels
-                section_level = self.get_section_level(node)
-                if node['level'] != section_level:
-                    warning = document.reporter.warning(
-                        'Title level inconsistent. Changing from %d to %d.'
-                        %(node['level'], section_level),
-                        nodes.literal_block('', node[0].astext()))
-                    node.insert(1, warning)
-                # remove non-standard attribute "level"
-                del node['level'] # TODO: store the original md level somewhere
+                # fix section levels (recommonmark 0.4.0
+                # later versions silently ignore incompatible levels)
+                if 'level' in node:
+                    section_level = self.get_section_level(node)
+                    if node['level'] != section_level:
+                        warning = document.reporter.warning(
+                            'Title level inconsistent. Changing from %d to %d.'
+                            %(node['level'], section_level),
+                            nodes.literal_block('', node[0].astext()))
+                        node.insert(1, warning)
+                        # remove non-standard attribute "level"
+                        del node['level']
+    
+            # drop pending_xref (Sphinx cross reference extension)
+            for node in document.traverse(addnodes.pending_xref):
+                reference = node.children[0]
+                if 'name' not in reference:
+                    reference['name'] = nodes.fully_normalize_name(
+                                                        reference.astext())
+                node.parent.replace(node, reference)
 
         def get_section_level(self, node):
+            """Auxiliary function for post-processing in self.parse()"""
             level = 1
             while True:
                 node = node.parent
@@ -131,3 +148,10 @@ if CommonMarkParser:
                     return level
                 if isinstance(node, nodes.section):
                     level += 1
+
+        def visit_document(self, node):
+            """Dummy function to prevent spurious warnings.
+
+            cf. https://github.com/readthedocs/recommonmark/issues/177
+            """
+            pass

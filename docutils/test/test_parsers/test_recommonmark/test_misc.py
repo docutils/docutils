@@ -25,14 +25,6 @@ from docutils import core, utils
 from docutils.core import publish_string
 from docutils.parsers import recommonmark_wrapper
 
-sample1 = """\
-Test unexpected section titles.
-
-* Title
-  =====
-  Paragraph.
-"""
-
 sample_with_html = """\
 A paragraph:
 
@@ -49,14 +41,6 @@ Final paragraph.
 skip_msg = 'optional module "recommonmark" not found'
 
 class reCommonMarkParserTests(unittest.TestCase):
-
-    @unittest.skipUnless(recommonmark_wrapper.CommonMarkParser, skip_msg)
-    def test_parsing_error(self):
-        output = publish_string(sample1, parser_name='recommonmark',
-                                settings_overrides={'warning_stream': ''})
-
-        self.assertIn(b'Parsing with "recommonmark" returned the error:',
-                      output)
 
     @unittest.skipUnless(recommonmark_wrapper.CommonMarkParser, skip_msg)
     def test_raw_disabled(self):
@@ -91,7 +75,7 @@ class reCommonMarkParserTests(unittest.TestCase):
     @unittest.skipIf(recommonmark_wrapper.CommonMarkParser,
                      'recommonmark_wrapper: parser found, fallback not used')
     def test_fallback_parser(self):
-        output = publish_string(sample1, parser_name='recommonmark',
+        output = publish_string(sample_with_html, parser_name='recommonmark',
                                 settings_overrides={'warning_stream': ''})
         self.assertIn(b'Python did not find the required module "recommonmark"',
                       output)

@@ -21,6 +21,15 @@ Will be merged on release.
   - Don't change a list while looping over it (in
     document.set_name_id_map()). Thanks to Mickey Endito.
 
+* docutils/parsers/recommonmark_wrapper.py
+
+  - Test and update to work with recommonmark version 0.6.0.
+    Still experimental.
+
+    Unfortunately, recommonmark_ is `no longer maintained`__.
+
+    __ https://github.com/readthedocs/recommonmark/issues/221
+
 * docutils/parsers/rst/directives/misc.py
 
   - Fix bug #424 Wrong circular inclusion detection.
@@ -265,10 +274,10 @@ Release 0.17 (2021-04-03)
 * docutils/parsers/recommonmark_wrapper.py
 
   - New, **experimental** wrapper to integrate the
-    `recommonmark`__ Markdown parser for use with Docutils.
+    `recommonmark`_ Markdown parser for use with Docutils.
     Currently only tested with recommonmark version 0.4.0.
 
-    __ https://pypi.org/project/recommonmark/
+    .. _recommonmark: https://pypi.org/project/recommonmark/
 
 * docutils/parsers/rst/directives/body.py
 
