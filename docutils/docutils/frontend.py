@@ -332,7 +332,7 @@ class Values(optparse.Values):
     def copy(self):
         """Return a shallow copy of `self`."""
         return self.__class__(defaults=self.__dict__)
-    
+
     def setdefault(self, name, default):
         """V.setdefault(n[,d]) -> getattr(V,n,d), also set D.n=d if n not in D or None.
         """
@@ -683,7 +683,7 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
         parser.read(config_file, self)
         self.config_files.extend(parser._files)
         base_path = os.path.dirname(config_file)
-        applied = {}
+        applied = set()
         settings = Values()
         for component in self.components:
             if not component:
@@ -692,7 +692,7 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
                             + (component.config_section,)):
                 if section in applied:
                     continue
-                applied[section] = 1
+                applied.add(section)
                 settings.update(parser.get_section(section), self)
         make_paths_absolute(
             settings.__dict__, self.relative_path_settings, base_path)
