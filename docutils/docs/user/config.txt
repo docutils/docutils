@@ -2126,6 +2126,35 @@ New in 0.17. Obsoletes the ``html_writer`` option.
 .. _HTML writer: html.html
 
 
+[docutils-cli application]
+--------------------------
+
+New in 0.18.
+
+reader
+~~~~~~
+Reader component name. One of "standalone" or "pep".
+
+Default: "standalone".
+Option: ``--reader``
+
+parser
+~~~~~~
+Parser component name. One of "markdown", "recommonmark", or "rst"
+
+Default: "rst".
+Option: ``--parser``
+
+.. _writer [docutils-cli application]:
+
+writer
+~~~~~~
+Writer component name. One of the valid writer names or aliases.
+
+Default: "html5".
+Option: ``--writer``
+
+
 Other Settings
 ==============
 

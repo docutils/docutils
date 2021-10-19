@@ -45,6 +45,10 @@ Will be merged on release.
   - New option "image_loading". Support "lazy" loading of images.
     Obsoletes "embed_images".
 
+* tools/docutils-cli.py
+
+  - Read settings from standard configuration files.
+
 
 Release 0.18b1 (2021-10-05)
 ===========================
