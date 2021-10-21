@@ -144,7 +144,7 @@ How can I get a new feature into Docutils?
 Present your idea at the docutils-develop_ mailing list
 or file a ticket at Docutils' `feature request tracker`_.
 
-See the `Docutils Policies`__ for a more detailled answer.
+See the `Docutils Policies`__ for a more detailed answer.
 
 .. _docutils-develop: docs/user/mailing-lists.html#docutils-develop
 .. _feature request tracker:

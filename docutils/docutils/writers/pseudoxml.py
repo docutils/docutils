@@ -21,7 +21,7 @@ class Writer(writers.Writer):
         '"Docutils pseudo-XML" Writer Options',
         None,
         (('Pretty-print <#text> nodes.',
-          ['--detailled'],
+          ['--detailed'],
           {'action': 'store_true', 'validator': frontend.validate_boolean}),
         ))
 

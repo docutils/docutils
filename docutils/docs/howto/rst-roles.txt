@@ -46,7 +46,7 @@ Options and Content`_).  The role function parameters are as follows:
 * ``name``: The local name of the interpreted role, the role name
   actually used in the document.
 
-* ``rawtext``: A string containing the enitre interpreted text input,
+* ``rawtext``: A string containing the entire interpreted text input,
   including the role and markup.  Return it as a ``problematic`` node
   linked to a system message if a problem is encountered.
 
@@ -126,7 +126,7 @@ registered with the parser and language mappings added:
        roles.register_canonical_role(name, role_function)
 
    This code is normally placed immediately after the definition of
-   the role funtion.
+   the role function.
 
 2. Add an entry to the ``roles`` dictionary in
    ``docutils/parsers/rst/languages/en.py`` for the role, mapping the

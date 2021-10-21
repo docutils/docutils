@@ -424,7 +424,7 @@ class Text(Node, reprunicode):
 
     def pformat(self, indent='    ', level=0):
         try:
-            if self.document.settings.detailled:
+            if self.document.settings.detailed:
                 lines = ['%s%s' % (indent*level, '<#text>')
                         ] + [indent*(level+1) + repr(reprunicode(line))
                              for line in self.splitlines(True)]
