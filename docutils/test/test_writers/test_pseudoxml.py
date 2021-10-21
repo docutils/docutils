@@ -20,12 +20,12 @@ def suite():
     s = DocutilsTestSupport.PublishTestSuite('pseudoxml',
                                              suite_settings=settings)
     s.generateTests(totest)
-    settings['detailled'] = True
-    s.generateTests(totest_detailled)
+    settings['detailed'] = True
+    s.generateTests(totest_detailed)
     return s
 
 totest = {}
-totest_detailled = {}
+totest_detailed = {}
 
 totest['basic'] = [
 # input
@@ -59,7 +59,7 @@ Foo.
 """]
 ]
 
-totest_detailled['basic'] = [
+totest_detailed['basic'] = [
 # input                             
 [totest['basic'][0][0],
 # output 

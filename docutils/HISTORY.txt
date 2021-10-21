@@ -45,6 +45,10 @@ Will be merged on release.
   - New option "image_loading". Support "lazy" loading of images.
     Obsoletes "embed_images".
 
+* docutils/writers/pseudoxml.py:
+
+  - Fix spelling of option "detailed".
+
 * tools/docutils-cli.py
 
   - Read settings from standard configuration files.
@@ -91,10 +95,10 @@ Release 0.18b1 (2021-10-05)
   docutils/tools/math/tex2unicode.py,
   docutils/writers/html5/math.css
 
-  - Fork from elyxer and remove code that is not requried
+  - Fork from elyxer and remove code that is not required
     for math conversion.
   - Scale variable sized operators and big delimiters with CSS
-  - Support more commands, fix mapping fo commands to Unicode characters
+  - Support more commands, fix mapping of commands to Unicode characters
     (cf. `LaTeX syntax for mathematics`_).
   - Fix bug #244 Wrong subscript/superscript order.
   - Don't use <tt> element (deprecated in HTML5).
@@ -165,7 +169,7 @@ Release 0.18b1 (2021-10-05)
 
 * docutils/writers/html4css1/__init__.py:
 
-  - Overwrite methods in _html_base.HTMLTranslator that use HTM5 tags
+  - Overwrite methods in _html_base.HTMLTranslator that use HTML5 tags
     (details, aside, nav, ...) and attributes (role, aria-level).
 
 * docutils/writers/latex2e/__init__.py
@@ -185,7 +189,7 @@ Release 0.18b1 (2021-10-05)
   - Improve spacing and allow customization of Docutils-generated table
     of contents.
 
-  - New algorithm for table colum widths. Fixes bug #422.
+  - New algorithm for table column widths. Fixes bug #422.
     New configuration setting legacy_column_widths_.
 
     Table.set_table_style() arguments changed.
@@ -247,7 +251,7 @@ Release 0.17 (2021-04-03)
 
   - Installing with ``setup.py`` now requires ``setuptools``.
     Alternatively, install with `pip`_ (or "manually").
-  - Use importlib.import_module() to programmatically import modules.
+  - Use importlib.import_module() to programatically import modules.
   - Fix bug #385: Import of language modules.
 
   .. _pip: https://pypi.org/project/pip/
@@ -411,7 +415,7 @@ Release 0.17 (2021-04-03)
   - Fix #394 fix missing new line after rubric.
   - Patch #168 fix crashing on empty citation (by Takeshi KOMIYA).
   - Fix #126 manpage title with spaces.
-  - Fix #380 commandline option problem in sphinx.
+  - Fix #380 command line option problem in sphinx.
 
 * docutils/writers/odf_odt/__init__.py:
 
@@ -423,7 +427,7 @@ Release 0.17 (2021-04-03)
 
   - New option `detailled`__.
 
-    __ docs/user/config.html#detailled
+    __ docs/user/config.html#detailed
 
 * test/DocutilsTestSupport.py
 
@@ -521,7 +525,7 @@ Release 0.16 (2020-01-16)
 
 * test/test_writers/test_odt.py:
 
-  - Fix [ 359 ]: Test suite failes on Python 3.8. odt xml sorting.
+  - Fix [ 359 ]: Test suite fails on Python 3.8. odt XML sorting.
     Use ElementTree instead of minidom.
 
 * tools/buildhtml.py
@@ -617,7 +621,7 @@ Release 0.15 (2019-07-20)
 
   - Fix bug #323: spurious ``\phantomsection`` and whitespace in
     ``parts['title']``.
-  - Fix bug #324: Invalid LaTeX for table with empty multicolumn cell.
+  - Fix bug #324: Invalid LaTeX for table with empty multi-column cell.
   - Fixes to literal block handling.
 
 
@@ -724,7 +728,7 @@ Release 0.14 (2017-08-03)
 
 * tools/rst2html4.py: New front-end.
 
-* tools/dev/generate_punctuation_chars.py: New skript
+* tools/dev/generate_punctuation_chars.py: New script
   to test and update utils.punctuation_chars.
 
 
@@ -776,12 +780,12 @@ Release 0.13.1 (2016-12-09)
 
 * docutils/utils/error_reporting.py
 
-  - Fix [ 130 ] support streams expectiong byte-strings in ErrorOutput.
+  - Fix [ 130 ] support streams expecting byte-strings in ErrorOutput.
 
 * docutils/utils/math/math2html.py
 
   - Add ``\colon`` macro, fix spacing around colons. Fixes [ 246 ].
-  - New upstream version (additional macros, piecewise integrals and sums).
+  - New upstream version (additional macros, piece-wise integrals and sums).
 
 * docutils/writers/_html_base.py
 
@@ -877,7 +881,7 @@ Release 0.12 (2014-07-06)
 * docutils/writers/latex2e/__init__.py
 
   - Fix [ 239 ] Latex writer glues paragraphs with figure floats.
-  - Apply [ 116 ] by Kirill Smelkov. Don't hardcode \large for subtitle.
+  - Apply [ 116 ] by Kirill Smelkov. Don't hard code \large for subtitle.
 
 * docutils/writers/odf_odt/__init__.py
 
@@ -889,7 +893,7 @@ Release 0.12 (2014-07-06)
 
 * test/test_nodes.py
 
-  - Apply [ 115 ] respect fixed 2to3 string literal conversion behavior.
+  - Apply [ 115 ] respect fixed 2to3 string literal conversion behaviour.
 
 
 Release 0.11 (2013-07-22)
@@ -897,7 +901,7 @@ Release 0.11 (2013-07-22)
 
 * General
 
-  - Apply [ 2714873 ] Fix for the overwritting of document attributes.
+  - Apply [ 2714873 ] Fix for the overwriting of document attributes.
   - Support embedded aliases within hyperlink references.
   - Fix [ 228 ] try local import of docutils components (reader, writer, parser,
     language module) before global search.
@@ -992,8 +996,8 @@ Release 0.10 (2012-12-16)
 
 * docutils/utils/__init__.py
 
-  - normalize_language_tag() now returns `BCP 47`_ conformant tags
-    with subtags separated by ``-``.
+  - normalize_language_tag() now returns `BCP 47`_ conforming tags
+    with sub-tags separated by ``-``.
 
 * docutils/writers/html4css1/__init__.py
 
@@ -1004,7 +1008,7 @@ Release 0.10 (2012-12-16)
 
 * docutils/writers/manpage.py
 
-  - Apply [ 3527401 ] addmonition's don't preserve indentation
+  - Apply [ 3527401 ] admonition's don't preserve indentation
   - Apply [ 3527397 ] Add indentation to literal blocks in manpage writer.
 
 * docutils/writers/xetex/__init__.py
@@ -1014,7 +1018,7 @@ Release 0.10 (2012-12-16)
 
 * docutils/writers/s5_html/__init__.py
 
-  - Fix [ 3556388 ] Mathjax does not work with rst2s5.
+  - Fix [ 3556388 ] MathJax does not work with rst2s5.
 
 * docutils/writers/s5_html/docutils_xml.py
 
@@ -1239,7 +1243,7 @@ Release 0.8 (2011-07-07)
     No hard-coded "unicode" hyperref option (clash with xetex).
   - Set language for custom roles, paragraphs, block-quotes, and
     line-quotes with class argument "language-<language tag>".
-  - Fix [ 3095603 ] wrong quotes output for russian and other languages.
+  - Fix [ 3095603 ] wrong quotes output for Russian and other languages.
   - Convert image URI to a local file path.
   - Apply [ 3148141 ] fix multicolumn support when a colspanning cell
     has more than one paragraph (Wolfgang Scherer).
@@ -1304,7 +1308,7 @@ Release 0.7 (2010-07-07)
 * docutils/writers/html4css1/__init__.py
 
   - Support SVG and SWF images (thanks to Stefan Rank).
-  - Generate valid XHTML for centered images with targets.
+  - Generate valid XHTML for centred images with targets.
     Use CSS classes instead of "align" tags for image alignment.
 
 * docutils/writers/latex2e/__init__.py
@@ -1342,7 +1346,7 @@ __ docs/user/config.html#output_encoding
 * docutils/nodes.py
 
   - Fix: encoding ``'ascii'`` must be lowercase to prevent problems for
-    turkish locale.
+    Turkish locale.
 
 * setup.py:
 
@@ -1370,8 +1374,8 @@ Release 0.6 (2009-10-11)
     + Drop extras/optparse.py and extras/textwrap.py
       (stdlib modules since 2.3).
 
-  - OpenOffice export: ODT writer moved from sandbox to Doctutils core.
-  - Unix man page export: manpage writer moved from sandbox to Doctutils
+  - OpenOffice export: ODT writer moved from sandbox to Docutils core.
+  - Unix man page export: manpage writer moved from sandbox to Docutils
     core.
 
   - Apply [ 1719345 ] Galician translation
@@ -1449,13 +1453,13 @@ Release 0.6 (2009-10-11)
   - Apply [ 2051599 ] multi-page tables in latex writer (from pabigot).
   - Change: has_key for dictionaries (not Nodes) to in-operator.
   - Merge adjacent citations into one latex cite command.
-  - Failsave implementation of custom roles. LaTeX compilation now ignores
+  - Fail-save implementation of custom roles. LaTeX compilation now ignores
     unknown classes instead of aborting with an error.
   - Support custom roles based on standard roles.
   - LaTeX packages can be used as ``--stylesheet`` arguments without
     restriction. (A style sheet is now referenced with the ``\usepackage``
     command, if it ends with ``.sty`` or has no extension.)
-  - Add ``bp`` to lenghts without unit (prevents LaTex errors).
+  - Add ``bp`` to lengths without unit (prevents LaTeX errors).
   - Correctly write length unit ``pt`` as ``bp`` in LaTeX.
   - Do not convert ``px`` to ``pt`` (``px`` is supported by pdfTeX since
     2005-02-04 as a configurable length unit).
@@ -1491,7 +1495,7 @@ Release 0.6 (2009-10-11)
     (``--figure-footnotes, --figure-citations, --link-stylesheet``,
     ``--use-docutils-toc, --use-docutils-docinfo, --topic-abstract``)
   - New defaults:
-    - font-encoding: "T1" (formerly implicitely set by 'ae').
+    - font-encoding: "T1" (formerly implicitly set by 'ae').
     - use-latex-toc: true (ToC with page numbers).
     - use-latex-footnotes: true (no mixup with figures).
 
