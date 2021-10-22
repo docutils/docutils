@@ -13,39 +13,39 @@
 .. admonition:: Quick Instructions
 
    To get a checkout of the Docutils source tree (with the
-   sandboxes), type ::
+   sandboxes) with SVN_, type ::
 
        svn checkout http://svn.code.sf.net/p/docutils/code/trunk docutils-code
 
+   Users of Git_ can clone a mirror of the docutils repository with ::
+
+      git clone git://repo.or.cz/docutils.git
 
    If you are going to commit changes to the repository, please read
    the **whole document**, especially the section "`Information for
    Developers`_"!
 
-.. important::
-   As of 2013-03-13 the subversion urls have changed.
-
-Docutils uses a Subversion_ repository located at
+Docutils uses a Subversion_ (SVN) repository located at
 ``docutils.svn.sourceforge.net``.
-Subversion is exhaustively documented in the `Subversion Book`_ (svnbook).
 
 While Unix and Mac OS X users will probably prefer the standard
 Subversion command line interface, Windows user may want to try
 TortoiseSVN_, a convenient explorer extension.  The instructions apply
 analogously.
 
-There is a Git_ mirror at http://repo.or.cz/docutils.git (and one at
-`github <https://github.com/live-clones/docutils/tree/master/docutils>`_).
-Both provide `web access`_ and the base for `creating a local Git clone`_.
+There is a _`Git mirror` at http://repo.or.cz/docutils.git providing
+`web access`_ and the base for `creating a local Git clone`_.
+(Another mirror is available at
+https://github.com/live-clones/docutils/tree/master/docutils.)
 
 For the project policy on repository use (check-in requirements,
 branching, etc.), please see the `Docutils Project Policies`__.
 
 __ policies.html#subversion-repository
 
-.. _Subversion: http://subversion.tigris.org/
-.. _Subversion Book: http://svnbook.red-bean.com/
-.. _TortoiseSVN: http://tortoisesvn.tigris.org/
+.. _SVN:
+.. _Subversion: https://subversion.apache.org/
+.. _TortoiseSVN: https://tortoisesvn.net/
 .. _SourceForge.net: http://sourceforge.net/
 .. _Git: http://git-scm.com/
 
@@ -64,12 +64,13 @@ Web Access
 The repository can be browsed and examined via the web at
 http://sourceforge.net/p/docutils/code
 
-Alternatively, use the web interface of the Git mirrors at
-http://repo.or.cz/docutils.git or github_.
+Alternatively, use the web interface of a `Git mirror`_.
 
 
 Repository Access Methods
 ~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. _creating a local Git clone:
 
 Users of Git_ can clone a mirror of the docutils repository with ::
 
@@ -87,8 +88,6 @@ the root of the repository depending on your preferred protocol:
 
 anonymous access: (read only)
     ``http://svn.code.sf.net/p/docutils/code``
-    
-    .. _creating a local Git clone:
 
 `developer access`_: (read and write)
     ``svn+ssh://<USERNAME>@svn.code.sf.net/p/docutils/code``
@@ -139,7 +138,7 @@ user names to docutils-develop@lists.sourceforge.net.
 (Note that there may be a delay of several hours until you can commit
 changes to the repository.)
 
-Sourceforge subversion access is documented `here`__
+Sourceforge SVN access is documented `here`__
 
 __ http://sourceforge.net/p/forge/documentation/svn/
 

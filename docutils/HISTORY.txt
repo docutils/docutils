@@ -53,6 +53,9 @@ Will be merged on release.
 
   - Read settings from standard configuration files.
 
+Fix spelling errors in documentation and docstrings. 
+Thanks to Dimitri Papadopoulos.
+
 
 Release 0.18b1 (2021-10-05)
 ===========================
