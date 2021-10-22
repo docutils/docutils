@@ -91,7 +91,7 @@ CPU and memory utilization
 --------------------------
 
 Parsing **complex reStructuredText documents may require high
-processing ressources**. This enables `Denial of Service` attacs using
+processing resources**. This enables `Denial of Service` attacks using
 specially crafted input.
 
 It is recommended to enforce limits for the computation time and

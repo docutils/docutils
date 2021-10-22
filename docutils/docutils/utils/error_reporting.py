@@ -149,7 +149,7 @@ class ErrorString(SafeString):
 class ErrorOutput(object):
     """
     Wrapper class for file-like error streams with
-    failsave de- and encoding of `str`, `bytes`, `unicode` and
+    failsafe de- and encoding of `str`, `bytes`, `unicode` and
     `Exception` instances.
     """
 

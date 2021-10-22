@@ -192,7 +192,7 @@ __ http://mail.python.org/pipermail/python-list/2002-April/096656.html
     Any programmer can learn the basics in 15 minutes or less.
 
     And it really is very very easy to write documents in it.  I do
-    belive that if I were ever to write a book (again) I would write
+    believe that if I were ever to write a book (again) I would write
     it in ReST.
 
     And as far as I can tell from the specs, ReST solves most of the

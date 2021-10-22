@@ -757,7 +757,7 @@ class CharMaps(object):
         0x20b2: u'\\textguarani{}',       # GUARANI SIGN
         0x2103: u'\\textcelsius{}',       # DEGREE CELSIUS
         0x2116: u'\\textnumero{}',        # NUMERO SIGN
-        0x2117: u'\\textcircledP{}',      # SOUND RECORDING COYRIGHT
+        0x2117: u'\\textcircledP{}',      # SOUND RECORDING COPYRIGHT
         0x211e: u'\\textrecipe{}',        # PRESCRIPTION TAKE
         0x2120: u'\\textservicemark{}',   # SERVICE MARK
         0x2122: u'\\texttrademark{}',     # TRADE MARK SIGN
@@ -1274,7 +1274,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
         self._bibitems = []
 
-        # object for a table while proccessing.
+        # object for a table while processing.
         self.table_stack = []
         self.active_table = Table(self, 'longtable')
 
@@ -1557,7 +1557,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def append_hypertargets(self, node):
         """Append hypertargets for all ids of `node`"""
         # hypertarget places the anchor at the target's baseline,
-        # so we raise it explicitely
+        # so we raise it explicitly
         self.out.append('%\n'.join(['\\raisebox{1em}{\\hypertarget{%s}{}}' %
                                     id for id in node['ids']]))
 
@@ -2343,7 +2343,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.pop_output_collector()
 
     def to_latex_length(self, length_str, pxunit=None):
-        """Convert `length_str` with rst lenght to LaTeX length
+        """Convert `length_str` with rst length to LaTeX length
         """
         if pxunit is not None:
             sys.stderr.write('deprecation warning: LaTeXTranslator.to_latex_length()'
@@ -2665,7 +2665,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.context[-1] += 1
 
     def visit_option_argument(self, node):
-        """Append the delimiter betweeen an option and its argument to body."""
+        """Append the delimiter between an option and its argument to body."""
         self.out.append(node.get('delimiter', ' '))
 
     def depart_option_argument(self, node):

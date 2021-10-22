@@ -54,7 +54,7 @@ goes something like this:
 
 I've had trouble reconciling the roles of input parser and output
 writer with the idea of modes ("readers" or "directors").  Does the
-mode govern the tranformation of the input, the output, or both?
+mode govern the transformation of the input, the output, or both?
 Perhaps the mode should be split into two.
 
 For example, say the source of our input is a Python module.  Our

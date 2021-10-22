@@ -201,7 +201,7 @@ taken with capitalization, to avoid confusion with "REST__", an
 acronym for "Representational State Transfer".
 
 The abbreviations "reSTX" and "rSTX"/"rstx" should **not** be used;
-they overemphasize reStructuredText's precedessor, Zope's
+they overemphasize reStructuredText's predecessor, Zope's
 StructuredText.
 
 __ http://en.wikipedia.org/wiki/Representational_State_Transfer
@@ -307,7 +307,7 @@ charents naturally; instead of writing "&mdash;" you'd have to write
 "&amp;mdash;".
 
 For the common case of long dashes, you might also want to insert the
-following substitution definitons into your document (both of them are
+following substitution definitions into your document (both of them are
 using the "unicode_" directive)::
 
     .. |--| unicode:: U+2013   .. en dash
@@ -522,7 +522,7 @@ Could the requirement for blank lines around lists be relaxed?
 
 Short answer: no.
 
-In reStructuredText, it would be impossible to unambigously mark up
+In reStructuredText, it would be impossible to unambiguously mark up
 and parse lists without blank lines before and after.  Deeply nested
 lists may look ugly with so many blank lines, but it's a price we pay
 for unambiguous markup.  Some other plaintext markup systems do not
@@ -815,7 +815,7 @@ classes in the HTML:
       pre {direction: ltr; unicode-bidi: embed; }
       /* Use this if you all your inline literals (``) are LTR */
       tt {direction: ltr; unicode-bidi: embed; }
-      /* Use this if you all your interpretted text (`) is LTR */
+      /* Use this if you all your interpreted text (`) is LTR */
       cite {direction: ltr; unicode-bidi: embed; }
 
       /* Allow manual direction override by class directive and roles */
@@ -1106,7 +1106,7 @@ spaces.  When encoded with UTF-8 and viewed with ordinary ASCII tools,
 these characters will appear to be multi-character garbage.
 
 You may have an decoding problem in your browser (or editor, etc.).
-The encoding of the output is set to "utf-8", but your browswer isn't
+The encoding of the output is set to "utf-8", but your browser isn't
 recognizing that.  You can either try to fix your browser (enable
 "UTF-8 character set", sometimes called "Unicode"), or choose a
 different encoding for the HTML output.  You can also try

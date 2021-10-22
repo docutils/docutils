@@ -194,7 +194,7 @@ package (in the ``__init__.py`` module):
   of integers into a Python list of integers.  Raises ValueError for
   non-positive-integer values.
 
-- ``encoding``: Verfies the encoding argument by lookup.  Raises
+- ``encoding``: Verifies the encoding argument by lookup.  Raises
   ValueError for unknown encodings.
 
 A further utility function, ``choice``, is supplied to enable

@@ -12,7 +12,7 @@
 
 (defun cmnt-insert ()
   "Wrapper to insert comment via `comment-dwim'.
-Must be called on a line conaining at most whitespace."
+Must be called on a line containing at most whitespace."
   (let ((fc fill-column))
     (rst-mode)
     (setq fill-column fc)

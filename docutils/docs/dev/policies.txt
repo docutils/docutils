@@ -620,7 +620,7 @@ ways to keep the Docutils code accessible during development:
    __ repository.html
 
 2. Create a symlink to the docutils package directory somewhere in the
-   module serach path (``sys.path``), e.g., ::
+   module search path (``sys.path``), e.g., ::
 
      ln -s ~/projects/docutils/docutils \
           /usr/local/lib/python2.7/site-packages/
@@ -688,7 +688,7 @@ The Wiki
 
 There is a development wiki at http://docutils.python-hosting.com/ as
 a scratchpad for transient notes.  Please use the repository for
-permament document storage.
+permanent document storage.
 
 Extensions and Related Projects
 ===============================

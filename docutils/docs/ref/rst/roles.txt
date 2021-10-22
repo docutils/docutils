@@ -212,7 +212,7 @@ This is equivalent to::
 .. [#] You can link to a specific section by saying
    ``:rfc:`number#anchor```. (New in Docutils 0.15.)
 
-   .. Warning:: The anchor (anything follwing a ``#``) is appended to
+   .. Warning:: The anchor (anything following a ``#``) is appended to
       the reference without any checks and not shown in the link text.
 
       It is recommended to use `hyperlink references`_ for

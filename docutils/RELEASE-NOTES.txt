@@ -408,7 +408,7 @@ Release 0.11 (2013-07-22)
 
 * General
 
-  - Apply [ 2714873 ] Fix for the overwritting of document attributes.
+  - Apply [ 2714873 ] Fix for the overwriting of document attributes.
   - Support embedded aliases within hyperlink references.
   - Fix [ 228 ] try local import of docutils components (reader, writer, parser,
     language module) before global search.
@@ -576,7 +576,7 @@ Release 0.8 (2011-07-07)
 * General:
 
   - Handle language codes according to `BCP 47`_.
-  - If the specified langauage is not supported by Docutils,
+  - If the specified language is not supported by Docutils,
     warn and fall back to English.
   - Math support: reStructuredText "math" role and directive,
     ``math`` and ``math_block`` doctree elements.
@@ -706,7 +706,7 @@ Release 0.6 (2009-10-11)
 * LaTeX2e writer:
 
   - New defaults:
-    - font-encoding: "T1" (formerly implicitely set by 'ae').
+    - font-encoding: "T1" (formerly implicitly set by 'ae').
     - use-latex-toc: true (ToC with page numbers).
     - use-latex-footnotes: true (no mixup with figures).
     - Float placement defaults to "here definitely" (configurable).

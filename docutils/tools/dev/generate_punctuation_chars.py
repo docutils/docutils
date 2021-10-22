@@ -25,7 +25,7 @@
 # which may give different results for different Python versions.
 #
 # Updating the module with changed `unicode_punctuation_categories` (due to
-# a new Python or Unicode standard version is an API cange (may render valid
+# a new Python or Unicode standard version is an API change (may render valid
 # rST documents invalid). It should only be done for "feature releases" and
 # requires also updating the specification of `inline markup recognition
 # rules`_ in ../../docs/ref/rst/restructuredtext.txt.

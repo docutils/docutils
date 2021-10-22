@@ -589,7 +589,7 @@ exceptions occur.  Useful for debugging, and essential for issue
 reports.  Exceptions are allowed to propagate, instead of being
 caught and reported (in a user-friendly way) by Docutils.
 
-Default: disabled (None) unless Docutils is run programatically
+Default: disabled (None) unless Docutils is run programmatically
 using the `Publisher Interface`_.
 Options: ``--traceback, --no-traceback``.
 
@@ -1118,7 +1118,7 @@ the output document. Supported values are (case insensitive):
 :LaTeX:
   Include literal LaTeX code.
 
-  The fail-save fallback.
+  The failsafe fallback.
 
 Default: HTML math.css.  Option: ``--math-output``.
 

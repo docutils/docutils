@@ -485,7 +485,7 @@ class ListTable(Table):
         table = nodes.table()
         if self.widths == 'auto':
             table['classes'] += ['colwidths-auto']
-        elif self.widths: # explicitely set column widths
+        elif self.widths: # explicitly set column widths
             table['classes'] += ['colwidths-given']
         tgroup = nodes.tgroup(cols=len(col_widths))
         table += tgroup

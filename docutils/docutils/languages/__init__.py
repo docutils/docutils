@@ -30,7 +30,7 @@ class LanguageImporter(object):
     warn_msg = ('Language "%s" not supported: '
                 'Docutils-generated text will be in English.')
     fallback = 'en'
-    # TODO: use a dummy module returning emtpy strings?, configurable?
+    # TODO: use a dummy module returning empty strings?, configurable?
 
     def __init__(self):
         self.cache = {}

@@ -54,12 +54,12 @@
      The following parameter entity has been added:
 
        - tbl.thead.att
-         This entity parameterizes the attributes on thead. It replaces
+         This entity parametrizes the attributes on thead. It replaces
          the tbl.hdft.att parameter entity.
 
      Other miscellaneous changes:
 
-       - Tag ommission indicators have been removed
+       - Tag omission indicators have been removed
        - Comments have been removed from declarations
        - NUMBER attributes have been changed to NMTOKEN
        - NUTOKEN attributes have been to changed to NMTOKEN
@@ -166,7 +166,7 @@ current application.
 
 Note, however, that changes may have significant effect on the ability to
 interchange table information.  These changes may manifest themselves
-in useability, presentation, and possible structure information degradation.
+in usability, presentation, and possible structure information degradation.
 -->
 
 <!ENTITY % tbl.table.name       "table">

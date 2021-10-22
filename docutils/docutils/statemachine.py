@@ -310,7 +310,7 @@ class StateMachine(object):
             self.notify_observers()
 
     def is_next_line_blank(self):
-        """Return 1 if the next line is blank or non-existant."""
+        """Return True if the next line is blank or non-existent."""
         try:
             return not self.input_lines[self.line_offset + 1].strip()
         except IndexError:
@@ -520,7 +520,7 @@ class State(object):
       ``match.end()`` gives the end index.
     - A context object, whose meaning is application-defined (initial value
       ``None``). It can be used to store any information required by the state
-      machine, and the retured context is passed on to the next transition
+      machine, and the returned context is passed on to the next transition
       method unchanged.
     - The name of the next state, a string, taken from the transitions list;
       normally it is returned unchanged, but it may be altered by the
@@ -1378,7 +1378,7 @@ class StringList(ViewList):
           - `first_indent`: The indent of the first line, if known.
 
         :Return:
-          - a StringList of indented lines with mininum indent removed;
+          - a StringList of indented lines with minimum indent removed;
           - the amount of the indent;
           - a boolean: did the indented block finish with a blank line or EOF?
         """

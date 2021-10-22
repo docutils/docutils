@@ -43,7 +43,7 @@ from docutils.utils.math import tex2unichar, toplevel_code
 # identifiers -> <mi>
 
 letters = tex2unichar.mathalpha
-letters['hbar'] = u'\u210F' # compatiblity mapping to ℏ (\hslash).
+letters['hbar'] = u'\u210F' # compatibility mapping to ℏ (\hslash).
 # (ħ LATIN SMALL LETTER H WITH STROKE is upright)
 
 # special case: Capital Greek letters: (upright in TeX style)
