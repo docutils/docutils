@@ -29,7 +29,7 @@ signs in a LaTeX document.  [#math-syntax]_
   If you put ``.. default-role:: math`` at the top of your
   document, you can write ```x^2``` instead of the longer
   version: ``:math:`x^2```.  You can also introduce an
-  abreviation like this ``.. role:: m(math)``.  That will allow
+  abbreviation like this ``.. role:: m(math)``.  That will allow
   you to write ``:m:`x^2``` or ```x^2`:m:``.
 
 
@@ -621,7 +621,7 @@ For piecewise function definitions there is a ``cases`` environment:
 Spacing commands
 ----------------
 
-Horizontal spacing of elements can be controled with the following
+Horizontal spacing of elements can be controlled with the following
 commands:
 
 .. class:: colwidths-auto
@@ -825,7 +825,7 @@ similar symbols like
 
 .. math:: \lim_{n\to\infty} \sum_1^n \frac{1}{n}
 
-move to index postions: `\lim_{n\to\infty} \sum_1^n \frac{1}{n}`.
+move to index positions: `\lim_{n\to\infty} \sum_1^n \frac{1}{n}`.
 
 Altering the placement of limits
 --------------------------------

@@ -1006,7 +1006,7 @@ BEG-UND are the starting points of the overline or underline,
 respectively.  They may be nil if the respective thing is missing.
 BEG-TXT is the beginning of the title line or the transition and
 must be given.  The end of the line is used as the end point.  TXT
-is the title text or nil.  If TXT is given the indendation of the
+is the title text or nil.  If TXT is given the indentation of the
 line containing BEG-TXT is used as indentation.  Match group 0 is
 derived from the remaining information."
   (cl-check-type beg-txt integer-or-marker)

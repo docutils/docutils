@@ -230,7 +230,7 @@ class TransformSpec:
     """List of functions to try to resolve unknown references.  Unknown
     references have a 'refname' attribute which doesn't correspond to any
     target in the document.  Called when the transforms in
-    `docutils.tranforms.references` are unable to find a correct target.  The
+    `docutils.transforms.references` are unable to find a correct target.  The
     list should contain functions which will try to resolve unknown
     references, with the following signature::
 

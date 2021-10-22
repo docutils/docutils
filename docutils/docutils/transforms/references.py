@@ -419,10 +419,10 @@ class Footnotes(Transform):
 
         <document>
             <paragraph>
-                A labeled autonumbered footnote referece:
+                A labeled autonumbered footnote reference:
                 <footnote_reference auto="1" id="id1" refname="footnote">
             <paragraph>
-                An unlabeled autonumbered footnote referece:
+                An unlabeled autonumbered footnote reference:
                 <footnote_reference auto="1" id="id2">
             <footnote auto="1" id="id3">
                 <paragraph>
@@ -441,11 +441,11 @@ class Footnotes(Transform):
 
         <document>
             <paragraph>
-                A labeled autonumbered footnote referece:
+                A labeled autonumbered footnote reference:
                 <footnote_reference auto="1" id="id1" refid="footnote">
                     2
             <paragraph>
-                An unlabeled autonumbered footnote referece:
+                An unlabeled autonumbered footnote reference:
                 <footnote_reference auto="1" id="id2" refid="id3">
                     1
             <footnote auto="1" id="id3" backrefs="id2">
@@ -662,7 +662,7 @@ class Substitutions(Transform):
 
     default_priority = 220
     """The Substitutions transform has to be applied very early, before
-    `docutils.tranforms.frontmatter.DocTitle` and others."""
+    `docutils.transforms.frontmatter.DocTitle` and others."""
 
     def apply(self):
         defs = self.document.substitution_defs
@@ -747,7 +747,7 @@ class Substitutions(Transform):
                     ref.replace_self(prb)
                 continue
             ref.replace_self(subdef_copy.children)
-            # register refname of the replacment node(s)
+            # register refname of the replacement node(s)
             # (needed for resolution of references)
             for node in subdef_copy.children:
                 if isinstance(node, nodes.Referential):

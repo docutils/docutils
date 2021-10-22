@@ -211,7 +211,7 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
     def depart_authors(self, node):
         self.depart_docinfo_item()
 
-    # use "width" argument insted of "style: 'width'":
+    # use "width" argument instead of "style: 'width'":
     def visit_colspec(self, node):
         self.colspecs.append(node)
         # "stubs" list is an attribute of the tgroup element:
@@ -886,7 +886,7 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
     def depart_thead(self, node):
         self.body.append('</thead>\n')
 
-    # auxilliary method, called by visit_title()
+    # auxiliary method, called by visit_title()
     # "with-subtitle" class, no ARIA roles
     def section_title_tags(self, node):
         classes = []

@@ -208,7 +208,7 @@ Release 0.18b1 (2021-10-05)
 
 * docutils/writers/pseudoxml.py:
 
-  - Fix option "detailled" under Python 2.7.
+  - Fix option "detailed" under Python 2.7.
 
 * docutils/writers/s5_html/themes/default
 
@@ -251,7 +251,7 @@ Release 0.17 (2021-04-03)
 
   - Installing with ``setup.py`` now requires ``setuptools``.
     Alternatively, install with `pip`_ (or "manually").
-  - Use importlib.import_module() to programatically import modules.
+  - Use importlib.import_module() to programmatically import modules.
   - Fix bug #385: Import of language modules.
 
   .. _pip: https://pypi.org/project/pip/
@@ -1453,7 +1453,7 @@ Release 0.6 (2009-10-11)
   - Apply [ 2051599 ] multi-page tables in latex writer (from pabigot).
   - Change: has_key for dictionaries (not Nodes) to in-operator.
   - Merge adjacent citations into one latex cite command.
-  - Fail-save implementation of custom roles. LaTeX compilation now ignores
+  - Failsafe implementation of custom roles. LaTeX compilation now ignores
     unknown classes instead of aborting with an error.
   - Support custom roles based on standard roles.
   - LaTeX packages can be used as ``--stylesheet`` arguments without
@@ -1640,7 +1640,7 @@ Release 0.5 (2008-06-25)
   - Fix: bug# 1605376 rst2latex: bad options group list
   - Remove inactive code for use_optionlist_for_option_list.
   - Remove latex comments from option_list output.
-  - Fix: bug# 1612270 double qoutes in italian literal.
+  - Fix: bug# 1612270 double quotes in italian literal.
   - Fix: output ``hypertarget{ node.get(refid) }{}`` from visit_target.
   - Add option --use-latex-abstract.
   - Image width unit ``px`` is translated to ``pt``.

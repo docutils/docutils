@@ -924,7 +924,7 @@ transformed to document bibliographic data.  This bibliographic data
 corresponds to the front matter of a book, such as the title page and
 copyright page.
 
-.. [#] In additon to the document title and subtitle, also comments_,
+.. [#] In addition to the document title and subtitle, also comments_,
    `substitution definitions`_, `hyperlink targets`_, and "header",
    "footer", "meta", and "raw" directives_ may be placed before the
    bibliographic fields.

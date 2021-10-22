@@ -341,10 +341,10 @@ Compiling for syntax check
 
   * Customization group must be used
 
-Renumber an exisiting enumeration
+Renumber an existing enumeration
 =================================
 
-* Renumbering an exisiting enumeration is not possible yet
+* Renumbering an existing enumeration is not possible yet
 
 Command to move across blocks
 =============================
@@ -503,7 +503,7 @@ Improvements for comments
   commented region
 
   * Then it could uncomment it automatically and use of prefix
-    argument is no longer neccessary
+    argument is no longer necessary
 
 Context sensitive M-q
 =====================
@@ -564,7 +564,7 @@ Copying literal blocks
 Structural operations for toc-mode
 ==================================
 
-* Structrual operations for toc-mode
+* Structural operations for toc-mode
 
   * Raise or lower sections
 

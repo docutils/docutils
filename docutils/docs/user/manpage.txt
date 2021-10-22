@@ -8,7 +8,7 @@
 :Date: $Date$
 :Copyright: This document has been placed in the public domain.
 
-This writer explores the posibilities to generate man-pages from
+This writer explores the possibilities to generate man-pages from
 reStructuredText. Man pages are the way for Unix systems to provide
 help to the user. GNU does this with (TeX)info-pages.
 
@@ -20,10 +20,10 @@ Module information
 
 Unix man page belong into a numbered section, 1 is user commands, 8 contains
 administrator commands, the headlines of all manpages are collected into a
-database, queryable with the programm ``apropos``, therefore the headline
+database, queryable with the program ``apropos``, therefore the headline
 should contain a short text describing into which group this command belongs.
 
-These informations are collected from title, subtitle and the docinfo.
+That information is collected from the title, subtitle and docinfo.
 
 Also man pages have a defined set of sections, that are more or less
 mandatory, see References_.

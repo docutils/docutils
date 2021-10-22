@@ -571,7 +571,7 @@ def educate_tokens(text_tokens, attr=default_smartypants_attr, language='en'):
 
     for (ttype, text) in text_tokens:
 
-        # skip HTML and/or XML tags as well as emtpy text tokens
+        # skip HTML and/or XML tags as well as empty text tokens
         # without updating the last character
         if ttype == 'tag' or not text:
             yield text
@@ -608,7 +608,7 @@ def educate_tokens(text_tokens, attr=default_smartypants_attr, language='en'):
             text = educateSingleBackticks(text, language)
 
         if do_quotes:
-            # Replace plain quotes in context to prevent converstion to
+            # Replace plain quotes in context to prevent conversion to
             # 2-character sequence in French.
             context = prev_token_last_char.replace('"', ';').replace("'", ';')
             text = educateQuotes(context+text, language)[1:]

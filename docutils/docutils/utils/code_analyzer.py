@@ -117,7 +117,7 @@ class NumberLines(object):
 
     Iterating over an instance yields the tokens with a
     ``(['ln'], '<the line number>')`` token added for every code line.
-    Multi-line tokens are splitted."""
+    Multi-line tokens are split."""
 
     def __init__(self, tokens, startline, endline):
         self.tokens = tokens

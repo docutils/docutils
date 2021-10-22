@@ -14,7 +14,7 @@
 Transforms change the document tree in-place, add to the tree, or prune it.
 Transforms resolve references and footnote numbers, process interpreted
 text, and do other context-sensitive processing. Each transform is a
-subclass of ``docutils.tranforms.Transform``.
+subclass of ``docutils.transforms.Transform``.
 
 There are `transforms added by components`_, others (e.g.
 ``parts.Contents``) are added by the parser, if a corresponding directive is

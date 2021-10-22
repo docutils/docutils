@@ -513,7 +513,7 @@ used square brackets for phrase-links.  I changed my mind because:
    etc. names) into hyperlinks is a useful feature.  PyDoc recognizes
    identifiers heuristically, but it doesn't take much imagination to
    come up with counter-examples where PyDoc's heuristics would result
-   in embarassing failure.  I wanted to do it deterministically, and
+   in embarrassing failure.  I wanted to do it deterministically, and
    that called for syntax.  I called this construct "interpreted
    text".
 
@@ -838,7 +838,7 @@ Currently reStructuredText has two hyperlink syntax variations:
     - The plaintext is readable.
     - Each target may be reused multiple times (e.g., just write
       ``"reference_"`` again).
-    - No syncronized ordering of references and targets is necessary.
+    - No synchronized ordering of references and targets is necessary.
 
   + Disadvantages:
 
@@ -996,7 +996,7 @@ A new type of "inline external hyperlink" has been proposed.
    (reference/target pairs must be proximate [refA trgA refB trgB],
    not interleaved [refA refB trgA trgB] or nested [refA refB trgB
    trgA]).  This variation is too problematic; references and inline
-   external targets will have to be kept imediately adjacent (see (3)
+   external targets will have to be kept immediately adjacent (see (3)
    below).
 
    The ``"reference__ __<target>"`` syntax is actually for "anonymous
@@ -1086,7 +1086,7 @@ maintainable web pages.  The arguments go something like this:
 
   To which I said, "So use anonymous hyperlinks."
 
-- Anonymous hyperlinks are difficult to maintain becuase the
+- Anonymous hyperlinks are difficult to maintain because the
   references and targets have to be kept in sync.
 
   "So keep the targets close to the references, grouped after each
@@ -1278,7 +1278,7 @@ Syntax for Line Blocks
   (Awful, and arguably invalid, since in Japanese the word "haiku"
   contains three syllables not two.)
 
-  This idea was superceded by the rules for escaped whitespace, useful
+  This idea was superseded by the rules for escaped whitespace, useful
   for `character-level inline markup`_.
 
 * In a `2004-02-22 docutils-develop message`__, Jarno Elonen proposed
@@ -2339,7 +2339,7 @@ __ http://thread.gmane.org/gmane.text.docutils.devel/1386
 
 7. "I'd prefer to see double-dot-space / command / double-colon as the
    standard Docutils markup-marker.  It's unusual enough to avoid
-   being accidently used.  Everything that starts with a double-dot
+   being accidentally used.  Everything that starts with a double-dot
    should end with a double-colon."
 
    That would increase the punctuation verbosity of some constructs

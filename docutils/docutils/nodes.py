@@ -345,7 +345,7 @@ else:
 
 def ensure_str(s):
     """
-    Failsave conversion of `unicode` to `str`.
+    Failsafe conversion of `unicode` to `str`.
     """
     if sys.version_info < (3, 0) and isinstance(s, unicode):
         return s.encode('ascii', 'backslashreplace')
@@ -2187,7 +2187,7 @@ class NodeFound(TreePruningException):
 class StopTraversal(TreePruningException):
 
     """
-    Stop the traversal alltogether.  The current node's ``depart_...`` method
+    Stop the traversal altogether.  The current node's ``depart_...`` method
     is not affected.  The parent nodes ``depart_...`` methods are also called
     as usual.  No other nodes are visited.  This is an alternative to
     NodeFound that does not cause exception handling to trickle up to the

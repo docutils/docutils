@@ -53,7 +53,7 @@ prescribes a methodology.
             default).
 
       :Return:
-          - a list of indented lines with mininum indent removed;
+          - a list of indented lines with minimum indent removed;
           - the amount of the indent;
           - whether or not the block finished with a blank line or at
             the end of `lines`.

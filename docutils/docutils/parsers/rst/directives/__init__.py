@@ -369,7 +369,7 @@ def positive_int_list(argument):
 
 def encoding(argument):
     """
-    Verfies the encoding argument by lookup.
+    Verifies the encoding argument by lookup.
     (Directive option conversion function.)
 
     Raises ValueError for unknown encodings.

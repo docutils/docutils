@@ -342,7 +342,7 @@ def decode_path(path):
     """
     Ensure `path` is Unicode. Return `nodes.reprunicode` object.
 
-    Decode file/path string in a failsave manner if not already done.
+    Decode file/path string in a failsafe manner if not already done.
     """
     # see also http://article.gmane.org/gmane.text.docutils.user/2905
     if isinstance(path, unicode):

@@ -2318,7 +2318,7 @@ class SpacedCommand(CommandBit):
     self.contents = [FormulaConstant(u'\u2009' + self.translated + u'\u2009')]
 
 class AlphaCommand(EmptyCommand):
-  """A command without paramters whose result is alphabetical."""
+  """A command without parameters whose result is alphabetical."""
 
   commandmap = FormulaConfig.alphacommands
   greek_capitals = ('\\Xi', '\\Theta', '\\Pi', '\\Sigma', '\\Gamma',

@@ -159,7 +159,7 @@ class CodeBlock(Directive):
                            self.state.document.settings.syntax_highlight)
         except LexerError as error:
             if self.state.document.settings.report_level > 2:
-                # don't report warnings -> insert without syntax highligt
+                # don't report warnings -> insert without syntax highlight
                 tokens = Lexer(u'\n'.join(self.content), language, 'none')
             else:
                 raise self.warning(error)

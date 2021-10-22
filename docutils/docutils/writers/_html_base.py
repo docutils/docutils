@@ -589,7 +589,7 @@ class HTMLTranslator(nodes.NodeVisitor):
     # the end of this file).
 
     def is_compactable(self, node):
-        # explicite class arguments have precedence
+        # explicit class arguments have precedence
         if 'compact' in node['classes']:
             return True
         if 'open' in node['classes']:

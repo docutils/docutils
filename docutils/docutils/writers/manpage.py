@@ -451,7 +451,7 @@ class Translator(nodes.NodeVisitor):
         pass
 
     def visit_block_quote(self, node):
-        # BUG/HACK: indent always uses the _last_ indention,
+        # BUG/HACK: indent always uses the _last_ indentation,
         # thus we need two of them.
         self.indent(BLOCKQOUTE_INDENT)
         self.indent(0)
@@ -833,7 +833,7 @@ class Translator(nodes.NodeVisitor):
         self.body.append(self.defs['literal'][1])
 
     def visit_literal_block(self, node):
-        # BUG/HACK: indent always uses the _last_ indention,
+        # BUG/HACK: indent always uses the _last_ indentation,
         # thus we need two of them.
         self.indent(LITERAL_BLOCK_INDENT)
         self.indent(0)
