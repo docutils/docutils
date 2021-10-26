@@ -30,21 +30,19 @@ Release 0.18 (2021-10-26)
 * set_version 0.18
 * tox again
 * commit : release 0.18
-
-TODO
-
 * Generate universal wheel and source-distribution with py39.
 * Upload universal wheel and source to test.pypi.
-* test in venvs 
+* test in venvs: ignore wrong paths and un-embedded images
 * tag release 0.18
 
-    svn copy svn+ssh://grubert@svn.code.sf.net/p/docutils/code/trunk/docutils \
-             svn+ssh://grubert@svn.code.sf.net/p/docutils/code/tags/docutils-0.18 \
+    svn copy svn+ssh://grubert@svn.code.sf.net/p/docutils/code/trunk/docutils 
+             svn+ssh://grubert@svn.code.sf.net/p/docutils/code/tags/docutils-0.18 
              -m "tagging release 0.18"
 
 * upload to pypi
-* and test
-* Notify docutils-developer and user.
+* and test: Note python3 uses the cached download from the python2 test.
+
+
 * upload source and generated html to sf-htdocs/0.18
 
     mkdir tmp1
@@ -57,7 +55,6 @@ TODO
     rsync -e ssh -r -t ./ web.sourceforge.net:/home/project-web/docutils/htdocs/0.18
 
 * Check web/index.txt for necessary corrections : None necessary.
-* Run sandbox/infrastructure/docutils-update.local to update web-content.
 * Release to sourceforge.
 
   - Upload tar.gz and 0.18 release notes to sourceforge.
@@ -66,7 +63,8 @@ TODO
 * set_version 0.18.1.dev
 * tox
 * docutils/HISTORY.txt: add title "Changes Since 0.18"
-* run sandbox/infrastructure/docutils-update.local
+* Notify docutils-developer and user.
+* Run sandbox/infrastructure/docutils-update.local to update web-content.
 
 Release 0.17 aftermath
 ======================
