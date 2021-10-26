@@ -63,7 +63,7 @@ TODO
   - Upload tar.gz and 0.18 release notes to sourceforge.
   - Select docutils-0.18.tar.gz as default for all OS.  
 
-* set_version 0.18.1b.dev
+* set_version 0.18.1.dev
 * tox
 * docutils/HISTORY.txt: add title "Changes Since 0.18"
 * run sandbox/infrastructure/docutils-update.local
