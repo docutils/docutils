@@ -78,8 +78,8 @@ __ docs/user/config.html#writer
 .. _use_latex_citations: docs/user/config.html#use-latex-citations
 
 
-Release 0.18 (unpublished)
-==========================
+Release 0.18 (2021-10-26)
+=========================
 
 .. Note::
 
@@ -167,6 +167,9 @@ Release 0.18 (unpublished)
 * ``nodes.Node.traverse()`` returns an iterator instead of a list.
 
 * Various bugfixes and improvements (see HISTORY_).
+
+  Fix spelling errors in documentation and docstrings. 
+  Thanks to Dimitri Papadopoulos.
 
 __ docs/ref/doctree.html#meta
 .. _identifier normalization:
