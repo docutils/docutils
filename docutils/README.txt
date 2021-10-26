@@ -1,6 +1,6 @@
-=========================
- README: Docutils 0.18b2.dev
-=========================
+=======================
+ README: Docutils 0.18
+=======================
 
 :Author: David Goodger
 :Contact: goodger@python.org
