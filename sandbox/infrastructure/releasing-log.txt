@@ -21,6 +21,53 @@ Problems
   - finding ``HISTORY.txt`` in test_utils.py fails.
     Create a HISTORY.txt file to avoid.
 
+Release 0.18 (2021-10-26)
+=========================
+
+* beta is out for three weeks.
+* announce soft freeze on dev-mail.
+* run tox: passed 2.7, 3.5 ... 3.11
+
+TODO
+
+* set_version 0.18
+* tox again
+* commit : release 0.18
+* Generate universal wheel and source-distribution with py39.
+* Upload universal wheel and source to test.pypi.
+* test in venvs 
+* tag release 0.18
+
+    svn copy svn+ssh://grubert@svn.code.sf.net/p/docutils/code/trunk/docutils \
+             svn+ssh://grubert@svn.code.sf.net/p/docutils/code/tags/docutils-0.18 \
+             -m "tagging release 0.18"
+
+* upload to pypi
+* and test
+* Notify docutils-developer and user.
+* upload source and generated html to sf-htdocs/0.18
+
+    mkdir tmp1
+    cd tmp1
+    tar xzvf ../dist/docutils-0.18.tar.gz
+    cd docutils-0.18/
+    tools/buildhtml.py .
+    find . -name \*.pyc -exec rm {} \;
+    rm -rf docutils.egg-info
+    rsync -e ssh -r -t ./ web.sourceforge.net:/home/project-web/docutils/htdocs/0.18
+
+* Check web/index.txt for necessary corrections : None necessary.
+* Run sandbox/infrastructure/docutils-update.local to update web-content.
+* Release to sourceforge.
+
+  - Upload tar.gz and 0.18 release notes to sourceforge.
+  - Select docutils-0.18.tar.gz as default for all OS.  
+
+* set_version 0.18.1b.dev
+* tox
+* docutils/HISTORY.txt: add title "Changes Since 0.18"
+* run sandbox/infrastructure/docutils-update.local
+
 Release 0.17 aftermath
 ======================
 
