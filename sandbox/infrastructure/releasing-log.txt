@@ -27,12 +27,12 @@ Release 0.18 (2021-10-26)
 * beta is out for three weeks.
 * announce soft freeze on dev-mail.
 * run tox: passed 2.7, 3.5 ... 3.11
-
-TODO
-
 * set_version 0.18
 * tox again
 * commit : release 0.18
+
+TODO
+
 * Generate universal wheel and source-distribution with py39.
 * Upload universal wheel and source to test.pypi.
 * test in venvs 
