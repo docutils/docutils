@@ -5,7 +5,32 @@
 Additionally to standard testing, here we try to include tests that process
 the generated man pages and verify the output.
 
-Before changing functionality check
+Some of these tests either require roff and some groff to verify the produced layout.
 
-* mercurial: they have a local modified version of manpage.py
+From the groff-manual at gnu.org
+--------------------------------
+
+5.1.3 Sentences
+
+Although it is often debated, some typesetting rules say there should be
+different amounts of space after various punctuation marks. For example, the
+Chicago typesetting manual says that a period at the end of a sentence should
+have twice as much space following it as would a comma or a period as part of
+an abbreviation.
+
+gtroff does this by flagging certain characters (normally ‘!’, ‘?’, and ‘.’) as
+end-of-sentence characters. When gtroff encounters one of these characters at
+the end of a line, it appends a normal space followed by a sentence space in
+the formatted output. (This justifies one of the conventions mentioned in Input
+Conventions.)
+
+In addition, the following characters and symbols are treated transparently
+while handling end-of-sentence characters: ‘"’, ‘'’, ‘)’, ‘]’, ‘*’, \[dg],
+\[rq], and \[cq].
+
+See the cflags request in Using Symbols, for more details.
+
+To prevent the insertion of extra space after an end-of-sentence character (at
+the end of a line), append \&. 
+
 
