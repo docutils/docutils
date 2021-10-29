@@ -10,6 +10,25 @@ Some of these tests either require roff and some groff to verify the produced la
 From the groff-manual at gnu.org
 --------------------------------
 
+5.1.6 Input Conventions
+
+Since gtroff does filling automatically, it is traditional in groff not to try
+and type things in as nicely formatted paragraphs. 
+
+: this conflicts with reST because a reST-document is nicely formatted WYSIWYH.
+
+These are some conventions commonly used when typing gtroff text:
+
+* Break lines after punctuation, particularly at the end of a sentence and in
+  other logical places. Keep separate phrases on lines by themselves, as entire
+  phrases are often added or deleted when editing.
+
+* Try to keep lines less than 40–60 characters, to allow space for inserting
+  more text.
+
+* Do not try to do any formatting in a WYSIWYG manner (i.e., don’t try using
+  spaces to get proper indentation). 
+
 5.1.3 Sentences
 
 Although it is often debated, some typesetting rules say there should be
