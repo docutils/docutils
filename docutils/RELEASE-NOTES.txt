@@ -153,6 +153,10 @@ Release 0.18 (2021-10-26)
 * Removed files:
   ``iepngfix.htc`` and ``blank.gif`` (IE 6 workaround for `s5_html`).
 
+* Removed sub-module:
+  ``parsers.rst.directives.html`` 
+  (Meta directive moved to ``parsers.rst.directives.misc``.)
+
 * Removed function: ``utils.unique_combinations``
   (obsoleted by ``itertools.combinations``).
 
