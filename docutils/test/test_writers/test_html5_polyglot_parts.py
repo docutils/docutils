@@ -657,6 +657,71 @@ totest['lazy loading'] = ({'image_loading': 'lazy',
 """],
 ])
 
+
+totest['no backlinks'] = ({'footnote_backlinks': False,
+                           'stylesheet_path': '',
+                           'embed_stylesheet': 0}, [
+
+["""\
+Two footnotes [#f1]_ [#f2]_ and two citations [once]_ [twice]_.
+
+The latter are referenced a second time [#f2]_ [twice]_.
+
+.. [#f1] referenced once
+.. [#f2] referenced twice
+.. [once] citation referenced once
+.. [twice] citation referenced twice
+""",
+"""\
+{'fragment': '''\
+<p>Two footnotes <a class="footnote-reference brackets" href="#f1" id="footnote-reference-1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> <a class="footnote-reference brackets" href="#f2" id="footnote-reference-2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a> and two citations <a class="citation-reference" href="#once" id="citation-reference-1" role="doc-biblioref">[once]</a> <a class="citation-reference" href="#twice" id="citation-reference-2" role="doc-biblioref">[twice]</a>.</p>
+<p>The latter are referenced a second time <a class="footnote-reference brackets" href="#f2" id="footnote-reference-3" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a> <a class="citation-reference" href="#twice" id="citation-reference-3" role="doc-biblioref">[twice]</a>.</p>
+<aside class="footnote brackets" id="f1" role="note">
+<span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
+<p>referenced once</p>
+</aside>
+<aside class="footnote brackets" id="f2" role="note">
+<span class="label"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></span>
+<p>referenced twice</p>
+</aside>
+<div role="list" class="citation-list">
+<div class="citation" id="once" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>once<span class="fn-bracket">]</span></span>
+<p>citation referenced once</p>
+</div>
+<div class="citation" id="twice" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>twice<span class="fn-bracket">]</span></span>
+<p>citation referenced twice</p>
+</div>
+</div>\\n''',
+ 'html_body': '''\
+<main>
+<p>Two footnotes <a class="footnote-reference brackets" href="#f1" id="footnote-reference-1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> <a class="footnote-reference brackets" href="#f2" id="footnote-reference-2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a> and two citations <a class="citation-reference" href="#once" id="citation-reference-1" role="doc-biblioref">[once]</a> <a class="citation-reference" href="#twice" id="citation-reference-2" role="doc-biblioref">[twice]</a>.</p>
+<p>The latter are referenced a second time <a class="footnote-reference brackets" href="#f2" id="footnote-reference-3" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a> <a class="citation-reference" href="#twice" id="citation-reference-3" role="doc-biblioref">[twice]</a>.</p>
+<aside class="footnote brackets" id="f1" role="note">
+<span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
+<p>referenced once</p>
+</aside>
+<aside class="footnote brackets" id="f2" role="note">
+<span class="label"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></span>
+<p>referenced twice</p>
+</aside>
+<div role="list" class="citation-list">
+<div class="citation" id="once" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>once<span class="fn-bracket">]</span></span>
+<p>citation referenced once</p>
+</div>
+<div class="citation" id="twice" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>twice<span class="fn-bracket">]</span></span>
+<p>citation referenced twice</p>
+</div>
+</div>
+</main>\\n''',
+ 'html_head': '''...<title>&lt;string&gt;</title>\\n'''}
+"""],
+])
+
+
 if __name__ == '__main__':
     import unittest
     unittest.main(defaultTest='suite')

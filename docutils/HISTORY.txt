@@ -14,7 +14,13 @@
 Changes Since 0.18
 ==================
 
-.
+* docutils/writers/_html_base.py
+
+  - fixed handling of ``footnote_backlinks==False`` (report Alan G Isaac).
+
+* docutils/writers/html5_polyglot/math.css
+
+  - fixed typo (bug #432).
 
 Release 0.18 (2021-10-26)
 =========================

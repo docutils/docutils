@@ -1101,7 +1101,9 @@ class HTMLTranslator(nodes.NodeVisitor):
                                  ' href="#%s">' % backrefs[0])
 
     def depart_label(self, node):
-        backrefs = node.parent.get('backrefs', [])
+        backrefs = []
+        if self.settings.footnote_backlinks:
+            backrefs = node.parent.get('backrefs', backrefs)
         if len(backrefs) == 1:
             self.body.append('</a>')
         self.body.append('<span class="fn-bracket">]</span></span>\n')
