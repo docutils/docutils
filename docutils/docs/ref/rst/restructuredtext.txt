@@ -1075,10 +1075,11 @@ this with any special syntax.  The complete option word should be
 given, supported by notes about truncation if and when applicable.
 
 Options may be followed by an argument placeholder, whose role and
-syntax should be explained in the description text.  Either a space or
-an equals sign may be used as a delimiter between options and option
-argument placeholders; short options ("-" or "+" prefix only) may omit
-the delimiter.  Option arguments may take one of two forms:
+syntax should be explained in the description text.
+Either a space or an equals sign may be used as a delimiter between long
+options and option argument placeholders;
+short options ("-" or "+" prefix only) use a space or omit the delimiter.
+Option arguments may take one of two forms:
 
 - Begins with a letter (``[a-zA-Z]``) and subsequently consists of
   letters, numbers, underscores and hyphens (``[a-zA-Z0-9_-]``).
