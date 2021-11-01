@@ -46,6 +46,9 @@ Getting Help
 
 First, try the "``--help``" option each front-end tool has.
 
+Command line options and their corresponding configuration file entries
+are detailed in `Docutils Configuration`_.
+
 Users who have questions or need assistance with Docutils or
 reStructuredText should post a message to the Docutils-users_ mailing
 list.
@@ -65,12 +68,21 @@ docutils-cli.py
 
 :Readers: Standalone, PEP
 :Parser: reStructuredText, Markdown (reCommonMark)
-:Writers: html_, html4css1_, html5_, pep_html_, s5_html_, 
-          latex__, xelatex_, xml_, odt_, Pseudo-XML_
+:Writers: html_, html4css1_, html5_, latex__, manpage_,
+          odt_, pep_html_, pseudo-xml_, s5_html_, xelatex_, xml_,
+
+The ``docutils-cli.py`` front allows combining reader, parser, and
+writer components.
+
+For example, to process a Markdown_ file "``test.md``" into
+Pseudo-XML_ ::
+
+    docutils_.py --parser=markdown --writer=pseudoxml test.md test.txt
 
 __ `Generating LaTeX with Docutils`_
 .. _Generating LaTeX with Docutils: latex.html
-
+.. _manpage: manpage.html
+.. _Markdown: https://www.markdownguide.org/
 
 HTML-Generating Tools
 =====================
@@ -110,6 +122,8 @@ ensures that the correct settings are in place (a ``docutils.conf``
 `configuration file`_ in the current directory is picked up
 automatically).  Command-line options may be used to override config
 file settings or replace them altogether.
+
+.. _configuration file: configuration files
 
 
 rst2html.py
@@ -371,22 +385,20 @@ For details see `Generating LaTeX with Docutils`_.
 .. _LuaTeX: https://en.wikipedia.org/wiki/LuaTeX
 
 
-XML-Generating Tools
-====================
+Man-Page-Generating Tools
+=========================
 
-rst2xml.py
+rst2man.py
 ----------
 
 :Reader: Standalone
 :Parser: reStructuredText
-:Writer: _`XML` (Docutils native)
+:Writer: manpage_
 
-The ``rst2xml.py`` front end produces Docutils-native XML output.
-This can be transformed with standard XML tools such as XSLT
-processors into arbitrary final forms. An example is the xml2rst_ processor
-in the Docutils sandbox.
+The ``rst2man.py`` front end reads standalone reStructuredText source
+files and produces troff_ sources for Unix man pages.
 
-.. _xml2rst: ../../../sandbox/xml2rst
+.. _troff: https://troff.org/
 
 
 ODF/OpenOffice-Generating Tools
@@ -411,6 +423,7 @@ etc from `Odt Writer for Docutils`_.
 .. _Odt Writer for Docutils:
 .. _odt: odt.html
 
+
 reStructuredText-Generating Tools
 =================================
 
@@ -419,6 +432,24 @@ an ``rst2rst.py`` tool is still missing.
 
 To generate reStructuredText documents with Docutils, you can use
 the XML (Docutils native) writer and the xml2rst_ processor.
+
+
+XML-Generating Tools
+====================
+
+rst2xml.py
+----------
+
+:Reader: Standalone
+:Parser: reStructuredText
+:Writer: _`XML` (Docutils native)
+
+The ``rst2xml.py`` front end produces Docutils-native XML output.
+This can be transformed with standard XML tools such as XSLT
+processors into arbitrary final forms. An example is the xml2rst_ processor
+in the Docutils sandbox.
+
+.. _xml2rst: ../../../sandbox/xml2rst
 
 
 Testing/Debugging Tools
@@ -458,7 +489,6 @@ document.  Various forms output are possible:
 - Raw native XML (with or without a stylesheet reference)
 
 
-
 ---------------
  Customization
 ---------------
@@ -470,10 +500,8 @@ Command-line options are intended for one-off customization.
 They take priority over configuration file settings.
 
 Use the "--help" option on each of the front ends to list the
-command-line options it supports.  
+command-line options it supports.
 
-
-.. _configuration file:
 
 Configuration Files
 ===================
@@ -482,9 +510,9 @@ Configuration files are used for persistent customization; they can be
 set once and take effect every time you use a front-end tool.
 
 Command-line options and their corresponding configuration file entry
-names are listed in the `Docutils Configuration Files`_ document.
+names are listed in the `Docutils Configuration`_ document.
 
-.. _Docutils Configuration Files: config.html
+.. _Docutils Configuration: config.html
 
 
 ..
