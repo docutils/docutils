@@ -828,7 +828,7 @@ def parse_latex_math(node, string):
             node = node.append(mo(anomalous_chars[c], **attributes))
         elif c in "/()[]|":
             node = node.append(mo(c, stretchy=False))
-        elif c in "+*=<>,.!?';@":
+        elif c in "+*=<>,.!?`';@":
             node = node.append(mo(c))
         else:
             raise SyntaxError(u'Unsupported character: "%s"' % c)
