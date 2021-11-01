@@ -68,6 +68,39 @@ Many of these are now handled by Sphinx_
 
 .. _Sphinx: http://sphinx.pocoo.org/
 
+Repository
+==========
+
+Move to a Git repository.
+
+* This is a long standing `feature request`__
+  (with pointers to Sphinx issues and discussion).
+
+  __ https://sourceforge.net/p/docutils/feature-requests/58/
+
+* From a `post by David Goodger`__
+
+    An absolute requirement, for me, is that such a change be complete.
+    We can't lose any data or have to refer to the old system as an
+    "archive". So all the SVN history, all branches, and the full sandbox
+    need to be converted at the same time.
+
+  __ https://sourceforge.net/p/docutils/mailman/message/31878077/
+
+Convert with reposurgeon_?
+
+  If you are doing a full import rather than gatewaying, reposurgeon is
+  probably what you want. It has been tested against a lot of large, old,
+  nasty repositories and is thus known to be robust in the presence of
+  repository malformations (a property regularly checked by a test suite
+  that is a rogue's gallery of Subversion botches).
+
+  -- `Git Wiki`__
+
+.. _reposurgeon: http://www.catb.org/esr/reposurgeon/
+__ https://git.wiki.kernel.org/index.php/
+   Interfaces,_frontends,_and_tools#Subversion
+
 General
 =======
 
@@ -2268,22 +2301,6 @@ Unimplemented Transforms
 
 HTML Writer
 ===========
-
-* Make it easier to find out fragment names (#foo-bar) of ``_`inline
-  targets```.  Currently you have to either look at the source or
-  guess the fragment.
-
-  For example, we could add support for self-referencing targets
-  (i.e. inline targets would [unobtrusively] link to themselves, so
-  that you can just click them and then copy the address).  Or we
-  could add support for titles that display the fragment name (as in
-  <http://subversion.tigris.org/mailing-list-guidelines.html>; just
-  hover the paragraphs).
-
-  Either way it should be optional and deactivated by default.
-
-  This would be useful for documents like Docutils' bug list or to-do
-  list.
 
 * Make the _`list compacting` logic more generic: For example, allow
   for literal blocks or line blocks inside of compact list items.
