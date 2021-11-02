@@ -27,9 +27,9 @@ level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .in \\n[rst2man-indent\\n[rst2man-indent-level]]u
 ..
-.TH "REFERNCE TESTS"  "" "" ""
+.TH "REFERENCE TESTS"  "" "" ""
 .SH NAME
-refernce tests \- some tests for references in man pages
+reference tests \- some tests for references in man pages
 .sp
 See \fI\%https://docutils.sourceforge.io/docs/user/rst/quickref.html#explicit\-markup\fP
 for more
