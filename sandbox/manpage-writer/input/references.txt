@@ -1,6 +1,6 @@
-==============
-refernce tests
-==============
+===============
+reference tests
+===============
 
 some tests for references in man pages
 --------------------------------------
