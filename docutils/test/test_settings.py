@@ -22,10 +22,6 @@ from docutils.writers import html4css1, pep_html
 from docutils.parsers import rst
 
 
-warnings.filterwarnings(action='ignore',
-                        category=frontend.ConfigDeprecationWarning)
-
-
 def fixpath(path):
     return os.path.abspath(os.path.join(*(path.split('/'))))
 
@@ -85,6 +81,8 @@ class ConfigFileTests(unittest.TestCase):
     """Comparison method shared by all tests."""
 
     def setUp(self):
+        warnings.filterwarnings(action='ignore',
+                                category=frontend.ConfigDeprecationWarning)
         self.option_parser = frontend.OptionParser(
             components=(pep_html.Writer, rst.Parser), read_config_files=None)
 
@@ -123,8 +121,12 @@ class ConfigFileTests(unittest.TestCase):
                             self.expected_settings())
 
     def test_old(self):
-        self.compare_output(self.files_settings('old'),
-                            self.expected_settings('old'))
+        with warnings.catch_warnings(record=True) as wng:
+            warnings.simplefilter("always") # check also for deprecation warning
+            self.compare_output(self.files_settings('old'),
+                                self.expected_settings('old'))
+            self.assertEqual(len(wng), 1, "Expected a FutureWarning.")
+            assert issubclass(wng[-1].category, FutureWarning)
 
     def test_one(self):
         self.compare_output(self.files_settings('one'),
@@ -283,6 +285,13 @@ class HelperFunctionsTests(unittest.TestCase):
                     frontend.validate_smartquotes_locales(None, t[0], None),
                     t[1])
 
+    def test_set_conditions_deprecation_warning(self):
+        reporter = utils.Reporter('test', 1, 4)
+        with warnings.catch_warnings(record=True) as wng:
+            warnings.simplefilter("always")
+            reporter.set_conditions('foo', 1, 4) # trigger warning
+            self.assertEqual(len(wng), 1, "Expected a DeprecationWarning.")
+            assert issubclass(wng[-1].category, DeprecationWarning)
 
 
 if __name__ == '__main__':
