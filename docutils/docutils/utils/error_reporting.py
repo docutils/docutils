@@ -13,6 +13,11 @@
 # .. _2-Clause BSD license: https://opensource.org/licenses/BSD-2-Clause
 
 """
+Provisional module to handle Exceptions across Python versions.
+
+This module will be deprecated with the end of support for Python 2.7
+and be removed in Docutils 1.2.
+
 Error reporting should be safe from encoding/decoding errors.
 However, implicit conversions of strings and exceptions like
 

@@ -18,7 +18,11 @@ from test_transforms import DocutilsTestSupport  # before importing docutils!
 
 
 def suite():
-    settings = {'use_latex_toc': False}
+    settings = {'use_latex_toc': False,
+               # avoid latex writer future warnings:
+               'use_latex_citations': False,
+               'legacy_column_widths': True,
+               }
     s = DocutilsTestSupport.PublishTestSuite('latex', suite_settings=settings)
     s.generateTests(totest)
     settings['use_latex_toc'] = True

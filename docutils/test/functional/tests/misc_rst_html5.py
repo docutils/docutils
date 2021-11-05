@@ -13,6 +13,6 @@ writer_name = "html5"
 settings_overrides['stylesheet_dirs'] = ('.', 'functional/input/data')
 settings_overrides['stylesheet_path'] = 'minimal.css,responsive.css'
 settings_overrides['smart_quotes'] = 'yes'
-settings_overrides['embed_images'] = 'yes'
+settings_overrides['image_loading'] = 'embed'
 settings_overrides['toc_backlinks'] = 'top'
 settings_overrides['section_self_link'] = True

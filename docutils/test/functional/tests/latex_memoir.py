@@ -15,3 +15,5 @@ settings_overrides['template'] = "titlingpage.tex"
 
 # test the legacy class functions (since 0.18 default is False )
 settings_overrides['legacy_class_functions'] = True
+settings_overrides['legacy_column_widths'] = True
+settings_overrides['use_latex_citations'] = False

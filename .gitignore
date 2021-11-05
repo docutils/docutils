@@ -10,6 +10,7 @@ __pycache__
 
 docutils/*.html
 docutils/docs/**/*.html
+docutils/tools/**/*.html
 
 /docutils/test/alltests.out
 /docutils/test/record.txt

@@ -21,11 +21,13 @@ try:
 except:
     pass
 
-import sys
-import os
-import os.path
 import copy
 from fnmatch import fnmatch
+import os
+import os.path
+import sys
+import warnings
+
 import docutils
 from docutils import ApplicationError
 from docutils import core, frontend, utils
@@ -80,11 +82,11 @@ class SettingsSpec(docutils.SettingsSpec):
           ['--writer'],
           {'metavar': '<writer>',
            'choices': ['html', 'html4', 'html5'],
-           'default': 'html'}),
+           # 'default': 'html' (set below)
+          }),
          ('Obsoleted by "--writer".',
           ['--html-writer'],
-          {'dest': 'writer',
-           'metavar': '<writer>',
+          {'metavar': '<writer>',
            'choices': ['html', 'html4', 'html5'],}),
          ('Work silently (no progress messages).  Independent of "--quiet".',
           ['--silent'],
@@ -175,6 +177,14 @@ class Builder(object):
         self.settings_spec = self.publishers[''].option_parser.parse_args(
             values=frontend.Values())   # no defaults; just the cmdline opts
         self.initial_settings = self.get_settings('')
+        
+        if self.initial_settings.html_writer is not None:
+            warnings.warn('The configuration setting "html_writer" '
+                'will be removed in Docutils 1.2. '
+                'Use setting "writer" instead.', FutureWarning, stacklevel=5)
+        if self.initial_settings.writer is None:
+            self.initial_settings.writer = (self.initial_settings.html_writer
+                                            or 'html')
 
     def get_settings(self, publisher_name, directory=None):
         """
@@ -198,6 +208,11 @@ class Builder(object):
         return settings
 
     def run(self, directory=None, recurse=1):
+        # if not self.initial_settings.silent:
+        #     errout = ErrorOutput(encoding=self.initial_settings.error_encoding)
+        #     errout.write('*** Using writer "%s"\n'
+        #                  % self.initial_settings.writer)
+        #     sys.stderr.flush()
         recurse = recurse and self.initial_settings.recurse
         if directory:
             self.directories = [directory]

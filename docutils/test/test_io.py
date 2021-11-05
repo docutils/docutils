@@ -8,7 +8,10 @@
 Test module for io.py.
 """
 
-import unittest, sys
+import sys
+import unittest
+import warnings
+
 import DocutilsTestSupport              # must be imported before docutils
 from docutils import io
 from docutils.utils.error_reporting import locale_encoding
@@ -164,6 +167,13 @@ class OutputTests(unittest.TestCase):
                                autoclose=False)
             fo.write(self.udata)
             self.assertEqual(self.bdrain.getvalue(), self.udata.encode('utf8'))
+
+    def test_FileOutput_hande_io_errors_deprection_warning(self):
+        with warnings.catch_warnings(record=True) as wng:
+            warnings.simplefilter("always")
+            fo = io.FileOutput(handle_io_errors=True)
+            self.assertEqual(len(wng), 1, "Expected a DeprecationWarning.")
+            assert issubclass(wng[0].category, DeprecationWarning)
 
     # With destination in binary mode, data must be binary string
     # and is written as-is:

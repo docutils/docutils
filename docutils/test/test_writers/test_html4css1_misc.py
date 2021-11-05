@@ -137,6 +137,7 @@ class SettingsTestCase(DocutilsTestSupport.StandardTestCase):
                                   settings_overrides=mysettings)['stylesheet']
         self.assertIn('dl.docutils dd {\n  margin-bottom: 0.5em }', styles)
 
+
 class MathTestCase(DocutilsTestSupport.StandardTestCase):
 
     """Attention: This class tests the current implementation of maths support
