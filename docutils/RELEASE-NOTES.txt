@@ -22,6 +22,8 @@ Future changes
 
 Drop support for Python 2.7, 3.5, and 3.6.
 
+Drop support for `old-format configuration files`_.
+
 * `html5` writer:
 
   - Stop setting the "footnote-reference" class value for footnote
@@ -71,9 +73,12 @@ Drop support for Python 2.7, 3.5, and 3.6.
 * Remove the "html_writer" option of the ``buildhtml.py`` application
   (obsoleted by "writer__").
 
+  __ docs/user/config.html#writer
+
+.. _old-format configuration files:
+   docs/user/config.html#old-format-configuration-files
 .. _rst2html.py: docs/user/tools.html#rst2html-py
 .. _reference name: docs/ref/rst/restructuredtext.html#reference-names
-__ docs/user/config.html#writer
 .. _literal_block_env: docs/user/config.html#literal-block-env
 .. _use_latex_citations: docs/user/config.html#use-latex-citations
 

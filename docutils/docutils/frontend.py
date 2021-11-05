@@ -866,5 +866,5 @@ Skipping "%s" configuration file.
         return section_dict
 
 
-class ConfigDeprecationWarning(DeprecationWarning):
+class ConfigDeprecationWarning(FutureWarning):
     """Warning for deprecated configuration file features."""
