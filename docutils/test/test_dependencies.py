@@ -26,6 +26,9 @@ paths = {'include': u'data/include.txt',  # included rst file
          'stylesheet':   u'data/stylesheet.txt',
         }
 
+# avoid latex writer future warnings:
+latex_settings_overwrites = {'legacy_column_widths': False,
+                             'use_latex_citations': True}
 
 class RecordDependenciesTests(unittest.TestCase):
 
@@ -80,7 +83,8 @@ class RecordDependenciesTests(unittest.TestCase):
         if PIL:
             keys += ['figure-image']
         expected = [paths[key] for key in keys]
-        record = sorted(self.get_record(writer_name='latex'))
+        record = sorted(self.get_record(writer_name='latex', 
+                                        settings_overrides=latex_settings_overwrites))
         # the order of the files is arbitrary
         expected.sort()
         self.assertEqual(record, expected)
@@ -94,7 +98,7 @@ class RecordDependenciesTests(unittest.TestCase):
         stylesheet = paths['stylesheet']
         so = {'stylesheet_path': paths['stylesheet'],
               'stylesheet': None}
-
+        so.update(latex_settings_overwrites)
         so['embed_stylesheet'] = False
         record = self.get_record(writer_name='html', settings_overrides=so)
         self.assertTrue(stylesheet not in record,
@@ -107,6 +111,7 @@ class RecordDependenciesTests(unittest.TestCase):
         record = self.get_record(writer_name='html', settings_overrides=so)
         self.assertTrue(stylesheet in record,
                      '%r should be in %r' % (stylesheet, record))
+        so['embed_stylesheet'] = True
         record = self.get_record(writer_name='latex', settings_overrides=so)
         self.assertTrue(stylesheet in record,
                      '%r should be in %r' % (stylesheet, record))

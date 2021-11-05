@@ -22,6 +22,7 @@ import mimetypes
 import os, os.path
 import re
 import sys
+import warnings
 
 try: # check for the Python Imaging Library
     import PIL.Image
@@ -319,10 +320,20 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.section_level = 0
         self.initial_header_level = int(settings.initial_header_level)
         # image_loading only defined for HTML5 writer
-        self.image_loading = getattr(settings, 'image_loading', 'link')
-        if (getattr(settings, 'embed_images', False)
-            and self.image_loading == 'link'):
-            self.image_loading = 'embed'
+        self.image_loading = getattr(settings, 'image_loading', None)
+        # legacy setting embed_images:
+        if getattr(settings, 'embed_images', None) is True:
+            warnings.warn('The configuration setting "embed_images" '
+                'will be removed in Docutils 1.2. Use "image_loading: embed".',
+                FutureWarning, stacklevel=8)
+            if self.image_loading == None:
+                self.image_loading = 'embed'
+        if getattr(settings, 'embed_images', None) is False:
+            warnings.warn('The configuration setting "embed_images" '
+                'will be removed in Docutils 1.2. Use "image_loading: link".',
+                FutureWarning, stacklevel=8)
+        if self.image_loading == None:
+            self.image_loading = 'link' # default
         self.math_output = settings.math_output.split()
         self.math_output_options = self.math_output[1:]
         self.math_output = self.math_output[0].lower()
@@ -1367,9 +1378,9 @@ class HTMLTranslator(nodes.NodeVisitor):
     #
     # The HTML4CSS1 writer does this to "produce
     # visually compact lists (less vertical whitespace)". This writer
-    # relies on CSS rules for"visual compactness".
+    # relies on CSS rules for visual compactness.
     #
-    # * In XHTML 1.1, e.g. a <blockquote> element may not contain
+    # * In XHTML 1.1, e.g., a <blockquote> element may not contain
     #   character data, so you cannot drop the <p> tags.
     # * Keeping simple paragraphs in the field_body enables a CSS
     #   rule to start the field-body on a new line if the label is too long

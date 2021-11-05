@@ -12,6 +12,7 @@ Miscellaneous HTML writer tests.
 from __future__ import absolute_import
 
 import os
+import warnings
 
 if __name__ == '__main__':
     import __init__
@@ -138,6 +139,19 @@ class SettingsTestCase(DocutilsTestSupport.StandardTestCase):
         styles = core.publish_parts(self.data, writer_name='html5_polyglot',
                                   settings_overrides=mysettings)['stylesheet']
         self.assertIn('dl.docutils dd {\n  margin-bottom: 0.5em }', styles)
+
+    def test_future_warnings(self):
+        """Warn about changing defaults."""
+        mysettings={'_disable_config': True,
+                    'embed_images': False,
+                   }
+        with warnings.catch_warnings(record=True) as wng:
+            warnings.simplefilter("always")
+            core.publish_string(u'warnings test', writer_name='html5',
+                                settings_overrides=mysettings)
+            self.assertEqual(len(wng), 1, "Expected FutureWarning.")
+            assert issubclass(wng[0].category, FutureWarning)
+        
 
 class MathTestCase(DocutilsTestSupport.StandardTestCase):
 

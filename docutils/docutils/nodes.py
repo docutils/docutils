@@ -391,6 +391,10 @@ class Text(Node, reprunicode):
 
     def __init__(self, data, rawsource=None):
         """The `rawsource` argument is ignored and deprecated."""
+        if rawsource is not None:
+            warnings.warn('nodes.Text: initialization argument "rawsource" '
+                          'is ignored and will be removed in Docutils 1.3.',
+                          DeprecationWarning, stacklevel=2)
 
     def shortrepr(self, maxlen=18):
         data = self
@@ -1063,7 +1067,7 @@ class Element(Node):
 
     def set_class(self, name):
         """Add a new class to the "classes" attribute."""
-        warnings.warn('docutils.nodes.Element.set_class deprecated; '
+        warnings.warn('docutils.nodes.Element.set_class() is deprecated; '
                       "append to Element['classes'] list attribute directly",
                       DeprecationWarning, stacklevel=2)
         assert ' ' not in name

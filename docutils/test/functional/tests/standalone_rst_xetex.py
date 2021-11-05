@@ -15,3 +15,5 @@ settings_overrides['smart_quotes'] = True
 settings_overrides['stylesheet'] = 'docutils'
 # Test the ToC generation by Docutils:
 settings_overrides['use_latex_toc'] = False
+settings_overrides['legacy_column_widths'] = True
+settings_overrides['use_latex_citations'] = False

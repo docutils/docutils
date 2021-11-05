@@ -19,6 +19,7 @@ import os
 import re
 import string
 import sys
+import warnings
 
 if sys.version_info < (3, 0):
     from io import open
@@ -74,10 +75,10 @@ class Writer(writers.Writer):
            'overrides': 'trim_footnote_reference_space'}),
          ('Use \\cite command for citations. (future default)',
           ['--use-latex-citations'],
-          {'default': False, 'action': 'store_true',
+          {'default': None, 'action': 'store_true',
            'validator': frontend.validate_boolean}),
          ('Use figure floats for citations '
-          '(might get mixed with real figures). (current default)',
+          '(might get mixed with real figures). (provisional default)',
           ['--figure-citations'],
           {'dest': 'use_latex_citations', 'action': 'store_false',
            'validator': frontend.validate_boolean}),
@@ -183,7 +184,7 @@ class Writer(writers.Writer):
           {'default': ''}),
          ('Deprecated alias for "--literal-block-env=verbatim".',
           ['--use-verbatim-when-possible'],
-          {'default': False, 'action': 'store_true',
+          {'action': 'store_true',
            'validator': frontend.validate_boolean}),
          ('Table style. "standard" with horizontal and vertical lines, '
           '"booktabs" (LaTeX booktabs style) only horizontal lines '
@@ -222,18 +223,19 @@ class Writer(writers.Writer):
            'action': 'store_true',
            'validator': frontend.validate_boolean}),
          ('Use \\DUrole and "DUclass" wrappers for class values. '
-          'Place admonition content in an environment (default).',
+          'Place admonition content in an environment. (default)',
           ['--new-class-functions'],
           {'dest': 'legacy_class_functions',
            'action': 'store_false',
            'validator': frontend.validate_boolean}),
-         ('Use legacy algorithm to determine table column widths (default).',
+         ('Use legacy algorithm to determine table column widths. '
+          '(provisional default)',
           ['--legacy-column-widths'],
-          {'default': True,
+          {'default': None,
            'action': 'store_true',
            'validator': frontend.validate_boolean}),
-         ('Use new algorithm to determine table column widths '
-          '(future default).',
+         ('Use new algorithm to determine table column widths. '
+          '(future default)',
           ['--new-column-widths'],
           {'dest': 'legacy_column_widths',
            'action': 'store_false',
@@ -1159,7 +1161,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
     alltt = False                      # inside `alltt` environment
 
     def __init__(self, document, babel_class=Babel):
-        nodes.NodeVisitor.__init__(self, document)
+        nodes.NodeVisitor.__init__(self, document) # TODO: use super()
         # Reporter
         # ~~~~~~~~
         self.warn = self.document.reporter.warning
@@ -1168,10 +1170,28 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # Settings
         # ~~~~~~~~
         self.settings = settings = document.settings
+        # warn of deprecated settings and changing defaults:
+        if settings.use_latex_citations is None:
+            settings.use_latex_citations = False
+            warnings.warn('The default for the setting "use_latex_citations" '
+                          'will change to "True" in Docutils 1.0.',
+                          FutureWarning, stacklevel=7)
+        if settings.legacy_column_widths is None:
+            settings.legacy_column_widths = True
+            warnings.warn('The default for the setting "legacy_column_widths" '
+                          'will change to "False" in Docutils 1.0.)',
+                          FutureWarning, stacklevel=7)
+        if settings.use_verbatim_when_possible is not None:
+            warnings.warn(
+                'The configuration setting "use_verbatim_when_possible" '
+                'will be removed in Docutils 1.2. '
+                'Use "literal_block_env: verbatim".', 
+                FutureWarning, stacklevel=7)
+
         self.latex_encoding = self.to_latex_encoding(settings.output_encoding)
         self.use_latex_toc = settings.use_latex_toc
         self.use_latex_docinfo = settings.use_latex_docinfo
-        self._use_latex_citations = settings.use_latex_citations
+        self.use_latex_citations = settings.use_latex_citations
         self._reference_label = settings.reference_label
         self.hyperlink_color = settings.hyperlink_color
         self.compound_enumerators = settings.compound_enumerators
@@ -1190,7 +1210,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
              none) = re.split(r'(\w+)(.*)', settings.literal_block_env)
         elif settings.use_verbatim_when_possible:
             self.literal_block_env = 'verbatim'
-        #
+
         if self.settings.use_bibtex:
             self.bibtex = self.settings.use_bibtex.split(',', 1)
             # TODO avoid errors on not declared citations.
@@ -1774,7 +1794,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.out.append('}')
 
     def visit_citation(self, node):
-        if self._use_latex_citations:
+        if self.use_latex_citations:
             self.push_output_collector([])
         else:
             ## self.requirements['~fnt_floats'] = PreambleCmds.footnote_floats
@@ -1782,7 +1802,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.append_hypertargets(node)
 
     def depart_citation(self, node):
-        if self._use_latex_citations:
+        if self.use_latex_citations:
             # TODO: normalize label
             label = self.out[0]
             text = ''.join(self.out[1:])
@@ -1792,7 +1812,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.out.append('\\end{figure}\n')
 
     def visit_citation_reference(self, node):
-        if self._use_latex_citations:
+        if self.use_latex_citations:
             if not self.inside_citation_reference_label:
                 self.out.append(r'\cite{')
                 self.inside_citation_reference_label = 1
@@ -1810,7 +1830,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def depart_citation_reference(self, node):
         # TODO: normalize labels
-        if self._use_latex_citations:
+        if self.use_latex_citations:
             followup_citation = False
             # check for a following citation separated by a space or newline
             sibling = node.next_node(descend=False, siblings=True)
@@ -2023,7 +2043,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
         # * bibliography
         #   TODO insertion point of bibliography should be configurable.
-        if self._use_latex_citations and len(self._bibitems)>0:
+        if self.use_latex_citations and len(self._bibitems)>0:
             if not self.bibtex:
                 widest_label = ''
                 for bi in self._bibitems:
@@ -2316,7 +2336,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             raise nodes.SkipNode
         else:
             assert isinstance(node.parent, nodes.citation)
-            if not self._use_latex_citations:
+            if not self.use_latex_citations:
                 self.out.append(bracket)
 
     def visit_label(self, node):
@@ -2346,8 +2366,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
         """Convert `length_str` with rst length to LaTeX length
         """
         if pxunit is not None:
-            sys.stderr.write('deprecation warning: LaTeXTranslator.to_latex_length()'
-                             ' option `pxunit` will be removed.')
+            warnings.warn('LaTeXTranslator.to_latex_length(): The optional '
+                          'argument `pxunit` is ignored and will be removed '
+                          'in Docutils 1.1', DeprecationWarning, stacklevel=2)
         match = re.match(r'(\d*\.?\d*)\s*(\S*)', length_str)
         if not match:
             return length_str

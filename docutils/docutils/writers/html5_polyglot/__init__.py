@@ -87,7 +87,7 @@ class Writer(writers._html_base.Writer):
         '',
         (('Obsoleted by "--image-loading".',
           ['--embed-images'],
-          {'default': 0, 'action': 'store_true',
+          {'action': 'store_true',
            'validator': frontend.validate_boolean}),
          ('Obsoleted by "--image-loading".',
           ['--link-images'],
@@ -96,7 +96,8 @@ class Writer(writers._html_base.Writer):
           '"embed", "link" (default), or "lazy".',
           ['--image-loading'],
           {'choices': ('embed', 'link', 'lazy'),
-           'default': 'link'}),
+           # 'default': 'link' # default set in _html_base.py
+          }),
          ('Append a self-link to section headings.',
           ['--section-self-link'],
           {'default': 0, 'action': 'store_true'}),

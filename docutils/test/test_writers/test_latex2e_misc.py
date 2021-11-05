@@ -18,6 +18,7 @@
 Miscellaneous LaTeX writer tests.
 """
 from __future__ import absolute_import
+import warnings
 
 if __name__ == '__main__':
     import __init__
@@ -41,15 +42,36 @@ class TocTestCase(DocutilsTestSupport.StandardTestCase):
         """Ignore the Docutils-generated ToC, when ``use_latex_toc``
         is True. (This did happen when publishing from a doctree.)
         """
-        settings_overrides={'output_encoding': 'unicode',
-                            '_disable_config': True,}
+        mysettings = {'output_encoding': 'unicode',
+                      '_disable_config': True,
+                      # avoid latex writer future warnings:
+                      'use_latex_citations': False,
+                      'legacy_column_widths': True,
+                     }
         doctree = core.publish_doctree(contents_test_input,
-                                       settings_overrides=settings_overrides)
+                                       settings_overrides=mysettings)
         result = core.publish_from_doctree(doctree,
                                      writer_name='latex',
-                                     settings_overrides=settings_overrides)
+                                     settings_overrides=mysettings)
         self.assertNotIn(r'\item \hyperref[foo]{foo}', result)
         # self.assertIn(r'\tableofcontents', result)
+
+
+class WarningsTestCase(DocutilsTestSupport.StandardTestCase):
+
+    def test_future_warnings(self):
+        """Warn about changing defaults."""
+        mysettings={'_disable_config': True,
+                    # 'use_latex_citations': False,
+                    # 'legacy_column_widths': True,
+                   }
+        with warnings.catch_warnings(record=True) as wng:
+            warnings.simplefilter("always")
+            core.publish_string(u'warnings test', writer_name='latex',
+                                settings_overrides=mysettings)
+            self.assertEqual(len(wng), 2, "Expected 2 FutureWarnings.")
+            assert issubclass(wng[0].category, FutureWarning)
+            assert issubclass(wng[1].category, FutureWarning)
 
 
 if __name__ == '__main__':

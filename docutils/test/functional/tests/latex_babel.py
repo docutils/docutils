@@ -7,4 +7,6 @@ reader_name = "standalone"
 parser_name = "rst"
 writer_name = "latex"
 
-# Extra setting we need
+# Extra settings we need
+settings_overrides['legacy_column_widths'] = False
+settings_overrides['use_latex_citations'] = True

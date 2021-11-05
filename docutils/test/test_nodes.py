@@ -11,6 +11,7 @@ Test module for nodes.py.
 
 import sys
 import unittest
+import warnings
 
 import DocutilsTestSupport              # must be imported before docutils
 from DocutilsTestSupport import nodes, utils
@@ -78,6 +79,14 @@ class TextTests(unittest.TestCase):
                           r"and everwh ...'>")
         self.assertEqual(self.longtext.shortrepr(),
                           r"<#text: 'Mary had a lit ...'>")
+
+    def test_Text_rawsource_deprection_warning(self):
+        with warnings.catch_warnings(record=True) as wng:
+            warnings.simplefilter("always")
+            nodes.Text('content', rawsource='content')
+            self.assertEqual(len(wng), 1, "Expected a DeprecationWarning.")
+            assert issubclass(wng[-1].category, DeprecationWarning)
+
 
 class ElementTests(unittest.TestCase):
 
@@ -691,7 +700,7 @@ class SetIdTests(unittest.TestCase):
 
     def test_set_id_custom(self):
         # Custom prefixes.
-        
+
         # Change settings.
         self.document.settings.id_prefix = 'P-'
         self.document.settings.auto_id_prefix = 'auto'
@@ -706,7 +715,7 @@ class SetIdTests(unittest.TestCase):
 
     def test_set_id_descriptive_auto_id(self):
         # Use name or tag-name for auto-id.
-        
+
         # Change setting.
         self.document.settings.auto_id_prefix = '%'
 
@@ -720,7 +729,7 @@ class SetIdTests(unittest.TestCase):
 
     def test_set_id_custom_descriptive_auto_id(self):
         # Custom prefixes and name or tag-name for auto-id.
-        
+
         # Change settings.
         self.document.settings.id_prefix = 'P:'
         self.document.settings.auto_id_prefix = 'a-%'
@@ -741,7 +750,7 @@ class NodeVisitorTests(unittest.TestCase):
 
     def test_dispatch_visit_unknown(self):
         # raise exception if no visit/depart methods are defined for node class
-        self.assertRaises(NotImplementedError, 
+        self.assertRaises(NotImplementedError,
                           self.visitor.dispatch_visit, self.element)
 
     def test_dispatch_visit_optional(self):
