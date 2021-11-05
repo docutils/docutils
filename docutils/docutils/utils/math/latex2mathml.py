@@ -13,12 +13,15 @@
 #    This file is offered as-is, without any warranty.
 #
 # .. _2-Clause BSD license: https://opensource.org/licenses/BSD-2-Clause
-
-
-"""Convert LaTex maths code into presentational MathML."""
-
-# .. [1] the original `rst2mathml.py` in `sandbox/jensj/latex_math`
 #
+# .. [1] the original `rst2mathml.py` in `sandbox/jensj/latex_math`
+
+"""Convert LaTex maths code into presentational MathML.
+
+This module is provisional:
+the API is not settled and may change with any minor Docutils version.
+"""
+
 # Usage:
 #
 # >>> from latex2mathml import *
