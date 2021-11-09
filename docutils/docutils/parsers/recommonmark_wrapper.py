@@ -16,6 +16,9 @@
 A parser for CommonMark MarkDown text using `recommonmark`__.
 
 __ https://pypi.org/project/recommonmark/
+
+This module is provisional:
+the API is not settled and may change with any minor Docutils version.
 """
 
 import docutils.parsers
@@ -46,8 +49,11 @@ except ImportError:
 
 if CommonMarkParser:
     class Parser(CommonMarkParser):
-        """MarkDown parser based on recommonmark."""
+        """MarkDown parser based on recommonmark.
         
+        This parser is provisional:
+        the API is not settled and may change with any minor Docutils version.
+        """
         supported = ('recommonmark', 'commonmark', 'markdown', 'md')
         config_section = 'recommonmark parser'
         config_section_dependencies = ('parsers',)
