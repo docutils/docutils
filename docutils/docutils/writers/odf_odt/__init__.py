@@ -11,18 +11,18 @@ from __future__ import absolute_import
 __docformat__ = 'reStructuredText'
 
 
-import sys
-import os
-import os.path
-import tempfile
-import zipfile
-from xml.etree import ElementTree as etree
-from xml.dom import minidom
-import time
-import re
 import copy
 import itertools
+import os
+import os.path
+import re
+import sys
+import tempfile
+import time
 import weakref
+from xml.etree import ElementTree as etree
+from xml.dom import minidom
+import zipfile
 
 try:
     import locale   # module missing in Jython
@@ -31,6 +31,7 @@ except ImportError:
 
 import docutils
 from docutils import frontend, nodes, utils, writers, languages
+from docutils.parsers.rst.directives.images import PIL # optional
 from docutils.readers import standalone
 from docutils.transforms import references
 
@@ -45,12 +46,6 @@ else:
     from urllib2 import HTTPError
     from urllib2 import urlopen
 
-
-VERSION = '1.0a'
-
-IMAGE_NAME_COUNTER = itertools.count()
-
-#
 # Import pygments and odtwriter pygments formatters if possible.
 try:
     import pygments
@@ -60,19 +55,6 @@ try:
 except (ImportError, SyntaxError):
     pygments = None
 
-# check for the Python Imaging Library
-try:
-    import PIL.Image
-except ImportError:
-    try:  # sometimes PIL modules are put in PYTHONPATH's root
-        import Image
-
-        class PIL(object):
-            pass  # dummy wrapper
-        PIL.Image = Image
-    except ImportError:
-        PIL = None
-
 ## import warnings
 ## warnings.warn('importing IPShellEmbed', UserWarning)
 ## from IPython.Shell import IPShellEmbed
@@ -81,6 +63,10 @@ except ImportError:
 ## ipshell = IPShellEmbed(args,
 ##                        banner = 'Entering IPython.  Press Ctrl-D to exit.',
 ##                        exit_msg = 'Leaving Interpreter, back to program.')
+
+VERSION = '1.0a'
+
+IMAGE_NAME_COUNTER = itertools.count()
 
 
 #

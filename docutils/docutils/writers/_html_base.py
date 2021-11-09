@@ -24,19 +24,10 @@ import re
 import sys
 import warnings
 
-try: # check for the Python Imaging Library
-    import PIL.Image
-except ImportError:
-    try:  # sometimes PIL modules are put in PYTHONPATH's root
-        import Image
-        class PIL(object): pass  # dummy wrapper
-        PIL.Image = Image
-    except ImportError:
-        PIL = None
-
 import docutils
 from docutils import frontend, languages, nodes, utils, writers
 from docutils.parsers.rst.directives import length_or_percentage_or_unitless
+from docutils.parsers.rst.directives.images import PIL
 from docutils.utils.error_reporting import SafeString
 from docutils.transforms import writer_aux
 from docutils.utils.math import (unichar2tex, pick_math_environment,
