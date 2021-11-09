@@ -34,7 +34,6 @@ import docutils
 from docutils import frontend, nodes, writers, io
 from docutils.transforms import writer_aux
 from docutils.writers import _html_base
-from docutils.writers._html_base import PIL, url2pathname
 
 class Writer(writers._html_base.Writer):
 
@@ -286,7 +285,7 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
         if 'controls' in node['classes']:
             atts['controls'] = 'controls'
         atts['title'] = node.get('alt', uri)
-        if self.settings.image_loading == 'lazy':
+        if getattr(self.settings, 'image_loading', None) == 'lazy':
             atts['loading'] = 'lazy'
         # No newline in inline context or if surrounded by <a>...</a>.
         if (isinstance(node.parent, nodes.TextElement) or
@@ -443,7 +442,7 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
         start_tag, close_tag = super(HTMLTranslator,
                                      self).section_title_tags(node)
         ids = node.parent['ids']
-        if (ids and self.settings.section_self_link
+        if (ids and getattr(self.settings, 'section_self_link', None)
             and not isinstance(node.parent, nodes.document)):
             self_link = ('<a class="self-link" title="link to this section"'
                         ' href="#%s"></a>' % ids[0])
