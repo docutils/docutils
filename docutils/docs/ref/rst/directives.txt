@@ -164,6 +164,39 @@ value.
 
 There are two image directives: "image" and "figure".
 
+It is up to the author to ensure compatibility of the image data format
+with the output format or user agent (LaTeX__ engine, `HTML browser`__,
+ODT, ...). The following, non exhaustive table provides an overview
+
+========== ====== ====== ===== ===== ===== ===== ===== ===== ===== =====
+..         vector image  raster image                  moving image [#]_
+---------- ------------- ----------------------------- -----------------
+..         SVG    PDF    PNG   JPG   GIF   APNG  AVIF  WebM  MP4   OGG
+========== ====== ====== ===== ===== ===== ===== ===== ===== ===== =====
+HTML4      ✓ [#]_        ✓     ✓     ✓     (✓)   (✓)
+
+HTML5      ✓             ✓     ✓     ✓     ✓     ✓     ✓     ✓     ✓
+
+LaTeX [#]_        ✓      ✓     ✓
+
+ODT        ✓      ✓      ✓     ✓     ✓
+========== ====== ====== ===== ===== ===== ===== ===== ===== ===== =====
+
+.. [#] The html5 writer uses the ``<video>`` tag if the image URI points
+       to a file with an extension matching one of the listed video formats
+       (since Docutils 0.17).
+
+.. [#] The html4 writer uses an ``<object>`` tag for SVG images for better
+       compatibility with older browsers.
+
+.. [#] When compiling with ``pdflatex``, ``xelatex``, or ``lualatex``.
+       The original ``latex`` engine supports only the EPS image format.
+       Some build systems, e.g. rubber_ support additional formats via
+       on-the-fly image conversion.
+
+__ ../../user/latex.html#image-inclusion
+__ https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Image_types
+.. _rubber: https://github.com/petrhosek/rubber
 
 Image
 =====
@@ -222,7 +255,7 @@ The following options are recognized:
     no scaling.
 
     If no "height" or "width" options are specified, the `Python
-    Imaging Library`_ (PIL/Pillow_) may be used to determine them, if
+    Imaging Library` (PIL/Pillow_) may be used to determine them, if
     it is installed and the image file is available.
 
 ``align`` : "top", "middle", "bottom", "left", "center", or "right"
@@ -329,7 +362,6 @@ In addition, the following options are recognized:
     class_ directive below.
 
 .. _Python Imaging Library:
-    https://en.wikipedia.org/wiki/Python_Imaging_Library
 .. _Pillow: https://pypi.org/project/Pillow/
 
 
@@ -768,7 +800,7 @@ The following options are recognized:
     Sets the width of the table to the specified length or percentage
     of the line width.  If omitted, the renderer determines the width
     of the table based on its contents or the column ``widths``.
-    
+
     .. _column-widths:
 
 ``widths`` : "auto", "grid", or a list of integers
@@ -953,7 +985,7 @@ The following options are recognized:
 ``align`` : "left", "center", or "right"
     The horizontal alignment of the table.
     (New in Docutils 0.13)
-    
+
 ``header-rows`` : integer
     The number of rows of list data to use in the table header.
     Defaults to 0.
@@ -968,7 +1000,7 @@ The following options are recognized:
     Sets the width of the table to the specified length or percentage
     of the line width.  If omitted, the renderer determines the width
     of the table based on its contents or the column ``widths``.
-    
+
     .. _column widths:
 
 ``widths`` : integer [integer...] or "auto"
@@ -1040,7 +1072,7 @@ The following options are recognized:
 
 ``backlinks`` : "entry" or "top" or "none"
     Generate links from section headers back to the table of contents
-    entries, the table of contents itself, or generate no backlinks.
+    entries, the table of contents itself, or generate no back-links.
 
 ``class`` : text
     Set a `"classes"`_ attribute value on the topic element.  See the

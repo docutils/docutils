@@ -221,7 +221,7 @@ Docutils-general:
 * `Docutils Testing <dev/testing.html>`__
 * `Docstring Semantics <dev/semantics.html>`__ (incomplete)
 * `Python Source Reader <dev/pysource.html>`_ (incomplete)
-* `Docutils Python DTD <dev/pysource.dtd>`_ (experimental)
+* `Docutils Python DTD <dev/pysource.dtd>`_
 * `Plan for Enthought API Documentation Tool <dev/enthought-plan.html>`_
 * `Enthought API Documentation Tool RFP <dev/enthought-rfp.html>`_
 

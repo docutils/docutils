@@ -33,7 +33,7 @@ Release 0.18 (2021-10-26)
 * docutils/parsers/recommonmark_wrapper.py
 
   - Test and update to work with recommonmark version 0.6.0.
-    Still experimental.
+    Still provisional.
 
     Unfortunately, recommonmark_ is `no longer maintained`__.
 
@@ -62,7 +62,7 @@ Release 0.18 (2021-10-26)
 
   - Read settings from standard configuration files.
 
-Fix spelling errors in documentation and docstrings. 
+Fix spelling errors in documentation and docstrings.
 Thanks to Dimitri Papadopoulos.
 
 

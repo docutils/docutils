@@ -12,8 +12,11 @@
 #
 # .. _2-Clause BSD license: https://opensource.org/licenses/BSD-2-Clause
 
-# Wrappers for TeX->MathML conversion by external tools
-# =====================================================
+"""Wrappers for TeX->MathML conversion by external tools
+
+This module is provisional:
+the API is not settled and may change with any minor Docutils version.
+"""
 
 from __future__ import print_function
 import subprocess
