@@ -281,10 +281,10 @@ class SectionSubTitle(TitlePromoter):
     def apply(self):
         if not self.document.settings.setdefault('sectsubtitle_xform', True):
             return
-        for section in self.document.traverse(nodes.section):
+        for section in self.document.findall(nodes.section):
             # On our way through the node tree, we are modifying it
             # but only the not-yet-visited part, so that the iterator
-            # returned by traverse() is not corrupted.
+            # returned by findall() is not corrupted.
             self.promote_subtitle(section)
 
 
@@ -513,7 +513,7 @@ class DocInfo(Transform):
         """
         # @@ keep original formatting? (e.g. ``:authors: A. Test, *et-al*``)
         text = ''.join(unicode(node)
-                       for node in field[1].traverse(nodes.Text))
+                       for node in field[1].findall(nodes.Text))
         if not text:
             raise TransformError
         for authorsep in self.language.author_separators:

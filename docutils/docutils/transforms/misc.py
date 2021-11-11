@@ -94,7 +94,7 @@ class Transitions(Transform):
     default_priority = 830
 
     def apply(self):
-        for node in self.document.traverse(nodes.transition):
+        for node in self.document.findall(nodes.transition):
             self.visit_transition(node)
 
     def visit_transition(self, node):

@@ -2064,7 +2064,7 @@ class Body(RSTState):
                 del substitution_node[i]
             else:
                 i += 1
-        for node in substitution_node.traverse(nodes.Element):
+        for node in substitution_node.findall(nodes.Element):
             if self.disallowed_inside_substitution_definitions(node):
                 pformat = nodes.literal_block('', node.pformat().rstrip())
                 msg = self.reporter.error(

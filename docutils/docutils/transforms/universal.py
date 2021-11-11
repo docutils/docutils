@@ -108,7 +108,7 @@ class ExposeInternals(Transform):
 
     def apply(self):
         if self.document.settings.expose_internals:
-            for node in self.document.traverse(self.not_Text):
+            for node in self.document.findall(self.not_Text):
                 for att in self.document.settings.expose_internals:
                     value = getattr(node, att, None)
                     if value is not None:
@@ -149,7 +149,7 @@ class FilterMessages(Transform):
     default_priority = 870
 
     def apply(self):
-        for node in tuple(self.document.traverse(nodes.system_message)):
+        for node in tuple(self.document.findall(nodes.system_message)):
             if node['level'] < self.document.reporter.report_level:
                 node.parent.remove(node)
 
@@ -181,7 +181,7 @@ class StripComments(Transform):
 
     def apply(self):
         if self.document.settings.strip_comments:
-            for node in tuple(self.document.traverse(nodes.comment)):
+            for node in tuple(self.document.findall(nodes.comment)):
                 node.parent.remove(node)
 
 
@@ -200,14 +200,14 @@ class StripClassesAndElements(Transform):
             self.strip_elements = set(
                 self.document.settings.strip_elements_with_classes)
             # Iterate over a tuple as removing the current node
-            # corrupts the iterator returned by `traverse`:
-            for node in tuple(self.document.traverse(self.check_classes)):
+            # corrupts the iterator returned by `iter`:
+            for node in tuple(self.document.findall(self.check_classes)):
                 node.parent.remove(node)
 
         if not self.document.settings.strip_classes:
             return
         strip_classes = self.document.settings.strip_classes
-        for node in self.document.traverse(nodes.Element):
+        for node in self.document.findall(nodes.Element):
             for class_value in strip_classes:
                 try:
                     node['classes'].remove(class_value)
@@ -282,7 +282,7 @@ class SmartQuotes(Transform):
 
         # "Educate" quotes in normal text. Handle each block of text
         # (TextElement node) as a unit to keep context around inline nodes:
-        for node in self.document.traverse(nodes.TextElement):
+        for node in self.document.findall(nodes.TextElement):
             # skip preformatted text blocks and special elements:
             if isinstance(node, self.nodes_to_skip):
                 continue
@@ -291,7 +291,7 @@ class SmartQuotes(Transform):
                 continue
 
             # list of text nodes in the "text block":
-            txtnodes = [txtnode for txtnode in node.traverse(nodes.Text)
+            txtnodes = [txtnode for txtnode in node.findall(nodes.Text)
                         if not isinstance(txtnode.parent,
                                           nodes.option_string)]
 
