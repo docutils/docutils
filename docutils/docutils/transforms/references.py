@@ -41,7 +41,7 @@ class PropagateTargets(Transform):
     default_priority = 260
 
     def apply(self):
-        for target in self.document.traverse(nodes.target):
+        for target in self.document.findall(nodes.target):
             # Only block-level targets without reference (like ".. _target:"):
             if (isinstance(target.parent, nodes.TextElement) or
                 (target.hasattr('refid') or target.hasattr('refuri') or
@@ -118,10 +118,10 @@ class AnonymousHyperlinks(Transform):
     def apply(self):
         anonymous_refs = []
         anonymous_targets = []
-        for node in self.document.traverse(nodes.reference):
+        for node in self.document.findall(nodes.reference):
             if node.get('anonymous'):
                 anonymous_refs.append(node)
-        for node in self.document.traverse(nodes.target):
+        for node in self.document.findall(nodes.target):
             if node.get('anonymous'):
                 anonymous_targets.append(node)
         if len(anonymous_refs) \
@@ -354,7 +354,7 @@ class ExternalTargets(Transform):
     default_priority = 640
 
     def apply(self):
-        for target in self.document.traverse(nodes.target):
+        for target in self.document.findall(nodes.target):
             if target.hasattr('refuri'):
                 refuri = target['refuri']
                 for name in target['names']:
@@ -374,7 +374,7 @@ class InternalTargets(Transform):
     default_priority = 660
 
     def apply(self):
-        for target in self.document.traverse(nodes.target):
+        for target in self.document.findall(nodes.target):
             if not target.hasattr('refuri') and not target.hasattr('refid'):
                 self.resolve_reference_ids(target)
 
@@ -671,7 +671,7 @@ class Substitutions(Transform):
         line_length_limit = getattr(self.document.settings,
                                     "line_length_limit", 10000)
 
-        subreflist = list(self.document.traverse(nodes.substitution_reference))
+        subreflist = list(self.document.findall(nodes.substitution_reference))
         for ref in subreflist:
             msg = ''
             refname = ref['refname']
@@ -714,7 +714,7 @@ class Substitutions(Transform):
             subdef_copy = subdef.deepcopy()
             try:
                 # Take care of nested substitution references:
-                for nested_ref in subdef_copy.traverse(
+                for nested_ref in subdef_copy.findall(
                         nodes.substitution_reference):
                     nested_name = normed[nested_ref['refname'].lower()]
                     if nested_name in nested.setdefault(nested_name, []):
@@ -777,7 +777,7 @@ class TargetNotes(Transform):
     def apply(self):
         notes = {}
         nodelist = []
-        for target in self.document.traverse(nodes.target):
+        for target in self.document.findall(nodes.target):
             # Only external targets.
             if not target.hasattr('refuri'):
                 continue
@@ -793,7 +793,7 @@ class TargetNotes(Transform):
                 notes[target['refuri']] = footnote
                 nodelist.append(footnote)
         # Take care of anonymous references.
-        for ref in self.document.traverse(nodes.reference):
+        for ref in self.document.findall(nodes.reference):
             if not ref.get('anonymous'):
                 continue
             if ref.hasattr('refuri'):
@@ -856,7 +856,7 @@ class DanglingReferences(Transform):
         self.document.walk(visitor)
         # *After* resolving all references, check for unreferenced
         # targets:
-        for target in self.document.traverse(nodes.target):
+        for target in self.document.findall(nodes.target):
             if not target.referenced:
                 if target.get('anonymous'):
                     # If we have unreferenced anonymous targets, there

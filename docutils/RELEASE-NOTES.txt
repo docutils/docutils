@@ -83,13 +83,22 @@ Drop support for `old-format configuration files`_.
 .. _use_latex_citations: docs/user/config.html#use-latex-citations
 
 
-Release 0.18 (2021-10-26)
-=========================
+Release 0.18.1.dev
+==================
 
 .. Note::
 
    Docutils 0.18.x is the last version supporting Python 2.7, 3.5, and 3.6.
 
+* nodes.Node.traverse() returns a list again to restore
+  backwards compatibility (fixes bug #431).
+  It is deprecated in favour of the new method nodes.Node.findall().
+
+* Small bugfixes (see HISTORY_).
+
+
+Release 0.18 (2021-10-26)
+=========================
 
 * Output changes:
 
@@ -159,11 +168,11 @@ Release 0.18 (2021-10-26)
   ``iepngfix.htc`` and ``blank.gif`` (IE 6 workaround for `s5_html`).
 
 * Removed sub-module:
-  ``parsers.rst.directives.html`` 
+  ``parsers.rst.directives.html``
   (Meta directive moved to ``parsers.rst.directives.misc``.)
 
-* Removed function: ``utils.unique_combinations``
-  (obsoleted by ``itertools.combinations``).
+* Removed function: utils.unique_combinations()
+  (obsoleted by itertools.combinations()).
 
 * Removed attribute: ``HTMLTranslator.topic_classes``
   (check node.parent.classes instead).
@@ -173,11 +182,11 @@ Release 0.18 (2021-10-26)
   ``docutils/utils/math/latex2mathml.py``
   (mathematical notation in HTML, cf. `LaTeX syntax for mathematics`_).
 
-* ``nodes.Node.traverse()`` returns an iterator instead of a list.
+* nodes.Node.traverse() returns an iterator instead of a list.
 
 * Various bugfixes and improvements (see HISTORY_).
 
-  Fix spelling errors in documentation and docstrings. 
+  Fix spelling errors in documentation and docstrings.
   Thanks to Dimitri Papadopoulos.
 
 __ docs/ref/doctree.html#meta

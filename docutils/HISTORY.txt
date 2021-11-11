@@ -14,6 +14,13 @@
 Changes Since 0.18
 ==================
 
+* docutils/nodes.py
+
+  - Node.traverse() returns a list again to restore backwards
+    compatibility. Fixes bug #431.
+
+  - New method Node.findall(): like Node.traverse() but returns an iterator.
+
 * docutils/writers/_html_base.py
 
   - Fix handling of ``footnote_backlinks==False`` (report Alan G Isaac).
@@ -84,7 +91,7 @@ Release 0.18b1 (2021-10-05)
   - document.make_id(): Do not strip leading number and hyphen characters
     from `name` if the id_prefix setting is non-empty.
 
-  - ``Node.traverse()`` returns an iterator instead of a list.
+  - Node.traverse() returns an iterator instead of a list.
 
 * docutils/parsers/rst/directives/html.py
 
@@ -460,9 +467,9 @@ Release 0.16 (2020-01-16)
   - Docutils now supports Python 2.7 and Python 3.5+ natively
     (without conversion by ``2to3``).
   - Keep `backslash escapes`__ in the document tree. Backslash characters in
-    text are be represented by NULL characters in the ``text`` attribute of
+    text are be represented by NULL characters in the `text` attribute of
     Doctree nodes and removed in the writing stage by the node's
-    ``astext()`` method.
+    astext() method.
 
   __ http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html#escaping-mechanism
 
@@ -669,7 +676,7 @@ Release 0.14 (2017-08-03)
 
 * docutils/parsers/rst/directives/tables.py:
 
-  - Rework patch [ 120 ] (revert change to ``Table.get_column_widths()``
+  - Rework patch [ 120 ] (revert change to Table.get_column_widths()
     that led to problems in an application with a custom table directive).
 
 * docutils/transforms/frontmatter.py:

@@ -212,39 +212,57 @@ class Node(object):
             visitor.dispatch_departure(self)
         return stop
 
-    def _fast_traverse(self, cls):
+    def _fast_findall(self, cls):
         """Return iterator that only supports instance checks."""
         if isinstance(self, cls):
             yield self
         for child in self.children:
-            for subnode in child._fast_traverse(cls):
+            for subnode in child._fast_findall(cls):
                 yield subnode
 
-    def _all_traverse(self):
+    def _superfast_findall(self):
         """Return iterator that doesn't check for a condition."""
+        # This is different from ``iter(self)`` implemented via
+        # __getitem__() and __len__() in the Element subclass,
+        # which yields only the direct children.
         yield self
         for child in self.children:
-            for subnode in child._all_traverse():
+            for subnode in child._superfast_findall():
                 yield subnode
 
     def traverse(self, condition=None, include_self=True, descend=True,
                  siblings=False, ascend=False):
-        """
-        Return an iterator yielding
+        """Return list of nodes following `self`.
 
-        * self (if include_self is true)
-        * all descendants in tree traversal order (if descend is true)
-        * all siblings (if siblings is true) and their descendants (if
-          also descend is true)
-        * the siblings of the parent (if ascend is true) and their
-          descendants (if also descend is true), and so on
+        For looping, Node.findall() is faster and more memory efficient.
+        """
+        # traverse() may be eventually removed:
+        warnings.warn('nodes.Node.traverse() is obsoleted by Node.findall().',
+                      PendingDeprecationWarning, stacklevel=2)
+        return list(self.findall(condition, include_self, descend,
+                                 siblings, ascend))
+
+    def findall(self, condition=None, include_self=True, descend=True,
+                siblings=False, ascend=False):
+        """
+        Return an iterator yielding nodes following `self`.
+
+        * self (if `include_self` is true)
+        * all descendants in tree traversal order (if `descend` is true)
+        * all siblings (if `siblings` is true) and their descendants (if
+          also `descend` is true)
+        * the siblings of the parent (if `ascend` is true) and their
+          descendants (if also `descend` is true), and so on
 
         If `condition` is not None, the iterator yields only nodes
         for which ``condition(node)`` is true.  If `condition` is a
         node class ``cls``, it is equivalent to a function consisting
         of ``return isinstance(node, cls)``.
 
-        If ascend is true, assume siblings to be true as well.
+        If `ascend` is true, assume `siblings` to be true as well.
+
+        To allow processing of the return value or modification while
+        iterating, wrap calls to findall() in a ``tuple()`` or ``list()``.
 
         For example, given the following tree::
 
@@ -256,26 +274,25 @@ class Node(object):
                 <reference name="Baz" refid="baz">
                     Baz
 
-        Then list(emphasis.traverse()) equals ::
+        Then tuple(emphasis.traverse()) equals ::
 
-            [<emphasis>, <strong>, <#text: Foo>, <#text: Bar>]
+            (<emphasis>, <strong>, <#text: Foo>, <#text: Bar>)
 
-        and list(strong.traverse(ascend=True)) equals ::
+        and list(strong.traverse(ascend=True) equals ::
 
             [<strong>, <#text: Foo>, <#text: Bar>, <reference>, <#text: Baz>]
         """
-
         if ascend:
             siblings=True
         # Check for special argument combinations that allow using an
         # optimized version of traverse()
         if include_self and descend and not siblings:
             if condition is None:
-                for subnode in self._all_traverse():
+                for subnode in self._superfast_findall():
                     yield subnode
                 return
             elif isinstance(condition, type):
-                for subnode in self._fast_traverse(condition):
+                for subnode in self._fast_findall(condition):
                     yield subnode
                 return
         # Check if `condition` is a class (check for TypeType for Python
@@ -290,7 +307,7 @@ class Node(object):
             yield self
         if descend and len(self.children):
             for child in self:
-                for subnode in child.traverse(condition=condition,
+                for subnode in child.findall(condition=condition,
                                     include_self=True, descend=True,
                                     siblings=False, ascend=False):
                     yield subnode
@@ -299,7 +316,7 @@ class Node(object):
             while node.parent:
                 index = node.parent.index(node)
                 for sibling in node.parent[index+1:]:
-                    for subnode in sibling.traverse(condition=condition,
+                    for subnode in sibling.findall(condition=condition,
                                         include_self=True, descend=descend,
                                         siblings=False, ascend=False):
                         yield subnode
@@ -311,16 +328,15 @@ class Node(object):
     def next_node(self, condition=None, include_self=False, descend=True,
                   siblings=False, ascend=False):
         """
-        Return the first node in the iterator returned by traverse(),
+        Return the first node in the iterator returned by findall(),
         or None if the iterable is empty.
 
-        Parameter list is the same as of traverse.  Note that
-        include_self defaults to False, though.
+        Parameter list is the same as of traverse.  Note that `include_self`
+        defaults to False, though.
         """
-        node_iterator = self.traverse(condition, include_self,
-                                      descend, siblings, ascend)
         try:
-            return next(node_iterator)
+            return next(self.findall(condition, include_self,
+                                     descend, siblings, ascend))
         except StopIteration:
             return None
 
@@ -472,6 +488,11 @@ class Element(Node):
     nodes), indexing by integer.  To get the first child node, use::
 
         element[0]
+
+    to iterate over the child nodes (without descending), use::
+
+        for child in element:
+            ...
 
     Elements may be constructed using the ``+=`` operator.  To add one new
     child node to element, do::
