@@ -14,12 +14,7 @@ if __name__ == '__main__':
     import __init__
 from test_parsers import DocutilsTestSupport
 
-import unicodedata
-
-try:
-    east_asian_width = unicodedata.east_asian_width
-except AttributeError:
-    east_asian_width = None
+from unicodedata import east_asian_width
 
 
 def suite():

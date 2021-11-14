@@ -109,7 +109,8 @@ __docformat__ = 'restructuredtext'
 
 import sys
 import re
-import unicodedata
+from unicodedata import east_asian_width
+
 from docutils import utils
 from docutils.utils.error_reporting import ErrorOutput
 
@@ -1446,7 +1447,6 @@ class StringList(ViewList):
         Pad all double-width characters in self by appending `pad_char` to each.
         For East Asian language support.
         """
-        east_asian_width = unicodedata.east_asian_width
         for i in range(len(self.data)):
             line = self.data[i]
             if isinstance(line, unicode):

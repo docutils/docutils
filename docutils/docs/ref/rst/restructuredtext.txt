@@ -495,13 +495,17 @@ adornment: "underlines" below the title text, or underlines and
 matching "overlines" above the title.  An underline/overline is a
 single repeated punctuation character that begins in column 1 and
 forms a line extending at least as far as the right edge of the title
-text.  Specifically, an underline/overline character may be any
+text. [#]_  Specifically, an underline/overline character may be any
 non-alphanumeric printable 7-bit ASCII character [#]_.  When an
 overline is used, the length and character used must match the
 underline.  Underline-only adornment styles are distinct from
 overline-and-underline styles that use the same character.  There may
 be any number of levels of section titles, although some output
 formats may have limits (HTML has 6 levels).
+
+.. [#] The key is the visual length of the title in a mono-spaced font.
+   The adornment may need more or less characters than title, if the
+   title contains wide__ or combining__ characters.
 
 .. [#] The following are all valid section title adornment
    characters::
@@ -512,6 +516,9 @@ formats may have limits (HTML has 6 levels).
    recommended::
 
        = - ` : . ' " ~ ^ _ * + #
+
+__ https://en.wikipedia.org/wiki/Halfwidth_and_fullwidth_forms#In_Unicode
+__ https://en.wikipedia.org/wiki/Combining_character
 
 Rather than imposing a fixed number and order of section title
 adornment styles, the order enforced will be the order as encountered.
@@ -1020,8 +1027,8 @@ Option Lists
 Doctree elements: option_list_, option_list_item_, option_group_, option_,
 option_string_, option_argument_, description_.
 
-Option lists are two-column lists of command-line options and
-descriptions, documenting a program's options.  For example::
+Option lists map a program's command-line options to descriptions
+documenting them.  For example::
 
     -a         Output all.
     -b         Output both (this description is
