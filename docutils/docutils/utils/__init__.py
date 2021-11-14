@@ -641,7 +641,7 @@ def column_width(text):
     Correct ``len(text)`` for wide East Asian and combining Unicode chars.
     """
     if isinstance(text, str) and sys.version_info < (3, 0):
-        return len(text)
+        return len(text) # shortcut for binary strings
     width = sum([east_asian_widths[unicodedata.east_asian_width(c)]
                  for c in text])
     # correction for combining chars:
