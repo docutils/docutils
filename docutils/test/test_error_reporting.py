@@ -58,7 +58,7 @@ problematic_locales = ['cs_CZ', 'cs_CZ.UTF8',
                        'ja_JP.UTF-8',
                        'ru_RU', 'ru_RU.KOI8-R',
                        'ru_RU.UTF-8',
-                       '',  # default locale: might be non-problematic
+                       # '',  # default locale: might be non-problematic
                        ]
 
 if oldlocale is not None:
@@ -74,13 +74,14 @@ if oldlocale is not None:
 else:
     testlocale = None
 
+
 class SafeStringTests(unittest.TestCase):
     # the error message in EnvironmentError instances comes from the OS
     # and in some locales (e.g. ru_RU), contains high bit chars.
     # -> see the test in test_error_reporting.py
 
     # test data:
-    bs = b'\xfc'     # unicode(bs) fails, str(bs) in Python 3 return repr()
+    bs = b'\xc3\xbc'   # unicode(bs) fails, str(bs) in Python 3 returns repr(bs)
     us = u'\xfc'       # bytes(us) fails; str(us) fails in Python 2
     be = Exception(bs) # unicode(be) fails
     ue = Exception(us) # bytes(ue) fails, str(ue) fails in Python 2;
@@ -130,7 +131,7 @@ class SafeStringTests(unittest.TestCase):
 
 
 class ErrorStringTests(unittest.TestCase):
-    bs = b'\xfc'     # unicode(bs) fails, str(bs) in Python 3 return repr()
+    bs = b'\xc3\xbc' # unicode(bs) fails, str(bs) in Python 3 return repr()
     us = u'\xfc'     # bytes(us) fails; str(us) fails in Python 2
 
     def test_str(self):
@@ -219,10 +220,10 @@ class SafeStringTests_locale(unittest.TestCase):
     if testlocale:
         locale.setlocale(locale.LC_ALL, testlocale)
     # test data:
-    bs = b'\xfc'
+    bs = b'\xc3\xbc'
     us = u'\xfc'
     try:
-        open(b'\xfc')
+        open(b'\xc3\xbc')
     except IOError as e: # in Python 3 the name for the exception instance
         bioe = e       # is local to the except clause
     try:
@@ -235,7 +236,7 @@ class SafeStringTests_locale(unittest.TestCase):
         except IOError as e:
             uioe = e
     try:
-        os.chdir(b'\xfc')
+        os.chdir(b'\xc3\xbc')
     except OSError as e:
         bose = e
     try:
