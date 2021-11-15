@@ -29,6 +29,10 @@ Changes Since 0.18
 
   - Fix typo (bug #432).
 
+* docutils/writers/odf_odt/__init__.py:
+
+  - Fix spurious output with Windows (bug #350). 
+
 Release 0.18 (2021-10-26)
 =========================
 
