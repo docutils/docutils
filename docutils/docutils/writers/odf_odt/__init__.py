@@ -16,6 +16,7 @@ import itertools
 import os
 import os.path
 import re
+import subprocess
 import sys
 import tempfile
 import time
@@ -45,6 +46,8 @@ else:
     from StringIO import StringIO
     from urllib2 import HTTPError
     from urllib2 import urlopen
+    FileNotFoundError = OSError
+
 
 # Import pygments and odtwriter pygments formatters if possible.
 try:
@@ -1087,13 +1090,13 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def setup_paper(self, root_el):
         try:
-            fin = os.popen("paperconf -s 2> /dev/null")
-            dimensions = fin.read().split()
-            w, h = (float(s) for s in dimensions)
-        except (IOError, ValueError):
+            dimensions = subprocess.check_output(('paperconf', '-s'),
+                                                 stderr=subprocess.STDOUT)
+            w, h = (float(s) for s in dimensions.split())
+        except (subprocess.CalledProcessError, FileNotFoundError, ValueError):
+            self.document.reporter.info(
+                'Cannot use `paperconf`, defaulting to Letter.')
             w, h = 612, 792     # default to Letter
-        finally:
-            fin.close()
 
         def walk(el):
             if el.tag == "{%s}page-layout-properties" % SNSD["style"] and \
