@@ -92,7 +92,6 @@ Release 0.18.1.dev
 
 * nodes.Node.traverse() returns a list again to restore
   backwards compatibility (fixes bug #431).
-  It is deprecated in favour of the new method nodes.Node.findall().
 
 * Small bugfixes (see HISTORY_).
 
