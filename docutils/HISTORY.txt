@@ -11,15 +11,16 @@
 
 .. contents::
 
-Changes Since 0.18
-==================
+Release 0.18.1 (in preparation)
+===============================
 
 * docutils/nodes.py
 
   - Node.traverse() returns a list again to restore backwards
     compatibility. Fixes bug #431.
-
-  - New method Node.findall(): like Node.traverse() but returns an iterator.
+    
+  - New method Node.findall(): like Node.traverse() but returns an
+    iterator. Obsoletes Node.traverse().
 
 * docutils/writers/_html_base.py
 
@@ -32,6 +33,11 @@ Changes Since 0.18
 * docutils/writers/odf_odt/__init__.py:
 
   - Fix spurious output with Windows (bug #350). 
+
+* test\test_error_reporting.py
+
+  - Fix a false positive (bug #434).
+
 
 Release 0.18 (2021-10-26)
 =========================
@@ -62,8 +68,10 @@ Release 0.18 (2021-10-26)
 
 * docutils/writers/html5_polyglot/__init__.py
 
-  - New option "image_loading". Support "lazy" loading of images.
+  - New option `image_loading`_. Support "lazy" loading of images.
     Obsoletes "embed_images".
+
+    .. _image_loading: docs/user/config.html#image-loading
 
 * docutils/writers/pseudoxml.py:
 

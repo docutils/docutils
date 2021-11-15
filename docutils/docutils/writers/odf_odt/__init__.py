@@ -5,6 +5,8 @@
 """
 Open Document Format (ODF) Writer.
 
+This module is provisional:
+the API is not settled and may change with any minor Docutils version.
 """
 from __future__ import absolute_import
 
