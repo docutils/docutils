@@ -29,6 +29,7 @@ import os
 import re
 import warnings
 import unicodedata
+# import xml.dom.minidom as dom # -> conditional import in Node.asdom()
 
 if sys.version_info >= (3, 0):
     unicode = str  # noqa
@@ -73,8 +74,7 @@ class Node(object):
         than a simple container.  Its boolean "truth" does not depend on
         having one or more subnodes in the doctree.
 
-        Use `len()` to check node length.  Use `None` to represent a boolean
-        false value.
+        Use `len()` to check node length.
         """
         return True
 
@@ -245,14 +245,14 @@ class Node(object):
     def findall(self, condition=None, include_self=True, descend=True,
                 siblings=False, ascend=False):
         """
-        Return an iterator yielding nodes following `self`.
+        Return an iterator yielding nodes following `self`:
 
         * self (if `include_self` is true)
         * all descendants in tree traversal order (if `descend` is true)
-        * all siblings (if `siblings` is true) and their descendants (if
-          also `descend` is true)
-        * the siblings of the parent (if `ascend` is true) and their
-          descendants (if also `descend` is true), and so on
+        * the following siblings (if `siblings` is true) and their
+          descendants (if also `descend` is true)
+        * the following siblings of the parent (if `ascend` is true) and
+          their descendants (if also `descend` is true), and so on.
 
         If `condition` is not None, the iterator yields only nodes
         for which ``condition(node)`` is true.  If `condition` is a
@@ -261,8 +261,8 @@ class Node(object):
 
         If `ascend` is true, assume `siblings` to be true as well.
 
-        To allow processing of the return value or modification while
-        iterating, wrap calls to findall() in a ``tuple()`` or ``list()``.
+        If the tree structure is modified during iteration, the result
+        is undefined.
 
         For example, given the following tree::
 
@@ -472,19 +472,26 @@ class Element(Node):
     """
     `Element` is the superclass to all specific elements.
 
-    Elements contain attributes and child nodes.  Elements emulate
-    dictionaries for attributes, indexing by attribute name (a string).  To
-    set the attribute 'att' to 'value', do::
+    Elements contain attributes and child nodes.
+    They can be described as a cross between a list and a dictionary.
+
+    Elements emulate dictionaries for external [#]_ attributes, indexing by
+    attribute name (a string). To set the attribute 'att' to 'value', do::
 
         element['att'] = 'value'
 
-    There are two special attributes: 'ids' and 'names'.  Both are
-    lists of unique identifiers, and names serve as human interfaces
-    to IDs.  Names are case- and whitespace-normalized (see the
-    fully_normalize_name() function), and IDs conform to the regular
-    expression ``[a-z](-?[a-z0-9]+)*`` (see the make_id() function).
+    .. [#] External attributes correspond to the XML element attributes.
+       From its `Node` superclass, Element also inherits "internal"
+       class attributes that are accessed using the standard syntax, e.g.
+       ``element.parent``.
 
-    Elements also emulate lists for child nodes (element nodes and/or text
+    There are two special attributes: 'ids' and 'names'.  Both are
+    lists of unique identifiers: 'ids' conform to the regular expression
+    ``[a-z](-?[a-z0-9]+)*`` (see the make_id() function for rationale and
+    details). 'names' serve as user-friendly interfaces to IDs; they are
+    case- and whitespace-normalized (see the fully_normalize_name() function).
+
+    Elements emulate lists for child nodes (element nodes and/or text
     nodes), indexing by integer.  To get the first child node, use::
 
         element[0]
@@ -510,22 +517,22 @@ class Element(Node):
     """
 
     basic_attributes = ('ids', 'classes', 'names', 'dupnames')
-    """List attributes which are defined for every Element-derived class
+    """Tuple of attributes which are defined for every Element-derived class
     instance and can be safely transferred to a different node."""
 
     local_attributes = ('backrefs',)
-    """A list of class-specific attributes that should not be copied with the
+    """Tuple of class-specific attributes that should not be copied with the
     standard attributes when replacing a node.
 
     NOTE: Derived classes should override this value to prevent any of its
     attributes being copied by adding to the value in its parent class."""
 
     list_attributes = basic_attributes + local_attributes
-    """List attributes, automatically initialized to empty lists for
-    all nodes."""
+    """Tuple of attributes that are automatically initialized to empty lists
+    for all nodes."""
 
-    known_attributes = list_attributes + ('source', 'rawsource')
-    """List attributes that are known to the Element base class."""
+    known_attributes = list_attributes + ('source',)
+    """Tuple of attributes that are known to the Element base class."""
 
     tagname = None
     """The element generic identifier. If None, it is set as an instance

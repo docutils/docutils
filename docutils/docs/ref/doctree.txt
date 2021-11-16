@@ -978,7 +978,7 @@ Details
        In contrast to the definition in the exchange-table-model_,
        unitless values of the "colwidth" are interpreted as proportional
        values, not fixed values with unit "pt".
-       
+
        .. The reference implementation `html4css2` converts column
           widths values to percentages.
 
@@ -4711,7 +4711,7 @@ _`idrefs.type`
               :depth: 1
 
 _`Common Attributes`:
-    Through the `%basic.atts;`_ parameter entity, all elements contain
+    Through the `%basic.atts;`_ parameter entity, all elements support
     the following attributes: ids_, names_ or dupnames_, source_, and
     classes_.
 
@@ -4969,7 +4969,7 @@ Attribute type: `CDATA`_.  Default value: none.
 
 The ``source`` attribute is used to store the path or URL to the
 source text that was used to produce the document tree.  It is one of
-the `common attributes`_, shared by all Docutils elements.
+the `common attributes`_, declared for all Docutils elements.
 
 
 ``start``
