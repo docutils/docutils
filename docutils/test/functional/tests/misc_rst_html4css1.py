@@ -8,9 +8,10 @@ parser_name = "rst"
 writer_name = "html4css1"
 
 # Settings
-# test for encoded attribute value in optional stylesheet name:
-settings_overrides['stylesheet'] = 'foo&bar.css, html4css1.css'
+# test for encoded attribute value in optional stylesheet name,
+# 'stylesheet' setting, values are used verbatim
+settings_overrides['stylesheet'] = 'foo&bar.css, ../input/data/html4css1.css'
+# reset to avoid conflict with 'stylesheet'
 settings_overrides['stylesheet_path'] = ''
-# local copy of stylesheets:
-# (Test runs in ``docutils/test/``, we need relative path from there.)
+# stylesheet_dirs not used with 'stylesheet'
 settings_overrides['stylesheet_dirs'] = ('.', 'functional/input/data')

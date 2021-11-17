@@ -492,6 +492,10 @@ def get_stylesheet_reference(settings, relative_to=None):
     enable specification of multiple stylesheets as a comma-separated
     list.
     """
+    warnings.warn('utils.get_stylesheet_reference()'
+                  ' is obsoleted by utils.get_stylesheet_list()'
+                  ' and will be removed in Docutils 1.2.',
+                  DeprecationWarning, stacklevel=2)
     if settings.stylesheet_path:
         assert not settings.stylesheet, (
             'stylesheet and stylesheet_path are mutually exclusive.')
@@ -518,12 +522,14 @@ def get_stylesheet_list(settings):
     assert not (settings.stylesheet and settings.stylesheet_path), (
             'stylesheet and stylesheet_path are mutually exclusive.')
     stylesheets = settings.stylesheet_path or settings.stylesheet or []
-    # programmatically set default can be string or unicode:
+    # programmatically set default may be string with comma separated list:
     if not isinstance(stylesheets, list):
         stylesheets = [path.strip() for path in stylesheets.split(',')]
-    # expand relative paths if found in stylesheet-dirs:
-    return [find_file_in_dirs(path, settings.stylesheet_dirs)
-            for path in stylesheets]
+    if settings.stylesheet_path:
+        # expand relative paths if found in stylesheet-dirs:
+        stylesheets = [find_file_in_dirs(path, settings.stylesheet_dirs)
+                       for path in stylesheets]
+    return stylesheets
 
 def find_file_in_dirs(path, dirs):
     """

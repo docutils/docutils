@@ -393,8 +393,10 @@ class HTMLTranslator(nodes.NodeVisitor):
             encoded = encoded.replace('.', '&#46;')
         return encoded
 
-    def stylesheet_call(self, path):
+    def stylesheet_call(self, path, adjust_path=None):
         """Return code to reference or embed stylesheet file `path`"""
+        if adjust_path is None:
+            adjust_path = bool(self.settings.stylesheet_path)
         if self.settings.embed_stylesheet:
             try:
                 content = docutils.io.FileInput(source_path=path,
@@ -407,8 +409,8 @@ class HTMLTranslator(nodes.NodeVisitor):
                 return '<--- %s --->\n' % msg
             return self.embedded_stylesheet % content
         # else link to style file:
-        if self.settings.stylesheet_path:
-            # adapt path relative to output (cf. config.html#stylesheet-path)
+        if adjust_path:
+            # rewrite path relative to output (cf. config.html#stylesheet-path)
             path = utils.relative_path(self.settings._destination, path)
         return self.stylesheet_link % self.encode(path)
 
@@ -1237,7 +1239,8 @@ class HTMLTranslator(nodes.NodeVisitor):
         elif self.math_output == 'html':
             if self.math_output_options and not self.math_header:
                 self.math_header = [self.stylesheet_call(
-                    utils.find_file_in_dirs(s, self.settings.stylesheet_dirs))
+                    utils.find_file_in_dirs(s, self.settings.stylesheet_dirs),
+                    adjust_path=True)
                     for s in self.math_output_options[0].split(',')]
             # TODO: fix display mode in matrices and fractions
             math2html.DocumentParameters.displaymode = (math_env != '')

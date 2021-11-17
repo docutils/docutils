@@ -354,7 +354,38 @@ class HelperFunctionTests(unittest.TestCase):
         self.assertEqual(unescaped, self.unescaped)
         restored = utils.unescape(self.nulled, restore_backslashes=True)
         self.assertEqual(restored, self.escaped)
-  
+
+
+class StylesheetFunctionTests(unittest.TestCase):
+
+    stylesheet_dirs = ['.', 'data']
+
+    def test_get_stylesheet_list_stylesheet_path(self):
+        # look for stylesheets in stylesheet_dirs
+        self.stylesheet = None
+        self.stylesheet_path = 'ham.css, missing.css'
+
+        self.assertEqual(utils.get_stylesheet_list(self),
+                         ['data/ham.css', 'missing.css'])
+
+    def test_get_stylesheet_list_stylesheet(self):
+        # use stylesheet paths verbatim
+        self.stylesheet = 'ham.css, missing.css'
+        self.stylesheet_path = None
+
+        self.assertEqual(utils.get_stylesheet_list(self),
+                         ['ham.css', 'missing.css'])
+
+    def test_get_stylesheet_list_conflict(self):
+        # settings "stylesheet_path" and "stylesheet"
+        # must not be used together
+        self.stylesheet = 'ham.css, missing.css'
+        self.stylesheet_path = 'man.css, miss2.css'
+        self.assertRaises(AssertionError,
+                          utils.get_stylesheet_list, self)
+
+
+
 
 if __name__ == '__main__':
     unittest.main()
