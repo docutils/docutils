@@ -18,9 +18,14 @@ Release 0.18.1 (in preparation)
 
   - Node.traverse() returns a list again to restore backwards
     compatibility. Fixes bug #431.
-    
+
   - New method Node.findall(): like Node.traverse() but returns an
     iterator. Obsoletes Node.traverse().
+
+* docutils/utils/__init__.py:
+
+  - Fix behaviour of get_stylesheet_list(): do not look up stylesheets
+    given as "stylesheet" setting. Cf. bug #434.
 
 * docutils/writers/_html_base.py
 
@@ -32,9 +37,9 @@ Release 0.18.1 (in preparation)
 
 * docutils/writers/odf_odt/__init__.py:
 
-  - Fix spurious output with Windows (bug #350). 
+  - Fix spurious output with Windows (bug #350).
 
-* test\test_error_reporting.py
+* test/test_error_reporting.py
 
   - Fix a false positive (bug #434).
 
