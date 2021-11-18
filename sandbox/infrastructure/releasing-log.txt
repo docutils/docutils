@@ -21,6 +21,39 @@ Problems
   - finding ``HISTORY.txt`` in test_utils.py fails.
     Create a HISTORY.txt file to avoid.
 
+Release 0.18.1b (2021-11-18)
+============================
+
+* run tox: passed 2.7, 3.5 ... 3.11
+* set_version 0.18.1b
+* tox again
+* commit : release 0.18.1b
+* Generate universal wheel and source-distribution with py3.8::
+
+    python3 setup.py sdist
+    python3 setup.py bdist_wheel --universal
+
+* Upload universal wheel and source to test.pypi::
+
+    python3 -m twine upload --repository-url https://test.pypi.org/legacy/ dist/docutils-0.18.1b0*
+
+* test in venvs: ignore wrong paths and un-embedded images
+
+* upload to pypi::
+
+    python3.9 -m twine upload  dist/docutils-0.18.1b0*
+
+* and test: Note python3 uses the cached download from the python2 test.
+
+  - remove from pip cache::
+
+      find .cache/pip/wheels -name docutils\*whl
+
+* set_version 0.18.1b1.dev
+* tox
+* commit
+* Run sandbox/infrastructure/docutils-update.local to update web-content.
+
 Release 0.18 (2021-10-26)
 =========================
 
