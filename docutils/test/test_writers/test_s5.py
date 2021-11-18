@@ -31,8 +31,8 @@ interpolations = {
         'version': DocutilsTestSupport.docutils.__version__,
         'drive': '', }
 
-if platform.system() == "Windows":
-    interpolations['drive'] = "C:"
+if platform.system() == 'Windows':
+    interpolations['drive'] = os.path.splitdrive(os.getcwd())[0]
 
 totest_1 = {}
 totest_2 = {}
