@@ -1,4 +1,4 @@
-# $Id: html.py 8347 2019-08-26 12:12:02Z milde $
+# $Id$
 # Author: David Goodger <goodger@python.org>
 # Copyright: This module has been placed in the public domain.
 
@@ -14,7 +14,7 @@ import warnings
 
 from docutils.parsers.rst.directives.misc import MetaBody, Meta
 
-warnings.warn('The `docutils.parsers.rst.directive.htmp` module'
+warnings.warn('The `docutils.parsers.rst.directive.html` module'
               ' will be removed in Docutils 1.2.'
               ' Since Docutils 0.18, the "Meta" node is defined in'
               ' `docutils.parsers.rst.directives.misc`.',
