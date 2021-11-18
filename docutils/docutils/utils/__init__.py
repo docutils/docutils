@@ -529,6 +529,8 @@ def get_stylesheet_list(settings):
         # expand relative paths if found in stylesheet-dirs:
         stylesheets = [find_file_in_dirs(path, settings.stylesheet_dirs)
                        for path in stylesheets]
+        if os.sep != '/': # for URLs, we need POSIX paths
+            stylesheets = [path.replace(os.sep, '/') for path in stylesheets]
     return stylesheets
 
 def find_file_in_dirs(path, dirs):
