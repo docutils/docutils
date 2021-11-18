@@ -998,6 +998,8 @@ class Translator(nodes.NodeVisitor):
         self.body.append(self.defs['reference'][0])
 
     def depart_reference(self, node):
+        # TODO check node text is different from refuri
+        #self.body.append("\n'UR " + node['refuri'] + "\n'UE\n")
         self.body.append(self.defs['reference'][1])
 
     def visit_revision(self, node):
