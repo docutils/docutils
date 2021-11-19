@@ -48,72 +48,6 @@ originators of Ogg Vorbis) put it well when he said:
    http://www.catb.org/~esr/writings/magic-cauldron/
 
 
-How to get a new feature into Docutils
-========================================
-
-Question:
-   I would very much like to have this new feature in the Docutils core.
-   What exactly do I have to do to make this possible?
-
-* Present your idea at the Docutils-develop_ mailing list,
-
-  +1  usually triggers a fast response,
-  -1  may be forgotten later,
-
-  and/or file a ticket at Docutils' `feature request tracker`_.
-
-  +1  there is a permanent record,
-  -1  it may stay forgotten among all the other feature requests.
-
-* Convince a Docutils developer that this is a valuable addition worth the
-  effort.
-
-* Contribute. The developers will make sure that the contribution fits
-  nicely into Docutils (cf. the `review criteria`_). This might involve
-  discussing (and compromising on) design and implementation details. It
-  might also lead to the conclusion that the addition fits better in the
-  `extensions and related projects`_.
-
-* Be patient, and be persistent.  None of us are paid to do this,
-  it's all in our spare time -- which is precious and rare.
-
-How to make code contributions that are easily accepted
--------------------------------------------------------
-
-* Have a look at the `Python coding conventions`_ and `documentation
-  conventions`_ below.
-
-* **Prepare test cases.** This vastly helps when integrating new code. Test
-  cases are also examples and showcases for new features. See `Docutils
-  Testing`_ for a description of the test suite in ``docutils/test/``.
-
-  Ensure the addition works with all `supported Python versions`__.
-
-  __ ../../README.html#requirements
-
-* Look at the Docutils sources to see how similar features are implemented,
-  learn to do it "the Docutils way".
-
-* Prepare a patch or an addition to the existing documentation.
-  Include links.
-
-* If you are familiar with version control, consider creating a `feature
-  branch`_ in a Docutils repository_ checkout. (Working with branches is
-  *much* easier with Git_. You can get a Git clone of the repository from
-  http://repo.or.cz/w/docutils.git or with git-svn.)
-  
-* Mail your patch to the Docutils-develop_ mailing list or attach it to the
-  relevant ticket at Docutils' `feature request tracker`_.
-
-  We accept patches created with diff, SVN, or Git.
-
-.. _docutils-develop: ../user/mailing-lists.html#docutils-develop
-.. _feature request tracker:
-    http://sourceforge.net/p/docutils/feature-requests/
-.. _git: http://git-scm.com/
-.. _Docutils testing: testing.html
-
-
 Python Coding Conventions
 =========================
 
@@ -213,7 +147,9 @@ Copyrights and Licensing
 ========================
 
 The majority of the Docutils project code and documentation has been
-placed in the public domain.  Unless clearly and explicitly indicated
+placed in the public domain (see `Copying Docutils`_).
+
+Unless clearly and explicitly indicated
 otherwise, any patches (modifications to existing files) submitted to
 the project for inclusion (via Subversion, SourceForge trackers,
 mailing lists, or private email) are assumed to be in the public
@@ -232,35 +168,15 @@ intentions regarding copyright, in one of the following ways:
   The license should be well known, simple and compatible with other
   open source software licenses. To keep the number of different
   licenses at a minimum, using the `2-Clause BSD license`_
-  is recommended.
+  (`local copy`__) is recommended.
 
-2-Clause BSD license
---------------------
+  .. Rationale:
+     + clear wording, structured text
+     + license used by the closely related Sphinx project
 
-(also known as "Simplified" or `FreeBSD license`)
-
-  If you want a simple, permissive non-copyleft free software license, the
-  FreeBSD license is a reasonable choice. However, please don't call it a
-  “BSD” or “BSD-style” license, because that is likely to cause confusion
-  which could lead to use of the flawed original BSD license.
-
-  -- `Various Licenses and Comments about Them`_
-
-Pros:
-  * clear wording, structured text
-  * license used by the closely related Sphinx project
-  * "2-Clause BSD license" is a non-ambiguous name, used by both, OSI and
-    GNU.
-
-References:
-  * https://www.freebsd.org/copyright/freebsd-license.html
-  * https://opensource.org/licenses/BSD-2-Clause
-  * https://spdx.org/licenses/BSD-2-Clause.html
-
-.. _Various Licenses and Comments about Them:
-   https://www.gnu.org/licenses/license-list.html
-.. _OSI Approved Licenses: https://www.opensource.org/licenses/category
-.. _SPDX Open Source License Registry: https://www.spdx.org/licenses/
+.. _Copying Docutils: ../../COPYING.html
+.. _2-Clause BSD license: http://opensource.org/licenses/BSD-2-Clause
+__ ../../licenses/BSD-2-Clause.txt
 
 
 .. _Subversion Repository:
@@ -340,6 +256,8 @@ maintenance branch, it must undergo review.  These are the criteria:
 The review process will ensure that at least one other set of eyeballs
 & brains sees the code before it enters the core.  In addition to the
 above, the general `Check-ins`_ policy (below) also applies.
+
+.. _Docutils testing: testing.html
 
 
 Check-ins
@@ -789,6 +707,7 @@ Many related but independent projects are listed in the Docutils
 the Docutils-develop_ mailing list.
 
 .. _link list: http://docutils.sourceforge.net/docs/user/links.html
+.. _docutils-develop: docs/user/mailing-lists.html#docutils-develop
 
 
 

@@ -141,15 +141,21 @@ that yet.
 How can I get a new feature into Docutils?
 ------------------------------------------
 
-Present your idea at the docutils-develop_ mailing list
-or file a ticket at Docutils' `feature request tracker`_.
+* Present your idea at the docutils-develop_ mailing list or file a
+  ticket at Docutils' `feature request tracker`_.
+  Convince the Docutils developers that this is a valuable addition.
 
-See the `Docutils Policies`__ for a more detailed answer.
+* Contribute_.
+
+* Be patient, and be persistent.  None of us are paid to do this,
+  it's all in our spare time, which is precious and rare.
 
 .. _docutils-develop: docs/user/mailing-lists.html#docutils-develop
+.. _extensions and related projects:
+   docs/dev/policies.html#extensions-and-related-projects
 .. _feature request tracker:
     http://sourceforge.net/p/docutils/feature-requests/
-__ docs/dev/policies.html#how-to-get-a-new-feature-into-docutils
+
 
 reStructuredText
 ================
@@ -1221,6 +1227,49 @@ Not directly, no.  It borrows bits from DocBook, HTML, and others.  I
 and have my own biases.  The Docutils document model is designed for
 simplicity and extensibility, and has been influenced by the needs of
 the reStructuredText markup.
+
+
+.. _contribute:
+
+How to make code contributions that are easily accepted
+-------------------------------------------------------
+
+* Follow the `Python coding conventions`_ and `documentation
+  conventions`_ in the Docutils Policies.
+  Ensure the addition works with all `supported Python versions`_.
+
+  Look at the Docutils sources to see how similar features are
+  implemented, learn to do it "the Docutils way".
+
+* Prepare tests_. Test cases are also examples and showcases for new
+  features.
+
+* Include documentation.
+
+* For larger changes, consider creating a `feature branch`_ in a
+  Docutils repository_ checkout. [#]_
+
+* Mail your patch to the Docutils-develop_ mailing list or attach it to the
+  relevant ticket at Docutils' `bug tracker`_ or `feature request tracker`_.
+  We accept patches created with diff, SVN, or Git.
+
+The developers will make sure that contributions fit nicely into Docutils.
+This might involve discussing (and compromising on) design and
+implementation details. It might also lead to the conclusion that the
+addition fits better in the `extensions and related projects`_.
+
+.. [#] Working with branches is much easier with Git_. You can get a Git
+   clone of the repository from http://repo.or.cz/w/docutils.git or with
+   git-svn.
+
+.. _Python coding conventions: docs/dev/policies.html#python-coding-conventions
+.. _documentation conventions: docs/dev/policies.html#documentation-conventions
+.. _tests: docs/dev/testing.html
+.. _supported Python versions: README.html#requirements
+.. _feature branch: docs/dev/policies.html#feature-branch
+.. _Git: http://git-scm.com/
+.. _bug tracker: http://sourceforge.net/p/docutils/bugs/
+
 
 
 ..
