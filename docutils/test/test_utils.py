@@ -281,11 +281,15 @@ class HelperFunctionTests(unittest.TestCase):
         self.assertEqual(utils.column_width(u'dâ'), 2) # combining
 
     def test_decode_path(self):
-        bytes_filename = u'späm'.encode(sys.getfilesystemencoding())
+        try:
+            bytes_filename = u'späm'.encode(sys.getfilesystemencoding())
+        except UnicodeEncodeError:
+            bytes_filename = b'spam'
         bytespath = utils.decode_path(bytes_filename)
         unipath = utils.decode_path(u'späm')
         defaultpath = utils.decode_path(None)
-        self.assertEqual(bytespath, u'späm')
+        if bytes_filename != b'spam': # skip if ä cannot be encoded
+            self.assertEqual(bytespath, u'späm')
         self.assertEqual(unipath, u'späm')
         self.assertEqual(defaultpath, u'')
         self.assertTrue(isinstance(bytespath, nodes.reprunicode))
