@@ -83,8 +83,8 @@ Drop support for `old-format configuration files`_.
 .. _use_latex_citations: docs/user/config.html#use-latex-citations
 
 
-Release 0.18.1b0
-================
+Release 0.18.1
+==============
 
 .. Note::
 

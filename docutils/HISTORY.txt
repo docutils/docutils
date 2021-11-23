@@ -11,8 +11,8 @@
 
 .. contents::
 
-Release 0.18.1 (in preparation)
-===============================
+Release 0.18.1
+==============
 
 * docutils/nodes.py
 
