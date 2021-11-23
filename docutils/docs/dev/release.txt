@@ -81,7 +81,7 @@ Releasing (post 2020)
              -m "tagging release 0.##"
 
 * Update your source directory. 
-* Remove distribution files and build universal wheel and source-distribution again::
+* Rebuild universal wheel and source-distribution ::
 
     python3 setup.py sdist
     python3 setup.py bdist_wheel --universal
