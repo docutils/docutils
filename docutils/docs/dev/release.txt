@@ -80,11 +80,21 @@ Releasing (post 2020)
              svn+ssh://grubert@svn.code.sf.net/p/docutils/code/tags/docutils-0.## \
              -m "tagging release 0.##"
 
+* Update your source directory. 
+* Remove distribution files and build universal wheel and source-distribution again::
+
+    python3 setup.py sdist
+    python3 setup.py bdist_wheel --universal
+
 * Now upload to pypi::
 
     python3 -m twine upload  dist/docutils-0.##*
 
-  and test::
+* Remove previous package from local cache::
+
+    find .cache/pip/wheels -name docutils\*whl -exec rm -v -i {} \;
+
+* and test::
 
     python3 -m venv du3 ; cd du3
     export PYTHONPATH= ; . bin/activate
