@@ -82,6 +82,10 @@ Drop support for `old-format configuration files`_.
 .. _literal_block_env: docs/user/config.html#literal-block-env
 .. _use_latex_citations: docs/user/config.html#use-latex-citations
 
+Changes Since 0.18.1
+====================
+
+.
 
 Release 0.18.1
 ==============
