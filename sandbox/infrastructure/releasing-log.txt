@@ -21,6 +21,11 @@ Problems
   - finding ``HISTORY.txt`` in test_utils.py fails.
     Create a HISTORY.txt file to avoid.
 
+Release 0.18.1 (2021-11-23)
+===========================
+
+follow docs/dev/release.txt
+
 Release 0.18.1b (2021-11-18)
 ============================
 
