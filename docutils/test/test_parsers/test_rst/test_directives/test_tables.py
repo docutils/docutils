@@ -69,60 +69,73 @@ null_bytes_exception = DocutilsTestSupport.exception_data(null_bytes)[0]
 if null_bytes_exception is None:
     bad_encoding_result = """\
 <document source="test data">
-<document source="test data">
     <table>
         <title>
-            good encoding
-        <tgroup cols="3">
-            <colspec colwidth="33">
-            <colspec colwidth="33">
-            <colspec colwidth="33">
-            <thead>
-                <row>
-                    <entry>
-                        <paragraph>
-                            Treat
-                    <entry>
-                        <paragraph>
-                            Quantity
-                    <entry>
-                        <paragraph>
-                            Description
+            bad encoding
+        <tgroup cols="4">
+            <colspec colwidth="25">
+            <colspec colwidth="25">
+            <colspec colwidth="25">
+            <colspec colwidth="25">
             <tbody>
                 <row>
                     <entry>
                         <paragraph>
-                            Albatr\u00b0\u00df
+                            \xfe\xff"Treat"
+                    <entry>
+                        <paragraph>
+                            "Quantity"
+                    <entry>
+                        <paragraph>
+                            "Description"
+                    <entry>
+                <row>
+                    <entry>
+                        <paragraph>
+                            "Albatr\u00b0\u00df"
                     <entry>
                         <paragraph>
                             2.99
                     <entry>
                         <paragraph>
-                            \u00a1On a \u03c3\u03c4\u03b9\u03ba!
+                            "\u00a1Ona\x03\xc3\x03\xc4\x03\xb9\x03\xba!"
+                    <entry>
                 <row>
                     <entry>
                         <paragraph>
-                            Crunchy Frog
+                            "CrunchyFrog"
                     <entry>
                         <paragraph>
                             1.49
                     <entry>
                         <paragraph>
-                            If we took the b\u00f6nes out, it wouldn\u2019t be
-                            crunchy, now would it?
+                            "Ifwetooktheb\u00f6nesout
+                    <entry>
+                        <paragraph>
+                            itwouldn\x20\x19tbe
                 <row>
                     <entry>
                         <paragraph>
-                            Gannet Ripple
+                            crunchy
+                    <entry>
+                        <paragraph>
+                            nowwouldit?"
+                    <entry>
+                    <entry>
+                <row>
+                    <entry>
+                        <paragraph>
+                            "GannetRipple"
                     <entry>
                         <paragraph>
                             1.99
                     <entry>
                         <paragraph>
-                            \u00bfOn a \u03c3\u03c4\u03b9\u03ba?
+                            "\xbfOna\x03\xc3\x03\xc4\x03\xb9\x03\xba?"
+                    <entry>
     <paragraph>
         (7- and 8-bit text encoded as UTF-16 has lots of null/zero bytes.)
-""" % (null_bytes_exception, utf_16_csv)
+"""
 else:
     bad_encoding_result = """\
 <document source="test data">
