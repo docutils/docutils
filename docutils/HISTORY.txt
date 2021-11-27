@@ -14,7 +14,13 @@
 Changes Since 0.18.1
 ====================
 
-.
+* test/DocutilsTestSupport.py
+
+  - Function exception_data returns None if no exception was raised.
+
+* test/test_parsers/test_rst/test_directives/test_tables.py
+
+  - Change for python 3.11.0a2 csv modules supports null character.
 
 Release 0.18.1
 ==============
