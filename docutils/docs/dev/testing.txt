@@ -3,7 +3,8 @@
 ===================
 
 :Authors: Lea Wiemann <LeWiemann@gmail.com>;
-          David Goodger <goodger@python.org>
+          David Goodger <goodger@python.org>;
+          Docutils developers <docutils-developers@lists.sourceforge.net>
 :Revision: $Revision$
 :Date: $Date$
 :Copyright: This document has been placed in the public domain.
@@ -24,59 +25,47 @@ Running the Test Suite
 ======================
 
 Before checking in any changes, run the entire Docutils test suite to
-be sure that you haven't broken anything.  From a shell::
+be sure that you haven't broken anything.  From a shell do [#]_::
 
     cd docutils/test
-    ./alltests.py
+    python -u alltests.py
 
-You should run this with multiple Python versions. You can use ``tox`` for
-this purpose. To run tests against all supported versions of Python, run::
+Before `checking in`__ changes to the Docutils core, run the tests on
+all `supported Python versions`_ (see below for details).
+In a pinch, the edge cases should cover most of it.
 
+.. [#] When using the `Python launcher for Windows`__, make sure to
+   specify a Python version, e.g., ``py -3.9 -u alltests.py`` for
+   Python 3.9.
+
+   __ https://docs.python.org/3/using/windows.html#python-launcher-for-windows
+
+   .. cf. https://sourceforge.net/p/docutils/bugs/434/
+
+__ policies.html#check-ins
+
+
+.. _Python versions:
+
+Testing across multiple Python versions
+---------------------------------------
+
+A Docutils release has a commitment to support a minimum Python version [#]_
+and beyond. Before a release is cut, tests must pass in all
+`supported versions`_.
+
+You can use `tox`_ to test with all supported versions in one go.
+From the shell::
+
+    cd docutils
     tox
 
-To run against a specific version of Python, use the ``pyNN`` environment.
-For example::
+To test a specific version, use the ``pyNN`` environment. For example::
 
     tox -e py37
 
-
-Python Versions
-===============
-
-A docutils release has a commitment to support a minimum version and beyond.
-Before a release is cut, tests must pass in all supported Python versions.
-
-Docutils 0.16 supports Python 2.7 and Python 3.5 or later.
-
-Therefore, you should install Python 2.7 as well as 3.5 up to the latest Python
-(3.7 at the time of this writing) and always run the tests on all of
-them (see `Testing across multiple python versions`_).
-In a pinch, the edge cases (2.7, and 3.7) should cover most of it.
-
-Good resources covering the differences between Python versions:
-
-* `What's New in Python 2.7`__
-* `What's New in Python 3.5`__
-* `What's New in Python 3.6`__
-* `What's New in Python 3.7`__
-* `PEP 290 - Code Migration and Modernization`__
-
-__ https://docs.python.org/whatsnew/2.7.html
-__ https://docs.python.org/3/whatsnew/3.5.html
-__ https://docs.python.org/3/whatsnew/3.6.html
-__ https://docs.python.org/3/whatsnew/3.7.html
-__ http://www.python.org/peps/pep-0290.html
-
-.. _Python Check-in Policies: http://www.python.org/dev/tools.html
-.. _sandbox directory:
-   http://docutils.svn.sourceforge.net/svnroot/docutils/trunk/sandbox/
-
-
-Testing across multiple python versions
----------------------------------------
-
 `pyenv`_ can be installed and configured (see `installing pyenv`_) to
-test multiple python versions::
+get multiple Python versions::
 
     # assuming your system runs 2.7.x
     pyenv install 3.5.7
@@ -88,17 +77,24 @@ test multiple python versions::
     rm -rf ~/.pyenv/shims && pyenv rehash
 
 This will give you ``python2.7`` and ``python3.5`` through ``python3.7``.
-You will also get ``pip2.7``, ``pip3.5``, etc.
+Then run::
 
-To save time, you can use `tox`_. To install tox, run ``pip install tox``.
-Once installed, from shell::
+    python2.7 -u alltests.py
+    [...]
+    python3.7 -u alltests.py
 
-    cd docutils
-    tox
+.. [#] Good resources covering the differences between Python versions
+   are the `What's New` documents (`What's New in Python 3.10`__ and
+   similar).
 
-.. _tox: https://tox.readthedocs.org/en/latest/
+__ https://docs.python.org/3/whatsnew/3.10.html
+
+
+.. _supported versions:
+.. _supported Python versions: ../../README.html#requirements
 .. _pyenv: https://github.com/yyuu/pyenv
 .. _installing pyenv: https://github.com/yyuu/pyenv#installation
+.. _tox: https://pypi.org/project/tox/
 
 
 Unit Tests
@@ -277,7 +273,7 @@ commit the change.
 
 .. [#] The validity of `Docutils XML` can be tested with
    ``xmllint <document-referencing-local-Docutils-DTD>.xml --valid --noout``.
-     
+
    .. note: the ``--dtdvalid`` and ``--nonet`` options did not help override
      a reference to the PUBLIC "docutils.dtd" if there is a local version
      on the system (e.g. /usr/share/xml/docutils/docutils.dtd in Debian).
