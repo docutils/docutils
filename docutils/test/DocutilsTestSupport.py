@@ -819,6 +819,7 @@ def exception_data(func, *args, **kwds):
     except Exception as detail:
         return (detail, detail.args,
                 '%s: %s' % (detail.__class__.__name__, detail))
+    return None, [], "No exception"
 
 
 def _format_str(*args):

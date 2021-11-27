@@ -65,6 +65,79 @@ def null_bytes():
     next(reader)
 
 null_bytes_exception = DocutilsTestSupport.exception_data(null_bytes)[0]
+# Null bytes are valid in Python 3.11+:
+if null_bytes_exception is None:
+    bad_encoding_result = """\
+<document source="test data">
+<document source="test data">
+    <table>
+        <title>
+            good encoding
+        <tgroup cols="3">
+            <colspec colwidth="33">
+            <colspec colwidth="33">
+            <colspec colwidth="33">
+            <thead>
+                <row>
+                    <entry>
+                        <paragraph>
+                            Treat
+                    <entry>
+                        <paragraph>
+                            Quantity
+                    <entry>
+                        <paragraph>
+                            Description
+            <tbody>
+                <row>
+                    <entry>
+                        <paragraph>
+                            Albatr\u00b0\u00df
+                    <entry>
+                        <paragraph>
+                            2.99
+                    <entry>
+                        <paragraph>
+                            \u00a1On a \u03c3\u03c4\u03b9\u03ba!
+                <row>
+                    <entry>
+                        <paragraph>
+                            Crunchy Frog
+                    <entry>
+                        <paragraph>
+                            1.49
+                    <entry>
+                        <paragraph>
+                            If we took the b\u00f6nes out, it wouldn\u2019t be
+                            crunchy, now would it?
+                <row>
+                    <entry>
+                        <paragraph>
+                            Gannet Ripple
+                    <entry>
+                        <paragraph>
+                            1.99
+                    <entry>
+                        <paragraph>
+                            \u00bfOn a \u03c3\u03c4\u03b9\u03ba?
+    <paragraph>
+        (7- and 8-bit text encoded as UTF-16 has lots of null/zero bytes.)
+""" % (null_bytes_exception, utf_16_csv)
+else:
+    bad_encoding_result = """\
+<document source="test data">
+    <system_message level="3" line="1" source="test data" type="ERROR">
+        <paragraph>
+            Error with CSV data in "csv-table" directive:
+            %s
+        <literal_block xml:space="preserve">
+            .. csv-table:: bad encoding
+               :file: %s
+               :encoding: latin-1
+    <paragraph>
+        (7- and 8-bit text encoded as UTF-16 has lots of null/zero bytes.)
+""" % (null_bytes_exception, utf_16_csv)
+
 
 totest = {}
 
@@ -1031,19 +1104,8 @@ u"""\
 
 (7- and 8-bit text encoded as UTF-16 has lots of null/zero bytes.)
 """ % utf_16_csv,
-"""\
-<document source="test data">
-    <system_message level="3" line="1" source="test data" type="ERROR">
-        <paragraph>
-            Error with CSV data in "csv-table" directive:
-            %s
-        <literal_block xml:space="preserve">
-            .. csv-table:: bad encoding
-               :file: %s
-               :encoding: latin-1
-    <paragraph>
-        (7- and 8-bit text encoded as UTF-16 has lots of null/zero bytes.)
-""" % (null_bytes_exception, utf_16_csv)],
+bad_encoding_result
+],
 ["""\
 .. csv-table:: good encoding
    :file: %s
