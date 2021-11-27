@@ -271,7 +271,8 @@ The Docutils core (``trunk/docutils`` directory) and maintenance
 branches should always be kept in a stable state (usable and as
 problem-free as possible).  All changes to the Docutils core or
 maintenance branches must be in `good shape`_, usable_, documented_,
-tested_, and `reasonably complete`_.
+tested_, and `reasonably complete`_. Starting with version 1.0, they must
+also comply with the `backwards compatibility policy`_.
 
 * _`Good shape` means that the code is clean, readable, and free of
   junk code (unused legacy code; by analogy to "junk DNA").
@@ -352,8 +353,8 @@ major : non-negative integer
     major number will be bumped to 1 when the project is
     feature-complete, and may be incremented later if there is a major
     change in the design or API.  When Docutils reaches version 1.0,
-    the major APIs will be considered frozen and backward
-    compatibility will become of paramount importance.
+    the major APIs will be considered frozen.
+    For details, see the `backwards compatibility policy`_.
 
 minor : non-negative integer
     Releases that change the minor number (x.y, e.g. 0.5) will be
@@ -478,6 +479,48 @@ Policy History
   .. _Feature Request #50:
      https://sourceforge.net/p/docutils/feature-requests/50/
   __ https://sourceforge.net/p/docutils/mailman/message/35903816/
+
+
+Backwards Compatibility Policy
+==============================
+
+.. note:: The backwards compatibility policy outlined below is a draft,
+   open to discussion in the `Docutils-develop mailing list`_.
+
+   If accepted, it will become effective with Docutils version 1.0.
+
+Docutils' backwards compatibility policy follows the rules for Python in
+:PEP:`387`.
+
+* The scope of the public API is laid out at the start of the `backwards
+  compatibility rules`_.
+  
+* The rules for `making incompatible changes`_ apply.
+
+A majority of projects depends on Docutils indirectly, via the Sphinx_
+document processor.
+
+* Sphinx developers should be given the chance to fix or work around a
+  DeprecationWarning_ in the Sphinx development version before a new
+  Docutils version is released. Otherwise, use a PendingDeprecationWarning_.
+
+Changes that may affect end-users (e.g. by requiring changes to the
+configuration file or potentially breaking custom style sheets) should be
+announced with a FutureWarning_.
+
+.. _Docutils-develop mailing list:
+   http://lists.sourceforge.net/lists/listinfo/docutils-develop
+.. _backwards compatibility rules:
+   https://www.python.org/dev/peps/pep-0387/#backwards-compatibility-rules
+.. _making incompatible changes:
+   https://www.python.org/dev/peps/pep-0387/#making-incompatible-changes
+.. _Sphinx: https://www.sphinx-doc.org/
+.. _DeprecationWarning:
+   https://docs.python.org/3/library/exceptions.html#DeprecationWarning
+.. _PendingDeprecationWarning:
+   https://docs.python.org/3/library/exceptions.html#PendingDeprecationWarning
+.. _FutureWarning:
+   https://docs.python.org/3/library/exceptions.html#FutureWarning
 
 
 Snapshots
