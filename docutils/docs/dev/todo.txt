@@ -104,6 +104,21 @@ __ https://git.wiki.kernel.org/index.php/
 General
 =======
 
+Miscellaneous
+-------------
+
+Code cleanup and modernization:
+  Use flake8_? See also the configuration in `<../../tox.ini>`__.
+  
+  Check and solve issue from  :PEP:`290` - Code Migration and Modernization. 
+  (Covers issues up to Python 2.4, is there an equivalent for more recent
+  modernizations?)
+
+  Ensure `backwards compatibility`_!  
+  
+  .. _flake8: https://pypi.org/project/flake8/
+  .. _backwards compatibility: policies.html#backwards-compatibility-policy
+
 * Encoding of command line arguments can only be guessed:
 
   * try UTF-8/strict first, then try the locale's encoding with
@@ -243,7 +258,7 @@ General
 
 * Perhaps the ``Component.supports`` method should deal with
   individual features ("meta" etc.) instead of formats ("html" etc.)?
-  Currently, only the `<meta> node`_ requires the framework.
+  Currently, it is not used at all.
 
   Do we need it at all?  Or rather let the writers just ignore some
   nodes (like we already do for "class" values)?
@@ -657,19 +672,6 @@ No such mechanism exists in HTML.
 See also the `Modified rst2html
 <http://www.loria.fr/~rougier/coding/article/rst2html.py>`__
 by Nicolas Rougier for a sample implementation.
-
-<meta> node
------------
-
-Up to 0.17, <meta> nodes are non-standard (not part of the Docutils
-document tree specification).
-
-The "Filter" transform removes "meta" nodes from the doctree unless the
-output format is "html" (rsp. "html", "latex", or "odt" since 0.17).
-
-Suggestion:
-  Make "meta" a generic directive and <meta> nodes standard nodes that
-  are kept in the doctree. Allow writers to ignore <meta> nodes.
 
 
 Documentation
