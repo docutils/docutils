@@ -31,7 +31,7 @@ Drop support for `old-format configuration files`_.
     ``[role="doc-noteref"]`` instead of ``.footnote-reference``
     (see minimal.css for examples).
 
-  - Remove option "embed_images" (obsoleted by "image_loading_").
+  - Remove option ``--embed-images`` (obsoleted by "image_loading_").
 
     .. _image_loading: docs/user/config.html#image-loading
 
@@ -51,9 +51,8 @@ Drop support for `old-format configuration files`_.
   - Remove ``use_verbatim_when_possible`` setting
     (use literal_block_env_: verbatim).
 
-* Remove the "rawsource" attribute and argument from nodes.Text:
-  we store the null-escaped text in Text nodes since 0.16 so there is no
-  additional information in the rawsource.
+* Remove the "rawsource" argument from nodes.Text.__init__()
+  (deprecated and ignored since Docutils 0.18).
 
 * Move math format conversion from docutils/utils/math (called from
   docutils/writers/_html_base.py) to a transform__.
@@ -70,10 +69,8 @@ Drop support for `old-format configuration files`_.
   stability of the generated HTML code, e.g. because you use a custom
   style sheet or post-processing that may break otherwise.
 
-* Remove the "html_writer" option of the ``buildhtml.py`` application
-  (obsoleted by "writer__").
-
-  __ docs/user/config.html#writer
+* Remove the ``--html-writer`` option of the ``buildhtml.py`` application
+  (obsoleted by the `"writer" option`_).
 
 .. _old-format configuration files:
    docs/user/config.html#old-format-configuration-files
@@ -87,15 +84,20 @@ Changes Since 0.18.1
 
 .
 
-Release 0.18.1
-==============
+Release 0.18.1 (2021-12-23)
+===========================
 
 .. Note::
 
    Docutils 0.18.x is the last version supporting Python 2.7, 3.5, and 3.6.
 
-* nodes.Node.traverse() returns a list again to restore
-  backwards compatibility (fixes bug #431).
+* nodes.Node.traverse() returns a list again to restore backwards
+  compatibility (fixes bug #431).  
+  Use nodes.Node.findall() to get an iterator.
+
+* re-add module ``parsers.rst.directives.html``
+  (stub, emits deprecation warning and loads
+  "Meta" directive from ist new place at ``parsers.rst.directives.misc``.)
 
 * Small bugfixes (see HISTORY_).
 
@@ -106,56 +108,57 @@ Release 0.18 (2021-10-26)
 * Output changes:
 
   Identifiers:
-    During `identifier normalization`_, leading number and hyphen
-    characters are no longer stripped from a `reference name`_, if the
-    id_prefix_ setting is non-empty.
+    - During `identifier normalization`_, leading number and hyphen
+      characters are no longer stripped from a `reference name`_, if the
+      id_prefix_ setting is non-empty.
 
-    Example:
-      with ``--id-prefix="DU-"``, a section with title "34. May"
-      currently gets the identifier key ``DU-may`` and after the
-      change the identifier key ``DU-34-may``.
-
-    The default value for the auto_id_prefix_ setting changed to ``%``:
-    "use the tag name as prefix for auto-generated IDs".
-    Set auto_id_prefix_ to ``id`` for unchanged auto-IDs.
+      Example:
+        with ``--id-prefix="DU-"``, a section with title "34. May"
+        currently gets the identifier key ``DU-may`` and after the
+        change the identifier key ``DU-34-may``.
+      
+    - The default value for the auto_id_prefix_ setting changed to ``%``:
+      "use the tag name as prefix for auto-generated IDs".
+      Set auto_id_prefix_ to ``id`` for unchanged auto-IDs.
 
   HTML5:
-    Use the semantic tag <aside> for footnote text and citations, topics
-    (except abstract and toc), admonitions, and system messages.
-    Use <nav> for the Table of Contents.
+    - Use the semantic tag <aside> for footnote text and citations, topics
+      (except abstract and toc), admonitions, and system messages.
+      Use <nav> for the Table of Contents.
+      
+    - Make "auto" table column widths the default: Only specify column
+      widths, if the `"widths" option`_ is set and not "auto".
+      The table-style__ setting "colwidths-grid" restores the current default.
+      
+      .. _"widths" option: __ docs/ref/rst/directives.html#table
+      __ docs/user/config.html#table-style
+      
+    - Items of a definition list with class argument "details" are
+      converted to `details disclosure elements`_. Example::
+      
+        ..class:: details
+      
+        Summary
+          This additional information should be hidden.
+      
+    - Do not add "compound-first", "compound-middle", or "compound-last" to
+      elements nested in a compound. Use child selector and ":first-child",
+      ":last-child" pseudo classes instead.
+      
+    - Use class value "backrefs" instead of "fn-backref" for a span of
+      back-references.
+      
+    - Write footnote brackets and field term colons to HTML, so that they
+      are present also without CSS and when copying text.
+      
+    - Move space character between section number and heading into
+      "sectnum" span.
 
-    Make "auto" table column widths the default: Only specify column
-    widths, if the `"widths" option`_ is set and not "auto".
-    The table-style__ setting "colwidths-grid" restores the current default.
-
-    .. _"widths" option: __ docs/ref/rst/directives.html#table
-    __ docs/user/config.html#table-style
-
-    Items of a definition list with class argument "details" are
-    converted to `details disclosure elements`_. Example::
-
-      ..class:: details
-
-      Summary
-        This additional information should be hidden.
-
-    Do not add "compound-first", "compound-middle", or "compound-last" to
-    elements nested in a compound. Use child selector and ":first-child",
-    ":last-child" pseudo classes instead.
-    Use class value "backrefs" instead of "fn-backref" for a span of
-    back-references.
-
-    Write footnote brackets and field term colons to HTML, so that they
-    are present also without CSS and when copying text.
-
-    Move space character between section number and heading into
-    "sectnum" span.
-
-  math-output: html
-    Support more commands, fix mapping of commands to Unicode characters.
-    Scale variable sized operators and big delimiters with CSS.
-    Don't use <tt> element (deprecated in HTML5).
-    Use STIX fonts if available.
+  `math-output`_: html
+    - Support more commands, fix mapping of commands to Unicode characters.
+    - Scale variable sized operators and big delimiters with CSS.
+    - Don't use <tt> element (deprecated in HTML5).
+    - Use STIX fonts if available.
 
   LaTeX:
      `legacy_class_functions`_ setting default changed to "False",
@@ -164,28 +167,34 @@ Release 0.18 (2021-10-26)
 * New standard Docutils doctree node: <meta__>.
 
 * New configuration settings:
-  [latex writers] legacy_column_widths_ and
-  [html5 writer] image_loading_.
+  
+  - [latex writers] legacy_column_widths_ and
+  - [html5 writer] image_loading_.
 
 * Removed files:
   ``iepngfix.htc`` and ``blank.gif`` (IE 6 workaround for `s5_html`).
 
 * Removed sub-module:
   ``parsers.rst.directives.html``
-  (Meta directive moved to ``parsers.rst.directives.misc``.)
+  (reversed in release 0.18.1).
 
 * Removed function: utils.unique_combinations()
   (obsoleted by itertools.combinations()).
 
-* Removed attribute: ``HTMLTranslator.topic_classes``
-  (check node.parent.classes instead).
-
+* Removed attributes: 
+  
+  - ``HTMLTranslator.topic_classes``: check ``node.parent.classes`` instead.
+  - ``nodes.Text.rawsource``: we store the null-escaped text in Text
+    nodes since 0.16 so there is no additional information in the
+    rawsource.
+    
 * Major refactoring and fixes/additions in
   ``docutils/utils/math/math2html.py`` and
   ``docutils/utils/math/latex2mathml.py``
   (mathematical notation in HTML, cf. `LaTeX syntax for mathematics`_).
 
-* nodes.Node.traverse() returns an iterator instead of a list.
+* nodes.Node.traverse() returns an iterator instead of a list
+  (reversed in release 0.18.1).
 
 * Various bugfixes and improvements (see HISTORY_).
 
@@ -308,14 +317,16 @@ Release 0.16 (2020-01-12)
 
 * tools/buildhtml.py
 
-  - New option "--html-writer" allows to select "html__" (default),
-    "html4" or "html5".
+  - New option ``--html-writer`` allows to select "html" (default),
+    "html4" or "html5" (deprecated in favour of the `"writer" option`_
+    in release 0.18).
 
-  __ html: docs/user/html.html#html
+  .. _"writer" option:
+     docs/user/config.html#writer-buildhtml-application
 
 * docutils/io.py
 
-  - Remove the `handle_io_errors` option from io.FileInput/Output.
+  - Remove the `handle_io_errors` argument from io.FileInput/Output.
 
 * docutils/nodes.py
 
@@ -503,7 +514,7 @@ Release 0.10 (2012-12-16)
 * docutils/io.py
 
   - FileInput/FileOutput: no system-exit on IOError.
-    The `handle_io_errors` option is ignored.
+    The `handle_io_errors` argument is ignored.
 
 * docutils/writers/html4css1/__init__.py
 

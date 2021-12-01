@@ -1,4 +1,4 @@
-/* CSS3_ style sheet for the output of Docutils HTML writers.              */
+/* CSS3_ style sheet for the output of Docutils HTML5 writer.  */
 /* Generic responsive design for all screen sizes.                         */
 /*                                                                         */
 /* :Author: Günter Milde                                                   */
@@ -16,6 +16,11 @@
 /*                                                                         */
 /* .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause     */
 /* .. _CSS3: http://www.w3.org/TR/CSS3                                     */
+
+/* Note:     								   */
+/* This style sheet is provisional:					   */
+/* the API is not settled and may change with any minor Docutils version.  */
+
 
 
 /* General Settings */
