@@ -102,15 +102,15 @@ universal.ExposeInternals       Reader (r)                    840
 
 references.DanglingReferences   standalone (r), pep (r)       850
 
+universal.SmartQuotes           Parser                        855
+
 universal.Messages              Writer (w)                    860
 
 universal.FilterMessages        Writer (w)                    870
 
-universal.SmartQuotes           Parser                        850
-
 universal.TestMessages          DocutilsTestSupport           880
 
-writer_aux.Compound             newlatex2e (w)                910
+writer_aux.Compound             *not used, to be removed*     910
 
 writer_aux.Admonitions          html4css1 (w),                920
                                 latex2e (w)

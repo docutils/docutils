@@ -140,6 +140,12 @@ class Messages(Transform):
             self.document += section
 
 
+# TODO: fix bug #435:
+
+# Messages are filtered at a very late stage
+# This breaks the link from inline error messages to the corresponding
+# system message at the end of document.
+
 class FilterMessages(Transform):
 
     """
@@ -231,7 +237,7 @@ class SmartQuotes(Transform):
     Also replace multiple dashes with em-dash/en-dash characters.
     """
 
-    default_priority = 850
+    default_priority = 855
 
     nodes_to_skip = (nodes.FixedTextElement, nodes.Special)
     """Do not apply "smartquotes" to instances of these block-level nodes."""
@@ -239,7 +245,7 @@ class SmartQuotes(Transform):
     literal_nodes = (nodes.FixedTextElement, nodes.Special,
                      nodes.image, nodes.literal, nodes.math,
                      nodes.raw, nodes.problematic)
-    """Do apply smartquotes to instances of these inline nodes."""
+    """Do not apply smartquotes to instances of these inline nodes."""
 
     smartquotes_action = 'qDe'
     """Setting to select smartquote transformations.

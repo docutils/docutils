@@ -812,12 +812,27 @@ Options: ``--trim-footnote-reference-space, --leave-footnote-reference-space``.
    The footnote space is trimmed if the reference style is "superscript",
    and it is left if the reference style is "brackets".
 
-[markdown parser]
------------------
+[recommonmark parser]
+---------------------
 
 Experimental, based on recommonmark_.
+Currently no configuration settings.
 
 .. _recommonmark: https://pypi.org/project/recommonmark/
+
+[myst parser]
+-------------
+
+Provided by the 3rd party package `myst-docutils`_.
+See `MyST with Docutils`_ and its `Sphinx configuration options`_
+(some settings are not available with Docutils).
+
+.. _myst-docutils: https://pypi.org/project/myst-docutils/
+.. _MyST with Docutils:
+   https://myst-parser.readthedocs.io/en/latest/docutils.html
+.. _Sphinx configuration options:
+   https://myst-parser.readthedocs.io/en/latest/sphinx/reference.html#sphinx-config-options
+
 
 [readers]
 =========
@@ -954,8 +969,8 @@ Default: don't cloak (None).  Option: ``--cloak-email-addresses``.
 compact_lists
 ~~~~~~~~~~~~~
 
-Remove extra vertical whitespace between items of bullet lists and
-enumerated lists, when list items are all "simple" (i.e., items
+Remove extra vertical whitespace between items of `bullet lists`_ and
+`enumerated lists`_, when list items are all "simple" (i.e., items
 each contain one paragraph and/or one "simple" sub-list only).  The
 behaviour can be specified directly via "class" attributes (values
 "compact" and "open") in the document.
@@ -2140,7 +2155,7 @@ Option: ``--reader``
 
 parser
 ~~~~~~
-Parser component name. One of "markdown", "recommonmark", or "rst"
+Parser component name.
 
 Default: "rst".
 Option: ``--parser``
@@ -2272,6 +2287,7 @@ pep_template           [pep_html writer] template
    ../ref/rst/restructuredtext.html#bibliographic-fields
 .. _block quote: ../ref/rst/restructuredtext.html#block-quotes
 .. _citations: ../ref/rst/restructuredtext.html#citations
+.. _bullet lists: ../ref/rst/restructuredtext.html#bullet-lists
 .. _enumerated lists: ../ref/rst/restructuredtext.html#enumerated-lists
 .. _field lists: ../ref/rst/restructuredtext.html#field-lists
 .. _field names: ../ref/rst/restructuredtext.html#field-names
