@@ -14,9 +14,30 @@
 Changes Since 0.18.1
 ====================
 
+* docutils/parsers/__init__.py
+
+  - Alias for the "myst" parser (https://pypi.org/project/myst-docutils).
+  - Use absolute module names in ``_parser_aliases`` instead of two
+    import attempts. (Keeps details if the `recommonmark_wrapper.py` module
+    raises an ImportError.)
+  - Prepend parser name to ImportError if importing a parser class fails.
+
+* docutils/parsers/recommonmark_wrapper.py
+
+  - Raise ImportError, if import of the upstream parser module fails.
+    If the parser was called from an `"include" directive`_,
+    the system-message now has source/line info.
+
+    .. _"include" directive: docs/ref/rst/directives.html#include
+
+* docutils/parsers/rst/directives/__init__.py
+
+  - parser_name() keeps details if converting ImportError to ValueError.
+
 * test/DocutilsTestSupport.py
 
-  - Function exception_data returns None if no exception was raised.
+  - exception_data() returns None if no exception was raised.
+  - recommonmark_wrapper only imported if upstream parser is present.
 
 * test/test_parsers/test_rst/test_directives/test_tables.py
 

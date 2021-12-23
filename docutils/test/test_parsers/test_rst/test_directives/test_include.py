@@ -15,7 +15,6 @@ if __name__ == '__main__':
     import __init__
 from test_parsers import DocutilsTestSupport
 from docutils.parsers.rst import states
-from docutils.parsers import recommonmark_wrapper
 from docutils.utils.code_analyzer import with_pygments
 
 if sys.version_info >= (3, 0):
@@ -76,7 +75,7 @@ InputError: [Errno 2] No such file or directory: '\u043c\u0438\u0440.txt'.\
 
 # Parsing with Markdown (recommonmark) is an optional feature depending
 # on 3rd-party modules:
-if recommonmark_wrapper.CommonMarkParser:
+if DocutilsTestSupport.RecommonmarkParserTestCase.parser_class:
     markdown_parsing_result = """\
     <section ids="title-1" names="title\\ 1">
         <title>
@@ -94,11 +93,15 @@ if recommonmark_wrapper.CommonMarkParser:
             ."""
 else:
     markdown_parsing_result = """\
-    <system_message level="2" source="test_parsers/test_rst/test_directives/include.md" type="WARNING">
+    <system_message level="3" line="3" source="test data" type="ERROR">
         <paragraph>
-            Missing dependency: MarkDown input is processed by a 3rd party parser but Python did not find the required module "recommonmark" (https://pypi.org/project/recommonmark/).\
-"""
-
+            Error in "include" directive:
+            invalid option value: (option: "parser"; value: \'markdown\')
+            Parser "markdown" missing. No module named recommonmark.parser.
+            Parsing "recommonmark" Markdown flavour requires the package https://pypi.org/project/recommonmark.
+        <literal_block xml:space="preserve">
+            .. include:: test_parsers/test_rst/test_directives/include.md
+               :parser: markdown"""
 
 totest = {}
 

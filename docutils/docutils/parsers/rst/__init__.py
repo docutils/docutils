@@ -325,7 +325,7 @@ class Directive(object):
         self.state_machine = state_machine
 
     def run(self):
-        raise NotImplementedError('Must override run() is subclass.')
+        raise NotImplementedError('Must override run() in subclass.')
 
     # Directive errors:
 

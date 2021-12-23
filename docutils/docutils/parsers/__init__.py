@@ -64,22 +64,28 @@ class Parser(Component):
             self.document.note_parse_message)
 
 
-_parser_aliases = {
-      'restructuredtext': 'rst',
-      'rest': 'rst',
-      'restx': 'rst',
-      'rtxt': 'rst',
-      'recommonmark': 'recommonmark_wrapper',
-      'commonmark': 'recommonmark_wrapper',
-      'markdown': 'recommonmark_wrapper'}
+_parser_aliases = {# short names for known parsers
+                   'null': 'docutils.parsers.null',
+                   # reStructuredText
+                   'rst': 'docutils.parsers.rst',
+                   'restructuredtext': 'docutils.parsers.rst',
+                   'rest': 'docutils.parsers.rst',
+                   'restx': 'docutils.parsers.rst',
+                   'rtxt': 'docutils.parsers.rst',
+                   # 3rd-party Markdown parsers
+                   'recommonmark': 'docutils.parsers.recommonmark_wrapper',
+                   'myst': 'myst_parser.docutils_',
+                   # 'myst': 'docutils.parsers.myst_wrapper',
+                   # TODO: the following two could be either of the above
+                   'commonmark': 'docutils.parsers.recommonmark_wrapper',
+                   'markdown': 'docutils.parsers.recommonmark_wrapper',
+                  }
 
 def get_parser_class(parser_name):
     """Return the Parser class from the `parser_name` module."""
     parser_name = parser_name.lower()
-    if parser_name in _parser_aliases:
-        parser_name = _parser_aliases[parser_name]
     try:
-        module = import_module('docutils.parsers.'+parser_name)
-    except ImportError:
-        module = import_module(parser_name)
+        module = import_module(_parser_aliases.get(parser_name, parser_name))
+    except ImportError as err:
+        raise ImportError('Parser "%s" missing. %s' % (parser_name, err))
     return module.Parser
