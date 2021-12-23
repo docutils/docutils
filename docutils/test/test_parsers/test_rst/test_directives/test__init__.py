@@ -15,6 +15,8 @@ Test module for `docutils.parsers.rst.directives`.
 """
 
 from __future__ import absolute_import
+import unittest
+
 
 if __name__ == '__main__':
     import __init__
@@ -51,9 +53,14 @@ class DirectiveOptionConversionTestCase(DocutilsTestSupport.StandardTestCase):
                          directives.parser_name('null'))
         self.assertEqual(docutils.parsers.rst.Parser,
                          directives.parser_name('rst'))
-        self.assertEqual(docutils.parsers.recommonmark_wrapper.Parser,
-                         directives.parser_name('markdown'))
         self.assertRaises(ValueError, directives.parser_name, 'fantasy')
+
+    parser_class = DocutilsTestSupport.RecommonmarkParserTestCase.parser_class
+    skip_msg = 'optional module "recommonmark" not found'
+    @unittest.skipUnless(parser_class, skip_msg)
+    def test_external_parser_name(self):
+        self.assertEqual(docutils.parsers.recommonmark_wrapper.Parser,
+                         directives.parser_name('recommonmark'))
 
 
 if __name__ == '__main__':

@@ -429,10 +429,11 @@ def parser_name(argument):
     (Directive option conversion function.)
 
     Return `None`, if the argument evaluates to `False`.
+    Raise `ValueError` if importing the parser module fails.
     """
     if not argument:
         return None
     try:
         return parsers.get_parser_class(argument)
-    except ImportError:
-        raise ValueError('Unknown parser name "%s".'%argument)
+    except ImportError as err:
+        raise ValueError(str(err))

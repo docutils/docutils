@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 # -*- coding: utf8 -*-
 # :Copyright: © 2020 Günter Milde.
 # :License: Released under the terms of the `2-Clause BSD license`_, in short:
@@ -23,7 +23,6 @@ if __name__ == '__main__':
 from test_parsers import DocutilsTestSupport # must be imported before docutils
 from docutils import core, utils
 from docutils.core import publish_string
-from docutils.parsers import recommonmark_wrapper
 
 sample_with_html = """\
 A paragraph:
@@ -38,11 +37,12 @@ Next paragraph.
 Final paragraph.
 """
 
+parser_class = DocutilsTestSupport.RecommonmarkParserTestCase.parser_class
 skip_msg = 'optional module "recommonmark" not found'
 
 class reCommonMarkParserTests(unittest.TestCase):
 
-    @unittest.skipUnless(recommonmark_wrapper.CommonMarkParser, skip_msg)
+    @unittest.skipUnless(parser_class, skip_msg)
     def test_raw_disabled(self):
         output = publish_string(sample_with_html, parser_name='recommonmark',
                                 settings_overrides={'warning_stream': '',
@@ -51,7 +51,7 @@ class reCommonMarkParserTests(unittest.TestCase):
         self.assertIn(b'<system_message', output)
         self.assertIn(b'Raw content disabled.', output)
 
-    @unittest.skipUnless(recommonmark_wrapper.CommonMarkParser, skip_msg)
+    @unittest.skipUnless(parser_class, skip_msg)
     def test_raw_disabled_inline(self):
         output = publish_string('foo <a href="uri">', parser_name='recommonmark',
                                 settings_overrides={'warning_stream': '',
@@ -62,7 +62,7 @@ class reCommonMarkParserTests(unittest.TestCase):
         self.assertIn(b'Raw content disabled.', output)
 
 
-    @unittest.skipUnless(recommonmark_wrapper.CommonMarkParser, skip_msg)
+    @unittest.skipUnless(parser_class, skip_msg)
     def test_raw_disabled(self):
         output = publish_string(sample_with_html, parser_name='recommonmark',
                                 settings_overrides={'warning_stream': '',
@@ -72,13 +72,17 @@ class reCommonMarkParserTests(unittest.TestCase):
         self.assertNotIn(b'<raw>', output)
         self.assertNotIn(b'<system_message', output)
 
-    @unittest.skipIf(recommonmark_wrapper.CommonMarkParser,
+    @unittest.skipIf(parser_class,
                      'recommonmark_wrapper: parser found, fallback not used')
-    def test_fallback_parser(self):
-        output = publish_string(sample_with_html, parser_name='recommonmark',
-                                settings_overrides={'warning_stream': ''})
-        self.assertIn(b'Python did not find the required module "recommonmark"',
-                      output)
+    def test_missing_parser(self):
+        try:
+            output = publish_string(sample_with_html, 
+                                    parser_name='recommonmark')
+        except ImportError as err:
+            pass
+        self.assertIn(
+            b'requires the package https://pypi.org/project/recommonmark', 
+            str(err))
 
 if __name__ == '__main__':
     unittest.main()

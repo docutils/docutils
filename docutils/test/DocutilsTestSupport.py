@@ -64,7 +64,7 @@ try:
     from docutils import frontend, nodes, statemachine, utils
     from docutils.utils import urischemes
     from docutils.transforms import universal
-    from docutils.parsers import rst, recommonmark_wrapper
+    from docutils.parsers import rst
     from docutils.parsers.rst import states, tableparser, roles, languages
     from docutils.readers import standalone, pep
     from docutils.statemachine import StringList, string2lines
@@ -522,11 +522,15 @@ class RecommonmarkParserTestCase(ParserTestCase):
 
     """Recommonmark-specific parser test case."""
 
-    parser = recommonmark_wrapper.Parser()
+    try:
+        parser_class = docutils.parsers.get_parser_class('recommonmark')
+        parser = parser_class()
+    except ImportError:
+        parser_class = None
+    # recommonmark_wrapper.Parser
     """Parser shared by all RecommonmarkParserTestCases."""
 
-    option_parser = frontend.OptionParser(
-                        components=(recommonmark_wrapper.Parser,))
+    option_parser = frontend.OptionParser(components=(parser_class,))
     settings = option_parser.get_default_values()
     settings.report_level = 5
     settings.halt_level = 5
@@ -540,7 +544,7 @@ class RecommonmarkParserTestSuite(ParserTestSuite):
     test_case_class = RecommonmarkParserTestCase
 
     def generateTests(self, dict, dictname='totest'):
-        if 'recommonmark' not in recommonmark_wrapper.Parser.supported:
+        if not RecommonmarkParserTestCase.parser_class:
             return
         # TODO: currently the tests are too version-specific
         import recommonmark
