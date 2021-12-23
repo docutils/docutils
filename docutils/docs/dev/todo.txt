@@ -1563,12 +1563,14 @@ HTML/CSS
   * TtH_ (C)
   * Hevea_ (Objective Caml)
   * `MathJax for Node`_
+  * KaTeX_
 
   __ http://www.cs.tut.fi/~jkorpela/math/
   __ http://www.zipcon.net/~swhite/docs/math/math.html
   .. _elyxer: http://elyxer.nongnu.org/
   .. _TtH: ttp://hutchinson.belmont.ma.us/tth/index.html
   .. _Hevea: http://para.inria.fr/~maranget/hevea/
+  .. _KaTeX: https://katex.org
 
 images
   (PNG or SVG) like e.g. Wikipedia.
