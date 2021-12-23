@@ -27,7 +27,6 @@ import argparse
 import sys
 
 from docutils.core import publish_cmdline, default_description
-from docutils.utils import SystemMessage
 from docutils.frontend import ConfigParser, OptionParser
 
 config_section = 'docutils-cli application'
@@ -56,7 +55,7 @@ default_settings = config_settings_from_files()
 
 description = u'Generate documents from reStructuredText or Markdown sources.'
 
-epilog = (u'The availability of some options depends on the selected '
+epilog = (u'Further optional arguments are added by the selected '
           u'components, the list below adapts to your selection.'
          )
 
@@ -64,21 +63,22 @@ parser = argparse.ArgumentParser(add_help=False,
                 description=description, epilog=epilog,
                 formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
-parser.add_argument('--reader', choices=('standalone', 'pep'),
-                    help=u'reader name',
+parser.add_argument('source', nargs='?')
+parser.add_argument('destination', nargs='?')
+parser.add_argument('--reader', help=u'reader name',
                     default=default_settings['reader'])
-parser.add_argument('--parser', choices=('markdown', 'recommonmark', 'rst'),
-                    help=u'parser name',
+parser.add_argument('--parser', help=u'parser name',
                     default=default_settings['parser'])
-parser.add_argument('--writer',
-                    # choices=('html', 'html4', 'html5', 'latex', 'xelatex',
-                    #          'odt', 'xml', 'pseudoxml', 'manpage',
-                    #          'pep_html', 's5_html'),
-                    help=u'writer name',
+parser.add_argument('--writer', help=u'writer name',
                     default=default_settings['writer'])
 
 (args, remainder) = parser.parse_known_args()
 
+# push back positional arguments
+if args.destination:
+    remainder.insert(0, args.destination)
+if args.source:
+    remainder.insert(0, args.source)
 
 if '-h' in sys.argv or '--help' in sys.argv:
     print(parser.format_help())
@@ -92,5 +92,8 @@ try:
                     description=default_description,
                     argv=remainder)
 except ImportError as error:
-    print(parser.format_help())
-    print('ImportError:', error)
+    print('%s.' % error)
+    if '--traceback' in remainder:
+        raise
+    else:
+        print('Use "--traceback" to show details.')

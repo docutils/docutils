@@ -20,7 +20,13 @@ Changes Since 0.18.1
 
 * test/test_parsers/test_rst/test_directives/test_tables.py
 
-  - Change for python 3.11.0a2 csv modules supports null character.
+  - Fix bug #436: Null char valid in CSV since Python 3.11.
+
+* tools/docutils-cli.py
+
+  - Allow 3rd-party drop-in components for reader and parser, too.
+  - Fix help output.
+
 
 Release 0.18.1
 ==============

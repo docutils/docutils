@@ -2144,11 +2144,14 @@ New in 0.17. Obsoletes the ``html_writer`` option.
 [docutils-cli application]
 --------------------------
 
-New in 0.18.
+New in 0.17. Config file support added in 0.18. 
+Support for reader/parser import names added in 0.19.
 
 reader
 ~~~~~~
-Reader component name. One of "standalone" or "pep".
+Reader component name. 
+One of "standalone", "pep",
+or the import name of a drop-in reader module.
 
 Default: "standalone".
 Option: ``--reader``
@@ -2156,6 +2159,8 @@ Option: ``--reader``
 parser
 ~~~~~~
 Parser component name.
+One of "rst", "markdown", "recommonmark",
+or the import name of a drop-in parser module.
 
 Default: "rst".
 Option: ``--parser``
@@ -2164,7 +2169,10 @@ Option: ``--parser``
 
 writer
 ~~~~~~
-Writer component name. One of the valid writer names or aliases.
+Writer component name.
+One of "html", "html4", "html5", "latex", "xelatex", "odt", "xml",
+"pseudoxml", "manpage", "pep_html", "s5", an alias,
+or the import name of a drop-in writer module.
 
 Default: "html5".
 Option: ``--writer``
