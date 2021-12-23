@@ -14,6 +14,8 @@ conflicting imports like this one::
 
 __docformat__ = 'reStructuredText'
 
+import warnings
+
 from docutils import nodes, utils, languages
 from docutils.transforms import Transform
 
@@ -21,6 +23,9 @@ from docutils.transforms import Transform
 class Compound(Transform):
 
     """
+    .. warning:: This transform is not used by Docutils since Dec 2010
+                 and will be removed in Docutils 1.2 (or later).
+    
     Flatten all compound paragraphs.  For example, transform ::
 
         <compound>
@@ -36,6 +41,12 @@ class Compound(Transform):
     """
 
     default_priority = 910
+    
+    def __init__(self, document, startnode=None):
+        warnings.warn('docutils.transforms.writer_aux.Compound is deprecated'
+                      ' and will be removed in Docutils 1.2 or later.',
+                      DeprecationWarning, stacklevel=2)
+        super(Compound, self).__init__(document, startnode)
 
     def apply(self):
         for compound in self.document.findall(nodes.compound):
