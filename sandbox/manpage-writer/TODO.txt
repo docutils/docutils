@@ -1,0 +1,13 @@
+TODOs 
+=====
+
+:Date: $Date$
+
+* URLs in manpage: check linux and macos mans for usage of UR UE and URL
+  then see https://sourceforge.net/p/docutils/feature-requests/72/
+
+* add tests with mandoc, the BSD reimplementation of man/groff.
+
+* doublespace after end of sentence in manpages ? 
+
+  see https://sourceforge.net/p/docutils/bugs/427/
