@@ -13,7 +13,7 @@ __ https://docutils.sourceforge.io/docs/ref/rst/roles.html
 The interface for interpreted role functions is as follows::
 
     def role_fn(name, rawtext, text, lineno, inliner,
-                options={}, content=[]):
+                options=None, content=None):
         code...
 
     # Set function attributes for customization:
@@ -101,7 +101,7 @@ def role(role_name, language_module, lineno, reporter):
     """
     Locate and return a role function from its language-dependent name, along
     with a list of system messages.
-    
+
     If the role is not found in the current language, check English. Return a
     2-tuple: role function (``None`` if the named role cannot be found) and a
     list of system messages.
@@ -200,44 +200,43 @@ class GenericRole(object):
         self.node_class = node_class
 
     def __call__(self, role, rawtext, text, lineno, inliner,
-                 options={}, content=[]):
-        set_classes(options)
+                 options=None, content=None):
+        options = normalized_role_options(options)
         return [self.node_class(rawtext, text, **options)], []
 
 
 class CustomRole(object):
     """Wrapper for custom interpreted text roles."""
 
-    def __init__(self, role_name, base_role, options={}, content=[]):
+    def __init__(self, role_name, base_role, options=None, content=None):
         self.name = role_name
         self.base_role = base_role
-        self.options = None
-        if hasattr(base_role, 'options'):
-            self.options = base_role.options
-        self.content = None
-        if hasattr(base_role, 'content'):
-            self.content = base_role.content
+        self.options = getattr(base_role, 'options', None)
+        self.content = getattr(base_role, 'content', None)
         self.supplied_options = options
         self.supplied_content = content
 
     def __call__(self, role, rawtext, text, lineno, inliner,
-                 options={}, content=[]):
-        opts = self.supplied_options.copy()
-        opts.update(options)
-        cont = list(self.supplied_content)
-        if cont and content:
-            cont += '\n'
-        cont.extend(content)
+                 options=None, content=None):
+        opts = normalized_role_options(self.supplied_options)
+        try:
+            opts.update(options)
+        except TypeError: # options may be ``None``
+            pass
+        # pass concatenation of content from instance and call argument:
+        supplied_content = self.supplied_content or []
+        content = content or []
+        delimiter = ['\n'] if supplied_content and content else []
         return self.base_role(role, rawtext, text, lineno, inliner,
-                              options=opts, content=cont)
+                    options=opts, content=supplied_content+delimiter+content)
 
 
 def generic_custom_role(role, rawtext, text, lineno, inliner,
-                        options={}, content=[]):
+                        options=None, content=None):
     """Base for custom roles if no other base role is specified."""
     # Once nested inline markup is implemented, this and other methods should
     # recursively call inliner.nested_parse().
-    set_classes(options)
+    options = normalized_role_options(options)
     return [nodes.inline(rawtext, text, **options)], []
 
 generic_custom_role.options = {'class': directives.class_option}
@@ -257,7 +256,8 @@ register_generic_role('superscript', nodes.superscript)
 register_generic_role('title-reference', nodes.title_reference)
 
 def pep_reference_role(role, rawtext, text, lineno, inliner,
-                       options={}, content=[]):
+                       options=None, content=None):
+    options = normalized_role_options(options)
     try:
         pepnum = int(utils.unescape(text))
         if pepnum < 0 or pepnum > 9999:
@@ -271,14 +271,13 @@ def pep_reference_role(role, rawtext, text, lineno, inliner,
     # Base URL mainly used by inliner.pep_reference; so this is correct:
     ref = (inliner.document.settings.pep_base_url
            + inliner.document.settings.pep_file_url_template % pepnum)
-    set_classes(options)
-    return [nodes.reference(rawtext, 'PEP ' + text, refuri=ref,
-                            **options)], []
+    return [nodes.reference(rawtext, 'PEP ' + text, refuri=ref, **options)], []
 
 register_canonical_role('pep-reference', pep_reference_role)
 
 def rfc_reference_role(role, rawtext, text, lineno, inliner,
-                       options={}, content=[]):
+                       options=None, content=None):
+    options = normalized_role_options(options)
     if "#" in text:
         rfcnum, section = utils.unescape(text).split("#", 1)
     else:
@@ -297,14 +296,13 @@ def rfc_reference_role(role, rawtext, text, lineno, inliner,
     ref = inliner.document.settings.rfc_base_url + inliner.rfc_url % rfcnum
     if section is not None:
         ref += "#"+section
-    set_classes(options)
-    node = nodes.reference(rawtext, 'RFC ' + str(rfcnum), refuri=ref,
-                           **options)
+    node = nodes.reference(rawtext, 'RFC ' + str(rfcnum), refuri=ref, **options)
     return [node], []
 
 register_canonical_role('rfc-reference', rfc_reference_role)
 
-def raw_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
+def raw_role(role, rawtext, text, lineno, inliner, options=None, content=None):
+    options = normalized_role_options(options)
     if not inliner.document.settings.raw_enabled:
         msg = inliner.reporter.warning('raw (and derived) roles disabled')
         prb = inliner.problematic(rawtext, rawtext, msg)
@@ -317,7 +315,6 @@ def raw_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
             'an associated format.' % role, line=lineno)
         prb = inliner.problematic(rawtext, rawtext, msg)
         return [prb], [msg]
-    set_classes(options)
     node = nodes.raw(rawtext, utils.unescape(text, True), **options)
     node.source, node.line = inliner.reporter.get_source_and_line(lineno)
     return [node], []
@@ -326,8 +323,9 @@ raw_role.options = {'format': directives.unchanged}
 
 register_canonical_role('raw', raw_role)
 
-def code_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
-    set_classes(options)
+def code_role(role, rawtext, text, lineno, inliner,
+              options=None, content=None):
+    options = normalized_role_options(options)
     language = options.get('language', '')
     classes = ['code']
     if 'classes' in options:
@@ -358,8 +356,9 @@ code_role.options = {'language': directives.unchanged}
 
 register_canonical_role('code', code_role)
 
-def math_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
-    set_classes(options)
+def math_role(role, rawtext, text, lineno, inliner,
+              options=None, content=None):
+    options = normalized_role_options(options)
     text = utils.unescape(text, True) # raw text without inline role markup
     node = nodes.math(rawtext, text, **options)
     return [node], []
@@ -390,13 +389,29 @@ register_canonical_role('target', unimplemented_role)
 register_canonical_role('restructuredtext-unimplemented-role',
                         unimplemented_role)
 
-
 def set_classes(options):
-    """
-    Auxiliary function to set options['classes'] and delete
-    options['class'].
-    """
-    if 'class' in options:
+    """Deprecated. Obsoleted by ``normalized_role_options()``."""
+    # TODO: Change use in directives.py and uncomment.
+    # raise PendingDeprecationWarning(
+    #  'The auxiliary function roles.set_classes() is obsoleted by '
+    #  'roles.normalized_role_options() and will be removed in Docutils 2.0.')
+    if options and 'class' in options:
         assert 'classes' not in options
         options['classes'] = options['class']
         del options['class']
+
+def normalized_role_options(options):
+    """
+    Return normalized dictionary of role options.
+
+    * ``None`` is replaced by an empty dictionary.
+    * The key 'class' is renamed to 'classes'.
+    """
+    if options is None:
+        return {}
+    result = options.copy()
+    if 'class' in result:
+        assert 'classes' not in result
+        result['classes'] = result['class']
+        del result['class']
+    return result

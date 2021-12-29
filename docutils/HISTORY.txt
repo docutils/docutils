@@ -34,6 +34,10 @@ Changes Since 0.18.1
 
   - parser_name() keeps details if converting ImportError to ValueError.
 
+* docutils/parsers/rst/roles.py
+
+  - Don't use mutable default values for function arguments. Fixes bug #430.
+
 * test/DocutilsTestSupport.py
 
   - exception_data() returns None if no exception was raised.
