@@ -79,10 +79,9 @@ class reCommonMarkParserTests(unittest.TestCase):
             output = publish_string(sample_with_html, 
                                     parser_name='recommonmark')
         except ImportError as err:
-            pass
-        self.assertIn(
-            b'requires the package https://pypi.org/project/recommonmark', 
-            str(err))
+            self.assertIn(
+                'requires the package https://pypi.org/project/recommonmark', 
+                str(err))
 
 if __name__ == '__main__':
     unittest.main()
