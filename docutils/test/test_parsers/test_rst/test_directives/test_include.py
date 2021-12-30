@@ -97,7 +97,7 @@ else:
         <paragraph>
             Error in "include" directive:
             invalid option value: (option: "parser"; value: \'markdown\')
-            Parser "markdown" missing. No module named recommonmark.parser.
+            Parser "markdown" missing. No module named 'recommonmark'.
             Parsing "recommonmark" Markdown flavour requires the package https://pypi.org/project/recommonmark.
         <literal_block xml:space="preserve">
             .. include:: test_parsers/test_rst/test_directives/include.md
