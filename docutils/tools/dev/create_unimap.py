@@ -13,17 +13,6 @@ from xml.dom import minidom
 import sys
 import pprint
 
-if sys.version_info >= (3, 0):
-    unicode = str  #noqa
-else:
-    bytes = str  # noqa
-    chr = unichr  # noqa
-
-
-def w(s):
-    if sys.version_info >= (3, 0) and isinstance(s, unicode):
-        s = s.encode('utf8')
-    sys.stdout.write(s)
 
 text_map = {}
 math_map = {}

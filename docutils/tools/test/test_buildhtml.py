@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 # $Id$
 # Author: engelbert gruber <grubert@users.sourceforge.net>

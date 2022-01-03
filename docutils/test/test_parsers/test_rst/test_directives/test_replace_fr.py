@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 
 # $Id: test_replace.py 4667 2006-07-12 21:40:56Z wiemann $
 # Author: David Goodger <goodger@python.org>

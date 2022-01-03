@@ -1,5 +1,4 @@
 #! /usr/bin/env python3
-
 # $Id$
 # Author: David Goodger <goodger@python.org>
 # Copyright: This module has been placed in the public domain.
@@ -17,9 +16,6 @@ from DocutilsTestSupport import nodes, utils
 
 debug = False
 
-if sys.version_info >= (3, 0):
-    unicode = str  # noqa
-
 
 class TextTests(unittest.TestCase):
 
@@ -36,25 +32,22 @@ class TextTests(unittest.TestCase):
         self.assertEqual(self.text.shortrepr(),
                           r"<#text: 'Line 1.\nLine 2.'>")
         self.assertEqual(nodes.reprunicode('foo'), u'foo')
-        if sys.version_info < (3, 0):
-            self.assertEqual(repr(self.unicode_text), r"<#text: 'M\xf6hren'>")
-        else:
-            self.assertEqual(repr(self.unicode_text), u"<#text: 'Möhren'>")
+        self.assertEqual(repr(self.unicode_text), u"<#text: 'Möhren'>")
 
     def test_str(self):
         self.assertEqual(str(self.text), 'Line 1.\nLine 2.')
 
     def test_unicode(self):
-        self.assertEqual(unicode(self.unicode_text), u'Möhren')
+        self.assertEqual(str(self.unicode_text), u'Möhren')
         self.assertEqual(str(self.unicode_text), 'M\xf6hren')
 
     def test_astext(self):
-        self.assertTrue(isinstance(self.text.astext(), unicode))
+        self.assertTrue(isinstance(self.text.astext(), str))
         self.assertEqual(self.text.astext(), u'Line 1.\nLine 2.')
         self.assertEqual(self.unicode_text.astext(), u'Möhren')
 
     def test_pformat(self):
-        self.assertTrue(isinstance(self.text.pformat(), unicode))
+        self.assertTrue(isinstance(self.text.pformat(), str))
         self.assertEqual(self.text.pformat(), u'Line 1.\nLine 2.\n')
 
     def test_strip(self):
@@ -65,12 +58,8 @@ class TextTests(unittest.TestCase):
         self.assertEqual(stripped2, u's noc')
 
     def test_asciirestriction(self):
-        if sys.version_info < (3, 0):
-            self.assertRaises(UnicodeDecodeError, nodes.Text,
-                              b'hol%s' % chr(224))
-        else:
-            # no bytes at all allowed
-            self.assertRaises(TypeError, nodes.Text, b'hol')
+        # no bytes at all allowed
+        self.assertRaises(TypeError, nodes.Text, b'hol')
 
     def test_longrepr(self):
         self.assertEqual(repr(self.longtext), r"<#text: 'Mary had a "
@@ -106,29 +95,19 @@ class ElementTests(unittest.TestCase):
         del element['attr']
         element['mark'] = u'\u2022'
         self.assertEqual(repr(element), '<Element: >')
-        if sys.version_info < (3, 0):
-            self.assertEqual(str(element), '<Element mark="\\u2022"/>')
-        else:
-            self.assertEqual(str(element), u'<Element mark="\u2022"/>')
+        self.assertEqual(str(element), u'<Element mark="\u2022"/>')
         dom = element.asdom()
         self.assertEqual(dom.toxml(), u'<Element mark="\u2022"/>')
         dom.unlink()
         element['names'] = ['nobody', u'имя', u'näs']
-        if sys.version_info < (3, 0):
-            self.assertEqual(repr(element),
-                '<Element "nobody; \\u0438\\u043c\\u044f; n\\xe4s": >')
-        else:
-            self.assertEqual(repr(element), u'<Element "nobody; имя; näs": >')
+        self.assertEqual(repr(element), u'<Element "nobody; имя; näs": >')
         self.assertTrue(isinstance(repr(element), str))
 
     def test_withtext(self):
         element = nodes.Element('text\nmore', nodes.Text('text\nmore'))
         uelement = nodes.Element(u'grün', nodes.Text(u'grün'))
         self.assertEqual(repr(element), r"<Element: <#text: 'text\nmore'>>")
-        if sys.version_info < (3, 0):
-            self.assertEqual(repr(uelement), "<Element: <#text: 'gr\\xfcn'>>")
-        else:
-            self.assertEqual(repr(uelement), u"<Element: <#text: 'grün'>>")
+        self.assertEqual(repr(uelement), u"<Element: <#text: 'grün'>>")
         self.assertTrue(isinstance(repr(uelement), str))
         self.assertEqual(str(element), '<Element>text\nmore</Element>')
         self.assertEqual(str(uelement), '<Element>gr\xfcn</Element>')
@@ -339,29 +318,23 @@ class ElementTests(unittest.TestCase):
 
     def test_unicode(self):
         node = nodes.Element(u'Möhren', nodes.Text(u'Möhren'))
-        self.assertEqual(unicode(node), u'<Element>Möhren</Element>')
+        self.assertEqual(str(node), u'<Element>Möhren</Element>')
 
 
 class MiscTests(unittest.TestCase):
 
     def test_reprunicode(self):
         # return `unicode` instance
-        self.assertTrue(isinstance(nodes.reprunicode('foo'), unicode))
+        self.assertTrue(isinstance(nodes.reprunicode('foo'), str))
         self.assertEqual(nodes.reprunicode('foo'), u'foo')
         self.assertEqual(nodes.reprunicode(u'Möhre'), u'Möhre')
-        if sys.version_info < (3, 0): # strip leading "u" from representation
-            self.assertEqual(repr(nodes.reprunicode(u'Möhre')),
-                             repr(u'Möhre')[1:])
-        else: # no change to `unicode` under Python 3k
-            self.assertEqual(repr(nodes.reprunicode(u'Möhre')), repr(u'Möhre'))
+        # no change to `unicode` under Python 3k
+        self.assertEqual(repr(nodes.reprunicode(u'Möhre')), repr(u'Möhre'))
 
     def test_ensure_str(self):
         self.assertTrue(isinstance(nodes.ensure_str(u'über'), str))
         self.assertEqual(nodes.ensure_str('over'), 'over')
-        if sys.version_info < (3, 0): # strip leading "u" from representation
-            self.assertEqual(nodes.ensure_str(u'über'), r'\xfcber')
-        else:
-            self.assertEqual(nodes.ensure_str(u'über'), r'über')
+        self.assertEqual(nodes.ensure_str(u'über'), r'über')
 
     def test_node_class_names(self):
         node_class_names = []
@@ -553,7 +526,7 @@ class MiscTests(unittest.TestCase):
         if failures:
             self.fail("%d failures in %d\n%s" % (len(failures), len(self.ids), "\n".join(failures)))
 
-    def test_traverse(self):
+    def test_findall(self):
         e = nodes.Element()
         e += nodes.Element()
         e[0] += nodes.Element()
@@ -561,33 +534,33 @@ class MiscTests(unittest.TestCase):
         e[0][1] += nodes.Text('some text')
         e += nodes.Element()
         e += nodes.Element()
-        self.assertEqual(list(e.traverse()),
+        self.assertEqual(list(e.findall()),
                           [e, e[0], e[0][0], e[0][1], e[0][1][0], e[1], e[2]])
-        self.assertEqual(list(e.traverse(include_self=False)),
+        self.assertEqual(list(e.findall(include_self=False)),
                           [e[0], e[0][0], e[0][1], e[0][1][0], e[1], e[2]])
-        self.assertEqual(list(e.traverse(descend=False)),
+        self.assertEqual(list(e.findall(descend=False)),
                           [e])
-        self.assertEqual(list(e[0].traverse(descend=False, ascend=True)),
+        self.assertEqual(list(e[0].findall(descend=False, ascend=True)),
                           [e[0], e[1], e[2]])
-        self.assertEqual(list(e[0][0].traverse(descend=False, ascend=True)),
+        self.assertEqual(list(e[0][0].findall(descend=False, ascend=True)),
                           [e[0][0], e[0][1], e[1], e[2]])
-        self.assertEqual(list(e[0][0].traverse(descend=False, siblings=True)),
+        self.assertEqual(list(e[0][0].findall(descend=False, siblings=True)),
                           [e[0][0], e[0][1]])
         self.testlist = e[0:2]
-        self.assertEqual(list(e.traverse(condition=self.not_in_testlist)),
+        self.assertEqual(list(e.findall(condition=self.not_in_testlist)),
                           [e, e[0][0], e[0][1], e[0][1][0], e[2]])
         # Return siblings despite siblings=False because ascend is true.
-        self.assertEqual(list(e[1].traverse(ascend=True, siblings=False)),
+        self.assertEqual(list(e[1].findall(ascend=True, siblings=False)),
                           [e[1], e[2]])
-        self.assertEqual(list(e[0].traverse()),
+        self.assertEqual(list(e[0].findall()),
                           [e[0], e[0][0], e[0][1], e[0][1][0]])
         self.testlist = [e[0][0], e[0][1]]
-        self.assertEqual(list(e[0].traverse(condition=self.not_in_testlist)),
+        self.assertEqual(list(e[0].findall(condition=self.not_in_testlist)),
                                [e[0], e[0][1][0]])
         self.testlist.append(e[0][1][0])
-        self.assertEqual(list(e[0].traverse(condition=self.not_in_testlist)),
+        self.assertEqual(list(e[0].findall(condition=self.not_in_testlist)),
                                [e[0]])
-        self.assertEqual(list(e.traverse(nodes.TextElement)), [e[0][1]])
+        self.assertEqual(list(e.findall(nodes.TextElement)), [e[0][1]])
 
     def test_next_node(self):
         e = nodes.Element()

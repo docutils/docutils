@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 # $Id$
 # Author: Martin Blais <blais@furius.ca>
@@ -15,10 +15,7 @@ import DocutilsTestSupport              # must be imported before docutils
 import docutils
 from docutils import core, nodes, io
 
-if sys.version_info < (3, 0):
-    u_prefix = 'u'
-else:
-    u_prefix = b''
+u_prefix = b''
 
 
 test_document = """\

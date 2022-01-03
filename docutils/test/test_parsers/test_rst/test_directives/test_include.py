@@ -1,5 +1,4 @@
 #! /usr/bin/env python3
-
 # $Id$
 # Author: David Goodger <goodger@python.org>
 # Copyright: This module has been placed in the public domain.
@@ -15,9 +14,6 @@ if __name__ == '__main__':
 from test_parsers import DocutilsTestSupport
 from docutils.parsers.rst import states
 from docutils.utils.code_analyzer import with_pygments
-
-if sys.version_info >= (3, 0):
-    unichr = chr  # noqa
 
 
 def suite():
@@ -51,10 +47,6 @@ include_md = mydir('include.md')
 utf_16_file = mydir('utf-16.csv')
 utf_16_error_str = ("UnicodeDecodeError: 'ascii' codec can't decode byte 0xfe "
                     "in position 0: ordinal not in range(128)")
-if sys.version_info < (3, 0):
-    utf_16_error_str = ("UnicodeError: Unable to decode input data.  "
-                        "Tried the following encodings: 'ascii'.\n"
-                        "            (%s)" % utf_16_error_str)
 nonexistent = os.path.join(os.path.dirname(states.__file__),
                            'include', 'nonexistent')
 nonexistent_rel = DocutilsTestSupport.utils.relative_path(
@@ -814,7 +806,7 @@ Testing errors in included file:
                 .. end of inclusion from "test_parsers/test_rst/test_directives/include10.txt"
 """ % {'source': reldir(include10), 'nonexistent': reldir(nonexistent),
        'unichr_exception':
-       DocutilsTestSupport.exception_data(unichr, int("11111111", 16))[2]
+       DocutilsTestSupport.exception_data(chr, int("11111111", 16))[2]
       }],
 ["""\
 Include file with whitespace in the path:

@@ -22,10 +22,7 @@ from test_writers import DocutilsTestSupport # before importing docutils!
 import docutils
 import docutils.core
 
-if sys.version_info >= (3, 0):
-    from io import StringIO
-else:
-    from StringIO import StringIO
+from io import StringIO
 
 # sample strings
 # --------------

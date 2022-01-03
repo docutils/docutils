@@ -82,9 +82,6 @@ try:
 except:
     import pdb
 
-if sys.version_info >= (3, 0):
-    unicode = str  # noqa
-
 
 # Hack to make repr(StringList) look like repr(list):
 StringList.__repr__ = StringList.__str__
@@ -192,21 +189,13 @@ class CustomTestCase(StandardTestCase):
         self.clear_roles()
 
     def compare_output(self, input, output, expected):
-        """`input`, `output`, and `expected` should all be strings."""
-        if isinstance(input, unicode):
+        """`input` should by bytes, `output` and `expected` strings."""
+        if isinstance(input, str):
             input = input.encode('raw_unicode_escape')
-        if sys.version_info > (3, 0):
-            # API difference: Python 3's node.__str__ doesn't escape
-            #assert expected is None or isinstance(expected, unicode)
-            if isinstance(expected, bytes):
-                expected = expected.decode('utf-8')
-            if isinstance(output, bytes):
-                output = output.decode('utf-8')
-        else:
-            if isinstance(expected, unicode):
-                expected = expected.encode('raw_unicode_escape')
-            if isinstance(output, unicode):
-                output = output.encode('raw_unicode_escape')
+        if isinstance(expected, bytes):
+            expected = expected.decode('utf-8')
+        if isinstance(output, bytes):
+            output = output.decode('utf-8')
         # Normalize line endings:
         if expected:
             expected = '\n'.join(expected.splitlines())
@@ -847,10 +836,10 @@ def _format_str(*args):
     return_tuple = []
     for i in args:
         r = repr(i)
-        if ( (isinstance(i, bytes) or isinstance(i, unicode))
+        if ( (isinstance(i, bytes) or isinstance(i, str))
              and '\n' in i):
             stripped = ''
-            if isinstance(i, unicode) and r.startswith('u'):
+            if isinstance(i, str) and r.startswith('u'):
                 stripped = r[0]
                 r = r[1:]
             elif isinstance(i, bytes) and r.startswith('b'):

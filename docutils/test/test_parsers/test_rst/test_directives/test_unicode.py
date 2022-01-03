@@ -15,17 +15,13 @@ if __name__ == '__main__':
 from test_parsers import DocutilsTestSupport
 
 
-if sys.version_info >= (3, 0):
-    unichr = chr  # noqa
-
-
 def suite():
     s = DocutilsTestSupport.ParserTestSuite()
     s.generateTests(totest)
     return s
 
 unichr_exception = DocutilsTestSupport.exception_data(
-    unichr, int("111111111111111111", 16))[0]
+    chr, int("111111111111111111", 16))[0]
 if isinstance(unichr_exception, OverflowError):
     unichr_exception_string = 'code too large (%s)' % unichr_exception
 else:
@@ -171,7 +167,7 @@ u"""\
         <literal_block xml:space="preserve">
             .. |too big for unicode| unicode:: 0x11111111
 """ % (unichr_exception_string,
-       DocutilsTestSupport.exception_data(unichr, int("11111111", 16))[2])]
+       DocutilsTestSupport.exception_data(chr, int("11111111", 16))[2])]
 ]
 
 

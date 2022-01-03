@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-
 # $Id$
 # Author: Lea Wiemann <LeWiemann@gmail.com>
 # Copyright: This module has been placed in the public domain.
@@ -143,30 +142,17 @@ expected output and check it in:
         output = docutils.core.publish_file(**params)
         # ensure output is unicode
         output_encoding = params.get('output_encoding', 'utf-8')
-        if sys.version_info < (3, 0):
-            try:
-                output = output.decode(output_encoding)
-            except UnicodeDecodeError:
-                # failsafe
-                output = output.decode('latin1', 'replace')
         # Normalize line endings:
         output = '\n'.join(output.splitlines())
         # Get the expected output *after* writing the actual output.
         no_expected = self.no_expected_template % {
             'exp': expected_path, 'out': params['destination_path']}
         self.assertTrue(os.access(expected_path, os.R_OK), no_expected)
-        if sys.version_info < (3, 0):
-            f = open(expected_path, 'r')
-        else: # samples are UTF8 encoded. 'rb' leads to errors with Python 3!
-            f = open(expected_path, 'r', encoding='utf-8')
+        # samples are UTF8 encoded. 'rb' leads to errors with Python 3!
+        f = open(expected_path, 'r', encoding='utf-8')
         # Normalize line endings:
         expected = '\n'.join(f.read().splitlines())
         f.close()
-        if sys.version_info < (3, 0):
-            try:
-                expected = expected.decode(output_encoding)
-            except UnicodeDecodeError:
-                expected = expected.decode('latin1', 'replace')
 
         diff = self.expected_output_differs_template % {
             'exp': expected_path, 'out': params['destination_path']}
@@ -176,8 +162,6 @@ expected output and check it in:
             diff = ''.join(difflib.unified_diff(
                 expected.splitlines(True), output.splitlines(True),
                 expected_path, params['destination_path']))
-            if sys.version_info < (3, 0):
-                diff = diff.encode(sys.stderr.encoding or 'ascii', 'replace')
             print('\n%s:' % (self,), file=sys.stderr)
             print(diff, file=sys.stderr)
             raise

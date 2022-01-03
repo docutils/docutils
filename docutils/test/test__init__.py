@@ -16,19 +16,15 @@ import docutils.utils
 from docutils import VersionInfo
 
 
-if sys.version_info >= (3, 0):
-    unicode = str  # noqa
-
-
 class ApplicationErrorTests(unittest.TestCase):
 
     def test_message(self):
         err = docutils.ApplicationError('the message')
-        self.assertEqual(unicode(err), u'the message')
+        self.assertEqual(str(err), u'the message')
 
     def test_non_ASCII_message(self):
         err = docutils.ApplicationError(u'\u0169')
-        self.assertEqual(unicode(err), u'\u0169')
+        self.assertEqual(str(err), u'\u0169')
 
 
 class VersionInfoTests(unittest.TestCase):

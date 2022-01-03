@@ -1,5 +1,4 @@
-#! /usr/bin/env python
-
+#! /usr/bin/env python3
 # $Id$
 # Author: Stefan Rank <strank(AT)strank(DOT)info>
 # Copyright: This module has been placed in the public domain.
@@ -10,6 +9,9 @@ Tests for basic functionality of parser classes.
 
 import sys
 import unittest
+
+if __name__ == '__main__':
+    import __init__
 import DocutilsTestSupport              # must be imported before docutils
 import docutils
 from docutils import parsers, utils, frontend
@@ -22,14 +24,8 @@ class RstParserTests(unittest.TestCase):
         parser = parser_class()
         document = utils.new_document('test data', frontend.OptionParser(
                     components=(parser, )).get_default_values())
-
-        if sys.version_info < (3, 0):
-            # supplying string input is supported, but only if ascii-decodable
-            self.assertRaises(UnicodeDecodeError,
-                              parser.parse, b'hol%s' % chr(224), document)
-        else:
-            # input must be unicode at all times
-            self.assertRaises(TypeError, parser.parse, b'hol', document)
+        # input must be unicode at all times
+        self.assertRaises(TypeError, parser.parse, b'hol', document)
 
 
 if __name__ == '__main__':
