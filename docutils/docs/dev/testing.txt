@@ -67,21 +67,21 @@ To test a specific version, use the ``pyNN`` environment. For example::
 `pyenv`_ can be installed and configured (see `installing pyenv`_) to
 get multiple Python versions::
 
-    # assuming your system runs 2.7.x
-    pyenv install 3.5.7
-    pyenv install 3.6.9
-    pyenv install 3.7.3
-    pyenv global system 3.5.7 3.6.9 3.7.3
+    # assuming your system runs 3.9.x
+    pyenv install 3.7.12
+    pyenv install 3.8.12
+    pyenv install 3.10.1
+    pyenv global system 3.7.12 3.8.12 3.10.1
 
     # reset your shims
     rm -rf ~/.pyenv/shims && pyenv rehash
 
-This will give you ``python2.7`` and ``python3.5`` through ``python3.7``.
+This will give you ``python3.7`` through ``python3.10``.
 Then run::
 
-    python2.7 -u alltests.py
-    [...]
     python3.7 -u alltests.py
+    [...]
+    python3.10 -u alltests.py
 
 .. [#] Good resources covering the differences between Python versions
    are the `What's New` documents (`What's New in Python 3.10`__ and

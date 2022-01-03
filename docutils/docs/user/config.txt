@@ -2150,12 +2150,12 @@ New in 0.17. Obsoletes the ``html_writer`` option.
 [docutils-cli application]
 --------------------------
 
-New in 0.17. Config file support added in 0.18. 
+New in 0.17. Config file support added in 0.18.
 Support for reader/parser import names added in 0.19.
 
 reader
 ~~~~~~
-Reader component name. 
+Reader component name.
 One of "standalone", "pep",
 or the import name of a drop-in reader module.
 
@@ -2278,8 +2278,9 @@ Old-Format Configuration Files
 Formerly, Docutils configuration files contained a single "[options]"
 section only.  This was found to be inflexible, and in August 2003
 Docutils adopted the current component-based configuration file
-sections as described above.  Docutils will still recognize the old
-"[options]" section, but complains with a deprecation warning.
+sections as described above.
+Up to version 1.1, Docutils will still recognize the old "[options]"
+section, but complain with a deprecation warning.
 
 To convert existing config files, the easiest way is to change the
 section title: change "[options]" to "[general]".  Most settings

@@ -20,9 +20,7 @@ For a more detailed list of changes, please see the Docutils `HISTORY`_.
 Future changes
 ==============
 
-Drop support for Python 2.7, 3.5, and 3.6.
-
-Drop support for `old-format configuration files`_.
+Drop support for `old-format configuration files`_ in Docutils 1.2.
 
 * `html5` writer:
 
@@ -31,7 +29,8 @@ Drop support for `old-format configuration files`_.
     ``[role="doc-noteref"]`` instead of ``.footnote-reference``
     (see minimal.css for examples).
 
-  - Remove option ``--embed-images`` (obsoleted by "image_loading_").
+  - Remove option ``--embed-images`` (obsoleted by "image_loading_")
+    in Docutils 1.2.
 
     .. _image_loading: docs/user/config.html#image-loading
 
@@ -44,15 +43,17 @@ Drop support for `old-format configuration files`_.
 
 * `latex2e` writer:
 
-  - Change default of use_latex_citations_ setting to True.
+  - Change default of use_latex_citations_ setting to True
+    in Docutils 1.0.
 
-  - Change default of legacy_column_widths_ setting to False.
+  - Change default of legacy_column_widths_ setting to False
+    in Docutils 1.0.
 
   - Remove ``use_verbatim_when_possible`` setting
-    (use literal_block_env_: verbatim).
+    (use literal_block_env_: verbatim) in Docutils 1.2.
 
 * Remove the "rawsource" argument from nodes.Text.__init__()
-  (deprecated and ignored since Docutils 0.18).
+  (deprecated and ignored since Docutils 0.18) in Docutils 1.3.
 
 * Move math format conversion from docutils/utils/math (called from
   docutils/writers/_html_base.py) to a transform__.
@@ -70,7 +71,7 @@ Drop support for `old-format configuration files`_.
   style sheet or post-processing that may break otherwise.
 
 * Remove the ``--html-writer`` option of the ``buildhtml.py`` application
-  (obsoleted by the `"writer" option`_).
+  (obsoleted by the `"writer" option`_) in Docutils 1.2.
 
 .. _old-format configuration files:
    docs/user/config.html#old-format-configuration-files
@@ -79,10 +80,14 @@ Drop support for `old-format configuration files`_.
 .. _literal_block_env: docs/user/config.html#literal-block-env
 .. _use_latex_citations: docs/user/config.html#use-latex-citations
 
-Changes Since 0.18.1
-====================
+Release 0.19b (unpublished)
+===========================
 
-.
+Docutils 0.19 is compatible with Python versions 3.7 and later.
+
+* Support calling the "myst" parser (https://pypi.org/project/myst-docutils)
+  from docutils-cli.py_.
+
 
 Release 0.18.1 (2021-12-23)
 ===========================
@@ -92,7 +97,7 @@ Release 0.18.1 (2021-12-23)
    Docutils 0.18.x is the last version supporting Python 2.7, 3.5, and 3.6.
 
 * nodes.Node.traverse() returns a list again to restore backwards
-  compatibility (fixes bug #431).  
+  compatibility (fixes bug #431).
   Use nodes.Node.findall() to get an iterator.
 
 * re-add module ``parsers.rst.directives.html``
@@ -116,7 +121,7 @@ Release 0.18 (2021-10-26)
         with ``--id-prefix="DU-"``, a section with title "34. May"
         currently gets the identifier key ``DU-may`` and after the
         change the identifier key ``DU-34-may``.
-      
+
     - The default value for the auto_id_prefix_ setting changed to ``%``:
       "use the tag name as prefix for auto-generated IDs".
       Set auto_id_prefix_ to ``id`` for unchanged auto-IDs.
@@ -125,32 +130,32 @@ Release 0.18 (2021-10-26)
     - Use the semantic tag <aside> for footnote text and citations, topics
       (except abstract and toc), admonitions, and system messages.
       Use <nav> for the Table of Contents.
-      
+
     - Make "auto" table column widths the default: Only specify column
       widths, if the `"widths" option`_ is set and not "auto".
       The table-style__ setting "colwidths-grid" restores the current default.
-      
+
       .. _"widths" option: __ docs/ref/rst/directives.html#table
       __ docs/user/config.html#table-style
-      
+
     - Items of a definition list with class argument "details" are
       converted to `details disclosure elements`_. Example::
-      
+
         ..class:: details
-      
+
         Summary
           This additional information should be hidden.
-      
+
     - Do not add "compound-first", "compound-middle", or "compound-last" to
       elements nested in a compound. Use child selector and ":first-child",
       ":last-child" pseudo classes instead.
-      
+
     - Use class value "backrefs" instead of "fn-backref" for a span of
       back-references.
-      
+
     - Write footnote brackets and field term colons to HTML, so that they
       are present also without CSS and when copying text.
-      
+
     - Move space character between section number and heading into
       "sectnum" span.
 
@@ -167,7 +172,7 @@ Release 0.18 (2021-10-26)
 * New standard Docutils doctree node: <meta__>.
 
 * New configuration settings:
-  
+
   - [latex writers] legacy_column_widths_ and
   - [html5 writer] image_loading_.
 
@@ -181,13 +186,13 @@ Release 0.18 (2021-10-26)
 * Removed function: utils.unique_combinations()
   (obsoleted by itertools.combinations()).
 
-* Removed attributes: 
-  
+* Removed attributes:
+
   - ``HTMLTranslator.topic_classes``: check ``node.parent.classes`` instead.
   - ``nodes.Text.rawsource``: we store the null-escaped text in Text
     nodes since 0.16 so there is no additional information in the
     rawsource.
-    
+
 * Major refactoring and fixes/additions in
   ``docutils/utils/math/math2html.py`` and
   ``docutils/utils/math/latex2mathml.py``
