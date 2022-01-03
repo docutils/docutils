@@ -28,10 +28,6 @@ from docutils import nodes, utils
 from docutils.transforms import TransformError, Transform
 
 
-if sys.version_info >= (3, 0):
-    unicode = str  # noqa
-
-
 class TitlePromoter(Transform):
 
     """
@@ -512,7 +508,7 @@ class DocInfo(Transform):
         The set of separators is locale dependent (default: ";"- or ",").
         """
         # @@ keep original formatting? (e.g. ``:authors: A. Test, *et-al*``)
-        text = ''.join(unicode(node)
+        text = ''.join(str(node)
                        for node in field[1].findall(nodes.Text))
         if not text:
             raise TransformError

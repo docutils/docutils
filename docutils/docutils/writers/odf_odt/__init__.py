@@ -12,7 +12,9 @@ the API is not settled and may change with any minor Docutils version.
 __docformat__ = 'reStructuredText'
 
 
+from configparser import ConfigParser
 import copy
+from io import StringIO
 import itertools
 import os
 import os.path
@@ -21,6 +23,8 @@ import subprocess
 import sys
 import tempfile
 import time
+from urllib.request import urlopen
+from urllib.error import HTTPError
 import weakref
 from xml.etree import ElementTree as etree
 from xml.dom import minidom
@@ -37,17 +41,6 @@ from docutils.parsers.rst.directives.images import PIL # optional
 from docutils.readers import standalone
 from docutils.transforms import references
 
-if sys.version_info >= (3, 0):
-    from configparser import ConfigParser
-    from io import StringIO
-    from urllib.request import urlopen
-    from urllib.error import HTTPError
-else:
-    from ConfigParser import ConfigParser
-    from StringIO import StringIO
-    from urllib2 import HTTPError
-    from urllib2 import urlopen
-    FileNotFoundError = OSError
 
 
 # Import pygments and odtwriter pygments formatters if possible.
@@ -296,10 +289,7 @@ def add_ns(tag, nsdict=CNSD):
 
 def ToString(et):
     outstream = StringIO()
-    if sys.version_info >= (3, 0):
-        et.write(outstream, encoding="unicode")
-    else:
-        et.write(outstream)
+    et.write(outstream, encoding="unicode")
     s1 = outstream.getvalue()
     outstream.close()
     return s1
@@ -881,10 +871,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                     self.document.reporter.warning(
                         'Style "%s" is not a style used by odtwriter.' % (
                             rststyle, ))
-                if sys.version_info >= (3, 0):
-                    self.format_map[rststyle] = format
-                else:
-                    self.format_map[rststyle] = format.decode('utf-8')
+                self.format_map[rststyle] = format
         self.section_level = 0
         self.section_count = 0
         # Create ElementTree content and styles documents.

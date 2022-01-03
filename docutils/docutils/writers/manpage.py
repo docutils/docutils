@@ -46,9 +46,6 @@ __docformat__ = 'reStructuredText'
 import re
 import sys
 
-if sys.version_info < (3, 0):
-    range = xrange  # NOQA: F821  # flake8 do not check undefined name
-
 import docutils
 from docutils import nodes, writers, languages
 try:
@@ -351,9 +348,6 @@ class Translator(nodes.NodeVisitor):
                     return res.lower()
                 else:
                     return "%d." % self._cnt
-
-            if sys.version_info < (3, 0):
-                next = __next__
 
             def get_width(self):
                 return self._indent

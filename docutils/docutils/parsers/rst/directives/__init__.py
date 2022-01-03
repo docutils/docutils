@@ -17,9 +17,6 @@ from docutils import nodes, parsers
 from docutils.utils import split_escaped_whitespace, escape2null, unescape
 from docutils.parsers.rst.languages import en as _fallback_language_module
 
-if sys.version_info >= (3, 0):
-    unichr = chr  # noqa
-
 
 _directive_registry = {
       'attention': ('admonitions', 'Attention'),
@@ -308,12 +305,12 @@ def unicode_code(code):
     """
     try:
         if code.isdigit():                  # decimal number
-            return unichr(int(code))
+            return chr(int(code))
         else:
             match = unicode_pattern.match(code)
             if match:                       # hex number
                 value = match.group(1) or match.group(2)
-                return unichr(int(value, 16))
+                return chr(int(value, 16))
             else:                           # other text
                 return code
     except OverflowError as detail:

@@ -29,8 +29,6 @@ import copy
 import re
 import sys
 import unicodedata
-if sys.version_info >= (3, 0):
-    unicode = str  # noqa
 
 from docutils.utils.math import tex2unichar, toplevel_code
 
@@ -514,7 +512,7 @@ class MathToken(math):
         super(MathToken, self).__init__(**attributes)
 
     def _xml_body(self, level=0):
-        return [unicode(self.data).translate(self.xml_entities)]
+        return [str(self.data).translate(self.xml_entities)]
 
 class mtext(MathToken): pass
 class mi(MathToken): pass

@@ -9,9 +9,10 @@ Directives for table elements.
 __docformat__ = 'reStructuredText'
 
 
-import sys
-import os.path
 import csv
+import os.path
+import sys
+import warnings
 
 from docutils import io, nodes, statemachine, utils
 from docutils.utils.error_reporting import SafeString
@@ -209,14 +210,14 @@ class CSVTable(Table):
 
         def __init__(self, options):
             if 'delim' in options:
-                self.delimiter = CSVTable.encode_for_csv(options['delim'])
+                self.delimiter = options['delim']
             if 'keepspace' in options:
                 self.skipinitialspace = False
             if 'quote' in options:
-                self.quotechar = CSVTable.encode_for_csv(options['quote'])
+                self.quotechar = options['quote']
             if 'escape' in options:
                 self.doublequote = False
-                self.escapechar = CSVTable.encode_for_csv(options['escape'])
+                self.escapechar = options['escape']
             csv.Dialect.__init__(self)
 
 
@@ -265,8 +266,6 @@ class CSVTable(Table):
             return [detail.args[0]]
         except csv.Error as detail:
             message = str(detail)
-            if sys.version_info < (3, 0) and '1-character string' in message:
-                message += '\nwith Python 2.x this must be an ASCII character.'
             error = self.state_machine.reporter.error(
                 'Error with CSV data in "%s" directive:\n%s'
                 % (self.name, message), nodes.literal_block(
@@ -331,14 +330,11 @@ class CSVTable(Table):
                 raise SystemMessagePropagation(severe)
         elif 'url' in self.options:
             # CSV data is from a URL.
-            # Do not import urllib2 at the top of the module because
+            # Do not import urllib at the top of the module because
             # it may fail due to broken SSL dependencies, and it takes
-            # about 0.15 seconds to load.
-            if sys.version_info >= (3, 0):
-                from urllib.request import urlopen
-                from urllib.error import URLError
-            else:
-                from urllib2 import urlopen, URLError
+            # about 0.15 seconds to load. Update: < 0.03s with Py3k.
+            from urllib.request import urlopen
+            from urllib.error import URLError
 
             source = self.options['url']
             try:
@@ -363,34 +359,31 @@ class CSVTable(Table):
             raise SystemMessagePropagation(error)
         return csv_data, source
 
-    if sys.version_info < (3, 0):
-        # 2.x csv module doesn't do Unicode
-        def decode_from_csv(s):
-            return s.decode('utf-8')
-        def encode_for_csv(s):
-            return s.encode('utf-8')
-    else:
-        def decode_from_csv(s):
-            return s
-        def encode_for_csv(s):
-            return s
+    def decode_from_csv(s):
+        warnings.warn('CSVTable.decode_from_csv()'
+                  ' is not required with Python 3'
+                  ' and will be removed in Docutils 1.2.',
+                  DeprecationWarning, stacklevel=2)
+        return s
+    def encode_for_csv(s):
+        warnings.warn('CSVTable.encode_from_csv()'
+                  ' is not required with Python 3'
+                  ' and will be removed in Docutils 1.2.',
+                  DeprecationWarning, stacklevel=2)
+        return s
     decode_from_csv = staticmethod(decode_from_csv)
     encode_for_csv = staticmethod(encode_for_csv)
 
     def parse_csv_data_into_rows(self, csv_data, dialect, source):
-        # csv.py doesn't do Unicode; encode temporarily as UTF-8
-        csv_reader = csv.reader([self.encode_for_csv(line + '\n')
-                                 for line in csv_data],
+        csv_reader = csv.reader([line + '\n' for line in csv_data],
                                 dialect=dialect)
         rows = []
         max_cols = 0
         for row in csv_reader:
             row_data = []
             for cell in row:
-                # decode UTF-8 back to Unicode
-                cell_text = self.decode_from_csv(cell)
                 cell_data = (0, 0, 0, statemachine.StringList(
-                    cell_text.splitlines(), source=source))
+                    cell.splitlines(), source=source))
                 row_data.append(cell_data)
             rows.append(row_data)
             max_cols = max(max_cols, len(row))

@@ -21,9 +21,6 @@ from docutils.nodes import unescape
 import docutils.io
 from docutils.utils.error_reporting import ErrorOutput, SafeString
 
-if sys.version_info >= (3, 0):
-    unicode = str
-
 
 class SystemMessage(ApplicationError):
 
@@ -159,7 +156,7 @@ class Reporter(object):
 
         Raise an exception or generate a warning if appropriate.
         """
-        # `message` can be a `string`, `unicode`, or `Exception` instance.
+        # `message` can be a `str` or `Exception` instance.
         if isinstance(message, Exception):
             message = SafeString(message)
 
@@ -344,7 +341,8 @@ def decode_path(path):
     Decode file/path string in a failsafe manner if not already done.
     """
     # see also http://article.gmane.org/gmane.text.docutils.user/2905
-    if isinstance(path, unicode):
+    # TODO: is this still required with Python 3?
+    if isinstance(path, str):
         return path
     try:
         path = path.decode(sys.getfilesystemencoding(), 'strict')
@@ -601,8 +599,6 @@ def split_escaped_whitespace(text):
     return list(itertools.chain(*strings))
 
 def strip_combining_chars(text):
-    if isinstance(text, str) and sys.version_info < (3, 0):
-        return text
     return u''.join([c for c in text if not unicodedata.combining(c)])
 
 def find_combining_chars(text):
@@ -613,8 +609,6 @@ def find_combining_chars(text):
     [3, 6, 9]
 
     """
-    if isinstance(text, str) and sys.version_info < (3, 0):
-        return []
     return [i for i,c in enumerate(text) if unicodedata.combining(c)]
 
 def column_indices(text):
@@ -647,8 +641,6 @@ def column_width(text):
 
     Correct ``len(text)`` for wide East Asian and combining Unicode chars.
     """
-    if isinstance(text, str) and sys.version_info < (3, 0):
-        return len(text) # shortcut for binary strings
     width = sum([east_asian_widths[unicodedata.east_asian_width(c)]
                  for c in text])
     # correction for combining chars:

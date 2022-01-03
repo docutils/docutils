@@ -29,28 +29,20 @@ Also exports the following functions:
 
 __docformat__ = 'reStructuredText'
 
+import codecs
+from configparser import RawConfigParser
+import optparse
+from optparse import SUPPRESS_HELP
 import os
 import os.path
 import sys
 import warnings
-import codecs
-import optparse
-from optparse import SUPPRESS_HELP
-if sys.version_info >= (3, 0):
-    from configparser import RawConfigParser
-    from os import getcwd
-else:
-    from ConfigParser import RawConfigParser
-    from os import getcwdu as getcwd
 
 import docutils
 import docutils.utils
 import docutils.nodes
 from docutils.utils.error_reporting import (locale_encoding, SafeString,
                                             ErrorOutput, ErrorString)
-
-if sys.version_info >= (3, 0):
-    unicode = str  # noqa
 
 
 def store_multiple(option, opt, value, parser, *args, **kwargs):
@@ -175,7 +167,7 @@ def validate_comma_separated_list(setting, value, option_parser,
                                     config_parser=None, config_section=None):
     """Check/normalize list arguments (split at "," and strip whitespace).
     """
-    # `value` may be ``unicode``, ``str``, or a ``list`` (when  given as
+    # `value` may be ``bytes``, ``str``, or a ``list`` (when  given as
     # command line option and "action" is "append").
     if not isinstance(value, list):
         value = [value]
@@ -258,8 +250,7 @@ def make_paths_absolute(pathdict, keys, base_path=None):
     `OptionParser.relative_path_settings`.
     """
     if base_path is None:
-        base_path = getcwd() # type(base_path) == unicode
-        # to allow combining non-ASCII cwd with unicode values in `pathdict`
+        base_path = os.getcwd()
     for key in keys:
         if key in pathdict:
             value = pathdict[key]
@@ -779,7 +770,7 @@ Skipping "%s" configuration file.
         """Wrapper around sys.stderr catching en-/decoding errors"""
 
     def read(self, filenames, option_parser):
-        if type(filenames) in (str, unicode):
+        if type(filenames) == str:
             filenames = [filenames]
         for filename in filenames:
             try:
@@ -788,10 +779,7 @@ Skipping "%s" configuration file.
             except IOError:
                 continue
             try:
-                if sys.version_info < (3, 0):
-                    RawConfigParser.readfp(self, fp, filename)
-                else:
-                    RawConfigParser.read_file(self, fp, filename)
+                RawConfigParser.read_file(self, fp, filename)
             except UnicodeDecodeError:
                 self._stderr.write(self.not_utf8_error % (filename, filename))
                 fp.close()
