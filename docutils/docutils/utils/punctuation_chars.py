@@ -1,5 +1,4 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
+#!/usr/bin/env python3
 # :Id: $Id$
 # :Copyright: © 2011, 2017 Günter Milde.
 # :License: Released under the terms of the `2-Clause BSD license`_, in short:

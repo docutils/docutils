@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # $Id$
 # Author: Adam Chodorowski <chodorowski@users.sourceforge.net>
 # Copyright: This module has been placed in the public domain.

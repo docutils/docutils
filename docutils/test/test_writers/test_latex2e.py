@@ -1,6 +1,4 @@
 #! /usr/bin/env python3
-# -*- coding: utf-8 -*-
-
 # $Id$
 # Author: engelbert gruber <grubert@users.sourceforge.net>
 # Copyright: This module has been placed in the public domain.

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # $Id: fa.py 4564 2016-08-10 11:48:42Z
 # Author: Shahin <me@5hah.in>
 # Copyright: This module has been placed in the public domain.

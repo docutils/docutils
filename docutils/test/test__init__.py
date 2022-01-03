@@ -1,5 +1,4 @@
-#! /usr/bin/env python
-# -*- coding: utf-8 -*-
+#! /usr/bin/env python3
 # $Id$
 # Authors: Günter Milde <milde@users.sourceforge.net>,
 #          David Goodger <goodger@python.org>

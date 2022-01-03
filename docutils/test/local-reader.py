@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # $Id$
 # Authors: Engelbert Gruber <grubert@users.sourceforge.net>
 #          Toshio Kuratomi <toshio@fedoraproject.org>

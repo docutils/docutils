@@ -1,6 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
-
 # :Id: $Id$
 # :Copyright: © 2010 Günter Milde,
 #             original `SmartyPants`_: © 2003 John Gruber

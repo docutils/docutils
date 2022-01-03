@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # $Id$
 # Author: Engelbert Gruber <grubert@users.sourceforge.net>
 # Copyright: This module is put into the public domain.

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # $Id$
 # Author: Asko Soukka <asko.soukka@iki.fi>
 # Copyright: This module has been placed in the public domain.

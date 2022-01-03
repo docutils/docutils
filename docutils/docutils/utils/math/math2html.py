@@ -1,6 +1,4 @@
-#! /usr/bin/env python
-# -*- coding: utf-8 -*-
-
+#! /usr/bin/env python3
 #   math2html: convert LaTeX equations to HTML output.
 #
 #   Copyright (C) 2009-2011 Alex Fernández, 2021 Günter Milde

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # $Id$
 # Author: Marcelo Huerta San Martín <richieadler@users.sourceforge.net>
 # Copyright: This module has been placed in the public domain.

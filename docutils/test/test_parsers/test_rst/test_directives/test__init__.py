@@ -1,5 +1,4 @@
 #! /usr/bin/env python3
-# -*- coding: utf-8 -*-
 # $Id$
 # Author: Günter Milde <milde@users.sourceforge.net>,
 # :License: Released under the terms of the `2-Clause BSD license`_, in short:

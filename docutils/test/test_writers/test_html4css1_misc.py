@@ -1,6 +1,4 @@
 #! /usr/bin/env python3
-# coding: utf-8
-
 # $Id$
 # Authors: Lea Wiemann, Dmitry Shachnev, Günter Milde
 # Maintainer: docutils-develop@lists.sourceforge.net
