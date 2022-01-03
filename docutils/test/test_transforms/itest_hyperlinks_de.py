@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 
 # $Id$
 # Author: David Goodger <goodger@python.org>
@@ -18,8 +18,6 @@ TODO: This test fails currently when run as part of "alltests" because
         
       See also https://sourceforge.net/p/docutils/feature-requests/71/
 """ 
-
-from __future__ import absolute_import
 
 if __name__ == '__main__':
     import __init__

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 # $Id$
 # Author: Dave Kuhlman <dkuhlman@rexx.com>
@@ -10,8 +10,6 @@ specifications from styles.xml in STYLE_FILE.odt.
 """
 
 # Author: Michael Schutte <michi@uiae.at>
-
-from __future__ import print_function
 
 from lxml import etree
 import sys

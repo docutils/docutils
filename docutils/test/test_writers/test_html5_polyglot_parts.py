@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 
 # $Id$
 # Author: reggie dugard <reggie@users.sourceforge.net>
@@ -11,7 +11,6 @@ Note: the 'body' and 'whole' entries have been removed from the parts
 dictionaries (redundant), along with 'meta' and 'stylesheet' entries with
 standard values, and any entries with empty values.
 """
-from __future__ import absolute_import
 
 if __name__ == '__main__':
     import __init__

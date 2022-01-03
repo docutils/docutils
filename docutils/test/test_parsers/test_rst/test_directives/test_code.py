@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 
 # $Id$
 # Author: Guenter Milde
@@ -7,7 +7,6 @@
 """
 Test the 'code' directive in parsers/rst/directives/body.py.
 """
-from __future__ import absolute_import
 
 if __name__ == '__main__':
     import __init__

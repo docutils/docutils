@@ -7,7 +7,6 @@
 """
 Tests for misc.py test directives.
 """
-from __future__ import absolute_import
 
 if __name__ == '__main__':
     import __init__

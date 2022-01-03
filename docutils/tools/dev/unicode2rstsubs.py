@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 
 # $Id$
 # Author: David Goodger <goodger@python.org>
@@ -19,7 +19,6 @@ The input file, unicode.xml, is maintained as part of the MathML 2
 Recommentation XML source, and is available from
 <http://www.w3.org/2003/entities/xml/>.
 """
-from __future__ import print_function
 
 import sys
 import os

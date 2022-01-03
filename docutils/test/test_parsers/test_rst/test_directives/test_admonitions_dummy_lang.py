@@ -7,7 +7,6 @@
 """
 Tests for admonition directives with local language module.
 """
-from __future__ import absolute_import
 
 if __name__ == '__main__':
     import __init__

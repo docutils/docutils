@@ -14,7 +14,6 @@
 Tests for HTML blocks in CommonMark parsers
 Cf. the `CommonMark Specification <https://spec.commonmark.org/>`__
 """
-from __future__ import absolute_import
 
 if __name__ == '__main__':
     import __init__

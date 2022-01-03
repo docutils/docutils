@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 
 # $Id$
 # Author: Lea Wiemann <LeWiemann@gmail.com>
@@ -7,8 +7,6 @@
 """
 Test module for universal.ExposeInternals transform.
 """
-from __future__ import absolute_import
-
 
 if __name__ == '__main__':
     import __init__

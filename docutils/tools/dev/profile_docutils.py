@@ -1,10 +1,9 @@
-#!/usr/bin/python -i
+#!/usr/bin/python3 -i
 
 # $Id$
 # Author: Lea Wiemann <LeWiemann@gmail.com>
 # Copyright: This script has been placed in the public domain.
 
-from __future__ import print_function
 import os.path
 import docutils.core
 import hotshot.stats

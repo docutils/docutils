@@ -1,11 +1,10 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 # $Id$
 # Authors: Garth Kidd <garth@deadlybloodyserious.com>;
 #          David Goodger <goodger@python.org>
 # Copyright: This module has been placed in the public domain.
 
-from __future__ import print_function
 try:
     import locale
     locale.setlocale(locale.LC_ALL, '')

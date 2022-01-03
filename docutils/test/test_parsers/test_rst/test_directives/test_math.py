@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 
 # $Id$
 # Author: Guenter Milde <milde@users.sf.net>
@@ -7,7 +7,6 @@
 """
 Tests for the 'math' directive.
 """
-from __future__ import absolute_import
 
 if __name__ == '__main__':
     import __init__

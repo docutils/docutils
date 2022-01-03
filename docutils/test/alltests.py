@@ -1,6 +1,5 @@
 #!/bin/sh
 ''''exec python -u "$0" "$@" #'''
-from __future__ import print_function
 
 # $Id$
 # Author: David Goodger <goodger@python.org>

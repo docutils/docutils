@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 # $Id$
 # Author: Günter Milde <milde@users.sourceforge.net>,
@@ -14,7 +14,6 @@
 Test module for `docutils.parsers.rst.directives`.
 """
 
-from __future__ import absolute_import
 import unittest
 
 

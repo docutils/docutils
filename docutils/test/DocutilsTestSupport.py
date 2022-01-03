@@ -38,7 +38,6 @@ Exports the following:
     - `HtmlFragmentTestSuite`
     - `DevNull` (output sink)
 """
-from __future__ import print_function
 __docformat__ = 'reStructuredText'
 
 import sys

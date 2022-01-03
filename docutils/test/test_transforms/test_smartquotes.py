@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python33
 # -*- coding: utf-8 -*-
 # $Id$
 #
@@ -16,7 +16,6 @@
 """
 Test module for universal.SmartQuotes transform.
 """
-from __future__ import absolute_import
 
 if __name__ == '__main__':
     import __init__

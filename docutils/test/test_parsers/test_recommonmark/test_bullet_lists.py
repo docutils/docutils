@@ -15,8 +15,6 @@ Test for bullet lists in CommonMark parsers.
 Cf. the `CommonMark Specification <https://spec.commonmark.org/>`__
 """
 
-from __future__ import absolute_import
-
 if __name__ == '__main__':
     import __init__
 from test_parsers import DocutilsTestSupport

@@ -11,7 +11,6 @@ custom component objects first, and pass *them* to
 
 .. _The Docutils Publisher: http://docutils.sf.net/docs/api/publisher.html
 """
-from __future__ import print_function
 
 __docformat__ = 'reStructuredText'
 
