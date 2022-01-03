@@ -142,7 +142,7 @@ A paragraph:
 
       A wonky literal block.
     Literal line 2.
-  
+
       Literal line 3.
 """,
 """\
@@ -158,18 +158,18 @@ A paragraph:
 ["""\
 A paragraph:
 ~~~
-  A fenced literal block.
+  A fenced code block.
 Literal line 2.
 
   Literal line 3.
-~~~  
+~~~
 """,
 """\
 <document source="test data">
     <paragraph>
         A paragraph:
     <literal_block classes="code" xml:space="preserve">
-          A fenced literal block.
+          A fenced code block.
         Literal line 2.
         \n\
           Literal line 3.
@@ -189,8 +189,21 @@ with *info string*.
         A literal block (fenced code block)
         with *info string*.
 """],
+["""\
+~~~eval_rst
+Evaluating embedded rST blocks requires the AutoStructify component
+in recommonmark. Otherwise this is just a code block
+with class ``eval_rst``.
+~~~
+""",
+"""\
+<document source="test data">
+    <literal_block classes="code eval_rst" xml:space="preserve">
+        Evaluating embedded rST blocks requires the AutoStructify component
+        in recommonmark. Otherwise this is just a code block
+        with class ``eval_rst``.
+"""],
 ]
-
 
 
 if __name__ == '__main__':
