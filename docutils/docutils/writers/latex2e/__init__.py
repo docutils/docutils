@@ -6,8 +6,6 @@
 
 """LaTeX2e document tree Writer."""
 
-from __future__ import division
-
 __docformat__ = 'reStructuredText'
 
 # code contributions from several people included, thanks to all.

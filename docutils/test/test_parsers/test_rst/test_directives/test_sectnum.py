@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 
 # $Id$
 # Author: Lea Wiemann <LeWiemann@gmail.com>
@@ -7,7 +7,6 @@
 """
 Tests for the 'sectnum' directive.
 """
-from __future__ import absolute_import
 
 if __name__ == '__main__':
     import __init__

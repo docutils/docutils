@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 # $Id: test_pseudoxml.py 8481 2020-01-31 08:17:24Z milde $
 # Author: Lea Wiemann <LeWiemann@gmail.com>
@@ -7,7 +7,6 @@
 """
 Test for pseudo-XML writer.
 """
-from __future__ import absolute_import
 
 if __name__ == '__main__':
     import __init__
@@ -34,7 +33,7 @@ This is a paragraph.
 
 ----------
 
-This is a paragraph 
+This is a paragraph
 with \escaped \characters.
 
 A Section
@@ -60,9 +59,9 @@ Foo.
 ]
 
 totest_detailed['basic'] = [
-# input                             
+# input
 [totest['basic'][0][0],
-# output 
+# output
 """\
 <document source="<string>">
     <paragraph>

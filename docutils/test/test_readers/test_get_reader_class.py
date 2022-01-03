@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 
 # $Id$
 # Author: grubert abadger1999
@@ -8,7 +8,6 @@
 """
 test get_reader_class
 """
-from __future__ import absolute_import
 
 if __name__ == '__main__':
     import __init__

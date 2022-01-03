@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 
 # $Id$
 # Author: grubert
@@ -8,7 +8,6 @@
 """
 test get_writer_class
 """
-from __future__ import absolute_import
 
 if __name__ == '__main__':
     import __init__
@@ -34,4 +33,3 @@ class GetWriterClassTestCase(DocutilsTestSupport.StandardTestCase):
 if __name__ == '__main__':
     import unittest
     unittest.main()
-

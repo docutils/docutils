@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 # $Id$
 # Author: Lea Wiemann <LeWiemann@gmail.com>
@@ -13,7 +13,6 @@ Test for docutils XML writer.
    ``<empty></empty>`` vs. ``<empty/>``. The sample strings in this test
    module mirrors the current behaviour of the docutils_xml writer.
 """
-from __future__ import absolute_import
 
 import sys
 

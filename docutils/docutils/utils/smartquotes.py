@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
 # :Id: $Id$
@@ -315,7 +315,6 @@ Version History
 1.5_1.0: Tue, 09 Mar 2004 08:08:35 -0500
         - Initial release
 """
-from __future__ import print_function
 
 options = r"""
 Options

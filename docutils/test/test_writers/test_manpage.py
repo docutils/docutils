@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 
 # $Id: test_latex2e.py 6003 2009-06-27 20:44:09Z milde $
 # Author: engelbert gruber <grubert@users.sourceforge.net>
@@ -7,7 +7,6 @@
 """
 Tests for manpage writer.
 """
-from __future__ import absolute_import
 
 if __name__ == '__main__':
     import __init__

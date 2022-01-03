@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 # $Id$
 # Author: Dave Kuhlman <dkuhlman@rexx.com>
@@ -29,7 +29,6 @@ Instructions for adding a new test:
 5. If any other tests fail, that's a possible regression.
 
 """
-from __future__ import absolute_import
 
 import os
 import zipfile
@@ -51,7 +50,7 @@ EXPECTED_PATH = 'functional/expected/'
 
 class DocutilsOdtTestCase(DocutilsTestSupport.StandardTestCase):
 
-    def process_test(self, input_filename, expected_filename, 
+    def process_test(self, input_filename, expected_filename,
             save_output_name=None, settings_overrides=None):
         # Test that xmlcharrefreplace is the default output encoding
         # error handler.
@@ -87,7 +86,7 @@ class DocutilsOdtTestCase(DocutilsTestSupport.StandardTestCase):
 
     def reorder_attributes(self, root):
         """
-        Make attribute order independent of python version. 
+        Make attribute order independent of python version.
         python3.8 is different to previous.
         """
         for el in root.iter():

@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 
 # $Id$
 # Author: Lea Wiemann <LeWiemann@gmail.com>
@@ -7,7 +7,6 @@
 """
 Test module for transforms/__init__.py.
 """
-from __future__ import absolute_import
 
 import unittest
 
@@ -22,7 +21,7 @@ class TestTransform(transforms.Transform):
     default_priority = 100
 
     applied = 0
-    
+
     def apply(self, **kwargs):
         self.applied += 1
         assert kwargs == {'foo': 42}

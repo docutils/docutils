@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 # .. coding: utf-8
 # $Id$
 # Author: Günter Milde <milde@users.sourceforge.net>
@@ -24,7 +24,6 @@ instances like, e.g., ::
 
 unless the minimal required Python version has this problem fixed.
 """
-from __future__ import print_function
 
 import os
 import sys

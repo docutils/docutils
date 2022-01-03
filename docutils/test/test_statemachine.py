@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 
 # $Id$
 # Author: David Goodger <goodger@python.org>
@@ -7,7 +7,6 @@
 """
 Test module for statemachine.py.
 """
-from __future__ import print_function
 
 import unittest
 import sys

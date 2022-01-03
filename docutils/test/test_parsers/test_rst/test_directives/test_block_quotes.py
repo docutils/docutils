@@ -8,7 +8,6 @@
 Tests for the block quote directives "epigraph", "highlights", and
 "pull-quote".
 """
-from __future__ import absolute_import
 
 if __name__ == '__main__':
     import __init__

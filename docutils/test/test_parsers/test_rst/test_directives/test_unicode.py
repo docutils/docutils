@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 
 # $Id$
 # Author: David Goodger <goodger@python.org>
@@ -7,7 +7,6 @@
 """
 Tests for misc.py "unicode" directive.
 """
-from __future__ import absolute_import
 
 import sys
 

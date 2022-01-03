@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 # $Id$
 # Author: Lea Wiemann <LeWiemann@gmail.com>
@@ -9,7 +9,6 @@ Perform tests with the data in the functional/ directory.
 
 Read README.txt for details on how this is done.
 """
-from __future__ import print_function
 
 import sys
 import os

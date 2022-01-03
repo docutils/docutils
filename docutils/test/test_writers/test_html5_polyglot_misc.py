@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 # coding: utf-8
 
 # $Id$
@@ -9,7 +9,6 @@
 """
 Miscellaneous HTML writer tests.
 """
-from __future__ import absolute_import
 
 import os
 import warnings
@@ -151,7 +150,7 @@ class SettingsTestCase(DocutilsTestSupport.StandardTestCase):
                                 settings_overrides=mysettings)
             self.assertEqual(len(wng), 1, "Expected FutureWarning.")
             assert issubclass(wng[0].category, FutureWarning)
-        
+
 
 class MathTestCase(DocutilsTestSupport.StandardTestCase):
 

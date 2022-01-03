@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # :Copyright: © 2011, 2017 Günter Milde.
 # :License: Released under the terms of the `2-Clause BSD license`_, in short:
@@ -33,8 +33,6 @@
 # .. _inline markup recognition rules:
 #     ../../docs/ref/rst/restructuredtext.html#inline-markup
 
-from __future__ import print_function
-
 import sys
 import unicodedata
 
@@ -50,7 +48,7 @@ else:
 #
 # Problem: ``ur`` prefix fails with Py 3.5 ::
 
-module_template = u'''#!/usr/bin/env python
+module_template = u'''#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # :Id: $Id$
 # :Copyright: © 2011, 2017 Günter Milde.

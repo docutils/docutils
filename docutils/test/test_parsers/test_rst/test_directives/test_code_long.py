@@ -7,7 +7,6 @@
 """
 Test the 'code' directive in body.py with syntax_highlight = 'long'.
 """
-from __future__ import absolute_import
 
 if __name__ == '__main__':
     import __init__

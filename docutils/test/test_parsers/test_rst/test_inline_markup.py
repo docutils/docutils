@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 # $Id$
@@ -9,7 +9,6 @@
 Tests for inline markup in docutils/parsers/rst/states.py.
 Interpreted text tests are in a separate module, test_interpreted.py.
 """
-from __future__ import absolute_import
 
 if __name__ == '__main__':
     import __init__

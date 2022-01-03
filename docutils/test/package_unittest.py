@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 
 # $Id$
 # Author: Garth Kidd <garth@deadlybloodyserious.com>
@@ -9,7 +9,6 @@ This module extends unittest.py with `loadTestModules()`, by loading multiple
 test modules from a directory.  Optionally, test packages are also loaded,
 recursively.
 """
-from __future__ import print_function
 
 import sys
 import os

@@ -6,7 +6,6 @@
 I/O classes provide a uniform API for low-level input and output.  Subclasses
 exist for a variety of input/output mechanisms.
 """
-from __future__ import print_function
 
 __docformat__ = 'reStructuredText'
 

@@ -19,14 +19,13 @@ hierarchy.
 
 .. _DTD: http://docutils.sourceforge.net/docs/ref/docutils.dtd
 """
-from __future__ import print_function
-from collections import Counter
 
 __docformat__ = 'reStructuredText'
 
-import sys
+from collections import Counter
 import os
 import re
+import sys
 import warnings
 import unicodedata
 # import xml.dom.minidom as dom # -> conditional import in Node.asdom()

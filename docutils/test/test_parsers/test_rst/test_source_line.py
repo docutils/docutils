@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 # coding: utf-8
 # $Id$
 # Author: Günter Milde
@@ -24,7 +24,6 @@ adding them to more nodes is regarded a compatible feature extension.
 # ``test_transforms/test_expose_internals.py``)
 # to make internal attributes visible.
 
-from __future__ import absolute_import
 import os
 
 if __name__ == '__main__':

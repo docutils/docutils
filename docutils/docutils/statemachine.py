@@ -103,7 +103,6 @@ How To Use This Module
 
        sm.unlink()
 """
-from __future__ import print_function
 
 __docformat__ = 'restructuredtext'
 

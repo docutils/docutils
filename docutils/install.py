@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # $Id$
 # Copyright: This file has been placed in the public domain.
 
@@ -15,7 +15,6 @@ one of::
     python setup.py install --help
     python setup.py --help
 """
-from __future__ import print_function
 
 from distutils import core
 from setup import do_setup

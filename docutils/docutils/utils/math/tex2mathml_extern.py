@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 # :Id: $Id$
@@ -18,7 +18,6 @@ This module is provisional:
 the API is not settled and may change with any minor Docutils version.
 """
 
-from __future__ import print_function
 import subprocess
 
 document_template = r"""\documentclass{article}

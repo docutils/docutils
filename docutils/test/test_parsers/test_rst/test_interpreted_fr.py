@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 
 # $Id: test_interpreted.py 6424 2010-09-18 10:43:52Z smerten $
 # Author: David Goodger <goodger@python.org>
@@ -8,7 +8,6 @@
 Tests for interpreted text in docutils/parsers/rst/states.py.
 Test not default/fallback language french.
 """
-from __future__ import absolute_import
 
 if __name__ == '__main__':
     import __init__

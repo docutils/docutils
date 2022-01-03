@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 # $Id$
@@ -8,7 +8,6 @@
 """
 Tests of runtime settings.
 """
-from __future__ import print_function
 
 import sys
 import os
