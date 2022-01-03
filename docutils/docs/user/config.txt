@@ -812,13 +812,19 @@ Options: ``--trim-footnote-reference-space, --leave-footnote-reference-space``.
    The footnote space is trimmed if the reference style is "superscript",
    and it is left if the reference style is "brackets".
 
+
+.. _recommonmark:
+
 [recommonmark parser]
 ---------------------
 
-Experimental, based on recommonmark_.
+Experimental, based on recommonmark__.
 Currently no configuration settings.
 
-.. _recommonmark: https://pypi.org/project/recommonmark/
+__ https://pypi.org/project/recommonmark/
+
+
+.. _myst:
 
 [myst parser]
 -------------
@@ -2159,7 +2165,7 @@ Option: ``--reader``
 parser
 ~~~~~~
 Parser component name.
-One of "rst", "markdown", "recommonmark",
+One of "rst", "markdown", "recommonmark_", "myst_",
 or the import name of a drop-in parser module.
 
 Default: "rst".
