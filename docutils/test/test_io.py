@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 
 # $Id$
 # Author: Lea Wiemann <LeWiemann@gmail.com>
@@ -102,19 +102,10 @@ print("hello world")
         data = input.readlines()
         self.assertEqual(data, [u'Some include text.\n'])
 
-    def test_heuristics_utf8(self):
-        # if no encoding is given, try decoding with utf8:
-        input = io.FileInput(source_path='functional/input/cyrillic.txt')
-        data = input.read()
-        if sys.version_info < (3, 0):
-            # in Py3k, the locale encoding is used without --input-encoding
-            # skipping the heuristic
-            self.assertEqual(input.successful_encoding, 'utf-8')
-
     def test_heuristics_no_utf8(self):
         # if no encoding is given and decoding with utf8 fails,
         # use either the locale encoding (if specified) or latin-1:
-        if sys.version_info >= (3, 0) and locale_encoding != "utf8":
+        if locale_encoding != "utf8":
             # in Py3k, the locale encoding is used without --input-encoding
             # skipping the heuristic unless decoding fails.
             return
@@ -157,16 +148,10 @@ class OutputTests(unittest.TestCase):
         self.assertEqual(self.udrain.getvalue(), self.udata)
 
     def test_write_utf8(self):
-        if sys.version_info >= (3, 0):
-            fo = io.FileOutput(destination=self.udrain, encoding='utf8',
-                               autoclose=False)
-            fo.write(self.udata)
-            self.assertEqual(self.udrain.getvalue(), self.udata)
-        else:
-            fo = io.FileOutput(destination=self.bdrain, encoding='utf8',
-                               autoclose=False)
-            fo.write(self.udata)
-            self.assertEqual(self.bdrain.getvalue(), self.udata.encode('utf8'))
+        fo = io.FileOutput(destination=self.udrain, encoding='utf8',
+                           autoclose=False)
+        fo.write(self.udata)
+        self.assertEqual(self.udrain.getvalue(), self.udata)
 
     def test_FileOutput_hande_io_errors_deprection_warning(self):
         with warnings.catch_warnings(record=True) as wng:
@@ -183,28 +168,26 @@ class OutputTests(unittest.TestCase):
         fo.write(self.bdata)
         self.assertEqual(self.bdrain.getvalue(), self.bdata)
 
-    # Test for Python 3 features:
-    if sys.version_info >= (3, 0):
-        def test_write_bytes_to_stdout(self):
-            # try writing data to `destination.buffer`, if data is
-            # instance of `bytes` and writing to `destination` fails:
-            fo = io.FileOutput(destination=self.mock_stdout)
-            fo.write(self.bdata)
-            self.assertEqual(self.mock_stdout.buffer.getvalue(),
-                             self.bdata)
+    def test_write_bytes_to_stdout(self):
+        # try writing data to `destination.buffer`, if data is
+        # instance of `bytes` and writing to `destination` fails:
+        fo = io.FileOutput(destination=self.mock_stdout)
+        fo.write(self.bdata)
+        self.assertEqual(self.mock_stdout.buffer.getvalue(),
+                            self.bdata)
 
-        def test_encoding_clash_resolved(self):
-            fo = io.FileOutput(destination=self.mock_stdout,
-                               encoding='latin1', autoclose=False)
-            fo.write(self.udata)
-            self.assertEqual(self.mock_stdout.buffer.getvalue(),
-                             self.udata.encode('latin1'))
+    def test_encoding_clash_resolved(self):
+        fo = io.FileOutput(destination=self.mock_stdout,
+                            encoding='latin1', autoclose=False)
+        fo.write(self.udata)
+        self.assertEqual(self.mock_stdout.buffer.getvalue(),
+                            self.udata.encode('latin1'))
 
-        def test_encoding_clash_nonresolvable(self):
-            del(self.mock_stdout.buffer)
-            fo = io.FileOutput(destination=self.mock_stdout,
-                               encoding='latin1', autoclose=False)
-            self.assertRaises(ValueError, fo.write, self.udata)
+    def test_encoding_clash_nonresolvable(self):
+        del(self.mock_stdout.buffer)
+        fo = io.FileOutput(destination=self.mock_stdout,
+                            encoding='latin1', autoclose=False)
+        self.assertRaises(ValueError, fo.write, self.udata)
 
 
 if __name__ == '__main__':

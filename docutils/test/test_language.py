@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 # $Id$
 # Authors: Engelbert Gruber <grubert@users.sourceforge.net>;
@@ -25,9 +25,6 @@ _settings = docutils.frontend.OptionParser().get_default_values()
 _reporter = docutils.utils.new_reporter('', _settings)
 
 reference_language = 'en'
-
-if sys.version_info >= (3, 0):
-    unicode = str  # noqa
 
 
 class LanguageTestSuite(DocutilsTestSupport.CustomTestSuite):
@@ -158,7 +155,7 @@ class LanguageTestCase(DocutilsTestSupport.CustomTestCase):
         if failures:
             text = ('Module docutils.parsers.rst.languages.%s:\n    %s'
                     % (self.language, '\n    '.join(failures)))
-            if isinstance(text, unicode):
+            if isinstance(text, str):
                 text = text.encode('raw_unicode_escape')
             self.fail(text)
 
@@ -192,7 +189,7 @@ class LanguageTestCase(DocutilsTestSupport.CustomTestCase):
         if failures:
             text = ('Module docutils.parsers.rst.languages.%s:\n    %s'
                     % (self.language, '\n    '.join(failures)))
-            if isinstance(text, unicode):
+            if isinstance(text, str):
                 text = text.encode('raw_unicode_escape')
             self.fail(text)
 

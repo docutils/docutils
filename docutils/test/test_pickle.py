@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 # $Id$
 # Author: David Goodger <goodger@python.org>
 # Copyright: This module has been placed in the public domain.

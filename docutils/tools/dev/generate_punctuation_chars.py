@@ -35,12 +35,6 @@
 import sys
 import unicodedata
 
-if sys.version_info >= (3, 0):
-    unichr = chr  # unichr not available in Py3k
-else:
-    import codecs
-    sys.stdout = codecs.getwriter('UTF-8')(sys.stdout)
-
 
 # Template for utils.punctuation_chars
 # ------------------------------------
@@ -174,12 +168,12 @@ def unicode_charlists(categories, cp_min=0, cp_max=None):
     # categories with not too high characters):
     if cp_max is None:
         cp_max = max(x for x in range(sys.maxunicode+1)
-                    if unicodedata.category(unichr(x)) in categories)
+                    if unicodedata.category(chr(x)) in categories)
         # print(cp_max) # => 74867 for unicode_punctuation_categories
     charlists = {}
     for cat in categories:
-        charlists[cat] = [unichr(x) for x in range(cp_min, cp_max+1)
-                            if unicodedata.category(unichr(x)) == cat]
+        charlists[cat] = [chr(x) for x in range(cp_min, cp_max+1)
+                            if unicodedata.category(chr(x)) == cat]
     return charlists
 
 
@@ -277,7 +271,7 @@ def mark_intervals(s):
 
     l2 = []
     for i in l:
-        i = [unichr(n) for n in i]
+        i = [chr(n) for n in i]
         if len(i) > 2:
             i = i[0], u'-', i[-1]
         l2.extend(i)
@@ -357,10 +351,7 @@ if __name__ == '__main__':
 # Import the punctuation_chars module from the source
 # or Py3k build path for local Python modules::
 
-        if sys.version_info < (3, 0):
-            sys.path.insert(0, '../../docutils')
-        else:
-            sys.path.insert(0, '../../build/lib')
+        sys.path.insert(0, '../../docutils')
 
         from docutils.utils.punctuation_chars import (openers, closers,
                                           delimiters, closing_delimiters)
@@ -371,16 +362,10 @@ if __name__ == '__main__':
 
         print_differences(openers, o, 'openers')
         if o_wide:
-            if sys.version_info < (3, 0):
-                print('+ openers-wide = ur"""%s"""' % o_wide.encode('utf8'))
-            else:
-                print('+ openers-wide = r"""%s"""' % o_wide.encode('utf8'))
+            print('+ openers-wide = r"""%s"""' % o_wide.encode('utf8'))
         print_differences(closers, c, 'closers')
         if c_wide:
-            if sys.version_info < (3, 0):
-                print('+ closers-wide = ur"""%s"""' % c_wide.encode('utf8'))
-            else:
-                print('+ closers-wide = r"""%s"""' % c_wide.encode('utf8'))
+            print('+ closers-wide = r"""%s"""' % c_wide.encode('utf8'))
 
         print_differences(delimiters, d + d_wide, 'delimiters')
         print_differences(closing_delimiters, cd, 'closing_delimiters')

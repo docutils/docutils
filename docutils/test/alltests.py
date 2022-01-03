@@ -1,5 +1,5 @@
 #!/bin/sh
-''''exec python -u "$0" "$@" #'''
+''''exec python3 -u "$0" "$@" #'''
 
 # $Id$
 # Author: David Goodger <goodger@python.org>
@@ -30,10 +30,7 @@ class Tee(object):
     """Write to a file and a stream (default: stdout) simultaneously."""
 
     def __init__(self, filename, stream=sys.__stdout__):
-        if sys.version_info >= (3, 0):
-            self.file = open(filename, 'w', errors='backslashreplace')
-        else:
-            self.file = open(filename, 'w')
+        self.file = open(filename, 'w', errors='backslashreplace')
         atexit.register(self.close)
         self.stream = stream
         self.encoding = getattr(stream, 'encoding', None)

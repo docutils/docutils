@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 # $Id$
@@ -15,11 +15,7 @@ import unittest
 
 from DocutilsTestSupport import docutils, utils, nodes
 
-if sys.version_info >= (3, 0):
-    from io import StringIO
-    unicode = str
-else:
-    from StringIO import StringIO
+from io import StringIO
 
 
 class ReporterTests(unittest.TestCase):
@@ -293,8 +289,8 @@ class HelperFunctionTests(unittest.TestCase):
         self.assertEqual(unipath, u'späm')
         self.assertEqual(defaultpath, u'')
         self.assertTrue(isinstance(bytespath, nodes.reprunicode))
-        self.assertTrue(isinstance(unipath, unicode))
-        self.assertTrue(isinstance(defaultpath, unicode))
+        self.assertTrue(isinstance(unipath, str))
+        self.assertTrue(isinstance(defaultpath, str))
         self.assertRaises(ValueError, utils.decode_path, 13)
 
     def test_relative_path(self):

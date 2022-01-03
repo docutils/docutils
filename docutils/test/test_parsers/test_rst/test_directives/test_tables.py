@@ -19,11 +19,6 @@ from test_parsers import DocutilsTestSupport
 from docutils.parsers.rst.directives import tables
 
 
-if sys.version_info >= (3, 0):
-    unicode = str  # noqa
-    unichr = chr  # noqa
-
-
 def suite():
     s = DocutilsTestSupport.ParserTestSuite()
     s.generateTests(totest)
@@ -35,30 +30,23 @@ utf_16_csv_rel = DocutilsTestSupport.utils.relative_path(None, utf_16_csv)
 empty_txt = os.path.join(mydir, 'empty.txt')
 
 unichr_exception = DocutilsTestSupport.exception_data(
-    unichr, int("9999999999999", 16))[0]
+    chr, int("9999999999999", 16))[0]
 if isinstance(unichr_exception, OverflowError):
     unichr_exception_string = 'code too large (%s)' % unichr_exception
 else:
     unichr_exception_string = str(unichr_exception)
 
-# some error messages changed in Python 3.3, CPython has backported to 2.7.4,
-# PyPy has not
 csv_eod_error_str = 'unexpected end of data'
-if sys.version_info < (2,7,4) or (platform.python_implementation() == 'PyPy'
-                                  and sys.version_info < (3,0)):
-    csv_eod_error_str = 'newline inside string'
 # pypy adds a line number
 if platform.python_implementation() == 'PyPy':
     csv_eod_error_str = 'line 1: ' + csv_eod_error_str
 csv_unknown_url = "'bogus.csv'"
-if sys.version_info < (3, 0):
-    csv_unknown_url = "bogus.csv"
 
 
 def null_bytes():
     with open(utf_16_csv, 'rb') as f:
         csv_data = f.read()
-    csv_data = unicode(csv_data, 'latin1').splitlines()
+    csv_data = str(csv_data, 'latin1').splitlines()
     reader = csv.reader([tables.CSVTable.encode_for_csv(line + '\n')
                          for line in csv_data])
     next(reader)
@@ -897,11 +885,11 @@ u"""\
     <system_message level="4" line="1" source="test data" type="SEVERE">
         <paragraph>
             Problems with "csv-table" directive URL "bogus.csv":
-            unknown url type: %s.
+            unknown url type: 'bogus.csv'.
         <literal_block xml:space="preserve">
             .. csv-table:: bad URL
                :url: bogus.csv
-""" % csv_unknown_url],
+"""],
 ["""\
 .. csv-table:: column mismatch
    :widths: 10,20

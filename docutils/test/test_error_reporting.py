@@ -34,55 +34,14 @@ from docutils import core, parsers, frontend, utils
 from docutils.utils.error_reporting import SafeString, ErrorString, ErrorOutput
 
 
-oldlocale = None
-if sys.version_info < (3, 0):  # problems solved in py3k
-    try:
-        import locale  # module missing in Jython
-        oldlocale = locale.getlocale()
-    except ImportError:
-        print('cannot test error reporting with problematic locales,\n'
-              '`import locale` failed.')
-
-if sys.version_info >= (3, 0):
-    unicode = str  # noqa
-
-
-# locales confirmed to use non-ASCII chars in the IOError message
-# for a missing file (https://bugs.gentoo.org/show_bug.cgi?id=349101)
-# TODO: add more confirmed problematic locales
-problematic_locales = ['cs_CZ', 'cs_CZ.UTF8',
-                       'el_GR', 'el_GR.UTF-8',
-                       # 'fr_FR.UTF-8', # only OSError
-                       'ja_JP.UTF-8',
-                       'ru_RU', 'ru_RU.KOI8-R',
-                       'ru_RU.UTF-8',
-                       # '',  # default locale: might be non-problematic
-                       ]
-
-if oldlocale is not None:
-    # find a supported problematic locale:
-    for testlocale in problematic_locales:
-        try:
-            locale.setlocale(locale.LC_ALL, testlocale)
-        except locale.Error:
-            testlocale = None
-        else:
-            break
-    locale.setlocale(locale.LC_ALL, oldlocale) # reset
-else:
-    testlocale = None
-
 
 class SafeStringTests(unittest.TestCase):
-    # the error message in EnvironmentError instances comes from the OS
-    # and in some locales (e.g. ru_RU), contains high bit chars.
-    # -> see the test in test_error_reporting.py
 
     # test data:
-    bs = b'\xc3\xbc'   # unicode(bs) fails, str(bs) in Python 3 returns repr(bs)
-    us = u'\xfc'       # bytes(us) fails; str(us) fails in Python 2
-    be = Exception(bs) # unicode(be) fails
-    ue = Exception(us) # bytes(ue) fails, str(ue) fails in Python 2;
+    bs = b'\xc3\xbc'   # str(bs) returns repr(bs)
+    us = u'\xfc'       # bytes(us) fails (requires encoding argument)
+    be = Exception(bs)
+    ue = Exception(us) # bytes(ue) fails
     # wrapped test data:
     wbs = SafeString(bs)
     wus = SafeString(us)
@@ -96,36 +55,28 @@ class SafeStringTests(unittest.TestCase):
         us7 = u'foo'
         be7 = Exception(bs7)
         ue7 = Exception(us7)
-        self.assertEqual(str(42), str(SafeString(42)))
         self.assertEqual(str(bs7), str(SafeString(bs7)))
         self.assertEqual(str(us7), str(SafeString(us7)))
         self.assertEqual(str(be7), str(SafeString(be7)))
         self.assertEqual(str(ue7), str(SafeString(ue7)))
-        self.assertEqual(unicode(7), unicode(SafeString(7)))
-        self.assertEqual(unicode(bs7), unicode(SafeString(bs7)))
-        self.assertEqual(unicode(us7), unicode(SafeString(us7)))
-        self.assertEqual(unicode(be7), unicode(SafeString(be7)))
-        self.assertEqual(unicode(ue7), unicode(SafeString(ue7)))
 
     def test_ustr(self):
         """Test conversion to a unicode-string."""
         # unicode(self.bs) fails
-        self.assertEqual(unicode, type(unicode(self.wbs)))
-        self.assertEqual(unicode(self.us), unicode(self.wus))
+        self.assertEqual(str, type(str(self.wbs)))
+        self.assertEqual(str(self.us), str(self.wus))
         # unicode(self.be) fails
-        self.assertEqual(unicode, type(unicode(self.wbe)))
-        self.assertEqual(unicode, type(unicode(self.ue)))
-        self.assertEqual(unicode, type(unicode(self.wue)))
-        self.assertEqual(self.us, unicode(self.wue))
+        self.assertEqual(str, type(str(self.wbe)))
+        self.assertEqual(str, type(str(self.ue)))
+        self.assertEqual(str, type(str(self.wue)))
+        self.assertEqual(self.us, str(self.wue))
 
     def test_str(self):
         """Test conversion to a string (bytes in Python 2, unicode in Python 3)."""
         self.assertEqual(str(self.bs), str(self.wbs))
-        self.assertEqual(str(self.be), str(self.be))
-        # str(us) fails in Python 2
-        self.assertEqual(str, type(str(self.wus)))
-        # str(ue) fails in Python 2
-        self.assertEqual(str, type(str(self.wue)))
+        self.assertEqual(str(self.be), str(self.wbe))
+        self.assertEqual(str(self.us), str(self.wus))
+        self.assertEqual(str(self.ue), str(self.wue))
 
 
 class ErrorStringTests(unittest.TestCase):
@@ -142,11 +93,11 @@ class ErrorStringTests(unittest.TestCase):
 
     def test_unicode(self):
         self.assertEqual(u'Exception: spam',
-                         unicode(ErrorString(Exception(u'spam'))))
+                         str(ErrorString(Exception(u'spam'))))
         self.assertEqual(u'IndexError: '+self.us,
-                         unicode(ErrorString(IndexError(self.us))))
+                         str(ErrorString(IndexError(self.us))))
         self.assertEqual(u'ImportError: %s' % SafeString(self.bs),
-                         unicode(ErrorString(ImportError(self.bs))))
+                         str(ErrorString(ImportError(self.bs))))
 
 
 # ErrorOutput tests
@@ -155,7 +106,7 @@ class ErrorStringTests(unittest.TestCase):
 # Stub: Buffer with 'strict' auto-conversion of input to byte string:
 class BBuf(BytesIO):
     def write(self, data):
-        if isinstance(data, unicode):
+        if isinstance(data, str):
             data.encode('ascii', 'strict')
         super(BBuf, self).write(data)
 
@@ -215,8 +166,6 @@ class SafeStringTests_locale(unittest.TestCase):
     The error message in `EnvironmentError` instances comes from the OS
     and in some locales (e.g. ru_RU), contains high bit chars.
     """
-    if testlocale:
-        locale.setlocale(locale.LC_ALL, testlocale)
     # test data:
     bs = b'\xc3\xbc'
     us = u'\xfc'
@@ -251,17 +200,14 @@ class SafeStringTests_locale(unittest.TestCase):
     wuioe = SafeString(uioe)
     wbose = SafeString(bose)
     wuose = SafeString(uose)
-    # reset locale
-    if testlocale:
-        locale.setlocale(locale.LC_ALL, oldlocale)
 
     def test_ustr(self):
         """Test conversion to a unicode-string."""
         # unicode(bioe) fails with e.g. 'ru_RU.utf8' locale
-        self.assertEqual(unicode, type(unicode(self.wbioe)))
-        self.assertEqual(unicode, type(unicode(self.wuioe)))
-        self.assertEqual(unicode, type(unicode(self.wbose)))
-        self.assertEqual(unicode, type(unicode(self.wuose)))
+        self.assertEqual(str, type(str(self.wbioe)))
+        self.assertEqual(str, type(str(self.wuioe)))
+        self.assertEqual(str, type(str(self.wbose)))
+        self.assertEqual(str, type(str(self.wuose)))
 
     def test_str(self):
         """Test conversion to a string (bytes in Python 2, unicode in Python 3)."""
@@ -292,14 +238,6 @@ class ErrorReportingTests(unittest.TestCase):
     settings.halt_level = 1
     settings.warning_stream = ''
     document = utils.new_document('test data', settings)
-
-    def setUp(self):
-        if testlocale:
-            locale.setlocale(locale.LC_ALL, testlocale)
-
-    def tearDown(self):
-        if testlocale:
-            locale.setlocale(locale.LC_ALL, oldlocale)
 
     def test_include(self):
         source = ('.. include:: bogus.txt')
