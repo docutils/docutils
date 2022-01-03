@@ -75,7 +75,7 @@ Requirements
 
 To run the code, Python_ must be installed.
 
-* Docutils 1.0 will require Python 3.7 or later.
+* Docutils 0.19 requires Python 3.7 or later.
 * Docutils 0.16 to 0.18 require Python 2.7 or 3.5+.
 * Docutils 0.14 dropped Python 2.4, 2.5, 3.1 and 3.2 support.
 * Docutils 0.10 dropped Python 2.3 support.
