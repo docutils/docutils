@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # $Id$
 # Author: Panjunyong <panjy@zopechina.com>
 # Copyright: This module has been placed in the public domain.

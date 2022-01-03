@@ -1,5 +1,3 @@
-# -*- coding: utf8 -*-
-
 # LaTeX math to Unicode symbols translation dictionaries.
 # Generated with ``write_tex2unichar.py`` from the data in
 # http://milde.users.sourceforge.net/LUCR/Math/

@@ -1,4 +1,3 @@
-# .. coding: utf-8
 # $Id$
 # Author: Engelbert Gruber, Günter Milde
 # Maintainer: docutils-develop@lists.sourceforge.net

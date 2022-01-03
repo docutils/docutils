@@ -1,5 +1,4 @@
-#!/usr/bin/python
-# coding: utf-8
+#!/usr/bin/python3
 
 """Lexical analysis of formal languages (i.e. code) using Pygments."""
 

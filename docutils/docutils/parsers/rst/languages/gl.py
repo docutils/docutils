@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Author: David Goodger
 # Contact: goodger@users.sourceforge.net
 # Revision: $Revision: 4229 $

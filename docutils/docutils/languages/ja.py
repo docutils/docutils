@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # $Id$
 # Author: Hisashi Morita <hisashim@kt.rim.or.jp>
 # Copyright: This module has been placed in the public domain.

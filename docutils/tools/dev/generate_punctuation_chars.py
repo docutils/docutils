@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 # :Copyright: © 2011, 2017 Günter Milde.
 # :License: Released under the terms of the `2-Clause BSD license`_, in short:
 #
@@ -49,7 +48,6 @@ else:
 # Problem: ``ur`` prefix fails with Py 3.5 ::
 
 module_template = u'''#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 # :Id: $Id$
 # :Copyright: © 2011, 2017 Günter Milde.
 # :License: Released under the terms of the `2-Clause BSD license`_, in short:

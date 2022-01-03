@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # $Id$
 # Authors: Engelbert Gruber <grubert@users.sourceforge.net>;
 #          Lea Wiemann <LeWiemann@gmail.com>

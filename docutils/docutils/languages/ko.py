@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # $Id$
 # Author: Thomas SJ Kang <thomas.kangsj@ujuc.kr>
 # Copyright: This module has been placed in the public domain.

@@ -1,5 +1,4 @@
 # $Id$
-# -*- coding: utf-8 -*-
 # Authors: David Goodger <goodger@python.org>; Ueli Schlaepfer; Günter Milde
 # Maintainer: docutils-develop@lists.sourceforge.net
 # Copyright: This module has been placed in the public domain.
