@@ -8,14 +8,8 @@ Directives for figures and simple images.
 
 __docformat__ = 'reStructuredText'
 
-
 import sys
-
-from docutils import nodes, utils
-from docutils.parsers.rst import Directive
-from docutils.parsers.rst import directives, states
-from docutils.nodes import fully_normalize_name, whitespace_normalize_name
-from docutils.parsers.rst.roles import set_classes
+from urllib.request import url2pathname
 
 try: # check for the Python Imaging Library
     import PIL.Image
@@ -27,10 +21,11 @@ except ImportError:
     except ImportError:
         PIL = None
 
-if sys.version_info >= (3, 0):
-    from urllib.request import url2pathname
-else:
-    from urllib import url2pathname
+from docutils import nodes, utils
+from docutils.parsers.rst import Directive
+from docutils.parsers.rst import directives, states
+from docutils.nodes import fully_normalize_name, whitespace_normalize_name
+from docutils.parsers.rst.roles import set_classes
 
 
 class Image(Directive):

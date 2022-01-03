@@ -18,8 +18,6 @@ import warnings
 from docutils import TransformSpec
 from docutils.utils.error_reporting import locale_encoding, ErrorString, ErrorOutput
 
-if sys.version_info >= (3, 0):
-    unicode = str  # noqa
 
 class InputError(IOError): pass
 class OutputError(IOError): pass
@@ -88,10 +86,9 @@ class Input(TransformSpec):
             locale.setlocale(locale.LC_ALL, '')
         """
         if self.encoding and self.encoding.lower() == 'unicode':
-            assert isinstance(data, unicode), (
-                'input encoding is "unicode" '
-                'but input is not a unicode object')
-        if isinstance(data, unicode):
+            assert isinstance(data, str), ('input encoding is "unicode" '
+                                           'but input is not a str object')
+        if isinstance(data, str):
             # Accept unicode even if self.encoding != 'unicode'.
             return data
         if self.encoding:
@@ -113,7 +110,7 @@ class Input(TransformSpec):
                     encodings.insert(1, locale_encoding)
         for enc in encodings:
             try:
-                decoded = unicode(data, enc, self.error_handler)
+                decoded = str(data, enc, self.error_handler)
                 self.successful_encoding = enc
                 # Return decoded, removing BOMs.
                 return decoded.replace(u'\ufeff', u'')
@@ -189,11 +186,11 @@ class Output(TransformSpec):
 
     def encode(self, data):
         if self.encoding and self.encoding.lower() == 'unicode':
-            assert isinstance(data, unicode), (
+            assert isinstance(data, str), (
                 'the encoding given is "unicode" but the output is not '
                 'a Unicode string')
             return data
-        if not isinstance(data, unicode):
+        if not isinstance(data, str):
             # Non-unicode (e.g. bytes) output.
             return data
         else:
@@ -207,8 +204,7 @@ class FileInput(Input):
     """
     def __init__(self, source=None, source_path=None,
                  encoding=None, error_handler='strict',
-                 autoclose=True,
-                 mode='r' if sys.version_info >= (3, 0) else 'rU'):
+                 autoclose=True, mode='r'):
         """
         :Parameters:
             - `source`: either a file-like object (which is read directly), or
@@ -228,20 +224,15 @@ class FileInput(Input):
 
         if source is None:
             if source_path:
-                # Specify encoding in Python 3
-                if sys.version_info >= (3, 0):
-                    kwargs = {'encoding': self.encoding,
-                              'errors': self.error_handler}
-                else:
-                    kwargs = {}
                 try:
-                    self.source = open(source_path, mode, **kwargs)
+                    self.source = open(source_path, mode,
+                                       encoding=self.encoding,
+                                       errors=self.error_handler)
                 except IOError as error:
                     raise InputError(error.errno, error.strerror, source_path)
             else:
                 self.source = sys.stdin
-        elif (sys.version_info >= (3, 0) and
-              check_encoding(self.source, self.encoding) is False):
+        elif (check_encoding(self.source, self.encoding) is False):
             # TODO: re-open, warn or raise error?
             raise UnicodeError('Encoding clash: encoding given is "%s" '
                                'but source is opened with encoding "%s".' %
@@ -257,21 +248,21 @@ class FileInput(Input):
         Read and decode a single file and return the data (Unicode string).
         """
         try:
-            if self.source is sys.stdin and sys.version_info >= (3, 0):
+            if self.source is sys.stdin:
                 # read as binary data to circumvent auto-decoding
                 data = self.source.buffer.read()
                 # normalize newlines
-                data = b'\n'.join(data.splitlines()) + b'\n'
+                data = b'\n'.join(data.splitlines()+[b''])
             else:
                 data = self.source.read()
-        except (UnicodeError, LookupError) as err: # (in Py3k read() decodes)
+        except (UnicodeError, LookupError) as err:
             if not self.encoding and self.source_path:
                 # re-read in binary mode and decode with heuristics
                 b_source = open(self.source_path, 'rb')
                 data = b_source.read()
                 b_source.close()
                 # normalize newlines
-                data = b'\n'.join(data.splitlines()) + b'\n'
+                data = b'\n'.join(data.splitlines()+[b''])
             else:
                 raise
         finally:
@@ -350,8 +341,8 @@ class FileOutput(Output):
                 pass
 
     def open(self):
-        # Specify encoding in Python 3.
-        if sys.version_info >= (3, 0) and 'b' not in self.mode:
+        # Specify encoding
+        if 'b' not in self.mode:
             kwargs = {'encoding': self.encoding,
                       'errors': self.error_handler}
         else:
@@ -371,17 +362,16 @@ class FileOutput(Output):
         """
         if not self.opened:
             self.open()
-        if ('b' not in self.mode and sys.version_info < (3, 0)
-            or check_encoding(self.destination, self.encoding) is False
-           ):
+        if ('b' not in self.mode 
+            and check_encoding(self.destination, self.encoding) is False):
             data = self.encode(data)
-            if sys.version_info >= (3, 0) and os.linesep != '\n':
-                data = data.replace(b'\n', bytes(os.linesep, 'ascii')) # fix endings
-
+            if os.linesep != '\n':
+                # fix endings
+                data = data.replace(b'\n', bytes(os.linesep, 'ascii')) 
         try:
             self.destination.write(data)
         except TypeError as err:
-            if sys.version_info >= (3, 0) and isinstance(data, bytes):
+            if isinstance(data, bytes):
                 try:
                     self.destination.buffer.write(data)
                 except AttributeError:

@@ -28,10 +28,6 @@ from docutils.transforms import TransformError, Transform
 from docutils.utils import smartquotes
 
 
-if sys.version_info >= (3, 0):
-    unicode = str  # noqa
-
-
 class Decorations(Transform):
 
     """
@@ -263,11 +259,11 @@ class SmartQuotes(Transform):
         for node in txtnodes:
             if (isinstance(node.parent, self.literal_nodes)
                 or isinstance(node.parent.parent, self.literal_nodes)):
-                yield ('literal', unicode(node))
+                yield ('literal', str(node))
             else:
                 # SmartQuotes uses backslash escapes instead of null-escapes
                 # Insert backslashes before escaped "active" characters.
-                txt = re.sub('(?<=\x00)([-\\\'".`])', r'\\\1', unicode(node))
+                txt = re.sub('(?<=\x00)([-\\\'".`])', r'\\\1', str(node))
                 yield ('plain', txt)
 
     def apply(self):

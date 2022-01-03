@@ -10,20 +10,13 @@ http://docutils.sourceforge.net/docs/ref/docutils.dtd.
 
 __docformat__ = 'reStructuredText'
 
+from io import StringIO
 import sys
 import xml.sax.saxutils
 
 import docutils
 from docutils import frontend, writers, nodes
 
-if sys.version_info >= (3, 0):
-    from io import StringIO  # noqa
-else:
-    from StringIO import StringIO  # noqa
-
-
-if sys.version_info >= (3, 0):
-    unicode = str  # noqa
 
 
 class RawXmlError(docutils.ApplicationError): pass
@@ -177,8 +170,6 @@ class XMLTranslator(nodes.GenericNodeVisitor):
         self.output.append(xml_string)
         self.default_departure(node)  # or not?
         # Check validity of raw XML:
-        if isinstance(xml_string, unicode) and sys.version_info < (3, 0):
-            xml_string = xml_string.encode('utf8')
         try:
             self.xmlparser.parse(StringIO(xml_string))
         except xml.sax._exceptions.SAXParseException as error:

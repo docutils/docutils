@@ -21,6 +21,7 @@ import mimetypes
 import os, os.path
 import re
 import sys
+from urllib.request import url2pathname
 import warnings
 
 import docutils
@@ -31,14 +32,6 @@ from docutils.utils.error_reporting import SafeString
 from docutils.transforms import writer_aux
 from docutils.utils.math import (unichar2tex, pick_math_environment,
                                  math2html, latex2mathml, tex2mathml_extern)
-
-if sys.version_info >= (3, 0):
-    from urllib.request import url2pathname
-else:
-    from urllib import url2pathname
-
-if sys.version_info >= (3, 0):
-    unicode = str  # noqa
 
 
 class Writer(writers.Writer):
@@ -159,9 +152,9 @@ class Writer(writers.Writer):
         self.output = self.apply_template()
 
     def apply_template(self):
-        template_file = open(self.document.settings.template, 'rb')
-        template = unicode(template_file.read(), 'utf-8')
-        template_file.close()
+        with open(self.document.settings.template, 'r', 
+                  encoding='utf-8') as template_file:
+            template = template_file.read()
         subs = self.interpolation_dict()
         return template % subs
 
@@ -364,7 +357,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         # Use only named entities known in both XML and HTML
         # other characters are automatically encoded "by number" if required.
         # @@@ A codec to do these and all other HTML entities would be nice.
-        text = unicode(text)
+        text = str(text)
         return text.translate(self.special_characters)
 
     def cloak_mailto(self, uri):
@@ -469,12 +462,12 @@ class HTMLTranslator(nodes.NodeVisitor):
             # value, but this isn't supported by XHTML.
             assert value is not None
             if isinstance(value, list):
-                values = [unicode(v) for v in value]
+                values = [str(v) for v in value]
                 parts.append('%s="%s"' % (name.lower(),
                                           self.attval(' '.join(values))))
             else:
                 parts.append('%s="%s"' % (name.lower(),
-                                          self.attval(unicode(value))))
+                                          self.attval(str(value))))
         if empty:
             infix = ' /'
         else:

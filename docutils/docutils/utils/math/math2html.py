@@ -19,21 +19,14 @@
 # 1.3    2021-06-02  Removed code for conversion of LyX files not
 #                    required for LaTeX math.
 #                    Support for more math commands from the AMS "math-guide".
+# 2.0    2021-12-31  Drop 2.7 compatibility code.
 
 import os.path
 import sys
 import unicodedata
-
-if sys.version_info >= (3, 0):
-    from urllib.parse import quote_plus
-else:
-    from urllib import quote_plus
+from urllib.parse import quote_plus
 
 from docutils.utils.math import tex2unichar
-
-if sys.version_info >= (3, 0):
-    unicode = str  #noqa
-    basestring = str  # noqa
 
 
 __version__ = u'1.3 (2021-06-02)'
@@ -76,8 +69,6 @@ class Trace(object):
 
   def show(cls, message, channel):
     "Show a message out of a channel"
-    if sys.version_info < (3, 0):
-      message = message.encode('utf-8')
     channel.write(message + '\n')
 
   debug = classmethod(debug)
@@ -771,7 +762,7 @@ class Parser(object):
   def parseending(self, reader, process):
     "Parse until the current ending is found"
     if not self.ending:
-      Trace.error('No ending for ' + unicode(self))
+      Trace.error('No ending for ' + str(self))
       return
     while not reader.currentline().startswith(self.ending):
       process()
@@ -782,12 +773,9 @@ class Parser(object):
       container.parent = self.parent
       contents.append(container)
 
-  def __unicode__(self):
+  def __str__(self):
     "Return a description"
-    return self.__class__.__name__ + ' (' + unicode(self.begin) + ')'
-
-  if sys.version_info >= (3, 0):
-    __str__ = __unicode__
+    return self.__class__.__name__ + ' (' + str(self.begin) + ')'
 
 
 class LoneCommand(Parser):
@@ -882,7 +870,7 @@ class ContainerOutput(object):
 
   def gethtml(self, container):
     "Show an error."
-    Trace.error('gethtml() not implemented for ' + unicode(self))
+    Trace.error('gethtml() not implemented for ' + str(self))
 
   def isempty(self):
     "Decide if the output is empty: by default, not empty."
@@ -915,7 +903,7 @@ class ContentsOutput(ContainerOutput):
       return html
     for element in container.contents:
       if not hasattr(element, 'gethtml'):
-        Trace.error('No html in ' + element.__class__.__name__ + ': ' + unicode(element))
+        Trace.error('No html in ' + element.__class__.__name__ + ': ' + str(element))
         return html
       html += element.gethtml()
     return html
@@ -980,7 +968,7 @@ class TaggedOutput(ContentsOutput):
   def checktag(self, container):
     "Check that the tag is valid."
     if not self.tag:
-      Trace.error('No tag in ' + unicode(container))
+      Trace.error('No tag in ' + str(container))
       return False
     if self.tag == '':
       return False
@@ -1192,19 +1180,16 @@ class EndingList(object):
   def checkpending(self):
     "Check if there are any pending endings"
     if len(self.endings) != 0:
-      Trace.error('Pending ' + unicode(self) + ' left open')
+      Trace.error('Pending ' + str(self) + ' left open')
 
-  def __unicode__(self):
+  def __str__(self):
     "Printable representation"
     string = 'endings ['
     for ending in self.endings:
-      string += unicode(ending) + ','
+      string += str(ending) + ','
     if len(self.endings) > 0:
       string = string[:-1]
     return string + ']'
-
-  if sys.version_info >= (3, 0):
-    __str__ = __unicode__
 
 
 class PositionEnding(object):
@@ -1218,15 +1203,12 @@ class PositionEnding(object):
     "Check for the ending"
     return pos.checkfor(self.ending)
 
-  def __unicode__(self):
+  def __str__(self):
     "Printable representation"
     string = 'Ending ' + self.ending
     if self.optional:
       string += ' (optional)'
     return string
-
-  if sys.version_info >= (3, 0):
-    __str__ = __unicode__
 
 
 class Position(Globable):
@@ -1273,9 +1255,6 @@ class Position(Globable):
     "Advance the position and return the next character."
     self.skipcurrent()
     return self.current()
-
-  if sys.version_info < (3, 0):
-      next = __next__
 
   def checkskip(self, string):
     "Check for a string at the given position; if there, skip it"
@@ -1341,7 +1320,7 @@ class Container(object):
   def gethtml(self):
     "Get the resulting HTML"
     html = self.output.gethtml(self)
-    if isinstance(html, basestring):
+    if isinstance(html, str):
       Trace.error('Raw string ' + html)
       html = [html]
     return html
@@ -1429,7 +1408,7 @@ class Container(object):
 
   def tree(self, level = 0):
     "Show in a tree"
-    Trace.debug("  " * level + unicode(self))
+    Trace.debug("  " * level + str(self))
     for container in self.contents:
       container.tree(level + 1)
 
@@ -1455,14 +1434,11 @@ class Container(object):
       current = current.parent
     return False
 
-  def __unicode__(self):
+  def __str__(self):
     "Get a description"
     if not self.begin:
       return self.__class__.__name__
-    return self.__class__.__name__ + '@' + unicode(self.begin)
-
-  if sys.version_info >= (3, 0):
-    __str__ = __unicode__
+    return self.__class__.__name__ + '@' + str(self.begin)
 
 
 class BlackBox(Container):
@@ -1496,7 +1472,7 @@ class StringContainer(Container):
     if ContainerConfig.string['startcommand'] in replaced and len(replaced) > 1:
       # unprocessed commands
       if self.begin:
-        message = 'Unknown command at ' + unicode(self.begin) + ': '
+        message = 'Unknown command at ' + str(self.begin) + ': '
       else:
         message = 'Unknown command: '
       Trace.error(message + replaced.strip())
@@ -1510,18 +1486,15 @@ class StringContainer(Container):
     "Return all text."
     return self.string
 
-  def __unicode__(self):
+  def __str__(self):
     "Return a printable representation."
     result = 'StringContainer'
     if self.begin:
-      result += '@' + unicode(self.begin)
+      result += '@' + str(self.begin)
     ellipsis = '...'
     if len(self.string.strip()) <= 15:
       ellipsis = ''
     return result + ' (' + self.string.strip()[:15] + ellipsis + ')'
-
-  if sys.version_info >= (3, 0):
-    __str__ = __unicode__
 
 
 class Constant(StringContainer):
@@ -1532,11 +1505,8 @@ class Constant(StringContainer):
     self.string = text
     self.output = StringOutput()
 
-  def __unicode__(self):
+  def __str__(self):
     return 'Constant: ' + self.string
-
-  if sys.version_info >= (3, 0):
-    __str__ = __unicode__
 
 
 class DocumentParameters(object):
@@ -1690,12 +1660,9 @@ class FormulaBit(Container):
     "Return a copy of itself."
     return self.factory.parseformula(self.original)
 
-  def __unicode__(self):
+  def __str__(self):
     "Get a string representation"
     return self.__class__.__name__ + ' read in ' + self.original
-
-  if sys.version_info >= (3, 0):
-    __str__ = __unicode__
 
 
 class TaggedBit(FormulaBit):
@@ -1736,12 +1703,9 @@ class FormulaConstant(Constant):
     "Return a copy of itself."
     return FormulaConstant(self.original)
 
-  def __unicode__(self):
+  def __str__(self):
     "Return a printable representation."
     return 'Formula constant: ' + self.string
-
-  if sys.version_info >= (3, 0):
-    __str__ = __unicode__
 
 
 class RawText(FormulaBit):
@@ -1823,12 +1787,9 @@ class WhiteSpace(FormulaBit):
     "Parse all whitespace."
     self.original += pos.skipspace()
 
-  def __unicode__(self):
+  def __str__(self):
     "Return a printable representation."
     return 'Whitespace: *' + self.original + '*'
-
-  if sys.version_info >= (3, 0):
-    __str__ = __unicode__
 
 
 class Bracket(FormulaBit):
@@ -1919,14 +1880,11 @@ class MathsProcessor(object):
 
   def process(self, contents, index):
     "Process an element inside a formula."
-    Trace.error('Unimplemented process() in ' + unicode(self))
+    Trace.error('Unimplemented process() in ' + str(self))
 
-  def __unicode__(self):
+  def __str__(self):
     "Return a printable description."
     return 'Maths processor ' + self.__class__.__name__
-
-  if sys.version_info >= (3, 0):
-    __str__ = __unicode__
 
 
 class FormulaProcessor(object):
@@ -2055,14 +2013,11 @@ class Formula(Container):
     self.parsed = pos.glob(lambda: True)
     pos.popending(limit)
 
-  def __unicode__(self):
+  def __str__(self):
     "Return a printable representation."
     if self.partkey and self.partkey.number:
       return 'Formula (' + self.partkey.number + ')'
     return 'Unnumbered formula'
-
-  if sys.version_info >= (3, 0):
-    __str__ = __unicode__
 
 
 class WholeFormula(FormulaBit):
@@ -2428,7 +2383,7 @@ class BigBracket(object):
 
   def getpiece(self, index):
     "Return the nth piece for the bracket."
-    function = getattr(self, 'getpiece' + unicode(len(self.pieces)))
+    function = getattr(self, 'getpiece' + str(len(self.pieces)))
     return function(index)
 
   def getpiece1(self, index):
@@ -2762,12 +2717,9 @@ class LimitPreviousCommand(LimitCommand):
     self.output = TaggedOutput().settag('span class="limits"')
     self.factory.clearskipped(pos)
 
-  def __unicode__(self):
+  def __str__(self):
     "Return a printable representation."
     return 'Limit previous command'
-
-  if sys.version_info >= (3, 0):
-    __str__ = __unicode__
 
 
 class LimitsProcessor(MathsProcessor):
@@ -2981,17 +2933,14 @@ class ParameterDefinition(object):
     else:
       self.value = function.parseparameter(pos)
 
-  def __unicode__(self):
+  def __str__(self):
     "Return a printable representation."
     result = 'param ' + self.name
     if self.value:
-      result += ': ' + unicode(self.value)
+      result += ': ' + str(self.value)
     else:
       result += ' (empty)'
     return result
-
-  if sys.version_info >= (3, 0):
-    __str__ = __unicode__
 
 
 class ParameterFunction(CommandBit):
@@ -3120,7 +3069,7 @@ class HybridFunction(ParameterFunction):
       return None
     index = int(pos.skipcurrent())
     if 2 + index > len(self.translated):
-      Trace.error('Function f' + unicode(index) + ' is not defined')
+      Trace.error('Function f' + str(index) + ' is not defined')
       return None
     tag = self.translated[2 + index]
     if not '$' in tag:
@@ -3164,7 +3113,7 @@ class HybridSize(object):
     for name in function.params:
       if name in sizestring:
         size = function.params[name].value.computesize()
-        sizestring = sizestring.replace(name, unicode(size))
+        sizestring = sizestring.replace(name, str(size))
     if '$' in sizestring:
       Trace.error('Unconverted variable in hybrid size: ' + sizestring)
       return 1

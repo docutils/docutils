@@ -265,14 +265,11 @@ class Raw(Directive):
             attributes['source'] = path
         elif 'url' in self.options:
             source = self.options['url']
-            # Do not import urllib2 at the top of the module because
+            # Do not import urllib at the top of the module because
             # it may fail due to broken SSL dependencies, and it takes
-            # about 0.15 seconds to load.
-            if sys.version_info >= (3, 0):
-                from urllib.request import urlopen
-                from urllib.error import URLError
-            else:
-                from urllib2 import urlopen, URLError
+            # about 0.15 seconds to load. Update: < 0.03s with Py3k.
+            from urllib.request import urlopen
+            from urllib.error import URLError
             try:
                 raw_text = urlopen(source).read()
             except (URLError, IOError, OSError) as error:
@@ -587,12 +584,6 @@ class Date(Directive):
                 'Invalid context: the "%s" directive can only be used within '
                 'a substitution definition.' % self.name)
         format_str = '\n'.join(self.content) or '%Y-%m-%d'
-        if sys.version_info< (3, 0):
-            try:
-                format_str = format_str.encode(locale_encoding or 'utf-8')
-            except UnicodeEncodeError:
-                raise self.warning(u'Cannot encode date format string '
-                    u'with locale encoding "%s".' % locale_encoding)
         # @@@
         # Use timestamp from the `SOURCE_DATE_EPOCH`_ environment variable?
         # Pro: Docutils-generated documentation
@@ -610,14 +601,6 @@ class Date(Directive):
         #                          time.gmtime(int(source_date_epoch)))
         # else:
         text = time.strftime(format_str)
-        if sys.version_info< (3, 0):
-            # `text` is a byte string that may contain non-ASCII characters:
-            try:
-                text = text.decode(locale_encoding or 'utf-8')
-            except UnicodeDecodeError:
-                text = text.decode(locale_encoding or 'utf-8', 'replace')
-                raise self.warning(u'Error decoding "%s"'
-                    u'with locale encoding "%s".' % (text, locale_encoding))
         return [nodes.Text(text)]
 
 

@@ -16,13 +16,8 @@ import os
 import re
 import string
 import sys
+from urllib.request import url2pathname
 import warnings
-
-if sys.version_info < (3, 0):
-    from io import open
-    from urllib import url2pathname
-else:
-    from urllib.request import url2pathname
 
 try:
     import roman
@@ -34,9 +29,6 @@ from docutils import frontend, nodes, languages, writers, utils
 from docutils.utils.error_reporting import SafeString
 from docutils.transforms import writer_aux
 from docutils.utils.math import pick_math_environment, unichar2tex
-
-if sys.version_info >= (3, 0):
-    unicode = str  # noqa
 
 
 class Writer(writers.Writer):
@@ -2805,7 +2797,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
                         }
         # external reference (URL)
         if 'refuri' in node:
-            href = unicode(node['refuri']).translate(special_chars)
+            href = str(node['refuri']).translate(special_chars)
             # problematic chars double caret and unbalanced braces:
             if href.find('^^') != -1 or self.has_unbalanced_braces(href):
                 self.error(

@@ -113,9 +113,6 @@ from unicodedata import east_asian_width
 from docutils import utils
 from docutils.utils.error_reporting import ErrorOutput
 
-if sys.version_info >= (3, 0):
-    unicode = str  # noqa
-
 
 class StateMachine(object):
 
@@ -1448,7 +1445,7 @@ class StringList(ViewList):
         """
         for i in range(len(self.data)):
             line = self.data[i]
-            if isinstance(line, unicode):
+            if isinstance(line, str):
                 new = []
                 for char in line:
                     new.append(char)
