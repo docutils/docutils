@@ -336,7 +336,7 @@ class NameValueError(DataError): pass
 
 def decode_path(path):
     """
-    Ensure `path` is Unicode. Return `nodes.reprunicode` object.
+    Ensure `path` is Unicode. Return `str` instance.
 
     Decode file/path string in a failsafe manner if not already done.
     """
@@ -348,7 +348,7 @@ def decode_path(path):
         path = path.decode(sys.getfilesystemencoding(), 'strict')
     except AttributeError: # default value None has no decode method
         if not path:
-            return nodes.reprunicode('')
+            return ''
         raise ValueError('`path` value must be a String or ``None``, not %r'
                          %path)
     except UnicodeDecodeError:
@@ -356,7 +356,7 @@ def decode_path(path):
             path = path.decode('utf-8', 'strict')
         except UnicodeDecodeError:
             path = path.decode('ascii', 'replace')
-    return nodes.reprunicode(path)
+    return path
 
 
 def extract_name_value(line):

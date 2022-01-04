@@ -12,8 +12,6 @@ if __name__ == '__main__':
     import __init__
 from test_parsers import DocutilsTestSupport
 
-from docutils.nodes import reprunicode
-
 
 def suite():
     s = DocutilsTestSupport.ParserTestSuite()
@@ -417,12 +415,12 @@ u"""\
     <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
             Error in "image" directive:
-            invalid option value: (option: "align"; value: %s)
+            invalid option value: (option: "align"; value: 'ä')
             "\xe4" unknown; choose from "top", "middle", "bottom", "left", "center", or "right".
         <literal_block xml:space="preserve">
             .. image:: picture.png
                :align: \xe4
-""" % repr(reprunicode(u'\xe4'))],
+"""],
 ["""
 .. image:: test.png
    :target: Uppercase_
