@@ -15,8 +15,9 @@ Changes Since 0.18.1
 ====================
 
 * General
-  
-  - Dropped support for Python 2.7, 3.5, and 3.6.
+
+  - Dropped support for Python 2.7, 3.5, and 3.6. and removed compatibility
+    hacks from code and tests.
 
 * docutils/parsers/__init__.py
 
@@ -41,6 +42,10 @@ Changes Since 0.18.1
 * docutils/parsers/rst/roles.py
 
   - Don't use mutable default values for function arguments. Fixes bug #430.
+
+* docutils/utils/__init__.py
+
+  - decode_path() returns `str` instance instead of `nodes.reprunicode`.
 
 * test/DocutilsTestSupport.py
 

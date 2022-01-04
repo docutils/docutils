@@ -77,15 +77,6 @@ class Node(object):
         """
         return True
 
-    if sys.version_info < (3, 0):
-        __nonzero__ = __bool__
-
-    if sys.version_info < (3, 0):
-        # on 2.x, str(node) will be a byte string with Unicode
-        # characters > 255 escaped; on 3.x this is no longer necessary
-        def __str__(self):
-            return unicode(self).encode('raw_unicode_escape')
-
     def asdom(self, dom=None):
         """Return a DOM **fragment** representation of this Node."""
         if dom is None:
@@ -346,24 +337,25 @@ class Node(object):
         except (AttributeError, IndexError):
             return None
 
-if sys.version_info < (3, 0):
-    class reprunicode(unicode):
-        """
-        A unicode sub-class that removes the initial u from unicode's repr.
-        """
 
-        def __repr__(self):
-            return unicode.__repr__(self)[1:]
-else:
-    reprunicode = unicode
+class reprunicode(str):
+    """
+    Deprecated backwards compatibility stub. Use the standard `str` instead.
+    """
+    def __init__(self, s):
+        warnings.warn('nodes.reprunicode() is not required with Python 3'
+                      ' and will be removed in Docutils 1.2.',
+                      DeprecationWarning, stacklevel=2)
+        super().__init__()
 
 
 def ensure_str(s):
     """
-    Failsafe conversion of `unicode` to `str`.
+    Deprecated backwards compatibility stub returning `s`.
     """
-    if sys.version_info < (3, 0) and isinstance(s, unicode):
-        return s.encode('ascii', 'backslashreplace')
+    warnings.warn('nodes.ensure_str() is not required with Python 3'
+                  ' and will be removed in Docutils 1.2.',
+                  DeprecationWarning, stacklevel=2)
     return s
 
 # definition moved here from `utils` to avoid circular import dependency
@@ -381,12 +373,13 @@ def unescape(text, restore_backslashes=False, respect_whitespace=False):
         return text
 
 
-class Text(Node, reprunicode):
+class Text(Node, str):
 
     """
     Instances are terminal nodes (leaves) containing text only; no child
     nodes or attributes.  Initialize by passing a string to the constructor.
-    Access the text itself with the `astext` method.
+    Access the raw (null-escaped) text with ``str(<instance>)``
+    and unescaped text with the `astext` method.
     """
 
     tagname = '#text'
@@ -394,15 +387,11 @@ class Text(Node, reprunicode):
     children = ()
     """Text nodes have no children, and cannot have children."""
 
-    if sys.version_info > (3, 0):
-        def __new__(cls, data, rawsource=None):
-            """Assert that `data` is not an array of bytes."""
-            if isinstance(data, bytes):
-                raise TypeError('expecting str data, not bytes')
-            return reprunicode.__new__(cls, data)
-    else:
-        def __new__(cls, data, rawsource=None):
-            return reprunicode.__new__(cls, data)
+    def __new__(cls, data, rawsource=None):
+        """Assert that `data` is not an array of bytes."""
+        if isinstance(data, bytes):
+            raise TypeError('expecting str data, not bytes')
+        return str.__new__(cls, data)
 
     def __init__(self, data, rawsource=None):
         """The `rawsource` argument is ignored and deprecated."""
@@ -415,7 +404,7 @@ class Text(Node, reprunicode):
         data = self
         if len(data) > maxlen:
             data = data[:maxlen-4] + ' ...'
-        return '<%s: %r>' % (self.tagname, reprunicode(data))
+        return '<%s: %r>' % (self.tagname, str(data))
 
     def __repr__(self):
         return self.shortrepr(maxlen=68)
@@ -424,7 +413,7 @@ class Text(Node, reprunicode):
         return domroot.createTextNode(unicode(self))
 
     def astext(self):
-        return reprunicode(unescape(self))
+        return str(unescape(self))
 
     # Note about __unicode__: The implementation of __unicode__ here,
     # and the one raising NotImplemented in the superclass Node had
@@ -436,7 +425,7 @@ class Text(Node, reprunicode):
     # an infinite loop
 
     def copy(self):
-        return self.__class__(reprunicode(self))
+        return self.__class__(str(self))
 
     def deepcopy(self):
         return self.copy()
@@ -445,7 +434,7 @@ class Text(Node, reprunicode):
         try:
             if self.document.settings.detailed:
                 lines = ['%s%s' % (indent*level, '<#text>')
-                        ] + [indent*(level+1) + repr(reprunicode(line))
+                        ] + [indent*(level+1) + repr(line)
                              for line in self.splitlines(True)]
                 return '\n'.join(lines) + '\n'
         except AttributeError:
@@ -461,10 +450,10 @@ class Text(Node, reprunicode):
     # taken care of by UserString.
 
     def rstrip(self, chars=None):
-        return self.__class__(reprunicode.rstrip(self, chars))
+        return self.__class__(str.rstrip(self, chars))
 
     def lstrip(self, chars=None):
-        return self.__class__(reprunicode.lstrip(self, chars))
+        return self.__class__(str.lstrip(self, chars))
 
 class Element(Node):
 
@@ -589,27 +578,24 @@ class Element(Node):
                 break
         if self['names']:
             return '<%s "%s": %s>' % (self.__class__.__name__,
-                '; '.join([ensure_str(n) for n in self['names']]), data)
+                                      '; '.join(self['names']), data)
         else:
             return '<%s: %s>' % (self.__class__.__name__, data)
 
     def shortrepr(self):
         if self['names']:
             return '<%s "%s"...>' % (self.__class__.__name__,
-                '; '.join([ensure_str(n) for n in self['names']]))
+                                     '; '.join(self['names']))
         else:
             return '<%s...>' % self.tagname
 
-    def __unicode__(self):
+    def __str__(self):
         if self.children:
             return u'%s%s%s' % (self.starttag(),
                                 ''.join([unicode(c) for c in self.children]),
                                 self.endtag())
         else:
             return self.emptytag()
-
-    if sys.version_info >= (3, 0):
-        __str__ = __unicode__
 
     def starttag(self, quoteattr=None):
         # the optional arg is used by the docutils_xml writer

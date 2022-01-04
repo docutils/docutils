@@ -31,7 +31,6 @@ class TextTests(unittest.TestCase):
         self.assertEqual(repr(self.text), r"<#text: 'Line 1.\nLine 2.'>")
         self.assertEqual(self.text.shortrepr(),
                           r"<#text: 'Line 1.\nLine 2.'>")
-        self.assertEqual(nodes.reprunicode('foo'), u'foo')
         self.assertEqual(repr(self.unicode_text), u"<#text: 'Möhren'>")
 
     def test_str(self):
@@ -322,19 +321,6 @@ class ElementTests(unittest.TestCase):
 
 
 class MiscTests(unittest.TestCase):
-
-    def test_reprunicode(self):
-        # return `unicode` instance
-        self.assertTrue(isinstance(nodes.reprunicode('foo'), str))
-        self.assertEqual(nodes.reprunicode('foo'), u'foo')
-        self.assertEqual(nodes.reprunicode(u'Möhre'), u'Möhre')
-        # no change to `unicode` under Python 3k
-        self.assertEqual(repr(nodes.reprunicode(u'Möhre')), repr(u'Möhre'))
-
-    def test_ensure_str(self):
-        self.assertTrue(isinstance(nodes.ensure_str(u'über'), str))
-        self.assertEqual(nodes.ensure_str('over'), 'over')
-        self.assertEqual(nodes.ensure_str(u'über'), r'über')
 
     def test_node_class_names(self):
         node_class_names = []

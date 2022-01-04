@@ -288,7 +288,7 @@ class HelperFunctionTests(unittest.TestCase):
             self.assertEqual(bytespath, u'späm')
         self.assertEqual(unipath, u'späm')
         self.assertEqual(defaultpath, u'')
-        self.assertTrue(isinstance(bytespath, nodes.reprunicode))
+        self.assertTrue(isinstance(bytespath, str))
         self.assertTrue(isinstance(unipath, str))
         self.assertTrue(isinstance(defaultpath, str))
         self.assertRaises(ValueError, utils.decode_path, 13)
