@@ -98,7 +98,7 @@ Developer access (read and write) is possible with `git svn`_.
 .. _git svn: https://git.wiki.kernel.org/index.php/Git-svn
 
 Subversion_ users can use the following commands
-(substitute your preferred repository root for ROOT):  
+(substitute your preferred repository root for ROOT):
 
 * To check out only the current main source tree of Docutils, type ::
 
@@ -128,6 +128,106 @@ If you changed your mind and want to use a different repository root,
 ``cd`` into your working copy and type::
 
     svn switch --relocate OLDROOT NEWROOT
+
+
+Editable installs
+=================
+
+The `Docutils project policies`_ require that any modifications must be
+tested_ before check-in_.
+There are several ways to ensure that edits to the Docutils code are
+picked up by Python.
+
+We'll assume that the Docutils "trunk" is checked out under the
+``~/projects/`` directory.
+
+1. Do an `editable install`__ with pip_::
+
+     python3 -m pip install -e ~/projects/docutils/docutils
+
+   __ https://pip.pypa.io/en/stable/cli/pip_install/#editable-installs
+
+2. Install in `development mode`__ with setuptools_.
+
+   __ https://setuptools.pypa.io/en/latest/userguide/development_mode.html
+      #development-mode
+
+3. Install "manually".
+
+   To ensure the "docutils" package is in ``sys.path``, do one of the
+   following:
+
+   * Set the ``PYTHONPATH`` environment variable so that Python
+     picks up your local working copy of the code.
+
+     For the bash shell, add this to your ``~/.profile``::
+
+         PYTHONPATH=$HOME/projects/docutils/docutils
+         export PYTHONPATH
+
+     The first line points to the directory containing the ``docutils``
+     package.  The second line exports this environment variable.
+
+   * Create a symlink to the docutils package directory somewhere in the
+     module search path (``sys.path``), e.g., ::
+
+         ln -s ~/projects/docutils/docutils \
+               /usr/local/lib/python3.9/dist-packages/
+
+   * Use a `path configuration file`__.
+
+     __ https://docs.python.org/library/site.html
+
+   Optionally, add some or all `front-end tools`_ from ``docutils/tools``
+   to the binary search path, e.g.,
+
+   * add the ``tools`` directory to the ``PATH`` variable::
+
+         PATH=$PATH:$HOME/projects/docutils/docutils/tools
+         export PATH
+
+   * copy or link idividual front-end tools
+     to a suitable place in your binary path::
+
+         ln -s ~/projects/docutils/docutils/tools/docutils-cli.py \
+               /usr/local/bin/docutils
+
+5. Before you run anything, every time you make a change, reinstall
+   Docutils::
+
+       python3 setup.py install
+
+   .. CAUTION::
+
+      This method is **not** recommended for day-to-day development;
+      it's too easy to forget.  Confusion inevitably ensues.
+
+      If you install Docutils this way, Python will always pick up the
+      last-installed copy of the code.  If you ever forget to
+      reinstall the "docutils" package, Python won't see your latest
+      changes.
+
+A useful addition to the ``docutils`` top-level directory in branches
+and alternate copies of the code is a ``set-PATHS`` file
+containing the following lines::
+
+    # source this file
+    export PYTHONPATH=$PWD:$PWD
+    export PATH=$PWD/tools:$PATH
+
+Open a shell for this branch, ``cd`` to the ``docutils`` top-level
+directory, and "source" this file.  For example, using the bash
+shell::
+
+    $ cd some-branch/docutils
+    $ . set-PATHS
+
+.. _Docutils Project Policies: policies.html
+.. _check-in: policies.html#check-ins
+.. _tested: policies.html#tested
+.. _pip: https://pypi.org/project/pip/
+.. _setuptools: https://pypi.org/project/setuptools/
+.. _front-end tools: ../user/tools.html
 
 
 .. _developer access:

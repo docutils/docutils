@@ -16,18 +16,15 @@ Quick-Start
 
 This is for those who want to get up & running quickly.
 
-1. Docutils requires Python, available from
+1. Docutils requires **Python**, available from
    http://www.python.org/.
-
-   See Requirements_ below for details.
+   See Dependencies_ below for details.
 
 2. Install the latest stable release from PyPi with pip_::
 
-       python -m pip install docutils
+       python3 -m pip install docutils
 
-   To install a pre-relase, append the option ``--pre``.
-   To install a `development version`_, follow the instructions in
-   section `Installation`_ below.
+   For alternatives and details, see section `Installation`_ below.
 
 3. Use the `front-end scripts`_ to convert reStructuredText documents.
    Try for example::
@@ -36,8 +33,6 @@ This is for those who want to get up & running quickly.
        python tools/rst2html.py FAQ.txt FAQ.html  (Windows)
 
    See Usage_ below for details.
-
-.. _pip: https://pypi.org/project/pip/
 
 
 Purpose
@@ -70,24 +65,21 @@ Support for the following sources is planned:
    http://www.python.org/peps/pep-0012.html
 
 
-Requirements
+Dependencies
 ============
 
 To run the code, Python_ must be installed.
+(Python is pre-installed with most Linux distributions.)
 
 * Docutils 0.19 requires Python 3.7 or later.
 * Docutils 0.16 to 0.18 require Python 2.7 or 3.5+.
 * Docutils 0.14 dropped Python 2.4, 2.5, 3.1 and 3.2 support.
-* Docutils 0.10 dropped Python 2.3 support.
-* From version 0.6, Docutils is compatible with Python 3. [#2to3]_
-* For Docutils 0.5, Python 2.2.1+ is required.
-* Up to Docutils 0.4, Python 2.1 is required.
 
-.. [#2to3] Up to version 0.15, the Docutils codebase was translated
-   "on-demand" using the 2to3 tool.
+.. _Python: http://www.python.org/.
 
-Recommendations
----------------
+
+Optional Dependencies
+---------------------
 
 Docutils uses the following packages for enhanced functionality, if they
 are installed:
@@ -100,15 +92,17 @@ are installed:
 * The `Pygments`_ package provides syntax highlight of "code" directives
   and roles.
 
-* The `recommonmark`_ parser is used to parse input in Markdown format.
+* The `myst`_ or `recommonmark`_ parsers can be used to parse input in
+  Markdown format.
 
 The `Docutils Link List <docs/user/links.html>`__ records projects that
 users of Docutils and reStructuredText may find useful.
 
-.. _Python: http://www.python.org/.
+.. _pip: https://pypi.org/project/pip/
+.. _setuptools: https://pypi.org/project/setuptools/
 .. _Python Imaging Library: http://www.pythonware.com/products/pil/
 .. _Pygments: https://pypi.org/project/Pygments/
-.. _setuptools: https://pypi.org/project/setuptools/
+.. _myst: https://pypi.org/project/myst-docutils/
 .. _recommonmark: https://github.com/rtfd/recommonmark
 
 
@@ -116,53 +110,59 @@ Development version
 ===================
 
 While we are trying to follow a "release early & often" policy,
-features are added frequently.  Since the code in the repository_
-is usually in a bug-free state, we recommend using a current snapshot
-or a working copy.
+features are added frequently.
+Since the code in the `Docutils version repository`_ is usually in a
+bug-free state, we recommend using a current snapshot or a working copy.
 
-To get a _`snapshot`, go to the code page and click the download snapshot
-button:
-
-* Docutils code, documentation, front-end tools, and tests:
+Snapshots:
+  To get a repository _`snapshot`, go to
   https://sourceforge.net/p/docutils/code/HEAD/tree/trunk/docutils/
+  and click the download snapshot button.
 
-* Sandbox (experimental, contributed code):
-  https://sourceforge.net/p/docutils/code/HEAD/tree/trunk/sandbox/
-
-To keep up to date on the latest developments, download fresh copies of the
-snapshots regularly or use a `working copy of the Docutils code repository`__.
+Repository check-out:
+  To keep up to date on the latest developments,
+  use a `working copy`__ of the `Docutils version repository`_.
 
 Continue with the `Installation`_ instructions below.
 
-.. _repository: docs/dev/repository.html
+.. _Docutils version repository: docs/dev/repository.html
+.. _sandbox: https://docutils.sourceforge.io/sandbox/README.html
+
 __ docs/dev/repository.html#checking-out-the-repository
+
 
 Installation
 ============
 
-Steps to install Docutils from source:
+* The simplest way is to install the latest stable release from PyPi with
+  pip_::
 
-* Go to the directory containing the file ``setup.py``.
+    python3 -m pip install docutils
 
-  A snapshot_ must be unpacked in a temporary directory (**not** directly in
-  Python's ``site-packages``) first.
+  To install a pre-relase, append the option ``--pre``.
 
-* Run ``setup.py install``. [#setup-requires-setuptools]_
-  On Windows systems it may be sufficient to double-click ``install.py``.
+* For a *manual install* see the options in
+  `Setting up for Docutils development`__.
 
-.. [#setup-requires-setuptools] ``setup.py`` requires the `setuptools`_
-   package. For a manual install see the options in `Setting up for Docutils
-   development`__.
+  __ docs/dev/policies.html#setting-up-for-docutils-development
 
-   __ docs/dev/policies.html#setting-up-for-docutils-development
+* To install a `development version`_ from source with `setuptools`_:
+
+  * Go to the directory containing the file ``setup.py``.
+
+    A snapshot_ must be unpacked in a temporary directory
+    (**not** directly in Python's ``site-packages``) first.
+
+  * Run ``setup.py install``.
+    On Windows systems it may be sufficient to double-click ``install.py``.
+
+  OS-specific installation instructions follow below.
 
 Optional steps:
 
-* `running the test suite`_
+* `Running the test suite`_
 
-* `converting the documentation`_
-
-OS-specific installation instructions follow.
+* `Converting the documentation`_
 
 
 GNU/Linux, BSDs, Unix, Mac OS X, etc.
@@ -179,7 +179,7 @@ GNU/Linux, BSDs, Unix, Mac OS X, etc.
 
        su
        (enter admin password)
-       python setup.py install
+       python3 setup.py install
 
    If the python executable isn't on your path, you'll have to specify
    the complete path, such as ``/usr/local/bin/python``.
@@ -191,7 +191,7 @@ GNU/Linux, BSDs, Unix, Mac OS X, etc.
 
    To install for different Python versions, repeat step 3 for every
    required version. The last installed version will be used in the
-   `shebang line`_ of the ``rst2*.py`` wrapper scripts.
+   `shebang line`_ of the `front-end scripts`_.
 
    .. _shebang line: http://en.wikipedia.org/wiki/Shebang_%28Unix%29
 

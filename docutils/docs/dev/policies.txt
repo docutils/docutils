@@ -225,7 +225,7 @@ developers to decide which mechanism to use for each case.
 
 Feature additions and API changes will be done in **feature
 branches**.  Feature branches will not be managed in any way.
-Frequent small checkins are encouraged here.  Feature branches must be
+Frequent small check-ins are encouraged here.  Feature branches must be
 discussed on the `docutils-develop mailing list`_ and reviewed before
 being merged into the core.
 
@@ -494,7 +494,7 @@ Docutils' backwards compatibility policy follows the rules for Python in
 
 * The scope of the public API is laid out at the start of the `backwards
   compatibility rules`_.
-  
+
 * The rules for `making incompatible changes`_ apply.
 
 A majority of projects depends on Docutils indirectly, via the Sphinx_
@@ -553,86 +553,15 @@ snapshot" button in the head of the code listing table).
 Setting Up For Docutils Development
 ===================================
 
-When making changes to the code, testing is a must.  The code should
+When making changes to the code, testing_ is a must.  The code should
 be run to verify that it produces the expected results, and the entire
 test suite should be run too.  The modified Docutils code has to be
-accessible to Python for the tests to have any meaning.  There are several
-ways to keep the Docutils code accessible during development:
+accessible to Python for the tests to have any meaning.
+See `editable installs`_ for ways to keep the Docutils code
+accessible during development.
 
-1. Update your ``PYTHONPATH`` environment variable so that Python
-   picks up your local working copy of the code.
-
-   We'll assume that the `Docutils trunk`__ is checked out under your
-   ``~/projects/`` directory.
-
-   For the bash shell, add this to your ``~/.profile``::
-
-       PYTHONPATH=$HOME/projects/docutils/docutils
-       export PYTHONPATH
-
-   The first line points to the directory containing the ``docutils``
-   package.  The second line exports this environment variable.
-
-   You many also want to add the ``tools`` directory to your binary ``PATH``::
-
-       PATH=$PATH:$HOME/projects/docutils/docutils/tools
-       export PATH
-
-   __ repository.html
-
-2. Create a symlink to the docutils package directory somewhere in the
-   module search path (``sys.path``), e.g., ::
-
-     ln -s ~/projects/docutils/docutils \
-          /usr/local/lib/python2.7/site-packages/
-
-   Alternatively, use a `path configuration file`__.
-
-   __ https://docs.python.org/library/site.html
-
-   You may also want to copy or link the front-end tools in
-   ``docutils/tools`` to a suitable place in your binary PATH, e.g., ::
-
-     ln -s ~/projects/docutils/docutils/tools/rst2html.py \
-           /usr/local/bin/rst2html
-
-3. Do an `editable install`__ with pip.
-
-   __ https://pip.pypa.io/en/stable/reference/pip_install/#editable-installs
-
-4. Install in `development mode`__ with setuptools.
-
-   __ https://setuptools.readthedocs.io/en/latest/setuptools.html#development-mode
-
-5. Before you run anything, every time you make a change, reinstall
-   Docutils::
-
-       python setup.py install
-
-   .. CAUTION::
-
-      This method is **not** recommended for day-to-day development;
-      it's too easy to forget.  Confusion inevitably ensues.
-
-      If you install Docutils this way, Python will always pick up the
-      last-installed copy of the code.  If you ever forget to
-      reinstall the "docutils" package, Python won't see your latest
-      changes.
-
-A useful addition to the ``docutils`` top-level directory in branches
-and alternate copies of the code is a ``set-PATHS`` file
-containing the following lines::
-
-    # source this file
-    export PYTHONPATH=$PWD:$PWD
-    export PATH=$PWD/tools:$PATH
-
-Open a shell for this branch, ``cd`` to the ``docutils`` top-level
-directory, and "source" this file.  For example, using the bash
-shell::
-
-    $ cd some-branch/docutils
-    $ . set-PATHS
+.. _testing: tested_
+.. _editable installs: repository.html#editable-installs
 
 
 Mailing Lists

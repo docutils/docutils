@@ -2762,9 +2762,10 @@ backquotes in an end-string context (according to the recognition
 rules above).  No markup interpretation (including backslash-escape
 interpretation) is done within inline literals.
 
-Line breaks are *not* preserved in inline literals.  Although a
-reStructuredText parser will preserve runs of spaces in its output,
-the final representation of the processed document is dependent on the
+Line breaks and sequences of whitespace characters
+are *not* protected in inline literals.
+Although a reStructuredText parser will preserve them in its output,
+the final representation of the processed document depends on the
 output formatter, thus the preservation of whitespace cannot be
 guaranteed.  If the preservation of line breaks and/or other
 whitespace is important, `literal blocks`_ should be used.
