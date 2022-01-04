@@ -133,11 +133,8 @@ If you changed your mind and want to use a different repository root,
 Editable installs
 =================
 
-The `Docutils project policies`_ require that any modifications must be
-tested_ before check-in_.
 There are several ways to ensure that edits to the Docutils code are
 picked up by Python.
-
 We'll assume that the Docutils "trunk" is checked out under the
 ``~/projects/`` directory.
 
@@ -154,8 +151,8 @@ We'll assume that the Docutils "trunk" is checked out under the
 
 3. Install "manually".
 
-   To ensure the "docutils" package is in ``sys.path``, do one of the
-   following:
+   Ensure that the "docutils" package is in ``sys.path`` by
+   one of the following actions:
 
    * Set the ``PYTHONPATH`` environment variable so that Python
      picks up your local working copy of the code.
@@ -166,7 +163,7 @@ We'll assume that the Docutils "trunk" is checked out under the
          export PYTHONPATH
 
      The first line points to the directory containing the ``docutils``
-     package.  The second line exports this environment variable.
+     package.  The second line exports the environment variable.
 
    * Create a symlink to the docutils package directory somewhere in the
      module search path (``sys.path``), e.g., ::
@@ -178,22 +175,20 @@ We'll assume that the Docutils "trunk" is checked out under the
 
      __ https://docs.python.org/library/site.html
 
-   Optionally, add some or all `front-end tools`_ from ``docutils/tools``
+   Optionally, add some or all `front-end tools`_
    to the binary search path, e.g.,
-
-   * add the ``tools`` directory to the ``PATH`` variable::
+   add the ``tools`` directory to the ``PATH`` variable::
 
          PATH=$PATH:$HOME/projects/docutils/docutils/tools
          export PATH
 
-   * copy or link idividual front-end tools
-     to a suitable place in your binary path::
+   or link idividual front-end tools to a suitable place
+   in the binary path::
 
          ln -s ~/projects/docutils/docutils/tools/docutils-cli.py \
                /usr/local/bin/docutils
 
-5. Before you run anything, every time you make a change, reinstall
-   Docutils::
+5. Reinstall Docutils after any change::
 
        python3 setup.py install
 
@@ -222,9 +217,6 @@ shell::
     $ cd some-branch/docutils
     $ . set-PATHS
 
-.. _Docutils Project Policies: policies.html
-.. _check-in: policies.html#check-ins
-.. _tested: policies.html#tested
 .. _pip: https://pypi.org/project/pip/
 .. _setuptools: https://pypi.org/project/setuptools/
 .. _front-end tools: ../user/tools.html
@@ -244,6 +236,13 @@ changes to the repository.)
 Sourceforge SVN access is documented `here`__
 
 __ http://sourceforge.net/p/forge/documentation/svn/
+
+
+Ensure any changes comply with the `Docutils Project Policies`_
+before `checking in`_,
+
+.. _Docutils Project Policies: policies.html
+.. _checking in: policies.html#check-ins
 
 
 Setting Up Your Subversion Client For Development

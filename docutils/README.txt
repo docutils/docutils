@@ -141,11 +141,6 @@ Installation
 
   To install a pre-relase, append the option ``--pre``.
 
-* For a *manual install* see the options in
-  `Setting up for Docutils development`__.
-
-  __ docs/dev/policies.html#setting-up-for-docutils-development
-
 * To install a `development version`_ from source with `setuptools`_:
 
   * Go to the directory containing the file ``setup.py``.
@@ -155,8 +150,13 @@ Installation
 
   * Run ``setup.py install``.
     On Windows systems it may be sufficient to double-click ``install.py``.
+    See also OS-specific installation instructions below.
 
-  OS-specific installation instructions follow below.
+* For installing "by hand" or in "development mode", see the
+  `editable installs`_ section in the `Docutils version repository`_
+  documentation.
+
+  .. _editable installs: docs/dev/repository.html#editable-installs
 
 Optional steps:
 
