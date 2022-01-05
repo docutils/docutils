@@ -24,22 +24,27 @@ knows how to interpret a file in context), a "Parser" (which
 understands the syntax of the text), and a "Writer" (which knows how
 to generate a specific data format).
 
-Most front ends have common options and the same command-line usage
+Most [#]_ front ends have common options and the same command-line usage
 pattern::
 
     toolname [options] [<source> [<destination>]]
 
-(The exceptions are buildhtml.py_ and rstpep2html.py_.)  See
-rst2html.py_ for concrete examples.  Each tool has a "``--help``"
-option which lists the `command-line options`_ and arguments it
-supports.  Processing can also be customized with `configuration
-files`_.
+See rst2html4.py_ for examples.
+Each tool has a "``--help``" option which lists the 
+`command-line options`_ and arguments it supports.
+Processing can also be customized with `configuration files`_.
 
 The two arguments, "source" and "destination", are optional.  If only
 one argument (source) is specified, the standard output (stdout) is
 used for the destination.  If no arguments are specified, the standard
 input (stdin) is used for the source.
 
+.. note::
+   Docutils front-end tool support is currently under discussion.
+   Tool names, install details and the set of auto-installed tools
+   may change in future Docutils versions.
+
+.. [#] The exceptions are buildhtml.py_ and rst2odt_prepstyles.py_.
 
 Getting Help
 ============
@@ -70,6 +75,7 @@ docutils-cli.py
 :Parser: reStructuredText, Markdown (reCommonMark)
 :Writers: html_, html4css1_, html5_, latex__, manpage_,
           odt_, pep_html_, pseudo-xml_, s5_html_, xelatex_, xml_,
+:Config_: See `[docutils-cli application]`_
 
 The ``docutils-cli.py`` front allows combining reader, parser, and
 writer components.
@@ -77,12 +83,21 @@ writer components.
 For example, to process a Markdown_ file "``test.md``" into
 Pseudo-XML_ ::
 
-    docutils_.py --parser=markdown --writer=pseudoxml test.md test.txt
+    docutils-cli.py --parser=markdown --writer=pseudoxml\
+      test.md test.txt
 
-__ `Generating LaTeX with Docutils`_
+Use the "--help" option together with the component-selection options
+to get the correct list of supported command-line options. Example::
+
+    docutils-cli.py --parser=markdown --writer=xml --help
+
+__
+.. _latex2e:
 .. _Generating LaTeX with Docutils: latex.html
 .. _manpage: manpage.html
 .. _Markdown: https://www.markdownguide.org/
+.. _[docutils-cli application]: config.html#docutils-cli-application
+
 
 HTML-Generating Tools
 =====================
@@ -93,6 +108,7 @@ buildhtml.py
 :Readers: Standalone, PEP
 :Parser: reStructuredText
 :Writers: html_, html5_, pep_html_
+:Config_: `[buildhtml application]`_
 
 Use ``buildhtml.py`` to generate ``*.html`` from all the ``*.txt`` files
 (including PEPs) in each <directory> given, and their subdirectories
@@ -123,6 +139,7 @@ ensures that the correct settings are in place (a ``docutils.conf``
 automatically).  Command-line options may be used to override config
 file settings or replace them altogether.
 
+.. _[buildhtml application]: config.html#buildhtml-application
 .. _configuration file: configuration files
 
 
@@ -137,11 +154,14 @@ rst2html.py
 The default writer may change with the development of HTML, browsers,
 Docutils, and the web. Currently, it is html4css1_.
 
-* Use `rst2html.py`, if you want the output to be up-to-date automatically.
+.. caution::
+   Use docutils-cli.py_ with the `"writer" option`__ or
+   a specific front end like rst2html4.py_ or rst2html5.py_,
+   if you depend on stability of the generated HTML code
+   (e.g., because you use a custom style sheet or post-processing
+   that may break otherwise).
 
-* Use a specific front end, if you depend on stability of the
-  generated HTML code, e.g. because you use a custom style sheet or
-  post-processing that may break otherwise.
+   __ config.html#writer-docutils-cli-application
 
 
 rst2html4.py
@@ -346,7 +366,7 @@ rst2latex.py
 
 :Reader: Standalone
 :Parser: reStructuredText
-:Writer: latex2e
+:Writer: latex2e_
 
 The ``rst2latex.py`` front end reads standalone reStructuredText
 source files and produces LaTeX_ output. For example, to process a
@@ -368,7 +388,7 @@ rst2xetex.py
 :Writer: _`xelatex`
 
 The ``rst2xetex.py`` front end reads standalone reStructuredText source
-files and produces `LaTeX` output for processing with unicode-aware
+files and produces `LaTeX` output for processing with Unicode-aware
 TeX engines (`LuaTeX`_ or `XeTeX`_). For example, to process a
 reStructuredText file "``test.txt``" into LaTeX::
 
@@ -409,19 +429,32 @@ rst2odt.py
 
 :Reader: Standalone
 :Parser: reStructuredText
-:Writer: ODF/odt
+:Writer: odt_
 
 The ``rst2odt.py`` front end reads standalone reStructuredText
 source files and produces ODF/.odt files that can be read, edited,
-printed, etc with OpenOffice ``oowriter`` or LibreOffice.
-(http://www.openoffice.org/).  A stylesheet file is required.  A
+printed, etc with OpenOffice_ ``oowriter`` or LibreOffice_ ``lowriter``.
+A stylesheet file is required.  A
 stylesheet file is an OpenOffice .odt file containing definitions
-of the styles required for ``rst2odt.py``.  You can learn more
-about how to use ``rst2odt.py``, the styles used ``rst2odt.py``,
-etc from `Odt Writer for Docutils`_.
+of the styles required for ``rst2odt.py``.
+For details, see `Odt Writer for Docutils`_.
 
-.. _Odt Writer for Docutils:
-.. _odt: odt.html
+.. _OpenOffice: https://www.openoffice.org/
+.. _LibreOffice: https://www.libreoffice.org/
+.. _odt:
+.. _Odt Writer for Docutils: odt.html
+
+rst2odt_prepstyles.py
+`````````````````````
+
+A helper tool to fix a word-processor-generated STYLE_FILE.odt for
+odtwriter use::
+
+  rst2odt_prepstyles STYLE_FILE.odt
+
+See `Odt Writer for Docutils`__ for details.
+
+__ odt.html#page-size
 
 
 reStructuredText-Generating Tools
@@ -480,18 +513,28 @@ The ``quicktest.py`` tool is used for testing the reStructuredText
 parser.  It does not use a Docutils Reader or Writer or the standard
 Docutils command-line options.  Rather, it does its own I/O and calls
 the parser directly.  No transforms are applied to the parsed
-document.  Various forms output are possible:
+document.  Possible output forms output include:
 
-- Pretty-printed pseudo-XML (default)
-- Test data (Python list of input and pseudo-XML output strings;
-  useful for creating new test cases)
-- Pretty-printed native XML
-- Raw native XML (with or without a stylesheet reference)
+--pretty  Pretty-printed pseudo-XML (default)
+
+--test    Test data (Python list of input and pseudo-XML output strings;
+          useful for creating new test cases)
+--xml     Pretty-printed native XML
+--rawxml  Raw native XML (with or without a stylesheet reference)
+--help    Usage hint and complete list of supported options.
 
 
 ---------------
  Customization
 ---------------
+
+Most front-end tools support the options/settings from the generic
+`configuration file sections`_ plus the sections of their components
+(reader, writer, parser). [#]_
+Some front-end tools also add application-specific settings.
+
+.. [#] The exceptions are quicktest.py_ and rst2odt_prepstyles.py_.
+
 
 Command-Line Options
 ====================
@@ -513,6 +556,9 @@ Command-line options and their corresponding configuration file entry
 names are listed in the `Docutils Configuration`_ document.
 
 .. _Docutils Configuration: config.html
+.. _Config:
+.. _configuration file sections:
+   config.html#configuration-file-sections-entries
 
 
 ..

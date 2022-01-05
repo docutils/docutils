@@ -20,10 +20,12 @@
 Configuration Files
 -------------------
 
-Configuration files are used for persistent customization; they can be
-set once and take effect every time you use a front-end tool.
+Configuration files are used for persistent customization;
+they can be set once and take effect every time you use a component,
+e.g., via a `front-end tool`_.
 Configuration file settings override the built-in defaults, and
 command-line options override all.
+For the technicalities, see `Docutils Runtime Settings`_.
 
 By default, Docutils checks the following places for configuration
 files, in the following order:
@@ -62,6 +64,8 @@ In addition, a configuration file may be explicitly specified with the
 the three implicit ones listed above (or the ones defined by the
 ``DOCUTILSCONFIG`` environment variable), and its entries will have
 priority.
+
+.. _Docutils Runtime Settings: ../api/runtime-settings.html
 
 
 -------------------------
@@ -192,6 +196,7 @@ Some knowledge of Python_ is assumed for some attributes.
    http://www.python.org/doc/current/lib/module-ConfigParser.html
 .. _Python: http://www.python.org/
 .. _RFC 822: http://www.rfc-editor.org/rfc/rfc822.txt
+.. _front-end tool:
 .. _Docutils application: tools.html
 
 
@@ -2313,5 +2318,4 @@ pep_template           [pep_html writer] template
 .. _literal blocks: ../ref/rst/restructuredtext.html#literal-blocks
 .. _option lists: ../ref/rst/restructuredtext.html#option-lists
 .. _tables: ../ref/rst/restructuredtext.html#tables
-
 .. _table of contents: ../ref/rst/directives.html#contents

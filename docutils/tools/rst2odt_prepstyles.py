@@ -53,7 +53,7 @@ def prepstyle(filename):
 
 def main():
     args = sys.argv[1:]
-    if len(args) != 1:
+    if len(args) != 1 or args[0] in ('-h', '--help'):
         print(__doc__, file=sys.stderr)
         print("Usage: %s STYLE_FILE.odt\n" % sys.argv[0], file=sys.stderr)
         sys.exit(1)
