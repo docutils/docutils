@@ -15,6 +15,7 @@ Various tests for the recommonmark parser.
 
 import sys
 import unittest
+import warnings
 
 if __name__ == '__main__':
     import __init__
@@ -62,6 +63,9 @@ class reCommonMarkParserTests(unittest.TestCase):
 
     @unittest.skipUnless(parser_class, skip_msg)
     def test_raw_disabled(self):
+        # silence Warnings in recommonmark (unmaintained 3rd party module):
+        warnings.filterwarnings('ignore', category=DeprecationWarning,
+                                module='recommonmark')
         output = publish_string(sample_with_html, parser_name='recommonmark',
                                 settings_overrides={'warning_stream': '',
                                                     'raw_enabled': False,

@@ -129,15 +129,14 @@ class Figure(Image):
             if PIL and self.state.document.settings.file_insertion_enabled:
                 imagepath = url2pathname(image_node['uri'])
                 try:
-                    img = PIL.Image.open(
-                            imagepath.encode(sys.getfilesystemencoding()))
+                    with PIL.Image.open(imagepath.encode(
+                                        sys.getfilesystemencoding())) as img:
+                        figure_node['width'] = '%dpx' % img.size[0]
                 except (IOError, UnicodeEncodeError):
                     pass # TODO: warn?
                 else:
                     self.state.document.settings.record_dependencies.add(
                         imagepath.replace('\\', '/'))
-                    figure_node['width'] = '%dpx' % img.size[0]
-                    del img
         elif figwidth is not None:
             figure_node['width'] = figwidth
         if figclasses:
