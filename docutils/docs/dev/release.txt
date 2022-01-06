@@ -30,7 +30,6 @@ Releasing (post 2020)
   Run tests ::
 
     export PYTHONWARNINGS=default
-    python2 test/alltests.py
     python3 test/alltests.py
 
   or use tox.
@@ -45,19 +44,6 @@ Releasing (post 2020)
 * Upload universal wheel and source to test.pypi::
 
     python3 -m twine upload --repository-url https://test.pypi.org/legacy/ dist/*
-
-  Wait some minutes to test in virtualenv ::
-
-    python2 -m virtualenv py2.7 ; cd py2.7
-    export PYTHONPATH= ; . bin/activate
-
-    python -m pip install --index-url https://test.pypi.org/simple/ --no-deps docutils
-
-    cp -Lr ../docutils-code/docutils/test .
-    python test/alltests.py
-
-    python -m pip uninstall docutils
-    deactivate ; cd .. ; rm -r py2.7
 
   Test in venv ::
 
@@ -105,15 +91,6 @@ Releasing (post 2020)
 
     deactivate ; cd .. ; rm -r du3
 
-    python2 -m virtualenv du2 ; cd du2
-    export PYTHONPATH= ; . bin/activate
-
-    pip install --no-deps docutils
-    cp -Lr ../docutils-code/docutils/test .
-    python test/alltests.py
-
-    deactivate ; cd .. ; rm -r du2
-
 * Notify to docutils-developer and user.
 
 * upload source and generated html to sf-htdocs/0.## ::
@@ -136,7 +113,7 @@ Releasing (post 2020)
   - Select docutils-0.16.tar.gz as default for all OS.  
 
 * set_version 0.#.#+1b.dev
-* test with py2 and py3
+* test with py3
 * docutils/HISTORY.txt: add title "Changes Since 0.##"
 * run sandbox/infrastructure/docutils-update.local
 

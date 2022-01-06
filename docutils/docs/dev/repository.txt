@@ -148,6 +148,8 @@ We'll assume that the Docutils "trunk" is checked out under the
 
    __ https://setuptools.pypa.io/en/latest/userguide/development_mode.html
       #development-mode
+      
+   .. _install manually:
 
 3. Install "manually".
 
