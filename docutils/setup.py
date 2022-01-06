@@ -9,14 +9,20 @@ import sys
 try:
     from setuptools import setup
 except ImportError:
-    print('Error: The "setuptools" module, which is required for the')
-    print('  installation of Docutils, could not be found.\n')
-    print('  You may install  it with `python -m pip install setuptools`')
-    print('  or from a package called "python-setuptools" (or similar)')
-    print('  using your system\'s package manager.\n')
-    print('  Alternatively, install a release from PyPi with')
-    print('  `python -m pip install docutils`.')
-    
+    print("""\
+Error: The "setuptools" module, which is required for the
+  installation of Docutils, could not be found.
+
+  You may install  it with `python -m pip install setuptools`
+  or from a package called "python-setuptools" (or similar)
+  using your system\'s package manager.
+
+  Alternatively, install a release from PyPi with
+  `python -m pip install docutils`.'
+
+  If all this fails, try a "manual install".
+  https://docutils.sourceforge.io/docs/dev/repository.html#install-manually
+""")
     sys.exit(1)
 
 
@@ -36,9 +42,9 @@ what-you-see-is-what-you-get plaintext markup syntax.""",  # wrap at col 60
     'maintainer_email': 'docutils-develop@lists.sourceforge.net',
     'license': 'public domain, Python, 2-Clause BSD, GPL 3 (see COPYING.txt)',
     'platforms': 'OS-independent',
-    'python_requires': '>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*',
+    'python_requires': '>=3.7',
     'include_package_data': True,
-    'exclude_package_data': {"": ["docutils.conf"]},                
+    'exclude_package_data': {"": ["docutils.conf"]},
     'package_dir': {
         'docutils': 'docutils',
         'docutils.tools': 'tools'

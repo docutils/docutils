@@ -362,8 +362,7 @@ Development
   documentation of Software (and other) *projects* (but other documents
   can be written with it too).
 
-  Since version 2.6, the `Python documentation`_ is based on
-  reStructuredText and Sphinx.
+  The `Python documentation`_ is based on reStructuredText and Sphinx.
   
   .. _Python documentation: http://docs.python.org/
 
