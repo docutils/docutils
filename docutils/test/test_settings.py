@@ -122,6 +122,8 @@ class ConfigFileTests(unittest.TestCase):
             warnings.simplefilter("always") # check also for deprecation warning
             self.compare_output(self.files_settings('old'),
                                 self.expected_settings('old'))
+            warnings.filterwarnings(action='ignore',
+                                    category=frontend.ConfigDeprecationWarning)
             self.assertEqual(len(wng), 1, "Expected a FutureWarning.")
             assert issubclass(wng[-1].category, FutureWarning)
 

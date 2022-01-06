@@ -564,18 +564,18 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
                 and self.settings.file_insertion_enabled):
                 imagepath = url2pathname(uri)
                 try:
-                    img = PIL.Image.open(
-                            imagepath.encode(sys.getfilesystemencoding()))
+                    with PIL.Image.open(imagepath.encode(
+                                        sys.getfilesystemencoding())) as img:
+                        img_size = img.size
                 except (IOError, UnicodeEncodeError):
                     pass # TODO: warn?
                 else:
                     self.settings.record_dependencies.add(
                         imagepath.replace('\\', '/'))
                     if 'width' not in atts:
-                        atts['width'] = '%dpx' % img.size[0]
+                        atts['width'] = '%dpx' % img_size[0]
                     if 'height' not in atts:
-                        atts['height'] = '%dpx' % img.size[1]
-                    del img
+                        atts['height'] = '%dpx' % img_size[1]
             for att_name in 'width', 'height':
                 if att_name in atts:
                     match = re.match(r'([0-9.]+)(\S*)$', atts[att_name])

@@ -538,8 +538,6 @@ class RecommonmarkParserTestSuite(ParserTestSuite):
         import recommonmark
         if recommonmark.__version__ != '0.4.0':
             return
-        # suppress UserWarnings from recommonmark parser
-        warnings.filterwarnings('ignore', message='Unsupported.*type')
         ParserTestSuite.generateTests(self, dict, dictname='totest')
 
 

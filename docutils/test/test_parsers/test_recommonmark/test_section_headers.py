@@ -31,8 +31,7 @@ The Title
 =========
 Paragraph.
 """,
-"""\
-<document source="test data">
+r"""<document source="test data">
     <section ids="the-title" names="the\ title">
         <title>
             The Title
@@ -44,8 +43,7 @@ Another Section Title
 =====================
 Paragraph (no blank line required).
 """,
-"""\
-<document source="test data">
+r"""<document source="test data">
     <section ids="another-section-title" names="another\ section\ title">
         <title>
             Another Section Title
@@ -158,7 +156,7 @@ Test bad subsection order.
 
 ### Title 5
 """,
-"""\
+r"""
 <document source="test data">
     <paragraph>
         Test bad subsection order.

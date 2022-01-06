@@ -49,7 +49,7 @@ class RecordDependenciesTests(unittest.TestCase):
                                        encoding='utf8')
         return record.read().splitlines()
 
-    def test_dependencies(self):
+    def test_dependencies_xml(self):
         # Note: currently, raw input files are read (and hence recorded) while
         # parsing even if not used in the chosen output format.
         # This should change (see parsers/rst/directives/misc.py).

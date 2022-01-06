@@ -23,34 +23,6 @@ def suite():
 
 totest = {}
 
-totest['compound'] = ((writer_aux.Compound,), [
-["""\
-.. class:: compound
-
-.. compound::
-
-   .. class:: paragraph1
-
-   Paragraph 1.
-
-   .. class:: paragraph2
-
-   Paragraph 2.
-
-       Block quote.
-""",
-"""\
-<document source="test data">
-    <paragraph classes="paragraph1 compound">
-        Paragraph 1.
-    <paragraph classes="paragraph2 continued">
-        Paragraph 2.
-    <block_quote classes="continued">
-        <paragraph>
-            Block quote.
-"""],
-])
-
 totest['admonitions'] = ((writer_aux.Admonitions,), [
 ["""\
 .. note::
