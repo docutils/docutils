@@ -29,10 +29,9 @@ import sys
 import warnings
 import unicodedata
 # import xml.dom.minidom as dom # -> conditional import in Node.asdom()
+#                                    and document.asdom()
 
-if sys.version_info >= (3, 0):
-    unicode = str  # noqa
-    basestring = str  # noqa
+# import docutils.transforms # -> conditional import in document.__init__()
 
 
 # ==============================
@@ -378,8 +377,9 @@ class Text(Node, str):
     """
     Instances are terminal nodes (leaves) containing text only; no child
     nodes or attributes.  Initialize by passing a string to the constructor.
+
     Access the raw (null-escaped) text with ``str(<instance>)``
-    and unescaped text with the `astext` method.
+    and unescaped text with ``<instance>.astext()``.
     """
 
     tagname = '#text'
@@ -388,17 +388,16 @@ class Text(Node, str):
     """Text nodes have no children, and cannot have children."""
 
     def __new__(cls, data, rawsource=None):
-        """Assert that `data` is not an array of bytes."""
+        """Assert that `data` is not an array of bytes
+        and warn if the deprecated `rawsource` argument is used.
+        """
         if isinstance(data, bytes):
             raise TypeError('expecting str data, not bytes')
-        return str.__new__(cls, data)
-
-    def __init__(self, data, rawsource=None):
-        """The `rawsource` argument is ignored and deprecated."""
         if rawsource is not None:
             warnings.warn('nodes.Text: initialization argument "rawsource" '
                           'is ignored and will be removed in Docutils 1.3.',
                           DeprecationWarning, stacklevel=2)
+        return str.__new__(cls, data)
 
     def shortrepr(self, maxlen=18):
         data = self
@@ -410,19 +409,10 @@ class Text(Node, str):
         return self.shortrepr(maxlen=68)
 
     def _dom_node(self, domroot):
-        return domroot.createTextNode(unicode(self))
+        return domroot.createTextNode(str(self))
 
     def astext(self):
         return str(unescape(self))
-
-    # Note about __unicode__: The implementation of __unicode__ here,
-    # and the one raising NotImplemented in the superclass Node had
-    # to be removed when changing Text to a subclass of unicode instead
-    # of UserString, since there is no way to delegate the __unicode__
-    # call to the superclass unicode:
-    # unicode itself does not have __unicode__ method to delegate to
-    # and calling unicode(self) or unicode.__new__ directly creates
-    # an infinite loop
 
     def copy(self):
         return self.__class__(str(self))
@@ -592,7 +582,7 @@ class Element(Node):
     def __str__(self):
         if self.children:
             return u'%s%s%s' % (self.starttag(),
-                                ''.join([unicode(c) for c in self.children]),
+                                ''.join([str(c) for c in self.children]),
                                 self.endtag())
         else:
             return self.emptytag()
@@ -610,7 +600,7 @@ class Element(Node):
                 values = [serial_escape('%s' % (v,)) for v in value]
                 value = ' '.join(values)
             else:
-                value = unicode(value)
+                value = str(value)
             value = quoteattr(value)
             parts.append(u'%s=%s' % (name, value))
         return u'<%s>' % u' '.join(parts)
@@ -628,12 +618,12 @@ class Element(Node):
 
     def __contains__(self, key):
         # Test for both, children and attributes with operator ``in``.
-        if isinstance(key, basestring):
+        if isinstance(key, str):
             return key in self.attributes
         return key in self.children
 
     def __getitem__(self, key):
-        if isinstance(key, basestring):
+        if isinstance(key, str):
             return self.attributes[key]
         elif isinstance(key, int):
             return self.children[key]
@@ -645,7 +635,7 @@ class Element(Node):
                             'an attribute name string')
 
     def __setitem__(self, key, item):
-        if isinstance(key, basestring):
+        if isinstance(key, str):
             self.attributes[str(key)] = item
         elif isinstance(key, int):
             self.setup_child(item)
@@ -660,7 +650,7 @@ class Element(Node):
                             'an attribute name string')
 
     def __delitem__(self, key):
-        if isinstance(key, basestring):
+        if isinstance(key, str):
             del self.attributes[key]
         elif isinstance(key, int):
             del self.children[key]
@@ -2250,8 +2240,6 @@ def make_id(string):
     .. _CSS1 spec: http://www.w3.org/TR/REC-CSS1
     """
     id = string.lower()
-    if not isinstance(id, unicode):
-        id = id.decode()
     id = id.translate(_non_id_translate_digraphs)
     id = id.translate(_non_id_translate)
     # get rid of non-ascii characters.
