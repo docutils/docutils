@@ -39,10 +39,7 @@ import sys
 import warnings
 
 import docutils
-import docutils.utils
-import docutils.nodes
-from docutils.utils.error_reporting import (locale_encoding, SafeString,
-                                            ErrorOutput, ErrorString)
+from docutils import io
 
 
 def store_multiple(option, opt, value, parser, *args, **kwargs):
@@ -63,8 +60,8 @@ def read_config_file(option, opt, value, parser):
     """
     try:
         new_settings = parser.get_config_file_settings(value)
-    except ValueError as error:
-        parser.error(error)
+    except ValueError as err:
+        parser.error(err)
     parser.values.update(new_settings, parser)
 
 def validate_encoding(setting, value, option_parser,
@@ -349,10 +346,10 @@ class Option(optparse.Option):
                 value = getattr(values, setting)
                 try:
                     new_value = self.validator(setting, value, parser)
-                except Exception as error:
+                except Exception as err:
                     raise optparse.OptionValueError(
                         'Error in option "%s":\n    %s'
-                        % (opt, ErrorString(error)))
+                        % (opt, io.error_string(err)))
                 setattr(values, setting, new_value)
             if self.overrides:
                 setattr(values, self.overrides, None)
@@ -607,8 +604,8 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
         if read_config_files and not self.defaults['_disable_config']:
             try:
                 config_settings = self.get_standard_config_settings()
-            except ValueError as error:
-                self.error(SafeString(error))
+            except ValueError as err:
+                self.error(err)
             self.set_defaults_from_dict(config_settings.__dict__)
 
     def populate_from_components(self, components):
@@ -766,7 +763,7 @@ Skipping "%s" configuration file.
         self._files = []
         """List of paths of configuration files read."""
 
-        self._stderr = ErrorOutput()
+        self._stderr = io.ErrorOutput()
         """Wrapper around sys.stderr catching en-/decoding errors"""
 
     def read(self, filenames, option_parser):
@@ -825,12 +822,12 @@ Skipping "%s" configuration file.
                         new_value = option.validator(
                             setting, value, option_parser,
                             config_parser=self, config_section=section)
-                    except Exception as error:
+                    except Exception as err:
                         raise ValueError(
                             'Error in config file "%s", section "[%s]":\n'
                             '    %s\n'
                             '        %s = %s'
-                            % (filename, section, ErrorString(error),
+                            % (filename, section, io.error_string(err),
                                setting, value))
                     self.set(section, setting, new_value)
                 if option.overrides:

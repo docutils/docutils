@@ -46,6 +46,12 @@ Changes Since 0.18.1
 * docutils/utils/__init__.py
 
   - decode_path() returns `str` instance instead of `nodes.reprunicode`.
+  - new function error_string() obsoletes utils.error_reporting.ErrorString.
+  - class ErrorOutput moved here from docutils/utils/error_reporting.py
+
+* docutils/utils/error_reporting.py
+
+  - Add deprecation warning.
 
 * test/DocutilsTestSupport.py
 

@@ -110,8 +110,7 @@ import sys
 import re
 from unicodedata import east_asian_width
 
-from docutils import utils
-from docutils.utils.error_reporting import ErrorOutput
+from docutils import io, utils
 
 
 class StateMachine(object):
@@ -171,7 +170,7 @@ class StateMachine(object):
         line changes.  Observers are called with one argument, ``self``.
         Cleared at the end of `run()`."""
 
-        self._stderr = ErrorOutput()
+        self._stderr = io.ErrorOutput()
         """Wrapper around sys.stderr catching en-/decoding errors"""
 
 

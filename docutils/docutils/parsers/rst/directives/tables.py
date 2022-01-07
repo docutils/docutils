@@ -15,7 +15,6 @@ import sys
 import warnings
 
 from docutils import io, nodes, statemachine, utils
-from docutils.utils.error_reporting import SafeString
 from docutils.utils import SystemMessagePropagation
 from docutils.parsers.rst import Directive
 from docutils.parsers.rst import directives
@@ -324,7 +323,7 @@ class CSVTable(Table):
             except IOError as error:
                 severe = self.state_machine.reporter.severe(
                     u'Problems with "%s" directive path:\n%s.'
-                    % (self.name, SafeString(error)),
+                    % (self.name, error),
                     nodes.literal_block(self.block_text, self.block_text),
                     line=self.lineno)
                 raise SystemMessagePropagation(severe)
@@ -342,7 +341,7 @@ class CSVTable(Table):
             except (URLError, IOError, OSError, ValueError) as error:
                 severe = self.state_machine.reporter.severe(
                       'Problems with "%s" directive URL "%s":\n%s.'
-                      % (self.name, self.options['url'], SafeString(error)),
+                      % (self.name, self.options['url'], error),
                       nodes.literal_block(self.block_text, self.block_text),
                       line=self.lineno)
                 raise SystemMessagePropagation(severe)

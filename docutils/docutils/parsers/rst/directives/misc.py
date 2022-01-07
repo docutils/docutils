@@ -11,8 +11,6 @@ import os.path
 import re
 import time
 from docutils import io, nodes, statemachine, utils
-from docutils.utils.error_reporting import SafeString, ErrorString
-from docutils.utils.error_reporting import locale_encoding
 from docutils.parsers.rst import Directive, convert_directive_function
 from docutils.parsers.rst import directives, roles, states
 from docutils.parsers.rst.directives.body import CodeBlock, NumberLines
@@ -81,10 +79,10 @@ class Include(Directive):
             raise self.severe(u'Problems with "%s" directive path:\n'
                               'Cannot encode input file path "%s" '
                               '(wrong locale?).' %
-                              (self.name, SafeString(path)))
+                              (self.name, path))
         except IOError as error:
             raise self.severe(u'Problems with "%s" directive path:\n%s.' %
-                      (self.name, ErrorString(error)))
+                      (self.name, io.error_string(error)))
 
         # Get to-be-included content
         startline = self.options.get('start-line', None)
@@ -97,7 +95,7 @@ class Include(Directive):
                 rawtext = include_file.read()
         except UnicodeError as error:
             raise self.severe(u'Problem with "%s" directive:\n%s' %
-                              (self.name, ErrorString(error)))
+                              (self.name, io.error_string(error)))
         # start-after/end-before: no restrictions on newlines in match-text,
         # and no restrictions on matching inside lines vs. line boundaries
         after_text = self.options.get('start-after', None)
@@ -255,12 +253,12 @@ class Raw(Directive):
                 self.state.document.settings.record_dependencies.add(path)
             except IOError as error:
                 raise self.severe(u'Problems with "%s" directive path:\n%s.'
-                                  % (self.name, ErrorString(error)))
+                                  % (self.name, io.error_string(error)))
             try:
                 text = raw_file.read()
             except UnicodeError as error:
                 raise self.severe(u'Problem with "%s" directive:\n%s'
-                    % (self.name, ErrorString(error)))
+                    % (self.name, io.error_string(error)))
             attributes['source'] = path
         elif 'url' in self.options:
             source = self.options['url']
@@ -273,7 +271,7 @@ class Raw(Directive):
                 raw_text = urlopen(source).read()
             except (URLError, IOError, OSError) as error:
                 raise self.severe(u'Problems with "%s" directive URL "%s":\n%s.'
-                    % (self.name, self.options['url'], ErrorString(error)))
+                    % (self.name, self.options['url'], io.error_string(error)))
             raw_file = io.StringInput(source=raw_text, source_path=source,
                                       encoding=encoding,
                                       error_handler=e_handler)
@@ -281,7 +279,7 @@ class Raw(Directive):
                 text = raw_file.read()
             except UnicodeError as error:
                 raise self.severe(u'Problem with "%s" directive:\n%s'
-                                  % (self.name, ErrorString(error)))
+                                  % (self.name, io.error_string(error)))
             attributes['source'] = source
         else:
             # This will always fail because there is no content.
@@ -364,7 +362,7 @@ class Unicode(Directive):
                 decoded = directives.unicode_code(code)
             except ValueError as error:
                 raise self.error(u'Invalid character code: %s\n%s'
-                    % (code, ErrorString(error)))
+                    % (code, io.error_string(error)))
             element += nodes.Text(decoded)
         return element.children
 
@@ -460,7 +458,7 @@ class Role(Directive):
             except ValueError as detail:
                 error = self.state_machine.reporter.error(
                     u'Invalid argument for "%s" directive:\n%s.'
-                    % (self.name, SafeString(detail)), nodes.literal_block(
+                    % (self.name, detail), nodes.literal_block(
                     self.block_text, self.block_text), line=self.lineno)
                 return messages + [error]
         role = roles.CustomRole(new_role_name, base_role, options, content)

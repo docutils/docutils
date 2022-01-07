@@ -24,15 +24,17 @@ instances like, e.g., ::
 unless the minimal required Python version has this problem fixed.
 """
 
+from io import StringIO, BytesIO
 import os
 import sys
 import unittest
-from io import StringIO, BytesIO
+import warnings
+warnings.filterwarnings('ignore', category=DeprecationWarning,
+                        message=r'.*utils\.error_reporting')
 
 import DocutilsTestSupport              # must be imported before docutils
 from docutils import core, parsers, frontend, utils
 from docutils.utils.error_reporting import SafeString, ErrorString, ErrorOutput
-
 
 
 class SafeStringTests(unittest.TestCase):
@@ -158,7 +160,6 @@ class ErrorOutputTests(unittest.TestCase):
         self.assertEqual(buf.getvalue(), u'b\ufffd u\xfc e\xfc b\xfc')
 
 
-
 class SafeStringTests_locale(unittest.TestCase):
     """
     Test docutils.SafeString with 'problematic' locales.
@@ -255,6 +256,7 @@ class ErrorReportingTests(unittest.TestCase):
                   '   :file: bogus.csv\n')
         self.assertRaises(utils.SystemMessage,
                           self.parser.parse, source, self.document)
+
 
 if __name__ == '__main__':
     unittest.main()

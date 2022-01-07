@@ -8,14 +8,31 @@
 Test module for io.py.
 """
 
+from io import StringIO, BytesIO
 import sys
 import unittest
 import warnings
 
 import DocutilsTestSupport              # must be imported before docutils
 from docutils import io
-from docutils.utils.error_reporting import locale_encoding
-from test_error_reporting import BBuf, UBuf
+
+
+# Stub: Buffer with 'strict' auto-conversion of input to byte string:
+class BBuf(BytesIO):
+    def write(self, data):
+        if isinstance(data, str):
+            data.encode('ascii', 'strict')
+        super(BBuf, self).write(data)
+
+
+# Stub: Buffer expecting unicode string:
+class UBuf(StringIO):
+    def write(self, data):
+        # emulate Python 3 handling of stdout, stderr
+        if isinstance(data, bytes):
+            raise TypeError('must be unicode, not bytes')
+        super(UBuf, self).write(data)
+
 
 class mock_stdout(UBuf):
     encoding = 'utf8'
@@ -23,6 +40,7 @@ class mock_stdout(UBuf):
     def __init__(self):
         self.buffer = BBuf()
         UBuf.__init__(self)
+
 
 class HelperTests(unittest.TestCase):
 
@@ -47,6 +65,19 @@ class HelperTests(unittest.TestCase):
         self.assertEqual(io.check_encoding(mock_stdout, None), None)
         # encoding is invalid
         self.assertEqual(io.check_encoding(mock_stdout, 'UTF-9'), None)
+        
+    def test_error_string(self):
+        us = '\xfc'      # bytes(us) fails
+        bs = b'\xc3\xbc' # str(bs) returns repr(bs)
+
+        self.assertEqual('Exception: spam',
+                         io.error_string(Exception('spam')))
+        self.assertEqual('IndexError: '+str(bs),
+                         io.error_string(IndexError(bs)))
+        self.assertEqual('ImportError: %s' % us,
+                         io.error_string(ImportError(us)))
+
+        
 
 
 class InputTests(unittest.TestCase):
@@ -105,7 +136,7 @@ print("hello world")
     def test_heuristics_no_utf8(self):
         # if no encoding is given and decoding with utf8 fails,
         # use either the locale encoding (if specified) or latin-1:
-        if locale_encoding != "utf8":
+        if io.locale_encoding != "utf8":
             # in Py3k, the locale encoding is used without --input-encoding
             # skipping the heuristic unless decoding fails.
             return
@@ -188,6 +219,46 @@ class OutputTests(unittest.TestCase):
         fo = io.FileOutput(destination=self.mock_stdout,
                             encoding='latin1', autoclose=False)
         self.assertRaises(ValueError, fo.write, self.udata)
+
+
+class ErrorOutputTests(unittest.TestCase):
+    def test_defaults(self):
+        e = io.ErrorOutput()
+        self.assertEqual(e.destination, sys.stderr)
+
+    def test_bbuf(self):
+        buf = BBuf() # buffer storing byte string
+        e = io.ErrorOutput(buf, encoding='ascii')
+        # write byte-string as-is
+        e.write(b'b\xfc')
+        self.assertEqual(buf.getvalue(), b'b\xfc')
+        # encode unicode data with backslashescape fallback replacement:
+        e.write(u' u\xfc')
+        self.assertEqual(buf.getvalue(), b'b\xfc u\\xfc')
+        # handle Exceptions with Unicode string args
+        # unicode(Exception(u'e\xfc')) # fails in Python < 2.6
+        e.write(AttributeError(u' e\xfc'))
+        self.assertEqual(buf.getvalue(), b'b\xfc u\\xfc e\\xfc')
+        # encode with `encoding` attribute
+        e.encoding = 'utf8'
+        e.write(u' u\xfc')
+        self.assertEqual(buf.getvalue(), b'b\xfc u\\xfc e\\xfc u\xc3\xbc')
+
+    def test_ubuf(self):
+        buf = UBuf() # buffer only accepting unicode string
+        # decode of binary strings
+        e = io.ErrorOutput(buf, encoding='ascii')
+        e.write(b'b\xfc')
+        self.assertEqual(buf.getvalue(), u'b\ufffd') # use REPLACEMENT CHARACTER
+        # write Unicode string and Exceptions with Unicode args
+        e.write(u' u\xfc')
+        self.assertEqual(buf.getvalue(), u'b\ufffd u\xfc')
+        e.write(AttributeError(u' e\xfc'))
+        self.assertEqual(buf.getvalue(), u'b\ufffd u\xfc e\xfc')
+        # decode with `encoding` attribute
+        e.encoding = 'latin1'
+        e.write(b' b\xfc')
+        self.assertEqual(buf.getvalue(), u'b\ufffd u\xfc e\xfc b\xfc')
 
 
 if __name__ == '__main__':
