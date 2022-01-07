@@ -101,6 +101,11 @@ Convert with reposurgeon_?
 __ https://git.wiki.kernel.org/index.php/
    Interfaces,_frontends,_and_tools#Subversion
 
+Sourceforge supports multiple Git repositories per project, so we can
+switch the version control system independent of the decision on an
+eventual switch of the host. 
+Cf. https://sourceforge.net/p/forge/documentation/Git/
+
 General
 =======
 
@@ -109,13 +114,13 @@ Miscellaneous
 
 Code cleanup and modernization:
   Use flake8_? See also the configuration in `<../../tox.ini>`__.
-  
-  Check and solve issue from  :PEP:`290` - Code Migration and Modernization. 
+
+  Check and solve issue from  :PEP:`290` - Code Migration and Modernization.
   (Covers issues up to Python 2.4, is there an equivalent for more recent
   modernizations?)
 
-  Ensure `backwards compatibility`_!  
-  
+  Ensure `backwards compatibility`_!
+
   .. _flake8: https://pypi.org/project/flake8/
   .. _backwards compatibility: policies.html#backwards-compatibility-policy
 
