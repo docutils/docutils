@@ -19,7 +19,7 @@ A generic front end to the Docutils Publisher.
 try:
     import locale # module missing in Jython
     locale.setlocale(locale.LC_ALL, '')
-except locale.Error:
+except:
     pass
 
 import argparse

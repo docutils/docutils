@@ -16,10 +16,8 @@ import itertools
 import warnings
 import unicodedata
 from docutils import ApplicationError, DataError, __version_info__
-from docutils import nodes
+from docutils import io, nodes
 from docutils.nodes import unescape
-import docutils.io
-from docutils.utils.error_reporting import ErrorOutput, SafeString
 
 
 class SystemMessage(ApplicationError):
@@ -108,8 +106,8 @@ class Reporter(object):
         """The level at or above which `SystemMessage` exceptions
         will be raised, halting execution."""
 
-        if not isinstance(stream, ErrorOutput):
-            stream = ErrorOutput(stream, encoding, error_handler)
+        if not isinstance(stream, io.ErrorOutput):
+            stream = io.ErrorOutput(stream, encoding, error_handler)
 
         self.stream = stream
         """Where warning output is sent."""
@@ -131,8 +129,8 @@ class Reporter(object):
                       DeprecationWarning, stacklevel=2)
         self.report_level = report_level
         self.halt_level = halt_level
-        if not isinstance(stream, ErrorOutput):
-            stream = ErrorOutput(stream, self.encoding, self.error_handler)
+        if not isinstance(stream, io.ErrorOutput):
+            stream = io.ErrorOutput(stream, self.encoding, self.error_handler)
         self.stream = stream
         self.debug_flag = debug
 
@@ -158,7 +156,7 @@ class Reporter(object):
         """
         # `message` can be a `str` or `Exception` instance.
         if isinstance(message, Exception):
-            message = SafeString(message)
+            message = str(message)
 
         attributes = kwargs.copy()
         if 'base_node' in kwargs:
@@ -717,8 +715,8 @@ class DependencyList(object):
                 of = None
             else:
                 of = output_file
-            self.file = docutils.io.FileOutput(destination_path=of,
-                                   encoding='utf8', autoclose=False)
+            self.file = io.FileOutput(destination_path=of,
+                                      encoding='utf8', autoclose=False)
         else:
             self.file = None
 

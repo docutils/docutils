@@ -28,7 +28,6 @@ import docutils
 from docutils import frontend, languages, nodes, utils, writers
 from docutils.parsers.rst.directives import length_or_percentage_or_unitless
 from docutils.parsers.rst.directives.images import PIL
-from docutils.utils.error_reporting import SafeString
 from docutils.transforms import writer_aux
 from docutils.utils.math import (unichar2tex, pick_math_environment,
                                  math2html, latex2mathml, tex2mathml_extern)
@@ -395,8 +394,7 @@ class HTMLTranslator(nodes.NodeVisitor):
                                                 encoding='utf-8').read()
                 self.settings.record_dependencies.add(path)
             except IOError as err:
-                msg = u"Cannot embed stylesheet '%r': %s." % (
-                                path, SafeString(err.strerror))
+                msg = f'Cannot embed stylesheet: {err}'
                 self.document.reporter.error(msg)
                 return '<--- %s --->\n' % msg
             return self.embedded_stylesheet % content

@@ -11,15 +11,22 @@
 # .. _2-Clause BSD license: https://opensource.org/licenses/BSD-2-Clause
 
 """
-Provisional module to handle Exceptions across Python versions.
+Deprecated module to handle Exceptions across Python versions.
 
-This module will be deprecated with the end of support for Python 2.7
-and be removed in Docutils 1.2.
+.. warning::
+   This module is deprecated with the end of support for Python 2.7
+   and will be removed in Docutils 1.2 or later.
+   
+   Replacements: 
+     | SafeString  -> str
+     | ErrorString -> docutils.io.error_string()
+     | ErrorOutput -> docutils.io.ErrorOutput
+     | locale_encoding -> docutils.io.locale_encoding
 
 Error reporting should be safe from encoding/decoding errors.
 However, implicit conversions of strings and exceptions like
 
->>> u'%s world: %s' % ('H\xe4llo', Exception(u'H\xe4llo')
+>>> u'%s world: %s' % ('H\xe4llo', Exception(u'H\xe4llo'))
 
 fail in some Python versions:
 
@@ -40,6 +47,12 @@ common exceptions.
 
 import codecs
 import sys
+import warnings
+
+warnings.warn('The `docutils.utils.error_reporting` module is deprecated '
+              'and will be removed in Docutils 1.2.\n'
+              'Details with help("docutils.utils.error_reporting").',
+              DeprecationWarning, stacklevel=2)
 
 # Guess the locale's encoding.
 # If no valid guess can be made, locale_encoding is set to `None`:

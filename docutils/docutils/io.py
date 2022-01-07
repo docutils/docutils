@@ -10,17 +10,41 @@ exist for a variety of input/output mechanisms.
 __docformat__ = 'reStructuredText'
 
 import codecs
+try:
+    import locale # module missing in Jython
+except ImportError:
+    pass
 import os
 import re
 import sys
 import warnings
 
 from docutils import TransformSpec
-from docutils.utils.error_reporting import locale_encoding, ErrorString, ErrorOutput
+
+
+# Guess the locale's encoding.
+# If no valid guess can be made, locale_encoding is set to `None`:
+try:
+    locale_encoding = locale.getlocale()[1] or locale.getdefaultlocale()[1]
+except ValueError as error: # OS X may set UTF-8 without language code
+    # See http://bugs.python.org/issue18378 fixed in 3.8
+    # and https://sourceforge.net/p/docutils/bugs/298/.
+    # Drop the special case after requiring Python >= 3.8
+    if "unknown locale: UTF-8" in error.args:
+        locale_encoding = "UTF-8"
+    else:
+        locale_encoding = None
+except: # any other problems determining the locale -> use None
+    locale_encoding = None
+try:
+    codecs.lookup(locale_encoding or '')
+except LookupError:
+    locale_encoding = None
 
 
 class InputError(IOError): pass
 class OutputError(IOError): pass
+
 
 def check_encoding(stream, encoding):
     """Test, whether the encoding of `stream` matches `encoding`.
@@ -36,6 +60,11 @@ def check_encoding(stream, encoding):
         return codecs.lookup(stream.encoding) == codecs.lookup(encoding)
     except (LookupError, AttributeError, TypeError):
         return None
+
+def error_string(err):
+    """Return string representation of Exception `err`.
+    """
+    return f'{err.__class__.__name__}: {err}'
 
 
 class Input(TransformSpec):
@@ -120,7 +149,7 @@ class Input(TransformSpec):
         raise UnicodeError(
             'Unable to decode input data.  Tried the following encodings: '
             '%s.\n(%s)' % (', '.join([repr(enc) for enc in encodings]),
-                         ErrorString(error)))
+                           error_string(error)))
 
     coding_slug = re.compile(br"coding[:=]\s*([-\w.]+)")
     """Encoding declaration pattern."""
@@ -195,6 +224,86 @@ class Output(TransformSpec):
             return data
         else:
             return data.encode(self.encoding, self.error_handler)
+
+
+class ErrorOutput(object):
+    """
+    Wrapper class for file-like error streams with
+    failsafe de- and encoding of `str`, `bytes`, `unicode` and
+    `Exception` instances.
+    """
+
+    def __init__(self, destination=None, encoding=None,
+                 encoding_errors='backslashreplace',
+                 decoding_errors='replace'):
+        """
+        :Parameters:
+            - `destination`: a file-like object,
+                        a string (path to a file),
+                        `None` (write to `sys.stderr`, default), or
+                        evaluating to `False` (write() requests are ignored).
+            - `encoding`: `destination` text encoding. Guessed if None.
+            - `encoding_errors`: how to treat encoding errors.
+        """
+        if destination is None:
+            destination = sys.stderr
+        elif not destination:
+            destination = False
+        # if `destination` is a file name, open it
+        elif isinstance(destination, str):
+            destination = open(destination, 'w')
+
+        self.destination = destination
+        """Where warning output is sent."""
+
+        self.encoding = (encoding or getattr(destination, 'encoding', None) or
+                         locale_encoding or 'ascii')
+        """The output character encoding."""
+
+        self.encoding_errors = encoding_errors
+        """Encoding error handler."""
+
+        self.decoding_errors = decoding_errors
+        """Decoding error handler."""
+
+    def write(self, data):
+        """
+        Write `data` to self.destination. Ignore, if self.destination is False.
+
+        `data` can be a `bytes`, `str`, or `Exception` instance.
+        """
+        if not self.destination:
+            return
+        if isinstance(data, Exception):
+            data = str(data)
+        try:
+            self.destination.write(data)
+        except UnicodeEncodeError:
+            self.destination.write(data.encode(self.encoding,
+                                               self.encoding_errors))
+        except TypeError:
+            if isinstance(data, str): # destination may expect bytes
+                self.destination.write(data.encode(self.encoding,
+                                              self.encoding_errors))
+            elif self.destination in (sys.stderr, sys.stdout):
+                self.destination.buffer.write(data) # write bytes to raw stream
+            else:
+                self.destination.write(str(data, self.encoding,
+                                           self.decoding_errors))
+
+    def close(self):
+        """
+        Close the error-output stream.
+
+        Ignored if the destination is` sys.stderr` or `sys.stdout` or has no
+        close() method.
+        """
+        if self.destination in (sys.stdout, sys.stderr):
+            return
+        try:
+            self.destination.close()
+        except AttributeError:
+            pass
 
 
 class FileInput(Input):
@@ -362,12 +471,12 @@ class FileOutput(Output):
         """
         if not self.opened:
             self.open()
-        if ('b' not in self.mode 
+        if ('b' not in self.mode
             and check_encoding(self.destination, self.encoding) is False):
             data = self.encode(data)
             if os.linesep != '\n':
                 # fix endings
-                data = data.replace(b'\n', bytes(os.linesep, 'ascii')) 
+                data = data.replace(b'\n', bytes(os.linesep, 'ascii'))
         try:
             self.destination.write(data)
         except TypeError as err:
@@ -386,7 +495,7 @@ class FileOutput(Output):
         except (UnicodeError, LookupError) as err:
             raise UnicodeError(
                 'Unable to encode output data. output-encoding is: '
-                '%s.\n(%s)' % (self.encoding, ErrorString(err)))
+                '%s.\n(%s)' % (self.encoding, error_string(err)))
         finally:
             if self.autoclose:
                 self.close()

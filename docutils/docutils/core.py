@@ -20,7 +20,6 @@ from docutils import __version__, __version_details__, SettingsSpec
 from docutils import frontend, io, utils, readers, writers
 from docutils.frontend import OptionParser
 from docutils.transforms import Transformer
-from docutils.utils.error_reporting import ErrorOutput, ErrorString
 import docutils.readers.doctree
 
 class Publisher(object):
@@ -75,7 +74,7 @@ class Publisher(object):
         """An object containing Docutils settings as instance attributes.
         Set by `self.process_command_line()` or `self.get_settings()`."""
 
-        self._stderr = ErrorOutput()
+        self._stderr = io.ErrorOutput()
 
     def set_reader(self, reader_name, parser, parser_name):
         """Set `self.reader` by name."""
@@ -264,13 +263,13 @@ class Publisher(object):
             self.report_UnicodeError(error)
         elif isinstance(error, io.InputError):
             self._stderr.write(u'Unable to open source file for reading:\n'
-                               u'  %s\n' % ErrorString(error))
+                               u'  %s\n' % io.error_string(error))
         elif isinstance(error, io.OutputError):
             self._stderr.write(
                 u'Unable to open destination file for writing:\n'
-                u'  %s\n' % ErrorString(error))
+                u'  %s\n' % io.error_string(error))
         else:
-            print(u'%s' % ErrorString(error), file=self._stderr)
+            print(u'%s' % io.error_string(error), file=self._stderr)
             print(("""\
 Exiting due to error.  Use "--traceback" to diagnose.
 Please report errors to <docutils-users@lists.sf.net>.
@@ -309,7 +308,7 @@ command line used.""" % (__version__,
             'Include "--traceback" output, Docutils version (%s),\n'
             'Python version (%s), your OS type & version, and the\n'
             'command line used.\n'
-            % (ErrorString(error),
+            % (io.error_string(error),
                self.settings.output_encoding,
                data.encode('ascii', 'xmlcharrefreplace'),
                data.encode('ascii', 'backslashreplace'),

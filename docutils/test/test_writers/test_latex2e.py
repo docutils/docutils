@@ -1126,8 +1126,8 @@ totest_stylesheet_embed['two-styles'] = [
 # input
 ["""two stylesheets embedded in the header""",
 head_template.substitute(dict(parts, stylesheet =
-r"""% Cannot embed stylesheet 'data/spam.sty':
-%   No such file or directory.
+r"""% Cannot embed stylesheet:
+%  [Errno 2] No such file or directory: 'data/spam.sty'
 % embedded stylesheet: data/ham.tex
 \newcommand{\ham}{wonderful ham}
 

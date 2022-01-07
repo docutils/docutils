@@ -30,8 +30,7 @@ import warnings
 
 import docutils
 from docutils import ApplicationError
-from docutils import core, frontend, utils
-from docutils.utils.error_reporting import ErrorOutput, ErrorString
+from docutils import core, frontend, io, utils
 from docutils.parsers import rst
 from docutils.readers import standalone, pep
 from docutils.writers import html4css1, html5_polyglot, pep_html
@@ -177,7 +176,7 @@ class Builder(object):
         self.settings_spec = self.publishers[''].option_parser.parse_args(
             values=frontend.Values())   # no defaults; just the cmdline opts
         self.initial_settings = self.get_settings('')
-        
+
         if self.initial_settings.html_writer is not None:
             warnings.warn('The configuration setting "html_writer" '
                 'will be removed in Docutils 1.2. '
@@ -209,7 +208,7 @@ class Builder(object):
 
     def run(self, directory=None, recurse=1):
         # if not self.initial_settings.silent:
-        #     errout = ErrorOutput(encoding=self.initial_settings.error_encoding)
+        #     errout = io.ErrorOutput(encoding=self.initial_settings.error_encoding)
         #     errout.write('*** Using writer "%s"\n'
         #                  % self.initial_settings.writer)
         #     sys.stderr.flush()
@@ -230,7 +229,7 @@ class Builder(object):
 
     def visit(self, directory, names, subdirectories):
         settings = self.get_settings('', directory)
-        errout = ErrorOutput(encoding=settings.error_encoding)
+        errout = io.ErrorOutput(encoding=settings.error_encoding)
         if settings.prune and (os.path.abspath(directory) in settings.prune):
             errout.write('/// ...Skipping directory (pruned): %s\n' %
                          directory)
@@ -257,24 +256,23 @@ class Builder(object):
         else:
             publisher = self.initial_settings.writer
         settings = self.get_settings(publisher, directory)
-        errout = ErrorOutput(encoding=settings.error_encoding)
+        errout = io.ErrorOutput(encoding=settings.error_encoding)
         pub_struct = self.publishers[publisher]
         settings._source = os.path.normpath(os.path.join(directory, name))
         settings._destination = settings._source[:-4]+'.html'
         if not self.initial_settings.silent:
             errout.write('    ::: Processing: %s\n' % name)
             sys.stderr.flush()
-        try:
-            if not settings.dry_run:
+        if not settings.dry_run:
+            try:
                 core.publish_file(source_path=settings._source,
                               destination_path=settings._destination,
                               reader_name=pub_struct.reader_name,
                               parser_name='restructuredtext',
                               writer_name=pub_struct.writer_name,
                               settings=settings)
-        except ApplicationError:
-            error = sys.exc_info()[1]  # get exception in Python 3.x
-            errout.write('        %s\n' % ErrorString(error))
+            except ApplicationError as err:
+                errout.write(f'        {type(err).__name__}: {err}\n')
 
 
 if __name__ == "__main__":
