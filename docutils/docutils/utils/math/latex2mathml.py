@@ -947,7 +947,7 @@ def handle_cmd(name, node, string):
         return node, string
 
     if name == 'idotsint':
-        node = parse_latex_math(node, '\int\dotsi\int')
+        node = parse_latex_math(node, r'\int\dotsi\int')
         return node, string
 
     if name in thick_operators:
