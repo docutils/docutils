@@ -1191,7 +1191,7 @@ Yes, in conjunction with other projects.
 
 The Sphinx_ documentation generator includes an autodoc module.
 
-.. _Sphinx: http://sphinx.pocoo.org/index.html
+.. _Sphinx: http://www.sphinx-doc.org
 
 Version 2.0 of Ed Loper's `Epydoc <http://epydoc.sourceforge.net/>`_
 supports reStructuredText-format docstrings for HTML output.  Docutils
