@@ -122,22 +122,22 @@ Paragraph 4.
 <document source="test data">
     <paragraph>
         Test return to existing, highest-level section (Title 3).
-    <section ids="title-1" names="title\\ 1">
+    <section ids="title-1" names="title\ 1">
         <title>
             Title 1
         <paragraph>
             Paragraph 1.
-        <section ids="title-2" names="title\\ 2">
+        <section ids="title-2" names="title\ 2">
             <title>
                 Title 2
             <paragraph>
                 Paragraph 2.
-    <section ids="title-3" names="title\\ 3">
+    <section ids="title-3" names="title\ 3">
         <title>
             Title 3
         <paragraph>
             Paragraph 3.
-        <section ids="title-4" names="title\\ 4">
+        <section ids="title-4" names="title\ 4">
             <title>
                 Title 4
             <paragraph>
@@ -156,45 +156,25 @@ Test bad subsection order.
 
 ### Title 5
 """,
-r"""
+"""\
 <document source="test data">
     <paragraph>
         Test bad subsection order.
-    <section ids="title-1" names="title\\ 1">
+    <section ids="title-1" names="title\ 1">
         <title>
             Title 1
-        <system_message level="2" source="test data" type="WARNING">
-            <paragraph>
-                Title level inconsistent. Changing from 2 to 1.
-            <literal_block xml:space="preserve">
-                Title 1
-    <section ids="title-2" names="title\\ 2">
+    <section ids="title-2" names="title\ 2">
         <title>
             Title 2
-        <system_message level="2" source="test data" type="WARNING">
-            <paragraph>
-                Title level inconsistent. Changing from 2 to 1.
-            <literal_block xml:space="preserve">
-                Title 2
-    <section ids="title-3" names="title\\ 3">
+    <section ids="title-3" names="title\ 3">
         <title>
             Title 3
         <section ids="title-4" names="title\ 4">
             <title>
                 Title 4
-            <system_message level="2" source="test data" type="WARNING">
-                <paragraph>
-                    Title level inconsistent. Changing from 4 to 2.
-                <literal_block xml:space="preserve">
-                    Title 4
         <section ids="title-5" names="title\ 5">
             <title>
                 Title 5
-            <system_message level="2" source="test data" type="WARNING">
-                <paragraph>
-                    Title level inconsistent. Changing from 3 to 2.
-                <literal_block xml:space="preserve">
-                    Title 5
 """],
 ["""\
 Title containing *inline* ``markup``
@@ -204,7 +184,7 @@ Paragraph.
 """,
 """\
 <document source="test data">
-    <section ids="title-containing-inline-markup" names="title\\ containing\\ inline\\ markup">
+    <section ids="title-containing-inline-markup" names="title\ containing\ inline\ markup">
         <title>
             Title containing \n\
             <emphasis>
@@ -251,7 +231,7 @@ Empty Section
 """,
 """\
 <document source="test data">
-    <section ids="empty-section" names="empty\\ section">
+    <section ids="empty-section" names="empty\ section">
         <title>
             Empty Section
 """],

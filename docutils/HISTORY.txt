@@ -32,8 +32,9 @@ Changes Since 0.18.1
   - Raise ImportError, if import of the upstream parser module fails.
     If called from an `"include" directive`_,
     the system-message now has source/line info.
+  - Adapt to and test with "recommonmark" versions 0.6.0 and 0.7.1.
 
-    .. _"include" directive: docs/ref/rst/directives.html#include
+  .. _"include" directive: docs/ref/rst/directives.html#include
 
 * docutils/parsers/rst/directives/__init__.py
 

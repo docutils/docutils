@@ -35,7 +35,7 @@ External hyperlink [target]s:
 <document source="test data">
     <paragraph>
         External hyperlink \n\
-        <reference name="target" refuri="http://www.python.org/">
+        <reference refuri="http://www.python.org/">
             target
         s:
 """],
@@ -64,7 +64,7 @@ Duplicate external [targets] (different URIs):
 <document source="test data">
     <paragraph>
         Duplicate external \n\
-        <reference name="targets" refuri="first wins">
+        <reference name="targets" refuri="first%20wins">
             targets
          (different URIs):
 """],

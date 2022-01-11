@@ -36,12 +36,12 @@ Next paragraph.
 Final paragraph.
 """
 
-parser_class = DocutilsTestSupport.RecommonmarkParserTestCase.parser_class
+parser = DocutilsTestSupport.RecommonmarkParserTestCase.parser
 skip_msg = 'optional module "recommonmark" not found'
 
-class reCommonMarkParserTests(unittest.TestCase):
+class RecommonmarkParserTests(unittest.TestCase):
 
-    @unittest.skipUnless(parser_class, skip_msg)
+    @unittest.skipUnless(parser, skip_msg)
     def test_raw_disabled(self):
         output = publish_string(sample_with_html, parser_name='recommonmark',
                                 settings_overrides={'warning_stream': '',
@@ -50,7 +50,7 @@ class reCommonMarkParserTests(unittest.TestCase):
         self.assertIn(b'<system_message', output)
         self.assertIn(b'Raw content disabled.', output)
 
-    @unittest.skipUnless(parser_class, skip_msg)
+    @unittest.skipUnless(parser, skip_msg)
     def test_raw_disabled_inline(self):
         output = publish_string('foo <a href="uri">', parser_name='recommonmark',
                                 settings_overrides={'warning_stream': '',
@@ -61,7 +61,7 @@ class reCommonMarkParserTests(unittest.TestCase):
         self.assertIn(b'Raw content disabled.', output)
 
 
-    @unittest.skipUnless(parser_class, skip_msg)
+    @unittest.skipUnless(parser, skip_msg)
     def test_raw_disabled(self):
         # silence Warnings in recommonmark (unmaintained 3rd party module):
         warnings.filterwarnings('ignore', category=DeprecationWarning,
@@ -74,7 +74,7 @@ class reCommonMarkParserTests(unittest.TestCase):
         self.assertNotIn(b'<raw>', output)
         self.assertNotIn(b'<system_message', output)
 
-    @unittest.skipIf(parser_class,
+    @unittest.skipIf(parser,
                      'recommonmark_wrapper: parser found, fallback not used')
     def test_missing_parser(self):
         try:

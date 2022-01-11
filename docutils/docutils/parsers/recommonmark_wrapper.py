@@ -70,6 +70,8 @@ class Parser(CommonMarkParser):
         try:
             CommonMarkParser.parse(self, inputstring, document)
         except Exception as err:
+            if document.settings.traceback:
+                raise err
             error = document.reporter.error('Parsing with "recommonmark" '
                                             'returned the error:\n%s'%err)
             document.append(error)
@@ -92,44 +94,19 @@ class Parser(CommonMarkParser):
         # add "code" class argument to literal elements (inline and block)
         for node in document.findall(lambda n: isinstance(n,
                                 (nodes.literal, nodes.literal_block))):
-            node['classes'].append('code')
+            if 'code' not in node['classes']:
+                node['classes'].append('code')
         # move "language" argument to classes
         for node in document.findall(nodes.literal_block):
             if 'language' in node.attributes:
                 node['classes'].append(node['language'])
                 del node['language']
 
-        # remove empty target nodes
-        for node in list(document.findall(nodes.target)):
-            # remove empty name
-            node['names'] = [v for v in node['names'] if v]
-            if node.children or [v for v in node.attributes.values() if v]:
-                continue
-            node.parent.remove(node)
-
         # replace raw nodes if raw is not allowed
         if not document.settings.raw_enabled:
             for node in document.findall(nodes.raw):
                 warning = document.reporter.warning('Raw content disabled.')
                 node.parent.replace(node, warning)
-
-        # fix section nodes
-        for node in document.findall(nodes.section):
-            # remove spurious IDs (first may be from duplicate name)
-            if len(node['ids']) > 1:
-                node['ids'].pop()
-            # fix section levels (recommonmark 0.4.0
-            # later versions silently ignore incompatible levels)
-            if 'level' in node:
-                section_level = self.get_section_level(node)
-                if node['level'] != section_level:
-                    warning = document.reporter.warning(
-                        'Title level inconsistent. Changing from %d to %d.'
-                        %(node['level'], section_level),
-                        nodes.literal_block('', node[0].astext()))
-                    node.insert(1, warning)
-                    # remove non-standard attribute "level"
-                    del node['level']
 
         # drop pending_xref (Sphinx cross reference extension)
         for node in document.findall(addnodes.pending_xref):
@@ -138,16 +115,6 @@ class Parser(CommonMarkParser):
                 reference['name'] = nodes.fully_normalize_name(
                                                     reference.astext())
             node.parent.replace(node, reference)
-
-    def get_section_level(self, node):
-        """Auxiliary function for post-processing in self.parse()"""
-        level = 1
-        while True:
-            node = node.parent
-            if isinstance(node, nodes.document):
-                return level
-            if isinstance(node, nodes.section):
-                level += 1
 
     def visit_document(self, node):
         """Dummy function to prevent spurious warnings.

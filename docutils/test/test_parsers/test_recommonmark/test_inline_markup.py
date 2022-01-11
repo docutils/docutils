@@ -263,7 +263,7 @@ No warning for `standalone TeX quotes' or other *unbalanced markup**.
 <document source="test data">
     <paragraph>
         <literal classes="code">
-            literal
+            literal \n\
         no literal
     <paragraph>
         No warning for `standalone TeX quotes\' or other \n\
@@ -323,20 +323,21 @@ totest['references'] = [
         <reference name="ref" refuri="/uri">
             ref
 """],
-["""\
-Inline image ![foo *bar*][foobar]
-in a paragraph.
-
-[FOOBAR]: train.jpg "train & tracks"
-""",
-"""\
-<document source="test data">
-    <paragraph>
-        Inline image \n\
-        <image alt="foo " title="train & tracks" uri="train.jpg">
-        \n\
-        in a paragraph.
-"""],
+# Fails with recommonmark 0.6.0:                        
+# ["""\
+# Inline image ![foo *bar*]
+# in a paragraph.
+# 
+# [foo *bar*]: train.jpg "train & tracks"
+# """,
+# """\
+# <document source="test data">
+#     <paragraph>
+#         Inline image \n\
+#         <image alt="foo " title="train & tracks" uri="train.jpg">
+#         \n\
+#         in a paragraph.
+# """],
 ["""\
 [phrase reference]
 
@@ -370,7 +371,7 @@ across lines]
 """\
 <document source="test data">
     <paragraph>
-        <reference name="phrase referenceacross lines" refuri="/uri">
+        <reference name="phrase reference across lines" refuri="/uri">
             phrase reference
             across lines
 """],
@@ -383,7 +384,7 @@ totest['appended_URIs'] = [
 """\
 <document source="test data">
     <paragraph>
-        <reference name="anonymous reference" refuri="http://example.com">
+        <reference refuri="http://example.com">
             anonymous reference
 """],
 ["""\
@@ -396,16 +397,17 @@ Inline image ![a train](train.jpg) more text.
         <image alt="a train" uri="train.jpg">
          more text.
 """],
-["""\
-Inline image ![foo](/url "title") more text.
-""",
-"""\
-<document source="test data">
-    <paragraph>
-        Inline image \n\
-        <image alt="foo" title="title" uri="/url">
-         more text.
-"""],
+# recommonmark 0.6.0 drops the "title"                           
+# ["""\
+# Inline image ![foo](/url "title") more text.
+# """,
+# """\
+# <document source="test data">
+#     <paragraph>
+#         Inline image \n\
+#         <image alt="foo" title="title" uri="/url">
+#          more text.
+# """],
 ["""\
 [URI must follow immediately]
 (http://example.com)
@@ -441,7 +443,7 @@ like <http://example.com> "autolinks".
     <paragraph>
         CommonMark calls standalone hyperlinks
         like \n\
-        <reference name="http://example.com" refuri="http://example.com">
+        <reference refuri="http://example.com">
             http://example.com
          "autolinks".
 """],
@@ -478,17 +480,21 @@ comment - with hyphen -->
 """],
 ["""\
 Hard line breaks are not supported by Docutils.
-Not the soft line break preceded by two or more spaces,  \n\
-nor the more visible alternative,\\
-a backslash before the line ending.
+"recommonmark 0.6.0" converts both, invisible  \n\
+(two or more trailing spaces) nor visible\\
+(trailing backslash) to raw HTML.
 """,
 """\
 <document source="test data">
     <paragraph>
         Hard line breaks are not supported by Docutils.
-        Not the soft line break preceded by two or more spaces,\
-nor the more visible alternative,\
-a backslash before the line ending.
+        "recommonmark 0.6.0" converts both, invisible
+        <raw format="html" xml:space="preserve">
+            <br />
+        (two or more trailing spaces) nor visible
+        <raw format="html" xml:space="preserve">
+            <br />
+        (trailing backslash) to raw HTML.
 """],
 ]
 
