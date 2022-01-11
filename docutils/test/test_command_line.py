@@ -7,14 +7,16 @@
 Test module for the command line.
 """
 
+import codecs
+import locale
+import sys
 import unittest
-import sys, codecs
+
 import DocutilsTestSupport # must be imported before docutils
 import docutils.core
 
 # determine/guess the encoding of the standard input:
 try:
-    import locale # module missing in Jython
     locale_encoding = locale.getlocale()[1] or locale.getdefaultlocale()[1]
 except ImportError:
     locale_encoding = None
