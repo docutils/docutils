@@ -348,6 +348,8 @@ The threshold at or above which system messages are converted to
 exceptions, halting execution immediately.  If `traceback`_ is set, the
 exception will propagate; otherwise, Docutils will exit.
 
+See also report_level_.
+
 Default: severe (4).  Options: ``--halt, --strict``.
 
 id_prefix
@@ -484,6 +486,8 @@ Report system messages at or higher than <level>:
 3  error
 4  severe
 5  none
+
+See also halt_level_.
 
 Default: warning (2).
 Options: ``--report, -r, --verbose, -v, --quiet, -q``.
@@ -818,17 +822,6 @@ Options: ``--trim-footnote-reference-space, --leave-footnote-reference-space``.
    and it is left if the reference style is "brackets".
 
 
-.. _recommonmark:
-
-[recommonmark parser]
----------------------
-
-Experimental, based on recommonmark__.
-Currently no configuration settings.
-
-__ https://pypi.org/project/recommonmark/
-
-
 .. _myst:
 
 [myst parser]
@@ -843,6 +836,29 @@ See `MyST with Docutils`_ and its `Sphinx configuration options`_
    https://myst-parser.readthedocs.io/en/latest/docutils.html
 .. _Sphinx configuration options:
    https://myst-parser.readthedocs.io/en/latest/sphinx/reference.html#sphinx-config-options
+
+
+.. _pycmark:
+
+[pycmark parser]
+----------------
+
+Provided by the 3rd party package `pycmark`__.
+Currently no configuration settings.
+
+__ https://pypi.org/project/pycmark/
+
+
+
+.. _recommonmark:
+
+[recommonmark parser]
+---------------------
+
+Provisional, depends on (deprecated) 3rd-party package recommonmark__.
+Currently no configuration settings.
+
+__ https://pypi.org/project/recommonmark/
 
 
 [readers]
@@ -2166,8 +2182,10 @@ Option: ``--reader``
 parser
 ~~~~~~
 Parser component name.
-One of "rst", "markdown", "recommonmark_", "myst_",
-or the import name of a drop-in parser module.
+Either "rst" (default) or the import name of a drop-in parser module.
+
+Parsers for CommonMark_ known to work with Docutils include "pycmark_",
+"myst_", and "recommonmark_".
 
 Default: "rst".
 Option: ``--parser``
@@ -2183,6 +2201,8 @@ or the import name of a drop-in writer module.
 
 Default: "html5".
 Option: ``--writer``
+
+.. _CommonMark: https://spec.commonmark.org/0.30/
 
 
 Other Settings

@@ -194,8 +194,7 @@ class DocutilsXMLTestCase(DocutilsTestSupport.StandardTestCase):
              u'<string>:10: '
              u'(WARNING/2) Invalid raw XML in column 30, line offset 1:\n',
              u'<test>inline raw XML&lt;/test>\n'])
-        # abort with SystemMessage if halt_level is "info":
-        settings['halt_level'] = 2
+        settings['halt_level'] = 2 # convert info messages to exceptions
         settings['warning_stream'] = ''
         self.assertRaises(docutils.utils.SystemMessage,
                           publish_xml, settings, invalid_raw_xml_source)
