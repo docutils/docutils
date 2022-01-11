@@ -503,9 +503,10 @@ class DocInfo(Transform):
             raise
 
     def authors_from_one_paragraph(self, field):
-        """Return list of Text nodes for authornames.
-
-        The set of separators is locale dependent (default: ";"- or ",").
+        """Return list of Text nodes with author names in `field`.
+        
+        Author names must be separated by one of the "autor separators"
+        defined for the document language (default: ";" or ",").
         """
         # @@ keep original formatting? (e.g. ``:authors: A. Test, *et-al*``)
         text = ''.join(str(node)
