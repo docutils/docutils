@@ -270,17 +270,18 @@ class Writer(writers.Writer):
         for part in self.visitor_attributes:
             setattr(self, part, getattr(visitor, part))
         # get template string from file
+        templatepath = self.document.settings.template
         try:
-            template_file = open(self.document.settings.template,
-                                 encoding='utf8')
+            with open(templatepath, encoding='utf8') as fp:
+                template = fp.read()
         except IOError:
-            template_file = open(os.path.join(self.default_template_path,
-                    self.document.settings.template), encoding= 'utf8')
-        template = string.Template(template_file.read())
-        template_file.close()
+            templatepath = os.path.join(self.default_template_path,
+                                        templatepath)
+            with open(templatepath, encoding= 'utf8') as fp:
+                template = fp.read()
         # fill template
         self.assemble_parts() # create dictionary of parts
-        self.output = template.substitute(self.parts)
+        self.output = string.Template(template).substitute(self.parts)
 
     def assemble_parts(self):
         """Assemble the `self.parts` dictionary of output fragments."""
@@ -586,9 +587,9 @@ def _read_block(fp):
         block.append(line)
     return ''.join(block).rstrip()
 
-_du_sty = os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                      'docutils.sty')
-with open(_du_sty, encoding='utf8') as fp:
+_docutils_sty = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                             'docutils.sty')
+with open(_docutils_sty, encoding='utf8') as fp:
     for line in fp:
         line = line.strip('% \n')
         if not line.endswith('::'):
@@ -1173,7 +1174,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             warnings.warn(
                 'The configuration setting "use_verbatim_when_possible" '
                 'will be removed in Docutils 1.2. '
-                'Use "literal_block_env: verbatim".', 
+                'Use "literal_block_env: verbatim".',
                 FutureWarning, stacklevel=7)
 
         self.latex_encoding = self.to_latex_encoding(settings.output_encoding)

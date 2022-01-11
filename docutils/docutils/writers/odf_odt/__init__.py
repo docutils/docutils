@@ -946,9 +946,8 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         stylespath = self.settings.stylesheet
         ext = os.path.splitext(stylespath)[1]
         if ext == '.xml':
-            stylesfile = open(stylespath, 'r')
-            s1 = stylesfile.read()
-            stylesfile.close()
+            with open(stylespath, 'r') as stylesfile:
+                s1 = stylesfile.read()
         elif ext == extension:
             zfile = zipfile.ZipFile(stylespath, 'r')
             s1 = zfile.read('styles.xml')
@@ -2281,30 +2280,31 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         dpi = (72, 72)
         if PIL is not None and source in self.image_dict:
             filename, destination = self.image_dict[source]
-            imageobj = PIL.Image.open(filename, 'r')
-            dpi = imageobj.info.get('dpi', dpi)
+            with PIL.Image.open(filename, 'r') as img:
+                img_size = img.size
+                dpi = img.info.get('dpi', dpi)
             # dpi information can be (xdpi, ydpi) or xydpi
             try:
                 iter(dpi)
             except TypeError:
                 dpi = (dpi, dpi)
         else:
-            imageobj = None
+            img_size = None
         if width is None or height is None:
-            if imageobj is None:
+            if img_size is None:
                 raise RuntimeError(
                     'image size not fully specified and PIL not installed')
             if width is None:
-                width = imageobj.size[0]
+                width = img_size[0]
                 width = float(width) * 0.026        # convert px to cm
             if height is None:
-                height = imageobj.size[1]
+                height = img_size[1]
                 height = float(height) * 0.026      # convert px to cm
             if width_unit == '%':
                 factor = width
-                image_width = imageobj.size[0]
+                image_width = img_size[0]
                 image_width = float(image_width) * 0.026    # convert px to cm
-                image_height = imageobj.size[1]
+                image_height = img_size[1]
                 image_height = float(image_height) * 0.026  # convert px to cm
                 line_width = self.get_page_width()
                 width = factor * line_width

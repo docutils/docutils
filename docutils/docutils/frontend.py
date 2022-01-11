@@ -772,16 +772,15 @@ Skipping "%s" configuration file.
         for filename in filenames:
             try:
                 # Config files are UTF-8-encoded:
-                fp = codecs.open(filename, 'r', 'utf-8')
+                with open(filename, encoding='utf-8') as fp:
+                    try:
+                        RawConfigParser.read_file(self, fp, filename)
+                    except UnicodeDecodeError:
+                        self._stderr.write(self.not_utf8_error 
+                                           % (filename, filename))
+                        continue
             except IOError:
                 continue
-            try:
-                RawConfigParser.read_file(self, fp, filename)
-            except UnicodeDecodeError:
-                self._stderr.write(self.not_utf8_error % (filename, filename))
-                fp.close()
-                continue
-            fp.close()
             self._files.append(filename)
             if self.has_section('options'):
                 self.handle_old_config(filename)
