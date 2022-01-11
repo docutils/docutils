@@ -564,8 +564,7 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
                 and self.settings.file_insertion_enabled):
                 imagepath = url2pathname(uri)
                 try:
-                    with PIL.Image.open(imagepath.encode(
-                                        sys.getfilesystemencoding())) as img:
+                    with PIL.Image.open(imagepath) as img:
                         img_size = img.size
                 except (IOError, UnicodeEncodeError):
                     pass # TODO: warn?

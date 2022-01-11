@@ -12,7 +12,6 @@ __docformat__ = 'reStructuredText'
 import sys
 import os
 import os.path
-import codecs
 import docutils
 from docutils import frontend, nodes, utils, writers
 from docutils.writers import html4css1

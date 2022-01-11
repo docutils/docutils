@@ -1000,17 +1000,17 @@ class HTMLTranslator(nodes.NodeVisitor):
                 and self.settings.file_insertion_enabled):
                 imagepath = url2pathname(uri)
                 try:
-                    img = PIL.Image.open(
-                            imagepath.encode(sys.getfilesystemencoding()))
+                    with PIL.Image.open(imagepath) as img:
+                        imgsize = img.size
                 except (IOError, UnicodeEncodeError):
                     pass # TODO: warn?
                 else:
                     self.settings.record_dependencies.add(
                         imagepath.replace('\\', '/'))
                     if 'width' not in atts:
-                        atts['width'] = '%dpx' % img.size[0]
+                        atts['width'] = '%dpx' % imgsize[0]
                     if 'height' not in atts:
-                        atts['height'] = '%dpx' % img.size[1]
+                        atts['height'] = '%dpx' % imgsize[1]
                     del img
             for att_name in 'width', 'height':
                 if att_name in atts:

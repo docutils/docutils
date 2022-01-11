@@ -264,15 +264,13 @@ class S5HTMLTranslator(html4css1.HTMLTranslator):
             if os.path.exists(dest) and not settings.overwrite_theme_files:
                 settings.record_dependencies.add(dest)
             else:
-                src_file = open(source, 'rb')
-                src_data = src_file.read()
-                src_file.close()
-                dest_file = open(dest, 'wb')
-                dest_dir = dest_dir.replace(os.sep, '/')
-                dest_file.write(src_data.replace(b'ui/default',
-                    dest_dir[dest_dir.rfind('ui/'):].encode(
-                    sys.getfilesystemencoding())))
-                dest_file.close()
+                with open(source, 'rb') as src_file:
+                    src_data = src_file.read()
+                with open(dest, 'wb') as dest_file:
+                    dest_dir = dest_dir.replace(os.sep, '/')
+                    dest_file.write(src_data.replace(b'ui/default',
+                        dest_dir[dest_dir.rfind('ui/'):].encode(
+                        sys.getfilesystemencoding())))
                 settings.record_dependencies.add(source)
             return 1
         if os.path.isfile(dest):
