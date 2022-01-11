@@ -10,10 +10,7 @@ exist for a variety of input/output mechanisms.
 __docformat__ = 'reStructuredText'
 
 import codecs
-try:
-    import locale # module missing in Jython
-except ImportError:
-    pass
+import locale
 import os
 import re
 import sys
@@ -116,9 +113,9 @@ class Input(TransformSpec):
         """
         if self.encoding and self.encoding.lower() == 'unicode':
             assert isinstance(data, str), ('input encoding is "unicode" '
-                                           'but input is not a str object')
+                                           'but input is not a `str` object')
         if isinstance(data, str):
-            # Accept unicode even if self.encoding != 'unicode'.
+            # Accept unicode string even if self.encoding != 'unicode'.
             return data
         if self.encoding:
             # We believe the user/application when the encoding is
@@ -144,8 +141,8 @@ class Input(TransformSpec):
                 # Return decoded, removing BOMs.
                 return decoded.replace(u'\ufeff', u'')
             except (UnicodeError, LookupError) as err:
-                error = err # in Python 3, the <exception instance> is
-                            # local to the except clause
+                # keep exception instance for use outside of the "for" loop.
+                error = err 
         raise UnicodeError(
             'Unable to decode input data.  Tried the following encodings: '
             '%s.\n(%s)' % (', '.join([repr(enc) for enc in encodings]),

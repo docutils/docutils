@@ -910,8 +910,8 @@ def tokenize(text):
 if __name__ == "__main__":
 
     import itertools
+    import locale
     try:
-        import locale # module missing in Jython
         locale.setlocale(locale.LC_ALL, '') # set to user defaults
         defaultlanguage = locale.getdefaultlocale()[0]
     except:

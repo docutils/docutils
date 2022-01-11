@@ -16,6 +16,7 @@ from configparser import ConfigParser
 import copy
 from io import StringIO
 import itertools
+import locale
 import os
 import os.path
 import re
@@ -30,18 +31,11 @@ from xml.etree import ElementTree as etree
 from xml.dom import minidom
 import zipfile
 
-try:
-    import locale   # module missing in Jython
-except ImportError:
-    pass
-
 import docutils
 from docutils import frontend, nodes, utils, writers, languages
 from docutils.parsers.rst.directives.images import PIL # optional
 from docutils.readers import standalone
 from docutils.transforms import references
-
-
 
 # Import pygments and odtwriter pygments formatters if possible.
 try:
