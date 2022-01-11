@@ -164,8 +164,7 @@ class CustomTestCase(StandardTestCase):
         self.run_in_debugger = run_in_debugger
         self.suite_settings = suite_settings.copy() or {}
 
-        # Ring your mother.
-        unittest.TestCase.__init__(self, method_name)
+        super().__init__(method_name)
 
     def __str__(self):
         """
@@ -508,21 +507,28 @@ class PEPParserTestSuite(ParserTestSuite):
 
 class RecommonmarkParserTestCase(ParserTestCase):
 
-    """Recommonmark-specific parser test case."""
+    """Test case for 3rd-party CommonMark parsers."""
 
+    # TODO: test with alternative CommonMark parsers?
+    parser_name = 'recommonmark'
+    # parser_name = 'pycmark'
+    # parser_name = 'myst'
     try:
-        parser_class = docutils.parsers.get_parser_class('recommonmark')
-        parser = parser_class()
+        parser_class = docutils.parsers.get_parser_class(parser_name)
     except ImportError:
         parser_class = None
-    # recommonmark_wrapper.Parser
-    """Parser shared by all RecommonmarkParserTestCases."""
-
-    option_parser = frontend.OptionParser(components=(parser_class,))
-    settings = option_parser.get_default_values()
-    settings.report_level = 5
-    settings.halt_level = 5
-    settings.debug = package_unittest.debug
+    if parser_class and parser_name == 'recommonmark':
+        import recommonmark
+        if recommonmark.__version__ < '0.6.0':
+            # print(f'Skip Markdown tests, "{parser_name}" parser too old')
+            parser_class = None
+    if parser_class:
+        parser = parser_class()
+        option_parser = frontend.OptionParser(components=(parser_class,))
+        settings = option_parser.get_default_values()
+        settings.report_level = 5
+        settings.halt_level = 5
+        settings.debug = package_unittest.debug
 
 
 class RecommonmarkParserTestSuite(ParserTestSuite):
@@ -530,15 +536,12 @@ class RecommonmarkParserTestSuite(ParserTestSuite):
     """A collection of RecommonmarkParserTestCases."""
 
     test_case_class = RecommonmarkParserTestCase
-
-    def generateTests(self, dict, dictname='totest'):
-        if not RecommonmarkParserTestCase.parser_class:
+    
+    if not test_case_class.parser_class:
+        # print('No compatible CommonMark parser found.'
+        #       ' Skipping all CommonMark/recommonmark tests.')
+        def generateTests(self, dict, dictname='totest'):
             return
-        # TODO: currently the tests are too version-specific
-        import recommonmark
-        if recommonmark.__version__ != '0.4.0':
-            return
-        ParserTestSuite.generateTests(self, dict, dictname='totest')
 
 
 class GridTableParserTestCase(CustomTestCase):

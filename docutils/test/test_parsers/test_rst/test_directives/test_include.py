@@ -18,8 +18,11 @@ from docutils.utils.code_analyzer import with_pygments
 
 def suite():
     s = DocutilsTestSupport.ParserTestSuite()
+    # eventually skip optional parts:
     if not with_pygments:
         del(totest['include-code'])
+    if not DocutilsTestSupport.RecommonmarkParserTestCase.parser:
+        del(totest['include-recommonmark'])
     s.generateTests(totest)
     return s
 
@@ -63,36 +66,6 @@ except:
     errstr_8bit_path = u"""\
 InputError: [Errno 2] No such file or directory: '\u043c\u0438\u0440.txt'.\
 """
-
-# Parsing with Markdown (recommonmark) is an optional feature depending
-# on 3rd-party modules:
-if DocutilsTestSupport.RecommonmarkParserTestCase.parser_class:
-    markdown_parsing_result = """\
-    <section ids="title-1" names="title\\ 1">
-        <title>
-            Title 1
-        <paragraph>
-            <emphasis>
-                emphasis
-             and \n\
-            <emphasis>
-                also emphasis
-        <paragraph>
-            No whitespace required around a
-            <reference name="phrase reference" refuri="/uri">
-                phrase reference
-            ."""
-else:
-    markdown_parsing_result = """\
-    <system_message level="3" line="3" source="test data" type="ERROR">
-        <paragraph>
-            Error in "include" directive:
-            invalid option value: (option: "parser"; value: \'markdown\')
-            Parser "markdown" missing. No module named 'recommonmark'.
-            Parsing "recommonmark" Markdown flavour requires the package https://pypi.org/project/recommonmark.
-        <literal_block xml:space="preserve">
-            .. include:: test_parsers/test_rst/test_directives/include.md
-               :parser: markdown"""
 
 totest = {}
 
@@ -214,21 +187,28 @@ Include code, add line numbers
         This file is used by ``test_include.py``.
 """ % reldir(include1)],
 ["""\
-Include markdown (recommonmark).
+Include with unknown parser.
 
 .. include:: %s
-   :parser: markdown
+   :parser: sillyformat
 
 A paragraph.
-""" % include_md,
+""" % include1,
 """\
 <document source="test data">
     <paragraph>
-        Include markdown (recommonmark).
-%s
+        Include with unknown parser.
+    <system_message level="3" line="3" source="test data" type="ERROR">
+        <paragraph>
+            Error in "include" directive:
+            invalid option value: (option: "parser"; value: \'sillyformat\')
+            Parser "sillyformat" missing. No module named 'sillyformat'.
+        <literal_block xml:space="preserve">
+            .. include:: test_parsers/test_rst/test_directives/include1.txt
+               :parser: sillyformat
     <paragraph>
         A paragraph.
-""" % markdown_parsing_result],
+"""],
 ["""\
 Let's test the parse context.
 
@@ -1309,6 +1289,41 @@ No circular inclusion.
                         <paragraph>
                             Some include text."""],
 ]
+
+# Parsing with Markdown (recommonmark) is an optional feature depending
+# on 3rd-party modules:
+totest['include-recommonmark'] = [
+["""\
+Include markdown (recommonmark).
+ 
+.. include:: %s
+   :parser: markdown
+ 
+A paragraph.
+""" % include_md,
+"""\
+<document source="test data">
+    <paragraph>
+        Include markdown (recommonmark).
+    <section ids="title-1" names="title\\ 1">
+        <title>
+            Title 1
+        <paragraph>
+            <emphasis>
+                emphasis
+             and \n\
+            <emphasis>
+                also emphasis
+        <paragraph>
+            No whitespace required around a
+            <reference name="phrase reference" refuri="/uri">
+                phrase reference
+            .
+    <paragraph>
+        A paragraph.
+"""],
+]
+
 
 if __name__ == '__main__':
     import unittest
