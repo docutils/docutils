@@ -88,11 +88,19 @@ expected output and check it in:
   svn add %(exp)s
   svn commit -m "<comment>" %(exp)s"""
 
-    def __init__(self, *args, **kwargs):
-        """Set self.configfile, pass arguments to parent __init__."""
-        self.configfile = kwargs['configfile']
-        del kwargs['configfile']
-        DocutilsTestSupport.CustomTestCase.__init__(self, *args, **kwargs)
+    def __init__(self, *args, configfile=None, **kwargs):
+        """
+        Set self.configfile, pass remaining arguments to parent.
+
+        Requires keyword argument `configfile`.
+
+        Note: the modified signature is incompatible with
+        the "pytest" and "nose" frameworks.
+        """ # cf. feature-request #81
+
+        assert configfile is not None, 'required argument'
+        self.configfile = configfile
+        super().__init__(*args, **kwargs)
 
     def shortDescription(self):
         return 'test_functional.py: ' + self.configfile

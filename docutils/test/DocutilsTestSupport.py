@@ -103,6 +103,9 @@ class StandardTestCase(unittest.TestCase):
     """
     Helper class, providing the same interface as unittest.TestCase,
     but with useful setUp and comparison methods.
+
+    The methods assertEqual and assertNotEqual have been overwritten
+    to provide better support for multi-line strings.
     """
 
     def setUp(self):
@@ -136,10 +139,11 @@ class CustomTestCase(StandardTestCase):
     """
     Helper class, providing extended functionality over unittest.TestCase.
 
-    The methods assertEqual and assertNotEqual have been overwritten
-    to provide better support for multi-line strings.  Furthermore,
-    see the compare_output method and the parameter list of __init__.
-    """
+    See the compare_output method and the parameter list of __init__.
+
+    Note: the modified signature is incompatible with
+    the "pytest" and "nose" frameworks.
+    """ # cf. feature-request #81
 
     compare = difflib.Differ().compare
     """Comparison method shared by all subclasses."""
@@ -162,7 +166,7 @@ class CustomTestCase(StandardTestCase):
         self.input = input
         self.expected = expected
         self.run_in_debugger = run_in_debugger
-        self.suite_settings = suite_settings.copy() or {}
+        self.suite_settings = suite_settings.copy() if suite_settings else {}
 
         super().__init__(method_name)
 
@@ -316,18 +320,19 @@ class TransformTestCase(CustomTestCase):
     settings.warning_stream = DevNull()
     unknown_reference_resolvers = ()
 
-    def __init__(self, *args, **kwargs):
-        self.transforms = kwargs['transforms']
+    def __init__(self, *args, parser=None, transforms=None, **kwargs):
+        assert transforms is not None, 'required argument'
+        self.transforms = transforms
         """List of transforms to perform for this test case."""
 
-        self.parser = kwargs['parser']
+        assert parser is not None, 'required argument'
+        self.parser = parser
         """Input parser for this test case."""
 
-        del kwargs['transforms'], kwargs['parser'] # only wanted here
         CustomTestCase.__init__(self, *args, **kwargs)
 
     def supports(self, format):
-        return 1
+        return True
 
     def test_transforms(self):
         if self.run_in_debugger:
@@ -536,7 +541,7 @@ class RecommonmarkParserTestSuite(ParserTestSuite):
     """A collection of RecommonmarkParserTestCases."""
 
     test_case_class = RecommonmarkParserTestCase
-    
+
     if not test_case_class.parser_class:
         # print('No compatible CommonMark parser found.'
         #       ' Skipping all CommonMark/recommonmark tests.')
@@ -660,11 +665,10 @@ class WriterPublishTestCase(CustomTestCase, docutils.SettingsSpec):
                                   'strict_visitor': True}
     writer_name = '' # set in subclasses or constructor
 
-    def __init__(self, *args, **kwargs):
-        if 'writer_name' in kwargs:
-            self.writer_name = kwargs['writer_name']
-            del kwargs['writer_name']
-        CustomTestCase.__init__(self, *args, **kwargs)
+    def __init__(self, *args, writer_name='', **kwargs):
+        if writer_name:
+            self.writer_name = writer_name
+        super().__init__(*args, **kwargs)
 
     def test_publish(self):
         if self.run_in_debugger:
