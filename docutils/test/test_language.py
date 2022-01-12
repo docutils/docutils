@@ -72,12 +72,22 @@ class LanguageTestCase(DocutilsTestSupport.CustomTestCase):
                     'test_directives', 'test_roles']
     """Names of methods used to test each language."""
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, language=None, **kwargs):
+        """
+        Set self.ref (from module variable) and self.language.
+
+        Requires keyword argument `language`.
+        Pass remaining arguments to parent __init__.
+
+        Note: the modified signature is incompatible with
+        the "pytest" and "nose" frameworks.
+        """ # cf. feature-request #81
+
         self.ref = docutils.languages.get_language(reference_language,
                                                    _reporter)
-        self.language = kwargs['language']
-        del kwargs['language']          # only wanted here
-        DocutilsTestSupport.CustomTestCase.__init__(self, *args, **kwargs)
+        assert language is not None, 'required argument'
+        self.language = language
+        super().__init__(*args, **kwargs)
 
     def _xor(self, ref_dict, l_dict):
         """
