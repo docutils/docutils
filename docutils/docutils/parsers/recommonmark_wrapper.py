@@ -16,8 +16,12 @@ A parser for CommonMark Markdown text using `recommonmark`__.
 
 __ https://pypi.org/project/recommonmark/
 
-This module is provisional:
-the API is not settled and may change with any minor Docutils version.
+.. important:: This module is provisional
+
+   * The "recommonmark" package is unmaintained and deprecated.
+     This wrapper module will be removed in a future Docutils version.
+
+   * The API is not settled and may change with any minor Docutils version.
 """
 
 import docutils.parsers
@@ -44,7 +48,7 @@ except ImportError:
 
 class Parser(CommonMarkParser):
     """MarkDown parser based on recommonmark.
-    
+
     This parser is provisional:
     the API is not settled and may change with any minor Docutils version.
     """
@@ -122,3 +126,8 @@ class Parser(CommonMarkParser):
         cf. https://github.com/readthedocs/recommonmark/issues/177
         """
         pass
+
+    # Overwrite parent method with version that
+    # doesn't pass deprecated `rawsource` argument to nodes.Text:
+    def visit_text(self, mdnode):
+        self.current_node.append(nodes.Text(mdnode.literal))
