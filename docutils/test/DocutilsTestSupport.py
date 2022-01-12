@@ -510,26 +510,33 @@ class PEPParserTestSuite(ParserTestSuite):
     test_case_class = PEPParserTestCase
 
 
+# Optional tests with 3rd party CommonMark parser
+# ===============================================
+
+# TODO: test with alternative CommonMark parsers?
+md_parser_name = 'recommonmark'
+# md_parser_name = 'pycmark'
+# md_parser_name = 'myst'
+md_skip_msg = f'Cannot test "{md_parser_name}". Parser not found.'
+try:
+    md_parser_class = docutils.parsers.get_parser_class(
+                                                md_parser_name)
+except ImportError:
+    md_parser_class = None
+if md_parser_class and md_parser_name == 'recommonmark':
+    import recommonmark
+    if recommonmark.__version__ < '0.6.0':
+        md_parser_class = None
+        md_skip_msg = f'"{md_parser_name}" parser too old, skip tests'
+
+@unittest.skipUnless(md_parser_class, md_skip_msg)
 class RecommonmarkParserTestCase(ParserTestCase):
 
     """Test case for 3rd-party CommonMark parsers."""
 
-    # TODO: test with alternative CommonMark parsers?
-    parser_name = 'recommonmark'
-    # parser_name = 'pycmark'
-    # parser_name = 'myst'
-    try:
-        parser_class = docutils.parsers.get_parser_class(parser_name)
-    except ImportError:
-        parser_class = None
-    if parser_class and parser_name == 'recommonmark':
-        import recommonmark
-        if recommonmark.__version__ < '0.6.0':
-            # print(f'Skip Markdown tests, "{parser_name}" parser too old')
-            parser_class = None
-    if parser_class:
-        parser = parser_class()
-        option_parser = frontend.OptionParser(components=(parser_class,))
+    if md_parser_class:
+        parser = md_parser_class()
+        option_parser = frontend.OptionParser(components=(md_parser_class,))
         settings = option_parser.get_default_values()
         settings.report_level = 5
         settings.halt_level = 5
@@ -541,13 +548,6 @@ class RecommonmarkParserTestSuite(ParserTestSuite):
     """A collection of RecommonmarkParserTestCases."""
 
     test_case_class = RecommonmarkParserTestCase
-
-    if not test_case_class.parser_class:
-        # print('No compatible CommonMark parser found.'
-        #       ' Skipping all CommonMark/recommonmark tests.')
-        def generateTests(self, dict, dictname='totest'):
-            return
-
 
 class GridTableParserTestCase(CustomTestCase):
 
