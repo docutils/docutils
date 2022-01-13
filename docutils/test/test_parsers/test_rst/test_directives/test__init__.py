@@ -46,13 +46,11 @@ class DirectiveOptionConversionTestCase(DocutilsTestSupport.StandardTestCase):
     # TODO: 13 more directive option conversion functions.
 
     def test_parser_name(self):
-        self.assertEqual(None, directives.parser_name(None))
-        self.assertEqual(docutils.parsers.null.Parser,
-                         directives.parser_name('null'))
-        self.assertEqual(docutils.parsers.rst.Parser,
-                         directives.parser_name('rst'))
-        self.assertEqual(directives.parser_name('recommonmark'),
-                         docutils.parsers.recommonmark_wrapper.Parser)
+        self.assertEqual(directives.parser_name(None), None)
+        self.assertEqual(directives.parser_name('null'),
+                         docutils.parsers.null.Parser)
+        self.assertEqual(directives.parser_name('rst'),
+                         docutils.parsers.rst.Parser)
         self.assertRaises(ValueError, directives.parser_name, 'fantasy')
 
 if __name__ == '__main__':

@@ -12,8 +12,14 @@ import sys
 if __name__ == '__main__':
     import __init__
 from test_parsers import DocutilsTestSupport
-from docutils.parsers.rst import states
+from docutils import parsers
 from docutils.utils.code_analyzer import with_pygments
+
+# check markdown parser availability:
+try:
+    md_parser_class = parsers.get_parser_class('markdown')
+except ImportError:
+    md_parser_class = None
 
 
 def suite():
@@ -21,8 +27,8 @@ def suite():
     # eventually skip optional parts:
     if not with_pygments:
         del(totest['include-code'])
-    if not DocutilsTestSupport.RecommonmarkParserTestCase.parser:
-        del(totest['include-recommonmark'])
+    if not md_parser_class:
+        del(totest['include-markdown'])
     s.generateTests(totest)
     return s
 
@@ -50,7 +56,7 @@ include_md = mydir('include.md')
 utf_16_file = mydir('utf-16.csv')
 utf_16_error_str = ("UnicodeDecodeError: 'ascii' codec can't decode byte 0xfe "
                     "in position 0: ordinal not in range(128)")
-nonexistent = os.path.join(os.path.dirname(states.__file__),
+nonexistent = os.path.join(os.path.dirname(parsers.rst.states.__file__),
                            'include', 'nonexistent')
 nonexistent_rel = DocutilsTestSupport.utils.relative_path(
     os.path.join(DocutilsTestSupport.testroot, 'dummy'), nonexistent)
@@ -782,7 +788,7 @@ Testing errors in included file:
                 ==============  ======
                 A simple table  with
                 no bottom       border
-                
+                \n\
                 .. end of inclusion from "test_parsers/test_rst/test_directives/include10.txt"
 """ % {'source': reldir(include10), 'nonexistent': reldir(nonexistent),
        'unichr_exception':
@@ -1292,19 +1298,19 @@ No circular inclusion.
 
 # Parsing with Markdown (recommonmark) is an optional feature depending
 # on 3rd-party modules:
-totest['include-recommonmark'] = [
+totest['include-markdown'] = [
 ["""\
-Include markdown (recommonmark).
- 
+Include Markdown source.
+
 .. include:: %s
    :parser: markdown
- 
+
 A paragraph.
 """ % include_md,
 """\
 <document source="test data">
     <paragraph>
-        Include markdown (recommonmark).
+        Include Markdown source.
     <section ids="title-1" names="title\\ 1">
         <title>
             Title 1

@@ -2,6 +2,6 @@
 
 *emphasis* and _also emphasis_
 
-No whitespace required around a[phrase reference].
+No whitespace required around a[phrase reference][].
 
 [phrase reference]: /uri
