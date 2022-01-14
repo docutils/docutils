@@ -56,7 +56,7 @@ Drop support for `old-format configuration files`_ in Docutils 1.2.
   (deprecated and ignored since Docutils 0.18) in Docutils 1.3.
   
 * Remove the compatibility hacks `nodes.reprunicode` and `nodes.ensure_str()`
-  in Docutils 1.2. They are not required with Python 3.x.
+  in Docutils 0.21 or later. They are not required with Python 3.x.
 
 * Move math format conversion from docutils/utils/math (called from
   docutils/writers/_html_base.py) to a transform__.

@@ -15,7 +15,7 @@ Deprecated module to handle Exceptions across Python versions.
 
 .. warning::
    This module is deprecated with the end of support for Python 2.7
-   and will be removed in Docutils 1.2 or later.
+   and will be removed in Docutils 0.21 or later.
    
    Replacements: 
      | SafeString  -> str
@@ -50,7 +50,7 @@ import sys
 import warnings
 
 warnings.warn('The `docutils.utils.error_reporting` module is deprecated '
-              'and will be removed in Docutils 1.2.\n'
+              'and will be removed in Docutils 0.21 or later.\n'
               'Details with help("docutils.utils.error_reporting").',
               DeprecationWarning, stacklevel=2)
 
