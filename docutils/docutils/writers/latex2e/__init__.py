@@ -2354,9 +2354,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
         """Convert `length_str` with rst length to LaTeX length
         """
         if pxunit is not None:
-            warnings.warn('LaTeXTranslator.to_latex_length(): The optional '
-                          'argument `pxunit` is ignored and will be removed '
-                          'in Docutils 1.1', DeprecationWarning, stacklevel=2)
+            warnings.warn('The optional argument `pxunit` '
+                'of LaTeXTranslator.to_latex_length() is ignored '
+                'and will be removed in Docutils 0.21 or later',
+                          DeprecationWarning, stacklevel=2)
         match = re.match(r'(\d*\.?\d*)\s*(\S*)', length_str)
         if not match:
             return length_str

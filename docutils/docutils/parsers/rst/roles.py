@@ -76,6 +76,8 @@ Interpreted role functions return a tuple of two values:
 
 __docformat__ = 'reStructuredText'
 
+import warnings
+
 from docutils import nodes, utils
 from docutils.parsers.rst import directives
 from docutils.parsers.rst.languages import en as _fallback_language_module
@@ -392,9 +394,9 @@ register_canonical_role('restructuredtext-unimplemented-role',
 def set_classes(options):
     """Deprecated. Obsoleted by ``normalized_role_options()``."""
     # TODO: Change use in directives.py and uncomment.
-    # raise PendingDeprecationWarning(
-    #  'The auxiliary function roles.set_classes() is obsoleted by '
-    #  'roles.normalized_role_options() and will be removed in Docutils 2.0.')
+    # warnings.warn('The auxiliary function roles.set_classes() is obsoleted'
+    #     ' by roles.normalized_role_options() and will be removed'
+    #     ' in Docutils 0.21 or later', PendingDeprecationWarning, stacklevel=2)
     if options and 'class' in options:
         assert 'classes' not in options
         options['classes'] = options['class']

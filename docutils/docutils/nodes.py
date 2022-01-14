@@ -343,7 +343,7 @@ class reprunicode(str):
     """
     def __init__(self, s):
         warnings.warn('nodes.reprunicode() is not required with Python 3'
-                      ' and will be removed in Docutils 1.2.',
+                      ' and will be removed in Docutils 0.21 or later.',
                       DeprecationWarning, stacklevel=2)
         super().__init__()
 
@@ -353,7 +353,7 @@ def ensure_str(s):
     Deprecated backwards compatibility stub returning `s`.
     """
     warnings.warn('nodes.ensure_str() is not required with Python 3'
-                  ' and will be removed in Docutils 1.2.',
+                  ' and will be removed in Docutils 0.21 or later.',
                   DeprecationWarning, stacklevel=2)
     return s
 
@@ -1071,7 +1071,8 @@ class Element(Node):
     def set_class(self, name):
         """Add a new class to the "classes" attribute."""
         warnings.warn('docutils.nodes.Element.set_class() is deprecated; '
-                      "append to Element['classes'] list attribute directly",
+                      ' and will be removed in Docutils 0.21 or later.',
+                      "Append to Element['classes'] list attribute directly",
                       DeprecationWarning, stacklevel=2)
         assert ' ' not in name
         self['classes'].append(name.lower())
