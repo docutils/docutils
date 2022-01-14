@@ -484,10 +484,7 @@ Policy History
 Backwards Compatibility Policy
 ==============================
 
-.. note:: The backwards compatibility policy outlined below is a draft,
-   open to discussion in the `Docutils-develop mailing list`_.
-
-   If accepted, it will become effective with Docutils version 1.0.
+.. note:: The backwards compatibility policy outlined below is a stub.
 
 Docutils' backwards compatibility policy follows the rules for Python in
 :PEP:`387`.
@@ -508,8 +505,6 @@ Changes that may affect end-users (e.g. by requiring changes to the
 configuration file or potentially breaking custom style sheets) should be
 announced with a FutureWarning_.
 
-.. _Docutils-develop mailing list:
-   http://lists.sourceforge.net/lists/listinfo/docutils-develop
 .. _backwards compatibility rules:
    https://www.python.org/dev/peps/pep-0387/#backwards-compatibility-rules
 .. _making incompatible changes:
