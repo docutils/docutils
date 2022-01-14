@@ -21,7 +21,6 @@ Recommentation XML source, and is available from
 
 import sys
 import os
-import optparse
 import re
 from xml.parsers.expat import ParserCreate
 
