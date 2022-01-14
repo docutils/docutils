@@ -30,20 +30,18 @@ from docutils import nodes, Component
 try:
     from recommonmark.parser import CommonMarkParser
 except ImportError as err:
-    missing_dependency_msg = '%s.\nParsing "recommonmark" Markdown flavour ' \
-        'requires the package https://pypi.org/project/recommonmark' % err
-    raise ImportError(missing_dependency_msg)
+    raise ImportError(
+        '%s.\nParsing "recommonmark" Markdown flavour requires the package'
+        ' https://pypi.org/project/recommonmark which in turn'
+        ' depends on https://pypi.org/project/sphinx.'% err)
 
-
-# recommonmark 0.5.0 introduced a hard dependency on Sphinx
-# https://github.com/readthedocs/recommonmark/issues/202
-# There is a PR to change this to an optional dependency
-# https://github.com/readthedocs/recommonmark/pull/218
 try:
     from sphinx import addnodes
+    # already cached in `sys.modules` if recommonmark >= 0.5.0
 except ImportError:
-    # create a stub
-    class addnodes(nodes.pending): pass
+    # stub to prevent errors with recommonmark < 0.5.0
+    class addnodes():
+        pending_xref = nodes.pending
 
 
 class Parser(CommonMarkParser):
