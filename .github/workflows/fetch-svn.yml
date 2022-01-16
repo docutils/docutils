@@ -1,0 +1,39 @@
+name: Fetch from SVN
+
+on:
+  schedule:
+  - cron: "9/15 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  FORCE_COLOR: "1"
+  UV_SYSTEM_PYTHON: "1"  # make uv do global installs
+
+jobs:
+  fetch:
+    if: github.repository_owner == 'docutils'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: write
+
+    steps:
+    - uses: actions/checkout@v6
+      with:
+        fetch-depth: 0
+        persist-credentials: true
+
+    - name: Configure git
+      run: |
+        git config user.name "Adam Turner"
+        git config user.email "9087854+aa-turner@users.noreply.github.com"
+
+    - name: Fetch from Docutils upstream
+      run: |
+        git remote add upstream https://repo.or.cz/docutils.git
+        git fetch --all --progress --prune
+        git rebase upstream/master
+        git push origin master --force-with-lease || true
