@@ -1,0 +1,83 @@
+name: Coverage
+
+on: [push, pull_request, workflow_dispatch]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  with-deps:
+    name: Test with dependencies
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python 3
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3"
+        cache: pip
+        cache-dependency-path: .github/workflows/coverage.yml
+
+    - name: Install dependencies
+      run: |
+        cd docutils
+        python -m pip install --upgrade pip
+        python -m pip install coverage pytest
+        python -m pip install .
+        python -m pip install pygments
+        # for recommonmark
+        python -m pip install commonmark
+        python -m pip install recommonmark --no-deps
+        # for visual inspection
+        python -m pip list
+
+    - name: Run test suite
+      run: |
+        coverage run --parallel-mode -m pytest ./docutils/test
+
+    - name: Upload coverage data
+      uses: actions/upload-artifact@v3
+      with:
+        name: coverage_data
+        path: .coverage.*
+
+  coverage:
+    name: Coverage
+    needs: with-deps
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python 3
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3"
+          cache: pip
+          cache-dependency-path: .github/workflows/coverage.yml
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install coverage
+
+      - name: Download coverage data
+        uses: actions/download-artifact@v3
+        with:
+          name: coverage_data
+
+      - name: Combine coverage data
+        run: |
+          python -m coverage combine
+          python -m coverage report --show-missing --skip-covered
+          python -m coverage json
+          python -m coverage xml
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./coverage.xml
+          verbose: true

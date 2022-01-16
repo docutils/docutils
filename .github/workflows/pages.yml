@@ -1,0 +1,75 @@
+name: Documentation
+
+on: [push, pull_request, workflow_dispatch]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  render:
+    name: Publish
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python 3
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3
+        cache: pip
+        cache-dependency-path: .github/workflows/pages.yml
+
+    - name: Install dependencies
+      run: |
+        cd docutils
+        python -m pip install --upgrade pip
+        python -m pip install -e .
+        python -m pip install pygments
+        # for recommonmark
+        python -m pip install commonmark
+        python -m pip install recommonmark --no-deps
+        # for visual inspection
+        python -m pip list
+
+    - name: Run tools/buildhtml
+      run: |
+        cd docutils
+        
+        # copy files from web/
+        cp ../web/index.txt ./index.txt
+        cp ../web/rst.txt ./rst.txt
+        cp ../web/python.png ./python.png
+        cp ../web/rst.png ./rst.png
+        
+        # convert reStructuredText source to HTML 
+        python tools/buildhtml.py --writer html5 --local .
+        python tools/buildhtml.py --writer html5 ./docs
+        
+        # Remove files under docutils/ except the CSS files
+        mkdir tmp_css
+        mv docutils/writers/html5_polyglot/* tmp_css/
+        find tmp_css/ -type f ! -name '*.css' -delete
+        rm -r docutils/
+        mkdir -p docutils/writers/html5_polyglot
+        mv tmp_css/* docutils/writers/html5_polyglot/
+        
+        # Remove other files
+        rm -r docutils.egg-info/ licenses/ test/ tools/
+        rm docutils.conf install.py MANIFEST.in setup.cfg setup.py tox.ini
+        
+        # Add files for GitHub Pages
+        touch .nojekyll
+        echo "www.docutils.org" > ./docs/CNAME
+
+    - name: Deploy to GitHub pages
+      # This allows CI to build branches for testing
+      if: github.ref == 'refs/heads/master'
+      uses: JamesIves/github-pages-deploy-action@v4.3.0
+      with:
+        branch: gh-pages
+        folder: docutils
+        single-commit: true # Delete existing files

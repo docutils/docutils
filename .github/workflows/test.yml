@@ -1,0 +1,66 @@
+name: Test
+
+on: [push, pull_request, workflow_dispatch]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  tests:
+    name: Python ${{ matrix.python }}; LANG=${{ matrix.lang[0] }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python:
+          - "3.7"
+          - "3.8"
+          - "3.9"
+          - "3.10"
+          - "3.11"
+        lang:
+          # -["full lang code", "code for locale-gen"]
+          - ["C.UTF-8", "--help"]  # for the default locale we skip locale-gen
+        include:
+        - python: "3"
+          lang: ["en_GB.iso88591", "en_GB"]
+        - python: "3"
+          lang: ["de_DE.UTF-8", "de_DE.UTF-8"]
+        - python: "3"
+          lang: ["fr_FR.iso88591", "fr_FR"]
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python ${{ matrix.python }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python }}
+        cache: pip
+        cache-dependency-path: .github/workflows/test.yml
+
+    - name: Install dependencies
+      run: |
+        cd docutils
+        python -m pip install --upgrade pip
+        python -m pip install -e .
+        python -m pip install pytest pygments
+        # for recommonmark
+        python -m pip install commonmark
+        python -m pip install recommonmark --no-deps
+        # for visual inspection
+        python -m pip list
+
+    - name: Run test suite
+      run: |
+        cd docutils
+        sudo locale-gen ${{ matrix.lang[1] }}
+        sudo update-locale LANG=${{ matrix.lang[0] }}
+        export LANG=${{ matrix.lang[0] }}
+        export LANGUAGE=${{ matrix.lang[0] }}
+        export LC_ALL=${{ matrix.lang[0] }}
+        locale
+        python -X dev -X warn_default_encoding -m pytest ./test
