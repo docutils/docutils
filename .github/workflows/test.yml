@@ -1,0 +1,275 @@
+name: Test
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+env:
+  FORCE_COLOR: "1"
+  PYTHONDEVMODE: "1"  # -X dev
+  PYTHONWARNDEFAULTENCODING: "1"  # -X warn_default_encoding
+  PYTHONWARNINGS: "error"  # -W error
+
+jobs:
+  ubuntu:
+    name: "Ubuntu: Python ${{ matrix.python }}; LANG=${{ matrix.lang[0] }}; PYTHONUTF8=${{ matrix.utf-8-mode }}"
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # TODO Test with Pillow
+        python:
+          - "3.9"
+          - "3.10"
+          - "3.11"
+          - "3.12"
+          - "3.13-dev"
+        utf-8-mode:
+          - ""
+        lang:
+          # -["full lang code", "code for locale-gen"]
+          - ["C.UTF-8", "--help"]  # for the default locale we skip locale-gen
+        include:
+        - python: "3"
+          lang: ["en_GB.iso88591", "en_GB"]
+          utf-8-mode: ""
+        - python: "3"
+          lang: ["de_DE.UTF-8", "de_DE.UTF-8"]
+          utf-8-mode: ""
+        - python: "3"
+          lang: ["fr_FR.iso88591", "fr_FR"]
+          utf-8-mode: ""
+
+        # https://docs.python.org/dev/library/os.html#utf8-mode
+        - python: "3"
+          lang: ["C.UTF-8", "--help"]
+          utf-8-mode: "1"
+        - python: "3"
+          lang: ["en_GB.iso88591", "en_GB"]
+          utf-8-mode: "1"
+        - python: "3"
+          lang: ["de_DE.UTF-8", "de_DE.UTF-8"]
+          utf-8-mode: "1"
+        - python: "3"
+          lang: ["fr_FR.iso88591", "fr_FR"]
+          utf-8-mode: "1"
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python ${{ matrix.python }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python }}
+        cache: pip
+        cache-dependency-path: .github/workflows/test.yml
+      env:
+        PYTHONWARNINGS: ""
+
+    - name: Install dependencies
+      run: |
+        cd docutils
+        python -m pip install --upgrade pip
+        python -m pip install .
+        python -m pip install pytest pytest-subtests pygments
+        # for recommonmark
+        python -m pip install commonmark
+        python -m pip install recommonmark --no-deps
+        # for visual inspection
+        python -m pip list
+      env:
+        PYTHONWARNINGS: ""
+
+    - name: Generate locale
+      if: matrix.lang[0] != 'C.UTF-8'
+      run: |
+        sudo locale-gen ${{ matrix.lang[1] }}
+        sudo update-locale LANG=${{ matrix.lang[0] }}
+        export LANG=${{ matrix.lang[0] }}
+        export LANGUAGE=${{ matrix.lang[0] }}
+        export LC_ALL=${{ matrix.lang[0] }}
+        locale
+
+    - name: Run test suite (pytest ./test)
+      if: always()
+      env:
+        LANG: ${{ matrix.lang[0] }}
+        LANGUAGE: ${{ matrix.lang[0] }}
+        LC_ALL: ${{ matrix.lang[0] }}
+        PYTHONUTF8: ${{ matrix.utf-8-mode }}
+      run: |
+        cd docutils
+        python -m pytest -vv ./test
+
+    - name: Run test suite (pytest .)
+      if: always()
+      env:
+        LANG: ${{ matrix.lang[0] }}
+        LANGUAGE: ${{ matrix.lang[0] }}
+        LC_ALL: ${{ matrix.lang[0] }}
+        PYTHONUTF8: ${{ matrix.utf-8-mode }}
+      run: |
+        cd docutils
+        python -m pytest -vv .
+
+    - name: Run test suite (pytest . in ./test)
+      if: always()
+      env:
+        LANG: ${{ matrix.lang[0] }}
+        LANGUAGE: ${{ matrix.lang[0] }}
+        LC_ALL: ${{ matrix.lang[0] }}
+        PYTHONUTF8: ${{ matrix.utf-8-mode }}
+      run: |
+        cd docutils/test
+        python -m pytest -vv .
+
+    - name: Run test suite (python -m unittest discover -v)
+      if: always()      
+      env:
+        LANG: ${{ matrix.lang[0] }}
+        LANGUAGE: ${{ matrix.lang[0] }}
+        LC_ALL: ${{ matrix.lang[0] }}
+        PYTHONUTF8: ${{ matrix.utf-8-mode }}
+      run: |
+          cd docutils
+          python -m unittest discover -v
+
+    - name: Run test suite (python -m unittest discover -v in ./test)
+      if: always()      
+      env:
+        LANG: ${{ matrix.lang[0] }}
+        LANGUAGE: ${{ matrix.lang[0] }}
+        LC_ALL: ${{ matrix.lang[0] }}
+        PYTHONUTF8: ${{ matrix.utf-8-mode }}
+      run: |
+          cd docutils/test
+          python -m unittest discover -v
+
+    - name: Run test suite (alltests.py)
+      if: always()      
+      env:
+        LANG: ${{ matrix.lang[0] }}
+        LANGUAGE: ${{ matrix.lang[0] }}
+        LC_ALL: ${{ matrix.lang[0] }}
+        PYTHONUTF8: ${{ matrix.utf-8-mode }}
+      run: |
+          cd docutils
+          python test/alltests.py
+
+    - name: Run test suite (alltests.py in ./test)
+      if: always()      
+      env:
+        LANG: ${{ matrix.lang[0] }}
+        LANGUAGE: ${{ matrix.lang[0] }}
+        LC_ALL: ${{ matrix.lang[0] }}
+        PYTHONUTF8: ${{ matrix.utf-8-mode }}
+      run: |
+          cd docutils/test
+          python alltests.py
+
+  windows:
+    name: "Windows: Python ${{ matrix.python }}; PYTHONUTF8=${{ matrix.utf-8-mode }}"
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python:
+          - "3.9"
+          - "3.10"
+          - "3.11"
+          - "3.12"
+          - "3.13-dev"
+        utf-8-mode:
+          - ""
+        include:
+        # https://docs.python.org/dev/library/os.html#utf8-mode
+        - python: "3"
+          utf-8-mode: "1"
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python ${{ matrix.python }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python }}
+        cache: pip
+        cache-dependency-path: .github/workflows/test.yml
+      env:
+        PYTHONWARNINGS: ""
+
+    - name: Install dependencies
+      run: |
+        cd docutils
+        python -m pip install --upgrade pip
+        python -m pip install .
+        python -m pip install pytest pytest-subtests pygments
+        # for recommonmark
+        python -m pip install commonmark
+        python -m pip install recommonmark --no-deps
+        # for visual inspection
+        python -m pip list
+      env:
+        PYTHONWARNINGS: ""
+
+    - name: Run test suite (pytest ./test)
+      if: always()
+      run: |
+        cd docutils
+        python -m pytest -vv ./test
+      env:
+        PYTHONUTF8: ${{ matrix.utf-8-mode }}
+
+    - name: Run test suite (pytest .)
+      if: always()
+      run: |
+        cd docutils
+        python -m pytest -vv .
+      env:
+        PYTHONUTF8: ${{ matrix.utf-8-mode }}
+
+    - name: Run test suite (pytest . in ./test)
+      if: always()
+      run: |
+        cd docutils/test
+        python -m pytest -vv .
+      env:
+        PYTHONUTF8: ${{ matrix.utf-8-mode }}
+
+    - name: Run test suite (python -m unittest discover -v)
+      if: always()
+      run: |
+          cd docutils
+          python -m unittest discover -v
+      env:
+        PYTHONUTF8: ${{ matrix.utf-8-mode }}
+
+    - name: Run test suite (python -m unittest discover -v in ./test)
+      if: always()
+      run: |
+          cd docutils/test
+          python -m unittest discover -v
+      env:
+        PYTHONUTF8: ${{ matrix.utf-8-mode }}
+
+    - name: Run test suite (alltests.py)
+      if: always()
+      run: |
+          cd docutils
+          python test/alltests.py
+      env:
+        PYTHONUTF8: ${{ matrix.utf-8-mode }}
+
+    - name: Run test suite (alltests.py in ./test)
+      if: always()
+      run: |
+          cd docutils/test
+          python alltests.py
+      env:
+        PYTHONUTF8: ${{ matrix.utf-8-mode }}
