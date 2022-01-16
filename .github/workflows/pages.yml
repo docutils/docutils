@@ -1,0 +1,92 @@
+name: Documentation
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  render:
+    name: Render
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python 3
+      uses: actions/setup-python@v5
+      with:
+        python-version: 3
+        cache: pip
+        cache-dependency-path: .github/workflows/pages.yml
+
+    - name: Install dependencies
+      run: |
+        cd docutils
+        python -m pip install --upgrade pip
+        python -m pip install -e .
+        python -m pip install pygments
+        # for recommonmark
+        python -m pip install commonmark
+        python -m pip install recommonmark --no-deps
+        # for visual inspection
+        python -m pip list
+
+    - name: Run tools/buildhtml
+      run: |
+        cd docutils
+        
+        # copy files from web/
+        cp ../web/index.txt ./index.txt
+        cp ../web/rst.txt ./rst.txt
+        cp ../web/python.png ./python.png
+        cp ../web/rst.png ./rst.png
+        
+        # convert reStructuredText source to HTML 
+        python tools/buildhtml.py --writer html5 --local .
+        python tools/buildhtml.py --writer html5 ./docs
+        
+        # Remove files under docutils/ except the CSS files
+        mkdir tmp_css
+        mv docutils/writers/html5_polyglot/* tmp_css/
+        find tmp_css/ -type f ! -name '*.css' -delete
+        rm -r docutils/
+        mkdir -p docutils/writers/html5_polyglot
+        mv tmp_css/* docutils/writers/html5_polyglot/
+        
+        # Remove other files
+        rm -r licenses/ test/ tools/
+        rm docutils.conf tox.ini
+        
+        # Add files for GitHub Pages
+        touch .nojekyll
+        echo "www.docutils.org" > ./docs/CNAME
+
+    - name: Upload the generated HTML as a GitHub Actions artefact
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: docutils
+
+  publish:
+    name: Publish
+    needs: "render"
+    # This allows CI to build branches for testing
+    if: github.repository_owner == 'docutils' && github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+
+    environment:
+      name: github-pages
+
+    permissions:
+      # This allows publishing to the GitHub Pages site.
+      pages: write
+      # This allows GitHub Pages to verify that the deployment comes
+      # from a legitimate source through OpenID Connect.
+      id-token: write
+
+    steps:
+    - name: Deploy to GitHub pages
+      uses: actions/deploy-pages@v4
