@@ -1,0 +1,103 @@
+name: Coverage
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+env:
+  FORCE_COLOR: "1"
+  UV_SYSTEM_PYTHON: "1"  # make uv do global installs
+  PYTHONDEVMODE: "1"  # -X dev
+  PYTHONWARNDEFAULTENCODING: "1"  # -X warn_default_encoding
+  PYTHONWARNINGS: "error"  # -W error
+
+jobs:
+  with-deps:
+    name: Test with dependencies
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v6
+    - name: Set up Python 3
+      uses: actions/setup-python@v6
+      with:
+        python-version: "3"
+
+    - name: Install uv
+      uses: astral-sh/setup-uv@v7
+      with:
+        version: latest
+        enable-cache: false
+
+    - name: Install dependencies
+      run: |
+        cd docutils
+        uv pip install coverage pytest
+        uv pip install .
+        uv pip install pygments
+        # for recommonmark
+        uv pip install commonmark
+        uv pip install recommonmark --no-deps
+        # for visual inspection
+        python -m pip list
+      env:
+        PYTHONWARNINGS: ""
+
+    - name: Run test suite
+      run: coverage run --parallel-mode -m pytest ./docutils/test -vv
+
+    - name: Upload coverage data
+      uses: actions/upload-artifact@v6
+      with:
+        if-no-files-found: error
+        include-hidden-files: true
+        name: coverage_data
+        path: .coverage.*
+
+  coverage:
+    name: Coverage
+    needs: with-deps
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v6
+    - name: Set up Python 3
+      uses: actions/setup-python@v6
+      with:
+        python-version: "3"
+
+    - name: Install uv
+      uses: astral-sh/setup-uv@v7
+      with:
+        version: latest
+        enable-cache: false
+
+    - name: Install dependencies
+      run: uv pip install coverage
+      env:
+        PYTHONWARNINGS: ""
+
+    - name: Download coverage data
+      uses: actions/download-artifact@v7
+      with:
+        name: coverage_data
+
+    - name: Combine coverage data
+      run: |
+        python -m coverage combine
+        python -m coverage report --show-missing --skip-covered
+        python -m coverage json
+        python -m coverage xml
+
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v5
+      with:
+        files: ./coverage.xml
+        verbose: true
