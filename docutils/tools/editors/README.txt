@@ -23,5 +23,5 @@ External links:
 
 Additions are welcome.
 
-.. _reStructuredText: http://docutils.sf.net/rst.html
+.. _reStructuredText: https://docutils.sourceforge.io/rst.html
 .. _JED: http://www.jedsoft.org/jed/

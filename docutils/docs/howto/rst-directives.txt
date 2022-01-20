@@ -427,4 +427,4 @@ of the ``contents`` directive in
 docutils.parsers.rst.directives.parts__.
 
 .. _transform: ../ref/transforms.html
-__ http://docutils.sf.net/docutils/parsers/rst/directives/parts.py
+__ https://docutils.sourceforge.io/docutils/parsers/rst/directives/parts.py

@@ -64,7 +64,7 @@ Many of these are now handled by Sphinx_
 * Plugin support.
 
 * Suitability for `Python module documentation
-  <http://docutils.sf.net/sandbox/README.html#documenting-python>`_.
+  <https://docutils.sourceforge.io/sandbox/README.html#documenting-python>`_.
 
 .. _Sphinx: http://www.sphinx-doc.org/
 

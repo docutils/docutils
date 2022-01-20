@@ -940,8 +940,8 @@ Most of the code has been modified, enhanced and extended by Stefan
 Merten who also is the current maintainer of ``rst.el``.
 
 .. _Emacs: http://www.gnu.org/software/emacs/emacs.html
-.. _reStructuredText: http://docutils.sf.net/rst.html
-.. _Docutils: http://docutils.sf.net/
+.. _reStructuredText: https://docutils.sourceforge.io/rst.html
+.. _Docutils: https://docutils.sourceforge.io/
 
 
 

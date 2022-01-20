@@ -39,7 +39,7 @@ import unicodedata
    "unicodedata" module of Python 2.7.13 (based on Unicode version 5.2.0).
 
    .. _inline markup recognition rules:
-      http://docutils.sf.net/docs/ref/rst/restructuredtext.html#inline-markup-recognition-rules
+      https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#inline-markup-recognition-rules
 """
 
 openers = (u'"\'(<\\[{\u0f3a\u0f3c\u169b\u2045\u207d\u208d\u2329\u2768'

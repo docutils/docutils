@@ -1585,7 +1585,7 @@ Example:
     \marginpar cannot be used, e.g., inside floats, footnotes, or in frames
     made with the framed package (see marginnote_).
 
-__ http://docutils.sf.net/docutils/docs/ref/rst/directives.html#sidebar
+__ https://docutils.sourceforge.io/docutils/docs/ref/rst/directives.html#sidebar
 
 size of a pixel
 ---------------
@@ -1842,7 +1842,7 @@ Example 2:
 
     \newcommand*{\DUtransition}{\vspace{2ex}}
 
-__ http://docutils.sf.net/docutils/docs/ref/rst/restructuredtext.html#transitions
+__ https://docutils.sourceforge.io/docutils/docs/ref/rst/restructuredtext.html#transitions
 .. _transition-stars.sty: ../../../sandbox/stylesheets/transition-stars.sty
 
 

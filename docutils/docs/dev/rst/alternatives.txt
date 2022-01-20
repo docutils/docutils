@@ -2191,7 +2191,7 @@ syntax, this directive becomes low priority.
 As described in the FAQ__, no special syntax or directive is needed
 for this application.
 
-__ http://docutils.sf.net/FAQ.html
+__ https://docutils.sourceforge.io/FAQ.html
    #how-can-i-mark-up-a-faq-or-other-list-of-questions-answers
 
 
@@ -3016,9 +3016,9 @@ character entities can be defined and used.  `A set of character
 entity set definition files have been defined`__ (`tarball`__).
 There's also `a description and instructions for use`__.
 
-__ http://docutils.sf.net/tmp/charents/
-__ http://docutils.sf.net/tmp/charents.tgz
-__ http://docutils.sf.net/tmp/charents/README.html
+__ https://docutils.sourceforge.io/tmp/charents/
+__ https://docutils.sourceforge.io/tmp/charents.tgz
+__ https://docutils.sourceforge.io/tmp/charents/README.html
 
 To allow for `character-level inline markup`_, a limited form of
 character processing has been added to the spec and parser: escaped

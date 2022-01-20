@@ -421,7 +421,7 @@ There are several, with various degrees of completeness.  With no
 implied endorsement or recommendation, and in no particular order:
 
 * `Ian Bicking's experimental code
-  <http://docutils.sf.net/sandbox/ianb/wiki/Wiki.py>`__
+  <https://docutils.sourceforge.io/sandbox/ianb/wiki/Wiki.py>`__
 
 * `MoinMoin <http://moinmoin.wikiwikiweb.de/>`__ has some support;
   `here's a sample <http://moinmoin.wikiwikiweb.de/RestSample>`__

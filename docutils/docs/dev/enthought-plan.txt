@@ -9,7 +9,7 @@
 :Copyright: 2004 by `Enthought, Inc. <http://www.enthought.com>`_
 :License: `Enthought License`_ (BSD-style)
 
-.. _Enthought License: http://docutils.sf.net/licenses/enthought.txt
+.. _Enthought License: https://docutils.sourceforge.io/licenses/enthought.txt
 
 This document should be read in conjunction with the `Enthought API
 Documentation Tool RFP`__ prepared by Janet Swisher.
@@ -55,7 +55,7 @@ the community will benefit from the end result, which will be great.
 All that's left now is to actually do the work!
 
 .. _PyCon 2004: http://pycon.org/dc2004/
-.. _reStructuredText: http://docutils.sf.net/rst.html
+.. _reStructuredText: https://docutils.sourceforge.io/rst.html
 .. _SciPy: http://www.scipy.org/
 
 
@@ -72,7 +72,7 @@ Development Plan
    .. _Epydoc: http://epydoc.sourceforge.net/
    .. _HappyDoc: http://happydoc.sourceforge.net/
    .. _PEP 258:
-      http://docutils.sf.net/docs/peps/pep-0258.html#python-source-reader
+      https://docutils.sourceforge.io/docs/peps/pep-0258.html#python-source-reader
 
 2. Decide on a base platform.  The best way to achieve Enthought's
    goals in a reasonable time frame may be to extend Epydoc or
@@ -156,7 +156,7 @@ A section describing all of this will be added to the Docutils
 If another project is chosen as the base project, similar changes
 would be made to their files, subject to negotiation.
 
-__ http://docutils.sf.net/COPYING.html
+__ https://docutils.sourceforge.io/COPYING.html
 
 
 Proposed Changes to reStructuredText

@@ -624,7 +624,7 @@ Some sandbox projects are destined to move to the Docutils core once
 completed.  Others, such as add-ons to Docutils or applications of
 Docutils, may graduate to become `parallel projects`_.
 
-.. _sandbox README: http://docutils.sf.net/sandbox/README.html
+.. _sandbox README: https://docutils.sourceforge.io/sandbox/README.html
 .. _sandbox directory:
    http://sourceforge.net/p/docutils/code/HEAD/tree/trunk/sandbox/
 

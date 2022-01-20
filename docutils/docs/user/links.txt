@@ -29,7 +29,7 @@ Editors
 
 Advanced text editors with reStructuredText support, IDEs, and docutils GUIs:
 
-* Emacs `rst mode <http://docutils.sf.net/tools/editors/emacs>`__.
+* Emacs `rst mode <https://docutils.sourceforge.io/tools/editors/emacs>`__.
 
 * `Vim <http://www.vim.org/index.php>`__:
 
@@ -282,7 +282,7 @@ Convert other formats to reStructuredText:
 
   .. _PySource: https://docutils.sourceforge.io/sandbox/tibs/pysource/
   .. _pysource_reader: https://docutils.sourceforge.io/sandbox/davidg/pysource_reader/
-  .. _Python Source Reader: http://docutils.sf.net/docs/dev/pysource.html
+  .. _Python Source Reader: https://docutils.sourceforge.io/docs/dev/pysource.html
 
 
 Extensions
@@ -329,9 +329,9 @@ Applications using docutils/reStructuredText and helper applications.
 * `Project Gutenberg`_ uses a customized version of Docutils with it's own
   xetex- and nroff-writer and epub generator.
 
-.. _FAQ entry about Wikis: http://docutils.sf.net/FAQ.html
+.. _FAQ entry about Wikis: https://docutils.sourceforge.io/FAQ.html
     #are-there-any-wikis-that-use-restructuredtext-syntax
-.. _FAQ entry about Blogs: http://docutils.sf.net/FAQ.html
+.. _FAQ entry about Blogs: https://docutils.sourceforge.io/FAQ.html
     #are-there-any-weblog-blog-projects-that-use-restructuredtext-syntax
 .. _Project Gutenberg: http://www.gutenberg.org
 

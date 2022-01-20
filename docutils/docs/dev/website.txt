@@ -34,13 +34,13 @@ __ `Adding .txt Files`_
 The docutils-update.local__ script is located at
 ``sandbox/infrastructure/docutils-update.local``.
 
-__ http://docutils.sf.net/sandbox/infrastructure/docutils-update.local
+__ https://docutils.sourceforge.io/sandbox/infrastructure/docutils-update.local
 
 If you want to share files via the web, you can upload them using the
 uploaddocutils.sh__ script
 (``sandbox/infrastructure/uploaddocutils.sh``).
 
-__ http://docutils.sf.net/sandbox/infrastructure/uploaddocutils.sh
+__ https://docutils.sourceforge.io/sandbox/infrastructure/uploaddocutils.sh
 
 
 Setting Up
