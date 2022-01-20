@@ -225,8 +225,7 @@ datestamp
 ---------
 
 Include a time/datestamp in the document footer.  Contains a
-format string for Python's ``time.strftime``.  See the `time
-module documentation`__.
+format string for Python's `time.strftime()`__.
 
 Default: None.
 Options: ``--date, -d, --time, -t, --no-datestamp``.
@@ -244,7 +243,7 @@ Configuration file entry examples::
     # Disables datestamp; equivalent to --no-datestamp:
     datestamp:
 
-__ http://www.python.org/doc/current/lib/module-time.html
+__ https://docs.python.org/3/library/time.html#time.strftime
 
 debug
 -----
