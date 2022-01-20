@@ -29,7 +29,7 @@ class Html5WriterPublishPartsTestCase(HtmlWriterPublishPartsTestCase):
 
     standard_content_type_template = ('<meta charset="%s"/>\n')
     standard_generator_template = ('<meta name="generator"'
-        ' content="Docutils %s: http://docutils.sourceforge.net/" />\n')
+        ' content="Docutils %s: https://docutils.sourceforge.io/" />\n')
     standard_viewport_template = ('<meta name="viewport"'
         ' content="width=device-width, initial-scale=1" />\n')
 

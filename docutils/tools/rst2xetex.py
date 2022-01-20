@@ -21,7 +21,7 @@ description = ('Generates LaTeX documents from standalone reStructuredText '
                'XeLaTeX or LuaLaTeX. '
                'Reads from <source> (default is stdin) and writes to '
                '<destination> (default is stdout).  See '
-               '<http://docutils.sourceforge.net/docs/user/latex.html> for '
+               '<https://docutils.sourceforge.io/docs/user/latex.html> for '
                'the full reference.')
 
 publish_cmdline(writer_name='xetex', description=description)

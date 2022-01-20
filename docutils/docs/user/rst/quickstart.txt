@@ -16,7 +16,7 @@ quick reference`_ document.
 __
 .. _Quick reStructuredText: quickref.html
 .. _master quick reference:
-   http://docutils.sourceforge.net/docs/user/rst/quickref.html
+   https://docutils.sourceforge.io/docs/user/rst/quickref.html
 
 .. Note:: This document is an informal introduction to
    reStructuredText.  The `What Next?`_ section below has links to
@@ -396,9 +396,9 @@ reStructuredText should post a message to the Docutils-users_ mailing
 list.
 
 .. [#] If that relative link doesn't work, try the master document:
-   http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html.
+   https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html.
 
 .. _reStructuredText Markup Specification:
    ../../ref/rst/restructuredtext.html
 .. _Docutils-users: ../mailing-lists.html#docutils-users
-.. _Docutils project web site: http://docutils.sourceforge.net/
+.. _Docutils project web site: https://docutils.sourceforge.io/

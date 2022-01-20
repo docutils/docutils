@@ -11,8 +11,8 @@
 The latest working documents may be accessed individually below, or
 from the ``docs`` directory of the `Docutils distribution`_.
 
-.. _Docutils: http://docutils.sourceforge.net/
-.. _Docutils distribution: http://docutils.sourceforge.net/#download
+.. _Docutils: https://docutils.sourceforge.io/
+.. _Docutils distribution: https://docutils.sourceforge.io/#download
 
 .. contents::
 
@@ -93,7 +93,7 @@ Writer-specific:
 * `Docutils LaTeX Writer <user/latex.html>`__
 * `Docutils ODF/OpenOffice/odt Writer <user/odt.html>`__
 
-`reStructuredText <http://docutils.sourceforge.net/rst.html>`_:
+`reStructuredText <https://docutils.sourceforge.io/rst.html>`_:
 
 * `A ReStructuredText Primer <user/rst/quickstart.html>`__
   (see also the `text source <user/rst/quickstart.txt>`__)
@@ -145,7 +145,7 @@ reStructuredText_:
 Prehistoric:
 
 * `Setext Documents Mirror
-  <http://docutils.sourceforge.net/mirror/setext.html>`__
+  <https://docutils.sourceforge.io/mirror/setext.html>`__
 
 
 .. _peps:

@@ -1945,13 +1945,13 @@ indirect.
    permitted to allow for line wrapping).  The following external
    hyperlink targets are equivalent::
 
-       .. _one-liner: http://docutils.sourceforge.net/rst.html
+       .. _one-liner: https://docutils.sourceforge.io/rst.html
 
-       .. _starts-on-this-line: http://
+       .. _starts-on-this-line: https://
           docutils.sourceforge.net/rst.html
 
        .. _entirely-below:
-          http://docutils.
+          https://docutils.
           sourceforge.net/rst.html
 
    Escaped whitespace is preserved as intentional spaces, e.g.::
@@ -2350,7 +2350,7 @@ Replacement text
         |RST| source readability.
 
         .. |RST| replace:: reStructuredText
-        .. _RST: http://docutils.sourceforge.net/rst.html
+        .. _RST: https://docutils.sourceforge.io/rst.html
 
     Note the trailing underscore in the first use of a substitution
     reference.  This indicates a reference to the corresponding
@@ -3137,16 +3137,16 @@ Markup errors are handled according to the specification in `PEP
 258`_.
 
 
-.. _reStructuredText: http://docutils.sourceforge.net/rst.html
-.. _Docutils: http://docutils.sourceforge.net/
+.. _reStructuredText: https://docutils.sourceforge.io/rst.html
+.. _Docutils: https://docutils.sourceforge.io/
 .. _Docutils Generic DTD: ../docutils.dtd
 .. _transforms:
-   http://docutils.sourceforge.net/docutils/transforms/
+   https://docutils.sourceforge.io/docutils/transforms/
 .. _Grouch: http://www.mems-exchange.org/software/grouch/
 .. _RFC822: http://www.rfc-editor.org/rfc/rfc822.txt
 .. _DocTitle transform:
 .. _DocInfo transform:
-   http://docutils.sourceforge.net/docutils/transforms/frontmatter.py
+   https://docutils.sourceforge.io/docutils/transforms/frontmatter.py
 .. _getopt.py:
    http://www.python.org/doc/current/lib/module-getopt.html
 .. _GNU libc getopt_long():

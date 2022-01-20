@@ -308,7 +308,7 @@ class Babel(object):
     # http://www.tug.org/TUGboat/Articles/tb29-3/tb93miklavec.pdf
     # * the key without subtags is the default
     # * case is ignored
-    # cf. http://docutils.sourceforge.net/docs/howto/i18n.html
+    # cf. https://docutils.sourceforge.io/docs/howto/i18n.html
     #     http://www.w3.org/International/articles/language-tags/
     # and http://www.iana.org/assignments/language-subtag-registry
     language_codes = {

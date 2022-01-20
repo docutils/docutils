@@ -153,5 +153,5 @@ __ nntp://news.gmane.org/gmane.comp.python.documentation
    http://mail.python.org/mailman/listinfo/doc-sig
 
 .. _Subversion repository: ../dev/repository.html
-.. _Docutils: http://docutils.sourceforge.net/
+.. _Docutils: https://docutils.sourceforge.io/
 .. _FAQ: ../../FAQ.html

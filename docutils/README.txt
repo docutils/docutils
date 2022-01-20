@@ -5,7 +5,7 @@
 :Author: David Goodger
 :Contact: goodger@python.org
 :Date: $Date$
-:Web site: http://docutils.sourceforge.net/
+:Web site: https://docutils.sourceforge.io/
 :Copyright: This document has been placed in the public domain.
 
 .. contents::
@@ -366,7 +366,7 @@ Windows users type these commands::
     python quicktest.py --version
 
 
-.. _Docutils Testing: http://docutils.sourceforge.net/docs/dev/testing.html
+.. _Docutils Testing: https://docutils.sourceforge.io/docs/dev/testing.html
 .. _open a bug report:
    http://sourceforge.net/p/docutils/bugs/
 .. _send an email: mailto:docutils-users@lists.sourceforge.net

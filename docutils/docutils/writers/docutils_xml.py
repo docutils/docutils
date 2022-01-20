@@ -5,7 +5,7 @@
 
 """
 Simple document tree Writer, writes Docutils XML according to
-http://docutils.sourceforge.net/docs/ref/docutils.dtd.
+https://docutils.sourceforge.io/docs/ref/docutils.dtd.
 """
 
 __docformat__ = 'reStructuredText'

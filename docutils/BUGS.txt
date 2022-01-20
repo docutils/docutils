@@ -8,7 +8,7 @@
 :Revision: $Revision$
 :Copyright: This document has been placed in the public domain.
 
-.. _Docutils: http://docutils.sourceforge.net/
+.. _Docutils: https://docutils.sourceforge.io/
 
 
 Bugs in Docutils?!?  Yes, we do have a few.  Some are old-timers that
@@ -118,7 +118,7 @@ __ http://subversion.tigris.org/
 __ http://svn.collab.net/viewcvs/svn/trunk/BUGS?view=markup
 
 .. _repository: docs/dev/repository.html
-.. _snapshot: http://docutils.sourceforge.net/#download
+.. _snapshot: https://docutils.sourceforge.io/#download
 .. _documentation: docs/
 .. _FAQ: FAQ.html
 .. _mailing list archives: https://docutils.sourceforge.io/#mailing-lists

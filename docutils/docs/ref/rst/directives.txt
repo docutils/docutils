@@ -533,7 +533,7 @@ when Pygments_ is not installed or the language is not in the
 For inline code, use the `"code" role`_.
 
 __ http://pygments.org/docs/cmdline/#generating-styles
-__ http://docutils.sourceforge.net/sandbox/stylesheets/
+__ https://docutils.sourceforge.io/sandbox/stylesheets/
 .. _Pygments: http://pygments.org/
 .. _syntax_highlight: ../../user/config.html#syntax-highlight
 .. _supported languages and markup formats: http://pygments.org/languages/
@@ -1178,7 +1178,7 @@ processing system.  For example, if certain runtime settings are
 enabled, the document footer is populated with processing information
 such as a datestamp, a link to `the Docutils website`_, etc.
 
-.. _the Docutils website: http://docutils.sourceforge.net
+.. _the Docutils website: https://docutils.sourceforge.io
 
 
 ------------

@@ -67,7 +67,7 @@ Inline Markup
 =============
 *emphasis*; **strong emphasis**; `interpreted text`; `interpreted text
 with role`:emphasis:; ``inline literal text``; standalone hyperlink,
-http://docutils.sourceforge.net; named reference, reStructuredText_;
+https://docutils.sourceforge.io; named reference, reStructuredText_;
 `anonymous reference`__; footnote reference, [1]_; citation reference,
 [CIT2002]_; |substitution|; _`inline internal target`.
 

@@ -69,7 +69,7 @@ class CharacterEntitySetExtractor(object):
 .. Derived from the Unicode character mappings available from
    <http://www.w3.org/2003/entities/xml/>.
    Processed by unicode2rstsubs.py, part of Docutils:
-   <http://docutils.sourceforge.net>.
+   <https://docutils.sourceforge.io>.
 """
 
     def __init__(self, infile):

@@ -803,8 +803,8 @@ Here is another example::
 
 For more on roles see:
 `Custom Interpreted Text Roles --
-http://docutils.sourceforge.net/docs/ref/rst/directives.html#custom-interpreted-text-roles
-<http://docutils.sourceforge.net/docs/ref/rst/directives.html#custom-interpreted-text-roles>`_.
+https://docutils.sourceforge.io/docs/ref/rst/directives.html#custom-interpreted-text-roles
+<https://docutils.sourceforge.io/docs/ref/rst/directives.html#custom-interpreted-text-roles>`_.
 
 **Note:** The ability to base a role on another existing role is
 *not* supported by ``odtwriter``.
@@ -1189,7 +1189,7 @@ pick up the default paper size on platforms where the program
     http://pygments.pocoo.org/
 
 .. _`Docutils`:
-    http://docutils.sourceforge.net/
+    https://docutils.sourceforge.io/
 
 .. _`Python Imaging Library`:
     https://en.wikipedia.org/wiki/Python_Imaging_Library

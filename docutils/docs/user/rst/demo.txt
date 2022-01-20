@@ -401,7 +401,7 @@ Directives
 
 These are just a sample of the many reStructuredText Directives.  For
 others, please see
-http://docutils.sourceforge.net/docs/ref/rst/directives.html.
+https://docutils.sourceforge.io/docs/ref/rst/directives.html.
 
 Document Parts
 ``````````````

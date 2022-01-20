@@ -546,7 +546,7 @@ Release 0.16 (2020-01-16)
     Doctree nodes and removed in the writing stage by the node's
     astext() method.
 
-  __ http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html#escaping-mechanism
+  __ https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#escaping-mechanism
 
 * docutils/io.py
 

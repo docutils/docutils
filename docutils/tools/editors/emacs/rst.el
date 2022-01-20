@@ -48,10 +48,10 @@
 ;; the contents of this package and how to use it.
 ;;
 ;; For more information about reStructuredText, see
-;; http://docutils.sourceforge.net/rst.html
+;; https://docutils.sourceforge.io/rst.html
 ;;
 ;; For full details on how to use the contents of this file, see
-;; http://docutils.sourceforge.net/docs/user/emacs.html
+;; https://docutils.sourceforge.io/docs/user/emacs.html
 ;;
 ;; There are a number of convenient key bindings provided by rst-mode.  For the
 ;; bindings, try C-c C-h when in rst-mode.  There are also many variables that
@@ -81,7 +81,7 @@
 ;;   (require 'rst)
 ;;
 ;; If you are using `.txt' as a standard extension for reST files as
-;; http://docutils.sourceforge.net/FAQ.html#what-s-the-standard-filename-extension-for-a-restructuredtext-file
+;; https://docutils.sourceforge.io/FAQ.html#what-s-the-standard-filename-extension-for-a-restructuredtext-file
 ;; suggests you may use one of the `Local Variables in Files' mechanism Emacs
 ;; provides to set the major mode automatically.  For instance you may use::
 ;;
@@ -315,7 +315,7 @@ in parentheses follows the development revision and the time stamp.")
 (defgroup rst nil "Support for reStructuredText documents."
   :group 'text
   :version "23.1"
-  :link '(url-link "http://docutils.sourceforge.net/rst.html"))
+  :link '(url-link "https://docutils.sourceforge.io/rst.html"))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -3863,7 +3863,7 @@ of your own."
 
 (defvar rst-font-lock-keywords
   ;; The reST-links in the comments below all relate to sections in
-  ;; http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html.
+  ;; https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html.
   `(;; FIXME: Block markup is not recognized in blocks after explicit markup
     ;;        start.
 

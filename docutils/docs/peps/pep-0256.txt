@@ -235,7 +235,7 @@ Project Web Site
 ================
 
 A SourceForge project has been set up for this work at
-http://docutils.sourceforge.net/.
+https://docutils.sourceforge.io/.
 
 
 References and Footnotes
@@ -273,7 +273,7 @@ References and Footnotes
 
 .. _docutils: http://www.tibsnjoan.co.uk/docutils.html
 
-.. _Docutils project: http://docutils.sourceforge.net/
+.. _Docutils project: https://docutils.sourceforge.io/
 
 .. _STMinus: http://www.cis.upenn.edu/~edloper/pydoc/
 

@@ -59,7 +59,7 @@ None yet.
 SEE ALSO
 ========
 
-`docutils <http://docutils.sourceforge.net>`__
+`docutils <https://docutils.sourceforge.io>`__
 `linux man page howto <http://tldp.org/HOWTO/Man-Page/>`__
 
 and ``man man`` also ``man 7 man``

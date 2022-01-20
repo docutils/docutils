@@ -425,13 +425,13 @@ u"""\
 .. image:: test.png
    :target: Uppercase_
 
-.. _Uppercase: http://docutils.sourceforge.net/
+.. _Uppercase: https://docutils.sourceforge.io/
 """,
 """\
 <document source="test data">
     <reference name="Uppercase" refname="uppercase">
         <image uri="test.png">
-    <target ids="uppercase" names="uppercase" refuri="http://docutils.sourceforge.net/">
+    <target ids="uppercase" names="uppercase" refuri="https://docutils.sourceforge.io/">
 """],
 [r"""
 .. image:: path\ with\ spaces/name\ with\ spaces.png
