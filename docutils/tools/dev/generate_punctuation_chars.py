@@ -82,7 +82,7 @@ import unicodedata
    "unicodedata" module of Python %(python_version)s (based on Unicode version %(unidata_version)s).
 
    .. _inline markup recognition rules:
-      http://docutils.sf.net/docs/ref/rst/restructuredtext.html#inline-markup-recognition-rules
+      https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#inline-markup-recognition-rules
 """
 
 %(openers)s

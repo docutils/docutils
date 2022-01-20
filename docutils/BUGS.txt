@@ -121,7 +121,7 @@ __ http://svn.collab.net/viewcvs/svn/trunk/BUGS?view=markup
 .. _snapshot: http://docutils.sourceforge.net/#download
 .. _documentation: docs/
 .. _FAQ: FAQ.html
-.. _mailing list archives: http://docutils.sf.net/#mailing-lists
+.. _mailing list archives: https://docutils.sourceforge.io/#mailing-lists
 .. _Docutils-users: docs/user/mailing-lists.html#docutils-users
 .. _SourceForge Bug Tracker:
    http://sourceforge.net/p/docutils/bugs/

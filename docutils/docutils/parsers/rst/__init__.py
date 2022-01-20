@@ -294,7 +294,7 @@ class Directive(object):
     """
 
     # There is a "Creating reStructuredText Directives" how-to at
-    # <http://docutils.sf.net/docs/howto/rst-directives.html>.  If you
+    # <https://docutils.sourceforge.io/docs/howto/rst-directives.html>.  If you
     # update this docstring, please update the how-to as well.
 
     required_arguments = 0

@@ -748,7 +748,7 @@ class ConfigParser(RawConfigParser):
     old_warning = """
 The "[option]" section is deprecated.  Support for old-format configuration
 files will be removed in Docutils 0.21 or later.  Please revise your
-configuration files.  See <http://docutils.sf.net/docs/user/config.html>,
+configuration files.  See <https://docutils.sourceforge.io/docs/user/config.html>,
 section "Old-Format Configuration Files".
 """
 

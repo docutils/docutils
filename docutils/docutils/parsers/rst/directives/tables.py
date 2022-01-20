@@ -394,7 +394,7 @@ class ListTable(Table):
     """
     Implement tables whose data is encoded as a uniform two-level bullet list.
     For further ideas, see
-    http://docutils.sf.net/docs/dev/rst/alternatives.html#list-driven-tables
+    https://docutils.sourceforge.io/docs/dev/rst/alternatives.html#list-driven-tables
     """
 
     option_spec = {'header-rows': directives.nonnegative_int,

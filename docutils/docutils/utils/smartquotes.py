@@ -132,7 +132,7 @@ smartypants.py license (2-Clause BSD license):
 .. _SmartyPants: http://daringfireball.net/projects/smartypants/
 .. _Movable Type: http://www.movabletype.org/
 .. _2-Clause BSD license: https://opensource.org/licenses/BSD-2-Clause
-.. _Docutils: http://docutils.sf.net/
+.. _Docutils: https://docutils.sourceforge.io/
 
 Description
 ===========
