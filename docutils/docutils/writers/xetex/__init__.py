@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# :Author: Günter Milde <milde@users.sourceforge.net>
+# :Author: Günter Milde <milde@users.sf.net>
 # :Revision: $Revision$
 # :Date: $Date$
 # :Copyright: © 2010 Günter Milde.

@@ -1,6 +1,6 @@
 #! /usr/bin/env python3
 # $Id$
-# Authors: Günter Milde <milde@users.sourceforge.net>,
+# Authors: Günter Milde <milde@users.sf.net>,
 #          David Goodger <goodger@python.org>
 # Copyright: This module has been placed in the public domain.
 
