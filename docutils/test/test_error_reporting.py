@@ -1,6 +1,6 @@
 #! /usr/bin/env python3
 # $Id$
-# Author: Günter Milde <milde@users.sourceforge.net>
+# Author: Günter Milde <milde@users.sf.net>
 # Copyright: This module has been placed in the public domain.
 
 """

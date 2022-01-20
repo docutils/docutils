@@ -1,6 +1,6 @@
 #! /usr/bin/env python3
 # $Id$
-# Author: Günter Milde <milde@users.sourceforge.net>,
+# Author: Günter Milde <milde@users.sf.net>,
 # :License: Released under the terms of the `2-Clause BSD license`_, in short:
 #
 #    Copying and distribution of this file, with or without modification,
