@@ -272,7 +272,7 @@ class Publisher(object):
             print(u'%s' % io.error_string(error), file=self._stderr)
             print(("""\
 Exiting due to error.  Use "--traceback" to diagnose.
-Please report errors to <docutils-users@lists.sf.net>.
+Please report errors to <docutils-users@lists.sourceforge.net>.
 Include "--traceback" output, Docutils version (%s%s),
 Python version (%s), your OS type & version, and the
 command line used.""" % (__version__,
@@ -304,7 +304,7 @@ command line used.""" % (__version__,
             '\n'
             'Exiting due to error.  Use "--traceback" to diagnose.\n'
             'If the advice above doesn\'t eliminate the error,\n'
-            'please report it to <docutils-users@lists.sf.net>.\n'
+            'please report it to <docutils-users@lists.sourceforge.net>.\n'
             'Include "--traceback" output, Docutils version (%s),\n'
             'Python version (%s), your OS type & version, and the\n'
             'command line used.\n'

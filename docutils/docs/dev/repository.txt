@@ -15,7 +15,7 @@
    To get a checkout of the Docutils source tree (with the
    sandboxes) with SVN_, type ::
 
-       svn checkout http://svn.code.sf.net/p/docutils/code/trunk docutils-code
+       svn checkout https://svn.code.sf.net/p/docutils/code/trunk docutils-code
 
    Users of Git_ can clone a mirror of the docutils repository with ::
 
@@ -75,7 +75,7 @@ To get a checkout, first determine the root of the repository depending
 on your preferred protocol:
 
 anonymous access: (read only)
-    Subversion_: ``http://svn.code.sf.net/p/docutils/code``
+    Subversion_: ``https://svn.code.sf.net/p/docutils/code``
 
     Git_: ``git://repo.or.cz/docutils.git``
 
