@@ -122,7 +122,7 @@ page and select the "Docutils core" topic.
 
 __ `Docutils-checkins list`_
 __ nntp://news.gmane.org/gmane.text.docutils.cvs
-.. _list options: http://lists.sf.net/lists/options/docutils-checkins
+.. _list options: https://lists.sourceforge.net/lists/options/docutils-checkins
 
 Doc-SIG
 -------

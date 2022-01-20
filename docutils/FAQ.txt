@@ -534,7 +534,7 @@ lists may look ugly with so many blank lines, but it's a price we pay
 for unambiguous markup.  Some other plaintext markup systems do not
 require blank lines in nested lists, but they have to compromise
 somehow, either accepting ambiguity or requiring extra complexity.
-For example, `Epytext <http://epydoc.sf.net/epytext.html#list>`__ does
+For example, `Epytext <http://epydoc.sourceforge.net/epytext.html#list>`__ does
 not require blank lines around lists, but it does require that lists
 be indented and that ambiguous cases be escaped.
 
@@ -802,8 +802,8 @@ transparent implicit solution for HTML:
     incomplete practice_ (this is still a partial implementation - but
     sufficient for most needs).
 
-    .. _theory: http://cben-hacks.sf.net/bidi/hibidi.html
-    .. _practice: http://cben-hacks.sf.net/bidi/hibidi.html#practice
+    .. _theory: http://cben-hacks.sourceforge.net/bidi/hibidi.html
+    .. _practice: http://cben-hacks.sourceforge.net/bidi/hibidi.html#practice
 
 There is also an explicit way to set directions through CSS and
 classes in the HTML:

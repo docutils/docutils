@@ -3609,7 +3609,7 @@ Specific:
 
 * docutils/frontend.py: Added to project; support for front-end
   (command-line) scripts.  Option specifications may be augmented by
-  components.  Requires Optik (http://optik.sf.net/) for option
+  components.  Requires Optik (http://optik.sourceforge.net/) for option
   processing (installed locally as docutils/optik.py).
 
 * docutils/io.py: Added to project; uniform API for a variety of input

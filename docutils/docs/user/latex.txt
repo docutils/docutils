@@ -273,11 +273,11 @@ expected output:
   standalone_rst_latex.tex_
 
 .. _standalone_rst_latex.txt:
-  https://sf.net/p/docutils/code/HEAD/tree/trunk/docutils/test/functional/input/standalone_rst_latex.txt
+  https://sourceforge.net/p/docutils/code/HEAD/tree/trunk/docutils/test/functional/input/standalone_rst_latex.txt
 .. _tests/functional/input/data:
-  https://sf.net/p/docutils/code/HEAD/tree/trunk/docutils/test/functional/input/data
+  https://sourceforge.net/p/docutils/code/HEAD/tree/trunk/docutils/test/functional/input/data
 .. _standalone_rst_latex.tex:
-   https://sf.net/p/docutils/code/HEAD/tree/trunk/docutils/test/functional/expected/standalone_rst_latex.tex?format=raw
+   https://sourceforge.net/p/docutils/code/HEAD/tree/trunk/docutils/test/functional/expected/standalone_rst_latex.tex
 
 
 .. _style sheet:

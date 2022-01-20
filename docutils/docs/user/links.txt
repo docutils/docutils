@@ -47,11 +47,11 @@ Advanced text editors with reStructuredText support, IDEs, and docutils GUIs:
     plugin to take notes in reStructured text.
 
 * `JED <http://www.jedsoft.org/jed/>`__ programmers editor with
-  `rst mode <http://jedmodes.sf.net/mode/rst/>`__
+  `rst mode <https://jedmodes.sourceforge.io/mode/rst/>`__
 
 * `reStructuredText editor plug-in for Eclipse`__
 
-  __ http://resteditor.sf.net/
+  __ http://http://resteditor.sourceforge.net/
 
 * Gnome's gedit offers syntax highlighting and a reST preview pane.
 

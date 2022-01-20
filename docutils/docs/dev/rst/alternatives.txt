@@ -2707,8 +2707,8 @@ and `beginning 2003-08-04`__.
 __ http://mail.python.org/pipermail/doc-sig/2001-April/001776.html
 __ http://mail.python.org/pipermail/doc-sig/2001-April/001789.html
 __ http://mail.python.org/pipermail/doc-sig/2001-April/001793.html
-__ http://sourceforge.net/mailarchive/message.php?msg_id=3838913
-__ http://sf.net/mailarchive/forum.php?thread_id=2957175&forum_id=11444
+__ https://sourceforge.net/mailarchive/message.php?msg_id=3838913
+__ https://sf.net/mailarchive/forum.php?thread_id=2957175&forum_id=11444
 
 
 Sloppy Indentation of List Items

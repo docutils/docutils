@@ -989,7 +989,7 @@ That's All, Folks!
    https://docutils.sourceforge.io
 
    Docutils users' mailing list:
-   docutils-users@lists.sf.net
+   docutils-users@lists.sourceforge.net
 
    `Any questions?`
 

@@ -105,7 +105,7 @@ Other Ideas
 .. _JavaDoc: http://java.sun.com/j2se/javadoc/
 .. _pythondoc: http://starship.python.net/crew/danilo/pythondoc/
 .. _Grouch: http://www.mems-exchange.org/software/grouch/
-.. _epydoc: http://epydoc.sf.net/
+.. _epydoc: http://epydoc.sourceforge.net/
 .. _iPhrase Python documentation conventions:
    http://mail.python.org/pipermail/doc-sig/2001-May/001840.html
 
