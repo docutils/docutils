@@ -8,7 +8,7 @@
 :Date: $Date$
 :Copyright: This document has been placed in the public domain.
 
-.. _Docutils: http://docutils.sourceforge.net/
+.. _Docutils: https://docutils.sourceforge.io/
 
 .. contents::
 
@@ -20,7 +20,7 @@ First, please download the most current `release tarball`_ and unpack
 it.
 
 .. _Docutils-develop: ../user/mailing-lists.html#docutils-develop
-.. _release tarball: http://docutils.sourceforge.net/#download
+.. _release tarball: https://docutils.sourceforge.io/#download
 
 
 Dependencies
@@ -146,4 +146,4 @@ tarball.
 
 For more information on testing, view the `Docutils Testing`_ page.
 
-.. _Docutils Testing: http://docutils.sourceforge.net/docs/dev/testing.html
+.. _Docutils Testing: https://docutils.sourceforge.io/docs/dev/testing.html

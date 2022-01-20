@@ -54,8 +54,8 @@
    There is no support for the "header" directive in the themes
    included with Docutils.
 
-.. _Docutils: http://docutils.sourceforge.net/
-.. _reStructuredText: http://docutils.sourceforge.net/rst.html
+.. _Docutils: https://docutils.sourceforge.io/
+.. _reStructuredText: https://docutils.sourceforge.io/rst.html
 .. _S5: http://meyerweb.com/eric/tools/s5/
 .. _Firefox: http://www.mozilla.com/firefox/
 .. |bullet| unicode:: U+02022
@@ -80,7 +80,7 @@ Introduction
    installed.  See the `Docutils README`__ file for installation
    instructions.
 
-   __ http://docutils.sourceforge.net/README.html
+   __ https://docutils.sourceforge.io/README.html
 
 * reStructuredText
 

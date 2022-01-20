@@ -743,7 +743,7 @@ class HtmlWriterPublishPartsTestCase(WriterPublishTestCase):
                                       ' content="text/html; charset=%s" />\n')
     standard_generator_template = (
         '<meta name="generator"'
-        ' content="Docutils %s: http://docutils.sourceforge.net/" />\n')
+        ' content="Docutils %s: https://docutils.sourceforge.io/" />\n')
     standard_html_meta_value = (
         standard_content_type_template
         + standard_generator_template % docutils.__version__)

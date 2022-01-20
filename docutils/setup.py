@@ -34,7 +34,7 @@ Docutils is a modular system for processing documentation
 into useful formats, such as HTML, XML, and LaTeX.  For
 input Docutils supports reStructuredText, an easy-to-read,
 what-you-see-is-what-you-get plaintext markup syntax.""",  # wrap at col 60
-    'url': 'http://docutils.sourceforge.net/',
+    'url': 'https://docutils.sourceforge.io/',
     'version': '0.19b.dev',
     'author': 'David Goodger',
     'author_email': 'goodger@python.org',

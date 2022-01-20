@@ -5,7 +5,7 @@
 :Author: David Goodger
 :Contact: goodger@python.org
 :Date: $Date$
-:Web site: http://docutils.sourceforge.net/
+:Web site: https://docutils.sourceforge.io/
 :Copyright: This document has been placed in the public domain.
 
 Most of the files included in this project have been placed in the
@@ -26,7 +26,7 @@ listed below, in the work of authorship known as "Docutils" identified
 below (the "Work") to the public domain.
 
 The primary repository for the Work is the Internet World Wide Web
-site <http://docutils.sourceforge.net/>.  The Work consists of the
+site <https://docutils.sourceforge.io/>.  The Work consists of the
 files within the "docutils" module of the Docutils project Subversion
 repository (Internet host docutils.svn.sourceforge.net, filesystem path
 /svnroot/docutils), whose Internet web interface is located at
@@ -141,7 +141,7 @@ All used licenses are OSI-approved_ and GPL-compatible_.
 Plaintext versions of all the linked-to licenses are provided in the
 licenses_ directory.
 
-.. _sandbox: http://docutils.sourceforge.net/sandbox/README.html
+.. _sandbox: https://docutils.sourceforge.io/sandbox/README.html
 .. _licenses: licenses/
 .. _Python 2.1.1 license: http://www.python.org/2.1.1/license.html
 .. _GNU General Public License: http://www.gnu.org/copyleft/gpl.html

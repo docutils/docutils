@@ -294,7 +294,7 @@ References and Footnotes
 .. [3] Guido van Rossum, Python's creator and Benevolent Dictator For
    Life.
 
-.. _Docutils: http://docutils.sourceforge.net/
+.. _Docutils: https://docutils.sourceforge.io/
 
 .. _Python Style Guide:
    http://www.python.org/doc/essays/styleguide.html

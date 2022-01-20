@@ -165,4 +165,4 @@ TODO - Open issues
 
 * Input and output encoding are problematic at least.
 
-.. _Docutils: http://docutils.sourceforge.net/
+.. _Docutils: https://docutils.sourceforge.io/

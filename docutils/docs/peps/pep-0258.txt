@@ -497,7 +497,7 @@ The ``tools/`` directory contains several front ends for common
 Docutils processing.  See `Docutils Front-End Tools`_ for details.
 
 .. _Docutils Front-End Tools:
-   http://docutils.sourceforge.net/docs/user/tools.html
+   https://docutils.sourceforge.io/docs/user/tools.html
 
 
 Document Tree
@@ -978,13 +978,13 @@ stylist code will lower the barrier considerably.
    (http://www.python.org/peps/pep-0216.html)
 
 .. _docutils.dtd:
-   http://docutils.sourceforge.net/docs/ref/docutils.dtd
+   https://docutils.sourceforge.io/docs/ref/docutils.dtd
 
 .. _soextbl.dtd:
-   http://docutils.sourceforge.net/docs/ref/soextblx.dtd
+   https://docutils.sourceforge.io/docs/ref/soextblx.dtd
 
 .. _The Docutils Document Tree:
-   http://docutils.sourceforge.net/docs/ref/doctree.html
+   https://docutils.sourceforge.io/docs/ref/doctree.html
 
 .. _VMS error condition severity levels:
    http://www.openvms.compaq.com:8000/73final/5841/841pro_027.html
@@ -993,7 +993,7 @@ stylist code will lower the barrier considerably.
 .. _log4j project: http://logging.apache.org/log4j/docs/index.html
 
 .. _Docutils Python Source DTD:
-   http://docutils.sourceforge.net/docs/dev/pysource.dtd
+   https://docutils.sourceforge.io/docs/dev/pysource.dtd
 
 .. _ISO 639: http://www.loc.gov/standards/iso639-2/englangn.html
 
@@ -1006,7 +1006,7 @@ stylist code will lower the barrier considerably.
 ==================
 
 A SourceForge project has been set up for this work at
-http://docutils.sourceforge.net/.
+https://docutils.sourceforge.io/.
 
 
 ===========

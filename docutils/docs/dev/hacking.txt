@@ -15,8 +15,8 @@
     knowledge is certainly helpful (though not necessary, strictly
     speaking).
 
-.. _Docutils: http://docutils.sourceforge.net/
-.. _reStructuredText: http://docutils.sourceforge.net/rst.html
+.. _Docutils: https://docutils.sourceforge.io/
+.. _reStructuredText: https://docutils.sourceforge.io/rst.html
 .. _Docutils front-end tools: ../user/tools.html
 
 .. contents::
@@ -164,7 +164,7 @@ For HTML output, we can test this using the ``rst2html.py`` tool::
     <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
     <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="generator" content="Docutils 0.3.10: http://docutils.sourceforge.net/" />
+    <meta name="generator" content="Docutils 0.3.10: https://docutils.sourceforge.io/" />
     <title></title>
     <link rel="stylesheet" href="../docutils/writers/html4css1/html4css1.css" type="text/css" />
     </head>

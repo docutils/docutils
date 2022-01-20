@@ -310,7 +310,7 @@ Release 0.16 (2020-01-12)
   - Keep `backslash escapes`__ in the document tree. This allows, e.g.,
     escaping of author-separators in `bibliographic fields`__.
 
-  __ http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html#escaping-mechanism
+  __ https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#escaping-mechanism
   __ docs/ref/rst/restructuredtext.html#bibliographic-fields
 
 * LaTeX writer:
@@ -727,7 +727,7 @@ Release 0.6 (2009-10-11)
 
    The recommended way to generate PDF output is to use either the
    LaTeX2e writer or one of the alternatives listed at
-   http://docutils.sourceforge.net/docs/user/links.html#pdf.
+   https://docutils.sourceforge.io/docs/user/links.html#pdf.
 
 * reStructuredText:
 

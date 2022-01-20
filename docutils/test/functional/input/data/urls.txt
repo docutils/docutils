@@ -7,7 +7,7 @@ Long URLs should be wrapped in the PDF. This can be achieved with the
 
 Example:
   a long URL that should wrap in the output
-  http://docutils.sourceforge.net/docs/user/latex.html#id79
+  https://docutils.sourceforge.io/docs/user/latex.html#id79
 
 
 If the argument contains any "%", "#", or "^^", or ends with ``\``, it can't

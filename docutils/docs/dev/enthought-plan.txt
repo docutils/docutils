@@ -118,7 +118,7 @@ follows::
 This is in conjunction with the "Public Domain Dedication" section of
 COPYING.txt__.
 
-__ http://docutils.sourceforge.net/COPYING.html
+__ https://docutils.sourceforge.io/COPYING.html
 
 The code and documentation originating from Enthought funding will
 have Enthought's copyright and license declaration.  While I will try

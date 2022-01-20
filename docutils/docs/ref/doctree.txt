@@ -36,13 +36,13 @@ throughout this document.  For a gentle introduction, see `A
 ReStructuredText Primer`_.  For complete technical details, see the
 `reStructuredText Markup Specification`_.
 
-.. _Docutils: http://docutils.sourceforge.net/
+.. _Docutils: https://docutils.sourceforge.io/
 .. _Docutils Generic DTD:
 .. _Docutils DTD:
 .. _docutils.dtd: docutils.dtd
 .. _Introducing the Extensible Markup Language (XML):
    http://xml.coverpages.org/xmlIntro.html
-.. _reStructuredText: http://docutils.sourceforge.net/rst.html
+.. _reStructuredText: https://docutils.sourceforge.io/rst.html
 .. _A ReStructuredText Primer: ../user/rst/quickstart.html
 .. _reStructuredText Markup Specification: rst/restructuredtext.html
 

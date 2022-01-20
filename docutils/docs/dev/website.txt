@@ -8,7 +8,7 @@
 :Revision: $Revision$
 :Copyright: This document has been placed in the public domain.
 
-The Docutils web site, <http://docutils.sourceforge.net/>, is
+The Docutils web site, <https://docutils.sourceforge.io/>, is
 maintained by the ``docutils-update.local`` script, run by project 
 maintainers on their local machines.  The script
 will process any .txt file which is newer than the corresponding .html
@@ -17,7 +17,7 @@ to the web site at SourceForge.
 
 ..  .. old instructions, for cron job:
 
-    The Docutils web site, <http://docutils.sourceforge.net/>, is
+    The Docutils web site, <https://docutils.sourceforge.io/>, is
     maintained automatically by the ``docutils-update`` script, run as an
     hourly cron job on shell.berlios.de (by user "wiemann").  The script
     will process any .txt file which is newer than the corresponding .html

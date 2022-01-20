@@ -37,7 +37,7 @@ support via a module in the PYTHONPATH root (e.g. the working directory).
    project bug tracker on SourceForge at
    http://sourceforge.net/p/docutils/bugs/
 
-.. _Docutils: http://docutils.sourceforge.net/
+.. _Docutils: https://docutils.sourceforge.io/
 .. _Introduction to i18n:
    http://www.debian.org/doc/manuals/intro-i18n/
 

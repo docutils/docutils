@@ -27,4 +27,4 @@ To install the package, put a copy of the package file in a directory on your
 For setup and usage details, see `Emacs Support for reStructuredText
 <../../../docs/user/emacs.html>`_.
 
-.. _reStructuredText: http://docutils.sourceforge.net/rst.html
+.. _reStructuredText: https://docutils.sourceforge.io/rst.html

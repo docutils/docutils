@@ -203,7 +203,7 @@ setting (or command line argument).
   from the booktabs_ LaTeX package.
 
   .. _table-style:
-     http://docutils.sourceforge.net/docs/user/config.html#table-style
+     https://docutils.sourceforge.io/docs/user/config.html#table-style
   .. _booktabs:
      http://tug.ctan.org/tex-archive/macros/latex/contrib/booktabs/booktabs.pdf
 

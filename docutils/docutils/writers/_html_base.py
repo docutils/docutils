@@ -238,7 +238,7 @@ class HTMLTranslator(nodes.NodeVisitor):
                             ' xml:lang="%(lang)s" lang="%(lang)s">\n<head>\n')
     content_type = '<meta charset="%s"/>\n'
     generator = ('<meta name="generator" content="Docutils %s: '
-                 'http://docutils.sourceforge.net/" />\n')
+                 'https://docutils.sourceforge.io/" />\n')
 
     # Template for the MathJax script in the header:
     mathjax_script = '<script type="text/javascript" src="%s"></script>\n'
@@ -252,7 +252,7 @@ class HTMLTranslator(nodes.NodeVisitor):
     in the `math-output` setting appended to "mathjax".
     See `Docutils Configuration`__.
 
-    __ http://docutils.sourceforge.net/docs/user/config.html#math-output
+    __ https://docutils.sourceforge.io/docs/user/config.html#math-output
 
     The fallback tries a local MathJax installation at
     ``/usr/share/javascript/mathjax/MathJax.js``.

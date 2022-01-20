@@ -227,7 +227,7 @@ wbr
 .. [#attribute-required] Requires support for attributes to inline
    roles to make sense.
 
-.. _TODO: http://docutils.sourceforge.net/docs/dev/todo.html#interpreted-text
+.. _TODO: https://docutils.sourceforge.io/docs/dev/todo.html#interpreted-text
 
 
 Indicating Edits

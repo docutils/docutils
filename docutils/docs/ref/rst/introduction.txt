@@ -27,13 +27,13 @@ Specification`_ is the definitive reference.  There is also an
 analysis of the `Problems With StructuredText`_.
 
 ReStructuredText's web page is
-http://docutils.sourceforge.net/rst.html.
+https://docutils.sourceforge.io/rst.html.
 
-.. _reStructuredText: http://docutils.sourceforge.net/rst.html
+.. _reStructuredText: https://docutils.sourceforge.io/rst.html
 .. _StructuredText:
     http://www.zope.org/DevHome/Members/jim/StructuredTextWiki/FrontPage
-.. _Setext: http://docutils.sourceforge.net/mirror/setext.html
-.. _Docutils: http://docutils.sourceforge.net/
+.. _Setext: https://docutils.sourceforge.io/mirror/setext.html
+.. _Docutils: https://docutils.sourceforge.io/
 .. _A ReStructuredText Primer: ../../user/rst/quickstart.html
 .. _Quick reStructuredText: ../../user/rst/quickref.html
 .. _reStructuredText Markup Specification: restructuredtext.html
@@ -281,7 +281,7 @@ followed.
    - `PEP 257: Docstring Conventions`__
 
    Current working versions of the PEPs can be found in
-   http://docutils.sourceforge.net/docs/peps/, and official versions
+   https://docutils.sourceforge.io/docs/peps/, and official versions
    can be found in the `master PEP repository`_.
 
    __ http://mail.python.org/pipermail/doc-sig/2001-June/001855.html

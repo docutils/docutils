@@ -642,7 +642,7 @@ Docutils does not require their presence to function.
 An official parallel project will have its own directory beside (or
 parallel to) the main ``docutils`` directory in the Subversion
 repository.  It can have its own web page in the
-docutils.sourceforge.net domain, its own file releases and
+docutils.sourceforge.io domain, its own file releases and
 downloadable snapshots, and even a mailing list if that proves useful.
 However, an official parallel project has implications: it is expected
 to be maintained and continue to work with changes to the core
@@ -673,7 +673,7 @@ Many related but independent projects are listed in the Docutils
 `link list`_. If you want your project to appear there, drop a note at
 the Docutils-develop_ mailing list.
 
-.. _link list: http://docutils.sourceforge.net/docs/user/links.html
+.. _link list: https://docutils.sourceforge.io/docs/user/links.html
 .. _docutils-develop: docs/user/mailing-lists.html#docutils-develop
 
 

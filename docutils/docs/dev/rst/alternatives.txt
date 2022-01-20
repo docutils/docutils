@@ -30,7 +30,7 @@ The ideas are divided into sections:
 * `... Or Not To Do?`_: possible but questionable.  These probably
   won't be implemented, but you never know.
 
-.. _Setext: http://docutils.sourceforge.net/mirror/setext.html
+.. _Setext: https://docutils.sourceforge.io/mirror/setext.html
 .. _StructuredText:
    http://www.zope.org/DevHome/Members/jim/StructuredTextWiki/FrontPage
 .. _Problems with StructuredText: problems.html
@@ -2015,7 +2015,7 @@ Syntax proposals:
 
         _[DJG2002]
             Docutils: Python Documentation Utilities project; Goodger
-            et al.; http://docutils.sourceforge.net/
+            et al.; https://docutils.sourceforge.io/
 
     Without the ".. " marker, subsequent lines would either have to
     align as in one of the above, or we'd have to allow loose
