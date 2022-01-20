@@ -59,7 +59,8 @@ top level of the Docutils project directory.
            question or issue, there's a good chance it's already
            answered here.
 :BUGS.txt_: A list of known bugs, and how to report a bug.
-:RELEASE-NOTES.txt_: Summary of the major changes in recent releases.
+:RELEASE-NOTES.txt_: Summary of the major changes in recent releases and
+                     notice of future incompatible changes.
 :HISTORY.txt_: Detailed change history log.
 :THANKS.txt_: Acknowledgements.
 
@@ -153,28 +154,24 @@ Prehistoric:
 =======================================
 
 * `PEP 256: Docstring Processing System Framework`__ is a high-level
-  generic proposal.  [`PEP 256`__ in the `master repository`_]
+  generic proposal.  [:PEP:`256` in the `master repository`_]
 * `PEP 257: Docstring Conventions`__ addresses docstring style and
-  touches on content.  [`PEP 257`__ in the `master repository`_]
+  touches on content.  [:PEP:`257` in the `master repository`_]
 * `PEP 258: Docutils Design Specification`__ is an overview of the
   architecture of Docutils.  It documents design issues and
-  implementation details.  [`PEP 258`__ in the `master repository`_]
+  implementation details.  [:PEP:`258` in the `master repository`_]
 * `PEP 287: reStructuredText Docstring Format`__ proposes a standard
-  markup syntax.  [`PEP 287`__ in the `master repository`_]
+  markup syntax.  [:PEP:`287` in the `master repository`_]
 
-Please note that PEPs in the `master repository`_ may not be current,
-whereas the local versions are.
+Please note that PEPs in the `master repository`_ developed
+independent from the local versions after the rejection of :PEP:`258`.
 
 __ peps/pep-0256.html
-__ http://www.python.org/peps/pep-0256.html
 __ peps/pep-0257.html
-__ http://www.python.org/peps/pep-0257.html
 .. _PEP 258:
 __ peps/pep-0258.html
-__ http://www.python.org/peps/pep-0258.html
 __ peps/pep-0287.html
-__ http://www.python.org/peps/pep-0287.html
-.. _master repository: http://www.python.org/peps/
+.. _master repository: https://www.python.org/dev/peps/
 
 
 .. _api:
