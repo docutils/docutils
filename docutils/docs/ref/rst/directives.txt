@@ -1368,7 +1368,7 @@ into the document as text.  This directive may be used in substitution
 definitions only.
 
 The optional directive content is interpreted as the desired date
-format, using the same codes as Python's time.strftime function.  The
+format, using the same codes as Python's `time.strftime()`__ function.  The
 default format is "%Y-%m-%d" (ISO 8601 date), but time fields can also
 be used.  Examples::
 
@@ -1378,6 +1378,8 @@ be used.  Examples::
     Today's date is |date|.
 
     This document was generated on |date| at |time|.
+
+__ https://docs.python.org/3/library/time.html#time.strftime
 
 
 ---------------
