@@ -37,9 +37,9 @@ class Writer(html4css1.Writer):
         'option is "%s", and the default value for --template is "%s". '
         'See HTML Writer Options above.'
         % (default_stylesheet_path, default_template_path),
-        (('Python\'s home URL.  Default is "http://www.python.org".',
+        (('Python\'s home URL.  Default is "https://www.python.org".',
           ['--python-home'],
-          {'default': 'http://www.python.org', 'metavar': '<URL>'}),
+          {'default': 'https://www.python.org', 'metavar': '<URL>'}),
          ('Home URL prefix for PEPs.  Default is "." (current directory).',
           ['--pep-home'],
           {'default': '.', 'metavar': '<URL>'}),

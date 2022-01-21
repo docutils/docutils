@@ -505,11 +505,11 @@
                         Title Reference
                     .  Here are
                     some explicit interpreted text roles: a PEP reference (
-                    <reference refuri="http://www.python.org/dev/peps/pep-0287">
+                    <reference refuri="https://www.python.org/dev/peps/pep-0287">
                         PEP 287
                     ); an
                     RFC reference (
-                    <reference refuri="http://tools.ietf.org/html/rfc2822.html">
+                    <reference refuri="https://tools.ietf.org/html/rfc2822.html">
                         RFC 2822
                     ); an abbreviation (
                     <abbreviation>
