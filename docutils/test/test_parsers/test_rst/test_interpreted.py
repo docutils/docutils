@@ -301,7 +301,7 @@ totest['references'] = [
 """\
 <document source="test data">
     <paragraph>
-        <reference refuri="http://www.python.org/dev/peps/pep-0000">
+        <reference refuri="https://www.python.org/dev/peps/pep-0000">
             PEP 0
 """],
 ["""\
@@ -322,7 +322,7 @@ totest['references'] = [
 """\
 <document source="test data">
     <paragraph>
-        <reference refuri="http://tools.ietf.org/html/rfc2822.html">
+        <reference refuri="https://tools.ietf.org/html/rfc2822.html">
             RFC 2822
 """],
 ["""\
@@ -343,7 +343,7 @@ totest['references'] = [
 """\
 <document source="test data">
     <paragraph>
-        <reference refuri="http://tools.ietf.org/html/rfc2822.html#section1">
+        <reference refuri="https://tools.ietf.org/html/rfc2822.html#section1">
             RFC 2822
 """],
 ]

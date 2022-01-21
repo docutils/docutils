@@ -36,6 +36,10 @@ Changes Since 0.18.1
 
   .. _"include" directive: docs/ref/rst/directives.html#include
 
+* docutils/parsers/rst/__init__.py
+  
+  - use "https:" scheme in PEP and RFC base link defaults.
+
 * docutils/parsers/rst/directives/__init__.py
 
   - parser_name() keeps details if converting ImportError to ValueError.
@@ -54,6 +58,10 @@ Changes Since 0.18.1
 
   - Add deprecation warning.
 
+* docutils/writers/pep_html/:
+
+  - use "https:" scheme in "python_home" URL default. 
+  
 * test/DocutilsTestSupport.py
 
   - exception_data() returns None if no exception was raised.

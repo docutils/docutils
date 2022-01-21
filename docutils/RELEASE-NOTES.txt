@@ -91,6 +91,11 @@ Docutils 0.19 is compatible with Python versions 3.7 and later.
 * Support calling the "myst" parser (https://pypi.org/project/myst-docutils)
   from docutils-cli.py_.
 
+* The default values for the "pep-references", "rfc-base-url",
+  and "python-home" `configuration settings`_ now uses the "https:" scheme.
+  
+.. _configuration settings: docs/user/config.html
+  
 
 Release 0.18.1 (2021-12-23)
 ===========================
