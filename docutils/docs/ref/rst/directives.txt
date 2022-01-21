@@ -532,11 +532,11 @@ when Pygments_ is not installed or the language is not in the
 
 For inline code, use the `"code" role`_.
 
-__ http://pygments.org/docs/cmdline/#generating-styles
+__ https://pygments.org/docs/cmdline/#generating-styles
 __ https://docutils.sourceforge.io/sandbox/stylesheets/
-.. _Pygments: http://pygments.org/
+.. _Pygments: https://pygments.org/
 .. _syntax_highlight: ../../user/config.html#syntax-highlight
-.. _supported languages and markup formats: http://pygments.org/languages/
+.. _supported languages and markup formats: https://pygments.org/languages/
 .. _"code" role: roles.html#code
 
 
@@ -1284,7 +1284,7 @@ the "replace" directive::
     I recommend you try |Python|_.
 
     .. |Python| replace:: Python, *the* best language around
-    .. _Python: http://www.python.org/
+    .. _Python: https://www.python.org/
 
 
 .. _unicode:
@@ -1700,7 +1700,7 @@ For example ``"Rot.Gelb&Grün:+2008"`` becomes ``"rot-gelb-grun-2008"`` and
           hyphens ("-"), underscores ("_"), colons (":"), and periods
           (".").
 
-          -- http://www.w3.org/TR/html401/types.html#type-name
+          -- https://www.w3.org/TR/html401/types.html#type-name
 
     - The `CSS1 spec`_ defines identifiers based on the "name" token
       ("flex" tokenizer notation below; "latin1" and "escape" 8-bit
@@ -1729,8 +1729,8 @@ For example ``"Rot.Gelb&Grün:+2008"`` becomes ``"rot-gelb-grun-2008"`` and
        __ https://www.w3.org/TR/CSS22/syndata.html
        __ https://www.w3.org/TR/css-syntax-3/#typedef-ident-token
 
-    .. _HTML 4.01 spec: http://www.w3.org/TR/html401/
-    .. _CSS1 spec: http://www.w3.org/TR/REC-CSS1
+    .. _HTML 4.01 spec: https://www.w3.org/TR/html401/
+    .. _CSS1 spec: https://www.w3.org/TR/REC-CSS1
 
 .. _role:
 
@@ -1941,7 +1941,7 @@ HTML equivalent::
    https://html.spec.whatwg.org/multipage/semantics.html#the-meta-element
 .. _ODT file properties:
    https://en.wikipedia.org/wiki/OpenDocument_technical_specification#Metadata
-.. _hyperref: http://ctan.org/pkg/hyperref
+.. _hyperref: https://ctan.org/pkg/hyperref
 .. _bibliographic fields: restructuredtext.html#bibliographic-fields
 
 

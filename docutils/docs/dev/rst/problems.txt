@@ -847,8 +847,7 @@ reStructuredText's syntax (#4) is definitely the most readable.  The
 text is separated from the link URI and the footnote, resulting in
 cleanly readable text.
 
-.. _StructuredText:
-   http://www.zope.org/DevHome/Members/jim/StructuredTextWiki/FrontPage
+.. _StructuredText: https://zopestructuredtext.readthedocs.org/
 .. _Setext: https://docutils.sourceforge.io/mirror/setext.html
 .. _reStructuredText: https://docutils.sourceforge.io/rst.html
 .. _detailed description:

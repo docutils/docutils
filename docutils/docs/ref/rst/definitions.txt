@@ -84,7 +84,7 @@ the ``tools/dev/unicode2rstsubs.py`` program from the input file
 unicode.xml__, which is maintained as part of the MathML 2
 Recommentation XML source.
 
-__ http://www.w3.org/2003/entities/xml/
+__ https://www.w3.org/2003/entities/xml/
 
 ===================  =================================================
 Entity Set File      Description

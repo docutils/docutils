@@ -61,13 +61,13 @@ Docutils is implemented in Python_.
 
 .. _Docutils: https://docutils.sourceforge.io/
 .. _PEPs (Python Enhancement Proposals):
-   http://www.python.org/peps/pep-0012.html
+   https://www.python.org/dev/peps/pep-0012
 .. _can be used by client code: docs/api/publisher.html
 .. _front-end tools: docs/user/tools.html
 .. _test suite: docs/dev/testing.html
 .. _documentation: docs/index.html
-.. _PEP 258: http://www.python.org/peps/pep-0258.html
-.. _Python: http://www.python.org/
+.. _PEP 258: https://www.python.org/dev/peps/pep-0258
+.. _Python: https://www.python.org/
 
 
 Why is it called "Docutils"?
@@ -99,9 +99,9 @@ or any other variation.  It is pronounced as in "DOCumentation
 UTILitieS", with emphasis on the first syllable.
 
 .. _An Introduction to reStructuredText: docs/ref/rst/introduction.html
-__ http://mail.python.org/pipermail/doc-sig/1999-December/000878.html
-__ http://mail.python.org/pipermail/doc-sig/2000-November/001252.html
-__ http://mail.python.org/pipermail/doc-sig/2000-November/001239.html
+__ https://mail.python.org/pipermail/doc-sig/1999-December/000878.html
+__ https://mail.python.org/pipermail/doc-sig/2000-November/001252.html
+__ https://mail.python.org/pipermail/doc-sig/2000-November/001239.html
 __ http://homepage.ntlworld.com/tibsnjoan/docutils/STpy.html
 
 
@@ -154,7 +154,7 @@ How can I get a new feature into Docutils?
 .. _extensions and related projects:
    docs/dev/policies.html#extensions-and-related-projects
 .. _feature request tracker:
-    http://sourceforge.net/p/docutils/feature-requests/
+    https://sourceforge.net/p/docutils/feature-requests/
 
 
 reStructuredText
@@ -210,7 +210,7 @@ The abbreviations "reSTX" and "rSTX"/"rstx" should **not** be used;
 they overemphasize reStructuredText's predecessor, Zope's
 StructuredText.
 
-__ http://en.wikipedia.org/wiki/Representational_State_Transfer
+__ https://en.wikipedia.org/wiki/Representational_State_Transfer
 
 
 What's the standard filename extension for a reStructuredText file?
@@ -456,7 +456,7 @@ With no implied endorsement or recommendation, and in no particular
 order:
 
 * `Firedrop <http://www.voidspace.org.uk/python/firedrop2/>`__
-* `PyBloxsom <http://pyblosxom.sourceforge.net/>`__
+* `PyBloxsom <http://pyblosxom.github.io/>`__
 * `Lino WebMan <http://lino.sourceforge.net/webman.html>`__
 * `Pelican <http://blog.getpelican.com/>`__
   (also  listed `on PyPi <http://pypi.python.org/pypi/pelican>`__)
@@ -571,7 +571,7 @@ They are not recommended.
       Here is an |emphasized hyperlink|_.
 
       .. |emphasized hyperlink| replace:: *emphasized hyperlink*
-      .. _emphasized hyperlink: http://example.org
+      .. _emphasized hyperlink: https://example.org
 
   It is not possible for just a portion of the replacement text to be
   a hyperlink; it's the entire replacement text or nothing.
@@ -588,7 +588,7 @@ They are not recommended.
       .. |stuff| raw:: html
 
          <em>emphasized text containing a
-         <a href="http://example.org">hyperlink</a> and
+         <a href="https://example.org">hyperlink</a> and
          <tt>inline literals</tt></em>
 
   Raw LaTeX is supported for LaTeX output, etc.
@@ -781,7 +781,7 @@ Persian/Farsi.  This should allow reasonable use of editors limited to
 a single base direction for the whole document (like Notepad, Vim and
 text boxes in Firefox).
 
-.. _Unicode Bidi Algorithm: http://www.unicode.org/reports/tr9/
+.. _Unicode Bidi Algorithm: https://www.unicode.org/reports/tr9/
 .. _geresh: http://www.typo.co.il/~mooffie/geresh/
 .. _translate: docs/howto/i18n.html
 
@@ -1157,7 +1157,7 @@ Full question:
 
       <?xml version="1.0" encoding="utf-8" ?>
       <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-       "http://www.w3.org/TR/xht ml1/DTD/xhtml1-transitional.dtd">
+       "https://www.w3.org/TR/xht ml1/DTD/xhtml1-transitional.dtd">
 
     But this is followed by::
 
@@ -1268,7 +1268,7 @@ addition fits better in the `extensions and related projects`_.
 .. _supported Python versions: README.html#requirements
 .. _feature branch: docs/dev/policies.html#feature-branch
 .. _Git: http://git-scm.com/
-.. _bug tracker: http://sourceforge.net/p/docutils/bugs/
+.. _bug tracker: https://sourceforge.net/p/docutils/bugs/
 
 
 

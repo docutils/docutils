@@ -717,8 +717,8 @@ contain them, do the following:
    configuration file obeys the file format supported by the Python
    ConfigParser module:
    `ConfigParser -- Configuration file parser --
-   http://docs.python.org/lib/module-ConfigParser.html
-   <http://docs.python.org/lib/module-ConfigParser.html>`_.
+   https://docs.python.org/3/library/configparser.html
+   <https://docs.python.org/3/library/configparser.html>`_.
 
 2. In the "Formats" section of the configuration file, create one
    option (a name-value pair) for each custom style name that you
@@ -1186,7 +1186,7 @@ pick up the default paper size on platforms where the program
 
 
 .. _`Pygments`:
-    http://pygments.pocoo.org/
+    https://pygments.org/
 
 .. _`Docutils`:
     https://docutils.sourceforge.io/
@@ -1195,7 +1195,7 @@ pick up the default paper size on platforms where the program
     https://en.wikipedia.org/wiki/Python_Imaging_Library
 
 .. _`Open Document at Wikipedia`:
-    http://en.wikipedia.org/wiki/OpenDocument
+    https://en.wikipedia.org/wiki/OpenDocument
 
 .. _`OASIS Open Document Format for Office Applications (OpenDocument) TC`:
     http://www.oasis-open.org/committees/tc_home.php?wg_abbrev=office

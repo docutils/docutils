@@ -7,7 +7,7 @@
 # Call: create_unimap.py < unicode.xml > unicode_latex.py
 #
 # Get unicode.xml from
-# <http://www.w3.org/2003/entities/xml/unicode.xml>.
+# <https://www.w3.org/2003/entities/xml/unicode.xml>.
 
 from xml.dom import minidom
 import sys
@@ -65,7 +65,7 @@ print('# Copyright: This file has been placed in the public domain.')
 print('')
 print('# This is a mapping of Unicode characters to LaTeX equivalents.')
 print('# The information has been extracted from')
-print('# <http://www.w3.org/2003/entities/xml/unicode.xml>, written by')
+print('# <https://www.w3.org/2003/entities/xml/unicode.xml>, written by')
 print('# David Carlisle and Sebastian Rahtz.')
 print('#')
 print('# The extraction has been done by the "create_unimap.py" script')

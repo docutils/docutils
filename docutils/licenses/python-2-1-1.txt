@@ -28,7 +28,7 @@ other PythonLabs developers joined Digital Creations.  All
 intellectual property added from this point on, starting with Python
 2.1 and its alpha and beta releases, is owned by the Python Software
 Foundation (PSF), a non-profit modeled after the Apache Software
-Foundation.  See http://www.python.org/psf/ for more information about
+Foundation.  See https://www.python.org/psf/ for more information about
 the PSF.
 
 Thanks to the many outside volunteers who have worked under Guido's

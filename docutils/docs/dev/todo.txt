@@ -19,17 +19,7 @@ the priority.  Items in question form (containing "?") are ideas which
 require more thought and debate; they are potential to-do's.
 
 Many of these items are awaiting champions.  If you see something
-you'd like to tackle, please do!  If there's something you'd like to
-see done but are unable to implement it yourself, please consider
-donating to Docutils: |donate|
-
-.. |donate| image:: http://images.sourceforge.net/images/project-support.jpg
-   :target: http://sourceforge.net/donate/index.php?group_id=38414
-   :align: middle
-   :width: 88
-   :height: 32
-   :alt: Support the Docutils project!
-
+you'd like to tackle, please do!
 Please see also the Bugs_ document for a list of bugs in Docutils.
 
 .. _bugs: ../../BUGS.html
@@ -971,7 +961,7 @@ Misc
 
 * Support generic hyperlink references to _`targets in other
   documents`?  Not in an HTML-centric way, though (it's trivial to say
-  ``http://www.example.com/doc#name``, and useless in non-HTML
+  ``https://www.example.org/doc#name``, and useless in non-HTML
   contexts).  XLink/XPointer?  ``.. baseref::``?  See Doc-SIG
   2001-08-10.
 
@@ -1025,7 +1015,7 @@ Misc
   Appendix E ("Recommendations for Delimiting URI in Context") of `RFC
   2396`_.
 
-  .. _RFC 2396: http://www.rfc-editor.org/rfc/rfc2396.txt
+  .. _RFC 2396: https://www.rfc-editor.org/rfc/rfc2396.txt
 
 * Use the vertical spacing of the source text to determine the
   corresponding vertical spacing of the output?
@@ -1156,7 +1146,7 @@ Misc
   grid tables inside XML comments.
 
   .. _feature request [6]:
-      http://sourceforge.net/p/docutils/feature-requests/6
+      https://sourceforge.net/p/docutils/feature-requests/6
   .. _list-table: ../ref/rst/directives.html#list-table
 
 
@@ -1428,7 +1418,7 @@ MathML_
   For an overview of MathML implementations and tests, see, e.g.,
   the `mathweb wiki`_ or the `ConTeXT MathML page`_.
 
-  .. _MathML: http://www.w3.org/TR/MathML2/
+  .. _MathML: https://www.w3.org/TR/MathML2/
   .. _mathweb wiki: http://www.mathweb.org/wiki/MathML
   .. _ConTeXT MathML page: http://wiki.contextgarden.net/MathML
 
@@ -1462,7 +1452,7 @@ ASCIIMath_
   .. _ASCIIMath tutorial:
      http://www.wjagray.co.uk/maths/ASCIIMathTutorial.html
   .. _ASCIIMathML: http://pypi.python.org/pypi/asciimathml/
-  .. _ASCIIMathPython: http://sourceforge.net/projects/asciimathpython/
+  .. _ASCIIMathPython: https://github.com/paulhtremblay/asciimathml
   __ http://fletcherpenney.net/multimarkdown/
 
 `Unicode Nearly Plain Text Encoding of Mathematics`_
@@ -1474,7 +1464,7 @@ ASCIIMath_
    the Unicode Consortium.)
 
    .. _Unicode Nearly Plain Text Encoding of Mathematics:
-      http://www.unicode.org/notes/tn28/
+      https://www.unicode.org/notes/tn28/
 
 itex
   See `the culmination of a relevant discussion in 2003
@@ -1539,7 +1529,7 @@ MathML_
     * the Unicode-Char <-> LaTeX mappings database unimathsymbols_
 
   __ http://msevior.livejournal.com/26377.html
-  .. _MathML: http://www.w3.org/TR/MathML2/
+  .. _MathML: https://www.w3.org/TR/MathML2/
   .. _ttm: http://hutchinson.belmont.ma.us/tth/mml/
   .. _TeX4ht: http://www.tug.org/applications/tex4ht/mn.html
   .. _MathToWeb:  http://www.mathtoweb.com/
@@ -1712,7 +1702,7 @@ when used in a document.
     - Add support for inclusion by URL? ::
 
           .. include::
-             :url: http://www.example.org/inclusion.txt
+             :url: https://www.example.org/inclusion.txt
 
     - Strip blank lines from begin and end of a literal included file or
       file section. This would correspond to the way a literal block is
@@ -1770,7 +1760,7 @@ when used in a document.
       "language by class attribute" does not change parsing (localized
       directives etc.), only supporting writers.
 
-    .. _BCP 47: http://www.rfc-editor.org/rfc/bcp/bcp47.txt
+    .. _BCP 47: https://www.rfc-editor.org/rfc/bcp/bcp47.txt
 
 
   - _`misc.settings`: Set any(?) Docutils runtime setting from within
@@ -2446,7 +2436,7 @@ Test and consider moving the better one into the docutils core.
 __ ../user/links.html#ePub
 .. _International Digital Publishing Forum: http://www.idpf.org/
 .. _electronic reading devices:
-   http://en.wikipedia.org/wiki/List_of_e-book_readers
+   https://en.wikipedia.org/wiki/List_of_e-book_readers
 
 
 LaTeX writer
@@ -2780,7 +2770,7 @@ but need to find a way to insert it as href argument.
 
 The following fails::
 
-    \href{http://www.w3.org/XML/Schema^^dev}{\fragileURLi}
+    \href{https://www.w3.org/XML/Schema^^dev}{\fragileURLi}
 
 Use %-replacement like http://nowhere/url_with%28parens%29 ?
 
@@ -2814,7 +2804,7 @@ This run will use the default stylesheet, a custom local stylesheet,
 and an external stylesheet:
 
     rstpep2html.py --add-stylesheet-path custom.css \
-        --add-stylesheet http://www.example.org/external.css ...
+        --add-stylesheet https://www.example.org/external.css ...
 
 This run will use only the second custom stylesheet:
 

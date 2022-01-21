@@ -17,7 +17,7 @@
 /*    This file is offered as-is, without any warranty.                    */
 /*                                                                         */
 /* .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause     */
-/* .. _CSS3: http://www.w3.org/TR/CSS3                                     */
+/* .. _CSS3: https://www.w3.org/Style/CSS/                                 */
 /* .. _tufte.css: https://edwardtufte.github.io/tufte-css/                 */
 /* .. _tufte-latex_: https://www.ctan.org/pkg/tufte-latex                  */
 
@@ -159,7 +159,7 @@ ul.auto-toc > li > p {
   padding-left: 1em;
   text-indent: -1em;
 }
-nav.contents ul { 
+nav.contents ul {
   padding-left: 1em;
 }
 
@@ -173,7 +173,7 @@ hr {
 
 /* Lists */
 /* Less indent per level */
-ul, ol { 
+ul, ol {
   padding-left: 1.1em;
 }
 dd {
@@ -329,7 +329,7 @@ a[href^="#system-message"] {
 }
 a:link:hover {
   text-decoration: underline;
-}  
+}
 
 /* Block Alignment */
 /* Let content flow to the side of aligned images and figures */
@@ -547,7 +547,7 @@ figure.marginal > figcaption {
   }
 }
 
-/* wrap URLs */ 
+/* wrap URLs */
 /*   a:link {    */
 /*     white-space: normal; */
 /*     hyphens: none;	    */

@@ -101,13 +101,13 @@ Other Ideas
   an attachment to his Doc-SIG post of 2001-05-30.
 
 
-.. _PEP 257: http://www.python.org/peps/pep-0257.html
+.. _PEP 257: https://www.python.org/dev/peps/pep-0257
 .. _JavaDoc: http://java.sun.com/j2se/javadoc/
 .. _pythondoc: http://starship.python.net/crew/danilo/pythondoc/
 .. _Grouch: http://www.mems-exchange.org/software/grouch/
 .. _epydoc: http://epydoc.sourceforge.net/
 .. _iPhrase Python documentation conventions:
-   http://mail.python.org/pipermail/doc-sig/2001-May/001840.html
+   https://mail.python.org/pipermail/doc-sig/2001-May/001840.html
 
 
 ..

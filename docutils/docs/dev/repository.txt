@@ -45,7 +45,7 @@ __ policies.html#subversion-repository
 .. _SVN:
 .. _Subversion: https://subversion.apache.org/
 .. _TortoiseSVN: https://tortoisesvn.net/
-.. _SourceForge.net: http://sourceforge.net/
+.. _SourceForge.net: https://sourceforge.net/
 .. _Git: http://git-scm.com/
 
 .. contents::
@@ -58,7 +58,7 @@ Web Access
 ----------
 
 The repository can be browsed and examined via the web at
-http://sourceforge.net/p/docutils/code.
+https://sourceforge.net/p/docutils/code.
 
 Alternatively, use the web interface at http://repo.or.cz/docutils.git.
 [#github-mirrors]_
@@ -237,7 +237,7 @@ changes to the repository.)
 
 Sourceforge SVN access is documented `here`__
 
-__ http://sourceforge.net/p/forge/documentation/svn/
+__ https://sourceforge.net/p/forge/documentation/svn/
 
 
 Ensure any changes comply with the `Docutils Project Policies`_

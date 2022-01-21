@@ -352,10 +352,10 @@ For details, please see `Easy Slide Shows With reStructuredText &
 S5 <slide-shows.html>`_.
 
 
-.. _HTML 5: http://www.w3.org/TR/html5/
-.. _HTML 4.1: http://www.w3.org/TR/html401/
-.. _XHTML 1.0 Transitional: http://www.w3.org/TR/xhtml1/
-.. _XHTML 1.1: http://www.w3.org/TR/xhtml1/
+.. _HTML 5: https://www.w3.org/TR/html5/
+.. _HTML 4.1: https://www.w3.org/TR/html401/
+.. _XHTML 1.0 Transitional: https://www.w3.org/TR/xhtml1/
+.. _XHTML 1.1: https://www.w3.org/TR/xhtml1/
 
 
 LaTeX-Generating Tools

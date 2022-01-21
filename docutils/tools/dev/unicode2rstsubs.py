@@ -16,7 +16,7 @@ wide-Unicode characters in the set.
 
 The input file, unicode.xml, is maintained as part of the MathML 2
 Recommentation XML source, and is available from
-<http://www.w3.org/2003/entities/xml/>.
+<https://www.w3.org/2003/entities/xml/>.
 """
 
 import sys
@@ -67,7 +67,7 @@ class CharacterEntitySetExtractor(object):
     header = """\
 .. This data file has been placed in the public domain.
 .. Derived from the Unicode character mappings available from
-   <http://www.w3.org/2003/entities/xml/>.
+   <https://www.w3.org/2003/entities/xml/>.
    Processed by unicode2rstsubs.py, part of Docutils:
    <https://docutils.sourceforge.io>.
 """

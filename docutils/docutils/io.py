@@ -24,7 +24,7 @@ from docutils import TransformSpec
 try:
     locale_encoding = locale.getlocale()[1] or locale.getdefaultlocale()[1]
 except ValueError as error: # OS X may set UTF-8 without language code
-    # See http://bugs.python.org/issue18378 fixed in 3.8
+    # See https://bugs.python.org/issue18378 fixed in 3.8
     # and https://sourceforge.net/p/docutils/bugs/298/.
     # Drop the special case after requiring Python >= 3.8
     if "unknown locale: UTF-8" in error.args:

@@ -132,7 +132,7 @@ def match_chars(c1, c2):
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 # For details about Unicode categories, see
-# http://www.unicode.org/Public/5.1.0/ucd/UCD.html#General_Category_Values
+# https://www.unicode.org/Public/5.1.0/ucd/UCD.html#General_Category_Values
 # ::
 
 unicode_punctuation_categories = {

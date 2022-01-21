@@ -46,7 +46,7 @@ Docutils has the following dependencies:
 .. _Python Imaging Library: 
     https://en.wikipedia.org/wiki/Python_Imaging_Library
 .. _Pillow: https://pypi.org/project/Pillow/
-.. _Pygments: http://pygments.org/
+.. _Pygments: https://pygments.org/
 .. _recommonmark: https://pypi.org/project/recommonmark/
 
 .. _code directives: ../ref/rst/directives.html#code

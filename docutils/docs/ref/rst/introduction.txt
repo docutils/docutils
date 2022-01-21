@@ -30,8 +30,7 @@ ReStructuredText's web page is
 https://docutils.sourceforge.io/rst.html.
 
 .. _reStructuredText: https://docutils.sourceforge.io/rst.html
-.. _StructuredText:
-    http://www.zope.org/DevHome/Members/jim/StructuredTextWiki/FrontPage
+.. _StructuredText: https://zopestructuredtext.readthedocs.org/
 .. _Setext: https://docutils.sourceforge.io/mirror/setext.html
 .. _Docutils: https://docutils.sourceforge.io/
 .. _A ReStructuredText Primer: ../../user/rst/quickstart.html
@@ -144,7 +143,7 @@ Author's note:
 
     David Goodger (goodger@python.org), 2001-04-20
 
-.. _Doc-SIG: http://www.python.org/sigs/doc-sig/
+.. _Doc-SIG: https://www.python.org/sigs/doc-sig/
 
 
 History
@@ -179,7 +178,7 @@ Implementing the new syntax extensions from version 1.23 proved to be
 an exercise in frustration, as the complexity of the module had become
 overwhelming.
 
-In 2000, development on StructuredTextNG_ ("Next Generation") began at
+In 2000, development on StructuredTextNG ("Next Generation") began at
 `Zope Corporation`_ (then Digital Creations).  It seems to have many
 improvements, but still suffers from many of the problems of classic
 StructuredText.
@@ -218,9 +217,9 @@ parts:
 - `Problems With StructuredText`__
 - `reStructuredText: Revised Structured Text Specification`__
 
-__ http://mail.python.org/pipermail/doc-sig/2000-November/001239.html
-__ http://mail.python.org/pipermail/doc-sig/2000-November/001240.html
-__ http://mail.python.org/pipermail/doc-sig/2000-November/001241.html
+__ https://mail.python.org/pipermail/doc-sig/2000-November/001239.html
+__ https://mail.python.org/pipermail/doc-sig/2000-November/001240.html
+__ https://mail.python.org/pipermail/doc-sig/2000-November/001241.html
 
 In March 2001 a flurry of activity on the Doc-SIG spurred me to
 further revise and refine my specification, the result of which you
@@ -269,10 +268,10 @@ followed.
    - `Python Extensions to the reStructuredText Markup
      Specification`__
 
-   __ http://mail.python.org/pipermail/doc-sig/2001-June/001858.html
-   __ http://mail.python.org/pipermail/doc-sig/2001-June/001859.html
-   __ http://mail.python.org/pipermail/doc-sig/2001-June/001860.html
-   __ http://mail.python.org/pipermail/doc-sig/2001-June/001861.html
+   __ https://mail.python.org/pipermail/doc-sig/2001-June/001858.html
+   __ https://mail.python.org/pipermail/doc-sig/2001-June/001859.html
+   __ https://mail.python.org/pipermail/doc-sig/2001-June/001860.html
+   __ https://mail.python.org/pipermail/doc-sig/2001-June/001861.html
 
 .. [#peps-1] First drafts of the PEPs:
 
@@ -284,25 +283,23 @@ followed.
    https://docutils.sourceforge.io/docs/peps/, and official versions
    can be found in the `master PEP repository`_.
 
-   __ http://mail.python.org/pipermail/doc-sig/2001-June/001855.html
-   __ http://mail.python.org/pipermail/doc-sig/2001-June/001856.html
-   __ http://mail.python.org/pipermail/doc-sig/2001-June/001857.html
+   __ https://mail.python.org/pipermail/doc-sig/2001-June/001855.html
+   __ https://mail.python.org/pipermail/doc-sig/2001-June/001856.html
+   __ https://mail.python.org/pipermail/doc-sig/2001-June/001857.html
 
 
 .. _Zope Corporation: http://www.zope.com
-.. _ZOPE: http://www.zope.org
+.. _ZOPE: https://www.zope.dev
 .. _reStructuredText SourceForge project:
    http://structuredtext.sourceforge.net/
 .. _pythondoc: http://starship.python.net/crew/danilo/pythondoc/
-.. _StructuredTextNG:
-   http://www.zope.org/DevHome/Members/jim/StructuredTextWiki/StructuredTextNG
 .. _project history file: ../../../HISTORY.html
 .. _PEP 287: ../../peps/pep-0287.html
 .. _Docstring Processing System framework: ../../peps/pep-0256.html
 .. _comp.lang.python: news:comp.lang.python
-.. _Python-dev: http://mail.python.org/pipermail/python-dev/
+.. _Python-dev: https://mail.python.org/pipermail/python-dev/
 .. _Docstring Processing System: http://docstring.sourceforge.net/
-.. _master PEP repository: http://www.python.org/peps/
+.. _master PEP repository: https://www.python.org/dev/peps/
 
 
 ..
