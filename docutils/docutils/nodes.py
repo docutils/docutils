@@ -2237,8 +2237,8 @@ def make_id(string):
     "unicode", "latin1", or "escape" characters), this results in the
     ``[a-z](-?[a-z0-9]+)*`` pattern.
 
-    .. _HTML 4.01 spec: http://www.w3.org/TR/html401
-    .. _CSS1 spec: http://www.w3.org/TR/REC-CSS1
+    .. _HTML 4.01 spec: https://www.w3.org/TR/html401
+    .. _CSS1 spec: https://www.w3.org/TR/REC-CSS1
     """
     id = string.lower()
     id = id.translate(_non_id_translate_digraphs)

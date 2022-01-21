@@ -32,7 +32,7 @@ typographic punctuation characters.
   characters, it works for any output format that supports Unicode.
 * Supports `language specific quote characters`__.
 
-__ http://en.wikipedia.org/wiki/Non-English_usage_of_quotation_marks
+__ https://en.wikipedia.org/wiki/Non-English_usage_of_quotation_marks
 
 
 Authors
@@ -391,7 +391,7 @@ class smartchars(object):
     apostrophe = u'’' # "&#8217;" RIGHT SINGLE QUOTATION MARK
 
     # quote characters (language-specific, set in __init__())
-    # [1] http://en.wikipedia.org/wiki/Non-English_usage_of_quotation_marks
+    # [1] https://en.wikipedia.org/wiki/Non-English_usage_of_quotation_marks
     # [2] http://de.wikipedia.org/wiki/Anf%C3%BChrungszeichen#Andere_Sprachen
     # [3] https://fr.wikipedia.org/wiki/Guillemet
     # [4] http://typographisme.net/post/Les-espaces-typographiques-et-le-web

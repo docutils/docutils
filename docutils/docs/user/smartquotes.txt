@@ -453,7 +453,7 @@ the source:
 
 .. _right single quotation mark:
     http://www.fileformat.info/info/unicode/char/2019/index.htm
-.. _Unicode: http://www.unicode.org/charts/PDF/U2000.pdf
+.. _Unicode: https://www.unicode.org/charts/PDF/U2000.pdf
 
 History
 =======

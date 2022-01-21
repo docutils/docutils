@@ -94,7 +94,7 @@ occur at the same level.
 
 .. _HTML: https://www.w3.org/TR/html52/
 .. _DocBook: https://tdg.docbook.org/tdg/5.1/
-.. _XMLSpec: http://www.w3.org/XML/1998/06/xmlspec-report.htm
+.. _XMLSpec: https://www.w3.org/XML/1998/06/xmlspec-report.htm
 
 
 Structural Elements
@@ -1658,7 +1658,7 @@ testing environment via the `doctest module`_ in the Python standard
 library.
 
 .. _doctest module:
-   http://www.python.org/doc/current/lib/module-doctest.html
+   https://docs.python.org/3/library/doctest.html
 
 
 Details
@@ -4676,7 +4676,7 @@ _`idrefs.type`
    `reference names`_ or from the auto_id_prefix_, prepending the id_prefix_
    and potentially appending numbers for disambiguation.
 
-   __ http://www.w3.org/TR/html401/types.html#type-name
+   __ https://www.w3.org/TR/html401/types.html#type-name
    __ https://www.w3.org/TR/html50/dom.html#the-id-attribute
    __ https://www.w3.org/TR/html-polyglot/#id-attribute
    __ https://tex.stackexchange.com/questions/18311/what-are-the-valid-names-as-labels

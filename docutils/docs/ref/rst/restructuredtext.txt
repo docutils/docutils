@@ -67,7 +67,7 @@ Here are examples of `body elements`_:
 
       Paragraphs contain text and may contain inline markup:
       *emphasis*, **strong emphasis**, `interpreted text`, ``inline
-      literals``, standalone hyperlinks (http://www.python.org),
+      literals``, standalone hyperlinks (https://www.python.org),
       external hyperlinks (Python_), internal cross-references
       (example_), footnote references ([1]_), citation references
       ([CIT2002]_), substitution references (|example|), and _`inline
@@ -187,7 +187,7 @@ Here are examples of `body elements`_:
 
   - `Hyperlink targets`_::
 
-        .. _Python: http://www.python.org
+        .. _Python: https://www.python.org
 
         .. _example:
 
@@ -413,7 +413,7 @@ and treating the backquoted text as a reference name::
 
     Want to learn about `my favorite programming language`_?
 
-    .. _my favorite programming language: http://www.python.org
+    .. _my favorite programming language: https://www.python.org
 
 Simple reference names may also optionally use backquotes.
 
@@ -1901,7 +1901,7 @@ indirect.
 
        .. _Python DOC-SIG mailing list archive:
        .. _archive:
-       .. _Doc-SIG: http://mail.python.org/pipermail/doc-sig/
+       .. _Doc-SIG: https://mail.python.org/pipermail/doc-sig/
 
    An inline form of internal hyperlink target is available; see
    `Inline Internal Targets`_.
@@ -1926,12 +1926,12 @@ indirect.
 
        `Write to me`_ with your questions.
 
-       .. _Python: http://www.python.org
+       .. _Python: https://www.python.org
        .. _Write to me: jdoe@example.com
 
    After processing into HTML, the hyperlinks might be expressed as::
 
-       See the <a href="http://www.python.org">Python</a> home page
+       See the <a href="https://www.python.org">Python</a> home page
        for info.
 
        <a href="mailto:jdoe@example.com">Write to me</a> with your
@@ -2047,12 +2047,12 @@ instead of one::
 Anonymous targets begin with ".. __:"; no reference name is required
 or allowed::
 
-    .. __: http://www.python.org
+    .. __: https://www.python.org
 
 As a convenient alternative, anonymous targets may begin with "__"
 only::
 
-    __ http://www.python.org
+    __ https://www.python.org
 
 The reference name of the reference is not used to match the reference
 to its target.  Instead, the order of anonymous hyperlink references
@@ -2550,10 +2550,10 @@ inline markup:
    Docutils 0.13 uses `Unicode version 5.2.0`_.
 
 .. _Unicode categories:
-   http://www.unicode.org/Public/5.1.0/ucd/UCD.html#General_Category_Values
-.. _Unicode version 5.2.0: http://www.unicode.org/Public/5.2.0/
+   https://www.unicode.org/Public/5.1.0/ucd/UCD.html#General_Category_Values
+.. _Unicode version 5.2.0: https://www.unicode.org/Public/5.2.0/
 .. _quotation marks in international usage:
-   http://en.wikipedia.org/wiki/Quotation_mark,_non-English_usage
+   https://en.wikipedia.org/wiki/Quotation_mark,_non-English_usage
 
 The inline markup recognition rules were devised to allow 90% of non-markup
 uses of "*", "`", "_", and "|" without escaping. For example, none of the
@@ -2818,7 +2818,7 @@ A hyperlink reference may directly embed a target URI or (since
 Docutils 0.11) a hyperlink reference within angle brackets ("<...>")
 as follows::
 
-    See the `Python home page <http://www.python.org>`_ for info.
+    See the `Python home page <https://www.python.org>`_ for info.
 
     This `link <Python home page_>`_ is an alias to the link above.
 
@@ -2828,7 +2828,7 @@ This is exactly equivalent to::
 
     This link_ is an alias to the link above.
 
-    .. _Python home page: http://www.python.org
+    .. _Python home page: https://www.python.org
     .. _link: `Python home page`_
 
 The bracketed URI must be preceded by whitespace and be the last text
@@ -2840,16 +2840,16 @@ With two trailing underscores, the reference and target are both
 anonymous, and the target cannot be referred to again.  These are
 "one-off" hyperlinks.  For example::
 
-    `RFC 2396 <http://www.rfc-editor.org/rfc/rfc2396.txt>`__ and `RFC
-    2732 <http://www.rfc-editor.org/rfc/rfc2732.txt>`__ together
+    `RFC 2396 <https://www.rfc-editor.org/rfc/rfc2396.txt>`__ and `RFC
+    2732 <https://www.rfc-editor.org/rfc/rfc2732.txt>`__ together
     define the syntax of URIs.
 
 Equivalent to::
 
     `RFC 2396`__ and `RFC 2732`__ together define the syntax of URIs.
 
-    __ http://www.rfc-editor.org/rfc/rfc2396.txt
-    __ http://www.rfc-editor.org/rfc/rfc2732.txt
+    __ https://www.rfc-editor.org/rfc/rfc2396.txt
+    __ https://www.rfc-editor.org/rfc/rfc2732.txt
 
 `Standalone hyperlinks`_ are treated as URIs, even if they end with an
 underscore like in the example of a Python function documentation::
@@ -3014,11 +3014,11 @@ A URI (absolute URI [#URI]_ or standalone email address) within a text
 block is treated as a general external hyperlink with the URI itself
 as the link's text.  For example::
 
-    See http://www.python.org for info.
+    See https://www.python.org for info.
 
 would be marked up in HTML as::
 
-    See <a href="http://www.python.org">http://www.python.org</a> for
+    See <a href="https://www.python.org">https://www.python.org</a> for
     info.
 
 Two forms of URI are recognized:
@@ -3039,7 +3039,7 @@ Two forms of URI are recognized:
      use slashes to separate hierarchical components of the path.
      Examples are web pages and FTP sites::
 
-         http://www.python.org
+         https://www.python.org
 
          ftp://ftp.python.org/pub/python
 
@@ -3111,9 +3111,9 @@ default (e.g. "px" with HTML, "pt" with `latex2e`). See the writer
 specific documentation in the `user doc`__ for details.
 
 .. _length units in CSS2:
-   http://www.w3.org/TR/CSS2/syndata.html#length-units
+   https://www.w3.org/TR/CSS2/syndata.html#length-units
 .. _length units in CSS3:
-   http://www.w3.org/TR/css-values-3/#absolute-lengths
+   https://www.w3.org/TR/css-values-3/#absolute-lengths
 .. _How to configure the size of a pixel:
    ../../user/latex.html#size-of-a-pixel
 __ ../../user/
@@ -3143,26 +3143,26 @@ Markup errors are handled according to the specification in `PEP
 .. _transforms:
    https://docutils.sourceforge.io/docutils/transforms/
 .. _Grouch: http://www.mems-exchange.org/software/grouch/
-.. _RFC822: http://www.rfc-editor.org/rfc/rfc822.txt
+.. _RFC822: https://www.rfc-editor.org/rfc/rfc822.txt
 .. _DocTitle transform:
 .. _DocInfo transform:
    https://docutils.sourceforge.io/docutils/transforms/frontmatter.py
 .. _getopt.py:
-   http://www.python.org/doc/current/lib/module-getopt.html
+   https://docs.python.org/3/library/getopt.html
 .. _GNU libc getopt_long():
-   http://www.gnu.org/software/libc/manual/html_node/Getopt-Long-Options.html
+   https://www.gnu.org/software/libc/manual/html_node/Getopt-Long-Options.html
 .. _doctest module:
-   http://www.python.org/doc/current/lib/module-doctest.html
+   https://docs.python.org/3/library/doctest.html
 .. _Emacs table mode: http://table.sourceforge.net/
 .. _Official IANA Registry of URI Schemes:
    http://www.iana.org/assignments/uri-schemes
 .. _Retired Index of WWW Addressing Schemes:
-   http://www.w3.org/Addressing/schemes.html
-.. _World Wide Web Consortium: http://www.w3.org/
+   https://www.w3.org/Addressing/schemes.html
+.. _World Wide Web Consortium: https://www.w3.org/
 .. _HTML Techniques for Web Content Accessibility Guidelines:
-   http://www.w3.org/TR/WCAG10-HTML-TECHS/#link-text
-.. _RFC2396: http://www.rfc-editor.org/rfc/rfc2396.txt
-.. _RFC2732: http://www.rfc-editor.org/rfc/rfc2732.txt
+   https://www.w3.org/TR/WCAG10-HTML-TECHS/#link-text
+.. _RFC2396: https://www.rfc-editor.org/rfc/rfc2396.txt
+.. _RFC2732: https://www.rfc-editor.org/rfc/rfc2732.txt
 .. _Zope: http://www.zope.com/
 .. _PEP 258: ../../peps/pep-0258.html
 .. _writers: ../../peps/pep-0258.html#writers

@@ -304,12 +304,12 @@ class Babel(object):
     # ! not all of these are supported by Docutils!
     #
     # based on LyX' languages file with adaptions to `BCP 47`_
-    # (http://www.rfc-editor.org/rfc/bcp/bcp47.txt) and
+    # (https://www.rfc-editor.org/rfc/bcp/bcp47.txt) and
     # http://www.tug.org/TUGboat/Articles/tb29-3/tb93miklavec.pdf
     # * the key without subtags is the default
     # * case is ignored
     # cf. https://docutils.sourceforge.io/docs/howto/i18n.html
-    #     http://www.w3.org/International/articles/language-tags/
+    #     https://www.w3.org/International/articles/language-tags/
     # and http://www.iana.org/assignments/language-subtag-registry
     language_codes = {
         # code          TeX/Babel-name       comment

@@ -32,7 +32,7 @@ Consider the following reStructuredText file::
 
     My *favorite* language is Python_.
 
-    .. _Python: http://www.python.org/
+    .. _Python: https://www.python.org/
 
 Using the ``rst2html.py`` front-end tool, you would get an HTML output
 which looks like this::
@@ -40,7 +40,7 @@ which looks like this::
     [uninteresting HTML code removed]
     <body>
     <div class="document">
-    <p>My <em>favorite</em> language is <a class="reference" href="http://www.python.org/">Python</a>.</p>
+    <p>My <em>favorite</em> language is <a class="reference" href="https://www.python.org/">Python</a>.</p>
     </div>
     </body>
     </html>
@@ -84,7 +84,7 @@ might need to type ``python quicktest.py test.txt``)::
             <reference name="Python" refname="python">
                 Python
             .
-        <target ids="python" names="python" refuri="http://www.python.org/">
+        <target ids="python" names="python" refuri="https://www.python.org/">
 
 Let us now examine the node tree:
 
@@ -106,7 +106,7 @@ Transforming the Document
 -------------------------
 
 In the node tree above, the ``reference`` node does not contain the
-target URI (``http://www.python.org/``) yet.
+target URI (``https://www.python.org/``) yet.
 
 Assigning the target URI (from the ``target`` node) to the
 ``reference`` node is *not* done by the parser (the parser only
@@ -133,10 +133,10 @@ has changed after applying the Transforms, we use the
             <emphasis>
                 favorite
              language is
-            <reference name="Python" **refuri="http://www.python.org/"**>
+            <reference name="Python" **refuri="https://www.python.org/"**>
                 Python
             .
-        <target ids="python" names="python" ``refuri="http://www.python.org/"``>
+        <target ids="python" names="python" ``refuri="https://www.python.org/"``>
 
 For our small test document, the only change is that the ``refname``
 attribute of the reference has been replaced by a ``refuri``
@@ -160,8 +160,8 @@ For HTML output, we can test this using the ``rst2html.py`` tool::
 
     $ rst2html.py --link-stylesheet test.txt
     <?xml version="1.0" encoding="utf-8" ?>
-    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-    <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    <html xmlns="https://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
     <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="generator" content="Docutils 0.3.10: https://docutils.sourceforge.io/" />
@@ -170,7 +170,7 @@ For HTML output, we can test this using the ``rst2html.py`` tool::
     </head>
     <body>
     <div class="document">
-    <p>My <em>favorite</em> language is <a class="reference" href="http://www.python.org/">Python</a>.</p>
+    <p>My <em>favorite</em> language is <a class="reference" href="https://www.python.org/">Python</a>.</p>
     </div>
     </body>
     </html>

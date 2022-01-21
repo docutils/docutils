@@ -422,7 +422,7 @@ Release 0.13.1 (2016-12-09)
 
   - New HTML writer generating `HTML 5`_.
 
-  .. _HTML 5: http://www.w3.org/TR/html5/
+  .. _HTML 5: https://www.w3.org/TR/html5/
 
 * tools/
 
@@ -567,7 +567,7 @@ Release 0.9 (2012-05-02)
     by Pygments_.
   - "code" option of the "include" directive.
 
-  .. _Pygments: http://pygments.org/
+  .. _Pygments: https://pygments.org/
 
   - Fix [ 3402314 ] allow non-ASCII whitespace, punctuation
     characters and "international" quotes around inline markup.
@@ -625,7 +625,7 @@ Release 0.8 (2011-07-07)
     ``math`` and ``math_block`` doctree elements.
   - Orphaned "python" reader and "newlatex2e" writer moved to the sandbox.
 
-  .. _BCP 47: http://www.rfc-editor.org/rfc/bcp/bcp47.txt
+  .. _BCP 47: https://www.rfc-editor.org/rfc/bcp/bcp47.txt
 
 * reStructuredText:
 

@@ -162,8 +162,8 @@ donations, tasty treats, and related projects:
 
 Thank you!
 
-Special thanks to `SourceForge <http://sourceforge.net>`__ and the
-`Python Software Foundation <http://www.python.org/psf/>`__.
+Special thanks to `SourceForge <https://sourceforge.net>`__ and the
+`Python Software Foundation <https://www.python.org/psf/>`__.
 
 Hopefully I haven't forgotten anyone or misspelled any names;
 apologies (and please let me know!) if I have.

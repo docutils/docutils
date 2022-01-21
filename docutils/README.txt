@@ -17,7 +17,7 @@ Quick-Start
 This is for those who want to get up & running quickly.
 
 1. Docutils requires **Python**, available from
-   http://www.python.org/.
+   https://www.python.org/.
    See Dependencies_ below for details.
 
 2. Install the latest stable release from PyPi with pip_::
@@ -62,7 +62,7 @@ Support for the following sources is planned:
 * And others as discovered.
 
 .. _PEPs (Python Enhancement Proposals):
-   http://www.python.org/peps/pep-0012.html
+   https://www.python.org/dev/peps/pep-0012
 
 
 Dependencies
@@ -75,7 +75,7 @@ To run the code, Python_ must be installed.
 * Docutils 0.16 to 0.18 require Python 2.7 or 3.5+.
 * Docutils 0.14 dropped Python 2.4, 2.5, 3.1 and 3.2 support.
 
-.. _Python: http://www.python.org/.
+.. _Python: https://www.python.org/.
 
 
 Optional Dependencies
@@ -193,7 +193,7 @@ GNU/Linux, BSDs, Unix, Mac OS X, etc.
    required version. The last installed version will be used in the
    `shebang line`_ of the `front-end scripts`_.
 
-   .. _shebang line: http://en.wikipedia.org/wiki/Shebang_%28Unix%29
+   .. _shebang line: https://en.wikipedia.org/wiki/Shebang_%28Unix%29
 
 Windows
 -------
@@ -368,7 +368,7 @@ Windows users type these commands::
 
 .. _Docutils Testing: https://docutils.sourceforge.io/docs/dev/testing.html
 .. _open a bug report:
-   http://sourceforge.net/p/docutils/bugs/
+   https://sourceforge.net/p/docutils/bugs/
 .. _send an email: mailto:docutils-users@lists.sourceforge.net
    ?subject=Test%20suite%20failure
 .. _web interface: https://sourceforge.net/p/docutils/mailman/

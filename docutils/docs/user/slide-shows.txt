@@ -691,7 +691,7 @@ Making a Custom Theme
 
    Resources:
 
-   * W3C's `Learning CSS <http://www.w3.org/Style/CSS/learning>`__
+   * W3C's `Learning CSS <https://www.w3.org/Style/CSS/learning>`__
 
    * `Creating An S5 Theme <http://home.cogeco.ca/~ve3ll/s5themes.htm>`__
 

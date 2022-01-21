@@ -89,7 +89,7 @@ If you decided to install locally please follow these steps.
 #. Download ``rst.el``
 
    Download the most recent published version of ``rst.el`` from
-   http://sourceforge.net/p/docutils/code/HEAD/tree/trunk/docutils/tools/editors/emacs/rst.el
+   https://sourceforge.net/p/docutils/code/HEAD/tree/trunk/docutils/tools/editors/emacs/rst.el
 
 #. Put ``rst.el`` to a directory in ``load-path``
 
@@ -939,7 +939,7 @@ Stefan Merten.
 Most of the code has been modified, enhanced and extended by Stefan
 Merten who also is the current maintainer of ``rst.el``.
 
-.. _Emacs: http://www.gnu.org/software/emacs/emacs.html
+.. _Emacs: https://www.gnu.org/software/emacs/emacs.html
 .. _reStructuredText: https://docutils.sourceforge.io/rst.html
 .. _Docutils: https://docutils.sourceforge.io/
 

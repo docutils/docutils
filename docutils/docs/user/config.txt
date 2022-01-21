@@ -193,9 +193,9 @@ file.
 Some knowledge of Python_ is assumed for some attributes.
 
 .. _ConfigParser.py:
-   http://www.python.org/doc/current/lib/module-ConfigParser.html
-.. _Python: http://www.python.org/
-.. _RFC 822: http://www.rfc-editor.org/rfc/rfc822.txt
+   https://docs.python.org/3/library/configparser.html
+.. _Python: https://www.python.org/
+.. _RFC 822: https://www.rfc-editor.org/rfc/rfc822.txt
 .. _front-end tool:
 .. _Docutils application: tools.html
 
@@ -696,7 +696,7 @@ pep_base_url
 ~~~~~~~~~~~~
 Base URL for PEP references.
 
-Default: "http://www.python.org/peps/".
+Default: "https://www.python.org/dev/peps/".
 Option: ``--pep-base-url``.
 
 pep_file_url_template
@@ -749,7 +749,7 @@ New in Docutils 0.10.
 .. _SmartQuotes: smartquotes.html
 __ smartquotes.html#localization
 .. _quote characters:
-   http://en.wikipedia.org/wiki/Non-English_usage_of_quotation_marks
+   https://en.wikipedia.org/wiki/Non-English_usage_of_quotation_marks
 
 
 smartquotes_locales
@@ -795,10 +795,10 @@ Default: "long".  Option: ``--syntax-highlight``.
 
 New in Docutils 0.9.
 
-.. _Pygments: http://pygments.org/
+.. _Pygments: https://pygments.org/
 .. _code: ../ref/rst/directives.html#code
 .. _Pygments-generated stylesheets:
-   http://pygments.org/docs/cmdline/#generating-styles
+   https://pygments.org/docs/cmdline/#generating-styles
 
 tab_width
 ~~~~~~~~~
@@ -1164,7 +1164,7 @@ New in Docutils 0.8.
 .. _math directive: ../ref/rst/directives.html#math
 .. _MathJax: http://www.mathjax.org/
 .. _MathPlayer: http://www.dessci.com/en/products/mathplayer/
-.. _MathML: http://www.w3.org/TR/MathML/
+.. _MathML: https://www.w3.org/TR/MathML/
 .. _blahtexml: http://gva.noekeon.org/blahtexml/
 .. _LaTeXML: http://dlmf.nist.gov/LaTeXML/
 .. _TtM: http://hutchinson.belmont.ma.us/tth/mml/
@@ -1319,7 +1319,7 @@ Writer Specific Defaults
   enabled (True)
 
 .. _HTML4/CSS1 Writer: html.html#html4css1
-.. _XHTML 1 Transitional: http://www.w3.org/TR/xhtml1/
+.. _XHTML 1 Transitional: https://www.w3.org/TR/xhtml1/
 
 
 field_name_limit
@@ -2275,8 +2275,8 @@ Default: stdin (None).  No command-line options.
 
 --------------------------------------------------------------------------
 
-.. _language tag: http://www.w3.org/International/articles/language-tags/
-.. _BCP 47: http://www.rfc-editor.org/rfc/bcp/bcp47.txt
+.. _language tag: https://www.w3.org/International/articles/language-tags/
+.. _BCP 47: https://www.rfc-editor.org/rfc/bcp/bcp47.txt
 .. _ISO 639: http://www.loc.gov/standards/iso639-2/php/English_list.php
 .. _ISO 3166: http://www.iso.ch/iso/en/prods-services/iso3166ma/
    02iso-3166-code-lists/index.html

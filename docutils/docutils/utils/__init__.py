@@ -339,7 +339,6 @@ def decode_path(path):
 
     Decode file/path string in a failsafe manner if not already done.
     """
-    # see also http://article.gmane.org/gmane.text.docutils.user/2905
     # TODO: is this still required with Python 3?
     if isinstance(path, str):
         return path

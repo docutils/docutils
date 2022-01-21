@@ -31,8 +31,7 @@ The ideas are divided into sections:
   won't be implemented, but you never know.
 
 .. _Setext: https://docutils.sourceforge.io/mirror/setext.html
-.. _StructuredText:
-   http://www.zope.org/DevHome/Members/jim/StructuredTextWiki/FrontPage
+.. _StructuredText: https://zopestructuredtext.readthedocs.org/
 .. _Problems with StructuredText: problems.html
 .. _reStructuredText Markup Specification:
    ../../ref/rst/restructuredtext.html
@@ -155,7 +154,7 @@ implement the bibliographic elements explicitly.  For example, there
 would be no need for such a transformation for an XML-based markup
 syntax.
 
-.. _RFC822: http://www.rfc-editor.org/rfc/rfc822.txt
+.. _RFC822: https://www.rfc-editor.org/rfc/rfc822.txt
 
 
 Interpreted Text "Roles"
@@ -287,21 +286,21 @@ Alan Jaffray came up with this idea, along with the following syntax::
 
     Search the `Python DOC-SIG mailing list archives`{}_.
 
-    .. _: http://mail.python.org/pipermail/doc-sig/
+    .. _: https://mail.python.org/pipermail/doc-sig/
 
 The idea is sound and useful.  I suggested a "double underscore"
 syntax::
 
     Search the `Python DOC-SIG mailing list archives`__.
 
-    .. __: http://mail.python.org/pipermail/doc-sig/
+    .. __: https://mail.python.org/pipermail/doc-sig/
 
 But perhaps single underscores are okay?  The syntax looks better, but
 the hyperlink itself doesn't explicitly say "anonymous"::
 
     Search the `Python DOC-SIG mailing list archives`_.
 
-    .. _: http://mail.python.org/pipermail/doc-sig/
+    .. _: https://mail.python.org/pipermail/doc-sig/
 
 Mixing anonymous and named hyperlinks becomes confusing.  The order of
 targets is not significant for named hyperlinks, but it is for
@@ -696,7 +695,7 @@ Syntax alternatives for the definition:
        I had lunch with Jonathan_ today.  We talked about Zope_.
 
        .. _Jonathan: lj [user=jhl]
-       .. _Zope: http://www.zope.org/
+       .. _Zope: https://www.zope.dev/
 
    A problem with the proposed syntax is that URIs which look like
    simple reference names (alphanum plus ".", "-", "_") would be
@@ -706,7 +705,7 @@ Syntax alternatives for the definition:
        I had lunch with Jonathan_ today.  We talked about Zope_.
 
        .. _Jonathan: lj:: user=jhl
-       .. _Zope: http://www.zope.org/
+       .. _Zope: https://www.zope.dev/
 
    (``::`` after ``.. _Jonathan: lj``.)
 
@@ -748,7 +747,7 @@ allows us to click on an image-link::
 
     .. |biohazard| image:: biohazard.png
        [height=20 width=20]
-    .. _biohazard: http://www.cdc.gov/
+    .. _biohazard: https://www.cdc.gov/
 
 There have been several suggestions for the naming of these
 constructs, originally called "substitution references" and
@@ -829,9 +828,9 @@ Currently reStructuredText has two hyperlink syntax variations:
       a `phrase reference`_.  Phrase references may even cross `line
       boundaries`_.
 
-      .. _reference: http://www.example.org/reference/
-      .. _phrase reference: http://www.example.org/phrase_reference/
-      .. _line boundaries: http://www.example.org/line_boundaries/
+      .. _reference: https://www.example.org/reference/
+      .. _phrase reference: https://www.example.org/phrase_reference/
+      .. _line boundaries: https://www.example.org/line_boundaries/
 
   + Advantages:
 
@@ -853,9 +852,9 @@ Currently reStructuredText has two hyperlink syntax variations:
       `phrase reference`__.  Phrase references may even cross `line
       boundaries`__.
 
-      __ http://www.example.org/reference/
-      __ http://www.example.org/phrase_reference/
-      __ http://www.example.org/line_boundaries/
+      __ https://www.example.org/reference/
+      __ https://www.example.org/phrase_reference/
+      __ https://www.example.org/line_boundaries/
 
   + Advantages:
 
@@ -873,15 +872,15 @@ syntaxes for hyperlinks:
 
 * First, ``"reference text":URL``::
 
-      This is a "reference":http://www.example.org/reference/
+      This is a "reference":https://www.example.org/reference/
       of one word ("reference").  Here is a "phrase
-      reference":http://www.example.org/phrase_reference/.
+      reference":https://www.example.org/phrase_reference/.
 
-* Second, ``"reference text", http://example.com/absolute_URL``::
+* Second, ``"reference text", https://example.org/absolute_URL``::
 
-      This is a "reference", http://www.example.org/reference/
+      This is a "reference", https://www.example.org/reference/
       of one word ("reference").  Here is a "phrase reference",
-      http://www.example.org/phrase_reference/.
+      https://www.example.org/phrase_reference/.
 
 Both syntaxes share advantages and disadvantages:
 
@@ -905,14 +904,14 @@ A new type of "inline external hyperlink" has been proposed.
 1. On 2002-06-28, Simon Budig proposed__ a new syntax for
    reStructuredText hyperlinks::
 
-       This is a reference_(http://www.example.org/reference/) of one
+       This is a reference_(https://www.example.org/reference/) of one
        word ("reference").  Here is a `phrase
-       reference`_(http://www.example.org/phrase_reference/).  Are
+       reference`_(https://www.example.org/phrase_reference/).  Are
        these examples, (single-underscore), named?  If so, `anonymous
-       references`__(http://www.example.org/anonymous/) using two
+       references`__(https://www.example.org/anonymous/) using two
        underscores would probably be preferable.
 
-   __ http://mail.python.org/pipermail/doc-sig/2002-June/002648.html
+   __ https://mail.python.org/pipermail/doc-sig/2002-June/002648.html
 
    The syntax, advantages, and disadvantages are similar to those of
    StructuredText.
@@ -953,13 +952,13 @@ A new type of "inline external hyperlink" has been proposed.
    following compromise syntax::
 
        This is an anonymous reference__
-       __<http://www.example.org/reference/> of one word
+       __<https://www.example.org/reference/> of one word
        ("reference").  Here is a `phrase reference`__
-       __<http://www.example.org/phrase_reference/>.  `Named
-       references`_ _<http://www.example.org/anonymous/> use single
+       __<https://www.example.org/phrase_reference/>.  `Named
+       references`_ _<https://www.example.org/anonymous/> use single
        underscores.
 
-   __ http://mail.python.org/pipermail/doc-sig/2002-July/002670.html
+   __ https://mail.python.org/pipermail/doc-sig/2002-July/002670.html
 
    The syntax builds on that of the existing "inline internal
    targets": ``an _`inline internal target`.``
@@ -989,8 +988,8 @@ A new type of "inline external hyperlink" has been proposed.
    target to appear later, such as after the end of the sentence::
 
        This is a named reference__ of one word ("reference").
-       __<http://www.example.org/reference/>  Here is a `phrase
-       reference`__.  __<http://www.example.org/phrase_reference/>
+       __<https://www.example.org/reference/>  Here is a `phrase
+       reference`__.  __<https://www.example.org/phrase_reference/>
 
    Problem: this could only work for one reference at a time
    (reference/target pairs must be proximate [refA trgA refB trgB],
@@ -1030,9 +1029,9 @@ A new type of "inline external hyperlink" has been proposed.
    Here's an alternative syntax embedding the target URL in the
    reference::
 
-       This is an anonymous `reference <http://www.example.org
+       This is an anonymous `reference <https://www.example.org
        /reference/>`__ of one word ("reference").  Here is a `phrase
-       reference <http://www.example.org/phrase_reference/>`__.
+       reference <https://www.example.org/phrase_reference/>`__.
 
    Advantages and disadvantages are similar to those in (2).
    Readability is still an issue, but the syntax is a bit less
@@ -1045,7 +1044,7 @@ A new type of "inline external hyperlink" has been proposed.
    Problem: how to refer to a title like "HTML Anchors: <a>" (which
    ends with an HTML/SGML/XML tag)?  We could either require more
    syntax on the target (like ``"`reference text
-   __<http://example.com/>`__"``), or require the odd conflicting
+   __<https://example.org/>`__"``), or require the odd conflicting
    title to be escaped (like ``"`HTML Anchors: \<a>`__"``).  The
    latter seems preferable, and not too onerous.
 
@@ -1058,17 +1057,17 @@ A new type of "inline external hyperlink" has been proposed.
 Other syntax variations have been proposed (by Brett Cannon and Benja
 Fallenstein)::
 
-    `phrase reference`->http://www.example.com
+    `phrase reference`->https://www.example.org
 
-    `phrase reference`@http://www.example.com
+    `phrase reference`@https://www.example.org
 
-    `phrase reference`__ ->http://www.example.com
+    `phrase reference`__ ->https://www.example.org
 
-    `phrase reference` [-> http://www.example.com]
+    `phrase reference` [-> https://www.example.org]
 
-    `phrase reference`__ [-> http://www.example.com]
+    `phrase reference`__ [-> https://www.example.org]
 
-    `phrase reference` <http://www.example.com>_
+    `phrase reference` <https://www.example.org>_
 
 None of these variations are clearly superior to #3 above.  Some have
 problems that exclude their use.
@@ -1239,7 +1238,7 @@ There are several possibilities for the implementation:
 
 Solution 3 was chosen for incorporation into the document tree model.
 
-.. _HTML: http://www.w3.org/MarkUp/
+.. _HTML: https://www.w3.org/MarkUp/
 
 
 Syntax for Line Blocks
@@ -1288,7 +1287,7 @@ Syntax for Line Blocks
        | President, SuperDuper Corp.
        | jdoe@example.org
 
-  __ http://thread.gmane.org/gmane.text.docutils.devel/1187
+  __ https://thread.gmane.org/gmane.text.docutils.devel/1187
 
   This syntax is very natural.  However, these "plain lists" seem very
   similar to line blocks, and I see so little intrinsic "list-ness"
@@ -1807,7 +1806,7 @@ ugly or confusing (depending on which alternative is chosen).
    auto-numbered lists be limited to begin with ordinal-1 ("1", "A",
    "a", "I", or "i")?
 
-   __ http://sourceforge.net/tracker/index.php?func=detail&aid=548802
+   __ https://sourceforge.net/tracker/index.php?func=detail&aid=548802
       &group_id=38414&atid=422032
 
 4. Alternative proposed by Tony Ibbs::
@@ -1886,7 +1885,7 @@ b) full backwards compatibility
 .. _Inline markup recognition rules:
    ../../ref/rst/restructuredtext.html#inline-markup-recognition-rules
 .. _Unicode categories:
-   http://www.unicode.org/Public/5.1.0/ucd/UCD.html#General_Category_Values
+   https://www.unicode.org/Public/5.1.0/ucd/UCD.html#General_Category_Values
 
 
 -----------------
@@ -2006,12 +2005,12 @@ Syntax proposals:
   - Current syntax (footnote syntax)::
 
         .. [GVR2001] Python Documentation; van Rossum, Drake, et al.;
-           http://www.python.org/doc/
+           https://www.python.org/doc/
 
   - Possible new syntax::
 
         _[GVR2001] Python Documentation; van Rossum, Drake, et al.;
-                   http://www.python.org/doc/
+                   https://www.python.org/doc/
 
         _[DJG2002]
             Docutils: Python Documentation Utilities project; Goodger
@@ -2022,7 +2021,7 @@ Syntax proposals:
     alignment (I'd rather not)::
 
         _[GVR2001] Python Documentation; van Rossum, Drake, et al.;
-            http://www.python.org/doc/
+            https://www.python.org/doc/
 
 I proposed adopting the "minimal" syntax for footnotes and footnote
 references, and adding citations and citation references to
@@ -2209,7 +2208,7 @@ in RST markup`__.  Several arguments were made; the first argument
 begat later arguments.  Below, the arguments are paraphrased "in
 quotes", with responses.
 
-__ http://thread.gmane.org/gmane.text.docutils.devel/1386
+__ https://thread.gmane.org/gmane.text.docutils.devel/1386
 
 1. References and targets take this form::
 
@@ -2407,9 +2406,9 @@ mailing list messages should be referred to for details.
       inside what must be well thought out first though.
 
       .. _Ed Loper's 2001-03-21 post:
-         http://mail.python.org/pipermail/doc-sig/2001-March/001487.html
+         https://mail.python.org/pipermail/doc-sig/2001-March/001487.html
 
-      -- http://mail.python.org/pipermail/doc-sig/2001-October/002354.html
+      -- https://mail.python.org/pipermail/doc-sig/2001-October/002354.html
 
 * In a 2001-11-09 Doc-SIG post, I wrote:
 
@@ -2426,7 +2425,7 @@ mailing list messages should be referred to for details.
       markup. The first algorithm ("first identify the outer inline
       markup as we do now, then recursively scan for nested inline
       markup") won't work; counterexamples were given in my `last post
-      <http://mail.python.org/pipermail/doc-sig/2001-November/002363.html>`__.
+      <https://mail.python.org/pipermail/doc-sig/2001-November/002363.html>`__.
 
       The second algorithm makes my head hurt::
 
@@ -2457,7 +2456,7 @@ mailing list messages should be referred to for details.
       at least not now. If somebody codes up a consistent, working,
       general solution, I'll be happy to consider it.
 
-      -- http://mail.python.org/pipermail/doc-sig/2001-November/002388.html
+      -- https://mail.python.org/pipermail/doc-sig/2001-November/002388.html
 
 * In a `2003-05-06 Docutils-Users post`__ Paul Tremblay proposed a new
   syntax to allow for easier nesting.  It eventually evolved into
@@ -2468,7 +2467,7 @@ mailing list messages should be referred to for details.
   The duplication with the existing interpreted text syntax is
   problematic though.
 
-  __ http://article.gmane.org/gmane.text.docutils.user/317
+  __ https://article.gmane.org/gmane.text.docutils.user/317
 
 * Could the parser be extended to parse nested interpreted text? ::
 
@@ -2481,7 +2480,7 @@ mailing list messages should be referred to for details.
   ideas.  The implementation was flawed, however, by the change in
   semantics required for backslash escapes.
 
-  __ http://article.gmane.org/gmane.text.docutils.devel/795
+  __ https://article.gmane.org/gmane.text.docutils.devel/795
 
 * Docutils-develop threads between David Abrahams, David Goodger, and
   Mark Nodine (beginning 2004-01-16__ and 2004-01-19__) hashed out
@@ -2489,8 +2488,8 @@ mailing list messages should be referred to for details.
   described below.  David Abrahams checked in code to the "nesting"
   branch of CVS, awaiting thorough review.
 
-  __ http://thread.gmane.org/gmane.text.docutils.devel/1102
-  __ http://thread.gmane.org/gmane.text.docutils.devel/1125
+  __ https://thread.gmane.org/gmane.text.docutils.devel/1102
+  __ https://thread.gmane.org/gmane.text.docutils.devel/1125
 
 It may be possible to accomplish nested inline markup in general with
 a more powerful inline markup parser.  There may be some issues, but
@@ -2704,9 +2703,9 @@ See the `Doc-SIG discussion starting 2001-04-18`__ with Ed Loper's
 follow-ups, here__ and here__).  Also `docutils-users, 2003-02-17`__
 and `beginning 2003-08-04`__.
 
-__ http://mail.python.org/pipermail/doc-sig/2001-April/001776.html
-__ http://mail.python.org/pipermail/doc-sig/2001-April/001789.html
-__ http://mail.python.org/pipermail/doc-sig/2001-April/001793.html
+__ https://mail.python.org/pipermail/doc-sig/2001-April/001776.html
+__ https://mail.python.org/pipermail/doc-sig/2001-April/001789.html
+__ https://mail.python.org/pipermail/doc-sig/2001-April/001793.html
 __ https://sourceforge.net/mailarchive/message.php?msg_id=3838913
 __ https://sf.net/mailarchive/forum.php?thread_id=2957175&forum_id=11444
 

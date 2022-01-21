@@ -137,8 +137,8 @@ In addition to "class_", the following option is recognized:
     See `supported languages and markup formats`_ for recognized values.
 
 .. _code directive: directives.html#code
-.. _Pygments: http://pygments.org/
-.. _supported languages and markup formats: http://pygments.org/languages/
+.. _Pygments: https://pygments.org/
+.. _supported languages and markup formats: https://pygments.org/languages/
 
 
 ``:math:``
@@ -185,7 +185,7 @@ This is equivalent to::
 
     See `PEP 287`__ for more information about reStructuredText.
 
-    __ http://www.python.org/peps/pep-0287.html
+    __ https://www.python.org/dev/peps/pep-0287
 
 
 ``:rfc-reference:``
@@ -207,7 +207,7 @@ This is equivalent to::
 
     See `RFC 2822`__ for information about email headers.
 
-    __ http://tools.ietf.org/html/rfc2822.html
+    __ https://tools.ietf.org/html/rfc2822.html
 
 .. [#] You can link to a specific section by saying
    ``:rfc:`number#anchor```. (New in Docutils 0.15.)

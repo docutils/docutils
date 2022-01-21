@@ -98,8 +98,8 @@ Conventions`_ PEPs, summarized, clarified, and extended as follows:
   quotes""" for docstrings.
 
 .. _Style Guide for Python Code:
-   http://www.python.org/peps/pep-0008.html
-.. _Docstring Conventions: http://www.python.org/peps/pep-0257.html
+   https://www.python.org/dev/peps/pep-0008
+.. _Docstring Conventions: https://www.python.org/dev/peps/pep-0257
 .. _Docutils Internationalization: ../howto/i18n.html#python-code
 
 
@@ -230,7 +230,7 @@ discussed on the `docutils-develop mailing list`_ and reviewed before
 being merged into the core.
 
 .. _docutils-develop mailing list:
-   http://lists.sourceforge.net/lists/listinfo/docutils-develop
+   https://lists.sourceforge.net/lists/listinfo/docutils-develop
 
 
 Review Criteria
@@ -534,15 +534,15 @@ snapshot" button in the head of the code listing table).
 
    TODO: do we have active maintenance branches?
    (the only branch looking like a maintenance branch is
-   http://sourceforge.net/p/docutils/code/HEAD/tree/branches/docutils-0.4)
+   https://sourceforge.net/p/docutils/code/HEAD/tree/branches/docutils-0.4)
 
 * `development branches`_, representing ongoing development efforts to bring
   new features into Docutils.
 
 .. _Docutils core:
-   http://sourceforge.net/p/docutils/code/HEAD/tree/trunk/docutils
+   https://sourceforge.net/p/docutils/code/HEAD/tree/trunk/docutils
 .. _development branches:
-   http://sourceforge.net/p/docutils/code/HEAD/tree/branches/
+   https://sourceforge.net/p/docutils/code/HEAD/tree/branches/
 
 
 Setting Up For Docutils Development
@@ -626,7 +626,7 @@ Docutils, may graduate to become `parallel projects`_.
 
 .. _sandbox README: https://docutils.sourceforge.io/sandbox/README.html
 .. _sandbox directory:
-   http://sourceforge.net/p/docutils/code/HEAD/tree/trunk/sandbox/
+   https://sourceforge.net/p/docutils/code/HEAD/tree/trunk/sandbox/
 
 
 .. _parallel project:

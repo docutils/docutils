@@ -945,9 +945,9 @@ Release 0.13.1 (2016-12-09)
     To use, install the ``tox`` package via pip or easy_install and use
     tox from the project root directory.
 
-.. _polyglot: http://www.w3.org/TR/html-polyglot/
-.. _HTML 5: http://www.w3.org/TR/html5/
-.. _XHTML 1.0: http://www.w3.org/TR/xhtml1/
+.. _polyglot: https://www.w3.org/TR/html-polyglot/
+.. _HTML 5: https://www.w3.org/TR/html5/
+.. _XHTML 1.0: https://www.w3.org/TR/xhtml1/
 
 
 Release 0.12 (2014-07-06)
@@ -1180,8 +1180,8 @@ Release 0.9 (2012-05-02)
     via ``import PIL`` as starting with PIL 1.2,
     "PIL lives in the PIL namespace only" (announcement__).
 
-.. _Pygments: http://pygments.org/
-__ http://mail.python.org/pipermail/image-sig/2011-January/006650.html
+.. _Pygments: https://pygments.org/
+__ https://mail.python.org/pipermail/image-sig/2011-January/006650.html
 
 * setup.py
 
@@ -1298,7 +1298,7 @@ Release 0.8 (2011-07-07)
   - Some additions to the Docutils core are released under the 2-Clause BSD
     license, see COPYING_ for details.
 
-  .. _BCP 47: http://www.rfc-editor.org/rfc/bcp/bcp47.txt
+  .. _BCP 47: https://www.rfc-editor.org/rfc/bcp/bcp47.txt
   .. _COPYING: COPYING.html
 
 * reStructuredText:
