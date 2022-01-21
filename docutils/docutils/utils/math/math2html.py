@@ -2335,22 +2335,6 @@ class TextFunction(CommandBit):
     "Set the type to font"
     self.type = 'font'
 
-class LabelFunction(CommandBit):
-  "A function that acts as a label"
-
-  commandmap = FormulaConfig.labelfunctions
-
-  def parsebit(self, pos):
-    "Parse a literal parameter"
-    self.key = self.parseliteral(pos)
-
-  def process(self):
-    "Add an anchor with the label contents."
-    self.type = 'font'
-    self.label = Label().create(' ', self.key, type = 'eqnumber')
-    self.contents = [self.label]
-    # store as a Label so we know it's been seen
-    Label.names[self.key] = self.label
 
 class FontFunction(OneParamFunction):
   """A function of one parameter that changes the font."""
@@ -2366,7 +2350,7 @@ class FontFunction(OneParamFunction):
 FormulaFactory.types += [FormulaCommand, SymbolFunction]
 FormulaCommand.types = [
     AlphaCommand, EmptyCommand, OneParamFunction, FontFunction,
-    LabelFunction, TextFunction, SpacedCommand]
+    TextFunction, SpacedCommand]
 
 
 class BigBracket(object):

@@ -858,7 +858,8 @@ def parse_latex_math(node, string):
 # >>> parse_latex_math(math(), 'x_\\text{in}')
 # math(msub(mi('x'), mtext('in')))
 
-def handle_cmd(name, node, string):
+
+def handle_cmd(name, node, string): # noqa: C901 TODO make this less complex
     """Process LaTeX command `name` followed by `string`.
 
     Append result to `node`.
@@ -1206,8 +1207,7 @@ def handle_script_or_limit(node, c, limits=''):
         elif isinstance(child, msup):
             new_node = msubsup(*child.children, switch=True)
         elif (limits in ('limits', 'movablelimits')
-              or limits == ''
-              and child.get('movablelimits', None) == True):
+              or limits == '' and child.get('movablelimits', None)):
             new_node = munder(child)
         else:
             new_node = msub(child)
@@ -1217,8 +1217,7 @@ def handle_script_or_limit(node, c, limits=''):
         elif isinstance(child, msub):
             new_node = msubsup(*child.children)
         elif (limits in ('limits', 'movablelimits')
-              or limits == ''
-              and child.get('movablelimits', None) == True):
+              or limits == '' and child.get('movablelimits', None)):
             new_node = mover(child)
         else:
             new_node = msup(child)
