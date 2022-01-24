@@ -3,7 +3,6 @@
 [general]
 
 source-link: on
-datestamp: %Y-%m-%d %H:%M UTC
 generator: true
 raw-enabled: off
 
@@ -18,9 +17,19 @@ tab-width = 8
 stylesheet-path: stylesheets/default.css
 output_encoding: ascii:xmlcharrefreplace
 
+# general settings or settings from other components may be used,
+datestamp: %Y-%m-%d %H:%M UTC
+
+
 [pep_html writer]
 
 template: pep-html-template
 stylesheet-path: stylesheets/pep.css
 python-home: http://www.python.org
 no-random: yes
+
+
+[html5 writer]
+
+# overwrite general setting (above) for the html5 writer
+source_link: off
