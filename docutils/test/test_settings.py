@@ -15,7 +15,7 @@ import warnings
 import unittest
 import DocutilsTestSupport              # must be imported before docutils
 from docutils import frontend, utils
-from docutils.writers import html4css1, pep_html
+from docutils.writers import html4css1, pep_html, html5_polyglot
 from docutils.parsers import rst
 
 
@@ -65,6 +65,17 @@ class ConfigFileTests(unittest.TestCase):
                 u'stylesheet_path': [u'test.css'],
                 'trim_footnote_reference_space': None,
                 'output_encoding_error_handler': 'namereplace'},
+        'two_html5': {
+                # use defaults from html5_polyglot writer component
+                # ignore settings in [html4css1 writer] section,
+                'generator': True,
+                'raw_enabled': False,
+                'record_dependencies': utils.DependencyList(),
+                'source_link': False,
+                'tab_width': 8,
+                'trim_footnote_reference_space': True
+                'output_encoding_error_handler': 'namereplace'
+                },
         'list': {u'expose_internals': [u'a', u'b', u'c', u'd', u'e'],
                  u'strip_classes': [u'spam', u'pan', u'fun', u'parrot'],
                  u'strip_elements_with_classes': [u'sugar', u'flour', u'milk',
@@ -144,6 +155,14 @@ class ConfigFileTests(unittest.TestCase):
     def test_multiple(self):
         self.compare_output(self.files_settings('one', 'two'),
                             self.expected_settings('one', 'two'))
+
+    def test_multiple_with_html5_writer(self):
+        # initialize option parser with different component set
+        self.option_parser = frontend.OptionParser(
+            components=(html5_polyglot.Writer, rst.Parser), read_config_files=None)
+        # generator setting not changed by "config_2.txt":
+        self.compare_output(self.files_settings('one', 'two'),
+                            self.expected_settings('two_html5'))
 
     def test_old_and_new(self):
         self.compare_output(self.files_settings('old', 'two'),
