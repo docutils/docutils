@@ -3,7 +3,7 @@
 [general]
 
 generator: no
-
+output-encoding-error-handler: namereplace
 
 [html4css1 writer]
 

@@ -16,7 +16,7 @@ tab-width = 8
 [html4css1 writer]
 
 stylesheet-path: stylesheets/default.css
-
+output_encoding: ascii:xmlcharrefreplace
 
 [pep_html writer]
 

@@ -30,8 +30,10 @@ class ConfigFileTests(unittest.TestCase):
                     'two': fixpath('data/config_2.txt'),
                     'list': fixpath('data/config_list.txt'),
                     'list2': fixpath('data/config_list_2.txt'),
-                    'error': fixpath('data/config_error_handler.txt')}
+                    'error': fixpath('data/config_error_handler.txt'),
+                    'error2': fixpath('data/config_error_handler_2.txt')}
 
+    # expected settings after parsing the equally named config_file:
     settings = {
         'old': {u'datestamp': u'%Y-%m-%d %H:%M UTC',
                 u'generator': True,
@@ -53,13 +55,16 @@ class ConfigFileTests(unittest.TestCase):
                 u'tab_width': 8,
                 u'template': fixpath(u'data/pep-html-template'),
                 u'trim_footnote_reference_space': True,
+                'output_encoding': 'ascii',
+                'output_encoding_error_handler': 'xmlcharrefreplace',
                },
         'two': {u'footnote_references': u'superscript',
                 u'generator': False,
                 'record_dependencies': utils.DependencyList(),
                 u'stylesheet': None,
                 u'stylesheet_path': [u'test.css'],
-                'trim_footnote_reference_space': None},
+                'trim_footnote_reference_space': None,
+                'output_encoding_error_handler': 'namereplace'},
         'list': {u'expose_internals': [u'a', u'b', u'c', u'd', u'e'],
                  u'strip_classes': [u'spam', u'pan', u'fun', u'parrot'],
                  u'strip_elements_with_classes': [u'sugar', u'flour', u'milk',
@@ -69,9 +74,13 @@ class ConfigFileTests(unittest.TestCase):
                                      u'ham', u'eggs'],
                   u'strip_elements_with_classes': [u'sugar', u'flour',
                                                    u'milk', u'safran',
-                                                   u'eggs', u'salt']},
+                                                   u'eggs', u'salt'],
+                  'stylesheet': ['style2.css'],
+                  'stylesheet_path': None,
+                 },
         'error': {u'error_encoding': u'ascii',
                   u'error_encoding_error_handler': u'strict'},
+        'error2': {'error_encoding': 'latin1'},
         }
 
     compare = difflib.Differ().compare
@@ -86,8 +95,9 @@ class ConfigFileTests(unittest.TestCase):
     def files_settings(self, *names):
         settings = frontend.Values()
         for name in names:
-            settings.update(self.option_parser.get_config_file_settings(
-                self.config_files[name]), self.option_parser)
+            cfs = self.option_parser.get_config_file_settings(
+                                                    self.config_files[name])
+            settings.update(cfs, self.option_parser)
         return settings.__dict__
 
     def expected_settings(self, *names):
@@ -110,7 +120,7 @@ class ConfigFileTests(unittest.TestCase):
             print('\n%s\n' % (self,), file=sys.stderr)
             print('-: expected\n+: result', file=sys.stderr)
             print(''.join(self.compare(expected.splitlines(1),
-                                                     result.splitlines(1))), file=sys.stderr)
+                                       result.splitlines(1))), file=sys.stderr)
             raise
 
     def test_nofiles(self):
@@ -144,12 +154,19 @@ class ConfigFileTests(unittest.TestCase):
                             self.expected_settings('list'))
 
     def test_list2(self):
+        # setting `stylesheet` in 'list2' resets stylesheet_path to None
         self.compare_output(self.files_settings('list', 'list2'),
                             self.expected_settings('list2'))
 
     def test_error_handler(self):
+        # set error_encoding and error_encoding_error_handler (from affix)
         self.compare_output(self.files_settings('error'),
                             self.expected_settings('error'))
+
+    def test_error_handler2(self):
+        # second config file only changes encoding, not error_handler:
+        self.compare_output(self.files_settings('error', 'error2'),
+                            self.expected_settings('error', 'error2'))
 
 
 class ConfigEnvVarFileTests(ConfigFileTests):
