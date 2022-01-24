@@ -35,8 +35,8 @@ Subpackages:
 - readers: Context-specific input handlers which understand the data
   source and manage a parser.
 
-- transforms: Modules used by readers and writers to modify DPS
-  doctrees.
+- transforms: Modules used by readers and writers to modify
+  the Docutils document tree.
 
 - utils: Contains the ``Reporter`` system warning class and miscellaneous
   utilities used by readers, writers, and transforms.
@@ -49,10 +49,6 @@ Subpackages:
 
 - writers: Format-specific output translators.
 """
-
-import sys
-from collections import namedtuple
-
 
 __docformat__ = 'reStructuredText'
 
@@ -67,8 +63,16 @@ rather than parsing the text of `__version__`.
 See 'Version Numbering' in docs/dev/policies.txt.
 """
 
-# from functools import total_ordering
-# @total_ordering
+__version_details__ = 'release'
+"""Optional extra version details (e.g. 'snapshot 2005-05-29, r3410').
+(For development and release status see `__version_info__`.)
+"""
+
+
+from collections import namedtuple
+import sys
+
+
 class VersionInfo(namedtuple('VersionInfo',
                              'major minor micro releaselevel serial release')):
 
@@ -109,6 +113,7 @@ class VersionInfo(namedtuple('VersionInfo',
             other = VersionInfo(*other)
         return tuple.__ge__(self, other)
 
+
 __version_info__ = VersionInfo(
     major=0,
     minor=19,
@@ -120,11 +125,6 @@ __version_info__ = VersionInfo(
     )
 """Comprehensive version information tuple. See 'Version Numbering' in
 docs/dev/policies.txt."""
-
-__version_details__ = 'release'
-"""Optional extra version details (e.g. 'snapshot 2005-05-29, r3410').
-(For development and release status see `__version_info__`.)
-"""
 
 
 class ApplicationError(Exception): pass
