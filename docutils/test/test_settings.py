@@ -73,8 +73,8 @@ class ConfigFileTests(unittest.TestCase):
                 'record_dependencies': utils.DependencyList(),
                 'source_link': False,
                 'tab_width': 8,
-                'trim_footnote_reference_space': True
-                'output_encoding_error_handler': 'namereplace'
+                'trim_footnote_reference_space': True,
+                'output_encoding_error_handler': 'namereplace',
                 },
         'list': {u'expose_internals': [u'a', u'b', u'c', u'd', u'e'],
                  u'strip_classes': [u'spam', u'pan', u'fun', u'parrot'],
