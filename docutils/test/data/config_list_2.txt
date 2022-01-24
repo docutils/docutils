@@ -2,3 +2,5 @@
 expose_internals: f
 strip-classes: ham,  eggs
 strip-elements-with-classes: eggs,salt
+# setting stylesheet resets `stylesheet_path` to None
+stylesheet: style2.css
