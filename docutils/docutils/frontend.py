@@ -15,19 +15,20 @@ Exports the following classes:
 
 Also exports the following functions:
 
-* Option callbacks: `store_multiple`, `read_config_file`.
-* Setting validators: `validate_encoding`,
-  `validate_encoding_error_handler`,
-  `validate_encoding_and_error_handler`,
-  `validate_boolean`, `validate_ternary`, `validate_threshold`,
-  `validate_colon_separated_list`,
-  `validate_comma_separated_list`,
-  `validate_dependency_file`.
-* `make_paths_absolute`.
-* SettingSpec manipulation: `filter_settings_spec`.
+* Option callbacks: `store_multiple()`, `read_config_file()`.
+* Setting validators: `validate_encoding()`,
+  `validate_encoding_error_handler()`,
+  `validate_encoding_and_error_handler()`,
+  `validate_boolean()`, `validate_ternary()`, `validate_threshold()`,
+  `validate_colon_separated_string_list()`,
+  `validate_comma_separated_list()`,
+  `validate_dependency_file()`.
+* `make_paths_absolute()`.
+* SettingSpec manipulation: `filter_settings_spec()`.
 """
 
 __docformat__ = 'reStructuredText'
+
 
 import codecs
 from configparser import RawConfigParser
@@ -264,8 +265,8 @@ def make_one_path_absolute(base_path, path):
 def filter_settings_spec(settings_spec, *exclude, **replace):
     """Return a copy of `settings_spec` excluding/replacing some settings.
 
-    `settings_spec` is a tuple of configuration settings with a structure
-    described for docutils.SettingsSpec.settings_spec.
+    `settings_spec` is a tuple of configuration settings
+    (cf. `docutils.SettingsSpec.settings_spec`).
 
     Optional positional arguments are names of to-be-excluded settings.
     Keyword arguments are option specification replacements.
@@ -776,7 +777,7 @@ Skipping "%s" configuration file.
                     try:
                         RawConfigParser.read_file(self, fp, filename)
                     except UnicodeDecodeError:
-                        self._stderr.write(self.not_utf8_error 
+                        self._stderr.write(self.not_utf8_error
                                            % (filename, filename))
                         continue
             except IOError:
