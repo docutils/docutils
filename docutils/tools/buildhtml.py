@@ -83,7 +83,7 @@ class SettingsSpec(docutils.SettingsSpec):
            'choices': ['html', 'html4', 'html5'],
            # 'default': 'html' (set below)
           }),
-         ('Obsoleted by "--writer".',
+         (frontend.SUPPRESS_HELP, # Obsoleted by "--writer"
           ['--html-writer'],
           {'metavar': '<writer>',
            'choices': ['html', 'html4', 'html5'],}),

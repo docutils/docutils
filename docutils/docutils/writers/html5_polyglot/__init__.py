@@ -83,11 +83,11 @@ class Writer(writers._html_base.Writer):
     settings_spec = settings_spec + (
         'HTML5 Writer Options',
         '',
-        (('Obsoleted by "--image-loading".',
+        ((frontend.SUPPRESS_HELP, # Obsoleted by "--image-loading"
           ['--embed-images'],
           {'action': 'store_true',
            'validator': frontend.validate_boolean}),
-         ('Obsoleted by "--image-loading".',
+         (frontend.SUPPRESS_HELP, # Obsoleted by "--image-loading"
           ['--link-images'],
           {'dest': 'embed_images', 'action': 'store_false'}),
          ('Suggest at which point images should be loaded: '
