@@ -96,8 +96,7 @@ def ttm(math_code, reporter=None):
     if reporter and err.find('**** Error') >= 0 or not result:
         reporter.error(err)
     start, end = result.find('<math'), result.find('</math>')+7
-    result = result[start:end]
-    return result
+    return result[start:end]
 
 def blahtexml(math_code, inline=True, reporter=None):
     """Convert LaTeX math code to MathML with blahtexml_

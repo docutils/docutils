@@ -183,8 +183,7 @@ def path(argument):
     if argument is None:
         raise ValueError('argument required but none supplied')
     else:
-        path = ''.join(s.strip() for s in argument.splitlines())
-        return path
+        return ''.join(s.strip() for s in argument.splitlines())
 
 def uri(argument):
     """
@@ -197,8 +196,7 @@ def uri(argument):
         raise ValueError('argument required but none supplied')
     else:
         parts = split_escaped_whitespace(escape2null(argument))
-        uri = ' '.join(''.join(unescape(part).split()) for part in parts)
-        return uri
+        return ' '.join(''.join(unescape(part).split()) for part in parts)
 
 def nonnegative_int(argument):
     """

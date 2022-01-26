@@ -105,9 +105,8 @@ class DocutilsOdtTestCase(DocutilsTestSupport.StandardTestCase):
         content1 = zfile.read(filename)
         doc = etree.fromstring(content1)
         self.reorder_attributes(doc)
-        #content2 = doc.toprettyxml(indent='  ')
-        content2 = etree.tostring(doc)
-        return content2
+        # return doc.toprettyxml(indent='  ')
+        return etree.tostring(doc)
 
     def assertEqual(self, first, second, msg=None):
         if msg is None:

@@ -1479,8 +1479,7 @@ class StringContainer(Container):
     return replaced
 
   def changeline(self, line):
-    line = self.escape(line, EscapeConfig.chars)
-    return line
+    return self.escape(line, EscapeConfig.chars)
 
   def extracttext(self):
     "Return all text."

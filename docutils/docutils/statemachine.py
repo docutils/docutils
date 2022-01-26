@@ -1498,8 +1498,7 @@ def string2lines(astring, tab_width=8, convert_whitespace=False,
     """
     if convert_whitespace:
         astring = whitespace.sub(' ', astring)
-    lines = [s.expandtabs(tab_width).rstrip() for s in astring.splitlines()]
-    return lines
+    return [s.expandtabs(tab_width).rstrip() for s in astring.splitlines()]
 
 def _exception_data():
     """

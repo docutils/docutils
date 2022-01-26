@@ -262,8 +262,7 @@ def extract_extension_options(field_list, options_spec):
           missing data, bad quotes, etc.).
     """
     option_list = extract_options(field_list)
-    option_dict = assemble_option_dict(option_list, options_spec)
-    return option_dict
+    return assemble_option_dict(option_list, options_spec)
 
 def extract_options(field_list):
     """

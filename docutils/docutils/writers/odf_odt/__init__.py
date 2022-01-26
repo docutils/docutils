@@ -253,8 +253,7 @@ def Element(tag, attrib=None, nsmap=None, nsdict=CNSD):
     if attrib is None:
         attrib = {}
     tag, attrib = fix_ns(tag, attrib, nsdict)
-    el = _ElementInterfaceWrapper(tag, attrib)
-    return el
+    return _ElementInterfaceWrapper(tag, attrib)
 
 
 def SubElement(parent, tag, attrib=None, nsmap=None, nsdict=CNSD):
@@ -678,8 +677,7 @@ class Writer(writers.Writer):
         """Get the stylesheet from the visitor.
         Ask the visitor to setup the page.
         """
-        s1 = self.visitor.setup_page()
-        return s1
+        return self.visitor.setup_page()
 
     def copy_from_stylesheet(self, outzipfile):
         """Copy images, settings, etc from the stylesheet doc into target doc.
@@ -729,8 +727,7 @@ class Writer(writers.Writer):
         }, nsdict=MANNSD)
         s1 = ToString(doc)
         doc = minidom.parseString(s1)
-        s1 = doc.toprettyxml('  ')
-        return s1
+        return doc.toprettyxml('  ')
 
     def create_meta(self):
         root = Element(
@@ -1049,8 +1046,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         the value.
         """
         name1 = name % parameters
-        stylename = self.format_map.get(name1, 'rststyle-%s' % name1)
-        return stylename
+        return self.format_map.get(name1, 'rststyle-%s' % name1)
 
     def generate_content_element(self, root):
         return SubElement(root, 'office:text')
@@ -1062,8 +1058,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                 self.settings.custom_header or
                 self.settings.custom_footer):
             self.add_header_footer(self.dom_stylesheet)
-        new_content = etree.tostring(self.dom_stylesheet)
-        return new_content
+        return etree.tostring(self.dom_stylesheet)
 
     def get_dom_stylesheet(self):
         return self.dom_stylesheet
@@ -1444,8 +1439,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def astext(self):
         root = self.content_tree.getroot()
         et = etree.ElementTree(root)
-        s1 = ToString(et)
-        return s1
+        return ToString(et)
 
     def content_astext(self):
         return self.astext()
@@ -1506,8 +1500,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def append_child(self, tag, attrib=None, parent=None):
         if parent is None:
             parent = self.current_element
-        el = SubElement(parent, tag, attrib)
-        return el
+        return SubElement(parent, tag, attrib)
 
     def append_p(self, style, text=None):
         result = self.append_child('text:p', attrib={
@@ -1537,8 +1530,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             el, 'text:span',
             attrib={'text:style-name': self.rststyle('strong')})
         el1.text = label
-        el = self.append_p('blockindent')
-        return el
+        return self.append_p('blockindent')
 
     def generate_labeled_line(self, node, label):
         label = '%s:' % (self.language.labels[label], )
@@ -1551,8 +1543,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         return el
 
     def encode(self, text):
-        text = text.replace('\n', " ")
-        return text
+        return text.replace('\n', " ")
 
     #
     # Visitor functions
@@ -2601,23 +2592,19 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                 lambda name, parameters=():
                 self.rststyle(name, parameters),
                 escape_function=escape_cdata)
-        outsource = pygments.highlight(insource, lexer, fmtr)
-        return outsource
+        return pygments.highlight(insource, lexer, fmtr)
 
     def fill_line(self, line):
         line = FILL_PAT1.sub(self.fill_func1, line)
-        line = FILL_PAT2.sub(self.fill_func2, line)
-        return line
+        return FILL_PAT2.sub(self.fill_func2, line)
 
     def fill_func1(self, matchobj):
         spaces = matchobj.group(0)
-        repl = '<text:s text:c="%d"/>' % (len(spaces), )
-        return repl
+        return '<text:s text:c="%d"/>' % (len(spaces), )
 
     def fill_func2(self, matchobj):
         spaces = matchobj.group(0)
-        repl = ' <text:s text:c="%d"/>' % (len(spaces) - 1, )
-        return repl
+        return ' <text:s text:c="%d"/>' % (len(spaces) - 1, )
 
     def visit_literal_block(self, node):
         if len(self.paragraph_style_stack) > 1:

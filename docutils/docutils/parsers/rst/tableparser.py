@@ -65,8 +65,7 @@ class TableParser(object):
         self.setup(block)
         self.find_head_body_sep()
         self.parse_table()
-        structure = self.structure_from_cells()
-        return structure
+        return self.structure_from_cells()
 
     def find_head_body_sep(self):
         """Look for a head/body row separator line; store the line index."""
@@ -209,8 +208,7 @@ class GridTableParser(TableParser):
     def scan_cell(self, top, left):
         """Starting at the top-left corner, start tracing out a cell."""
         assert self.block[top][left] == '+'
-        result = self.scan_right(top, left)
-        return result
+        return self.scan_right(top, left)
 
     def scan_right(self, top, left):
         """

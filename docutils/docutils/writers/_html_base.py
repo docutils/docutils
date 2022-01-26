@@ -370,8 +370,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         # Surround at-signs and periods with <span> tags.  ("@" has
         # already been encoded to "&#64;" by the `encode` method.)
         addr = addr.replace('&#64;', '<span>&#64;</span>')
-        addr = addr.replace('.', '<span>&#46;</span>')
-        return addr
+        return addr.replace('.', '<span>&#46;</span>')
 
     def attval(self, text,
                whitespace=re.compile('[\n\r\t\v\f]')):
