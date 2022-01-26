@@ -625,7 +625,7 @@ class Options(object):
   simplemath = False
   showlines = True
 
-  branches = dict()
+  branches = {}
 
   def parseoptions(self, args):
     "Parse command line options"
@@ -734,7 +734,7 @@ class Parser(object):
 
   def __init__(self):
     self.begin = 0
-    self.parameters = dict()
+    self.parameters = {}
 
   def parseheader(self, reader):
     "Parse the header"
@@ -2042,7 +2042,7 @@ class FormulaFactory(object):
 
   def __init__(self):
     "Initialize the map of instances."
-    self.instances = dict()
+    self.instances = {}
 
   def detecttype(self, type, pos):
     "Detect a bit of a given type."
@@ -2933,7 +2933,7 @@ class ParameterFunction(CommandBit):
 
   def readparams(self, readtemplate, pos):
     "Read the params according to the template."
-    self.params = dict()
+    self.params = {}
     for paramdef in self.paramdefs(readtemplate):
       paramdef.read(pos, self)
       self.params['$' + paramdef.name] = paramdef

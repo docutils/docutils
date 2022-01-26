@@ -198,8 +198,8 @@ class StripClassesAndElements(Transform):
 
     def apply(self):
         if self.document.settings.strip_elements_with_classes:
-            self.strip_elements = set(
-                self.document.settings.strip_elements_with_classes)
+            self.strip_elements = {*self.document.settings
+                                   .strip_elements_with_classes}
             # Iterate over a tuple as removing the current node
             # corrupts the iterator returned by `iter`:
             for node in tuple(self.document.findall(self.check_classes)):

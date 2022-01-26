@@ -388,7 +388,7 @@ class Babel(object):
         # zh-Latn:      Chinese Pinyin
         }
     # normalize (downcase) keys
-    language_codes = dict([(k.lower(), v) for (k, v) in language_codes.items()])
+    language_codes = {k.lower(): v for k, v in language_codes.items()}
 
     warn_msg = 'Language "%s" not supported by LaTeX (babel)'
 
