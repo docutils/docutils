@@ -672,18 +672,18 @@ def educateQuotes(text, language='en'):
                     )
                     '                 # the quote
                     (?=\\w|%(punct)s) # followed by a word character or punctuation
-                    """ % ch_classes, re.VERBOSE | re.UNICODE)
+                    """ % ch_classes, re.VERBOSE)
 
     text = opening_secondary_quotes_regex.sub(r'\1'+smart.osquote, text)
 
     # In many locales, secondary closing quotes are different from apostrophe:
     if smart.csquote != smart.apostrophe:
-        apostrophe_regex = re.compile(r"(?<=(\w|\d))'(?=\w)", re.UNICODE)
+        apostrophe_regex = re.compile(r"(?<=(\w|\d))'(?=\w)")
         text = apostrophe_regex.sub(smart.apostrophe, text)
     # TODO: keep track of quoting level to recognize apostrophe in, e.g.,
     # "Ich fass' es nicht."
 
-    closing_secondary_quotes_regex = re.compile(r"(?<!\s)'", re.UNICODE)
+    closing_secondary_quotes_regex = re.compile(r"(?<!\s)'")
     text = closing_secondary_quotes_regex.sub(smart.csquote, text)
 
     # Any remaining secondary quotes should be opening ones:
@@ -698,7 +698,7 @@ def educateQuotes(text, language='en'):
                     )
                     "                 # the quote
                     (?=\\w|%(punct)s) # followed by a word character or punctuation
-                    """ % ch_classes, re.VERBOSE | re.UNICODE)
+                    """ % ch_classes, re.VERBOSE)
 
     text = opening_primary_quotes_regex.sub(r'\1'+smart.opquote, text)
 
@@ -708,7 +708,7 @@ def educateQuotes(text, language='en'):
                     (?<!\s)" | # no whitespace before
                     "(?=\s)    # whitespace behind
                     )
-                    """, re.VERBOSE | re.UNICODE)
+                    """, re.VERBOSE)
     text = closing_primary_quotes_regex.sub(smart.cpquote, text)
 
     # Any remaining quotes should be opening ones.
