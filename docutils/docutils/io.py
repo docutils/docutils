@@ -139,7 +139,7 @@ class Input(TransformSpec):
                 decoded = str(data, enc, self.error_handler)
                 self.successful_encoding = enc
                 # Return decoded, removing BOMs.
-                return decoded.replace(u'\ufeff', u'')
+                return decoded.replace('\ufeff', '')
             except (UnicodeError, LookupError) as err:
                 # keep exception instance for use outside of the "for" loop.
                 error = err 
@@ -549,7 +549,7 @@ class NullInput(Input):
 
     def read(self):
         """Return a null string."""
-        return u''
+        return ''
 
 
 class NullOutput(Output):

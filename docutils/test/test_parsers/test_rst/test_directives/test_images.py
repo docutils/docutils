@@ -278,7 +278,7 @@ totest['images'] = [
         <literal_block xml:space="preserve">
             .. image:: picture.png
                :scale: fifty
-""" % DocutilsTestSupport.exception_data(int, u"fifty")[1][0]],
+""" % DocutilsTestSupport.exception_data(int, "fifty")[1][0]],
 ["""\
 .. image:: picture.png
    :scale: 50
@@ -406,11 +406,11 @@ totest['images'] = [
             .. |img| image:: picture.png
                :align: left
 """],
-[u"""\
+["""\
 .. image:: picture.png
    :align: \xe4
 """,
-u"""\
+"""\
 <document source="test data">
     <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>

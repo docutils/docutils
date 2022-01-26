@@ -62,10 +62,10 @@ Today's date is |date|.
 # some locales return non-ASCII characters for names of days or months
 if locale_encoding in ['utf8', 'utf-8', 'latin-1']:
     totest['decode date'] = [
-    [u"""\
+    ["""\
 .. |date| date:: t\xc3glich
 """,
-    u"""\
+    """\
 <document source="test data">
     <substitution_definition names="date">
         t\xc3glich

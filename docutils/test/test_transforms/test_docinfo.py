@@ -379,7 +379,7 @@ totest['bibliographic_field_lists'] = ((DocInfo,), [
 ])
 
 totest_de['bibliographic_field_lists'] = ((DocInfo,), [
-[u"""\
+["""\
 .. Bibliographic element extraction for a German document.
 
 :Zusammenfassung: Abstract 1.
@@ -391,7 +391,7 @@ totest_de['bibliographic_field_lists'] = ((DocInfo,), [
 :Datum: 2001-08-11
 :Parameter i: integer
 """,
-u"""\
+"""\
 <document source="test data">
     <docinfo>
         <author>
@@ -422,7 +422,7 @@ u"""\
 """],])
 
 totest_ru['bibliographic_field_lists'] = ((DocInfo,), [
-[u"""\
+["""\
 .. Bibliographic element extraction for a Russian document.
 
 :аннотация: Abstract 1.
@@ -434,7 +434,7 @@ totest_ru['bibliographic_field_lists'] = ((DocInfo,), [
 :дата: 2001-08-11
 :Parameter i: integer
 """,
-u"""\
+"""\
 <document source="test data">
     <docinfo>
         <author>

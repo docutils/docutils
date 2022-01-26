@@ -86,11 +86,11 @@ class InputTests(unittest.TestCase):
         input = io.StringInput(source=b'\xef\xbb\xbf foo \xef\xbb\xbf bar',
                                encoding='utf8')
         # Assert BOMs are gone.
-        self.assertEqual(input.read(), u' foo  bar')
+        self.assertEqual(input.read(), ' foo  bar')
         # With unicode input:
-        input = io.StringInput(source=u'\ufeff foo \ufeff bar')
+        input = io.StringInput(source='\ufeff foo \ufeff bar')
         # Assert BOMs are still there.
-        self.assertEqual(input.read(), u'\ufeff foo \ufeff bar')
+        self.assertEqual(input.read(), '\ufeff foo \ufeff bar')
 
     def test_coding_slug(self):
         input = io.StringInput(source=b"""\
@@ -117,7 +117,7 @@ print("hello world")
         self.assertNotEqual(input.successful_encoding, 'ascii')
 
     def test_bom_detection(self):
-        source = u'\ufeffdata\nblah\n'
+        source = '\ufeffdata\nblah\n'
         input = io.StringInput(source=source.encode('utf-16-be'))
         data = input.read()
         self.assertEqual(input.successful_encoding, 'utf-16-be')
@@ -131,7 +131,7 @@ print("hello world")
     def test_readlines(self):
         input = io.FileInput(source_path='data/include.txt')
         data = input.readlines()
-        self.assertEqual(data, [u'Some include text.\n'])
+        self.assertEqual(data, ['Some include text.\n'])
 
     def test_heuristics_no_utf8(self):
         # if no encoding is given and decoding with utf8 fails,
@@ -148,13 +148,13 @@ print("hello world")
                 "guessed encoding '%s' differs from probed encodings %r"
                 % (input.successful_encoding, probed_encodings))
         if input.successful_encoding == 'latin-1':
-            self.assertEqual(data, u'Gr\xfc\xdfe\n')
+            self.assertEqual(data, 'Gr\xfc\xdfe\n')
 
     def test_decode_unicode(self):
         # With the special value "unicode" or "Unicode":
         uniinput = io.Input(encoding='unicode')
         # keep unicode instances as-is
-        self.assertEqual(uniinput.decode(u'ja'), u'ja')
+        self.assertEqual(uniinput.decode('ja'), 'ja')
         # raise AssertionError if data is not an unicode string
         self.assertRaises(AssertionError, uniinput.decode, b'ja')
 
@@ -162,7 +162,7 @@ print("hello world")
 class OutputTests(unittest.TestCase):
 
     bdata = b'\xfc'
-    udata = u'\xfc'
+    udata = '\xfc'
 
     def setUp(self):
         self.bdrain = BBuf()
@@ -233,15 +233,15 @@ class ErrorOutputTests(unittest.TestCase):
         e.write(b'b\xfc')
         self.assertEqual(buf.getvalue(), b'b\xfc')
         # encode unicode data with backslashescape fallback replacement:
-        e.write(u' u\xfc')
+        e.write(' u\xfc')
         self.assertEqual(buf.getvalue(), b'b\xfc u\\xfc')
         # handle Exceptions with Unicode string args
-        # unicode(Exception(u'e\xfc')) # fails in Python < 2.6
-        e.write(AttributeError(u' e\xfc'))
+        # unicode(Exception('e\xfc')) # fails in Python < 2.6
+        e.write(AttributeError(' e\xfc'))
         self.assertEqual(buf.getvalue(), b'b\xfc u\\xfc e\\xfc')
         # encode with `encoding` attribute
         e.encoding = 'utf8'
-        e.write(u' u\xfc')
+        e.write(' u\xfc')
         self.assertEqual(buf.getvalue(), b'b\xfc u\\xfc e\\xfc u\xc3\xbc')
 
     def test_ubuf(self):
@@ -249,16 +249,16 @@ class ErrorOutputTests(unittest.TestCase):
         # decode of binary strings
         e = io.ErrorOutput(buf, encoding='ascii')
         e.write(b'b\xfc')
-        self.assertEqual(buf.getvalue(), u'b\ufffd') # use REPLACEMENT CHARACTER
+        self.assertEqual(buf.getvalue(), 'b\ufffd') # use REPLACEMENT CHARACTER
         # write Unicode string and Exceptions with Unicode args
-        e.write(u' u\xfc')
-        self.assertEqual(buf.getvalue(), u'b\ufffd u\xfc')
-        e.write(AttributeError(u' e\xfc'))
-        self.assertEqual(buf.getvalue(), u'b\ufffd u\xfc e\xfc')
+        e.write(' u\xfc')
+        self.assertEqual(buf.getvalue(), 'b\ufffd u\xfc')
+        e.write(AttributeError(' e\xfc'))
+        self.assertEqual(buf.getvalue(), 'b\ufffd u\xfc e\xfc')
         # decode with `encoding` attribute
         e.encoding = 'latin1'
         e.write(b' b\xfc')
-        self.assertEqual(buf.getvalue(), u'b\ufffd u\xfc e\xfc b\xfc')
+        self.assertEqual(buf.getvalue(), 'b\ufffd u\xfc e\xfc b\xfc')
 
 
 if __name__ == '__main__':

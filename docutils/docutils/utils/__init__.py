@@ -602,7 +602,7 @@ def find_combining_chars(text):
     """Return indices of all combining chars in  Unicode string `text`.
 
     >>> from docutils.utils import find_combining_chars
-    >>> find_combining_chars(u'A t̆ab̆lĕ')
+    >>> find_combining_chars('A t̆ab̆lĕ')
     [3, 6, 9]
 
     """
@@ -612,7 +612,7 @@ def column_indices(text):
     """Indices of Unicode string `text` when skipping combining characters.
 
     >>> from docutils.utils import column_indices
-    >>> column_indices(u'A t̆ab̆lĕ')
+    >>> column_indices('A t̆ab̆lĕ')
     [0, 1, 2, 4, 5, 7, 8]
 
     """

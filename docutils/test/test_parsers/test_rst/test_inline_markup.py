@@ -30,11 +30,11 @@ totest['emphasis'] = [
         <emphasis>
             emphasis
 """],
-[u"""\
+["""\
 l'*emphasis* with the *emphasis*' apostrophe.
 l\u2019*emphasis* with the *emphasis*\u2019 apostrophe.
 """,
-u"""\
+"""\
 <document source="test data">
     <paragraph>
         l\'
@@ -155,7 +155,7 @@ what about *this**?
             this*
         ?
 """],
-[u"""\
+["""\
 Quotes around inline markup:
 
 '*emphasis*' "*emphasis*" Straight,
@@ -170,7 +170,7 @@ Quotes around inline markup:
 „*emphasis*” ‚*emphasis*’ Polish,
 „*emphasis*” »*emphasis*« ’*emphasis*’ Hungarian,
 """,
-u"""\
+"""\
 <document source="test data">
     <paragraph>
         Quotes around inline markup:
@@ -302,10 +302,10 @@ totest['strong'] = [
         <strong>
             strong
 """],
-[u"""\
+["""\
 l'**strong** and l\u2019**strong** with apostrophe
 """,
-u"""\
+"""\
 <document source="test data">
     <paragraph>
         l'
@@ -316,12 +316,12 @@ u"""\
             strong
          with apostrophe
 """],
-[u"""\
+["""\
 quoted '**strong**', quoted "**strong**",
 quoted \u2018**strong**\u2019, quoted \u201c**strong**\u201d,
 quoted \xab**strong**\xbb
 """,
-u"""\
+"""\
 <document source="test data">
     <paragraph>
         quoted '
@@ -432,10 +432,10 @@ totest['literal'] = [
         <literal>
             literal\\
 """],
-[u"""\
+["""\
 l'``literal`` and l\u2019``literal`` with apostrophe
 """,
-u"""\
+"""\
 <document source="test data">
     <paragraph>
         l'
@@ -446,12 +446,12 @@ u"""\
             literal
          with apostrophe
 """],
-[u"""\
+["""\
 quoted '``literal``', quoted "``literal``",
 quoted \u2018``literal``\u2019, quoted \u201c``literal``\u201d,
 quoted \xab``literal``\xbb
 """,
-u"""\
+"""\
 <document source="test data">
     <paragraph>
         quoted '
@@ -473,12 +473,12 @@ u"""\
             literal
         \xbb
 """],
-[u"""\
+["""\
 ``'literal'`` with quotes, ``"literal"`` with quotes,
 ``\u2018literal\u2019`` with quotes, ``\u201cliteral\u201d`` with quotes,
 ``\xabliteral\xbb`` with quotes
 """,
-u"""\
+"""\
 <document source="test data">
     <paragraph>
         <literal>
@@ -596,10 +596,10 @@ ref_
         <reference name="ref" refname="ref">
             ref
 """],
-[u"""\
+["""\
 l'ref_ and l\u2019ref_ with apostrophe
 """,
-u"""\
+"""\
 <document source="test data">
     <paragraph>
         l'
@@ -610,14 +610,14 @@ u"""\
             ref
          with apostrophe
 """],
-[u"""\
+["""\
 quoted 'ref_', quoted "ref_",
 quoted \u2018ref_\u2019, quoted \u201cref_\u201d,
 quoted \xabref_\xbb,
 but not 'ref ref'_, "ref ref"_, \u2018ref ref\u2019_,
 \u201cref ref\u201d_, or \xabref ref\xbb_
 """,
-u"""\
+"""\
 <document source="test data">
     <paragraph>
         quoted '
@@ -650,10 +650,10 @@ ref__
         <reference anonymous="1" name="ref">
             ref
 """],
-[u"""\
+["""\
 l'ref__ and l\u2019ref__ with apostrophe
 """,
-u"""\
+"""\
 <document source="test data">
     <paragraph>
         l'
@@ -664,14 +664,14 @@ u"""\
             ref
          with apostrophe
 """],
-[u"""\
+["""\
 quoted 'ref__', quoted "ref__",
 quoted \u2018ref__\u2019, quoted \u201cref__\u201d,
 quoted \xabref__\xbb,
 but not 'ref ref'__, "ref ref"__, \u2018ref ref\u2019__,
 \u201cref ref\u201d__, or \xabref ref\xbb__
 """,
-u"""\
+"""\
 <document source="test data">
     <paragraph>
         quoted '
@@ -731,10 +731,10 @@ totest['phrase_references'] = [
         <reference name="phrase reference" refname="phrase reference">
             phrase reference
 """],
-[u"""\
+["""\
 l'`phrase reference`_ and l\u2019`phrase reference`_ with apostrophe
 """,
-u"""\
+"""\
 <document source="test data">
     <paragraph>
         l'
@@ -745,13 +745,13 @@ u"""\
             phrase reference
          with apostrophe
 """],
-[u"""\
+["""\
 quoted '`phrase reference`_', quoted "`phrase reference`_",
 quoted \u2018`phrase reference`_\u2019,
 quoted \u201c`phrase reference`_\u201d,
 quoted \xab`phrase reference`_\xbb
 """,
-u"""\
+"""\
 <document source="test data">
     <paragraph>
         quoted '
@@ -774,13 +774,13 @@ u"""\
             phrase reference
         \xbb
 """],
-[u"""\
+["""\
 `'phrase reference'`_ with quotes, `"phrase reference"`_ with quotes,
 `\u2018phrase reference\u2019`_ with quotes,
 `\u201cphrase reference\u201d`_ with quotes,
 `\xabphrase reference\xbb`_ with quotes
 """,
-u"""\
+"""\
 <document source="test data">
     <paragraph>
         <reference name="'phrase reference'" refname="'phrase reference'">
@@ -808,10 +808,10 @@ u"""\
         <reference anonymous="1" name="anonymous reference">
             anonymous reference
 """],
-[u"""\
+["""\
 l'`anonymous reference`__ and l\u2019`anonymous reference`__ with apostrophe
 """,
-u"""\
+"""\
 <document source="test data">
     <paragraph>
         l'
@@ -822,13 +822,13 @@ u"""\
             anonymous reference
          with apostrophe
 """],
-[u"""\
+["""\
 quoted '`anonymous reference`__', quoted "`anonymous reference`__",
 quoted \u2018`anonymous reference`__\u2019,
 quoted \u201c`anonymous reference`__\u201d,
 quoted \xab`anonymous reference`__\xbb
 """,
-u"""\
+"""\
 <document source="test data">
     <paragraph>
         quoted '
@@ -851,13 +851,13 @@ u"""\
             anonymous reference
         \xbb
 """],
-[u"""\
+["""\
 `'anonymous reference'`__ with quotes, `"anonymous reference"`__ with quotes,
 `\u2018anonymous reference\u2019`__ with quotes,
 `\u201canonymous reference\u201d`__ with quotes,
 `\xabanonymous reference\xbb`__ with quotes
 """,
-u"""\
+"""\
 <document source="test data">
     <paragraph>
         <reference anonymous="1" name="'anonymous reference'">
@@ -1257,10 +1257,10 @@ _`Here is  a    TaRgeT` with case and spacial difficulties.
             Here is  a    TaRgeT
          with case and spacial difficulties.
 """],
-[u"""\
+["""\
 l'_`target1` and l\u2019_`target2` with apostrophe
 """,
-u"""\
+"""\
 <document source="test data">
     <paragraph>
         l'
@@ -1271,12 +1271,12 @@ u"""\
             target2
          with apostrophe
 """],
-[u"""\
+["""\
 quoted '_`target1`', quoted "_`target2`",
 quoted \u2018_`target3`\u2019, quoted \u201c_`target4`\u201d,
 quoted \xab_`target5`\xbb
 """,
-u"""\
+"""\
 <document source="test data">
     <paragraph>
         quoted '
@@ -1298,12 +1298,12 @@ u"""\
             target5
         \xbb
 """],
-[u"""\
+["""\
 _`'target1'` with quotes, _`"target2"` with quotes,
 _`\u2018target3\u2019` with quotes, _`\u201ctarget4\u201d` with quotes,
 _`\xabtarget5\xbb` with quotes
 """,
-u"""\
+"""\
 <document source="test data">
     <paragraph>
         <target ids="target1" names="'target1'">
@@ -1699,11 +1699,11 @@ lines.
         p
         with backslash-escaped whitespace, including newlines.
 """],
-[u"""\
+["""\
 text-*separated*\u2010*by*\u2011*various*\u2012*dashes*\u2013*and*\u2014*hyphens*.
 \u00bf*punctuation*? \u00a1*examples*!\u00a0*no-break-space*\u00a0.
 """,
-u"""\
+"""\
 <document source="test data">
     <paragraph>
         text-
@@ -1738,7 +1738,7 @@ u"""\
 """],
 # Whitespace characters:
 #  \u180e*MONGOLIAN VOWEL SEPARATOR*\u180e,   fails in Python 2.6
-[u"""\
+["""\
 text separated by
 *newline*
 or *space* or one of
@@ -1760,7 +1760,7 @@ or *space* or one of
 \u3000*IDEOGRAPHIC SPACE*\u3000,
 \u2028*LINE SEPARATOR*\u2028
 """,
-u"""\
+"""\
 <document source="test data">
     <paragraph>
         text separated by
@@ -1839,13 +1839,13 @@ u"""\
         <emphasis>
             LINE SEPARATOR
 """],
-[u"""\
+["""\
 inline markup separated by non-ASCII whitespace
 \xa0**NO-BREAK SPACE**\xa0, \xa0``NO-BREAK SPACE``\xa0, \xa0`NO-BREAK SPACE`\xa0,
 \u2000**EN QUAD**\u2000, \u2000``EN QUAD``\u2000, \u2000`EN QUAD`\u2000,
 \u202f**NARROW NBSP**\u202f, \u202f``NARROW NBSP``\u202f, \u202f`NARROW NBSP`\u202f,
 """,
-u"""\
+"""\
 <document source="test data">
     <paragraph>
         inline markup separated by non-ASCII whitespace
@@ -1880,7 +1880,7 @@ u"""\
             NARROW NBSP
         \u202f,
 """],
-[u"""\
+["""\
 no inline markup due to whitespace inside and behind: *
 newline
 *
@@ -1903,7 +1903,7 @@ newline
 *\u3000IDEOGRAPHIC SPACE\u3000*
 *\u2028LINE SEPARATOR\u2028*
 """,
-u"""\
+"""\
 <document source="test data">
     <paragraph>
         no inline markup due to whitespace inside and behind: *
@@ -1929,13 +1929,13 @@ u"""\
         *
         LINE SEPARATOR
         *"""],
-[u"""\
+["""\
 no inline markup because of non-ASCII whitespace following /preceding the markup
 **\xa0NO-BREAK SPACE\xa0** ``\xa0NO-BREAK SPACE\xa0`` `\xa0NO-BREAK SPACE\xa0`
 **\u2000EN QUAD\u2000** ``\u2000EN QUAD\u2000`` `\u2000EN QUAD\u2000`
 **\u202fNARROW NBSP\u202f** ``\u202fNARROW NBSP\u202f`` `\u202fNARROW NBSP\u202f`
 """,
-u"""\
+"""\
 <document source="test data">
     <paragraph>
         no inline markup because of non-ASCII whitespace following /preceding the markup
@@ -1944,7 +1944,7 @@ u"""\
         **\u202fNARROW NBSP\u202f** ``\u202fNARROW NBSP\u202f`` `\u202fNARROW NBSP\u202f`\
 """],
 # « * » ‹ * › « * » ‹ * › « * » ‹ * › French,
-[u"""\
+["""\
 "Quoted" markup start-string (matched openers & closers) -> no markup:
 
 '*' "*" (*) <*> [*] {*}
@@ -1962,7 +1962,7 @@ Some international quoting styles:
 
 But this is „*’ emphasized »*‹.
 """,
-u"""\
+"""\
 <document source="test data">
     <paragraph>
         "Quoted" markup start-string (matched openers & closers) -> no markup:

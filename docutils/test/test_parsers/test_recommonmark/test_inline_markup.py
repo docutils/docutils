@@ -39,10 +39,10 @@ _also emphasis_
         <emphasis>
             also emphasis
 """],
-[u"""\
+["""\
 Partially*emphasised*word.
 """,
-u"""\
+"""\
 <document source="test data">
     <paragraph>
         Partially
@@ -189,10 +189,10 @@ Inline `literals` are called `code spans` in CommonMark.
         <literal classes="code">
             literal\\
 """],
-[u"""\
+["""\
 l'``literal`` and l\u2019``literal`` with apostrophe
 """,
-u"""\
+"""\
 <document source="test data">
     <paragraph>
         l'
@@ -203,12 +203,12 @@ u"""\
             literal
          with apostrophe
 """],
-[u"""\
+["""\
 quoted '``literal``', quoted "``literal``",
 quoted \u2018``literal``\u2019, quoted \u201c``literal``\u201d,
 quoted \xab``literal``\xbb
 """,
-u"""\
+"""\
 <document source="test data">
     <paragraph>
         quoted '
@@ -230,12 +230,12 @@ u"""\
             literal
         \xbb
 """],
-[u"""\
+["""\
 ``'literal'`` with quotes, ``"literal"`` with quotes,
 ``\u2018literal\u2019`` with quotes, ``\u201cliteral\u201d`` with quotes,
 ``\xabliteral\xbb`` with quotes
 """,
-u"""\
+"""\
 <document source="test data">
     <paragraph>
         <literal classes="code">
@@ -349,12 +349,12 @@ totest['references'] = [
         <reference name="phrase reference" refuri="/uri">
             phrase reference
 """],
-[u"""\
+["""\
 No whitespace required around a[phrase reference].
 
 [phrase reference]: /uri
 """,
-u"""\
+"""\
 <document source="test data">
     <paragraph>
         No whitespace required around a

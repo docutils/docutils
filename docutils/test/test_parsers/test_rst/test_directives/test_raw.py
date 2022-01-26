@@ -125,7 +125,7 @@ Raw input file is UTF-16-encoded, and is not valid ASCII.
                :file: %s
                :encoding: ascii
 """ % (utf_16_error_str, utf_16_file_rel)],
-[u"""\
+["""\
 .. raw:: html
    :encoding: utf-8
 

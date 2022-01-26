@@ -442,11 +442,11 @@ lines.
         p
         with backslash-escaped whitespace, including newlines.
 """],
-[u"""\
+["""\
 text-*separated*\u2010*by*\u2011*various*\u2012*dashes*\u2013*and*\u2014*hyphens*.
 \u00bf*punctuation*? \u00a1*examples*!\xa0*no-break-space*\xa0.
 """,
-u"""\
+"""\
 <document source="test data">
     <paragraph>
         text-
@@ -480,7 +480,7 @@ u"""\
         \xa0.
 """],
 # Whitespace characters:
-[u"""\
+["""\
 inline markup surrounded by various whitespace characters:
 *newline*
 or *space* or one of
@@ -503,7 +503,7 @@ or *space* or one of
 \u3000*IDEOGRAPHIC SPACE*\u3000,
 \u2028*LINE SEPARATOR*\u2028
 """,
-u"""\
+"""\
 <document source="test data">
     <paragraph>
         inline markup surrounded by various whitespace characters:
@@ -586,7 +586,7 @@ u"""\
         <emphasis>
             LINE SEPARATOR
 """],
-[u"""\
+["""\
 no inline markup due to whitespace inside and behind: *
 newline
 *
@@ -609,7 +609,7 @@ newline
 *\u3000IDEOGRAPHIC SPACE\u3000*
 *\u2028LINE SEPARATOR\u2028*
 """,
-u"""\
+"""\
 <document source="test data">
     <paragraph>
         no inline markup due to whitespace inside and behind: *
@@ -636,7 +636,7 @@ u"""\
         LINE SEPARATOR
         *"""],
 # « * » ‹ * › « * » ‹ * › « * » ‹ * › French,
-[u"""\
+["""\
 "Quoted" markup start-string (matched openers & closers) -> no markup:
 
 '*' "*" (*) <*> [*] {*}
@@ -654,7 +654,7 @@ Some international quoting styles:
 
 But this is „*’ emphasized »*‹.
 """,
-u"""\
+"""\
 <document source="test data">
     <paragraph>
         "Quoted" markup start-string (matched openers & closers) -> no markup:

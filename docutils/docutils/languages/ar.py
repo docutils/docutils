@@ -15,46 +15,46 @@ __docformat__ = 'reStructuredText'
 
 labels = {
       # fixed: language-dependent
-      u'author': u'المؤلف',
-      u'authors': u'المؤلفون',
-      u'organization': u'التنظيم',
-      u'address': u'العنوان',
-      u'contact': u'اتصل',
-      u'version': u'نسخة',
-      u'revision': u'مراجعة',
-      u'status': u'الحالة',
-      u'date': u'تاریخ',
-      u'copyright': u'الحقوق',
-      u'dedication': u'إهداء',
-      u'abstract': u'ملخص',
-      u'attention': u'تنبيه',
-      u'caution': u'احتیاط',
-      u'danger': u'خطر',
-      u'error': u'خطأ',
-      u'hint': u'تلميح',
-      u'important': u'مهم',
-      u'note': u'ملاحظة',
-      u'tip': u'نصيحة',
-      u'warning': u'تحذير',
-      u'contents': u'المحتوى'}
+      'author': 'المؤلف',
+      'authors': 'المؤلفون',
+      'organization': 'التنظيم',
+      'address': 'العنوان',
+      'contact': 'اتصل',
+      'version': 'نسخة',
+      'revision': 'مراجعة',
+      'status': 'الحالة',
+      'date': 'تاریخ',
+      'copyright': 'الحقوق',
+      'dedication': 'إهداء',
+      'abstract': 'ملخص',
+      'attention': 'تنبيه',
+      'caution': 'احتیاط',
+      'danger': 'خطر',
+      'error': 'خطأ',
+      'hint': 'تلميح',
+      'important': 'مهم',
+      'note': 'ملاحظة',
+      'tip': 'نصيحة',
+      'warning': 'تحذير',
+      'contents': 'المحتوى'}
 """Mapping of node class name to label text."""
 
 bibliographic_fields = {
       # language-dependent: fixed
-      u'مؤلف': u'author',
-      u'مؤلفون': u'authors',
-      u'التنظيم': u'organization',
-      u'العنوان': u'address',
-      u'اتصل': u'contact',
-      u'نسخة': u'version',
-      u'مراجعة': u'revision',
-      u'الحالة': u'status',
-      u'تاریخ': u'date',
-      u'الحقوق': u'copyright',
-      u'إهداء': u'dedication',
-      u'ملخص': u'abstract'}
+      'مؤلف': 'author',
+      'مؤلفون': 'authors',
+      'التنظيم': 'organization',
+      'العنوان': 'address',
+      'اتصل': 'contact',
+      'نسخة': 'version',
+      'مراجعة': 'revision',
+      'الحالة': 'status',
+      'تاریخ': 'date',
+      'الحقوق': 'copyright',
+      'إهداء': 'dedication',
+      'ملخص': 'abstract'}
 """Arabic (lowcased) to canonical name mapping for bibliographic fields."""
 
-author_separators = [u'؛', u'،']
+author_separators = ['؛', '،']
 """List of separator strings for the 'Authors' bibliographic field. Tried in
 order."""

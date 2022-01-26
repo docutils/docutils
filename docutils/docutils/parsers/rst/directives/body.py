@@ -155,12 +155,12 @@ class CodeBlock(Directive):
 
         # set up lexical analyzer
         try:
-            tokens = Lexer(u'\n'.join(self.content), language,
+            tokens = Lexer('\n'.join(self.content), language,
                            self.state.document.settings.syntax_highlight)
         except LexerError as error:
             if self.state.document.settings.report_level > 2:
                 # don't report warnings -> insert without syntax highlight
-                tokens = Lexer(u'\n'.join(self.content), language, 'none')
+                tokens = Lexer('\n'.join(self.content), language, 'none')
             else:
                 raise self.warning(error)
 

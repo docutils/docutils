@@ -29,7 +29,7 @@ from urllib.parse import quote_plus
 from docutils.utils.math import tex2unichar
 
 
-__version__ = u'1.3 (2021-06-02)'
+__version__ = '1.3 (2021-06-02)'
 
 
 class Trace(object):
@@ -82,24 +82,24 @@ class ContainerConfig(object):
   "Configuration class from elyxer.config file"
 
   extracttext = {
-      u'allowed': [u'FormulaConstant',],
-      u'extracted': [
-                     u'AlphaCommand',
-                     u'Bracket',
-                     u'BracketCommand',
-                     u'CombiningFunction',
-                     u'EmptyCommand',
-                     u'FontFunction',
-                     u'Formula',
-                     u'FormulaNumber',
-                     u'FormulaSymbol',
-                     u'OneParamFunction',
-                     u'OversetFunction',
-                     u'RawText',
-                     u'SpacedCommand',
-                     u'SymbolFunction',
-                     u'TextFunction',
-                     u'UndersetFunction',
+      'allowed': ['FormulaConstant',],
+      'extracted': [
+                     'AlphaCommand',
+                     'Bracket',
+                     'BracketCommand',
+                     'CombiningFunction',
+                     'EmptyCommand',
+                     'FontFunction',
+                     'Formula',
+                     'FormulaNumber',
+                     'FormulaSymbol',
+                     'OneParamFunction',
+                     'OversetFunction',
+                     'RawText',
+                     'SpacedCommand',
+                     'SymbolFunction',
+                     'TextFunction',
+                     'UndersetFunction',
                     ],
       }
 
@@ -108,15 +108,15 @@ class EscapeConfig(object):
   "Configuration class from elyxer.config file"
 
   chars = {
-      u'\n': u'',
-      u"'": u'’',
-      u'`': u'‘',
+      '\n': '',
+      "'": '’',
+      '`': '‘',
       }
 
   entities = {
-      u'&': u'&amp;',
-      u'<': u'&lt;',
-      u'>': u'&gt;',
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
       }
 
 
@@ -124,158 +124,158 @@ class FormulaConfig(object):
   "Configuration class from elyxer.config file"
 
   alphacommands = {
-      '\\AmS': u'<span class="textsc">AmS</span>',
-      '\\AA':        u'Å',
-      '\\AE':        u'Æ',
-      '\\DH':        u'Ð',
-      '\\L':         u'Ł',
-      '\\O':         u'Ø',
-      '\\OE':        u'Œ',
-      '\\TH':        u'Þ',
-      '\\aa':        u'å',
-      '\\ae':        u'æ',
-      '\\dh':        u'ð',
-      '\\i':         u'ı',
-      '\\j':         u'ȷ',
-      '\\l':         u'ł',
-      '\\o':         u'ø',
-      '\\oe':        u'œ',
-      '\\ss':        u'ß',
-      '\\th':        u'þ',
+      '\\AmS': '<span class="textsc">AmS</span>',
+      '\\AA':        'Å',
+      '\\AE':        'Æ',
+      '\\DH':        'Ð',
+      '\\L':         'Ł',
+      '\\O':         'Ø',
+      '\\OE':        'Œ',
+      '\\TH':        'Þ',
+      '\\aa':        'å',
+      '\\ae':        'æ',
+      '\\dh':        'ð',
+      '\\i':         'ı',
+      '\\j':         'ȷ',
+      '\\l':         'ł',
+      '\\o':         'ø',
+      '\\oe':        'œ',
+      '\\ss':        'ß',
+      '\\th':        'þ',
       }
   for key, value in tex2unichar.mathalpha.items():
       alphacommands['\\'+key] = value
 
   array = {
-      u'begin': u'\\begin',
-      u'cellseparator': u'&',
-      u'end': u'\\end',
-      u'rowseparator': u'\\\\',
+      'begin': r'\begin',
+      'cellseparator': '&',
+      'end': r'\end',
+      'rowseparator': r'\\',
       }
 
-  bigbrackets = {u'(': [u'⎛', u'⎜', u'⎝',],
-                 u')': [u'⎞', u'⎟', u'⎠',],
-                 u'[': [u'⎡', u'⎢', u'⎣',],
-                 u']': [u'⎤', u'⎥', u'⎦',],
-                 u'{': [u'⎧', u'⎪', u'⎨', u'⎩',],
-                 u'}': [u'⎫', u'⎪', u'⎬', u'⎭',],
+  bigbrackets = {'(': ['⎛', '⎜', '⎝',],
+                 ')': ['⎞', '⎟', '⎠',],
+                 '[': ['⎡', '⎢', '⎣',],
+                 ']': ['⎤', '⎥', '⎦',],
+                 '{': ['⎧', '⎪', '⎨', '⎩',],
+                 '}': ['⎫', '⎪', '⎬', '⎭',],
                  # TODO: 2-row brackets with ⎰⎱ (\lmoustache \rmoustache)
-                 u'|': [u'|',], # 007C VERTICAL LINE
-                 # u'|': [u'⎮',], # 23AE INTEGRAL EXTENSION
-                 # u'|': [u'⎪',], # 23AA CURLY BRACKET EXTENSION
-                 u'‖': [u'‖'], # 2016 DOUBLE VERTICAL LINE
-                 # u'∥': [u'∥'], # 2225 PARALLEL TO
+                 '|': ['|',], # 007C VERTICAL LINE
+                 # '|': ['⎮',], # 23AE INTEGRAL EXTENSION
+                 # '|': ['⎪',], # 23AA CURLY BRACKET EXTENSION
+                 '‖': ['‖'], # 2016 DOUBLE VERTICAL LINE
+                 # '∥': ['∥'], # 2225 PARALLEL TO
                 }
 
   bracketcommands = {
-      u'\\left': u'span class="stretchy"',
-      u'\\left.': u'<span class="leftdot"></span>',
-      u'\\middle': u'span class="stretchy"',
-      u'\\right': u'span class="stretchy"',
-      u'\\right.': u'<span class="rightdot"></span>',
+      '\\left': 'span class="stretchy"',
+      '\\left.': '<span class="leftdot"></span>',
+      '\\middle': 'span class="stretchy"',
+      '\\right': 'span class="stretchy"',
+      '\\right.': '<span class="rightdot"></span>',
       }
 
   combiningfunctions = {
-      u"\\'": u'́',
-      u'\\"': u'̈',
-      u'\\^': u'̂',
-      u'\\`': u'̀',
-      u'\\~': u'̃',
-      u'\\c': u'̧',
-      u'\\r': u'̊',
-      u'\\s': u'̩',
-      u'\\textcircled': u'⃝',
-      u'\\textsubring': u'̥',
-      u'\\v': u'̌',
+      "\\'": '',
+      '\\"': '',
+      '\\^': '',
+      '\\`': '',
+      '\\~': '',
+      '\\c': '',
+      '\\r': '',
+      '\\s': '',
+      '\\textcircled': '',
+      '\\textsubring': '',
+      '\\v': '',
       }
   for key, value in tex2unichar.mathaccent.items():
       combiningfunctions['\\'+key] = value
 
   commands = {
-      '\\\\': u'<br/>',
-      '\\\n': u' ', # escaped whitespace
-      '\\\t': u' ', # escaped whitespace
-      '\\centerdot': u'\u2B1D', # BLACK VERY SMALL SQUARE, mathbin
-      '\\colon': u': ',
-      '\\copyright': u'©',
-      '\\dotminus': u'∸',
-      '\\dots': u'…',
-      '\\dotsb': u'⋯',
-      '\\dotsc': u'…',
-      '\\dotsi': u'⋯',
-      '\\dotsm': u'⋯',
-      '\\dotso': u'…',
-      '\\euro': u'€',
-      '\\guillemotleft': u'«',
-      '\\guillemotright': u'»',
-      '\\hbar': u'<i>\u0127</i>', # ħ LATIN SMALL LETTER H WITH STROKE
-      '\\lVert': u'‖',
-      '\\Arrowvert':  u'\u2016', # ‖
-      '\\lvert': u'|',
-      '\\newline': u'<br/>',
-      '\\nobreakspace': u' ',
-      '\\nolimits': u'',
-      '\\nonumber': u'',
-      '\\qquad': u'  ',
-      '\\rVert': u'‖',
-      '\\rvert': u'|',
-      '\\textasciicircum': u'^',
-      '\\textasciitilde': u'~',
-      '\\textbackslash': u'\\',
-      '\\textcopyright': u'©',
-      '\\textdegree': u'°',
-      '\\textellipsis': u'…',
-      '\\textemdash': u'—',
-      '\\textendash': u'—',
-      '\\texteuro': u'€',
-      '\\textgreater': u'>',
-      '\\textless': u'<',
-      '\\textordfeminine': u'ª',
-      '\\textordmasculine': u'º',
-      '\\textquotedblleft': u'“',
-      '\\textquotedblright': u'”',
-      '\\textquoteright': u'’',
-      '\\textregistered': u'®',
-      '\\textrightarrow': u'→',
-      '\\textsection': u'§',
-      '\\texttrademark': u'™',
-      '\\texttwosuperior': u'²',
-      '\\textvisiblespace': u' ',
-      '\\thickspace': u'<span class="thickspace"> </span>', # 5/13 em
-      '\\;': u'<span class="thickspace"> </span>', # 5/13 em
-      '\\triangle': u'\u25B3', # WHITE UP-POINTING TRIANGLE, mathord
-      '\\triangledown': u'\u25BD', # WHITE DOWN-POINTING TRIANGLE, mathord
-      '\\varnothing': u'\u2300', # ⌀ DIAMETER SIGN
+      '\\\\': '<br/>',
+      '\\\n': ' ', # escaped whitespace
+      '\\\t': ' ', # escaped whitespace
+      '\\centerdot': '\u2B1D', # BLACK VERY SMALL SQUARE, mathbin
+      '\\colon': ': ',
+      '\\copyright': '©',
+      '\\dotminus': '∸',
+      '\\dots': '…',
+      '\\dotsb': '⋯',
+      '\\dotsc': '…',
+      '\\dotsi': '⋯',
+      '\\dotsm': '⋯',
+      '\\dotso': '…',
+      '\\euro': '€',
+      '\\guillemotleft': '«',
+      '\\guillemotright': '»',
+      '\\hbar': '<i>\u0127</i>', # ħ LATIN SMALL LETTER H WITH STROKE
+      '\\lVert': '‖',
+      '\\Arrowvert':  '\u2016', # ‖
+      '\\lvert': '|',
+      '\\newline': '<br/>',
+      '\\nobreakspace': ' ',
+      '\\nolimits': '',
+      '\\nonumber': '',
+      '\\qquad': '  ',
+      '\\rVert': '‖',
+      '\\rvert': '|',
+      '\\textasciicircum': '^',
+      '\\textasciitilde': '~',
+      '\\textbackslash': '\\',
+      '\\textcopyright': '©',
+      '\\textdegree': '°',
+      '\\textellipsis': '…',
+      '\\textemdash': '—',
+      '\\textendash': '—',
+      '\\texteuro': '€',
+      '\\textgreater': '>',
+      '\\textless': '<',
+      '\\textordfeminine': 'ª',
+      '\\textordmasculine': 'º',
+      '\\textquotedblleft': '“',
+      '\\textquotedblright': '”',
+      '\\textquoteright': '’',
+      '\\textregistered': '®',
+      '\\textrightarrow': '→',
+      '\\textsection': '§',
+      '\\texttrademark': '™',
+      '\\texttwosuperior': '²',
+      '\\textvisiblespace': ' ',
+      '\\thickspace': '<span class="thickspace"> </span>', # 5/13 em
+      '\\;': '<span class="thickspace"> </span>', # 5/13 em
+      '\\triangle': '\u25B3', # WHITE UP-POINTING TRIANGLE, mathord
+      '\\triangledown': '\u25BD', # WHITE DOWN-POINTING TRIANGLE, mathord
+      '\\varnothing': '\u2300', # ⌀ DIAMETER SIGN
       # functions
-      '\\Pr': u'Pr',
-      '\\arccos': u'arccos',
-      '\\arcsin': u'arcsin',
-      '\\arctan': u'arctan',
-      '\\arg': u'arg',
-      '\\cos': u'cos',
-      '\\cosh': u'cosh',
-      '\\cot': u'cot',
-      '\\coth': u'coth',
-      '\\csc': u'csc',
-      '\\deg': u'deg',
-      '\\det': u'det',
-      '\\dim': u'dim',
-      '\\exp': u'exp',
-      '\\gcd': u'gcd',
-      '\\hom': u'hom',
-      '\\injlim': u'inj lim',
-      '\\ker': u'ker',
-      '\\lg': u'lg',
-      '\\liminf': u'lim inf',
-      '\\limsup': u'lim sup',
-      '\\ln': u'ln',
-      '\\log': u'log',
-      '\\projlim': u'proj lim',
-      '\\sec': u'sec',
-      '\\sin': u'sin',
-      '\\sinh': u'sinh',
-      '\\tan': u'tan',
-      '\\tanh': u'tanh',
+      '\\Pr': 'Pr',
+      '\\arccos': 'arccos',
+      '\\arcsin': 'arcsin',
+      '\\arctan': 'arctan',
+      '\\arg': 'arg',
+      '\\cos': 'cos',
+      '\\cosh': 'cosh',
+      '\\cot': 'cot',
+      '\\coth': 'coth',
+      '\\csc': 'csc',
+      '\\deg': 'deg',
+      '\\det': 'det',
+      '\\dim': 'dim',
+      '\\exp': 'exp',
+      '\\gcd': 'gcd',
+      '\\hom': 'hom',
+      '\\injlim': 'inj lim',
+      '\\ker': 'ker',
+      '\\lg': 'lg',
+      '\\liminf': 'lim inf',
+      '\\limsup': 'lim sup',
+      '\\ln': 'ln',
+      '\\log': 'log',
+      '\\projlim': 'proj lim',
+      '\\sec': 'sec',
+      '\\sin': 'sin',
+      '\\sinh': 'sinh',
+      '\\tan': 'tan',
+      '\\tanh': 'tanh',
   }
   cmddict = {}
   cmddict.update(tex2unichar.mathbin) # TODO: spacing around binary operators
@@ -289,180 +289,180 @@ class FormulaConfig(object):
 
   oversetfunctions = {
       # math accents (cf. combiningfunctions)
-      # '\\acute':    u'´',
-      '\\bar':      u'‒',  # FIGURE DASH
-      # '\\breve':    u'˘',
-      # '\\check':    u'ˇ',
-      '\\dddot':    u'<span class="smallsymbol">⋯</span>',
-      # '\\ddot':     u'··', # ¨ too high
-      # '\\dot':      u'·',
-      # '\\grave':    u'`',
-      # '\\hat':      u'^',
-      # '\\mathring': u'˚',
-      # '\\tilde':    u'~',
-      '\\vec':      u'<span class="smallsymbol">→</span>',
+      # '\\acute':    '´',
+      '\\bar':      '‒',  # FIGURE DASH
+      # '\\breve':    '˘',
+      # '\\check':    'ˇ',
+      '\\dddot':    '<span class="smallsymbol">⋯</span>',
+      # '\\ddot':     '··', # ¨ too high
+      # '\\dot':      '·',
+      # '\\grave':    '`',
+      # '\\hat':      '^',
+      # '\\mathring': '˚',
+      # '\\tilde':    '~',
+      '\\vec':      '<span class="smallsymbol">→</span>',
       # embellishments
-      '\\overleftarrow': u'⟵',
-      '\\overleftrightarrow': u'⟷',
-      '\\overrightarrow': u'⟶',
-      '\\widehat': u'^',
-      '\\widetilde': u'～',
+      '\\overleftarrow': '⟵',
+      '\\overleftrightarrow': '⟷',
+      '\\overrightarrow': '⟶',
+      '\\widehat': '^',
+      '\\widetilde': '～',
   }
 
   undersetfunctions = {
-      '\\underleftarrow': u'⟵',
-      '\\underleftrightarrow': u'⟷',
-      '\\underrightarrow': u'⟶',
+      '\\underleftarrow': '⟵',
+      '\\underleftrightarrow': '⟷',
+      '\\underrightarrow': '⟶',
   }
 
   endings = {
-      u'bracket': u'}',
-      u'complex': u'\\]',
-      u'endafter': u'}',
-      u'endbefore': u'\\end{',
-      u'squarebracket': u']',
+      'bracket': '}',
+      'complex': '\\]',
+      'endafter': '}',
+      'endbefore': '\\end{',
+      'squarebracket': ']',
       }
 
   environments = {
-      u'align': [u'r', u'l',],
-      u'eqnarray': [u'r', u'c', u'l',],
-      u'gathered': [u'l', u'l',],
-      u'smallmatrix': [u'c', u'c',],
+      'align': ['r', 'l',],
+      'eqnarray': ['r', 'c', 'l',],
+      'gathered': ['l', 'l',],
+      'smallmatrix': ['c', 'c',],
       }
 
   fontfunctions = {
-      u'\\boldsymbol': u'b', u'\\mathbb': u'span class="blackboard"',
-      u'\\mathbb{A}': u'𝔸', u'\\mathbb{B}': u'𝔹', u'\\mathbb{C}': u'ℂ',
-      u'\\mathbb{D}': u'𝔻', u'\\mathbb{E}': u'𝔼', u'\\mathbb{F}': u'𝔽',
-      u'\\mathbb{G}': u'𝔾', u'\\mathbb{H}': u'ℍ', u'\\mathbb{J}': u'𝕁',
-      u'\\mathbb{K}': u'𝕂', u'\\mathbb{L}': u'𝕃', u'\\mathbb{N}': u'ℕ',
-      u'\\mathbb{O}': u'𝕆', u'\\mathbb{P}': u'ℙ', u'\\mathbb{Q}': u'ℚ',
-      u'\\mathbb{R}': u'ℝ', u'\\mathbb{S}': u'𝕊', u'\\mathbb{T}': u'𝕋',
-      u'\\mathbb{W}': u'𝕎', u'\\mathbb{Z}': u'ℤ', u'\\mathbf': u'b',
-      u'\\mathcal': u'span class="scriptfont"',
-      u'\\mathcal{B}': u'ℬ', u'\\mathcal{E}': u'ℰ', u'\\mathcal{F}':
-      u'ℱ', u'\\mathcal{H}': u'ℋ', u'\\mathcal{I}': u'ℐ',
-      u'\\mathcal{L}': u'ℒ', u'\\mathcal{M}': u'ℳ', u'\\mathcal{R}': u'ℛ',
-      u'\\mathfrak': u'span class="fraktur"',
-      u'\\mathfrak{C}': u'ℭ', u'\\mathfrak{F}': u'𝔉', u'\\mathfrak{H}': u'ℌ',
-      u'\\mathfrak{I}': u'ℑ', u'\\mathfrak{R}': u'ℜ', u'\\mathfrak{Z}': u'ℨ',
-      u'\\mathit': u'i',
-      u'\\mathring{A}': u'Å', u'\\mathring{U}': u'Ů',
-      u'\\mathring{a}': u'å', u'\\mathring{u}': u'ů', u'\\mathring{w}': u'ẘ',
-      u'\\mathring{y}': u'ẙ',
-      u'\\mathrm': u'span class="mathrm"',
-      u'\\mathscr': u'span class="mathscr"',
-      u'\\mathscr{B}': u'ℬ', u'\\mathscr{E}': u'ℰ', u'\\mathscr{F}': u'ℱ',
-      u'\\mathscr{H}': u'ℋ', u'\\mathscr{I}': u'ℐ', u'\\mathscr{L}': u'ℒ',
-      u'\\mathscr{M}': u'ℳ', u'\\mathscr{R}': u'ℛ',
-      u'\\mathsf': u'span class="mathsf"',
-      u'\\mathtt': u'span class="mathtt"',
-      u'\\operatorname': u'span class="mathrm"',
+      '\\boldsymbol': 'b', '\\mathbb': 'span class="blackboard"',
+      '\\mathbb{A}': '𝔸', '\\mathbb{B}': '𝔹', '\\mathbb{C}': 'ℂ',
+      '\\mathbb{D}': '𝔻', '\\mathbb{E}': '𝔼', '\\mathbb{F}': '𝔽',
+      '\\mathbb{G}': '𝔾', '\\mathbb{H}': 'ℍ', '\\mathbb{J}': '𝕁',
+      '\\mathbb{K}': '𝕂', '\\mathbb{L}': '𝕃', '\\mathbb{N}': 'ℕ',
+      '\\mathbb{O}': '𝕆', '\\mathbb{P}': 'ℙ', '\\mathbb{Q}': 'ℚ',
+      '\\mathbb{R}': 'ℝ', '\\mathbb{S}': '𝕊', '\\mathbb{T}': '𝕋',
+      '\\mathbb{W}': '𝕎', '\\mathbb{Z}': 'ℤ', '\\mathbf': 'b',
+      '\\mathcal': 'span class="scriptfont"',
+      '\\mathcal{B}': 'ℬ', '\\mathcal{E}': 'ℰ', '\\mathcal{F}':
+      'ℱ', '\\mathcal{H}': 'ℋ', '\\mathcal{I}': 'ℐ',
+      '\\mathcal{L}': 'ℒ', '\\mathcal{M}': 'ℳ', '\\mathcal{R}': 'ℛ',
+      '\\mathfrak': 'span class="fraktur"',
+      '\\mathfrak{C}': 'ℭ', '\\mathfrak{F}': '𝔉', '\\mathfrak{H}': 'ℌ',
+      '\\mathfrak{I}': 'ℑ', '\\mathfrak{R}': 'ℜ', '\\mathfrak{Z}': 'ℨ',
+      '\\mathit': 'i',
+      '\\mathring{A}': 'Å', '\\mathring{U}': 'Ů',
+      '\\mathring{a}': 'å', '\\mathring{u}': 'ů', '\\mathring{w}': 'ẘ',
+      '\\mathring{y}': 'ẙ',
+      '\\mathrm': 'span class="mathrm"',
+      '\\mathscr': 'span class="mathscr"',
+      '\\mathscr{B}': 'ℬ', '\\mathscr{E}': 'ℰ', '\\mathscr{F}': 'ℱ',
+      '\\mathscr{H}': 'ℋ', '\\mathscr{I}': 'ℐ', '\\mathscr{L}': 'ℒ',
+      '\\mathscr{M}': 'ℳ', '\\mathscr{R}': 'ℛ',
+      '\\mathsf': 'span class="mathsf"',
+      '\\mathtt': 'span class="mathtt"',
+      '\\operatorname': 'span class="mathrm"',
       }
 
   hybridfunctions = {
-      u'\\addcontentsline': [u'{$p!}{$q!}{$r!}', u'f0{}', u'ignored',],
-      u'\\addtocontents': [u'{$p!}{$q!}', u'f0{}', u'ignored',],
-      u'\\backmatter': [u'', u'f0{}', u'ignored',],
-      u'\\binom': [u'{$1}{$2}', u'f2{(}f0{f1{$1}f1{$2}}f2{)}', u'span class="binom"', u'span class="binomstack"', u'span class="bigdelimiter size2"',],
-      u'\\boxed': [u'{$1}', u'f0{$1}', u'span class="boxed"',],
-      u'\\cfrac': [u'[$p!]{$1}{$2}', u'f0{f3{(}f1{$1}f3{)/(}f2{$2}f3{)}}', u'span class="fullfraction"', u'span class="numerator align-$p"', u'span class="denominator"', u'span class="ignored"',],
-      u'\\color': [u'{$p!}{$1}', u'f0{$1}', u'span style="color: $p;"',],
-      u'\\colorbox': [u'{$p!}{$1}', u'f0{$1}', u'span class="colorbox" style="background: $p;"',],
-      u'\\dbinom': [u'{$1}{$2}', u'(f0{f1{f2{$1}}f1{f2{ }}f1{f2{$2}}})', u'span class="binomial"', u'span class="binomrow"', u'span class="binomcell"',],
-      u'\\dfrac': [u'{$1}{$2}', u'f0{f3{(}f1{$1}f3{)/(}f2{$2}f3{)}}', u'span class="fullfraction"', u'span class="numerator"', u'span class="denominator"', u'span class="ignored"',],
-      u'\\displaystyle': [u'{$1}', u'f0{$1}', u'span class="displaystyle"',],
-      u'\\fancyfoot': [u'[$p!]{$q!}', u'f0{}', u'ignored',],
-      u'\\fancyhead': [u'[$p!]{$q!}', u'f0{}', u'ignored',],
-      u'\\fbox': [u'{$1}', u'f0{$1}', u'span class="fbox"',],
-      u'\\fboxrule': [u'{$p!}', u'f0{}', u'ignored',],
-      u'\\fboxsep': [u'{$p!}', u'f0{}', u'ignored',],
-      u'\\fcolorbox': [u'{$p!}{$q!}{$1}', u'f0{$1}', u'span class="boxed" style="border-color: $p; background: $q;"',],
-      u'\\frac': [u'{$1}{$2}', u'f0{f3{(}f1{$1}f3{)/(}f2{$2}f3{)}}', u'span class="fraction"', u'span class="numerator"', u'span class="denominator"', u'span class="ignored"',],
-      u'\\framebox': [u'[$p!][$q!]{$1}', u'f0{$1}', u'span class="framebox align-$q" style="width: $p;"',],
-      u'\\frontmatter': [u'', u'f0{}', u'ignored',],
-      u'\\href': [u'[$o]{$u!}{$t!}', u'f0{$t}', u'a href="$u"',],
-      u'\\hspace': [u'{$p!}', u'f0{ }', u'span class="hspace" style="width: $p;"',],
-      u'\\leftroot': [u'{$p!}', u'f0{ }', u'span class="leftroot" style="width: $p;px"',],
+      '\\addcontentsline': ['{$p!}{$q!}{$r!}', 'f0{}', 'ignored',],
+      '\\addtocontents': ['{$p!}{$q!}', 'f0{}', 'ignored',],
+      '\\backmatter': ['', 'f0{}', 'ignored',],
+      '\\binom': ['{$1}{$2}', 'f2{(}f0{f1{$1}f1{$2}}f2{)}', 'span class="binom"', 'span class="binomstack"', 'span class="bigdelimiter size2"',],
+      '\\boxed': ['{$1}', 'f0{$1}', 'span class="boxed"',],
+      '\\cfrac': ['[$p!]{$1}{$2}', 'f0{f3{(}f1{$1}f3{)/(}f2{$2}f3{)}}', 'span class="fullfraction"', 'span class="numerator align-$p"', 'span class="denominator"', 'span class="ignored"',],
+      '\\color': ['{$p!}{$1}', 'f0{$1}', 'span style="color: $p;"',],
+      '\\colorbox': ['{$p!}{$1}', 'f0{$1}', 'span class="colorbox" style="background: $p;"',],
+      '\\dbinom': ['{$1}{$2}', '(f0{f1{f2{$1}}f1{f2{ }}f1{f2{$2}}})', 'span class="binomial"', 'span class="binomrow"', 'span class="binomcell"',],
+      '\\dfrac': ['{$1}{$2}', 'f0{f3{(}f1{$1}f3{)/(}f2{$2}f3{)}}', 'span class="fullfraction"', 'span class="numerator"', 'span class="denominator"', 'span class="ignored"',],
+      '\\displaystyle': ['{$1}', 'f0{$1}', 'span class="displaystyle"',],
+      '\\fancyfoot': ['[$p!]{$q!}', 'f0{}', 'ignored',],
+      '\\fancyhead': ['[$p!]{$q!}', 'f0{}', 'ignored',],
+      '\\fbox': ['{$1}', 'f0{$1}', 'span class="fbox"',],
+      '\\fboxrule': ['{$p!}', 'f0{}', 'ignored',],
+      '\\fboxsep': ['{$p!}', 'f0{}', 'ignored',],
+      '\\fcolorbox': ['{$p!}{$q!}{$1}', 'f0{$1}', 'span class="boxed" style="border-color: $p; background: $q;"',],
+      '\\frac': ['{$1}{$2}', 'f0{f3{(}f1{$1}f3{)/(}f2{$2}f3{)}}', 'span class="fraction"', 'span class="numerator"', 'span class="denominator"', 'span class="ignored"',],
+      '\\framebox': ['[$p!][$q!]{$1}', 'f0{$1}', 'span class="framebox align-$q" style="width: $p;"',],
+      '\\frontmatter': ['', 'f0{}', 'ignored',],
+      '\\href': ['[$o]{$u!}{$t!}', 'f0{$t}', 'a href="$u"',],
+      '\\hspace': ['{$p!}', 'f0{ }', 'span class="hspace" style="width: $p;"',],
+      '\\leftroot': ['{$p!}', 'f0{ }', 'span class="leftroot" style="width: $p;px"',],
       # TODO: convert 1 mu to 1/18 em
-      # u'\\mspace': [u'{$p!}', u'f0{ }', u'span class="hspace" style="width: $p;"',],
-      u'\\nicefrac': [u'{$1}{$2}', u'f0{f1{$1}⁄f2{$2}}', u'span class="fraction"', u'sup class="numerator"', u'sub class="denominator"', u'span class="ignored"',],
-      u'\\parbox': [u'[$p!]{$w!}{$1}', u'f0{1}', u'div class="Boxed" style="width: $w;"',],
-      u'\\raisebox': [u'{$p!}{$1}', u'f0{$1.font}', u'span class="raisebox" style="vertical-align: $p;"',],
-      u'\\renewenvironment': [u'{$1!}{$2!}{$3!}', u'',],
-      u'\\rule': [u'[$v!]{$w!}{$h!}', u'f0/', u'hr class="line" style="width: $w; height: $h;"',],
-      u'\\scriptscriptstyle': [u'{$1}', u'f0{$1}', u'span class="scriptscriptstyle"',],
-      u'\\scriptstyle': [u'{$1}', u'f0{$1}', u'span class="scriptstyle"',],
+      # '\\mspace': ['{$p!}', 'f0{ }', 'span class="hspace" style="width: $p;"',],
+      '\\nicefrac': ['{$1}{$2}', 'f0{f1{$1}⁄f2{$2}}', 'span class="fraction"', 'sup class="numerator"', 'sub class="denominator"', 'span class="ignored"',],
+      '\\parbox': ['[$p!]{$w!}{$1}', 'f0{1}', 'div class="Boxed" style="width: $w;"',],
+      '\\raisebox': ['{$p!}{$1}', 'f0{$1.font}', 'span class="raisebox" style="vertical-align: $p;"',],
+      '\\renewenvironment': ['{$1!}{$2!}{$3!}', '',],
+      '\\rule': ['[$v!]{$w!}{$h!}', 'f0/', 'hr class="line" style="width: $w; height: $h;"',],
+      '\\scriptscriptstyle': ['{$1}', 'f0{$1}', 'span class="scriptscriptstyle"',],
+      '\\scriptstyle': ['{$1}', 'f0{$1}', 'span class="scriptstyle"',],
       # TODO: increase √-size with argument (\frac in display mode, ...)
-      u'\\sqrt': [u'[$0]{$1}', u'f0{f1{$0}f2{√}f4{(}f3{$1}f4{)}}', u'span class="sqrt"', u'sup class="root"', u'span class="radical"', u'span class="root"', u'span class="ignored"',],
-      u'\\stackrel': [u'{$1}{$2}', u'f0{f1{$1}f2{$2}}', u'span class="stackrel"', u'span class="upstackrel"', u'span class="downstackrel"',],
-      u'\\tbinom': [u'{$1}{$2}', u'(f0{f1{f2{$1}}f1{f2{ }}f1{f2{$2}}})', u'span class="binomial"', u'span class="binomrow"', u'span class="binomcell"',],
-      u'\\tfrac':  [u'{$1}{$2}', u'f0{f3{(}f1{$1}f3{)/(}f2{$2}f3{)}}', u'span class="textfraction"', u'span class="numerator"', u'span class="denominator"', u'span class="ignored"',],
-      u'\\textcolor': [u'{$p!}{$1}', u'f0{$1}', u'span style="color: $p;"',],
-      u'\\textstyle': [u'{$1}', u'f0{$1}', u'span class="textstyle"',],
-      u'\\thispagestyle': [u'{$p!}', u'f0{}', u'ignored',],
-      u'\\unit': [u'[$0]{$1}', u'$0f0{$1.font}', u'span class="unit"',],
-      u'\\unitfrac': [u'[$0]{$1}{$2}', u'$0f0{f1{$1.font}⁄f2{$2.font}}', u'span class="fraction"', u'sup class="unit"', u'sub class="unit"',],
-      u'\\uproot': [u'{$p!}', u'f0{ }', u'span class="uproot" style="width: $p;px"',],
-      u'\\url': [u'{$u!}', u'f0{$u}', u'a href="$u"',],
-      u'\\vspace': [u'{$p!}', u'f0{ }', u'span class="vspace" style="height: $p;"',],
+      '\\sqrt': ['[$0]{$1}', 'f0{f1{$0}f2{√}f4{(}f3{$1}f4{)}}', 'span class="sqrt"', 'sup class="root"', 'span class="radical"', 'span class="root"', 'span class="ignored"',],
+      '\\stackrel': ['{$1}{$2}', 'f0{f1{$1}f2{$2}}', 'span class="stackrel"', 'span class="upstackrel"', 'span class="downstackrel"',],
+      '\\tbinom': ['{$1}{$2}', '(f0{f1{f2{$1}}f1{f2{ }}f1{f2{$2}}})', 'span class="binomial"', 'span class="binomrow"', 'span class="binomcell"',],
+      '\\tfrac':  ['{$1}{$2}', 'f0{f3{(}f1{$1}f3{)/(}f2{$2}f3{)}}', 'span class="textfraction"', 'span class="numerator"', 'span class="denominator"', 'span class="ignored"',],
+      '\\textcolor': ['{$p!}{$1}', 'f0{$1}', 'span style="color: $p;"',],
+      '\\textstyle': ['{$1}', 'f0{$1}', 'span class="textstyle"',],
+      '\\thispagestyle': ['{$p!}', 'f0{}', 'ignored',],
+      '\\unit': ['[$0]{$1}', '$0f0{$1.font}', 'span class="unit"',],
+      '\\unitfrac': ['[$0]{$1}{$2}', '$0f0{f1{$1.font}⁄f2{$2.font}}', 'span class="fraction"', 'sup class="unit"', 'sub class="unit"',],
+      '\\uproot': ['{$p!}', 'f0{ }', 'span class="uproot" style="width: $p;px"',],
+      '\\url': ['{$u!}', 'f0{$u}', 'a href="$u"',],
+      '\\vspace': ['{$p!}', 'f0{ }', 'span class="vspace" style="height: $p;"',],
       }
 
   hybridsizes = {
-      u'\\binom': u'$1+$2', u'\\cfrac': u'$1+$2', u'\\dbinom': u'$1+$2+1',
-      u'\\dfrac': u'$1+$2', u'\\frac': u'$1+$2', u'\\tbinom': u'$1+$2+1',
+      '\\binom': '$1+$2', '\\cfrac': '$1+$2', '\\dbinom': '$1+$2+1',
+      '\\dfrac': '$1+$2', '\\frac': '$1+$2', '\\tbinom': '$1+$2+1',
       }
 
   labelfunctions = {
-      '\\label': u'a name="#"',
+      '\\label': 'a name="#"',
       }
 
   limitcommands = {
-      '\\biginterleave': u'⫼',
-      '\\inf': u'inf',
-      '\\lim': u'lim',
-      '\\max': u'max',
-      '\\min': u'min',
-      '\\sup': u'sup',
-      '\\ointop':    u'<span class="bigoperator integral">∮</span>',
-      '\\bigcap':    u'<span class="bigoperator">⋂</span>',
-      '\\bigcup':    u'<span class="bigoperator">⋃</span>',
-      '\\bigodot':   u'<span class="bigoperator">⨀</span>',
-      '\\bigoplus':  u'<span class="bigoperator">⨁</span>',
-      '\\bigotimes': u'<span class="bigoperator">⨂</span>',
-      '\\bigsqcap':  u'<span class="bigoperator">⨅</span>',
-      '\\bigsqcup':  u'<span class="bigoperator">⨆</span>',
-      '\\biguplus':  u'<span class="bigoperator">⨄</span>',
-      '\\bigvee':    u'<span class="bigoperator">⋁</span>',
-      '\\bigwedge':  u'<span class="bigoperator">⋀</span>',
-      '\\coprod':    u'<span class="bigoperator">∐</span>',
-      '\\intop':     u'<span class="bigoperator integral">∫</span>',
-      '\\prod':      u'<span class="bigoperator">∏</span>',
-      '\\sum':       u'<span class="bigoperator">∑</span>',
-      '\\varprod':   u'<span class="bigoperator">⨉</span>',
-      '\\zcmp': u'⨟', '\\zhide': u'⧹', '\\zpipe': u'⨠', '\\zproject': u'⨡',
+      '\\biginterleave': '⫼',
+      '\\inf': 'inf',
+      '\\lim': 'lim',
+      '\\max': 'max',
+      '\\min': 'min',
+      '\\sup': 'sup',
+      '\\ointop':    '<span class="bigoperator integral">∮</span>',
+      '\\bigcap':    '<span class="bigoperator">⋂</span>',
+      '\\bigcup':    '<span class="bigoperator">⋃</span>',
+      '\\bigodot':   '<span class="bigoperator">⨀</span>',
+      '\\bigoplus':  '<span class="bigoperator">⨁</span>',
+      '\\bigotimes': '<span class="bigoperator">⨂</span>',
+      '\\bigsqcap':  '<span class="bigoperator">⨅</span>',
+      '\\bigsqcup':  '<span class="bigoperator">⨆</span>',
+      '\\biguplus':  '<span class="bigoperator">⨄</span>',
+      '\\bigvee':    '<span class="bigoperator">⋁</span>',
+      '\\bigwedge':  '<span class="bigoperator">⋀</span>',
+      '\\coprod':    '<span class="bigoperator">∐</span>',
+      '\\intop':     '<span class="bigoperator integral">∫</span>',
+      '\\prod':      '<span class="bigoperator">∏</span>',
+      '\\sum':       '<span class="bigoperator">∑</span>',
+      '\\varprod':   '<span class="bigoperator">⨉</span>',
+      '\\zcmp': '⨟', '\\zhide': '⧹', '\\zpipe': '⨠', '\\zproject': '⨡',
       # integrals have limits in index position with LaTeX default settings
       # TODO: move to commands?
-      '\\int': u'<span class="bigoperator integral">∫</span>',
-      '\\iint': u'<span class="bigoperator integral">∬</span>',
-      '\\iiint': u'<span class="bigoperator integral">∭</span>',
-      '\\iiiint': u'<span class="bigoperator integral">⨌</span>',
-      '\\fint': u'<span class="bigoperator integral">⨏</span>',
-      '\\idotsint': u'<span class="bigoperator integral">∫⋯∫</span>',
-      '\\oint': u'<span class="bigoperator integral">∮</span>',
-      '\\oiint': u'<span class="bigoperator integral">∯</span>',
-      '\\oiiint': u'<span class="bigoperator integral">∰</span>',
-      '\\ointclockwise': u'<span class="bigoperator integral">∲</span>',
-      '\\ointctrclockwise': u'<span class="bigoperator integral">∳</span>',
-      '\\smallint': u'<span class="smallsymbol integral">∫</span>',
-      '\\sqint': u'<span class="bigoperator integral">⨖</span>',
-      '\\varointclockwise': u'<span class="bigoperator integral">∲</span>',
+      '\\int': '<span class="bigoperator integral">∫</span>',
+      '\\iint': '<span class="bigoperator integral">∬</span>',
+      '\\iiint': '<span class="bigoperator integral">∭</span>',
+      '\\iiiint': '<span class="bigoperator integral">⨌</span>',
+      '\\fint': '<span class="bigoperator integral">⨏</span>',
+      '\\idotsint': '<span class="bigoperator integral">∫⋯∫</span>',
+      '\\oint': '<span class="bigoperator integral">∮</span>',
+      '\\oiint': '<span class="bigoperator integral">∯</span>',
+      '\\oiiint': '<span class="bigoperator integral">∰</span>',
+      '\\ointclockwise': '<span class="bigoperator integral">∲</span>',
+      '\\ointctrclockwise': '<span class="bigoperator integral">∳</span>',
+      '\\smallint': '<span class="smallsymbol integral">∫</span>',
+      '\\sqint': '<span class="bigoperator integral">⨖</span>',
+      '\\varointclockwise': '<span class="bigoperator integral">∲</span>',
       }
 
   modified = {
-      u'\n': u'', u' ': u'', u'$': u'', u'&': u'	', u'\'': u'’', u'+': u'\u2009+\u2009',
-      u',': u',\u2009', u'-': u'\u2009−\u2009', u'/': u'\u2009⁄\u2009', u':': u' : ', u'<': u'\u2009&lt;\u2009',
-      u'=': u'\u2009=\u2009', u'>': u'\u2009&gt;\u2009', u'@': u'', u'~': u'\u00a0',
+      '\n': '', ' ': '', '$': '', '&': '	', '\'': '’', '+': '\u2009+\u2009',
+      ',': ',\u2009', '-': '\u2009−\u2009', '/': '\u2009⁄\u2009', ':': ' : ', '<': '\u2009&lt;\u2009',
+      '=': '\u2009=\u2009', '>': '\u2009&gt;\u2009', '@': '', '~': '\u00a0',
       }
 
   onefunctions = {
@@ -488,60 +488,60 @@ class FormulaConfig(object):
       '\\overline': 'span class="overline"',
       '\\phantom': 'span class="phantom"',
       '\\underbrace': 'span class="underbrace"',
-      '\\underline': 'u',
+      '\\underline': '',
       '\\vphantom': 'span class="phantom"',
       }
 
   # relations (put additional space before and after the symbol)
   spacedcommands = {
       # negated symbols without pre-composed Unicode character
-      '\\nleqq':      u'\u2266\u0338', # ≦̸
-      '\\ngeqq':      u'\u2267\u0338', # ≧̸
-      '\\nleqslant':  u'\u2a7d\u0338', # ⩽̸
-      '\\ngeqslant':  u'\u2a7e\u0338', # ⩾̸
-      '\\nsubseteqq': u'\u2AC5\u0338', # ⫅̸
-      '\\nsupseteqq': u'\u2AC6\u0338', # ⫆̸
-      '\\nsqsubset':  u'\u2276\u228F', # ⊏̸
+      '\\nleqq':      '\u2266\u0338', # ≦̸
+      '\\ngeqq':      '\u2267\u0338', # ≧̸
+      '\\nleqslant':  '\u2a7d\u0338', # ⩽̸
+      '\\ngeqslant':  '\u2a7e\u0338', # ⩾̸
+      '\\nsubseteqq': '\u2AC5\u0338', # ⫅̸
+      '\\nsupseteqq': '\u2AC6\u0338', # ⫆̸
+      '\\nsqsubset':  '\u2276\u228F', # ⊏̸
       # modified glyphs
-      '\\shortmid': u'<span class="smallsymbol">∣</span>',
-      '\\shortparallel': u'<span class="smallsymbol">∥</span>',
-      '\\nshortmid': u'<span class="smallsymbol">∤</span>',
-      '\\nshortparallel': u'<span class="smallsymbol">∦</span>',
-      '\\smallfrown': u'<span class="smallsymbol">⌢</span>',
-      '\\smallsmile': u'<span class="smallsymbol">⌣</span>',
-      '\\thickapprox': u'<span class="boldsymbol">≈</span>',
-      '\\thicksim': u'<span class="boldsymbol">∼</span>',
-      '\\varpropto': u'<span class="mathsf">\u221d</span>', # ∝ PROPORTIONAL TO
+      '\\shortmid': '<span class="smallsymbol">∣</span>',
+      '\\shortparallel': '<span class="smallsymbol">∥</span>',
+      '\\nshortmid': '<span class="smallsymbol">∤</span>',
+      '\\nshortparallel': '<span class="smallsymbol">∦</span>',
+      '\\smallfrown': '<span class="smallsymbol">⌢</span>',
+      '\\smallsmile': '<span class="smallsymbol">⌣</span>',
+      '\\thickapprox': '<span class="boldsymbol">≈</span>',
+      '\\thicksim': '<span class="boldsymbol">∼</span>',
+      '\\varpropto': '<span class="mathsf">\u221d</span>', # ∝ PROPORTIONAL TO
       }
   for key, value in tex2unichar.mathrel.items():
       spacedcommands['\\'+key] = value
   starts = {
-      u'beginafter': u'}', u'beginbefore': u'\\begin{', u'bracket': u'{',
-      u'command': u'\\', u'comment': u'%', u'complex': u'\\[', u'simple': u'$',
-      u'squarebracket': u'[', u'unnumbered': u'*',
+      'beginafter': '}', 'beginbefore': '\\begin{', 'bracket': '{',
+      'command': '\\', 'comment': '%', 'complex': '\\[', 'simple': '$',
+      'squarebracket': '[', 'unnumbered': '*',
       }
 
   symbolfunctions = {
-      u'^': u'sup', u'_': u'sub',
+      '^': 'sup', '_': 'sub',
       }
 
   textfunctions = {
-      u'\\mbox': u'span class="mbox"',
-      u'\\text': u'span class="text"',
-      u'\\textbf': u'span class="textbf"',
-      u'\\textit': u'span class="textit"',
-      u'\\textnormal': u'span class="textnormal"',
-      u'\\textrm': u'span class="textrm"',
-      u'\\textsc': u'span class="textsc"',
-      u'\\textsf': u'span class="textsf"',
-      u'\\textsl': u'span class="textsl"',
-      u'\\texttt': u'span class="texttt"',
-      u'\\textup': u'span class="normal"',
+      '\\mbox': 'span class="mbox"',
+      '\\text': 'span class="text"',
+      '\\textbf': 'span class="textbf"',
+      '\\textit': 'span class="textit"',
+      '\\textnormal': 'span class="textnormal"',
+      '\\textrm': 'span class="textrm"',
+      '\\textsc': 'span class="textsc"',
+      '\\textsf': 'span class="textsf"',
+      '\\textsl': 'span class="textsl"',
+      '\\texttt': 'span class="texttt"',
+      '\\textup': 'span class="normal"',
       }
 
   unmodified = {
-      u'characters': [u'.', u'*', u'€', u'(', u')', u'[', u']',
-                      u'·', u'!', u';', u'|', u'§', u'"', u'?'],
+      'characters': ['.', '*', '€', '(', ')', '[', ']',
+                      '·', '!', ';', '|', '§', '"', '?'],
       }
 
 
@@ -1922,7 +1922,7 @@ class FormulaProcessor(object):
       if bit.type == 'alpha':
         self.italicize(bit, contents)
       elif bit.type == 'font' and last and last.type == 'number':
-        bit.contents.insert(0, FormulaConstant(u'\u2009'))
+        bit.contents.insert(0, FormulaConstant('\u2009'))
       last = bit
 
   def traverse(self, bit):
@@ -2264,9 +2264,9 @@ class SpacedCommand(CommandBit):
   def parsebit(self, pos):
     "Place as contents the command translated and spaced."
     # pad with MEDIUM MATHEMATICAL SPACE (4/18 em): too wide in STIX fonts :(
-    # self.contents = [FormulaConstant(u'\u205f' + self.translated + u'\u205f')]
+    # self.contents = [FormulaConstant('\u205f' + self.translated + '\u205f')]
     # pad with THIN SPACE (1/5 em)
-    self.contents = [FormulaConstant(u'\u2009' + self.translated + u'\u2009')]
+    self.contents = [FormulaConstant('\u2009' + self.translated + '\u2009')]
 
 class AlphaCommand(EmptyCommand):
   """A command without parameters whose result is alphabetical."""
@@ -2499,7 +2499,7 @@ class MultiRowFormula(CommandBit):
     row = self.factory.create(FormulaRow).setalignments(self.alignments)
     for index, originalcell in enumerate(self.rows[-1].contents):
       cell = row.createcell(index)
-      cell.add(FormulaConstant(u' '))
+      cell.add(FormulaConstant(' '))
       row.add(cell)
     self.addrow(row)
 
@@ -2557,7 +2557,7 @@ class FormulaCases(MultiRowFormula):
     for row in self.contents:
       for cell in row.contents:
         cell.output.settag('span class="case align-l"', True)
-        cell.contents.append(FormulaConstant(u' '))
+        cell.contents.append(FormulaConstant(' '))
     array = TaggedBit().complete(self.contents, 'span class="bracketcases"', True)
     brace = BigBracket(len(self.contents), '{', 'l')
     self.contents = brace.getcontents() + [array]
@@ -2633,7 +2633,7 @@ class CombiningFunction(OneParamFunction):
         return
     # Trace.message('  basechar: %r' % parameter.string)
     # Insert combining character after the first character:
-    if parameter.string.startswith(u'\u2009'):
+    if parameter.string.startswith('\u2009'):
         i = 2 # skip padding by SpacedCommand and FormulaConfig.modified
     else:
         i = 1
@@ -2740,7 +2740,7 @@ class LimitsProcessor(MathsProcessor):
     if self.checkscript(contents, index + 1):
       superscript = self.getlimit(contents, index  + 1)
     else:
-      superscript = TaggedBit().constant(u'\u2009', 'sup class="limit"')
+      superscript = TaggedBit().constant('\u2009', 'sup class="limit"')
     # fix order if source is x^i
     if subscript.command == '^':
         superscript, subscript = subscript, superscript

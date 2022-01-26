@@ -212,8 +212,8 @@ class StateMachine(object):
         self.line_offset = -1
         self.current_state = initial_state or self.initial_state
         if self.debug:
-            print(u'\nStateMachine.run: input_lines (line_offset=%s):\n| %s'
-                  % (self.line_offset, u'\n| '.join(self.input_lines)), file=self._stderr)
+            print('\nStateMachine.run: input_lines (line_offset=%s):\n| %s'
+                  % (self.line_offset, '\n| '.join(self.input_lines)), file=self._stderr)
         transitions = None
         results = []
         state = self.get_state()
@@ -229,8 +229,8 @@ class StateMachine(object):
                         if self.debug:
                             source, offset = self.input_lines.info(
                                 self.line_offset)
-                            print(u'\nStateMachine.run: line (source=%r, '
-                                  u'offset=%r):\n| %s'
+                            print('\nStateMachine.run: line (source=%r, '
+                                  'offset=%r):\n| %s'
                                   % (source, offset, self.line), file=self._stderr)
                         context, next_state, result = self.check_line(
                             context, state, transitions)
@@ -480,9 +480,9 @@ class StateMachine(object):
     def error(self):
         """Report error details."""
         type, value, module, line, function = _exception_data()
-        print(u'%s: %s' % (type, value), file=self._stderr)
+        print('%s: %s' % (type, value), file=self._stderr)
         print('input line %s' % (self.abs_line_number()), file=self._stderr)
-        print((u'module %s, line %s, function %s' %
+        print(('module %s, line %s, function %s' %
                                (module, line, function)), file=self._stderr)
 
     def attach_observer(self, observer):

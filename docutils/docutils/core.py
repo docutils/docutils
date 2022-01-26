@@ -262,14 +262,14 @@ class Publisher(object):
         elif isinstance(error, UnicodeEncodeError):
             self.report_UnicodeError(error)
         elif isinstance(error, io.InputError):
-            self._stderr.write(u'Unable to open source file for reading:\n'
-                               u'  %s\n' % io.error_string(error))
+            self._stderr.write('Unable to open source file for reading:\n'
+                               '  %s\n' % io.error_string(error))
         elif isinstance(error, io.OutputError):
             self._stderr.write(
-                u'Unable to open destination file for writing:\n'
-                u'  %s\n' % io.error_string(error))
+                'Unable to open destination file for writing:\n'
+                '  %s\n' % io.error_string(error))
         else:
-            print(u'%s' % io.error_string(error), file=self._stderr)
+            print('%s' % io.error_string(error), file=self._stderr)
             print(("""\
 Exiting due to error.  Use "--traceback" to diagnose.
 Please report errors to <docutils-users@lists.sourceforge.net>.

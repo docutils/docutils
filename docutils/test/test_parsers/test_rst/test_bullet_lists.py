@@ -174,7 +174,7 @@ empty item above, no blank line
     <paragraph>
         empty item above, no blank line
 """],
-[u"""\
+["""\
 Unicode bullets:
 
 \u2022 BULLET
@@ -183,7 +183,7 @@ Unicode bullets:
 
 \u2043 HYPHEN BULLET
 """,
-u"""\
+"""\
 <document source="test data">
     <paragraph>
         Unicode bullets:

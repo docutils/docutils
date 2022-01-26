@@ -20,7 +20,7 @@ class TextTests(unittest.TestCase):
 
     def setUp(self):
         self.text = nodes.Text('Line 1.\nLine 2.')
-        self.unicode_text = nodes.Text(u'Möhren')
+        self.unicode_text = nodes.Text('Möhren')
         self.longtext = nodes.Text('Mary had a little lamb whose '
                                    'fleece was white as snow and '
                                    'everwhere that Mary went the '
@@ -30,30 +30,30 @@ class TextTests(unittest.TestCase):
         self.assertEqual(repr(self.text), r"<#text: 'Line 1.\nLine 2.'>")
         self.assertEqual(self.text.shortrepr(),
                           r"<#text: 'Line 1.\nLine 2.'>")
-        self.assertEqual(repr(self.unicode_text), u"<#text: 'Möhren'>")
+        self.assertEqual(repr(self.unicode_text), "<#text: 'Möhren'>")
 
     def test_str(self):
         self.assertEqual(str(self.text), 'Line 1.\nLine 2.')
 
     def test_unicode(self):
-        self.assertEqual(str(self.unicode_text), u'Möhren')
+        self.assertEqual(str(self.unicode_text), 'Möhren')
         self.assertEqual(str(self.unicode_text), 'M\xf6hren')
 
     def test_astext(self):
         self.assertTrue(isinstance(self.text.astext(), str))
-        self.assertEqual(self.text.astext(), u'Line 1.\nLine 2.')
-        self.assertEqual(self.unicode_text.astext(), u'Möhren')
+        self.assertEqual(self.text.astext(), 'Line 1.\nLine 2.')
+        self.assertEqual(self.unicode_text.astext(), 'Möhren')
 
     def test_pformat(self):
         self.assertTrue(isinstance(self.text.pformat(), str))
-        self.assertEqual(self.text.pformat(), u'Line 1.\nLine 2.\n')
+        self.assertEqual(self.text.pformat(), 'Line 1.\nLine 2.\n')
 
     def test_strip(self):
         text = nodes.Text(' was noch ')
         stripped = text.lstrip().rstrip()
         stripped2 = text.lstrip(' wahn').rstrip(' wahn')
-        self.assertEqual(stripped, u'was noch')
-        self.assertEqual(stripped2, u's noc')
+        self.assertEqual(stripped, 'was noch')
+        self.assertEqual(stripped2, 's noc')
 
     def test_asciirestriction(self):
         # no bytes at all allowed
@@ -91,21 +91,21 @@ class ElementTests(unittest.TestCase):
         dom.unlink()
         self.assertEqual(element.pformat(), '<Element attr="1">\n')
         del element['attr']
-        element['mark'] = u'\u2022'
+        element['mark'] = '\u2022'
         self.assertEqual(repr(element), '<Element: >')
-        self.assertEqual(str(element), u'<Element mark="\u2022"/>')
+        self.assertEqual(str(element), '<Element mark="\u2022"/>')
         dom = element.asdom()
-        self.assertEqual(dom.toxml(), u'<Element mark="\u2022"/>')
+        self.assertEqual(dom.toxml(), '<Element mark="\u2022"/>')
         dom.unlink()
-        element['names'] = ['nobody', u'имя', u'näs']
-        self.assertEqual(repr(element), u'<Element "nobody; имя; näs": >')
+        element['names'] = ['nobody', 'имя', 'näs']
+        self.assertEqual(repr(element), '<Element "nobody; имя; näs": >')
         self.assertTrue(isinstance(repr(element), str))
 
     def test_withtext(self):
         element = nodes.Element('text\nmore', nodes.Text('text\nmore'))
-        uelement = nodes.Element(u'grün', nodes.Text(u'grün'))
+        uelement = nodes.Element('grün', nodes.Text('grün'))
         self.assertEqual(repr(element), r"<Element: <#text: 'text\nmore'>>")
-        self.assertEqual(repr(uelement), u"<Element: <#text: 'grün'>>")
+        self.assertEqual(repr(uelement), "<Element: <#text: 'grün'>>")
         self.assertTrue(isinstance(repr(uelement), str))
         self.assertEqual(str(element), '<Element>text\nmore</Element>')
         self.assertEqual(str(uelement), '<Element>gr\xfcn</Element>')
@@ -315,8 +315,8 @@ class ElementTests(unittest.TestCase):
         self.assertEqual(len(parent), 5)
 
     def test_unicode(self):
-        node = nodes.Element(u'Möhren', nodes.Text(u'Möhren'))
-        self.assertEqual(str(node), u'<Element>Möhren</Element>')
+        node = nodes.Element('Möhren', nodes.Text('Möhren'))
+        self.assertEqual(str(node), '<Element>Möhren</Element>')
 
 
 class MiscTests(unittest.TestCase):
@@ -332,173 +332,173 @@ class MiscTests(unittest.TestCase):
         nodes.node_class_names.sort()
         self.assertEqual(node_class_names, nodes.node_class_names)
 
-    ids = [(u'a', 'a'), ('A', 'a'), ('', ''), ('a b \n c', 'a-b-c'),
+    ids = [('a', 'a'), ('A', 'a'), ('', ''), ('a b \n c', 'a-b-c'),
            ('a.b.c', 'a-b-c'), (' - a - b - c - ', 'a-b-c'), (' - ', ''),
-           (u'\u2020\u2066', ''), (u'a \xa7 b \u2020 c', 'a-b-c'),
+           ('\u2020\u2066', ''), ('a \xa7 b \u2020 c', 'a-b-c'),
            ('1', ''), ('1abc', 'abc'),
           ]
     ids_unicode_all = [
-            (u'\u00f8 o with stroke', 'o-o-with-stroke'),
-            (u'\u0111 d with stroke', 'd-d-with-stroke'),
-            (u'\u0127 h with stroke', 'h-h-with-stroke'),
-            (u'\u0131 dotless i', 'i-dotless-i'),
-            (u'\u0142 l with stroke', 'l-l-with-stroke'),
-            (u'\u0167 t with stroke', 't-t-with-stroke'),
+            ('\u00f8 o with stroke', 'o-o-with-stroke'),
+            ('\u0111 d with stroke', 'd-d-with-stroke'),
+            ('\u0127 h with stroke', 'h-h-with-stroke'),
+            ('\u0131 dotless i', 'i-dotless-i'),
+            ('\u0142 l with stroke', 'l-l-with-stroke'),
+            ('\u0167 t with stroke', 't-t-with-stroke'),
            # From Latin Extended-B
-            (u'\u0180 b with stroke', 'b-b-with-stroke'),
-            (u'\u0183 b with topbar', 'b-b-with-topbar'),
-            (u'\u0188 c with hook', 'c-c-with-hook'),
-            (u'\u018c d with topbar', 'd-d-with-topbar'),
-            (u'\u0192 f with hook', 'f-f-with-hook'),
-            (u'\u0199 k with hook', 'k-k-with-hook'),
-            (u'\u019a l with bar', 'l-l-with-bar'),
-            (u'\u019e n with long right leg', 'n-n-with-long-right-leg'),
-            (u'\u01a5 p with hook', 'p-p-with-hook'),
-            (u'\u01ab t with palatal hook', 't-t-with-palatal-hook'),
-            (u'\u01ad t with hook', 't-t-with-hook'),
-            (u'\u01b4 y with hook', 'y-y-with-hook'),
-            (u'\u01b6 z with stroke', 'z-z-with-stroke'),
-            (u'\u01e5 g with stroke', 'g-g-with-stroke'),
-            (u'\u0225 z with hook', 'z-z-with-hook'),
-            (u'\u0234 l with curl', 'l-l-with-curl'),
-            (u'\u0235 n with curl', 'n-n-with-curl'),
-            (u'\u0236 t with curl', 't-t-with-curl'),
-            (u'\u0237 dotless j', 'j-dotless-j'),
-            (u'\u023c c with stroke', 'c-c-with-stroke'),
-            (u'\u023f s with swash tail', 's-s-with-swash-tail'),
-            (u'\u0240 z with swash tail', 'z-z-with-swash-tail'),
-            (u'\u0247 e with stroke', 'e-e-with-stroke'),
-            (u'\u0249 j with stroke', 'j-j-with-stroke'),
-            (u'\u024b q with hook tail', 'q-q-with-hook-tail'),
-            (u'\u024d r with stroke', 'r-r-with-stroke'),
-            (u'\u024f y with stroke', 'y-y-with-stroke'),
+            ('\u0180 b with stroke', 'b-b-with-stroke'),
+            ('\u0183 b with topbar', 'b-b-with-topbar'),
+            ('\u0188 c with hook', 'c-c-with-hook'),
+            ('\u018c d with topbar', 'd-d-with-topbar'),
+            ('\u0192 f with hook', 'f-f-with-hook'),
+            ('\u0199 k with hook', 'k-k-with-hook'),
+            ('\u019a l with bar', 'l-l-with-bar'),
+            ('\u019e n with long right leg', 'n-n-with-long-right-leg'),
+            ('\u01a5 p with hook', 'p-p-with-hook'),
+            ('\u01ab t with palatal hook', 't-t-with-palatal-hook'),
+            ('\u01ad t with hook', 't-t-with-hook'),
+            ('\u01b4 y with hook', 'y-y-with-hook'),
+            ('\u01b6 z with stroke', 'z-z-with-stroke'),
+            ('\u01e5 g with stroke', 'g-g-with-stroke'),
+            ('\u0225 z with hook', 'z-z-with-hook'),
+            ('\u0234 l with curl', 'l-l-with-curl'),
+            ('\u0235 n with curl', 'n-n-with-curl'),
+            ('\u0236 t with curl', 't-t-with-curl'),
+            ('\u0237 dotless j', 'j-dotless-j'),
+            ('\u023c c with stroke', 'c-c-with-stroke'),
+            ('\u023f s with swash tail', 's-s-with-swash-tail'),
+            ('\u0240 z with swash tail', 'z-z-with-swash-tail'),
+            ('\u0247 e with stroke', 'e-e-with-stroke'),
+            ('\u0249 j with stroke', 'j-j-with-stroke'),
+            ('\u024b q with hook tail', 'q-q-with-hook-tail'),
+            ('\u024d r with stroke', 'r-r-with-stroke'),
+            ('\u024f y with stroke', 'y-y-with-stroke'),
            # From Latin-1 Supplements
-            (u'\u00e0: a with grave', 'a-a-with-grave'),
-            (u'\u00e1 a with acute', 'a-a-with-acute'),
-            (u'\u00e2 a with circumflex', 'a-a-with-circumflex'),
-            (u'\u00e3 a with tilde', 'a-a-with-tilde'),
-            (u'\u00e4 a with diaeresis', 'a-a-with-diaeresis'),
-            (u'\u00e5 a with ring above', 'a-a-with-ring-above'),
-            (u'\u00e7 c with cedilla', 'c-c-with-cedilla'),
-            (u'\u00e8 e with grave', 'e-e-with-grave'),
-            (u'\u00e9 e with acute', 'e-e-with-acute'),
-            (u'\u00ea e with circumflex', 'e-e-with-circumflex'),
-            (u'\u00eb e with diaeresis', 'e-e-with-diaeresis'),
-            (u'\u00ec i with grave', 'i-i-with-grave'),
-            (u'\u00ed i with acute', 'i-i-with-acute'),
-            (u'\u00ee i with circumflex', 'i-i-with-circumflex'),
-            (u'\u00ef i with diaeresis', 'i-i-with-diaeresis'),
-            (u'\u00f1 n with tilde', 'n-n-with-tilde'),
-            (u'\u00f2 o with grave', 'o-o-with-grave'),
-            (u'\u00f3 o with acute', 'o-o-with-acute'),
-            (u'\u00f4 o with circumflex', 'o-o-with-circumflex'),
-            (u'\u00f5 o with tilde', 'o-o-with-tilde'),
-            (u'\u00f6 o with diaeresis', 'o-o-with-diaeresis'),
-            (u'\u00f9 u with grave', 'u-u-with-grave'),
-            (u'\u00fa u with acute', 'u-u-with-acute'),
-            (u'\u00fb u with circumflex', 'u-u-with-circumflex'),
-            (u'\u00fc u with diaeresis', 'u-u-with-diaeresis'),
-            (u'\u00fd y with acute', 'y-y-with-acute'),
-            (u'\u00ff y with diaeresis', 'y-y-with-diaeresis'),
+            ('\u00e0: a with grave', 'a-a-with-grave'),
+            ('\u00e1 a with acute', 'a-a-with-acute'),
+            ('\u00e2 a with circumflex', 'a-a-with-circumflex'),
+            ('\u00e3 a with tilde', 'a-a-with-tilde'),
+            ('\u00e4 a with diaeresis', 'a-a-with-diaeresis'),
+            ('\u00e5 a with ring above', 'a-a-with-ring-above'),
+            ('\u00e7 c with cedilla', 'c-c-with-cedilla'),
+            ('\u00e8 e with grave', 'e-e-with-grave'),
+            ('\u00e9 e with acute', 'e-e-with-acute'),
+            ('\u00ea e with circumflex', 'e-e-with-circumflex'),
+            ('\u00eb e with diaeresis', 'e-e-with-diaeresis'),
+            ('\u00ec i with grave', 'i-i-with-grave'),
+            ('\u00ed i with acute', 'i-i-with-acute'),
+            ('\u00ee i with circumflex', 'i-i-with-circumflex'),
+            ('\u00ef i with diaeresis', 'i-i-with-diaeresis'),
+            ('\u00f1 n with tilde', 'n-n-with-tilde'),
+            ('\u00f2 o with grave', 'o-o-with-grave'),
+            ('\u00f3 o with acute', 'o-o-with-acute'),
+            ('\u00f4 o with circumflex', 'o-o-with-circumflex'),
+            ('\u00f5 o with tilde', 'o-o-with-tilde'),
+            ('\u00f6 o with diaeresis', 'o-o-with-diaeresis'),
+            ('\u00f9 u with grave', 'u-u-with-grave'),
+            ('\u00fa u with acute', 'u-u-with-acute'),
+            ('\u00fb u with circumflex', 'u-u-with-circumflex'),
+            ('\u00fc u with diaeresis', 'u-u-with-diaeresis'),
+            ('\u00fd y with acute', 'y-y-with-acute'),
+            ('\u00ff y with diaeresis', 'y-y-with-diaeresis'),
            # From Latin Extended-A
-            (u'\u0101 a with macron', 'a-a-with-macron'),
-            (u'\u0103 a with breve', 'a-a-with-breve'),
-            (u'\u0105 a with ogonek', 'a-a-with-ogonek'),
-            (u'\u0107 c with acute', 'c-c-with-acute'),
-            (u'\u0109 c with circumflex', 'c-c-with-circumflex'),
-            (u'\u010b c with dot above', 'c-c-with-dot-above'),
-            (u'\u010d c with caron', 'c-c-with-caron'),
-            (u'\u010f d with caron', 'd-d-with-caron'),
-            (u'\u0113 e with macron', 'e-e-with-macron'),
-            (u'\u0115 e with breve', 'e-e-with-breve'),
-            (u'\u0117 e with dot above', 'e-e-with-dot-above'),
-            (u'\u0119 e with ogonek', 'e-e-with-ogonek'),
-            (u'\u011b e with caron', 'e-e-with-caron'),
-            (u'\u011d g with circumflex', 'g-g-with-circumflex'),
-            (u'\u011f g with breve', 'g-g-with-breve'),
-            (u'\u0121 g with dot above', 'g-g-with-dot-above'),
-            (u'\u0123 g with cedilla', 'g-g-with-cedilla'),
-            (u'\u0125 h with circumflex', 'h-h-with-circumflex'),
-            (u'\u0129 i with tilde', 'i-i-with-tilde'),
-            (u'\u012b i with macron', 'i-i-with-macron'),
-            (u'\u012d i with breve', 'i-i-with-breve'),
-            (u'\u012f i with ogonek', 'i-i-with-ogonek'),
-            (u'\u0133 ligature ij', 'ij-ligature-ij'),
-            (u'\u0135 j with circumflex', 'j-j-with-circumflex'),
-            (u'\u0137 k with cedilla', 'k-k-with-cedilla'),
-            (u'\u013a l with acute', 'l-l-with-acute'),
-            (u'\u013c l with cedilla', 'l-l-with-cedilla'),
-            (u'\u013e l with caron', 'l-l-with-caron'),
-            (u'\u0140 l with middle dot', 'l-l-with-middle-dot'),
-            (u'\u0144 n with acute', 'n-n-with-acute'),
-            (u'\u0146 n with cedilla', 'n-n-with-cedilla'),
-            (u'\u0148 n with caron', 'n-n-with-caron'),
-            (u'\u014d o with macron', 'o-o-with-macron'),
-            (u'\u014f o with breve', 'o-o-with-breve'),
-            (u'\u0151 o with double acute', 'o-o-with-double-acute'),
-            (u'\u0155 r with acute', 'r-r-with-acute'),
-            (u'\u0157 r with cedilla', 'r-r-with-cedilla'),
-            (u'\u0159 r with caron', 'r-r-with-caron'),
-            (u'\u015b s with acute', 's-s-with-acute'),
-            (u'\u015d s with circumflex', 's-s-with-circumflex'),
-            (u'\u015f s with cedilla', 's-s-with-cedilla'),
-            (u'\u0161 s with caron', 's-s-with-caron'),
-            (u'\u0163 t with cedilla', 't-t-with-cedilla'),
-            (u'\u0165 t with caron', 't-t-with-caron'),
-            (u'\u0169 u with tilde', 'u-u-with-tilde'),
-            (u'\u016b u with macron', 'u-u-with-macron'),
-            (u'\u016d u with breve', 'u-u-with-breve'),
-            (u'\u016f u with ring above', 'u-u-with-ring-above'),
-            (u'\u0171 u with double acute', 'u-u-with-double-acute'),
-            (u'\u0173 u with ogonek', 'u-u-with-ogonek'),
-            (u'\u0175 w with circumflex', 'w-w-with-circumflex'),
-            (u'\u0177 y with circumflex', 'y-y-with-circumflex'),
-            (u'\u017a z with acute', 'z-z-with-acute'),
-            (u'\u017c z with dot above', 'z-z-with-dot-above'),
-            (u'\u017e z with caron', 'z-z-with-caron'),
+            ('\u0101 a with macron', 'a-a-with-macron'),
+            ('\u0103 a with breve', 'a-a-with-breve'),
+            ('\u0105 a with ogonek', 'a-a-with-ogonek'),
+            ('\u0107 c with acute', 'c-c-with-acute'),
+            ('\u0109 c with circumflex', 'c-c-with-circumflex'),
+            ('\u010b c with dot above', 'c-c-with-dot-above'),
+            ('\u010d c with caron', 'c-c-with-caron'),
+            ('\u010f d with caron', 'd-d-with-caron'),
+            ('\u0113 e with macron', 'e-e-with-macron'),
+            ('\u0115 e with breve', 'e-e-with-breve'),
+            ('\u0117 e with dot above', 'e-e-with-dot-above'),
+            ('\u0119 e with ogonek', 'e-e-with-ogonek'),
+            ('\u011b e with caron', 'e-e-with-caron'),
+            ('\u011d g with circumflex', 'g-g-with-circumflex'),
+            ('\u011f g with breve', 'g-g-with-breve'),
+            ('\u0121 g with dot above', 'g-g-with-dot-above'),
+            ('\u0123 g with cedilla', 'g-g-with-cedilla'),
+            ('\u0125 h with circumflex', 'h-h-with-circumflex'),
+            ('\u0129 i with tilde', 'i-i-with-tilde'),
+            ('\u012b i with macron', 'i-i-with-macron'),
+            ('\u012d i with breve', 'i-i-with-breve'),
+            ('\u012f i with ogonek', 'i-i-with-ogonek'),
+            ('\u0133 ligature ij', 'ij-ligature-ij'),
+            ('\u0135 j with circumflex', 'j-j-with-circumflex'),
+            ('\u0137 k with cedilla', 'k-k-with-cedilla'),
+            ('\u013a l with acute', 'l-l-with-acute'),
+            ('\u013c l with cedilla', 'l-l-with-cedilla'),
+            ('\u013e l with caron', 'l-l-with-caron'),
+            ('\u0140 l with middle dot', 'l-l-with-middle-dot'),
+            ('\u0144 n with acute', 'n-n-with-acute'),
+            ('\u0146 n with cedilla', 'n-n-with-cedilla'),
+            ('\u0148 n with caron', 'n-n-with-caron'),
+            ('\u014d o with macron', 'o-o-with-macron'),
+            ('\u014f o with breve', 'o-o-with-breve'),
+            ('\u0151 o with double acute', 'o-o-with-double-acute'),
+            ('\u0155 r with acute', 'r-r-with-acute'),
+            ('\u0157 r with cedilla', 'r-r-with-cedilla'),
+            ('\u0159 r with caron', 'r-r-with-caron'),
+            ('\u015b s with acute', 's-s-with-acute'),
+            ('\u015d s with circumflex', 's-s-with-circumflex'),
+            ('\u015f s with cedilla', 's-s-with-cedilla'),
+            ('\u0161 s with caron', 's-s-with-caron'),
+            ('\u0163 t with cedilla', 't-t-with-cedilla'),
+            ('\u0165 t with caron', 't-t-with-caron'),
+            ('\u0169 u with tilde', 'u-u-with-tilde'),
+            ('\u016b u with macron', 'u-u-with-macron'),
+            ('\u016d u with breve', 'u-u-with-breve'),
+            ('\u016f u with ring above', 'u-u-with-ring-above'),
+            ('\u0171 u with double acute', 'u-u-with-double-acute'),
+            ('\u0173 u with ogonek', 'u-u-with-ogonek'),
+            ('\u0175 w with circumflex', 'w-w-with-circumflex'),
+            ('\u0177 y with circumflex', 'y-y-with-circumflex'),
+            ('\u017a z with acute', 'z-z-with-acute'),
+            ('\u017c z with dot above', 'z-z-with-dot-above'),
+            ('\u017e z with caron', 'z-z-with-caron'),
            # From Latin Extended-B
-            (u'\u01a1 o with horn', 'o-o-with-horn'),
-            (u'\u01b0 u with horn', 'u-u-with-horn'),
-            (u'\u01c6 dz with caron', 'dz-dz-with-caron'),
-            (u'\u01c9 lj', 'lj-lj'),
-            (u'\u01cc nj', 'nj-nj'),
-            (u'\u01ce a with caron', 'a-a-with-caron'),
-            (u'\u01d0 i with caron', 'i-i-with-caron'),
-            (u'\u01d2 o with caron', 'o-o-with-caron'),
-            (u'\u01d4 u with caron', 'u-u-with-caron'),
-            (u'\u01e7 g with caron', 'g-g-with-caron'),
-            (u'\u01e9 k with caron', 'k-k-with-caron'),
-            (u'\u01eb o with ogonek', 'o-o-with-ogonek'),
-            (u'\u01ed o with ogonek and macron', 'o-o-with-ogonek-and-macron'),
-            (u'\u01f0 j with caron', 'j-j-with-caron'),
-            (u'\u01f3 dz', 'dz-dz'),
-            (u'\u01f5 g with acute', 'g-g-with-acute'),
-            (u'\u01f9 n with grave', 'n-n-with-grave'),
-            (u'\u0201 a with double grave', 'a-a-with-double-grave'),
-            (u'\u0203 a with inverted breve', 'a-a-with-inverted-breve'),
-            (u'\u0205 e with double grave', 'e-e-with-double-grave'),
-            (u'\u0207 e with inverted breve', 'e-e-with-inverted-breve'),
-            (u'\u0209 i with double grave', 'i-i-with-double-grave'),
-            (u'\u020b i with inverted breve', 'i-i-with-inverted-breve'),
-            (u'\u020d o with double grave', 'o-o-with-double-grave'),
-            (u'\u020f o with inverted breve', 'o-o-with-inverted-breve'),
-            (u'\u0211 r with double grave', 'r-r-with-double-grave'),
-            (u'\u0213 r with inverted breve', 'r-r-with-inverted-breve'),
-            (u'\u0215 u with double grave', 'u-u-with-double-grave'),
-            (u'\u0217 u with inverted breve', 'u-u-with-inverted-breve'),
-            (u'\u0219 s with comma below', 's-s-with-comma-below'),
-            (u'\u021b t with comma below', 't-t-with-comma-below'),
-            (u'\u021f h with caron', 'h-h-with-caron'),
-            (u'\u0227 a with dot above', 'a-a-with-dot-above'),
-            (u'\u0229 e with cedilla', 'e-e-with-cedilla'),
-            (u'\u022f o with dot above', 'o-o-with-dot-above'),
-            (u'\u0233 y with macron', 'y-y-with-macron'),
+            ('\u01a1 o with horn', 'o-o-with-horn'),
+            ('\u01b0 u with horn', 'u-u-with-horn'),
+            ('\u01c6 dz with caron', 'dz-dz-with-caron'),
+            ('\u01c9 lj', 'lj-lj'),
+            ('\u01cc nj', 'nj-nj'),
+            ('\u01ce a with caron', 'a-a-with-caron'),
+            ('\u01d0 i with caron', 'i-i-with-caron'),
+            ('\u01d2 o with caron', 'o-o-with-caron'),
+            ('\u01d4 u with caron', 'u-u-with-caron'),
+            ('\u01e7 g with caron', 'g-g-with-caron'),
+            ('\u01e9 k with caron', 'k-k-with-caron'),
+            ('\u01eb o with ogonek', 'o-o-with-ogonek'),
+            ('\u01ed o with ogonek and macron', 'o-o-with-ogonek-and-macron'),
+            ('\u01f0 j with caron', 'j-j-with-caron'),
+            ('\u01f3 dz', 'dz-dz'),
+            ('\u01f5 g with acute', 'g-g-with-acute'),
+            ('\u01f9 n with grave', 'n-n-with-grave'),
+            ('\u0201 a with double grave', 'a-a-with-double-grave'),
+            ('\u0203 a with inverted breve', 'a-a-with-inverted-breve'),
+            ('\u0205 e with double grave', 'e-e-with-double-grave'),
+            ('\u0207 e with inverted breve', 'e-e-with-inverted-breve'),
+            ('\u0209 i with double grave', 'i-i-with-double-grave'),
+            ('\u020b i with inverted breve', 'i-i-with-inverted-breve'),
+            ('\u020d o with double grave', 'o-o-with-double-grave'),
+            ('\u020f o with inverted breve', 'o-o-with-inverted-breve'),
+            ('\u0211 r with double grave', 'r-r-with-double-grave'),
+            ('\u0213 r with inverted breve', 'r-r-with-inverted-breve'),
+            ('\u0215 u with double grave', 'u-u-with-double-grave'),
+            ('\u0217 u with inverted breve', 'u-u-with-inverted-breve'),
+            ('\u0219 s with comma below', 's-s-with-comma-below'),
+            ('\u021b t with comma below', 't-t-with-comma-below'),
+            ('\u021f h with caron', 'h-h-with-caron'),
+            ('\u0227 a with dot above', 'a-a-with-dot-above'),
+            ('\u0229 e with cedilla', 'e-e-with-cedilla'),
+            ('\u022f o with dot above', 'o-o-with-dot-above'),
+            ('\u0233 y with macron', 'y-y-with-macron'),
            # digraphs From Latin-1 Supplements
-            (u'\u00df: ligature sz', 'sz-ligature-sz'),
-            (u'\u00e6 ae', 'ae-ae'),
-            (u'\u0153 ligature oe', 'oe-ligature-oe'),
-            (u'\u0238 db digraph', 'db-db-digraph'),
-            (u'\u0239 qp digraph', 'qp-qp-digraph'),
+            ('\u00df: ligature sz', 'sz-ligature-sz'),
+            ('\u00e6 ae', 'ae-ae'),
+            ('\u0153 ligature oe', 'oe-ligature-oe'),
+            ('\u0238 db digraph', 'db-db-digraph'),
+            ('\u0239 qp digraph', 'qp-qp-digraph'),
             ]
 
     def test_make_id(self):

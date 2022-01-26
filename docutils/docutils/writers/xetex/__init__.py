@@ -121,7 +121,7 @@ class Babel(latex2e.Babel):
         self.quotes = ('"', '"')
         # language dependent configuration:
         # double quotes are "active" in some languages (e.g. German).
-        self.literal_double_quote = u'"' # TODO: use \textquotedbl ?
+        self.literal_double_quote = '"' # TODO: use \textquotedbl ?
 
     def __call__(self):
         setup = [r'\usepackage{polyglossia}',

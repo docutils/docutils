@@ -44,7 +44,7 @@ Title 4
 -------
 Paragraph 4.
 """,
-u"""\
+"""\
 <document source="test data">
     <section ids="title-1" names="title\\ 1">
         <title auto="1">
@@ -82,7 +82,7 @@ u"""\
 ==============
 Paragraph 1.
 """,
-u"""\
+"""\
 <document source="test data">
     <section ids="bold-title" names="bold\\ title">
         <title auto="1">
@@ -112,7 +112,7 @@ Title 4
 -------
 Paragraph 4.
 """,
-u"""\
+"""\
 <document source="test data">
     <section ids="title-1" names="title\\ 1">
         <title auto="1">
@@ -161,7 +161,7 @@ Title 4
 -------
 Paragraph 4.
 """,
-u"""\
+"""\
 <document source="test data">
     <topic classes="contents" ids="contents" names="contents">
         <title>
@@ -238,7 +238,7 @@ Title 4
 -------
 Paragraph 4.
 """,
-u"""\
+"""\
 <document source="test data">
     <section ids="title-1" names="title\\ 1">
         <title auto="1">
@@ -289,7 +289,7 @@ Title 4
 -------
 Paragraph 4.
 """,
-u"""\
+"""\
 <document source="test data">
     <section ids="title-1" names="title\\ 1">
         <title auto="1">
@@ -342,7 +342,7 @@ Title 4
 -------
 Paragraph 4.
 """,
-u"""\
+"""\
 <document source="test data">
     <section ids="title-1" names="title\\ 1">
         <title auto="1">

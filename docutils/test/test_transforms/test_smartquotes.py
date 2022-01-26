@@ -35,7 +35,7 @@ def suite():
     settings['smart_quotes'] = 'alternative'
     s.generateTests(totest_de_alt)
     settings['smart_quotes'] = True
-    settings['smartquotes_locales'] = [('de', u'«»()'), ('nl', u'„”’’')]
+    settings['smartquotes_locales'] = [('de', '«»()'), ('nl', '„”’’')]
     s.generateTests(totest_locales)
     return s
 
@@ -51,7 +51,7 @@ Test "smart quotes", 'secondary smart quotes',
 "'nested' smart" quotes
 -- and ---also long--- dashes.
 """,
-u"""\
+"""\
 <document source="test data">
     <paragraph>
         Test “smart quotes”, ‘secondary smart quotes’,
@@ -60,7 +60,7 @@ u"""\
 """],
 [r"""Escaped \"ASCII quotes\" and \'secondary ASCII quotes\'.
 """,
-u"""\
+"""\
 <document source="test data">
     <paragraph>
         Escaped "ASCII quotes" and 'secondary ASCII quotes'.
@@ -85,7 +85,7 @@ Keep quotes straight in code and math:
    f'(x) = df(x)/dx
 
 """,
-u"""\
+"""\
 <document source="test data">
     <paragraph>
         Do not “educate” quotes 
@@ -110,7 +110,7 @@ u"""\
     <math_block xml:space="preserve">
         f'(x) = df(x)/dx
 """],
-[u"""\
+["""\
 Closing quotes, if preceded by
 wor"d char's
 or punctuation:"a",'a';'a' (TODO: opening quotes if followed by word-char?).
@@ -135,7 +135,7 @@ But not if followed by (optional punctuation and) whitespace:
 "-", "–", "—", "(", "a[", "{"
 '-', '–', '—', '((', '[', '{'
 """,
-u"""\
+"""\
 <document source="test data">
     <paragraph>
         Closing quotes, if preceded by
@@ -173,7 +173,7 @@ Quotes and inline-elements:
 Do not drop characters from intra-word inline markup like
 *re*\\ ``Structured``\\ *Text*.
 """,
-u"""\
+"""\
 <document source="test data">
     <paragraph>
         Quotes and inline-elements:
@@ -227,7 +227,7 @@ Do not convert context-character at inline-tag boundaries
   Do not drop characters from intra-word inline markup like
   *re*\\ ``Structured``\\ *Text*.
 """,
-u"""\
+"""\
 <document source="test data">
     <paragraph>
         Do not convert context-character at inline-tag boundaries
@@ -304,7 +304,7 @@ Test around inline elements:\ [*]_
 
 .. [*] and footnotes
 """,
-u"""\
+"""\
 <document source="test data">
     <paragraph>
         Docutils escape mechanism uses the backslash:
@@ -394,7 +394,7 @@ British "primary quotes" use single and
 
 Alternative German "smart quotes" and 'secondary smart quotes'.
 """,
-u"""\
+"""\
 <document source="test data">
     <paragraph classes="language-de">
         German „smart quotes“ and ‚secondary smart quotes‘.
@@ -419,7 +419,7 @@ German "smart quotes" and 'secondary smart quotes'.
 
 English "smart quotes" and 'secondary smart quotes'.
 """,
-u"""\
+"""\
 <document source="test data">
     <paragraph>
         German „smart quotes“ and ‚secondary smart quotes‘.
@@ -443,7 +443,7 @@ British "quotes" use single and 'secondary quotes' double quote signs
 
 Romanian "smart quotes" and 'secondary' smart quotes.
 """,
-u"""\
+"""\
 <document source="test data">
     <paragraph>
         Alternative German »smart quotes« and ›secondary smart quotes‹.
@@ -465,7 +465,7 @@ German "smart quotes" and 'secondary smart quotes'.
 
 Dutch "smart quotes" and 's Gravenhage (leading apostrophe).
 """,
-u"""\
+"""\
 <document source="test data">
     <paragraph>
         German «smart quotes» and (secondary smart quotes).

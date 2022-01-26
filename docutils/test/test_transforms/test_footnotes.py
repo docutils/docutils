@@ -411,7 +411,7 @@ A sequence of symbol footnote references:
 .. [*] Auto-symbol footnote 11.
 .. [*] Auto-symbol footnote 12.
 """,
-u"""\
+"""\
 <document source="test data">
     <paragraph>
         A sequence of symbol footnote references:
