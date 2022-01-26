@@ -48,9 +48,11 @@ class Writer(latex2e.Writer):
     config_section_dependencies = ('writers', 'latex writers',
             'latex2e writer') # TODO: remove dependency on `latex2e writer`.
 
+    # use a copy of the parent spec with some modifications:
     settings_spec = frontend.filter_settings_spec(
         latex2e.Writer.settings_spec,
-        'font_encoding', # removed settings
+        # removed settings
+        'font_encoding',
         # changed settings:
         template=('Template file. Default: "%s".' % default_template,
                   ['--template'],

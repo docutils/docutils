@@ -58,7 +58,11 @@ Changes Since 0.18.1
 
   - Add deprecation warning.
 
-* docutils/writers/pep_html/:
+* docutils/writers/_html_base.py
+
+  - Add 'html writers' to `config_section_dependencies`. Fixes bug #443.
+
+* docutils/writers/pep_html/
 
   - use "https:" scheme in "python_home" URL default. 
   

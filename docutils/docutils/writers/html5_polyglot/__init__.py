@@ -44,9 +44,9 @@ class Writer(writers._html_base.Writer):
     default_template = os.path.join(
         os.path.dirname(os.path.abspath(__file__)), 'template.txt')
 
+    # use a copy of the parent spec with some modifications
     settings_spec = frontend.filter_settings_spec(
         writers._html_base.Writer.settings_spec,
-        # update specs with changed defaults or help string
         template =
          ('Template file. (UTF-8 encoded, default: "%s")' % default_template,
           ['--template'],
