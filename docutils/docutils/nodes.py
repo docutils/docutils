@@ -765,7 +765,7 @@ class Element(Node):
         """
         # List Concatenation
         for value in values:
-            if not value in self[attr]:
+            if value not in self[attr]:
                 self[attr].append(value)
 
     def coerce_append_attr_list(self, attr, value):

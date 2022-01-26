@@ -40,7 +40,7 @@ class BaseAdmonition(Directive):
                     self.state_machine.get_source_and_line(self.lineno))
             admonition_node += title
             admonition_node += messages
-            if not 'classes' in self.options:
+            if 'classes' not in self.options:
                 admonition_node['classes'] += ['admonition-' +
                                                nodes.make_id(title_text)]
         self.state.nested_parse(self.content, self.content_offset,

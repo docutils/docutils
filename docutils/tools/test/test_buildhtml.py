@@ -76,7 +76,7 @@ class BuildHtmlTests(unittest.TestCase):
 
         for s in self.tree:
             s = os.path.join(self.root, s)
-            if not "." in s:
+            if "." not in s:
                 os.mkdir(s)
             else:
                 fd_s = open(s, "w")
@@ -86,7 +86,7 @@ class BuildHtmlTests(unittest.TestCase):
     def tearDown(self):
         for i in range(len(self.tree) - 1, -1, -1):
             s = os.path.join(self.root, self.tree[i])
-            if not "." in s:
+            if "." not in s:
                 os.rmdir(s)
             else:
                 os.remove(s)

@@ -168,7 +168,7 @@ class Reporter(object):
             if line is not None:
                 attributes.setdefault('line', line)
                 # assert source is not None, "node has line- but no source-argument"
-        if not 'source' in attributes: # 'line' is absolute line number
+        if 'source' not in attributes: # 'line' is absolute line number
             try: # look up (source, line-in-source)
                 source, line = self.get_source_and_line(attributes.get('line'))
             except AttributeError:
@@ -648,7 +648,7 @@ def column_width(text):
 def uniq(L):
      r = []
      for item in L:
-         if not item in r:
+         if item not in r:
              r.append(item)
      return r
 
@@ -727,7 +727,7 @@ class DependencyList(object):
         is not None.
         """
         for filename in filenames:
-            if not filename in self.list:
+            if filename not in self.list:
                 self.list.append(filename)
                 if self.file is not None:
                     self.file.write(filename+'\n')
