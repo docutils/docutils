@@ -328,7 +328,7 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
         if (node.html5tagname == 'small' and node.get('classes') == ['ln']
             and isinstance(node.parent, nodes.literal_block)):
             self.body.append('<code data-lineno="%s">' % node.astext())
-        del(node.html5tagname)
+        del node.html5tagname
 
     # place inside HTML5 <figcaption> element (together with caption)
     def visit_legend(self, node):
@@ -434,7 +434,7 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
 
     def depart_topic(self, node):
         self.body.append('</%s>\n'%node.html_tagname)
-        del(node.html_tagname)
+        del node.html_tagname
 
     # append self-link
     def section_title_tags(self, node):

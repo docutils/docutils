@@ -337,7 +337,7 @@ class FileInput(Input):
                     raise InputError(error.errno, error.strerror, source_path)
             else:
                 self.source = sys.stdin
-        elif (check_encoding(self.source, self.encoding) is False):
+        elif check_encoding(self.source, self.encoding) is False:
             # TODO: re-open, warn or raise error?
             raise UnicodeError('Encoding clash: encoding given is "%s" '
                                'but source is opened with encoding "%s".' %

@@ -888,7 +888,7 @@ class Table(object):
     def get_latex_type(self):
         if self._latex_type == 'longtable' and not self.caption:
             # do not advance the "table" counter (requires "ltcaption" package)
-            return('longtable*')
+            return 'longtable*'
         return self._latex_type
 
     def set(self, attr, value):
@@ -1060,7 +1060,7 @@ class Table(object):
         res = [' \\\\\n']
         self._cell_in_row = None  # remove cell counter
         for i in range(len(self._rowspan)):
-            if (self._rowspan[i]>0):
+            if self._rowspan[i] > 0:
                 self._rowspan[i] -= 1
 
         if self.borders == 'standard':
@@ -1664,7 +1664,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             return ''
         if isinstance(child, (nodes.container, nodes.compound)):
             return self.term_postfix(child)
-        if isinstance(child, (nodes.image)):
+        if isinstance(child, nodes.image):
             return '\\leavevmode\n' # Images get an additional newline.
         if not isinstance(child, (nodes.paragraph, nodes.math_block)):
             return '\\leavevmode'
@@ -3113,7 +3113,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
                                     % roman.toRoman(level))
 
             # System messages heading in red:
-            if ('system-messages' in node.parent['classes']):
+            if 'system-messages' in node.parent['classes']:
                 self.requirements['color'] = PreambleCmds.color
                 section_title = self.encode(node.astext())
                 self.out.append(r'\%s[%s]{\color{red}' % (

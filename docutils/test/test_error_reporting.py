@@ -241,7 +241,7 @@ class ErrorReportingTests(unittest.TestCase):
     document = utils.new_document('test data', settings)
 
     def test_include(self):
-        source = ('.. include:: bogus.txt')
+        source = '.. include:: bogus.txt'
         self.assertRaises(utils.SystemMessage,
                           self.parser.parse, source, self.document)
 

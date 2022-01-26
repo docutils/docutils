@@ -1930,7 +1930,7 @@ class FormulaProcessor(object):
     "Traverse a formula and yield a flattened structure of (bit, list) pairs."
     for element in bit.contents:
       if hasattr(element, 'type') and element.type:
-        yield (element, bit.contents)
+        yield element, bit.contents
       elif isinstance(element, FormulaBit):
         yield from self.traverse(element)
 

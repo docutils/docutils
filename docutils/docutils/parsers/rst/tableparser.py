@@ -320,7 +320,7 @@ class GridTableParser(TableParser):
         else:
             headrows = []
             bodyrows = rows
-        return (colspecs, headrows, bodyrows)
+        return colspecs, headrows, bodyrows
 
 
 class SimpleTableParser(TableParser):

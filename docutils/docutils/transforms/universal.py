@@ -259,12 +259,12 @@ class SmartQuotes(Transform):
         for node in txtnodes:
             if (isinstance(node.parent, self.literal_nodes)
                 or isinstance(node.parent.parent, self.literal_nodes)):
-                yield ('literal', str(node))
+                yield 'literal', str(node)
             else:
                 # SmartQuotes uses backslash escapes instead of null-escapes
                 # Insert backslashes before escaped "active" characters.
                 txt = re.sub('(?<=\x00)([-\\\'".`])', r'\\\1', str(node))
-                yield ('plain', txt)
+                yield 'plain', txt
 
     def apply(self):
         smart_quotes = self.document.settings.setdefault('smart_quotes',

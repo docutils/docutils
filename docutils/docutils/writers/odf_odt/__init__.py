@@ -1433,14 +1433,14 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             if mo:
                 pos2 = mo.start()
                 if pos2 > pos1:
-                    yield (ODFTranslator.code_text, text[pos1:pos2])
-                yield (ODFTranslator.code_field, mo.group(1))
+                    yield ODFTranslator.code_text, text[pos1:pos2]
+                yield ODFTranslator.code_field, mo.group(1)
                 pos1 = mo.end()
             else:
                 break
         trailing = text[pos1:]
         if trailing:
-            yield (ODFTranslator.code_text, trailing)
+            yield ODFTranslator.code_text, trailing
 
     def astext(self):
         root = self.content_tree.getroot()

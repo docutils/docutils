@@ -40,7 +40,7 @@ try:
     # already cached in `sys.modules` if recommonmark >= 0.5.0
 except ImportError:
     # stub to prevent errors with recommonmark < 0.5.0
-    class addnodes():
+    class addnodes:
         pending_xref = nodes.pending
 
 

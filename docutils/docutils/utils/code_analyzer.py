@@ -82,18 +82,18 @@ class Lexer(object):
             if ttype is lasttype:
                 lastval += value
             else:
-                yield(lasttype, lastval)
+                yield lasttype, lastval
                 (lasttype, lastval) = (ttype, value)
         if lastval.endswith('\n'):
             lastval = lastval[:-1]
         if lastval:
-            yield(lasttype, lastval)
+            yield lasttype, lastval
 
     def __iter__(self):
         """Parse self.code and yield "classified" tokens.
         """
         if self.lexer is None:
-            yield ([], self.code)
+            yield [], self.code
             return
         tokens = pygments.lex(self.code, self.lexer)
         for tokentype, value in self.merge(tokens):
@@ -102,7 +102,7 @@ class Lexer(object):
             else: # short CSS class args
                 classes = [_get_ttype_class(tokentype)]
             classes = [cls for cls in classes if cls not in unstyled_tokens]
-            yield (classes, value)
+            yield classes, value
 
 
 class NumberLines(object):
@@ -126,11 +126,11 @@ class NumberLines(object):
 
     def __iter__(self):
         lineno = self.startline
-        yield (['ln'], self.fmt_str % lineno)
+        yield ['ln'], self.fmt_str % lineno
         for ttype, value in self.tokens:
             lines = value.split('\n')
             for line in lines[:-1]:
-                yield (ttype, line + '\n')
+                yield ttype, line + '\n'
                 lineno += 1
-                yield (['ln'], self.fmt_str % lineno)
-            yield (ttype, lines[-1])
+                yield ['ln'], self.fmt_str % lineno
+            yield ttype, lines[-1]

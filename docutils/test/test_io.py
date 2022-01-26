@@ -215,7 +215,7 @@ class OutputTests(unittest.TestCase):
                             self.udata.encode('latin1'))
 
     def test_encoding_clash_nonresolvable(self):
-        del(self.mock_stdout.buffer)
+        del self.mock_stdout.buffer
         fo = io.FileOutput(destination=self.mock_stdout,
                             encoding='latin1', autoclose=False)
         self.assertRaises(ValueError, fo.write, self.udata)

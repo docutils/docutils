@@ -688,7 +688,7 @@ class Substitutions(Transform):
                 if len(subdef.astext()) > line_length_limit:
                     msg = self.document.reporter.error(
                             'Substitution definition "%s" exceeds the'
-                            ' line-length-limit.' % (key))
+                            ' line-length-limit.' % key)
             if msg:
                 msgid = self.document.set_id(msg)
                 prb = nodes.problematic(
