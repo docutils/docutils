@@ -103,7 +103,6 @@ Parsing proceeds as follows:
 __docformat__ = 'reStructuredText'
 
 
-import sys
 import re
 from types import FunctionType, MethodType
 

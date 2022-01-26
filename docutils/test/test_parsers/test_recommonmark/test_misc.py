@@ -13,9 +13,7 @@
 Various tests for the recommonmark parser.
 """
 
-import sys
 import unittest
-import warnings
 
 if __name__ == '__main__':
     import __init__

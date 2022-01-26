@@ -9,7 +9,6 @@ Tests for misc.py "raw" directive.
 """
 
 import os.path
-import sys
 
 if __name__ == '__main__':
     import __init__

@@ -8,10 +8,6 @@ Docutils component-related transforms.
 
 __docformat__ = 'reStructuredText'
 
-import sys
-import os
-import re
-import time
 from docutils import nodes, utils
 from docutils import ApplicationError, DataError
 from docutils.transforms import Transform, TransformError

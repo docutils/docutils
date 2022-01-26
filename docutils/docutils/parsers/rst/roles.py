@@ -76,7 +76,6 @@ Interpreted role functions return a tuple of two values:
 
 __docformat__ = 'reStructuredText'
 
-import warnings
 
 from docutils import nodes, utils
 from docutils.parsers.rst import directives

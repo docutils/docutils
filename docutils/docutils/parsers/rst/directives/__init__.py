@@ -10,7 +10,6 @@ __docformat__ = 'reStructuredText'
 
 import re
 import codecs
-import sys
 from importlib import import_module
 
 from docutils import nodes, parsers

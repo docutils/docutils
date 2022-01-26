@@ -8,8 +8,6 @@ Transforms for resolving references.
 
 __docformat__ = 'reStructuredText'
 
-import sys
-import re
 from docutils import nodes, utils
 from docutils.transforms import TransformError, Transform
 

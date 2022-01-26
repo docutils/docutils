@@ -11,7 +11,6 @@ This package contains modules for language-dependent features of Docutils.
 
 __docformat__ = 'reStructuredText'
 
-import sys
 from importlib import import_module
 
 from docutils.utils import normalize_language_tag

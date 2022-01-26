@@ -11,7 +11,6 @@ __docformat__ = 'reStructuredText'
 
 import csv
 import os.path
-import sys
 import warnings
 
 from docutils import io, nodes, statemachine, utils

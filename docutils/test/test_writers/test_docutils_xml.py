@@ -14,7 +14,6 @@ Test for docutils XML writer.
    module mirrors the current behaviour of the docutils_xml writer.
 """
 
-import sys
 
 if __name__ == '__main__':
     import __init__

@@ -15,7 +15,6 @@ __docformat__ = 'reStructuredText'
 import os
 import re
 import string
-import sys
 from urllib.request import url2pathname
 import warnings
 

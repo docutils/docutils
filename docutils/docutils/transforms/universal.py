@@ -21,7 +21,6 @@ Transforms needed by most or all documents:
 __docformat__ = 'reStructuredText'
 
 import re
-import sys
 import time
 from docutils import nodes, utils
 from docutils.transforms import TransformError, Transform

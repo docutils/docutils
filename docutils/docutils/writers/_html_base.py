@@ -20,7 +20,6 @@ import base64
 import mimetypes
 import os, os.path
 import re
-import sys
 from urllib.request import url2pathname
 import warnings
 

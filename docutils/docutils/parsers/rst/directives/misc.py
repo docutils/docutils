@@ -6,7 +6,6 @@
 
 __docformat__ = 'reStructuredText'
 
-import sys
 import os.path
 import re
 import time

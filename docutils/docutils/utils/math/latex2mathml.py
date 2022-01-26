@@ -24,9 +24,7 @@ the API is not settled and may change with any minor Docutils version.
 #
 # >>> from latex2mathml import *
 
-import copy
 import re
-import sys
 import unicodedata
 
 from docutils.utils.math import tex2unichar, toplevel_code

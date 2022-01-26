@@ -22,9 +22,7 @@ LuaTeX and XeTeX.
 
 __docformat__ = 'reStructuredText'
 
-import os
 import os.path
-import re
 
 import docutils
 from docutils import frontend, nodes, utils, writers, languages

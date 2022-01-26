@@ -8,7 +8,6 @@ Directives for figures and simple images.
 
 __docformat__ = 'reStructuredText'
 
-import sys
 from urllib.request import url2pathname
 
 try: # check for the Python Imaging Library

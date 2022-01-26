@@ -7,7 +7,6 @@
 Tests for basic functionality of parser classes.
 """
 
-import sys
 import unittest
 
 if __name__ == '__main__':

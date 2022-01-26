@@ -7,7 +7,6 @@
 Test module for nodes.py.
 """
 
-import sys
 import unittest
 import warnings
 

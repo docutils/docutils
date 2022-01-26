@@ -9,7 +9,6 @@ Tests for tables.py directives.
 """
 
 import os
-import sys
 import csv
 import platform
 
