@@ -713,7 +713,7 @@ class Inliner(object):
         matchstart = match.start('start')
         matchend = match.end('start')
         if self.quoted_start(match):
-            return (string[:matchend], [], string[matchend:], [], '')
+            return string[:matchend], [], string[matchend:], [], ''
         endmatch = end_pattern.search(string[matchend:])
         if endmatch and endmatch.start(1):  # 1 or more chars
             text = endmatch.string[:endmatch.start(1)]
@@ -760,7 +760,7 @@ class Inliner(object):
             role = role[1:-1]
             position = 'prefix'
         elif self.quoted_start(match):
-            return (string[:matchend], [], string[matchend:], [])
+            return string[:matchend], [], string[matchend:], []
         endmatch = end_pattern.search(string[matchend:])
         if endmatch and endmatch.start(1):  # 1 or more chars
             textend = matchend + endmatch.end()
@@ -966,7 +966,7 @@ class Inliner(object):
                 self.document.note_footnote_ref(refnode)
             if utils.get_trim_footnote_ref_space(self.document.settings):
                 before = before.rstrip()
-        return (before, [refnode], remaining, [])
+        return before, [refnode], remaining, []
 
     def reference(self, match, lineno, anonymous=False):
         referencename = match.group('refname')
@@ -983,7 +983,7 @@ class Inliner(object):
         string = match.string
         matchstart = match.start('whole')
         matchend = match.end('whole')
-        return (string[:matchstart], [referencenode], string[matchend:], [])
+        return string[:matchstart], [referencenode], string[matchend:], []
 
     def anonymous_reference(self, match, lineno):
         return self.reference(match, lineno, anonymous=True)
@@ -1231,7 +1231,7 @@ class Body(RSTState):
             else:
                 blank = i
         else:
-            return (indented, None, None, None, None)
+            return indented, None, None, None, None
 
     def check_attribution(self, indented, attribution_start):
         """
@@ -2206,7 +2206,7 @@ class Body(RSTState):
             arguments = []
         if content and not has_content:
             raise MarkupError('no content permitted')
-        return (arguments, options, content, content_offset)
+        return arguments, options, content, content_offset
 
     def parse_directive_options(self, option_presets, option_spec, arg_block):
         options = option_presets.copy()
@@ -2266,11 +2266,11 @@ class Body(RSTState):
         try:
             options = utils.extract_extension_options(node, option_spec)
         except KeyError as detail:
-            return 0, ('unknown option: "%s"' % detail.args[0])
+            return 0, 'unknown option: "%s"' % detail.args[0]
         except (ValueError, TypeError) as detail:
             return 0, ('invalid option value: %s' % ' '.join(detail.args))
         except utils.ExtensionOptionError as detail:
-            return 0, ('invalid option data: %s' % ' '.join(detail.args))
+            return 0, 'invalid option data: %s' % ' '.join(detail.args)
         if blank_finish:
             return 1, options
         else:

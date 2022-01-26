@@ -895,15 +895,15 @@ def tokenize(text):
     previous_end = 0
     while token_match is not None:
         if token_match.group(1):
-            yield ('text', token_match.group(1))
+            yield 'text', token_match.group(1)
 
-        yield ('tag', token_match.group(2))
+        yield 'tag', token_match.group(2)
 
         previous_end = token_match.end()
         token_match = tag_soup.search(text, token_match.end())
 
     if previous_end < len(text):
-        yield ('text', text[previous_end:])
+        yield 'text', text[previous_end:]
 
 
 

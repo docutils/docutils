@@ -318,7 +318,7 @@ class Replace(Directive):
                 return [
                     self.state_machine.reporter.error(
                         'Error in "%s" directive: may contain a single paragraph '
-                        'only.' % (self.name), line=self.lineno) ]
+                        'only.' % self.name, line=self.lineno)]
         if node:
             return messages + node.children
         return messages

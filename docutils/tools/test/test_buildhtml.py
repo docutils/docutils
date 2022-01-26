@@ -54,7 +54,7 @@ def process_and_return_filelist(options):
     cin.close()
     cout.close()
     p.wait()
-    return (dirs, files)
+    return dirs, files
 
 class BuildHtmlTests(unittest.TestCase):
     tree = ( "_tmp_test_tree",

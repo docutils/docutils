@@ -769,7 +769,7 @@ class HTMLTranslator(nodes.NodeVisitor):
     def visit_docinfo(self, node):
         self.context.append(len(self.body))
         classes = ['docinfo']
-        if (self.is_compactable(node)):
+        if self.is_compactable(node):
             classes.append('simple')
         self.body.append(self.starttag(node, 'dl', classes=classes))
 
@@ -885,7 +885,7 @@ class HTMLTranslator(nodes.NodeVisitor):
                 classes.pop(i)
                 break
         classes.append('field-list')
-        if (self.is_compactable(node)):
+        if self.is_compactable(node):
             classes.append('simple')
         self.body.append(self.starttag(node, 'dl', **atts))
 

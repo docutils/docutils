@@ -183,7 +183,7 @@ class ErrorOutput(object):
         """
         if stream is None:
             stream = sys.stderr
-        elif not(stream):
+        elif not stream:
             stream = False
         # if `stream` is a file name, open it
         elif isinstance(stream, str):

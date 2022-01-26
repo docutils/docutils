@@ -102,7 +102,7 @@ class LanguageTestCase(DocutilsTestSupport.CustomTestCase):
         for label in l_dict.keys():
             if label not in ref_dict:
                 too_much.append(label)
-        return (missing, too_much)
+        return missing, too_much
 
     def _invert(self, adict):
         """Return an inverted (keys & values swapped) dictionary."""

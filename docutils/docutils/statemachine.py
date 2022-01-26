@@ -371,16 +371,16 @@ class StateMachine(object):
         try:
             src, srcoffset = self.input_lines.info(offset)
             srcline = srcoffset + 1
-        except (TypeError):
+        except TypeError:
             # line is None if index is "Just past the end"
             src, srcline = self.get_source_and_line(offset + self.input_offset)
             return src, srcline + 1
-        except (IndexError):  # `offset` is off the list
+        except IndexError:  # `offset` is off the list
             src, srcline = None, None
             # raise AssertionError('cannot find line %d in %s lines' %
             #                      (offset, len(self.input_lines)))
             #                      # list(self.input_lines.lines())))
-        return (src, srcline)
+        return src, srcline
 
     def insert_input(self, input_lines, source):
         self.input_lines.insert(self.line_offset + 1, '',
@@ -710,7 +710,7 @@ class State(object):
         except AttributeError:
             raise TransitionMethodNotFound(
                   '%s.%s' % (self.__class__.__name__, name))
-        return (pattern, method, next_state)
+        return pattern, method, next_state
 
     def make_transitions(self, name_list):
         """
@@ -1307,7 +1307,7 @@ class ViewList(object):
     def xitems(self):
         """Return iterator yielding (source, offset, value) tuples."""
         for (value, (source, offset)) in zip(self.data, self.items):
-            yield (source, offset, value)
+            yield source, offset, value
 
     def pprint(self):
         """Print the list in `grep` format (`source:offset:value` lines)"""
