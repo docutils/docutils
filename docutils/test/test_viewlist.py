@@ -192,7 +192,7 @@ Unindented text.
 
 
     def setUp(self):
-        self.a_list = self.text.splitlines(1)
+        self.a_list = self.text.splitlines(True)
         self.a = statemachine.StringList(self.a_list, 'a')
 
     def test_trim_left(self):

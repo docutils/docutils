@@ -34,7 +34,7 @@ class FunctionalTestSuite(DocutilsTestSupport.CustomTestSuite):
 
     def __init__(self):
         """Process all config files in functional/tests/."""
-        DocutilsTestSupport.CustomTestSuite.__init__(self)
+        super().__init__()
         os.chdir(DocutilsTestSupport.testroot)
         self.clear_output_directory()
         self.added = 0

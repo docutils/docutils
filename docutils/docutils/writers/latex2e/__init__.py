@@ -1154,7 +1154,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
     alltt = False                      # inside `alltt` environment
 
     def __init__(self, document, babel_class=Babel):
-        nodes.NodeVisitor.__init__(self, document) # TODO: use super()
+        super().__init__(document)
         # Reporter
         # ~~~~~~~~
         self.warn = self.document.reporter.warning

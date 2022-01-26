@@ -14,7 +14,6 @@ reStructuredText.
 
 __docformat__ = 'reStructuredText'
 
-
 directives = {
       u'atenci\u00f3n': 'attention',
       u'atencion': 'attention',
@@ -84,7 +83,6 @@ mapping."""
 roles = {
     u'abreviatura': 'abbreviation',
     u'ab': 'abbreviation',
-    u'acronimo': 'acronym',
     u'acronimo': 'acronym',
     u'ac': 'acronym',
     u'code (translation required)': 'code',

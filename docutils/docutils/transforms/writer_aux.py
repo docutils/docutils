@@ -46,7 +46,7 @@ class Compound(Transform):
         warnings.warn('docutils.transforms.writer_aux.Compound is deprecated'
                       ' and will be removed in Docutils 0.21 or later.',
                       DeprecationWarning, stacklevel=2)
-        super(Compound, self).__init__(document, startnode)
+        super().__init__(document, startnode)
 
     def apply(self):
         for compound in self.document.findall(nodes.compound):

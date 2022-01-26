@@ -13,7 +13,7 @@ if __name__ == '__main__':
 from test_parsers import DocutilsTestSupport
 import time
 
-from docutils.utils.error_reporting import locale_encoding
+from docutils.io import locale_encoding
 
 def suite():
     s = DocutilsTestSupport.ParserTestSuite()

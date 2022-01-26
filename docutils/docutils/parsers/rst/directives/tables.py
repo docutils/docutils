@@ -358,20 +358,21 @@ class CSVTable(Table):
             raise SystemMessagePropagation(error)
         return csv_data, source
 
+    @staticmethod
     def decode_from_csv(s):
         warnings.warn('CSVTable.decode_from_csv()'
                   ' is not required with Python 3'
                   ' and will be removed in Docutils 0.21 or later.',
                   DeprecationWarning, stacklevel=2)
         return s
+
+    @staticmethod
     def encode_for_csv(s):
         warnings.warn('CSVTable.encode_from_csv()'
                   ' is not required with Python 3'
                   ' and will be removed in Docutils 0.21 or later.',
                   DeprecationWarning, stacklevel=2)
         return s
-    decode_from_csv = staticmethod(decode_from_csv)
-    encode_for_csv = staticmethod(encode_for_csv)
 
     def parse_csv_data_into_rows(self, csv_data, dialect, source):
         csv_reader = csv.reader([line + '\n' for line in csv_data],
