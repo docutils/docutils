@@ -8,7 +8,6 @@
 Test module for the --record-dependencies option.
 """
 
-import csv
 import os.path
 import unittest
 import DocutilsTestSupport              # must be imported before docutils

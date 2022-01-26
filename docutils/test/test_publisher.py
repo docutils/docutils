@@ -9,7 +9,6 @@ Test the `Publisher` facade and the ``publish_*`` convenience functions.
 """
 
 import pickle
-import sys
 
 import DocutilsTestSupport              # must be imported before docutils
 import docutils

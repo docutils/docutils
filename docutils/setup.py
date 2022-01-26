@@ -2,8 +2,6 @@
 # $Id$
 # Copyright: This file has been placed in the public domain.
 
-import glob
-import os
 import sys
 
 try:

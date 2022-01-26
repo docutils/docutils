@@ -21,7 +21,6 @@ try:
 except:
     pass
 
-import copy
 from fnmatch import fnmatch
 import os
 import os.path

@@ -14,7 +14,7 @@
 # ``docutils/tools/dev/generate_punctuation_chars.py``.
 # ::
 
-import sys, re
+import sys
 import unicodedata
 
 """Docutils character category patterns.

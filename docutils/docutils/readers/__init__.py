@@ -8,7 +8,6 @@ This package contains Docutils Reader modules.
 
 __docformat__ = 'reStructuredText'
 
-import sys
 from importlib import import_module
 
 from docutils import utils, parsers, Component

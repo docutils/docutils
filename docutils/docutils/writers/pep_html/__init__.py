@@ -9,7 +9,6 @@ PEP HTML Writer.
 __docformat__ = 'reStructuredText'
 
 
-import sys
 import os
 import os.path
 import docutils

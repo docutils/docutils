@@ -11,7 +11,6 @@ https://docutils.sourceforge.io/docs/ref/docutils.dtd.
 __docformat__ = 'reStructuredText'
 
 from io import StringIO
-import sys
 import xml.sax.saxutils
 
 import docutils

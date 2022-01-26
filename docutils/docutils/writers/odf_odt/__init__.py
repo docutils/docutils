@@ -21,7 +21,6 @@ import os
 import os.path
 import re
 import subprocess
-import sys
 import tempfile
 import time
 from urllib.request import urlopen
@@ -1759,7 +1758,6 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def visit_caption(self, node):
         raise nodes.SkipChildren()
-        pass
 
     def depart_caption(self, node):
         pass

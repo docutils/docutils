@@ -16,7 +16,6 @@ __docformat__ = 'reStructuredText'
 
 import os.path
 import re
-import sys
 import docutils
 from docutils import frontend, nodes, writers, io
 from docutils.transforms import writer_aux

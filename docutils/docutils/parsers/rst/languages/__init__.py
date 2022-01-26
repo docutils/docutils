@@ -12,7 +12,6 @@ reStructuredText.
 
 __docformat__ = 'reStructuredText'
 
-import sys
 
 from docutils.languages import LanguageImporter
 

@@ -70,7 +70,6 @@ __version_details__ = 'release'
 
 
 from collections import namedtuple
-import sys
 
 
 class VersionInfo(namedtuple('VersionInfo',

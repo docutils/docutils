@@ -13,7 +13,6 @@ Transforms for PEP processing.
 
 __docformat__ = 'reStructuredText'
 
-import sys
 import os
 import re
 import time

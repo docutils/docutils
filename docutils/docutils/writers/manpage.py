@@ -44,7 +44,6 @@ by the command whatis or apropos.
 __docformat__ = 'reStructuredText'
 
 import re
-import sys
 
 import docutils
 from docutils import nodes, writers, languages

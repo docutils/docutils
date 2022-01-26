@@ -8,7 +8,6 @@
 A front end to the Docutils Publisher, producing OpenOffice documents.
 """
 
-import sys
 try:
     import locale
     locale.setlocale(locale.LC_ALL, '')

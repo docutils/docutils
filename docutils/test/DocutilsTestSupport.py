@@ -46,7 +46,6 @@ import unittest
 import re
 import inspect
 import traceback
-import warnings
 from pprint import pformat
 
 testroot = os.path.abspath(os.path.dirname(__file__) or os.curdir)

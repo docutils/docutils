@@ -23,7 +23,6 @@ hierarchy.
 __docformat__ = 'reStructuredText'
 
 from collections import Counter
-import os
 import re
 import sys
 import warnings
@@ -1880,7 +1879,6 @@ class raw(Special, Inline, PreBibliographic, FixedTextElement):
     Raw data that is to be passed untouched to the Writer.
     """
 
-    pass
 
 
 # =================
@@ -2133,7 +2131,6 @@ class TreePruningException(Exception):
     the tree traversed.
     """
 
-    pass
 
 
 class SkipChildren(TreePruningException):
@@ -2143,7 +2140,6 @@ class SkipChildren(TreePruningException):
     siblings and ``depart_...`` method are not affected.
     """
 
-    pass
 
 
 class SkipSiblings(TreePruningException):
@@ -2153,7 +2149,6 @@ class SkipSiblings(TreePruningException):
     current node's children and its ``depart_...`` method are not affected.
     """
 
-    pass
 
 
 class SkipNode(TreePruningException):
@@ -2163,7 +2158,6 @@ class SkipNode(TreePruningException):
     node's ``depart_...`` method.
     """
 
-    pass
 
 
 class SkipDeparture(TreePruningException):
@@ -2173,7 +2167,6 @@ class SkipDeparture(TreePruningException):
     children and siblings are not affected.
     """
 
-    pass
 
 
 class NodeFound(TreePruningException):
@@ -2184,7 +2177,6 @@ class NodeFound(TreePruningException):
     code.
     """
 
-    pass
 
 
 class StopTraversal(TreePruningException):
@@ -2197,7 +2189,6 @@ class StopTraversal(TreePruningException):
     caller.
     """
 
-    pass
 
 
 def make_id(string):

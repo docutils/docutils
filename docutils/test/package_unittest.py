@@ -15,7 +15,6 @@ import os
 import getopt
 import types
 import unittest
-import re
 
 
 # So that individual test modules can share a bit of state,
