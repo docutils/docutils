@@ -2267,7 +2267,7 @@ class Body(RSTState):
         except KeyError as detail:
             return 0, 'unknown option: "%s"' % detail.args[0]
         except (ValueError, TypeError) as detail:
-            return 0, ('invalid option value: %s' % ' '.join(detail.args))
+            return 0, 'invalid option value: %s' % ' '.join(detail.args)
         except utils.ExtensionOptionError as detail:
             return 0, 'invalid option data: %s' % ' '.join(detail.args)
         if blank_finish:
