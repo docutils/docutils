@@ -1980,7 +1980,7 @@ class Body(RSTState):
             - 'malformed' and a system_message node
         """
         if block and block[-1].strip()[-1:] == '_': # possible indirect target
-            reference = ' '.join([line.strip() for line in block])
+            reference = ' '.join(line.strip() for line in block)
             refname = self.is_reference(reference)
             if refname:
                 return 'refname', refname

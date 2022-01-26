@@ -2873,9 +2873,9 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             formatlist = formats.split()
             if 'odt' in formatlist:
                 rawstr = node.astext()
-                attrstr = ' '.join([
+                attrstr = ' '.join(
                     '%s="%s"' % (k, v, )
-                    for k, v in list(CONTENT_NAMESPACE_ATTRIB.items())])
+                    for k, v in list(CONTENT_NAMESPACE_ATTRIB.items()))
                 contentstr = '<stuff %s>%s</stuff>' % (attrstr, rawstr, )
                 contentstr = contentstr.encode("utf-8")
                 content = etree.fromstring(contentstr)

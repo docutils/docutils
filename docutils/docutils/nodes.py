@@ -553,7 +553,7 @@ class Element(Node):
         element = domroot.createElement(self.tagname)
         for attribute, value in self.attlist():
             if isinstance(value, list):
-                value = ' '.join([serial_escape('%s' % (v,)) for v in value])
+                value = ' '.join(serial_escape('%s' % (v,)) for v in value)
             element.setAttribute(attribute, '%s' % value)
         for child in self.children:
             element.appendChild(child._dom_node(domroot))
@@ -581,9 +581,9 @@ class Element(Node):
 
     def __str__(self):
         if self.children:
-            return u'%s%s%s' % (self.starttag(),
-                                ''.join([str(c) for c in self.children]),
-                                self.endtag())
+            return '%s%s%s' % (self.starttag(),
+                               ''.join(str(c) for c in self.children),
+                               self.endtag())
         else:
             return self.emptytag()
 
@@ -1867,8 +1867,8 @@ class pending(Special, Invisible, Element):
             else:
                 internals.append('%7s%s: %r' % ('', key, value))
         return (Element.pformat(self, indent, level)
-                + ''.join([('    %s%s\n' % (indent * level, line))
-                           for line in internals]))
+                + ''.join(('    %s%s\n' % (indent * level, line))
+                          for line in internals))
 
     def copy(self):
         obj = self.__class__(self.transform, self.details, self.rawsource,

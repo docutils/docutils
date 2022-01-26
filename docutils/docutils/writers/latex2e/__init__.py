@@ -428,7 +428,7 @@ class Babel(object):
         self.setup = [r'\usepackage[%s]{babel}' % ','.join(languages)]
         # Deactivate "active characters"
         shorthands = []
-        for c in ''.join([self.active_chars.get(l, '') for l in languages]):
+        for c in ''.join(self.active_chars.get(l, '') for l in languages):
             if c not in shorthands:
                 shorthands.append(c)
         if shorthands:
@@ -995,9 +995,8 @@ class Table(object):
     def get_multicolumn_width(self, start, len_):
         """Return sum of columnwidths for multicell."""
         try:
-            multicol_width = sum([width
-                                  for width in ([self._colwidths[start + co]
-                                                 for co in range(len_)])])
+            multicol_width = sum(self._colwidths[start + co]
+                                 for co in range(len_))
             if self.legacy_column_widths:
                 return 'p{%.2f\\DUtablewidth}' % multicol_width
             return 'p{\\DUcolumnwidth{%.3f}}' % multicol_width
@@ -1038,7 +1037,7 @@ class Table(object):
                 n_c = len(self._col_specs)
                 a.append('\\endhead\n')
                 # footer on all but last page (if it fits):
-                twidth = sum([node['colwidth']+2 for node in self._col_specs])
+                twidth = sum(node['colwidth']+2 for node in self._col_specs)
                 if twidth > 30 or (twidth > 12 and not self.colwidths_auto):
                     a.append(r'\multicolumn{%d}{%s}'
                              % (n_c, self.get_multicolumn_width(0, n_c))
@@ -1566,8 +1565,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
         """Append hypertargets for all ids of `node`"""
         # hypertarget places the anchor at the target's baseline,
         # so we raise it explicitly
-        self.out.append('%\n'.join(['\\raisebox{1em}{\\hypertarget{%s}{}}' %
-                                    id for id in node['ids']]))
+        self.out.append('%\n'.join('\\raisebox{1em}{\\hypertarget{%s}{}}' %
+                                   id for id in node['ids']))
 
     def ids_to_labels(self, node, set_anchor=True, protect=False,
                       newline=False):
@@ -2157,9 +2156,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if self.compound_enumerators:
             if (self.section_prefix_for_enumerators and self.section_level
                 and not self._enumeration_counters):
-                prefix = '.'.join([str(n) for n in
-                                   self._section_number[:self.section_level]]
-                                 ) + self.section_enumerator_separator
+                prefix = '.'.join(str(n) for n in
+                                  self._section_number[:self.section_level]
+                                  ) + self.section_enumerator_separator
             if self._enumeration_counters:
                 prefix += self._enumeration_counters[-1]
         prefix += node.get('prefix', '')

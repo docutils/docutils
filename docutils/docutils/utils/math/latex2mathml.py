@@ -412,10 +412,10 @@ class math(object):
                 + ['</%s>' % self.__class__.__name__])
 
     def xml_starttag(self):
-        attrs = ['%s="%s"' % (k, str(v).replace('True', 'true').replace('False', 'false'))
+        attrs = ('%s="%s"' % (k, str(v).replace('True', 'true').replace('False', 'false'))
                  for k, v in self.attributes.items()
-                 if v is not None]
-        return '<%s>' % ' '.join([self.__class__.__name__] + attrs)
+                 if v is not None)
+        return '<%s>' % ' '.join((self.__class__.__name__, *attrs))
 
     def _xml_body(self, level=0):
         xml = []

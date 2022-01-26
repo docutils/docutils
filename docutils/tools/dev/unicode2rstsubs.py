@@ -170,7 +170,7 @@ class CharacterEntitySetExtractor(object):
         print('writing file "%s"' % outname)
         outfile.write(self.header + '\n')
         set = self.sets[set_name]
-        entities = sorted([(e.lower(), e) for e in set.keys()])
+        entities = sorted((e.lower(), e) for e in set.keys())
         longest = 0
         for _, entity_name in entities:
             longest = max(longest, len(entity_name))
@@ -188,7 +188,7 @@ class CharacterEntitySetExtractor(object):
             for code in charid[1:].split('-'):
                 if int(code, 16) > 0xFFFF:
                     return 1            # wide-Unicode character
-        codes = ' '.join(['U+%s' % code for code in charid[1:].split('-')])
+        codes = ' '.join('U+%s' % code for code in charid[1:].split('-'))
         outfile.write('.. %-*s unicode:: %s .. %s\n'
                       % (longest + 2, '|' + entity_name + '|',
                          codes, self.descriptions[charid]))
