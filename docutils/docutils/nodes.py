@@ -206,8 +206,7 @@ class Node(object):
         if isinstance(self, cls):
             yield self
         for child in self.children:
-            for subnode in child._fast_findall(cls):
-                yield subnode
+            yield from child._fast_findall(cls)
 
     def _superfast_findall(self):
         """Return iterator that doesn't check for a condition."""
@@ -216,8 +215,7 @@ class Node(object):
         # which yields only the direct children.
         yield self
         for child in self.children:
-            for subnode in child._superfast_findall():
-                yield subnode
+            yield from child._superfast_findall()
 
     def traverse(self, condition=None, include_self=True, descend=True,
                  siblings=False, ascend=False):
@@ -277,12 +275,10 @@ class Node(object):
         # optimized version of traverse()
         if include_self and descend and not siblings:
             if condition is None:
-                for subnode in self._superfast_findall():
-                    yield subnode
+                yield from self._superfast_findall()
                 return
             elif isinstance(condition, type):
-                for subnode in self._fast_findall(condition):
-                    yield subnode
+                yield from self._fast_findall(condition)
                 return
         # Check if `condition` is a class (check for TypeType for Python
         # implementations that use only new-style classes, like PyPy).
@@ -296,19 +292,18 @@ class Node(object):
             yield self
         if descend and len(self.children):
             for child in self:
-                for subnode in child.findall(condition=condition,
-                                    include_self=True, descend=True,
-                                    siblings=False, ascend=False):
-                    yield subnode
+                yield from child.findall(condition=condition,
+                                         include_self=True, descend=True,
+                                         siblings=False, ascend=False)
         if siblings or ascend:
             node = self
             while node.parent:
                 index = node.parent.index(node)
                 for sibling in node.parent[index+1:]:
-                    for subnode in sibling.findall(condition=condition,
-                                        include_self=True, descend=descend,
-                                        siblings=False, ascend=False):
-                        yield subnode
+                    yield from sibling.findall(
+                        condition=condition,
+                        include_self=True, descend=descend,
+                        siblings=False, ascend=False)
                 if not ascend:
                     break
                 else:
