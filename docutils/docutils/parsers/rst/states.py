@@ -454,7 +454,7 @@ def build_regexp(definition, compile=True):
     or_group = '|'.join(part_strings)
     regexp = '%(prefix)s(?P<%(name)s>%(or_group)s)%(suffix)s' % locals()
     if compile:
-        return re.compile(regexp, re.UNICODE)
+        return re.compile(regexp)
     else:
         return regexp
 
@@ -519,9 +519,9 @@ class Inliner(object):
         self.patterns = Struct(
           initial=build_regexp(parts),
           emphasis=re.compile(self.non_whitespace_escape_before
-                              + r'(\*)' + end_string_suffix, re.UNICODE),
+                              + r'(\*)' + end_string_suffix),
           strong=re.compile(self.non_whitespace_escape_before
-                            + r'(\*\*)' + end_string_suffix, re.UNICODE),
+                            + r'(\*\*)' + end_string_suffix),
           interpreted_or_phrase_ref=re.compile(
               r"""
               %(non_unescaped_whitespace_escape_before)s
@@ -533,7 +533,7 @@ class Inliner(object):
                 )
               )
               %(end_string_suffix)s
-              """ % args, re.VERBOSE | re.UNICODE),
+              """ % args, re.VERBOSE),
           embedded_link=re.compile(
               r"""
               (
@@ -545,16 +545,16 @@ class Inliner(object):
                 >                       # close bracket
               )
               $                         # end of string
-              """ % args, re.VERBOSE | re.UNICODE),
+              """ % args, re.VERBOSE),
           literal=re.compile(self.non_whitespace_before + '(``)'
-                             + end_string_suffix, re.UNICODE),
+                             + end_string_suffix),
           target=re.compile(self.non_whitespace_escape_before
-                            + r'(`)' + end_string_suffix, re.UNICODE),
+                            + r'(`)' + end_string_suffix),
           substitution_ref=re.compile(self.non_whitespace_escape_before
                                       + r'(\|_{0,2})'
-                                      + end_string_suffix, re.UNICODE),
+                                      + end_string_suffix),
           email=re.compile(self.email_pattern % args + '$',
-                           re.VERBOSE | re.UNICODE),
+                           re.VERBOSE),
           uri=re.compile(
                 (r"""
                 %(start_string_prefix)s
@@ -586,7 +586,7 @@ class Inliner(object):
                   )
                 )
                 %(end_string_suffix)s
-                """) % args, re.VERBOSE | re.UNICODE),
+                """) % args, re.VERBOSE),
           pep=re.compile(
                 r"""
                 %(start_string_prefix)s
@@ -595,12 +595,12 @@ class Inliner(object):
                 |
                   (PEP\s+(?P<pepnum2>\d+))      # reference by name
                 )
-                %(end_string_suffix)s""" % args, re.VERBOSE | re.UNICODE),
+                %(end_string_suffix)s""" % args, re.VERBOSE),
           rfc=re.compile(
                 r"""
                 %(start_string_prefix)s
                 (RFC(-|\s+)?(?P<rfcnum>\d+))
-                %(end_string_suffix)s""" % args, re.VERBOSE | re.UNICODE))
+                %(end_string_suffix)s""" % args, re.VERBOSE))
 
         self.implicit_dispatch.append((self.patterns.uri,
                                        self.standalone_uri))
@@ -1102,7 +1102,7 @@ class Body(RSTState):
     enum.sequenceregexps = {}
     for sequence in enum.sequences:
         enum.sequenceregexps[sequence] = re.compile(
-              enum.sequencepats[sequence] + '$', re.UNICODE)
+              enum.sequencepats[sequence] + '$')
 
     grid_table_top_pat = re.compile(r'\+-[-+]+-\+ *$')
     """Matches the top (& bottom) of a full table)."""
@@ -1196,8 +1196,7 @@ class Body(RSTState):
         return elements
 
     # U+2014 is an em-dash:
-    attribution_pattern = re.compile(u'(---?(?!-)|\u2014) *(?=[^ \\n])',
-                                     re.UNICODE)
+    attribution_pattern = re.compile('(---?(?!-)|\u2014) *(?=[^ \\n])')
 
     def split_attribution(self, indented, line_offset):
         """
@@ -1856,7 +1855,7 @@ class Body(RSTState):
                             [ ]?            # optional space
                             :               # end of reference name
                             ([ ]+|$)        # followed by whitespace
-                            """ % vars(Inliner), re.VERBOSE | re.UNICODE),
+                            """ % vars(Inliner), re.VERBOSE),
           reference=re.compile(r"""
                                (
                                  (?P<simple>%(simplename)s)_
@@ -1869,7 +1868,7 @@ class Body(RSTState):
                                                     # reference mark
                                )
                                $                  # end of string
-                               """ % vars(Inliner), re.VERBOSE | re.UNICODE),
+                               """ % vars(Inliner), re.VERBOSE),
           substitution=re.compile(r"""
                                   (
                                     (?![ ])          # first char. not space
@@ -1879,7 +1878,7 @@ class Body(RSTState):
                                   )
                                   ([ ]+|$)           # followed by whitespace
                                   """ % vars(Inliner),
-                                  re.VERBOSE | re.UNICODE),)
+                                  re.VERBOSE),)
 
     def footnote(self, match):
         src, srcline = self.state_machine.get_source_and_line()
@@ -2319,25 +2318,25 @@ class Body(RSTState):
                       )
                       \]
                       ([ ]+|$)          # whitespace or end of line
-                      """ % Inliner.simplename, re.VERBOSE | re.UNICODE)),
+                      """ % Inliner.simplename, re.VERBOSE)),
           (citation,
            re.compile(r"""
                       \.\.[ ]+          # explicit markup start
                       \[(%s)\]          # citation label
                       ([ ]+|$)          # whitespace or end of line
-                      """ % Inliner.simplename, re.VERBOSE | re.UNICODE)),
+                      """ % Inliner.simplename, re.VERBOSE)),
           (hyperlink_target,
            re.compile(r"""
                       \.\.[ ]+          # explicit markup start
                       _                 # target indicator
                       (?![ ]|$)         # first char. not space or EOL
-                      """, re.VERBOSE | re.UNICODE)),
+                      """, re.VERBOSE)),
           (substitution_def,
            re.compile(r"""
                       \.\.[ ]+          # explicit markup start
                       \|                # substitution indicator
                       (?![ ]|$)         # first char. not space or EOL
-                      """, re.VERBOSE | re.UNICODE)),
+                      """, re.VERBOSE)),
           (directive,
            re.compile(r"""
                       \.\.[ ]+          # explicit markup start
@@ -2345,7 +2344,7 @@ class Body(RSTState):
                       [ ]?              # optional space
                       ::                # directive delimiter
                       ([ ]+|$)          # whitespace or end of line
-                      """ % Inliner.simplename, re.VERBOSE | re.UNICODE))]
+                      """ % Inliner.simplename, re.VERBOSE))]
 
     def explicit_markup(self, match, context, next_state):
         """Footnotes, hyperlink targets, directives, comments."""
@@ -2677,7 +2676,7 @@ class SubstitutionDef(Body):
 
     patterns = {
           'embedded_directive': re.compile(r'(%s)::( +|$)'
-                                           % Inliner.simplename, re.UNICODE),
+                                           % Inliner.simplename),
           'text': r''}
     initial_transitions = ['embedded_directive', 'text']
 
@@ -3102,7 +3101,7 @@ class QuotedLiteralBlock(RSTState):
         """Match arbitrary quote character on the first line only."""
         self.remove_transition('initial_quoted')
         quote = match.string[0]
-        pattern = re.compile(re.escape(quote), re.UNICODE)
+        pattern = re.compile(re.escape(quote))
         # New transition matches consistent quotes only:
         self.add_transition('quoted',
                             (pattern, self.quoted, self.__class__.__name__))
