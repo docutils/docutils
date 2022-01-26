@@ -52,9 +52,17 @@ Drop support for `old-format configuration files`_ in Docutils 1.2.
   - Remove ``use_verbatim_when_possible`` setting
     (use literal_block_env_: verbatim) in Docutils 1.2.
 
+* `xetex` writer:
+
+  - Settings in the "latex2e writer" `configuration file section`__ will
+    be ignored in Docutils 0.20. Move settings intended for both, `xetex`
+    and `latex2e` writers to section "latex writers".
+
+    __ docs/user/config.html#configuration-file-sections-entries
+
 * Remove the "rawsource" argument from nodes.Text.__init__()
   (deprecated and ignored since Docutils 0.18) in Docutils 1.3.
-  
+
 * Remove the compatibility hacks `nodes.reprunicode` and `nodes.ensure_str()`
   in Docutils 0.21 or later. They are not required with Python 3.x.
 
@@ -83,6 +91,7 @@ Drop support for `old-format configuration files`_ in Docutils 1.2.
 .. _literal_block_env: docs/user/config.html#literal-block-env
 .. _use_latex_citations: docs/user/config.html#use-latex-citations
 
+
 Release 0.19b (unpublished)
 ===========================
 
@@ -93,9 +102,9 @@ Docutils 0.19 is compatible with Python versions 3.7 and later.
 
 * The default values for the "pep-references", "rfc-base-url",
   and "python-home" `configuration settings`_ now uses the "https:" scheme.
-  
+
 .. _configuration settings: docs/user/config.html
-  
+
 
 Release 0.18.1 (2021-12-23)
 ===========================
