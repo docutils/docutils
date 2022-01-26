@@ -38,10 +38,8 @@ import unicodedata
 
 # Template for utils.punctuation_chars
 # ------------------------------------
-#
-# Problem: ``ur`` prefix fails with Py 3.5 ::
 
-module_template = u'''#!/usr/bin/env python3
+module_template = r'''#!/usr/bin/env python3
 # :Id: $Id$
 # :Copyright: © 2011, 2017 Günter Milde.
 # :License: Released under the terms of the `2-Clause BSD license`_, in short:
@@ -90,21 +88,21 @@ import unicodedata
 %(delimiters)s
 if sys.maxunicode >= 0x10FFFF: # "wide" build
 %(delimiters_wide)s
-closing_delimiters = u'\\\\\\\\.,;!?'
+closing_delimiters = '\\\\.,;!?'
 
 
 # Matching open/close quotes
 # --------------------------
 
 quote_pairs = {# open char: matching closing characters # usage example
-               u'\\xbb':   u'\\xbb',         # » » Swedish
-               u'\\u2018': u'\\u201a',       # ‘ ‚ Albanian/Greek/Turkish
-               u'\\u2019': u'\\u2019',       # ’ ’ Swedish
-               u'\\u201a': u'\\u2018\\u2019', # ‚ ‘ German ‚ ’ Polish
-               u'\\u201c': u'\\u201e',       # “ „ Albanian/Greek/Turkish
-               u'\\u201e': u'\\u201c\\u201d', # „ “ German „ ” Polish
-               u'\\u201d': u'\\u201d',       # ” ” Swedish
-               u'\\u203a': u'\\u203a',       # › › Swedish
+               '\xbb':   '\xbb',         # » » Swedish
+               '\u2018': '\u201a',       # ‘ ‚ Albanian/Greek/Turkish
+               '\u2019': '\u2019',       # ’ ’ Swedish
+               '\u201a': '\u2018\u2019', # ‚ ‘ German ‚ ’ Polish
+               '\u201c': '\u201e',       # “ „ Albanian/Greek/Turkish
+               '\u201e': '\u201c\u201d', # „ “ German „ ” Polish
+               '\u201d': '\u201d',       # ” ” Swedish
+               '\u203a': '\u203a',       # › › Swedish
               }
 """Additional open/close quote pairs."""
 
@@ -121,7 +119,7 @@ def match_chars(c1, c2):
         i = openers.index(c1)
     except ValueError:  # c1 not in openers
         return False
-    return c2 == closers[i] or c2 in quote_pairs.get(c1, u'')\
+    return c2 == closers[i] or c2 in quote_pairs.get(c1, '')
 '''
 
 
@@ -202,21 +200,21 @@ def character_category_patterns():
 
     # low quotation marks are also used as closers (e.g. in Greek)
     # move them to category Pi:
-    ucharlists['Ps'].remove(u'‚') # 201A  SINGLE LOW-9 QUOTATION MARK
-    ucharlists['Ps'].remove(u'„') # 201E  DOUBLE LOW-9 QUOTATION MARK
-    ucharlists['Pi'] += [u'‚', u'„']
+    ucharlists['Ps'].remove('‚') # 201A  SINGLE LOW-9 QUOTATION MARK
+    ucharlists['Ps'].remove('„') # 201E  DOUBLE LOW-9 QUOTATION MARK
+    ucharlists['Pi'] += ['‚', '„']
 
-    ucharlists['Pi'].remove(u'‛') # 201B  SINGLE HIGH-REVERSED-9 QUOTATION MARK
-    ucharlists['Pi'].remove(u'‟') # 201F  DOUBLE HIGH-REVERSED-9 QUOTATION MARK
-    ucharlists['Pf'] += [u'‛', u'‟']
+    ucharlists['Pi'].remove('‛') # 201B  SINGLE HIGH-REVERSED-9 QUOTATION MARK
+    ucharlists['Pi'].remove('‟') # 201F  DOUBLE HIGH-REVERSED-9 QUOTATION MARK
+    ucharlists['Pf'] += ['‛', '‟']
 
     # 301F  LOW DOUBLE PRIME QUOTATION MARK misses the opening pendant:
-    ucharlists['Ps'].insert(ucharlists['Pe'].index(u'\u301f'), u'\u301d')
+    ucharlists['Ps'].insert(ucharlists['Pe'].index('\u301f'), '\u301d')
 
-    # print(u''.join(ucharlists['Ps']).encode('utf8')
-    # print(u''.join(ucharlists['Pe']).encode('utf8')
-    # print(u''.join(ucharlists['Pi']).encode('utf8')
-    # print(u''.join(ucharlists['Pf']).encode('utf8')
+    # print(''.join(ucharlists['Ps']).encode('utf8')
+    # print(''.join(ucharlists['Pe']).encode('utf8')
+    # print(''.join(ucharlists['Pi']).encode('utf8')
+    # print(''.join(ucharlists['Pf']).encode('utf8')
 
     # The Docutils character categories
     # ---------------------------------
@@ -226,24 +224,24 @@ def character_category_patterns():
     # recognition rules`_)
 
     # allowed before markup if there is a matching closer
-    openers = [u'"\'(<\\[{']
+    openers = ['"\'(<\\[{']
     for category in ('Ps', 'Pi', 'Pf'):
         openers.extend(ucharlists[category])
 
     # allowed after markup if there is a matching opener
-    closers = [u'"\')>\\]}']
+    closers = ['"\')>\\]}']
     for category in ('Pe', 'Pf', 'Pi'):
         closers.extend(ucharlists[category])
 
     # non-matching, allowed on both sides
-    delimiters = [u'\\-/:']
+    delimiters = [r'\-/:']
     for category in ('Pd', 'Po'):
         delimiters.extend(ucharlists[category])
 
     # non-matching, after markup
     closing_delimiters = [r'\\.,;!?']
 
-    return [u''.join(chars) for chars in (openers, closers, delimiters,
+    return [''.join(chars) for chars in (openers, closers, delimiters,
                                             closing_delimiters)]
 
 def separate_wide_chars(s):
@@ -259,7 +257,7 @@ def mark_intervals(s):
     Sort string and replace 'cdef' by 'c-f' and similar.
     """
     l =[]
-    s = sorted([ord(ch) for ch in s])
+    s = sorted(ord(ch) for ch in s)
     for n in s:
         try:
             if l[-1][-1]+1 == n:
@@ -273,16 +271,16 @@ def mark_intervals(s):
     for i in l:
         i = [chr(n) for n in i]
         if len(i) > 2:
-            i = i[0], u'-', i[-1]
+            i = i[0], '-', i[-1]
         l2.extend(i)
 
     return ''.join(l2)
 
-def wrap_string(s, startstring= "(u'",
+def wrap_string(s, startstring= "('",
                     endstring = "')", wrap=67):
     """Line-wrap a unicode string literal definition."""
     c = len(startstring)
-    contstring = "'\n" + ' ' * (len(startstring)-2) + "u'"
+    contstring = "'\n" + ' ' * (len(startstring)-2) + "'"
     l = [startstring]
     for ch in s.replace("'", r"\'"):
         c += 1
@@ -300,7 +298,7 @@ def print_differences(old, new, name):
         print('new %s:' % name)
         for c in new:
             if c not in old:
-                print('  %04x'%ord(c), unicodedata.name(c))
+                print('  %04x'%ord(c), c, unicodedata.name(c))
         print('removed %s:' % name)
         for c in old:
             if c not in new:
@@ -381,17 +379,17 @@ if __name__ == '__main__':
 # Replacements::
 
     substitutions = {
-        'python_version': '.'.join(str(s) for s in sys.version_info[:3]),
+        'python_version': sys.version.split()[0],
         'unidata_version': unicodedata.unidata_version,
         'openers': wrap_string(o.encode('unicode-escape').decode(),
-                               startstring="openers = (u'"),
+                               startstring="openers = ('"),
         'closers': wrap_string(c.encode('unicode-escape').decode(),
-                               startstring="closers = (u'"),
+                               startstring="closers = ('"),
         'delimiters': wrap_string(d.encode('unicode-escape').decode(),
-                                  startstring="delimiters = (u'"),
+                                  startstring="delimiters = ('"),
         'delimiters_wide': wrap_string(
                             d_wide.encode('unicode-escape').decode(),
-                            startstring="    delimiters += (u'")
+                            startstring="    delimiters += ('")
         }
 
-    print(module_template % substitutions)
+    print(module_template % substitutions, end='')
