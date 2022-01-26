@@ -1932,8 +1932,7 @@ class FormulaProcessor(object):
       if hasattr(element, 'type') and element.type:
         yield (element, bit.contents)
       elif isinstance(element, FormulaBit):
-        for pair in self.traverse(element):
-          yield pair
+        yield from self.traverse(element)
 
   def italicize(self, bit, contents):
     "Italicize the given bit of text."
