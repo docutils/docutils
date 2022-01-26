@@ -37,10 +37,10 @@ class Writer(writers.Writer):
 
     default_template = 'default.tex'
     default_template_path = os.path.dirname(os.path.abspath(__file__))
-    default_preamble = '\n'.join([r'% PDF Standard Fonts',
-                                  r'\usepackage{mathptmx} % Times',
-                                  r'\usepackage[scaled=.90]{helvet}',
-                                  r'\usepackage{courier}'])
+    default_preamble = ('% PDF Standard Fonts\n'
+                        '\\usepackage{mathptmx} % Times\n'
+                        '\\usepackage[scaled=.90]{helvet}\n'
+                        '\\usepackage{courier}')
     table_style_values = [# TODO: align-left, align-center, align-right, ??
                           'booktabs', 'borderless', 'colwidths-auto',
                           'nolines', 'standard']
@@ -571,6 +571,11 @@ PreambleCmds.toc_list = r"""
                    }%
     {\end{list}}%
 }"""
+
+PreambleCmds.ttem = r"""
+% character width in monospaced font
+\newlength{\ttemwidth}
+\settowidth{\ttemwidth}{\ttfamily M}"""
 
 ## PreambleCmds.caption = r"""% configure caption layout
 ## \usepackage{caption}
@@ -2561,10 +2566,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if _in_table and _use_env and not _autowidth_table:
             # Wrap in minipage to prevent extra vertical space
             # with alltt and verbatim-like environments:
-            self.fallbacks['ttem'] = '\n'.join(['',
-                r'% character width in monospaced font',
-                r'\newlength{\ttemwidth}',
-                r'\settowidth{\ttemwidth}{\ttfamily M}'])
+            self.fallbacks['ttem'] = PreambleCmds.ttem
             self.out.append('\\begin{minipage}{%d\\ttemwidth}\n' %
                 (max(len(line) for line in node.astext().split('\n'))))
             self.context.append('\n\\end{minipage}\n')
