@@ -130,8 +130,8 @@ class Writer(writers.Writer):
 
     settings_defaults = {'output_encoding_error_handler': 'xmlcharrefreplace'}
 
-    config_section = 'html writers'
-    config_section_dependencies = ('writers', )
+    config_section = 'html base writer' # overwrite in subclass
+    config_section_dependencies = ('writers', 'html writers')
 
     visitor_attributes = (
         'head_prefix', 'head', 'stylesheet', 'body_prefix',
