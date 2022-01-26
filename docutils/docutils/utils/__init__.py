@@ -494,7 +494,7 @@ def get_stylesheet_reference(settings, relative_to=None):
     if settings.stylesheet_path:
         assert not settings.stylesheet, (
             'stylesheet and stylesheet_path are mutually exclusive.')
-        if relative_to == None:
+        if relative_to is None:
             relative_to = settings._destination
         return relative_path(relative_to, settings.stylesheet_path)
     else:

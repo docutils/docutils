@@ -899,7 +899,7 @@ class ContentsOutput(ContainerOutput):
   def gethtml(self, container):
     "Return the HTML code"
     html = []
-    if container.contents == None:
+    if container.contents is None:
       return html
     for element in container.contents:
       if not hasattr(element, 'gethtml'):
