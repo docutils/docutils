@@ -155,7 +155,7 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
         # <figcaption> is closed in depart_figure(), as legend may follow.
 
     # use HTML block-level tags if matching class value found
-    supported_block_tags = set(('ins', 'del'))
+    supported_block_tags = {'ins', 'del'}
     def visit_container(self, node):
         # If there is exactly one of the "supported block tags" in
         # the list of class values, use it as tag name:
@@ -301,9 +301,9 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
         pass
 
     # use HTML text-level tags if matching class value found
-    supported_inline_tags = set(('code', 'kbd', 'dfn', 'samp', 'var',
-                                 'bdi', 'del', 'ins', 'mark', 'small',
-                                 'b', 'i', 'q', 's', 'u'))
+    supported_inline_tags = {'code', 'kbd', 'dfn', 'samp', 'var',
+                             'bdi', 'del', 'ins', 'mark', 'small',
+                             'b', 'i', 'q', 's', 'u'}
     def visit_inline(self, node):
         # Use `supported_inline_tags` if found in class values
         classes = node['classes']

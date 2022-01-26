@@ -96,7 +96,7 @@ class Babel(latex2e.Babel):
         # zh-Latn:      ???        #     Chinese Pinyin
         })
     # normalize (downcase) keys
-    language_codes = dict([(k.lower(), v) for (k, v) in language_codes.items()])
+    language_codes = {k.lower(): v for k, v in language_codes.items()}
 
     # Languages without Polyglossia support:
     for key in ('af',           # 'afrikaans',
