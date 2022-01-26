@@ -30,7 +30,7 @@ from docutils import languages, ApplicationError, TransformSpec
 class TransformError(ApplicationError): pass
 
 
-class Transform(object):
+class Transform:
 
     """
     Docutils transform component abstract base class.

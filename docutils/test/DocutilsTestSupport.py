@@ -86,7 +86,7 @@ except:
 StringList.__repr__ = StringList.__str__
 
 
-class DevNull(object):
+class DevNull:
 
     """Output sink."""
 

@@ -54,7 +54,7 @@ def process(infile):
     grouper.write_sets()
 
 
-class CharacterEntitySetExtractor(object):
+class CharacterEntitySetExtractor:
 
     """
     Extracts character entity information from unicode.xml file, groups it by

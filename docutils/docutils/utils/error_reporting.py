@@ -85,7 +85,7 @@ if sys.version_info >= (3, 0):
     unicode = str  # noqa
 
 
-class SafeString(object):
+class SafeString:
     """
     A wrapper providing robust conversion to `str` and `unicode`.
     """
@@ -162,7 +162,7 @@ class ErrorString(SafeString):
                             super(ErrorString, self).__unicode__())
 
 
-class ErrorOutput(object):
+class ErrorOutput:
     """
     Wrapper class for file-like error streams with
     failsafe de- and encoding of `str`, `bytes`, `unicode` and

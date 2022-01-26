@@ -131,7 +131,7 @@ class ApplicationError(Exception): pass
 class DataError(ApplicationError): pass
 
 
-class SettingsSpec(object):
+class SettingsSpec:
 
     """
     Runtime setting specification base class.

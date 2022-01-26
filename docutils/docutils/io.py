@@ -223,7 +223,7 @@ class Output(TransformSpec):
             return data.encode(self.encoding, self.error_handler)
 
 
-class ErrorOutput(object):
+class ErrorOutput:
     """
     Wrapper class for file-like error streams with
     failsafe de- and encoding of `str`, `bytes`, `unicode` and

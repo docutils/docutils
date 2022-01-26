@@ -24,7 +24,7 @@ unstyled_tokens = ['token', # Token (base token type)
 class LexerError(ApplicationError):
     pass
 
-class Lexer(object):
+class Lexer:
     """Parse `code` lines and yield "classified" tokens.
 
     Arguments
@@ -105,7 +105,7 @@ class Lexer(object):
             yield classes, value
 
 
-class NumberLines(object):
+class NumberLines:
     """Insert linenumber-tokens at the start of every code line.
 
     Arguments

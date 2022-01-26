@@ -305,7 +305,7 @@ def escape_cdata(text):
 #
 
 
-class TableStyle(object):
+class TableStyle:
     def __init__(self, border=None, backgroundcolor=None):
         self.border = border
         self.backgroundcolor = backgroundcolor
@@ -333,7 +333,7 @@ BUILTIN_DEFAULT_TABLE_STYLE = TableStyle(
 #
 # Information about the indentation level for lists nested inside
 #   other contexts, e.g. dictionary lists.
-class ListLevel(object):
+class ListLevel:
     def __init__(self, level, sibling_level=True, nested_level=True):
         self.level = level
         self.sibling_level = sibling_level
