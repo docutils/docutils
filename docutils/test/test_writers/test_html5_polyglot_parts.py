@@ -599,7 +599,6 @@ because the unit &quot;uf&quot; is invalid.</p>
 </main>\\n''',
  'html_head': '''...<title>&lt;string&gt;</title>\\n'''}
 """],
-])
 ["""\
 .. figure:: dummy.png
 
@@ -620,6 +619,7 @@ No caption nor legend.
 </main>\\n''',
  'html_head': '''...<title>&lt;string&gt;</title>\\n'''}
 """],
+])
 
 
 totest['lazy loading'] = ({'image_loading': 'lazy',

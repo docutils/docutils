@@ -14,13 +14,10 @@ reStructuredText.
 
 __docformat__ = 'reStructuredText'
 
-
 directives = {
       # language-dependent: fixed
       u'تنبيه': u'attention',
       u'احتیاط': u'caution',
-      u'كود': u'code',
-      u'كود': u'code',
       u'كود': u'code',
       u'خطر': u'danger',
       u'خطأ': u'error',

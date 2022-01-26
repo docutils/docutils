@@ -210,8 +210,8 @@ class CustomTestCase(StandardTestCase):
             print('\n%s\ninput:' % (self,), file=sys.stderr)
             print(input, file=sys.stderr)
             try:
-                comparison = ''.join(self.compare(expected.splitlines(1),
-                                                  output.splitlines(1)))
+                comparison = ''.join(self.compare(expected.splitlines(True),
+                                                  output.splitlines(True)))
                 print('-: expected\n+: output', file=sys.stderr)
                 print(comparison, file=sys.stderr)
             except AttributeError:      # expected or output not a string
@@ -841,13 +841,9 @@ def _format_str(*args):
     return_tuple = []
     for i in args:
         r = repr(i)
-        if ( (isinstance(i, bytes) or isinstance(i, str))
-             and '\n' in i):
+        if isinstance(i, (str, bytes)) and '\n' in i:
             stripped = ''
-            if isinstance(i, str) and r.startswith('u'):
-                stripped = r[0]
-                r = r[1:]
-            elif isinstance(i, bytes) and r.startswith('b'):
+            if isinstance(i, bytes) and r.startswith('b'):
                 stripped = r[0]
                 r = r[1:]
             # quote_char = "'" or '"'

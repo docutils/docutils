@@ -130,8 +130,8 @@ class ConfigFileTests(unittest.TestCase):
         except AssertionError:
             print('\n%s\n' % (self,), file=sys.stderr)
             print('-: expected\n+: result', file=sys.stderr)
-            print(''.join(self.compare(expected.splitlines(1),
-                                       result.splitlines(1))), file=sys.stderr)
+            print(''.join(self.compare(expected.splitlines(True),
+                                       result.splitlines(True))), file=sys.stderr)
             raise
 
     def test_nofiles(self):

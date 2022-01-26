@@ -22,7 +22,7 @@ class BBuf(BytesIO):
     def write(self, data):
         if isinstance(data, str):
             data.encode('ascii', 'strict')
-        super(BBuf, self).write(data)
+        super().write(data)
 
 
 # Stub: Buffer expecting unicode string:
@@ -31,7 +31,7 @@ class UBuf(StringIO):
         # emulate Python 3 handling of stdout, stderr
         if isinstance(data, bytes):
             raise TypeError('must be unicode, not bytes')
-        super(UBuf, self).write(data)
+        super().write(data)
 
 
 class mock_stdout(UBuf):
@@ -39,7 +39,7 @@ class mock_stdout(UBuf):
 
     def __init__(self):
         self.buffer = BBuf()
-        UBuf.__init__(self)
+        super().__init__()
 
 
 class HelperTests(unittest.TestCase):

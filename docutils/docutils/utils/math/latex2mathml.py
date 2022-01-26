@@ -24,7 +24,6 @@ the API is not settled and may change with any minor Docutils version.
 #
 # >>> from latex2mathml import *
 
-import collections
 import copy
 import re
 import sys
@@ -340,7 +339,7 @@ class math(object):
         self.children = []
         self.extend(children)
 
-        self.attributes = collections.OrderedDict()
+        self.attributes = {}
         # sort attributes for predictable functional tests
         # as self.attributes.update(attributes) does not keep order in Python < 3.6
         for key in sorted(attributes.keys()):
@@ -472,7 +471,7 @@ class mrow(math):
                 self.children[0].parent = parent
             except (AttributeError, ValueError):
                 return self.children[0]
-        return super(mrow, self).close()
+        return super().close()
 
 # >>> mrow(displaystyle=False)
 # mrow(displaystyle=False)
@@ -509,7 +508,7 @@ class MathToken(math):
 
     def __init__(self, data, **attributes):
         self.data = data
-        super(MathToken, self).__init__(**attributes)
+        super().__init__(**attributes)
 
     def _xml_body(self, level=0):
         return [str(self.data).translate(self.xml_entities)]
@@ -538,7 +537,7 @@ class MathSchema(math):
         math.__init__(self, *children, **kwargs)
 
     def append(self, child):
-        current_node = super(MathSchema, self).append(child)
+        current_node = super().append(child)
         # normalize order if full
         if self.switch and self.full():
             self.children[-1], self.children[-2] = self.children[-2], self.children[-1]

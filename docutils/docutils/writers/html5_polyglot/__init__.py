@@ -273,7 +273,7 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
         uri = node['uri']
         mimetype = mimetypes.guess_type(uri)[0]
         if mimetype not in self.videotypes:
-            return super(HTMLTranslator, self).visit_image(node)
+            return super().visit_image(node)
         # image size
         if 'width' in node:
             atts['width'] = node['width'].replace('px', '')
@@ -438,8 +438,7 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
 
     # append self-link
     def section_title_tags(self, node):
-        start_tag, close_tag = super(HTMLTranslator,
-                                     self).section_title_tags(node)
+        start_tag, close_tag = super().section_title_tags(node)
         ids = node.parent['ids']
         if (ids and getattr(self.settings, 'section_self_link', None)
             and not isinstance(node.parent, nodes.document)):

@@ -118,8 +118,7 @@ class DocutilsOdtTestCase(DocutilsTestSupport.StandardTestCase):
                 sep, first, sep, second, sep, )
             #msg2 = '%s\n%s' % (msg1, msg, )
             msg2 = '%s' % (msg, )
-        DocutilsTestSupport.StandardTestCase.assertEqual(self,
-            first, second, msg2)
+        super().assertEqual(first, second, msg2)
 
     #
     # Unit test methods

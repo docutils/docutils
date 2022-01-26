@@ -986,7 +986,7 @@ class Inliner(object):
         return (string[:matchstart], [referencenode], string[matchend:], [])
 
     def anonymous_reference(self, match, lineno):
-        return self.reference(match, lineno, anonymous=1)
+        return self.reference(match, lineno, anonymous=True)
 
     def standalone_uri(self, match, lineno):
         if (not match.group('scheme')

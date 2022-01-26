@@ -32,7 +32,7 @@ class LanguageTestSuite(DocutilsTestSupport.CustomTestSuite):
     language_module_pattern = re.compile(r'^([a-z]{2,3}(_[a-z]{2,8})*)\.py$')
 
     def __init__(self, languages=None):
-        DocutilsTestSupport.CustomTestSuite.__init__(self)
+        super().__init__()
         if languages:
             self.languages = languages
         else:
@@ -170,16 +170,11 @@ class LanguageTestCase(DocutilsTestSupport.CustomTestCase):
             self.fail(text)
 
     def test_roles(self):
-        try:
-            module = docutils.parsers.rst.languages.get_language(
-                self.language)
-            if not module:
-                raise ImportError
-            module.roles
-        except ImportError:
+        module = docutils.parsers.rst.languages.get_language(self.language)
+        if not module:
             self.fail('No docutils.parsers.rst.languages.%s module.'
                       % self.language)
-        except AttributeError:
+        if not hasattr(module, "roles"):
             self.fail('No "roles" mapping in docutils.parsers.rst.languages.'
                       '%s module.' % self.language)
         failures = []
