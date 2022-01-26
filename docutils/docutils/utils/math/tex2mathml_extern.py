@@ -90,8 +90,8 @@ def ttm(math_code, reporter=None):
     result = p.stdout.read()
     err = p.stderr.read().decode('utf8')
     if err.find('**** Unknown') >= 0:
-        msg = '\n'.join([line for line in err.splitlines()
-                         if line.startswith('****')])
+        msg = '\n'.join(line for line in err.splitlines()
+                        if line.startswith('****'))
         raise SyntaxError('\nMessage from external converter TtM:\n'+ msg)
     if reporter and err.find('**** Error') >= 0 or not result:
         reporter.error(err)

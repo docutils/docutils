@@ -145,7 +145,7 @@ class Input(TransformSpec):
                 error = err 
         raise UnicodeError(
             'Unable to decode input data.  Tried the following encodings: '
-            '%s.\n(%s)' % (', '.join([repr(enc) for enc in encodings]),
+            '%s.\n(%s)' % (', '.join(repr(enc) for enc in encodings),
                            error_string(error)))
 
     coding_slug = re.compile(br"coding[:=]\s*([-\w.]+)")

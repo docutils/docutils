@@ -184,7 +184,7 @@ def path(argument):
     if argument is None:
         raise ValueError('argument required but none supplied')
     else:
-        path = ''.join([s.strip() for s in argument.splitlines()])
+        path = ''.join(s.strip() for s in argument.splitlines())
         return path
 
 def uri(argument):
@@ -239,7 +239,7 @@ def get_measure(argument, units):
     except (AttributeError, ValueError):
         raise ValueError(
             'not a positive measure of one of the following units:\n%s'
-            % ' '.join(['"%s"' % i for i in units]))
+            % ' '.join('"%s"' % i for i in units))
     return match.group(1) + match.group(2)
 
 def length_or_unitless(argument):
@@ -404,7 +404,7 @@ def choice(argument, values):
                          % (argument, format_values(values)))
 
 def format_values(values):
-    return '%s, or "%s"' % (', '.join(['"%s"' % s for s in values[:-1]]),
+    return '%s, or "%s"' % (', '.join('"%s"' % s for s in values[:-1]),
                             values[-1])
 
 def value_or(values, other):

@@ -242,7 +242,7 @@ class S5HTMLTranslator(html4css1.HTMLTranslator):
                 required.remove(f)
             raise docutils.ApplicationError(
                 'Theme files not found: %s'
-                % ', '.join(['%r' % f for f in required]))
+                % ', '.join('%r' % f for f in required))
 
     files_to_skip_pattern = re.compile(r'~$|\.bak$|#$|\.cvsignore$')
 

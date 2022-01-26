@@ -128,8 +128,8 @@ def getArgs():
 def posixGetArgs(argv):
     outputFormat = 'pretty'
     # convert fancy_getopt style option list to getopt.getopt() arguments
-    shortopts = ''.join([option[1] + ':' * (option[0][-1:] == '=')
-                         for option in options if option[1]])
+    shortopts = ''.join(option[1] + ':' * (option[0][-1:] == '=')
+                        for option in options if option[1])
     longopts = [option[0] for option in options if option[0]]
     try:
         opts, args = getopt.getopt(argv, shortopts, longopts)
