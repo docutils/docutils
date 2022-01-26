@@ -681,8 +681,7 @@ class Element(Node):
         return atts
 
     def attlist(self):
-        attlist = sorted(self.non_default_attributes().items())
-        return attlist
+        return sorted(self.non_default_attributes().items())
 
     def get(self, key, failobj=None):
         return self.attributes.get(key, failobj)

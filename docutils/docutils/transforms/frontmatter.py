@@ -519,8 +519,7 @@ class DocInfo(Transform):
             if len(authornames) > 1:
                 break
         authornames = (name.strip() for name in authornames)
-        authors = [[nodes.Text(name)] for name in authornames if name]
-        return authors
+        return [[nodes.Text(name)] for name in authornames if name]
 
     def authors_from_bullet_list(self, field):
         authors = []

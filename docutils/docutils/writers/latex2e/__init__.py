@@ -480,8 +480,7 @@ class SortableDict(dict):
     """
     def sortedkeys(self):
         """Return sorted list of keys"""
-        keys = sorted(self.keys())
-        return keys
+        return sorted(self.keys())
 
     def sortedvalues(self):
         """Return list of values sorted by keys"""

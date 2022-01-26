@@ -79,8 +79,7 @@ class Reader(Component):
 
     def new_document(self):
         """Create and return a new empty document tree (root node)."""
-        document = utils.new_document(self.source.source_path, self.settings)
-        return document
+        return utils.new_document(self.source.source_path, self.settings)
 
 
 class ReReader(Reader):

@@ -135,8 +135,7 @@ what-you-see-is-what-you-get plaintext markup syntax.""",  # wrap at col 60
 
 def do_setup():
     # Install data files properly.
-    dist = setup(**package_data)
-    return dist
+    return setup(**package_data)
 
 
 if __name__ == '__main__':

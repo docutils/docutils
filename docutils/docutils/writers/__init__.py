@@ -75,8 +75,7 @@ class Writer(Component):
             document.reporter)
         self.destination = destination
         self.translate()
-        output = self.destination.write(self.output)
-        return output
+        return self.destination.write(self.output)
 
     def translate(self):
         """
