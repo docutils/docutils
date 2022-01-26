@@ -34,11 +34,11 @@ class CommandLineEncodingTests(unittest.TestCase):
         if argv_encoding == 'ascii': # cannot test
             return
         sys.argv.append('--source-url=test.txt') # pure ASCII argument
-        sys.argv.append(u'--title=Dornröschen')
+        sys.argv.append('--title=Dornröschen')
         publisher = docutils.core.Publisher()
         publisher.process_command_line()
         self.assertEqual(publisher.settings.source_url, 'test.txt')
-        self.assertEqual(publisher.settings.title, u'Dornröschen')
+        self.assertEqual(publisher.settings.title, 'Dornröschen')
         sys.argv.pop() # --title
         sys.argv.pop() # --source-url
 

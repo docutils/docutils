@@ -135,13 +135,13 @@ Followed by a paragraph.
         <paragraph>
             Followed by a block quote.
 """],
-[u"""\
+["""\
 Substitutions support case differences:
 
 .. |eacute| replace:: \u00E9
 .. |Eacute| replace:: \u00C9
 """,
-u"""\
+"""\
 <document source="test data">
     <paragraph>
         Substitutions support case differences:

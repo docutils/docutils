@@ -170,7 +170,7 @@ empty item above, no blank line
     <paragraph>
         empty item above, no blank line
 """],
-[u"""\
+["""\
 Unicode bullets are not supported by CommonMark.
 
 • BULLET
@@ -179,7 +179,7 @@ Unicode bullets are not supported by CommonMark.
 
 ⁃ HYPHEN BULLET
 """,
-u"""\
+"""\
 <document source="test data">
     <paragraph>
         Unicode bullets are not supported by CommonMark.

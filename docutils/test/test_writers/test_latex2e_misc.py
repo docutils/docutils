@@ -64,7 +64,7 @@ class WarningsTestCase(DocutilsTestSupport.StandardTestCase):
                    }
         with warnings.catch_warnings(record=True) as wng:
             warnings.simplefilter("always")
-            core.publish_string(u'warnings test', writer_name='latex',
+            core.publish_string('warnings test', writer_name='latex',
                                 settings_overrides=mysettings)
             self.assertEqual(len(wng), 2, "Expected 2 FutureWarnings.")
             assert issubclass(wng[0].category, FutureWarning)

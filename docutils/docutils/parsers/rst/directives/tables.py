@@ -321,7 +321,7 @@ class CSVTable(Table):
                 csv_data = csv_file.read().splitlines()
             except IOError as error:
                 severe = self.state_machine.reporter.severe(
-                    u'Problems with "%s" directive path:\n%s.'
+                    'Problems with "%s" directive path:\n%s.'
                     % (self.name, error),
                     nodes.literal_block(self.block_text, self.block_text),
                     line=self.lineno)

@@ -264,11 +264,11 @@ class HTMLTranslator(nodes.NodeVisitor):
     in_word_wrap_point = re.compile(r'.+\W\W.+|[-?].+')
     lang_attribute = 'lang' # name changes to 'xml:lang' in XHTML 1.1
 
-    special_characters = {ord('&'): u'&amp;',
-                          ord('<'): u'&lt;',
-                          ord('"'): u'&quot;',
-                          ord('>'): u'&gt;',
-                          ord('@'): u'&#64;', # may thwart address harvesters
+    special_characters = {ord('&'): '&amp;',
+                          ord('<'): '&lt;',
+                          ord('"'): '&quot;',
+                          ord('>'): '&gt;',
+                          ord('@'): '&#64;', # may thwart address harvesters
                          }
     """Character references for characters with a special meaning in HTML."""
 
@@ -525,7 +525,7 @@ class HTMLTranslator(nodes.NodeVisitor):
     def depart_admonition(self, node=None):
         self.body.append('</aside>\n')
 
-    attribution_formats = {'dash': (u'\u2014', ''),
+    attribution_formats = {'dash': ('\u2014', ''),
                            'parentheses': ('(', ')'),
                            'parens': ('(', ')'),
                            'none': ('', '')}
@@ -963,7 +963,7 @@ class HTMLTranslator(nodes.NodeVisitor):
     def visit_generated(self, node):
         if 'sectnum' in node['classes']:
             # get section number (strip trailing no-break-spaces)
-            sectnum = node.astext().rstrip(u' ')
+            sectnum = node.astext().rstrip(' ')
             self.body.append('<span class="sectnum">%s </span>'
                                     % self.encode(sectnum))
             # Content already processed:
@@ -1059,7 +1059,7 @@ class HTMLTranslator(nodes.NodeVisitor):
                   # read/parse, apply arguments,
                   # insert as <svg ....> ... </svg> # (about 1/3 less data)
                 data64 = base64.b64encode(imagedata).decode()
-                uri = u'data:%s;base64,%s' % (mimetype, data64)
+                uri = 'data:%s;base64,%s' % (mimetype, data64)
         elif self.image_loading == 'lazy':
             atts['loading'] = 'lazy'
         if mimetype == 'application/x-shockwave-flash':
@@ -1194,9 +1194,9 @@ class HTMLTranslator(nodes.NodeVisitor):
         clsarg = self.math_tags[self.math_output][2]
         # LaTeX container
         wrappers = {# math_mode: (inline, block)
-                    'mathml':  ('$%s$',   u'\\begin{%s}\n%s\n\\end{%s}'),
-                    'html':    ('$%s$',   u'\\begin{%s}\n%s\n\\end{%s}'),
-                    'mathjax': (r'\(%s\)', u'\\begin{%s}\n%s\n\\end{%s}'),
+                    'mathml':  ('$%s$',   '\\begin{%s}\n%s\n\\end{%s}'),
+                    'html':    ('$%s$',   '\\begin{%s}\n%s\n\\end{%s}'),
+                    'mathjax': (r'\(%s\)', '\\begin{%s}\n%s\n\\end{%s}'),
                     'latex':   (None,     None),
                    }
         wrapper = wrappers[self.math_output][math_env != '']
@@ -1261,7 +1261,7 @@ class HTMLTranslator(nodes.NodeVisitor):
                 err_node = self.document.reporter.error(err, base_node=node)
                 self.visit_system_message(err_node)
                 self.body.append(self.starttag(node, 'p'))
-                self.body.append(u','.join(err.args))
+                self.body.append(','.join(err.args))
                 self.body.append('</p>\n')
                 self.body.append(self.starttag(node, 'pre',
                                                CLASS='literal-block'))

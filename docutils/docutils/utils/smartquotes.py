@@ -385,10 +385,10 @@ class smartchars(object):
     """Smart quotes and dashes
     """
 
-    endash   = u'–' # "&#8211;" EN DASH
-    emdash   = u'—' # "&#8212;" EM DASH
-    ellipsis = u'…' # "&#8230;" HORIZONTAL ELLIPSIS
-    apostrophe = u'’' # "&#8217;" RIGHT SINGLE QUOTATION MARK
+    endash   = '–' # "&#8211;" EN DASH
+    emdash   = '—' # "&#8212;" EM DASH
+    ellipsis = '…' # "&#8230;" HORIZONTAL ELLIPSIS
+    apostrophe = '’' # "&#8217;" RIGHT SINGLE QUOTATION MARK
 
     # quote characters (language-specific, set in __init__())
     # [1] https://en.wikipedia.org/wiki/Non-English_usage_of_quotation_marks
@@ -403,91 +403,91 @@ class smartchars(object):
     # [10] http://www.typografi.org/sitat/sitatart.html
     #
     # See also configuration option "smartquote-locales".
-    quotes = {'af':           u'“”‘’',
-              'af-x-altquot': u'„”‚’',
-              'bg':           u'„“‚‘', # Bulgarian, https://bg.wikipedia.org/wiki/Кавички
-              'ca':           u'«»“”',
-              'ca-x-altquot': u'“”‘’',
-              'cs':           u'„“‚‘',
-              'cs-x-altquot': u'»«›‹',
-              'da':           u'»«›‹',
-              'da-x-altquot': u'„“‚‘',
-              # 'da-x-altquot2': u'””’’',
-              'de':           u'„“‚‘',
-              'de-x-altquot': u'»«›‹',
-              'de-ch':        u'«»‹›',
-              'el':           u'«»“”',
-              'en':           u'“”‘’',
-              'en-uk-x-altquot': u'‘’“”', # Attention: " → ‘ and ' → “ !
-              'eo':           u'“”‘’',
-              'es':           u'«»“”',
-              'es-x-altquot': u'“”‘’',
-              'et':           u'„“‚‘', # no secondary quote listed in
-              'et-x-altquot': u'«»‹›', # the sources above (wikipedia.org)
-              'eu':           u'«»‹›',
-              'fi':           u'””’’',
-              'fi-x-altquot': u'»»››',
-              'fr':           (u'« ', u' »', u'“', u'”'), # full no-break space
-              'fr-x-altquot': (u'« ', u' »', u'“', u'”'), # narrow no-break space
-              'fr-ch':        u'«»‹›',
-              'fr-ch-x-altquot': (u'« ',  u' »', u'‹ ', u' ›'), # narrow no-break space, http://typoguide.ch/
-              'gl':           u'«»“”',
-              'he':           u'”“»«', # Hebrew is RTL, test position:
-              'he-x-altquot': u'„”‚’', # low quotation marks are opening.
-              # 'he-x-altquot': u'“„‘‚', # RTL: low quotation marks opening
-              'hr':           u'„”‘’', # http://hrvatska-tipografija.com/polunavodnici/
-              'hr-x-altquot': u'»«›‹',
-              'hsb':          u'„“‚‘',
-              'hsb-x-altquot': u'»«›‹',
-              'hu':           u'„”«»',
-              'is':           u'„“‚‘',
-              'it':           u'«»“”',
-              'it-ch':        u'«»‹›',
-              'it-x-altquot': u'“”‘’',
-              # 'it-x-altquot2': u'“„‘‚', # [7] in headlines
-              'ja':           u'「」『』',
-              'ko':           u'“”‘’',
-              'lt':           u'„“‚‘',
-              'lv':           u'„“‚‘',
-              'mk':           u'„“‚‘', # Macedonian, https://mk.wikipedia.org/wiki/Правопис_и_правоговор_на_македонскиот_јазик
-              'nl':           u'“”‘’',
-              'nl-x-altquot': u'„”‚’',
-              # 'nl-x-altquot2': u'””’’',
-              'nb':           u'«»’’', # Norsk bokmål (canonical form 'no')
-              'nn':           u'«»’’', # Nynorsk [10]
-              'nn-x-altquot': u'«»‘’', # [8], [10]
-              # 'nn-x-altquot2': u'«»«»', # [9], [10
-              # 'nn-x-altquot3': u'„“‚‘', # [10]
-              'no':           u'«»’’', # Norsk bokmål [10]
-              'no-x-altquot': u'«»‘’', # [8], [10]
-              # 'no-x-altquot2': u'«»«»', # [9], [10
-              # 'no-x-altquot3': u'„“‚‘', # [10]
-              'pl':           u'„”«»',
-              'pl-x-altquot': u'«»‚’',
-              # 'pl-x-altquot2': u'„”‚’', # https://pl.wikipedia.org/wiki/Cudzys%C5%82%C3%B3w
-              'pt':           u'«»“”',
-              'pt-br':        u'“”‘’',
-              'ro':           u'„”«»',
-              'ru':           u'«»„“',
-              'sh':           u'„”‚’', # Serbo-Croatian
-              'sh-x-altquot': u'»«›‹',
-              'sk':           u'„“‚‘', # Slovak
-              'sk-x-altquot': u'»«›‹',
-              'sl':           u'„“‚‘', # Slovenian
-              'sl-x-altquot': u'»«›‹',
-              'sq':           u'«»‹›', # Albanian
-              'sq-x-altquot': u'“„‘‚',
-              'sr':           u'„”’’',
-              'sr-x-altquot': u'»«›‹',
-              'sv':           u'””’’',
-              'sv-x-altquot': u'»»››',
-              'tr':           u'“”‘’',
-              'tr-x-altquot': u'«»‹›',
-              # 'tr-x-altquot2': u'“„‘‚', # [7] antiquated?
-              'uk':           u'«»„“',
-              'uk-x-altquot': u'„“‚‘',
-              'zh-cn':        u'“”‘’',
-              'zh-tw':        u'「」『』',
+    quotes = {'af':           '“”‘’',
+              'af-x-altquot': '„”‚’',
+              'bg':           '„“‚‘', # Bulgarian, https://bg.wikipedia.org/wiki/Кавички
+              'ca':           '«»“”',
+              'ca-x-altquot': '“”‘’',
+              'cs':           '„“‚‘',
+              'cs-x-altquot': '»«›‹',
+              'da':           '»«›‹',
+              'da-x-altquot': '„“‚‘',
+              # 'da-x-altquot2': '””’’',
+              'de':           '„“‚‘',
+              'de-x-altquot': '»«›‹',
+              'de-ch':        '«»‹›',
+              'el':           '«»“”',
+              'en':           '“”‘’',
+              'en-uk-x-altquot': '‘’“”', # Attention: " → ‘ and ' → “ !
+              'eo':           '“”‘’',
+              'es':           '«»“”',
+              'es-x-altquot': '“”‘’',
+              'et':           '„“‚‘', # no secondary quote listed in
+              'et-x-altquot': '«»‹›', # the sources above (wikipedia.org)
+              'eu':           '«»‹›',
+              'fi':           '””’’',
+              'fi-x-altquot': '»»››',
+              'fr':           ('« ', ' »', '“', '”'), # full no-break space
+              'fr-x-altquot': ('« ', ' »', '“', '”'), # narrow no-break space
+              'fr-ch':        '«»‹›',
+              'fr-ch-x-altquot': ('« ',  ' »', '‹ ', ' ›'), # narrow no-break space, http://typoguide.ch/
+              'gl':           '«»“”',
+              'he':           '”“»«', # Hebrew is RTL, test position:
+              'he-x-altquot': '„”‚’', # low quotation marks are opening.
+              # 'he-x-altquot': '“„‘‚', # RTL: low quotation marks opening
+              'hr':           '„”‘’', # http://hrvatska-tipografija.com/polunavodnici/
+              'hr-x-altquot': '»«›‹',
+              'hsb':          '„“‚‘',
+              'hsb-x-altquot': '»«›‹',
+              'hu':           '„”«»',
+              'is':           '„“‚‘',
+              'it':           '«»“”',
+              'it-ch':        '«»‹›',
+              'it-x-altquot': '“”‘’',
+              # 'it-x-altquot2': '“„‘‚', # [7] in headlines
+              'ja':           '「」『』',
+              'ko':           '“”‘’',
+              'lt':           '„“‚‘',
+              'lv':           '„“‚‘',
+              'mk':           '„“‚‘', # Macedonian, https://mk.wikipedia.org/wiki/Правопис_и_правоговор_на_македонскиот_јазик
+              'nl':           '“”‘’',
+              'nl-x-altquot': '„”‚’',
+              # 'nl-x-altquot2': '””’’',
+              'nb':           '«»’’', # Norsk bokmål (canonical form 'no')
+              'nn':           '«»’’', # Nynorsk [10]
+              'nn-x-altquot': '«»‘’', # [8], [10]
+              # 'nn-x-altquot2': '«»«»', # [9], [10
+              # 'nn-x-altquot3': '„“‚‘', # [10]
+              'no':           '«»’’', # Norsk bokmål [10]
+              'no-x-altquot': '«»‘’', # [8], [10]
+              # 'no-x-altquot2': '«»«»', # [9], [10
+              # 'no-x-altquot3': '„“‚‘', # [10]
+              'pl':           '„”«»',
+              'pl-x-altquot': '«»‚’',
+              # 'pl-x-altquot2': '„”‚’', # https://pl.wikipedia.org/wiki/Cudzys%C5%82%C3%B3w
+              'pt':           '«»“”',
+              'pt-br':        '“”‘’',
+              'ro':           '„”«»',
+              'ru':           '«»„“',
+              'sh':           '„”‚’', # Serbo-Croatian
+              'sh-x-altquot': '»«›‹',
+              'sk':           '„“‚‘', # Slovak
+              'sk-x-altquot': '»«›‹',
+              'sl':           '„“‚‘', # Slovenian
+              'sl-x-altquot': '»«›‹',
+              'sq':           '«»‹›', # Albanian
+              'sq-x-altquot': '“„‘‚',
+              'sr':           '„”’’',
+              'sr-x-altquot': '»«›‹',
+              'sv':           '””’’',
+              'sv-x-altquot': '»»››',
+              'tr':           '“”‘’',
+              'tr-x-altquot': '«»‹›',
+              # 'tr-x-altquot2': '“„‘‚', # [7] antiquated?
+              'uk':           '«»„“',
+              'uk-x-altquot': '„“‚‘',
+              'zh-cn':        '“”‘’',
+              'zh-tw':        '「」『』',
              }
 
     def __init__(self, language='en'):
@@ -496,7 +496,7 @@ class smartchars(object):
             (self.opquote, self.cpquote,
              self.osquote, self.csquote) = self.quotes[language.lower()]
         except KeyError:
-            self.opquote, self.cpquote, self.osquote, self.csquote = u'""\'\''
+            self.opquote, self.cpquote, self.osquote, self.csquote = '""\'\''
 
 
 def smartyPants(text, attr=default_smartypants_attr, language='en'):
@@ -633,12 +633,12 @@ def educateQuotes(text, language='en'):
     """
 
     smart = smartchars(language)
-    ch_classes = {'open': u'[([{]', # opening braces
+    ch_classes = {'open': '[([{]', # opening braces
                   'close': r'[^\s]', # everything except whitespace
                   'punct': r"""[-!"#\$\%'()*+,.\/:;<=>?\@\[\\\]\^_`{|}~]""",
-                  'dash': u'[-–—]' # hyphen and em/en dashes
+                  'dash': '[-–—]' # hyphen and em/en dashes
                           + r'|&[mn]dash;|&\#8211;|&\#8212;|&\#x201[34];',
-                  'sep': u'[\\s\u200B\u200C]|&nbsp;', # Whitespace, ZWSP, ZWNJ
+                  'sep': '[\\s\u200B\u200C]|&nbsp;', # Whitespace, ZWSP, ZWNJ
                  }
 
     # Special case if the very first character is a quote
@@ -664,7 +664,7 @@ def educateQuotes(text, language='en'):
         text = re.sub(r"'(?=\d{2}s)", smart.apostrophe, text)
 
     # Get most opening secondary quotes:
-    opening_secondary_quotes_regex = re.compile(u"""
+    opening_secondary_quotes_regex = re.compile("""
                     (# ?<=  # look behind fails: requires fixed-width pattern
                       %(sep)s     |  # a whitespace char, or
                       %(open)s    |  # opening brace, or
@@ -690,7 +690,7 @@ def educateQuotes(text, language='en'):
     text = re.sub(r"""'""", smart.osquote, text)
 
     # Get most opening primary quotes:
-    opening_primary_quotes_regex = re.compile(u"""
+    opening_primary_quotes_regex = re.compile("""
                     (
                       %(sep)s     |  # a whitespace char, or
                       %(open)s    |  # zero width separating char, or
@@ -978,15 +978,15 @@ if __name__ == "__main__":
         class TestSmartypantsAllAttributes(unittest.TestCase):
             # the default attribute is "1", which means "all".
             def test_dates(self):
-                self.assertEqual(smartyPants("1440-80's"), u"1440-80’s")
-                self.assertEqual(smartyPants("1440-'80s"), u"1440-’80s")
-                self.assertEqual(smartyPants("1440---'80s"), u"1440–’80s")
-                self.assertEqual(smartyPants("1960's"), u"1960’s")
-                self.assertEqual(smartyPants("one two '60s"), u"one two ’60s")
-                self.assertEqual(smartyPants("'60s"), u"’60s")
+                self.assertEqual(smartyPants("1440-80's"), "1440-80’s")
+                self.assertEqual(smartyPants("1440-'80s"), "1440-’80s")
+                self.assertEqual(smartyPants("1440---'80s"), "1440–’80s")
+                self.assertEqual(smartyPants("1960's"), "1960’s")
+                self.assertEqual(smartyPants("one two '60s"), "one two ’60s")
+                self.assertEqual(smartyPants("'60s"), "’60s")
 
             def test_educated_quotes(self):
-                self.assertEqual(smartyPants('"Isn\'t this fun?"'), u'“Isn’t this fun?”')
+                self.assertEqual(smartyPants('"Isn\'t this fun?"'), '“Isn’t this fun?”')
 
             def test_html_tags(self):
                 text = '<a src="foo">more</a>'

@@ -78,7 +78,7 @@ def ttm(math_code, reporter=None):
     """
     p = subprocess.Popen(['ttm',
                           # '-i', # italic font for equations. Default roman.
-                          '-u', # unicode character encoding. (Default iso-8859-1).
+                          '-', # unicode character encoding. (Default iso-8859-1).
                           '-r', # output raw MathML (no preamble or  postlude)
                          ],
                          stdin=subprocess.PIPE,
@@ -140,8 +140,8 @@ def blahtexml(math_code, inline=True, reporter=None):
 # self-test
 
 if __name__ == "__main__":
-    example = (u'\\frac{\\partial \\sin^2(\\alpha)}{\\partial \\vec r}'
-               u'\\varpi \\, \\text{Grüße}')
+    example = ('\\frac{\\partial \\sin^2(\\alpha)}{\\partial \\vec r}'
+               '\\varpi \\, \\text{Grüße}')
     # print(latexml(example).encode('utf8'))
     # print(ttm(example))
     print(blahtexml(example).encode('utf8'))

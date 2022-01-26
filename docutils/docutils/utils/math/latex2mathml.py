@@ -39,22 +39,22 @@ from docutils.utils.math import tex2unichar, toplevel_code
 # identifiers -> <mi>
 
 letters = tex2unichar.mathalpha
-letters['hbar'] = u'\u210F' # compatibility mapping to ℏ (\hslash).
+letters['hbar'] = '\u210F' # compatibility mapping to ℏ (\hslash).
 # (ħ LATIN SMALL LETTER H WITH STROKE is upright)
 
 # special case: Capital Greek letters: (upright in TeX style)
 greek_capitals = {
-    'Phi':u'\u03a6', 'Xi':u'\u039e', 'Sigma':u'\u03a3',
-    'Psi':u'\u03a8', 'Delta':u'\u0394', 'Theta':u'\u0398',
-    'Upsilon':u'\u03d2', 'Pi':u'\u03a0', 'Omega':u'\u03a9',
-    'Gamma':u'\u0393', 'Lambda':u'\u039b'}
+    'Phi':'\u03a6', 'Xi':'\u039e', 'Sigma':'\u03a3',
+    'Psi':'\u03a8', 'Delta':'\u0394', 'Theta':'\u0398',
+    'Upsilon':'\u03d2', 'Pi':'\u03a0', 'Omega':'\u03a9',
+    'Gamma':'\u0393', 'Lambda':'\u039b'}
 
 # functions -> <mi>
 functions = {# functions with a space in the name
-             'liminf': u'lim\u202finf',
-             'limsup': u'lim\u202fsup',
-             'injlim': u'inj\u202flim',
-             'projlim': u'proj\u202flim',
+             'liminf': 'lim\u202finf',
+             'limsup': 'lim\u202fsup',
+             'injlim': 'inj\u202flim',
+             'projlim': 'proj\u202flim',
              # embellished function names (see handle_cmd() below)
              'varlimsup': 'lim',
              'varliminf': 'lim',
@@ -98,21 +98,21 @@ math_alphabets = {# 'cmdname': 'mathvariant value'  # package
 
 stretchables = {# extensible delimiters allowed in left/right cmds
                 'backslash':   '\\',
-                'uparrow':     u'\u2191', # ↑ UPWARDS ARROW
-                'downarrow':   u'\u2193', # ↓ DOWNWARDS ARROW
-                'updownarrow': u'\u2195', # ↕ UP DOWN ARROW
-                'Uparrow':     u'\u21d1', # ⇑ UPWARDS DOUBLE ARROW
-                'Downarrow':   u'\u21d3', # ⇓ DOWNWARDS DOUBLE ARROW
-                'Updownarrow': u'\u21d5', # ⇕ UP DOWN DOUBLE ARROW
-                'lmoustache':  u'\u23b0', # ⎰ UPPER LEFT OR LOWER RIGHT CURLY BRACKET SECTION
-                'rmoustache':  u'\u23b1', # ⎱ UPPER RIGHT OR LOWER LEFT CURLY BRACKET SECTION
-                'arrowvert':   u'\u23d0', # ⏐ VERTICAL LINE EXTENSION
-                'bracevert':   u'\u23aa', # ⎪ CURLY BRACKET EXTENSION
-                'lvert':      u'|',      # left  |
-                'lVert':      u'\u2016', # left  ‖
-                'rvert':      u'|',      # right |
-                'rVert':      u'\u2016', # right ‖
-                'Arrowvert':  u'\u2016', # ‖
+                'uparrow':     '\u2191', # ↑ UPWARDS ARROW
+                'downarrow':   '\u2193', # ↓ DOWNWARDS ARROW
+                'updownarrow': '\u2195', # ↕ UP DOWN ARROW
+                'Uparrow':     '\u21d1', # ⇑ UPWARDS DOUBLE ARROW
+                'Downarrow':   '\u21d3', # ⇓ DOWNWARDS DOUBLE ARROW
+                'Updownarrow': '\u21d5', # ⇕ UP DOWN DOUBLE ARROW
+                'lmoustache':  '\u23b0', # ⎰ UPPER LEFT OR LOWER RIGHT CURLY BRACKET SECTION
+                'rmoustache':  '\u23b1', # ⎱ UPPER RIGHT OR LOWER LEFT CURLY BRACKET SECTION
+                'arrowvert':   '\u23d0', # ⏐ VERTICAL LINE EXTENSION
+                'bracevert':   '\u23aa', # ⎪ CURLY BRACKET EXTENSION
+                'lvert':      '|',      # left  |
+                'lVert':      '\u2016', # left  ‖
+                'rvert':      '|',      # right |
+                'rVert':      '\u2016', # right ‖
+                'Arrowvert':  '\u2016', # ‖
                }
 stretchables.update(tex2unichar.mathfence)
 stretchables.update(tex2unichar.mathopen)  # Braces
@@ -122,26 +122,26 @@ stretchables.update(tex2unichar.mathclose) # Braces
 # [ \ ] { | } ‖ ↑ ↓ ↕ ⇑ ⇓ ⇕ ⌈ ⌉ ⌊ ⌋ ⌜ ⌝ ⌞ ⌟ ⎪ ⎰ ⎱ ⏐ ⟅ ⟆ ⟦ ⟧ ⟨ ⟩ ⟮ ⟯ ⦇ ⦈
 
 operators = {# negated symbols without pre-composed Unicode character
-             'nleqq':      u'\u2266\u0338', # ≦̸
-             'ngeqq':      u'\u2267\u0338', # ≧̸
-             'nleqslant':  u'\u2a7d\u0338', # ⩽̸
-             'ngeqslant':  u'\u2a7e\u0338', # ⩾̸
-             'ngtrless':   u'\u2277\u0338', # txfonts
-             'nlessgtr':   u'\u2276\u0338', # txfonts
-             'nsubseteqq': u'\u2AC5\u0338', # ⫅̸
-             'nsupseteqq': u'\u2AC6\u0338', # ⫆̸
+             'nleqq':      '\u2266\u0338', # ≦̸
+             'ngeqq':      '\u2267\u0338', # ≧̸
+             'nleqslant':  '\u2a7d\u0338', # ⩽̸
+             'ngeqslant':  '\u2a7e\u0338', # ⩾̸
+             'ngtrless':   '\u2277\u0338', # txfonts
+             'nlessgtr':   '\u2276\u0338', # txfonts
+             'nsubseteqq': '\u2AC5\u0338', # ⫅̸
+             'nsupseteqq': '\u2AC6\u0338', # ⫆̸
              # compatibility definitions:
-             'centerdot': u'\u2B1D', # BLACK VERY SMALL SQUARE | mathbin
-             'varnothing': u'\u2300', # ⌀ DIAMETER SIGN | empty set
-             'varpropto': u'\u221d', # ∝ PROPORTIONAL TO | sans serif
-             'triangle': u'\u25B3', # WHITE UP-POINTING TRIANGLE | mathord
-             'triangledown': u'\u25BD', # WHITE DOWN-POINTING TRIANGLE | mathord
+             'centerdot': '\u2B1D', # BLACK VERY SMALL SQUARE | mathbin
+             'varnothing': '\u2300', # ⌀ DIAMETER SIGN | empty set
+             'varpropto': '\u221d', # ∝ PROPORTIONAL TO | sans serif
+             'triangle': '\u25B3', # WHITE UP-POINTING TRIANGLE | mathord
+             'triangledown': '\u25BD', # WHITE DOWN-POINTING TRIANGLE | mathord
              # alias commands:
-             'dotsb': u'\u22ef', # ⋯ with binary operators/relations
-             'dotsc': u'\u2026', # … with commas
-             'dotsi': u'\u22ef', # ⋯ with integrals
-             'dotsm': u'\u22ef', # ⋯ multiplication dots
-             'dotso': u'\u2026', # … other dots
+             'dotsb': '\u22ef', # ⋯ with binary operators/relations
+             'dotsc': '\u2026', # … with commas
+             'dotsi': '\u22ef', # ⋯ with integrals
+             'dotsm': '\u22ef', # ⋯ multiplication dots
+             'dotso': '\u2026', # … other dots
              # functions with movable limits (requires <mo>)
              'lim': 'lim',
              'sup': 'sup',
@@ -160,18 +160,18 @@ operators.update(stretchables)
 # special cases
 
 thick_operators = {# style='font-weight: bold;'
-                   'thicksim':   u'\u223C', # ∼
-                   'thickapprox':u'\u2248', # ≈
+                   'thicksim':   '\u223C', # ∼
+                   'thickapprox':'\u2248', # ≈
                   }
 
 small_operators = {# mathsize='75%'
-                   'shortmid':       u'\u2223', # ∣
-                   'shortparallel':  u'\u2225', # ∥
-                   'nshortmid':      u'\u2224', # ∤
-                   'nshortparallel': u'\u2226', # ∦
-                   'smallfrown':     u'\u2322', # ⌢ FROWN
-                   'smallsmile':     u'\u2323', # ⌣ SMILE
-                   'smallint':       u'\u222b', # ∫ INTEGRAL
+                   'shortmid':       '\u2223', # ∣
+                   'shortparallel':  '\u2225', # ∥
+                   'nshortmid':      '\u2224', # ∤
+                   'nshortparallel': '\u2226', # ∦
+                   'smallfrown':     '\u2322', # ⌢ FROWN
+                   'smallsmile':     '\u2323', # ⌣ SMILE
+                   'smallint':       '\u222b', # ∫ INTEGRAL
                   }
 
 # Operators and functions with limits above/below in display formulas
@@ -206,53 +206,53 @@ spaces = {'qquad':         '2em',       # two \quad
 
 # accents -> <mover stretchy="false">
 accents = {# TeX:      (spacing, combining)
-           'acute':    (u'´', u'\u0301'),
-           'bar':      (u'ˉ', u'\u0304'),
-           'breve':    (u'˘', u'\u0306'),
-           'check':    (u'ˇ', u'\u030C'),
-           'dot':      (u'˙', u'\u0307'),
-           'ddot':     (u'¨', u'\u0308'),
-           'dddot':    (u'⋯', u'\u20DB'),
-           'grave':    (u'`', u'\u0300'),
-           'hat':      (u'ˆ', u'\u0302'),
-           'mathring': (u'˚', u'\u030A'),
-           'tilde':    (u'˜', u'\u0303'), # tilde ~ or small tilde ˜?
-           'vec':      (u'→', u'\u20d7'), # → too heavy, accents="false"
+           'acute':    ('´', '\u0301'),
+           'bar':      ('ˉ', '\u0304'),
+           'breve':    ('˘', '\u0306'),
+           'check':    ('ˇ', '\u030C'),
+           'dot':      ('˙', '\u0307'),
+           'ddot':     ('¨', '\u0308'),
+           'dddot':    ('⋯', '\u20DB'),
+           'grave':    ('`', '\u0300'),
+           'hat':      ('ˆ', '\u0302'),
+           'mathring': ('˚', '\u030A'),
+           'tilde':    ('˜', '\u0303'), # tilde ~ or small tilde ˜?
+           'vec':      ('→', '\u20d7'), # → too heavy, accents="false"
            # TODO: ddddot
        }
 
 # limits etc. -> <mover> or <munder>
 over = {# TeX:                  (char,     offset-correction/em)
-        'overbrace':            (u'\u23DE', -0.2), # DejaVu Math -0.6
-        'overleftarrow':        (u'\u2190', -0.2),
-        'overleftrightarrow':   (u'\u2194', -0.2),
-        'overline':             (u'_',      -0.2),   # \u2012' FIGURE DASH does not stretch
-        'overrightarrow':       (u'\u2192', -0.2),
-        'widehat':              (u'^',      -0.5),
-        'widetilde':            (u'~',      -0.3),
+        'overbrace':            ('\u23DE', -0.2), # DejaVu Math -0.6
+        'overleftarrow':        ('\u2190', -0.2),
+        'overleftrightarrow':   ('\u2194', -0.2),
+        'overline':             ('_',      -0.2),   # \u2012' FIGURE DASH does not stretch
+        'overrightarrow':       ('\u2192', -0.2),
+        'widehat':              ('^',      -0.5),
+        'widetilde':            ('~',      -0.3),
        }
-under = {'underbrace':          (u'\u23DF',  0.1), # DejaVu Math -0.7
-         'underleftarrow':      (u'\u2190', -0.2),
-         'underleftrightarrow': (u'\u2194', -0.2),
-         'underline':           (u'_',      -0.8),
-         'underrightarrow':     (u'\u2192', -0.2),
+under = {'underbrace':          ('\u23DF',  0.1), # DejaVu Math -0.7
+         'underleftarrow':      ('\u2190', -0.2),
+         'underleftrightarrow': ('\u2194', -0.2),
+         'underline':           ('_',      -0.8),
+         'underrightarrow':     ('\u2192', -0.2),
         }
 
 # Character translations
 # ----------------------
 # characters with preferred alternative in mathematical use
 # cf. https://www.w3.org/TR/MathML3/chapter7.html#chars.anomalous
-anomalous_chars = {'-': u'\u2212', # HYPHEN-MINUS -> MINUS SIGN
-                   ':': u'\u2236', # COLON -> RATIO
-                   '~': u'\u00a0', # NO-BREAK SPACE
+anomalous_chars = {'-': '\u2212', # HYPHEN-MINUS -> MINUS SIGN
+                   ':': '\u2236', # COLON -> RATIO
+                   '~': '\u00a0', # NO-BREAK SPACE
                   }
 
 # blackboard bold (Greek characters not working with "mathvariant" (Firefox 78)
-mathbb = {u'Γ': u'\u213E',    # ℾ
-          u'Π': u'\u213F',    # ℿ
-          u'Σ': u'\u2140',    # ⅀
-          u'γ': u'\u213D',    # ℽ
-          u'π': u'\u213C',    # ℼ
+mathbb = {'Γ': '\u213E',    # ℾ
+          'Π': '\u213F',    # ℿ
+          'Σ': '\u2140',    # ⅀
+          'γ': '\u213D',    # ℽ
+          'π': '\u213C',    # ℼ
          }
 
 # Matrix environments
@@ -263,7 +263,7 @@ matrices = {# name:    fences
             'bmatrix': ('[', ']'),
             'Bmatrix': ('{', '}'),
             'vmatrix': ('|', '|'),
-            'Vmatrix': (u'\u2016', u'\u2016'), # ‖
+            'Vmatrix': ('\u2016', '\u2016'), # ‖
             'cases':   ('{', ''),
            }
 
@@ -313,10 +313,10 @@ class math(object):
     """Parent node in MathML DOM tree."""
     _level = 0 # indentation level (static class variable)
     xml_entities = { # for invalid and invisible characters
-                    ord('<'): u'&lt;',
-                    ord('>'): u'&gt;',
-                    ord('&'): u'&amp;',
-                    0x2061:   u'&ApplyFunction;',
+                    ord('<'): '&lt;',
+                    ord('>'): '&gt;',
+                    ord('&'): '&amp;',
+                    0x2061:   '&ApplyFunction;',
                    }
     _boolstrings = {True: 'true', False: 'false'}
     """String representation of boolean MathML attribute values."""
@@ -516,9 +516,9 @@ class mi(MathToken): pass
 class mo(MathToken): pass
 class mn(MathToken): pass
 
-# >>> mo(u'<')
+# >>> mo('<')
 # mo('<')
-# >>> mo(u'<')._xml()
+# >>> mo('<')._xml()
 # ['<mo>', '&lt;', '</mo>']
 
 class MathSchema(math):
@@ -827,7 +827,7 @@ def parse_latex_math(node, string):
         elif c in "+*=<>,.!?`';@":
             node = node.append(mo(c))
         else:
-            raise SyntaxError(u'Unsupported character: "%s"' % c)
+            raise SyntaxError('Unsupported character: "%s"' % c)
     return tree
 
 # Test:
@@ -897,19 +897,19 @@ def handle_cmd(name, node, string): # noqa: C901 TODO make this less complex
             new_node = mi(functions[name])
         # embellished function names:
         if name == 'varliminf':    # \underline\lim
-            new_node = munder(new_node, mo(u'_'))
+            new_node = munder(new_node, mo('_'))
         elif name == 'varlimsup':  # \overline\lim
-            new_node = mover(new_node, mo(u'¯'), accent=False)
+            new_node = mover(new_node, mo('¯'), accent=False)
         elif name == 'varprojlim': # \underleftarrow\lim
-            new_node = munder(new_node, mo(u'\u2190'))
+            new_node = munder(new_node, mo('\u2190'))
         elif name == 'varinjlim':  # \underrightarrow\lim
-            new_node = munder(new_node, mo(u'\u2192'))
+            new_node = munder(new_node, mo('\u2192'))
 
         node = node.append(new_node)
         # add ApplyFunction when appropriate (not \sin^2(x), say)
         # cf. https://www.w3.org/TR/MathML3/chapter3.html#presm.mi
         if string and string[0] not in ('^', '_'):
-            node = node.append(mo(u'\u2061')) # &ApplyFunction;
+            node = node.append(mo('\u2061')) # &ApplyFunction;
         return node, string
 
     if name in math_alphabets:
@@ -929,7 +929,7 @@ def handle_cmd(name, node, string): # noqa: C901 TODO make this less complex
             # mathvariant="double-struck" is ignored for Greek letters
             # (tested in Firefox 78). Use literal Unicode characters.
             arg = mathbb.get(arg, arg)
-        if arg.isalpha() or arg == u'\u2140':
+        if arg.isalpha() or arg == '\u2140':
             node = node.append(mi(arg, **attributes))
             return node, remainder
         # Wrap in <style>
@@ -973,7 +973,7 @@ def handle_cmd(name, node, string): # noqa: C901 TODO make this less complex
             try:
                 delimiter = stretchables[delimiter.lstrip('\\')]
             except KeyError:
-                raise SyntaxError(u'Unsupported "\\%s" delimiter "%s"!'
+                raise SyntaxError('Unsupported "\\%s" delimiter "%s"!'
                                   % (name, delimiter))
         if size:
             delimiter_attributes['maxsize'] = size
@@ -997,8 +997,8 @@ def handle_cmd(name, node, string): # noqa: C901 TODO make this less complex
             try:
                 arg = operators[arg[1:]]
             except KeyError:
-                raise SyntaxError(u'\\not: Cannot negate: "%s"!'%arg)
-        arg = unicodedata.normalize('NFC', arg+u'\u0338')
+                raise SyntaxError('\\not: Cannot negate: "%s"!'%arg)
+        arg = unicodedata.normalize('NFC', arg+'\u0338')
         node = node.append(mo(arg))
         return node, string
 
@@ -1008,7 +1008,7 @@ def handle_cmd(name, node, string): # noqa: C901 TODO make this less complex
         parts = arg.split('$') # extract inline math
         for i, part in enumerate(parts):
             if i % 2 == 0: # i is even
-                part = re.sub('(^ | $)', u'\u00a0', part)
+                part = re.sub('(^ | $)', '\u00a0', part)
                 node = node.append(mtext(part))
             else:
                 parse_latex_math(node, part)
@@ -1021,7 +1021,7 @@ def handle_cmd(name, node, string): # noqa: C901 TODO make this less complex
 
     if name in ('hspace', 'mspace'):
         arg, string = tex_group(string)
-        if arg.endswith('mu'):
+        if arg.endswith('m'):
             arg = '%sem' % (float(arg[:-2])/18)
         node = node.append(mspace(width='%s'%arg))
         return node, string
@@ -1133,8 +1133,8 @@ def handle_cmd(name, node, string): # noqa: C901 TODO make this less complex
         elif node.__class__.__name__ == 'math':
             node.append(new_node)
         else:
-            raise SyntaxError(u'Declaration "\\%s" must be first command '
-                              u'in a group.' % name)
+            raise SyntaxError('Declaration "\\%s" must be first command '
+                              'in a group.' % name)
         return new_node, string
 
     if name.endswith('limits'):
@@ -1152,7 +1152,7 @@ def handle_cmd(name, node, string): # noqa: C901 TODO make this less complex
     if name == 'end':
         return end_environment(node, string)
 
-    raise SyntaxError(u'Unknown LaTeX command: ' + name)
+    raise SyntaxError('Unknown LaTeX command: ' + name)
 
 # >>> handle_cmd('left', math(), '[a\\right]')
 # (mrow(mo('[')), 'a\\right]')
@@ -1246,7 +1246,7 @@ def begin_environment(node, string):
         node.append(mtable(mtr(entry), **attributes))
         node = entry
     else:
-        raise SyntaxError(u'Environment not supported!')
+        raise SyntaxError('Environment not supported!')
     return node, string
 
 
@@ -1261,7 +1261,7 @@ def end_environment(node, string):
         elif name == 'cases':
             node = node.close()
     else:
-        raise SyntaxError(u'Environment not supported!')
+        raise SyntaxError('Environment not supported!')
     return node, string
 
 

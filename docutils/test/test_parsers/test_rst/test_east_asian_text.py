@@ -22,14 +22,14 @@ def suite():
 totest = {}
 
 totest['double-width'] = [
-[u"""\
+["""\
 タイトル1
 =========
 
 タイトル2
 ========
 """,
-u"""\
+"""\
 <document source="test data">
     <section ids="section-1" names="タイトル1">
         <title>
@@ -44,7 +44,7 @@ u"""\
                 タイトル2
                 ========
 """],
-[u"""
+["""
 +-----------------------+
 | * ヒョウ:ダイ1ギョウ  |
 | * ダイ2ギョウ         |
@@ -53,7 +53,7 @@ u"""\
 | * ダイ2ギョウ         |
 +-----------------------+
 """,
-u"""\
+"""\
 <document source="test data">
     <table>
         <tgroup cols="1">
@@ -74,7 +74,7 @@ u"""\
                             * ダイ1ギョウ
                             * ダイ2ギョウ
 """],
-[u"""\
+["""\
 Complex spanning pattern (no edge knows all rows/cols):
 
 +--------+---------------------+
@@ -85,7 +85,7 @@ Complex spanning pattern (no edge knows all rows/cols):
 | 南西・南セル          | セル |
 +-----------------------+------+
 """,
-u"""\
+"""\
 <document source="test data">
     <paragraph>
         Complex spanning pattern (no edge knows all rows/cols):
@@ -117,7 +117,7 @@ u"""\
                         <paragraph>
                             南西・南セル
 """],
-[u"""\
+["""\
 =========  =========
 ダイ1ラン  ダイ2ラン
 =========  =========
@@ -126,7 +126,7 @@ u"""\
 ダイ1ラン ダイ2ラン
 ========  =========
 """,
-u"""\
+"""\
 <document source="test data">
     <table>
         <tgroup cols="2">
@@ -149,7 +149,7 @@ u"""\
             ダイ1ラン ダイ2ラン
             ========  =========
 """],
-[u"""\
+["""\
 Some ambiguous-width characters:
 
 = ===================================
@@ -303,9 +303,9 @@ b"""\
 """.decode('raw_unicode_escape')],
 ]
 '''
-[u"""\
+["""\
 """,
-u"""\
+"""\
 """],
 '''
 

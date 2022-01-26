@@ -73,8 +73,8 @@ class ReporterTests(unittest.TestCase):
 
 
     def test_unicode_message(self):
-        sw = self.reporter.system_message(0, u'mesidʒ')
-        self.assertEqual(sw.pformat(), u"""\
+        sw = self.reporter.system_message(0, 'mesidʒ')
+        self.assertEqual(sw.pformat(), """\
 <system_message level="0" source="test data" type="DEBUG">
     <paragraph>
         mesidʒ
@@ -85,10 +85,10 @@ class ReporterTests(unittest.TestCase):
         unicode(<exception instance>) uses __str__
         and hence fails with unicode message"""
         try:
-            raise Exception(u'mesidʒ')
+            raise Exception('mesidʒ')
         except Exception as err:
             sw = self.reporter.system_message(0, err)
-            self.assertEqual(sw.pformat(), u"""\
+            self.assertEqual(sw.pformat(), """\
 <system_message level="0" source="test data" type="DEBUG">
     <paragraph>
         mesidʒ
@@ -197,13 +197,13 @@ class ExtensionOptionTests(unittest.TestCase):
               nodes.field_body('', nodes.paragraph('', '2.0')))
         field_list += nodes.field(
               '', nodes.field_name('', 'cdef'),
-              nodes.field_body('', nodes.paragraph('', u'hol\u00e0')))
+              nodes.field_body('', nodes.paragraph('', 'hol\u00e0')))
         field_list += nodes.field(
               '', nodes.field_name('', 'empty'), nodes.field_body())
         self.assertEqual(
               utils.extract_extension_options(field_list, self.optionspec),
               {'a': 1, 'bbb': 2.0,
-               'cdef': u'hol\u00e0',
+               'cdef': 'hol\u00e0',
                'empty': None})
         self.assertRaises(KeyError, utils.extract_extension_options,
                           field_list, {})
@@ -271,22 +271,22 @@ class HelperFunctionTests(unittest.TestCase):
                           'grc-x-altquot', 'grc'])
 
     def test_column_width(self):
-        self.assertEqual(utils.column_width(u'de'), 2)
-        self.assertEqual(utils.column_width(u'dâ'), 2) # pre-composed
-        self.assertEqual(utils.column_width(u'dâ'), 2) # combining
+        self.assertEqual(utils.column_width('de'), 2)
+        self.assertEqual(utils.column_width('dâ'), 2) # pre-composed
+        self.assertEqual(utils.column_width('dâ'), 2) # combining
 
     def test_decode_path(self):
         try:
-            bytes_filename = u'späm'.encode(sys.getfilesystemencoding())
+            bytes_filename = 'späm'.encode(sys.getfilesystemencoding())
         except UnicodeEncodeError:
             bytes_filename = b'spam'
         bytespath = utils.decode_path(bytes_filename)
-        unipath = utils.decode_path(u'späm')
+        unipath = utils.decode_path('späm')
         defaultpath = utils.decode_path(None)
         if bytes_filename != b'spam': # skip if ä cannot be encoded
-            self.assertEqual(bytespath, u'späm')
-        self.assertEqual(unipath, u'späm')
-        self.assertEqual(defaultpath, u'')
+            self.assertEqual(bytespath, 'späm')
+        self.assertEqual(unipath, 'späm')
+        self.assertEqual(defaultpath, '')
         self.assertTrue(isinstance(bytespath, str))
         self.assertTrue(isinstance(unipath, str))
         self.assertTrue(isinstance(defaultpath, str))
@@ -312,16 +312,16 @@ class HelperFunctionTests(unittest.TestCase):
         # self.assertEqual(utils.relative_path(source, target),
         #                  os.path.abspath('fileB'))
         # Correctly process unicode instances:
-        self.assertEqual(utils.relative_path(u'spam', u'spam'), u'')
-        source = os.path.join(u'h\xE4m', u'spam', u'fileA')
-        target = os.path.join(u'h\xE4m', u'spam', u'fileB')
-        self.assertEqual(utils.relative_path(source, target), u'fileB')
-        source = os.path.join(u'h\xE4m', u'spam', u'fileA')
-        target = os.path.join(u'h\xE4m', u'fileB')
-        self.assertEqual(utils.relative_path(source, target), u'../fileB')
+        self.assertEqual(utils.relative_path('spam', 'spam'), '')
+        source = os.path.join('h\xE4m', 'spam', 'fileA')
+        target = os.path.join('h\xE4m', 'spam', 'fileB')
+        self.assertEqual(utils.relative_path(source, target), 'fileB')
+        source = os.path.join('h\xE4m', 'spam', 'fileA')
+        target = os.path.join('h\xE4m', 'fileB')
+        self.assertEqual(utils.relative_path(source, target), '../fileB')
         # if source is None, default to the cwd:
-        target = os.path.join(u'eggs', u'fileB')
-        self.assertEqual(utils.relative_path(None, target), u'eggs/fileB')
+        target = os.path.join('eggs', 'fileB')
+        self.assertEqual(utils.relative_path(None, target), 'eggs/fileB')
 
     def test_find_file_in_dirs(self):
         # Search for file `path` in the sequence of directories `dirs`.

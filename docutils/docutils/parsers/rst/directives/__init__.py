@@ -169,7 +169,7 @@ def unchanged(argument):
     No argument implies empty string ("").
     """
     if argument is None:
-        return u''
+        return ''
     else:
         return argument  # unchanged!
 

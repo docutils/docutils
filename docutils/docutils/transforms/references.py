@@ -476,17 +476,17 @@ class Footnotes(Transform):
           # Entries 1-4 and 6 below are from section 12.51 of
           # The Chicago Manual of Style, 14th edition.
           '*',                          # asterisk/star
-          u'\u2020',                    # † &dagger; dagger
-          u'\u2021',                    # ‡ &Dagger; double dagger
-          u'\u00A7',                    # § &sect; section mark
-          u'\u00B6',                    # ¶ &para; paragraph mark (pilcrow)
+          '\u2020',                    # † &dagger; dagger
+          '\u2021',                    # ‡ &Dagger; double dagger
+          '\u00A7',                    # § &sect; section mark
+          '\u00B6',                    # ¶ &para; paragraph mark (pilcrow)
                                         # (parallels ['||'] in CMoS)
           '#',                          # number sign
           # The entries below were chosen arbitrarily.
-          u'\u2660',                    # ♠ &spades; spade suit
-          u'\u2665',                    # ♡ &hearts; heart suit
-          u'\u2666',                    # ♢ &diams; diamond suit
-          u'\u2663',                    # ♣ &clubs; club suit
+          '\u2660',                    # ♠ &spades; spade suit
+          '\u2665',                    # ♡ &hearts; heart suit
+          '\u2666',                    # ♢ &diams; diamond suit
+          '\u2663',                    # ♣ &clubs; club suit
           ]
 
     def apply(self):

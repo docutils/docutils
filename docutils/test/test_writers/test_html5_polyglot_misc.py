@@ -27,7 +27,7 @@ class EncodingTestCase(DocutilsTestSupport.StandardTestCase):
             'stylesheet': '',
             '_disable_config': True,}
         result = core.publish_string(
-            u'EUR = \u20ac', writer_name='html5_polyglot',
+            'EUR = \u20ac', writer_name='html5_polyglot',
             settings_overrides=settings_overrides)
         # Encoding a euro sign with latin1 doesn't work, so the
         # xmlcharrefreplace handler is used.
@@ -144,7 +144,7 @@ class SettingsTestCase(DocutilsTestSupport.StandardTestCase):
                    }
         with warnings.catch_warnings(record=True) as wng:
             warnings.simplefilter("always")
-            core.publish_string(u'warnings test', writer_name='html5',
+            core.publish_string('warnings test', writer_name='html5',
                                 settings_overrides=mysettings)
             self.assertEqual(len(wng), 1, "Expected FutureWarning.")
             assert issubclass(wng[0].category, FutureWarning)
@@ -202,7 +202,7 @@ class MathTestCase(DocutilsTestSupport.StandardTestCase):
                       'embed_stylesheet': False}
         styles = core.publish_parts(self.data, writer_name='html5_polyglot',
             settings_overrides=mysettings)['stylesheet']
-        self.assertEqual(u"""\
+        self.assertEqual("""\
 <link rel="stylesheet" href="functional/input/data/minimal.css" type="text/css" />
 <link rel="stylesheet" href="functional/input/data/plain.css" type="text/css" />
 <link rel="stylesheet" href="functional/input/data/math.css" type="text/css" />

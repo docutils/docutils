@@ -18,11 +18,11 @@ from docutils.parsers.rst.directives.images import PIL
 
 # docutils.utils.DependencyList records POSIX paths,
 # i.e. "/" as a path separator even on Windows (not os.path.join).
-paths = {'include': u'data/include.txt',  # included rst file
-         'raw':     u'data/raw.txt',      # included raw "HTML file"
-         'scaled-image': u'../docs/user/rst/images/biohazard.png',
-         'figure-image': u'../docs/user/rst/images/title.png',
-         'stylesheet':   u'data/stylesheet.txt',
+paths = {'include': 'data/include.txt',  # included rst file
+         'raw':     'data/raw.txt',      # included raw "HTML file"
+         'scaled-image': '../docs/user/rst/images/biohazard.png',
+         'figure-image': '../docs/user/rst/images/title.png',
+         'stylesheet':   'data/stylesheet.txt',
         }
 
 # avoid latex writer future warnings:

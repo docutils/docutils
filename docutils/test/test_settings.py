@@ -18,10 +18,8 @@ from docutils import frontend, utils
 from docutils.writers import html4css1, pep_html, html5_polyglot
 from docutils.parsers import rst
 
-
 def fixpath(path):
     return os.path.abspath(os.path.join(*(path.split('/'))))
-
 
 class ConfigFileTests(unittest.TestCase):
 
@@ -35,34 +33,34 @@ class ConfigFileTests(unittest.TestCase):
 
     # expected settings after parsing the equally named config_file:
     settings = {
-        'old': {u'datestamp': u'%Y-%m-%d %H:%M UTC',
-                u'generator': True,
-                u'no_random': True,
-                u'python_home': u'http://www.python.org',
-                u'source_link': True,
+        'old': {'datestamp': '%Y-%m-%d %H:%M UTC',
+                'generator': True,
+                'no_random': True,
+                'python_home': 'http://www.python.org',
+                'source_link': True,
                 'stylesheet': None,
-                u'stylesheet_path': [u'stylesheets/pep.css'],
-                'template': fixpath(u'data/pep-html-template')},
-        'one': {u'datestamp': u'%Y-%m-%d %H:%M UTC',
-                u'generator': True,
-                u'no_random': True,
-                u'python_home': u'http://www.python.org',
-                u'raw_enabled': False,
+                'stylesheet_path': ['stylesheets/pep.css'],
+                'template': fixpath('data/pep-html-template')},
+        'one': {'datestamp': '%Y-%m-%d %H:%M UTC',
+                'generator': True,
+                'no_random': True,
+                'python_home': 'http://www.python.org',
+                'raw_enabled': False,
                 'record_dependencies': utils.DependencyList(),
-                u'source_link': True,
+                'source_link': True,
                 'stylesheet': None,
-                u'stylesheet_path': [u'stylesheets/pep.css'],
-                u'tab_width': 8,
-                u'template': fixpath(u'data/pep-html-template'),
-                u'trim_footnote_reference_space': True,
+                'stylesheet_path': ['stylesheets/pep.css'],
+                'tab_width': 8,
+                'template': fixpath('data/pep-html-template'),
+                'trim_footnote_reference_space': True,
                 'output_encoding': 'ascii',
                 'output_encoding_error_handler': 'xmlcharrefreplace',
                },
-        'two': {u'footnote_references': u'superscript',
-                u'generator': False,
+        'two': {'footnote_references': 'superscript',
+                'generator': False,
                 'record_dependencies': utils.DependencyList(),
-                u'stylesheet': None,
-                u'stylesheet_path': [u'test.css'],
+                'stylesheet': None,
+                'stylesheet_path': ['test.css'],
                 'trim_footnote_reference_space': None,
                 'output_encoding_error_handler': 'namereplace'},
         'two_html5': {
@@ -76,21 +74,20 @@ class ConfigFileTests(unittest.TestCase):
                 'trim_footnote_reference_space': True,
                 'output_encoding_error_handler': 'namereplace',
                 },
-        'list': {u'expose_internals': [u'a', u'b', u'c', u'd', u'e'],
-                 u'strip_classes': [u'spam', u'pan', u'fun', u'parrot'],
-                 u'strip_elements_with_classes': [u'sugar', u'flour', u'milk',
-                                                  u'safran']},
-        'list2': {u'expose_internals': [u'a', u'b', u'c', u'd', u'e', u'f'],
-                  u'strip_classes': [u'spam', u'pan', u'fun', u'parrot',
-                                     u'ham', u'eggs'],
-                  u'strip_elements_with_classes': [u'sugar', u'flour',
-                                                   u'milk', u'safran',
-                                                   u'eggs', u'salt'],
+        'list': {'expose_internals': ['a', 'b', 'c', 'd', 'e'],
+                 'strip_classes': ['spam', 'pan', 'fun', 'parrot'],
+                 'strip_elements_with_classes': ['sugar', 'flour', 'milk',
+                                                 'safran']},
+        'list2': {'expose_internals': ['a', 'b', 'c', 'd', 'e', 'f'],
+                  'strip_classes': ['spam', 'pan', 'fun', 'parrot',
+                                    'ham', 'eggs'],
+                  'strip_elements_with_classes': ['sugar', 'flour', 'milk',
+                                                  'safran', 'eggs', 'salt'],
                   'stylesheet': ['style2.css'],
                   'stylesheet_path': None,
                  },
-        'error': {u'error_encoding': u'ascii',
-                  u'error_encoding_error_handler': u'strict'},
+        'error': {'error_encoding': 'ascii',
+                  'error_encoding_error_handler': 'strict'},
         'error2': {'error_encoding': 'latin1'},
         }
 
@@ -187,7 +184,6 @@ class ConfigFileTests(unittest.TestCase):
         self.compare_output(self.files_settings('error', 'error2'),
                             self.expected_settings('error', 'error2'))
 
-
 class ConfigEnvVarFileTests(ConfigFileTests):
 
     """
@@ -209,10 +205,9 @@ class ConfigEnvVarFileTests(ConfigFileTests):
     def tearDown(self):
         os.environ = self.orig_environ
 
-
 class HelperFunctionsTests(unittest.TestCase):
 
-    pathdict = {'foo': 'hallo', 'ham': u'h\xE4m', 'spam': u'spam'}
+    pathdict = {'foo': 'hallo', 'ham': 'h\xE4m', 'spam': 'spam'}
     keys = ['foo', 'ham']
 
     def setUp(self):
@@ -223,9 +218,9 @@ class HelperFunctionsTests(unittest.TestCase):
         pathdict = self.pathdict.copy()
         frontend.make_paths_absolute(pathdict, self.keys, base_path='base')
         self.assertEqual(pathdict['foo'], os.path.abspath('base/hallo'))
-        self.assertEqual(pathdict['ham'], os.path.abspath(u'base/h\xE4m'))
+        self.assertEqual(pathdict['ham'], os.path.abspath('base/h\xE4m'))
         # not touched, because key not in keys:
-        self.assertEqual(pathdict['spam'], u'spam')
+        self.assertEqual(pathdict['spam'], 'spam')
 
     def test_make_paths_absolute_cwd(self):
         # With base_path None, the cwd is used as base path.
@@ -233,46 +228,44 @@ class HelperFunctionsTests(unittest.TestCase):
         # os.getcwdu() is used and the converted path is a unicode instance:
         pathdict = self.pathdict.copy()
         frontend.make_paths_absolute(pathdict, self.keys)
-        self.assertEqual(pathdict['foo'], os.path.abspath(u'hallo'))
-        self.assertEqual(pathdict['ham'], os.path.abspath(u'h\xE4m'))
+        self.assertEqual(pathdict['foo'], os.path.abspath('hallo'))
+        self.assertEqual(pathdict['ham'], os.path.abspath('h\xE4m'))
         # not touched, because key not in keys:
-        self.assertEqual(pathdict['spam'], u'spam')
+        self.assertEqual(pathdict['spam'], 'spam')
 
     boolean_settings = (
                 (True, True ),
                 ('1', True ),
-                (u'on', True ),
+                ('on', True ),
                 ('yes', True ),
-                (u'true', True ),
-                (u'0', False ),
+                ('true', True ),
+                ('0', False ),
                 ('off', False ),
-                (u'no', False ),
+                ('no', False ),
                 ('false', False ),
                )
     def test_validate_boolean(self):
         for t in self.boolean_settings:
             self.assertEqual(
                 frontend.validate_boolean(None, t[0], self.option_parser),
-                             t[1])
+                t[1])
 
     def test_validate_ternary(self):
         tests = (
                  ('500V', '500V'),
-                 (u'parrot', u'parrot'),
+                 ('parrot', 'parrot'),
                 )
         for t in self.boolean_settings + tests:
             self.assertEqual(
                 frontend.validate_ternary(None, t[0], self.option_parser),
-                             t[1])
+                t[1])
 
     def test_validate_colon_separated_string_list(self):
         tests = (
-                    (u'a', ['a',] ),
                     ('a', ['a',] ),
-                    (u'a:b', ['a', 'b'] ),
                     ('a:b', ['a', 'b'] ),
-                    ([u'a',], ['a',] ),
-                    ([u'a', u'b:c'], ['a', 'b', 'c'] ),
+                    (['a',], ['a',] ),
+                    (['a', 'b:c'], ['a', 'b', 'c'] ),
                 )
         for t in tests:
             self.assertEqual(
@@ -281,12 +274,9 @@ class HelperFunctionsTests(unittest.TestCase):
 
     def test_validate_comma_separated_list(self):
         tests = (
-                    (u'a', ['a',] ),
                     ('a', ['a',] ),
-                    (u'a,b', ['a', 'b'] ),
                     ('a,b', ['a', 'b'] ),
-                    ([u'a',], ['a',] ),
-                    ([u'a', u'b,c'], ['a', 'b', 'c'] ),
+                    (['a',], ['a',] ),
                     (['a', 'b,c'], ['a', 'b', 'c'] ),
                 )
         for t in tests:
@@ -298,7 +288,7 @@ class HelperFunctionsTests(unittest.TestCase):
         tests = (
                     ('', './' ),
                     (None, './' ),
-                    (u'http://example.org', u'http://example.org/' ),
+                    ('http://example.org', 'http://example.org/' ),
                     ('http://example.org/', 'http://example.org/' ),
                 )
         for t in tests:
@@ -309,11 +299,9 @@ class HelperFunctionsTests(unittest.TestCase):
     def test_validate_smartquotes_locales(self):
         tests = (
                  ('en:ssvv', [('en', 'ssvv')]),
-                 (u'sd:«»°°', [(u'sd', u'«»°°')]),
-                 ([('sd', u'«»°°'), u'ds:°°«»'], [('sd', u'«»°°'),
-                                                  ('ds', u'°°«»')]),
-                 (u'frs:« : »:((:))', [(u'frs', [u'« ', u' »',
-                                                 u'((', u'))'])]),
+                 ('sd:«»°°', [('sd', '«»°°')]),
+                 ([('sd', '«»°°'), 'ds:°°«»'], [('sd', '«»°°'), ('ds', '°°«»')]),
+                 ('frs:« : »:((:))', [('frs', ['« ', ' »', '((', '))'])]),
                 )
         for t in tests:
             self.assertEqual(
@@ -327,7 +315,6 @@ class HelperFunctionsTests(unittest.TestCase):
             reporter.set_conditions('foo', 1, 4) # trigger warning
             self.assertEqual(len(wng), 1, "Expected a DeprecationWarning.")
             assert issubclass(wng[-1].category, DeprecationWarning)
-
 
 if __name__ == '__main__':
     unittest.main()

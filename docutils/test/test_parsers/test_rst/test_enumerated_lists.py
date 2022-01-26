@@ -651,7 +651,7 @@ Nested enumerated lists:
             <paragraph>
                 Item 3.
 """],
-[u"""\
+["""\
 A. Einstein was a great influence on
 B. Physicist, who was a colleague of
 C. Chemist.  They all worked in

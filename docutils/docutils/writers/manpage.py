@@ -273,19 +273,19 @@ class Translator(nodes.NodeVisitor):
         return ''.join(self.head + self.body + self.foot)
 
     def deunicode(self, text):
-        text = text.replace(u'\xa0', '\\ ')
-        text = text.replace(u'\u2020', '\\(dg')
+        text = text.replace('\xa0', '\\ ')
+        text = text.replace('\u2020', '\\(dg')
         return text
 
     def visit_Text(self, node):
         text = node.astext()
         text = text.replace('\\', '\\e')
         replace_pairs = [
-            (u'-', u'\\-'),
-            (u'\'', u'\\(aq'),
-            (u'´', u"\\'"),
-            (u'`', u'\\(ga'),
-            (u'"', u'\\(dq'),  # double quotes are a problem on macro lines
+            ('-', '\\-'),
+            ('\'', '\\(aq'),
+            ('´', "\\'"),
+            ('`', '\\(ga'),
+            ('"', '\\(dq'),  # double quotes are a problem on macro lines
             ]
         for (in_char, out_markup) in replace_pairs:
             text = text.replace(in_char, out_markup)

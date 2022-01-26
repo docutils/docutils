@@ -701,12 +701,12 @@ totest['csv-table'] = [
                     <entry>
                     <entry>
 """],
-[u"""\
+["""\
 .. csv-table:: non-ASCII characters
 
    Heiz\xf6lr\xfccksto\xdfabd\xe4mpfung
 """,
-u"""\
+"""\
 <document source="test data">
     <table>
         <title>
@@ -938,7 +938,7 @@ u"""\
                :widths: 0 0 0
             \n\
                some, csv, data
-""" % DocutilsTestSupport.exception_data(int, u"y")[1][0]],
+""" % DocutilsTestSupport.exception_data(int, "y")[1][0]],
 ["""\
 .. csv-table:: good delimiter
    :delim: /
@@ -1110,7 +1110,7 @@ bad_encoding_result
    :encoding: utf-16
    :header-rows: 1
 """ % utf_16_csv,
-u"""\
+"""\
 <document source="test data">
     <table>
         <title>

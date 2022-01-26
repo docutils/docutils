@@ -147,7 +147,7 @@ Paragraph.
         <attribution>
             Attribution
 """],
-[u"""\
+["""\
 Alternative: true em-dash.
 
    Block quote.
