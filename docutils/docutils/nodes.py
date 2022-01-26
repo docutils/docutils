@@ -37,7 +37,7 @@ import unicodedata
 #  Functional Node Base Classes
 # ==============================
 
-class Node(object):
+class Node:
     """Abstract base class of nodes in a document tree."""
 
     parent = None
@@ -1144,12 +1144,12 @@ class FixedTextElement(TextElement):
 #  Mixins
 # ========
 
-class Resolvable(object):
+class Resolvable:
 
     resolved = 0
 
 
-class BackLinkable(object):
+class BackLinkable:
 
     def add_backref(self, refid):
         self['backrefs'].append(refid)
@@ -1159,19 +1159,19 @@ class BackLinkable(object):
 #  Element Categories
 # ====================
 
-class Root(object):
+class Root:
     pass
 
 
-class Titular(object):
+class Titular:
     pass
 
 
-class PreBibliographic(object):
+class PreBibliographic:
     """Category of Node which may occur before Bibliographic Nodes."""
 
 
-class Bibliographic(object):
+class Bibliographic:
     pass
 
 
@@ -1179,11 +1179,11 @@ class Decorative(PreBibliographic):
     pass
 
 
-class Structural(object):
+class Structural:
     pass
 
 
-class Body(object):
+class Body:
     pass
 
 
@@ -1206,11 +1206,11 @@ class Invisible(PreBibliographic):
     """Internal elements that don't appear in output."""
 
 
-class Part(object):
+class Part:
     pass
 
 
-class Inline(object):
+class Inline:
     pass
 
 
@@ -1227,7 +1227,7 @@ class Targetable(Resolvable):
     Required for MoinMoin/reST compatibility."""
 
 
-class Labeled(object):
+class Labeled:
     """Contains a `label` as its first element."""
 
 
@@ -1945,7 +1945,7 @@ node_class_names = """
 """A list of names of all concrete Node subclasses."""
 
 
-class NodeVisitor(object):
+class NodeVisitor:
 
     """
     "Visitor" pattern [GoF95]_ abstract superclass implementation for

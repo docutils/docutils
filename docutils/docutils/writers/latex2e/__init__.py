@@ -296,7 +296,7 @@ class Writer(writers.Writer):
                 self.parts[part] = ''.join(lines)
 
 
-class Babel(object):
+class Babel:
     """Language specifics for LaTeX."""
 
     # TeX (babel) language names:
@@ -496,7 +496,7 @@ class SortableDict(dict):
 #    \providelength and \provideenvironment commands.
 #    However, it is pretty non-standard (texlive-latex-extra).
 
-class PreambleCmds(object):
+class PreambleCmds:
     """Building blocks for the latex preamble."""
 
 # Requirements and Setup
@@ -612,7 +612,7 @@ with open(_docutils_sty, encoding='utf8') as fp:
 # -------------------
 # ::
 
-class CharMaps(object):
+class CharMaps:
     """LaTeX representations for active and Unicode characters."""
 
     # characters that need escaping even in `alltt` environments:
@@ -787,7 +787,7 @@ class CharMaps(object):
     # and unimap.py from TeXML
 
 
-class DocumentClass(object):
+class DocumentClass:
     """Details of a LaTeX document class."""
 
     def __init__(self, document_class, with_part=False):
@@ -828,7 +828,7 @@ class DocumentClass(object):
         return depth
 
 
-class Table(object):
+class Table:
     """Manage a table while traversing.
 
     Table style might be

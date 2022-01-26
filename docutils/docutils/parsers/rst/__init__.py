@@ -205,7 +205,7 @@ class DirectiveError(Exception):
         self.msg = message
 
 
-class Directive(object):
+class Directive:
 
     """
     Base class for reStructuredText directives.

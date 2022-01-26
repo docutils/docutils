@@ -113,7 +113,7 @@ from unicodedata import east_asian_width
 from docutils import io, utils
 
 
-class StateMachine(object):
+class StateMachine:
 
     """
     A finite state machine for text filters using regular expressions.
@@ -504,7 +504,7 @@ class StateMachine(object):
             observer(*info)
 
 
-class State(object):
+class State:
 
     """
     State superclass. Contains a list of transitions, and transition methods.
@@ -1019,7 +1019,7 @@ class StateWS(State):
         return context, next_state, results
 
 
-class _SearchOverride(object):
+class _SearchOverride:
 
     """
     Mix-in class to override `StateMachine` regular expression behavior.
@@ -1052,7 +1052,7 @@ class SearchStateMachineWS(_SearchOverride, StateMachineWS):
     pass
 
 
-class ViewList(object):
+class ViewList:
 
     """
     List with extended functionality: slices of ViewList objects are child

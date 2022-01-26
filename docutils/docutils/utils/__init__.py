@@ -30,7 +30,7 @@ class SystemMessage(ApplicationError):
 class SystemMessagePropagation(ApplicationError): pass
 
 
-class Reporter(object):
+class Reporter:
 
     """
     Info/warning/error reporter and ``system_message`` element generator.
@@ -678,7 +678,7 @@ def normalize_language_tag(tag):
     return taglist
 
 
-class DependencyList(object):
+class DependencyList:
 
     """
     List of dependencies, with file recording support.

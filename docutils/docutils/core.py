@@ -22,7 +22,7 @@ from docutils.frontend import OptionParser
 from docutils.transforms import Transformer
 import docutils.readers.doctree
 
-class Publisher(object):
+class Publisher:
 
     """
     A facade encapsulating the high-level logic of a Docutils system.

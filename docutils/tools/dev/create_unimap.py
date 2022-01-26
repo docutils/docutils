@@ -18,7 +18,7 @@ text_map = {}
 math_map = {}
 
 
-class Visitor(object):
+class Visitor:
     """Node visitor for contents of unicode.xml."""
 
     def visit_character(self, node):

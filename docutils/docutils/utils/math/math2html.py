@@ -32,7 +32,7 @@ from docutils.utils.math import tex2unichar
 __version__ = '1.3 (2021-06-02)'
 
 
-class Trace(object):
+class Trace:
   "A tracing class"
 
   debugmode = False
@@ -78,7 +78,7 @@ class Trace(object):
   show = classmethod(show)
 
 
-class ContainerConfig(object):
+class ContainerConfig:
   "Configuration class from elyxer.config file"
 
   extracttext = {
@@ -104,7 +104,7 @@ class ContainerConfig(object):
       }
 
 
-class EscapeConfig(object):
+class EscapeConfig:
   "Configuration class from elyxer.config file"
 
   chars = {
@@ -120,7 +120,7 @@ class EscapeConfig(object):
       }
 
 
-class FormulaConfig(object):
+class FormulaConfig:
   "Configuration class from elyxer.config file"
 
   alphacommands = {
@@ -545,7 +545,7 @@ class FormulaConfig(object):
       }
 
 
-class CommandLineParser(object):
+class CommandLineParser:
   "A parser for runtime options"
 
   def __init__(self, options):
@@ -613,7 +613,7 @@ class CommandLineParser(object):
     return key
 
 
-class Options(object):
+class Options:
   "A set of runtime options"
 
   location = None
@@ -671,7 +671,7 @@ class Options(object):
     sys.exit()
 
 
-class Cloner(object):
+class Cloner:
   "An object used to clone other objects."
 
   def clone(cls, original):
@@ -688,7 +688,7 @@ class Cloner(object):
   clone = classmethod(clone)
   create = classmethod(create)
 
-class ContainerExtractor(object):
+class ContainerExtractor:
   """A class to extract certain containers.
 
   The config parameter is a map containing three lists:
@@ -729,7 +729,7 @@ class ContainerExtractor(object):
     return clone
 
 
-class Parser(object):
+class Parser:
   "A generic parser"
 
   def __init__(self):
@@ -865,7 +865,7 @@ class StringParser(Parser):
 
 
 
-class ContainerOutput(object):
+class ContainerOutput:
   "The generic HTML output for a container."
 
   def gethtml(self, container):
@@ -1010,7 +1010,7 @@ class StringOutput(ContainerOutput):
     return [container.string]
 
 
-class Globable(object):
+class Globable:
   """A bit of text which can be globbed (lumped together in bits).
   Methods current(), skipcurrent(), checkfor() and isout() have to be
   implemented by subclasses."""
@@ -1128,7 +1128,7 @@ class Globable(object):
       return None
     return nextending.ending
 
-class EndingList(object):
+class EndingList:
   "A list of position endings"
 
   def __init__(self):
@@ -1192,7 +1192,7 @@ class EndingList(object):
     return string + ']'
 
 
-class PositionEnding(object):
+class PositionEnding:
   "An ending for a parsing position"
 
   def __init__(self, ending, optional):
@@ -1303,7 +1303,7 @@ class TextPosition(Position):
     return self.text[self.pos : self.pos + length]
 
 
-class Container(object):
+class Container:
   "A container for text and objects in a lyx file"
 
   partkey = None
@@ -1508,7 +1508,7 @@ class Constant(StringContainer):
     return 'Constant: ' + self.string
 
 
-class DocumentParameters(object):
+class DocumentParameters:
   "Global parameters for the document."
 
   displaymode = False
@@ -1874,7 +1874,7 @@ class SquareBracket(Bracket):
     return bracket
 
 
-class MathsProcessor(object):
+class MathsProcessor:
   "A processor for a maths construction inside the FormulaProcessor."
 
   def process(self, contents, index):
@@ -1886,7 +1886,7 @@ class MathsProcessor(object):
     return 'Maths processor ' + self.__class__.__name__
 
 
-class FormulaProcessor(object):
+class FormulaProcessor:
   "A processor specifically for formulas."
 
   processors = []
@@ -2030,7 +2030,7 @@ class WholeFormula(FormulaBit):
     while not pos.finished():
       self.add(self.factory.parseany(pos))
 
-class FormulaFactory(object):
+class FormulaFactory:
   "Construct bits of formula"
 
   # bit types will be appended later
@@ -2351,7 +2351,7 @@ FormulaCommand.types = [
     TextFunction, SpacedCommand]
 
 
-class BigBracket(object):
+class BigBracket:
   "A big bracket generator."
 
   def __init__(self, size, bracket, alignment='l'):
@@ -2866,7 +2866,7 @@ FormulaProcessor.processors += [
 
 
 
-class ParameterDefinition(object):
+class ParameterDefinition:
   "The definition of a parameter in a hybrid function."
   "[] parameters are optional, {} parameters are mandatory."
   "Each parameter has a one-character name, like {$1} or {$p}."
@@ -3084,7 +3084,7 @@ class HybridFunction(ParameterFunction):
       element.size = self.size
 
 
-class HybridSize(object):
+class HybridSize:
   "The size associated with a hybrid function."
 
   configsizes = FormulaConfig.hybridsizes

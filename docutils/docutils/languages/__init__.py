@@ -16,7 +16,7 @@ from importlib import import_module
 from docutils.utils import normalize_language_tag
 
 
-class LanguageImporter(object):
+class LanguageImporter:
     """Import language modules.
 
     When called with a BCP 47 language tag, instances return a module

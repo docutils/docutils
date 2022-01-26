@@ -381,7 +381,7 @@ default_smartypants_attr = "1"
 
 import re, sys
 
-class smartchars(object):
+class smartchars:
     """Smart quotes and dashes
     """
 

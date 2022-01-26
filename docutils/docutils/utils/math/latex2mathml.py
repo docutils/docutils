@@ -303,7 +303,7 @@ bigdelimiters = {'left':  0,
 # MathML element classes
 # ----------------------
 
-class math(object):
+class math:
     """Base class for MathML elements and root of MathML trees."""
 
     nchildren = None
