@@ -996,7 +996,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         if 'height' in node:
             atts['height'] = node['height']
         if 'scale' in node:
-            if (PIL and not ('width' in node and 'height' in node)
+            if (PIL and ('width' not in node or 'height' not in node)
                 and self.settings.file_insertion_enabled):
                 imagepath = url2pathname(uri)
                 try:
@@ -1568,8 +1568,9 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('</table>\n')
 
     def visit_target(self, node):
-        if not ('refuri' in node or 'refid' in node
-                or 'refname' in node):
+        if ('refuri' not in node
+                and 'refid' not in node
+                and 'refname' not in node):
             self.body.append(self.starttag(node, 'span', '', CLASS='target'))
             self.context.append('</span>')
         else:

@@ -753,7 +753,7 @@ class Parser(object):
     if len(split) == 1:
       self.parameters[key] = True
       return
-    if not '"' in split[1]:
+    if '"' not in split[1]:
       self.parameters[key] = split[1].strip()
       return
     doublesplit = split[1].split('"')
@@ -1414,7 +1414,7 @@ class Container(object):
 
   def getparameter(self, name):
     "Get the value of a parameter, if present."
-    if not name in self.parameters:
+    if name not in self.parameters:
       return None
     return self.parameters[name]
 
@@ -1591,7 +1591,7 @@ class FormulaParser(Parser):
   def parsesingleliner(self, reader, start, ending):
     "Parse a formula in one line"
     line = reader.currentline().strip()
-    if not start in line:
+    if start not in line:
       Trace.error('Line ' + line + ' does not contain formula start ' + start)
       return ''
     if not line.endswith(ending):
@@ -1606,7 +1606,7 @@ class FormulaParser(Parser):
     "Parse a formula in multiple lines"
     formula = ''
     line = reader.currentline()
-    if not start in line:
+    if start not in line:
       Trace.error('Line ' + line.strip() + ' does not contain formula start ' + start)
       return ''
     index = line.index(start)
@@ -2051,7 +2051,7 @@ class FormulaFactory(object):
 
   def instance(self, type):
     "Get an instance of the given type."
-    if not type in self.instances or not self.instances[type]:
+    if type not in self.instances or not self.instances[type]:
       self.instances[type] = self.create(type)
     return self.instances[type]
 
@@ -2947,7 +2947,7 @@ class ParameterFunction(CommandBit):
 
   def getparam(self, name):
     "Get a parameter as parsed."
-    if not name in self.params:
+    if name not in self.params:
       return None
     return self.params[name]
 
@@ -3018,7 +3018,7 @@ class HybridFunction(ParameterFunction):
   def writeparam(self, pos):
     "Write a single param of the form $0, $x..."
     name = '$' + pos.skipcurrent()
-    if not name in self.params:
+    if name not in self.params:
       Trace.error('Unknown parameter ' + name)
       return None
     if not self.params[name]:
@@ -3055,7 +3055,7 @@ class HybridFunction(ParameterFunction):
       Trace.error('Function f' + str(index) + ' is not defined')
       return None
     tag = self.translated[2 + index]
-    if not '$' in tag:
+    if '$' not in tag:
       return tag
     for variable in self.params:
       if variable in tag:
@@ -3076,7 +3076,7 @@ class HybridFunction(ParameterFunction):
 
   def computehybridsize(self):
     "Compute the size of the hybrid function."
-    if not self.command in HybridSize.configsizes:
+    if self.command not in HybridSize.configsizes:
       self.computesize()
       return
     self.size = HybridSize().getsize(self)

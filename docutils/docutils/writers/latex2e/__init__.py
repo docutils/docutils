@@ -2388,7 +2388,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # Convert image URI to a local file path
         imagepath = url2pathname(attrs['uri']).replace('\\', '/')
         # alignment defaults:
-        if not 'align' in attrs:
+        if 'align' not in attrs:
             # Set default align of image in a figure to 'center'
             if isinstance(node.parent, nodes.figure):
                 attrs['align'] = 'center'
@@ -2763,7 +2763,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.out.append('}}')
 
     def visit_raw(self, node):
-        if not 'latex' in node.get('format', '').split():
+        if 'latex' not in node.get('format', '').split():
             raise nodes.SkipNode
         if not (self.is_inline(node)
                 or isinstance(node.parent, nodes.compound)):

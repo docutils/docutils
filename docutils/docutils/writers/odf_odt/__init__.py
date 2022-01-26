@@ -3175,9 +3175,9 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         #
         # I don't know how to implement targets in ODF.
         # How do we create a target in oowriter?  A cross-reference?
-        if not ('refuri' in node or
-                'refid' in node or
-                'refname' in node):
+        if ('refuri' not in node
+                and 'refid' not in node
+                and 'refname' not in node):
             pass
         else:
             pass
