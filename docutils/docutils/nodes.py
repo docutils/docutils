@@ -1362,7 +1362,7 @@ class document(Root, Structural, Element):
                 self.ids.setdefault(id, node)
                 if self.ids[id] is not node:
                     msg = self.reporter.severe('Duplicate ID: "%s".' % id)
-                    if msgnode != None:
+                    if msgnode is not None:
                         msgnode += msg
             return id
         # generate and set id
@@ -1461,7 +1461,7 @@ class document(Root, Structural, Element):
                 msg = self.reporter.system_message(
                     level, 'Duplicate explicit target name: "%s".' % name,
                     backrefs=[id], base_node=node)
-                if msgnode != None:
+                if msgnode is not None:
                     msgnode += msg
                 dupname(node, name)
             else:
@@ -1479,7 +1479,7 @@ class document(Root, Structural, Element):
             msg = self.reporter.info(
                 'Duplicate implicit target name: "%s".' % name,
                 backrefs=[id], base_node=node)
-            if msgnode != None:
+            if msgnode is not None:
                 msgnode += msg
 
     def has_name(self, name):
@@ -1547,7 +1547,7 @@ class document(Root, Structural, Element):
             msg = self.reporter.error(
                   'Duplicate substitution definition name: "%s".' % name,
                   base_node=subdef)
-            if msgnode != None:
+            if msgnode is not None:
                 msgnode += msg
             oldnode = self.substitution_defs[name]
             dupname(oldnode, name)
