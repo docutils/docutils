@@ -321,8 +321,7 @@ class FileInput(Input):
             - `autoclose`: close automatically after read (except when
               `sys.stdin` is the source).
             - `mode`: how the file is to be opened (see standard function
-              `open`). The default 'rU' provides universal newline support
-              for text files with Python 2.x.
+              `open`). The default is read only ('r').
         """
         Input.__init__(self, source, source_path, encoding, error_handler)
         self.autoclose = autoclose
