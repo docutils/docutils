@@ -176,17 +176,17 @@ class FormulaConfig:
       }
 
   combiningfunctions = {
-      "\\'": '́',
-      '\\"': '̈',
-      '\\^': '̂',
-      '\\`': '̀',
-      '\\~': '̃',
-      '\\c': '̧',
-      '\\r': '̊',
-      '\\s': '̩',
-      '\\textcircled': '⃝',
-      '\\textsubring': '̥',
-      '\\v': '̌',
+      "\\'":           '\u0301', # x́
+      '\\"':           '\u0308', # ẍ
+      '\\^':           '\u0302', # x̂
+      '\\`':           '\u0300', # x̀
+      '\\~':           '\u0303', # x̃
+      '\\c':           '\u0327', # x̧
+      '\\r':           '\u030a', # x̊
+      '\\s':           '\u0329', # x̩
+      '\\textcircled': '\u20dd', # x⃝
+      '\\textsubring': '\u0325', # x̥
+      '\\v':           '\u030c', # x̌
       }
   for key, value in tex2unichar.mathaccent.items():
       combiningfunctions['\\'+key] = value
