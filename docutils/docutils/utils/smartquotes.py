@@ -259,6 +259,9 @@ the source::
 Version History
 ===============
 
+1.8.2   2022-01-27
+        - Code cleanup. Require Python 3.
+
 1.8.1   2017-10-25
         - Use open quote after Unicode whitespace, ZWSP, and ZWNJ.
         - Code cleanup.
@@ -382,8 +385,7 @@ default_smartypants_attr = "1"
 import re, sys
 
 class smartchars:
-    """Smart quotes and dashes
-    """
+    """Smart quotes and dashes"""
 
     endash   = '–' # "&#8211;" EN DASH
     emdash   = '—' # "&#8212;" EM DASH
@@ -507,9 +509,7 @@ def smartyPants(text, attr=default_smartypants_attr, language='en'):
 
 
 def educate_tokens(text_tokens, attr=default_smartypants_attr, language='en'):
-    """Return iterator that "educates" the items of `text_tokens`.
-    """
-
+    """Return iterator that "educates" the items of `text_tokens`."""
     # Parse attributes:
     # 0 : do nothing
     # 1 : set all
@@ -585,7 +585,7 @@ def educate_tokens(text_tokens, attr=default_smartypants_attr, language='en'):
         text = processEscapes(text)
 
         if convert_quot:
-            text = re.sub('&quot;', '"', text)
+            text = text.replace('&quot;', '"')
 
         if do_dashes == 1:
             text = educateDashes(text)
@@ -649,8 +649,8 @@ def educateQuotes(text, language='en'):
 
     # Special case for adjacent quotes
     # like "'Quoted' words in a larger quote."
-    text = re.sub(r""""'(?=\w)""", smart.opquote+smart.osquote, text)
-    text = re.sub(r"""'"(?=\w)""", smart.osquote+smart.opquote, text)
+    text = re.sub('"\'(?=\\w)', smart.opquote+smart.osquote, text)
+    text = re.sub('\'"(?=\\w)', smart.osquote+smart.opquote, text)
 
     # Special case: "opening character" followed by quote,
     # optional punctuation and space like "[", '(', or '-'.
@@ -687,7 +687,7 @@ def educateQuotes(text, language='en'):
     text = closing_secondary_quotes_regex.sub(smart.csquote, text)
 
     # Any remaining secondary quotes should be opening ones:
-    text = re.sub(r"""'""", smart.osquote, text)
+    text = text.replace(r"'", smart.osquote)
 
     # Get most opening primary quotes:
     opening_primary_quotes_regex = re.compile("""
@@ -712,7 +712,7 @@ def educateQuotes(text, language='en'):
     text = closing_primary_quotes_regex.sub(smart.cpquote, text)
 
     # Any remaining quotes should be opening ones.
-    text = re.sub(r'"', smart.opquote, text)
+    text = text.replace(r'"', smart.opquote)
 
     return text
 
@@ -727,8 +727,8 @@ def educateBackticks(text, language='en'):
     """
     smart = smartchars(language)
 
-    text = re.sub(r"""``""", smart.opquote, text)
-    text = re.sub(r"""''""", smart.cpquote, text)
+    text = text.replace(r'``', smart.opquote)
+    text = text.replace(r"''", smart.cpquote)
     return text
 
 
@@ -743,8 +743,8 @@ def educateSingleBackticks(text, language='en'):
     """
     smart = smartchars(language)
 
-    text = re.sub(r"""`""", smart.osquote, text)
-    text = re.sub(r"""'""", smart.csquote, text)
+    text = text.replace(r'`', smart.osquote)
+    text = text.replace(r"'", smart.csquote)
     return text
 
 
@@ -755,8 +755,8 @@ def educateDashes(text):
                 an em-dash character.
     """
 
-    text = re.sub(r"""---""", smartchars.endash, text) # en  (yes, backwards)
-    text = re.sub(r"""--""", smartchars.emdash, text) # em (yes, backwards)
+    text = text.replace(r'---', smartchars.endash) # en  (yes, backwards)
+    text = text.replace(r'--', smartchars.emdash) # em (yes, backwards)
     return text
 
 
@@ -768,8 +768,8 @@ def educateDashesOldSchool(text):
                 an em-dash character.
     """
 
-    text = re.sub(r"""---""", smartchars.emdash, text)
-    text = re.sub(r"""--""", smartchars.endash, text)
+    text = text.replace(r'---', smartchars.emdash)
+    text = text.replace(r'--', smartchars.endash)
     return text
 
 
@@ -787,8 +787,8 @@ def educateDashesOldSchoolInverted(text):
                 the shortcut should be shorter to type. (Thanks to Aaron
                 Swartz for the idea.)
     """
-    text = re.sub(r"""---""", smartchars.endash, text)    # em
-    text = re.sub(r"""--""", smartchars.emdash, text)    # en
+    text = text.replace(r'---', smartchars.endash)    # em
+    text = text.replace(r'--', smartchars.emdash)    # en
     return text
 
 
@@ -803,8 +803,8 @@ def educateEllipses(text):
     Example output: Huh&#8230;?
     """
 
-    text = re.sub(r"""\.\.\.""", smartchars.ellipsis, text)
-    text = re.sub(r"""\. \. \.""", smartchars.ellipsis, text)
+    text = text.replace(r'...', smartchars.ellipsis)
+    text = text.replace(r'. . .', smartchars.ellipsis)
     return text
 
 
@@ -819,16 +819,16 @@ def stupefyEntities(text, language='en'):
     """
     smart = smartchars(language)
 
-    text = re.sub(smart.endash, "-", text)   # en-dash
-    text = re.sub(smart.emdash, "--", text)  # em-dash
+    text = text.replace(smart.endash, "-")   # en-dash
+    text = text.replace(smart.emdash, "--")  # em-dash
 
-    text = re.sub(smart.osquote, "'", text)  # open secondary quote
-    text = re.sub(smart.csquote, "'", text)  # close secondary quote
+    text = text.replace(smart.osquote, "'")  # open secondary quote
+    text = text.replace(smart.csquote, "'")  # close secondary quote
 
-    text = re.sub(smart.opquote, '"', text)  # open primary quote
-    text = re.sub(smart.cpquote, '"', text)  # close primary quote
+    text = text.replace(smart.opquote, '"')  # open primary quote
+    text = text.replace(smart.cpquote, '"')  # close primary quote
 
-    text = re.sub(smart.ellipsis, '...', text) # ellipsis
+    text = text.replace(smart.ellipsis, '...') # ellipsis
 
     return text
 
@@ -878,33 +878,19 @@ def tokenize(text):
     Based on the _tokenize() subroutine from Brad Choate's MTRegex plugin.
         <http://www.bradchoate.com/past/mtregex.php>
     """
-
-    pos = 0
-    length = len(text)
-    # tokens = []
-
-    depth = 6
-    nested_tags = "|".join(['(?:<(?:[^<>]',] * depth) + (')*>)' * depth)
-    #match = r"""(?: <! ( -- .*? -- \s* )+ > ) |  # comments
-    #               (?: <\? .*? \?> ) |  # directives
-    #               %s  # nested tags       """ % (nested_tags,)
-    tag_soup = re.compile(r"""([^<]*)(<[^>]*>)""")
-
+    tag_soup = re.compile(r'([^<]*)(<[^>]*>)')
     token_match = tag_soup.search(text)
-
     previous_end = 0
+
     while token_match is not None:
         if token_match.group(1):
             yield 'text', token_match.group(1)
-
         yield 'tag', token_match.group(2)
-
         previous_end = token_match.end()
         token_match = tag_soup.search(text, token_match.end())
 
     if previous_end < len(text):
         yield 'text', text[previous_end:]
-
 
 
 if __name__ == "__main__":
@@ -939,8 +925,9 @@ if __name__ == "__main__":
 
     import argparse
     parser = argparse.ArgumentParser(
-                description='Filter stdin making ASCII punctuation "smart".')
-    # parser.add_argument("text", help="text to be acted on")
+                description='Filter <input> making ASCII punctuation "smart".')
+    # TODO: require input arg or other means to print USAGE instead of waiting.
+    # parser.add_argument("input", help="Input stream, use '-' for stdin.")
     parser.add_argument("-a", "--action", default="1",
                         help="what to do with the input (see --actionhelp)")
     parser.add_argument("-e", "--encoding", default="utf8",
@@ -1002,6 +989,5 @@ if __name__ == "__main__":
                 args.language = args.language.replace('-x-altquot', '')
             else:
                 args.language += '-x-altquot'
-        text = sys.stdin.read().decode(args.encoding)
-        print(smartyPants(text, attr=args.action,
-                          language=args.language).encode(args.encoding))
+        text = sys.stdin.read()
+        print(smartyPants(text, attr=args.action, language=args.language))
