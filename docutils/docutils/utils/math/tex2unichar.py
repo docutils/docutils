@@ -61,15 +61,15 @@ mathalpha = {
     'jmath': '\u0237', # ȷ LATIN SMALL LETTER DOTLESS J
     'kappa': '\u03ba', # κ GREEK SMALL LETTER KAPPA
     'lambda': '\u03bb', # λ GREEK SMALL LETTER LAMDA
-    'm': '\u03bc', # μ GREEK SMALL LETTER MU
-    'n': '\u03bd', # ν GREEK SMALL LETTER NU
+    'mu': '\u03bc', # μ GREEK SMALL LETTER MU
+    'nu': '\u03bd', # ν GREEK SMALL LETTER NU
     'omega': '\u03c9', # ω GREEK SMALL LETTER OMEGA
     'phi': '\u03d5', # ϕ GREEK PHI SYMBOL
     'pi': '\u03c0', # π GREEK SMALL LETTER PI
     'psi': '\u03c8', # ψ GREEK SMALL LETTER PSI
     'rho': '\u03c1', # ρ GREEK SMALL LETTER RHO
     'sigma': '\u03c3', # σ GREEK SMALL LETTER SIGMA
-    'ta': '\u03c4', # τ GREEK SMALL LETTER TAU
+    'tau': '\u03c4', # τ GREEK SMALL LETTER TAU
     'theta': '\u03b8', # θ GREEK SMALL LETTER THETA
     'upsilon': '\u03c5', # υ GREEK SMALL LETTER UPSILON
     'varDelta': '\U0001d6e5', # 𝛥 MATHEMATICAL ITALIC CAPITAL DELTA

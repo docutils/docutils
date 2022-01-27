@@ -263,7 +263,7 @@ There is built-in support for the following languages:\ [#smartquotes-locales]_
 
     "'Dutch' alternative quotes"
 
-    .. # 'nl-x-altquot2': u'””’’',
+    .. # 'nl-x-altquot2': '””’’',
 
 :pl: .. class:: language-pl
 
@@ -337,7 +337,7 @@ There is built-in support for the following languages:\ [#smartquotes-locales]_
 
     "'Turkish' alternative quotes"
 
-.. 'tr-x-altquot2': u'“„‘‚', # antiquated?
+.. 'tr-x-altquot2': '“„‘‚', # antiquated?
 
 :uk: .. class:: language-uk
 
