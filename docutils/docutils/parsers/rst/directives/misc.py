@@ -175,9 +175,10 @@ class Include(Directive):
             include_log.append((utils.relative_path(None, source),
                                 (None, None, None, None)))
         if (path, clip_options) in include_log:
-            raise self.warning('circular inclusion in "%s" directive: %s'
-                % (self.name, ' < '.join([path] + [pth for (pth, opt)
-                                                   in include_log[::-1]])))
+            master_paths = (pth for (pth, opt) in reversed(include_log))
+            inclusion_chain = '\n> '.join((path, *master_paths))
+            raise self.warning('circular inclusion in "%s" directive:\n%s'
+                               % (self.name, inclusion_chain))
 
         if 'parser' in self.options:
             # parse into a dummy document and return created nodes

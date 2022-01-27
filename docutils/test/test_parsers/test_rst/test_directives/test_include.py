@@ -1207,7 +1207,11 @@ Circular inclusion
         File "include16.txt": example of rekursive inclusion.
     <system_message level="2" line="3" source="%s" type="WARNING">
         <paragraph>
-            circular inclusion in "include" directive: %s < %s < %s < test data
+            circular inclusion in "include" directive:
+            %s
+            > %s
+            > %s
+            > test data
         <literal_block xml:space="preserve">
             .. include:: include15.txt
     <paragraph>
@@ -1232,7 +1236,12 @@ Circular inclusion with clipping.
         File "include16.txt": example of rekursive inclusion.
     <system_message level="2" line="3" source="%s" type="WARNING">
         <paragraph>
-            circular inclusion in "include" directive: %s < %s < %s < %s < test data
+            circular inclusion in "include" directive:
+            %s
+            > %s
+            > %s
+            > %s
+            > test data
         <literal_block xml:space="preserve">
             .. include:: include15.txt
     <paragraph>
@@ -1261,7 +1270,11 @@ Circular inclusion with specified parser.
         File "include16.txt": example of rekursive inclusion.
     <system_message level="2" line="3" source="%s" type="WARNING">
         <paragraph>
-            circular inclusion in "include" directive: %s < %s < %s < test data
+            circular inclusion in "include" directive:
+            %s
+            > %s
+            > %s
+            > test data
         <literal_block xml:space="preserve">
             .. include:: include15.txt
     <paragraph>
