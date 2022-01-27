@@ -156,7 +156,7 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
                            ' content="application/xhtml+xml; charset=%s" />\n')
 
     # encode also non-breaking space
-    special_characters = dict(_html_base.HTMLTranslator.special_characters)
+    special_characters = _html_base.HTMLTranslator.special_characters.copy()
     special_characters[0xa0] = '&nbsp;'
 
     # use character reference for dash (not valid in HTML5)
