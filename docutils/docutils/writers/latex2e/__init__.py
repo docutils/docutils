@@ -1396,11 +1396,12 @@ class LaTeXTranslator(nodes.NodeVisitor):
             try:
                 content = docutils.io.FileInput(source_path=path,
                                        encoding='utf-8').read()
-                self.settings.record_dependencies.add(path)
-            except IOError as err:
+            except OSError as err:
                 msg = f'Cannot embed stylesheet:\n {err}'
                 self.document.reporter.error(msg)
                 return '% ' + msg.replace('\n', '\n% ')
+            else:
+                self.settings.record_dependencies.add(path)
             if is_package:
                 content = '\n'.join([r'\makeatletter',
                                      content,

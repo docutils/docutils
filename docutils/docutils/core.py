@@ -165,16 +165,9 @@ class Publisher:
             source_path = self.settings._source
         else:
             self.settings._source = source_path
-        # Raise IOError instead of system exit with `tracback == True`
-        # TODO: change io.FileInput's default behaviour and remove this hack
-        try:
-            self.source = self.source_class(
-                source=source, source_path=source_path,
-                encoding=self.settings.input_encoding)
-        except TypeError:
-            self.source = self.source_class(
-                source=source, source_path=source_path,
-                encoding=self.settings.input_encoding)
+        self.source = self.source_class(
+            source=source, source_path=source_path,
+            encoding=self.settings.input_encoding)
 
     def set_destination(self, destination=None, destination_path=None):
         if destination_path is None:

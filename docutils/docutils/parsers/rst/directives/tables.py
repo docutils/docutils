@@ -314,18 +314,19 @@ class CSVTable(Table):
                                                    self.options['file']))
             source = utils.relative_path(None, source)
             try:
-                self.state.document.settings.record_dependencies.add(source)
                 csv_file = io.FileInput(source_path=source,
                                         encoding=encoding,
                                         error_handler=error_handler)
                 csv_data = csv_file.read().splitlines()
-            except IOError as error:
+            except OSError as error:
                 severe = self.state_machine.reporter.severe(
                     'Problems with "%s" directive path:\n%s.'
                     % (self.name, error),
                     nodes.literal_block(self.block_text, self.block_text),
                     line=self.lineno)
                 raise SystemMessagePropagation(severe)
+            else:
+                self.state.document.settings.record_dependencies.add(source)
         elif 'url' in self.options:
             # CSV data is from a URL.
             # Do not import urllib at the top of the module because
@@ -337,7 +338,7 @@ class CSVTable(Table):
             source = self.options['url']
             try:
                 csv_text = urlopen(source).read()
-            except (URLError, IOError, OSError, ValueError) as error:
+            except (URLError, OSError, ValueError) as error:
                 severe = self.state_machine.reporter.severe(
                       'Problems with "%s" directive URL "%s":\n%s.'
                       % (self.name, self.options['url'], error),

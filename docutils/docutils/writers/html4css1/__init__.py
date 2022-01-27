@@ -564,8 +564,8 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
                 try:
                     with PIL.Image.open(imagepath) as img:
                         img_size = img.size
-                except (IOError, UnicodeEncodeError):
-                    pass # TODO: warn?
+                except (OSError, UnicodeEncodeError):
+                    pass # TODO: warn/info?
                 else:
                     self.settings.record_dependencies.add(
                         imagepath.replace('\\', '/'))

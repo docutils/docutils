@@ -390,11 +390,12 @@ class HTMLTranslator(nodes.NodeVisitor):
             try:
                 content = docutils.io.FileInput(source_path=path,
                                                 encoding='utf-8').read()
-                self.settings.record_dependencies.add(path)
-            except IOError as err:
+            except OSError as err:
                 msg = f'Cannot embed stylesheet: {err}'
                 self.document.reporter.error(msg)
                 return '<--- %s --->\n' % msg
+            else:
+                self.settings.record_dependencies.add(path)
             return self.embedded_stylesheet % content
         # else link to style file:
         if adjust_path:
@@ -1000,7 +1001,7 @@ class HTMLTranslator(nodes.NodeVisitor):
                 try:
                     with PIL.Image.open(imagepath) as img:
                         imgsize = img.size
-                except (IOError, UnicodeEncodeError):
+                except (OSError, UnicodeEncodeError):
                     pass # TODO: warn?
                 else:
                     self.settings.record_dependencies.add(
@@ -1046,11 +1047,9 @@ class HTMLTranslator(nodes.NodeVisitor):
             try:
                 with open(url2pathname(uri), 'rb') as imagefile:
                     imagedata = imagefile.read()
-            except IOError as err:
-                err_msg = err.strerror
-            if err_msg:
+            except OSError as err:
                 self.document.reporter.error('Cannot embed image %r: %s'
-                                             %(uri, err_msg))
+                                             %(uri, err.strerror))
             else:
                 self.settings.record_dependencies.add(
                                             uri.replace('\\', '/'))
