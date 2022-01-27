@@ -70,7 +70,6 @@ class Include(Directive):
         tab_width = self.options.get(
             'tab-width', self.state.document.settings.tab_width)
         try:
-            self.state.document.settings.record_dependencies.add(path)
             include_file = io.FileInput(source_path=path,
                                         encoding=encoding,
                                         error_handler=e_handler)
@@ -79,9 +78,11 @@ class Include(Directive):
                               'Cannot encode input file path "%s" '
                               '(wrong locale?).' %
                               (self.name, path))
-        except IOError as error:
+        except OSError as error:
             raise self.severe('Problems with "%s" directive path:\n%s.' %
                       (self.name, io.error_string(error)))
+        else:
+            self.state.document.settings.record_dependencies.add(path)
 
         # Get to-be-included content
         startline = self.options.get('start-line', None)
@@ -248,12 +249,13 @@ class Raw(Directive):
                 raw_file = io.FileInput(source_path=path,
                                         encoding=encoding,
                                         error_handler=e_handler)
+            except OSError as error:
+                raise self.severe('Problems with "%s" directive path:\n%s.'
+                                  % (self.name, io.error_string(error)))
+            else:
                 # TODO: currently, raw input files are recorded as
                 # dependencies even if not used for the chosen output format.
                 self.state.document.settings.record_dependencies.add(path)
-            except IOError as error:
-                raise self.severe('Problems with "%s" directive path:\n%s.'
-                                  % (self.name, io.error_string(error)))
             try:
                 text = raw_file.read()
             except UnicodeError as error:
@@ -269,7 +271,7 @@ class Raw(Directive):
             from urllib.error import URLError
             try:
                 raw_text = urlopen(source).read()
-            except (URLError, IOError, OSError) as error:
+            except (URLError, OSError) as error:
                 raise self.severe('Problems with "%s" directive URL "%s":\n%s.'
                     % (self.name, self.options['url'], io.error_string(error)))
             raw_file = io.StringInput(source=raw_text, source_path=source,

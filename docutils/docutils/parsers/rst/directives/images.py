@@ -130,8 +130,8 @@ class Figure(Image):
                 try:
                     with PIL.Image.open(imagepath) as img:
                         figure_node['width'] = '%dpx' % img.size[0]
-                except (IOError, UnicodeEncodeError):
-                    pass # TODO: warn?
+                except (OSError, UnicodeEncodeError):
+                    pass # TODO: warn/info?
                 else:
                     self.state.document.settings.record_dependencies.add(
                         imagepath.replace('\\', '/'))

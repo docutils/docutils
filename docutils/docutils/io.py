@@ -39,8 +39,8 @@ except LookupError:
     locale_encoding = None
 
 
-class InputError(IOError): pass
-class OutputError(IOError): pass
+class InputError(OSError): pass
+class OutputError(OSError): pass
 
 
 def check_encoding(stream, encoding):
@@ -333,7 +333,7 @@ class FileInput(Input):
                     self.source = open(source_path, mode,
                                        encoding=self.encoding,
                                        errors=self.error_handler)
-                except IOError as error:
+                except OSError as error:
                     raise InputError(error.errno, error.strerror, source_path)
             else:
                 self.source = sys.stdin
@@ -454,7 +454,7 @@ class FileOutput(Output):
             kwargs = {}
         try:
             self.destination = open(self.destination_path, self.mode, **kwargs)
-        except IOError as error:
+        except OSError as error:
             raise OutputError(error.errno, error.strerror,
                               self.destination_path)
         self.opened = True

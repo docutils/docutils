@@ -189,7 +189,8 @@ def validate_dependency_file(setting, value, option_parser,
                              config_parser=None, config_section=None):
     try:
         return docutils.utils.DependencyList(value)
-    except IOError:
+    except OSError:
+        # TODO: warn/info?
         return docutils.utils.DependencyList(None)
 
 def validate_strip_class(setting, value, option_parser,
@@ -301,9 +302,8 @@ class Values(optparse.Values):
 
     def __init__(self, *args, **kwargs):
         optparse.Values.__init__(self, *args, **kwargs)
-        if (not hasattr(self, 'record_dependencies')
-            or self.record_dependencies is None):
-            # Set up dependency list, in case it is needed.
+        if getattr(self, 'record_dependencies', None) is None:
+            # Set up dummy dependency list.
             self.record_dependencies = docutils.utils.DependencyList()
 
     def update(self, other_dict, option_parser):
@@ -780,7 +780,7 @@ Skipping "%s" configuration file.
                         self._stderr.write(self.not_utf8_error
                                            % (filename, filename))
                         continue
-            except IOError:
+            except OSError:
                 continue
             self._files.append(filename)
             if self.has_section('options'):
