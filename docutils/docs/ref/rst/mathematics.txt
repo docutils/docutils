@@ -975,7 +975,7 @@ Compare automatic sizing with fixed sizes:
   \left( \frac{3  }{2}              \right)
   \left( \frac{3^2}{2^4}            \right)
   \binom{3  }{2}
-  \begin{pmatrix} a & b \\ c & d \end{pmatrix}  
+  \begin{pmatrix} a & b \\ c & d \end{pmatrix}
   \left( \frac{1}{\sqrt 2}          \right)
   \left( \int                       \right)
   \left( \int_0                     \right)
@@ -1001,7 +1001,7 @@ And in text:
                               \left( \sum_0                     \right)
                               \left( \prod                      \right)`
 
-                              
+
 :`\bigl(\text{big}\bigr)`:    `\left(\underline x               \right)
                               \left( 3^2                        \right)
                               \binom{3}{2}
@@ -1087,8 +1087,12 @@ Inline: `\int\ \iint\ \iiint\ \iiiint\ \idotsint \oint\ \smallint\
    \bigotimes_1^N
 
 
-
 Text
 ~~~~
 
 The text may contain non-ASCII characters: `n_\text{Stoß}`.
+
+Some text-mode LaTeX commands are supported with math_output_ "html".
+In other output formats, use literal Unicode: `\text{ç é è ë ê ñ ů ž ©}`
+to get the result of the accent macros
+`\text{\c{c} \'e \`e \"e \^e \~n \r{u} \v{z} \textcircled{c}}`.
