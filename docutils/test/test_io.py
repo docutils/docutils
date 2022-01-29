@@ -65,7 +65,7 @@ class HelperTests(unittest.TestCase):
         self.assertEqual(io.check_encoding(mock_stdout, None), None)
         # encoding is invalid
         self.assertEqual(io.check_encoding(mock_stdout, 'UTF-9'), None)
-        
+
     def test_error_string(self):
         us = '\xfc'      # bytes(us) fails
         bs = b'\xc3\xbc' # str(bs) returns repr(bs)
@@ -77,7 +77,7 @@ class HelperTests(unittest.TestCase):
         self.assertEqual('ImportError: %s' % us,
                          io.error_string(ImportError(us)))
 
-        
+
 
 
 class InputTests(unittest.TestCase):

@@ -26,4 +26,3 @@ writer = Writer()
 reader = Reader()
 output = publish_cmdline_to_binary(reader=reader, writer=writer,
     description=description)
-

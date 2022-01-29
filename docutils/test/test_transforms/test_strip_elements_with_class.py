@@ -38,9 +38,9 @@ this is ham
 
 .. code::
    :class: spam
-   
+   \n\
    print("spam")
-   
+   \n\
 .. image:: spam.jpg
    :class: spam
 
