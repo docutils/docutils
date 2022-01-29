@@ -105,7 +105,7 @@ No blank line between:
                 item 2
 """],
 ["""\
-Different bullets start different lists: 
+Different bullets start different lists:
 
 - item 1
 

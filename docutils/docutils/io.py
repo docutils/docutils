@@ -142,7 +142,7 @@ class Input(TransformSpec):
                 return decoded.replace('\ufeff', '')
             except (UnicodeError, LookupError) as err:
                 # keep exception instance for use outside of the "for" loop.
-                error = err 
+                error = err
         raise UnicodeError(
             'Unable to decode input data.  Tried the following encodings: '
             '%s.\n(%s)' % (', '.join(repr(enc) for enc in encodings),

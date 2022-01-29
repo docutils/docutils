@@ -32,10 +32,10 @@ class Filter(Transform):
     directive created a "pending" element containing a "meta" element
     (in ``pending.details['nodes']``).
     Only writers (``pending.details['component'] == 'writer'``)
-    supporting the "html", "latex", or "odf" formats 
+    supporting the "html", "latex", or "odf" formats
     (``pending.details['format'] == 'html,latex,odf'``) included the
     "meta" element; it was deleted from the output of all other writers.
-    
+
     This transform is no longer used by Docutils, it may be removed in future.
     """
     # TODO: clean up or keep this for 3rd party (or possible future) use?

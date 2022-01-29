@@ -38,7 +38,7 @@ labels = {
       'tip': '技巧',
       'warning': '警告',
       'contents': '目录',
-} 
+}
 """Mapping of node class name to label text."""
 
 bibliographic_fields = {

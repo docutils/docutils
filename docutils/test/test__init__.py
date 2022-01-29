@@ -32,13 +32,13 @@ class VersionInfoTests(unittest.TestCase):
         # arguments may use keywords
         self.assertEqual(VersionInfo(0, 1, 2, 'beta', 3, False),
                          VersionInfo(major=0, minor=1, micro=2,
-                                     releaselevel='beta', serial=3, 
+                                     releaselevel='beta', serial=3,
                                      release=False))
         # check defaults:
         self.assertEqual(VersionInfo(),
                          VersionInfo(0, 0, 0, releaselevel='final',
                                      serial=0, release=True))
-        
+
     def test_VersionInfo_value_check(self):
         # releaselevel must be one of ('alpha', 'beta', 'candidate', 'final')
         with self.assertRaises(ValueError):

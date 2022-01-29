@@ -63,9 +63,9 @@ second row.
 ==========  ===========
 A table with four rows,
 -----------------------
-and two     columns.   
-First and   last rows     
-contain column spans.   
+and two     columns.
+First and   last rows
+contain column spans.
 =======================
 """,
 ([10, 11],
@@ -94,10 +94,10 @@ Another bad    table
 ===========  ================
 A table with two header rows,
 -----------------------------
-the first    with a span.    
+the first    with a span.
 ===========  ================
-Two body     rows,           
-the second with a span.      
+Two body     rows,
+the second with a span.
 =============================
 """,
 ([11, 16],

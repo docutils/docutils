@@ -16,8 +16,8 @@ Deprecated module to handle Exceptions across Python versions.
 .. warning::
    This module is deprecated with the end of support for Python 2.7
    and will be removed in Docutils 0.21 or later.
-   
-   Replacements: 
+
+   Replacements:
      | SafeString  -> str
      | ErrorString -> docutils.io.error_string()
      | ErrorOutput -> docutils.io.ErrorOutput

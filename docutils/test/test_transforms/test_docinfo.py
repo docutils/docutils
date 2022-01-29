@@ -357,7 +357,7 @@ totest['bibliographic_field_lists'] = ((DocInfo,), [
 ["""\
 .. RCS keyword extraction.
 
-:Status: (some text) $""" + """RCSfile: test_docinfo.py,v $ (more text) 
+:Status: (some text) $""" + """RCSfile: test_docinfo.py,v $ (more text)
 :Date: (some text) $""" + """Date: 2002/10/08 01:34:23 $ (more text)
 :Date: (some text) $""" + """Date: 2005-03-26T16:21:28.693201Z $ (more text)
 :Version: (some text) $""" + """Revision: 1.1 $ (more text)

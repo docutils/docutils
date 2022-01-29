@@ -8,16 +8,16 @@
 Tests for docutils.transforms.references.Hyperlinks with non-English language.
 
 TODO: This test fails currently when run as part of "alltests" because
-      
+
       - the "info" system-messages for directive fallbacks are only generated
-        once (the name -> directive mapping is cached in 
+        once (the name -> directive mapping is cached in
         ``docutils.parsers.rst.directives._directives``).
-      
+
       - the cache is not reset between after processing a document
         (i.e. it contains name -> directive mappings from other tests).
-        
+
       See also https://sourceforge.net/p/docutils/feature-requests/71/
-""" 
+"""
 
 if __name__ == '__main__':
     import __init__
@@ -65,7 +65,7 @@ Target_ should propagate past the system_message to set "id" on note.
             Kurznotiz
     <system_message level="1" source="test data" type="INFO">
         <paragraph>
-            Using <module 'docutils.languages.de' from '/usr/local/src/docutils-git-svn/docutils/docutils/languages/de.pyc'> for language "de".
+            Using <module 'docutils.languages.de' from '/usr/local/src/docutils-git-svn/docutils/docutils/languages/de.py'> for language "de".
 """],
 ])
 
