@@ -63,7 +63,7 @@ Advanced text editors with reStructuredText support, IDEs, and docutils GUIs:
 
 * Gunnar Schwant's DocFactory_ is a wxPython GUI application for
   Docutils.
-  
+
   .. _DocFactory: https://docutils.sourceforge.io/sandbox/gschwant/docfactory/doc/
 
 * ReSTedit_ by Bill Bumgarner is a Docutils GUI for Mac OS X.
@@ -96,7 +96,7 @@ PDF
 * `rst2pdf (reportlab)`__ is a tool to go directly from
   reStructuredText to PDF, via ReportLab__. No LaTeX installation
   is required.
-  
+
   __ https://pypi.org/project/rst2pdf/
   __ https://pypi.org/project/reportlab/
 
@@ -104,14 +104,14 @@ PDF
   producing LaTeX, compiling the LaTeX file, getting the produced
   output to the destination location and finally deleting all the
   messy temporary files that this process generates.
-  
+
   __ https://docutils.sourceforge.io/sandbox/blais/rst2pdf/
 
 * `rst2pdf (rubber)`__ is a front end for the generation of PDF
   documents from a reStructuredText source via LaTeX in one step
   cleaning up intermediate files. It uses the rubber__ Python wrapper
   for LaTeX and friends.
-  
+
   __ https://docutils.sourceforge.io/sandbox/rst2pdf/README.html
   __ https://launchpad.net/rubber
 
@@ -133,7 +133,7 @@ website generators and HTML variants
 
   It can generate complete web sites (interlinked and indexed HTML pages),
   ePub, LaTeX, and others from a set of rST source files.
-  
+
   .. _Sphinx: https://www.sphinx-doc.org
   __ https://www.sphinx-doc.org/en/master/examples.html
 
@@ -186,7 +186,7 @@ Others
 
 * Pandoc_ is a document converter that can write Markdown_,
   reStructuredText, HTML, LaTeX, RTF, DocBook XML, and S5.
-  
+
   .. _Pandoc: https://pandoc.org/
 
 * restxsl_ by Michael Alyn Miller, lets you transform reStructuredText
@@ -207,7 +207,7 @@ Others
   extracts information from reStructuredText documents and stores it
   in a database.  Python knowledge is required to write extractor
   functions and to retrieve the data from the database again.
-  
+
   .. _Nabu: https://github.com/blais/nabu
 
 * The `pickle writer`_ by Martin Blais pickles the document tree to a binary
@@ -237,11 +237,11 @@ Import
 Convert other formats to reStructuredText:
 
 * recommonmark_ is a Markdown_ (CommonMark_) parser for
-  docutils originally created by Luca Barbato. 
-  
-  Docutils "markdown" parser (new in Docutils 0.17) is a wrapper 
+  docutils originally created by Luca Barbato.
+
+  Docutils "markdown" parser (new in Docutils 0.17) is a wrapper
   around recommonmark.
-  
+
   .. _recommonmark: https://github.com/rtfd/recommonmark
   .. _Markdown: https://daringfireball.net/projects/markdown/syntax
   .. _CommonMark: https://commonmark.org/
@@ -255,7 +255,7 @@ Convert other formats to reStructuredText:
 * xml2rst_, an XSLT stylesheet written by Stefan Merten, converts XML
   dumps of the document tree (e.g. created with rst2xml.py) back to
   reStructuredText.
-  
+
   .. _xml2rst: http://www.merten-home.de/FreeSoftware/xml2rst/index.html
 
 * xhtml2rest_, written by Antonios Christofides, is a simple utility
@@ -362,7 +362,7 @@ Development
   can be written with it too).
 
   The `Python documentation`_ is based on reStructuredText and Sphinx.
-  
+
   .. _Python documentation: https://docs.python.org/
 
 * Trac_, a project management and bug/issue tracking system, supports
@@ -418,7 +418,7 @@ Presentations
 
 * InkSlide_ quick and easy presentations using Inkscape_. InkSlide uses
   reStructuredText for markup, although it renders only a subset of rst.
-  
+
   .. _InkSlide: http://wiki.inkscape.org/wiki/index.php/InkSlide
   .. _Inkscape: http://inkscape.org/
 
@@ -428,4 +428,3 @@ Presentations
   .. _rst2outline: https://docutils.sourceforge.io/sandbox/rst2outline/
 
 * Pandoc_ can also be used to produce slides
-

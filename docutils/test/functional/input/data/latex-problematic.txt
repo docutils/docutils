@@ -179,5 +179,3 @@ A paragraph with top |top| aligned image.
 A paragraph with middle |middle| aligned image.
 
 A paragraph with bottom |bottom| aligned image.
-
-

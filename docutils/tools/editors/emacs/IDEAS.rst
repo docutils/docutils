@@ -440,7 +440,7 @@ Marriage with `org-mode`
 
 * May be Org mode can be utilized instead of `forms-mode`
 
-  * See `orgtbl-mode` 
+  * See `orgtbl-mode`
 
   * See `orgstruct-mode`
 

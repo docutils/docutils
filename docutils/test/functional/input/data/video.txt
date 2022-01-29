@@ -15,7 +15,7 @@ for video playback.
 It is a good idea to include width and height attributes. If
 height and width are not set, the page might flicker while the video
 loads. According to the `HTML5 spec`__, hight and width must be
-specified as pixel values. 
+specified as pixel values.
 
 .. figure:: ../../../docs/user/rst/images/pens.mp4
    :width: 200px

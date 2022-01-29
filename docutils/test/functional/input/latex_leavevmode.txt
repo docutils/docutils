@@ -8,7 +8,7 @@ Styling of Elements in Definition- or Field-List
     - This is a list.
     - It does not require ``\leavevmode`` because it is in the docinfo.
 :Abstract:
-    Test that ``\leavevmode`` is inserted after the term or field-name 
+    Test that ``\leavevmode`` is inserted after the term or field-name
     when required for correct placement of the item.
 
 Elements needing ``\leavevmode``
@@ -120,14 +120,14 @@ Comment and Target
     .. This is ignored.
 
     .. _foo:
-    
+
     * Comments and other "Invisible" nodes (substitution definitions,
       targets, pending) must be skipped when determining whether a
       ``\leavevmode`` is required.
 
 Substitution Definition and Class directive
     .. |no-leavevmode| replace:: No (because a paragraph follows).
-    
+
     .. class:: test
 
     Is ``\leavevmode`` required?  Answer: |no-leavevmode|

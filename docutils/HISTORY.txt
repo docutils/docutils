@@ -37,7 +37,7 @@ Changes Since 0.18.1
   .. _"include" directive: docs/ref/rst/directives.html#include
 
 * docutils/parsers/rst/__init__.py
-  
+
   - use "https:" scheme in PEP and RFC base link defaults.
   - Add `reporter` to `Directive` class attributes.
 
@@ -65,8 +65,8 @@ Changes Since 0.18.1
 
 * docutils/writers/pep_html/
 
-  - use "https:" scheme in "python_home" URL default. 
-  
+  - use "https:" scheme in "python_home" URL default.
+
 * test/DocutilsTestSupport.py
 
   - exception_data() returns None if no exception was raised.

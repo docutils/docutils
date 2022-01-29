@@ -377,7 +377,7 @@ early version of the image directive class::
     from docutils.parsers.rst import Directive
 
     def align(argument):
-        """Conversion function for the "align" option.""" 
+        """Conversion function for the "align" option."""
         return directives.choice(argument, ('left', 'center', 'right'))
 
     class Image(Directive):

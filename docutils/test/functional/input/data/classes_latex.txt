@@ -25,7 +25,7 @@ redefining the "quote" environment as "minipage":
 
 Raw latex is also used to style the following lists: "DUCLASSenumerateitems"
 redefines "itemize" as "enumerate", "DUCLASSrules" draws horizontal lines
-above and below. 
+above and below.
 
 .. raw:: latex
 
@@ -52,7 +52,7 @@ A list with lines above and below:
 
 * item
 * next item
-    
+
 A normal bullet list is kept unchanged by the above redefinitions:
 
 * item

@@ -165,7 +165,7 @@ S5/HTML Definitions
 
 The "s5defs.txt_" standard definition file contains interpreted text
 roles (classes) and other definitions for documents destined to become
-`S5/HTML slide shows`_.  
+`S5/HTML slide shows`_.
 
 .. _s5defs.txt: ../../../docutils/parsers/rst/include/s5defs.txt
 .. _S5/HTML slide shows: ../../user/slide-shows.html

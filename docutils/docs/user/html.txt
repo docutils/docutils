@@ -128,13 +128,13 @@ name             aliases     `front-end`_   HTML version      CSS version
 ================ =========== ============== ================= ===========
 html4css1_       html4,      rst2html4.py,  `XHTML 1          `CSS 1`_
                  html_       rst2html.py    Transitional`_
-                 
+
 pep_html_        ..          rstpep2html.py `XHTML 1          `CSS 1`_
                                             Transitional`_
-                 
+
 s5_html_         s5          rst2s5.py      `XHTML 1          `CSS 1`_
                                             Transitional`_
-                 
+
 html5_polyglot_  html5       rst2html5.py   `HTML5`_          `CSS 3`_
 
 ================ =========== ============== ================= ===========

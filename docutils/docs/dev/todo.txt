@@ -93,7 +93,7 @@ __ https://git.wiki.kernel.org/index.php/
 
 Sourceforge supports multiple Git repositories per project, so we can
 switch the version control system independent of the decision on an
-eventual switch of the host. 
+eventual switch of the host.
 Cf. https://sourceforge.net/p/forge/documentation/Git/
 
 General
