@@ -417,10 +417,10 @@ class Text(Node, str):
     def pformat(self, indent='    ', level=0):
         try:
             if self.document.settings.detailed:
-                lines = ['%s%s' % (indent*level, '<#text>')
-                        ] + [indent*(level+1) + repr(line)
-                             for line in self.splitlines(True)]
-                return '\n'.join(lines) + '\n'
+                tag = '%s%s' % (indent*level, '<#text>')
+                lines = (indent*(level+1) + repr(line)
+                         for line in self.splitlines(True))
+                return '\n'.join((tag, *lines)) + '\n'
         except AttributeError:
             pass
         indent = indent * level

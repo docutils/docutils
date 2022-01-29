@@ -185,7 +185,7 @@ class SettingsSpec:
 
     settings_default_overrides = None
     """A dictionary of auxiliary defaults, to override defaults for settings
-    defined in other components.  Override in subclasses."""
+    defined in other components' `setting_specs`.  Override in subclasses."""
 
     relative_path_settings = ()
     """Settings containing filesystem paths.  Override in subclasses.

@@ -140,7 +140,7 @@ print("hello world")
             # in Py3k, the locale encoding is used without --input-encoding
             # skipping the heuristic unless decoding fails.
             return
-        probed_encodings = (locale_encoding, 'latin-1')
+        probed_encodings = (io.locale_encoding, 'latin-1')
         input = io.FileInput(source_path='data/latin1.txt')
         data = input.read()
         if input.successful_encoding not in probed_encodings:
