@@ -39,6 +39,7 @@ Changes Since 0.18.1
 * docutils/parsers/rst/__init__.py
   
   - use "https:" scheme in PEP and RFC base link defaults.
+  - Add `reporter` to `Directive` class attributes.
 
 * docutils/parsers/rst/directives/__init__.py
 

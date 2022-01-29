@@ -272,6 +272,8 @@ class Directive:
 
     - ``state_machine`` is the state machine which controls the state which called
       the directive function.
+      
+    - ``reporter`` is the state machine's `reporter` instance.
 
     Directive functions return a list of nodes which will be inserted
     into the document tree at the point where the directive was
@@ -286,7 +288,7 @@ class Directive:
     substitution definition context, typically using code like this::
 
         if not isinstance(state, states.SubstitutionDef):
-            error = state_machine.reporter.error(
+            error = self.reporter.error(
                 'Invalid context: the "%s" directive can only be used '
                 'within a substitution definition.' % (name),
                 nodes.literal_block(block_text, block_text), line=lineno)
@@ -323,6 +325,7 @@ class Directive:
         self.block_text = block_text
         self.state = state
         self.state_machine = state_machine
+        self.reporter = state_machine.reporter
 
     def run(self):
         raise NotImplementedError('Must override run() in subclass.')
