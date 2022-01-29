@@ -33,5 +33,3 @@ class Writer(writers.Writer):
 class Translator(nodes.NodeVisitor):
     def __init__(self, document):
         nodes.NodeVisitor.__init__(self, document)
-
-

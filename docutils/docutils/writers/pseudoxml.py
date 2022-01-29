@@ -16,7 +16,7 @@ class Writer(writers.Writer):
 
     supported = ('pprint', 'pformat', 'pseudoxml')
     """Formats this writer supports."""
-    
+
     settings_spec = (
         '"Docutils pseudo-XML" Writer Options',
         None,

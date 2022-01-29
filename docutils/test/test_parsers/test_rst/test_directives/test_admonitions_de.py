@@ -211,7 +211,7 @@ totest['admonitions'] = [
             1 argument(s) required, 0 supplied.
         <literal_block xml:space="preserve">
             .. admonition::
-            
+            \n\
                Generic admonitions require a title.
 """],
 ]

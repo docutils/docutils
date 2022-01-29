@@ -79,4 +79,3 @@ def fromRoman(s):
             result += integer
             index += len(numeral)
     return result
-

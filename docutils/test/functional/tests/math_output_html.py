@@ -12,5 +12,3 @@ settings_overrides['math_output'] = 'HTML math.css'
 # local copy of stylesheets:
 # (Test runs in ``docutils/test/``, we need relative path from there.)
 settings_overrides['stylesheet_dirs'] = ('.', 'functional/input/data')
-
-    

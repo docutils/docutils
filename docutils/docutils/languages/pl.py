@@ -58,5 +58,3 @@ bibliographic_fields = {
 author_separators = [';', ',']
 """List of separator strings for the 'Authors' bibliographic field. Tried in
 order."""
-
- 	  	 

@@ -272,7 +272,7 @@ class Directive:
 
     - ``state_machine`` is the state machine which controls the state which called
       the directive function.
-      
+
     - ``reporter`` is the state machine's `reporter` instance.
 
     Directive functions return a list of nodes which will be inserted

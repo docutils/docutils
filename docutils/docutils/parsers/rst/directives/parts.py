@@ -41,7 +41,7 @@ class Contents(Directive):
                    'local': directives.flag,
                    'backlinks': backlinks,
                    'class': directives.class_option}
-    
+
     def run(self):
         if not (self.state_machine.match_titles
                 or isinstance(self.state_machine.node, nodes.sidebar)):

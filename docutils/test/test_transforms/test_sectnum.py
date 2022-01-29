@@ -272,7 +272,7 @@ Paragraph 4.
 ["""\
 .. sectnum::
    :start: 3
-   
+   \n\
 Title 1
 =======
 Paragraph 1.
@@ -325,7 +325,7 @@ Paragraph 4.
    :prefix: (5.9.
    :suffix: )
    :start: 3
-   
+   \n\
 Title 1
 =======
 Paragraph 1.

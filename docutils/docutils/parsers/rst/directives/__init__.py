@@ -407,7 +407,7 @@ def format_values(values):
 def value_or(values, other):
     """
     Directive option conversion function.
-    
+
     The argument can be any of `values` or `argument_type`.
     """
     def auto_or_other(argument):

@@ -503,7 +503,7 @@ class DocInfo(Transform):
 
     def authors_from_one_paragraph(self, field):
         """Return list of Text nodes with author names in `field`.
-        
+
         Author names must be separated by one of the "autor separators"
         defined for the document language (default: ";" or ",").
         """

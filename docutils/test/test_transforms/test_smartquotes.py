@@ -98,10 +98,10 @@ Keep quotes straight in code and math:
         Keep quotes straight in code and math:
         <literal classes="code">
             print "hello"
-         
+         \n\
         <literal classes="code python">
             print("hello")
-         
+         \n\
         <math>
             1' 12"
         .
