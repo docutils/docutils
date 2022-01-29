@@ -84,7 +84,7 @@ roles = {
       'enfasi': 'emphasis',
       'forte': 'strong',
       'letterale': 'literal',
-    'math (translation required)': 'math',
+      'math (translation required)': 'math',
       'riferimento-con-nome': 'named-reference',
       'riferimento-anonimo': 'anonymous-reference',
       'riferimento-nota': 'footnote-reference',

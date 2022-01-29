@@ -162,7 +162,7 @@ def validate_colon_separated_string_list(
     return value
 
 def validate_comma_separated_list(setting, value, option_parser,
-                                    config_parser=None, config_section=None):
+                                  config_parser=None, config_section=None):
     """Check/normalize list arguments (split at "," and strip whitespace).
     """
     # `value` may be ``bytes``, ``str``, or a ``list`` (when  given as
@@ -207,7 +207,7 @@ def validate_strip_class(setting, value, option_parser,
     return value
 
 def validate_smartquotes_locales(setting, value, option_parser,
-                         config_parser=None, config_section=None):
+                                 config_parser=None, config_section=None):
     """Check/normalize a comma separated list of smart quote definitions.
 
     Return a list of (language-tag, quotes) string tuples."""
@@ -236,7 +236,7 @@ def validate_smartquotes_locales(setting, value, option_parser,
             quotes = multichar_quotes
         elif len(quotes) != 4:
             raise ValueError('Invalid value "%s". Please specify 4 quotes\n'
-                '    (primary open/close; secondary open/close).'
+                             '    (primary open/close; secondary open/close).'
                              % item.encode('ascii', 'backslashreplace'))
         lc_quotes.append((lang, quotes))
     return lc_quotes
@@ -281,8 +281,7 @@ def filter_settings_spec(settings_spec, *exclude, **replace):
             # opt_spec is ("<help>", [<option strings>], {<keyword args>})
             opt_name = [opt_string[2:].replace('-', '_')
                         for opt_string in opt_spec[1]
-                            if opt_string.startswith('--')
-                       ][0]
+                        if opt_string.startswith('--')][0]
             if opt_name in exclude:
                 continue
             if opt_name in replace.keys():

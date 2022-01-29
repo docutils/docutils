@@ -88,8 +88,8 @@ def loadTestModules(path, name='', packages=None):
                 if filename.endswith('.py'):
                     fullpath = fullpath[len(path)+1:]
                     testModules.append(path2mod(fullpath))
-                elif packages and os.path.isdir(fullpath) and \
-                      os.path.isfile(os.path.join(fullpath, '__init__.py')):
+                elif (packages and os.path.isdir(fullpath) and
+                      os.path.isfile(os.path.join(fullpath, '__init__.py'))):
                     paths.append(fullpath)
     # Import modules and add their tests to the suite.
     sys.path.insert(0, path)

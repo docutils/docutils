@@ -44,6 +44,11 @@ except ImportError:
         pending_xref = nodes.pending
 
 
+# auxiliary function for `document.findall()`
+def is_literal(node):
+    return isinstance(node, (nodes.literal, nodes.literal_block))
+
+
 class Parser(CommonMarkParser):
     """MarkDown parser based on recommonmark.
 
@@ -94,8 +99,7 @@ class Parser(CommonMarkParser):
                     i += 1
 
         # add "code" class argument to literal elements (inline and block)
-        for node in document.findall(lambda n: isinstance(n,
-                                (nodes.literal, nodes.literal_block))):
+        for node in document.findall(is_literal):
             if 'code' not in node['classes']:
                 node['classes'].append('code')
         # move "language" argument to classes

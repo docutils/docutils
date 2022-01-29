@@ -205,19 +205,19 @@ class OutputTests(unittest.TestCase):
         fo = io.FileOutput(destination=self.mock_stdout)
         fo.write(self.bdata)
         self.assertEqual(self.mock_stdout.buffer.getvalue(),
-                            self.bdata)
+                         self.bdata)
 
     def test_encoding_clash_resolved(self):
         fo = io.FileOutput(destination=self.mock_stdout,
-                            encoding='latin1', autoclose=False)
+                           encoding='latin1', autoclose=False)
         fo.write(self.udata)
         self.assertEqual(self.mock_stdout.buffer.getvalue(),
-                            self.udata.encode('latin1'))
+                         self.udata.encode('latin1'))
 
     def test_encoding_clash_nonresolvable(self):
         del self.mock_stdout.buffer
         fo = io.FileOutput(destination=self.mock_stdout,
-                            encoding='latin1', autoclose=False)
+                           encoding='latin1', autoclose=False)
         self.assertRaises(ValueError, fo.write, self.udata)
 
 

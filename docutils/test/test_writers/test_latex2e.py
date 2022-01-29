@@ -16,10 +16,10 @@ from test_transforms import DocutilsTestSupport  # before importing docutils!
 
 def suite():
     settings = {'use_latex_toc': False,
-               # avoid latex writer future warnings:
-               'use_latex_citations': False,
-               'legacy_column_widths': True,
-               }
+                # avoid latex writer future warnings:
+                'use_latex_citations': False,
+                'legacy_column_widths': True,
+                }
     s = DocutilsTestSupport.PublishTestSuite('latex', suite_settings=settings)
     s.generateTests(totest)
     settings['use_latex_toc'] = True
@@ -112,14 +112,12 @@ head_booktabs = head_template.substitute(
          + '\\usepackage{booktabs}\n' + parts['longtable']))
 
 head_textcomp = head_template.substitute(
-    dict(parts, requirements = parts['requirements'] +
-r"""\usepackage{textcomp} % text symbol macros
-"""))
+    dict(parts, requirements=parts['requirements']
+         + '\\usepackage{textcomp} % text symbol macros\n'))
 
 head_alltt = head_template.substitute(
-    dict(parts, requirements = parts['requirements'] +
-r"""\usepackage{alltt}
-"""))
+    dict(parts, requirements = parts['requirements']
+         + '\\usepackage{alltt}\n'))
 
 
 totest = {}
@@ -1054,8 +1052,7 @@ head_template.substitute(
      \csname \DocutilsClassFunctionName \endcsname}%
   {\csname end\DocutilsClassFunctionName \endcsname}%
 \fi
-"""
-    )
+""")
 ) + r"""
 \begin{DUclass}{compound}
 Compound paragraph

@@ -42,8 +42,8 @@ class Headers(Transform):
             # @@@ replace these DataErrors with proper system messages
             raise DataError('Document tree is empty.')
         header = self.document[0]
-        if not isinstance(header, nodes.field_list) or \
-              'rfc2822' not in header['classes']:
+        if (not isinstance(header, nodes.field_list)
+            or 'rfc2822' not in header['classes']):
             raise DataError('Document does not begin with an RFC-2822 '
                             'header; it is not a PEP.')
         pep = None

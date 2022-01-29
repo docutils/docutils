@@ -35,16 +35,16 @@ class Writer(latex2e.Writer):
     """Formats this writer supports."""
 
     default_template = 'xelatex.tex'
-    default_preamble = (
-      '% Linux Libertine (free, wide coverage, not only for Linux)\n'
-      '\\setmainfont{Linux Libertine O}\n'
-      '\\setsansfont{Linux Biolinum O}\n'
-      '\\setmonofont[HyphenChar=None,Scale=MatchLowercase]{DejaVu Sans Mono}'
-    )
+    default_preamble = """\
+% Linux Libertine (free, wide coverage, not only for Linux)
+\\setmainfont{Linux Libertine O}
+\\setsansfont{Linux Biolinum O}
+\\setmonofont[HyphenChar=None,Scale=MatchLowercase]{DejaVu Sans Mono}"""
 
     config_section = 'xetex writer'
+    # TODO: remove dependency on `latex2e writer`.
     config_section_dependencies = ('writers', 'latex writers',
-            'latex2e writer') # TODO: remove dependency on `latex2e writer`.
+                                   'latex2e writer')
 
     # use a copy of the parent spec with some modifications:
     settings_spec = frontend.filter_settings_spec(
@@ -108,7 +108,7 @@ class Babel(latex2e.Babel):
                 'fr-CA',        # 'canadien',
                 'grc-ibycus',   # 'ibycus', (Greek Ibycus encoding)
                 'sr-Latn',      # 'serbian script=latin'
-               ):
+                ):
         del(language_codes[key.lower()])
 
     def __init__(self, language_code, reporter):

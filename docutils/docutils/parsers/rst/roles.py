@@ -229,7 +229,8 @@ class CustomRole:
         content = content or []
         delimiter = ['\n'] if supplied_content and content else []
         return self.base_role(role, rawtext, text, lineno, inliner,
-                    options=opts, content=supplied_content+delimiter+content)
+                              options=opts,
+                              content=supplied_content+delimiter+content)
 
 
 def generic_custom_role(role, rawtext, text, lineno, inliner,

@@ -82,8 +82,8 @@ class OdtPygmentsLaTeXFormatter(OdtPygmentsFormatter):
                 s1 = '<text:span text:style-name="%s">%s</text:span>' % \
                     (s2, value, )
             elif ttype in (tokenclass.Literal.String,
-                    tokenclass.Literal.String.Backtick,
-                    ):
+                           tokenclass.Literal.String.Backtick,
+                           ):
                 s2 = self.rststyle('codeblock-string')
                 s1 = '<text:span text:style-name="%s">%s</text:span>' % \
                     (s2, value, )

@@ -143,7 +143,8 @@ class Parser(docutils.parsers.Parser):
           ['--character-level-inline-markup'],
           {'action': 'store_true', 'default': False,
            'dest': 'character_level_inline_markup'}),
-        ))
+         )
+        )
 
     config_section = 'restructuredtext parser'
     config_section_dependencies = ('parsers',)

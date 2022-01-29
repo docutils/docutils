@@ -57,12 +57,12 @@ class Lexer:
             return
         if not with_pygments:
             raise LexerError('Cannot analyze code. '
-                                    'Pygments package not found.')
+                             'Pygments package not found.')
         try:
             self.lexer = get_lexer_by_name(self.language)
         except pygments.util.ClassNotFound:
             raise LexerError('Cannot analyze code. '
-                'No Pygments lexer found for "%s".' % language)
+                             'No Pygments lexer found for "%s".' % language)
         # self.lexer.add_filter('tokenmerge')
         # Since version 1.2. (released Jan 01, 2010) Pygments has a
         # TokenMergeFilter. # ``self.merge(tokens)`` in __iter__ could

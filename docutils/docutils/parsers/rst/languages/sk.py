@@ -82,7 +82,7 @@ roles = {
       'emphasis (translation required)': 'emphasis',
       'strong (translation required)': 'strong',
       'literal (translation required)': 'literal',
-    'math (translation required)': 'math',
+      'math (translation required)': 'math',
       'named-reference (translation required)': 'named-reference',
       'anonymous-reference (translation required)': 'anonymous-reference',
       'footnote-reference (translation required)': 'footnote-reference',

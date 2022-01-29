@@ -286,8 +286,10 @@ def extract_options(field_list):
         body = field[1]
         if len(body) == 0:
             data = None
-        elif len(body) > 1 or not isinstance(body[0], nodes.paragraph) \
-              or len(body[0]) != 1 or not isinstance(body[0][0], nodes.Text):
+        elif (len(body) > 1
+              or not isinstance(body[0], nodes.paragraph)
+              or len(body[0]) != 1
+              or not isinstance(body[0][0], nodes.Text)):
             raise BadOptionDataError(
                   'extension option field body may contain\n'
                   'a single paragraph only (option "%s")' % name)
@@ -460,7 +462,7 @@ def relative_path(source, target):
     If there is no common prefix, return the absolute path to `target`.
     """
     source_parts = os.path.abspath(source or type(target)('dummy_file')
-                                  ).split(os.sep)
+                                   ).split(os.sep)
     target_parts = os.path.abspath(target).split(os.sep)
     # Check first 2 parts because '/dir'.split('/') == ['', 'dir']:
     if source_parts[:2] != target_parts[:2]:
@@ -628,8 +630,8 @@ east_asian_widths = {'W': 2,   # Wide
                      'Na': 1,  # Narrow
                      'H': 1,   # Half-width (narrow)
                      'N': 1,   # Neutral (not East Asian, treated as narrow)
-                     'A': 1}   # Ambiguous (s/b wide in East Asian context,
-                               # narrow otherwise, but that doesn't work)
+                     'A': 1,   # Ambiguous (s/b wide in East Asian context,
+                     }         # narrow otherwise, but that doesn't work)
 """Mapping of result codes from `unicodedata.east_asian_widt()` to character
 column widths."""
 
@@ -639,17 +641,17 @@ def column_width(text):
     Correct ``len(text)`` for wide East Asian and combining Unicode chars.
     """
     width = sum(east_asian_widths[unicodedata.east_asian_width(c)]
-                 for c in text)
+                for c in text)
     # correction for combining chars:
     width -= len(find_combining_chars(text))
     return width
 
 def uniq(L):
-     r = []
-     for item in L:
-         if item not in r:
-             r.append(item)
-     return r
+    r = []
+    for item in L:
+        if item not in r:
+            r.append(item)
+    return r
 
 def normalize_language_tag(tag):
     """Return a list of normalized combinations for a `BCP 47` language tag.

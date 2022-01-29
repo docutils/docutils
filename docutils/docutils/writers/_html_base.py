@@ -37,8 +37,10 @@ class Writer(writers.Writer):
     supported = ('html', 'xhtml') # update in subclass
     """Formats this writer supports."""
 
-    settings_spec = ('HTML Writer Options', None, (
-         ('Specify the template file (UTF-8 encoded). '
+    settings_spec = (
+        'HTML Writer Options',
+        None,
+        (('Specify the template file (UTF-8 encoded). '
           '(default: writer dependent)',
           ['--template'],
           {'metavar': '<file>'}),
@@ -125,7 +127,8 @@ class Writer(writers.Writer):
           'keeping email links usable with standards-compliant browsers.',
           ['--cloak-email-addresses'],
           {'action': 'store_true', 'validator': frontend.validate_boolean}),
-        ))
+         )
+        )
 
     settings_defaults = {'output_encoding_error_handler': 'xmlcharrefreplace'}
 
@@ -269,7 +272,7 @@ class HTMLTranslator(nodes.NodeVisitor):
                           ord('"'): '&quot;',
                           ord('>'): '&gt;',
                           ord('@'): '&#64;', # may thwart address harvesters
-                         }
+                          }
     """Character references for characters with a special meaning in HTML."""
 
 
@@ -305,14 +308,16 @@ class HTMLTranslator(nodes.NodeVisitor):
         # legacy setting embed_images:
         if getattr(settings, 'embed_images', None) is True:
             warnings.warn('The configuration setting "embed_images" '
-                'will be removed in Docutils 1.2. Use "image_loading: embed".',
-                FutureWarning, stacklevel=8)
+                          'will be removed in Docutils 1.2. '
+                          'Use "image_loading: embed".',
+                          FutureWarning, stacklevel=8)
             if self.image_loading is None:
                 self.image_loading = 'embed'
         if getattr(settings, 'embed_images', None) is False:
             warnings.warn('The configuration setting "embed_images" '
-                'will be removed in Docutils 1.2. Use "image_loading: link".',
-                FutureWarning, stacklevel=8)
+                          'will be removed in Docutils 1.2. '
+                          'Use "image_loading: link".',
+                          FutureWarning, stacklevel=8)
         if self.image_loading is None:
             self.image_loading = 'link' # default
         self.math_output = settings.math_output.split()
@@ -441,11 +446,9 @@ class HTMLTranslator(nodes.NodeVisitor):
                 # may be targets inside of references, but nested "a"
                 # elements aren't allowed in XHTML (even if they do
                 # not all have a "href" attribute).
-                if empty or isinstance(node,
-                            (nodes.bullet_list, nodes.docinfo,
-                             nodes.definition_list, nodes.enumerated_list,
-                             nodes.field_list, nodes.option_list,
-                             nodes.table)):
+                if empty or isinstance(node, (nodes.Sequential,
+                                              nodes.docinfo,
+                                              nodes.table)):
                     # Insert target right in front of element.
                     prefix.append('<span id="%s"></span>' % id)
                 else:
@@ -652,7 +655,7 @@ class HTMLTranslator(nodes.NodeVisitor):
     def depart_citation_reference(self, node):
         self.body.append(']</a>')
 
-     # classifier
+    # classifier
     # ----------
     # don't insert classifier-delimiter here (done by CSS)
 
@@ -811,8 +814,8 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.meta.insert(0, self.content_type % self.settings.output_encoding)
         self.head.insert(0, self.content_type % self.settings.output_encoding)
         if 'name="dcterms.' in ''.join(self.meta):
-            self.head.append(
-             '<link rel="schema.dcterms" href="http://purl.org/dc/terms/"/>')
+            self.head.append('<link rel="schema.dcterms"'
+                             'href="http://purl.org/dc/terms/"/>')
         if self.math_header:
             if self.math_output == 'mathjax':
                 self.head.extend(self.math_header)
@@ -966,7 +969,7 @@ class HTMLTranslator(nodes.NodeVisitor):
             # get section number (strip trailing no-break-spaces)
             sectnum = node.astext().rstrip(' ')
             self.body.append('<span class="sectnum">%s </span>'
-                                    % self.encode(sectnum))
+                             % self.encode(sectnum))
             # Content already processed:
             raise nodes.SkipNode
 
@@ -1055,8 +1058,8 @@ class HTMLTranslator(nodes.NodeVisitor):
                                             uri.replace('\\', '/'))
                 # TODO: insert SVG as-is?
                 # if mimetype == 'image/svg+xml':
-                  # read/parse, apply arguments,
-                  # insert as <svg ....> ... </svg> # (about 1/3 less data)
+                # read/parse, apply arguments,
+                # insert as <svg ....> ... </svg> # (about 1/3 less data)
                 data64 = base64.b64encode(imagedata).decode()
                 uri = 'data:%s;base64,%s' % (mimetype, data64)
         elif self.image_loading == 'lazy':
@@ -1149,7 +1152,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         for token in self.words_and_spaces.findall(text):
             if token.strip() and self.in_word_wrap_point.search(token):
                 self.body.append('<span class="pre">%s</span>'
-                                    % self.encode(token))
+                                 % self.encode(token))
             else:
                 self.body.append(self.encode(token))
         self.body.append('</span>')
@@ -1199,8 +1202,9 @@ class HTMLTranslator(nodes.NodeVisitor):
                     'latex':   (None,     None),
                    }
         wrapper = wrappers[self.math_output][math_env != '']
-        if self.math_output == 'mathml' and (not self.math_output_options or
-                                self.math_output_options[0] == 'blahtexml'):
+        if (self.math_output == 'mathml'
+            and (not self.math_output_options
+                 or self.math_output_options[0] == 'blahtexml')):
             wrapper = None
         # get and wrap content
         math_code = node.astext().translate(unichar2tex.uni2tex_table)
@@ -1217,7 +1221,8 @@ class HTMLTranslator(nodes.NodeVisitor):
                 self.mathjax_url = self.math_output_options[0]
             except IndexError:
                 self.document.reporter.warning('No MathJax URL specified, '
-                    'using local fallback (see config.html)')
+                                               'using local fallback '
+                                               '(see config.html)')
             # append configuration, if not already present in the URL:
             # input LaTeX with AMS, output common HTML
             if '?' not in self.mathjax_url:
@@ -1239,23 +1244,24 @@ class HTMLTranslator(nodes.NodeVisitor):
             converter = ' '.join(self.math_output_options).lower()
             try:
                 if converter == 'latexml':
-                    math_code = tex2mathml_extern.latexml(math_code,
-                                                    self.document.reporter)
+                    math_code = tex2mathml_extern.latexml(
+                                    math_code, self.document.reporter)
                 elif converter == 'ttm':
-                    math_code = tex2mathml_extern.ttm(math_code,
-                                                    self.document.reporter)
+                    math_code = tex2mathml_extern.ttm(
+                                    math_code, self.document.reporter)
                 elif converter == 'blahtexml':
-                    math_code = tex2mathml_extern.blahtexml(math_code,
-                        inline=not(math_env),
-                        reporter=self.document.reporter)
+                    math_code = tex2mathml_extern.blahtexml(
+                                    math_code,
+                                    inline=not(math_env),
+                                    reporter=self.document.reporter)
                 elif not converter:
-                    math_code = latex2mathml.tex2mathml(math_code,
-                                                        inline=not(math_env))
+                    math_code = latex2mathml.tex2mathml(
+                                    math_code, inline=not(math_env))
                 else:
                     self.document.reporter.error('option "%s" not supported '
-                    'with math-output "MathML"')
+                                                 'with math-output "MathML"')
             except OSError:
-                    raise OSError('is "latexmlmath" in your PATH?')
+                raise OSError('is "latexmlmath" in your PATH?')
             except SyntaxError as err:
                 err_node = self.document.reporter.error(err, base_node=node)
                 self.visit_system_message(err_node)
@@ -1632,13 +1638,13 @@ class HTMLTranslator(nodes.NodeVisitor):
     def visit_title(self, node):
         close_tag = '</p>\n'
         if isinstance(node.parent, nodes.topic):
+            # TODO: use role="heading" or <h1>? (HTML5 only)
             self.body.append(
-                  self.starttag(node, 'p', '', CLASS='topic-title'))
-                  # TODO: use role="heading" or <h1>? (HTML5 only)
+                self.starttag(node, 'p', '', CLASS='topic-title'))
         elif isinstance(node.parent, nodes.sidebar):
+            # TODO: use role="heading" or <h1>? (HTML5 only)
             self.body.append(
-                  self.starttag(node, 'p', '', CLASS='sidebar-title'))
-                  # TODO: use role="heading" or <h1>? (HTML5 only)
+                self.starttag(node, 'p', '', CLASS='sidebar-title'))
         elif isinstance(node.parent, nodes.Admonition):
             self.body.append(
                   self.starttag(node, 'p', '', CLASS='admonition-title'))

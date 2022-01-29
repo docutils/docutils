@@ -29,7 +29,7 @@ class TextTests(unittest.TestCase):
     def test_repr(self):
         self.assertEqual(repr(self.text), r"<#text: 'Line 1.\nLine 2.'>")
         self.assertEqual(self.text.shortrepr(),
-                          r"<#text: 'Line 1.\nLine 2.'>")
+                         r"<#text: 'Line 1.\nLine 2.'>")
         self.assertEqual(repr(self.unicode_text), "<#text: 'Möhren'>")
 
     def test_str(self):
@@ -61,10 +61,10 @@ class TextTests(unittest.TestCase):
 
     def test_longrepr(self):
         self.assertEqual(repr(self.longtext), r"<#text: 'Mary had a "
-                          r"little lamb whose fleece was white as snow "
-                          r"and everwh ...'>")
+                         r"little lamb whose fleece was white as snow "
+                         r"and everwh ...'>")
         self.assertEqual(self.longtext.shortrepr(),
-                          r"<#text: 'Mary had a lit ...'>")
+                         r"<#text: 'Mary had a lit ...'>")
 
     def test_Text_rawsource_deprection_warning(self):
         with warnings.catch_warnings(record=True) as wng:
@@ -115,13 +115,13 @@ class ElementTests(unittest.TestCase):
         element['attr'] = '1'
         self.assertEqual(repr(element), r"<Element: <#text: 'text\nmore'>>")
         self.assertEqual(str(element),
-                          '<Element attr="1">text\nmore</Element>')
+                         '<Element attr="1">text\nmore</Element>')
         dom = element.asdom()
         self.assertEqual(dom.toxml(),
-                          '<Element attr="1">text\nmore</Element>')
+                         '<Element attr="1">text\nmore</Element>')
         dom.unlink()
         self.assertEqual(element.pformat(),
-                          '<Element attr="1">\n    text\n    more\n')
+                         '<Element attr="1">\n    text\n    more\n')
 
     def test_clear(self):
         element = nodes.Element()
@@ -148,7 +148,7 @@ class ElementTests(unittest.TestCase):
         element['ids'].append('someid')
         self.assertEqual(element['ids'], ['someid'])
         self.assertEqual(element.non_default_attributes(),
-                          {'ids': ['someid']})
+                         {'ids': ['someid']})
         self.assertTrue(element.is_not_default('ids'))
 
     def test_update_basic_atts(self):
@@ -325,8 +325,9 @@ class MiscTests(unittest.TestCase):
         node_class_names = []
         for x in dir(nodes):
             c = getattr(nodes, x)
-            if isinstance(c, type) and \
-                   issubclass(c, nodes.Node) and len(c.__bases__) > 1:
+            if (isinstance(c, type)
+                and issubclass(c, nodes.Node)
+                and len(c.__bases__) > 1):
                 node_class_names.append(x)
         node_class_names.sort()
         nodes.node_class_names.sort()
@@ -336,7 +337,7 @@ class MiscTests(unittest.TestCase):
            ('a.b.c', 'a-b-c'), (' - a - b - c - ', 'a-b-c'), (' - ', ''),
            ('\u2020\u2066', ''), ('a \xa7 b \u2020 c', 'a-b-c'),
            ('1', ''), ('1abc', 'abc'),
-          ]
+           ]
     ids_unicode_all = [
             ('\u00f8 o with stroke', 'o-o-with-stroke'),
             ('\u0111 d with stroke', 'd-d-with-stroke'),
@@ -344,7 +345,7 @@ class MiscTests(unittest.TestCase):
             ('\u0131 dotless i', 'i-dotless-i'),
             ('\u0142 l with stroke', 'l-l-with-stroke'),
             ('\u0167 t with stroke', 't-t-with-stroke'),
-           # From Latin Extended-B
+            # From Latin Extended-B
             ('\u0180 b with stroke', 'b-b-with-stroke'),
             ('\u0183 b with topbar', 'b-b-with-topbar'),
             ('\u0188 c with hook', 'c-c-with-hook'),
@@ -372,7 +373,7 @@ class MiscTests(unittest.TestCase):
             ('\u024b q with hook tail', 'q-q-with-hook-tail'),
             ('\u024d r with stroke', 'r-r-with-stroke'),
             ('\u024f y with stroke', 'y-y-with-stroke'),
-           # From Latin-1 Supplements
+            # From Latin-1 Supplements
             ('\u00e0: a with grave', 'a-a-with-grave'),
             ('\u00e1 a with acute', 'a-a-with-acute'),
             ('\u00e2 a with circumflex', 'a-a-with-circumflex'),
@@ -400,7 +401,7 @@ class MiscTests(unittest.TestCase):
             ('\u00fc u with diaeresis', 'u-u-with-diaeresis'),
             ('\u00fd y with acute', 'y-y-with-acute'),
             ('\u00ff y with diaeresis', 'y-y-with-diaeresis'),
-           # From Latin Extended-A
+            # From Latin Extended-A
             ('\u0101 a with macron', 'a-a-with-macron'),
             ('\u0103 a with breve', 'a-a-with-breve'),
             ('\u0105 a with ogonek', 'a-a-with-ogonek'),
@@ -456,7 +457,7 @@ class MiscTests(unittest.TestCase):
             ('\u017a z with acute', 'z-z-with-acute'),
             ('\u017c z with dot above', 'z-z-with-dot-above'),
             ('\u017e z with caron', 'z-z-with-caron'),
-           # From Latin Extended-B
+            # From Latin Extended-B
             ('\u01a1 o with horn', 'o-o-with-horn'),
             ('\u01b0 u with horn', 'u-u-with-horn'),
             ('\u01c6 dz with caron', 'dz-dz-with-caron'),
@@ -493,7 +494,7 @@ class MiscTests(unittest.TestCase):
             ('\u0229 e with cedilla', 'e-e-with-cedilla'),
             ('\u022f o with dot above', 'o-o-with-dot-above'),
             ('\u0233 y with macron', 'y-y-with-macron'),
-           # digraphs From Latin-1 Supplements
+            # digraphs From Latin-1 Supplements
             ('\u00df: ligature sz', 'sz-ligature-sz'),
             ('\u00e6 ae', 'ae-ae'),
             ('\u0153 ligature oe', 'oe-ligature-oe'),
@@ -520,31 +521,31 @@ class MiscTests(unittest.TestCase):
         e += nodes.Element()
         e += nodes.Element()
         self.assertEqual(list(e.findall()),
-                          [e, e[0], e[0][0], e[0][1], e[0][1][0], e[1], e[2]])
+                         [e, e[0], e[0][0], e[0][1], e[0][1][0], e[1], e[2]])
         self.assertEqual(list(e.findall(include_self=False)),
-                          [e[0], e[0][0], e[0][1], e[0][1][0], e[1], e[2]])
+                         [e[0], e[0][0], e[0][1], e[0][1][0], e[1], e[2]])
         self.assertEqual(list(e.findall(descend=False)),
-                          [e])
+                         [e])
         self.assertEqual(list(e[0].findall(descend=False, ascend=True)),
-                          [e[0], e[1], e[2]])
+                         [e[0], e[1], e[2]])
         self.assertEqual(list(e[0][0].findall(descend=False, ascend=True)),
-                          [e[0][0], e[0][1], e[1], e[2]])
+                         [e[0][0], e[0][1], e[1], e[2]])
         self.assertEqual(list(e[0][0].findall(descend=False, siblings=True)),
-                          [e[0][0], e[0][1]])
+                         [e[0][0], e[0][1]])
         self.testlist = e[0:2]
         self.assertEqual(list(e.findall(condition=self.not_in_testlist)),
-                          [e, e[0][0], e[0][1], e[0][1][0], e[2]])
+                         [e, e[0][0], e[0][1], e[0][1][0], e[2]])
         # Return siblings despite siblings=False because ascend is true.
         self.assertEqual(list(e[1].findall(ascend=True, siblings=False)),
-                          [e[1], e[2]])
+                         [e[1], e[2]])
         self.assertEqual(list(e[0].findall()),
-                          [e[0], e[0][0], e[0][1], e[0][1][0]])
+                         [e[0], e[0][0], e[0][1], e[0][1][0]])
         self.testlist = [e[0][0], e[0][1]]
         self.assertEqual(list(e[0].findall(condition=self.not_in_testlist)),
-                               [e[0], e[0][1][0]])
+                         [e[0], e[0][1][0]])
         self.testlist.append(e[0][1][0])
         self.assertEqual(list(e[0].findall(condition=self.not_in_testlist)),
-                               [e[0]])
+                         [e[0]])
         self.assertEqual(list(e.findall(nodes.TextElement)), [e[0][1]])
 
     def test_next_node(self):
@@ -565,7 +566,7 @@ class MiscTests(unittest.TestCase):
                    (e[2], None)]
         for node, next_node in compare:
             self.assertEqual(node.next_node(self.not_in_testlist, ascend=True),
-                              next_node)
+                             next_node)
         self.assertEqual(e[0][0].next_node(ascend=True), e[0][1])
         self.assertEqual(e[2].next_node(), None)
 
@@ -645,7 +646,7 @@ class SetIdTests(unittest.TestCase):
                          nodes.section(), # Name empty
                          nodes.section(names=['Test']), # duplicate id
                          nodes.footnote(names=['2019-10-30']), # id empty
-                        ]
+                         ]
 
     def test_set_id_default(self):
         # Default prefixes.

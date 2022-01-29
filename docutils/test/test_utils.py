@@ -34,7 +34,7 @@ class ReporterTests(unittest.TestCase):
         debug output
 """)
         self.assertEqual(self.stream.getvalue(),
-                          'test data:: (DEBUG/0) debug output\n')
+                         'test data:: (DEBUG/0) debug output\n')
 
     def test_level1(self):
         sw = self.reporter.system_message(1, 'a little reminder')
@@ -53,7 +53,7 @@ class ReporterTests(unittest.TestCase):
         a warning
 """)
         self.assertEqual(self.stream.getvalue(),
-                          'test data:: (WARNING/2) a warning\n')
+                         'test data:: (WARNING/2) a warning\n')
 
     def test_level3(self):
         sw = self.reporter.system_message(3, 'an error')
@@ -63,13 +63,13 @@ class ReporterTests(unittest.TestCase):
         an error
 """)
         self.assertEqual(self.stream.getvalue(),
-                          'test data:: (ERROR/3) an error\n')
+                         'test data:: (ERROR/3) an error\n')
 
     def test_level4(self):
         self.assertRaises(utils.SystemMessage, self.reporter.system_message, 4,
                           'a severe error, raises an exception')
         self.assertEqual(self.stream.getvalue(), 'test data:: (SEVERE/4) '
-                          'a severe error, raises an exception\n')
+                         'a severe error, raises an exception\n')
 
 
     def test_unicode_message(self):
@@ -166,8 +166,8 @@ class NameValueTests(unittest.TestCase):
         output = utils.extract_name_value(
               """att1=val1 att2=val2 att3="value number '3'" att4=val4""")
         self.assertEqual(output, [('att1', 'val1'), ('att2', 'val2'),
-                                   ('att3', "value number '3'"),
-                                   ('att4', 'val4')])
+                                  ('att3', "value number '3'"),
+                                  ('att4', 'val4')])
 
 
 class ExtensionOptionTests(unittest.TestCase):

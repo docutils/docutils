@@ -45,7 +45,7 @@ class BasePseudoSection(Directive):
                 textnodes, more_messages = self.state.inline_text(
                     self.options['subtitle'], self.lineno)
                 titles.append(nodes.subtitle(self.options['subtitle'], '',
-                                            *textnodes))
+                                             *textnodes))
                 messages.extend(more_messages)
         else:
             titles = []
@@ -137,7 +137,7 @@ class CodeBlock(Directive):
     option_spec = {'class': directives.class_option,
                    'name': directives.unchanged,
                    'number-lines': directives.unchanged # integer or None
-                  }
+                   }
     has_content = True
 
     def run(self):
@@ -193,9 +193,10 @@ class CodeBlock(Directive):
 class MathBlock(Directive):
 
     option_spec = {'class': directives.class_option,
-                   'name': directives.unchanged}
+                   'name': directives.unchanged,
                    ## TODO: Add Sphinx' ``mathbase.py`` option 'nowrap'?
                    # 'nowrap': directives.flag,
+                   }
     has_content = True
 
     def run(self):

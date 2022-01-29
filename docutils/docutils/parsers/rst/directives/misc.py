@@ -80,7 +80,7 @@ class Include(Directive):
                               (self.name, path))
         except OSError as error:
             raise self.severe('Problems with "%s" directive path:\n%s.' %
-                      (self.name, io.error_string(error)))
+                              (self.name, io.error_string(error)))
         else:
             self.state.document.settings.record_dependencies.add(path)
 
@@ -128,8 +128,9 @@ class Include(Directive):
                 text = rawtext.expandtabs(tab_width)
             else:
                 text = rawtext
-            literal_block = nodes.literal_block(rawtext, source=path,
-                                    classes=self.options.get('class', []))
+            literal_block = nodes.literal_block(
+                                rawtext, source=path,
+                                classes=self.options.get('class', []))
             literal_block.line = 1
             self.add_name(literal_block)
             if 'number-lines' in self.options:
@@ -260,7 +261,7 @@ class Raw(Directive):
                 text = raw_file.read()
             except UnicodeError as error:
                 raise self.severe('Problem with "%s" directive:\n%s'
-                    % (self.name, io.error_string(error)))
+                                  % (self.name, io.error_string(error)))
             attributes['source'] = path
         elif 'url' in self.options:
             source = self.options['url']
@@ -273,7 +274,9 @@ class Raw(Directive):
                 raw_text = urlopen(source).read()
             except (URLError, OSError) as error:
                 raise self.severe('Problems with "%s" directive URL "%s":\n%s.'
-                    % (self.name, self.options['url'], io.error_string(error)))
+                                  % (self.name,
+                                     self.options['url'],
+                                     io.error_string(error)))
             raw_file = io.StringInput(source=raw_text, source_path=source,
                                       encoding=encoding,
                                       error_handler=e_handler)
@@ -289,7 +292,7 @@ class Raw(Directive):
         raw_node = nodes.raw('', text, classes=self.options.get('class', []),
                              **attributes)
         (raw_node.source,
-        raw_node.line) = self.state_machine.get_source_and_line(self.lineno)
+         raw_node.line) = self.state_machine.get_source_and_line(self.lineno)
         return [raw_node]
 
 
@@ -364,7 +367,7 @@ class Unicode(Directive):
                 decoded = directives.unicode_code(code)
             except ValueError as error:
                 raise self.error('Invalid character code: %s\n%s'
-                    % (code, io.error_string(error)))
+                                 % (code, io.error_string(error)))
             element += nodes.Text(decoded)
         return element.children
 
@@ -444,10 +447,10 @@ class Role(Directive):
             'supported (specified by "%r" role).' % (self.name, base_role))
         try:
             converted_role = convert_directive_function(base_role)
-            (arguments, options, content, content_offset) = (
-                self.state.parse_directive_block(
-                self.content[1:], self.content_offset, converted_role,
-                option_presets={}))
+            (arguments, options, content, content_offset
+             ) = self.state.parse_directive_block(
+                    self.content[1:], self.content_offset,
+                    converted_role, option_presets={})
         except states.MarkupError as detail:
             error = self.reporter.error(
                 'Error in "%s" directive:\n%s.' % (self.name, detail),
@@ -458,8 +461,9 @@ class Role(Directive):
             try:
                 options['class'] = directives.class_option(new_role_name)
             except ValueError as detail:
-                error = self.reporter.error('Invalid argument '
-                    'for "%s" directive:\n%s.' % (self.name, detail),
+                error = self.reporter.error(
+                    'Invalid argument for "%s" directive:\n%s.'
+                    % (self.name, detail),
                     nodes.literal_block(self.block_text, self.block_text),
                     line=self.lineno)
                 return messages + [error]
@@ -516,8 +520,8 @@ class MetaBody(states.SpecializedBody):
     def parsemeta(self, match):
         name = self.parse_field_marker(match)
         name = utils.unescape(utils.escape2null(name))
-        indented, indent, line_offset, blank_finish = \
-              self.state_machine.get_first_known_indented(match.end())
+        (indented, indent, line_offset, blank_finish
+         ) = self.state_machine.get_first_known_indented(match.end())
         node = nodes.meta()
         node['content'] = utils.unescape(utils.escape2null(
                                             ' '.join(indented)))

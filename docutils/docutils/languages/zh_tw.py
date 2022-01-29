@@ -60,6 +60,6 @@ author_separators = [';', ',',
                      '\uff1b', # '；'
                      '\uff0c', # '，'
                      '\u3001', # '、'
-                    ]
+                     ]
 """List of separator strings for the 'Authors' bibliographic field. Tried in
 order."""

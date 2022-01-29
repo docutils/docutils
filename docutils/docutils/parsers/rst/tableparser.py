@@ -36,8 +36,8 @@ class TableMarkupError(DataError):
     """
 
     def __init__(self, *args, **kwargs):
-            self.offset = kwargs.pop('offset', 0)
-            DataError.__init__(self, *args)
+        self.offset = kwargs.pop('offset', 0)
+        DataError.__init__(self, *args)
 
 
 class TableParser:
@@ -169,8 +169,9 @@ class GridTableParser(TableParser):
         corners = [(0, 0)]
         while corners:
             top, left = corners.pop(0)
-            if top == self.bottom or left == self.right \
-                  or top <= self.done[left]:
+            if (top == self.bottom
+                or left == self.right
+                or top <= self.done[left]):
                 continue
             result = self.scan_cell(top, left)
             if not result:
@@ -512,9 +513,9 @@ class SimpleTableParser(TableParser):
                     if new_end > main_end:
                         self.columns[-1] = (main_start, new_end)
                 elif line[end:nextstart].strip():
-                    raise TableMarkupError('Text in column margin '
-                        'in table line %s.' % (first_line+offset+1),
-                        offset=first_line+offset)
+                    raise TableMarkupError('Text in column margin in table '
+                                           'line %s.' % (first_line+offset+1),
+                                           offset=first_line+offset)
                 offset += 1
         columns.pop()
 

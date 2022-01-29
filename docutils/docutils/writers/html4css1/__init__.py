@@ -33,7 +33,7 @@ class Writer(writers._html_base.Writer):
                                os.path.abspath(os.path.join(
                                    os.path.dirname(os.path.dirname(__file__)),
                                    'html5_polyglot')) # for math.css
-                              ]
+                               ]
     default_template = os.path.join(
         os.path.dirname(os.path.abspath(__file__)), 'template.txt')
 
@@ -41,39 +41,39 @@ class Writer(writers._html_base.Writer):
     settings_spec = frontend.filter_settings_spec(
         writers._html_base.Writer.settings_spec,
         template =
-         ('Template file. (UTF-8 encoded, default: "%s")' % default_template,
-          ['--template'],
-          {'default': default_template, 'metavar': '<file>'}),
+        ('Template file. (UTF-8 encoded, default: "%s")' % default_template,
+         ['--template'],
+         {'default': default_template, 'metavar': '<file>'}),
         stylesheet_path =
-         ('Comma separated list of stylesheet paths. '
-          'Relative paths are expanded if a matching file is found in '
-          'the --stylesheet-dirs. With --link-stylesheet, '
-          'the path is rewritten relative to the output HTML file. '
-          '(default: "%s")' % ','.join(default_stylesheets),
-          ['--stylesheet-path'],
-          {'metavar': '<file[,file,...]>', 'overrides': 'stylesheet',
-           'validator': frontend.validate_comma_separated_list,
-           'default': default_stylesheets}),
-       stylesheet_dirs =
-         ('Comma-separated list of directories where stylesheets are found. '
-          'Used by --stylesheet-path when expanding relative path arguments. '
-          '(default: "%s")' % ','.join(default_stylesheet_dirs),
-          ['--stylesheet-dirs'],
-          {'metavar': '<dir[,dir,...]>',
-           'validator': frontend.validate_comma_separated_list,
-           'default': default_stylesheet_dirs}),
-       initial_header_level =
-         ('Specify the initial header level. Does not affect document '
-          'title & subtitle (see --no-doc-title). (default: 1 for "<h1>")',
-          ['--initial-header-level'],
-          {'choices': '1 2 3 4 5 6'.split(), 'default': '1',
-           'metavar': '<level>'}),
-       xml_declaration =
-         ('Prepend an XML declaration (default). ',
-          ['--xml-declaration'],
-          {'default': True, 'action': 'store_true',
-           'validator': frontend.validate_boolean}),
-        )
+        ('Comma separated list of stylesheet paths. '
+         'Relative paths are expanded if a matching file is found in '
+         'the --stylesheet-dirs. With --link-stylesheet, '
+         'the path is rewritten relative to the output HTML file. '
+         '(default: "%s")' % ','.join(default_stylesheets),
+         ['--stylesheet-path'],
+         {'metavar': '<file[,file,...]>', 'overrides': 'stylesheet',
+          'validator': frontend.validate_comma_separated_list,
+          'default': default_stylesheets}),
+        stylesheet_dirs =
+        ('Comma-separated list of directories where stylesheets are found. '
+         'Used by --stylesheet-path when expanding relative path arguments. '
+         '(default: "%s")' % ','.join(default_stylesheet_dirs),
+         ['--stylesheet-dirs'],
+         {'metavar': '<dir[,dir,...]>',
+          'validator': frontend.validate_comma_separated_list,
+          'default': default_stylesheet_dirs}),
+        initial_header_level =
+        ('Specify the initial header level. Does not affect document '
+         'title & subtitle (see --no-doc-title). (default: 1 for "<h1>")',
+         ['--initial-header-level'],
+         {'choices': '1 2 3 4 5 6'.split(), 'default': '1',
+          'metavar': '<level>'}),
+        xml_declaration =
+        ('Prepend an XML declaration (default). ',
+         ['--xml-declaration'],
+         {'default': True, 'action': 'store_true',
+          'validator': frontend.validate_boolean}),
+    )
     settings_spec = settings_spec + (
         'HTML4 Writer Options',
         '',
@@ -91,7 +91,8 @@ class Writer(writers._html_base.Writer):
           ['--option-limit'],
           {'default': 14, 'metavar': '<level>',
            'validator': frontend.validate_nonnegative_int}),
-        ))
+         )
+        )
 
     config_section = 'html4css1 writer'
 
@@ -540,7 +541,7 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
     #   (SVG not supported by IE up to version 8,
     #   html4css1 strives for IE6 compatibility.)
     object_image_types = {'.svg': 'image/svg+xml',
-                         '.swf': 'application/x-shockwave-flash'}
+                          '.swf': 'application/x-shockwave-flash'}
     #
     def visit_image(self, node):
         atts = {}

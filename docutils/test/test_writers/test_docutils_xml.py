@@ -184,7 +184,8 @@ class DocutilsXMLTestCase(DocutilsTestSupport.StandardTestCase):
                     + invalid_raw_xml).encode('latin1', 'xmlcharrefreplace')
         self.assertEqual(result, expected)
         warnings.seek(0)
-        self.assertEqual(warnings.readlines(),
+        self.assertEqual(
+            warnings.readlines(),
             ['<string>:5: '
              '(WARNING/2) Invalid raw XML in column 2, line offset 3:\n',
              '<root>\n',

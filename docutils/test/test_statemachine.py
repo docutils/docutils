@@ -81,7 +81,7 @@ class MockState(statemachine.StateWS):
     def bullet(self, match, context, next_state):
         if self.debug: print('bullet%s' % self.level, file=sys.stderr)
         context, next_state, result \
-              = self.known_indent(match, context, next_state)
+            = self.known_indent(match, context, next_state)
         return [], next_state, ['bullet%s' % self.level] + result
 
     def text(self, match, context, next_state):
@@ -90,8 +90,8 @@ class MockState(statemachine.StateWS):
 
     def literalblock(self):
         indented, indent, offset, good = self.state_machine.get_indented()
-        if self.debug: print('literalblock%s(%s)' % (self.level,
-                                                                   indent), file=sys.stderr)
+        if self.debug: print('literalblock%s(%s)' % (self.level, indent),
+                             file=sys.stderr)
         return ['literalblock%s(%s)' % (self.level, indent)]
 
     def eof(self, context):
@@ -125,9 +125,9 @@ class EmptySMTests(unittest.TestCase):
         self.assertRaises(statemachine.UnknownStateError, self.sm.get_state,
                           'unknownState')
         self.assertTrue(isinstance(self.sm.get_state('State'),
-                                statemachine.State))
+                                   statemachine.State))
         self.assertTrue(isinstance(self.sm.get_state('StateWS'),
-                                statemachine.State))
+                                   statemachine.State))
         self.assertEqual(self.sm.current_state, 'StateWS')
 
 
@@ -176,7 +176,7 @@ class SMWSTests(unittest.TestCase):
         self.assertEqual(indent, lbindent)
         self.assertEqual(indented, literalblock)
         self.assertEqual(offset, (len(para1) + len(item1) + len(item2)
-                                   - len(literalblock)))
+                                  - len(literalblock)))
         self.assertTrue(good)
 
     def test_get_text_block(self):
@@ -246,10 +246,10 @@ class EmptyStateTests(unittest.TestCase):
     def test_make_transition(self):
         dummy = re.compile('dummy')
         self.assertEqual(self.state.make_transition('nop', 'bogus'),
-                          (dummy, self.state.nop, 'bogus'))
+                         (dummy, self.state.nop, 'bogus'))
         self.assertEqual(self.state.make_transition('nop'),
-                          (dummy, self.state.nop,
-                           self.state.__class__.__name__))
+                         (dummy, self.state.nop,
+                          self.state.__class__.__name__))
         self.assertRaises(statemachine.TransitionPatternNotFound,
                           self.state.make_transition, 'None')
         self.assertRaises(statemachine.TransitionMethodNotFound,
@@ -258,13 +258,13 @@ class EmptyStateTests(unittest.TestCase):
     def test_make_transitions(self):
         dummy = re.compile('dummy')
         self.assertEqual(self.state.make_transitions(('nop', ['nop2'],
-                                                       ('nop3', 'bogus'))),
-                          (['nop', 'nop2', 'nop3'],
-                           {'nop': (dummy, self.state.nop,
+                                                      ('nop3', 'bogus'))),
+                         (['nop', 'nop2', 'nop3'],
+                          {'nop': (dummy, self.state.nop,
+                                   self.state.__class__.__name__),
+                           'nop2': (dummy, self.state.nop2,
                                     self.state.__class__.__name__),
-                            'nop2': (dummy, self.state.nop2,
-                                     self.state.__class__.__name__),
-                            'nop3': (dummy, self.state.nop3, 'bogus')}))
+                           'nop3': (dummy, self.state.nop3, 'bogus')}))
 
 
 class MiscTests(unittest.TestCase):
@@ -274,7 +274,7 @@ class MiscTests(unittest.TestCase):
                     "        I'm fine        thanks."]
     def test_string2lines(self):
         self.assertEqual(statemachine.string2lines(self.s2l_string),
-                          self.s2l_expected)
+                         self.s2l_expected)
 
 
 if __name__ == '__main__':

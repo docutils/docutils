@@ -177,9 +177,9 @@ small_operators = {# mathsize='75%'
 # Operators and functions with limits above/below in display formulas
 # and in index position inline (movablelimits=True)
 movablelimits = ('bigcap', 'bigcup', 'bigodot', 'bigoplus', 'bigotimes',
-                  'bigsqcup', 'biguplus', 'bigvee', 'bigwedge',
-                  'coprod', 'intop', 'ointop', 'prod', 'sum',
-                  'lim', 'max', 'min', 'sup', 'inf')
+                 'bigsqcup', 'biguplus', 'bigvee', 'bigwedge',
+                 'coprod', 'intop', 'ointop', 'prod', 'sum',
+                 'lim', 'max', 'min', 'sup', 'inf')
 # Depending on settings, integrals may also be in this category.
 # (e.g. if "amsmath" is loaded with option "intlimits", see
 #  http://mirror.ctan.org/macros/latex/required/amsmath/amsldoc.pdf)
@@ -202,7 +202,7 @@ spaces = {'qquad':         '2em',       # two \quad
           ':':             '0.2222em',  # 4mu medspace
           ',':             '0.1667em',  # 3mu thinspace
           '!':             '-0.1667em', # negthinspace
-         }
+          }
 
 # accents -> <mover stretchy="false">
 accents = {# TeX:      (spacing, combining)
@@ -219,7 +219,7 @@ accents = {# TeX:      (spacing, combining)
            'tilde':    ('˜', '\u0303'), # tilde ~ or small tilde ˜?
            'vec':      ('→', '\u20d7'), # → too heavy, accents="false"
            # TODO: ddddot
-       }
+           }
 
 # limits etc. -> <mover> or <munder>
 over = {# TeX:                  (char,     offset-correction/em)
@@ -230,13 +230,13 @@ over = {# TeX:                  (char,     offset-correction/em)
         'overrightarrow':       ('\u2192', -0.2),
         'widehat':              ('^',      -0.5),
         'widetilde':            ('~',      -0.3),
-       }
+        }
 under = {'underbrace':          ('\u23DF',  0.1), # DejaVu Math -0.7
          'underleftarrow':      ('\u2190', -0.2),
          'underleftrightarrow': ('\u2194', -0.2),
          'underline':           ('_',      -0.8),
          'underrightarrow':     ('\u2192', -0.2),
-        }
+         }
 
 # Character translations
 # ----------------------
@@ -245,7 +245,7 @@ under = {'underbrace':          ('\u23DF',  0.1), # DejaVu Math -0.7
 anomalous_chars = {'-': '\u2212', # HYPHEN-MINUS -> MINUS SIGN
                    ':': '\u2236', # COLON -> RATIO
                    '~': '\u00a0', # NO-BREAK SPACE
-                  }
+                   }
 
 # blackboard bold (Greek characters not working with "mathvariant" (Firefox 78)
 mathbb = {'Γ': '\u213E',    # ℾ
@@ -253,7 +253,7 @@ mathbb = {'Γ': '\u213E',    # ℾ
           'Σ': '\u2140',    # ⅀
           'γ': '\u213D',    # ℽ
           'π': '\u213C',    # ℼ
-         }
+          }
 
 # Matrix environments
 matrices = {# name:    fences
@@ -265,7 +265,7 @@ matrices = {# name:    fences
             'vmatrix': ('|', '|'),
             'Vmatrix': ('\u2016', '\u2016'), # ‖
             'cases':   ('{', ''),
-           }
+            }
 
 layout_styles = {
     'displaystyle':      {'displaystyle': True,  'scriptlevel': 0},
@@ -284,7 +284,7 @@ fractions = {# name:   style_attrs, frac_attrs
              'binom':  ({}, {'linethickness': 0}),
              'dbinom': (layout_styles['displaystyle'], {'linethickness': 0}),
              'tbinom': (layout_styles['textstyle'], {'linethickness': 0}),
-            }
+             }
 
 delimiter_sizes = ['', '1.2em', '1.623em', '2.047em', '2.470em']
 bigdelimiters = {'left':  0,
@@ -297,7 +297,7 @@ bigdelimiters = {'left':  0,
                  'biggr': 3,
                  'Biggl': 4,
                  'Biggr': 4,
-                }
+                 }
 
 
 # MathML element classes

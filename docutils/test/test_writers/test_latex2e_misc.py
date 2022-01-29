@@ -48,8 +48,8 @@ class TocTestCase(DocutilsTestSupport.StandardTestCase):
         doctree = core.publish_doctree(contents_test_input,
                                        settings_overrides=mysettings)
         result = core.publish_from_doctree(doctree,
-                                     writer_name='latex',
-                                     settings_overrides=mysettings)
+                                           writer_name='latex',
+                                           settings_overrides=mysettings)
         self.assertNotIn(r'\item \hyperref[foo]{foo}', result)
         # self.assertIn(r'\tableofcontents', result)
 

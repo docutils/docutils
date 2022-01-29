@@ -31,14 +31,14 @@ def latexml(math_code, reporter=None):
     .. _LaTeXML: http://dlmf.nist.gov/LaTeXML/
     """
     p = subprocess.Popen(['latexml',
-                             '-', # read from stdin
-                             # '--preload=amsmath',
-                             '--inputencoding=utf8',
-                            ],
-                            stdin=subprocess.PIPE,
-                            stdout=subprocess.PIPE,
-                            stderr=subprocess.PIPE,
-                            close_fds=True)
+                          '-', # read from stdin
+                          # '--preload=amsmath',
+                          '--inputencoding=utf8',
+                          ],
+                         stdin=subprocess.PIPE,
+                         stdout=subprocess.PIPE,
+                         stderr=subprocess.PIPE,
+                         close_fds=True)
     p.stdin.write((document_template % math_code).encode('utf8'))
     p.stdin.close()
     latexml_code = p.stdout.read()
@@ -52,7 +52,7 @@ def latexml(math_code, reporter=None):
                                '--format=xhtml',
                                # '--linelength=78', # experimental
                                '--'
-                              ],
+                               ],
                               stdin=subprocess.PIPE,
                               stdout=subprocess.PIPE,
                               stderr=subprocess.PIPE,
@@ -80,7 +80,7 @@ def ttm(math_code, reporter=None):
                           # '-i', # italic font for equations. Default roman.
                           '-', # unicode character encoding. (Default iso-8859-1).
                           '-r', # output raw MathML (no preamble or  postlude)
-                         ],
+                          ],
                          stdin=subprocess.PIPE,
                          stdout=subprocess.PIPE,
                          stderr=subprocess.PIPE,
@@ -110,7 +110,7 @@ def blahtexml(math_code, inline=True, reporter=None):
                '--other-encoding', 'raw',
                '--doctype-xhtml+mathml',
                '--annotate-TeX',
-              ]
+               ]
     if inline:
         mathmode_arg = ''
     else:
@@ -128,8 +128,9 @@ def blahtexml(math_code, inline=True, reporter=None):
     err = p.stderr.read().decode('utf8')
 
     if result.find('<error>') >= 0:
-        raise SyntaxError('\nMessage from external converter blahtexml:\n'
-                +result[result.find('<message>')+9:result.find('</message>')])
+        msg = result[result.find('<message>')+9:result.find('</message>')]
+        raise SyntaxError('\nMessage from external converter blahtexml:\n%s'
+                          % msg)
     if reporter and (err.find('**** Error') >= 0 or not result):
         reporter.error(err)
     start, end = result.find('<markup>')+9, result.find('</markup>')

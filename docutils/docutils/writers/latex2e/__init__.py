@@ -230,14 +230,14 @@ class Writer(writers.Writer):
          # TODO: implement "latex footnotes" alternative
          ('Footnotes with numbers/symbols by Docutils. (default) '
           '(The alternative, --latex-footnotes, is not implemented yet.)',
-           ['--docutils-footnotes'],
-           {'default': True,
-            'action': 'store_true',
-            'validator': frontend.validate_boolean}),
-        ),)
+          ['--docutils-footnotes'],
+          {'default': True,
+           'action': 'store_true',
+           'validator': frontend.validate_boolean}),
+         ),
+        )
 
-    settings_defaults = {'sectnum_depth': 0 # updated by SectNum transform
-                        }
+    settings_defaults = {'sectnum_depth': 0} # updated by SectNum transform
     config_section = 'latex2e writer'
     config_section_dependencies = ('writers', 'latex writers')
 
@@ -256,11 +256,11 @@ class Writer(writers.Writer):
 
     # Override parent method to add latex-specific transforms
     def get_transforms(self):
-       return writers.Writer.get_transforms(self) + [
-       # Convert specific admonitions to generic one
-       writer_aux.Admonitions,
-       # TODO: footnote collection transform
-       ]
+        return writers.Writer.get_transforms(self) + [
+                   # Convert specific admonitions to generic one
+                   writer_aux.Admonitions,
+                   # TODO: footnote collection transform
+                   ]
 
     def translate(self):
         visitor = self.translator_class(self.document)
@@ -875,8 +875,10 @@ class Table:
         # TODO: elif 'align' in classes/settings.table-style:
         #           self.set('align', ...)
         borders = [cls.replace('nolines', 'borderless')
-            for cls in ['standard'] + settings.table_style + node['classes']
-            if cls in ('standard', 'booktabs', 'borderless', 'nolines')]
+                   for cls in (['standard']
+                               + settings.table_style
+                               + node['classes'])
+                   if cls in ('standard', 'booktabs', 'borderless', 'nolines')]
         self.borders = borders[-1]
         self.colwidths_auto = (('colwidths-auto' in node['classes']
                                 or 'colwidths-auto' in settings.table_style)
@@ -912,8 +914,7 @@ class Table:
         latex_type = self.get_latex_type()
         if align and latex_type not in ("longtable", "longtable*"):
             opening = [r'\noindent\makebox[\linewidth]%s{%%' % (align,),
-                       r'\begin{%s}' % (latex_type,),
-                      ]
+                       r'\begin{%s}' % (latex_type,)]
         else:
             opening = [r'\begin{%s}%s' % (latex_type, align)]
         if not self.colwidths_auto:
@@ -958,7 +959,7 @@ class Table:
             if total_width > width:
                 factor *= width / total_width
             self._colwidths = [(factor * (node['colwidth']+1)/width)
-                                + 0.005 for node in self._col_specs]
+                               + 0.005 for node in self._col_specs]
             latex_colspecs = ['p{%.3f\\DUtablewidth}' % colwidth
                               for colwidth in self._colwidths]
         else:
@@ -1210,7 +1211,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # language module for Docutils-generated text
         # (labels, bibliographic_fields, and author_separators)
         self.language_module = languages.get_language(settings.language_code,
-                                              document.reporter)
+                                                      document.reporter)
         self.babel = babel_class(settings.language_code, document.reporter)
         self.author_separator = self.language_module.author_separators[0]
         d_options = [self.settings.documentoptions]
@@ -1233,7 +1234,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
         # Document parts
         self.head_prefix = [r'\documentclass[%s]{%s}' %
-            (self.documentoptions, self.settings.documentclass)]
+                            (self.documentoptions,
+                             self.settings.documentclass)]
         self.requirements = SortableDict() # made a list in depart_document()
         self.requirements['__static'] = r'\usepackage{ifthen}'
         self.latex_preamble = [settings.latex_preamble]
@@ -1333,8 +1335,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 self.fallback_stylesheet = False
             else:
                 # require a minimal version:
-                self.fallbacks['docutils.sty'
-                              ] = r'\usepackage{docutils}[2020/08/28]'
+                self.fallbacks['docutils.sty'] = (
+                    r'\usepackage{docutils}[2020/08/28]')
 
         self.stylesheet = [self.stylesheet_call(path)
                            for path in stylesheet_list]
@@ -1369,8 +1371,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
             #        4  paragraph
             #        5  subparagraph
             if secnumdepth is not None:
-                PreambleCmds.secnumdepth = (r'\setcounter{secnumdepth}{%d}'
-                            % self.d_class.latex_section_depth(secnumdepth))
+                PreambleCmds.secnumdepth = (
+                    r'\setcounter{secnumdepth}{%d}'
+                    % self.d_class.latex_section_depth(secnumdepth))
             # start with specified number:
             if (hasattr(settings, 'sectnum_start') and
                 settings.sectnum_start != 1):
@@ -1395,7 +1398,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 path = base + '.sty' # ensure extension
             try:
                 content = docutils.io.FileInput(source_path=path,
-                                       encoding='utf-8').read()
+                                                encoding='utf-8').read()
             except OSError as err:
                 msg = f'Cannot embed stylesheet:\n {err}'
                 self.document.reporter.error(msg)
@@ -1423,34 +1426,34 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
         Default method is remove "-" and "_" chars from docutils_encoding.
         """
-        tr = {  'iso-8859-1': 'latin1',     # west european
-                'iso-8859-2': 'latin2',     # east european
-                'iso-8859-3': 'latin3',     # esperanto, maltese
-                'iso-8859-4': 'latin4',     # north european, scandinavian, baltic
-                'iso-8859-5': 'iso88595',   # cyrillic (ISO)
-                'iso-8859-9': 'latin5',     # turkish
-                'iso-8859-15': 'latin9',    # latin9, update to latin1.
-                'mac_cyrillic': 'maccyr',   # cyrillic (on Mac)
-                'windows-1251': 'cp1251',   # cyrillic (on Windows)
-                'koi8-r': 'koi8-r',         # cyrillic (Russian)
-                'koi8-u': 'koi8-u',         # cyrillic (Ukrainian)
-                'windows-1250': 'cp1250',   #
-                'windows-1252': 'cp1252',   #
-                'us-ascii': 'ascii',        # ASCII (US)
-                # unmatched encodings
-                #'': 'applemac',
-                #'': 'ansinew',  # windows 3.1 ansi
-                #'': 'ascii',    # ASCII encoding for the range 32--127.
-                #'': 'cp437',    # dos latin us
-                #'': 'cp850',    # dos latin 1
-                #'': 'cp852',    # dos latin 2
-                #'': 'decmulti',
-                #'': 'latin10',
-                #'iso-8859-6': ''   # arabic
-                #'iso-8859-7': ''   # greek
-                #'iso-8859-8': ''   # hebrew
-                #'iso-8859-10': ''   # latin6, more complete iso-8859-4
-             }
+        tr = {'iso-8859-1': 'latin1',     # west european
+              'iso-8859-2': 'latin2',     # east european
+              'iso-8859-3': 'latin3',     # esperanto, maltese
+              'iso-8859-4': 'latin4',     # north european, scandinavian, baltic
+              'iso-8859-5': 'iso88595',   # cyrillic (ISO)
+              'iso-8859-9': 'latin5',     # turkish
+              'iso-8859-15': 'latin9',    # latin9, update to latin1.
+              'mac_cyrillic': 'maccyr',   # cyrillic (on Mac)
+              'windows-1251': 'cp1251',   # cyrillic (on Windows)
+              'koi8-r': 'koi8-r',         # cyrillic (Russian)
+              'koi8-u': 'koi8-u',         # cyrillic (Ukrainian)
+              'windows-1250': 'cp1250',   #
+              'windows-1252': 'cp1252',   #
+              'us-ascii': 'ascii',        # ASCII (US)
+              # unmatched encodings
+              #'': 'applemac',
+              #'': 'ansinew',  # windows 3.1 ansi
+              #'': 'ascii',    # ASCII encoding for the range 32--127.
+              #'': 'cp437',    # dos latin us
+              #'': 'cp850',    # dos latin 1
+              #'': 'cp852',    # dos latin 2
+              #'': 'decmulti',
+              #'': 'latin10',
+              #'iso-8859-6': ''   # arabic
+              #'iso-8859-7': ''   # greek
+              #'iso-8859-8': ''   # hebrew
+              #'iso-8859-10': ''   # latin6, more complete iso-8859-4
+              }
         encoding = docutils_encoding.lower()
         if encoding in tr:
             return tr[encoding]
@@ -1520,7 +1523,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
                       and cp in CharMaps.unsupported_unicode):
                     self.requirements['_inputenc'+str(cp)] = (
                         '\\DeclareUnicodeCharacter{%04X}{%s}'
-                         % (cp, CharMaps.unsupported_unicode[cp]))
+                        % (cp, CharMaps.unsupported_unicode[cp]))
         text = text.translate(table)
 
         # Break up input ligatures e.g. '--' to '-{}-'.
@@ -1609,7 +1612,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def duclass_open(self, node):
         """Open a group and insert declarations for class values."""
         if not isinstance(node.parent, nodes.compound):
-             self.out.append('\n')
+            self.out.append('\n')
         for cls in node['classes']:
             if cls.startswith('language-'):
                 language = self.babel.language_name(cls[9:])
@@ -1829,7 +1832,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 and sibling.astext() in (' ', '\n')):
                 sibling2 = sibling.next_node(descend=False, siblings=True)
                 if isinstance(sibling2, nodes.citation_reference):
-                        followup_citation = True
+                    followup_citation = True
             if followup_citation:
                 self.out.append(',')
             else:
@@ -1852,7 +1855,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_comment(self, node):
         if not isinstance(node.parent, nodes.compound):
-             self.out.append('\n')
+            self.out.append('\n')
         # Precede every line with a comment sign, wrap in newlines
         self.out.append('%% %s\n' % node.astext().replace('\n', '\n% '))
         raise nodes.SkipNode
@@ -2019,14 +2022,14 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 title += self.title_labels
             if self.subtitle:
                 title += [r'\\',
-                          r'\DUdocumentsubtitle{%s}' % ''.join(self.subtitle)
-                         ] + self.subtitle_labels
+                          r'\DUdocumentsubtitle{%s}' % ''.join(self.subtitle),
+                          ] + self.subtitle_labels
             self.titledata.append(r'\title{%s}' % '%\n  '.join(title))
             # \author (empty \author prevents warning with \maketitle)
             authors = ['\\\\\n'.join(author_entry)
-                        for author_entry in self.author_stack]
+                       for author_entry in self.author_stack]
             self.titledata.append(r'\author{%s}' %
-                                      ' \\and\n'.join(authors))
+                                  ' \\and\n'.join(authors))
             # \date (empty \date prevents defaulting to \today)
             self.titledata.append(r'\date{%s}' % ', '.join(self.date))
             # \maketitle in the body formats title with LaTeX
@@ -2041,12 +2044,12 @@ class LaTeXTranslator(nodes.NodeVisitor):
                     if len(widest_label)<len(bi[0]):
                         widest_label = bi[0]
                 self.out.append('\n\\begin{thebibliography}{%s}\n' %
-                                 widest_label)
+                                widest_label)
                 for bi in self._bibitems:
                     # cite_key: underscores must not be escaped
                     cite_key = bi[0].replace(r'\_', '_')
                     self.out.append('\\bibitem[%s]{%s}{%s}\n' %
-                                     (bi[0], cite_key, bi[1]))
+                                    (bi[0], cite_key, bi[1]))
                 self.out.append('\\end{thebibliography}\n')
             else:
                 self.out.append('\n\\bibliographystyle{%s}\n' %
@@ -2081,8 +2084,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
         # multirow, multicolumn
         if 'morerows' in node and 'morecols' in node:
-            raise NotImplementedError('Cells that '
-            'span multiple rows *and* columns currently not supported, sorry.')
+            raise NotImplementedError('Cells that span multiple rows *and* '
+                                      'columns currently not supported '
+                                      'by the LaTeX writer')
             # TODO: should be possible with LaTeX, see e.g.
             # http://texblog.org/2012/12/21/multi-column-and-multi-row-cells-in-latex-tables/
         # multirow in LaTeX simply will enlarge the cell over several rows
@@ -2104,11 +2108,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 bar1 = ''
             mcols = node['morecols'] + 1
             self.out.append('\\multicolumn{%d}{%s%s%s}{' %
-                    (mcols, bar1,
-                     self.active_table.get_multicolumn_width(
-                        self.active_table.get_entry_number(),
-                        mcols),
-                     self.active_table.get_vertical_bar()))
+                            (mcols,
+                             bar1,
+                             self.active_table.get_multicolumn_width(
+                                 self.active_table.get_entry_number(), mcols),
+                             self.active_table.get_vertical_bar()))
             self.context.append('}')
         else:
             self.context.append('')
@@ -2125,7 +2129,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if (not self.active_table.colwidths_auto
             and self.out[-1].endswith("{")
             and node.astext()):
-                self.out.append("%")
+            self.out.append("%")
 
         self.active_table.visit_entry() # increment cell count
 
@@ -2144,11 +2148,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_enumerated_list(self, node):
         # enumeration styles:
         types = {'': '',
-                  'arabic':'arabic',
-                  'loweralpha':'alph',
-                  'upperalpha':'Alph',
-                  'lowerroman':'roman',
-                  'upperroman':'Roman'}
+                 'arabic':'arabic',
+                 'loweralpha':'alph',
+                 'upperalpha':'Alph',
+                 'lowerroman':'roman',
+                 'upperroman':'Roman'}
         # default LaTeX enumeration labels:
         default_labels = [# (präfix, enumtype, suffix)
                           ('',  'arabic', '.'), #  1.
@@ -2169,16 +2173,15 @@ class LaTeXTranslator(nodes.NodeVisitor):
         enumtype = types[node.get('enumtype', 'arabic')]
         suffix = node.get('suffix', '.')
 
-        enumeration_level = len(self._enumeration_counters)+1
-        counter_name = 'enum' + roman.toRoman(enumeration_level).lower()
+        enum_level = len(self._enumeration_counters)+1
+        counter_name = 'enum' + roman.toRoman(enum_level).lower()
         label = r'%s\%s{%s}%s' % (prefix, enumtype, counter_name, suffix)
         self._enumeration_counters.append(label)
 
         self.duclass_open(node)
-        if enumeration_level <= 4:
+        if enum_level <= 4:
             self.out.append('\\begin{enumerate}')
-            if (prefix, enumtype, suffix
-               ) != default_labels[enumeration_level-1]:
+            if (prefix, enumtype, suffix) != default_labels[enum_level-1]:
                 self.out.append('\n\\renewcommand{\\label%s}{%s}' %
                                 (counter_name, label))
         else:
@@ -2357,10 +2360,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
         """Convert `length_str` with rst length to LaTeX length
         """
         if pxunit is not None:
-            warnings.warn('The optional argument `pxunit` '
+            warnings.warn(
+                'The optional argument `pxunit` '
                 'of LaTeXTranslator.to_latex_length() is ignored '
                 'and will be removed in Docutils 0.21 or later',
-                          DeprecationWarning, stacklevel=2)
+                DeprecationWarning, stacklevel=2)
         match = re.match(r'(\d*\.?\d*)\s*(\S*)', length_str)
         if not match:
             return length_str
@@ -2414,14 +2418,14 @@ class LaTeXTranslator(nodes.NodeVisitor):
             except KeyError:
                 pass                    # TODO: warn?
         if 'height' in attrs:
-            include_graphics_options.append('height=%s' %
-                            self.to_latex_length(attrs['height']))
+            include_graphics_options.append(
+                'height=%s' % self.to_latex_length(attrs['height']))
         if 'scale' in attrs:
-            include_graphics_options.append('scale=%f' %
-                                            (attrs['scale'] / 100.0))
+            include_graphics_options.append(
+                'scale=%f' % (attrs['scale'] / 100.0))
         if 'width' in attrs:
-            include_graphics_options.append('width=%s' %
-                            self.to_latex_length(attrs['width']))
+            include_graphics_options.append(
+                'width=%s' % self.to_latex_length(attrs['width']))
         if not (self.is_inline(node) or
                 isinstance(node.parent, (nodes.figure, nodes.compound))):
             pre.append('\n')
@@ -2475,7 +2479,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.set_align_from_classes(node)
         if isinstance(node.parent, nodes.line_block):
             self.out.append('\\item[]\n'
-                             '\\begin{DUlineblock}{\\DUlineblockindent}\n')
+                            '\\begin{DUlineblock}{\\DUlineblockindent}\n')
             # nested line-blocks cannot be given class arguments
         else:
             self.duclass_open(node)
@@ -2566,7 +2570,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
             # Wrap in minipage to prevent extra vertical space
             # with alltt and verbatim-like environments:
             self.fallbacks['ttem'] = PreambleCmds.ttem
-            self.out.append('\\begin{minipage}{%d\\ttemwidth}\n' %
+            self.out.append(
+                '\\begin{minipage}{%d\\ttemwidth}\n' %
                 (max(len(line) for line in node.astext().split('\n'))))
             self.context.append('\n\\end{minipage}\n')
         elif not _in_table and not _use_listings:
@@ -2728,8 +2733,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # * is in a table with auto-width columns
         index = node.parent.index(node)
         if index == 0 and isinstance(node.parent,
-                (nodes.list_item, nodes.description,
-                 nodes.compound, nodes.container)):
+                                     (nodes.list_item, nodes.description,
+                                      nodes.compound, nodes.container)):
             pass
         elif (index > 0
               and isinstance(node.parent, nodes.compound)
@@ -2794,7 +2799,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         special_chars = {ord('#'): '\\#',
                          ord('%'): '\\%',
                          ord('\\'): '\\\\',
-                        }
+                         }
         # external reference (URL)
         if 'refuri' in node:
             href = str(node['refuri']).translate(special_chars)
@@ -2912,7 +2917,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # section subtitle: "starred" (no number, not in ToC)
         elif isinstance(node.parent, nodes.section):
             self.out.append(r'\%s*{' %
-                             self.d_class.section(self.section_level + 1))
+                            self.d_class.section(self.section_level + 1))
         else:
             if not self.fallback_stylesheet:
                 self.fallbacks['subtitle'] = PreambleCmds.subtitle
@@ -2942,8 +2947,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
         except KeyError:
             line = ''
         self.out.append('}\n\n{\\color{red}%s/%s} in \\texttt{%s}%s\n' %
-                         (node['type'], node['level'],
-                          self.encode(node['source']), line))
+                        (node['type'], node['level'],
+                         self.encode(node['source']), line))
         if len(node['backrefs']) == 1:
             self.out.append('\n\\hyperlink{%s}{' % node['backrefs'][0])
             self.context.append('}')
@@ -3150,16 +3155,16 @@ class LaTeXTranslator(nodes.NodeVisitor):
             section_name = self.d_class.section(self.section_level)
             # minitoc only supports "part" and toplevel sections
             minitoc_names = {'part': 'part',
-                            'chapter': 'mini',
-                            'section': 'sect'}
+                             'chapter': 'mini',
+                             'section': 'sect'}
             if 'chapter' in self.d_class.sections:
                 del(minitoc_names['section'])
             try:
                 mtc_name = minitoc_names[section_name]
             except KeyError:
                 self.warn('Skipping local ToC at "%s" level.\n'
-                        '  Feature not supported with option "use-latex-toc"'
-                        % section_name, base_node=node)
+                          '  Feature not supported with option "use-latex-toc"'
+                          % section_name, base_node=node)
                 raise nodes.SkipNode
 
         # labels and PDF bookmark (sidebar entry)
@@ -3245,7 +3250,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def depart_topic(self, node):
         if ('abstract' in node['classes']
-          and self.settings.use_latex_abstract):
+            and self.settings.use_latex_abstract):
             self.out.append('\\end{abstract}\n')
         elif 'contents' in node['classes']:
             self.duclass_close(node)

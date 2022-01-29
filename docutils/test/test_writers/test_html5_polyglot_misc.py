@@ -35,10 +35,10 @@ class EncodingTestCase(DocutilsTestSupport.StandardTestCase):
 
 class MovingArgsTestCase(DocutilsTestSupport.StandardTestCase):
 
-    settings_overrides={'stylesheet_path': '',
-                        # 'embed_stylesheet': False,
-                        '_disable_config': True,
-                       }
+    mys = {'stylesheet_path': '',
+           # 'embed_stylesheet': False,
+           '_disable_config': True,
+           }
 
     def test_definition_list_item_classes(self):
         # Do not drop class arguments for the definition list item.
@@ -53,7 +53,7 @@ second term:
   second def
 """
         result = core.publish_string(data, writer_name='html5_polyglot',
-                            settings_overrides=self.settings_overrides)
+                                     settings_overrides=self.mys)
         self.assertIn(b'<dt class="for the second item">second term:</dt>',
                       result)
 
@@ -70,7 +70,7 @@ second term:
   second def
 """
         result = core.publish_string(data, writer_name='html5_polyglot',
-                            settings_overrides=self.settings_overrides)
+                                     settings_overrides=self.mys)
         self.assertIn(b'<dt id="second-item">second term:</dt>',
                       result)
 
@@ -80,72 +80,72 @@ class SettingsTestCase(DocutilsTestSupport.StandardTestCase):
 
     def test_default_stylesheet(self):
         # default style sheet, embedded
-        mysettings = {'_disable_config': True,}
+        mys = {'_disable_config': True,}
         styles = core.publish_parts(self.data, writer_name='html5_polyglot',
-                                  settings_overrides=mysettings)['stylesheet']
+                                    settings_overrides=mys)['stylesheet']
         self.assertIn('Minimal style sheet '
                       'for the HTML output of Docutils.', styles)
 
     def test_default_stylesheet_linked(self):
         # default style sheet, linked
-        mysettings = {'_disable_config': True,
-                      'embed_stylesheet': False}
+        mys = {'_disable_config': True,
+               'embed_stylesheet': False}
         styles = core.publish_parts(self.data, writer_name='html5_polyglot',
-                                  settings_overrides=mysettings)['stylesheet']
+                                    settings_overrides=mys)['stylesheet']
         self.assertIn('docutils/writers/html5_polyglot/minimal.css', styles)
 
     def test_math_stylesheet_linked(self):
         # default + math style sheet, linked
-        mysettings = {'_disable_config': True,
-                      'embed_stylesheet': False,
-                      'stylesheet_path': 'minimal.css, math.css'}
+        mys = {'_disable_config': True,
+               'embed_stylesheet': False,
+               'stylesheet_path': 'minimal.css, math.css'}
         styles = core.publish_parts(self.data, writer_name='html5_polyglot',
-                                  settings_overrides=mysettings)['stylesheet']
+                                    settings_overrides=mys)['stylesheet']
         self.assertIn('docutils/writers/html5_polyglot/minimal.css', styles)
         self.assertIn('docutils/writers/html5_polyglot/math.css', styles)
 
     def test_custom_stylesheet_linked(self):
         # default + custom style sheet, linked
-        mysettings = {'_disable_config': True,
-                      'embed_stylesheet': False,
-                      'stylesheet_path': 'minimal.css, '
-                                         'data/ham.css'}
+        mys = {'_disable_config': True,
+               'embed_stylesheet': False,
+               'stylesheet_path': 'minimal.css, '
+               'data/ham.css'}
         styles = core.publish_parts(self.data, writer_name='html5_polyglot',
-                                  settings_overrides=mysettings)['stylesheet']
+                                    settings_overrides=mys)['stylesheet']
         self.assertIn('docutils/writers/html5_polyglot/minimal.css', styles)
         self.assertIn('href="data/ham.css"', styles)
 
     def test_custom_stylesheet_dir(self):
-        mysettings = {'_disable_config': True,
-                      'embed_stylesheet': False,
-                      'stylesheet_dirs': ('../docutils/writers/html5_polyglot/',
-                                          'data'),
-                      'stylesheet_path': 'minimal.css, ham.css'}
+        mys = {'_disable_config': True,
+               'embed_stylesheet': False,
+               'stylesheet_dirs': ('../docutils/writers/html5_polyglot/',
+                                   'data'),
+               'stylesheet_path': 'minimal.css, ham.css'}
         styles = core.publish_parts(self.data, writer_name='html5_polyglot',
-                                  settings_overrides=mysettings)['stylesheet']
+                                    settings_overrides=mys)['stylesheet']
         if os.path.isdir('../docutils/writers/html5_polyglot/'):
             self.assertIn('docutils/writers/html5_polyglot/minimal.css', styles)
         self.assertIn('href="data/ham.css"', styles)
 
     def test_custom_stylesheet_dir_embedded(self):
-        mysettings = {'_disable_config': True,
-                      'embed_stylesheet': True,
-                      'stylesheet_dirs': ('../docutils/writers/html5_polyglot/',
-                                          'data'),
-                      'stylesheet_path': 'ham.css'}
+        mys = {'_disable_config': True,
+               'embed_stylesheet': True,
+               'stylesheet_dirs': ('../docutils/writers/html5_polyglot/',
+                                   'data'),
+               'stylesheet_path': 'ham.css'}
         styles = core.publish_parts(self.data, writer_name='html5_polyglot',
-                                  settings_overrides=mysettings)['stylesheet']
+                                    settings_overrides=mys)['stylesheet']
         self.assertIn('dl.docutils dd {\n  margin-bottom: 0.5em }', styles)
 
     def test_future_warnings(self):
         """Warn about changing defaults."""
-        mysettings={'_disable_config': True,
-                    'embed_images': False,
-                   }
+        mys={'_disable_config': True,
+             'embed_images': False,
+             }
         with warnings.catch_warnings(record=True) as wng:
             warnings.simplefilter("always")
             core.publish_string('warnings test', writer_name='html5',
-                                settings_overrides=mysettings)
+                                settings_overrides=mys)
             self.assertEqual(len(wng), 1, "Expected FutureWarning.")
             assert issubclass(wng[0].category, FutureWarning)
 
@@ -163,45 +163,45 @@ class MathTestCase(DocutilsTestSupport.StandardTestCase):
 
     def test_math_output_default(self):
         # HTML with math.css stylesheet (since 0.11)
-        mysettings = {'_disable_config': True,}
+        mys = {'_disable_config': True,}
         styles = core.publish_parts(self.data, writer_name='html5_polyglot',
-                                  settings_overrides=mysettings)['stylesheet']
+                                    settings_overrides=mys)['stylesheet']
         self.assertIn('convert LaTeX equations to HTML output.', styles)
 
     def test_math_output_mathjax(self):
         # Explicitly specifying math_output=MathJax, case insensitively
         # use default MathJax URL
-        mysettings = {'_disable_config': True,
-                      'report_level': 3,
-                      'math_output': 'MathJax'}
+        mys = {'_disable_config': True,
+               'report_level': 3,
+               'math_output': 'MathJax'}
         head = core.publish_parts(self.data, writer_name='html5_polyglot',
-            settings_overrides=mysettings)['head']
+                                  settings_overrides=mys)['head']
         self.assertIn(self.mathjax_script % self.default_mathjax_url, head)
 
     def test_math_output_mathjax_custom(self):
         # Customizing MathJax URL
-        mysettings = {'_disable_config': True,
-                      'math_output':
-                      'mathjax %s' % self.custom_mathjax_url}
+        mys = {'_disable_config': True,
+               'math_output':
+               'mathjax %s' % self.custom_mathjax_url}
         head = core.publish_parts(self.data, writer_name='html5_polyglot',
-            settings_overrides=mysettings)['head']
+                                  settings_overrides=mys)['head']
         self.assertIn(self.mathjax_script % self.custom_mathjax_url, head)
 
     def test_math_output_html(self):
-        mysettings = {'_disable_config': True,
-                      'math_output': 'HTML'}
+        mys = {'_disable_config': True,
+               'math_output': 'HTML'}
         head = core.publish_parts(self.data, writer_name='html5_polyglot',
-            settings_overrides=mysettings)['head']
+                                  settings_overrides=mys)['head']
         # There should be no MathJax script when math_output is not MathJax
         self.assertNotIn('MathJax.js', head)
 
     def test_math_output_html_stylesheet(self):
-        mysettings = {'_disable_config': True,
-                      'math_output': 'HTML math.css,custom/style.css',
-                      'stylesheet_dirs': ('.', 'functional/input/data'),
-                      'embed_stylesheet': False}
+        mys = {'_disable_config': True,
+               'math_output': 'HTML math.css,custom/style.css',
+               'stylesheet_dirs': ('.', 'functional/input/data'),
+               'embed_stylesheet': False}
         styles = core.publish_parts(self.data, writer_name='html5_polyglot',
-            settings_overrides=mysettings)['stylesheet']
+                                    settings_overrides=mys)['stylesheet']
         self.assertEqual("""\
 <link rel="stylesheet" href="functional/input/data/minimal.css" type="text/css" />
 <link rel="stylesheet" href="functional/input/data/plain.css" type="text/css" />
@@ -210,8 +210,6 @@ class MathTestCase(DocutilsTestSupport.StandardTestCase):
 """, styles)
 
     def test_math_output_mathjax_no_math(self):
-        mysettings = {'_disable_config': True,
-                      'math_output': 'MathJax'}
         # There should be no math script when text does not contain math
         head = core.publish_parts('No math.', writer_name='html5_polyglot')['head']
         self.assertNotIn('MathJax', head)

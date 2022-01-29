@@ -275,7 +275,7 @@ command line used.""" % (__version__,
 
     def report_SystemMessage(self, error):
         print('Exiting due to level-%s (%s) system message.' % (
-            error.level, utils.Reporter.levels[error.level]),
+                  error.level, utils.Reporter.levels[error.level]),
               file=self._stderr)
 
     def report_UnicodeError(self, error):
@@ -508,14 +508,18 @@ def publish_from_doctree(document, destination_path=None,
     return pub.publish(enable_exit_status=enable_exit_status)
 
 def publish_cmdline_to_binary(reader=None, reader_name='standalone',
-                    parser=None, parser_name='restructuredtext',
-                    writer=None, writer_name='pseudoxml',
-                    settings=None, settings_spec=None,
-                    settings_overrides=None, config_section=None,
-                    enable_exit_status=True, argv=None,
-                    usage=default_usage, description=default_description,
-                    destination=None, destination_class=io.BinaryFileOutput
-                    ):
+                              parser=None, parser_name='restructuredtext',
+                              writer=None, writer_name='pseudoxml',
+                              settings=None,
+                              settings_spec=None,
+                              settings_overrides=None,
+                              config_section=None,
+                              enable_exit_status=True,
+                              argv=None,
+                              usage=default_usage,
+                              description=default_description,
+                              destination=None,
+                              destination_class=io.BinaryFileOutput):
     """
     Set up & run a `Publisher` for command-line-based file I/O (input and
     output file paths taken automatically from the command line).  Return the
@@ -533,7 +537,7 @@ def publish_cmdline_to_binary(reader=None, reader_name='standalone',
       (along with command-line option descriptions).
     """
     pub = Publisher(reader, parser, writer, settings=settings,
-        destination_class=destination_class)
+                    destination_class=destination_class)
     pub.set_components(reader_name, parser_name, writer_name)
     output = pub.publish(
         argv, usage, description, settings_spec, settings_overrides,
