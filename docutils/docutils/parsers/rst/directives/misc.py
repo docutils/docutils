@@ -318,7 +318,7 @@ class Replace(Directive):
                 messages.append(elem)
             else:
                 return [
-                    self.state_machine.reporter.error(
+                    self.reporter.error(
                         'Error in "%s" directive: may contain a single paragraph '
                         'only.' % self.name, line=self.lineno)]
         if node:
@@ -449,7 +449,7 @@ class Role(Directive):
                 self.content[1:], self.content_offset, converted_role,
                 option_presets={}))
         except states.MarkupError as detail:
-            error = self.state_machine.reporter.error(
+            error = self.reporter.error(
                 'Error in "%s" directive:\n%s.' % (self.name, detail),
                 nodes.literal_block(self.block_text, self.block_text),
                 line=self.lineno)
@@ -458,10 +458,10 @@ class Role(Directive):
             try:
                 options['class'] = directives.class_option(new_role_name)
             except ValueError as detail:
-                error = self.state_machine.reporter.error(
-                    'Invalid argument for "%s" directive:\n%s.'
-                    % (self.name, detail), nodes.literal_block(
-                    self.block_text, self.block_text), line=self.lineno)
+                error = self.reporter.error('Invalid argument '
+                    'for "%s" directive:\n%s.' % (self.name, detail),
+                    nodes.literal_block(self.block_text, self.block_text),
+                    line=self.lineno)
                 return messages + [error]
         role = roles.CustomRole(new_role_name, base_role, options, content)
         roles.register_local_role(new_role_name, role)
@@ -561,7 +561,7 @@ class Meta(Directive):
             state_machine_kwargs=self.SMkwargs)
         if (new_line_offset - self.content_offset) != len(self.content):
             # incomplete parse of block?
-            error = self.state_machine.reporter.error(
+            error = self.reporter.error(
                 'Invalid meta directive.',
                 nodes.literal_block(self.block_text, self.block_text),
                 line=self.lineno)
@@ -615,12 +615,12 @@ class TestDirective(Directive):
     def run(self):
         if self.content:
             text = '\n'.join(self.content)
-            info = self.state_machine.reporter.info(
+            info = self.reporter.info(
                 'Directive processed. Type="%s", arguments=%r, options=%r, '
                 'content:' % (self.name, self.arguments, self.options),
                 nodes.literal_block(text, text), line=self.lineno)
         else:
-            info = self.state_machine.reporter.info(
+            info = self.reporter.info(
                 'Directive processed. Type="%s", arguments=%r, options=%r, '
                 'content: None' % (self.name, self.arguments, self.options),
                 line=self.lineno)
@@ -633,12 +633,12 @@ class TestDirective(Directive):
 #     """This directive is useful only for testing purposes."""
 #     if content:
 #         text = '\n'.join(content)
-#         info = state_machine.reporter.info(
+#         info = reporter.info(
 #             'Directive processed. Type="%s", arguments=%r, options=%r, '
 #             'content:' % (name, arguments, options),
 #             nodes.literal_block(text, text), line=lineno)
 #     else:
-#         info = state_machine.reporter.info(
+#         info = reporter.info(
 #             'Directive processed. Type="%s", arguments=%r, options=%r, '
 #             'content: None' % (name, arguments, options), line=lineno)
 #     return [info]

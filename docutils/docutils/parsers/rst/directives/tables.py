@@ -65,33 +65,33 @@ class Table(Directive):
 
     def check_table_dimensions(self, rows, header_rows, stub_columns):
         if len(rows) < header_rows:
-            error = self.state_machine.reporter.error(
-                '%s header row(s) specified but only %s row(s) of data '
-                'supplied ("%s" directive).'
-                % (header_rows, len(rows), self.name), nodes.literal_block(
-                self.block_text, self.block_text), line=self.lineno)
+            error = self.reporter.error('%s header row(s) specified but '
+                'only %s row(s) of data supplied ("%s" directive).'
+                % (header_rows, len(rows), self.name),
+                nodes.literal_block(self.block_text, self.block_text),
+                line=self.lineno)
             raise SystemMessagePropagation(error)
         if len(rows) == header_rows > 0:
-            error = self.state_machine.reporter.error(
-                'Insufficient data supplied (%s row(s)); no data remaining '
-                'for table body, required by "%s" directive.'
-                % (len(rows), self.name), nodes.literal_block(
-                self.block_text, self.block_text), line=self.lineno)
+            error = self.reporter.error('Insufficient data supplied (%s row(s)); '
+                'no data remaining for table body, required by "%s" directive.'
+                % (len(rows), self.name),
+                nodes.literal_block(self.block_text, self.block_text),
+                line=self.lineno)
             raise SystemMessagePropagation(error)
         for row in rows:
             if len(row) < stub_columns:
-                error = self.state_machine.reporter.error(
-                    '%s stub column(s) specified but only %s columns(s) of '
-                    'data supplied ("%s" directive).' %
-                    (stub_columns, len(row), self.name), nodes.literal_block(
-                    self.block_text, self.block_text), line=self.lineno)
+                error = self.reporter.error('%s stub column(s) specified but '
+                    'only %s columns(s) of data supplied ("%s" directive).'
+                    % (stub_columns, len(row), self.name),
+                    nodes.literal_block(self.block_text, self.block_text),
+                    line=self.lineno)
                 raise SystemMessagePropagation(error)
             if len(row) == stub_columns > 0:
-                error = self.state_machine.reporter.error(
-                    'Insufficient data supplied (%s columns(s)); no data remaining '
-                    'for table body, required by "%s" directive.'
-                    % (len(row), self.name), nodes.literal_block(
-                    self.block_text, self.block_text), line=self.lineno)
+                error = self.reporter.error('Insufficient data supplied '
+                    '(%s columns(s)); no data remaining for table body, required '
+                    'by "%s" directive.' % (len(row), self.name),
+                    nodes.literal_block(self.block_text, self.block_text),
+                    line=self.lineno)
                 raise SystemMessagePropagation(error)
 
     def set_table_width(self, table_node):
@@ -106,18 +106,18 @@ class Table(Directive):
         if isinstance(self.widths, list):
             if len(self.widths) != n_cols:
                 # TODO: use last value for missing columns?
-                error = self.state_machine.reporter.error(
-                    '"%s" widths do not match the number of columns in table '
-                    '(%s).' % (self.name, n_cols), nodes.literal_block(
-                    self.block_text, self.block_text), line=self.lineno)
+                error = self.reporter.error('"%s" widths do not match the '
+                    'number of columns in table (%s).' % (self.name, n_cols),
+                    nodes.literal_block(self.block_text, self.block_text),
+                    line=self.lineno)
                 raise SystemMessagePropagation(error)
             col_widths = self.widths
         elif n_cols:
             col_widths = [100 // n_cols] * n_cols
         else:
-            error = self.state_machine.reporter.error(
-                'No table data detected in CSV file.', nodes.literal_block(
-                self.block_text, self.block_text), line=self.lineno)
+            error = self.reporter.error('No table data detected in CSV file.',
+                nodes.literal_block(self.block_text, self.block_text),
+                line=self.lineno)
             raise SystemMessagePropagation(error)
         return col_widths
 
@@ -132,19 +132,19 @@ class RSTTable(Table):
 
     def run(self):
         if not self.content:
-            warning = self.state_machine.reporter.warning(
-                'Content block expected for the "%s" directive; none found.'
-                % self.name, nodes.literal_block(
-                self.block_text, self.block_text), line=self.lineno)
+            warning = self.reporter.warning('Content block expected '
+                'for the "%s" directive; none found.' % self.name,
+                nodes.literal_block(self.block_text, self.block_text),
+                line=self.lineno)
             return [warning]
         title, messages = self.make_title()
         node = nodes.Element()          # anonymous container for parsing
         self.state.nested_parse(self.content, self.content_offset, node)
         if len(node) != 1 or not isinstance(node[0], nodes.table):
-            error = self.state_machine.reporter.error(
-                'Error parsing content block for the "%s" directive: exactly '
-                'one table expected.' % self.name, nodes.literal_block(
-                self.block_text, self.block_text), line=self.lineno)
+            error = self.reporter.error('Error parsing content block for the '
+                '"%s" directive: exactly one table expected.' % self.name,
+                nodes.literal_block(self.block_text, self.block_text),
+                line=self.lineno)
             return [error]
         table_node = node[0]
         table_node['classes'] += self.options.get('class', [])
@@ -240,10 +240,10 @@ class CSVTable(Table):
             if (not self.state.document.settings.file_insertion_enabled
                 and ('file' in self.options
                      or 'url' in self.options)):
-                warning = self.state_machine.reporter.warning(
-                    'File and URL access deactivated; ignoring "%s" '
-                    'directive.' % self.name, nodes.literal_block(
-                    self.block_text, self.block_text), line=self.lineno)
+                warning = self.reporter.warning('File and URL access '
+                    'deactivated; ignoring "%s" directive.' % self.name,
+                    nodes.literal_block(self.block_text, self.block_text),
+                    line=self.lineno)
                 return [warning]
             self.check_requirements()
             title, messages = self.make_title()
@@ -264,10 +264,10 @@ class CSVTable(Table):
             return [detail.args[0]]
         except csv.Error as detail:
             message = str(detail)
-            error = self.state_machine.reporter.error(
-                'Error with CSV data in "%s" directive:\n%s'
-                % (self.name, message), nodes.literal_block(
-                self.block_text, self.block_text), line=self.lineno)
+            error = self.reporter.error('Error with CSV data'
+                ' in "%s" directive:\n%s' % (self.name, message),
+                nodes.literal_block(self.block_text, self.block_text),
+                line=self.lineno)
             return [error]
         table = (col_widths, table_head, table_body)
         table_node = self.state.build_table(table, self.content_offset,
@@ -292,21 +292,21 @@ class CSVTable(Table):
         if self.content:
             # CSV data is from directive content.
             if 'file' in self.options or 'url' in self.options:
-                error = self.state_machine.reporter.error(
-                    '"%s" directive may not both specify an external file and'
-                    ' have content.' % self.name, nodes.literal_block(
-                    self.block_text, self.block_text), line=self.lineno)
+                error = self.reporter.error('"%s" directive may not both '
+                    'specify an external file and have content.' % self.name,
+                    nodes.literal_block(self.block_text, self.block_text),
+                    line=self.lineno)
                 raise SystemMessagePropagation(error)
             source = self.content.source(0)
             csv_data = self.content
         elif 'file' in self.options:
             # CSV data is from an external file.
             if 'url' in self.options:
-                error = self.state_machine.reporter.error(
-                      'The "file" and "url" options may not be simultaneously'
-                      ' specified for the "%s" directive.' % self.name,
-                      nodes.literal_block(self.block_text, self.block_text),
-                      line=self.lineno)
+                error = self.reporter.error('The "file" and "url" options '
+                    'may not be simultaneously specified '
+                    'for the "%s" directive.' % self.name,
+                    nodes.literal_block(self.block_text, self.block_text),
+                    line=self.lineno)
                 raise SystemMessagePropagation(error)
             source_dir = os.path.dirname(
                 os.path.abspath(self.state.document.current_source))
@@ -319,7 +319,7 @@ class CSVTable(Table):
                                         error_handler=error_handler)
                 csv_data = csv_file.read().splitlines()
             except OSError as error:
-                severe = self.state_machine.reporter.severe(
+                severe = self.reporter.severe(
                     'Problems with "%s" directive path:\n%s.'
                     % (self.name, error),
                     nodes.literal_block(self.block_text, self.block_text),
@@ -339,7 +339,7 @@ class CSVTable(Table):
             try:
                 csv_text = urlopen(source).read()
             except (URLError, OSError, ValueError) as error:
-                severe = self.state_machine.reporter.severe(
+                severe = self.reporter.severe(
                       'Problems with "%s" directive URL "%s":\n%s.'
                       % (self.name, self.options['url'], error),
                       nodes.literal_block(self.block_text, self.block_text),
@@ -351,10 +351,11 @@ class CSVTable(Table):
                                input_encoding_error_handler))
             csv_data = csv_file.read().splitlines()
         else:
-            error = self.state_machine.reporter.warning(
+            error = self.reporter.warning(
                 'The "%s" directive requires content; none supplied.'
-                % self.name, nodes.literal_block(
-                self.block_text, self.block_text), line=self.lineno)
+                % self.name,
+                nodes.literal_block(self.block_text, self.block_text),
+                line=self.lineno)
             raise SystemMessagePropagation(error)
         return csv_data, source
 
@@ -409,8 +410,8 @@ class ListTable(Table):
 
     def run(self):
         if not self.content:
-            error = self.state_machine.reporter.error(
-                'The "%s" directive is empty; content required.' % self.name,
+            error = self.reporter.error('The "%s" directive is empty; '
+                'content required.' % self.name,
                 nodes.literal_block(self.block_text, self.block_text),
                 line=self.lineno)
             return [error]
@@ -439,7 +440,7 @@ class ListTable(Table):
 
     def check_list_content(self, node):
         if len(node) != 1 or not isinstance(node[0], nodes.bullet_list):
-            error = self.state_machine.reporter.error(
+            error = self.reporter.error(
                 'Error parsing content block for the "%s" directive: '
                 'exactly one bullet list expected.' % self.name,
                 nodes.literal_block(self.block_text, self.block_text),
@@ -451,16 +452,17 @@ class ListTable(Table):
         for item_index in range(len(list_node)):
             item = list_node[item_index]
             if len(item) != 1 or not isinstance(item[0], nodes.bullet_list):
-                error = self.state_machine.reporter.error(
+                error = self.reporter.error(
                     'Error parsing content block for the "%s" directive: '
                     'two-level bullet list expected, but row %s does not '
                     'contain a second-level bullet list.'
-                    % (self.name, item_index + 1), nodes.literal_block(
-                    self.block_text, self.block_text), line=self.lineno)
+                    % (self.name, item_index + 1),
+                    nodes.literal_block(self.block_text, self.block_text),
+                    line=self.lineno)
                 raise SystemMessagePropagation(error)
             elif item_index:
                 if len(item[0]) != num_cols:
-                    error = self.state_machine.reporter.error(
+                    error = self.reporter.error(
                         'Error parsing content block for the "%s" directive: '
                         'uniform two-level bullet list expected, but row %s '
                         'does not contain the same number of items as row 1 '
