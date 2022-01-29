@@ -496,7 +496,7 @@ Unicode supports the following blackboard-bold characters:
 
 The package mathrsfs_ (and some drop-in replacements) define the ``\mathscr``
 macro that selects a differently shaped "script" alphabet.
-Compare `\mathscr{A, B, …, Z, a, b, …, z}` 
+Compare `\mathscr{A, B, …, Z, a, b, …, z}`
 with `\mathcal{A, B, …, Z, a, b, …, z}`.
 
 .. _rsfs: https://ctan.org/pkg/mathrsfs
@@ -517,7 +517,7 @@ Accents vs. embellishments
 
 MathML drops dots on "i" and "j" with accents:
 
-.. math:: \vec i \ne \overrightarrow i 
+.. math:: \vec i \ne \overrightarrow i
           \text{ and } \vec\lim \ne \overrightarrow\lim.
 
 Accents should be nearer to the base (in Firefox 78, it's vice versa!):
@@ -525,4 +525,3 @@ Accents should be nearer to the base (in Firefox 78, it's vice versa!):
 .. math:: \vec a \vec l \ne \overrightarrow a \overrightarrow l
 
           \bar a \bar l \ne \overline a \overline l
-

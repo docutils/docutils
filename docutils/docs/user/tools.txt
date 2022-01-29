@@ -30,7 +30,7 @@ pattern::
     toolname [options] [<source> [<destination>]]
 
 See rst2html4.py_ for examples.
-Each tool has a "``--help``" option which lists the 
+Each tool has a "``--help``" option which lists the
 `command-line options`_ and arguments it supports.
 Processing can also be customized with `configuration files`_.
 

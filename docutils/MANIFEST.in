@@ -5,7 +5,7 @@ recursive-include docs *
 recursive-include licenses *
 recursive-include tools *
 recursive-include test *
-exclude test/alltests.out test/record.txt 
+exclude test/alltests.out test/record.txt
 prune test/functional/output
 include test/functional/output/README.txt
 global-exclude *.pyc *~ __pycache__ .DS_Store

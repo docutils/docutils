@@ -26,7 +26,7 @@
 
   There are multiple paragraphs in some items.
 
-* However, the class="compact" setting will cause 
+* However, the class="compact" setting will cause
   all first paragraph's <p> & </p> tags to be omitted.
 
 * Items with multiple paragraphs will not appear changed.

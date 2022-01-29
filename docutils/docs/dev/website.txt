@@ -9,7 +9,7 @@
 :Copyright: This document has been placed in the public domain.
 
 The Docutils web site, <https://docutils.sourceforge.io/>, is
-maintained by the ``docutils-update.local`` script, run by project 
+maintained by the ``docutils-update.local`` script, run by project
 maintainers on their local machines.  The script
 will process any .txt file which is newer than the corresponding .html
 file in the local copy of the project's web directory and upload the changes
@@ -48,7 +48,7 @@ Setting Up
 
 (TBA)
 
-.. hint:: 
+.. hint::
   Anyone with checkin privileges can be a web-site maintainer. You need to
   set up the directories for a local website build.
 
@@ -92,10 +92,10 @@ Removing Files & Directories
 
 #. Remove to-be-generated HTML files from
    ``sandbox/infrastructure/htmlfiles.lst``.
-  
+
 #. Removing files and directories from SVN will not trigger their removal
    from the web site.  Files and directories must be manually removed from
-   sourceforge.net (under ``/home/project-web/docutils/htdocs/``). 
+   sourceforge.net (under ``/home/project-web/docutils/htdocs/``).
 
 
 ..

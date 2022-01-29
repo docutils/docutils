@@ -14,4 +14,3 @@ stylesheet-path: test.css
 # general settings or settings from other components may be used,
 # e.g., only set generator to False, if this section is set active
 generator: no
-

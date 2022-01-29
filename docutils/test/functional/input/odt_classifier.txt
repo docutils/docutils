@@ -9,5 +9,3 @@ Term : classifier
     Definition paragraph 2.
 Term
     Definition
-
-

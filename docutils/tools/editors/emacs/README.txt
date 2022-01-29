@@ -15,7 +15,7 @@ This directory contains the following Emacs lisp package files:
   * Table-of-contents mode and insertion (M. Blais);
   * Font-lock syntax highlighting (S. Merten);
   * Some handy editing functions (D. Goodger).
-  * Some functions for converting rest documents from within emacs (M. Blais).  
+  * Some functions for converting rest documents from within emacs (M. Blais).
 
 * `<tests/>`_ subdirectory: automated tests for some of the features in rst.el.
   Please make sure the tests pass if you change the LISP code.  Just type "make"
