@@ -54,5 +54,4 @@ class DirectiveOptionConversionTestCase(DocutilsTestSupport.StandardTestCase):
         self.assertRaises(ValueError, directives.parser_name, 'fantasy')
 
 if __name__ == '__main__':
-    import unittest
     unittest.main()

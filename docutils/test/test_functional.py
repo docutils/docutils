@@ -6,7 +6,9 @@
 """
 Perform tests with the data in the functional/ directory.
 
-Read README.txt for details on how this is done.
+Please see the documentation on `functional testing`__ for details.
+
+__ ../../docs/dev/testing.html#functional
 """
 
 import sys
