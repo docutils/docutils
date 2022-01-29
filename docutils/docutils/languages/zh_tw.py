@@ -37,7 +37,7 @@ labels = {
       'tip': '\u79d8\u8a23', # '秘訣',
       'warning': '\u8b66\u544a', # '警告',
       'contents': '\u76ee\u9304' # '目錄'
-} 
+}
 """Mapping of node class name to label text."""
 
 bibliographic_fields = {

@@ -69,21 +69,21 @@ Paragraph 2 in section 2.
 """],
 # ["""\
 # --------
-# 
+#
 # A section or document may not begin with a transition.
-# 
+#
 # The DTD specifies that two transitions may not
 # be adjacent:
-# 
+#
 # --------
-# 
+#
 # --------
-# 
+#
 # --------
-# 
+#
 # The DTD also specifies that a section or document
 # may not end with a transition.
-# 
+#
 # --------
 # """,
 # """\

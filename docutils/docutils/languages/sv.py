@@ -50,7 +50,7 @@ bibliographic_fields = {
     'status':          'status',
     'datum':           'date',
     'copyright':       'copyright',
-    'dedikation':      'dedication', 
+    'dedikation':      'dedication',
     'sammanfattning':  'abstract' }
 """Swedish (lowcased) to canonical name mapping for bibliographic fields."""
 

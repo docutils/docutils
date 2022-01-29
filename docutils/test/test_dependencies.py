@@ -82,7 +82,7 @@ class RecordDependenciesTests(unittest.TestCase):
         if PIL:
             keys += ['figure-image']
         expected = [paths[key] for key in keys]
-        record = sorted(self.get_record(writer_name='latex', 
+        record = sorted(self.get_record(writer_name='latex',
                                         settings_overrides=latex_settings_overwrites))
         # the order of the files is arbitrary
         expected.sort()

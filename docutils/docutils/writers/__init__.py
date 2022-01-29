@@ -126,11 +126,11 @@ _writer_aliases = {
       'xelatex': 'xetex',
       'luatex': 'xetex',
       'lualatex': 'xetex',
-      'odf': 'odf_odt',                   
-      'odt': 'odf_odt',                   
-      'ooffice': 'odf_odt',                   
-      'openoffice': 'odf_odt',                   
-      'libreoffice': 'odf_odt',                   
+      'odf': 'odf_odt',
+      'odt': 'odf_odt',
+      'ooffice': 'odf_odt',
+      'openoffice': 'odf_odt',
+      'libreoffice': 'odf_odt',
       'pprint': 'pseudoxml',
       'pformat': 'pseudoxml',
       'pdf': 'rlpdf',
@@ -147,5 +147,5 @@ def get_writer_class(writer_name):
         try:
             module = import_module(writer_name)
         except ImportError as err:
-            raise ImportError('No writer named "%s".' % writer_name) 
+            raise ImportError('No writer named "%s".' % writer_name)
     return module.Writer

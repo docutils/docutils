@@ -2303,11 +2303,3 @@ def serial_escape(value):
 def pseudo_quoteattr(value):
     """Quote attributes for pseudo-xml"""
     return '"%s"' % value
-
-# 
-#
-# Local Variables:
-# indent-tabs-mode: nil
-# sentence-end-double-space: t
-# fill-column: 78
-# End:

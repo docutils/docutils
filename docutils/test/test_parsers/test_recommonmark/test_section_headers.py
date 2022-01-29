@@ -70,10 +70,10 @@ Paragraph.
 """],
 # ["""\
 # Test unexpected section titles.
-# 
+#
 # * Title
 #   =====
-#   
+#
 #   Paragraph.
 # """,
 # """\

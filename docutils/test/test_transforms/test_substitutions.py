@@ -237,13 +237,13 @@ Substitution reference with |reference-in-content|.
 """\
 <document source="test data">
     <paragraph>
-        Substitution reference with 
-        text and 
+        Substitution reference with \n\
+        text and \n\
         <reference name="hyperlink-reference" refname="hyperlink-reference">
             hyperlink-reference
         .
     <substitution_definition names="reference-in-content">
-        text and 
+        text and \n\
         <reference name="hyperlink-reference" refname="hyperlink-reference">
             hyperlink-reference
 """],

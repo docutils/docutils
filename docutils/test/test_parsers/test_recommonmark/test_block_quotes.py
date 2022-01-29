@@ -69,7 +69,7 @@ Line 1.
 Line 2.
 
 >Block quote,
-continuation line 
+continuation line
 """,
 """\
 <document source="test data">

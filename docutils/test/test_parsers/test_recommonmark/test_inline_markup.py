@@ -323,11 +323,11 @@ totest['references'] = [
         <reference name="ref" refuri="/uri">
             ref
 """],
-# Fails with recommonmark 0.6.0:                        
+# Fails with recommonmark 0.6.0:
 # ["""\
 # Inline image ![foo *bar*]
 # in a paragraph.
-# 
+#
 # [foo *bar*]: train.jpg "train & tracks"
 # """,
 # """\
@@ -397,7 +397,7 @@ Inline image ![a train](train.jpg) more text.
         <image alt="a train" uri="train.jpg">
          more text.
 """],
-# recommonmark 0.6.0 drops the "title"                           
+# recommonmark 0.6.0 drops the "title"
 # ["""\
 # Inline image ![foo](/url "title") more text.
 # """,

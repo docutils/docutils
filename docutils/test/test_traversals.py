@@ -23,7 +23,7 @@ stop_traversal_input = '''
 
 Happily, happily going by train.
 
-.. attention:: Attention, attention.  This is a public annoucement.  
+.. attention:: Attention, attention.  This is a public annoucement.
                You must get off the train now.
 
 KaZoom! Train crashes.
@@ -73,4 +73,3 @@ class StopTraversalTests(unittest.TestCase, docutils.SettingsSpec):
 
 if __name__ == '__main__':
     unittest.main()
-

@@ -13,5 +13,5 @@ settings_overrides['pep_home'] = "http://www.python.org/peps"
 settings_overrides['no_random'] = 1
 settings_overrides['cloak_email_addresses'] = 1
 # local copy of default stylesheet:
-settings_overrides['stylesheet_path'] = ( 
+settings_overrides['stylesheet_path'] = (
     'functional/input/data/html4css1.css')

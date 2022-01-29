@@ -51,7 +51,7 @@ level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
 totest = {}
 
 totest['blank'] = [
-        ["", 
+        ["",
         r""".\" Man page generated from reStructuredText.
 .
 """+indend_macros+

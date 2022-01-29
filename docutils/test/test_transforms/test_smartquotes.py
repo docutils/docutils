@@ -88,7 +88,7 @@ Keep quotes straight in code and math:
 """\
 <document source="test data">
     <paragraph>
-        Do not “educate” quotes 
+        Do not “educate” quotes \n\
         <literal>
             inside "literal" text
          and
@@ -261,7 +261,7 @@ Do not convert context-character at inline-tag boundaries
         ), (
         <literal>
             'string'
-        ), 
+        ), \n\
         <emphasis>
             «\u202fbetont\u202f»
         , «\u202f
