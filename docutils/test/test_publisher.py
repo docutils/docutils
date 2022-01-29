@@ -38,10 +38,11 @@ pseudoxml_output = b"""\
             <paragraph>
                 Unknown target name: "nonexistent".
 """
-exposed_pseudoxml_output = (b"""\
-<document ids="test-document" internal:refnames="{"""
-+ u_prefix
-+ b"""\'nonexistent\': [<reference: <#text: \'nonexistent\'>>]}" names="test\\ document" source="<string>" title="Test Document">
+exposed_pseudoxml_output = (
+    b'<document ids="test-document" internal:refnames="{'
+    + u_prefix
+    + b"""\
+\'nonexistent\': [<reference: <#text: \'nonexistent\'>>]}" names="test\\ document" source="<string>" title="Test Document">
     <title>
         Test Document
     <paragraph>
@@ -66,7 +67,7 @@ class PublisherTests(DocutilsTestSupport.StandardTestCase):
         # pass IOErrors to calling application if `traceback` is True
         try:
             core.publish_cmdline(argv=['nonexisting/path'],
-                                       settings_overrides={'traceback': True})
+                                 settings_overrides={'traceback': True})
         except IOError as e:
             self.assertTrue(isinstance(e, io.InputError))
 
@@ -75,7 +76,7 @@ class PublisherTests(DocutilsTestSupport.StandardTestCase):
         # pass IOErrors to calling application if `traceback` is True
         try:
             core.publish_cmdline(argv=['data/include.txt', 'nonexisting/path'],
-                                       settings_overrides={'traceback': True})
+                                 settings_overrides={'traceback': True})
         except IOError as e:
             self.assertTrue(isinstance(e, io.OutputError))
 
@@ -120,9 +121,9 @@ class PublishDoctreeTestCase(DocutilsTestSupport.StandardTestCase, docutils.Sett
 
         # Test publishing parts using document as the source.
         parts = core.publish_parts(
-           reader_name='doctree', source_class=io.DocTreeInput,
-           source=doctree, source_path='test', writer_name='html',
-           settings_spec=self)
+            reader_name='doctree', source_class=io.DocTreeInput,
+            source=doctree, source_path='test', writer_name='html',
+            settings_spec=self)
         self.assertTrue(isinstance(parts, dict))
 
     def test_publish_pickle(self):

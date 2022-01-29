@@ -76,10 +76,10 @@ def _rawxml(input, document, optargs):
 
 def _styledxml(input, document, optargs):
     docnode = document.asdom().childNodes[0]
-    return '%s\n%s\n%s' % (
-          '<?xml version="1.0" encoding="ISO-8859-1"?>',
-          '<?xml-stylesheet type="text/xsl" href="%s"?>'
-          % optargs['styledxml'], docnode.toxml())
+    return '\n'.join(('<?xml version="1.0" encoding="ISO-8859-1"?>',
+                      '<?xml-stylesheet type="text/xsl" href="%s"?>'
+                      % optargs['styledxml'],
+                      docnode.toxml()))
 
 def _prettyxml(input, document, optargs):
     return document.asdom().toprettyxml('    ', '\n')
@@ -112,8 +112,7 @@ _outputFormatters = {
     'styledxml': _styledxml,
     'xml': _prettyxml,
     'pretty' : _pretty,
-    'test': _test
-    }
+    'test': _test}
 
 def format(outputFormat, input, document, optargs):
     formatter = _outputFormatters[outputFormat]

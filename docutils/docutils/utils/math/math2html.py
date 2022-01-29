@@ -165,7 +165,7 @@ class FormulaConfig:
                  # '|': ['⎪',], # 23AA CURLY BRACKET EXTENSION
                  '‖': ['‖'], # 2016 DOUBLE VERTICAL LINE
                  # '∥': ['∥'], # 2225 PARALLEL TO
-                }
+                 }
 
   bracketcommands = {
       '\\left': 'span class="stretchy"',
@@ -541,7 +541,7 @@ class FormulaConfig:
 
   unmodified = {
       'characters': ['.', '*', '€', '(', ')', '[', ']',
-                      '·', '!', ';', '|', '§', '"', '?'],
+                     '·', '!', ';', '|', '§', '"', '?'],
       }
 
 
@@ -801,7 +801,8 @@ class TextParser(Parser):
     "Parse lines as long as they are text"
     TextParser.stack.append(self.ending)
     self.endings = TextParser.stack + [ContainerConfig.endings['Layout'],
-        ContainerConfig.endings['Inset'], self.ending]
+                                       ContainerConfig.endings['Inset'],
+                                       self.ending]
     contents = []
     while not self.isending(reader):
       self.parsecontainer(reader, contents)
@@ -1565,7 +1566,7 @@ class FormulaParser(Parser):
     if FormulaConfig.starts['complex'] in reader.currentline():
       # formula of the form \[...\]
       return self.parsemultiliner(reader, FormulaConfig.starts['complex'],
-          FormulaConfig.endings['complex'])
+                                  FormulaConfig.endings['complex'])
     beginbefore = FormulaConfig.starts['beginbefore']
     beginafter = FormulaConfig.starts['beginafter']
     if beginbefore in reader.currentline():

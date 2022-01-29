@@ -490,7 +490,7 @@ class smartchars:
               'uk-x-altquot': '„“‚‘',
               'zh-cn':        '“”‘’',
               'zh-tw':        '「」『』',
-             }
+              }
 
     def __init__(self, language='en'):
         self.language = language
@@ -639,7 +639,7 @@ def educateQuotes(text, language='en'):
                   'dash': '[-–—]' # hyphen and em/en dashes
                           + r'|&[mn]dash;|&\#8211;|&\#8212;|&\#x201[34];',
                   'sep': '[\\s\u200B\u200C]|&nbsp;', # Whitespace, ZWSP, ZWNJ
-                 }
+                  }
 
     # Special case if the very first character is a quote
     # followed by punctuation at a non-word-break. Use closing quotes.

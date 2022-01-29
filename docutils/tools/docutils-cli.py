@@ -57,7 +57,7 @@ class CliSettingsSpec(docutils.SettingsSpec):
 # Get default components from configuration files
 # default to "html5" writer for backwards compatibility
 default_settings = Publisher().get_settings(settings_spec=CliSettingsSpec,
-                        writer='html5')
+                                            writer='html5')
 
 
 argparser = argparse.ArgumentParser(

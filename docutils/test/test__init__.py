@@ -96,7 +96,7 @@ class VersionInfoTests(unittest.TestCase):
                         VersionInfo(0, 2, 0, 'beta', 0, False),
                         VersionInfo(0, 2, 0, 'beta', 0, True),
                         VersionInfo(0, 2, 0, 'final', 0, True),
-                       ]
+                        ]
         # transform to version strings
         versions = [docutils.utils.version_identifier(vinfo)
                     for vinfo in versioninfos]

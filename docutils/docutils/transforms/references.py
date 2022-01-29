@@ -121,8 +121,7 @@ class AnonymousHyperlinks(Transform):
         for node in self.document.findall(nodes.target):
             if node.get('anonymous'):
                 anonymous_targets.append(node)
-        if len(anonymous_refs) \
-              != len(anonymous_targets):
+        if len(anonymous_refs) != len(anonymous_targets):
             msg = self.document.reporter.error(
                   'Anonymous hyperlink mismatch: %s references but %s '
                   'targets.\nSee "backrefs" attribute for IDs.'
@@ -229,11 +228,10 @@ class IndirectHyperlinks(Transform):
                 return
         reftarget = self.document.ids[reftarget_id]
         reftarget.note_referenced_by(id=reftarget_id)
-        if isinstance(reftarget, nodes.target) \
-               and not reftarget.resolved and reftarget.hasattr('refname'):
+        if (isinstance(reftarget, nodes.target)
+            and not reftarget.resolved
+            and reftarget.hasattr('refname')):
             if hasattr(target, 'multiply_indirect'):
-                #and target.multiply_indirect):
-                #del target.multiply_indirect
                 self.circular_indirect_reference(target)
                 return
             target.multiply_indirect = 1

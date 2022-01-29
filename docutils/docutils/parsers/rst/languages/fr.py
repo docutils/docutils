@@ -90,7 +90,7 @@ roles = {
       'emphase': 'emphasis',
       'fort': 'strong',
       'litt\u00E9ral': 'literal',
-    'math (translation required)': 'math',
+      'math (translation required)': 'math',
       'nomm\u00E9e-r\u00E9f\u00E9rence': 'named-reference',
       'anonyme-r\u00E9f\u00E9rence': 'anonymous-reference',
       'note-r\u00E9f\u00E9rence': 'footnote-reference',

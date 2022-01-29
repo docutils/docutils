@@ -48,38 +48,38 @@ class Writer(writers._html_base.Writer):
     settings_spec = frontend.filter_settings_spec(
         writers._html_base.Writer.settings_spec,
         template =
-         ('Template file. (UTF-8 encoded, default: "%s")' % default_template,
-          ['--template'],
-          {'default': default_template, 'metavar': '<file>'}),
+        ('Template file. (UTF-8 encoded, default: "%s")' % default_template,
+         ['--template'],
+         {'default': default_template, 'metavar': '<file>'}),
         stylesheet_path =
-         ('Comma separated list of stylesheet paths. '
-          'Relative paths are expanded if a matching file is found in '
-          'the --stylesheet-dirs. With --link-stylesheet, '
-          'the path is rewritten relative to the output HTML file. '
-          '(default: "%s")' % ','.join(default_stylesheets),
-          ['--stylesheet-path'],
-          {'metavar': '<file[,file,...]>', 'overrides': 'stylesheet',
-           'validator': frontend.validate_comma_separated_list,
-           'default': default_stylesheets}),
-       stylesheet_dirs =
-         ('Comma-separated list of directories where stylesheets are found. '
-          'Used by --stylesheet-path when expanding relative path arguments. '
-          '(default: "%s")' % ','.join(default_stylesheet_dirs),
-          ['--stylesheet-dirs'],
-          {'metavar': '<dir[,dir,...]>',
-           'validator': frontend.validate_comma_separated_list,
-           'default': default_stylesheet_dirs}),
-       initial_header_level =
-         ('Specify the initial header level. Does not affect document '
-          'title & subtitle (see --no-doc-title). (default: 2 for "<h2>")',
-          ['--initial-header-level'],
-          {'choices': '1 2 3 4 5 6'.split(), 'default': '2',
-           'metavar': '<level>'}),
-       no_xml_declaration =
-         ('Omit the XML declaration.',
-          ['--no-xml-declaration'],
-          {'dest': 'xml_declaration', 'action': 'store_false'}),
-        )
+        ('Comma separated list of stylesheet paths. '
+         'Relative paths are expanded if a matching file is found in '
+         'the --stylesheet-dirs. With --link-stylesheet, '
+         'the path is rewritten relative to the output HTML file. '
+         '(default: "%s")' % ','.join(default_stylesheets),
+         ['--stylesheet-path'],
+         {'metavar': '<file[,file,...]>', 'overrides': 'stylesheet',
+          'validator': frontend.validate_comma_separated_list,
+          'default': default_stylesheets}),
+        stylesheet_dirs =
+        ('Comma-separated list of directories where stylesheets are found. '
+         'Used by --stylesheet-path when expanding relative path arguments. '
+         '(default: "%s")' % ','.join(default_stylesheet_dirs),
+         ['--stylesheet-dirs'],
+         {'metavar': '<dir[,dir,...]>',
+          'validator': frontend.validate_comma_separated_list,
+          'default': default_stylesheet_dirs}),
+        initial_header_level =
+        ('Specify the initial header level. Does not affect document '
+         'title & subtitle (see --no-doc-title). (default: 2 for "<h2>")',
+         ['--initial-header-level'],
+         {'choices': '1 2 3 4 5 6'.split(), 'default': '2',
+          'metavar': '<level>'}),
+        no_xml_declaration =
+        ('Omit the XML declaration.',
+         ['--no-xml-declaration'],
+         {'dest': 'xml_declaration', 'action': 'store_false'}),
+    )
     settings_spec = settings_spec + (
         'HTML5 Writer Options',
         '',
@@ -95,14 +95,15 @@ class Writer(writers._html_base.Writer):
           ['--image-loading'],
           {'choices': ('embed', 'link', 'lazy'),
            # 'default': 'link' # default set in _html_base.py
-          }),
+           }),
          ('Append a self-link to section headings.',
           ['--section-self-link'],
           {'default': 0, 'action': 'store_true'}),
          ('Do not append a self-link to section headings. (default)',
           ['--no-section-self-link'],
           {'dest': 'section_self_link', 'action': 'store_false'}),
-        ))
+         )
+        )
 
     config_section = 'html5 writer'
 
@@ -208,8 +209,8 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
         self.meta.insert(0, self.content_type % self.settings.output_encoding)
         self.head.insert(0, self.content_type % self.settings.output_encoding)
         if 'name="dcterms.' in ''.join(self.meta):
-            self.head.append(
-             '<link rel="schema.dcterms" href="http://purl.org/dc/terms/"/>')
+            self.head.append('<link rel="schema.dcterms"'
+                             ' href="http://purl.org/dc/terms/"/>')
         if self.math_header:
             if self.math_output == 'mathjax':
                 self.head.extend(self.math_header)
@@ -293,9 +294,13 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
             suffix = ''
         else:
             suffix = '\n'
-        self.body.append('%s<a href="%s">%s</a>%s</video>%s'
+        self.body.append(
+            '%s<a href="%s">%s</a>%s</video>%s'
             % (self.starttag(node, 'video', suffix, src=uri, **atts),
-               uri, node.get('alt', uri), suffix, suffix))
+               uri,
+               node.get('alt', uri),
+               suffix,
+               suffix))
 
     def depart_image(self, node):
         pass
@@ -312,8 +317,9 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
         if len(tags):
             node.html5tagname = tags[0]
             classes.remove(tags[0])
-        elif (classes == ['ln'] and isinstance(node.parent, nodes.literal_block)
-            and 'code' in node.parent.get('classes')):
+        elif (classes == ['ln']
+              and isinstance(node.parent, nodes.literal_block)
+              and 'code' in node.parent.get('classes')):
             if self.body[-1] == '<code>':
                 del(self.body[-1])
             else:
@@ -364,7 +370,7 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
         for token in self.words_and_spaces.findall(text):
             if token.strip() and self.in_word_wrap_point.search(token):
                 self.body.append('<span class="pre">%s</span>'
-                                    % self.encode(token))
+                                 % self.encode(token))
             else:
                 self.body.append(self.encode(token))
         self.body.append('</%s>' % tagname)
@@ -443,6 +449,6 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
         if (ids and getattr(self.settings, 'section_self_link', None)
             and not isinstance(node.parent, nodes.document)):
             self_link = ('<a class="self-link" title="link to this section"'
-                        ' href="#%s"></a>' % ids[0])
+                         ' href="#%s"></a>' % ids[0])
             close_tag = close_tag.replace('</h', self_link + '</h')
         return start_tag, close_tag

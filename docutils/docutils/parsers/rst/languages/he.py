@@ -54,7 +54,7 @@ directives = {
       'replace': 'replace',
       'unicode': 'unicode',
       'date': 'date',
-       '\u05e1\u05d2\u05e0\u05d5\u05df': 'class',
+      '\u05e1\u05d2\u05e0\u05d5\u05df': 'class',
       'role': 'role',
       'default-role': 'default-role',
       'title': 'title',

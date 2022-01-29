@@ -281,7 +281,7 @@ class ErrorOutput:
         except TypeError:
             if isinstance(data, str): # destination may expect bytes
                 self.destination.write(data.encode(self.encoding,
-                                              self.encoding_errors))
+                                                   self.encoding_errors))
             elif self.destination in (sys.stderr, sys.stdout):
                 self.destination.buffer.write(data) # write bytes to raw stream
             else:
@@ -422,9 +422,9 @@ class FileOutput(Output):
         self.opened = True
         self.autoclose = autoclose
         if handle_io_errors is not None:
-            warnings.warn('io.FileOutput: initialization argument '
-                '"handle_io_errors" is ignored and will be removed in '
-                'Docutils 1.2.', DeprecationWarning, stacklevel=2)
+            warnings.warn('io.FileOutput: init argument "handle_io_errors" '
+                          'is ignored and will be removed in '
+                          'Docutils 1.2.', DeprecationWarning, stacklevel=2)
         if mode is not None:
             self.mode = mode
         self._stderr = ErrorOutput()
@@ -436,9 +436,9 @@ class FileOutput(Output):
         elif (# destination is file-type object -> check mode:
               mode and hasattr(self.destination, 'mode')
               and mode != self.destination.mode):
-                print('Warning: Destination mode "%s" differs from specified '
-                      'mode "%s"' % (self.destination.mode, mode),
-                      file=self._stderr)
+            print('Warning: Destination mode "%s" differs from specified '
+                  'mode "%s"' % (self.destination.mode, mode),
+                  file=self._stderr)
         if not destination_path:
             try:
                 self.destination_path = self.destination.name
@@ -482,10 +482,12 @@ class FileOutput(Output):
                 except AttributeError:
                     if check_encoding(self.destination,
                                       self.encoding) is False:
-                        raise ValueError('Encoding of %s (%s) differs \n'
+                        raise ValueError(
+                            'Encoding of %s (%s) differs \n'
                             '  from specified encoding (%s)' %
                             (self.destination_path or 'destination',
-                            self.destination.encoding, self.encoding))
+                             self.destination.encoding,
+                             self.encoding))
                     else:
                         raise err
         except (UnicodeError, LookupError) as err:

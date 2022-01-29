@@ -100,4 +100,4 @@ class HTMLTranslator(html4css1.HTMLTranslator):
     def depart_field_list(self, node):
         html4css1.HTMLTranslator.depart_field_list(self, node)
         if 'rfc2822' in node['classes']:
-             self.body.append('<hr />\n')
+            self.body.append('<hr />\n')

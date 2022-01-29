@@ -482,8 +482,8 @@ class StateMachine:
         type, value, module, line, function = _exception_data()
         print('%s: %s' % (type, value), file=self._stderr)
         print('input line %s' % (self.abs_line_number()), file=self._stderr)
-        print(('module %s, line %s, function %s' %
-                               (module, line, function)), file=self._stderr)
+        print('module %s, line %s, function %s' % (module, line, function),
+              file=self._stderr)
 
     def attach_observer(self, observer):
         """
@@ -632,7 +632,7 @@ class State:
         """Make and add transitions listed in `self.initial_transitions`."""
         if self.initial_transitions:
             names, transitions = self.make_transitions(
-                  self.initial_transitions)
+                                     self.initial_transitions)
             self.add_transitions(names, transitions)
 
     def add_transitions(self, names, transitions):
@@ -980,8 +980,8 @@ class StateWS(State):
         Recursively run the registered state machine for indented blocks
         (`self.indent_sm`).
         """
-        indented, indent, line_offset, blank_finish = \
-              self.state_machine.get_indented()
+        (indented, indent, line_offset, blank_finish
+         ) = self.state_machine.get_indented()
         sm = self.indent_sm(debug=self.debug, **self.indent_sm_kwargs)
         results = sm.run(indented, input_offset=line_offset)
         return context, next_state, results
@@ -994,10 +994,10 @@ class StateWS(State):
         blocks (`self.known_indent_sm`). The indent is the length of the
         match, ``match.end()``.
         """
-        indented, line_offset, blank_finish = \
-              self.state_machine.get_known_indented(match.end())
+        (indented, line_offset, blank_finish
+         ) = self.state_machine.get_known_indented(match.end())
         sm = self.known_indent_sm(debug=self.debug,
-                                 **self.known_indent_sm_kwargs)
+                                  **self.known_indent_sm_kwargs)
         results = sm.run(indented, input_offset=line_offset)
         return context, next_state, results
 
@@ -1011,10 +1011,10 @@ class StateWS(State):
         blocks (`self.known_indent_sm`). The indent is the length of the
         match, ``match.end()``.
         """
-        indented, line_offset, blank_finish = \
-              self.state_machine.get_first_known_indented(match.end())
+        (indented, line_offset, blank_finish
+         ) = self.state_machine.get_first_known_indented(match.end())
         sm = self.known_indent_sm(debug=self.debug,
-                                 **self.known_indent_sm_kwargs)
+                                  **self.known_indent_sm_kwargs)
         results = sm.run(indented, input_offset=line_offset)
         return context, next_state, results
 

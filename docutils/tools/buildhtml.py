@@ -81,7 +81,7 @@ class SettingsSpec(docutils.SettingsSpec):
           {'metavar': '<writer>',
            'choices': ['html', 'html4', 'html5'],
            # 'default': 'html' (set below)
-          }),
+           }),
          (frontend.SUPPRESS_HELP, # Obsoleted by "--writer"
           ['--html-writer'],
           {'metavar': '<writer>',
@@ -133,13 +133,13 @@ class Builder:
             '': Struct(components=(pep.Reader, rst.Parser, pep_html.Writer,
                                    SettingsSpec)),
             'html4': Struct(components=(rst.Parser, standalone.Reader,
-                                       html4css1.Writer, SettingsSpec),
-                           reader_name='standalone',
-                           writer_name='html4'),
+                                        html4css1.Writer, SettingsSpec),
+                            reader_name='standalone',
+                            writer_name='html4'),
             'html5': Struct(components=(rst.Parser, standalone.Reader,
-                                       html5_polyglot.Writer, SettingsSpec),
-                           reader_name='standalone',
-                           writer_name='html5'),
+                                        html5_polyglot.Writer, SettingsSpec),
+                            reader_name='standalone',
+                            writer_name='html5'),
             'PEPs': Struct(components=(rst.Parser, pep.Reader,
                                        pep_html.Writer, SettingsSpec),
                            reader_name='pep',
@@ -178,8 +178,9 @@ class Builder:
 
         if self.initial_settings.html_writer is not None:
             warnings.warn('The configuration setting "html_writer" '
-                'will be removed in Docutils 1.2. '
-                'Use setting "writer" instead.', FutureWarning, stacklevel=5)
+                          'will be removed in Docutils 1.2. '
+                          'Use setting "writer" instead.',
+                          FutureWarning, stacklevel=5)
         if self.initial_settings.writer is None:
             self.initial_settings.writer = (self.initial_settings.html_writer
                                             or 'html')
@@ -265,11 +266,11 @@ class Builder:
         if not settings.dry_run:
             try:
                 core.publish_file(source_path=settings._source,
-                              destination_path=settings._destination,
-                              reader_name=pub_struct.reader_name,
-                              parser_name='restructuredtext',
-                              writer_name=pub_struct.writer_name,
-                              settings=settings)
+                                  destination_path=settings._destination,
+                                  reader_name=pub_struct.reader_name,
+                                  parser_name='restructuredtext',
+                                  writer_name=pub_struct.writer_name,
+                                  settings=settings)
             except ApplicationError as err:
                 errout.write(f'        {type(err).__name__}: {err}\n')
 

@@ -105,7 +105,7 @@ class SafeString:
         except UnicodeEncodeError:
             if isinstance(self.data, Exception):
                 args = [str(SafeString(arg, self.encoding,
-                                        self.encoding_errors))
+                                       self.encoding_errors))
                         for arg in self.data.args]
                 return ', '.join(args)
             if isinstance(self.data, unicode):
@@ -135,14 +135,16 @@ class SafeString:
             return u
         except UnicodeError as error: # catch ..Encode.. and ..Decode.. errors
             if isinstance(self.data, EnvironmentError):
-                return  "[Errno %s] %s: '%s'" % (self.data.errno,
+                return  "[Errno %s] %s: '%s'" % (
+                    self.data.errno,
                     SafeString(self.data.strerror, self.encoding,
                                self.decoding_errors),
                     SafeString(self.data.filename, self.encoding,
                                self.decoding_errors))
             if isinstance(self.data, Exception):
-                args = [unicode(SafeString(arg, self.encoding,
-                            decoding_errors=self.decoding_errors))
+                args = [unicode(SafeString(
+                                    arg, self.encoding,
+                                    decoding_errors=self.decoding_errors))
                         for arg in self.data.args]
                 return u', '.join(args)
             if isinstance(error, UnicodeDecodeError):
@@ -155,7 +157,7 @@ class ErrorString(SafeString):
     """
     def __str__(self):
         return '%s: %s' % (self.data.__class__.__name__,
-                            super(ErrorString, self).__str__())
+                           super(ErrorString, self).__str__())
 
     def __unicode__(self):
         return u'%s: %s' % (self.data.__class__.__name__,
@@ -214,7 +216,8 @@ class ErrorOutput:
             return
         if isinstance(data, Exception):
             data = unicode(SafeString(data, self.encoding,
-                                  self.encoding_errors, self.decoding_errors))
+                                      self.encoding_errors,
+                                      self.decoding_errors))
         try:
             self.stream.write(data)
         except UnicodeEncodeError:

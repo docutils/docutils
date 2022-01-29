@@ -90,7 +90,7 @@ schemes = {
       'printer': '',
       'prospero': 'Prospero Directory Service; RFC 4157',
       'rdar': ('URLs found in Darwin source '
-                '(http://www.opensource.apple.com/darwinsource/).'),
+               '(http://www.opensource.apple.com/darwinsource/).'),
       'res': '',
       'rtsp': 'real time streaming protocol; RFC 2326',
       'rvp': '',

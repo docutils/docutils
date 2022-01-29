@@ -166,12 +166,12 @@ def unicode_charlists(categories, cp_min=0, cp_max=None):
     # categories with not too high characters):
     if cp_max is None:
         cp_max = max(x for x in range(sys.maxunicode+1)
-                    if unicodedata.category(chr(x)) in categories)
+                     if unicodedata.category(chr(x)) in categories)
         # print(cp_max) # => 74867 for unicode_punctuation_categories
     charlists = {}
     for cat in categories:
         charlists[cat] = [chr(x) for x in range(cp_min, cp_max+1)
-                            if unicodedata.category(chr(x)) == cat]
+                          if unicodedata.category(chr(x)) == cat]
     return charlists
 
 
@@ -242,7 +242,7 @@ def character_category_patterns():
     closing_delimiters = [r'\\.,;!?']
 
     return [''.join(chars) for chars in (openers, closers, delimiters,
-                                            closing_delimiters)]
+                                         closing_delimiters)]
 
 def separate_wide_chars(s):
     """Return (s1,s2) with characters above 0xFFFF in s2"""
@@ -276,8 +276,7 @@ def mark_intervals(s):
 
     return ''.join(l2)
 
-def wrap_string(s, startstring= "('",
-                    endstring = "')", wrap=67):
+def wrap_string(s, startstring= "('", endstring = "')", wrap=67):
     """Line-wrap a unicode string literal definition."""
     c = len(startstring)
     contstring = "'\n" + ' ' * (len(startstring)-2) + "'"
@@ -342,17 +341,16 @@ if __name__ == '__main__':
 
 # Test: compare module content with re-generated definitions
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# ::
-
-    if args.test:
-
+#
 # Import the punctuation_chars module from the source
 # or Py3k build path for local Python modules::
 
+    if args.test:
+
         sys.path.insert(0, '../../docutils')
 
-        from docutils.utils.punctuation_chars import (openers, closers,
-                                          delimiters, closing_delimiters)
+        from docutils.utils.punctuation_chars import (
+                 openers, closers, delimiters, closing_delimiters)
 
         print('Check for differences between the current `punctuation_chars`'
               ' module\n and a regeneration based on Unicode version %s:'

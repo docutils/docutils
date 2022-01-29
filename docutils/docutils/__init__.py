@@ -84,8 +84,8 @@ class VersionInfo(namedtuple('VersionInfo',
         if releaselevel == 'final':
             if not release:
                 raise ValueError('releaselevel "final" must not be used '
-                             'with development versions (leads to wrong '
-                             'version ordering of the related __version__')
+                                 'with development versions (leads to wrong '
+                                 'version ordering of the related __version__')
             if serial != 0:
                 raise ValueError('"serial" must be 0 for final releases')
 

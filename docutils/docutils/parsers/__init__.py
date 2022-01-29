@@ -39,7 +39,8 @@ class Parser(Component):
           ['--line-length-limit'],
           {'metavar': '<length>', 'type': 'int', 'default': 10000,
            'validator': frontend.validate_nonnegative_int}),
-        ))
+         )
+        )
     component_type = 'parser'
     config_section = 'parsers'
 

@@ -11,8 +11,7 @@ writer_name = 's5_html'
 # Settings:
 settings_overrides['theme'] = 'small-black'
 # local copy of default stylesheet:
-settings_overrides['stylesheet_path'] = (
-    'functional/input/data/html4css1.css')
+settings_overrides['stylesheet_path'] = 'functional/input/data/html4css1.css'
 
 
 # Extra functional tests.

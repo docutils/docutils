@@ -23,7 +23,7 @@ paths = {'include': 'data/include.txt',  # included rst file
          'scaled-image': '../docs/user/rst/images/biohazard.png',
          'figure-image': '../docs/user/rst/images/title.png',
          'stylesheet':   'data/stylesheet.txt',
-        }
+         }
 
 # avoid latex writer future warnings:
 latex_settings_overwrites = {'legacy_column_widths': False,
@@ -101,19 +101,19 @@ class RecordDependenciesTests(unittest.TestCase):
         so['embed_stylesheet'] = False
         record = self.get_record(writer_name='html', settings_overrides=so)
         self.assertTrue(stylesheet not in record,
-                     '%r should not be in %r' % (stylesheet, record))
+                        '%r should not be in %r' % (stylesheet, record))
         record = self.get_record(writer_name='latex', settings_overrides=so)
         self.assertTrue(stylesheet not in record,
-                     '%r should not be in %r' % (stylesheet, record))
+                        '%r should not be in %r' % (stylesheet, record))
 
         so['embed_stylesheet'] = True
         record = self.get_record(writer_name='html', settings_overrides=so)
         self.assertTrue(stylesheet in record,
-                     '%r should be in %r' % (stylesheet, record))
+                        '%r should be in %r' % (stylesheet, record))
         so['embed_stylesheet'] = True
         record = self.get_record(writer_name='latex', settings_overrides=so)
         self.assertTrue(stylesheet in record,
-                     '%r should be in %r' % (stylesheet, record))
+                        '%r should be in %r' % (stylesheet, record))
 
 
 if __name__ == '__main__':

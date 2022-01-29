@@ -132,9 +132,9 @@ class CharacterEntitySetExtractor:
             return
         entity = attributes['id']
         assert (entity not in self.sets[set]
-                or self.sets[set][entity] == self.charid), \
-                ('sets[%r][%r] == %r (!= %r)'
-                 % (set, entity, self.sets[set][entity], self.charid))
+                or self.sets[set][entity] == self.charid
+                ), ('sets[%r][%r] == %r (!= %r)'
+                    % (set, entity, self.sets[set][entity], self.charid))
         self.sets[set][entity] = self.charid
 
     def description_data(self, data):

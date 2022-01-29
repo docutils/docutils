@@ -202,11 +202,11 @@ Unindented text.
 
     def test_get_indented(self):
         self.assertEqual(self.a.get_indented(),
-                          ([], 0, 0))
+                         ([], 0, 0))
         block = statemachine.StringList(
             statemachine.string2lines(self.indented_string))
         self.assertEqual(block.get_indented(),
-                          ([s[6:] for s in block], 6, 1))
+                         ([s[6:] for s in block], 6, 1))
 
 
 if __name__ == '__main__':

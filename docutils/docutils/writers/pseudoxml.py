@@ -23,7 +23,8 @@ class Writer(writers.Writer):
         (('Pretty-print <#text> nodes.',
           ['--detailed'],
           {'action': 'store_true', 'validator': frontend.validate_boolean}),
-        ))
+         )
+        )
 
     config_section = 'pseudoxml writer'
     config_section_dependencies = ('writers',)

@@ -51,7 +51,7 @@ EXPECTED_PATH = 'functional/expected/'
 class DocutilsOdtTestCase(DocutilsTestSupport.StandardTestCase):
 
     def process_test(self, input_filename, expected_filename,
-            save_output_name=None, settings_overrides=None):
+                     save_output_name=None, settings_overrides=None):
         # Test that xmlcharrefreplace is the default output encoding
         # error handler.
         input_file = open(INPUT_PATH + input_filename, 'rb')
@@ -129,27 +129,22 @@ class DocutilsOdtTestCase(DocutilsTestSupport.StandardTestCase):
 
     def test_odt_basic(self):
         self.process_test('odt_basic.txt', 'odt_basic.odt',
-            save_output_name='odt_basic.odt'
-            )
+                          save_output_name='odt_basic.odt')
 
     def test_odt_nested_class(self):
         self.process_test('odt_nested_class.txt',
                           'odt_nested_class.odt',
-                          save_output_name='odt_nested_class.odt'
-        )
+                          save_output_name='odt_nested_class.odt')
         self.process_test('odt_unnested_class.txt',
                           'odt_unnested_class.odt',
-                          save_output_name='odt_unnested_class.odt'
-        )
+                          save_output_name='odt_unnested_class.odt')
         self.process_test('odt_no_class.txt',
                           'odt_no_class.odt',
-                          save_output_name='odt_no_class.odt'
-        )
+                          save_output_name='odt_no_class.odt')
 
     def test_odt_tables1(self):
         self.process_test('odt_tables1.txt', 'odt_tables1.odt',
-            save_output_name='odt_tables1.odt'
-            )
+                          save_output_name='odt_tables1.odt')
 
     def test_odt_custom_headfoot(self):
         settings_overrides = {
@@ -158,14 +153,12 @@ class DocutilsOdtTestCase(DocutilsTestSupport.StandardTestCase):
             'language_code': 'en-US',
             }
         self.process_test('odt_custom_headfoot.txt', 'odt_custom_headfoot.odt',
-            settings_overrides=settings_overrides,
-            save_output_name='odt_custom_headfoot.odt'
-            )
+                          settings_overrides=settings_overrides,
+                          save_output_name='odt_custom_headfoot.odt')
 
     def test_odt_header_footer(self):
         self.process_test('odt_header_footer.txt', 'odt_header_footer.odt',
-            save_output_name='odt_header_footer.odt'
-            )
+                          save_output_name='odt_header_footer.odt')
 
     def test_odt_literal_block(self):
         self.process_test('odt_literal_block.txt', 'odt_literal_block.odt')
@@ -178,12 +171,10 @@ class DocutilsOdtTestCase(DocutilsTestSupport.StandardTestCase):
 
     def test_odt_footnotes(self):
         self.process_test('odt_footnotes.txt', 'odt_footnotes.odt',
-            save_output_name='odt_footnotes.odt'
-            )
+                          save_output_name='odt_footnotes.odt')
     def test_odt_raw(self):
         self.process_test('odt_raw.txt', 'odt_raw.odt',
-            save_output_name='odt_raw.odt'
-            )
+                          save_output_name='odt_raw.odt')
 
     #
     # Template for new tests.

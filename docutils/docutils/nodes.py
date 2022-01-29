@@ -670,7 +670,7 @@ class Element(Node):
 
     def astext(self):
         return self.child_text_separator.join(
-              [child.astext() for child in self.children])
+                   [child.astext() for child in self.children])
 
     def non_default_attributes(self):
         atts = {}
@@ -1125,7 +1125,7 @@ class TextElement(Element):
         if text != '':
             textnode = Text(text)
             Element.__init__(self, rawsource, textnode, *children,
-                              **attributes)
+                             **attributes)
         else:
             Element.__init__(self, rawsource, *children, **attributes)
 
@@ -1385,8 +1385,9 @@ class document(Root, Structural, Element):
             else:
                 prefix = id_prefix + auto_id_prefix
                 if  prefix.endswith('%'):
-                    prefix = '%s%s-' % (prefix[:-1], suggested_prefix
-                                                or make_id(node.tagname))
+                    prefix = '%s%s-' % (prefix[:-1],
+                                        suggested_prefix
+                                        or make_id(node.tagname))
             while True:
                 self.id_counter[prefix] += 1
                 id = '%s%d' % (prefix, self.id_counter[prefix])
@@ -1448,9 +1449,9 @@ class document(Root, Structural, Element):
                     old_node = self.ids[old_id]
                     if 'refuri' in node:
                         refuri = node['refuri']
-                        if old_node['names'] \
-                               and 'refuri' in old_node \
-                               and old_node['refuri'] == refuri:
+                        if (old_node['names']
+                            and 'refuri' in old_node
+                            and old_node['refuri'] == refuri):
                             level = 1   # just inform if refuri's identical
                     if level > 1:
                         dupname(old_node, name)
@@ -1542,8 +1543,8 @@ class document(Root, Structural, Element):
         name = whitespace_normalize_name(def_name)
         if name in self.substitution_defs:
             msg = self.reporter.error(
-                  'Duplicate substitution definition name: "%s".' % name,
-                  base_node=subdef)
+                      'Duplicate substitution definition name: "%s".' % name,
+                      base_node=subdef)
             if msgnode is not None:
                 msgnode += msg
             oldnode = self.substitution_defs[name]
@@ -1574,7 +1575,7 @@ class document(Root, Structural, Element):
 
     def copy(self):
         obj = self.__class__(self.settings, self.reporter,
-                              **self.attributes)
+                             **self.attributes)
         obj.source = self.source
         obj.line = self.line
         return obj
@@ -1796,7 +1797,7 @@ class system_message(Special, BackLinkable, PreBibliographic, Element):
     def astext(self):
         line = self.get('line', '')
         return '%s:%s: (%s/%s) %s' % (self['source'], line, self['type'],
-                                       self['level'], Element.astext(self))
+                                      self['level'], Element.astext(self))
 
 
 class pending(Special, Invisible, Element):
@@ -1839,19 +1840,19 @@ class pending(Special, Invisible, Element):
         """Detail data (dictionary) required by the pending operation."""
 
     def pformat(self, indent='    ', level=0):
-        internals = [
-              '.. internal attributes:',
-              '     .transform: %s.%s' % (self.transform.__module__,
-                                          self.transform.__name__),
-              '     .details:']
+        internals = ['.. internal attributes:',
+                     '     .transform: %s.%s' % (self.transform.__module__,
+                                                 self.transform.__name__),
+                     '     .details:']
         details = sorted(self.details.items())
         for key, value in details:
             if isinstance(value, Node):
                 internals.append('%7s%s:' % ('', key))
                 internals.extend(['%9s%s' % ('', line)
                                   for line in value.pformat().splitlines()])
-            elif value and isinstance(value, list) \
-                  and isinstance(value[0], Node):
+            elif (value
+                  and isinstance(value, list)
+                  and isinstance(value[0], Node)):
                 internals.append('%7s%s:' % ('', key))
                 for v in value:
                     internals.extend(['%9s%s' % ('', line)
@@ -1864,7 +1865,7 @@ class pending(Special, Invisible, Element):
 
     def copy(self):
         obj = self.__class__(self.transform, self.details, self.rawsource,
-                              **self.attributes)
+                             **self.attributes)
         obj._document = self._document
         obj.source = self.source
         obj.line = self.line
@@ -2229,8 +2230,8 @@ def make_id(string):
     id = id.translate(_non_id_translate)
     # get rid of non-ascii characters.
     # 'ascii' lowercase to prevent problems with turkish locale.
-    id = unicodedata.normalize('NFKD', id).\
-         encode('ascii', 'ignore').decode('ascii')
+    id = unicodedata.normalize(
+            'NFKD', id).encode('ascii', 'ignore').decode('ascii')
     # shrink runs of whitespace and replace by hyphen
     id = _non_id_chars.sub('-', ' '.join(id.split()))
     id = _non_id_at_ends.sub('', id)

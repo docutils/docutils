@@ -240,7 +240,7 @@ html_body = """\
 footer text
 </div>"""
 ''' % {'version': DocutilsTestSupport.docutils.__version__,
-        'drive': drive_prefix,
+       'drive': drive_prefix,
     }]
 ]
 

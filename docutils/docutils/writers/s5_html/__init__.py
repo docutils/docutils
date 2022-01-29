@@ -268,9 +268,10 @@ class S5HTMLTranslator(html4css1.HTMLTranslator):
                     src_data = src_file.read()
                 with open(dest, 'wb') as dest_file:
                     dest_dir = dest_dir.replace(os.sep, '/')
-                    dest_file.write(src_data.replace(b'ui/default',
+                    dest_file.write(src_data.replace(
+                        b'ui/default',
                         dest_dir[dest_dir.rfind('ui/'):].encode(
-                        sys.getfilesystemencoding())))
+                            sys.getfilesystemencoding())))
                 settings.record_dependencies.add(source)
             return 1
         if os.path.isfile(dest):
