@@ -2,7 +2,7 @@
  Docutils Runtime Settings
 ===========================
 
-:Author: David Goodger
+:Author: David Goodger, Günter Milde
 :Contact: docutils-develop@lists.sourceforge.net
 :Date: $Date$
 :Revision: $Revision$
@@ -15,178 +15,209 @@ Introduction
 ============
 
 Docutils runtime settings are assembled from several sources:
-component settings specifications, application settings
-specifications, configuration files, and command-line options.
+
+* Settings specifications of the selected components_,
+* `application settings specifications`_,
+* `configuration files`_ (if enabled), and
+* command-line options (if enabled).
+
 Docutils overlays default and explicitly specified values from these
 sources such that settings behave the way we want and expect them to
 behave.
 
-To understand how Docutils deals with runtime settings, the attributes
-and parameters involved must first be understood.  Begin with the the
-docstrings of the attributes of the ``docutils.SettingsSpec`` base
-class (in the ``docutils/__init__.py`` module):
 
-* ``settings_spec``
-* ``settings_defaults``
-* ``settings_default_overrides``
-* ``relative_path_settings``
-* ``config_section``
-* ``config_section_dependencies``
+Settings priority
+=================
 
-Next, several _`convenience function parameters` are also significant
-(described in the ``docutils.core.publish_programmatically`` function
-docstring):
+The sources are overlaid in the following order (later sources
+overwrite earlier ones):
 
-* The ``settings`` parameter is a runtime settings
-  (``docutils.frontend.Values``) object which, if present, is assumed
-  to be complete (it must include all runtime settings).  Also, if the
-  ``settings`` parameter is present, no further runtime settings
-  processing is done.  In other words, the other parameters, described
-  below, will have no effect.
+1. Defaults specified in the `settings_spec`__ and
+   `settings_defaults`__ attributes for each component_.
 
-* ``settings_spec``, a `docutils.SettingsSpec` subclass or object, is
-  treated like a fourth component (after the Parser, Reader, and
-  Writer).  In other words, it's the settings specification for the
-  "Application" itself.
+   __ SettingsSpec.settings_spec_
+   __ SettingsSpec.settings_defaults_
 
-* ``settings_overrides`` is a dictionary which will override the
-  defaults of the components (from their settings specs).
+2. Defaults specified in the `settings_default_overrides`__ attribute
+   for each component_.
 
-* ``config_section`` specifies the name of an application-specific
-  configuration file section.
+   __ SettingsSpec.settings_default_overrides_
+
+3. Settings specified in the `settings_overrides`__ parameter of the
+   `convenience functions`_ resp. the `settings_overrides` attribute of
+   a `Publisher`_ instance.
+
+   __ `settings_overrides parameter`_
+
+4. Settings specified in `active sections`_ of the `configuration files`_
+   in the order described in `Configuration File Sections & Entries`_.
+
+5. Command line arguments.
 
 
-.. _command-line tools:
+7. Settings specified in the `settings parameter`_ of the `convenience
+   functions`_ or the `settings` attribute of the ``Publisher.settings``
+   attribute.
 
-Runtime Settings Processing for Command-Line Tools
-==================================================
-
-Following along with the actual code is recommended.  The
-``docutils/__init__.py``, ``docutils/core.py``, and
-``docutils.frontend.py`` modules are described.
-
-1. A command-line front-end tool imports and calls
-   ``docutils.core.publish_cmdline``.  The relevant `convenience
-   function parameters`_ are described above.
-
-2. ``docutils.core.publish_cmdline`` initializes a
-   ``docutils.core.Publisher`` object, then calls its ``publish``
-   method.
-
-3. The ``docutils.core.Publisher`` object's ``publish`` method checks
-   its ``settings`` attribute to see if it's defined.  If it is, no
-   further runtime settings processing is done.
-
-   If ``settings`` is not defined, ``self.process_command_line`` is
-   called with the following relevant arguments:
-
-   * ``settings_spec``
-   * ``config_section``
-   * ``settings_overrides`` (in the form of excess keyword
-     arguments, collected in the ``defaults`` parameter)
-
-4. ``self.process_command_line`` calls ``self.setup_option_parser``,
-   passing ``settings_spec``, ``config_section``, and ``defaults``.
-
-5. ``self.setup_option_parser`` checks its ``config_section``
-   parameter; if defined, it adds that config file section to
-   ``settings_spec`` (or to a new, empty ``docutils.SettingsSpec``
-   object), replacing anything defined earlier.  (See `Docutils
-   Configuration Files`_ for details.)  Then it instantiates a new
-   ``docutils.frontend.OptionParser`` object, passing the following
-   relevant arguments:
-
-   * ``components``: A tuple of ``docutils.SettingsSpec`` objects,
-     ``(self.parser, self.reader, self.writer, settings_spec)``
-   * ``defaults`` (originally from ``settings_overrides``)
-
-6. The ``docutils.frontend.OptionParser`` object's ``__init__`` method
-   calls ``self.populate_from_components`` with ``self.components``,
-   which consists of ``self`` prepended to the ``components`` tuple it
-   received.  ``self`` (``docutils.frontend.OptionParser``) defines
-   general Docutils settings.
-
-7. In ``self.populate_from_components``, for each component passed,
-   ``component.settings_spec`` is processed and
-   ``component.settings_defaults`` is applied.  Then, for each
-   component, ``component.settings_default_overrides`` is applied.
-   This two-loop process ensures that
-   ``component.settings_default_overrides`` can override the default
-   settings of any other component.
-
-8. Back in ``docutils.frontend.OptionParser.__init__``, the
-   ``defaults`` parameter (derived from the ``settings_overrides``
-   parameter of ``docutils.core.Publisher.publish``) is overlaid over
-   ``self.defaults``.  So ``settings_overrides`` has priority over all
-   ``SettingsSpec`` data.
-
-9. Next, ``docutils.frontend.OptionParser.__init__`` checks if
-   configuration files are enabled (its ``read_config_files``
-   parameter is true, and ``self.defaults['_disable_config']`` is
-   false).  If they are enabled (and normally, they are),
-   ``self.get_standard_config_settings`` is called.  This reads the
-   `docutils configuration files`_, and returns a dictionary of
-   settings.  This is then overlaid on ``self.defaults``.  So
-   configuration file settings have priority over all software-defined
-   defaults.
-
-10. Back in the ``docutils.core.Publisher`` object,
-    ``self.setup_option_parser`` returns the ``option_parser`` object
-    to its caller, ``self.process_command_line``.
-
-11. ``self.process_command_line`` calls ``option_parser.parse_args``,
-    which parses all command line options and returns a
-    ``docutils.frontend.Values`` object.  This is assigned to the
-    ``docutils.core.Publisher`` object's ``self.settings``.  So
-    command-line options have priority over configuration file
-    settings.
-
-    When ``option_parser.parse_args`` is called, the source and
-    destination command-line arguments are also parsed, and assigned
-    to the ``_source`` and ``_destination`` attributes of what becomes
-    the ``docutils.core.Publisher`` object's ``self.settings``.
-
-12. From ``docutils.core.Publisher.publish``, ``self.set_io`` is
-    called with no arguments.  If either ``self.source`` or
-    ``self.destination`` are not set, the corresponding
-    ``self.set_source`` and ``self.set_destination`` are called,
-    effectively with no arguments.
-
-13. ``self.set_source`` checks for a ``source_path`` parameter, and if
-    there is none (which is the case for command-line use), it is
-    taken from ``self.settings._source``.  ``self.source`` is set by
-    instantiating a ``self.source_class`` object.  For command-line
-    front-end tools, the default ``self.source_class`` is used,
-    ``docutils.io.FileInput``.
-
-14. ``self.set_destination`` does the same job for the destination
-    that ``self.set_source`` does for the source (the default
-    ``self.destination_class`` is ``docutils.io.FileOutput``).
-
-.. _Docutils Configuration Files: ../user/config.html
+For details see the ``docutils/__init__.py``, ``docutils/core.py``, and
+``docutils.frontend.py`` modules and the implementation description in
+`Runtime Settings Processing`_.
 
 
-Runtime Settings Processing From Applications
-=============================================
+.. _SettingsSpec:
 
-Applications process runtime settings in a different way than
-`command-line tools`_ do.  Instead of calling ``publish_cmdline``, the
-application calls one of ``publish_file``, ``publish_string``, or
-``publish_parts``.  These in turn call ``publish_programmatically``,
-which implements a generic programmatic interface.  Although an
-application may also call ``publish_programmatically`` directly, it is
-not recommended (if it does seem to be necessary, please write to the
-Docutils-develop_ mailing list).
+SettingsSpec base class
+=======================
 
-``publish_programmatically`` accepts the same `convenience function
-parameters`_ as ``publish_cmdline``.  Where things differ is that
-programmatic use does no command-line processing.  Instead of calling
-``docutils.Publisher.process_command_line`` (as ``publish_cmdline``
-does, via ``docutils.Publisher.publish``),
-``docutils.Publisher.process_programmatic_settings`` is called to set
-up the runtime settings.
+.. note::
+   Implementation details will change with the move to replace the
+   deprecated optparse_ module with argparse_.
 
-.. copy & modify the list from command-line tools?
+The `docutils.SettingsSpec` base class is inherited by Docutils
+components_ and `frontend.OptionParser`.
+It defines the following six **attributes**:
+
+.. _SettingsSpec.settings_spec:
+
+`settings_spec`
+   a sequence of
+
+   1. option group title (string or None)
+
+   2. description (string or None)
+
+   3. option tuples with
+
+      a) help text
+      b) options string(s)
+      c) dictionary with keyword arguments for `OptionParser.add_option()`_
+         and an optional "validator", a `frontend.validate_*()` function
+         that processes the values (e.g. convert to other data types).
+
+   For examples, see the source of ``frontend.OptionParser.settings_spec``
+   or the `settings_spec` attributes of the Docutils components_.
+
+   .. _SettingsSpec.settings_defaults:
+
+`settings_defaults`
+   for purely programmatic settings
+   (not accessible from command line and configuration files).
+
+   .. _SettingsSpec.settings_default_overrides:
+
+`settings_default_overrides`
+   to override defaults for settings
+   defined in other components' `setting_specs`.
+
+`relative_path_settings`
+   listing settings containing filesystem paths.
+
+   .. _active sections:
+
+`config_section`
+   the configuration file section specific to this
+   component.
+
+`config_section_dependencies`
+   lists configuration files sections
+   that should also be read (before the `config_section`).
+
+The last two attributes define which configuration file sections are
+"active". See also `Configuration File Sections & Entries`_.
 
 
-.. _Docutils-develop: ../user/mailing-lists.html#docutils-develop
+Glossary
+========
+
+.. _component:
+
+components
+----------
+
+Docutils front-ends and applications combine a selection of
+*components* of the `Docutils Project Model`_.
+
+All components inherit the `SettingsSpec`_ base class.
+This means that all instances of ``readers.Reader``, ``parsers.Parser``, and
+``writers.Writer`` are also instances of ``docutils.SettingsSpec``.
+
+For the determination of runtime settings, ``frontend.OptionParser`` and
+the `settings_spec parameter`_ in application settings specifications
+are treated as components as well.
+
+
+.. _application settings specifications:
+.. _convenience function:
+
+convenience functions
+---------------------
+
+Applications usually deploy Docutils by one of the
+`Publisher convenience functions`_.
+All convenience functions accept the following optional **parameters**:
+
+.. _settings parameter:
+
+`settings`
+  a ``frontend.Values`` instance.
+  If present, it must be complete.
+
+  No further runtime settings processing is done and the
+  following parameters have no effect.
+
+  .. _settings_spec parameter:
+
+`settings_spec`
+  a `SettingsSpec`_ subclass or instance containing the settings
+  specification for the "Application" itself.
+  The instance is added to the components_ (after the generic
+  settings, parser, reader, and writer).
+
+  .. _settings_overrides parameter:
+
+`settings_overrides`
+  a dictionary which is used to update the
+  defaults of the components' settings specifications.
+
+  .. _config_section parameter:
+
+`config_section`
+  the name of an application-specific
+  `configuration file section`_ for this application.
+
+  Can be specified instead of a `settings_spec` (a new SettingsSpec_
+  instance that just defines a configuration section will be created)
+  or in addition to a `settings_spec`
+  (overriding its `config_section` attribute).
+
+
+settings_spec
+-------------
+
+The name ``settings_spec`` may refer to
+
+a) an instance of the SettingsSpec_ class, or
+b) the data structure `SettingsSpec.settings_spec`_ which is used to
+   store settings details.
+
+
+.. References:
+
+.. _Publisher: publisher.html
+.. _Publisher convenience functions:
+    publisher.html#publisher-convenience-functions
+.. _front-end tools: ../user/tools.html
+.. _configuration files:
+.. _Docutils Configuration: ../user/config.html#configuration-files
+.. _configuration file section:
+.. _Configuration File Sections & Entries:
+    ../user/config.html#configuration-file-sections-entries
+.. _Docutils Project Model: ../peps/pep-0258.html#docutils-project-model
+.. _Reader: ../peps/pep-0258.html#reader
+.. _Runtime Settings Processing: ../dev/runtime-settings-processing.html
+
+.. _optparse: https://docs.python.org/dev/library/optparse.html
+.. _argparse: https://docs.python.org/dev/library/argparse.html
+.. _OptionParser.add_option():
+    https://docs.python.org/dev/library/optparse.html
+    #optparse.OptionParser.add_option
