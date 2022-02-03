@@ -49,6 +49,10 @@ Changes Since 0.18.1
 
   - Don't use mutable default values for function arguments. Fixes bug #430.
 
+* docutils/transforms/universal.py
+
+  - Fix bug 435: invalid references in `problematic` nodes with report_level=4.
+
 * docutils/utils/__init__.py
 
   - decode_path() returns `str` instance instead of `nodes.reprunicode`.
@@ -69,7 +73,7 @@ Changes Since 0.18.1
 
 * test/DocutilsTestSupport.py
 
-  - exception_data() returns None if no exception was raised.
+  - exception_data() now returns None if no exception was raised.
   - recommonmark_wrapper only imported if upstream parser is present.
 
 * test/test_parsers/test_rst/test_directives/test_tables.py

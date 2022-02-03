@@ -121,11 +121,7 @@ class Messages(Transform):
 
     def apply(self):
         unfiltered = self.document.transform_messages
-        threshold = self.document.reporter.report_level
-        messages = []
-        for msg in unfiltered:
-            if msg['level'] >= threshold and not msg.parent:
-                messages.append(msg)
+        messages = [msg for msg in unfiltered if not msg.parent]
         if messages:
             section = nodes.section(classes=['system-messages'])
             # @@@ get this from the language module?
@@ -145,6 +141,9 @@ class FilterMessages(Transform):
 
     """
     Remove system messages below verbosity threshold.
+
+    Convert <problematic> nodes referencing removed messages to <Text>.
+    Remove "System Messages" section if empty.
     """
 
     default_priority = 870
@@ -152,6 +151,16 @@ class FilterMessages(Transform):
     def apply(self):
         for node in tuple(self.document.findall(nodes.system_message)):
             if node['level'] < self.document.reporter.report_level:
+                node.parent.remove(node)
+                try: # also remove id-entry
+                    del(self.document.ids[node['ids'][0]])
+                except (IndexError):
+                    pass
+        for node in tuple(self.document.findall(nodes.problematic)):
+            if node['refid'] not in self.document.ids:
+                node.parent.replace(node, nodes.Text(node.astext()))
+        for node in self.document.findall(nodes.section):
+            if "system-messages" in node['classes'] and len(node) == 1:
                 node.parent.remove(node)
 
 
