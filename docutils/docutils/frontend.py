@@ -5,6 +5,13 @@
 """
 Command-line and common processing for Docutils front-end tools.
 
+This module is provisional.
+Major changes will happen with the switch from the deprecated
+"optparse" module to "arparse".
+
+Applications should use the high-level API provided by `docutils.core`.
+See https://docutils.sourceforge.io/docs/api/runtime-settings.html.
+
 Exports the following classes:
 
 * `OptionParser`: Standard Docutils command-line processing.
@@ -31,7 +38,7 @@ __docformat__ = 'reStructuredText'
 
 
 import codecs
-from configparser import RawConfigParser
+import configparser
 import optparse
 from optparse import SUPPRESS_HELP
 import os
@@ -308,7 +315,7 @@ class Values(optparse.Values):
     def update(self, other_dict, option_parser):
         if isinstance(other_dict, Values):
             other_dict = other_dict.__dict__
-        other_dict = other_dict.copy()
+        other_dict = dict(other_dict) # also works with ConfigParser sections
         for setting in option_parser.lists.keys():
             if hasattr(self, setting) and setting in other_dict:
                 value = getattr(self, setting)
@@ -339,7 +346,7 @@ class Option(optparse.Option):
         evaluate the 'overrides' option.
         Extends `optparse.Option.process`.
         """
-        result = optparse.Option.process(self, opt, value, values, parser)
+        result = super().process(opt, value, values, parser)
         setting = self.dest
         if setting:
             if self.validator:
@@ -365,7 +372,7 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
 
     Common settings (defined below) and component-specific settings must not
     conflict.  Short options are reserved for common settings, and components
-    are restrict to using long options.
+    are restricted to using long options.
     """
 
     standard_config_files = [
@@ -598,15 +605,15 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
             self.version = self.version_template
         # Make an instance copy (it will be modified):
         self.relative_path_settings = list(self.relative_path_settings)
-        self.components = (self,) + tuple(components)
+        self.components = (self, *components)
         self.populate_from_components(self.components)
-        self.set_defaults_from_dict(defaults or {})
+        self.defaults.update(defaults or {})
         if read_config_files and not self.defaults['_disable_config']:
             try:
                 config_settings = self.get_standard_config_settings()
             except ValueError as err:
                 self.error(err)
-            self.set_defaults_from_dict(config_settings.__dict__)
+            self.defaults.update(config_settings.__dict__)
 
     def populate_from_components(self, components):
         """
@@ -639,25 +646,14 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
             if component and component.settings_default_overrides:
                 self.defaults.update(component.settings_default_overrides)
 
-    def get_standard_config_files(self):
+    @classmethod
+    def get_standard_config_files(cls):
         """Return list of config files, from environment or standard."""
         try:
             config_files = os.environ['DOCUTILSCONFIG'].split(os.pathsep)
         except KeyError:
-            config_files = self.standard_config_files
-
-        # If 'HOME' is not set, expandvars() requires the 'pwd' module which is
-        # not available under certain environments, for example, within
-        # mod_python.  The publisher ends up in here, and we need to publish
-        # from within mod_python.  Therefore we need to avoid expanding when we
-        # are in those environments.
-        expand = os.path.expanduser
-        if 'HOME' not in os.environ:
-            try:
-                import pwd
-            except ImportError:
-                expand = lambda x: x
-        return [expand(f) for f in config_files if f.strip()]
+            config_files = cls.standard_config_files
+        return [os.path.expanduser(f) for f in config_files if f.strip()]
 
     def get_standard_config_settings(self):
         settings = Values()
@@ -667,9 +663,9 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
 
     def get_config_file_settings(self, config_file):
         """Returns a dictionary containing appropriate config file settings."""
-        parser = ConfigParser()
-        parser.read(config_file, self)
-        self.config_files.extend(parser._files)
+        config_parser = ConfigParser()
+        # parse config file, add filename if found and successfull read.
+        self.config_files += config_parser.read(config_file, self)
         base_path = os.path.dirname(config_file)
         applied = set()
         settings = Values()
@@ -681,7 +677,7 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
                 if section in applied:
                     continue
                 applied.add(section)
-                settings.update(parser.get_section(section), self)
+                settings.update(config_parser.get_section(section), self)
         make_paths_absolute(
             settings.__dict__, self.relative_path_settings, base_path)
         return settings.__dict__
@@ -711,6 +707,7 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
         return source, destination
 
     def set_defaults_from_dict(self, defaults):
+        # not used, deprecated, will be removed
         self.defaults.update(defaults)
 
     def get_default_values(self):
@@ -736,14 +733,26 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
         raise KeyError('No option with dest == %r.' % dest)
 
 
-class ConfigParser(RawConfigParser):
+class ConfigParser(configparser.RawConfigParser):
+    """Parser for Docutils configuration files.
+
+    See https://docutils.sourceforge.io/docs/user/config.html.
+
+    Option key normalization includes conversion of '-' to '_'.
+
+    Config file encoding is "utf-8". Encoding errors are reported
+    and the affected file(s) skipped.
+
+    This class is provisional and will change in future versions.
+    """
 
     old_settings = {
         'pep_stylesheet': ('pep_html writer', 'stylesheet'),
         'pep_stylesheet_path': ('pep_html writer', 'stylesheet_path'),
         'pep_template': ('pep_html writer', 'template')}
     """{old setting: (new section, new setting)} mapping, used by
-    `handle_old_config`, to convert settings from the old [options] section."""
+    `handle_old_config`, to convert settings from the old [options] section.
+    """
 
     old_warning = """
 The "[option]" section is deprecated.  Support for old-format configuration
@@ -757,34 +766,29 @@ Unable to read configuration file "%s": content not encoded as UTF-8.
 Skipping "%s" configuration file.
 """
 
-    def __init__(self, *args, **kwargs):
-        RawConfigParser.__init__(self, *args, **kwargs)
-
-        self._files = []
-        """List of paths of configuration files read."""
-
-        self._stderr = io.ErrorOutput()
-        """Wrapper around sys.stderr catching en-/decoding errors"""
-
-    def read(self, filenames, option_parser):
-        if type(filenames) == str:
+    def read(self, filenames, option_parser=None):
+        # Currently, if a `docutils.frontend.OptionParser` instance is
+        # supplied, setting values are validated.
+        if option_parser is not None:
+            warnings.warn('frontend.ConfigParser.read(): parameter '
+                          '"option_parser" will be removed '
+                          'in Docutils 0.21 or later.',
+                          PendingDeprecationWarning, stacklevel=2)
+        read_ok = []
+        if isinstance(filenames, str):
             filenames = [filenames]
         for filename in filenames:
+            # Config files are UTF-8-encoded:
             try:
-                # Config files are UTF-8-encoded:
-                with open(filename, encoding='utf-8') as fp:
-                    try:
-                        RawConfigParser.read_file(self, fp, filename)
-                    except UnicodeDecodeError:
-                        self._stderr.write(self.not_utf8_error
-                                           % (filename, filename))
-                        continue
-            except OSError:
+                read_ok += super().read(filename, encoding='utf-8')
+            except UnicodeDecodeError:
+                sys.stderr.write(self.not_utf8_error % (filename, filename))
                 continue
-            self._files.append(filename)
-            if self.has_section('options'):
+            if 'options' in self:
                 self.handle_old_config(filename)
-            self.validate_settings(filename, option_parser)
+            if option_parser is not None:
+                self.validate_settings(filename, option_parser)
+        return read_ok
 
     def handle_old_config(self, filename):
         warnings.warn_explicit(self.old_warning, ConfigDeprecationWarning,
@@ -834,21 +838,28 @@ Skipping "%s" configuration file.
 
     def optionxform(self, optionstr):
         """
-        Transform '-' to '_' so the cmdline form of option names can be used.
+        Lowercase and transform '-' to '_'.
+
+        So the cmdline form of option names can be used in config files.
         """
         return optionstr.lower().replace('-', '_')
 
     def get_section(self, section):
         """
-        Return a given section as a dictionary (empty if the section
-        doesn't exist).
-        """
-        section_dict = {}
-        if self.has_section(section):
-            for option in self.options(section):
-                section_dict[option] = self.get(section, option)
-        return section_dict
+        Return a given section as a dictionary.
 
+        Return empty dictionary if the section doesn't exist.
+
+        Deprecated. Use the configparser "Mapping Protocol Access" and
+        catch KeyError.
+        """
+        warnings.warn('frontend.OptionParser.get_section() '
+                      'will be removed in Docutils 0.22 or later.',
+                      PendingDeprecationWarning, stacklevel=2)
+        try:
+            return dict(self[section])
+        except KeyError:
+            return {}
 
 class ConfigDeprecationWarning(FutureWarning):
     """Warning for deprecated configuration file features."""
