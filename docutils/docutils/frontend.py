@@ -24,7 +24,7 @@ Also exports the following functions:
   `validate_comma_separated_list()`,
   `validate_dependency_file()`.
 * `make_paths_absolute()`.
-* SettingSpec manipulation: `filter_settings_spec()`.
+* SettingSpec creation: `filter_settings_spec()`.
 """
 
 __docformat__ = 'reStructuredText'

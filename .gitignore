@@ -2,15 +2,21 @@ MANIFEST
 build
 .venv
 .tox
+0*.patch
 
 *~
+*.bak
 *.pyc
 *.egg-info
 __pycache__
+*.aux
+*.toc
 
 docutils/*.html
 docutils/docs/**/*.html
 docutils/tools/**/*.html
+sandbox/*.html
+sandbox/**/index.html
 
 /docutils/test/alltests.out
 /docutils/test/record.txt
