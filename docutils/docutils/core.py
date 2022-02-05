@@ -132,7 +132,7 @@ class Publisher:
                                       settings_overrides,
                                       config_section):
         if self.settings is None:
-            defaults = (settings_overrides or {}).copy()
+            defaults = settings_overrides.copy() if settings_overrides else {}
             # Propagate exceptions by default when used programmatically:
             defaults.setdefault('traceback', True)
             self.get_settings(settings_spec=settings_spec,
@@ -143,8 +143,10 @@ class Publisher:
                              settings_spec=None, config_section=None,
                              **defaults):
         """
-        Pass an empty list to `argv` to avoid reading `sys.argv` (the
-        default).
+        Set parse command line arguments and set ``self.settings``.
+
+        Pass an empty sequence to `argv` to avoid reading `sys.argv`
+        (the default behaviour).
 
         Set components first (`self.set_reader` & `self.set_writer`).
         """

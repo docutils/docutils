@@ -65,7 +65,7 @@ class ConfigFileTests(unittest.TestCase):
                 'trim_footnote_reference_space': None,
                 'output_encoding_error_handler': 'namereplace',
                 },
-        'two_html5': {
+        'two (html5)': {
                 # use defaults from html5_polyglot writer component
                 # ignore settings in [html4css1 writer] section,
                 'generator': True,
@@ -77,16 +77,22 @@ class ConfigFileTests(unittest.TestCase):
                 'output_encoding_error_handler': 'namereplace',
                 },
         'list': {'expose_internals': ['a', 'b', 'c', 'd', 'e'],
+                 'smartquotes_locales': [('de', '«»‹›')],
                  'strip_classes': ['spam', 'pan', 'fun', 'parrot'],
                  'strip_elements_with_classes': ['sugar', 'flour', 'milk',
                                                  'safran']
                  },
         'list2': {'expose_internals': ['a', 'b', 'c', 'd', 'e', 'f'],
+                  'smartquotes_locales': [('de', '«»‹›'),
+                                          ('nl', '„”’’'),
+                                          ('cs', '»«›‹'),
+                                          ('fr', ['« ', ' »', '‹ ', ' ›'])
+                                          ],
                   'strip_classes': ['spam', 'pan', 'fun', 'parrot',
                                     'ham', 'eggs'],
                   'strip_elements_with_classes': ['sugar', 'flour', 'milk',
                                                   'safran', 'eggs', 'salt'],
-                  'stylesheet': ['style2.css'],
+                  'stylesheet': ['style2.css', 'style3.css'],
                   'stylesheet_path': None,
                   },
         'error': {'error_encoding': 'ascii',
@@ -139,14 +145,15 @@ class ConfigFileTests(unittest.TestCase):
                             self.expected_settings())
 
     def test_old(self):
-        with warnings.catch_warnings(record=True) as wng:
+        with warnings.catch_warnings(record=True) as wngs:
             warnings.simplefilter("always") # check also for deprecation warning
             self.compare_output(self.files_settings('old'),
                                 self.expected_settings('old'))
             warnings.filterwarnings(action='ignore',
                                     category=frontend.ConfigDeprecationWarning)
-            self.assertEqual(len(wng), 1, "Expected a FutureWarning.")
-            assert issubclass(wng[-1].category, FutureWarning)
+            self.assertTrue(len(wngs) > 0, "Expected a FutureWarning.")
+            assert any(issubclass(wng.category, FutureWarning)
+                       for wng in wngs)
 
     def test_one(self):
         self.compare_output(self.files_settings('one'),
@@ -162,7 +169,7 @@ class ConfigFileTests(unittest.TestCase):
             components=(html5_polyglot.Writer, rst.Parser), read_config_files=None)
         # generator setting not changed by "config_2.txt":
         self.compare_output(self.files_settings('one', 'two'),
-                            self.expected_settings('two_html5'))
+                            self.expected_settings('two (html5)'))
 
     def test_old_and_new(self):
         self.compare_output(self.files_settings('old', 'two'),

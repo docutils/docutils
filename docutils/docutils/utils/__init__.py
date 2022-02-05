@@ -434,8 +434,8 @@ def new_document(source_path, settings=None):
             obtainable as follows::
 
                 settings = docutils.frontend.OptionParser(
-                    components=(docutils.parsers.rst.Parser,)
-                    ).get_default_values()
+                               components=(docutils.parsers.rst.Parser,)
+                               ).get_default_values()
     """
     from docutils import frontend
     if settings is None:

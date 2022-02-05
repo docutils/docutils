@@ -139,6 +139,17 @@ class SettingsSpec:
     SettingsSpec subclass objects used by `docutils.frontend.OptionParser`.
     """
 
+    # TODO: replace settings_specs with a new data structure
+    # Backwards compatiblity:
+    #   Drop-in components:
+    #   Sphinx supplies settings_spec in the current format in some places
+    #   Myst parser provides a settings_spec tuple
+    #
+    #   Sphinx reads a settings_spec in order to set a default value
+    #   in writers/html.py:59
+    #   https://github.com/sphinx-doc/sphinx/blob/4.x/sphinx/writers/html.py
+    #   This should be changed (before retiring the old format)
+    #   to use `settings_default_overrides` instead.
     settings_spec = ()
     """Runtime settings specification.  Override in subclasses.
 

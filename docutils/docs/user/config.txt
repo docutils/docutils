@@ -161,8 +161,7 @@ general-to-specific order, as follows:
 1. `[general]`_
 
 2. `[parsers]`_, parser dependencies, and the section specific to the
-   Parser used ("[... parser]").  Currently, only `[restructuredtext
-   parser]`_ is applicable.
+   Parser used ("[... parser]").
 
 3. `[readers]`_, reader dependencies, and the section specific to the
    Reader used ("[... reader]").  For example, `[pep reader]`_ depends

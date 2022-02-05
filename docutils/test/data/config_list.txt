@@ -2,6 +2,7 @@
 expose_internals: a
 strip-classes: spam
 strip-elements-with-classes: sugar, flour
+smartquotes-locales: de: «»‹›
 
 [html4css1 writer]
 expose_internals: b:c:d
