@@ -62,13 +62,13 @@ class WarningsTestCase(DocutilsTestSupport.StandardTestCase):
                     # 'use_latex_citations': False,
                     # 'legacy_column_widths': True,
                    }
-        with warnings.catch_warnings(record=True) as wng:
+        with warnings.catch_warnings(record=True) as wngs:
             warnings.simplefilter("always")
             core.publish_string('warnings test', writer_name='latex',
                                 settings_overrides=mysettings)
-            self.assertEqual(len(wng), 2, "Expected 2 FutureWarnings.")
-            assert issubclass(wng[0].category, FutureWarning)
-            assert issubclass(wng[1].category, FutureWarning)
+            n_w = sum(issubclass(wng.category, FutureWarning)
+                      for wng in wngs)
+            self.assertTrue(n_w > 1, "Expected 2 FutureWarnings.")
 
 
 if __name__ == '__main__':
