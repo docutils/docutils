@@ -142,12 +142,13 @@ class SettingsTestCase(DocutilsTestSupport.StandardTestCase):
         mys={'_disable_config': True,
              'embed_images': False,
              }
-        with warnings.catch_warnings(record=True) as wng:
+        with warnings.catch_warnings(record=True) as wngs:
             warnings.simplefilter("always")
             core.publish_string('warnings test', writer_name='html5',
                                 settings_overrides=mys)
-            self.assertEqual(len(wng), 1, "Expected FutureWarning.")
-            assert issubclass(wng[0].category, FutureWarning)
+            n_w = sum(issubclass(wng.category, FutureWarning)
+                      for wng in wngs)
+            self.assertTrue(n_w > 0, "Expected a FutureWarning.")
 
 
 class MathTestCase(DocutilsTestSupport.StandardTestCase):

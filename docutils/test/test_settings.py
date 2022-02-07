@@ -136,8 +136,9 @@ class ConfigFileTests(unittest.TestCase):
         except AssertionError:
             print('\n%s\n' % (self,), file=sys.stderr)
             print('-: expected\n+: result', file=sys.stderr)
-            print(''.join(self.compare(expected.splitlines(True),
-                                       result.splitlines(True))), file=sys.stderr)
+            print(''.join(self.compare(
+                      expected.splitlines(True),
+                      result.splitlines(True))), file=sys.stderr)
             raise
 
     def test_nofiles(self):
@@ -146,14 +147,13 @@ class ConfigFileTests(unittest.TestCase):
 
     def test_old(self):
         with warnings.catch_warnings(record=True) as wngs:
-            warnings.simplefilter("always") # check also for deprecation warning
+            warnings.simplefilter("always") # also deprecation warning
             self.compare_output(self.files_settings('old'),
                                 self.expected_settings('old'))
             warnings.filterwarnings(action='ignore',
                                     category=frontend.ConfigDeprecationWarning)
             self.assertTrue(len(wngs) > 0, "Expected a FutureWarning.")
-            assert any(issubclass(wng.category, FutureWarning)
-                       for wng in wngs)
+            assert any(issubclass(wng.category, FutureWarning) for wng in wngs)
 
     def test_one(self):
         self.compare_output(self.files_settings('one'),
@@ -166,7 +166,8 @@ class ConfigFileTests(unittest.TestCase):
     def test_multiple_with_html5_writer(self):
         # initialize option parser with different component set
         self.option_parser = frontend.OptionParser(
-            components=(html5_polyglot.Writer, rst.Parser), read_config_files=None)
+            components=(html5_polyglot.Writer, rst.Parser),
+            read_config_files=None)
         # generator setting not changed by "config_2.txt":
         self.compare_output(self.files_settings('one', 'two'),
                             self.expected_settings('two (html5)'))
@@ -194,6 +195,7 @@ class ConfigFileTests(unittest.TestCase):
         self.compare_output(self.files_settings('error', 'error2'),
                             self.expected_settings('error', 'error2'))
 
+
 class ConfigEnvVarFileTests(ConfigFileTests):
 
     """
@@ -214,6 +216,23 @@ class ConfigEnvVarFileTests(ConfigFileTests):
 
     def tearDown(self):
         os.environ = self.orig_environ
+
+    @unittest.skipUnless(os.name, 'posix')
+    def test_get_standard_config_files(self):
+        os.environ['HOME'] = '/home/parrot'
+        # os.path.expanduser() no longer uses HOME on Windows (since 3.8)
+        # TODO: set up mock home directory under Windows
+        self.assertEqual(self.option_parser.get_standard_config_files(),
+                         ['/etc/docutils.conf',
+                          './docutils.conf',
+                          '/home/parrot/.docutils'])
+        # split at ':', expand leading '~':
+        os.environ['DOCUTILSCONFIG'] = ('/etc/docutils2.conf'
+                                        ':~/.config/docutils.conf')
+        self.assertEqual(self.option_parser.get_standard_config_files(),
+                         ['/etc/docutils2.conf',
+                          '/home/parrot/.config/docutils.conf'])
+
 
 class HelperFunctionsTests(unittest.TestCase):
 
