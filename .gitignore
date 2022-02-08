@@ -14,8 +14,10 @@ __pycache__
 
 docutils/*.html
 docutils/docs/**/*.html
+docutils/docs/ref/rst/LaTeXML.css
 docutils/tools/**/*.html
 sandbox/*.html
+sandbox/enhancement-proposals/**/*.html
 sandbox/**/index.html
 
 /docutils/test/alltests.out

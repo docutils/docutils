@@ -1,0 +1,225 @@
+:Title: Public API and Backwards Compatibility Policy
+:Author: Günter Milde, open to all Docutils developers
+:Discussions-To: docutils-develop@lists.sf.net, https://sourceforge.net/p/docutils/feature-requests/89/
+:Status: Draft
+:Type: Process
+:Created: 2022-01-21
+:Docutils-Version: 0.19
+
+
+Abstract
+========
+
+.. A short (<~200 word) description of the technical issue being addressed.
+
+This proposal defines the public API and outlines a backwards compatibility
+policy of the Docutils project.
+
+
+Motivation
+==========
+
+.. Clearly explain why the existing specification is inadequate to
+   address the problem that the proposal solves.
+
+Docutils has a large user base and a wide range of use cases.
+
+Direct:
+
+1. End-users: authors writing reStructuredText documents,
+
+2. Client developers: developers using Docutils as a library,
+
+3. Component developers: developers implementing drop-in
+   components (parsers, writers, transforms, ...)
+
+4. Core-developers: developers of the Docutils codebase and
+   participants in the Docutils project community.
+
+5. Re-implementers: developers of alternate processors for
+   reStructuredText.
+
+Indirect
+
+1. End-users of projects using Docutils as a library (Sphinx, ...) or
+   users of 3rd-party drop-in components.
+
+2. Client developers for projects using Docutils as a library.
+
+3. Maintainers of projects that use Docutils (or a tool depending on
+   Docutils) in their tool chain.
+
+
+OTOH, Docutils has a version number below 1.0 (widely seen as an
+indicator of "beta" status of a project) and is missing a clear policy on
+version identificator semantics.
+
+The current `Docutils Project Policies`_ section on `version
+identifcation`__ concentrates on the formal definition of the version
+specificator but leaves open what consists a *major change in the design
+or API*.
+
+There is a inconsistence in the description of Major releases regarding
+the possibility of major changes past 1.0:
+
+    The major number [...] may be incremented later if there is a major
+    change in the design or API.
+
+    When Docutils reaches version 1.0, the major APIs will be considered
+    frozen
+
+
+The current `backwards compatibility policy`__ is only a stub referencing
+:PEP:`387`.
+
+.. _Docutils Project Policies: ../policies.html
+__ ../policies.html#version-identifcation
+__ ../policies.html#backwards-compatibility-policy
+
+
+Rationale
+=========
+
+.. Describe why particular design decisions were made.
+
+
+Specification
+=============
+
+.. Describe the syntax and semantics of any new feature.
+
+Docutils public APIs are:
+
+* the reStructuredText specification
+
+* the document model
+
+* `the "docutils" Python package API`_.
+
+* HTML elements and classes used to represent Doctree nodes in HTML.
+  (form the interface to CSS stylesheets to configure the visual
+  appearance).
+  
+* Macros defined in the LaTeX style file `docutils.sty` and in the preamble
+  of LaTeX output.
+
+.. TODO: complete
+
+.. _api/: ../../index.html#api-api-reference-material-for-client-developers
+
+
+The "docutils" Python package API
+---------------------------------
+
+* overall structure, inter-dependencies, and data flow as laid out in
+  `PEP 258`_ (local version).
+  
+* interfaces documented in the api/_ section of the project documentation.
+
+Object behaviour and names (modules, classes, module level
+functions, module level variables, etc) of
+
+* objects included in the ``__all__`` "dunders" of their parent objects.
+
+.. _PEP 258: ../../peps/pep-0258.html
+
+Backwards Compatibility
+=======================
+
+.. Describe potential impact and severity on pre-existing code.
+
+
+Security Implications
+=====================
+
+.. How could a malicious user take advantage of this new feature?
+
+
+How to Teach This
+=================
+
+.. How to teach users, new and experienced, how to apply the proposal to their
+   work.
+
+
+Reference Implementation
+========================
+
+.. Link to any existing implementation and details about its state, e.g.
+   proof-of-concept.
+
+
+Rejected Ideas
+==============
+
+.. Why certain ideas that were brought while discussing this proposal were not
+   ultimately pursued.
+
+* use type annotations as an indication of status in the public API.
+
+
+Open Issues
+===========
+
+.. Any points that are still being decided/discussed.
+
+* Differentiate between "core API" and "extended API"?
+
+* enumerating all modules, classes, and functions that form the public API
+
+  in a separate document, temporarily, in a script/helper function?
+
+* mark names as private by prefixing them with an underscore?
+
+* use docstrings as indicator for public objecs?
+
+    Documented interfaces are considered public, unless the documentation
+    explicitly declares them to be provisional or internal interfaces
+    exempt from the usual backwards compatibility guarantees. All
+    undocumented interfaces should be assumed to be internal.
+
+  Alternatives
+
+  - an object is not part of the public API if it does not have a docstring
+    (opt-in)
+
+  - any object with Docstring is part of the public API unless the
+    docstring tells otherwise (opt-out)
+
+* Formalise the wording for docstrings for public/private/provisional
+  (ideally this would be a single regex pattern).
+
+* adopt a formal versioning "system" such as Sematic Versioning
+  (SemVer) or Calendar Versioning (CalVer)?
+
+* define a deprecation period
+
+  - In addition to SemVer (i.e. also for changes in "major" releases,
+    interdicting *all* incompatible changes in "minor" releases.
+
+  - Instead of SemVer (i.e. for "minor/medium" changes in "minor" releases)
+    (similar to :PEP:`387`).
+
+
+References
+==========
+
+.. A collection of URLs used as references through the proposal.
+
+
+Copyright
+=========
+
+This document is placed in the public domain or under the
+CC0-1.0-Universal license, whichever is more permissive.
+
+
+
+..
+    Local Variables:
+    mode: indented-text
+    indent-tabs-mode: nil
+    sentence-end-double-space: t
+    fill-column: 70
+    coding: utf-8
+    End:

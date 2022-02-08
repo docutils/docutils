@@ -1,0 +1,133 @@
+:Title: New settings specification data structure
+:Author: Günter Milde
+:Discussions-To: docutils-develop@lists.sf.net, `bug #441`_
+:Status: Draft
+:Type: API
+:Created: 2022-02-08
+:Docutils-Version: 0.18
+:Replaces: Data structure of SettingsSpec.settings_spec
+
+
+Abstract
+========
+
+Revise the datastructure used to specify Docutils runtime settings.
+
+
+Motivation
+==========
+
+.. Clearly explain why the existing specification is inadequate to
+   address the problem that the proposal solves.
+
+The current settings specification
+
+* uses a data structure of deeply nested tuples and dictinaries,
+
+* is paired with the deprecated "optparse" module.
+
+The new settings specifications should be:
+
+* Easy to write and comprehend.
+
+* Easy to parse into `argparse.ArgumentParser.add_argument()` calls.
+
+* Easy to parse into code to handle configuration file settings
+  in `docutils.frontend.ConfigParser`.
+
+
+
+Rationale
+=========
+
+.. Describe why particular design decisions were made.
+
+
+Specification
+=============
+
+.. Describe the syntax and semantics of any new feature.
+
+
+Backwards Compatibility
+=======================
+
+.. Describe potential impact and severity on pre-existing code.
+
+A facility function in `docutils.frontend` will convert existing
+`SettingsSpec` instances into the new format at runtime.
+
+"Off-label use" will be affected:
+
+* 3rd-party code that parses/modifies current `SettingsSpec` instances
+  will have to adapt. (Preferably by using higher level interfaces.)
+
+* Use cases with 3rd-party validators that have side-effects will require
+  a manual update.
+
+
+Security Implications
+=====================
+
+.. How could a malicious user take advantage of this new feature?
+
+The means to prevent reading of configuration files and/or command-line
+arguments must be kept intact.
+
+
+How to Teach This
+=================
+
+.. How to teach users, new and experienced, how to apply the proposal to their
+   work.
+
+
+Reference Implementation
+========================
+
+.. Link to any existing implementation and details about its state, e.g.
+   proof-of-concept.
+
+`<cf_parser.py>`_: proof-of-concept, first draft.
+
+Rejected Ideas
+==============
+
+.. Why certain ideas that were brought while discussing this proposal
+   were not ultimately pursued.
+
+
+Open Issues
+===========
+
+.. Any points that are still being decided/discussed.
+
+
+References
+==========
+
+.. A collection of URLs used as references through the proposal.
+
+.. _Runtime Settings:
+
+`Docutils Runtime Settings
+<../../../docutils/docs/api/runtime-settings.html>`_
+
+`Bug #441 <https://sourceforge.net/p/docutils/bugs/441/>`_
+
+Copyright
+=========
+
+This document is placed in the public domain or under the
+CC0-1.0-Universal license, whichever is more permissive.
+
+
+
+..
+    Local Variables:
+    mode: indented-text
+    indent-tabs-mode: nil
+    sentence-end-double-space: t
+    fill-column: 70
+    coding: utf-8
+    End:
