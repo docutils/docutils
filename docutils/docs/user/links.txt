@@ -328,12 +328,23 @@ Applications using docutils/reStructuredText and helper applications.
 * `Project Gutenberg`_ uses a customized version of Docutils with it's own
   xetex- and nroff-writer and epub generator.
 
-.. _FAQ entry about Wikis: https://docutils.sourceforge.io/FAQ.html
+* Text-Restructured_ at CPAN is a set of modules to parse
+  reStructuredText documents and output them in various formats written
+  in Perl_.
+  Up to January 2021, the sources were stored in the Docutils repository_.
+  After long inactivity (the last commit was r6498__
+  2010-12-08), ``trunk/prest/`` was moved to the attic.
+
+  __ https://sourceforge.net/p/docutils/code/6498/
+
+.. _FAQ entry about Wikis: http://docutils.sf.net/FAQ.html
     #are-there-any-wikis-that-use-restructuredtext-syntax
 .. _FAQ entry about Blogs: https://docutils.sourceforge.io/FAQ.html
     #are-there-any-weblog-blog-projects-that-use-restructuredtext-syntax
-.. _Project Gutenberg: https://www.gutenberg.org
-
+.. _Project Gutenberg: http://www.gutenberg.org
+.. _Perl: https://www.perl.org
+.. _Text-Restructured: https://metacpan.org/dist/Text-Restructured
+.. _repository: ../dev/repository.html
 
 Tools
 `````

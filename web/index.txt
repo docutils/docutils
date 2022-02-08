@@ -57,7 +57,7 @@ than the "official" releases |---| they're not only for developers!
 
 .. [#snapshots] Snapshots are created on-demand by Sourceforge.  You can
    download a snapshot of the complete `trunk directory`_ (docutils,
-   sandbox_, prest/perl and web) or any sub-directory. Browse to the
+   sandbox_ and web) or any sub-directory. Browse to the
    desired directory and click the "Download Snapshot" button.
 
 ----------------------------------------------------------------------
