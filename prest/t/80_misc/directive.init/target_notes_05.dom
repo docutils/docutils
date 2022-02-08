@@ -1,9 +1,0 @@
-<document source="test data">
-    <system_message level="3" line="1" source="test data" type="ERROR">
-        <paragraph>
-            Error in "target-notes" directive:
-            no content permitted.
-        <literal_block xml:space="preserve">
-            target-notes::
-            
-               bad content

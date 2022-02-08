@@ -1,7 +1,0 @@
-# -*-perl-*-
-{
-    %PREST_FILE_FLAGS =
-	(include02 => q(-D include-path=includes),
-	 include03 => q(-D include-path="includes/:<.>:."),
-	 );
-}

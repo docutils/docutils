@@ -1,9 +1,0 @@
-<document source="embeduri.rst">
-    <paragraph>
-        <reference name="Embedded uri with target" refuri="#target">
-            Embedded uri with target
-        <target ids="embedded-uri-with-target" names="embedded uri with target" refuri="#target">
-         should hit 
-        <target ids="target" names="target">
-            target
-        .

@@ -1,7 +1,0 @@
-<document ids="a-main-title" names="a main title" source="test data" title="Chapter 3.14159\u00a0\u00a0\u00a0A Main Title">
-    <title>
-        <generated classes="sectnum">
-            Chapter 3.14159\u00a0\u00a0\u00a0
-        A Main Title
-    <comment xml:space="preserve">
-        Test prefix-title

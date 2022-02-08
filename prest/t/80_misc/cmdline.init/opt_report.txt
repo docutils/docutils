@@ -1,8 +1,0 @@
-The following generated both info and severe error.
-
-.. perl:: severe error
-
-.. table::
-   :: error
-
-.. table:: warning

@@ -1,7 +1,0 @@
-<document source="test data">
-    <system_message level="3" line="1" source="test data" type="ERROR">
-        <paragraph>
-            Error in "parsed-literal" directive:
-            0 argument(s) required, 4 supplied.
-        <literal_block xml:space="preserve">
-            .. parsed-literal:: should not have arguments

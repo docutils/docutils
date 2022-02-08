@@ -1,3 +1,0 @@
-.. default-role::
-
-   Content block.

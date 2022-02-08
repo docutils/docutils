@@ -1,7 +1,0 @@
-<document source="test data">
-    <paragraph>
-        Here are in-line math expressions \n\
-        int_0^16x^3dx
-         and
-        sum_{k=0}^47k^2
-        .

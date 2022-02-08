@@ -1,2 +1,0 @@
-.. compound::
-   :: badoption

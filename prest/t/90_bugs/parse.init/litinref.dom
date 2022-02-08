@@ -1,7 +1,0 @@
-<document source="litinref.rst">
-    <paragraph>
-        <reference name="Reference with literal in it" refname="reference with literal in it">
-            Reference with 
-            <literal>
-                literal
-             in it

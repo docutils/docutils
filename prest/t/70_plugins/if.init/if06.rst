@@ -1,6 +1,0 @@
-An if directive in substitution definition whose content returns an error.
-
-.. |error| if:: 1
-
-   Bogus header
-   ============

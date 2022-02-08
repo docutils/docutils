@@ -1,3 +1,0 @@
-.. |subst| replace::
-
-   Content.

@@ -1,8 +1,0 @@
-# -*-perl-*-
-{
-    # Override global flags
-    $PREST_FLAGS = '-D align=0';
-    $PREST_SUITE_FLAGS = q(-D include-path='<.>'/..);
-}
-
-

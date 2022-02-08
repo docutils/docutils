@@ -1,6 +1,0 @@
-<document source="lostbracket.rst">
-    <bullet_list bullet="-">
-        <list_item>
-            <paragraph>
-                Minimal syntax: remove the ".. [" and "]", prefix a "_", and
-                suffix a ".".

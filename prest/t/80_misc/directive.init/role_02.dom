@@ -1,8 +1,0 @@
-<document source="test data">
-    <system_message level="3" line="1" source="test data" type="ERROR">
-        <paragraph>
-            Error in "role" directive:
-            unknown option: "nosuchoption".
-        <literal_block xml:space="preserve">
-            .. role:: myrole
-               :nosuchoption:

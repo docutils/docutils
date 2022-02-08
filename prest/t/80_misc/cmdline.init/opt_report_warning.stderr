@@ -1,4 +1,0 @@
-opt_report.txt:3 (SEVERE/4) Error executing "perl" directive: Can't locate object method "severe" via package "error" (perhaps you forgot to load "error"?) at (eval 51) line 1.
-opt_report.txt:5 (ERROR/3) Error in "table" directive:
-invalid option block.
-opt_report.txt:8 (WARNING/2) The "table" directive requires content; none supplied.

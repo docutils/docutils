@@ -1,8 +1,0 @@
-<document source="test data">
-    <target ids="external-target" names="external target" refuri="http://somewhere.com">
-    <footnote auto="1" classes="tnotes" ids="id1" names="TARGET_NOTE: id1">
-        <label>
-            1
-        <paragraph>
-            <reference refuri="http://somewhere.com">
-                http://somewhere.com

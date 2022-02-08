@@ -1,9 +1,0 @@
-<document source="test data">
-    <paragraph>
-        Code block that specifies a non-existent file in the :file: option.
-    <system_message level="1" line="3" source="test data" type="INFO">
-        <paragraph>
-            No directive entry for "code_block" in module "Text::Restructured::Directive".
-            Trying "code_block" as canonical directive name.
-    <parsed_literal xml:space="preserve">
-        states: couldn't open input file `nosuchfile.sh': No such file or directory

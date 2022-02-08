@@ -1,6 +1,0 @@
-<document source="noattrvalue.rst">
-<paragraph>
-Check xml output for attribute with no value.
-</paragraph>
-<nosuchtag undefattr/>
-</document>

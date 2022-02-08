@@ -1,9 +1,0 @@
-# -*-perl-*-
-{
-    $PREST_DIR_FLAGS = q(-D xformoff='Decorations' -W stylesheet=default.css -W target_tag=span);
-    %PREST_FILE_FLAGS =
-	(alternatives => q(-D generator=0),
-	 introduction => q(-D generator=0),
-	 standalone => q(-D generator=0),
-	 );
-}

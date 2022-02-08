@@ -1,8 +1,0 @@
-# -*-perl-*-
-{
-    $PREST_DIR_FLAGS = q(-W stylesheet=default.css -D generator=0 \
-			 -D xformoff='Decorations');
-
-    %PREST_FILE_FLAGS =
-	(method => q(-D xformoff='DocTitle|Decorations'));
-}

@@ -1,6 +1,0 @@
-<document source="test data">
-    <system_message level="3" line="1" source="test data" type="ERROR">
-        <paragraph>
-            The "compound" compound is empty; content required.
-        <literal_block xml:space="preserve">
-            .. compound::

@@ -1,4 +1,0 @@
-<document source="test data">
-    <paragraph>
-        Call a pending transform routine with -d.
-    You called test::mytransform.

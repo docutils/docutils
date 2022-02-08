@@ -1,2 +1,0 @@
-.. topic:: Title Text
-   :nosuchoption:
