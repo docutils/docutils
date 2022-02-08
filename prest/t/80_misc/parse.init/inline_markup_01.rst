@@ -1,1 +1,0 @@
-Null inline literal ````.

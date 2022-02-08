@@ -1,8 +1,0 @@
-# -*-perl-*-
-{
-    %PREST_FILE_FLAGS =
-	(mathml02    => q(-D mstyle='mathcolor=red,mathbackground=yellow'),
-	 subst_ref01 => q(-D xformoff=Decorations),
-	 );
-}
-

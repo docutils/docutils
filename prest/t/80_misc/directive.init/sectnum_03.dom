@@ -1,7 +1,0 @@
-<document source="test data">
-    <system_message level="3" line="1" source="test data" type="ERROR">
-        <paragraph>
-            Error in "sectnum" directive:
-            0 argument(s) required, 2 supplied.
-        <literal_block xml:space="preserve">
-            .. sectnum:: args forbidden

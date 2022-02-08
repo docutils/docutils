@@ -1,9 +1,0 @@
-<document source="test data">
-    <paragraph>
-        A literal block is expected:
-    <system_message level="2" line="3" source="test data" type="WARNING">
-        <paragraph>
-            Literal block expected; none found.
-    <section ids="section-header-instead" names="section header instead">
-        <title>
-            Section header instead

@@ -1,6 +1,0 @@
-# -*-perl-*-
-{
-    %PREST_FILE_FLAGS =
-	(messages01 => q(-D xformoff='DocTitle|Decorations'));
-}
-

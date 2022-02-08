@@ -1,4 +1,0 @@
-.. line-block::
-   :badoption:
-
-   Content

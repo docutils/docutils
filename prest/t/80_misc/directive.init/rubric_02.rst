@@ -1,2 +1,0 @@
-.. rubric:: Args
-   :nosuchoption:

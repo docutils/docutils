@@ -1,6 +1,0 @@
-<document source="test data">
-    <line_block classes="my-line-block">
-        <line>
-            A line block
-        <line>
-            With a class option

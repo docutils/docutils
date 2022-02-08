@@ -1,7 +1,0 @@
-# -*-makefile-*-
-
-# Add "includes" to the pretest targets
-pretest:   { @PRETESTS } includes
-
-includes:  includes.tar
-	tar xf includes.tar

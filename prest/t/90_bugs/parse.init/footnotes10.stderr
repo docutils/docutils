@@ -1,4 +1,0 @@
-footnotes10.rst:14 (WARNING/2) Duplicate explicit target name: "five".
-footnotes10.rst:6 (ERROR/3) Too many autonumbered footnote references: only 2 corresponding footnotes available.
-footnotes10.rst:7 (ERROR/3) Duplicate target name, cannot be used as a unique reference: "five".
-footnotes10.rst:7 (ERROR/3) Unknown target name: "six".

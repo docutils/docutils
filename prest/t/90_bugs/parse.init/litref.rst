@@ -1,1 +1,0 @@
-`\ ``Literal in reference```_.

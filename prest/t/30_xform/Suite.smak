@@ -1,4 +1,0 @@
-# -*-perl-*-
-{
-    $PREST_SUITE_FLAGS = q(-D xformoff='DocTitle|Messages|Decorations');
-}

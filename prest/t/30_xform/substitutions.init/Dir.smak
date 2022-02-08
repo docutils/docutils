@@ -1,6 +1,0 @@
-# -*-perl-*-
-{
-    %PREST_FILE_FLAGS =
-	(substitutions02 => q(-D xformoff='\.Messages|Decorations'));
-}
-

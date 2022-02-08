@@ -1,1 +1,0 @@
-opts: w D d foo

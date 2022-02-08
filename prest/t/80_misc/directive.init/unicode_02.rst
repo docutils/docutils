@@ -1,2 +1,0 @@
-.. unicode:: Text
-   :nosuchoption:

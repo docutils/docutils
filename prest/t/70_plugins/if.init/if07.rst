@@ -1,5 +1,0 @@
-A substitution definition defined using an if whose last element isn't #PCDATA.
-
-.. |sub| if:: 1
-
-   Text ends with *emphasis*

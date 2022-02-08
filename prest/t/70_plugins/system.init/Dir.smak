@@ -1,9 +1,0 @@
-# -*-perl-*-
-{
-    $PREST_DIR_FLAGS = q(-D trusted -D include-path='<.>':../data -W nobackn=0);
-
-    %PREST_FILE_FLAGS =
-	(trusted01 => q(-D trusted=0),
-	 trusted03 => q(-D trusted=0),
-	 );
-}

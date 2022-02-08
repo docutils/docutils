@@ -1,9 +1,0 @@
-<document source="test data">
-    <decoration>
-        <footer>
-            <paragraph>
-                <reference refuri="http://mysite.com">
-                    View document source
-                .
-    <paragraph>
-        Very simple file.

@@ -1,9 +1,0 @@
-<document source="test data">
-    <system_message level="3" line="1" source="test data" type="ERROR">
-        <paragraph>
-            Error in "header" directive:
-            no arguments permitted; blank line required before content block.
-        <literal_block xml:space="preserve">
-            .. header:: arg
-            
-               content

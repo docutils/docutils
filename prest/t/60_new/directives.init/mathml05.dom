@@ -1,9 +1,0 @@
-<document source="test data">
-    <system_message level="3" line="1" source="test data" type="ERROR">
-        <paragraph>
-            Error in "mathml" directive:
-            invalid option value: (option: "mstyle"; value: 'badly formatted field list')
-            invalid literal for fieldlist.
-        <literal_block xml:space="preserve">
-            .. mathml::
-               :mstyle: badly formatted field list

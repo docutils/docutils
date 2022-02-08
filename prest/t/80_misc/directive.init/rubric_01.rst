@@ -1,2 +1,0 @@
-.. rubric::
-   :: badoption

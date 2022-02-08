@@ -1,6 +1,0 @@
-# -*-perl-*-
-{
-    %PREST_FILE_FLAGS =
-	(transitions01 => q(-D xformoff='SectionSubTitle|Decorations'));
-}
-

@@ -1,3 +1,0 @@
-.. mathml:: argument
-
-   and content

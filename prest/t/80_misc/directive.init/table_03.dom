@@ -1,6 +1,0 @@
-<document source="test data">
-    <system_message level="3" line="1" source="test data" type="ERROR">
-        <paragraph>
-            The title in a "table" directive must be a single paragraph only.
-        <literal_block xml:space="preserve">
-            .. table:: * List instead of paragraph.

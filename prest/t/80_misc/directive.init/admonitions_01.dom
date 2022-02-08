@@ -1,5 +1,0 @@
-<document source="test data">
-    <substitution_definition names="subst">
-        <caution>
-            <paragraph>
-                An admonition in a substitution definition.

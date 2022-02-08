@@ -1,7 +1,0 @@
-<document source="test data">
-    <paragraph>
-        Some substitutions 
-        \u2122
-        only need trimming on the right side.
-    <substitution_definition names="TM" rtrim="1">
-        \u2122

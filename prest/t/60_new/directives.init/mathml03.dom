@@ -1,7 +1,0 @@
-<document source="test data">
-    <paragraph>
-        <math title="\int_0^16x^3\ dx" xmlns="&mathml;"><mstyle mathbackground="yellow" mathcolor="red" displaystyle="false"><mrow><msubsup><mo>&#x222B;</mo><mn>0</mn><mn>16</mn></msubsup></mrow><msup><mi>x</mi><mn>3</mn></msup><mo>&#x00A0;</mo><mrow><mi>d</mi><mi>x</mi></mrow></mstyle></math>
-    <paragraph>
-        <math title="sum_{k=0}^47k^2" xmlns="&mathml;"><mstyle mathbackground="yellow" mathcolor="green" displaystyle="true"><mrow><munderover><mo>&#x2211;</mo><mrow><mi>k</mi><mo>=</mo><mn>0</mn></mrow><mn>47</mn></munderover></mrow><msup><mi>k</mi><mn>2</mn></msup></mstyle></math>
-    <paragraph>
-        <math title="DDX43981x" xmlns="&mathml;"><mstyle mathbackground="yellow" mathcolor="red" displaystyle="true"><mrow><mfrac><mi>d</mi><mrow><mi>d</mi><mi>x</mi></mrow></mfrac></mrow><mn>43981</mn><mi>x</mi></mstyle></math>

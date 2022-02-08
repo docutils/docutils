@@ -1,4 +1,0 @@
-.. compound::
-   :nosuchoption:
-
-   Paragraph.

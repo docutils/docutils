@@ -1,5 +1,0 @@
-<document source="test data">
-    <reference refuri="a/multi/line/uri">
-        <image uri="picture.png">
-    <reference name="a multi line internal reference_" refname="a multi line internal reference">
-        <image uri="picture.png">

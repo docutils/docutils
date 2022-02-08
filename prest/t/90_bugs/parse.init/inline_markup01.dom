@@ -1,5 +1,0 @@
-<document source="inline_markup01.rst">
-    <paragraph>
-        This pup produced an infinite loop.
-    <paragraph>
-        Brackets in embedded uri: somebody@som[ewhere.com].

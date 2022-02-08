@@ -1,7 +1,0 @@
-<document source="test data">
-    <system_message level="4" line="1" source="test data" type="SEVERE">
-        <paragraph>
-            The "url" option is not yet implemented for the "raw" directive.
-        <literal_block xml:space="preserve">
-            .. raw:: html
-               :url: http://host/file.html

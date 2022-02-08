@@ -1,9 +1,0 @@
-<document source="trailingspace.rst">
-    <bullet_list bullet="+">
-        <list_item>
-            <paragraph>
-                Advantages:
-            <bullet_list bullet="-">
-                <list_item>
-                    <paragraph>
-                        The plaintext is readable.

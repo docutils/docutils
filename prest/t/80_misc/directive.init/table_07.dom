@@ -1,9 +1,0 @@
-<document source="test data">
-    <system_message level="3" line="1" source="test data" type="ERROR">
-        <paragraph>
-            3 stub column(s) specified but only 2 column(s) of data supplied ("csv-table" directive).
-        <literal_block xml:space="preserve">
-            .. csv-table::
-               :stub-columns: 3
-            
-               "column 1", "column 2"

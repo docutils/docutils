@@ -1,2 +1,0 @@
-.. sidebar:: title
-   :nosuchoption:
