@@ -91,7 +91,8 @@ Writer-specific:
 * `Docutils HTML writers <user/html.html>`__
 * `Easy Slide Shows With reStructuredText & S5 <user/slide-shows.html>`__
 * `Docutils LaTeX Writer <user/latex.html>`__
-* `Docutils ODF/OpenOffice/odt Writer <user/odt.html>`__
+* `manpage writer for Docutils <user/manpage.html>`__
+* `Docutils ODT Writer <user/odt.html>`__
 
 `reStructuredText <https://docutils.sourceforge.io/rst.html>`_:
 
