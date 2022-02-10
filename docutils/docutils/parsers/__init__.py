@@ -75,7 +75,7 @@ _parser_aliases = {# short names for known parsers
                    # 3rd-party Markdown parsers
                    'recommonmark': 'docutils.parsers.recommonmark_wrapper',
                    'myst': 'myst_parser.docutils_',
-                   # 'myst': 'docutils.parsers.myst_wrapper',
+                   #'pycmark': works out of the box
                    # TODO: the following two could be either of the above
                    'commonmark': 'docutils.parsers.recommonmark_wrapper',
                    'markdown': 'docutils.parsers.recommonmark_wrapper',
@@ -83,9 +83,9 @@ _parser_aliases = {# short names for known parsers
 
 def get_parser_class(parser_name):
     """Return the Parser class from the `parser_name` module."""
-    parser_name = parser_name.lower()
+    name = parser_name.lower()
     try:
-        module = import_module(_parser_aliases.get(parser_name, parser_name))
+        module = import_module(_parser_aliases.get(name, name))
     except ImportError as err:
-        raise ImportError('Parser "%s" missing. %s' % (parser_name, err))
+        raise ImportError(f'Parser "{parser_name}" not found. {err}')
     return module.Parser

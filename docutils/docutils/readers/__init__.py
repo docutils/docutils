@@ -101,11 +101,13 @@ _reader_aliases = {}
 
 def get_reader_class(reader_name):
     """Return the Reader class from the `reader_name` module."""
-    reader_name = reader_name.lower()
-    if reader_name in _reader_aliases:
-        reader_name = _reader_aliases[reader_name]
+    name = reader_name.lower()
+    name = _reader_aliases.get(name, name)
     try:
-        module = import_module('docutils.readers.'+reader_name)
+        module = import_module('docutils.readers.'+name)
     except ImportError:
-        module = import_module(reader_name)
+        try:
+            module = import_module(name)
+        except ImportError as err:
+            raise ImportError(f'Reader "{reader_name}" not found. {err}')
     return module.Reader
