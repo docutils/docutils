@@ -207,7 +207,7 @@ A paragraph.
         <paragraph>
             Error in "include" directive:
             invalid option value: (option: "parser"; value: \'sillyformat\')
-            Parser "sillyformat" missing. No module named 'sillyformat'.
+            Parser "sillyformat" not found. No module named 'sillyformat'.
         <literal_block xml:space="preserve">
             .. include:: test_parsers/test_rst/test_directives/include1.txt
                :parser: sillyformat

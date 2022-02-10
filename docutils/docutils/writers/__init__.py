@@ -138,14 +138,13 @@ _writer_aliases = {
 
 def get_writer_class(writer_name):
     """Return the Writer class from the `writer_name` module."""
-    writer_name = writer_name.lower()
-    if writer_name in _writer_aliases:
-        writer_name = _writer_aliases[writer_name]
+    name = writer_name.lower()
+    name = _writer_aliases.get(name, name)
     try:
-        module = import_module('docutils.writers.'+writer_name)
+        module = import_module('docutils.writers.'+name)
     except ImportError:
         try:
-            module = import_module(writer_name)
+            module = import_module(name)
         except ImportError as err:
-            raise ImportError('No writer named "%s".' % writer_name)
+            raise ImportError(f'Writer "{writer_name}" not found. {err}')
     return module.Writer
