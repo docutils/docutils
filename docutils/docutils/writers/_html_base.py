@@ -679,12 +679,12 @@ class HTMLTranslator(nodes.NodeVisitor):
             'colwidths-grid' not in self.settings.table_style
             and 'colwidths-given' not in node.parent.parent['classes']):
             return
-        total_width = sum(node['colwidth'] for node in self.colspecs)
         self.body.append(self.starttag(node, 'colgroup'))
+        total_width = sum(node['colwidth'] for node in self.colspecs)
         for node in self.colspecs:
-            colwidth = int(node['colwidth'] * 100.0 / total_width + 0.5)
+            colwidth = node['colwidth'] / total_width
             self.body.append(self.emptytag(node, 'col',
-                                           style='width: %i%%' % colwidth))
+                                           style=f'width: {colwidth:.1%}'))
         self.body.append('</colgroup>\n')
 
     def visit_comment(self, node,

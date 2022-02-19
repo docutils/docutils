@@ -66,6 +66,7 @@ Changes Since 0.18.1
 * docutils/writers/_html_base.py
 
   - Add 'html writers' to `config_section_dependencies`. Fixes bug #443.
+  - Write table column widths with 3 digits precision. Fixes bug #444.
 
 * docutils/writers/pep_html/
 
