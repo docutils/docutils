@@ -28,8 +28,10 @@ class ConfigFileTests(unittest.TestCase):
                     'two': fixpath('data/config_2.txt'),
                     'list': fixpath('data/config_list.txt'),
                     'list2': fixpath('data/config_list_2.txt'),
-                    'error': fixpath('data/config_error_handler.txt'),
-                    'error2': fixpath('data/config_error_handler_2.txt')}
+                    'error': fixpath('data/config_encoding.txt'),
+                    'error2': fixpath('data/config_encoding_2.txt'),
+                    'syntax_error': fixpath('data/config_syntax_error.txt'),
+                    }
 
     # expected settings after parsing the equally named config_file:
     settings = {
@@ -106,6 +108,8 @@ class ConfigFileTests(unittest.TestCase):
     def setUp(self):
         warnings.filterwarnings(action='ignore',
                                 category=frontend.ConfigDeprecationWarning)
+        warnings.filterwarnings(action='ignore', module='docutils.frontend',
+                                category=PendingDeprecationWarning)
         self.option_parser = frontend.OptionParser(
             components=(pep_html.Writer, rst.Parser), read_config_files=None)
 
@@ -146,14 +150,16 @@ class ConfigFileTests(unittest.TestCase):
                             self.expected_settings())
 
     def test_old(self):
-        with warnings.catch_warnings(record=True) as wngs:
-            warnings.simplefilter("always") # also deprecation warning
-            self.compare_output(self.files_settings('old'),
-                                self.expected_settings('old'))
-            warnings.filterwarnings(action='ignore',
-                                    category=frontend.ConfigDeprecationWarning)
-            self.assertTrue(len(wngs) > 0, "Expected a FutureWarning.")
-            assert any(issubclass(wng.category, FutureWarning) for wng in wngs)
+        with self.assertWarnsRegex(FutureWarning,
+                                   'The "\[option\]" section is deprecated.'):
+            self.files_settings('old')
+
+    def test_syntax_error(self):
+        with self.assertRaisesRegex(
+                 ValueError,
+                 'Error in config file ".*config_syntax_error.txt", '
+                 'section "\[general\]"'):
+            self.files_settings('syntax_error')
 
     def test_one(self):
         self.compare_output(self.files_settings('one'),
@@ -185,12 +191,12 @@ class ConfigFileTests(unittest.TestCase):
         self.compare_output(self.files_settings('list', 'list2'),
                             self.expected_settings('list2'))
 
-    def test_error_handler(self):
+    def test_encoding_error_handler(self):
         # set error_encoding and error_encoding_error_handler (from affix)
         self.compare_output(self.files_settings('error'),
                             self.expected_settings('error'))
 
-    def test_error_handler2(self):
+    def test_encoding_error_handler2(self):
         # second config file only changes encoding, not error_handler:
         self.compare_output(self.files_settings('error', 'error2'),
                             self.expected_settings('error', 'error2'))
@@ -216,6 +222,8 @@ class ConfigEnvVarFileTests(ConfigFileTests):
 
     def tearDown(self):
         os.environ = self.orig_environ
+
+    def test_old(self): pass # don't repreat this test
 
     @unittest.skipUnless(os.name, 'posix')
     def test_get_standard_config_files(self):
@@ -339,11 +347,9 @@ class HelperFunctionsTests(unittest.TestCase):
 
     def test_set_conditions_deprecation_warning(self):
         reporter = utils.Reporter('test', 1, 4)
-        with warnings.catch_warnings(record=True) as wng:
-            warnings.simplefilter("always")
+        with self.assertWarnsRegex(DeprecationWarning,
+                                   'Set attributes via configuration settings'):
             reporter.set_conditions('foo', 1, 4) # trigger warning
-            self.assertEqual(len(wng), 1, "Expected a DeprecationWarning.")
-            assert issubclass(wng[-1].category, DeprecationWarning)
 
 if __name__ == '__main__':
     unittest.main()
