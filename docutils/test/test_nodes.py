@@ -8,7 +8,6 @@ Test module for nodes.py.
 """
 
 import unittest
-import warnings
 
 import DocutilsTestSupport              # must be imported before docutils
 from DocutilsTestSupport import nodes, utils
@@ -67,11 +66,9 @@ class TextTests(unittest.TestCase):
                          r"<#text: 'Mary had a lit ...'>")
 
     def test_Text_rawsource_deprection_warning(self):
-        with warnings.catch_warnings(record=True) as wng:
-            warnings.simplefilter("always")
+        with self.assertWarnsRegex(DeprecationWarning,
+                                   '"rawsource" is ignored'):
             nodes.Text('content', rawsource='content')
-            self.assertEqual(len(wng), 1, "Expected a DeprecationWarning.")
-            assert issubclass(wng[-1].category, DeprecationWarning)
 
 
 class ElementTests(unittest.TestCase):
@@ -708,8 +705,8 @@ class NodeVisitorTests(unittest.TestCase):
 
     def test_dispatch_visit_unknown(self):
         # raise exception if no visit/depart methods are defined for node class
-        self.assertRaises(NotImplementedError,
-                          self.visitor.dispatch_visit, self.element)
+        with self.assertRaises(NotImplementedError):
+            self.visitor.dispatch_visit(self.element)
 
     def test_dispatch_visit_optional(self):
         # silently skip nodes of a calss in tuple nodes.NodeVisitor.optional

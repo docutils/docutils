@@ -72,13 +72,10 @@ class RecommonmarkParserTests(unittest.TestCase):
 class RecommonmarkMissingTests(unittest.TestCase):
 
     def test_missing_parser_message(self):
-        try:
-            output = publish_string(sample_with_html,
-                                    parser_name='recommonmark')
-        except ImportError as err:
-            self.assertIn(
-                'requires the package https://pypi.org/project/recommonmark',
-                str(err))
+        with self.assertRaisesRegex(ImportError,
+                                    'requires the package .*recommonmark'):
+            publish_string(sample_with_html, parser_name='recommonmark')
+
 
 if __name__ == '__main__':
     unittest.main()

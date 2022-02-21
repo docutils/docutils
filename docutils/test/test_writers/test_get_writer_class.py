@@ -23,8 +23,8 @@ class GetWriterClassTestCase(DocutilsTestSupport.StandardTestCase):
         # raises ImportError on failure
 
     def test_bogus_writer(self):
-        self.assertRaises(ImportError,
-                          get_writer_class, 'nope')
+        with self.assertRaises(ImportError):
+            get_writer_class('nope')
 
     def test_local_writer(self):
         # requires local-writer.py in test directory (testroot)

@@ -11,7 +11,6 @@ Test module for io.py.
 from io import StringIO, BytesIO
 import sys
 import unittest
-import warnings
 
 import DocutilsTestSupport              # must be imported before docutils
 from docutils import io
@@ -185,11 +184,9 @@ class OutputTests(unittest.TestCase):
         self.assertEqual(self.udrain.getvalue(), self.udata)
 
     def test_FileOutput_hande_io_errors_deprection_warning(self):
-        with warnings.catch_warnings(record=True) as wng:
-            warnings.simplefilter("always")
+        with self.assertWarnsRegex(DeprecationWarning,
+                                   '"handle_io_errors" is ignored'):
             fo = io.FileOutput(handle_io_errors=True)
-            self.assertEqual(len(wng), 1, "Expected a DeprecationWarning.")
-            assert issubclass(wng[0].category, DeprecationWarning)
 
     # With destination in binary mode, data must be binary string
     # and is written as-is:

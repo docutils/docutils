@@ -196,8 +196,8 @@ class DocutilsXMLTestCase(DocutilsTestSupport.StandardTestCase):
              '<test>inline raw XML&lt;/test>\n'])
         settings['halt_level'] = 2 # convert info messages to exceptions
         settings['warning_stream'] = ''
-        self.assertRaises(docutils.utils.SystemMessage,
-                          publish_xml, settings, invalid_raw_xml_source)
+        with self.assertRaises(docutils.utils.SystemMessage):
+            publish_xml(settings, invalid_raw_xml_source)
 
 
 if __name__ == '__main__':

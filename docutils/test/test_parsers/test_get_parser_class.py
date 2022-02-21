@@ -21,8 +21,8 @@ class GetParserClassTestCase(DocutilsTestSupport.StandardTestCase):
         # raises ImportError on failure
 
     def test_bogus_parser(self):
-        self.assertRaises(ImportError,
-                          get_parser_class, 'nope')
+        with self.assertRaises(ImportError):
+            get_parser_class('nope')
 
     def test_local_parser(self):
         # requires local-parser.py in test directory (testroot)

@@ -66,8 +66,9 @@ class ReporterTests(unittest.TestCase):
                          'test data:: (ERROR/3) an error\n')
 
     def test_level4(self):
-        self.assertRaises(utils.SystemMessage, self.reporter.system_message, 4,
-                          'a severe error, raises an exception')
+        with self.assertRaises(utils.SystemMessage):
+            self.reporter.system_message(
+                4, 'a severe error, raises an exception')
         self.assertEqual(self.stream.getvalue(), 'test data:: (SEVERE/4) '
                          'a severe error, raises an exception\n')
 
@@ -149,20 +150,18 @@ class QuietReporterTests(unittest.TestCase):
 class NameValueTests(unittest.TestCase):
 
     def test_extract_name_value(self):
-        self.assertRaises(utils.NameValueError, utils.extract_name_value,
-                          'hello')
-        self.assertRaises(utils.NameValueError, utils.extract_name_value,
-                          'hello')
-        self.assertRaises(utils.NameValueError, utils.extract_name_value,
-                          '=hello')
-        self.assertRaises(utils.NameValueError, utils.extract_name_value,
-                          'hello=')
-        self.assertRaises(utils.NameValueError, utils.extract_name_value,
-                          'hello="')
-        self.assertRaises(utils.NameValueError, utils.extract_name_value,
-                          'hello="something')
-        self.assertRaises(utils.NameValueError, utils.extract_name_value,
-                          'hello="something"else')
+        with self.assertRaises(utils.NameValueError):
+            utils.extract_name_value('hello')
+        with self.assertRaises(utils.NameValueError):
+            utils.extract_name_value('=hello')
+        with self.assertRaises(utils.NameValueError):
+            utils.extract_name_value('hello=')
+        with self.assertRaises(utils.NameValueError):
+            utils.extract_name_value('hello="')
+        with self.assertRaises(utils.NameValueError):
+            utils.extract_name_value('hello="something')
+        with self.assertRaises(utils.NameValueError):
+            utils.extract_name_value('hello="something"else')
         output = utils.extract_name_value(
               """att1=val1 att2=val2 att3="value number '3'" att4=val4""")
         self.assertEqual(output, [('att1', 'val1'), ('att2', 'val2'),
@@ -181,11 +180,11 @@ class ExtensionOptionTests(unittest.TestCase):
               utils.assemble_option_dict(input, self.optionspec),
               {'a': 1, 'bbb': 2.0, 'cdef': ('hol%s' % chr(224))})
         input = utils.extract_name_value('a=1 b=2.0 c=hol%s' % chr(224))
-        self.assertRaises(KeyError, utils.assemble_option_dict,
-                          input, self.optionspec)
+        with self.assertRaises(KeyError):
+            utils.assemble_option_dict(input, self.optionspec)
         input = utils.extract_name_value('a=1 bbb=two cdef=hol%s' % chr(224))
-        self.assertRaises(ValueError, utils.assemble_option_dict,
-                          input, self.optionspec)
+        with self.assertRaises(ValueError):
+            utils.assemble_option_dict(input, self.optionspec)
 
     def test_extract_extension_options(self):
         field_list = nodes.field_list()
@@ -205,32 +204,29 @@ class ExtensionOptionTests(unittest.TestCase):
               {'a': 1, 'bbb': 2.0,
                'cdef': 'hol\u00e0',
                'empty': None})
-        self.assertRaises(KeyError, utils.extract_extension_options,
-                          field_list, {})
+        with self.assertRaises(KeyError):
+            utils.extract_extension_options(field_list, {})
         field_list += nodes.field(
               '', nodes.field_name('', 'cdef'),
               nodes.field_body('', nodes.paragraph('', 'one'),
                                nodes.paragraph('', 'two')))
-        self.assertRaises(utils.BadOptionDataError,
-                          utils.extract_extension_options,
-                          field_list, self.optionspec)
+        with self.assertRaises(utils.BadOptionDataError):
+            utils.extract_extension_options(field_list, self.optionspec)
         field_list[-1] = nodes.field(
               '', nodes.field_name('', 'cdef bad'),
               nodes.field_body('', nodes.paragraph('', 'no arguments')))
-        self.assertRaises(utils.BadOptionError,
-                          utils.extract_extension_options,
-                          field_list, self.optionspec)
+        with self.assertRaises(utils.BadOptionError):
+            utils.extract_extension_options(field_list, self.optionspec)
         field_list[-1] = nodes.field(
               '', nodes.field_name('', 'cdef'),
               nodes.field_body('', nodes.paragraph('', 'duplicate')))
-        self.assertRaises(utils.DuplicateOptionError,
-                          utils.extract_extension_options,
-                          field_list, self.optionspec)
+        with self.assertRaises(utils.DuplicateOptionError):
+            utils.extract_extension_options(field_list, self.optionspec)
         field_list[-2] = nodes.field(
               '', nodes.field_name('', 'unkown'),
               nodes.field_body('', nodes.paragraph('', 'unknown')))
-        self.assertRaises(KeyError, utils.extract_extension_options,
-                          field_list, self.optionspec)
+        with self.assertRaises(KeyError):
+            utils.extract_extension_options(field_list, self.optionspec)
 
 
 class HelperFunctionTests(unittest.TestCase):
@@ -381,8 +377,8 @@ class StylesheetFunctionTests(unittest.TestCase):
         # must not be used together
         self.stylesheet = 'ham.css, missing.css'
         self.stylesheet_path = 'man.css, miss2.css'
-        self.assertRaises(AssertionError,
-                          utils.get_stylesheet_list, self)
+        with self.assertRaises(AssertionError):
+            utils.get_stylesheet_list(self)
 
 
 
