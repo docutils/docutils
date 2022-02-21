@@ -9,7 +9,6 @@ Miscellaneous HTML writer tests.
 """
 
 import os
-import warnings
 
 if __name__ == '__main__':
     import __init__
@@ -138,17 +137,14 @@ class SettingsTestCase(DocutilsTestSupport.StandardTestCase):
         self.assertIn('dl.docutils dd {\n  margin-bottom: 0.5em }', styles)
 
     def test_future_warnings(self):
-        """Warn about changing defaults."""
-        mys={'_disable_config': True,
-             'embed_images': False,
-             }
-        with warnings.catch_warnings(record=True) as wngs:
-            warnings.simplefilter("always")
+        """Warn about deprecated setting name."""
+        my_settings={'_disable_config': True,
+                     'embed_images': False,
+                     }
+        with self.assertWarnsRegex(FutureWarning,
+                                   '"embed_images" will be removed'):
             core.publish_string('warnings test', writer_name='html5',
-                                settings_overrides=mys)
-            n_w = sum(issubclass(wng.category, FutureWarning)
-                      for wng in wngs)
-            self.assertTrue(n_w > 0, "Expected a FutureWarning.")
+                                settings_overrides=my_settings)
 
 
 class MathTestCase(DocutilsTestSupport.StandardTestCase):

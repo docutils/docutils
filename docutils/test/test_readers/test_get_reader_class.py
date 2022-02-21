@@ -22,8 +22,8 @@ class GetReaderClassTestCase(DocutilsTestSupport.StandardTestCase):
         # raises ImportError on failure
 
     def test_bogus_reader(self):
-        self.assertRaises(ImportError,
-                          get_reader_class, 'nope')
+        with self.assertRaises(ImportError):
+            get_reader_class('nope')
 
     def test_local_reader(self):
         # requires local-reader.py in test directory (testroot)

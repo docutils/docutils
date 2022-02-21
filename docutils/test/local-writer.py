@@ -8,10 +8,6 @@ mini-writer to test get_writer_class with local writer
 
 import docutils
 from docutils import nodes, writers, languages
-try:
-    import roman
-except ImportError:
-    import docutils.utils.roman as roman
 
 class Writer(writers.Writer):
 

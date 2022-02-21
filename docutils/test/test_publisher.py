@@ -65,20 +65,16 @@ class PublisherTests(DocutilsTestSupport.StandardTestCase):
         # exits with a short message, if `traceback` is False,
 
         # pass IOErrors to calling application if `traceback` is True
-        try:
+        with self.assertRaises(IOError):
             core.publish_cmdline(argv=['nonexisting/path'],
                                  settings_overrides={'traceback': True})
-        except IOError as e:
-            self.assertTrue(isinstance(e, io.InputError))
 
 
     def test_output_error_handling(self):
         # pass IOErrors to calling application if `traceback` is True
-        try:
+        with self.assertRaises(io.OutputError):
             core.publish_cmdline(argv=['data/include.txt', 'nonexisting/path'],
                                  settings_overrides={'traceback': True})
-        except IOError as e:
-            self.assertTrue(isinstance(e, io.OutputError))
 
 
 class PublishDoctreeTestCase(DocutilsTestSupport.StandardTestCase, docutils.SettingsSpec):

@@ -110,8 +110,8 @@ class EmptySMTests(unittest.TestCase):
     def test_add_state(self):
         self.sm.add_state(statemachine.State)
         self.assertTrue(len(self.sm.states) == 1)
-        self.assertRaises(statemachine.DuplicateStateError, self.sm.add_state,
-                          statemachine.State)
+        with self.assertRaises(statemachine.DuplicateStateError):
+            self.sm.add_state(statemachine.State)
         self.sm.add_state(statemachine.StateWS)
         self.assertTrue(len(self.sm.states) == 2)
 
@@ -122,8 +122,8 @@ class EmptySMTests(unittest.TestCase):
     def test_get_state(self):
         self.assertRaises(statemachine.UnknownStateError, self.sm.get_state)
         self.sm.add_states((statemachine.State, statemachine.StateWS))
-        self.assertRaises(statemachine.UnknownStateError, self.sm.get_state,
-                          'unknownState')
+        with self.assertRaises(statemachine.UnknownStateError):
+            self.sm.get_state('unknownState')
         self.assertTrue(isinstance(self.sm.get_state('State'),
                                    statemachine.State))
         self.assertTrue(isinstance(self.sm.get_state('StateWS'),
@@ -196,8 +196,8 @@ class SMWSTests(unittest.TestCase):
         textblock = self.sm.get_text_block(flush_left=1)
         self.assertEqual(textblock, testtext[:1])
         self.sm.next_line(2)
-        self.assertRaises(statemachine.UnexpectedIndentationError,
-                          self.sm.get_text_block, flush_left=1)
+        with self.assertRaises(statemachine.UnexpectedIndentationError):
+            self.sm.get_text_block(flush_left=1)
 
     def test_run(self):
         self.assertEqual(self.sm.run(testtext), expected)
@@ -221,18 +221,17 @@ class EmptyStateTests(unittest.TestCase):
         self.assertEqual(len(self.state.transitions), 0)
         self.state.add_transitions(['None'], {'None': None})
         self.assertEqual(len(self.state.transitions), 1)
-        self.assertRaises(statemachine.UnknownTransitionError,
-                          self.state.add_transitions, ['bogus'], {})
-        self.assertRaises(statemachine.DuplicateTransitionError,
-                          self.state.add_transitions, ['None'],
-                          {'None': None})
+        with self.assertRaises(statemachine.UnknownTransitionError):
+            self.state.add_transitions(['bogus'], {})
+        with self.assertRaises(statemachine.DuplicateTransitionError):
+            self.state.add_transitions(['None'], {'None': None})
 
     def test_add_transition(self):
         self.assertEqual(len(self.state.transitions), 0)
         self.state.add_transition('None', None)
         self.assertEqual(len(self.state.transitions), 1)
-        self.assertRaises(statemachine.DuplicateTransitionError,
-                          self.state.add_transition, 'None', None)
+        with self.assertRaises(statemachine.DuplicateTransitionError):
+            self.state.add_transition('None', None)
 
     def test_remove_transition(self):
         self.assertEqual(len(self.state.transitions), 0)
@@ -240,8 +239,8 @@ class EmptyStateTests(unittest.TestCase):
         self.assertEqual(len(self.state.transitions), 1)
         self.state.remove_transition('None')
         self.assertEqual(len(self.state.transitions), 0)
-        self.assertRaises(statemachine.UnknownTransitionError,
-                          self.state.remove_transition, 'None')
+        with self.assertRaises(statemachine.UnknownTransitionError):
+            self.state.remove_transition('None')
 
     def test_make_transition(self):
         dummy = re.compile('dummy')
@@ -250,10 +249,10 @@ class EmptyStateTests(unittest.TestCase):
         self.assertEqual(self.state.make_transition('nop'),
                          (dummy, self.state.nop,
                           self.state.__class__.__name__))
-        self.assertRaises(statemachine.TransitionPatternNotFound,
-                          self.state.make_transition, 'None')
-        self.assertRaises(statemachine.TransitionMethodNotFound,
-                          self.state.make_transition, 'bogus')
+        with self.assertRaises(statemachine.TransitionPatternNotFound):
+            self.state.make_transition('None')
+        with self.assertRaises(statemachine.TransitionMethodNotFound):
+            self.state.make_transition('bogus')
 
     def test_make_transitions(self):
         dummy = re.compile('dummy')

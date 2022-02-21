@@ -15,7 +15,6 @@
 """
 Miscellaneous LaTeX writer tests.
 """
-import warnings
 
 if __name__ == '__main__':
     import __init__
@@ -58,17 +57,19 @@ class WarningsTestCase(DocutilsTestSupport.StandardTestCase):
 
     def test_future_warnings(self):
         """Warn about changing defaults."""
+        # Warn only if not set (uncommenting should make test fail):
         mysettings={'_disable_config': True,
                     # 'use_latex_citations': False,
                     # 'legacy_column_widths': True,
                    }
-        with warnings.catch_warnings(record=True) as wngs:
-            warnings.simplefilter("always")
+        with self.assertWarnsRegex(FutureWarning,
+                                   '"legacy_column_widths" will change'):
             core.publish_string('warnings test', writer_name='latex',
                                 settings_overrides=mysettings)
-            n_w = sum(issubclass(wng.category, FutureWarning)
-                      for wng in wngs)
-            self.assertTrue(n_w > 1, "Expected 2 FutureWarnings.")
+        with self.assertWarnsRegex(FutureWarning,
+                                   '"use_latex_citations" will change'):
+            core.publish_string('warnings test', writer_name='latex',
+                                settings_overrides=mysettings)
 
 
 if __name__ == '__main__':
