@@ -151,14 +151,14 @@ class ConfigFileTests(unittest.TestCase):
 
     def test_old(self):
         with self.assertWarnsRegex(FutureWarning,
-                                   'The "\[option\]" section is deprecated.'):
+                                   r'The "\[option\]" section is deprecated.'):
             self.files_settings('old')
 
     def test_syntax_error(self):
         with self.assertRaisesRegex(
                  ValueError,
                  'Error in config file ".*config_syntax_error.txt", '
-                 'section "\[general\]"'):
+                 r'section "\[general\]"'):
             self.files_settings('syntax_error')
 
     def test_one(self):
@@ -225,10 +225,11 @@ class ConfigEnvVarFileTests(ConfigFileTests):
 
     def test_old(self): pass # don't repreat this test
 
-    @unittest.skipUnless(os.name, 'posix')
+    @unittest.skipUnless(
+        os.name == 'posix',
+        'os.path.expanduser() does not use HOME on Windows (since 3.8)')
     def test_get_standard_config_files(self):
         os.environ['HOME'] = '/home/parrot'
-        # os.path.expanduser() no longer uses HOME on Windows (since 3.8)
         # TODO: set up mock home directory under Windows
         self.assertEqual(self.option_parser.get_standard_config_files(),
                          ['/etc/docutils.conf',
