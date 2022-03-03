@@ -388,8 +388,8 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
     thresholds = {'info': 1, 'warning': 2, 'error': 3, 'severe': 4, 'none': 5}
     """Lookup table for --report and --halt threshold values."""
 
-    booleans={'1': True, 'on': True, 'yes': True, 'true': True,
-              '0': False, 'off': False, 'no': False, 'false': False, '': False}
+    booleans = {'1': True, 'on': True, 'yes': True, 'true': True, '0': False,
+                'off': False, 'no': False, 'false': False, '': False}
     """Lookup table for boolean configuration file settings."""
 
     default_error_encoding = (getattr(sys.stderr, 'encoding', None)

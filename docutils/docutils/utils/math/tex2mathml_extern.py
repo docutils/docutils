@@ -92,7 +92,7 @@ def ttm(math_code, reporter=None):
     if err.find('**** Unknown') >= 0:
         msg = '\n'.join(line for line in err.splitlines()
                         if line.startswith('****'))
-        raise SyntaxError('\nMessage from external converter TtM:\n'+ msg)
+        raise SyntaxError('\nMessage from external converter TtM:\n'+msg)
     if reporter and err.find('**** Error') >= 0 or not result:
         reporter.error(err)
     start, end = result.find('<math'), result.find('</math>')+7

@@ -59,7 +59,7 @@ def parseArgs(argv=sys.argv):
             if opt in ('-v', '--verbose'):
                 verbosity = 2
             if opt in ('-d', '--debug'):
-                debug =1
+                debug = 1
         if len(args) != 0:
             usageExit("No command-line arguments supported yet.")
     except getopt.error as msg:

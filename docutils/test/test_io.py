@@ -71,7 +71,7 @@ class HelperTests(unittest.TestCase):
 
         self.assertEqual('Exception: spam',
                          io.error_string(Exception('spam')))
-        self.assertEqual('IndexError: '+str(bs),
+        self.assertEqual('IndexError: ' + str(bs),
                          io.error_string(IndexError(bs)))
         self.assertEqual('ImportError: %s' % us,
                          io.error_string(ImportError(us)))

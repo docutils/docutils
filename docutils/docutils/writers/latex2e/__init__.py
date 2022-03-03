@@ -1064,8 +1064,8 @@ class Table:
 
         if self.borders == 'standard':
             rowspans = [i+1 for i in range(len(self._rowspan))
-                        if (self._rowspan[i]<=0)]
-            if len(rowspans)==len(self._rowspan):
+                        if self._rowspan[i] <= 0]
+            if len(rowspans) == len(self._rowspan):
                 res.append('\\hline\n')
             else:
                 cline = ''
@@ -2037,11 +2037,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
         # * bibliography
         #   TODO insertion point of bibliography should be configurable.
-        if self.use_latex_citations and len(self._bibitems)>0:
+        if self.use_latex_citations and len(self._bibitems) > 0:
             if not self.bibtex:
                 widest_label = ''
                 for bi in self._bibitems:
-                    if len(widest_label)<len(bi[0]):
+                    if len(widest_label) < len(bi[0]):
                         widest_label = bi[0]
                 self.out.append('\n\\begin{thebibliography}{%s}\n' %
                                 widest_label)
@@ -3000,7 +3000,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.out += content
         self.out.append(self.active_table.get_closing() + '\n')
         self.active_table.close()
-        if len(self.table_stack)>0:
+        if len(self.table_stack) > 0:
             self.active_table = self.table_stack.pop()
         # Insert hyperlabel after (long)table, as
         # other places (beginning, caption) result in LaTeX errors.

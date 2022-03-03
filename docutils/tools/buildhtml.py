@@ -259,7 +259,7 @@ class Builder:
         errout = io.ErrorOutput(encoding=settings.error_encoding)
         pub_struct = self.publishers[publisher]
         settings._source = os.path.normpath(os.path.join(directory, name))
-        settings._destination = settings._source[:-4]+'.html'
+        settings._destination = settings._source[:-4] + '.html'
         if not self.initial_settings.silent:
             errout.write('    ::: Processing: %s\n' % name)
             sys.stderr.flush()

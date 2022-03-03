@@ -66,7 +66,7 @@ class Include(Directive):
         path = utils.relative_path(None, path)
         encoding = self.options.get(
             'encoding', self.state.document.settings.input_encoding)
-        e_handler=self.state.document.settings.input_encoding_error_handler
+        e_handler = self.state.document.settings.input_encoding_error_handler
         tab_width = self.options.get(
             'tab-width', self.state.document.settings.tab_width)
         try:
@@ -229,7 +229,7 @@ class Raw(Directive):
         attributes = {'format': ' '.join(self.arguments[0].lower().split())}
         encoding = self.options.get(
             'encoding', self.state.document.settings.input_encoding)
-        e_handler=self.state.document.settings.input_encoding_error_handler
+        e_handler = self.state.document.settings.input_encoding_error_handler
         if self.content:
             if 'file' in self.options or 'url' in self.options:
                 raise self.error(

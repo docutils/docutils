@@ -297,7 +297,7 @@ def rfc_reference_role(role, rawtext, text, lineno, inliner,
     # Base URL mainly used by inliner.rfc_reference, so this is correct:
     ref = inliner.document.settings.rfc_base_url + inliner.rfc_url % rfcnum
     if section is not None:
-        ref += "#"+section
+        ref += "#" + section
     node = nodes.reference(rawtext, 'RFC ' + str(rfcnum), refuri=ref, **options)
     return [node], []
 
