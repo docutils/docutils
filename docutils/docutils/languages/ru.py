@@ -53,6 +53,6 @@ bibliographic_fields = {
       'версия': 'version'}
 """Russian (lowcased) to canonical name mapping for bibliographic fields."""
 
-author_separators =  [';', ',']
+author_separators = [';', ',']
 """List of separator strings for the 'Authors' bibliographic field. Tried in
 order."""

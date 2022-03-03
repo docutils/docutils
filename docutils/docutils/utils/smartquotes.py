@@ -387,9 +387,9 @@ import re, sys
 class smartchars:
     """Smart quotes and dashes"""
 
-    endash   = '–' # "&#8211;" EN DASH
-    emdash   = '—' # "&#8212;" EM DASH
-    ellipsis = '…' # "&#8230;" HORIZONTAL ELLIPSIS
+    endash = '–'     # "&#8211;" EN DASH
+    emdash = '—'     # "&#8212;" EM DASH
+    ellipsis = '…'   # "&#8230;" HORIZONTAL ELLIPSIS
     apostrophe = '’' # "&#8217;" RIGHT SINGLE QUOTATION MARK
 
     # quote characters (language-specific, set in __init__())
@@ -534,24 +534,24 @@ def educate_tokens(text_tokens, attr=default_smartypants_attr, language='en'):
 
     # if attr == "0": # pass tokens unchanged (see below).
     if attr == "1": # Do everything, turn all options on.
-        do_quotes    = True
+        do_quotes = True
         do_backticks = True
-        do_dashes    = 1
-        do_ellipses  = True
+        do_dashes = 1
+        do_ellipses = True
     elif attr == "2":
         # Do everything, turn all options on, use old school dash shorthand.
-        do_quotes    = True
+        do_quotes = True
         do_backticks = True
-        do_dashes    = 2
-        do_ellipses  = True
+        do_dashes = 2
+        do_ellipses = True
     elif attr == "3":
         # Do everything, use inverted old school dash shorthand.
-        do_quotes    = True
+        do_quotes = True
         do_backticks = True
-        do_dashes    = 3
-        do_ellipses  = True
+        do_dashes = 3
+        do_ellipses = True
     elif attr == "-1": # Special "stupefy" mode.
-        do_stupefy   = True
+        do_stupefy = True
     else:
         if "q" in attr: do_quotes = True
         if "b" in attr: do_backticks = True
@@ -934,7 +934,7 @@ if __name__ == "__main__":
                         help="text encoding")
     parser.add_argument("-l", "--language", default=defaultlanguage,
                         help="text language (BCP47 tag), "
-                             "Default: %s"% defaultlanguage)
+                             f"Default: {defaultlanguage}")
     parser.add_argument("-q", "--alternative-quotes", action="store_true",
                         help="use alternative quote style")
     parser.add_argument("--doc", action="store_true",

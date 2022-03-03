@@ -2739,7 +2739,7 @@ class LimitsProcessor(MathsProcessor):
     limited = contents[index]
     subscript = self.getlimit(contents, index + 1)
     if self.checkscript(contents, index + 1):
-      superscript = self.getlimit(contents, index  + 1)
+      superscript = self.getlimit(contents, index + 1)
     else:
       superscript = TaggedBit().constant('\u2009', 'sup class="limit"')
     # fix order if source is x^i

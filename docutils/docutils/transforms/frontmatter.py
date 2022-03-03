@@ -422,7 +422,7 @@ class DocInfo(Transform):
                             base_node=field)
                         raise TransformError
                     title = nodes.title(name, labels[canonical])
-                    title[0].rawsource =  labels[canonical]
+                    title[0].rawsource = labels[canonical]
                     topics[canonical] = biblioclass(
                         '', title, classes=[canonical], *field[1].children)
                 else:
