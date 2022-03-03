@@ -269,7 +269,7 @@ class Node:
             [<strong>, <#text: Foo>, <#text: Bar>, <reference>, <#text: Baz>]
         """
         if ascend:
-            siblings=True
+            siblings = True
         # Check for special argument combinations that allow using an
         # optimized version of traverse()
         if include_self and descend and not siblings:

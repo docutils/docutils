@@ -107,7 +107,7 @@ class XMLTranslator(nodes.GenericNodeVisitor):
         self.output.append(self.generator % docutils.__version__)
 
         # initialize XML parser
-        self.the_handle=TestXml()
+        self.the_handle = TestXml()
         self.xmlparser.setContentHandler(self.the_handle)
 
     # generic visit and depart methods

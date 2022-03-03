@@ -30,10 +30,10 @@ from docutils import nodes, Component
 try:
     from recommonmark.parser import CommonMarkParser
 except ImportError as err:
-    raise ImportError(
-        '%s.\nParsing "recommonmark" Markdown flavour requires the package'
-        ' https://pypi.org/project/recommonmark which in turn'
-        ' depends on https://pypi.org/project/sphinx.'% err)
+    raise ImportError(f'{err}.\n'
+                      'Parsing "recommonmark" Markdown flavour requires the '
+                      'package https://pypi.org/project/recommonmark which '
+                      'in turn depends on https://pypi.org/project/sphinx.')
 
 try:
     from sphinx import addnodes

@@ -21,10 +21,10 @@ class EncodingTestCase(DocutilsTestSupport.StandardTestCase):
     def test_xmlcharrefreplace(self):
         # Test that xmlcharrefreplace is the default output encoding
         # error handler.
-        settings_overrides={
+        settings_overrides = {
             'output_encoding': 'latin1',
             'stylesheet': '',
-            '_disable_config': True,}
+            '_disable_config': True}
         result = core.publish_string(
             'EUR = \u20ac', writer_name='html5_polyglot',
             settings_overrides=settings_overrides)
@@ -138,9 +138,9 @@ class SettingsTestCase(DocutilsTestSupport.StandardTestCase):
 
     def test_future_warnings(self):
         """Warn about deprecated setting name."""
-        my_settings={'_disable_config': True,
-                     'embed_images': False,
-                     }
+        my_settings = {'_disable_config': True,
+                       'embed_images': False,
+                       }
         with self.assertWarnsRegex(FutureWarning,
                                    '"embed_images" will be removed'):
             core.publish_string('warnings test', writer_name='html5',

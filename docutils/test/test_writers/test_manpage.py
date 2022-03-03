@@ -54,7 +54,7 @@ totest['blank'] = [
         ["",
         r""".\" Man page generated from reStructuredText.
 .
-"""+indend_macros+
+""" + indend_macros +
 r""".TH ""  "" "" ""
 .SH NAME
  \- 
@@ -70,7 +70,7 @@ r""".TH ""  "" "" ""
 """,
         r""".\" Man page generated from reStructuredText.
 .
-"""+indend_macros+
+""" + indend_macros +
 r""".TH "HELLO, WORLD."  "" "" ""
 .SH NAME
 Hello, world. \- 
@@ -146,7 +146,7 @@ and . in a line and at line start
 """, 
         r""".\" Man page generated from reStructuredText.
 .
-"""+indend_macros+
+""" + indend_macros +
 r""".TH "SIMPLE" 1 "2009-08-05" "0.1" "text processing"
 .SH NAME
 simple \- The way to go
@@ -227,7 +227,7 @@ totest['table'] = [
 '''\
 .\\" Man page generated from reStructuredText.
 .
-'''+indend_macros+
+''' + indend_macros +
 '''.TH ""  "" "" ""
 .SH NAME
  \\- \n\
@@ -285,7 +285,7 @@ $
         """\
 .\\" Man page generated from reStructuredText.
 .
-"""+indend_macros+
+""" + indend_macros +
 """.TH ""  "" "" ""
 .SH NAME
  \\- \n\
@@ -342,11 +342,11 @@ Section
 '''\
 .\\" Man page generated from reStructuredText.
 .
-'''+indend_macros+
+''' + indend_macros +
 '''.TH "DEFINITION LIST TEST"  "" "" ""
 .SH NAME
 Definition List Test \\- \n\
-'''+
+''' +
 '''.SS Abstract
 .sp
 Docinfo is required.
@@ -372,7 +372,7 @@ totest['cmdlineoptions'] = [
 """, 
         r""".\" Man page generated from reStructuredText.
 .
-"""+indend_macros+
+""" + indend_macros +
 r""".TH ""  "" "" ""
 .SH NAME
  \- 
@@ -402,7 +402,7 @@ totest['citation'] = [
 """,
         r""".\" Man page generated from reStructuredText.
 .
-"""+indend_macros+
+""" + indend_macros +
 r""".TH ""  "" "" ""
 .SH NAME
  \- 
@@ -422,7 +422,7 @@ totest['rubric'] = [
 """,
         r""".\" Man page generated from reStructuredText.
 .
-"""+indend_macros+
+""" + indend_macros +
 r""".TH ""  "" "" ""
 .SH NAME
  \- 
@@ -446,7 +446,7 @@ They are "escaped" anywhere.
 """,
         r""".\" Man page generated from reStructuredText.
 .
-"""+indend_macros+
+""" + indend_macros +
 r""".TH ""  "" "" ""
 .SH NAME
  \- 

@@ -21,7 +21,7 @@ class EncodingTestCase(DocutilsTestSupport.StandardTestCase):
     def test_xmlcharrefreplace(self):
         # Test that xmlcharrefreplace is the default output encoding
         # error handler.
-        settings_overrides={
+        settings_overrides = {
             'output_encoding': 'latin1',
             'stylesheet': '',
             '_disable_config': True,

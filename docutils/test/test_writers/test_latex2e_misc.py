@@ -58,10 +58,10 @@ class WarningsTestCase(DocutilsTestSupport.StandardTestCase):
     def test_future_warnings(self):
         """Warn about changing defaults."""
         # Warn only if not set (uncommenting should make test fail):
-        mysettings={'_disable_config': True,
-                    # 'use_latex_citations': False,
-                    # 'legacy_column_widths': True,
-                   }
+        mysettings = {'_disable_config': True,
+                      # 'use_latex_citations': False,
+                      # 'legacy_column_widths': True,
+                      }
         with self.assertWarnsRegex(FutureWarning,
                                    '"legacy_column_widths" will change'):
             core.publish_string('warnings test', writer_name='latex',

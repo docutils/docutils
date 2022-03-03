@@ -164,10 +164,11 @@ Und damit \foreignlanguage{spanish}{basta}!
 ]
 
 totest['code role'] = [
-[":code:`x=1`",
-head_template.substitute(dict(parts, requirements = parts['requirements']+
-r"""\usepackage{color}
-""", fallbacks = parts['fallbacks_highlight'])) + r"""
+[':code:`x=1`',
+head_template.substitute(dict(parts, requirements = parts['requirements']
+                              + '\\usepackage{color}\n',
+                              fallbacks = parts['fallbacks_highlight']))
++ r"""
 \texttt{\DUrole{code}{x=1}}
 
 \end{document}

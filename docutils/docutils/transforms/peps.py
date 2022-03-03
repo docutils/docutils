@@ -217,7 +217,7 @@ class PEPZero(Transform):
     Special processing for PEP 0.
     """
 
-    default_priority =760
+    default_priority = 760
 
     def apply(self):
         visitor = PEPZeroSpecial(self.document)

@@ -2429,7 +2429,8 @@ class FormulaCell(FormulaCommand):
 
   def setalignment(self, alignment):
     self.alignment = alignment
-    self.output = TaggedOutput().settag('span class="arraycell align-' + alignment +'"', True)
+    self.output = TaggedOutput().settag('span class="arraycell align-'
+                                        + alignment + '"', True)
     return self
 
   def parsebit(self, pos):

@@ -1052,7 +1052,7 @@ class HTMLTranslator(nodes.NodeVisitor):
                     imagedata = imagefile.read()
             except OSError as err:
                 self.document.reporter.error('Cannot embed image %r: %s'
-                                             %(uri, err.strerror))
+                                             % (uri, err.strerror))
             else:
                 self.settings.record_dependencies.add(
                                             uri.replace('\\', '/'))
@@ -1189,8 +1189,8 @@ class HTMLTranslator(nodes.NodeVisitor):
 
         if self.math_output not in self.math_tags:
             self.document.reporter.error(
-                'math-output format "%s" not supported '
-                'falling back to "latex"'% self.math_output)
+                f'math-output format "{self.math_output}" not supported '
+                'falling back to "latex"')
             self.math_output = 'latex'
         tag = self.math_tags[self.math_output][math_env == '']
         clsarg = self.math_tags[self.math_output][2]
@@ -1509,7 +1509,7 @@ class HTMLTranslator(nodes.NodeVisitor):
             classes = ['sidebar-subtitle']
         elif isinstance(node.parent, nodes.document):
             classes = ['subtitle']
-            self.in_document_title = len(self.body)+1
+            self.in_document_title = len(self.body) + 1
         elif isinstance(node.parent, nodes.section):
             classes = ['section-subtitle']
         self.body.append(self.starttag(node, 'p', '', classes=classes))

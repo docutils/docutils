@@ -402,7 +402,7 @@ class TransformTestSuite(CustomTestSuite):
             for casenum in range(len(cases)):
                 case = cases[casenum]
                 run_in_debugger = False
-                if len(case)==3:
+                if len(case) == 3:
                     # TODO: (maybe) change the 3rd argument to a dict, so it
                     # can handle more cases by keyword ('disable', 'debug',
                     # 'settings'), here and in other generateTests methods.
@@ -476,7 +476,7 @@ class ParserTestSuite(CustomTestSuite):
             for casenum in range(len(cases)):
                 case = cases[casenum]
                 run_in_debugger = False
-                if len(case)==3:
+                if len(case) == 3:
                     if case[2]:
                         run_in_debugger = True
                     else:
@@ -697,7 +697,7 @@ class PublishTestSuite(CustomTestSuite):
             for casenum in range(len(cases)):
                 case = cases[casenum]
                 run_in_debugger = False
-                if len(case)==3:
+                if len(case) == 3:
                     if case[2]:
                         run_in_debugger = True
                     else:
@@ -793,7 +793,7 @@ class HtmlPublishPartsTestSuite(CustomTestSuite):
             for casenum in range(len(cases)):
                 case = cases[casenum]
                 run_in_debugger = False
-                if len(case)==3:
+                if len(case) == 3:
                     if case[2]:
                         run_in_debugger = True
                     else:

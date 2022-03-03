@@ -429,7 +429,7 @@ class RSTState(StateWS):
 
     def unindent_warning(self, node_name):
         # the actual problem is one line below the current line
-        lineno = self.state_machine.abs_line_number()+1
+        lineno = self.state_machine.abs_line_number() + 1
         return self.reporter.warning('%s ends without a blank line; '
                                      'unexpected unindent.' % node_name,
                                      line=lineno)

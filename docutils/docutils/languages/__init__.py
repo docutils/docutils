@@ -43,10 +43,10 @@ class LanguageImporter:
                 self.check_content(module)
             except (ImportError, AttributeError):
                 if reporter and module:
-                    reporter.info('%s is no complete Docutils language module.'
-                                  %module)
+                    reporter.info(f'{module} is no complete '
+                                  'Docutils language module.')
                 elif reporter:
-                    reporter.info('Module "%s" not found.'%(package+name))
+                    reporter.info(f'Module "{package+name}" not found.')
                 continue
             break
         return module

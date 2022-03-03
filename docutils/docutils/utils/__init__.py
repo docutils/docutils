@@ -348,8 +348,8 @@ def decode_path(path):
     except AttributeError: # default value None has no decode method
         if not path:
             return ''
-        raise ValueError('`path` value must be a String or ``None``, not %r'
-                         %path)
+        raise ValueError('`path` value must be a String or ``None``, '
+                         f'not {path!r}')
     except UnicodeDecodeError:
         try:
             path = path.decode('utf-8', 'strict')
