@@ -68,7 +68,7 @@ class SettingsSpec(docutils.SettingsSpec):
           ['--prune'],
           {'metavar': '<directory>', 'action': 'append',
            'validator': frontend.validate_colon_separated_string_list,
-           'default': prune_default,}),
+           'default': prune_default}),
          ('Recursively ignore files matching any of the given '
           'wildcard (shell globbing) patterns (separated by colons).',
           ['--ignore'],
@@ -85,7 +85,7 @@ class SettingsSpec(docutils.SettingsSpec):
          (frontend.SUPPRESS_HELP, # Obsoleted by "--writer"
           ['--html-writer'],
           {'metavar': '<writer>',
-           'choices': ['html', 'html4', 'html5'],}),
+           'choices': ['html', 'html4', 'html5']}),
          ('Work silently (no progress messages).  Independent of "--quiet".',
           ['--silent'],
           {'action': 'store_true', 'validator': frontend.validate_boolean}),

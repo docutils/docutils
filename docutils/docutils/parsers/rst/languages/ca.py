@@ -120,6 +120,7 @@ roles = {
     'refer\u00E8ncia-uri': 'uri-reference',
     'uri': 'uri-reference',
     'url': 'uri-reference',
-    'cru': 'raw',}
+    'cru': 'raw',
+    }
 """Mapping of Catalan role names to canonical role names for interpreted text.
 """

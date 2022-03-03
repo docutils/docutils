@@ -105,6 +105,7 @@ roles = {
     'referencia-uri': 'uri-reference',
     'uri': 'uri-reference',
     'url': 'uri-reference',
-    'cru': 'raw',}
+    'cru': 'raw',
+    }
 """Mapping of Galician role names to canonical role names for interpreted text.
 """

@@ -300,9 +300,9 @@ class HelperFunctionsTests(unittest.TestCase):
 
     def test_validate_colon_separated_string_list(self):
         tests = (
-                    ('a', ['a',]),
+                    ('a', ['a']),
                     ('a:b', ['a', 'b']),
-                    (['a',], ['a',]),
+                    (['a'], ['a']),
                     (['a', 'b:c'], ['a', 'b', 'c']),
                 )
         for t in tests:
@@ -312,9 +312,9 @@ class HelperFunctionsTests(unittest.TestCase):
 
     def test_validate_comma_separated_list(self):
         tests = (
-                    ('a', ['a',]),
+                    ('a', ['a']),
                     ('a,b', ['a', 'b']),
-                    (['a',], ['a',]),
+                    (['a'], ['a']),
                     (['a', 'b,c'], ['a', 'b', 'c']),
                 )
         for t in tests:

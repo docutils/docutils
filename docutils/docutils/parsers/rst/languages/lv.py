@@ -102,6 +102,7 @@ roles = {
     'atsauce-uz-uri': 'uri-reference',
     'uri': 'uri-reference',
     'url': 'uri-reference',
-    'burtiski': 'raw',}
+    'burtiski': 'raw',
+    }
 """Mapping of English role names to canonical role names for interpreted text.
 """

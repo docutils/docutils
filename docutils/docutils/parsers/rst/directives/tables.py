@@ -192,7 +192,7 @@ class CSVTable(Table):
                    # text field quote/unquote char:
                    'quote': directives.single_char_or_unicode,
                    # char used to escape delim & quote as-needed:
-                   'escape': directives.single_char_or_unicode,}
+                   'escape': directives.single_char_or_unicode}
 
     class DocutilsDialect(csv.Dialect):
 

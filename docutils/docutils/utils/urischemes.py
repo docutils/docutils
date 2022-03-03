@@ -133,4 +133,5 @@ schemes = {
       'xmlrpc.beep': 'RFC 3529',
       'xmlrpc.beeps': 'RFC 3529',
       'z39.50r': 'Z39.50 Retrieval; RFC 2056',
-      'z39.50s': 'Z39.50 Session; RFC 2056',}
+      'z39.50s': 'Z39.50 Session; RFC 2056',
+      }

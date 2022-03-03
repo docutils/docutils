@@ -13,7 +13,8 @@ if __name__ == '__main__':
 from test_parsers import DocutilsTestSupport
 
 def suite():
-    s = DocutilsTestSupport.ParserTestSuite(suite_settings={'syntax_highlight':'none'})
+    s = DocutilsTestSupport.ParserTestSuite(
+            suite_settings={'syntax_highlight': 'none'})
     s.generateTests(totest)
     return s
 

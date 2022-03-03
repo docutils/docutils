@@ -20,7 +20,7 @@ def suite():
     settings = {'template': os.path.join(DocutilsTestSupport.testroot,
                                          'data', 'full-template.txt'),
                 'stylesheet_path': '/test.css',
-                'embed_stylesheet': 0,}
+                'embed_stylesheet': 0}
     s = DocutilsTestSupport.PublishTestSuite('html', suite_settings=settings)
     s.generateTests(totest)
     return s

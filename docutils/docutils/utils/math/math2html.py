@@ -82,24 +82,23 @@ class ContainerConfig:
   "Configuration class from elyxer.config file"
 
   extracttext = {
-      'allowed': ['FormulaConstant',],
-      'extracted': [
-                     'AlphaCommand',
-                     'Bracket',
-                     'BracketCommand',
-                     'CombiningFunction',
-                     'EmptyCommand',
-                     'FontFunction',
-                     'Formula',
-                     'FormulaNumber',
-                     'FormulaSymbol',
-                     'OneParamFunction',
-                     'OversetFunction',
-                     'RawText',
-                     'SpacedCommand',
-                     'SymbolFunction',
-                     'TextFunction',
-                     'UndersetFunction',
+      'allowed': ['FormulaConstant'],
+      'extracted': ['AlphaCommand',
+                    'Bracket',
+                    'BracketCommand',
+                    'CombiningFunction',
+                    'EmptyCommand',
+                    'FontFunction',
+                    'Formula',
+                    'FormulaNumber',
+                    'FormulaSymbol',
+                    'OneParamFunction',
+                    'OversetFunction',
+                    'RawText',
+                    'SpacedCommand',
+                    'SymbolFunction',
+                    'TextFunction',
+                    'UndersetFunction',
                     ],
       }
 
@@ -153,16 +152,16 @@ class FormulaConfig:
       'rowseparator': r'\\',
       }
 
-  bigbrackets = {'(': ['⎛', '⎜', '⎝',],
-                 ')': ['⎞', '⎟', '⎠',],
-                 '[': ['⎡', '⎢', '⎣',],
-                 ']': ['⎤', '⎥', '⎦',],
-                 '{': ['⎧', '⎪', '⎨', '⎩',],
-                 '}': ['⎫', '⎪', '⎬', '⎭',],
+  bigbrackets = {'(': ['⎛', '⎜', '⎝'],
+                 ')': ['⎞', '⎟', '⎠'],
+                 '[': ['⎡', '⎢', '⎣'],
+                 ']': ['⎤', '⎥', '⎦'],
+                 '{': ['⎧', '⎪', '⎨', '⎩'],
+                 '}': ['⎫', '⎪', '⎬', '⎭'],
                  # TODO: 2-row brackets with ⎰⎱ (\lmoustache \rmoustache)
-                 '|': ['|',], # 007C VERTICAL LINE
-                 # '|': ['⎮',], # 23AE INTEGRAL EXTENSION
-                 # '|': ['⎪',], # 23AA CURLY BRACKET EXTENSION
+                 '|': ['|'], # 007C VERTICAL LINE
+                 # '|': ['⎮'], # 23AE INTEGRAL EXTENSION
+                 # '|': ['⎪'], # 23AA CURLY BRACKET EXTENSION
                  '‖': ['‖'], # 2016 DOUBLE VERTICAL LINE
                  # '∥': ['∥'], # 2225 PARALLEL TO
                  }
@@ -324,10 +323,10 @@ class FormulaConfig:
       }
 
   environments = {
-      'align': ['r', 'l',],
-      'eqnarray': ['r', 'c', 'l',],
-      'gathered': ['l', 'l',],
-      'smallmatrix': ['c', 'c',],
+      'align': ['r', 'l'],
+      'eqnarray': ['r', 'c', 'l'],
+      'gathered': ['l', 'l'],
+      'smallmatrix': ['c', 'c'],
       }
 
   fontfunctions = {
@@ -361,51 +360,51 @@ class FormulaConfig:
       }
 
   hybridfunctions = {
-      '\\addcontentsline': ['{$p!}{$q!}{$r!}', 'f0{}', 'ignored',],
-      '\\addtocontents': ['{$p!}{$q!}', 'f0{}', 'ignored',],
-      '\\backmatter': ['', 'f0{}', 'ignored',],
-      '\\binom': ['{$1}{$2}', 'f2{(}f0{f1{$1}f1{$2}}f2{)}', 'span class="binom"', 'span class="binomstack"', 'span class="bigdelimiter size2"',],
-      '\\boxed': ['{$1}', 'f0{$1}', 'span class="boxed"',],
-      '\\cfrac': ['[$p!]{$1}{$2}', 'f0{f3{(}f1{$1}f3{)/(}f2{$2}f3{)}}', 'span class="fullfraction"', 'span class="numerator align-$p"', 'span class="denominator"', 'span class="ignored"',],
-      '\\color': ['{$p!}{$1}', 'f0{$1}', 'span style="color: $p;"',],
-      '\\colorbox': ['{$p!}{$1}', 'f0{$1}', 'span class="colorbox" style="background: $p;"',],
-      '\\dbinom': ['{$1}{$2}', '(f0{f1{f2{$1}}f1{f2{ }}f1{f2{$2}}})', 'span class="binomial"', 'span class="binomrow"', 'span class="binomcell"',],
-      '\\dfrac': ['{$1}{$2}', 'f0{f3{(}f1{$1}f3{)/(}f2{$2}f3{)}}', 'span class="fullfraction"', 'span class="numerator"', 'span class="denominator"', 'span class="ignored"',],
-      '\\displaystyle': ['{$1}', 'f0{$1}', 'span class="displaystyle"',],
-      '\\fancyfoot': ['[$p!]{$q!}', 'f0{}', 'ignored',],
-      '\\fancyhead': ['[$p!]{$q!}', 'f0{}', 'ignored',],
-      '\\fbox': ['{$1}', 'f0{$1}', 'span class="fbox"',],
-      '\\fboxrule': ['{$p!}', 'f0{}', 'ignored',],
-      '\\fboxsep': ['{$p!}', 'f0{}', 'ignored',],
-      '\\fcolorbox': ['{$p!}{$q!}{$1}', 'f0{$1}', 'span class="boxed" style="border-color: $p; background: $q;"',],
-      '\\frac': ['{$1}{$2}', 'f0{f3{(}f1{$1}f3{)/(}f2{$2}f3{)}}', 'span class="fraction"', 'span class="numerator"', 'span class="denominator"', 'span class="ignored"',],
-      '\\framebox': ['[$p!][$q!]{$1}', 'f0{$1}', 'span class="framebox align-$q" style="width: $p;"',],
-      '\\frontmatter': ['', 'f0{}', 'ignored',],
-      '\\href': ['[$o]{$u!}{$t!}', 'f0{$t}', 'a href="$u"',],
-      '\\hspace': ['{$p!}', 'f0{ }', 'span class="hspace" style="width: $p;"',],
-      '\\leftroot': ['{$p!}', 'f0{ }', 'span class="leftroot" style="width: $p;px"',],
+      '\\addcontentsline': ['{$p!}{$q!}{$r!}', 'f0{}', 'ignored'],
+      '\\addtocontents': ['{$p!}{$q!}', 'f0{}', 'ignored'],
+      '\\backmatter': ['', 'f0{}', 'ignored'],
+      '\\binom': ['{$1}{$2}', 'f2{(}f0{f1{$1}f1{$2}}f2{)}', 'span class="binom"', 'span class="binomstack"', 'span class="bigdelimiter size2"'],
+      '\\boxed': ['{$1}', 'f0{$1}', 'span class="boxed"'],
+      '\\cfrac': ['[$p!]{$1}{$2}', 'f0{f3{(}f1{$1}f3{)/(}f2{$2}f3{)}}', 'span class="fullfraction"', 'span class="numerator align-$p"', 'span class="denominator"', 'span class="ignored"'],
+      '\\color': ['{$p!}{$1}', 'f0{$1}', 'span style="color: $p;"'],
+      '\\colorbox': ['{$p!}{$1}', 'f0{$1}', 'span class="colorbox" style="background: $p;"'],
+      '\\dbinom': ['{$1}{$2}', '(f0{f1{f2{$1}}f1{f2{ }}f1{f2{$2}}})', 'span class="binomial"', 'span class="binomrow"', 'span class="binomcell"'],
+      '\\dfrac': ['{$1}{$2}', 'f0{f3{(}f1{$1}f3{)/(}f2{$2}f3{)}}', 'span class="fullfraction"', 'span class="numerator"', 'span class="denominator"', 'span class="ignored"'],
+      '\\displaystyle': ['{$1}', 'f0{$1}', 'span class="displaystyle"'],
+      '\\fancyfoot': ['[$p!]{$q!}', 'f0{}', 'ignored'],
+      '\\fancyhead': ['[$p!]{$q!}', 'f0{}', 'ignored'],
+      '\\fbox': ['{$1}', 'f0{$1}', 'span class="fbox"'],
+      '\\fboxrule': ['{$p!}', 'f0{}', 'ignored'],
+      '\\fboxsep': ['{$p!}', 'f0{}', 'ignored'],
+      '\\fcolorbox': ['{$p!}{$q!}{$1}', 'f0{$1}', 'span class="boxed" style="border-color: $p; background: $q;"'],
+      '\\frac': ['{$1}{$2}', 'f0{f3{(}f1{$1}f3{)/(}f2{$2}f3{)}}', 'span class="fraction"', 'span class="numerator"', 'span class="denominator"', 'span class="ignored"'],
+      '\\framebox': ['[$p!][$q!]{$1}', 'f0{$1}', 'span class="framebox align-$q" style="width: $p;"'],
+      '\\frontmatter': ['', 'f0{}', 'ignored'],
+      '\\href': ['[$o]{$u!}{$t!}', 'f0{$t}', 'a href="$u"'],
+      '\\hspace': ['{$p!}', 'f0{ }', 'span class="hspace" style="width: $p;"'],
+      '\\leftroot': ['{$p!}', 'f0{ }', 'span class="leftroot" style="width: $p;px"'],
       # TODO: convert 1 mu to 1/18 em
-      # '\\mspace': ['{$p!}', 'f0{ }', 'span class="hspace" style="width: $p;"',],
-      '\\nicefrac': ['{$1}{$2}', 'f0{f1{$1}⁄f2{$2}}', 'span class="fraction"', 'sup class="numerator"', 'sub class="denominator"', 'span class="ignored"',],
-      '\\parbox': ['[$p!]{$w!}{$1}', 'f0{1}', 'div class="Boxed" style="width: $w;"',],
-      '\\raisebox': ['{$p!}{$1}', 'f0{$1.font}', 'span class="raisebox" style="vertical-align: $p;"',],
-      '\\renewenvironment': ['{$1!}{$2!}{$3!}', '',],
-      '\\rule': ['[$v!]{$w!}{$h!}', 'f0/', 'hr class="line" style="width: $w; height: $h;"',],
-      '\\scriptscriptstyle': ['{$1}', 'f0{$1}', 'span class="scriptscriptstyle"',],
-      '\\scriptstyle': ['{$1}', 'f0{$1}', 'span class="scriptstyle"',],
+      # '\\mspace': ['{$p!}', 'f0{ }', 'span class="hspace" style="width: $p;"'],
+      '\\nicefrac': ['{$1}{$2}', 'f0{f1{$1}⁄f2{$2}}', 'span class="fraction"', 'sup class="numerator"', 'sub class="denominator"', 'span class="ignored"'],
+      '\\parbox': ['[$p!]{$w!}{$1}', 'f0{1}', 'div class="Boxed" style="width: $w;"'],
+      '\\raisebox': ['{$p!}{$1}', 'f0{$1.font}', 'span class="raisebox" style="vertical-align: $p;"'],
+      '\\renewenvironment': ['{$1!}{$2!}{$3!}', ''],
+      '\\rule': ['[$v!]{$w!}{$h!}', 'f0/', 'hr class="line" style="width: $w; height: $h;"'],
+      '\\scriptscriptstyle': ['{$1}', 'f0{$1}', 'span class="scriptscriptstyle"'],
+      '\\scriptstyle': ['{$1}', 'f0{$1}', 'span class="scriptstyle"'],
       # TODO: increase √-size with argument (\frac in display mode, ...)
-      '\\sqrt': ['[$0]{$1}', 'f0{f1{$0}f2{√}f4{(}f3{$1}f4{)}}', 'span class="sqrt"', 'sup class="root"', 'span class="radical"', 'span class="root"', 'span class="ignored"',],
-      '\\stackrel': ['{$1}{$2}', 'f0{f1{$1}f2{$2}}', 'span class="stackrel"', 'span class="upstackrel"', 'span class="downstackrel"',],
-      '\\tbinom': ['{$1}{$2}', '(f0{f1{f2{$1}}f1{f2{ }}f1{f2{$2}}})', 'span class="binomial"', 'span class="binomrow"', 'span class="binomcell"',],
-      '\\tfrac':  ['{$1}{$2}', 'f0{f3{(}f1{$1}f3{)/(}f2{$2}f3{)}}', 'span class="textfraction"', 'span class="numerator"', 'span class="denominator"', 'span class="ignored"',],
-      '\\textcolor': ['{$p!}{$1}', 'f0{$1}', 'span style="color: $p;"',],
-      '\\textstyle': ['{$1}', 'f0{$1}', 'span class="textstyle"',],
-      '\\thispagestyle': ['{$p!}', 'f0{}', 'ignored',],
-      '\\unit': ['[$0]{$1}', '$0f0{$1.font}', 'span class="unit"',],
-      '\\unitfrac': ['[$0]{$1}{$2}', '$0f0{f1{$1.font}⁄f2{$2.font}}', 'span class="fraction"', 'sup class="unit"', 'sub class="unit"',],
-      '\\uproot': ['{$p!}', 'f0{ }', 'span class="uproot" style="width: $p;px"',],
-      '\\url': ['{$u!}', 'f0{$u}', 'a href="$u"',],
-      '\\vspace': ['{$p!}', 'f0{ }', 'span class="vspace" style="height: $p;"',],
+      '\\sqrt': ['[$0]{$1}', 'f0{f1{$0}f2{√}f4{(}f3{$1}f4{)}}', 'span class="sqrt"', 'sup class="root"', 'span class="radical"', 'span class="root"', 'span class="ignored"'],
+      '\\stackrel': ['{$1}{$2}', 'f0{f1{$1}f2{$2}}', 'span class="stackrel"', 'span class="upstackrel"', 'span class="downstackrel"'],
+      '\\tbinom': ['{$1}{$2}', '(f0{f1{f2{$1}}f1{f2{ }}f1{f2{$2}}})', 'span class="binomial"', 'span class="binomrow"', 'span class="binomcell"'],
+      '\\tfrac':  ['{$1}{$2}', 'f0{f3{(}f1{$1}f3{)/(}f2{$2}f3{)}}', 'span class="textfraction"', 'span class="numerator"', 'span class="denominator"', 'span class="ignored"'],
+      '\\textcolor': ['{$p!}{$1}', 'f0{$1}', 'span style="color: $p;"'],
+      '\\textstyle': ['{$1}', 'f0{$1}', 'span class="textstyle"'],
+      '\\thispagestyle': ['{$p!}', 'f0{}', 'ignored'],
+      '\\unit': ['[$0]{$1}', '$0f0{$1.font}', 'span class="unit"'],
+      '\\unitfrac': ['[$0]{$1}{$2}', '$0f0{f1{$1.font}⁄f2{$2.font}}', 'span class="fraction"', 'sup class="unit"', 'sub class="unit"'],
+      '\\uproot': ['{$p!}', 'f0{ }', 'span class="uproot" style="width: $p;px"'],
+      '\\url': ['{$u!}', 'f0{$u}', 'a href="$u"'],
+      '\\vspace': ['{$p!}', 'f0{ }', 'span class="vspace" style="height: $p;"'],
       }
 
   hybridsizes = {
@@ -2586,7 +2585,7 @@ class EquationEnvironment(MultiRowFormula):
 class BeginCommand(CommandBit):
   "A \\begin{}...\\end command and what it entails (array, cases, aligned)"
 
-  commandmap = {FormulaConfig.array['begin']:''}
+  commandmap = {FormulaConfig.array['begin']: ''}
 
   types = [FormulaEquation, FormulaArray, FormulaCases, FormulaMatrix]
 

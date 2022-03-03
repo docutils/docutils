@@ -94,6 +94,7 @@ roles = {
     'referencja-uri': 'uri-reference',
     'uri': 'uri-reference',
     'url': 'uri-reference',
-    'surowe': 'raw',}
+    'surowe': 'raw',
+    }
 """Mapping of Polish role names to canonical role names for interpreted text.
 """

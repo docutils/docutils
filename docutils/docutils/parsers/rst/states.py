@@ -1094,7 +1094,7 @@ class Body(RSTState):
                          'loweralpha': '[a-z]',
                          'upperalpha': '[A-Z]',
                          'lowerroman': '[ivxlcdm]+',
-                         'upperroman': '[IVXLCDM]+',}
+                         'upperroman': '[IVXLCDM]+'}
     enum.converters = {'arabic': int,
                        'loweralpha': _loweralpha_to_int,
                        'upperalpha': _upperalpha_to_int,
