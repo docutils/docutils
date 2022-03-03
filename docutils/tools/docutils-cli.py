@@ -90,7 +90,7 @@ def main(settings_spec=CliSettingsSpec,
         publish_cmdline(reader_name=args.reader,
                         parser_name=args.parser,
                         writer_name=args.writer,
-                        settings_spec = settings_spec,
+                        settings_spec=settings_spec,
                         description=description,
                         argv=remainder)
     except ImportError as error:

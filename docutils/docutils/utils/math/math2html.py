@@ -1107,11 +1107,11 @@ class Globable:
     "Glob a bit of text up until (excluding) any excluded character."
     return self.glob(lambda: self.current() not in excluded)
 
-  def pushending(self, ending, optional = False):
+  def pushending(self, ending, optional=False):
     "Push a new ending to the bottom"
     self.endinglist.add(ending, optional)
 
-  def popending(self, expected = None):
+  def popending(self, expected=None):
     "Pop the ending found at the current position"
     if self.isout() and self.leavepending:
       return expected
@@ -1134,7 +1134,7 @@ class EndingList:
   def __init__(self):
     self.endings = []
 
-  def add(self, ending, optional = False):
+  def add(self, ending, optional=False):
     "Add a new ending to the list"
     self.endings.append(PositionEnding(ending, optional))
 
@@ -1325,7 +1325,7 @@ class Container:
       html = [html]
     return html
 
-  def escape(self, line, replacements = EscapeConfig.entities):
+  def escape(self, line, replacements=EscapeConfig.entities):
     "Escape a line with replacements from a map"
     pieces = sorted(replacements.keys())
     # do them in order
@@ -1406,7 +1406,7 @@ class Container:
     while len(container.contents) > 0:
       self.contents.insert(index, container.contents.pop())
 
-  def tree(self, level = 0):
+  def tree(self, level=0):
     "Show in a tree"
     Trace.debug("  " * level + str(self))
     for container in self.contents:
@@ -1673,7 +1673,7 @@ class TaggedBit(FormulaBit):
     self.add(FormulaConstant(constant))
     return self
 
-  def complete(self, contents, tag, breaklines = False):
+  def complete(self, contents, tag, breaklines=False):
     "Set the constant and the tag"
     self.contents = contents
     self.output = TaggedOutput().settag(tag, breaklines)
@@ -1681,7 +1681,7 @@ class TaggedBit(FormulaBit):
 
   def selfcomplete(self, tag):
     "Set the self-closing tag, no contents (as in <hr/>)."
-    self.output = TaggedOutput().settag(tag, empty = True)
+    self.output = TaggedOutput().settag(tag, empty=True)
     return self
 
 class FormulaConstant(Constant):

@@ -276,7 +276,7 @@ def mark_intervals(s):
 
     return ''.join(l2)
 
-def wrap_string(s, startstring= "('", endstring = "')", wrap=67):
+def wrap_string(s, startstring="('", endstring="')", wrap=67):
     """Line-wrap a unicode string literal definition."""
     c = len(startstring)
     contstring = "'\n" + ' '*(len(startstring)-2) + "'"

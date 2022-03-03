@@ -47,38 +47,39 @@ class Writer(writers._html_base.Writer):
     # use a copy of the parent spec with some modifications
     settings_spec = frontend.filter_settings_spec(
         writers._html_base.Writer.settings_spec,
-        template =
-        ('Template file. (UTF-8 encoded, default: "%s")' % default_template,
-         ['--template'],
-         {'default': default_template, 'metavar': '<file>'}),
-        stylesheet_path =
-        ('Comma separated list of stylesheet paths. '
-         'Relative paths are expanded if a matching file is found in '
-         'the --stylesheet-dirs. With --link-stylesheet, '
-         'the path is rewritten relative to the output HTML file. '
-         '(default: "%s")' % ','.join(default_stylesheets),
-         ['--stylesheet-path'],
-         {'metavar': '<file[,file,...]>', 'overrides': 'stylesheet',
-          'validator': frontend.validate_comma_separated_list,
-          'default': default_stylesheets}),
-        stylesheet_dirs =
-        ('Comma-separated list of directories where stylesheets are found. '
-         'Used by --stylesheet-path when expanding relative path arguments. '
-         '(default: "%s")' % ','.join(default_stylesheet_dirs),
-         ['--stylesheet-dirs'],
-         {'metavar': '<dir[,dir,...]>',
-          'validator': frontend.validate_comma_separated_list,
-          'default': default_stylesheet_dirs}),
-        initial_header_level =
-        ('Specify the initial header level. Does not affect document '
-         'title & subtitle (see --no-doc-title). (default: 2 for "<h2>")',
-         ['--initial-header-level'],
-         {'choices': '1 2 3 4 5 6'.split(), 'default': '2',
-          'metavar': '<level>'}),
-        no_xml_declaration =
-        ('Omit the XML declaration.',
-         ['--no-xml-declaration'],
-         {'dest': 'xml_declaration', 'action': 'store_false'}),
+        template=(
+            'Template file. (UTF-8 encoded, default: "%s")'
+            % default_template,
+            ['--template'],
+            {'default': default_template, 'metavar': '<file>'}),
+        stylesheet_path=(
+            'Comma separated list of stylesheet paths. '
+            'Relative paths are expanded if a matching file is found in '
+            'the --stylesheet-dirs. With --link-stylesheet, '
+            'the path is rewritten relative to the output HTML file. '
+            '(default: "%s")' % ','.join(default_stylesheets),
+            ['--stylesheet-path'],
+            {'metavar': '<file[,file,...]>', 'overrides': 'stylesheet',
+             'validator': frontend.validate_comma_separated_list,
+             'default': default_stylesheets}),
+        stylesheet_dirs=(
+            'Comma-separated list of directories where stylesheets are found. '
+            'Used by --stylesheet-path when expanding relative path arguments. '
+            '(default: "%s")' % ','.join(default_stylesheet_dirs),
+            ['--stylesheet-dirs'],
+            {'metavar': '<dir[,dir,...]>',
+             'validator': frontend.validate_comma_separated_list,
+             'default': default_stylesheet_dirs}),
+        initial_header_level=(
+            'Specify the initial header level. Does not affect document '
+            'title & subtitle (see --no-doc-title). (default: 2 for "<h2>")',
+            ['--initial-header-level'],
+            {'choices': '1 2 3 4 5 6'.split(), 'default': '2',
+             'metavar': '<level>'}),
+        no_xml_declaration=(
+            'Omit the XML declaration.',
+            ['--no-xml-declaration'],
+            {'dest': 'xml_declaration', 'action': 'store_false'}),
     )
     settings_spec = settings_spec + (
         'HTML5 Writer Options',

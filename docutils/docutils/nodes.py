@@ -780,7 +780,7 @@ class Element(Node):
             value = [value]
         self.append_attr_list(attr, value)
 
-    def replace_attr(self, attr, value, force = True):
+    def replace_attr(self, attr, value, force=True):
         """
         If self[attr] does not exist or force is True or omitted, set
         self[attr] to value, otherwise do nothing.
@@ -789,7 +789,7 @@ class Element(Node):
         if force or self.get(attr) is None:
             self[attr] = value
 
-    def copy_attr_convert(self, attr, value, replace = True):
+    def copy_attr_convert(self, attr, value, replace=True):
         """
         If attr is an attribute of self, set self[attr] to
         [self[attr], value], otherwise set self[attr] to value.
@@ -839,8 +839,8 @@ class Element(Node):
         if self.get(attr) is not value:
             self.replace_attr(attr, value, replace)
 
-    def update_all_atts(self, dict_, update_fun = copy_attr_consistent,
-                        replace = True, and_source = False):
+    def update_all_atts(self, dict_, update_fun=copy_attr_consistent,
+                        replace=True, and_source=False):
         """
         Updates all attributes from node or dictionary `dict_`.
 
@@ -877,8 +877,8 @@ class Element(Node):
         for att in filter(filter_fun, dict_):
             update_fun(self, att, dict_[att], replace)
 
-    def update_all_atts_consistantly(self, dict_, replace = True,
-                                     and_source = False):
+    def update_all_atts_consistantly(self, dict_, replace=True,
+                                     and_source=False):
         """
         Updates all attributes from node or dictionary `dict_`.
 
@@ -898,8 +898,8 @@ class Element(Node):
         self.update_all_atts(dict_, Element.copy_attr_consistent, replace,
                              and_source)
 
-    def update_all_atts_concatenating(self, dict_, replace = True,
-                                      and_source = False):
+    def update_all_atts_concatenating(self, dict_, replace=True,
+                                      and_source=False):
         """
         Updates all attributes from node or dictionary `dict_`.
 
@@ -922,8 +922,8 @@ class Element(Node):
         self.update_all_atts(dict_, Element.copy_attr_concatenate, replace,
                              and_source)
 
-    def update_all_atts_coercion(self, dict_, replace = True,
-                                 and_source = False):
+    def update_all_atts_coercion(self, dict_, replace=True,
+                                 and_source=False):
         """
         Updates all attributes from node or dictionary `dict_`.
 
@@ -947,7 +947,7 @@ class Element(Node):
         self.update_all_atts(dict_, Element.copy_attr_coerce, replace,
                              and_source)
 
-    def update_all_atts_convert(self, dict_, and_source = False):
+    def update_all_atts_convert(self, dict_, and_source=False):
         """
         Updates all attributes from node or dictionary `dict_`.
 
@@ -966,7 +966,7 @@ class Element(Node):
               on the value of update_fun.
         """
         self.update_all_atts(dict_, Element.copy_attr_convert,
-                             and_source = and_source)
+                             and_source=and_source)
 
     def clear(self):
         self.children = []
