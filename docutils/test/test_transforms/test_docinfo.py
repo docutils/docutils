@@ -419,7 +419,8 @@ totest_de['bibliographic_field_lists'] = ((DocInfo,), [
             Abstract 1.
     <comment xml:space="preserve">
         Bibliographic element extraction for a German document.
-"""],])
+"""]
+])
 
 totest_ru['bibliographic_field_lists'] = ((DocInfo,), [
 ["""\
@@ -462,7 +463,8 @@ totest_ru['bibliographic_field_lists'] = ((DocInfo,), [
             Abstract 1.
     <comment xml:space="preserve">
         Bibliographic element extraction for a Russian document.
-"""],])
+"""]
+])
 
 
 if __name__ == '__main__':

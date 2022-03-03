@@ -89,6 +89,7 @@ roles = {
       'ersättnings-referens': 'substitution-reference',
       'mål': 'target',
       'uri-referens': 'uri-reference',
-      'rå': 'raw',}
+      'rå': 'raw',
+      }
 """Mapping of Swedish role names to canonical role names for interpreted text.
 """

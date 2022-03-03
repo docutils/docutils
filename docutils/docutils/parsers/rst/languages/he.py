@@ -103,6 +103,7 @@ roles = {
     'uri-reference': 'uri-reference',
     'uri': 'uri-reference',
     'url': 'uri-reference',
-    'raw': 'raw',}
+    'raw': 'raw',
+    }
 """Mapping of English role names to canonical role names for interpreted text.
 """

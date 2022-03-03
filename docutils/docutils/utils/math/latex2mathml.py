@@ -44,10 +44,10 @@ letters['hbar'] = '\u210F' # compatibility mapping to ℏ (\hslash).
 
 # special case: Capital Greek letters: (upright in TeX style)
 greek_capitals = {
-    'Phi':'\u03a6', 'Xi':'\u039e', 'Sigma':'\u03a3',
-    'Psi':'\u03a8', 'Delta':'\u0394', 'Theta':'\u0398',
-    'Upsilon':'\u03d2', 'Pi':'\u03a0', 'Omega':'\u03a9',
-    'Gamma':'\u0393', 'Lambda':'\u039b'}
+    'Phi': '\u03a6', 'Xi': '\u039e', 'Sigma': '\u03a3',
+    'Psi': '\u03a8', 'Delta': '\u0394', 'Theta': '\u0398',
+    'Upsilon': '\u03d2', 'Pi': '\u03a0', 'Omega': '\u03a9',
+    'Gamma': '\u0393', 'Lambda': '\u039b'}
 
 # functions -> <mi>
 functions = {# functions with a space in the name
@@ -160,8 +160,8 @@ operators.update(stretchables)
 # special cases
 
 thick_operators = {# style='font-weight: bold;'
-                   'thicksim':   '\u223C', # ∼
-                   'thickapprox':'\u2248', # ≈
+                   'thicksim':       '\u223C', # ∼
+                   'thickapprox':    '\u2248', # ≈
                   }
 
 small_operators = {# mathsize='75%'

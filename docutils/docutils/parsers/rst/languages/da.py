@@ -107,6 +107,7 @@ roles = {
     'uri-reference': 'uri-reference',
     'uri': 'uri-reference',
     'url': 'uri-reference',
-    'rå': 'raw',}
+    'rå': 'raw',
+    }
 """Mapping of Danish role names to canonical role names for interpreted text.
 """

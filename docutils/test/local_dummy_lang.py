@@ -149,6 +149,6 @@ roles = {
     'dummy uri-reference': 'uri-reference',
     'dummy uri': 'uri-reference',
     'dummy url': 'uri-reference',
-    'dummy raw': 'raw',}
+    'dummy raw': 'raw'}
 """Mapping of English role names to canonical role names for interpreted text.
 """

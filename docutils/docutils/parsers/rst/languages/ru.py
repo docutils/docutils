@@ -58,7 +58,8 @@ directives = {
     'тема': 'topic',
     'эпиграф': 'epigraph',
     'header (translation required)': 'header',
-    'footer (translation required)': 'footer',}
+    'footer (translation required)': 'footer',
+    }
 """Russian name to registered (in directives/__init__.py) directive name
 mapping."""
 
@@ -83,6 +84,7 @@ roles = {
     'ссылка-на-сноску': 'footnote-reference',
     'цитатная-ссылка': 'citation-reference',
     'цель': 'target',
-    'сырой': 'raw',}
+    'сырой': 'raw',
+    }
 """Mapping of Russian role names to canonical role names for interpreted text.
 """

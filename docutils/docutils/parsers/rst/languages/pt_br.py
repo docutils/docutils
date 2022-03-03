@@ -103,6 +103,7 @@ roles = {
     'refer\u00EAncia-a-uri': 'uri-reference',
     'uri': 'uri-reference',
     'url': 'uri-reference',
-    'cru': 'raw',}
+    'cru': 'raw',
+    }
 """Mapping of Brazilian Portuguese role names to canonical role names
 for interpreted text."""

@@ -80,7 +80,7 @@ class SettingsTestCase(DocutilsTestSupport.StandardTestCase):
 
     def test_default_stylesheet(self):
         # default style sheet, embedded
-        mys = {'_disable_config': True,}
+        mys = {'_disable_config': True}
         styles = core.publish_parts(self.data, writer_name='html4css1',
                                     settings_overrides=mys)['stylesheet']
         self.assertIn('Default cascading style sheet '
@@ -151,7 +151,7 @@ class MathTestCase(DocutilsTestSupport.StandardTestCase):
 
     def test_math_output_default(self):
         # HTML with math.css stylesheet (since 0.11)
-        mys = {'_disable_config': True,}
+        mys = {'_disable_config': True}
         styles = core.publish_parts(self.data, writer_name='html4css1',
                                     settings_overrides=mys)['stylesheet']
         self.assertIn('convert LaTeX equations to HTML output.', styles)

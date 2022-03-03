@@ -30,10 +30,9 @@ class Reader(Component):
     config_section = 'readers'
 
     def get_transforms(self):
-        return Component.get_transforms(self) + [
-            universal.Decorations,
-            universal.ExposeInternals,
-            universal.StripComments,]
+        return Component.get_transforms(self) + [universal.Decorations,
+                                                 universal.ExposeInternals,
+                                                 universal.StripComments]
 
     def __init__(self, parser=None, parser_name=None):
         """

@@ -48,7 +48,7 @@ class Writer(html4css1.Writer):
           {'action': 'store_true', 'validator': frontend.validate_boolean}),))
 
     settings_default_overrides = {'stylesheet_path': default_stylesheet_path,
-                                  'template': default_template_path,}
+                                  'template': default_template_path}
 
     relative_path_settings = ('template',)
 

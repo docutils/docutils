@@ -608,7 +608,7 @@ def find_combining_chars(text):
     [3, 6, 9]
 
     """
-    return [i for i,c in enumerate(text) if unicodedata.combining(c)]
+    return [i for i, c in enumerate(text) if unicodedata.combining(c)]
 
 def column_indices(text):
     """Indices of Unicode string `text` when skipping combining characters.
@@ -752,7 +752,7 @@ release_level_abbreviations = {
     'alpha':     'a',
     'beta':      'b',
     'candidate': 'rc',
-    'final':     '',}
+    'final':     ''}
 
 def version_identifier(version_info=None):
     """

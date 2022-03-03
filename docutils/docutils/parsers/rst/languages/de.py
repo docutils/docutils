@@ -99,6 +99,7 @@ roles = {
       'ziel': 'target',
       'uri-referenz': 'uri-reference',
       'unverändert': 'raw',
-      'roh': 'raw',}
+      'roh': 'raw',
+      }
 """Mapping of German role names to canonical role names for interpreted text.
 """

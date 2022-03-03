@@ -2148,11 +2148,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_enumerated_list(self, node):
         # enumeration styles:
         types = {'': '',
-                 'arabic':'arabic',
-                 'loweralpha':'alph',
-                 'upperalpha':'Alph',
-                 'lowerroman':'roman',
-                 'upperroman':'Roman'}
+                 'arabic': 'arabic',
+                 'loweralpha': 'alph',
+                 'upperalpha': 'Alph',
+                 'lowerroman': 'roman',
+                 'upperroman': 'Roman'}
         # default LaTeX enumeration labels:
         default_labels = [# (präfix, enumtype, suffix)
                           ('',  'arabic', '.'), #  1.
@@ -2408,7 +2408,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
             # block level images:
             'center': (r'\noindent\makebox[\linewidth][c]{', '}'),
             'left':   (r'\noindent{', r'\hfill}'),
-            'right':  (r'\noindent{\hfill', '}'),}
+            'right':  (r'\noindent{\hfill', '}'),
+            }
         if 'align' in attrs:
             # TODO: warn or ignore non-applicable alignment settings?
             try:

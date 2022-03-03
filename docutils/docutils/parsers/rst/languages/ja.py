@@ -113,6 +113,7 @@ roles = {
     'uri参照': 'uri-reference',
     'uri': 'uri-reference',
     'url': 'uri-reference',
-    '生': 'raw',}
+    '生': 'raw',
+    }
 """Mapping of Japanese role names to canonical role names for interpreted
 text."""
