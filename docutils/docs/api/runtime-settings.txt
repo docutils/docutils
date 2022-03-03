@@ -17,7 +17,6 @@ Introduction
 Docutils runtime settings are assembled from several sources:
 
 * Settings specifications of the selected components_,
-* `application settings specifications`_,
 * `configuration files`_ (if enabled), and
 * command-line options (if enabled).
 
@@ -50,14 +49,10 @@ overwrite earlier ones):
    __ `settings_overrides parameter`_
 
 4. Settings specified in `active sections`_ of the `configuration files`_
-   in the order described in `Configuration File Sections & Entries`_.
+   in the order described in `Configuration File Sections & Entries`_
+   (if enabled).
 
-5. Command line arguments.
-
-
-7. Settings specified in the `settings parameter`_ of the `convenience
-   functions`_ or the `settings` attribute of the ``Publisher.settings``
-   attribute.
+5. Command line options (if enabled).
 
 For details see the ``docutils/__init__.py``, ``docutils/core.py``, and
 ``docutils.frontend.py`` modules and the implementation description in
@@ -146,7 +141,6 @@ the `settings_spec parameter`_ in application settings specifications
 are treated as components as well.
 
 
-.. _application settings specifications:
 .. _convenience function:
 
 convenience functions
@@ -154,7 +148,8 @@ convenience functions
 
 Applications usually deploy Docutils by one of the
 `Publisher convenience functions`_.
-All convenience functions accept the following optional **parameters**:
+
+All convenience functions accept the following optional parameters:
 
 .. _settings parameter:
 

@@ -10,12 +10,17 @@
 
 :Abstract: A detailled description of Docutil's settings processing
            framework.
-           
-           See `Docutils Runtime Settings`_ for a high-level description
-           of the core API and `Docutils Configuration`_ for a
-           description of the individual settings.
 
 .. contents::
+
+
+The ``docutils/__init__.py``, ``docutils/core.py``, and
+``docutils.frontend.py`` modules are described.
+Following along with the actual code is recommended.
+
+See `Docutils Runtime Settings`_ for a high-level description of the core
+API and `Docutils Configuration`_ for a description of the individual
+settings.
 
 .. note::
    This document is informal.
@@ -38,15 +43,15 @@ overwrite earlier ones):
    `settings_defaults`__ attributes for each component_.
    (details__)
 
-   __ ../api/runtime-settings.html#settingsspec-settings_spec
-   __ ../api/runtime-settings.html#settingsspec-settings_defaults
+   __ ../api/runtime-settings.html#settingsspec-settings-spec
+   __ ../api/runtime-settings.html#settingsspec-settings-defaults
    __ `OptionParser.populate_from_components()`_
 
 2. Defaults specified in `settings_default_overrides`__ attribute for
-   each component_. 
+   each component_.
    (details__)
 
-   __ ../api/runtime-settings.html#settingsspec-settings_default_overrides
+   __ ../api/runtime-settings.html#settingsspec-settings-default-overrides
    __ component.settings_default_overrides_
 
 3. Settings specified in the `settings_overrides parameter`_ of the
@@ -56,31 +61,27 @@ overwrite earlier ones):
 
    __ OptionParser.defaults_
 
-4. Settings specified in `active sections`_ of the `configuration files`_
-   in the order described in `Configuration File Sections & Entries`_. 
-   (details__)
+4. If enabled, settings specified in `active sections`_ of the
+   `configuration files`_ in the order described in
+   `Configuration File Sections & Entries`_. (details__)
 
    See also `Configuration File Sections & Entries`_.
 
    __ `OptionParser.get_standard_config_settings()`_
 
-5. Command line arguments (details__).
+5. If enabled, command line arguments (details__).
 
    __ `Publisher.process_command_line()`_
 
-7. Settings specified in the `settings parameter`_ of the `convenience
-   functions`_ or the `settings` attribute of the ``Publisher.settings``
-   attribute (details for `command-line tools`__ and `other applications`__).
 
-   __ `pub.publish()`_
-   __ `pub.process_programmatic_settings()`_
+Settings assigned to the `settings parameter`_ of the
+`convenience functions`_ or the ``Publisher.settings`` attribute
+are used **instead of** the above sources
+(see below for details for `command-line tools`__ and
+`other applications`__).
 
-
-
-The ``docutils/__init__.py``, ``docutils/core.py``, and
-``docutils.frontend.py`` modules are described.
-Following along with the actual code is recommended.
-
+__ `publisher.publish()`_
+__ `publisher.process_programmatic_settings()`_
 
 .. _command-line tools:
 
@@ -92,41 +93,42 @@ the `convenience function`_ ``docutils.core.publish_cmdline()``.
 
 1. ``docutils.core.publish_cmdline()`` creates a `Publisher`_ instance::
 
-       pub = core.Publisher(…, settings)
+       publisher = core.Publisher(…, settings)
 
    eventually sets the components_ from the respective names, and calls ::
 
-       pub.publish(argv, …,
-                   settings_spec, settings_overrides, config_section, …)
+       publisher.publish(argv, …, settings_spec,
+                         settings_overrides, config_section, …)
 
-   .. _pub.publish():
+   .. _publisher.publish():
 
-2. If `pub.settings` is None [#]_, ``pub.publish()`` calls::
+2. If `publisher.settings` is None, ``publisher.publish()`` calls::
 
-       pub.process_command_line(…, settings_spec, config_section, **defaults)
+       publisher.process_command_line(…,
+           settings_spec, config_section, **defaults)
 
-   with `defaults` taken from `pub.settings_overrides`.
+   with `defaults` taken from `publisher.settings_overrides`.
 
-   .. [#] If `pub.settings` is defined, steps 3 to 5 are skipped.
+   If `publisher.settings` is defined, steps 3 to 5 are skipped.
 
-3. ``pub.process_command_line()`` calls::
+3. ``publisher.process_command_line()`` calls::
 
-       opa = pub.setup_option_parser(…,
-                 settings_spec, config_section, **defaults)
+       optpar = publisher.setup_option_parser(…,
+                    settings_spec, config_section, **defaults)
 
-   .. _pub.setup_option_parser():
+   .. _publisher.setup_option_parser():
 
-4. ``pub.setup_option_parser()``
+4. ``publisher.setup_option_parser()``
 
    - merges the value of the `config_section parameter`_ into
      `settings_spec` and
 
    - creates an `OptionParser` instance ::
 
-        opa = docutils.frontend.OptionParser(components, defaults)
+        optpar = docutils.frontend.OptionParser(components, defaults)
 
      with `components` the tuple of the `SettingsSpec`_ instances
-     ``(pub.parser, pub.reader, pub.writer, settings_spec)``
+     ``(publisher.parser, publisher.reader, publisher.writer, settings_spec)``
 
    .. _OptionParser.populate_from_components():
 
@@ -160,43 +162,44 @@ the `convenience function`_ ``docutils.core.publish_cmdline()``.
 
    This reads the Docutils `configuration files`_, and returns a
    dictionary of settings in `active sections`_ which is used to update
-   ``opa.defaults``. So configuration file settings have priority over
+   ``optpar.defaults``. So configuration file settings have priority over
    all software-defined defaults.
 
    .. _Publisher.process_command_line():
 
-8. ``pub.process_command_line()`` calls ``opa.parse_args()``.
+8. ``publisher.process_command_line()`` calls ``optpar.parse_args()``.
    The OptionParser parses all command line options and returns a
    `docutils.frontend.Values` object.
-   This is assigned to ``pub.settings``.
+   This is assigned to ``publisher.settings``.
    So command-line options have priority over configuration file
    settings.
 
 9. The `<source>` and `<destination>` command-line arguments
-   are also parsed, and assigned to ``pub.settings._source``
-   and ``pub.settings._destination`` respectively.
+   are also parsed, and assigned to ``publisher.settings._source``
+   and ``publisher.settings._destination`` respectively.
 
-10. ``pub.publish()`` calls ``pub.set_io()`` with no arguments.
-    If either ``pub.source`` or ``pub.destination`` are not set, the
-    corresponding ``pub.set_source()`` and ``pub.set_destination()``
-    are called:
+10. ``publisher.publish()`` calls ``publisher.set_io()`` with no arguments.
+    If either ``publisher.source`` or ``publisher.destination`` are not
+    set, the corresponding ``publisher.set_source()`` and
+    ``publisher.set_destination()`` are called:
 
-    ``pub.set_source()``
+    ``publisher.set_source()``
       checks for a ``source_path`` argument, and if there is none (which
       is the case for command-line use), it is taken from
-      ``pub.settings._source``.  ``pub.source`` is set by instantiating a
-      ``pub.source_class`` object.  For command-line front-end tools, the
-      default ``pub.source_class`` (i.e. ``docutils.io.FileInput``) is
-      used.
+      ``publisher.settings._source``.  ``publisher.source`` is set by
+      instantiating a ``publisher.source_class`` object.
+      For command-line front-end tools, the default
+      ``publisher.source_class`` (i.e. ``docutils.io.FileInput``)
+      is used.
 
-    ``pub.set_destination()``
+    ``publisher.set_destination()``
       does the same job for the destination. (the default
-      ``pub.destination_class`` is ``docutils.io.FileOutput``).
+      ``publisher.destination_class`` is ``docutils.io.FileOutput``).
 
-    .. _acessing the runtime settings:
+    .. _accessing the runtime settings:
 
-11. ``pub.publish()`` passes ``pub.settings`` to the reader_ component's
-    ``read()`` method.
+11. ``publisher.publish()`` passes ``publisher.settings`` to the reader_
+    component's ``read()`` method.
 
 12. The reader component creates a new `document root node`__.
     ``nodes.document.__init__()`` adds the settings to the internal
@@ -224,45 +227,45 @@ command line for settings.
 
    eventually sets the components_ from the respective names, and calls ::
 
-       pub.process_programmatic_settings(
+       publisher.process_programmatic_settings(
            settings_spec, settings_overrides, config_section)
 
-   .. _pub.process_programmatic_settings():
+   .. _publisher.process_programmatic_settings():
 
-2. If `pub.settings` is None [#]_,
-   ``pub.process_programmatic_settings()`` calls::
+2. If `publisher.settings` is None,
+   ``publisher.process_programmatic_settings()`` calls::
 
-       pub.get_settings(settings_spec, config_section, **defaults)
+       publisher.get_settings(settings_spec, config_section, **defaults)
 
-   with `defaults` taken from `pub.settings_overrides`.
+   with `defaults` taken from `publisher.settings_overrides`.
 
-   .. [#] If `pub.settings` is defined, the following steps are skipped.
+   If `publisher.settings` is defined, the following steps are skipped.
 
-3. ``pub.get_settings()`` calls::
+3. ``publisher.get_settings()`` calls::
 
-       opa = pub.setup_option_parser(…,
-                 settings_spec, config_section, **defaults)
+       optpar = publisher.setup_option_parser(…,
+                    settings_spec, config_section, **defaults)
 
 4. The OptionParser instance determines setting defaults
    as described in `steps 4 to 7`__ in the previous section.
 
-   __ `pub.setup_option_parser()`_
+   __ `publisher.setup_option_parser()`_
 
-5. Back in ``pub.get_settings()``, the ``frontend.Values`` instance
-   returned by ``opa.get_default_values()`` is stored in
-   ``pub.settings``.
+5. Back in ``publisher.get_settings()``, the ``frontend.Values`` instance
+   returned by ``optpar.get_default_values()`` is stored in
+   ``publisher.settings``.
 
-6. ``publish_programmatically()`` continues with setting ``pub.source`` and
-   ``pub.destination``.
+6. ``publish_programmatically()`` continues with setting
+   ``publisher.source`` and ``publisher.destination``.
 
-7. Finally, ``pub.publish()`` is called. As ``pub.settings`` is not None,
-   no new command line processing takes place.
+7. Finally, ``publisher.publish()`` is called. As ``publisher.settings``
+   is not None, no further command line processing takes place.
 
 8. All components acting on the Document Tree are handed the
    ``document`` root node and can access the runtime settings as
    ``document.settings`` (cf. `steps 11 and 12`__ in the previous section).
 
-   __ accessing the runtime settings_
+   __ `accessing the runtime settings`_
 
 
 .. References:
@@ -272,7 +275,7 @@ command line for settings.
 
 .. _Docutils Runtime Settings:
    ../api/runtime-settings.html
-.. _active sections:   
+.. _active sections:
    ../api/runtime-settings.html#active-sections
 .. _SettingsSpec:
    ../api/runtime-settings.html#settingsspec
@@ -280,8 +283,8 @@ command line for settings.
 .. _components:
     ../api/runtime-settings.html#components
 .. _application settings specifications:
-.. _convenience function: 
-.. _convenience functions: 
+.. _convenience function:
+.. _convenience functions:
     ../api/runtime-settings.html#convenience-functions
 .. _settings_overrides parameter:
     ../api/runtime-settings.html#settings-overrides-parameter
