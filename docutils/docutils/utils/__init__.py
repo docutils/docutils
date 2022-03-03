@@ -749,10 +749,10 @@ class DependencyList:
 
 
 release_level_abbreviations = {
-    'alpha':     'a',
-    'beta':      'b',
+    'alpha': 'a',
+    'beta': 'b',
     'candidate': 'rc',
-    'final':     ''}
+    'final': ''}
 
 def version_identifier(version_info=None):
     """

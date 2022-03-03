@@ -19,7 +19,7 @@ labels = {
       'authors': '\u05de\u05d7\u05d1\u05e8\u05d9',
       'organization': '\u05d0\u05e8\u05d2\u05d5\u05df',
       'address': '\u05db\u05ea\u05d5\u05d1\u05ea',
-      'contact':  '\u05d0\u05d9\u05e9 \u05e7\u05e9\u05e8',
+      'contact': '\u05d0\u05d9\u05e9 \u05e7\u05e9\u05e8',
       'version': '\u05d2\u05e8\u05e1\u05d4',
       'revision': '\u05de\u05d4\u05d3\u05d5\u05e8\u05d4',
       'status': '\u05e1\u05d8\u05d8\u05d5\u05e1',
