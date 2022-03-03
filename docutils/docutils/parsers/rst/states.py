@@ -1356,8 +1356,8 @@ class Body(RSTState):
                 break                   # yes; keep `format`
         else:                           # shouldn't happen
             raise ParserError('enumerator format not matched')
-        text = groupdict[format][self.enum.formatinfo[format].start
-                                 :self.enum.formatinfo[format].end]
+        text = groupdict[format][self.enum.formatinfo[format].start     # noqa: E203
+                                 : self.enum.formatinfo[format].end]
         if text == '#':
             sequence = '#'
         elif expected_sequence:
@@ -1408,8 +1408,8 @@ class Body(RSTState):
         if result:
             next_enumerator, auto_enumerator = result
             try:
-                if ( next_line.startswith(next_enumerator) or
-                     next_line.startswith(auto_enumerator) ):
+                if (next_line.startswith(next_enumerator)
+                    or next_line.startswith(auto_enumerator)):
                     return 1
             except TypeError:
                 pass
@@ -2135,7 +2135,7 @@ class Body(RSTState):
          ) = self.state_machine.get_first_known_indented(match.end(),
                                                          strip_top=0)
         block_text = '\n'.join(self.state_machine.input_lines[
-            initial_line_offset : self.state_machine.line_offset + 1])
+            initial_line_offset : self.state_machine.line_offset + 1]) # noqa: E203
         try:
             arguments, options, content, content_offset = (
                 self.parse_directive_block(indented, line_offset,
@@ -2554,11 +2554,11 @@ class EnumeratedList(SpecializedBody):
         """Enumerated list item."""
         format, sequence, text, ordinal = self.parse_enumerator(
               match, self.parent['enumtype'])
-        if ( format != self.format
-             or (sequence != '#' and (sequence != self.parent['enumtype']
-                                      or self.auto
-                                      or ordinal != (self.lastordinal + 1)))
-             or not self.is_enumerated_list_item(ordinal, sequence, format)):
+        if (format != self.format
+            or (sequence != '#' and (sequence != self.parent['enumtype']
+                                     or self.auto
+                                     or ordinal != (self.lastordinal + 1)))
+            or not self.is_enumerated_list_item(ordinal, sequence, format)):
             # different enumeration: new list
             self.invalid_input()
         if sequence == '#':

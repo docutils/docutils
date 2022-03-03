@@ -1414,8 +1414,8 @@ class HTMLTranslator(nodes.NodeVisitor):
         atts = {'class': 'reference'}
         if 'refuri' in node:
             atts['href'] = node['refuri']
-            if ( self.settings.cloak_email_addresses
-                 and atts['href'].startswith('mailto:')):
+            if (self.settings.cloak_email_addresses
+                and atts['href'].startswith('mailto:')):
                 atts['href'] = self.cloak_mailto(atts['href'])
                 self.in_mailto = True
             atts['class'] += ' external'

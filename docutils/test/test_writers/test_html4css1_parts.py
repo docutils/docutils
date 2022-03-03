@@ -197,7 +197,7 @@ Some stuff
 """]
 ])
 
-totest['No title promotion'] = ({'doctitle_xform' : 0,
+totest['No title promotion'] = ({'doctitle_xform': 0,
                                  'stylesheet_path': '',
                                  'embed_stylesheet': 0}, [
 ["""\

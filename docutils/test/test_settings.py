@@ -272,15 +272,15 @@ class HelperFunctionsTests(unittest.TestCase):
         self.assertEqual(pathdict['spam'], 'spam')
 
     boolean_settings = (
-                (True, True ),
-                ('1', True ),
-                ('on', True ),
-                ('yes', True ),
-                ('true', True ),
-                ('0', False ),
-                ('off', False ),
-                ('no', False ),
-                ('false', False ),
+                (True, True),
+                ('1', True),
+                ('on', True),
+                ('yes', True),
+                ('true', True),
+                ('0', False),
+                ('off', False),
+                ('no', False),
+                ('false', False),
                )
     def test_validate_boolean(self):
         for t in self.boolean_settings:
@@ -300,10 +300,10 @@ class HelperFunctionsTests(unittest.TestCase):
 
     def test_validate_colon_separated_string_list(self):
         tests = (
-                    ('a', ['a',] ),
-                    ('a:b', ['a', 'b'] ),
-                    (['a',], ['a',] ),
-                    (['a', 'b:c'], ['a', 'b', 'c'] ),
+                    ('a', ['a',]),
+                    ('a:b', ['a', 'b']),
+                    (['a',], ['a',]),
+                    (['a', 'b:c'], ['a', 'b', 'c']),
                 )
         for t in tests:
             self.assertEqual(
@@ -312,10 +312,10 @@ class HelperFunctionsTests(unittest.TestCase):
 
     def test_validate_comma_separated_list(self):
         tests = (
-                    ('a', ['a',] ),
-                    ('a,b', ['a', 'b'] ),
-                    (['a',], ['a',] ),
-                    (['a', 'b,c'], ['a', 'b', 'c'] ),
+                    ('a', ['a',]),
+                    ('a,b', ['a', 'b']),
+                    (['a',], ['a',]),
+                    (['a', 'b,c'], ['a', 'b', 'c']),
                 )
         for t in tests:
             self.assertEqual(
@@ -324,10 +324,10 @@ class HelperFunctionsTests(unittest.TestCase):
 
     def test_validate_url_trailing_slash(self):
         tests = (
-                    ('', './' ),
-                    (None, './' ),
-                    ('http://example.org', 'http://example.org/' ),
-                    ('http://example.org/', 'http://example.org/' ),
+                    ('', './'),
+                    (None, './'),
+                    ('http://example.org', 'http://example.org/'),
+                    ('http://example.org/', 'http://example.org/'),
                 )
         for t in tests:
             self.assertEqual(

@@ -96,7 +96,7 @@ def _test(input, document, optargs):
 %s
 %s],
 ]
-""" % ( tq, escape(input.rstrip()), tq, tq, escape(output.rstrip()), tq )
+""" % (tq, escape(input.rstrip()), tq, tq, escape(output.rstrip()), tq)
 
 def escape(text):
     """
@@ -111,7 +111,7 @@ _outputFormatters = {
     'rawxml': _rawxml,
     'styledxml': _styledxml,
     'xml': _prettyxml,
-    'pretty' : _pretty,
+    'pretty': _pretty,
     'test': _test}
 
 def format(outputFormat, input, document, optargs):

@@ -128,8 +128,8 @@ class Contents(Transform):
                                           suggested_prefix='toc-entry')
             entry = nodes.paragraph('', '', reference)
             item = nodes.list_item('', entry)
-            if ( self.backlinks in ('entry', 'top')
-                 and title.next_node(nodes.reference) is None):
+            if (self.backlinks in ('entry', 'top')
+                and title.next_node(nodes.reference) is None):
                 if self.backlinks == 'entry':
                     title['refid'] = ref_id
                 elif self.backlinks == 'top':

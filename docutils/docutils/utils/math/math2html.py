@@ -1301,7 +1301,7 @@ class TextPosition(Position):
     "Extract the next string of the given length, or None if not enough text."
     if self.pos + length > len(self.text):
       return None
-    return self.text[self.pos : self.pos + length]
+    return self.text[self.pos : self.pos + length]                 # noqa: E203
 
 
 class Container:

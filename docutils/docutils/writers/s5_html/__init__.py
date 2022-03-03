@@ -207,8 +207,8 @@ class S5HTMLTranslator(html4css1.HTMLTranslator):
             for f in os.listdir(path):  # copy all files from each theme
                 if f == self.base_theme_file:
                     continue            # ... except the "__base__" file
-                if ( self.copy_file(f, path, dest)
-                     and f in self.required_theme_files):
+                if (self.copy_file(f, path, dest)
+                    and f in self.required_theme_files):
                     required_files_copied[f] = 1
             if default:
                 break                   # "default" theme has no base theme
