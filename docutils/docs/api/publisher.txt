@@ -85,11 +85,11 @@ a dictionary of setting names & values, like this::
 
 Settings from command-line options override configuration file
 settings, and they override application defaults.  For details, see
-`Docutils Runtime Settings`_.  See `Docutils Configuration Files`_ for
+`Docutils Runtime Settings`_.  See `Docutils Configuration`_ for
 details about individual settings.
 
 .. _Docutils Runtime Settings: ./runtime-settings.html
-.. _Docutils Configuration Files: ../user/tools.html
+.. _Docutils Configuration: ../user/config.html
 
 
 Encodings
