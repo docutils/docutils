@@ -109,9 +109,9 @@ class VersionInfoTests(unittest.TestCase):
         """Test comparing of __version_info__ instances to tuples."""
 
         # {<version string>: <version info>}
-        v01b =      VersionInfo(0, 1, 0, 'beta', 0, True)
-        v01 =       VersionInfo(0, 1, 0, 'final', 0, True)
-        v02b_dev =  VersionInfo(0, 2, 0, 'beta', 0, False)
+        v01b = VersionInfo(0, 1, 0, 'beta', 0, True)
+        v01 = VersionInfo(0, 1, 0, 'final', 0, True)
+        v02b_dev = VersionInfo(0, 2, 0, 'beta', 0, False)
 
         # compare to ordinary tuples:
         self.assertTrue(v01b < (0, 2))

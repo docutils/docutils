@@ -57,7 +57,7 @@ class SectNum(Transform):
                 # Use &nbsp; for spacing:
                 generated = nodes.generated(
                     '', (self.prefix + '.'.join(numbers) + self.suffix
-                         +  '\u00a0' * 3),
+                         + '\u00a0' * 3),
                     classes=['sectnum'])
                 title.insert(0, generated)
                 title['auto'] = 1

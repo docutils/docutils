@@ -283,7 +283,7 @@ def rfc_reference_role(role, rawtext, text, lineno, inliner,
     if "#" in text:
         rfcnum, section = utils.unescape(text).split("#", 1)
     else:
-        rfcnum, section  = utils.unescape(text), None
+        rfcnum, section = utils.unescape(text), None
     try:
         rfcnum = int(rfcnum)
         if rfcnum < 1:

@@ -431,7 +431,7 @@ class StateMachine:
         value is returned.
         """
         if transitions is None:
-            transitions =  state.transition_order
+            transitions = state.transition_order
         state_correction = None
         if self.debug:
             print('\nStateMachine.check_line: state="%s", transitions=%r.'
@@ -1106,11 +1106,11 @@ class ViewList:
         return '%s(%s, items=%s)' % (self.__class__.__name__,
                                      self.data, self.items)
 
-    def __lt__(self, other): return self.data <  self.__cast(other)
+    def __lt__(self, other): return self.data < self.__cast(other)
     def __le__(self, other): return self.data <= self.__cast(other)
     def __eq__(self, other): return self.data == self.__cast(other)
     def __ne__(self, other): return self.data != self.__cast(other)
-    def __gt__(self, other): return self.data >  self.__cast(other)
+    def __gt__(self, other): return self.data > self.__cast(other)
     def __ge__(self, other): return self.data >= self.__cast(other)
 
     def __cast(self, other):

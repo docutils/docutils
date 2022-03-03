@@ -75,7 +75,7 @@ longtable = r"""\usepackage{longtable,ltcaption,array}
 \newlength{\DUtablewidth} % internal use in tables
 """,
 stylesheet = '',
-fallbacks =  '',
+fallbacks = '',
 fallbacks_highlight = r"""
 % basic code highlight:
 \providecommand*\DUrolecomment[1]{\textcolor[rgb]{0.40,0.40,0.40}{#1}}

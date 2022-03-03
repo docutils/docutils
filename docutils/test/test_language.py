@@ -94,7 +94,7 @@ class LanguageTestCase(DocutilsTestSupport.CustomTestCase):
         Returns entries that are only in one dictionary.
         (missing_in_lang, more_than_in_ref).
         """
-        missing  = []   # in ref but not in l.
+        missing = []    # in ref but not in l.
         too_much = []   # in l but not in ref.
         for label in ref_dict.keys():
             if label not in l_dict:

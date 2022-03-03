@@ -173,7 +173,7 @@ class XMLTranslator(nodes.GenericNodeVisitor):
             self.xmlparser.parse(StringIO(xml_string))
         except xml.sax._exceptions.SAXParseException as error:
             col_num = self.the_handle.locator.getColumnNumber()
-            line_num =  self.the_handle.locator.getLineNumber()
+            line_num = self.the_handle.locator.getLineNumber()
             srcline = node.line
             if not isinstance(node.parent, nodes.TextElement):
                 srcline += 2 # directive content start line
