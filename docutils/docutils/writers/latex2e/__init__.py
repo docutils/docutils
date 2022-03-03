@@ -276,7 +276,7 @@ class Writer(writers.Writer):
         except IOError:
             templatepath = os.path.join(self.default_template_path,
                                         templatepath)
-            with open(templatepath, encoding= 'utf8') as fp:
+            with open(templatepath, encoding='utf8') as fp:
                 template = fp.read()
         # fill template
         self.assemble_parts() # create dictionary of parts

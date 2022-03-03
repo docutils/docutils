@@ -59,24 +59,24 @@ $fallbacks$pdfsetup
 $titledata""")
 
 parts = dict(
-head_prefix = r"""\documentclass[a4paper]{article}
+head_prefix=r"""\documentclass[a4paper]{article}
 """,
-requirements = r"""\usepackage{ifthen}
+requirements=r"""\usepackage{ifthen}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 """,
-latex_preamble = r"""% PDF Standard Fonts
+latex_preamble=r"""% PDF Standard Fonts
 \usepackage{mathptmx} % Times
 \usepackage[scaled=.90]{helvet}
 \usepackage{courier}
 """,
-longtable = r"""\usepackage{longtable,ltcaption,array}
+longtable=r"""\usepackage{longtable,ltcaption,array}
 \setlength{\extrarowheight}{2pt}
 \newlength{\DUtablewidth} % internal use in tables
 """,
-stylesheet = '',
-fallbacks = '',
-fallbacks_highlight = r"""
+stylesheet='',
+fallbacks='',
+fallbacks_highlight=r"""
 % basic code highlight:
 \providecommand*\DUrolecomment[1]{\textcolor[rgb]{0.40,0.40,0.40}{#1}}
 \providecommand*\DUroledeleted[1]{\textcolor[rgb]{0.40,0.40,0.40}{#1}}
@@ -92,7 +92,7 @@ fallbacks_highlight = r"""
   \fi%
 }
 """,
-pdfsetup = r"""
+pdfsetup=r"""
 % hyperlinks:
 \ifthenelse{\isundefined{\hypersetup}}{
   \usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue]{hyperref}
@@ -100,12 +100,12 @@ pdfsetup = r"""
   \urlstyle{same} % normal text font (alternatives: tt, rm, sf)
 }{}
 """,
-titledata = '')
+titledata='')
 
 head = head_template.substitute(parts)
 
 head_table = head_template.substitute(
-    dict(parts, requirements = parts['requirements'] + parts['longtable']))
+    dict(parts, requirements=parts['requirements'] + parts['longtable']))
 
 head_booktabs = head_template.substitute(
     dict(parts, requirements=parts['requirements']
@@ -116,7 +116,7 @@ head_textcomp = head_template.substitute(
          + '\\usepackage{textcomp} % text symbol macros\n'))
 
 head_alltt = head_template.substitute(
-    dict(parts, requirements = parts['requirements']
+    dict(parts, requirements=parts['requirements']
          + '\\usepackage{alltt}\n'))
 
 
@@ -150,8 +150,8 @@ head_textcomp + r"""
 
 totest['spanish quote'] = [
 [".. role:: language-es\n\nUnd damit :language-es:`basta`!",
-head_template.substitute(dict(parts, requirements =
-r"""\usepackage{ifthen}
+head_template.substitute(dict(parts,
+requirements=r"""\usepackage{ifthen}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage[spanish,english]{babel}
@@ -165,9 +165,9 @@ Und damit \foreignlanguage{spanish}{basta}!
 
 totest['code role'] = [
 [':code:`x=1`',
-head_template.substitute(dict(parts, requirements = parts['requirements']
+head_template.substitute(dict(parts, requirements=parts['requirements']
                               + '\\usepackage{color}\n',
-                              fallbacks = parts['fallbacks_highlight']))
+                              fallbacks=parts['fallbacks_highlight']))
 + r"""
 \texttt{\DUrole{code}{x=1}}
 
@@ -408,7 +408,7 @@ first section
 -------------
 """,
 # expected output
-head_template.substitute(dict(parts, requirements = parts['requirements'] +
+head_template.substitute(dict(parts, requirements=parts['requirements'] +
 r"""\setcounter{secnumdepth}{0}
 """)) + r"""
 some text
@@ -927,8 +927,8 @@ totest['table_nonstandard_class'] = [
 head_template.substitute(
     dict(
         parts,
-        requirements = parts['requirements'] + parts['longtable'],
-        fallbacks = r"""
+        requirements=parts['requirements'] + parts['longtable'],
+        fallbacks=r"""
 % class handling for environments (block-level elements)
 % \begin{DUclass}{spam} tries \DUCLASSspam and
 % \end{DUclass}{spam} tries \endDUCLASSspam
@@ -1042,7 +1042,7 @@ same paragraph.
 """,
 head_template.substitute(
     dict(parts,
-         fallbacks = r"""
+         fallbacks=r"""
 % class handling for environments (block-level elements)
 % \begin{DUclass}{spam} tries \DUCLASSspam and
 % \end{DUclass}{spam} tries \endDUCLASSspam
@@ -1110,8 +1110,8 @@ This is the \emph{document}.
 totest_stylesheet['two-styles'] = [
 # input
 ["""two stylesheet links in the header""",
-head_template.substitute(dict(parts, stylesheet =
-r"""\usepackage{data/spam}
+head_template.substitute(dict(parts,
+stylesheet=r"""\usepackage{data/spam}
 \input{data/ham.tex}
 """)) + r"""
 two stylesheet links in the header
@@ -1123,8 +1123,8 @@ two stylesheet links in the header
 totest_stylesheet_embed['two-styles'] = [
 # input
 ["""two stylesheets embedded in the header""",
-head_template.substitute(dict(parts, stylesheet =
-r"""% Cannot embed stylesheet:
+head_template.substitute(dict(parts,
+stylesheet=r"""% Cannot embed stylesheet:
 %  [Errno 2] No such file or directory: 'data/spam.sty'
 % embedded stylesheet: data/ham.tex
 \newcommand{\ham}{wonderful ham}

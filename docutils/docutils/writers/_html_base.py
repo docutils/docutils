@@ -517,7 +517,7 @@ class HTMLTranslator(nodes.NodeVisitor):
     def visit_address(self, node):
         self.visit_docinfo_item(node, 'address', meta=False)
         self.body.append(self.starttag(node, 'pre',
-                                       suffix= '', CLASS='address'))
+                                       suffix='', CLASS='address'))
 
     def depart_address(self, node):
         self.body.append('\n</pre>\n')
