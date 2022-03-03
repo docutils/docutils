@@ -57,19 +57,19 @@ def process_and_return_filelist(options):
     return dirs, files
 
 class BuildHtmlTests(unittest.TestCase):
-    tree = ( "_tmp_test_tree",
-             "_tmp_test_tree/one.txt",
-             "_tmp_test_tree/two.txt",
-             "_tmp_test_tree/dir1",
-             "_tmp_test_tree/dir1/one.txt",
-             "_tmp_test_tree/dir1/two.txt",
-             "_tmp_test_tree/dir2",
-             "_tmp_test_tree/dir2/one.txt",
-             "_tmp_test_tree/dir2/two.txt",
-             "_tmp_test_tree/dir2/sub",
-             "_tmp_test_tree/dir2/sub/one.txt",
-             "_tmp_test_tree/dir2/sub/two.txt",
-             )
+    tree = ("_tmp_test_tree",
+            "_tmp_test_tree/one.txt",
+            "_tmp_test_tree/two.txt",
+            "_tmp_test_tree/dir1",
+            "_tmp_test_tree/dir1/one.txt",
+            "_tmp_test_tree/dir1/two.txt",
+            "_tmp_test_tree/dir2",
+            "_tmp_test_tree/dir2/one.txt",
+            "_tmp_test_tree/dir2/two.txt",
+            "_tmp_test_tree/dir2/sub",
+            "_tmp_test_tree/dir2/sub/one.txt",
+            "_tmp_test_tree/dir2/sub/two.txt",
+            )
 
     def setUp(self):
         self.root = tempfile.mkdtemp()
@@ -94,14 +94,14 @@ class BuildHtmlTests(unittest.TestCase):
 
     def test_1(self):
         opts = ["--dry-run", self.root]
-        dirs, files = process_and_return_filelist( opts )
+        dirs, files = process_and_return_filelist(opts)
         self.assertEqual(files.count("one.txt"), 4)
 
     def test_local(self):
         opts = ["--dry-run", "--local", self.root]
-        dirs, files = process_and_return_filelist( opts )
-        self.assertEqual( len(dirs), 1)
-        self.assertEqual( files, [])
+        dirs, files = process_and_return_filelist(opts)
+        self.assertEqual(len(dirs), 1)
+        self.assertEqual(files, [])
 
 if __name__ == '__main__':
     unittest.main()

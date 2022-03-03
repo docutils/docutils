@@ -21,7 +21,7 @@ class AddNameToDocumentTitle(Directive):
     required_arguments = 0
     optional_arguments = 0
     final_argument_whitespace = True
-    option_spec = { }
+    option_spec = {}
     has_content = False
 
     def run(self):

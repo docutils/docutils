@@ -458,8 +458,8 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
             atts['class'] = 'docinfo-name'
         else:
             atts['class'] = 'field-name'
-        if ( self.settings.field_name_limit
-             and len(node.astext()) > self.settings.field_name_limit):
+        if (self.settings.field_name_limit
+            and len(node.astext()) > self.settings.field_name_limit):
             atts['colspan'] = 2
             self.context.append('</tr>\n'
                                 + self.starttag(node.parent, 'tr', '',
@@ -674,8 +674,8 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
     # use table for option list
     def visit_option_group(self, node):
         atts = {}
-        if ( self.settings.option_limit
-             and len(node.astext()) > self.settings.option_limit):
+        if (self.settings.option_limit
+            and len(node.astext()) > self.settings.option_limit):
             atts['colspan'] = 2
             self.context.append('</tr>\n<tr><td>&nbsp;</td>')
         else:
@@ -733,9 +733,9 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
             return False
         parent_length = len([n for n in node.parent if not isinstance(
             n, (nodes.Invisible, nodes.label))])
-        if ( self.compact_simple
-             or self.compact_field_list
-             or self.compact_p and parent_length == 1):
+        if (self.compact_simple
+            or self.compact_field_list
+            or self.compact_p and parent_length == 1):
             return True
         return False
 

@@ -1144,8 +1144,9 @@ class ViewList:
             self.items[i.start:i.stop] = item.items
             assert len(self.data) == len(self.items), 'data mismatch'
             if self.parent:
-                self.parent[(i.start or 0) + self.parent_offset
-                            : (i.stop or len(self)) + self.parent_offset] = item
+                k = (i.start or 0) + self.parent_offset
+                l = (i.stop or len(self)) + self.parent_offset
+                self.parent[k:l] = item
         else:
             self.data[i] = item
             if self.parent:
@@ -1162,8 +1163,9 @@ class ViewList:
             del self.data[i.start:i.stop]
             del self.items[i.start:i.stop]
             if self.parent:
-                del self.parent[(i.start or 0) + self.parent_offset
-                                : (i.stop or len(self)) + self.parent_offset]
+                k = (i.start or 0) + self.parent_offset
+                l = (i.stop or len(self)) + self.parent_offset
+                del self.parent[k:l]
 
     def __add__(self, other):
         if isinstance(other, ViewList):

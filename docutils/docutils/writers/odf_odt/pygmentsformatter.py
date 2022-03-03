@@ -19,7 +19,7 @@ class OdtPygmentsFormatter(pygments.formatter.Formatter):
         self.rststyle_function = rststyle_function
         self.escape_function = escape_function
 
-    def rststyle(self, name, parameters=( )):
+    def rststyle(self, name, parameters=()):
         return self.rststyle_function(name, parameters)
 
 

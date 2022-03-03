@@ -21,7 +21,7 @@ directives = {
       '\u05d6\u05d4\u05d9\u05e8\u05d5\u05ea': 'caution',
       'code (translation required)': 'code',
       '\u05e1\u05db\u05e0\u05d4': 'danger',
-      '\u05e9\u05d2\u05d9\u05d0\u05d4' : 'error',
+      '\u05e9\u05d2\u05d9\u05d0\u05d4': 'error',
       '\u05e8\u05de\u05d6': 'hint',
       '\u05d7\u05e9\u05d5\u05d1': 'important',
       '\u05d4\u05e2\u05e8\u05d4': 'note',

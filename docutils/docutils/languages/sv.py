@@ -35,7 +35,7 @@ labels = {
     'note':         'Notera',
     'tip':          'Tips',
     'warning':      'Varning',
-    'contents':     'Innehåll' }
+    'contents':     'Innehåll'}
 """Mapping of node class name to label text."""
 
 bibliographic_fields = {
@@ -51,7 +51,7 @@ bibliographic_fields = {
     'datum':           'date',
     'copyright':       'copyright',
     'dedikation':      'dedication',
-    'sammanfattning':  'abstract' }
+    'sammanfattning':  'abstract'}
 """Swedish (lowcased) to canonical name mapping for bibliographic fields."""
 
 author_separators = [';', ',']
