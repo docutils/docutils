@@ -94,7 +94,7 @@ closing_delimiters = u'\\\\.,;!?'
 # --------------------------
 
 quote_pairs = {# open char: matching closing characters # usage example
-               u'\xbb':   u'\xbb',         # » » Swedish
+               u'\xbb': u'\xbb',           # » » Swedish
                u'\u2018': u'\u201a',       # ‘ ‚ Albanian/Greek/Turkish
                u'\u2019': u'\u2019',       # ’ ’ Swedish
                u'\u201a': u'\u2018\u2019', # ‚ ‘ German ‚ ’ Polish

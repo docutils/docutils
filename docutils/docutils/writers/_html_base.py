@@ -1178,10 +1178,10 @@ class HTMLTranslator(nodes.NodeVisitor):
     # HTML and MathML also convert the math_code.
     # HTML container
     math_tags = {# math_output: (block, inline, class-arguments)
-                 'mathml':      ('div', '', ''),
-                 'html':        ('div', 'span', 'formula'),
-                 'mathjax':     ('div', 'span', 'math'),
-                 'latex':       ('pre', 'tt',   'math'),
+                 'html': ('div', 'span', 'formula'),
+                 'latex': ('pre', 'tt', 'math'),
+                 'mathml': ('div', '', ''),
+                 'mathjax': ('div', 'span', 'math'),
                 }
 
     def visit_math(self, node, math_env=''):
@@ -1196,10 +1196,10 @@ class HTMLTranslator(nodes.NodeVisitor):
         clsarg = self.math_tags[self.math_output][2]
         # LaTeX container
         wrappers = {# math_mode: (inline, block)
-                    'mathml':  ('$%s$',   '\\begin{%s}\n%s\n\\end{%s}'),
-                    'html':    ('$%s$',   '\\begin{%s}\n%s\n\\end{%s}'),
+                    'html': ('$%s$', '\\begin{%s}\n%s\n\\end{%s}'),
+                    'latex': (None, None),
+                    'mathml': ('$%s$', '\\begin{%s}\n%s\n\\end{%s}'),
                     'mathjax': (r'\(%s\)', '\\begin{%s}\n%s\n\\end{%s}'),
-                    'latex':   (None,     None),
                    }
         wrapper = wrappers[self.math_output][math_env != '']
         if (self.math_output == 'mathml'

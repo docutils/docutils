@@ -1128,7 +1128,7 @@ class ViewList:
 
     def __getitem__(self, i):
         if isinstance(i, slice):
-            assert i.step in (None, 1),  'cannot handle slice with stride'
+            assert i.step in (None, 1), 'cannot handle slice with stride'
             return self.__class__(self.data[i.start:i.stop],
                                   items=self.items[i.start:i.stop],
                                   parent=self, parent_offset=i.start or 0)
