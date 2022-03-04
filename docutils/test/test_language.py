@@ -198,12 +198,15 @@ class LanguageTestCase(DocutilsTestSupport.CustomTestCase):
                 text = text.encode('raw_unicode_escape')
             self.fail(text)
 
+
 languages_to_test = []
+
 
 def suite():
     s = LanguageTestSuite(languages_to_test)
     s.generateTests()
     return s
+
 
 def get_language_arguments():
     while len(sys.argv) > 1:

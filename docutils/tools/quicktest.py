@@ -51,6 +51,7 @@ options = [('pretty', 'p',
 """See ``distutils.fancy_getopt.FancyGetopt.__init__`` for a description of
 the data structure: (long option, short option, description)."""
 
+
 def usage():
     print(usage_header)
     for longopt, shortopt, description in options:
@@ -68,11 +69,14 @@ def usage():
             sys.stdout.write('%-15s' % ' ')
         print(description)
 
+
 def _pretty(input, document, optargs):
     return document.pformat()
 
+
 def _rawxml(input, document, optargs):
     return document.asdom().toxml()
+
 
 def _styledxml(input, document, optargs):
     docnode = document.asdom().childNodes[0]
@@ -81,8 +85,10 @@ def _styledxml(input, document, optargs):
                       % optargs['styledxml'],
                       docnode.toxml()))
 
+
 def _prettyxml(input, document, optargs):
     return document.asdom().toprettyxml('    ', '\n')
+
 
 def _test(input, document, optargs):
     tq = '"""'
@@ -98,6 +104,7 @@ def _test(input, document, optargs):
 ]
 """ % (tq, escape(input.rstrip()), tq, tq, escape(output.rstrip()), tq)
 
+
 def escape(text):
     """
     Return `text` in triple-double-quoted Python string form.
@@ -107,6 +114,7 @@ def escape(text):
     text = text.replace(' \n', ' \\n\\\n')  # protect trailing whitespace
     return text
 
+
 _outputFormatters = {
     'rawxml': _rawxml,
     'styledxml': _styledxml,
@@ -114,15 +122,18 @@ _outputFormatters = {
     'pretty': _pretty,
     'test': _test}
 
+
 def format(outputFormat, input, document, optargs):
     formatter = _outputFormatters[outputFormat]
     return formatter(input, document, optargs)
+
 
 def getArgs():
     if os.name == 'mac' and len(sys.argv) <= 1:
         return macGetArgs()
     else:
         return posixGetArgs(sys.argv[1:])
+
 
 def posixGetArgs(argv):
     outputFormat = 'pretty'
@@ -175,6 +186,7 @@ def posixGetArgs(argv):
         outputFile = open(args.pop(0), 'w')
     return inputFile, outputFile, outputFormat, optargs
 
+
 def macGetArgs():
     import EasyDialogs
     EasyDialogs.Message("""\
@@ -189,6 +201,7 @@ Use the next dialog to build a command line:
                   for (longopt, shortopt, description) in options]
     argv = EasyDialogs.GetArgv(optionlist=optionlist, addfolder=0)
     return posixGetArgs(argv)
+
 
 def main():
     # process cmdline arguments:

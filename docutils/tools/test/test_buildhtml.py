@@ -33,6 +33,7 @@ buildhtml_path = os.path.abspath(os.path.join(
                     os.path.dirname(__file__) or os.curdir,
                     '..', 'buildhtml.py'))
 
+
 def process_and_return_filelist(options):
     dirs = []
     files = []
@@ -55,6 +56,7 @@ def process_and_return_filelist(options):
     cout.close()
     p.wait()
     return dirs, files
+
 
 class BuildHtmlTests(unittest.TestCase):
     tree = ("_tmp_test_tree",
@@ -102,6 +104,7 @@ class BuildHtmlTests(unittest.TestCase):
         dirs, files = process_and_return_filelist(opts)
         self.assertEqual(len(dirs), 1)
         self.assertEqual(files, [])
+
 
 if __name__ == '__main__':
     unittest.main()

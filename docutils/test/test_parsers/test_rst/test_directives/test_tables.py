@@ -23,6 +23,7 @@ def suite():
     s.generateTests(totest)
     return s
 
+
 mydir = 'test_parsers/test_rst/test_directives/'
 utf_16_csv = os.path.join(mydir, 'utf-16.csv')
 utf_16_csv_rel = DocutilsTestSupport.utils.relative_path(None, utf_16_csv)
@@ -48,6 +49,7 @@ def null_bytes():
     csv_data = str(csv_data, 'latin1').splitlines()
     reader = csv.reader([line + '\n' for line in csv_data])
     next(reader)
+
 
 null_bytes_exception = DocutilsTestSupport.exception_data(null_bytes)[0]
 # Null bytes are valid in Python 3.11+:

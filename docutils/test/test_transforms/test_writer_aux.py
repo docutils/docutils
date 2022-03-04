@@ -14,6 +14,7 @@ from test_transforms import DocutilsTestSupport  # before importing docutils!
 from docutils.transforms import writer_aux
 from docutils.parsers.rst import Parser
 
+
 def suite():
     parser = Parser()
     s = DocutilsTestSupport.TransformTestSuite(parser)

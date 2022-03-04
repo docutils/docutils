@@ -351,6 +351,7 @@ def ensure_str(s):
                   DeprecationWarning, stacklevel=2)
     return s
 
+
 # definition moved here from `utils` to avoid circular import dependency
 def unescape(text, restore_backslashes=False, respect_whitespace=False):
     """
@@ -438,6 +439,7 @@ class Text(Node, str):
 
     def lstrip(self, chars=None):
         return self.__class__(str.lstrip(self, chars))
+
 
 class Element(Node):
 
@@ -1607,6 +1609,7 @@ class rubric(Titular, TextElement): pass
 class meta(PreBibliographic, Element):
     """Container for "invisible" bibliographic data, or meta-data."""
 
+
 # ========================
 #  Bibliographic Elements
 # ========================
@@ -2073,14 +2076,18 @@ class GenericNodeVisitor(NodeVisitor):
         """Override for generic, uniform traversals."""
         raise NotImplementedError
 
+
 def _call_default_visit(self, node):
     self.default_visit(node)
+
 
 def _call_default_departure(self, node):
     self.default_departure(node)
 
+
 def _nop(self, node):
     pass
+
 
 def _add_node_class_names(names):
     """Save typing with dynamic assignments:"""
@@ -2089,6 +2096,7 @@ def _add_node_class_names(names):
         setattr(GenericNodeVisitor, "depart_" + _name, _call_default_departure)
         setattr(SparseNodeVisitor, 'visit_' + _name, _nop)
         setattr(SparseNodeVisitor, 'depart_' + _name, _nop)
+
 
 _add_node_class_names(node_class_names)
 
@@ -2229,6 +2237,7 @@ def make_id(string):
     id = _non_id_at_ends.sub('', id)
     return str(id)
 
+
 _non_id_chars = re.compile('[^a-z0-9]+')
 _non_id_at_ends = re.compile('^[-0-9]+|-+$')
 _non_id_translate = {
@@ -2274,6 +2283,7 @@ _non_id_translate_digraphs = {
     0x0239: 'qp',      # qp digraph
 }
 
+
 def dupname(node, name):
     node['dupnames'].append(name)
     node['names'].remove(name)
@@ -2281,17 +2291,21 @@ def dupname(node, name):
     # don't want to throw unnecessary system_messages.
     node.referenced = 1
 
+
 def fully_normalize_name(name):
     """Return a case- and whitespace-normalized name."""
     return ' '.join(name.lower().split())
+
 
 def whitespace_normalize_name(name):
     """Return a whitespace-normalized name."""
     return ' '.join(name.split())
 
+
 def serial_escape(value):
     """Escape string values that are elements of a list, for serialization."""
     return value.replace('\\', r'\\').replace(' ', r'\ ')
+
 
 def pseudo_quoteattr(value):
     """Quote attributes for pseudo-xml"""

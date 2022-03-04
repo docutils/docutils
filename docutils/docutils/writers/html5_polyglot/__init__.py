@@ -34,6 +34,7 @@ from docutils import frontend, nodes, writers, io
 from docutils.transforms import writer_aux
 from docutils.writers import _html_base
 
+
 class Writer(writers._html_base.Writer):
 
     supported = ('html', 'html5', 'xhtml')

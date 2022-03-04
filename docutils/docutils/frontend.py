@@ -62,6 +62,7 @@ def store_multiple(option, opt, value, parser, *args, **kwargs):
     for key, value in kwargs.items():
         setattr(parser.values, key, value)
 
+
 def read_config_file(option, opt, value, parser):
     """
     Read a configuration file during option processing.  (Option callback.)
@@ -72,6 +73,7 @@ def read_config_file(option, opt, value, parser):
         parser.error(err)
     parser.values.update(new_settings, parser)
 
+
 def validate_encoding(setting, value, option_parser,
                       config_parser=None, config_section=None):
     try:
@@ -80,6 +82,7 @@ def validate_encoding(setting, value, option_parser,
         raise LookupError('setting "%s": unknown encoding: "%s"'
                           % (setting, value))
     return value
+
 
 def validate_encoding_error_handler(setting, value, option_parser,
                                     config_parser=None, config_section=None):
@@ -92,6 +95,7 @@ def validate_encoding_error_handler(setting, value, option_parser,
             '"xmlcharrefreplace", and possibly others; see documentation for '
             'the Python ``codecs`` module)' % value)
     return value
+
 
 def validate_encoding_and_error_handler(
     setting, value, option_parser, config_parser=None, config_section=None):
@@ -115,6 +119,7 @@ def validate_encoding_and_error_handler(
                       config_parser, config_section)
     return encoding
 
+
 def validate_boolean(setting, value, option_parser,
                      config_parser=None, config_section=None):
     """Check/normalize boolean settings:
@@ -127,6 +132,7 @@ def validate_boolean(setting, value, option_parser,
         return option_parser.booleans[value.strip().lower()]
     except KeyError:
         raise LookupError('unknown boolean value: "%s"' % value)
+
 
 def validate_ternary(setting, value, option_parser,
                      config_parser=None, config_section=None):
@@ -142,12 +148,14 @@ def validate_ternary(setting, value, option_parser,
     except KeyError:
         return value
 
+
 def validate_nonnegative_int(setting, value, option_parser,
                              config_parser=None, config_section=None):
     value = int(value)
     if value < 0:
         raise ValueError('negative value; must be positive or zero')
     return value
+
 
 def validate_threshold(setting, value, option_parser,
                        config_parser=None, config_section=None):
@@ -159,6 +167,7 @@ def validate_threshold(setting, value, option_parser,
         except (KeyError, AttributeError):
             raise LookupError('unknown threshold: %r.' % value)
 
+
 def validate_colon_separated_string_list(
     setting, value, option_parser, config_parser=None, config_section=None):
     if not isinstance(value, list):
@@ -167,6 +176,7 @@ def validate_colon_separated_string_list(
         last = value.pop()
         value.extend(last.split(':'))
     return value
+
 
 def validate_comma_separated_list(setting, value, option_parser,
                                   config_parser=None, config_section=None):
@@ -183,6 +193,7 @@ def validate_comma_separated_list(setting, value, option_parser,
     value.extend(items)
     return value
 
+
 def validate_url_trailing_slash(
     setting, value, option_parser, config_parser=None, config_section=None):
     if not value:
@@ -192,6 +203,7 @@ def validate_url_trailing_slash(
     else:
         return value + '/'
 
+
 def validate_dependency_file(setting, value, option_parser,
                              config_parser=None, config_section=None):
     try:
@@ -199,6 +211,7 @@ def validate_dependency_file(setting, value, option_parser,
     except OSError:
         # TODO: warn/info?
         return docutils.utils.DependencyList(None)
+
 
 def validate_strip_class(setting, value, option_parser,
                          config_parser=None, config_section=None):
@@ -212,6 +225,7 @@ def validate_strip_class(setting, value, option_parser,
             raise ValueError('Invalid class value %r (perhaps %r?)'
                              % (cls, normalized))
     return value
+
 
 def validate_smartquotes_locales(setting, value, option_parser,
                                  config_parser=None, config_section=None):
@@ -248,6 +262,7 @@ def validate_smartquotes_locales(setting, value, option_parser,
         lc_quotes.append((lang, quotes))
     return lc_quotes
 
+
 def make_paths_absolute(pathdict, keys, base_path=None):
     """
     Interpret filesystem path settings relative to the `base_path` given.
@@ -267,8 +282,10 @@ def make_paths_absolute(pathdict, keys, base_path=None):
                 value = make_one_path_absolute(base_path, value)
             pathdict[key] = value
 
+
 def make_one_path_absolute(base_path, path):
     return os.path.abspath(os.path.join(base_path, path))
+
 
 def filter_settings_spec(settings_spec, *exclude, **replace):
     """Return a copy of `settings_spec` excluding/replacing some settings.
@@ -860,6 +877,7 @@ Skipping "%s" configuration file.
             return dict(self[section])
         except KeyError:
             return {}
+
 
 class ConfigDeprecationWarning(FutureWarning):
     """Warning for deprecated configuration file features."""

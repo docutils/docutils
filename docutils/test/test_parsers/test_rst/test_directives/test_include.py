@@ -31,12 +31,16 @@ def suite():
     s.generateTests(totest)
     return s
 
+
 # prepend this directory (relative to the test root):
 def mydir(path):
     return os.path.join('test_parsers/test_rst/test_directives/', path)
+
+
 # make `path` relative with utils.relative_path():
 def reldir(path):
     return DocutilsTestSupport.utils.relative_path(None, path)
+
 
 include1 = mydir('include1.txt')
 include2 = mydir('include2.txt')

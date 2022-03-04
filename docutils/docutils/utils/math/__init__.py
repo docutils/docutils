@@ -25,11 +25,13 @@ It contains various modules for conversion between different math formats
 # helpers for Docutils math support
 # =================================
 
+
 def toplevel_code(code):
     """Return string (LaTeX math) `code` with environments stripped out."""
     chunks = code.split(r'\begin{')
     return r'\begin{'.join(chunk.split(r'\end{')[-1]
                            for chunk in chunks)
+
 
 def pick_math_environment(code, numbered=False):
     """Return the right math environment to display `code`.

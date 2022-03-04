@@ -33,6 +33,7 @@ class EncodingTestCase(DocutilsTestSupport.StandardTestCase):
         # xmlcharrefreplace handler is used.
         self.assertIn(b'EUR = &#8364;', result)
 
+
 class MovingArgsTestCase(DocutilsTestSupport.StandardTestCase):
 
     mys = {'stylesheet_path': '',

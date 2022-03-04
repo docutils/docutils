@@ -9,6 +9,7 @@ mini-reader to test get_reader_class with local reader
 
 from docutils import parsers
 
+
 class Parser(parsers.Parser):
 
     supported = ('dummy',)

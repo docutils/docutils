@@ -25,6 +25,7 @@ def suite():
     s.generateTests(totest)
     return s
 
+
 if platform.system() == "Windows":
     drive_prefix = os.path.splitdrive(os.getcwd())[0]
 else:

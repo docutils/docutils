@@ -41,6 +41,7 @@ Next paragraph.
 Final paragraph.
 """
 
+
 @unittest.skipUnless(parser, 'Optional "recommonmark" module not found.')
 class RecommonmarkParserTests(unittest.TestCase):
 

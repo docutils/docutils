@@ -23,6 +23,7 @@ def suite():
     s.generateTests(totest)
     return s
 
+
 totest = {}
 
 # Exhaustive listing of hyperlink variations: every combination of

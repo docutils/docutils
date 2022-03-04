@@ -39,6 +39,7 @@ class Html5WriterPublishPartsTestCase(HtmlWriterPublishPartsTestCase):
     standard_meta_value = standard_html_meta_value % 'utf-8'
     standard_html_prolog = '<!DOCTYPE html>\n'
 
+
 class Html5PublishPartsTestSuite(HtmlPublishPartsTestSuite):
 
     testcase_class = Html5WriterPublishPartsTestCase

@@ -29,6 +29,7 @@ paths = {'include': 'data/include.txt',  # included rst file
 latex_settings_overwrites = {'legacy_column_widths': False,
                              'use_latex_citations': True}
 
+
 class RecordDependenciesTests(unittest.TestCase):
 
     def get_record(self, **settings):

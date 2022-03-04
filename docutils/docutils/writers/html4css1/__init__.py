@@ -22,6 +22,7 @@ from docutils.transforms import writer_aux
 from docutils.writers import _html_base
 from docutils.writers._html_base import PIL, url2pathname
 
+
 class Writer(writers._html_base.Writer):
 
     supported = ('html', 'html4', 'html4css1', 'xhtml', 'xhtml10')

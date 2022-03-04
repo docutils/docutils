@@ -280,6 +280,7 @@ non_masked_addresses = ('peps@python.org',
                         'python-list@python.org',
                         'python-dev@python.org')
 
+
 def mask_email(ref, pepno=None):
     """
     Mask the email address in `ref` and return a replacement node.

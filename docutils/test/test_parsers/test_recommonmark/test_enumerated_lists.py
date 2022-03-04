@@ -17,10 +17,12 @@ if __name__ == '__main__':
     import __init__
 from test_parsers import DocutilsTestSupport
 
+
 def suite():
     s = DocutilsTestSupport.RecommonmarkParserTestSuite()
     s.generateTests(totest)
     return s
+
 
 totest = {}
 

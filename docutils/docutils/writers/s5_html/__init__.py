@@ -22,6 +22,7 @@ themes_dir_path = utils.relative_path(
     os.path.join(os.getcwd(), 'dummy'),
     os.path.join(os.path.dirname(__file__), 'themes'))
 
+
 def find_theme(name):
     # Where else to look for a theme?
     # Check working dir?  Destination dir?  Config dir?  Plugins dir?

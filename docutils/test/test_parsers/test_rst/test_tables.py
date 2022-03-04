@@ -20,6 +20,7 @@ def suite():
     s.generateTests(totest)
     return s
 
+
 mydir = 'test_parsers/test_rst/'
 include2 = os.path.join(mydir, 'test_directives/include2.txt')
 

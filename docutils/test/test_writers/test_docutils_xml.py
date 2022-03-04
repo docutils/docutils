@@ -127,8 +127,10 @@ def publish_xml(settings, source):
                                         writer_name='docutils_xml',
                                         settings_overrides=settings)
 
+
 # XML Test Case
 # -------------
+
 
 class DocutilsXMLTestCase(DocutilsTestSupport.StandardTestCase):
 

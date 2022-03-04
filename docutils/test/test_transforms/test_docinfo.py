@@ -26,6 +26,7 @@ def suite():
     s.generateTests(totest_ru)
     return s
 
+
 totest = {}
 totest_de = {}
 totest_ru = {}

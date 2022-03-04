@@ -39,6 +39,7 @@ class Visitor:
                 else:
                     text_map[chr(int(code))] = '{%s}' % latex_code
 
+
 def call_visitor(node, visitor=Visitor()):
     if isinstance(node, minidom.Text):
         name = 'Text'
@@ -50,6 +51,7 @@ def call_visitor(node, visitor=Visitor()):
         call_visitor(child)
     if hasattr(visitor, 'depart_' + name):
         getattr(visitor, 'depart_' + name)(node)
+
 
 document = minidom.parse(sys.stdin)
 call_visitor(document)

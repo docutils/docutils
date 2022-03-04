@@ -14,6 +14,7 @@ if __name__ == '__main__':
 from test_parsers import DocutilsTestSupport
 from docutils.parsers import get_parser_class
 
+
 class GetParserClassTestCase(DocutilsTestSupport.StandardTestCase):
 
     def test_registered_parser(self):
@@ -27,6 +28,7 @@ class GetParserClassTestCase(DocutilsTestSupport.StandardTestCase):
     def test_local_parser(self):
         # requires local-parser.py in test directory (testroot)
         wr = get_parser_class('local-parser')
+
 
 if __name__ == '__main__':
     import unittest

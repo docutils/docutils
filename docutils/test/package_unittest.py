@@ -33,12 +33,14 @@ Options:
   -d, --debug      Debug mode
 """
 
+
 def usageExit(msg=None):
     """Print usage and exit."""
     if msg:
         print(msg)
     print(USAGE)
     sys.exit(2)
+
 
 def parseArgs(argv=sys.argv):
     """Parse command line arguments and set TestFramework state.
@@ -64,6 +66,7 @@ def parseArgs(argv=sys.argv):
             usageExit("No command-line arguments supported yet.")
     except getopt.error as msg:
         usageExit(msg)
+
 
 def loadTestModules(path, name='', packages=None):
     """
@@ -122,9 +125,11 @@ def loadTestModules(path, name='', packages=None):
     sys.path.pop(0)
     return testSuite
 
+
 def path2mod(path):
     """Convert a file path to a dotted module name."""
     return path[:-3].replace(os.sep, '.')
+
 
 def import_module(name):
     """Import a dotted-path module name, and return the final component."""
@@ -133,6 +138,7 @@ def import_module(name):
     for comp in components[1:]:
         mod = getattr(mod, comp)
     return mod
+
 
 def main(suite=None):
     """

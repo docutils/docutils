@@ -18,8 +18,10 @@ from docutils import frontend, utils
 from docutils.writers import html4css1, pep_html, html5_polyglot
 from docutils.parsers import rst
 
+
 def fixpath(path):
     return os.path.abspath(os.path.join(*(path.split('/'))))
+
 
 class ConfigFileTests(unittest.TestCase):
 
@@ -352,6 +354,7 @@ class HelperFunctionsTests(unittest.TestCase):
         with self.assertWarnsRegex(DeprecationWarning,
                                    'Set attributes via configuration settings'):
             reporter.set_conditions('foo', 1, 4)  # trigger warning
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -58,6 +58,7 @@ def check_encoding(stream, encoding):
     except (LookupError, AttributeError, TypeError):
         return None
 
+
 def error_string(err):
     """Return string representation of Exception `err`.
     """

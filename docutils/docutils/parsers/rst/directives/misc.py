@@ -16,6 +16,7 @@ from docutils.parsers.rst.directives.body import CodeBlock, NumberLines
 from docutils.parsers.rst.roles import set_classes
 from docutils.transforms import misc
 
+
 class Include(Directive):
 
     """
@@ -327,6 +328,7 @@ class Replace(Directive):
         if node:
             return messages + node.children
         return messages
+
 
 class Unicode(Directive):
 

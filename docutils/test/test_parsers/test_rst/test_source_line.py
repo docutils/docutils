@@ -39,6 +39,7 @@ def suite():
     s.generateTests(totest)
     return s
 
+
 mydir = 'test_parsers/test_rst/'
 include14 = os.path.join(mydir, 'includes/include14.txt')
 

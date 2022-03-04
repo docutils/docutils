@@ -32,6 +32,7 @@ def suite():
     s.generateTests(totest)
     return s
 
+
 totest = {}
 
 totest['system_message_sections'] = ((Substitutions, Messages, FilterMessages), [

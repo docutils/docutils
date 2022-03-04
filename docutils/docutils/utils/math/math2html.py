@@ -687,6 +687,7 @@ class Cloner:
   clone = classmethod(clone)
   create = classmethod(create)
 
+
 class ContainerExtractor:
   """A class to extract certain containers.
 
@@ -784,6 +785,7 @@ class LoneCommand(Parser):
     "Read nothing"
     return []
 
+
 class TextParser(Parser):
   "A parser for a command and a bit of text"
 
@@ -820,6 +822,7 @@ class TextParser(Parser):
       return True
     return False
 
+
 class ExcludingParser(Parser):
   "A parser that excludes the final line"
 
@@ -828,6 +831,7 @@ class ExcludingParser(Parser):
     contents = []
     self.parseending(reader, lambda: self.parsecontainer(reader, contents))
     return contents
+
 
 class BoundedParser(ExcludingParser):
   "A parser bound by a final line"
@@ -839,6 +843,7 @@ class BoundedParser(ExcludingParser):
     reader.nextline()
     return contents
 
+
 class BoundedDummy(Parser):
   "A bound parser that ignores everything"
 
@@ -848,6 +853,7 @@ class BoundedDummy(Parser):
     # skip last line
     reader.nextline()
     return []
+
 
 class StringParser(Parser):
   "Parses just a string"
@@ -875,6 +881,7 @@ class ContainerOutput:
     "Decide if the output is empty: by default, not empty."
     return False
 
+
 class EmptyOutput(ContainerOutput):
 
   def gethtml(self, container):
@@ -885,12 +892,14 @@ class EmptyOutput(ContainerOutput):
     "This output is particularly empty."
     return True
 
+
 class FixedOutput(ContainerOutput):
   "Fixed output"
 
   def gethtml(self, container):
     "Return constant HTML code"
     return container.html
+
 
 class ContentsOutput(ContainerOutput):
   "Outputs the contents converted to HTML"
@@ -906,6 +915,7 @@ class ContentsOutput(ContainerOutput):
         return html
       html += element.gethtml()
     return html
+
 
 class TaggedOutput(ContentsOutput):
   "Outputs an HTML tag surrounding the contents."
@@ -972,6 +982,7 @@ class TaggedOutput(ContentsOutput):
     if self.tag == '':
       return False
     return True
+
 
 class FilteredOutput(ContentsOutput):
   "Returns the output in the contents, but filtered:"
@@ -1127,6 +1138,7 @@ class Globable:
       return None
     return nextending.ending
 
+
 class EndingList:
   "A list of position endings"
 
@@ -1265,6 +1277,7 @@ class Position(Globable):
   def error(self, message):
     "Show an error message and the position identifier."
     Trace.error(message + ': ' + self.identifier())
+
 
 class TextPosition(Position):
   "A parse position based on a raw text."
@@ -1447,6 +1460,7 @@ class BlackBox(Container):
     self.parser = LoneCommand()
     self.output = EmptyOutput()
     self.contents = []
+
 
 class StringContainer(Container):
   "A container for a single string"
@@ -1683,6 +1697,7 @@ class TaggedBit(FormulaBit):
     self.output = TaggedOutput().settag(tag, empty=True)
     return self
 
+
 class FormulaConstant(Constant):
   "A constant string in a formula"
 
@@ -1719,6 +1734,7 @@ class RawText(FormulaBit):
     self.add(FormulaConstant(alpha))
     self.type = 'alpha'
 
+
 class FormulaSymbol(FormulaBit):
   "A symbol inside a formula"
 
@@ -1748,6 +1764,7 @@ class FormulaSymbol(FormulaBit):
     self.skiporiginal(pos.current(), pos)
     self.contents.append(FormulaConstant(symbol))
 
+
 class FormulaNumber(FormulaBit):
   "A string of digits in a formula"
 
@@ -1761,6 +1778,7 @@ class FormulaNumber(FormulaBit):
     self.add(FormulaConstant(digits))
     self.type = 'number'
 
+
 class Comment(FormulaBit):
   "A LaTeX comment: % to the end of the line."
 
@@ -1773,6 +1791,7 @@ class Comment(FormulaBit):
   def parsebit(self, pos):
     "Parse to the end of the line."
     self.original += pos.globincluding('\n')
+
 
 class WhiteSpace(FormulaBit):
   "Some white space inside a formula."
@@ -1859,6 +1878,7 @@ class Bracket(FormulaBit):
       else:
         self.literal += pos.skipcurrent()
     self.original += self.literal
+
 
 class SquareBracket(Bracket):
   "A [] bracket inside a formula"
@@ -2029,6 +2049,7 @@ class WholeFormula(FormulaBit):
     while not pos.finished():
       self.add(self.factory.parseany(pos))
 
+
 class FormulaFactory:
   "Construct bits of formula"
 
@@ -2187,6 +2208,7 @@ class FormulaCommand(FormulaBit):
       upgreek.type = 'font'
     return upgreek
 
+
 class CommandBit(FormulaCommand):
   "A formula bit that includes a command"
 
@@ -2246,6 +2268,7 @@ class CommandBit(FormulaCommand):
     self.add(bracket)
     return bracket
 
+
 class EmptyCommand(CommandBit):
   "An empty command (without parameters)"
 
@@ -2254,6 +2277,7 @@ class EmptyCommand(CommandBit):
   def parsebit(self, pos):
     "Parse a command without parameters"
     self.contents = [FormulaConstant(self.translated)]
+
 
 class SpacedCommand(CommandBit):
   """An empty command which should have math spacing in formulas."""
@@ -2266,6 +2290,7 @@ class SpacedCommand(CommandBit):
     # self.contents = [FormulaConstant('\u205f' + self.translated + '\u205f')]
     # pad with THIN SPACE (1/5 em)
     self.contents = [FormulaConstant('\u2009' + self.translated + '\u2009')]
+
 
 class AlphaCommand(EmptyCommand):
   """A command without parameters whose result is alphabetical."""
@@ -2282,6 +2307,7 @@ class AlphaCommand(EmptyCommand):
         # Greek Capital letters are upright in LaTeX default math-style.
         # TODO: use italic, like in MathML and "iso" math-style?
         self.type = 'alpha'
+
 
 class OneParamFunction(CommandBit):
   "A function of one parameter"
@@ -2302,6 +2328,7 @@ class OneParamFunction(CommandBit):
       self.html = [self.commandmap[self.original]]
       self.simplified = True
 
+
 class SymbolFunction(CommandBit):
   "Find a function which is represented by a symbol (like _ or ^)"
 
@@ -2317,6 +2344,7 @@ class SymbolFunction(CommandBit):
     pos.skip(self.command)
     self.output = TaggedOutput().settag(self.translated)
     self.parseparameter(pos)
+
 
 class TextFunction(CommandBit):
   "A function where parameters are read as text."
@@ -2343,6 +2371,7 @@ class FontFunction(OneParamFunction):
     "Simplify if possible using a single character."
     self.type = 'font'
     self.simplifyifpossible()
+
 
 FormulaFactory.types += [FormulaCommand, SymbolFunction]
 FormulaCommand.types = [
@@ -2422,6 +2451,7 @@ class FormulaEquation(CommandBit):
     self.output = ContentsOutput()
     self.add(self.factory.parsetype(WholeFormula, pos))
 
+
 class FormulaCell(FormulaCommand):
   "An array cell inside a row"
 
@@ -2436,6 +2466,7 @@ class FormulaCell(FormulaCommand):
     if pos.finished():
       return
     self.add(self.factory.parsetype(WholeFormula, pos))
+
 
 class FormulaRow(FormulaCommand):
   "An array row inside an array"
@@ -2464,6 +2495,7 @@ class FormulaRow(FormulaCommand):
     "Create the cell that corresponds to the given index."
     alignment = self.alignments[index % len(self.alignments)]
     return self.factory.create(FormulaCell).setalignment(alignment)
+
 
 class MultiRowFormula(CommandBit):
   "A formula with multiple rows."
@@ -2508,6 +2540,7 @@ class MultiRowFormula(CommandBit):
     self.rows.append(row)
     self.add(row)
 
+
 class FormulaArray(MultiRowFormula):
   "An array within a formula"
 
@@ -2532,6 +2565,7 @@ class FormulaArray(MultiRowFormula):
     for l in literal:
       self.alignments.append(l)
 
+
 class FormulaMatrix(MultiRowFormula):
   "A matrix (array with center alignment)."
 
@@ -2543,6 +2577,7 @@ class FormulaMatrix(MultiRowFormula):
     self.valign = 'c'
     self.alignments = ['c']
     self.parserows(pos)
+
 
 class FormulaCases(MultiRowFormula):
   "A cases statement"
@@ -2562,6 +2597,7 @@ class FormulaCases(MultiRowFormula):
     brace = BigBracket(len(self.contents), '{', 'l')
     self.contents = brace.getcontents() + [array]
 
+
 class EquationEnvironment(MultiRowFormula):
   "A \\begin{}...\\end equation environment with rows and cells."
 
@@ -2580,6 +2616,7 @@ class EquationEnvironment(MultiRowFormula):
 
       self.alignments = ['l']
     self.parserows(pos)
+
 
 class BeginCommand(CommandBit):
   "A \\begin{}...\\end command and what it entails (array, cases, aligned)"
@@ -2607,6 +2644,7 @@ class BeginCommand(CommandBit):
     bit = self.factory.create(EquationEnvironment)
     bit.piece = piece
     return bit
+
 
 FormulaCommand.types += [BeginCommand]
 
@@ -2648,6 +2686,7 @@ class CombiningFunction(OneParamFunction):
       return None
     return self.parseparameter(pos)
 
+
 class OversetFunction(OneParamFunction):
   "A function that decorates some bit of text with an overset."
 
@@ -2662,6 +2701,7 @@ class OversetFunction(OneParamFunction):
     self.contents.insert(0, self.symbol)
     self.parameter.output = TaggedOutput().settag('span class="base"')
     self.simplifyifpossible()
+
 
 class UndersetFunction(OneParamFunction):
   "A function that decorates some bit of text with an underset."
@@ -2678,6 +2718,7 @@ class UndersetFunction(OneParamFunction):
     self.parameter.output = TaggedOutput().settag('span class="base"')
     self.simplifyifpossible()
 
+
 class LimitCommand(EmptyCommand):
   "A command which accepts limits above and below, in display mode."
 
@@ -2688,6 +2729,7 @@ class LimitCommand(EmptyCommand):
     self.output = TaggedOutput().settag('span class="limits"')
     symbol = self.translated
     self.contents.append(TaggedBit().constant(symbol, 'span class="limit"'))
+
 
 class LimitPreviousCommand(LimitCommand):
   "A command to limit the previous command."
@@ -2781,6 +2823,7 @@ class LimitsProcessor(MathsProcessor):
     del contents[index]
     return bit
 
+
 class BracketCommand(OneParamFunction):
   "A command which defines a bracket."
 
@@ -2796,6 +2839,7 @@ class BracketCommand(OneParamFunction):
     self.command = '\\' + direction
     self.contents = [FormulaConstant(character)]
     return self
+
 
 class BracketProcessor(MathsProcessor):
   "A processor for bracket commands."
@@ -2960,6 +3004,7 @@ class ParameterFunction(CommandBit):
       return None
     return param.literalvalue
 
+
 class HybridFunction(ParameterFunction):
   """
   A parameter function where the output is also defined using a template.
@@ -3112,6 +3157,7 @@ def math2html(formula):
   whole.process()
   return ''.join(whole.gethtml())
 
+
 def main():
   "Main function, called if invoked from the command line"
   args = sys.argv
@@ -3121,6 +3167,7 @@ def main():
     exit()
   result = math2html(args[0])
   Trace.message(result)
+
 
 if __name__ == '__main__':
   main()

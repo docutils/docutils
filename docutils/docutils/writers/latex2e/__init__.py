@@ -500,6 +500,7 @@ class SortableDict(dict):
 class PreambleCmds:
     """Building blocks for the latex preamble."""
 
+
 # Requirements and Setup
 
 PreambleCmds.color = r"""\usepackage{color}"""
@@ -590,6 +591,7 @@ def _read_block(fp):
             break
         block.append(line)
     return ''.join(block).rstrip()
+
 
 _docutils_sty = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                              'docutils.sty')

@@ -441,7 +441,9 @@ class math:
 # >>> math(CLASS='bold').xml_starttag()
 # '<math class="bold">'
 
+
 class mtable(math): pass
+
 
 # >>> mt = mtable(displaystyle=True)
 # >>> mt
@@ -476,24 +478,29 @@ class mrow(math):
 # >>> mrow(displaystyle=False)
 # mrow(displaystyle=False)
 
+
 # The elements <msqrt>, <mstyle>, <merror>, <mpadded>, <mphantom>, <menclose>,
 # <mtd>, <mscarry>, and <math> treat their contents as a single inferred mrow
 # formed from all their children.
 class MathRowSchema(math):
     """Base class for elements treating content as a single inferred mrow."""
 
-class mtr(MathRowSchema): pass
 
+class mtr(MathRowSchema): pass
 class mtd(MathRowSchema): pass
+
 
 class menclose(MathRowSchema):
     nchildren = 1 # \boxed expects one argument or a group
 
+
 class mphantom(MathRowSchema):
     nchildren = 1 # \phantom expects one argument or a group
 
+
 class msqrt(MathRowSchema):
     nchildren = 1 # \sqrt expects one argument or a group
+
 
 class mstyle(MathRowSchema):
     nchildren = 1 # \mathrm, ... expect one argument or a group
@@ -513,10 +520,12 @@ class MathToken(math):
     def _xml_body(self, level=0):
         return [str(self.data).translate(self.xml_entities)]
 
+
 class mtext(MathToken): pass
 class mi(MathToken): pass
 class mo(MathToken): pass
 class mn(MathToken): pass
+
 
 # >>> mo('<')
 # mo('<')
@@ -544,10 +553,14 @@ class MathSchema(math):
             self.switch = False
         return current_node
 
+
 class msub(MathSchema): pass
 class msup(MathSchema): pass
+
+
 class msubsup(MathSchema):
     nchildren = 3
+
 
 # >>> msub(mi('x'), mo('-'))
 # msub(mi('x'), mo('-'))
@@ -558,6 +571,7 @@ class msubsup(MathSchema):
 
 class munder(msub): pass
 class mover(msup): pass
+
 
 # >>> munder(mi('lim'), mo('-'), accent=False)
 # munder(mi('lim'), mo('-'), accent=False)
@@ -575,11 +589,14 @@ class mover(msup): pass
 
 class munderover(msubsup): pass
 
+
 class mroot(MathSchema):
     nchildren = 2
 
+
 class mfrac(math):
     nchildren = 2
+
 
 class mspace(math):
     nchildren = 0
@@ -607,6 +624,7 @@ def tex_cmdname(string):
         m = re.match(r'(.?)(.*)', string)
     return m.group(1), m.group(2)
 
+
 # Test:
 #
 # >>> tex_cmdname('name_2') # first non-letter terminates
@@ -617,6 +635,7 @@ def tex_cmdname(string):
 # ('1', ' 2')
 # >>> tex_cmdname('') # empty string
 # ('', '')
+
 
 def tex_number(string):
     """Return leading number literal and remainder of `string`.
@@ -630,6 +649,7 @@ def tex_number(string):
         return '', string
     return m.group(1), m.group(2)
 
+
 # Test:
 #
 # >>> tex_number(' 23.4b') # leading whitespace -> no number
@@ -642,6 +662,7 @@ def tex_number(string):
 # ('4', ', 2')
 # >>> tex_number('1 000.4')
 # ('1', ' 000.4')
+
 
 def tex_token(string):
     """Return first simple TeX token and remainder of `string`.
@@ -672,6 +693,7 @@ def tex_token(string):
 # ('', '')
 # >>> tex_token('\{escaped bracket')
 # ('\\{', 'escaped bracket')
+
 
 def tex_group(string):
     """Return first TeX group or token and remainder of `string`.
@@ -742,6 +764,7 @@ def tex_token_or_group(string):
 
 # >>> tex_token_or_group('\{no group but left bracket')
 # ('\\{', 'no group but left bracket')
+
 
 def tex_optarg(string):
     """Return optional argument and remainder.
@@ -1187,6 +1210,7 @@ def handle_cmd(name, node, string): # noqa: C901 TODO make this less complex
 # (munderover(mo('⟵'), mi('α')), '{10}')
 # >>> handle_cmd('xleftarrow', math(), r'[\alpha=5]{10}')
 # (munderover(mo('⟵'), mrow(mi('α'), mo('='), mn('5'))), '{10}')
+
 
 def handle_script_or_limit(node, c, limits=''):
     """Append script or limit element to `node`."""

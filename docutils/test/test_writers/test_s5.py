@@ -26,6 +26,7 @@ def suite():
     s.generateTests(totest_2)
     return s
 
+
 interpolations = {
         'version': DocutilsTestSupport.docutils.__version__,
         'drive': '', }
