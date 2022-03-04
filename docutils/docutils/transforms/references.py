@@ -696,15 +696,15 @@ class Substitutions(Transform):
 
             parent = ref.parent
             index = parent.index(ref)
-            if  ('ltrim' in subdef.attributes
-                    or 'trim' in subdef.attributes):
+            if ('ltrim' in subdef.attributes
+                or 'trim' in subdef.attributes):
                 if index > 0 and isinstance(parent[index - 1],
                                             nodes.Text):
                     parent[index - 1] = parent[index - 1].rstrip()
-            if  ('rtrim' in subdef.attributes
-                    or 'trim' in subdef.attributes):
-                if  (len(parent) > index + 1
-                        and isinstance(parent[index + 1], nodes.Text)):
+            if ('rtrim' in subdef.attributes
+                or 'trim' in subdef.attributes):
+                if (len(parent) > index + 1
+                    and isinstance(parent[index + 1], nodes.Text)):
                     parent[index + 1] = parent[index + 1].lstrip()
             subdef_copy = subdef.deepcopy()
             try:

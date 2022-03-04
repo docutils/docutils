@@ -1384,7 +1384,7 @@ class document(Root, Structural, Element):
                 prefix = id + '-'
             else:
                 prefix = id_prefix + auto_id_prefix
-                if  prefix.endswith('%'):
+                if prefix.endswith('%'):
                     prefix = '%s%s-' % (prefix[:-1],
                                         suggested_prefix
                                         or make_id(node.tagname))
@@ -2019,8 +2019,8 @@ class NodeVisitor:
 
         Raise an exception unless overridden.
         """
-        if  (self.document.settings.strict_visitor
-             or node.__class__.__name__ not in self.optional):
+        if (self.document.settings.strict_visitor
+            or node.__class__.__name__ not in self.optional):
             raise NotImplementedError(
                 '%s visiting unknown node type: %s'
                 % (self.__class__, node.__class__.__name__))
@@ -2031,8 +2031,8 @@ class NodeVisitor:
 
         Raise exception unless overridden.
         """
-        if  (self.document.settings.strict_visitor
-             or node.__class__.__name__ not in self.optional):
+        if (self.document.settings.strict_visitor
+            or node.__class__.__name__ not in self.optional):
             raise NotImplementedError(
                 '%s departing unknown node type: %s'
                 % (self.__class__, node.__class__.__name__))

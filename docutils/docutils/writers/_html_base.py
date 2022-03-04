@@ -1240,7 +1240,7 @@ class HTMLTranslator(nodes.NodeVisitor):
             math2html.DocumentParameters.displaymode = (math_env != '')
             math_code = math2html.math2html(math_code)
         elif self.math_output == 'mathml':
-            if  'XHTML 1' in self.doctype:
+            if 'XHTML 1' in self.doctype:
                 self.doctype = self.doctype_mathml
                 self.content_type = self.content_type_mathml
             converter = ' '.join(self.math_output_options).lower()
