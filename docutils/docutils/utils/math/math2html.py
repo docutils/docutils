@@ -864,7 +864,6 @@ class StringParser(Parser):
     return contents
 
 
-
 class ContainerOutput:
   "The generic HTML output for a container."
 
@@ -2866,7 +2865,6 @@ FormulaProcessor.processors += [
     ]
 
 
-
 class ParameterDefinition:
   "The definition of a parameter in a hybrid function."
   "[] parameters are optional, {} parameters are mandatory."
@@ -3104,7 +3102,6 @@ class HybridSize:
 
 
 FormulaCommand.types += [HybridFunction]
-
 
 
 def math2html(formula):

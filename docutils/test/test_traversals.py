@@ -15,7 +15,6 @@ from docutils.writers.null import Writer as NullWriter
 import docutils
 
 
-
 stop_traversal_input = '''
 ==================
    Train Travel

@@ -763,7 +763,6 @@ class TargetNotes(Transform):
     """The TargetNotes transform has to be applied after `IndirectHyperlinks`
     but before `Footnotes`."""
 
-
     def __init__(self, document, startnode):
         Transform.__init__(self, document, startnode=startnode)
 

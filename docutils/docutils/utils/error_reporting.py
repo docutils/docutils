@@ -98,7 +98,6 @@ class SafeString:
         self.encoding_errors = encoding_errors
         self.decoding_errors = decoding_errors
 
-
     def __str__(self):
         try:
             return str(self.data)

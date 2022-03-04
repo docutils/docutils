@@ -275,7 +275,6 @@ class HTMLTranslator(nodes.NodeVisitor):
                           }
     """Character references for characters with a special meaning in HTML."""
 
-
     def __init__(self, document):
         nodes.NodeVisitor.__init__(self, document)
         self.settings = settings = document.settings

@@ -64,7 +64,6 @@ class PublisherTests(DocutilsTestSupport.StandardTestCase):
             core.publish_cmdline(argv=['nonexisting/path'],
                                  settings_overrides={'traceback': True})
 
-
     def test_output_error_handling(self):
         # pass IOErrors to calling application if `traceback` is True
         with self.assertRaises(io.OutputError):

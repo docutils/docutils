@@ -218,7 +218,6 @@ class SafeStringTests_locale(unittest.TestCase):
         self.assertEqual(str(self.uose), str(self.wuose))
 
 
-
 class ErrorReportingTests(unittest.TestCase):
     """
     Test cases where error reporting can go wrong.

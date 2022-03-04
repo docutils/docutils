@@ -17,7 +17,6 @@ import docutils
 from docutils import frontend, writers, nodes
 
 
-
 class RawXmlError(docutils.ApplicationError): pass
 
 
