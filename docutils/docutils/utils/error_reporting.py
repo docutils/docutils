@@ -135,7 +135,7 @@ class SafeString:
             return u
         except UnicodeError as error: # catch ..Encode.. and ..Decode.. errors
             if isinstance(self.data, EnvironmentError):
-                return  "[Errno %s] %s: '%s'" % (
+                return "[Errno %s] %s: '%s'" % (
                     self.data.errno,
                     SafeString(self.data.strerror, self.encoding,
                                self.decoding_errors),

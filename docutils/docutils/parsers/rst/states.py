@@ -851,7 +851,7 @@ class Inliner:
         node_list = [reference]
 
         if rawsource[-2:] == '__':
-            if  target and (aliastype == 'name'):
+            if target and (aliastype == 'name'):
                 reference['refname'] = alias
                 self.document.note_refname(reference)
                 # self.document.note_indirect_target(target) # required?
