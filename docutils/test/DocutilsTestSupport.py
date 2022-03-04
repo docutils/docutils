@@ -142,7 +142,7 @@ class CustomTestCase(StandardTestCase):
 
     Note: the modified signature is incompatible with
     the "pytest" and "nose" frameworks.
-    """ # cf. feature-request #81
+    """  # cf. feature-request #81
 
     compare = difflib.Differ().compare
     """Comparison method shared by all subclasses."""
@@ -262,7 +262,7 @@ class CustomTestSuite(unittest.TestSuite):
             if not mydir:
                 mydir = os.curdir
             if callerpath.startswith(mydir):
-                self.id = callerpath[len(mydir) + 1:] # caller's module
+                self.id = callerpath[len(mydir) + 1:]  # caller's module
             else:
                 self.id = callerpath
         else:
@@ -662,7 +662,7 @@ class WriterPublishTestCase(CustomTestCase, docutils.SettingsSpec):
 
     settings_default_overrides = {'_disable_config': True,
                                   'strict_visitor': True}
-    writer_name = '' # set in subclasses or constructor
+    writer_name = ''  # set in subclasses or constructor
 
     def __init__(self, *args, writer_name='', **kwargs):
         if writer_name:

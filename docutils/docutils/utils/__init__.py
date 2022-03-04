@@ -168,8 +168,9 @@ class Reporter:
             if line is not None:
                 attributes.setdefault('line', line)
                 # assert source is not None, "node has line- but no source-argument"
-        if 'source' not in attributes: # 'line' is absolute line number
-            try: # look up (source, line-in-source)
+        if 'source' not in attributes:
+            # 'line' is absolute line number
+            try:
                 source, line = self.get_source_and_line(attributes.get('line'))
             except AttributeError:
                 source, line = None, None
@@ -345,7 +346,7 @@ def decode_path(path):
         return path
     try:
         path = path.decode(sys.getfilesystemencoding(), 'strict')
-    except AttributeError: # default value None has no decode method
+    except AttributeError:  # default value None has no decode method
         if not path:
             return ''
         raise ValueError('`path` value must be a String or ``None``, '
@@ -525,7 +526,7 @@ def get_stylesheet_list(settings):
         # expand relative paths if found in stylesheet-dirs:
         stylesheets = [find_file_in_dirs(path, settings.stylesheet_dirs)
                        for path in stylesheets]
-        if os.sep != '/': # for URLs, we need POSIX paths
+        if os.sep != '/':  # for URLs, we need POSIX paths
             stylesheets = [path.replace(os.sep, '/') for path in stylesheets]
     return stylesheets
 

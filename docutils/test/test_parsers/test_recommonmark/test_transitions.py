@@ -203,7 +203,7 @@ A paragraph and two transitions.
 ----------
 
 ----------
-""", # the same:
+""",
 """\
 <document source="test data">
     <paragraph>

@@ -38,7 +38,7 @@ class SectNum(Transform):
             if self.maxdepth is None:
                 self.maxdepth = sys.maxsize
             self.update_section_numbers(self.document)
-        else: # store details for eventual section numbering by the writer
+        else:  # store details for eventual section numbering by the writer
             self.document.settings.sectnum_depth = self.maxdepth
             self.document.settings.sectnum_start = self.startvalue
             self.document.settings.sectnum_prefix = self.prefix
@@ -140,8 +140,8 @@ class Contents(Transform):
             entries.append(item)
         if entries:
             contents = nodes.bullet_list('', *entries)
-            if auto: # auto-numbered sections
-                contents['classes'].append('auto-toc') # auto-numbered sections
+            if auto:  # auto-numbered sections
+                contents['classes'].append('auto-toc')
             return contents
         else:
             return []

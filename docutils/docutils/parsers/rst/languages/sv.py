@@ -15,21 +15,21 @@ __docformat__ = 'reStructuredText'
 
 directives = {
       'observera': 'attention',
-      'akta': 'caution', # also 'försiktigt'
+      'akta': 'caution',  # also 'försiktigt'
       'kod': 'code',
       'fara': 'danger',
       'fel': 'error',
-      'vink': 'hint', # also 'hint'
+      'vink': 'hint',  # also 'hint'
       'viktigt': 'important',
       'notera': 'note',
       'tips': 'tip',
       'varning': 'warning',
-      'anmärkning': 'admonition', # literal 'tillrättavisning', 'förmaning'
+      'anmärkning': 'admonition',  # literal 'tillrättavisning', 'förmaning'
       'sidorad': 'sidebar',
       'ämne': 'topic',
       'tema': 'topic',
       'rad-block': 'line-block',
-      'parsed-literal (translation required)': 'parsed-literal', # 'tolkad-bokstavlig'?
+      'parsed-literal (translation required)': 'parsed-literal',  # 'tolkad-bokstavlig'?
       'rubrik': 'rubric',
       'epigraf': 'epigraph',
       'höjdpunkter': 'highlights',
@@ -45,7 +45,7 @@ directives = {
       'list-tabell': 'list-table',
       'meta': 'meta',
       'matematik': 'math',
-      # 'bildkarta': 'imagemap',   # FIXME: Translation might be too literal.
+      # 'bildkarta': 'imagemap',  # FIXME: Translation might be too literal.
       'bild': 'image',
       'figur': 'figure',
       'inkludera': 'include',
@@ -80,7 +80,7 @@ roles = {
       'rfc-referens': 'rfc-reference',
       'betoning': 'emphasis',
       'stark': 'strong',
-      'bokstavlig': 'literal', # also 'ordagranna'
+      'bokstavlig': 'literal',  # also 'ordagranna'
       'matematik': 'math',
       'namngiven-referens': 'named-reference',
       'anonym-referens': 'anonymous-reference',

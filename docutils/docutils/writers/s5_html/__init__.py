@@ -222,8 +222,8 @@ class S5HTMLTranslator(html4css1.HTMLTranslator):
                     line = line.strip()
                     if line and not line.startswith('#'):
                         path = find_theme(line)
-                        if path in theme_paths: # check for duplicates (cycles)
-                            path = None         # if found, use default base
+                        if path in theme_paths:  # check for duplicates (cycles)
+                            path = None          # if found, use default base
                         else:
                             theme_paths.append(path)
                         break

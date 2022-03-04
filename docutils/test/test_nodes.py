@@ -640,9 +640,9 @@ class SetIdTests(unittest.TestCase):
     def setUp(self):
         self.document = utils.new_document('test')
         self.elements = [nodes.Element(names=['test']),
-                         nodes.section(), # Name empty
-                         nodes.section(names=['Test']), # duplicate id
-                         nodes.footnote(names=['2019-10-30']), # id empty
+                         nodes.section(),  # Name empty
+                         nodes.section(names=['Test']),  # duplicate id
+                         nodes.footnote(names=['2019-10-30']),  # id empty
                          ]
 
     def test_set_id_default(self):

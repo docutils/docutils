@@ -41,7 +41,7 @@ class Include(Directive):
                    'start-after': directives.unchanged_required,
                    'end-before': directives.unchanged_required,
                    # ignored except for 'literal' or 'code':
-                   'number-lines': directives.unchanged, # integer or None
+                   'number-lines': directives.unchanged,  # integer or None
                    'class': directives.class_option,
                    'name': directives.unchanged}
 
@@ -159,9 +159,9 @@ class Include(Directive):
             if tab_width < 0:
                 include_lines = rawtext.splitlines()
             codeblock = CodeBlock(self.name,
-                                  [self.options.pop('code')], # arguments
+                                  [self.options.pop('code')],  # arguments
                                   self.options,
-                                  include_lines, # content
+                                  include_lines,  # content
                                   self.lineno,
                                   self.content_offset,
                                   self.block_text,
@@ -173,7 +173,7 @@ class Include(Directive):
         clip_options = (startline, endline, before_text, after_text)
         include_log = self.state.document.include_log
         # log entries are tuples (<source>, <clip-options>)
-        if not include_log: # new document
+        if not include_log:  # new document
             include_log.append((utils.relative_path(None, source),
                                 (None, None, None, None)))
         if (path, clip_options) in include_log:

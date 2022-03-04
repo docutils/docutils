@@ -84,18 +84,18 @@ class Writer(writers._html_base.Writer):
     settings_spec = settings_spec + (
         'HTML5 Writer Options',
         '',
-        ((frontend.SUPPRESS_HELP, # Obsoleted by "--image-loading"
+        ((frontend.SUPPRESS_HELP,  # Obsoleted by "--image-loading"
           ['--embed-images'],
           {'action': 'store_true',
            'validator': frontend.validate_boolean}),
-         (frontend.SUPPRESS_HELP, # Obsoleted by "--image-loading"
+         (frontend.SUPPRESS_HELP,  # Obsoleted by "--image-loading"
           ['--link-images'],
           {'dest': 'embed_images', 'action': 'store_false'}),
          ('Suggest at which point images should be loaded: '
           '"embed", "link" (default), or "lazy".',
           ['--image-loading'],
           {'choices': ('embed', 'link', 'lazy'),
-           # 'default': 'link' # default set in _html_base.py
+           # 'default': 'link'  # default set in _html_base.py
            }),
          ('Append a self-link to section headings.',
           ['--section-self-link'],
@@ -221,7 +221,7 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
         self.html_head.extend(self.head[1:])
         self.body_prefix.append(self.starttag(node, 'main'))
         self.body_suffix.insert(0, '</main>\n')
-        self.fragment.extend(self.body) # self.fragment is the "naked" body
+        self.fragment.extend(self.body)  # self.fragment is the "naked" body
         self.html_body.extend(self.body_prefix[1:] + self.body_pre_docinfo
                               + self.docinfo + self.body
                               + self.body_suffix[:-1])

@@ -35,7 +35,7 @@ directives = {
       'rubriek': 'rubric',
       'opschrift': 'epigraph',
       'hoogtepunten': 'highlights',
-      'pull-quote': 'pull-quote', # Dutch printers use the english term
+      'pull-quote': 'pull-quote',  # Dutch printers use the english term
       'samenstelling': 'compound',
       'verbinding': 'compound',
       'container (translation required)': 'container',

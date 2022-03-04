@@ -98,7 +98,7 @@ expected output and check it in:
 
         Note: the modified signature is incompatible with
         the "pytest" and "nose" frameworks.
-        """ # cf. feature-request #81
+        """  # cf. feature-request #81
 
         assert configfile is not None, 'required argument'
         self.configfile = configfile

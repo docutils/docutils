@@ -63,7 +63,7 @@ class Writer(latex2e.Writer):
 
     def __init__(self):
         latex2e.Writer.__init__(self)
-        self.settings_defaults.update({'fontencoding': ''}) # use default (TU)
+        self.settings_defaults.update({'fontencoding': ''})  # use default (TU)
         self.translator_class = XeLaTeXTranslator
 
 
@@ -75,23 +75,23 @@ class Babel(latex2e.Babel):
     language_codes = latex2e.Babel.language_codes.copy()
     # Additionally supported or differently named languages:
     language_codes.update({
-        # code          Polyglossia-name       comment
-        'cop':          'coptic',
-        'de':           'german', # new spelling (de_1996)
-        'de-1901':      'ogerman', # old spelling
-        'dv':           'divehi',  # Maldivian
-        'dsb':          'lsorbian',
-        'el-polyton':   'polygreek',
-        'fa':           'farsi',
-        'grc':          'ancientgreek',
-        'hsb':          'usorbian',
-        'sh-Cyrl':      'serbian', # Serbo-Croatian, Cyrillic script
-        'sh-Latn':      'croatian', # Serbo-Croatian, Latin script
-        'sq':           'albanian',
-        'sr':           'serbian', # Cyrillic script (sr-Cyrl)
-        'th':           'thai',
-        'vi':           'vietnamese',
-        # zh-Latn:      ???        #     Chinese Pinyin
+        # code        Polyglossia-name  comment
+        'cop':        'coptic',
+        'de':         'german',         # new spelling (de_1996)
+        'de-1901':    'ogerman',        # old spelling
+        'dv':         'divehi',         # Maldivian
+        'dsb':        'lsorbian',
+        'el-polyton': 'polygreek',
+        'fa':         'farsi',
+        'grc':        'ancientgreek',
+        'hsb':        'usorbian',
+        'sh-Cyrl':    'serbian',        # Serbo-Croatian, Cyrillic script
+        'sh-Latn':    'croatian',       # Serbo-Croatian, Latin script
+        'sq':         'albanian',
+        'sr':         'serbian',        # Cyrillic script (sr-Cyrl)
+        'th':         'thai',
+        'vi':         'vietnamese',
+        # zh-Latn:    ???               # Chinese Pinyin
         })
     # normalize (downcase) keys
     language_codes = {k.lower(): v for k, v in language_codes.items()}
@@ -121,7 +121,7 @@ class Babel(latex2e.Babel):
         self.quotes = ('"', '"')
         # language dependent configuration:
         # double quotes are "active" in some languages (e.g. German).
-        self.literal_double_quote = '"' # TODO: use \textquotedbl ?
+        self.literal_double_quote = '"'  # TODO: use \textquotedbl ?
 
     def __call__(self):
         setup = [r'\usepackage{polyglossia}',

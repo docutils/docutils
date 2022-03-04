@@ -315,7 +315,7 @@ class Values(optparse.Values):
     def update(self, other_dict, option_parser):
         if isinstance(other_dict, Values):
             other_dict = other_dict.__dict__
-        other_dict = dict(other_dict) # also works with ConfigParser sections
+        other_dict = dict(other_dict)  # also works with ConfigParser sections
         for setting in option_parser.lists.keys():
             if hasattr(self, setting) and setting in other_dict:
                 value = getattr(self, setting)

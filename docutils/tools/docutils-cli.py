@@ -30,14 +30,14 @@ class CliSettingsSpec(docutils.SettingsSpec):
     settings_spec = (
         'Docutils CLI Options',
         None,
-        (# 'help text', [<option strings>], {<keyword arguments>}
-         ('Reader name (default/current: "%default").',
+        # options: ('help text', [<option strings>], {<keyword arguments>})
+        (('Reader name (default/current: "%default").',
           ['--reader'], {'metavar': '<reader>'}),
          ('Parser name (default/current: "%default").',
           ['--parser'], {'metavar': '<parser>'}),
          ('Writer name (default/current: "%default").',
           ['--writer'], {'metavar': '<writer>'}),
-        )
+         )
     )
     config_section = 'docutils-cli application'
     config_section_dependencies = ('applications',)

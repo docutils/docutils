@@ -14,7 +14,7 @@ from test_parsers import DocutilsTestSupport
 
 def suite():
     settings = {'language_code': 'local-dummy-lang',
-                'report_level': 2} # warning (has no effect on test output is run as __main__).
+                'report_level': 2}  # TODO: ignored when run as __main__
     s = DocutilsTestSupport.ParserTestSuite(suite_settings=settings)
     s.generateTests(totest)
     return s

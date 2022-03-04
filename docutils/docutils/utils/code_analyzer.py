@@ -16,9 +16,9 @@ except ImportError:
     with_pygments = False
 
 # Filter the following token types from the list of class arguments:
-unstyled_tokens = ['token', # Token (base token type)
-                   'text',  # Token.Text
-                   '']      # short name for Token and Text
+unstyled_tokens = ['token',  # Token (base token type)
+                   'text',   # Token.Text
+                   '']       # short name for Token and Text
 # (Add, e.g., Token.Punctuation with ``unstyled_tokens += 'punctuation'``.)
 
 class LexerError(ApplicationError):
@@ -97,9 +97,9 @@ class Lexer:
             return
         tokens = pygments.lex(self.code, self.lexer)
         for tokentype, value in self.merge(tokens):
-            if self.tokennames == 'long': # long CSS class args
+            if self.tokennames == 'long':  # long CSS class args
                 classes = str(tokentype).lower().split('.')
-            else: # short CSS class args
+            else:  # short CSS class args
                 classes = [_get_ttype_class(tokentype)]
             classes = [cls for cls in classes if cls not in unstyled_tokens]
             yield classes, value

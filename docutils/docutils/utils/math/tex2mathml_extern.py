@@ -31,7 +31,7 @@ def latexml(math_code, reporter=None):
     .. _LaTeXML: http://dlmf.nist.gov/LaTeXML/
     """
     p = subprocess.Popen(['latexml',
-                          '-', # read from stdin
+                          '-',  # read from stdin
                           # '--preload=amsmath',
                           '--inputencoding=utf8',
                           ],
@@ -50,7 +50,7 @@ def latexml(math_code, reporter=None):
                                '-',
                                '--nonumbersections',
                                '--format=xhtml',
-                               # '--linelength=78', # experimental
+                               # '--linelength=78',  # experimental
                                '--'
                                ],
                               stdin=subprocess.PIPE,
@@ -77,9 +77,9 @@ def ttm(math_code, reporter=None):
     .. _TtM: http://hutchinson.belmont.ma.us/tth/mml/
     """
     p = subprocess.Popen(['ttm',
-                          # '-i', # italic font for equations. Default roman.
-                          '-', # unicode character encoding. (Default iso-8859-1).
-                          '-r', # output raw MathML (no preamble or  postlude)
+                          # '-i',  # italic font for equations. Default roman.
+                          '-u',    # unicode encoding. (Default iso-8859-1).
+                          '-r',    # output raw MathML (no wrapper)
                           ],
                          stdin=subprocess.PIPE,
                          stdout=subprocess.PIPE,

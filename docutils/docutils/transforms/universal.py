@@ -152,7 +152,7 @@ class FilterMessages(Transform):
         for node in tuple(self.document.findall(nodes.system_message)):
             if node['level'] < self.document.reporter.report_level:
                 node.parent.remove(node)
-                try: # also remove id-entry
+                try:  # also remove id-entry
                     del(self.document.ids[node['ids'][0]])
                 except (IndexError):
                     pass
@@ -318,7 +318,7 @@ class SmartQuotes(Transform):
                 if tag in smartquotes.smartchars.quotes:
                     lang = tag
                     break
-            else: # language not supported: (keep ASCII quotes)
+            else:  # language not supported -- keep ASCII quotes
                 if lang not in self.unsupported_languages:
                     self.document.reporter.warning(
                         'No smart quotes defined for language "%s".' % lang,
@@ -335,4 +335,4 @@ class SmartQuotes(Transform):
             for txtnode, newtext in zip(txtnodes, teacher):
                 txtnode.parent.replace(txtnode, nodes.Text(newtext))
 
-        self.unsupported_languages = set() # reset
+        self.unsupported_languages.clear()

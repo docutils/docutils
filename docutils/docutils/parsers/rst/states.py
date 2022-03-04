@@ -347,7 +347,7 @@ class RSTState(StateWS):
         try:                            # check for existing title style
             level = title_styles.index(style) + 1
         except ValueError:              # new title style
-            if len(title_styles) == memo.section_level: # new subsection
+            if len(title_styles) == memo.section_level:  # new subsection
                 title_styles.append(style)
                 return True
             else:                       # not at lowest level
@@ -393,8 +393,8 @@ class RSTState(StateWS):
               self.state_machine.input_lines[offset:], input_offset=absoffset,
               node=section_node, match_titles=True)
         self.goto_line(newabsoffset)
-        if memo.section_level <= mylevel: # can't handle next section?
-            raise EOFError              # bubble up to supersection
+        if memo.section_level <= mylevel:  # can't handle next section?
+            raise EOFError                 # bubble up to supersection
         # reset section_level; next pass will detect it properly
         memo.section_level = mylevel
 
@@ -487,27 +487,27 @@ class Inliner:
 
         parts = ('initial_inline', start_string_prefix, '',
            [
-            ('start', '', self.non_whitespace_after, # simple start-strings
+            ('start', '', self.non_whitespace_after,  # simple start-strings
              [r'\*\*',                # strong
               r'\*(?!\*)',            # emphasis but not strong
               r'``',                  # literal
               r'_`',                  # inline internal target
               r'\|(?!\|)']            # substitution reference
              ),
-            ('whole', '', end_string_suffix, # whole constructs
-             [# reference name & end-string
+            ('whole', '', end_string_suffix,  # whole constructs
+             [  # reference name & end-string
               r'(?P<refname>%s)(?P<refend>__?)' % self.simplename,
               ('footnotelabel', r'\[', r'(?P<fnend>\]_)',
-               [r'[0-9]+',               # manually numbered
-                r'\#(%s)?' % self.simplename, # auto-numbered (w/ label?)
-                r'\*',                   # auto-symbol
-                r'(?P<citationlabel>%s)' % self.simplename, # citation reference
+               [r'[0-9]+',                     # manually numbered
+                r'\#(%s)?' % self.simplename,  # auto-numbered (w/ label?)
+                r'\*',                         # auto-symbol
+                r'(?P<citationlabel>%s)' % self.simplename,  # citation ref
                 ]
                )
               ]
              ),
             ('backquote',             # interpreted text or phrase reference
-             '(?P<role>(:%s:)?)' % self.simplename, # optional role
+             '(?P<role>(:%s:)?)' % self.simplename,  # optional role
              self.non_whitespace_after,
              ['`(?!`)']               # but not literal
              )
@@ -804,7 +804,7 @@ class Inliner:
     def phrase_ref(self, before, after, rawsource, escaped, text=None):
         # `text` is ignored (since 0.16)
         match = self.patterns.embedded_link.search(escaped)
-        if match: # embedded <URI> or <alias_>
+        if match:  # embedded <URI> or <alias_>
             text = escaped[:match.start(0)]
             unescaped = unescape(text)
             rawtext = unescape(text, True)
@@ -1089,7 +1089,7 @@ class Body(RSTState):
           'period': Struct(prefix='', suffix='.', start=0, end=-1)}
     enum.formats = enum.formatinfo.keys()
     enum.sequences = ['arabic', 'loweralpha', 'upperalpha',
-                      'lowerroman', 'upperroman'] # ORDERED!
+                      'lowerroman', 'upperroman']  # ORDERED!
     enum.sequencepats = {'arabic': '[0-9]+',
                          'loweralpha': '[a-z]',
                          'upperalpha': '[A-Z]',
@@ -1217,7 +1217,7 @@ class Body(RSTState):
         for i in range(len(indented)):
             line = indented[i].rstrip()
             if line:
-                if nonblank_seen and blank == i - 1: # last line blank
+                if nonblank_seen and blank == i - 1:  # last line blank
                     match = self.attribution_pattern.match(line)
                     if match:
                         attribution_end, indent = self.check_attribution(
@@ -1257,7 +1257,7 @@ class Body(RSTState):
 
     def parse_attribution(self, indented, line_offset):
         text = '\n'.join(indented).rstrip()
-        lineno = 1 + line_offset # line_offset is zero-based
+        lineno = 1 + line_offset  # line_offset is zero-based
         textnodes, messages = self.inline_text(text, lineno)
         node = nodes.attribution(text, '', *textnodes)
         node.source, node.line = self.state_machine.get_source_and_line(lineno)
@@ -1421,7 +1421,7 @@ class Body(RSTState):
         auto-enumerator ("#" instead of the regular enumerator).
 
         Return ``None`` for invalid (out of range) ordinals.
-        """ #"
+        """
         if sequence == '#':
             enumerator = '#'
         elif sequence == 'arabic':
@@ -1488,8 +1488,8 @@ class Body(RSTState):
 
     def parse_field_marker(self, match):
         """Extract & return field name from a field marker match."""
-        field = match.group()[1:]        # strip off leading ':'
-        field = field[:field.rfind(':')] # strip off trailing ':' etc.
+        field = match.group()[1:]         # strip off leading ':'
+        field = field[:field.rfind(':')]  # strip off trailing ':' etc.
         return field
 
     def parse_field_body(self, indented, offset, node):
@@ -1627,7 +1627,7 @@ class Body(RSTState):
         text = '\n'.join(indented)
         text_nodes, messages = self.inline_text(text, lineno)
         line = nodes.line(text, '', *text_nodes)
-        if match.string.rstrip() != '|': # not empty
+        if match.string.rstrip() != '|':  # not empty
             line.indent = len(match.group(1)) - 1
         return line, messages, blank_finish
 
@@ -1714,12 +1714,12 @@ class Body(RSTState):
         width = len(block[0].strip())
         for i in range(len(block)):
             block[i] = block[i].strip()
-            if block[i][0] not in '+|': # check left edge
+            if block[i][0] not in '+|':  # check left edge
                 blank_finish = 0
                 self.state_machine.previous_line(len(block) - i)
                 del block[i:]
                 break
-        if not self.grid_table_top_pat.match(block[-1]): # find bottom
+        if not self.grid_table_top_pat.match(block[-1]):  # find bottom
             blank_finish = 0
             # from second-last to third line of table:
             for i in range(len(block) - 2, 1, -1):
@@ -1795,7 +1795,7 @@ class Body(RSTState):
         table = nodes.table()
         if widths == 'auto':
             table['classes'] += ['colwidths-auto']
-        elif widths: # "grid" or list of integers
+        elif widths:  # "grid" or list of integers
             table['classes'] += ['colwidths-given']
         tgroup = nodes.tgroup(cols=len(colwidths))
         table += tgroup
@@ -1981,7 +1981,7 @@ class Body(RSTState):
             - 'refuri' and the URI
             - 'malformed' and a system_message node
         """
-        if block and block[-1].strip()[-1:] == '_': # possible indirect target
+        if block and block[-1].strip()[-1:] == '_':  # possible indirect target
             reference = ' '.join(line.strip() for line in block)
             refname = self.is_reference(reference)
             if refname:
@@ -2135,7 +2135,7 @@ class Body(RSTState):
          ) = self.state_machine.get_first_known_indented(match.end(),
                                                          strip_top=0)
         block_text = '\n'.join(self.state_machine.input_lines[
-            initial_line_offset : self.state_machine.line_offset + 1]) # noqa: E203
+            initial_line_offset : self.state_machine.line_offset + 1])  # noqa: E203
         try:
             arguments, options, content, content_offset = (
                 self.parse_directive_block(indented, line_offset,
@@ -2264,7 +2264,7 @@ class Body(RSTState):
         newline_offset, blank_finish = self.nested_list_parse(
               datalines, 0, node, initial_state='ExtensionOptions',
               blank_finish=True)
-        if newline_offset != len(datalines): # incomplete parse of block
+        if newline_offset != len(datalines):  # incomplete parse of block
             return 0, 'invalid option block'
         try:
             options = utils.extract_extension_options(node, option_spec)
@@ -2292,8 +2292,8 @@ class Body(RSTState):
     def comment(self, match):
         if self.state_machine.is_next_line_blank():
             first_comment_line = match.string[match.end():]
-            if not first_comment_line.strip(): # empty comment
-                return [nodes.comment()], True # "A tiny but practical wart."
+            if not first_comment_line.strip():  # empty comment
+                return [nodes.comment()], True  # "A tiny but practical wart."
             if first_comment_line.startswith('end of inclusion from "'):
                 # cf. parsers.rst.directives.misc.Include
                 self.document.include_log.pop()
@@ -2443,7 +2443,7 @@ class RFC2822Body(Body):
     patterns['rfc2822'] = r'[!-9;-~]+:( +|$)'
     initial_transitions = [(name, 'Body')
                            for name in Body.initial_transitions]
-    initial_transitions.insert(-1, ('rfc2822', 'Body')) # just before 'text'
+    initial_transitions.insert(-1, ('rfc2822', 'Body'))  # just before 'text'
 
     def rfc2822(self, match, context, next_state):
         """RFC2822-style field list item."""
@@ -2451,7 +2451,7 @@ class RFC2822Body(Body):
         self.parent += fieldlist
         field, blank_finish = self.rfc2822_field(match)
         fieldlist += field
-        offset = self.state_machine.line_offset + 1   # next line
+        offset = self.state_machine.line_offset + 1  # next line
         newline_offset, blank_finish = self.nested_list_parse(
               self.state_machine.input_lines[offset:],
               input_offset=self.state_machine.abs_line_offset() + 1,
@@ -2504,7 +2504,7 @@ class SpecializedBody(Body):
 
     def invalid_input(self, match=None, context=None, next_state=None):
         """Not a compound element member. Abort this state machine."""
-        self.state_machine.previous_line() # back up so parent SM can reassess
+        self.state_machine.previous_line()  # back up so parent SM can reassess
         raise EOFError
 
     indent = invalid_input
@@ -2912,7 +2912,7 @@ class Definition(SpecializedText):
 
     def eof(self, context):
         """Not a definition."""
-        self.state_machine.previous_line(2) # so parent SM can reassess
+        self.state_machine.previous_line(2)  # so parent SM can reassess
         return []
 
     def indent(self, match, context, next_state):
@@ -3089,7 +3089,7 @@ class QuotedLiteralBlock(RSTState):
             self.parent += self.reporter.warning(
                 'Literal block expected; none found.',
                 line=self.state_machine.abs_line_number()
-                ) # src not available, statemachine.input_lines is empty
+                )  # src not available, statemachine.input_lines is empty
             self.state_machine.previous_line()
         self.parent += self.messages
         return []

@@ -33,7 +33,7 @@ class Writer(writers.Writer):
           ['--newlines'],
           {'action': 'store_true', 'validator': frontend.validate_boolean}),
          ('Generate XML with indents and newlines.',
-          ['--indents'], #@ TODO use integer value for number of spaces?
+          ['--indents'],  #@ TODO use integer value for number of spaces?
           {'action': 'store_true', 'validator': frontend.validate_boolean}),
          ('Omit the XML declaration.  Use with caution.',
           ['--no-xml-declaration'],
@@ -92,10 +92,10 @@ class XMLTranslator(nodes.GenericNodeVisitor):
             self.newline = '\n'
         if settings.indents:
             self.newline = '\n'
-            self.indent = '    ' #@ TODO make this configurable?
-        self.level = 0  # indentation level
-        self.in_simple = 0 # level of nesting inside mixed-content elements
-        self.fixed_text = 0 # level of nesting inside FixedText elements
+            self.indent = '    '  #@ TODO make this configurable?
+        self.level = 0       # indentation level
+        self.in_simple = 0   # level of nesting inside mixed-content elements
+        self.fixed_text = 0  # level of nesting inside FixedText elements
 
         # Output
         self.output = []
@@ -114,7 +114,7 @@ class XMLTranslator(nodes.GenericNodeVisitor):
     # --------------------------------
 
     simple_nodes = (nodes.TextElement,
-                    nodes.image, nodes.colspec, nodes.transition) # empty elements
+                    nodes.image, nodes.colspec, nodes.transition)  # empty elements
 
     def default_visit(self, node):
         """Default node visit method."""
@@ -176,11 +176,11 @@ class XMLTranslator(nodes.GenericNodeVisitor):
             line_num = self.the_handle.locator.getLineNumber()
             srcline = node.line
             if not isinstance(node.parent, nodes.TextElement):
-                srcline += 2 # directive content start line
+                srcline += 2  # directive content start line
             msg = 'Invalid raw XML in column %d, line offset %d:\n%s' % (
                    col_num, line_num, node.astext())
             self.warn(msg, source=node.source, line=srcline+line_num-1)
-        raise nodes.SkipNode # content already processed
+        raise nodes.SkipNode  # content already processed
 
 
 class TestXml(xml.sax.handler.ContentHandler):

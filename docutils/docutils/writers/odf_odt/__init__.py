@@ -32,7 +32,7 @@ import zipfile
 
 import docutils
 from docutils import frontend, nodes, utils, writers, languages
-from docutils.parsers.rst.directives.images import PIL # optional
+from docutils.parsers.rst.directives.images import PIL  # optional
 from docutils.readers import standalone
 from docutils.transforms import references
 
@@ -774,7 +774,7 @@ class Writer(writers.Writer):
             elif prop == 'subject':
                 el1 = SubElement(root, 'dc:subject', nsdict=METNSD)
                 el1.text = value
-            else: # Store remaining properties as custom/user-defined
+            else:  # Store remaining properties as custom/user-defined
                 el1 = SubElement(root, 'meta:user-defined',
                                  attrib={'meta:name': prop}, nsdict=METNSD)
                 el1.text = value

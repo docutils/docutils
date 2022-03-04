@@ -82,7 +82,7 @@ delimiters = (u'\\-/:\u058a\xa1\xb7\xbf\u037e\u0387\u055a-\u055f\u0589'
               u'\ufe50-\ufe52\ufe54-\ufe58\ufe5f-\ufe61\ufe63\ufe68\ufe6a'
               u'\ufe6b\uff01-\uff03\uff05-\uff07\uff0a\uff0c-\uff0f\uff1a'
               u'\uff1b\uff1f\uff20\uff3c\uff61\uff64\uff65')
-if sys.maxunicode >= 0x10FFFF: # "wide" build
+if sys.maxunicode >= 0x10FFFF:  # "wide" build
     delimiters += (u'\U00010100\U00010101\U0001039f\U000103d0\U00010857'
                    u'\U0001091f\U0001093f\U00010a50-\U00010a58\U00010a7f'
                    u'\U00010b39-\U00010b3f\U000110bb\U000110bc\U000110be-'
@@ -93,15 +93,16 @@ closing_delimiters = u'\\\\.,;!?'
 # Matching open/close quotes
 # --------------------------
 
-quote_pairs = {# open char: matching closing characters # usage example
-               u'\xbb': u'\xbb',           # » » Swedish
-               u'\u2018': u'\u201a',       # ‘ ‚ Albanian/Greek/Turkish
-               u'\u2019': u'\u2019',       # ’ ’ Swedish
-               u'\u201a': u'\u2018\u2019', # ‚ ‘ German ‚ ’ Polish
-               u'\u201c': u'\u201e',       # “ „ Albanian/Greek/Turkish
-               u'\u201e': u'\u201c\u201d', # „ “ German „ ” Polish
-               u'\u201d': u'\u201d',       # ” ” Swedish
-               u'\u203a': u'\u203a',       # › › Swedish
+quote_pairs = {
+               # open char: matching closing characters # usage example
+               u'\xbb': u'\xbb',            # » » Swedish
+               u'\u2018': u'\u201a',        # ‘ ‚ Albanian/Greek/Turkish
+               u'\u2019': u'\u2019',        # ’ ’ Swedish
+               u'\u201a': u'\u2018\u2019',  # ‚ ‘ German ‚ ’ Polish
+               u'\u201c': u'\u201e',        # “ „ Albanian/Greek/Turkish
+               u'\u201e': u'\u201c\u201d',  # „ “ German „ ” Polish
+               u'\u201d': u'\u201d',        # ” ” Swedish
+               u'\u203a': u'\u203a',        # › › Swedish
               }
 """Additional open/close quote pairs."""
 

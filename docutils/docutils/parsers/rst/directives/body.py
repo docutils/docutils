@@ -136,7 +136,7 @@ class CodeBlock(Directive):
     optional_arguments = 1
     option_spec = {'class': directives.class_option,
                    'name': directives.unchanged,
-                   'number-lines': directives.unchanged # integer or None
+                   'number-lines': directives.unchanged  # integer or None
                    }
     has_content = True
 

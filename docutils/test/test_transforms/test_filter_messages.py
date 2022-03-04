@@ -26,7 +26,7 @@ from docutils.parsers.rst import Parser
 
 def suite():
     parser = Parser()
-    settings = {'report_level': 5} # filter all system messages
+    settings = {'report_level': 5}  # filter all system messages
     s = DocutilsTestSupport.TransformTestSuite(
         parser, suite_settings=settings)
     s.generateTests(totest)

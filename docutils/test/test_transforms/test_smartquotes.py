@@ -26,7 +26,7 @@ def suite():
     parser = Parser()
     settings = {'smart_quotes': True,
                 'trim_footnote_ref_space': True,
-                'report': 2} # TODO: why is this ignored when running as main?
+                'report': 2}  # TODO why is this ignored when running as main?
     s = DocutilsTestSupport.TransformTestSuite(
         parser, suite_settings=settings)
     s.generateTests(totest)

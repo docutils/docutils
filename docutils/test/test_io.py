@@ -66,8 +66,8 @@ class HelperTests(unittest.TestCase):
         self.assertEqual(io.check_encoding(mock_stdout, 'UTF-9'), None)
 
     def test_error_string(self):
-        us = '\xfc'      # bytes(us) fails
-        bs = b'\xc3\xbc' # str(bs) returns repr(bs)
+        us = '\xfc'       # bytes(us) fails
+        bs = b'\xc3\xbc'  # str(bs) returns repr(bs)
 
         self.assertEqual('Exception: spam',
                          io.error_string(Exception('spam')))
@@ -224,7 +224,7 @@ class ErrorOutputTests(unittest.TestCase):
         self.assertEqual(e.destination, sys.stderr)
 
     def test_bbuf(self):
-        buf = BBuf() # buffer storing byte string
+        buf = BBuf()  # buffer storing byte string
         e = io.ErrorOutput(buf, encoding='ascii')
         # write byte-string as-is
         e.write(b'b\xfc')
@@ -242,11 +242,12 @@ class ErrorOutputTests(unittest.TestCase):
         self.assertEqual(buf.getvalue(), b'b\xfc u\\xfc e\\xfc u\xc3\xbc')
 
     def test_ubuf(self):
-        buf = UBuf() # buffer only accepting unicode string
+        buf = UBuf()  # buffer only accepting unicode string
         # decode of binary strings
         e = io.ErrorOutput(buf, encoding='ascii')
         e.write(b'b\xfc')
-        self.assertEqual(buf.getvalue(), 'b\ufffd') # use REPLACEMENT CHARACTER
+        # use REPLACEMENT CHARACTER
+        self.assertEqual(buf.getvalue(), 'b\ufffd')
         # write Unicode string and Exceptions with Unicode args
         e.write(' u\xfc')
         self.assertEqual(buf.getvalue(), 'b\ufffd u\xfc')

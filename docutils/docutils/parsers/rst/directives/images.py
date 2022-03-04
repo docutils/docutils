@@ -10,7 +10,7 @@ __docformat__ = 'reStructuredText'
 
 from urllib.request import url2pathname
 
-try: # check for the Python Imaging Library
+try:  # check for the Python Imaging Library
     import PIL.Image
 except ImportError:
     try:  # sometimes PIL modules are put in PYTHONPATH's root
@@ -131,7 +131,7 @@ class Figure(Image):
                     with PIL.Image.open(imagepath) as img:
                         figure_node['width'] = '%dpx' % img.size[0]
                 except (OSError, UnicodeEncodeError):
-                    pass # TODO: warn/info?
+                    pass  # TODO: warn/info?
                 else:
                     self.state.document.settings.record_dependencies.add(
                         imagepath.replace('\\', '/'))

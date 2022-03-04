@@ -23,7 +23,7 @@ from docutils import TransformSpec
 # If no valid guess can be made, locale_encoding is set to `None`:
 try:
     locale_encoding = locale.getlocale()[1] or locale.getdefaultlocale()[1]
-except ValueError as error: # OS X may set UTF-8 without language code
+except ValueError as error:  # OS X may set UTF-8 without language code
     # See https://bugs.python.org/issue18378 fixed in 3.8
     # and https://sourceforge.net/p/docutils/bugs/298/.
     # Drop the special case after requiring Python >= 3.8
@@ -31,7 +31,7 @@ except ValueError as error: # OS X may set UTF-8 without language code
         locale_encoding = "UTF-8"
     else:
         locale_encoding = None
-except: # any other problems determining the locale -> use None
+except:  # any other problems determining the locale -> use None
     locale_encoding = None
 try:
     codecs.lookup(locale_encoding or '')
@@ -279,11 +279,12 @@ class ErrorOutput:
             self.destination.write(data.encode(self.encoding,
                                                self.encoding_errors))
         except TypeError:
-            if isinstance(data, str): # destination may expect bytes
+            if isinstance(data, str):  # destination may expect bytes
                 self.destination.write(data.encode(self.encoding,
                                                    self.encoding_errors))
             elif self.destination in (sys.stderr, sys.stdout):
-                self.destination.buffer.write(data) # write bytes to raw stream
+                # write bytes to raw stream
+                self.destination.buffer.write(data)
             else:
                 self.destination.write(str(data, self.encoding,
                                            self.decoding_errors))
@@ -433,7 +434,7 @@ class FileOutput(Output):
                 self.opened = False
             else:
                 self.destination = sys.stdout
-        elif (# destination is file-type object -> check mode:
+        elif (  # destination is file-type object -> check mode:
               mode and hasattr(self.destination, 'mode')
               and mode != self.destination.mode):
             print('Warning: Destination mode "%s" differs from specified '

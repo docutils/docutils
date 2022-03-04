@@ -64,7 +64,7 @@ class LanguageImporter:
         except KeyError:
             pass
         for tag in normalize_language_tag(language_code):
-            tag = tag.replace('-', '_') # '-' not valid in module names
+            tag = tag.replace('-', '_')  # '-' not valid in module names
             module = self.import_from_packages(tag, reporter)
             if module is not None:
                 break

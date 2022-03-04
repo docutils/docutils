@@ -47,7 +47,7 @@ directives = {
       #'qa': 'questions',
       #'faq': 'questions',
       'tabelo': 'table',
-      'tabelo-vdk': 'csv-table', # "valoroj disigitaj per komoj"
+      'tabelo-vdk': 'csv-table',  # "valoroj disigitaj per komoj"
       'tabelo-csv': 'csv-table',
       'tabelo-lista': 'list-table',
       'meta': 'meta',
