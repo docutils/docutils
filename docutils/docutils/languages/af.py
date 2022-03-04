@@ -33,7 +33,7 @@ labels = {
       'hint': 'Wenk',
       'important': 'Belangrik',
       'note': 'Nota',
-      'tip': 'Tip', # hint and tip both have the same translation: wenk
+      'tip': 'Tip',  # hint and tip both have the same translation: wenk
       'warning': 'Waarskuwing',
       'contents': 'Inhoud'}
 """Mapping of node class name to label text."""

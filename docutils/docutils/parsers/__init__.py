@@ -64,7 +64,7 @@ class Parser(Component):
             self.document.note_parse_message)
 
 
-_parser_aliases = {# short names for known parsers
+_parser_aliases = {  # short names for known parsers
                    'null': 'docutils.parsers.null',
                    # reStructuredText
                    'rst': 'docutils.parsers.rst',

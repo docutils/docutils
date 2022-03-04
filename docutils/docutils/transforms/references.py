@@ -235,7 +235,7 @@ class IndirectHyperlinks(Transform):
                 self.circular_indirect_reference(target)
                 return
             target.multiply_indirect = 1
-            self.resolve_indirect_target(reftarget) # multiply indirect
+            self.resolve_indirect_target(reftarget)  # multiply indirect
             del target.multiply_indirect
         if reftarget.hasattr('refuri'):
             target['refuri'] = reftarget['refuri']

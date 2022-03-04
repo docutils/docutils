@@ -40,7 +40,7 @@ class Writer(writers.Writer):
                         '\\usepackage{mathptmx} % Times\n'
                         '\\usepackage[scaled=.90]{helvet}\n'
                         '\\usepackage{courier}')
-    table_style_values = [# TODO: align-left, align-center, align-right, ??
+    table_style_values = [  # TODO: align-left, align-center, align-right, ??
                           'booktabs', 'borderless', 'colwidths-auto',
                           'nolines', 'standard']
 
@@ -237,7 +237,7 @@ class Writer(writers.Writer):
          ),
         )
 
-    settings_defaults = {'sectnum_depth': 0} # updated by SectNum transform
+    settings_defaults = {'sectnum_depth': 0}  # updated by SectNum transform
     config_section = 'latex2e writer'
     config_section_dependencies = ('writers', 'latex writers')
 
@@ -279,7 +279,7 @@ class Writer(writers.Writer):
             with open(templatepath, encoding='utf8') as fp:
                 template = fp.read()
         # fill template
-        self.assemble_parts() # create dictionary of parts
+        self.assemble_parts()  # create dictionary of parts
         self.output = string.Template(template).substitute(self.parts)
 
     def assemble_parts(self):
@@ -289,7 +289,7 @@ class Writer(writers.Writer):
             lines = getattr(self, part)
             if part in self.head_parts:
                 if lines:
-                    lines.append('') # to get a trailing newline
+                    lines.append('')  # to get a trailing newline
                 self.parts[part] = '\n'.join(lines)
             else:
                 # body contains inline elements, so join without newline
@@ -311,7 +311,7 @@ class Babel:
     #     https://www.w3.org/International/articles/language-tags/
     # and http://www.iana.org/assignments/language-subtag-registry
     language_codes = {
-        # code          TeX/Babel-name       comment
+        # code          TeX/Babel-name    comment
         'af':           'afrikaans',
         'ar':           'arabic',
         # 'be':           'belarusian',
@@ -322,14 +322,14 @@ class Babel:
         'cs':           'czech',
         'cy':           'welsh',
         'da':           'danish',
-        'de':           'ngerman', # new spelling (de_1996)
-        'de-1901':      'german', # old spelling
+        'de':           'ngerman',        # new spelling (de_1996)
+        'de-1901':      'german',         # old spelling
         'de-AT':        'naustrian',
         'de-AT-1901':   'austrian',
         'dsb':          'lowersorbian',
-        'el':           'greek', # monotonic (el-monoton)
+        'el':           'greek',          # monotonic (el-monoton)
         'el-polyton':   'polutonikogreek',
-        'en':           'english',  # TeX' default language
+        'en':           'english',        # TeX' default language
         'en-AU':        'australian',
         'en-CA':        'canadian',
         'en-GB':        'british',
@@ -343,16 +343,16 @@ class Babel:
         'fi':           'finnish',
         'fr':           'french',
         'fr-CA':        'canadien',
-        'ga':           'irish',    # Irish Gaelic
-        # 'grc':                    # Ancient Greek
-        'grc-ibycus':   'ibycus',   # Ibycus encoding
+        'ga':           'irish',          # Irish Gaelic
+        # 'grc':                          # Ancient Greek
+        'grc-ibycus':   'ibycus',         # Ibycus encoding
         'gl':           'galician',
         'he':           'hebrew',
         'hr':           'croatian',
         'hsb':          'uppersorbian',
         'hu':           'magyar',
         'ia':           'interlingua',
-        'id':           'bahasai',  # Bahasa (Indonesian)
+        'id':           'bahasai',        # Bahasa (Indonesian)
         'is':           'icelandic',
         'it':           'italian',
         'ja':           'japanese',
@@ -360,25 +360,25 @@ class Babel:
         'la':           'latin',
         'lt':           'lithuanian',
         'lv':           'latvian',
-        'mn':           'mongolian', # Mongolian, Cyrillic script (mn-cyrl)
-        'ms':           'bahasam',   # Bahasa (Malay)
-        'nb':           'norsk',     # Norwegian Bokmal
+        'mn':           'mongolian',      # Mongolian, Cyrillic (mn-cyrl)
+        'ms':           'bahasam',        # Bahasa (Malay)
+        'nb':           'norsk',          # Norwegian Bokmal
         'nl':           'dutch',
-        'nn':           'nynorsk',   # Norwegian Nynorsk
-        'no':           'norsk',     # Norwegian (Bokmal)
+        'nn':           'nynorsk',        # Norwegian Nynorsk
+        'no':           'norsk',          # Norwegian (Bokmal)
         'pl':           'polish',
         'pt':           'portuges',
         'pt-BR':        'brazil',
         'ro':           'romanian',
         'ru':           'russian',
-        'se':           'samin',     # North Sami
-        'sh-Cyrl':      'serbianc',  # Serbo-Croatian, Cyrillic script
-        'sh-Latn':      'serbian',   # Serbo-Croatian, Latin script see also 'hr'
+        'se':           'samin',          # North Sami
+        'sh-Cyrl':      'serbianc',       # Serbo-Croatian, Cyrillic
+        'sh-Latn':      'serbian',        # Serbo-Croatian, Latin (cf. 'hr')
         'sk':           'slovak',
         'sl':           'slovene',
         'sq':           'albanian',
-        'sr':           'serbianc',  # Serbian, Cyrillic script (contributed)
-        'sr-Latn':      'serbian',   # Serbian, Latin script
+        'sr':           'serbianc',       # Serbian, Cyrillic (contributed)
+        'sr-Latn':      'serbian',        # Serbian, Latin script
         'sv':           'swedish',
         # 'th':           'thai',
         'tr':           'turkish',
@@ -404,15 +404,16 @@ class Babel:
     #    ngerman, norsk, nynorsk, polish, portuges, russian, serbian, slovak,
     #    slovene, spanish, swedish, ukrainian, and uppersorbian --
     #    is escaped as ``\textquotedbl``.
-    active_chars = {# TeX/Babel-name:  active characters to deactivate
-                    # 'breton':        ':;!?' # ensure whitespace
+    active_chars = {
+                    # TeX/Babel-name:  active characters to deactivate
+                    # 'breton':        ':;!?'  # ensure whitespace
                     # 'esperanto':     '^',
                     # 'estonian':      '~"`',
-                    # 'french':        ':;!?' # ensure whitespace
-                    'galician':        '.<>', # also '~"'
-                    # 'magyar':        '`', # for special hyphenation cases
-                    'spanish':         '.<>', # old versions also '~'
-                    # 'turkish':       ':!=' # ensure whitespace
+                    # 'french':        ':;!?'  # ensure whitespace
+                    'galician':        '.<>',  # also '~"'
+                    # 'magyar':        '`',  # for special hyphenation cases
+                    'spanish':         '.<>',  # old versions also '~'
+                    # 'turkish':       ':!='  # ensure whitespace
                    }
 
     def __init__(self, language_code, reporter=None):
@@ -583,7 +584,7 @@ PreambleCmds.ttem = r"""
 # Definitions from docutils.sty::
 
 def _read_block(fp):
-    block = [next(fp)] # first line (empty)
+    block = [next(fp)]  # first line (empty)
     for line in fp:
         if not line.strip():
             break
@@ -642,52 +643,52 @@ class CharMaps:
         ord(']'): '{]}',
         # the soft hyphen is unknown in 8-bit text
         # and not properly handled by XeTeX
-        0x00AD: '\\-', # SOFT HYPHEN
+        0x00AD: '\\-',  # SOFT HYPHEN
     }
     # Unicode chars that are not recognized by LaTeX's utf8 encoding
     unsupported_unicode = {
         # TODO: ensure white space also at the beginning of a line?
         # 0x00A0: '\\leavevmode\\nobreak\\vadjust{}~'
-        0x2000: '\\enskip',      # EN QUAD
-        0x2001: '\\quad',        # EM QUAD
-        0x2002: '\\enskip',      # EN SPACE
-        0x2003: '\\quad',        # EM SPACE
-        0x2008: '\\,',           # PUNCTUATION SPACE   
-        0x200b: '\\hspace{0pt}', # ZERO WIDTH SPACE
-        0x202F: '\\,',           # NARROW NO-BREAK SPACE
-        # 0x02d8: '\\\u{ }',     # BREVE
-        0x2011: '\\hbox{-}',     # NON-BREAKING HYPHEN
-        0x212b: '\\AA',          # ANGSTROM SIGN
-        0x21d4: '\\ensuremath{\\Leftrightarrow}', # LEFT RIGHT DOUBLE ARROW
-        0x2260: '\\ensuremath{\\neq}',   # NOT EQUAL TO
-        0x2261: '\\ensuremath{\\equiv}', # IDENTICAL TO
-        0x2264: '\\ensuremath{\\le}',    # LESS-THAN OR EQUAL TO
-        0x2265: '\\ensuremath{\\ge}',    # GREATER-THAN OR EQUAL TO
+        0x2000: '\\enskip',                        # EN QUAD
+        0x2001: '\\quad',                          # EM QUAD
+        0x2002: '\\enskip',                        # EN SPACE
+        0x2003: '\\quad',                          # EM SPACE
+        0x2008: '\\,',                             # PUNCTUATION SPACE   
+        0x200b: '\\hspace{0pt}',                   # ZERO WIDTH SPACE
+        0x202F: '\\,',                             # NARROW NO-BREAK SPACE
+        # 0x02d8: '\\\u{ }',                       # BREVE
+        0x2011: '\\hbox{-}',                       # NON-BREAKING HYPHEN
+        0x212b: '\\AA',                            # ANGSTROM SIGN
+        0x21d4: '\\ensuremath{\\Leftrightarrow}',  # LEFT RIGHT DOUBLE ARROW
+        0x2260: '\\ensuremath{\\neq}',             # NOT EQUAL TO
+        0x2261: '\\ensuremath{\\equiv}',           # IDENTICAL TO
+        0x2264: '\\ensuremath{\\le}',              # LESS-THAN OR EQUAL TO
+        0x2265: '\\ensuremath{\\ge}',              # GREATER-THAN OR EQUAL TO
         # Docutils footnote symbols:
         0x2660: '\\ensuremath{\\spadesuit}',
         0x2663: '\\ensuremath{\\clubsuit}',
-        0xfb00: 'ff',  # LATIN SMALL LIGATURE FF
-        0xfb01: 'fi',  # LATIN SMALL LIGATURE FI
-        0xfb02: 'fl',  # LATIN SMALL LIGATURE FL
-        0xfb03: 'ffi', # LATIN SMALL LIGATURE FFI
-        0xfb04: 'ffl', # LATIN SMALL LIGATURE FFL
+        0xfb00: 'ff',                              # LATIN SMALL LIGATURE FF
+        0xfb01: 'fi',                              # LATIN SMALL LIGATURE FI
+        0xfb02: 'fl',                              # LATIN SMALL LIGATURE FL
+        0xfb03: 'ffi',                             # LATIN SMALL LIGATURE FFI
+        0xfb04: 'ffl',                             # LATIN SMALL LIGATURE FFL
     }
     # Unicode chars that are recognized by LaTeX's utf8 encoding
     utf8_supported_unicode = {
-        0x00A0: '~', # NO-BREAK SPACE
-        0x00AB: '\\guillemotleft{}', # LEFT-POINTING DOUBLE ANGLE QUOTATION MARK
-        0x00bb: '\\guillemotright{}', # RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK
-        0x200C: '\\textcompwordmark{}', # ZERO WIDTH NON-JOINER
+        0x00A0: '~',                   # NO-BREAK SPACE
+        0x00AB: '\\guillemotleft{}',   # LEFT-POINTING DOUBLE ANGLE QUOTATION
+        0x00bb: '\\guillemotright{}',  # RIGHT-POINTING DOUBLE ANGLE QUOTATION
+        0x200C: '\\textcompwordmark{}',  # ZERO WIDTH NON-JOINER
         0x2013: '\\textendash{}',
         0x2014: '\\textemdash{}',
         0x2018: '\\textquoteleft{}',
         0x2019: '\\textquoteright{}',
-        0x201A: '\\quotesinglbase{}', # SINGLE LOW-9 QUOTATION MARK
+        0x201A: '\\quotesinglbase{}',    # SINGLE LOW-9 QUOTATION MARK
         0x201C: '\\textquotedblleft{}',
         0x201D: '\\textquotedblright{}',
-        0x201E: '\\quotedblbase{}', # DOUBLE LOW-9 QUOTATION MARK
+        0x201E: '\\quotedblbase{}',      # DOUBLE LOW-9 QUOTATION MARK
         0x2030: '\\textperthousand{}',   # PER MILLE SIGN
-        0x2031: '\\textpertenthousand{}', # PER TEN THOUSAND SIGN
+        0x2031: '\\textpertenthousand{}',  # PER TEN THOUSAND SIGN
         0x2039: '\\guilsinglleft{}',
         0x203A: '\\guilsinglright{}',
         0x2423: '\\textvisiblespace{}',  # OPEN BOX
@@ -699,87 +700,87 @@ class CharMaps:
     # recognized with 'utf8', if textcomp is loaded
     textcomp = {
         # Latin-1 Supplement
-        0x00a2: '\\textcent{}',          # ¢ CENT SIGN
-        0x00a4: '\\textcurrency{}',      # ¤ CURRENCY SYMBOL
-        0x00a5: '\\textyen{}',           # ¥ YEN SIGN
-        0x00a6: '\\textbrokenbar{}',     # ¦ BROKEN BAR
-        0x00a7: '\\textsection{}',       # § SECTION SIGN
-        0x00a8: '\\textasciidieresis{}', # ¨ DIAERESIS
-        0x00a9: '\\textcopyright{}',     # © COPYRIGHT SIGN
-        0x00aa: '\\textordfeminine{}',   # ª FEMININE ORDINAL INDICATOR
-        0x00ac: '\\textlnot{}',          # ¬ NOT SIGN
-        0x00ae: '\\textregistered{}',    # ® REGISTERED SIGN
-        0x00af: '\\textasciimacron{}',   # ¯ MACRON
-        0x00b0: '\\textdegree{}',        # ° DEGREE SIGN
-        0x00b1: '\\textpm{}',            # ± PLUS-MINUS SIGN
-        0x00b2: '\\texttwosuperior{}',   # ² SUPERSCRIPT TWO
-        0x00b3: '\\textthreesuperior{}', # ³ SUPERSCRIPT THREE
-        0x00b4: '\\textasciiacute{}',    # ´ ACUTE ACCENT
-        0x00b5: '\\textmu{}',            # µ MICRO SIGN
-        0x00b6: '\\textparagraph{}',     # ¶ PILCROW SIGN # != \textpilcrow
-        0x00b9: '\\textonesuperior{}',   # ¹ SUPERSCRIPT ONE
-        0x00ba: '\\textordmasculine{}',  # º MASCULINE ORDINAL INDICATOR
-        0x00bc: '\\textonequarter{}',    # 1/4 FRACTION
-        0x00bd: '\\textonehalf{}',       # 1/2 FRACTION
-        0x00be: '\\textthreequarters{}', # 3/4 FRACTION
-        0x00d7: '\\texttimes{}',         # × MULTIPLICATION SIGN
-        0x00f7: '\\textdiv{}',           # ÷ DIVISION SIGN
+        0x00a2: '\\textcent{}',              # ¢ CENT SIGN
+        0x00a4: '\\textcurrency{}',          # ¤ CURRENCY SYMBOL
+        0x00a5: '\\textyen{}',               # ¥ YEN SIGN
+        0x00a6: '\\textbrokenbar{}',         # ¦ BROKEN BAR
+        0x00a7: '\\textsection{}',           # § SECTION SIGN
+        0x00a8: '\\textasciidieresis{}',     # ¨ DIAERESIS
+        0x00a9: '\\textcopyright{}',         # © COPYRIGHT SIGN
+        0x00aa: '\\textordfeminine{}',       # ª FEMININE ORDINAL INDICATOR
+        0x00ac: '\\textlnot{}',              # ¬ NOT SIGN
+        0x00ae: '\\textregistered{}',        # ® REGISTERED SIGN
+        0x00af: '\\textasciimacron{}',       # ¯ MACRON
+        0x00b0: '\\textdegree{}',            # ° DEGREE SIGN
+        0x00b1: '\\textpm{}',                # ± PLUS-MINUS SIGN
+        0x00b2: '\\texttwosuperior{}',       # ² SUPERSCRIPT TWO
+        0x00b3: '\\textthreesuperior{}',     # ³ SUPERSCRIPT THREE
+        0x00b4: '\\textasciiacute{}',        # ´ ACUTE ACCENT
+        0x00b5: '\\textmu{}',                # µ MICRO SIGN
+        0x00b6: '\\textparagraph{}',         # ¶ PILCROW SIGN # != \textpilcrow
+        0x00b9: '\\textonesuperior{}',       # ¹ SUPERSCRIPT ONE
+        0x00ba: '\\textordmasculine{}',      # º MASCULINE ORDINAL INDICATOR
+        0x00bc: '\\textonequarter{}',        # 1/4 FRACTION
+        0x00bd: '\\textonehalf{}',           # 1/2 FRACTION
+        0x00be: '\\textthreequarters{}',     # 3/4 FRACTION
+        0x00d7: '\\texttimes{}',             # × MULTIPLICATION SIGN
+        0x00f7: '\\textdiv{}',               # ÷ DIVISION SIGN
         # others
-        0x0192: '\\textflorin{}',        # LATIN SMALL LETTER F WITH HOOK
-        0x02b9: '\\textasciiacute{}',    # MODIFIER LETTER PRIME
-        0x02ba: '\\textacutedbl{}',      # MODIFIER LETTER DOUBLE PRIME
-        0x2016: '\\textbardbl{}',        # DOUBLE VERTICAL LINE
-        0x2022: '\\textbullet{}',        # BULLET
-        0x2032: '\\textasciiacute{}',    # PRIME
-        0x2033: '\\textacutedbl{}',      # DOUBLE PRIME
-        0x2035: '\\textasciigrave{}',    # REVERSED PRIME
-        0x2036: '\\textgravedbl{}',      # REVERSED DOUBLE PRIME
-        0x203b: '\\textreferencemark{}', # REFERENCE MARK
-        0x203d: '\\textinterrobang{}',   # INTERROBANG
-        0x2044: '\\textfractionsolidus{}', # FRACTION SLASH
-        0x2045: '\\textlquill{}',        # LEFT SQUARE BRACKET WITH QUILL
-        0x2046: '\\textrquill{}',        # RIGHT SQUARE BRACKET WITH QUILL
-        0x2052: '\\textdiscount{}',      # COMMERCIAL MINUS SIGN
-        0x20a1: '\\textcolonmonetary{}', # COLON SIGN
-        0x20a3: '\\textfrenchfranc{}',   # FRENCH FRANC SIGN
-        0x20a4: '\\textlira{}',          # LIRA SIGN
-        0x20a6: '\\textnaira{}',         # NAIRA SIGN
-        0x20a9: '\\textwon{}',           # WON SIGN
-        0x20ab: '\\textdong{}',          # DONG SIGN
-        0x20ac: '\\texteuro{}',          # EURO SIGN
-        0x20b1: '\\textpeso{}',          # PESO SIGN
-        0x20b2: '\\textguarani{}',       # GUARANI SIGN
-        0x2103: '\\textcelsius{}',       # DEGREE CELSIUS
-        0x2116: '\\textnumero{}',        # NUMERO SIGN
-        0x2117: '\\textcircledP{}',      # SOUND RECORDING COPYRIGHT
-        0x211e: '\\textrecipe{}',        # PRESCRIPTION TAKE
-        0x2120: '\\textservicemark{}',   # SERVICE MARK
-        0x2122: '\\texttrademark{}',     # TRADE MARK SIGN
-        0x2126: '\\textohm{}',           # OHM SIGN
-        0x2127: '\\textmho{}',           # INVERTED OHM SIGN
-        0x212e: '\\textestimated{}',     # ESTIMATED SYMBOL
-        0x2190: '\\textleftarrow{}',     # LEFTWARDS ARROW
-        0x2191: '\\textuparrow{}',       # UPWARDS ARROW
-        0x2192: '\\textrightarrow{}',    # RIGHTWARDS ARROW
-        0x2193: '\\textdownarrow{}',     # DOWNWARDS ARROW
-        0x2212: '\\textminus{}',         # MINUS SIGN
-        0x2217: '\\textasteriskcentered{}', # ASTERISK OPERATOR
-        0x221a: '\\textsurd{}',          # SQUARE ROOT
-        0x2422: '\\textblank{}',         # BLANK SYMBOL
-        0x25e6: '\\textopenbullet{}',    # WHITE BULLET
-        0x25ef: '\\textbigcircle{}',     # LARGE CIRCLE
-        0x266a: '\\textmusicalnote{}',   # EIGHTH NOTE
-        0x26ad: '\\textmarried{}',       # MARRIAGE SYMBOL
-        0x26ae: '\\textdivorced{}',      # DIVORCE SYMBOL
-        0x27e8: '\\textlangle{}',        # MATHEMATICAL LEFT ANGLE BRACKET
-        0x27e9: '\\textrangle{}',        # MATHEMATICAL RIGHT ANGLE BRACKET
+        0x0192: '\\textflorin{}',            # LATIN SMALL LETTER F WITH HOOK
+        0x02b9: '\\textasciiacute{}',        # MODIFIER LETTER PRIME
+        0x02ba: '\\textacutedbl{}',          # MODIFIER LETTER DOUBLE PRIME
+        0x2016: '\\textbardbl{}',            # DOUBLE VERTICAL LINE
+        0x2022: '\\textbullet{}',            # BULLET
+        0x2032: '\\textasciiacute{}',        # PRIME
+        0x2033: '\\textacutedbl{}',          # DOUBLE PRIME
+        0x2035: '\\textasciigrave{}',        # REVERSED PRIME
+        0x2036: '\\textgravedbl{}',          # REVERSED DOUBLE PRIME
+        0x203b: '\\textreferencemark{}',     # REFERENCE MARK
+        0x203d: '\\textinterrobang{}',       # INTERROBANG
+        0x2044: '\\textfractionsolidus{}',   # FRACTION SLASH
+        0x2045: '\\textlquill{}',            # LEFT SQUARE BRACKET WITH QUILL
+        0x2046: '\\textrquill{}',            # RIGHT SQUARE BRACKET WITH QUILL
+        0x2052: '\\textdiscount{}',          # COMMERCIAL MINUS SIGN
+        0x20a1: '\\textcolonmonetary{}',     # COLON SIGN
+        0x20a3: '\\textfrenchfranc{}',       # FRENCH FRANC SIGN
+        0x20a4: '\\textlira{}',              # LIRA SIGN
+        0x20a6: '\\textnaira{}',             # NAIRA SIGN
+        0x20a9: '\\textwon{}',               # WON SIGN
+        0x20ab: '\\textdong{}',              # DONG SIGN
+        0x20ac: '\\texteuro{}',              # EURO SIGN
+        0x20b1: '\\textpeso{}',              # PESO SIGN
+        0x20b2: '\\textguarani{}',           # GUARANI SIGN
+        0x2103: '\\textcelsius{}',           # DEGREE CELSIUS
+        0x2116: '\\textnumero{}',            # NUMERO SIGN
+        0x2117: '\\textcircledP{}',          # SOUND RECORDING COPYRIGHT
+        0x211e: '\\textrecipe{}',            # PRESCRIPTION TAKE
+        0x2120: '\\textservicemark{}',       # SERVICE MARK
+        0x2122: '\\texttrademark{}',         # TRADE MARK SIGN
+        0x2126: '\\textohm{}',               # OHM SIGN
+        0x2127: '\\textmho{}',               # INVERTED OHM SIGN
+        0x212e: '\\textestimated{}',         # ESTIMATED SYMBOL
+        0x2190: '\\textleftarrow{}',         # LEFTWARDS ARROW
+        0x2191: '\\textuparrow{}',           # UPWARDS ARROW
+        0x2192: '\\textrightarrow{}',        # RIGHTWARDS ARROW
+        0x2193: '\\textdownarrow{}',         # DOWNWARDS ARROW
+        0x2212: '\\textminus{}',             # MINUS SIGN
+        0x2217: '\\textasteriskcentered{}',  # ASTERISK OPERATOR
+        0x221a: '\\textsurd{}',              # SQUARE ROOT
+        0x2422: '\\textblank{}',             # BLANK SYMBOL
+        0x25e6: '\\textopenbullet{}',        # WHITE BULLET
+        0x25ef: '\\textbigcircle{}',         # LARGE CIRCLE
+        0x266a: '\\textmusicalnote{}',       # EIGHTH NOTE
+        0x26ad: '\\textmarried{}',           # MARRIAGE SYMBOL
+        0x26ae: '\\textdivorced{}',          # DIVORCE SYMBOL
+        0x27e8: '\\textlangle{}',            # MATHEMATICAL LEFT ANGLE BRACKET
+        0x27e9: '\\textrangle{}',            # MATHEMATICAL RIGHT ANGLE BRACKET
     }
     # Unicode chars that require a feature/package to render
     pifont = {
-        0x2665: '\\ding{170}',     # black heartsuit
-        0x2666: '\\ding{169}',     # black diamondsuit
-        0x2713: '\\ding{51}',      # check mark
-        0x2717: '\\ding{55}',      # check mark
+        0x2665: '\\ding{170}',               # black heartsuit
+        0x2666: '\\ding{169}',               # black diamondsuit
+        0x2713: '\\ding{51}',                # check mark
+        0x2717: '\\ding{55}',                # check mark
     }
     # TODO: greek alphabet ... ?
     # see also LaTeX codec
@@ -820,7 +821,7 @@ class DocumentClass:
         "sectnum" directive, return the corresponding value for the
         LaTeX ``tocdepth`` or ``secnumdepth`` counters.
         """
-        depth = min(depth, len(self.sections)) # limit to supported levels
+        depth = min(depth, len(self.sections))  # limit to supported levels
         if 'chapter' in self.sections:
             depth -= 1
         if self.sections[0] == 'part':
@@ -855,7 +856,7 @@ class Table:
         self._col_specs = []
         self.caption = []
         self._attrs = {}
-        self._in_head = False # maybe context with search
+        self._in_head = False  # maybe context with search
 
     def close(self):
         self._open = False
@@ -952,8 +953,8 @@ class Table:
             latex_colspecs = ['l'] * len(self._col_specs)
         elif self.legacy_column_widths:
             # use old algorithm for backwards compatibility
-            width = 80 # assumed standard line length
-            factor = 0.93 # do not make it full linewidth
+            width = 80  # assumed standard line length
+            factor = 0.93  # do not make it full linewidth
             # first see if we get too wide.
             total_width = sum(node['colwidth']+1 for node in self._col_specs)
             if total_width > width:
@@ -975,7 +976,7 @@ class Table:
             if 'colwidths-given' not in node.parent.parent['classes']:
                 allowance = 1
             else:
-                allowance = 0 # "widths" option specified, use exact ratio
+                allowance = 0  # "widths" option specified, use exact ratio
             self._colwidths = [(node['colwidth']+allowance)/norm_length
                                for node in self._col_specs]
             total_width = sum(self._colwidths)
@@ -1140,17 +1141,17 @@ class LaTeXTranslator(nodes.NodeVisitor):
     # Auxiliary variables
     # -------------------
 
-    has_latex_toc = False # is there a toc in the doc? (needed by minitoc)
+    has_latex_toc = False  # is there a toc in the doc? (needed by minitoc)
     section_level = 0
 
     # Flags to encode():
     # inside citation reference labels underscores dont need to be escaped
     inside_citation_reference_label = False
-    verbatim = False                   # do not encode
-    insert_non_breaking_blanks = False # replace blanks by "~"
-    insert_newline = False             # add latex newline commands
-    literal = False                    # literal text (block or inline)
-    alltt = False                      # inside `alltt` environment
+    verbatim = False                    # do not encode
+    insert_non_breaking_blanks = False  # replace blanks by "~"
+    insert_newline = False              # add latex newline commands
+    literal = False                     # literal text (block or inline)
+    alltt = False                       # inside `alltt` environment
 
     def __init__(self, document, babel_class=Babel):
         super().__init__(document)
@@ -1236,16 +1237,16 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.head_prefix = [r'\documentclass[%s]{%s}' %
                             (self.documentoptions,
                              self.settings.documentclass)]
-        self.requirements = SortableDict() # made a list in depart_document()
+        self.requirements = SortableDict()  # made a list in depart_document()
         self.requirements['__static'] = r'\usepackage{ifthen}'
         self.latex_preamble = [settings.latex_preamble]
-        self.fallbacks = SortableDict() # made a list in depart_document()
-        self.pdfsetup = [] # PDF properties (hyperref package)
+        self.fallbacks = SortableDict()  # made a list in depart_document()
+        self.pdfsetup = []  # PDF properties (hyperref package)
         self.title = []
         self.subtitle = []
-        self.titledata = [] # \title, \author, \date
+        self.titledata = []  # \title, \author, \date
         ## self.body_prefix = ['\\begin{document}\n']
-        self.body_pre_docinfo = [] # \maketitle
+        self.body_pre_docinfo = []  # \maketitle
         self.docinfo = []
         self.dedication = []
         self.abstract = []
@@ -1355,9 +1356,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # (or use documentclass-default (as currently))?
 
         # Section numbering
-        if settings.sectnum_xform: # section numbering by Docutils
+        if settings.sectnum_xform:  # section numbering by Docutils
             PreambleCmds.secnumdepth = r'\setcounter{secnumdepth}{0}'
-        else: # section numbering by LaTeX:
+        else:  # section numbering by LaTeX:
             secnumdepth = settings.sectnum_depth
             # Possible values of settings.sectnum_depth:
             # None  "sectnum" directive without depth arg -> LaTeX default
@@ -1395,7 +1396,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # Embed content of style file:
         if self.settings.embed_stylesheet:
             if is_package:
-                path = base + '.sty' # ensure extension
+                path = base + '.sty'  # ensure extension
             try:
                 content = docutils.io.FileInput(source_path=path,
                                                 encoding='utf-8').read()
@@ -1412,7 +1413,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             return '%% embedded stylesheet: %s\n%s' % (path, content)
         # Link to style file:
         if is_package:
-            path = base # drop extension
+            path = base  # drop extension
             cmd = r'\usepackage{%s}'
         else:
             cmd = r'\input{%s}'
@@ -1527,7 +1528,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         text = text.translate(table)
 
         # Break up input ligatures e.g. '--' to '-{}-'.
-        if not self.is_xetex: # Not required with xetex/luatex
+        if not self.is_xetex:  # Not required with xetex/luatex
             separate_chars = '-'
             # In monospace-font, we also separate ',,', '``' and "''" and some
             # other characters which can't occur in non-literal text.
@@ -1667,7 +1668,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if isinstance(child, (nodes.container, nodes.compound)):
             return self.term_postfix(child)
         if isinstance(child, nodes.image):
-            return '\\leavevmode\n' # Images get an additional newline.
+            return '\\leavevmode\n'  # Images get an additional newline.
         if not isinstance(child, (nodes.paragraph, nodes.math_block)):
             return '\\leavevmode'
         return ''
@@ -2073,7 +2074,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         while self.active_table.get_rowspan(
                                 self.active_table.get_entry_number()):
             self.out.append(' & ')
-            self.active_table.visit_entry() # increment cell count
+            self.active_table.visit_entry()  # increment cell count
 
     def visit_entry(self, node):
         # cell separation
@@ -2131,11 +2132,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
             and node.astext()):
             self.out.append("%")
 
-        self.active_table.visit_entry() # increment cell count
+        self.active_table.visit_entry()  # increment cell count
 
     def depart_entry(self, node):
-        self.out.append(self.context.pop()) # header / not header
-        self.out.append(self.context.pop()) # multirow/column
+        self.out.append(self.context.pop())  # header / not header
+        self.out.append(self.context.pop())  # multirow/column
         # insert extra "&"s, if following rows are spanned from above:
         self.insert_additional_table_colum_delimiters()
 
@@ -2154,11 +2155,12 @@ class LaTeXTranslator(nodes.NodeVisitor):
                  'lowerroman': 'roman',
                  'upperroman': 'Roman'}
         # default LaTeX enumeration labels:
-        default_labels = [# (präfix, enumtype, suffix)
-                          ('',  'arabic', '.'), #  1.
-                          ('(', 'alph',   ')'), # (a)
-                          ('',  'roman',  '.'), #  i.
-                          ('',  'Alph',   '.')] #  A.
+        default_labels = [
+                          # (präfix, enumtype, suffix)
+                          ('',  'arabic', '.'),  #  1.
+                          ('(', 'alph',   ')'),  # (a)
+                          ('',  'roman',  '.'),  #  i.
+                          ('',  'Alph',   '.')]  #  A.
 
         prefix = ''
         if self.compound_enumerators:
@@ -2275,7 +2277,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         try:
             backref = node['backrefs'][0]
         except IndexError:
-            backref = node['ids'][0] # no backref, use self-ref instead
+            backref = node['ids'][0]  # no backref, use self-ref instead
         if self.docutils_footnotes:
             if not self.fallback_stylesheet:
                 self.fallbacks['footnotes'] = PreambleCmds.footnotes
@@ -2444,7 +2446,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def depart_image(self, node):
         self.out += self.ids_to_labels(node, newline=True)
 
-    def visit_inline(self, node): # <span>, i.e. custom roles
+    def visit_inline(self, node):  # <span>, i.e. custom roles
         for cls in node['classes']:
             if cls.startswith('language-'):
                 language = self.babel.language_name(cls[9:])
@@ -2662,14 +2664,14 @@ class LaTeXTranslator(nodes.NodeVisitor):
         raise nodes.SkipNode
 
     def depart_math(self, node):
-        pass # never reached
+        pass  # never reached
 
     def visit_math_block(self, node):
         math_env = pick_math_environment(node.astext())
         self.visit_math(node, math_env=math_env)
 
     def depart_math_block(self, node):
-        pass # never reached
+        pass  # never reached
 
     def visit_option(self, node):
         if self.context[-1]:
@@ -2693,7 +2695,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.context.append(0)
 
     def depart_option_group(self, node):
-        self.context.pop() # the flag
+        self.context.pop()  # the flag
         self.out.append('] ')
 
     def visit_option_list(self, node):
@@ -2743,7 +2745,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
                                  (nodes.paragraph, nodes.compound))):
             pass
         elif self.active_table.colwidths_auto:
-            if index == 1: # second paragraph
+            if index == 1:  # second paragraph
                 self.warn('LaTeX merges paragraphs in tables '
                           'with auto-sized columns!', base_node=node)
             if index > 0:
@@ -2873,7 +2875,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.out.append('}\n')
         self.duclass_close(node)
 
-    attribution_formats = {'dash': ('—', ''), # EM DASH
+    attribution_formats = {'dash': ('—', ''),  # EM DASH
                            'parentheses': ('(', ')'),
                            'parens': ('(', ')'),
                            'none': ('', '')}
@@ -3010,9 +3012,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_target(self, node):
         # Skip indirect targets:
-        if ('refuri' in node       # external hyperlink
-            or 'refid' in node     # resolved internal link
-            or 'refname' in node): # unresolved internal link
+        if ('refuri' in node        # external hyperlink
+            or 'refid' in node      # resolved internal link
+            or 'refname' in node):  # unresolved internal link
             ## self.out.append('%% %s\n' % node)   # for debugging
             return
         self.out.append('%\n')
@@ -3169,8 +3171,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 raise nodes.SkipNode
 
         # labels and PDF bookmark (sidebar entry)
-        self.out.append('\n') # start new paragraph
-        if node['names']: # don't add labels just for auto-ids
+        self.out.append('\n')  # start new paragraph
+        if node['names']:  # don't add labels just for auto-ids
             self.out += self.ids_to_labels(node, newline=True)
         if (isinstance(node.next_node(), nodes.title)
             and 'local' not in node['classes']
@@ -3232,7 +3234,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.push_output_collector(self.abstract)
             self.out.append('\\begin{abstract}')
             if isinstance(node.next_node(), nodes.title):
-                node.pop(0) # LaTeX provides its own title
+                node.pop(0)  # LaTeX provides its own title
         else:
             # special topics:
             if 'abstract' in node['classes']:

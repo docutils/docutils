@@ -34,7 +34,7 @@ from docutils.utils.math import (unichar2tex, pick_math_environment,
 
 class Writer(writers.Writer):
 
-    supported = ('html', 'xhtml') # update in subclass
+    supported = ('html', 'xhtml')  # update in subclass
     """Formats this writer supports."""
 
     settings_spec = (
@@ -132,7 +132,7 @@ class Writer(writers.Writer):
 
     settings_defaults = {'output_encoding_error_handler': 'xmlcharrefreplace'}
 
-    config_section = 'html base writer' # overwrite in subclass
+    config_section = 'html base writer'  # overwrite in subclass
     config_section_dependencies = ('writers', 'html writers')
 
     visitor_attributes = (
@@ -265,13 +265,13 @@ class HTMLTranslator(nodes.NodeVisitor):
     words_and_spaces = re.compile(r'[^ \n]+| +|\n')
     # wrap point inside word:
     in_word_wrap_point = re.compile(r'.+\W\W.+|[-?].+')
-    lang_attribute = 'lang' # name changes to 'xml:lang' in XHTML 1.1
+    lang_attribute = 'lang'  # name changes to 'xml:lang' in XHTML 1.1
 
     special_characters = {ord('&'): '&amp;',
                           ord('<'): '&lt;',
                           ord('"'): '&quot;',
                           ord('>'): '&gt;',
-                          ord('@'): '&#64;', # may thwart address harvesters
+                          ord('@'): '&#64;',  # may thwart address harvesters
                           }
     """Character references for characters with a special meaning in HTML."""
 
@@ -319,7 +319,7 @@ class HTMLTranslator(nodes.NodeVisitor):
                           'Use "image_loading: link".',
                           FutureWarning, stacklevel=8)
         if self.image_loading is None:
-            self.image_loading = 'link' # default
+            self.image_loading = 'link'  # default
         self.math_output = settings.math_output.split()
         self.math_output_options = self.math_output[1:]
         self.math_output = self.math_output[0].lower()
@@ -340,13 +340,13 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.subtitle = []
         self.header = []
         self.footer = []
-        self.html_head = [self.content_type] # charset not interpolated
+        self.html_head = [self.content_type]  # charset not interpolated
         self.html_title = []
         self.html_subtitle = []
         self.html_body = []
-        self.in_document_title = 0   # len(self.body) or 0
+        self.in_document_title = 0  # len(self.body) or 0
         self.in_mailto = False
-        self.author_in_authors = False # for html4css1
+        self.author_in_authors = False  # for html4css1
         self.math_header = []
 
     def astext(self):
@@ -825,7 +825,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.html_head.extend(self.head[1:])
         self.body_prefix.append(self.starttag(node, 'div', CLASS='document'))
         self.body_suffix.insert(0, '</div>\n')
-        self.fragment.extend(self.body) # self.fragment is the "naked" body
+        self.fragment.extend(self.body)  # self.fragment is the "naked" body
         self.html_body.extend(self.body_prefix[1:] + self.body_pre_docinfo
                               + self.docinfo + self.body
                               + self.body_suffix[:-1])
@@ -1005,7 +1005,7 @@ class HTMLTranslator(nodes.NodeVisitor):
                     with PIL.Image.open(imagepath) as img:
                         imgsize = img.size
                 except (OSError, UnicodeEncodeError):
-                    pass # TODO: warn?
+                    pass  # TODO: warn?
                 else:
                     self.settings.record_dependencies.add(
                         imagepath.replace('\\', '/'))
@@ -1156,7 +1156,7 @@ class HTMLTranslator(nodes.NodeVisitor):
             else:
                 self.body.append(self.encode(token))
         self.body.append('</span>')
-        raise nodes.SkipNode # content already processed
+        raise nodes.SkipNode  # content already processed
 
     def depart_literal(self, node):
         # skipped unless literal element is from "code" role:
@@ -1177,7 +1177,8 @@ class HTMLTranslator(nodes.NodeVisitor):
     # for the math-output: LaTeX and MathJax simply wrap the content,
     # HTML and MathML also convert the math_code.
     # HTML container
-    math_tags = {# math_output: (block, inline, class-arguments)
+    math_tags = {
+                 # math_output: (block, inline, class-arguments)
                  'html': ('div', 'span', 'formula'),
                  'latex': ('pre', 'tt', 'math'),
                  'mathml': ('div', '', ''),
@@ -1195,7 +1196,8 @@ class HTMLTranslator(nodes.NodeVisitor):
         tag = self.math_tags[self.math_output][math_env == '']
         clsarg = self.math_tags[self.math_output][2]
         # LaTeX container
-        wrappers = {# math_mode: (inline, block)
+        wrappers = {
+                    # math_mode: (inline, block)
                     'html': ('$%s$', '\\begin{%s}\n%s\n\\end{%s}'),
                     'latex': (None, None),
                     'mathml': ('$%s$', '\\begin{%s}\n%s\n\\end{%s}'),
@@ -1209,9 +1211,9 @@ class HTMLTranslator(nodes.NodeVisitor):
         # get and wrap content
         math_code = node.astext().translate(unichar2tex.uni2tex_table)
         if wrapper:
-            try: # wrapper with three "%s"
+            try:  # wrapper with three "%s"
                 math_code = wrapper % (math_env, math_code, math_env)
-            except TypeError: # wrapper with one "%s"
+            except TypeError:  # wrapper with one "%s"
                 math_code = wrapper % math_code
         # settings and conversion
         if self.math_output in ('latex', 'mathjax'):
@@ -1280,7 +1282,7 @@ class HTMLTranslator(nodes.NodeVisitor):
                                            suffix='\n'*bool(math_env),
                                            CLASS=clsarg))
         self.body.append(math_code)
-        if math_env: # block mode (equation, display)
+        if math_env:  # block mode (equation, display)
             self.body.append('\n')
         if tag:
             self.body.append('</%s>' % tag)
@@ -1290,14 +1292,14 @@ class HTMLTranslator(nodes.NodeVisitor):
         raise nodes.SkipNode
 
     def depart_math(self, node):
-        pass # never reached
+        pass  # never reached
 
     def visit_math_block(self, node):
         math_env = pick_math_environment(node.astext())
         self.visit_math(node, math_env=math_env)
 
     def depart_math_block(self, node):
-        pass # never reached
+        pass  # never reached
 
     # Meta tags: 'lang' attribute replaced by 'xml:lang' in XHTML 1.1
     # HTML5/polyglot recommends using both
@@ -1627,7 +1629,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         if node.hasattr('refid'):
             atts = {}
             atts['class'] = 'toc-backref'
-            atts['role'] = 'doc-backlink' # HTML5 only
+            atts['role'] = 'doc-backlink'  # HTML5 only
             atts['href'] = '#' + node['refid']
             start_tag += self.starttag(nodes.reference(), 'a', '', **atts)
             close_tag = '</a></%s>\n' % tagname

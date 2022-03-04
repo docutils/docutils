@@ -8,7 +8,7 @@ parser_name = "rst"
 writer_name = "html"
 
 # Settings
-settings_overrides['field_name_limit'] = 0 # no limit
+settings_overrides['field_name_limit'] = 0  # no limit
 settings_overrides['docinfo_xform'] = False
 # local copy of stylesheets:
 # (Test runs in ``docutils/test/``, we need relative path from there.)

@@ -223,7 +223,7 @@ class ConfigEnvVarFileTests(ConfigFileTests):
     def tearDown(self):
         os.environ = self.orig_environ
 
-    def test_old(self): pass # don't repreat this test
+    def test_old(self): pass  # don't repreat this test
 
     @unittest.skipUnless(
         os.name == 'posix',
@@ -350,7 +350,7 @@ class HelperFunctionsTests(unittest.TestCase):
         reporter = utils.Reporter('test', 1, 4)
         with self.assertWarnsRegex(DeprecationWarning,
                                    'Set attributes via configuration settings'):
-            reporter.set_conditions('foo', 1, 4) # trigger warning
+            reporter.set_conditions('foo', 1, 4)  # trigger warning
 
 if __name__ == '__main__':
     unittest.main()

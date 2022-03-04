@@ -27,7 +27,7 @@ labels = {
     'dedication': 'Dedikation',
     'abstract': 'Sammanfattning',
     'attention': 'Observera!',
-    'caution': 'Akta!', # 'Varning' already used for 'warning'
+    'caution': 'Akta!',  # 'Varning' already used for 'warning'
     'danger': 'FARA!',
     'error': 'Fel',
     'hint': 'Vink',

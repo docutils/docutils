@@ -102,9 +102,9 @@ def escape(text):
     """
     Return `text` in triple-double-quoted Python string form.
     """
-    text = text.replace('\\', '\\\\')   # escape backslashes
-    text = text.replace('"""', '""\\"') # break up triple-double-quotes
-    text = text.replace(' \n', ' \\n\\\n') # protect trailing whitespace
+    text = text.replace('\\', '\\\\')       # escape backslashes
+    text = text.replace('"""', '""\\"')     # break up triple-double-quotes
+    text = text.replace(' \n', ' \\n\\\n')  # protect trailing whitespace
     return text
 
 _outputFormatters = {

@@ -19,7 +19,7 @@ The output is also valid XML.
 """
 
 try:
-    import locale # module missing in Jython
+    import locale  # module missing in Jython
     locale.setlocale(locale.LC_ALL, '')
 except locale.Error:
     pass

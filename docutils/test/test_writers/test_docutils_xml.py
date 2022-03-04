@@ -17,7 +17,7 @@ Test for docutils XML writer.
 
 if __name__ == '__main__':
     import __init__
-from test_writers import DocutilsTestSupport # before importing docutils!
+from test_writers import DocutilsTestSupport  # before importing docutils!
 import docutils
 import docutils.core
 
@@ -194,7 +194,7 @@ class DocutilsXMLTestCase(DocutilsTestSupport.StandardTestCase):
              '<string>:10: '
              '(WARNING/2) Invalid raw XML in column 30, line offset 1:\n',
              '<test>inline raw XML&lt;/test>\n'])
-        settings['halt_level'] = 2 # convert info messages to exceptions
+        settings['halt_level'] = 2  # convert info messages to exceptions
         settings['warning_stream'] = ''
         with self.assertRaises(docutils.utils.SystemMessage):
             publish_xml(settings, invalid_raw_xml_source)

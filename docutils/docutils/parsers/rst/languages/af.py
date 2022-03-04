@@ -24,7 +24,7 @@ directives = {
       'wenk': 'hint',
       'belangrik': 'important',
       'nota': 'note',
-      'tip': 'tip', # hint and tip both have the same translation: wenk
+      'tip': 'tip',  # hint and tip both have the same translation: wenk
       'waarskuwing': 'warning',
       'vermaning': 'admonition',
       'kantstreep': 'sidebar',
@@ -51,7 +51,7 @@ directives = {
       'insluiting': 'include',
       'rou': 'raw',
       'vervang': 'replace',
-      'unicode': 'unicode', # should this be translated? unikode
+      'unicode': 'unicode',  # should this be translated? unikode
       'datum': 'date',
       'klas': 'class',
       'role (translation required)': 'role',

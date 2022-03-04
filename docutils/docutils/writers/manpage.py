@@ -211,7 +211,7 @@ class Translator(nodes.NodeVisitor):
         # Hopefully ``C`` courier too.
         self.defs = {
                 'indent': ('.INDENT %.1f\n', '.UNINDENT\n'),
-                'definition_list_item': ('.TP', ''), # paragraph with hanging tag
+                'definition_list_item': ('.TP', ''),  # paragraph with hanging tag
                 'field_name': ('.TP\n.B ', '\n'),
                 'literal': ('\\fB', '\\fP'),
                 'literal_block': ('.sp\n.nf\n.ft C\n', '\n.ft P\n.fi\n'),
@@ -893,9 +893,9 @@ class Translator(nodes.NodeVisitor):
         # options with parameter bold italic, .BI, -f file
         #
         # we do not know if .B or .BI
-        self.context.append('.B ')          # blind guess. Add blank for sphinx see docutils/bugs/380
-        self.context.append(len(self.body)) # to be able to insert later
-        self.context.append(0)              # option counter
+        self.context.append('.B ')           # blind guess. Add blank for sphinx see docutils/bugs/380
+        self.context.append(len(self.body))  # to be able to insert later
+        self.context.append(0)               # option counter
 
     def depart_option_group(self, node):
         self.context.pop()  # the counter
@@ -926,7 +926,7 @@ class Translator(nodes.NodeVisitor):
         pass
 
     def visit_option_argument(self, node):
-        self.context[-3] = '.BI' # bold/italic alternate
+        self.context[-3] = '.BI'  # bold/italic alternate
         if node['delimiter'] != ' ':
             self.body.append('\\fB%s ' % node['delimiter'])
         elif self.body[len(self.body)-1].endswith('='):
@@ -946,7 +946,7 @@ class Translator(nodes.NodeVisitor):
         pass
 
     def first_child(self, node):
-        first = isinstance(node.parent[0], nodes.label) # skip label
+        first = isinstance(node.parent[0], nodes.label)  # skip label
         for child in node.parent.children[first:]:
             if isinstance(child, nodes.Invisible):
                 continue

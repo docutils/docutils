@@ -134,12 +134,12 @@ def match_chars(c1, c2):
 # ::
 
 unicode_punctuation_categories = {
-    # 'Pc': 'Connector', # not used in Docutils inline markup recognition
+    # 'Pc': 'Connector',  # not used in Docutils inline markup recognition
     'Pd': 'Dash',
     'Ps': 'Open',
     'Pe': 'Close',
-    'Pi': 'Initial quote', # may behave like Ps or Pe depending on usage
-    'Pf': 'Final quote', # may behave like Ps or Pe depending on usage
+    'Pi': 'Initial quote',  # may behave like Ps or Pe depending on usage
+    'Pf': 'Final quote',    # may behave like Ps or Pe depending on usage
     'Po': 'Other'
     }
 """Unicode character categories for punctuation"""
@@ -189,7 +189,7 @@ def character_category_patterns():
     recognition rules`_.
     """
 
-    cp_min = 160 # ASCII chars have special rules for backwards compatibility
+    cp_min = 160  # ASCII chars have special rules for backwards compatibility
     ucharlists = unicode_charlists(unicode_punctuation_categories, cp_min)
     """Strings of characters in Unicode punctuation character categories"""
 
@@ -200,12 +200,12 @@ def character_category_patterns():
 
     # low quotation marks are also used as closers (e.g. in Greek)
     # move them to category Pi:
-    ucharlists['Ps'].remove('‚') # 201A  SINGLE LOW-9 QUOTATION MARK
-    ucharlists['Ps'].remove('„') # 201E  DOUBLE LOW-9 QUOTATION MARK
+    ucharlists['Ps'].remove('‚')  # 201A  SINGLE LOW-9 QUOTATION MARK
+    ucharlists['Ps'].remove('„')  # 201E  DOUBLE LOW-9 QUOTATION MARK
     ucharlists['Pi'] += ['‚', '„']
 
-    ucharlists['Pi'].remove('‛') # 201B  SINGLE HIGH-REVERSED-9 QUOTATION MARK
-    ucharlists['Pi'].remove('‟') # 201F  DOUBLE HIGH-REVERSED-9 QUOTATION MARK
+    ucharlists['Pi'].remove('‛')  # 201B  … HIGH-REVERSED-9 QUOTATION MARK
+    ucharlists['Pi'].remove('‟')  # 201F  … HIGH-REVERSED-9 QUOTATION MARK
     ucharlists['Pf'] += ['‛', '‟']
 
     # 301F  LOW DOUBLE PRIME QUOTATION MARK misses the opening pendant:

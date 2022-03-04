@@ -244,7 +244,7 @@ class StateMachine:
                     else:
                         results.extend(result)
                 except TransitionCorrection as exception:
-                    self.previous_line() # back up for another try
+                    self.previous_line()  # back up for another try
                     transitions = (exception.args[0],)
                     if self.debug:
                         print('\nStateMachine.run: TransitionCorrection to '
@@ -252,7 +252,7 @@ class StateMachine:
                               % (state.__class__.__name__, transitions[0]), file=self._stderr)
                     continue
                 except StateCorrection as exception:
-                    self.previous_line() # back up for another try
+                    self.previous_line()  # back up for another try
                     next_state = exception.args[0]
                     if len(exception.args) == 1:
                         transitions = None
@@ -407,7 +407,7 @@ class StateMachine:
             return block
         except UnexpectedIndentationError as err:
             block = err.args[0]
-            self.next_line(len(block) - 1) # advance to last line of block
+            self.next_line(len(block) - 1)  # advance to last line of block
             raise
 
     def check_line(self, context, state, transitions=None):
@@ -808,7 +808,7 @@ class StateMachineWS(StateMachine):
         indented, indent, blank_finish = self.input_lines.get_indented(
               self.line_offset, until_blank, strip_indent)
         if indented:
-            self.next_line(len(indented) - 1) # advance to last indented line
+            self.next_line(len(indented) - 1)  # advance to last indented line
         while indented and not indented[0].strip():
             indented.trim_start()
             offset += 1
@@ -838,7 +838,7 @@ class StateMachineWS(StateMachine):
         indented, indent, blank_finish = self.input_lines.get_indented(
               self.line_offset, until_blank, strip_indent,
               block_indent=indent)
-        self.next_line(len(indented) - 1) # advance to last indented line
+        self.next_line(len(indented) - 1)  # advance to last indented line
         while indented and not indented[0].strip():
             indented.trim_start()
             offset += 1
@@ -870,7 +870,7 @@ class StateMachineWS(StateMachine):
         indented, indent, blank_finish = self.input_lines.get_indented(
               self.line_offset, until_blank, strip_indent,
               first_indent=indent)
-        self.next_line(len(indented) - 1) # advance to last indented line
+        self.next_line(len(indented) - 1)  # advance to last indented line
         if strip_top:
             while indented and not indented[0].strip():
                 indented.trim_start()
@@ -1443,7 +1443,7 @@ class StringList(ViewList):
                 new = []
                 for char in line:
                     new.append(char)
-                    if east_asian_width(char) in 'WF': # 'W'ide & 'F'ull-width
+                    if east_asian_width(char) in 'WF':  # Wide & Full-width
                         new.append(pad_char)
                 self.data[i] = ''.join(new)
 

@@ -10,7 +10,7 @@ Test module for misc.Transitions transform.
 
 if __name__ == '__main__':
     import __init__
-from test_transforms import DocutilsTestSupport # before importing docutils!
+from test_transforms import DocutilsTestSupport  # before importing docutils!
 from docutils.transforms.misc import Transitions
 from docutils.parsers.rst import Parser
 
@@ -174,7 +174,7 @@ A paragraph and two transitions.
 ----------
 
 ----------
-""", # the same:
+""",
 """\
 <document source="test data">
     <paragraph>

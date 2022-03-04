@@ -72,14 +72,14 @@ directives = {
     'ディフォルトロール': 'default-role',
     '既定役': 'default-role',
     'タイトル': 'title',
-    '題': 'title',                    # 題名　件名
+    '題': 'title',                       # 題名　件名
     '目次': 'contents',
     '節数': 'sectnum',
     'ヘッダ': 'header',
     'フッタ': 'footer',
-    #'脚注': 'footnotes',             # 脚註?
+    #'脚注': 'footnotes',                # 脚註?
     #'サイテーション': 'citations',　　　# 出典　引証　引用
-    'ターゲットノート': 'target-notes', # 的注　的脚注
+    'ターゲットノート': 'target-notes',  # 的注　的脚注
     }
 """Japanese name to registered (in directives/__init__.py) directive name
 mapping."""

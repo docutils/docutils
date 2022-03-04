@@ -294,7 +294,7 @@ class GridTableParser(TableParser):
         for i in range(len(colseps)):
             colindex[colseps[i]] = i    # column boundary -> col number map
         colspecs = [(colseps[i] - colseps[i - 1] - 1)
-                    for i in range(1, len(colseps))] # list of column widths
+                    for i in range(1, len(colseps))]  # list of column widths
         # prepare an empty table with the correct number of rows & columns
         onerow = [None for i in range(len(colseps) - 1)]
         rows = [onerow[:] for i in range(len(rowseps) - 1)]

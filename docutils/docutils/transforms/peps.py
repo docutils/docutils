@@ -48,7 +48,7 @@ class Headers(Transform):
                             'header; it is not a PEP.')
         pep = None
         for field in header:
-            if field[0].astext().lower() == 'pep': # should be the first field
+            if field[0].astext().lower() == 'pep':  # should be the first field
                 value = field[1].astext()
                 try:
                     pep = int(value)
@@ -122,7 +122,7 @@ class Headers(Transform):
                         refuri=(self.document.settings.pep_base_url
                                 + self.pep_url % pepno)))
                     newbody.append(space)
-                para[:] = newbody[:-1] # drop trailing space
+                para[:] = newbody[:-1]  # drop trailing space
             elif name == 'last-modified':
                 utils.clean_rcs_keywords(para, self.rcs_keyword_substitutions)
                 if cvs_url:

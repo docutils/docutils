@@ -60,7 +60,7 @@ class Parser(CommonMarkParser):
     config_section_dependencies = ('parsers',)
 
     def get_transforms(self):
-        return Component.get_transforms(self) # + [AutoStructify]
+        return Component.get_transforms(self)  # + [AutoStructify]
 
     def parse(self, inputstring, document):
         """Use the upstream parser and clean up afterwards.

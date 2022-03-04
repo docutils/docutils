@@ -18,7 +18,7 @@ __docformat__ = 'reStructuredText'
 directives = {
       # language-dependent: fixed
       'pozor': 'attention',
-      'caution (translation required)': 'caution', # jak rozlisit caution a warning?
+      'caution (translation required)': 'caution',  # jak rozlisit caution a warning?
       'code (translation required)': 'code',
       'nebezpe\u010D\u00ED': 'danger',
       'chyba': 'error',
@@ -47,8 +47,8 @@ directives = {
       'math (translation required)': 'math',
       'meta (translation required)': 'meta',
       #'imagemap': 'imagemap',
-      'image (translation required)': 'image',   # obrazek
-      'figure (translation required)': 'figure', # a tady?
+      'image (translation required)': 'image',    # obrazek
+      'figure (translation required)': 'figure',  # a tady?
       'include (translation required)': 'include',
       'raw (translation required)': 'raw',
       'replace (translation required)': 'replace',

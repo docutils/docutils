@@ -213,7 +213,7 @@ class Publisher:
         except Exception as error:
             if not self.settings:       # exception too early to report nicely
                 raise
-            if self.settings.traceback: # Propagate exceptions?
+            if self.settings.traceback:  # Propagate exceptions?
                 self.debugging_dumps()
                 raise
             self.report_Exception(error)

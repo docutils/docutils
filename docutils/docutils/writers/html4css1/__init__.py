@@ -32,7 +32,7 @@ class Writer(writers._html_base.Writer):
                                os.path.abspath(os.path.dirname(__file__)),
                                os.path.abspath(os.path.join(
                                    os.path.dirname(os.path.dirname(__file__)),
-                                   'html5_polyglot')) # for math.css
+                                   'html5_polyglot'))  # for math.css
                                ]
     default_template = os.path.join(
         os.path.dirname(os.path.abspath(__file__)), 'template.txt')
@@ -566,7 +566,7 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
                     with PIL.Image.open(imagepath) as img:
                         img_size = img.size
                 except (OSError, UnicodeEncodeError):
-                    pass # TODO: warn/info?
+                    pass  # TODO: warn/info?
                 else:
                     self.settings.record_dependencies.add(
                         imagepath.replace('\\', '/'))
@@ -723,7 +723,7 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
                      ([], ['first'], ['last'], ['first', 'last']))):
                 # Attribute which needs to survive.
                 return False
-        first = isinstance(node.parent[0], nodes.label) # skip label
+        first = isinstance(node.parent[0], nodes.label)  # skip label
         for child in node.parent.children[first:]:
             # only first paragraph can be compact
             if isinstance(child, nodes.Invisible):

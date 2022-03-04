@@ -29,7 +29,7 @@ directives = {
       'warnung': 'warning',
       'ermahnung': 'admonition',
       'kasten': 'sidebar',
-      'seitenkasten': 'sidebar', # kept for backwards compatibiltity
+      'seitenkasten': 'sidebar',  # kept for backwards compatibiltity
       'seitenleiste': 'sidebar',
       'thema': 'topic',
       'zeilenblock': 'line-block',
@@ -37,8 +37,8 @@ directives = {
       'rubrik': 'rubric',
       'epigraph': 'epigraph',
       'highlights': 'highlights',
-      'pull-quote': 'pull-quote', # commonly used in German too
-      'seitenansprache': 'pull-quote', # cf. http://www.typografie.info/2/wiki.php?title=Seitenansprache
+      'pull-quote': 'pull-quote',  # commonly used in German too
+      'seitenansprache': 'pull-quote',  # cf. http://www.typografie.info/2/wiki.php?title=Seitenansprache
       'zusammengesetzt': 'compound',
       'verbund': 'compound',
       'container': 'container',
@@ -86,7 +86,7 @@ roles = {
       'titel-referenz': 'title-reference',
       'pep-referenz': 'pep-reference',
       'rfc-referenz': 'rfc-reference',
-      'betonung': 'emphasis', # for backwards compatibility
+      'betonung': 'emphasis',  # for backwards compatibility
       'betont': 'emphasis',
       'fett': 'strong',
       'wörtlich': 'literal',

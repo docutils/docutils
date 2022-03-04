@@ -45,7 +45,7 @@ class Filter(Transform):
 
     def apply(self):
         pending = self.startnode
-        component_type = pending.details['component'] # 'reader' or 'writer'
+        component_type = pending.details['component']  # 'reader' or 'writer'
         formats = (pending.details['format']).split(',')
         component = self.document.transformer.components[component_type]
         for format in formats:
