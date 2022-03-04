@@ -215,7 +215,7 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
         self.colspecs.append(node)
         # "stubs" list is an attribute of the tgroup element:
         node.parent.stubs.append(node.attributes.get('stub'))
-    #
+
     def depart_colspec(self, node):
         # write out <colgroup> when all colspecs are processed
         if isinstance(node.next_node(descend=False, siblings=True),
@@ -542,7 +542,7 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
     #   html4css1 strives for IE6 compatibility.)
     object_image_types = {'.svg': 'image/svg+xml',
                           '.swf': 'application/x-shockwave-flash'}
-    #
+
     def visit_image(self, node):
         atts = {}
         uri = node['uri']
@@ -864,7 +864,7 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
     # hard-coded vertical alignment
     def visit_tbody(self, node):
         self.body.append(self.starttag(node, 'tbody', valign='top'))
-    #
+
     def depart_tbody(self, node):
         self.body.append('</tbody>\n')
 
@@ -880,7 +880,7 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
     # hard-coded vertical alignment
     def visit_thead(self, node):
         self.body.append(self.starttag(node, 'thead', valign='bottom'))
-    #
+
     def depart_thead(self, node):
         self.body.append('</thead>\n')
 

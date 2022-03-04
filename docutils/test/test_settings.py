@@ -282,6 +282,7 @@ class HelperFunctionsTests(unittest.TestCase):
                 ('no', False),
                 ('false', False),
                )
+
     def test_validate_boolean(self):
         for t in self.boolean_settings:
             self.assertEqual(

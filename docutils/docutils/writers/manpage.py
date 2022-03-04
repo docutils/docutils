@@ -113,11 +113,14 @@ class Table:
         self._options = ['center']
         self._tab_char = '\t'
         self._coldefs = []
+
     def new_row(self):
         self._rows.append([])
+
     def append_separator(self, separator):
         """Append the separator for table head."""
         self._rows.append([separator])
+
     def append_cell(self, cell_lines):
         """cell_lines is an array of lines"""
         start = 0
@@ -126,12 +129,14 @@ class Table:
         self._rows[-1].append(cell_lines[start:])
         if len(self._coldefs) < len(self._rows[-1]):
             self._coldefs.append('l')
+
     def _minimize_cell(self, cell_lines):
         """Remove leading and trailing blank and ``.sp`` lines"""
         while cell_lines and cell_lines[0] in ('\n', '.sp\n'):
             del cell_lines[0]
         while cell_lines and cell_lines[-1] in ('\n', '.sp\n'):
             del cell_lines[-1]
+
     def as_list(self):
         text = ['.TS\n']
         text.append(' '.join(self._options) + ';\n')
@@ -349,6 +354,7 @@ class Translator(nodes.NodeVisitor):
 
             def get_width(self):
                 return self._indent
+
             def __repr__(self):
                 return 'enum_style-%s' % list(self._style)
 

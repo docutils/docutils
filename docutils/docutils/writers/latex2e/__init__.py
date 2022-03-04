@@ -3057,6 +3057,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         pass
 
     _thead_depth = 0
+
     def thead_depth(self):
         return self._thead_depth
 
