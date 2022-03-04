@@ -42,14 +42,14 @@ directives = {
       'zusammengesetzt': 'compound',
       'verbund': 'compound',
       'container': 'container',
-      #'fragen': 'questions',
+      # 'fragen': 'questions',
       'tabelle': 'table',
       'csv-tabelle': 'csv-table',
       'listentabelle': 'list-table',
       'mathe': 'math',
       'formel': 'math',
       'meta': 'meta',
-      #'imagemap': 'imagemap',
+      # 'imagemap': 'imagemap',
       'bild': 'image',
       'abbildung': 'figure',
       'unverändert': 'raw',
@@ -70,8 +70,8 @@ directives = {
       'linkziel-fußnoten': 'target-notes',
       'kopfzeilen': 'header',
       'fußzeilen': 'footer',
-      #'fußnoten': 'footnotes',
-      #'zitate': 'citations',
+      # 'fußnoten': 'footnotes',
+      # 'zitate': 'citations',
       }
 """German name to registered (in directives/__init__.py) directive name
 mapping."""

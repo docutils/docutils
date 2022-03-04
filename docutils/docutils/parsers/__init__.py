@@ -75,7 +75,7 @@ _parser_aliases = {  # short names for known parsers
                    # 3rd-party Markdown parsers
                    'recommonmark': 'docutils.parsers.recommonmark_wrapper',
                    'myst': 'myst_parser.docutils_',
-                   #'pycmark': works out of the box
+                   # 'pycmark': works out of the box
                    # TODO: the following two could be either of the above
                    'commonmark': 'docutils.parsers.recommonmark_wrapper',
                    'markdown': 'docutils.parsers.recommonmark_wrapper',

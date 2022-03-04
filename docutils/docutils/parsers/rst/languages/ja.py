@@ -46,12 +46,12 @@ directives = {
     '表': 'table',
     'csv表': 'csv-table',
     'リスト表': 'list-table',
-    #'質問': 'questions',
-    #'問答': 'questions',
-    #'faq': 'questions',
+    # '質問': 'questions',
+    # '問答': 'questions',
+    # 'faq': 'questions',
     'math (translation required)': 'math',
     'メタ': 'meta',
-    #'イメージマプ': 'imagemap',
+    # 'イメージマプ': 'imagemap',
     'イメージ': 'image',
     '画像': 'image',
     'フィグア': 'figure',
@@ -77,8 +77,8 @@ directives = {
     '節数': 'sectnum',
     'ヘッダ': 'header',
     'フッタ': 'footer',
-    #'脚注': 'footnotes',                # 脚註?
-    #'サイテーション': 'citations',　　　# 出典　引証　引用
+    # '脚注': 'footnotes',                # 脚註?
+    # 'サイテーション': 'citations',　　　# 出典　引証　引用
     'ターゲットノート': 'target-notes',  # 的注　的脚注
     }
 """Japanese name to registered (in directives/__init__.py) directive name

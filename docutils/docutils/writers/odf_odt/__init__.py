@@ -45,14 +45,14 @@ try:
 except (ImportError, SyntaxError):
     pygments = None
 
-## import warnings
-## warnings.warn('importing IPShellEmbed', UserWarning)
-## from IPython.Shell import IPShellEmbed
-## args = ['-pdb', '-pi1', 'In <\\#>: ', '-pi2', '   .\\D.: ',
-##         '-po', 'Out<\\#>: ', '-nosep']
-## ipshell = IPShellEmbed(args,
-##                        banner = 'Entering IPython.  Press Ctrl-D to exit.',
-##                        exit_msg = 'Leaving Interpreter, back to program.')
+# import warnings
+# warnings.warn('importing IPShellEmbed', UserWarning)
+# from IPython.Shell import IPShellEmbed
+# args = ['-pdb', '-pi1', 'In <\\#>: ', '-pi2', '   .\\D.: ',
+#         '-po', 'Out<\\#>: ', '-nosep']
+# ipshell = IPShellEmbed(args,
+#                        banner = 'Entering IPython.  Press Ctrl-D to exit.',
+#                        exit_msg = 'Leaving Interpreter, back to program.')
 
 VERSION = '1.0a'
 
@@ -102,7 +102,7 @@ GENERATOR_DESC = 'Docutils.org/odf_odt'
 NAME_SPACE_1 = 'urn:oasis:names:tc:opendocument:xmlns:office:1.0'
 
 CONTENT_NAMESPACE_DICT = CNSD = {
-    #'office:version': '1.0',
+    # 'office:version': '1.0',
     'chart': 'urn:oasis:names:tc:opendocument:xmlns:chart:1.0',
     'dc': 'http://purl.org/dc/elements/1.1/',
     'dom': 'http://www.w3.org/2001/xml-events',
@@ -131,7 +131,7 @@ CONTENT_NAMESPACE_DICT = CNSD = {
 }
 
 STYLES_NAMESPACE_DICT = SNSD = {
-    #'office:version': '1.0',
+    # 'office:version': '1.0',
     'chart': 'urn:oasis:names:tc:opendocument:xmlns:chart:1.0',
     'dc': 'http://purl.org/dc/elements/1.1/',
     'dom': 'http://www.w3.org/2001/xml-events',
@@ -160,7 +160,7 @@ MANIFEST_NAMESPACE_DICT = MANNSD = {
 }
 
 META_NAMESPACE_DICT = METNSD = {
-    #'office:version': '1.0',
+    # 'office:version': '1.0',
     'dc': 'http://purl.org/dc/elements/1.1/',
     'meta': 'urn:oasis:names:tc:opendocument:xmlns:meta:1.0',
     'office': NAME_SPACE_1,
@@ -172,7 +172,7 @@ META_NAMESPACE_DICT = METNSD = {
 # does not support use of nsmap parameter on Element() and SubElement().
 
 CONTENT_NAMESPACE_ATTRIB = {
-    #'office:version': '1.0',
+    # 'office:version': '1.0',
     'xmlns:chart': 'urn:oasis:names:tc:opendocument:xmlns:chart:1.0',
     'xmlns:dc': 'http://purl.org/dc/elements/1.1/',
     'xmlns:dom': 'http://www.w3.org/2001/xml-events',
@@ -201,7 +201,7 @@ CONTENT_NAMESPACE_ATTRIB = {
 }
 
 STYLES_NAMESPACE_ATTRIB = {
-    #'office:version': '1.0',
+    # 'office:version': '1.0',
     'xmlns:chart': 'urn:oasis:names:tc:opendocument:xmlns:chart:1.0',
     'xmlns:dc': 'http://purl.org/dc/elements/1.1/',
     'xmlns:dom': 'http://www.w3.org/2001/xml-events',
@@ -231,7 +231,7 @@ MANIFEST_NAMESPACE_ATTRIB = {
 }
 
 META_NAMESPACE_ATTRIB = {
-    #'office:version': '1.0',
+    # 'office:version': '1.0',
     'xmlns:dc': 'http://purl.org/dc/elements/1.1/',
     'xmlns:meta': 'urn:oasis:names:tc:opendocument:xmlns:meta:1.0',
     'xmlns:office': NAME_SPACE_1,
@@ -779,8 +779,8 @@ class Writer(writers.Writer):
                                  attrib={'meta:name': prop}, nsdict=METNSD)
                 el1.text = value
         s1 = ToString(doc)
-        #doc = minidom.parseString(s1)
-        #s1 = doc.toprettyxml('  ')
+        # doc = minidom.parseString(s1)
+        # s1 = doc.toprettyxml('  ')
         return s1
 
 
@@ -845,7 +845,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     )
 
     def __init__(self, document):
-        #nodes.SparseNodeVisitor.__init__(self, document)
+        # nodes.SparseNodeVisitor.__init__(self, document)
         nodes.GenericNodeVisitor.__init__(self, document)
         self.settings = document.settings
         self.language_code = self.settings.language_code
@@ -1173,12 +1173,12 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def make_field_element(self, parent, text, style_name, automatic_styles):
         if text == 'p':
             el1 = SubElement(parent, 'text:page-number', attrib={
-                #'text:style-name': self.rststyle(style_name),
+                # 'text:style-name': self.rststyle(style_name),
                 'text:select-page': 'current',
             })
         elif text == 'P':
             el1 = SubElement(parent, 'text:page-count', attrib={
-                #'text:style-name': self.rststyle(style_name),
+                # 'text:style-name': self.rststyle(style_name),
             })
         elif text == 't1':
             self.style_index += 1
@@ -1662,10 +1662,10 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def visit_version(self, node):
         self.generate_labeled_line(node, 'version')
-        #self.set_current_element(el)
+        # self.set_current_element(el)
 
     def depart_version(self, node):
-        #self.set_to_parent()
+        # self.set_to_parent()
         pass
 
     def visit_attribution(self, node):
@@ -2474,8 +2474,8 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                    attrib=attrib, nsdict=SNSD)
         draw_name = 'graphics%d' % next(IMAGE_NAME_COUNTER)
         # Add the content.
-        #el = SubElement(current_element, 'text:p',
-        #    attrib={'text:style-name': self.rststyle('textbody')})
+        # el = SubElement(current_element, 'text:p',
+        #     attrib={'text:style-name': self.rststyle('textbody')})
         attrib = {
             'draw:style-name': style_name,
             'draw:name': draw_name,
@@ -2614,12 +2614,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             wrapper1 = '<text:p text:style-name="%s">%%s</text:p>' % (
                 self.rststyle('codeblock'), )
         source = node.astext()
-        if (
-                pygments and
-                self.settings.add_syntax_highlighting
-                #and
-                #node.get('hilight', False)
-        ):
+        if (pygments and self.settings.add_syntax_highlighting):
             language = node.get('language', 'python')
             source = self._add_syntax_highlighting(source, language)
         else:
@@ -2883,7 +2878,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             pass
 
     def visit_reference(self, node):
-        #text = node.astext()
+        # text = node.astext()
         if self.settings.create_links:
             if 'refuri' in node:
                 href = node['refuri']
@@ -2925,8 +2920,8 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             if class1:
                 style_name = class1
         el = SubElement(self.current_element, 'text:h', attrib={
-            #'text:outline-level': '%d' % section_level,
-            #'text:style-name': 'Heading_20_%d' % section_level,
+            # 'text:outline-level': '%d' % section_level,
+            # 'text:style-name': 'Heading_20_%d' % section_level,
             'text:style-name': style_name,
         })
         text = node.astext()
@@ -3021,15 +3016,15 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         }, nsdict=SNSD)
         if table_style.backgroundcolor is None:
             SubElement(el1, 'style:table-properties', attrib={
-                #'style:width': '17.59cm',
-                #'table:align': 'margins',
+                # 'style:width': '17.59cm',
+                # 'table:align': 'margins',
                 'table:align': 'left',
                 'fo:margin-top': '0in',
                 'fo:margin-bottom': '0.10in',
             }, nsdict=SNSD)
         else:
             SubElement(el1, 'style:table-properties', attrib={
-                #'style:width': '17.59cm',
+                # 'style:width': '17.59cm',
                 'table:align': 'margins',
                 'fo:margin-top': '0in',
                 'fo:margin-bottom': '0.10in',
@@ -3183,16 +3178,16 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             el1 = self.append_child(
                 'text:h', attrib={
                     'text:outline-level': '%d' % section_level,
-                    #'text:style-name': 'Heading_20_%d' % section_level,
+                    # 'text:style-name': 'Heading_20_%d' % section_level,
                     'text:style-name': self.rststyle(
                         'heading%d', (section_level, )),
                 })
             self.append_pending_ids(el1)
             self.set_current_element(el1)
         elif isinstance(node.parent, docutils.nodes.document):
-            #    text = self.settings.title
-            #else:
-            #    text = node.astext()
+            # text = self.settings.title
+            # else:
+            #     text = node.astext()
             el1 = SubElement(self.current_element, 'text:p', attrib={
                 'text:style-name': self.rststyle(title_type),
             })

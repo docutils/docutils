@@ -152,7 +152,7 @@ class S5HTMLTranslator(html4css1.HTMLTranslator):
 
     def __init__(self, *args):
         html4css1.HTMLTranslator.__init__(self, *args)
-        #insert S5-specific stylesheet and script stuff:
+        # insert S5-specific stylesheet and script stuff:
         self.theme_file_path = None
         self.setup_theme()
         view_mode = self.document.settings.view_mode

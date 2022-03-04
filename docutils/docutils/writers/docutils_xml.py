@@ -33,7 +33,7 @@ class Writer(writers.Writer):
           ['--newlines'],
           {'action': 'store_true', 'validator': frontend.validate_boolean}),
          ('Generate XML with indents and newlines.',
-          ['--indents'],  #@ TODO use integer value for number of spaces?
+          ['--indents'],  # TODO use integer value for number of spaces?
           {'action': 'store_true', 'validator': frontend.validate_boolean}),
          ('Omit the XML declaration.  Use with caution.',
           ['--no-xml-declaration'],
@@ -66,7 +66,7 @@ class XMLTranslator(nodes.GenericNodeVisitor):
 
     xml_declaration = '<?xml version="1.0" encoding="%s"?>\n'
     # TODO: add stylesheet options similar to HTML and LaTeX writers?
-    #xml_stylesheet = '<?xml-stylesheet type="text/xsl" href="%s"?>\n'
+    # xml_stylesheet = '<?xml-stylesheet type="text/xsl" href="%s"?>\n'
     doctype = (
         '<!DOCTYPE document PUBLIC'
         ' "+//IDN docutils.sourceforge.net//DTD Docutils Generic//EN//XML"'
@@ -92,7 +92,7 @@ class XMLTranslator(nodes.GenericNodeVisitor):
             self.newline = '\n'
         if settings.indents:
             self.newline = '\n'
-            self.indent = '    '  #@ TODO make this configurable?
+            self.indent = '    '  # TODO make this configurable?
         self.level = 0       # indentation level
         self.in_simple = 0   # level of nesting inside mixed-content elements
         self.fixed_text = 0  # level of nesting inside FixedText elements

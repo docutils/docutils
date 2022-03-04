@@ -16,13 +16,13 @@ http://www.python.org/2.1.1/license.html
 
 import re
 
-#Define exceptions
+# Define exceptions
 class RomanError(Exception): pass
 class OutOfRangeError(RomanError): pass
 class NotIntegerError(RomanError): pass
 class InvalidRomanNumeralError(RomanError): pass
 
-#Define digit mapping
+# Define digit mapping
 romanNumeralMap = (('M',  1000),
                    ('CM', 900),
                    ('D',  500),
@@ -51,7 +51,7 @@ def toRoman(n):
             n -= integer
     return result
 
-#Define pattern to detect valid Roman numerals
+# Define pattern to detect valid Roman numerals
 romanNumeralPattern = re.compile("""
     ^                   # beginning of string
     M{0,4}              # thousands - 0 to 4 M's
