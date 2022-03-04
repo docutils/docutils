@@ -41,10 +41,10 @@ directives = {
       'list-table (translation required)': 'list-table',
       'compound (translation required)': 'compound',
       'container (translation required)': 'container',
-      #'kysymykset': 'questions',
+      # 'kysymykset': 'questions',
       'meta': 'meta',
       'math (translation required)': 'math',
-      #'kuvakartta': 'imagemap',
+      # 'kuvakartta': 'imagemap',
       'kuva': 'image',
       'kaavio': 'figure',
       'sis\u00e4llyt\u00e4': 'include',
@@ -60,8 +60,8 @@ directives = {
       'kappale': 'sectnum',
       'header (translation required)': 'header',
       'footer (translation required)': 'footer',
-      #'alaviitteet': 'footnotes',
-      #'viitaukset': 'citations',
+      # 'alaviitteet': 'footnotes',
+      # 'viitaukset': 'citations',
       'target-notes (translation required)': 'target-notes'}
 """Finnish name to registered (in directives/__init__.py) directive name
 mapping."""

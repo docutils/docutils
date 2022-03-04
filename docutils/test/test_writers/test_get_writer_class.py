@@ -16,7 +16,6 @@ from docutils.writers import get_writer_class
 
 
 class GetWriterClassTestCase(DocutilsTestSupport.StandardTestCase):
-    #tests = ( ('manpage', 1), ('nope', 0), ('dummy-writer', 1))
 
     def test_registered_writer(self):
         wr = get_writer_class('manpage')

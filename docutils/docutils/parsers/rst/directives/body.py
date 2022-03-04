@@ -194,7 +194,7 @@ class MathBlock(Directive):
 
     option_spec = {'class': directives.class_option,
                    'name': directives.unchanged,
-                   ## TODO: Add Sphinx' ``mathbase.py`` option 'nowrap'?
+                   # TODO: Add Sphinx' ``mathbase.py`` option 'nowrap'?
                    # 'nowrap': directives.flag,
                    }
     has_content = True

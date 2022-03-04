@@ -107,7 +107,7 @@ class Publisher:
             parts = config_section.split()
             if len(parts) > 1 and parts[-1] == 'application':
                 settings_spec.config_section_dependencies = ['applications']
-        #@@@ Add self.source & self.destination to components in future?
+        # @@@ Add self.source & self.destination to components in future?
         option_parser = OptionParser(
             components=(self.parser, self.reader, self.writer, settings_spec),
             defaults=defaults, read_config_files=True,

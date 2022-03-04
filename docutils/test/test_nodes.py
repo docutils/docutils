@@ -160,7 +160,7 @@ class ElementTests(unittest.TestCase):
     def test_update_all_atts(self):
         # Note: Also tests is_not_list_attribute and is_not_known_attribute
         # and various helpers
-        ## Test for full attribute replacement
+        # Test for full attribute replacement
         element1 = nodes.Element(ids=['foo', 'bar'], parent_only='parent',
                                  all_nodes='mom')
         element2 = nodes.Element(ids=['baz', 'qux'], child_only='child',
@@ -228,7 +228,7 @@ class ElementTests(unittest.TestCase):
         # 'source' remains unset due to the third parameter default of False.
         self.assertEqual(element1.get('source'), None)
 
-        ## Test for List attribute merging
+        # Test for List attribute merging
         # Attribute Concatination
         element1 = nodes.Element(ss='a', sl='1', ls=['I'], ll=['A'])
         element2 = nodes.Element(ss='b', sl=['2'], ls='II', ll=['B'])

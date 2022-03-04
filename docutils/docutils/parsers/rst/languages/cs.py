@@ -38,15 +38,15 @@ directives = {
       'pull-quote (translation required)': 'pull-quote',
       'compound (translation required)': 'compound',
       'container (translation required)': 'container',
-      #'questions': 'questions',
-      #'qa': 'questions',
-      #'faq': 'questions',
+      # 'questions': 'questions',
+      # 'qa': 'questions',
+      # 'faq': 'questions',
       'table (translation required)': 'table',
       'csv-table (translation required)': 'csv-table',
       'list-table (translation required)': 'list-table',
       'math (translation required)': 'math',
       'meta (translation required)': 'meta',
-      #'imagemap': 'imagemap',
+      # 'imagemap': 'imagemap',
       'image (translation required)': 'image',    # obrazek
       'figure (translation required)': 'figure',  # a tady?
       'include (translation required)': 'include',
@@ -63,8 +63,8 @@ directives = {
       'section-numbering (translation required)': 'sectnum',
       'header (translation required)': 'header',
       'footer (translation required)': 'footer',
-      #'footnotes': 'footnotes',
-      #'citations': 'citations',
+      # 'footnotes': 'footnotes',
+      # 'citations': 'citations',
       'target-notes (translation required)': 'target-notes',
       'restructuredtext-test-directive': 'restructuredtext-test-directive'}
 """Czech name to registered (in directives/__init__.py) directive name

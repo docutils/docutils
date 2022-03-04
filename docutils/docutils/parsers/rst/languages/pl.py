@@ -38,15 +38,15 @@ directives = {
       'pull-quote': 'pull-quote',  # FIXME no polish equivalent?
       'z\u0142o\u017cony': 'compound',
       'kontener': 'container',
-      #'questions': 'questions',
+      # 'questions': 'questions',
       'tabela': 'table',
       'tabela-csv': 'csv-table',
       'tabela-listowa': 'list-table',
-      #'qa': 'questions',
-      #'faq': 'questions',
+      # 'qa': 'questions',
+      # 'faq': 'questions',
       'meta': 'meta',
       'math (translation required)': 'math',
-      #'imagemap': 'imagemap',
+      # 'imagemap': 'imagemap',
       'obraz': 'image',
       'rycina': 'figure',
       'do\u0142\u0105cz': 'include',
@@ -63,8 +63,8 @@ directives = {
       'numeracja-sekcji': 'sectnum',
       'nag\u0142\u00f3wek': 'header',
       'stopka': 'footer',
-      #'footnotes': 'footnotes',
-      #'citations': 'citations',
+      # 'footnotes': 'footnotes',
+      # 'citations': 'citations',
       'target-notes': 'target-notes',  # FIXME no polish equivalent?
       'restructuredtext-test-directive': 'restructuredtext-test-directive'}
 """Polish name to registered (in directives/__init__.py) directive name

@@ -695,10 +695,10 @@ mathunder = {
     'underbrace': '\u23df', # ⏟ BOTTOM CURLY BRACKET
     }
 space = {
-    ' ': ' ', #   SPACE
-    ',': '\u2006', #   SIX-PER-EM SPACE
-    ':': '\u205f', #   MEDIUM MATHEMATICAL SPACE
-    'medspace': '\u205f', #   MEDIUM MATHEMATICAL SPACE
-    'quad': '\u2001', #   EM QUAD
-    'thinspace': '\u2006', #   SIX-PER-EM SPACE
+    ' ': ' ', # SPACE
+    ',': '\u2006', # SIX-PER-EM SPACE
+    ':': '\u205f', # MEDIUM MATHEMATICAL SPACE
+    'medspace': '\u205f', # MEDIUM MATHEMATICAL SPACE
+    'quad': '\u2001', # EM QUAD
+    'thinspace': '\u2006', # SIX-PER-EM SPACE
     }

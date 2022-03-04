@@ -70,9 +70,9 @@ class DocutilsOdtTestCase(DocutilsTestSupport.StandardTestCase):
             reader_name='standalone',
             writer_name='odf_odt',
             settings_overrides=settings_overrides)
-##         msg = 'file length not equal: expected length: %d  actual length: %d' % (
-##             len(expected), len(result), )
-##         self.assertEqual(str(len(result)), str(len(expected)))
+        # msg = 'file length not equal: expected length: %d  actual length: %d' % (
+        #           len(expected), len(result), )
+        # self.assertEqual(str(len(result)), str(len(expected)))
         if save_output_name:
             filename = '%s%s%s' % (TEMP_FILE_PATH, os.sep, save_output_name,)
             outfile = open(filename, 'wb')
@@ -115,7 +115,7 @@ class DocutilsOdtTestCase(DocutilsTestSupport.StandardTestCase):
             sep = '+' * 60
             msg1 = '\n%s\nresult:\n%s\n%s\nexpected:\n%s\n%s' % (
                 sep, first, sep, second, sep, )
-            #msg2 = '%s\n%s' % (msg1, msg, )
+            # msg2 = '%s\n%s' % (msg1, msg, )
             msg2 = '%s' % (msg, )
         super().assertEqual(first, second, msg2)
 
@@ -182,9 +182,8 @@ class DocutilsOdtTestCase(DocutilsTestSupport.StandardTestCase):
     #   functional/expected/odt_xxxx.odt
     # Replace all xxxx with name of your test.
     #
-##     def test_odt_xxxx(self):
-##         self.process_test('odt_xxxx.txt', 'odt_xxxx.odt')
-
+    # def test_odt_xxxx(self):
+    #     self.process_test('odt_xxxx.txt', 'odt_xxxx.odt')
 
 # -----------------------------------------------------------------
 

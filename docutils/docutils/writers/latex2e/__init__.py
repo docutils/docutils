@@ -1031,8 +1031,8 @@ class Table:
 
     def depart_thead(self):
         a = []
-        #if self.borders == 'standard':
-        #    a.append('\\hline\n')
+        ## if self.borders == 'standard':
+        ##     a.append('\\hline\n')
         if self.borders == 'booktabs':
             a.append('\\midrule\n')
         if self._latex_type == 'longtable':
@@ -1442,18 +1442,18 @@ class LaTeXTranslator(nodes.NodeVisitor):
               'windows-1252': 'cp1252',   #
               'us-ascii': 'ascii',        # ASCII (US)
               # unmatched encodings
-              #'': 'applemac',
-              #'': 'ansinew',  # windows 3.1 ansi
-              #'': 'ascii',    # ASCII encoding for the range 32--127.
-              #'': 'cp437',    # dos latin us
-              #'': 'cp850',    # dos latin 1
-              #'': 'cp852',    # dos latin 2
-              #'': 'decmulti',
-              #'': 'latin10',
-              #'iso-8859-6': ''   # arabic
-              #'iso-8859-7': ''   # greek
-              #'iso-8859-8': ''   # hebrew
-              #'iso-8859-10': ''   # latin6, more complete iso-8859-4
+              # '': 'applemac',
+              # '': 'ansinew',  # windows 3.1 ansi
+              # '': 'ascii',    # ASCII encoding for the range 32--127.
+              # '': 'cp437',    # dos latin us
+              # '': 'cp850',    # dos latin 1
+              # '': 'cp852',    # dos latin 2
+              # '': 'decmulti',
+              # '': 'latin10',
+              # 'iso-8859-6': ''   # arabic
+              # 'iso-8859-7': ''   # greek
+              # 'iso-8859-8': ''   # hebrew
+              # 'iso-8859-10': ''   # latin6, more complete iso-8859-4
               }
         encoding = docutils_encoding.lower()
         if encoding in tr:
@@ -1792,7 +1792,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if self.use_latex_citations:
             self.push_output_collector([])
         else:
-            ## self.requirements['~fnt_floats'] = PreambleCmds.footnote_floats
+            # self.requirements['~fnt_floats'] = PreambleCmds.footnote_floats
             self.out.append(r'\begin{figure}[b]')
             self.append_hypertargets(node)
 
@@ -2157,10 +2157,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # default LaTeX enumeration labels:
         default_labels = [
                           # (präfix, enumtype, suffix)
-                          ('',  'arabic', '.'),  #  1.
+                          ('',  'arabic', '.'),  # 1.
                           ('(', 'alph',   ')'),  # (a)
-                          ('',  'roman',  '.'),  #  i.
-                          ('',  'Alph',   '.')]  #  A.
+                          ('',  'roman',  '.'),  # i.
+                          ('',  'Alph',   '.')]  # A.
 
         prefix = ''
         if self.compound_enumerators:
@@ -2716,11 +2716,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
         pass
 
     def visit_option_string(self, node):
-        ##self.out.append(self.starttag(node, 'span', '', CLASS='option'))
+        ## self.out.append(self.starttag(node, 'span', '', CLASS='option'))
         pass
 
     def depart_option_string(self, node):
-        ##self.out.append('</span>')
+        ## self.out.append('</span>')
         pass
 
     def visit_organization(self, node):

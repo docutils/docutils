@@ -989,7 +989,7 @@ class Translator(nodes.NodeVisitor):
 
     def depart_reference(self, node):
         # TODO check node text is different from refuri
-        #self.body.append("\n'UR " + node['refuri'] + "\n'UE\n")
+        # self.body.append("\n'UR " + node['refuri'] + "\n'UE\n")
         self.body.append(self.defs['reference'][1])
 
     def visit_revision(self, node):
@@ -1042,7 +1042,7 @@ class Translator(nodes.NodeVisitor):
 
     def visit_system_message(self, node):
         # TODO add report_level
-        #if node['level'] < self.document.reporter['writer'].report_level:
+        # if node['level'] < self.document.reporter['writer'].report_level:
         #    Level is too low to display:
         #    raise nodes.SkipNode
         attr = {}
