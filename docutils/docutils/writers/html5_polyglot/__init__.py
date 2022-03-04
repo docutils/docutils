@@ -158,6 +158,7 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
 
     # use HTML block-level tags if matching class value found
     supported_block_tags = {'ins', 'del'}
+
     def visit_container(self, node):
         # If there is exactly one of the "supported block tags" in
         # the list of class values, use it as tag name:
@@ -174,7 +175,6 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
 
     def depart_container(self, node):
         self.body.append('</%s>\n' % node.html5tagname)
-
 
     # no standard meta tag name in HTML5, use dcterms.rights
     # see https://wiki.whatwg.org/wiki/MetaExtensions
@@ -310,8 +310,9 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
     supported_inline_tags = {'code', 'kbd', 'dfn', 'samp', 'var',
                              'bdi', 'del', 'ins', 'mark', 'small',
                              'b', 'i', 'q', 's', 'u'}
+
+    # Use `supported_inline_tags` if found in class values
     def visit_inline(self, node):
-        # Use `supported_inline_tags` if found in class values
         classes = node['classes']
         tags = [cls for cls in self.supported_inline_tags
                 if cls in classes]
@@ -389,12 +390,14 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
             node['xml:lang'] = node['lang']
         meta = self.emptytag(node, 'meta', **node.non_default_attributes())
         self.add_meta(meta)
+
     def depart_meta(self, node):
         pass
 
     # no standard meta tag name in HTML5
     def visit_organization(self, node):
         self.visit_docinfo_item(node, 'organization', meta=False)
+
     def depart_organization(self, node):
         self.depart_docinfo_item()
 

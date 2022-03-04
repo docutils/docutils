@@ -283,9 +283,9 @@ class Node:
         # implementations that use only new-style classes, like PyPy).
         if isinstance(condition, type):
             node_class = condition
+
             def condition(node, node_class=node_class):
                 return isinstance(node, node_class)
-
 
         if include_self and (condition is None or condition(self)):
             yield self

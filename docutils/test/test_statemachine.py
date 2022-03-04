@@ -271,6 +271,7 @@ class MiscTests(unittest.TestCase):
     s2l_string = "hello\tthere\thow are\tyou?\n\tI'm fine\tthanks.\n"
     s2l_expected = ['hello   there   how are you?',
                     "        I'm fine        thanks."]
+
     def test_string2lines(self):
         self.assertEqual(statemachine.string2lines(self.s2l_string),
                          self.s2l_expected)

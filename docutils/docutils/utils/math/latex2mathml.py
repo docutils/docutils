@@ -363,8 +363,10 @@ class math:
     # see `docutils.nodes.Element` for dict/list interface
     def __getitem__(self, key):
         return self.attributes[key]
+
     def __setitem__(self, key, item):
         self.attributes[key] = item
+
     def get(self, *args, **kwargs):
         return self.attributes.get(*args, **kwargs)
 

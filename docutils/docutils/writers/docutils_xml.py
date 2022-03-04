@@ -143,7 +143,6 @@ class XMLTranslator(nodes.GenericNodeVisitor):
         if not self.in_simple:
             self.output.append(self.newline)
 
-
     # specific visit and depart methods
     # ---------------------------------
 

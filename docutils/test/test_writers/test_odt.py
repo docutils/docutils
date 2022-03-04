@@ -172,6 +172,7 @@ class DocutilsOdtTestCase(DocutilsTestSupport.StandardTestCase):
     def test_odt_footnotes(self):
         self.process_test('odt_footnotes.txt', 'odt_footnotes.odt',
                           save_output_name='odt_footnotes.odt')
+
     def test_odt_raw(self):
         self.process_test('odt_raw.txt', 'odt_raw.odt',
                           save_output_name='odt_raw.odt')
