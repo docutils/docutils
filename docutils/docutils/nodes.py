@@ -1879,7 +1879,6 @@ class raw(Special, Inline, PreBibliographic, FixedTextElement):
     """
 
 
-
 # =================
 #  Inline Elements
 # =================
@@ -2131,14 +2130,12 @@ class TreePruningException(Exception):
     """
 
 
-
 class SkipChildren(TreePruningException):
 
     """
     Do not visit any children of the current node.  The current node's
     siblings and ``depart_...`` method are not affected.
     """
-
 
 
 class SkipSiblings(TreePruningException):
@@ -2149,7 +2146,6 @@ class SkipSiblings(TreePruningException):
     """
 
 
-
 class SkipNode(TreePruningException):
 
     """
@@ -2158,14 +2154,12 @@ class SkipNode(TreePruningException):
     """
 
 
-
 class SkipDeparture(TreePruningException):
 
     """
     Do not call the current node's ``depart_...`` method.  The current node's
     children and siblings are not affected.
     """
-
 
 
 class NodeFound(TreePruningException):
@@ -2177,7 +2171,6 @@ class NodeFound(TreePruningException):
     """
 
 
-
 class StopTraversal(TreePruningException):
 
     """
@@ -2187,7 +2180,6 @@ class StopTraversal(TreePruningException):
     NodeFound that does not cause exception handling to trickle up to the
     caller.
     """
-
 
 
 def make_id(string):

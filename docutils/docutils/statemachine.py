@@ -173,7 +173,6 @@ class StateMachine:
         self._stderr = io.ErrorOutput()
         """Wrapper around sys.stderr catching en-/decoding errors"""
 
-
     def unlink(self):
         """Remove circular references to objects no longer required."""
         for state in self.states.values():

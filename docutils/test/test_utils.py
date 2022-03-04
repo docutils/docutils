@@ -72,7 +72,6 @@ class ReporterTests(unittest.TestCase):
         self.assertEqual(self.stream.getvalue(), 'test data:: (SEVERE/4) '
                          'a severe error, raises an exception\n')
 
-
     def test_unicode_message(self):
         sw = self.reporter.system_message(0, 'mesidʒ')
         self.assertEqual(sw.pformat(), """\
@@ -379,8 +378,6 @@ class StylesheetFunctionTests(unittest.TestCase):
         self.stylesheet_path = 'man.css, miss2.css'
         with self.assertRaises(AssertionError):
             utils.get_stylesheet_list(self)
-
-
 
 
 if __name__ == '__main__':

@@ -77,8 +77,6 @@ class HelperTests(unittest.TestCase):
                          io.error_string(ImportError(us)))
 
 
-
-
 class InputTests(unittest.TestCase):
 
     def test_bom(self):

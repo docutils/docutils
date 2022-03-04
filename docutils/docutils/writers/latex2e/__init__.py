@@ -2195,7 +2195,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.out.append('\n\\setcounter{%s}{%d}' %
                             (counter_name, node['start']-1))
 
-
     def depart_enumerated_list(self, node):
         if len(self._enumeration_counters) <= 4:
             self.out.append('\\end{enumerate}\n')

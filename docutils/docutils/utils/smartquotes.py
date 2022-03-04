@@ -621,7 +621,6 @@ def educate_tokens(text_tokens, attr=default_smartypants_attr, language='en'):
         yield text
 
 
-
 def educateQuotes(text, language='en'):
     """
     Parameter:  - text string (unicode or bytes).
@@ -792,7 +791,6 @@ def educateDashesOldSchoolInverted(text):
     return text
 
 
-
 def educateEllipses(text):
     """
     Parameter:  String (unicode or bytes).
@@ -918,7 +916,6 @@ if __name__ == "__main__":
                 defaultlanguage = _basetag
             else:
                 defaultlanguage = 'en'
-
 
     import argparse
     parser = argparse.ArgumentParser(

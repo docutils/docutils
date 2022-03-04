@@ -704,7 +704,6 @@ def tex_group(string):
     return string[1:split_index-1], string[split_index:]
 
 
-
 # >>> tex_group('{} empty group')
 # ('', ' empty group')
 # >>> tex_group('{group with {nested} group} ')
@@ -939,7 +938,6 @@ def handle_cmd(name, node, string): # noqa: C901 TODO make this less complex
         node.append(style)
         return style, string
 
-
     # operator, fence, or separator  ->  <mo>
 
     if name == 'colon': # trailing punctuation, not binary relation
@@ -1037,7 +1035,6 @@ def handle_cmd(name, node, string): # noqa: C901 TODO make this less complex
         new_node = menclose(notation='box')
         node.append(new_node)
         return new_node, string
-
 
     # Complex elements (Layout schemata)
     # ==================================

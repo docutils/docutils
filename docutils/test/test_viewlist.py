@@ -190,7 +190,6 @@ Unindented text.
       literal
            block"""
 
-
     def setUp(self):
         self.a_list = self.text.splitlines(True)
         self.a = statemachine.StringList(self.a_list, 'a')

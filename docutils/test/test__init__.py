@@ -63,7 +63,6 @@ class VersionInfoTests(unittest.TestCase):
         self.assertEqual(type(docutils.__version_info__.serial), int)
         self.assertEqual(type(docutils.__version_info__.release), bool)
 
-
     def test__version__(self):
         """Test that __version__ is equivalent to __version_info__."""
         self.assertEqual(

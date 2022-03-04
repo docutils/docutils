@@ -226,7 +226,6 @@ class RSTState(StateWS):
         if not hasattr(self.reporter, 'get_source_and_line'):
             self.reporter.get_source_and_line = self.state_machine.get_source_and_line
 
-
     def goto_line(self, abs_line_offset):
         """
         Jump to input line `abs_line_offset`, ignoring jumps past the end.
@@ -875,7 +874,6 @@ class Inliner:
                 reference['refname'] = refname
                 self.document.note_refname(reference)
         return before, node_list, after, []
-
 
     def adjust_uri(self, uri):
         match = self.patterns.email.match(uri)
@@ -1833,7 +1831,6 @@ class Body(RSTState):
                 self.nested_parse(cellblock, input_offset=tableline+offset,
                                   node=entry)
         return row
-
 
     explicit = Struct()
     """Patterns and constants used for explicit markup recognition."""

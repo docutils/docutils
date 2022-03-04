@@ -218,7 +218,6 @@ class CSVTable(Table):
                 self.escapechar = options['escape']
             csv.Dialect.__init__(self)
 
-
     class HeaderDialect(csv.Dialect):
 
         """CSV dialect to use for the "header" option data."""
