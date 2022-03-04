@@ -528,6 +528,7 @@ if md_parser_class and md_parser_name == 'recommonmark':
         md_parser_class = None
         md_skip_msg = f'"{md_parser_name}" parser too old, skip tests'
 
+
 @unittest.skipUnless(md_parser_class, md_skip_msg)
 class RecommonmarkParserTestCase(ParserTestCase):
 
@@ -547,6 +548,7 @@ class RecommonmarkParserTestSuite(ParserTestSuite):
     """A collection of RecommonmarkParserTestCases."""
 
     test_case_class = RecommonmarkParserTestCase
+
 
 class GridTableParserTestCase(CustomTestCase):
 

@@ -22,6 +22,7 @@ def suite():
     s.generateTests(totest)
     return s
 
+
 # pseudoxml representation of the substitution definition content:
 a = '        lol'
 b = '        10^1 \n' + '\n         \n'.join(10 * [a])

@@ -73,6 +73,7 @@ names are defined in the ``language`` subpackage."""
 _directives = {}
 """Cache of imported directives."""
 
+
 def directive(directive_name, language_module, document):
     """
     Locate and return a directive function from its language-dependent name.
@@ -131,12 +132,14 @@ def directive(directive_name, language_module, document):
         return None, messages
     return directive, messages
 
+
 def register_directive(name, directive):
     """
     Register a nonstandard application-defined directive function.
     Language lookups are not needed for such functions.
     """
     _directives[name] = directive
+
 
 def flag(argument):
     """
@@ -150,6 +153,7 @@ def flag(argument):
     else:
         return None
 
+
 def unchanged_required(argument):
     """
     Return the argument text, unchanged.
@@ -161,6 +165,7 @@ def unchanged_required(argument):
         raise ValueError('argument required but none supplied')
     else:
         return argument  # unchanged!
+
 
 def unchanged(argument):
     """
@@ -174,6 +179,7 @@ def unchanged(argument):
     else:
         return argument  # unchanged!
 
+
 def path(argument):
     """
     Return the path argument unwrapped (with newlines removed).
@@ -185,6 +191,7 @@ def path(argument):
         raise ValueError('argument required but none supplied')
     else:
         return ''.join(s.strip() for s in argument.splitlines())
+
 
 def uri(argument):
     """
@@ -199,6 +206,7 @@ def uri(argument):
         parts = split_escaped_whitespace(escape2null(argument))
         return ' '.join(''.join(unescape(part).split()) for part in parts)
 
+
 def nonnegative_int(argument):
     """
     Check for a nonnegative integer argument; raise ``ValueError`` if not.
@@ -208,6 +216,7 @@ def nonnegative_int(argument):
     if value < 0:
         raise ValueError('negative value; must be positive or zero')
     return value
+
 
 def percentage(argument):
     """
@@ -220,7 +229,9 @@ def percentage(argument):
         pass
     return nonnegative_int(argument)
 
+
 length_units = ['em', 'ex', 'px', 'in', 'cm', 'mm', 'pt', 'pc']
+
 
 def get_measure(argument, units):
     """
@@ -240,8 +251,10 @@ def get_measure(argument, units):
             % ' '.join('"%s"' % i for i in units))
     return match.group(1) + match.group(2)
 
+
 def length_or_unitless(argument):
     return get_measure(argument, length_units + [''])
+
 
 def length_or_percentage_or_unitless(argument, default=''):
     """
@@ -269,6 +282,7 @@ def length_or_percentage_or_unitless(argument, default=''):
             # raise ValueError with list of valid units:
             return get_measure(argument, length_units + ['%'])
 
+
 def class_option(argument):
     """
     Convert the argument into a list of ID-compatible strings and return it.
@@ -287,8 +301,10 @@ def class_option(argument):
         class_names.append(class_name)
     return class_names
 
+
 unicode_pattern = re.compile(
     r'(?:0x|x|\\x|U\+?|\\u)([0-9a-f]+)$|&#x([0-9a-f]+);$', re.IGNORECASE)
+
 
 def unicode_code(code):
     r"""
@@ -314,6 +330,7 @@ def unicode_code(code):
     except OverflowError as detail:
         raise ValueError('code too large (%s)' % detail)
 
+
 def single_char_or_unicode(argument):
     """
     A single character is returned as-is.  Unicode characters codes are
@@ -324,6 +341,7 @@ def single_char_or_unicode(argument):
         raise ValueError('%r invalid; must be a single character or '
                          'a Unicode code' % char)
     return char
+
 
 def single_char_or_whitespace_or_unicode(argument):
     """
@@ -338,6 +356,7 @@ def single_char_or_whitespace_or_unicode(argument):
         char = single_char_or_unicode(argument)
     return char
 
+
 def positive_int(argument):
     """
     Converts the argument into an integer.  Raises ValueError for negative,
@@ -347,6 +366,7 @@ def positive_int(argument):
     if value < 1:
         raise ValueError('negative or zero value; must be positive')
     return value
+
 
 def positive_int_list(argument):
     """
@@ -362,6 +382,7 @@ def positive_int_list(argument):
         entries = argument.split()
     return [positive_int(entry) for entry in entries]
 
+
 def encoding(argument):
     """
     Verifies the encoding argument by lookup.
@@ -374,6 +395,7 @@ def encoding(argument):
     except LookupError:
         raise ValueError('unknown encoding: "%s"' % argument)
     return argument
+
 
 def choice(argument, values):
     """
@@ -401,9 +423,11 @@ def choice(argument, values):
         raise ValueError('"%s" unknown; choose from %s'
                          % (argument, format_values(values)))
 
+
 def format_values(values):
     return '%s, or "%s"' % (', '.join('"%s"' % s for s in values[:-1]),
                             values[-1])
+
 
 def value_or(values, other):
     """
@@ -417,6 +441,7 @@ def value_or(values, other):
         else:
             return other(argument)
     return auto_or_other
+
 
 def parser_name(argument):
     """

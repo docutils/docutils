@@ -25,6 +25,7 @@ def suite():
     s.generateTests(totest)
     return s
 
+
 totest = {}
 
 totest['default'] = [

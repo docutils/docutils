@@ -22,6 +22,7 @@ from docutils.frontend import OptionParser
 from docutils.transforms import Transformer
 import docutils.readers.doctree
 
+
 class Publisher:
 
     """
@@ -310,11 +311,13 @@ command line used.""" % (__version__,
                self.settings.output_encoding_error_handler,
                __version__, sys.version.split()[0]))
 
+
 default_usage = '%prog [options] [<source> [<destination>]]'
 default_description = ('Reads from <source> (default is stdin) and writes to '
                        '<destination> (default is stdout).  See '
                        '<https://docutils.sourceforge.io/docs/user/config.html> for '
                        'the full reference.')
+
 
 def publish_cmdline(reader=None, reader_name='standalone',
                     parser=None, parser_name='restructuredtext',
@@ -343,6 +346,7 @@ def publish_cmdline(reader=None, reader_name='standalone',
         config_section=config_section, enable_exit_status=enable_exit_status)
     return output
 
+
 def publish_file(source=None, source_path=None,
                  destination=None, destination_path=None,
                  reader=None, reader_name='standalone',
@@ -368,6 +372,7 @@ def publish_file(source=None, source_path=None,
         config_section=config_section,
         enable_exit_status=enable_exit_status)
     return output
+
 
 def publish_string(source, source_path=None, destination_path=None,
                    reader=None, reader_name='standalone',
@@ -405,6 +410,7 @@ def publish_string(source, source_path=None, destination_path=None,
         enable_exit_status=enable_exit_status)
     return output
 
+
 def publish_parts(source, source_path=None, source_class=io.StringInput,
                   destination_path=None,
                   reader=None, reader_name='standalone',
@@ -439,6 +445,7 @@ def publish_parts(source, source_path=None, source_class=io.StringInput,
         enable_exit_status=enable_exit_status)
     return pub.writer.parts
 
+
 def publish_doctree(source, source_path=None,
                     source_class=io.StringInput,
                     reader=None, reader_name='standalone',
@@ -469,6 +476,7 @@ def publish_doctree(source, source_path=None,
     pub.set_destination(None, None)
     output = pub.publish(enable_exit_status=enable_exit_status)
     return pub.document
+
 
 def publish_from_doctree(document, destination_path=None,
                          writer=None, writer_name='pseudoxml',
@@ -509,6 +517,7 @@ def publish_from_doctree(document, destination_path=None,
     pub.set_destination(None, destination_path)
     return pub.publish(enable_exit_status=enable_exit_status)
 
+
 def publish_cmdline_to_binary(reader=None, reader_name='standalone',
                               parser=None, parser_name='restructuredtext',
                               writer=None, writer_name='pseudoxml',
@@ -545,6 +554,7 @@ def publish_cmdline_to_binary(reader=None, reader_name='standalone',
         argv, usage, description, settings_spec, settings_overrides,
         config_section=config_section, enable_exit_status=enable_exit_status)
     return output
+
 
 def publish_programmatically(source_class, source, source_path,
                              destination_class, destination, destination_path,

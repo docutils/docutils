@@ -22,6 +22,7 @@ def suite():
     s.generateTests(totest)
     return s
 
+
 totest = {}
 
 totest['tables_of_contents'] = ((Substitutions,), [

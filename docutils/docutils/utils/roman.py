@@ -16,11 +16,13 @@ http://www.python.org/2.1.1/license.html
 
 import re
 
+
 # Define exceptions
 class RomanError(Exception): pass
 class OutOfRangeError(RomanError): pass
 class NotIntegerError(RomanError): pass
 class InvalidRomanNumeralError(RomanError): pass
+
 
 # Define digit mapping
 romanNumeralMap = (('M',  1000),
@@ -37,6 +39,7 @@ romanNumeralMap = (('M',  1000),
                    ('IV', 4),
                    ('I',  1))
 
+
 def toRoman(n):
     """convert integer to Roman numeral"""
     if not (0 < n < 5000):
@@ -51,6 +54,7 @@ def toRoman(n):
             n -= integer
     return result
 
+
 # Define pattern to detect valid Roman numerals
 romanNumeralPattern = re.compile("""
     ^                   # beginning of string
@@ -63,6 +67,7 @@ romanNumeralPattern = re.compile("""
                         #        or 5-8 (V, followed by 0 to 3 I's)
     $                   # end of string
     """, re.VERBOSE)
+
 
 def fromRoman(s):
     """convert Roman numeral to integer"""

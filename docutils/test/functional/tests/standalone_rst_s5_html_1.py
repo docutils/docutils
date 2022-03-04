@@ -19,6 +19,7 @@ settings_overrides['stylesheet_path'] = 'functional/input/data/html4css1.css'
 
 import filecmp as _filecmp
 
+
 def _test_more(expected_dir, output_dir, test_case, parameters):
     """Compare ``ui/<theme>`` directories."""
     theme = settings_overrides.get('theme', 'default')
@@ -45,6 +46,7 @@ def _test_more(expected_dir, output_dir, test_case, parameters):
         parts.append('The following paths are unique:')
         parts.extend(uniques)
     test_case.assertTrue(not parts, '\n'.join(parts))
+
 
 def _compare_directories(expected, output):
     dircmp = _filecmp.dircmp(expected, output, ['.svn', 'CVS'])

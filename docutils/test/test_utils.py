@@ -94,6 +94,7 @@ class ReporterTests(unittest.TestCase):
         mesidʒ
 """)
 
+
 class QuietReporterTests(unittest.TestCase):
 
     stream = StringIO()

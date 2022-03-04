@@ -21,8 +21,10 @@ unstyled_tokens = ['token',  # Token (base token type)
                    '']       # short name for Token and Text
 # (Add, e.g., Token.Punctuation with ``unstyled_tokens += 'punctuation'``.)
 
+
 class LexerError(ApplicationError):
     pass
+
 
 class Lexer:
     """Parse `code` lines and yield "classified" tokens.

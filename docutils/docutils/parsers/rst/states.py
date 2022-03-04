@@ -118,6 +118,7 @@ from docutils.utils import escape2null, unescape, column_width
 from docutils.utils import punctuation_chars, roman, urischemes
 from docutils.utils import split_escaped_whitespace
 
+
 class MarkupError(DataError): pass
 class UnknownInterpretedRoleError(DataError): pass
 class InterpretedRoleNotImplementedError(DataError): pass
@@ -1062,8 +1063,10 @@ class Inliner:
 def _loweralpha_to_int(s, _zero=(ord('a')-1)):
     return ord(s) - _zero
 
+
 def _upperalpha_to_int(s, _zero=(ord('A')-1)):
     return ord(s) - _zero
+
 
 def _lowerroman_to_int(s):
     return roman.fromRoman(s.upper())

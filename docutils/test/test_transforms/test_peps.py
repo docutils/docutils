@@ -21,6 +21,7 @@ def suite():
     s.generateTests(totest)
     return s
 
+
 totest = {}
 
 totest['target_notes'] = ((TargetNotes,), [

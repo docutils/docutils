@@ -112,6 +112,7 @@ class BBuf(BytesIO):
             data.encode('ascii', 'strict')
         super(BBuf, self).write(data)
 
+
 # Stub: Buffer expecting unicode string:
 class UBuf(StringIO):
     def write(self, data):
@@ -119,6 +120,7 @@ class UBuf(StringIO):
         if isinstance(data, bytes):
             raise TypeError('must be unicode, not bytes')
         super(UBuf, self).write(data)
+
 
 class ErrorOutputTests(unittest.TestCase):
     def test_defaults(self):

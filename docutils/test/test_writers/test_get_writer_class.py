@@ -29,6 +29,7 @@ class GetWriterClassTestCase(DocutilsTestSupport.StandardTestCase):
         # requires local-writer.py in test directory (testroot)
         wr = get_writer_class('local-writer')
 
+
 if __name__ == '__main__':
     import unittest
     unittest.main()

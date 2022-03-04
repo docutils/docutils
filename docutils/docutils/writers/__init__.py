@@ -15,6 +15,7 @@ import docutils
 from docutils import languages, Component
 from docutils.transforms import universal
 
+
 class Writer(Component):
 
     """
@@ -135,6 +136,7 @@ _writer_aliases = {
       'pformat': 'pseudoxml',
       'pdf': 'rlpdf',
       'xml': 'docutils_xml'}
+
 
 def get_writer_class(writer_name):
     """Return the Writer class from the `writer_name` module."""

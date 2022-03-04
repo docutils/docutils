@@ -25,6 +25,7 @@ document_template = r"""\documentclass{article}
 \end{document}
 """
 
+
 def latexml(math_code, reporter=None):
     """Convert LaTeX math code to MathML with LaTeXML_
 
@@ -71,6 +72,7 @@ def latexml(math_code, reporter=None):
         raise SyntaxError(result)
     return result
 
+
 def ttm(math_code, reporter=None):
     """Convert LaTeX math code to MathML with TtM_
 
@@ -97,6 +99,7 @@ def ttm(math_code, reporter=None):
         reporter.error(err)
     start, end = result.find('<math'), result.find('</math>')+7
     return result[start:end]
+
 
 def blahtexml(math_code, inline=True, reporter=None):
     """Convert LaTeX math code to MathML with blahtexml_
@@ -137,6 +140,7 @@ def blahtexml(math_code, inline=True, reporter=None):
     result = ('<math xmlns="http://www.w3.org/1998/Math/MathML"%s>\n'
               '%s</math>\n') % (mathmode_arg, result[start:end])
     return result
+
 
 # self-test
 

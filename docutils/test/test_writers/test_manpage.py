@@ -19,6 +19,7 @@ def suite():
     s.generateTests(totest)
     return s
 
+
 indend_macros = r""".
 .nr rst2man-indent-level 0
 .

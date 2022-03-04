@@ -14,6 +14,7 @@ from test_transforms import DocutilsTestSupport
 from docutils.parsers.rst import Parser
 from docutils.transforms.universal import StripClassesAndElements
 
+
 def suite():
     parser = Parser()
     s = DocutilsTestSupport.TransformTestSuite(parser,
@@ -21,6 +22,7 @@ def suite():
                             'strip_classes': ['spam', 'noise']})
     s.generateTests(totest)
     return s
+
 
 totest = {}
 

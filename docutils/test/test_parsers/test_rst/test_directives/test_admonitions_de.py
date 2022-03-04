@@ -12,11 +12,13 @@ if __name__ == '__main__':
     import __init__
 from test_parsers import DocutilsTestSupport
 
+
 def suite():
     settings = {'language_code': 'de'}
     s = DocutilsTestSupport.ParserTestSuite(suite_settings=settings)
     s.generateTests(totest)
     return s
+
 
 totest = {}
 

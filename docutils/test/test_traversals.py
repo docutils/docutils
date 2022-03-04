@@ -31,6 +31,7 @@ KaZoom! Train crashes.
 
 '''
 
+
 class AttentiveVisitor(nodes.SparseNodeVisitor):
 
     def visit_attention(self, node):
@@ -40,6 +41,7 @@ class AttentiveVisitor(nodes.SparseNodeVisitor):
         raise RuntimeError("It's too late for attention, "
                            "more discipline is needed!.")
 
+
 class AttentiveWriter(writers.Writer):
 
     def translate(self):
@@ -48,6 +50,7 @@ class AttentiveWriter(writers.Writer):
         # Test both kinds of traversals.
         self.document.walkabout(visitor)
         self.document.walk(visitor)
+
 
 class StopTraversalTests(unittest.TestCase, docutils.SettingsSpec):
 

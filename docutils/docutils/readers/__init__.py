@@ -98,6 +98,7 @@ class ReReader(Reader):
 
 _reader_aliases = {}
 
+
 def get_reader_class(reader_name):
     """Return the Reader class from the `reader_name` module."""
     name = reader_name.lower()

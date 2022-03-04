@@ -18,6 +18,7 @@ def suite():
     s.generateTests(totest)
     return s
 
+
 totest = {}
 
 # See DocutilsTestSupport.RecommonmarkParserTestSuite.generateTests for a

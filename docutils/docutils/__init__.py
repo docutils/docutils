@@ -126,7 +126,6 @@ docs/dev/policies.txt."""
 
 
 class ApplicationError(Exception): pass
-
 class DataError(ApplicationError): pass
 
 

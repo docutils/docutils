@@ -20,6 +20,7 @@ def suite():
     s.generateTests(totest)
     return s
 
+
 mydir = 'test_parsers/test_rst/test_directives/'
 raw1 = os.path.join(mydir, 'raw1.txt')
 utf_16_file = os.path.join(mydir, 'utf-16.csv')

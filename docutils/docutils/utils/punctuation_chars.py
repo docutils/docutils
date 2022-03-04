@@ -106,6 +106,7 @@ quote_pairs = {
               }
 """Additional open/close quote pairs."""
 
+
 def match_chars(c1, c2):
     """Test whether `c1` and `c2` are a matching open/close character pair.
 

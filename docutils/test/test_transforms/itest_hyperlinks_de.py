@@ -27,6 +27,7 @@ from docutils.transforms.references import PropagateTargets, \
      InternalTargets, DanglingReferences
 from docutils.parsers.rst import Parser, directives
 
+
 def suite():
     parser = Parser()
     settings = {}
@@ -35,6 +36,7 @@ def suite():
         parser, suite_settings=settings)
     s.generateTests(totest)
     return s
+
 
 totest = {}
 

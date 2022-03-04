@@ -28,6 +28,7 @@ import docutils
 from docutils import frontend, nodes, utils, writers, languages
 from docutils.writers import latex2e
 
+
 class Writer(latex2e.Writer):
     """A writer for Unicode-aware LaTeX variants (XeTeX, LuaTeX)"""
 

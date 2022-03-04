@@ -81,6 +81,7 @@ _parser_aliases = {  # short names for known parsers
                    'markdown': 'docutils.parsers.recommonmark_wrapper',
                   }
 
+
 def get_parser_class(parser_name):
     """Return the Parser class from the `parser_name` module."""
     name = parser_name.lower()

@@ -265,6 +265,7 @@ def extract_extension_options(field_list, options_spec):
     option_list = extract_options(field_list)
     return assemble_option_dict(option_list, options_spec)
 
+
 def extract_options(field_list):
     """
     Return a list of option (name, value) pairs from field names & bodies.
@@ -298,6 +299,7 @@ def extract_options(field_list):
             data = body[0][0].astext()
         option_list.append((name, data))
     return option_list
+
 
 def assemble_option_dict(option_list, options_spec):
     """
@@ -403,6 +405,7 @@ def extract_name_value(line):
         attlist.append((attname.lower(), data))
     return attlist
 
+
 def new_reporter(source_path, settings):
     """
     Return a new Reporter object.
@@ -419,6 +422,7 @@ def new_reporter(source_path, settings):
         encoding=settings.error_encoding,
         error_handler=settings.error_encoding_error_handler)
     return reporter
+
 
 def new_document(source_path, settings=None):
     """
@@ -447,6 +451,7 @@ def new_document(source_path, settings=None):
     document.note_source(source_path, -1)
     return document
 
+
 def clean_rcs_keywords(paragraph, keyword_substitutions):
     if len(paragraph) == 1 and isinstance(paragraph[0], nodes.Text):
         textnode = paragraph[0]
@@ -455,6 +460,7 @@ def clean_rcs_keywords(paragraph, keyword_substitutions):
             if match:
                 paragraph[0] = nodes.Text(pattern.sub(substitution, textnode))
                 return
+
 
 def relative_path(source, target):
     """
@@ -481,6 +487,7 @@ def relative_path(source, target):
     parts = ['..'] * (len(source_parts) - 1) + target_parts
     return '/'.join(parts)
 
+
 def get_stylesheet_reference(settings, relative_to=None):
     """
     Retrieve a stylesheet reference from the settings object.
@@ -501,6 +508,7 @@ def get_stylesheet_reference(settings, relative_to=None):
         return relative_path(relative_to, settings.stylesheet_path)
     else:
         return settings.stylesheet
+
 
 # Return 'stylesheet' or 'stylesheet_path' arguments as list.
 #
@@ -530,6 +538,7 @@ def get_stylesheet_list(settings):
             stylesheets = [path.replace(os.sep, '/') for path in stylesheets]
     return stylesheets
 
+
 def find_file_in_dirs(path, dirs):
     """
     Search for `path` in the list of directories `dirs`.
@@ -548,6 +557,7 @@ def find_file_in_dirs(path, dirs):
             return f
     return path
 
+
 def get_trim_footnote_ref_space(settings):
     """
     Return whether or not to trim footnote space.
@@ -562,6 +572,7 @@ def get_trim_footnote_ref_space(settings):
     else:
         return settings.trim_footnote_reference_space
 
+
 def get_source_line(node):
     """
     Return the "source" and "line" attributes from the `node` given or from
@@ -572,6 +583,7 @@ def get_source_line(node):
             return node.source, node.line
         node = node.parent
     return None, None
+
 
 def escape2null(text):
     """Return a string with escape-backslashes converted to nulls."""
@@ -586,7 +598,6 @@ def escape2null(text):
         parts.append('\x00' + text[found+1:found+2])
         start = found + 2               # skip character after escape
 
-# `unescape` definition moved to `nodes` to avoid circular import dependency.
 
 def split_escaped_whitespace(text):
     """
@@ -598,8 +609,10 @@ def split_escaped_whitespace(text):
     # flatten list of lists of strings to list of strings:
     return list(itertools.chain(*strings))
 
+
 def strip_combining_chars(text):
     return ''.join(c for c in text if not unicodedata.combining(c))
+
 
 def find_combining_chars(text):
     """Return indices of all combining chars in  Unicode string `text`.
@@ -610,6 +623,7 @@ def find_combining_chars(text):
 
     """
     return [i for i, c in enumerate(text) if unicodedata.combining(c)]
+
 
 def column_indices(text):
     """Indices of Unicode string `text` when skipping combining characters.
@@ -626,6 +640,7 @@ def column_indices(text):
         string_indices[index] = None
     return [i for i in string_indices if i is not None]
 
+
 east_asian_widths = {'W': 2,   # Wide
                      'F': 2,   # Full-width (wide)
                      'Na': 1,  # Narrow
@@ -635,6 +650,7 @@ east_asian_widths = {'W': 2,   # Wide
                      }         # narrow otherwise, but that doesn't work)
 """Mapping of result codes from `unicodedata.east_asian_widt()` to character
 column widths."""
+
 
 def column_width(text):
     """Return the column width of text.
@@ -647,12 +663,14 @@ def column_width(text):
     width -= len(find_combining_chars(text))
     return width
 
+
 def uniq(L):
     r = []
     for item in L:
         if item not in r:
             r.append(item)
     return r
+
 
 def normalize_language_tag(tag):
     """Return a list of normalized combinations for a `BCP 47` language tag.
@@ -754,6 +772,7 @@ release_level_abbreviations = {
     'beta': 'b',
     'candidate': 'rc',
     'final': ''}
+
 
 def version_identifier(version_info=None):
     """

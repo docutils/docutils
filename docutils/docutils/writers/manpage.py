@@ -89,6 +89,7 @@ level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
 ..
 """)
 
+
 class Writer(writers.Writer):
 
     supported = ('manpage',)
@@ -158,6 +159,7 @@ class Table:
         text.append('_\n')
         text.append('.TE\n')
         return text
+
 
 class Translator(nodes.NodeVisitor):
     """"""

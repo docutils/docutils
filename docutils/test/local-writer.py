@@ -9,6 +9,7 @@ mini-writer to test get_writer_class with local writer
 import docutils
 from docutils import nodes, writers, languages
 
+
 class Writer(writers.Writer):
 
     supported = ('dummy',)
@@ -25,6 +26,7 @@ class Writer(writers.Writer):
         visitor = self.translator_class(self.document)
         self.document.walkabout(visitor)
         self.output = visitor.astext()
+
 
 class Translator(nodes.NodeVisitor):
     def __init__(self, document):

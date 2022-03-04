@@ -15,6 +15,7 @@ __docformat__ = 'reStructuredText'
 
 from docutils.languages import LanguageImporter
 
+
 class RstLanguageImporter(LanguageImporter):
     """Import language modules.
 
@@ -34,5 +35,6 @@ class RstLanguageImporter(LanguageImporter):
         if not (isinstance(module.directives, dict)
                 and isinstance(module.roles, dict)):
             raise ImportError
+
 
 get_language = RstLanguageImporter()

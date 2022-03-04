@@ -27,11 +27,13 @@ from xml.parsers.expat import ParserCreate
 
 usage_msg = """Usage: %s [unicode.xml]\n"""
 
+
 def usage(prog, status=0, msg=None):
     sys.stderr.write(usage_msg % prog)
     if msg:
         sys.stderr.write(msg + '\n')
     sys.exit(status)
+
 
 def main(argv=None):
     if argv is None:
@@ -47,6 +49,7 @@ def main(argv=None):
         usage(argv[0], 1, 'No such file: "%s".' % inpath)
     infile = open(inpath, mode='rb')
     process(infile)
+
 
 def process(infile):
     grouper = CharacterEntitySetExtractor(infile)

@@ -150,6 +150,7 @@ class SafeString:
                 return unicode(self.data, self.encoding, self.decoding_errors)
             raise
 
+
 class ErrorString(SafeString):
     """
     Safely report exception type and message.

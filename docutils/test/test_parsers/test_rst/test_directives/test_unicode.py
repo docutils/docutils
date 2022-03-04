@@ -19,6 +19,7 @@ def suite():
     s.generateTests(totest)
     return s
 
+
 unichr_exception = DocutilsTestSupport.exception_data(
     chr, int("111111111111111111", 16))[0]
 if isinstance(unichr_exception, OverflowError):

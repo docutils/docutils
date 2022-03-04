@@ -29,13 +29,16 @@ class AddNameToDocumentTitle(Directive):
         document['names'].append('Name')
         return []
 
+
 register_directive('add-name-to-title', AddNameToDocumentTitle)
+
 
 def suite():
     parser = Parser()
     s = DocutilsTestSupport.TransformTestSuite(parser)
     s.generateTests(totest)
     return s
+
 
 totest = {}
 

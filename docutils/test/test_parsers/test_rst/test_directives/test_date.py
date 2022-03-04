@@ -15,10 +15,12 @@ import time
 
 from docutils.io import locale_encoding
 
+
 def suite():
     s = DocutilsTestSupport.ParserTestSuite()
     s.generateTests(totest)
     return s
+
 
 totest = {}
 

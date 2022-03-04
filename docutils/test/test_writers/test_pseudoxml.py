@@ -23,6 +23,7 @@ def suite():
     s.generateTests(totest_detailed)
     return s
 
+
 totest = {}
 totest_detailed = {}
 

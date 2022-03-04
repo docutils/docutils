@@ -32,6 +32,7 @@ bar
 
 """
 
+
 class TocTestCase(DocutilsTestSupport.StandardTestCase):
 
     def test_publish_from_doctree(self):

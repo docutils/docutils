@@ -244,12 +244,14 @@ def character_category_patterns():
     return [''.join(chars) for chars in (openers, closers, delimiters,
                                          closing_delimiters)]
 
+
 def separate_wide_chars(s):
     """Return (s1,s2) with characters above 0xFFFF in s2"""
     maxunicode_narrow = 0xFFFF
     l1 = [ch for ch in s if ord(ch) <= maxunicode_narrow]
     l2 = [ch for ch in s if ord(ch) > maxunicode_narrow]
     return ''.join(l1), ''.join(l2)
+
 
 def mark_intervals(s):
     """Return s with shortcut notation for runs of consecutive characters
@@ -275,6 +277,7 @@ def mark_intervals(s):
         l2.extend(i)
 
     return ''.join(l2)
+
 
 def wrap_string(s, startstring="('", endstring="')", wrap=67):
     """Line-wrap a unicode string literal definition."""
@@ -304,6 +307,7 @@ def print_differences(old, new, name):
                 print('  %04x'%ord(c), unicodedata.name(c))
     else:
         print('%s unchanged' % name)
+
 
 # Output
 # ------
