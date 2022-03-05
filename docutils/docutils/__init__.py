@@ -50,6 +50,8 @@ Subpackages:
 - writers: Format-specific output translators.
 """
 
+from collections import namedtuple
+
 __docformat__ = 'reStructuredText'
 
 __version__ = '0.19b.dev'
@@ -67,9 +69,6 @@ __version_details__ = 'release'
 """Optional extra version details (e.g. 'snapshot 2005-05-29, r3410').
 (For development and release status see `__version_info__`.)
 """
-
-
-from collections import namedtuple
 
 
 class VersionInfo(namedtuple('VersionInfo',

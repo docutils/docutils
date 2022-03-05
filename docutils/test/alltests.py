@@ -14,15 +14,15 @@ are run.
 import time
 # Start point for actual elapsed time, including imports
 # and setup outside of unittest.
-start = time.time()  # noqa
+start = time.time()
 
-import sys
-import atexit
-import os
-import platform
+import sys                              # noqa: E402
+import atexit                           # noqa: E402
+import os                               # noqa: E402
+import platform                         # noqa: E402
 
-import DocutilsTestSupport              # must be imported before docutils
-import docutils
+import DocutilsTestSupport              # noqa: E402 must be imported before docutils
+import docutils                         # noqa: E402
 
 
 class Tee:

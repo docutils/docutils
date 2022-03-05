@@ -259,7 +259,7 @@ the source::
 Version History
 ===============
 
-1.8.2   2022-01-27
+1.9     2022-03-04
         - Code cleanup. Require Python 3.
 
 1.8.1   2017-10-25
@@ -316,6 +316,10 @@ Version History
 1.5_1.0: Tue, 09 Mar 2004 08:08:35 -0500
         - Initial release
 """
+
+import re
+import sys
+
 
 options = r"""
 Options
@@ -377,12 +381,6 @@ example, ``"1"`` is equivalent to ``"qBde"``.
         regular quotes so SmartyPants can educate them, you should pass the
         following to the smarty_pants attribute:
 """
-
-
-default_smartypants_attr = "1"
-
-
-import re, sys
 
 
 class smartchars:
@@ -502,11 +500,13 @@ class smartchars:
             self.opquote, self.cpquote, self.osquote, self.csquote = '""\'\''
 
 
+default_smartypants_attr = '1'
+
+
 def smartyPants(text, attr=default_smartypants_attr, language='en'):
     """Main function for "traditional" use."""
 
-    return "".join(t for t in educate_tokens(tokenize(text),
-                                             attr, language))
+    return "".join(t for t in educate_tokens(tokenize(text), attr, language))
 
 
 def educate_tokens(text_tokens, attr=default_smartypants_attr, language='en'):
@@ -534,36 +534,36 @@ def educate_tokens(text_tokens, attr=default_smartypants_attr, language='en'):
     do_stupefy = False
 
     # if attr == "0":  # pass tokens unchanged (see below).
-    if attr == "1":  # Do everything, turn all options on.
+    if attr == '1':  # Do everything, turn all options on.
         do_quotes = True
         do_backticks = True
         do_dashes = 1
         do_ellipses = True
-    elif attr == "2":
+    elif attr == '2':
         # Do everything, turn all options on, use old school dash shorthand.
         do_quotes = True
         do_backticks = True
         do_dashes = 2
         do_ellipses = True
-    elif attr == "3":
+    elif attr == '3':
         # Do everything, use inverted old school dash shorthand.
         do_quotes = True
         do_backticks = True
         do_dashes = 3
         do_ellipses = True
-    elif attr == "-1":  # Special "stupefy" mode.
+    elif attr == '-1':  # Special "stupefy" mode.
         do_stupefy = True
     else:
-        if "q" in attr: do_quotes = True
-        if "b" in attr: do_backticks = True
-        if "B" in attr: do_backticks = 2
-        if "d" in attr: do_dashes = 1
-        if "D" in attr: do_dashes = 2
-        if "i" in attr: do_dashes = 3
-        if "e" in attr: do_ellipses = True
-        if "w" in attr: convert_quot = True
+        if 'q' in attr: do_quotes = True
+        if 'b' in attr: do_backticks = True
+        if 'B' in attr: do_backticks = 2
+        if 'd' in attr: do_dashes = 1
+        if 'D' in attr: do_dashes = 2
+        if 'i' in attr: do_dashes = 3
+        if 'e' in attr: do_ellipses = True
+        if 'w' in attr: convert_quot = True
 
-    prev_token_last_char = " "
+    prev_token_last_char = ' '
     # Last character of the previous text token. Used as
     # context to curl leading quote characters correctly.
 

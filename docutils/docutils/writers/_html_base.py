@@ -18,7 +18,8 @@
 
 import base64
 import mimetypes
-import os, os.path
+import os
+import os.path
 import re
 from urllib.request import url2pathname
 import warnings

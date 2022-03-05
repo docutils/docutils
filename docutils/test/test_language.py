@@ -15,11 +15,13 @@ that language.
 import sys
 import os
 import re
+
 import DocutilsTestSupport              # must be imported before docutils
 import docutils.languages
 import docutils.parsers.rst.languages
 from docutils.parsers.rst import states, directives, roles
-import docutils.utils, docutils.frontend
+import docutils.utils
+import docutils.frontend
 
 _settings = docutils.frontend.OptionParser().get_default_values()
 _reporter = docutils.utils.new_reporter('', _settings)
