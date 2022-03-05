@@ -31,7 +31,7 @@ except ValueError as error:  # OS X may set UTF-8 without language code
         locale_encoding = "UTF-8"
     else:
         locale_encoding = None
-except:  # any other problems determining the locale -> use None
+except:  # noqa  any other problems determining the locale -> use None
     locale_encoding = None
 try:
     codecs.lookup(locale_encoding or '')

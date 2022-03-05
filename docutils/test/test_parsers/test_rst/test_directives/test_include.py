@@ -71,7 +71,7 @@ except UnicodeEncodeError:
     errstr_8bit_path = """\
 Cannot encode input file path "\u043c\u0438\u0440.txt" (wrong locale?).\
 """
-except:
+except FileNotFoundError:
     errstr_8bit_path = """\
 InputError: [Errno 2] No such file or directory: '\u043c\u0438\u0440.txt'.\
 """
