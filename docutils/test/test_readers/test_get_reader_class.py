@@ -18,7 +18,7 @@ from docutils.readers import get_reader_class
 class GetReaderClassTestCase(DocutilsTestSupport.StandardTestCase):
 
     def test_registered_reader(self):
-        rdr = get_reader_class('pep')
+        get_reader_class('pep')
         # raises ImportError on failure
 
     def test_bogus_reader(self):
@@ -27,7 +27,8 @@ class GetReaderClassTestCase(DocutilsTestSupport.StandardTestCase):
 
     def test_local_reader(self):
         # requires local-reader.py in test directory (testroot)
-        wr = get_reader_class('local-reader')
+        get_reader_class('local-reader')
+        # raises ImportError on failure
 
 
 if __name__ == '__main__':

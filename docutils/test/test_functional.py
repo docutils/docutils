@@ -150,8 +150,6 @@ expected output and check it in:
         # Get output (automatically written to the output/ directory
         # by publish_file):
         output = docutils.core.publish_file(**params)
-        # ensure output is unicode
-        output_encoding = params.get('output_encoding', 'utf-8')
         # Normalize line endings:
         output = '\n'.join(output.splitlines())
         # Get the expected output *after* writing the actual output.

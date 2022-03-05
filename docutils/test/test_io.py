@@ -94,14 +94,14 @@ class InputTests(unittest.TestCase):
 data
 blah
 """)
-        data = input.read()
+        data = input.read()  # noqa: F841
         self.assertEqual(input.successful_encoding, 'ascii')
         input = io.StringInput(source=b"""\
 #! python
 # -*- coding: ascii -*-
 print("hello world")
 """)
-        data = input.read()
+        data = input.read()  # noqa: F841
         self.assertEqual(input.successful_encoding, 'ascii')
         input = io.StringInput(source=b"""\
 #! python
@@ -109,7 +109,6 @@ print("hello world")
 # -*- coding: ascii -*-
 print("hello world")
 """)
-        data = input.read()
         self.assertNotEqual(input.successful_encoding, 'ascii')
 
     def test_bom_detection(self):
@@ -121,7 +120,7 @@ print("hello world")
         data = input.read()
         self.assertEqual(input.successful_encoding, 'utf-16-le')
         input = io.StringInput(source=source.encode('utf-8'))
-        data = input.read()
+        data = input.read()  # noqa: F841
         self.assertEqual(input.successful_encoding, 'utf-8')
 
     def test_readlines(self):
@@ -183,7 +182,7 @@ class OutputTests(unittest.TestCase):
     def test_FileOutput_hande_io_errors_deprection_warning(self):
         with self.assertWarnsRegex(DeprecationWarning,
                                    '"handle_io_errors" is ignored'):
-            fo = io.FileOutput(handle_io_errors=True)
+            io.FileOutput(handle_io_errors=True)
 
     # With destination in binary mode, data must be binary string
     # and is written as-is:

@@ -66,7 +66,7 @@ class StopTraversalTests(unittest.TestCase, docutils.SettingsSpec):
             settings_spec=self)
         self.assertTrue(isinstance(doctree, nodes.document))
 
-        parts = core.publish_parts(
+        core.publish_parts(
             reader_name='doctree', source_class=docutils.io.DocTreeInput,
             source=doctree, source_path='test',
             writer=AttentiveWriter())

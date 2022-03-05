@@ -116,7 +116,6 @@ class Contents(Transform):
         level += 1
         sections = [sect for sect in node if isinstance(sect, nodes.section)]
         entries = []
-        autonum = 0
         depth = self.startnode.details.get('depth', sys.maxsize)
         for section in sections:
             title = section[0]

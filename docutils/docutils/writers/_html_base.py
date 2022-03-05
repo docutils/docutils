@@ -1043,11 +1043,6 @@ class HTMLTranslator(nodes.NodeVisitor):
             atts['class'] = 'align-%s' % node['align']
         # Embed image file (embedded SVG or data URI):
         if self.image_loading == 'embed':
-            err_msg = ''
-            if not mimetype:
-                err_msg = 'unknown MIME type'
-            if not self.settings.file_insertion_enabled:
-                err_msg = 'file insertion disabled.'
             try:
                 with open(url2pathname(uri), 'rb') as imagefile:
                     imagedata = imagefile.read()

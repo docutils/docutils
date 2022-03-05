@@ -18,7 +18,7 @@ from docutils.parsers import get_parser_class
 class GetParserClassTestCase(DocutilsTestSupport.StandardTestCase):
 
     def test_registered_parser(self):
-        rdr = get_parser_class('rst')
+        get_parser_class('rst')
         # raises ImportError on failure
 
     def test_bogus_parser(self):
@@ -27,7 +27,8 @@ class GetParserClassTestCase(DocutilsTestSupport.StandardTestCase):
 
     def test_local_parser(self):
         # requires local-parser.py in test directory (testroot)
-        wr = get_parser_class('local-parser')
+        get_parser_class('local-parser')
+        # raises ImportError on failure
 
 
 if __name__ == '__main__':

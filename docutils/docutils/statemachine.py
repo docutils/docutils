@@ -430,7 +430,6 @@ class StateMachine:
         """
         if transitions is None:
             transitions = state.transition_order
-        state_correction = None
         if self.debug:
             print('\nStateMachine.check_line: state="%s", transitions=%r.'
                   % (state.__class__.__name__, transitions), file=sys.stderr)
