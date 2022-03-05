@@ -1,3 +1,6 @@
+import filecmp as _filecmp
+
+
 with open('functional/tests/_standalone_rst_defaults.py') as _f:
     exec(_f.read())
 
@@ -16,9 +19,6 @@ settings_overrides['stylesheet_path'] = 'functional/input/data/html4css1.css'
 
 # Extra functional tests.
 # Prefix all names with '_' to avoid confusing `docutils.core.publish_file`.
-
-import filecmp as _filecmp
-
 
 def _test_more(expected_dir, output_dir, test_case, parameters):
     """Compare ``ui/<theme>`` directories."""
