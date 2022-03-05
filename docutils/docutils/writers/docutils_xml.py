@@ -113,7 +113,7 @@ class XMLTranslator(nodes.GenericNodeVisitor):
     # --------------------------------
 
     simple_nodes = (nodes.TextElement,
-                    nodes.image, nodes.colspec, nodes.transition)  # empty elements
+                    nodes.image, nodes.colspec, nodes.transition)
 
     def default_visit(self, node):
         """Default node visit method."""

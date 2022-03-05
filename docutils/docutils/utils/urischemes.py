@@ -50,7 +50,8 @@ schemes = {
       'hnews': 'an HTTP-tunneling variant of the NNTP news protocol',
       'http': 'Hypertext Transfer Protocol; RFC 2616',
       'https': 'HTTP over SSL; RFC 2818',
-      'hydra': 'SubEthaEdit URI.  See http://www.codingmonkeys.de/subethaedit.',
+      'hydra': ('SubEthaEdit URI. '
+                'See http://www.codingmonkeys.de/subethaedit.'),
       'iioploc': 'Internet Inter-ORB Protocol Location?',
       'ilu': 'Inter-Language Unification',
       'im': 'Instant Messaging; RFC 3860',
@@ -62,8 +63,8 @@ schemes = {
       'iris.beep': 'iris.beep; RFC 3983',
       'iseek': 'See www.ambrosiasw.com;  a little util for OS X.',
       'jar': 'Java archive',
-      'javascript': ('JavaScript code; evaluates the expression after the '
-                     'colon'),
+      'javascript': ('JavaScript code; '
+                     'evaluates the expression after the colon'),
       'jdbc': 'JDBC connection URI.',
       'ldap': 'Lightweight Directory Access Protocol',
       'lifn': '',

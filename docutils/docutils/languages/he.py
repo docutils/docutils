@@ -3,9 +3,9 @@
 # Copyright: This module has been placed in the public domain.
 
 # New language mappings are welcome.  Before doing a new translation, please
-# read <https://docutils.sourceforge.io/docs/howto/i18n.html>.  Two files must be
-# translated for each language: one in docutils/languages, the other in
-# docutils/parsers/rst/languages.
+# read <https://docutils.sourceforge.io/docs/howto/i18n.html>.
+# Two files must be translated for each language: one in docutils/languages,
+# the other in docutils/parsers/rst/languages.
 
 """
 Hebrew-language mappings for language-dependent features of Docutils.
@@ -24,7 +24,8 @@ labels = {
       'revision': '\u05de\u05d4\u05d3\u05d5\u05e8\u05d4',
       'status': '\u05e1\u05d8\u05d8\u05d5\u05e1',
       'date': '\u05ea\u05d0\u05e8\u05d9\u05da',
-      'copyright': '\u05d6\u05db\u05d5\u05d9\u05d5\u05ea \u05e9\u05de\u05d5\u05e8\u05d5\u05ea',
+      'copyright': ('\u05d6\u05db\u05d5\u05d9\u05d5\u05ea '
+                    '\u05e9\u05de\u05d5\u05e8\u05d5\u05ea'),
       'dedication': '\u05d4\u05e7\u05d3\u05e9\u05d4',
       'abstract': '\u05ea\u05e7\u05e6\u05d9\u05e8',
       'attention': '\u05ea\u05e9\u05d5\u05de\u05ea \u05dc\u05d1',
@@ -50,7 +51,7 @@ bibliographic_fields = {
       '\u05de\u05d4\u05d3\u05d5\u05e8\u05d4': 'revision',
       '\u05e1\u05d8\u05d8\u05d5\u05e1': 'status',
       '\u05ea\u05d0\u05e8\u05d9\u05da': 'date',
-      '\u05d6\u05db\u05d5\u05d9\u05d5\u05ea \u05e9\u05de\u05d5\u05e8\u05d5\u05ea': 'copyright',
+      '\u05d6\u05db\u05d5\u05d9\u05d5\u05ea \u05e9\u05de\u05d5\u05e8\u05d5\u05ea': 'copyright',  # noqa:E501
       '\u05d4\u05e7\u05d3\u05e9\u05d4': 'dedication',
       '\u05ea\u05e7\u05e6\u05d9\u05e8': 'abstract'}
 """Hebrew to canonical name mapping for bibliographic fields."""

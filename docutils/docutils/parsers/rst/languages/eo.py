@@ -3,9 +3,9 @@
 # Copyright: This module has been placed in the public domain.
 
 # New language mappings are welcome.  Before doing a new translation, please
-# read <https://docutils.sourceforge.io/docs/howto/i18n.html>.  Two files must be
-# translated for each language: one in docutils/languages, the other in
-# docutils/parsers/rst/languages.
+# read <https://docutils.sourceforge.io/docs/howto/i18n.html>.
+# Two files must be translated for each language: one in docutils/languages,
+# the other in docutils/parsers/rst/languages.
 
 """
 Esperanto-language mappings for language-dependent features of
@@ -114,5 +114,5 @@ roles = {
     'url': 'uri-reference',
     'senanaliza': 'raw',
 }
-"""Mapping of Esperanto role names to canonical role names for interpreted text.
+"""Mapping of Esperanto role names to canonical names for interpreted text.
 """

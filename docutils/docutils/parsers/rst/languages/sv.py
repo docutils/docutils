@@ -3,9 +3,9 @@
 # Copyright: This module has been placed in the public domain.
 
 # New language mappings are welcome.  Before doing a new translation, please
-# read <https://docutils.sourceforge.io/docs/howto/i18n.html>.  Two files must be
-# translated for each language: one in docutils/languages, the other in
-# docutils/parsers/rst/languages.
+# read <https://docutils.sourceforge.io/docs/howto/i18n.html>.
+# Two files must be translated for each language: one in docutils/languages,
+# the other in docutils/parsers/rst/languages.
 
 """
 Swedish language mappings for language-dependent features of reStructuredText.
@@ -29,7 +29,8 @@ directives = {
       'ämne': 'topic',
       'tema': 'topic',
       'rad-block': 'line-block',
-      'parsed-literal (translation required)': 'parsed-literal',  # 'tolkad-bokstavlig'?
+      # 'tolkad-bokstavlig'?
+      'parsed-literal (translation required)': 'parsed-literal',
       'rubrik': 'rubric',
       'epigraf': 'epigraph',
       'höjdpunkter': 'highlights',

@@ -309,9 +309,9 @@ class HelperFunctionsTests(unittest.TestCase):
                     (['a', 'b:c'], ['a', 'b', 'c']),
                 )
         for t in tests:
-            self.assertEqual(
-                    frontend.validate_colon_separated_string_list(None, t[0], None),
-                    t[1])
+            self.assertEqual(frontend.validate_colon_separated_string_list(
+                                 None, t[0], None),
+                             t[1])
 
     def test_validate_comma_separated_list(self):
         tests = (
@@ -339,11 +339,11 @@ class HelperFunctionsTests(unittest.TestCase):
 
     def test_validate_smartquotes_locales(self):
         tests = (
-                 ('en:ssvv', [('en', 'ssvv')]),
-                 ('sd:«»°°', [('sd', '«»°°')]),
-                 ([('sd', '«»°°'), 'ds:°°«»'], [('sd', '«»°°'), ('ds', '°°«»')]),
-                 ('frs:« : »:((:))', [('frs', ['« ', ' »', '((', '))'])]),
-                )
+            ('en:ssvv', [('en', 'ssvv')]),
+            ('sd:«»°°', [('sd', '«»°°')]),
+            ([('sd', '«»°°'), 'ds:°°«»'], [('sd', '«»°°'), ('ds', '°°«»')]),
+            ('frs:« : »:((:))', [('frs', ['« ', ' »', '((', '))'])]),
+            )
         for t in tests:
             self.assertEqual(
                     frontend.validate_smartquotes_locales(None, t[0], None),
@@ -352,7 +352,7 @@ class HelperFunctionsTests(unittest.TestCase):
     def test_set_conditions_deprecation_warning(self):
         reporter = utils.Reporter('test', 1, 4)
         with self.assertWarnsRegex(DeprecationWarning,
-                                   'Set attributes via configuration settings'):
+                                   'Set attributes via configuration '):
             reporter.set_conditions('foo', 1, 4)  # trigger warning
 
 

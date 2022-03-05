@@ -65,8 +65,8 @@ class Writer(writers._html_base.Writer):
              'default': default_stylesheets}),
         stylesheet_dirs=(
             'Comma-separated list of directories where stylesheets are found. '
-            'Used by --stylesheet-path when expanding relative path arguments. '
-            '(default: "%s")' % ','.join(default_stylesheet_dirs),
+            'Used by --stylesheet-path when expanding relative path '
+            'arguments. (default: "%s")' % ','.join(default_stylesheet_dirs),
             ['--stylesheet-dirs'],
             {'metavar': '<dir[,dir,...]>',
              'validator': frontend.validate_comma_separated_list,

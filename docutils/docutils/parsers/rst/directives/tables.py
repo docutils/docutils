@@ -72,23 +72,26 @@ class Table(Directive):
                 line=self.lineno)
             raise SystemMessagePropagation(error)
         if len(rows) == header_rows > 0:
-            error = self.reporter.error('Insufficient data supplied (%s row(s)); '
-                'no data remaining for table body, required by "%s" directive.'
-                % (len(rows), self.name),
+            error = self.reporter.error(
+                f'Insufficient data supplied ({len(rows)} row(s)); '
+                'no data remaining for table body, '
+                f'required by "{self.name}" directive.',
                 nodes.literal_block(self.block_text, self.block_text),
                 line=self.lineno)
             raise SystemMessagePropagation(error)
         for row in rows:
             if len(row) < stub_columns:
-                error = self.reporter.error('%s stub column(s) specified but '
-                    'only %s columns(s) of data supplied ("%s" directive).'
-                    % (stub_columns, len(row), self.name),
+                error = self.reporter.error(
+                    f'{stub_columns} stub column(s) specified '
+                    f'but only {len(row)} columns(s) of data supplied '
+                    f'("{self.name}" directive).',
                     nodes.literal_block(self.block_text, self.block_text),
                     line=self.lineno)
                 raise SystemMessagePropagation(error)
             if len(row) == stub_columns > 0:
-                error = self.reporter.error('Insufficient data supplied '
-                    '(%s columns(s)); no data remaining for table body, required '
+                error = self.reporter.error(
+                    'Insufficient data supplied (%s columns(s)); '
+                    'no data remaining for table body, required '
                     'by "%s" directive.' % (len(row), self.name),
                     nodes.literal_block(self.block_text, self.block_text),
                     line=self.lineno)
@@ -287,7 +290,7 @@ class CSVTable(Table):
         """
         encoding = self.options.get(
             'encoding', self.state.document.settings.input_encoding)
-        error_handler = self.state.document.settings.input_encoding_error_handler
+        error_handler = self.state.document.settings.input_encoding_error_handler  # noqa:E501
         if self.content:
             # CSV data is from directive content.
             if 'file' in self.options or 'url' in self.options:
@@ -475,7 +478,8 @@ class ListTable(Table):
         col_widths = self.get_column_widths(num_cols)
         return num_cols, col_widths
 
-    def build_table_from_list(self, table_data, col_widths, header_rows, stub_columns):
+    def build_table_from_list(self, table_data,
+                              col_widths, header_rows, stub_columns):
         table = nodes.table()
         if self.widths == 'auto':
             table['classes'] += ['colwidths-auto']

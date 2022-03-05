@@ -307,7 +307,7 @@ def rfc_reference_role(role, rawtext, text, lineno, inliner,
     ref = inliner.document.settings.rfc_base_url + inliner.rfc_url % rfcnum
     if section is not None:
         ref += "#" + section
-    node = nodes.reference(rawtext, 'RFC ' + str(rfcnum), refuri=ref, **options)
+    node = nodes.reference(rawtext, 'RFC '+str(rfcnum), refuri=ref, **options)
     return [node], []
 
 
@@ -415,7 +415,7 @@ def set_classes(options):
     # TODO: Change use in directives.py and uncomment.
     # warnings.warn('The auxiliary function roles.set_classes() is obsoleted'
     #     ' by roles.normalized_role_options() and will be removed'
-    #     ' in Docutils 0.21 or later', PendingDeprecationWarning, stacklevel=2)
+    #     ' in Docutils 0.21 or later', DeprecationWarning, stacklevel=2)
     if options and 'class' in options:
         assert 'classes' not in options
         options['classes'] = options['class']

@@ -9,7 +9,8 @@ behavior.  For custom behavior (setting component options), create
 custom component objects first, and pass *them* to
 ``publish_*``/`Publisher`.  See `The Docutils Publisher`_.
 
-.. _The Docutils Publisher: https://docutils.sourceforge.io/docs/api/publisher.html
+.. _The Docutils Publisher:
+    https://docutils.sourceforge.io/docs/api/publisher.html
 """
 
 __docformat__ = 'reStructuredText'
@@ -313,10 +314,11 @@ command line used.""" % (__version__,
 
 
 default_usage = '%prog [options] [<source> [<destination>]]'
-default_description = ('Reads from <source> (default is stdin) and writes to '
-                       '<destination> (default is stdout).  See '
-                       '<https://docutils.sourceforge.io/docs/user/config.html> for '
-                       'the full reference.')
+default_description = (
+    'Reads from <source> (default is stdin) and writes to <destination> '
+    '(default is stdout). '
+    'See https://docutils.sourceforge.io/docs/user/config.html '
+    ' for the full reference.')
 
 
 def publish_cmdline(reader=None, reader_name='standalone',

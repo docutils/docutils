@@ -53,8 +53,7 @@ class Node:
 
     @property
     def document(self):
-        """
-        Return the `document` node at the root of the tree containing this Node.
+        """Return the `document` root node of the tree containing this Node.
         """
         try:
             return self._document or self.parent.document

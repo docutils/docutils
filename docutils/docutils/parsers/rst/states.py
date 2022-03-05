@@ -225,7 +225,7 @@ class RSTState(StateWS):
         self.parent = self.state_machine.node
         # enable the reporter to determine source and source-line
         if not hasattr(self.reporter, 'get_source_and_line'):
-            self.reporter.get_source_and_line = self.state_machine.get_source_and_line
+            self.reporter.get_source_and_line = self.state_machine.get_source_and_line  # noqa:E501
 
     def goto_line(self, abs_line_offset):
         """
@@ -1357,7 +1357,7 @@ class Body(RSTState):
                 break                   # yes; keep `format`
         else:                           # shouldn't happen
             raise ParserError('enumerator format not matched')
-        text = groupdict[format][self.enum.formatinfo[format].start     # noqa: E203
+        text = groupdict[format][self.enum.formatinfo[format].start     # noqa: E203,E501
                                  : self.enum.formatinfo[format].end]
         if text == '#':
             sequence = '#'
@@ -2032,11 +2032,13 @@ class Body(RSTState):
                 break
             blockindex += 1
             try:
-                escaped = escaped + ' ' + escape2null(block[blockindex].strip())
+                escaped = escaped + ' ' + escape2null(
+                                              block[blockindex].strip())
             except IndexError:
                 raise MarkupError('malformed substitution definition.')
         del block[:blockindex]          # strip out the substitution marker
-        block[0] = (block[0].strip() + ' ')[subdefmatch.end()-len(escaped)-1:-1]
+        start = subdefmatch.end()-len(escaped)-1
+        block[0] = (block[0].strip() + ' ')[start:-1]
         if not block[0]:
             del block[0]
             offset += 1
@@ -2135,7 +2137,7 @@ class Body(RSTState):
          ) = self.state_machine.get_first_known_indented(match.end(),
                                                          strip_top=0)
         block_text = '\n'.join(self.state_machine.input_lines[
-            initial_line_offset : self.state_machine.line_offset + 1])  # noqa: E203
+            initial_line_offset : self.state_machine.line_offset + 1])  # noqa: E203,E501
         try:
             arguments, options, content, content_offset = (
                 self.parse_directive_block(indented, line_offset,

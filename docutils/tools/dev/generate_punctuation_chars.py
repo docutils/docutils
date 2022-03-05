@@ -77,10 +77,12 @@ import unicodedata
 
    The category of some characters changed with the development of the
    Unicode standard. The current lists are generated with the help of the
-   "unicodedata" module of Python %(python_version)s (based on Unicode version %(unidata_version)s).
+   "unicodedata" module of Python %(python_version)s
+   (based on Unicode version %(unidata_version)s).
 
    .. _inline markup recognition rules:
-      https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#inline-markup-recognition-rules
+      https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html
+      #inline-markup-recognition-rules
 """
 
 %(openers)s

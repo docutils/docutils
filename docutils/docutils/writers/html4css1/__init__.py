@@ -57,8 +57,8 @@ class Writer(writers._html_base.Writer):
              'default': default_stylesheets}),
         stylesheet_dirs=(
             'Comma-separated list of directories where stylesheets are found. '
-            'Used by --stylesheet-path when expanding relative path arguments. '
-            '(default: "%s")' % ','.join(default_stylesheet_dirs),
+            'Used by --stylesheet-path when expanding relative path '
+            'arguments. (default: "%s")' % ','.join(default_stylesheet_dirs),
             ['--stylesheet-dirs'],
             {'metavar': '<dir[,dir,...]>',
              'validator': frontend.validate_comma_separated_list,
@@ -618,7 +618,7 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
                                        CLASS='label'))
 
     def depart_label(self, node):
-        self.body.append(']%s</td><td>%s' % (self.context.pop(), self.context.pop()))
+        self.body.append(f']{self.context.pop()}</td><td>{self.context.pop()}')
 
     # ersatz for first/last pseudo-classes
     def visit_list_item(self, node):

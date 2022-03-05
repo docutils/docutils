@@ -101,7 +101,8 @@ class Parser(docutils.parsers.Parser):
          ('Recognize and link to standalone RFC references (like "RFC 822").',
           ['--rfc-references'],
           {'action': 'store_true', 'validator': frontend.validate_boolean}),
-         ('Base URL for RFC references (default "https://tools.ietf.org/html/").',
+         ('Base URL for RFC references '
+          '(default "https://tools.ietf.org/html/").',
           ['--rfc-base-url'],
           {'metavar': '<URL>', 'default': 'https://tools.ietf.org/html/',
            'validator': frontend.validate_url_trailing_slash}),
@@ -264,15 +265,16 @@ class Directive:
     - ``lineno`` is the absolute line number of the first line
       of the directive.
 
-    - ``content_offset`` is the line offset of the first line of the content from
-      the beginning of the current input.  Used when initiating a nested parse.
+    - ``content_offset`` is the line offset of the first line
+      of the content from the beginning of the current input.
+      Used when initiating a nested parse.
 
     - ``block_text`` is a string containing the entire directive.
 
     - ``state`` is the state which called the directive function.
 
-    - ``state_machine`` is the state machine which controls the state which called
-      the directive function.
+    - ``state_machine`` is the state machine which controls the state
+      which called the directive function.
 
     - ``reporter`` is the state machine's `reporter` instance.
 

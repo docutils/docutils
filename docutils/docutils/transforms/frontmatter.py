@@ -65,7 +65,8 @@ class TitlePromoter(Transform):
         #       already exist in node with those in section.
         # NOTE: Remove `and_source` to NOT copy the 'source'
         #       attribute from section
-        node.update_all_atts_concatenating(section, replace=True, and_source=True)
+        node.update_all_atts_concatenating(section, replace=True,
+                                           and_source=True)
 
         # setup_child is called automatically for all nodes.
         node[:] = (section[:1]        # section title
@@ -106,7 +107,8 @@ class TitlePromoter(Transform):
         #       that already exist in node with those in section.
         # NOTE: Remove `and_source` to NOT copy the 'source'
         #       attribute from section.
-        subtitle.update_all_atts_concatenating(subsection, replace=True, and_source=True)
+        subtitle.update_all_atts_concatenating(subsection, replace=True,
+                                               and_source=True)
 
         # Transfer the contents of the subsection's title to the
         # subtitle:
@@ -232,7 +234,8 @@ class DocTitle(TitlePromoter):
         if not self.document.hasattr('title'):
             if self.document.settings.title is not None:
                 self.document['title'] = self.document.settings.title
-            elif len(self.document) and isinstance(self.document[0], nodes.title):
+            elif len(self.document) and isinstance(self.document[0],
+                                                   nodes.title):
                 self.document['title'] = self.document[0].astext()
 
     def apply(self):
