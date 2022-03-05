@@ -85,6 +85,7 @@ class Babel(latex2e.Babel):
         'el-polyton': 'polygreek',
         'fa':         'farsi',
         'grc':        'ancientgreek',
+        'ko':         'korean',
         'hsb':        'usorbian',
         'sh-Cyrl':    'serbian',        # Serbo-Croatian, Cyrillic script
         'sh-Latn':    'croatian',       # Serbo-Croatian, Latin script
