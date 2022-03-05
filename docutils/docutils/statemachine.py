@@ -110,7 +110,7 @@ import sys
 import re
 from unicodedata import east_asian_width
 
-from docutils import io, utils
+from docutils import utils
 
 
 class StateMachine:

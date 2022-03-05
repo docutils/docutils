@@ -10,7 +10,7 @@ Tests for the block quote directives "epigraph", "highlights", and
 """
 
 if __name__ == '__main__':
-    import __init__
+    import __init__  # noqa: F401
 from test_parsers import DocutilsTestSupport
 
 

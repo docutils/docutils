@@ -12,7 +12,6 @@ from io import StringIO, BytesIO
 import sys
 import unittest
 
-import DocutilsTestSupport              # must be imported before docutils
 from docutils import io
 
 

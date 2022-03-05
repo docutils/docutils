@@ -23,7 +23,7 @@ __docformat__ = 'reStructuredText'
 import re
 import time
 from docutils import nodes, utils
-from docutils.transforms import TransformError, Transform
+from docutils.transforms import Transform
 from docutils.utils import smartquotes
 
 

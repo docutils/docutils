@@ -10,7 +10,7 @@ __docformat__ = 'reStructuredText'
 
 
 from docutils.readers import standalone
-from docutils.transforms import peps, references, misc, frontmatter
+from docutils.transforms import peps, frontmatter
 from docutils.parsers import rst
 
 

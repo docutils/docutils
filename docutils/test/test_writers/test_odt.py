@@ -36,7 +36,7 @@ import xml.etree.ElementTree as etree
 from io import BytesIO
 
 if __name__ == '__main__':
-    import __init__
+    import __init__  # noqa: F401
 from test_writers import DocutilsTestSupport
 import docutils
 import docutils.core

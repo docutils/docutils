@@ -17,10 +17,9 @@ __docformat__ = 'reStructuredText'
 
 import sys
 import pprint
-from docutils import __version__, __version_details__, SettingsSpec
-from docutils import frontend, io, utils, readers, writers
+from docutils import __version__, SettingsSpec
+from docutils import io, utils, readers, writers
 from docutils.frontend import OptionParser
-from docutils.transforms import Transformer
 import docutils.readers.doctree
 
 

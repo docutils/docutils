@@ -45,7 +45,6 @@ __docformat__ = 'reStructuredText'
 
 import re
 
-import docutils
 from docutils import nodes, writers, languages
 try:
     import roman

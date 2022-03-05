@@ -29,13 +29,11 @@ __docformat__ = 'reStructuredText'
 import mimetypes
 import os.path
 
-import docutils
-from docutils import frontend, nodes, writers, io
-from docutils.transforms import writer_aux
+from docutils import frontend, nodes
 from docutils.writers import _html_base
 
 
-class Writer(writers._html_base.Writer):
+class Writer(_html_base.Writer):
 
     supported = ('html', 'html5', 'xhtml')
     """Formats this writer supports."""
@@ -47,7 +45,7 @@ class Writer(writers._html_base.Writer):
 
     # use a copy of the parent spec with some modifications
     settings_spec = frontend.filter_settings_spec(
-        writers._html_base.Writer.settings_spec,
+        _html_base.Writer.settings_spec,
         template=(
             'Template file. (UTF-8 encoded, default: "%s")'
             % default_template,
@@ -114,7 +112,7 @@ class Writer(writers._html_base.Writer):
         self.translator_class = HTMLTranslator
 
 
-class HTMLTranslator(writers._html_base.HTMLTranslator):
+class HTMLTranslator(_html_base.HTMLTranslator):
     """
     This writer generates `polyglot markup`: HTML5 that is also valid XML.
 

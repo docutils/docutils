@@ -9,7 +9,7 @@ Miscellaneous transforms.
 __docformat__ = 'reStructuredText'
 
 from docutils import nodes
-from docutils.transforms import Transform, TransformError
+from docutils.transforms import Transform
 
 
 class CallBack(Transform):

@@ -55,8 +55,8 @@ module_template = r'''#!/usr/bin/env python3
 # ``docutils/tools/dev/generate_punctuation_chars.py``.
 # ::
 
-import sys, re
-import unicodedata
+import re
+import sys
 
 """Docutils character category patterns.
 

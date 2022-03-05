@@ -9,7 +9,7 @@ Tests for inline markup in PEPs (readers/pep.py).
 """
 
 if __name__ == '__main__':
-    import __init__
+    import __init__  # noqa: F401
 from test_readers import DocutilsTestSupport
 
 

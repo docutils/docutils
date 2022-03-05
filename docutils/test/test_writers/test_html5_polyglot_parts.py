@@ -13,11 +13,10 @@ standard values, and any entries with empty values.
 """
 
 if __name__ == '__main__':
-    import __init__
-from test_transforms import DocutilsTestSupport  # before importing docutils!
+    import __init__  # noqa: F401
 from DocutilsTestSupport import (HtmlWriterPublishPartsTestCase,
                                  HtmlPublishPartsTestSuite)
-from docutils import core, __version__
+from docutils import __version__
 
 
 class Html5WriterPublishPartsTestCase(HtmlWriterPublishPartsTestCase):

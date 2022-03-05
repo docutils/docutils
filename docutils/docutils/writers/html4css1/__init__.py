@@ -16,9 +16,8 @@ __docformat__ = 'reStructuredText'
 
 import os.path
 import re
-import docutils
-from docutils import frontend, nodes, writers, io
-from docutils.transforms import writer_aux
+
+from docutils import frontend, nodes, writers
 from docutils.writers import _html_base
 from docutils.writers._html_base import PIL, url2pathname
 

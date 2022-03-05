@@ -24,7 +24,6 @@
 import os.path
 import sys
 import unicodedata
-from urllib.parse import quote_plus
 
 from docutils.utils.math import tex2unichar
 

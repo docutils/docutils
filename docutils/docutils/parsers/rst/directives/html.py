@@ -12,7 +12,7 @@ __docformat__ = 'reStructuredText'
 
 import warnings
 
-from docutils.parsers.rst.directives.misc import MetaBody, Meta
+from docutils.parsers.rst.directives.misc import MetaBody, Meta  # noqa: F401
 
 warnings.warn('The `docutils.parsers.rst.directive.html` module'
               ' will be removed in Docutils 1.2.'

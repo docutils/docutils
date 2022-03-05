@@ -77,7 +77,7 @@ Interpreted role functions return a tuple of two values:
 __docformat__ = 'reStructuredText'
 
 
-from docutils import nodes, utils
+from docutils import nodes
 from docutils.parsers.rst import directives
 from docutils.parsers.rst.languages import en as _fallback_language_module
 from docutils.utils.code_analyzer import Lexer, LexerError
@@ -268,7 +268,7 @@ def pep_reference_role(role, rawtext, text, lineno, inliner,
                        options=None, content=None):
     options = normalized_role_options(options)
     try:
-        pepnum = int(utils.unescape(text))
+        pepnum = int(nodes.unescape(text))
         if pepnum < 0 or pepnum > 9999:
             raise ValueError
     except ValueError:
@@ -290,9 +290,9 @@ def rfc_reference_role(role, rawtext, text, lineno, inliner,
                        options=None, content=None):
     options = normalized_role_options(options)
     if "#" in text:
-        rfcnum, section = utils.unescape(text).split("#", 1)
+        rfcnum, section = nodes.unescape(text).split("#", 1)
     else:
-        rfcnum, section = utils.unescape(text), None
+        rfcnum, section = nodes.unescape(text), None
     try:
         rfcnum = int(rfcnum)
         if rfcnum < 1:
@@ -328,7 +328,7 @@ def raw_role(role, rawtext, text, lineno, inliner, options=None, content=None):
             'an associated format.' % role, line=lineno)
         prb = inliner.problematic(rawtext, rawtext, msg)
         return [prb], [msg]
-    node = nodes.raw(rawtext, utils.unescape(text, True), **options)
+    node = nodes.raw(rawtext, nodes.unescape(text, True), **options)
     node.source, node.line = inliner.reporter.get_source_and_line(lineno)
     return [node], []
 
@@ -348,7 +348,7 @@ def code_role(role, rawtext, text, lineno, inliner,
     if language and language not in classes:
         classes.append(language)
     try:
-        tokens = Lexer(utils.unescape(text, True), language,
+        tokens = Lexer(nodes.unescape(text, True), language,
                        inliner.document.settings.syntax_highlight)
     except LexerError as error:
         msg = inliner.reporter.warning(error)
@@ -376,7 +376,7 @@ register_canonical_role('code', code_role)
 def math_role(role, rawtext, text, lineno, inliner,
               options=None, content=None):
     options = normalized_role_options(options)
-    text = utils.unescape(text, True)  # raw text without inline role markup
+    text = nodes.unescape(text, True)  # raw text without inline role markup
     node = nodes.math(rawtext, text, **options)
     return [node], []
 

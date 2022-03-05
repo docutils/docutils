@@ -24,7 +24,6 @@ __ https://pypi.org/project/recommonmark/
    * The API is not settled and may change with any minor Docutils version.
 """
 
-import docutils.parsers
 from docutils import nodes, Component
 
 try:

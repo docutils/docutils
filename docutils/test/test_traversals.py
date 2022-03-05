@@ -9,10 +9,9 @@ Test module for traversals.
 """
 
 import unittest
-import DocutilsTestSupport              # must be imported before docutils
-from docutils import nodes, core, io, utils, writers
-from docutils.writers.null import Writer as NullWriter
+
 import docutils
+from docutils import core, nodes, writers
 
 
 stop_traversal_input = '''
@@ -60,14 +59,14 @@ class StopTraversalTests(unittest.TestCase, docutils.SettingsSpec):
     """
     def test_stop_traversal(self):
         # Load some document tree in memory.
-        doctree = docutils.core.publish_doctree(
+        doctree = core.publish_doctree(
             source=stop_traversal_input,
             reader_name='standalone',
             parser_name='restructuredtext',
             settings_spec=self)
         self.assertTrue(isinstance(doctree, nodes.document))
 
-        parts = docutils.core.publish_parts(
+        parts = core.publish_parts(
             reader_name='doctree', source_class=docutils.io.DocTreeInput,
             source=doctree, source_path='test',
             writer=AttentiveWriter())

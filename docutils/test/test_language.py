@@ -19,7 +19,7 @@ import re
 import DocutilsTestSupport              # must be imported before docutils
 import docutils.languages
 import docutils.parsers.rst.languages
-from docutils.parsers.rst import states, directives, roles
+from docutils.parsers.rst import directives, roles
 import docutils.utils
 import docutils.frontend
 
