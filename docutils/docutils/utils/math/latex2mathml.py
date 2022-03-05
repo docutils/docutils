@@ -104,8 +104,8 @@ stretchables = {# extensible delimiters allowed in left/right cmds
                 'Uparrow':     '\u21d1', # ⇑ UPWARDS DOUBLE ARROW
                 'Downarrow':   '\u21d3', # ⇓ DOWNWARDS DOUBLE ARROW
                 'Updownarrow': '\u21d5', # ⇕ UP DOWN DOUBLE ARROW
-                'lmoustache':  '\u23b0', # ⎰ UPPER LEFT OR LOWER RIGHT CURLY BRACKET SECTION
-                'rmoustache':  '\u23b1', # ⎱ UPPER RIGHT OR LOWER LEFT CURLY BRACKET SECTION
+                'lmoustache':  '\u23b0', # ⎰ … CURLY BRACKET SECTION
+                'rmoustache':  '\u23b1', # ⎱ … LEFT CURLY BRACKET SECTION
                 'arrowvert':   '\u23d0', # ⏐ VERTICAL LINE EXTENSION
                 'bracevert':   '\u23aa', # ⎪ CURLY BRACKET EXTENSION
                 'lvert':      '|',      # left  |
@@ -223,15 +223,15 @@ accents = {# TeX:      (spacing, combining)
 
 # limits etc. -> <mover> or <munder>
 over = {# TeX:                  (char,     offset-correction/em)
-        'overbrace':            ('\u23DE', -0.2), # DejaVu Math -0.6
+        'overbrace':            ('\u23DE', -0.2),  # DejaVu Math -0.6
         'overleftarrow':        ('\u2190', -0.2),
         'overleftrightarrow':   ('\u2194', -0.2),
-        'overline':             ('_',      -0.2),   # \u2012' FIGURE DASH does not stretch
+        'overline':             ('_',      -0.2),  # \u2012 does not stretch
         'overrightarrow':       ('\u2192', -0.2),
         'widehat':              ('^',      -0.5),
         'widetilde':            ('~',      -0.3),
         }
-under = {'underbrace':          ('\u23DF',  0.1), # DejaVu Math -0.7
+under = {'underbrace':          ('\u23DF',  0.1),  # DejaVu Math -0.7
          'underleftarrow':      ('\u2190', -0.2),
          'underleftrightarrow': ('\u2194', -0.2),
          'underline':           ('_',      -0.8),
@@ -338,9 +338,7 @@ class math:
         self.extend(children)
 
         self.attributes = {}
-        # sort attributes for predictable functional tests
-        # as self.attributes.update(attributes) does not keep order in Python < 3.6
-        for key in sorted(attributes.keys()):
+        for key in attributes.keys():
             # Use .lower() to allow argument `CLASS` for attribute `class`
             # (Python keyword). MathML uses only lowercase attributes.
             self.attributes[key.lower()] = attributes[key]
