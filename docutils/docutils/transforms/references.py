@@ -624,7 +624,8 @@ class Footnotes(Transform):
         note.resolved = 1
 
 
-class CircularSubstitutionDefinitionError(Exception): pass
+class CircularSubstitutionDefinitionError(Exception):
+    pass
 
 
 class Substitutions(Transform):

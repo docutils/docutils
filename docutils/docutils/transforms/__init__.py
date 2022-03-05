@@ -27,7 +27,8 @@ __docformat__ = 'reStructuredText'
 from docutils import languages, ApplicationError, TransformSpec
 
 
-class TransformError(ApplicationError): pass
+class TransformError(ApplicationError):
+    pass
 
 
 class Transform:

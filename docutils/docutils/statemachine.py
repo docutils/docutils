@@ -1101,15 +1101,14 @@ class ViewList:
         return str(self.data)
 
     def __repr__(self):
-        return '%s(%s, items=%s)' % (self.__class__.__name__,
-                                     self.data, self.items)
+        return f'{self.__class__.__name__}({self.data}, items={self.items})'
 
-    def __lt__(self, other): return self.data < self.__cast(other)
-    def __le__(self, other): return self.data <= self.__cast(other)
-    def __eq__(self, other): return self.data == self.__cast(other)
-    def __ne__(self, other): return self.data != self.__cast(other)
-    def __gt__(self, other): return self.data > self.__cast(other)
-    def __ge__(self, other): return self.data >= self.__cast(other)
+    def __lt__(self, other): return self.data < self.__cast(other)   # noqa
+    def __le__(self, other): return self.data <= self.__cast(other)  # noqa
+    def __eq__(self, other): return self.data == self.__cast(other)  # noqa
+    def __ne__(self, other): return self.data != self.__cast(other)  # noqa
+    def __gt__(self, other): return self.data > self.__cast(other)   # noqa
+    def __ge__(self, other): return self.data >= self.__cast(other)  # noqa
 
     def __cast(self, other):
         if isinstance(other, ViewList):
@@ -1117,8 +1116,11 @@ class ViewList:
         else:
             return other
 
-    def __contains__(self, item): return item in self.data
-    def __len__(self): return len(self.data)
+    def __contains__(self, item):
+        return item in self.data
+
+    def __len__(self):
+        return len(self.data)
 
     # The __getitem__()/__setitem__() methods check whether the index
     # is a slice first, since indexing a native list with a slice object
@@ -1268,8 +1270,11 @@ class ViewList:
         index = self.index(item)
         del self[index]
 
-    def count(self, item): return self.data.count(item)
-    def index(self, item): return self.data.index(item)
+    def count(self, item):
+        return self.data.count(item)
+
+    def index(self, item):
+        return self.data.index(item)
 
     def reverse(self):
         self.data.reverse()

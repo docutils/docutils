@@ -15,7 +15,7 @@ try:  # check for the Python Imaging Library
 except ImportError:
     try:  # sometimes PIL modules are put in PYTHONPATH's root
         import Image
-        class PIL: pass  # dummy wrapper
+        class PIL: pass  # noqa:E701  dummy wrapper
         PIL.Image = Image
     except ImportError:
         PIL = None

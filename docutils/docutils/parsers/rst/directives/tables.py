@@ -349,7 +349,7 @@ class CSVTable(Table):
                 raise SystemMessagePropagation(severe)
             csv_file = io.StringInput(
                 source=csv_text, source_path=source, encoding=encoding,
-                error_handler=(self.state.document.settings.\
+                error_handler=(self.state.document.settings.
                                input_encoding_error_handler))
             csv_data = csv_file.read().splitlines()
         else:

@@ -556,14 +556,14 @@ def educate_tokens(text_tokens, attr=default_smartypants_attr, language='en'):
     elif attr == '-1':  # Special "stupefy" mode.
         do_stupefy = True
     else:
-        if 'q' in attr: do_quotes = True
-        if 'b' in attr: do_backticks = True
-        if 'B' in attr: do_backticks = 2
-        if 'd' in attr: do_dashes = 1
-        if 'D' in attr: do_dashes = 2
-        if 'i' in attr: do_dashes = 3
-        if 'e' in attr: do_ellipses = True
-        if 'w' in attr: convert_quot = True
+        if 'q' in attr: do_quotes = True     # noqa: E701
+        if 'b' in attr: do_backticks = True  # noqa: E701
+        if 'B' in attr: do_backticks = 2     # noqa: E701
+        if 'd' in attr: do_dashes = 1        # noqa: E701
+        if 'D' in attr: do_dashes = 2        # noqa: E701
+        if 'i' in attr: do_dashes = 3        # noqa: E701
+        if 'e' in attr: do_ellipses = True   # noqa: E701
+        if 'w' in attr: convert_quot = True  # noqa: E701
 
     prev_token_last_char = ' '
     # Last character of the previous text token. Used as
