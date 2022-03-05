@@ -170,9 +170,6 @@ class StateMachine:
         line changes.  Observers are called with one argument, ``self``.
         Cleared at the end of `run()`."""
 
-        self._stderr = io.ErrorOutput()
-        """Wrapper around sys.stderr catching en-/decoding errors"""
-
     def unlink(self):
         """Remove circular references to objects no longer required."""
         for state in self.states.values():
@@ -212,13 +209,14 @@ class StateMachine:
         self.current_state = initial_state or self.initial_state
         if self.debug:
             print('\nStateMachine.run: input_lines (line_offset=%s):\n| %s'
-                  % (self.line_offset, '\n| '.join(self.input_lines)), file=self._stderr)
+                  % (self.line_offset, '\n| '.join(self.input_lines)),
+                  file=sys.stderr)
         transitions = None
         results = []
         state = self.get_state()
         try:
             if self.debug:
-                print('\nStateMachine.run: bof transition', file=self._stderr)
+                print('\nStateMachine.run: bof transition', file=sys.stderr)
             context, result = state.bof(context)
             results.extend(result)
             while True:
@@ -228,15 +226,15 @@ class StateMachine:
                         if self.debug:
                             source, offset = self.input_lines.info(
                                 self.line_offset)
-                            print('\nStateMachine.run: line (source=%r, '
-                                  'offset=%r):\n| %s'
-                                  % (source, offset, self.line), file=self._stderr)
+                            print(f'\nStateMachine.run: line '
+                                  f'(source={source!r}, offset={offset!r}):\n'
+                                  f'| {self.line}', file=sys.stderr)
                         context, next_state, result = self.check_line(
                             context, state, transitions)
                     except EOFError:
                         if self.debug:
                             print('\nStateMachine.run: %s.eof transition'
-                                  % state.__class__.__name__, file=self._stderr)
+                                  % state.__class__.__name__, file=sys.stderr)
                         result = state.eof(context)
                         results.extend(result)
                         break
@@ -247,8 +245,9 @@ class StateMachine:
                     transitions = (exception.args[0],)
                     if self.debug:
                         print('\nStateMachine.run: TransitionCorrection to '
-                              'state "%s", transition %s.'
-                              % (state.__class__.__name__, transitions[0]), file=self._stderr)
+                              f'state "{state.__class__.__name__}", '
+                              f'transition {transitions[0]}.',
+                              file=sys.stderr)
                     continue
                 except StateCorrection as exception:
                     self.previous_line()  # back up for another try
@@ -259,8 +258,8 @@ class StateMachine:
                         transitions = (exception.args[1],)
                     if self.debug:
                         print('\nStateMachine.run: StateCorrection to state '
-                              '"%s", transition %s.'
-                              % (next_state, transitions[0]), file=self._stderr)
+                              f'"{next_state}", transition {transitions[0]}.',
+                              file=sys.stderr)
                 else:
                     transitions = None
                 state = self.get_state(next_state)
@@ -284,7 +283,7 @@ class StateMachine:
                 print('\nStateMachine.get_state: Changing state from '
                       '"%s" to "%s" (input line %s).'
                       % (self.current_state, next_state,
-                         self.abs_line_number()), file=self._stderr)
+                         self.abs_line_number()), file=sys.stderr)
             self.current_state = next_state
         try:
             return self.states[self.current_state]
@@ -434,20 +433,20 @@ class StateMachine:
         state_correction = None
         if self.debug:
             print('\nStateMachine.check_line: state="%s", transitions=%r.'
-                  % (state.__class__.__name__, transitions), file=self._stderr)
+                  % (state.__class__.__name__, transitions), file=sys.stderr)
         for name in transitions:
             pattern, method, next_state = state.transitions[name]
             match = pattern.match(self.line)
             if match:
                 if self.debug:
                     print('\nStateMachine.check_line: Matched transition '
-                          '"%s" in state "%s".'
-                          % (name, state.__class__.__name__), file=self._stderr)
+                          f'"{name}" in state "{state.__class__.__name__}".',
+                          file=sys.stderr)
                 return method(match, context, next_state)
         else:
             if self.debug:
                 print('\nStateMachine.check_line: No match in state "%s".'
-                      % state.__class__.__name__, file=self._stderr)
+                      % state.__class__.__name__, file=sys.stderr)
             return state.no_match(context, transitions)
 
     def add_state(self, state_class):
@@ -479,10 +478,10 @@ class StateMachine:
     def error(self):
         """Report error details."""
         type, value, module, line, function = _exception_data()
-        print('%s: %s' % (type, value), file=self._stderr)
-        print('input line %s' % (self.abs_line_number()), file=self._stderr)
+        print('%s: %s' % (type, value), file=sys.stderr)
+        print('input line %s' % (self.abs_line_number()), file=sys.stderr)
         print('module %s, line %s, function %s' % (module, line, function),
-              file=self._stderr)
+              file=sys.stderr)
 
     def attach_observer(self, observer):
         """
@@ -1432,8 +1431,8 @@ class StringList(ViewList):
         return block
 
     def pad_double_width(self, pad_char):
-        """
-        Pad all double-width characters in self by appending `pad_char` to each.
+        """Pad all double-width characters in `self` appending `pad_char`.
+
         For East Asian language support.
         """
         for i in range(len(self.data)):
