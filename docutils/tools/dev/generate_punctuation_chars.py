@@ -260,40 +260,40 @@ def mark_intervals(s):
 
     Sort string and replace 'cdef' by 'c-f' and similar.
     """
-    l = []
+    lst = []
     s = sorted(ord(ch) for ch in s)
     for n in s:
         try:
-            if l[-1][-1] + 1 == n:
-                l[-1].append(n)
+            if lst[-1][-1] + 1 == n:
+                lst[-1].append(n)
             else:
-                l.append([n])
+                lst.append([n])
         except IndexError:
-            l.append([n])
+            lst.append([n])
 
-    l2 = []
-    for i in l:
+    lst2 = []
+    for i in lst:
         i = [chr(n) for n in i]
         if len(i) > 2:
             i = i[0], '-', i[-1]
-        l2.extend(i)
+        lst2.extend(i)
 
-    return ''.join(l2)
+    return ''.join(lst2)
 
 
 def wrap_string(s, startstring="('", endstring="')", wrap=67):
     """Line-wrap a unicode string literal definition."""
     c = len(startstring)
     contstring = "'\n" + ' '*(len(startstring)-2) + "'"
-    l = [startstring]
+    lst = [startstring]
     for ch in s.replace("'", r"\'"):
         c += 1
         if ch == '\\' and c > wrap:
             c = len(startstring)
             ch = contstring + ch
-        l.append(ch)
-    l.append(endstring)
-    return ''.join(l)
+        lst.append(ch)
+    lst.append(endstring)
+    return ''.join(lst)
 
 
 def print_differences(old, new, name):
