@@ -9,7 +9,7 @@ Test the 'code' directive in body.py with syntax_highlight = 'none'.
 """
 
 if __name__ == '__main__':
-    import __init__
+    import __init__  # noqa: F401
 from test_parsers import DocutilsTestSupport
 
 

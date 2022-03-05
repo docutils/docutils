@@ -59,12 +59,12 @@ try:
     import package_unittest
     import docutils
     import docutils.core
-    from docutils import frontend, nodes, statemachine, utils
-    from docutils.utils import urischemes
+    from docutils import frontend, nodes, statemachine, utils   # noqa: F401
+    from docutils.utils import urischemes                       # noqa: F401
     from docutils.transforms import universal
     from docutils.parsers import rst
-    from docutils.parsers.rst import states, tableparser, roles, languages
-    from docutils.readers import standalone, pep
+    from docutils.parsers.rst import states, tableparser, roles, languages  # noqa: F401, E501
+    from docutils.readers import standalone, pep                # noqa: F401
     from docutils.statemachine import StringList, string2lines
 except ImportError:
     # The importing module (usually __init__.py in one of the

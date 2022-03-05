@@ -9,7 +9,7 @@ Tests for misc.py "include" directive.
 
 import os.path
 if __name__ == '__main__':
-    import __init__
+    import __init__  # noqa: F401
 from test_parsers import DocutilsTestSupport
 from docutils import parsers
 from docutils.utils.code_analyzer import with_pygments

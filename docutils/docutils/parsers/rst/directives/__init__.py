@@ -13,7 +13,7 @@ import codecs
 from importlib import import_module
 
 from docutils import nodes, parsers
-from docutils.utils import split_escaped_whitespace, escape2null, unescape
+from docutils.utils import split_escaped_whitespace, escape2null
 from docutils.parsers.rst.languages import en as _fallback_language_module
 
 
@@ -204,7 +204,8 @@ def uri(argument):
         raise ValueError('argument required but none supplied')
     else:
         parts = split_escaped_whitespace(escape2null(argument))
-        return ' '.join(''.join(unescape(part).split()) for part in parts)
+        return ' '.join(''.join(nodes.unescape(part).split())
+                        for part in parts)
 
 
 def nonnegative_int(argument):

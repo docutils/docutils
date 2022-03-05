@@ -8,7 +8,6 @@ This package contains Docutils Writer modules.
 
 __docformat__ = 'reStructuredText'
 
-import os.path
 from importlib import import_module
 
 import docutils

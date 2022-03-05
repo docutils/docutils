@@ -17,8 +17,8 @@ import os
 import re
 import time
 from docutils import nodes, utils, languages
-from docutils import ApplicationError, DataError
-from docutils.transforms import Transform, TransformError
+from docutils import DataError
+from docutils.transforms import Transform
 from docutils.transforms import parts, references, misc
 
 

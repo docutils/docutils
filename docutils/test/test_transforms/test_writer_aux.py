@@ -9,7 +9,7 @@ Test module for writer_aux transforms.
 """
 
 if __name__ == '__main__':
-    import __init__
+    import __init__  # noqa: F401
 from test_transforms import DocutilsTestSupport  # before importing docutils!
 from docutils.transforms import writer_aux
 from docutils.parsers.rst import Parser

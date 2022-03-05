@@ -12,7 +12,6 @@ import locale
 import sys
 import unittest
 
-import DocutilsTestSupport  # must be imported before docutils
 import docutils.core
 
 # determine/guess the encoding of the standard input:

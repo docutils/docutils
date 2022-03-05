@@ -13,7 +13,6 @@ from docutils import io, nodes, statemachine, utils
 from docutils.parsers.rst import Directive, convert_directive_function
 from docutils.parsers.rst import directives, roles, states
 from docutils.parsers.rst.directives.body import CodeBlock, NumberLines
-from docutils.parsers.rst.roles import set_classes
 from docutils.transforms import misc
 
 
@@ -521,11 +520,11 @@ class MetaBody(states.SpecializedBody):
 
     def parsemeta(self, match):
         name = self.parse_field_marker(match)
-        name = utils.unescape(utils.escape2null(name))
+        name = nodes.unescape(utils.escape2null(name))
         (indented, indent, line_offset, blank_finish
          ) = self.state_machine.get_first_known_indented(match.end())
         node = nodes.meta()
-        node['content'] = utils.unescape(utils.escape2null(
+        node['content'] = nodes.unescape(utils.escape2null(
                                             ' '.join(indented)))
         if not indented:
             line = self.state_machine.line

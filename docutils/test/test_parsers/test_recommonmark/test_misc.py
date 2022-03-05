@@ -15,10 +15,8 @@ Various tests for the recommonmark parser.
 
 import unittest
 
-if __name__ == '__main__':
-    import __init__
-from test_parsers import DocutilsTestSupport  # must be imported before docutils
-from docutils import core, utils, parsers
+from docutils import parsers
+from docutils.parsers import rst
 from docutils.core import publish_string
 
 # Import `docutils.parsers.recommonmark_wrapper` and
@@ -48,7 +46,7 @@ class RecommonmarkParserTests(unittest.TestCase):
     def test_parser_name(self):
         # cf. ../test_rst/test_directives/test__init__.py
         # this is used in the "include" directive's :parser: option.
-        self.assertEqual(parsers.rst.directives.parser_name('recommonmark'),
+        self.assertEqual(rst.directives.parser_name('recommonmark'),
                          parsers.recommonmark_wrapper.Parser)
 
     def test_raw_disabled(self):

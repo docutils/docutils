@@ -15,7 +15,6 @@
 # ::
 
 import sys
-import unicodedata
 
 """Docutils character category patterns.
 

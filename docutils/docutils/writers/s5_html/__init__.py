@@ -16,7 +16,6 @@ import re
 import docutils
 from docutils import frontend, nodes, utils
 from docutils.writers import html4css1
-from docutils.parsers.rst import directives
 
 themes_dir_path = utils.relative_path(
     os.path.join(os.getcwd(), 'dummy'),

@@ -30,8 +30,8 @@ import sys
 import unittest
 import warnings
 
-import DocutilsTestSupport              # must be imported before docutils
-from docutils import core, parsers, frontend, utils
+from docutils import frontend, utils
+import docutils.parsers.rst
 from docutils.utils.error_reporting import SafeString, ErrorString, ErrorOutput
 
 warnings.filterwarnings('ignore', category=DeprecationWarning,
@@ -238,10 +238,10 @@ class ErrorReportingTests(unittest.TestCase):
     # These tests fail with a 'problematic locale',
     # Docutils revision < 7035, and Python 2:
 
-    parser = parsers.rst.Parser()
+    parser = docutils.parsers.rst.Parser()
     """Parser shared by all ParserTestCases."""
 
-    option_parser = frontend.OptionParser(components=(parsers.rst.Parser,))
+    option_parser = frontend.OptionParser(components=(parser,))
     settings = option_parser.get_default_values()
     settings.report_level = 1
     settings.halt_level = 1

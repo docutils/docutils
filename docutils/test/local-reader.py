@@ -7,7 +7,6 @@
 mini-reader to test get_reader_class with local reader
 """
 
-import docutils
 from docutils import readers
 
 

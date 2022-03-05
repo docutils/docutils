@@ -9,7 +9,7 @@ Transforms for resolving references.
 __docformat__ = 'reStructuredText'
 
 from docutils import nodes, utils
-from docutils.transforms import TransformError, Transform
+from docutils.transforms import Transform
 
 
 class PropagateTargets(Transform):

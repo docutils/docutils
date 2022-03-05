@@ -9,10 +9,6 @@ Tests for basic functionality of parser classes.
 
 import unittest
 
-if __name__ == '__main__':
-    import __init__
-import DocutilsTestSupport              # must be imported before docutils
-import docutils
 from docutils import parsers, utils, frontend
 
 

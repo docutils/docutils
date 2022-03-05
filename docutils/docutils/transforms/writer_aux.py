@@ -16,7 +16,7 @@ __docformat__ = 'reStructuredText'
 
 import warnings
 
-from docutils import nodes, utils, languages
+from docutils import nodes, languages
 from docutils.transforms import Transform
 
 

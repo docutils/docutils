@@ -10,7 +10,7 @@ test get_parser_class
 """
 
 if __name__ == '__main__':
-    import __init__
+    import __init__  # noqa: F401
 from test_parsers import DocutilsTestSupport
 from docutils.parsers import get_parser_class
 

@@ -10,7 +10,7 @@ Tests for `docutils.transforms.parts.Contents` (via
 """
 
 if __name__ == '__main__':
-    import __init__
+    import __init__  # noqa: F401
 from test_transforms import DocutilsTestSupport
 from docutils.transforms.references import Substitutions
 from docutils.parsers.rst import Parser

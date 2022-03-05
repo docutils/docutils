@@ -15,9 +15,10 @@ import re
 import itertools
 import warnings
 import unicodedata
+
 from docutils import ApplicationError, DataError, __version_info__
 from docutils import io, nodes
-from docutils.nodes import unescape
+from docutils.nodes import unescape  # noqa: F401  backwards compatibility
 
 
 class SystemMessage(ApplicationError):
