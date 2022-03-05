@@ -69,7 +69,8 @@ class RecordDependenciesTests(unittest.TestCase):
         expected = [paths[key] for key in keys]
         # stylesheets are tested separately in test_stylesheet_dependencies():
         so = {'stylesheet_path': None, 'stylesheet': None}
-        record = sorted(self.get_record(writer_name='html', settings_overrides=so))
+        record = sorted(self.get_record(writer_name='html',
+                                        settings_overrides=so))
         # the order of the files is arbitrary
         expected.sort()
         self.assertEqual(record, expected)
@@ -83,8 +84,9 @@ class RecordDependenciesTests(unittest.TestCase):
         if PIL:
             keys += ['figure-image']
         expected = [paths[key] for key in keys]
-        record = sorted(self.get_record(writer_name='latex',
-                                        settings_overrides=latex_settings_overwrites))
+        record = sorted(self.get_record(
+                            writer_name='latex',
+                            settings_overrides=latex_settings_overwrites))
         # the order of the files is arbitrary
         expected.sort()
         self.assertEqual(record, expected)

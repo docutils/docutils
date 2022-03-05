@@ -207,11 +207,6 @@ class Builder:
         return settings
 
     def run(self, directory=None, recurse=1):
-        # if not self.initial_settings.silent:
-        #     errout = io.ErrorOutput(encoding=self.initial_settings.error_encoding)
-        #     errout.write('*** Using writer "%s"\n'
-        #                  % self.initial_settings.writer)
-        #     sys.stderr.flush()
         recurse = recurse and self.initial_settings.recurse
         if directory:
             self.directories = [directory]

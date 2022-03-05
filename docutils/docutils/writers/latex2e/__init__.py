@@ -522,7 +522,9 @@ PreambleCmds.table = r"""\usepackage{longtable,ltcaption,array}
 \setlength{\extrarowheight}{2pt}
 \newlength{\DUtablewidth} % internal use in tables"""
 
-PreambleCmds.table_columnwidth = r"""\newcommand{\DUcolumnwidth}[1]{\dimexpr#1\DUtablewidth-2\tabcolsep\relax}"""
+PreambleCmds.table_columnwidth = (
+    r'\newcommand{\DUcolumnwidth}[1]'
+    r'{\dimexpr#1\DUtablewidth-2\tabcolsep\relax}')
 
 PreambleCmds.textcomp = r"""\usepackage{textcomp} % text symbol macros"""
 # TODO? Options [force,almostfull] prevent spurious error messages,
@@ -936,7 +938,8 @@ class Table:
         # elif self.borders == 'standard':
         #     closing.append(r'\hline')
         closing.append(r'\end{%s}' % self.get_latex_type())
-        if self.get('align') and self.get_latex_type() not in ("longtable", "longtable*"):
+        if (self.get('align')
+            and self.get_latex_type() not in ("longtable", "longtable*")):
             closing.append('}')
         return '\n'.join(closing)
 
@@ -994,8 +997,8 @@ class Table:
         """Return columnwidth for current cell (not multicell)."""
         try:
             if self.legacy_column_widths:
-                return '%.2f\\DUtablewidth' % self._colwidths[self._cell_in_row]
-            return '\\DUcolumnwidth{%.2f}' % self._colwidths[self._cell_in_row]
+                return '%.2f\\DUtablewidth'%self._colwidths[self._cell_in_row]
+            return '\\DUcolumnwidth{%.2f}'%self._colwidths[self._cell_in_row]
         except IndexError:
             return '*'
 
@@ -1348,8 +1351,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if self.hyperlink_color in ('0', 'false', 'False', ''):
             self.hyperref_options = ''
         else:
-            self.hyperref_options = 'colorlinks=true,linkcolor=%s,urlcolor=%s' % (
-                                      self.hyperlink_color, self.hyperlink_color)
+            self.hyperref_options = ('colorlinks=true,'
+                                     f'linkcolor={self.hyperlink_color},'
+                                     f'urlcolor={self.hyperlink_color}')
         if settings.hyperref_options:
             self.hyperref_options += ',' + settings.hyperref_options
 
@@ -1432,7 +1436,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         tr = {'iso-8859-1': 'latin1',     # west european
               'iso-8859-2': 'latin2',     # east european
               'iso-8859-3': 'latin3',     # esperanto, maltese
-              'iso-8859-4': 'latin4',     # north european, scandinavian, baltic
+              'iso-8859-4': 'latin4',     # north european
               'iso-8859-5': 'iso88595',   # cyrillic (ISO)
               'iso-8859-9': 'latin5',     # turkish
               'iso-8859-15': 'latin9',    # latin9, update to latin1.
@@ -1460,7 +1464,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         encoding = docutils_encoding.lower()
         if encoding in tr:
             return tr[encoding]
-        # drop hyphen or low-line from "latin-1", "latin_1", "utf-8" and similar
+        # drop hyphen or low-line from "latin_1", "utf-8" and similar
         encoding = encoding.replace('_', '').replace('-', '')
         # strip the error handler
         return encoding.split(':')[0]
@@ -1507,7 +1511,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             # quick-and-dirty replacement with spaces
             # (for better results use `--literal-block-env=lstlisting`)
             table[ord('\t')] = '~' * self.settings.tab_width
-        # Unicode replacements for 8-bit tex engines (not required with XeTeX/LuaTeX):
+        # Unicode replacements for 8-bit tex engines (not required with XeTeX)
         if not self.is_xetex:
             if not self.latex_encoding.startswith('utf8'):
                 table.update(CharMaps.unsupported_unicode)
@@ -1712,7 +1716,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.fallbacks['admonition'] = PreambleCmds.admonition_legacy
             if 'error' in node['classes']:
                 self.fallbacks['error'] = PreambleCmds.error_legacy
-            self.out.append('\n\\DUadmonition[%s]{' % ','.join(node['classes']))
+            self.out.append('\n\\DUadmonition[%s]{'%','.join(node['classes']))
             return
         if not self.fallback_stylesheet:
             self.fallbacks['admonition'] = PreambleCmds.admonition
@@ -2914,7 +2918,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if isinstance(node.parent, nodes.document):
             self.push_output_collector(self.subtitle)
             if not self.fallback_stylesheet:
-                self.fallbacks['documentsubtitle'] = PreambleCmds.documentsubtitle
+                self.fallbacks['documentsubtitle'] = PreambleCmds.documentsubtitle  # noqa:E501
             protect = (self.settings.documentclass == 'memoir')
             self.subtitle_labels += self.ids_to_labels(node, set_anchor=False,
                                                        protect=protect)

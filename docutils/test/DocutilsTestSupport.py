@@ -749,10 +749,10 @@ class HtmlWriterPublishPartsTestCase(WriterPublishTestCase):
         standard_content_type_template
         + standard_generator_template % docutils.__version__)
     standard_meta_value = standard_html_meta_value % 'utf-8'
-    standard_html_prolog = """\
-<?xml version="1.0" encoding="%s" ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-"""
+    standard_html_prolog = (
+        '<?xml version="1.0" encoding="%s" ?>\n'
+        '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" '
+        '"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">\n')
 
     def format_output(self, parts):
         """Minimize & standardize the output."""

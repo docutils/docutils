@@ -16,13 +16,13 @@ import time
 # and setup outside of unittest.
 start = time.time()
 
-import sys                              # noqa: E402
-import atexit                           # noqa: E402
-import os                               # noqa: E402
-import platform                         # noqa: E402
+import sys                  # noqa: E402
+import atexit               # noqa: E402
+import os                   # noqa: E402
+import platform             # noqa: E402
 
-import DocutilsTestSupport              # noqa: E402 must be imported before docutils
-import docutils                         # noqa: E402
+import DocutilsTestSupport  # noqa: E402 must be imported before docutils
+import docutils             # noqa: E402
 
 
 class Tee:

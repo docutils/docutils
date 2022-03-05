@@ -360,26 +360,27 @@ example, ``"1"`` is equivalent to ``"qBde"``.
 
 :d:     Educates em-dashes.
 
-:D:     Educates em-dashes and en-dashes, using old-school typewriter shorthand:
-        (dash dash) for en-dashes, (dash dash dash) for em-dashes.
+:D:     Educates em-dashes and en-dashes, using old-school typewriter
+        shorthand: (dash dash) for en-dashes, (dash dash dash) for em-dashes.
 
 :i:     Educates em-dashes and en-dashes, using inverted old-school typewriter
         shorthand: (dash dash) for em-dashes, (dash dash dash) for en-dashes.
 
 :e:     Educates ellipses.
 
-:w:     Translates any instance of ``&quot;`` into a normal double-quote character.
-        This should be of no interest to most people, but of particular interest
-        to anyone who writes their posts using Dreamweaver, as Dreamweaver
-        inexplicably uses this entity to represent a literal double-quote
-        character. SmartyPants only educates normal quotes, not entities (because
-        ordinarily, entities are used for the explicit purpose of representing the
-        specific character they represent). The "w" option must be used in
-        conjunction with one (or both) of the other quote options ("q" or "b").
-        Thus, if you wish to apply all SmartyPants transformations (quotes, en-
-        and em-dashes, and ellipses) and also translate ``&quot;`` entities into
-        regular quotes so SmartyPants can educate them, you should pass the
-        following to the smarty_pants attribute:
+:w:     Translates any instance of ``&quot;`` into a normal double-quote
+        character. This should be of no interest to most people, but
+        of particular interest to anyone who writes their posts using
+        Dreamweaver, as Dreamweaver inexplicably uses this entity to represent
+        a literal double-quote character. SmartyPants only educates normal
+        quotes, not entities (because ordinarily, entities are used for
+        the explicit purpose of representing the specific character they
+        represent). The "w" option must be used in conjunction with one (or
+        both) of the other quote options ("q" or "b"). Thus, if you wish to
+        apply all SmartyPants transformations (quotes, en- and em-dashes, and
+        ellipses) and also translate ``&quot;`` entities into regular quotes
+        so SmartyPants can educate them, you should pass the following to the
+        smarty_pants attribute:
 """
 
 
@@ -392,104 +393,105 @@ class smartchars:
     apostrophe = '’'  # "&#8217;" RIGHT SINGLE QUOTATION MARK
 
     # quote characters (language-specific, set in __init__())
-    # [1] https://en.wikipedia.org/wiki/Non-English_usage_of_quotation_marks
-    # [2] http://de.wikipedia.org/wiki/Anf%C3%BChrungszeichen#Andere_Sprachen
-    # [3] https://fr.wikipedia.org/wiki/Guillemet
-    # [4] http://typographisme.net/post/Les-espaces-typographiques-et-le-web
-    # [5] http://www.btb.termiumplus.gc.ca/tpv2guides/guides/redac/index-fra.html
-    # [6] https://en.wikipedia.org/wiki/Hebrew_punctuation#Quotation_marks
+    # https://en.wikipedia.org/wiki/Non-English_usage_of_quotation_marks
+    # http://de.wikipedia.org/wiki/Anf%C3%BChrungszeichen#Andere_Sprachen
+    # https://fr.wikipedia.org/wiki/Guillemet
+    # http://typographisme.net/post/Les-espaces-typographiques-et-le-web
+    # http://www.btb.termiumplus.gc.ca/tpv2guides/guides/redac/index-fra.html
+    # https://en.wikipedia.org/wiki/Hebrew_punctuation#Quotation_marks
     # [7] http://www.tustep.uni-tuebingen.de/bi/bi00/bi001t1-anfuehrung.pdf
     # [8] http://www.korrekturavdelingen.no/anforselstegn.htm
     # [9] Typografisk håndbok. Oslo: Spartacus. 2000. s. 67. ISBN 8243001530.
     # [10] http://www.typografi.org/sitat/sitatart.html
     #
     # See also configuration option "smartquote-locales".
-    quotes = {'af':           '“”‘’',
-              'af-x-altquot': '„”‚’',
-              'bg':           '„“‚‘',  # https://bg.wikipedia.org/wiki/Кавички
-              'ca':           '«»“”',
-              'ca-x-altquot': '“”‘’',
-              'cs':           '„“‚‘',
-              'cs-x-altquot': '»«›‹',
-              'da':           '»«›‹',
-              'da-x-altquot': '„“‚‘',
-              # 'da-x-altquot2': '””’’',
-              'de':           '„“‚‘',
-              'de-x-altquot': '»«›‹',
-              'de-ch':        '«»‹›',
-              'el':           '«»“”',
-              'en':           '“”‘’',
-              'en-uk-x-altquot': '‘’“”',  # Attention: " → ‘ and ' → “ !
-              'eo':           '“”‘’',
-              'es':           '«»“”',
-              'es-x-altquot': '“”‘’',
-              'et':           '„“‚‘',  # no secondary quote listed in
-              'et-x-altquot': '«»‹›',  # the sources above (wikipedia.org)
-              'eu':           '«»‹›',
-              'fi':           '””’’',
-              'fi-x-altquot': '»»››',
-              'fr':           ('« ', ' »', '“', '”'),  # full no-break space
-              'fr-x-altquot': ('« ', ' »', '“', '”'),  # narrow no-break space
-              'fr-ch':        '«»‹›',                  # http://typoguide.ch/
-              'fr-ch-x-altquot': ('« ',  ' »', '‹ ', ' ›'),  # narrow no-break space
-              'gl':           '«»“”',
-              'he':           '”“»«',  # Hebrew is RTL, test position:
-              'he-x-altquot': '„”‚’',  # low quotation marks are opening.
-              # 'he-x-altquot': '“„‘‚',  # RTL: low quotation marks opening
-              'hr':           '„”‘’',  # http://hrvatska-tipografija.com/polunavodnici/
-              'hr-x-altquot': '»«›‹',
-              'hsb':          '„“‚‘',
-              'hsb-x-altquot': '»«›‹',
-              'hu':           '„”«»',
-              'is':           '„“‚‘',
-              'it':           '«»“”',
-              'it-ch':        '«»‹›',
-              'it-x-altquot': '“”‘’',
-              # 'it-x-altquot2': '“„‘‚',  # [7] in headlines
-              'ja':           '「」『』',
-              'ko':           '“”‘’',
-              'lt':           '„“‚‘',
-              'lv':           '„“‚‘',
-              'mk':           '„“‚‘',  # Macedonian, https://mk.wikipedia.org/wiki/Правопис_и_правоговор_на_македонскиот_јазик
-              'nl':           '“”‘’',
-              'nl-x-altquot': '„”‚’',
-              # 'nl-x-altquot2': '””’’',
-              'nb':           '«»’’',  # Norsk bokmål (canonical form 'no')
-              'nn':           '«»’’',  # Nynorsk [10]
-              'nn-x-altquot': '«»‘’',  # [8], [10]
-              # 'nn-x-altquot2': '«»«»',  # [9], [10
-              # 'nn-x-altquot3': '„“‚‘',  # [10]
-              'no':           '«»’’',  # Norsk bokmål [10]
-              'no-x-altquot': '«»‘’',  # [8], [10]
-              # 'no-x-altquot2': '«»«»',  # [9], [10
-              # 'no-x-altquot3': '„“‚‘',  # [10]
-              'pl':           '„”«»',
-              'pl-x-altquot': '«»‚’',
-              # 'pl-x-altquot2': '„”‚’',  # https://pl.wikipedia.org/wiki/Cudzys%C5%82%C3%B3w
-              'pt':           '«»“”',
-              'pt-br':        '“”‘’',
-              'ro':           '„”«»',
-              'ru':           '«»„“',
-              'sh':           '„”‚’',  # Serbo-Croatian
-              'sh-x-altquot': '»«›‹',
-              'sk':           '„“‚‘',  # Slovak
-              'sk-x-altquot': '»«›‹',
-              'sl':           '„“‚‘',  # Slovenian
-              'sl-x-altquot': '»«›‹',
-              'sq':           '«»‹›',  # Albanian
-              'sq-x-altquot': '“„‘‚',
-              'sr':           '„”’’',
-              'sr-x-altquot': '»«›‹',
-              'sv':           '””’’',
-              'sv-x-altquot': '»»››',
-              'tr':           '“”‘’',
-              'tr-x-altquot': '«»‹›',
-              # 'tr-x-altquot2': '“„‘‚',  # [7] antiquated?
-              'uk':           '«»„“',
-              'uk-x-altquot': '„“‚‘',
-              'zh-cn':        '“”‘’',
-              'zh-tw':        '「」『』',
-              }
+    quotes = {
+        'af':           '“”‘’',
+        'af-x-altquot': '„”‚’',
+        'bg':           '„“‚‘',  # https://bg.wikipedia.org/wiki/Кавички
+        'ca':           '«»“”',
+        'ca-x-altquot': '“”‘’',
+        'cs':           '„“‚‘',
+        'cs-x-altquot': '»«›‹',
+        'da':           '»«›‹',
+        'da-x-altquot': '„“‚‘',
+        # 'da-x-altquot2': '””’’',
+        'de':           '„“‚‘',
+        'de-x-altquot': '»«›‹',
+        'de-ch':        '«»‹›',
+        'el':           '«»“”',
+        'en':           '“”‘’',
+        'en-uk-x-altquot': '‘’“”',  # Attention: " → ‘ and ' → “ !
+        'eo':           '“”‘’',
+        'es':           '«»“”',
+        'es-x-altquot': '“”‘’',
+        'et':           '„“‚‘',  # no secondary quote listed in
+        'et-x-altquot': '«»‹›',  # the sources above (wikipedia.org)
+        'eu':           '«»‹›',
+        'fi':           '””’’',
+        'fi-x-altquot': '»»››',
+        'fr':           ('« ', ' »', '“', '”'),  # full no-break space
+        'fr-x-altquot': ('« ', ' »', '“', '”'),  # narrow no-break space
+        'fr-ch':        '«»‹›',                  # http://typoguide.ch/
+        'fr-ch-x-altquot': ('« ',  ' »', '‹ ', ' ›'),  # narrow no-break space  # noqa:E501
+        'gl':           '«»“”',
+        'he':           '”“»«',  # Hebrew is RTL, test position:
+        'he-x-altquot': '„”‚’',  # low quotation marks are opening.
+        # 'he-x-altquot': '“„‘‚',  # RTL: low quotation marks opening
+        'hr':           '„”‘’',  # http://hrvatska-tipografija.com/polunavodnici/  # noqa:E501
+        'hr-x-altquot': '»«›‹',
+        'hsb':          '„“‚‘',
+        'hsb-x-altquot': '»«›‹',
+        'hu':           '„”«»',
+        'is':           '„“‚‘',
+        'it':           '«»“”',
+        'it-ch':        '«»‹›',
+        'it-x-altquot': '“”‘’',
+        # 'it-x-altquot2': '“„‘‚',  # [7] in headlines
+        'ja':           '「」『』',
+        'ko':           '“”‘’',
+        'lt':           '„“‚‘',
+        'lv':           '„“‚‘',
+        'mk':           '„“‚‘',  # Macedonian, https://mk.wikipedia.org/wiki/Правопис_и_правоговор_на_македонскиот_јазик  # noqa:E501
+        'nl':           '“”‘’',
+        'nl-x-altquot': '„”‚’',
+        # 'nl-x-altquot2': '””’’',
+        'nb':           '«»’’',     # Norsk bokmål (canonical form 'no')
+        'nn':           '«»’’',     # Nynorsk [10]
+        'nn-x-altquot': '«»‘’',     # [8], [10]
+        # 'nn-x-altquot2': '«»«»',  # [9], [10]
+        # 'nn-x-altquot3': '„“‚‘',  # [10]
+        'no':           '«»’’',     # Norsk bokmål [10]
+        'no-x-altquot': '«»‘’',     # [8], [10]
+        # 'no-x-altquot2': '«»«»',  # [9], [10
+        # 'no-x-altquot3': '„“‚‘',  # [10]
+        'pl':           '„”«»',
+        'pl-x-altquot': '«»‚’',
+        # 'pl-x-altquot2': '„”‚’',  # https://pl.wikipedia.org/wiki/Cudzys%C5%82%C3%B3w  # noqa:E501
+        'pt':           '«»“”',
+        'pt-br':        '“”‘’',
+        'ro':           '„”«»',
+        'ru':           '«»„“',
+        'sh':           '„”‚’',  # Serbo-Croatian
+        'sh-x-altquot': '»«›‹',
+        'sk':           '„“‚‘',  # Slovak
+        'sk-x-altquot': '»«›‹',
+        'sl':           '„“‚‘',  # Slovenian
+        'sl-x-altquot': '»«›‹',
+        'sq':           '«»‹›',  # Albanian
+        'sq-x-altquot': '“„‘‚',
+        'sr':           '„”’’',
+        'sr-x-altquot': '»«›‹',
+        'sv':           '””’’',
+        'sv-x-altquot': '»»››',
+        'tr':           '“”‘’',
+        'tr-x-altquot': '«»‹›',
+        # 'tr-x-altquot2': '“„‘‚',  # [7] antiquated?
+        'uk':           '«»„“',
+        'uk-x-altquot': '„“‚‘',
+        'zh-cn':        '“”‘’',
+        'zh-tw':        '「」『』',
+        }
 
     def __init__(self, language='en'):
         self.language = language
@@ -696,8 +698,8 @@ def educateQuotes(text, language='en'):
                       %(open)s    |  # zero width separating char, or
                       %(dash)s       # em/en-dash
                     )
-                    "                 # the quote
-                    (?=\\w|%(punct)s) # followed by a word character or punctuation
+                    "                 # the quote, followed by
+                    (?=\\w|%(punct)s) # a word character or punctuation
                     """ % ch_classes, re.VERBOSE)
 
     text = opening_primary_quotes_regex.sub(r'\1'+smart.opquote, text)
@@ -968,7 +970,8 @@ if __name__ == "__main__":
                 self.assertEqual(smartyPants("'60s"), "’60s")
 
             def test_educated_quotes(self):
-                self.assertEqual(smartyPants('"Isn\'t this fun?"'), '“Isn’t this fun?”')
+                self.assertEqual(smartyPants('"Isn\'t this fun?"'),
+                                 '“Isn’t this fun?”')
 
             def test_html_tags(self):
                 text = '<a src="foo">more</a>'

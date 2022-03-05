@@ -3,9 +3,9 @@
 # Copyright: This module has been placed in the public domain.
 
 # New language mappings are welcome.  Before doing a new translation, please
-# read <https://docutils.sourceforge.io/docs/howto/i18n.html>.  Two files must be
-# translated for each language: one in docutils/languages, the other in
-# docutils/parsers/rst/languages.
+# read <https://docutils.sourceforge.io/docs/howto/i18n.html>.
+# Two files must be translated for each language: one in docutils/languages,
+# the other in docutils/parsers/rst/languages.
 
 """
 Czech-language mappings for language-dependent features of
@@ -18,7 +18,8 @@ __docformat__ = 'reStructuredText'
 directives = {
       # language-dependent: fixed
       'pozor': 'attention',
-      'caution (translation required)': 'caution',  # jak rozlisit caution a warning?
+      # jak rozlisit caution a warning?
+      'caution (translation required)': 'caution',
       'code (translation required)': 'code',
       'nebezpe\u010D\u00ED': 'danger',
       'chyba': 'error',

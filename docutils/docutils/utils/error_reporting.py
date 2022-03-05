@@ -65,7 +65,6 @@ else:
         locale_encoding = locale.getlocale()[1] or locale.getdefaultlocale()[1]
         # locale.getpreferredencoding([do_setlocale=True|False])
         # has side-effects | might return a wrong guess.
-        # (cf. Update 1 in http://stackoverflow.com/questions/4082645/using-python-2-xs-locale-module-to-format-numbers-and-currency)
     except ValueError as error: # OS X may set UTF-8 without language code
         # see http://bugs.python.org/issue18378
         # and https://sourceforge.net/p/docutils/bugs/298/

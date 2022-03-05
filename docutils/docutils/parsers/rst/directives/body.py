@@ -38,7 +38,8 @@ class BasePseudoSection(Directive):
         self.assert_has_content()
         if self.arguments:  # title (in sidebars optional)
             title_text = self.arguments[0]
-            textnodes, messages = self.state.inline_text(title_text, self.lineno)
+            textnodes, messages = self.state.inline_text(
+                                      title_text, self.lineno)
             titles = [nodes.title(title_text, '', *textnodes)]
             # Sidebar uses this code.
             if 'subtitle' in self.options:

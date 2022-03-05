@@ -511,7 +511,8 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
                               'default': 5, 'metavar': '<level>',
                               'validator': validate_threshold}),
          ('Enable debug-level system messages and diagnostics.',
-          ['--debug'], {'action': 'store_true', 'validator': validate_boolean}),
+          ['--debug'], {'action': 'store_true',
+                        'validator': validate_boolean}),
          ('Disable debug output.  (default)',
           ['--no-debug'], {'action': 'store_false', 'dest': 'debug'}),
          ('Send the output of system messages to <file>.',
@@ -587,7 +588,7 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
                          '_source': None,
                          '_destination': None,
                          '_config_files': None}
-    """Defaults for settings that don't have command-line option equivalents."""
+    """Defaults for settings without command-line option equivalents."""
 
     relative_path_settings = ('warning_stream',)
 
@@ -633,8 +634,9 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
             self.defaults.update(config_settings.__dict__)
 
     def populate_from_components(self, components):
-        """
-        For each component, first populate from the `SettingsSpec.settings_spec`
+        """Collect settings specification from components.
+
+        For each component, populate from the `SettingsSpec.settings_spec`
         structure, then from the `SettingsSpec.settings_defaults` dictionary.
         After all components have been processed, check for and populate from
         each component's `SettingsSpec.settings_default_overrides` dictionary.
@@ -771,12 +773,12 @@ class ConfigParser(configparser.RawConfigParser):
     `handle_old_config`, to convert settings from the old [options] section.
     """
 
-    old_warning = """
-The "[option]" section is deprecated.  Support for old-format configuration
-files will be removed in Docutils 0.21 or later.  Please revise your
-configuration files.  See <https://docutils.sourceforge.io/docs/user/config.html>,
-section "Old-Format Configuration Files".
-"""
+    old_warning = (
+        'The "[option]" section is deprecated.\n'
+        'Support for old-format configuration files will be removed in '
+        'Docutils 0.21 or later.  Please revise your configuration files.  '
+        'See <https://docutils.sourceforge.io/docs/user/config.html>, '
+        'section "Old-Format Configuration Files".')
 
     not_utf8_error = """\
 Unable to read configuration file "%s": content not encoded as UTF-8.

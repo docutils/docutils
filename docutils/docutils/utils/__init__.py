@@ -167,7 +167,7 @@ class Reporter:
                 attributes.setdefault('source', source)
             if line is not None:
                 attributes.setdefault('line', line)
-                # assert source is not None, "node has line- but no source-argument"
+                # assert source is not None, "line- but no source-argument"
         if 'source' not in attributes:
             # 'line' is absolute line number
             try:

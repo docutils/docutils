@@ -74,7 +74,8 @@ class LanguageImporter:
             if self.fallback:
                 module = self.import_from_packages(self.fallback)
         if reporter and (language_code != 'en'):
-            reporter.info('Using %s for language "%s".'%(module, language_code))
+            reporter.info('Using %s for language "%s".'
+                          % (module, language_code))
         self.cache[language_code] = module
         return module
 

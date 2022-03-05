@@ -3,9 +3,9 @@
 # Copyright: This module has been placed in the public domain.
 
 # New language mappings are welcome.  Before doing a new translation, please
-# read <https://docutils.sourceforge.io/docs/howto/i18n.html>.  Two files must be
-# translated for each language: one in docutils/languages, the other in
-# docutils/parsers/rst/languages.
+# read <https://docutils.sourceforge.io/docs/howto/i18n.html>.
+# Two files must be translated for each language: one in docutils/languages,
+# the other in docutils/parsers/rst/languages.
 
 """
 English-language mappings for language-dependent features of Docutils.
@@ -112,7 +112,8 @@ directives = {
       # 'dummy-footnotes': 'footnotes',
       # 'dummy-citations': 'citations',
       'dummy-target-notes': 'target-notes',
-      'dummy-restructuredtext-test-directive': 'restructuredtext-test-directive'}
+      'dummy-restructuredtext-test-directive': 'restructuredtext-test-directive',  # noqa: E501
+      }
 """English name to registered (in directives/__init__.py) directive name
 mapping."""
 

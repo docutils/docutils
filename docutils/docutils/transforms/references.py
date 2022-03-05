@@ -827,7 +827,8 @@ class TargetNotes(Transform):
             reflist = [refnode]
             if not utils.get_trim_footnote_ref_space(self.document.settings):
                 if self.classes:
-                    reflist.insert(0, nodes.inline(text=' ', Classes=self.classes))
+                    reflist.insert(
+                        0, nodes.inline(text=' ', Classes=self.classes))
                 else:
                     reflist.insert(0, nodes.Text(' '))
             ref.parent.insert(index, reflist)

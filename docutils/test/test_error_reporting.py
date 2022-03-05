@@ -75,7 +75,10 @@ class SafeStringTests(unittest.TestCase):
         self.assertEqual(self.us, str(self.wue))
 
     def test_str(self):
-        """Test conversion to a string (bytes in Python 2, unicode in Python 3)."""
+        """Test conversion to a string
+
+        (bytes in Python 2, unicode in Python 3).
+        """
         self.assertEqual(str(self.bs), str(self.wbs))
         self.assertEqual(str(self.be), str(self.wbe))
         self.assertEqual(str(self.us), str(self.wus))
@@ -151,7 +154,7 @@ class ErrorOutputTests(unittest.TestCase):
         # decode of binary strings
         e = ErrorOutput(buf, encoding='ascii')
         e.write(b'b\xfc')
-        self.assertEqual(buf.getvalue(), u'b\ufffd') # use REPLACEMENT CHARACTER
+        self.assertEqual(buf.getvalue(), u'b\ufffd') # REPLACEMENT CHARACTER
         # write Unicode string and Exceptions with Unicode args
         e.write(u' u\xfc')
         self.assertEqual(buf.getvalue(), u'b\ufffd u\xfc')
@@ -214,7 +217,10 @@ class SafeStringTests_locale(unittest.TestCase):
         self.assertEqual(str, type(str(self.wuose)))
 
     def test_str(self):
-        """Test conversion to a string (bytes in Python 2, unicode in Python 3)."""
+        """Test conversion to a string
+
+        (bytes in Python 2, unicode in Python 3).
+        """
         self.assertEqual(str(self.bioe), str(self.wbioe))
         self.assertEqual(str(self.uioe), str(self.wuioe))
         self.assertEqual(str(self.bose), str(self.wbose))

@@ -102,7 +102,8 @@ def loadTestModules(path, name='', packages=None):
         try:
             module = import_module(mod)
         except ImportError:
-            print("ERROR: Can't import %s, skipping its tests:" % mod, file=sys.stderr)
+            print(f"ERROR: Can't import {mod}, skipping its tests:",
+                  file=sys.stderr)
             sys.excepthook(*sys.exc_info())
         else:
             # if there's a suite defined, incorporate its contents

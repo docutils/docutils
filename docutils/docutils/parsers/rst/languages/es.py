@@ -3,9 +3,9 @@
 # Copyright: This module has been placed in the public domain.
 
 # New language mappings are welcome.  Before doing a new translation, please
-# read <https://docutils.sourceforge.io/docs/howto/i18n.html>.  Two files must be
-# translated for each language: one in docutils/languages, the other in
-# docutils/parsers/rst/languages.
+# read <https://docutils.sourceforge.io/docs/howto/i18n.html>.
+# Two files must be translated for each language: one in docutils/languages,
+# the other in docutils/parsers/rst/languages.
 
 """
 Spanish-language mappings for language-dependent features of
@@ -102,7 +102,7 @@ roles = {
     'enfasis': 'emphasis',
     '\u00e9nfasis': 'emphasis',
     'destacado': 'strong',
-    'literal': 'literal',              # "literal" is also a word in Spanish :-)
+    'literal': 'literal',  # "literal" is also a word in Spanish :-)
     'math (translation required)': 'math',
     'referencia-con-nombre': 'named-reference',
     'referencia-anonima': 'anonymous-reference',

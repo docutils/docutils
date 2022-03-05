@@ -218,7 +218,7 @@ class Translator(nodes.NodeVisitor):
         # Hopefully ``C`` courier too.
         self.defs = {
                 'indent': ('.INDENT %.1f\n', '.UNINDENT\n'),
-                'definition_list_item': ('.TP', ''),  # paragraph with hanging tag
+                'definition_list_item': ('.TP', ''),  # par. with hanging tag
                 'field_name': ('.TP\n.B ', '\n'),
                 'literal': ('\\fB', '\\fP'),
                 'literal_block': ('.sp\n.nf\n.ft C\n', '\n.ft P\n.fi\n'),
@@ -271,7 +271,8 @@ class Translator(nodes.NodeVisitor):
                       and self.body[i - 2][:4] == '.TP\n'):
                     self.body[i] = '.\n'
                 elif (self.body[i - 1] == '\n'
-                      and not self.possibly_a_roff_command.match(self.body[i - 2])
+                      and not self.possibly_a_roff_command.match(
+                                  self.body[i - 2])
                       and (self.body[i - 3][:7] == '.TP\n.B '
                            or self.body[i - 3][:4] == '\n.B ')
                       ):
@@ -625,8 +626,8 @@ class Translator(nodes.NodeVisitor):
     def visit_entry(self, node):
         # a cell in a table row
         if 'morerows' in node:
-            self.document.reporter.warning('"table row spanning" not supported',
-                                           base_node=node)
+            self.document.reporter.warning(
+                '"table row spanning" not supported', base_node=node)
         if 'morecols' in node:
             self.document.reporter.warning(
                 '"table cell spanning" not supported', base_node=node)
@@ -900,8 +901,8 @@ class Translator(nodes.NodeVisitor):
         # options without parameter bold only, .B, -v
         # options with parameter bold italic, .BI, -f file
         #
-        # we do not know if .B or .BI
-        self.context.append('.B ')           # blind guess. Add blank for sphinx see docutils/bugs/380
+        # we do not know if .B or .BI, blind guess:
+        self.context.append('.B ')  # Add blank for sphinx (docutils/bugs/380)
         self.context.append(len(self.body))  # to be able to insert later
         self.context.append(0)               # option counter
 
@@ -1033,8 +1034,8 @@ class Translator(nodes.NodeVisitor):
         raise nodes.SkipNode
 
     def visit_substitution_reference(self, node):
-        self.document.reporter.warning('"substitution_reference" not supported',
-                                       base_node=node)
+        self.document.reporter.warning(
+            '"substitution_reference" not supported', base_node=node)
 
     def visit_subtitle(self, node):
         if isinstance(node.parent, nodes.sidebar):
@@ -1123,7 +1124,7 @@ class Translator(nodes.NodeVisitor):
             self._docinfo['title_upper'] = node.astext().upper()
             raise nodes.SkipNode
         elif self.section_level == 1:
-            self.body.append('.SH %s\n' % self.deunicode(node.astext().upper()))
+            self.body.append('.SH %s\n'%self.deunicode(node.astext().upper()))
             raise nodes.SkipNode
         else:
             self.body.append('.SS ')

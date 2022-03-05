@@ -187,7 +187,7 @@ class ElementTests(unittest.TestCase):
         self.assertEqual(element1['ids'], ['foo', 'bar', 'baz', 'qux'])
         # 'parent_only' should remain unaffected.
         self.assertEqual(element1['parent_only'], 'parent')
-        # 'all_nodes' is overwritten due to the second parameter default of True.
+        # 'all_nodes' is overwritten due to the second parameter default True.
         self.assertEqual(element1['all_nodes'], 'dad')
         # 'child_only' should have been added.
         self.assertEqual(element1['child_only'], 'child')
@@ -507,7 +507,8 @@ class MiscTests(unittest.TestCase):
             if expect != output:
                 failures.append("'%s' != '%s'" % (expect, output))
         if failures:
-            self.fail("%d failures in %d\n%s" % (len(failures), len(self.ids), "\n".join(failures)))
+            self.fail(f'{len(failures)} failures in {len(self.ids)} ids\n'
+                      + "\n".join(failures))
 
     def test_findall(self):
         e = nodes.Element()

@@ -4,9 +4,9 @@
 # Copyright: This module has been placed in the public domain.
 
 # New language mappings are welcome.  Before doing a new translation, please
-# read <https://docutils.sourceforge.io/docs/howto/i18n.html>.  Two files must be
-# translated for each language: one in docutils/languages, the other in
-# docutils/parsers/rst/languages.
+# read <https://docutils.sourceforge.io/docs/howto/i18n.html>.
+# Two files must be translated for each language: one in docutils/languages,
+# the other in docutils/parsers/rst/languages.
 
 """
 German-language mappings for language-dependent features of
@@ -38,7 +38,8 @@ directives = {
       'epigraph': 'epigraph',
       'highlights': 'highlights',
       'pull-quote': 'pull-quote',  # commonly used in German too
-      'seitenansprache': 'pull-quote',  # cf. http://www.typografie.info/2/wiki.php?title=Seitenansprache
+      'seitenansprache': 'pull-quote',
+      # cf. http://www.typografie.info/2/wiki.php?title=Seitenansprache
       'zusammengesetzt': 'compound',
       'verbund': 'compound',
       'container': 'container',

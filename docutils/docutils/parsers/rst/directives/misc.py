@@ -323,8 +323,8 @@ class Replace(Directive):
             else:
                 return [
                     self.reporter.error(
-                        'Error in "%s" directive: may contain a single paragraph '
-                        'only.' % self.name, line=self.lineno)]
+                        f'Error in "{self.name}" directive: may contain '
+                        'a single paragraph only.', line=self.lineno)]
         if node:
             return messages + node.children
         return messages
@@ -631,24 +631,3 @@ class TestDirective(Directive):
                 'content: None' % (self.name, self.arguments, self.options),
                 line=self.lineno)
         return [info]
-
-# Old-style, functional definition:
-#
-# def directive_test_function(name, arguments, options, content, lineno,
-#                             content_offset, block_text, state, state_machine):
-#     """This directive is useful only for testing purposes."""
-#     if content:
-#         text = '\n'.join(content)
-#         info = reporter.info(
-#             'Directive processed. Type="%s", arguments=%r, options=%r, '
-#             'content:' % (name, arguments, options),
-#             nodes.literal_block(text, text), line=lineno)
-#     else:
-#         info = reporter.info(
-#             'Directive processed. Type="%s", arguments=%r, options=%r, '
-#             'content: None' % (name, arguments, options), line=lineno)
-#     return [info]
-#
-# directive_test_function.arguments = (0, 1, 1)
-# directive_test_function.options = {'option': directives.unchanged_required}
-# directive_test_function.content = 1
