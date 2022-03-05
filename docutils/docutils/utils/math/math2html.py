@@ -1394,7 +1394,6 @@ class Container:
 
   def extracttext(self):
     "Extract all text from allowed containers."
-    result = ''
     constants = ContainerExtractor(ContainerConfig.extracttext).extract(self)
     return ''.join(constant.string for constant in constants)
 

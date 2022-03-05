@@ -182,9 +182,7 @@ class LanguageTestCase(DocutilsTestSupport.CustomTestCase):
         failures = []
         for d in module.roles.values():
             try:
-                method = roles._role_registry[d]
-                # if not method:
-                #     failures.append('"%s": unknown role' % d)
+                roles._role_registry[d]
             except KeyError as error:
                 failures.append('"%s": %s' % (d, error))
         inverted = self._invert(module.roles)

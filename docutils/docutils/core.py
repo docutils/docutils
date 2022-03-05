@@ -475,7 +475,7 @@ def publish_doctree(source, source_path=None,
         settings_spec, settings_overrides, config_section)
     pub.set_source(source, source_path)
     pub.set_destination(None, None)
-    output = pub.publish(enable_exit_status=enable_exit_status)
+    pub.publish(enable_exit_status=enable_exit_status)
     return pub.document
 
 

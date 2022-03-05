@@ -18,7 +18,7 @@ from docutils.writers import get_writer_class
 class GetWriterClassTestCase(DocutilsTestSupport.StandardTestCase):
 
     def test_registered_writer(self):
-        wr = get_writer_class('manpage')
+        get_writer_class('manpage')
         # raises ImportError on failure
 
     def test_bogus_writer(self):
@@ -27,7 +27,8 @@ class GetWriterClassTestCase(DocutilsTestSupport.StandardTestCase):
 
     def test_local_writer(self):
         # requires local-writer.py in test directory (testroot)
-        wr = get_writer_class('local-writer')
+        get_writer_class('local-writer')
+        # raises ImportError on failure
 
 
 if __name__ == '__main__':

@@ -362,7 +362,7 @@ class FileInput(Input):
                 data = b'\n'.join(data.splitlines()+[b''])
             else:
                 data = self.source.read()
-        except (UnicodeError, LookupError) as err:
+        except (UnicodeError, LookupError):
             if not self.encoding and self.source_path:
                 # re-read in binary mode and decode with heuristics
                 b_source = open(self.source_path, 'rb')

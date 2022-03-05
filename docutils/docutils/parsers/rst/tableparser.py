@@ -473,10 +473,8 @@ class SimpleTableParser(TableParser):
             return
         if spanline:
             columns = self.parse_columns(*spanline)
-            span_offset = spanline[1]
         else:
             columns = self.columns[:]
-            span_offset = start
         self.check_columns(lines, start, columns)
         row = self.init_row(columns, start)
         for i in range(len(columns)):

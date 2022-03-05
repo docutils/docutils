@@ -170,7 +170,7 @@ class XMLTranslator(nodes.GenericNodeVisitor):
         # Check validity of raw XML:
         try:
             self.xmlparser.parse(StringIO(xml_string))
-        except xml.sax._exceptions.SAXParseException as error:
+        except xml.sax._exceptions.SAXParseException:
             col_num = self.the_handle.locator.getColumnNumber()
             line_num = self.the_handle.locator.getLineNumber()
             srcline = node.line

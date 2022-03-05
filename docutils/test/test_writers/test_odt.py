@@ -108,17 +108,6 @@ class DocutilsOdtTestCase(DocutilsTestSupport.StandardTestCase):
         # return doc.toprettyxml(indent='  ')
         return etree.tostring(doc)
 
-    def assertEqual(self, first, second, msg=None):
-        if msg is None:
-            msg2 = msg
-        else:
-            sep = '+' * 60
-            msg1 = '\n%s\nresult:\n%s\n%s\nexpected:\n%s\n%s' % (
-                sep, first, sep, second, sep, )
-            # msg2 = '%s\n%s' % (msg1, msg, )
-            msg2 = '%s' % (msg, )
-        super().assertEqual(first, second, msg2)
-
     #
     # Unit test methods
     #
