@@ -1008,9 +1008,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def find_first_text_p(self, el):
         """Search the generated doc and return the first <text:p> element.
         """
-        if (
-                el.tag == 'text:p' or
-                el.tag == 'text:h'):
+        if el.tag == 'text:p' or el.tag == 'text:h':
             return el
         else:
             for child in el:
@@ -1053,10 +1051,10 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def setup_page(self):
         self.setup_paper(self.dom_stylesheet)
-        if (len(self.header_content) > 0 or
-                len(self.footer_content) > 0 or
-                self.settings.custom_header or
-                self.settings.custom_footer):
+        if (len(self.header_content) > 0
+            or len(self.footer_content) > 0
+            or self.settings.custom_header
+            or self.settings.custom_footer):
             self.add_header_footer(self.dom_stylesheet)
         return etree.tostring(self.dom_stylesheet)
 
@@ -2318,9 +2316,9 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             margin_right = node.get(
                 '{urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0}'
                 'margin-right')
-            if (page_width is None or
-                    margin_left is None or
-                    margin_right is None):
+            if (page_width is None
+                or margin_left is None
+                or margin_right is None):
                 continue
             try:
                 page_width, _ = self.convert_to_cm(page_width)
@@ -2882,9 +2880,8 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         if self.settings.create_links:
             if 'refuri' in node:
                 href = node['refuri']
-                if (
-                        self.settings.cloak_email_addresses and
-                        href.startswith('mailto:')):
+                if (self.settings.cloak_email_addresses
+                    and href.startswith('mailto:')):
                     href = self.cloak_mailto(href)
                 el = self.append_child('text:a', attrib={
                     'xlink:href': '%s' % href,
@@ -2901,10 +2898,9 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             else:
                 self.document.reporter.warning(
                     'References must have "refuri" or "refid" attribute.')
-        if (
-                self.in_table_of_contents and
-                len(node.children) >= 1 and
-                isinstance(node.children[0], docutils.nodes.generated)):
+        if (self.in_table_of_contents
+            and len(node.children) >= 1
+            and isinstance(node.children[0], docutils.nodes.generated)):
             node.remove(node.children[0])
 
     def depart_reference(self, node):
@@ -3198,9 +3194,8 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             self.set_current_element(el1)
 
     def depart_title(self, node):
-        if (
-                isinstance(node.parent, docutils.nodes.section) or
-                isinstance(node.parent, docutils.nodes.document)):
+        if (isinstance(node.parent, docutils.nodes.section)
+            or isinstance(node.parent, docutils.nodes.document)):
             self.set_to_parent()
 
     def visit_subtitle(self, node, move_ids=1):
@@ -3333,9 +3328,8 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def update_toc_add_numbers(self, collection):
         for level, el1 in collection:
-            if (
-                    el1.tag == 'text:p' and
-                    el1.text != 'Table of Contents'):
+            if (el1.tag == 'text:p'
+                and el1.text != 'Table of Contents'):
                 el2 = SubElement(el1, 'text:tab')
                 el2.tail = '9999'
 

@@ -1043,8 +1043,8 @@ class Inliner:
                     # Must recurse on strings before *and* after the match;
                     # there may be multiple patterns.
                     return (self.implicit_inline(text[:match.start()], lineno)
-                            + method(match, lineno) +
-                            self.implicit_inline(text[match.end():], lineno))
+                            + method(match, lineno)
+                            + self.implicit_inline(text[match.end():], lineno))
                 except MarkupMismatch:
                     pass
         return [nodes.Text(text)]
@@ -2062,8 +2062,8 @@ class Body(RSTState):
               initial_state='SubstitutionDef', blank_finish=blank_finish)
         i = 0
         for node in substitution_node[:]:
-            if not (isinstance(node, nodes.Inline) or
-                    isinstance(node, nodes.Text)):
+            if not (isinstance(node, nodes.Inline)
+                    or isinstance(node, nodes.Text)):
                 self.parent += substitution_node[i]
                 del substitution_node[i]
             else:
@@ -2088,9 +2088,9 @@ class Body(RSTState):
         return [substitution_node], blank_finish
 
     def disallowed_inside_substitution_definitions(self, node):
-        if (node['ids'] or
-            isinstance(node, nodes.reference) and node.get('anonymous') or
-            isinstance(node, nodes.footnote_reference) and node.get('auto')):
+        if (node['ids']
+            or isinstance(node, nodes.reference) and node.get('anonymous')
+            or isinstance(node, nodes.footnote_reference) and node.get('auto')):  # noqa: E501
             return True
         else:
             return False

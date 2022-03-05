@@ -409,9 +409,8 @@ first section
 -------------
 """,
 # expected output
-head_template.substitute(dict(parts, requirements=parts['requirements'] +
-r"""\setcounter{secnumdepth}{0}
-""")) + r"""
+head_template.substitute(dict(parts, requirements=parts['requirements']
+                              + '\\setcounter{secnumdepth}{0}\n')) + r"""
 some text
 
 

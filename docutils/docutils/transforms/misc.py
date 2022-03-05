@@ -49,8 +49,8 @@ class ClassAttribute(Transform):
             # Check for appropriate following siblings:
             for index in range(parent.index(child) + 1, len(parent)):
                 element = parent[index]
-                if (isinstance(element, nodes.Invisible) or
-                    isinstance(element, nodes.system_message)):
+                if (isinstance(element, nodes.Invisible)
+                    or isinstance(element, nodes.system_message)):
                     continue
                 element['classes'] += pending.details['class']
                 pending.parent.remove(pending)
@@ -100,13 +100,13 @@ class Transitions(Transform):
     def visit_transition(self, node):
         index = node.parent.index(node)
         error = None
-        if (index == 0 or
-            isinstance(node.parent[0], nodes.title) and
-            (index == 1 or
-             isinstance(node.parent[1], nodes.subtitle) and
-             index == 2)):
-            assert (isinstance(node.parent, nodes.document) or
-                    isinstance(node.parent, nodes.section))
+        if (index == 0
+            or isinstance(node.parent[0], nodes.title)
+            and (index == 1
+                 or isinstance(node.parent[1], nodes.subtitle)
+                 and index == 2)):
+            assert (isinstance(node.parent, nodes.document)
+                    or isinstance(node.parent, nodes.section))
             error = self.document.reporter.error(
                 'Document or section may not begin with a transition.',
                 source=node.source, line=node.line)

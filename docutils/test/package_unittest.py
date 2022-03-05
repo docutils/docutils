@@ -86,15 +86,16 @@ def loadTestModules(path, name='', packages=None):
         p = paths.pop(0)
         files = os.listdir(p)
         for filename in files:
-            if filename.startswith(name):
-                fullpath = os.path.join(p, filename)
-                if filename.endswith('.py'):
-                    fullpath = fullpath[len(path)+1:]
-                    testModules.append(path2mod(fullpath))
-                elif (packages and os.path.isdir(fullpath) and
-                      os.path.isfile(os.path.join(fullpath, '__init__.py'))):
-                    paths.append(fullpath)
-    # Import modules and add their tests to the suite.
+            if not filename.startswith(name):
+                continue
+            fullpath = os.path.join(p, filename)
+            if filename.endswith('.py'):
+                fullpath = fullpath[len(path)+1:]
+                testModules.append(path2mod(fullpath))
+            elif (packages and os.path.isdir(fullpath)
+                  and os.path.isfile(os.path.join(fullpath, '__init__.py'))):
+                paths.append(fullpath)
+# Import modules and add their tests to the suite.
     sys.path.insert(0, path)
     for mod in testModules:
         if debug:
