@@ -92,8 +92,8 @@ class SafeString:
     def __init__(self, data, encoding=None, encoding_errors='backslashreplace',
                  decoding_errors='replace'):
         self.data = data
-        self.encoding = (encoding or getattr(data, 'encoding', None) or
-                         locale_encoding or 'ascii')
+        self.encoding = (encoding or getattr(data, 'encoding', None)
+                         or locale_encoding or 'ascii')
         self.encoding_errors = encoding_errors
         self.decoding_errors = decoding_errors
 
@@ -195,8 +195,8 @@ class ErrorOutput:
         self.stream = stream
         """Where warning output is sent."""
 
-        self.encoding = (encoding or getattr(stream, 'encoding', None) or
-                         locale_encoding or 'ascii')
+        self.encoding = (encoding or getattr(stream, 'encoding', None)
+                         or locale_encoding or 'ascii')
         """The output character encoding."""
 
         self.encoding_errors = encoding_errors

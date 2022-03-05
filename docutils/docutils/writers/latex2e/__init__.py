@@ -445,8 +445,8 @@ class Babel:
             self.setup.extend([r'\makeatletter',
                                r'  \addto\extrasbasque{\bbl@deactivate{~}}',
                                r'\makeatother'])
-        if (languages[-1] == 'english' and
-            'french' in self.otherlanguages.keys()):
+        if (languages[-1] == 'english'
+            and 'french' in self.otherlanguages.keys()):
             self.setup += ['% Prevent side-effects if French hyphenation '
                            'patterns are not loaded:',
                            r'\frenchbsetup{StandardLayout}',
@@ -1323,9 +1323,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
                     self.requirements['_textquotedbl'] = (
                         r'\DeclareTextSymbolDefault{\textquotedbl}{T1}')
         # page layout with typearea (if there are relevant document options)
-        if (settings.documentclass.find('scr') == -1 and
-            (self.documentoptions.find('DIV') != -1 or
-             self.documentoptions.find('BCOR') != -1)):
+        if (settings.documentclass.find('scr') == -1
+            and (self.documentoptions.find('DIV') != -1
+                 or self.documentoptions.find('BCOR') != -1)):
             self.requirements['typearea'] = r'\usepackage{typearea}'
 
         # Stylesheets
@@ -1382,8 +1382,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
                     r'\setcounter{secnumdepth}{%d}'
                     % self.d_class.latex_section_depth(secnumdepth))
             # start with specified number:
-            if (hasattr(settings, 'sectnum_start') and
-                settings.sectnum_start != 1):
+            if (hasattr(settings, 'sectnum_start')
+                and settings.sectnum_start != 1):
                 self.requirements['sectnum_start'] = (
                     r'\setcounter{%s}{%d}' % (self.d_class.sections[0],
                                               settings.sectnum_start-1))
@@ -1995,8 +1995,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_document(self, node):
         # titled document?
-        if (self.use_latex_docinfo or len(node) and
-            isinstance(node[0], nodes.title)):
+        if (self.use_latex_docinfo or len(node)
+            and isinstance(node[0], nodes.title)):
             protect = (self.settings.documentclass == 'memoir')
             self.title_labels += self.ids_to_labels(node, set_anchor=False,
                                                     protect=protect)
@@ -2004,8 +2004,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def depart_document(self, node):
         # Complete header with information gained from walkabout
         # * language setup
-        if (self.babel.otherlanguages or
-            self.babel.language not in ('', 'english')):
+        if (self.babel.otherlanguages
+            or self.babel.language not in ('', 'english')):
             self.requirements['babel'] = self.babel()
         # * conditional requirements (before style sheet)
         self.requirements = self.requirements.sortedvalues()
@@ -2434,11 +2434,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if 'width' in attrs:
             include_graphics_options.append(
                 'width=%s' % self.to_latex_length(attrs['width']))
-        if not (self.is_inline(node) or
-                isinstance(node.parent, (nodes.figure, nodes.compound))):
+        if not (self.is_inline(node)
+                or isinstance(node.parent, (nodes.figure, nodes.compound))):
             pre.append('\n')
-        if not (self.is_inline(node) or
-                isinstance(node.parent, nodes.figure)):
+        if not (self.is_inline(node)
+                or isinstance(node.parent, nodes.figure)):
             post.append('\n')
         pre.reverse()
         self.out.extend(pre)
@@ -2506,8 +2506,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_literal(self, node):
         self.literal = True
-        if ('code' in node['classes'] and
-            self.settings.syntax_highlight != 'none'):
+        if ('code' in node['classes']
+            and self.settings.syntax_highlight != 'none'):
             self.requirements['color'] = PreambleCmds.color
             if not self.fallback_stylesheet:
                 self.fallbacks['code'] = PreambleCmds.highlight_rules
@@ -2980,10 +2980,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.active_table = Table(self, 'tabular')
         # A longtable moves before \paragraph and \subparagraph
         # section titles if it immediately follows them:
-        if (self.active_table._latex_type == 'longtable' and
-            isinstance(node.parent, nodes.section) and
-            node.parent.index(node) == 1 and
-            self.d_class.section(self.section_level).find('paragraph') != -1):
+        if (self.active_table._latex_type == 'longtable'
+            and isinstance(node.parent, nodes.section)
+            and node.parent.index(node) == 1
+            and self.d_class.section(
+                   self.section_level).find('paragraph') != -1):
             self.out.append('\\leavevmode')
         self.active_table.open()
         self.active_table.set_table_style(node, self.settings)
@@ -3090,9 +3091,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.pdfinfo.append('  pdftitle={%s},' %
                                 self.encode(node.astext()))
         # Topic titles (topic, admonition, sidebar)
-        elif (isinstance(node.parent, nodes.topic) or
-              isinstance(node.parent, nodes.admonition) or
-              isinstance(node.parent, nodes.sidebar)):
+        elif (isinstance(node.parent, nodes.topic)
+              or isinstance(node.parent, nodes.admonition)
+              or isinstance(node.parent, nodes.sidebar)):
             classes = node.parent['classes'] or [node.parent.tagname]
             if self.settings.legacy_class_functions:
                 self.fallbacks['title'] = PreambleCmds.title_legacy
@@ -3235,8 +3236,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # table of contents:
         if 'contents' in node['classes']:
             self.visit_contents(node)
-        elif ('abstract' in node['classes'] and
-              self.settings.use_latex_abstract):
+        elif ('abstract' in node['classes']
+              and self.settings.use_latex_abstract):
             self.push_output_collector(self.abstract)
             self.out.append('\\begin{abstract}')
             if isinstance(node.next_node(), nodes.title):
@@ -3265,8 +3266,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.duclass_close(node)
         else:
             self.depart_block_quote(node)
-        if ('abstract' in node['classes'] or
-            'dedication' in node['classes']):
+        if ('abstract' in node['classes']
+            or 'dedication' in node['classes']):
             self.pop_output_collector()
 
     def visit_transition(self, node):

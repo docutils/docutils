@@ -273,8 +273,8 @@ Please report errors to <docutils-users@lists.sourceforge.net>.
 Include "--traceback" output, Docutils version (%s%s),
 Python version (%s), your OS type & version, and the
 command line used.""" % (__version__,
-                         docutils.__version_details__ and
-                         ' [%s]'%docutils.__version_details__ or '',
+                         docutils.__version_details__
+                         and ' [%s]'%docutils.__version_details__ or '',
                          sys.version.split()[0])), file=self._stderr)
 
     def report_SystemMessage(self, error):

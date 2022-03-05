@@ -222,9 +222,9 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
         if isinstance(node.next_node(descend=False, siblings=True),
                       nodes.colspec):
             return
-        if 'colwidths-auto' in node.parent.parent['classes'] or (
-            'colwidths-auto' in self.settings.table_style and
-            ('colwidths-given' not in node.parent.parent['classes'])):
+        if ('colwidths-auto' in node.parent.parent['classes']
+            or ('colwidths-auto' in self.settings.table_style
+                and 'colwidths-given' not in node.parent.parent['classes'])):
             return
         total_width = sum(node['colwidth'] for node in self.colspecs)
         self.body.append(self.starttag(node, 'colgroup'))
@@ -411,9 +411,9 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
         self.body.append(self.starttag(node, 'td', '', CLASS='field-body'))
         self.set_class_on_child(node, 'first', 0)
         field = node.parent
-        if (self.compact_field_list or
-            isinstance(field.parent, nodes.docinfo) or
-            field.parent.index(field) == len(field.parent) - 1):
+        if (self.compact_field_list
+            or isinstance(field.parent, nodes.docinfo)
+            or field.parent.index(field) == len(field.parent) - 1):
             # If we are in a compact list, the docinfo, or if this is
             # the last field of the field list, do not add vertical
             # space after last element.
@@ -436,10 +436,10 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
                 assert isinstance(field_body, nodes.field_body)
                 children = [n for n in field_body
                             if not isinstance(n, nodes.Invisible)]
-                if not (len(children) == 0 or
-                        len(children) == 1 and
-                        isinstance(children[0],
-                                   (nodes.paragraph, nodes.line_block))):
+                if not (len(children) == 0
+                        or len(children) == 1
+                        and isinstance(children[0],
+                                       (nodes.paragraph, nodes.line_block))):
                     self.compact_field_list = False
                     break
         self.body.append(self.starttag(node, 'table', frame='void',
@@ -592,9 +592,9 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
                 del atts[att_name]
         if style:
             atts['style'] = ' '.join(style)
-        if (isinstance(node.parent, nodes.TextElement) or
-            (isinstance(node.parent, nodes.reference) and
-             not isinstance(node.parent.parent, nodes.TextElement))):
+        if (isinstance(node.parent, nodes.TextElement)
+            or (isinstance(node.parent, nodes.reference)
+                and not isinstance(node.parent.parent, nodes.TextElement))):
             # Inline context or surrounded by <a>...</a>.
             suffix = ''
         else:
@@ -603,8 +603,8 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
             atts['class'] = 'align-%s' % node['align']
         if ext in self.object_image_types:
             # do NOT use an empty tag: incorrect rendering in browsers
-            self.body.append(self.starttag(node, 'object', '', **atts) +
-                             node.get('alt', uri) + '</object>' + suffix)
+            self.body.append(self.starttag(node, 'object', '', **atts)
+                             + node.get('alt', uri) + '</object>' + suffix)
         else:
             self.body.append(self.emptytag(node, 'img', suffix, **atts))
 
@@ -714,14 +714,15 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
         """
         Determine if the <p> tags around paragraph ``node`` can be omitted.
         """
-        if (isinstance(node.parent, nodes.document) or
-            isinstance(node.parent, nodes.compound)):
+        if (isinstance(node.parent, nodes.document)
+            or isinstance(node.parent, nodes.compound)):
             # Never compact paragraphs in document or compound.
             return False
         for key, value in node.attlist():
-            if (node.is_not_default(key) and
-                not (key == 'classes' and value in
-                     ([], ['first'], ['last'], ['first', 'last']))):
+            if (node.is_not_default(key)
+                and not (key == 'classes'
+                         and value in ([], ['first'],
+                                       ['last'], ['first', 'last']))):
                 # Attribute which needs to survive.
                 return False
         first = isinstance(node.parent[0], nodes.label)  # skip label
@@ -788,8 +789,8 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
         elif isinstance(node.parent, nodes.section):
             tag = 'h%s' % (self.section_level + self.initial_header_level - 1)
             self.body.append(
-                self.starttag(node, tag, '', CLASS='section-subtitle') +
-                self.starttag({}, 'span', '', CLASS='section-subtitle'))
+                self.starttag(node, tag, '', CLASS='section-subtitle')
+                + self.starttag({}, 'span', '', CLASS='section-subtitle'))
             self.context.append('</span></%s>\n' % tag)
 
     def depart_subtitle(self, node):

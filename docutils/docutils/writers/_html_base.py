@@ -1032,9 +1032,9 @@ class HTMLTranslator(nodes.NodeVisitor):
                 del atts[att_name]
         if style:
             atts['style'] = ' '.join(style)
-        if (isinstance(node.parent, nodes.TextElement) or
-            (isinstance(node.parent, nodes.reference) and
-             not isinstance(node.parent.parent, nodes.TextElement))):
+        if (isinstance(node.parent, nodes.TextElement)
+            or (isinstance(node.parent, nodes.reference)
+                and not isinstance(node.parent.parent, nodes.TextElement))):
             # Inline context or surrounded by <a>...</a>.
             suffix = ''
         else:
@@ -1383,8 +1383,8 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def depart_paragraph(self, node):
         self.body.append('</p>')
-        if not (isinstance(node.parent, (nodes.list_item, nodes.entry)) and
-                (len(node.parent) == 1)):
+        if not (isinstance(node.parent, (nodes.list_item, nodes.entry))
+                and (len(node.parent) == 1)):
             self.body.append('\n')
 
     def visit_problematic(self, node):
@@ -1722,9 +1722,9 @@ class SimpleListChecker(nodes.GenericNodeVisitor):
         children = [child for child in node.children
                     if not isinstance(child, nodes.Invisible)]
         if (children and isinstance(children[0], nodes.paragraph)
-            and (isinstance(children[-1], nodes.bullet_list) or
-                 isinstance(children[-1], nodes.enumerated_list) or
-                 isinstance(children[-1], nodes.field_list))):
+            and (isinstance(children[-1], nodes.bullet_list)
+                 or isinstance(children[-1], nodes.enumerated_list)
+                 or isinstance(children[-1], nodes.field_list))):
             children.pop()
         if len(children) <= 1:
             return

@@ -40,9 +40,9 @@ class PropagateTargets(Transform):
     def apply(self):
         for target in self.document.findall(nodes.target):
             # Only block-level targets without reference (like ".. _target:"):
-            if (isinstance(target.parent, nodes.TextElement) or
-                (target.hasattr('refid') or target.hasattr('refuri') or
-                 target.hasattr('refname'))):
+            if (isinstance(target.parent, nodes.TextElement)
+                or (target.hasattr('refid') or target.hasattr('refuri')
+                    or target.hasattr('refname'))):
                 continue
             assert len(target) == 0, 'error: block-level target has children'
             next_node = target.next_node(ascend=True)

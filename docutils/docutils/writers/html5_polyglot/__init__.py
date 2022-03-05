@@ -290,9 +290,9 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
         if getattr(self.settings, 'image_loading', None) == 'lazy':
             atts['loading'] = 'lazy'
         # No newline in inline context or if surrounded by <a>...</a>.
-        if (isinstance(node.parent, nodes.TextElement) or
-            (isinstance(node.parent, nodes.reference) and
-             not isinstance(node.parent.parent, nodes.TextElement))):
+        if (isinstance(node.parent, nodes.TextElement)
+            or (isinstance(node.parent, nodes.reference)
+                and not isinstance(node.parent.parent, nodes.TextElement))):
             suffix = ''
         else:
             suffix = '\n'

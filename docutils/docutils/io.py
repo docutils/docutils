@@ -254,8 +254,8 @@ class ErrorOutput:
         self.destination = destination
         """Where warning output is sent."""
 
-        self.encoding = (encoding or getattr(destination, 'encoding', None) or
-                         locale_encoding or 'ascii')
+        self.encoding = (encoding or getattr(destination, 'encoding', None)
+                         or locale_encoding or 'ascii')
         """The output character encoding."""
 
         self.encoding_errors = encoding_errors

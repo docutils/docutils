@@ -41,8 +41,8 @@ class BaseAdmonition(Directive):
             admonition_node += title
             admonition_node += messages
             if 'classes' not in self.options:
-                admonition_node['classes'] += ['admonition-' +
-                                               nodes.make_id(title_text)]
+                admonition_node['classes'] += ['admonition-'
+                                               + nodes.make_id(title_text)]
         self.state.nested_parse(self.content, self.content_offset,
                                 admonition_node)
         return [admonition_node]
