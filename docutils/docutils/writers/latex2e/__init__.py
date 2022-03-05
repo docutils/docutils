@@ -428,7 +428,7 @@ class Babel:
         self.setup = [r'\usepackage[%s]{babel}' % ','.join(languages)]
         # Deactivate "active characters"
         shorthands = []
-        for c in ''.join(self.active_chars.get(l, '') for l in languages):
+        for c in ''.join(self.active_chars.get(lng, '') for lng in languages):
             if c not in shorthands:
                 shorthands.append(c)
         if shorthands:

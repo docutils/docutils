@@ -2562,8 +2562,8 @@ class FormulaArray(MultiRowFormula):
     # horizontal
     literal = self.parseliteral(pos)
     self.alignments = []
-    for l in literal:
-      self.alignments.append(l)
+    for s in literal:
+      self.alignments.append(s)
 
 
 class FormulaMatrix(MultiRowFormula):
