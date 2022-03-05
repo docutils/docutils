@@ -119,8 +119,7 @@ Title 4
 -------
 Paragraph 4.
 """,
-"""\
-<document source="test data">
+r"""<document source="test data">
     <paragraph>
         Test return to existing, highest-level section (Title 3).
     <section ids="title-1" names="title\ 1">
@@ -157,8 +156,7 @@ Test bad subsection order.
 
 ### Title 5
 """,
-"""\
-<document source="test data">
+r"""<document source="test data">
     <paragraph>
         Test bad subsection order.
     <section ids="title-1" names="title\ 1">
@@ -185,7 +183,7 @@ Paragraph.
 """,
 """\
 <document source="test data">
-    <section ids="title-containing-inline-markup" names="title\ containing\ inline\ markup">
+    <section ids="title-containing-inline-markup" names="title\\ containing\\ inline\\ markup">
         <title>
             Title containing \n\
             <emphasis>
@@ -232,7 +230,7 @@ Empty Section
 """,
 """\
 <document source="test data">
-    <section ids="empty-section" names="empty\ section">
+    <section ids="empty-section" names="empty\\ section">
         <title>
             Empty Section
 """],
