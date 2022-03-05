@@ -27,7 +27,8 @@ class SystemMessage(ApplicationError):
         self.level = level
 
 
-class SystemMessagePropagation(ApplicationError): pass
+class SystemMessagePropagation(ApplicationError):
+    pass
 
 
 class Reporter:
