@@ -1080,7 +1080,7 @@ class Table:
                 while True:
                     try:
                         c_start = rowspans.pop()
-                    except:
+                    except IndexError:
                         break
                     cline += '\\cline{%d-%d}\n' % (c_start, c_start)
                 res.append(cline)
@@ -1089,13 +1089,13 @@ class Table:
     def set_rowspan(self, cell, value):
         try:
             self._rowspan[cell] = value
-        except:
+        except IndexError:
             pass
 
     def get_rowspan(self, cell):
         try:
             return self._rowspan[cell]
-        except:
+        except IndexError:
             return 0
 
     def get_entry_number(self):

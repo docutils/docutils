@@ -78,7 +78,7 @@ except ImportError:
 
 try:
     import mypdb as pdb
-except:
+except ImportError:
     import pdb
 
 

@@ -72,7 +72,7 @@ else:
             locale_encoding = "UTF-8"
         else:
             locale_encoding = None
-    except: # any other problems determining the locale -> use None
+    except: # noqa  any other problems determining the locale -> use None
         locale_encoding = None
     try:
         codecs.lookup(locale_encoding or '') # None -> ''
