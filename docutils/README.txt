@@ -377,10 +377,18 @@ Windows users type these commands::
 Getting Help
 ============
 
-If you have questions or need assistance with Docutils or
+All documentation can be reached from the `Project Documentation
+Overview`_. 
+
+The SourceForge `project page`_ has links to the tracker, mailing
+lists, and code repository.
+
+If you have further questions or need assistance with Docutils or
 reStructuredText, please post a message to the Docutils-users_ mailing
 list.
 
+.. _Project Documentation Overview: docs/index.html
+.. _project page: https://sourceforge.net/p/docutils
 .. _Docutils-users: docs/user/mailing-lists.html#docutils-users
 
 
