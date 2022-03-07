@@ -12,10 +12,7 @@ Abstract
 
 .. A short (<~200 word) description of the technical issue being addressed.
 
-This proposal defines the public API.
-
-After completing this task, Docutils can move to version 1.0 and start
-using `Semantic Versioning`_.
+This proposal defines the public APIs provided by the Docutils project.
 
 
 Motivation
@@ -41,8 +38,8 @@ The current `backwards compatibility policy`__ is only a stub referencing
 Clearly defining how we will balance evolution with stability is
 important to both users and project developers.
 
-__ ../policies.html#version-identifcation
-__ ../policies.html#backwards-compatibility-policy
+__ ../../docutils/docs/dev/policies.html#version-identification
+__ ../../docutils/docs/dev/policies.html#backwards-compatibility-policy
 
 
 Rationale
@@ -107,9 +104,6 @@ Docutils public APIs are:
 * the `reStructuredText specification`_,
 
 * the document type definition (`Docutils Document Tree`_, docutils.dtd_),
-
-* interfaces documented in the `api/`_ section of the project
-  documentation,
   
 * names, arguments and behaviour of the `front-end tools`_,
 
@@ -117,32 +111,42 @@ Docutils public APIs are:
   elements, macros and classes used by writers to represent doctree_ nodes
   in the output format,
 
-* the core "docutils" Python package API:
+* provided output templates [#]_ and style sheets [#]_ (unless marked as
+  "provisional"),
+
+  .. [#] template.txt, default.tex, titlepage.tex, xelatex.tex
+  .. [#] html4css1.css, minimal.css, docutils.sty (LaTeX), styles.odt
+
+* the core "docutils" Python package API [#]_:
+    
+  - the `Docutils Publisher`_ interface for programmatic use,
     
   - component interfaces as defined by the base
     ``docutils.reader.Reader``, ``docutils.writer.Writer``, and
     ``docutils.transform.Transform`` classes,
+    
+  
 
-  - behaviour [#]_ and names of all objects included in the ``__all__``
-    attribute of their parent objects. 
+* behaviour [#]_ and names of all **documented** objects.
 
-Python objects and variables can explicitly "opt-out" of the public API
-with a docstring noting that the object is provisional_.
+  Python objects and variables can explicitly "opt-out" of the public API
+  with a docstring noting that the object is provisional_ or internal.
 
-Objects not included in their parents ``__all__`` attribute are
-considered public if they are documented. 
-Undocumented objects should be assumed to be internal.
+  All undocumented objects should be assumed to be internal.
 
-.. TODO:
-   include also
-   provided output templates [#]_ and style sheets [#]_ (unless marked as
-   "provisional") ?
-
-   .. [#] template.txt, default.tex, titlepage.tex, xelatex.tex
-   .. [#] html4css1.css, minimal.css, docutils.sty (LaTeX), styles.odt
-
-
+.. [#] see also the `API Reference Material for Client-Developers`_
 .. [#] Cf. the `backwards compatibility rules`_ in :PEP:`387`.
+
+
+Backwards Compatibility
+=======================
+
+.. Describe potential impact and severity on pre-existing code.
+
+Beginning with version 1.0, Docutils will follow the rules of
+`Semantic Versioning`_. All incompatible changes to the public APIs
+require increasing the major part of the version specifier.
+Backwards compatible changes can be done in minor releases.
 
 
 Security Implications
@@ -160,7 +164,7 @@ How to Teach This
 
 * Move the specification_ to the `Docutils Project Policies`_.
 
-* Keep the `api/`_ documentation up to date.
+* Complete the `api/`_ documentation and keep it up to date.
 
 * Generate "docutils" package API documentation from the docstrings:
 
@@ -191,7 +195,17 @@ Rejected Ideas
   - Docutils does not have a fixed release schedule.
   - The release date is documented in the HISTORY_ and RELEASE-NOTES_.
 
+* Allow breaking API changes in minor versions after a deprecation period.
+
+  - Breaks the principle of least surprise.
+
 * Enumerate all modules, classes, and functions that form the public API.
+
+* Mark all private objects with a prefix underscore.
+
+  - May needlessly break applications that use "internal" objects by the
+    current name.
+  - Too much work.
 
 
 Open Issues
@@ -209,28 +223,25 @@ Open Issues
     The major number [...] may be incremented later if there is a major
     change in the design or API.
 
-* Mark all private objects with a prefix underscore?
 
 * Formalise the wording for docstrings for public/private/provisional
   (ideally this would be a single regex pattern)?
 
-* Define a deprecation period
+* Declare only objects included in the ``__all__`` attribute of their
+  parent objects as public rsp. explicitely list all public objects in 
+  ``__all__`` attribute of their parents?
+  
+  This would hide private objects from `pydoc` help on the parent objects.
 
-  - In addition to SemVer_ (i.e. also for changes in "major" releases,
-    interdicting *all* incompatible changes in "minor" releases).
-
-  - Instead of SemVer_ (i.e. for "minor/medium" changes in "minor"
-    releases, similar to :PEP:`387`).
-
-
-.. _SemVer: Semantic Versioning_
 
 References
 ==========
 
 .. A collection of URLs used as references through the proposal.
 
-.. _api/: ../../docutils/docs/index.html
+.. _api/:
+.. _API Reference Material for Client-Developers:
+   ../../docutils/docs/index.html
           #api-api-reference-material-for-client-developers
 .. _doctree:
 .. _Docutils Document Tree: ../../docutils/docs/ref/doctree.html
@@ -238,6 +249,8 @@ References
 .. _Docutils Design Specification: ../../docutils/docs/peps/pep-0258.html
 .. _Docutils Project Policies: ../../docutils/docs/dev/policies.html
 .. _front-end tools: ../../docutils/docs/user/tools.html
+.. _Docutils Publisher: ../../docutils/docs/api/publisher.html
+.. _Docutils Transforms: ../../docutils/docs/ref/transforms.html
 .. _HISTORY: ../../docutils/HISTORY.html
 .. _RELEASE-NOTES: ../../docutils/RELEASE-NOTES.html
 .. _reStructuredText specification:
