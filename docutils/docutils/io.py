@@ -175,6 +175,12 @@ class Input(TransformSpec):
                 return match.group(1).decode('ascii')
         return None
 
+    def isatty(self):
+        try:
+            return self.source.isatty()
+        except AttributeError:
+            return False
+
 
 class Output(TransformSpec):
 
@@ -303,6 +309,12 @@ class ErrorOutput:
             self.destination.close()
         except AttributeError:
             pass
+
+    def isatty(self):
+        try:
+            return self.destination.isatty()
+        except AttributeError:
+            return False
 
 
 class FileInput(Input):

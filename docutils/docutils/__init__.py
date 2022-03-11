@@ -268,7 +268,7 @@ class Component(SettingsSpec, TransformSpec):
     subclasses."""
 
     supported = ()
-    """Names for this component.  Override in subclasses."""
+    """Name and aliases for this component.  Override in subclasses."""
 
     def supports(self, format):
         """

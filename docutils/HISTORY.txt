@@ -21,6 +21,11 @@ Changes Since 0.18.1
   - Code cleanup,
     check PEP 8 conformity with `flake8` (exceptions in file tox.ini).
 
+* docutils/core.py:
+
+  Publisher.publish(): Print info and prompt when waiting for input from
+  a terminal cf. https://clig.dev/#interactivity.
+
 * docutils/parsers/__init__.py
 
   - Alias for the "myst" parser (https://pypi.org/project/myst-docutils).
