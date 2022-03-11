@@ -2866,6 +2866,16 @@ Front-End Tools
   directive should override the ``--no-section-numbering`` command
   line option then.
 
+* Implement the following suggestions from clig.dev?
+
+     Display output on success, but keep it brief.
+     provide a --quiet option to suppress all non-essential output.
+   
+     Consider chaining several args as input and use --output
+     (or redirection) for output.
+   
+     -- https://clig.dev/#help
+
 .. _partial parsing:
    https://docs.python.org/3/library/argparse.html#partial-parsing
 

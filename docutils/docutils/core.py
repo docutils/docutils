@@ -15,6 +15,7 @@ custom component objects first, and pass *them* to
 
 __docformat__ = 'reStructuredText'
 
+import os
 import sys
 import pprint
 from docutils import __version__, SettingsSpec
@@ -203,6 +204,7 @@ class Publisher:
                     argv, usage, description, settings_spec, config_section,
                     **(settings_overrides or {}))
             self.set_io()
+            self.prompt()
             self.document = self.reader.read(self.source, self.parser,
                                              self.settings)
             self.apply_transforms()
@@ -251,6 +253,27 @@ class Publisher:
             print('\n::: Pseudo-XML:', file=self._stderr)
             print(self.document.pformat().encode(
                 'raw_unicode_escape'), file=self._stderr)
+
+    def prompt(self):
+        """Print info and prompt when waiting for input from a terminal."""
+        try:
+            if not (self.source.isatty() and self._stderr.isatty()):
+                return
+        except AttributeError:
+            return
+        eot_key = 'Ctrl+Z' if os.name == 'nt' else 'Ctrl+D on an empty line'
+        in_format = 'plaintext'
+        out_format = 'useful formats'
+        try:
+            in_format = self.parser.supported[0]
+            out_format = self.writer.supported[0]
+        except (AttributeError, IndexError):
+            pass
+        print(f'Docutils {__version__} <https://docutils.sourceforge.io>\n'
+              f'converting "{in_format}" into "{out_format}".\n'
+              f'Call with option "--help" for more info.\n'
+              f'.. Waiting for source text (finish with {eot_key}):',
+              file=self._stderr)
 
     def report_Exception(self, error):
         if isinstance(error, utils.SystemMessage):

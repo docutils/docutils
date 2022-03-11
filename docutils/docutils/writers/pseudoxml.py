@@ -14,7 +14,7 @@ from docutils import writers, frontend
 
 class Writer(writers.Writer):
 
-    supported = ('pprint', 'pformat', 'pseudoxml')
+    supported = ('pseudoxml', 'pprint', 'pformat')
     """Formats this writer supports."""
 
     settings_spec = (

@@ -29,7 +29,7 @@ from docutils.writers import latex2e
 class Writer(latex2e.Writer):
     """A writer for Unicode-aware LaTeX variants (XeTeX, LuaTeX)"""
 
-    supported = ('lxtex', 'xetex', 'xelatex', 'luatex', 'lualatex')
+    supported = ('latex', 'tex', 'xetex', 'xelatex', 'luatex', 'lualatex')
     """Formats this writer supports."""
 
     default_template = 'xelatex.tex'

@@ -55,6 +55,8 @@ class Parser(CommonMarkParser):
     the API is not settled and may change with any minor Docutils version.
     """
     supported = ('recommonmark', 'commonmark', 'markdown', 'md')
+    """Formats this parser supports."""
+
     config_section = 'recommonmark parser'
     config_section_dependencies = ('parsers',)
 

@@ -81,7 +81,7 @@ class Parser(docutils.parsers.Parser):
 
     """The reStructuredText parser."""
 
-    supported = ('restructuredtext', 'rst', 'rest', 'restx', 'rtxt', 'rstx')
+    supported = ('rst', 'restructuredtext', 'rest', 'restx', 'rtxt', 'rstx')
     """Aliases this parser supports."""
 
     settings_spec = docutils.parsers.Parser.settings_spec + (
