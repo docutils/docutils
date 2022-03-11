@@ -57,27 +57,22 @@ Authors
 End-Users
   of Docutils native `front-end tools`_ (optionally with 3rd-party
   drop-in extensions) or alternative tools using Docutils either as a
-  library [#3rd-party-tools]_ or via the command line interface
+  library (Sphinx_, …) or via the command line interface
   (build systems, Makefiles, scripts in other languages).
 
 Developers
   authors and maintainers of
 
-  - projects that use Docutils as a library [#3rd-party-tools]_, 
-  - drop-in components [#]_,
+  - projects that use Docutils as a library (Sphinx_, rsted_, Leo_,
+    Pelican_, ebookmaker_, MyST_, readthedocs_, rinohtype_, …),
+  - drop-in components (pycmark_, rst2pdf_, rst2beamer_, …),
   - alternative front-end tools,
   - custom stylesheets (CSS style sheets, LaTeX styles, ODT styles),
     or
-  - re-implementations of the `reStructuredText specification`_. [#]_
+  - re-implementations of the `reStructuredText specification`_,
+    e.g. PanDoc_ or Text-Restructured_ (prest).
 
 A person may belong to more than one of these catgories.
-
-.. [#3rd-party-tools] like Sphinx_, rsted_, Leo_, Pelican_, ebookmaker_,
-   MyST_, readthedocs_, rinohtype_, …
-.. [#] for example parsers like pycmark_ or writers like rst2pdf_ or
-   rst2beamer_
-.. [#] e.g., PanDoc_ or Text-Restructured_ (prest).
-
 
 .. _Sphinx: https://www.sphinx-doc.org/
 .. _rsted: https://github.com/anru/rsted
@@ -104,30 +99,28 @@ Docutils public APIs are:
 * the `reStructuredText specification`_,
 
 * the document type definition (`Docutils Document Tree`_, docutils.dtd_),
-  
-* names, arguments and behaviour of the `front-end tools`_,
+
+* names, command-line arguments and behaviour of the `front-end tools`_,
 
 * the interface to custom stylesheets --
   elements, macros and classes used by writers to represent doctree_ nodes
   in the output format,
 
-* provided output templates [#]_ and style sheets [#]_ (unless marked as
-  "provisional"),
+* provided output templates and style sheets (unless marked as
+  provisional_),
 
-  .. [#] template.txt, default.tex, titlepage.tex, xelatex.tex
-  .. [#] html4css1.css, minimal.css, docutils.sty (LaTeX), styles.odt
+  .. template.txt, default.tex, titlepage.tex, xelatex.tex
+  .. html4css1.css, minimal.css, docutils.sty (LaTeX), styles.odt
 
 * the core "docutils" Python package API [#]_:
-    
+
   - the `Docutils Publisher`_ interface for programmatic use,
-    
+
   - component interfaces as defined by the base
     ``docutils.reader.Reader``, ``docutils.writer.Writer``, and
     ``docutils.transform.Transform`` classes,
-    
-  
 
-* behaviour [#]_ and names of all **documented** objects.
+* behaviour [#]_ and names of all documented objects.
 
   Python objects and variables can explicitly "opt-out" of the public API
   with a docstring noting that the object is provisional_ or internal.
@@ -159,23 +152,42 @@ warning.
 How to Teach This
 =================
 
-.. How to teach users, new and experienced, 
+.. How to teach users, new and experienced,
    how to apply the proposal to their work.
 
-* Move the specification_ to the `Docutils Project Policies`_.
+* Move the API specification_ and the backwards compatibility declaration
+  to the `Docutils Project Policies`_.
 
 * Complete the `api/`_ documentation and keep it up to date.
 
 * Generate "docutils" package API documentation from the docstrings:
 
   - Fix/enhance/add docstrings to improve the output of `pydoc`_.
-    
+
   - Generate API documentation with Sphinx:
-  
+
     - nicely format rST docstrings
     - include attribute docstrings (ignored by pydoc_).
 
+* Put the text below at a suitable place in the documentation.
+
+To find out if an object from the "docutils" package is safe to use,
+look up its docstring and the docstring of its parent [#]_.
+
+If there is no documentation or the documentation says "provisional" or
+"internal", the name, behaviour, and existence of the object is not
+guaranteed to be stable.
+
+Code relying on non-public objects should be made robust using public
+alternatives. If this is a no such alternative or the required change
+would be a major problem, contact the Docutils developers.
+
+.. [#] `Attribute docstrings` are not shown by pydoc_ (cf. `What is a
+   Docstring`_). To find out whether attributes have a docstring, check
+   the source.
+
 .. _pydoc: https://docs.python.org/3/library/pydoc.html
+.. _what is a Docstring: https://peps.python.org/pep-0257/#what-is-a-docstring
 
 
 Rejected Ideas
@@ -191,11 +203,9 @@ Rejected Ideas
 
 * Use Calendar Versioning (CalVer).
 
-  - Would be a break from current versioning.
-  - Docutils does not have a fixed release schedule.
-  - The release date is documented in the HISTORY_ and RELEASE-NOTES_.
+  - Would be a break from current versioning without clear advantages.
 
-* Allow breaking API changes in minor versions after a deprecation period.
+* Allow breaking API changes in *minor* versions after a deprecation period.
 
   - Breaks the principle of least surprise.
 
@@ -227,10 +237,13 @@ Open Issues
 * Formalise the wording for docstrings for public/private/provisional
   (ideally this would be a single regex pattern)?
 
+  * The keyword provisional_ is well defined. ✓
+  * Use "private" or "internal"?
+
 * Declare only objects included in the ``__all__`` attribute of their
-  parent objects as public rsp. explicitely list all public objects in 
+  parent objects as public rsp. explicitely list all public objects in
   ``__all__`` attribute of their parents?
-  
+
   This would hide private objects from `pydoc` help on the parent objects.
 
 
