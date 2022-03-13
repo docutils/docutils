@@ -332,7 +332,7 @@ BetaRelease 0.17b1 (2021-02-10) to test.pypi
 
     setuptools/dist.py:473: UserWarning: Normalizing '0.17b.dev' to '0.17b0.dev0'.
 
-  Acchording to https://www.python.org/dev/peps/pep-0440/#pre-releases
+  According to https://peps.python.org/pep-0440/#pre-releases
 
   set_version 0.17b1
 
@@ -1093,7 +1093,7 @@ same failures as for 0.9 plus
 
 Note: sf takes some considerable time till the downlods are visible for normal users.
   More than 1 hour , the folder files/docutils/0.9.1 exists and the webinterface
-  correctly summarizes "Totals: 2 Items	 	1.6 MB" but nothing is shown.
+  correctly summarizes "Totals: 2 Items     1.6 MB" but nothing is shown.
 
 Release 0.9
 ===========

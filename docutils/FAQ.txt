@@ -54,19 +54,18 @@ The Docutils distribution consists of:
 * a `test suite`_; and
 * documentation_.
 
-For an overview of the Docutils project implementation, see `PEP
-258`_, "Docutils Design Specification".
+For an overview of the Docutils project implementation,
+see :PEP:`258`, "Docutils Design Specification".
 
 Docutils is implemented in Python_.
 
 .. _Docutils: https://docutils.sourceforge.io/
 .. _PEPs (Python Enhancement Proposals):
-   https://www.python.org/dev/peps/pep-0012
+   https://peps.python.org/pep-0012
 .. _can be used by client code: docs/api/publisher.html
 .. _front-end tools: docs/user/tools.html
 .. _test suite: docs/dev/testing.html
 .. _documentation: docs/index.html
-.. _PEP 258: https://www.python.org/dev/peps/pep-0258
 .. _Python: https://www.python.org/
 
 
@@ -1212,8 +1211,8 @@ the disadvantage is complexity/difficulty.
 * Complexity/difficulty: it's a lot harder to parse and analyze a
   module than it is to ``import`` and analyze one.
 
-For more details, please see "Docstring Extraction Rules" in `PEP
-258`_, item 3 ("How").
+For more details, please see "Docstring Extraction Rules"
+in :PEP:`258`, item 3 ("How").
 
 
 Miscellaneous
