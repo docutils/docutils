@@ -102,6 +102,8 @@ Docutils 0.19 is compatible with Python versions 3.7 and later.
 
 * The default values for the "pep-references", "rfc-base-url",
   and "python-home" `configuration settings`_ now uses the "https:" scheme.
+  The PEP-writer template's header is updated to fix links and
+  resemble the header of official PEPs.
 
 .. _configuration settings: docs/user/config.html
 

@@ -695,7 +695,7 @@ pep_base_url
 ~~~~~~~~~~~~
 Base URL for PEP references.
 
-Default: "https://www.python.org/dev/peps/".
+Default: "https://peps.python.org/".
 Option: ``--pep-base-url``.
 
 pep_file_url_template
