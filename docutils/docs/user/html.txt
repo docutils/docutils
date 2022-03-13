@@ -66,7 +66,7 @@ reader.
 .. _rstpep2html.py: tools.html#rstpep2html-py
 .. _PEP-specific options:
 .. _[pep_html writer]: config.html#pep-html-writer
-.. _Python Enhancement Proposals: https://www.python.org/dev/peps/
+.. _Python Enhancement Proposals: https://peps.python.org/
 
 s5_html
 ~~~~~~~

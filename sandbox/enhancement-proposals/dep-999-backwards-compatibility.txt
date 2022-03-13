@@ -270,7 +270,7 @@ References
     ../../docutils/docs/ref/rst/restructuredtext.html
 
 .. _backwards compatibility rules:
-    https://www.python.org/dev/peps/pep-0387/#backwards-compatibility-rules
+    https://peps.python.org/pep-0387/#backwards-compatibility-rules
 .. _provisional: https://docs.python.org/3/glossary.html#term-provisional-API
 .. _Semantic Versioning: https://semver.org/
 

@@ -5,7 +5,7 @@
 # Parse a Docutils version identifier
 # (adapted from the `PEP 440 example regexp`__)
 #
-# __https://www.python.org/dev/peps/pep-0440/#appendix-b-parsing-version-strings-with-regular-expressions
+# __https://peps.python.org/pep-0440/#appendix-b-parsing-version-strings-with-regular-expressions
 
 
 import re, argparse
@@ -51,7 +51,7 @@ def identifier2version_info(identifier):
         releaselevel = releaselevels[segments['pre_l']]
     else:
         # .dev without pre-release segment sorts before pre-releases, see
-        # https://www.python.org/dev/peps/pep-0440/#summary-of-permitted-suffixes-and-relative-ordering
+        # https://peps.python.org/pep-0440/#summary-of-permitted-suffixes-and-relative-ordering
         if segments['dev']:
             releaselevel = None
         else:

@@ -98,8 +98,8 @@ Conventions`_ PEPs, summarized, clarified, and extended as follows:
   quotes""" for docstrings.
 
 .. _Style Guide for Python Code:
-   https://www.python.org/dev/peps/pep-0008
-.. _Docstring Conventions: https://www.python.org/dev/peps/pep-0257
+   https://peps.python.org/pep-0008
+.. _Docstring Conventions: https://peps.python.org/pep-0257
 .. _Docutils Internationalization: ../howto/i18n.html#python-code
 
 
@@ -460,7 +460,7 @@ beta (development) [#dev]_      0.16b.dev
 .. [#dev] Default active development state between releases.
 .. [#skip] These steps may be skipped.
 
-.. _PEP 440: https://www.python.org/dev/peps/pep-0440/
+.. _PEP 440: https://peps.python.org/pep-0440/
 
 Policy History
 --------------
@@ -506,9 +506,9 @@ configuration file or potentially breaking custom style sheets) should be
 announced with a FutureWarning_.
 
 .. _backwards compatibility rules:
-   https://www.python.org/dev/peps/pep-0387/#backwards-compatibility-rules
+   https://peps.python.org/pep-0387/#backwards-compatibility-rules
 .. _making incompatible changes:
-   https://www.python.org/dev/peps/pep-0387/#making-incompatible-changes
+   https://peps.python.org/pep-0387/#making-incompatible-changes
 .. _Sphinx: https://www.sphinx-doc.org/
 .. _DeprecationWarning:
    https://docs.python.org/3/library/exceptions.html#DeprecationWarning

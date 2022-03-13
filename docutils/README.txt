@@ -62,7 +62,7 @@ Support for the following sources is planned:
 * And others as discovered.
 
 .. _PEPs (Python Enhancement Proposals):
-   https://www.python.org/dev/peps/pep-0012
+   https://peps.python.org/pep-0012
 
 
 Dependencies

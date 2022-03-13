@@ -101,7 +101,7 @@ Other Ideas
   an attachment to his Doc-SIG post of 2001-05-30.
 
 
-.. _PEP 257: https://www.python.org/dev/peps/pep-0257
+.. _PEP 257: https://peps.python.org/pep-0257
 .. _JavaDoc: http://java.sun.com/j2se/javadoc/
 .. _pythondoc: http://starship.python.net/crew/danilo/pythondoc/
 .. _Grouch: http://www.mems-exchange.org/software/grouch/
