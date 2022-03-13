@@ -91,9 +91,9 @@ class Parser(docutils.parsers.Parser):
           ['--pep-references'],
           {'action': 'store_true', 'validator': frontend.validate_boolean}),
          ('Base URL for PEP references '
-          '(default "https://www.python.org/dev/peps/").',
+          '(default "https://peps.python.org/").',
           ['--pep-base-url'],
-          {'metavar': '<URL>', 'default': 'https://www.python.org/dev/peps/',
+          {'metavar': '<URL>', 'default': 'https://peps.python.org/',
            'validator': frontend.validate_url_trailing_slash}),
          ('Template for PEP file part of URL. (default "pep-%04d")',
           ['--pep-file-url-template'],

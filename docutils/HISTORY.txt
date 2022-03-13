@@ -45,7 +45,8 @@ Changes Since 0.18.1
 
 * docutils/parsers/rst/__init__.py
 
-  - use "https:" scheme in PEP and RFC base link defaults.
+  - Update PEP base URL (fixes bug #445),
+    use "https:" scheme in RFC base URL.
   - Add `reporter` to `Directive` class attributes.
 
 * docutils/parsers/rst/directives/__init__.py
@@ -62,9 +63,9 @@ Changes Since 0.18.1
 
 * docutils/utils/__init__.py
 
-  - decode_path() returns `str` instance instead of `nodes.reprunicode`.
-  - new function error_string() obsoletes utils.error_reporting.ErrorString.
-  - class ErrorOutput moved here from docutils/utils/error_reporting.py
+  - `decode_path()` returns `str` instance instead of `nodes.reprunicode`.
+  - New function error_string() obsoletes utils.error_reporting.ErrorString.
+  - Class `ErrorOutput` moved here from docutils/utils/error_reporting.py
 
 * docutils/utils/error_reporting.py
 
@@ -77,12 +78,13 @@ Changes Since 0.18.1
 
 * docutils/writers/pep_html/
 
-  - use "https:" scheme in "python_home" URL default.
+  - Use "https:" scheme in "python_home" URL default.
+  - Fix links in template.txt.
 
 * test/DocutilsTestSupport.py
 
-  - exception_data() now returns None if no exception was raised.
-  - recommonmark_wrapper only imported if upstream parser is present.
+  - `exception_data()` now returns None if no exception was raised.
+  - `recommonmark_wrapper` only imported if upstream parser is present.
 
 * test/test_parsers/test_rst/test_directives/test_tables.py
 
