@@ -32,10 +32,9 @@ import warnings
 
 from docutils import frontend, utils
 import docutils.parsers.rst
-from docutils.utils.error_reporting import SafeString, ErrorString, ErrorOutput
-
 warnings.filterwarnings('ignore', category=DeprecationWarning,
-                        message=r'.*utils\.error_reporting')
+                        module='.*error_reporting')
+from docutils.utils.error_reporting import SafeString, ErrorString, ErrorOutput  # noqa: E402, E501
 
 
 class SafeStringTests(unittest.TestCase):
@@ -241,8 +240,7 @@ class ErrorReportingTests(unittest.TestCase):
     parser = docutils.parsers.rst.Parser()
     """Parser shared by all ParserTestCases."""
 
-    option_parser = frontend.OptionParser(components=(parser,))
-    settings = option_parser.get_default_values()
+    settings = frontend.get_default_settings(parser)
     settings.report_level = 1
     settings.halt_level = 1
     settings.warning_stream = ''

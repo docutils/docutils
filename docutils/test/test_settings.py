@@ -108,10 +108,9 @@ class ConfigFileTests(unittest.TestCase):
     """Comparison method shared by all tests."""
 
     def setUp(self):
-        warnings.filterwarnings(action='ignore',
+        warnings.filterwarnings('ignore',
                                 category=frontend.ConfigDeprecationWarning)
-        warnings.filterwarnings(action='ignore', module='docutils.frontend',
-                                category=PendingDeprecationWarning)
+        warnings.filterwarnings('ignore', category=DeprecationWarning)
         self.option_parser = frontend.OptionParser(
             components=(pep_html.Writer, rst.Parser), read_config_files=None)
 
@@ -355,6 +354,7 @@ class HelperFunctionsTests(unittest.TestCase):
         with self.assertWarnsRegex(DeprecationWarning,
                                    'Set attributes via configuration '):
             reporter.set_conditions('foo', 1, 4)  # trigger warning
+
 
 
 if __name__ == '__main__':

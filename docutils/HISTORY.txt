@@ -135,6 +135,7 @@ Release 0.18 (2021-10-26)
 * docutils/frontend.py
   - mark as provisional (will switch from using "optparse" to "argparse").
   - remove hack for the now obsolete "mod_python" Apache module.
+  - new function get_default_settings()
 
 * docutils/nodes.py
 
