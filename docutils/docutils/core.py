@@ -18,6 +18,7 @@ __docformat__ = 'reStructuredText'
 import pprint
 import os
 import sys
+import warnings
 
 from docutils import (__version__, __version_details__, SettingsSpec,
                       io, utils, readers, writers)
@@ -102,6 +103,9 @@ class Publisher:
     def setup_option_parser(self, usage=None, description=None,
                             settings_spec=None, config_section=None,
                             **defaults):
+        warnings.warn('Publisher.setup_option_parser is deprecated, '
+                      'and will be removed in Docutils 0.21.',
+                      DeprecationWarning, stacklevel=2)
         if config_section:
             if not settings_spec:
                 settings_spec = SettingsSpec()
@@ -110,22 +114,32 @@ class Publisher:
             if len(parts) > 1 and parts[-1] == 'application':
                 settings_spec.config_section_dependencies = ['applications']
         # @@@ Add self.source & self.destination to components in future?
-        option_parser = OptionParser(
+        return OptionParser(
             components=(self.parser, self.reader, self.writer, settings_spec),
             defaults=defaults, read_config_files=True,
             usage=usage, description=description)
-        return option_parser
+
+    def _setup_settings_parser(self, *args, **kwargs):
+        # Provisional: will change (docutils.frontend.OptionParser will
+        # be replaced by a parser based on arparse.ArgumentParser)
+        # and may be removed later.
+        with warnings.catch_warnings():
+            warnings.filterwarnings('ignore', category=DeprecationWarning)
+            return self.setup_option_parser(*args, **kwargs)
 
     def get_settings(self, usage=None, description=None,
                      settings_spec=None, config_section=None, **defaults):
         """
-        Set and return default settings (overrides in `defaults` dict).
+        Return settings from components and config files.
 
-        Set components first (`self.set_reader` & `self.set_writer`).
-        Explicitly setting `self.settings` disables command line option
-        processing from `self.publish()`.
+        Please set components first (`self.set_reader` & `self.set_writer`).
+        Use keyword arguments to override component defaults
+        (before updating from configuration files).
+
+        Calling this function also sets `self.settings` which makes
+        `self.publish()` skip parsing command line options.
         """
-        option_parser = self.setup_option_parser(
+        option_parser = self._setup_settings_parser(
             usage, description, settings_spec, config_section, **defaults)
         self.settings = option_parser.get_default_values()
         return self.settings
@@ -145,14 +159,14 @@ class Publisher:
                              settings_spec=None, config_section=None,
                              **defaults):
         """
-        Set parse command line arguments and set ``self.settings``.
+        Parse command line arguments and set ``self.settings``.
 
         Pass an empty sequence to `argv` to avoid reading `sys.argv`
         (the default behaviour).
 
         Set components first (`self.set_reader` & `self.set_writer`).
         """
-        option_parser = self.setup_option_parser(
+        option_parser = self._setup_settings_parser(
             usage, description, settings_spec, config_section, **defaults)
         if argv is None:
             argv = sys.argv[1:]

@@ -15,23 +15,39 @@ See https://docutils.sourceforge.io/docs/api/runtime-settings.html.
 Exports the following classes:
 
 * `OptionParser`: Standard Docutils command-line processing.
+  Deprecated. Will be replaced by an ArgumentParser.
 * `Option`: Customized version of `optparse.Option`; validation support.
+  Deprecated. Will be removed.
 * `Values`: Runtime settings; objects are simple structs
   (``object.attribute``).  Supports cumulative list settings (attributes).
+  Deprecated. Will be removed.
 * `ConfigParser`: Standard Docutils config file processing.
+  Provisional. Details will change.
 
 Also exports the following functions:
 
-* Option callbacks: `store_multiple()`, `read_config_file()`.
-* Setting validators: `validate_encoding()`,
-  `validate_encoding_error_handler()`,
+Interface function:
+   `get_default_settings()`.  New in 0.19.
+
+Option callbacks:
+   `store_multiple()`, `read_config_file()`. Deprecated.
+
+Setting validators:
+  `validate_encoding()`, `validate_encoding_error_handler()`,
   `validate_encoding_and_error_handler()`,
-  `validate_boolean()`, `validate_ternary()`, `validate_threshold()`,
+  `validate_boolean()`, `validate_ternary()`,
+  `validate_nonnegative_int()`, `validate_threshold()`,
   `validate_colon_separated_string_list()`,
   `validate_comma_separated_list()`,
-  `validate_dependency_file()`.
-* `make_paths_absolute()`.
-* SettingSpec creation: `filter_settings_spec()`.
+  `validate_url_trailing_slash()`,
+  `validate_dependency_file()`,
+  `validate_strip_class()`
+  `validate_smartquotes_locales()`.
+
+  Provisional.
+
+Misc:
+  `make_paths_absolute()`, `filter_settings_spec()`. Provisional.
 """
 
 __docformat__ = 'reStructuredText'
@@ -47,7 +63,7 @@ import sys
 import warnings
 
 import docutils
-from docutils import io
+from docutils import io, utils
 
 
 def store_multiple(option, opt, value, parser, *args, **kwargs):
@@ -207,10 +223,10 @@ def validate_url_trailing_slash(
 def validate_dependency_file(setting, value, option_parser,
                              config_parser=None, config_section=None):
     try:
-        return docutils.utils.DependencyList(value)
+        return utils.DependencyList(value)
     except OSError:
         # TODO: warn/info?
-        return docutils.utils.DependencyList(None)
+        return utils.DependencyList(None)
 
 
 def validate_strip_class(setting, value, option_parser,
@@ -317,17 +333,22 @@ def filter_settings_spec(settings_spec, *exclude, **replace):
 
 
 class Values(optparse.Values):
+    """Storage for option values.
 
-    """
     Updates list attributes by extension rather than by replacement.
     Works in conjunction with the `OptionParser.lists` instance attribute.
+
+    Deprecated. Will be removed.
     """
 
     def __init__(self, *args, **kwargs):
-        optparse.Values.__init__(self, *args, **kwargs)
+        warnings.warn('frontend.Values class will be removed '
+                      'in Docutils 0.21 or later.',
+                      DeprecationWarning, stacklevel=2)
+        super().__init__(*args, **kwargs)
         if getattr(self, 'record_dependencies', None) is None:
             # Set up dummy dependency list.
-            self.record_dependencies = docutils.utils.DependencyList()
+            self.record_dependencies = utils.DependencyList()
 
     def update(self, other_dict, option_parser):
         if isinstance(other_dict, Values):
@@ -354,8 +375,18 @@ class Values(optparse.Values):
 
 
 class Option(optparse.Option):
+    """Add validation and override support to `optparse.Option`.
+
+    Deprecated. Will be removed.
+    """
 
     ATTRS = optparse.Option.ATTRS + ['validator', 'overrides']
+
+    def __init__(self, *args, **kwargs):
+        warnings.warn('The frontend.Option class will be removed '
+                      'in Docutils 0.21 or later.',
+                      DeprecationWarning, stacklevel=2)
+        super().__init__(*args, **kwargs)
 
     def process(self, opt, value, values, parser):
         """
@@ -381,23 +412,29 @@ class Option(optparse.Option):
 
 
 class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
-
     """
-    Parser for command-line and library use.  The `settings_spec`
-    specification here and in other Docutils components are merged to build
-    the set of command-line options and runtime settings for this process.
+    Settings parser for command-line and library use.
+
+    The `settings_spec` specification here and in other Docutils components
+    are merged to build the set of command-line options and runtime settings
+    for this process.
 
     Common settings (defined below) and component-specific settings must not
     conflict.  Short options are reserved for common settings, and components
     are restricted to using long options.
+
+    Deprecated.
+    Will be replaced by a subclass of `argparse.ArgumentParser`.
     """
 
     standard_config_files = [
         '/etc/docutils.conf',           # system-wide
         './docutils.conf',              # project-specific
         '~/.docutils']                  # user-specific
-    """Docutils configuration files, using ConfigParser syntax.  Filenames
-    will be tilde-expanded later.  Later files override earlier ones."""
+    """Docutils configuration files, using ConfigParser syntax.
+
+    Filenames will be tilde-expanded later. Later files override earlier ones.
+    """
 
     threshold_choices = 'info 1 warning 2 error 3 severe 4 none 5'.split()
     """Possible inputs for for --report and --halt threshold values."""
@@ -588,9 +625,10 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
                          '_source': None,
                          '_destination': None,
                          '_config_files': None}
-    """Defaults for settings without command-line option equivalents."""
+    """Defaults for settings without command-line option equivalents.
 
-    relative_path_settings = ('warning_stream',)
+    See https://docutils.sourceforge.io/docs/user/config.html#internal-settings
+    """
 
     config_section = 'general'
 
@@ -601,12 +639,13 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
                            sys.version.split()[0], sys.platform))
     """Default version message."""
 
-    def __init__(self, components=(), defaults=None, read_config_files=None,
+    def __init__(self, components=(), defaults=None, read_config_files=False,
                  *args, **kwargs):
-        """
+        """Set up OptionParser instance.
+
         `components` is a list of Docutils components each containing a
-        ``.settings_spec`` attribute.  `defaults` is a mapping of setting
-        default overrides.
+        ``.settings_spec`` attribute.
+        `defaults` is a mapping of setting default overrides.
         """
 
         self.lists = {}
@@ -615,14 +654,17 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
         self.config_files = []
         """List of paths of applied configuration files."""
 
-        optparse.OptionParser.__init__(
-            self, option_class=Option, add_help_option=None,
-            formatter=optparse.TitledHelpFormatter(width=78),
-            *args, **kwargs)
+        self.relative_path_settings = ['warning_stream']  # will be modified
+
+        warnings.warn('The frontend.OptionParser class will be replaced '
+                      'by a subclass of argparse.ArgumentParser '
+                      'in Docutils 0.21 or later.',
+                      DeprecationWarning, stacklevel=2)
+        super().__init__(option_class=Option, add_help_option=None,
+                         formatter=optparse.TitledHelpFormatter(width=78),
+                         *args, **kwargs)
         if not self.version:
             self.version = self.version_template
-        # Make an instance copy (it will be modified):
-        self.relative_path_settings = list(self.relative_path_settings)
         self.components = (self, *components)
         self.populate_from_components(self.components)
         self.defaults.update(defaults or {})
@@ -668,14 +710,16 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
     @classmethod
     def get_standard_config_files(cls):
         """Return list of config files, from environment or standard."""
-        try:
+        if 'DOCUTILSCONFIG' in os.environ:
             config_files = os.environ['DOCUTILSCONFIG'].split(os.pathsep)
-        except KeyError:
+        else:
             config_files = cls.standard_config_files
         return [os.path.expanduser(f) for f in config_files if f.strip()]
 
     def get_standard_config_settings(self):
-        settings = Values()
+        with warnings.catch_warnings():
+            warnings.filterwarnings('ignore', category=DeprecationWarning)
+            settings = Values()
         for filename in self.get_standard_config_files():
             settings.update(self.get_config_file_settings(filename), self)
         return settings
@@ -683,11 +727,12 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
     def get_config_file_settings(self, config_file):
         """Returns a dictionary containing appropriate config file settings."""
         config_parser = ConfigParser()
-        # parse config file, add filename if found and successfull read.
-        self.config_files += config_parser.read(config_file, self)
-        base_path = os.path.dirname(config_file)
+        # parse config file, add filename if found and successfully read.
         applied = set()
-        settings = Values()
+        with warnings.catch_warnings():
+            warnings.filterwarnings('ignore', category=DeprecationWarning)
+            self.config_files += config_parser.read(config_file, self)
+            settings = Values()
         for component in self.components:
             if not component:
                 continue
@@ -696,9 +741,11 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
                 if section in applied:
                     continue
                 applied.add(section)
-                settings.update(config_parser.get_section(section), self)
-        make_paths_absolute(
-            settings.__dict__, self.relative_path_settings, base_path)
+                if config_parser.has_section(section):
+                    settings.update(config_parser[section], self)
+        make_paths_absolute(settings.__dict__,
+                            self.relative_path_settings,
+                            os.path.dirname(config_file))
         return settings.__dict__
 
     def check_values(self, values, args):
@@ -731,7 +778,9 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
 
     def get_default_values(self):
         """Needed to get custom `Values` instances."""
-        defaults = Values(self.defaults)
+        with warnings.catch_warnings():
+            warnings.filterwarnings('ignore', category=DeprecationWarning)
+            defaults = Values(self.defaults)
         defaults._config_files = self.config_files
         return defaults
 
@@ -792,7 +841,7 @@ Skipping "%s" configuration file.
             warnings.warn('frontend.ConfigParser.read(): parameter '
                           '"option_parser" will be removed '
                           'in Docutils 0.21 or later.',
-                          PendingDeprecationWarning, stacklevel=2)
+                          DeprecationWarning, stacklevel=2)
         read_ok = []
         if isinstance(filenames, str):
             filenames = [filenames]
@@ -845,12 +894,10 @@ Skipping "%s" configuration file.
                             setting, value, option_parser,
                             config_parser=self, config_section=section)
                     except Exception as err:
-                        raise ValueError(
-                            'Error in config file "%s", section "[%s]":\n'
-                            '    %s\n'
-                            '        %s = %s'
-                            % (filename, section, io.error_string(err),
-                               setting, value))
+                        raise ValueError(f'Error in config file "{filename}", '
+                                         f'section "[{section}]":\n'
+                                         f'    {io.error_string(err)}\n'
+                                         f'        {setting} = {value}')
                     self.set(section, setting, new_value)
                 if option.overrides:
                     self.set(section, option.overrides, None)
@@ -873,8 +920,8 @@ Skipping "%s" configuration file.
         catch KeyError.
         """
         warnings.warn('frontend.OptionParser.get_section() '
-                      'will be removed in Docutils 0.22 or later.',
-                      PendingDeprecationWarning, stacklevel=2)
+                      'will be removed in Docutils 0.21 or later.',
+                      DeprecationWarning, stacklevel=2)
         try:
             return dict(self[section])
         except KeyError:
@@ -883,3 +930,19 @@ Skipping "%s" configuration file.
 
 class ConfigDeprecationWarning(FutureWarning):
     """Warning for deprecated configuration file features."""
+
+
+def get_default_settings(*components):
+    """Return default runtime settings for `components`.
+
+    Return a `frontend.Values` instance with defaults for generic Docutils
+    settings and settings from the `components` (`SettingsSpec` instances).
+
+    This corresponds to steps 1 and 2 in the `runtime settings priority`__.
+
+    __ https://docutils.sourceforge.io/docs/api/runtime-settings.html
+       #settings-priority
+    """
+    with warnings.catch_warnings():
+        warnings.filterwarnings('ignore', category=DeprecationWarning)
+        return OptionParser(components).get_default_values()

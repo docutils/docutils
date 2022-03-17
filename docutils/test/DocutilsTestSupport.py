@@ -311,8 +311,7 @@ class TransformTestCase(CustomTestCase):
     cases that have nothing to do with the input and output of the transform.
     """
 
-    option_parser = frontend.OptionParser(components=(rst.Parser,))
-    settings = option_parser.get_default_values()
+    settings = frontend.get_default_settings(rst.Parser)
     settings.report_level = 1
     settings.halt_level = 5
     settings.debug = package_unittest.debug
@@ -433,8 +432,7 @@ class ParserTestCase(CustomTestCase):
     parser = rst.Parser()
     """Parser shared by all ParserTestCases."""
 
-    option_parser = frontend.OptionParser(components=(rst.Parser,))
-    settings = option_parser.get_default_values()
+    settings = frontend.get_default_settings(rst.Parser)
     settings.report_level = 5
     settings.halt_level = 5
     settings.debug = package_unittest.debug
@@ -495,8 +493,7 @@ class PEPParserTestCase(ParserTestCase):
     parser = rst.Parser(rfc2822=True, inliner=rst.states.Inliner())
     """Parser shared by all PEPParserTestCases."""
 
-    option_parser = frontend.OptionParser(components=(rst.Parser, pep.Reader))
-    settings = option_parser.get_default_values()
+    settings = frontend.get_default_settings(rst.Parser, pep.Reader)
     settings.report_level = 5
     settings.halt_level = 5
     settings.debug = package_unittest.debug
@@ -536,8 +533,7 @@ class RecommonmarkParserTestCase(ParserTestCase):
 
     if md_parser_class:
         parser = md_parser_class()
-        option_parser = frontend.OptionParser(components=(md_parser_class,))
-        settings = option_parser.get_default_values()
+        settings = frontend.get_default_settings(md_parser_class)
         settings.report_level = 5
         settings.halt_level = 5
         settings.debug = package_unittest.debug

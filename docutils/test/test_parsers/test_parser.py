@@ -17,8 +17,8 @@ class RstParserTests(unittest.TestCase):
     def test_inputrestrictions(self):
         parser_class = parsers.get_parser_class('rst')
         parser = parser_class()
-        document = utils.new_document('test data', frontend.OptionParser(
-                    components=(parser, )).get_default_values())
+        document = utils.new_document('test data',
+                                      frontend.get_default_settings(parser))
         # input must be unicode at all times
         self.assertRaises(TypeError, parser.parse, b'hol', document)
 

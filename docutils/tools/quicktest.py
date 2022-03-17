@@ -15,7 +15,7 @@ import sys
 import os
 import getopt
 import docutils
-from docutils.frontend import OptionParser
+from docutils import frontend
 from docutils.utils import new_document
 from docutils.parsers.rst import Parser
 
@@ -206,7 +206,7 @@ Use the next dialog to build a command line:
 def main():
     # process cmdline arguments:
     inputFile, outputFile, outputFormat, optargs = getArgs()
-    settings = OptionParser(components=(Parser,)).get_default_values()
+    settings = frontend.get_default_settings(Parser)
     settings.debug = optargs['debug']
     parser = Parser()
     input = inputFile.read()

@@ -18,7 +18,8 @@ import unicodedata
 
 from docutils import ApplicationError, DataError, __version_info__
 from docutils import io, nodes
-from docutils.nodes import unescape  # noqa: F401  backwards compatibility
+# for backwards compatibility
+from docutils.nodes import unescape  # noqa: F401
 
 
 class SystemMessage(ApplicationError):
@@ -436,17 +437,26 @@ def new_document(source_path, settings=None):
         `settings` : optparse.Values object
             Runtime settings.  If none are provided, a default core set will
             be used.  If you will use the document object with any Docutils
-            components, you must provide their default settings as well.  For
-            example, if parsing rST, at least provide the rst-parser settings,
-            obtainable as follows::
+            components, you must provide their default settings as well.
 
-                settings = docutils.frontend.OptionParser(
-                               components=(docutils.parsers.rst.Parser,)
-                               ).get_default_values()
+            For example, if parsing rST, at least provide the rst-parser
+            settings, obtainable as follows:
+
+            Defaults for parser component::
+
+                settings = docutils.frontend.get_default_settings(
+                               docutils.parsers.rst.Parser)
+
+            Defaults and configuration file customizations::
+
+                settings = docutils.core.Publisher(
+                    parser=docutils.parsers.rst.Parser).get_settings()
+
     """
+    # Import at top of module would lead to circular dependency!
     from docutils import frontend
     if settings is None:
-        settings = frontend.OptionParser().get_default_values()
+        settings = frontend.get_default_settings()
     source_path = decode_path(source_path)
     reporter = new_reporter(source_path, settings)
     document = nodes.document(settings, reporter, source=source_path)
