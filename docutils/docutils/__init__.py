@@ -62,12 +62,13 @@ __version__ = '0.19b.dev'
 For version comparison operations, use `__version_info__` (see, below)
 rather than parsing the text of `__version__`.
 
-See 'Version Numbering' in docs/dev/policies.txt.
+https://docutils.sourceforge.io/docs/dev/policies.html#version-identification
 """
 
-__version_details__ = 'release'
+__version_details__ = ''
 """Optional extra version details (e.g. 'snapshot 2005-05-29, r3410').
-(For development and release status see `__version_info__`.)
+
+For development and release status, use `__version__ and `__version_info__`.
 """
 
 
@@ -120,8 +121,10 @@ __version_info__ = VersionInfo(
     serial=0,  # pre-release number (0 for final releases and snapshots)
     release=False  # True for official releases and pre-releases
     )
-"""Comprehensive version information tuple. See 'Version Numbering' in
-docs/dev/policies.txt."""
+"""Comprehensive version information tuple.
+
+https://docutils.sourceforge.io/docs/dev/policies.html#version-identification
+"""
 
 
 class ApplicationError(Exception): pass
