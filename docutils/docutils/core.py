@@ -15,13 +15,13 @@ custom component objects first, and pass *them* to
 
 __docformat__ = 'reStructuredText'
 
+import pprint
 import os
 import sys
-import pprint
-from docutils import __version__, SettingsSpec
-from docutils import io, utils, readers, writers
+
+from docutils import (__version__, __version_details__, SettingsSpec,
+                      io, utils, readers, writers)
 from docutils.frontend import OptionParser
-import docutils.readers.doctree
 
 
 class Publisher:
@@ -289,15 +289,13 @@ class Publisher:
                 '  %s\n' % io.error_string(error))
         else:
             print('%s' % io.error_string(error), file=self._stderr)
-            print(("""\
+            print(f"""\
 Exiting due to error.  Use "--traceback" to diagnose.
 Please report errors to <docutils-users@lists.sourceforge.net>.
-Include "--traceback" output, Docutils version (%s%s),
-Python version (%s), your OS type & version, and the
-command line used.""" % (__version__,
-                         docutils.__version_details__
-                         and ' [%s]'%docutils.__version_details__ or '',
-                         sys.version.split()[0])), file=self._stderr)
+Include "--traceback" output, Docutils version ({__version__}\
+{f' [{__version_details__}]' if __version_details__ else ''}),
+Python version ({sys.version.split()[0]}), your OS type & version, \
+and the command line used.""", file=self._stderr)
 
     def report_SystemMessage(self, error):
         print('Exiting due to level-%s (%s) system message.' % (
@@ -530,7 +528,7 @@ def publish_from_doctree(document, destination_path=None,
 
     Other parameters: see `publish_programmatically`.
     """
-    reader = docutils.readers.doctree.Reader(parser_name='null')
+    reader = readers.doctree.Reader(parser_name='null')
     pub = Publisher(reader, None, writer,
                     source=io.DocTreeInput(document),
                     destination_class=io.StringOutput, settings=settings)
