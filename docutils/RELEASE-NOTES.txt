@@ -95,16 +95,19 @@ Drop support for `old-format configuration files`_ in Docutils 1.2.
 Release 0.19b (unpublished)
 ===========================
 
-Docutils 0.19 is compatible with Python versions 3.7 and later.
+* Drop support for Python 2.7, 3.5, and 3.6.
 
-* Support calling the "myst" parser (https://pypi.org/project/myst-docutils)
-  from docutils-cli.py_.
+* Support parsing "Markdown" input with 3rd party parsers
+  myst_, pycmark_, or recommonmark_.
 
 * The default values for the "pep-references", "rfc-base-url",
   and "python-home" `configuration settings`_ now uses the "https:" scheme.
   The PEP-writer template's header is updated to fix links and
   resemble the header of official PEPs.
 
+.. _myst: https://pypi.org/project/myst-docutils
+.. _pycmark: https://pypi.org/project/pycmark/
+.. _recommonmark: https://pypi.org/project/recommonmark/
 .. _configuration settings: docs/user/config.html
 
 
