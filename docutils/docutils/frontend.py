@@ -364,7 +364,9 @@ class Values(optparse.Values):
 
     def copy(self):
         """Return a shallow copy of `self`."""
-        return self.__class__(defaults=self.__dict__)
+        with warnings.catch_warnings():
+            warnings.filterwarnings('ignore', category=DeprecationWarning)
+            return self.__class__(defaults=self.__dict__)
 
     def setdefault(self, name, default):
         """V.setdefault(n[,d]) -> getattr(V,n,d), also set D.n=d if n not in D or None.
