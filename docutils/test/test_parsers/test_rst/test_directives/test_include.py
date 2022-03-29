@@ -14,9 +14,10 @@ from test_parsers import DocutilsTestSupport
 from docutils import parsers
 from docutils.utils.code_analyzer import with_pygments
 
-# check markdown parser availability:
-try:
-    md_parser_class = parsers.get_parser_class('markdown')
+# optional 3rd-party markdown parser
+md_parser_name = 'recommonmark'
+try:  # check availability
+    md_parser_class = parsers.get_parser_class(md_parser_name)
 except ImportError:
     md_parser_class = None
 
@@ -1312,17 +1313,16 @@ No circular inclusion.
                             Some include text."""],
 ]
 
-# Parsing with Markdown (recommonmark) is an optional feature depending
-# on 3rd-party modules:
+# Parsing with Markdown is an optional feature depending on 3rd-party modules:
 totest['include-markdown'] = [
-["""\
+[f"""\
 Include Markdown source.
 
-.. include:: %s
-   :parser: markdown
+.. include:: {include_md}
+   :parser: {md_parser_name}
 
 A paragraph.
-""" % include_md,
+""",
 """\
 <document source="test data">
     <paragraph>

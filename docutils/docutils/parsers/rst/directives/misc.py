@@ -184,10 +184,13 @@ class Include(Directive):
 
         if 'parser' in self.options:
             # parse into a dummy document and return created nodes
-            parser = self.options['parser']()
             document = utils.new_document(path, self.state.document.settings)
             document.include_log = include_log + [(path, clip_options)]
+            parser = self.options['parser']()
             parser.parse('\n'.join(include_lines), document)
+            # clean up doctree and complete parsing
+            document.transformer.populate_from_components((parser,))
+            document.transformer.apply_transforms()
             return document.children
 
         # Include as rST source:

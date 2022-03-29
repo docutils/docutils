@@ -28,11 +28,17 @@ Changes Since 0.18.1
 
 * docutils/parsers/__init__.py
 
+  - Aliases "markdown" and "commonmark" point to "commonmark_wrapper".
   - Alias for the "myst" parser (https://pypi.org/project/myst-docutils).
   - Use absolute module names in ``_parser_aliases`` instead of two
     import attempts. (Keeps details if the `recommonmark_wrapper.py` module
     raises an ImportError.)
   - Prepend parser name to ImportError if importing a parser class fails.
+
+* docutils/parsers/commonmark_wrapper.py
+
+  - New module for parsing CommonMark input. Selects a locally installed
+    3rd-party parser (pycmark, myst, or recommonmark).
 
 * docutils/parsers/recommonmark_wrapper.py
 
