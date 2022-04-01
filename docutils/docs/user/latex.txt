@@ -1163,6 +1163,18 @@ Option:
 
 .. _hyperref: https://ctan.org/pkg/hyperref
 
+
+language
+--------
+
+The global document language can be set with the language-code_
+configuration setting. The language of text parts can be set adding the
+language tag prefixed by "language-" to an element's classes_
+attribute, e.g. ``language-el`` for a Greek text part.
+
+.. _language-code: config.html#language-code
+
+
 line blocks
 -----------
 
@@ -1994,6 +2006,7 @@ Solution:
   Specify the image size in fixed units (``pt``, ``cm``, ``in``) or
   configure the `size of a pixel`_ (length unit px).
 
+
 Error ``illegal unit px``
 `````````````````````````
 
@@ -2007,6 +2020,7 @@ distributions (since ca. 2006).
 If updating LaTeX is not an option, just remove the "px" from the length
 specification. HTML/CSS will default to "px" while the `latexe2` writer
 will add the fallback unit "bp".
+
 
 Error ``Symbol \textcurrency not provided`` ...
 ```````````````````````````````````````````````
@@ -2026,12 +2040,28 @@ an Euro sign at its place). You might see an error like::
 
 to the document options or use a different font package.
 
+
+Warning: language … not supported
+`````````````````````````````````
+
+The "latex" writer uses the LaTeX package Babel_ and the "xetex" writer
+uses Polyglossia_ for language_ support (hyphenation rules, auto-text
+localisations and typographic rules). Polyglossia_ supports more
+languages, so switching to the "xetex_" writer may help.
+
+For short quotes or if language support is provided by the user via other
+`LaTeX document classes and packages`_, the warning can be ignored.
+
+.. _Babel: https://ctan.org/pkg/babel
+.. _Polyglossia: https://ctan.org/pkg/polyglossia
+
+
 Search and text extraction
 ``````````````````````````
 
-Search for text that contains characters outside the ASCII range (e.g.
-umlauts) might fail.  See font_ and `font encoding`_ (as well as
-`Searching PDF files`_ for background information).
+Search for text that contains characters outside the ASCII range might
+fail.  See font_ and `font encoding`_ (as well as `Searching PDF files`_
+for background information).
 
 It may help to load the `cmap` package (via `style sheets`_ or the custom
 `LaTeX preamble`_ (see also `Proper use of cmap and mmmap`_).
@@ -2040,6 +2070,7 @@ It may help to load the `cmap` package (via `style sheets`_ or the custom
    http://www.tex.ac.uk/cgi-bin/texfaq2html?label=srchpdf
 .. _Proper use of cmap and mmmap:
    https://tex.stackexchange.com/questions/64409/proper-use-of-cmap-and-mmap
+
 
 Unicode box drawing and block characters
 ````````````````````````````````````````
@@ -2059,6 +2090,7 @@ Unfortunately, this defines only a subset of the characters
 .. _pmboxdraw: https://ctan.org/pkg/pmboxdraw
 .. _pmboxdraw.pdf:
    https://mirrors.ctan.org/macros/latex/contrib/pmboxdraw/pmboxdraw.pdf
+
 
 Bugs and open issues
 --------------------
