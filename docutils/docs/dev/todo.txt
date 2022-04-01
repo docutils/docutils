@@ -688,8 +688,6 @@ User Docs
 Developer Docs
 --------------
 
-* Complete `Docutils Runtime Settings <../api/runtime-settings.html>`_.
-
 * Improve the internal module documentation (docstrings in the code).
   Specific deficiencies listed below.
 
@@ -2881,7 +2879,7 @@ Front-End Tools
 
 
 .. _configuration: ../user/config.html
-.. _transforms: ../ref/transforms.html
+.. _transforms: ../api/transforms.html
 
 
 ..

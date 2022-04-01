@@ -426,5 +426,5 @@ For an example usage of the ``pending`` node, see the implementation
 of the ``contents`` directive in
 docutils.parsers.rst.directives.parts__.
 
-.. _transform: ../ref/transforms.html
+.. _transform: ../api/transforms.html
 __ https://docutils.sourceforge.io/docutils/parsers/rst/directives/parts.py

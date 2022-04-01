@@ -2398,7 +2398,7 @@ The ``references.Footnotes`` Docutils transform_ resolves this to::
         <paragraph>
             Auto-numbered footnote 1.
 
-.. _transform: transforms.html
+.. _transform: api/.html
 
 
 ``generated``
@@ -4940,7 +4940,7 @@ citation_reference_, and substitution_reference_ elements (via the
 `%refname.att;`_ and `%reference.atts;`_ parameter entities).
 
 .. _indirect target: rst/restructuredtext.html#indirect-hyperlink-targets
-.. _transforms: transforms.html
+.. _transforms: api/.html
 
 
 ``refuri``

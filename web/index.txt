@@ -47,17 +47,17 @@ list. **Patch** submissions should be filed in the `patch tracker`_
 Download
 ========
 
-`Release packages`_ can be downloaded from PyPI_. They are mostly intended
-for distributors.  See the `release notes`_ for a list of changes since the
-previous release.
+`Release packages`_ can be downloaded from PyPI_. 
+See the `release notes`_ for a list of changes since the previous
+release.
 
-We recommend that you use a snapshot_ [#snapshots]_ from `Docutils' Subversion
-repository`_. The snapshots usually contain *more features* and *fewer bugs*
+Snapshots_ [#]_ from the `Docutils' Subversion repository`_
+usually contain *more features* and *fewer bugs*
 than the "official" releases |---| they're not only for developers!
 
-.. [#snapshots] Snapshots are created on-demand by Sourceforge.  You can
+.. [#] Snapshots are created on-demand by Sourceforge.  You can
    download a snapshot of the complete `trunk directory`_ (docutils,
-   sandbox_ and web) or any sub-directory. Browse to the
+   sandbox_, prest/perl and web) or any sub-directory. Browse to the
    desired directory and click the "Download Snapshot" button.
 
 ----------------------------------------------------------------------
@@ -70,7 +70,7 @@ Powered by |Python|_.
 .. |---| unicode:: U+02014 .. em dash
    :trim:
 
-.. _snapshot:
+.. _snapshots:
    https://sourceforge.net/p/docutils/code/HEAD/tree/trunk/docutils/
 .. _trunk directory: https://sourceforge.net/p/docutils/code/HEAD/tree/trunk/
 .. _patch tracker: https://sourceforge.net/p/docutils/patches/
