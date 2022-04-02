@@ -1,3 +1,5 @@
+.. include:: ../header.txt
+
 =========================
 Smart Quotes for Docutils
 =========================

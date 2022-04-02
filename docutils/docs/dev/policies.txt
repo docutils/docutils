@@ -1,3 +1,5 @@
+.. include:: ../header.txt
+
 ===========================
  Docutils Project Policies
 ===========================
@@ -675,7 +677,6 @@ the Docutils-develop_ mailing list.
 
 .. _link list: https://docutils.sourceforge.io/docs/user/links.html
 .. _docutils-develop: docs/user/mailing-lists.html#docutils-develop
-
 
 
 ..

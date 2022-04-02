@@ -1,3 +1,5 @@
+.. include:: ../header.txt
+
 ==============================================
  Writing HTML (CSS) Stylesheets for Docutils_
 ==============================================
@@ -82,7 +84,6 @@ Docutils' HTML code in a separate stylesheet.
 .. _configuration: ../user/config.txt
 .. _sandbox: ../../../sandbox
 .. _stylesheet collection: ../../../sandbox/stylesheets/
-
 
 
 

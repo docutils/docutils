@@ -1,3 +1,5 @@
+.. header:: Docutils | Documentation_ | `Project page`_ | Download_ 
+
 ===================================
  Docutils: Documentation Utilities
 ===================================
@@ -84,6 +86,7 @@ Powered by |Python|_.
 .. _To Do list: docs/dev/todo.html
 .. _README: README.html
 .. _Quick-Start: README.html#quick-start
+.. _Documentation:
 .. _Project Documentation Overview: docs/index.html
 .. _Docutils' Subversion repository: docs/dev/repository.html
 .. _requirement: README.html#requirements

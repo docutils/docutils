@@ -1,3 +1,5 @@
+.. include:: ../header.txt
+
 ======================
  Python Source Reader
 ======================
@@ -120,6 +122,7 @@ roles may be defined.
 
 .. _pysource.dtd: pysource.dtd
 .. _docutils.dtd: ../ref/docutils.dtd
+
 
 
 ..

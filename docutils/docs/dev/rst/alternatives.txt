@@ -1,3 +1,5 @@
+.. include:: ../../header2.txt
+
 ==================================================
  A Record of reStructuredText Syntax Alternatives
 ==================================================
@@ -3200,7 +3202,6 @@ We need syntax for `object references`_.
 
 .. _object references:
    ../todo.html#object-numbering-and-object-references
-
 
 
 ..

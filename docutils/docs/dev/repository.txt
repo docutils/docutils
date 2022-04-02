@@ -1,3 +1,5 @@
+.. include:: ../header.txt
+
 =====================================
  The Docutils_ Version Repository
 =====================================
