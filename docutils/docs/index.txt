@@ -1,5 +1,5 @@
 ==========================================
- Docutils_ Project Documentation Overview
+ Docutils Project Documentation Overview
 ==========================================
 
 :Author: David Goodger
@@ -13,6 +13,15 @@ from the ``docs`` directory of the `Docutils distribution`_.
 
 .. _Docutils: https://docutils.sourceforge.io/
 .. _Docutils distribution: https://docutils.sourceforge.io/#download
+
+.. header::
+   Docutils_ | Overview | About__ | Users__ | Reference__ | Developers__
+
+__ `project fundamentals`_
+__ user_
+__ ref_
+__ howto_
+
 
 .. contents::
 

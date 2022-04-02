@@ -1,3 +1,5 @@
+.. include:: ../header.txt
+
 =======================
 Odt Writer for Docutils
 =======================
@@ -14,7 +16,6 @@ Odt Writer for Docutils
 .. sectnum::
 
 .. contents::
-
 
 
 Introduction

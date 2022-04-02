@@ -1,3 +1,5 @@
+.. include:: ../header.txt
+
 =============================
  Docutils_ Release Procedure
 =============================

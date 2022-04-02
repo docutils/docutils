@@ -1,3 +1,5 @@
+.. include:: ../header.txt
+
 ==============================
  manpage writer for Docutils_
 ==============================
