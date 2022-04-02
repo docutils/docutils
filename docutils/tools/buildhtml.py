@@ -44,7 +44,7 @@ description = ('Generates .html from all the reStructuredText .txt files '
 class SettingsSpec(docutils.SettingsSpec):
 
     """
-    Runtime settings & command-line options for the front end.
+    Runtime settings & command-line options for the "buildhtml" front end.
     """
 
     prune_default = ['.hg', '.bzr', '.git', '.svn', 'CVS']
@@ -105,17 +105,14 @@ class OptionParser(frontend.OptionParser):
     """
 
     def check_values(self, values, args):
-        frontend.OptionParser.check_values(self, values, args)
+        super().check_values(values, args)
         values._source = None
         return values
 
     def check_args(self, args):
-        source = destination = None
-        if args:
-            self.values._directories = args
-        else:
-            self.values._directories = [os.getcwd()]
-        return source, destination
+        self.values._directories = args or [os.getcwd()]
+        # backwards compatibility:
+        return None, None
 
 
 class Struct:
@@ -162,19 +159,22 @@ class Builder:
         config file settings and command-line options by
         `self.get_settings()`.
         """
-        for name, publisher in self.publishers.items():
-            option_parser = OptionParser(
-                components=publisher.components, read_config_files=1,
-                usage=usage, description=description)
-            publisher.option_parser = option_parser
-            publisher.setting_defaults = option_parser.get_default_values()
-            frontend.make_paths_absolute(publisher.setting_defaults.__dict__,
-                                         option_parser.relative_path_settings)
-            publisher.config_settings = (
-                option_parser.get_standard_config_settings())
-        self.settings_spec = self.publishers[''].option_parser.parse_args(
-            values=frontend.Values())   # no defaults; just the cmdline opts
-        self.initial_settings = self.get_settings('')
+        with warnings.catch_warnings():
+            warnings.filterwarnings('ignore', category=DeprecationWarning)
+            for name, publisher in self.publishers.items():
+                option_parser = OptionParser(
+                    components=publisher.components, read_config_files=True,
+                    usage=usage, description=description)
+                publisher.option_parser = option_parser
+                publisher.setting_defaults = option_parser.get_default_values()
+                frontend.make_paths_absolute(
+                    publisher.setting_defaults.__dict__,
+                    option_parser.relative_path_settings)
+                publisher.config_settings = (
+                    option_parser.get_standard_config_settings())
+            self.settings_spec = self.publishers[''].option_parser.parse_args(
+                values=frontend.Values())  # no defaults; just the cmdline opts
+            self.initial_settings = self.get_settings('')
 
         if self.initial_settings.html_writer is not None:
             warnings.warn('The configuration setting "html_writer" '
@@ -194,7 +194,9 @@ class Builder:
         Assumes the current directory has been set.
         """
         publisher = self.publishers[publisher_name]
-        settings = frontend.Values(publisher.setting_defaults.__dict__)
+        with warnings.catch_warnings():
+            warnings.filterwarnings('ignore', category=DeprecationWarning)
+            settings = frontend.Values(publisher.setting_defaults.__dict__)
         settings.update(publisher.config_settings, publisher.option_parser)
         if directory:
             local_config = publisher.option_parser.get_config_file_settings(
