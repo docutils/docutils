@@ -23,6 +23,7 @@ import warnings
 from docutils import (__version__, __version_details__, SettingsSpec,
                       io, utils, readers, writers)
 from docutils.frontend import OptionParser
+from docutils.readers import doctree
 
 
 class Publisher:
@@ -542,7 +543,7 @@ def publish_from_doctree(document, destination_path=None,
 
     Other parameters: see `publish_programmatically`.
     """
-    reader = readers.doctree.Reader(parser_name='null')
+    reader = doctree.Reader(parser_name='null')
     pub = Publisher(reader, None, writer,
                     source=io.DocTreeInput(document),
                     destination_class=io.StringOutput, settings=settings)
