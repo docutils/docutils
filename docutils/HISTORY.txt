@@ -81,7 +81,12 @@ Changes Since 0.18.1
 
   - Add 'html writers' to `config_section_dependencies`. Fixes bug #443.
   - Write table column widths with 3 digits precision. Fixes bug #444.
+  - Stop writing an empty line before the "footer" closing tag.
 
+* docutils/writers/html5_polyglot/__init__.py
+
+  - Add space before "charset" meta tag closing sequence.
+      
 * docutils/writers/pep_html/
 
   - Use "https:" scheme in "python_home" URL default.
