@@ -12,7 +12,8 @@ Abstract
 
 .. A short (<~200 word) description of the technical issue being addressed.
 
-This proposal defines the public APIs provided by the Docutils project.
+This document defines the public APIs provided by the Docutils project
+and outlines the backwards compatibility policy.
 
 
 Motivation
@@ -28,8 +29,8 @@ below 1.0 (widely seen as an indicator of "beta" status of a project) and
 is missing a clear policy on version identificator semantics.
 
 The current `Docutils Project Policies`_ section on `version
-identifcation`__ concentrates on the formal definition of the version
-specificator but leaves open what consists a "major change in the design
+identifcation`_ concentrates on the formal definition of the version
+specifier but leaves open what consists a "major change in the design
 or API".
 
 The current `backwards compatibility policy`__ is only a stub referencing
@@ -38,7 +39,9 @@ The current `backwards compatibility policy`__ is only a stub referencing
 Clearly defining how we will balance evolution with stability is
 important to both users and project developers.
 
-__ ../../docutils/docs/dev/policies.html#version-identification
+.. _version specifier:
+.. _version identifcation:
+   ../../docutils/docs/dev/policies.html#version-identification
 __ ../../docutils/docs/dev/policies.html#backwards-compatibility-policy
 
 
@@ -96,7 +99,7 @@ Specification
 
 Docutils public APIs are:
 
-* the `reStructuredText specification`_,
+* The `reStructuredText specification`_,
 
 * the document type definition (`Docutils Document Tree`_, docutils.dtd_),
 
@@ -138,8 +141,8 @@ Backwards Compatibility
 
 Beginning with version 1.0, Docutils will follow the rules of
 `Semantic Versioning`_. All incompatible changes to the public APIs
-require increasing the major part of the version specifier.
-Backwards compatible changes can be done in minor releases.
+require increasing the `major` part of the `version specifier`_.
+Backwards compatible changes can be done in `minor` releases.
 
 
 Security Implications
@@ -169,25 +172,25 @@ How to Teach This
     - nicely format rST docstrings
     - include attribute docstrings (ignored by pydoc_).
 
-* Put the text below at a suitable place in the documentation.
+* Put the following text at a suitable place in the documentation:
 
-To find out if an object from the "docutils" package is safe to use,
-look up its docstring and the docstring of its parent [#]_.
-
-If there is no documentation or the documentation says "provisional" or
-"internal", the name, behaviour, and existence of the object is not
-guaranteed to be stable.
-
-Code relying on non-public objects should be made robust using public
-alternatives. If this is a no such alternative or the required change
-would be a major problem, contact the Docutils developers.
-
-.. [#] `Attribute docstrings` are not shown by pydoc_ (cf. `What is a
-   Docstring`_). To find out whether attributes have a docstring, check
-   the source.
-
-.. _pydoc: https://docs.python.org/3/library/pydoc.html
-.. _what is a Docstring: https://peps.python.org/pep-0257/#what-is-a-docstring
+     To find out if an object from the "docutils" package is safe to use,
+     look up its docstring and the docstring of its parent [#]_.
+     
+     If there is no documentation or the documentation says "provisional" or
+     "internal", the name, behaviour, and existence of the object is not
+     guaranteed to be stable.
+     
+     Code relying on non-public objects should be made robust using public
+     alternatives. If there is a no such alternative or the required change
+     would be a major problem, contact the Docutils developers.
+     
+     .. [#] `Attribute docstrings`_ are not shown by pydoc_. To find out
+        whether attributes have a docstring, check the source.
+     
+     .. _attribute docstrings:
+         https://peps.python.org/pep-0258/#attribute-docstrings
+     .. _pydoc: https://docs.python.org/3/library/pydoc.html
 
 
 Rejected Ideas
@@ -205,7 +208,8 @@ Rejected Ideas
 
   - Would be a break from current versioning without clear advantages.
 
-* Allow breaking API changes in *minor* versions after a deprecation period.
+* Allow breaking API changes in *minor* versions after prior announcement
+  and a deprecation period.
 
   - Breaks the principle of least surprise.
 
@@ -228,7 +232,7 @@ Open Issues
   Cf. the `Docutils Project Policies`_
 
     When Docutils reaches version 1.0, the major APIs will be considered
-    frozen
+    frozen.
 
     The major number [...] may be incremented later if there is a major
     change in the design or API.
@@ -245,6 +249,35 @@ Open Issues
   ``__all__`` attribute of their parents?
 
   This would hide private objects from `pydoc` help on the parent objects.
+
+* Semantic versioning restricts incompatible changes to `major` releases.
+
+  Currently, several incompatible changes and removals are scheduled
+  for the `minor` releases 1.1, 1.2, and 1.3. 
+  This was done under the assumption that 1.0 will be released soon
+  (after 0.18 or 0.19) and following the policy of warnings at least 
+  two minor releases before the actual change (as in :PEP:`387`).
+
+  Alternatives to handle this problem:
+
+  * Postpone the removals and changes to version 2.0.
+
+    +1  No surprises.
+    -1  Junk code and use of deprecated "optparse" module in 1.x series.
+
+  * Prepone the changes to release 1.0
+    (after releases 0.19 and 0.20 to keep the "two minor releases"
+    warning period).
+
+    +1  Cleaner code in Docutils 1.0
+    -1  Incompatible changes in a "lower" release than currently announced.
+
+  * Keep an exception from `semantic versioning` for the 1.x series.
+
+    +1  Stick to the current announcment.
+    -1  Incompatible change in minor release may be unexpected for some
+        despite beeing documented.
+        ("Special cases aren't special enough to break the rules.")
 
 
 References
