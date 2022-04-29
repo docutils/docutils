@@ -239,7 +239,7 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     head_prefix_template = ('<html xmlns="http://www.w3.org/1999/xhtml"'
                             ' xml:lang="%(lang)s" lang="%(lang)s">\n<head>\n')
-    content_type = '<meta charset="%s"/>\n'
+    content_type = '<meta charset="%s" />\n'
     generator = ('<meta name="generator" content="Docutils %s: '
                  'https://docutils.sourceforge.io/" />\n')
 

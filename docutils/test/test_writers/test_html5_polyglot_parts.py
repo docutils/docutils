@@ -26,7 +26,7 @@ class Html5WriterPublishPartsTestCase(HtmlWriterPublishPartsTestCase):
     settings_default_overrides = HtmlWriterPublishPartsTestCase.settings_default_overrides.copy()
     settings_default_overrides['section_self_link'] = True
 
-    standard_content_type_template = '<meta charset="%s"/>\n'
+    standard_content_type_template = '<meta charset="%s" />\n'
     standard_generator_template = '<meta name="generator"' \
         ' content="Docutils %s: https://docutils.sourceforge.io/" />\n'
     standard_viewport_template = '<meta name="viewport"' \

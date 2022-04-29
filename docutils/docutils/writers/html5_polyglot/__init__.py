@@ -248,7 +248,7 @@ class HTMLTranslator(_html_base.HTMLTranslator):
         start = self.context.pop()
         footer = [self.starttag(node, 'footer')]
         footer.extend(self.body[start:])
-        footer.append('\n</footer>\n')
+        footer.append('</footer>\n')
         self.footer.extend(footer)
         self.body_suffix[:0] = footer
         del self.body[start:]
