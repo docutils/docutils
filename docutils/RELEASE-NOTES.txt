@@ -20,7 +20,10 @@ For a more detailed list of changes, please see the Docutils `HISTORY`_.
 Future changes
 ==============
 
-Drop support for `old-format configuration files`_ in Docutils 1.2.
+* Setup: 
+
+  - Do not install the auxilliary script ``tools/rst2odt_prepstyles.py``
+    in the binary PATH.
 
 * `html5` writer:
 
@@ -66,6 +69,8 @@ Drop support for `old-format configuration files`_ in Docutils 1.2.
 * Remove the compatibility hacks `nodes.reprunicode` and `nodes.ensure_str()`
   in Docutils 0.21 or later. They are not required with Python 3.x.
 
+* Drop support for `old-format configuration files`_ in Docutils 1.2.
+
 * Move math format conversion from docutils/utils/math (called from
   docutils/writers/_html_base.py) to a transform__.
 
@@ -101,9 +106,11 @@ Release 0.19b (unpublished)
   myst_, pycmark_, or recommonmark_.
 
 * The default values for the "pep-references", "rfc-base-url",
-  and "python-home" `configuration settings`_ now uses the "https:" scheme.
+  and "python-home" `configuration settings`_ now use the "https:" scheme.
   The PEP-writer template's header is updated to fix links and
   resemble the header of official PEPs.
+
+* Various bugfixes and improvements (see HISTORY_).
 
 .. _myst: https://pypi.org/project/myst-docutils
 .. _pycmark: https://pypi.org/project/pycmark/
@@ -118,9 +125,9 @@ Release 0.18.1 (2021-12-23)
 
    Docutils 0.18.x is the last version supporting Python 2.7, 3.5, and 3.6.
 
-* nodes.Node.traverse() returns a list again to restore backwards
+* ``nodes.Node.traverse()`` returns a list again to restore backwards
   compatibility (fixes bug #431).
-  Use nodes.Node.findall() to get an iterator.
+  Use ``nodes.Node.findall()`` to get an iterator.
 
 * re-add module ``parsers.rst.directives.html``
   (stub, emits deprecation warning and loads
