@@ -284,6 +284,7 @@ class HTMLTranslator(_html_base.HTMLTranslator):
             atts['class'] = 'align-%s' % node['align']
         if 'controls' in node['classes']:
             atts['controls'] = 'controls'
+            node['classes'].remove('controls')
         atts['title'] = node.get('alt', uri)
         if getattr(self.settings, 'image_loading', None) == 'lazy':
             atts['loading'] = 'lazy'
