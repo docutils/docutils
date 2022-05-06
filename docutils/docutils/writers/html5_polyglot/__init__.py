@@ -47,8 +47,7 @@ class Writer(_html_base.Writer):
     settings_spec = frontend.filter_settings_spec(
         _html_base.Writer.settings_spec,
         template=(
-            'Template file. (UTF-8 encoded, default: "%s")'
-            % default_template,
+            f'Template file. (UTF-8 encoded, default: "{default_template}")',
             ['--template'],
             {'default': default_template, 'metavar': '<file>'}),
         stylesheet_path=(
@@ -173,7 +172,7 @@ class HTMLTranslator(_html_base.HTMLTranslator):
                                        CLASS='docutils container'))
 
     def depart_container(self, node):
-        self.body.append('</%s>\n' % node.html5tagname)
+        self.body.append(f'</{node.html5tagname}>\n')
 
     # no standard meta tag name in HTML5, use dcterms.rights
     # see https://wiki.whatwg.org/wiki/MetaExtensions
@@ -197,7 +196,7 @@ class HTMLTranslator(_html_base.HTMLTranslator):
     def visit_document(self, node):
         title = (node.get('title', '') or os.path.basename(node['source'])
                  or 'untitled Docutils document')
-        self.head.append('<title>%s</title>\n' % self.encode(title))
+        self.head.append(f'<title>{self.encode(title)}</title>\n')
 
     def depart_document(self, node):
         self.head_prefix.extend([self.doctype,
@@ -224,15 +223,15 @@ class HTMLTranslator(_html_base.HTMLTranslator):
         self.html_body.extend(self.body_prefix[1:] + self.body_pre_docinfo
                               + self.docinfo + self.body
                               + self.body_suffix[:-1])
-        assert not self.context, 'len(context) = %s' % len(self.context)
+        assert not self.context, f'len(context) = {len(self.context)}'
 
     # use new HTML5 <figure> and <figcaption> elements
     def visit_figure(self, node):
         atts = {}
         if node.get('width'):
-            atts['style'] = 'width: %s' % node['width']
+            atts['style'] = f"width: {node['width']}"
         if node.get('align'):
-            atts['class'] = "align-" + node['align']
+            atts['class'] = f"align-{node['align']}"
         self.body.append(self.starttag(node, 'figure', **atts))
 
     def depart_figure(self, node):
@@ -281,7 +280,7 @@ class HTMLTranslator(_html_base.HTMLTranslator):
         if 'height' in node:
             atts['height'] = node['height'].replace('px', '')
         if 'align' in node:
-            atts['class'] = 'align-%s' % node['align']
+            atts['class'] = f"align-{node['align']}"
         if 'controls' in node['classes']:
             atts['controls'] = 'controls'
             node['classes'].remove('controls')
@@ -295,13 +294,10 @@ class HTMLTranslator(_html_base.HTMLTranslator):
             suffix = ''
         else:
             suffix = '\n'
+        fallback = node.get('alt', uri)
         self.body.append(
-            '%s<a href="%s">%s</a>%s</video>%s'
-            % (self.starttag(node, 'video', suffix, src=uri, **atts),
-               uri,
-               node.get('alt', uri),
-               suffix,
-               suffix))
+            self.starttag(node, "video", suffix, src=uri, **atts)
+            + f'<a href="{uri}">{fallback}</a>{suffix}</video>{suffix}')
 
     def depart_image(self, node):
         pass
@@ -332,10 +328,10 @@ class HTMLTranslator(_html_base.HTMLTranslator):
         self.body.append(self.starttag(node, node.html5tagname, ''))
 
     def depart_inline(self, node):
-        self.body.append('</%s>' % node.html5tagname)
+        self.body.append(f'</{node.html5tagname}>')
         if (node.html5tagname == 'small' and node.get('classes') == ['ln']
             and isinstance(node.parent, nodes.literal_block)):
-            self.body.append('<code data-lineno="%s">' % node.astext())
+            self.body.append(f'<code data-lineno="{node.astext()}">')
         del node.html5tagname
 
     # place inside HTML5 <figcaption> element (together with caption)
@@ -371,11 +367,11 @@ class HTMLTranslator(_html_base.HTMLTranslator):
         # ``[+]?(\d+(\.\d*)?|\.\d+)`` from bad line wrapping
         for token in self.words_and_spaces.findall(text):
             if token.strip() and self.in_word_wrap_point.search(token):
-                self.body.append('<span class="pre">%s</span>'
-                                 % self.encode(token))
+                self.body.append(
+                    f'<span class="pre">{self.encode(token)}</span>')
             else:
                 self.body.append(self.encode(token))
-        self.body.append('</%s>' % tagname)
+        self.body.append(f'</{tagname}>')
         # Content already processed:
         raise nodes.SkipNode
 
@@ -443,7 +439,7 @@ class HTMLTranslator(_html_base.HTMLTranslator):
         self.body.append(self.starttag(node, node.html_tagname, **atts))
 
     def depart_topic(self, node):
-        self.body.append('</%s>\n'%node.html_tagname)
+        self.body.append(f'</{node.html_tagname}>\n')
         del node.html_tagname
 
     # append self-link
@@ -453,6 +449,6 @@ class HTMLTranslator(_html_base.HTMLTranslator):
         if (ids and getattr(self.settings, 'section_self_link', None)
             and not isinstance(node.parent, nodes.document)):
             self_link = ('<a class="self-link" title="link to this section"'
-                         ' href="#%s"></a>' % ids[0])
+                         f' href="#{ids[0]}"></a>')
             close_tag = close_tag.replace('</h', self_link + '</h')
         return start_tag, close_tag
