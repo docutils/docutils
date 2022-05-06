@@ -86,6 +86,8 @@ Changes Since 0.18.1
 * docutils/writers/html5_polyglot/__init__.py
 
   - Add space before "charset" meta tag closing sequence.
+  - Remove class value "controls" from an `image` node with video content
+    after converting it to a "control" attribute of the <video> tag.
       
 * docutils/writers/pep_html/
 
