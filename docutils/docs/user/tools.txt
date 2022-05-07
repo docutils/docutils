@@ -142,7 +142,7 @@ automatically).  Command-line options may be used to override config
 file settings or replace them altogether.
 
 .. _[buildhtml application]: config.html#buildhtml-application
-.. _configuration file: configuration files
+.. _configuration file: `configuration files`_
 
 
 rst2html.py
