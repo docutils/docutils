@@ -389,7 +389,7 @@ class Text(Node, str):
             raise TypeError('expecting str data, not bytes')
         if rawsource is not None:
             warnings.warn('nodes.Text: initialization argument "rawsource" '
-                          'is ignored and will be removed in Docutils 1.3.',
+                          'is ignored and will be removed in Docutils 2.0.',
                           DeprecationWarning, stacklevel=2)
         return str.__new__(cls, data)
 

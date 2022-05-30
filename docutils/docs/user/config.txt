@@ -2301,7 +2301,7 @@ Formerly, Docutils configuration files contained a single "[options]"
 section only.  This was found to be inflexible, and in August 2003
 Docutils adopted the current component-based configuration file
 sections as described above.
-Up to version 1.1, Docutils will still recognize the old "[options]"
+Up to version 2.0, Docutils will still recognize the old "[options]"
 section, but complain with a deprecation warning.
 
 To convert existing config files, the easiest way is to change the
