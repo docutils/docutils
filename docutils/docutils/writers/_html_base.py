@@ -308,14 +308,14 @@ class HTMLTranslator(nodes.NodeVisitor):
         # legacy setting embed_images:
         if getattr(settings, 'embed_images', None) is True:
             warnings.warn('The configuration setting "embed_images" '
-                          'will be removed in Docutils 1.2. '
+                          'will be removed in Docutils 2.0. '
                           'Use "image_loading: embed".',
                           FutureWarning, stacklevel=8)
             if self.image_loading is None:
                 self.image_loading = 'embed'
         if getattr(settings, 'embed_images', None) is False:
             warnings.warn('The configuration setting "embed_images" '
-                          'will be removed in Docutils 1.2. '
+                          'will be removed in Docutils 2.0. '
                           'Use "image_loading: link".',
                           FutureWarning, stacklevel=8)
         if self.image_loading is None:

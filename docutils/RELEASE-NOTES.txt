@@ -37,7 +37,7 @@ Future changes
     (see minimal.css for examples).
 
   - Remove option ``--embed-images`` (obsoleted by "image_loading_")
-    in Docutils 1.2.
+    in Docutils 2.0.
 
     .. _image_loading: docs/user/config.html#image-loading
 
@@ -57,7 +57,7 @@ Future changes
     in Docutils 1.0.
 
   - Remove ``use_verbatim_when_possible`` setting
-    (use literal_block_env_: verbatim) in Docutils 1.2.
+    (use literal_block_env_: verbatim) in Docutils 2.0.
 
 * `xetex` writer:
 
@@ -68,12 +68,12 @@ Future changes
     __ docs/user/config.html#configuration-file-sections-entries
 
 * Remove the "rawsource" argument from nodes.Text.__init__()
-  (deprecated and ignored since Docutils 0.18) in Docutils 1.3.
+  (deprecated and ignored since Docutils 0.18) in Docutils 2.0.
 
 * Remove the compatibility hacks `nodes.reprunicode` and `nodes.ensure_str()`
   in Docutils 0.21 or later. They are not required with Python 3.x.
 
-* Drop support for `old-format configuration files`_ in Docutils 1.2.
+* Drop support for `old-format configuration files`_ in Docutils 2.0.
 
 * Move math format conversion from docutils/utils/math (called from
   docutils/writers/_html_base.py) to a transform__.
@@ -91,7 +91,7 @@ Future changes
   style sheet or post-processing that may break otherwise.
 
 * Remove the ``--html-writer`` option of the ``buildhtml.py`` application
-  (obsoleted by the `"writer" option`_) in Docutils 1.2.
+  (obsoleted by the `"writer" option`_) in Docutils 2.0.
 
 .. _old-format configuration files:
    docs/user/config.html#old-format-configuration-files

@@ -178,7 +178,7 @@ class Builder:
 
         if self.initial_settings.html_writer is not None:
             warnings.warn('The configuration setting "html_writer" '
-                          'will be removed in Docutils 1.2. '
+                          'will be removed in Docutils 2.0. '
                           'Use setting "writer" instead.',
                           FutureWarning, stacklevel=5)
         if self.initial_settings.writer is None:

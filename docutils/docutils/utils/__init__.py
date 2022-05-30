@@ -510,7 +510,7 @@ def get_stylesheet_reference(settings, relative_to=None):
     """
     warnings.warn('utils.get_stylesheet_reference()'
                   ' is obsoleted by utils.get_stylesheet_list()'
-                  ' and will be removed in Docutils 1.2.',
+                  ' and will be removed in Docutils 2.0.',
                   DeprecationWarning, stacklevel=2)
     if settings.stylesheet_path:
         assert not settings.stylesheet, (

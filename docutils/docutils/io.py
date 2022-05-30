@@ -438,7 +438,7 @@ class FileOutput(Output):
         if handle_io_errors is not None:
             warnings.warn('io.FileOutput: init argument "handle_io_errors" '
                           'is ignored and will be removed in '
-                          'Docutils 1.2.', DeprecationWarning, stacklevel=2)
+                          'Docutils 2.0.', DeprecationWarning, stacklevel=2)
         if mode is not None:
             self.mode = mode
         self._stderr = ErrorOutput()

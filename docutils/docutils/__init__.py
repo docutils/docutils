@@ -228,7 +228,7 @@ class TransformSpec:
         if self.default_transforms != ():
             import warnings
             warnings.warn('TransformSpec: the "default_transforms" attribute '
-                          'will be removed in Docutils 1.1.\n'
+                          'will be removed in Docutils 2.0.\n'
                           'Use get_transforms() method instead.',
                           DeprecationWarning)
             return list(self.default_transforms)

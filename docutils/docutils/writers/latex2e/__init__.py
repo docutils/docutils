@@ -1182,7 +1182,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if settings.use_verbatim_when_possible is not None:
             warnings.warn(
                 'The configuration setting "use_verbatim_when_possible" '
-                'will be removed in Docutils 1.2. '
+                'will be removed in Docutils 2.0. '
                 'Use "literal_block_env: verbatim".',
                 FutureWarning, stacklevel=7)
 
