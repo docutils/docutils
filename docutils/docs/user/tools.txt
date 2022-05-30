@@ -17,21 +17,20 @@
  Introduction
 --------------
 
-Once the Docutils package is unpacked, you will discover a "``tools``"
+Once the Docutils package is unpacked, you will discover a ``tools/``
 directory containing several front ends for common Docutils
 processing.
-In addition to the all-purpose program docutils-cli.py_, Docutils has
+In addition to the `generic command line front end`_, Docutils has
 many small front ends, each specialized for a specific "Reader" (which
 knows how to interpret a file in context), a "Parser" (which
 understands the syntax of the text), and a "Writer" (which knows how
 to generate a specific data format).
 
 Most [#]_ front ends have common options and the same command-line usage
-pattern::
+pattern (see `the tools`_ below for concrete examples)::
 
     toolname [options] [<source> [<destination>]]
 
-See rst2html4.py_ for examples.
 Each tool has a "``--help``" option which lists the
 `command-line options`_ and arguments it supports.
 Processing can also be customized with `configuration files`_.
@@ -70,35 +69,38 @@ list.
 Generic Command Line Front End
 ==============================
 
-docutils-cli.py
----------------
-
 :Readers: Standalone, PEP
-:Parser: reStructuredText, Markdown (reCommonMark)
+:Parsers: reStructuredText, Markdown (requires 3rd party packages)
 :Writers: html_, html4css1_, html5_, latex__, manpage_,
           odt_, pep_html_, pseudo-xml_, s5_html_, xelatex_, xml_,
-:Config_: See `[docutils-cli application]`_
+:Config_: See `[docutils application]`_
 
-The ``docutils-cli.py`` front allows combining reader, parser, and
-writer components.
+The generic front end allows combining "reader", "parser", and
+"writer" components from the Docutils package or 3rd party plug-ins.
+
+Since Docutils 0.19, it can be called by Python's ``-m`` option,
+the ``docutils`` script installed in the binary PATH, or the
+``docutils-cli.py`` script in the ``tools/`` directory.
 
 For example, to process a Markdown_ file "``test.md``" into
 Pseudo-XML_ ::
 
-    docutils-cli.py --parser=markdown --writer=pseudoxml\
+    python3 -m docutils --parser=markdown --writer=pseudoxml\
       test.md test.txt
 
 Use the "--help" option together with the component-selection options
 to get the correct list of supported command-line options. Example::
 
-    docutils-cli.py --parser=markdown --writer=xml --help
+    docutils --parser=markdown --writer=xml --help
+
+
 
 __
 .. _latex2e:
 .. _Generating LaTeX with Docutils: latex.html
 .. _manpage: manpage.html
 .. _Markdown: https://www.markdownguide.org/
-.. _[docutils-cli application]: config.html#docutils-cli-application
+.. _[docutils application]: config.html#docutils-application
 
 
 HTML-Generating Tools
@@ -157,13 +159,10 @@ The default writer may change with the development of HTML, browsers,
 Docutils, and the web. Currently, it is html4css1_.
 
 .. caution::
-   Use docutils-cli.py_ with the `"writer" option`__ or
-   a specific front end like rst2html4.py_ or rst2html5.py_,
+   Use a specific front end like rst2html4.py_ or rst2html5.py_,
    if you depend on stability of the generated HTML code
    (e.g., because you use a custom style sheet or post-processing
    that may break otherwise).
-
-   __ config.html#writer-docutils-cli-application
 
 
 rst2html4.py

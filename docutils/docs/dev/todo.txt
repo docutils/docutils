@@ -488,7 +488,7 @@ Code cleanup and modernization:
      http://thread.gmane.org/gmane.text.docutils.user/1112
 
 * Add a "disable_transforms" setting? Would allow for easy syntax
-  checking. Where ("null" writer, generic, parser(s), docutils-cli.py)?
+  checking. Where ("null" writer, generic, parser(s))?
   Cf. the `2004-02-18 "rest checking and source path"`_ thread.
 
 * Add a generic meta-stylesheet mechanism?  An external file could
@@ -2833,45 +2833,6 @@ This run will use only the second custom stylesheet:
 
 Front-End Tools
 ===============
-
-* What about if we don't know which Reader and/or Writer we are
-  going to use?  If the Reader/Writer is specified on the
-  command-line?
-
-  The dynamic_ front end ``tools/docutils-cli.py`` (new in 0.17) is an
-  implementation of concept d) below. It uses 2-stage argument parsing
-  via the `argparse` module's `partial parsing`_. It still needs some
-  polishing.
-
-  Perhaps have different types of front ends:
-
-  a) _`Fully qualified`: Reader and Writer are hard-coded into the
-     front end (e.g. ``pep2html [options]``, ``pysource2pdf
-     [options]``).
-
-  b) _`Partially qualified`: Reader is hard-coded, and the Writer is
-     specified a sub-command (e.g. ``pep2 html [options]``,
-     ``pysource2 pdf [options]``).  The Writer is known before option
-     processing happens, allowing the OptionParser to be built
-     dynamically.  Alternatively, the Writer could be hard-coded and
-     the Reader specified as a sub-command (e.g. ``htmlfrom pep
-     [options]``).
-
-  c) _`Unqualified`: Reader and Writer are specified as subcommands
-     (e.g. ``publish pep html [options]``, ``publish pysource pdf
-     [options]``).  A single front end would be sufficient, but
-     probably only useful for testing purposes.
-
-  d) _`Dynamic`: Reader and/or Writer are specified by options, with
-     defaults if unspecified (e.g. ``publish --writer manpage
-     [options]``).
-
-  Allow common options before subcommands, as in CVS?  Or group all
-  options together?  In the case of the `fully qualified`_
-  front ends, all the options will have to be grouped together
-  anyway, so there's no advantage (we can't use it to avoid
-  conflicts) to splitting common and component-specific options
-  apart.
 
 * Parameterize help text & defaults somehow?  Perhaps a callback?  Or
   initialize ``settings_spec`` in ``__init__`` or ``init_options``?

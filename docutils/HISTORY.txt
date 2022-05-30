@@ -21,10 +21,15 @@ Changes Since 0.18.1
   - Code cleanup,
     check PEP 8 conformity with `flake8` (exceptions in file tox.ini).
 
+* docutils/__main__.py
+
+  - New module. Support for ``python -m docutils``.
+    Also used for the ``docutils`` console script `entry point`.
+    
 * docutils/core.py:
 
-  `Publisher.publish()`: Print info and prompt when waiting for input from
-  a terminal cf. https://clig.dev/#interactivity.
+  Let `Publisher.publish()` print info and prompt when waiting for input
+  from a terminal (cf. https://clig.dev/#interactivity).
 
 * docutils/parsers/__init__.py
 
@@ -65,7 +70,8 @@ Changes Since 0.18.1
 
 * docutils/transforms/universal.py
 
-  - Fix bug 435: invalid references in `problematic` nodes with report_level=4.
+  - Fix bug #435: invalid references in `problematic` nodes
+    with report_level=4.
 
 * docutils/utils/__init__.py
 
@@ -79,9 +85,8 @@ Changes Since 0.18.1
 
 * docutils/writers/_html_base.py
 
-  - Add 'html writers' to `config_section_dependencies`. Fixes bug #443.
+  - Add "html writers" to `config_section_dependencies`. Fixes bug #443.
   - Write table column widths with 3 digits precision. Fixes bug #444.
-  - Stop writing an empty line before the "footer" closing tag.
 
 * docutils/writers/html5_polyglot/__init__.py
 
@@ -93,6 +98,12 @@ Changes Since 0.18.1
 
   - Use "https:" scheme in "python_home" URL default.
   - Fix links in template.txt.
+  
+* setup.py:
+
+  - New "docutils" console script `entry point`__. Fixes bug #447.
+    
+    __ https://packaging.python.org/en/latest/specifications/entry-points/
 
 * test/DocutilsTestSupport.py
 
@@ -107,6 +118,7 @@ Changes Since 0.18.1
 
   - Allow 3rd-party drop-in components for reader and parser, too.
   - Fix help output.
+  - Actual code moved to docutils.__main__.py.
 
 
 Release 0.18.1
