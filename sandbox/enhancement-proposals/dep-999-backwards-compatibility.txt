@@ -12,8 +12,8 @@ Abstract
 
 .. A short (<~200 word) description of the technical issue being addressed.
 
-This document defines the public APIs provided by the Docutils project
-and outlines the backwards compatibility policy.
+This document suggests a definition of the public APIs provided by the
+Docutils project and the backwards compatibility policy.
 
 
 Motivation
@@ -25,8 +25,7 @@ Motivation
 Docutils has a large user base and is used in production at several
 places (Python documentation, Linux kernel documentation, CMake
 documentation, readthedocs, ...). OTOH, Docutils has a version number
-below 1.0 (widely seen as an indicator of "beta" status of a project) and
-is missing a clear policy on version identificator semantics.
+below 1.0 (widely seen as an indicator of "beta" status of a project).
 
 The current `Docutils Project Policies`_ section on `version
 identifcation`_ concentrates on the formal definition of the version

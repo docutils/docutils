@@ -23,14 +23,14 @@ Changes Since 0.18.1
 
 * docutils/core.py:
 
-  Publisher.publish(): Print info and prompt when waiting for input from
+  `Publisher.publish()`: Print info and prompt when waiting for input from
   a terminal cf. https://clig.dev/#interactivity.
 
 * docutils/parsers/__init__.py
 
   - Aliases "markdown" and "commonmark" point to "commonmark_wrapper".
   - Alias for the "myst" parser (https://pypi.org/project/myst-docutils).
-  - Use absolute module names in ``_parser_aliases`` instead of two
+  - Use absolute module names in `_parser_aliases` instead of two
     import attempts. (Keeps details if the `recommonmark_wrapper.py` module
     raises an ImportError.)
   - Prepend parser name to ImportError if importing a parser class fails.
@@ -57,7 +57,7 @@ Changes Since 0.18.1
 
 * docutils/parsers/rst/directives/__init__.py
 
-  - parser_name() keeps details if converting ImportError to ValueError.
+  - `parser_name()` keeps details if converting ImportError to ValueError.
 
 * docutils/parsers/rst/roles.py
 
@@ -70,7 +70,7 @@ Changes Since 0.18.1
 * docutils/utils/__init__.py
 
   - `decode_path()` returns `str` instance instead of `nodes.reprunicode`.
-  - New function error_string() obsoletes utils.error_reporting.ErrorString.
+  - New function `error_string()` obsoletes utils.error_reporting.ErrorString.
   - Class `ErrorOutput` moved here from docutils/utils/error_reporting.py
 
 * docutils/utils/error_reporting.py
@@ -88,7 +88,7 @@ Changes Since 0.18.1
   - Add space before "charset" meta tag closing sequence.
   - Remove class value "controls" from an `image` node with video content
     after converting it to a "control" attribute of the <video> tag.
-      
+
 * docutils/writers/pep_html/
 
   - Use "https:" scheme in "python_home" URL default.
@@ -114,15 +114,15 @@ Release 0.18.1
 
 * docutils/nodes.py
 
-  - Node.traverse() returns a list again to restore backwards
+  - `Node.traverse()` returns a list again to restore backwards
     compatibility. Fixes bug #431.
 
-  - New method Node.findall(): like Node.traverse() but returns an
-    iterator. Obsoletes Node.traverse().
+  - New method `Node.findall()`: like `Node.traverse()` but returns an
+    iterator. Obsoletes `Node.traverse()`.
 
 * docutils/utils/__init__.py:
 
-  - Fix behaviour of get_stylesheet_list(): do not look up stylesheets
+  - Fix behaviour of `get_stylesheet_list()`: do not look up stylesheets
     given as "stylesheet" setting. Cf. bug #434.
 
 * docutils/writers/_html_base.py
@@ -211,7 +211,7 @@ Release 0.18b1 (2021-10-05)
   - document.make_id(): Do not strip leading number and hyphen characters
     from `name` if the id_prefix setting is non-empty.
 
-  - Node.traverse() returns an iterator instead of a list.
+  - `Node.traverse()` returns an iterator instead of a list.
 
 * docutils/parsers/rst/directives/html.py
 
@@ -258,7 +258,7 @@ Release 0.18b1 (2021-10-05)
 
 * docutils/utils/__init__.py
 
-  - Removed ``unique_combinations`` (obsoleted by ``itertools.combinations``).
+  - Removed `unique_combinations()` (obsoleted by `itertools.combinations()`).
 
 * docutils/utils/latex2mathml.py
 
@@ -319,7 +319,7 @@ Release 0.18b1 (2021-10-05)
   - Apply patch #181 "Fix tocdepth when chapter/part in use" by
     John Thorvald Wodder II.
 
-  - Fix newlines after/before ids_to_labels() (cf. patch #183).
+  - Fix newlines after/before `ids_to_labels()` (cf. patch #183).
 
   - Refactor/revise ToC writing.
 
@@ -331,7 +331,7 @@ Release 0.18b1 (2021-10-05)
   - New algorithm for table column widths. Fixes bug #422.
     New configuration setting legacy_column_widths_.
 
-    Table.set_table_style() arguments changed.
+    `Table.set_table_style()` arguments changed.
 
     Only write "continued on next page..." if it fits
     without making the table columns wider.
@@ -388,9 +388,9 @@ Release 0.17 (2021-04-03)
 
 * General
 
-  - Installing with ``setup.py`` now requires ``setuptools``.
+  - Installing with ``setup.py`` now requires `setuptools`.
     Alternatively, install with `pip`_ (or "manually").
-  - Use importlib.import_module() to programmatically import modules.
+  - Use `importlib.import_module()` to programmatically import modules.
   - Fix bug #385: Import of language modules.
 
   .. _pip: https://pypi.org/project/pip/
@@ -413,7 +413,7 @@ Release 0.17 (2021-04-03)
 
   - Apply patch #165 "Fix error when copying `system_message` node"
     by Takeshi KOMIYA.
-  - Apply version of patch #167 "Let document.set_id() register all
+  - Apply version of patch #167 "Let `document.set_id()` register all
     existing IDs". Thanks to Takeshi KOMIYA.
   - Fix bug #410: Use a "property" function to recursively fetch
     `Node.document` value from parent node.
@@ -589,7 +589,7 @@ Release 0.16 (2020-01-16)
   - Keep `backslash escapes`__ in the document tree. Backslash characters in
     text are be represented by NULL characters in the `text` attribute of
     Doctree nodes and removed in the writing stage by the node's
-    astext() method.
+    `astext()` method.
 
   __ https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#escaping-mechanism
 
@@ -601,7 +601,7 @@ Release 0.16 (2020-01-16)
 
   - Speed up Node.next_node().
   - If `auto_id_prefix`_ ends with "%", this is replaced with the tag name.
-  - Warn about Node.traverse() returning an iterator instead of a list
+  - Warn about `Node.traverse()` returning an iterator instead of a list
     in future.
 
   .. _auto_id_prefix: docs/user/config.html#auto-id-prefix
@@ -617,7 +617,7 @@ Release 0.16 (2020-01-16)
 
 * docutils/utils/__init__.py
 
-  - unescape() definition moved to `nodes` to avoid circular import
+  - `unescape()` definition moved to `nodes` to avoid circular import
     dependency. Fixes [ 366 ].
 
 * docutils/writers/latex2e/__init__.py:
@@ -707,8 +707,8 @@ Release 0.15 (2019-07-20)
 
 * docutils/nodes.py
 
-  - Fix [ 251 ] system_message.copy() TypeError.
-  - Element.copy() also copies `document`, `line`, and `source` attributes.
+  - Fix [ 251 ] `system_message.copy()` TypeError.
+  - `Element.copy()` also copies `document`, `line`, and `source` attributes.
 
 * docutils/parsers/rst/__init__.py:
 
@@ -1047,7 +1047,7 @@ Release 0.11 (2013-07-22)
 
 * docutils/nodes.py
 
-  - Fix [ 3601607 ] node.__repr__() must return `str` instance.
+  - Fix [ 3601607 ] `node.__repr__()` must return `str` instance.
 
 * docutils/parsers/rst/directives/__init__.py
 
@@ -1135,7 +1135,7 @@ Release 0.10 (2012-12-16)
 
 * docutils/utils/__init__.py
 
-  - normalize_language_tag() now returns `BCP 47`_ conforming tags
+  - `normalize_language_tag()` now returns `BCP 47`_ conforming tags
     with sub-tags separated by ``-``.
 
 * docutils/writers/html4css1/__init__.py
@@ -1235,7 +1235,7 @@ __ https://mail.python.org/pipermail/image-sig/2011-January/006650.html
 
 * docutils/frontend.py
 
-  - Fix [ 3481980 ] Use os.getcwdu() in make_paths_absolute().
+  - Fix [ 3481980 ] Use `os.getcwdu()` in `make_paths_absolute()`.
 
 * docutils/io.py
 
@@ -1264,7 +1264,7 @@ __ https://mail.python.org/pipermail/image-sig/2011-January/006650.html
   - DependencyList uses io.FileOutput and 'utf8' encoding to prevent
     errors recording non-ASCII filenames (fixes [ 3434355 ]).
 
-  - Fix relative_path() with source=None and `unicode` target.
+  - Fix `relative_path()` with source=None and `unicode` target.
 
 * docutils/parsers/rst/states.py
 
@@ -1299,7 +1299,7 @@ __ https://mail.python.org/pipermail/image-sig/2011-January/006650.html
 
 * docutils/writers/docutils_xml.py
 
-  - Use the visitor pattern with default_visit()/default_depart() methods
+  - Use the visitor pattern with `default_visit()`/`default_depart()` methods
     instead of minidom to facilitate special handling of selected nodes.
   - Support raw XML (inserted as-is inside a <raw></raw> node).
 
@@ -1419,7 +1419,7 @@ Release 0.8 (2011-07-07)
 
 * docutils/io.py:
 
-  - Do not close() sys.stdin, sys.stdout, or sys.stderr. Prevents
+  - Do not `close()` sys.stdin, sys.stdout, or sys.stderr. Prevents
     ``Exception ValueError: 'I/O operation on closed file.'`` with Python 3.
 
 
@@ -1442,7 +1442,7 @@ Release 0.7 (2010-07-07)
 
 * docutils/utils.py
 
-  - Fix [ 2923723 ] let decode_path() tolerate path == None
+  - Fix [ 2923723 ] let `decode_path()` tolerate path == None
 
 * docutils/writers/html4css1/__init__.py
 
