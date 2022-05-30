@@ -849,7 +849,6 @@ Currently no configuration settings.
 __ https://pypi.org/project/pycmark/
 
 
-
 .. _recommonmark:
 
 [recommonmark parser]
@@ -2164,10 +2163,11 @@ New in 0.17. Obsoletes the ``html_writer`` option.
 .. _HTML writer: html.html
 
 
-[docutils-cli application]
+[docutils application]
 --------------------------
 
 New in 0.17. Config file support added in 0.18.
+Renamed in 0.19 (the old name "docutils-cli application" is kept as alias).
 Support for reader/parser import names added in 0.19.
 
 reader
@@ -2190,7 +2190,10 @@ Parsers for CommonMark_ known to work with Docutils include "pycmark_",
 Default: "rst".
 Option: ``--parser``
 
-.. _writer [docutils-cli application]:
+.. _CommonMark: https://spec.commonmark.org/0.30/
+
+
+.. _writer [docutils application]:
 
 writer
 ~~~~~~
@@ -2201,8 +2204,6 @@ or the import name of a drop-in writer module.
 
 Default: "html5".
 Option: ``--writer``
-
-.. _CommonMark: https://spec.commonmark.org/0.30/
 
 
 Other Settings

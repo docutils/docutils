@@ -67,6 +67,9 @@ what-you-see-is-what-you-get plaintext markup syntax.""",  # wrap at col 60
         'docutils.writers.xetex',
         'docutils.writers.odf_odt',
     ],
+    'entry_points': {
+        'console_scripts': ['docutils=docutils.__main__:main']
+    },
     'scripts': [
         'tools/rst2html.py',
         'tools/rst2html4.py',

@@ -20,10 +20,14 @@ For a more detailed list of changes, please see the Docutils `HISTORY`_.
 Future changes
 ==============
 
-* Setup: 
+* Setup:
 
   - Do not install the auxilliary script ``tools/rst2odt_prepstyles.py``
     in the binary PATH.
+
+  - Remove file ``install.py``. There are better ways, see README.txt__.
+
+    __ README.html#installation
 
 * `html5` writer:
 
@@ -101,6 +105,11 @@ Release 0.19b (unpublished)
 ===========================
 
 * Drop support for Python 2.7, 3.5, and 3.6.
+
+* After package installation, the CLI commands ``python -m docutils`` and
+  ``docutils`` start the `generic command line front end tool`__.
+
+  __ docs/user/tools.html#generic-command-line-front-end
 
 * Support parsing "Markdown" input with 3rd party parsers
   myst_, pycmark_, or recommonmark_.

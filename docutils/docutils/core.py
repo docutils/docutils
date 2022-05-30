@@ -277,7 +277,7 @@ class Publisher:
         except AttributeError:
             return
         eot_key = 'Ctrl+Z' if os.name == 'nt' else 'Ctrl+D on an empty line'
-        in_format = 'plaintext'
+        in_format = ''
         out_format = 'useful formats'
         try:
             in_format = self.parser.supported[0]
@@ -350,12 +350,20 @@ and the command line used.""", file=self._stderr)
 
 default_usage = '%prog [options] [<source> [<destination>]]'
 default_description = (
-    'Reads from <source> (default is stdin) and writes to <destination> '
-    '(default is stdout). '
+    'Reads from <source> (default is stdin) '
+    'and writes to <destination> (default is stdout).  '
     'See https://docutils.sourceforge.io/docs/user/config.html '
-    ' for the full reference.')
+    'for a detailed settings reference.')
 
 
+# TODO: or not to do?  cf. https://clig.dev/#help
+#
+# Display output on success, but keep it brief.
+#
+# Provide a -q option to suppress all non-essential output.
+# Chain several args as input and use --output or redirection for output:
+#   argparser.add_argument('source', nargs='+')
+#
 def publish_cmdline(reader=None, reader_name='standalone',
                     parser=None, parser_name='restructuredtext',
                     writer=None, writer_name='pseudoxml',

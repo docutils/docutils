@@ -149,7 +149,6 @@ Installation
     (**not** directly in Python's ``site-packages``) first.
 
   * Run ``setup.py install``.
-    On Windows systems it may be sufficient to double-click ``install.py``.
     See also OS-specific installation instructions below.
 
 * For installing "by hand" or in "development mode", see the
