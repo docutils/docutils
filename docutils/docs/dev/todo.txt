@@ -89,14 +89,31 @@ Convert with reposurgeon_?
 
   -- `Git Wiki`__
 
+The comprehensive `Reposurgeon documentation`_ comes with
+`a guide to repository conversion`__
+as well as info about `reading Subversion repositories`__.
+Converting from an SVN dump file is faster than from a checkout.
+
 .. _reposurgeon: http://www.catb.org/esr/reposurgeon/
+.. _reposurgeon documentation:
+    http://www.catb.org/esr/reposurgeon/repository-editing.html
 __ https://git.wiki.kernel.org/index.php/
    Interfaces,_frontends,_and_tools#Subversion
+__ http://www.catb.org/esr/reposurgeon/repository-editing.html#conversion   
+__ http://www.catb.org/esr/reposurgeon/repository-editing.html
+   #_reading_subversion_repositories   
+
+
+Adam Turner wrote a conversion Makefile and ``.lift`` scripts that
+downloads the repo from SF with rsync, converts it to a SVN mirror and
+finally to Git, splitting sandbox, prest, and web from docutils.
+
 
 Sourceforge supports multiple Git repositories per project, so we can
 switch the version control system independent of the decision on an
 eventual switch of the host.
 Cf. https://sourceforge.net/p/forge/documentation/Git/
+
 
 General
 =======

@@ -65,7 +65,7 @@ References
 
 man pages from section 7, ``man`` and ``man-pages``.
 
-.. [LMHT] Linux Man Page Howto.
+.. [LMHT] `Linux Man Page Howto <https://tldp.org/HOWTO/Man-Page/>`__.
 
 Conventions
 '''''''''''
