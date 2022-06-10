@@ -61,7 +61,7 @@ General Docutils Options
                         Choices: "strict" (default), "ignore", and "replace".
 --output-encoding=<name[:handler]>, -o <name[:handler]>
                         Specify the text encoding and optionally the error
-                        handler for output.  Default: UTF-8:strict.
+                        handler for output.  Default: utf-8:strict.
 --output-encoding-error-handler=OUTPUT_ENCODING_ERROR_HANDLER
                         Specify error handler for unencodable output
                         characters; "strict" (default), "ignore", "replace",
@@ -209,7 +209,7 @@ HTML5 Writer Options
 Docutils Application Options
 ----------------------------
 Reader, writer, and parser settings influence the available options.
-Example: use `--help --writer=latex` to see LaTeX writer options.
+Example: use `--help --writer=latex` to see LaTeX writer options.
 
 --reader=<reader>       Reader name (currently: "standalone").
 --parser=<parser>       Parser name (currently: "rst").
