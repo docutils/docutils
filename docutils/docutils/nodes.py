@@ -297,6 +297,9 @@ class Node:
             node = self
             while node.parent:
                 index = node.parent.index(node)
+                # extra check since Text nodes have value-equality
+                while node.parent[index] is not node:
+                    index = node.parent.index(node, index + 1)
                 for sibling in node.parent[index+1:]:
                     yield from sibling.findall(
                         condition=condition,
@@ -734,8 +737,8 @@ class Element(Node):
     def remove(self, item):
         self.children.remove(item)
 
-    def index(self, item):
-        return self.children.index(item)
+    def index(self, item, start=0, stop=sys.maxsize):
+        return self.children.index(item, start, stop)
 
     def is_not_default(self, key):
         if self[key] == [] and key in self.list_attributes:

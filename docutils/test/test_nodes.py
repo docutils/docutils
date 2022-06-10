@@ -64,6 +64,11 @@ class TextTests(unittest.TestCase):
         self.assertEqual(self.longtext.shortrepr(),
                          r"<#text: 'Mary had a lit ...'>")
 
+    def test_comparison(self):
+        # Text nodes are compared by value
+        self.assertEqual(self.text, 'Line 1.\nLine 2.')
+        self.assertEqual(self.text, nodes.Text('Line 1.\nLine 2.'))
+
     def test_Text_rawsource_deprection_warning(self):
         with self.assertWarnsRegex(DeprecationWarning,
                                    '"rawsource" is ignored'):
@@ -118,6 +123,22 @@ class ElementTests(unittest.TestCase):
         dom.unlink()
         self.assertEqual(element.pformat(),
                          '<Element attr="1">\n    text\n    more\n')
+
+    def test_index(self):
+        # Element.index() behaves like list.index() on the element's children
+        e = nodes.Element()
+        e += nodes.Element()
+        e += nodes.Text('sample')
+        e += nodes.Element()
+        e += nodes.Text('other sample')
+        e += nodes.Text('sample')
+        # return element's index for the first four children:
+        for i in range(4):
+            self.assertEqual(e.index(e[i]), i)
+        # Caution: mismatches are possible for Text nodes
+        # as they are compared by value (like `str` instances)
+        self.assertEqual(e.index(e[4]), 1)
+        self.assertEqual(e.index(e[4], start=2), 4)
 
     def test_clear(self):
         element = nodes.Element()
@@ -544,6 +565,24 @@ class MiscTests(unittest.TestCase):
         self.assertEqual(list(e[0].findall(condition=self.not_in_testlist)),
                          [e[0]])
         self.assertEqual(list(e.findall(nodes.TextElement)), [e[0][1]])
+
+    def test_findall_duplicate_texts(self):
+        e = nodes.Element()
+        e += nodes.TextElement()
+        e[0] += nodes.Text('one')
+        e[0] += nodes.Text('two')
+        e[0] += nodes.Text('three')
+        e[0] += nodes.Text('two')
+        e[0] += nodes.Text('five')
+        full_list = list(e[0][0].findall(siblings=True))
+        self.assertEqual(len(full_list), 5)
+        for i in range(5):
+            self.assertIs(full_list[i], e[0][i])
+
+        partial_list = list(e[0][3].findall(siblings=True))
+        self.assertEqual(len(partial_list), 2)
+        self.assertIs(partial_list[0], e[0][3])
+        self.assertIs(partial_list[1], e[0][4])
 
     def test_next_node(self):
         e = nodes.Element()
