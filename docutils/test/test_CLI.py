@@ -25,7 +25,7 @@ import sys
 import unittest
 
 # import docutils
-from docutils import __main__
+from docutils import __main__, frontend
 
 
 def print_mismatch(expected, output):
@@ -60,8 +60,12 @@ class CliTests(unittest.TestCase):
             pass
         output = sys.stdout.getvalue()
         # replace unpredictable paths (eventually wrapped)
-        output = re.sub(r'default:[^)]*/[^)]*\)', 'default: [...])',
+        output = re.sub(r'default:[^)]*[/\\][^)]*\)', 'default: [...])',
                         output, flags=re.DOTALL)
+        # normalise error encoding default
+        output = output.replace(
+            f'{frontend.OptionParser.default_error_encoding}:backslashreplace',
+            'utf-8:backslashreplace')
         # compare to stored version
         with open('data/help/docutils.txt') as samplefile:
             expected = samplefile.read()
