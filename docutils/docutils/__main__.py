@@ -38,7 +38,7 @@ class CliSettingsSpec(docutils.SettingsSpec):
     settings_spec = (
         'Docutils Application Options',
         'Reader, writer, and parser settings influence the available options. '
-        'Example: use `--help --writer=latex` to see LaTeX writer options. ',
+        '  Example: use `--help --writer=latex` to see LaTeX writer options. ',
         # options: ('help text', [<option strings>], {<keyword arguments>})
         (('Reader name (currently: "%default").',
           ['--reader'], {'default': 'standalone', 'metavar': '<reader>'}),
