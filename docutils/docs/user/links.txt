@@ -48,12 +48,16 @@ Advanced text editors with reStructuredText support, IDEs, and docutils GUIs:
   - `Riv: Take notes in rst <https://github.com/Rykka/riv.vim>`__ Vim
     plugin to take notes in reStructured text.
 
-* `JED <https://www.jedsoft.org/jed/>`__ programmers editor with
-  `rst mode <httpss://jedmodes.sourceforge.io/mode/rst/>`__
+* `reStructuredText Language Support for Visual Studio Code`__
+
+  __ https://github.com/vscode-restructuredtext/vscode-restructuredtext
 
 * `reStructuredText editor plug-in for Eclipse`__
 
   __ http://resteditor.sourceforge.net/
+
+* `JED <https://www.jedsoft.org/jed/>`__ programmers editor with
+  `rst mode <httpss://jedmodes.sourceforge.io/mode/rst/>`__
 
 * Gnome's gedit offers syntax highlighting and a reST preview pane.
 
@@ -63,6 +67,7 @@ Advanced text editors with reStructuredText support, IDEs, and docutils GUIs:
   .. _bittner @ github:  https://github.com/bittner/gedit-reST-plugin
   __ https://wiki.gnome.org/Apps/Gedit/ThirdPartyPlugins-v3.8
 
+
 * Gunnar Schwant's DocFactory_ is a wxPython GUI application for
   Docutils.
 
@@ -71,6 +76,10 @@ Advanced text editors with reStructuredText support, IDEs, and docutils GUIs:
 * ReSTedit_ by Bill Bumgarner is a Docutils GUI for Mac OS X.
 
   .. _ReSTedit: https://svn.red-bean.com/restedit/trunk/README.html
+
+* `ReText <https://pypi.org/project/ReText/>`_ is a simple but powerful
+  editor for Markdown and reStructuredText markup languages.
+  It is written in Python using PyQt libraries.
 
 * Leo_ is an outliner_, written in Python using PyQt. It can be used as IDE
   for literal programming, as a filing cabinet holding any kind of data and
@@ -329,7 +338,7 @@ Applications using docutils/reStructuredText and helper applications.
 
 * `Project Gutenberg`_ uses  Docutils for its "ebookmaker_"
   xetex, nroff, and epub generator (with some `extensions to rST`__).
-  
+
   __ http://pgrst.pglaf.org/publish/181/181-h.html
 
 
