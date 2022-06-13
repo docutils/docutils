@@ -62,15 +62,16 @@ Today's date is |date|.
 ]
 
 # some locales return non-ASCII characters for names of days or months
-if locale_encoding in ['utf8', 'utf-8', 'latin-1']:
+# ensure the directive handles them correctly
+if locale_encoding.lower() in ('utf8', 'utf-8', 'latin-1', 'iso8859-1'):
     totest['decode date'] = [
     ["""\
-.. |date| date:: t\xc3glich
+.. |date| date:: täglich
 """,
     """\
 <document source="test data">
     <substitution_definition names="date">
-        t\xc3glich
+        täglich
 """],
     ]
 

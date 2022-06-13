@@ -927,7 +927,7 @@ if __name__ == "__main__":
     # parser.add_argument("input", help="Input stream, use '-' for stdin.")
     parser.add_argument("-a", "--action", default="1",
                         help="what to do with the input (see --actionhelp)")
-    parser.add_argument("-e", "--encoding", default="utf8",
+    parser.add_argument("-e", "--encoding", default="utf-8",
                         help="text encoding")
     parser.add_argument("-l", "--language", default=defaultlanguage,
                         help="text language (BCP47 tag), "

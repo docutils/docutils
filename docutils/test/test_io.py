@@ -33,7 +33,7 @@ class UBuf(StringIO):
 
 
 class mock_stdout(UBuf):
-    encoding = 'utf8'
+    encoding = 'utf-8'
 
     def __init__(self):
         self.buffer = BBuf()
@@ -44,8 +44,9 @@ class HelperTests(unittest.TestCase):
 
     def test_check_encoding_true(self):
         """Return `True` if lookup returns the same codec"""
-        self.assertEqual(io.check_encoding(mock_stdout, 'utf8'), True)
         self.assertEqual(io.check_encoding(mock_stdout, 'utf-8'), True)
+        self.assertEqual(io.check_encoding(mock_stdout, 'utf_8'), True)
+        self.assertEqual(io.check_encoding(mock_stdout, 'utf8'), True)
         self.assertEqual(io.check_encoding(mock_stdout, 'UTF-8'), True)
 
     def test_check_encoding_false(self):
@@ -80,7 +81,7 @@ class InputTests(unittest.TestCase):
 
     def test_bom(self):
         input = io.StringInput(source=b'\xef\xbb\xbf foo \xef\xbb\xbf bar',
-                               encoding='utf8')
+                               encoding='utf-8')
         # Assert BOMs are gone.
         self.assertEqual(input.read(), ' foo  bar')
         # With unicode input:
@@ -129,9 +130,9 @@ print("hello world")
         self.assertEqual(data, ['Some include text.\n'])
 
     def test_heuristics_no_utf8(self):
-        # if no encoding is given and decoding with utf8 fails,
+        # if no encoding is given and decoding with utf-8 fails,
         # use either the locale encoding (if specified) or latin-1:
-        if io.locale_encoding != "utf8":
+        if io.locale_encoding.lower() not in ('utf-8', 'utf8'):
             # in Py3k, the locale encoding is used without --input-encoding
             # skipping the heuristic unless decoding fails.
             return
@@ -174,7 +175,7 @@ class OutputTests(unittest.TestCase):
         self.assertEqual(self.udrain.getvalue(), self.udata)
 
     def test_write_utf8(self):
-        fo = io.FileOutput(destination=self.udrain, encoding='utf8',
+        fo = io.FileOutput(destination=self.udrain, encoding='utf-8',
                            autoclose=False)
         fo.write(self.udata)
         self.assertEqual(self.udrain.getvalue(), self.udata)
@@ -187,7 +188,7 @@ class OutputTests(unittest.TestCase):
     # With destination in binary mode, data must be binary string
     # and is written as-is:
     def test_write_bytes(self):
-        fo = io.FileOutput(destination=self.bdrain, encoding='utf8',
+        fo = io.FileOutput(destination=self.bdrain, encoding='utf-8',
                            mode='wb', autoclose=False)
         fo.write(self.bdata)
         self.assertEqual(self.bdrain.getvalue(), self.bdata)
@@ -233,7 +234,7 @@ class ErrorOutputTests(unittest.TestCase):
         e.write(AttributeError(' e\xfc'))
         self.assertEqual(buf.getvalue(), b'b\xfc u\\xfc e\\xfc')
         # encode with `encoding` attribute
-        e.encoding = 'utf8'
+        e.encoding = 'utf-8'
         e.write(' u\xfc')
         self.assertEqual(buf.getvalue(), b'b\xfc u\\xfc e\\xfc u\xc3\xbc')
 

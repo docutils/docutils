@@ -748,7 +748,7 @@ class DependencyList:
             else:
                 of = output_file
             self.file = io.FileOutput(destination_path=of,
-                                      encoding='utf8', autoclose=False)
+                                      encoding='utf-8', autoclose=False)
         else:
             self.file = None
 
