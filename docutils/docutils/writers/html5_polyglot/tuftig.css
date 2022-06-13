@@ -45,6 +45,7 @@ main, header, footer {
 
 /* vertical space (parskip) */
 p, ol, ul, dl, li,
+h1, h2, h3, h4, h5, h6,
 div.line-block,
 .topic,
 .footnote, .citation,
@@ -52,7 +53,6 @@ table {
   margin-top: 0.5em;
   margin-bottom: 0.5em;
 }
-h1, h2, h3, h4, h5, h6,
 dl > dd {
   margin-bottom: 0.5em;
 }
@@ -110,8 +110,8 @@ h1 + p.subtitle {
   margin-bottom: 2em;
   font-size: 2.0em;
 }
-h2, h3, h4 {
-  margin-top: 2.0em;
+section {
+  margin-top: 2em;
 }
 h2, .contents > p.topic-title {
   font-size: 2.2em;
@@ -222,6 +222,9 @@ dl.description > dd:after {
 }
 
 /* Citation list (style as description list) */
+.citation-list {
+  display: contents;
+}
 .citation {
   padding-left: 1.5em;
 }
@@ -469,6 +472,10 @@ figure.marginal > figcaption {
   }
   .citation.align-left {
     font-size: 1em;
+    padding-left: 1.5em;
+  }
+  .citation.align-left .label {
+    margin-left: -1.5em;
   }
   figure > img { /* indent */
     margin: 0.5em 2%;
@@ -478,14 +485,14 @@ figure.marginal > figcaption {
   /* Margin Elements */
   /* Sidebar, Footnotes, Citations, Captions */
   aside.sidebar,
+  .citation,
   .footnote,
-  .citation-list,
   figcaption,
   /* table > caption,  does not work :(*/
   .marginal,
   .admonition.marginal,
   .topic.marginal {
-    /* background-color: Lavender; */
+    /* color: red; */
     grid-column: margin;
     width: auto;
     max-width: 55em;
@@ -503,13 +510,15 @@ figure.marginal > figcaption {
     display: block;
     margin: 0.5em 0;
   }
-  .citation {
+  .citation,
+  .footnote {
     padding-left: 0;
   }
-  .footnote .label,
-  .citation .label {
+  .citation .label,
+  .footnote .label {
     margin-left: 0;
   }
+
   /* Fullwidth Elements */
   h1.title, p.subtitle,
   dl.docinfo,
