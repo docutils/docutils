@@ -46,7 +46,7 @@ class RecordDependenciesTests(unittest.TestCase):
         recorder.close()
         # Read the record file:
         record = docutils.io.FileInput(source_path=recordfile,
-                                       encoding='utf8')
+                                       encoding='utf-8')
         return record.read().splitlines()
 
     def test_dependencies_xml(self):

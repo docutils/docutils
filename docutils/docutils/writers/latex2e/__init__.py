@@ -271,12 +271,12 @@ class Writer(writers.Writer):
         # get template string from file
         templatepath = self.document.settings.template
         try:
-            with open(templatepath, encoding='utf8') as fp:
+            with open(templatepath, encoding='utf-8') as fp:
                 template = fp.read()
         except IOError:
             templatepath = os.path.join(self.default_template_path,
                                         templatepath)
-            with open(templatepath, encoding='utf8') as fp:
+            with open(templatepath, encoding='utf-8') as fp:
                 template = fp.read()
         # fill template
         self.assemble_parts()  # create dictionary of parts
@@ -597,7 +597,7 @@ def _read_block(fp):
 
 _docutils_sty = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                              'docutils.sty')
-with open(_docutils_sty, encoding='utf8') as fp:
+with open(_docutils_sty, encoding='utf-8') as fp:
     for line in fp:
         line = line.strip('% \n')
         if not line.endswith('::'):
@@ -1459,7 +1459,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
               # 'iso-8859-6': ''   # arabic
               # 'iso-8859-7': ''   # greek
               # 'iso-8859-8': ''   # hebrew
-              # 'iso-8859-10': ''   # latin6, more complete iso-8859-4
+              # 'iso-8859-10': ''  # latin6, more complete iso-8859-4
               }
         encoding = docutils_encoding.lower()
         if encoding in tr:

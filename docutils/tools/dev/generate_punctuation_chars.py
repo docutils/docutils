@@ -213,10 +213,10 @@ def character_category_patterns():
     # 301F  LOW DOUBLE PRIME QUOTATION MARK misses the opening pendant:
     ucharlists['Ps'].insert(ucharlists['Pe'].index('\u301f'), '\u301d')
 
-    # print(''.join(ucharlists['Ps']).encode('utf8')
-    # print(''.join(ucharlists['Pe']).encode('utf8')
-    # print(''.join(ucharlists['Pi']).encode('utf8')
-    # print(''.join(ucharlists['Pf']).encode('utf8')
+    # print(''.join(ucharlists['Ps']).encode('utf-8')
+    # print(''.join(ucharlists['Pe']).encode('utf-8')
+    # print(''.join(ucharlists['Pi']).encode('utf-8')
+    # print(''.join(ucharlists['Pf']).encode('utf-8')
 
     # The Docutils character categories
     # ---------------------------------
@@ -364,10 +364,10 @@ if __name__ == '__main__':
 
         print_differences(openers, o, 'openers')
         if o_wide:
-            print('+ openers-wide = r"""%s"""' % o_wide.encode('utf8'))
+            print('+ openers-wide = r"""%s"""' % o_wide.encode('utf-8'))
         print_differences(closers, c, 'closers')
         if c_wide:
-            print('+ closers-wide = r"""%s"""' % c_wide.encode('utf8'))
+            print('+ closers-wide = r"""%s"""' % c_wide.encode('utf-8'))
 
         print_differences(delimiters, d + d_wide, 'delimiters')
         print_differences(closing_delimiters, cd, 'closing_delimiters')

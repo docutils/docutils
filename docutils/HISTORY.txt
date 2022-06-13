@@ -25,7 +25,7 @@ Changes Since 0.18.1
 
   - New module. Support for ``python -m docutils``.
     Also used for the ``docutils`` console script `entry point`.
-    
+
 * docutils/core.py:
 
   Let `Publisher.publish()` print info and prompt when waiting for input
@@ -98,11 +98,11 @@ Changes Since 0.18.1
 
   - Use "https:" scheme in "python_home" URL default.
   - Fix links in template.txt.
-  
+
 * setup.py:
 
   - New "docutils" console script `entry point`__. Fixes bug #447.
-    
+
     __ https://packaging.python.org/en/latest/specifications/entry-points/
 
 * test/DocutilsTestSupport.py
@@ -381,7 +381,7 @@ Release 0.17.1 (2021-04-16)
 
 * docutils/writers/latex2e/__init__.py:
 
-  - Open "docutils.sty" with encoding set to "utf8".
+  - Open "docutils.sty" with encoding set to "utf-8".
     Fixes bug #414: error with Py3k when locale encoding is "ascii".
 
 * docutils/parsers/*.py, docutils/transforms/*.py
@@ -1273,7 +1273,7 @@ __ https://mail.python.org/pipermail/image-sig/2011-January/006650.html
 
      __ RELEASE-NOTES.html
 
-  - DependencyList uses io.FileOutput and 'utf8' encoding to prevent
+  - DependencyList uses io.FileOutput and 'utf-8' encoding to prevent
     errors recording non-ASCII filenames (fixes [ 3434355 ]).
 
   - Fix `relative_path()` with source=None and `unicode` target.

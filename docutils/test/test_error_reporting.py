@@ -144,7 +144,7 @@ class ErrorOutputTests(unittest.TestCase):
         e.write(AttributeError(u' e\xfc'))
         self.assertEqual(buf.getvalue(), b'b\xfc u\\xfc e\\xfc')
         # encode with `encoding` attribute
-        e.encoding = 'utf8'
+        e.encoding = 'utf-8'
         e.write(u' u\xfc')
         self.assertEqual(buf.getvalue(), b'b\xfc u\\xfc e\\xfc u\xc3\xbc')
 

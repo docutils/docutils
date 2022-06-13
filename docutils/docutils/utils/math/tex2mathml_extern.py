@@ -40,10 +40,10 @@ def latexml(math_code, reporter=None):
                          stdout=subprocess.PIPE,
                          stderr=subprocess.PIPE,
                          close_fds=True)
-    p.stdin.write((document_template % math_code).encode('utf8'))
+    p.stdin.write((document_template % math_code).encode('utf-8'))
     p.stdin.close()
     latexml_code = p.stdout.read()
-    latexml_err = p.stderr.read().decode('utf8')
+    latexml_err = p.stderr.read().decode('utf-8')
     if reporter and (latexml_err.find('Error') >= 0 or not latexml_code):
         reporter.error(latexml_err)
 
@@ -60,8 +60,8 @@ def latexml(math_code, reporter=None):
                               close_fds=True)
     post_p.stdin.write(latexml_code)
     post_p.stdin.close()
-    result = post_p.stdout.read().decode('utf8')
-    post_p_err = post_p.stderr.read().decode('utf8')
+    result = post_p.stdout.read().decode('utf-8')
+    post_p_err = post_p.stderr.read().decode('utf-8')
     if reporter and (post_p_err.find('Error') >= 0 or not result):
         reporter.error(post_p_err)
 
@@ -87,10 +87,10 @@ def ttm(math_code, reporter=None):
                          stdout=subprocess.PIPE,
                          stderr=subprocess.PIPE,
                          close_fds=True)
-    p.stdin.write((document_template % math_code).encode('utf8'))
+    p.stdin.write((document_template % math_code).encode('utf-8'))
     p.stdin.close()
     result = p.stdout.read()
-    err = p.stderr.read().decode('utf8')
+    err = p.stderr.read().decode('utf-8')
     if err.find('**** Unknown') >= 0:
         msg = '\n'.join(line for line in err.splitlines()
                         if line.startswith('****'))
@@ -125,10 +125,10 @@ def blahtexml(math_code, inline=True, reporter=None):
                          stdout=subprocess.PIPE,
                          stderr=subprocess.PIPE,
                          close_fds=True)
-    p.stdin.write(math_code.encode('utf8'))
+    p.stdin.write(math_code.encode('utf-8'))
     p.stdin.close()
-    result = p.stdout.read().decode('utf8')
-    err = p.stderr.read().decode('utf8')
+    result = p.stdout.read().decode('utf-8')
+    err = p.stderr.read().decode('utf-8')
 
     if result.find('<error>') >= 0:
         msg = result[result.find('<message>')+9:result.find('</message>')]
@@ -147,6 +147,6 @@ def blahtexml(math_code, inline=True, reporter=None):
 if __name__ == "__main__":
     example = ('\\frac{\\partial \\sin^2(\\alpha)}{\\partial \\vec r}'
                '\\varpi \\, \\text{Grüße}')
-    # print(latexml(example).encode('utf8'))
+    # print(latexml(example).encode('utf-8'))
     # print(ttm(example))
-    print(blahtexml(example).encode('utf8'))
+    print(blahtexml(example).encode('utf-8'))

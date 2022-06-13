@@ -122,7 +122,7 @@ invalid_raw_xml = """\
 
 
 def publish_xml(settings, source):
-    return docutils.core.publish_string(source=source.encode('utf8'),
+    return docutils.core.publish_string(source=source.encode('utf-8'),
                                         reader_name='standalone',
                                         writer_name='docutils_xml',
                                         settings_overrides=settings)
@@ -134,7 +134,7 @@ def publish_xml(settings, source):
 
 class DocutilsXMLTestCase(DocutilsTestSupport.StandardTestCase):
 
-    settings = {'input_encoding': 'utf8',
+    settings = {'input_encoding': 'utf-8',
                 'output_encoding': 'iso-8859-1',
                 '_disable_config': True,
                 'indents': False,
