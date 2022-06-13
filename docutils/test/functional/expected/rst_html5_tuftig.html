@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="generator" content="Docutils 0.19b.dev: https://docutils.sourceforge.io/" />
+<title>Special Features of the tuftig.css Stylesheet</title>
+<link rel="stylesheet" href="../input/data/minimal.css" type="text/css" />
+<link rel="stylesheet" href="../input/data/tuftig.css" type="text/css" />
+</head>
+<body>
+<main id="special-features-of-the-tuftig-css-stylesheet">
+<h1 class="title">Special Features of the <cite>tuftig.css</cite> Stylesheet</h1>
+
+<p><span class="docutils literal">tuftig.css</span> is a <a class="reference external" href="http://www.w3.org/TR/CSS3">CSS3</a> style sheet for the output of Docutils’
+HTML5 writer. The rules are inspired by <a class="citation-reference" href="#tufte-css" id="citation-reference-1" role="doc-biblioref">[tufte.css]</a> and
+<a class="citation-reference" href="#tufte-latex" id="citation-reference-2" role="doc-biblioref">[tufte-latex]</a> going back to Edward Tufte’s layout design.</p>
+<div role="list" class="citation-list">
+<div class="citation" id="tufte-css" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#citation-reference-1">tufte.css</a><span class="fn-bracket">]</span></span>
+<p>Dave Liepmann, <cite>Tufte CSS</cite>,
+<a class="reference external" href="https://edwardtufte.github.io/tufte-css/">https://edwardtufte.github.io/tufte-css/</a>.</p>
+</div>
+<div class="citation" id="tufte-latex" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#citation-reference-2">tufte-latex</a><span class="fn-bracket">]</span></span>
+<p>Bil Kleb, Bill Wood and Kevin Godby,
+<cite>A Tufte-Style Book</cite>,
+<a class="reference external" href="https://www.ctan.org/pkg/tufte-latex">https://www.ctan.org/pkg/tufte-latex</a>.</p>
+</div>
+</div>
+<section id="fullwidth-and-margin-objects">
+<h2>Fullwidth and Margin Objects</h2>
+<p class="fullwidth">Block elements (paragraphs, admonitions, topics, figures, tables, …)
+with the “fullwidth” class argument use full text width.</p>
+<table class="booktabs numbered captionbelow fullwidth">
+<caption>A fullwidth table with LaTeX math commands</caption>
+<tbody>
+<tr><td><p><cite>arccos</cite></p></td>
+<td><p><span class="docutils literal">\arccos</span></p></td>
+<td><p><cite>gcd</cite></p></td>
+<td><p><span class="docutils literal">\gcd</span></p></td>
+<td><p><cite>Pr</cite></p></td>
+<td><p><span class="docutils literal">\Pr</span></p></td>
+</tr>
+<tr><td><p><cite>arcsin</cite></p></td>
+<td><p><span class="docutils literal">\arcsin</span></p></td>
+<td><p><cite>hom</cite></p></td>
+<td><p><span class="docutils literal">\hom</span></p></td>
+<td><p><cite>projlim</cite></p></td>
+<td><p><span class="docutils literal">\projlim</span></p></td>
+</tr>
+</tbody>
+</table>
+<figure class="numbered fullwidth">
+<img alt="reStructuredText, the markup syntax" src="../../../docs/user/rst/images/title.svg" style="width: 90%; height: 1.5em;" />
+<figcaption>
+<p>A numbered fullwidth figure.</p>
+</figcaption>
+</figure>
+<p>Block elements (admonitions, figures, tables, …) with the
+“marginal” class argument are set in the right margin (if place permits).</p>
+<p class="marginal">An ordinary paragraph with the “marginal” class argument.</p>
+<p>Tight integration of graphics with text is central to Tufte’s work
+even when those graphics are ancillary to the main body of a text. In
+many of those cases, a margin figure may be most appropriate.</p>
+<figure class="marginal numbered">
+<img alt="../../../docs/user/rst/images/biohazard.png" src="../../../docs/user/rst/images/biohazard.png" style="width: 2em;" />
+<figcaption>
+<p>This is a marginal figure.</p>
+<div class="legend">
+<p>This is the legend.</p>
+</div>
+</figcaption>
+</figure>
+<p>To place an image in the margin, use a marginal figure without caption.</p>
+<figure class="marginal">
+<img alt="../../../docs/user/rst/images/biohazard.png" src="../../../docs/user/rst/images/biohazard.png" style="width: 2em;" />
+</figure>
+<p>Marginal objects are placed to the right of the preceding main text
+block.</p>
+<aside class="admonition marginal note">
+<p class="admonition-title">Note</p>
+<p>This is a “note” type admonition with a block-quote inside.</p>
+<blockquote>
+<p>This is a silly text that is only there to
+demonstrate line wrapping.</p>
+</blockquote>
+</aside>
+<p>By default, citations and footnotes are set in the margin.
+To have them in the main text area (like <a class="citation-reference" href="#testbook" id="citation-reference-3" role="doc-biblioref">[Testbook]</a> and <a class="citation-reference" href="#tb98" id="citation-reference-4" role="doc-biblioref">[tb98]</a> here),
+use the “align-left” class value.</p>
+<div role="list" class="citation-list">
+<div class="citation align-left" id="testbook" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#citation-reference-3">Testbook</a><span class="fn-bracket">]</span></span>
+<p>John Ex Ample, <cite>How to test web pages</cite>, Ontario, 1978.</p>
+</div>
+<div class="citation align-left" id="tb98" lang="de" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#citation-reference-4">tb98</a><span class="fn-bracket">]</span></span>
+<p>Horst Schramm, <cite>Docutils 0.5</cite>, in Testberichte III,
+Leipzig, 1998.</p>
+</div>
+</div>
+<table class="booktabs numbered captionbelow marginal">
+<caption>A marginal table</caption>
+<thead>
+<tr><th class="head"><p>A</p></th>
+<th class="head"><p>B</p></th>
+<th class="head"><p>A or B</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p>False</p></td>
+<td><p>False</p></td>
+<td><p>False</p></td>
+</tr>
+<tr><td><p>True</p></td>
+<td><p>False</p></td>
+<td><p>True</p></td>
+</tr>
+<tr><td><p>False</p></td>
+<td><p>True</p></td>
+<td><p>True</p></td>
+</tr>
+<tr><td><p>True</p></td>
+<td><p>True</p></td>
+<td><p>True</p></td>
+</tr>
+</tbody>
+</table>
+<aside class="footnote superscript align-left" id="not-in-margin" role="note">
+<span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
+<p>The “align-left” class value ensures this footnote is set
+in the main text area.</p>
+</aside>
+</section>
+</main>
+<footer>
+<p><a class="reference external image-reference" href="http://www.w3.org/TR/html5/"><img alt="Conforms to HTML 5" src="http://www.w3.org/html/logo/badge/html5-badge-h-css3-semantics.png" style="width: 88px; height: 31px;" /></a> <a class="reference external image-reference" href="http://validator.w3.org/check?uri=referer"><img alt="Check validity!" src="https://www.w3.org/Icons/ValidatorSuite/vs-blue-190.png" style="width: 88px; height: 31px;" /></a> <a class="reference external image-reference" href="http://jigsaw.w3.org/css-validator/check/referer"><img alt="Valid CSS 2.1!" src="http://jigsaw.w3.org/css-validator/images/vcss" style="width: 88px; height: 31px;" /></a></p>
+</footer>
+</body>
+</html>

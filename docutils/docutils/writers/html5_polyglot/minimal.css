@@ -172,6 +172,7 @@ span.option { white-space: nowrap; }
   vertical-align: inherit;
 }
 
+.backrefs { user-select: none; }
 .backrefs > a { font-style: italic; }
 
 /* superscript footnotes */
