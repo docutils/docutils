@@ -156,7 +156,8 @@ rst2html.py
 
 `rst2html.py` is the front-end for the default Docutils HTML writer.
 The default writer may change with the development of HTML, browsers,
-Docutils, and the web. Currently, it is html4css1_.
+Docutils, and the web.
+The current default is html4css1_, it will change to html5_ in Docutils 2.0.
 
 .. caution::
    Use a specific front end like rst2html4.py_ or rst2html5.py_,
@@ -223,7 +224,7 @@ Correct rendering of elements not directly supported by HTML depends on a
 CSS style sheet. The provided style sheets ``minimal.css`` and ``plain.css``
 define required and optional styling rules respectively.
 
-.. _html5: html.html#html5-polyglot
+.. _html5: html.html#html5
 
 rstpep2html.py
 --------------

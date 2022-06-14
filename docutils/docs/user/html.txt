@@ -10,10 +10,11 @@ html
 ----
 
 `html` is an alias for the default Docutils HTML writer.
-Currently, `html` is mapped to html4css1_.
 
-The target may change with the development of HTML, browsers, Docutils, and
-the web.
+The default may change with the development of HTML, browsers, Docutils,
+and the web.
+Currently, `html` is mapped to html4css1_, it will become an alias for
+html5_ in Docutils 2.0.
 
 * Use ``get_writer_by_name('html')`` or the rst2html.py_ front end, if you
   want the output to be up-to-date automatically.
@@ -88,10 +89,10 @@ S5_, the “Simple Standards-based Slide Show System” by Eric Meyer.  See
 .. _theme: tools.html#themes
 
 
-html5_polyglot
---------------
+html5
+-----
 
-:aliases: html5
+:aliases: _`html5_polyglot`
 :front-end: rst2html5.py_
 :config: `[html5 writer]`_
 
