@@ -83,8 +83,8 @@ Future changes
 
   __ docs/ref/transforms.html
 
-* The default HTML writer "html" with frontend ``rst2html.py`` may change
-  from "html4css1" to "html5".
+* The default HTML writer "html" with frontend ``rst2html.py`` will change
+  from "html4css1" to "html5" in Docutils 2.0.
 
   Use ``get_writer_by_name('html')`` or the rst2html.py_ front end, if you
   want the output to be up-to-date automatically.
