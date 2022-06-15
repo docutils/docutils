@@ -30,7 +30,8 @@ class Tee:
     """Write to a file and a stream (default: stdout) simultaneously."""
 
     def __init__(self, filename, stream=sys.__stdout__):
-        self.file = open(filename, 'w', errors='backslashreplace')
+        self.file = open(filename, 'w', encoding='utf-8',
+                         errors='backslashreplace')
         atexit.register(self.close)
         self.stream = stream
         self.encoding = getattr(stream, 'encoding', None)

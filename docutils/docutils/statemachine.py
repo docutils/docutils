@@ -92,7 +92,8 @@ How To Use This Module
    one-line strings. For example, to read text from a file called
    'inputfile'::
 
-       input_string = open('inputfile').read()
+       with open('inputfile', encoding='utf-8') as fp:
+           input_string = fp.read()
        input_lines = statemachine.string2lines(input_string)
 
 5. Run the state machine on the input text and collect the results, a list::

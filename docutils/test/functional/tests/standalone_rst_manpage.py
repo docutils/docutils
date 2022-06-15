@@ -1,4 +1,5 @@
-with open('functional/tests/_standalone_rst_defaults.py') as _f:
+with open('functional/tests/_standalone_rst_defaults.py',
+          encoding='utf-8') as _f:
     exec(_f.read())
 
 # Source and destination file names.

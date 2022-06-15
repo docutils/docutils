@@ -216,7 +216,7 @@ class S5HTMLTranslator(html4css1.HTMLTranslator):
             base_theme_file = os.path.join(path, self.base_theme_file)
             # If it exists, read it and record the theme path:
             if os.path.isfile(base_theme_file):
-                with open(base_theme_file) as f:
+                with open(base_theme_file, encoding='utf-8') as f:
                     lines = f.readlines()
                 for line in lines:
                     line = line.strip()

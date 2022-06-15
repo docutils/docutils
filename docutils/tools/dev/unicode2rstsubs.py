@@ -169,7 +169,7 @@ class CharacterEntitySetExtractor:
             outname = set_name + '-wide.txt'
         else:
             outname = set_name + '.txt'
-        outfile = open(outname, 'w')
+        outfile = open(outname, 'w', encoding='ascii')
         print('writing file "%s"' % outname)
         outfile.write(self.header + '\n')
         set = self.sets[set_name]

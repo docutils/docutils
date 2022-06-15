@@ -105,6 +105,10 @@ Changes Since 0.18.1
 
     __ https://packaging.python.org/en/latest/specifications/entry-points/
 
+* test/alltests.py
+
+  - Always encode the log file "alltests.out" using 'utf-8'.
+
 * test/DocutilsTestSupport.py
 
   - `exception_data()` now returns None if no exception was raised.

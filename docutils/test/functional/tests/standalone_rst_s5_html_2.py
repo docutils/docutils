@@ -1,5 +1,6 @@
 # initialize with the settings & definitions from test 1:
-with open('functional/tests/standalone_rst_s5_html_1.py') as _f:
+with open('functional/tests/standalone_rst_s5_html_1.py',
+          encoding='utf-8') as _f:
     exec(_f.read())
 
 # overrides specific to this test:

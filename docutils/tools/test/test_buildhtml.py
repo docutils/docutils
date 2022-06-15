@@ -81,7 +81,7 @@ class BuildHtmlTests(unittest.TestCase):
             if "." not in s:
                 os.mkdir(s)
             else:
-                fd_s = open(s, "w")
+                fd_s = open(s, "w", encoding='utf-8')
                 fd_s.write("dummy")
                 fd_s.close()
 
