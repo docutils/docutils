@@ -19,16 +19,20 @@ import warnings
 from docutils import TransformSpec
 
 
-# Guess the locale's encoding.
+# Guess the locale's preferred encoding.
 # If no valid guess can be made, locale_encoding is set to `None`:
+#
+# TODO: check whether this is set correctly with every OS and Python version
+#       or whether front-end tools need to call `locale.setlocale()`
+#       before importing this module
 try:
-    locale_encoding = locale.getlocale()[1] or locale.getdefaultlocale()[1]
+    locale_encoding = locale.getpreferredencoding(do_setlocale=False).lower()
 except ValueError as error:  # OS X may set UTF-8 without language code
     # See https://bugs.python.org/issue18378 fixed in 3.8
     # and https://sourceforge.net/p/docutils/bugs/298/.
     # Drop the special case after requiring Python >= 3.8
     if "unknown locale: UTF-8" in error.args:
-        locale_encoding = "UTF-8"
+        locale_encoding = "utf-8"
     else:
         locale_encoding = None
 except:  # noqa  any other problems determining the locale -> use None

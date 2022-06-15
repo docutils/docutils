@@ -63,7 +63,7 @@ Today's date is |date|.
 
 # some locales return non-ASCII characters for names of days or months
 # ensure the directive handles them correctly
-if locale_encoding.lower() in ('utf8', 'utf-8', 'latin-1', 'iso8859-1'):
+if locale_encoding in ('utf-8', 'utf8', 'latin-1', 'iso-8859-1'):
     totest['decode date'] = [
     ["""\
 .. |date| date:: täglich

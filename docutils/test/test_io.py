@@ -132,7 +132,7 @@ print("hello world")
     def test_heuristics_no_utf8(self):
         # if no encoding is given and decoding with utf-8 fails,
         # use either the locale encoding (if specified) or latin-1:
-        if io.locale_encoding.lower() not in ('utf-8', 'utf8'):
+        if io.locale_encoding not in ('utf-8', 'utf8'):
             # in Py3k, the locale encoding is used without --input-encoding
             # skipping the heuristic unless decoding fails.
             return
