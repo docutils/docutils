@@ -67,7 +67,7 @@ class CliTests(unittest.TestCase):
             f'{frontend.OptionParser.default_error_encoding}:backslashreplace',
             'utf-8:backslashreplace')
         # compare to stored version
-        with open('data/help/docutils.txt') as samplefile:
+        with open('data/help/docutils.txt', encoding='utf-8') as samplefile:
             expected = samplefile.read()
         if expected != output:
             print_mismatch(expected, output)

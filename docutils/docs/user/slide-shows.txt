@@ -474,19 +474,14 @@ Themes
 
   .. container:: handout
 
-     Themes from the `S5 tutorial`__ can be used.  These themes are in
-     the public domain and may be redistributed freely.
-
-     __ http://meyerweb.com/eric/tools/s5/s5blank.zip
-
      Sites with other S5 themes:
 
      * http://meyerweb.com/eric/tools/s5/themes/
      * http://mozilla.wikicities.com/wiki/Firefox_S5:Designs
      * http://lachy.id.au/dev/mozilla/firefox/s5/
      * http://www.openlight.com/Python-S5-Theme.tar.gz
-
-     S5 is becoming more popular every day.  Do a web search for "S5
+     
+     Do a web search for "S5
      theme" and you're bound to find plenty of choices.
 
 * "``--theme``" option.
@@ -659,7 +654,7 @@ Making a Custom Theme
 
 2. Copy ``ui/<base-theme>`` to ``ui/<new-theme>``.
 
-3. Edit the styles.
+3. Edit the styles (save in UTF-8 encoding).
 
    .. class:: handout
 

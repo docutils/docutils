@@ -936,7 +936,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         stylespath = self.settings.stylesheet
         ext = os.path.splitext(stylespath)[1]
         if ext == '.xml':
-            with open(stylespath, 'r') as stylesfile:
+            with open(stylespath, 'r', encoding='utf-8') as stylesfile:
                 s1 = stylesfile.read()
         elif ext == extension:
             zfile = zipfile.ZipFile(stylespath, 'r')
