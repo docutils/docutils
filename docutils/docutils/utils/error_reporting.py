@@ -45,39 +45,15 @@ The `SafeString`, `ErrorString` and `ErrorOutput` classes handle
 common exceptions.
 """
 
-import codecs
 import sys
 import warnings
+
+from docutils.io import locale_encoding
 
 warnings.warn('The `docutils.utils.error_reporting` module is deprecated '
               'and will be removed in Docutils 0.21 or later.\n'
               'Details with help("docutils.utils.error_reporting").',
               DeprecationWarning, stacklevel=2)
-
-# Guess the locale's encoding.
-# If no valid guess can be made, locale_encoding is set to `None`:
-try:
-    import locale # module missing in Jython
-except ImportError:
-    locale_encoding = None
-else:
-    try:
-        locale_encoding = locale.getlocale()[1] or locale.getdefaultlocale()[1]
-        # locale.getpreferredencoding([do_setlocale=True|False])
-        # has side-effects | might return a wrong guess.
-    except ValueError as error: # OS X may set UTF-8 without language code
-        # see http://bugs.python.org/issue18378
-        # and https://sourceforge.net/p/docutils/bugs/298/
-        if "unknown locale: UTF-8" in error.args:
-            locale_encoding = "UTF-8"
-        else:
-            locale_encoding = None
-    except: # noqa  any other problems determining the locale -> use None
-        locale_encoding = None
-    try:
-        codecs.lookup(locale_encoding or '') # None -> ''
-    except LookupError:
-        locale_encoding = None
 
 
 if sys.version_info >= (3, 0):
