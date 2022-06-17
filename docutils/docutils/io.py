@@ -20,29 +20,29 @@ from docutils import TransformSpec
 
 
 # Guess the locale's preferred encoding.
-# If no valid guess can be made, locale_encoding is set to `None`:
+# If no valid guess can be made, _locale_encoding is set to `None`:
 #
 # TODO: check whether this is set correctly with every OS and Python version
 #       or whether front-end tools need to call `locale.setlocale()`
 #       before importing this module
 try:
     # Return locale encoding also in UTF-8 mode
-    locale_encoding = locale.getlocale()[1] or locale.getdefaultlocale()[1]
-    locale_encoding = locale_encoding.lower()
+    _locale_encoding = locale.getlocale()[1] or locale.getdefaultlocale()[1]
+    _locale_encoding = _locale_encoding.lower()
 except ValueError as error:  # OS X may set UTF-8 without language code
     # See https://bugs.python.org/issue18378 fixed in 3.8
     # and https://sourceforge.net/p/docutils/bugs/298/.
     # Drop the special case after requiring Python >= 3.8
     if "unknown locale: UTF-8" in error.args:
-        locale_encoding = "utf-8"
+        _locale_encoding = "utf-8"
     else:
-        locale_encoding = None
+        _locale_encoding = None
 except:  # noqa  any other problems determining the locale -> use None
-    locale_encoding = None
+    _locale_encoding = None
 try:
-    codecs.lookup(locale_encoding)
+    codecs.lookup(_locale_encoding)
 except (LookupError, TypeError):
-    locale_encoding = None
+    _locale_encoding = None
 
 
 class InputError(OSError): pass
@@ -139,8 +139,8 @@ class Input(TransformSpec):
                 # no BOM found.  Start with UTF-8, because that only matches
                 # data that *IS* UTF-8:
                 encodings = ['utf-8', 'latin-1']
-                if locale_encoding:
-                    encodings.insert(1, locale_encoding)
+                if _locale_encoding:
+                    encodings.insert(1, _locale_encoding)
         for enc in encodings:
             try:
                 decoded = str(data, enc, self.error_handler)
@@ -267,7 +267,7 @@ class ErrorOutput:
         """Where warning output is sent."""
 
         self.encoding = (encoding or getattr(destination, 'encoding', None)
-                         or locale_encoding or 'ascii')
+                         or _locale_encoding or 'ascii')
         """The output character encoding."""
 
         self.encoding_errors = encoding_errors

@@ -449,7 +449,8 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
     """Lookup table for boolean configuration file settings."""
 
     default_error_encoding = (getattr(sys.stderr, 'encoding', None)
-                              or io.locale_encoding or 'ascii')
+                              or io._locale_encoding  # noqa
+                              or 'ascii')
 
     default_error_encoding_error_handler = 'backslashreplace'
 

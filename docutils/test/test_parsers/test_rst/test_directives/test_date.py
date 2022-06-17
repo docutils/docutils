@@ -13,7 +13,7 @@ if __name__ == '__main__':
 from test_parsers import DocutilsTestSupport
 import time
 
-from docutils.io import locale_encoding
+from docutils.io import _locale_encoding  # noqa
 
 
 def suite():
@@ -63,7 +63,7 @@ Today's date is |date|.
 
 # some locales return non-ASCII characters for names of days or months
 # ensure the directive handles them correctly
-if locale_encoding in ('utf-8', 'utf8', 'latin-1', 'iso-8859-1'):
+if _locale_encoding in ('utf-8', 'utf8', 'latin-1', 'iso-8859-1'):
     totest['decode date'] = [
     ["""\
 .. |date| date:: täglich
