@@ -1099,26 +1099,21 @@ for more info:
 * `Python Unicode Tutorial
   <http://www.reportlab.com/i18n/python_unicode_tutorial.html>`_
 
-* `Python Unicode Objects: Some Observations on Working With Non-ASCII
-  Character Sets <http://effbot.org/zone/unicode-objects.htm>`_
-
 The common case is with the default output encoding (UTF-8), when
 either numbered sections are used (via the "sectnum_" directive) or
-symbol-footnotes.  3 non-breaking spaces are inserted in each numbered
+symbol-footnotes.  Three non-breaking spaces are inserted in each numbered
 section title, between the generated number and the title text.  Most
 footnote symbols are not available in ASCII, nor are non-breaking
 spaces.  When encoded with UTF-8 and viewed with ordinary ASCII tools,
 these characters will appear to be multi-character garbage.
 
 You may have an decoding problem in your browser (or editor, etc.).
-The encoding of the output is set to "utf-8", but your browser isn't
+The encoding of the output is set to UTF-8, but your browser isn't
 recognizing that.  You can either try to fix your browser (enable
 "UTF-8 character set", sometimes called "Unicode"), or choose a
-different encoding for the HTML output.  You can also try
+different `output-encoding`_.  You can also try
 ``--output-encoding=ascii:xmlcharrefreplace`` for HTML or XML, but not
-applicable to non-XMLish outputs (if using runtime
-settings/configuration files, use ``output_encoding=ascii`` and
-``output_encoding_error_handler=xmlcharrefreplace``).
+applicable to non-XMLish outputs.
 
 If you're generating document fragments, the "Content-Type" metadata
 (between the HTML ``<head>`` and ``</head>`` tags) must agree with the
@@ -1132,6 +1127,7 @@ of the output.  It must also match the document encoding.  For UTF-8::
     <?xml version="1.0" encoding="utf-8" ?>
 
 .. _sectnum: docs/ref/rst/directives.html#sectnum
+.. _output-encoding: docs/user/config.html#output-encoding
 
 
 How can I retrieve the body of the HTML document?

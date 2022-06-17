@@ -298,8 +298,9 @@ Default: "ascii".  Options: ``--error-encoding, -e``.
 error_encoding_error_handler
 ----------------------------
 
-The error handler for unencodable characters in error output.  See
-output_encoding_error_handler_ for acceptable values.
+The error handler for unencodable characters in error output.
+Acceptable values are the `Error Handlers`_ of Python's "encoding" module.
+See also output_encoding_error_handler_.
 
 Default: "backslashreplace"
 Options: ``--error-encoding-error-handler, --error-encoding, -e``.
@@ -373,8 +374,9 @@ Default: auto-detect (None).  Options: ``--input-encoding, -i``.
 input_encoding_error_handler
 ----------------------------
 
-The error handler for undecodable characters in the input. Acceptable
-values include:
+The error handler for undecodable characters in the input.
+Acceptable values are the `Error Handlers`_ of Python's "encoding" module,
+including:
 
 strict
     Raise an exception in case of an encoding error.
@@ -383,10 +385,6 @@ replace
     character, U+FFFD.
 ignore
     Ignore malformed data and continue without further notice.
-
-Acceptable values are the same as for the "error" parameter of
-Python's ``unicode`` function; other values may be defined in
-applications or in future versions of Python.
 
 Default: "strict".
 Options: ``--input-encoding-error-handler, --input-encoding, -i``.
@@ -421,13 +419,14 @@ output_encoding
 
 The text encoding for output.
 
-Default: "UTF-8".  Options: ``--output-encoding, -o``.
+Default: "utf-8".  Options: ``--output-encoding, -o``.
 
 output_encoding_error_handler
 -----------------------------
 
-The error handler for unencodable characters in the output. Acceptable
-values include:
+The error handler for unencodable characters in the output.
+Acceptable values are the `Error Handlers`_ of Python's "encoding" module,
+including:
 
 strict
     Raise an exception in case of an encoding error.
@@ -442,10 +441,6 @@ xmlcharrefreplace
 backslashreplace
     Replace with backslash escape sequences, such as "``\u2020``".
 
-Acceptable values are the same as for the "error" parameter of
-Python's ``encode`` string method; other values may be defined in
-applications or in future versions of Python.
-
 Default: "strict".
 Options: ``--output-encoding-error-handler, --output-encoding, -o``.
 
@@ -455,7 +450,7 @@ record_dependencies
 Path to a file where Docutils will write a list of files that were
 required to generate the output, e.g. included files or embedded
 stylesheets [#dependencies]_. [#pwd]_ The format is one path per
-line with forward slashes as separator, the encoding is ``utf8``.
+line with forward slashes as separator, the encoding is UTF-8.
 
 Set to ``-`` in order to write dependencies to stdout.
 
@@ -465,10 +460,10 @@ This option is particularly useful in conjunction with programs like
   ham.html: ham.txt $(shell cat hamdeps.txt)
     rst2html.py --record-dependencies=hamdeps.txt ham.txt ham.html
 
-If the filesystem encoding differs from utf8, replace the ``cat``
+If the filesystem encoding differs from UTF-8, replace the ``cat``
 command with a call to a converter, e.g.::
 
-  $(shell iconv -f utf8 -t latin1 hamdeps.txt)
+  $(shell iconv -f utf-8 -t latin1 hamdeps.txt)
 
 Default: None.  Option: ``--record-dependencies``.
 
@@ -2336,3 +2331,6 @@ pep_template           [pep_html writer] template
 .. _option lists: ../ref/rst/restructuredtext.html#option-lists
 .. _tables: ../ref/rst/restructuredtext.html#tables
 .. _table of contents: ../ref/rst/directives.html#contents
+
+.. _Error Handlers: 
+   https://docs.python.org/3/library/codecs.html#error-handlers
