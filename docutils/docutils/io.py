@@ -26,7 +26,9 @@ from docutils import TransformSpec
 #       or whether front-end tools need to call `locale.setlocale()`
 #       before importing this module
 try:
-    locale_encoding = locale.getpreferredencoding(do_setlocale=False).lower()
+    # Return locale encoding also in UTF-8 mode
+    locale_encoding = locale.getlocale()[1] or locale.getdefaultlocale()[1]
+    locale_encoding = locale_encoding.lower()
 except ValueError as error:  # OS X may set UTF-8 without language code
     # See https://bugs.python.org/issue18378 fixed in 3.8
     # and https://sourceforge.net/p/docutils/bugs/298/.
@@ -38,8 +40,8 @@ except ValueError as error:  # OS X may set UTF-8 without language code
 except:  # noqa  any other problems determining the locale -> use None
     locale_encoding = None
 try:
-    codecs.lookup(locale_encoding or '')
-except LookupError:
+    codecs.lookup(locale_encoding)
+except (LookupError, TypeError):
     locale_encoding = None
 
 
