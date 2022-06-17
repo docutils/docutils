@@ -133,27 +133,6 @@ Code cleanup and modernization:
   .. _flake8: https://pypi.org/project/flake8/
   .. _backwards compatibility: policies.html#backwards-compatibility-policy
 
-* Encoding of command line arguments can only be guessed:
-
-  * try UTF-8/strict first, then try the locale's encoding with
-    strict error handling, then ASCII/replace?
-
-    UTF-8 is almost 100% safe to try first; false positives are rare,
-    The locale's encoding with strict error handling may be a
-    reasonable compromise, but any error would indicate that the
-    locale's encoding is inappropriate.  The only safe fallback is
-    ASCII/replace.
-
-  * Do not decode argv before option parsing but individual string
-    values?
-
-    +1  Allows for separate command-line vs. filesystem encodings,
-        respectively to keep file names encoded.
-    +1  Allows to configure command-line encoding in a config file,
-    -1  More complicated.
-
-  Cf. <http://thread.gmane.org/gmane.text.docutils.user/2890/focus=2957>.
-
 * Improve handling on Windows:
 
   - Get graphical installer.
