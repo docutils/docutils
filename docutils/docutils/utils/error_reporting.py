@@ -21,7 +21,6 @@ Deprecated module to handle Exceptions across Python versions.
      | SafeString  -> str
      | ErrorString -> docutils.io.error_string()
      | ErrorOutput -> docutils.io.ErrorOutput
-     | locale_encoding -> docutils.io.locale_encoding
 
 Error reporting should be safe from encoding/decoding errors.
 However, implicit conversions of strings and exceptions like
@@ -48,7 +47,7 @@ common exceptions.
 import sys
 import warnings
 
-from docutils.io import locale_encoding
+from docutils.io import _locale_encoding as locale_encoding  # noqa
 
 warnings.warn('The `docutils.utils.error_reporting` module is deprecated '
               'and will be removed in Docutils 0.21 or later.\n'

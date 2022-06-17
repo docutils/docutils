@@ -31,6 +31,11 @@ Changes Since 0.18.1
   Let `Publisher.publish()` print info and prompt when waiting for input
   from a terminal (cf. https://clig.dev/#interactivity).
 
+* docutils/io.py
+  - New function `error_string()`
+    obsoletes `utils.error_reporting.ErrorString`.
+  - Class `ErrorOutput` moved here from `utils/error_reporting`.
+
 * docutils/parsers/__init__.py
 
   - Aliases "markdown" and "commonmark" point to "commonmark_wrapper".
@@ -76,8 +81,6 @@ Changes Since 0.18.1
 * docutils/utils/__init__.py
 
   - `decode_path()` returns `str` instance instead of `nodes.reprunicode`.
-  - New function `error_string()` obsoletes utils.error_reporting.ErrorString.
-  - Class `ErrorOutput` moved here from docutils/utils/error_reporting.py
 
 * docutils/utils/error_reporting.py
 
