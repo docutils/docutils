@@ -562,7 +562,7 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
          ('Disable Python tracebacks.  (default)',
           ['--no-traceback'], {'dest': 'traceback', 'action': 'store_false'}),
          ('Specify the encoding and optionally the '
-          'error handler of input text.  Default: <locale-dependent>:strict.',
+          'error handler of input text.  Default: <auto-detect>:strict.',
           ['--input-encoding', '-i'],
           {'metavar': '<name[:handler]>',
            'validator': validate_encoding_and_error_handler}),
@@ -580,8 +580,8 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
           '"xmlcharrefreplace", "backslashreplace".',
           ['--output-encoding-error-handler'],
           {'default': 'strict', 'validator': validate_encoding_error_handler}),
-         ('Specify text encoding and error handler for error output.  '
-          'Default: %s:%s.'
+         ('Specify text encoding and optionally error handler '
+          'for error output.  Default: %s:%s.'
           % (default_error_encoding, default_error_encoding_error_handler),
           ['--error-encoding', '-e'],
           {'metavar': '<name[:handler]>', 'default': default_error_encoding,

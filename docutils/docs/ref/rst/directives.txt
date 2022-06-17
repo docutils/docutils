@@ -884,7 +884,7 @@ The following options are recognized:
     The horizontal alignment of the table. (New in Docutils 0.13)
 
 ``delim`` : char | "tab" | "space" [#whitespace-delim]_
-    A one-character string\ [#ASCII-char]_ used to separate fields.
+    A one-character string used to separate fields.
     Defaults to ``,`` (comma).  May be specified as a Unicode code
     point; see the unicode_ directive for syntax details.
 
@@ -893,7 +893,7 @@ The following options are recognized:
     Defaults to the document's input_encoding_.
 
 ``escape`` : char
-    A one-character\ [#ASCII-char]_ string used to escape the
+    A one-character string used to escape the
     delimiter or quote characters.  May be specified as a Unicode
     code point; see the unicode_ directive for syntax details.  Used
     when the delimiter is used in an unquoted field, or when quote
@@ -920,7 +920,7 @@ The following options are recognized:
     significant.  The default is to ignore such whitespace.
 
 ``quote`` : char
-    A one-character string\ [#ASCII-char]_ used to quote elements
+    A one-character string used to quote elements
     containing the delimiter or which start with the quote
     character.  Defaults to ``"`` (quote).  May be specified as a
     Unicode code point; see the unicode_ directive for syntax
@@ -949,12 +949,6 @@ and the common options class_ and name_.
 
 .. [#whitespace-delim] Whitespace delimiters are supported only for external
    CSV files.
-
-.. [#ASCII-char] With Python 2, the values for the ``delimiter``,
-   ``quote``, and ``escape`` options must be ASCII characters. (The csv
-   module does not support Unicode and all non-ASCII characters are
-   encoded as multi-byte utf-8 string). This limitation does not exist
-   under Python 3.
 
 
 List Table

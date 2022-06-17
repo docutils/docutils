@@ -55,7 +55,7 @@ General Docutils Options
 --no-traceback          Disable Python tracebacks.  (default)
 --input-encoding=<name[:handler]>, -i <name[:handler]>
                         Specify the encoding and optionally the error handler
-                        of input text.  Default: <locale-dependent>:strict.
+                        of input text.  Default: <auto-detect>:strict.
 --input-encoding-error-handler=INPUT_ENCODING_ERROR_HANDLER
                         Specify the error handler for undecodable characters.
                         Choices: "strict" (default), "ignore", and "replace".
@@ -67,8 +67,8 @@ General Docutils Options
                         characters; "strict" (default), "ignore", "replace",
                         "xmlcharrefreplace", "backslashreplace".
 --error-encoding=<name[:handler]>, -e <name[:handler]>
-                        Specify text encoding and error handler for error
-                        output.  Default: utf-8:backslashreplace.
+                        Specify text encoding and optionally error handler for
+                        error output.  Default: utf-8:backslashreplace.
 --error-encoding-error-handler=ERROR_ENCODING_ERROR_HANDLER
                         Specify the error handler for unencodable characters
                         in error output.  Default: backslashreplace.
