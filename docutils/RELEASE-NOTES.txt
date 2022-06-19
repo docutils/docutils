@@ -36,10 +36,8 @@ Future changes
     ``[role="doc-noteref"]`` instead of ``.footnote-reference``
     (see minimal.css for examples).
 
-  - Remove option ``--embed-images`` (obsoleted by "image_loading_")
-    in Docutils 2.0.
-
-    .. _image_loading: docs/user/config.html#image-loading
+  - Use dpub-ARIA role "doc-footnote" (instead of ARIA role "note")
+    for footnotes in Docutils 0.20.
 
   - Move attribution behind the blockquote to comply with the `"living
     standard"`__. (HTML5__ allows <cite> elements inside a blockquote.)
@@ -47,6 +45,11 @@ Future changes
     __ https://html.spec.whatwg.org/#the-blockquote-element
     __ https://www.w3.org/TR/2014/REC-html5-20141028/grouping-content.html
        #the-blockquote-element
+
+  - Remove option ``--embed-images`` (obsoleted by "image_loading_")
+    in Docutils 2.0.
+
+    .. _image_loading: docs/user/config.html#image-loading
 
 * `latex2e` writer:
 
@@ -58,7 +61,7 @@ Future changes
 
   - Remove ``use_verbatim_when_possible`` setting
     (use literal_block_env_: verbatim) in Docutils 2.0.
-    
+
   - Do not insert ``\usepackage[utf8]{inputenc}`` into UTF-8 encoded
     LaTeX sources. UTF-8 is the default encoding for LaTeX2e since 2018.
 

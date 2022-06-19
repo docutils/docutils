@@ -2263,23 +2263,25 @@ Details
 
     The `DocBook "footnote"`_ element combines features of ``footnote``
     and footnote_reference_.
+    
+    The DPub ARIA role `"doc-footnote"`__ may be used to mark a (conforming__)
+    `HTML emulation`__ as "ancillary information, such as a citation or
+    commentary, that provides additional context to a referenced passage
+    of text".
 
-    The `ARIA role "note"`__ may be used to mark a (conforming__)
-    `HTML emulation`__ as "a section whose content is parenthetic or
-    ancillary to the main content of the resource".
+    For collections of notes that occur at the end of a section, the
+    the DPub ARIA role `"doc-endnotes"`__ is more appropriate.
 
-    Depending on the note's position, the `epub:type`__ *footnote* or
-    *endnote* and the DPub ARIA role `"doc-footnote"`__ or
-    `"doc-endnote"`__ may be applicable.
+    The corresponding types in the `EPUB 3 Structural Semantics
+    Vocabulary`__ are "footnote" and "endnote".
 
     .. _DocBook "footnote": https://tdg.docbook.org/tdg/5.1/footnote.html
-    __ https://www.w3.org/TR/wai-aria-1.1/#note
+    __ https://www.w3.org/TR/dpub-aria-1.0/#doc-footnote
     __ https://www.w3.org/TR/html-aria/#docconformance
     __ https://www.w3.org/TR/html51/
        common-idioms-without-dedicated-elements.html#footnotes
-    __ https://idpf.github.io/epub-vocabs/structure/#notes
-    __ https://www.w3.org/TR/dpub-aria-1.0/#doc-footnote
-    __ https://www.w3.org/TR/dpub-aria-1.0/#doc-endnote
+    __ https://www.w3.org/TR/dpub-aria-1.0/#doc-endnotes
+    __ https://www.w3.org/TR/epub-ssv-11/#notes
 
 :Processing:
     A ``footnote`` element should be set off from the rest of the
