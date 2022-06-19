@@ -245,6 +245,7 @@ div.system-message > p > span.literal {
 /* Literal and Code */
 pre.literal-block, pre.doctest{
   padding: 0.2em;
+  overflow-x: auto;
 }
 .literal-block, .doctest, span.literal {
   background-color: #f6f9f8;
@@ -290,13 +291,14 @@ a:hover {
   margin-left: 0.2em;
 }
 /* highlight the target of the current URL */
-/* section:target > h2, section:target > h3, section:target > h4, */
-/* section:target > h5, section:target > h6,			  */
+section:target > h2, section:target > h3, section:target > h4,
+section:target > h5, section:target > h6,
 .contents :target,
 .contents:target > .topic-title,
 [role="doc-biblioentry"]:target > .label,
 [role="doc-biblioref"]:target,
-[role="note"]:target > .label,
+[role="note"]:target, /* Docutils 0.18 ... 0.19 */
+[role="doc-footnote"]:target, /* Docutils >= 0.20 */
 [role="doc-noteref"]:target {
   background-color: #d2e6ec;
 }
