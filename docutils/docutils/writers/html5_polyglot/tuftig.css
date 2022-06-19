@@ -222,7 +222,8 @@ dl.description > dd:after {
 }
 
 /* Citation list (style as description list) */
-.citation-list {
+.citation-list,
+.footnote-list {
   display: contents;
 }
 .citation {

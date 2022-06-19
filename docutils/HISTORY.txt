@@ -96,6 +96,7 @@ Changes Since 0.18.1
   - Add space before "charset" meta tag closing sequence.
   - Remove class value "controls" from an `image` node with video content
     after converting it to a "control" attribute of the <video> tag.
+  - Wrap groups of footnotes in an ``<aside>`` for easier styling.
 
 * docutils/writers/pep_html/
 

@@ -635,8 +635,8 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def depart_citation(self, node):
         self.body.append('</div>\n')
-        next_node = node.next_node(descend=False, siblings=True)
-        if not isinstance(next_node, type(node)):
+        if not isinstance(node.next_node(descend=False, siblings=True),
+                          type(node)):
             self.body.append('</div>\n')
 
     # Use DPub role (overwritten in HTML4)
@@ -943,15 +943,22 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body_suffix[:0] = footer
         del self.body[start:]
 
-    # use HTML5 element <aside> with ARIA role "note" for footnote text
-    # (the html4css1 writer uses a table).
     def visit_footnote(self, node):
-        classes = [node.tagname, self.settings.footnote_references]
-        self.body.append(self.starttag(node, 'aside', classes=classes,
+        # No native HTML element: use <aside> with ARIA role
+        # (html4css1 uses tables).
+        # Wrap groups of footnotes for easier styling.
+        label_style = self.settings.footnote_references  # brackets/superscript
+        if not isinstance(node.previous_sibling(), type(node)):
+            self.body.append(f'<aside class="footnote-list {label_style}">\n')
+        self.body.append(self.starttag(node, 'aside',
+                                       classes=[node.tagname, label_style],
                                        role="note"))
 
     def depart_footnote(self, node):
         self.body.append('</aside>\n')
+        if not isinstance(node.next_node(descend=False, siblings=True),
+                          type(node)):
+            self.body.append('</aside>\n')
 
     def visit_footnote_reference(self, node):
         href = '#' + node['refid']

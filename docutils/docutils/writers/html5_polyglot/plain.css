@@ -199,17 +199,9 @@ table.numbered > caption:before {
 /* ----------------------- */
 
 /* line on the left */
-.footnote {
+.footnote-list {
   border-left: solid thin;
-  padding-left: 2.1em;
-  margin-bottom: 0;
-}
-.footnote + .footnote {
-  padding-top: 0.5em;
-  margin-top: 0;
-}
-.footnote.superscript {
-  padding-left: 1.2em;
+  padding-left: 0.25em;
 }
 
 /* Directives */

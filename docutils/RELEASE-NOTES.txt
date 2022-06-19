@@ -112,6 +112,14 @@ Release 0.19b (unpublished)
 
 * Drop support for Python 2.7, 3.5, and 3.6.
 
+* Output changes:
+
+  HTML5:
+    Wrap groups of footnotes in an ``<aside>`` for easier styling.
+    
+    The CSS rule ``.footnote-list { display: contents; }`` can be used to
+    restore the behaviour of custom CSS styles.
+
 * After package installation, the CLI commands ``python -m docutils`` and
   ``docutils`` start the `generic command line front end tool`__.
 
