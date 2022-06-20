@@ -71,7 +71,7 @@ Parsing the Document
 The **Parser** analyzes the the input document and creates a **node
 tree** representation.  In this case we are using the
 **reStructuredText parser** (``docutils/parsers/rst/__init__.py``).
-To see what that node tree looks like, we call ``quicktest.py`` (which
+To see what that node tree looks like, we call quicktest.py_ (which
 can be found in the ``tools/`` directory of the Docutils distribution)
 with our example file (``test.txt``) as first parameter (Windows users
 might need to type ``python quicktest.py test.txt``)::
@@ -251,7 +251,7 @@ on the Docutils-develop_ mailing list.
 
 
 .. _Docutils-develop: ../user/mailing-lists.html#docutils-develop
-
+.. _quicktest.py: ../user/tools.html#quicktest-py
 
 .. |---| unicode:: 8212 .. em-dash
    :trim:

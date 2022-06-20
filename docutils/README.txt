@@ -349,21 +349,14 @@ depend on the computer running the tests.  The difference between the
 two times represents the time required to set up the tests (import
 modules, create data structures, etc.).
 
+A copy of the test output is written to the file ``alltests.out``.
+
 If any of the tests fail, please `open a bug report`_ or `send an email`_
 (see `Bugs <BUGS.html>`_).
 Please include all relevant output, information about your operating
 system, Python version, and Docutils version.  To see the Docutils
-version, use one of the ``rst2*`` front ends or ``tools/quicktest.py``
-with the ``--version`` option, e.g.::
-
-    cd ../tools
-    ./quicktest.py --version
-
-Windows users type these commands::
-
-    cd ..\tools
-    python quicktest.py --version
-
+version, look at the test output or use one of the `front-end scripts`_ 
+with the ``--version`` option.
 
 .. _Docutils Testing: https://docutils.sourceforge.io/docs/dev/testing.html
 .. _open a bug report:

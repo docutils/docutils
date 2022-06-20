@@ -45,7 +45,8 @@ input (stdin) is used for the source.
    Tool names, install details and the set of auto-installed tools
    may change in future Docutils versions.
 
-.. [#] The exceptions are buildhtml.py_ and rst2odt_prepstyles.py_.
+.. [#] The exceptions are buildhtml.py_, quicktest.py_ and
+   rst2odt_prepstyles.py_.
 
 Getting Help
 ============
@@ -165,6 +166,8 @@ The current default is html4css1_, it will change to html5_ in Docutils 2.0.
    (e.g., because you use a custom style sheet or post-processing
    that may break otherwise).
 
+.. _html: html.html#html
+
 
 rst2html4.py
 ------------
@@ -196,19 +199,22 @@ Stylesheets
 
 ``rst2html.py`` inserts into the generated HTML a cascading stylesheet
 (or a link to a stylesheet, when passing the "``--link-stylesheet``"
-option).  A stylesheet is required for proper rendering.  The default
-stylesheet (``docutils/writers/html4css1/html4css1.css``, located in
-the installation directory) is provided for basic use.  To use
-different stylesheet(s), specify the stylesheets' location(s)
-as comma-separated list with the "``--stylesheet``" (for a URL)
-or "``--stylesheet-path``" (for a local file) command-line option,
-or with `configuration file`_ settings (e.g. ``./docutils.conf``
-or ``~/.docutils``).  To experiment with styles, please see the
+option).  A stylesheet is required for proper rendering.
+The default stylesheet (``docutils/writers/html4css1/html4css1.css``,
+located in the installation directory) is provided for basic use.
+
+To use different stylesheet(s), specify the stylesheets' location(s) as
+comma-separated list with the "`-\-stylesheet`_"
+or "`-\-stylesheet-path`_" options.
+To experiment with styles, please see the
 `guide to writing HTML (CSS) stylesheets for Docutils`__.
 
-__ ../howto/html-stylesheets.html
 .. _html4css1: html.html#html4css1
-.. _html: html.html#html
+.. _link-stylesheet: config.html#embed-stylesheet
+.. _--stylesheet: config.html#stylesheet
+.. _--stylesheet-path: config.html#stylesheet-path
+
+__ ../howto/html-stylesheets.html
 
 
 rst2html5.py
@@ -524,6 +530,11 @@ document.  Possible output forms output include:
 --xml     Pretty-printed native XML
 --rawxml  Raw native XML (with or without a stylesheet reference)
 --help    Usage hint and complete list of supported options.
+
+.. Caution:: ``quicktest.py`` uses Python's default encoding.
+   Input and output encoding depend on UTF-8 mode,
+   Python version, locale setting, and operating system
+   (cf. :PEP:`540`, :PEP:`538`, :PEP:`597`, and :PEP:`686`).
 
 
 ---------------
