@@ -49,7 +49,7 @@ Releasing (post 2020)
 
     python3 -m twine upload --repository-url https://test.pypi.org/legacy/ dist/*
 
-  Test in venv ::
+  Test in venv. NOTE use --pre for prereleases::
 
     python3 -m venv du3 ; cd du3
     export PYTHONPATH= ; . bin/activate
