@@ -24,11 +24,41 @@ Problems
 Release 0.19b1 (2022-06-21)
 ===========================
 
-follow docs/dev/release.txt
+* run tox: 
+* set_version 0.19b1
+* tox again
+* Generate universal wheel and source-distribution ::
 
-test install with ``--pre`` ::
+    python3 setup.py sdist
+    python3 setup.py bdist_wheel 
 
-  python -m pip install --index-url https://test.pypi.org/simple/ --no-deps --pre docutils
+* Upload universal wheel and source to test.pypi::
+
+    twine upload --repository-url https://test.pypi.org/legacy/ dist/docutils-0.19b*
+
+* test in venvs: ignore wrong paths and un-embedded images
+
+* upload to pypi::
+
+    twine upload  dist/docutils-0.19*
+
+* and test: python uses the cached download from the previous test.
+
+  - remove from pip cache::
+
+      find .cache/pip/wheels -name docutils\*whl
+
+ERROR ? 
+
+  ``python3 setup.py bdist_wheel`` builds a docutils-0.19b1-py2.py3-none-any.whl
+  although python > 3.7 is required ... will this break python2 installations ? 
+
+  Testing with python2.7 : only 0.18 is installed, even with --pre and -U.
+
+* set_version 0.19b2.dev and change __version_info_structure.
+* tox
+* commit
+* Run sandbox/infrastructure/docutils-update.local to update web-content.
 
 Release 0.18.1 (2021-11-23)
 ===========================
