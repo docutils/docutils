@@ -1,6 +1,6 @@
-=========================
- README: Docutils 0.19b1
-=========================
+=============================
+ README: Docutils 0.19b2.dev
+=============================
 
 :Author: David Goodger
 :Contact: goodger@python.org
