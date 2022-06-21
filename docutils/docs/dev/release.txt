@@ -29,6 +29,8 @@ Releasing (post 2020)
 
   Check what was changed with version control system by ``set_version.sh``
 
+  Change docutils/__init__.py __version_info__ tuple.
+
   Run tests ::
 
     export PYTHONWARNINGS=default
