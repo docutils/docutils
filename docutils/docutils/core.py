@@ -186,7 +186,8 @@ class Publisher:
             self.settings._source = source_path
         self.source = self.source_class(
             source=source, source_path=source_path,
-            encoding=self.settings.input_encoding)
+            encoding=self.settings.input_encoding,
+            error_handler=self.settings.input_encoding_error_handler)
 
     def set_destination(self, destination=None, destination_path=None):
         if destination_path is None:
