@@ -21,6 +21,8 @@ Problems
   - finding ``HISTORY.txt`` in test_utils.py fails.
     Create a HISTORY.txt file to avoid.
 
+setup.cfg contained the universal setting that generated py2py3 wheels.
+
 Release 0.19b1 (2022-06-21)
 ===========================
 
