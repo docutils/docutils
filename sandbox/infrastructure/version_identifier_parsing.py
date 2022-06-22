@@ -82,10 +82,9 @@ __version_info__ = VersionInfo(
     major=%d,
     minor=%d,
     micro=%d,
-    releaselevel='%s', # one of 'alpha', 'beta', 'candidate', 'final'
-    # pre-release serial number (0 for final releases and active development):
-    serial=%d,
-    release=%s # True for official releases and pre-releases
+    releaselevel='%s',  # one of 'alpha', 'beta', 'candidate', 'final'
+    serial=%d,  # pre-release number (0 for final releases and snapshots)
+    release=%s  # True for official releases and pre-releases
     )
 """
 
@@ -105,16 +104,16 @@ def change_version_info_definition(version, source):
     """Replace the __version_info__ definition in file "source" with
     a version matching the version identifer `version`."""
     version_info_def = version_info_definition(version)
-    sourcefile = open(source)
-    old = sourcefile.read()
-    sourcefile.close()
+    with open(source) as sourcefile:
+        old = sourcefile.read()
+    if not re.search(version_info_def_pattern, old):
+        return f'No matching "version_info" definition found.'
     new = re.sub(version_info_def_pattern, version_info_def, old)
     if old == new:
-        return "nothing to change (or parsing error)"
-    sourcefile = open(source, 'w')
-    sourcefile.write(new)
-    sourcefile.close()
-    return "changed %s" % source
+        return 'Nothing to change.'
+    with open(source, 'w') as sourcefile:
+        sourcefile.write(new)
+    return f'Changed "{source}".'
 
 
 # -----------------------------------------------------------------------
