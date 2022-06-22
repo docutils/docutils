@@ -48,10 +48,12 @@ Release 0.19b1 (2022-06-21)
 
       find .cache/pip/wheels -name docutils\*whl
 
-ERROR ? 
+IRRITATION
 
   ``python3 setup.py bdist_wheel`` builds a docutils-0.19b1-py2.py3-none-any.whl
   although python > 3.7 is required ... will this break python2 installations ? 
+
+  This happens with option universal and without and also if using *build*.
 
   Testing with python2.7 : only 0.18 is installed, even with --pre and -U.
 
