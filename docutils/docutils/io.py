@@ -110,38 +110,45 @@ class Input(TransformSpec):
 
     def decode(self, data):
         """
-        Decode a string, `data`, heuristically.
-        Raise UnicodeError if unsuccessful.
+        Decode `data` if required.
 
+        Return Unicode `str` instances unchanged (nothing to decode).
+
+        If `self.encoding` is None, determine encoding from data
+        or try UTF-8, locale encoding, and (as last ressort) 'latin-1'.
         The client application should call ``locale.setlocale`` at the
         beginning of processing::
 
             locale.setlocale(locale.LC_ALL, '')
+
+        Raise UnicodeError if unsuccessful.
         """
         if self.encoding and self.encoding.lower() == 'unicode':
             assert isinstance(data, str), ('input encoding is "unicode" '
                                            'but input is not a `str` object')
         if isinstance(data, str):
-            # Accept unicode string even if self.encoding != 'unicode'.
+            # nothing to decode
             return data
         if self.encoding:
             # We believe the user/application when the encoding is
             # explicitly given.
-            encodings = [self.encoding]
+            encoding_candidates = [self.encoding]
         else:
             data_encoding = self.determine_encoding_from_data(data)
             if data_encoding:
                 # If the data declares its encoding (explicitly or via a BOM),
                 # we believe it.
-                encodings = [data_encoding]
+                encoding_candidates = [data_encoding]
             else:
                 # Apply heuristics only if no encoding is explicitly given and
                 # no BOM found.  Start with UTF-8, because that only matches
                 # data that *IS* UTF-8:
-                encodings = ['utf-8', 'latin-1']
-                if _locale_encoding:
-                    encodings.insert(1, _locale_encoding)
-        for enc in encodings:
+                encoding_candidates = ['utf-8']
+                if _locale_encoding and _locale_encoding != 'utf-8':
+                    encoding_candidates.append(_locale_encoding)
+                # TODO: fall back to 'latin-1' or report error? (API change)
+                encoding_candidates.append('latin-1')
+        for enc in encoding_candidates:
             try:
                 decoded = str(data, enc, self.error_handler)
                 self.successful_encoding = enc
@@ -152,8 +159,8 @@ class Input(TransformSpec):
                 error = err
         raise UnicodeError(
             'Unable to decode input data.  Tried the following encodings: '
-            '%s.\n(%s)' % (', '.join(repr(enc) for enc in encodings),
-                           error_string(error)))
+            f'{", ".join(repr(enc) for enc in encoding_candidates)}.\n'
+            f'({error_string(error)})')
 
     coding_slug = re.compile(br"coding[:=]\s*([-\w.]+)")
     """Encoding declaration pattern."""
