@@ -86,6 +86,7 @@ class VersionInfo(namedtuple('VersionInfo',
                 raise ValueError('releaselevel "final" must not be used '
                                  'with development versions (leads to wrong '
                                  'version ordering of the related __version__')
+                # cf. https://peps.python.org/pep-0440/#summary-of-permitted-suffixes-and-relative-ordering  # noqa
             if serial != 0:
                 raise ValueError('"serial" must be 0 for final releases')
 
