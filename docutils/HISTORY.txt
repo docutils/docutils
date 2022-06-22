@@ -11,6 +11,14 @@
 
 .. contents::
 
+Changes since 0.19b1
+====================
+
+* docutils/core.py:
+
+  - Respect "input_encoding_error_handler" setting when opening a source.
+
+
 Release 0.19b1 (2022-06-21)
 ===========================
 
