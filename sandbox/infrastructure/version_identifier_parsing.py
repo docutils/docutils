@@ -40,34 +40,25 @@ releaselevels = {'a':  'alpha',
 
 
 def identifier2version_info(identifier):
-    """Convert Docutils version identifier to a `version_info` namedtuple.
+    """Convert Docutils version identifier to a `VersionInfo` instance.
     """
     try:
         segments = _version_regexp.match(identifier).groupdict()
     except AttributeError:
         raise ValueError('non-supported version identifier "%s"' % identifier)
 
-    if segments['pre']:
-        releaselevel = releaselevels[segments['pre_l']]
-    else:
-        # .dev without pre-release segment sorts before pre-releases, see
-        # https://peps.python.org/pep-0440/#summary-of-permitted-suffixes-and-relative-ordering
-        if segments['dev']:
-            releaselevel = None
-        else:
-            releaselevel = 'final'
-
     return VersionInfo(
             major=int(segments['major']),
             minor=int(segments['minor']),
             micro=int(segments['micro']) if segments['micro'] else 0,
-            releaselevel=releaselevel,
+            releaselevel=releaselevels[segments['pre_l'] or ''],
             serial=segments['pre_n'] and int(segments['pre_n']) or 0,
             release=not segments['dev'])
 
 
 def version_info2identifier(version_info):
-    """Return version identifier matching the given `docutils.version_info`."""
+    """Return version identifier matching the given `VersionInfo` instance.
+    """
     release_level_abbreviations = dict((level, abbr)
                                 for abbr, level in releaselevels.items())
     identifier = '%s.%s%s' % (version_info.major, version_info.minor,
@@ -145,9 +136,10 @@ def test_parse(identifier):
 def selftest(version=__version__):
     """Run a test on version identification parsing and transforming."""
 
-    # example: series of release identifiers in version-order.
+    # example: series of release identifiers in version-order
+    # cf. https://peps.python.org/pep-0440/#summary-of-permitted-suffixes-and-relative-ordering  # noqa
     identifiers = ['0.13.1',
-                '0.14.dev',
+                #'0.14.dev',   # invalid (wrong sorting)
                 '0.14a.dev',
                 '0.14b.dev',
                 '0.14b',
@@ -157,7 +149,7 @@ def selftest(version=__version__):
                 '0.14',
                 '0.14.1rc1.dev',
                 '0.14.1rc1',
-                '0.14.1.dev',
+                #'0.14.1.dev',  # invalid (wrong sorting)
                 '0.14.1',
                 ]
 
