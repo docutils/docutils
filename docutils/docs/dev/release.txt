@@ -40,12 +40,12 @@ Releasing (post 2020)
     
   ``export PYTHONWARNINGS=default`` prints DeprecationWarnings in python3.
 
-* Generate universal wheel and source-distribution::
+* Generate wheel and source-distribution::
 
     python3 setup.py sdist
-    python3 setup.py bdist_wheel --universal
+    python3 setup.py bdist_wheel
 
-* Upload universal wheel and source to test.pypi::
+* Upload wheel and source to test.pypi::
 
     python3 -m twine upload --repository-url https://test.pypi.org/legacy/ dist/*
 
@@ -71,10 +71,10 @@ Releasing (post 2020)
              -m "tagging release 0.##"
 
 * Update your source directory. 
-* Rebuild universal wheel and source-distribution ::
+* Rebuild wheel and source-distribution ::
 
     python3 setup.py sdist
-    python3 setup.py bdist_wheel --universal
+    python3 setup.py bdist_wheel
 
 * Now upload to pypi::
 
