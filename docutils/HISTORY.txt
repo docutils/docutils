@@ -36,10 +36,11 @@ Release 0.19b1 (2022-06-21)
 
 * docutils/core.py:
 
-  Let `Publisher.publish()` print info and prompt when waiting for input
-  from a terminal (cf. https://clig.dev/#interactivity).
+  - Let `Publisher.publish()` print info and prompt when waiting for input
+    from a terminal (cf. https://clig.dev/#interactivity).
 
 * docutils/io.py
+
   - New function `error_string()`
     obsoletes `utils.error_reporting.ErrorString`.
   - Class `ErrorOutput` moved here from `utils/error_reporting`.
