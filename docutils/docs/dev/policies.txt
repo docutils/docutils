@@ -570,12 +570,12 @@ lists`_.
 .. _Docutils mailing lists: ../user/mailing-lists.html
 
 
-The Wiki
-========
+.. The Wiki
+   ========
 
-There is a development wiki at http://docutils.python-hosting.com/ as
-a scratchpad for transient notes.  Please use the repository for
-permanent document storage.
+   The development wiki at http://docutils.python-hosting.com/
+   is no longer active.
+
 
 Extensions and Related Projects
 ===============================
