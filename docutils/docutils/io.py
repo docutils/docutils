@@ -144,15 +144,19 @@ class Input(TransformSpec):
                 # no BOM found.  Start with UTF-8, because that only matches
                 # data that *IS* UTF-8:
                 encoding_candidates = ['utf-8']
+                # TODO: use `locale.getpreferredlocale(do_setlocale=True)`
+                # to respect UTF-8 mode (API change).
+                # (Check if it is a valid encoding and not UTF-8)
                 if _locale_encoding and _locale_encoding != 'utf-8':
                     encoding_candidates.append(_locale_encoding)
-                # TODO: fall back to 'latin-1' or report error? (API change)
+                # TODO: don't fall back to 'latin-1' (API change).
                 encoding_candidates.append('latin-1')
         for enc in encoding_candidates:
             try:
                 decoded = str(data, enc, self.error_handler)
                 self.successful_encoding = enc
-                # Return decoded, removing BOMs.
+                # Return decoded, removing BOM and other ZWNBSPs.
+                # TODO: only remove BOM (ZWNBSP at start of data, API change).
                 return decoded.replace('\ufeff', '')
             except (UnicodeError, LookupError) as err:
                 # keep exception instance for use outside of the "for" loop.
