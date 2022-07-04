@@ -256,5 +256,52 @@ class ErrorOutputTests(unittest.TestCase):
         self.assertEqual(buf.getvalue(), 'b\ufffd u\xfc e\xfc b\xfc')
 
 
+class FileInputTests(unittest.TestCase):
+
+    # test input encoding auto-detection:
+    #
+    # Up to Docutils 0.18, auto-detection was not used under Python 3
+    # unless reading a file with Python's default encoding failed
+
+    def test_bom_utf_8(self):
+        """Drop optional BOM from utf-8 encoded files.
+        """
+        source = io.FileInput(source_path='data/utf-8-sig.txt')
+        self.assertTrue(source.read().startswith('Grüße'))
+
+    def test_bom_utf_16(self):
+        """Drop BOM from utf-16 encoded files, use correct encoding.
+        """
+        # Assert correct decoding, BOM is gone.
+        source = io.FileInput(source_path='data/utf-16-le-sig.txt')
+        self.assertTrue(source.read().startswith('Grüße'))
+
+    def test_coding_slug(self):
+        """Use self-declared encoding.
+        """
+        source = io.FileInput(source_path='data/latin2.txt')
+        self.assertTrue(source.read().endswith('škoda\n'))
+
+    def test_fallback_utf8(self):
+        """Try 'utf-8', if encoding is not specified in the source."""
+        source = io.FileInput(source_path='data/utf8.txt')
+        self.assertEqual(source.read(), 'Grüße\n')
+
+    @unittest.skipIf(io._locale_encoding in (None, 'utf-8', 'utf8'),
+                     'locale encoding not set or UTF-8')
+    def test_fallback_no_utf8(self):
+        # if decoding with 'utf-8' fails, use the locale encoding
+        # (if not None) or 'latin-1'.
+        # provisional: behaviour details will change in future
+        # TODO: don't fall back to latin1
+        # TODO: use `locale.getpreferredlocale()` (honour UTF-8 mode)?
+        probed_encodings = (io._locale_encoding, 'latin-1')  # noqa
+        source = io.FileInput(source_path='data/latin1.txt')
+        data = source.read()
+        self.assertTrue(source.successful_encoding in probed_encodings)
+        if source.successful_encoding in ('latin-1', 'iso8859-1'):
+            self.assertEqual(data, 'Grüße\n')
+
+
 if __name__ == '__main__':
     unittest.main()
