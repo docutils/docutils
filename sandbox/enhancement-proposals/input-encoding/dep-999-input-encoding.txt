@@ -1,0 +1,216 @@
+:Title: Input Encodings
+:Author: Günter Milde
+:Discussions-To: docutils-develop@lists.sf.net
+:Status: Draft
+:Type: API
+:Created: 2022-07-02
+:Docutils-Version: 0.19 or later
+:Replaces: undocumented behaviour in 0.18
+:Resolution: None
+
+
+Abstract
+========
+
+When the `input_encoding`_ setting is not specified, Docutils tries a
+heuristic to determine a "successfull encoding".
+
+The actual behaviour is not documented and depends on the Python version.
+
+
+Motivation
+==========
+
+The behaviour of Docutils when the `input_encoding`_ configuration
+setting is kept at its default value ``None`` is inconsistent and
+underdocumented.
+
+* If the source encoding cannot be determined from the data and
+  decoding the source with UTF-8 fails, the file is decoded with the
+  locale encoding or 'latin1' (hard-coded 2nd fallback).
+  
+  This leads to a character mix up (`mojibake`), if the file is actually
+  in another encoding (corrupt UTF-8, UTF-16, or a different legacy
+  encoding) without reporting an error.
+
+With the end of Python 2.7 support, some results from reading a file
+under Python 3.x will be seen as a regression by "late adopters".
+The following critical use cases are fixed in 0.19b2:
+
+* An encoding-specification in the file (BOM or "magic comment") is
+  ignored under Python 3.x (unless reading with Python's default fails).
+
+* If the user's locale is set to an 8-bit encoding ("latin1", say)
+  UTF-8 encoded files are opened as UTF-8 under Python 2.x and Python 3.15
+  but assuming the locale encoding under Python 3.7 … 3.14. [#]_
+  The second case leads to character mix up.
+
+* A BOM in an utf-8 file is not removed, if the locale encoding is UTF-8.
+
+
+.. [#] Assuming the `UTF-8 mode`_ at its default value, which will change
+   in Python 3.15 (:PEP:`686`).
+
+
+Rationale
+=========
+
+  | Errors should never pass silently.
+  | Unless explicitly silenced.
+  
+  -- ``import this``
+  
+The "hard coded" second fallback encoding "latin1" may have been
+practical in times where "latin1" was the most commonly used 8-bit
+encoding for text files. It is far from optimal in times where using
+legacy 8-bit encodings without specifying them (via `input_encoding`_ or
+in the document) can be considered an error.
+
+The same holds (for a lesser extend) for a non-UTF-8 locale encoding.
+
+
+Docutils supports a syntax to declare the encoding of a reStructuredText
+source file, similar to :PEP:`263`. This support should be kept.
+
+Adherence to an encoding-specification in the file (BOM or "magic
+comment") remains the default behaviour for Python source code:
+
+  An explicit encoding declaration takes precedence over the default.
+  
+  -- :PEP:`3120`
+
+
+Specification
+=============
+
+.. Describe the syntax and semantics of any new feature.
+
+Docutils determines the encoding of source files in the following order:
+
+1. If `input_encoding`_ evaluates to True, use it.
+
+2. If an "explicit encoding declaration" (BOM or "magic comment") is
+   found in the data, use the declared encoding.
+
+3. If no encoding information is found, try decoding with UTF-8.
+   If decoding with UTF-8 fails, go to step 5.
+
+4. use `locale.getpreferredencoding`_
+   (if it is a valid codec and differs from UTF-8).
+
+
+Differences to Python's default `open()`:
+
+- The UTF-8 encoding is always tried first
+
+  (This is almost sure to fail if the true encoding differs.)
+
+
+.. _locale.getpreferredencoding:
+   https://docs.python.org/3/library/locale.html#locale.getpreferredencoding
+
+
+Backwards Compatibility
+=======================
+
+.. Describe potential impact and severity on pre-existing code.
+
+The following incompatible changes are expected:
+
+- Only remove BOM (U+FEFF ZWNBSP at start of data), no other ZWNBSPs.
+
+  This is the behaviour known from the "utf-8-sig" and "utf-16" codecs_.
+
+- Raise UnicodeError (instead of decoding with 'latin1') if decoding the
+  source with UTF-8 fails and the locale encoding is not set or UTF-8.
+  
+- Raise UnicodeError (instead of decoding with the locale encoding)
+  if Python is started in `UTF-8 mode`_.
+
+.. _codecs: 
+    https://docs.python.org/3/library/codecs.html#encodings-and-unicode
+
+Security Implications
+=====================
+
+No security implications are expeted.
+
+
+How to Teach This
+=================
+
+* Document the encoding auto-detection steps.
+
+* It is recommended to specify the source encoding (via `input_encoding`_ or
+  with BOM or :PEP:`263`\ -like comment), especially if it is not UTF-8.
+
+* To avoid erroneous application of a locale encoding
+  but keep detection of an encoding-specification in the source
+  (BOM or "magic comment"), start Python in `UTF-8 mode`_.
+
+
+Reference Implementation
+========================
+
+.. Link to any existing implementation and details about its state, e.g.
+   proof-of-concept.
+
+
+Rejected Ideas
+==============
+
+.. Why certain ideas that were brought while discussing this proposal
+   were not ultimately pursued.
+
+
+Open Issues
+===========
+
+.. Any points that are still being decided/discussed.
+
+* If the input stream object (`source` argument passed to FileInput) has
+  an "encoding" attribute, use it?
+
+* When shall we implement the incompatible API changes?
+
+  - 2 minor versions after announcing.
+  
+  - Faster/immediately, because the current behaviour is a bug.
+  
+* Change the default `input_encoding`_ value to "UTF-8"?
+
+* Keep the auto-detection (as opt-in or as default)?
+
+  +1  convenient for users with differently encoded sources
+  -1  complicated
+
+
+References
+==========
+
+`<input-encoding-tests.py>`_
+  Test script for the exploration of the handling of input encoding
+  in Python and Docutils.
+
+.. _input_encoding:
+    https://docutils.sourceforge.io/docs/user/config.html#input-encoding
+
+.. _UTF-8 mode: https://docs.python.org/3/library/os.html#utf8-mode
+
+
+Copyright
+=========
+
+This document is placed in the public domain or under the
+CC0-1.0-Universal license, whichever is more permissive.
+
+
+
+..
+    Local Variables:
+    mode: indented-text
+    indent-tabs-mode: nil
+    sentence-end-double-space: t
+    fill-column: 70
+    coding: utf-8
+    End:
