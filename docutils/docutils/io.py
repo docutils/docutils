@@ -358,7 +358,7 @@ class FileInput(Input):
             if source_path:
                 try:
                     self.source = open(source_path, mode,
-                                       encoding=self.encoding,
+                                       encoding=self.encoding or 'utf-8-sig',
                                        errors=self.error_handler)
                 except OSError as error:
                     raise InputError(error.errno, error.strerror, source_path)
