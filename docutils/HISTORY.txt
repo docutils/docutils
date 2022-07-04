@@ -45,6 +45,7 @@ Release 0.19b1 (2022-06-21)
     obsoletes `utils.error_reporting.ErrorString`.
   - Class `ErrorOutput` moved here from `utils/error_reporting`.
   - Don't use on Pythons default encoding if "input_encoding" setting is None.
+  - Fix error when reading of UTF-16 encoded source without trailing newline.
 
 * docutils/parsers/__init__.py
 
