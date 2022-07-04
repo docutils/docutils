@@ -383,8 +383,6 @@ class FileInput(Input):
             if self.source is sys.stdin:
                 # read as binary data to circumvent auto-decoding
                 data = self.source.buffer.read()
-                # normalize newlines
-                data = b'\n'.join(data.splitlines()+[b''])
             else:
                 data = self.source.read()
         except (UnicodeError, LookupError):
@@ -393,14 +391,14 @@ class FileInput(Input):
                 b_source = open(self.source_path, 'rb')
                 data = b_source.read()
                 b_source.close()
-                # normalize newlines
-                data = b'\n'.join(data.splitlines()+[b''])
             else:
                 raise
         finally:
             if self.autoclose:
                 self.close()
-        return self.decode(data)
+        data = self.decode(data)
+        # normalise newlines
+        return '\n'.join(data.splitlines()+[''])
 
     def readlines(self):
         """
