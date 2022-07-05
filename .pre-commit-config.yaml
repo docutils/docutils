@@ -9,7 +9,7 @@ repos:
     -   id: trailing-whitespace
         exclude: ^(sandbox|prest)|(.el|.svg|.tex|.txt|test_manpage.py|test_latex2e.py)$
     -   id: end-of-file-fixer
-        exclude: ^(sandbox|prest)|(.svg)$
+        exclude: ^(sandbox|prest)|(.svg)|docutils/test/data/utf-16-le-sig.txt$
 
 -   repo: https://github.com/pycqa/flake8
     rev: 3.8.4  # pick a git hash / tag to point to
