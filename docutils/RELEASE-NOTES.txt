@@ -121,8 +121,10 @@ Future changes
 .. _use_latex_citations: docs/user/config.html#use-latex-citations
 
 
-Release 0.19b1 (2022-06-21)
-===========================
+Release 0.19 (2022-07-05)
+=========================
+
+(Release 0.19b1 (2022-06-21))
 
 * Drop support for Python 2.7, 3.5, and 3.6.
 
