@@ -37,7 +37,7 @@ With the end of Python 2.7 support, some results from reading a file
 under Python 3.x will be seen as a regression by "late adopters".
 The following critical use cases are fixed in 0.19b2:
 
-* An encoding-specification in the file (BOM or "magic comment") is
+* An encoding-specification in the file (BOM or special comment) is
   ignored under Python 3.x (unless reading with Python's default fails).
 
 * If the user's locale is set to an 8-bit encoding ("latin1", say)
@@ -85,28 +85,23 @@ Specification
 
 .. Describe the syntax and semantics of any new feature.
 
-Docutils determines the encoding of source files in the following order:
+The encoding of a reStructuredText source is determined from the
+`input_encoding`_ setting or an `explicit encoding declaration`
+(BOM or special comment).
 
-1. If `input_encoding`_ evaluates to True, use it.
+The default encoding is UTF-8 (codec 'utf-8-sig').
 
-2. If an "explicit encoding declaration" (BOM or "magic comment") is
-   found in the data, use the declared encoding.
-
-3. If no encoding information is found, try decoding with UTF-8.
-   If decoding with UTF-8 fails, go to step 5.
-
-4. use `locale.getpreferredencoding`_
-   (if it is a valid codec and differs from UTF-8).
+If the encoding is unspecified and decoding with UTF-8 fails,
+the `preferred encoding`_ is used as a fallback
+(if it maps to a valid codec and differs from UTF-8).
 
 
 Differences to Python's default `open()`:
 
-- The UTF-8 encoding is always tried first
-
+- The UTF-8 encoding is always tried first.
   (This is almost sure to fail if the true encoding differs.)
 
-
-.. _locale.getpreferredencoding:
+.. _preferred encoding:
    https://docs.python.org/3/library/locale.html#locale.getpreferredencoding
 
 
@@ -139,14 +134,16 @@ No security implications are expeted.
 How to Teach This
 =================
 
-* Document the encoding auto-detection steps.
+* Document the specification_.
 
-* It is recommended to specify the source encoding (via `input_encoding`_ or
-  with BOM or :PEP:`263`\ -like comment), especially if it is not UTF-8.
+* Document the _`special comment`.
 
-* To avoid erroneous application of a locale encoding
+* Recommend specifying the source encoding (via `input_encoding`_ or
+  with BOM or special comment), especially if it is not UTF-8.
+
+* "To avoid erroneous application of a locale encoding
   but keep detection of an encoding-specification in the source
-  (BOM or "magic comment"), start Python in `UTF-8 mode`_.
+  (BOM or special comment), start Python in `UTF-8 mode`_."
 
 
 Reference Implementation
@@ -168,9 +165,6 @@ Open Issues
 
 .. Any points that are still being decided/discussed.
 
-* If the input stream object (`source` argument passed to FileInput) has
-  an "encoding" attribute, use it?
-
 * When shall we implement the incompatible API changes?
 
   - 2 minor versions after announcing.
@@ -182,7 +176,7 @@ Open Issues
 * Keep the auto-detection (as opt-in or as default)?
 
   +1  convenient for users with differently encoded sources
-  -1  complicated
+  -1  complicates code
 
 
 References

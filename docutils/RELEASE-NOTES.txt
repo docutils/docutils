@@ -33,8 +33,8 @@ Future changes
 
   - Reduce chances of unrecognised character mix-ups (mojibake).
 
-    Don't use the hard-coded fallback encoding 'latin-1' if the
-    `input-encoding`_ cannot be determined and decoding with UTF-8 fails.
+    Stop using the hard-coded fallback "latin-1" if the
+    `input-encoding`_ is not specified and decoding with UTF-8 fails.
 
     Don't use the locale encoding as fallback in `UTF-8 mode`_.
 

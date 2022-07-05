@@ -11,16 +11,9 @@
 
 .. contents::
 
-Changes since 0.19b1
-====================
 
-* docutils/core.py:
-
-  - Respect "input_encoding_error_handler" setting when opening a source.
-
-
-Release 0.19b1 (2022-06-21)
-===========================
+Release 0.19b2 (unpublished)
+============================
 
 * General
 
@@ -38,13 +31,15 @@ Release 0.19b1 (2022-06-21)
 
   - Let `Publisher.publish()` print info and prompt when waiting for input
     from a terminal (cf. https://clig.dev/#interactivity).
+  - Respect "input_encoding_error_handler" setting when opening a source.
 
 * docutils/io.py
 
   - New function `error_string()`
     obsoletes `utils.error_reporting.ErrorString`.
   - Class `ErrorOutput` moved here from `utils/error_reporting`.
-  - Don't use on Pythons default encoding if "input_encoding" setting is None.
+  - Use "utf-8-sig" instead of Python's default encoding if the 
+    "input_encoding" setting is None.
   - Fix error when reading of UTF-16 encoded source without trailing newline.
 
 * docutils/parsers/__init__.py
@@ -210,7 +205,6 @@ Release 0.18 (2021-10-26)
   - New option `image_loading`_. Support "lazy" loading of images.
     Obsoletes "embed_images".
 
-    .. _image_loading: docs/user/config.html#image-loading
 
 * docutils/writers/pseudoxml.py:
 
