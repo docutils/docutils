@@ -80,6 +80,8 @@ class HelperTests(unittest.TestCase):
 class InputTests(unittest.TestCase):
 
     def test_bom(self):
+        # Provisional:
+        # TODO only remove BOM at start of data
         input = io.StringInput(source=b'\xef\xbb\xbf foo \xef\xbb\xbf bar',
                                encoding='utf-8')
         # Assert BOMs are gone.
@@ -114,15 +116,13 @@ print("hello world")
 
     def test_bom_detection(self):
         source = '\ufeffdata\nblah\n'
+        expected = 'data\nblah\n'
         input = io.StringInput(source=source.encode('utf-16-be'))
-        data = input.read()
-        self.assertEqual(input.successful_encoding, 'utf-16-be')
+        self.assertEqual(input.read(), expected)
         input = io.StringInput(source=source.encode('utf-16-le'))
-        data = input.read()
-        self.assertEqual(input.successful_encoding, 'utf-16-le')
+        self.assertEqual(input.read(), expected)
         input = io.StringInput(source=source.encode('utf-8'))
-        data = input.read()  # noqa: F841
-        self.assertEqual(input.successful_encoding, 'utf-8')
+        self.assertEqual(input.read(), expected)
 
     def test_readlines(self):
         input = io.FileInput(source_path='data/include.txt')
