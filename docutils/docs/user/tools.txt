@@ -12,6 +12,13 @@
 
 .. contents::
 
+.. note::
+   Docutils front-end tool support is currently `under discussion`__.
+   Tool names, install details and the set of auto-installed tools
+   will `change in future Docutils versions`__.
+
+   __ https://sourceforge.net/p/docutils/feature-requests/88/
+   __ ../../RELEASE-NOTES.html#future-changes
 
 --------------
  Introduction
@@ -27,9 +34,11 @@ understands the syntax of the text), and a "Writer" (which knows how
 to generate a specific data format).
 
 Most [#]_ front ends have common options and the same command-line usage
-pattern (see `the tools`_ below for concrete examples)::
+pattern::
 
     toolname [options] [<source> [<destination>]]
+
+See `the tools`_ below for concrete examples.
 
 Each tool has a "``--help``" option which lists the
 `command-line options`_ and arguments it supports.
@@ -39,11 +48,6 @@ The two arguments, "source" and "destination", are optional.  If only
 one argument (source) is specified, the standard output (stdout) is
 used for the destination.  If no arguments are specified, the standard
 input (stdin) is used for the source.
-
-.. note::
-   Docutils front-end tool support is currently under discussion.
-   Tool names, install details and the set of auto-installed tools
-   may change in future Docutils versions.
 
 .. [#] The exceptions are buildhtml.py_, quicktest.py_ and
    rst2odt_prepstyles.py_.
@@ -70,11 +74,11 @@ list.
 Generic Command Line Front End
 ==============================
 
-:Readers: Standalone, PEP
-:Parsers: reStructuredText, Markdown (requires 3rd party packages)
-:Writers: html_, html4css1_, html5_, latex__, manpage_,
+:Readers: Standalone (default), PEP
+:Parsers: reStructuredText (default), Markdown (requires 3rd party packages)
+:Writers: html_, html4css1_, html5_ (default), latex__, manpage_,
           odt_, pep_html_, pseudo-xml_, s5_html_, xelatex_, xml_,
-:Config_: See `[docutils application]`_
+:Config_: `[docutils application]`_
 
 The generic front end allows combining "reader", "parser", and
 "writer" components from the Docutils package or 3rd party plug-ins.
@@ -111,7 +115,7 @@ buildhtml.py
 ------------
 
 :Readers: Standalone, PEP
-:Parser: reStructuredText
+:Parser:  reStructuredText
 :Writers: html_, html5_, pep_html_
 :Config_: `[buildhtml application]`_
 
@@ -251,7 +255,17 @@ For example, to process a PEP into HTML::
     cd <path-to-docutils>/docs/peps
     rstpep2html.py pep-0287.txt pep-0287.html
 
+The same result can be achieved with the genric front end::
+
+    cd <path-to-docutils>/docs/peps
+    docutils --reader=pep --writer=pep_html pep-0287.txt pep-0287.html
+
+The rendering of published PEPs is done by a Sphinx-based build system
+(see :PEP:`676`).
+
+
 .. _pep_html: html.html#pep-html
+
 
 rst2s5.py
 ---------

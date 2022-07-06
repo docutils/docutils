@@ -9,6 +9,8 @@ Docutils HTML writers
 html
 ----
 
+:front-end: rst2html.py_
+
 `html` is an alias for the default Docutils HTML writer.
 
 The default may change with the development of HTML, browsers, Docutils,

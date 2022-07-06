@@ -1,19 +1,19 @@
-:Title: Input Encodings
+:Title: Input Encoding
 :Author: Günter Milde
 :Discussions-To: docutils-develop@lists.sf.net
 :Status: Draft
 :Type: API
 :Created: 2022-07-02
-:Docutils-Version: 0.19 or later
-:Replaces: undocumented behaviour in 0.18
+:Docutils-Version: > 0.19 (see `open issues`_)
+:Replaces: undocumented behaviour in 0.19
 :Resolution: None
 
 
 Abstract
 ========
 
-When the `input_encoding`_ setting is not specified, Docutils tries a
-heuristic to determine a "successfull encoding".
+When the `input_encoding`_ setting is not specified, Docutils uses
+a heuristic to determine or guess the source's encoding.
 
 The actual behaviour is not documented and depends on the Python version.
 
@@ -21,63 +21,36 @@ The actual behaviour is not documented and depends on the Python version.
 Motivation
 ==========
 
+  | Errors should never pass silently.
+  | Unless explicitly silenced.
+
+  -- ``import this``
+
 The behaviour of Docutils when the `input_encoding`_ configuration
-setting is kept at its default value ``None`` is inconsistent and
-underdocumented.
+setting is kept at its default value ``None`` is currently suboptimal
+and underdocumented.
 
-* If the source encoding cannot be determined from the data and
-  decoding the source with UTF-8 fails, the file is decoded with the
-  locale encoding or 'latin1' (hard-coded 2nd fallback).
-  
-  This leads to a character mix up (`mojibake`), if the file is actually
-  in another encoding (corrupt UTF-8, UTF-16, or a different legacy
-  encoding) without reporting an error.
+If the source encoding cannot be determined from the source and
+decoding the with UTF-8 fails, the file is decoded with the
+locale encoding or 'latin1' (hard-coded 2nd fallback),
+even in `UTF-8 mode`_.
 
-With the end of Python 2.7 support, some results from reading a file
-under Python 3.x will be seen as a regression by "late adopters".
-The following critical use cases are fixed in 0.19b2:
-
-* An encoding-specification in the file (BOM or special comment) is
-  ignored under Python 3.x (unless reading with Python's default fails).
-
-* If the user's locale is set to an 8-bit encoding ("latin1", say)
-  UTF-8 encoded files are opened as UTF-8 under Python 2.x and Python 3.15
-  but assuming the locale encoding under Python 3.7 … 3.14. [#]_
-  The second case leads to character mix up.
-
-* A BOM in an utf-8 file is not removed, if the locale encoding is UTF-8.
-
-
-.. [#] Assuming the `UTF-8 mode`_ at its default value, which will change
-   in Python 3.15 (:PEP:`686`).
+This leads to a character mix up (`mojibake`), if the file is actually
+corrupt UTF-8 or in another encoding (UTF-16 or a different legacy encoding)
+without reporting an error.
 
 
 Rationale
 =========
 
-  | Errors should never pass silently.
-  | Unless explicitly silenced.
-  
-  -- ``import this``
-  
 The "hard coded" second fallback encoding "latin1" may have been
-practical in times where "latin1" was the most commonly used 8-bit
+practical in times where "latin1" was the most commonly used
 encoding for text files. It is far from optimal in times where using
 legacy 8-bit encodings without specifying them (via `input_encoding`_ or
 in the document) can be considered an error.
 
-The same holds (for a lesser extend) for a non-UTF-8 locale encoding.
-
-
-Docutils supports a syntax to declare the encoding of a reStructuredText
-source file, similar to :PEP:`263`. This support should be kept.
-
-Adherence to an encoding-specification in the file (BOM or "magic
-comment") remains the default behaviour for Python source code:
-
-  An explicit encoding declaration takes precedence over the default.
-  
-  -- :PEP:`3120`
+The same holds for using a non-UTF-8 locale encoding as fallback when
+Python's `UTF-8 mode`_ is active.
 
 
 Specification
@@ -86,23 +59,63 @@ Specification
 .. Describe the syntax and semantics of any new feature.
 
 The encoding of a reStructuredText source is determined from the
-`input_encoding`_ setting or an `explicit encoding declaration`
+`input_encoding`_ setting or an `explicit encoding declaration`_
 (BOM or special comment).
 
-The default encoding is UTF-8 (codec 'utf-8-sig').
+The default input encoding is UTF-8 (codec 'utf-8-sig').
 
 If the encoding is unspecified and decoding with UTF-8 fails,
 the `preferred encoding`_ is used as a fallback
 (if it maps to a valid codec and differs from UTF-8).
 
 
-Differences to Python's default `open()`:
+Differences to the default behaviour of Python's `open()`:
 
 - The UTF-8 encoding is always tried first.
-  (This is almost sure to fail if the true encoding differs.)
+  (This is almost sure to fail if the actual source encoding differs.)
+
+- An `explicit encoding declaration`_ takes precedence over
+  the `preferred encoding`_.
+
+- An optional BOM_ is removed from UTF-8 encoded sources.
 
 .. _preferred encoding:
    https://docs.python.org/3/library/locale.html#locale.getpreferredencoding
+
+
+Explicit encoding declaration
+-----------------------------
+
+A `Unicode byte order mark` (BOM_) in the source is interpreted as
+encoding declaration.
+
+The encoding of a reStructuredText source file can also be given by a
+"magic comment" similar to :PEP:`263`.
+This makes the input encoding both *visible* and *changeable*
+on a per-source file basis.
+
+To declare the input encoding, the a comment like ::
+
+  .. text encoding: <encoding name>
+
+must be placed into the source file either as first or second line.
+
+Examples: (using formats recognized by popular editors) ::
+
+  .. -*- mode: rst -*-
+     -*- coding: latin1 -*-
+
+or::
+
+  .. vim: set fileencoding=cp737 :
+
+More precisely, the first and second line are searched for the following
+regular expression::
+
+  coding[:=]\s*([-\w.]+)
+
+The first group of this expression is then interpreted as encoding name.
+If the first line matches the second line is ignored.
 
 
 Backwards Compatibility
@@ -118,12 +131,10 @@ The following incompatible changes are expected:
 
 - Raise UnicodeError (instead of decoding with 'latin1') if decoding the
   source with UTF-8 fails and the locale encoding is not set or UTF-8.
-  
+
 - Raise UnicodeError (instead of decoding with the locale encoding)
   if Python is started in `UTF-8 mode`_.
 
-.. _codecs: 
-    https://docs.python.org/3/library/codecs.html#encodings-and-unicode
 
 Security Implications
 =====================
@@ -136,14 +147,14 @@ How to Teach This
 
 * Document the specification_.
 
-* Document the _`special comment`.
+* Document the `special comment`.
 
 * Recommend specifying the source encoding (via `input_encoding`_ or
   with BOM or special comment), especially if it is not UTF-8.
 
-* "To avoid erroneous application of a locale encoding
-  but keep detection of an encoding-specification in the source
-  (BOM or special comment), start Python in `UTF-8 mode`_."
+* "To avoid erroneous application of a locale encoding but keep
+  detection of an `explicit encoding declaration`_ in the source,
+  start Python in `UTF-8 mode`_."
 
 
 Reference Implementation
@@ -168,9 +179,9 @@ Open Issues
 * When shall we implement the incompatible API changes?
 
   - 2 minor versions after announcing.
-  
+
   - Faster/immediately, because the current behaviour is a bug.
-  
+
 * Change the default `input_encoding`_ value to "UTF-8"?
 
 * Keep the auto-detection (as opt-in or as default)?
@@ -178,18 +189,48 @@ Open Issues
   +1  convenient for users with differently encoded sources
   -1  complicates code
 
+  Adherence to an encoding-specification in the source (BOM or "magic
+  comment") remains the default behaviour for Python source code:
+
+    An explicit encoding declaration takes precedence over the default.
+
+    -- :PEP:`3120`
+
+
+Better feedback
+
+* Warning or Error, when `input_encoding` value differs from the
+  encoding declared in the source (BOM or special comment).
+
+* Info or Warning, when using the "locale" fallback encoding.
+
+* More helpful report of UnicodeDecodeError
+
+  - Hint at "input_encoding_error_handler"?
+
+  - Report the line number of the undecodable character.
+
+  - Print context around the undecodable character
+    (decode with "replace" error handler, print slice around error)?
+
 
 References
 ==========
 
 `<input-encoding-tests.py>`_
-  Test script for the exploration of the handling of input encoding
+  Script for the exploration of the handling of input encoding
   in Python and Docutils.
+
+Patches #194 Deprecate PEP 263 coding slugs support
+  https://sourceforge.net/p/docutils/patches/194/
 
 .. _input_encoding:
     https://docutils.sourceforge.io/docs/user/config.html#input-encoding
 
 .. _UTF-8 mode: https://docs.python.org/3/library/os.html#utf8-mode
+.. _codecs:
+    https://docs.python.org/3/library/codecs.html#encodings-and-unicode
+.. _BOM: https://docs.python.org/3/library/codecs.html#codecs.BOM
 
 
 Copyright

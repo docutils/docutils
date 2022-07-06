@@ -30,7 +30,7 @@ This is for those who want to get up & running quickly.
    Try for example::
 
        rst2html.py FAQ.txt FAQ.html         (Unix)
-       python tools/rst2html.py FAQ.txt FAQ.html  (Windows)
+       docutils FAQ.txt FAQ.html  (Unix and Windows)
 
    See Usage_ below for details.
 
@@ -47,7 +47,8 @@ following sources has been implemented:
 
 * `PEPs (Python Enhancement Proposals)`_.
 
-Support for the following sources is planned:
+Support for the following sources is planned or provided by
+`third party tools`_:
 
 * Inline documentation from Python modules and packages, extracted
   with namespace context.
@@ -63,6 +64,7 @@ Support for the following sources is planned:
 
 .. _PEPs (Python Enhancement Proposals):
    https://peps.python.org/pep-0012
+.. _third party tools: docs/user/links.html#related-applications
 
 
 Dependencies
@@ -151,17 +153,17 @@ Installation
   * Run ``setup.py install``.
     See also OS-specific installation instructions below.
 
+  Optional steps:
+  
+  * `Running the test suite`_
+  
+  * `Converting the documentation`_
+
 * For installing "by hand" or in "development mode", see the
   `editable installs`_ section in the `Docutils version repository`_
   documentation.
 
   .. _editable installs: docs/dev/repository.html#editable-installs
-
-Optional steps:
-
-* `Running the test suite`_
-
-* `Converting the documentation`_
 
 
 GNU/Linux, BSDs, Unix, Mac OS X, etc.

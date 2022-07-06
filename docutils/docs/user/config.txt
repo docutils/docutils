@@ -67,8 +67,6 @@ the three implicit ones listed above (or the ones defined by the
 ``DOCUTILSCONFIG`` environment variable), and its entries will have
 priority.
 
-.. _Docutils Runtime Settings: ../api/runtime-settings.html
-
 
 -------------------------
 Configuration File Syntax
@@ -155,7 +153,7 @@ Below are the Docutils runtime settings, listed by config file
 section.  **Any setting may be specified in any section, but only
 settings from active sections will be used.**  Sections correspond to
 Docutils components (module name or alias; section names are always in
-lowercase letters).  Each `Docutils application`_ uses a specific set
+lowercase letters).  Each Docutils application_ uses a specific set
 of components; corresponding configuration file sections are applied
 when the application is used.  Configuration sections are applied in
 general-to-specific order, as follows:
@@ -198,7 +196,7 @@ Some knowledge of Python_ is assumed for some attributes.
 .. _Python: https://www.python.org/
 .. _RFC 822: https://www.rfc-editor.org/rfc/rfc822.txt
 .. _front-end tool:
-.. _Docutils application: tools.html
+.. _application: tools.html
 
 
 [general]
@@ -299,7 +297,7 @@ error_encoding_error_handler
 ----------------------------
 
 The error handler for unencodable characters in error output.
-Acceptable values are the `Error Handlers`_ of Python's "encoding" module.
+Acceptable values are the `Error Handlers`_ of Python's "codecs" module.
 See also output_encoding_error_handler_.
 
 Default: "backslashreplace"
@@ -375,7 +373,7 @@ input_encoding_error_handler
 ----------------------------
 
 The error handler for undecodable characters in the input.
-Acceptable values are the `Error Handlers`_ of Python's "encoding" module,
+Acceptable values are the `Error Handlers`_ of Python's "codecs" module,
 including:
 
 strict
@@ -425,7 +423,7 @@ output_encoding_error_handler
 -----------------------------
 
 The error handler for unencodable characters in the output.
-Acceptable values are the `Error Handlers`_ of Python's "encoding" module,
+Acceptable values are the `Error Handlers`_ of Python's "codecs" module,
 including:
 
 strict
@@ -2161,9 +2159,9 @@ New in 0.17. Obsoletes the ``html_writer`` option.
 [docutils application]
 --------------------------
 
-New in 0.17. Config file support added in 0.18.
-Renamed in 0.19 (the old name "docutils-cli application" is kept as alias).
-Support for reader/parser import names added in 0.19.
+| New in 0.17. Config file support added in 0.18.
+| Renamed in 0.19 (the old name "docutils-cli application" is kept as alias).
+| Support for reader/parser import names added in 0.19.
 
 reader
 ~~~~~~
@@ -2320,6 +2318,7 @@ pep_template           [pep_html writer] template
 .. _block quote: ../ref/rst/restructuredtext.html#block-quotes
 .. _citations: ../ref/rst/restructuredtext.html#citations
 .. _bullet lists: ../ref/rst/restructuredtext.html#bullet-lists
+.. _Docutils Runtime Settings: ../api/runtime-settings.html
 .. _enumerated lists: ../ref/rst/restructuredtext.html#enumerated-lists
 .. _field lists: ../ref/rst/restructuredtext.html#field-lists
 .. _field names: ../ref/rst/restructuredtext.html#field-names
@@ -2332,5 +2331,5 @@ pep_template           [pep_html writer] template
 .. _tables: ../ref/rst/restructuredtext.html#tables
 .. _table of contents: ../ref/rst/directives.html#contents
 
-.. _Error Handlers: 
+.. _Error Handlers:
    https://docs.python.org/3/library/codecs.html#error-handlers

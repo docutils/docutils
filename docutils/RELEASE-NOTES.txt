@@ -20,28 +20,45 @@ For a more detailed list of changes, please see the Docutils `HISTORY`_.
 Future changes
 ==============
 
-* Setup:
+* Usage:
 
-  - Do not install the auxilliary script ``tools/rst2odt_prepstyles.py``
-    in the binary PATH.
+  - The ``rst2*.py`` `front end tools`_ will be renamed to ``rst2*``
+    (dropping the ``.py`` extension). [#]_
 
-  - Remove file ``install.py``. There are better ways, see README.txt__.
+    Exceptions:
+      The auxilliary script ``rst2odt_prepstyles.py`` will become
+      available via ``python -m docutils.writers.odf_odt.prepstyles``.
 
-    __ README.html#installation
+      The ``rstpep2html.py`` script will be retired.
+      Use ``docutils --reader=pep --writer=pep_html`` for a PEP preview. [#]_
 
-* Input encoding:
+    .. [#] Some Linux distributions already use the short names.
+    .. [#] The final rendering is done by a Sphinx-based build system
+           (see :PEP:`676`).
 
-  - Reduce chances of unrecognised character mix-ups (mojibake).
 
-    Stop using the hard-coded fallback "latin-1" if the
-    `input-encoding`_ is not specified and decoding with UTF-8 fails.
+  - The default HTML writer "html__" will change from "html4css1"
+    to "html5" in Docutils 2.0.
 
-    Don't use the locale encoding as fallback in `UTF-8 mode`_.
+    Use ``get_writer_by_name('html')`` or the rst2html.py_ front end,
+    if you want the output to be up-to-date automatically.
+
+    Use the "html4" writer or ``rst2html4.py``, if you depend on
+    stability of the generated HTML code, e.g. because you use a
+    custom style sheet or post-processing that may break otherwise.
+
+    __ docs/user/html.html#html
+
+* `Input encoding`_:
+
+  - Raise UnicodeError (instead of falling back to the locale encoding)
+    if decoding the source with the default encoding (UTF-8) fails and
+    Python is started in `UTF-8 mode`_.
+
+    Raise UnicodeError (instead of falling back to "latin1") if both,
+    default and locale encoding, fail.
 
   - Only remove BOM (U+FEFF ZWNBSP at start of data), no other ZWNBSPs.
-
-  .. _input-encoding: docs/user/config.html#input-encoding
-  .. _UTF-8 mode: https://docs.python.org/3/library/os.html#utf8-mode
 
 * `html5` writer:
 
@@ -63,8 +80,6 @@ Future changes
   - Remove option ``--embed-images`` (obsoleted by "image_loading_")
     in Docutils 2.0.
 
-    .. _image_loading: docs/user/config.html#image-loading
-
 * `latex2e` writer:
 
   - Change default of use_latex_citations_ setting to True
@@ -81,9 +96,10 @@ Future changes
 
 * `xetex` writer:
 
-  - Settings in the "latex2e writer" `configuration file section`__ will
-    be ignored in Docutils 0.20. Move settings intended for both, `xetex`
-    and `latex2e` writers to section "latex writers".
+  - Settings in the [latex2e writer] `configuration file section`__
+    will be ignored by the `xetex` writer in Docutils 0.20.
+    Move settings intended for both, `xetex` and `latex2e` writers
+    to section [latex writers].
 
     __ docs/user/config.html#configuration-file-sections-entries
 
@@ -95,24 +111,23 @@ Future changes
 
 * Drop support for `old-format configuration files`_ in Docutils 2.0.
 
+* Remove file ``install.py``. See README.txt__ for alternatives.
+
+  __ README.html#installation
+
 * Move math format conversion from docutils/utils/math (called from
   docutils/writers/_html_base.py) to a transform__.
 
   __ docs/ref/transforms.html
 
-* The default HTML writer "html" with frontend ``rst2html.py`` will change
-  from "html4css1" to "html5" in Docutils 2.0.
-
-  Use ``get_writer_by_name('html')`` or the rst2html.py_ front end, if you
-  want the output to be up-to-date automatically.
-
-  Use the "html4" writer or ``rst2html4.py``, if you depend on
-  stability of the generated HTML code, e.g. because you use a custom
-  style sheet or post-processing that may break otherwise.
-
 * Remove the ``--html-writer`` option of the ``buildhtml.py`` application
   (obsoleted by the `"writer" option`_) in Docutils 2.0.
 
+.. _front end tools: docs/user/tools.html
+.. _input encoding:
+.. _input_encoding: docs/user/config.html#input-encoding
+.. _UTF-8 mode: https://docs.python.org/3/library/os.html#utf8-mode
+.. _image_loading: docs/user/config.html#image-loading
 .. _old-format configuration files:
    docs/user/config.html#old-format-configuration-files
 .. _rst2html.py: docs/user/tools.html#rst2html-py
