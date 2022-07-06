@@ -97,10 +97,18 @@ details about individual settings.
 Encodings
 ---------
 
+The default input encoding is UTF-8. 
+A different encoding can be specified with the `input_encoding`_ setting
+or an `explicit encoding declaration` (BOM or special comment).
+The locale encoding may be used as a fallback.
+
 The default output encoding of Docutils is UTF-8.
+A different encoding can be specified with the `output_encoding`_ setting.
 Docutils may introduce some non-ASCII text if you use
 `auto-symbol footnotes`_ or the `"contents" directive`_.
 
+.. _input_encoding: ../user/config.html#input-encoding
+.. _output_encoding: ../user/config.html#output-encoding
 .. _auto-symbol footnotes:
    ../ref/rst/restructuredtext.html#auto-symbol-footnotes
 .. _"contents" directive:

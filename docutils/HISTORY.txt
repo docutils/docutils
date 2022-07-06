@@ -138,9 +138,13 @@ Release 0.19 (2022-07-05)
   - Fix help output.
   - Actual code moved to docutils.__main__.py.
 
+* tools/rst2odt_prepstyles.py
 
-Release 0.18.1
-==============
+  - Options ``-h`` and ``--help`` print short usage message.
+
+
+Release 0.18.1 (2021-11-23)
+===========================
 
 * docutils/nodes.py
 

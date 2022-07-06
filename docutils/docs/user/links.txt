@@ -361,6 +361,7 @@ Applications using docutils/reStructuredText and helper applications.
 .. _Text-Restructured: https://metacpan.org/dist/Text-Restructured
 .. _repository: ../dev/repository.html
 
+
 Tools
 `````
 
@@ -384,24 +385,25 @@ Development
 ```````````
 
 * Sphinx_ extends the ReStructuredText syntax to better support the
-  documentation of Software (and other) *projects* (but other documents
+  documentation of Software projects (but other documents
   can be written with it too).
 
-  The `Python documentation`_ is based on reStructuredText and Sphinx.
-
-  .. _Python documentation: https://docs.python.org/
+* `Sphinx Extensions`_ allow automatic testing of code snippets,
+  inclusion of docstrings from Python modules (API docs), and more.
 
 * Trac_, a project management and bug/issue tracking system, supports
   `using reStructuredText
   <https://trac.edgewall.org/wiki/WikiRestructuredText>`__ as an
   alternative to wiki markup.
 
-  .. _Trac: https://trac.edgewall.org/
 
 * PyLit_ provides a bidirectional text <--> code converter for *literate
   programming with reStructuredText*.
 
-  .. _PyLit: https://repo.or.cz/pylit.git
+.. _Sphinx extensions: https://www.sphinx-doc.org/en/master/usage/extensions/
+.. _Python documentation: https://docs.python.org/
+.. _Trac: https://trac.edgewall.org/
+.. _PyLit: https://codeberg.org/milde/pylit
 
 
 CMS Systems

@@ -166,33 +166,33 @@ value.
 
 There are two image directives: "image" and "figure".
 
-.. attention:: 
+.. attention::
 
   It is up to the author to ensure compatibility of the image data format
   with the output format or user agent (LaTeX engine, `HTML browser`__).
   The following, non exhaustive table provides an overview:
-  
+
   =========== ====== ====== ===== ===== ===== ===== ===== ===== ===== =====
   ..          vector image  raster image                  moving image [#]_
   ----------- ------------- ----------------------------- -----------------
   ..          SVG    PDF    PNG   JPG   GIF   APNG  AVIF  WebM  MP4   OGG
   =========== ====== ====== ===== ===== ===== ===== ===== ===== ===== =====
   HTML4_      ✓ [#]_        ✓     ✓     ✓     (✓)   (✓)
-  
+
   HTML5_      ✓             ✓     ✓     ✓     ✓     ✓     ✓     ✓     ✓
-  
+
   LaTeX_ [#]_        ✓      ✓     ✓
-  
+
   ODT_        ✓      ✓      ✓     ✓     ✓
   =========== ====== ====== ===== ===== ===== ===== ===== ===== ===== =====
-  
+
   .. [#] The `html5 writer`_ uses the ``<video>`` tag if the image URI
          ends with an extension matching one of the listed video formats
          (since Docutils 0.17).
-  
+
   .. [#] The html4 writer uses an ``<object>`` tag for SVG images
          for better compatibility with older browsers.
-  
+
   .. [#] When compiling with ``pdflatex``, ``xelatex``, or ``lualatex``.
          The original ``latex`` engine supports only the EPS image format.
          Some build systems, e.g. rubber_ support additional formats
@@ -201,7 +201,7 @@ There are two image directives: "image" and "figure".
 __ https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Image_types
 .. _HTML4:
 .. _html4 writer: ../../user/html.html#html4css1
-.. _HTML5: 
+.. _HTML5:
 .. _html5 writer: ../../user/html.html#html5-polyglot
 .. _LaTeX: ../../user/latex.html#image-inclusion
 .. _ODT: ../../user/odt.html
@@ -890,7 +890,7 @@ The following options are recognized:
 
 ``encoding`` : string
     The text encoding of the external CSV data (file or URL).
-    Defaults to the document's input_encoding_.
+    Defaults to the document's `input_encoding`_.
 
 ``escape`` : char
     A one-character string used to escape the
@@ -1488,8 +1488,8 @@ The following options are recognized:
     Works only with ``code`` or ``literal``.
 
 ``encoding`` : string
-    The text encoding of the external data file.  Defaults to the
-    document's input_encoding_.
+    The text encoding of the external file.
+    Defaults to the document's input_encoding_.
 
     .. _input_encoding: ../../user/config.html#input-encoding
 
@@ -1583,7 +1583,7 @@ The following options are recognized:
 
 ``encoding`` : string
     The text encoding of the external raw data (file or URL).
-    Defaults to the document's encoding (if specified).
+    Defaults to the document's `input_encoding`_ (if specified).
 
 and the common option class_.
 

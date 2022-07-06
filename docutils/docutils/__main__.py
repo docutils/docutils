@@ -31,8 +31,8 @@ class CliSettingsSpec(docutils.SettingsSpec):
 
     Configurable reader, parser, and writer components.
 
-    The "--writer" default will change to 'html' when this becomes
-    an alias for 'html5'.
+    The "--writer" default will change to 'html' in Docutils 2.0
+    when 'html' becomes an alias for the current value 'html5'.
     """
 
     settings_spec = (
