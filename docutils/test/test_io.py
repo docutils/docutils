@@ -81,14 +81,13 @@ class InputTests(unittest.TestCase):
 
     def test_bom(self):
         # Provisional:
-        # TODO only remove BOM at start of data
-        input = io.StringInput(source=b'\xef\xbb\xbf foo \xef\xbb\xbf bar',
-                               encoding='utf-8')
-        # Assert BOMs are gone.
+        input = io.StringInput(source=b'\xef\xbb\xbf foo \xef\xbb\xbf bar')
+        # Assert BOM is gone.
+        # TODO: only remove BOM (ZWNBSP at start of data)
         self.assertEqual(input.read(), ' foo  bar')
-        # With unicode input:
+        # Unicode input is left unchanged:
         input = io.StringInput(source='\ufeff foo \ufeff bar')
-        # Assert BOMs are still there.
+        # Assert ZWNBSPs are still there.
         self.assertEqual(input.read(), '\ufeff foo \ufeff bar')
 
     def test_coding_slug(self):

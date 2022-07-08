@@ -59,6 +59,8 @@ Future changes
     default and locale encoding, fail.
 
   - Only remove BOM (U+FEFF ZWNBSP at start of data), no other ZWNBSPs.
+    Only remove BOM with `input_encoding` values None, '', 'utf-8-sig',
+    'utf-16', and 'utf-32'.
 
 * `html5` writer:
 

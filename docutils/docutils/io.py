@@ -122,6 +122,17 @@ class Input(TransformSpec):
             locale.setlocale(locale.LC_ALL, '')
 
         Raise UnicodeError if unsuccessful.
+
+        Provisional:
+          - Raise UnicodeError (instead of falling back to the locale
+            encoding) if decoding the source with the default encoding (UTF-8)
+            fails and Python is started in `UTF-8 mode`.
+
+            Raise UnicodeError (instead of falling back to "latin1") if both,
+            default and locale encoding, fail.
+
+          - Only remove BOM (U+FEFF ZWNBSP at start of data),
+            no other ZWNBSPs.
         """
         if self.encoding and self.encoding.lower() == 'unicode':
             assert isinstance(data, str), ('input encoding is "unicode" '
@@ -156,7 +167,8 @@ class Input(TransformSpec):
                 decoded = str(data, enc, self.error_handler)
                 self.successful_encoding = enc
                 # Return decoded, removing BOM and other ZWNBSPs.
-                # TODO: only remove BOM (ZWNBSP at start of data, API change).
+                # TODO: only remove BOM (ZWNBSP at start of data)
+                #       and only if 'self.encoding' is None. (API change)
                 return decoded.replace('\ufeff', '')
             except (UnicodeError, LookupError) as err:
                 # keep exception instance for use outside of the "for" loop.
