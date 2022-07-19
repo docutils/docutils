@@ -14,7 +14,11 @@
 Changes Since 0.19
 ==================
 
-.
+* docutils/languages/
+  docutils/parsers/rst/languages/
+
+  - Support Ukrainian. Patch by Dmytro Kazanzhy.
+
 
 Release 0.19 (2022-07-05)
 =========================
