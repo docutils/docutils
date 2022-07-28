@@ -11,7 +11,7 @@ A front end to the Docutils Publisher, producing OpenOffice documents.
 try:
     import locale
     locale.setlocale(locale.LC_ALL, '')
-except:
+except Exception:
     pass
 
 from docutils.core import publish_cmdline_to_binary, default_description
