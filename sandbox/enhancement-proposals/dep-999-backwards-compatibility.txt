@@ -249,6 +249,33 @@ Open Issues
 
   This would hide private objects from `pydoc` help on the parent objects.
 
+* Define a rule for announcing incompatible changes similar to Dokbook:
+
+    With respect to schema changes, the technical committee asserts that
+    the following points will always apply:
+
+    * A point release (X.1 to X.2, X.2 to X.3, X.1 to X.1.2, etc.) will
+      not contain any backward-incompatible changes.
+
+    * A major release (X.1 to Y.0, X.2 to Y.0, X.1.2 to Y.0, etc.) may
+      contain backward-incompatible changes if:
+
+      * the change was announced in the release notes for the previous
+        version (major or minor) and
+
+      * the change was announced in a release that occurred at least six
+        months previously.
+
+    By these rules, the technical committee can announce, in V5.1, for
+    example, its plans to make a backward-incompatible change in V6.0.
+    Then, in V6.0, if it’s been at least six months since V5.1 was
+    released, it can make that change.
+
+    As a general rule, the technical committee tries to avoid
+    backward-incompatible changes.
+
+    -- https://tdg.docbook.org/tdg/5.1/ch01.html#bwcompat
+
 
 References
 ==========
