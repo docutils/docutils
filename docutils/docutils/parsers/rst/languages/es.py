@@ -27,7 +27,7 @@ directives = {
       'nota': 'note',
       'consejo': 'tip',
       'advertencia': 'warning',
-      'exhortacion': 'admonition',
+      'exhortacion': 'admonition',  # sic! Not used in this sense in rST.
       'exhortaci\u00f3n': 'admonition',
       'nota-al-margen': 'sidebar',
       'tema': 'topic',

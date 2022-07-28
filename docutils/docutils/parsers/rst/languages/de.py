@@ -28,6 +28,7 @@ directives = {
       'tipp': 'tip',
       'warnung': 'warning',
       'ermahnung': 'admonition',  # sic! Not used in this sense in rST.
+      # 'anmerkung': 'admonition',  # TODO: Anmerkung, Warnhinweis, ...?
       'kasten': 'sidebar',
       'seitenkasten': 'sidebar',  # kept for backwards compatibiltity
       'seitenleiste': 'sidebar',
