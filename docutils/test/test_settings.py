@@ -356,6 +356,5 @@ class HelperFunctionsTests(unittest.TestCase):
             reporter.set_conditions('foo', 1, 4)  # trigger warning
 
 
-
 if __name__ == '__main__':
     unittest.main()

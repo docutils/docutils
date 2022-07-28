@@ -35,5 +35,5 @@ stats.print_stats(40)
 
 try:
     exec(open(os.environ['PYTHONSTARTUP']).read())
-except:
+except Exception:
     pass

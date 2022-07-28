@@ -424,8 +424,8 @@ Details
 :Analogues:
     ``admonition`` has no direct analogues in common DTDs.  It can be
     emulated with primitives and type effects.
-    
-    The specific admonitions caution_, note_, tip_, and warning_ 
+
+    The specific admonitions caution_, note_, tip_, and warning_
     are analogous to the respective DocBook elements.
 
 :Processing:
@@ -2266,7 +2266,7 @@ Details
 
     The `DocBook "footnote"`_ element combines features of ``footnote``
     and footnote_reference_.
-    
+
     The DPub ARIA role `"doc-footnote"`__ may be used to mark a (conforming__)
     `HTML emulation`__ as "ancillary information, such as a citation or
     commentary, that provides additional context to a referenced passage
