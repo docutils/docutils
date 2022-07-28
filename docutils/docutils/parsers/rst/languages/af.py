@@ -26,7 +26,7 @@ directives = {
       'nota': 'note',
       'tip': 'tip',  # hint and tip both have the same translation: wenk
       'waarskuwing': 'warning',
-      'vermaning': 'admonition',
+      'vermaning': 'admonition',  # sic! Not used in this sense in rST.
       'kantstreep': 'sidebar',
       'onderwerp': 'topic',
       'lynblok': 'line-block',

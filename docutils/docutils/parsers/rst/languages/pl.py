@@ -27,7 +27,8 @@ directives = {
       'przypis': 'note',
       'rada': 'tip',
       'ostrze\u017cenie': 'warning',
-      'upomnienie': 'admonition',
+      'upomnienie': 'admonition',  # sic! Not used in this sense in rST.
+      # 'zauważenie': 'admonition',  # remark
       'ramka': 'sidebar',
       'temat': 'topic',
       'blok-linii': 'line-block',
