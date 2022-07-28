@@ -424,6 +424,9 @@ Details
 :Analogues:
     ``admonition`` has no direct analogues in common DTDs.  It can be
     emulated with primitives and type effects.
+    
+    The specific admonitions caution_, note_, tip_, and warning_ 
+    are analogous to the respective DocBook elements.
 
 :Processing:
     Rendered distinctly (inset and/or in a box, etc.).
@@ -4505,7 +4508,8 @@ context.
 The ``warning`` element is an admonition, a distinctive and
 self-contained notice.  Also see the other admonition elements
 Docutils offers (in alphabetical order): attention_, caution_,
-danger_, error_, hint_, important_, note_, tip_.
+danger_, error_, hint_, important_, note_, tip_,
+and the generic admonition_.
 
 
 Details
