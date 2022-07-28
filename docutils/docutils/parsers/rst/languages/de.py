@@ -27,7 +27,7 @@ directives = {
       'notiz': 'note',
       'tipp': 'tip',
       'warnung': 'warning',
-      'ermahnung': 'admonition',
+      'ermahnung': 'admonition',  # sic! Not used in this sense in rST.
       'kasten': 'sidebar',
       'seitenkasten': 'sidebar',  # kept for backwards compatibiltity
       'seitenleiste': 'sidebar',

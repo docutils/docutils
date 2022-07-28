@@ -51,16 +51,14 @@ reStructuredText Directives`_.
  Admonitions
 -------------
 
-.. From Webster's Revised Unabridged Dictionary (1913) [web1913]:
-   Admonition
-      Gentle or friendly reproof; counseling against a fault or
-      error; expression of authoritative advice; friendly caution
-      or warning.
+Admonitions ("safety messages" or "hazard statements") can appear anywhere
+an ordinary body element can.  They contain arbitrary body elements.
+Typically, an admonition is rendered as an offset block in a document,
+sometimes outlined or shaded,
 
-      Syn: {Admonition}, {Reprehension}, {Reproof}.
+Docutils defines a `generic admonition`_ as well as a set of
+`specific admonitions`_.
 
-      Usage: Admonition is prospective, and relates to moral delinquencies;
-             its object is to prevent further transgression.
 
 .. _attention:
 .. _caution:
@@ -76,18 +74,23 @@ Specific Admonitions
 ====================
 
 :Directive Types: "attention", "caution", "danger", "error", "hint",
-                  "important", "note", "tip", "warning", "admonition"
-:Doctree Elements: attention, caution, danger, error, hint, important,
-                   note, tip, warning, admonition_, title_
+                  "important", "note", "tip", "warning"
+:Doctree Elements: `attention <../doctree.html#attention>`__,
+                   `caution <../doctree.html#caution>`__                        ,
+                   `danger <../doctree.html#danger>`__,
+                   `error <../doctree.html#error>`__,
+                   `hint <../doctree.html#hint>`__,
+                   `important <../doctree.html#important>`__,
+                   `note <../doctree.html#note>`__,
+                   `tip <../doctree.html#tip>`__,
+                   `warning <../doctree.html#warning>`__
+
 :Directive Arguments: None.
 :Directive Options: class_, name_
 :Directive Content: Interpreted as body elements.
 
-Admonitions are specially marked "topics" that can appear anywhere an
-ordinary body element can.  They contain arbitrary body elements.
-Typically, an admonition is rendered as an offset block in a document,
-sometimes outlined or shaded, with a title matching the admonition
-type.  For example::
+Specific admontions are rendered with a title matching the admonition type.
+For example::
 
     .. DANGER::
        Beware killer rabbits!
@@ -99,18 +102,6 @@ This directive might be rendered something like this::
     |                        |
     | Beware killer rabbits! |
     +------------------------+
-
-The following admonition directives have been implemented:
-
-- attention
-- caution
-- danger
-- error
-- hint
-- important
-- note
-- tip
-- warning
 
 Any text immediately following the directive indicator (on the same
 line and/or indented on following lines) is interpreted as a directive
@@ -126,11 +117,14 @@ bullet list consisting of two list items::
        - It includes this bullet list.
 
 
+.. _admonition:
+
 Generic Admonition
 ==================
 
 :Directive Type: "admonition"
-:Doctree Elements: admonition_, title_
+:Doctree Elements: `admonition <../doctree.html#admonition>`__,
+                   `title <../doctree.html#title>`__
 :Directive Arguments: One, required (admonition title)
 :Directive Options: class_, name_
 :Directive Content: Interpreted as body elements.
@@ -139,9 +133,8 @@ This is a generic, titled admonition.  The title may be anything the
 author desires.
 
 The author-supplied title is also used as a `"classes"`_ attribute value
-after being converted into a valid identifier form (down-cased;
-non-alphanumeric characters converted to single hyphens; "admonition-"
-prefixed).  For example, this admonition::
+after `identifier normalization`_ and adding the prefix "admonition-".
+For example, this admonition::
 
     .. admonition:: And, by the way...
 
@@ -156,15 +149,14 @@ becomes the following document tree (pseudo-XML)::
             <paragraph>
                 You can make up your own admonition too.
 
-The class_ option overrides the computed `"classes"`_ attribute
-value.
+The class_ option overrides the generated `"classes"`_ attribute value.
 
 
 --------
  Images
 --------
 
-There are two image directives: "image" and "figure".
+There are two image directives: image_ and figure_.
 
 .. attention::
 
@@ -212,7 +204,7 @@ Image
 =====
 
 :Directive Type: "image"
-:Doctree Element: image_
+:Doctree Element: `image <../doctree.html#image>`__
 :Directive Arguments: One, required (image URI).
 :Directive Options: Possible (see below).
 :Directive Content: None.
@@ -482,7 +474,6 @@ example, here's a classic::
             Love, Ewan.
 
 
-
 .. _parsed-literal:
 
 Parsed Literal Block
@@ -516,6 +507,7 @@ For example, all the element names in this content model are links::
          decoration_?,
          (docinfo_, transition_?)?,
          `%structure.model;`_ )
+
 
 Code
 ====
@@ -690,11 +682,13 @@ The "pull-quote" directive produces a "pull-quote"-class block quote.
 See Epigraph_ above for an analogous example.
 
 
+.. compound:
+
 Compound Paragraph
 ==================
 
 :Directive Type: "compound"
-:Doctree Element: compound_
+:Doctree Element: `compound <../doctree.html#compound>`__
 :Directive Arguments: None.
 :Directive Options: class_, name_
 :Directive Content: Interpreted as body elements.
@@ -767,7 +761,6 @@ element.  It may be used to group a sequence of elements for user- or
 application-specific purposes.
 
 
-
 --------
  Tables
 --------
@@ -783,7 +776,7 @@ Table
 =====
 
 :Directive Type: "table"
-:Doctree Element: table_
+:Doctree Element: `table <../doctree.html#table>`__
 :Directive Arguments: One, optional (table title).
 :Directive Options: Possible (see below).
 :Directive Content: A normal `reStructuredText table`_.
@@ -834,6 +827,7 @@ Plus the common options class_ and name_.
 
 .. _reStructuredText table: restructuredtext.html#tables
 .. _table_style: ../../user/config.html#table-style
+
 
 .. _csv-table:
 
@@ -1241,17 +1235,16 @@ Citations
 
 @@@
 
+.. ---------------
+    HTML-Specific
+   ---------------
 
----------------
- HTML-Specific
----------------
+   Imagemap
+   ========
 
-Imagemap
-========
+   **NOT IMPLEMENTED YET**
 
-**NOT IMPLEMENTED YET**
-
-Non-standard element: imagemap.
+   Non-standard element: imagemap.
 
 
 -----------------------------------------
@@ -1265,6 +1258,7 @@ and in the standalone context.
 
 .. _substitution definitions:
 .. _substitution definition: restructuredtext.html#substitution-definitions
+
 
 .. _replace:
 
@@ -1507,13 +1501,14 @@ Combining ``start/end-line`` and ``start-after/end-before`` is possible. The
 text markers will be searched in the specified lines (further limiting the
 included content).
 
-.. _raw-directive:
+
+.. _raw:
 
 Raw Data Pass-Through
 =====================
 
 :Directive Type: "raw"
-:Doctree Element: raw_
+:Doctree Element: `raw <../doctree.html#raw>`__
 :Directive Arguments: One or more, required (output format types).
 :Directive Options: Possible (see below).
 :Directive Content: Stored verbatim, uninterpreted.  None (empty) if a
@@ -1591,7 +1586,6 @@ and the common option class_.
 .. _"raw" role: roles.html#raw
 
 
-.. _classes:
 
 Class
 =====
@@ -1742,6 +1736,7 @@ For example ``"Rot.Gelb&Grün:+2008"`` becomes ``"rot-gelb-grun-2008"`` and
     .. _HTML 4.01 spec: https://www.w3.org/TR/html401/
     .. _CSS1 spec: https://www.w3.org/TR/REC-CSS1
 
+
 .. _role:
 
 Custom Interpreted Text Roles
@@ -1879,11 +1874,13 @@ initial default interpreted text role of the standard reStructuredText
 parser is "title-reference".
 
 
+.. _meta:
+
 Metadata
 ========
 
 :Directive Type: "meta"
-:Doctree Element: meta_
+:Doctree Element: `meta <../doctree.html#meta>`__
 :Directive Arguments: None.
 :Directive Options: None.
 :Directive Content: Must contain a flat field list.
@@ -1955,6 +1952,8 @@ HTML equivalent::
 .. _bibliographic fields: restructuredtext.html#bibliographic-fields
 
 
+.. _title:
+
 Metadata Document Title
 =======================
 
@@ -1973,6 +1972,7 @@ appears in the title bar of the browser window.
 .. _document title: restructuredtext.html#document-title
 .. _"title" configuration setting: ../../user/config.html#title
 
+
 Restructuredtext-Test-Directive
 ===============================
 
@@ -1987,6 +1987,7 @@ expected to type in a name *that* long!)  It is converted into a
 level-1 (info) system message showing the directive data, possibly
 followed by a literal block containing the rest of the directive
 block.
+
 
 --------------
 Common Options
@@ -2031,17 +2032,15 @@ options:
 .. _identifier keys: ../doctree.html#ids-type
 .. _"ids": ../doctree.html#ids
 .. _"names": ../doctree.html#names
-.. _admonition: ../doctree.html#admonition
 .. _block_quote: ../doctree.html#block-quote
 .. _caption: ../doctree.html#caption
-.. _compound: ../doctree.html#compound
+.. _classes: ../doctree.html#classes
 .. _container element: ../doctree.html#container
 .. _decoration: ../doctree.html#decoration
 .. _figure: ../doctree.html#figure
 .. _footnote: ../doctree.html#footnote
 .. _footnote_reference: ../doctree.html#footnote-reference
 .. _generated: ../doctree.html#generated
-.. _image: ../doctree.html#image
 .. _inline elements: ../doctree.html#inline-elements
 .. _interpreted text role: roles.html
 .. _literal_block: ../doctree.html#literal-block
@@ -2049,14 +2048,10 @@ options:
 .. _length: restructuredtext.html#length-units
 .. _line_block: ../doctree.html#line-block
 .. _math_block: ../doctree.html#math-block
-.. _meta: ../doctree.html#meta
 .. _pending: ../doctree.html#pending
 .. _percentage: restructuredtext.html#percentage-units
-.. _raw: ../doctree.html#raw
 .. _rubric: ../doctree.html#rubric
 .. _sidebar: ../doctree.html#sidebar
-.. _table: ../doctree.html#table
-.. _title: ../doctree.html#title
 .. _title attribute: ../doctree.html#title-attribute
 .. _topic: ../doctree.html#topic
 
