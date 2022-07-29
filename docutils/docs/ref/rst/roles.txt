@@ -9,9 +9,9 @@
 :Revision: $Revision$
 :Date: $Date$
 :Copyright: This document has been placed in the public domain.
-
-This document describes the interpreted text roles implemented in the
-reference reStructuredText parser.
+:Abstract: 
+  This document describes the interpreted text roles implemented in the
+  reference reStructuredText parser.
 
 Interpreted text uses backquotes (`) around the text.  An explicit
 role marker may optionally appear before or after the text, delimited
@@ -66,51 +66,37 @@ __ directives.html#role-class
  Standard Roles
 ----------------
 
-``:emphasis:``
-==============
 
-:Aliases: None
-:DTD Element: emphasis
+``:abbreviation:``
+==================
+
+:Aliases: ``:ab:``
+:DTD Element: abbreviation_
 :Customization:
     :Options: class_.
     :Content: None.
 
-Implements emphasis.  These are equivalent::
-
-    *text*
-    :emphasis:`text`
+An abbreviation used in the document.
+An example of an abbreviation is ‘St’ being used instead of ‘Street’.
 
 
-``:literal:``
-==============
+``:acronym:``
+==================
 
-:Aliases: None
-:DTD Element: literal
+:Aliases: ``:ac:``
+:DTD Element: acronym_
 :Customization:
     :Options: class_.
     :Content: None.
 
-Implements inline literal text.  These are equivalent::
-
-    ``text``
-    :literal:`text`
-
-Care must be taken with backslash-escapes though.  These are *not*
-equivalent::
-
-    ``text \ and \ backslashes``
-    :literal:`text \ and \ backslashes`
-
-The backslashes in the first line are preserved (and do nothing),
-whereas the backslashes in the second line escape the following
-spaces.
+An acronym.
 
 
 ``:code:``
 ==========
 
 :Aliases: None
-:DTD Element: literal
+:DTD Element: literal_
 :Customization:
     :Options: class_, language
     :Content: None.
@@ -143,11 +129,51 @@ In addition to "class_", the following option is recognized:
 .. _supported languages and markup formats: https://pygments.org/languages/
 
 
+``:emphasis:``
+==============
+
+:Aliases: None
+:DTD Element: emphasis_
+:Customization:
+    :Options: class_.
+    :Content: None.
+
+Implements emphasis.  These are equivalent::
+
+    *text*
+    :emphasis:`text`
+
+
+``:literal:``
+==============
+
+:Aliases: None
+:DTD Element: literal_
+:Customization:
+    :Options: class_.
+    :Content: None.
+
+Implements inline literal text.  These are equivalent::
+
+    ``text``
+    :literal:`text`
+
+Care must be taken with backslash-escapes though.  These are *not*
+equivalent::
+
+    ``text \ and \ backslashes``
+    :literal:`text \ and \ backslashes`
+
+The backslashes in the first line are preserved (and do nothing),
+whereas the backslashes in the second line escape the following
+spaces.
+
+
 ``:math:``
 ==========
 
 :Aliases: None
-:DTD Element: math
+:DTD Element: math_
 :Customization:
     :Options: class_
     :Content: None.
@@ -172,7 +198,7 @@ on mathematical notation in reStructuredText.
 ===================
 
 :Aliases: ``:PEP:``
-:DTD Element: reference
+:DTD Element: reference_
 :Customization:
     :Options: class_.
     :Content: None.
@@ -194,7 +220,7 @@ This is equivalent to::
 ===================
 
 :Aliases: ``:RFC:``
-:DTD Element: reference
+:DTD Element: reference_
 :Customization:
     :Options: class_.
     :Content: None.
@@ -227,7 +253,7 @@ This is equivalent to::
 ============
 
 :Aliases: None
-:DTD Element: strong
+:DTD Element: strong_
 :Customization:
     :Options: class_.
     :Content: None.
@@ -242,7 +268,7 @@ Implements strong emphasis.  These are equivalent::
 ===============
 
 :Aliases: ``:sub:``
-:DTD Element: subscript
+:DTD Element: subscript_
 :Customization:
     :Options: class_.
     :Content: None.
@@ -278,7 +304,7 @@ Implements subscripts.
 =================
 
 :Aliases: ``:sup:``
-:DTD Element: superscript
+:DTD Element: superscript_
 :Customization:
     :Options: class_.
     :Content: None.
@@ -290,7 +316,7 @@ Implements superscripts.  See the tip in `:subscript:`_ above.
 =====================
 
 :Aliases: ``:title:``, ``:t:``.
-:DTD Element: title_reference
+:DTD Element: title_reference_
 :Customization:
     :Options: class_.
     :Content: None.
@@ -339,7 +365,7 @@ must be used to obtain a ``title_reference`` element.
 =======
 
 :Aliases: None
-:DTD Element: raw
+:DTD Element: raw_
 :Customization:
     :Options: class_, format
     :Content: None
@@ -391,3 +417,17 @@ In addition to "class_", the following option is recognized:
 
 ``format`` : text
     One or more space-separated output format names (Writer names).
+
+
+.. References
+
+.. _abbreviation: ../doctree.html#abbreviation
+.. _acronym: ../doctree.html#acronym
+.. _emphasis: ../doctree.html#emphasis
+.. _literal: ../doctree.html#literal
+.. _math: ../doctree.html#math
+.. _reference: ../doctree.html#reference
+.. _strong: ../doctree.html#strong
+.. _subscript: ../doctree.html#subscript
+.. _superscript: ../doctree.html#superscript
+.. _title_reference: ../doctree.html#title-reference

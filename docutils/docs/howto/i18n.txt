@@ -88,22 +88,22 @@ Each Docutils language module contains three module attributes:
 ``labels``
     This is a mapping of node class names to language-dependent
     boilerplate label text.  The label text is used by Writer
-    components when they encounter document tree elements whose class
-    names are the mapping keys.
+    components when they encounter `document tree`_ elements whose
+    `class names`_ are the mapping keys.
 
-    The entry values (*not* the keys) should be translated to the
+    The entry **values** (*not* the keys) should be translated to the
     target language.
 
 ``bibliographic_fields``
     This is a mapping of language-dependent field names (converted to
     lower case) to canonical field names (keys of
     ``DocInfo.biblio_notes`` in ``docutils.transforms.frontmatter``).
-    It is used when transforming bibliographic fields.
+    It is used when transforming `bibliographic fields`_.
 
-    The keys should be translated to the target language.
+    The **keys** should be translated to the target language.
 
 ``author_separators``
-    This is a list of strings used to parse the 'Authors'
+    This is a list of strings used to parse the 'Authors_'
     bibliographic field.  They separate individual authors' names, and
     are tried in order (i.e., earlier items take priority, and the
     first item that matches wins).  The English-language module
@@ -111,6 +111,15 @@ Each Docutils language module contains three module attributes:
     separate names like "Arthur Pewtie, Esq.".
 
     Most languages won't have to "translate" this list.
+
+.. _document tree:
+    ../ref/doctree.html
+.. _class names:
+    ../ref/doctree.html#element-reference
+.. _authors:
+    .. ref/doctree.html#authors
+.. _bibliographic fields:
+    ../ref/rst/restructuredtext.html#bibliographic-fields
 
 
 reStructuredText Language Module
@@ -127,8 +136,9 @@ Each reStructuredText language module contains two module attributes:
 ``directives``
     This is a mapping from language-dependent directive names to
     canonical directive names.  The canonical directive names are
-    registered in ``docutils/parsers/rst/directives/__init__.py``, in
-    ``_directive_registry``.
+    registered in ``docutils/parsers/rst/directives/__init__.py``,
+    in ``_directive_registry`` and documented in
+    `reStructuredText Directives`_.
 
     The keys should be translated to the target language.  Synonyms
     (multiple keys with the same values) are allowed; this is useful
@@ -136,13 +146,17 @@ Each reStructuredText language module contains two module attributes:
 
 ``roles``
     This is a mapping language-dependent role names to canonical role
-    names for interpreted text.  The canonical directive names are
+    names for interpreted text.  The canonical role names are
     registered in ``docutils/parsers/rst/states.py``, in
-    ``Inliner._interpreted_roles`` (this may change).
+    ``Inliner._interpreted_roles`` (this may change) and documented
+    in `reStructuredText Interpreted Text Roles`_.
 
     The keys should be translated to the target language.  Synonyms
     (multiple keys with the same values) are allowed; this is useful
     for abbreviations.
+
+.. _reStructuredText Directives: ../ref/rst/directives.html
+.. _reStructuredText Interpreted Text Roles: ../ref/rst/roles.html
 
 
 Testing the Language Modules
