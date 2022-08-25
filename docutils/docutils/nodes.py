@@ -327,10 +327,11 @@ class Node:
 
     def previous_sibling(self):
         """Return preceding sibling node or ``None``."""
-        try:
-            return self.parent[self.parent.index(self)-1]
-        except (AttributeError, IndexError):
+        if not self.parent:
             return None
+        else:
+            index = self.parent.index(self)
+            return self.parent[index - 1] if index > 0 else None
 
 
 class reprunicode(str):
