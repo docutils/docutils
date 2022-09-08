@@ -1,0 +1,73 @@
+# Set up logging
+logfile conversion.prest.log
+
+# Read common fast-import stream
+read <common.fi
+prefer git
+
+# REPOSITORY SPECIFIC - PREST
+
+# Create macros
+define releasetag {
+tag create {0} @min(=C&/\nSubversion-Revision-ID: {1}\n/)
+<{0}> setfield comment "Docutils {0}"
+}
+
+# Delete unneeded branches
+branch delete refs/heads/plugins
+branch delete refs/heads/subdocs
+branch delete refs/heads/lossless-rst-writer
+branch delete refs/heads/nesting
+
+# Remove unneeded empty commits
+:3 squash --empty-only --delete
+
+# Drop the "Remove 'prest'" commit
+/Remove 'prest'/ delete
+
+# Delete everything else
+expunge --notagify --not /^prest\/.*$/
+
+# Move up a directory
+path rename "prest/(.*)" "\1" --force
+
+# Create new tags
+do releasetag 0.3.10 4327
+do releasetag 0.3.11 4580
+# 0.3.12 -- never released
+do releasetag 0.3.13 4635
+do releasetag 0.3.14 4648
+do releasetag 0.3.15 4663
+do releasetag 0.3.16 4666
+# 0.3.17 -- never released
+do releasetag 0.3.18 4736
+do releasetag 0.3.19 4799
+do releasetag 0.3.20 4876
+do releasetag 0.3.21 4889
+do releasetag 0.3.22 4910
+do releasetag 0.3.23 4932
+do releasetag 0.3.24 4934
+do releasetag 0.3.25 4949
+do releasetag 0.3.26 5058
+do releasetag 0.3.27 5062
+do releasetag 0.3.28 5063
+do releasetag 0.3.29 5066
+do releasetag 0.3.30 5071
+do releasetag 0.3.31 5299
+do releasetag 0.3.32 5363
+do releasetag 0.3.33 5378
+do releasetag 0.3.34 5438
+do releasetag 0.3.35 5446
+do releasetag 0.3.36 5453
+do releasetag 0.3.37 5486
+do releasetag 0.3.38 5781
+do releasetag 0.3.39 5799
+do releasetag 0.3.40 5810
+do releasetag 0.3.41 6251
+do releasetag 0.3.42 6291
+do releasetag 0.3.43 6302
+do releasetag 0.3.44 6440
+do releasetag 0.3.45 6498
+
+# Remove rel-0.15 branch (must be done after reposurgeon)
+branch delete heads/rel-0.15

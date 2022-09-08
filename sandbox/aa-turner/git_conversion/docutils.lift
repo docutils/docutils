@@ -1,0 +1,68 @@
+# Set up logging
+logfile conversion.docutils.log
+
+# Read common fast-import stream
+read <common.fi
+prefer git
+
+# REPOSITORY SPECIFIC - CORE DOCUTILS
+
+# Create macros
+define releasetag {
+tag create {0} @min(/\nSubversion-Revision-ID: {1}\n/)
+<{0}> setfield comment "Docutils {0}"
+}
+
+# Move infrastructure, enhancement-proposals, web
+path rename "sandbox/infrastructure/(.*)" "docutils/infrastructure/\1" --force
+path rename "sandbox/enhancement-proposals/(.*)" "docutils/docs/enhancement-proposals/\1" --force
+path rename "^web(.*)" "docutils/docs/web\1" --force
+
+# Delete everything else
+expunge --notagify /^sandbox\/.*$/
+expunge --notagify /^prest\/.*$/
+expunge --notagify /^.pre-commit-config.yaml\/.*$/
+expunge --notagify /^tox.ini\/.*$/
+
+# Move up a directory
+path rename "docutils/(.*)" "\1" --force
+
+# Create new tags
+do releasetag 0.1.0 30
+do releasetag 0.2.0 433
+do releasetag 0.3.0 1504
+do releasetag 0.3.1 1641
+# 0.3.2 -- never released
+do releasetag 0.3.3 2067
+# 0.3.4 -- never released
+do releasetag 0.3.5 2512
+# 0.3.6 -- never released
+do releasetag 0.3.7 2900
+# 0.3.8 -- never released
+do releasetag 0.3.9 3376
+do releasetag 0.4.0 4262
+do releasetag 0.5.0 5578
+do releasetag 0.6.0 6167
+do releasetag 0.7.0 6360
+do releasetag 0.8.0 7087
+do releasetag 0.8.1 7107
+do releasetag 0.9.0 7410
+do releasetag 0.9.1 7452
+do releasetag 0.10.0 7563
+do releasetag 0.11.0 7696
+do releasetag 0.12.0 7760
+# 0.13.0 -- never released
+do releasetag 0.13.1 7985
+do releasetag 0.14.0 8148
+do releasetag 0.15.0 8272
+do releasetag 0.15.1 8298
+do releasetag 0.15.2 8304
+do releasetag 0.16.0 8453
+do releasetag 0.17.0 8653
+do releasetag 0.17.1 8705
+do releasetag 0.18.0 8865
+do releasetag 0.18.1 8900
+do releasetag 0.19.0 9103
+
+# Remove rel-0.15 branch (must be done after reposurgeon)
+branch delete heads/rel-0.15

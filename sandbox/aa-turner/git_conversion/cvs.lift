@@ -1,0 +1,89 @@
+# Set up options
+set canonicalize
+set progress
+prefer git
+
+# Create macros
+define releasetag {
+tag create {0} {1}
+<{0}> setfield comment "Docutils {0}"
+}
+
+# Read in CVS docstring repository
+read <docstring.fi
+authors read <docutils.map
+prefer git
+
+# Update commit messages
+gitify
+=C filter dedos
+
+# Remove uneeded "import-1.1.1" branch
+:50 squash --delete --quiet
+
+# Combine "*** empty log message ***" commits with neighbours where appropriate
+:58 squash --pushback
+/Minimal writer./ squash --pushback
+
+# Read in CVS structuredtext repository
+read <structuredtext.fi
+authors read <docutils.map
+prefer git
+
+# Update commit messages
+gitify
+=C filter dedos
+
+# Remove uneeded "import-1.1.1" branch
+branch delete heads/import-1.1.1
+branch delete heads/rel-0-3
+branch delete tags/RELEASE
+
+# Fix merge commit and delete redundant branch
+:292,:280,:297 reparent --use-order
+branch delete heads/Rrefactor-test
+
+# Fix commits in test-refactor branch
+:271,:278,:272,:276,:273,:280,:276,:274 reorder
+:278 squash --pushback
+:276 squash --pushback
+:280 squash --pushback
+:28 squash --delete --quiet
+
+# Fix first commits
+:37 squash --pushback
+:30 squash --pushback
+:14 setfield comment "initial checkin"
+
+# Remove empty commits
+=Z setfield comment "\n"
+=Z squash --empty-only --delete
+
+# Combine the CVS repositories
+unite docstring structuredtext --prune
+rename cvs
+renumber
+
+# Make the "docstring" branch start with an orphan commit
+:1151 reparent
+renumber
+
+# Rename branches
+branch rename heads/master heads/structuredtext
+branch rename heads/master-docstring heads/docstring
+
+# Rename web directory
+@anc(<docstring>) path rename "web/(.*)" "web_docstring/\1" --force
+@anc(<structuredtext>) path rename "web/(.*)" "web_structuredtext/\1" --force
+
+# Merge branches properly
+write --format=git cvs_combined_temp/
+!cd cvs_combined_temp; git config core.filemode false
+!cd cvs_combined_temp; git switch -C master
+!cd cvs_combined_temp; git merge --allow-unrelated-histories -m "merge" docstring structuredtext
+
+# Read in combined
+read --format=git cvs_combined_temp/
+drop cvs
+rename cvs
+!rm -rf cvs_combined_temp*
