@@ -1,0 +1,110 @@
+# Set up options
+set canonicalize
+set progress
+prefer git
+
+# Read subversion repo
+read --no-automatic-ignores --user-ignores <docutils.svn
+authors read <docutils.map
+
+# Update commit messages
+gitify
+=C filter dedos
+
+# Add backreference to SVN IDs
+=C append "\n\nSubversion-Revision-ID: %LEGACY%" --legacy --rstrip
+
+# Delete branch-creation commits in Subversion, which are prefixed with
+# "emptycommit".
+tag delete /emptycommit/
+
+# Delete invalid tags and branches
+tag delete deleted/r3814/docutils-0.3.9-root
+tag delete rel-0.15-root 
+branch delete /tags\/.*/
+branch delete refs/tags/start
+branch delete refs/tags/merged_to_nesting
+branch delete refs/heads/address-rendering
+branch delete refs/heads/index-bug
+
+# Remove useless commits
+:2 squash --quiet --delete
+:5 squash --quiet --delete
+:6 squash --quiet --delete
+<1813> squash --quiet --delete
+<2531> setfield comment "\n"
+<2531> squash
+<2573> setfield comment "\n"
+<2573> squash
+
+# Merge split "initial revision" commits
+<18> setfield comment "Subversion-Revision-ID: 18"
+<18> squash --pushback
+renumber
+
+# Read in CVS docstring repository
+script cvs.lift
+
+# Unite the CVS and SVN histories
+:1904 graft docutils
+rename docutils
+renumber
+
+# Set up for manual git surgery
+<4> reparent
+:1924 reset create refs/heads/early
+:2035 reset create refs/heads/late
+#<16>,:1904,<17> reparent --use-order --rebase
+
+# Ensure every commit message ends with a single new line
+=C append "\n" --rstrip
+=C append "\n"
+
+# Export and manually edit
+# The merge will claim to fail, but in reality it succeeded -- update the index
+# via read-tree to reflect this.
+write --format=git common_temp/
+!cd common_temp; git config core.filemode false
+!cd common_temp; git switch -C  working structuredtext
+set relax
+!cd common_temp; git merge --allow-unrelated-histories -m "merge" structuredtext docstring early
+clear relax
+!cd common_temp; git read-tree structuredtext docstring early
+!cd common_temp; git commit -m "merge"
+!cd common_temp; git reset --hard
+!cd common_temp; git mv web_docstring/PyBanner016.png web/PyBanner016.png
+!cd common_temp; git rm -r web_docstring web_structuredtext
+!cd common_temp; git commit --amend --all -m "merge"
+!cd common_temp; git rm -rf *
+!cd common_temp; git checkout early -- .
+!cd common_temp; git commit -a -C early
+
+# Read in combined
+read --format=git common_temp/
+drop docutils
+rename docutils
+!rm -rf common_temp*
+
+# make the parent of <late> the tip of <working>
+<working>,<late> reparent --use-order --rebase
+
+# Update metadata of merge commit
+<working> setfield comment "\n"
+<working> squash
+:35235 setfield comment "Combine into Docutils\n\n***Commit added during git conversion***.\n\nMerged projects:\n\n- docutils (SVN)\n- docstring (CVS)\n- structuredtext (CVS)\n"
+:35235 attribution =A set "David Goodger" "david@python.org" "Sat Apr 20 03:00:00 2002 +0000"
+:35235 attribution =C set "David Goodger" "david@python.org" "Sat Apr 20 03:00:00 2002 +0000"
+
+# Delete surgery branches
+<master> squash --delete --quiet
+branch delete heads/early
+branch delete heads/late
+branch delete heads/working
+branch delete heads/docstring
+branch delete heads/structuredtext
+branch rename /heads\/(.*)-docutils/ "heads/\1"
+
+# Set git
+prefer git
+
+exit
