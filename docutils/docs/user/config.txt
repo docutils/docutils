@@ -613,8 +613,9 @@ Generic parser options:
 file_insertion_enabled
 ----------------------
 
-Enable or disable directives or directive that insert the contents of
-external files, such as "include_" or "raw_" with option "url".
+Enable or disable directives inserting the contents of
+external files, such as "include_" directive
+or the "raw_" and "csv-table_" directives with option "url" or "file".
 A "warning" system message (including the directive text) is inserted
 instead.  (See also raw_enabled_ for another security-relevant setting.)
 
@@ -623,6 +624,7 @@ Options: ``--file-insertion-enabled, --no-file-insertion``.
 
 .. _include: ../ref/rst/directives.html#include
 .. _raw: ../ref/rst/directives.html#raw
+.. _csv-table: ../ref/rst/directives.html#csv-table
 
 line_length_limit
 -----------------
@@ -1230,10 +1232,10 @@ See also `table_style [latex writers]`_.
 The default CSS sylesheets define:
 
   borderless
-    No borders around the table.
+    Remove all borders.
 
   align-left, align-center, align-right
-    Align the tables
+    Align table as indicated.
 
 The HTML5 stylesheets also define:
 
@@ -1252,8 +1254,7 @@ In addition, the HTML writers support:
     Overridden by the "widths" option of the `table directive`_.
 
   colwidths-grid
-    Backwards compatibility setting. Write column widths
-    determined from the source to the HTML file.
+    Write column widths determined from the source to the HTML file.
     Overridden by the "widths" option of the `table directive`_.
 
 Default: "".  Option: ``--table-style``.
