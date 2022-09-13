@@ -1644,7 +1644,7 @@ booktabs
   A line above and below the table and one after the head.
 
 borderless
-  No borders.
+  No borders around table cells.
 
 colwidths-auto
   Column width determination by LaTeX.
