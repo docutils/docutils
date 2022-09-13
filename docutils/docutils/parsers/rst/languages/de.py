@@ -22,13 +22,13 @@ directives = {
       'code': 'code',
       'gefahr': 'danger',
       'fehler': 'error',
-      'hinweis': 'hint',
+      'hinweis': 'hint',  # Wink
       'wichtig': 'important',
       'notiz': 'note',
       'tipp': 'tip',
       'warnung': 'warning',
       'ermahnung': 'admonition',  # sic! Not used in this sense in rST.
-      # 'anmerkung': 'admonition',  # TODO: Anmerkung, Warnhinweis, ...?
+      # TODO: Rat(schlag), Empfehlung, Warnhinweis, ...?
       'kasten': 'sidebar',
       'seitenkasten': 'sidebar',  # kept for backwards compatibiltity
       'seitenleiste': 'sidebar',
