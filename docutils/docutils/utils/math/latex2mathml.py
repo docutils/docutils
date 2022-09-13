@@ -1172,7 +1172,7 @@ def handle_cmd(name, node, string): # noqa: C901 TODO make this less complex
     if name == 'end':
         return end_environment(node, string)
 
-    raise SyntaxError('Unknown LaTeX command: ' + name)
+    raise SyntaxError('Unknown LaTeX command: \\' + name)
 
 # >>> handle_cmd('left', math(), '[a\\right]')
 # (mrow(mo('[')), 'a\\right]')
