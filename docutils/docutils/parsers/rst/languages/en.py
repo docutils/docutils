@@ -26,7 +26,7 @@ directives = {
       'note': 'note',
       'tip': 'tip',
       'warning': 'warning',
-      'admonition': 'admonition',
+      'admonition': 'admonition',  # advice/caveat/remark, not reprimand
       'sidebar': 'sidebar',
       'topic': 'topic',
       'line-block': 'line-block',
