@@ -1232,7 +1232,7 @@ See also `table_style [latex writers]`_.
 The default CSS sylesheets define:
 
   borderless
-    Remove all borders.
+    No borders around table cells.
 
   align-left, align-center, align-right
     Align table as indicated.
