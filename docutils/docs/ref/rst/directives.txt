@@ -1518,8 +1518,9 @@ Raw Data Pass-Through
 .. WARNING::
 
    The "raw" directive represents a potential security hole.  It can
-   be disabled with the "raw_enabled_" or "file_insertion_enabled_"
-   runtime settings.
+   be disabled with the "raw_enabled_" runtime setting.
+   Insertion of external files can be disabled with the
+   "file_insertion_enabled_" runtime setting.
 
    .. _raw_enabled: ../../user/config.html#raw-enabled
 

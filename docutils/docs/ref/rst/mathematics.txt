@@ -804,17 +804,22 @@ The text may contain math commands wrapped in ``$`` signs, e.g.
 .. TODO ignore {}, handle text-mode commands
 
  
-.. TODO: ``\mod`` and its relatives
-         --------------------------
+``\mod`` and its relatives
+--------------------------
 
-  Commands ``\mod``, ``\bmod``, ``\pmod``, ``\pod`` deal with the special
-  spacing conventions of “mod” notation. ``\mod`` and ``\pod`` are
-  variants of ``\pmod`` preferred by some authors; ``\mod`` omits the
-  parentheses, whereas ``\pod`` omits the “mod” and retains the
-  parentheses.
+Commands ``\mod``, ``\bmod``, ``\pmod``, ``\pod`` deal with the special
+spacing conventions of “mod” notation.
+``\mod`` and ``\pod`` are variants of ``\pmod`` preferred by some
+authors; ``\mod`` omits the parentheses, whereas ``\pod`` omits the
+“mod” and retains the parentheses.
+   
+TODO: 
+  Currently not supported by the "HTML" and "MathML" math_output_ 
+  options of the HTML writer (cf. `feature-request #93
+  <https://sourceforge.net/p/docutils/feature-requests/93/>`__).
 
-  \gcd(n,m\bmod n) ;\quad x\equiv y\pmod b
-  ;\quad x\equiv y\mod c ;\quad x\equiv y\pod d
+.. \gcd(n,m\bmod n) ;\quad x\equiv y\pmod b
+   ;\quad x\equiv y\mod c ;\quad x\equiv y\pod d
 
 
 Integrals and sums
