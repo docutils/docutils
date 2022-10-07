@@ -1,0 +1,104 @@
+#!/bin/sh
+
+# manpage tests using mandoc
+#
+# Contact: grubert@users.sourceforge.net
+# Revision: $Revision: 8493 $
+# Date: $Date: 2020-02-17 12:30:46 +0100 (Mo, 17. Feb 2020) $
+# Copyright: This script has been placed in the public domain.
+
+# mandoc arguments
+#
+#   -K encoding
+#           Specify the input encoding. 
+#           supported arguments us-ascii, iso-8859-1, and utf-8.
+#           
+#           If the first or second line of the input file matches the emacs mode line format
+#
+#                          .\" -*- [...;] coding: encoding; -*-
+#
+#           then input is interpreted according to encoding.
+#
+#   -T output
+#           Select the output format.
+#           Supported values for the output argument are ascii, html, the default
+#           of locale, man, markdown, pdf, ps, tree, and utf8.
+
+IN_DIR=input
+OUT_DIR=output-mandoc
+EXP_DIR=expected-mandoc
+
+#ENCS="latin1 utf8 ascii ps"
+ENCS="utf8 ascii ps"
+GROFF=""
+
+if [ -z "$1" ] ; then
+  FILES=*.txt
+else
+  FILES=$1
+fi
+
+ERROR_CNT=0
+
+inc_ERROR_CNT () {
+    ERROR_CNT=$(( ERROR_CNT + 1 ))
+}
+
+report_ERROR_CNT () {
+	echo "$ERROR_CNT errors"
+}
+
+CMD="python3 ../../docutils/tools/rst2man.py --traceback"
+
+for IN_F in $IN_DIR/$FILES ; do
+  BASE=`basename $IN_F`
+  F_BASE=${BASE%.txt}
+  if echo $F_BASE | grep -q -- '-de\.' ; then
+    OPT="-l de"
+  else
+    OPT=""
+  fi
+  $CMD $OPT $IN_F $OUT_DIR/$F_BASE.man
+  if [ $? -eq 0 ] ; then
+    diff -s -u $EXP_DIR/$F_BASE.man $OUT_DIR/$F_BASE.man
+    if [ $? -ne 0 ] ; then
+      inc_ERROR_CNT
+    fi
+    for ENC in $ENCS ; do
+      if [ -e $EXP_DIR/$F_BASE.$ENC ] ; then
+        mandoc -T$ENC $OUT_DIR/$F_BASE.man > $OUT_DIR/$F_BASE.$ENC
+        diff -s -u $EXP_DIR/$F_BASE.$ENC $OUT_DIR/$F_BASE.$ENC
+        if [ $? -ne 0 ] ; then
+          inc_ERROR_CNT
+        fi
+      fi
+read A
+    done
+  fi
+done
+
+if [ -n "$1" ] ; then
+    report_ERROR_CNT
+    exit
+fi
+
+# language test
+for L in "en" "de" ; do
+  for IN_F in $IN_DIR/docinfo-*.txt ; do
+    BASE=`basename $IN_F`
+    F_BASE=${BASE%.txt}
+    OPT="-l $L"
+    EXT="-l_$L"
+    $CMD $OPT $IN_F $OUT_DIR/$F_BASE$EXT.man
+    if [ $? -eq 0 ] ; then
+      diff -s -u $EXP_DIR/$F_BASE$EXT.man $OUT_DIR/$F_BASE$EXT.man
+      if [ $? -ne 0 ] ; then
+        inc_ERROR_CNT
+      fi
+    fi
+read A
+  done
+done
+
+report_ERROR_CNT
+
