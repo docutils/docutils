@@ -1,0 +1,465 @@
+.\" Man page generated from reStructuredText.
+.
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.TH "RST2MAN" 1 "2009-06-22" "0.0.1" "text processing"
+.SH NAME
+rst2man \- generate unix manpages from reStructured text
+.\" TODO: authors and author with name <email>
+.
+.SH SYNOPSIS
+.sp
+\fBrst2man\fP \fB\-\-help\fP
+.sp
+\fBrst2man\fP [ OPTIONS ] [ SOURCE [ \fIdestination\fP ] ]
+.SH DESCRIPTION
+.sp
+Run it and examine output.
+.SH OPTIONS
+.INDENT 0.0
+.TP
+.BI \-o \ x
+an option
+.TP
+.B  \-b
+another
+.TP
+.B  \-f\fP,\fB  \-\-force
+really do it
+.UNINDENT
+.sp
+For all other options see \fB\-\-help\fP\&.
+.SH EXAMPLES
+.INDENT 0.0
+.TP
+.B rst2man.py xml\-schema\-catalog.rst xml\-schema\-catalog.man
+create a manpage from xml\-schema\-catalog.rst
+.UNINDENT
+.\" comments : lorem ipsum lorem ipsum
+.\" lorem ipsum lorem ipsum
+.
+.SS Character formatting
+.sp
+\fIBUG\fP The section title should be separated from the title above.
+.sp
+Test \fBbold\fP or \fBstrong\fP formatting.
+.sp
+Special characters:
+.INDENT 0.0
+.IP \(bu 2
+backslash: \e
+.IP \(bu 2
+hyphen: \-
+.IP \(bu 2
+accents: \' \(ga
+.IP \(bu 2
+quotes: \(aq \(dq
+.UNINDENT
+.sp
+\&.period ad line start.
+.SS Lists
+.INDENT 0.0
+.IP \(bu 2
+bullet list
+.IP \(bu 2
+and a longer entry, and a longer entry, and a longer entry, and a longer entry,
+and a longer entry, and a longer entry, and a longer entry, and a longer entry,
+.INDENT 2.0
+.IP 1. 4
+and a nested
+.IP 2. 4
+enumeration
+.INDENT 2.0
+.IP \(bu 2
+some line
+.IP \(bu 2
+bullets
+.UNINDENT
+.IP 3. 4
+a third
+.IP 4. 4
+a third
+.IP 5. 4
+a third
+.INDENT 2.0
+.IP a. 3
+alphabetically list
+.IP b. 3
+betacarotin
+.IP c. 3
+grammar
+.UNINDENT
+.IP 6. 4
+a third
+.INDENT 2.0
+.IP Y. 3
+the end
+.IP Z. 3
+yellow
+.UNINDENT
+.IP 7. 4
+a third
+.IP 8. 4
+a third
+.IP 9. 4
+a third
+.IP 10. 4
+bigger indentation if there are more than nine
+enumerated items (or there are larger numbers)
+.sp
+a second paragraph that should be separated from the previous
+one and not flowing into.
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP 7. 3
+dont start with 1
+.UNINDENT
+.INDENT 0.0
+.IP 9. 3
+dont increment by 1
+.UNINDENT
+.INDENT 0.0
+.IP 13. 4
+Problematic: indentation does not match for nonconsecutive entries.
+.UNINDENT
+.sp
+This paragraph must not be indented with the text the last list\-item,
+but start at the left margin of the numbers.
+.sp
+a second paragraph that should be separated from the previous
+one and not flowing into.
+.SS Definition Lists
+.INDENT 0.0
+.TP
+.B Term
+Definition
+.TP
+.B Term
+classifier
+Definition paragraph 1.
+.sp
+Definition paragraph 2.
+.TP
+.B \&.ini\-files
+Term starting with period.
+.TP
+.B Term
+Definition
+.UNINDENT
+.SS Field lists
+.INDENT 0.0
+.TP
+.B first
+a short label and a short text
+.TP
+.B secondly a longer label
+and some more text and some more text
+and some more text   and some more text
+.UNINDENT
+.INDENT 0.0
+.TP
+.B definition lists
+are also a valuable option and simple nonintrusive formatting
+.TP
+.B definition too :
+with the colon.
+.UNINDENT
+.SS Doctest Blocks
+.sp
+.nf
+.ft C
+>>> print \(aqPython\-specific usage examples; begun with \(dq>>>\(dq\(aq
+Python\-specific usage examples; begun with \(dq>>>\(dq
+>>> print \(aq(cut and pasted from interactive Python sessions)\(aq
+(cut and pasted from interactive Python sessions)
+.ft P
+.fi
+.SS Tables
+.TS
+center;
+|l|l|.
+_
+T{
+single
+T}	T{
+frame
+T}
+_
+T{
+no table
+header
+T}	T{
+T}
+_
+.TE
+.SS lineblock
+.nf
+paul
+tel. 12345
+LA
+.fi
+.sp
+.sp
+A paragraph following the line block.
+lorem ipsum lorem ipsum
+lorem ipsum lorem ipsum
+lorem ipsum lorem ipsum
+lorem ipsum lorem ipsum
+.SS Literal
+.sp
+some literal text
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+here now it starts
+and continues
+  indented
+and back
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+and a paragraph after the literal.
+.sp
+some special characters and roff formatting in literal:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+\&.SS \(dq.\(dq at line start
+backslash \(dq\e\(dq
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SS Line blocks
+.nf
+This is a line block.  It ends with a blank line.
+.in +2
+Each new line begins with a vertical bar (\(dq|\(dq).
+Line breaks and initial indents are preserved.
+.in -2
+Continuation lines are wrapped portions of long lines;
+they begin with a space in place of the vertical bar.
+.in +2
+The left edge of a continuation line need not be aligned with
+the left edge of the text above it.
+.in -2
+.fi
+.sp
+.nf
+This is a second line block.
+
+Blank lines are permitted internally, but they must begin with a \(dq|\(dq.
+.fi
+.sp
+.sp
+Take it away, Eric the Orchestra Leader!
+.INDENT 0.0
+.INDENT 3.5
+.nf
+A one, two, a one two three four
+
+Half a bee, philosophically,
+.in +2
+must, \fIipso facto\fP, half not be.
+.in -2
+But half the bee has got to be,
+.in +2
+\fIvis a vis\fP its entity.  D\(aqyou see?
+
+.in -2
+But can a bee be said to be
+.in +2
+or not to be an entire bee,
+.in +2
+when half the bee is not a bee,
+.in +2
+due to some ancient injury?
+
+.in -2
+.in -2
+.in -2
+Singing...
+.fi
+.sp
+.UNINDENT
+.UNINDENT
+.SS raw
+raw input to man
+.SS Admonitions
+.sp
+\fBATTENTION!:\fP
+.INDENT 0.0
+.INDENT 3.5
+Directives at large.
+.UNINDENT
+.UNINDENT
+.sp
+\fBCAUTION!:\fP
+.INDENT 0.0
+.INDENT 3.5
+Don\(aqt take any wooden nickels.
+.UNINDENT
+.UNINDENT
+.sp
+\fB!DANGER!:\fP
+.INDENT 0.0
+.INDENT 3.5
+Mad scientist at work!
+.UNINDENT
+.UNINDENT
+.sp
+\fBERROR:\fP
+.INDENT 0.0
+.INDENT 3.5
+Does not compute.
+.UNINDENT
+.UNINDENT
+.sp
+\fBHINT:\fP
+.INDENT 0.0
+.INDENT 3.5
+It\(aqs bigger than a bread box.
+.UNINDENT
+.UNINDENT
+.sp
+\fBIMPORTANT:\fP
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.IP \(bu 2
+Wash behind your ears.
+.IP \(bu 2
+Clean up your room.
+.IP \(bu 2
+Call your mother.
+.IP \(bu 2
+Back up your data.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+This is a note.
+.UNINDENT
+.UNINDENT
+.sp
+\fBTIP:\fP
+.INDENT 0.0
+.INDENT 3.5
+15% if the service is good.
+.UNINDENT
+.UNINDENT
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+Strong prose may provoke extreme mental exertion.
+Reader discretion is strongly advised.
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.INDENT 3.5
+.IP "And, by the way..."
+.sp
+You can make up your own admonition too.
+.sp
+With more than one paragraph.
+.UNINDENT
+.UNINDENT
+.sp
+Text after the admonition.
+.SS other
+.sp
+inline references \fIref something\fP .
+Contained verbose. Nothing special.
+.SH TOP SECTION
+.sp
+With mixed case
+.SH TOP SECTION B C D E F G
+.sp
+with character formatting.
+.SH FILES
+.sp
+This is a file.
+.SH SEE ALSO
+.sp
+\fI\%docutils\fP
+.sp
+\fBrst2xml\fP(dummy)
+.sp
+More information can be found about
+.INDENT 0.0
+.IP \(bu 2
+xml\-schema\-catalog at
+\fI\%http://xml\-schema\-catalog.origo.ethz.ch/\fP
+.UNINDENT
+.sp
+And see the stars at the sky!
+.SH BUGS
+.sp
+Numerous mapping problems.
+.INDENT 0.0
+.IP 1. 3
+Where do we get the manual section number from ? Commandline ?
+.IP 2. 3
+docutils authors should be filled into section \(dqAUTHORS\(dq.
+.IP 3. 3
+be carefull with linebreaks in generated code.
+.IP 4. 3
+list items.
+bullets and enumerators.
+.UNINDENT
+.SH AUTHOR
+grubert@users.sourceforge.net
+
+Organization: humankind
+
+Address:
+.INDENT 0.0
+.INDENT 3.5
+.nf
+123 Example Street
+Example, EX  Canada
+A1B 2C3
+.fi
+.UNINDENT
+.UNINDENT
+.SH COPYRIGHT
+public domain
+Behave responsible.
+.\" Generated by docutils manpage writer.
+.
