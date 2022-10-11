@@ -52,8 +52,8 @@ def suite():
 
 totest = {}
 
-totest['Title promotion'] = ({'stylesheet_path': '',
-                              'embed_stylesheet': 0}, [
+totest['standard'] = ({'stylesheet_path': '',
+                     'embed_stylesheet': 0}, [
 ["""\
 Simple String
 """,
@@ -122,6 +122,24 @@ reference and the target.</p>\\n''',
  'html_body': '''<main>
 <p>A simple <a class="reference external" href="http://www.test.com/test_url">named reference</a> with stuff in between the
 reference and the target.</p>
+</main>\\n''',
+ 'html_head': '''...<title>&lt;string&gt;</title>\\n'''}
+"""],
+[""".. [CIT2022] A citation.""",
+"""\
+{'fragment': '''<div role="list" class="citation-list">
+<div class="citation" id="cit2022" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>CIT2022<span class="fn-bracket">]</span></span>
+<p>A citation.</p>
+</div>
+</div>\\n''',
+ 'html_body': '''<main>
+<div role="list" class="citation-list">
+<div class="citation" id="cit2022" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>CIT2022<span class="fn-bracket">]</span></span>
+<p>A citation.</p>
+</div>
+</div>
 </main>\\n''',
  'html_head': '''...<title>&lt;string&gt;</title>\\n'''}
 """],

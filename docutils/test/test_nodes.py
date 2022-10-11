@@ -140,6 +140,16 @@ class ElementTests(unittest.TestCase):
         self.assertEqual(e.index(e[4]), 1)
         self.assertEqual(e.index(e[4], start=2), 4)
 
+    def test_previous_sibling(self):
+        e = nodes.Element()
+        c1 = nodes.Element()
+        c2 = nodes.Element()
+        e += [c1, c2]
+        # print(c1 == c2)
+        self.assertEqual(e.previous_sibling(), None)
+        self.assertEqual(c1.previous_sibling(), None)
+        self.assertEqual(c2.previous_sibling(), c1)
+
     def test_clear(self):
         element = nodes.Element()
         element += nodes.Element()
