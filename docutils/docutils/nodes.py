@@ -325,13 +325,6 @@ class Node:
         except StopIteration:
             return None
 
-    def previous_sibling(self):
-        """Return preceding sibling node or ``None``."""
-        try:
-            return self.parent[self.parent.index(self)-1]
-        except (AttributeError, IndexError):
-            return None
-
 
 class reprunicode(str):
     """
@@ -739,6 +732,14 @@ class Element(Node):
 
     def index(self, item, start=0, stop=sys.maxsize):
         return self.children.index(item, start, stop)
+
+    def previous_sibling(self):
+        """Return preceding sibling node or ``None``."""
+        try:
+            i = self.parent.index(self)
+        except (AttributeError):
+            return None
+        return self.parent[i-1] if i > 0 else None
 
     def is_not_default(self, key):
         if self[key] == [] and key in self.list_attributes:
