@@ -319,7 +319,7 @@ class HTMLTranslator(_html_base.HTMLTranslator):
               and isinstance(node.parent, nodes.literal_block)
               and 'code' in node.parent.get('classes')):
             if self.body[-1] == '<code>':
-                del(self.body[-1])
+                del self.body[-1]
             else:
                 self.body.append('</code>')
             node.html5tagname = 'small'
@@ -424,7 +424,7 @@ class HTMLTranslator(_html_base.HTMLTranslator):
         atts = {'classes': ['topic']}
         if 'contents' in node['classes']:
             node.html_tagname = 'nav'
-            del(atts['classes'])
+            del atts['classes']
             if isinstance(node.parent, nodes.document):
                 atts['role'] = 'doc-toc'
                 self.body_prefix[0] = '</head>\n<body class="with-toc">\n'

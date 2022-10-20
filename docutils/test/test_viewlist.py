@@ -54,7 +54,7 @@ class ViewListTests(unittest.TestCase):
         self.assertEqual(repr(self.a), "ViewList(%s, items=%s)" %
                          (repr(self.a_list), repr(self.a.items)))
         # `del` also deletes meta-data:
-        del(self.c[1])
+        del self.c[1]
         self.assertEqual(list(self.c.xitems()),
                          [('c', 0, 'X'), ('c', 2, 'Z')])
         # operators with extended behaviour

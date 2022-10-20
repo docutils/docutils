@@ -384,7 +384,7 @@ class Directive:
         if 'name' in self.options:
             name = nodes.fully_normalize_name(self.options.pop('name'))
             if 'name' in node:
-                del(node['name'])
+                del node['name']
             node['names'].append(name)
             self.state.document.note_explicit_target(node, node)
 

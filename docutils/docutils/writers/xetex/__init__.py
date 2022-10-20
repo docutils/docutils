@@ -108,7 +108,7 @@ class Babel(latex2e.Babel):
                 'grc-ibycus',   # 'ibycus', (Greek Ibycus encoding)
                 'sr-Latn',      # 'serbian script=latin'
                 ):
-        del(language_codes[key.lower()])
+        del language_codes[key.lower()]
 
     def __init__(self, language_code, reporter):
         self.language_code = language_code
