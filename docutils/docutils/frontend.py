@@ -369,7 +369,9 @@ class Values(optparse.Values):
             return self.__class__(defaults=self.__dict__)
 
     def setdefault(self, name, default):
-        """V.setdefault(n[,d]) -> getattr(V,n,d), also set D.n=d if n not in D or None.
+        """Return ``self.name`` or ``default``.
+
+        If ``self.name`` is unset, set ``self.name = default``.
         """
         if getattr(self, name, None) is None:
             setattr(self, name, default)
