@@ -158,11 +158,11 @@ class FormulaConfig:
                    '{': ['⎧', '⎪', '⎨', '⎩'],
                    '}': ['⎫', '⎪', '⎬', '⎭'],
                    # TODO: 2-row brackets with ⎰⎱ (\lmoustache \rmoustache)
-                   '|': ['|'], # 007C VERTICAL LINE
-                   # '|': ['⎮'], # 23AE INTEGRAL EXTENSION
-                   # '|': ['⎪'], # 23AA CURLY BRACKET EXTENSION
-                   '‖': ['‖'], # 2016 DOUBLE VERTICAL LINE
-                   # '∥': ['∥'], # 2225 PARALLEL TO
+                   '|': ['|'],  # 007C VERTICAL LINE
+                   # '|': ['⎮'],  # 23AE INTEGRAL EXTENSION
+                   # '|': ['⎪'],  # 23AA CURLY BRACKET EXTENSION
+                   '‖': ['‖'],  # 2016 DOUBLE VERTICAL LINE
+                   # '∥': ['∥'],  # 2225 PARALLEL TO
                    }
 
     bracketcommands = {
@@ -174,26 +174,26 @@ class FormulaConfig:
     }
 
     combiningfunctions = {
-        "\\'":           '\u0301', # x́
-        '\\"':           '\u0308', # ẍ
-        '\\^':           '\u0302', # x̂
-        '\\`':           '\u0300', # x̀
-        '\\~':           '\u0303', # x̃
-        '\\c':           '\u0327', # x̧
-        '\\r':           '\u030a', # x̊
-        '\\s':           '\u0329', # x̩
-        '\\textcircled': '\u20dd', # x⃝
-        '\\textsubring': '\u0325', # x̥
-        '\\v':           '\u030c', # x̌
+        "\\'":           '\u0301',  # x́
+        '\\"':           '\u0308',  # ẍ
+        '\\^':           '\u0302',  # x̂
+        '\\`':           '\u0300',  # x̀
+        '\\~':           '\u0303',  # x̃
+        '\\c':           '\u0327',  # x̧
+        '\\r':           '\u030a',  # x̊
+        '\\s':           '\u0329',  # x̩
+        '\\textcircled': '\u20dd',  # x⃝
+        '\\textsubring': '\u0325',  # x̥
+        '\\v':           '\u030c',  # x̌
     }
     for key, value in tex2unichar.mathaccent.items():
         combiningfunctions['\\'+key] = value
 
     commands = {
         '\\\\': '<br/>',
-        '\\\n': ' ', # escaped whitespace
-        '\\\t': ' ', # escaped whitespace
-        '\\centerdot': '\u2B1D', # BLACK VERY SMALL SQUARE, mathbin
+        '\\\n': ' ',  # escaped whitespace
+        '\\\t': ' ',  # escaped whitespace
+        '\\centerdot': '\u2B1D',  # BLACK VERY SMALL SQUARE, mathbin
         '\\colon': ': ',
         '\\copyright': '©',
         '\\dotminus': '∸',
@@ -206,9 +206,9 @@ class FormulaConfig:
         '\\euro': '€',
         '\\guillemotleft': '«',
         '\\guillemotright': '»',
-        '\\hbar': '<i>\u0127</i>', # ħ LATIN SMALL LETTER H WITH STROKE
+        '\\hbar': '<i>\u0127</i>',  # ħ LATIN SMALL LETTER H WITH STROKE
         '\\lVert': '‖',
-        '\\Arrowvert':  '\u2016', # ‖
+        '\\Arrowvert':  '\u2016',  # ‖
         '\\lvert': '|',
         '\\newline': '<br/>',
         '\\nobreakspace': ' ',
@@ -239,11 +239,11 @@ class FormulaConfig:
         '\\texttrademark': '™',
         '\\texttwosuperior': '²',
         '\\textvisiblespace': ' ',
-        '\\thickspace': '<span class="thickspace"> </span>', # 5/13 em
-        '\\;': '<span class="thickspace"> </span>', # 5/13 em
-        '\\triangle': '\u25B3', # WHITE UP-POINTING TRIANGLE, mathord
-        '\\triangledown': '\u25BD', # WHITE DOWN-POINTING TRIANGLE, mathord
-        '\\varnothing': '\u2300', # ⌀ DIAMETER SIGN
+        '\\thickspace': '<span class="thickspace"> </span>',  # 5/13 em
+        '\\;': '<span class="thickspace"> </span>',  # 5/13 em
+        '\\triangle': '\u25B3',  # WHITE UP-POINTING TRIANGLE, mathord
+        '\\triangledown': '\u25BD',  # WHITE DOWN-POINTING TRIANGLE, mathord
+        '\\varnothing': '\u2300',  # ⌀ DIAMETER SIGN
         # functions
         '\\Pr': 'Pr',
         '\\arccos': 'arccos',
@@ -276,7 +276,7 @@ class FormulaConfig:
         '\\tanh': 'tanh',
     }
     cmddict = {}
-    cmddict.update(tex2unichar.mathbin) # TODO: spacing around binary operators
+    cmddict.update(tex2unichar.mathbin)  # TODO: spacing around binary operators
     cmddict.update(tex2unichar.mathopen)
     cmddict.update(tex2unichar.mathclose)
     cmddict.update(tex2unichar.mathfence)
@@ -493,13 +493,13 @@ class FormulaConfig:
     # relations (put additional space before and after the symbol)
     spacedcommands = {
         # negated symbols without pre-composed Unicode character
-        '\\nleqq':      '\u2266\u0338', # ≦̸
-        '\\ngeqq':      '\u2267\u0338', # ≧̸
-        '\\nleqslant':  '\u2a7d\u0338', # ⩽̸
-        '\\ngeqslant':  '\u2a7e\u0338', # ⩾̸
-        '\\nsubseteqq': '\u2AC5\u0338', # ⫅̸
-        '\\nsupseteqq': '\u2AC6\u0338', # ⫆̸
-        '\\nsqsubset':  '\u2276\u228F', # ⊏̸
+        '\\nleqq':      '\u2266\u0338',  # ≦̸
+        '\\ngeqq':      '\u2267\u0338',  # ≧̸
+        '\\nleqslant':  '\u2a7d\u0338',  # ⩽̸
+        '\\ngeqslant':  '\u2a7e\u0338',  # ⩾̸
+        '\\nsubseteqq': '\u2AC5\u0338',  # ⫅̸
+        '\\nsupseteqq': '\u2AC6\u0338',  # ⫆̸
+        '\\nsqsubset':  '\u2276\u228F',  # ⊏̸
         # modified glyphs
         '\\shortmid': '<span class="smallsymbol">∣</span>',
         '\\shortparallel': '<span class="smallsymbol">∥</span>',
@@ -509,7 +509,7 @@ class FormulaConfig:
         '\\smallsmile': '<span class="smallsymbol">⌣</span>',
         '\\thickapprox': '<span class="boldsymbol">≈</span>',
         '\\thicksim': '<span class="boldsymbol">∼</span>',
-        '\\varpropto': '<span class="mathsf">\u221d</span>', # ∝ PROPORTIONAL TO
+        '\\varpropto': '<span class="mathsf">\u221d</span>',  # ∝ PROPORTIONAL TO
     }
     for key, value in tex2unichar.mathrel.items():
         spacedcommands['\\'+key] = value
@@ -2670,7 +2670,7 @@ class CombiningFunction(OneParamFunction):
         # Trace.message('  basechar: %r' % parameter.string)
         # Insert combining character after the first character:
         if parameter.string.startswith('\u2009'):
-            i = 2 # skip padding by SpacedCommand and FormulaConfig.modified
+            i = 2  # skip padding by SpacedCommand and FormulaConfig.modified
         else:
             i = 1
         parameter.string = parameter.string[:i] + combining + parameter.string[i:]
