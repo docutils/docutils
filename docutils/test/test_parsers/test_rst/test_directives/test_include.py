@@ -26,9 +26,9 @@ def suite():
     s = DocutilsTestSupport.ParserTestSuite()
     # eventually skip optional parts:
     if not with_pygments:
-        del(totest['include-code'])
+        del totest['include-code']
     if not md_parser_class:
-        del(totest['include-markdown'])
+        del totest['include-markdown']
     s.generateTests(totest)
     return s
 

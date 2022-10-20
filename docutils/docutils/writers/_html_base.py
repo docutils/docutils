@@ -544,7 +544,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append(self.context.pop() + '</p>\n')
 
     def visit_author(self, node):
-        if not(isinstance(node.parent, nodes.authors)):
+        if not isinstance(node.parent, nodes.authors):
             self.visit_docinfo_item(node, 'author')
         self.body.append('<p>')
 
@@ -1257,11 +1257,11 @@ class HTMLTranslator(nodes.NodeVisitor):
                 elif converter == 'blahtexml':
                     math_code = tex2mathml_extern.blahtexml(
                                     math_code,
-                                    inline=not(math_env),
+                                    inline=(not math_env),
                                     reporter=self.document.reporter)
                 elif not converter:
                     math_code = latex2mathml.tex2mathml(
-                                    math_code, inline=not(math_env))
+                                    math_code, inline=(not math_env))
                 else:
                     self.document.reporter.error('option "%s" not supported '
                                                  'with math-output "MathML"')

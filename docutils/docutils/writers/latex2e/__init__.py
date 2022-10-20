@@ -1488,7 +1488,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             table.update(CharMaps.special)
         # keep the underscore in citation references
         if self.inside_citation_reference_label and not self.alltt:
-            del(table[ord('_')])
+            del table[ord('_')]
         # Workarounds for OT1 font-encoding
         if self.font_encoding in ['OT1', ''] and not self.is_xetex:
             # * out-of-order characters in cmtt
@@ -3168,7 +3168,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
                              'chapter': 'mini',
                              'section': 'sect'}
             if 'chapter' in self.d_class.sections:
-                del(minitoc_names['section'])
+                del minitoc_names['section']
             try:
                 mtc_name = minitoc_names[section_name]
             except KeyError:

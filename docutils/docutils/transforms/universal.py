@@ -153,7 +153,7 @@ class FilterMessages(Transform):
             if node['level'] < self.document.reporter.report_level:
                 node.parent.remove(node)
                 try:  # also remove id-entry
-                    del(self.document.ids[node['ids'][0]])
+                    del self.document.ids[node['ids'][0]]
                 except (IndexError):
                     pass
         for node in tuple(self.document.findall(nodes.problematic)):

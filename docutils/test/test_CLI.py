@@ -10,7 +10,7 @@
 #
 # .. _2-Clause BSD license: https://opensource.org/licenses/BSD-2-Clause
 
-# :Id: $Id:  $
+# :Id: $Id$
 
 """
 Test module for the command line interface.
@@ -46,7 +46,7 @@ class CliTests(unittest.TestCase):
         sys.stdout = StringIO()  # re-direct sys.stdout
 
     def tearDown(self):
-        del(os.environ['DOCUTILSCONFIG'])
+        del os.environ['DOCUTILSCONFIG']
         sys.stdout = self.orig_stdout
         sys.argv = self.orig_argv
         locale.setlocale(locale.LC_ALL, 'C')  # restore default (C) locale
