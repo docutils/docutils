@@ -39,7 +39,7 @@ per-file-ignores =
   # deprecated module, will be removed
   docutils/utils/error_reporting.py:E261
   # module with 3rd-party origin
-  docutils/utils/math/math2html.py:E111,E114,E123,E241,E261,E501,E731
+  docutils/utils/math/math2html.py:E241,E261,E501,E731
   # generated auxiliary files
   docutils/utils/math/unichar2tex.py:E122
   docutils/utils/math/tex2unichar.py:E123,E261,E262,E501
