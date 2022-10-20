@@ -50,19 +50,20 @@ greek_capitals = {
     'Gamma': '\u0393', 'Lambda': '\u039b'}
 
 # functions -> <mi>
-functions = {# functions with a space in the name
-             'liminf': 'lim\u202finf',
-             'limsup': 'lim\u202fsup',
-             'injlim': 'inj\u202flim',
-             'projlim': 'proj\u202flim',
-             # embellished function names (see handle_cmd() below)
-             'varlimsup': 'lim',
-             'varliminf': 'lim',
-             'varprojlim': 'lim',
-             'varinjlim': 'lim',
-             # custom function name
-             'operatorname': None,
-            }
+functions = {
+    # functions with a space in the name
+    'liminf': 'lim\u202finf',
+    'limsup': 'lim\u202fsup',
+    'injlim': 'inj\u202flim',
+    'projlim': 'proj\u202flim',
+    # embellished function names (see handle_cmd() below)
+    'varlimsup': 'lim',
+    'varliminf': 'lim',
+    'varprojlim': 'lim',
+    'varinjlim': 'lim',
+    # custom function name
+    'operatorname': None,
+}
 functions.update((name, name) for name in
                  ('arccos', 'arcsin', 'arctan', 'arg',  'cos',
                   'cosh',   'cot',    'coth',   'csc',  'deg',
@@ -74,105 +75,110 @@ functions.update((name, name) for name in
 
 
 # math font selection -> <mi mathvariant=...> or <mstyle mathvariant=...>
-math_alphabets = {# 'cmdname': 'mathvariant value'  # package
-                  'boldsymbol': 'bold',
-                  'mathbf':     'bold',
-                  'mathit':     'italic',
-                  'mathtt':     'monospace',
-                  'mathrm':     'normal',
-                  'mathsf':     'sans-serif',
-                  'mathcal':    'script',
-                  'mathbfit':   'bold-italic',            # isomath
-                  'mathbb':     'double-struck',          # amssymb
-                  'mathfrak':   'fraktur',                # amssymb
-                  'mathsfit':   'sans-serif-italic',      # isomath
-                  'mathsfbfit': 'sans-serif-bold-italic', # isomath
-                  'mathscr':    'script',                 # mathrsfs
-                  # unsupported: bold-fraktur
-                  #              bold-script
-                  #              bold-sans-serif
-                 }
+math_alphabets = {
+    # 'cmdname':  'mathvariant value'        # package
+    'boldsymbol': 'bold',
+    'mathbf':     'bold',
+    'mathit':     'italic',
+    'mathtt':     'monospace',
+    'mathrm':     'normal',
+    'mathsf':     'sans-serif',
+    'mathcal':    'script',
+    'mathbfit':   'bold-italic',             # isomath
+    'mathbb':     'double-struck',           # amssymb
+    'mathfrak':   'fraktur',                 # amssymb
+    'mathsfit':   'sans-serif-italic',       # isomath
+    'mathsfbfit': 'sans-serif-bold-italic',  # isomath
+    'mathscr':    'script',                  # mathrsfs
+    # unsupported: bold-fraktur
+    #              bold-script
+    #              bold-sans-serif
+}
 
 # operator, fence, or separator -> <mo>
 
 
-stretchables = {# extensible delimiters allowed in left/right cmds
-                'backslash':   '\\',
-                'uparrow':     '\u2191', # ↑ UPWARDS ARROW
-                'downarrow':   '\u2193', # ↓ DOWNWARDS ARROW
-                'updownarrow': '\u2195', # ↕ UP DOWN ARROW
-                'Uparrow':     '\u21d1', # ⇑ UPWARDS DOUBLE ARROW
-                'Downarrow':   '\u21d3', # ⇓ DOWNWARDS DOUBLE ARROW
-                'Updownarrow': '\u21d5', # ⇕ UP DOWN DOUBLE ARROW
-                'lmoustache':  '\u23b0', # ⎰ … CURLY BRACKET SECTION
-                'rmoustache':  '\u23b1', # ⎱ … LEFT CURLY BRACKET SECTION
-                'arrowvert':   '\u23d0', # ⏐ VERTICAL LINE EXTENSION
-                'bracevert':   '\u23aa', # ⎪ CURLY BRACKET EXTENSION
-                'lvert':      '|',      # left  |
-                'lVert':      '\u2016', # left  ‖
-                'rvert':      '|',      # right |
-                'rVert':      '\u2016', # right ‖
-                'Arrowvert':  '\u2016', # ‖
-               }
+stretchables = {
+    # extensible delimiters allowed in left/right cmds
+    'backslash':   '\\',
+    'uparrow':     '\u2191',  # ↑ UPWARDS ARROW
+    'downarrow':   '\u2193',  # ↓ DOWNWARDS ARROW
+    'updownarrow': '\u2195',  # ↕ UP DOWN ARROW
+    'Uparrow':     '\u21d1',  # ⇑ UPWARDS DOUBLE ARROW
+    'Downarrow':   '\u21d3',  # ⇓ DOWNWARDS DOUBLE ARROW
+    'Updownarrow': '\u21d5',  # ⇕ UP DOWN DOUBLE ARROW
+    'lmoustache':  '\u23b0',  # ⎰ … CURLY BRACKET SECTION
+    'rmoustache':  '\u23b1',  # ⎱ … LEFT CURLY BRACKET SECTION
+    'arrowvert':   '\u23d0',  # ⏐ VERTICAL LINE EXTENSION
+    'bracevert':   '\u23aa',  # ⎪ CURLY BRACKET EXTENSION
+    'lvert':      '|',        # left  |
+    'lVert':      '\u2016',   # left  ‖
+    'rvert':      '|',        # right |
+    'rVert':      '\u2016',   # right ‖
+    'Arrowvert':  '\u2016',   # ‖
+}
 stretchables.update(tex2unichar.mathfence)
-stretchables.update(tex2unichar.mathopen)  # Braces
-stretchables.update(tex2unichar.mathclose) # Braces
+stretchables.update(tex2unichar.mathopen)   # Braces
+stretchables.update(tex2unichar.mathclose)  # Braces
 
 # >>> print(' '.join(sorted(set(stretchables.values()))))
 # [ \ ] { | } ‖ ↑ ↓ ↕ ⇑ ⇓ ⇕ ⌈ ⌉ ⌊ ⌋ ⌜ ⌝ ⌞ ⌟ ⎪ ⎰ ⎱ ⏐ ⟅ ⟆ ⟦ ⟧ ⟨ ⟩ ⟮ ⟯ ⦇ ⦈
 
-operators = {# negated symbols without pre-composed Unicode character
-             'nleqq':      '\u2266\u0338', # ≦̸
-             'ngeqq':      '\u2267\u0338', # ≧̸
-             'nleqslant':  '\u2a7d\u0338', # ⩽̸
-             'ngeqslant':  '\u2a7e\u0338', # ⩾̸
-             'ngtrless':   '\u2277\u0338', # txfonts
-             'nlessgtr':   '\u2276\u0338', # txfonts
-             'nsubseteqq': '\u2AC5\u0338', # ⫅̸
-             'nsupseteqq': '\u2AC6\u0338', # ⫆̸
-             # compatibility definitions:
-             'centerdot': '\u2B1D', # BLACK VERY SMALL SQUARE | mathbin
-             'varnothing': '\u2300', # ⌀ DIAMETER SIGN | empty set
-             'varpropto': '\u221d', # ∝ PROPORTIONAL TO | sans serif
-             'triangle': '\u25B3', # WHITE UP-POINTING TRIANGLE | mathord
-             'triangledown': '\u25BD', # WHITE DOWN-POINTING TRIANGLE | mathord
-             # alias commands:
-             'dotsb': '\u22ef', # ⋯ with binary operators/relations
-             'dotsc': '\u2026', # … with commas
-             'dotsi': '\u22ef', # ⋯ with integrals
-             'dotsm': '\u22ef', # ⋯ multiplication dots
-             'dotso': '\u2026', # … other dots
-             # functions with movable limits (requires <mo>)
-             'lim': 'lim',
-             'sup': 'sup',
-             'inf': 'inf',
-             'max': 'max',
-             'min': 'min',
-            }
-operators.update(tex2unichar.mathbin)   # Binary symbols
-operators.update(tex2unichar.mathrel)   # Relation symbols, arrow symbols
-operators.update(tex2unichar.mathord)   # Miscellaneous symbols
-operators.update(tex2unichar.mathpunct) # Punctuation
-operators.update(tex2unichar.mathop)    # Variable-sized symbols
+operators = {
+    # negated symbols without pre-composed Unicode character
+    'nleqq':      '\u2266\u0338',  # ≦̸
+    'ngeqq':      '\u2267\u0338',  # ≧̸
+    'nleqslant':  '\u2a7d\u0338',  # ⩽̸
+    'ngeqslant':  '\u2a7e\u0338',  # ⩾̸
+    'ngtrless':   '\u2277\u0338',  # txfonts
+    'nlessgtr':   '\u2276\u0338',  # txfonts
+    'nsubseteqq': '\u2AC5\u0338',  # ⫅̸
+    'nsupseteqq': '\u2AC6\u0338',  # ⫆̸
+    # compatibility definitions:
+    'centerdot': '\u2B1D',  # BLACK VERY SMALL SQUARE | mathbin
+    'varnothing': '\u2300',  # ⌀ DIAMETER SIGN | empty set
+    'varpropto': '\u221d',  # ∝ PROPORTIONAL TO | sans serif
+    'triangle': '\u25B3',  # WHITE UP-POINTING TRIANGLE | mathord
+    'triangledown': '\u25BD',  # WHITE DOWN-POINTING TRIANGLE | mathord
+    # alias commands:
+    'dotsb': '\u22ef',  # ⋯ with binary operators/relations
+    'dotsc': '\u2026',  # … with commas
+    'dotsi': '\u22ef',  # ⋯ with integrals
+    'dotsm': '\u22ef',  # ⋯ multiplication dots
+    'dotso': '\u2026',  # … other dots
+    # functions with movable limits (requires <mo>)
+    'lim': 'lim',
+    'sup': 'sup',
+    'inf': 'inf',
+    'max': 'max',
+    'min': 'min',
+}
+operators.update(tex2unichar.mathbin)    # Binary symbols
+operators.update(tex2unichar.mathrel)    # Relation symbols, arrow symbols
+operators.update(tex2unichar.mathord)    # Miscellaneous symbols
+operators.update(tex2unichar.mathpunct)  # Punctuation
+operators.update(tex2unichar.mathop)     # Variable-sized symbols
 operators.update(stretchables)
 
 
 # special cases
 
-thick_operators = {# style='font-weight: bold;'
-                   'thicksim':       '\u223C', # ∼
-                   'thickapprox':    '\u2248', # ≈
-                  }
+thick_operators = {
+    # style='font-weight: bold;'
+    'thicksim':       '\u223C',  # ∼
+    'thickapprox':    '\u2248',  # ≈
+}
 
-small_operators = {# mathsize='75%'
-                   'shortmid':       '\u2223', # ∣
-                   'shortparallel':  '\u2225', # ∥
-                   'nshortmid':      '\u2224', # ∤
-                   'nshortparallel': '\u2226', # ∦
-                   'smallfrown':     '\u2322', # ⌢ FROWN
-                   'smallsmile':     '\u2323', # ⌣ SMILE
-                   'smallint':       '\u222b', # ∫ INTEGRAL
-                  }
+small_operators = {
+    # mathsize='75%'
+    'shortmid':       '\u2223',  # ∣
+    'shortparallel':  '\u2225',  # ∥
+    'nshortmid':      '\u2224',  # ∤
+    'nshortparallel': '\u2226',  # ∦
+    'smallfrown':     '\u2322',  # ⌢ FROWN
+    'smallsmile':     '\u2323',  # ⌣ SMILE
+    'smallint':       '\u222b',  # ∫ INTEGRAL
+}
 
 # Operators and functions with limits above/below in display formulas
 # and in index position inline (movablelimits=True)
@@ -189,48 +195,50 @@ movablelimits = ('bigcap', 'bigcup', 'bigodot', 'bigoplus', 'bigotimes',
 
 # horizontal space -> <mspace>
 
-spaces = {'qquad':         '2em',       # two \quad
-          'quad':          '1em',       # 18 mu
-          'thickspace':    '0.2778em',  # 5mu = 5/18em
-          'medspace':      '0.2222em',  # 4mu = 2/9em
-          'thinspace':     '0.1667em',  # 3mu = 1/6em
-          'negthinspace':  '-0.1667em', # -3mu = -1/6em
-          'negmedspace':   '-0.2222em', # -4mu = -2/9em
-          'negthickspace': '-0.2778em', # -5mu = -5/18em
-          ' ':             '0.25em',    # inter word space
-          ';':             '0.2778em',  # 5mu thickspace
-          ':':             '0.2222em',  # 4mu medspace
-          ',':             '0.1667em',  # 3mu thinspace
-          '!':             '-0.1667em', # negthinspace
+spaces = {'qquad':         '2em',        # two \quad
+          'quad':          '1em',        # 18 mu
+          'thickspace':    '0.2778em',   # 5mu = 5/18em
+          'medspace':      '0.2222em',   # 4mu = 2/9em
+          'thinspace':     '0.1667em',   # 3mu = 1/6em
+          'negthinspace':  '-0.1667em',  # -3mu = -1/6em
+          'negmedspace':   '-0.2222em',  # -4mu = -2/9em
+          'negthickspace': '-0.2778em',  # -5mu = -5/18em
+          ' ':             '0.25em',     # inter word space
+          ';':             '0.2778em',   # 5mu thickspace
+          ':':             '0.2222em',   # 4mu medspace
+          ',':             '0.1667em',   # 3mu thinspace
+          '!':             '-0.1667em',  # negthinspace
           }
 
 # accents -> <mover stretchy="false">
-accents = {# TeX:      (spacing, combining)
-           'acute':    ('´', '\u0301'),
-           'bar':      ('ˉ', '\u0304'),
-           'breve':    ('˘', '\u0306'),
-           'check':    ('ˇ', '\u030C'),
-           'dot':      ('˙', '\u0307'),
-           'ddot':     ('¨', '\u0308'),
-           'dddot':    ('⋯', '\u20DB'),
-           'grave':    ('`', '\u0300'),
-           'hat':      ('ˆ', '\u0302'),
-           'mathring': ('˚', '\u030A'),
-           'tilde':    ('˜', '\u0303'), # tilde ~ or small tilde ˜?
-           'vec':      ('→', '\u20d7'), # → too heavy, accents="false"
-           # TODO: ddddot
-           }
+accents = {
+    # TeX:    (spacing, combining)
+    'acute':    ('´', '\u0301'),
+    'bar':      ('ˉ', '\u0304'),
+    'breve':    ('˘', '\u0306'),
+    'check':    ('ˇ', '\u030C'),
+    'dot':      ('˙', '\u0307'),
+    'ddot':     ('¨', '\u0308'),
+    'dddot':    ('⋯', '\u20DB'),
+    'grave':    ('`', '\u0300'),
+    'hat':      ('ˆ', '\u0302'),
+    'mathring': ('˚', '\u030A'),
+    'tilde':    ('˜', '\u0303'),  # tilde ~ or small tilde ˜?
+    'vec':      ('→', '\u20d7'),  # → too heavy, accents="false"
+    # TODO: ddddot
+}
 
 # limits etc. -> <mover> or <munder>
-over = {# TeX:                  (char,     offset-correction/em)
-        'overbrace':            ('\u23DE', -0.2),  # DejaVu Math -0.6
-        'overleftarrow':        ('\u2190', -0.2),
-        'overleftrightarrow':   ('\u2194', -0.2),
-        'overline':             ('_',      -0.2),  # \u2012 does not stretch
-        'overrightarrow':       ('\u2192', -0.2),
-        'widehat':              ('^',      -0.5),
-        'widetilde':            ('~',      -0.3),
-        }
+over = {
+    # TeX:                  (char,     offset-correction/em)
+    'overbrace':            ('\u23DE', -0.2),  # DejaVu Math -0.6
+    'overleftarrow':        ('\u2190', -0.2),
+    'overleftrightarrow':   ('\u2194', -0.2),
+    'overline':             ('_',      -0.2),  # \u2012 does not stretch
+    'overrightarrow':       ('\u2192', -0.2),
+    'widehat':              ('^',      -0.5),
+    'widetilde':            ('~',      -0.3),
+}
 under = {'underbrace':          ('\u23DF',  0.1),  # DejaVu Math -0.7
          'underleftarrow':      ('\u2190', -0.2),
          'underleftrightarrow': ('\u2194', -0.2),
@@ -242,9 +250,9 @@ under = {'underbrace':          ('\u23DF',  0.1),  # DejaVu Math -0.7
 # ----------------------
 # characters with preferred alternative in mathematical use
 # cf. https://www.w3.org/TR/MathML3/chapter7.html#chars.anomalous
-anomalous_chars = {'-': '\u2212', # HYPHEN-MINUS -> MINUS SIGN
-                   ':': '\u2236', # COLON -> RATIO
-                   '~': '\u00a0', # NO-BREAK SPACE
+anomalous_chars = {'-': '\u2212',  # HYPHEN-MINUS -> MINUS SIGN
+                   ':': '\u2236',  # COLON -> RATIO
+                   '~': '\u00a0',  # NO-BREAK SPACE
                    }
 
 # blackboard bold (Greek characters not working with "mathvariant" (Firefox 78)
@@ -256,16 +264,17 @@ mathbb = {'Γ': '\u213E',    # ℾ
           }
 
 # Matrix environments
-matrices = {# name:    fences
-            'matrix':  ('', ''),
-            'smallmatrix':  ('', ''), # smaller, see begin_environment()!
-            'pmatrix': ('(', ')'),
-            'bmatrix': ('[', ']'),
-            'Bmatrix': ('{', '}'),
-            'vmatrix': ('|', '|'),
-            'Vmatrix': ('\u2016', '\u2016'), # ‖
-            'cases':   ('{', ''),
-            }
+matrices = {
+    # name:    fences
+    'matrix':  ('', ''),
+    'smallmatrix':  ('', ''),  # smaller, see begin_environment()!
+    'pmatrix': ('(', ')'),
+    'bmatrix': ('[', ']'),
+    'Bmatrix': ('{', '}'),
+    'vmatrix': ('|', '|'),
+    'Vmatrix': ('\u2016', '\u2016'),  # ‖
+    'cases':   ('{', ''),
+}
 
 layout_styles = {
     'displaystyle':      {'displaystyle': True,  'scriptlevel': 0},
@@ -275,16 +284,17 @@ layout_styles = {
     }
 # See also https://www.w3.org/TR/MathML3/chapter3.html#presm.scriptlevel
 
-fractions = {# name:   style_attrs, frac_attrs
-             'frac':   ({}, {}),
-             'cfrac':  ({'displaystyle': True,  'scriptlevel': 0,
-                         'CLASS': 'cfrac'}, {}), # in LaTeX with padding
-             'dfrac':  (layout_styles['displaystyle'], {}),
-             'tfrac':  (layout_styles['textstyle'], {}),
-             'binom':  ({}, {'linethickness': 0}),
-             'dbinom': (layout_styles['displaystyle'], {'linethickness': 0}),
-             'tbinom': (layout_styles['textstyle'], {'linethickness': 0}),
-             }
+fractions = {
+    # name:   style_attrs, frac_attrs
+    'frac':   ({}, {}),
+    'cfrac':  ({'displaystyle': True,  'scriptlevel': 0,
+                'CLASS': 'cfrac'}, {}),  # in LaTeX with padding
+    'dfrac':  (layout_styles['displaystyle'], {}),
+    'tfrac':  (layout_styles['textstyle'], {}),
+    'binom':  ({}, {'linethickness': 0}),
+    'dbinom': (layout_styles['displaystyle'], {'linethickness': 0}),
+    'tbinom': (layout_styles['textstyle'], {'linethickness': 0}),
+}
 
 delimiter_sizes = ['', '1.2em', '1.623em', '2.047em', '2.470em']
 bigdelimiters = {'left':  0,
@@ -311,13 +321,14 @@ class math:
     # cf. https://www.w3.org/TR/MathML3/chapter3.html#id.3.1.3.2
     parent = None
     """Parent node in MathML DOM tree."""
-    _level = 0 # indentation level (static class variable)
-    xml_entities = { # for invalid and invisible characters
-                    ord('<'): '&lt;',
-                    ord('>'): '&gt;',
-                    ord('&'): '&amp;',
-                    0x2061:   '&ApplyFunction;',
-                   }
+    _level = 0  # indentation level (static class variable)
+    xml_entities = {
+        # for invalid and invisible characters
+        ord('<'): '&lt;',
+        ord('>'): '&gt;',
+        ord('&'): '&amp;',
+        0x2061:   '&ApplyFunction;',
+    }
     _boolstrings = {True: 'true', False: 'false'}
     """String representation of boolean MathML attribute values."""
 
@@ -489,19 +500,19 @@ class mtd(MathRowSchema): pass
 
 
 class menclose(MathRowSchema):
-    nchildren = 1 # \boxed expects one argument or a group
+    nchildren = 1  # \boxed expects one argument or a group
 
 
 class mphantom(MathRowSchema):
-    nchildren = 1 # \phantom expects one argument or a group
+    nchildren = 1  # \phantom expects one argument or a group
 
 
 class msqrt(MathRowSchema):
-    nchildren = 1 # \sqrt expects one argument or a group
+    nchildren = 1  # \sqrt expects one argument or a group
 
 
 class mstyle(MathRowSchema):
-    nchildren = 1 # \mathrm, ... expect one argument or a group
+    nchildren = 1  # \mathrm, ... expect one argument or a group
 
 
 class MathToken(math):
@@ -814,7 +825,7 @@ def parse_latex_math(node, string):
 
         if c == ' ':
             continue  # whitespace is ignored in LaTeX math mode
-        if c == '\\': # start of a LaTeX macro
+        if c == '\\':  # start of a LaTeX macro
             cmdname, string = tex_cmdname(string)
             node, string = handle_cmd(cmdname, node, string)
         elif c in "_^":
@@ -878,7 +889,7 @@ def parse_latex_math(node, string):
 # math(msub(mi('x'), mtext('in')))
 
 
-def handle_cmd(name, node, string): # noqa: C901 TODO make this less complex
+def handle_cmd(name, node, string):  # noqa: C901 TODO make this less complex
     """Process LaTeX command `name` followed by `string`.
 
     Append result to `node`.
@@ -922,7 +933,7 @@ def handle_cmd(name, node, string): # noqa: C901 TODO make this less complex
             new_node = munder(new_node, mo('_'))
         elif name == 'varlimsup':  # \overline\lim
             new_node = mover(new_node, mo('¯'), accent=False)
-        elif name == 'varprojlim': # \underleftarrow\lim
+        elif name == 'varprojlim':  # \underleftarrow\lim
             new_node = munder(new_node, mo('\u2190'))
         elif name == 'varinjlim':  # \underrightarrow\lim
             new_node = munder(new_node, mo('\u2192'))
@@ -931,7 +942,7 @@ def handle_cmd(name, node, string): # noqa: C901 TODO make this less complex
         # add ApplyFunction when appropriate (not \sin^2(x), say)
         # cf. https://www.w3.org/TR/MathML3/chapter3.html#presm.mi
         if string and string[0] not in ('^', '_'):
-            node = node.append(mo('\u2061')) # &ApplyFunction;
+            node = node.append(mo('\u2061'))  # &ApplyFunction;
         return node, string
 
     if name in math_alphabets:
@@ -961,7 +972,7 @@ def handle_cmd(name, node, string): # noqa: C901 TODO make this less complex
 
     # operator, fence, or separator  ->  <mo>
 
-    if name == 'colon': # trailing punctuation, not binary relation
+    if name == 'colon':  # trailing punctuation, not binary relation
         node = node.append(mo(':', form='postfix', lspace='0', rspace='0.28em'))
         return node, string
 
@@ -1004,7 +1015,7 @@ def handle_cmd(name, node, string): # noqa: C901 TODO make this less complex
             row = mrow()
             node.append(row)
             node = row
-        if delimiter != '.': # '.' stands for "empty delimiter"
+        if delimiter != '.':  # '.' stands for "empty delimiter"
             node.append(mo(delimiter, **delimiter_attributes))
         if name == 'right' or name.endswith('r'):
             node = node.close()
@@ -1014,7 +1025,7 @@ def handle_cmd(name, node, string): # noqa: C901 TODO make this less complex
         arg, string = tex_token(string)
         if arg == '{':
             return node, '{\\not ' + string
-        if arg.startswith('\\'): # LaTeX macro
+        if arg.startswith('\\'):  # LaTeX macro
             try:
                 arg = operators[arg[1:]]
             except KeyError:
@@ -1026,9 +1037,9 @@ def handle_cmd(name, node, string): # noqa: C901 TODO make this less complex
     # arbitrary text (usually comments)  ->  <mtext>
     if name in ('text', 'mbox', 'textrm'):
         arg, string = tex_token_or_group(string)
-        parts = arg.split('$') # extract inline math
+        parts = arg.split('$')  # extract inline math
         for i, part in enumerate(parts):
-            if i % 2 == 0: # i is even
+            if i % 2 == 0:  # i is even
                 part = re.sub('(^ | $)', '\u00a0', part)
                 node = node.append(mtext(part))
             else:
@@ -1079,7 +1090,7 @@ def handle_cmd(name, node, string): # noqa: C901 TODO make this less complex
             optargs = {'l': 'left', 'r': 'right'}
             if optarg in optargs:
                 frac_atts = frac_atts.copy()
-                frac_atts['numalign'] = optargs[optarg] # "numalign" is deprecated
+                frac_atts['numalign'] = optargs[optarg]  # "numalign" is deprecated
                 frac_atts['class'] = 'numalign-' + optargs[optarg]
         new_node = frac = mfrac(**frac_atts)
         if name.endswith('binom'):
@@ -1090,7 +1101,7 @@ def handle_cmd(name, node, string): # noqa: C901 TODO make this less complex
         node.append(new_node)
         return frac, string
 
-    if name == '\\': # end of a row
+    if name == '\\':  # end of a row
         entry = mtd()
         new_node = mtr(entry)
         node.close().close().append(new_node)
@@ -1099,8 +1110,8 @@ def handle_cmd(name, node, string): # noqa: C901 TODO make this less complex
     if name in accents:
         new_node = mover(mo(accents[name][0], stretchy=False), switch=True)
         if name == 'vec':
-            new_node.children[0]['accent'] = False # scale down arrow but drop i-dot
-        new_node.tex_cmd = name # for HTML export
+            new_node.children[0]['accent'] = False  # scale down arrow but drop i-dot
+        new_node.tex_cmd = name  # for HTML export
         node.append(new_node)
         return new_node, string
 
@@ -1109,7 +1120,7 @@ def handle_cmd(name, node, string): # noqa: C901 TODO make this less complex
         # but to True on accent node get "textstyle" (full size) symbols on top
         new_node = mover(mo(over[name][0], accent=True),
                          switch=True, accent=False)
-        new_node.tex_cmd = name # for HTML export
+        new_node.tex_cmd = name  # for HTML export
         node.append(new_node)
         return new_node, string
 
@@ -1120,7 +1131,7 @@ def handle_cmd(name, node, string): # noqa: C901 TODO make this less complex
 
     if name in under:
         new_node = munder(mo(under[name][0]), switch=True)
-        new_node.tex_cmd = name # for HTML export
+        new_node.tex_cmd = name  # for HTML export
         node.append(new_node)
         return new_node, string
 
@@ -1143,7 +1154,7 @@ def handle_cmd(name, node, string): # noqa: C901 TODO make this less complex
         node.append(new_node)
         return new_node, string
 
-    if name in layout_styles: # 'displaystyle', 'textstyle', ...
+    if name in layout_styles:  # 'displaystyle', 'textstyle', ...
         new_node = mstyle(**layout_styles[name])
         new_node.nchildren = None
         if isinstance(node, mrow) and len(node) == 0:
@@ -1159,7 +1170,7 @@ def handle_cmd(name, node, string): # noqa: C901 TODO make this less complex
 
     if name.endswith('limits'):
         arg, remainder = tex_token(string)
-        if arg in '_^': # else ignore
+        if arg in '_^':  # else ignore
             string = remainder
             node = handle_script_or_limit(node, arg, limits=name)
         return node, string
@@ -1274,7 +1285,7 @@ def begin_environment(node, string):
 def end_environment(node, string):
     name, string = tex_group(string)
     if name in matrices:
-        node = node.close().close().close() # close: mtd, mdr, mtable
+        node = node.close().close().close()  # close: mtd, mdr, mtable
         right_delimiter = matrices[name][1]
         if right_delimiter:
             node = node.append(mo(right_delimiter))
