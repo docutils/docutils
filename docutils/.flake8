@@ -46,7 +46,7 @@ per-file-ignores =
   # allow aligning values in data-collections
   docutils/utils/smartquotes.py:E241
   docutils/utils/roman.py:E241,E701
-  docutils/utils/math/latex2mathml.py:E241,E261,E501,E701
+  docutils/utils/math/latex2mathml.py:E241,E501,E701
   docutils/writers/xetex/__init__.py:E241
   # also allow '##' to mark deactivated code:
   docutils/writers/latex2e/__init__.py:E241,E266
