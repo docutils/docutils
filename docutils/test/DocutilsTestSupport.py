@@ -304,7 +304,7 @@ class TransformTestSuite(CustomTestSuite):
 
         super().__init__(suite_settings=suite_settings)
 
-    def generateTests(self, dict, dictname='totest',
+    def generateTests(self, dict,
                       testmethod='test_transforms'):
         """
         Stock the suite with test cases generated from a test data dictionary.
@@ -322,7 +322,7 @@ class TransformTestSuite(CustomTestSuite):
                       TransformTestCase, testmethod,
                       transforms=transforms, parser=self.parser,
                       input=case[0], expected=case[1],
-                      id='%s[%r][%s]' % (dictname, name, casenum)
+                      id='totest[%r][%s]' % (name, casenum),
                 )
 
 
@@ -365,7 +365,7 @@ class ParserTestSuite(CustomTestSuite):
 
     test_case_class = ParserTestCase
 
-    def generateTests(self, dict, dictname='totest'):
+    def generateTests(self, dict):
         """
         Stock the suite with test cases generated from a test data dictionary.
 
@@ -374,12 +374,11 @@ class ParserTestSuite(CustomTestSuite):
         Tests should be self-documenting and not require external comments.
         """
         for name, cases in dict.items():
-            for casenum in range(len(cases)):
-                case = cases[casenum]
+            for casenum, (case_input, case_expected) in enumerate(cases):
                 self.addTestCase(
                       self.test_case_class, 'test_parser',
-                      input=case[0], expected=case[1],
-                      id='%s[%r][%s]' % (dictname, name, casenum),
+                      input=case_input, expected=case_expected,
+                      id='totest[%r][%s]' % (name, casenum)
                 )
 
 
@@ -480,7 +479,7 @@ class GridTableParserTestSuite(CustomTestSuite):
 
     test_case_class = GridTableParserTestCase
 
-    def generateTests(self, dict, dictname='totest'):
+    def generateTests(self, dict):
         """
         Stock the suite with test cases generated from a test data dictionary.
 
@@ -494,10 +493,10 @@ class GridTableParserTestSuite(CustomTestSuite):
                 case = cases[casenum]
                 self.addTestCase(self.test_case_class, 'test_parse_table',
                                  input=case[0], expected=case[1],
-                                 id='%s[%r][%s]' % (dictname, name, casenum))
+                                 id='totest[%r][%s]' % (name, casenum))
                 self.addTestCase(self.test_case_class, 'test_parse',
                                  input=case[0], expected=case[2],
-                                 id='%s[%r][%s]' % (dictname, name, casenum))
+                                 id='totest[%r][%s]' % (name, casenum))
 
 
 class SimpleTableParserTestCase(GridTableParserTestCase):
@@ -513,7 +512,7 @@ class SimpleTableParserTestSuite(CustomTestSuite):
 
     test_case_class = SimpleTableParserTestCase
 
-    def generateTests(self, dict, dictname='totest'):
+    def generateTests(self, dict):
         """
         Stock the suite with test cases generated from a test data dictionary.
 
@@ -526,7 +525,7 @@ class SimpleTableParserTestSuite(CustomTestSuite):
                 case = cases[casenum]
                 self.addTestCase(self.test_case_class, 'test_parse',
                                  input=case[0], expected=case[1],
-                                 id='%s[%r][%s]' % (dictname, name, casenum))
+                                 id='totest[%r][%s]' % (name, casenum))
 
 
 class WriterPublishTestCase(CustomTestCase, docutils.SettingsSpec):
@@ -565,14 +564,14 @@ class PublishTestSuite(CustomTestSuite):
         self.test_class = WriterPublishTestCase
         self.writer_name = writer_name
 
-    def generateTests(self, dict, dictname='totest'):
+    def generateTests(self, dict):
         for name, cases in dict.items():
             for casenum in range(len(cases)):
                 case = cases[casenum]
                 self.addTestCase(
                       self.test_class, 'test_publish',
                       input=case[0], expected=case[1],
-                      id='%s[%r][%s]' % (dictname, name, casenum),
+                      id='totest[%r][%s]' % (name, casenum),
                       # Passed to constructor of self.test_class:
                       writer_name=self.writer_name)
 
@@ -650,7 +649,7 @@ class HtmlPublishPartsTestSuite(CustomTestSuite):
 
     testcase_class = HtmlWriterPublishPartsTestCase
 
-    def generateTests(self, dict, dictname='totest'):
+    def generateTests(self, dict):
         for name, (settings_overrides, cases) in dict.items():
             original_settings = self.suite_settings.copy()
             self.suite_settings.update(settings_overrides)
@@ -658,7 +657,7 @@ class HtmlPublishPartsTestSuite(CustomTestSuite):
                 case = cases[casenum]
                 self.addTestCase(self.testcase_class, 'test_publish',
                                  input=case[0], expected=case[1],
-                                 id='%s[%r][%s]' % (dictname, name, casenum))
+                                 id='totest[%r][%s]' % (name, casenum))
             self.suite_settings = original_settings
 
 
