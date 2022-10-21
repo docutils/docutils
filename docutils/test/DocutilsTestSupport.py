@@ -56,7 +56,6 @@ sys.path.append(os.path.normpath(os.path.join(testroot, '..', 'extras')))
 sys.path.insert(0, testroot)
 
 try:
-    import package_unittest
     import docutils
     import docutils.core
     from docutils import frontend, nodes, statemachine, utils   # noqa: F401
