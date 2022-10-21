@@ -1927,7 +1927,8 @@ newline
         *\u3000IDEOGRAPHIC SPACE\u3000*
         *
         LINE SEPARATOR
-        *"""],
+        *
+"""],
 ["""\
 no inline markup because of non-ASCII whitespace following /preceding the markup
 **\xa0NO-BREAK SPACE\xa0** ``\xa0NO-BREAK SPACE\xa0`` `\xa0NO-BREAK SPACE\xa0`
@@ -1940,7 +1941,7 @@ no inline markup because of non-ASCII whitespace following /preceding the markup
         no inline markup because of non-ASCII whitespace following /preceding the markup
         **\xa0NO-BREAK SPACE\xa0** ``\xa0NO-BREAK SPACE\xa0`` `\xa0NO-BREAK SPACE\xa0`
         **\u2000EN QUAD\u2000** ``\u2000EN QUAD\u2000`` `\u2000EN QUAD\u2000`
-        **\u202fNARROW NBSP\u202f** ``\u202fNARROW NBSP\u202f`` `\u202fNARROW NBSP\u202f`\
+        **\u202fNARROW NBSP\u202f** ``\u202fNARROW NBSP\u202f`` `\u202fNARROW NBSP\u202f`
 """],
 # « * » ‹ * › « * » ‹ * › « * » ‹ * › French,
 ["""\

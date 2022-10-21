@@ -151,10 +151,7 @@ class CustomTestCase(unittest.TestCase):
 
     def compare_output(self, _input, output: str, expected: str) -> None:
         """`output` and `expected` are strings."""
-        self.assertEqual(
-            str(output).rstrip(),
-            str(expected).rstrip(),
-        )
+        self.assertEqual(output, expected)
 
 
 class CustomTestSuite(unittest.TestSuite):
@@ -559,7 +556,7 @@ class WriterPublishTestCase(CustomTestCase, docutils.SettingsSpec):
               writer_name=self.writer_name,
               settings_spec=self,
               settings_overrides=self.suite_settings)
-        self.compare_output(self.input, output, self.expected)
+        self.compare_output(self.input, output, str(self.expected))
 
 
 class PublishTestSuite(CustomTestSuite):

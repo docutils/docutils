@@ -100,7 +100,8 @@ totest['code-parsing-long'] = [
             }
          \n\
         <inline classes="comment">
-            % emphasize"""],
+            % emphasize
+"""],
 ]
 
 

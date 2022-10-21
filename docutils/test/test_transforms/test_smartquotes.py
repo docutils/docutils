@@ -208,7 +208,7 @@ Do not drop characters from intra-word inline markup like
             Structured
         <emphasis>
             Text
-        .\
+        .
 """],
 ["""\
 Do not convert context-character at inline-tag boundaries

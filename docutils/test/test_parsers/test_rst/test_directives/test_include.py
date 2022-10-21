@@ -1308,7 +1308,8 @@ No circular inclusion.
                             Some include text.
                     <entry>
                         <paragraph>
-                            Some include text."""],
+                            Some include text.
+"""],
 ]
 
 # Parsing with Markdown is an optional feature depending on 3rd-party modules:
