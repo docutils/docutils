@@ -12,6 +12,8 @@ import os.path
 
 from test import DocutilsTestSupport
 
+from docutils import utils
+
 
 def suite():
     s = DocutilsTestSupport.ParserTestSuite()
@@ -22,7 +24,7 @@ def suite():
 mydir = 'test_parsers/test_rst/test_directives/'
 raw1 = os.path.join(mydir, 'raw1.txt')
 utf_16_file = os.path.join(mydir, 'utf-16.csv')
-utf_16_file_rel = DocutilsTestSupport.utils.relative_path(None, utf_16_file)
+utf_16_file_rel = utils.relative_path(None, utf_16_file)
 utf_16_error_str = ("UnicodeDecodeError: 'ascii' codec can't decode byte 0xfe "
                     "in position 0: ordinal not in range(128)")
 
@@ -47,7 +49,7 @@ totest['raw'] = [
 <document source="test data">
     <raw format="html" source="%s" xml:space="preserve">
         <p>This file is used by <tt>test_raw.py</tt>.</p>
-""" % DocutilsTestSupport.utils.relative_path(None, raw1)],
+""" % utils.relative_path(None, raw1)],
 ["""\
 .. raw:: html
    :file: rawfile.html

@@ -9,7 +9,7 @@ Tests for misc.py "include" directive.
 
 import os.path
 from test import DocutilsTestSupport
-from docutils import parsers
+from docutils import parsers, utils
 from docutils.utils.code_analyzer import with_pygments
 
 # optional 3rd-party markdown parser
@@ -38,7 +38,7 @@ def mydir(path):
 
 # make `path` relative with utils.relative_path():
 def reldir(path):
-    return DocutilsTestSupport.utils.relative_path(None, path)
+    return utils.relative_path(None, path)
 
 
 include1 = mydir('include1.txt')
@@ -60,7 +60,7 @@ utf_16_error_str = ("UnicodeDecodeError: 'ascii' codec can't decode byte 0xfe "
                     "in position 0: ordinal not in range(128)")
 nonexistent = os.path.join(os.path.dirname(parsers.rst.states.__file__),
                            'include', 'nonexistent')
-nonexistent_rel = DocutilsTestSupport.utils.relative_path(
+nonexistent_rel = utils.relative_path(
     os.path.join(DocutilsTestSupport.testroot, 'dummy'), nonexistent)
 
 # Different error for path with 8bit chars with locale == C or None:
