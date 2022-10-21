@@ -9,11 +9,12 @@
 test get_parser_class
 """
 
-from test import DocutilsTestSupport
+import unittest
+
 from docutils.parsers import get_parser_class
 
 
-class GetParserClassTestCase(DocutilsTestSupport.StandardTestCase):
+class GetParserClassTestCase(unittest.TestCase):
 
     def test_registered_parser(self):
         get_parser_class('rst')

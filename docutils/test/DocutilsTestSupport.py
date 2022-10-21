@@ -91,18 +91,10 @@ class DevNull:
         pass
 
 
-class StandardTestCase(unittest.TestCase):
-
-    """
-    Helper class, providing the same interface as unittest.TestCase,
-    but with useful setUp and comparison methods.
-
-    The methods assertEqual and assertNotEqual have been overwritten
-    to provide better support for multi-line strings.
-    """
+StandardTestCase = unittest.TestCase
 
 
-class CustomTestCase(StandardTestCase):
+class CustomTestCase(unittest.TestCase):
 
     """
     Helper class, providing extended functionality over unittest.TestCase.

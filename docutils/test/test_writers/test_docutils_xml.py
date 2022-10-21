@@ -15,7 +15,8 @@ Test for docutils XML writer.
 """
 
 
-from test import DocutilsTestSupport  # before importing docutils!
+import unittest
+
 import docutils
 import docutils.core
 
@@ -130,7 +131,7 @@ def publish_xml(settings, source):
 # -------------
 
 
-class DocutilsXMLTestCase(DocutilsTestSupport.StandardTestCase):
+class DocutilsXMLTestCase(unittest.TestCase):
 
     settings = {'input_encoding': 'utf-8',
                 'output_encoding': 'iso-8859-1',
