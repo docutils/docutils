@@ -249,17 +249,13 @@ class CustomTestSuite(unittest.TestSuite):
             self.next_test_case_id += 1
         # test identifier will become suiteid.testid
         tcid = '%s: %s' % (self.id, id)
-        # suite_settings may be passed as a parameter;
-        # if not, set from attribute:
-        kwargs.setdefault('suite_settings', self.suite_settings)
         # generate and add test case
         tc = test_case_class(method_name, input, expected, tcid,
-                             run_in_debugger=run_in_debugger, **kwargs)
+                             run_in_debugger=run_in_debugger,
+                             suite_settings=self.suite_settings.copy(),
+                             **kwargs)
         self.addTest(tc)
         return tc
-
-    def generate_no_tests(self, *args, **kwargs):
-        pass
 
 
 class TransformTestCase(CustomTestCase):
@@ -747,8 +743,8 @@ class HtmlPublishPartsTestSuite(CustomTestSuite):
 
     def generateTests(self, dict, dictname='totest'):
         for name, (settings_overrides, cases) in dict.items():
-            settings = self.suite_settings.copy()
-            settings.update(settings_overrides)
+            original_settings = self.suite_settings.copy()
+            self.suite_settings.update(settings_overrides)
             for casenum in range(len(cases)):
                 case = cases[casenum]
                 run_in_debugger = False
@@ -760,8 +756,8 @@ class HtmlPublishPartsTestSuite(CustomTestSuite):
                 self.addTestCase(self.testcase_class, 'test_publish',
                                  input=case[0], expected=case[1],
                                  id='%s[%r][%s]' % (dictname, name, casenum),
-                                 run_in_debugger=run_in_debugger,
-                                 suite_settings=settings)
+                                 run_in_debugger=run_in_debugger)
+            self.suite_settings = original_settings
 
 
 def exception_data(func, *args, **kwds):
