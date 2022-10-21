@@ -392,7 +392,7 @@ An `embedded alias <alias_>`_ with unknown reference.
             Unknown target name: "alias".
     <system_message level="1" line="1" source="test data" type="INFO">
         <paragraph>
-            Hyperlink target "embedded alias" is not referenced.\
+            Hyperlink target "embedded alias" is not referenced.
 """],
 ["""\
 An embedded URI with trailing underline:

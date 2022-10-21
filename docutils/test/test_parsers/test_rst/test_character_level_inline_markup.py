@@ -635,7 +635,8 @@ newline
         *\u3000IDEOGRAPHIC SPACE\u3000*
         *
         LINE SEPARATOR
-        *"""],
+        *
+"""],
 # « * » ‹ * › « * » ‹ * › « * » ‹ * › French,
 ["""\
 "Quoted" markup start-string (matched openers & closers) -> no markup:

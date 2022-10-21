@@ -198,7 +198,8 @@ totest['code-parsing'] = [
             }
          \n\
         <inline classes="comment">
-            % emphasize"""],
+            % emphasize
+"""],
 ["""\
 .. code:: rst
   :number-lines:

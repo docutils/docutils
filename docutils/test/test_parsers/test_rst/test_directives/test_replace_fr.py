@@ -66,7 +66,8 @@ Le |Na+| est l'ion sodium.
         Le \n\
         <substitution_reference refname="Na+">
             Na+
-         est l\'ion sodium."""],
+         est l\'ion sodium.
+"""],
 ]
 
 
