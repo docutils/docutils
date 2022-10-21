@@ -10,7 +10,7 @@ Tests for docutils.transforms.frontmatter.DocTitle.
 
 if __name__ == '__main__':
     import __init__  # noqa: F401
-from test_transforms import DocutilsTestSupport
+from test import DocutilsTestSupport
 from docutils.transforms.frontmatter import DocTitle, SectionSubTitle
 from docutils.parsers.rst import Parser, Directive
 from docutils.parsers.rst.directives import register_directive

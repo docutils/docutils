@@ -10,7 +10,7 @@ Test the 'code' directive in body.py with syntax_highlight = 'long'.
 
 if __name__ == '__main__':
     import __init__  # noqa: F401
-from test_parsers import DocutilsTestSupport
+from test import DocutilsTestSupport
 from docutils.utils.code_analyzer import with_pygments
 
 

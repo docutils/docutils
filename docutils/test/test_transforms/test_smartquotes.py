@@ -17,7 +17,7 @@ Test module for universal.SmartQuotes transform.
 
 if __name__ == '__main__':
     import __init__  # noqa: F401
-from test_transforms import DocutilsTestSupport  # before importing docutils!
+from test import DocutilsTestSupport  # before importing docutils!
 from docutils.transforms.universal import SmartQuotes
 from docutils.parsers.rst import Parser
 

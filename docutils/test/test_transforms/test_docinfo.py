@@ -9,7 +9,7 @@ Tests for docutils.transforms.frontmatter.DocInfo.
 
 if __name__ == '__main__':
     import __init__  # noqa: F401
-from test_transforms import DocutilsTestSupport
+from test import DocutilsTestSupport
 from docutils.transforms.frontmatter import DocInfo
 from docutils.parsers.rst import Parser
 
