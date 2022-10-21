@@ -358,7 +358,9 @@ If any of the tests fail, please `open a bug report`_ or `send an email`_
 Please include all relevant output, information about your operating
 system, Python version, and Docutils version.  To see the Docutils
 version, look at the test output or use one of the `front-end scripts`_ 
-with the ``--version`` option.
+with the ``--version`` option, e.g.::
+
+    docutils --version
 
 .. _Docutils Testing: https://docutils.sourceforge.io/docs/dev/testing.html
 .. _open a bug report:
