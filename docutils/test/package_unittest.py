@@ -12,7 +12,7 @@ recursively.
 
 import sys
 import os
-import types
+import glob
 import unittest
 from importlib import import_module
 
@@ -24,12 +24,12 @@ debug = False
 verbosity = 1
 
 
-def loadTestModules(path, name='', packages=None):
+def loadTestModules(path):
     """
     Return a test suite composed of all the tests from modules in a directory.
 
-    Search for modules in directory `path`, beginning with `name`. If
-    `packages` is true, search subdirectories (also beginning with `name`)
+    Search for modules in directory `path`, beginning with `name`.
+    Then search subdirectories (also beginning with `name`)
     recursively.  Subdirectories must be Python packages; they must contain an
     '__init__.py' module.
     """
@@ -39,19 +39,12 @@ def loadTestModules(path, name='', packages=None):
     path = os.path.abspath(path)        # current working dir if `path` empty
     paths = [path]
     while paths:
-        p = paths.pop(0)
-        files = os.listdir(p)
-        for filename in files:
-            if not filename.startswith(name):
-                continue
-            fullpath = os.path.join(p, filename)
-            if filename.endswith('.py'):
-                fullpath = fullpath[len(path)+1:]
-                testModules.append(path2mod(fullpath))
-            elif (packages and os.path.isdir(fullpath)
-                  and os.path.isfile(os.path.join(fullpath, '__init__.py'))):
-                paths.append(fullpath)
-# Import modules and add their tests to the suite.
+        p = paths.pop() + '/test_'
+        for file_path in glob.glob(p + '*.py'):
+            testModules.append(path2mod(os.path.relpath(file_path, path)))
+        for file_path in glob.glob(p + '*/__init__.py'):
+            paths.append(os.path.dirname(file_path))
+    # Import modules and add their tests to the suite.
     sys.path.insert(0, path)
     for mod in testModules:
         try:
@@ -63,7 +56,7 @@ def loadTestModules(path, name='', packages=None):
         else:
             # if there's a suite defined, incorporate its contents
             try:
-                suite = getattr(module, 'suite')
+                suite = module.suite
             except AttributeError:
                 # Look for individual tests
                 moduleTests = testLoader.loadTestsFromModule(module)
@@ -71,13 +64,10 @@ def loadTestModules(path, name='', packages=None):
                 # as it can't load tests from another TestSuite, so we have
                 # to cheat:
                 testSuite.addTest(moduleTests)
-                continue
-            if isinstance(suite, types.FunctionType):
-                testSuite.addTest(suite())
-            elif isinstance(suite, unittest.TestSuite):
-                testSuite.addTest(suite)
             else:
-                raise AssertionError("don't understand suite (%s)" % mod)
+                if not callable(suite):
+                    raise AssertionError(f"don't understand suite ({mod})")
+                testSuite.addTest(suite())
     sys.path.pop(0)
     return testSuite
 
