@@ -151,10 +151,9 @@ class CustomTestCase(unittest.TestCase):
 
     def compare_output(self, _input, output: str, expected: str) -> None:
         """`output` and `expected` are strings."""
-        # Normalise line endings:
         self.assertEqual(
-            '\n'.join(str(output).splitlines()),
-            '\n'.join(str(expected).splitlines())
+            str(output).rstrip(),
+            str(expected).rstrip(),
         )
 
 
