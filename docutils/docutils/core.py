@@ -448,12 +448,12 @@ def publish_string(source, source_path=None, destination_path=None,
 
 
 def publish_bytes(source, source_path=None, destination_path=None,
-                   reader=None, reader_name='standalone',
-                   parser=None, parser_name='restructuredtext',
-                   writer=None, writer_name='pseudoxml',
-                   settings=None, settings_spec=None,
-                   settings_overrides=None, config_section=None,
-                   enable_exit_status=False):
+                  reader=None, reader_name='standalone',
+                  parser=None, parser_name='restructuredtext',
+                  writer=None, writer_name='pseudoxml',
+                  settings=None, settings_spec=None,
+                  settings_overrides=None, config_section=None,
+                  enable_exit_status=False):
     """
     Set up & run a `Publisher` for programmatic use with string I/O.  Return
     the encoded bytes.
