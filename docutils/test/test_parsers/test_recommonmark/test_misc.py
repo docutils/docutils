@@ -53,18 +53,18 @@ class RecommonmarkParserTests(unittest.TestCase):
         output = publish_string(sample_with_html, parser=parser,
                                 settings_overrides={'warning_stream': '',
                                                     'raw_enabled': False})
-        self.assertNotIn(b'<raw>', output)
-        self.assertIn(b'<system_message', output)
-        self.assertIn(b'Raw content disabled.', output)
+        self.assertNotIn('<raw>', output)
+        self.assertIn('<system_message', output)
+        self.assertIn('Raw content disabled.', output)
 
     def test_raw_disabled_inline(self):
         output = publish_string('foo <a href="uri">', parser=parser,
                                 settings_overrides={'warning_stream': '',
                                                     'raw_enabled': False,
                                                    })
-        self.assertNotIn(b'<raw>', output)
-        self.assertIn(b'<system_message', output)
-        self.assertIn(b'Raw content disabled.', output)
+        self.assertNotIn('<raw>', output)
+        self.assertIn('<system_message', output)
+        self.assertIn('Raw content disabled.', output)
 
 
 @unittest.skipIf(parser, 'Optional "recommonmark" module found.')

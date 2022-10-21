@@ -149,16 +149,13 @@ class CustomTestCase(unittest.TestCase):
         # empties that dictionary.
         roles._roles = {}
 
-    def compare_output(self, _input, output, expected):
-        """`output` and `expected` should be strings."""
-        if isinstance(expected, bytes):
-            expected = expected.decode('utf-8')
-        if isinstance(output, bytes):
-            output = output.decode('utf-8')
+    def compare_output(self, _input, output: str, expected: str) -> None:
+        """`output` and `expected` are strings."""
         # Normalise line endings:
-        expected = expected and '\n'.join(expected.splitlines())
-        output = output and '\n'.join(output.splitlines())
-        self.assertEqual(output, expected)
+        self.assertEqual(
+            '\n'.join(str(output).splitlines()),
+            '\n'.join(str(expected).splitlines())
+        )
 
 
 class CustomTestSuite(unittest.TestSuite):
