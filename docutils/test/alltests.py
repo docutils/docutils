@@ -20,6 +20,7 @@ import sys                  # noqa: E402
 import atexit               # noqa: E402
 import os                   # noqa: E402
 import platform             # noqa: E402
+import unittest             # noqa: E402
 
 import DocutilsTestSupport  # noqa: E402 must be imported before docutils
 import docutils             # noqa: E402
@@ -97,7 +98,7 @@ if __name__ == '__main__':
     print('Working directory: %s' % os.getcwd())
     print('Docutils package: %s' % os.path.dirname(docutils.__file__))
     sys.stdout.flush()
-    result = package_unittest.main(suite)
+    result = unittest.TextTestRunner().run(suite)
     finish = time.time()
     print('Elapsed time: %.3f seconds' % (finish - start))
     sys.exit(not result.wasSuccessful())
