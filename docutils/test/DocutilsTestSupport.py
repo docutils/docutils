@@ -275,7 +275,7 @@ class TransformTestCase(CustomTestCase):
     settings = frontend.get_default_settings(rst.Parser)
     settings.report_level = 1
     settings.halt_level = 5
-    settings.debug = package_unittest.debug
+    settings.debug = False
     settings.warning_stream = DevNull()
     unknown_reference_resolvers = ()
 
@@ -396,7 +396,7 @@ class ParserTestCase(CustomTestCase):
     settings = frontend.get_default_settings(rst.Parser)
     settings.report_level = 5
     settings.halt_level = 5
-    settings.debug = package_unittest.debug
+    settings.debug = False
 
     def test_parser(self):
         if self.run_in_debugger:
@@ -457,7 +457,7 @@ class PEPParserTestCase(ParserTestCase):
     settings = frontend.get_default_settings(rst.Parser, pep.Reader)
     settings.report_level = 5
     settings.halt_level = 5
-    settings.debug = package_unittest.debug
+    settings.debug = False
 
 
 class PEPParserTestSuite(ParserTestSuite):
@@ -497,7 +497,7 @@ class RecommonmarkParserTestCase(ParserTestCase):
         settings = frontend.get_default_settings(md_parser_class)
         settings.report_level = 5
         settings.halt_level = 5
-        settings.debug = package_unittest.debug
+        settings.debug = False
 
 
 class RecommonmarkParserTestSuite(ParserTestSuite):
