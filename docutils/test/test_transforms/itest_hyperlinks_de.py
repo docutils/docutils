@@ -21,7 +21,7 @@ TODO: This test fails currently when run as part of "alltests" because
 
 if __name__ == '__main__':
     import __init__  # noqa: F401
-from test_transforms import DocutilsTestSupport
+from test import DocutilsTestSupport
 from docutils.transforms.references import (
          PropagateTargets, AnonymousHyperlinks, IndirectHyperlinks,
          ExternalTargets, InternalTargets, DanglingReferences)

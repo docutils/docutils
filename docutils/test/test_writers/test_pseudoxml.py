@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# $Id: test_pseudoxml.py 8481 2020-01-31 08:17:24Z milde $
+# $Id$
 # Author: Lea Wiemann <LeWiemann@gmail.com>
 # Copyright: This module has been placed in the public domain.
 
@@ -10,7 +10,7 @@ Test for pseudo-XML writer.
 
 if __name__ == '__main__':
     import __init__  # noqa: F401
-from test_writers import DocutilsTestSupport
+from test import DocutilsTestSupport
 
 
 def suite():

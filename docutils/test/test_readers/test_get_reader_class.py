@@ -11,7 +11,7 @@ test get_reader_class
 
 if __name__ == '__main__':
     import __init__  # noqa: F401
-from test_readers import DocutilsTestSupport
+from test import DocutilsTestSupport
 from docutils.readers import get_reader_class
 
 
