@@ -43,7 +43,6 @@ __docformat__ = 'reStructuredText'
 import difflib
 import inspect
 import os
-import pdb
 import sys
 import traceback
 import unittest
