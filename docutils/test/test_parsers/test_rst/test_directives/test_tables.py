@@ -14,6 +14,8 @@ import platform
 
 from test import DocutilsTestSupport
 
+from docutils import utils
+
 
 def suite():
     s = DocutilsTestSupport.ParserTestSuite()
@@ -23,7 +25,7 @@ def suite():
 
 mydir = 'test_parsers/test_rst/test_directives/'
 utf_16_csv = os.path.join(mydir, 'utf-16.csv')
-utf_16_csv_rel = DocutilsTestSupport.utils.relative_path(None, utf_16_csv)
+utf_16_csv_rel = utils.relative_path(None, utf_16_csv)
 empty_txt = os.path.join(mydir, 'empty.txt')
 
 unichr_exception = DocutilsTestSupport.exception_data(
