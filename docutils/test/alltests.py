@@ -124,16 +124,15 @@ def path2mod(path):
 
 if __name__ == '__main__':
     suite = suite()
-    print('Testing Docutils %s with Python %s on %s at %s' % (
-        docutils.__version__, sys.version.split()[0],
-        time.strftime('%Y-%m-%d'), time.strftime('%H:%M:%S')))
-    print('OS: %s %s %s (%s, %s)' % (
-        platform.system(), platform.release(), platform.version(),
-        sys.platform, platform.platform()))
-    print('Working directory: %s' % os.getcwd())
-    print('Docutils package: %s' % os.path.dirname(docutils.__file__))
+    print(f'Testing Docutils {docutils.__version__} '
+          f'with Python {sys.version.split()[0]} '
+          f'on {time.strftime("%Y-%m-%d at %H:%M:%S")}')
+    print(f'OS: {platform.system()} {platform.release()} {platform.version()} '
+          f'({sys.platform}, {platform.platform()})')
+    print(f'Working directory: {os.getcwd()}')
+    print(f'Docutils package: {os.path.dirname(docutils.__file__)}')
     sys.stdout.flush()
     result = unittest.TextTestRunner().run(suite)
     finish = time.time()
-    print('Elapsed time: %.3f seconds' % (finish - start))
+    print(f'Elapsed time: {finish - start:.3f} seconds')
     sys.exit(not result.wasSuccessful())
