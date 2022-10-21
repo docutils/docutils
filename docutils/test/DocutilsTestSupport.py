@@ -40,12 +40,13 @@ Exports the following:
 """
 __docformat__ = 'reStructuredText'
 
-import sys
-import os
-import unittest
-import re
+import difflib
 import inspect
+import os
+import pdb
+import sys
 import traceback
+import unittest
 from pprint import pformat
 
 testroot = os.path.abspath(os.path.dirname(__file__) or os.curdir)
@@ -55,7 +56,6 @@ sys.path.append(os.path.normpath(os.path.join(testroot, '..', 'extras')))
 sys.path.insert(0, testroot)
 
 try:
-    import difflib
     import package_unittest
     import docutils
     import docutils.core
@@ -70,16 +70,10 @@ except ImportError:
     # The importing module (usually __init__.py in one of the
     # subdirectories) may catch ImportErrors in order to detect the
     # absence of DocutilsTestSupport in sys.path.  Thus, ImportErrors
-    # resulting from problems with importing Docutils modules must
+    # resulting from problems with importing Docutils modules must be
     # caught here.
     traceback.print_exc()
-    sys.exit(1)
-
-
-try:
-    import mypdb as pdb
-except ImportError:
-    import pdb
+    raise SystemExit(1)
 
 
 # Hack to make repr(StringList) look like repr(list):
