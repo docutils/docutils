@@ -16,8 +16,6 @@
 Tests for docutils.transforms.universal.FilterMessages.
 """
 
-if __name__ == '__main__':
-    import __init__  # noqa: F401
 from test import DocutilsTestSupport
 from docutils.transforms.universal import Messages, FilterMessages
 from docutils.transforms.references import Substitutions

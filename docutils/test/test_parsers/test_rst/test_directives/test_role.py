@@ -8,8 +8,6 @@
 Tests for misc.py "role" directive.
 """
 
-if __name__ == '__main__':
-    import __init__  # noqa: F401
 from test import DocutilsTestSupport
 
 

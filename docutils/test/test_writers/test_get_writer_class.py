@@ -9,8 +9,6 @@
 test get_writer_class
 """
 
-if __name__ == '__main__':
-    import __init__  # noqa: F401
 from test import DocutilsTestSupport
 from docutils.writers import get_writer_class
 
