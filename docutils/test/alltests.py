@@ -57,12 +57,6 @@ class Tee:
             self.file.flush()
 
 
-def suite():
-    suite = loadTestModules(DocutilsTestSupport.testroot)
-    sys.stdout.flush()
-    return suite
-
-
 # must redirect stderr *before* first import of unittest
 sys.stdout = sys.stderr = Tee('alltests.out')
 
@@ -123,7 +117,7 @@ def path2mod(path):
 
 
 if __name__ == '__main__':
-    suite = suite()
+    suite = loadTestModules(DocutilsTestSupport.testroot)
     print(f'Testing Docutils {docutils.__version__} '
           f'with Python {sys.version.split()[0]} '
           f'on {time.strftime("%Y-%m-%d at %H:%M:%S")}')
