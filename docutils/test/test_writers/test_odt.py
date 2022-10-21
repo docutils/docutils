@@ -63,7 +63,7 @@ class DocutilsOdtTestCase(unittest.TestCase):
             settings_overrides['_disable_config'] = True
             settings_overrides['language_code'] = 'en-US'
 
-        result = docutils.core.publish_string(
+        result = docutils.core.publish_bytes(
             source=input,
             reader_name='standalone',
             writer_name='odf_odt',

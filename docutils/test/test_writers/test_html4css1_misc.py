@@ -24,7 +24,7 @@ class EncodingTestCase(unittest.TestCase):
             'stylesheet': '',
             '_disable_config': True,
             }
-        result = core.publish_string(
+        result = core.publish_bytes(
             'EUR = \u20ac', writer_name='html4css1',
             settings_overrides=settings_overrides)
         # Encoding a euro sign with latin1 doesn't work, so the
@@ -53,7 +53,7 @@ second term:
 """
         result = core.publish_string(data, writer_name='html4css1',
                                      settings_overrides=self.mys)
-        self.assertIn(b'<dt class="for the second item">second term:</dt>',
+        self.assertIn('<dt class="for the second item">second term:</dt>',
                       result)
 
     def test_definition_list_item_name(self):
@@ -70,7 +70,7 @@ second term:
 """
         result = core.publish_string(data, writer_name='html4css1',
                                      settings_overrides=self.mys)
-        self.assertIn(b'<dt id="second-item">second term:</dt>',
+        self.assertIn('<dt id="second-item">second term:</dt>',
                       result)
 
 
