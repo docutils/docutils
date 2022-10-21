@@ -15,15 +15,12 @@ Test module for `docutils.parsers.rst.directives`.
 
 import unittest
 
-
-from test import DocutilsTestSupport
-
 import docutils
 import docutils.parsers.null
 from docutils.parsers.rst import directives
 
 
-class DirectiveOptionConversionTestCase(DocutilsTestSupport.StandardTestCase):
+class DirectiveOptionConversionTestCase(unittest.TestCase):
 
     def test_flag(self):
         # Raise error when there is an argument:

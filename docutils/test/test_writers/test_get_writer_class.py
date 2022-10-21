@@ -9,11 +9,12 @@
 test get_writer_class
 """
 
-from test import DocutilsTestSupport
+import unittest
+
 from docutils.writers import get_writer_class
 
 
-class GetWriterClassTestCase(DocutilsTestSupport.StandardTestCase):
+class GetWriterClassTestCase(unittest.TestCase):
 
     def test_registered_writer(self):
         get_writer_class('manpage')

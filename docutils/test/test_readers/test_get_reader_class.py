@@ -9,11 +9,12 @@
 test get_reader_class
 """
 
-from test import DocutilsTestSupport
+import unittest
+
 from docutils.readers import get_reader_class
 
 
-class GetReaderClassTestCase(DocutilsTestSupport.StandardTestCase):
+class GetReaderClassTestCase(unittest.TestCase):
 
     def test_registered_reader(self):
         get_reader_class('pep')

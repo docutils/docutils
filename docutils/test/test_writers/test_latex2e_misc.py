@@ -16,7 +16,8 @@
 Miscellaneous LaTeX writer tests.
 """
 
-from test import DocutilsTestSupport
+import unittest
+
 from docutils import core
 
 contents_test_input = """\
@@ -31,7 +32,7 @@ bar
 """
 
 
-class TocTestCase(DocutilsTestSupport.StandardTestCase):
+class TocTestCase(unittest.TestCase):
 
     def test_publish_from_doctree(self):
         """Ignore the Docutils-generated ToC, when ``use_latex_toc``
@@ -52,7 +53,7 @@ class TocTestCase(DocutilsTestSupport.StandardTestCase):
         # self.assertIn(r'\tableofcontents', result)
 
 
-class WarningsTestCase(DocutilsTestSupport.StandardTestCase):
+class WarningsTestCase(unittest.TestCase):
 
     def test_future_warnings(self):
         """Warn about changing defaults."""

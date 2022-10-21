@@ -9,8 +9,8 @@ Test the `Publisher` facade and the ``publish_*`` convenience functions.
 """
 
 import pickle
+import unittest
 
-import DocutilsTestSupport              # must be imported before docutils
 import docutils
 from docutils import core, nodes, io
 
@@ -53,7 +53,7 @@ exposed_pseudoxml_output = b"""\
 """
 
 
-class PublisherTests(DocutilsTestSupport.StandardTestCase):
+class PublisherTests(unittest.TestCase):
 
     def test_input_error_handling(self):
         # core.publish_cmdline(argv=['nonexisting/path'])
@@ -71,7 +71,7 @@ class PublisherTests(DocutilsTestSupport.StandardTestCase):
                                  settings_overrides={'traceback': True})
 
 
-class PublishDoctreeTestCase(DocutilsTestSupport.StandardTestCase, docutils.SettingsSpec):
+class PublishDoctreeTestCase(unittest.TestCase, docutils.SettingsSpec):
 
     settings_default_overrides = {
         '_disable_config': True,
