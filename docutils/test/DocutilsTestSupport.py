@@ -107,9 +107,6 @@ class StandardTestCase(unittest.TestCase):
     to provide better support for multi-line strings.
     """
 
-    def setUp(self):
-        os.chdir(testroot)
-
 
 class CustomTestCase(StandardTestCase):
 
