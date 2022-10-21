@@ -2,7 +2,8 @@
 ''''exec python3 -u "$0" "$@" #'''
 
 # $Id$
-# Author: David Goodger <goodger@python.org>
+# Author: David Goodger <goodger@python.org>,
+#         Garth Kidd <garth@deadlybloodyserious.com>
 # Copyright: This module has been placed in the public domain.
 
 __doc__ = """\
@@ -18,10 +19,10 @@ start = time.time()
 
 import sys                  # noqa: E402
 import atexit               # noqa: E402
+import glob                 # noqa: E402
 import os                   # noqa: E402
 import platform             # noqa: E402
-import unittest             # noqa: E402
-
+from importlib import import_module  # noqa: E402
 import DocutilsTestSupport  # noqa: E402 must be imported before docutils
 import docutils             # noqa: E402
 
@@ -74,8 +75,7 @@ def pformat(suite):
 
 
 def suite():
-    path, script = os.path.split(sys.argv[0])
-    suite = package_unittest.loadTestModules(DocutilsTestSupport.testroot)
+    suite = loadTestModules(DocutilsTestSupport.testroot)
     sys.stdout.flush()
     return suite
 
@@ -83,7 +83,60 @@ def suite():
 # must redirect stderr *before* first import of unittest
 sys.stdout = sys.stderr = Tee('alltests.out')
 
-import package_unittest  # noqa
+import unittest  # NoQA: E402
+
+
+def loadTestModules(path):
+    """
+    Return a test suite composed of all the tests from modules in a directory.
+
+    Search for modules in directory `path`, beginning with `name`.
+    Then search subdirectories (also beginning with `name`)
+    recursively.  Subdirectories must be Python packages; they must contain an
+    '__init__.py' module.
+    """
+    testLoader = unittest.defaultTestLoader
+    testSuite = unittest.TestSuite()
+    testModules = []
+    path = os.path.abspath(path)        # current working dir if `path` empty
+    paths = [path]
+    while paths:
+        p = paths.pop() + '/test_'
+        for file_path in glob.glob(p + '*.py'):
+            testModules.append(path2mod(os.path.relpath(file_path, path)))
+        for file_path in glob.glob(p + '*/__init__.py'):
+            paths.append(os.path.dirname(file_path))
+    # Import modules and add their tests to the suite.
+    sys.path.insert(0, path)
+    for mod in testModules:
+        try:
+            module = import_module(mod)
+        except ImportError:
+            print(f"ERROR: Can't import {mod}, skipping its tests:",
+                  file=sys.stderr)
+            sys.excepthook(*sys.exc_info())
+        else:
+            # if there's a suite defined, incorporate its contents
+            try:
+                suite = module.suite
+            except AttributeError:
+                # Look for individual tests
+                moduleTests = testLoader.loadTestsFromModule(module)
+                # unittest.TestSuite.addTests() doesn't work as advertised,
+                # as it can't load tests from another TestSuite, so we have
+                # to cheat:
+                testSuite.addTest(moduleTests)
+            else:
+                if not callable(suite):
+                    raise AssertionError(f"don't understand suite ({mod})")
+                testSuite.addTest(suite())
+    sys.path.pop(0)
+    return testSuite
+
+
+def path2mod(path):
+    """Convert a file path to a dotted module name."""
+    return path[:-3].replace(os.sep, '.')
 
 
 if __name__ == '__main__':
