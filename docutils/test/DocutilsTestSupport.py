@@ -205,7 +205,7 @@ class CustomTestSuite(unittest.TestSuite):
         id -- identifier for the suite, prepended to test cases.
         suite_settings -- settings overrides for this test suite.
         """
-        unittest.TestSuite.__init__(self, tests)
+        super().__init__(tests)
         self.suite_settings = suite_settings or {}
         if id is None:
             mypath = os.path.abspath(
@@ -288,7 +288,7 @@ class TransformTestCase(CustomTestCase):
         self.parser = parser
         """Input parser for this test case."""
 
-        CustomTestCase.__init__(self, *args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def supports(self, format):
         return True
@@ -343,7 +343,7 @@ class TransformTestSuite(CustomTestSuite):
         self.parser = parser
         """Parser shared by all test cases."""
 
-        CustomTestSuite.__init__(self, suite_settings=suite_settings)
+        super().__init__(suite_settings=suite_settings)
 
     def generateTests(self, dict, dictname='totest',
                       testmethod='test_transforms'):
@@ -647,7 +647,7 @@ class PublishTestSuite(CustomTestSuite):
         """
         `writer_name` is the name of the writer to use.
         """
-        CustomTestSuite.__init__(self, suite_settings=suite_settings)
+        super().__init__(suite_settings=suite_settings)
         self.test_class = WriterPublishTestCase
         self.writer_name = writer_name
 
