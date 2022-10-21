@@ -11,7 +11,8 @@ Test module for statemachine.py.
 import unittest
 import sys
 import re
-from DocutilsTestSupport import statemachine
+
+from docutils import statemachine
 
 
 debug = False

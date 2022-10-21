@@ -9,7 +9,8 @@ Test module for the ViewList class from statemachine.py.
 """
 
 import unittest
-from DocutilsTestSupport import statemachine
+
+from docutils import statemachine
 
 
 class ViewListTests(unittest.TestCase):
