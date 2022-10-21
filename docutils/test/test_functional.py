@@ -37,7 +37,6 @@ class FunctionalTestSuite(DocutilsTestSupport.CustomTestSuite):
     def __init__(self):
         """Process all config files in functional/tests/."""
         super().__init__()
-        os.chdir(DocutilsTestSupport.testroot)
         self.clear_output_directory()
         self.added = 0
         for root, dirs, files in os.walk(join_path(datadir, 'tests')):
@@ -109,7 +108,6 @@ expected output and check it in:
 
     def test(self):
         """Process self.configfile."""
-        os.chdir(DocutilsTestSupport.testroot)
         # Keyword parameters for publish_file:
         namespace = {}
         # Initialize 'settings_overrides' for test settings scripts,

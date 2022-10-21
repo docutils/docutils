@@ -30,6 +30,8 @@ import sys
 import unittest
 import warnings
 
+from test import DocutilsTestSupport
+
 from docutils import frontend, utils
 import docutils.parsers.rst
 warnings.filterwarnings('ignore', category=DeprecationWarning,
@@ -192,6 +194,8 @@ class SafeStringTests_locale(unittest.TestCase):
         os.chdir(b'\xc3\xbc')
     except OSError as e:
         bose = e
+    finally:
+        os.chdir(DocutilsTestSupport.testroot)
     try:
         os.chdir(u'\xfc')
     except OSError as e:
@@ -201,6 +205,8 @@ class SafeStringTests_locale(unittest.TestCase):
             os.chdir(u'\xfc'.encode(sys.getfilesystemencoding(), 'replace'))
         except OSError as e:
             uose = e
+    finally:
+        os.chdir(DocutilsTestSupport.testroot)
     # wrapped test data:
     wbioe = SafeString(bioe)
     wuioe = SafeString(uioe)
