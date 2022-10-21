@@ -316,14 +316,12 @@ class TransformTestSuite(CustomTestSuite):
         Tests should be self-documenting and not require external comments.
         """
         for name, (transforms, cases) in dict.items():
-            for casenum in range(len(cases)):
-                case = cases[casenum]
+            for casenum, (case_input, case_expected) in enumerate(cases):
                 self.addTestCase(
                       TransformTestCase, testmethod,
                       transforms=transforms, parser=self.parser,
-                      input=case[0], expected=case[1],
-                      id='totest[%r][%s]' % (name, casenum),
-                )
+                      input=case_input, expected=case_expected,
+                      id='totest[%r][%s]' % (name, casenum))
 
 
 class ParserTestCase(CustomTestCase):
@@ -378,8 +376,7 @@ class ParserTestSuite(CustomTestSuite):
                 self.addTestCase(
                       self.test_case_class, 'test_parser',
                       input=case_input, expected=case_expected,
-                      id='totest[%r][%s]' % (name, casenum)
-                )
+                      id='totest[%r][%s]' % (name, casenum))
 
 
 class PEPParserTestCase(ParserTestCase):
@@ -489,13 +486,13 @@ class GridTableParserTestSuite(CustomTestSuite):
         Tests should be self-documenting and not require external comments.
         """
         for name, cases in dict.items():
-            for casenum in range(len(cases)):
-                case = cases[casenum]
+            for casenum, (case_input, case_table,
+                          case_expected) in enumerate(cases):
                 self.addTestCase(self.test_case_class, 'test_parse_table',
-                                 input=case[0], expected=case[1],
+                                 input=case_input, expected=case_table,
                                  id='totest[%r][%s]' % (name, casenum))
                 self.addTestCase(self.test_case_class, 'test_parse',
-                                 input=case[0], expected=case[2],
+                                 input=case_input, expected=case_expected,
                                  id='totest[%r][%s]' % (name, casenum))
 
 
@@ -521,10 +518,9 @@ class SimpleTableParserTestSuite(CustomTestSuite):
         Tests should be self-documenting and not require external comments.
         """
         for name, cases in dict.items():
-            for casenum in range(len(cases)):
-                case = cases[casenum]
+            for casenum, (case_input, case_expected) in enumerate(cases):
                 self.addTestCase(self.test_case_class, 'test_parse',
-                                 input=case[0], expected=case[1],
+                                 input=case_input, expected=case_expected,
                                  id='totest[%r][%s]' % (name, casenum))
 
 
@@ -566,11 +562,10 @@ class PublishTestSuite(CustomTestSuite):
 
     def generateTests(self, dict):
         for name, cases in dict.items():
-            for casenum in range(len(cases)):
-                case = cases[casenum]
+            for casenum, (case_input, case_expected) in enumerate(cases):
                 self.addTestCase(
                       self.test_class, 'test_publish',
-                      input=case[0], expected=case[1],
+                      input=case_input, expected=case_expected,
                       id='totest[%r][%s]' % (name, casenum),
                       # Passed to constructor of self.test_class:
                       writer_name=self.writer_name)
@@ -653,10 +648,9 @@ class HtmlPublishPartsTestSuite(CustomTestSuite):
         for name, (settings_overrides, cases) in dict.items():
             original_settings = self.suite_settings.copy()
             self.suite_settings.update(settings_overrides)
-            for casenum in range(len(cases)):
-                case = cases[casenum]
+            for casenum, (case_input, case_expected) in enumerate(cases):
                 self.addTestCase(self.testcase_class, 'test_publish',
-                                 input=case[0], expected=case[1],
+                                 input=case_input, expected=case_expected,
                                  id='totest[%r][%s]' % (name, casenum))
             self.suite_settings = original_settings
 
