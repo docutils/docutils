@@ -149,10 +149,6 @@ class CustomTestCase(unittest.TestCase):
         # empties that dictionary.
         roles._roles = {}
 
-    def compare_output(self, _input, output: str, expected: str) -> None:
-        """`output` and `expected` are strings."""
-        self.assertEqual(output, expected)
-
 
 class CustomTestSuite(unittest.TestSuite):
 
@@ -272,7 +268,7 @@ class TransformTestCase(CustomTestCase):
         document.transformer.components['writer'] = self
         document.transformer.apply_transforms()
         output = document.pformat()
-        self.compare_output(self.input, output, self.expected)
+        self.assertEqual(output, self.expected)
 
     def test_transforms_verbosely(self):
         print('\n', self.id)
@@ -289,7 +285,7 @@ class TransformTestCase(CustomTestCase):
         output = document.pformat()
         print('-' * 70)
         print(output)
-        self.compare_output(self.input, output, self.expected)
+        self.assertEqual(output, self.expected)
 
 
 class TransformTestSuite(CustomTestSuite):
@@ -354,7 +350,7 @@ class ParserTestCase(CustomTestCase):
         document = utils.new_document('test data', settings)
         self.parser.parse(self.input, document)
         output = document.pformat()
-        self.compare_output(self.input, output, self.expected)
+        self.assertEqual(output, self.expected)
 
 
 class ParserTestSuite(CustomTestSuite):
@@ -459,8 +455,8 @@ class GridTableParserTestCase(CustomTestCase):
             output = self.parser.cells
         except Exception as details:
             output = '%s: %s' % (details.__class__.__name__, details)
-        self.compare_output(self.input, pformat(output) + '\n',
-                            pformat(self.expected) + '\n')
+        self.assertEqual(pformat(output),
+                         pformat(self.expected))
 
     def test_parse(self):
         try:
@@ -468,8 +464,8 @@ class GridTableParserTestCase(CustomTestCase):
                                                   'test data'))
         except Exception as details:
             output = '%s: %s' % (details.__class__.__name__, details)
-        self.compare_output(self.input, pformat(output) + '\n',
-                            pformat(self.expected) + '\n')
+        self.assertEqual(pformat(output),
+                         pformat(self.expected))
 
 
 class GridTableParserTestSuite(CustomTestSuite):
@@ -556,7 +552,7 @@ class WriterPublishTestCase(CustomTestCase, docutils.SettingsSpec):
               writer_name=self.writer_name,
               settings_spec=self,
               settings_overrides=self.suite_settings)
-        self.compare_output(self.input, output, str(self.expected))
+        self.assertEqual(output, str(self.expected))
 
 
 class PublishTestSuite(CustomTestSuite):
@@ -604,7 +600,7 @@ class HtmlWriterPublishPartsTestCase(WriterPublishTestCase):
         output = self.format_output(parts)
         # interpolate standard variables:
         expected = self.expected % {'version': docutils.__version__}
-        self.compare_output(self.input, output, expected)
+        self.assertEqual(output, expected)
 
     standard_content_type_template = ('<meta http-equiv="Content-Type"'
                                       ' content="text/html; charset=%s" />\n')
