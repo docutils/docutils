@@ -9,7 +9,7 @@ Test module for nodes.py.
 
 import unittest
 
-from DocutilsTestSupport import nodes, utils
+from docutils import nodes, utils
 
 debug = False
 

@@ -11,10 +11,10 @@ Test module for utils/__init__.py.
 import os
 import sys
 import unittest
-
-from DocutilsTestSupport import docutils, utils, nodes
-
 from io import StringIO
+
+import docutils
+from docutils import utils, nodes
 
 
 class ReporterTests(unittest.TestCase):
