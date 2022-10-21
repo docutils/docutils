@@ -7,10 +7,8 @@
 Tests of runtime settings.
 """
 
-import sys
 import os
 import difflib
-import pprint
 import warnings
 import unittest
 
@@ -130,21 +128,12 @@ class ConfigFileTests(unittest.TestCase):
 
     def compare_output(self, result, expected):
         """`result` and `expected` should both be dicts."""
-        self.assertTrue('record_dependencies' in result)
-        if 'record_dependencies' not in expected:
-            # Delete it if we don't want to test it.
-            del result['record_dependencies']
-        result = pprint.pformat(result) + '\n'
-        expected = pprint.pformat(expected) + '\n'
-        try:
-            self.assertEqual(result, expected)
-        except AssertionError:
-            print('\n%s\n' % (self,), file=sys.stderr)
-            print('-: expected\n+: result', file=sys.stderr)
-            print(''.join(self.compare(
-                      expected.splitlines(True),
-                      result.splitlines(True))), file=sys.stderr)
-            raise
+        self.assertIn('record_dependencies', result)
+        rd_result = result.pop('record_dependencies')
+        rd_expected = expected.pop('record_dependencies', None)
+        if rd_expected is not None:
+            self.assertEqual(str(rd_result), str(rd_expected))
+        self.assertEqual(result, expected)
 
     def test_nofiles(self):
         self.compare_output(self.files_settings(),
