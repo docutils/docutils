@@ -107,6 +107,8 @@ class CustomTestCase(unittest.TestCase):
     compare = difflib.Differ().compare
     """Comparison method shared by all subclasses."""
 
+    maxDiff = None
+
     def __init__(self, method_name, input, expected, id,
                  run_in_debugger=True, suite_settings=None):
         """
@@ -125,7 +127,10 @@ class CustomTestCase(unittest.TestCase):
         self.input = input
         self.expected = expected
         self.run_in_debugger = run_in_debugger
-        self.suite_settings = suite_settings.copy() if suite_settings else {}
+        if suite_settings is not None:
+            self.suite_settings = suite_settings.copy()
+        else:
+            self.suite_settings = {}
 
         super().__init__(method_name)
 
@@ -134,50 +139,29 @@ class CustomTestCase(unittest.TestCase):
         Return string conversion. Overridden to give test id, in addition to
         method name.
         """
-        return '%s; %s' % (self.id, unittest.TestCase.__str__(self))
+        return f'{self.id}; {unittest.TestCase.__str__(self)}'
 
     def __repr__(self):
-        return "<%s %s>" % (self.id, unittest.TestCase.__repr__(self))
+        return f'<{self.id} {unittest.TestCase.__repr__(self)}>'
 
-    def clear_roles(self):
+    def setUp(self):
+        super().setUp()
         # Language-specific roles and roles added by the
         # "default-role" and "role" directives are currently stored
         # globally in the roles._roles dictionary.  This workaround
         # empties that dictionary.
         roles._roles = {}
 
-    def setUp(self):
-        super().setUp()
-        self.clear_roles()
-
-    def compare_output(self, input, output, expected):
-        """`input` should by bytes, `output` and `expected` strings."""
-        if isinstance(input, str):
-            input = input.encode('raw_unicode_escape')
+    def compare_output(self, _input, output, expected):
+        """`output` and `expected` should be strings."""
         if isinstance(expected, bytes):
             expected = expected.decode('utf-8')
         if isinstance(output, bytes):
             output = output.decode('utf-8')
-        # Normalize line endings:
-        if expected:
-            expected = '\n'.join(expected.splitlines())
-        if output:
-            output = '\n'.join(output.splitlines())
-        try:
-            self.assertEqual(output, expected)
-        except AssertionError as error:
-            print('\n%s\ninput:' % (self,), file=sys.stderr)
-            print(input, file=sys.stderr)
-            try:
-                comparison = ''.join(self.compare(expected.splitlines(True),
-                                                  output.splitlines(True)))
-                print('-: expected\n+: output', file=sys.stderr)
-                print(comparison, file=sys.stderr)
-            except AttributeError:      # expected or output not a string
-                # alternative output for non-strings:
-                print('expected: %r' % expected, file=sys.stderr)
-                print('output:   %r' % output, file=sys.stderr)
-            raise error
+        # Normalise line endings:
+        expected = expected and '\n'.join(expected.splitlines())
+        output = output and '\n'.join(output.splitlines())
+        self.assertEqual(output, expected)
 
 
 class CustomTestSuite(unittest.TestSuite):
