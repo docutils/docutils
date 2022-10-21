@@ -8,8 +8,6 @@
 Tests for docutils.transforms.universal.Messages.
 """
 
-if __name__ == '__main__':
-    import __init__  # noqa: F401
 from test import DocutilsTestSupport
 from docutils.transforms.universal import Messages
 from docutils.transforms.references import Substitutions

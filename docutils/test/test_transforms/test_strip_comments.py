@@ -8,8 +8,6 @@
 Tests for docutils.transforms.universal.StripComments.
 """
 
-if __name__ == '__main__':
-    import __init__  # noqa: F401
 from test import DocutilsTestSupport
 from docutils.transforms.universal import StripComments
 from docutils.parsers.rst import Parser

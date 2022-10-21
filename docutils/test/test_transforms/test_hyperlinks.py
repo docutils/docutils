@@ -8,8 +8,6 @@
 Tests for docutils.transforms.references.Hyperlinks.
 """
 
-if __name__ == '__main__':
-    import __init__  # noqa: F401
 from test import DocutilsTestSupport
 from docutils.transforms.references import PropagateTargets, \
      AnonymousHyperlinks, IndirectHyperlinks, ExternalTargets, \

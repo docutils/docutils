@@ -9,8 +9,6 @@ Tests for misc.py "unicode" directive.
 """
 
 
-if __name__ == '__main__':
-    import __init__  # noqa: F401
 from test import DocutilsTestSupport
 
 

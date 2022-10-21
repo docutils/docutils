@@ -19,8 +19,6 @@ TODO: This test fails currently when run as part of "alltests" because
       See also https://sourceforge.net/p/docutils/feature-requests/71/
 """
 
-if __name__ == '__main__':
-    import __init__  # noqa: F401
 from test import DocutilsTestSupport
 from docutils.transforms.references import (
          PropagateTargets, AnonymousHyperlinks, IndirectHyperlinks,

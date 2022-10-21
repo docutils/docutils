@@ -9,8 +9,6 @@ Tests for `docutils.transforms.references.TargetNotes` (via
 `docutils.transforms.universal.LastReaderPending`).
 """
 
-if __name__ == '__main__':
-    import __init__  # noqa: F401
 from test import DocutilsTestSupport
 from docutils.transforms.references import (PropagateTargets, AnonymousHyperlinks,
                                             IndirectHyperlinks, ExternalTargets,
