@@ -118,6 +118,9 @@ class RecordDependenciesTests(unittest.TestCase):
         self.assertTrue(stylesheet in record,
                         '%r should be in %r' % (stylesheet, record))
 
+    def tearDown(self) -> None:
+        os.unlink("record.txt")
+
 
 if __name__ == '__main__':
     unittest.main()
