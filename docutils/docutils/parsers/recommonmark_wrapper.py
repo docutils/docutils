@@ -51,8 +51,8 @@ except ImportError as err:
     ) from err
 else:
     if recommonmark.__version__ < '0.6.0':
-        raise ImportError('The installed version of "recommonmark" is too old. '
-                          'Update with "pip install -U recommonmark".')
+        raise ImportError('The installed version of "recommonmark" is too old.'
+                          ' Update with "pip install -U recommonmark".')
 
 
 # auxiliary function for `document.findall()`
