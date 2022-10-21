@@ -19,6 +19,10 @@ Changes Since 0.19
 
   - Support Ukrainian. Patch by Dmytro Kazanzhy.
 
+* Removed test/coverage.sh, use the coverage.py_ project instead,
+  ``coverage run test/alltests.py`` and ``coverage report``.
+
+.. _coverage.py: https://pypi.org/project/coverage/
 
 Release 0.19 (2022-07-05)
 =========================
