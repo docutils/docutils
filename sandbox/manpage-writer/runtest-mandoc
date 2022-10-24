@@ -45,7 +45,7 @@ inc_ERROR_CNT () {
 }
 
 report_ERROR_CNT () {
-	echo "$ERROR_CNT errors"
+    echo "$ERROR_CNT errors"
 }
 
 CMD="python3 ../../docutils/tools/rst2man.py --traceback"
@@ -72,7 +72,6 @@ for IN_F in $IN_DIR/$FILES ; do
           inc_ERROR_CNT
         fi
       fi
-read A
     done
   fi
 done
@@ -96,7 +95,6 @@ for L in "en" "de" ; do
         inc_ERROR_CNT
       fi
     fi
-read A
   done
 done
 
