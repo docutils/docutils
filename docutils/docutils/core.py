@@ -538,16 +538,17 @@ def publish_doctree(source, source_path=None,
 
     Parameters: see `publish_programmatically`.
     """
-    pub = Publisher(reader=reader, parser=parser, writer=None,
-                    settings=settings,
-                    source_class=source_class,
-                    destination_class=io.NullOutput)
-    pub.set_components(reader_name, parser_name, 'null')
-    pub.process_programmatic_settings(
-        settings_spec, settings_overrides, config_section)
-    pub.set_source(source, source_path)
-    pub.set_destination(None, None)
-    pub.publish(enable_exit_status=enable_exit_status)
+    _output, pub = publish_programmatically(
+        source=source, source_path=source_path,
+        source_class=source_class,
+        destination=None, destination_path=None,
+        destination_class=io.NullOutput,
+        reader=reader, reader_name=reader_name,
+        parser=parser, parser_name=parser_name,
+        writer=None, writer_name='null',
+        settings=settings, settings_spec=settings_spec,
+        settings_overrides=settings_overrides, config_section=config_section,
+        enable_exit_status=enable_exit_status)
     return pub.document
 
 
