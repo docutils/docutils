@@ -68,17 +68,12 @@ class FunctionalTests(unittest.TestCase):
                 namespace = {}
                 # Load variables from the current test file into the namespace
                 exec(test_file.read_text(encoding='utf-8'), namespace)
+                del namespace['__builtins__']  # clean-up
 
                 # Full source, actual output, and expected output paths
-                source_path = INPUT / namespace['test_source']
+                source_path = INPUT / namespace.pop('test_source')
                 destination_path = OUTPUT / namespace['test_destination']
-                expected_path = EXPECTED / namespace['test_destination']
-
-                # remove unneeded keys:
-                for key in 'test_source', 'test_destination', '__builtins__':
-                    del namespace[key]
-                namespace = {k: v for k, v in namespace.items()
-                             if not k.startswith('_')}
+                expected_path = EXPECTED / namespace.pop('test_destination')
 
                 # Get output (automatically written to the output/ directory
                 # by publish_file):
@@ -102,9 +97,6 @@ class FunctionalTests(unittest.TestCase):
                     EXPECTED_OUTPUT_DIFFERS_TEMPLATE.format(
                         exp=expected_path, out=destination_path)
                 )
-        # Execute optional function containing extra tests:
-        if '_test_more' in namespace:
-            namespace['_test_more'](EXPECTED, OUTPUT, self, namespace)
 
 
 if __name__ == '__main__':
