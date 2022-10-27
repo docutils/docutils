@@ -1,9 +1,13 @@
 import filecmp as _filecmp
 
 
-with open('functional/tests/_standalone_rst_defaults.py',
-          encoding='utf-8') as _f:
-    exec(_f.read())
+# Keyword parameters passed to publish_file.
+reader_name = 'standalone'
+parser_name = 'rst'
+
+# Settings.
+settings_overrides['sectsubtitle_xform'] = True
+settings_overrides['syntax_highlight'] = 'none'
 
 # Source and destination file names:
 test_source = 'standalone_rst_s5_html.txt'
