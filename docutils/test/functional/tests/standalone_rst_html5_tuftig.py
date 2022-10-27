@@ -1,5 +1,10 @@
-with open('functional/tests/_standalone_rst_defaults.py') as _f:
-    exec(_f.read())
+# Keyword parameters passed to publish_file.
+reader_name = 'standalone'
+parser_name = 'rst'
+
+# Settings.
+settings_overrides['sectsubtitle_xform'] = True
+settings_overrides['syntax_highlight'] = 'none'
 
 # Source and destination file names.
 test_source = "rst_html5_tuftig.txt"
