@@ -71,12 +71,20 @@ Parsing the Document
 The **Parser** analyzes the the input document and creates a **node
 tree** representation.  In this case we are using the
 **reStructuredText parser** (``docutils/parsers/rst/__init__.py``).
-To see what that node tree looks like, we call quicktest.py_ (which
-can be found in the ``tools/`` directory of the Docutils distribution)
-with our example file (``test.txt``) as first parameter (Windows users
-might need to type ``python quicktest.py test.txt``)::
+To see what that node tree looks like, the below code creates a Docutils
+document and parser to parse our example file without applying any
+tranforms or post-processing.
 
-    $ quicktest.py test.txt
+.. code:: pycon
+
+    >>> from docutils import frontend, utils
+    >>> from docutils.parsers.rst import Parser
+    >>> settings = frontend.get_default_settings(Parser)
+    >>> with open('test.txt', encoding='utf-8') as file:
+    ...     document = utils.new_document(file.name, settings)
+    ...     Parser().parse(file.read(), document)
+    ...
+    >>> print(document.pformat())
     <document source="test.txt">
         <paragraph>
             My
