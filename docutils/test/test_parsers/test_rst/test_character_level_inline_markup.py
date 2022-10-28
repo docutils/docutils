@@ -267,7 +267,7 @@ beware of _ref_ or __attr__ or object.__attr__
 """],
 ]
 
-totest['embedded_URIs'] = [
+totest['embedded_uris'] = [
 [r"""
 Escape chars in URIs:
 
@@ -411,7 +411,7 @@ http://example.com/rST_for_all.html
 """],
 ]
 
-totest['markup recognition rules'] = [
+totest['markup_recognition_rules'] = [
 ["""\
 __This__ is an anonymous reference with simple-inline-markup.
 """,

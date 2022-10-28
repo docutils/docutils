@@ -961,7 +961,7 @@ Invalid phrase reference:
 """],
 ]
 
-totest['embedded_URIs'] = [
+totest['embedded_uris'] = [
 ["""\
 `phrase reference <http://example.com>`_
 """,
@@ -1669,7 +1669,7 @@ Escaped email addresses are not recognized: test\\@example.org
 """],
 ]
 
-totest['markup recognition rules'] = [
+totest['markup_recognition_rules'] = [
 ["""\
 __This__ should be left alone.
 """,

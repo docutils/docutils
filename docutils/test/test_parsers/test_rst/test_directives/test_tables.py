@@ -457,7 +457,7 @@ totest['table'] = [
 """],
 ]
 
-totest['csv-table'] = [
+totest['csv_table'] = [
 ["""\
 .. csv-table:: inline with integral header
    :width: 80%
@@ -1179,7 +1179,7 @@ bad_encoding_result
 """ % empty_txt],
 ]
 
-totest['list-table'] = [
+totest['list_table'] = [
 ["""\
 .. list-table:: list table with integral header
    :widths: 10 20 30

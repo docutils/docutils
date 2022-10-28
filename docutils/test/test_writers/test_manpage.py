@@ -429,7 +429,7 @@ a list
 """],
     ]
 
-totest['double quote'] = [
+totest['double_quote'] = [
         ["""in "defintion list"
     double quotes must be escaped on macro invocations.
 

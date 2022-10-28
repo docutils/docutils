@@ -18,7 +18,7 @@ def suite():
 
 totest = {}
 
-totest['double-width'] = [
+totest['double_width'] = [
 ["""\
 タイトル1
 =========
