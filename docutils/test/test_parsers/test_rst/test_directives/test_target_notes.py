@@ -19,7 +19,7 @@ def suite():
 
 totest = {}
 
-totest['target-notes'] = [
+totest['target_notes'] = [
 ["""\
 .. target-notes::
 """,

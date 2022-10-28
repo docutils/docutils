@@ -20,7 +20,7 @@ def suite():
 
 totest = {}
 
-totest['code-parsing-none'] = [
+totest['code_parsing_none'] = [
 ["""\
 .. code::
 

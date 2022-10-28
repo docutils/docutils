@@ -24,9 +24,9 @@ def suite():
     s = DocutilsTestSupport.ParserTestSuite()
     # eventually skip optional parts:
     if not with_pygments:
-        del totest['include-code']
+        del totest['include_code']
     if not md_parser_class:
-        del totest['include-markdown']
+        del totest['include_markdown']
     s.generateTests(totest)
     return s
 
@@ -1033,7 +1033,7 @@ No TAB expansion with literal include:
 """ % include_literal],
 ]
 
-totest['include-code'] = [
+totest['include_code'] = [
 ["""\
 Included code
 
@@ -1313,7 +1313,7 @@ No circular inclusion.
 ]
 
 # Parsing with Markdown is an optional feature depending on 3rd-party modules:
-totest['include-markdown'] = [
+totest['include_markdown'] = [
 [f"""\
 Include Markdown source.
 

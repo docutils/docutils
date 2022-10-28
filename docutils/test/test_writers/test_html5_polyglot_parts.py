@@ -226,7 +226,7 @@ Some stuff
 }]
 ])
 
-totest['No title promotion'] = ({'doctitle_xform': 0,
+totest['no_title_promotion'] = ({'doctitle_xform': 0,
                                  'stylesheet_path': '',
                                  'embed_stylesheet': 0}, [
 ["""\
@@ -627,7 +627,7 @@ No caption nor legend.
 ])
 
 
-totest['lazy loading'] = ({'image_loading': 'lazy',
+totest['lazy_loading'] = ({'image_loading': 'lazy',
                            'stylesheet_path': '',
                            'embed_stylesheet': 0}, [
 
@@ -660,7 +660,7 @@ totest['lazy loading'] = ({'image_loading': 'lazy',
 ])
 
 
-totest['no backlinks'] = ({'footnote_backlinks': False,
+totest['no_backlinks'] = ({'footnote_backlinks': False,
                            'stylesheet_path': '',
                            'embed_stylesheet': 0}, [
 

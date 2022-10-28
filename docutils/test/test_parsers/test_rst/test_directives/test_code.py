@@ -15,7 +15,7 @@ from docutils.utils.code_analyzer import with_pygments
 def suite():
     s = DocutilsTestSupport.ParserTestSuite()
     if not with_pygments:
-        del totest['code-parsing']
+        del totest['code_parsing']
     s.generateTests(totest)
     return s
 
@@ -95,7 +95,7 @@ totest['code'] = [
 """],
 ]
 
-totest['code-parsing'] = [
+totest['code_parsing'] = [
 ["""\
 .. code:: python3
   :class: testclass

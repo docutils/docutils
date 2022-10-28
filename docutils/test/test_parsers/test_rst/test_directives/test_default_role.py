@@ -19,7 +19,7 @@ def suite():
 
 totest = {}
 
-totest['default-role'] = [
+totest['default_role'] = [
 ["""\
 .. default-role:: subscript
 

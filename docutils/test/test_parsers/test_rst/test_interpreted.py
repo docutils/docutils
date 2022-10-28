@@ -15,7 +15,7 @@ from docutils.utils.code_analyzer import with_pygments
 def suite():
     s = DocutilsTestSupport.ParserTestSuite()
     if not with_pygments:
-        del totest['code-parsing']
+        del totest['code_parsing']
     s.generateTests(totest)
     return s
 
@@ -234,7 +234,7 @@ Code role for inline code snippets:
 """],
 ]
 
-totest['code-parsing'] = [
+totest['code_parsing'] = [
 ["""\
 .. role:: tex(code)
    :language: latex

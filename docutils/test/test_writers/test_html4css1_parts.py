@@ -23,7 +23,7 @@ def suite():
 
 totest = {}
 
-totest['Title promotion'] = ({'stylesheet_path': '',
+totest['title_promotion'] = ({'stylesheet_path': '',
                               'embed_stylesheet': 0}, [
 ["""\
 Simple String
@@ -185,7 +185,7 @@ Some stuff
 }]
 ])
 
-totest['No title promotion'] = ({'doctitle_xform': 0,
+totest['no_title_promotion'] = ({'doctitle_xform': 0,
                                  'stylesheet_path': '',
                                  'embed_stylesheet': 0}, [
 ["""\

@@ -74,7 +74,7 @@ totest['argument_and_content'] = [
 """],
 ]
 
-totest['content with blank line'] = [
+totest['content_with_blank_line'] = [
 ["""\
 .. math::
 

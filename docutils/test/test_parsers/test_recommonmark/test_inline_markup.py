@@ -376,7 +376,7 @@ across lines]
 """],
 ]
 
-totest['appended_URIs'] = [
+totest['appended_uris'] = [
 ["""\
 [anonymous reference](http://example.com)
 """,
@@ -432,7 +432,7 @@ Relative URIs' reference text can't be omitted:
 """],
 ]
 
-totest['standalone hyperlink'] = [
+totest['standalone_hyperlink'] = [
 ["""\
 CommonMark calls standalone hyperlinks
 like <http://example.com> "autolinks".
@@ -448,7 +448,7 @@ like <http://example.com> "autolinks".
 """],
 ]
 
-totest['raw HTML'] = [
+totest['raw_html'] = [
 ["""\
 foo <a href="uri"> bar
 """,
@@ -497,7 +497,7 @@ Hard line breaks are not supported by Docutils.
 """],
 ]
 
-totest['markup recognition rules'] = [
+totest['markup_recognition_rules'] = [
 [r"""
 Character-level m*a***r**`k`_u_p
 works except for underline.

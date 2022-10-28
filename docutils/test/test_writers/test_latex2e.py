@@ -147,7 +147,7 @@ head_textcomp + r"""
 """],
 ]
 
-totest['spanish quote'] = [
+totest['spanish_quote'] = [
 [".. role:: language-es\n\nUnd damit :language-es:`basta`!",
 head_template.substitute(dict(parts,
 requirements=r"""\usepackage{ifthen}
@@ -162,7 +162,7 @@ Und damit \foreignlanguage{spanish}{basta}!
 """],
 ]
 
-totest['code role'] = [
+totest['code_role'] = [
 [':code:`x=1`',
 head_template.substitute(dict(parts, requirements=parts['requirements']
                               + '\\usepackage{color}\n',
@@ -248,7 +248,7 @@ Paragraph 2.
 """],
 ]
 
-totest['footnote text'] = [
+totest['footnote_text'] = [
 # input
 ["""\
 .. [1] paragraph

@@ -22,7 +22,7 @@ def suite():
 
 totest = {}
 
-totest['code-parsing-long'] = [
+totest['code_parsing_long'] = [
 ["""\
 .. code:: python3
   :number-lines: 7
