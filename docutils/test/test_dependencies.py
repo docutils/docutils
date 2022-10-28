@@ -12,7 +12,6 @@ import os.path
 import unittest
 from io import StringIO
 
-import DocutilsTestSupport              # must be imported before docutils
 import docutils.core
 import docutils.utils
 import docutils.io
