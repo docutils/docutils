@@ -13,6 +13,8 @@ import platform
 
 from test import DocutilsTestSupport
 
+import docutils
+
 
 def suite():
     settings = {'template': os.path.join(DocutilsTestSupport.testroot,
@@ -50,7 +52,7 @@ Section
 
 Some text.
 """,
-r'''head_prefix = """\
+fr'''head_prefix = """\
 <?xml version="1.0" encoding="utf-8" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
@@ -59,13 +61,13 @@ r'''head_prefix = """\
 
 head = """\
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils %(version)s: https://docutils.sourceforge.io/" />
+<meta name="generator" content="Docutils {docutils.__version__}: https://docutils.sourceforge.io/" />
 <title>Document Title</title>
 <meta name="author" content="Me" />"""
 
 
 stylesheet = """\
-<link rel="stylesheet" href="%(drive)s/test.css" type="text/css" />"""
+<link rel="stylesheet" href="{drive_prefix}/test.css" type="text/css" />"""
 
 
 body_prefix = """\
@@ -116,13 +118,13 @@ head_prefix = """\
 
 head = """\
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils %(version)s: https://docutils.sourceforge.io/" />
+<meta name="generator" content="Docutils {docutils.__version__}: https://docutils.sourceforge.io/" />
 <title>Document Title</title>
 <meta name="author" content="Me" />"""
 
 
 stylesheet = """\
-<link rel="stylesheet" href="%(drive)s/test.css" type="text/css" />"""
+<link rel="stylesheet" href="{drive_prefix}/test.css" type="text/css" />"""
 
 
 body_prefix = """\
@@ -185,7 +187,7 @@ footer text
 
 meta = """\
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils %(version)s: https://docutils.sourceforge.io/" />
+<meta name="generator" content="Docutils {docutils.__version__}: https://docutils.sourceforge.io/" />
 <meta name="author" content="Me" />"""
 
 
@@ -197,13 +199,13 @@ fragment = """\
 
 
 html_prolog = """\
-<?xml version="1.0" encoding="%%s" ?>
+<?xml version="1.0" encoding="%s" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">"""
 
 
 html_head = """\
-<meta http-equiv="Content-Type" content="text/html; charset=%%s" />
-<meta name="generator" content="Docutils %(version)s: https://docutils.sourceforge.io/" />
+<meta http-equiv="Content-Type" content="text/html; charset=%s" />
+<meta name="generator" content="Docutils {docutils.__version__}: https://docutils.sourceforge.io/" />
 <title>Document Title</title>
 <meta name="author" content="Me" />"""
 
@@ -237,9 +239,7 @@ html_body = """\
 <hr class="footer" />
 footer text
 </div>"""
-''' % {'version': DocutilsTestSupport.docutils.__version__,
-       'drive': drive_prefix,
-    }]
+''']
 ]
 
 if __name__ == '__main__':

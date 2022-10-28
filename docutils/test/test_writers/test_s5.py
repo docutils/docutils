@@ -13,6 +13,8 @@ import platform
 
 from test import DocutilsTestSupport
 
+import docutils
+
 
 def suite():
     settings = {'stylesheet_path': '/test.css',
@@ -25,12 +27,11 @@ def suite():
     return s
 
 
-interpolations = {
-        'version': DocutilsTestSupport.docutils.__version__,
-        'drive': '', }
+if platform.system() == "Windows":
+    drive_prefix = os.path.splitdrive(os.getcwd())[0]
+else:
+    drive_prefix = ""
 
-if platform.system() == 'Windows':
-    interpolations['drive'] = os.path.splitdrive(os.getcwd())[0]
 
 totest_1 = {}
 totest_2 = {}
@@ -48,16 +49,16 @@ First Slide
 
 Slide text.
 """,
-"""\
+f"""\
 <?xml version="1.0" encoding="utf-8" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils %(version)s: https://docutils.sourceforge.io/" />
+<meta name="generator" content="Docutils {docutils.__version__}: https://docutils.sourceforge.io/" />
 <meta name="version" content="S5 1.1" />
 <title>Show Title</title>
-<link rel="stylesheet" href="%(drive)s/test.css" type="text/css" />
+<link rel="stylesheet" href="{drive_prefix}/test.css" type="text/css" />
 <!-- configuration parameters -->
 <meta name="defaultView" content="slideshow" />
 <meta name="controlVis" content="hidden" />
@@ -73,7 +74,7 @@ Slide text.
       type="text/css" media="projection" id="operaFix" />
 
 <style type="text/css">
-#currentSlide {display: none;}
+#currentSlide {{display: none;}}
 </style>
 </head>
 <body>
@@ -102,7 +103,7 @@ Slide text.
 </div>
 </body>
 </html>
-""" % interpolations]
+"""]
 ]
 
 totest_2['settings'] = [
@@ -113,16 +114,16 @@ totest_2['settings'] = [
 
 We're just checking the settings
 """,
-"""\
+f"""\
 <?xml version="1.0" encoding="utf-8" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils %(version)s: https://docutils.sourceforge.io/" />
+<meta name="generator" content="Docutils {docutils.__version__}: https://docutils.sourceforge.io/" />
 <meta name="version" content="S5 1.1" />
 <title>Bogus Slide Show</title>
-<link rel="stylesheet" href="%(drive)s/test.css" type="text/css" />
+<link rel="stylesheet" href="{drive_prefix}/test.css" type="text/css" />
 <!-- configuration parameters -->
 <meta name="defaultView" content="outline" />
 <meta name="controlVis" content="visible" />
@@ -138,7 +139,7 @@ We're just checking the settings
       type="text/css" media="projection" id="operaFix" />
 
 <style type="text/css">
-#currentSlide {display: none;}
+#currentSlide {{display: none;}}
 </style>
 </head>
 <body>
@@ -162,7 +163,7 @@ We're just checking the settings
 </div>
 </body>
 </html>
-""" % interpolations]
+"""]
 ]
 
 if __name__ == '__main__':
