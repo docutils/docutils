@@ -556,10 +556,7 @@ class HtmlWriterPublishPartsTestCase(WriterPublishTestCase):
             writer_name=self.writer_name,
             settings_spec=self,
             settings_overrides=self.suite_settings)
-        output = self.format_output(parts)
-        # interpolate standard variables:
-        expected = self.expected % {'version': docutils.__version__}
-        self.assertEqual(output, expected)
+        self.assertEqual(self.format_output(parts), self.expected)
 
     standard_content_type_template = ('<meta http-equiv="Content-Type"'
                                       ' content="text/html; charset=%s" />\n')
@@ -594,15 +591,7 @@ class HtmlWriterPublishPartsTestCase(WriterPublishTestCase):
             self.standard_html_meta_value, '...')
         parts['html_prolog'] = parts['html_prolog'].replace(
             self.standard_html_prolog, '')
-        output = []
-        for key in sorted(parts.keys()):
-            if not parts[key]:
-                continue
-            output.append("%r: '''%s'''"
-                          % (key, parts[key]))
-            if output[-1].endswith("\n'''"):
-                output[-1] = output[-1][:-4] + "\\n'''"
-        return '{' + ',\n '.join(output) + '}\n'
+        return {k: v for k, v in parts.items() if v}
 
 
 class HtmlPublishPartsTestSuite(CustomTestSuite):
