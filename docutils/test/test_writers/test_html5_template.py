@@ -13,6 +13,8 @@ import platform
 
 from test import DocutilsTestSupport
 
+import docutils
+
 
 def suite():
     settings = {'template': os.path.join(DocutilsTestSupport.testroot,
@@ -50,7 +52,7 @@ Section
 
 Some text.
 """,
-r'''head_prefix = """\
+fr'''head_prefix = """\
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>"""
@@ -59,13 +61,13 @@ r'''head_prefix = """\
 head = """\
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="generator" content="Docutils %(version)s: https://docutils.sourceforge.io/" />
+<meta name="generator" content="Docutils {docutils.__version__}: https://docutils.sourceforge.io/" />
 <title>Document Title</title>
 <meta name="author" content="Me" />"""
 
 
 stylesheet = """\
-<link rel="stylesheet" href="%(drive)s/test.css" type="text/css" />"""
+<link rel="stylesheet" href="{drive_prefix}/test.css" type="text/css" />"""
 
 
 body_prefix = """\
@@ -111,13 +113,13 @@ head_prefix = """\
 head = """\
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="generator" content="Docutils %(version)s: https://docutils.sourceforge.io/" />
+<meta name="generator" content="Docutils {docutils.__version__}: https://docutils.sourceforge.io/" />
 <title>Document Title</title>
 <meta name="author" content="Me" />"""
 
 
 stylesheet = """\
-<link rel="stylesheet" href="%(drive)s/test.css" type="text/css" />"""
+<link rel="stylesheet" href="{drive_prefix}/test.css" type="text/css" />"""
 
 
 body_prefix = """\
@@ -175,7 +177,7 @@ footer = """\
 meta = """\
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="generator" content="Docutils %(version)s: https://docutils.sourceforge.io/" />
+<meta name="generator" content="Docutils {docutils.__version__}: https://docutils.sourceforge.io/" />
 <meta name="author" content="Me" />"""
 
 
@@ -191,9 +193,9 @@ html_prolog = """\
 
 
 html_head = """\
-<meta charset="%%s" />
+<meta charset="%s" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="generator" content="Docutils %(version)s: https://docutils.sourceforge.io/" />
+<meta name="generator" content="Docutils {docutils.__version__}: https://docutils.sourceforge.io/" />
 <title>Document Title</title>
 <meta name="author" content="Me" />"""
 
@@ -222,9 +224,7 @@ html_body = """\
 <footer>
 <p>footer text</p>
 </footer>"""
-''' % {'version': DocutilsTestSupport.docutils.__version__,
-       'drive': drive_prefix,
-    }]
+''']
 ]
 
 if __name__ == '__main__':
