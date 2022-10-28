@@ -303,8 +303,7 @@ class TransformTestSuite(CustomTestSuite):
 
         super().__init__(suite_settings=suite_settings)
 
-    def generateTests(self, dict,
-                      testmethod='test_transforms'):
+    def generateTests(self, dict):
         """
         Stock the suite with test cases generated from a test data dictionary.
 
@@ -317,10 +316,10 @@ class TransformTestSuite(CustomTestSuite):
         for name, (transforms, cases) in dict.items():
             for casenum, (case_input, case_expected) in enumerate(cases):
                 self.addTestCase(
-                      TransformTestCase, testmethod,
+                      TransformTestCase, 'test_transforms',
                       transforms=transforms, parser=self.parser,
                       input=case_input, expected=case_expected,
-                      id='totest[%r][%s]' % (name, casenum))
+                      id=f'totest[{name!r}][{casenum}]')
 
 
 class ParserTestCase(CustomTestCase):
@@ -375,7 +374,7 @@ class ParserTestSuite(CustomTestSuite):
                 self.addTestCase(
                       self.test_case_class, 'test_parser',
                       input=case_input, expected=case_expected,
-                      id='totest[%r][%s]' % (name, casenum))
+                      id=f'totest[{name!r}][{casenum}]')
 
 
 class PEPParserTestCase(ParserTestCase):
@@ -489,10 +488,10 @@ class GridTableParserTestSuite(CustomTestSuite):
                           case_expected) in enumerate(cases):
                 self.addTestCase(self.test_case_class, 'test_parse_table',
                                  input=case_input, expected=case_table,
-                                 id='totest[%r][%s]' % (name, casenum))
+                                 id=f'totest[{name!r}][{casenum}]')
                 self.addTestCase(self.test_case_class, 'test_parse',
                                  input=case_input, expected=case_expected,
-                                 id='totest[%r][%s]' % (name, casenum))
+                                 id=f'totest[{name!r}][{casenum}]')
 
 
 class SimpleTableParserTestCase(GridTableParserTestCase):
@@ -520,7 +519,7 @@ class SimpleTableParserTestSuite(CustomTestSuite):
             for casenum, (case_input, case_expected) in enumerate(cases):
                 self.addTestCase(self.test_case_class, 'test_parse',
                                  input=case_input, expected=case_expected,
-                                 id='totest[%r][%s]' % (name, casenum))
+                                 id=f'totest[{name!r}][{casenum}]')
 
 
 class WriterPublishTestCase(CustomTestCase, docutils.SettingsSpec):
@@ -565,7 +564,7 @@ class PublishTestSuite(CustomTestSuite):
                 self.addTestCase(
                       self.test_class, 'test_publish',
                       input=case_input, expected=case_expected,
-                      id='totest[%r][%s]' % (name, casenum),
+                      id=f'totest[{name!r}][{casenum}]',
                       # Passed to constructor of self.test_class:
                       writer_name=self.writer_name)
 
@@ -650,7 +649,7 @@ class HtmlPublishPartsTestSuite(CustomTestSuite):
             for casenum, (case_input, case_expected) in enumerate(cases):
                 self.addTestCase(self.testcase_class, 'test_publish',
                                  input=case_input, expected=case_expected,
-                                 id='totest[%r][%s]' % (name, casenum))
+                                 id=f'totest[{name!r}][{casenum}]')
             self.suite_settings = original_settings
 
 
