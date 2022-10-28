@@ -12,9 +12,12 @@ dictionaries (redundant), along with 'meta' and 'stylesheet' entries with
 standard values, and any entries with empty values.
 """
 
-from DocutilsTestSupport import (HtmlWriterPublishPartsTestCase,
-                                 HtmlPublishPartsTestSuite)
+from test import DocutilsTestSupport
+
 from docutils import __version__
+
+HtmlWriterPublishPartsTestCase = \
+    DocutilsTestSupport.HtmlWriterPublishPartsTestCase
 
 
 class Html5WriterPublishPartsTestCase(HtmlWriterPublishPartsTestCase):
@@ -37,9 +40,20 @@ class Html5WriterPublishPartsTestCase(HtmlWriterPublishPartsTestCase):
     standard_html_prolog = '<!DOCTYPE html>\n'
 
 
-class Html5PublishPartsTestSuite(HtmlPublishPartsTestSuite):
+class Html5PublishPartsTestSuite(DocutilsTestSupport.CustomTestSuite):
 
     testcase_class = Html5WriterPublishPartsTestCase
+
+    def generateTests(self, dict):
+        for name, (settings_overrides, cases) in dict.items():
+            original_settings = self.suite_settings.copy()
+            self.suite_settings.update(settings_overrides)
+            for casenum, (case_input, case_expected) in enumerate(cases):
+                self.addTestCase(
+                    Html5WriterPublishPartsTestCase, 'test_publish',
+                    input=case_input, expected=case_expected,
+                    id=f'totest[{name!r}][{casenum}]')
+            self.suite_settings = original_settings
 
 
 def suite():
