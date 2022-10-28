@@ -14,22 +14,35 @@ standard values, and any entries with empty values.
 
 from test import DocutilsTestSupport
 
-from docutils import __version__
+import docutils
+import docutils.core
 
-HtmlWriterPublishPartsTestCase = \
-    DocutilsTestSupport.HtmlWriterPublishPartsTestCase
+WriterPublishTestCase = DocutilsTestSupport.WriterPublishTestCase
 
 
-class Html5WriterPublishPartsTestCase(HtmlWriterPublishPartsTestCase):
+class Html5WriterPublishPartsTestCase(WriterPublishTestCase):
     """Test case for HTML5 writer via the publish_parts interface."""
 
     writer_name = 'html5'
-    settings_default_overrides = HtmlWriterPublishPartsTestCase.settings_default_overrides.copy()
+
+    settings_default_overrides = \
+        WriterPublishTestCase.settings_default_overrides.copy()
+    settings_default_overrides['stylesheet'] = ''
     settings_default_overrides['section_self_link'] = True
+
+    def test_publish(self):
+        parts = docutils.core.publish_parts(
+            source=self.input,
+            reader_name='standalone',
+            parser_name='restructuredtext',
+            writer_name=self.writer_name,
+            settings_spec=self,
+            settings_overrides=self.suite_settings)
+        self.assertEqual(self.format_output(parts), self.expected)
 
     standard_content_type_template = '<meta charset="%s" />\n'
     standard_generator_template = '<meta name="generator"' \
-        f' content="Docutils {__version__}: ' \
+        f' content="Docutils {docutils.__version__}: ' \
         'https://docutils.sourceforge.io/" />\n'
     standard_viewport_template = '<meta name="viewport"' \
         ' content="width=device-width, initial-scale=1" />\n'
@@ -39,6 +52,27 @@ class Html5WriterPublishPartsTestCase(HtmlWriterPublishPartsTestCase):
                                 + standard_generator_template)
     standard_meta_value = standard_html_meta_value % 'utf-8'
     standard_html_prolog = '<!DOCTYPE html>\n'
+
+    def format_output(self, parts):
+        """Minimize & standardize the output."""
+        # remove redundant parts & uninteresting parts:
+        del parts['whole']
+        assert parts['body'] == parts['fragment']
+        del parts['body']
+        del parts['body_pre_docinfo']
+        del parts['body_prefix']
+        del parts['body_suffix']
+        del parts['head']
+        del parts['head_prefix']
+        del parts['encoding']
+        del parts['version']
+        # remove standard portions:
+        parts['meta'] = parts['meta'].replace(self.standard_meta_value, '')
+        parts['html_head'] = parts['html_head'].replace(
+            self.standard_html_meta_value, '...')
+        parts['html_prolog'] = parts['html_prolog'].replace(
+            self.standard_html_prolog, '')
+        return {k: v for k, v in parts.items() if v}
 
 
 class Html5PublishPartsTestSuite(DocutilsTestSupport.CustomTestSuite):

@@ -18,7 +18,6 @@ Exports the following:
     - `TransformTestSuite`
     - `ParserTestCase`
     - `ParserTestSuite`
-    - `ParserTransformTestCase`
     - `PEPParserTestCase`
     - `PEPParserTestSuite`
     - `GridTableParserTestCase`
@@ -26,11 +25,7 @@ Exports the following:
     - `SimpleTableParserTestCase`
     - `SimpleTableParserTestSuite`
     - `WriterPublishTestCase`
-    - `LatexWriterPublishTestCase`
-    - `PseudoXMLWriterPublishTestCase`
-    - `HtmlWriterPublishTestCase`
     - `PublishTestSuite`
-    - `HtmlFragmentTestSuite`
 """
 __docformat__ = 'reStructuredText'
 
@@ -534,78 +529,6 @@ class PublishTestSuite(CustomTestSuite):
                       id=f'totest[{name!r}][{casenum}]',
                       # Passed to constructor of self.test_class:
                       writer_name=self.writer_name)
-
-
-class HtmlWriterPublishPartsTestCase(WriterPublishTestCase):
-
-    """
-    Test case for HTML writer via the publish_parts interface.
-    """
-
-    writer_name = 'html'
-
-    settings_default_overrides = \
-        WriterPublishTestCase.settings_default_overrides.copy()
-    settings_default_overrides['stylesheet'] = ''
-
-    def test_publish(self):
-        parts = docutils.core.publish_parts(
-            source=self.input,
-            reader_name='standalone',
-            parser_name='restructuredtext',
-            writer_name=self.writer_name,
-            settings_spec=self,
-            settings_overrides=self.suite_settings)
-        self.assertEqual(self.format_output(parts), self.expected)
-
-    standard_content_type_template = ('<meta http-equiv="Content-Type"'
-                                      ' content="text/html; charset=%s" />\n')
-    standard_generator_template = (
-        '<meta name="generator"'
-        f' content="Docutils {docutils.__version__}: '
-        f'https://docutils.sourceforge.io/" />\n')
-    standard_html_meta_value = (
-        standard_content_type_template
-        + standard_generator_template)
-    standard_meta_value = standard_html_meta_value % 'utf-8'
-    standard_html_prolog = (
-        '<?xml version="1.0" encoding="%s" ?>\n'
-        '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" '
-        '"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">\n')
-
-    def format_output(self, parts):
-        """Minimize & standardize the output."""
-        # remove redundant parts & uninteresting parts:
-        del parts['whole']
-        assert parts['body'] == parts['fragment']
-        del parts['body']
-        del parts['body_pre_docinfo']
-        del parts['body_prefix']
-        del parts['body_suffix']
-        del parts['head']
-        del parts['head_prefix']
-        del parts['encoding']
-        del parts['version']
-        # remove standard portions:
-        parts['meta'] = parts['meta'].replace(self.standard_meta_value, '')
-        parts['html_head'] = parts['html_head'].replace(
-            self.standard_html_meta_value, '...')
-        parts['html_prolog'] = parts['html_prolog'].replace(
-            self.standard_html_prolog, '')
-        return {k: v for k, v in parts.items() if v}
-
-
-class HtmlPublishPartsTestSuite(CustomTestSuite):
-    def generateTests(self, dict):
-        for name, (settings_overrides, cases) in dict.items():
-            original_settings = self.suite_settings.copy()
-            self.suite_settings.update(settings_overrides)
-            for casenum, (case_input, case_expected) in enumerate(cases):
-                self.addTestCase(
-                    HtmlWriterPublishPartsTestCase, 'test_publish',
-                    input=case_input, expected=case_expected,
-                    id=f'totest[{name!r}][{casenum}]')
-            self.suite_settings = original_settings
 
 
 def exception_data(func, *args, **kwds):
