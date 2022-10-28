@@ -7,12 +7,7 @@
 Exports the following:
 
 :Modules:
-    - `statemachine` is 'docutils.statemachine'
-    - `nodes` is 'docutils.nodes'
-    - `urischemes` is 'docutils.utils.urischemes'
     - `utils` is 'docutils.utils'
-    - `transforms` is 'docutils.transforms'
-    - `states` is 'docutils.parsers.rst.states'
     - `tableparser` is 'docutils.parsers.rst.tableparser'
 
 :Classes:
@@ -43,7 +38,6 @@ import difflib
 import inspect
 import os
 import sys
-import traceback
 import unittest
 from io import StringIO
 from pprint import pformat
@@ -51,27 +45,16 @@ from pprint import pformat
 testroot = os.path.abspath(os.path.dirname(__file__) or os.curdir)
 os.chdir(testroot)
 sys.path.insert(0, os.path.normpath(os.path.join(testroot, '..')))
-sys.path.append(os.path.normpath(os.path.join(testroot, '..', 'extras')))
 sys.path.insert(0, testroot)
 
-try:
-    import docutils
-    import docutils.core
-    from docutils import frontend, nodes, statemachine, utils   # noqa: F401
-    from docutils.utils import urischemes                       # noqa: F401
-    from docutils.transforms import universal
-    from docutils.parsers import rst
-    from docutils.parsers.rst import states, tableparser, roles, languages  # noqa: F401, E501
-    from docutils.readers import standalone, pep                # noqa: F401
-    from docutils.statemachine import StringList, string2lines
-except ImportError:
-    # The importing module (usually __init__.py in one of the
-    # subdirectories) may catch ImportErrors in order to detect the
-    # absence of DocutilsTestSupport in sys.path.  Thus, ImportErrors
-    # resulting from problems with importing Docutils modules must be
-    # caught here.
-    traceback.print_exc()
-    raise SystemExit(1)
+import docutils   # NoQA: E402
+import docutils.core   # NoQA: E402
+from docutils import frontend, utils   # NoQA: E402
+from docutils.transforms import universal   # NoQA: E402
+from docutils.parsers import rst   # NoQA: E402
+from docutils.parsers.rst import tableparser, roles   # NoQA: E402
+from docutils.readers import pep   # NoQA: E402
+from docutils.statemachine import StringList, string2lines   # NoQA: E402
 
 
 # Hack to make repr(StringList) look like repr(list):
