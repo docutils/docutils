@@ -562,10 +562,11 @@ class HtmlWriterPublishPartsTestCase(WriterPublishTestCase):
                                       ' content="text/html; charset=%s" />\n')
     standard_generator_template = (
         '<meta name="generator"'
-        ' content="Docutils %s: https://docutils.sourceforge.io/" />\n')
+        f' content="Docutils {docutils.__version__}: '
+        f'https://docutils.sourceforge.io/" />\n')
     standard_html_meta_value = (
         standard_content_type_template
-        + standard_generator_template % docutils.__version__)
+        + standard_generator_template)
     standard_meta_value = standard_html_meta_value % 'utf-8'
     standard_html_prolog = (
         '<?xml version="1.0" encoding="%s" ?>\n'
@@ -595,7 +596,6 @@ class HtmlWriterPublishPartsTestCase(WriterPublishTestCase):
 
 
 class HtmlPublishPartsTestSuite(CustomTestSuite):
-
     def generateTests(self, dict):
         for name, (settings_overrides, cases) in dict.items():
             original_settings = self.suite_settings.copy()
