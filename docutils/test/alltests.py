@@ -116,6 +116,16 @@ def path2mod(path):
     return path[:-3].replace(os.sep, '.')
 
 
+class NumbersTestResult(unittest.TextTestResult):
+    """Result class that counts subTests."""
+    def addSubTest(self, test, subtest, error):
+        super().addSubTest(test, subtest, error)
+        self.testsRun += 1
+        if self.dots:
+            self.stream.write('.' if error is None else 'E')
+            self.stream.flush()
+
+
 if __name__ == '__main__':
     suite = loadTestModules(DocutilsTestSupport.testroot)
     print(f'Testing Docutils {docutils.__version__} '
@@ -126,7 +136,7 @@ if __name__ == '__main__':
     print(f'Working directory: {os.getcwd()}')
     print(f'Docutils package: {os.path.dirname(docutils.__file__)}')
     sys.stdout.flush()
-    result = unittest.TextTestRunner().run(suite)
+    result = unittest.TextTestRunner(resultclass=NumbersTestResult).run(suite)
     finish = time.time()
     print(f'Elapsed time: {finish - start:.3f} seconds')
     sys.exit(not result.wasSuccessful())
