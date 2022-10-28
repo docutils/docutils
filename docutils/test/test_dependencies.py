@@ -10,6 +10,8 @@ Test module for the --record-dependencies option.
 
 import os.path
 import unittest
+from io import StringIO
+
 import DocutilsTestSupport              # must be imported before docutils
 import docutils.core
 import docutils.utils
@@ -41,7 +43,7 @@ class RecordDependenciesTests(unittest.TestCase):
         settings.setdefault('settings_overrides', {})
         settings['settings_overrides'].update(_disable_config=True,
                                               record_dependencies=recorder)
-        docutils.core.publish_file(destination=DocutilsTestSupport.DevNull(),
+        docutils.core.publish_file(destination=StringIO(),  # ignored
                                    **settings)
         recorder.close()
         # Read the record file:

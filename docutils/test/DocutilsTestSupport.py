@@ -36,7 +36,6 @@ Exports the following:
     - `HtmlWriterPublishTestCase`
     - `PublishTestSuite`
     - `HtmlFragmentTestSuite`
-    - `DevNull` (output sink)
 """
 __docformat__ = 'reStructuredText'
 
@@ -46,6 +45,7 @@ import os
 import sys
 import traceback
 import unittest
+from io import StringIO
 from pprint import pformat
 
 testroot = os.path.abspath(os.path.dirname(__file__) or os.curdir)
@@ -76,17 +76,6 @@ except ImportError:
 
 # Hack to make repr(StringList) look like repr(list):
 StringList.__repr__ = StringList.__str__
-
-
-class DevNull:
-
-    """Output sink."""
-
-    def write(self, string):
-        pass
-
-    def close(self):
-        pass
 
 
 StandardTestCase = unittest.TestCase
@@ -238,7 +227,7 @@ class TransformTestCase(CustomTestCase):
     settings.report_level = 1
     settings.halt_level = 5
     settings.debug = False
-    settings.warning_stream = DevNull()
+    settings.warning_stream = StringIO()  # ignored
     unknown_reference_resolvers = ()
 
     def __init__(self, *args, parser=None, transforms=None, **kwargs):
