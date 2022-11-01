@@ -7,19 +7,13 @@
 .PHONY: convert
 convert: docutils-git prest-git sandbox-git web-git
 
-# Get and install reposurgeon
+# Install reposurgeon
 # ===========================
 
-.PHONY: reposurgeon-dependencies
-reposurgeon-dependencies:
-	sudo apt install -y make golang asciidoctor cvs-fast-export subversion cvs mercurial rsync golint shellcheck
-
+# requires reposurgeon 4.31; this is the latest version in Ubuntu 22.04
 .PHONY: reposurgeon-install
-reposurgeon-install: reposurgeon-dependencies
-	git clone --depth=1 --branch 4.32 https://gitlab.com/esr/reposurgeon.git
-	$(MAKE) -C reposurgeon all
-	sudo $(MAKE) -C reposurgeon install
-	$(MAKE) -C reposurgeon test
+reposurgeon-install:
+	sudo apt install --yes make rsync cvs-fast-export subversion cvs reposurgeon
 
 # Get local copies of the SVN and CVS sources
 # ===========================================
@@ -49,9 +43,17 @@ structuredtext.fi: structuredtext-mirror
 # Create the git repositories
 # ===========================
 
-common-git: docutils.svn docstring.fi structuredtext.fi common.lift cvs.lift docutils.map
+common-git: docutils.svn docstring.fi structuredtext.fi
+	# prepare the two
+	reposurgeon 'script common_cvs.lift'
+	reposurgeon 'script common_load.lift'
+	mkdir -p docutils_tmp_early
+	reposurgeon 'read <docutils_early.fi' 'prefer git' 'write docutils_tmp_early'
+	mkdir -p docutils_tmp_late
+	reposurgeon 'read <docutils_late.fi' 'prefer git' 'write docutils_tmp_late'
+	./common_combine.sh
 	# TODO replace symlinks with copies
-	reposurgeon 'script common.lift' 'write >common.fi' 'rebuild common-git'
+	reposurgeon 'script common_clean.lift' 'write >common.fi' 'rebuild common-git'
 
 docutils-git: common-git docutils.lift
 	reposurgeon 'script docutils.lift' 'rebuild docutils-git'

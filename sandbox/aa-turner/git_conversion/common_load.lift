@@ -1,0 +1,66 @@
+# common_load.lift
+
+# These reposurgeon scripts are common to all repositories.
+# They are run in order:
+# 1. common_load.lift
+# 2. common_merge.sh
+# 3. common_clean.lift
+
+# Set up options
+set canonicalize
+set progress
+prefer git
+
+# Read subversion repo
+read --no-automatic-ignores --user-ignores <docutils.svn
+authors read <docutils.map
+prefer git
+
+# Update commit messages
+gitify
+=C filter dedos
+
+# Add backreference to SVN IDs
+=C append "\n\nSubversion-Revision-ID: %LEGACY%" --legacy --rstrip
+
+# Delete branch-creation commits in Subversion, which are prefixed with
+# "emptycommit".
+tag delete /emptycommit/
+
+# Delete invalid tags and branches
+tag delete deleted/r3814/docutils-0.3.9-root
+tag delete rel-0.15-root 
+branch delete /tags\/.*/
+branch delete refs/tags/start
+branch delete refs/tags/merged_to_nesting
+branch delete refs/heads/address-rendering
+branch delete refs/heads/index-bug
+
+# Remove "This commit was manufactured by cvs2svn ..." commits
+<1813> squash --quiet --delete
+<2531> setfield comment "\n"
+<2531> squash
+<2573> setfield comment "\n"
+<2573> squash
+
+# Merge split "initial revision" commits
+<18> setfield comment "Subversion-Revision-ID: 18"
+<18> squash --pushback
+renumber
+
+# Ensure every commit message ends with a single new line
+=C append "\n" --rstrip
+=C append "\n"
+
+# Export entire stream to git
+write >docutils_tmp.fi
+
+# Export to early (pre-CVS merge)
+# <2002-04-18T02:50:09Z#1> more editing progress (last commit of docutils-early)
+=C & 1..<2002-04-18T02:50:09Z#1> write >docutils_early.fi
+
+#Export to late (post-CVS merge)
+=C & 1..<2002-04-18T02:50:09Z#1> delete
+write >docutils_late.fi
+
+exit

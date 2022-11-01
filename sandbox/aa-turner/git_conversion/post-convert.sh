@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-cd $1
+cd "$1"
 
 # Ignore filemode changes
 git config core.filemode false

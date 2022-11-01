@@ -1,0 +1,169 @@
+# common_clean.lift
+
+# These reposurgeon scripts are common to all repositories.
+# They are run in order:
+# 1. common_load.lift
+# 2. common_merge.sh
+# 3. common_clean.lift
+
+# Set up options
+set canonicalize
+set progress
+prefer git
+
+read --format=git tmp_combined/
+prefer git
+
+read --format=git docutils_tmp_late/
+prefer git
+
+# Unite the combined histories with Late
+# this makes the tip of tmp_combined the root commit for docutils_late
+choose tmp_combined
+@max(=C) & /~merge histories~/ graft docutils_tmp_late
+rename docutils
+renumber
+
+# Delete surgery branches
+branch delete heads/docutils
+branch delete heads/docstring
+branch delete heads/structuredtext
+branch rename /heads\/(.*)-docutils_tmp_late/ "heads/\1"
+
+# Update metadata of merge commit
+# <2002-04-20T03:00:05Z#1> Initial revision (first commit of docutils_late)
+# the parent of this commit is the merge commit, we can't rely on commit
+# message matching as we blank out the commit message and the date is
+# indeterminate
+@max(@par(<2002-04-20T03:00:05Z#1>)) assign --singleton merge_commit
+merge_commit setfield comment "Combine into Docutils\n\n***Commit added during git conversion***.\n\nMerged projects:\n\n- docutils (SVN)\n- docstring (CVS)\n- structuredtext (CVS)\n"
+merge_commit attribution =A set "David Goodger" "goodger@python.org" "Sat Apr 20 02:00:00 2002 +0000"
+merge_commit attribution =C set "David Goodger" "goodger@python.org" "Sat Apr 20 02:00:00 2002 +0000"
+
+# Remove merge files
+define delete_merge {
+<2002-04-20T03:00:05Z#1> add D {0}
+}
+
+do delete_merge dps/COPYING.txt
+do delete_merge dps/HISTORY.txt
+do delete_merge dps/MANIFEST.in
+do delete_merge dps/README.txt
+do delete_merge dps/dps/__init__.py
+do delete_merge dps/dps/core.py
+do delete_merge dps/dps/languages/__init__.py
+do delete_merge dps/dps/languages/en.py
+do delete_merge dps/dps/nodes.py
+do delete_merge dps/dps/parsers/__init__.py
+do delete_merge dps/dps/readers/__init__.py
+do delete_merge dps/dps/readers/standalone.py
+do delete_merge dps/dps/roman.py
+do delete_merge dps/dps/statemachine.py
+do delete_merge dps/dps/transforms/__init__.py
+do delete_merge dps/dps/transforms/components.py
+do delete_merge dps/dps/transforms/frontmatter.py
+do delete_merge dps/dps/transforms/references.py
+do delete_merge dps/dps/transforms/universal.py
+do delete_merge dps/dps/urischemes.py
+do delete_merge dps/dps/utils.py
+do delete_merge dps/dps/writers/__init__.py
+do delete_merge dps/dps/writers/html.py
+do delete_merge dps/dps/writers/pprint.py
+do delete_merge dps/install.py
+do delete_merge dps/setup.py
+do delete_merge dps/spec/doctree.txt
+do delete_merge dps/spec/dps-notes.txt
+do delete_merge dps/spec/dps.cat
+do delete_merge dps/spec/gpdi.dtd
+do delete_merge dps/spec/pep-0256.txt
+do delete_merge dps/spec/pep-0257.txt
+do delete_merge dps/spec/pep-0258.txt
+do delete_merge dps/spec/ppdi.dtd
+do delete_merge dps/spec/pysource-reader.txt
+do delete_merge dps/spec/soextblx.dtd
+do delete_merge dps/test/DPSTestSupport.py
+do delete_merge dps/test/UnitTestFolder.py
+do delete_merge dps/test/alltests.py
+do delete_merge dps/test/difflib.py
+do delete_merge dps/test/test_nodes.py
+do delete_merge dps/test/test_statemachine.py
+do delete_merge dps/test/test_transforms/test_contents.py
+do delete_merge dps/test/test_transforms/test_docinfo.py
+do delete_merge dps/test/test_transforms/test_doctitle.py
+do delete_merge dps/test/test_transforms/test_final_checks.py
+do delete_merge dps/test/test_transforms/test_footnotes.py
+do delete_merge dps/test/test_transforms/test_hyperlinks.py
+do delete_merge dps/test/test_transforms/test_messages.py
+do delete_merge dps/test/test_transforms/test_substitutions.py
+do delete_merge dps/test/test_utils.py
+do delete_merge restructuredtext/COPYING.txt
+do delete_merge restructuredtext/HISTORY.txt
+do delete_merge restructuredtext/MANIFEST.in
+do delete_merge restructuredtext/README.txt
+do delete_merge restructuredtext/docs/images/ball1.gif
+do delete_merge restructuredtext/docs/images/biohazard.png
+do delete_merge restructuredtext/docs/images/title.png
+do delete_merge restructuredtext/docs/quickref.html
+do delete_merge restructuredtext/docs/quickstart.txt
+do delete_merge restructuredtext/install.py
+do delete_merge restructuredtext/restructuredtext/__init__.py
+do delete_merge restructuredtext/restructuredtext/directives/__init__.py
+do delete_merge restructuredtext/restructuredtext/directives/admonitions.py
+do delete_merge restructuredtext/restructuredtext/directives/components.py
+do delete_merge restructuredtext/restructuredtext/directives/html.py
+do delete_merge restructuredtext/restructuredtext/directives/images.py
+do delete_merge restructuredtext/restructuredtext/directives/misc.py
+do delete_merge restructuredtext/restructuredtext/languages/__init__.py
+do delete_merge restructuredtext/restructuredtext/languages/en.py
+do delete_merge restructuredtext/restructuredtext/states.py
+do delete_merge restructuredtext/restructuredtext/tableparser.py
+do delete_merge restructuredtext/setup.py
+do delete_merge restructuredtext/spec/alternatives.txt
+do delete_merge restructuredtext/spec/directives.txt
+do delete_merge restructuredtext/spec/introduction.txt
+do delete_merge restructuredtext/spec/problems.txt
+do delete_merge restructuredtext/spec/reStructuredText.txt
+do delete_merge restructuredtext/spec/rst-notes.txt
+do delete_merge restructuredtext/test/RSTTestSupport.py
+do delete_merge restructuredtext/test/UnitTestFolder.py
+do delete_merge restructuredtext/test/alltests.py
+do delete_merge restructuredtext/test/difflib.py
+do delete_merge restructuredtext/test/test_states/test_TableParser.py
+do delete_merge restructuredtext/test/test_states/test_block_quotes.py
+do delete_merge restructuredtext/test/test_states/test_bullet_lists.py
+do delete_merge restructuredtext/test/test_states/test_citations.py
+do delete_merge restructuredtext/test/test_states/test_comments.py
+do delete_merge restructuredtext/test/test_states/test_definition_lists.py
+do delete_merge restructuredtext/test/test_states/test_directives/test_admonitions.py
+do delete_merge restructuredtext/test/test_states/test_directives/test_contents.py
+do delete_merge restructuredtext/test/test_states/test_directives/test_figures.py
+do delete_merge restructuredtext/test/test_states/test_directives/test_images.py
+do delete_merge restructuredtext/test/test_states/test_directives/test_meta.py
+do delete_merge restructuredtext/test/test_states/test_directives/test_test_directives.py
+do delete_merge restructuredtext/test/test_states/test_directives/test_unknown.py
+do delete_merge restructuredtext/test/test_states/test_doctest_blocks.py
+do delete_merge restructuredtext/test/test_states/test_enumerated_lists.py
+do delete_merge restructuredtext/test/test_states/test_field_lists.py
+do delete_merge restructuredtext/test/test_states/test_footnotes.py
+do delete_merge restructuredtext/test/test_states/test_functions.py
+do delete_merge restructuredtext/test/test_states/test_inline_markup.py
+do delete_merge restructuredtext/test/test_states/test_literal_blocks.py
+do delete_merge restructuredtext/test/test_states/test_option_lists.py
+do delete_merge restructuredtext/test/test_states/test_outdenting.py
+do delete_merge restructuredtext/test/test_states/test_paragraphs.py
+do delete_merge restructuredtext/test/test_states/test_section_headers.py
+do delete_merge restructuredtext/test/test_states/test_substitutions.py
+do delete_merge restructuredtext/test/test_states/test_tables.py
+do delete_merge restructuredtext/test/test_states/test_targets.py
+do delete_merge restructuredtext/test/test_states/test_transitions.py
+do delete_merge restructuredtext/tools/default.css
+do delete_merge restructuredtext/tools/html.py
+do delete_merge restructuredtext/tools/publish.py
+do delete_merge restructuredtext/tools/quicktest.py
+do delete_merge restructuredtext/tools/test.txt
+
+# Ensure every commit message ends with a single new line
+=C append "\n" --rstrip
+=C append "\n"
+
+exit
