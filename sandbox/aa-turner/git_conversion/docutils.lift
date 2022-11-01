@@ -22,7 +22,7 @@ path rename "^web(.*)" "docutils/docs/web\1" --force
 expunge --notagify /^sandbox\/.*$/
 expunge --notagify /^prest\/.*$/
 expunge --notagify /^.pre-commit-config.yaml\/.*$/
-expunge --notagify /^tox.ini\/.*$/
+expunge --notagify /^.flake8\/.*$/
 
 # Move up a directory
 path rename "docutils/(.*)" "\1" --force

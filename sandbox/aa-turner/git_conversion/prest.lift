@@ -18,9 +18,7 @@ branch delete refs/heads/plugins
 branch delete refs/heads/subdocs
 branch delete refs/heads/lossless-rst-writer
 branch delete refs/heads/nesting
-
-# Remove unneeded empty commits
-:3 squash --empty-only --delete
+branch delete heads/rel-0.15
 
 # Drop the "Remove 'prest'" commit
 /Remove 'prest'/ delete
@@ -68,6 +66,3 @@ do releasetag 0.3.42 6291
 do releasetag 0.3.43 6302
 do releasetag 0.3.44 6440
 do releasetag 0.3.45 6498
-
-# Remove rel-0.15 branch (must be done after reposurgeon)
-branch delete heads/rel-0.15

@@ -12,15 +12,10 @@ branch delete refs/heads/plugins
 branch delete refs/heads/subdocs
 branch delete refs/heads/lossless-rst-writer
 branch delete refs/heads/nesting
-
-# Remove unneeded empty commits
-:3 squash --empty-only --delete
+branch delete heads/rel-0.15
 
 # Delete everything else
 expunge --notagify --not /^sandbox\/.*$/
 
 # Move up a directory
 path rename "sandbox/(.*)" "\1" --force
-
-# Remove rel-0.15 branch (must be done after reposurgeon)
-branch delete heads/rel-0.15
