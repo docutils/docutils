@@ -12,7 +12,8 @@ from test import DocutilsTestSupport
 
 
 def suite():
-    s = DocutilsTestSupport.PublishTestSuite('null')
+    s = DocutilsTestSupport.PublishTestSuite(
+        'null', suite_settings={'output_encoding': 'utf-8'})
     s.generateTests(totest)
     return s
 

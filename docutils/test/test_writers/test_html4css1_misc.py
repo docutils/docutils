@@ -37,6 +37,7 @@ class MovingArgsTestCase(unittest.TestCase):
     mys = {'stylesheet_path': '',
            # 'embed_stylesheet': False,
            '_disable_config': True,
+           'output_encoding': 'unicode',
            }
 
     def test_definition_list_item_classes(self):

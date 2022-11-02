@@ -429,10 +429,22 @@ def publish_string(source, source_path=None, destination_path=None,
                    enable_exit_status=False):
     """
     Set up & run a `Publisher` for programmatic use with string I/O.  Return
-    Unicode string output.
+    the encoded string or Unicode string output.
+
+    For encoded string output, be sure to set the 'output_encoding' setting to
+    the desired encoding.  Set it to 'unicode' for unencoded Unicode string
+    output.  Here's one way::
+
+        publish_string(..., settings_overrides={'output_encoding': 'unicode'})
+
+    Similarly for Unicode string input (`source`)::
+
+        publish_string(..., settings_overrides={'input_encoding': 'unicode'})
 
     Parameters: see `publish_programmatically`.
     """
+    warnings.warn('The return type of publish_string will change to '
+                  '"str" from Docutils 0.21.', FutureWarning, stacklevel=2)
     output, pub = publish_programmatically(
         source_class=io.StringInput, source=source, source_path=source_path,
         destination_class=io.StringOutput,

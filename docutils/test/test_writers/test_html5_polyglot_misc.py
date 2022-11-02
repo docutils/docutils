@@ -36,6 +36,7 @@ class MovingArgsTestCase(unittest.TestCase):
     mys = {'stylesheet_path': '',
            # 'embed_stylesheet': False,
            '_disable_config': True,
+           'output_encoding': 'unicode',
            }
 
     def test_definition_list_item_classes(self):
@@ -139,6 +140,7 @@ class SettingsTestCase(unittest.TestCase):
         """Warn about deprecated setting name."""
         my_settings = {'_disable_config': True,
                        'embed_images': False,
+                       'output_encoding': 'unicode',
                        }
         with self.assertWarnsRegex(FutureWarning,
                                    '"embed_images" will be removed'):

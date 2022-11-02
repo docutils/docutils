@@ -61,6 +61,7 @@ class WarningsTestCase(unittest.TestCase):
         mysettings = {'_disable_config': True,
                       # 'use_latex_citations': False,
                       # 'legacy_column_widths': True,
+                      'output_encoding': 'unicode',
                       }
         with self.assertWarnsRegex(FutureWarning,
                                    '"legacy_column_widths" will change'):

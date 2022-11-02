@@ -558,7 +558,8 @@ class BinaryFileOutput(FileOutput):
 class BytesOutput(Output):
 
     """
-    Direct string output.
+    Direct binary output.
+    Provisional.
     """
 
     default_destination_path = '<bytes>'
@@ -601,9 +602,12 @@ class StringOutput(Output):
         return self.destination
 
     def encode(self, data):
-        if isinstance(data, bytes):
-            return data.decode(self.encoding, self.error_handler)
-        return str(data)
+        data = super().encode(data)
+        if not isinstance(data, str):
+            warnings.warn("StringOutput.encode()'s return type will change to "
+                          f'``str`` from Docutils 0.21, got type {type(data)}',
+                          FutureWarning, stacklevel=2)
+        return data
 
 
 class NullInput(Input):

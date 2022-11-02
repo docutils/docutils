@@ -106,7 +106,8 @@ class PublishDoctreeTestCase(unittest.TestCase, docutils.SettingsSpec):
             settings_spec=self,
             settings_overrides={'expose_internals':
                                 ['refnames', 'do_not_expose'],
-                                'report_level': 1})
+                                'report_level': 1,
+                                'output_encoding': 'unicode'})
         self.assertEqual(output, exposed_pseudoxml_output)
 
         # Test publishing parts using document as the source.
@@ -150,7 +151,7 @@ class PublishDoctreeTestCase(unittest.TestCase, docutils.SettingsSpec):
         # Write out the document:
         output = core.publish_from_doctree(
             doctree_zombie, writer_name='pseudoxml',
-            settings_spec=self)
+            settings_spec=self).decode('utf-8')
         self.assertEqual(output, pseudoxml_output)
 
 

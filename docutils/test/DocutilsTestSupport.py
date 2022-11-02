@@ -492,7 +492,8 @@ class WriterPublishTestCase(CustomTestCase, docutils.SettingsSpec):
     """
 
     settings_default_overrides = {'_disable_config': True,
-                                  'strict_visitor': True}
+                                  'strict_visitor': True,
+                                  'output_encoding': 'unicode'}
     writer_name = ''  # set in subclasses or constructor
 
     def __init__(self, *args, writer_name='', **kwargs):
@@ -508,7 +509,7 @@ class WriterPublishTestCase(CustomTestCase, docutils.SettingsSpec):
               writer_name=self.writer_name,
               settings_spec=self,
               settings_overrides=self.suite_settings)
-        self.assertEqual(output, str(self.expected))
+        self.assertEqual(str(output), str(self.expected))
 
 
 class PublishTestSuite(CustomTestSuite):

@@ -1460,6 +1460,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
               # 'iso-8859-7': ''   # greek
               # 'iso-8859-8': ''   # hebrew
               # 'iso-8859-10': ''  # latin6, more complete iso-8859-4
+              'unicode': 'utf8',  # TEMPORARY, remove in Docutils 0.21
               }
         encoding = docutils_encoding.lower()
         if encoding in tr:
