@@ -51,17 +51,22 @@ class RecommonmarkParserTests(unittest.TestCase):
 
     def test_raw_disabled(self):
         output = publish_string(sample_with_html, parser=parser,
-                                settings_overrides={'warning_stream': '',
-                                                    'raw_enabled': False})
+                                settings_overrides={
+                                    'warning_stream': '',
+                                    'raw_enabled': False,
+                                    'output_encoding': 'unicode',
+                                })
         self.assertNotIn('<raw>', output)
         self.assertIn('<system_message', output)
         self.assertIn('Raw content disabled.', output)
 
     def test_raw_disabled_inline(self):
         output = publish_string('foo <a href="uri">', parser=parser,
-                                settings_overrides={'warning_stream': '',
-                                                    'raw_enabled': False,
-                                                   })
+                                settings_overrides={
+                                    'warning_stream': '',
+                                    'raw_enabled': False,
+                                    'output_encoding': 'unicode',
+                                })
         self.assertNotIn('<raw>', output)
         self.assertIn('<system_message', output)
         self.assertIn('Raw content disabled.', output)
@@ -73,7 +78,8 @@ class RecommonmarkMissingTests(unittest.TestCase):
     def test_missing_parser_message(self):
         with self.assertRaisesRegex(ImportError,
                                     'requires the package .*recommonmark'):
-            publish_string(sample_with_html, parser_name='recommonmark')
+            publish_string(sample_with_html, parser_name='recommonmark',
+                           settings_overrides={'output_encoding': 'unicode'})
 
 
 if __name__ == '__main__':

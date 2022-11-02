@@ -121,11 +121,10 @@ invalid_raw_xml = """\
 
 
 def publish_xml(settings, source):
-    return docutils.core.publish_string(source=source.encode('utf-8'),
-                                        reader_name='standalone',
-                                        writer_name='docutils_xml',
-                                        settings_overrides=settings
-                                        ).encode('latin1', 'xmlcharrefreplace')
+    return docutils.core.publish_bytes(source=source.encode('utf-8'),
+                                       reader_name='standalone',
+                                       writer_name='docutils_xml',
+                                       settings_overrides=settings)
 
 
 # XML Test Case

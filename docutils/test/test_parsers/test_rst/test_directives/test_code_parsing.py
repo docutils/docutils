@@ -38,7 +38,7 @@ Workaround to silence warning: disable code parsing with
    autoload("abc_mode", "abc");
 """
 
-settings = {'warning_stream': ''}
+settings = {'warning_stream': '', 'output_encoding': 'unicode'}
 
 
 @unittest.skipUnless(with_pygments, 'optional module "pygments" not found')
