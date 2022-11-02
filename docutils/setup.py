@@ -101,6 +101,7 @@ what-you-see-is-what-you-get plaintext markup syntax.""",  # wrap at col 60
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.11',
         'Topic :: Documentation',
         'Topic :: Software Development :: Documentation',
         'Topic :: Text Processing',
