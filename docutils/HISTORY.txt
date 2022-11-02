@@ -14,6 +14,10 @@
 Changes Since 0.19
 ==================
 
+* docutils/writers/manpage.py
+
+  - Do not output empty "manual" in ``.TH``
+
 * add python 3.11 to setup.py and tox.ini. Patch by hugovk.
 
 * docutils/languages/
