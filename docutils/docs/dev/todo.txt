@@ -2285,7 +2285,7 @@ Unimplemented Transforms
   The advantage of the current way of doing things is that parse-time
   system messages don't require a transform; they're already in the
   document.  This is valuable for testing (unit tests,
-  tools/quicktest.py).  So if we do decide to make a change, I think
+  tools/dev/quicktest.py).  So if we do decide to make a change, I think
   the insertion of parse-time system messages ought to remain as-is
   and the Messages transform ought to move all parse-time system
   messages (remove from their originally inserted positions, insert in
