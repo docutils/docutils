@@ -5,6 +5,27 @@
 #          David Goodger <goodger@python.org>
 # Copyright: This module has been placed in the public domain.
 
+"""
+The ``quicktest.py`` tool is used for testing the reStructuredText
+parser.  It does not use a Docutils Reader or Writer or the standard
+Docutils command-line options.  Rather, it does its own I/O and calls
+the parser directly.  No transforms are applied to the parsed
+document.  Possible output forms output include:
+
+--pretty  Pretty-printed pseudo-XML (default)
+
+--test    Test data (Python list of input and pseudo-XML output strings;
+          useful for creating new test cases)
+--xml     Pretty-printed native XML
+--rawxml  Raw native XML (with or without a stylesheet reference)
+--help    Usage hint and complete list of supported options.
+
+.. Caution:: ``quicktest.py`` uses Python's default encoding.
+   Input and output encoding depend on UTF-8 mode,
+   Python version, locale setting, and operating system
+   (cf. :PEP:`540`, :PEP:`538`, :PEP:`597`, and :PEP:`686`).
+"""
+
 try:
     import locale
     locale.setlocale(locale.LC_ALL, '')
@@ -12,7 +33,6 @@ except Exception:
     pass
 
 import sys
-import os
 import getopt
 import docutils
 from docutils import frontend
@@ -128,13 +148,6 @@ def format(outputFormat, input, document, optargs):
     return formatter(input, document, optargs)
 
 
-def getArgs():
-    if os.name == 'mac' and len(sys.argv) <= 1:
-        return macGetArgs()
-    else:
-        return posixGetArgs(sys.argv[1:])
-
-
 def posixGetArgs(argv):
     outputFormat = 'pretty'
     # convert fancy_getopt style option list to getopt.getopt() arguments
@@ -187,25 +200,9 @@ def posixGetArgs(argv):
     return inputFile, outputFile, outputFormat, optargs
 
 
-def macGetArgs():
-    import EasyDialogs
-    EasyDialogs.Message("""\
-Use the next dialog to build a command line:
-
-1. Choose an output format from the [Option] list
-2. Click [Add]
-3. Choose an input file: [Add existing file...]
-4. Save the output: [Add new file...]
-5. [OK]""")
-    optionlist = [(longopt, description)
-                  for (longopt, shortopt, description) in options]
-    argv = EasyDialogs.GetArgv(optionlist=optionlist, addfolder=0)
-    return posixGetArgs(argv)
-
-
 def main():
     # process cmdline arguments:
-    inputFile, outputFile, outputFormat, optargs = getArgs()
+    inputFile, outputFile, outputFormat, optargs = posixGetArgs(sys.argv[1:])
     settings = frontend.get_default_settings(Parser)
     settings.debug = optargs['debug']
     parser = Parser()

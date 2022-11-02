@@ -259,7 +259,6 @@ on the Docutils-develop_ mailing list.
 
 
 .. _Docutils-develop: ../user/mailing-lists.html#docutils-develop
-.. _quicktest.py: ../user/tools.html#quicktest-py
 
 .. |---| unicode:: 8212 .. em-dash
    :trim:
