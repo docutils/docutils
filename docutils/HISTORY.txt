@@ -18,7 +18,29 @@ Changes Since 0.19
 
   - Do not output empty "manual" in ``.TH``
 
-* add python 3.11 to setup.py and tox.ini. Patch by hugovk.
+* Declared support for Python 3.11 in setup.py and tox.ini.
+  Patch by Hugo van Kemenade.
+
+* Moved flake8 configuration to ``.flake8``. Patch by Adam Turner.
+
+* Moved ``quicktest.py`` to ``tools/dev/``. Patch by Adam Turner.
+
+* Added new ``docutils.core.publish_bytes()`` function to explicitly return
+  output as binary data in a ``bytes`` object. Patch by Adam Turner.
+
+* Deprecated returning ``bytes`` from ``docutils.core.publish_string()``.
+  Users should use the new function ``docutils.core.publish_bytes()`` instead.
+  Patch by Adam Turner.
+
+* Deprecated returning ``bytes`` from ``docutils.io.StringOutput.encode()``.
+  Users should use the new class ``docutils.io.BytesOutput`` instead.
+  Patch by Adam Turner.
+
+* Improved mock Sphinx module in ``docutils.parsers.recommonmark_wrapper``.
+  Patch by Adam Turner.
+
+* Refactored tests in ``test/`` towards using common ``unittest`` idioms.
+  Patch by Adam Turner.
 
 * docutils/languages/
   docutils/parsers/rst/languages/
@@ -27,6 +49,7 @@ Changes Since 0.19
 
 * Removed test/coverage.sh, use the coverage.py_ project instead,
   ``coverage run test/alltests.py`` and ``coverage report``.
+  Patch by Adam Turner.
 
 .. _coverage.py: https://pypi.org/project/coverage/
 
