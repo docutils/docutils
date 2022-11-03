@@ -1,6 +1,5 @@
 #! /usr/bin/env python3
 
-# $Id: test_latex2e.py 6003 2009-06-27 20:44:09Z milde $
 # Author: engelbert gruber <grubert@users.sourceforge.net>
 # Copyright: This module has been placed in the public domain.
 
