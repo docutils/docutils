@@ -286,7 +286,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.html_prolog = []
         if settings.xml_declaration:
             self.head_prefix.append(self.xml_declaration
-                                    % _output_encoding(settings))
+                                    % _encoding(settings))
             # self.content_type = ""
             # encoding not interpolated:
             self.html_prolog.append(self.xml_declaration)
@@ -812,8 +812,8 @@ class HTMLTranslator(nodes.NodeVisitor):
                                  self.head_prefix_template %
                                  {'lang': self.settings.language_code}])
         self.html_prolog.append(self.doctype)
-        self.meta.insert(0, self.content_type % _output_encoding(self.settings))
-        self.head.insert(0, self.content_type % _output_encoding(self.settings))
+        self.meta.insert(0, self.content_type % _encoding(self.settings))
+        self.head.insert(0, self.content_type % _encoding(self.settings))
         if 'name="dcterms.' in ''.join(self.meta):
             self.head.append('<link rel="schema.dcterms"'
                              'href="http://purl.org/dc/terms/"/>')
@@ -1781,7 +1781,7 @@ class SimpleListChecker(nodes.GenericNodeVisitor):
     visit_pending = ignore_node
 
 
-def _output_encoding(settings):
+def _encoding(settings):
     """TEMPORARY, remove in Docutils 0.21"""
     if settings.output_encoding == 'unicode':
         return 'utf-8'

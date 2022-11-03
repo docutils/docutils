@@ -101,7 +101,7 @@ class XMLTranslator(nodes.GenericNodeVisitor):
         self.output = []
         if settings.xml_declaration:
             self.output.append(
-                self.xml_declaration % _output_encoding(settings))
+                self.xml_declaration % _encoding(settings))
         if settings.doctype_declaration:
             self.output.append(self.doctype)
         self.output.append(self.generator % docutils.__version__)
@@ -188,7 +188,7 @@ class TestXml(xml.sax.handler.ContentHandler):
         self.locator = locator
 
 
-def _output_encoding(settings):
+def _encoding(settings):
     """TEMPORARY, remove in Docutils 0.21"""
     if settings.output_encoding == 'unicode':
         return 'utf-8'
