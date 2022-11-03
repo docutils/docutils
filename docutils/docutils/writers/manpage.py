@@ -376,12 +376,12 @@ class Translator(nodes.NodeVisitor):
 
     def header(self):
         th = (".TH \"%(title_upper)s\" %(manual_section)s"
-                " \"%(date)s\" \"%(version)s\"") % self._docinfo
+              " \"%(date)s\" \"%(version)s\"") % self._docinfo
         if self._docinfo["manual_group"]:
             th += " \"%(manual_group)s\"" % self._docinfo
         th += "\n"
         sh_tmpl = (".SH NAME\n"
-                "%(title)s \\- %(subtitle)s\n")
+                   "%(title)s \\- %(subtitle)s\n")
         return th + sh_tmpl % self._docinfo
 
     def append_header(self):

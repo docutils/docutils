@@ -205,8 +205,8 @@ class HTMLTranslator(_html_base.HTMLTranslator):
         self.html_prolog.append(self.doctype)
         self.meta.insert(0, self.viewport)
         self.head.insert(0, self.viewport)
-        self.meta.insert(0, self.content_type % _output_encoding(self))
-        self.head.insert(0, self.content_type % _output_encoding(self))
+        self.meta.insert(0, self.content_type % _encoding(self))
+        self.head.insert(0, self.content_type % _encoding(self))
         if 'name="dcterms.' in ''.join(self.meta):
             self.head.append('<link rel="schema.dcterms"'
                              ' href="http://purl.org/dc/terms/"/>')
@@ -454,7 +454,7 @@ class HTMLTranslator(_html_base.HTMLTranslator):
         return start_tag, close_tag
 
 
-def _output_encoding(self):
+def _encoding(self):
     """TEMPORARY, remove in Docutils 0.21"""
     if self.settings.output_encoding == 'unicode':
         return 'utf-8'
