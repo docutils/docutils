@@ -13,7 +13,7 @@ import csv
 import os.path
 import warnings
 
-from docutils import io, nodes, statemachine, utils
+from docutils import nodes, statemachine, utils
 from docutils.utils import SystemMessagePropagation
 from docutils.parsers.rst import Directive
 from docutils.parsers.rst import directives
