@@ -720,15 +720,19 @@ class DependencyList:
     to explicitly call the close() method.
     """
 
-    def __init__(self, output_file=None, dependencies=[]):
+    def __init__(self, output_file=None, dependencies=()):
         """
         Initialize the dependency list, automatically setting the
         output file to `output_file` (see `set_output()`) and adding
         all supplied dependencies.
+
+        If output_file is None, no file output is done when calling add().
         """
-        self.set_output(output_file)
-        for i in dependencies:
-            self.add(i)
+        self.list = []
+        self.file = None
+        if output_file:
+            self.set_output(output_file)
+        self.add(*dependencies)
 
     def set_output(self, output_file):
         """
@@ -739,18 +743,12 @@ class DependencyList:
         immediately overwritten.
 
         If output_file is '-', the output will be written to stdout.
-        If it is None, no file output is done when calling add().
         """
-        self.list = []
         if output_file:
             if output_file == '-':
-                of = None
+                self.file = sys.stdout
             else:
-                of = output_file
-            self.file = io.FileOutput(destination_path=of,
-                                      encoding='utf-8', autoclose=False)
-        else:
-            self.file = None
+                self.file = open(output_file, 'w', encoding='utf-8')
 
     def add(self, *filenames):
         """
@@ -768,7 +766,8 @@ class DependencyList:
         """
         Close the output file.
         """
-        self.file.close()
+        if self.file is not sys.stdout:
+            self.file.close()
         self.file = None
 
     def __repr__(self):
