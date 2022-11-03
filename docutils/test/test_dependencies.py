@@ -46,9 +46,8 @@ class RecordDependenciesTests(unittest.TestCase):
                                    **settings)
         recorder.close()
         # Read the record file:
-        record = docutils.io.FileInput(source_path=recordfile,
-                                       encoding='utf-8')
-        return record.read().splitlines()
+        with open(recordfile, encoding='utf-8') as record:
+            return record.read().splitlines()
 
     def test_dependencies_xml(self):
         # Note: currently, raw input files are read (and hence recorded) while
