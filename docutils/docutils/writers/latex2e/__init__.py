@@ -23,7 +23,6 @@ try:
 except ImportError:
     import docutils.utils.roman as roman
 
-import docutils
 from docutils import frontend, nodes, languages, writers, utils
 from docutils.transforms import writer_aux
 from docutils.utils.math import pick_math_environment, unichar2tex
@@ -1404,8 +1403,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
             if is_package:
                 path = base + '.sty'  # ensure extension
             try:
-                content = docutils.io.FileInput(source_path=path,
-                                                encoding='utf-8').read()
+                with open(path, encoding='utf-8') as f:
+                    content = f.read()
             except OSError as err:
                 msg = f'Cannot embed stylesheet:\n {err}'
                 self.document.reporter.error(msg)

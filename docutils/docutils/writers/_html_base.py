@@ -393,8 +393,8 @@ class HTMLTranslator(nodes.NodeVisitor):
             adjust_path = bool(self.settings.stylesheet_path)
         if self.settings.embed_stylesheet:
             try:
-                content = docutils.io.FileInput(source_path=path,
-                                                encoding='utf-8').read()
+                with open(path, encoding='utf-8') as f:
+                    content = f.read()
             except OSError as err:
                 msg = f'Cannot embed stylesheet: {err}'
                 self.document.reporter.error(msg)
