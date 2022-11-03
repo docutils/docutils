@@ -289,7 +289,7 @@ class CSVTable(Table):
         file, or from a URL reference.
         """
         encoding = self.options.get(
-            'encoding', self.state.document.settings.input_encoding)
+            'encoding', self.state.document.settings.input_encoding or 'utf-8')
         error_handler = self.state.document.settings.input_encoding_error_handler  # noqa:E501
         if self.content:
             # CSV data is from directive content.
@@ -338,8 +338,10 @@ class CSVTable(Table):
             from urllib.error import URLError
 
             source = self.options['url']
+            err_hdl = self.state.document.settings.input_encoding_error_handler
             try:
-                csv_text = urlopen(source).read()
+                with urlopen(source) as response:
+                    csv_text = response.read().decode(encoding, err_hdl)
             except (URLError, OSError, ValueError) as error:
                 severe = self.reporter.severe(
                       'Problems with "%s" directive URL "%s":\n%s.'
@@ -347,11 +349,8 @@ class CSVTable(Table):
                       nodes.literal_block(self.block_text, self.block_text),
                       line=self.lineno)
                 raise SystemMessagePropagation(severe)
-            csv_file = io.StringInput(
-                source=csv_text, source_path=source, encoding=encoding,
-                error_handler=(self.state.document.settings.
-                               input_encoding_error_handler))
-            csv_data = csv_file.read().splitlines()
+            else:
+                csv_data = csv_text.splitlines()
         else:
             error = self.reporter.warning(
                 'The "%s" directive requires content; none supplied.'

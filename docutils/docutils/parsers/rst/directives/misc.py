@@ -272,20 +272,15 @@ class Raw(Directive):
             from urllib.request import urlopen
             from urllib.error import URLError
             try:
-                raw_text = urlopen(source).read()
+                with urlopen(source) as response:
+                    text = response.read().decode(encoding, e_handler)
             except (URLError, OSError) as error:
-                raise self.severe('Problems with "%s" directive URL "%s":\n%s.'
-                                  % (self.name,
-                                     self.options['url'],
-                                     io.error_string(error)))
-            raw_file = io.StringInput(source=raw_text, source_path=source,
-                                      encoding=encoding,
-                                      error_handler=e_handler)
-            try:
-                text = raw_file.read()
+                raise self.severe(f'Problems with "{self.name}" directive URL '
+                                  f'"{self.options["url"]}":\n'
+                                  f'{io.error_string(error)}.')
             except UnicodeError as error:
-                raise self.severe('Problem with "%s" directive:\n%s'
-                                  % (self.name, io.error_string(error)))
+                raise self.severe(f'Problem with "{self.name}" directive:\n'
+                                  + io.error_string(error))
             attributes['source'] = source
         else:
             # This will always fail because there is no content.
