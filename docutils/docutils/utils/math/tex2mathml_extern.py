@@ -19,7 +19,6 @@ the API is not settled and may change with any minor Docutils version.
 import subprocess
 
 document_template = r"""\documentclass{article}
-\usepackage{amsmath}
 \begin{document}
 %s
 \end{document}
@@ -33,7 +32,8 @@ def latexml(math_code, reporter=None):
     """
     p = subprocess.Popen(['latexml',
                           '-',  # read from stdin
-                          # '--preload=amsmath',
+                          '--preload=amsfonts',
+                          '--preload=amsmath',
                           '--inputencoding=utf8',
                           ],
                          stdin=subprocess.PIPE,
@@ -89,7 +89,7 @@ def ttm(math_code, reporter=None):
                          close_fds=True)
     p.stdin.write((document_template % math_code).encode('utf-8'))
     p.stdin.close()
-    result = p.stdout.read()
+    result = p.stdout.read().decode('utf-8')
     err = p.stderr.read().decode('utf-8')
     if err.find('**** Unknown') >= 0:
         msg = '\n'.join(line for line in err.splitlines()
@@ -146,7 +146,7 @@ def blahtexml(math_code, inline=True, reporter=None):
 
 if __name__ == "__main__":
     example = ('\\frac{\\partial \\sin^2(\\alpha)}{\\partial \\vec r}'
-               '\\varpi \\, \\text{Grüße}')
-    # print(latexml(example).encode('utf-8'))
-    # print(ttm(example))
-    print(blahtexml(example).encode('utf-8'))
+               '\\varpi \\mathbb{R} \\, \\text{Grüße}')
+    # print(latexml('$'+example+'$'))
+    # print(ttm('$'+example.replace('\\mathbb{R}', '')+'$'))
+    print(blahtexml(example))
