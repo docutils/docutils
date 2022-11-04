@@ -1259,6 +1259,10 @@ class HTMLTranslator(nodes.NodeVisitor):
                                     math_code,
                                     inline=(not math_env),
                                     reporter=self.document.reporter)
+                elif converter == 'pandoc':
+                    math_code = tex2mathml_extern.pandoc(
+                                    math_code,
+                                    reporter=self.document.reporter)
                 elif not converter:
                     math_code = latex2mathml.tex2mathml(
                                     math_code, inline=(not math_env))
