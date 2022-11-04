@@ -10,7 +10,7 @@ LaTeX syntax for mathematics
 
 :abstract: Docutils supports mathematical content with a `"math"
            directive`__ and `role`__. The input format is *LaTeX math
-           syntax*\ [#math-syntax]_ with support for Unicode symbols.
+           syntax*\ [#math-syntax]_ with support for literal Unicode symbols.
 
 .. sectnum::
 .. contents::
@@ -313,6 +313,7 @@ Letterlike symbols
   `\mho`        ``\mho``         `\eth`     ``\eth``      `\Bbbk`    ``\Bbbk``
   ============= ===============  ========== ============  ========== ============  =========== =============
 
+
 Mathematical Alphabets
 ----------------------
 
@@ -413,6 +414,7 @@ Punctuation
 
 .. [#] Punctuation (not ratio):
        Compare spacing in `a\colon b\to c` to `a:b = c`.
+
 
 Relation symbols
 ----------------
@@ -534,6 +536,7 @@ The commands ``\varsubsetneq``, ``\varsubsetneqq``, ``\varsupsetneq``,
 and ``\varsupsetneqq`` are not supported by LateX2MathML, as there is no
 corresponding Unicode character.
 
+
 Variable-sized operators
 ------------------------
 .. class:: colwidths-auto
@@ -552,6 +555,7 @@ indices above/below the symbol (see also `scripts and limits`_):
           \int_0^1f(x)\,dx \qquad
           \prod_{i=1}^{10} b_i \ldots
 
+
 Notations
 =========
 
@@ -559,6 +563,7 @@ Top and bottom embellishments
 -----------------------------
 
 See `Accents and embellishments`_.
+
 
 Extensible arrows
 -----------------
@@ -573,6 +578,7 @@ take one optional argument (the subscript) and one mandatory argument
 results in
 
 .. math:: A \xleftarrow{n+\mu-1} B \xrightarrow[T]{n\pm i-1} C
+
 
 Affixing symbols to other symbols
 ---------------------------------
@@ -620,6 +626,7 @@ For piecewise function definitions there is a ``cases`` environment:
                               \phantom{-}1 & x>0
                             \end{cases}
 
+
 Spacing commands
 ----------------
 
@@ -659,6 +666,31 @@ The commands ``\hphantom`` and ``\vphantom`` insert space with the
 width or height of the argument. They are not supported with `math_output`_
 MathML.
 
+
+Modular arithmetic and modulo operation
+---------------------------------------
+
+The commands ``\bmod``, ``\pmod``, ``\mod``, and ``\pod`` deal with the
+special spacing conventions of the “mod” notation. [#]_
+
+.. class:: colwidths-auto
+
+  =========  ===========================  =========================
+  command    example                      result
+  =========  ===========================  =========================
+  ``\bmod``  ``\gcd(n,m \bmod n)``        `\gcd(n,m \bmod n)`
+  ``\pmod``  ``x\equiv y \pmod b``        `x\equiv y \pmod b`
+  ``\mod``   ``x\equiv y \mod c``         `x\equiv y \mod c`
+  ``\pod``   ``x\equiv y \pod d``         `x\equiv y \pod d`
+  ..         ``\operatorname{mod}(m,n)``  `\operatorname{mod}(m,n)`
+  =========  ===========================  =========================
+
+.. [#] Currently `not supported`__ by the "HTML" math_output_ option
+       of the HTML writer.
+
+__ https://sourceforge.net/p/docutils/feature-requests/93/
+
+
 Roots
 -----
 
@@ -672,13 +704,13 @@ Roots
   ..         ``\sqrt\frac{1}{2}``  `\sqrt\frac{1}{2}`
   =========  ====================  ==================
 
+
 Boxed formulas
 --------------
 
 The command ``\boxed`` puts a box around its argument:
 
 .. math:: \boxed{\eta \leq C(\delta(\eta) +\Lambda_M(0,\delta))}
-
 
 
 Fractions and related constructions
@@ -782,6 +814,7 @@ than the base size but still able to fit within the normal line spacing:
    `\left(\begin{smallmatrix} a & b \\ c & d \end{smallmatrix}\right)`
    vs. `\Bigl(\begin{smallmatrix} a & b \\ c & d \end{smallmatrix}\Bigr)`.
 
+
 Text
 ====
 
@@ -803,24 +836,6 @@ The text may contain math commands wrapped in ``$`` signs, e.g.
 
 .. TODO ignore {}, handle text-mode commands
 
- 
-``\mod`` and its relatives
---------------------------
-
-Commands ``\mod``, ``\bmod``, ``\pmod``, ``\pod`` deal with the special
-spacing conventions of “mod” notation.
-``\mod`` and ``\pod`` are variants of ``\pmod`` preferred by some
-authors; ``\mod`` omits the parentheses, whereas ``\pod`` omits the
-“mod” and retains the parentheses.
-   
-TODO: 
-  Currently not supported by the "HTML" and "MathML" math_output_ 
-  options of the HTML writer (cf. `feature-request #93
-  <https://sourceforge.net/p/docutils/feature-requests/93/>`__).
-
-.. \gcd(n,m\bmod n) ;\quad x\equiv y\pmod b
-   ;\quad x\equiv y\mod c ;\quad x\equiv y\pod d
-
 
 Integrals and sums
 ==================
@@ -833,6 +848,7 @@ similar symbols like
 .. math:: \lim_{n\to\infty} \sum_1^n \frac{1}{n}
 
 move to index positions: `\lim_{n\to\infty} \sum_1^n \frac{1}{n}`.
+
 
 Altering the placement of limits
 --------------------------------
@@ -903,7 +919,6 @@ Appendix
 Tests
 -----
 
-
 Font changes
 ~~~~~~~~~~~~
 
@@ -958,6 +973,7 @@ tex-token returns "{" for nested groups:
 
 .. math:: \text{das ist ein  {toller} text (unescaped \{ and \} is
                 ignored by LaTeX)}
+
 
 Big delimiters and symbols
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
