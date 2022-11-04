@@ -52,6 +52,9 @@ Changes Since 0.19
   - Fix previous_sibling() method that led to invalid HTML in some cases
     (cf. patch #195).
 
+* docutils/utils/math/latex2mathml.py
+
+  - Support "mod" notation for modulo operation/modulus arithmetic.
 
 * test/coverage.sh
 

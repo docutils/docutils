@@ -73,6 +73,15 @@ functions.update((name, name) for name in
 # Function with limits: 'lim', 'sup', 'inf', 'max', 'min':
 # use <mo> to allow "movablelimits" attribute (see below).
 
+# modulo operator/arithmetic
+modulo_functions = {
+    # cmdname: (binary, named, parentheses, padding)
+    'bmod': (True,  True,  False, '0.278em'),  # a mod n
+    'pmod': (False, True,  True,  '0.444em'),  # a  (mod n)
+    'mod':  (False, True,  False, '0.667em'),  # a  mod n
+    'pod':  (False, False, True,  '0.444em'),  # a  (n)
+    }
+
 
 # math font selection -> <mi mathvariant=...> or <mstyle mathvariant=...>
 math_alphabets = {
@@ -433,6 +442,16 @@ class math:
         xml.extend(['\n', '  ' * level])
         return xml
 
+    def is_block(self):
+        """Return true, if `self` or a parent has ``display='block'``."""
+        try:
+            return self['display'] == 'block'
+        except KeyError:
+            try:
+                return self.parent.is_block()
+            except AttributeError:
+                return False
+
 # >>> n2 = math(mn(2))
 # >>> n2
 # math(mn(2))
@@ -442,13 +461,23 @@ class math:
 # 1
 # >>> eq3 = math(id='eq3', display='block')
 # >>> eq3
-# math(display='block', id='eq3')
+# math(id='eq3', display='block')
 # >>> eq3.toprettyxml()
-# '<math display="block" id="eq3">\n</math>'
+# '<math id="eq3" display="block">\n</math>'
 # >>> len(eq3)
 # 0
 # >>> math(CLASS='bold').xml_starttag()
 # '<math class="bold">'
+# >>> n2.is_block()
+# False
+# >>> node = n2.append(mrow())
+# >>> node.is_block()
+# False
+# >>> eq3.is_block()
+# True
+# >>> node = eq3.append(mrow())
+# >>> node.is_block()
+# True
 
 
 class mtable(math): pass
@@ -945,6 +974,26 @@ def handle_cmd(name, node, string):  # noqa: C901 TODO make this less complex
             node = node.append(mo('\u2061'))  # &ApplyFunction;
         return node, string
 
+    if name in modulo_functions:
+        (binary, named, parentheses, padding) = modulo_functions[name]
+        if binary:
+            node = node.append(mo('mod', lspace=padding, rspace=padding))
+            return node, string
+        # left padding
+        if node.is_block():
+            padding = '1em'
+        node = node.append(mspace(width=padding))
+        if parentheses:
+            node = node.append(mo('(', stretchy=False))
+        if named:
+            node = node.append(mi('mod'))
+            node = node.append(mspace(width='0.333em'))
+        arg, string = tex_token_or_group(string)
+        node = parse_latex_math(node, arg)
+        if parentheses:
+            node = node.append(mo(')', stretchy=False))
+        return node, string
+
     if name in math_alphabets:
         if name == 'boldsymbol':
             attributes = {'class': 'boldsymbol'}
@@ -1212,7 +1261,7 @@ def handle_cmd(name, node, string):  # noqa: C901 TODO make this less complex
 # >>> handle_cmd('mathrm', math(), '{out} = 3')
 # (math(mi('out', mathvariant='normal')), ' = 3')
 # >>> handle_cmd('overline', math(), '{981}')
-# (mover(mo('¯', accent=True), switch=True, accent=False), '{981}')
+# (mover(mo('_', accent=True), switch=True, accent=False), '{981}')
 # >>> handle_cmd('bar', math(), '{x}')
 # (mover(mo('ˉ', stretchy=False), switch=True), '{x}')
 # >>> handle_cmd('xleftarrow', math(), r'[\alpha]{10}')
@@ -1366,7 +1415,7 @@ def tex2mathml(tex_math, inline=True):
 # </math>
 # >>> print(tex2mathml(r'a & b \\ c & d', inline=False))
 # <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-#   <mtable class="align" columnalign="right left" columnspacing="0" displaystyle="true">
+#   <mtable class="align" displaystyle="true" columnalign="right left" columnspacing="0">
 #     <mtr>
 #       <mtd>
 #         <mi>a</mi>
