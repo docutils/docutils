@@ -1,8 +1,21 @@
+#!/usr/bin/env python3
+
 # LaTeX math to Unicode symbols translation dictionaries.
 # Generated with ``write_tex2unichar.py`` from the data in
 # http://milde.users.sourceforge.net/LUCR/Math/
 
-# Includes commands from: wasysym, stmaryrd, txfonts, mathdots, mathabx, esint, bbold, amsxtra, amsmath, amssymb, standard LaTeX
+# Includes commands from:
+#   standard LaTeX
+#   amssymb
+#   amsmath
+#   amsxtra
+#   bbold
+#   esint
+#   mathabx
+#   mathdots
+#   txfonts
+#   stmaryrd
+#   wasysym
 
 mathaccent = {
     'acute': '\u0301',  #  ́ COMBINING ACUTE ACCENT
@@ -25,7 +38,8 @@ mathaccent = {
     'underline': '\u0332',  #  ̲ COMBINING LOW LINE
     'underrightarrow': '\u20ef',  #  ⃯ COMBINING RIGHT ARROW BELOW
     'vec': '\u20d7',  #  ⃗ COMBINING RIGHT ARROW ABOVE
-}
+    }
+
 mathalpha = {
     'Bbbk': '\U0001d55c',  # 𝕜 MATHEMATICAL DOUBLE-STRUCK SMALL K
     'Delta': '\u0394',  # Δ GREEK CAPITAL LETTER DELTA
@@ -93,7 +107,8 @@ mathalpha = {
     'wp': '\u2118',  # ℘ SCRIPT CAPITAL P
     'xi': '\u03be',  # ξ GREEK SMALL LETTER XI
     'zeta': '\u03b6',  # ζ GREEK SMALL LETTER ZETA
-}
+    }
+
 mathbin = {
     'Cap': '\u22d2',  # ⋒ DOUBLE INTERSECTION
     'Circle': '\u25cb',  # ○ WHITE CIRCLE
@@ -175,7 +190,8 @@ mathbin = {
     'veebar': '\u22bb',  # ⊻ XOR
     'wedge': '\u2227',  # ∧ LOGICAL AND
     'wr': '\u2240',  # ≀ WREATH PRODUCT
-}
+    }
+
 mathclose = {
     'Rbag': '\u27c6',  # ⟆ RIGHT S-SHAPED BAG DELIMITER
     'lrcorner': '\u231f',  # ⌟ BOTTOM RIGHT CORNER
@@ -190,12 +206,14 @@ mathclose = {
     'rrparenthesis': '\u2988',  # ⦈ Z NOTATION RIGHT IMAGE BRACKET
     'urcorner': '\u231d',  # ⌝ TOP RIGHT CORNER
     '}': '}',  # } RIGHT CURLY BRACKET
-}
+    }
+
 mathfence = {
     'Vert': '\u2016',  # ‖ DOUBLE VERTICAL LINE
     'vert': '|',  # | VERTICAL LINE
     '|': '\u2016',  # ‖ DOUBLE VERTICAL LINE
-}
+    }
+
 mathop = {
     'bigcap': '\u22c2',  # ⋂ N-ARY INTERSECTION
     'bigcup': '\u22c3',  # ⋃ N-ARY UNION
@@ -226,7 +244,8 @@ mathop = {
     'sum': '\u2211',  # ∑ N-ARY SUMMATION
     'varointclockwise': '\u2232',  # ∲ CLOCKWISE CONTOUR INTEGRAL
     'varprod': '\u2a09',  # ⨉ N-ARY TIMES OPERATOR
-}
+    }
+
 mathopen = {
     'Lbag': '\u27c5',  # ⟅ LEFT S-SHAPED BAG DELIMITER
     'langle': '\u27e8',  # ⟨ MATHEMATICAL LEFT ANGLE BRACKET
@@ -241,7 +260,8 @@ mathopen = {
     'llparenthesis': '\u2987',  # ⦇ Z NOTATION LEFT IMAGE BRACKET
     'ulcorner': '\u231c',  # ⌜ TOP LEFT CORNER
     '{': '{',  # { LEFT CURLY BRACKET
-}
+    }
+
 mathord = {
     '#': '#',  # # NUMBER SIGN
     '$': '$',  # $ DOLLAR SIGN
@@ -390,19 +410,23 @@ mathord = {
     'virgo': '\u264d',  # ♍ VIRGO
     'wasylozenge': '\u2311',  # ⌑ SQUARE LOZENGE
     'yen': '\xa5',  # ¥ YEN SIGN
-}
+    }
+
 mathover = {
     'overbrace': '\u23de',  # ⏞ TOP CURLY BRACKET
     'wideparen': '\u23dc',  # ⏜ TOP PARENTHESIS
-}
+    }
+
 mathpunct = {
     'ddots': '\u22f1',  # ⋱ DOWN RIGHT DIAGONAL ELLIPSIS
     'vdots': '\u22ee',  # ⋮ VERTICAL ELLIPSIS
-}
+    }
+
 mathradical = {
     'sqrt[3]': '\u221b',  # ∛ CUBE ROOT
     'sqrt[4]': '\u221c',  # ∜ FOURTH ROOT
-}
+    }
+
 mathrel = {
     'Bot': '\u2aeb',  # ⫫ DOUBLE UP TACK
     'Bumpeq': '\u224e',  # ≎ GEOMETRICALLY EQUIVALENT TO
@@ -690,15 +714,17 @@ mathrel = {
     'vartriangleright': '\u22b3',  # ⊳ CONTAINS AS NORMAL SUBGROUP
     'vdash': '\u22a2',  # ⊢ RIGHT TACK
     'wasytherefore': '\u2234',  # ∴ THEREFORE
-}
+    }
+
 mathunder = {
     'underbrace': '\u23df',  # ⏟ BOTTOM CURLY BRACKET
-}
+    }
+
 space = {
-    ' ': ' ',  # SPACE
-    ',': '\u2006',  # SIX-PER-EM SPACE
-    ':': '\u205f',  # MEDIUM MATHEMATICAL SPACE
-    'medspace': '\u205f',  # MEDIUM MATHEMATICAL SPACE
-    'quad': '\u2001',  # EM QUAD
-    'thinspace': '\u2006',  # SIX-PER-EM SPACE
-}
+    ' ': ' ',  #   SPACE
+    ',': '\u2006',  #   SIX-PER-EM SPACE
+    ':': '\u205f',  #   MEDIUM MATHEMATICAL SPACE
+    'medspace': '\u205f',  #   MEDIUM MATHEMATICAL SPACE
+    'quad': '\u2001',  #   EM QUAD
+    'thinspace': '\u2006',  #   SIX-PER-EM SPACE
+    }
