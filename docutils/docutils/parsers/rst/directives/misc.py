@@ -70,30 +70,31 @@ class Include(Directive):
         tab_width = self.options.get(
             'tab-width', self.state.document.settings.tab_width)
         try:
-            with open(path,
-                      encoding=encoding,
-                      errors=e_handler) as include_file:
-                rawtext = include_file.read()
+            include_file = io.FileInput(source_path=path,
+                                        encoding=encoding,
+                                        error_handler=e_handler)
         except UnicodeEncodeError:
             raise self.severe(f'Problems with "{self.name}" directive path:\n'
                               f'Cannot encode input file path "{path}" '
-                              f'(wrong locale?).')
+                              '(wrong locale?).')
         except OSError as error:
-            error = io.InputError(error.errno, error.strerror, path)
             raise self.severe(f'Problems with "{self.name}" directive '
                               f'path:\n{io.error_string(error)}.')
-        except UnicodeError as error:
-            raise self.severe(f'Problem with "{self.name}" directive:\n'
-                              + io.error_string(error))
         else:
             self.state.document.settings.record_dependencies.add(path)
 
         # Get to-be-included content
         startline = self.options.get('start-line', None)
         endline = self.options.get('end-line', None)
-        if startline or (endline is not None):
-            lines = rawtext.splitlines(keepends=True)
-            rawtext = ''.join(lines[startline:endline])
+        try:
+            if startline or (endline is not None):
+                lines = include_file.readlines()
+                rawtext = ''.join(lines[startline:endline])
+            else:
+                rawtext = include_file.read()
+        except UnicodeError as error:
+            raise self.severe(f'Problem with "{self.name}" directive:\n'
+                              + io.error_string(error))
         # start-after/end-before: no restrictions on newlines in match-text,
         # and no restrictions on matching inside lines vs. line boundaries
         after_text = self.options.get('start-after', None)
@@ -248,21 +249,21 @@ class Raw(Directive):
                                                  self.options['file']))
             path = utils.relative_path(None, path)
             try:
-                with open(path,
-                          encoding=encoding,
-                          errors=e_handler) as raw_file:
-                    text = raw_file.read()
+                raw_file = io.FileInput(source_path=path,
+                                        encoding=encoding,
+                                        error_handler=e_handler)
             except OSError as error:
-                error = io.InputError(error.errno, error.strerror, path)
                 raise self.severe(f'Problems with "{self.name}" directive '
                                   f'path:\n{io.error_string(error)}.')
-            except UnicodeError as error:
-                raise self.severe(f'Problem with "{self.name}" directive:\n'
-                                  + io.error_string(error))
             else:
                 # TODO: currently, raw input files are recorded as
                 # dependencies even if not used for the chosen output format.
                 self.state.document.settings.record_dependencies.add(path)
+            try:
+                text = raw_file.read()
+            except UnicodeError as error:
+                raise self.severe(f'Problem with "{self.name}" directive:\n'
+                                  + io.error_string(error))
             attributes['source'] = path
         elif 'url' in self.options:
             source = self.options['url']
@@ -272,12 +273,16 @@ class Raw(Directive):
             from urllib.request import urlopen
             from urllib.error import URLError
             try:
-                with urlopen(source) as response:
-                    text = response.read().decode(encoding, e_handler)
+                raw_text = urlopen(source).read()
             except (URLError, OSError) as error:
                 raise self.severe(f'Problems with "{self.name}" directive URL '
                                   f'"{self.options["url"]}":\n'
                                   f'{io.error_string(error)}.')
+            raw_file = io.StringInput(source=raw_text, source_path=source,
+                                      encoding=encoding,
+                                      error_handler=e_handler)
+            try:
+                text = raw_file.read()
             except UnicodeError as error:
                 raise self.severe(f'Problem with "{self.name}" directive:\n'
                                   + io.error_string(error))
