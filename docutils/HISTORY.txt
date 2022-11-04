@@ -47,11 +47,20 @@ Changes Since 0.19
 
   - Support Ukrainian. Patch by Dmytro Kazanzhy.
 
-* Removed test/coverage.sh, use the coverage.py_ project instead,
+* docutils/nodes.py
+
+  - Fix previous_sibling() method that led to invalid HTML in some cases
+    (cf. patch #195).
+
+
+* test/coverage.sh
+
+  Removed. Use the coverage.py_ project instead,
   ``coverage run test/alltests.py`` and ``coverage report``.
   Patch by Adam Turner.
 
-.. _coverage.py: https://pypi.org/project/coverage/
+  .. _coverage.py: https://pypi.org/project/coverage/
+
 
 Release 0.19 (2022-07-05)
 =========================
@@ -79,7 +88,7 @@ Release 0.19 (2022-07-05)
   - New function `error_string()`
     obsoletes `utils.error_reporting.ErrorString`.
   - Class `ErrorOutput` moved here from `utils/error_reporting`.
-  - Use "utf-8-sig" instead of Python's default encoding if the 
+  - Use "utf-8-sig" instead of Python's default encoding if the
     "input_encoding" setting is None.
   - Fix error when reading of UTF-16 encoded source without trailing newline.
 
