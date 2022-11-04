@@ -56,6 +56,10 @@ Changes Since 0.19
 
   - Support "mod" notation for modulo operation/modulus arithmetic.
 
+* docutils/docutils/utils/math/tex2mathml_extern.py
+
+  - Support `pandoc` as LaTeX to MathML converter. Patch by Ximin Luo.
+
 * test/coverage.sh
 
   Removed. Use the coverage.py_ project instead,

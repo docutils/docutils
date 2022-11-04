@@ -19,6 +19,7 @@ the API is not settled and may change with any minor Docutils version.
 import subprocess
 
 document_template = r"""\documentclass{article}
+\usepackage{amsmath}
 \begin{document}
 %s
 \end{document}
@@ -89,7 +90,7 @@ def ttm(math_code, reporter=None):
                          close_fds=True)
     p.stdin.write((document_template % math_code).encode('utf-8'))
     p.stdin.close()
-    result = p.stdout.read().decode('utf-8')
+    result = p.stdout.read()
     err = p.stderr.read().decode('utf-8')
     if err.find('**** Unknown') >= 0:
         msg = '\n'.join(line for line in err.splitlines()
@@ -117,7 +118,7 @@ def blahtexml(math_code, inline=True, reporter=None):
     if inline:
         mathmode_arg = ''
     else:
-        mathmode_arg = 'mode="display"'
+        mathmode_arg = ' display="block"'
         options.append('--displaymath')
 
     p = subprocess.Popen(['blahtexml']+options,
@@ -142,6 +143,38 @@ def blahtexml(math_code, inline=True, reporter=None):
     return result
 
 
+def pandoc(math_code, reporter=None):
+    """Convert LaTeX math code to MathML with pandoc_
+
+    .. _pandoc: https://pandoc.org/
+    """
+    p = subprocess.Popen(['pandoc',
+                          '--mathml',
+                          '--from=latex',
+                          ],
+                         stdin=subprocess.PIPE,
+                         stdout=subprocess.PIPE,
+                         stderr=subprocess.PIPE,
+                         close_fds=True)
+    p.stdin.write(math_code.encode('utf-8'))
+    p.stdin.close()
+    result = p.stdout.read().decode('utf-8')
+    err = p.stderr.read().decode('utf-8').strip()
+    x = p.wait()
+
+    if err:
+        if reporter:
+            reporter.error(err)
+        raise SyntaxError('\nError message from external converter pandoc:\n%s'
+                          % err)
+    if x != 0:
+        raise SyntaxError('\nError code from external converter pandoc:\n%s'
+                          % x)
+
+    start, end = result.find('<math'), result.find('</math>')+7
+    return result[start:end]
+
+
 # self-test
 
 if __name__ == "__main__":
@@ -150,3 +183,4 @@ if __name__ == "__main__":
     # print(latexml('$'+example+'$'))
     # print(ttm('$'+example.replace('\\mathbb{R}', '')+'$'))
     print(blahtexml(example))
+    # print(pandoc('$'+example+'$'))

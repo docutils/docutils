@@ -1147,6 +1147,9 @@ the output document. Supported values are (case insensitive):
   TtM_
     No "matrix", "align" and  "cases" environments. Support may be removed.
 
+  Pandoc_
+    Comprehensive macro support, fast, but a large install size. (Haskell)
+
 :LaTeX:
   Include literal LaTeX code.
 
@@ -1163,6 +1166,7 @@ New in Docutils 0.8.
 .. _blahtexml: http://gva.noekeon.org/blahtexml/
 .. _LaTeXML: http://dlmf.nist.gov/LaTeXML/
 .. _TtM: http://hutchinson.belmont.ma.us/tth/mml/
+.. _Pandoc: https://pandoc.org/
 
 
 .. _stylesheet [html writers]:
