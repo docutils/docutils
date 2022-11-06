@@ -14,10 +14,6 @@
 Changes Since 0.19
 ==================
 
-* docutils/writers/manpage.py
-
-  - Do not output empty "manual" in ``.TH``
-
 * Declared support for Python 3.11 in setup.py and tox.ini.
   Patch by Hugo van Kemenade.
 
@@ -52,11 +48,20 @@ Changes Since 0.19
   - Fix previous_sibling() method that led to invalid HTML in some cases
     (cf. patch #195).
 
+* docutils/writers/latex2e/__init__.py
+
+  - Do not insert ``\usepackage[utf8]{inputenc}`` into UTF-8 encoded
+    LaTeX sources. UTF-8 is the default encoding for LaTeX2e since 2018.
+
+* docutils/writers/manpage.py
+
+  - Do not output empty "manual" in ``.TH``
+
 * docutils/utils/math/latex2mathml.py
 
   - Support "mod" notation for modulo operation/modulus arithmetic.
 
-* docutils/docutils/utils/math/tex2mathml_extern.py
+* docutils/utils/math/tex2mathml_extern.py
 
   - Support `pandoc` as LaTeX to MathML converter. Patch by Ximin Luo.
 

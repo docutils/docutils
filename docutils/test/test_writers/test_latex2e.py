@@ -62,7 +62,6 @@ head_prefix=r"""\documentclass[a4paper]{article}
 """,
 requirements=r"""\usepackage{ifthen}
 \usepackage[T1]{fontenc}
-\usepackage[utf8]{inputenc}
 """,
 latex_preamble=r"""% PDF Standard Fonts
 \usepackage{mathptmx} % Times
@@ -152,7 +151,6 @@ totest['spanish_quote'] = [
 head_template.substitute(dict(parts,
 requirements=r"""\usepackage{ifthen}
 \usepackage[T1]{fontenc}
-\usepackage[utf8]{inputenc}
 \usepackage[spanish,english]{babel}
 \AtBeginDocument{\shorthandoff{.<>}}
 """)) + r"""

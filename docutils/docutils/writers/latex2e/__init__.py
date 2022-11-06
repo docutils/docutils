@@ -1304,7 +1304,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # ~~~~~~~~~~~~~~~~
         # Encodings:
         # Docutils' output-encoding => TeX input encoding
-        if self.latex_encoding != 'ascii':
+        if self.latex_encoding not in ('ascii', 'unicode', 'utf8'):
             self.requirements['_inputenc'] = (r'\usepackage[%s]{inputenc}'
                                               % self.latex_encoding)
         # TeX font encoding
@@ -1459,15 +1459,13 @@ class LaTeXTranslator(nodes.NodeVisitor):
               # 'iso-8859-7': ''   # greek
               # 'iso-8859-8': ''   # hebrew
               # 'iso-8859-10': ''  # latin6, more complete iso-8859-4
-              'unicode': 'utf8',  # TEMPORARY, remove in Docutils 0.21
               }
-        encoding = docutils_encoding.lower()
+        encoding = docutils_encoding.lower()  # normalize case
+        encoding = encoding.split(':')[0]     # strip the error handler
         if encoding in tr:
             return tr[encoding]
-        # drop hyphen or low-line from "latin_1", "utf-8" and similar
-        encoding = encoding.replace('_', '').replace('-', '')
-        # strip the error handler
-        return encoding.split(':')[0]
+        # drop HYPHEN or LOW LINE from "latin_1", "utf-8" and similar
+        return encoding.replace('_', '').replace('-', '')
 
     def language_label(self, docutil_label):
         return self.language_module.labels[docutil_label]
