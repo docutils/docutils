@@ -417,6 +417,10 @@ output_encoding
 
 The text encoding for output.
 
+The "output_encoding" setting may also affect the content of the output
+(e.g. an encoding declaration in HTML or XML or the representation of
+characters as LaTeX macro vs. literal character).
+
 Default: "utf-8".  Options: ``--output-encoding, -o``.
 
 output_encoding_error_handler
