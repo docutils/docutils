@@ -55,8 +55,8 @@ include15 = mydir('includes/include15.txt')
 include16 = mydir('includes/include16.txt')
 include_literal = mydir('include_literal.txt')
 include_md = mydir('include.md')
-utf_16_file = mydir('utf-16.csv')
-utf_16_error_str = ("UnicodeDecodeError: 'ascii' codec can't decode byte 0xfe "
+utf_16_file = 'data/utf-16-le-sig.txt'
+utf_16_error_str = ("UnicodeDecodeError: 'ascii' codec can't decode byte 0xff "
                     "in position 0: ordinal not in range(128)")
 nonexistent = os.path.join(os.path.dirname(parsers.rst.states.__file__),
                            'include', 'nonexistent')
@@ -498,17 +498,39 @@ Encoding:
 .. include:: %s
    :encoding: utf-16
 """ % reldir(utf_16_file),
-b"""\
+"""\
 <document source="test data">
     <paragraph>
         Encoding:
     <paragraph>
-        "Treat", "Quantity", "Description"
-        "Albatr\xb0\xdf", 2.99, "\xa1On a \\u03c3\\u03c4\\u03b9\\u03ba!"
-        "Crunchy Frog", 1.49, "If we took the b\xf6nes out, it wouldn\\u2019t be
-        crunchy, now would it?"
-        "Gannet Ripple", 1.99, "\xbfOn a \\u03c3\\u03c4\\u03b9\\u03ba?"
-""".decode('raw_unicode_escape')],
+        Grüße
+"""],
+["""\
+Default encoding: auto-determine (here via BOM).
+
+.. include:: %s
+""" % reldir(utf_16_file),
+"""\
+<document source="test data">
+    <paragraph>
+        Default encoding: auto-determine (here via BOM).
+    <paragraph>
+        Grüße
+"""],
+["""\
+Default encoding: auto-determine (via encoding declaration).
+
+.. include:: data/latin2.txt
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        Default encoding: auto-determine (via encoding declaration).
+    <comment xml:space="preserve">
+        -*- encoding: latin2 -*-
+    <paragraph>
+        škoda
+"""],
 ["""\
 Include file is UTF-16-encoded, and is not valid ASCII.
 
