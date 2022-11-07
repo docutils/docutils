@@ -23,9 +23,8 @@ def suite():
 
 mydir = 'test_parsers/test_rst/test_directives/'
 raw1 = os.path.join(mydir, 'raw1.txt')
-utf_16_file = os.path.join(mydir, 'utf-16.csv')
-utf_16_file_rel = utils.relative_path(None, utf_16_file)
-utf_16_error_str = ("UnicodeDecodeError: 'ascii' codec can't decode byte 0xfe "
+utf_16_file = 'data/utf-16-le-sig.txt'
+utf_16_error_str = ("UnicodeDecodeError: 'ascii' codec can't decode byte 0xff "
                     "in position 0: ordinal not in range(128)")
 
 totest = {}
@@ -94,25 +93,34 @@ totest['raw'] = [
 """],
 ["""\
 .. raw:: html
-   :file: %s
+   :file: data/utf-16-le-sig.txt
    :encoding: utf-16
-""" % utf_16_file_rel,
-b"""\
+""",
+"""\
 <document source="test data">
-    <raw format="html" source="%s" xml:space="preserve">
-        "Treat", "Quantity", "Description"
-        "Albatr\xb0\xdf", 2.99, "\xa1On a \\u03c3\\u03c4\\u03b9\\u03ba!"
-        "Crunchy Frog", 1.49, "If we took the b\xf6nes out, it wouldn\\u2019t be
-        crunchy, now would it?"
-        "Gannet Ripple", 1.99, "\xbfOn a \\u03c3\\u03c4\\u03b9\\u03ba?"
-""".decode('raw_unicode_escape') % utf_16_file_rel],
+    <raw format="html" source="data/utf-16-le-sig.txt" xml:space="preserve">
+        Grüße
+"""],
+["""\
+Default encoding: auto-determine (here via BOM).
+
+.. raw:: html
+   :file: data/utf-16-le-sig.txt
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        Default encoding: auto-determine (here via BOM).
+    <raw format="html" source="data/utf-16-le-sig.txt" xml:space="preserve">
+        Grüße
+"""],
 ["""\
 Raw input file is UTF-16-encoded, and is not valid ASCII.
 
 .. raw:: html
-   :file: %s
+   :file: data/utf-16-le-sig.txt
    :encoding: ascii
-""" % utf_16_file_rel,
+""",
 """\
 <document source="test data">
     <paragraph>
@@ -123,9 +131,9 @@ Raw input file is UTF-16-encoded, and is not valid ASCII.
             %s
         <literal_block xml:space="preserve">
             .. raw:: html
-               :file: %s
+               :file: data/utf-16-le-sig.txt
                :encoding: ascii
-""" % (utf_16_error_str, utf_16_file_rel)],
+""" % utf_16_error_str],
 ["""\
 .. raw:: html
    :encoding: utf-8
