@@ -428,18 +428,18 @@ def publish_string(source, source_path=None, destination_path=None,
                    settings_overrides=None, config_section=None,
                    enable_exit_status=False):
     """
-    Set up & run a `Publisher` for programmatic use with string I/O.  Return
-    the encoded string or Unicode string output.
+    Set up & run a `Publisher` for programmatic use with string I/O.
 
-    For encoded string output, be sure to set the 'output_encoding' setting to
-    the desired encoding.  Set it to 'unicode' for unencoded Unicode string
-    output.  Here's one way::
+    `source` and return value may be `bytes` or `str` objects.
+
+    For `bytes` output, set the "output_encoding" setting to the
+    desired encoding. For `str` output, set it to 'unicode', e.g.::
 
         publish_string(..., settings_overrides={'output_encoding': 'unicode'})
 
-    Similarly for Unicode string input (`source`)::
-
-        publish_string(..., settings_overrides={'input_encoding': 'unicode'})
+    Beware that the "output_encoding" setting may also affect the content
+    of the output (e.g. an encoding declaration in HTML or XML or the
+    representation of characters as LaTeX macro vs. literal character).
 
     Parameters: see `publish_programmatically`.
     """
@@ -506,14 +506,9 @@ def publish_parts(source, source_path=None, source_class=io.StringInput,
                   enable_exit_status=False):
     """
     Set up & run a `Publisher`, and return a dictionary of document parts.
+
     Dictionary keys are the names of parts, and values are Unicode strings;
     encoding is up to the client.  For programmatic use with string I/O.
-
-    For encoded string input, be sure to set the 'input_encoding' setting to
-    the desired encoding.  Set it to 'unicode' for unencoded Unicode string
-    input.  Here's how::
-
-        publish_parts(..., settings_overrides={'input_encoding': 'unicode'})
 
     Parameters: see `publish_programmatically`.
     """
@@ -539,14 +534,7 @@ def publish_doctree(source, source_path=None,
                     settings_overrides=None, config_section=None,
                     enable_exit_status=False):
     """
-    Set up & run a `Publisher` for programmatic use with string I/O.
-    Return the document tree.
-
-    For encoded string input, be sure to set the 'input_encoding' setting to
-    the desired encoding.  Set it to 'unicode' for unencoded Unicode string
-    input.  Here's one way::
-
-        publish_doctree(..., settings_overrides={'input_encoding': 'unicode'})
+    Set up & run a `Publisher` for programmatic use. Return a document tree.
 
     Parameters: see `publish_programmatically`.
     """
@@ -651,8 +639,9 @@ def publish_programmatically(source_class, source, source_path,
                              settings_overrides, config_section,
                              enable_exit_status):
     """
-    Set up & run a `Publisher` for custom programmatic use.  Return the
-    encoded string output and the Publisher object.
+    Set up & run a `Publisher` for custom programmatic use.
+
+    Return the output (as `str` or `bytes`) and the Publisher object.
 
     Applications should not need to call this function directly.  If it does
     seem to be necessary to call this function directly, please write to the
@@ -671,18 +660,17 @@ def publish_programmatically(source_class, source, source_path,
         (`source_path` is opened).  If neither `source` nor
         `source_path` are supplied, `sys.stdin` is used.
 
-      - If `source_class` is `io.StringInput` **required**: The input
-        string, either an encoded 8-bit string (set the
-        'input_encoding' setting to the correct encoding) or a Unicode
-        string (set the 'input_encoding' setting to 'unicode').
+      - If `source_class` is `io.StringInput` **required**:
+        The input as either a `bytes` object (ensure the 'input_encoding'
+        setting matches its encoding) or a `str` object.
 
     * `source_path`: Type depends on `source_class`:
 
       - `io.FileInput`: Path to the input file, opened if no `source`
         supplied.
 
-      - `io.StringInput`: Optional.  Path to the file or object that produced
-        `source`.  Only used for diagnostic output.
+      - `io.StringInput`: Optional.  Path to the file or name of the
+        object that produced `source`.  Only used for diagnostic output.
 
     * `destination_class` **required**: The class for dynamically created
       destination objects.  Typically `io.FileOutput` or `io.StringOutput`.

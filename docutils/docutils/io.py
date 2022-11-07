@@ -576,15 +576,15 @@ class BytesOutput(Output):
 
 
 class StringInput(Input):
-
-    """
-    Direct string input.
-    """
+    """Input from a `str` or `bytes` instance."""
 
     default_source_path = '<string>'
 
     def read(self):
-        """Decode and return the source string."""
+        """Return the source as `str` instance.
+
+        Decode, if required (see `Input.decode`).
+        """
         return self.decode(self.source)
 
 
