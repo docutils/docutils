@@ -29,7 +29,6 @@ import os
 import sys
 import unittest
 from io import StringIO
-from pprint import pformat
 
 testroot = os.path.abspath(os.path.dirname(__file__) or os.curdir)
 os.chdir(testroot)
@@ -41,9 +40,8 @@ import docutils.core   # NoQA: E402
 from docutils import frontend, utils   # NoQA: E402
 from docutils.transforms import universal   # NoQA: E402
 from docutils.parsers import rst   # NoQA: E402
-from docutils.parsers.rst import tableparser, roles   # NoQA: E402
-from docutils.readers import pep   # NoQA: E402
-from docutils.statemachine import StringList, string2lines   # NoQA: E402
+from docutils.parsers.rst import roles   # NoQA: E402
+from docutils.statemachine import StringList   # NoQA: E402
 
 
 # Hack to make repr(StringList) look like repr(list):
