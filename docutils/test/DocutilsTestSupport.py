@@ -20,8 +20,6 @@ Exports the following:
     - `ParserTestSuite`
     - `PEPParserTestCase`
     - `PEPParserTestSuite`
-    - `GridTableParserTestCase`
-    - `GridTableParserTestSuite`
     - `WriterPublishTestCase`
     - `PublishTestSuite`
 """
@@ -360,61 +358,6 @@ class PEPParserTestSuite(ParserTestSuite):
     """A collection of PEPParserTestCases."""
 
     test_case_class = PEPParserTestCase
-
-
-class GridTableParserTestCase(CustomTestCase):
-
-    parser = tableparser.GridTableParser()
-
-    def test_parse_table(self):
-        self.parser.setup(StringList(string2lines(self.input), 'test data'))
-        try:
-            self.parser.find_head_body_sep()
-            self.parser.parse_table()
-            output = self.parser.cells
-        except Exception as details:
-            output = '%s: %s' % (details.__class__.__name__, details)
-        self.assertEqual(pformat(output),
-                         pformat(self.expected))
-
-    def test_parse(self):
-        try:
-            output = self.parser.parse(StringList(string2lines(self.input),
-                                                  'test data'))
-        except Exception as details:
-            output = '%s: %s' % (details.__class__.__name__, details)
-        self.assertEqual(pformat(output),
-                         pformat(self.expected))
-
-
-class GridTableParserTestSuite(CustomTestSuite):
-
-    """
-    A collection of GridTableParserTestCases.
-
-    A GridTableParserTestSuite instance manufactures GridTableParserTestCases,
-    keeps track of them, and provides a shared test fixture (a-la setUp and
-    tearDown).
-    """
-
-    def generateTests(self, dict):
-        """
-        Stock the suite with test cases generated from a test data dictionary.
-
-        Each dictionary key (test type name) maps to a list of tests. Each
-        test is a list: an input table, expected output from parse_table(),
-        expected output from parse().
-        Tests should be self-documenting and not require external comments.
-        """
-        for name, cases in dict.items():
-            for casenum, (case_input, case_table,
-                          case_expected) in enumerate(cases):
-                self.addTestCase(GridTableParserTestCase, 'test_parse_table',
-                                 input=case_input, expected=case_table,
-                                 id=f'totest[{name!r}][{casenum}]')
-                self.addTestCase(GridTableParserTestCase, 'test_parse',
-                                 input=case_input, expected=case_expected,
-                                 id=f'totest[{name!r}][{casenum}]')
 
 
 class WriterPublishTestCase(CustomTestCase, docutils.SettingsSpec):
