@@ -8,14 +8,30 @@
 Test for Null writer.
 """
 
-from test import DocutilsTestSupport
+import unittest
+
+from test import DocutilsTestSupport  # NoQA: F401
+
+from docutils.core import publish_string
 
 
-def suite():
-    s = DocutilsTestSupport.PublishTestSuite(
-        'null', suite_settings={'output_encoding': 'utf-8'})
-    s.generateTests(totest)
-    return s
+class WriterPublishTestCase(unittest.TestCase):
+    def test_publish(self):
+        writer_name = 'null'
+        for name, cases in totest.items():
+            for casenum, (case_input, case_expected) in enumerate(cases):
+                with self.subTest(id=f'totest[{name!r}][{casenum}]'):
+                    output = publish_string(
+                        source=case_input,
+                        writer_name=writer_name,
+                        settings_overrides={
+                            '_disable_config': True,
+                            'strict_visitor': True,
+                        },
+                    )
+                    if isinstance(output, bytes):
+                        output = output.decode('utf-8')
+                    self.assertEqual(output, case_expected)
 
 
 totest = {}
@@ -29,4 +45,4 @@ None]
 
 if __name__ == '__main__':
     import unittest
-    unittest.main(defaultTest='suite')
+    unittest.main()
