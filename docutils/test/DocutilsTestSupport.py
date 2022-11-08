@@ -18,8 +18,6 @@ Exports the following:
     - `TransformTestSuite`
     - `ParserTestCase`
     - `ParserTestSuite`
-    - `PEPParserTestCase`
-    - `PEPParserTestSuite`
     - `WriterPublishTestCase`
     - `PublishTestSuite`
 """
@@ -338,26 +336,6 @@ class ParserTestSuite(CustomTestSuite):
                       self.test_case_class, 'test_parser',
                       input=case_input, expected=case_expected,
                       id=f'totest[{name!r}][{casenum}]')
-
-
-class PEPParserTestCase(ParserTestCase):
-
-    """PEP-specific parser test case."""
-
-    parser = rst.Parser(rfc2822=True, inliner=rst.states.Inliner())
-    """Parser shared by all PEPParserTestCases."""
-
-    settings = frontend.get_default_settings(rst.Parser, pep.Reader)
-    settings.report_level = 5
-    settings.halt_level = 5
-    settings.debug = False
-
-
-class PEPParserTestSuite(ParserTestSuite):
-
-    """A collection of PEPParserTestCases."""
-
-    test_case_class = PEPParserTestCase
 
 
 class WriterPublishTestCase(CustomTestCase, docutils.SettingsSpec):
