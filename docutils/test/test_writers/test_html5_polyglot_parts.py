@@ -12,33 +12,37 @@ dictionaries (redundant), along with 'meta' and 'stylesheet' entries with
 standard values, and any entries with empty values.
 """
 
-from test import DocutilsTestSupport
+import unittest
+
+from test import DocutilsTestSupport  # NoQA: F401
 
 import docutils
 import docutils.core
 
-WriterPublishTestCase = DocutilsTestSupport.WriterPublishTestCase
 
+class Html5WriterPublishPartsTestCase(unittest.TestCase):
 
-class Html5WriterPublishPartsTestCase(WriterPublishTestCase):
-    """Test case for HTML5 writer via the publish_parts interface."""
-
-    writer_name = 'html5'
-
-    settings_default_overrides = \
-        WriterPublishTestCase.settings_default_overrides.copy()
-    settings_default_overrides['stylesheet'] = ''
-    settings_default_overrides['section_self_link'] = True
+    """
+    Test case for HTML writer via the publish_parts interface.
+    """
 
     def test_publish(self):
-        parts = docutils.core.publish_parts(
-            source=self.input,
-            reader_name='standalone',
-            parser_name='restructuredtext',
-            writer_name=self.writer_name,
-            settings_spec=self,
-            settings_overrides=self.suite_settings)
-        self.assertEqual(self.format_output(parts), self.expected)
+        writer_name = 'html5'
+        for name, (settings_overrides, cases) in totest.items():
+            for casenum, (case_input, case_expected) in enumerate(cases):
+                with self.subTest(id=f'totest[{name!r}][{casenum}]'):
+                    parts = docutils.core.publish_parts(
+                        source=case_input,
+                        writer_name=writer_name,
+                        settings_overrides={
+                            '_disable_config': True,
+                            'strict_visitor': True,
+                            'stylesheet': '',
+                            'section_self_link': True,
+                            **settings_overrides,
+                        }
+                    )
+                    self.assertEqual(self.format_output(parts), case_expected)
 
     standard_content_type_template = '<meta charset="%s" />\n'
     standard_generator_template = '<meta name="generator"' \
@@ -73,25 +77,6 @@ class Html5WriterPublishPartsTestCase(WriterPublishTestCase):
         parts['html_prolog'] = parts['html_prolog'].replace(
             self.standard_html_prolog, '')
         return {k: v for k, v in parts.items() if v}
-
-
-class Html5PublishPartsTestSuite(DocutilsTestSupport.CustomTestSuite):
-    def generateTests(self, dict):
-        for name, (settings_overrides, cases) in dict.items():
-            original_settings = self.suite_settings.copy()
-            self.suite_settings.update(settings_overrides)
-            for casenum, (case_input, case_expected) in enumerate(cases):
-                self.addTestCase(
-                    Html5WriterPublishPartsTestCase, 'test_publish',
-                    input=case_input, expected=case_expected,
-                    id=f'totest[{name!r}][{casenum}]')
-            self.suite_settings = original_settings
-
-
-def suite():
-    s = Html5PublishPartsTestSuite()
-    s.generateTests(totest)
-    return s
 
 
 totest = {}
@@ -761,4 +746,4 @@ The latter are referenced a second time [#f2]_ [twice]_.
 
 if __name__ == '__main__':
     import unittest
-    unittest.main(defaultTest='suite')
+    unittest.main()

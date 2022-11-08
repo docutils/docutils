@@ -18,7 +18,6 @@ Exports the following:
     - `TransformTestSuite`
     - `ParserTestCase`
     - `ParserTestSuite`
-    - `WriterPublishTestCase`
 """
 __docformat__ = 'reStructuredText'
 
@@ -34,8 +33,6 @@ os.chdir(testroot)
 sys.path.insert(0, os.path.normpath(os.path.join(testroot, '..')))
 sys.path.insert(0, testroot)
 
-import docutils   # NoQA: E402
-import docutils.core   # NoQA: E402
 from docutils import frontend, utils   # NoQA: E402
 from docutils.transforms import universal   # NoQA: E402
 from docutils.parsers import rst   # NoQA: E402
@@ -333,37 +330,6 @@ class ParserTestSuite(CustomTestSuite):
                       self.test_case_class, 'test_parser',
                       input=case_input, expected=case_expected,
                       id=f'totest[{name!r}][{casenum}]')
-
-
-class WriterPublishTestCase(CustomTestCase, docutils.SettingsSpec):
-
-    """
-    Test case for publish.
-    """
-
-    settings_default_overrides = {'_disable_config': True,
-                                  'strict_visitor': True,
-                                  }
-    writer_name = ''  # set in subclasses or constructor
-
-    def __init__(self, *args, writer_name='', **kwargs):
-        if writer_name:
-            self.writer_name = writer_name
-        super().__init__(*args, **kwargs)
-
-    def test_publish(self):
-        output = docutils.core.publish_string(
-              source=self.input,
-              reader_name='standalone',
-              parser_name='restructuredtext',
-              writer_name=self.writer_name,
-              settings_spec=self,
-              settings_overrides=self.suite_settings)
-        try:
-            output = output.decode()
-        except AttributeError:
-            pass
-        self.assertEqual(output, self.expected)
 
 
 def exception_data(func, *args, **kwds):
