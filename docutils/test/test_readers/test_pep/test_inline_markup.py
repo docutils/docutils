@@ -8,13 +8,28 @@
 Tests for inline markup in PEPs (readers/pep.py).
 """
 
-from test import DocutilsTestSupport
+import unittest
+
+from test import DocutilsTestSupport  # NoQA: F401
+
+from docutils.frontend import get_default_settings
+from docutils.parsers.rst import Parser
+from docutils.parsers.rst.states import Inliner
+from docutils.readers.pep import Reader
+from docutils.utils import new_document
 
 
-def suite():
-    s = DocutilsTestSupport.PEPParserTestSuite()
-    s.generateTests(totest)
-    return s
+class PEPParserTestCase(unittest.TestCase):
+    def test_parser(self):
+        parser = Parser(rfc2822=True, inliner=Inliner())
+        settings = get_default_settings(Parser, Reader)
+        for name, cases in totest.items():
+            for casenum, (case_input, case_expected) in enumerate(cases):
+                with self.subTest(id=f'totest[{name!r}][{casenum}]'):
+                    document = new_document('test data', settings.copy())
+                    parser.parse(case_input, document)
+                    output = document.pformat()
+                    self.assertEqual(output, case_expected)
 
 
 totest = {}
@@ -135,4 +150,4 @@ For *completeness*, _`let's` ``test`` **other** forms_
 
 if __name__ == '__main__':
     import unittest
-    unittest.main(defaultTest='suite')
+    unittest.main()
