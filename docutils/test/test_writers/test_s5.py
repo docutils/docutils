@@ -10,21 +10,48 @@ Tests for the S5/HTML writer.
 
 import os
 import platform
+import unittest
 
-from test import DocutilsTestSupport
+from test import DocutilsTestSupport  # NoQA: F401
 
 import docutils
+from docutils.core import publish_string
 
 
-def suite():
-    settings = {'stylesheet_path': '/test.css',
-                'embed_stylesheet': 0}
-    s = DocutilsTestSupport.PublishTestSuite('s5', suite_settings=settings)
-    s.generateTests(totest_1)
-    settings['hidden_controls'] = 0
-    settings['view_mode'] = 'outline'
-    s.generateTests(totest_2)
-    return s
+class WriterPublishTestCase(unittest.TestCase):
+    def test_publish(self):
+        writer_name = 's5'
+        settings = {
+            '_disable_config': True,
+            'strict_visitor': True,
+            'stylesheet_path': '/test.css',
+            'embed_stylesheet': False,
+        }
+        for name, cases in totest_1.items():
+            for casenum, (case_input, case_expected) in enumerate(cases):
+                with self.subTest(id=f'totest_1[{name!r}][{casenum}]'):
+                    output = publish_string(
+                        source=case_input,
+                        writer_name=writer_name,
+                        settings_overrides=settings.copy(),
+                    )
+                    if isinstance(output, bytes):
+                        output = output.decode('utf-8')
+                    self.assertEqual(output, case_expected)
+
+        settings['hidden_controls'] = False
+        settings['view_mode'] = 'outline'
+        for name, cases in totest_2.items():
+            for casenum, (case_input, case_expected) in enumerate(cases):
+                with self.subTest(id=f'totest_2[{name!r}][{casenum}]'):
+                    output = publish_string(
+                        source=case_input,
+                        writer_name=writer_name,
+                        settings_overrides=settings.copy(),
+                    )
+                    if isinstance(output, bytes):
+                        output = output.decode('utf-8')
+                    self.assertEqual(output, case_expected)
 
 
 if platform.system() == "Windows":
@@ -168,4 +195,4 @@ f"""\
 
 if __name__ == '__main__':
     import unittest
-    unittest.main(defaultTest='suite')
+    unittest.main()

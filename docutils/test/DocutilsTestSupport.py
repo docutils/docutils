@@ -19,7 +19,6 @@ Exports the following:
     - `ParserTestCase`
     - `ParserTestSuite`
     - `WriterPublishTestCase`
-    - `PublishTestSuite`
 """
 __docformat__ = 'reStructuredText'
 
@@ -365,26 +364,6 @@ class WriterPublishTestCase(CustomTestCase, docutils.SettingsSpec):
         except AttributeError:
             pass
         self.assertEqual(output, self.expected)
-
-
-class PublishTestSuite(CustomTestSuite):
-
-    def __init__(self, writer_name, suite_settings=None):
-        """
-        `writer_name` is the name of the writer to use.
-        """
-        super().__init__(suite_settings=suite_settings)
-        self.writer_name = writer_name
-
-    def generateTests(self, dict):
-        for name, cases in dict.items():
-            for casenum, (case_input, case_expected) in enumerate(cases):
-                self.addTestCase(
-                      WriterPublishTestCase, 'test_publish',
-                      input=case_input, expected=case_expected,
-                      id=f'totest[{name!r}][{casenum}]',
-                      # Passed to constructor of self.test_class:
-                      writer_name=self.writer_name)
 
 
 def exception_data(func, *args, **kwds):

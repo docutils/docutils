@@ -10,20 +10,36 @@ Tests for the HTML writer.
 
 import os
 import platform
+import unittest
 
-from test import DocutilsTestSupport
+from test import DocutilsTestSupport  # NoQA: F401
 
 import docutils
+from docutils.core import publish_string
 
 
-def suite():
-    settings = {'template': os.path.join(DocutilsTestSupport.testroot,
-                                         'data', 'full-template.txt'),
-                'stylesheet_path': '/test.css',
-                'embed_stylesheet': 0}
-    s = DocutilsTestSupport.PublishTestSuite('html', suite_settings=settings)
-    s.generateTests(totest)
-    return s
+class WriterPublishTestCase(unittest.TestCase):
+    def test_publish(self):
+        writer_name = 'html4'
+        template_path = os.path.join(DocutilsTestSupport.testroot,
+                                     'data', 'full-template.txt')
+        for name, cases in totest.items():
+            for casenum, (case_input, case_expected) in enumerate(cases):
+                with self.subTest(id=f'totest[{name!r}][{casenum}]'):
+                    output = publish_string(
+                        source=case_input,
+                        writer_name=writer_name,
+                        settings_overrides={
+                            '_disable_config': True,
+                            'strict_visitor': True,
+                            'template': template_path,
+                            'stylesheet_path': '/test.css',
+                            'embed_stylesheet': False,
+                        },
+                    )
+                    if isinstance(output, bytes):
+                        output = output.decode('utf-8')
+                    self.assertEqual(output, case_expected)
 
 
 if platform.system() == "Windows":
@@ -244,4 +260,4 @@ footer text
 
 if __name__ == '__main__':
     import unittest
-    unittest.main(defaultTest='suite')
+    unittest.main()

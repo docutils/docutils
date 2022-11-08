@@ -8,39 +8,150 @@ Tests for latex2e writer.
 """
 
 import string
+import unittest
 
-from test import DocutilsTestSupport  # before importing docutils!
+from test import DocutilsTestSupport  # NoQA: F401
+
+from docutils.core import publish_string
 
 
-def suite():
-    settings = {'use_latex_toc': False,
-                # avoid latex writer future warnings:
-                'use_latex_citations': False,
-                'legacy_column_widths': True,
-                }
-    s = DocutilsTestSupport.PublishTestSuite('latex', suite_settings=settings)
-    s.generateTests(totest)
-    settings['use_latex_toc'] = True
-    s.generateTests(totest_latex_toc)
-    settings['documentclass'] = 'book'
-    s.generateTests(totest_latex_toc_book)
-    del settings['documentclass']
-    settings['use_latex_toc'] = False
-    settings['sectnum_xform'] = False
-    s.generateTests(totest_latex_sectnum)
-    settings['sectnum_xform'] = True
-    settings['use_latex_citations'] = True
-    s.generateTests(totest_latex_citations)
-    settings['table_style'] = ['colwidths-auto']
-    s.generateTests(totest_table_style_auto)
-    settings['table_style'] = ['booktabs']
-    s.generateTests(totest_table_style_booktabs)
-    settings['stylesheet_path'] = 'data/spam,data/ham.tex'
-    s.generateTests(totest_stylesheet)
-    settings['embed_stylesheet'] = True
-    settings['warning_stream'] = ''
-    s.generateTests(totest_stylesheet_embed)
-    return s
+class WriterPublishTestCase(unittest.TestCase):
+    def test_publish(self):
+        writer_name = 'latex'
+        settings = {
+            '_disable_config': True,
+            'strict_visitor': True,
+            'use_latex_toc': False,
+            # avoid latex writer future warnings:
+            'use_latex_citations': False,
+            'legacy_column_widths': True,
+        }
+        for name, cases in totest.items():
+            for casenum, (case_input, case_expected) in enumerate(cases):
+                with self.subTest(id=f'totest[{name!r}][{casenum}]'):
+                    output = publish_string(
+                        source=case_input,
+                        writer_name=writer_name,
+                        settings_overrides=settings.copy(),
+                    )
+                    if isinstance(output, bytes):
+                        output = output.decode('utf-8')
+                    self.assertEqual(output, case_expected)
+
+        settings['use_latex_toc'] = True
+        for name, cases in totest_latex_toc.items():
+            for casenum, (case_input, case_expected) in enumerate(cases):
+                with self.subTest(id=f'totest_latex_toc[{name!r}][{casenum}]'):
+                    output = publish_string(
+                        source=case_input,
+                        writer_name=writer_name,
+                        settings_overrides=settings.copy(),
+                    )
+                    if isinstance(output, bytes):
+                        output = output.decode('utf-8')
+                    self.assertEqual(output, case_expected)
+
+        settings['documentclass'] = 'book'
+        for name, cases in totest_latex_toc_book.items():
+            for casenum, (case_input, case_expected) in enumerate(cases):
+                with self.subTest(
+                        id=f'totest_latex_toc_book[{name!r}][{casenum}]'):
+                    output = publish_string(
+                        source=case_input,
+                        writer_name=writer_name,
+                        settings_overrides=settings.copy(),
+                    )
+                    if isinstance(output, bytes):
+                        output = output.decode('utf-8')
+                    self.assertEqual(output, case_expected)
+
+        del settings['documentclass']
+        settings['use_latex_toc'] = False
+        settings['sectnum_xform'] = False
+        for name, cases in totest_latex_sectnum.items():
+            for casenum, (case_input, case_expected) in enumerate(cases):
+                with self.subTest(
+                        id=f'totest_latex_sectnum[{name!r}][{casenum}]'):
+                    output = publish_string(
+                        source=case_input,
+                        writer_name=writer_name,
+                        settings_overrides=settings.copy(),
+                    )
+                    if isinstance(output, bytes):
+                        output = output.decode('utf-8')
+                    self.assertEqual(output, case_expected)
+
+        settings['sectnum_xform'] = True
+        settings['use_latex_citations'] = True
+        for name, cases in totest_latex_citations.items():
+            for casenum, (case_input, case_expected) in enumerate(cases):
+                with self.subTest(
+                        id=f'totest_latex_citations[{name!r}][{casenum}]'):
+                    output = publish_string(
+                        source=case_input,
+                        writer_name=writer_name,
+                        settings_overrides=settings.copy(),
+                    )
+                    if isinstance(output, bytes):
+                        output = output.decode('utf-8')
+                    self.assertEqual(output, case_expected)
+
+        settings['table_style'] = ['colwidths-auto']
+        for name, cases in totest_table_style_auto.items():
+            for casenum, (case_input, case_expected) in enumerate(cases):
+                with self.subTest(
+                        id=f'totest_table_style_auto[{name!r}][{casenum}]'):
+                    output = publish_string(
+                        source=case_input,
+                        writer_name=writer_name,
+                        settings_overrides=settings.copy(),
+                    )
+                    if isinstance(output, bytes):
+                        output = output.decode('utf-8')
+                    self.assertEqual(output, case_expected)
+
+        settings['table_style'] = ['booktabs']
+        for name, cases in totest_table_style_booktabs.items():
+            for casenum, (case_input, case_expected) in enumerate(cases):
+                with self.subTest(
+                        id=f'totest_table_style_booktabs[{name!r}][{casenum}]'):
+                    output = publish_string(
+                        source=case_input,
+                        writer_name=writer_name,
+                        settings_overrides=settings.copy(),
+                    )
+                    if isinstance(output, bytes):
+                        output = output.decode('utf-8')
+                    self.assertEqual(output, case_expected)
+
+        settings['stylesheet_path'] = 'data/spam,data/ham.tex'
+        for name, cases in totest_stylesheet.items():
+            for casenum, (case_input, case_expected) in enumerate(cases):
+                with self.subTest(
+                        id=f'totest_stylesheet[{name!r}][{casenum}]'):
+                    output = publish_string(
+                        source=case_input,
+                        writer_name=writer_name,
+                        settings_overrides=settings.copy(),
+                    )
+                    if isinstance(output, bytes):
+                        output = output.decode('utf-8')
+                    self.assertEqual(output, case_expected)
+
+        settings['embed_stylesheet'] = True
+        settings['warning_stream'] = ''
+        for name, cases in totest_stylesheet_embed.items():
+            for casenum, (case_input, case_expected) in enumerate(cases):
+                with self.subTest(
+                        id=f'totest_stylesheet_embed[{name!r}][{casenum}]'):
+                    output = publish_string(
+                        source=case_input,
+                        writer_name=writer_name,
+                        settings_overrides=settings.copy(),
+                    )
+                    if isinstance(output, bytes):
+                        output = output.decode('utf-8')
+                    self.assertEqual(output, case_expected)
 
 
 head_template = string.Template(
@@ -1134,4 +1245,4 @@ two stylesheets embedded in the header
 
 if __name__ == '__main__':
     import unittest
-    unittest.main(defaultTest='suite')
+    unittest.main()
