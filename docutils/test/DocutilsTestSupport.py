@@ -22,8 +22,6 @@ Exports the following:
     - `PEPParserTestSuite`
     - `GridTableParserTestCase`
     - `GridTableParserTestSuite`
-    - `SimpleTableParserTestCase`
-    - `SimpleTableParserTestSuite`
     - `WriterPublishTestCase`
     - `PublishTestSuite`
 """
@@ -415,32 +413,6 @@ class GridTableParserTestSuite(CustomTestSuite):
                                  input=case_input, expected=case_table,
                                  id=f'totest[{name!r}][{casenum}]')
                 self.addTestCase(GridTableParserTestCase, 'test_parse',
-                                 input=case_input, expected=case_expected,
-                                 id=f'totest[{name!r}][{casenum}]')
-
-
-class SimpleTableParserTestCase(GridTableParserTestCase):
-
-    parser = tableparser.SimpleTableParser()
-
-
-class SimpleTableParserTestSuite(CustomTestSuite):
-
-    """
-    A collection of SimpleTableParserTestCases.
-    """
-
-    def generateTests(self, dict):
-        """
-        Stock the suite with test cases generated from a test data dictionary.
-
-        Each dictionary key (test type name) maps to a list of tests. Each
-        test is a list: an input table, expected output from parse().
-        Tests should be self-documenting and not require external comments.
-        """
-        for name, cases in dict.items():
-            for casenum, (case_input, case_expected) in enumerate(cases):
-                self.addTestCase(SimpleTableParserTestCase, 'test_parse',
                                  input=case_input, expected=case_expected,
                                  id=f'totest[{name!r}][{casenum}]')
 
