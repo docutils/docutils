@@ -7,13 +7,26 @@
 Tests for states.py.
 """
 
-from test import DocutilsTestSupport
+import unittest
+
+from test import DocutilsTestSupport  # NoQA: F401
+
+from docutils.parsers.rst import tableparser
+from docutils.statemachine import StringList, string2lines
 
 
-def suite():
-    s = DocutilsTestSupport.SimpleTableParserTestSuite()
-    s.generateTests(totest)
-    return s
+class SimpleTableParserTestCase(unittest.TestCase):
+    def test_parse(self):
+        parser = tableparser.SimpleTableParser()
+        for name, cases in totest.items():
+            for casenum, (case_input, case_expected) in enumerate(cases):
+                lines_input = StringList(string2lines(case_input), 'test data')
+                with self.subTest(id=f'totest[{name!r}][{casenum}]'):
+                    try:
+                        output = parser.parse(lines_input)
+                    except Exception as details:
+                        output = f'{details.__class__.__name__}: {details}'
+                    self.assertEqual(output, case_expected)
 
 
 totest = {}
@@ -145,4 +158,4 @@ That's bad.
 
 if __name__ == '__main__':
     import unittest
-    unittest.main(defaultTest='suite')
+    unittest.main()
