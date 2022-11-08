@@ -12,35 +12,36 @@ dictionaries (redundant), along with 'meta' and 'stylesheet' entries with
 standard values, and any entries with empty values.
 """
 
-from test import DocutilsTestSupport
+import unittest
+
+from test import DocutilsTestSupport  # NoQA: F401
 
 import docutils
 import docutils.core
 
-WriterPublishTestCase = DocutilsTestSupport.WriterPublishTestCase
 
-
-class HtmlWriterPublishPartsTestCase(WriterPublishTestCase):
+class Html4WriterPublishPartsTestCase(unittest.TestCase):
 
     """
     Test case for HTML writer via the publish_parts interface.
     """
 
-    writer_name = 'html'
-
-    settings_default_overrides = \
-        WriterPublishTestCase.settings_default_overrides.copy()
-    settings_default_overrides['stylesheet'] = ''
-
     def test_publish(self):
-        parts = docutils.core.publish_parts(
-            source=self.input,
-            reader_name='standalone',
-            parser_name='restructuredtext',
-            writer_name=self.writer_name,
-            settings_spec=self,
-            settings_overrides=self.suite_settings)
-        self.assertEqual(self.format_output(parts), self.expected)
+        writer_name = 'html4'
+        for name, (settings_overrides, cases) in totest.items():
+            for casenum, (case_input, case_expected) in enumerate(cases):
+                with self.subTest(id=f'totest[{name!r}][{casenum}]'):
+                    parts = docutils.core.publish_parts(
+                        source=case_input,
+                        writer_name=writer_name,
+                        settings_overrides={
+                            '_disable_config': True,
+                            'strict_visitor': True,
+                            'stylesheet': '',
+                            **settings_overrides,
+                        }
+                    )
+                    self.assertEqual(self.format_output(parts), case_expected)
 
     standard_content_type_template = ('<meta http-equiv="Content-Type"'
                                       ' content="text/html; charset=%s" />\n')
@@ -79,29 +80,10 @@ class HtmlWriterPublishPartsTestCase(WriterPublishTestCase):
         return {k: v for k, v in parts.items() if v}
 
 
-class HtmlPublishPartsTestSuite(DocutilsTestSupport.CustomTestSuite):
-    def generateTests(self, dict):
-        for name, (settings_overrides, cases) in dict.items():
-            original_settings = self.suite_settings.copy()
-            self.suite_settings.update(settings_overrides)
-            for casenum, (case_input, case_expected) in enumerate(cases):
-                self.addTestCase(
-                    HtmlWriterPublishPartsTestCase, 'test_publish',
-                    input=case_input, expected=case_expected,
-                    id=f'totest[{name!r}][{casenum}]')
-            self.suite_settings = original_settings
-
-
-def suite():
-    s = HtmlPublishPartsTestSuite()
-    s.generateTests(totest)
-    return s
-
-
 totest = {}
 
 totest['title_promotion'] = ({'stylesheet_path': '',
-                              'embed_stylesheet': 0}, [
+                              'embed_stylesheet': False}, [
 ["""\
 Simple String
 """,
@@ -262,9 +244,9 @@ Some stuff
 }]
 ])
 
-totest['no_title_promotion'] = ({'doctitle_xform': 0,
+totest['no_title_promotion'] = ({'doctitle_xform': False,
                                  'stylesheet_path': '',
-                                 'embed_stylesheet': 0}, [
+                                 'embed_stylesheet': False}, [
 ["""\
 Simple String
 """,
@@ -514,4 +496,4 @@ Not a docinfo.
 
 if __name__ == '__main__':
     import unittest
-    unittest.main(defaultTest='suite')
+    unittest.main()
