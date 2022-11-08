@@ -364,46 +364,6 @@ class PEPParserTestSuite(ParserTestSuite):
     test_case_class = PEPParserTestCase
 
 
-# Optional tests with 3rd party CommonMark parser
-# ===============================================
-
-# TODO: test with alternative CommonMark parsers?
-md_parser_name = 'recommonmark'
-# md_parser_name = 'pycmark'
-# md_parser_name = 'myst'
-md_skip_msg = f'Cannot test "{md_parser_name}". Parser not found.'
-try:
-    md_parser_class = docutils.parsers.get_parser_class(
-                                                md_parser_name)
-except ImportError:
-    md_parser_class = None
-if md_parser_class and md_parser_name == 'recommonmark':
-    import recommonmark
-    if recommonmark.__version__ < '0.6.0':
-        md_parser_class = None
-        md_skip_msg = f'"{md_parser_name}" parser too old, skip tests'
-
-
-@unittest.skipUnless(md_parser_class, md_skip_msg)
-class RecommonmarkParserTestCase(ParserTestCase):
-
-    """Test case for 3rd-party CommonMark parsers."""
-
-    if md_parser_class:
-        parser = md_parser_class()
-        settings = frontend.get_default_settings(md_parser_class)
-        settings.report_level = 5
-        settings.halt_level = 5
-        settings.debug = False
-
-
-class RecommonmarkParserTestSuite(ParserTestSuite):
-
-    """A collection of RecommonmarkParserTestCases."""
-
-    test_case_class = RecommonmarkParserTestCase
-
-
 class GridTableParserTestCase(CustomTestCase):
 
     parser = tableparser.GridTableParser()
