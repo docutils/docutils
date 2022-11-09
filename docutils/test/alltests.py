@@ -34,6 +34,9 @@ warnings.filterwarnings('ignore',
                         message=r".*StringOutput.encode\(\)'s return type.*",
                         category=FutureWarning)
 
+# TEST_ROOT is ./test/ from the docutils root
+TEST_ROOT = os.path.abspath(os.path.dirname(__file__))
+
 
 class Tee:
 
@@ -135,7 +138,7 @@ class NumbersTestResult(unittest.TextTestResult):
 
 
 if __name__ == '__main__':
-    suite = loadTestModules(DocutilsTestSupport.testroot)
+    suite = loadTestModules(TEST_ROOT)
     print(f'Testing Docutils {docutils.__version__} '
           f'with Python {sys.version.split()[0]} '
           f'on {time.strftime("%Y-%m-%d at %H:%M:%S")}')

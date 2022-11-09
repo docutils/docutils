@@ -190,23 +190,10 @@ class SafeStringTests_locale(unittest.TestCase):
             open(u'\xfc'.encode(sys.getfilesystemencoding(), 'replace'))
         except IOError as e:
             uioe = e
-    try:
-        os.chdir(b'\xc3\xbc')
-    except OSError as e:
-        bose = e
-    finally:
-        os.chdir(DocutilsTestSupport.testroot)
-    try:
-        os.chdir(u'\xfc')
-    except OSError as e:
-        uose = e
-    except UnicodeEncodeError:
-        try:
-            os.chdir(u'\xfc'.encode(sys.getfilesystemencoding(), 'replace'))
-        except OSError as e:
-            uose = e
-    finally:
-        os.chdir(DocutilsTestSupport.testroot)
+    bose = FileNotFoundError(2, 'The system cannot find the file specified')
+    bose.filename = b'\xc3\xbc'
+    uose = FileNotFoundError(2, 'The system cannot find the file specified')
+    uose.filename = '\xfc'
     # wrapped test data:
     wbioe = SafeString(bioe)
     wuioe = SafeString(uioe)

@@ -17,12 +17,14 @@ from test import DocutilsTestSupport  # NoQA: F401
 import docutils
 from docutils.core import publish_string
 
+# TEST_ROOT is ./test/ from the docutils root
+TEST_ROOT = os.path.abspath(os.path.join(__file__, '..', '..'))
+
 
 class WriterPublishTestCase(unittest.TestCase):
     def test_publish(self):
         writer_name = 'html4'
-        template_path = os.path.join(DocutilsTestSupport.testroot,
-                                     'data', 'full-template.txt')
+        template_path = os.path.join(TEST_ROOT, 'data', 'full-template.txt')
         for name, cases in totest.items():
             for casenum, (case_input, case_expected) in enumerate(cases):
                 with self.subTest(id=f'totest[{name!r}][{casenum}]'):
