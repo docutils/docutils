@@ -41,12 +41,14 @@ utf_16_csv = os.path.join(mydir, 'utf-16.csv')
 utf_16_csv_rel = utils.relative_path(None, utf_16_csv)
 empty_txt = os.path.join(mydir, 'empty.txt')
 
-unichr_exception = DocutilsTestSupport.exception_data(
-    chr, int("9999999999999", 16))[0]
-if isinstance(unichr_exception, OverflowError):
-    unichr_exception_string = 'code too large (%s)' % unichr_exception
-else:
+try:
+    chr(0x9999999999999)
+except OverflowError as unichr_exception:
+    unichr_exception_string = f'code too large ({unichr_exception})'
+except Exception as unichr_exception:
     unichr_exception_string = str(unichr_exception)
+else:
+    unichr_exception_string = ''
 
 csv_eod_error_str = 'unexpected end of data'
 # pypy adds a line number
@@ -55,15 +57,17 @@ if platform.python_implementation() == 'PyPy':
 csv_unknown_url = "'bogus.csv'"
 
 
-def null_bytes():
+try:
     with open(utf_16_csv, 'rb') as f:
         csv_data = f.read()
     csv_data = str(csv_data, 'latin1').splitlines()
     reader = csv.reader([line + '\n' for line in csv_data])
     next(reader)
+except Exception as detail:
+    null_bytes_exception = detail
+else:
+    null_bytes_exception = None
 
-
-null_bytes_exception = DocutilsTestSupport.exception_data(null_bytes)[0]
 # Null bytes are valid in Python 3.11+:
 if null_bytes_exception is None:
     bad_encoding_result = """\
@@ -150,6 +154,12 @@ else:
         (7- and 8-bit text encoded as UTF-16 has lots of null/zero bytes.)
 """ % (null_bytes_exception, utf_16_csv)
 
+try:
+    int('y')
+except ValueError as detail:
+    invalid_literal = detail.args[0]
+else:
+    invalid_literal = ''
 
 totest = {}
 
@@ -952,7 +962,7 @@ totest['csv_table'] = [
                :widths: 0 0 0
             \n\
                some, csv, data
-""" % DocutilsTestSupport.exception_data(int, "y")[1][0]],
+""" % invalid_literal],
 ["""\
 .. csv-table:: good delimiter
    :delim: /
