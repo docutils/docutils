@@ -14,8 +14,6 @@ Exports the following:
     - `StandardTestCase`
     - `CustomTestCase`
     - `CustomTestSuite`
-    - `TransformTestCase`
-    - `TransformTestSuite`
     - `ParserTestCase`
     - `ParserTestSuite`
 """
@@ -26,7 +24,6 @@ import inspect
 import os
 import sys
 import unittest
-from io import StringIO
 
 testroot = os.path.abspath(os.path.dirname(__file__) or os.curdir)
 os.chdir(testroot)
@@ -34,7 +31,6 @@ sys.path.insert(0, os.path.normpath(os.path.join(testroot, '..')))
 sys.path.insert(0, testroot)
 
 from docutils import frontend, utils   # NoQA: E402
-from docutils.transforms import universal   # NoQA: E402
 from docutils.parsers import rst   # NoQA: E402
 from docutils.parsers.rst import roles   # NoQA: E402
 from docutils.statemachine import StringList   # NoQA: E402
@@ -177,104 +173,6 @@ class CustomTestSuite(unittest.TestSuite):
                              **kwargs)
         self.addTest(tc)
         return tc
-
-
-class TransformTestCase(CustomTestCase):
-
-    """
-    Output checker for the transform.
-
-    Should probably be called TransformOutputChecker, but I can deal with
-    that later when/if someone comes up with a category of transform test
-    cases that have nothing to do with the input and output of the transform.
-    """
-
-    settings = frontend.get_default_settings(rst.Parser)
-    settings.report_level = 1
-    settings.halt_level = 5
-    settings.debug = False
-    settings.warning_stream = StringIO()  # ignored
-    unknown_reference_resolvers = ()
-
-    def __init__(self, *args, parser=None, transforms=None, **kwargs):
-        assert transforms is not None, 'required argument'
-        self.transforms = transforms
-        """List of transforms to perform for this test case."""
-
-        assert parser is not None, 'required argument'
-        self.parser = parser
-        """Input parser for this test case."""
-
-        super().__init__(*args, **kwargs)
-
-    def supports(self, format):
-        return True
-
-    def test_transforms(self):
-        settings = self.settings.copy()
-        settings.__dict__.update(self.suite_settings)
-        document = utils.new_document('test data', settings)
-        self.parser.parse(self.input, document)
-        # Don't do a ``populate_from_components()`` because that would
-        # enable the Transformer's default transforms.
-        document.transformer.add_transforms(self.transforms)
-        document.transformer.add_transform(universal.TestMessages)
-        document.transformer.components['writer'] = self
-        document.transformer.apply_transforms()
-        output = document.pformat()
-        self.assertEqual(output, self.expected)
-
-    def test_transforms_verbosely(self):
-        print('\n', self.id)
-        print('-' * 70)
-        print(self.input)
-        settings = self.settings.copy()
-        settings.__dict__.update(self.suite_settings)
-        document = utils.new_document('test data', settings)
-        self.parser.parse(self.input, document)
-        print('-' * 70)
-        print(document.pformat())
-        for transformClass in self.transforms:
-            transformClass(document).apply()
-        output = document.pformat()
-        print('-' * 70)
-        print(output)
-        self.assertEqual(output, self.expected)
-
-
-class TransformTestSuite(CustomTestSuite):
-
-    """
-    A collection of TransformTestCases.
-
-    A TransformTestSuite instance manufactures TransformTestCases,
-    keeps track of them, and provides a shared test fixture (a-la
-    setUp and tearDown).
-    """
-
-    def __init__(self, parser, suite_settings=None):
-        self.parser = parser
-        """Parser shared by all test cases."""
-
-        super().__init__(suite_settings=suite_settings)
-
-    def generateTests(self, dict):
-        """
-        Stock the suite with test cases generated from a test data dictionary.
-
-        Each dictionary key (test type's name) maps to a tuple, whose
-        first item is a list of transform classes and whose second
-        item is a list of tests. Each test is a list: input, expected
-        output.
-        Tests should be self-documenting and not require external comments.
-        """
-        for name, (transforms, cases) in dict.items():
-            for casenum, (case_input, case_expected) in enumerate(cases):
-                self.addTestCase(
-                      TransformTestCase, 'test_transforms',
-                      transforms=transforms, parser=self.parser,
-                      input=case_input, expected=case_expected,
-                      id=f'totest[{name!r}][{casenum}]')
 
 
 class ParserTestCase(CustomTestCase):
