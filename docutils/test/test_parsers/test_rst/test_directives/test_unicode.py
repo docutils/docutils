@@ -32,12 +32,21 @@ class ParserTestCase(unittest.TestCase):
                     self.assertEqual(output, case_expected)
 
 
-unichr_exception = DocutilsTestSupport.exception_data(
-    chr, int("111111111111111111", 16))[0]
-if isinstance(unichr_exception, OverflowError):
-    unichr_exception_string = 'code too large (%s)' % unichr_exception
-else:
+try:
+    chr(0x111111111111111111)
+except OverflowError as unichr_exception:
+    unichr_exception_string = f'code too large ({unichr_exception})'
+except Exception as unichr_exception:
     unichr_exception_string = str(unichr_exception)
+else:
+    unichr_exception_string = ''
+
+try:
+    chr(0x11111111)
+except Exception as detail:
+    invalid_char_code = f'{detail.__class__.__name__}: {detail}'
+else:
+    invalid_char_code = ''
 
 totest = {}
 
@@ -178,8 +187,7 @@ Copyright |copy| 2003, |BogusMegaCorp (TM)|.
             Substitution definition "too big for unicode" empty or invalid.
         <literal_block xml:space="preserve">
             .. |too big for unicode| unicode:: 0x11111111
-""" % (unichr_exception_string,
-       DocutilsTestSupport.exception_data(chr, int("11111111", 16))[2])]
+""" % (unichr_exception_string, invalid_char_code)]
 ]
 
 

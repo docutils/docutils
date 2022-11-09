@@ -47,6 +47,13 @@ class ParserTestCase(unittest.TestCase):
                     self.assertEqual(output, case_expected)
 
 
+try:
+    chr(0x11111111)
+except ValueError as detail:
+    unichr_exception = f'{detail.__class__.__name__}: {detail}'
+else:
+    unichr_exception = ''
+
 # prepend this directory (relative to the test root):
 def mydir(path):
     return os.path.join('test_parsers/test_rst/test_directives/', path)
@@ -831,8 +838,7 @@ Testing errors in included file:
                 \n\
                 .. end of inclusion from "test_parsers/test_rst/test_directives/include10.txt"
 """ % {'source': reldir(include10), 'nonexistent': reldir(nonexistent),
-       'unichr_exception':
-       DocutilsTestSupport.exception_data(chr, int("11111111", 16))[2]
+       'unichr_exception': unichr_exception,
       }],
 ["""\
 Include file with whitespace in the path:

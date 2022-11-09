@@ -31,6 +31,22 @@ class ParserTestCase(unittest.TestCase):
                     self.assertEqual(output, case_expected)
 
 
+try:
+    int(None)
+except TypeError as detail:
+    int_none = detail.args[0]
+else:
+    int_none = ''
+
+
+try:
+    int('fifty')
+except ValueError as detail:
+    invalid_literal = detail.args[0]
+else:
+    invalid_literal = ''
+
+
 totest = {}
 
 totest['images'] = [
@@ -232,7 +248,7 @@ totest['images'] = [
         <literal_block xml:space="preserve">
             .. image:: picture.png
                :scale:
-""" % DocutilsTestSupport.exception_data(int, None)[1][0]],
+""" % int_none],
 ["""\
 .. image:: picture.png
    :height: 100
@@ -291,7 +307,7 @@ totest['images'] = [
         <literal_block xml:space="preserve">
             .. image:: picture.png
                :scale: fifty
-""" % DocutilsTestSupport.exception_data(int, "fifty")[1][0]],
+""" % invalid_literal],
 ["""\
 .. image:: picture.png
    :scale: 50

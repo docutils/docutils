@@ -31,6 +31,13 @@ class ParserTestCase(unittest.TestCase):
                     self.assertEqual(output, case_expected)
 
 
+try:
+    int('two')
+except ValueError as detail:
+    invalid_literal = detail.args[0]
+else:
+    invalid_literal = ''
+
 totest = {}
 
 totest['contents'] = [
@@ -171,7 +178,7 @@ totest['contents'] = [
         <literal_block xml:space="preserve">
             .. contents::
                :depth: two
-""" % DocutilsTestSupport.exception_data(int, "two")[1][0]],
+""" % invalid_literal],
 ["""\
 .. contents::
    :width: 2
