@@ -8,8 +8,14 @@ Tests for misc.py "include" directive.
 """
 
 import os.path
-from test import DocutilsTestSupport
+import unittest
+
+from test import DocutilsTestSupport  # NoQA: F401
+
 from docutils import parsers, utils
+from docutils.frontend import get_default_settings
+from docutils.parsers.rst import Parser
+from docutils.utils import new_document
 from docutils.utils.code_analyzer import with_pygments
 
 # optional 3rd-party markdown parser
@@ -20,15 +26,25 @@ except ImportError:
     md_parser_class = None
 
 
-def suite():
-    s = DocutilsTestSupport.ParserTestSuite()
-    # eventually skip optional parts:
-    if not with_pygments:
-        del totest['include_code']
-    if not md_parser_class:
-        del totest['include_markdown']
-    s.generateTests(totest)
-    return s
+class ParserTestCase(unittest.TestCase):
+    def test_parser(self):
+        # eventually skip optional parts:
+        if not with_pygments:
+            del totest['code_parsing']
+        if not md_parser_class:
+            del totest['include_markdown']
+
+        parser = Parser()
+        settings = get_default_settings(Parser)
+        settings.warning_stream = ''
+        settings.halt_level = 5
+        for name, cases in totest.items():
+            for casenum, (case_input, case_expected) in enumerate(cases):
+                with self.subTest(id=f'totest[{name!r}][{casenum}]'):
+                    document = new_document('test data', settings.copy())
+                    parser.parse(case_input, document)
+                    output = document.pformat()
+                    self.assertEqual(output, case_expected)
 
 
 # prepend this directory (relative to the test root):
@@ -1370,4 +1386,4 @@ A paragraph.
 
 if __name__ == '__main__':
     import unittest
-    unittest.main(defaultTest='suite')
+    unittest.main()
