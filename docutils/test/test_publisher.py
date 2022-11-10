@@ -70,6 +70,28 @@ class PublisherTests(unittest.TestCase):
             core.publish_cmdline(argv=['data/include.txt', 'nonexisting/path'],
                                  settings_overrides={'traceback': True})
 
+    def test_publish_string(self):
+        # Transparently decode `bytes` source (with "input_encoding" setting)
+        # default: auto-detect, fallback utf-8
+        # Output is encoded according to "output_encoding" setting.
+        settings = {'_disable_config': True,
+                    'datestamp': False}
+        source = 'test → me'
+        expected = ('<document source="<string>">\n'
+                    '    <paragraph>\n'
+                    '        test → me\n')
+        output = core.publish_string(source.encode('utf-16'),
+                                     settings_overrides=settings)
+        self.assertEqual(output.decode('utf-8'), expected)
+
+        # encoding declaration in source
+        source = '.. encoding: latin1\n\nGrüße'
+        # don't encode output (return `str`)
+        settings['output_encoding'] = 'unicode'
+        output = core.publish_string(source.encode('utf-16'),
+                                     settings_overrides=settings)
+        self.assertTrue(output.endswith('Grüße\n'))
+
 
 class PublishDoctreeTestCase(unittest.TestCase, docutils.SettingsSpec):
 

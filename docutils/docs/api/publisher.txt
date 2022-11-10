@@ -97,7 +97,7 @@ details about individual settings.
 Encodings
 ---------
 
-The default input encoding is UTF-8. 
+The default input encoding is UTF-8.
 A different encoding can be specified with the `input_encoding`_ setting
 or an `explicit encoding declaration` (BOM or special comment).
 The locale encoding may be used as a fallback.
@@ -239,12 +239,12 @@ _`html_prolog`
 
 _`html_subtitle`
     ``parts['html_subtitle']`` contains the document subtitle,
-    including the enclosing ``<h2 class="subtitle">`` & ``</h2>``
+    including the enclosing ``<h2 class="subtitle">`` and ``</h2>``
     tags.
 
 _`html_title`
     ``parts['html_title']`` contains the document title, including the
-    enclosing ``<h1 class="title">`` & ``</h1>`` tags.
+    enclosing ``<h1 class="title">`` and ``</h1>`` tags.
 
 _`meta`
     ``parts['meta']`` contains all ``<meta ... />`` tags.
@@ -255,12 +255,12 @@ _`stylesheet`
 
 _`subtitle`
     ``parts['subtitle']`` contains the document subtitle text and any
-    inline markup.  It does not include the enclosing ``<h2>`` &
+    inline markup.  It does not include the enclosing ``<h2>`` and
     ``</h2>`` tags.
 
 _`title`
     ``parts['title']`` contains the document title text and any inline
-    markup.  It does not include the enclosing ``<h1>`` & ``</h1>``
+    markup.  It does not include the enclosing ``<h1>`` and ``</h1>``
     tags.
 
 
@@ -271,7 +271,10 @@ The PEP/HTML writer provides the same parts as the `HTML4 writer`_,
 plus the following:
 
 _`pepnum`
-    ``parts['pepnum']`` contains
+    ``parts['pepnum']`` contains the PEP number
+    (extracted from the `header preamble`__).
+
+    __ https://peps.python.org/pep-0001/#pep-header-preamble
 
 
 S5/HTML Writer
@@ -291,7 +294,8 @@ footer.
 Parts Provided by the LaTeX2e Writer
 ------------------------------------
 
-See the template files for examples how these parts can be combined
+See the template files default.tex_, titlepage.tex_, titlingpage.tex_,
+and xelatex.tex_ for examples how these parts can be combined
 into a valid LaTeX document.
 
 abstract
@@ -356,7 +360,16 @@ title
 
 titledata
     ``parts['titledata]`` contains the combined title data in
-    ``\title``, ``\author``, and ``\data`` macros.
+    ``\title``, ``\author``, and ``\date`` macros.
 
     With ``--use-latex-docinfo``, this includes the 'author',
     'organization', 'contact', 'address' and 'date' docinfo items.
+
+.. _default.tex:
+   https://docutils.sourceforge.io/docutils/writers/latex2e/default.tex
+.. _titlepage.tex:
+   https://docutils.sourceforge.io/docutils/writers/latex2e/titlepage.tex
+.. _titlingpage.tex:
+   https://docutils.sourceforge.io/docutils/writers/latex2e/titlingpage.tex
+.. _xelatex.tex:
+   https://docutils.sourceforge.io/docutils/writers/latex2e/xelatex.tex

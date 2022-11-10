@@ -377,7 +377,7 @@ def publish_cmdline(reader=None, reader_name='standalone',
     output file paths taken automatically from the command line).  Return the
     encoded string output also.
 
-    Parameters: see `publish_programmatically` for the remainder.
+    Parameters: see `publish_programmatically()` for the remainder.
 
     - `argv`: Command-line argument list to use instead of ``sys.argv[1:]``.
     - `usage`: Usage string, output if there's a problem parsing the command
@@ -404,7 +404,7 @@ def publish_file(source=None, source_path=None,
     Set up & run a `Publisher` for programmatic use with file-like I/O.
     Return the encoded string output also.
 
-    Parameters: see `publish_programmatically`.
+    Parameters: see `publish_programmatically()`.
     """
     output, pub = publish_programmatically(
         source_class=io.FileInput, source=source, source_path=source_path,
@@ -430,18 +430,27 @@ def publish_string(source, source_path=None, destination_path=None,
     """
     Set up & run a `Publisher` for programmatic use with string I/O.
 
-    `source` and return value may be `bytes` or `str` objects.
+    Accepts a `bytes` or `str` instance as `source`.
+    The output is encoded according to the "output_encoding" setting;
+    the return value is a `bytes` instance (unless `output_encoding`_
+    is "unicode", see below).
 
-    For `bytes` output, set the "output_encoding" setting to the
-    desired encoding. For `str` output, set it to 'unicode', e.g.::
+    To get Docutils output as `str` instance, use `publish_parts()`::
 
-        publish_string(..., settings_overrides={'output_encoding': 'unicode'})
+      output = publish_parts(...)['whole']
 
-    Beware that the "output_encoding" setting may also affect the content
+    or set `output_encoding`_ to the pseudo encoding name "unicode", e.g.::
+
+      publish_string(..., settings_overrides={'output_encoding': 'unicode'})
+
+    Beware that the `output_encoding`_ setting may affect the content
     of the output (e.g. an encoding declaration in HTML or XML or the
     representation of characters as LaTeX macro vs. literal character).
 
-    Parameters: see `publish_programmatically`.
+    Parameters: see `publish_programmatically()`.
+
+    .. _output_encoding:
+        https://docutils.sourceforge.io/docs/user/config.html#output-encoding
     """
     warnings.warn('The return type of publish_string will change to '
                   '"str" from Docutils 0.21.', FutureWarning, stacklevel=2)
@@ -478,7 +487,7 @@ def publish_bytes(source, source_path=None, destination_path=None,
 
         publish_bytes(..., settings_overrides={'input_encoding': 'latin1'})
 
-    Parameters: see `publish_programmatically`.
+    Parameters: see `publish_programmatically()`.
 
     Provisional.
     """
@@ -505,12 +514,20 @@ def publish_parts(source, source_path=None, source_class=io.StringInput,
                   settings_overrides=None, config_section=None,
                   enable_exit_status=False):
     """
-    Set up & run a `Publisher`, and return a dictionary of document parts.
+    Set up & run a `Publisher`, and return a dictionary of `document parts`_.
 
-    Dictionary keys are the names of parts, and values are Unicode strings;
-    encoding is up to the client.  For programmatic use with string I/O.
+    Dictionary keys are the names of parts.
+    Dictionary values are `str` instances; encoding is up to the client,
+    e.g.::
 
-    Parameters: see `publish_programmatically`.
+       parts = publish_parts(...)
+       body = parts['body'].encode(parts['encoding'])
+
+    Parameters: see `publish_programmatically()`.
+
+    .. _document parts:
+        https://docutils.sourceforge.io/docs/api/publisher.html
+        #publish-parts-details
     """
     output, pub = publish_programmatically(
         source=source, source_path=source_path, source_class=source_class,
@@ -536,7 +553,7 @@ def publish_doctree(source, source_path=None,
     """
     Set up & run a `Publisher` for programmatic use. Return a document tree.
 
-    Parameters: see `publish_programmatically`.
+    Parameters: see `publish_programmatically()`.
     """
     _output, pub = publish_programmatically(
         source=source, source_path=source_path,
@@ -578,7 +595,7 @@ def publish_from_doctree(document, destination_path=None,
     Parameters: `document` is a `docutils.nodes.document` object, an existing
     document tree.
 
-    Other parameters: see `publish_programmatically`.
+    Other parameters: see `publish_programmatically()`.
     """
     reader = doctree.Reader(parser_name='null')
     pub = Publisher(reader, None, writer,
@@ -613,7 +630,7 @@ def publish_cmdline_to_binary(reader=None, reader_name='standalone',
     This is just like publish_cmdline, except that it uses
     io.BinaryFileOutput instead of io.FileOutput.
 
-    Parameters: see `publish_programmatically` for the remainder.
+    Parameters: see `publish_programmatically()` for the remainder.
 
     - `argv`: Command-line argument list to use instead of ``sys.argv[1:]``.
     - `usage`: Usage string, output if there's a problem parsing the command
