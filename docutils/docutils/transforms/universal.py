@@ -172,6 +172,9 @@ class TestMessages(Transform):
     Used for testing purposes.
     """
 
+    # marker for pytest to ignore this class during test discovery
+    __test__ = False
+
     default_priority = 880
 
     def apply(self):

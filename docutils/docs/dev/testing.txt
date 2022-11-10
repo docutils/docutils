@@ -39,15 +39,15 @@ In a pinch, the edge cases should cover most of it.
 __ policies.html#check-ins
 
 .. note::
-   Due to incompatible customization of the standard unittest_
-   framework, the test suite does not work with popular test frameworks
-   like pytest_ or nose_.
+   The standard ``alltests.py`` test runner uses the standard library's
+   unittest_ framework.
+
+   For the pytest_ test framework, from a shell run::
+
+       pytest --quiet ./test
 
    .. _unittest: https://docs.python.org/3/library/unittest.html
    .. _pytest: https://pypi.org/project/pytest/
-   .. _nose: https://pypi.org/project/nose3/
-
-   .. cf. https://sourceforge.net/p/docutils/feature-requests/81/
 
 .. [#] When using the `Python launcher for Windows`__, make sure to
    specify a Python version, e.g., ``py -3.9 -u alltests.py`` for
