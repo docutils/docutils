@@ -14,6 +14,7 @@ Tests for inline markup in docutils/parsers/rst/states.py.
 Interpreted text tests are in a separate module, test_interpreted.py.
 """
 
+import os.path
 import unittest
 
 from test import DocutilsTestSupport  # NoQA: F401
@@ -21,6 +22,11 @@ from test import DocutilsTestSupport  # NoQA: F401
 from docutils.frontend import get_default_settings
 from docutils.parsers.rst import Parser
 from docutils.utils import new_document
+
+# TEST_ROOT is ./test/ from the docutils root
+TEST_ROOT = os.path.abspath(os.path.join(__file__, '..', '..', '..'))
+docutils_conf = os.path.relpath(
+    os.path.join(TEST_ROOT, 'docutils.conf'), os.getcwd()).replace('\\', '/')
 
 
 class ParserTestCase(unittest.TestCase):
@@ -61,25 +67,25 @@ above the limit
         <paragraph>
             Line 2 exceeds the line-length-limit.
 """],
-["""\
+[f"""\
 Include Test
 ============
 
-.. include:: docutils.conf
+.. include:: {docutils_conf}
    :literal:
 
 A paragraph.
 """,
-"""\
+f"""\
 <document source="test data">
     <section ids="include-test" names="include\\ test">
         <title>
             Include Test
         <system_message level="2" line="4" source="test data" type="WARNING">
             <paragraph>
-                "docutils.conf": line 5 exceeds the line-length-limit.
+                "{docutils_conf}": line 5 exceeds the line-length-limit.
             <literal_block xml:space="preserve">
-                .. include:: docutils.conf
+                .. include:: {docutils_conf}
                    :literal:
         <paragraph>
             A paragraph.

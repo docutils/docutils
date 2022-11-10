@@ -7,12 +7,16 @@
 """
 Test module for io.py.
 """
+import os.path
 
 from io import StringIO, BytesIO
 import sys
 import unittest
 
 from docutils import io
+
+# DATA_ROOT is ./test/data/ from the docutils root
+DATA_ROOT = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'data')
 
 
 # Stub: Buffer with 'strict' auto-conversion of input to byte string:
@@ -124,7 +128,8 @@ print("hello world")
         self.assertEqual(input.read(), expected)
 
     def test_readlines(self):
-        input = io.FileInput(source_path='data/include.txt')
+        input = io.FileInput(
+            source_path=os.path.join(DATA_ROOT, 'include.txt'))
         data = input.readlines()
         self.assertEqual(data, ['Some include text.\n'])
 
@@ -132,7 +137,8 @@ print("hello world")
         # if no encoding is given and decoding with 'utf-8' fails,
         # use either the locale encoding (if specified) or 'latin-1':
         probed_encodings = (io._locale_encoding, 'latin-1')  # noqa
-        input = io.FileInput(source_path='data/latin1.txt')
+        input = io.FileInput(
+            source_path=os.path.join(DATA_ROOT, 'latin1.txt'))
         data = input.read()
         if input.successful_encoding not in probed_encodings:
             raise AssertionError(
@@ -261,25 +267,29 @@ class FileInputTests(unittest.TestCase):
     def test_bom_utf_8(self):
         """Drop optional BOM from utf-8 encoded files.
         """
-        source = io.FileInput(source_path='data/utf-8-sig.txt')
+        source = io.FileInput(
+            source_path=os.path.join(DATA_ROOT, 'utf-8-sig.txt'))
         self.assertTrue(source.read().startswith('Grüße'))
 
     def test_bom_utf_16(self):
         """Drop BOM from utf-16 encoded files, use correct encoding.
         """
         # Assert correct decoding, BOM is gone.
-        source = io.FileInput(source_path='data/utf-16-le-sig.txt')
+        source = io.FileInput(
+            source_path=os.path.join(DATA_ROOT, 'utf-16-le-sig.txt'))
         self.assertTrue(source.read().startswith('Grüße'))
 
     def test_coding_slug(self):
         """Use self-declared encoding.
         """
-        source = io.FileInput(source_path='data/latin2.txt')
+        source = io.FileInput(
+            source_path=os.path.join(DATA_ROOT, 'latin2.txt'))
         self.assertTrue(source.read().endswith('škoda\n'))
 
     def test_fallback_utf8(self):
         """Try 'utf-8', if encoding is not specified in the source."""
-        source = io.FileInput(source_path='data/utf8.txt')
+        source = io.FileInput(
+            source_path=os.path.join(DATA_ROOT, 'utf8.txt'))
         self.assertEqual(source.read(), 'Grüße\n')
 
     @unittest.skipIf(io._locale_encoding in (None, 'utf-8', 'utf8'),
@@ -291,7 +301,8 @@ class FileInputTests(unittest.TestCase):
         # TODO: don't fall back to latin1
         # TODO: use `locale.getpreferredlocale()` (honour UTF-8 mode)?
         probed_encodings = (io._locale_encoding, 'latin-1')  # noqa
-        source = io.FileInput(source_path='data/latin1.txt')
+        source = io.FileInput(
+            source_path=os.path.join(DATA_ROOT, 'latin1.txt'))
         data = source.read()
         self.assertTrue(source.successful_encoding in probed_encodings)
         if source.successful_encoding in ('latin-1', 'iso8859-1'):

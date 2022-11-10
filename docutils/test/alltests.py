@@ -24,7 +24,7 @@ import os                   # noqa: E402
 import platform             # noqa: E402
 import warnings             # noqa: E402
 from importlib import import_module  # noqa: E402
-import DocutilsTestSupport  # noqa: E402 must be imported before docutils
+import DocutilsTestSupport  # noqa: E402,F401 must be imported before docutils
 import docutils             # noqa: E402
 
 warnings.filterwarnings('ignore',

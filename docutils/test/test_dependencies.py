@@ -17,14 +17,27 @@ import docutils.utils
 import docutils.io
 from docutils.parsers.rst.directives.images import PIL
 
+# TEST_ROOT is ./test/ from the docutils root
+TEST_ROOT = os.path.abspath(os.path.dirname(__file__))
+# DATA_ROOT is ./test/data/ from the docutils root
+DATA_ROOT = os.path.join(TEST_ROOT, 'data')
+
+
+def relpath(*parts):
+    return os.path.relpath(
+        os.path.join(*parts), os.getcwd()).replace('\\', '/')
+
+
 # docutils.utils.DependencyList records POSIX paths,
 # i.e. "/" as a path separator even on Windows (not os.path.join).
-paths = {'include': 'data/include.txt',  # included rst file
-         'raw': 'data/raw.txt',      # included raw "HTML file"
-         'scaled-image': '../docs/user/rst/images/biohazard.png',
-         'figure-image': '../docs/user/rst/images/title.png',
-         'stylesheet': 'data/stylesheet.txt',
-         }
+paths = {
+    'include': relpath(DATA_ROOT, 'include.txt'),  # included rst file
+    'raw': relpath(DATA_ROOT, 'raw.txt'),      # included raw "HTML file"
+    'scaled-image': relpath(TEST_ROOT,
+                            '../docs/user/rst/images/biohazard.png'),
+    'figure-image': relpath(TEST_ROOT, '../docs/user/rst/images/title.png'),
+    'stylesheet': relpath(DATA_ROOT, 'stylesheet.txt'),
+}
 
 # avoid latex writer future warnings:
 latex_settings_overwrites = {'legacy_column_widths': False,
@@ -38,7 +51,7 @@ class RecordDependenciesTests(unittest.TestCase):
         recorder = docutils.utils.DependencyList(recordfile)
         # (Re) create the record file by running a conversion:
         settings.setdefault('source_path',
-                            os.path.join('data', 'dependencies.txt'))
+                            os.path.join(DATA_ROOT, 'dependencies.txt'))
         settings.setdefault('settings_overrides', {})
         settings['settings_overrides'].update(_disable_config=True,
                                               record_dependencies=recorder)
@@ -92,9 +105,9 @@ class RecordDependenciesTests(unittest.TestCase):
         self.assertEqual(record, expected)
 
     def test_csv_dependencies(self):
-        csvsource = os.path.join('data', 'csv_dep.txt')
+        csvsource = os.path.join(DATA_ROOT, 'csv_dep.txt')
         self.assertEqual(self.get_record(source_path=csvsource),
-                         ['data/csv_data.txt'])
+                         [relpath(DATA_ROOT, 'csv_data.txt')])
 
     def test_stylesheet_dependencies(self):
         stylesheet = paths['stylesheet']

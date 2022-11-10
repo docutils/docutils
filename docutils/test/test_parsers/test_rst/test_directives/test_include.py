@@ -59,10 +59,9 @@ else:
 
 # prepend this directory (relative to the test root):
 def mydir(path):
-    return utils.relative_path(
-        os.getcwd(),
-        os.path.join(TEST_ROOT, 'test_parsers', 'test_rst', 'test_directives', path)
-    )
+    return os.path.relpath(
+        os.path.join(TEST_ROOT, 'test_parsers/test_rst/test_directives', path),
+        os.getcwd()).replace('\\', '/')
 
 
 include1 = mydir('include1.txt')
@@ -86,8 +85,12 @@ utf_16_file = os.path.join(TEST_ROOT, 'data/utf-16-le-sig.txt')
 utf_16_error_str = ("UnicodeDecodeError: 'ascii' codec can't decode byte 0xff "
                     "in position 0: ordinal not in range(128)")
 rst_states_dir = os.path.dirname(parsers.rst.states.__file__)
+# TODO fix case normalisation bug on Windows in utils.relative_path()
+# nonexistent = os.path.relpath(
+#     os.path.join(rst_states_dir, 'include', 'nonexistent'),
+#     os.getcwd()).replace('\\', '/')
 nonexistent = utils.relative_path(
-    os.path.join(TEST_ROOT, 'dummy'),
+    os.path.join(os.getcwd(), 'dummy'),
     os.path.join(rst_states_dir, 'include', 'nonexistent')
 )
 

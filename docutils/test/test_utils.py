@@ -16,6 +16,9 @@ from io import StringIO
 import docutils
 from docutils import utils, nodes
 
+# TEST_ROOT is ./test/ from the docutils root
+TEST_ROOT = os.path.abspath(os.path.join(__file__, '..'))
+
 
 class ReporterTests(unittest.TestCase):
 
@@ -322,8 +325,12 @@ class HelperFunctionTests(unittest.TestCase):
     def test_find_file_in_dirs(self):
         # Search for file `path` in the sequence of directories `dirs`.
         # Return the first expansion that matches an existing file.
-        dirs = ('nonex', '.', '..')
-        found = utils.find_file_in_dirs('HISTORY.txt', dirs)
+        dirs = (os.path.join(TEST_ROOT, 'nonex'),
+                TEST_ROOT,
+                os.path.join(TEST_ROOT, '..'))
+        found = os.path.relpath(
+            os.path.join(utils.find_file_in_dirs('HISTORY.txt', dirs)),
+            TEST_ROOT).replace('\\', '/')
         # returns
         # '..\\HISTORY.txt' on windows
         # '../HISTORY.txt' on other platforms
@@ -332,7 +339,7 @@ class HelperFunctionTests(unittest.TestCase):
                         'HISTORY.txt not found in "..".')
         # Return `path` if the file exists in the cwd or if there is no match
         self.assertEqual(utils.find_file_in_dirs('alltests.py', dirs),
-                         'alltests.py')
+                         os.path.join(TEST_ROOT, 'alltests.py'))
         self.assertEqual(utils.find_file_in_dirs('gibts/nicht.txt', dirs),
                          'gibts/nicht.txt')
 
@@ -355,15 +362,16 @@ class HelperFunctionTests(unittest.TestCase):
 
 class StylesheetFunctionTests(unittest.TestCase):
 
-    stylesheet_dirs = ['.', 'data']
+    stylesheet_dirs = [TEST_ROOT, os.path.join(TEST_ROOT, 'data')]
 
     def test_get_stylesheet_list_stylesheet_path(self):
         # look for stylesheets in stylesheet_dirs
         self.stylesheet = None
         self.stylesheet_path = 'ham.css, missing.css'
 
+        ham_css = os.path.join(TEST_ROOT, 'data', 'ham.css').replace('\\', '/')
         self.assertEqual(utils.get_stylesheet_list(self),
-                         ['data/ham.css', 'missing.css'])
+                         [ham_css, 'missing.css'])
 
     def test_get_stylesheet_list_stylesheet(self):
         # use stylesheet paths verbatim

@@ -8,7 +8,6 @@ __docformat__ = 'reStructuredText'
 import os
 import sys
 
-testroot = os.path.abspath(os.path.dirname(__file__) or os.curdir)
-os.chdir(testroot)
-sys.path.insert(0, os.path.normpath(os.path.join(testroot, '..')))
+testroot = os.path.abspath(os.path.dirname(__file__))
+sys.path.insert(0, os.path.dirname(testroot))
 sys.path.insert(0, testroot)
