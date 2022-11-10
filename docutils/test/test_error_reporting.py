@@ -25,12 +25,11 @@ unless the minimal required Python version has this problem fixed.
 """
 
 from io import StringIO, BytesIO
-import os
 import sys
 import unittest
 import warnings
 
-from test import DocutilsTestSupport
+from test import DocutilsTestSupport  # NoQA: F401
 
 from docutils import frontend, utils
 import docutils.parsers.rst

@@ -33,6 +33,9 @@ from docutils.parsers.rst import Parser
 from docutils.transforms.universal import ExposeInternals, TestMessages
 from docutils.utils import new_document
 
+# TEST_ROOT is ./test/ from the docutils root
+TEST_ROOT = os.path.abspath(os.path.join(__file__, '..', '..', '..'))
+
 
 class TransformTestCase(unittest.TestCase):
     def test_transforms(self):
@@ -54,9 +57,10 @@ class TransformTestCase(unittest.TestCase):
                     self.assertEqual(output, case_expected)
 
 
-mydir = 'test_parsers/test_rst/'
-include14 = os.path.join(mydir, 'includes/include14.txt')
-
+mydir = os.path.join(TEST_ROOT, 'test_parsers/test_rst')
+include14 = os.path.relpath(
+    os.path.join(mydir, 'includes/include14.txt'),
+    os.getcwd()).replace('\\', '/')
 totest = {}
 
 totest['transitions'] = ((ExposeInternals,), [
@@ -163,32 +167,32 @@ Paragraph
 
 .. include:: %s
 """ % include14,
-"""\
+f"""\
 <document source="test data">
     <paragraph internal:line="1" internal:source="test data">
         Paragraph
-    <paragraph internal:line="1" internal:source="test_parsers/test_rst/includes/include14.txt">
+    <paragraph internal:line="1" internal:source="{include14}">
         Paragraph starting in line 1.
         With \n\
         <emphasis>
             inline
          element in line 2.
-    <block_quote internal:line="4" internal:source="test_parsers/test_rst/includes/include14.txt">
-        <paragraph internal:line="4" internal:source="test_parsers/test_rst/includes/include14.txt">
+    <block_quote internal:line="4" internal:source="{include14}">
+        <paragraph internal:line="4" internal:source="{include14}">
             Block quote in line 4
-        <attribution internal:line="6" internal:source="test_parsers/test_rst/includes/include14.txt">
+        <attribution internal:line="6" internal:source="{include14}">
             attribution
             in line 6
-    <bullet_list bullet="*" internal:line="9" internal:source="test_parsers/test_rst/includes/include14.txt">
-        <list_item internal:source="test_parsers/test_rst/includes/include14.txt">
-            <paragraph internal:line="9" internal:source="test_parsers/test_rst/includes/include14.txt">
+    <bullet_list bullet="*" internal:line="9" internal:source="{include14}">
+        <list_item internal:source="{include14}">
+            <paragraph internal:line="9" internal:source="{include14}">
                 bullet list in line 9
-        <list_item internal:source="test_parsers/test_rst/includes/include14.txt">
-            <paragraph internal:line="10" internal:source="test_parsers/test_rst/includes/include14.txt">
+        <list_item internal:source="{include14}">
+            <paragraph internal:line="10" internal:source="{include14}">
                 second item in line 10
-    <enumerated_list enumtype="arabic" internal:line="12" internal:source="test_parsers/test_rst/includes/include14.txt" prefix="" suffix=".">
-        <list_item internal:source="test_parsers/test_rst/includes/include14.txt">
-            <paragraph internal:line="12" internal:source="test_parsers/test_rst/includes/include14.txt">
+    <enumerated_list enumtype="arabic" internal:line="12" internal:source="{include14}" prefix="" suffix=".">
+        <list_item internal:source="{include14}">
+            <paragraph internal:line="12" internal:source="{include14}">
                 enumerated list in line 12
 """],
 ["""\

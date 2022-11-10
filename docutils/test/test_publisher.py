@@ -7,13 +7,15 @@
 """
 Test the `Publisher` facade and the ``publish_*`` convenience functions.
 """
-
+import os.path
 import pickle
 import unittest
 
 import docutils
 from docutils import core, nodes, io
 
+# DATA_ROOT is ./test/data/ from the docutils root
+DATA_ROOT = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'data')
 
 test_document = """\
 Test Document
@@ -67,7 +69,8 @@ class PublisherTests(unittest.TestCase):
     def test_output_error_handling(self):
         # pass IOErrors to calling application if `traceback` is True
         with self.assertRaises(io.OutputError):
-            core.publish_cmdline(argv=['data/include.txt', 'nonexisting/path'],
+            core.publish_cmdline(argv=[os.path.join(DATA_ROOT, 'include.txt'),
+                                       'nonexisting/path'],
                                  settings_overrides={'traceback': True})
 
     def test_publish_string(self):

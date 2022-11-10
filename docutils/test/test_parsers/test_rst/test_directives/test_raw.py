@@ -15,8 +15,10 @@ from test import DocutilsTestSupport  # NoQA: F401
 
 from docutils.frontend import get_default_settings
 from docutils.parsers.rst import Parser
-from docutils import utils
 from docutils.utils import new_document
+
+# TEST_ROOT is ./test/ from the docutils root
+TEST_ROOT = os.path.abspath(os.path.join(__file__, '..', '..', '..', '..'))
 
 
 class ParserTestCase(unittest.TestCase):
@@ -34,9 +36,13 @@ class ParserTestCase(unittest.TestCase):
                     self.assertEqual(output, case_expected)
 
 
-mydir = 'test_parsers/test_rst/test_directives/'
-raw1 = os.path.join(mydir, 'raw1.txt')
-utf_16_file = 'data/utf-16-le-sig.txt'
+mydir = os.path.join(TEST_ROOT, 'test_parsers/test_rst/test_directives')
+raw1 = os.path.relpath(
+    os.path.join(mydir, 'raw1.txt'),
+    os.getcwd()).replace('\\', '/')
+utf_16_file = os.path.relpath(
+    os.path.join(TEST_ROOT, 'data/utf-16-le-sig.txt'),
+    os.getcwd()).replace('\\', '/')
 utf_16_error_str = ("UnicodeDecodeError: 'ascii' codec can't decode byte 0xff "
                     "in position 0: ordinal not in range(128)")
 
@@ -53,15 +59,15 @@ totest['raw'] = [
     <raw format="html" xml:space="preserve">
         <span>This is some plain old raw text.</span>
 """],
-["""\
+[f"""\
 .. raw:: html
-   :file: %s
-""" % raw1,
-"""\
+   :file: {raw1}
+""",
+f"""\
 <document source="test data">
-    <raw format="html" source="%s" xml:space="preserve">
+    <raw format="html" source="{raw1}" xml:space="preserve">
         <p>This file is used by <tt>test_raw.py</tt>.</p>
-""" % utils.relative_path(None, raw1)],
+"""],
 ["""\
 .. raw:: html
    :file: rawfile.html
@@ -104,49 +110,49 @@ totest['raw'] = [
     <raw format="latex html" xml:space="preserve">
         \\[ \\sum_{n=1}^\\infty \\frac{1}{n} \\text{ etc.} \\]
 """],
-["""\
+[f"""\
 .. raw:: html
-   :file: data/utf-16-le-sig.txt
+   :file: {utf_16_file}
    :encoding: utf-16
 """,
-"""\
+f"""\
 <document source="test data">
-    <raw format="html" source="data/utf-16-le-sig.txt" xml:space="preserve">
+    <raw format="html" source="{utf_16_file}" xml:space="preserve">
         Grüße
 """],
-["""\
+[f"""\
 Default encoding: auto-determine (here via BOM).
 
 .. raw:: html
-   :file: data/utf-16-le-sig.txt
+   :file: {utf_16_file}
 """,
-"""\
+f"""\
 <document source="test data">
     <paragraph>
         Default encoding: auto-determine (here via BOM).
-    <raw format="html" source="data/utf-16-le-sig.txt" xml:space="preserve">
+    <raw format="html" source="{utf_16_file}" xml:space="preserve">
         Grüße
 """],
-["""\
+[f"""\
 Raw input file is UTF-16-encoded, and is not valid ASCII.
 
 .. raw:: html
-   :file: data/utf-16-le-sig.txt
+   :file: {utf_16_file}
    :encoding: ascii
 """,
-"""\
+f"""\
 <document source="test data">
     <paragraph>
         Raw input file is UTF-16-encoded, and is not valid ASCII.
     <system_message level="4" line="3" source="test data" type="SEVERE">
         <paragraph>
             Problem with "raw" directive:
-            %s
+            {utf_16_error_str}
         <literal_block xml:space="preserve">
             .. raw:: html
-               :file: data/utf-16-le-sig.txt
+               :file: {utf_16_file}
                :encoding: ascii
-""" % utf_16_error_str],
+"""],
 ["""\
 .. raw:: html
    :encoding: utf-8

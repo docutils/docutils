@@ -17,8 +17,10 @@ from test import DocutilsTestSupport  # NoQA: F401
 
 from docutils.frontend import get_default_settings
 from docutils.parsers.rst import Parser
-from docutils import utils
 from docutils.utils import new_document
+
+# TEST_ROOT is ./test/ from the docutils root
+TEST_ROOT = os.path.abspath(os.path.join(__file__, '..', '..', '..', '..'))
 
 
 class ParserTestCase(unittest.TestCase):
@@ -36,9 +38,8 @@ class ParserTestCase(unittest.TestCase):
                     self.assertEqual(output, case_expected)
 
 
-mydir = 'test_parsers/test_rst/test_directives/'
+mydir = os.path.join(TEST_ROOT, 'test_parsers/test_rst/test_directives')
 utf_16_csv = os.path.join(mydir, 'utf-16.csv')
-utf_16_csv_rel = utils.relative_path(None, utf_16_csv)
 empty_txt = os.path.join(mydir, 'empty.txt')
 
 try:

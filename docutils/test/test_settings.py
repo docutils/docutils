@@ -16,21 +16,24 @@ from docutils import frontend, utils
 from docutils.writers import pep_html, html5_polyglot
 from docutils.parsers import rst
 
+# DATA_ROOT is ./test/data/ from the docutils root
+DATA_ROOT = os.path.abspath(os.path.join(__file__, '..', 'data'))
+
 
 def fixpath(path):
-    return os.path.abspath(os.path.join(*(path.split('/'))))
+    return os.path.join(DATA_ROOT, path)
 
 
 class ConfigFileTests(unittest.TestCase):
 
-    config_files = {'old': fixpath('data/config_old.txt'),
-                    'one': fixpath('data/config_1.txt'),
-                    'two': fixpath('data/config_2.txt'),
-                    'list': fixpath('data/config_list.txt'),
-                    'list2': fixpath('data/config_list_2.txt'),
-                    'error': fixpath('data/config_encoding.txt'),
-                    'error2': fixpath('data/config_encoding_2.txt'),
-                    'syntax_error': fixpath('data/config_syntax_error.txt'),
+    config_files = {'old': fixpath('config_old.txt'),
+                    'one': fixpath('config_1.txt'),
+                    'two': fixpath('config_2.txt'),
+                    'list': fixpath('config_list.txt'),
+                    'list2': fixpath('config_list_2.txt'),
+                    'error': fixpath('config_encoding.txt'),
+                    'error2': fixpath('config_encoding_2.txt'),
+                    'syntax_error': fixpath('config_syntax_error.txt'),
                     }
 
     # expected settings after parsing the equally named config_file:
@@ -42,7 +45,7 @@ class ConfigFileTests(unittest.TestCase):
                 'source_link': True,
                 'stylesheet': None,
                 'stylesheet_path': ['stylesheets/pep.css'],
-                'template': fixpath('data/pep-html-template'),
+                'template': fixpath('pep-html-template'),
                 },
         'one': {'datestamp': '%Y-%m-%d %H:%M UTC',
                 'generator': True,
@@ -54,7 +57,7 @@ class ConfigFileTests(unittest.TestCase):
                 'stylesheet': None,
                 'stylesheet_path': ['stylesheets/pep.css'],
                 'tab_width': 8,
-                'template': fixpath('data/pep-html-template'),
+                'template': fixpath('pep-html-template'),
                 'trim_footnote_reference_space': True,
                 'output_encoding': 'ascii',
                 'output_encoding_error_handler': 'xmlcharrefreplace',

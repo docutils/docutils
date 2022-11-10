@@ -18,6 +18,9 @@ from docutils.frontend import get_default_settings
 from docutils.parsers.rst import Parser
 from docutils.utils import new_document
 
+# TEST_ROOT is ./test/ from the docutils root
+TEST_ROOT = os.path.abspath(os.path.join(__file__, '..', '..', '..'))
+
 
 class ParserTestCase(unittest.TestCase):
     def test_parser(self):
@@ -34,7 +37,7 @@ class ParserTestCase(unittest.TestCase):
                     self.assertEqual(output, case_expected)
 
 
-mydir = 'test_parsers/test_rst/'
+mydir = os.path.join(TEST_ROOT, 'test_parsers/test_rst')
 include2 = os.path.join(mydir, 'test_directives/include2.txt')
 
 totest = {}

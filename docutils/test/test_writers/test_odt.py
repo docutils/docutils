@@ -39,11 +39,14 @@ from io import BytesIO
 import docutils
 import docutils.core
 
+# FUNCTIONAL_ROOT is ./test/functional/ from the docutils root
+FUNCTIONAL_ROOT = os.path.abspath(os.path.join(__file__, '..', '..', 'functional'))
+
 #
 # Globals
-TEMP_FILE_PATH = 'functional/output/'
-INPUT_PATH = 'functional/input/'
-EXPECTED_PATH = 'functional/expected/'
+TEMP_FILE_PATH = os.path.join(FUNCTIONAL_ROOT, 'output')
+INPUT_PATH = os.path.join(FUNCTIONAL_ROOT, 'input')
+EXPECTED_PATH = os.path.join(FUNCTIONAL_ROOT, 'expected')
 
 
 class DocutilsOdtTestCase(unittest.TestCase):
@@ -52,8 +55,8 @@ class DocutilsOdtTestCase(unittest.TestCase):
                      save_output_name=None, settings_overrides=None):
         # Test that xmlcharrefreplace is the default output encoding
         # error handler.
-        input_file = open(INPUT_PATH + input_filename, 'rb')
-        expected_file = open(EXPECTED_PATH + expected_filename, 'rb')
+        input_file = open(os.path.join(INPUT_PATH, input_filename), 'rb')
+        expected_file = open(os.path.join(EXPECTED_PATH, expected_filename), 'rb')
         input = input_file.read()
         expected = expected_file.read()
         input_file.close()
@@ -72,7 +75,7 @@ class DocutilsOdtTestCase(unittest.TestCase):
         #           len(expected), len(result), )
         # self.assertEqual(str(len(result)), str(len(expected)))
         if save_output_name:
-            filename = '%s%s%s' % (TEMP_FILE_PATH, os.sep, save_output_name,)
+            filename = os.path.join(TEMP_FILE_PATH, save_output_name)
             outfile = open(filename, 'wb')
             outfile.write(result)
             outfile.close()

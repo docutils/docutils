@@ -7,12 +7,20 @@
 Tests for latex2e writer.
 """
 
+import os
 import string
 import unittest
 
 from test import DocutilsTestSupport  # NoQA: F401
 
 from docutils.core import publish_string
+
+# DATA_ROOT is ./test/data from the docutils root
+DATA_ROOT = os.path.abspath(os.path.join(__file__, '..', '..', 'data'))
+spam = os.path.relpath(
+    os.path.join(DATA_ROOT, 'spam'), os.getcwd()).replace('\\', '/')
+ham = os.path.relpath(
+    os.path.join(DATA_ROOT, 'ham.tex'), os.getcwd()).replace('\\', '/')
 
 
 class WriterPublishTestCase(unittest.TestCase):
@@ -124,7 +132,7 @@ class WriterPublishTestCase(unittest.TestCase):
                         output = output.decode('utf-8')
                     self.assertEqual(output, case_expected)
 
-        settings['stylesheet_path'] = 'data/spam,data/ham.tex'
+        settings['stylesheet_path'] = f'{spam},{ham}'
         for name, cases in totest_stylesheet.items():
             for casenum, (case_input, case_expected) in enumerate(cases):
                 with self.subTest(
@@ -1218,9 +1226,9 @@ totest_stylesheet['two-styles'] = [
 # input
 ["""two stylesheet links in the header""",
 head_template.substitute(dict(parts,
-stylesheet=r"""\usepackage{data/spam}
-\input{data/ham.tex}
-""")) + r"""
+stylesheet=r"""\usepackage{%s}
+\input{%s}
+""" % (spam, ham))) + r"""
 two stylesheet links in the header
 
 \end{document}
@@ -1232,8 +1240,8 @@ totest_stylesheet_embed['two-styles'] = [
 ["""two stylesheets embedded in the header""",
 head_template.substitute(dict(parts,
 stylesheet=r"""% Cannot embed stylesheet:
-%  [Errno 2] No such file or directory: 'data/spam.sty'
-% embedded stylesheet: data/ham.tex
+%  [Errno 2] No such file or directory: '""" + spam + r""".sty'
+% embedded stylesheet: """ + ham + r"""
 \newcommand{\ham}{wonderful ham}
 
 """)) + r"""

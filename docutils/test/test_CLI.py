@@ -27,6 +27,9 @@ import unittest
 # import docutils
 from docutils import __main__, frontend
 
+# DATA_ROOT is ./test/data/ from the docutils root
+DATA_ROOT = os.path.abspath(os.path.join(__file__, '..', 'data'))
+
 
 def print_mismatch(expected, output):
     diff = ''.join(difflib.unified_diff(
@@ -67,7 +70,8 @@ class CliTests(unittest.TestCase):
             f'{frontend.OptionParser.default_error_encoding}:backslashreplace',
             'utf-8:backslashreplace')
         # compare to stored version
-        with open('data/help/docutils.txt', encoding='utf-8') as samplefile:
+        docutils_txt = os.path.join(DATA_ROOT, 'help/docutils.txt')
+        with open(docutils_txt, encoding='utf-8') as samplefile:
             expected = samplefile.read()
         if expected != output:
             print_mismatch(expected, output)
