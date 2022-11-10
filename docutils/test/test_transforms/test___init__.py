@@ -15,6 +15,9 @@ from docutils import transforms, utils
 
 class TestTransform(transforms.Transform):
 
+    # marker for pytest to ignore this class during test discovery
+    __test__ = False
+
     default_priority = 100
 
     applied = 0
