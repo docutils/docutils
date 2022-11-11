@@ -53,6 +53,11 @@ Changes Since 0.19
   - Do not insert ``\usepackage[utf8]{inputenc}`` into UTF-8 encoded
     LaTeX sources. UTF-8 is the default encoding for LaTeX2e since 2018.
 
+* docutils/writers/latex2e/titlepage.tex
+
+  - Drop "fixltx2e" package call from template. (Obsolete since 2015
+    and dropped from other templates since Docutils 0.14.)
+
 * docutils/writers/manpage.py
 
   - Do not output empty "manual" in ``.TH``
