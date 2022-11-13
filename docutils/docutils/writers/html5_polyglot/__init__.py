@@ -121,9 +121,14 @@ class HTMLTranslator(_html_base.HTMLTranslator):
     and examples.
     """
 
-    # meta tag to fix rendering in mobile browsers
-    viewport = ('<meta name="viewport" '
-                'content="width=device-width, initial-scale=1" />\n')
+    # self.starttag() arguments for the main document
+    documenttag_args = {'tagname': 'main'}
+
+    # add meta tag to fix rendering in mobile browsers
+    def __init__(self, document):
+        super().__init__(document)
+        self.meta.append('<meta name="viewport" '
+                         'content="width=device-width, initial-scale=1" />\n')
 
     # <acronym> tag obsolete in HTML5. Use the <abbr> tag instead.
     def visit_acronym(self, node):
@@ -192,36 +197,6 @@ class HTMLTranslator(_html_base.HTMLTranslator):
 
     def depart_date(self, node):
         self.depart_docinfo_item()
-
-    def visit_document(self, node):
-        title = (node.get('title', '') or os.path.basename(node['source'])
-                 or 'untitled Docutils document')
-        self.head.append(f'<title>{self.encode(title)}</title>\n')
-        self.meta.append(self.viewport)
-
-    def depart_document(self, node):
-        self.head_prefix.extend([self.doctype,
-                                 self.head_prefix_template %
-                                 {'lang': self.settings.language_code}])
-        self.html_prolog.append(self.doctype)
-        self.head = self.meta[:] + self.head
-        if 'name="dcterms.' in ''.join(self.meta):
-            self.head.append('<link rel="schema.dcterms"'
-                             ' href="http://purl.org/dc/terms/"/>')
-        if self.math_header:
-            if self.math_output == 'mathjax':
-                self.head.extend(self.math_header)
-            else:
-                self.stylesheet.extend(self.math_header)
-        # skip content-type meta tag with interpolated charset value:
-        self.html_head.extend(self.head[1:])
-        self.body_prefix.append(self.starttag(node, 'main'))
-        self.body_suffix.insert(0, '</main>\n')
-        self.fragment.extend(self.body)  # self.fragment is the "naked" body
-        self.html_body.extend(self.body_prefix[1:] + self.body_pre_docinfo
-                              + self.docinfo + self.body
-                              + self.body_suffix[:-1])
-        assert not self.context, f'len(context) = {len(self.context)}'
 
     # use new HTML5 <figure> and <figcaption> elements
     def visit_figure(self, node):
