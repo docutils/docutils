@@ -242,6 +242,8 @@ class HTMLTranslator(nodes.NodeVisitor):
     generator = (
         f'<meta name="generator" content="Docutils {docutils.__version__}: '
         'https://docutils.sourceforge.io/" />\n')
+    # `starttag()` arguments for the main document (HTML5 uses <main>)
+    documenttag_args = {'tagname': 'div', 'CLASS': 'document'}
 
     # Template for the MathJax script in the header:
     mathjax_script = '<script type="text/javascript" src="%s"></script>\n'
@@ -808,8 +810,8 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_document(self, node):
         title = (node.get('title', '') or os.path.basename(node['source'])
-                 or 'docutils document without title')
-        self.head.append('<title>%s</title>\n' % self.encode(title))
+                 or 'untitled Docutils document')
+        self.head.append(f'<title>{self.encode(title)}</title>\n')
 
     def depart_document(self, node):
         self.head_prefix.extend([self.doctype,
@@ -827,13 +829,13 @@ class HTMLTranslator(nodes.NodeVisitor):
                 self.stylesheet.extend(self.math_header)
         # skip content-type meta tag with interpolated charset value:
         self.html_head.extend(self.head[1:])
-        self.body_prefix.append(self.starttag(node, 'div', CLASS='document'))
-        self.body_suffix.insert(0, '</div>\n')
+        self.body_prefix.append(self.starttag(node, **self.documenttag_args))
+        self.body_suffix.insert(0, f'</{self.documenttag_args["tagname"]}>\n')
         self.fragment.extend(self.body)  # self.fragment is the "naked" body
         self.html_body.extend(self.body_prefix[1:] + self.body_pre_docinfo
                               + self.docinfo + self.body
                               + self.body_suffix[:-1])
-        assert not self.context, 'len(context) = %s' % len(self.context)
+        assert not self.context, f'len(context) = {len(self.context)}'
 
     def visit_emphasis(self, node):
         self.body.append(self.starttag(node, 'em', ''))
