@@ -138,8 +138,8 @@ class HTMLTranslator(_html_base.HTMLTranslator):
     def visit_authors(self, node):
         self.visit_docinfo_item(node, 'authors', meta=False)
         for subnode in node:
-            self.add_meta('<meta name="author" content="%s" />\n' %
-                          self.attval(subnode.astext()))
+            self.meta.append('<meta name="author" content='
+                             f'"{self.attval(subnode.astext())}" />\n')
 
     def depart_authors(self, node):
         self.depart_docinfo_item()
@@ -178,8 +178,8 @@ class HTMLTranslator(_html_base.HTMLTranslator):
     # see https://wiki.whatwg.org/wiki/MetaExtensions
     def visit_copyright(self, node):
         self.visit_docinfo_item(node, 'copyright', meta=False)
-        self.add_meta('<meta name="dcterms.rights" content="%s" />\n'
-                      % self.attval(node.astext()))
+        self.meta.append('<meta name="dcterms.rights" '
+                         f'content="{self.attval(node.astext())}" />\n')
 
     def depart_copyright(self, node):
         self.depart_docinfo_item()
@@ -187,8 +187,8 @@ class HTMLTranslator(_html_base.HTMLTranslator):
     # no standard meta tag name in HTML5, use dcterms.date
     def visit_date(self, node):
         self.visit_docinfo_item(node, 'date', meta=False)
-        self.add_meta('<meta name="dcterms.date" content="%s" />\n'
-                      % self.attval(node.astext()))
+        self.meta.append('<meta name="dcterms.date" '
+                         f'content="{self.attval(node.astext())}" />\n')
 
     def depart_date(self, node):
         self.depart_docinfo_item()
@@ -197,16 +197,14 @@ class HTMLTranslator(_html_base.HTMLTranslator):
         title = (node.get('title', '') or os.path.basename(node['source'])
                  or 'untitled Docutils document')
         self.head.append(f'<title>{self.encode(title)}</title>\n')
+        self.meta.append(self.viewport)
 
     def depart_document(self, node):
         self.head_prefix.extend([self.doctype,
                                  self.head_prefix_template %
                                  {'lang': self.settings.language_code}])
         self.html_prolog.append(self.doctype)
-        self.meta.insert(0, self.viewport)
-        self.head.insert(0, self.viewport)
-        self.meta.insert(0, self.content_type % _encoding(self))
-        self.head.insert(0, self.content_type % _encoding(self))
+        self.head = self.meta[:] + self.head
         if 'name="dcterms.' in ''.join(self.meta):
             self.head.append('<link rel="schema.dcterms"'
                              ' href="http://purl.org/dc/terms/"/>')
@@ -384,8 +382,8 @@ class HTMLTranslator(_html_base.HTMLTranslator):
     def visit_meta(self, node):
         if node.hasattr('lang'):
             node['xml:lang'] = node['lang']
-        meta = self.emptytag(node, 'meta', **node.non_default_attributes())
-        self.add_meta(meta)
+        self.meta.append(self.emptytag(node, 'meta',
+                                       **node.non_default_attributes()))
 
     def depart_meta(self, node):
         pass
@@ -452,10 +450,3 @@ class HTMLTranslator(_html_base.HTMLTranslator):
                          f' href="#{ids[0]}"></a>')
             close_tag = close_tag.replace('</h', self_link + '</h')
         return start_tag, close_tag
-
-
-def _encoding(self):
-    """TEMPORARY, remove in Docutils 0.21"""
-    if self.settings.output_encoding == 'unicode':
-        return 'utf-8'
-    return self.settings.output_encoding

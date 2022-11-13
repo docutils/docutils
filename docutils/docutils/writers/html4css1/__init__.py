@@ -344,7 +344,7 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
         if meta:
             meta_tag = '<meta name="%s" content="%s" />\n' \
                        % (name, self.attval(node.astext()))
-            self.add_meta(meta_tag)
+            self.meta.append(meta_tag)
         self.body.append(self.starttag(node, 'tr', ''))
         self.body.append('<th class="docinfo-name">%s:</th>\n<td>'
                          % self.language.labels[name])

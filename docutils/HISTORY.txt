@@ -51,6 +51,15 @@ Changes Since 0.19
 * docutils/docutils/utils/__init__.py
 
   - New utility function `xml_declaration()`.
+  
+* docutils/docutils/writers/_html_base.py
+
+  - Refactoring of HTMLTranslator initialization and collecting of
+    document "parts". Adapt HTML writers importing `_html_base`.
+   
+    Changes to the HTML output (no space character before closing tag of
+    XML declaration, order of metadata elements)
+    don't affect the HTML semantics, styling, and rendering.   
 
 * docutils/writers/latex2e/__init__.py
 

@@ -22,6 +22,7 @@ TEST_ROOT = os.path.abspath(os.path.join(__file__, '..', '..'))
 
 
 class WriterPublishTestCase(unittest.TestCase):
+    # maxDiff = None
     def test_publish(self):
         writer_name = 'html5'
         template_path = os.path.join(TEST_ROOT, 'data', 'full-template.txt')
@@ -78,10 +79,10 @@ fr'''head_prefix = """\
 
 head = """\
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="generator" content="Docutils {docutils.__version__}: https://docutils.sourceforge.io/" />
-<title>Document Title</title>
-<meta name="author" content="Me" />"""
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="author" content="Me" />
+<title>Document Title</title>"""
 
 
 stylesheet = """\
@@ -130,10 +131,10 @@ head_prefix = """\
 
 head = """\
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="generator" content="Docutils {docutils.__version__}: https://docutils.sourceforge.io/" />
-<title>Document Title</title>
-<meta name="author" content="Me" />"""
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="author" content="Me" />
+<title>Document Title</title>"""
 
 
 stylesheet = """\
@@ -194,8 +195,8 @@ footer = """\
 
 meta = """\
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="generator" content="Docutils {docutils.__version__}: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="author" content="Me" />"""
 
 
@@ -212,10 +213,10 @@ html_prolog = """\
 
 html_head = """\
 <meta charset="%s" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="generator" content="Docutils {docutils.__version__}: https://docutils.sourceforge.io/" />
-<title>Document Title</title>
-<meta name="author" content="Me" />"""
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="author" content="Me" />
+<title>Document Title</title>"""
 
 
 html_title = """\

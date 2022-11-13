@@ -21,10 +21,9 @@ import docutils.core
 
 
 class Html5WriterPublishPartsTestCase(unittest.TestCase):
+    """Test case for HTML writer via the publish_parts interface."""
 
-    """
-    Test case for HTML writer via the publish_parts interface.
-    """
+    # maxDiff = None
 
     def test_publish(self):
         writer_name = 'html5'
@@ -52,8 +51,8 @@ class Html5WriterPublishPartsTestCase(unittest.TestCase):
         ' content="width=device-width, initial-scale=1" />\n'
 
     standard_html_meta_value = (standard_content_type_template
-                                + standard_viewport_template
-                                + standard_generator_template)
+                                + standard_generator_template
+                                + standard_viewport_template)
     standard_meta_value = standard_html_meta_value % 'utf-8'
     standard_html_prolog = '<!DOCTYPE html>\n'
 
@@ -235,8 +234,8 @@ Some stuff
 </dl>
 <p>Some stuff</p>
 </main>\n''',
- 'html_head': '''...<title>Title</title>
-<meta name="author" content="me" />\n''',
+ 'html_head': '''...<meta name="author" content="me" />
+<title>Title</title>\n''',
  'html_title': '''<h1 class="title">Title</h1>\n''',
  'meta': '''<meta name="author" content="me" />\n''',
  'title': '''Title'''

@@ -233,15 +233,15 @@ class HTMLTranslator(nodes.NodeVisitor):
       This way, changes in stack use will not bite you.
     """
 
-    xml_declaration = '<?xml version="1.0" encoding="%s" ?>\n'
     doctype = '<!DOCTYPE html>\n'
     doctype_mathml = doctype
 
     head_prefix_template = ('<html xmlns="http://www.w3.org/1999/xhtml"'
                             ' xml:lang="%(lang)s" lang="%(lang)s">\n<head>\n')
     content_type = '<meta charset="%s" />\n'
-    generator = ('<meta name="generator" content="Docutils %s: '
-                 'https://docutils.sourceforge.io/" />\n')
+    generator = (
+        f'<meta name="generator" content="Docutils {docutils.__version__}: '
+        'https://docutils.sourceforge.io/" />\n')
 
     # Template for the MathJax script in the header:
     mathjax_script = '<script type="text/javascript" src="%s"></script>\n'
@@ -278,32 +278,12 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def __init__(self, document):
         nodes.NodeVisitor.__init__(self, document)
+        # process settings
         self.settings = settings = document.settings
-        lcode = settings.language_code
-        self.language = languages.get_language(lcode, document.reporter)
-        self.meta = [self.generator % docutils.__version__]
-        self.head_prefix = []
-        self.html_prolog = []
-        if settings.xml_declaration:
-            self.head_prefix.append(self.xml_declaration
-                                    % _encoding(settings))
-            # self.content_type = ""
-            # encoding not interpolated:
-            self.html_prolog.append(self.xml_declaration)
-        self.head = self.meta[:]
-        self.stylesheet = [self.stylesheet_call(path)
-                           for path in utils.get_stylesheet_list(settings)]
-        self.body_prefix = ['</head>\n<body>\n']
-        # document title, subtitle display
-        self.body_pre_docinfo = []
-        # author, date, etc.
-        self.docinfo = []
-        self.body = []
-        self.fragment = []
-        self.body_suffix = ['</body>\n</html>\n']
-        self.section_level = 0
+        self.language = languages.get_language(
+                            settings.language_code, document.reporter)
         self.initial_header_level = int(settings.initial_header_level)
-        # image_loading only defined for HTML5 writer
+        # image_loading (only defined for HTML5 writer)
         self.image_loading = getattr(settings, 'image_loading', None)
         # legacy setting embed_images:
         if getattr(settings, 'embed_images', None) is True:
@@ -324,26 +304,52 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.math_output_options = self.math_output[1:]
         self.math_output = self.math_output[0].lower()
 
+        # set up "parts" (cf. docs/api/publisher.html#publish-parts-details)
+        #
+        self.body = []  # equivalent to `fragment`, ≠ `html_body`
+        self.body_prefix = ['</head>\n<body>\n']  # + optional header
+        self.body_pre_docinfo = []  # document heading (title and subtitle)
+        self.body_suffix = ['</body>\n</html>\n']  # + optional footer
+        self.docinfo = []
+        self.footer = []
+        self.fragment = []  # main content of the document ("naked" body)
+        self.head = []
+        self.head_prefix = []  # everything up to and including <head>
+        self.header = []
+        self.html_body = []
+        self.html_head = [self.content_type]  # charset not interpolated
+        self.html_prolog = []
+        self.html_subtitle = []
+        self.html_title = []
+        self.meta = [self.generator]
+        self.stylesheet = [self.stylesheet_call(path)
+                           for path in utils.get_stylesheet_list(settings)]
+        self.title = []
+        self.subtitle = []
+        if settings.xml_declaration:
+            self.head_prefix.append(
+                utils.xml_declaration(settings.output_encoding))
+            self.html_prolog.append(
+                utils.xml_declaration('%s'))  # encoding not interpolated
+        if (settings.output_encoding
+            and settings.output_encoding.lower() != 'unicode'):
+            self.meta.insert(0, self.content_type % settings.output_encoding)
+
+        # bookkeeping attributes; reflect state of translator
+        #
         self.context = []
         """Heterogeneous stack.
 
         Used by visit_* and depart_* functions in conjunction with the tree
-        traversal. Make sure that the pops correspond to the pushes."""
-
+        traversal. Make sure that the pops correspond to the pushes.
+        """
+        self.section_level = 0
         self.colspecs = []
         self.compact_p = True
         self.compact_simple = False
         self.compact_field_list = False
         self.in_docinfo = False
         self.in_sidebar = False
-        self.title = []
-        self.subtitle = []
-        self.header = []
-        self.footer = []
-        self.html_head = [self.content_type]  # charset not interpolated
-        self.html_title = []
-        self.html_subtitle = []
-        self.html_body = []
         self.in_document_title = 0  # len(self.body) or 0
         self.in_mailto = False
         self.author_in_authors = False  # for html4css1
@@ -784,12 +790,10 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_docinfo_item(self, node, name, meta=True):
         if meta:
-            meta_tag = '<meta name="%s" content="%s" />\n' \
-                       % (name, self.attval(node.astext()))
-            self.add_meta(meta_tag)
-        self.body.append(
-            '<dt class="%s">%s<span class="colon">:</span></dt>\n'
-            % (name, self.language.labels[name]))
+            self.meta.append(f'<meta name="{name}" '
+                             f'content="{self.attval(node.astext())}" />\n')
+        self.body.append(f'<dt class="{name}">{self.language.labels[name]}'
+                         '<span class="colon">:</span></dt>\n')
         self.body.append(self.starttag(node, 'dd', '', CLASS=name))
 
     def depart_docinfo_item(self):
@@ -812,11 +816,10 @@ class HTMLTranslator(nodes.NodeVisitor):
                                  self.head_prefix_template %
                                  {'lang': self.settings.language_code}])
         self.html_prolog.append(self.doctype)
-        self.meta.insert(0, self.content_type % _encoding(self.settings))
-        self.head.insert(0, self.content_type % _encoding(self.settings))
+        self.head = self.meta[:] + self.head
         if 'name="dcterms.' in ''.join(self.meta):
             self.head.append('<link rel="schema.dcterms"'
-                             'href="http://purl.org/dc/terms/"/>')
+                             ' href="http://purl.org/dc/terms/"/>')
         if self.math_header:
             if self.math_output == 'mathjax':
                 self.head.extend(self.math_header)
@@ -1311,15 +1314,11 @@ class HTMLTranslator(nodes.NodeVisitor):
     # Meta tags: 'lang' attribute replaced by 'xml:lang' in XHTML 1.1
     # HTML5/polyglot recommends using both
     def visit_meta(self, node):
-        meta = self.emptytag(node, 'meta', **node.non_default_attributes())
-        self.add_meta(meta)
+        self.meta.append(self.emptytag(node, 'meta',
+                                       **node.non_default_attributes()))
 
     def depart_meta(self, node):
         pass
-
-    def add_meta(self, tag):
-        self.meta.append(tag)
-        self.head.append(tag)
 
     def visit_option(self, node):
         self.body.append(self.starttag(node, 'span', '', CLASS='option'))
@@ -1783,10 +1782,3 @@ class SimpleListChecker(nodes.GenericNodeVisitor):
     visit_substitution_definition = ignore_node
     visit_target = ignore_node
     visit_pending = ignore_node
-
-
-def _encoding(settings):
-    """TEMPORARY, remove in Docutils 0.21"""
-    if settings.output_encoding == 'unicode':
-        return 'utf-8'
-    return settings.output_encoding
