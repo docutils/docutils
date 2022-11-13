@@ -107,7 +107,7 @@ Release 0.19 (2022-07-05)
   - New module. Support for ``python -m docutils``.
     Also used for the ``docutils`` console script `entry point`.
 
-* docutils/core.py:
+* docutils/core.py
 
   - Let `Publisher.publish()` print info and prompt when waiting for input
     from a terminal (cf. https://clig.dev/#interactivity).
@@ -189,7 +189,7 @@ Release 0.19 (2022-07-05)
   - Use "https:" scheme in "python_home" URL default.
   - Fix links in template.txt.
 
-* setup.py:
+* setup.py
 
   - New "docutils" console script `entry point`__. Fixes bug #447.
 
@@ -230,7 +230,7 @@ Release 0.18.1 (2021-11-23)
   - New method `Node.findall()`: like `Node.traverse()` but returns an
     iterator. Obsoletes `Node.traverse()`.
 
-* docutils/utils/__init__.py:
+* docutils/utils/__init__.py
 
   - Fix behaviour of `get_stylesheet_list()`: do not look up stylesheets
     given as "stylesheet" setting. Cf. bug #434.
@@ -243,7 +243,7 @@ Release 0.18.1 (2021-11-23)
 
   - Fix typo (bug #432).
 
-* docutils/writers/odf_odt/__init__.py:
+* docutils/writers/odf_odt/__init__.py
 
   - Fix spurious output with Windows (bug #350).
 
@@ -290,7 +290,7 @@ Release 0.18 (2021-10-26)
     Obsoletes "embed_images".
 
 
-* docutils/writers/pseudoxml.py:
+* docutils/writers/pseudoxml.py
 
   - Fix spelling of option "detailed".
 
@@ -333,7 +333,7 @@ Release 0.18b1 (2021-10-05)
 
   - Add `class` option to `Raw` directive.
 
-* docutils/parsers/rst/directives/tables.py:
+* docutils/parsers/rst/directives/tables.py
 
   - Unify behaviour of `"widths" option`_: check that the length of an
     integer list equals the number of table columns also for the "table"
@@ -354,7 +354,7 @@ Release 0.18b1 (2021-10-05)
 
   .. _LaTeX syntax for mathematics: docs/ref/rst/mathematics.html
 
-* docutils/parsers/rst/states.py:
+* docutils/parsers/rst/states.py
 
   - Fix source location (line number) for attribution elements.
     Patch by Mickey Endito.
@@ -415,7 +415,7 @@ Release 0.18b1 (2021-10-05)
     converted to `details disclosure elements`.
 
 
-* docutils/writers/html4css1/__init__.py:
+* docutils/writers/html4css1/__init__.py
 
   - Overwrite methods in _html_base.HTMLTranslator that use HTML5 tags
     (details, aside, nav, ...) and attributes (role, aria-level).
@@ -454,7 +454,7 @@ Release 0.18b1 (2021-10-05)
 
   - Fix excessive padding above sidebar titles.
 
-* docutils/writers/pseudoxml.py:
+* docutils/writers/pseudoxml.py
 
   - Fix option "detailed" under Python 2.7.
 
@@ -476,7 +476,7 @@ Release 0.17.1 (2021-04-16)
 
   - Fix bug #406 (MathML translation of ``\mathbf``).
 
-* docutils/writers/latex2e/__init__.py:
+* docutils/writers/latex2e/__init__.py
 
   - Open "docutils.sty" with encoding set to "utf-8".
     Fixes bug #414: error with Py3k when locale encoding is "ascii".
@@ -611,7 +611,7 @@ Release 0.17 (2021-04-03)
 
   - New optional style that adapts to different screen sizes.
 
-* docutils/writers/latex2e/__init__.py:
+* docutils/writers/latex2e/__init__.py
 
   - Use LaTeX environments for admonitions and "class wrappers" for styling
     admonitions and titles if the new configuration setting
@@ -665,13 +665,13 @@ Release 0.17 (2021-04-03)
   - Fix #126 manpage title with spaces.
   - Fix #380 command line option problem in sphinx.
 
-* docutils/writers/odf_odt/__init__.py:
+* docutils/writers/odf_odt/__init__.py
 
   - Fix/improve metadata handling:
     fix "keyword" splitting,
     allow generic fields (stored as "Custom Properties").
 
-* docutils/writers/pseudoxml.py:
+* docutils/writers/pseudoxml.py
 
   - New option `detailled`__.
 
@@ -729,7 +729,7 @@ Release 0.16 (2020-01-16)
   - `unescape()` definition moved to `nodes` to avoid circular import
     dependency. Fixes [ 366 ].
 
-* docutils/writers/latex2e/__init__.py:
+* docutils/writers/latex2e/__init__.py
 
   - Fix topic subtitle.
   - Make "rubric" bold-italic and left aligned.
@@ -745,11 +745,11 @@ Release 0.16 (2020-01-16)
   - Apply fix for [ 287 ] comma after option is bold.
   - Apply fix for [ 289 ], line starting with ``.`` in a text.
 
-* docutils/writers/odf_odt/__init__.py:
+* docutils/writers/odf_odt/__init__.py
 
   - Fix: ElementTree.getchildren deprecated warning
 
-* docutils/writers/xetex/__init__.py:
+* docutils/writers/xetex/__init__.py
 
   - Add "latex writers" to the `config_section_dependencies`.
 
@@ -767,11 +767,11 @@ Release 0.16 (2020-01-16)
     Results in descriptive links in HTML and more localized changes when
     editions to the input add or remove auto-ids.
 
-* test/test_io.py:
+* test/test_io.py
 
   - Apply patch #157: avoid test failure because of a ``ResourceWarning``.
 
-* test/test_writers/test_odt.py:
+* test/test_writers/test_odt.py
 
   - Fix [ 359 ]: Test suite fails on Python 3.8. odt XML sorting.
     Use ElementTree instead of minidom.
@@ -799,7 +799,7 @@ Release 0.15 (2019-07-20)
   - Dropped support for Python 2.4, 2.5, 3.1, and 3.2.
   - Infrastructure automation.
 
-* docs/ref/rst/restructuredtext.txt:
+* docs/ref/rst/restructuredtext.txt
 
   - Document rST syntax change: Tokens like ``:this:example:`` are now valid
     field list names (instead of ordinary text).
@@ -809,8 +809,7 @@ Release 0.15 (2019-07-20)
   - Fix [ 348 ] Since Python 3.4, the 'U' universal newlines mode has been
     deprecated. Thanks to hugovk.
 
-*  docutils/languages/ko.py
-   docutils/parsers/rst/languages/ko.py:
+* docutils/languages/ko.py, docutils/parsers/rst/languages/ko.py
 
   - Apply [ 153 ] Korean mappings by Thomas Sungjin Kang.
 
@@ -819,40 +818,40 @@ Release 0.15 (2019-07-20)
   - Fix [ 251 ] `system_message.copy()` TypeError.
   - `Element.copy()` also copies `document`, `line`, and `source` attributes.
 
-* docutils/parsers/rst/__init__.py:
+* docutils/parsers/rst/__init__.py
 
   - Apply [ 152 ] reset `default role` at end of document.
 
-* docutils/parsers/rst/states.py:
+* docutils/parsers/rst/states.py
 
   - Allow embedded colons in field list field names.
 
-* docutils/parsers/rst/directives/html.py:
+* docutils/parsers/rst/directives/html.py
 
   - Fix bug #281: Remove escaping backslashes in meta directive content.
 
-* docutils/parsers/rst/directives/misc.py:
+* docutils/parsers/rst/directives/misc.py
 
   - Don't convert tabs to spaces, if `tab_width` is negative in
     `include` directive with `code` option.
 
-* docutils/parsers/rst/directives/tables.py:
+* docutils/parsers/rst/directives/tables.py
 
   - Apply patch #121: Add "width" option for the table directives.
 
-* docutils/transforms/frontmatter.py:
+* docutils/transforms/frontmatter.py
 
   - Add field name as class argument to generic docinfo fields unconditionally.
 
-* docutils/transforms/references.py:
+* docutils/transforms/references.py
 
   - Fix bug #331: fixed the "trim" options of the "unicode" directive.
 
-* docutils/utils/__init__.py:
+* docutils/utils/__init__.py
 
   - Deprecate `unique_combinations` (obsoleted by `itertools.combinations`).
 
-* docutils/utils/smartquotes.py:
+* docutils/utils/smartquotes.py
 
   - Fix bug #332: use open quote after whitespace, ZWSP, and ZWNJ.
 
@@ -865,7 +864,7 @@ Release 0.15 (2019-07-20)
 
   - Fix bug #358: Non-breaking space removed from fixed-width literal.
 
-* docutils/writers/latex2e/__init__.py:
+* docutils/writers/latex2e/__init__.py
 
   - Fix bug #323: spurious ``\phantomsection`` and whitespace in
     ``parts['title']``.
@@ -876,7 +875,7 @@ Release 0.15 (2019-07-20)
 Release 0.14 (2017-08-03)
 =========================
 
-* docs/ref/docutils.dtd:
+* docs/ref/docutils.dtd
 
   - Enable validation of Docutils XML documents against the DTD:
 
@@ -888,49 +887,49 @@ Release 0.14 (2017-08-03)
 
   __ https://www.w3.org/TR/REC-xml/#sec-attribute-types
 
-* docs/ref/rst/restructuredtext.txt:
+* docs/ref/rst/restructuredtext.txt
 
   - Added documentation for escaped whitespace in URI contexts.
   - Clarify use of Unicode character categories.
 
-* docutils/parsers/rst/states.py:
+* docutils/parsers/rst/states.py
 
   - Added functionality: escaped whitespace in URI contexts.
   - Consistent handling of all whitespace characters in inline markup
     recognition. Fixes [ 307 ] and [ 3402314 ] (now [ 173 ]).
 
-* docutils/parsers/rst/directives/images.py:
+* docutils/parsers/rst/directives/images.py
 
   - Added support for escaped whitespace in URI contexts.
 
-* docutils/parsers/rst/directives/tables.py:
+* docutils/parsers/rst/directives/tables.py
 
   - Rework patch [ 120 ] (revert change to Table.get_column_widths()
     that led to problems in an application with a custom table directive).
 
-* docutils/transforms/frontmatter.py:
+* docutils/transforms/frontmatter.py
 
   - Fix [ 320 ] Russian docinfo fields not recognized.
 
-* docutils/transforms/references.py:
+* docutils/transforms/references.py
 
   - Don't add a second ID to problematic references.
 
-* docutils/transforms/universal.py:
+* docutils/transforms/universal.py
 
   Fix SmartQuotes: warn only once if language is unsupported,
   keep "rawsource" when "educating" quotes.
 
-* docutils/utils/__init__.py:
+* docutils/utils/__init__.py
 
   - Added ``split_escaped_whitespace`` function, support for escaped
     whitespace in URI contexts.
 
-* docutils/utils/error_reporting.py:
+* docutils/utils/error_reporting.py
 
   - Fix [ 321 ] Import block might cause name error.
 
-* docutils/utils/smartquotes.py:
+* docutils/utils/smartquotes.py
 
   - Update quote definitions for languages et, fi, fr, ro, sv, tr, uk.
   - New quote definitions for hr, hsb, hu, lv, sh, sl, sr.
@@ -939,7 +938,7 @@ Release 0.14 (2017-08-03)
   - Fix [ 317 ] Extra space inserted with French smartquotes.
   - Add command line interface for stand-alone use (requires 2.7).
 
-* docutils/writers/_html_base.py:
+* docutils/writers/_html_base.py
 
   - Provide default title in metadata (required by HTML5).
   - Fix [ 312 ] HTML writer generates invalid HTML if the table has two tags.
@@ -947,21 +946,21 @@ Release 0.14 (2017-08-03)
     reasons, we don't use a third party public installation as default but
     warn if math-output_ is set to MathJax without specifying a URL.
 
-* docutils/writers/html4css1/__init__.py:
+* docutils/writers/html4css1/__init__.py
 
   - Apply [ 125 ] HTML writer: respect automatic table column sizing.
 
-* docutils/writers/latex2e/__init__.py:
+* docutils/writers/latex2e/__init__.py
 
   - Handle class arguments for block-level elements by wrapping them
     in a "DUclass" environment. This replaces the special handling for
     "epigraph" and "topic" elements.
 
-* docutils/writers/manpage.py:
+* docutils/writers/manpage.py
 
   - Apply [ 141 ] Handling inline in manpage writer.
 
-* docutils/writers/odf_odt/__init__.py:
+* docutils/writers/odf_odt/__init__.py
 
   - Command setting ``language`` now sets the default language
     of the generated ODF document.
@@ -1354,7 +1353,7 @@ __ https://mail.python.org/pipermail/image-sig/2011-January/006650.html
   - New exceptions InputError and OutputError for IO errors in
     FileInput/FileOutput.
 
-* docutils/core.py:
+* docutils/core.py
 
   - No "hard" system exit on file IO errors: catch and report them in
     `Publisher.reportException` instead. Allows handling by a calling
@@ -1463,13 +1462,13 @@ Release 0.8 (2011-07-07)
   - Directive content may start on the first line also when the directive
     type accepts options.
 
-* docs/dev/policies.txt:
+* docs/dev/policies.txt
 
   - Recommend the 2-Clause BSD license
     (http://opensource.org/licenses/BSD-2-Clause)
     for code that is kept under the author's copyright.
 
-* tools/buildhtml.py:
+* tools/buildhtml.py
 
   - Fix ``--local`` switch.
 
@@ -1510,23 +1509,23 @@ Release 0.8 (2011-07-07)
   - Fix: BUG#3219183 - vertical space in definition lists containing markup.
   - Fix: vertical space cleaning for option group ``.``.
 
-* tools/editors/emacs/rst.el:
+* tools/editors/emacs/rst.el
 
   - Fix [ 3001100 ] does not handle spaces in filenames.
     Thanks to Jakub Wilk.
 
-* docutils/utils.py:
+* docutils/utils.py
 
   - strip whitespace from stylesheet arguments
   - exclude combining chars from column_width()
     (partial fix for [ 2926161 ])
 
-* docutils/parsers/rst/directives/misc.py:
+* docutils/parsers/rst/directives/misc.py
 
   - Fix [ 1830389 ] Replace not breaking on getting system_messages from
     nested_parse
 
-* docutils/io.py:
+* docutils/io.py
 
   - Do not `close()` sys.stdin, sys.stdout, or sys.stderr. Prevents
     ``Exception ValueError: 'I/O operation on closed file.'`` with Python 3.
@@ -1596,7 +1595,7 @@ __ docs/user/config.html#output_encoding
   - Fix: encoding ``'ascii'`` must be lowercase to prevent problems for
     Turkish locale.
 
-* setup.py:
+* setup.py
 
   - Python 3 support: copy test/ and tools/ to the build-dir
     and convert Python sources with 2to3.
