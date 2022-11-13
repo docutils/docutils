@@ -14,7 +14,7 @@ from io import StringIO
 import xml.sax.saxutils
 
 import docutils
-from docutils import frontend, writers, nodes
+from docutils import frontend, nodes, writers, utils
 
 
 class RawXmlError(docutils.ApplicationError):
@@ -64,7 +64,6 @@ class Writer(writers.Writer):
 
 class XMLTranslator(nodes.GenericNodeVisitor):
 
-    xml_declaration = '<?xml version="1.0" encoding="%s"?>\n'
     # TODO: add stylesheet options similar to HTML and LaTeX writers?
     # xml_stylesheet = '<?xml-stylesheet type="text/xsl" href="%s"?>\n'
     doctype = (
@@ -100,8 +99,7 @@ class XMLTranslator(nodes.GenericNodeVisitor):
         # Output
         self.output = []
         if settings.xml_declaration:
-            self.output.append(
-                self.xml_declaration % _encoding(settings))
+            self.output.append(utils.xml_declaration(settings.output_encoding))
         if settings.doctype_declaration:
             self.output.append(self.doctype)
         self.output.append(self.generator % docutils.__version__)
@@ -186,10 +184,3 @@ class TestXml(xml.sax.handler.ContentHandler):
 
     def setDocumentLocator(self, locator):
         self.locator = locator
-
-
-def _encoding(settings):
-    """TEMPORARY, remove in Docutils 0.21"""
-    if settings.output_encoding == 'unicode':
-        return 'utf-8'
-    return settings.output_encoding

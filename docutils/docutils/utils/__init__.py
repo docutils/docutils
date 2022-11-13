@@ -711,6 +711,19 @@ def normalize_language_tag(tag):
     return taglist
 
 
+def xml_declaration(encoding=None):
+    """Return an XML text declaration.
+
+    Include an encoding declaration, if `encoding`
+    is not 'unicode', '', or None.
+    """
+    if encoding and encoding.lower() != 'unicode':
+        encoding_declaration = f' encoding="{encoding}"'
+    else:
+        encoding_declaration = ''
+    return f'<?xml version="1.0"{encoding_declaration}?>\n'
+
+
 class DependencyList:
 
     """

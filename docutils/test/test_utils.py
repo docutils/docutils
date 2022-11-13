@@ -269,6 +269,24 @@ class HelperFunctionTests(unittest.TestCase):
                          ['grc-ibycus-x-altquot', 'grc-ibycus',
                           'grc-x-altquot', 'grc'])
 
+    def test_xml_declaration(self):
+        # default is no encoding declaration
+        self.assertEqual(utils.xml_declaration(), '<?xml version="1.0"?>\n')
+        # if an encoding is passed, declare it
+        self.assertEqual(utils.xml_declaration('ISO-8859-2'),
+                         '<?xml version="1.0" encoding="ISO-8859-2"?>\n')
+        # ignore pseudo encoding name "unicode" introduced by
+        # `docutils.io.Output.encode()`
+        self.assertEqual(utils.xml_declaration('Unicode'),
+                         '<?xml version="1.0"?>\n')
+        # ... non-regarding case
+        self.assertEqual(utils.xml_declaration('UNICODE'),
+                         '<?xml version="1.0"?>\n')
+        # allow %s for later interpolation
+        # (used for part 'html_prolog', cf. docs/api/publisher.html)
+        self.assertEqual(utils.xml_declaration('%s'),
+                         '<?xml version="1.0" encoding="%s"?>\n')
+
     def test_column_width(self):
         self.assertEqual(utils.column_width('de'), 2)
         self.assertEqual(utils.column_width('dâ'), 2)  # pre-composed

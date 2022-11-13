@@ -48,6 +48,10 @@ Changes Since 0.19
   - Fix previous_sibling() method that led to invalid HTML in some cases
     (cf. patch #195).
 
+* docutils/docutils/utils/__init__.py
+
+  - New utility function `xml_declaration()`.
+
 * docutils/writers/latex2e/__init__.py
 
   - Do not insert ``\usepackage[utf8]{inputenc}`` into UTF-8 encoded
