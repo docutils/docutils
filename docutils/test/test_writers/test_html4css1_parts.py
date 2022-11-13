@@ -54,7 +54,7 @@ class Html4WriterPublishPartsTestCase(unittest.TestCase):
         + standard_generator_template)
     standard_meta_value = standard_html_meta_value % 'utf-8'
     standard_html_prolog = (
-        '<?xml version="1.0" encoding="%s" ?>\n'
+        '<?xml version="1.0" encoding="%s"?>\n'
         '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" '
         '"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">\n')
 
@@ -236,8 +236,8 @@ Some stuff
 </table>
 <p>Some stuff</p>
 </div>\n''',
- 'html_head': '''...<title>Title</title>
-<meta name="author" content="me" />\n''',
+ 'html_head': '''...<meta name="author" content="me" />
+<title>Title</title>\n''',
  'html_title': '''<h1 class="title">Title</h1>\n''',
  'meta': '''<meta name="author" content="me" />\n''',
  'title': '''Title'''

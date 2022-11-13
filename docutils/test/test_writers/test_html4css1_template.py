@@ -22,6 +22,7 @@ TEST_ROOT = os.path.abspath(os.path.join(__file__, '..', '..'))
 
 
 class WriterPublishTestCase(unittest.TestCase):
+    # maxDiff = None
     def test_publish(self):
         writer_name = 'html4'
         template_path = os.path.join(TEST_ROOT, 'data', 'full-template.txt')
@@ -71,7 +72,7 @@ Section
 Some text.
 """,
 fr'''head_prefix = """\
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>"""
@@ -80,8 +81,8 @@ fr'''head_prefix = """\
 head = """\
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="Docutils {docutils.__version__}: https://docutils.sourceforge.io/" />
-<title>Document Title</title>
-<meta name="author" content="Me" />"""
+<meta name="author" content="Me" />
+<title>Document Title</title>"""
 
 
 stylesheet = """\
@@ -128,7 +129,7 @@ footer text
 
 
 head_prefix = """\
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>"""
@@ -137,8 +138,8 @@ head_prefix = """\
 head = """\
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="Docutils {docutils.__version__}: https://docutils.sourceforge.io/" />
-<title>Document Title</title>
-<meta name="author" content="Me" />"""
+<meta name="author" content="Me" />
+<title>Document Title</title>"""
 
 
 stylesheet = """\
@@ -217,15 +218,15 @@ fragment = """\
 
 
 html_prolog = """\
-<?xml version="1.0" encoding="%s" ?>
+<?xml version="1.0" encoding="%s"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">"""
 
 
 html_head = """\
 <meta http-equiv="Content-Type" content="text/html; charset=%s" />
 <meta name="generator" content="Docutils {docutils.__version__}: https://docutils.sourceforge.io/" />
-<title>Document Title</title>
-<meta name="author" content="Me" />"""
+<meta name="author" content="Me" />
+<title>Document Title</title>"""
 
 
 html_title = """\

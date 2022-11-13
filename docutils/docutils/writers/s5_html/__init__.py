@@ -164,7 +164,7 @@ class S5HTMLTranslator(html4css1.HTMLTranslator):
                                   'control_visibility': control_visibility})
         if not self.document.settings.current_slide:
             self.stylesheet.append(self.disable_current_slide)
-        self.add_meta('<meta name="version" content="S5 1.1" />\n')
+        self.meta.append('<meta name="version" content="S5 1.1" />\n')
         self.s5_footer = []
         self.s5_header = []
         self.section_count = 0
@@ -282,8 +282,7 @@ class S5HTMLTranslator(html4css1.HTMLTranslator):
                                  self.head_prefix_template %
                                  {'lang': self.settings.language_code}])
         self.html_prolog.append(self.doctype)
-        self.meta.insert(0, self.content_type % _encoding(self))
-        self.head.insert(0, self.content_type % _encoding(self))
+        self.head = self.meta[:] + self.head
         if self.math_header:
             if self.math_output == 'mathjax':
                 self.head.extend(self.math_header)
@@ -350,10 +349,3 @@ class S5HTMLTranslator(html4css1.HTMLTranslator):
 
     def visit_title(self, node):
         html4css1.HTMLTranslator.visit_title(self, node)
-
-
-def _encoding(self):
-    """TEMPORARY, remove in Docutils 0.21"""
-    if self.settings.output_encoding == 'unicode':
-        return 'utf-8'
-    return self.settings.output_encoding
