@@ -38,6 +38,12 @@ Changes Since 0.19
 * Refactored tests in ``test/`` towards using common ``unittest`` idioms.
   Patch by Adam Turner.
 
+* setup.py
+
+  - Fix: SetuptoolsDeprecationWarning: Installing '' as data is deprecated,
+
+    by adding data directories to package_data.packages list.
+
 * docutils/languages/
   docutils/parsers/rst/languages/
 
