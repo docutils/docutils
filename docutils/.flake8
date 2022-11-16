@@ -67,7 +67,7 @@ per-file-ignores =
   test/test_writers/test_latex2e.py:E122,E128,E501,W291,W293
 
   # ignore long line in string templates
-  docutils/tools/dev/generate_punctuation_chars.py:E501
+  tools/dev/generate_punctuation_chars.py:E501
 
 exclude =
   .venv
