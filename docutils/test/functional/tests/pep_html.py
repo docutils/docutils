@@ -1,30 +1,15 @@
-# Default settings for all tests.
-
-settings_overrides = {
-    '_disable_config': True,
-    'report_level': 2,
-    'halt_level': 5,
-    'warning_stream': '',
-    'input_encoding': 'utf-8',
-    'embed_stylesheet': False,
-    'auto_id_prefix': '%',
-    # avoid "Pygments not found"
-    'syntax_highlight': 'none'
-}
-
-# Source and destination file names.
+# Source and destination file names
 test_source = "pep_html.txt"
 test_destination = "pep_html.html"
 
-# Keyword parameters passed to publish_file.
+# Keyword parameters passed to publish_file()
 reader_name = "pep"
-parser_name = "rst"
 writer_name = "pep_html"
-
-# Settings
-settings_overrides['python_home'] = "http://www.python.org"
-settings_overrides['pep_home'] = "http://www.python.org/peps"
-settings_overrides['no_random'] = 1
-settings_overrides['cloak_email_addresses'] = 1
-# local copy of default stylesheet:
-settings_overrides['stylesheet_path'] = 'functional/input/data/html4css1.css'
+settings_overrides = {
+    'python_home': "http://www.python.org",
+    'pep_home': "http://www.python.org/peps",
+    'no_random': 1,
+    'cloak_email_addresses': 1,
+    # local copy of default stylesheet:
+    'stylesheet_path': 'functional/input/data/html4css1.css',
+    }
