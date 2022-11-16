@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# :Copyright: © 2011, 2017 Günter Milde.
+# :Copyright: © 2011, 2017, 2022 Günter Milde.
 # :License: Released under the terms of the `2-Clause BSD license`_, in short:
 #
 #    Copying and distribution of this file, with or without modification,
@@ -13,24 +13,25 @@
 #
 # ::
 
-"""(Re)generate the utils.punctuation_chars module."""
+"""(Re)generate the utils.punctuation_chars module.
 
-# (re)generate the utils.punctuation_chars module
-# ===============================================
-#
-# The category of some characters can change with the development of the
-# Unicode standard. This tool checks the patterns in `utils.punctuation_chars`
-# against a re-calculation based on the "unicodedata" stdlib module
-# which may give different results for different Python versions.
-#
-# Updating the module with changed `unicode_punctuation_categories` (due to
-# a new Python or Unicode standard version is an API change (may render valid
-# rST documents invalid). It should only be done for "feature releases" and
-# requires also updating the specification of `inline markup recognition
-# rules`_ in ../../docs/ref/rst/restructuredtext.txt.
-#
-# .. _inline markup recognition rules:
-#     ../../docs/ref/rst/restructuredtext.html#inline-markup
+The category of some characters can change with the development of the
+Unicode standard. This tool checks the patterns in `utils.punctuation_chars`
+against a re-calculation based on the "unicodedata" stdlib module
+which may give different results for different Python versions.
+
+.. admonition:: API change
+
+   Updating the module with changed `unicode_punctuation_categories`
+   (due to a new Python or Unicode standard version is an API change
+   (may render valid rST documents invalid). It should only be done for
+   "feature releases" and requires also updating the specification of
+   `inline markup recognition rules`_.
+
+   .. _inline markup recognition rules:
+      https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html
+      #inline-markup-recognition-rules
+"""
 
 import sys
 import unicodedata
@@ -39,9 +40,8 @@ import unicodedata
 # Template for utils.punctuation_chars
 # ------------------------------------
 
-module_template = r'''#!/usr/bin/env python3
-# :Id: $Id$
-# :Copyright: © 2011, 2017 Günter Milde.
+module_template = r'''# :Id: $Id$
+# :Copyright: © 2011, 2017, 2022 Günter Milde.
 # :License: Released under the terms of the `2-Clause BSD license`_, in short:
 #
 #    Copying and distribution of this file, with or without modification,
@@ -79,7 +79,8 @@ import sys
    "unicodedata" module of Python %(python_version)s (based on Unicode version %(unidata_version)s).
 
    .. _inline markup recognition rules:
-      https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#inline-markup-recognition-rules
+      https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html
+      #inline-markup-recognition-rules
 """
 
 %(openers)s
@@ -98,12 +99,12 @@ quote_pairs = {
     '\xbb': '\xbb',            # » » Swedish
     '\u2018': '\u201a',        # ‘ ‚ Albanian/Greek/Turkish
     '\u2019': '\u2019',        # ’ ’ Swedish
-    '\u201a': '\u2018\u2019',  # ‚ ‘ German ‚ ’ Polish
+    '\u201a': '\u2018\u2019',  # ‚ ‘ German, ‚ ’ Polish
     '\u201c': '\u201e',        # “ „ Albanian/Greek/Turkish
-    '\u201e': '\u201c\u201d',  # „ “ German „ ” Polish
+    '\u201e': '\u201c\u201d',  # „ “ German, „ ” Polish
     '\u201d': '\u201d',        # ” ” Swedish
     '\u203a': '\u203a',        # › › Swedish
-}
+    }
 """Additional open/close quote pairs."""
 
 
@@ -280,7 +281,7 @@ def mark_intervals(s):
     return ''.join(lst2)
 
 
-def wrap_string(s, startstring="(", endstring=")", wrap=71):
+def wrap_string(s, startstring="(", endstring="    )", wrap=71):
     """Line-wrap a unicode string literal definition."""
     c = len(startstring)
     left_indent = ' '*(c - len(startstring.lstrip(' ')))
