@@ -1,10 +1,8 @@
-#!/usr/bin/python3
-
-"""Lexical analysis of formal languages (i.e. code) using Pygments."""
-
-# :Author: Georg Brandl; Felix Wiemann; Günter Milde
+# :Author: Georg Brandl; Lea Wiemann; Günter Milde
 # :Date: $Date$
 # :Copyright: This module has been placed in the public domain.
+
+"""Lexical analysis of formal languages (i.e. code) using Pygments."""
 
 from docutils import ApplicationError
 try:

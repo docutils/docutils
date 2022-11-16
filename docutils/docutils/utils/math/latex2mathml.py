@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # :Id: $Id$
 # :Copyright: © 2005 Jens Jørgen Mortensen [1]_
 #             © 2010, 2021 Günter Milde.
