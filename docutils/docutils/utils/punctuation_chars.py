@@ -35,95 +35,74 @@ import sys
 
    The category of some characters changed with the development of the
    Unicode standard. The current lists are generated with the help of the
-   "unicodedata" module of Python 3.11.0 (based on Unicode version 14.0.0).
+   "unicodedata" module of Python 2.7.13 (based on Unicode version 5.2.0).
 
    .. _inline markup recognition rules:
       https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#inline-markup-recognition-rules
 """
 
-openers = (
-    '"\'(<\\[{\u0f3a\u0f3c\u169b\u2045\u207d\u208d\u2308\u230a\u2329'
-    '\u2768\u276a\u276c\u276e\u2770\u2772\u2774\u27c5\u27e6\u27e8\u27ea'
-    '\u27ec\u27ee\u2983\u2985\u2987\u2989\u298b\u298d\u298f\u2991\u2993'
-    '\u2995\u2997\u29d8\u29da\u29fc\u2e22\u2e24\u2e26\u2e28\u2e42\u2e55'
-    '\u2e57\u2e59\u2e5b\u3008\u300a\u300c\u300e\u3010\u3014\u3016\u3018'
-    '\u301a\u301d\u301d\ufd3f\ufe17\ufe35\ufe37\ufe39\ufe3b\ufe3d\ufe3f'
-    '\ufe41\ufe43\ufe47\ufe59\ufe5b\ufe5d\uff08\uff3b\uff5b\uff5f\uff62'
-    '\xab\u2018\u201c\u2039\u2e02\u2e04\u2e09\u2e0c\u2e1c\u2e20\u201a'
-    '\u201e\xbb\u2019\u201d\u203a\u2e03\u2e05\u2e0a\u2e0d\u2e1d\u2e21'
-    '\u201b\u201f'
-)
-closers = (
-    '"\')>\\]}\u0f3b\u0f3d\u169c\u2046\u207e\u208e\u2309\u230b\u232a'
-    '\u2769\u276b\u276d\u276f\u2771\u2773\u2775\u27c6\u27e7\u27e9\u27eb'
-    '\u27ed\u27ef\u2984\u2986\u2988\u298a\u298c\u298e\u2990\u2992\u2994'
-    '\u2996\u2998\u29d9\u29db\u29fd\u2e23\u2e25\u2e27\u2e29\u2e56\u2e58'
-    '\u2e5a\u2e5c\u3009\u300b\u300d\u300f\u3011\u3015\u3017\u3019\u301b'
-    '\u301e\u301f\ufd3e\ufe18\ufe36\ufe38\ufe3a\ufe3c\ufe3e\ufe40\ufe42'
-    '\ufe44\ufe48\ufe5a\ufe5c\ufe5e\uff09\uff3d\uff5d\uff60\uff63\xbb'
-    '\u2019\u201d\u203a\u2e03\u2e05\u2e0a\u2e0d\u2e1d\u2e21\u201b\u201f'
-    '\xab\u2018\u201c\u2039\u2e02\u2e04\u2e09\u2e0c\u2e1c\u2e20\u201a'
-    '\u201e'
-)
-delimiters = (
-    '\\-/:\u058a\xa1\xa7\xb6\xb7\xbf\u037e\u0387\u055a-\u055f\u0589'
-    '\u05be\u05c0\u05c3\u05c6\u05f3\u05f4\u0609\u060a\u060c\u060d'
-    '\u061b\u061d-\u061f\u066a-\u066d\u06d4\u0700-\u070d\u07f7-'
-    '\u07f9\u0830-\u083e\u085e\u0964\u0965\u0970\u09fd\u0a76\u0af0'
-    '\u0c77\u0c84\u0df4\u0e4f\u0e5a\u0e5b\u0f04-\u0f12\u0f14\u0f85'
-    '\u0fd0-\u0fd4\u0fd9\u0fda\u104a-\u104f\u10fb\u1360-\u1368\u1400'
-    '\u166e\u16eb-\u16ed\u1735\u1736\u17d4-\u17d6\u17d8-\u17da\u1800-'
-    '\u180a\u1944\u1945\u1a1e\u1a1f\u1aa0-\u1aa6\u1aa8-\u1aad\u1b5a-'
-    '\u1b60\u1b7d\u1b7e\u1bfc-\u1bff\u1c3b-\u1c3f\u1c7e\u1c7f\u1cc0-'
-    '\u1cc7\u1cd3\u2010-\u2017\u2020-\u2027\u2030-\u2038\u203b-'
-    '\u203e\u2041-\u2043\u2047-\u2051\u2053\u2055-\u205e\u2cf9-'
-    '\u2cfc\u2cfe\u2cff\u2d70\u2e00\u2e01\u2e06-\u2e08\u2e0b\u2e0e-'
-    '\u2e1b\u2e1e\u2e1f\u2e2a-\u2e2e\u2e30-\u2e41\u2e43-\u2e4f\u2e52-'
-    '\u2e54\u2e5d\u3001-\u3003\u301c\u3030\u303d\u30a0\u30fb\ua4fe'
-    '\ua4ff\ua60d-\ua60f\ua673\ua67e\ua6f2-\ua6f7\ua874-\ua877\ua8ce'
-    '\ua8cf\ua8f8-\ua8fa\ua8fc\ua92e\ua92f\ua95f\ua9c1-\ua9cd\ua9de'
-    '\ua9df\uaa5c-\uaa5f\uaade\uaadf\uaaf0\uaaf1\uabeb\ufe10-\ufe16'
-    '\ufe19\ufe30-\ufe32\ufe45\ufe46\ufe49-\ufe4c\ufe50-\ufe52\ufe54-'
-    '\ufe58\ufe5f-\ufe61\ufe63\ufe68\ufe6a\ufe6b\uff01-\uff03\uff05-'
-    '\uff07\uff0a\uff0c-\uff0f\uff1a\uff1b\uff1f\uff20\uff3c\uff61'
-    '\uff64\uff65'
-)
+openers = (u'"\'(<\\[{\u0f3a\u0f3c\u169b\u2045\u207d\u208d\u2329\u2768'
+           u'\u276a\u276c\u276e\u2770\u2772\u2774\u27c5\u27e6\u27e8\u27ea'
+           u'\u27ec\u27ee\u2983\u2985\u2987\u2989\u298b\u298d\u298f\u2991'
+           u'\u2993\u2995\u2997\u29d8\u29da\u29fc\u2e22\u2e24\u2e26\u2e28'
+           u'\u3008\u300a\u300c\u300e\u3010\u3014\u3016\u3018\u301a\u301d'
+           u'\u301d\ufd3e\ufe17\ufe35\ufe37\ufe39\ufe3b\ufe3d\ufe3f\ufe41'
+           u'\ufe43\ufe47\ufe59\ufe5b\ufe5d\uff08\uff3b\uff5b\uff5f\uff62'
+           u'\xab\u2018\u201c\u2039\u2e02\u2e04\u2e09\u2e0c\u2e1c\u2e20'
+           u'\u201a\u201e\xbb\u2019\u201d\u203a\u2e03\u2e05\u2e0a\u2e0d'
+           u'\u2e1d\u2e21\u201b\u201f')
+closers = (u'"\')>\\]}\u0f3b\u0f3d\u169c\u2046\u207e\u208e\u232a\u2769'
+           u'\u276b\u276d\u276f\u2771\u2773\u2775\u27c6\u27e7\u27e9\u27eb'
+           u'\u27ed\u27ef\u2984\u2986\u2988\u298a\u298c\u298e\u2990\u2992'
+           u'\u2994\u2996\u2998\u29d9\u29db\u29fd\u2e23\u2e25\u2e27\u2e29'
+           u'\u3009\u300b\u300d\u300f\u3011\u3015\u3017\u3019\u301b\u301e'
+           u'\u301f\ufd3f\ufe18\ufe36\ufe38\ufe3a\ufe3c\ufe3e\ufe40\ufe42'
+           u'\ufe44\ufe48\ufe5a\ufe5c\ufe5e\uff09\uff3d\uff5d\uff60\uff63'
+           u'\xbb\u2019\u201d\u203a\u2e03\u2e05\u2e0a\u2e0d\u2e1d\u2e21'
+           u'\u201b\u201f\xab\u2018\u201c\u2039\u2e02\u2e04\u2e09\u2e0c'
+           u'\u2e1c\u2e20\u201a\u201e')
+delimiters = (u'\\-/:\u058a\xa1\xb7\xbf\u037e\u0387\u055a-\u055f\u0589'
+              u'\u05be\u05c0\u05c3\u05c6\u05f3\u05f4\u0609\u060a\u060c'
+              u'\u060d\u061b\u061e\u061f\u066a-\u066d\u06d4\u0700-\u070d'
+              u'\u07f7-\u07f9\u0830-\u083e\u0964\u0965\u0970\u0df4\u0e4f'
+              u'\u0e5a\u0e5b\u0f04-\u0f12\u0f85\u0fd0-\u0fd4\u104a-\u104f'
+              u'\u10fb\u1361-\u1368\u1400\u166d\u166e\u16eb-\u16ed\u1735'
+              u'\u1736\u17d4-\u17d6\u17d8-\u17da\u1800-\u180a\u1944\u1945'
+              u'\u19de\u19df\u1a1e\u1a1f\u1aa0-\u1aa6\u1aa8-\u1aad\u1b5a-'
+              u'\u1b60\u1c3b-\u1c3f\u1c7e\u1c7f\u1cd3\u2010-\u2017\u2020-'
+              u'\u2027\u2030-\u2038\u203b-\u203e\u2041-\u2043\u2047-'
+              u'\u2051\u2053\u2055-\u205e\u2cf9-\u2cfc\u2cfe\u2cff\u2e00'
+              u'\u2e01\u2e06-\u2e08\u2e0b\u2e0e-\u2e1b\u2e1e\u2e1f\u2e2a-'
+              u'\u2e2e\u2e30\u2e31\u3001-\u3003\u301c\u3030\u303d\u30a0'
+              u'\u30fb\ua4fe\ua4ff\ua60d-\ua60f\ua673\ua67e\ua6f2-\ua6f7'
+              u'\ua874-\ua877\ua8ce\ua8cf\ua8f8-\ua8fa\ua92e\ua92f\ua95f'
+              u'\ua9c1-\ua9cd\ua9de\ua9df\uaa5c-\uaa5f\uaade\uaadf\uabeb'
+              u'\ufe10-\ufe16\ufe19\ufe30-\ufe32\ufe45\ufe46\ufe49-\ufe4c'
+              u'\ufe50-\ufe52\ufe54-\ufe58\ufe5f-\ufe61\ufe63\ufe68\ufe6a'
+              u'\ufe6b\uff01-\uff03\uff05-\uff07\uff0a\uff0c-\uff0f\uff1a'
+              u'\uff1b\uff1f\uff20\uff3c\uff61\uff64\uff65')
 if sys.maxunicode >= 0x10FFFF:  # "wide" build
-    delimiters += (
-        '\U00010100-\U00010102\U0001039f\U000103d0\U0001056f\U00010857'
-        '\U0001091f\U0001093f\U00010a50-\U00010a58\U00010a7f\U00010af0-'
-        '\U00010af6\U00010b39-\U00010b3f\U00010b99-\U00010b9c\U00010ead'
-        '\U00010f55-\U00010f59\U00010f86-\U00010f89\U00011047-'
-        '\U0001104d\U000110bb\U000110bc\U000110be-\U000110c1\U00011140-'
-        '\U00011143\U00011174\U00011175\U000111c5-\U000111c8\U000111cd'
-        '\U000111db\U000111dd-\U000111df\U00011238-\U0001123d\U000112a9'
-        '\U0001144b-\U0001144f\U0001145a\U0001145b\U0001145d\U000114c6'
-        '\U000115c1-\U000115d7\U00011641-\U00011643\U00011660-'
-        '\U0001166c\U000116b9\U0001173c-\U0001173e\U0001183b\U00011944-'
-        '\U00011946\U000119e2\U00011a3f-\U00011a46\U00011a9a-\U00011a9c'
-        '\U00011a9e-\U00011aa2\U00011c41-\U00011c45\U00011c70\U00011c71'
-        '\U00011ef7\U00011ef8\U00011fff\U00012470-\U00012474\U00012ff1'
-        '\U00012ff2\U00016a6e\U00016a6f\U00016af5\U00016b37-\U00016b3b'
-        '\U00016b44\U00016e97-\U00016e9a\U00016fe2\U0001bc9f\U0001da87-'
-        '\U0001da8b\U0001e95e\U0001e95f'
-    )
-closing_delimiters = r'\\.,;!?'
+    delimiters += (u'\U00010100\U00010101\U0001039f\U000103d0\U00010857'
+                   u'\U0001091f\U0001093f\U00010a50-\U00010a58\U00010a7f'
+                   u'\U00010b39-\U00010b3f\U000110bb\U000110bc\U000110be-'
+                   u'\U000110c1\U00012470-\U00012473')
+closing_delimiters = u'\\\\.,;!?'
 
 
 # Matching open/close quotes
 # --------------------------
 
 quote_pairs = {
-    # open char: matching closing characters # usage example
-    '\xbb': '\xbb',            # » » Swedish
-    '\u2018': '\u201a',        # ‘ ‚ Albanian/Greek/Turkish
-    '\u2019': '\u2019',        # ’ ’ Swedish
-    '\u201a': '\u2018\u2019',  # ‚ ‘ German ‚ ’ Polish
-    '\u201c': '\u201e',        # “ „ Albanian/Greek/Turkish
-    '\u201e': '\u201c\u201d',  # „ “ German „ ” Polish
-    '\u201d': '\u201d',        # ” ” Swedish
-    '\u203a': '\u203a',        # › › Swedish
-}
+               # open char: matching closing characters # usage example
+               u'\xbb': u'\xbb',            # » » Swedish
+               u'\u2018': u'\u201a',        # ‘ ‚ Albanian/Greek/Turkish
+               u'\u2019': u'\u2019',        # ’ ’ Swedish
+               u'\u201a': u'\u2018\u2019',  # ‚ ‘ German ‚ ’ Polish
+               u'\u201c': u'\u201e',        # “ „ Albanian/Greek/Turkish
+               u'\u201e': u'\u201c\u201d',  # „ “ German „ ” Polish
+               u'\u201d': u'\u201d',        # ” ” Swedish
+               u'\u203a': u'\u203a',        # › › Swedish
+              }
 """Additional open/close quote pairs."""
 
 
@@ -140,4 +119,4 @@ def match_chars(c1, c2):
         i = openers.index(c1)
     except ValueError:  # c1 not in openers
         return False
-    return c2 == closers[i] or c2 in quote_pairs.get(c1, '')
+    return c2 == closers[i] or c2 in quote_pairs.get(c1, u'')
