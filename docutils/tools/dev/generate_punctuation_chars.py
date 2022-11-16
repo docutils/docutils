@@ -55,7 +55,6 @@ module_template = r'''#!/usr/bin/env python3
 # ``docutils/tools/dev/generate_punctuation_chars.py``.
 # ::
 
-import re
 import sys
 
 """Docutils character category patterns.
@@ -77,36 +76,36 @@ import sys
 
    The category of some characters changed with the development of the
    Unicode standard. The current lists are generated with the help of the
-   "unicodedata" module of Python %(python_version)s
-   (based on Unicode version %(unidata_version)s).
+   "unicodedata" module of Python %(python_version)s (based on Unicode version %(unidata_version)s).
 
    .. _inline markup recognition rules:
-      https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html
-      #inline-markup-recognition-rules
+      https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#inline-markup-recognition-rules
 """
 
 %(openers)s
 %(closers)s
 %(delimiters)s
-if sys.maxunicode >= 0x10FFFF: # "wide" build
+if sys.maxunicode >= 0x10FFFF:  # "wide" build
 %(delimiters_wide)s
-closing_delimiters = '\\\\.,;!?'
+closing_delimiters = r'\\.,;!?'
 
 
 # Matching open/close quotes
 # --------------------------
 
-quote_pairs = {# open char: matching closing characters # usage example
-               '\xbb':   '\xbb',         # » » Swedish
-               '\u2018': '\u201a',       # ‘ ‚ Albanian/Greek/Turkish
-               '\u2019': '\u2019',       # ’ ’ Swedish
-               '\u201a': '\u2018\u2019', # ‚ ‘ German ‚ ’ Polish
-               '\u201c': '\u201e',       # “ „ Albanian/Greek/Turkish
-               '\u201e': '\u201c\u201d', # „ “ German „ ” Polish
-               '\u201d': '\u201d',       # ” ” Swedish
-               '\u203a': '\u203a',       # › › Swedish
-              }
+quote_pairs = {
+    # open char: matching closing characters # usage example
+    '\xbb': '\xbb',            # » » Swedish
+    '\u2018': '\u201a',        # ‘ ‚ Albanian/Greek/Turkish
+    '\u2019': '\u2019',        # ’ ’ Swedish
+    '\u201a': '\u2018\u2019',  # ‚ ‘ German ‚ ’ Polish
+    '\u201c': '\u201e',        # “ „ Albanian/Greek/Turkish
+    '\u201e': '\u201c\u201d',  # „ “ German „ ” Polish
+    '\u201d': '\u201d',        # ” ” Swedish
+    '\u203a': '\u203a',        # › › Swedish
+}
 """Additional open/close quote pairs."""
+
 
 def match_chars(c1, c2):
     """Test whether `c1` and `c2` are a matching open/close character pair.
@@ -281,18 +280,20 @@ def mark_intervals(s):
     return ''.join(lst2)
 
 
-def wrap_string(s, startstring="('", endstring="')", wrap=67):
+def wrap_string(s, startstring="(", endstring=")", wrap=71):
     """Line-wrap a unicode string literal definition."""
     c = len(startstring)
-    contstring = "'\n" + ' '*(len(startstring)-2) + "'"
-    lst = [startstring]
+    left_indent = ' '*(c - len(startstring.lstrip(' ')))
+    line_start_string = f"\n    {left_indent}'"
+    cont_string = f"'{line_start_string}"
+    lst = [startstring, line_start_string]
     for ch in s.replace("'", r"\'"):
         c += 1
         if ch == '\\' and c > wrap:
             c = len(startstring)
-            ch = contstring + ch
+            lst.append(cont_string)
         lst.append(ch)
-    lst.append(endstring)
+    lst.append(f"'\n{left_indent}{endstring}")
     return ''.join(lst)
 
 
@@ -322,6 +323,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('-t', '--test', action="store_true",
                         help='test for changed character categories')
+    parser.add_argument('-o', '--out')
     args = parser.parse_args()
 
 # (Re)create character patterns
@@ -386,14 +388,14 @@ if __name__ == '__main__':
         'python_version': sys.version.split()[0],
         'unidata_version': unicodedata.unidata_version,
         'openers': wrap_string(o.encode('unicode-escape').decode(),
-                               startstring="openers = ('"),
+                               startstring="openers = ("),
         'closers': wrap_string(c.encode('unicode-escape').decode(),
-                               startstring="closers = ('"),
+                               startstring="closers = ("),
         'delimiters': wrap_string(d.encode('unicode-escape').decode(),
-                                  startstring="delimiters = ('"),
+                                  startstring="delimiters = ("),
         'delimiters_wide': wrap_string(
                             d_wide.encode('unicode-escape').decode(),
-                            startstring="    delimiters += ('")
+                            startstring="    delimiters += (")
         }
 
     print(module_template % substitutions, end='')
