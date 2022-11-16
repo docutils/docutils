@@ -152,29 +152,20 @@ unicode_punctuation_categories = {
 #
 # ::
 
-def unicode_charlists(categories, cp_min=0, cp_max=None):
+def unicode_charlists(categories, cp_min=0, cp_max=sys.maxunicode):
     """Return dictionary of Unicode character lists.
 
     For each of the `catagories`, an item contains a list with all Unicode
     characters with `cp_min` <= code-point <= `cp_max` that belong to
     the category.
-
-    The default values check every code-point supported by Python
-    (`sys.maxint` is 0x10FFFF in a "wide" build and 0xFFFF in a "narrow"
-    build, i.e. ucs4 and ucs2 respectively).
     """
-    # Determine highest code point with one of the given categories
-    # (may shorten the search time considerably if there are many
-    # categories with not too high characters):
-    if cp_max is None:
-        cp_max = max(x for x in range(sys.maxunicode+1)
-                     if unicodedata.category(chr(x)) in categories)
-        # print(cp_max) # => 74867 for unicode_punctuation_categories
-    charlists = {}
-    for cat in categories:
-        charlists[cat] = [chr(x) for x in range(cp_min, cp_max+1)
-                          if unicodedata.category(chr(x)) == cat]
-    return charlists
+    char_lists = {cat: [] for cat in categories}
+    for i in range(cp_min, cp_max+1):
+        chr_i = chr(i)
+        cat_i = unicodedata.category(chr_i)
+        if cat_i in char_lists:
+            char_lists[cat_i].append(chr_i)
+    return char_lists
 
 
 # Character categories in Docutils
