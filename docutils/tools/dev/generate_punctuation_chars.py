@@ -213,6 +213,13 @@ def character_category_patterns():
     # 301F  LOW DOUBLE PRIME QUOTATION MARK misses the opening pendant:
     ucharlists['Ps'].insert(ucharlists['Pe'].index('\u301f'), '\u301d')
 
+    # 2E42  DOUBLE LOW-REVERSED-9 QUOTATION MARK has no pair, and the only
+    # usages identified thus far are in old hungarian, where it doesn't seem to
+    # be used as a quoting character. Remove from openers (Ps) for now, for
+    # simplicity.
+    # https://www.unicode.org/L2/L2012/12168r-n4268r-oldhungarian.pdf#page=26
+    ucharlists['Ps'].remove('⹂')
+
     # print(''.join(ucharlists['Ps']).encode('utf-8')
     # print(''.join(ucharlists['Pe']).encode('utf-8')
     # print(''.join(ucharlists['Pi']).encode('utf-8')
