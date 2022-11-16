@@ -15,7 +15,7 @@ from pathlib import Path
 import shutil
 import unittest
 
-import docutils.core
+from docutils import core, SettingsSpec
 
 FUNCTIONAL = Path('functional')
 EXPECTED = FUNCTIONAL / 'expected'
@@ -47,6 +47,20 @@ expected output and check it in:
   svn commit -m "<comment>" {exp}
 """
 
+# Default settings for functional tests.
+# Override "factory defaults",
+# overridden by `settings_overrides` in the individual tests.
+# cf. docs/api/runtime-settings.html#settings-priority
+functional_tests_settings_spec = SettingsSpec()
+functional_tests_settings_spec.settings_default_overrides = {
+    '_disable_config': True,
+    'halt_level': 5,
+    'warning_stream': '',
+    'input_encoding': 'utf-8',  # skip auto-detection
+    'embed_stylesheet': False,
+    'syntax_highlight': 'none'  # avoid "Pygments not found" warning
+    }
+
 
 class FunctionalTests(unittest.TestCase):
 
@@ -70,17 +84,18 @@ class FunctionalTests(unittest.TestCase):
                 exec(test_file.read_text(encoding='utf-8'), namespace)
                 del namespace['__builtins__']  # clean-up
 
-                # Full source, actual output, and expected output paths
+                # Full source, generated output, and expected output paths
                 source_path = INPUT / namespace.pop('test_source')
                 destination_path = OUTPUT / namespace['test_destination']
                 expected_path = EXPECTED / namespace.pop('test_destination')
 
                 # Get output (automatically written to the output/ directory
                 # by publish_file):
-                output = docutils.core.publish_file(
+                output = core.publish_file(
                     **namespace,
                     source_path=source_path.as_posix(),
                     destination_path=destination_path.as_posix(),
+                    settings_spec=functional_tests_settings_spec,
                 )
 
                 # Get the expected output *after* writing the actual output.
