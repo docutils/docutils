@@ -247,6 +247,13 @@ class Output(TransformSpec):
         raise NotImplementedError
 
     def encode(self, data):
+        """Encode `data` with `self.encoding` (unless it is already encoded).
+
+        If `self.encoding` is set to the pseudo encoding name "unicode",
+        `data` must be a `str` instance and is returned unchanged.
+
+        If `data` is a `bytes` instance, it is returned unchanged.
+        """
         if self.encoding and self.encoding.lower() == 'unicode':
             assert isinstance(data, str), (
                 'the encoding given is "unicode" but the output is not '
@@ -589,25 +596,19 @@ class StringInput(Input):
 
 
 class StringOutput(Output):
-
-    """
-    Direct string output.
-    """
+    """Output to a `bytes` or `str` instance."""
 
     default_destination_path = '<string>'
 
     def write(self, data):
-        """Encode `data`, store it in `self.destination`, and return it."""
+        """Encode `data`, store it in `self.destination`, and return it.
+
+        If `self.encoding` is set to the pseudo encoding name "unicode",
+        `data` must be a `str` instance and is returned unchanged.
+        (cf. `Output.encode`)
+        """
         self.destination = self.encode(data)
         return self.destination
-
-    def encode(self, data):
-        data = super().encode(data)
-        if not isinstance(data, str):
-            warnings.warn("StringOutput.encode()'s return type will change to "
-                          f'``str`` from Docutils 0.21, got type {type(data)}',
-                          FutureWarning, stacklevel=2)
-        return data
 
 
 class NullInput(Input):

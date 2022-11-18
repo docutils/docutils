@@ -452,8 +452,6 @@ def publish_string(source, source_path=None, destination_path=None,
     .. _output_encoding:
         https://docutils.sourceforge.io/docs/user/config.html#output-encoding
     """
-    warnings.warn('The return type of publish_string will change to '
-                  '"str" from Docutils 0.21.', FutureWarning, stacklevel=2)
     output, pub = publish_programmatically(
         source_class=io.StringInput, source=source, source_path=source_path,
         destination_class=io.StringOutput,
