@@ -1667,7 +1667,7 @@ comma-separated list of class values as optional argument. If `False`, class
 values are handled with wrappers and admonitions use the ``DUadmonition``
 environment. See `Generating LaTeX with Docutils`__ for details.
 
-Default: False (changed in Docutils 0.18).
+Default: False (since Docutils 0.18).
 Options: ``--legacy-class-functions``, ``--new-class-functions``.
 
 New in Docutils 0.17.
@@ -1686,7 +1686,7 @@ table width and keeps the ratio of specified column widths.
 Custom table and/or column widths can be set with the respective options
 of the `table directive`_. See also `Generating LaTeX with Docutils`__.
 
-Default: True (will change to False in 0.19).
+Default: True (will change to False in Docutils 1.0).
 Options: ``--legacy-column-widths``, ``--new-column-widths``.
 
 New in Docutils 0.18.
