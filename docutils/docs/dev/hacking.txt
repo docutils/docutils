@@ -70,21 +70,20 @@ Parsing the Document
 
 The **Parser** analyzes the the input document and creates a **node
 tree** representation.  In this case we are using the
-**reStructuredText parser** (``docutils/parsers/rst/__init__.py``).
-To see what that node tree looks like, the below code creates a Docutils
-document and parser to parse our example file without applying any
-tranforms or post-processing.
+**reStructuredText parser**:
 
-.. code:: pycon
+.. code:: python
 
-    >>> from docutils import frontend, utils
-    >>> from docutils.parsers.rst import Parser
-    >>> settings = frontend.get_default_settings(Parser)
-    >>> with open('test.txt', encoding='utf-8') as file:
-    ...     document = utils.new_document(file.name, settings)
-    ...     Parser().parse(file.read(), document)
-    ...
-    >>> print(document.pformat())
+    from docutils import frontend, utils
+    from docutils.parsers.rst import Parser
+    settings = frontend.get_default_settings(Parser)
+    with open('test.txt', encoding='utf-8') as file:
+        document = utils.new_document(file.name, settings)
+        Parser().parse(file.read(), document)
+
+Let us now examine the node tree.
+With ``print(document.pformat())`` we get::
+
     <document source="test.txt">
         <paragraph>
             My
@@ -95,8 +94,6 @@ tranforms or post-processing.
                 Python
             .
         <target ids="python" names="python" refuri="https://www.python.org/">
-
-Let us now examine the node tree:
 
 The top-level node is ``document``.  It has a ``source`` attribute
 whose value is ``text.txt``.  There are two children: A ``paragraph``
@@ -110,6 +107,13 @@ arranged as a class hierarchy (for example, both ``emphasis`` and
 ``reference`` have the common superclass ``Inline``).  To get an
 overview of the node class hierarchy, use epydoc (type ``epydoc
 nodes.py``) and look at the class hierarchy tree.
+
+.. tip:: While rst2pseudoxml_ shows the node tree after `transforming the
+   document`_, the script quicktest.py_ (in the ``tools/dev/`` directory
+   of the Docutils distribution) shows the direct result of parsing a
+   reStructuredText sample.
+
+.. _quicktest.py: https://docutils.sourceforge.io/tools/dev/quicktest.py
 
 
 Transforming the Document
@@ -126,15 +130,9 @@ Instead, it's done by a **Transform**.  In this case (resolving a
 reference), it's done by the ``ExternalTargets`` transform in
 ``docutils/transforms/references.py``.
 
-In fact, there are quite a lot of Transforms, which do various useful
-things like creating the table of contents, applying substitution
-references or resolving auto-numbered footnotes.
-
 The Transforms are applied after parsing.  To see how the node tree
 has changed after applying the Transforms, we use the
-``rst2pseudoxml.py`` tool:
-
-.. parsed-literal::
+rst2pseudoxml_ tool [#]_::
 
     $ rst2pseudoxml.py test.txt
     <document source="test.txt">
@@ -154,9 +152,17 @@ attribute |---| the reference has been resolved.
 
 While this does not look very exciting, transforms are a powerful tool
 to apply any kind of transformation on the node tree.
+In fact, there are quite a lot of Transforms, which do various useful
+things like creating the table of contents, applying substitution
+references or resolving auto-numbered footnotes. For details, see
+`Docutils Transforms`_.
 
-By the way, you can also get a "real" XML representation of the node
-tree by using ``rst2xml.py`` instead of ``rst2pseudoxml.py``.
+.. [#] You can also get a standard XML representation of the
+       node tree by using rst2xml_ instead of rst2pseudoxml_.
+
+.. _Docutils Transforms: ../api/transforms.html
+.. _rst2pseudoxml: ../user/tools.html#rst2pseudoxml
+.. _rst2xml: ../user/tools.html#rst2xml
 
 
 Writing the Document
@@ -256,7 +262,6 @@ This document is not complete.  Many topics could (and should) be
 covered here.  To find out with which topics we should write about
 first, we are awaiting *your* feedback.  So please ask your questions
 on the Docutils-develop_ mailing list.
-
 
 .. _Docutils-develop: ../user/mailing-lists.html#docutils-develop
 

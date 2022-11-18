@@ -36,7 +36,7 @@ to generate a specific data format).
 Most [#]_ front ends have common options and the same command-line usage
 pattern::
 
-    toolname [options] [<source> [<destination>]]
+    <toolname> [options] [<source> [<destination>]]
 
 See `the tools`_ below for concrete examples.
 
@@ -75,34 +75,29 @@ Generic Command Line Front End
 
 :Readers: Standalone (default), PEP
 :Parsers: reStructuredText (default), Markdown (requires 3rd party packages)
-:Writers: html_, html4css1_, html5_ (default), latex__, manpage_,
+:Writers: html_, html4css1_, html5_ (default), latex2e_, manpage_,
           odt_, pep_html_, pseudo-xml_, s5_html_, xelatex_, xml_,
 :Config_: `[docutils application]`_
 
+Since Docutils 0.19, you can start the generic front end like::
+
+    docutils test.rst test.html
+
+Alternatively, use Python's ``-m`` option, or the ``docutils-cli.py``
+script in the ``tools/`` directory.
+
 The generic front end allows combining "reader", "parser", and
 "writer" components from the Docutils package or 3rd party plug-ins.
-
-Since Docutils 0.19, it can be called by Python's ``-m`` option,
-the ``docutils`` script installed in the binary PATH, or the
-``docutils-cli.py`` script in the ``tools/`` directory.
-
 For example, to process a Markdown_ file "``test.md``" into
-Pseudo-XML_ ::
+Pseudo-XML_::
 
-    python3 -m docutils --parser=markdown --writer=pseudoxml\
-      test.md test.txt
+    docutils --parser=markdown --writer=pseudoxml test.md test.txt
 
 Use the "--help" option together with the component-selection options
 to get the correct list of supported command-line options. Example::
 
     docutils --parser=markdown --writer=xml --help
 
-
-
-__
-.. _latex2e:
-.. _Generating LaTeX with Docutils: latex.html
-.. _manpage: manpage.html
 .. _Markdown: https://www.markdownguide.org/
 .. _[docutils application]: config.html#docutils-application
 
@@ -252,11 +247,10 @@ configuration files.
 For example, to process a PEP into HTML::
 
     cd <path-to-docutils>/docs/peps
-    rstpep2html.py pep-0287.txt pep-0287.html
+    ../../tools/rstpep2html.py pep-0287.txt pep-0287.html
 
 The same result can be achieved with the genric front end::
 
-    cd <path-to-docutils>/docs/peps
     docutils --reader=pep --writer=pep_html pep-0287.txt pep-0287.html
 
 The rendering of published PEPs is done by a Sphinx-based build system
@@ -401,6 +395,10 @@ printing or on-screen viewing.
 
 For details see `Generating LaTeX with Docutils`_.
 
+.. _latex2e:
+.. _Generating LaTeX with Docutils: latex.html
+
+
 rst2xetex.py
 ------------
 
@@ -439,6 +437,7 @@ rst2man.py
 The ``rst2man.py`` front end reads standalone reStructuredText source
 files and produces troff_ sources for Unix man pages.
 
+.. _manpage: manpage.html
 .. _troff: https://troff.org/
 
 
