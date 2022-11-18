@@ -81,7 +81,7 @@ class Html5WriterPublishPartsTestCase(unittest.TestCase):
 totest = {}
 
 totest['standard'] = ({'stylesheet_path': '',
-                     'embed_stylesheet': 0}, [
+                     'embed_stylesheet': False}, [
 ["""\
 Simple String
 """,
@@ -242,9 +242,9 @@ Some stuff
 }]
 ])
 
-totest['no_title_promotion'] = ({'doctitle_xform': 0,
+totest['no_title_promotion'] = ({'doctitle_xform': False,
                                  'stylesheet_path': '',
-                                 'embed_stylesheet': 0}, [
+                                 'embed_stylesheet': False}, [
 ["""\
 Simple String
 """,
@@ -645,7 +645,7 @@ No caption nor legend.
 
 totest['lazy_loading'] = ({'image_loading': 'lazy',
                            'stylesheet_path': '',
-                           'embed_stylesheet': 0}, [
+                           'embed_stylesheet': False}, [
 
 ["""\
 .. image:: dummy.png
@@ -678,7 +678,7 @@ totest['lazy_loading'] = ({'image_loading': 'lazy',
 
 totest['no_backlinks'] = ({'footnote_backlinks': False,
                            'stylesheet_path': '',
-                           'embed_stylesheet': 0}, [
+                           'embed_stylesheet': False}, [
 
 ["""\
 Two footnotes [#f1]_ [#f2]_ and two citations [once]_ [twice]_.
