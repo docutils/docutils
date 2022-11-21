@@ -19,10 +19,6 @@ Changes Since 0.19
   - Declared support for Python 3.11 in setup.py and tox.ini.
     Patch by Hugo van Kemenade.
 
-* tox.ini
-
-  - Extracted flake8 configuration and moved to ``.flake8``.
-
 * docutils/core.py
 
   - Added new ``publish_bytes()`` function to explicitly return
@@ -34,12 +30,6 @@ Changes Since 0.19
 
   - Deprecated returning ``bytes`` from ``StringOutput.encode()``.
     Users should use the new class ``BytesOutput`` instead.
-
-* setup.py
-
-  - Fix: SetuptoolsDeprecationWarning: Installing '' as data is deprecated,
-
-    by adding data directories to package_data.packages list.
 
 * docutils/languages/
   docutils/parsers/rst/languages/
@@ -54,6 +44,11 @@ Changes Since 0.19
 * docutils/parsers/recommonmark_wrapper.py
 
   - Improved mock Sphinx module.
+
+* docutils/transforms/__init__.py
+
+  - `Transformer.populate_from_components()` now silently ignores
+    components that are not instances of `docutils.TransformSpec`.
 
 * docutils/utils/__init__.py
 
@@ -89,6 +84,15 @@ Changes Since 0.19
 * docutils/writers/manpage.py
 
   - Do not output empty "manual" in ``.TH``
+
+* setup.py
+
+  - Fix SetuptoolsDeprecationWarning: "Installing '' as data is deprecated"
+    by adding data directories to package_data.packages list.
+
+* tox.ini
+
+  - Extracted flake8 configuration and moved to ``.flake8``.
 
 * test/
 

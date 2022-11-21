@@ -217,11 +217,13 @@ class SettingsSpec:
 
 
 class TransformSpec:
-
     """
     Runtime transform specification base class.
 
-    TransformSpec subclass objects used by `docutils.transforms.Transformer`.
+    Provides the interface to register "transforms" and helper functions
+    to resolve references with a `docutils.transforms.Transformer`.
+
+    https://docutils.sourceforge.io/docs/ref/transforms.html
     """
 
     def get_transforms(self):
@@ -239,11 +241,13 @@ class TransformSpec:
     default_transforms = ()
 
     unknown_reference_resolvers = ()
-    """List of functions to try to resolve unknown references.  Unknown
-    references have a 'refname' attribute which doesn't correspond to any
-    target in the document.  Called when the transforms in
-    `docutils.transforms.references` are unable to find a correct target.  The
-    list should contain functions which will try to resolve unknown
+    """List of functions to try to resolve unknown references.
+
+    Unknown references have a 'refname' attribute which doesn't correspond
+    to any target in the document.  Called when the transforms in
+    `docutils.transforms.references` are unable to find a correct target.
+
+    The list should contain functions which will try to resolve unknown
     references, with the following signature::
 
         def reference_resolver(node):
@@ -260,7 +264,10 @@ class TransformSpec:
 
         reference_resolver.priority = 100
 
-    Override in subclasses."""
+    This hook is provided for 3rd party extensions.
+    Example use case: the `MoinMoin - ReStructured Text Parser`
+    in ``sandbox/mmgilbe/rst.py``.
+    """
 
 
 class Component(SettingsSpec, TransformSpec):
