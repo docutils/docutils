@@ -29,7 +29,7 @@ class Reader(standalone.Reader):
     config_section_dependencies = ('readers', 'standalone reader')
 
     def get_transforms(self):
-        transforms = standalone.Reader.get_transforms(self)
+        transforms = super().get_transforms()
         # We have PEP-specific frontmatter handling.
         transforms.remove(frontmatter.DocTitle)
         transforms.remove(frontmatter.SectionSubTitle)

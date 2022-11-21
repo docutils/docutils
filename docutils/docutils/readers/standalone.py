@@ -49,7 +49,7 @@ class Reader(readers.Reader):
     config_section_dependencies = ('readers',)
 
     def get_transforms(self):
-        return readers.Reader.get_transforms(self) + [
+        return super().get_transforms() + [
             references.Substitutions,
             references.PropagateTargets,
             frontmatter.DocTitle,

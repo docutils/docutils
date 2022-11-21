@@ -255,7 +255,7 @@ class Writer(writers.Writer):
 
     # Override parent method to add latex-specific transforms
     def get_transforms(self):
-        return writers.Writer.get_transforms(self) + [
+        return super().get_transforms() + [
                    # Convert specific admonitions to generic one
                    writer_aux.Admonitions,
                    # TODO: footnote collection transform
