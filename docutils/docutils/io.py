@@ -136,7 +136,7 @@ class Input(TransformSpec):
         """
         if self.encoding and self.encoding.lower() == 'unicode':
             assert isinstance(data, str), ('input encoding is "unicode" '
-                                           'but input is not a `str` object')
+                                           'but `data` is no `str` instance')
         if isinstance(data, str):
             # nothing to decode
             return data
@@ -255,9 +255,8 @@ class Output(TransformSpec):
         If `data` is a `bytes` instance, it is returned unchanged.
         """
         if self.encoding and self.encoding.lower() == 'unicode':
-            assert isinstance(data, str), (
-                'the encoding given is "unicode" but the output is not '
-                'a Unicode string')
+            assert isinstance(data, str), ('output encoding is "unicode" '
+                                           'but `data` is no `str` instance')
             return data
         if not isinstance(data, str):
             # Non-unicode (e.g. bytes) output.
@@ -604,8 +603,8 @@ class StringOutput(Output):
         """Encode `data`, store it in `self.destination`, and return it.
 
         If `self.encoding` is set to the pseudo encoding name "unicode",
-        `data` must be a `str` instance and is returned unchanged.
-        (cf. `Output.encode`)
+        `data` must be a `str` instance and is returned unchanged
+        (cf. `Output.encode`).
         """
         self.destination = self.encode(data)
         return self.destination
@@ -613,22 +612,18 @@ class StringOutput(Output):
 
 class NullInput(Input):
 
-    """
-    Degenerate input: read nothing.
-    """
+    """Degenerate input: read nothing."""
 
     default_source_path = 'null input'
 
     def read(self):
-        """Return a null string."""
+        """Return an empty string."""
         return ''
 
 
 class NullOutput(Output):
 
-    """
-    Degenerate output: write nothing.
-    """
+    """Degenerate output: write nothing."""
 
     default_destination_path = 'null output'
 

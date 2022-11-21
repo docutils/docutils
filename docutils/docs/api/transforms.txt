@@ -114,7 +114,7 @@ universal.TestMessages          DocutilsTestSupport           880
 
 writer_aux.Compound             *not used, to be removed*     910
 
-writer_aux.Admonitions          html4css1 (w),                920
+writer_aux.Admonitions          _html_base (w),               920
                                 latex2e (w)
 
 misc.CallBack                   n/a                           990
@@ -202,7 +202,7 @@ writers.UnfilteredWriter
 writers.latex2e.Writer
   writer_aux.Admonitions
 
-writers.html4css1.Writer:
+writers._html_base.Writer:
   writer_aux.Admonitions
 
 writers.odf_odt.Writer:
