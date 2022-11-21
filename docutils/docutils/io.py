@@ -72,9 +72,15 @@ def error_string(err):
 
 
 class Input(TransformSpec):
-
     """
     Abstract base class for input wrappers.
+
+    Docutils input objects must provide a `read()` method that
+    returns the source, typically as `str` instance.
+
+    Inheriting `TransformSpec` allows input objects to add
+    "transforms" and "unknown_reference_resolvers" to the "Transformer".
+    (Optional for custom input objects since Docutils 0.19.)
     """
 
     component_type = 'input'
@@ -106,6 +112,7 @@ class Input(TransformSpec):
                                                   self.source_path)
 
     def read(self):
+        """Return input as `str`. Define in subclasses."""
         raise NotImplementedError
 
     def decode(self, data):
@@ -205,6 +212,7 @@ class Input(TransformSpec):
         return None
 
     def isatty(self):
+        """Return True, if the input source is connected to a TTY device."""
         try:
             return self.source.isatty()
         except AttributeError:
@@ -212,9 +220,15 @@ class Input(TransformSpec):
 
 
 class Output(TransformSpec):
-
     """
     Abstract base class for output wrappers.
+
+    Docutils output objects must provide a `write()` method that
+    expects and handles one argument (the output).
+
+    Inheriting `TransformSpec` allows output objects to add
+    "transforms" and "unknown_reference_resolvers" to the "Transformer".
+    (Optional for custom output objects since Docutils 0.19.)
     """
 
     component_type = 'output'
@@ -243,16 +257,18 @@ class Output(TransformSpec):
                 % (self.__class__, self.destination, self.destination_path))
 
     def write(self, data):
-        """`data` is a Unicode string, to be encoded by `self.encode`."""
+        """Write `data`. Define in subclasses."""
         raise NotImplementedError
 
     def encode(self, data):
-        """Encode `data` with `self.encoding` (unless it is already encoded).
+        """Encode and return `data`.
+
+        If `data` is a `bytes` instance, it is returned unchanged.
+        Otherwise it is encoded with `self.encoding`.
 
         If `self.encoding` is set to the pseudo encoding name "unicode",
         `data` must be a `str` instance and is returned unchanged.
 
-        If `data` is a `bytes` instance, it is returned unchanged.
         """
         if self.encoding and self.encoding.lower() == 'unicode':
             assert isinstance(data, str), ('output encoding is "unicode" '
@@ -346,6 +362,7 @@ class ErrorOutput:
             pass
 
     def isatty(self):
+        """Return True, if the destination is connected to a TTY device."""
         try:
             return self.destination.isatty()
         except AttributeError:
@@ -435,9 +452,9 @@ class FileInput(Input):
 
 class FileOutput(Output):
 
-    """
-    Output for single, simple file-like objects.
-    """
+    """Output for single, simple file-like objects."""
+
+    default_destination_path = '<file>'
 
     mode = 'w'
     """The mode argument for `open()`."""
@@ -507,19 +524,18 @@ class FileOutput(Output):
         self.opened = True
 
     def write(self, data):
-        """Encode `data`, write it to a single file, and return it.
+        """Write `data` to a single file, also return it.
 
-        With Python 3 or binary output mode, `data` is returned unchanged,
-        except when specified encoding and output encoding differ.
+        `data` is encoded and returned as `bytes` instance
+        if `self.encoding` and `self.destination.encoding` differ.
         """
         if not self.opened:
             self.open()
         if ('b' not in self.mode
             and check_encoding(self.destination, self.encoding) is False):
-            data = self.encode(data)
             if os.linesep != '\n':
-                # fix endings
-                data = data.replace(b'\n', bytes(os.linesep, 'ascii'))
+                data = data.replace('\n', os.linesep)  # fix endings
+            data = self.encode(data)
         try:
             self.destination.write(data)
         except TypeError as err:
@@ -530,17 +546,15 @@ class FileOutput(Output):
                     if check_encoding(self.destination,
                                       self.encoding) is False:
                         raise ValueError(
-                            'Encoding of %s (%s) differs \n'
-                            '  from specified encoding (%s)' %
-                            (self.destination_path or 'destination',
-                             self.destination.encoding,
-                             self.encoding))
+                            f'Encoding of {self.destination_path} '
+                            f'({self.destination.encoding}) differs \n'
+                            '  from specified encoding ({self.encoding})')
                     else:
                         raise err
         except (UnicodeError, LookupError) as err:
             raise UnicodeError(
                 'Unable to encode output data. output-encoding is: '
-                '%s.\n(%s)' % (self.encoding, error_string(err)))
+                f'{self.encoding}.\n({error_string(err)})')
         finally:
             if self.autoclose:
                 self.close()
@@ -628,7 +642,7 @@ class NullOutput(Output):
     default_destination_path = 'null output'
 
     def write(self, data):
-        """Do nothing ([don't even] send data to the bit bucket)."""
+        """Do nothing, return None."""
         pass
 
 
