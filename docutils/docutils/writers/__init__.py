@@ -31,10 +31,9 @@ class Writer(Component):
     config_section = 'writers'
 
     def get_transforms(self):
-        return Component.get_transforms(self) + [
-                   universal.Messages,
-                   universal.FilterMessages,
-                   universal.StripClassesAndElements]
+        return super().get_transforms() + [universal.Messages,
+                                           universal.FilterMessages,
+                                           universal.StripClassesAndElements]
 
     document = None
     """The document to write (Docutils doctree); set by `write`."""

@@ -73,7 +73,7 @@ __docformat__ = 'reStructuredText'
 import docutils.parsers
 import docutils.statemachine
 from docutils.parsers.rst import roles, states
-from docutils import frontend, nodes, Component
+from docutils import frontend, nodes
 from docutils.transforms import universal
 
 
@@ -159,8 +159,7 @@ class Parser(docutils.parsers.Parser):
         self.inliner = inliner
 
     def get_transforms(self):
-        return Component.get_transforms(self) + [
-            universal.SmartQuotes]
+        return super().get_transforms() + [universal.SmartQuotes]
 
     def parse(self, inputstring, document):
         """Parse `inputstring` and populate `document`, a document tree."""

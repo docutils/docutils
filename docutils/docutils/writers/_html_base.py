@@ -144,7 +144,7 @@ class Writer(writers.Writer):
         'html_body')
 
     def get_transforms(self):
-        return writers.Writer.get_transforms(self) + [writer_aux.Admonitions]
+        return super().get_transforms() + [writer_aux.Admonitions]
 
     def translate(self):
         self.visitor = visitor = self.translator_class(self.document)
