@@ -55,8 +55,6 @@ module_template = r'''# :Id: $Id$
 # ``docutils/tools/dev/generate_punctuation_chars.py``.
 # ::
 
-import sys
-
 """Docutils character category patterns.
 
    Patterns for the implementation of the `inline markup recognition rules`_
@@ -86,16 +84,19 @@ import sys
 %(openers)s
 %(closers)s
 %(delimiters)s
-if sys.maxunicode >= 0x10FFFF:  # "wide" build
-%(delimiters_wide)s
 closing_delimiters = r'\\.,;!?'
 
 
 # Matching open/close quotes
 # --------------------------
 
+# Matching open/close pairs are at the same position in
+# `punctuation_chars.openers` and `punctuation_chars.closers`.
+# Additional matches (due to different typographic conventions
+# in different languages) are stored in `quote_pairs`.
+
 quote_pairs = {
-    # open char: matching closing characters # usage example
+    # open char: matching closing characters  # use case
     '\xbb': '\xbb',            # » » Swedish
     '\u2018': '\u201a',        # ‘ ‚ Albanian/Greek/Turkish
     '\u2019': '\u2019',        # ’ ’ Swedish
@@ -104,19 +105,14 @@ quote_pairs = {
     '\u201e': '\u201c\u201d',  # „ “ German, „ ” Polish
     '\u201d': '\u201d',        # ” ” Swedish
     '\u203a': '\u203a',        # › › Swedish
+    '\u301d': '\u301f'         # 〝 〟 CJK punctuation
+    '\u2e42': '\u201F',        # ⹂ ‟ Old Hungarian (right to left)
     }
 """Additional open/close quote pairs."""
 
 
 def match_chars(c1, c2):
-    """Test whether `c1` and `c2` are a matching open/close character pair.
-
-    Matching open/close pairs are at the same position in
-    `punctuation_chars.openers` and `punctuation_chars.closers`.
-    The pairing of open/close quotes is ambiguous due to  different
-    typographic conventions in different languages,
-    so we test for additional matches stored in `quote_pairs`.
-    """
+    """Test whether `c1` and `c2` are a matching open/close character pair."""
     try:
         i = openers.index(c1)
     except ValueError:  # c1 not in openers
@@ -136,13 +132,12 @@ def match_chars(c1, c2):
 # ::
 
 unicode_punctuation_categories = {
-    # 'Pc': 'Connector',  # not used in Docutils inline markup recognition
-    'Pd': 'Dash',
-    'Ps': 'Open',
-    'Pe': 'Close',
-    'Pi': 'Initial quote',  # may behave like Ps or Pe depending on usage
-    'Pf': 'Final quote',    # may behave like Ps or Pe depending on usage
-    'Po': 'Other'
+    'Pd': 'dash',
+    'Ps': 'open',
+    'Pe': 'close',
+    'Pi': 'initial quote',  # may behave like Ps or Pe depending on language
+    'Pf': 'final quote',    # may behave like Ps or Pe depending on language
+    'Po': 'other'
     }
 """Unicode character categories for punctuation"""
 
@@ -191,30 +186,41 @@ def character_category_patterns():
     # Rearange the lists to ensure matching characters at the same
     # index position.
 
-    # low quotation marks are also used as closers (e.g. in Greek)
-    # move them to category Pi:
+    # LOW-9 QUOTATION MARKs are categorized as Ps (open) without matching Pe.
+    # They are used as initial quotes in German and final quotes in Greek.
+    # Remove them to get balanced Ps/Pe pairs.
     ucharlists['Ps'].remove('‚')  # 201A  SINGLE LOW-9 QUOTATION MARK
     ucharlists['Ps'].remove('„')  # 201E  DOUBLE LOW-9 QUOTATION MARK
-    ucharlists['Pi'] += ['‚', '„']
+    #
+    # HIGH-REVERSED-9 QUOTATION MARKs are categorized as Pi (initial quote)
+    # without matching Pf (final quote).
+    # Insert the LOW-9 QUOTATION MARKs at the "empty slots" in Pf.
+    ucharlists['Pf'].insert(ucharlists['Pi'].index('‛'), '‚')
+    ucharlists['Pf'].insert(ucharlists['Pi'].index('‟'), '„')
 
-    ucharlists['Pi'].remove('‛')  # 201B  … HIGH-REVERSED-9 QUOTATION MARK
-    ucharlists['Pi'].remove('‟')  # 201F  … HIGH-REVERSED-9 QUOTATION MARK
-    ucharlists['Pf'] += ['‛', '‟']
-
-    # 301F  LOW DOUBLE PRIME QUOTATION MARK misses the opening pendant:
-    ucharlists['Ps'].insert(ucharlists['Pe'].index('\u301f'), '\u301d')
-
-    # 2E42  DOUBLE LOW-REVERSED-9 QUOTATION MARK has no pair, and the only
-    # usages identified thus far are in old hungarian, where it doesn't seem to
-    # be used as a quoting character. Remove from openers (Ps) for now, for
-    # simplicity.
+    # '⹂' 2E42 DOUBLE LOW-REVERSED-9 QUOTATION MARK
+    # is categorized as Ps (open) without matching Pe (close).
+    # It is used in Old Hungarian (written right to left) as quoting character
+    # matching DOUBLE HIGH-REVERSED-9 QUOTATION MARK.
     # https://www.unicode.org/L2/L2012/12168r-n4268r-oldhungarian.pdf#page=26
-    ucharlists['Ps'].remove('⹂')
+    #
+    # '⹂' 301F LOW DOUBLE PRIME QUOTATION MARK
+    # is categorized as Pe (close) without matching Ps (open).
+    # Move to the place matching  2E42:
+    ucharlists['Pe'].remove('\u301f')
+    ucharlists['Pe'].insert(ucharlists['Ps'].index('⹂'), '\u301f')
 
-    # print(''.join(ucharlists['Ps']).encode('utf-8')
-    # print(''.join(ucharlists['Pe']).encode('utf-8')
-    # print(''.join(ucharlists['Pi']).encode('utf-8')
-    # print(''.join(ucharlists['Pf']).encode('utf-8')
+    # check for balanced lists:
+    if len(ucharlists['Ps']) != len(ucharlists['Pe']):
+        print('Missmatch between "Open" and "Close" categories')
+        print(''.join(ucharlists['Ps']))
+        print(''.join(ucharlists['Pe']))
+        raise AssertionError
+    if len(ucharlists['Pi']) != len(ucharlists['Pf']):
+        print('Missmatch between "initial quote" and "final quote" categories')
+        print(''.join(ucharlists['Pi']))
+        print(''.join(ucharlists['Pf']))
+        raise AssertionError
 
     # The Docutils character categories
     # ---------------------------------
@@ -245,14 +251,6 @@ def character_category_patterns():
                                          closing_delimiters)]
 
 
-def separate_wide_chars(s):
-    """Return (s1,s2) with characters above 0xFFFF in s2"""
-    maxunicode_narrow = 0xFFFF
-    l1 = [ch for ch in s if ord(ch) <= maxunicode_narrow]
-    l2 = [ch for ch in s if ord(ch) > maxunicode_narrow]
-    return ''.join(l1), ''.join(l2)
-
-
 def mark_intervals(s):
     """Return s with shortcut notation for runs of consecutive characters
 
@@ -281,6 +279,7 @@ def mark_intervals(s):
 
 def wrap_string(s, startstring="(", endstring="    )", wrap=71):
     """Line-wrap a unicode string literal definition."""
+    s = s.encode('unicode-escape').decode()
     c = len(startstring)
     left_indent = ' '*(c - len(startstring.lstrip(' ')))
     line_start_string = f"\n    {left_indent}'"
@@ -299,16 +298,21 @@ def wrap_string(s, startstring="(", endstring="    )", wrap=71):
 def print_differences(old, new, name):
     """List characters missing in old/new."""
     if old != new:
-        print('new %s:' % name)
-        for c in new:
-            if c not in old:
-                print('  %04x'%ord(c), c, unicodedata.name(c))
-        print('removed %s:' % name)
-        for c in old:
-            if c not in new:
-                print('  %04x'%ord(c), unicodedata.name(c))
+        print(f'"{name}" changed')
+        if '-' in old or '-' in new:
+            print('-', old)
+            print('+', new)
+        else:
+            for c in new:
+                if c not in old:
+                    print('+ %04x'%ord(c), c, unicodedata.name(c))
+            for c in old:
+                if c not in new:
+                    print('- %04x'%ord(c), c, unicodedata.name(c))
+        return True
     else:
-        print('%s unchanged' % name)
+        print(f'"{name}" unchanged')
+        return False
 
 
 # Output
@@ -322,7 +326,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('-t', '--test', action="store_true",
                         help='test for changed character categories')
-    parser.add_argument('-o', '--out')
+    parser.add_argument('--pairs', action="store_true",
+                        help='show openers/closers in human readable form')
     args = parser.parse_args()
 
 # (Re)create character patterns
@@ -332,18 +337,11 @@ if __name__ == '__main__':
 
     (o, c, d, cd) = character_category_patterns()
 
-# Characters in the upper plane require a "wide" build::
-
-    o, o_wide = separate_wide_chars(o)
-    c, c_wide = separate_wide_chars(c)
-    d, d_wide = separate_wide_chars(d)
-
 # delimiters: sort and use shortcut for intervals (saves ~150 characters)
 # (`openers` and `closers` must be verbose and keep order
 # because they are also used in `match_chars()`)::
 
     d = d[:5] + mark_intervals(d[5:])
-    d_wide = mark_intervals(d_wide)
 
 
 # Test: compare module content with re-generated definitions
@@ -363,16 +361,27 @@ if __name__ == '__main__':
               ' module\n and a regeneration based on Unicode version %s:'
               % unicodedata.unidata_version)
 
-        print_differences(openers, o, 'openers')
-        if o_wide:
-            print('+ openers-wide = r"""%s"""' % o_wide.encode('utf-8'))
-        print_differences(closers, c, 'closers')
-        if c_wide:
-            print('+ closers-wide = r"""%s"""' % c_wide.encode('utf-8'))
-
-        print_differences(delimiters, d + d_wide, 'delimiters')
+        delta_o = print_differences(openers, o, 'openers')
+        delta_c = print_differences(closers, c, 'closers')
+        print_differences(delimiters, d, 'delimiters')
         print_differences(closing_delimiters, cd, 'closing_delimiters')
 
+        if delta_o or delta_c:
+            print('\nChanges in "openers" and/or "closers",'
+                  '\nCheck open/close pairs with option "--pairs"!')
+        sys.exit()
+
+
+# Print debugging output
+# ~~~~~~~~~~~~~~~~~~~~~~
+#
+# Print comparison of `openers` and `closers` in human readable form
+# to allow checking for matching pairs.
+
+    if args.pairs:
+        for o_i, c_i in zip(o, c):
+            print(o_i, c_i,
+                  unicodedata.name(o_i), '\t', unicodedata.name(c_i))
         sys.exit()
 
 # Print re-generation of the punctuation_chars module
@@ -386,15 +395,9 @@ if __name__ == '__main__':
     substitutions = {
         'python_version': sys.version.split()[0],
         'unidata_version': unicodedata.unidata_version,
-        'openers': wrap_string(o.encode('unicode-escape').decode(),
-                               startstring="openers = ("),
-        'closers': wrap_string(c.encode('unicode-escape').decode(),
-                               startstring="closers = ("),
-        'delimiters': wrap_string(d.encode('unicode-escape').decode(),
-                                  startstring="delimiters = ("),
-        'delimiters_wide': wrap_string(
-                            d_wide.encode('unicode-escape').decode(),
-                            startstring="    delimiters += (")
+        'openers': wrap_string(o, startstring="openers = ("),
+        'closers': wrap_string(c, startstring="closers = ("),
+        'delimiters': wrap_string(d, startstring="delimiters = ("),
         }
 
     print(module_template % substitutions, end='')

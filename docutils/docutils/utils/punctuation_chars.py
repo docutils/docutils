@@ -13,8 +13,6 @@
 # ``docutils/tools/dev/generate_punctuation_chars.py``.
 # ::
 
-import sys
-
 """Docutils character category patterns.
 
    Patterns for the implementation of the `inline markup recognition rules`_
@@ -86,22 +84,24 @@ delimiters = (
     '\ufe50-\ufe52\ufe54-\ufe58\ufe5f-\ufe61\ufe63\ufe68\ufe6a'
     '\ufe6b\uff01-\uff03\uff05-\uff07\uff0a\uff0c-\uff0f\uff1a'
     '\uff1b\uff1f\uff20\uff3c\uff61\uff64\uff65'
+    '\U00010100\U00010101\U0001039f\U000103d0\U00010857'
+    '\U0001091f\U0001093f\U00010a50-\U00010a58\U00010a7f'
+    '\U00010b39-\U00010b3f\U000110bb\U000110bc\U000110be-'
+    '\U000110c1\U00012470-\U00012473'
     )
-if sys.maxunicode >= 0x10FFFF:  # "wide" build
-    delimiters += (
-        '\U00010100\U00010101\U0001039f\U000103d0\U00010857'
-        '\U0001091f\U0001093f\U00010a50-\U00010a58\U00010a7f'
-        '\U00010b39-\U00010b3f\U000110bb\U000110bc\U000110be-'
-        '\U000110c1\U00012470-\U00012473'
-        )
 closing_delimiters = r'\\.,;!?'
 
 
 # Matching open/close quotes
 # --------------------------
 
+# Matching open/close pairs are at the same position in
+# `punctuation_chars.openers` and `punctuation_chars.closers`.
+# Additional matches (due to different typographic conventions
+# in different languages) are stored in `quote_pairs`.
+
 quote_pairs = {
-    # open char: matching closing characters # usage example
+    # open char: matching closing characters # use case
     '\xbb': '\xbb',            # » » Swedish
     '\u2018': '\u201a',        # ‘ ‚ Albanian/Greek/Turkish
     '\u2019': '\u2019',        # ’ ’ Swedish
@@ -115,14 +115,7 @@ quote_pairs = {
 
 
 def match_chars(c1, c2):
-    """Test whether `c1` and `c2` are a matching open/close character pair.
-
-    Matching open/close pairs are at the same position in
-    `punctuation_chars.openers` and `punctuation_chars.closers`.
-    The pairing of open/close quotes is ambiguous due to  different
-    typographic conventions in different languages,
-    so we test for additional matches stored in `quote_pairs`.
-    """
+    """Test whether `c1` and `c2` are a matching open/close character pair."""
     try:
         i = openers.index(c1)
     except ValueError:  # c1 not in openers
