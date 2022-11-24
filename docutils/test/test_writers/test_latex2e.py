@@ -8,22 +8,28 @@ Tests for latex2e writer.
 """
 
 import os
+from pathlib import Path
 import string
+import sys
 import unittest
 
-from test import DocutilsTestSupport  # NoQA: F401
+if __name__ == '__main__':
+    # prepend the "docutils root" to the Python library path
+    # so we import the local `docutils` package.
+    sys.path.insert(0, str(Path(__file__).parents[2]))
 
 from docutils.core import publish_string
 
 # DATA_ROOT is ./test/data from the docutils root
-DATA_ROOT = os.path.abspath(os.path.join(__file__, '..', '..', 'data'))
-spam = os.path.relpath(
-    os.path.join(DATA_ROOT, 'spam'), os.getcwd()).replace('\\', '/')
-ham = os.path.relpath(
-    os.path.join(DATA_ROOT, 'ham.tex'), os.getcwd()).replace('\\', '/')
+DATA_ROOT = Path(__file__).parents[1] / 'data'
+spam = os.path.relpath(DATA_ROOT/'spam').replace('\\', '/')
+ham = os.path.relpath(DATA_ROOT/'ham.tex').replace('\\', '/')
 
 
 class WriterPublishTestCase(unittest.TestCase):
+    
+    maxDiff = None
+    
     def test_publish(self):
         writer_name = 'latex'
         settings = {
@@ -1252,5 +1258,4 @@ two stylesheets embedded in the header
 ]
 
 if __name__ == '__main__':
-    import unittest
     unittest.main()
