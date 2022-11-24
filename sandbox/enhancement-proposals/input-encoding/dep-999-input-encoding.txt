@@ -1,4 +1,7 @@
-:Title: Input Encoding
+==============
+Input Encoding
+==============
+
 :Author: Günter Milde
 :Discussions-To: docutils-develop@lists.sf.net
 :Status: Draft

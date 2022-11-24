@@ -1,4 +1,7 @@
+==================================
 :Title: <REQUIRED: proposal title>
+==================================
+
 :Author: <REQUIRED: list of authors' real names and optionally, email addrs>
 :Discussions-To: docutils-develop@lists.sf.net, <enhancement ticket URL>
 :Status: <REQUIRED: Draft | Active | Accepted | Provisional | Deferred | Rejected | Withdrawn | Final | Superseded>

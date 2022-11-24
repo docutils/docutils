@@ -1,4 +1,7 @@
-:Title: New settings specification data structure
+=========================================
+New settings specification data structure
+=========================================
+
 :Author: Günter Milde
 :Discussions-To: docutils-develop@lists.sf.net, `bug #441`_
 :Status: Draft
