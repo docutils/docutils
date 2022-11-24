@@ -83,5 +83,4 @@ The billion laughs attack for ReStructuredText:
 
 
 if __name__ == '__main__':
-    import unittest
     unittest.main()

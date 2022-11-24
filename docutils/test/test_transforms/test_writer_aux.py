@@ -75,5 +75,4 @@ totest['admonitions'] = ((writer_aux.Admonitions,), [
 
 
 if __name__ == '__main__':
-    import unittest
     unittest.main()

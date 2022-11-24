@@ -1326,5 +1326,4 @@ Note       The first row of this table may expand
 
 
 if __name__ == '__main__':
-    import unittest
     unittest.main()

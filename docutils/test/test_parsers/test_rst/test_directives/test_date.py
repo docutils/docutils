@@ -87,5 +87,4 @@ if _locale_encoding in ('utf-8', 'utf8', 'latin-1', 'iso-8859-1'):
     ]
 
 if __name__ == '__main__':
-    import unittest
     unittest.main()

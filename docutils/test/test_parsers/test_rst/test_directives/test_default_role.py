@@ -93,5 +93,4 @@ Returned the `default role` to its standard default.
 
 
 if __name__ == '__main__':
-    import unittest
     unittest.main()

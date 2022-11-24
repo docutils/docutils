@@ -526,5 +526,4 @@ Dutch "smart quotes" and 's Gravenhage (leading apostrophe).
 
 
 if __name__ == '__main__':
-    import unittest
     unittest.main()

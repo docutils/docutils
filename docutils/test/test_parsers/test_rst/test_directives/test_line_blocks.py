@@ -104,5 +104,4 @@ totest['line_blocks'] = [
 
 
 if __name__ == '__main__':
-    import unittest
     unittest.main()

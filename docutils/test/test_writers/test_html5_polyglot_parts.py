@@ -744,5 +744,4 @@ The latter are referenced a second time [#f2]_ [twice]_.
 
 
 if __name__ == '__main__':
-    import unittest
     unittest.main()

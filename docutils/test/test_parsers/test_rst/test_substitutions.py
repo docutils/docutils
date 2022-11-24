@@ -308,5 +308,4 @@ Elements that are prohibited inside of substitution definitions:
 
 
 if __name__ == '__main__':
-    import unittest
     unittest.main()

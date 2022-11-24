@@ -266,5 +266,4 @@ Place the language name in a class argument to avoid the no-lexer warning:
 
 
 if __name__ == '__main__':
-    import unittest
     unittest.main()

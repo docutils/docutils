@@ -497,5 +497,4 @@ Test title, docinfo to man page header.
 
 
 if __name__ == '__main__':
-    import unittest
     unittest.main()

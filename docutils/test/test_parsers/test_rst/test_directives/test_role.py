@@ -293,5 +293,4 @@ Can't use the :raw:`role` directly.
 
 
 if __name__ == '__main__':
-    import unittest
     unittest.main()

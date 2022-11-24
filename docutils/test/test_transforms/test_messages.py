@@ -78,5 +78,4 @@ document by the test framework.)
 
 
 if __name__ == '__main__':
-    import unittest
     unittest.main()
