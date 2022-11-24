@@ -10,7 +10,7 @@ __docformat__ = 'reStructuredText'
 
 
 import csv
-import os.path
+from pathlib import Path
 import warnings
 
 from docutils import io, nodes, statemachine, utils
@@ -310,10 +310,8 @@ class CSVTable(Table):
                     nodes.literal_block(self.block_text, self.block_text),
                     line=self.lineno)
                 raise SystemMessagePropagation(error)
-            source_dir = os.path.dirname(
-                os.path.abspath(self.state.document.current_source))
-            source = os.path.normpath(os.path.join(source_dir,
-                                                   self.options['file']))
+            source_dir = Path(self.state.document.current_source).parent
+            source = source_dir / self.options['file']
             source = utils.relative_path(None, source)
             try:
                 csv_file = io.FileInput(source_path=source,

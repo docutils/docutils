@@ -6,9 +6,10 @@
 
 __docformat__ = 'reStructuredText'
 
-import os.path
+from pathlib import Path
 import re
 import time
+
 from docutils import io, nodes, statemachine, utils
 from docutils.parsers.rst import Directive, convert_directive_function
 from docutils.parsers.rst import directives, roles, states
@@ -45,8 +46,7 @@ class Include(Directive):
                    'class': directives.class_option,
                    'name': directives.unchanged}
 
-    standard_include_path = os.path.join(os.path.dirname(states.__file__),
-                                         'include')
+    standard_include_path = Path(states.__file__).parent / 'include'
 
     def run(self):
         """Include a file as part of the content of this reST file.
@@ -58,11 +58,11 @@ class Include(Directive):
             raise self.warning('"%s" directive disabled.' % self.name)
         source = self.state_machine.input_lines.source(
             self.lineno - self.state_machine.input_offset - 1)
-        source_dir = os.path.dirname(os.path.abspath(source))
         path = directives.path(self.arguments[0])
         if path.startswith('<') and path.endswith('>'):
-            path = os.path.join(self.standard_include_path, path[1:-1])
-        path = os.path.normpath(os.path.join(source_dir, path))
+            path = Path(self.standard_include_path) / path[1:-1]
+        else:
+            path = Path(source).parent / path
         path = utils.relative_path(None, path)
         encoding = self.options.get(
             'encoding', self.state.document.settings.input_encoding)
@@ -243,11 +243,8 @@ class Raw(Directive):
                 raise self.error(
                     'The "file" and "url" options may not be simultaneously '
                     'specified for the "%s" directive.' % self.name)
-            source_dir = os.path.dirname(
-                os.path.abspath(self.state.document.current_source))
-            path = os.path.normpath(os.path.join(source_dir,
-                                                 self.options['file']))
-            path = utils.relative_path(None, path)
+            source_dir = Path(self.state.document.current_source).parent
+            path = utils.relative_path(None, source_dir/self.options['file'])
             try:
                 raw_file = io.FileInput(source_path=path,
                                         encoding=encoding,

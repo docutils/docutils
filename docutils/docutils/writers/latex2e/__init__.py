@@ -12,12 +12,11 @@ __docformat__ = 'reStructuredText'
 #
 # convention deactivate code by two # i.e. ##.
 
-import os
+from pathlib import Path
 import re
 import string
 from urllib.request import url2pathname
 import warnings
-
 try:
     import roman
 except ImportError:
@@ -27,6 +26,8 @@ from docutils import frontend, nodes, languages, writers, utils
 from docutils.transforms import writer_aux
 from docutils.utils.math import pick_math_environment, unichar2tex
 
+LATEX_WRITER_DIR = Path(__file__).parent
+
 
 class Writer(writers.Writer):
 
@@ -34,7 +35,7 @@ class Writer(writers.Writer):
     """Formats this writer supports."""
 
     default_template = 'default.tex'
-    default_template_path = os.path.dirname(os.path.abspath(__file__))
+    default_template_path = LATEX_WRITER_DIR
     default_preamble = ('% PDF Standard Fonts\n'
                         '\\usepackage{mathptmx} % Times\n'
                         '\\usepackage[scaled=.90]{helvet}\n'
@@ -268,15 +269,10 @@ class Writer(writers.Writer):
         for part in self.visitor_attributes:
             setattr(self, part, getattr(visitor, part))
         # get template string from file
-        templatepath = self.document.settings.template
-        try:
-            with open(templatepath, encoding='utf-8') as fp:
-                template = fp.read()
-        except IOError:
-            templatepath = os.path.join(self.default_template_path,
-                                        templatepath)
-            with open(templatepath, encoding='utf-8') as fp:
-                template = fp.read()
+        templatepath = Path(self.document.settings.template)
+        if not templatepath.exists():
+            templatepath = self.default_template_path / templatepath
+        template = templatepath.read_text(encoding='utf-8')
         # fill template
         self.assemble_parts()  # create dictionary of parts
         self.output = string.Template(template).substitute(self.parts)
@@ -594,9 +590,7 @@ def _read_block(fp):
     return ''.join(block).rstrip()
 
 
-_docutils_sty = os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                             'docutils.sty')
-with open(_docutils_sty, encoding='utf-8') as fp:
+with open(LATEX_WRITER_DIR/'docutils.sty', encoding='utf-8') as fp:
     for line in fp:
         line = line.strip('% \n')
         if not line.endswith('::'):
@@ -1395,30 +1389,31 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def stylesheet_call(self, path):
         """Return code to reference or embed stylesheet file `path`"""
+        path = Path(path)
         # is it a package (no extension or *.sty) or "normal" tex code:
-        (base, ext) = os.path.splitext(path)
-        is_package = ext in ['.sty', '']
+        is_package = path.suffix in ('.sty', '')
         # Embed content of style file:
         if self.settings.embed_stylesheet:
             if is_package:
-                path = base + '.sty'  # ensure extension
+                path = path.with_suffix('.sty')  # ensure extension
             try:
-                with open(path, encoding='utf-8') as f:
-                    content = f.read()
+                content = path.read_text(encoding='utf-8')
             except OSError as err:
-                msg = f'Cannot embed stylesheet:\n {err}'
+                msg = f'Cannot embed stylesheet:\n {err}'.replace('\\\\', '/')
                 self.document.reporter.error(msg)
                 return '% ' + msg.replace('\n', '\n% ')
             else:
                 self.settings.record_dependencies.add(path)
             if is_package:
-                content = '\n'.join([r'\makeatletter',
-                                     content,
-                                     r'\makeatother'])
-            return '%% embedded stylesheet: %s\n%s' % (path, content)
+                # allow '@' in macro names:
+                content = (r'\makeatletter'
+                           f'\n{content}\n'
+                           r'\makeatother')
+            return (f'% embedded stylesheet: {path.as_posix()}\n'
+                    f'{content}')
         # Link to style file:
         if is_package:
-            path = base  # drop extension
+            path = path.parent / path.stem  # drop extension
             cmd = r'\usepackage{%s}'
         else:
             cmd = r'\input{%s}'

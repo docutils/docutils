@@ -21,7 +21,8 @@ import mimetypes
 import os
 import os.path
 import re
-from urllib.request import url2pathname
+from urllib.request import unquote as unquote_url
+from urllib.request import url2pathname  # unquote and use local path sep
 import warnings
 
 import docutils
@@ -154,9 +155,8 @@ class Writer(writers.Writer):
         self.output = self.apply_template()
 
     def apply_template(self):
-        with open(self.document.settings.template, 'r',
-                  encoding='utf-8') as template_file:
-            template = template_file.read()
+        with open(self.document.settings.template, encoding='utf-8') as fp:
+            template = fp.read()
         subs = self.interpolation_dict()
         return template % subs
 
@@ -809,7 +809,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('\n</pre>\n')
 
     def visit_document(self, node):
-        title = (node.get('title', '') or os.path.basename(node['source'])
+        title = (node.get('title') or os.path.basename(node['source'])
                  or 'untitled Docutils document')
         self.head.append(f'<title>{self.encode(title)}</title>\n')
 
@@ -1062,8 +1062,7 @@ class HTMLTranslator(nodes.NodeVisitor):
                 self.document.reporter.error('Cannot embed image %r: %s'
                                              % (uri, err.strerror))
             else:
-                self.settings.record_dependencies.add(
-                                            uri.replace('\\', '/'))
+                self.settings.record_dependencies.add(unquote_url(uri))
                 # TODO: insert SVG as-is?
                 # if mimetype == 'image/svg+xml':
                 # read/parse, apply arguments,

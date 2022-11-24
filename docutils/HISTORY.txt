@@ -53,6 +53,7 @@ Changes Since 0.19
 * docutils/utils/__init__.py
 
   - New utility function ``xml_declaration()``.
+  - `utils.DependencyList.add()` accepts `pathlib.Path` instances.
 
 * docutils/utils/math/latex2mathml.py
 
