@@ -85,5 +85,4 @@ totest['parsed_literals'] = [
 
 
 if __name__ == '__main__':
-    import unittest
     unittest.main()

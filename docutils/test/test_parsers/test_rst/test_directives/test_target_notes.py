@@ -87,5 +87,4 @@ totest['target_notes'] = [
 
 
 if __name__ == '__main__':
-    import unittest
     unittest.main()

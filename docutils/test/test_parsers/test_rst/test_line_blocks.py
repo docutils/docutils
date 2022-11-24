@@ -343,5 +343,4 @@ System messages can appear in place of lines:
 
 
 if __name__ == '__main__':
-    import unittest
     unittest.main()

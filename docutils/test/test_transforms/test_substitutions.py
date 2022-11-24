@@ -391,5 +391,4 @@ Make sure this substitution definition is not registered: |target|
 
 
 if __name__ == '__main__':
-    import unittest
     unittest.main()

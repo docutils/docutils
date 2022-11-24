@@ -92,5 +92,4 @@ totest['code_parsing_none'] = [
 
 
 if __name__ == '__main__':
-    import unittest
     unittest.main()

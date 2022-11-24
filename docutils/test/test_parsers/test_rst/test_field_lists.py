@@ -695,5 +695,4 @@ Not recognized as field list items:
 ]
 
 if __name__ == '__main__':
-    import unittest
     unittest.main()

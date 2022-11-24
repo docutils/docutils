@@ -120,5 +120,4 @@ totest['code_parsing_long'] = [
 
 
 if __name__ == '__main__':
-    import unittest
     unittest.main()

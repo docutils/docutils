@@ -1604,5 +1604,4 @@ totest['list_table'] = [
 
 
 if __name__ == '__main__':
-    import unittest
     unittest.main()

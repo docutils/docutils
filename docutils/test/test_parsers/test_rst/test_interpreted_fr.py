@@ -72,5 +72,4 @@ Simple explicit roles and english fallbacks:
 ]
 
 if __name__ == '__main__':
-    import unittest
     unittest.main()

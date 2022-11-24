@@ -953,5 +953,4 @@ Duplicate manual footnote labels, with reference ([1]_):
 
 
 if __name__ == '__main__':
-    import unittest
     unittest.main()

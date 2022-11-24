@@ -508,5 +508,4 @@ totest_ru['bibliographic_field_lists'] = ((DocInfo,), [
 
 
 if __name__ == '__main__':
-    import unittest
     unittest.main()

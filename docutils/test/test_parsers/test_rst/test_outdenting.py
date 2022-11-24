@@ -100,5 +100,4 @@ This paragraph ends the bullet list item before a block quote.
 ]
 
 if __name__ == '__main__':
-    import unittest
     unittest.main()

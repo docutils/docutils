@@ -107,5 +107,4 @@ totest['content_with_blank_line'] = [
 
 
 if __name__ == '__main__':
-    import unittest
     unittest.main()

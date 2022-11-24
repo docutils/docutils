@@ -149,5 +149,4 @@ For *completeness*, _`let's` ``test`` **other** forms_
 
 
 if __name__ == '__main__':
-    import unittest
     unittest.main()
