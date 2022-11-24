@@ -19,16 +19,21 @@ Test module for the command line interface.
 import difflib
 from io import StringIO
 import locale
+from pathlib import Path
 import os
 import re
 import sys
 import unittest
 
-# import docutils
+if __name__ == '__main__':
+    # prepend the "docutils root" to the Python library path
+    # so we import the local `docutils` package.
+    sys.path.insert(0, str(Path(__file__).parents[1]))
+
 from docutils import __main__, frontend
 
 # DATA_ROOT is ./test/data/ from the docutils root
-DATA_ROOT = os.path.abspath(os.path.join(__file__, '..', 'data'))
+DATA_ROOT = Path(__file__).parent / 'data'
 
 
 def print_mismatch(expected, output):
@@ -70,7 +75,7 @@ class CliTests(unittest.TestCase):
             f'{frontend.OptionParser.default_error_encoding}:backslashreplace',
             'utf-8:backslashreplace')
         # compare to stored version
-        docutils_txt = os.path.join(DATA_ROOT, 'help/docutils.txt')
+        docutils_txt = DATA_ROOT / 'help' / 'docutils.txt'
         with open(docutils_txt, encoding='utf-8') as samplefile:
             expected = samplefile.read()
         if expected != output:
