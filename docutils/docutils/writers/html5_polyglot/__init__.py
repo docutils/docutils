@@ -27,7 +27,7 @@ the style sheet "plain.css" improves reading experience.
 __docformat__ = 'reStructuredText'
 
 import mimetypes
-import os.path
+from pathlib import Path
 
 from docutils import frontend, nodes
 from docutils.writers import _html_base
@@ -39,9 +39,8 @@ class Writer(_html_base.Writer):
     """Formats this writer supports."""
 
     default_stylesheets = ['minimal.css', 'plain.css']
-    default_stylesheet_dirs = ['.', os.path.abspath(os.path.dirname(__file__))]
-    default_template = os.path.join(
-        os.path.dirname(os.path.abspath(__file__)), 'template.txt')
+    default_stylesheet_dirs = ['.', str(Path(__file__).parent)]
+    default_template = Path(__file__).parent / 'template.txt'
 
     # use a copy of the parent spec with some modifications
     settings_spec = frontend.filter_settings_spec(

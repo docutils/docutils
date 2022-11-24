@@ -21,7 +21,7 @@
 #                    Support for more math commands from the AMS "math-guide".
 # 2.0    2021-12-31  Drop 2.7 compatibility code.
 
-import os.path
+import pathlib
 import sys
 import unicodedata
 
@@ -649,8 +649,8 @@ class Options:
 
     def usage(self):
         "Show correct usage"
-        Trace.error('Usage: ' + os.path.basename(Options.location)
-                    + ' [options] "input string"')
+        Trace.error(f'Usage: {pathlib.Path(Options.location).parent}'
+                    ' [options] "input string"')
         Trace.error('Convert input string with LaTeX math to MathML')
         self.showoptions()
 

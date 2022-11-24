@@ -11,6 +11,7 @@ __docformat__ = 'reStructuredText'
 import sys
 import os
 import os.path
+from pathlib import PurePath
 import re
 import itertools
 import warnings
@@ -478,7 +479,15 @@ def relative_path(source, target):
     """
     Build and return a path to `target`, relative to `source` (both files).
 
-    If there is no common prefix, return the absolute path to `target`.
+    Differences to `os.relpath()`:
+
+    * Inverse argument order.
+    * `source` expects path to a FILE (while os.relpath expects a dir)!
+      (Add a "dummy" file name if `source` points to a directory.)
+    * Always use Posix path separator ("/") for the output.
+    * Use `os.sep` for parsing the input (ignored by `os.relpath()`).
+    * If there is no common prefix, return the absolute path to `target`.
+
     """
     source_parts = os.path.abspath(source or type(target)('dummy_file')
                                    ).split(os.sep)
@@ -763,17 +772,20 @@ class DependencyList:
             else:
                 self.file = open(output_file, 'w', encoding='utf-8')
 
-    def add(self, *filenames):
+    def add(self, *paths):
         """
-        If the dependency `filename` has not already been added,
-        append it to self.list and print it to self.file if self.file
-        is not None.
+        Append `path` to `self.list` unless it is already there.
+
+        Also append to `self.file` unless it is already there
+        or `self.file is `None`.
         """
-        for filename in filenames:
-            if filename not in self.list:
-                self.list.append(filename)
+        for path in paths:
+            if isinstance(path, PurePath):
+                path = path.as_posix()  # use '/' as separator
+            if path not in self.list:
+                self.list.append(path)
                 if self.file is not None:
-                    self.file.write(filename+'\n')
+                    self.file.write(path+'\n')
 
     def close(self):
         """
