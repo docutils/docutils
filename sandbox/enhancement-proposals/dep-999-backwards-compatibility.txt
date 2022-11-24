@@ -1,4 +1,7 @@
-:Title: Public API and Backwards Compatibility Policy
+=============================================
+Public API and Backwards Compatibility Policy
+=============================================
+
 :Author: Günter Milde, Adam Turner, open to all Docutils developers
 :Discussions-To: docutils-develop@lists.sf.net, https://sourceforge.net/p/docutils/feature-requests/89/
 :Status: Draft

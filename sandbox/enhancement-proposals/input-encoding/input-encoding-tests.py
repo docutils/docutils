@@ -59,24 +59,24 @@ pprint(samples_encoded)
 
 # write sample files:
 
-# for encoding, data in samples_encoded.items():
-#     with open('sample-'+encoding, mode='w', encoding=encoding) as f:
-#         f.write(data.decode(encoding))
-# 
-# for encoding, data in samples_encoded.items():
-#     with open('self-declaring-'+encoding, mode='w', encoding=encoding) as f:
-#         if encoding in ('utf-16-be', 'utf-16-le'):
-#             f.write('\ufeff') # BOM (ZWNJ)
-#         else:
-#             f.write('.. encoding: %s\n'%encoding)
-#         f.write(data.decode(encoding))
+for encoding, data in samples_encoded.items():
+    with open('samples/sample-'+encoding, mode='w', encoding=encoding) as f:
+        f.write(data.decode(encoding))
+
+for encoding, data in samples_encoded.items():
+    with open('samples/self-declaring-'+encoding, mode='w', encoding=encoding) as f:
+        if encoding in ('utf-16-be', 'utf-16-le'):
+            f.write('\ufeff') # BOM (ZWNJ)
+        else:
+            f.write('.. encoding: %s\n'%encoding)
+        f.write(data.decode(encoding))
 
 
 # read sample files:
 
 print('\nreading with standard `open`')
 for encoding in sorted(samples):
-    with open('self-declaring-'+encoding) as f:
+    with open('samples/self-declaring-'+encoding) as f:
         try:
             text = f.read()
             print(encoding, repr(text), len(text))
@@ -85,7 +85,7 @@ for encoding in sorted(samples):
 
 print('\nreading with `docutils.io.FileInput`')
 for encoding in sorted(samples):
-    f = FileInput(source_path='sample-'+encoding)
+    f = FileInput(source_path='samples/sample-'+encoding)
     try:
         text = f.read()
         # l > 5 points to spurious bytes in the data
@@ -98,7 +98,7 @@ for encoding in sorted(samples):
 
 print('\nreading self-declaring file with `docutils.io.FileInput`')
 for encoding in sorted(samples):
-    f = FileInput(source_path='self-declaring-'+encoding)
+    f = FileInput(source_path='samples/self-declaring-'+encoding)
     try:
         text = f.read()
         # l > 5 points to spurious bytes in the data
