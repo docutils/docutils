@@ -8,16 +8,21 @@
 Test module for utils/__init__.py.
 """
 
+from io import StringIO
 import os
+from pathlib import Path
 import sys
 import unittest
-from io import StringIO
+
+if __name__ == '__main__':
+    # prepend the "docutils root" to the Python library path
+    # so we import the local `docutils` package.
+    sys.path.insert(0, str(Path(__file__).parents[1]))
 
 import docutils
 from docutils import utils, nodes
 
-# TEST_ROOT is ./test/ from the docutils root
-TEST_ROOT = os.path.abspath(os.path.join(__file__, '..'))
+TEST_ROOT = Path(__file__).parent  # ./test/ from the docutils root
 
 
 class ReporterTests(unittest.TestCase):
@@ -313,11 +318,11 @@ class HelperFunctionTests(unittest.TestCase):
         # Build and return a path to `target`, relative to `source`:
         # Use '/' as path sep in result.
         self.assertEqual(utils.relative_path('spam', 'spam'), '')
-        source = os.path.join('h\xE4m', 'spam', 'fileA')
-        target = os.path.join('h\xE4m', 'spam', 'fileB')
+        source = os.path.join('häm', 'spam', 'fileA')
+        target = os.path.join('häm', 'spam', 'fileB')
         self.assertEqual(utils.relative_path(source, target), 'fileB')
-        source = os.path.join('h\xE4m', 'spam', 'fileA')
-        target = os.path.join('h\xE4m', 'fileB')
+        source = os.path.join('häm', 'spam', 'fileA')
+        target = os.path.join('häm', 'fileB')
         self.assertEqual(utils.relative_path(source, target), '../fileB')
         # if source is None, default to the cwd:
         target = os.path.join('eggs', 'fileB')
@@ -330,11 +335,11 @@ class HelperFunctionTests(unittest.TestCase):
         #                  os.path.abspath('fileB'))
         # Correctly process unicode instances:
         self.assertEqual(utils.relative_path('spam', 'spam'), '')
-        source = os.path.join('h\xE4m', 'spam', 'fileA')
-        target = os.path.join('h\xE4m', 'spam', 'fileB')
+        source = os.path.join('häm', 'spam', 'fileA')
+        target = os.path.join('häm', 'spam', 'fileB')
         self.assertEqual(utils.relative_path(source, target), 'fileB')
-        source = os.path.join('h\xE4m', 'spam', 'fileA')
-        target = os.path.join('h\xE4m', 'fileB')
+        source = os.path.join('häm', 'spam', 'fileA')
+        target = os.path.join('häm', 'fileB')
         self.assertEqual(utils.relative_path(source, target), '../fileB')
         # if source is None, default to the cwd:
         target = os.path.join('eggs', 'fileB')
