@@ -12,9 +12,16 @@ Specify a language code (e.g. "de") as a command-line parameter to test only
 that language.
 """
 
+from pathlib import Path
 import os
 import re
+import sys
 import unittest
+
+if __name__ == '__main__':
+    # prepend the "docutils root" to the Python library path
+    # so we import the local `docutils` package.
+    sys.path.insert(0, str(Path(__file__).parent))
 
 from docutils import frontend, languages, utils
 from docutils.parsers.rst import languages as rst_languages

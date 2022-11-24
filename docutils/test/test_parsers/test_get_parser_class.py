@@ -5,11 +5,18 @@
 # Maintainer: docutils-develop@lists.sourceforge.net
 # Copyright: This module has been placed in the public domain.
 
-"""
-test get_parser_class
-"""
+"""test `docutils.parsers.get_parser_class()`"""
 
+from pathlib import Path
+import sys
 import unittest
+
+if __name__ == '__main__':
+    # prepend the "docutils root" to the Python library path
+    # so we import the local `docutils` package.
+    sys.path.insert(0, str(Path(__file__).parents[2]))
+    # prepend the "test root", home of the `local_parser`
+    sys.path.insert(0, str(Path(__file__).parents[2]/'test'))
 
 from docutils.core import publish_string
 from docutils.parsers import get_parser_class
@@ -30,7 +37,7 @@ class GetParserClassTestCase(unittest.TestCase):
             get_parser_class('nope')
 
     def test_local_parser(self):
-        # requires local-parser.py in test directory (testroot)
+        # requires local-parser.py in "test root" directory
         get_parser_class('local-parser')
         # raises ImportError on failure
 

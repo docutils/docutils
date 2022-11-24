@@ -42,9 +42,9 @@ __ policies.html#check-ins
    The standard ``alltests.py`` test runner uses the standard library's
    unittest_ framework.
 
-   For the pytest_ test framework, from a shell run::
+   For the pytest_ test framework::
 
-       pytest --quiet ./test
+       pytest --quiet .
 
    .. _unittest: https://docs.python.org/3/library/unittest.html
    .. _pytest: https://pypi.org/project/pytest/
