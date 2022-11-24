@@ -13,11 +13,21 @@
 Various tests for the recommonmark parser.
 """
 
+from pathlib import Path
+import sys
 import unittest
+
+if __name__ == '__main__':
+    # prepend the "docutils root" to the Python library path
+    # so we import the local `docutils` package.
+    sys.path.insert(0, str(Path(__file__).parents[3]))
 
 from docutils.core import publish_string
 from docutils.parsers.rst import directives as rst_directives
-from docutils.parsers.recommonmark_wrapper import Parser
+try:
+    from docutils.parsers.recommonmark_wrapper import Parser
+except ImportError:
+    Parser = None
 
 
 sample_with_html = """\
@@ -34,6 +44,7 @@ Final paragraph.
 """
 
 
+@unittest.skipIf(Parser is None, 'Optional "recommonmark" module not found.')
 class RecommonmarkParserTests(unittest.TestCase):
 
     def test_parser_name(self):
