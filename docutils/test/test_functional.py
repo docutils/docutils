@@ -106,12 +106,10 @@ class FunctionalTests(unittest.TestCase):
                         exp=expected_path, out=destination_path)
                     ) from err
 
-                self.assertEqual(
-                    output,
-                    expected,
-                    EXPECTED_OUTPUT_DIFFERS_TEMPLATE.format(
-                        exp=expected_path, out=destination_path)
-                )
+                self.assertEqual(output, expected,
+                                 EXPECTED_OUTPUT_DIFFERS_TEMPLATE.format(
+                                     exp=expected_path, out=destination_path)
+                                 )
 
 
 if __name__ == '__main__':
