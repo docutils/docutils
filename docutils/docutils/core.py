@@ -277,7 +277,7 @@ class Publisher:
                 return
         except AttributeError:
             return
-        eot_key = 'Ctrl+Z' if os.name == 'nt' else 'Ctrl+D on an empty line'
+        eot_key = 'Ctrl+Z' if os.name == 'nt' else 'Ctrl+D'
         in_format = ''
         out_format = 'useful formats'
         try:
@@ -288,7 +288,8 @@ class Publisher:
         print(f'Docutils {__version__} <https://docutils.sourceforge.io>\n'
               f'converting "{in_format}" into "{out_format}".\n'
               f'Call with option "--help" for more info.\n'
-              f'.. Waiting for source text (finish with {eot_key}):',
+              f'.. Waiting for source text (finish with {eot_key} '
+              'on an empty line):',
               file=self._stderr)
 
     def report_Exception(self, error):
