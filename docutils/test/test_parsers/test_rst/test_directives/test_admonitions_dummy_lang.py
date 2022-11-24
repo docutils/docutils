@@ -8,9 +8,16 @@
 Tests for admonition directives with local language module.
 """
 
+from pathlib import Path
+import sys
 import unittest
 
-from test import DocutilsTestSupport  # NoQA: F401
+if __name__ == '__main__':
+    # prepend the "docutils root" to the Python library path
+    # so we import the local `docutils` package.
+    sys.path.insert(0, str(Path(__file__).parents[4]))
+    # also prepend the "test root", for import of ``local_dummy_lang.py``
+    sys.path.insert(0, str(Path(__file__).parents[3]))
 
 from docutils.frontend import get_default_settings
 from docutils.parsers.rst import Parser
@@ -18,6 +25,9 @@ from docutils.utils import new_document
 
 
 class ParserTestCase(unittest.TestCase):
+
+    maxDiff = None
+
     def test_parser(self):
         parser = Parser()
         settings = get_default_settings(Parser)
@@ -45,6 +55,10 @@ totest['admonitions'] = [
     <attention>
         <paragraph>
             directive with silly localised name.
+    <system_message level="1" line="3" source="test data" type="INFO">
+        <paragraph>
+            No directive entry for "Attention" in module "local_dummy_lang".
+            Using English fallback for directive "Attention".
     <attention>
         <paragraph>
             English fallback (an INFO is written).
