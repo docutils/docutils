@@ -8,9 +8,14 @@
 Tests for docutils.transforms.frontmatter.DocTitle.
 """
 
+from pathlib import Path
+import sys
 import unittest
 
-from test import DocutilsTestSupport  # NoQA: F401
+if __name__ == '__main__':
+    # prepend the "docutils root" to the Python library path
+    # so we import the local `docutils` package.
+    sys.path.insert(0, str(Path(__file__).parents[2]))
 
 from docutils.frontend import get_default_settings
 from docutils.parsers.rst import Parser, Directive
@@ -34,14 +39,15 @@ class AddNameToDocumentTitle(Directive):
         return []
 
 
-register_directive('add-name-to-title', AddNameToDocumentTitle)
-
-
 class TransformTestCase(unittest.TestCase):
+
+    maxDiff = None
+
     def test_transforms(self):
         parser = Parser()
         settings = get_default_settings(Parser)
         settings.warning_stream = ''
+        register_directive('add-name-to-title', AddNameToDocumentTitle)
         for name, (transforms, cases) in totest.items():
             for casenum, (case_input, case_expected) in enumerate(cases):
                 with self.subTest(id=f'totest[{name!r}][{casenum}]'):
