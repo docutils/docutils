@@ -7,10 +7,15 @@
 Tests for misc.py "include" directive.
 """
 
+from pathlib import Path
 import os.path
 import unittest
+import sys
 
-from test import DocutilsTestSupport  # NoQA: F401
+if __name__ == '__main__':
+    # prepend the "docutils root" to the Python library path
+    # so we import the local `docutils` package.
+    sys.path.insert(0, str(Path(__file__).parents[4]))
 
 from docutils import parsers, utils
 from docutils.frontend import get_default_settings
@@ -18,7 +23,8 @@ from docutils.parsers.rst import Parser
 from docutils.utils import new_document
 from docutils.utils.code_analyzer import with_pygments
 
-TEST_ROOT = os.path.abspath(os.path.join(__file__, '..', '..', '..', '..'))
+TEST_ROOT = Path(__file__).parents[3]
+
 
 # optional 3rd-party markdown parser
 md_parser_name = 'recommonmark'
@@ -32,7 +38,7 @@ class ParserTestCase(unittest.TestCase):
     def test_parser(self):
         # eventually skip optional parts:
         if not with_pygments:
-            del totest['code_parsing']
+            del totest['include_parsed_code']
         if not md_parser_class:
             del totest['include_markdown']
 
@@ -1083,7 +1089,7 @@ f"""\
 """],
 ]
 
-totest['include_code'] = [
+totest['include_parsed_code'] = [
 [f"""\
 Included code
 
@@ -1395,5 +1401,4 @@ A paragraph.
 
 
 if __name__ == '__main__':
-    import unittest
     unittest.main()
