@@ -30,11 +30,18 @@ Instructions for adding a new test:
 
 """
 
-import os
-import zipfile
-import xml.etree.ElementTree as etree
-import unittest
 from io import BytesIO
+from pathlib import Path
+import os
+import sys
+import unittest
+import xml.etree.ElementTree as etree
+import zipfile
+
+if __name__ == '__main__':
+    # prepend the "docutils root" to the Python library path
+    # so we import the local `docutils` package.
+    sys.path.insert(0, str(Path(__file__).parents[2]))
 
 import docutils
 import docutils.core

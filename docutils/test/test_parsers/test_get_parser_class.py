@@ -11,15 +11,16 @@ from pathlib import Path
 import sys
 import unittest
 
-if __name__ == '__main__':
-    # prepend the "docutils root" to the Python library path
-    # so we import the local `docutils` package.
-    sys.path.insert(0, str(Path(__file__).parents[2]))
-    # prepend the "test root", home of the `local_parser`
-    sys.path.insert(0, str(Path(__file__).parents[2]/'test'))
+# Prepend the "docutils root" to the Python library path
+# so we import the local `docutils` and `test` packages.
+# ensure `test` package can be loaded also if not running as __main__
+# (required by ``python -m unittest``
+DOCUTILS_ROOT = Path(__file__).parents[2]
+if str(DOCUTILS_ROOT) not in sys.path:
+    sys.path.insert(0, str(DOCUTILS_ROOT))
 
-from docutils.core import publish_string
-from docutils.parsers import get_parser_class
+from docutils.core import publish_string       # noqa: E402
+from docutils.parsers import get_parser_class  # noqa: E402
 try:
     md_parser_class = get_parser_class('recommonmark')
 except ImportError:
@@ -38,7 +39,7 @@ class GetParserClassTestCase(unittest.TestCase):
 
     def test_local_parser(self):
         # requires local-parser.py in "test root" directory
-        get_parser_class('local-parser')
+        get_parser_class('test.local-parser')
         # raises ImportError on failure
 
 

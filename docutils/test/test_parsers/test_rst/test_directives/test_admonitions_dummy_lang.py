@@ -16,8 +16,6 @@ if __name__ == '__main__':
     # prepend the "docutils root" to the Python library path
     # so we import the local `docutils` package.
     sys.path.insert(0, str(Path(__file__).parents[4]))
-    # also prepend the "test root", for import of ``local_dummy_lang.py``
-    sys.path.insert(0, str(Path(__file__).parents[3]))
 
 from docutils.frontend import get_default_settings
 from docutils.parsers.rst import Parser
@@ -32,7 +30,7 @@ class ParserTestCase(unittest.TestCase):
         parser = Parser()
         settings = get_default_settings(Parser)
         settings.warning_stream = ''
-        settings.language_code = 'local-dummy-lang'
+        settings.language_code = 'test.local-dummy-lang'
         for name, cases in totest.items():
             for casenum, (case_input, case_expected) in enumerate(cases):
                 with self.subTest(id=f'totest[{name!r}][{casenum}]'):
@@ -57,7 +55,7 @@ totest['admonitions'] = [
             directive with silly localised name.
     <system_message level="1" line="3" source="test data" type="INFO">
         <paragraph>
-            No directive entry for "Attention" in module "local_dummy_lang".
+            No directive entry for "Attention" in module "test.local_dummy_lang".
             Using English fallback for directive "Attention".
     <attention>
         <paragraph>
