@@ -25,11 +25,15 @@ unless the minimal required Python version has this problem fixed.
 """
 
 from io import StringIO, BytesIO
+from pathlib import Path
 import sys
 import unittest
 import warnings
 
-from test import DocutilsTestSupport  # NoQA: F401
+if __name__ == '__main__':
+    # prepend the "docutils root" to the Python library path
+    # so we import the local `docutils` package.
+    sys.path.insert(0, str(Path(__file__).parents[1]))
 
 from docutils import frontend, utils
 import docutils.parsers.rst

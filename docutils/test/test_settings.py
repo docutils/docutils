@@ -10,7 +10,14 @@ Tests of runtime settings.
 import os
 import difflib
 import warnings
+from pathlib import Path
+import sys
 import unittest
+
+if __name__ == '__main__':
+    # prepend the "docutils root" to the Python library path
+    # so we import the local `docutils` package.
+    sys.path.insert(0, str(Path(__file__).parents[1]))
 
 from docutils import frontend, utils
 from docutils.writers import pep_html, html5_polyglot

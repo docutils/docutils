@@ -8,9 +8,14 @@
 Tests for docutils.transforms.references.Hyperlinks.
 """
 
+from pathlib import Path
+import sys
 import unittest
 
-from test import DocutilsTestSupport  # NoQA: F401
+if __name__ == '__main__':
+    # prepend the "docutils root" to the Python library path
+    # so we import the local `docutils` package.
+    sys.path.insert(0, str(Path(__file__).parents[2]))
 
 from docutils.frontend import get_default_settings
 from docutils.parsers.rst import Parser

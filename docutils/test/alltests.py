@@ -17,25 +17,20 @@ import time
 # and setup outside of unittest.
 start = time.time()
 
-import sys                  # noqa: E402
 import atexit               # noqa: E402
 import glob                 # noqa: E402
+import importlib            # noqa: E402
 import os                   # noqa: E402
+from pathlib import Path    # noqa: E402
 import platform             # noqa: E402
-import warnings             # noqa: E402
-from importlib import import_module  # noqa: E402
-import DocutilsTestSupport  # noqa: E402,F401 must be imported before docutils
+import sys                  # noqa: E402
+
+# prepend the "docutils root" to the Python library path
+# so we import the local `docutils` package.
+DOCUTILS_ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(DOCUTILS_ROOT))
+
 import docutils             # noqa: E402
-
-warnings.filterwarnings('ignore',
-                        message='.*return type of publish_string.*',
-                        category=FutureWarning)
-warnings.filterwarnings('ignore',
-                        message=r".*StringOutput.encode\(\)'s return type.*",
-                        category=FutureWarning)
-
-# TEST_ROOT is ./test/ from the docutils root
-TEST_ROOT = os.path.abspath(os.path.dirname(__file__))
 
 
 class Tee:
@@ -98,7 +93,7 @@ def loadTestModules(path):
     sys.path.insert(0, path)
     for mod in testModules:
         try:
-            module = import_module(mod)
+            module = importlib.import_module(mod)
         except ImportError:
             print(f"ERROR: Can't import {mod}, skipping its tests:",
                   file=sys.stderr)
@@ -138,7 +133,7 @@ class NumbersTestResult(unittest.TextTestResult):
 
 
 if __name__ == '__main__':
-    suite = loadTestModules(TEST_ROOT)
+    suite = loadTestModules(DOCUTILS_ROOT/'test')
     print(f'Testing Docutils {docutils.__version__} '
           f'with Python {sys.version.split()[0]} '
           f'on {time.strftime("%Y-%m-%d at %H:%M:%S")}')

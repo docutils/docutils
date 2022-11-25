@@ -21,7 +21,8 @@ import unittest
 if __name__ == '__main__':
     # prepend the "docutils root" to the Python library path
     # so we import the local `docutils` package.
-    sys.path.insert(0, str(Path(__file__).parent))
+    sys.path.insert(0, str(Path(__file__).parents[1]))
+
 
 from docutils import frontend, languages, utils
 from docutils.parsers.rst import languages as rst_languages
@@ -52,7 +53,7 @@ def get_languages():
     # requires local_dummy_lang.py in test directory (testroot)
     # The local_dummy_lang.py contains all the fields from both
     # the docutils language tags and the parser.rst language tags
-    language_list += ['local_dummy_lang']
+    language_list += ['test.local_dummy_lang']
     return language_list
 
 

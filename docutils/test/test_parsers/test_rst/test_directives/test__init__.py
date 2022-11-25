@@ -13,7 +13,14 @@
 Test module for `docutils.parsers.rst.directives`.
 """
 
+from pathlib import Path
+import sys
 import unittest
+
+if __name__ == '__main__':
+    # prepend the "docutils root" to the Python library path
+    # so we import the local `docutils` package.
+    sys.path.insert(0, str(Path(__file__).parents[4]))
 
 import docutils
 import docutils.parsers.null
