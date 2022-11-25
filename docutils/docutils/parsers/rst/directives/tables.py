@@ -310,9 +310,10 @@ class CSVTable(Table):
                     nodes.literal_block(self.block_text, self.block_text),
                     line=self.lineno)
                 raise SystemMessagePropagation(error)
-            source_dir = Path(self.state.document.current_source).parent
-            source = source_dir / self.options['file']
-            source = utils.relative_path(None, source)
+            source = self.options['file']
+            # resolve path to external file
+            _base = Path(self.state.document.current_source).parent
+            source = utils.relative_path(None, _base/source)
             try:
                 csv_file = io.FileInput(source_path=source,
                                         encoding=encoding,

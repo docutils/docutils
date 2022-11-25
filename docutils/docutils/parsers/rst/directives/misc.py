@@ -9,6 +9,10 @@ __docformat__ = 'reStructuredText'
 from pathlib import Path
 import re
 import time
+# from urllib.request import urlopen
+# from urllib.error import URLError
+# deferred to Raw.run() because import may fail due to broken SSL dependencies
+# and it took about 0.15 seconds to load. Update: < 0.03s with Py3k.
 
 from docutils import io, nodes, statemachine, utils
 from docutils.parsers.rst import Directive, convert_directive_function
@@ -27,6 +31,8 @@ class Include(Directive):
     a part of the given file argument may be included by specifying
     start and end line or text to match before and/or after the text
     to be used.
+
+    https://docutils.sourceforge.io/docs/ref/rst/directives.html#including-an-external-document-fragment
     """
 
     required_arguments = 1
@@ -56,14 +62,14 @@ class Include(Directive):
         """
         if not self.state.document.settings.file_insertion_enabled:
             raise self.warning('"%s" directive disabled.' % self.name)
-        source = self.state_machine.input_lines.source(
-            self.lineno - self.state_machine.input_offset - 1)
+        current_source = self.state.document.current_source
         path = directives.path(self.arguments[0])
         if path.startswith('<') and path.endswith('>'):
-            path = Path(self.standard_include_path) / path[1:-1]
+            _base = Path(self.standard_include_path)
+            path = path[1:-1]
         else:
-            path = Path(source).parent / path
-        path = utils.relative_path(None, path)
+            _base = Path(current_source).parent
+        path = utils.relative_path(None, _base/path)
         encoding = self.options.get(
             'encoding', self.state.document.settings.input_encoding)
         e_handler = self.state.document.settings.input_encoding_error_handler
@@ -172,8 +178,8 @@ class Include(Directive):
         clip_options = (startline, endline, before_text, after_text)
         include_log = self.state.document.include_log
         # log entries are tuples (<source>, <clip-options>)
-        if not include_log:  # new document
-            include_log.append((utils.relative_path(None, source),
+        if not include_log:  # new document, initialize with document source
+            include_log.append((utils.relative_path(None, current_source),
                                 (None, None, None, None)))
         if (path, clip_options) in include_log:
             master_paths = (pth for (pth, opt) in reversed(include_log))
@@ -243,8 +249,9 @@ class Raw(Directive):
                 raise self.error(
                     'The "file" and "url" options may not be simultaneously '
                     'specified for the "%s" directive.' % self.name)
-            source_dir = Path(self.state.document.current_source).parent
-            path = utils.relative_path(None, source_dir/self.options['file'])
+            path = self.options['file']
+            _base = Path(self.state.document.current_source).parent
+            path = utils.relative_path(None, _base/path)
             try:
                 raw_file = io.FileInput(source_path=path,
                                         encoding=encoding,
