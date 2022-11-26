@@ -15,7 +15,7 @@ import unittest
 # so we import the local `docutils` and `test` packages.
 # ensure `test` package can be loaded also if not running as __main__
 # (required by ``python -m unittest``
-DOCUTILS_ROOT = Path(__file__).parents[2]
+DOCUTILS_ROOT = Path(__file__).resolve().parents[2]
 if str(DOCUTILS_ROOT) not in sys.path:
     sys.path.insert(0, str(DOCUTILS_ROOT))
 
