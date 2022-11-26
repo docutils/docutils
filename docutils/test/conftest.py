@@ -6,7 +6,7 @@ def pytest_report_header(config):
     import time
 
     # get metadata of the local `docutils` package
-    docutils_root = pathlib.Path(__file__).parents[1] / 'docutils'
+    docutils_root = pathlib.Path(__file__).resolve().parents[1] / 'docutils'
     namespace = {}
     exec((docutils_root/'__init__.py').read_text(encoding='utf-8'), namespace)
 

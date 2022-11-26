@@ -15,7 +15,7 @@ import sys
 if __name__ == '__main__':
     # prepend the "docutils root" to the Python library path
     # so we import the local `docutils` package.
-    sys.path.insert(0, str(Path(__file__).parents[4]))
+    sys.path.insert(0, str(Path(__file__).resolve().parents[4]))
 
 from docutils import parsers, utils
 from docutils.frontend import get_default_settings
@@ -23,7 +23,7 @@ from docutils.parsers.rst import Parser
 from docutils.utils import new_document
 from docutils.utils.code_analyzer import with_pygments
 
-TEST_ROOT = Path(__file__).parents[3]
+TEST_ROOT = Path(__file__).resolve().parents[3]
 
 
 # optional 3rd-party markdown parser

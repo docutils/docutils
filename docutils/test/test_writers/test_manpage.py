@@ -14,7 +14,7 @@ import unittest
 if __name__ == '__main__':
     # prepend the "docutils root" to the Python library path
     # so we import the local `docutils` package.
-    sys.path.insert(0, str(Path(__file__).parents[2]))
+    sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from docutils.core import publish_string
 

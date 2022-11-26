@@ -16,12 +16,12 @@ import unittest
 if __name__ == '__main__':
     # prepend the "docutils root" to the Python library path
     # so we import the local `docutils` package.
-    sys.path.insert(0, str(Path(__file__).parents[2]))
+    sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from docutils.core import publish_string
 
 # DATA_ROOT is ./test/data from the docutils root
-DATA_ROOT = Path(__file__).parents[1] / 'data'
+DATA_ROOT = Path(__file__).resolve().parents[1] / 'data'
 spam = os.path.relpath(DATA_ROOT/'spam').replace('\\', '/')
 ham = os.path.relpath(DATA_ROOT/'ham.tex').replace('\\', '/')
 
