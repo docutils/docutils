@@ -16,20 +16,12 @@ Changes Since 0.19
 
 * General
 
-  - Declared support for Python 3.11 in setup.py and tox.ini.
-    Patch by Hugo van Kemenade.
+  - Support Python 3.11 (patch #198 by Hugo van Kemenade).
 
 * docutils/core.py
 
-  - Added new ``publish_bytes()`` function to explicitly return
-    output as binary data in a ``bytes`` object.
-  - Deprecated returning ``bytes`` from ``publish_string()``.
-    Users should use the new function ``publish_bytes()`` instead.
-
-* docutils/io.py
-
-  - Deprecated returning ``bytes`` from ``StringOutput.encode()``.
-    Users should use the new class ``BytesOutput`` instead.
+  - Added new `publish_bytes()` function to explicitly return
+    output as binary data in a `bytes` object.
 
 * docutils/languages/
   docutils/parsers/rst/languages/
@@ -38,7 +30,7 @@ Changes Since 0.19
 
 * docutils/nodes.py
 
-  - Fix previous_sibling() method that led to invalid HTML in some cases
+  - Fix `previous_sibling()` method that led to invalid HTML in some cases
     (cf. patch #195).
 
 * docutils/parsers/recommonmark_wrapper.py
@@ -79,8 +71,8 @@ Changes Since 0.19
 
 * docutils/writers/latex2e/titlepage.tex
 
-  - Drop "fixltx2e" package call from template. (Obsolete since 2015
-    and dropped from other templates since Docutils 0.14.)
+  - Drop ``\usepackage{fixltx2e}`` from template. (Obsolete since 2015
+    and dropped from other templates in Docutils 0.14.)
 
 * docutils/writers/manpage.py
 
@@ -88,7 +80,7 @@ Changes Since 0.19
 
 * setup.py
 
-  - Fix SetuptoolsDeprecationWarning: "Installing '' as data is deprecated"
+  - Fix SetuptoolsDeprecationWarning: ``Installing '' as data is deprecated``
     by adding data directories to package_data.packages list.
 
 * tox.ini
@@ -97,8 +89,9 @@ Changes Since 0.19
 
 * test/
 
-  - Refactored tests in to use common ``unittest`` idioms.
-  - Enable use of external test frameworks, such as Pytest_
+  - Refactored tests to use common `unittest` idioms.
+    Fixes errors when running the test suite with ``python -m unittest``
+    or external test frameworks, such as Pytest_.
 
   .. _pytest: https://pypi.org/project/pytest/
 
@@ -127,21 +120,21 @@ Release 0.19 (2022-07-05)
 * docutils/__main__.py
 
   - New module. Support for ``python -m docutils``.
-    Also used for the ``docutils`` console script `entry point`.
+    Also used for the ``docutils`` console script `entry point`_.
 
 * docutils/core.py
 
   - Let `Publisher.publish()` print info and prompt when waiting for input
     from a terminal (cf. https://clig.dev/#interactivity).
-  - Respect "input_encoding_error_handler" setting when opening a source.
+  - Respect `input_encoding_error_handler`_ setting when opening a source.
 
 * docutils/io.py
 
   - New function `error_string()`
     obsoletes `utils.error_reporting.ErrorString`.
-  - Class `ErrorOutput` moved here from ``utils/error_reporting``.
+  - Class `ErrorOutput` moved here from `utils.error_reporting` module.
   - Use "utf-8-sig" instead of Python's default encoding if the
-    "input_encoding" setting is None.
+    `input_encoding`_ setting is None.
   - Fix error when reading of UTF-16 encoded source without trailing newline.
 
 * docutils/parsers/__init__.py
@@ -150,20 +143,20 @@ Release 0.19 (2022-07-05)
   - Alias for the "myst" parser (https://pypi.org/project/myst-docutils).
   - Use absolute module names in `_parser_aliases` instead of two
     import attempts. (Keeps details if the `recommonmark_wrapper` module
-    raises an ImportError.)
-  - Prepend parser name to ImportError if importing a parser class fails.
+    raises an `ImportError`.)
+  - Prepend parser name to `ImportError` if importing a parser class fails.
 
 * docutils/parsers/commonmark_wrapper.py
 
   - New module for parsing CommonMark input. Selects a locally installed
-    3rd-party parser (pycmark, myst, or recommonmark).
+    3rd-party parser (`pycmark`, `myst`, or `recommonmark`).
 
 * docutils/parsers/recommonmark_wrapper.py
 
-  - Raise ImportError, if import of the upstream parser module fails.
+  - Raise `ImportError`, if import of the upstream parser module fails.
     If called from an `"include" directive`_,
     the system-message now has source/line info.
-  - Adapt to and test with "recommonmark" versions 0.6.0 and 0.7.1.
+  - Adapt to and test with `recommonmark` versions 0.6.0 and 0.7.1.
 
   .. _"include" directive: docs/ref/rst/directives.html#include
 
@@ -175,7 +168,7 @@ Release 0.19 (2022-07-05)
 
 * docutils/parsers/rst/directives/__init__.py
 
-  - `parser_name()` keeps details if converting ImportError to ValueError.
+  - `parser_name()` keeps details if converting  `ImportError` to  `ValueError`.
 
 * docutils/parsers/rst/roles.py
 
@@ -213,13 +206,14 @@ Release 0.19 (2022-07-05)
 
 * setup.py
 
-  - New "docutils" console script `entry point`__. Fixes bug #447.
+  - New ``docutils``" console script `entry point`_. Fixes bug #447.
 
-    __ https://packaging.python.org/en/latest/specifications/entry-points/
+    .. _entry point:
+        https://packaging.python.org/en/latest/specifications/entry-points/
 
 * test/alltests.py
 
-  - Always encode the log file "alltests.out" using 'utf-8'.
+  - Always encode the log file ``alltests.out`` using "utf-8".
 
 * test/DocutilsTestSupport.py
 
@@ -255,7 +249,7 @@ Release 0.18.1 (2021-11-23)
 * docutils/utils/__init__.py
 
   - Fix behaviour of `get_stylesheet_list()`: do not look up stylesheets
-    given as "stylesheet" setting. Cf. bug #434.
+    given as `stylesheet`_ setting. Cf. bug #434.
 
 * docutils/writers/_html_base.py
 
@@ -278,18 +272,18 @@ Release 0.18 (2021-10-26)
 =========================
 
 * docutils/frontend.py
-  - mark as provisional (will switch from using "optparse" to "argparse").
-  - remove hack for the now obsolete "mod_python" Apache module.
-  - new function get_default_settings()
+  - Mark as provisional (will switch from using `optparse` to `argparse`).
+  - Remove hack for the now obsolete "mod_python" Apache module.
+  - New function `get_default_settings()`.
 
 * docutils/nodes.py
 
   - Don't change a list while looping over it (in
-    document.set_name_id_map()). Thanks to Mickey Endito.
+    `document.set_name_id_map()`). Thanks to Mickey Endito.
 
 * docutils/parsers/recommonmark_wrapper.py
 
-  - Test and update to work with recommonmark version 0.6.0.
+  - Test and update to work with `recommonmark` version 0.6.0.
     Still provisional.
 
     Unfortunately, recommonmark_ is `no longer maintained`__.
@@ -309,12 +303,11 @@ Release 0.18 (2021-10-26)
 * docutils/writers/html5_polyglot/__init__.py
 
   - New option `image_loading`_. Support "lazy" loading of images.
-    Obsoletes "embed_images".
-
+    Obsoletes `embed_images`_.
 
 * docutils/writers/pseudoxml.py
 
-  - Fix spelling of option "detailed".
+  - Fix spelling of setting `detailed`_.
 
 * tools/docutils-cli.py
 
@@ -329,18 +322,18 @@ Release 0.18b1 (2021-10-05)
 
 * docutils/frontend.py
 
-  - The default value for the "auto_id_prefix" setting changed to "%":
+  - The default value for the `auto_id_prefix`_ setting changed to "%":
     auto-generated IDs use the tag name as prefix.
 
 * docutils/nodes.py
 
   - Make meta__ a standard Docutils doctree node. Writers may ignore
-    "meta" nodes if they are not supported by the output format.
+    `meta` nodes if they are not supported by the output format.
 
     __ docs/ref/doctree.html#meta
 
   - document.make_id(): Do not strip leading number and hyphen characters
-    from `name` if the id_prefix setting is non-empty.
+    from `name` if the `id_prefix`_ setting is non-empty.
 
   - `Node.traverse()` returns an iterator instead of a list.
 
@@ -411,7 +404,6 @@ Release 0.18b1 (2021-10-05)
     The `table_style`_ setting "colwidths-grid" restores the current default.
 
     .. _"widths" option: docs/ref/rst/directives.html#column-widths
-    .. _table_style: docs/user/config.html#table-style
 
   - Use ARIA roles to enable accessible HTML for abstract, dedication,
     the table of contents, footnote, references, footnotes, citations,
@@ -431,11 +423,10 @@ Release 0.18b1 (2021-10-05)
   - Move space character between section number and heading into
     "sectnum" span.
 
-  - Removed attribute ``HTMLTranslator.topic_classes``
+  - Removed attribute `HTMLTranslator.topic_classes`
 
   - Items of a definition list with class argument "details" are
-    converted to `details disclosure elements`.
-
+    converted to <details> disclosure elements.
 
 * docutils/writers/html4css1/__init__.py
 
@@ -460,17 +451,14 @@ Release 0.18b1 (2021-10-05)
     of contents.
 
   - New algorithm for table column widths. Fixes bug #422.
-    New configuration setting legacy_column_widths_.
+    New configuration setting `legacy_column_widths`_.
 
     `Table.set_table_style()` arguments changed.
 
     Only write "continued on next page..." if it fits
     without making the table columns wider.
 
-    Table `width` option overrides conflicting "auto" column `widths`.
-
-.. _legacy_column_widths: docs/user/config.html#legacy-column-widths
-
+    Table "width" option overrides conflicting "auto" column "widths".
 
 * docutils/writers/latex2e/docutils.sty
 
@@ -478,7 +466,7 @@ Release 0.18b1 (2021-10-05)
 
 * docutils/writers/pseudoxml.py
 
-  - Fix option "detailed" under Python 2.7.
+  - Fix option `detailed`_ under Python 2.7.
 
 * docutils/writers/s5_html/themes/default
 
@@ -500,7 +488,7 @@ Release 0.17.1 (2021-04-16)
 
 * docutils/writers/latex2e/__init__.py
 
-  - Open "docutils.sty" with encoding set to "utf-8".
+  - Open ``docutils.sty`` with encoding set to "utf-8".
     Fixes bug #414: error with Py3k when locale encoding is "ascii".
 
 * docutils/parsers/*.py, docutils/transforms/*.py
@@ -532,7 +520,7 @@ Release 0.17 (2021-04-03)
 
 * docutils/__init__.py
 
-  - VersionInfo: ValueError for invalid values, fix comparison to tuples.
+  - VersionInfo:  `ValueError` for invalid values, fix comparison to tuples.
 
 * docutils/languages/
   docutils/parsers/rst/languages/
@@ -553,7 +541,7 @@ Release 0.17 (2021-04-03)
 
   - New, **experimental** wrapper to integrate the
     `recommonmark`_ Markdown parser for use with Docutils.
-    Currently only tested with recommonmark version 0.4.0.
+    Currently only tested with `recommonmark` version 0.4.0.
 
     .. _recommonmark: https://pypi.org/project/recommonmark/
 
@@ -563,7 +551,7 @@ Release 0.17 (2021-04-03)
 
 * docutils/parsers/rst/directives/html.py
 
-  - Make "meta" elements available for "latex" and "odt".
+  - Make `meta` elements available for "latex" and "odt" writers.
 
 * docutils/parsers/rst/directives/misc.py
 
@@ -592,7 +580,7 @@ Release 0.17 (2021-04-03)
     <footer>, <aside>, <figure>, and <figcaption>.
     See ``minimal.css`` and ``plain.css`` for styling rule examples.
 
-    Change the `initial_header_level` setting default to "2", as browsers
+    Change the `initial_header_level`_ setting default to "2", as browsers
     use the `same style for <h1> and <h2> when nested in a <section\>`__.
 
     __ https://stackoverflow.com/questions/39547412/same-font-size-for-h1-and-h2-in-article
@@ -639,8 +627,6 @@ Release 0.17 (2021-04-03)
     admonitions and titles if the new configuration setting
     `legacy_class_functions`_ is False.
 
-    .. _legacy_class_functions: docs/user/config.html#legacy-class-functions
-
   - Remove backwards compatibility code for the deprecated
     `styling command`__ prefix ``\docutilsrole``.
 
@@ -653,8 +639,6 @@ Release 0.17 (2021-04-03)
 
   - The special value "auto" for the `graphicx_option`_ setting
     is no longer supported (it never worked for xetex/luatex).
-
-    .. _graphicx_option: docs/user/config.html#graphicx-option
 
   - Most helper commands and element definitions are now defined in the
     LaTeX package `docutils.sty`_ and only inserted in the document
@@ -672,12 +656,12 @@ Release 0.17 (2021-04-03)
   - Apply patch #175 "Fix alignment of nested tables"
     by John Thorvald Wodder II. Additional fixes to table alignment.
 
-  - Do not write Docutils-generated ToC, when ``use_latex_toc``
-    is True. (This did happen when publishing from a doctree.)
+  - Do not write Docutils-generated ToC, when ``use_latex_toc == True``.
+    (This did happen when publishing from a doctree.)
 
   - Set PDF document properties from "meta" directive content.
 
-  - Apply version of patch #176 "LaTeX writer: Append \leavevmode to
+  - Apply version of patch #176 "LaTeX writer: Append ``\leavevmode`` to
     non-docinfo field names" by John Thorvald Wodder II.
 
 * docutils/writers/manpage.py
@@ -695,9 +679,7 @@ Release 0.17 (2021-04-03)
 
 * docutils/writers/pseudoxml.py
 
-  - New option `detailled`__.
-
-    __ docs/user/config.html#detailed
+  - New option `detailled`_.
 
 * test/DocutilsTestSupport.py
 
@@ -716,7 +698,7 @@ Release 0.16 (2020-01-16)
 
   - Dropped support for Python 2.6, 3.3 and 3.4
   - Docutils now supports Python 2.7 and Python 3.5+ natively
-    (without conversion by ``2to3``).
+    (without conversion by `2to3`).
   - Keep `backslash escapes`__ in the document tree. Backslash characters in
     text are be represented by NULL characters in the `text` attribute of
     Doctree nodes and removed in the writing stage by the node's
@@ -734,8 +716,6 @@ Release 0.16 (2020-01-16)
   - If `auto_id_prefix`_ ends with "%", this is replaced with the tag name.
   - Warn about `Node.traverse()` returning an iterator instead of a list
     in future.
-
-  .. _auto_id_prefix: docs/user/config.html#auto-id-prefix
 
 * docutils/statemachine.py
 
@@ -785,13 +765,13 @@ Release 0.16 (2020-01-16)
   - Fix: 377 ResourceWarning: unclosed file python3.8
     Read defaults file with context.
 
-  - Set "auto_id_prefix" to "%" (expands to tag-names).
+  - Set `auto_id_prefix`_ to "%" (expands to tag-names).
     Results in descriptive links in HTML and more localized changes when
     editions to the input add or remove auto-ids.
 
 * test/test_io.py
 
-  - Apply patch #157: avoid test failure because of a ``ResourceWarning``.
+  - Apply patch #157: avoid test failure because of a `ResourceWarning`.
 
 * test/test_writers/test_odt.py
 
@@ -800,9 +780,7 @@ Release 0.16 (2020-01-16)
 
 * tools/buildhtml.py
 
-  - New option `html-writer`_.
-
-  .. _html-writer: docs/user/config.html#html-writer
+  - New option `html_writer`_.
 
 
 Release 0.15.1 (2019-07-24)
@@ -837,7 +815,7 @@ Release 0.15 (2019-07-20)
 
 * docutils/nodes.py
 
-  - Fix [ 251 ] `system_message.copy()` TypeError.
+  - Fix [ 251 ] `system_message.copy()`  `TypeError`.
   - `Element.copy()` also copies `document`, `line`, and `source` attributes.
 
 * docutils/parsers/rst/__init__.py
@@ -855,7 +833,7 @@ Release 0.15 (2019-07-20)
 * docutils/parsers/rst/directives/misc.py
 
   - Don't convert tabs to spaces, if `tab_width` is negative in
-    "include" directive with `code` option.
+    "include" directive with "code" option.
 
 * docutils/parsers/rst/directives/tables.py
 
@@ -871,7 +849,7 @@ Release 0.15 (2019-07-20)
 
 * docutils/utils/__init__.py
 
-  - Deprecate `unique_combinations` (obsoleted by `itertools.combinations`).
+  - Deprecate `unique_combination()` (obsoleted by `itertools.combination()`.
 
 * docutils/utils/smartquotes.py
 
@@ -939,12 +917,12 @@ Release 0.14 (2017-08-03)
 
 * docutils/transforms/universal.py
 
-  Fix SmartQuotes: warn only once if language is unsupported,
+  Fix `SmartQuotes`: warn only once if language is unsupported,
   keep "rawsource" when "educating" quotes.
 
 * docutils/utils/__init__.py
 
-  - Added ``split_escaped_whitespace`` function, support for escaped
+  - Added `split_escaped_whitespac()` function, support for escaped
     whitespace in URI contexts.
 
 * docutils/utils/error_reporting.py
@@ -966,7 +944,7 @@ Release 0.14 (2017-08-03)
   - Fix [ 312 ] HTML writer generates invalid HTML if the table has two tags.
   - Fix [ 319 ] The MathJax CDN shut down on April 30, 2017. For security
     reasons, we don't use a third party public installation as default but
-    warn if math-output_ is set to MathJax without specifying a URL.
+    warn if `math_output`_ is set to MathJax without specifying a URL.
 
 * docutils/writers/html4css1/__init__.py
 
@@ -976,7 +954,7 @@ Release 0.14 (2017-08-03)
 
   - Handle class arguments for block-level elements by wrapping them
     in a "DUclass" environment. This replaces the special handling for
-    "epigraph" and "topic" elements.
+    `epigraph` and `topic` elements.
 
 * docutils/writers/manpage.py
 
@@ -984,16 +962,16 @@ Release 0.14 (2017-08-03)
 
 * docutils/writers/odf_odt/__init__.py
 
-  - Command setting ``language`` now sets the default language
+  - Command line setting `language`_ now sets the default language
     of the generated ODF document.
   - The use of image directive options :width: (%), :scale:, etc now
     set the width/height/size of images in the generated ODF
     documents.
   - The heading/title of admonitions now reflects the language
-    specified by the ``language`` setting.
+    specified by the `language`_ setting.
   - Fixed [ 306 ] only first of multiple "image" directives with the same URL
     shown in output.
-  - Fixed [ 282 ] python3: AttributeError.
+  - Fixed [ 282 ] python3:  `AttributeError`.
 
 * tools/rst2html4.py: New front-end.
 
@@ -1072,7 +1050,7 @@ Release 0.13.1 (2016-12-09)
 
   - Add "docutils" to class values for "container" object to address [ 267 ].
   - Apply patch [ 119 ] by Anatoly Techtonik: use absolute paths for
-    ``default_stylesheet_path`` and ``default_template_path``.
+    `default_stylesheet_path` and `default_template_path`.
   - Fix [ 266 ] creating labels/class values in description list items.
   - Do not use <sup> and <sub> tags inside <pre> (parsed-literal blocks).
   - Fix footnotes with content that does not start with a paragraph.
@@ -1084,14 +1062,14 @@ Release 0.13.1 (2016-12-09)
   - Fix [ 262 ] Use ``\linewidth`` instead of ``\textwidth`` for figures,
     admonitions and docinfo.
 
-  - Use absolute path for ``default_template_path``.
+  - Use absolute path for `default_template_path`.
 
   - Removed deprecated options ``--use-latex-footnotes`` and
     ``--figure-footnotes``.
 
   - Cleaner LaTeX code for enumerations and literal blocks.
 
-  - Use "hyperref" package together with "bookmark" (improved hyperlinking
+  - Use `hyperref` package together with `bookmark` (improved hyperlinking
     by the same author).
 
   - Fix [ 286 ] Empty column title cause invalid latex file.
@@ -1107,7 +1085,7 @@ Release 0.13.1 (2016-12-09)
 
 * docutils/writers/xetex/__init__.py
 
-  - LuaLaTex compatibility: do not load "xunicode".
+  - LuaLaTex compatibility: do not load `xunicode` package.
 
 * tools/
 
@@ -1117,7 +1095,7 @@ Release 0.13.1 (2016-12-09)
 
   - Test py26, py27, py33 and py34.
 
-    To use, install the ``tox`` package via pip or easy_install and use
+    To use, install the `tox` package via pip or easy_install and use
     tox from the project root directory.
 
 .. _polyglot: https://www.w3.org/TR/html-polyglot/
@@ -1134,7 +1112,7 @@ Release 0.12 (2014-07-06)
 
 * docutils/parsers/rst/directives/images.py
 
-  - Fix [ 258 ] figwidth="image" generates unitless width value.
+  - Fix [ 258 ] ``figwidth="image"`` generates unitless width value.
 
 * docutils/parsers/rst/states.py
 
@@ -1181,7 +1159,7 @@ Release 0.11 (2013-07-22)
 
 * docutils/parsers/rst/directives/__init__.py
 
-  - Fix [ 3606028 ] ``assert`` is skipped with ``python -O``.
+  - Fix [ 3606028 ] `assert` is skipped with ``python -O``.
 
 * docutils/parsers/rst/directives/images.py
 
@@ -1202,30 +1180,30 @@ Release 0.11 (2013-07-22)
 
 * docutils/utils/__init__.py
 
-  - Fix [ 3596884 ] exception importing ``docutils.io``.
+  - Fix [ 3596884 ] exception importing `docutils.io`.
 
 * docutils/writers/html4css1/__init__.py
 
   - Fix [ 3600051 ] for tables in a list, table cells are not compacted.
-  - New setting `stylesheet_dirs`: Comma-separated list of directories
+  - New setting `stylesheet_dirs`_: Comma-separated list of directories
     where stylesheets are found. Used by `stylesheet_path` when expanding
     relative path arguments.
-  - New default for math-output_: ``HTML math.css``.
+  - New default for `math_output`_: ``HTML math.css``.
   - Avoid repeated class declarations in html4css1 writer
     (modified version of patch [ 104 ]).
 
-.. _math-output: docs/user/config.html#math-output
 
 * docutils/writers/latex2e/__init__.py
 
   - Drop the simple algorithm replacing straight double quotes with
     English typographic ones.
-    Activate the SmartQuotes_ transform if you want this feature.
+    Use the `smart_quotes`_ setting to activate this feature.
   - Fix literal use of babel shorthands (straight quote, tilde, ...).
-  - Fix [ 3603246 ] Bug in option "--graphicx-option=auto".
-  - New setting `stylesheet_dirs`.
+  - Fix [ 3603246 ] Bug in option ``--graphicx-option=auto``.
+  - New setting `stylesheet_dirs`__.
 
-.. _SmartQuotes: docs/user/config.html#smart-quotes
+    __ docs/user/config.html#stylesheet-dirs-latex-writers
+
 
 * docutils/writers/manpage.py
 
@@ -1245,7 +1223,7 @@ Release 0.10 (2012-12-16)
   - Fix [3559988] and [3560841] __import__ local writer, reader, languages
     and parsers for Python 2.7 up.
   - Fix import of PIL.Image.
-  - Change default of "syntax highlight" option to "long",
+  - Change default of `syntax_highlight`_ option to "long",
     basic syntax highlight styles for LaTeX and HTML.
 
 * docutils/io.py
@@ -1289,10 +1267,10 @@ Release 0.10 (2012-12-16)
 
   - Fix [ 3556388 ] MathJax does not work with rst2s5.
 
-* docutils/writers/s5_html/docutils_xml.py
+* docutils/writers/docutils_xml.py
 
   - Fix [ 3552403 ] Prevent broken PyXML replacing stdlibs xml module.
-  - Fix/improve output with ``--indent`` option.
+  - Fix/improve output with `indents`_ setting.
 
 * setup.py
 
@@ -1339,7 +1317,7 @@ Release 0.9.1 (2012-06-17)
 
 * test/alltests.py
 
-  - class `Tee`: catch UnicodeError when writing to "ascii" stream or
+  - class `Tee`: catch  `UnicodeError` when writing to "ascii" stream or
     file under Python 3.
 
 
@@ -1372,14 +1350,14 @@ __ https://mail.python.org/pipermail/image-sig/2011-January/006650.html
   - Fix [ 3395948 ] (Work around encoding problems in Py3k).
   - `mode` argument for FileOutput avoids code replication in
     BinaryFileOutput.
-  - New exceptions InputError and OutputError for IO errors in
+  - New exceptions  `InputError` and  `OutputError` for IO errors in
     FileInput/FileOutput.
 
 * docutils/core.py
 
   - No "hard" system exit on file IO errors: catch and report them in
     `Publisher.reportException` instead. Allows handling by a calling
-    application if the configuration setting `traceback` is True.
+    application if the configuration setting `traceback`_ is True.
 
 * docutils/utils.py -> docutils/utils/__init__.py
 
@@ -1415,8 +1393,8 @@ __ https://mail.python.org/pipermail/image-sig/2011-January/006650.html
   - Fix handling of missing stylesheets.
   - Use ``\setcounter{secnumdepth}{0}`` instead of ``*``-versions
     when suppressing LaTeX section numbering.
-  - Use ``\DUtitle`` for unsupported section levels
-  - Apply [ 3512791 ] do not compare string literals with "is"
+  - Use ``\DUtitle`` for unsupported section levels.
+  - Apply [ 3512791 ] do not compare string literals with "is".
 
 * docutils/writers/xetex/__init__.py
 
@@ -1424,7 +1402,7 @@ __ https://mail.python.org/pipermail/image-sig/2011-January/006650.html
 
 * docutils/writers/html4css1/__init__.py
 
-  - Change default for `math-output` setting to MathJax.
+  - Change default for `math_output`_ setting to MathJax.
   - Fix handling of missing stylesheets.
 
 * docutils/writers/docutils_xml.py
@@ -1464,10 +1442,10 @@ Release 0.8 (2011-07-07)
   - If the specified language is not supported by Docutils,
     warn and fall back to English.
   - Math support: reStructuredText "math" role and directive,
-    ``math`` and ``math_block`` doctree elements.
+    `math` and `math_block` doctree elements.
   - Decode command line arguments with the locale's preferred encoding
     (to allow, e.g., ``--title=Dornröschen``).
-  - Orphaned "python" reader and "newlatex2e" writer moved to the sandbox.
+  - Orphaned `python` reader and `newlatex2e` writer moved to the sandbox.
   - New sub-module `error_reporting`: handle encoding/decoding errors
     when reporting exceptions.
   - Some additions to the Docutils core are released under the 2-Clause BSD
@@ -1500,15 +1478,15 @@ Release 0.8 (2011-07-07)
 
   - Set "lang" argument for objects with class argument
     "language-<language tag>".
-  - New setting "math-output" with support for HTML, MathML, and LaTeX.
+  - New setting `math_output`_ with support for HTML, MathML, and LaTeX.
 
 * docutils/writers/latex2e/__init__.py
 
-  - Fix [ 3043986 ] AttributeError using :local: with table of content.
+  - Fix [ 3043986 ]  `AttributeError` using :local: with table of content.
   - Place title data in the document preamble.
   - Load `babel` package only if required.
   - Update list of supported languages.
-  - New config setting "hyperref-options".
+  - New config setting `hyperref_options`_.
     No hard-coded "unicode" hyperref option (clash with xetex).
   - Set language for custom roles, paragraphs, block-quotes, and
     line-quotes with class argument "language-<language tag>".
@@ -1572,7 +1550,7 @@ Release 0.7 (2010-07-07)
 
 * docutils/utils.py
 
-  - Fix [ 2923723 ] let `decode_path()` tolerate ``path == None``
+  - Fix [ 2923723 ] let `decode_path()` tolerate ``path == None``.
 
 * docutils/writers/html4css1/__init__.py
 
@@ -1587,14 +1565,14 @@ Release 0.7 (2010-07-07)
   - Use the ``\url`` command for URLs (breaks long URLs instead of
     writing into the margin).
   - Preserve runs of spaces in `inline literals`__.
-  - Deprecate ``figure_footnotes`` setting.
-  - Rename ``use_latex_footnotes`` setting to `docutils_footnotes`__.
-  - New ``latex_preamble`` setting.
+  - Deprecate `figure_footnotes`_ setting.
+  - Rename `use_latex_footnotes`_ setting to `docutils_footnotes`_.
+  - New `latex_preamble`_ setting.
   - Use PDF standard fonts (Times/Helvetica/Courier) as default.
   - Fix hyperlink targets (labels) for images, figures, and tables.
   - Apply [ 2961988 ] Load babel after inputenc and fontenc.
   - Apply [ 2961991 ] Call hyperref with unicode option.
-  - Drop the special `output_encoding`__ default ("latin-1").
+  - Drop the special `output_encoding`_ default ("latin-1").
     The Docutils wide default (usually "UTF-8") is used instead.
   - Render inline markup in document title and subtitle.
   - Fix numbering depth with LaTeX section numbering.
@@ -1602,8 +1580,6 @@ Release 0.7 (2010-07-07)
   - Fix bug with topic directive (thanks to Alan G Isaac for reporting).
 
 __ docs/ref/restructuredtext.html#inline-literals
-__ docs/user/config.html#docutils-footnotes
-__ docs/user/config.html#output_encoding
 
 * docutils/writers/manpage.py
 
@@ -1633,7 +1609,7 @@ Release 0.6 (2009-10-11)
 
     + Node.__nonzero__ returns True instead of 1.
     + use os.walk instead os.path.walk.
-    + minimize "types" module where possible.
+    + minimize `types` module where possible.
     + Backwards-compatible changes to remove python2.6 -3 deprecation warnings
     + Text nodes now subclass unicode rather than UserString
       (which is gone in python 3.0).
@@ -1654,12 +1630,12 @@ Release 0.6 (2009-10-11)
   - Fix [ 1692788 ] allow UTF-8 in style sheets.
   - Fix [ 2781629 ] support non-ASCII chars in file names.
   - Apply [ 2845002 ] let ``--no-raw`` disable raw *roles* too.
-  - Fix [ 2831643 ] by renaming DirectiveError.message to DirectiveError.msg
-  - Fix [ 2821266 ] --strict option works now like --halt=info.
-  - Fix [ 2788716 ] DirectiveError now correctly reports source and line.
+  - Fix [ 2831643 ] renaming `DirectiveError.message` to `DirectiveError.msg`
+  - Fix [ 2821266 ] ``--strict`` option works now like ``--halt=info``.
+  - Fix [ 2788716 ]  `DirectiveError` now correctly reports source and line.
   - Fix [ 1627229 ] hyperlink references in substitutions.
 
-  - The "newlatex" writer is orphaned.
+  - The `newlatex` writer is orphaned.
 
 * reStructuredText:
 
@@ -1674,7 +1650,7 @@ Release 0.6 (2009-10-11)
 
 * docutils/nodes.py:
 
-  - Added ``Element.__contains__`` method, for the in-operator.
+  - Added `Element.__contains_()` method, for the in-operator.
 
 * docutils/parsers/rst/states.py:
 
@@ -1692,7 +1668,7 @@ Release 0.6 (2009-10-11)
 
 * docutils/utils.py:
 
-  - Add ``get_stylesheet_list`` function.
+  - Add `get_stylesheet_lis()` function.
   - Apply [ 2834836 ] print info at halt
 
 * docutils/transforms/universal.py:
@@ -1702,12 +1678,12 @@ Release 0.6 (2009-10-11)
 
 * docutils/writers/html4css1/__init__.py:
 
-  - ``--stylesheet`` and ``--stylesheet-path`` options support a comma
+  - `stylesheet`_ and `stylesheet_path`_ settings support a comma
     separated list of stylesheets.
   - Address [ 1938891 ] Inline literal text creates "pre" span only when
     needed to prevent inter-word line wraps.
   - Use `translate()` method instead of repeated `replace()` calls.
-  - Fix [ 1757105 ] New ``table-style`` option. Added to standard table
+  - Fix [ 1757105 ] New `table_style`_ setting. Added to standard table
     classes to allow CSS styling that does not interfere with other
     table-using constructs (field lists, citations, ...).
 
@@ -1717,7 +1693,7 @@ Release 0.6 (2009-10-11)
 
 * docutils/writers/latex2e/__init__.py:
 
-  - Add ``--embed-stylesheet`` option.
+  - Add `embed_stylesheet`_ setting.
   - Apply [ 1474017 ] image vertical alignment is reversed.
   - Apply [ 2051599 ] multi-page tables in latex writer (from pabigot).
   - Change: has_key for dictionaries (not Nodes) to in-operator.
@@ -1725,7 +1701,7 @@ Release 0.6 (2009-10-11)
   - Failsafe implementation of custom roles. LaTeX compilation now ignores
     unknown classes instead of aborting with an error.
   - Support custom roles based on standard roles.
-  - LaTeX packages can be used as ``--stylesheet`` arguments without
+  - LaTeX packages can be used as `stylesheet`_ arguments without
     restriction. (A style sheet is now referenced with the ``\usepackage``
     command, if it ends with ``.sty`` or has no extension.)
   - Add ``bp`` to lengths without unit (prevents LaTeX errors).
@@ -1741,7 +1717,7 @@ Release 0.6 (2009-10-11)
   - Use the name prefix ``DU`` for all Docutils specific LaTeX macros.
   - New custom environments and commands with optional "classes" argument.
   - Simpler LaTeX encoding, e.g. "\%" instead of "{\%}".
-  - Better conformance to Docutils specifications with ``--use-latex-toc``.
+  - Better conformance to Docutils specifications with `use_latex_toc`_.
     Support for LaTeX generated ToC also with unnumbered sections.
   - If 'sectnum_xform' is False, the 'sectnum' directive triggers
     section numbering by LaTeX.
@@ -1791,11 +1767,9 @@ Release 0.5 (2008-06-25)
   - Configuration files are now assumed and required to be
     UTF-8-encoded.
   - Paths of applied configuration files are now recorded in the
-    runtime setting ``_config_files`` (accessible via
-    ``--dump-settings``).
-  - Added ``--strip-elements-with-class`` and ``--strip-class``
-    options (``strip_elements_with_classes`` and ``strip_classes``
-    settings).
+    runtime setting `_config_files`_ (accessible via
+    `dump_settings`_).
+  - Added `strip_elements_with_classes`_ and `strip_classes`_ settings.
 
 * docutils/io.py:
 
@@ -1805,7 +1779,7 @@ Release 0.5 (2008-06-25)
 
 * docutils/nodes.py:
 
-  - Added ``document.__getstate__`` method, for pickling.
+  - Added `document.__getstate_()` method, for pickling.
 
 * docutils/parsers/rst/states.py:
 
@@ -1819,21 +1793,21 @@ Release 0.5 (2008-06-25)
     "⁃".
   - Added support for new object-oriented directive interface,
     retaining compatibility to the old functional interface.
-  - Added support for throwing ``DirectiveError``'s from within
+  - Added support for throwing `DirectiveError`'s from within
     directive code.
 
 * docutils/parsers/rst/__init__.py:
 
-  - Added ``Directive`` base class.
-  - Added ``DirectiveError`` base class.
-  - Fixed ``file_insertion_enabled`` & ``raw_enabled`` setting
+  - Added `Directive` base class.
+  - Added `DirectiveError` base class.
+  - Fixed `file_insertion_enabled`_ & `raw_enabled`_ setting
     definitions.
 
 * docutils/parsers/directives/:
 
   - Refactored all reStructuredText directives to use the new
     object-oriented directive interface.  Errors are now (mostly)
-    thrown using the new ``DirectiveError`` class.
+    thrown using the new `DirectiveError` class.
 
 * docutils/parsers/directives/misc.py:
 
@@ -1842,15 +1816,15 @@ Release 0.5 (2008-06-25)
 
 * docutils/transforms/universal.py:
 
-  - Added ``StripClassesAndElements`` transform to remove from the
+  - Added `StripClassesAndElements` transform to remove from the
     document tree all elements with classes in
-    ``settings.strip_elements_with_classes`` and all "classes"
-    attribute values in ``self.document.settings.strip_classes``.
+    `strip_elements_with_classes`_ and all "classes"
+    attribute values in `strip_classes`_
 
 * docutils/transforms/writer_aux.py:
 
-  - Added ``Admonitions`` transform to transform specific admonitions
-    (like ``note``, ``warning``, etc.) into generic admonitions with a
+  - Added `Admonitions` transform to transform specific admonitions
+    (like "note", "warning", etc.) into generic admonitions with a
     localized title.
 
 * docutils/writers/html4css1/__init__.py:
@@ -1874,13 +1848,11 @@ Release 0.5 (2008-06-25)
 
 * docutils/writers/s5_html/__init__.py:
 
-  - Added ``view_mode`` & ``hidden_controls`` settings
-    (``--view-mode`` & ``--hidden-controls/--visible-controls``
-    options).
+  - Added `view_mode`_ & `hidden_controls`_ settings.
 
 * docutils/writers/latex2e/__init__.py:
 
-  - Add ``--literal-block-env``
+  - Add `literal_block_env`_.
   - Fix: escaping ``%`` in href urls.
   - Move usepackage hyperref after stylesheet inclusion.
   - Fix: scrartcl does not have chapter but scrreprt.
@@ -1901,8 +1873,8 @@ Release 0.5 (2008-06-25)
   - Use section commands down to subparagraph.
   - Put ensuremath around some latin1 chars.
   - Set ``usepackage[utf8x]{inputenc}`` for utf-8.
-  - New option ``--use-bibtex=style,db1,db2``.
-  - New option ``--reference-label`` to allow usage of LaTeX ref for
+  - New experimental setting `use_bibtex`_.
+  - New setting `reference_label`_ to allow usage of LaTeX ref for
     labels in section references.
   - Add a label after every section to support sectionnumbers as reference
     labels.
@@ -1911,7 +1883,7 @@ Release 0.5 (2008-06-25)
   - Remove latex comments from option_list output.
   - Fix: bug# 1612270 double quotes in italian literal.
   - Fix: output ``hypertarget{ node.get(refid) }{}`` from visit_target.
-  - Add option --use-latex-abstract.
+  - Add setting `use_latex_abstract`_.
   - Image width unit ``px`` is translated to ``pt``.
   - Add image height support.
   - Fix: image width ``70%`` is converted ``0.700\linewidth``.
@@ -1936,8 +1908,8 @@ Release 0.5 (2008-06-25)
 
 * tools/buildhtml.py:
 
-  -- Added ``ignore`` setting to exclude a list of shell patterns
-     (default: ``.svn:CVS``).
+  - Add `ignore`_ setting to exclude a list of shell patterns
+    (default: ``.svn:CVS``).
 
 * tools/editors/emacs/rst.el:
 
@@ -1968,7 +1940,7 @@ Release 0.4 (2006-01-09)
 
   - Added ``__version_details__`` attribute to describe code source
     (repository/snapshot/release).
-  - Replaced ``default_transforms`` attribute of TransformSpec with
+  - Replaced ``default_transforms`` attribute of ``TransformSpec`` with
     ``get_transforms()`` method.
 
 * docutils/core.py:
@@ -2019,7 +1991,7 @@ Release 0.4 (2006-01-09)
 
 * docutils/parsers/rst/__init__.py:
 
-  - Added validator to tab_width setting, with test.  Closes SF bug
+  - Added validator to "tab_width" setting, with test.  Closes SF bug
     #1212515, report from Wu Wei.
 
 * docutils/parsers/rst/states.py:
@@ -2348,8 +2320,8 @@ Release 0.3.9 (2005-05-26)
 
 * docutils/readers/standalone.py:
 
-  - Added ``--section-subtitles`` and ``--no-section-subtitles``
-    options to activate or deactivate the SectSubTitle transform.
+  - Added ``section_subtitles`` setting to activate or deactivate the
+    ``SectSubTitle`` transform.
 
 * docutils/transforms/frontmatter.py:
 
@@ -2386,10 +2358,10 @@ Release 0.3.9 (2005-05-26)
 * docutils/writers/latex2e.py:
 
   - Fixed tables starting with more than one multirow cell.
-  - Improved --use-latex-docinfo so that organization/contact/address
+  - Improved ``--use-latex-docinfo`` so that organization/contact/address
     fields are lumped with the last author field and appear on the
     titlepage.
-  - Made sure the titlepage is always shown with --use-latex-docinfo,
+  - Made sure the titlepage is always shown with ``--use-latex-docinfo``,
     even if the document has no title.
   - Made sure that latex doesn't fill in today's date if no date field
     was given.
@@ -2423,9 +2395,9 @@ Release 0.3.7 (2004-12-24)
 
 * docutils/frontend.py:
 
-  - Added options: --input-encoding-error-handler,
-    --record-dependencies, --leave-footnote-reference-space,
-    --strict-visitor.
+  - Added options: ``--input-encoding-error-handler``,
+    ``--record-dependencies``, ``--leave-footnote-reference-space``,
+    ``--strict-visitor``.
   - Added command-line and config file support for "overrides" setting
     parameter.
 
@@ -2519,8 +2491,8 @@ Release 0.3.7 (2004-12-24)
   - "stylesheet" and "stylesheet_path" settings are now mutually
     exclusive.
   - Added support for the new line_block/line structure.
-  - --footnote-references now overrides
-    --trim-footnote-reference-space, if applicable.
+  - ``--footnote-references`` now overrides
+    ``--trim-footnote-reference-space``, if applicable.
   - Added support for ``compound`` elements.
   - Enabled multiple format names for "raw" directive.
   - ``<p>`` tags of a paragraph which is the only visible child of the
@@ -2543,10 +2515,10 @@ Release 0.3.7 (2004-12-24)
   - no newline after depart_term.
   - Added translations for some Unicode quotes.
   - Added option "font-encoding", made package AE the default.
-  - "stylesheet" and "stylesheet_path" settings are now mutually
+  - `stylesheet`_ and `stylesheet_path`_ settings are now mutually
     exclusive.
-  - --footnote-references now overrides
-    --trim-footnote-reference-space, if applicable.
+  - ``--footnote-references`` now overrides
+    ``--trim-footnote-reference-space``, if applicable.
   - The footnote label style now matches the footnote reference style
     ("brackets" or "superscript").
   - Added support for ``compound`` elements.
@@ -2614,10 +2586,7 @@ General:
   - Moved ``spec/howto/`` to ``docs/howto``.
 
   In order to keep the CVS history of moved files, we supplied
-  SourceForge with a `script for modifying the Docutils CVS
-  repository`__.
-
-  __ http://cvs.sourceforge.net/viewcvs.py/*checkout*/docutils/sandbox/davidg/infrastructure/cvs-reorg.sh?content-type=text/plain&rev=1.5
+  SourceForge with a script for modifying the Docutils CVS repository.
 
   After running the cleanup script:
 
@@ -2666,14 +2635,14 @@ Specific:
 
 * docutils/frontend.py:
 
-  - Added help text for "--output-encoding-error-handler" and
-    "--error-encoding-error-handler".
-  - Renamed "--exit" to "--exit-status".
+  - Added help text for ``--output-encoding-error-handler`` and
+    ``--error-encoding-error-handler``.
+  - Renamed ``--exit`` to ``--exit-status``.
   - Simplified default-setting code.
 
 * docutils/parsers/rst/__init__.py:
 
-  - Added "--pep-base-url" and "--rfc-base-url" options.
+  - Added ``--pep-base-url`` and ``--rfc-base-url`` options.
 
 * docutils/parsers/rst/states.py:
 
@@ -2692,7 +2661,7 @@ Specific:
 
 * docutils/writers/latex2e.py:
 
-  - Added "--table-style=(standard|booktabs|nolines)"
+  - Added ``--table-style=(standard|booktabs|nolines)``
   - figures get "here" option (LaTeX per default puts them at bottom),
     and figure content is centered.
   - Rowspan support for tables.
@@ -2702,7 +2671,7 @@ Specific:
     width.
   - Fix: encode pdfbookmark titles, ``#`` broke pdflatex.
   - A few unicode replacements, if output_encoding != utf
-  - Add "--graphicx-option".
+  - Add `graphicx_option`_ setting.
   - Indent literal-blocks.
   - Fix: omit ``\maketitle`` when there is no document title.
 
@@ -2775,7 +2744,7 @@ Release 0.3.3 (2004-05-09)
 
   - Catch system messages to stop tracebacks from parsing errors.
   - Catch exceptions during processing report & exit without
-    tracebacks, except when "--traceback" used.
+    tracebacks, except when ``--traceback`` used.
   - Reordered components for OptionParser; application comes last.
   - Added "config_section" parameter to several methods and functions,
     allowing front ends to easily specify their config file sections.
@@ -2787,8 +2756,7 @@ Release 0.3.3 (2004-05-09)
 
 * docutils/frontend.py:
 
-  - Added "--traceback" & "--no-traceback" options ("traceback"
-    setting).
+  - Added "traceback" setting.
   - Implemented support for config file reorganization:
     ``standard_config_files`` moved from ``ConfigParser`` to
     ``OptionParser``; added
@@ -2802,7 +2770,7 @@ Release 0.3.3 (2004-05-09)
     for list setting attributes.
   - Added support for new ``DOCUTILSCONFIG`` environment variable;
     thanks to Beni Cherniavsky.
-  - Added "--no-section-numbering" option.
+  - Added ``--no-section-numbering`` option.
 
 * docutils/io.py:
 
@@ -2853,7 +2821,7 @@ Release 0.3.3 (2004-05-09)
 * docutils/parsers/rst/states.py:
 
   - Updated ``RSTState.nested_parse`` for "include" in table cells.
-  - Allowed true em-dash character and "---" as block quote
+  - Allowed true em-dash character and "``---``" as block quote
     attribution marker.
   - Added support for <angle-bracketed> complex option arguments
     (option lists).
@@ -3030,7 +2998,7 @@ Release 0.3.3 (2004-05-09)
 
 * tools/buildhtml.py:
 
-  - Added support for the "--prune" option.
+  - Added support for the ``--prune`` option.
   - Removed dependency on pep2html.py; plaintext PEPs no longer
     supported.
 
@@ -3086,7 +3054,7 @@ Specific:
   - Bumped version to 0.2.1 to reflect changes to I/O classes.
   - Bumped version to 0.2.2 to reflect changes to stylesheet options.
   - Factored ``SettingsSpec`` out of ``Component``; separately useful.
-  - Bumped version to 0.2.3 because of the new "--embed-stylesheet"
+  - Bumped version to 0.2.3 because of the new ``--embed-stylesheet``
     option and its effect on the PEP template & writer.
   - Bumped version to 0.2.4 due to changes to the PEP template &
     stylesheet.
@@ -3113,8 +3081,8 @@ Specific:
   - Added ``publish_file()`` and ``publish_string()``.
   - Factored ``Publisher.set_source()`` and ``.set_destination()``
     out of ``.set_io``.
-  - Added support for "--dump-pseudo-xml", "--dump-settings", and
-    "--dump-transforms" hidden options.
+  - Added support for ``--dump-pseudo-xml``, ``--dump-settings``, and
+    ``--dump-transforms`` hidden options.
   - Added ``Publisher.apply_transforms()`` method.
   - Added ``Publisher.set_components()`` method; support for
     ``publish_*()`` conveninece functions.
@@ -3126,28 +3094,28 @@ Specific:
 * docutils/frontend.py:
 
   - Check for & exit on identical source & destination paths.
-  - Fixed bug with absolute paths & "--config".
+  - Fixed bug with absolute paths & ``--config``.
   - Set non-command-line defaults in ``OptionParser.__init__()``:
     ``_source`` & ``_destination``.
   - Distributed ``relative_path_settings`` to components; updated
     ``OptionParser.populate_from_components()`` to combine it all.
   - Require list of keys in ``make_paths_absolute`` (was implicit in
     global ``relative_path_settings``).
-  - Added "--expose-internal-attribute", "--dump-pseudo-xml",
-    "--dump-settings", and "--dump-transforms" hidden options.
+  - Added ``--expose-internal-attribute``, ``--dump-pseudo-xml``,
+    ``--dump-settings``, and ``--dump-transforms`` hidden options.
   - Removed nasty internals-fiddling ``ConfigParser.get_section``
     code, replaced with correct code.
   - Added validation functionality for config files.
-  - Added "--error-encoding" option/setting, "_disable_config"
+  - Added ``--error-encoding`` option/setting, "_disable_config"
     internal setting.
-  - Added encoding validation; updated "--input-encoding" and
-    "--output-encoding"; added "--error-encoding-error-handler" and
-    "--output-encoding-error-handler".
+  - Added encoding validation; updated ``--input-encoding`` and
+    ``--output-encoding``; added ``--error-encoding-error-handler`` and
+    ``--output-encoding-error-handler``.
   - Moved config file processing from docutils/core.py.
   - Updated ``OptionParser.populate_from_components`` to handle new
     ``SettingsSpec.settings_defaults`` dict.
   - Added support for "-" => stdin/stdout.
-  - Added "exit_level" setting ("--exit" option).
+  - Added "exit_level" setting (``--exit`` option).
 
 * docutils/io.py:
 
@@ -3271,8 +3239,8 @@ Specific:
 
 * docutils/parser/rst/__init__.py:
 
-  - Added options: "--pep-references", "--rfc-references",
-    "--tab-width", "--trim-footnote-reference-space".
+  - Added options: ``--pep-references``, ``--rfc-references``,
+    ``--tab-width``, ``--trim-footnote-reference-space``.
 
 * docutils/parsers/rst/states.py:
 
@@ -3282,7 +3250,7 @@ Specific:
     titles to begin with enumerators.
   - Converted system messages to use the new "line" attribute.
   - Fixed a substitution reference edge case.
-  - Added support for "--pep-references" and "--rfc-references"
+  - Added support for ``--pep-references`` and ``--rfc-references``
     options; reworked ``Inliner`` code to make customization easier.
   - Removed field argument parsing.
   - Added support for short section title over/underlines.
@@ -3321,7 +3289,7 @@ Specific:
   - Implemented "superscript" and "subscript" interpreted text roles.
   - Added initial support for "abbreviation" and "acronym" roles;
     incomplete.
-  - Added support for "--trim-footnote-reference-space" option.
+  - Added support for ``--trim-footnote-reference-space`` option.
   - Optional space before colons in directives & hyperlink targets.
 
 * docutils/parsers/rst/tableparser.py:
@@ -3460,7 +3428,7 @@ Specific:
 
 * docutils/transforms/universal.py:
 
-  - Added support for the "--expose-internal-attributes" option.
+  - Added support for the ``--expose-internal-attributes`` option.
   - Removed ``Pending`` transform classes & data.
 
 * docutils/writers/__init__.py:
@@ -3470,7 +3438,7 @@ Specific:
 * docutils/writers/docutils-xml.py:
 
   - Added XML and doctype declarations.
-  - Added "--no-doctype" and "--no-xml-declaration" options.
+  - Added ``--no-doctype`` and ``--no-xml-declaration`` options.
 
 * docutils/writers/html4css1.py:
 
@@ -3491,12 +3459,12 @@ Specific:
   - Added support for "line_block", "address" elements.
   - Improved backlinks (footnotes & system_messages).
   - Improved system_message output.
-  - Redefined "--stylesheet" as containing an invariant URL, used
-    verbatim.  Added "--stylesheet-path", interpreted w.r.t. the
+  - Redefined ``--stylesheet`` as containing an invariant URL, used
+    verbatim.  Added ``--stylesheet-path``, interpreted w.r.t. the
     working directory.
-  - Added "--footnote-references" option (superscript or brackets).
-  - Added "--compact-lists" and "--no-compact-lists" options.
-  - Added "--embed-stylesheet" and "--link-stylesheet" options;
+  - Added ``--footnote-references`` option (superscript or brackets).
+  - Added ``--compact-lists`` and ``--no-compact-lists`` options.
+  - Added ``--embed-stylesheet`` and ``--link-stylesheet`` options;
     factored out ``HTMLTranslator.get_stylesheet_reference()``.
   - Improved field list rendering.
   - Added Docutils version to "generator" meta tag.
@@ -3508,7 +3476,7 @@ Specific:
   - Removed "interpreted" element support.
   - Added support for "title_reference", "sidebar", "attribution",
     "rubric", and generic "admonition" elements.
-  - Added "--attribution" option.
+  - Added ``--attribution`` option.
   - Added support for "inline", "subscript", "superscript" elements.
   - Added initial support for "abbreviation" and "acronym";
     incomplete.
@@ -3518,18 +3486,18 @@ Specific:
 
   - Added french.
   - Double quotes in literal blocks (special treatment for de/ngerman).
-  - Added '--hyperlink-color' option ('0' turns off coloring of links).
-  - Added  "--attribution" option.
+  - Added ``--hyperlink-color`` option ('0' turns off coloring of links).
+  - Added ``--attribution`` option.
   - Right align attributions.
 
 * docutils/writers/pep_html.py:
 
   - Parameterized output encoding in PEP template.
   - Reworked substitutions from ``locals()`` into ``subs`` dict.
-  - Redefined "--pep-stylesheet" as containing an invariant URL, used
-    verbatim.  Added "--pep-stylesheet-path", interpreted w.r.t. the
+  - Redefined ``--pep-stylesheet`` as containing an invariant URL, used
+    verbatim.  Added ``--pep-stylesheet-path``, interpreted w.r.t. the
     working directory.
-  - Added an override on the "--footnote-references" option.
+  - Added an override on the ``--footnote-references`` option.
   - Factored out ``HTMLTranslator.get_stylesheet_reference()``.
   - Added Docutils version to "generator" meta tag.
   - Added a "DO NOT EDIT THIS FILE" comment to generated HTML.
@@ -3677,8 +3645,8 @@ Specific:
 
 * tools/buildhtml.py:
 
-  - Added "--silent" option.
-  - Fixed bug with absolute paths & "--config".
+  - Added ``--silent`` option.
+  - Fixed bug with absolute paths & ``--config``.
   - Updated for new I/O classes.
   - Added some exception handling.
   - Separated publishers' setting defaults; prevents interference.
@@ -3686,7 +3654,7 @@ Specific:
 
 * tools/pep-html-template:
 
-  - Allow for "--embed-stylesheet".
+  - Allow for ``--embed-stylesheet``.
   - Added Docutils version to "generator" meta tag.
   - Added a "DO NOT EDIT THIS FILE" comment to generated HTML.
   - Conform to XHTML spec.
@@ -3705,7 +3673,7 @@ Specific:
 
 * tools/quicktest.py:
 
-  - Added "-V"/"--version" option.
+  - Added ``-V``/``--version`` option.
 
 * tools/rst2latex.py: LaTeX front end, added by Engelbert Gruber.
 
@@ -3917,7 +3885,7 @@ Specific:
 
 * docutils/transforms/parts.py: Renamed from old components.py.
 
-  - Added filter for `Contents`, to use alt-text for inline images,
+  - Added filter for ``Contents``, to use alt-text for inline images,
     and to remove inline markup that doesn't make sense in the ToC.
   - Added "name" attribute to TOC topic depending on its title.
   - Added support for optional TOC backlinks.
@@ -4116,6 +4084,55 @@ test/test_rst); and all modifications required to make it all work.
 
   - Improved diagnostic system messages for missing blank lines.
   - Fixed substitution_reference bug.
+
+.. References
+   ==========
+
+.. _`_config_files`: docs/user/config.html#config-files
+.. _auto_id_prefix: docs/user/config.html#auto-id-prefix
+.. _detailled:
+.. _detailed: docs/user/config.html#detailed
+.. _docutils_footnotes: docs/user/config.html#docutils-footnotes
+.. _dump_settings: docs/user/config.html#dump-settings
+.. _embed_images: docs/user/config.html#embed-images
+.. _embed_stylesheet: docs/user/config.html#embed-stylesheet
+.. _figure_footnotes: docs/user/config.html#figure-footnotes
+.. _file_insertion_enabled: docs/user/config.html#file-insertion-enabled
+.. _graphicx_option: docs/user/config.html#graphicx-option
+.. _hidden_controls: docs/user/config.html#hidden-controls
+.. _html_writer: docs/user/config.html#html-writer
+.. _hyperref_options: docs/user/config.html#hyperref-options
+.. _id_prefix: docs/user/config.html#id-prefix
+.. _ignore: docs/user/config.html#ignore
+.. _image_loading: docs/user/config.html#image-loading
+.. _indents: docs/user/config.html#indents
+.. _initial_header_level: docs/user/config.html#initial-header-level
+.. _input_encoding: docs/user/config.html#input-encoding
+.. _input_encoding_error_handler: docs/user/config.html#input-encoding-error-handler
+.. _language: docs/user/config.html#language
+.. _latex_preamble: docs/user/config.html#latex-preamble
+.. _legacy_class_functions: docs/user/config.html#legacy-class-functions
+.. _legacy_column_widths: docs/user/config.html#legacy-column-widths
+.. _literal_block_env: docs/user/config.html#literal-block-env
+.. _math_output: docs/user/config.html#math-output
+.. _output_encoding: docs/user/config.html#output-encoding
+.. _raw_enabled: docs/user/config.html#raw-enabled
+.. _reference_label: docs/user/config.html#reference-label
+.. _smart_quotes: docs/user/config.html#smart-quotes
+.. _strip_classes: docs/user/config.html#strip-classes
+.. _strip_elements_with_classes: docs/user/config.html#strip-elements-with-classes
+.. _stylesheet: docs/user/config.html#stylesheet
+.. _stylesheet_dirs: docs/user/config.html#stylesheet-dirs
+.. _stylesheet_path: docs/user/config.html#stylesheet-path
+.. _syntax_highlight: docs/user/config.html#syntax-highlight
+.. _table_style: docs/user/config.html#table-style
+.. _traceback: docs/user/config.html#traceback
+.. _use_bibtex: docs/user/config.html#use-bibtex
+.. _use_latex_abstract: docs/user/config.html#use-latex-abstract
+.. _use_latex_footnotes: docs/user/config.html#use-latex-footnotes
+.. _use_latex_toc: docs/user/config.html#use-latex-toc
+.. _view_mode: docs/user/config.html#view-mode
+
 
 
 ..
