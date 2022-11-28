@@ -65,7 +65,7 @@ class Include(Directive):
         current_source = self.state.document.current_source
         path = directives.path(self.arguments[0])
         if path.startswith('<') and path.endswith('>'):
-            _base = Path(self.standard_include_path)
+            _base = self.standard_include_path
             path = path[1:-1]
         else:
             _base = Path(current_source).parent
