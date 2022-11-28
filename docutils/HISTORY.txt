@@ -47,7 +47,9 @@ Changes Since 0.19
 * docutils/utils/__init__.py
 
   - New utility function `xml_declaration()`.
-  - `utils.DependencyList.add()` accepts `pathlib.Path` instances.
+  - `DependencyList.add()` accepts `pathlib.Path` instances.
+  - `find_file_in_dirs()` now returns a POSIX path also on Windows;
+    `get_stylesheet_list()` no longer converts "\" to "/".
 
 * docutils/utils/math/latex2mathml.py
 
