@@ -1639,7 +1639,7 @@ Options for the `hyperref TeX package`_. If hyperlink_color_ is
 not "false", the expansion of ::
 
   'colorlinks=true,linkcolor=%s,urlcolor=%s' % (
-     hyperlink_color, self.hyperlink_color
+      hyperlink_color, hyperlink_color)
 
 is prepended.
 
