@@ -300,7 +300,7 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
     def depart_definition(self, node):
         self.body.append('</dd>\n')
 
-    # don't add "simple" class value
+    # don't add "simple" class value, no special handling of "details"
     def visit_definition_list(self, node):
         self.body.append(self.starttag(node, 'dl', CLASS='docutils'))
 

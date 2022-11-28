@@ -102,11 +102,13 @@ Details disclosure elements
 Items of `definition lists`_ with class argument "details" are converted
 to `details`_ disclosure elements with the term becoming the "summary".
 
+.. _closed-details:
 .. class:: details
 
 A summary
   with details only visible after user interaction.
 
+.. _open-details:
 .. class:: details open
 
 Another summary
