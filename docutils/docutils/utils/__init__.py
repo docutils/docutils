@@ -11,7 +11,7 @@ __docformat__ = 'reStructuredText'
 import sys
 import os
 import os.path
-from pathlib import PurePath
+from pathlib import PurePath, Path
 import re
 import itertools
 import warnings
@@ -534,9 +534,9 @@ def get_stylesheet_reference(settings, relative_to=None):
 # Return 'stylesheet' or 'stylesheet_path' arguments as list.
 #
 # The original settings arguments are kept unchanged: you can test
-# with e.g. ``if settings.stylesheet_path:``
+# with e.g. ``if settings.stylesheet_path: ...``.
 #
-# Differences to ``get_stylesheet_reference``:
+# Differences to the depracated `get_stylesheet_reference()`:
 # * return value is a list
 # * no re-writing of the path (and therefore no optional argument)
 #   (if required, use ``utils.relative_path(source, target)``
@@ -555,8 +555,6 @@ def get_stylesheet_list(settings):
         # expand relative paths if found in stylesheet-dirs:
         stylesheets = [find_file_in_dirs(path, settings.stylesheet_dirs)
                        for path in stylesheets]
-        if os.sep != '/':  # for URLs, we need POSIX paths
-            stylesheets = [path.replace(os.sep, '/') for path in stylesheets]
     return stylesheets
 
 
@@ -566,17 +564,14 @@ def find_file_in_dirs(path, dirs):
 
     Return the first expansion that matches an existing file.
     """
-    if os.path.isabs(path):
-        return path
+    path = Path(path)
+    if path.is_absolute():
+        return path.as_posix()
     for d in dirs:
-        if d == '.':
-            f = path
-        else:
-            d = os.path.expanduser(d)
-            f = os.path.join(d, path)
-        if os.path.exists(f):
-            return f
-    return path
+        f = Path(d).expanduser() / path
+        if f.exists():
+            return f.as_posix()
+    return path.as_posix()
 
 
 def get_trim_footnote_ref_space(settings):

@@ -351,13 +351,10 @@ class HelperFunctionTests(unittest.TestCase):
         dirs = (os.path.join(TEST_ROOT, 'nonex'),
                 TEST_ROOT,
                 os.path.join(TEST_ROOT, '..'))
-        found = os.path.relpath(
-            os.path.join(utils.find_file_in_dirs('HISTORY.txt', dirs)),
-            TEST_ROOT).replace('\\', '/')
-        # returns
-        # '..\\HISTORY.txt' on windows
-        # '../HISTORY.txt' on other platforms
-        # 'HISTORY.txt' if not called from docutils directory.
+        found = utils.find_file_in_dirs('HISTORY.txt', dirs)
+        self.assertEqual(found, (TEST_ROOT / '..' / 'HISTORY.txt').as_posix())
+        # normalize
+        found = os.path.relpath(found, TEST_ROOT).replace('\\', '/')
         self.assertTrue(found.startswith('..'),
                         'HISTORY.txt not found in "..".')
         # Return `path` if the file exists in the cwd or if there is no match
