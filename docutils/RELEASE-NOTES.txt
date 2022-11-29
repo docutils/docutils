@@ -24,6 +24,13 @@ Future changes
 
   - The ``rst2*.py`` `front end tools`_ will be renamed to ``rst2*``
     (dropping the ``.py`` extension). [#]_
+    You may use ``docutils`` [#]_ as a future-proof command name, 
+    for example:
+    
+    .. code:: diff
+
+       - rst2latex.py --use-latex-abstract xmpl.txt > xmpl.tex
+       + docutils --writer=latex --use-latex-abstract xmpl.txt > xmpl.tex
 
     Exceptions:
       The auxilliary script ``rst2odt_prepstyles.py`` will become
@@ -33,19 +40,21 @@ Future changes
       Use ``docutils --reader=pep --writer=pep_html`` for a PEP preview. [#]_
 
     .. [#] Some Linux distributions already use the short names.
+    .. [#] The `generic command line front end tool`_.
     .. [#] The final rendering is done by a Sphinx-based build system
            (see :PEP:`676`).
 
 
-  - The default HTML writer "html__" will change from "html4css1"
-    to "html5" in Docutils 2.0.
+  - The `default HTML writer`__  will change in Docutils 2.0.
 
-    Use ``get_writer_by_name('html')`` or the rst2html.py_ front end,
-    if you want the output to be up-to-date automatically.
-
-    Use the "html4" writer or ``rst2html4.py``, if you depend on
-    stability of the generated HTML code, e.g. because you use a
-    custom style sheet or post-processing that may break otherwise.
+    * The rst2html_ front end and ``get_writer_by_name('html')`` select
+      "html4css1" now and will select "html5" in Docutils 2.0 and later.
+    * Use rst2html4_, ``docutils --writer=html4``, or 
+      ``get_writer_by_name('html4')`` if you depend on stability of the
+      generated HTML code, e.g. because you use a custom style sheet or
+      post-processing that may break otherwise.
+    * Use rst2html5_, ``docutils`` or ``get_writer_by_name('html5')``
+      if you want a HTML5 document.
 
     __ docs/user/html.html#html
 
@@ -59,10 +68,10 @@ Future changes
     default and locale encoding, fail.
 
   - Only remove BOM (U+FEFF ZWNBSP at start of data), no other ZWNBSPs.
-    Only remove BOM with `input_encoding` values None, '', 'utf-8-sig',
+    Only remove BOM with `input_encoding`_ values None, '', 'utf-8-sig',
     'utf-16', and 'utf-32'.
 
-* `html5` writer:
+* "html5" writer:
 
   - Stop setting the "footnote-reference" class value for footnote
     references. Since 0.18, you can use the CSS selector
@@ -82,7 +91,7 @@ Future changes
   - Remove option ``--embed-images`` (obsoleted by "image_loading_")
     in Docutils 2.0.
 
-* `latex2e` writer:
+* "latex2e" writer:
 
   - Change default of use_latex_citations_ setting to True
     in Docutils 1.0.
@@ -93,7 +102,7 @@ Future changes
   - Remove ``use_verbatim_when_possible`` setting
     (use literal_block_env_: verbatim) in Docutils 2.0.
 
-* `xetex` writer:
+* "xetex" writer:
 
   - Settings in the [latex2e writer] `configuration file section`__
     will be ignored by the `xetex` writer in Docutils 0.20.
@@ -102,7 +111,7 @@ Future changes
 
     __ docs/user/config.html#configuration-file-sections-entries
 
-* Remove the "rawsource" argument from nodes.Text.__init__()
+* Remove the "rawsource" argument from `nodes.Text.__init__()`
   (deprecated and ignored since Docutils 0.18) in Docutils 2.0.
 
 * Remove the compatibility hacks `nodes.reprunicode` and `nodes.ensure_str()`
@@ -119,8 +128,9 @@ Future changes
 
   __ docs/ref/transforms.html
 
-* Remove the ``--html-writer`` option of the ``buildhtml.py`` application
-  (obsoleted by the `"writer" option`_) in Docutils 2.0.
+* Remove the ``--html-writer`` option of the `buildhtml.py`_ application
+  (obsoleted by the `"writer" setting`_ since Docutils 0.18)
+  in Docutils 2.0.
 
 .. _front end tools: docs/user/tools.html
 .. _input encoding:
@@ -129,10 +139,14 @@ Future changes
 .. _image_loading: docs/user/config.html#image-loading
 .. _old-format configuration files:
    docs/user/config.html#old-format-configuration-files
-.. _rst2html.py: docs/user/tools.html#rst2html-py
+.. _rst2html.py:
+.. _rst2html: docs/user/tools.html#rst2html
+.. _rst2html4: docs/user/tools.html#rst2html4
+.. _rst2html5: docs/user/tools.html#rst2html5
 .. _reference name: docs/ref/rst/restructuredtext.html#reference-names
 .. _literal_block_env: docs/user/config.html#literal-block-env
 .. _use_latex_citations: docs/user/config.html#use-latex-citations
+.. _buildhtml.py: docs/user/tools.html#buildhtml-py
 
 
 Release 0.19 (2022-07-05)
@@ -151,9 +165,10 @@ Release 0.19 (2022-07-05)
     restore the behaviour of custom CSS styles.
 
 * After package installation, the CLI commands ``python -m docutils`` and
-  ``docutils`` start the `generic command line front end tool`__.
+  ``docutils`` start the `generic command line front end tool`_.
 
-  __ docs/user/tools.html#generic-command-line-front-end
+  .. _generic command line front end tool:
+      docs/user/tools.html#generic-command-line-front-end
 
 * Support parsing "Markdown" input with 3rd party parsers
   myst_, pycmark_, or recommonmark_.
@@ -405,10 +420,10 @@ Release 0.16 (2020-01-12)
 * tools/buildhtml.py
 
   - New option ``--html-writer`` allows to select "html" (default),
-    "html4" or "html5" (deprecated in favour of the `"writer" option`_
-    in release 0.18).
+    "html4" or "html5" (deprecated in favour of the `"writer" setting`_
+    in Docutils 0.18).
 
-  .. _"writer" option:
+  .. _"writer" setting:
      docs/user/config.html#writer-buildhtml-application
 
 * docutils/io.py
