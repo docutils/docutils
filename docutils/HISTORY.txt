@@ -312,6 +312,8 @@ Release 0.18 (2021-10-26)
   - New option `image_loading`_. Support "lazy" loading of images.
     Obsoletes `embed_images`_.
 
+    .. _image_loading: docs/user/config.html#image-loading
+
 * docutils/writers/pseudoxml.py
 
   - Fix spelling of setting `detailed`_.
