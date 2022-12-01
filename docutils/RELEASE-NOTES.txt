@@ -29,8 +29,8 @@ Future changes
     
     .. code:: diff
 
-       - rst2latex.py --use-latex-abstract xmpl.txt > xmpl.tex
-       + docutils --writer=latex --use-latex-abstract xmpl.txt > xmpl.tex
+       - rst2latex.py --use-latex-abstract FAQ.txt > FAQ.tex
+       + docutils --writer=latex --use-latex-abstract FAQ.txt > FAQ.tex
 
     Exceptions:
       The auxilliary script ``rst2odt_prepstyles.py`` will become

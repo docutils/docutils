@@ -137,6 +137,7 @@ Editable installs
 
 There are several ways to ensure that edits to the Docutils code are
 picked up by Python.
+
 We'll assume that the Docutils "trunk" is checked out under the
 ``~/projects/`` directory.
 
@@ -144,79 +145,73 @@ We'll assume that the Docutils "trunk" is checked out under the
 
      python3 -m pip install -e ~/projects/docutils/docutils
 
-   __ https://pip.pypa.io/en/stable/cli/pip_install/#editable-installs
+   __ https://pip.pypa.io/en/stable/topics/local-project-installs/
+      #editable-installs
 
-2. Install in `development mode`__ with setuptools_.
+2. Install "manually".
 
-   __ https://setuptools.pypa.io/en/latest/userguide/development_mode.html
-      #development-mode
+   Ensure that the "docutils" package is in the module search path
+   (``sys.path``) by one of the following actions:
 
-   .. _install manually:
+   a) Set the ``PYTHONPATH`` environment variable.
 
-3. Install "manually".
-
-   Ensure that the "docutils" package is in ``sys.path`` by
-   one of the following actions:
-
-   * Set the ``PYTHONPATH`` environment variable so that Python
-     picks up your local working copy of the code.
-
-     For the bash shell, add this to your ``~/.profile``::
+      For the bash shell, add this to your ``~/.profile``::
 
          PYTHONPATH=$HOME/projects/docutils/docutils
          export PYTHONPATH
 
-     The first line points to the directory containing the ``docutils``
-     package.  The second line exports the environment variable.
+      The first line points to the directory containing the ``docutils``
+      package, the second line exports the environment variable.
 
-   * Create a symlink to the docutils package directory somewhere in the
-     module search path (``sys.path``), e.g., ::
+   b) Create a symlink to the docutils package directory somewhere in the
+      ``sys.path``, e.g., ::
 
          ln -s ~/projects/docutils/docutils \
                /usr/local/lib/python3.9/dist-packages/
 
-   * Use a `path configuration file`__.
+   c) Use a `path configuration file`__.
 
-     __ https://docs.python.org/library/site.html
+      __ https://docs.python.org/library/site.html
 
-   Optionally, add some or all `front-end tools`_
-   to the binary search path, e.g.,
-   add the ``tools`` directory to the ``PATH`` variable::
+   Optionally, add some or all `front-end tools`_ to the binary search
+   path, e.g.:
+
+   a) add the ``tools`` directory to the ``PATH`` variable::
 
          PATH=$PATH:$HOME/projects/docutils/docutils/tools
          export PATH
 
-   or link idividual front-end tools to a suitable place
-   in the binary path::
+      or
+
+   b) link idividual front-end tools to a suitable place in the binary
+      path::
 
          ln -s ~/projects/docutils/docutils/tools/docutils-cli.py \
                /usr/local/bin/docutils
 
-5. Reinstall Docutils after any change::
+3. Do a regular install. Repeat after any change. ::
 
-       python3 setup.py install
+       ./setup.py install
 
    .. CAUTION::
 
-      This method is **not** recommended for day-to-day development;
-      it's too easy to forget.  Confusion inevitably ensues.
+      This method is **not** recommended for day-to-day development!
 
-      If you install Docutils this way, Python will always pick up the
-      last-installed copy of the code.  If you ever forget to
-      reinstall the "docutils" package, Python won't see your latest
-      changes.
+      If you ever forget to reinstall the "docutils" package, Python
+      won't see your latest changes. Confusion inevitably ensues.
 
-A useful addition to the ``docutils`` top-level directory in branches
-and alternate copies of the code is a ``set-PATHS`` file
-containing the following lines::
+Tip:
+  A useful addition to the ``docutils`` top-level directory in
+  *SVN branches* and *alternate copies* of the code is a ``set-PATHS``
+  shell script containing the following lines::
 
-    # source this file
-    export PYTHONPATH=$PWD:$PWD
-    export PATH=$PWD/tools:$PATH
+      # source this file
+      export PYTHONPATH=$PWD:$PWD
+      export PATH=$PWD/tools:$PATH
 
-Open a shell for this branch, ``cd`` to the ``docutils`` top-level
-directory, and "source" this file.  For example, using the bash
-shell::
+  Open a shell for this branch, ``cd`` to the ``docutils`` top-level
+  directory, and "source" this file.  For example, using the bash
+  shell::
 
     $ cd some-branch/docutils
     $ . set-PATHS
