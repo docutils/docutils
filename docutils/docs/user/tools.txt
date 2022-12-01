@@ -146,6 +146,8 @@ file settings or replace them altogether.
 .. _configuration file: `configuration files`_
 
 
+.. _rst2html:
+
 rst2html.py
 -----------
 
@@ -166,6 +168,8 @@ The current default is html4css1_, it will change to html5_ in Docutils 2.0.
 
 .. _html: html.html#html
 
+
+.. _rst2html4:
 
 rst2html4.py
 ------------
@@ -214,6 +218,8 @@ To experiment with styles, please see the
 
 __ ../howto/html-stylesheets.html
 
+
+.. _rst2html5:
 
 rst2html5.py
 ------------
