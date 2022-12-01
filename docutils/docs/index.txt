@@ -201,6 +201,7 @@ Instructions for Developers
 :Security: `Deploying Docutils Securely <howto/security.html>`__
 
 * `Inside A Docutils Command-Line Front-End Tool <howto/cmdline-tool.html>`__
+* `Runtime Settings Processing <dev/runtime-settings-processing.html>`__
 * `Writing HTML (CSS) Stylesheets for Docutils
   <howto/html-stylesheets.html>`__
 * `Docutils Internationalization <howto/i18n.html>`__
