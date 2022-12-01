@@ -961,7 +961,7 @@ class HTMLTranslator(nodes.NodeVisitor):
             self.body.append(f'<aside class="footnote-list {label_style}">\n')
         self.body.append(self.starttag(node, 'aside',
                                        classes=[node.tagname, label_style],
-                                       role="note"))
+                                       role="doc-footnote"))
 
     def depart_footnote(self, node):
         self.body.append('</aside>\n')

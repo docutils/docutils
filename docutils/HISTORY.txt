@@ -71,6 +71,9 @@ Changes Since 0.19
   - Wrap definition lists with "details" class argument in a <div>    
     with the "id" and "class" values of the list node.
 
+  - Use dpub-ARIA role "doc-footnote" (instead of ARIA role "note")
+    for footnotes.
+
 * docutils/writers/latex2e/__init__.py
 
   - Do not insert ``\usepackage[utf8]{inputenc}`` into UTF-8 encoded

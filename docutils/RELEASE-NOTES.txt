@@ -24,9 +24,9 @@ Future changes
 
   - The ``rst2*.py`` `front end tools`_ will be renamed to ``rst2*``
     (dropping the ``.py`` extension). [#]_
-    You may use ``docutils`` [#]_ as a future-proof command name, 
+    You may use ``docutils`` [#]_ as a future-proof command name,
     for example:
-    
+
     .. code:: diff
 
        - rst2latex.py --use-latex-abstract FAQ.txt > FAQ.tex
@@ -49,7 +49,7 @@ Future changes
 
     * The rst2html_ front end and ``get_writer_by_name('html')`` select
       "html4css1" now and will select "html5" in Docutils 2.0 and later.
-    * Use rst2html4_, ``docutils --writer=html4``, or 
+    * Use rst2html4_, ``docutils --writer=html4``, or
       ``get_writer_by_name('html4')`` if you depend on stability of the
       generated HTML code, e.g. because you use a custom style sheet or
       post-processing that may break otherwise.
@@ -74,12 +74,10 @@ Future changes
 * "html5" writer:
 
   - Stop setting the "footnote-reference" class value for footnote
-    references. Since 0.18, you can use the CSS selector
+    references in Docutils 0.21.
+    Since 0.18, you can use the CSS selector
     ``[role="doc-noteref"]`` instead of ``.footnote-reference``
     (see minimal.css for examples).
-
-  - Use dpub-ARIA role "doc-footnote" (instead of ARIA role "note")
-    for footnotes in Docutils 0.20.
 
   - Move attribution behind the blockquote to comply with the `"living
     standard"`__. (HTML5__ allows <cite> elements inside a blockquote.)
@@ -147,6 +145,16 @@ Future changes
 .. _literal_block_env: docs/user/config.html#literal-block-env
 .. _use_latex_citations: docs/user/config.html#use-latex-citations
 .. _buildhtml.py: docs/user/tools.html#buildhtml-py
+
+
+Release 0.20 (unpublished)
+==========================
+
+* Output changes:
+
+  HTML5:
+    Use dpub-ARIA role "doc-footnote" (instead of ARIA role "note")
+    for footnotes.
 
 
 Release 0.19 (2022-07-05)
