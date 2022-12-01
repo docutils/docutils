@@ -25,11 +25,14 @@ Releasing (post 2020)
 
 * Change HISTORY.txt title ``Changes Since <previous release>`` to ``Release <version>``.
 
-* Set new version with ``sandbox/infrastructure/set_version.sh <version>``
+* Set new version (replace ``<version>`` with the new version indentifier
+  and ``<docutils-repository-root>`` with the dir containing
+  ``HISTORY.txt`` and ``RELEASE-NOTES.txt``)::
 
-  Check what was changed with version control system by ``set_version.sh``
+      cd <docutils-repository-root>
+      ../sandbox/infrastructure/set_version.sh <version>
 
-  Change docutils/__init__.py __version_info__ tuple.
+  Check what was changed by ``set_version.sh``.
 
   Run tests ::
 
@@ -37,7 +40,8 @@ Releasing (post 2020)
     python3 test/alltests.py
 
   or use tox.
-    
+  In case of errors, clearing ``docutils/__pycache__`` may help.
+
   ``export PYTHONWARNINGS=default`` prints DeprecationWarnings in python3.
 
 * Generate wheel and source-distribution::
@@ -64,13 +68,13 @@ Releasing (post 2020)
 
 * Commit changes ... the changed version number.
 
-* tag 0.## (Note: only directory docutils is copied)::
+* tag #.# (Note: only directory docutils is copied)::
 
     svn copy svn+ssh://grubert@svn.code.sf.net/p/docutils/code/trunk/docutils \
-             svn+ssh://grubert@svn.code.sf.net/p/docutils/code/tags/docutils-0.## \
-             -m "tagging release 0.##"
+             svn+ssh://grubert@svn.code.sf.net/p/docutils/code/tags/docutils-#.# \
+             -m "tagging release #.#"
 
-* Update your source directory. 
+* Update your source directory.
 * Rebuild wheel and source-distribution ::
 
     python3 setup.py sdist
@@ -78,7 +82,7 @@ Releasing (post 2020)
 
 * Now upload to pypi::
 
-    python3 -m twine upload  dist/docutils-0.##*
+    python3 -m twine upload  dist/docutils-#.#*
 
 * Remove previous package from local cache::
 
@@ -97,28 +101,28 @@ Releasing (post 2020)
 
 * Notify to docutils-developer and user.
 
-* upload source and generated html to sf-htdocs/0.## ::
+* upload source and generated html to sf-htdocs/#.# ::
 
     mkdir tmp1
     cd tmp1
-    tar xzvf ../dist/docutils-0.##.tar.gz
-    cd docutils-0.##/
+    tar xzvf ../dist/docutils-#.#.tar.gz
+    cd docutils-#.#/
     tools/buildhtml.py .
     find . -name \*.pyc -exec rm -v {} \;
     find . -name __pycache__ -exec rmdir -v {} \;
     rm -r docutils.egg-info
-    rsync -e ssh -r -t ./ web.sourceforge.net:/home/project-web/docutils/htdocs/0.##
+    rsync -e ssh -r -t ./ web.sourceforge.net:/home/project-web/docutils/htdocs/#.#
 
 * Check web/index.txt for necessary corrections.
 * Run sandbox/infrastructure/docutils-update.local to update web-content.
 * Release to sourceforge.
 
-  - Upload tar.gz and 0.16 release notes to sourceforge.
-  - Select docutils-0.16.tar.gz as default for all OS.  
+  - Upload docutils-#.#.tar.gz and release notes to sourceforge.
+  - Select docutils-#.#.tar.gz as default for all OS.
 
-* set_version 0.#.#+1b.dev
+* set_version #.{#+1}b.dev
 * test with py3
-* docutils/HISTORY.txt: add title "Changes Since 0.##"
+* docutils/HISTORY.txt: add title "Changes Since #.#"
 * run sandbox/infrastructure/docutils-update.local
 
 

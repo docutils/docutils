@@ -54,7 +54,7 @@ from collections import namedtuple
 
 __docformat__ = 'reStructuredText'
 
-__version__ = '0.19.1b.dev'
+__version__ = '0.20b.dev'
 """Docutils version identifier (complies with PEP 440)::
 
     major.minor[.micro][releaselevel[serial]][.dev]
@@ -116,8 +116,8 @@ class VersionInfo(namedtuple('VersionInfo',
 
 __version_info__ = VersionInfo(
     major=0,
-    minor=19,
-    micro=1,
+    minor=20,
+    micro=0,
     releaselevel='beta',  # one of 'alpha', 'beta', 'candidate', 'final'
     serial=0,  # pre-release number (0 for final releases and snapshots)
     release=False  # True for official releases and pre-releases

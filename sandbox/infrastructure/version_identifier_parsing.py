@@ -107,7 +107,7 @@ def change_version_info_definition(version, source):
     with open(source) as sourcefile:
         old = sourcefile.read()
     if not re.search(version_info_def_pattern, old):
-        return f'No matching "version_info" definition found.'
+        return 'No matching "version_info" definition found.'
     new = re.sub(version_info_def_pattern, version_info_def, old)
     if old == new:
         return 'Nothing to change.'
