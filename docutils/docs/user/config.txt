@@ -145,6 +145,9 @@ Individual configuration sections and settings are described in the
 following section.
 
 
+.. _configuration section:
+.. _configuration sections:
+
 -------------------------------------
 Configuration File Sections & Entries
 -------------------------------------
@@ -1901,7 +1904,6 @@ LaTeX (pdfTeX_). It shares all settings defined in the `[latex writers]`_
 
 .. _LaTeX2e writer: latex.html#latex2e-writer
 .. _pdfTeX: https://www.tug.org/applications/pdftex/
-.. _configuration section: `Configuration File Sections & Entries`_
 
 
 Writer Specific Defaults
@@ -1938,14 +1940,12 @@ Default: "T1".  Option: ``--font-encoding``.
 [xetex writer]
 ~~~~~~~~~~~~~~
 
-The `XeTeX writer`_ generates a LaTeX source for compilation with `XeTeX or
-LuaTeX`_. It derives from the latex2e writer, and shares all settings
-defined in the `[latex writers]`_ and `[latex2e writer]`_ `configuration
-sections`_.
+The `XeTeX writer`_ generates a LaTeX source for compilation with `XeTeX
+or LuaTeX`_. It derives from the latex2e writer, and shares all settings
+defined in the `[latex writers]`_ `configuration section`_.
 
 .. _XeTeX writer: latex.html#xetex-writer
 .. _XeTeX or LuaTeX: https://texfaq.org/FAQ-xetex-luatex
-.. _configuration sections: `Configuration File Sections & Entries`_
 
 Writer Specific Defaults
 """"""""""""""""""""""""
