@@ -40,9 +40,7 @@ class Writer(latex2e.Writer):
 \\setmonofont[HyphenChar=None,Scale=MatchLowercase]{DejaVu Sans Mono}"""
 
     config_section = 'xetex writer'
-    # TODO: remove dependency on `latex2e writer`.
-    config_section_dependencies = ('writers', 'latex writers',
-                                   'latex2e writer')
+    config_section_dependencies = ('writers', 'latex writers')
 
     # use a copy of the parent spec with some modifications:
     settings_spec = frontend.filter_settings_spec(

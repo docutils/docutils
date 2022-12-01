@@ -88,6 +88,10 @@ Changes Since 0.19
 
   - Do not output empty "manual" in ``.TH``
 
+* docutils/writers/xetex/__init__.py
+
+  - Ignore settings in the [latex2e writer] configuration file section.
+
 * setup.py
 
   - Fix SetuptoolsDeprecationWarning: ``Installing '' as data is deprecated``

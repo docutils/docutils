@@ -100,15 +100,6 @@ Future changes
   - Remove ``use_verbatim_when_possible`` setting
     (use literal_block_env_: verbatim) in Docutils 2.0.
 
-* "xetex" writer:
-
-  - Settings in the [latex2e writer] `configuration file section`__
-    will be ignored by the `xetex` writer in Docutils 0.20.
-    Move settings intended for both, `xetex` and `latex2e` writers
-    to section [latex writers].
-
-    __ docs/user/config.html#configuration-file-sections-entries
-
 * Remove the "rawsource" argument from `nodes.Text.__init__()`
   (deprecated and ignored since Docutils 0.18) in Docutils 2.0.
 
@@ -155,6 +146,17 @@ Release 0.20 (unpublished)
   HTML5:
     Use dpub-ARIA role "doc-footnote" (instead of ARIA role "note")
     for footnotes.
+
+* Configuration changes:
+
+  - Settings in the [latex2e writer] configuration file section
+    are now ignored by the "xetex" writer.
+    Move settings intended for both, "xetex" and "latex2e" writers
+    to section `[latex writers]`_.
+
+    .. _[latex writers]: docs/user/config.html#latex-writers
+
+* Bugfixes and improvements (see HISTORY_).
 
 
 Release 0.19 (2022-07-05)
