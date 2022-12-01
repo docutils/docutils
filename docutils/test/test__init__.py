@@ -74,7 +74,7 @@ class VersionInfoTests(unittest.TestCase):
         """Test that __version__ is equivalent to __version_info__."""
         self.assertEqual(
             docutils.utils.version_identifier(docutils.__version_info__),
-            docutils.__version__)
+            docutils.__version__, f'{docutils.__version_info__} differs')
 
     def test_version_info_comparing(self):
         """Test comparing of __version_info__ instances."""
