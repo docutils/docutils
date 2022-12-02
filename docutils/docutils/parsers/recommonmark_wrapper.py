@@ -45,9 +45,8 @@ try:
     from recommonmark.parser import CommonMarkParser
 except ImportError as err:
     raise ImportError(
-        'Parsing "recommonmark" Markdown flavour requires the '
-        'package https://pypi.org/project/recommonmark which '
-        'in turn depends on https://pypi.org/project/sphinx.'
+        'Parsing "recommonmark" Markdown flavour requires the\n'
+        '  package https://pypi.org/project/recommonmark.'
     ) from err
 else:
     if recommonmark.__version__ < '0.6.0':
