@@ -250,8 +250,10 @@ class HelperFunctionsTests(unittest.TestCase):
     keys = ['foo', 'ham']
 
     def setUp(self):
-        self.option_parser = frontend.OptionParser(
-            components=(rst.Parser,), read_config_files=None)
+        with warnings.catch_warnings():
+            warnings.filterwarnings('ignore', category=DeprecationWarning)
+            self.option_parser = frontend.OptionParser(
+                components=(rst.Parser,), read_config_files=None)
 
     def test_make_paths_absolute(self):
         pathdict = self.pathdict.copy()
