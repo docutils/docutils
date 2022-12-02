@@ -18,8 +18,6 @@ import time
 start = time.time()
 
 import atexit               # noqa: E402
-import glob                 # noqa: E402
-import importlib            # noqa: E402
 import os                   # noqa: E402
 from pathlib import Path    # noqa: E402
 import platform             # noqa: E402
@@ -71,59 +69,6 @@ sys.stdout = sys.stderr = Tee('alltests.out')
 import unittest  # NoQA: E402
 
 
-def loadTestModules(path):
-    """
-    Return a test suite composed of all the tests from modules in a directory.
-
-    Search for modules in directory `path`, beginning with `name`.
-    Then search subdirectories (also beginning with `name`)
-    recursively.  Subdirectories must be Python packages; they must contain an
-    '__init__.py' module.
-    """
-    testLoader = unittest.defaultTestLoader
-    testSuite = unittest.TestSuite()
-    testModules = []
-    path = os.path.abspath(path)        # current working dir if `path` empty
-    paths = [path]
-    while paths:
-        p = paths.pop() + '/test_'
-        for file_path in glob.glob(p + '*.py'):
-            testModules.append(path2mod(os.path.relpath(file_path, path)))
-        for file_path in glob.glob(p + '*/__init__.py'):
-            paths.append(os.path.dirname(file_path))
-    # Import modules and add their tests to the suite.
-    sys.path.insert(0, path)
-    for mod in testModules:
-        try:
-            module = importlib.import_module(mod)
-        except ImportError:
-            print(f"ERROR: Can't import {mod}, skipping its tests:",
-                  file=sys.stderr)
-            sys.excepthook(*sys.exc_info())
-        else:
-            # if there's a suite defined, incorporate its contents
-            try:
-                suite = module.suite
-            except AttributeError:
-                # Look for individual tests
-                moduleTests = testLoader.loadTestsFromModule(module)
-                # unittest.TestSuite.addTests() doesn't work as advertised,
-                # as it can't load tests from another TestSuite, so we have
-                # to cheat:
-                testSuite.addTest(moduleTests)
-            else:
-                if not callable(suite):
-                    raise AssertionError(f"don't understand suite ({mod})")
-                testSuite.addTest(suite())
-    sys.path.pop(0)
-    return testSuite
-
-
-def path2mod(path):
-    """Convert a file path to a dotted module name."""
-    return path[:-3].replace(os.sep, '.')
-
-
 class NumbersTestResult(unittest.TextTestResult):
     """Result class that counts subTests."""
     def addSubTest(self, test, subtest, error):
@@ -135,7 +80,7 @@ class NumbersTestResult(unittest.TextTestResult):
 
 
 if __name__ == '__main__':
-    suite = loadTestModules(DOCUTILS_ROOT/'test')
+    suite = unittest.defaultTestLoader.discover(str(DOCUTILS_ROOT / 'test'))
     print(f'Testing Docutils {docutils.__version__} '
           f'with Python {sys.version.split()[0]} '
           f'on {time.strftime("%Y-%m-%d at %H:%M:%S")}')
