@@ -23,14 +23,10 @@ if __name__ == '__main__':
     sys.path.insert(0, str(Path(__file__).resolve().parents[3]))
 
 from docutils.frontend import get_default_settings
-try:
-    from docutils.parsers.recommonmark_wrapper import Parser
-except ImportError:
-    Parser = None
+from docutils.parsers.recommonmark_wrapper import Parser
 from docutils.utils import new_document
 
 
-@unittest.skipIf(Parser is None, 'Optional "recommonmark" module not found.')
 class RecommonmarkParserTestCase(unittest.TestCase):
     def test_parser(self):
         parser = Parser()

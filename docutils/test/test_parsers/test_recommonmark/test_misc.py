@@ -24,10 +24,7 @@ if __name__ == '__main__':
 
 from docutils.core import publish_string
 from docutils.parsers.rst import directives as rst_directives
-try:
-    from docutils.parsers.recommonmark_wrapper import Parser
-except ImportError:
-    Parser = None
+from docutils.parsers.recommonmark_wrapper import Parser
 
 
 sample_with_html = """\
