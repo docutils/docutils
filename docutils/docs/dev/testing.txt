@@ -11,6 +11,10 @@
 :Date: $Date$
 :Copyright: This document has been placed in the public domain.
 
+:Abstract: This document describes how to run the Docutils test suite,
+           how the tests are organized and how to add new tests or modify
+           existing tests.
+
 .. _Docutils: https://docutils.sourceforge.io/
 
 .. contents::
@@ -19,15 +23,12 @@ When adding new functionality (or fixing bugs), be sure to add test
 cases to the test suite.  Practise test-first programming; it's fun,
 it's addictive, and it works!
 
-This document describes how to run the Docutils test suite, how the
-tests are organized and how to add new tests or modify existing tests.
-
 
 Running the Test Suite
 ======================
 
 Before checking in any changes, run the entire Docutils test suite to
-be sure that you haven't broken anything.  From a shell do [#]_::
+be sure that you haven't broken anything.  From a shell do::
 
     cd docutils/test
     python -u alltests.py
@@ -36,26 +37,19 @@ Before `checking in`__ changes to the Docutils core, run the tests on
 all `supported Python versions`_ (see below for details).
 In a pinch, the edge cases should cover most of it.
 
-__ policies.html#check-ins
-
 .. note::
-   The standard ``alltests.py`` test runner uses the standard library's
-   unittest_ framework.
+   The ``alltests.py`` test runner is based on the standard library's unittest_
+   framework.
+   Since Docutils 0.19, running ``python -m unittest``, the pytest_, and the
+   nose_ frameworks no longer result in spurious failures (cf. `bug #270`_).
+   However, there are differences in the reported number of tests and in
+   test coverage.
 
-   For the pytest_ test framework::
-
-       pytest --quiet .
-
-   .. _unittest: https://docs.python.org/3/library/unittest.html
-   .. _pytest: https://pypi.org/project/pytest/
-
-.. [#] When using the `Python launcher for Windows`__, make sure to
-   specify a Python version, e.g., ``py -3.9 -u alltests.py`` for
-   Python 3.9.
-
-   __ https://docs.python.org/3/using/windows.html#python-launcher-for-windows
-
-   .. cf. https://sourceforge.net/p/docutils/bugs/434/
+__ policies.html#check-ins
+.. _unittest: https://docs.python.org/3/library/unittest.html
+.. _pytest: https://pypi.org/project/pytest
+.. _nose: https://pypi.org/project/nose
+.. _`bug #270`: https://sourceforge.net/p/docutils/bugs/270/
 
 
 .. _Python versions:
@@ -63,9 +57,11 @@ __ policies.html#check-ins
 Testing across multiple Python versions
 ---------------------------------------
 
-A Docutils release has a commitment to support a minimum Python version [#]_
-and beyond. Before a release is cut, tests must pass in all
-`supported versions`_.
+A Docutils release has a commitment to support a minimum Python version
+and beyond (see dependencies__ in README.txt). Before a release is cut,
+tests must pass in all `supported versions`_. [#]_
+
+__ ../../README.html#dependencies
 
 You can use `tox`_ to test with all supported versions in one go.
 From the shell::
@@ -96,12 +92,20 @@ Then run::
     [...]
     python3.11 -u alltests.py
 
+.. note::
+   When using the `Python launcher for Windows`__, make sure to
+   specify a Python version, e.g., ``py -3.9 -u alltests.py`` for
+   Python 3.9.
+
+   .. cf. https://sourceforge.net/p/docutils/bugs/434/
+   __ https://docs.python.org/3/using/windows.html#python-launcher-for-windows
+
+
 .. [#] Good resources covering the differences between Python versions
    are the `What's New` documents (`What's New in Python 3.11`__ and
    similar).
 
-__ https://docs.python.org/3/whatsnew/3.11.html
-
+   __ https://docs.python.org/3/whatsnew/3.11.html
 
 .. _supported versions:
 .. _supported Python versions: ../../README.html#requirements
@@ -137,7 +141,7 @@ If there is no similar test, you can write a new test from scratch
 using Python's ``unittest`` module.  For an example, please have a
 look at the following imaginary ``test_square.py``::
 
-    #! /usr/bin/env python
+    #! /usr/bin/env python3
 
     # $Id$
     # Author: Your Name <your_email_address@example.org>
@@ -148,6 +152,11 @@ look at the following imaginary ``test_square.py``::
     """
 
     import unittest
+    if __name__ == '__main__':
+        # prepend the "docutils root" to the Python library path
+        # so we import the local `docutils` package.
+        sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
     import docutils.square
 
 
@@ -173,11 +182,14 @@ documentation of the ``unittest`` module.
 
 .. Note::
 
-   Unit tests and functional test should generally set ::
+   Unit tests and functional test should generally disable configuration
+   files, setting the `_disable_config`__ setting to True ::
 
      settings_overrides['_disable_config'] = True
 
    in order to be independent on the users local configuration.
+
+   __ ../user/config.html#disable-config
 
 .. _functional:
 
@@ -211,8 +223,6 @@ Directory Structure
 
     - ``some_test.py``, for example.
 
-    - ``_default.py``, the `default configuration file`_.
-
 
 The Testing Process
 -------------------
@@ -242,14 +252,6 @@ file name (relative to ``functional/output/`` and
 ``functional/expected/``).  Note that the file names can be chosen
 arbitrarily.  However, the file names in ``functional/output/`` *must*
 match the file names in ``functional/expected/``.
-
-If defined, ``_test_more`` must be a function with the following
-signature::
-
-    def _test_more(expected_dir, output_dir, test_case, parameters):
-
-This function is called from the test case to perform tests beyond the
-simple comparison of expected and actual output files.
 
 ``test_source`` and ``test_destination`` are removed from the
 namespace, as are all variables whose names begin with an underscore
@@ -287,17 +289,6 @@ commit the change.
 .. [#] The validity of `Docutils XML` can be tested with
    ``xmllint <document-referencing-local-Docutils-DTD>.xml --valid --noout``.
 
-   .. note: the ``--dtdvalid`` and ``--nonet`` options did not help override
+   .. note: the ``--dtdvalid`` and ``--nonet`` options do not help override
      a reference to the PUBLIC "docutils.dtd" if there is a local version
      on the system (e.g. /usr/share/xml/docutils/docutils.dtd in Debian).
-
-
-.. _default configuration file:
-
-The Default Configuration File
-------------------------------
-
-The file ``functional/tests/_default.py`` contains default settings.
-It is executed just before the actual configuration files, which has
-the same effect as if the contents of ``_default.py`` were prepended
-to every configuration file.
