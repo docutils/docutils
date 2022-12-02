@@ -548,7 +548,7 @@ class FileOutput(Output):
                         raise ValueError(
                             f'Encoding of {self.destination_path} '
                             f'({self.destination.encoding}) differs \n'
-                            '  from specified encoding ({self.encoding})')
+                            f'  from specified encoding ({self.encoding})')
                     else:
                         raise err
         except (UnicodeError, LookupError) as err:
