@@ -49,7 +49,7 @@ class RecommonmarkMissingTests(unittest.TestCase):
 
     def test_missing_parser_message(self):
         with self.assertRaisesRegex(ImportError,
-                                    'requires the package .*recommonmark'):
+                                    'requires the.*package .* recommonmark'):
             publish_string('test data', parser_name='recommonmark')
 
 
