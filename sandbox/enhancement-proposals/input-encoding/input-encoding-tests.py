@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# encoding: utf-8
 # :License: Released under the terms of the `2-Clause BSD license`_, in short:
 #
 #    Copying and distribution of this file, with or without modification,
@@ -13,9 +12,13 @@
 # ========================
 from __future__ import print_function
 
+import codecs
 import locale
 from pprint import pprint
 import sys
+
+# additional codecs from https://codeberg.org/milde/inspecting-codecs
+import inspecting_codecs
 
 if sys.version_info < (3,):
     sys.path.append('/usr/lib/python3/dist-packages/')
@@ -83,6 +86,26 @@ for encoding in sorted(samples):
         except UnicodeError:
             print(encoding, 'fail')
 
+
+print('\nreading with codec "utf_sig".')
+for encoding in sorted(samples):
+    with open('samples/sample-'+encoding, encoding='utf-sig') as f:
+        try:
+            text = f.read()
+            print(encoding, repr(text), len(text))
+        except UnicodeError:
+            print(encoding, 'fail')
+
+print('\nreading self-declaring files with codec "declared".')
+for encoding in sorted(samples):
+    with open('samples/self-declaring-'+encoding, encoding='declared') as f:
+        try:
+            text = f.read()
+            print(encoding, repr(text), len(text))
+        except UnicodeError:
+            print(encoding, 'fail')
+
+
 print('\nreading with `docutils.io.FileInput`')
 for encoding in sorted(samples):
     f = FileInput(source_path='samples/sample-'+encoding)
@@ -102,9 +125,7 @@ for encoding in sorted(samples):
     try:
         text = f.read()
         # l > 5 points to spurious bytes in the data
-        l = len(text.split()[-1]) 
-        if sys.version_info < (3,):
-            text = text.encode('utf8')
+        l = len(text.split()[-1])
         print(encoding, repr(text), l)
     except UnicodeError as err:
         print(encoding, 'fail', err)
