@@ -92,6 +92,8 @@ def read_config_file(option, opt, value, parser):
 
 def validate_encoding(setting, value, option_parser,
                       config_parser=None, config_section=None):
+    if value == '':
+        return None  # allow overwriting a config file value
     try:
         codecs.lookup(value)
     except LookupError:
