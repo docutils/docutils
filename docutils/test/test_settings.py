@@ -246,7 +246,7 @@ class ConfigEnvVarFileTests(ConfigFileTests):
 
 class HelperFunctionsTests(unittest.TestCase):
 
-    pathdict = {'foo': 'hallo', 'ham': 'h\xE4m', 'spam': 'spam'}
+    pathdict = {'foo': 'hallo', 'ham': 'häm', 'spam': 'spam'}
     keys = ['foo', 'ham']
 
     def setUp(self):
@@ -257,7 +257,7 @@ class HelperFunctionsTests(unittest.TestCase):
         pathdict = self.pathdict.copy()
         frontend.make_paths_absolute(pathdict, self.keys, base_path='base')
         self.assertEqual(pathdict['foo'], os.path.abspath('base/hallo'))
-        self.assertEqual(pathdict['ham'], os.path.abspath('base/h\xE4m'))
+        self.assertEqual(pathdict['ham'], os.path.abspath('base/häm'))
         # not touched, because key not in keys:
         self.assertEqual(pathdict['spam'], 'spam')
 
@@ -268,7 +268,7 @@ class HelperFunctionsTests(unittest.TestCase):
         pathdict = self.pathdict.copy()
         frontend.make_paths_absolute(pathdict, self.keys)
         self.assertEqual(pathdict['foo'], os.path.abspath('hallo'))
-        self.assertEqual(pathdict['ham'], os.path.abspath('h\xE4m'))
+        self.assertEqual(pathdict['ham'], os.path.abspath('häm'))
         # not touched, because key not in keys:
         self.assertEqual(pathdict['spam'], 'spam')
 
