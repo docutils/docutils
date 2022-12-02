@@ -27,9 +27,9 @@ ham = os.path.relpath(DATA_ROOT/'ham.tex').replace('\\', '/')
 
 
 class WriterPublishTestCase(unittest.TestCase):
-    
+
     maxDiff = None
-    
+
     def test_publish(self):
         writer_name = 'latex'
         settings = {
@@ -720,22 +720,22 @@ totest['table_styles'] = [
    |  3  |  4  |
    +-----+-----+
 """,
-head_table + r"""
-\setlength{\DUtablewidth}{\linewidth}%
-\begin{longtable*}{p{0.075\DUtablewidth}p{0.075\DUtablewidth}}
+head_table + """
+\\setlength{\\DUtablewidth}{\\linewidth}%
+\\begin{longtable*}{p{0.075\\DUtablewidth}p{0.075\\DUtablewidth}}
 
 1
- & 
+ & \n\
 2
- \\
+ \\\\
 
 3
- & 
+ & \n\
 4
- \\
-\end{longtable*}
+ \\\\
+\\end{longtable*}
 
-\end{document}
+\\end{document}
 """],
 ["""\
 .. table::
@@ -745,19 +745,19 @@ head_table + r"""
    |  1  |2|
    +-----+-+
 """,
-head_booktabs + r"""
-\setlength{\DUtablewidth}{\linewidth}%
-\begin{longtable*}{p{0.075\DUtablewidth}p{0.028\DUtablewidth}}
-\toprule
+head_booktabs + """
+\\setlength{\\DUtablewidth}{\\linewidth}%
+\\begin{longtable*}{p{0.075\\DUtablewidth}p{0.028\\DUtablewidth}}
+\\toprule
 
 1
- & 
+ & \n\
 2
- \\
-\bottomrule
-\end{longtable*}
+ \\\\
+\\bottomrule
+\\end{longtable*}
 
-\end{document}
+\\end{document}
 """],
 ["""\
 .. table::
@@ -801,19 +801,19 @@ head_table + r"""
    |  1  |  2  |
    +-----+-----+
 """,
-head_table + r"""
-\setlength{\DUtablewidth}{\linewidth}%
-\begin{longtable*}{|p{0.191\DUtablewidth}|p{0.365\DUtablewidth}|}
-\hline
+head_table + """
+\\setlength{\\DUtablewidth}{\\linewidth}%
+\\begin{longtable*}{|p{0.191\\DUtablewidth}|p{0.365\\DUtablewidth}|}
+\\hline
 
 1
- & 
+ & \n\
 2
- \\
-\hline
-\end{longtable*}
+ \\\\
+\\hline
+\\end{longtable*}
 
-\end{document}
+\\end{document}
 """],
 ]
 
@@ -829,22 +829,22 @@ totest_table_style_booktabs['table_styles'] = [
    |  3  |  4  |
    +-----+-----+
 """,
-head_table + r"""
-\setlength{\DUtablewidth}{\linewidth}%
-\begin{longtable*}{p{0.075\DUtablewidth}p{0.075\DUtablewidth}}
+head_table + """
+\\setlength{\\DUtablewidth}{\\linewidth}%
+\\begin{longtable*}{p{0.075\\DUtablewidth}p{0.075\\DUtablewidth}}
 
 1
- & 
+ & \n\
 2
- \\
+ \\\\
 
 3
- & 
+ & \n\
 4
- \\
-\end{longtable*}
+ \\\\
+\\end{longtable*}
 
-\end{document}
+\\end{document}
 """],
 ["""\
 .. table::
@@ -871,19 +871,19 @@ head_booktabs + r"""
    |  1  |  2  |
    +-----+-----+
 """,
-head_booktabs + r"""
-\setlength{\DUtablewidth}{\linewidth}%
-\begin{longtable*}{p{0.191\DUtablewidth}p{0.365\DUtablewidth}}
-\toprule
+head_booktabs + """
+\\setlength{\\DUtablewidth}{\\linewidth}%
+\\begin{longtable*}{p{0.191\\DUtablewidth}p{0.365\\DUtablewidth}}
+\\toprule
 
 1
- & 
+ & \n\
 2
- \\
-\bottomrule
-\end{longtable*}
+ \\\\
+\\bottomrule
+\\end{longtable*}
 
-\end{document}
+\\end{document}
 """],
 ]
 totest_table_style_auto['table_styles'] = [
@@ -931,19 +931,19 @@ head_booktabs + r"""
    |  1  |  2  |
    +-----+-----+
 """,
-head_table + r"""
-\setlength{\DUtablewidth}{\linewidth}%
-\begin{longtable*}{|p{0.191\DUtablewidth}|p{0.365\DUtablewidth}|}
-\hline
+head_table + """
+\\setlength{\\DUtablewidth}{\\linewidth}%
+\\begin{longtable*}{|p{0.191\\DUtablewidth}|p{0.365\\DUtablewidth}|}
+\\hline
 
 1
- & 
+ & \n\
 2
- \\
-\hline
-\end{longtable*}
+ \\\\
+\\hline
+\\end{longtable*}
 
-\end{document}
+\\end{document}
 """],
 ]
 
@@ -957,19 +957,19 @@ totest['table_align'] = [
    |  1  |  2  |
    +-----+-----+
 """,
-head_table + r"""
-\setlength{\DUtablewidth}{\linewidth}%
-\begin{longtable*}[r]{|p{0.075\DUtablewidth}|p{0.075\DUtablewidth}|}
-\hline
+head_table + """
+\\setlength{\\DUtablewidth}{\\linewidth}%
+\\begin{longtable*}[r]{|p{0.075\\DUtablewidth}|p{0.075\\DUtablewidth}|}
+\\hline
 
 1
- & 
+ & \n\
 2
- \\
-\hline
-\end{longtable*}
+ \\\\
+\\hline
+\\end{longtable*}
 
-\end{document}
+\\end{document}
 """],
 ]
 
@@ -981,33 +981,33 @@ Title
 entry value1
 ===== ======
 """,
-head_table + r"""
-\setlength{\DUtablewidth}{\linewidth}%
-\begin{longtable*}{|p{0.075\DUtablewidth}|p{0.086\DUtablewidth}|}
-\hline
-\textbf{%
+head_table + """
+\\setlength{\\DUtablewidth}{\\linewidth}%
+\\begin{longtable*}{|p{0.075\\DUtablewidth}|p{0.086\\DUtablewidth}|}
+\\hline
+\\textbf{%
 Title
-} &  \\
-\hline
-\endfirsthead
-\hline
-\textbf{%
+} &  \\\\
+\\hline
+\\endfirsthead
+\\hline
+\\textbf{%
 Title
-} &  \\
-\hline
-\endhead
-\multicolumn{2}{p{0.16\DUtablewidth}}{\raggedleft\ldots continued on next page}\\
-\endfoot
-\endlastfoot
+} &  \\\\
+\\hline
+\\endhead
+\\multicolumn{2}{p{0.16\\DUtablewidth}}{\\raggedleft\\ldots continued on next page}\\\\
+\\endfoot
+\\endlastfoot
 
 entry
- & 
+ & \n\
 value1
- \\
-\hline
-\end{longtable*}
+ \\\\
+\\hline
+\\end{longtable*}
 
-\end{document}
+\\end{document}
 """],
 ["""\
 +----+----+
@@ -1016,21 +1016,21 @@ value1
 |         |
 +---------+
 """,
-head_table + r"""
-\setlength{\DUtablewidth}{\linewidth}%
-\begin{longtable*}{|p{0.063\DUtablewidth}|p{0.063\DUtablewidth}|}
-\hline
+head_table + """
+\\setlength{\\DUtablewidth}{\\linewidth}%
+\\begin{longtable*}{|p{0.063\\DUtablewidth}|p{0.063\\DUtablewidth}|}
+\\hline
 
 c3
- & 
+ & \n\
 c4
- \\
-\hline
-\multicolumn{2}{|p{0.13\DUtablewidth}|}{} \\
-\hline
-\end{longtable*}
+ \\\\
+\\hline
+\\multicolumn{2}{|p{0.13\\DUtablewidth}|}{} \\\\
+\\hline
+\\end{longtable*}
 
-\end{document}
+\\end{document}
 """],
 ]
 
@@ -1062,27 +1062,27 @@ head_template.substitute(
 \fi
 """
     )
-) + r"""
-\begin{DUclass}{my-class}
-\setlength{\DUtablewidth}{\linewidth}%
-\begin{longtable*}{|p{0.075\DUtablewidth}|p{0.075\DUtablewidth}|}
-\hline
+) + """
+\\begin{DUclass}{my-class}
+\\setlength{\\DUtablewidth}{\\linewidth}%
+\\begin{longtable*}{|p{0.075\\DUtablewidth}|p{0.075\\DUtablewidth}|}
+\\hline
 
 1
- & 
+ & \n\
 2
- \\
-\hline
+ \\\\
+\\hline
 
 3
- & 
+ & \n\
 4
- \\
-\hline
-\end{longtable*}
-\end{DUclass}
+ \\\\
+\\hline
+\\end{longtable*}
+\\end{DUclass}
 
-\end{document}
+\\end{document}
 """],
 ]
 
@@ -1154,11 +1154,11 @@ same paragraph.
 [r""".. compound::
 
   Compound paragraph
-  
+
   .. raw:: LaTeX
-     
+
      raw LaTeX block
-  
+
   compound paragraph continuation.
 """,
 head_template.substitute(
