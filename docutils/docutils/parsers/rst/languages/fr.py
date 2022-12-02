@@ -93,7 +93,6 @@ roles = {
       'brut': 'raw',
       # the following roles are not implemented in Docutils
       'index': 'index',
-      'index': 'index',
       'nommée-référence': 'named-reference',
       'anonyme-référence': 'anonymous-reference',
       'note-référence': 'footnote-reference',
