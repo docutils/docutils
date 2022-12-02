@@ -70,8 +70,9 @@ class HelperTests(unittest.TestCase):
         self.assertEqual(io.check_encoding(io.FileInput(), 'ascii'), None)
         # stream.encoding does not exist:
         self.assertEqual(io.check_encoding(BBuf, 'ascii'), None)
-        # encoding is None:
+        # encoding is None or empty string:
         self.assertEqual(io.check_encoding(mock_stdout, None), None)
+        self.assertEqual(io.check_encoding(mock_stdout, ''), None)
         # encoding is invalid
         self.assertEqual(io.check_encoding(mock_stdout, 'UTF-9'), None)
 
@@ -142,6 +143,7 @@ print("hello world")
     def test_heuristics_no_utf8(self):
         # if no encoding is given and decoding with 'utf-8' fails,
         # use either the locale encoding (if specified) or 'latin-1':
+        # Provisional: the second fallback 'latin-1' will be dropped
         probed_encodings = (io._locale_encoding, 'latin-1')  # noqa
         input = io.FileInput(
             source_path=os.path.join(DATA_ROOT, 'latin1.txt'))
