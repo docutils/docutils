@@ -105,7 +105,7 @@ This broke docutils\-sphinx.
 
 totest['simple'] = [
         ["""\
-========        
+========
  simple
 ========
 
@@ -152,7 +152,7 @@ With mixed case.
    * bullet list
    * bull and list
 
-.. admonition:: homegrown 
+.. admonition:: homegrown
 
    something important
 
@@ -160,7 +160,7 @@ With mixed case.
 
 and . in a line and at line start
 .in a paragraph
-""", 
+""",
         r""".\" Man page generated from reStructuredText.
 .
 """ + indend_macros + r""".TH "SIMPLE" 1 "2009-08-05" "0.1" "text processing"
@@ -239,7 +239,7 @@ totest['table'] = [
            1     2
           abc   so
         ====== =====
-""", 
+""",
 '''\
 .\\" Man page generated from reStructuredText.
 .
@@ -296,7 +296,7 @@ $
 
 ]
    bla bla bla
-""", 
+""",
         """\
 .\\" Man page generated from reStructuredText.
 .
@@ -353,7 +353,7 @@ Section
     Description of Term 1 Description of Term 1 Description of Term 1
     Description of Term 1 Description of Term 1
 
-""", 
+""",
 '''\
 .\\" Man page generated from reStructuredText.
 .
@@ -383,7 +383,7 @@ totest['cmdlineoptions'] = [
   -h, --help                 show this help
   --output FILE, -o FILE     output filename
   -i DEVICE, --input DEVICE  input device
-""", 
+""",
         r""".\" Man page generated from reStructuredText.
 .
 """ + indend_macros + r""".TH ""  "" ""
@@ -478,7 +478,7 @@ totest['man_header'] = [
  page title
 ============
 
-in short 
+in short
 --------
 
 :Manual section: 3
