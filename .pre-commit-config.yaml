@@ -7,7 +7,7 @@ repos:
     hooks:
     -   id: check-added-large-files
     -   id: trailing-whitespace
-        exclude: ^sandbox|(.el|.svg|.tex|pseudoxml.txt|test_manpage.py)$
+        exclude: ^(sandbox|docutils/docs)|(.el|.svg|.tex|pseudoxml.txt|test_manpage.py)$
     -   id: end-of-file-fixer
         exclude: ^sandbox|(.svg)|docutils/test/data/utf-16-le-sig.txt$
 
