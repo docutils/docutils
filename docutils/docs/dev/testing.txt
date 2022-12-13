@@ -40,15 +40,15 @@ In a pinch, the edge cases should cover most of it.
 .. note::
    The ``alltests.py`` test runner is based on the standard library's unittest_
    framework.
-   Since Docutils 0.19, running ``python -m unittest``, the pytest_, and the
-   nose_ frameworks no longer result in spurious failures (cf. `bug #270`_).
-   However, there are differences in the reported number of tests and in
-   test coverage.
+   Since Docutils 0.19, running ``python -m unittest`` and the pytest_
+   framework no longer result in spurious failures (cf. `bug #270`_).
+   However, there are differences in the reported number of tests
+   (``alltests.py`` also counts sub-tests).
+   In future, running the test suite may require pytest_.
 
 __ policies.html#check-ins
 .. _unittest: https://docs.python.org/3/library/unittest.html
 .. _pytest: https://pypi.org/project/pytest
-.. _nose: https://pypi.org/project/nose
 .. _`bug #270`: https://sourceforge.net/p/docutils/bugs/270/
 
 
@@ -93,9 +93,8 @@ Then run::
     python3.11 -u alltests.py
 
 .. note::
-   When using the `Python launcher for Windows`__, make sure to
-   specify a Python version, e.g., ``py -3.9 -u alltests.py`` for
-   Python 3.9.
+   When using the `Python launcher for Windows`__, specify the Python version
+   as option, e.g., ``py -3.9 -u alltests.py`` for Python 3.9.
 
    .. cf. https://sourceforge.net/p/docutils/bugs/434/
    __ https://docs.python.org/3/using/windows.html#python-launcher-for-windows
@@ -106,6 +105,7 @@ Then run::
    similar).
 
    __ https://docs.python.org/3/whatsnew/3.11.html
+
 
 .. _supported versions:
 .. _supported Python versions: ../../README.html#requirements
