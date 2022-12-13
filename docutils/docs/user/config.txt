@@ -368,9 +368,11 @@ Option: ``--id-prefix`` (hidden, intended mainly for programmatic use).
 input_encoding
 --------------
 
-The text encoding for input.
+The text encoding for input (use the empty string to restore the default).
 
-Default: auto-detect (None).  Options: ``--input-encoding, -i``.
+Default: auto-detect_ (None).  Options: ``--input-encoding, -i``.
+
+.. _auto-detect: ../api/publisher.html#encodings
 
 input_encoding_error_handler
 ----------------------------

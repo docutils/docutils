@@ -43,35 +43,42 @@ the ``docutils.core`` module:
 
 :_`publish_file()`: for programmatic use with file-like I/O.  In
   addition to writing the encoded output to a file, also returns the
-  encoded output as a string.
+  encoded output as a `bytes` instance.
 
-:_`publish_string()`: for programmatic use with string I/O.  Returns
-  the encoded output as a string.
+:_`publish_string()`: for programmatic use with `string I/O`_.  Returns
+  the encoded output as a string [#string-output]_.
 
-:_`publish_parts()`: for programmatic use with string input; returns a
-  dictionary of document parts.  Dictionary keys are the names of
-  parts, and values are Unicode strings; encoding is up to the client.
+:_`publish_parts()`: for programmatic use with string input [#string-input]_;
+  returns a dictionary of document parts.  Dictionary keys are the names of
+  parts, and values are `str` instances; encoding is up to the client.
   Useful when only portions of the processed document are desired.
   See `publish_parts() Details`_ below.
 
   There are usage examples in the `docutils/examples.py`_ module.
 
-:_`publish_doctree()`: for programmatic use with string input; returns a
-  Docutils document tree data structure (doctree).  The doctree can be
-  modified, pickled & unpickled, etc., and then reprocessed with
-  `publish_from_doctree()`_.
+:_`publish_doctree()`: for programmatic use with string input [#string-input]_;
+  returns a Docutils document tree data structure (doctree).
+  The doctree can be modified, pickled & unpickled, etc., and then
+  reprocessed with `publish_from_doctree()`_.
 
 :_`publish_from_doctree()`: for programmatic use to render from an
   existing document tree data structure (doctree); returns the encoded
-  output as a string.
+  output as a string [#string-output]_.
 
 :_`publish_programmatically()`: for custom programmatic use.  This
   function implements common code and is used by ``publish_file``,
   ``publish_string``, and ``publish_parts``.  It returns a 2-tuple:
-  the encoded string output and the Publisher object.
+  the encoded string output [#string-output]_ and the Publisher object.
 
 .. _Inside A Docutils Command-Line Front-End Tool: ../howto/cmdline-tool.html
 .. _docutils/examples.py: ../../docutils/examples.py
+
+
+.. _String I/O:
+.. [#string-input] Input can be a `str` or `bytes` instance.
+   `bytes` are decoded with input_encoding_.
+.. [#string-output] Output is a `bytes` instance unless
+   output_encoding_ is set to the special value ``"unicode"``.
 
 
 Configuration
@@ -97,17 +104,64 @@ details about individual settings.
 Encodings
 ---------
 
-The default input encoding is UTF-8.
+The default **input encoding** is UTF-8 (codec 'utf-8-sig').
 A different encoding can be specified with the `input_encoding`_ setting
-or an `explicit encoding declaration` (BOM or special comment).
-The locale encoding may be used as a fallback.
+or an `explicit encoding declaration`_ (BOM or special comment).
+If the encoding is unspecified and decoding with UTF-8 fails,
+the `preferred encoding`_ is used as a fallback
+(if it maps to a valid codec and differs from UTF-8).
 
-The default output encoding of Docutils is UTF-8.
+The default behaviour differs from Python's `open()`:
+
+- The UTF-8 encoding is tried before the `preferred encoding`_.
+  (This is almost sure to fail if the actual source encoding differs.)
+- An `explicit encoding declaration`_ in the source takes precedence
+  over the `preferred encoding`_.
+- An optional BOM_ is removed from UTF-8 encoded sources.
+
+The default **output encoding** of Docutils is UTF-8.
 A different encoding can be specified with the `output_encoding`_ setting.
 Docutils may introduce some non-ASCII text if you use
 `auto-symbol footnotes`_ or the `"contents" directive`_.
 
+Explicit encoding declaration
+`````````````````````````````
+
+A `Unicode byte order mark` (BOM_) in the source is interpreted as
+encoding declaration.
+
+The encoding of a reStructuredText source file can also be given by a
+"magic comment" similar to :PEP:`263`.
+This makes the input encoding both *visible* and *changeable*
+on a per-source file basis.
+
+To declare the input encoding, a comment like ::
+
+  .. text encoding: <encoding name>
+
+must be placed into the source file either as first or second line.
+
+Examples: (using formats recognized by popular editors) ::
+
+    .. -*- mode: rst -*-
+       -*- coding: latin1 -*-
+
+or::
+
+    .. vim: set fileencoding=cp737 :
+
+More precisely, the first and second line are searched for the following
+regular expression::
+
+    coding[:=]\s*([-\w.]+)
+
+The first group of this expression is then interpreted as encoding name.
+If the first line matches the second line is ignored.
+
 .. _input_encoding: ../user/config.html#input-encoding
+.. _preferred encoding:
+   https://docs.python.org/3/library/locale.html#locale.getpreferredencoding
+.. _BOM: https://docs.python.org/3/library/codecs.html#codecs.BOM
 .. _output_encoding: ../user/config.html#output-encoding
 .. _auto-symbol footnotes:
    ../ref/rst/restructuredtext.html#auto-symbol-footnotes
@@ -120,7 +174,7 @@ Docutils may introduce some non-ASCII text if you use
 
 The ``docutils.core.publish_parts()`` convenience function returns a
 dictionary of document parts.  Dictionary keys are the names of parts,
-and values are Unicode strings.
+and values are `str` instances.
 
 Each Writer component may publish a different set of document parts,
 described below.  Not all writers implement all parts.
@@ -220,7 +274,7 @@ _`html_body`
 _`html_head`
     ``parts['html_head']`` contains the HTML ``<head>`` content, less
     the stylesheet link and the ``<head>`` and ``</head>`` tags
-    themselves.  Since ``publish_parts`` returns Unicode strings and
+    themselves.  Since ``publish_parts`` returns `str` instances and
     does not know about the output encoding, the "Content-Type" meta
     tag's "charset" value is left unresolved, as "%s"::
 

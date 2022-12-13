@@ -85,7 +85,6 @@ Differences to the default behaviour of Python's `open()`:
 .. _preferred encoding:
    https://docs.python.org/3/library/locale.html#locale.getpreferredencoding
 
-
 Explicit encoding declaration
 -----------------------------
 
@@ -97,7 +96,7 @@ The encoding of a reStructuredText source file can also be given by a
 This makes the input encoding both *visible* and *changeable*
 on a per-source file basis.
 
-To declare the input encoding, the a comment like ::
+To declare the input encoding, a comment like ::
 
   .. text encoding: <encoding name>
 
