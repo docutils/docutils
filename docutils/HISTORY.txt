@@ -34,6 +34,7 @@ Changes Since 0.19
 
   - Fix `previous_sibling()` method that led to invalid HTML in some cases
     (cf. patch #195).
+  - Fix bug #463. Spurious comma in deprecation warning.
 
 * docutils/parsers/recommonmark_wrapper.py
 
@@ -67,8 +68,8 @@ Changes Since 0.19
     Changes to the HTML output (no space character before closing tag of
     XML declaration, order of metadata elements)
     don't affect the HTML semantics, styling, and rendering.
-    
-  - Wrap definition lists with "details" class argument in a <div>    
+
+  - Wrap definition lists with "details" class argument in a <div>
     with the "id" and "class" values of the list node.
 
   - Use dpub-ARIA role "doc-footnote" (instead of ARIA role "note")
@@ -4150,7 +4151,7 @@ test/test_rst); and all modifications required to make it all work.
 .. _view_mode: docs/user/config.html#view-mode
 
 
-
+
 ..
    Local Variables:
    mode: indented-text

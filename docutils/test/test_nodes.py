@@ -352,6 +352,11 @@ class ElementTests(unittest.TestCase):
         node = nodes.Element('Möhren', nodes.Text('Möhren'))
         self.assertEqual(str(node), '<Element>Möhren</Element>')
 
+    def test_set_class_deprecation_warning(self):
+        node = nodes.Element('test node')
+        with self.assertWarns(DeprecationWarning):
+            node.set_class('parrot')
+
 
 class MiscTests(unittest.TestCase):
 
