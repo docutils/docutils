@@ -45,6 +45,12 @@ Changes Since 0.19
   - `Transformer.populate_from_components()` now silently ignores
     components that are not instances of `docutils.TransformSpec`.
 
+* docutils/transforms/references.py
+
+  - Ignore `citation_reference` nodes if the "use_bibex" setting is
+    active. In this case, citations are provided by LaTeX/BibTeX.
+    Fixes bug #384.
+
 * docutils/utils/__init__.py
 
   - New utility function `xml_declaration()`.
@@ -79,6 +85,7 @@ Changes Since 0.19
 
   - Do not insert ``\usepackage[utf8]{inputenc}`` into UTF-8 encoded
     LaTeX sources. UTF-8 is the default encoding for LaTeX2e since 2018.
+  - Fix handling of the "use_bibtex" setting.
 
 * docutils/writers/latex2e/titlepage.tex
 

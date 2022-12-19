@@ -199,10 +199,12 @@ class Writer(writers.Writer):
           'number or the page number.',
           ['--reference-label'],
           {'default': ''}),
-         ('Specify style and database for bibtex, for example '
-          '"--use-bibtex=mystyle,mydb1,mydb2".',
+         ('Specify style and database(s) for bibtex, for example '
+          '"--use-bibtex=unsrt,mydb1,mydb2". Provisional!',
           ['--use-bibtex'],
-          {'default': ''}),
+          {'default': '',
+           'metavar': '<style,bibfile[,bibfile,...]>',
+           'validator': frontend.validate_comma_separated_list}),
          ('Use legacy functions with class value list for '
           '\\DUtitle and \\DUadmonition.',
           ['--legacy-class-functions'],
@@ -1162,7 +1164,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # ~~~~~~~~
         self.settings = settings = document.settings
         # warn of deprecated settings and changing defaults:
-        if settings.use_latex_citations is None:
+        if settings.use_latex_citations is None and not settings.use_bibtex:
             settings.use_latex_citations = False
             warnings.warn('The default for the setting "use_latex_citations" '
                           'will change to "True" in Docutils 1.0.',
@@ -1202,29 +1204,27 @@ class LaTeXTranslator(nodes.NodeVisitor):
         elif settings.use_verbatim_when_possible:
             self.literal_block_env = 'verbatim'
 
-        if self.settings.use_bibtex:
-            self.bibtex = self.settings.use_bibtex.split(',', 1)
-            # TODO avoid errors on not declared citations.
-        else:
-            self.bibtex = None
+        if settings.use_bibtex:
+            self.use_latex_citations = True
+        self.bibtex = settings.use_bibtex
         # language module for Docutils-generated text
         # (labels, bibliographic_fields, and author_separators)
         self.language_module = languages.get_language(settings.language_code,
                                                       document.reporter)
         self.babel = babel_class(settings.language_code, document.reporter)
         self.author_separator = self.language_module.author_separators[0]
-        d_options = [self.settings.documentoptions]
+        d_options = [settings.documentoptions]
         if self.babel.language not in ('english', ''):
             d_options.append(self.babel.language)
         self.documentoptions = ','.join(filter(None, d_options))
         self.d_class = DocumentClass(settings.documentclass,
                                      settings.use_part_section)
         # graphic package options:
-        if self.settings.graphicx_option == '':
+        if settings.graphicx_option == '':
             self.graphicx_package = r'\usepackage{graphicx}'
         else:
             self.graphicx_package = (r'\usepackage[%s]{graphicx}' %
-                                     self.settings.graphicx_option)
+                                     settings.graphicx_option)
         # footnotes: TODO: implement LaTeX footnotes
         self.docutils_footnotes = settings.docutils_footnotes
 
@@ -1234,7 +1234,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # Document parts
         self.head_prefix = [r'\documentclass[%s]{%s}' %
                             (self.documentoptions,
-                             self.settings.documentclass)]
+                             settings.documentclass)]
         self.requirements = SortableDict()  # made a list in depart_document()
         self.requirements['__static'] = r'\usepackage{ifthen}'
         self.latex_preamble = [settings.latex_preamble]
@@ -1329,7 +1329,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if self.fallback_stylesheet:
             stylesheet_list = [sheet for sheet in stylesheet_list
                                if sheet != 'docutils']
-            if self.settings.legacy_class_functions:
+            if settings.legacy_class_functions:
                 # docutils.sty is incompatible with legacy functions
                 self.fallback_stylesheet = False
             else:
@@ -1806,6 +1806,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.out.append('\\end{figure}\n')
 
     def visit_citation_reference(self, node):
+        if self.bibtex:
+            self._bibitems.append([node.astext()])
         if self.use_latex_citations:
             if not self.inside_citation_reference_label:
                 self.out.append(r'\cite{')
@@ -2037,24 +2039,23 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
         # * bibliography
         #   TODO insertion point of bibliography should be configurable.
-        if self.use_latex_citations and len(self._bibitems) > 0:
-            if not self.bibtex:
-                widest_label = ''
-                for bi in self._bibitems:
-                    if len(widest_label) < len(bi[0]):
-                        widest_label = bi[0]
-                self.out.append('\n\\begin{thebibliography}{%s}\n' %
-                                widest_label)
-                for bi in self._bibitems:
-                    # cite_key: underscores must not be escaped
-                    cite_key = bi[0].replace(r'\_', '_')
-                    self.out.append('\\bibitem[%s]{%s}{%s}\n' %
-                                    (bi[0], cite_key, bi[1]))
-                self.out.append('\\end{thebibliography}\n')
-            else:
-                self.out.append('\n\\bibliographystyle{%s}\n' %
-                                self.bibtex[0])
-                self.out.append('\\bibliography{%s}\n' % self.bibtex[1])
+        if self.bibtex and self._bibitems:
+            self.out.append('\n\\bibliographystyle{%s}\n' % self.bibtex[0])
+            self.out.append('\\bibliography{%s}\n' % ','.join(self.bibtex[1:]))
+        elif self.use_latex_citations and self._bibitems:
+            # TODO: insert citations at point of definition.
+            widest_label = ''
+            for bibitem in self._bibitems:
+                if len(widest_label) < len(bibitem[0]):
+                    widest_label = bibitem[0]
+            self.out.append('\n\\begin{thebibliography}{%s}\n' %
+                            widest_label)
+            for bibitem in self._bibitems:
+                # cite_key: underscores must not be escaped
+                cite_key = bibitem[0].replace(r'\_', '_')
+                self.out.append('\\bibitem[%s]{%s}{%s}\n' %
+                                (bibitem[0], cite_key, bibitem[1]))
+            self.out.append('\\end{thebibliography}\n')
         # * make sure to generate a toc file if needed for local contents:
         if 'minitoc' in self.requirements and not self.has_latex_toc:
             self.out.append('\n\\faketableofcontents % for local ToCs\n')
