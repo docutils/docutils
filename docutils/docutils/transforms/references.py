@@ -893,13 +893,18 @@ class DanglingReferencesVisitor(nodes.SparseNodeVisitor):
                 if resolver_function(node):
                     break
             else:
+                if (getattr(self.document.settings, 'use_bibtex', False)
+                    and isinstance(node, nodes.citation_reference)):
+                    # targets added from BibTeX database by LaTeX
+                    node.resolved = True
+                    return
                 if refname in self.document.nameids:
                     msg = self.document.reporter.error(
                         'Duplicate target name, cannot be used as a unique '
                         'reference: "%s".' % (node['refname']), base_node=node)
                 else:
                     msg = self.document.reporter.error(
-                        'Unknown target name: "%s".' % (node['refname']),
+                        f'Unknown target name: "{node["refname"]}".',
                         base_node=node)
                 msgid = self.document.set_id(msg)
                 prb = nodes.problematic(
@@ -914,6 +919,6 @@ class DanglingReferencesVisitor(nodes.SparseNodeVisitor):
             del node['refname']
             node['refid'] = id
             self.document.ids[id].note_referenced_by(id=id)
-            node.resolved = 1
+            node.resolved = True
 
     visit_footnote_reference = visit_citation_reference = visit_reference

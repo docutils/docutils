@@ -100,8 +100,9 @@ recognized:
 
 List values can be comma- or colon-delimited.
 
-strip_classes_, strip_elements_with_classes_, stylesheet, and
-stylesheet_path use the comma as delimiter,
+strip_classes_, strip_elements_with_classes_, smartquotes_locales_, 
+stylesheet, stylesheet_dirs, stylesheet_path, legacy_class_functions_,
+and use_bibtex_ use the comma as delimiter,
 whitespace around list values is stripped. ::
 
     strip-classes: ham,eggs,
@@ -1849,13 +1850,16 @@ See also `template [html writers]`_.
 Default: writer dependent (see `[latex2e writer]`_, `[xetex writer]`_).
 Option: ``--template``.
 
-
 use_bibtex
 ~~~~~~~~~~
-Specify style and database for the experimental `BibTeX` support, for
-example::
 
-  --use-bibtex=mystyle,mydb1,mydb2
+Provisional, name, values, and behaviour may change in future versions
+or the option may be removed.
+
+A comma-separated list of style and database(s) for the experimental
+`BibTeX` support, for example::
+
+  --use-bibtex=unsrt,mydb1,mydb2
 
 Default: "" (don't use BibTeX).  Option ``--use-bibtex``.
 
