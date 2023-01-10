@@ -158,6 +158,7 @@ Release 0.19 (2022-07-05)
   - Use "utf-8-sig" instead of Python's default encoding if the
     `input_encoding`_ setting is None.
   - Fix error when reading of UTF-16 encoded source without trailing newline.
+  - Suppress deprecation warning (fixes bug #464).
 
 * docutils/parsers/__init__.py
 
