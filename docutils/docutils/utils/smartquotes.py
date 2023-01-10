@@ -897,7 +897,7 @@ if __name__ == "__main__":
     import locale
     try:
         locale.setlocale(locale.LC_ALL, '')  # set to user defaults
-        defaultlanguage = locale.getdefaultlocale()[0]
+        defaultlanguage = locale.getlocale()[0]
     except:  # noqa  catchall
         defaultlanguage = 'en'
 

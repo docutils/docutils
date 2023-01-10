@@ -27,8 +27,11 @@ from docutils import TransformSpec
 #       before importing this module
 try:
     # Return locale encoding also in UTF-8 mode
-    _locale_encoding = locale.getlocale()[1] or locale.getdefaultlocale()[1]
-    _locale_encoding = _locale_encoding.lower()
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        _locale_encoding = (locale.getlocale()[1]
+                            or locale.getdefaultlocale()[1])
+        _locale_encoding = _locale_encoding.lower()
 except ValueError as error:  # OS X may set UTF-8 without language code
     # See https://bugs.python.org/issue18378 fixed in 3.8
     # and https://sourceforge.net/p/docutils/bugs/298/.
