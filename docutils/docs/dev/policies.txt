@@ -60,13 +60,13 @@ don't be surprised if the "offending" code gets fiddled over time to
 conform to these conventions.
 
 The Docutils project shall follow the generic coding conventions as
-specified in the `Style Guide for Python Code`_ and `Docstring
-Conventions`_ PEPs, summarized, clarified, and extended as follows:
+specified in the `Style Guide for Python Code` (:PEP:`8`) and `Docstring
+Conventions` (:PEP:`257`), summarized, clarified, and extended as follows:
 
 * 4 spaces per indentation level.  No hard tabs.
 
-* Use only 7-bit ASCII, no 8-bit strings.  See `Docutils
-  Internationalization`_.
+* Use UTF-8 encoding (no encoding declaration).
+  Identifiers must use ASCII only.
 
 * No one-liner compound statements (i.e., no ``if x: return``: use two
   lines & indentation), except for degenerate class or method
@@ -99,9 +99,6 @@ Conventions`_ PEPs, summarized, clarified, and extended as follows:
 * Use 'single quotes' for string literals, and """triple double
   quotes""" for docstrings.
 
-.. _Style Guide for Python Code:
-   https://peps.python.org/pep-0008
-.. _Docstring Conventions: https://peps.python.org/pep-0257
 .. _Docutils Internationalization: ../howto/i18n.html#python-code
 
 
@@ -110,8 +107,7 @@ Documentation Conventions
 
 * Docutils documentation is written using reStructuredText, of course.
 
-* Use 7-bit ASCII if at all possible, and Unicode substitutions when
-  necessary.
+* The encoding of the documentation files is UTF-8.
 
 * Use the following section title adornment styles::
 
