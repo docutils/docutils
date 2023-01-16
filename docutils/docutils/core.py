@@ -386,9 +386,9 @@ def publish_cmdline(reader=None, reader_name='standalone',
     - `description`: Program description, output for the "--help" option
       (along with command-line option descriptions).
     """
-    pub = Publisher(reader, parser, writer, settings=settings)
-    pub.set_components(reader_name, parser_name, writer_name)
-    output = pub.publish(
+    publisher = Publisher(reader, parser, writer, settings=settings)
+    publisher.set_components(reader_name, parser_name, writer_name)
+    output = publisher.publish(
         argv, usage, description, settings_spec, settings_overrides,
         config_section=config_section, enable_exit_status=enable_exit_status)
     return output
@@ -407,7 +407,7 @@ def publish_file(source=None, source_path=None,
 
     Parameters: see `publish_programmatically()`.
     """
-    output, pub = publish_programmatically(
+    output, publisher = publish_programmatically(
         source_class=io.FileInput, source=source, source_path=source_path,
         destination_class=io.FileOutput,
         destination=destination, destination_path=destination_path,
@@ -453,7 +453,7 @@ def publish_string(source, source_path=None, destination_path=None,
     .. _output_encoding:
         https://docutils.sourceforge.io/docs/user/config.html#output-encoding
     """
-    output, pub = publish_programmatically(
+    output, publisher = publish_programmatically(
         source_class=io.StringInput, source=source, source_path=source_path,
         destination_class=io.StringOutput,
         destination=None, destination_path=destination_path,
@@ -490,7 +490,7 @@ def publish_bytes(source, source_path=None, destination_path=None,
 
     Provisional.
     """
-    output, pub = publish_programmatically(
+    output, publisher = publish_programmatically(
         source_class=io.StringInput, source=source, source_path=source_path,
         destination_class=io.BytesOutput,
         destination=None, destination_path=destination_path,
@@ -528,7 +528,7 @@ def publish_parts(source, source_path=None, source_class=io.StringInput,
         https://docutils.sourceforge.io/docs/api/publisher.html
         #publish-parts-details
     """
-    output, pub = publish_programmatically(
+    output, publisher = publish_programmatically(
         source=source, source_path=source_path, source_class=source_class,
         destination_class=io.StringOutput,
         destination=None, destination_path=destination_path,
@@ -539,7 +539,7 @@ def publish_parts(source, source_path=None, source_class=io.StringInput,
         settings_overrides=settings_overrides,
         config_section=config_section,
         enable_exit_status=enable_exit_status)
-    return pub.writer.parts
+    return publisher.writer.parts
 
 
 def publish_doctree(source, source_path=None,
@@ -554,7 +554,7 @@ def publish_doctree(source, source_path=None,
 
     Parameters: see `publish_programmatically()`.
     """
-    _output, pub = publish_programmatically(
+    _output, publisher = publish_programmatically(
         source=source, source_path=source_path,
         source_class=source_class,
         destination=None, destination_path=None,
@@ -565,7 +565,7 @@ def publish_doctree(source, source_path=None,
         settings=settings, settings_spec=settings_spec,
         settings_overrides=settings_overrides, config_section=config_section,
         enable_exit_status=enable_exit_status)
-    return pub.document
+    return publisher.document
 
 
 def publish_from_doctree(document, destination_path=None,
@@ -597,15 +597,16 @@ def publish_from_doctree(document, destination_path=None,
     Other parameters: see `publish_programmatically()`.
     """
     reader = doctree.Reader(parser_name='null')
-    pub = Publisher(reader, None, writer,
-                    source=io.DocTreeInput(document),
-                    destination_class=io.StringOutput, settings=settings)
+    publisher = Publisher(reader, None, writer,
+                          source=io.DocTreeInput(document),
+                          destination_class=io.StringOutput,
+                          settings=settings)
     if not writer and writer_name:
-        pub.set_writer(writer_name)
-    pub.process_programmatic_settings(
+        publisher.set_writer(writer_name)
+    publisher.process_programmatic_settings(
         settings_spec, settings_overrides, config_section)
-    pub.set_destination(None, destination_path)
-    return pub.publish(enable_exit_status=enable_exit_status)
+    publisher.set_destination(None, destination_path)
+    return publisher.publish(enable_exit_status=enable_exit_status)
 
 
 def publish_cmdline_to_binary(reader=None, reader_name='standalone',
@@ -637,10 +638,10 @@ def publish_cmdline_to_binary(reader=None, reader_name='standalone',
     - `description`: Program description, output for the "--help" option
       (along with command-line option descriptions).
     """
-    pub = Publisher(reader, parser, writer, settings=settings,
-                    destination_class=destination_class)
-    pub.set_components(reader_name, parser_name, writer_name)
-    output = pub.publish(
+    publisher = Publisher(reader, parser, writer, settings=settings,
+                          destination_class=destination_class)
+    publisher.set_components(reader_name, parser_name, writer_name)
+    output = publisher.publish(
         argv, usage, description, settings_spec, settings_overrides,
         config_section=config_section, enable_exit_status=enable_exit_status)
     return output
@@ -746,13 +747,13 @@ def publish_programmatically(source_class, source, source_path,
 
     * `enable_exit_status`: Boolean; enable exit status at end of processing?
     """
-    pub = Publisher(reader, parser, writer, settings=settings,
-                    source_class=source_class,
-                    destination_class=destination_class)
-    pub.set_components(reader_name, parser_name, writer_name)
-    pub.process_programmatic_settings(
+    publisher = Publisher(reader, parser, writer, settings=settings,
+                          source_class=source_class,
+                          destination_class=destination_class)
+    publisher.set_components(reader_name, parser_name, writer_name)
+    publisher.process_programmatic_settings(
         settings_spec, settings_overrides, config_section)
-    pub.set_source(source, source_path)
-    pub.set_destination(destination, destination_path)
-    output = pub.publish(enable_exit_status=enable_exit_status)
-    return output, pub
+    publisher.set_source(source, source_path)
+    publisher.set_destination(destination, destination_path)
+    output = publisher.publish(enable_exit_status=enable_exit_status)
+    return output, publisher
