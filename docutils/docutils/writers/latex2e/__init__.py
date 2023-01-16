@@ -256,8 +256,8 @@ class Writer(writers.Writer):
         writers.Writer.__init__(self)
         self.translator_class = LaTeXTranslator
 
-    # Override parent method to add latex-specific transforms
     def get_transforms(self):
+        # Override parent method to add latex-specific transforms
         return super().get_transforms() + [
                    # Convert specific admonitions to generic one
                    writer_aux.Admonitions,
@@ -1327,8 +1327,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         stylesheet_list = utils.get_stylesheet_list(settings)
         self.fallback_stylesheet = 'docutils' in stylesheet_list
         if self.fallback_stylesheet:
-            stylesheet_list = [sheet for sheet in stylesheet_list
-                               if sheet != 'docutils']
+            stylesheet_list.remove('docutils')
             if settings.legacy_class_functions:
                 # docutils.sty is incompatible with legacy functions
                 self.fallback_stylesheet = False
@@ -1403,12 +1402,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 self.document.reporter.error(msg)
                 return '% ' + msg.replace('\n', '\n% ')
             else:
-                self.settings.record_dependencies.add(path)
+                self.settings.record_dependencies.add(path.as_posix())
             if is_package:
                 # allow '@' in macro names:
-                content = (r'\makeatletter'
-                           f'\n{content}\n'
-                           r'\makeatother')
+                content = (f'\\makeatletter\n{content}\n\\makeatother')
             return (f'% embedded stylesheet: {path.as_posix()}\n'
                     f'{content}')
         # Link to style file:
@@ -1419,8 +1416,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
             cmd = r'\input{%s}'
         if self.settings.stylesheet_path:
             # adapt path relative to output (cf. config.html#stylesheet-path)
-            path = utils.relative_path(self.settings._destination, path)
-        return cmd % path
+            return cmd % utils.relative_path(self.settings._destination, path)
+        return cmd % path.as_posix()
 
     def to_latex_encoding(self, docutils_encoding):
         """Translate docutils encoding name into LaTeX's.

@@ -1760,6 +1760,8 @@ stylesheet
 ~~~~~~~~~~
 
 A comma-separated list_ of style files.
+Used without path adaption (cf. `stylesheet_path [latex writers]`_).
+Under Windows, path separators are normalized to forward slashes (``/``).
 See also `stylesheet [html writers]`_.
 
 Overrides also stylesheet_path__. [#override]_
@@ -1811,7 +1813,7 @@ output file path. Run ``latex`` from the directory containing
 the output file.
 See also `stylesheet_path [html writers]`_.
 
-The stylesheet__  option is preferred for files in the `TeX input path`_.
+For files in the `TeX input path`_, the stylesheet__  option is recommended.
 
 Also overrides stylesheet__. [#override]_
 
