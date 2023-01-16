@@ -58,29 +58,29 @@ class PublishTestCase(unittest.TestCase):
     def test_publish_parts(self):
         """Check for the presence of documented parts.
         """
-        # parts = core.publish_parts(contents_test_input,
-        #                            settings_overrides=self.settings)
-        # documented_parts = [
-        #     'abstract',
-        #     'body',
-        #     'body_pre_docinfo',
-        #     'dedication',
-        #     'docinfo',
-        #     'encoding',
-        #     'fallbacks',
-        #     'head_prefix',
-        #     'latex_preamble',
-        #     'pdfsetup',
-        #     'requirements',
-        #     'stylesheet',
-        #     'subtitle',
-        #     'title',
-        #     'titledata',
-        #     'version',
-        #     'whole'
-        #     ]
-        # TODO: activate and fix test.
-        # self.assertEqual(sorted(parts.keys()), documented_parts)
+        parts = core.publish_parts(contents_test_input,
+                                   writer_name='latex',
+                                   settings_overrides=self.settings)
+        documented_parts = [
+            'abstract',
+            'body',
+            'body_pre_docinfo',
+            'dedication',
+            'docinfo',
+            'encoding',
+            'fallbacks',
+            'head_prefix',
+            'latex_preamble',
+            'pdfsetup',
+            'requirements',
+            'stylesheet',
+            'subtitle',
+            'title',
+            'titledata',
+            'version',
+            'whole'
+            ]
+        self.assertEqual(sorted(parts.keys()), documented_parts)
 
 
 class WarningsTestCase(unittest.TestCase):
