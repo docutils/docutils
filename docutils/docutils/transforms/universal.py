@@ -120,13 +120,13 @@ class Messages(Transform):
     default_priority = 860
 
     def apply(self):
-        unfiltered = self.document.transform_messages
-        messages = [msg for msg in unfiltered if not msg.parent]
-        if messages:
+        messages = self.document.transform_messages
+        loose_messages = [msg for msg in messages if not msg.parent]
+        if loose_messages:
             section = nodes.section(classes=['system-messages'])
             # @@@ get this from the language module?
             section += nodes.title('', 'Docutils System Messages')
-            section += messages
+            section += loose_messages
             self.document.transform_messages[:] = []
             self.document += section
 
