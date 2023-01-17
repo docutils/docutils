@@ -74,7 +74,7 @@ totest['bibliographic_field_lists'] = ((DocInfo,), [
 
     It is automatically moved to the end of the other bibliographic elements.
 
-:Author: Me
+:Author: E. *Xample*
 :Version: 1
 :Date: 2001-08-11
 :Parameter i: integer
@@ -83,7 +83,9 @@ totest['bibliographic_field_lists'] = ((DocInfo,), [
 <document source="test data">
     <docinfo>
         <author>
-            Me
+            E. \n\
+            <emphasis>
+                Xample
         <version>
             1
         <date>
@@ -178,7 +180,8 @@ totest['bibliographic_field_lists'] = ((DocInfo,), [
                             must be a paragraph
                 <system_message level="2" line="1" source="test data" type="WARNING">
                     <paragraph>
-                        Cannot extract bibliographic field "Author" containing anything other than a single paragraph.
+                        Bibliographic field "Author"
+                        must contain a single <paragraph>, not a <bullet_list>.
         <status>
             a \n\
             <emphasis>
@@ -194,7 +197,8 @@ totest['bibliographic_field_lists'] = ((DocInfo,), [
                     paragraph.
                 <system_message level="2" line="3" source="test data" type="WARNING">
                     <paragraph>
-                        Cannot extract compound bibliographic field "Date".
+                        Bibliographic field "Date"
+                        must contain a single <paragraph>, not [<paragraph>, <paragraph>].
         <field classes="version">
             <field_name>
                 Version
