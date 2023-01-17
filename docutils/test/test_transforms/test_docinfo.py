@@ -19,56 +19,46 @@ if __name__ == '__main__':
 from docutils.frontend import get_default_settings
 from docutils.parsers.rst import Parser
 from docutils.transforms.frontmatter import DocInfo
-from docutils.transforms.universal import TestMessages
+from docutils.transforms.universal import FilterMessages, TestMessages
 from docutils.utils import new_document
 
 
 class TransformTestCase(unittest.TestCase):
+
+    maxDiff = None
+    settings = get_default_settings(Parser)
+    settings.warning_stream = ''
+    parser = Parser()
+
+    def check_output(self, samples, settings):
+        # yield (output, expected) for each test sample
+        for key, (transforms, cases) in samples.items():
+            for casenum, (case_input, case_expected) in enumerate(cases):
+                with self.subTest(id=f'samples[{key!r}][{casenum}]'):
+                    document = new_document('test data', settings)
+                    self.parser.parse(case_input, document)
+                    # Don't do a ``populate_from_components()`` because that
+                    # would enable the Transformer's default transforms.
+                    document.transformer.add_transforms(transforms)
+                    document.transformer.add_transform(TestMessages)
+                    # Filter INFOs with increased priority so that
+                    # messages added by `TestMessages` are filtered, too:
+                    document.transformer.add_transform(FilterMessages, 890)
+                    document.transformer.apply_transforms()
+                    self.assertEqual(document.pformat(), case_expected)
+
     def test_transforms(self):
-        parser = Parser()
-        settings = get_default_settings(Parser)
-        settings.warning_stream = ''
-        settings.language_code = 'en'
-        for name, (transforms, cases) in totest.items():
-            for casenum, (case_input, case_expected) in enumerate(cases):
-                with self.subTest(id=f'totest[{name!r}][{casenum}]'):
-                    document = new_document('test data', settings.copy())
-                    parser.parse(case_input, document)
-                    # Don't do a ``populate_from_components()`` because that
-                    # would enable the Transformer's default transforms.
-                    document.transformer.add_transforms(transforms)
-                    document.transformer.add_transform(TestMessages)
-                    document.transformer.apply_transforms()
-                    output = document.pformat()
-                    self.assertEqual(output, case_expected)
+        self.check_output(totest, self.settings)
 
+    def test_transforms_de(self):
+        settings = self.settings.copy()
         settings.language_code = 'de'
-        for name, (transforms, cases) in totest_de.items():
-            for casenum, (case_input, case_expected) in enumerate(cases):
-                with self.subTest(id=f'totest_de[{name!r}][{casenum}]'):
-                    document = new_document('test data', settings.copy())
-                    parser.parse(case_input, document)
-                    # Don't do a ``populate_from_components()`` because that
-                    # would enable the Transformer's default transforms.
-                    document.transformer.add_transforms(transforms)
-                    document.transformer.add_transform(TestMessages)
-                    document.transformer.apply_transforms()
-                    output = document.pformat()
-                    self.assertEqual(output, case_expected)
+        self.check_output(totest_de, settings)
 
+    def test_transforms_ru(self):
+        settings = self.settings.copy()
         settings.language_code = 'ru'
-        for name, (transforms, cases) in totest_ru.items():
-            for casenum, (case_input, case_expected) in enumerate(cases):
-                with self.subTest(id=f'totest_ru[{name!r}][{casenum}]'):
-                    document = new_document('test data', settings.copy())
-                    parser.parse(case_input, document)
-                    # Don't do a ``populate_from_components()`` because that
-                    # would enable the Transformer's default transforms.
-                    document.transformer.add_transforms(transforms)
-                    document.transformer.add_transform(TestMessages)
-                    document.transformer.apply_transforms()
-                    output = document.pformat()
-                    self.assertEqual(output, case_expected)
+        self.check_output(totest_ru, settings)
 
 
 totest = {}
@@ -423,7 +413,7 @@ totest['bibliographic_field_lists'] = ((DocInfo,), [
 """],
 ])
 
-totest_de['bibliographic_field_lists'] = ((DocInfo,), [
+totest_de['bibliographic_field_lists_de'] = ((DocInfo,), [
 ["""\
 .. Bibliographic element extraction for a German document.
 
@@ -467,7 +457,7 @@ totest_de['bibliographic_field_lists'] = ((DocInfo,), [
 """]
 ])
 
-totest_ru['bibliographic_field_lists'] = ((DocInfo,), [
+totest_ru['bibliographic_field_lists_ru'] = ((DocInfo,), [
 ["""\
 .. Bibliographic element extraction for a Russian document.
 
