@@ -112,7 +112,7 @@ class Transformer(TransformSpec):
         priority_string = self.get_priority_string(priority)
         self.transforms.append(
             (priority_string, transform_class, None, kwargs))
-        self.sorted = 0
+        self.sorted = False
 
     def add_transforms(self, transform_list):
         """Store multiple transforms, with default priorities."""
@@ -121,7 +121,7 @@ class Transformer(TransformSpec):
                 transform_class.default_priority)
             self.transforms.append(
                 (priority_string, transform_class, None, {}))
-        self.sorted = 0
+        self.sorted = False
 
     def add_pending(self, pending, priority=None):
         """Store a transform with an associated `pending` node."""
@@ -131,7 +131,7 @@ class Transformer(TransformSpec):
         priority_string = self.get_priority_string(priority)
         self.transforms.append(
             (priority_string, transform_class, pending, {}))
-        self.sorted = 0
+        self.sorted = False
 
     def get_priority_string(self, priority):
         """
