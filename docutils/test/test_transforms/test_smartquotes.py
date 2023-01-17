@@ -26,7 +26,8 @@ if __name__ == '__main__':
 
 from docutils.frontend import get_default_settings
 from docutils.parsers.rst import Parser
-from docutils.transforms.universal import SmartQuotes, TestMessages
+from docutils.transforms.universal import (SmartQuotes, FilterMessages,
+                                           TestMessages)
 from docutils.utils import new_document
 
 
@@ -37,7 +38,6 @@ class TransformTestCase(unittest.TestCase):
         settings.warning_stream = ''
         settings.smart_quotes = True
         settings.trim_footnote_ref_space = True
-        settings.report = 2  # TODO why is this ignored when running as main?
         for name, (transforms, cases) in totest.items():
             for casenum, (case_input, case_expected) in enumerate(cases):
                 with self.subTest(id=f'totest[{name!r}][{casenum}]'):
@@ -61,6 +61,9 @@ class TransformTestCase(unittest.TestCase):
                     # would enable the Transformer's default transforms.
                     document.transformer.add_transforms(transforms)
                     document.transformer.add_transform(TestMessages)
+                    # Filter with increased priority: call later, so that
+                    # messages added by `TestMessages` are filtered, too.
+                    document.transformer.add_transform(FilterMessages, 890)
                     document.transformer.apply_transforms()
                     output = document.pformat()
                     self.assertEqual(output, case_expected)
