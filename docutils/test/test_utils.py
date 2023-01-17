@@ -351,15 +351,16 @@ class HelperFunctionTests(unittest.TestCase):
         dirs = (os.path.join(TEST_ROOT, 'nonex'),
                 TEST_ROOT,
                 os.path.join(TEST_ROOT, '..'))
-        found = utils.find_file_in_dirs('HISTORY.txt', dirs)
-        self.assertEqual(found, (TEST_ROOT / '..' / 'HISTORY.txt').as_posix())
-        # normalize
-        found = os.path.relpath(found, TEST_ROOT).replace('\\', '/')
-        self.assertTrue(found.startswith('..'),
+        result = utils.find_file_in_dirs('alltests.py', dirs)
+        expected = os.path.join(TEST_ROOT, 'alltests.py').replace('\\', '/')
+        self.assertEqual(result, expected)
+        result = utils.find_file_in_dirs('HISTORY.txt', dirs)
+        expected = (TEST_ROOT / '..' / 'HISTORY.txt').as_posix()
+        self.assertEqual(result, expected)
+        # normalize for second check
+        self.assertTrue(os.path.relpath(result, TEST_ROOT).startswith('..'),
                         'HISTORY.txt not found in "..".')
         # Return `path` if the file exists in the cwd or if there is no match
-        self.assertEqual(utils.find_file_in_dirs('alltests.py', dirs),
-                         os.path.join(TEST_ROOT, 'alltests.py'))
         self.assertEqual(utils.find_file_in_dirs('gibts/nicht.txt', dirs),
                          'gibts/nicht.txt')
 
