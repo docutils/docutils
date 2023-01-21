@@ -1994,7 +1994,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
                                                     protect=protect)
 
     def depart_document(self, node):
-        # Complete header with information gained from walkabout
+        # Complete "parts" with information gained from walkabout
         # * language setup
         if (self.babel.otherlanguages
             or self.babel.language not in ('', 'english')):
@@ -2010,36 +2010,54 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.pdfinfo.append('  pdfauthor={%s}' % authors)
         if self.pdfinfo:
             self.pdfsetup += [r'\hypersetup{'] + self.pdfinfo + ['}']
-        # Complete body
-        # * document title (with "use_latex_docinfo" also
-        #   'author', 'organization', 'contact', 'address' and 'date')
-        if self.title or (
-           self.use_latex_docinfo and (self.author_stack or self.date)):
-            # \title (empty \title prevents error with \maketitle)
-            title = [''.join(self.title)]
-            if self.title:
-                title += self.title_labels
-            if self.subtitle:
-                title += [r'\\',
+        # * title (including author(s) and date if using "latex_docinfo")
+        if self.title or (self.use_latex_docinfo
+                          and (self.author_stack or self.date)):
+            self.make_title()  # see below
+        # * bibliography
+        if self._bibitems:
+            self.append_bibliogaphy()  # see below
+        # * make sure to generate a toc file if needed for local contents:
+        if 'minitoc' in self.requirements and not self.has_latex_toc:
+            self.out.append('\n\\faketableofcontents % for local ToCs\n')
+
+    def make_title(self):
+        # Auxiliary function called by `self.depart_document()`.
+        #
+        # Append ``\title``, ``\author``, and ``\date`` to "titledata".
+        # (We need all three, even if empty, to prevent errors
+        # and/or automatic display of the current date by \maketitle.)
+        # Append ``\maketitle`` to "body_pre_docinfo" parts.
+        #
+        # \title
+        title_arg = [''.join(self.title)]  # ensure len == 1
+        if self.title:
+            title_arg += self.title_labels
+        if self.subtitle:
+            title_arg += [r'\\',
                           r'\DUdocumentsubtitle{%s}' % ''.join(self.subtitle),
                           ] + self.subtitle_labels
-            self.titledata.append(r'\title{%s}' % '%\n  '.join(title))
-            # \author (empty \author prevents warning with \maketitle)
-            authors = ['\\\\\n'.join(author_entry)
-                       for author_entry in self.author_stack]
-            self.titledata.append(r'\author{%s}' %
-                                  ' \\and\n'.join(authors))
-            # \date (empty \date prevents defaulting to \today)
-            self.titledata.append(r'\date{%s}' % ', '.join(self.date))
-            # \maketitle in the body formats title with LaTeX
-            self.body_pre_docinfo.append('\\maketitle\n')
+        self.titledata.append(r'\title{%s}' % '%\n  '.join(title_arg))
+        # \author
+        author_arg = ['\\\\\n'.join(author_entry)
+                      for author_entry in self.author_stack]
+        self.titledata.append(r'\author{%s}' %
+                              ' \\and\n'.join(author_arg))
+        # \date
+        self.titledata.append(r'\date{%s}' % ', '.join(self.date))
+        # \maketitle
+        # Must be in the document body. We add it to `body_pre_docinfo`
+        # to allow templates to put `titledata` into the document preamble.
+        self.body_pre_docinfo.append('\\maketitle\n')
 
-        # * bibliography
-        #   TODO insertion point of bibliography should be configurable.
-        if self.bibtex and self._bibitems:
+    def append_bibliogaphy(self):
+        # Add bibliography at end of document.
+        # TODO insertion point should be configurable.
+        # Auxiliary function called by `depart_document`.
+        if self.bibtex:
             self.out.append('\n\\bibliographystyle{%s}\n' % self.bibtex[0])
             self.out.append('\\bibliography{%s}\n' % ','.join(self.bibtex[1:]))
-        elif self.use_latex_citations and self._bibitems:
+        elif self.use_latex_citations:
             # TODO: insert citations at point of definition.
             widest_label = ''
             for bibitem in self._bibitems:
@@ -2053,9 +2071,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 self.out.append('\\bibitem[%s]{%s}{%s}\n' %
                                 (bibitem[0], cite_key, bibitem[1]))
             self.out.append('\\end{thebibliography}\n')
-        # * make sure to generate a toc file if needed for local contents:
-        if 'minitoc' in self.requirements and not self.has_latex_toc:
-            self.out.append('\n\\faketableofcontents % for local ToCs\n')
 
     def visit_emphasis(self, node):
         self.out.append('\\emph{')
