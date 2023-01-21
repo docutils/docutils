@@ -94,7 +94,9 @@ Changes Since 0.19
   - Do not insert ``\usepackage[utf8]{inputenc}`` into UTF-8 encoded
     LaTeX sources. UTF-8 is the default encoding for LaTeX2e since 2018.
   - Fix handling of the "use_bibtex" setting.
-  - Use POSIX paths in stylesheet loading macros [report Alan G. Isaac].
+  - Outsource parts of `depart_document()` to new auxiliary methods
+    `make_title()` and `append_bibliography()`.
+  - Ensure POSIX paths in stylesheet loading macros.
 
 * docutils/writers/latex2e/titlepage.tex
 
