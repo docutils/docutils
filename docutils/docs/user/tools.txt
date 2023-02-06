@@ -13,11 +13,9 @@
 .. contents::
 
 .. note::
-   Docutils front-end tool support is currently `under discussion`__.
-   Tool names, install details and the set of auto-installed tools
-   will `change in future Docutils versions`__.
+   Docutils front-end tool names, install details and the set of
+   auto-installed tools will `change in Docutils 0.21`__.
 
-   __ https://sourceforge.net/p/docutils/feature-requests/88/
    __ ../../RELEASE-NOTES.html#future-changes
 
 --------------
@@ -73,11 +71,12 @@ list.
 Generic Command Line Front End
 ==============================
 
-:Readers: Standalone (default), PEP
-:Parsers: reStructuredText (default), Markdown (requires 3rd party packages)
-:Writers: html_, html4css1_, html5_ (default), latex2e_, manpage_,
-          odt_, pep_html_, pseudo-xml_, s5_html_, xelatex_, xml_,
-:Config_: `[docutils application]`_
+:CLI name: ``docutils``
+:Readers:  Standalone (default), PEP
+:Parsers:  reStructuredText (default), Markdown (requires 3rd party packages)
+:Writers:  html_, html4css1_, html5_ (default), latex2e_, manpage_,
+           odt_, pep_html_, pseudo-xml_, s5_html_, xelatex_, xml_,
+:Config_:  `[docutils application]`_
 
 Since Docutils 0.19, you can start the generic front end like::
 

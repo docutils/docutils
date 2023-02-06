@@ -22,10 +22,12 @@ Future changes
 
 * Usage:
 
-  - The ``rst2*.py`` `front end tools`_ will be renamed to ``rst2*``
-    (dropping the ``.py`` extension). [#]_
-    You may use ``docutils`` [#]_ as a future-proof command name,
-    for example:
+  - Docutils 0.21 will provide ``rst2*`` `"console_scripts" entry
+    points`_ (without the ``.py`` extension) instead of installing the
+    ``rst2*.py`` `front end tools`_ in the binary PATH. [#]_
+
+    You may use the `generic command line front end tool`_ as a
+    future-proof command, for example:
 
     .. code:: diff
 
@@ -37,18 +39,21 @@ Future changes
       available via ``python -m docutils.writers.odf_odt.prepstyles``.
 
       The ``rstpep2html.py`` script will be retired.
-      Use ``docutils --reader=pep --writer=pep_html`` for a PEP preview. [#]_
+      Use ``docutils --reader=pep --writer=pep_html`` for a PEP preview
+      (the final rendering is done by a Sphinx-based build system,
+      cf. :PEP:`676`).
+
 
     .. [#] Some Linux distributions already use the short names.
-    .. [#] The `generic command line front end tool`_.
-    .. [#] The final rendering is done by a Sphinx-based build system
-           (see :PEP:`676`).
 
+    .. _"console_scripts" entry points:
+        https://packaging.python.org/en/latest/specifications/entry-points/
 
-  - The `default HTML writer`__  will change in Docutils 2.0.
+  - The `default HTML writer`__  will change in Docutils 2.0:
 
-    * The rst2html_ front end and ``get_writer_by_name('html')`` select
-      "html4css1" now and will select "html5" in Docutils 2.0 and later.
+    The rst2html_ front end and ``get_writer_by_name('html')`` select
+    "html4css1" now and will select "html5" in Docutils 2.0 and later.
+
     * Use rst2html4_, ``docutils --writer=html4``, or
       ``get_writer_by_name('html4')`` if you depend on stability of the
       generated HTML code, e.g. because you use a custom style sheet or

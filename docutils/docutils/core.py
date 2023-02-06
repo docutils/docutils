@@ -15,6 +15,7 @@ custom component objects first, and pass *them* to
 
 __docformat__ = 'reStructuredText'
 
+import locale
 import pprint
 import os
 import sys
@@ -227,7 +228,7 @@ class Publisher:
             output = self.writer.write(self.document, self.destination)
             self.writer.assemble_parts()
         except SystemExit as error:
-            exit = 1
+            exit = True
             exit_status = error.code
         except Exception as error:
             if not self.settings:       # exception too early to report nicely
@@ -757,3 +758,60 @@ def publish_programmatically(source_class, source, source_path,
     publisher.set_destination(destination, destination_path)
     output = publisher.publish(enable_exit_status=enable_exit_status)
     return output, publisher
+
+
+# "Entry points" with functionality of the "tools/rst2*.py" scripts
+# cf. https://packaging.python.org/en/latest/specifications/entry-points/
+
+def rst2something(writer, documenttype, doc_path=''):
+    # Helper function for the common parts of rst2...
+    #   writer:       writer name
+    #   documenttype: output document type
+    #   doc_path:     documentation path (relative to the documentation root)
+    description = (
+        f'Generate {documenttype} documents '
+        'from standalone reStructuredText sources '
+        f'<https://docutils.sourceforge.io/docs/{doc_path}>.  '
+        + default_description)
+    locale.setlocale(locale.LC_ALL, '')
+    publish_cmdline(writer_name=writer, description=description)
+
+
+def rst2html():
+    rst2something('html', 'HTML', 'user/html.html#html')
+
+
+def rst2html4():
+    rst2something('html4', 'XHTML 1.1', 'user/html.html#html4css1')
+
+
+def rst2html5():
+    rst2something('html5', 'HTML5', 'user/html.html#html5-polyglot')
+
+
+def rst2latex():
+    rst2something('latex', 'LaTeX', 'user/latex.html')
+
+
+def rst2man():
+    rst2something('manpage', 'Unix manual (troff)', 'user/manpage.html')
+
+
+def rst2odt():
+    rst2something('odt', 'OpenDocument text (ODT)', 'user/odt.html')
+
+
+def rst2pseudoxml():
+    rst2something('pseudoxml', 'pseudo-XML (test)', 'ref/doctree.html')
+
+
+def rst2s5():
+    rst2something('s5', 'S5 HTML slideshow', 'user/slide-shows.html')
+
+
+def rst2xetex():
+    rst2something('xetex', 'LaTeX (XeLaTeX/LuaLaTeX)', 'user/latex.html')
+
+
+def rst2xml():
+    rst2something('xml', 'Docutils-native XML', 'ref/doctree.html')
