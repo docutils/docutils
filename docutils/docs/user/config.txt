@@ -100,7 +100,7 @@ recognized:
 
 List values can be comma- or colon-delimited.
 
-strip_classes_, strip_elements_with_classes_, smartquotes_locales_, 
+strip_classes_, strip_elements_with_classes_, smartquotes_locales_,
 stylesheet, stylesheet_dirs, stylesheet_path, legacy_class_functions_,
 and use_bibtex_ use the comma as delimiter,
 whitespace around list values is stripped. ::
@@ -371,7 +371,9 @@ input_encoding
 
 The text encoding for input (use the empty string to restore the default).
 
-Default: auto-detect_ (None).  Options: ``--input-encoding, -i``.
+Default: auto-detect_ (None). [#]_  Options: ``--input-encoding, -i``.
+
+.. [#] The default will change to "utf-8" in Docutils 0.22.
 
 .. _auto-detect: ../api/publisher.html#encodings
 

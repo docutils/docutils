@@ -13,12 +13,13 @@
 
 .. contents::
 
-Changes Since 0.19
-==================
+Release 0.20b (unpublished)
+===========================
 
 * General
 
-  - Support Python 3.11 (patch #198 by Hugo van Kemenade).
+  - Docutils 0.20 is the last version supporting Python 3.7 and 3.8.
+  - Support Python 3.11 (patch #198 by Hugo van Kemenade).
 
 * docutils/core.py
 
