@@ -24,6 +24,7 @@ Changes Since 0.19
 
   - Added new `publish_bytes()` function to explicitly return
     output as binary data in a `bytes` object.
+  - New functions `rst2…()` for use as "console_scripts" `entry point`_.
 
 * docutils/languages/
   docutils/parsers/rst/languages/
