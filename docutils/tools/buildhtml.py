@@ -28,8 +28,8 @@ import sys
 import warnings
 
 import docutils
-from docutils import ApplicationError
-from docutils import core, frontend, io, utils
+import docutils.io
+from docutils import core, frontend, utils, ApplicationError
 from docutils.parsers import rst
 from docutils.readers import standalone, pep
 from docutils.writers import html4css1, html5_polyglot, pep_html
@@ -226,7 +226,7 @@ class Builder:
 
     def visit(self, directory, names, subdirectories):
         settings = self.get_settings('', directory)
-        errout = io.ErrorOutput(encoding=settings.error_encoding)
+        errout = docutils.io.ErrorOutput(encoding=settings.error_encoding)
         if settings.prune and (os.path.abspath(directory) in settings.prune):
             errout.write('/// ...Skipping directory (pruned): %s\n' %
                          directory)
@@ -253,7 +253,7 @@ class Builder:
         else:
             publisher = self.initial_settings.writer
         settings = self.get_settings(publisher, directory)
-        errout = io.ErrorOutput(encoding=settings.error_encoding)
+        errout = docutils.io.ErrorOutput(encoding=settings.error_encoding)
         pub_struct = self.publishers[publisher]
         settings._source = os.path.normpath(os.path.join(directory, name))
         settings._destination = settings._source[:-4] + '.html'
