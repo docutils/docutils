@@ -14,9 +14,14 @@
 
 .. note::
    Docutils front-end tool names, install details and the set of
-   auto-installed tools will `change in Docutils 0.21`__.
+   auto-installed tools will change in Docutils 0.21.
 
-   __ ../../RELEASE-NOTES.html#future-changes
+   The command line usage pattern will change over the next releases.
+
+   See `Future changes`__ in the RELEASE-NOTES.
+   
+__ RELEASE-NOTES.html#future-changes
+
 
 --------------
  Introduction
@@ -48,6 +53,7 @@ used for the destination.  If no arguments are specified, the standard
 input (stdin) is used for the source.
 
 .. [#] The exceptions are buildhtml.py_ and rst2odt_prepstyles.py_.
+
 
 Getting Help
 ============

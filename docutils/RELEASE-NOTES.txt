@@ -65,6 +65,25 @@ Drop support for Python 2.7 and 2.8 in Docutils 0.21.
 
     __ docs/user/html.html#html
 
+* The command-line usage pattern will change:
+
+  .. code:: diff
+
+       - <toolname> [options] [<source> [<destination>]]
+       + <toolname> [options] source [source2 [source3 [...]]]
+
+  * Remove short options ``-i`` and ``-o`` in Docutils 0.22.
+    Use the long equivalents ``--input-encoding`` and ``--output-encoding``.
+
+  * Stop accepting the `<destination>` positional argument in Docutils 1.0.
+    Use output redirection ``>`` or the option ``--output=<destination>``
+    (available since Docutils 0.20).
+
+  * Accept more than one source document and the short option
+    ``-o`` for ``--output`` in Docutils 2.0
+
+  For the rationale, see https://clig.dev/#arguments-and-flags.
+
 * `Input encoding`_:
 
   - Raise UnicodeError (instead of falling back to the locale encoding)
