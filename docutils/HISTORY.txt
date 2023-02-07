@@ -27,6 +27,11 @@ Release 0.20b (unpublished)
     output as binary data in a `bytes` object.
   - New functions `rst2…()` for use as "console_scripts" `entry point`_.
 
+* docutils/frontend.py
+
+  - New setting ``output``. Obsoletes the ``<destination>`` positional
+    argument (cf. "Future changes" in the RELEASE-NOTES).
+
 * docutils/languages/
   docutils/parsers/rst/languages/
 

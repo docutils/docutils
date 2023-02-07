@@ -420,6 +420,21 @@ Default: English ("en").  Options: ``--language, -l``.
 
 .. _class attribute: ../ref/doctree.html#classes
 
+
+output
+------
+
+The name of the output destination. Use ``-`` for stdout.
+
+Obsoletes the ``<destination>`` positional argument
+(cf. `Future changes`_ in the RELEASE-NOTES).
+
+Default: None (stdout). Option: ``--output``.
+
+New in Docutils 0.20.
+
+.. _Future changes: ../../RELEASE-NOTES.html#future-changes
+
 output_encoding
 ---------------
 

@@ -192,9 +192,16 @@ class Publisher:
 
     def set_destination(self, destination=None, destination_path=None):
         if destination_path is None:
-            destination_path = self.settings._destination
-        else:
-            self.settings._destination = destination_path
+            if (self.settings.output and self.settings._destination
+                and self.settings.output != self.settings._destination):
+                raise SystemExit('The positional argument <destination> is '
+                                 'obsoleted by the --output option.  '
+                                 'You cannot use them together.')
+            if self.settings.output == '-':      # means stdout
+                self.settings.output = None
+            destination_path = (self.settings.output
+                                or self.settings._destination)
+        self.settings._destination = destination_path
         self.destination = self.destination_class(
             destination=destination, destination_path=destination_path,
             encoding=self.settings.output_encoding,
@@ -362,8 +369,8 @@ default_description = (
 # TODO: or not to do?  cf. https://clig.dev/#help
 #
 # Display output on success, but keep it brief.
-#
 # Provide a -q option to suppress all non-essential output.
+#
 # Chain several args as input and use --output or redirection for output:
 #   argparser.add_argument('source', nargs='+')
 #
