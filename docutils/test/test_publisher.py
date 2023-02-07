@@ -19,7 +19,7 @@ if __name__ == '__main__':
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 import docutils
-from docutils import core, nodes, io
+from docutils import core, nodes
 
 # DATA_ROOT is ./test/data/ from the docutils root
 DATA_ROOT = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'data')
@@ -75,10 +75,29 @@ class PublisherTests(unittest.TestCase):
 
     def test_output_error_handling(self):
         # pass IOErrors to calling application if `traceback` is True
-        with self.assertRaises(io.OutputError):
+        with self.assertRaises(docutils.io.OutputError):
             core.publish_cmdline(argv=[os.path.join(DATA_ROOT, 'include.txt'),
                                        'nonexisting/path'],
                                  settings_overrides={'traceback': True})
+
+    def test_set_destination(self):
+        # Exit if `_destination` and `output` settings conflict.
+        publisher = core.Publisher()
+        publisher.get_settings(output='out_name', _destination='out_name')
+        # no conflict if both have same value:
+        publisher.set_destination()
+        # no conflict if both are overridden:
+        publisher.set_destination(destination_path='winning_dest')
+        # ... also sets _destination to 'winning_dest' -> conflict
+        with self.assertRaises(SystemExit):
+            publisher.set_destination()
+
+    def test_destination_output_conflict(self):
+        # Exit if positional argument and --output option conflict.
+        settings = {'output': 'out_name'}
+        with self.assertRaises(SystemExit):
+            core.publish_cmdline(argv=['-', 'dest_name'],
+                                 settings_overrides=settings)
 
     def test_publish_string(self):
         # Transparently decode `bytes` source (with "input_encoding" setting)
@@ -107,7 +126,7 @@ class PublishDoctreeTestCase(unittest.TestCase, docutils.SettingsSpec):
 
     settings_default_overrides = {
         '_disable_config': True,
-        'warning_stream': io.NullOutput()}
+        'warning_stream': docutils.io.NullOutput()}
 
     def test_publish_doctree(self):
         # Test `publish_doctree` and `publish_from_doctree`.
@@ -144,7 +163,7 @@ class PublishDoctreeTestCase(unittest.TestCase, docutils.SettingsSpec):
 
         # Test publishing parts using document as the source.
         parts = core.publish_parts(
-            reader_name='doctree', source_class=io.DocTreeInput,
+            reader_name='doctree', source_class=docutils.io.DocTreeInput,
             source=doctree, source_path='test', writer_name='html',
             settings_spec=self)
         self.assertTrue(isinstance(parts, dict))
