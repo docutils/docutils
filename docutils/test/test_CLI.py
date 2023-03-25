@@ -30,7 +30,7 @@ if __name__ == '__main__':
     # so we import the local `docutils` package.
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from docutils import __main__, core, frontend
+from docutils import __main__, core
 
 # DATA_ROOT is ./test/data/ from the docutils root
 DATA_ROOT = Path(__file__).parent / 'data'
