@@ -1,2 +1,57 @@
+# Binary data types
+*.mp4 binary
+*.odt binary
+*.pdf binary
+*.png binary
+*.swf binary
+
+# Unix-style line endings
+[attr]unix text eol=lf
+
+*.cfg  unix
+*.conf unix
+*.css  unix
+*.csv  unix
+*.dtd  unix
+*.el   unix
+*.html unix
+*.in   unix
+*.ini  unix
+*.js   unix
+*.man  unix
+*.md   unix
+*.py   unix
+*.rst  unix
+*.sty  unix
+*.tex  unix
+*.toml unix
+*.txt  unix
+*.xml  unix
+
+# Language aware diff headers
+*.css  diff=css
+*.html diff=html
+*.md   diff=markdown
+*.py   diff=python
+# *.rst  diff=reStructuredText
+*.tex  diff=tex
+# *.txt  diff=reStructuredText
+
+# Non UTF-8 encodings
+docutils/test/data/latin1.txt        encoding=latin1
+docutils/test/data/latin2.txt        encoding=latin1
+docutils/test/data/utf-8-sig.txt     encoding=UTF-8-BOM
+docutils/test/data/utf-16-le-sig.txt encoding=UTF-16LE-BOM
+docutils/test/test_parsers/test_rst/test_directives/utf-16.csv encoding=UTF-16BE
+sandbox/dkuhlman/docutils/test/test_writers/test_python_latex.py encoding=latin1
+sandbox/docbook/test/data/utf16.rst encoding=utf-16le
+sandbox/manpage-writer/expected/*.latin1 encoding=latin1
+sandbox/mly/restblog/date_index.py encoding=latin1
+sandbox/mly/restblog/main_index.py encoding=latin1
+sandbox/mly/restblog/Makefile      encoding=latin1
+sandbox/mly/restblog/restblog.py   encoding=latin1
+sandbox/wilk/french/quickstart-fr.txt encoding=latin1
+sandbox/xml2rst/tests/real/original/Technik.rst encoding=latin1
+
 # Classify ``.txt`` as reStructuredText for syntax highlighting
 *.txt linguist-language=reStructuredText
