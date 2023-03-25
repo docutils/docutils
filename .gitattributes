@@ -1,0 +1,2 @@
+# Classify ``.txt`` as reStructuredText for syntax highlighting
+*.txt linguist-language=reStructuredText
