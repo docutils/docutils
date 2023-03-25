@@ -652,7 +652,7 @@ class CharMaps:
         0x2001: '\\quad',                          # EM QUAD
         0x2002: '\\enskip',                        # EN SPACE
         0x2003: '\\quad',                          # EM SPACE
-        0x2008: '\\,',                             # PUNCTUATION SPACE   
+        0x2008: '\\,',                             # PUNCTUATION SPACE
         0x200b: '\\hspace{0pt}',                   # ZERO WIDTH SPACE
         0x202F: '\\,',                             # NARROW NO-BREAK SPACE
         # 0x02d8: '\\\u{ }',                       # BREVE
