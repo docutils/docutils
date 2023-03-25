@@ -12,6 +12,6 @@ repos:
         exclude: ^sandbox|(.svg)|docutils/test/data/utf-16-le-sig.txt$
 
 -   repo: https://github.com/pycqa/flake8
-    rev: 3.8.4  # pick a git hash / tag to point to
+    rev: 5.0.4  # Docutils' ``.flake8`` configuration files do not work with Flake8 >=6
     hooks:
     -   id: flake8
