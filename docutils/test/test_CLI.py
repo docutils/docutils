@@ -91,7 +91,8 @@ class CliTests(unittest.TestCase):
         # collect help text
         output = self.get_help_text('rst2html', core.rst2html)
         # compare to stored version
-        with open('data/help/rst2html.txt') as samplefile:
+        rst2html_txt = os.path.join(DATA_ROOT, 'help/rst2html.txt')
+        with open(rst2html_txt, encoding='utf-8') as samplefile:
             expected = samplefile.read()
         if expected != output:
             print_mismatch(expected, output)
@@ -100,7 +101,8 @@ class CliTests(unittest.TestCase):
         # collect help text
         output = self.get_help_text('rst2latex', core.rst2latex)
         # compare to stored version
-        with open('data/help/rst2latex.txt') as samplefile:
+        rst2latex_txt = os.path.join(DATA_ROOT, 'help/rst2latex.txt')
+        with open(rst2latex_txt, encoding='utf-8') as samplefile:
             expected = samplefile.read()
         if expected != output:
             print_mismatch(expected, output)
