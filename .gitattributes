@@ -8,25 +8,25 @@
 # Unix-style line endings
 [attr]unix text eol=lf
 
-*.cfg  unix
-*.conf unix
-*.css  unix
-*.csv  unix
-*.dtd  unix
-*.el   unix
-*.html unix
-*.in   unix
-*.ini  unix
-*.js   unix
-*.man  unix
-*.md   unix
-*.py   unix
-*.rst  unix
-*.sty  unix
-*.tex  unix
-*.toml unix
-*.txt  unix
-*.xml  unix
+docutils/*.cfg  unix
+docutils/*.conf unix
+docutils/*.css  unix
+docutils/*.csv  unix
+docutils/*.dtd  unix
+docutils/*.el   unix
+docutils/*.html unix
+docutils/*.in   unix
+docutils/*.ini  unix
+docutils/*.js   unix
+docutils/*.man  unix
+docutils/*.md   unix
+docutils/*.py   unix
+docutils/*.rst  unix
+docutils/*.sty  unix
+docutils/*.tex  unix
+docutils/*.toml unix
+docutils/*.txt  unix
+docutils/*.xml  unix
 
 # Language aware diff headers
 *.css  diff=css
