@@ -394,15 +394,18 @@ class smartchars:
 
     # quote characters (language-specific, set in __init__())
     # https://en.wikipedia.org/wiki/Non-English_usage_of_quotation_marks
-    # http://de.wikipedia.org/wiki/Anf%C3%BChrungszeichen#Andere_Sprachen
+    # https://de.wikipedia.org/wiki/Anf%C3%BChrungszeichen#Andere_Sprachen
     # https://fr.wikipedia.org/wiki/Guillemet
-    # http://typographisme.net/post/Les-espaces-typographiques-et-le-web
-    # http://www.btb.termiumplus.gc.ca/tpv2guides/guides/redac/index-fra.html
+    # https://typographisme.net/post/Les-espaces-typographiques-et-le-web
+    # https://www.btb.termiumplus.gc.ca/tpv2guides/guides/redac/index-fra.html
     # https://en.wikipedia.org/wiki/Hebrew_punctuation#Quotation_marks
-    # [7] http://www.tustep.uni-tuebingen.de/bi/bi00/bi001t1-anfuehrung.pdf
-    # [8] http://www.korrekturavdelingen.no/anforselstegn.htm
+    # [7] https://www.tustep.uni-tuebingen.de/bi/bi00/bi001t1-anfuehrung.pdf
+    # [8] https://www.korrekturavdelingen.no/anforselstegn.htm
     # [9] Typografisk håndbok. Oslo: Spartacus. 2000. s. 67. ISBN 8243001530.
-    # [10] http://www.typografi.org/sitat/sitatart.html
+    # [10] https://www.typografi.org/sitat/sitatart.html
+    # [11] https://mk.wikipedia.org/wiki/Правопис_и_правоговор_на_македонскиот_јазик  # noqa:E501
+    # [12] https://hrvatska-tipografija.com/polunavodnici/
+    # [13] https://pl.wikipedia.org/wiki/Cudzys%C5%82%C3%B3w
     #
     # See also configuration option "smartquote-locales".
     quotes = {
@@ -419,7 +422,7 @@ class smartchars:
         'de':           '„“‚‘',
         'de-x-altquot': '»«›‹',
         'de-ch':        '«»‹›',
-        'el':           '«»“”',
+        'el':           '«»“”',  # '«»‟”' https://hal.science/hal-02101618
         'en':           '“”‘’',
         'en-uk-x-altquot': '‘’“”',  # Attention: " → ‘ and ' → “ !
         'eo':           '“”‘’',
@@ -432,13 +435,13 @@ class smartchars:
         'fi-x-altquot': '»»››',
         'fr':           ('« ', ' »', '“', '”'),  # full no-break space
         'fr-x-altquot': ('« ', ' »', '“', '”'),  # narrow no-break space
-        'fr-ch':        '«»‹›',                  # http://typoguide.ch/
+        'fr-ch':        '«»‹›',                  # https://typoguide.ch/
         'fr-ch-x-altquot': ('« ',  ' »', '‹ ', ' ›'),  # narrow no-break space  # noqa:E501
         'gl':           '«»“”',
         'he':           '”“»«',  # Hebrew is RTL, test position:
         'he-x-altquot': '„”‚’',  # low quotation marks are opening.
         # 'he-x-altquot': '“„‘‚',  # RTL: low quotation marks opening
-        'hr':           '„”‘’',  # http://hrvatska-tipografija.com/polunavodnici/  # noqa:E501
+        'hr':           '„”‘’',  # Croatian [12]
         'hr-x-altquot': '»«›‹',
         'hsb':          '„“‚‘',
         'hsb-x-altquot': '»«›‹',
@@ -452,7 +455,7 @@ class smartchars:
         'ko':           '“”‘’',
         'lt':           '„“‚‘',
         'lv':           '„“‚‘',
-        'mk':           '„“‚‘',  # Macedonian, https://mk.wikipedia.org/wiki/Правопис_и_правоговор_на_македонскиот_јазик  # noqa:E501
+        'mk':           '„“‚‘',  # Macedonian [11]
         'nl':           '“”‘’',
         'nl-x-altquot': '„”‚’',
         # 'nl-x-altquot2': '””’’',
@@ -467,7 +470,7 @@ class smartchars:
         # 'no-x-altquot3': '„“‚‘',  # [10]
         'pl':           '„”«»',
         'pl-x-altquot': '«»‚’',
-        # 'pl-x-altquot2': '„”‚’',  # https://pl.wikipedia.org/wiki/Cudzys%C5%82%C3%B3w  # noqa:E501
+        # 'pl-x-altquot2': '„”‚’',  # [13]
         'pt':           '«»“”',
         'pt-br':        '“”‘’',
         'ro':           '„”«»',
@@ -874,7 +877,6 @@ def tokenize(text):
                 the second is the actual value.
 
     Based on the _tokenize() subroutine from Brad Choate's MTRegex plugin.
-        <http://www.bradchoate.com/past/mtregex.php>
     """
     tag_soup = re.compile(r'([^<]*)(<[^>]*>)')
     token_match = tag_soup.search(text)
