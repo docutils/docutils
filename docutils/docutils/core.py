@@ -435,26 +435,24 @@ def publish_string(source, source_path=None, destination_path=None,
                    writer=None, writer_name='pseudoxml',
                    settings=None, settings_spec=None,
                    settings_overrides=None, config_section=None,
-                   enable_exit_status=False):
+                   enable_exit_status=False,
+                   auto_encode=True):
     """
     Set up & run a `Publisher` for programmatic use with string I/O.
 
     Accepts a `bytes` or `str` instance as `source`.
-    The output is encoded according to the "output_encoding" setting;
-    the return value is a `bytes` instance (unless `output_encoding`_
-    is "unicode", see below).
 
-    To get Docutils output as `str` instance, use `publish_parts()`::
+    If `auto_encode` is True, the output is encoded according to the
+    `output_encoding`_ setting; the return value is a `bytes` instance
+    (unless `output_encoding`_ is "unicode",
+    cf. `docutils.io.StringOutput.write()`).
 
-      output = publish_parts(...)['whole']
+    If `auto_encode` is False, the output is an instance of a `str`
+    sub-class with "output_encoding" and "output_encoding_error_handler"
+    settings stored as `encoding` and `errors` attributes.
 
-    or set `output_encoding`_ to the pseudo encoding name "unicode", e.g.::
-
-      publish_string(..., settings_overrides={'output_encoding': 'unicode'})
-
-    Beware that the `output_encoding`_ setting may affect the content
-    of the output (e.g. an encoding declaration in HTML or XML or the
-    representation of characters as LaTeX macro vs. literal character).
+    The default value of `auto_encode` will change to ``False`` in
+    Docutils 0.22.
 
     Parameters: see `publish_programmatically()`.
 
@@ -471,7 +469,8 @@ def publish_string(source, source_path=None, destination_path=None,
         settings=settings, settings_spec=settings_spec,
         settings_overrides=settings_overrides,
         config_section=config_section,
-        enable_exit_status=enable_exit_status)
+        enable_exit_status=enable_exit_status,
+        auto_encode=auto_encode)
     return output
 
 
@@ -662,7 +661,8 @@ def publish_programmatically(source_class, source, source_path,
                              writer, writer_name,
                              settings, settings_spec,
                              settings_overrides, config_section,
-                             enable_exit_status):
+                             enable_exit_status,
+                             auto_encode=True):
     """
     Set up & run a `Publisher` for custom programmatic use.
 
@@ -754,6 +754,10 @@ def publish_programmatically(source_class, source, source_path,
       defined by `settings_spec`.  Used only if no `settings` specified.
 
     * `enable_exit_status`: Boolean; enable exit status at end of processing?
+
+    * `auto_encode`: Boolean; encode string output and return `bytes`?
+      Ignored with `io.FileOutput`.
+      The default value will change to ``False`` in Docutils 0.22.
     """
     publisher = Publisher(reader, parser, writer, settings=settings,
                           source_class=source_class,
@@ -763,6 +767,8 @@ def publish_programmatically(source_class, source, source_path,
         settings_spec, settings_overrides, config_section)
     publisher.set_source(source, source_path)
     publisher.set_destination(destination, destination_path)
+    if not auto_encode and isinstance(publisher.destination, io.StringOutput):
+        publisher.destination.auto_encode = auto_encode
     output = publisher.publish(enable_exit_status=enable_exit_status)
     return output, publisher
 

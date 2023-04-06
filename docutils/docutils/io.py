@@ -74,6 +74,57 @@ def error_string(err):
     return f'{err.__class__.__name__}: {err}'
 
 
+class OutString(str):
+    """Return a string representation of `object` with known encoding.
+
+    Differences to `str()`:
+
+    If the `encoding` is given, both `str` instances and byte-like objects
+    are stored as text string, the latter decoded with `encoding` and
+    `errors` (defaulting to 'strict').
+
+    The encoding is never guessed. If `encoding` is None (the default),
+    an informal string representation is used, also if `errors` are given.
+
+    The original or intended encoding and error handler are stored in the
+    attributes `encoding` and `errors`.
+    Typecasting to `bytes` uses the stored values.
+    """
+
+    def __new__(cls, object, encoding=None, errors='strict'):
+        """Return a new OutString object.
+
+        Provisional.
+        """
+        try:
+            # decode bytes-like objects if encoding is known
+            return super().__new__(cls, object, encoding, errors)
+        except TypeError:
+            return super().__new__(cls, object)
+
+    def __init__(self, object, encoding=None, errors='strict'):
+        """Set "encoding" and "errors" attributes."""
+        self.encoding = encoding
+        self.errors = errors
+
+    def __bytes__(self):
+        try:
+            return super().encode(self.encoding, self.errors)
+        except TypeError:
+            raise TypeError('OutString instance without known encoding')
+
+    def __repr__(self):
+        if self.errors != 'strict':
+            errors_arg = f', errors={self.errors!r}'
+        else:
+            errors_arg = ''
+        return (f'{self.__class__.__name__}({super().__repr__()}, '
+                f'encoding={self.encoding!r}{errors_arg})')
+
+    def encode(self, encoding=None, errors=None):
+        return super().encode(encoding or self.encoding, errors or self.errors)
+
+
 class Input(TransformSpec):
     """
     Abstract base class for input wrappers.
@@ -264,14 +315,14 @@ class Output(TransformSpec):
         raise NotImplementedError
 
     def encode(self, data):
-        """Encode and return `data`.
+        """
+        Encode and return `data`.
 
         If `data` is a `bytes` instance, it is returned unchanged.
         Otherwise it is encoded with `self.encoding`.
 
         If `self.encoding` is set to the pseudo encoding name "unicode",
         `data` must be a `str` instance and is returned unchanged.
-
         """
         if self.encoding and self.encoding.lower() == 'unicode':
             assert isinstance(data, str), ('output encoding is "unicode" '
@@ -616,14 +667,39 @@ class StringOutput(Output):
 
     default_destination_path = '<string>'
 
-    def write(self, data):
-        """Encode `data`, store it in `self.destination`, and return it.
+    def __init__(self, destination=None, destination_path=None,
+                 encoding=None, error_handler='strict', auto_encode=True):
+        self.auto_encode = auto_encode
+        """Let `write()` encode the output document and return `bytes`."""
+        super().__init__(destination, destination_path,
+                         encoding, error_handler)
 
+    def write(self, data):
+        """Store `data` in `self.destination`, and return it.
+
+        If `self.auto_encode` is False, store and return a `str`
+        sub-class instance with "encoding" and "errors" attributes
+        set to `self.encoding` and `self.error_handler`.
+
+        If `self.auto_encode` is True, encode `data` with `self.encoding`
+        and `self.error_handler` and store/return a `bytes` instance.
+        Exception:
         If `self.encoding` is set to the pseudo encoding name "unicode",
         `data` must be a `str` instance and is returned unchanged
         (cf. `Output.encode`).
+        Beware that the `output_encoding`_ setting may affect the content
+        of the output (e.g. an encoding declaration in HTML or XML or the
+        representation of characters as LaTeX macro vs. literal character).
         """
-        self.destination = self.encode(data)
+        if self.auto_encode:
+            self.destination = self.encode(data)
+            return self.destination
+
+        if not self.encoding or self.encoding.lower() == 'unicode':
+            encoding = None
+        else:
+            encoding = self.encoding
+        self.destination = OutString(data, encoding, self.error_handler)
         return self.destination
 
 
