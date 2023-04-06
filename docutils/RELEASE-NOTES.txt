@@ -131,6 +131,10 @@ Drop support for Python 2.7 and 2.8 in Docutils 0.21.
   - Remove ``use_verbatim_when_possible`` setting
     (use literal_block_env_: verbatim) in Docutils 2.0.
 
+* The default value of the `auto_encode` argument of
+  `core.publish_str()` and `core.publish_programmatically()`
+  will change to ``False`` in Docutils 0.22.
+
 * Remove the "rawsource" argument from `nodes.Text.__init__()`
   (deprecated and ignored since Docutils 0.18) in Docutils 2.0.
 
@@ -187,6 +191,11 @@ Release 0.20 (unpublished)
     to section `[latex writers]`_.
 
     .. _[latex writers]: docs/user/config.html#latex-writers
+
+* The new function argument `auto_encode` for `core.publish_string()` and
+  `core.publish_programmatically()` selects whether the output document is
+  encoded and returned as `bytes` instance.  The default will change to
+  ``False`` in Docutils 0.22.
 
 * Bugfixes and improvements (see HISTORY_).
 
