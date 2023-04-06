@@ -99,7 +99,8 @@ class PublisherTests(unittest.TestCase):
             core.publish_cmdline(argv=['-', 'dest_name'],
                                  settings_overrides=settings)
 
-    def test_publish_string(self):
+    def test_publish_string_input_encoding(self):
+        """Test handling of encoded input."""
         # Transparently decode `bytes` source (with "input_encoding" setting)
         # default: auto-detect, fallback utf-8
         # Output is encoded according to "output_encoding" setting.
@@ -120,6 +121,24 @@ class PublisherTests(unittest.TestCase):
         output = core.publish_string(source.encode('utf-16'),
                                      settings_overrides=settings)
         self.assertTrue(output.endswith('Grüße\n'))
+
+    def test_publish_string_output_encoding(self):
+        settings = {'_disable_config': True,
+                    'datestamp': False,
+                    'output_encoding': 'latin1',
+                    'output_encoding_error_handler': 'replace'}
+        source = 'Grüß → dich'
+        expected = ('<document source="<string>">\n'
+                    '    <paragraph>\n'
+                    '        Grüß → dich\n')
+        # current default: encode output, return `bytes`
+        output = core.publish_string(source, settings_overrides=settings)
+        self.assertEqual(output, expected.encode('latin1', 'replace'))
+        # no encoding if `auto_encode` is False:
+        output = core.publish_string(source, settings_overrides=settings,
+                                     auto_encode=False)
+        self.assertEqual(output, expected)
+        # self.assertEqual(output.encoding, 'latin1')
 
 
 class PublishDoctreeTestCase(unittest.TestCase, docutils.SettingsSpec):

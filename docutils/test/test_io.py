@@ -190,6 +190,19 @@ class OutputTests(unittest.TestCase):
         fo.write(self.udata)
         self.assertEqual(self.udrain.getvalue(), self.udata)
 
+    def test_write_auto_encode_false(self):
+        so = du_io.StringOutput(encoding='latin1', error_handler='replace',
+                                auto_encode=False)
+        output = so.write(self.udata)
+        # store output in self.destination and also return it
+        self.assertEqual(output, self.udata)
+        self.assertEqual(so.destination, self.udata)
+        # store also encoding and encoding error handler ...
+        self.assertEqual(output.encoding, 'latin1')
+        self.assertEqual(output.errors, 'replace')
+        # ... to allow easy conversion to `bytes`:
+        self.assertEqual(bytes(output), self.bdata)
+
     def test_FileOutput_hande_io_errors_deprection_warning(self):
         with self.assertWarnsRegex(DeprecationWarning,
                                    '"handle_io_errors" is ignored'):
@@ -223,6 +236,52 @@ class OutputTests(unittest.TestCase):
         fo = du_io.FileOutput(destination=self.mock_stdout,
                               encoding='latin1', autoclose=False)
         self.assertRaises(ValueError, fo.write, self.udata)
+
+
+class OutStringTests(unittest.TestCase):
+
+    def test__init__defaults(self):
+        """Test `__new__()` and `__init__()` with default values."""
+
+        os = du_io.OutString('Grüße')
+        self.assertEqual(str(os), 'Grüße')
+        self.assertEqual(os.encoding, None)
+        self.assertEqual(os.errors, 'strict')
+        # converting to `bytes` fails if the encoding is not known:
+        with self.assertRaises(TypeError):
+            self.assertEqual(bytes(os), 'Grüße')
+        # without known encoding, `bytes` and other incompatible types
+        # are converted to their string representation ...
+        bos = du_io.OutString(b'gut')
+        self.assertEqual(str(bos), "b'gut'")
+        bos_e = du_io.OutString('Grüße'.encode('latin1'), errors='ignore')
+        self.assertEqual(str(bos_e), r"b'Gr\xfc\xdfe'")
+        bos = du_io.OutString(b'gut', encoding=None)
+        self.assertEqual(str(bos), "b'gut'")
+
+    def test__init__custom_attributes(self):
+        """Test `__new__()` and `__init__()` with custom encoding."""
+        os8 = du_io.OutString('Grüße', encoding='utf-8')
+        self.assertEqual(str(os8), 'Grüße')
+        self.assertEqual(bytes(os8), b'Gr\xc3\xbc\xc3\x9fe')
+        self.assertEqual(repr(os8), "OutString('Grüße', encoding='utf-8')")
+        # With known encoding, "bytes-like" objects are decoded
+        bos1 = du_io.OutString(b'Gr\xfc\xdfe', encoding='latin1')
+        self.assertEqual(str(bos1), 'Grüße')
+        self.assertEqual(bytes(bos1), b'Gr\xfc\xdfe')
+        # Invalid encodings (including the empty string) raise an error
+        with self.assertRaises(LookupError):
+            du_io.OutString(b'Gr\xfc\xdfe', encoding='')
+
+    def test__init__custom_errors(self):
+        """Test `__new__()` and `__init__()` with custom `errors`."""
+        ts8_r = du_io.OutString('Grüße', encoding='utf-8', errors='replace')
+        # Encoding uses the stored error handler:
+        self.assertEqual(ts8_r.encode('ascii'), b'Gr??e')
+        # Initialization with a `bytes` object uses the error handler, too:
+        bts8_r = du_io.OutString(b'Gr\xfc\xdfe', encoding='utf-8',
+                                 errors='replace')
+        self.assertEqual(str(bts8_r), 'Gr��e')
 
 
 class ErrorOutputTests(unittest.TestCase):
