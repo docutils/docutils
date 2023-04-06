@@ -20,7 +20,7 @@ For a more detailed list of changes, please see the Docutils `HISTORY`_.
 Future changes
 ==============
 
-Drop support for Python 2.7 and 2.8 in Docutils 0.21.
+Drop support for Python 3.7 and 3.8 in Docutils 0.21.
 
 * Usage:
 
