@@ -100,7 +100,7 @@ Drop support for Python 3.7 and 3.8 in Docutils 0.21.
   - Change the default input encoding from ``None`` (auto-detect) to
     "utf-8" in Docutils 0.22.
 
-  - Remove the input encoding auto-detection code in Docutils 1.0.
+  - Remove the input encoding auto-detection code in Docutils 1.0 or later.
 
 * "html5" writer:
 
@@ -194,8 +194,8 @@ Release 0.20 (unpublished)
 
 * The new function argument `auto_encode` for `core.publish_string()` and
   `core.publish_programmatically()` selects whether the output document is
-  encoded and returned as `bytes` instance.  The default will change to
-  ``False`` in Docutils 0.22.
+  encoded and returned as `bytes` instance.  The default is ``True`` (for
+  backwards compatibility) and will change to ``False`` in Docutils 0.22.
 
 * Bugfixes and improvements (see HISTORY_).
 
