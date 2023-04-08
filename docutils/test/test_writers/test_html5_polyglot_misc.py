@@ -39,7 +39,7 @@ class EncodingTestCase(unittest.TestCase):
             'output_encoding': 'latin1',
             'stylesheet': '',
             '_disable_config': True}
-        result = core.publish_bytes(
+        result = core.publish_string(
             'EUR = \u20ac', writer_name='html5_polyglot',
             settings_overrides=settings_overrides)
         # Encoding a euro sign with latin1 doesn't work, so the
