@@ -206,16 +206,16 @@ movablelimits = ('bigcap', 'bigcup', 'bigodot', 'bigoplus', 'bigotimes',
 spaces = {'qquad':         '2em',        # two \quad
           'quad':          '1em',        # 18 mu
           'thickspace':    '0.2778em',   # 5mu = 5/18em
+          ';':             '0.2778em',   # 5mu thickspace
+          ' ':             '0.25em',     # inter word space
           'medspace':      '0.2222em',   # 4mu = 2/9em
+          ':':             '0.2222em',   # 4mu medspace
           'thinspace':     '0.1667em',   # 3mu = 1/6em
+          ',':             '0.1667em',   # 3mu thinspace
           'negthinspace':  '-0.1667em',  # -3mu = -1/6em
+          '!':             '-0.1667em',  # negthinspace
           'negmedspace':   '-0.2222em',  # -4mu = -2/9em
           'negthickspace': '-0.2778em',  # -5mu = -5/18em
-          ' ':             '0.25em',     # inter word space
-          ';':             '0.2778em',   # 5mu thickspace
-          ':':             '0.2222em',   # 4mu medspace
-          ',':             '0.1667em',   # 3mu thinspace
-          '!':             '-0.1667em',  # negthinspace
           }
 
 # accents -> <mover stretchy="false">
@@ -1101,7 +1101,8 @@ def handle_cmd(name, node, string):  # noqa: C901 TODO make this less complex
 
     if name in ('hspace', 'mspace'):
         arg, string = tex_group(string)
-        if arg.endswith('m'):
+        if arg.endswith('mu'):
+            # unit "mu" (1mu=1/18em) not supported by MathML
             arg = '%sem' % (float(arg[:-2])/18)
         node = node.append(mspace(width='%s'%arg))
         return node, string
