@@ -185,9 +185,12 @@ Prehistoric:
 API Reference Material for Client-Developers
 ============================================
 
-* `The Docutils Publisher <api/publisher.html>`__
-* `Docutils Runtime Settings <api/runtime-settings.html>`__
-* `Docutils Transforms <api/transforms.html>`__
+`The Docutils Publisher <api/publisher.html>`__
+  entry points for using Docutils as a library
+`Docutils Runtime Settings <api/runtime-settings.html>`__
+  configuration framework details
+`Docutils Transforms <api/transforms.html>`__
+  change the document tree in-place (resolve references, …)
 
 The `Docutils Design Specification`_ (PEP 258) is a must-read for any
 Docutils developer.
