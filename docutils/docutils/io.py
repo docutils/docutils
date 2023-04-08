@@ -629,26 +629,6 @@ class BinaryFileOutput(FileOutput):
     mode = 'wb'
 
 
-class BytesOutput(Output):
-
-    """
-    Direct binary output.
-    Provisional.
-    """
-
-    default_destination_path = '<bytes>'
-
-    def write(self, data):
-        """Encode `data`, store it in `self.destination`, and return it."""
-        self.destination = self.encode(data)
-        return self.destination
-
-    def encode(self, data):
-        if isinstance(data, bytes):
-            return data
-        return str(data).encode(self.encoding, self.error_handler)
-
-
 class StringInput(Input):
     """Input from a `str` or `bytes` instance."""
 

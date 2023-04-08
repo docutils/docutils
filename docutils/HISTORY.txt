@@ -23,8 +23,6 @@ Release 0.20b (unpublished)
 
 * docutils/core.py
 
-  - Added new `publish_bytes()` function to explicitly return
-    output as binary data in a `bytes` object.
   - New argument "auto_encode" for `publish_string()` and
     `publish_programmatically()`.
   - New functions `rst2…()` for use as "console_scripts" `entry point`_.
