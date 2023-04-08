@@ -652,7 +652,7 @@ commands:
   ======================  ========  =====================  ==================
 
 .. [#] Whitespace characters are ignored in LaTeX math mode.
-.. [#] Unit must be 'mu' (1 mu = 1/18em).
+.. [#] In LaTeX, unit must be 'mu' (1 mu = 1/18em).
 
 Negative spacing does not work with MathML (in Firefox 78).
 
