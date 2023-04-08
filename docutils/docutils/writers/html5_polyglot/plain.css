@@ -281,7 +281,8 @@ math .boldsymbol {
   font-weight: bold;
 }
 mstyle.mathscr, mi.mathscr {
-  font-family: STIX;
+  font-family: STIX, XITSMathJax_Script, rsfs10,
+               "Asana Math", Garamond, cursive;
 }
 
 /* Epigraph           */
