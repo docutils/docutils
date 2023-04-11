@@ -32,9 +32,8 @@ class WriterPublishTestCase(unittest.TestCase):
                             '_disable_config': True,
                             'strict_visitor': True,
                         },
+                        auto_encode=False,
                     )
-                    if isinstance(output, bytes):
-                        output = output.decode('utf-8')
                     self.assertEqual(output, case_expected)
 
 
