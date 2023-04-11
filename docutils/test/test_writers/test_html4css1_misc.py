@@ -33,9 +33,9 @@ class EncodingTestCase(unittest.TestCase):
             'stylesheet': '',
             '_disable_config': True,
             }
-        result = core.publish_string(
+        result = bytes(core.publish_string(
             'EUR = \u20ac', writer_name='html4css1',
-            settings_overrides=settings_overrides)
+            settings_overrides=settings_overrides))
         # Encoding a euro sign with latin1 doesn't work, so the
         # xmlcharrefreplace handler is used.
         self.assertIn(b'EUR = &#8364;', result)
@@ -46,7 +46,6 @@ class MovingArgsTestCase(unittest.TestCase):
     mys = {'stylesheet_path': '',
            # 'embed_stylesheet': False,
            '_disable_config': True,
-           'output_encoding': 'unicode',
            }
 
     def test_definition_list_item_classes(self):
@@ -62,7 +61,8 @@ second term:
   second def
 """
         result = core.publish_string(data, writer_name='html4css1',
-                                     settings_overrides=self.mys)
+                                     settings_overrides=self.mys,
+                                     auto_encode=False)
         self.assertIn('<dt class="for the second item">second term:</dt>',
                       result)
 
@@ -79,7 +79,8 @@ second term:
   second def
 """
         result = core.publish_string(data, writer_name='html4css1',
-                                     settings_overrides=self.mys)
+                                     settings_overrides=self.mys,
+                                     auto_encode=False)
         self.assertIn('<dt id="second-item">second term:</dt>',
                       result)
 

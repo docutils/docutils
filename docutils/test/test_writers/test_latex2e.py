@@ -44,8 +44,9 @@ class WriterPublishTestCase(unittest.TestCase):
                 with self.subTest(id=f'samples_default[{name!r}][{casenum}]'):
                     output = publish_string(source=rst_input,
                                             writer_name=self.writer_name,
-                                            settings_overrides=self.settings)
-                    self.assertEqual(output.decode('utf-8'), expected)
+                                            settings_overrides=self.settings,
+                                            auto_encode=False)
+                    self.assertEqual(output, expected)
 
     def test_docutils_toc(self):
         settings = self.settings.copy()
@@ -55,8 +56,9 @@ class WriterPublishTestCase(unittest.TestCase):
                 with self.subTest(id=f'samples_docutils_toc[{name!r}][{casenum}]'):
                     output = publish_string(source=rst_input,
                                             writer_name=self.writer_name,
-                                            settings_overrides=settings)
-                    self.assertEqual(output.decode('utf-8'), expected)
+                                            settings_overrides=settings,
+                                            auto_encode=False)
+                    self.assertEqual(output, expected)
 
     def test_book(self):
         settings = self.settings.copy()
@@ -66,8 +68,9 @@ class WriterPublishTestCase(unittest.TestCase):
                 with self.subTest(id=f'samples_book[{name!r}][{casenum}]'):
                     output = publish_string(source=rst_input,
                                             writer_name=self.writer_name,
-                                            settings_overrides=settings)
-                    self.assertEqual(output.decode('utf-8'), expected)
+                                            settings_overrides=settings,
+                                            auto_encode=False)
+                    self.assertEqual(output, expected)
 
     def test_latex_sectnum(self):
         settings = self.settings.copy()
@@ -79,8 +82,9 @@ class WriterPublishTestCase(unittest.TestCase):
                         id=f'samples_latex_sectnum[{name!r}][{casenum}]'):
                     output = publish_string(source=rst_input,
                                             writer_name=self.writer_name,
-                        settings_overrides=settings)
-                    self.assertEqual(output.decode('utf-8'), expected)
+                                            settings_overrides=settings,
+                                            auto_encode=False)
+                    self.assertEqual(output, expected)
 
     def test_latex_citations(self):
         settings = self.settings.copy()
@@ -91,8 +95,9 @@ class WriterPublishTestCase(unittest.TestCase):
                         id=f'samples_latex_citations[{name!r}][{casenum}]'):
                     output = publish_string(source=rst_input,
                                             writer_name=self.writer_name,
-                                            settings_overrides=settings)
-                    self.assertEqual(output.decode('utf-8'), expected)
+                                            settings_overrides=settings,
+                                            auto_encode=False)
+                    self.assertEqual(output, expected)
 
     def test_table_style_auto(self):
         settings = self.settings.copy()
@@ -103,8 +108,9 @@ class WriterPublishTestCase(unittest.TestCase):
                         id=f'samples_table_style_auto[{name!r}][{casenum}]'):
                     output = publish_string(source=rst_input,
                                             writer_name=self.writer_name,
-                                            settings_overrides=settings)
-                    self.assertEqual(output.decode('utf-8'), expected)
+                                            settings_overrides=settings,
+                                            auto_encode=False)
+                    self.assertEqual(output, expected)
 
     def test_booktabs(self):
         settings = self.settings.copy()
@@ -114,8 +120,9 @@ class WriterPublishTestCase(unittest.TestCase):
                 with self.subTest(id=f'samples_booktabs[{name!r}][{casenum}]'):
                     output = publish_string(source=rst_input,
                                             writer_name=self.writer_name,
-                                            settings_overrides=settings)
-                    self.assertEqual(output.decode('utf-8'), expected)
+                                            settings_overrides=settings,
+                                            auto_encode=False)
+                    self.assertEqual(output, expected)
 
     def test_link_stylesheet(self):
         settings = self.settings.copy()
@@ -125,8 +132,9 @@ class WriterPublishTestCase(unittest.TestCase):
                 with self.subTest(id=f'samples_link_stylesheet[{name!r}][{casenum}]'):
                     output = publish_string(source=rst_input,
                                             writer_name=self.writer_name,
-                                            settings_overrides=settings)
-                    self.assertEqual(output.decode('utf-8'), expected)
+                                            settings_overrides=settings,
+                                            auto_encode=False)
+                    self.assertEqual(output, expected)
 
     def test_embed_embed_stylesheet(self):
         settings = self.settings.copy()
@@ -138,8 +146,9 @@ class WriterPublishTestCase(unittest.TestCase):
                 with self.subTest(id=f'samples_embed_stylesheet[{name!r}][{casenum}]'):
                     output = publish_string(source=rst_input,
                                             writer_name=self.writer_name,
-                                            settings_overrides=settings)
-                    self.assertEqual(output.decode('utf-8'), expected)
+                                            settings_overrides=settings,
+                                            auto_encode=False)
+                    self.assertEqual(output, expected)
 
     def test_bibtex(self):
         settings = self.settings.copy()
@@ -149,9 +158,9 @@ class WriterPublishTestCase(unittest.TestCase):
                 with self.subTest(id=f'samples_bibtex[{name!r}][{casenum}]'):
                     output = publish_string(source=rst_input,
                                             writer_name=self.writer_name,
-                                            settings_overrides=settings)
-                    # print(output.decode('utf-8'))
-                    self.assertEqual(output.decode('utf-8'), expected)
+                                            settings_overrides=settings,
+                                            auto_encode=False)
+                    self.assertEqual(output, expected)
 
 
 head_template = string.Template(

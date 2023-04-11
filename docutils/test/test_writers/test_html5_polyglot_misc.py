@@ -52,7 +52,6 @@ class MovingArgsTestCase(unittest.TestCase):
     mys = {'stylesheet_path': '',
            # 'embed_stylesheet': False,
            '_disable_config': True,
-           'output_encoding': 'unicode',
            }
 
     def test_definition_list_item_classes(self):
@@ -68,7 +67,8 @@ second term:
   second def
 """
         result = core.publish_string(data, writer_name='html5_polyglot',
-                                     settings_overrides=self.mys)
+                                     settings_overrides=self.mys,
+                                     auto_encode=False)
         self.assertIn('<dt class="for the second item">second term:</dt>',
                       result)
 
@@ -85,7 +85,8 @@ second term:
   second def
 """
         result = core.publish_string(data, writer_name='html5_polyglot',
-                                     settings_overrides=self.mys)
+                                     settings_overrides=self.mys,
+                                     auto_encode=False)
         self.assertIn('<dt id="second-item">second term:</dt>',
                       result)
 
