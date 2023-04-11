@@ -39,9 +39,8 @@ class WriterPublishTestCase(unittest.TestCase):
                         source=case_input,
                         writer_name=writer_name,
                         settings_overrides=settings.copy(),
+                        auto_encode=False,
                     )
-                    if isinstance(output, bytes):
-                        output = output.decode('utf-8')
                     self.assertEqual(output, case_expected)
 
         settings['hidden_controls'] = False
@@ -53,9 +52,8 @@ class WriterPublishTestCase(unittest.TestCase):
                         source=case_input,
                         writer_name=writer_name,
                         settings_overrides=settings.copy(),
+                        auto_encode=False,
                     )
-                    if isinstance(output, bytes):
-                        output = output.decode('utf-8')
                     self.assertEqual(output, case_expected)
 
 

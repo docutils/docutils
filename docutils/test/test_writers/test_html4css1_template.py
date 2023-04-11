@@ -44,9 +44,8 @@ class WriterPublishTestCase(unittest.TestCase):
                             'stylesheet_path': '/test.css',
                             'embed_stylesheet': False,
                         },
+                        auto_encode=False,
                     )
-                    if isinstance(output, bytes):
-                        output = output.decode('utf-8')
                     self.assertEqual(output, case_expected)
 
 
