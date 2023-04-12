@@ -483,7 +483,7 @@ def publish_parts(source, source_path=None, source_class=io.StringInput,
                   settings_overrides=None, config_section=None,
                   enable_exit_status=False):
     """
-    Set up & run a `Publisher`, and return a dictionary of `document parts`_.
+    Set up & run a `Publisher`, and return a dictionary of document parts.
 
     Dictionary keys are the names of parts.
     Dictionary values are `str` instances; encoding is up to the client,
@@ -492,11 +492,11 @@ def publish_parts(source, source_path=None, source_class=io.StringInput,
        parts = publish_parts(...)
        body = parts['body'].encode(parts['encoding'])
 
+    See the `API documentation`__ for details on the provided parts.
+
     Parameters: see `publish_programmatically()`.
 
-    .. _document parts:
-        https://docutils.sourceforge.io/docs/api/publisher.html
-        #publish-parts-details
+    __ https://docutils.sourceforge.io/docs/api/publisher.html#publish-parts
     """
     output, publisher = publish_programmatically(
         source=source, source_path=source_path, source_class=source_class,
@@ -545,8 +545,8 @@ def publish_from_doctree(document, destination_path=None,
                          enable_exit_status=False,
                          auto_encode=True):
     """
-    Set up & run a `Publisher` to render from an existing document
-    tree data structure, for programmatic use with string output
+    Set up & run a `Publisher` to render from an existing document tree
+    data structure. For programmatic use with string output
     (`bytes` or `str`, cf. `publish_string()`).
 
     Note that ``document.settings`` is overridden; if you want to use the

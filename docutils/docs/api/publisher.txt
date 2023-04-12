@@ -16,33 +16,38 @@
 The ``docutils.core.Publisher`` class is the core of Docutils,
 managing all the processing and relationships between components.  See
 `PEP 258`_ for an overview of Docutils components.
+Configuration_ is done via `runtime settings`_ assembled from several sources.
 
-The ``docutils.core.publish_*()`` convenience functions are the normal
-entry points for using Docutils as a library.
-
-See `Inside A Docutils Command-Line Front-End Tool`_ for an overview
-of a typical Docutils front-end tool, including how the Publisher
-class is used.
+The `Publisher convenience functions`_ are the normal entry points for
+using Docutils as a library.
 
 .. _PEP 258: ../peps/pep-0258.html
-.. _Inside A Docutils Command-Line Front-End Tool: ../howto/cmdline-tool.html
 
 
 Publisher Convenience Functions
 ===============================
 
+There are several convenience functions in the ``docutils.core`` module.
 Each of these functions sets up a `docutils.core.Publisher` object,
 then calls its ``publish()`` method.  ``docutils.core.Publisher.publish()``
-handles everything else.  There are several convenience functions in
-the ``docutils.core`` module:
+handles everything else.
+
+See the module docstring, ``help(docutils.core)``, and the function
+docstrings, e.g., ``help(docutils.core.publish_string)``, for details and
+a description of the function arguments.
+
+.. TODO: generate API documentation with Sphinx and add links to it.
 
 
 publish_cmdline()
 -----------------
 
-Function for command-line front-end tools, like ``rst2html.py``.  There are
-several examples in the ``tools/`` directory.  A detailed analysis of one
-such tool is in `Inside A Docutils Command-Line Front-End Tool`_.
+Function for command-line front-end tools, like ``rst2html.py`` with 
+file I/O. Also returns the output as `bytes` instance.
+
+There are several examples in the ``tools/`` directory of the Docutils
+repository. A detailed analysis of one such tool is in `Inside A Docutils
+Command-Line Front-End Tool`_.
 
 .. _Inside A Docutils Command-Line Front-End Tool: ../howto/cmdline-tool.html
 
@@ -72,13 +77,14 @@ Output
     ``"unicode"``.
 
   * a `bytes` instance, if the "encode_output" argument is ``True`` and
-    output_encoding_ is set to an encoding registerd with
+    output_encoding_ is set to an encoding registered with
     Python's "codecs_" module (default: "utf-8").
 
-  Calling ``output = bytes(publish_string(…))`` ensures that
-  ``output`` is a `bytes` instance encoded with output_encoding_.
+  Calling ``output = bytes(publish_string(…))`` ensures that ``output``
+  is a `bytes` instance encoded with the configured output_encoding_
+  (matching the encoding indicated inside HTML, XML, and LaTeX documents).
 
-.. [#] Actually an instance of a `str` sub-class with the
+.. [#] More precisely, an instance of a `str` sub-class with the
    output_encoding_ and output_encoding_error_handler_ configuration
    settings stored as "encoding" and "errors" attributes.
 
@@ -92,24 +98,24 @@ Parse string input (cf. `string I/O`_) into a `Docutils document tree`_ data
 structure (doctree). The doctree can be modified, pickled & unpickled,
 etc., and then reprocessed with `publish_from_doctree()`_.
 
-.. _Docutils document tree: ../ref/doctree.html
-
 
 publish_from_doctree()
 ----------------------
 
-Render from an existing document tree data structure (doctree).
+Render from an existing `document tree`_ data structure (doctree).
 Returns the output document as a memory object (cf. `string I/O`_).
 
 
 publish_programmatically()
 --------------------------
 
-This function implements common code and is used by `publish_file()`_,
-`publish_string()`_, and `publish_parts()`_.
+Auxilliary function used by `publish_file()`_, `publish_string()`_,
+`publish_doctree()`_, and `publish_parts()`_. 
 It returns a 2-tuple: the output document as memory object (cf. `string
 I/O`_) and the Publisher object.
 
+
+.. _publish-parts-details:
 
 publish_parts()
 ---------------
@@ -380,6 +386,20 @@ titledata
 Configuration
 =============
 
+Docutils is configured by runtime settings assembled from several
+sources:
+
+* *settings specifications* of the selected components (reader, parser,
+  writer),
+* *configuration files* (if enabled), and
+* *command-line options* (if enabled).
+
+The individual settings are described in `Docutils Configuration`_.
+
+Docutils overlays default and explicitly specified values from these
+sources such that settings behave the way we want and expect them to
+behave. For details, see `Docutils Runtime Settings`_.
+
 To pass application-specific setting defaults to the Publisher
 convenience functions, use the ``settings_overrides`` parameter.  Pass
 a dictionary of setting names & values, like this::
@@ -389,12 +409,10 @@ a dictionary of setting names & values, like this::
     output = publish_string(..., settings_overrides=overrides)
 
 Settings from command-line options override configuration file
-settings, and they override application defaults.  For details, see
-`Docutils Runtime Settings`_.  See `Docutils Configuration`_ for
-details about individual settings.
+settings, and they override application defaults.
 
-.. _Docutils Runtime Settings: ./runtime-settings.html
-.. _Docutils Configuration: ../user/config.html
+Further customization is possible creating custom component
+objects and passing *them* to ``publish_*()`` or the ``Publisher``. 
 
 
 Encodings
@@ -456,6 +474,8 @@ A different encoding can be specified with the `output_encoding`_ setting.
    This feature is scheduled to be removed in Docutils 1.0.
    See the `inspecting_codecs`_ package for a possible replacement.
 
+
+.. _Inside A Docutils Command-Line Front-End Tool: ../howto/cmdline-tool.html
 .. _RELEASE-NOTES: ../../RELEASE-NOTES.html#future-changes
 .. _input_encoding: ../user/config.html#input-encoding
 .. _preferred encoding:
@@ -468,4 +488,9 @@ A different encoding can be specified with the `output_encoding`_ setting.
    ../ref/rst/restructuredtext.html#auto-symbol-footnotes
 .. _"contents" directive:
    ../ref/rst/directives.html#table-of-contents
+.. _document tree:   
+.. _Docutils document tree: ../ref/doctree.html
+.. _runtime settings:
+.. _Docutils Runtime Settings: ./runtime-settings.html
+.. _Docutils Configuration: ../user/config.html
 .. _inspecting_codecs: https://codeberg.org/milde/inspecting-codecs
