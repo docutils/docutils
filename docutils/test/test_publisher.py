@@ -111,15 +111,17 @@ class PublisherTests(unittest.TestCase):
                     '    <paragraph>\n'
                     '        test → me\n')
         output = core.publish_string(source.encode('utf-16'),
-                                     settings_overrides=settings)
-        self.assertEqual(output.decode('utf-8'), expected)
+                                     settings_overrides=settings,
+                                     auto_encode=False)
+        self.assertEqual(output, expected)
 
         # encoding declaration in source
         source = '.. encoding: latin1\n\nGrüße'
         # don't encode output (return `str`)
         settings['output_encoding'] = 'unicode'
         output = core.publish_string(source.encode('utf-16'),
-                                     settings_overrides=settings)
+                                     settings_overrides=settings,
+                                     auto_encode=False)
         self.assertTrue(output.endswith('Grüße\n'))
 
     def test_publish_string_output_encoding(self):
@@ -132,13 +134,13 @@ class PublisherTests(unittest.TestCase):
                     '    <paragraph>\n'
                     '        Grüß → dich\n')
         # current default: encode output, return `bytes`
-        output = core.publish_string(source, settings_overrides=settings)
+        output = bytes(core.publish_string(source, settings_overrides=settings))
         self.assertEqual(output, expected.encode('latin1', 'replace'))
         # no encoding if `auto_encode` is False:
         output = core.publish_string(source, settings_overrides=settings,
                                      auto_encode=False)
         self.assertEqual(output, expected)
-        # self.assertEqual(output.encoding, 'latin1')
+        self.assertEqual(output.encoding, 'latin1')
 
 
 class PublishDoctreeTestCase(unittest.TestCase, docutils.SettingsSpec):
@@ -219,9 +221,10 @@ class PublishDoctreeTestCase(unittest.TestCase, docutils.SettingsSpec):
         self.assertTrue(isinstance(doctree_zombie, nodes.document))
 
         # Write out the document:
-        output = core.publish_from_doctree(
-            doctree_zombie, writer_name='pseudoxml',
-            settings_spec=self).decode('utf-8')
+        output = core.publish_from_doctree(doctree_zombie,
+                                           writer_name='pseudoxml',
+                                           settings_spec=self,
+                                           auto_encode=False)
         self.assertEqual(output, pseudoxml_output)
 
 

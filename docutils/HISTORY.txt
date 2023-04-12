@@ -23,8 +23,8 @@ Release 0.20b (unpublished)
 
 * docutils/core.py
 
-  - New argument "auto_encode" for `publish_string()` and
-    `publish_programmatically()`.
+  - New argument "auto_encode" for `publish_string()`,
+    `publish_from_docstring()` and `publish_programmatically()`.
   - New functions `rst2…()` for use as "console_scripts" `entry point`_.
 
 * docutils/frontend.py
