@@ -383,8 +383,8 @@ def publish_cmdline(reader=None, reader_name='standalone',
                     usage=default_usage, description=default_description):
     """
     Set up & run a `Publisher` for command-line-based file I/O (input and
-    output file paths taken automatically from the command line).  Return the
-    encoded string output also.
+    output file paths taken automatically from the command line).
+    Also return the encoded output as `bytes`.
 
     Parameters: see `publish_programmatically()` for the remainder.
 
@@ -411,7 +411,7 @@ def publish_file(source=None, source_path=None,
                  config_section=None, enable_exit_status=False):
     """
     Set up & run a `Publisher` for programmatic use with file-like I/O.
-    Return the encoded string output also.
+    Also return the encoded output as `bytes`.
 
     Parameters: see `publish_programmatically()`.
     """
@@ -542,24 +542,18 @@ def publish_from_doctree(document, destination_path=None,
                          writer=None, writer_name='pseudoxml',
                          settings=None, settings_spec=None,
                          settings_overrides=None, config_section=None,
-                         enable_exit_status=False):
+                         enable_exit_status=False,
+                         auto_encode=True):
     """
     Set up & run a `Publisher` to render from an existing document
-    tree data structure, for programmatic use with string I/O.  Return
-    the encoded string output.
+    tree data structure, for programmatic use with string output
+    (`bytes` or `str`, cf. `publish_string()`).
 
-    Note that document.settings is overridden; if you want to use the settings
-    of the original `document`, pass settings=document.settings.
+    Note that ``document.settings`` is overridden; if you want to use the
+    settings of the original `document`, pass ``settings=document.settings``.
 
-    Also, new document.transformer and document.reporter objects are
+    Also, new `document.transformer` and `document.reporter` objects are
     generated.
-
-    For encoded string output, be sure to set the 'output_encoding' setting to
-    the desired encoding.  Set it to 'unicode' for unencoded Unicode string
-    output.  Here's one way::
-
-        publish_from_doctree(
-            ..., settings_overrides={'output_encoding': 'unicode'})
 
     Parameters: `document` is a `docutils.nodes.document` object, an existing
     document tree.
@@ -576,6 +570,7 @@ def publish_from_doctree(document, destination_path=None,
     publisher.process_programmatic_settings(
         settings_spec, settings_overrides, config_section)
     publisher.set_destination(None, destination_path)
+    publisher.destination.auto_encode = auto_encode
     return publisher.publish(enable_exit_status=enable_exit_status)
 
 
@@ -594,8 +589,8 @@ def publish_cmdline_to_binary(reader=None, reader_name='standalone',
                               destination_class=io.BinaryFileOutput):
     """
     Set up & run a `Publisher` for command-line-based file I/O (input and
-    output file paths taken automatically from the command line).  Return the
-    encoded string output also.
+    output file paths taken automatically from the command line).
+    Also return the encoded output as `bytes`.
 
     This is just like publish_cmdline, except that it uses
     io.BinaryFileOutput instead of io.FileOutput.
@@ -720,7 +715,9 @@ def publish_programmatically(source_class, source, source_path,
 
     * `auto_encode`: Boolean; encode string output and return `bytes`?
       Ignored with `io.FileOutput`.
-      The default value will change to ``False`` in Docutils 0.22.
+      New in Docutils 0.21.
+      The default value will change to ``False`` in Docutils 0.22 or later.
+      The argument may be removed in Docutils 2.0 or later.
     """
     publisher = Publisher(reader, parser, writer, settings=settings,
                           source_class=source_class,
