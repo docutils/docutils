@@ -72,11 +72,11 @@ Input
 Output
   is a memory object:
 
-  * a `str` instance [#]_, if the "encode_output" function argument is
+  * a `str` instance [#]_, if the "auto_encode" function argument is
     ``False`` or output_encoding_ is set to the special value
     ``"unicode"``.
 
-  * a `bytes` instance, if the "encode_output" argument is ``True`` and
+  * a `bytes` instance, if the "auto_encode" argument is ``True`` and
     output_encoding_ is set to an encoding registered with
     Python's "codecs_" module (default: "utf-8").
 
