@@ -48,8 +48,9 @@ class GetParserClassTestCase(unittest.TestCase):
 class RecommonmarkMissingTests(unittest.TestCase):
 
     def test_missing_parser_message(self):
+        # match multiline message (?s) = re.DOTALL "." also matches newline
         with self.assertRaisesRegex(ImportError,
-                                    'requires the.*package .* recommonmark'):
+                                    '(?s)requires the.*package .*recommonmark'):
             publish_string('test data', parser_name='recommonmark')
 
 
