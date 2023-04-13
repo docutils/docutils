@@ -147,6 +147,10 @@ Release 0.20b (unpublished)
 
   .. _coverage.py: https://pypi.org/project/coverage/
 
+* test/test_parsers/test_get_parser_class.py
+
+  - Fix regex to match multiline message "requires ... recommonmark"
+
 * tools/
 
   - Moved ``quicktest.py`` to ``tools/dev/``.
