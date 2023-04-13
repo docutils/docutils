@@ -1,7 +1,7 @@
 .. include:: ../header.txt
 
 =======================
-Odt Writer for Docutils
+ODT Writer for Docutils
 =======================
 
 :Author: Dave Kuhlman
@@ -10,8 +10,8 @@ Odt Writer for Docutils
 :Date: $Date$
 :Copyright: This document has been placed in the public domain.
 
-:abstract: This document describes the Docutils odtwriter
-    (rst2odt.py).
+:abstract: This document describes the Docutils writer for
+           OpenDocument Text (.odt) documents.
 
 .. sectnum::
 
@@ -21,19 +21,12 @@ Odt Writer for Docutils
 Introduction
 ============
 
-What it does -- ``rst2odt.py`` translates reST
-(reStructuredText) into a Open Document Format ``.odt`` file.  You
-can learn more about the ODF format here:
+The Docutils front end rst2odt.py_ translates reStructuredText_ into an
+`OpenDocument Text`_ (.odt) file.
+OpenDocument files `can be opened by most modern office software`__.
+It is the native file format for LibreOffice_ Writer.
 
-- `OASIS Open Document Format for Office Applications
-  (OpenDocument) TC`_
-
-- `Open Document at Wikipedia`_
-
-You should be able to open documents (.odt files) generated with
-``rst2odt.py`` in ``OpenOffice/oowriter``.
-
-You can learn more about Docutils and reST here: `Docutils`_
+__ https://en.wikipedia.org/wiki/OpenDocument#Software
 
 
 Requirements
@@ -57,7 +50,7 @@ How to Use It
 
 Run it from the command line as follows::
 
-    $ rst2odt.py myinput.txt myoutput.odt
+    $ rst2odt.py myinput.txt > myoutput.odt
 
 To see usage information and to learn about command line options
 that you can use, run the following::
@@ -66,25 +59,29 @@ that you can use, run the following::
 
 Examples::
 
-    $ rst2odt.py -s -g python_comments.txt python_comments.odt
+    $ rst2odt.py -s -g python_comments.txt > python_comments.odt
 
     $ rst2odt.py --source-url=odtwriter.txt --generator \
-        --stylesheet=/myconfigs/styles.odt odtwriter.txt odtwriter.odt
+        --stylesheet=/myconfigs/styles.odt odtwriter.txt > odtwriter.odt
 
 
 Configuration file
 ------------------
 
-The options described below can also be set in a configuration file.
-Use section ``[odf_odt writer]`` to set options specific to the
+The options described below can also be set in a `configuration file`_.
+Use section `[odf_odt writer]`_ to set options specific to the
 ``odtwriter``.  For example::
 
     [odf_odt writer]
     stylesheet: styles1.odt
 
-See the "Docutils Configuration" document for more information on
+See the `Docutils Configuration`_ document for more information on
 Docutils configuration files, including locations which are
 searched.
+
+.. _Docutils Configuration: config.html
+.. _configuration file: config.html#configuration-files
+.. _[odf_odt writer]: config.html#odf-odt-writer
 
 
 Command line options
@@ -1185,18 +1182,15 @@ pick up the default paper size on platforms where the program
 
 
 
-
+.. _rst2odt.py:
+    tools.html#rst2odt-py
+.. _reStructuredText:
+    ../ref/rst/restructuredtext.html
+.. _`OpenDocument Text`:
+    https://en.wikipedia.org/wiki/OpenDocument
+.. _LibreOffice:
+    https://libreoffice.org/
 .. _`Pygments`:
     https://pygments.org/
-
-.. _`Docutils`:
-    https://docutils.sourceforge.io/
-
 .. _`Python Imaging Library`:
     https://en.wikipedia.org/wiki/Python_Imaging_Library
-
-.. _`Open Document at Wikipedia`:
-    https://en.wikipedia.org/wiki/OpenDocument
-
-.. _`OASIS Open Document Format for Office Applications (OpenDocument) TC`:
-    http://www.oasis-open.org/committees/tc_home.php?wg_abbrev=office

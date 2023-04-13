@@ -444,7 +444,9 @@ The "output_encoding" setting may also affect the content of the output
 (e.g. an encoding declaration in HTML or XML or the representation of
 characters as LaTeX macro vs. literal character).
 
-Default: "utf-8".  Options: ``--output-encoding, -o``.
+This setting is ignored by the `ODF/ODT Writer`_
+
+Default: "utf-8".  Options: ``--output-encoding``.
 
 output_encoding_error_handler
 -----------------------------
@@ -1999,10 +2001,21 @@ template__:
   __ `template [latex writers]`_
 
 
+.. _ODF/ODT Writer:
+
 [odf_odt writer]
 ----------------
 
-The following command line options are specific to ``odtwriter``:
+The `ODF/ODT Writer`__ generates documents in the 
+OpenDocument_ Text format (.odt).
+
+The output_encoding_ setting is ignored, the output encoding is
+always "UTF-8".
+
+__
+.. _ODT Writer for Docutils: odt.html
+.. _OpenDocument: https://en.wikipedia.org/wiki/OpenDocument
+
 
 stylesheet
 ~~~~~~~~~~
@@ -2029,6 +2042,7 @@ keeping email links usable with standards-compliant browsers.
 
 no-cloak-email-addresses
 ~~~~~~~~~~~~~~~~~~~~~~~~
+
 Do not obfuscate email addresses.
 
 table-border-thickness
@@ -2060,6 +2074,7 @@ Do not create sections for headers.
 
 create-links
 ~~~~~~~~~~~~
+
 Create links.
 
 no-links
@@ -2110,8 +2125,6 @@ custom footers and about special field character sequences, see
 section "Custom header/footers: inserting page numbers, date,
 time, etc" in the `Odt Writer for Docutils`_ document for
 details.
-
-.. _Odt Writer for Docutils: odt.html
 
 
 [pseudoxml writer]

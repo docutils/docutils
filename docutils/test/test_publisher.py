@@ -64,6 +64,9 @@ exposed_pseudoxml_output = """\
 
 class PublisherTests(unittest.TestCase):
 
+    settings = {'_disable_config': True,
+                'datestamp': False}
+
     def test_input_error_handling(self):
         # core.publish_cmdline(argv=['nonexisting/path'])
         # exits with a short message, if `traceback` is False,
@@ -104,8 +107,7 @@ class PublisherTests(unittest.TestCase):
         # Transparently decode `bytes` source (with "input_encoding" setting)
         # default: auto-detect, fallback utf-8
         # Output is encoded according to "output_encoding" setting.
-        settings = {'_disable_config': True,
-                    'datestamp': False}
+        settings = dict(self.settings)
         source = 'test → me'
         expected = ('<document source="<string>">\n'
                     '    <paragraph>\n'
@@ -125,22 +127,33 @@ class PublisherTests(unittest.TestCase):
         self.assertTrue(output.endswith('Grüße\n'))
 
     def test_publish_string_output_encoding(self):
-        settings = {'_disable_config': True,
-                    'datestamp': False,
-                    'output_encoding': 'latin1',
-                    'output_encoding_error_handler': 'replace'}
+        settings = dict(self.settings)
+        settings['output_encoding'] = 'latin1'
+        settings['output_encoding_error_handler'] = 'replace'
         source = 'Grüß → dich'
         expected = ('<document source="<string>">\n'
                     '    <paragraph>\n'
                     '        Grüß → dich\n')
         # current default: encode output, return `bytes`
-        output = bytes(core.publish_string(source, settings_overrides=settings))
+        output = bytes(core.publish_string(source,
+                                           settings_overrides=settings))
         self.assertEqual(output, expected.encode('latin1', 'replace'))
         # no encoding if `auto_encode` is False:
         output = core.publish_string(source, settings_overrides=settings,
                                      auto_encode=False)
         self.assertEqual(output, expected)
         self.assertEqual(output.encoding, 'latin1')
+
+    def test_publish_string_output_encoding_odt(self):
+        """The ODT writer generates a zip archive, not a `str`.
+
+        TODO: return `str` with document as "flat XML" (.fodt).
+        """
+        with self.assertRaises(ValueError) as cm:
+            core.publish_string('test',
+                                writer_name='odt',
+                                auto_encode=False)
+        self.assertIn('ODT writer generates binary output', str(cm.exception))
 
 
 class PublishDoctreeTestCase(unittest.TestCase, docutils.SettingsSpec):
