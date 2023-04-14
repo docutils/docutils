@@ -216,10 +216,8 @@ Nonpairing delimiters
 The use of ``|`` and ``\|`` for pairs of vertical bars may produce
 incorrect spacing, e.g., ``|k|=|-k|`` produces `|k| = |−k|` and
 ``|\sin(x)|`` produces `|\sin(x)|`. The pairing delimiters, e.g.
-`\lvert -k\rvert` and `\lvert\sin(x)\rvert`, prevent this problem
-(in LaTeX and MathJax).
+`\lvert -k\rvert` and `\lvert\sin(x)\rvert`, prevent this problem.
 
-.. TODO: fix spacing before unary minus (see also cases example below).
 
 Extensible vertical arrows
 --------------------------
@@ -635,7 +633,7 @@ commands:
 
 .. class:: colwidths-auto
 
-  ======================  ========  =====================  ==================
+  ======================  ========  =====================  ===================
   :m:`3\qquad 4`                    ``3\qquad 4``          = 2em
   :m:`3\quad 4`                     ``3\quad 4``           = 1em
   :m:`3~4`                ``3~4``   ``3\nobreakspace 4``
@@ -644,17 +642,16 @@ commands:
   :m:`3\:4`               ``3\:4``  ``3\medspace 4``
   :m:`3\,4`               ``3\,4``  ``3\thinspace 4``
   :m:`3  4`               ``3  4``                         regular space [#]_
-  :m:`3\!4`               ``3\!4``  ``3\negthinspace 4``
+  :m:`3\!4`               ``3\!4``  ``3\negthinspace 4``   negative space [#]_
   :m:`3\negmedspace 4`              ``3\negmedspace 4``
   :m:`3\negthickspace 4`            ``3\negthickspace 4``
   `3\hspace{1ex}4`                  ``3\hspace{1ex}4``     custom length
   `3\mspace{20mu}4`                 ``3\mspace{20mu}4``    custom length [#]_
-  ======================  ========  =====================  ==================
+  ======================  ========  =====================  ===================
 
 .. [#] Whitespace characters are ignored in LaTeX math mode.
-.. [#] In LaTeX, unit must be 'mu' (1 mu = 1/18em).
-
-Negative spacing does not work with MathML (in Firefox 78).
+.. [#] Negative spacing does not work with MathML (last tested in Firefox 102).
+.. [#] In LaTeX, the unit must be 'mu' (1 mu = 1/18em).
 
 There are also three commands that leave a space equal to the height and
 width of its argument. For example ``\phantom{XXX}`` results in space as
@@ -751,12 +748,14 @@ padding for sub-fractions:
                                       2 + \frac{7^2}{2 + \cdots}
                               }}}
 
-It supports the optional argument ``[l]`` or ``[r]`` for
-left or right placement of the numerator:
+The optional argument ``[l]`` or ``[r]`` for left or right placement of
+the numerator is `not supported by MathML Core`__:
 
 .. math::  \cfrac[l]{x}{x-1} \quad
            \cfrac{x}{x-1}    \quad
            \cfrac[r]{x}{x-1}
+
+__ https://github.com/w3c/mathml/issues/30
 
 
 Delimiter sizes
@@ -934,9 +933,12 @@ MathML), leaving some symbols unchanged:
 :mathcal: `\mathcal{abs(x) \pm \alpha \approx 3 \Gamma  \quad \forall x \in R}`
 :mathscr: `\mathscr{abs(x) \pm \alpha \approx 3 \Gamma  \quad \forall x \in R}`
 
-Unicode supports the following blackboard-bold characters:
-`\mathbb{a \ldots z A \ldots Z 0 \ldots 9
-\mathbb\Gamma \mathbb{\Pi} \mathbb {\Sigma} \mathbb\gamma \mathbb\pi}`.
+Without additional packages, LaTeX supports "blackboard-bold" only for
+capital Latin letters.
+Unicode supports also small Latin letters, some Greek letters, and digits:
+`\mathbb{A \ldots Z a \ldots z} 
+\mathbb\Gamma \mathbb{\Pi} \mathbb {\Sigma} \mathbb\gamma \mathbb \pi
+\mathbb{0 \ldots 9}`.
 
 
 Inferred <mrow>s in MathML
@@ -956,7 +958,7 @@ inline: :math:`a = \sqrt 2 + x, b = \sqrt{1+x^2}, c = \sqrt\frac{\sin(x)}{23}`.
 Scripts and Limits
 ~~~~~~~~~~~~~~~~~~
 
-Accents should be nearer to the base (in MathML Firefox 78, it's vice versa!):
+Accents should be nearer to the base:
 `\bar a \overline a, \bar l \overline l, \bar i \overline i`,
 `\vec{r}` `\overrightarrow{r}`.
 

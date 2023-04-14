@@ -1091,6 +1091,40 @@ the output document. Supported values are (case insensitive):
   stylesheet(s) will only be referenced or embedded if required
   (i.e. if there is mathematical content in the document).
 
+:MathML:
+  Embed math content as presentational MathML_.
+
+  Self-contained documents (no JavaScript, no external downloads).
+  MathML is part of the HTML5 standard [#mathml-in-html4]_ and
+  `supported by all major browsers`__ (since January 2023 also by Chrome).
+
+  .. [#mathml-in-html4] 
+    With the "html4css1" writer, the resulting HTML document does
+    not validate, as there is no DTD for `MathML + XHTML Transitional`.
+    However, MathML-enabled browsers will render it fine.
+
+  Docutil's latex2mathml converter supports a considerable
+  `subset of LaTeX math syntax`__.
+
+  An external converter can be appended after whitespace, e.g.,
+  ``--math-output="MathML blahtexml"``:
+
+  blahtexml_
+    Fast conversion, support for many symbols and environments, but no
+    "align" (or other equation-aligning) environment. (C++)
+
+  LaTeXML_
+    Comprehensive macro support but *very* slow. (Perl)
+
+  TtM_
+    No "matrix", "align" and  "cases" environments. Support may be removed.
+
+  Pandoc_
+    Comprehensive macro support, fast, but a large install size. (Haskell)
+
+  __ https://developer.mozilla.org/en-US/docs/Web/MathML#browser_compatibility
+  __ ../ref/rst/mathematics.html
+
 :MathJax:
   Format math for display with MathJax_, a JavaScript-based math rendering
   engine.
@@ -1140,45 +1174,6 @@ the output document. Supported values are (case insensitive):
 
     This is the fallback if no URL is specified.
 
-:MathML:
-  Embed math content as presentational MathML_.
-
-  Pro:
-    The W3C recommendation for math on the web.
-
-    Self-contained documents (no JavaScript, no external downloads).
-
-  Con:
-    Limited `browser support`__.
-
-    Docutil's latex2mathml converter supports only a
-    `subset of LaTeX math syntax`__.
-
-    With the "html4css1" writer, the resulting HTML document does
-    not validate, as there is no DTD for `MathML + XHTML Transitional`.
-    However, MathML-enabled browsers will render it fine.
-
-    __ https://developer.mozilla.org/en-US/docs/Web/MathML
-       #browser_compatibility
-    __ ../ref/rst/mathematics.html
-
-
-  An external converter can be appended after whitespace, e.g.,
-  ``--math-output="MathML latexml"``:
-
-  blahtexml_
-    Fast conversion, support for many symbols and environments, but no
-    "align" (or other equation-aligning) environment. (C++)
-
-  LaTeXML_
-    Comprehensive macro support but *very* slow. (Perl)
-
-  TtM_
-    No "matrix", "align" and  "cases" environments. Support may be removed.
-
-  Pandoc_
-    Comprehensive macro support, fast, but a large install size. (Haskell)
-
 :LaTeX:
   Include literal LaTeX code.
 
@@ -1186,7 +1181,9 @@ the output document. Supported values are (case insensitive):
 
 Default: HTML math.css.  Option: ``--math-output``.
 
-New in Docutils 0.8.
+| New in Docutils 0.8. 
+| The default for the HTML5 writer will change to
+  "MathML" in Docutils 0.22.
 
 .. _math directive: ../ref/rst/directives.html#math
 .. _MathJax: http://www.mathjax.org/

@@ -120,6 +120,8 @@ Drop support for Python 3.7 and 3.8 in Docutils 0.21.
   - Remove option ``--embed-images`` (obsoleted by "image_loading_")
     in Docutils 2.0.
 
+  - Change the default value for math_output_ to "MathML" in Docutils 0.22.
+
 * "latex2e" writer:
 
   - Change default of use_latex_citations_ setting to True
@@ -160,6 +162,7 @@ Drop support for Python 3.7 and 3.8 in Docutils 0.21.
 .. _front end tools: docs/user/tools.html
 .. _input encoding:
 .. _input_encoding: docs/user/config.html#input-encoding
+.. _math_output: docs/user/config.html#math-output
 .. _UTF-8 mode: https://docs.python.org/3/library/os.html#utf8-mode
 .. _image_loading: docs/user/config.html#image-loading
 .. _old-format configuration files:
