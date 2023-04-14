@@ -13,8 +13,8 @@
 
 .. contents::
 
-Release 0.20b (unpublished)
-===========================
+Release 0.20 (unpublished)
+==========================
 
 * General
 
@@ -25,12 +25,12 @@ Release 0.20b (unpublished)
 
   - New argument "auto_encode" for `publish_string()`,
     `publish_from_docstring()` and `publish_programmatically()`.
-  - New functions `rst2…()` for use as "console_scripts" `entry point`_.
+  - New functions `rst2…()` for use as "console_scripts" `entry points`_.
 
 * docutils/frontend.py
 
-  - New setting ``output``. Obsoletes the ``<destination>`` positional
-    argument (cf. "Future changes" in the RELEASE-NOTES).
+  - New configuration setting output_. Obsoletes the ``<destination>``
+    positional argument (cf. `Future changes` in the RELEASE-NOTES_).
 
 * docutils/io.py
 
@@ -59,17 +59,19 @@ Release 0.20b (unpublished)
 
 * docutils/transforms/frontmatter.py
 
-  - `DocInfo` now accepts author names with initial like "A. Einstein"
-    (that are `parsed as enumerated list`__) in "author" fields
-    instead of rising an error.
+  - Accept author names with initials like ``A. Einstein`` in the "author"
+    `bibliographic field`_ instead of rising an error
+    (generally, such names are `parsed as enumerated list`__).
 
+    .. _bibliographic field:
+        docs/ref/rst/restructuredtext.html#bibliographic-fields
     __ docs/ref/rst/restructuredtext.html#enumerated-lists
 
 * docutils/transforms/references.py
 
-  - Ignore `citation_reference` nodes if the "use_bibex" setting is
-    active. In this case, citations are provided by LaTeX/BibTeX.
-    Fixes bug #384.
+  - `DanglingReferences` ignores `citation_reference` nodes if the
+    "use_bibex" setting is active. (In this case, citations are provided
+    by LaTeX/BibTeX.) Fixes bug #384.
 
 * docutils/utils/__init__.py
 
@@ -84,7 +86,8 @@ Release 0.20b (unpublished)
 
 * docutils/utils/math/tex2mathml_extern.py
 
-  - Support `pandoc` as LaTeX to MathML converter. Patch by Ximin Luo.
+  - Support `Pandoc` as alternative LaTeX to MathML converter.
+    Patch by Ximin Luo.
 
 * docutils/writers/_html_base.py
 
@@ -98,30 +101,33 @@ Release 0.20b (unpublished)
   - Wrap definition lists with "details" class argument in a <div>
     with the "id" and "class" values of the list node.
 
-  - Use dpub-ARIA role "doc-footnote" (instead of ARIA role "note")
+  - Use dpub-ARIA role "doc-footnote__" (instead of ARIA role "note")
     for footnotes.
+
+    __ https://www.w3.org/TR/dpub-aria-1.1/#doc-footnote
 
 * docutils/writers/latex2e/__init__.py
 
-  - Do not insert ``\usepackage[utf8]{inputenc}`` into UTF-8 encoded
-    LaTeX sources. UTF-8 is the default encoding for LaTeX2e since 2018.
-  - Fix handling of the "use_bibtex" setting.
+  - Do not load the `inputenc` package in UTF-8 encoded LaTeX sources.
+    (UTF-8 is the default encoding for LaTeX2e since 2018).
+  - Fix behaviour of the use_bibtex_ setting.
   - Outsource parts of `depart_document()` to new auxiliary methods
     `make_title()` and `append_bibliography()`.
   - Ensure POSIX paths in stylesheet loading macros.
 
 * docutils/writers/latex2e/titlepage.tex
 
-  - Drop ``\usepackage{fixltx2e}`` from template. (Obsolete since 2015
-    and dropped from other templates in Docutils 0.14.)
+  - Drop ``\usepackage{fixltx2e}`` from template.
+    (Obsolete since 2015 and dropped from other templates in Docutils 0.14.)
 
 * docutils/writers/manpage.py
 
-  - Do not output empty "manual" in ``.TH``
+  - Do not output empty "manual" in ``.TH``.
 
 * docutils/writers/xetex/__init__.py
 
-  - Ignore settings in the [latex2e writer] configuration file section.
+  - Ignore settings in the [latex2e writer] configuration file section
+    (users can place common settings in section [latex writers]).
 
 * setup.py
 
@@ -154,6 +160,7 @@ Release 0.20b (unpublished)
 * tools/
 
   - Moved ``quicktest.py`` to ``tools/dev/``.
+
 
 
 Release 0.19 (2022-07-05)
@@ -258,9 +265,6 @@ Release 0.19 (2022-07-05)
 
   - New ``docutils``" console script `entry point`_. Fixes bug #447.
 
-    .. _entry point:
-        https://packaging.python.org/en/latest/specifications/entry-points/
-
 * test/alltests.py
 
   - Always encode the log file ``alltests.out`` using "utf-8".
@@ -283,6 +287,10 @@ Release 0.19 (2022-07-05)
 * tools/rst2odt_prepstyles.py
 
   - Options ``-h`` and ``--help`` print short usage message.
+
+.. _entry point:
+.. _entry points:
+    https://packaging.python.org/en/latest/specifications/entry-points/
 
 
 Release 0.18.1 (2021-11-23)
@@ -354,8 +362,6 @@ Release 0.18 (2021-10-26)
 
   - New option `image_loading`_. Support "lazy" loading of images.
     Obsoletes `embed_images`_.
-
-    .. _image_loading: docs/user/config.html#image-loading
 
 * docutils/writers/pseudoxml.py
 
@@ -1415,12 +1421,6 @@ __ https://mail.python.org/pipermail/image-sig/2011-January/006650.html
 
   - docutils.utils is now a package (providing a place for sub-modules)
 
-  .. note:: docutils/math, docutils/error_reporting.py, and
-     docutils/urischemes.py will move to the utils package in the next
-     release, too. See RELEASE-NOTES__
-
-     __ RELEASE-NOTES.html
-
   - DependencyList uses io.FileOutput and 'utf-8' encoding to prevent
     errors recording non-ASCII filenames (fixes [ 3434355 ]).
 
@@ -1819,8 +1819,7 @@ Release 0.5 (2008-06-25)
   - Configuration files are now assumed and required to be
     UTF-8-encoded.
   - Paths of applied configuration files are now recorded in the
-    runtime setting `_config_files`_ (accessible via
-    `dump_settings`_).
+    runtime setting `_config_files`_ (accessible via `dump_settings`_).
   - Added `strip_elements_with_classes`_ and `strip_classes`_ settings.
 
 * docutils/io.py:
@@ -4140,6 +4139,7 @@ test/test_rst); and all modifications required to make it all work.
 .. References
    ==========
 
+.. _RELEASE-NOTES: RELEASE-NOTES.html
 .. _`_config_files`: docs/user/config.html#config-files
 .. _auto_id_prefix: docs/user/config.html#auto-id-prefix
 .. _detailled:
@@ -4167,6 +4167,7 @@ test/test_rst); and all modifications required to make it all work.
 .. _legacy_column_widths: docs/user/config.html#legacy-column-widths
 .. _literal_block_env: docs/user/config.html#literal-block-env
 .. _math_output: docs/user/config.html#math-output
+.. _output: docs/user/config.html#output
 .. _output_encoding: docs/user/config.html#output-encoding
 .. _raw_enabled: docs/user/config.html#raw-enabled
 .. _reference_label: docs/user/config.html#reference-label
@@ -4184,7 +4185,6 @@ test/test_rst); and all modifications required to make it all work.
 .. _use_latex_footnotes: docs/user/config.html#use-latex-footnotes
 .. _use_latex_toc: docs/user/config.html#use-latex-toc
 .. _view_mode: docs/user/config.html#view-mode
-
 
 
 ..
