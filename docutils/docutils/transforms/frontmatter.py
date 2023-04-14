@@ -466,7 +466,7 @@ class DocInfo(Transform):
         # enumerated list
         # https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#enumerated-lists
         if (isinstance(f_body[0], nodes.enumerated_list)
-            and '\n' not in f_body.rawsource):
+            and '\n' not in f_body.rawsource.strip()):
             # parse into a dummy document and use created nodes
             _document = utils.new_document('*DocInfo transform*',
                                            field.document.settings)
@@ -517,7 +517,8 @@ class DocInfo(Transform):
                   'it must contain either a single paragraph (with authors '
                   'separated by one of "%s"), multiple paragraphs (one per '
                   'author), or a bullet list with one paragraph (one author) '
-                  'per item.'
+                  'per item. Remember that leading initials can cause '
+                  '(mis)recognizing names as enumerated lists.'
                   % (name, ''.join(self.language.author_separators)),
                   base_node=field)
             raise
