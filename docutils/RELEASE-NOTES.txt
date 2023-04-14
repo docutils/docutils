@@ -20,7 +20,7 @@ For a more detailed list of changes, please see the Docutils `HISTORY`_.
 Future changes
 ==============
 
-Drop support for Python 3.7 and 3.8 in Docutils 0.21.
+Drop support for Python 3.7 and 3.8 in Docutils 0.21.
 
 * Usage:
 
@@ -28,8 +28,8 @@ Drop support for Python 3.7 and 3.8 in Docutils 0.21.
     points`_ (without the ``.py`` extension) instead of installing the
     ``rst2*.py`` `front end tools`_ in the binary PATH. [#]_
 
-    You may use the `generic command line front end tool`_ as a
-    future-proof command, for example:
+    You may use the ``docutils`` `generic command line front end tool`_
+    as a future-proof command, for example:
 
     .. code:: diff
 
@@ -65,7 +65,7 @@ Drop support for Python 3.7 and 3.8 in Docutils 0.21.
 
     __ docs/user/html.html#html
 
-* The command-line usage pattern will change:
+* The _`command-line usage pattern` will change:
 
   .. code:: diff
 
@@ -105,7 +105,7 @@ Drop support for Python 3.7 and 3.8 in Docutils 0.21.
 * "html5" writer:
 
   - Stop setting the "footnote-reference" class value for footnote
-    references in Docutils 0.21.
+    references in Docutils 0.21.
     Since 0.18, you can use the CSS selector
     ``[role="doc-noteref"]`` instead of ``.footnote-reference``
     (see minimal.css for examples).
@@ -117,33 +117,34 @@ Drop support for Python 3.7 and 3.8 in Docutils 0.21.
     __ https://www.w3.org/TR/2014/REC-html5-20141028/grouping-content.html
        #the-blockquote-element
 
-  - Remove option ``--embed-images`` (obsoleted by "image_loading_")
-    in Docutils 2.0.
+  - Change the default value for math_output_ to "MathML" in Docutils 0.22.
 
-  - Change the default value for math_output_ to "MathML" in Docutils 0.22.
+  - Remove option ``--embed-images`` (obsoleted by "image_loading_")
+    in Docutils 2.0.
 
 * "latex2e" writer:
 
   - Change default of use_latex_citations_ setting to True
-    in Docutils 1.0.
+    in Docutils 1.0.
 
   - Change default of legacy_column_widths_ setting to False
-    in Docutils 1.0.
+    in Docutils 1.0.
 
   - Remove ``use_verbatim_when_possible`` setting
-    (use literal_block_env_: verbatim) in Docutils 2.0.
+    (use literal_block_env_: verbatim) in Docutils 2.0.
 
-* The default value of the `auto_encode` argument of
-  `core.publish_str()` and `core.publish_programmatically()`
-  will change to ``False`` in Docutils 0.22.
+* The default value of the `auto_encode` argument of `core.publish_str()`,
+  `core.publish_from_doctree()`, and `core.publish_programmatically()`
+  will change to ``False`` in Docutils 0.22.
+  The functions will then return a `str` object by default.
 
 * Remove the "rawsource" argument from `nodes.Text.__init__()`
-  (deprecated and ignored since Docutils 0.18) in Docutils 2.0.
+  (deprecated and ignored since Docutils 0.18) in Docutils 2.0.
 
 * Remove the compatibility hacks `nodes.reprunicode` and `nodes.ensure_str()`
-  in Docutils 0.21 or later. They are not required with Python 3.x.
+  in Docutils 0.21 or later. They are not required with Python 3.x.
 
-* Drop support for `old-format configuration files`_ in Docutils 2.0.
+* Drop support for `old-format configuration files`_ in Docutils 2.0.
 
 * Remove file ``install.py`` in Docutils 0.21.
   See README.txt__ for alternatives.
@@ -180,6 +181,10 @@ Drop support for Python 3.7 and 3.8 in Docutils 0.21.
 Release 0.20 (unpublished)
 ==========================
 
+.. Note::
+
+   Docutils 0.20 is the last version supporting Python 3.7 and 3.8.
+
 * Output changes:
 
   HTML5:
@@ -190,17 +195,27 @@ Release 0.20 (unpublished)
 
   - Settings in the [latex2e writer] configuration file section
     are now ignored by the "xetex" writer.
-    Move settings intended for both, "xetex" and "latex2e" writers
-    to section `[latex writers]`_.
+    Users can place common settings in section `[latex writers]`_.
 
     .. _[latex writers]: docs/user/config.html#latex-writers
 
-* The new function argument `auto_encode` for `core.publish_string()` and
-  `core.publish_programmatically()` selects whether the output document is
+  - New command line setting output_. Obsoletes the ``<destination>``
+    positional argument (cf. `future changes`__).
+
+    __ `command-line usage pattern`_
+
+* The new function argument `auto_encode` for Publisher convenience
+  functions with `String I/O`_ selects whether the output document is
   encoded and returned as `bytes` instance.  The default is ``True`` (for
-  backwards compatibility) and will change to ``False`` in Docutils 0.22.
+  backwards compatibility) and will change to ``False`` in Docutils 0.22.
+
+* `utils.find_file_in_dirs()` now returns a POSIX path also on Windows;
+  `utils.get_stylesheet_list()` no longer converts ``\`` to ``/``.
 
 * Bugfixes and improvements (see HISTORY_).
+
+.. _String I/O: docs/api/publisher.html#string-i-o
+.. _output: docs/user/config.html#output
 
 
 Release 0.19 (2022-07-05)
@@ -245,7 +260,7 @@ Release 0.18.1 (2021-12-23)
 
 .. Note::
 
-   Docutils 0.18.x is the last version supporting Python 2.7, 3.5, and 3.6.
+   Docutils 0.18.1 is the last version supporting Python 2.7, 3.5, and 3.6.
 
 * ``nodes.Node.traverse()`` returns a list again to restore backwards
   compatibility (fixes bug #431).
@@ -446,12 +461,8 @@ Release 0.17 (2021-04-03)
 Release 0.16 (2020-01-12)
 =========================
 
-.. Note::
-
-   Docutils 0.15.x is the last version supporting Python 2.6, 3.3 and 3.4.
-
-   Docutils 0.16.x supports Python 2.7 and Python >= 3.5 natively,
-   without the use of the ``2to3`` tool.
+Docutils 0.16.x supports Python 2.7 and Python >= 3.5 natively,
+without the use of the ``2to3`` tool.
 
 * reStructuredText:
 
@@ -496,13 +507,11 @@ Release 0.16 (2020-01-12)
 Release 0.15 (2019-07-20)
 =========================
 
+Docutils 0.15.x is compatible with Python versions 2.6, 2.7 and 3.3 to 3.5.
+
 .. Note::
 
-   Docutils 0.14.x is the last version supporting Python 2.4, 2.5,
-   3.1, and 3.2.
-
-   Docutils 0.15.x is compatible with Python versions 2.6, 2.7 and 3.3 to 3.5
-   (cf. `Python 3 compatibility`_).
+   Docutils 0.15.x is the last version supporting Python 2.6, 3.3 and 3.4.
 
 * reStructuredText:
 
@@ -516,6 +525,11 @@ Release 0.15 (2019-07-20)
 
 Release 0.14 (2017-08-03)
 =========================
+
+.. Note::
+
+   Docutils 0.14.x is the last version supporting Python 2.4, 2.5,
+   3.1, and 3.2.
 
 * docutils/docs/ref/docutils.dtd:
 
@@ -645,12 +659,7 @@ Release 0.11 (2013-07-22)
 Release 0.10 (2012-12-16)
 =========================
 
-.. Note::
-
-   Docutils 0.9.x is the last version supporting Python 2.3.
-
-   Docutils 0.10 is compatible with Python versions from 2.4 to 3.2
-   (cf. `Python 3 compatibility`_).
+Docutils 0.10 is compatible with Python versions from 2.4 to 3.2.
 
 * General:
 
@@ -690,6 +699,10 @@ Release 0.10 (2012-12-16)
 
 Release 0.9.1 (2012-06-17)
 ==========================
+
+.. Note::
+
+   Docutils 0.9.1 is the last version supporting Python 2.3.
 
 * General:
 
@@ -862,12 +875,8 @@ General:
 Release 0.6 (2009-10-11)
 ========================
 
-.. Note::
-
-   Docutils 0.5 is the last version supporting Python 2.2.
-
-   Docutils 0.6 is compatible with Python versions from 2.3 up to 2.6
-   and convertible to 3.1 code.
+Docutils 0.6 is compatible with Python versions from 2.3 up to 2.6
+and convertible to 3.1 code.
 
 .. note::
 
@@ -931,6 +940,10 @@ Release 0.6 (2009-10-11)
 Release 0.5 (2008-06-25)
 ========================
 
+.. Note::
+
+   Docutils 0.5 is the last version supporting Python 2.2.
+
 Components:
 
 * HTML writer.
@@ -984,12 +997,10 @@ Release 0.4 (2006-01-09)
 
 .. Note::
 
-   Docutils 0.4.x is the last version that will support Python 2.1.
-   Docutils 0.5 will *not* be compatible with Python 2.1; Python 2.2
-   or later will be required.
+   Docutils 0.4 is the last version supporting Python 2.1.
 
-   Docutils 0.4.x is the last version that will make compromises in
-   its HTML output for Netscape Navigator 4.  Docutils 0.5 will
+   It is also the last version that will make compromises in
+   its HTML output for Netscape Navigator 4.  Docutils 0.5 will
    require more up-to-date browsers (the exact definition is to be
    determined).
 
