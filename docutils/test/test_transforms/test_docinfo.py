@@ -75,8 +75,11 @@ totest['bibliographic_field_lists'] = ((DocInfo,), [
     It is automatically moved to the end of the other bibliographic elements.
 
 :Author: E. *Xample*
+
 :Version: 1
+
 :Date: 2001-08-11
+
 :Parameter i: integer
 """,
 """\
