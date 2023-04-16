@@ -157,6 +157,10 @@ Release 0.20 (unpublished)
 
   - Fix regex to match multiline message "requires ... recommonmark"
 
+* test/test_transforms/test_docinfo.py
+
+  - Fix message for nonconforming docinfo-Authors.
+
 * tools/
 
   - Moved ``quicktest.py`` to ``tools/dev/``.
