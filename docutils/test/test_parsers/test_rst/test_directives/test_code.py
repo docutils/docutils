@@ -22,6 +22,14 @@ from docutils.parsers.rst import Parser
 from docutils.utils import new_document
 from docutils.utils.code_analyzer import with_pygments
 
+try:
+    from pygments import __version__ as _pygments_ver
+except ImportError:
+    _pygments_ver = ''
+    PYGMENTS_2_14_PLUS = False
+else:
+    PYGMENTS_2_14_PLUS = tuple(map(int, _pygments_ver.split('.'))) >= (2, 14)
+
 
 class ParserTestCase(unittest.TestCase):
     def test_parser(self):
@@ -153,6 +161,60 @@ totest['code_parsing'] = [
       print(8/2)
 """,
 """\
+<document source="test data">
+    <literal_block classes="code python3 testclass" ids="my-function" names="my_function" xml:space="preserve">
+        <inline classes="ln">
+             7 \n\
+        <inline classes="keyword">
+            def
+         \n\
+        <inline classes="name function">
+            my_function
+        <inline classes="punctuation">
+            ():
+        <inline classes="whitespace">
+            \n\
+        <inline classes="ln">
+             8 \n\
+        <inline classes="whitespace">
+                \n\
+        <inline classes="literal string doc">
+            \'\'\'Test the lexer.
+        <inline classes="ln">
+             9 \n\
+        <inline classes="literal string doc">
+                \'\'\'
+        <inline classes="whitespace">
+            \n\
+        <inline classes="ln">
+            10 \n\
+        <inline classes="whitespace">
+            \n\
+        <inline classes="ln">
+            11 \n\
+        <inline classes="whitespace">
+            \n\
+        <inline classes="comment single">
+            # and now for something completely different
+        <inline classes="whitespace">
+            \n\
+        <inline classes="ln">
+            12 \n\
+        <inline classes="whitespace">
+            \n\
+        <inline classes="name builtin">
+            print
+        <inline classes="punctuation">
+            (
+        <inline classes="literal number integer">
+            8
+        <inline classes="operator">
+            /
+        <inline classes="literal number integer">
+            2
+        <inline classes="punctuation">
+            )
+""" if PYGMENTS_2_14_PLUS else """\
 <document source="test data">
     <literal_block classes="code python3 testclass" ids="my-function" names="my_function" xml:space="preserve">
         <inline classes="ln">
