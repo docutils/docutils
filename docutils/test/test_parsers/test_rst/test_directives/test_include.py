@@ -22,14 +22,9 @@ from docutils.frontend import get_default_settings
 from docutils.parsers.rst import Parser
 from docutils.utils import new_document
 from docutils.utils.code_analyzer import with_pygments
+from test.test_parsers.test_rst.test_directives.test_code \
+    import PYGMENTS_2_14_PLUS
 
-try:
-    from pygments import __version__ as _pygments_ver
-except ImportError:
-    _pygments_ver = ''
-    PYGMENTS_2_14_PLUS = False
-else:
-    PYGMENTS_2_14_PLUS = tuple(map(int, _pygments_ver.split('.'))) >= (2, 14)
 
 TEST_ROOT = Path(__file__).resolve().parents[3]
 
