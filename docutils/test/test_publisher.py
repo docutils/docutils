@@ -150,10 +150,8 @@ class PublisherTests(unittest.TestCase):
         TODO: return `str` with document as "flat XML" (.fodt).
         """
         with self.assertRaises(ValueError) as cm:
-            core.publish_string('test',
-                                writer_name='odt',
-                                auto_encode=False)
-        self.assertIn('ODT writer generates binary output', str(cm.exception))
+            core.publish_string('test', writer_name='odt', auto_encode=False)
+        self.assertIn('expects `str` instance', str(cm.exception))
 
 
 class PublishDoctreeTestCase(unittest.TestCase, docutils.SettingsSpec):
