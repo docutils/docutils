@@ -321,8 +321,8 @@ class Output(TransformSpec):
         If `data` is a `bytes` instance, it is returned unchanged.
         Otherwise it is encoded with `self.encoding`.
 
-        If `self.encoding` is set to the pseudo encoding name "unicode",
-        `data` must be a `str` instance and is returned unchanged.
+        Provisional: If `self.encoding` is set to the pseudo encoding name
+        "unicode", `data` must be a `str` instance and is returned unchanged.
         """
         if self.encoding and self.encoding.lower() == 'unicode':
             assert isinstance(data, str), ('output encoding is "unicode" '
@@ -649,6 +649,13 @@ class StringOutput(Output):
 
     def __init__(self, destination=None, destination_path=None,
                  encoding=None, error_handler='strict', auto_encode=True):
+        """Initialize self.
+
+        `auto_encode` determines the return type of `self.write()`.
+        Its default value will change to False in Docutils 0.22.
+        Other attributes are passed to `Output.__init__()`.
+        """
+
         self.auto_encode = auto_encode
         """Let `write()` encode the output document and return `bytes`."""
         super().__init__(destination, destination_path,
@@ -657,28 +664,31 @@ class StringOutput(Output):
     def write(self, data):
         """Store `data` in `self.destination`, and return it.
 
-        If `self.auto_encode` is False, store and return a `str`
-        sub-class instance with "encoding" and "errors" attributes
-        set to `self.encoding` and `self.error_handler`.
+        If `self.auto_encode` is False, `data` must be a `str` instance
+        and is stored/returned as `str` sub-class `OutString` with
+        attributes "encoding" and "errors" set to `self.encoding`
+        and `self.error_handler` respectively.
 
-        If `self.auto_encode` is True, encode `data` with `self.encoding`
-        and `self.error_handler` and store/return a `bytes` instance.
-        Exception:
-        If `self.encoding` is set to the pseudo encoding name "unicode",
-        `data` must be a `str` instance and is returned unchanged
-        (cf. `Output.encode`).
-        Beware that the `output_encoding`_ setting may affect the content
+        If `self.auto_encode` is True, `data` can be a `bytes` or `str`
+        instance and is stored/returned as a `bytes` instance
+        (`str` data is encoded with `self.encode()`).
+        Exception (provisional): If `self.encoding` is set to the pseudo
+        encoding name "unicode", `data` must be a `str` instance and is
+        stored/returned unchanged (cf. `Output.encode`).
+
+        Attention: the `output_encoding`_ setting may affect the content
         of the output (e.g. an encoding declaration in HTML or XML or the
         representation of characters as LaTeX macro vs. literal character).
         """
         if self.auto_encode:
             self.destination = self.encode(data)
             return self.destination
-
-        if not self.encoding or self.encoding.lower() == 'unicode':
+        if not isinstance(data, str):
+            raise ValueError('StringOutput.write() expects `str` instance, '
+                             f'not {type(data)}.')
+        encoding = self.encoding
+        if not encoding or encoding.lower() == 'unicode':
             encoding = None
-        else:
-            encoding = self.encoding
         self.destination = OutString(data, encoding, self.error_handler)
         return self.destination
 

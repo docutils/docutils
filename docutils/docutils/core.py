@@ -23,7 +23,6 @@ import warnings
 
 from docutils import (__version__, __version_details__, SettingsSpec,
                       io, utils, readers, writers)
-import docutils.writers.odf_odt  # noqa:F401
 from docutils.frontend import OptionParser
 from docutils.readers import doctree
 
@@ -725,10 +724,6 @@ def publish_programmatically(source_class, source, source_path,
                           source_class=source_class,
                           destination_class=destination_class)
     publisher.set_components(reader_name, parser_name, writer_name)
-    if isinstance(publisher.writer,
-                  writers.odf_odt.Writer) and not auto_encode:
-        raise ValueError('The ODT writer generates binary output and cannot '
-                         'be used with `auto_encode=False`')
     publisher.process_programmatic_settings(
         settings_spec, settings_overrides, config_section)
     publisher.set_source(source, source_path)
