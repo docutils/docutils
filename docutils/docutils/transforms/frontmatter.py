@@ -513,14 +513,15 @@ class DocInfo(Transform):
                 raise TransformError
         except TransformError:
             field[-1] += self.document.reporter.warning(
-                  'Bibliographic field "%s" incompatible with extraction: '
-                  'it must contain either a single paragraph (with authors '
-                  'separated by one of "%s"), multiple paragraphs (one per '
-                  'author), or a bullet list with one paragraph (one author) '
-                  'per item. Remember that leading initials can cause '
-                  '(mis)recognizing names as enumerated lists.'
-                  % (name, ''.join(self.language.author_separators)),
-                  base_node=field)
+                f'Cannot extract "{name}" from bibliographic field:\n'
+                f'Bibliographic field "{name}" must contain either\n'
+                ' a single paragraph (with author names separated by one of '
+                f'"{"".join(self.language.author_separators)}"),\n'
+                ' multiple paragraphs (one per author),\n'
+                ' or a bullet list with one author name per item.\n'
+                'Note: Leading initials can cause (mis)recognizing names '
+                'as enumerated list.',
+                base_node=field)
             raise
 
     def authors_from_one_paragraph(self, field):
