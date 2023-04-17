@@ -358,7 +358,12 @@ totest['bibliographic_field_lists'] = ((DocInfo,), [
                             Shaw
                 <system_message level="2" line="3" source="test data" type="WARNING">
                     <paragraph>
-                        Bibliographic field "Authors" incompatible with extraction: it must contain either a single paragraph (with authors separated by one of ";,"), multiple paragraphs (one per author), or a bullet list with one paragraph (one author) per item. Remember that leading initials can cause (mis)recognizing names as enumerated lists.
+                        Cannot extract "Authors" from bibliographic field:
+                        Bibliographic field "Authors" must contain either
+                         a single paragraph (with author names separated by one of ";,"),
+                         multiple paragraphs (one per author),
+                         or a bullet list with one author name per item.
+                        Note: Leading initials can cause (mis)recognizing names as enumerated list.
         <field classes="authors">
             <field_name>
                 Authors
@@ -368,7 +373,12 @@ totest['bibliographic_field_lists'] = ((DocInfo,), [
                     <list_item>
                 <system_message level="2" line="6" source="test data" type="WARNING">
                     <paragraph>
-                        Bibliographic field "Authors" incompatible with extraction: it must contain either a single paragraph (with authors separated by one of ";,"), multiple paragraphs (one per author), or a bullet list with one paragraph (one author) per item. Remember that leading initials can cause (mis)recognizing names as enumerated lists.
+                        Cannot extract "Authors" from bibliographic field:
+                        Bibliographic field "Authors" must contain either
+                         a single paragraph (with author names separated by one of ";,"),
+                         multiple paragraphs (one per author),
+                         or a bullet list with one author name per item.
+                        Note: Leading initials can cause (mis)recognizing names as enumerated list.
         <field classes="authors">
             <field_name>
                 Authors
@@ -381,7 +391,12 @@ totest['bibliographic_field_lists'] = ((DocInfo,), [
                     Two
                 <system_message level="2" line="10" source="test data" type="WARNING">
                     <paragraph>
-                        Bibliographic field "Authors" incompatible with extraction: it must contain either a single paragraph (with authors separated by one of ";,"), multiple paragraphs (one per author), or a bullet list with one paragraph (one author) per item. Remember that leading initials can cause (mis)recognizing names as enumerated lists.
+                        Cannot extract "Authors" from bibliographic field:
+                        Bibliographic field "Authors" must contain either
+                         a single paragraph (with author names separated by one of ";,"),
+                         multiple paragraphs (one per author),
+                         or a bullet list with one author name per item.
+                        Note: Leading initials can cause (mis)recognizing names as enumerated list.
         <field classes="authors">
             <field_name>
                 Authors
@@ -394,7 +409,12 @@ totest['bibliographic_field_lists'] = ((DocInfo,), [
                             Two
                 <system_message level="2" line="15" source="test data" type="WARNING">
                     <paragraph>
-                        Bibliographic field "Authors" incompatible with extraction: it must contain either a single paragraph (with authors separated by one of ";,"), multiple paragraphs (one per author), or a bullet list with one paragraph (one author) per item. Remember that leading initials can cause (mis)recognizing names as enumerated lists.
+                        Cannot extract "Authors" from bibliographic field:
+                        Bibliographic field "Authors" must contain either
+                         a single paragraph (with author names separated by one of ";,"),
+                         multiple paragraphs (one per author),
+                         or a bullet list with one author name per item.
+                        Note: Leading initials can cause (mis)recognizing names as enumerated list.
 """],
 ["""\
 .. RCS keyword extraction.
