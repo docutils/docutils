@@ -133,6 +133,8 @@ Drop support for Python 3.7 and 3.8 in Docutils 0.21.
   - Remove ``use_verbatim_when_possible`` setting
     (use literal_block_env_: verbatim) in Docutils 2.0.
 
+* "null" writer: output will change to the empty string in Docutils 0.22.
+
 * The default value of the `auto_encode` argument of `core.publish_str()`,
   `core.publish_from_doctree()`, and `core.publish_programmatically()`
   will change to ``False`` in Docutils 0.22.
