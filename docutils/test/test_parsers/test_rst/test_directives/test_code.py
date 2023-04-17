@@ -9,6 +9,7 @@ Test the 'code' directive in parsers/rst/directives/body.py.
 """
 
 from pathlib import Path
+import re
 import sys
 import unittest
 
@@ -22,13 +23,12 @@ from docutils.parsers.rst import Parser
 from docutils.utils import new_document
 from docutils.utils.code_analyzer import with_pygments
 
-try:
-    from pygments import __version__ as _pygments_ver
-except ImportError:
-    _pygments_ver = ''
-    PYGMENTS_2_14_PLUS = False
+if with_pygments:
+    import pygments
+    _pv = re.match(r'^([0-9]+)\.([0-9]*)', pygments.__version__)
+    PYGMENTS_2_14_PLUS = (int(_pv[1]), int(_pv[2])) >= (2, 14)
 else:
-    PYGMENTS_2_14_PLUS = tuple(map(int, _pygments_ver.split('.'))) >= (2, 14)
+    PYGMENTS_2_14_PLUS = None
 
 
 class ParserTestCase(unittest.TestCase):
