@@ -23,6 +23,14 @@ from docutils.parsers.rst import Parser
 from docutils.utils import new_document
 from docutils.utils.code_analyzer import with_pygments
 
+try:
+    from pygments import __version__ as _pygments_ver
+except ImportError:
+    _pygments_ver = ''
+    PYGMENTS_2_14_PLUS = False
+else:
+    PYGMENTS_2_14_PLUS = tuple(map(int, _pygments_ver.split('.'))) >= (2, 14)
+
 TEST_ROOT = Path(__file__).resolve().parents[3]
 
 
@@ -1107,6 +1115,23 @@ f"""\
         <inline classes="generic heading">
             -----------
         \n\
+        <inline classes="whitespace">
+            \n\
+        This file is used by \n\
+        <inline classes="literal string">
+            ``test_include.py``
+        .
+""" if PYGMENTS_2_14_PLUS else f"""\
+<document source="test data">
+    <paragraph>
+        Included code
+    <literal_block classes="code rst" source="{include1}" xml:space="preserve">
+        <inline classes="generic heading">
+            Inclusion 1
+        \n\
+        <inline classes="generic heading">
+            -----------
+        \n\
         \n\
         This file is used by \n\
         <inline classes="literal string">
@@ -1121,6 +1146,32 @@ Included code
    :number-lines:
 """,
 f"""\
+<document source="test data">
+    <paragraph>
+        Included code
+    <literal_block classes="code rst" source="{include1}" xml:space="preserve">
+        <inline classes="ln">
+            1 \n\
+        <inline classes="generic heading">
+            Inclusion 1
+        \n\
+        <inline classes="ln">
+            2 \n\
+        <inline classes="generic heading">
+            -----------
+        \n\
+        <inline classes="ln">
+            3 \n\
+        <inline classes="whitespace">
+            \n\
+        <inline classes="ln">
+            4 \n\
+        <inline classes="whitespace">
+        This file is used by \n\
+        <inline classes="literal string">
+            ``test_include.py``
+        .
+""" if PYGMENTS_2_14_PLUS else f"""\
 <document source="test data">
     <paragraph>
         Included code
@@ -1166,6 +1217,34 @@ f"""\
         <inline classes="name variable">
             `up`
         .
+        <inline classes="whitespace">
+            \n\
+                <- leading raw tab.
+        <inline classes="whitespace">
+            \n\
+            \n\
+        Newlines
+        <inline classes="whitespace">
+            \n\
+        are
+        <inline classes="whitespace">
+            \n\
+        normalized.
+""" if PYGMENTS_2_14_PLUS else f"""\
+<document source="test data">
+    <paragraph>
+        TAB expansion with included code:
+    <literal_block classes="code rst" source="{include_literal}" xml:space="preserve">
+        Literal included this should \n\
+        <inline classes="generic strong">
+            **not**
+         be \n\
+        <inline classes="generic emph">
+            *marked*
+         \n\
+        <inline classes="name variable">
+            `up`
+        .
                 <- leading raw tab.
         \n\
         Newlines
@@ -1180,6 +1259,34 @@ Custom TAB expansion with included code:
    :tab-width: 2
 """,
 f"""\
+<document source="test data">
+    <paragraph>
+        Custom TAB expansion with included code:
+    <literal_block classes="code rst" source="{include_literal}" xml:space="preserve">
+        Literal included this should \n\
+        <inline classes="generic strong">
+            **not**
+         be \n\
+        <inline classes="generic emph">
+            *marked*
+         \n\
+        <inline classes="name variable">
+            `up`
+        .
+        <inline classes="whitespace">
+            \n\
+          <- leading raw tab.
+        <inline classes="whitespace">
+            \n\
+            \n\
+        Newlines
+        <inline classes="whitespace">
+            \n\
+        are
+        <inline classes="whitespace">
+            \n\
+        normalized.
+""" if PYGMENTS_2_14_PLUS else f"""\
 <document source="test data">
     <paragraph>
         Custom TAB expansion with included code:
@@ -1222,6 +1329,34 @@ f"""\
         <inline classes="name variable">
             `up`
         .
+        <inline classes="whitespace">
+            \n\
+        \t<- leading raw tab.
+        <inline classes="whitespace">
+            \n\
+            \n\
+        Newlines
+        <inline classes="whitespace">
+            \n\
+        are
+        <inline classes="whitespace">
+            \n\
+        normalized.
+""" if PYGMENTS_2_14_PLUS else f"""\
+<document source="test data">
+    <paragraph>
+        Custom TAB expansion with included code:
+    <literal_block classes="code rst" source="{include_literal}" xml:space="preserve">
+        Literal included this should \n\
+        <inline classes="generic strong">
+            **not**
+         be \n\
+        <inline classes="generic emph">
+            *marked*
+         \n\
+        <inline classes="name variable">
+            `up`
+        .
         \t<- leading raw tab.
         \n\
         Newlines
@@ -1234,6 +1369,25 @@ Including includes/include14.txt
 .. include:: {include14}
 """,
 f"""\
+<document source="test data">
+    <paragraph>
+        Including includes/include14.txt
+    <paragraph>
+        Including more/include6.txt as rst-code from includes/include14.txt:
+    <literal_block classes="code rst" source="{include6}" xml:space="preserve">
+        In includes/more/include6.txt
+        <inline classes="whitespace">
+            \n\
+            \n\
+        <inline classes="punctuation">
+            ..
+         \n\
+        <inline classes="operator word">
+            include
+        <inline classes="punctuation">
+            ::
+         ../sibling/include7.txt
+""" if PYGMENTS_2_14_PLUS else f"""\
 <document source="test data">
     <paragraph>
         Including includes/include14.txt
