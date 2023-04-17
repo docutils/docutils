@@ -36,18 +36,22 @@ class Writer(Component):
                                            universal.StripClassesAndElements]
 
     document = None
-    """The document to write (Docutils doctree); set by `write`."""
+    """The document to write (Docutils doctree); set by `write()`."""
 
     output = None
-    """Final translated form of `document` (Unicode string for text, binary
-    string for other forms); set by `translate`."""
+    """Final translated form of `document`
+
+    (`str` for text, `bytes` for binary formats); set by `translate()`.
+    """
 
     language = None
-    """Language module for the document; set by `write`."""
+    """Language module for the document; set by `write()`."""
 
     destination = None
     """`docutils.io` Output object; where to write the document.
-    Set by `write`."""
+
+    Set by `write()`.
+    """
 
     def __init__(self):
 
