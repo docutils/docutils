@@ -53,6 +53,11 @@ class Table(Directive):
         return title, messages
 
     def process_header_option(self):
+        # Provisional
+        # * Will move to CSVTable in Docutils 0.21
+        #   as it calls `self.HeaderDialect()` only defined in CSVTable.
+        # * Will change to use the same CSV dialect as the body to get in line
+        #   with the specification in ref/rst/directives.txt in Docutils 0.21.
         source = self.state_machine.get_source(self.lineno - 1)
         table_head = []
         max_header_cols = 0
@@ -132,6 +137,11 @@ class Table(Directive):
 
 
 class RSTTable(Table):
+    """
+    Class for the `"table" directive`__ for formal tables using rST syntax.
+
+    __ https://docutils.sourceforge.io/docs/ref/rst/directives.html
+    """
 
     def run(self):
         if not self.content:
@@ -219,11 +229,14 @@ class CSVTable(Table):
             if 'escape' in options:
                 self.doublequote = False
                 self.escapechar = options['escape']
-            csv.Dialect.__init__(self)
+            super().__init__()
 
     class HeaderDialect(csv.Dialect):
 
-        """CSV dialect to use for the "header" option data."""
+        """CSV dialect used for the "header" option data.
+
+        Deprecated. Will be removed in Docutils 0.22.
+        """
 
         delimiter = ','
         quotechar = '"'
@@ -234,8 +247,18 @@ class CSVTable(Table):
         lineterminator = '\n'
         quoting = csv.QUOTE_MINIMAL
 
-    def check_requirements(self):
-        pass
+        def __init__(self):
+            warnings.warn('CSVTable.HeaderDialect will be removed '
+                          'in Docutils 0.22.',
+                          PendingDeprecationWarning, stacklevel=2)
+            super().__init__()
+
+    @staticmethod
+    def check_requirements():
+        warnings.warn('CSVTable.check_requirements()'
+                      ' is not required with Python 3'
+                      ' and will be removed in Docutils 0.22.',
+                      DeprecationWarning, stacklevel=2)
 
     def run(self):
         try:
@@ -247,7 +270,6 @@ class CSVTable(Table):
                     nodes.literal_block(self.block_text, self.block_text),
                     line=self.lineno)
                 return [warning]
-            self.check_requirements()
             title, messages = self.make_title()
             csv_data, source = self.get_csv_data()
             table_head, max_header_cols = self.process_header_option()
