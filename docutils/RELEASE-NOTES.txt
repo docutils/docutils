@@ -102,6 +102,18 @@ Drop support for Python 3.7 and 3.8 in Docutils 0.21.
 
   - Remove the input encoding auto-detection code in Docutils 1.0 or later.
 
+* "csv-table_" directive:
+
+  - Use the same CSV format for the main CSV data and the :header: option
+    (as specified in the documentation since addition of "csv-table_")
+    in Docutils 0.21.
+
+  - Move `parsers.rst.directives.Table.process_header_option()` to
+    `parsers.rst.directives.CSVTable` in Docutils 0.21.
+
+  - Remove `parsers.rst.directives.CSVTable.HeaderDialect`
+    in Docutils 0.22.
+
 * "html5" writer:
 
   - Stop setting the "footnote-reference" class value for footnote
@@ -178,6 +190,7 @@ Drop support for Python 3.7 and 3.8 in Docutils 0.21.
 .. _literal_block_env: docs/user/config.html#literal-block-env
 .. _use_latex_citations: docs/user/config.html#use-latex-citations
 .. _buildhtml.py: docs/user/tools.html#buildhtml-py
+.. _csv-table: docs/ref/rst/directives.html#csv-table
 
 
 Release 0.20 (unpublished)
@@ -270,7 +283,7 @@ Release 0.18.1 (2021-12-23)
 
 * re-add module ``parsers.rst.directives.html``
   (stub, emits deprecation warning and loads
-  "Meta" directive from ist new place at ``parsers.rst.directives.misc``.)
+  "Meta" directive from its new place at ``parsers.rst.directives.misc``.)
 
 * Small bugfixes (see HISTORY_).
 

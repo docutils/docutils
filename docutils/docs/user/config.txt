@@ -828,9 +828,11 @@ New in Docutils 0.9.
 tab_width
 ~~~~~~~~~
 
-Number of spaces for hard tab expansion.
+Number of spaces for `hard tab expansion`_.
 
 Default: 8.  Option: ``--tab-width``.
+
+.. _hard tab expansion: ../ref/rst/restructuredtext.html#whitespace
 
 trim_footnote_reference_space
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

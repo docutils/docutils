@@ -838,12 +838,13 @@ CSV Table
 :Doctree Element: table_
 :Directive Arguments: One, optional (table title).
 :Directive Options: Possible (see below).
-:Directive Content: A CSV (comma-separated values) table.
+:Directive Content: A CSV (comma-separated values) table
+                    or (with the `:file:`_ or `:url:`_ options) None
 
 .. WARNING::
 
-   The "csv-table" directive's ":file:" and ":url:" options represent
-   a potential security holes.  They can be disabled with the
+   The "csv-table" directive's `:file:`_ and `:url:`_ options represent
+   potential security holes.  They can be disabled with the
    "file_insertion_enabled_" runtime setting.
 
 The "csv-table" directive is used to create a table from CSV
@@ -853,7 +854,7 @@ internal (an integral part of the document) or external (a separate
 file).
 
 * Block markup and inline markup within cells is supported.  Line ends
-  are recognized within cells.
+  are recognized within quoted cells.
 
 * There is no support for checking that the number of columns in each
   row is the same. The directive automatically adds empty entries at
@@ -868,34 +869,38 @@ Example::
        :widths: 15, 10, 30
 
        "Albatross", 2.99, "On a stick!"
-       "Crunchy Frog", 1.49, "If we took the bones out, it wouldn't be
-       crunchy, now would it?"
+       "Crunchy Frog", 1.49, "If we took the bones out,
+       it wouldn't be crunchy, now would it?"
        "Gannet Ripple", 1.99, "On a stick!"
 
 The following options are recognized:
 
 ``align`` : "left", "center", or "right"
     The horizontal alignment of the table. (New in Docutils 0.13)
+    
+.. _delimiter:    
 
-``delim`` : char | "tab" | "space" [#whitespace-delim]_
-    A one-character string used to separate fields.
-    Defaults to ``,`` (comma).  May be specified as a Unicode code
-    point; see the unicode_ directive for syntax details.
+``delim`` : char | "tab" | "space"
+    A one-character string [#char-or-uni]_ used to separate data fields.
+    The special values "tab" and "space" are converted to the respective
+    whitespace characters. [#tab-expansion]_
+    Defaults to ``,`` (comma).
 
 ``encoding`` : string
     The text encoding of the external CSV data (file or URL).
     Defaults to the document's `input_encoding`_.
 
 ``escape`` : char
-    A one-character string used to escape the
-    delimiter or quote characters.  May be specified as a Unicode
-    code point; see the unicode_ directive for syntax details.  Used
-    when the delimiter is used in an unquoted field, or when quote
-    characters are used within a field.  The default is to double-up
-    the character, e.g. "He said, ""Hi!"""
+    A one-character string [#char-or-uni]_ used to escape the delimiter_
+    or quote_ characters from the CSV parser. 
+    The default is no CSV-escape character -- 
+    quote data fields containing the delimiter and double-up the quote
+    character, e.g.  ``"He said, ""Hi!"""``.
+    The reStructuredText `escaping mechanism`_ is applied
+    after CSV parsing as part of parsing the field content for
+    reStructuredText markup.
 
-    .. Add another possible value, "double", to explicitly indicate
-       the default case?
+.. _`:file:`:
 
 ``file`` : string (newlines removed)
     The local filesystem path to a CSV data file.
@@ -905,6 +910,10 @@ The following options are recognized:
     before any ``header-rows`` from the main CSV data.  Must use the
     same CSV format as the main CSV data.
 
+    .. note:: Currently, the header option uses a hard-coded
+              CSV dialect variant with the backslash as escape character.
+              This will change to the documented behaviour in Docutils 0.21.
+
 ``header-rows`` : integer
     The number of rows of CSV data to use in the table header.
     Defaults to 0.
@@ -913,16 +922,19 @@ The following options are recognized:
     Treat whitespace immediately following the delimiter as
     significant.  The default is to ignore such whitespace.
 
+.. _quote:
+
 ``quote`` : char
-    A one-character string used to quote elements
-    containing the delimiter or which start with the quote
-    character.  Defaults to ``"`` (quote).  May be specified as a
-    Unicode code point; see the unicode_ directive for syntax
-    details.
+    A one-character string [#char-or-uni]_ used to quote fields
+    containing special characters, such as the delimiter, quote,
+    or new-line characters.
+    Defaults to ``"`` (quote).
 
 ``stub-columns`` : integer
-    The number of table columns to use as stubs (row titles, on the
-    left).  Defaults to 0.
+    The number of table columns to use as stubs (row titles, on the left).
+    Defaults to 0.
+
+.. _`:url:`:
 
 ``url`` : string (whitespace removed)
     An Internet URL reference to a CSV data file.
@@ -941,8 +953,16 @@ The following options are recognized:
 
 and the common options class_ and name_.
 
-.. [#whitespace-delim] Whitespace delimiters are supported only for external
-   CSV files.
+.. [#char-or-uni] May be specified as a *Unicode character code*;
+   see the unicode_ directive for syntax details.
+
+.. [#tab-expansion] Note, that tabs can be used as separator only in
+   external files because all hard `tabs in rST sources are converted to
+   spaces`__.
+
+   __ restructuredtext.html#whitespace
+
+.. _escaping mechanism: restructuredtext.html#escaping-mechanism
 
 
 List Table
