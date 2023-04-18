@@ -334,7 +334,7 @@ def unicode_code(code):
 
 def single_char_or_unicode(argument):
     """
-    A single character is returned as-is.  Unicode characters codes are
+    A single character is returned as-is.  Unicode character codes are
     converted as in `unicode_code`.  (Directive option conversion function.)
     """
     char = unicode_code(argument)
