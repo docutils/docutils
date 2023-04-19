@@ -17,6 +17,8 @@ from docutils import io, nodes, statemachine, utils
 from docutils.utils import SystemMessagePropagation
 from docutils.parsers.rst import Directive
 from docutils.parsers.rst import directives
+from urllib.request import urlopen
+from urllib.error import URLError
 
 
 def align(argument):
@@ -351,13 +353,6 @@ class CSVTable(Table):
             else:
                 self.state.document.settings.record_dependencies.add(source)
         elif 'url' in self.options:
-            # CSV data is from a URL.
-            # Do not import urllib at the top of the module because
-            # it may fail due to broken SSL dependencies, and it takes
-            # about 0.15 seconds to load. Update: < 0.03s with Py3k.
-            from urllib.request import urlopen
-            from urllib.error import URLError
-
             source = self.options['url']
             try:
                 with urlopen(source) as response:
@@ -400,7 +395,7 @@ class CSVTable(Table):
         return s
 
     def parse_csv_data_into_rows(self, csv_data, dialect, source):
-        csv_reader = csv.reader([line + '\n' for line in csv_data],
+        csv_reader = csv.reader((line + '\n' for line in csv_data),
                                 dialect=dialect)
         rows = []
         max_cols = 0
