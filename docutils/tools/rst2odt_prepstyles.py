@@ -5,8 +5,10 @@
 # Copyright: This module has been placed in the public domain.
 
 """
-Fix a word-processor-generated styles.odt for odtwriter use: Drop page size
-specifications from styles.xml in STYLE_FILE.odt.
+Adapt a word-processor-generated styles.odt for odtwriter use:
+
+Drop page size specifications from styles.xml in STYLE_FILE.odt.
+See https://docutils.sourceforge.io/docs/user/odt.html#page-size
 """
 
 # Author: Michael Schutte <michi@uiae.at>
@@ -42,7 +44,7 @@ def prepstyle(filename):
 
     for item in zin.infolist():
         if item.filename == "styles.xml":
-            zout.writestr(item, etree.tostring(root))
+            zout.writestr(item, etree.tostring(root, encoding="UTF-8"))
         else:
             zout.writestr(item, zin.read(item.filename))
 
