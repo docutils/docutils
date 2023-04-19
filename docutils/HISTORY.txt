@@ -137,6 +137,7 @@ Release 0.20 (unpublished)
 * tox.ini
 
   - Extracted flake8 configuration and moved to ``.flake8``.
+  - changedir to directory ``test`` to avoid path problems.
 
 * test/
 
