@@ -9,10 +9,8 @@ __docformat__ = 'reStructuredText'
 from pathlib import Path
 import re
 import time
-# from urllib.request import urlopen
-# from urllib.error import URLError
-# deferred to Raw.run() because import may fail due to broken SSL dependencies
-# and it took about 0.15 seconds to load. Update: < 0.03s with Py3k.
+from urllib.request import urlopen
+from urllib.error import URLError
 
 from docutils import io, nodes, statemachine, utils
 from docutils.parsers.rst import Directive, convert_directive_function
@@ -271,11 +269,6 @@ class Raw(Directive):
             attributes['source'] = path
         elif 'url' in self.options:
             source = self.options['url']
-            # Do not import urllib at the top of the module because
-            # it may fail due to broken SSL dependencies, and it takes
-            # about 0.15 seconds to load. Update: < 0.03s with Py3k.
-            from urllib.request import urlopen
-            from urllib.error import URLError
             try:
                 raw_text = urlopen(source).read()
             except (URLError, OSError) as error:
