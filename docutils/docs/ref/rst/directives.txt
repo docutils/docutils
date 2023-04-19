@@ -272,7 +272,7 @@ The following options are recognized:
     text flow around it.  The specific behavior depends upon the
     browser or rendering software used.
 
-``target`` : text (URI or reference name)
+``target`` : text (URI or `reference name`_)
     Makes the image into a hyperlink reference ("clickable").  The
     option argument may be a URI (relative or absolute), or a
     `reference name`_ with underscore suffix (e.g. ```a name`_``).
@@ -544,7 +544,7 @@ __ https://docutils.sourceforge.io/sandbox/stylesheets/
 
 The following options are recognized:
 
-``number-lines`` : [integer] (start line number)
+``number-lines`` : integer (start line number, optional)
     Precede every line with a line number.
     The optional argument is the number of the first line (default 1).
 
@@ -765,11 +765,13 @@ application-specific purposes.
  Tables
 --------
 
-Formal tables need more structure than the reStructuredText syntax
-supplies.  Tables may be given titles with the table_ directive.
+Formal tables need more structure than the reStructuredText `table syntax`_
+supplies.  Tables may be given titles with the "table_" directive.
 Sometimes reStructuredText tables are inconvenient to write, or table
-data in a standard format is readily available.  The csv-table_
-directive supports CSV data.
+data in a standard format is readily available.  The "csv-table_"
+directive supports CSV [#CSV]_ data.
+
+.. _table syntax: restructuredtext.html#tables
 
 
 Table
@@ -839,19 +841,17 @@ CSV Table
 :Directive Arguments: One, optional (table title).
 :Directive Options: Possible (see below).
 :Directive Content: A CSV (comma-separated values) table
-                    or (with the `:file:`_ or `:url:`_ options) None
+                    or (with the `file`_ or `url`_ options) None
 
 .. WARNING::
 
-   The "csv-table" directive's `:file:`_ and `:url:`_ options represent
+   The "csv-table" directive's `file`_ and `url`_ options represent
    potential security holes.  They can be disabled with the
    "file_insertion_enabled_" runtime setting.
 
 The "csv-table" directive is used to create a table from CSV
-(comma-separated values) data.  CSV is a common data format generated
-by spreadsheet applications and commercial databases.  The data may be
-internal (an integral part of the document) or external (a separate
-file).
+(comma-separated values) [#CSV]_ data. The data may be internal
+(an integral part of the document) or external (a separate file).
 
 * Block markup and inline markup within cells is supported.  Line ends
   are recognized within quoted cells.
@@ -877,42 +877,44 @@ The following options are recognized:
 
 ``align`` : "left", "center", or "right"
     The horizontal alignment of the table. (New in Docutils 0.13)
-    
-.. _delimiter:    
 
-``delim`` : char | "tab" | "space"
-    A one-character string [#char-or-uni]_ used to separate data fields.
+.. _delimiter:
+
+``delim`` : char [#char]_, "tab", or "space"
+    The character used to separate data fields.
     The special values "tab" and "space" are converted to the respective
     whitespace characters. [#tab-expansion]_
     Defaults to ``,`` (comma).
 
-``encoding`` : string
+``encoding`` : text (encoding name)
     The text encoding of the external CSV data (file or URL).
     Defaults to the document's `input_encoding`_.
 
-``escape`` : char
-    A one-character string [#char-or-uni]_ used to escape the delimiter_
-    or quote_ characters from the CSV parser. 
-    The default is no CSV-escape character -- 
-    quote data fields containing the delimiter and double-up the quote
-    character, e.g.  ``"He said, ""Hi!"""``.
-    The reStructuredText `escaping mechanism`_ is applied
-    after CSV parsing as part of parsing the field content for
-    reStructuredText markup.
+``escape`` : char [#char]_
+    A character used to escape the delimiter_ or quote_ characters from
+    the CSV parser. The default is no escape character -- fields may
+    contain delimiter or newline characers if they are quoted, two quote
+    characters stand for a literal one, e.g., ``"He said, ""Hi!"""``.
 
-.. _`:file:`:
+    .. Caution:: Setting ``escape`` to ``\`` (backslash) interferes with
+       the reStructuredText `escaping mechanism`_ (applied after CSV
+       parsing). You will need two backslashes to escape reStructuredText
+       markup and four backslashes for a literal one.
 
-``file`` : string (newlines removed)
+.. _`file`:
+
+``file`` : text (path, newlines are removed)
     The local filesystem path to a CSV data file.
 
-``header`` : CSV data
+``header`` : text (CSV data)
     Supplemental data for the table header, added independently of and
     before any ``header-rows`` from the main CSV data.  Must use the
     same CSV format as the main CSV data.
 
-    .. note:: Currently, the header option uses a hard-coded
-              CSV dialect variant with the backslash as escape character.
-              This will change to the documented behaviour in Docutils 0.21.
+    .. Important:: Currently, the header option uses a hard-coded CSV
+       dialect with the backslash as escape character (interfering with
+       the reStructuredText `escaping mechanism`_). This will change to
+       the documented behaviour in Docutils 0.21.
 
 ``header-rows`` : integer
     The number of rows of CSV data to use in the table header.
@@ -924,22 +926,21 @@ The following options are recognized:
 
 .. _quote:
 
-``quote`` : char
-    A one-character string [#char-or-uni]_ used to quote fields
-    containing special characters, such as the delimiter, quote,
-    or new-line characters.
+``quote`` : char [#char]_
+    The character used to quote fields containing special characters,
+    such as the delimiter_, quote, or new-line characters.
     Defaults to ``"`` (quote).
 
 ``stub-columns`` : integer
     The number of table columns to use as stubs (row titles, on the left).
     Defaults to 0.
 
-.. _`:url:`:
+.. _`url`:
 
-``url`` : string (whitespace removed)
-    An Internet URL reference to a CSV data file.
+``url`` : text (URI, whitespace is removed)
+    An Internet URI reference to a CSV data file.
 
-``widths`` : integer [integer...] or "auto"
+``widths`` : a list of integers or "auto"
     A list of relative column widths.
     The default is equal-width columns (100%/#columns).
 
@@ -953,12 +954,16 @@ The following options are recognized:
 
 and the common options class_ and name_.
 
-.. [#char-or-uni] May be specified as a *Unicode character code*;
-   see the unicode_ directive for syntax details.
+.. [#CSV] CSV (comma separated values) is a common data format generated
+   by spreadsheet applications and commercial databases. Despite the
+   "comma" in its name, the field delimiter_ may be any Unicode character.
+
+.. [#char] Single character. May be specified as literal character or as
+   Unicode `character code`_ (cf. the unicode_ directive).
 
 .. [#tab-expansion] Note, that tabs can be used as separator only in
-   external files because all hard `tabs in rST sources are converted to
-   spaces`__.
+   external files because hard tabs the directive content are
+   `converted to spaces`__ before it reaches the CVS reader.
 
    __ restructuredtext.html#whitespace
 
@@ -1027,7 +1032,7 @@ The following options are recognized:
 
     .. _column widths:
 
-``widths`` : integer [integer...] or "auto"
+``widths`` : a list of integers or "auto"
     A list of relative column widths.
     The default is equal-width columns (100%/#columns).
 
@@ -1139,14 +1144,14 @@ The following options are recognized:
     The number of section levels that are numbered by this directive.
     The default is unlimited depth.
 
-``prefix`` : string
+``prefix`` : text
     An arbitrary string that is prefixed to the automatically
     generated section numbers.  It may be something like "3.2.", which
     will produce "3.2.1", "3.2.2", "3.2.2.1", and so on.  Note that
     any separating punctuation (in the example, a period, ".") must be
     explicitly provided.  The default is no prefix.
 
-``suffix`` : string
+``suffix`` : text
     An arbitrary string that is appended to the automatically
     generated section numbers.  The default is no suffix.
 
@@ -1329,6 +1334,8 @@ only.
 
 The arguments, separated by spaces, can be:
 
+.. _character code:
+
 * **character codes** as
 
   - decimal numbers or
@@ -1484,7 +1491,7 @@ The following options are recognized:
     Only the content before the first occurrence of the specified text
     (but after any ``after`` text) will be included.
 
-``parser`` :  parser name
+``parser`` :  text (parser name)
     Parse the included content with the specified parser.
     (New in Docutils 0.17)
 
@@ -1492,16 +1499,16 @@ The following options are recognized:
     The entire included text is inserted into the document as a single
     literal block.
 
-``code`` : [string] (formal language)
+``code`` : text (formal language, optional)
     The argument and the included content are passed to
     the code_ directive (useful for program listings).
 
-``number-lines`` : [integer] (start line number)
+``number-lines`` : integer (optional start line number)
     Precede every code line with a line number.
     The optional argument is the number of the first line (default 1).
     Works only with ``code`` or ``literal``.
 
-``encoding`` : string
+``encoding`` : text (encoding name)
     The text encoding of the external file.
     Defaults to the document's input_encoding_.
 
@@ -1591,13 +1598,13 @@ Inline equivalents of the "raw" directive can be defined via
 
 The following options are recognized:
 
-``file`` : string (newlines removed)
+``file`` : text (path, newlines are removed)
     The local filesystem path of a raw data file to be included.
 
-``url`` : string (whitespace removed)
-    An Internet URL reference to a raw data file to be included.
+``url`` : text (URI, whitespace is removed)
+    An Internet URI reference to a raw data file to be included.
 
-``encoding`` : string
+``encoding`` : text (encoding name)
     The text encoding of the external raw data (file or URL).
     Defaults to the document's `input_encoding`_ (if specified).
 
@@ -1840,7 +1847,7 @@ This is the parsed result::
 The following option is recognized by the "role" directive for most
 base roles:
 
-``class`` : text
+``class`` : text (space separated list of `class names`_)
     Set the `"classes"`_ attribute value on the element produced
     (``inline``, or element associated with a base class) when the
     custom interpreted text role is used.  If no directive options are
