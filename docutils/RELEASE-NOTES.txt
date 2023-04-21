@@ -206,11 +206,15 @@ Release 0.20 (unpublished)
     Use dpub-ARIA role "doc-footnote" (instead of ARIA role "note")
     for footnotes.
 
+  LaTeX:
+    Do not load the `inputenc` package in UTF-8 encoded LaTeX sources.
+    (UTF-8 is the default encoding for LaTeX2e since 2018).
+
 * Configuration changes:
 
   - Settings in the [latex2e writer] configuration file section
     are now ignored by the "xetex" writer.
-    Users can place common settings in section `[latex writers]`_.
+    Place common settings in section `[latex writers]`_.
 
     .. _[latex writers]: docs/user/config.html#latex-writers
 
