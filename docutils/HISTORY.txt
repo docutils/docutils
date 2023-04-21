@@ -26,6 +26,7 @@ Release 0.20 (unpublished)
   - New argument "auto_encode" for `publish_string()`,
     `publish_from_docstring()` and `publish_programmatically()`.
   - New functions `rst2…()` for use as "console_scripts" `entry points`_.
+    (cf. `Future changes` in the RELEASE-NOTES_).
 
 * docutils/frontend.py
 
@@ -82,7 +83,7 @@ Release 0.20 (unpublished)
 
 * docutils/utils/math/latex2mathml.py
 
-  - Support "mod" notation for modulo operation/modulus arithmetic.
+  - Support "mod" notation for modulo operation / modulus arithmetic.
 
 * docutils/utils/math/tex2mathml_extern.py
 
@@ -126,8 +127,8 @@ Release 0.20 (unpublished)
 
 * docutils/writers/xetex/__init__.py
 
-  - Ignore settings in the [latex2e writer] configuration file section
-    (users can place common settings in section [latex writers]).
+  - Ignore settings in the [latex2e writer] configuration file section.
+    Place common settings in section [latex writers].
 
 * setup.py
 
