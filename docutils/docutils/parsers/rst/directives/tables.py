@@ -234,12 +234,25 @@ class CSVTable(Table):
             super().__init__()
 
     class HeaderDialect(csv.Dialect):
-
-        """CSV dialect used for the "header" option data.
+        """
+        CSV dialect used for the "header" option data.
 
         Deprecated. Will be removed in Docutils 0.22.
         """
-
+        # The separate HeaderDialect was introduced in revision 2294
+        # (2004-06-17) in the sandbox before the "csv-table" directive moved
+        # to the trunk in r2309. Discussion in docutils-devel around this time
+        # did not mention a rationale (part of the discussion was in private
+        # mail).
+        # This is in conflict with the documentation, which always said:
+        # ""
+        # and did not change in this aspect.
+        #
+        # Maybe it was intended to have similar escape rules for rST and CSV,
+        # however with the current implementation this means we need
+        # `\\` for rST markup and ``\\\\`` for a literal backslash
+        # in the "option" header but ``\`` and ``\\`` in the header-lines and
+        # table cells of the main CSV data.
         delimiter = ','
         quotechar = '"'
         escapechar = '\\'
