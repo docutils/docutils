@@ -1,0 +1,5 @@
+{{- [basename, "module"] | join(" ") | e | heading }}
+
+.. automodule:: {{ qualname }}
+:members:
+{{- "\n" }}
