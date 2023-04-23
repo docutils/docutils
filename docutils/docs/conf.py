@@ -22,7 +22,7 @@ needs_sphinx = '6.1'
 
 project = 'docutils'
 # pylint: disable-next=C0209
-project_copyright = '2021 - %s' % time.strftime('%Y')
+project_copyright = time.strftime('%Y')
 
 root_doc = 'index'
 source_suffix = '.rst'
@@ -56,7 +56,6 @@ html_theme_options = {
 
 nitpick_ignore_regex = [
     (r'py:.*', r'builtins\..*'),
-    (r'py:.*', r'docutils\..*'),
 ]
 suppress_warnings = ['toc']
 
@@ -67,6 +66,7 @@ suppress_warnings = ['toc']
 autodoc_default_options = {
     'ignore-module-all': True,  # force 'bysource' sorting
     'show-inheritance': True,
+    'private-members': True,
     'special-members': False,  # handled by Napoleon
     'inherited-members': False,
     'undoc-public-members': True
