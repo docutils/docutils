@@ -64,8 +64,11 @@ class Table(Directive):
         table_head = []
         max_header_cols = 0
         if 'header' in self.options:   # separate table header in option
+            with warnings.catch_warnings():
+                warnings.simplefilter('ignore')
+                header_dialect = self.HeaderDialect()
             rows, max_header_cols = self.parse_csv_data_into_rows(
-                self.options['header'].split('\n'), self.HeaderDialect(),
+                self.options['header'].split('\n'), header_dialect,
                 source)
             table_head.extend(rows)
         return table_head, max_header_cols
