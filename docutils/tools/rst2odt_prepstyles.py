@@ -13,7 +13,8 @@ See https://docutils.sourceforge.io/docs/user/odt.html#page-size
 
 # Author: Michael Schutte <michi@uiae.at>
 
-from lxml import etree
+from xml.etree import ElementTree as etree
+
 import sys
 import zipfile
 from tempfile import mkstemp
@@ -29,17 +30,27 @@ NAMESPACES = {
 def prepstyle(filename):
 
     zin = zipfile.ZipFile(filename)
-    styles = zin.read("styles.xml")
+    styles = zin.open("styles.xml")
 
-    root = etree.fromstring(styles)
-    for el in root.xpath("//style:page-layout-properties",
-                         namespaces=NAMESPACES):
-        for attr in el.attrib:
+    root = None
+    # some extra effort to preserve namespace prefixes
+    for event, elem in etree.iterparse(styles, events=("start", "start-ns")):
+        if event == "start-ns":
+            etree.register_namespace(elem[0], elem[1])
+        elif event == "start":
+            if root is None:
+                root = elem
+
+    styles.close()
+
+    for el in root.findall(".//style:page-layout-properties",
+                           namespaces=NAMESPACES):
+        for attr in list(el.attrib):
             if attr.startswith("{%s}" % NAMESPACES["fo"]):
                 del el.attrib[attr]
 
     tempname = mkstemp()
-    zout = zipfile.ZipFile(os.fdopen(tempname[0], "w"), "w",
+    zout = zipfile.ZipFile(os.fdopen(tempname[0], "wb"), "w",
                            zipfile.ZIP_DEFLATED)
 
     for item in zin.infolist():
