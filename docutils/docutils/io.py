@@ -580,16 +580,25 @@ class FileOutput(Output):
     def write(self, data):
         """Write `data` to a single file, also return it.
 
-        `data` is encoded and returned as `bytes` instance
-        if `self.encoding` and `self.destination.encoding` differ.
+        `data` can be a `str` or `bytes` instance.
+        If writing `bytes` fails, an attempt is made to write to
+        the low-level interface ``self.destination.buffer``.
+
+        If `data` is a `str` instance and `self.encoding` and
+        `self.destination.encoding` are  set to different values, `data`
+        is encoded to a `bytes` instance using `self.encoding`.
+
+        Provisional: future versions may raise an error if `self.encoding`
+        and `self.destination.encoding` are set to different values.
         """
         if not self.opened:
             self.open()
-        if ('b' not in self.mode
+        if (isinstance(data, str)
             and check_encoding(self.destination, self.encoding) is False):
             if os.linesep != '\n':
                 data = data.replace('\n', os.linesep)  # fix endings
             data = self.encode(data)
+
         try:
             self.destination.write(data)
         except TypeError as err:
@@ -625,7 +634,7 @@ class BinaryFileOutput(FileOutput):
     A version of docutils.io.FileOutput which writes to a binary file.
     """
     # Used by core.publish_cmdline_to_binary() which in turn is used by
-    # rst2odt (OpenOffice writer)
+    # tools/rst2odt.py but not by core.rst2odt().
     mode = 'wb'
 
 
