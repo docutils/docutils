@@ -42,13 +42,18 @@ a description of the function arguments.
 publish_cmdline()
 -----------------
 
-Function for command-line front-end tools, like ``rst2html.py`` with 
-file I/O. Also returns the output as `bytes` instance.
+Function for command-line front-end tools, like ``rst2html.py`` 
+or functions for `"console_scripts" entry points`_ like `core.rst2html()`
+with file I/O. 
+In addition to writing the output document to a file, also returns it as
+`str` instance (rsp. `bytes` for binary output document formats).
 
 There are several examples in the ``tools/`` directory of the Docutils
 repository. A detailed analysis of one such tool is in `Inside A Docutils
 Command-Line Front-End Tool`_.
 
+.. _"console_scripts" entry points:
+    https://packaging.python.org/en/latest/specifications/entry-points/
 .. _Inside A Docutils Command-Line Front-End Tool: ../howto/cmdline-tool.html
 
 
@@ -57,7 +62,7 @@ publish_file()
 
 For programmatic use with file-like I/O.
 In addition to writing the output document to a file, also returns it as
-a `bytes` instance.
+`str` instance (rsp. `bytes` for binary output document formats).
 
 
 publish_string()
