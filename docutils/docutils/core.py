@@ -39,8 +39,9 @@ class Publisher:
                  settings=None):
         """
         Initial setup.  If any of `reader`, `parser`, or `writer` are not
-        specified, the corresponding ``set_...`` method should be called with
-        a component name (`set_reader` sets the parser as well).
+        specified, ``set_components()`` or the corresponding ``set_...()``
+        method should be called with component names
+        (`set_reader` sets the parser as well).
         """
 
         self.document = None
@@ -385,7 +386,8 @@ def publish_cmdline(reader=None, reader_name='standalone',
     """
     Set up & run a `Publisher` for command-line-based file I/O (input and
     output file paths taken automatically from the command line).
-    Also return the encoded output as `bytes`.
+    Also return the output as `str` or `bytes` (for binary output document
+    formats).
 
     Parameters: see `publish_programmatically()` for the remainder.
 
@@ -412,7 +414,8 @@ def publish_file(source=None, source_path=None,
                  config_section=None, enable_exit_status=False):
     """
     Set up & run a `Publisher` for programmatic use with file-like I/O.
-    Also return the encoded output as `bytes`.
+    Also return the output as `str` or `bytes` (for binary output document
+    formats).
 
     Parameters: see `publish_programmatically()`.
     """
@@ -591,7 +594,7 @@ def publish_cmdline_to_binary(reader=None, reader_name='standalone',
     """
     Set up & run a `Publisher` for command-line-based file I/O (input and
     output file paths taken automatically from the command line).
-    Also return the encoded output as `bytes`.
+    Also return the output as `bytes`.
 
     This is just like publish_cmdline, except that it uses
     io.BinaryFileOutput instead of io.FileOutput.
