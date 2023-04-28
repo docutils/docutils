@@ -55,11 +55,11 @@ class Writer(Component):
 
     def __init__(self):
 
-        # Used by HTML and LaTeX writer for output fragments:
         self.parts = {}
         """Mapping of document part names to fragments of `self.output`.
-        Values are Unicode strings; encoding is up to the client.  The 'whole'
-        key should contain the entire document output.
+
+        See `Writer.assemble_parts()` below and
+        <https://docutils.sourceforge.io/docs/api/publisher.html>.
         """
 
     def write(self, document, destination):
@@ -95,9 +95,14 @@ class Writer(Component):
         raise NotImplementedError('subclass must override this method')
 
     def assemble_parts(self):
-        """Assemble the `self.parts` dictionary.  Extend in subclasses."""
+        """Assemble the `self.parts` dictionary.  Extend in subclasses.
+
+        See <https://docutils.sourceforge.io/docs/api/publisher.html>.
+        """
         self.parts['whole'] = self.output
         self.parts['encoding'] = self.document.settings.output_encoding
+        self.parts['errors'] = (
+            self.document.settings.output_encoding_error_handler)
         self.parts['version'] = docutils.__version__
 
 

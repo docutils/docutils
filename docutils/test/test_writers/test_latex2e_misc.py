@@ -68,6 +68,7 @@ class PublishTestCase(unittest.TestCase):
             'dedication',
             'docinfo',
             'encoding',
+            'errors',
             'fallbacks',
             'head_prefix',
             'latex_preamble',

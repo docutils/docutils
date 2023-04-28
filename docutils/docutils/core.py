@@ -494,7 +494,7 @@ def publish_parts(source, source_path=None, source_class=io.StringInput,
     e.g.::
 
        parts = publish_parts(...)
-       body = parts['body'].encode(parts['encoding'])
+       body = parts['body'].encode(parts['encoding'], parts['errors'])
 
     See the `API documentation`__ for details on the provided parts.
 
