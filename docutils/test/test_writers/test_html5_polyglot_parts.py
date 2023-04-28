@@ -73,6 +73,7 @@ class Html5WriterPublishPartsTestCase(unittest.TestCase):
         del parts['head']
         del parts['head_prefix']
         del parts['encoding']
+        del parts['errors']
         del parts['version']
         # remove standard portions:
         parts['meta'] = parts['meta'].replace(self.standard_meta_value, '')

@@ -140,7 +140,10 @@ Parts Provided By All Writers
 `````````````````````````````
 
 _`encoding`
-    The output encoding setting.
+    The `output_encoding`_ setting.
+    
+_`errors`
+    The `output_encoding_error_handler`_ setting.
 
 _`version`
     The version of Docutils used.
