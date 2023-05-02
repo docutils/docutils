@@ -38,9 +38,8 @@ class WriterPublishTestCase(unittest.TestCase):
                     output = publish_string(
                         source=case_input,
                         writer_name=writer_name,
-                        settings_overrides=settings.copy(),
-                        auto_encode=False,
-                    )
+                        settings_overrides=settings.copy()
+                        ).decode()
                     self.assertEqual(output, case_expected)
 
         settings['hidden_controls'] = False
@@ -51,9 +50,8 @@ class WriterPublishTestCase(unittest.TestCase):
                     output = publish_string(
                         source=case_input,
                         writer_name=writer_name,
-                        settings_overrides=settings.copy(),
-                        auto_encode=False,
-                    )
+                        settings_overrides=settings.copy()
+                        ).decode()
                     self.assertEqual(output, case_expected)
 
 

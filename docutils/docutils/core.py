@@ -439,26 +439,20 @@ def publish_string(source, source_path=None, destination_path=None,
                    writer=None, writer_name='pseudoxml',
                    settings=None, settings_spec=None,
                    settings_overrides=None, config_section=None,
-                   enable_exit_status=False,
-                   auto_encode=True):
+                   enable_exit_status=False):
     """
     Set up & run a `Publisher` for programmatic use with string I/O.
 
     Accepts a `bytes` or `str` instance as `source`.
 
-    If `auto_encode` is True, the output is encoded according to the
-    `output_encoding`_ setting; the return value is a `bytes` instance
-    (unless `output_encoding`_ is "unicode",
-    cf. `docutils.io.StringOutput.write()`).
-
-    If `auto_encode` is False, the output is an instance of a `str`
-    sub-class with "output_encoding" and "output_encoding_error_handler"
-    settings stored as `encoding` and `errors` attributes.
-
-    The default value of `auto_encode` will change to ``False`` in
-    Docutils 0.22.
+    The output is encoded according to the `output_encoding`_ setting;
+    the return value is a `bytes` instance (unless `output_encoding`_ is
+    "unicode", cf. `docutils.io.StringOutput.write()`).
 
     Parameters: see `publish_programmatically()`.
+
+    This function is provisional because in Python 3 name and behaviour
+    no longer match.
 
     .. _output_encoding:
         https://docutils.sourceforge.io/docs/user/config.html#output-encoding
@@ -473,8 +467,7 @@ def publish_string(source, source_path=None, destination_path=None,
         settings=settings, settings_spec=settings_spec,
         settings_overrides=settings_overrides,
         config_section=config_section,
-        enable_exit_status=enable_exit_status,
-        auto_encode=auto_encode)
+        enable_exit_status=enable_exit_status)
     return output
 
 
@@ -546,8 +539,7 @@ def publish_from_doctree(document, destination_path=None,
                          writer=None, writer_name='pseudoxml',
                          settings=None, settings_spec=None,
                          settings_overrides=None, config_section=None,
-                         enable_exit_status=False,
-                         auto_encode=True):
+                         enable_exit_status=False):
     """
     Set up & run a `Publisher` to render from an existing document tree
     data structure. For programmatic use with string output
@@ -563,6 +555,9 @@ def publish_from_doctree(document, destination_path=None,
     document tree.
 
     Other parameters: see `publish_programmatically()`.
+
+    This function is provisional because in Python 3 name and behaviour
+    of the `io.StringOutput` class no longer match.
     """
     reader = doctree.Reader(parser_name='null')
     publisher = Publisher(reader, None, writer,
@@ -574,7 +569,6 @@ def publish_from_doctree(document, destination_path=None,
     publisher.process_programmatic_settings(
         settings_spec, settings_overrides, config_section)
     publisher.set_destination(None, destination_path)
-    publisher.destination.auto_encode = auto_encode
     return publisher.publish(enable_exit_status=enable_exit_status)
 
 
@@ -623,12 +617,12 @@ def publish_programmatically(source_class, source, source_path,
                              writer, writer_name,
                              settings, settings_spec,
                              settings_overrides, config_section,
-                             enable_exit_status,
-                             auto_encode=True):
+                             enable_exit_status):
     """
     Set up & run a `Publisher` for custom programmatic use.
 
-    Return the output (as `str` or `bytes`) and the Publisher object.
+    Return the output (as `str` or `bytes`, depending on `destination_class`,
+    writer, and the "output_encoding" setting) and the Publisher object.
 
     Applications should not need to call this function directly.  If it does
     seem to be necessary to call this function directly, please write to the
@@ -716,12 +710,6 @@ def publish_programmatically(source_class, source, source_path,
       defined by `settings_spec`.  Used only if no `settings` specified.
 
     * `enable_exit_status`: Boolean; enable exit status at end of processing?
-
-    * `auto_encode`: Boolean; encode string output and return `bytes`?
-      Ignored with `io.FileOutput`.
-      New in Docutils 0.21.
-      The default value will change to ``False`` in Docutils 0.22 or later.
-      The argument may be removed in Docutils 2.0 or later.
     """
     publisher = Publisher(reader, parser, writer, settings=settings,
                           source_class=source_class,
@@ -731,8 +719,6 @@ def publish_programmatically(source_class, source, source_path,
         settings_spec, settings_overrides, config_section)
     publisher.set_source(source, source_path)
     publisher.set_destination(destination, destination_path)
-    if isinstance(publisher.destination, io.StringOutput):
-        publisher.destination.auto_encode = auto_encode
     output = publisher.publish(enable_exit_status=enable_exit_status)
     return output, publisher
 

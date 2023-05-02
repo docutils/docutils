@@ -52,19 +52,17 @@ settings = {'warning_stream': ''}
 class CodeParsingTests(unittest.TestCase):
 
     def test_lexer_error(self):
-        output = publish_string(unknown_language, settings_overrides=settings,
-                                auto_encode=False)
-        self.assertIn('<system_message level="2"', output)
-        self.assertIn('Cannot analyze code. '
-                      'No Pygments lexer found for "s-lang".', output)
-        self.assertIn('<literal_block xml:space="preserve">', output)
+        output = publish_string(unknown_language, settings_overrides=settings)
+        self.assertIn(b'<system_message level="2"', output)
+        self.assertIn(b'Cannot analyze code. '
+                      b'No Pygments lexer found for "s-lang".', output)
+        self.assertIn(b'<literal_block xml:space="preserve">', output)
 
     def test_lexer_error_workaround(self):
-        output = publish_string(workaround, settings_overrides=settings,
-                                auto_encode=False)
-        self.assertNotIn('<system_message', output)
-        self.assertIn('<literal_block classes="code s-lang"', output)
-        self.assertIn('autoload("abc_mode", "abc");', output)
+        output = publish_string(workaround, settings_overrides=settings)
+        self.assertNotIn(b'<system_message', output)
+        self.assertIn(b'<literal_block classes="code s-lang"', output)
+        self.assertIn(b'autoload("abc_mode", "abc");', output)
 
 
 if __name__ == '__main__':

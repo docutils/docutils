@@ -23,8 +23,6 @@ Release 0.20 (unpublished)
 
 * docutils/core.py
 
-  - New argument "auto_encode" for `publish_string()`,
-    `publish_from_docstring()` and `publish_programmatically()`.
   - New functions `rst2…()` for use as "console_scripts" `entry points`_.
     (cf. `Future changes` in the RELEASE-NOTES_).
 
@@ -32,11 +30,6 @@ Release 0.20 (unpublished)
 
   - New configuration setting output_. Obsoletes the ``<destination>``
     positional argument (cf. `Future changes` in the RELEASE-NOTES_).
-
-* docutils/io.py
-
-  - New `str` sub-class `io.OutString` with "encoding" and "errors"
-    attributes.
 
 * docutils/languages/
   docutils/parsers/rst/languages/

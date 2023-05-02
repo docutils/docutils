@@ -35,9 +35,7 @@ class WriterPublishTestCase(unittest.TestCase):
                         settings_overrides={
                             '_disable_config': True,
                             'strict_visitor': True,
-                        },
-                        auto_encode=False,
-                    )
+                        }).decode()
                     self.assertEqual(output, case_expected)
 
         for name, cases in totest_detailed.items():
@@ -50,9 +48,7 @@ class WriterPublishTestCase(unittest.TestCase):
                             '_disable_config': True,
                             'strict_visitor': True,
                             'detailed': True,
-                        },
-                        auto_encode=False,
-                        )
+                        }).decode()
                     self.assertEqual(output, case_expected)
 
 

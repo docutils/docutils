@@ -476,7 +476,7 @@ record_dependencies
 
 Path to a file where Docutils will write a list of files that were
 required to generate the output, e.g. included files or embedded
-stylesheets [#dependencies]_. [#pwd]_ The format is one path per
+stylesheets. [#dependencies]_ [#pwd]_ The format is one path per
 line with forward slashes as separator, the encoding is UTF-8.
 
 Set to ``-`` in order to write dependencies to stdout.

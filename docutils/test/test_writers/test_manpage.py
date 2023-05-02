@@ -31,9 +31,7 @@ class WriterPublishTestCase(unittest.TestCase):
                         settings_overrides={
                             '_disable_config': True,
                             'strict_visitor': True,
-                        },
-                        auto_encode=False,
-                    )
+                        }).decode()
                     self.assertEqual(output, case_expected)
 
 

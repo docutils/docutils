@@ -61,9 +61,8 @@ second term:
   second def
 """
         result = core.publish_string(data, writer_name='html4css1',
-                                     settings_overrides=self.mys,
-                                     auto_encode=False)
-        self.assertIn('<dt class="for the second item">second term:</dt>',
+                                     settings_overrides=self.mys)
+        self.assertIn(b'<dt class="for the second item">second term:</dt>',
                       result)
 
     def test_definition_list_item_name(self):
@@ -79,9 +78,8 @@ second term:
   second def
 """
         result = core.publish_string(data, writer_name='html4css1',
-                                     settings_overrides=self.mys,
-                                     auto_encode=False)
-        self.assertIn('<dt id="second-item">second term:</dt>',
+                                     settings_overrides=self.mys)
+        self.assertIn(b'<dt id="second-item">second term:</dt>',
                       result)
 
 

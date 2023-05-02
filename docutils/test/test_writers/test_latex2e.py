@@ -44,8 +44,8 @@ class WriterPublishTestCase(unittest.TestCase):
                 with self.subTest(id=f'samples_default[{name!r}][{casenum}]'):
                     output = publish_string(source=rst_input,
                                             writer_name=self.writer_name,
-                                            settings_overrides=self.settings,
-                                            auto_encode=False)
+                                            settings_overrides=self.settings)
+                    output = output.decode()
                     self.assertEqual(output, expected)
 
     def test_docutils_toc(self):
@@ -56,8 +56,8 @@ class WriterPublishTestCase(unittest.TestCase):
                 with self.subTest(id=f'samples_docutils_toc[{name!r}][{casenum}]'):
                     output = publish_string(source=rst_input,
                                             writer_name=self.writer_name,
-                                            settings_overrides=settings,
-                                            auto_encode=False)
+                                            settings_overrides=settings)
+                    output = output.decode()
                     self.assertEqual(output, expected)
 
     def test_book(self):
@@ -68,8 +68,8 @@ class WriterPublishTestCase(unittest.TestCase):
                 with self.subTest(id=f'samples_book[{name!r}][{casenum}]'):
                     output = publish_string(source=rst_input,
                                             writer_name=self.writer_name,
-                                            settings_overrides=settings,
-                                            auto_encode=False)
+                                            settings_overrides=settings)
+                    output = output.decode()
                     self.assertEqual(output, expected)
 
     def test_latex_sectnum(self):
@@ -82,8 +82,8 @@ class WriterPublishTestCase(unittest.TestCase):
                         id=f'samples_latex_sectnum[{name!r}][{casenum}]'):
                     output = publish_string(source=rst_input,
                                             writer_name=self.writer_name,
-                                            settings_overrides=settings,
-                                            auto_encode=False)
+                                            settings_overrides=settings)
+                    output = output.decode()
                     self.assertEqual(output, expected)
 
     def test_latex_citations(self):
@@ -95,8 +95,8 @@ class WriterPublishTestCase(unittest.TestCase):
                         id=f'samples_latex_citations[{name!r}][{casenum}]'):
                     output = publish_string(source=rst_input,
                                             writer_name=self.writer_name,
-                                            settings_overrides=settings,
-                                            auto_encode=False)
+                                            settings_overrides=settings)
+                    output = output.decode()
                     self.assertEqual(output, expected)
 
     def test_table_style_auto(self):
@@ -108,8 +108,8 @@ class WriterPublishTestCase(unittest.TestCase):
                         id=f'samples_table_style_auto[{name!r}][{casenum}]'):
                     output = publish_string(source=rst_input,
                                             writer_name=self.writer_name,
-                                            settings_overrides=settings,
-                                            auto_encode=False)
+                                            settings_overrides=settings)
+                    output = output.decode()
                     self.assertEqual(output, expected)
 
     def test_booktabs(self):
@@ -120,8 +120,8 @@ class WriterPublishTestCase(unittest.TestCase):
                 with self.subTest(id=f'samples_booktabs[{name!r}][{casenum}]'):
                     output = publish_string(source=rst_input,
                                             writer_name=self.writer_name,
-                                            settings_overrides=settings,
-                                            auto_encode=False)
+                                            settings_overrides=settings)
+                    output = output.decode()
                     self.assertEqual(output, expected)
 
     def test_link_stylesheet(self):
@@ -132,8 +132,8 @@ class WriterPublishTestCase(unittest.TestCase):
                 with self.subTest(id=f'samples_link_stylesheet[{name!r}][{casenum}]'):
                     output = publish_string(source=rst_input,
                                             writer_name=self.writer_name,
-                                            settings_overrides=settings,
-                                            auto_encode=False)
+                                            settings_overrides=settings)
+                    output = output.decode()
                     self.assertEqual(output, expected)
 
     def test_embed_embed_stylesheet(self):
@@ -146,8 +146,8 @@ class WriterPublishTestCase(unittest.TestCase):
                 with self.subTest(id=f'samples_embed_stylesheet[{name!r}][{casenum}]'):
                     output = publish_string(source=rst_input,
                                             writer_name=self.writer_name,
-                                            settings_overrides=settings,
-                                            auto_encode=False)
+                                            settings_overrides=settings)
+                    output = output.decode()
                     self.assertEqual(output, expected)
 
     def test_bibtex(self):
@@ -158,8 +158,8 @@ class WriterPublishTestCase(unittest.TestCase):
                 with self.subTest(id=f'samples_bibtex[{name!r}][{casenum}]'):
                     output = publish_string(source=rst_input,
                                             writer_name=self.writer_name,
-                                            settings_overrides=settings,
-                                            auto_encode=False)
+                                            settings_overrides=settings)
+                    output = output.decode()
                     self.assertEqual(output, expected)
 
 
