@@ -111,10 +111,9 @@ class PublisherTests(unittest.TestCase):
         source = 'test → me'
         expected = ('<document source="<string>">\n'
                     '    <paragraph>\n'
-                    '        test → me\n')
+                    '        test → me\n').encode('utf-8')
         output = core.publish_string(source.encode('utf-16'),
-                                     settings_overrides=settings,
-                                     auto_encode=False)
+                                     settings_overrides=settings)
         self.assertEqual(output, expected)
 
         # encoding declaration in source
@@ -122,8 +121,7 @@ class PublisherTests(unittest.TestCase):
         # don't encode output (return `str`)
         settings['output_encoding'] = 'unicode'
         output = core.publish_string(source.encode('utf-16'),
-                                     settings_overrides=settings,
-                                     auto_encode=False)
+                                     settings_overrides=settings)
         self.assertTrue(output.endswith('Grüße\n'))
 
     def test_publish_string_output_encoding(self):
@@ -134,24 +132,22 @@ class PublisherTests(unittest.TestCase):
         expected = ('<document source="<string>">\n'
                     '    <paragraph>\n'
                     '        Grüß → dich\n')
-        # current default: encode output, return `bytes`
+        # encode output, return `bytes`
         output = bytes(core.publish_string(source,
                                            settings_overrides=settings))
         self.assertEqual(output, expected.encode('latin1', 'replace'))
-        # no encoding if `auto_encode` is False:
-        output = core.publish_string(source, settings_overrides=settings,
-                                     auto_encode=False)
-        self.assertEqual(output, expected)
-        self.assertEqual(output.encoding, 'latin1')
 
     def test_publish_string_output_encoding_odt(self):
         """The ODT writer generates a zip archive, not a `str`.
 
         TODO: return `str` with document as "flat XML" (.fodt).
         """
-        with self.assertRaises(ValueError) as cm:
-            core.publish_string('test', writer_name='odt', auto_encode=False)
-        self.assertIn('expects `str` instance', str(cm.exception))
+        settings = dict(self.settings)
+        settings['output_encoding'] = 'unicode'
+        with self.assertRaises(AssertionError) as cm:
+            core.publish_string('test', writer_name='odt',
+                                settings_overrides=settings)
+        self.assertIn('`data` is no `str` instance', str(cm.exception))
 
 
 class PublishDoctreeTestCase(unittest.TestCase, docutils.SettingsSpec):
@@ -234,9 +230,8 @@ class PublishDoctreeTestCase(unittest.TestCase, docutils.SettingsSpec):
         # Write out the document:
         output = core.publish_from_doctree(doctree_zombie,
                                            writer_name='pseudoxml',
-                                           settings_spec=self,
-                                           auto_encode=False)
-        self.assertEqual(output, pseudoxml_output)
+                                           settings_spec=self)
+        self.assertEqual(output.decode(), pseudoxml_output)
 
 
 if __name__ == '__main__':

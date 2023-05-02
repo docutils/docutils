@@ -147,11 +147,6 @@ Drop support for Python 3.7 and 3.8 in Docutils 0.21.
 
 * "null" writer: output will change to the empty string in Docutils 0.22.
 
-* The default value of the `auto_encode` argument of `core.publish_str()`,
-  `core.publish_from_doctree()`, and `core.publish_programmatically()`
-  will change to ``False`` in Docutils 0.22.
-  The functions will then return a `str` object by default.
-
 * Remove the "rawsource" argument from `nodes.Text.__init__()`
   (deprecated and ignored since Docutils 0.18) in Docutils 2.0.
 
@@ -223,17 +218,11 @@ Release 0.20 (unpublished)
 
     __ `command-line usage pattern`_
 
-* The new function argument `auto_encode` for Publisher convenience
-  functions with `String I/O`_ selects whether the output document is
-  encoded and returned as `bytes` instance.  The default is ``True`` (for
-  backwards compatibility) and will change to ``False`` in Docutils 0.22.
-
 * `utils.find_file_in_dirs()` now returns a POSIX path also on Windows;
   `utils.get_stylesheet_list()` no longer converts ``\`` to ``/``.
 
 * Bugfixes and improvements (see HISTORY_).
 
-.. _String I/O: docs/api/publisher.html#string-i-o
 .. _output: docs/user/config.html#output
 
 

@@ -67,8 +67,7 @@ second term:
   second def
 """
         result = core.publish_string(data, writer_name='html5_polyglot',
-                                     settings_overrides=self.mys,
-                                     auto_encode=False)
+                                     settings_overrides=self.mys).decode()
         self.assertIn('<dt class="for the second item">second term:</dt>',
                       result)
 
@@ -85,8 +84,7 @@ second term:
   second def
 """
         result = core.publish_string(data, writer_name='html5_polyglot',
-                                     settings_overrides=self.mys,
-                                     auto_encode=False)
+                                     settings_overrides=self.mys).decode()
         self.assertIn('<dt id="second-item">second term:</dt>',
                       result)
 

@@ -43,9 +43,7 @@ class WriterPublishTestCase(unittest.TestCase):
                             'template': template_path,
                             'stylesheet_path': '/test.css',
                             'embed_stylesheet': False,
-                        },
-                        auto_encode=False,
-                    )
+                        }).decode()
                     self.assertEqual(output, case_expected)
 
 
