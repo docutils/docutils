@@ -85,7 +85,7 @@ Release 0.20 (unpublished)
 
 * docutils/writers/_html_base.py
 
-  - Refactoring of HTMLTranslator initialization and collecting of
+  - Refactoring of `HTMLTranslator` initialization and collecting of
     document "parts". Adapt HTML writers importing `_html_base`.
 
     Changes to the HTML output (no space character before closing tag of
@@ -148,18 +148,9 @@ Release 0.20 (unpublished)
 
   .. _coverage.py: https://pypi.org/project/coverage/
 
-* test/test_parsers/test_get_parser_class.py
-
-  - Fix regex to match multiline message "requires ... recommonmark"
-
-* test/test_transforms/test_docinfo.py
-
-  - Fix message for nonconforming docinfo-Authors.
-
 * tools/
 
   - Moved ``quicktest.py`` to ``tools/dev/``.
-
 
 
 Release 0.19 (2022-07-05)
