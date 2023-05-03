@@ -38,7 +38,7 @@ Command line interface
      + docutils --writer=latex --use-latex-abstract FAQ.txt > FAQ.tex
 
   Exceptions:
-    The auxilliary script ``rst2odt_prepstyles.py`` will become
+    The auxiliary script ``rst2odt_prepstyles.py`` will become
     available via ``python -m docutils.writers.odf_odt.prepstyles``.
 
     The ``rstpep2html.py`` script will be retired.
@@ -74,11 +74,11 @@ Command line interface
 `Input encoding`_
 -----------------
 
-* Raise UnicodeError (instead of falling back to the locale encoding)
+* Raise `UnicodeError` (instead of falling back to the locale encoding)
   if decoding the source with the default encoding (UTF-8) fails and
   Python is started in `UTF-8 mode`_. (Docutils 0.21)
 
-  Raise UnicodeError (instead of falling back to "latin1") if both,
+  Raise `UnicodeError` (instead of falling back to "latin1") if both,
   default and locale encoding, fail. (Docutils 0.21)
 
 * Only remove BOM (U+FEFF ZWNBSP at start of data), no other ZWNBSPs.
