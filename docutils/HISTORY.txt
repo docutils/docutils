@@ -28,7 +28,7 @@ Release 0.20 (unpublished)
 
 * docutils/frontend.py
 
-  - New configuration setting output_. Obsoletes the ``<destination>``
+  - New configuration setting "output_". Obsoletes the ``<destination>``
     positional argument (cf. `Future changes` in the RELEASE-NOTES_).
 
 * docutils/languages/

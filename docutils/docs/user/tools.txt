@@ -12,26 +12,12 @@
 
 .. contents::
 
-.. note::
-   Docutils front-end tool names, install details and the set of
-   auto-installed tools will change in Docutils 0.21.
-
-   The command line usage pattern will change over the next releases.
-
-   See `Future changes`__ in the RELEASE-NOTES.
-   
-__ RELEASE-NOTES.html#future-changes
-
-
 --------------
  Introduction
 --------------
 
-Once the Docutils package is unpacked, you will discover a ``tools/``
-directory containing several front ends for common Docutils
-processing.
-In addition to the `generic command line front end`_, Docutils has
-many small front ends, each specialized for a specific "Reader" (which
+In addition to the `generic command line front end`_, Docutils installs
+several small front ends, each specialized for a specific "Reader" (which
 knows how to interpret a file in context), a "Parser" (which
 understands the syntax of the text), and a "Writer" (which knows how
 to generate a specific data format).
@@ -53,6 +39,16 @@ used for the destination.  If no arguments are specified, the standard
 input (stdin) is used for the source.
 
 .. [#] The exceptions are buildhtml.py_ and rst2odt_prepstyles.py_.
+
+.. note::
+   Docutils front-end tool names, install details and the set of
+   auto-installed tools will change in Docutils 0.21.
+
+   The command line usage pattern will change over the next releases.
+
+   See `Future changes`_ in the RELEASE-NOTES.
+
+.. _future changes: ../../RELEASE-NOTES.html#future-changes
 
 
 Getting Help
@@ -109,47 +105,6 @@ to get the correct list of supported command-line options. Example::
 
 HTML-Generating Tools
 =====================
-
-buildhtml.py
-------------
-
-:Readers: Standalone, PEP
-:Parser:  reStructuredText
-:Writers: html_, html5_, pep_html_
-:Config_: `[buildhtml application]`_
-
-Use ``buildhtml.py`` to generate ``*.html`` from all the ``*.txt`` files
-(including PEPs) in each <directory> given, and their subdirectories
-too.  (Use the ``--local`` option to skip subdirectories.)
-
-Usage::
-
-    buildhtml.py [options] [<directory> ...]
-
-After unpacking the Docutils package, the following shell commands
-will generate HTML for all included documentation::
-
-    cd docutils/tools
-    buildhtml.py ..
-
-For official releases, the directory may be called "docutils-X.Y",
-where "X.Y" is the release version.  Alternatively::
-
-    cd docutils
-    tools/buildhtml.py --config=tools/docutils.conf
-
-The current directory (and all subdirectories) is chosen by default if
-no directory is named.  Some files may generate system messages
-(docs/user/rst/demo.txt contains intentional errors); use the
-``--quiet`` option to suppress all warnings.  The ``--config`` option
-ensures that the correct settings are in place (a ``docutils.conf``
-`configuration file`_ in the current directory is picked up
-automatically).  Command-line options may be used to override config
-file settings or replace them altogether.
-
-.. _[buildhtml application]: config.html#buildhtml-application
-.. _configuration file: `configuration files`_
-
 
 .. _rst2html:
 
@@ -216,11 +171,11 @@ or "`-\-stylesheet-path`_" options.
 To experiment with styles, please see the
 `guide to writing HTML (CSS) stylesheets for Docutils`__.
 
+.. _XHTML 1.0 Transitional: https://www.w3.org/TR/xhtml1/
 .. _html4css1: html.html#html4css1
 .. _link-stylesheet: config.html#embed-stylesheet
 .. _--stylesheet: config.html#stylesheet
 .. _--stylesheet-path: config.html#stylesheet-path
-
 __ ../howto/html-stylesheets.html
 
 
@@ -240,6 +195,8 @@ CSS style sheet. The provided style sheets ``minimal.css`` and ``plain.css``
 define required and optional styling rules respectively.
 
 .. _html5: html.html#html5
+.. _HTML 5: https://www.w3.org/TR/html5/
+
 
 rstpep2html.py
 --------------
@@ -266,7 +223,6 @@ The same result can be achieved with the genric front end::
 
 The rendering of published PEPs is done by a Sphinx-based build system
 (see :PEP:`676`).
-
 
 .. _pep_html: html.html#pep-html
 
@@ -378,10 +334,51 @@ For details, please see `Easy Slide Shows With reStructuredText &
 S5 <slide-shows.html>`_.
 
 
-.. _HTML 5: https://www.w3.org/TR/html5/
-.. _HTML 4.1: https://www.w3.org/TR/html401/
-.. _XHTML 1.0 Transitional: https://www.w3.org/TR/xhtml1/
-.. _XHTML 1.1: https://www.w3.org/TR/xhtml1/
+buildhtml.py
+------------
+
+:Readers: Standalone, PEP
+:Parser:  reStructuredText
+:Writers: html_, html5_, pep_html_
+:Config_: `[buildhtml application]`_
+
+The ``buildhtml.py`` script can be found in the ``/tools`` directory of
+the "docutils" source. It is not included in binary packages. [#]_
+
+Use ``buildhtml.py`` to generate ``*.html`` from all the ``*.txt`` files
+(including PEPs) in each <directory> given, and their subdirectories
+too.  (Use the ``--local`` option to skip subdirectories.)
+
+Usage::
+
+    buildhtml.py [options] [<directory> ...]
+
+After unpacking the Docutils source package, the following shell commands
+will generate HTML for all included documentation::
+
+    cd docutils/tools
+    buildhtml.py ..
+
+For official releases, the directory may be called "docutils-X.Y",
+where "X.Y" is the release version.  Alternatively::
+
+    cd docutils
+    tools/buildhtml.py --config=tools/docutils.conf
+
+The current directory (and all subdirectories) is chosen by default if
+no directory is named.  Some files may generate system messages
+(docs/user/rst/demo.txt contains intentional errors); use the
+``--quiet`` option to suppress all warnings.  The ``--config`` option
+ensures that the correct settings are in place (a ``docutils.conf``
+`configuration file`_ in the current directory is picked up
+automatically).  Command-line options may be used to override config
+file settings or replace them altogether.
+
+.. [#] The Debian package "python3-docutils" includes the script
+   under the name ``rst-builthtml``.
+
+.. _[buildhtml application]: config.html#buildhtml-application
+.. _configuration file: `configuration files`_
 
 
 LaTeX-Generating Tools
@@ -452,8 +449,8 @@ files and produces troff_ sources for Unix man pages.
 .. _troff: https://troff.org/
 
 
-ODF/OpenOffice-Generating Tools
-===============================
+OpenDocument-Generating Tools
+=============================
 
 rst2odt.py
 ----------
@@ -478,12 +475,15 @@ For details, see `Odt Writer for Docutils`_.
 rst2odt_prepstyles.py
 `````````````````````
 
-A helper tool to fix a word-processor-generated STYLE_FILE.odt for
-odtwriter use::
+A helper tool to prepare a word-processor-generated STYLE_FILE.odt for
+use with the "odt" writer: [#]_ ::
 
-  rst2odt_prepstyles STYLE_FILE.odt
+  rst2odt_prepstyles.py STYLE_FILE.odt
 
 See `Odt Writer for Docutils`__ for details.
+
+.. [#] The call pattern will change in Docutils 0.20, see
+       `Future changes`_ in the RELEASE-NOTES.
 
 __ odt.html#page-size
 
