@@ -8,6 +8,93 @@ Releasing
 
 Notes on what happend while releasing.
 
+Release 0.20 (2023-05-04)
+=========================
+
+(follow docs/dev/release.txt)
+
+release candidate 1
+
+* svn update
+* run tox : py3.7 to py3.11 : OK
+* run tests with 3.12.0a7 : OK
+
+* Update RELEASE-NOTES.txt add section ``Release <version>``.
+
+  Consult HISTORY.txt for important changes.
+
+* Change HISTORY.txt title ``Changes Since <previous release>`` to ``Release <version>``.
+
+* Set new version with ``sandbox/infrastructure/set_version.sh <version>``
+ 
+  run tox (py3.7 to 3.11)
+ 
+  Check docutils/__init__.py __version_info__ tuple. : OK
+
+  Run tests ::
+
+    export PYTHONWARNINGS=default
+    python3 test/alltests.py
+
+  OK , no warnings (really no)
+
+* Generate wheel and source-distribution::
+
+    python3 setup.py sdist
+    python3 setup.py bdist_wheel
+
+* Upload wheel and source to test.pypi::
+
+    python3 -m twine upload --repository-url https://test.pypi.org/legacy/ dist/*
+
+* Test in venv. NOTE use --pre for prereleases::
+
+    python3 -m venv du3 ; cd du3
+    export PYTHONPATH= ; . bin/activate
+
+    python -m pip install --index-url https://test.pypi.org/simple/ --pre --no-deps docutils
+
+    cp -Lr ../docutils-code/docutils/test .
+    python test/alltests.py
+
+  HISTORY.txt is not installed with wheel. 
+
+  Clean up::
+
+    python -m pip uninstall docutils
+    deactivate ; cd .. ; rm -r du3
+
+* Commit changes ... the changed version number.
+
+* Now upload to pypi::
+
+    python3 -m twine upload  dist/docutils-0.20*
+
+* Remove previous package from local cache::
+
+    find .cache/pip/wheels -name docutils\*whl -exec rm -v -i {} \;
+
+* and test::
+
+    python3 -m venv du3 ; cd du3
+    export PYTHONPATH= ; . bin/activate
+
+    pip install --pre --no-deps docutils
+    cp -Lr ../docutils-code/docutils/test .
+    python test/alltests.py
+
+  HISTORY.txt is missing.
+
+  Clean up::
+
+    deactivate ; cd .. ; rm -r du3
+
+* Notify to docutils-developer and user.
+
+* update web page.
+
+TODO on release tag the source 
+
 Release 0.19 (2022-07-05)
 =========================
 
