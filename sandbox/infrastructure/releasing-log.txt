@@ -8,12 +8,56 @@ Releasing
 
 Notes on what happend while releasing.
 
-Release 0.20 (2023-05-04)
+Release 0.20 (2023-05-09)
 =========================
 
 (follow docs/dev/release.txt)
 
-release candidate 1
+release (2023-05-09)
+
+* Update RELEASE-NOTES.txt add section ``Release 0.20``.
+
+  Changes were already done on canditate
+
+* Change HISTORY.txt title ``Release 0.20 (2023-05-09)``.
+
+* Set new version (replace ``<version>`` with the new version indentifier
+  and ``<docutils-repository-root>`` with the dir containing
+  ``HISTORY.txt`` and ``RELEASE-NOTES.txt``)::
+
+      cd <docutils-repository-root>
+      ../sandbox/infrastructure/set_version.sh <version>
+  
+* run tox 3.7 ... 3.11, run python3.12 alltests.py
+
+  all OK.
+
+* Generate wheel and source-distribution::
+
+    python3 setup.py sdist
+    python3 setup.py bdist_wheel
+
+* Upload wheel and source to test.pypi::
+
+    python3 -m twine upload --repository-url https://test.pypi.org/legacy/ dist/*
+
+  Test in venv. ::
+
+    python3 -m venv du3 ; cd du3
+    export PYTHONPATH= ; . bin/activate
+
+    python -m pip install --index-url https://test.pypi.org/simple/ --no-deps docutils
+
+    cp -Lr ../docutils-code/docutils/test .
+    python test/alltests.py
+
+    python -m pip uninstall docutils
+    deactivate ; cd .. ; rm -r du3
+
+* Commit changes ... the changed version number.
+
+
+release candidate 1 (2023-05-04)
 
 * svn update
 * run tox : py3.7 to py3.11 : OK
