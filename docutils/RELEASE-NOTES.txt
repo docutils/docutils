@@ -201,8 +201,8 @@ Misc
 .. _buildhtml.py: docs/user/tools.html#buildhtml-py
 .. _csv-table: docs/ref/rst/directives.html#csv-table
 
-Release 0.20rc1 (2023-05-04)
-============================
+Release 0.20 (2023-05-04)
+=========================
 
 .. Note::
 

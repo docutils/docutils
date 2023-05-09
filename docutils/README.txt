@@ -1,8 +1,8 @@
 .. include:: docs/header0.txt
 
-==========================
- README: Docutils 0.20rc1
-==========================
+=======================
+ README: Docutils 0.20
+=======================
 
 :Author: David Goodger
 :Contact: goodger@python.org
