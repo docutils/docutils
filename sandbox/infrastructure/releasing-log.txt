@@ -56,8 +56,62 @@ release (2023-05-09)
 
 * Commit changes ... the changed version number.
 
+* tag #.# (Note: only directory docutils is copied)::
+
+    svn copy svn+ssh://grubert@svn.code.sf.net/p/docutils/code/trunk/docutils \
+             svn+ssh://grubert@svn.code.sf.net/p/docutils/code/tags/docutils-0.20 \
+             -m "tagging release 0.20"
+
+* Update your source directory.
+* Rebuild wheel and source-distribution ::
+
+    python3 setup.py sdist
+    python3 setup.py bdist_wheel
+
+* Now upload to pypi::
+
+    python3 -m twine upload  dist/docutils-0.20*
+
+* and test::
+
+    python3 -m venv du3 ; cd du3
+    export PYTHONPATH= ; . bin/activate
+
+    pip install --no-deps docutils
+    cp -Lr ../docutils-code/docutils/test .
+    python test/alltests.py
+
+    deactivate ; cd .. ; rm -r du3
+
+* Notify to docutils-developer and user.
+
+* upload source and generated html to sf-htdocs/#.# ::
+
+    mkdir tmp1
+    cd tmp1
+    tar xzvf ../dist/docutils-0.20.tar.gz
+    cd docutils-0.20/
+    python3 tools/buildhtml.py .
+    find . -name \*.pyc -exec rm -v {} \;
+    find . -name __pycache__ -exec rmdir -v {} \;
+    rm -r docutils.egg-info
+    rsync -e ssh -r -t ./ web.sourceforge.net:/home/project-web/docutils/htdocs/0.20
+
+* Check web/index.txt for necessary corrections. Nothing changed.
+* Run sandbox/infrastructure/docutils-update.local to update web-content.
+* Release to sourceforge.
+
+  - Upload docutils-0.20.tar.gz and release notes to sourceforge.
+  - Select docutils-0.20.tar.gz as default for all OS.
+
+* set_version 0.20.1b.dev 
+* run tox : OK
+* docutils/HISTORY.txt: add title "Changes Since 0.20"
+* commit
+* run sandbox/infrastructure/docutils-update.local
 
 release candidate 1 (2023-05-04)
+--------------------------------
 
 * svn update
 * run tox : py3.7 to py3.11 : OK

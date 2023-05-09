@@ -1,7 +1,7 @@
 .. include:: docs/header0.txt
 
 =======================
- README: Docutils 0.20
+ README: Docutils 0.20.1b.dev
 =======================
 
 :Author: David Goodger

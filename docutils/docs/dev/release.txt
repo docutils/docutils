@@ -107,7 +107,7 @@ Releasing (post 2020)
     cd tmp1
     tar xzvf ../dist/docutils-#.#.tar.gz
     cd docutils-#.#/
-    tools/buildhtml.py .
+    python3 tools/buildhtml.py .
     find . -name \*.pyc -exec rm -v {} \;
     find . -name __pycache__ -exec rmdir -v {} \;
     rm -r docutils.egg-info
