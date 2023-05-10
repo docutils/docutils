@@ -49,6 +49,7 @@ Releasing (post 2020)
     python3 setup.py sdist
     python3 setup.py bdist_wheel
 
+* check sdist for html-files in docutils.egg-info.
 * Upload wheel and source to test.pypi::
 
     python3 -m twine upload --repository-url https://test.pypi.org/legacy/ dist/*
