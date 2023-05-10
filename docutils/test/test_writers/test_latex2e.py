@@ -53,7 +53,8 @@ class WriterPublishTestCase(unittest.TestCase):
         settings['use_latex_toc'] = False
         for name, cases in samples_docutils_toc.items():
             for casenum, (rst_input, expected) in enumerate(cases):
-                with self.subTest(id=f'samples_docutils_toc[{name!r}][{casenum}]'):
+                id = f'samples_docutils_toc[{name!r}][{casenum}]'
+                with self.subTest(id=id):
                     output = publish_string(source=rst_input,
                                             writer_name=self.writer_name,
                                             settings_overrides=settings)
@@ -129,7 +130,8 @@ class WriterPublishTestCase(unittest.TestCase):
         settings['stylesheet_path'] = f'{spam},{ham}'
         for name, cases in samples_stylesheet.items():
             for casenum, (rst_input, expected) in enumerate(cases):
-                with self.subTest(id=f'samples_link_stylesheet[{name!r}][{casenum}]'):
+                id = f'samples_link_stylesheet[{name!r}][{casenum}]'
+                with self.subTest(id=id):
                     output = publish_string(source=rst_input,
                                             writer_name=self.writer_name,
                                             settings_overrides=settings)
@@ -143,7 +145,8 @@ class WriterPublishTestCase(unittest.TestCase):
         settings['warning_stream'] = ''
         for name, cases in samples_stylesheet_embed.items():
             for casenum, (rst_input, expected) in enumerate(cases):
-                with self.subTest(id=f'samples_embed_stylesheet[{name!r}][{casenum}]'):
+                id = f'samples_embed_stylesheet[{name!r}][{casenum}]'
+                with self.subTest(id=id):
                     output = publish_string(source=rst_input,
                                             writer_name=self.writer_name,
                                             settings_overrides=settings)

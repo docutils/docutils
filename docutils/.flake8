@@ -55,16 +55,14 @@ per-file-ignores =
   test/functional/tests/*:F821
   # deprecated module, will be removed
   test/test_error_reporting.py:E261
-  # test output samples contain long lines
-  # don't indent list delimiters in lists of test samples (multi-line strings)
-  test/test_readers/test_pep/*:E122,E128,E501
+  # Lists with multi-line test output samples
+  # may contain long lines (E501)
+  # and are not indented (E122, E124, E128)
   test/test_parsers/*:E122,E124,E128,E501
-  test/test_writers/*:E122,E124,E128,E501
-  test/test_transforms/*:E122,E124,E128,E501
   test/test_publisher.py:E501
-  # raw string test samples with trailing whitespace
-  test/test_writers/test_manpage.py:E121,E128,E501,W291
-  test/test_writers/test_latex2e.py:E122,E128,E501,W291,W293
+  test/test_readers/test_pep/*:E122,E128,E501
+  test/test_transforms/*:E122,E124,E128,E501
+  test/test_writers/*:E122,E124,E128,E501
 
   # ignore long line in string templates
   tools/dev/generate_punctuation_chars.py:E501
