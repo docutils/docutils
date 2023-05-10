@@ -16,7 +16,9 @@
 Changes since 0.20
 ==================
 
-Nothing yet
+* docutils/MANIFEST.in
+
+  - Include tox.ini in the source package (bug #467).
 
 Release 0.20 (2023-05-09)
 =========================
