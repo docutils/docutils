@@ -183,6 +183,15 @@ Misc
 
   __ docs/ref/transforms.html
 
+* docutils/parsers/rst/languages/
+
+  Fix mistranslated localizations of the "admonition" directive name in
+  Docutils 0.21 (or later). In Docutils, "admonition" is used as a
+  generic term for "advice"/"caveat"/"remark", not a reprimand.
+  Use the English term (or specific admonitions) instead of "aanmaning",
+  "ammonizione", "Ermahnung", "exhortacion", "formaning", "upomnienie",
+  or "vermaning" to avoid errors in future conversions.
+
 .. _front end tools: docs/user/tools.html
 .. _input encoding:
 .. _input_encoding: docs/user/config.html#input-encoding
