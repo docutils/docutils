@@ -22,8 +22,14 @@ from docutils.core import publish_string
 
 # DATA_ROOT is ./test/data from the docutils root
 DATA_ROOT = Path(__file__).resolve().parents[1] / 'data'
-spam = os.path.relpath(DATA_ROOT/'spam').replace('\\', '/')
+
 ham = os.path.relpath(DATA_ROOT/'ham.tex').replace('\\', '/')
+spam = os.path.relpath(DATA_ROOT/'spam').replace('\\', '/')
+# workaround for PyPy (cf. https://sourceforge.net/p/docutils/bugs/471/)
+if sys.implementation.name == "pypy" and sys.version_info < (3, 10):
+    spampath = f"PosixPath('{spam}.sty')"
+else:
+    spampath = f"'{spam}.sty'"
 
 
 class WriterPublishTestCase(unittest.TestCase):
@@ -1227,10 +1233,11 @@ two stylesheet links in the header
 samples_stylesheet_embed['two-styles'] = [
 ["""two stylesheets embedded in the header""",
 head_template.substitute(dict(parts,
-stylesheet=r"""% Cannot embed stylesheet:
-%  [Errno 2] No such file or directory: '""" + spam + r""".sty'
-% embedded stylesheet: """ + ham + r"""
-\newcommand{\ham}{wonderful ham}
+stylesheet=f"""\
+% Cannot embed stylesheet:
+%  [Errno 2] No such file or directory: {spampath}
+% embedded stylesheet: {ham}
+\\newcommand{{\\ham}}{{wonderful ham}}
 
 """)) + r"""
 two stylesheets embedded in the header
