@@ -26,6 +26,8 @@ directives = {
       'astuce': 'tip',
       'avertissement': 'warning',
       'admonition': 'admonition',  # sic! Not used in this sense in rST.
+      # suggestions: annonce, avis, indication, remarque, renseignement
+      # see also https://sourceforge.net/p/docutils/bugs/453/
       'encadré': 'sidebar',
       'sujet': 'topic',
       'bloc-textuel': 'line-block',
