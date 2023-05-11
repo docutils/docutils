@@ -12,8 +12,13 @@
 
 .. _Docutils: https://docutils.sourceforge.io/
 
-Releasing (post 2020)
----------------------
+Steps to take and watch
+-----------------------
+
+* Make a clean checkout of svn.code.sf.net/p/docutils/code/trunk/docutils
+  to avoid having development files in the released packages.
+
+  Test, package and release this checkout.
 
 * Announce the upcoming release on docutils-develop list.
 
