@@ -101,6 +101,9 @@ html5
 The ``html5_polyglot`` writer generates `polyglot HTML`_ [#]_ output, valid
 XML [#safetext]_ that is compatible with `HTML5`_. New features and elements
 are used if they are widely supported.
+See the `HTML5 test page`_ (and the sources `html5-features.txt`_ and
+`html5-text-level-tags.txt`_) for further differences to the html4css1_
+writer.
 
 There is no hard-coded formatting information in the HTML document.
 Correct rendering of elements not directly supported by HTML depends on a
@@ -114,7 +117,12 @@ New in Docutils 0.13
 .. [#] see also `Benefits of polyglot XHTML5`_
 .. [#safetext] The validity of raw HTML and custom stylesheets must be
    ensured by the author.
-
+.. _HTML5 test page: https://docutils.sourceforge.io/test/functional/
+    expected/standalone_rst_html5.html#changes-to-the-html4css1-writer
+.. _html5-features.txt: https://docutils.sourceforge.io/test/functional/
+    input/data/html5-features.txt
+.. _html5-text-level-tags.txt: https://docutils.sourceforge.io/test/functional/
+    input/data/html5-text-level-tags.txt
 .. _rst2html5.py: tools.html#rst2html5-py
 .. _[html5 writer]: config.html#html5-writer
 .. _minimal.css: ../../docutils/writers/html5_polyglot/minimal.css
