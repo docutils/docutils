@@ -14,8 +14,8 @@
 .. contents::
 
 
-Changes since 0.20
-==================
+Release 0.20.1 (2023-05-17)
+===========================
 
 * docutils/MANIFEST.in
 
