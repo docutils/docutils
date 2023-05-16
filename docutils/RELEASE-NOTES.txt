@@ -216,8 +216,8 @@ Misc
 .. _csv-table: docs/ref/rst/directives.html#csv-table
 
 
-Release 0.20.1 (unpublished)
-============================
+Release 0.20.1 (2023-05-17)
+===========================
 
 Bugfix release. See HISTORY_ for details.
 
