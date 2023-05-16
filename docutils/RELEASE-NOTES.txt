@@ -38,15 +38,20 @@ Command line interface
      + docutils --writer=latex --use-latex-abstract FAQ.txt > FAQ.tex
 
   Exceptions:
-    The auxiliary script ``rst2odt_prepstyles.py`` will become
-    available via ``python -m docutils.writers.odf_odt.prepstyles``.
+    The ``rstpep2html.py`` and ``rst2odt_prepstyles.py`` scripts
+    will be retired.
 
-    The ``rstpep2html.py`` script will be retired.
-    Use ``docutils --reader=pep --writer=pep_html`` for a PEP preview
-    (the final rendering is done by a Sphinx-based build system,
-    cf. :PEP:`676`).
+    Use ``docutils --reader=pep --writer=pep_html`` for a PEP preview. [#]_
+
+    Use ``python -m docutils.writers.odf_odt.prepstyles``
+    to `strip the page size`__ from an ODT writer stylesheet.
+
+    __ docs/user/odt.html#page-size
 
   .. [#] Some Linux distributions already use the short names.
+  .. [#] The final rendering is done by a Sphinx-based build system
+         (cf. :PEP:`676`).
+
 
 * The _`command-line usage pattern` will change:
 
@@ -209,6 +214,13 @@ Misc
 .. _use_latex_citations: docs/user/config.html#use-latex-citations
 .. _buildhtml.py: docs/user/tools.html#buildhtml-py
 .. _csv-table: docs/ref/rst/directives.html#csv-table
+
+
+Release 0.20.1 (unpublished)
+============================
+
+Bugfix release. See HISTORY_ for details.
+
 
 Release 0.20 (2023-05-04)
 =========================

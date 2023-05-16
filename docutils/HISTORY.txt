@@ -13,6 +13,7 @@
 
 .. contents::
 
+
 Changes since 0.20
 ==================
 
@@ -20,6 +21,12 @@ Changes since 0.20
 
   - Include tox.ini and docutils.conf in the source package
     (cf. bug #467 and bug #461).
+
+* tools/rst2odt_prepstyles.py
+
+  - Moved to ``docutils/writers/odf_odt/prepstyles.py``.
+    Replaced with a provisional backwards compatibility script.
+
 
 Release 0.20 (2023-05-09)
 =========================
