@@ -102,17 +102,20 @@ Release 0.20.1 (2023-05-17)
 
 * Notify to docutils-developer and user.
 
-* upload source and generated html to sf-htdocs/#.# ::
+* upload source and generated html to sf-htdocs/0.20.1 ::
 
     mkdir tmp1
     cd tmp1
-    tar xzvf ../dist/docutils-#.#.tar.gz
-    cd docutils-#.#/
-    python3 tools/buildhtml.py .
+    tar xzvf ../dist/docutils-0.20.1.tar.gz
+    cd docutils-0.20.1/
+    python3.11 tools/buildhtml.py .
+
+  check for html-files in docutils.egg-info/ ... None::
+
     find . -name \*.pyc -exec rm -v {} \;
     find . -name __pycache__ -exec rmdir -v {} \;
     rm -r docutils.egg-info
-    rsync -e ssh -r -t ./ web.sourceforge.net:/home/project-web/docutils/htdocs/#.#
+    rsync -e ssh -r -t ./ web.sourceforge.net:/home/project-web/docutils/htdocs/0.20.1
 
 * Check web/index.txt for necessary corrections.
 * Run sandbox/infrastructure/docutils-update.local to update web-content.
