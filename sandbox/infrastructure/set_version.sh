@@ -60,7 +60,14 @@ function set_ver()
         done
         set -e
         echo 'Modifying docutils/__init__.py with version_identifier_parsing.py'
-        python3 ../sandbox/infrastructure/version_identifier_parsing.py --change-version-info=docutils/__init__.py
+        if [ -L $0 ] ; then
+            # resolve symlink
+            _F=$( readlink $0 )
+        else
+            _F=$0
+        fi
+	    PATHTOFILES=$( dirname $_F )
+        python3 $PATHTOFILES/version_identifier_parsing.py --change-version-info=docutils/__init__.py
     fi
     echo 'CAUTION: please look at the diffs carefully, for wrongly'
     echo '         replaced embedded numbers.'
