@@ -143,6 +143,12 @@ Writers
   - Remove ``use_verbatim_when_possible`` setting
     (use literal_block_env_: verbatim) in Docutils 2.0.
 
+  - Don't wrap references with custom reference-label_ in
+    a ``\hyperref`` command in Docutils 0.22.
+
+    .. _reference-label: docs/user/config.html#reference-label
+
+
 * "null" writer: output will change to the empty string in Docutils 0.22.
 
 Misc

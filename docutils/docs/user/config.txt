@@ -1100,7 +1100,7 @@ the output document. Supported values are (case insensitive):
   MathML is part of the HTML5 standard [#mathml-in-html4]_ and
   `supported by all major browsers`__ (since January 2023 also by Chrome).
 
-  .. [#mathml-in-html4] 
+  .. [#mathml-in-html4]
     With the "html4css1" writer, the resulting HTML document does
     not validate, as there is no DTD for `MathML + XHTML Transitional`.
     However, MathML-enabled browsers will render it fine.
@@ -1183,7 +1183,7 @@ the output document. Supported values are (case insensitive):
 
 Default: HTML math.css.  Option: ``--math-output``.
 
-| New in Docutils 0.8. 
+| New in Docutils 0.8.
 | The default for the HTML5 writer will change to
   "MathML" in Docutils 0.22.
 
@@ -1736,11 +1736,26 @@ Option: ``--literal-block-env``.
 reference_label
 ~~~~~~~~~~~~~~~
 
-Per default the latex-writer puts the reference title into
-hyper references. Specify "ref*" or "pageref*" to get the section
-number or the page number.
+The LaTeX command name for `hyperlink references`_ to internal__ or
+implicit__ targets. Per default the LaTeX writer uses ``\hyperref``.
+Specify an alternative reference command, e.g., "ref" or "pageref" to get
+the section number or the page number as reference text.
 
-Default: "" (use hyper references).  Option: ``--reference-label``.
+.. Caution::
+   * Drops the original reference text.
+   * Experimental. Not sufficiently tested.
+   * Fails, e.g., with section numbering by Docutils (cf. sectnum_xform_)
+     or tables without caption.
+   * Provisional: to be replaced by a dedicated
+     `interpreted text role`_ for references.
+
+Default: "" (use "hyperref").  Option: ``--reference-label``.
+
+.. _hyperlink references: ../ref/rst/restructuredtext.html#hyperlink-references
+__ ../ref/rst/restructuredtext.html#internal-hyperlink-targets
+__ ../ref/rst/restructuredtext.html#implicit-hyperlink-targets
+.. _interpreted text role: ../ref/rst/restructuredtext.html#interpreted-text
+
 
 section_enumerator_separator
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -2005,7 +2020,7 @@ template__:
 [odf_odt writer]
 ----------------
 
-The `ODF/ODT Writer`__ generates documents in the 
+The `ODF/ODT Writer`__ generates documents in the
 OpenDocument_ Text format (.odt).
 
 The output_encoding_ setting is ignored, the output encoding is
@@ -2182,7 +2197,7 @@ silent
 ~~~~~~
 
 Work silently (no progress messages).  Independent of
-"report_level".
+report_level_.
 
 Default: show progress (None).  Option: ``--silent``.
 
