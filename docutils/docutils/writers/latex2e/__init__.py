@@ -1185,7 +1185,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.use_latex_toc = settings.use_latex_toc
         self.use_latex_docinfo = settings.use_latex_docinfo
         self.use_latex_citations = settings.use_latex_citations
-        self._reference_label = settings.reference_label
+        self.reference_label = settings.reference_label
         self.hyperlink_color = settings.hyperlink_color
         self.compound_enumerators = settings.compound_enumerators
         self.font_encoding = getattr(settings, 'font_encoding', '')
@@ -1808,7 +1808,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if self.use_latex_citations:
             if not self.inside_citation_reference_label:
                 self.out.append(r'\cite{')
-                self.inside_citation_reference_label = 1
+                self.inside_citation_reference_label = True
             else:
                 assert self.out[-1] in (' ', '\n'),\
                         'unexpected non-whitespace while in reference label'
@@ -2820,8 +2820,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
             # problematic chars double caret and unbalanced braces:
             if href.find('^^') != -1 or self.has_unbalanced_braces(href):
                 self.error(
-                    'External link "%s" not supported by LaTeX.\n'
-                    ' (Must not contain "^^" or unbalanced braces.)' % href)
+                    f'External link "{href}" not supported by LaTeX.\n'
+                    ' (Must not contain "^^" or unbalanced braces.)')
             if node['refuri'] == node.astext():
                 self.out.append(r'\url{%s}' % href)
                 raise nodes.SkipNode
@@ -2837,9 +2837,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if not self.is_inline(node):
             self.out.append('\n')
         self.out.append('\\hyperref[%s]{' % href)
-        if self._reference_label:
+        if self.reference_label:
+            # TODO: don't use \hyperref if self.reference_label is True
             self.out.append('\\%s{%s}}' %
-                            (self._reference_label, href.replace('#', '')))
+                            (self.reference_label, href.replace('#', '')))
             raise nodes.SkipNode
 
     def depart_reference(self, node):
