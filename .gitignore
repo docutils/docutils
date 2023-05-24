@@ -6,7 +6,6 @@ build
 
 *~
 *.bak
-*.pyc
 *.egg-info
 __pycache__
 *.aux
@@ -22,4 +21,4 @@ sandbox/**/index.html
 
 /docutils/test/alltests.out
 /docutils/test/record.txt
-/docutils/test/functional/output
+/docutils/test/functional/output/*
