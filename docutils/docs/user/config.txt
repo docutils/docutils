@@ -1736,10 +1736,10 @@ Option: ``--literal-block-env``.
 reference_label
 ~~~~~~~~~~~~~~~
 
-The LaTeX command name for `hyperlink references`_ to internal__ or
-implicit__ targets. Per default the LaTeX writer uses ``\hyperref``.
-Specify an alternative reference command, e.g., "ref" or "pageref" to get
-the section number or the page number as reference text.
+Per default the LaTeX writer uses ``\hyperref`` for `hyperlink
+references`_ to internal__ or implicit__ targets.
+Specify an alternative reference command, e.g., "ref" or "pageref"
+to get the section number or the page number as reference text.
 
 .. Caution::
    * Drops the original reference text.
@@ -1747,15 +1747,15 @@ the section number or the page number as reference text.
    * Fails, e.g., with section numbering by Docutils (cf. sectnum_xform_)
      or tables without caption.
    * Provisional: to be replaced by a dedicated
-     `interpreted text role`_ for references.
+     `interpreted text role`_ for references (cf. TODO__).
 
 Default: "" (use "hyperref").  Option: ``--reference-label``.
 
-.. _hyperlink references: ../ref/rst/restructuredtext.html#hyperlink-references
 __ ../ref/rst/restructuredtext.html#internal-hyperlink-targets
 __ ../ref/rst/restructuredtext.html#implicit-hyperlink-targets
+__ ../dev/todo.html#object-numbering-and-object-references
+.. _hyperlink references: ../ref/rst/restructuredtext.html#hyperlink-references
 .. _interpreted text role: ../ref/rst/restructuredtext.html#interpreted-text
-
 
 section_enumerator_separator
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -904,7 +904,6 @@ class Table:
             return '|'
         return ''
 
-    # horizontal lines are drawn below a row,
     def get_opening(self, width=r'\linewidth'):
         align_map = {'left': '[l]',
                      'center': '[c]',
@@ -1009,6 +1008,11 @@ class Table:
             return 'l'
 
     def get_caption(self):
+        """Deprecated. Will be removed in Docutils 0.22."""
+        warnings.warn('`writers.latex2e.Table.get_caption()` is obsolete'
+                      ' and will be removed in Docutils 0.22.',
+                      DeprecationWarning, stacklevel=2)
+
         if not self.caption:
             return ''
         caption = ''.join(self.caption)
@@ -3007,6 +3011,13 @@ class LaTeXTranslator(nodes.NodeVisitor):
             width = self.to_latex_length(node['width'])
         except KeyError:
             width = r'\linewidth'
+        # Insert hyperlabel and anchor before the table
+        # if it has no caption/title.
+        # See visit_thead() for tables with caption.
+        if not self.active_table.caption:
+            self.out.extend(self.ids_to_labels(
+                node, set_anchor=len(self.table_stack) != 1,
+                newline=True))
         # TODO: Don't use a longtable or add \noindent before
         #       the next paragraph, when in a "compound paragraph".
         #       Start a new line or a new paragraph?
@@ -3018,9 +3029,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.active_table.close()
         if len(self.table_stack) > 0:
             self.active_table = self.table_stack.pop()
-        # Insert hyperlabel after (long)table, as
-        # other places (beginning, caption) result in LaTeX errors.
-        self.out += self.ids_to_labels(node, set_anchor=False, newline=True)
         self.duclass_close(node)
 
     def visit_target(self, node):
@@ -3079,7 +3087,14 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if 1 == self.thead_depth():
             self.out.append('{%s}\n' % self.active_table.get_colspecs(node))
             self.active_table.set('preamble written', 1)
-        self.out.append(self.active_table.get_caption())
+        if self.active_table.caption:
+            if self._thead_depth == 1:
+                pre = [r'\caption{']
+                post = self.ids_to_labels(node.parent.parent, False) + [r'}\\']
+            else:
+                pre = [r'\caption[]{']
+                post = [r' (... continued)}\\']
+            self.out.extend(pre + self.active_table.caption + post + ['\n'])
         self.out.extend(self.active_table.visit_thead())
 
     def depart_thead(self, node):
