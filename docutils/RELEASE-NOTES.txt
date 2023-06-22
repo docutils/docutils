@@ -145,6 +145,7 @@ Writers
 
   - Don't wrap references with custom reference-label_ in
     a ``\hyperref`` command in Docutils 0.22.
+    Specify, e.g., "ref" instead of "ref*" to keep generating hyperlinks.
 
     .. _reference-label: docs/user/config.html#reference-label
 
