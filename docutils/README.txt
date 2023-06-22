@@ -1,7 +1,7 @@
 .. include:: docs/header0.txt
 
 ===============================
- README: Docutils 0.20.2b.dev
+ README: Docutils 0.21b.dev
 ===============================
 
 :Author: David Goodger
@@ -392,7 +392,7 @@ list.
 .. _project page: https://sourceforge.net/p/docutils
 .. _Docutils-users: docs/user/mailing-lists.html#docutils-users
 
-
+
 ..
    Local Variables:
    mode: indented-text
