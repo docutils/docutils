@@ -7,9 +7,9 @@ Input Encoding
 :Status: Draft
 :Type: API
 :Created: 2022-07-02
-:Docutils-Version: > 0.19 (see `open issues`_)
+:Docutils-Version: 0.21, 0.22, 1.0 (see `open issues`_)
 :Replaces: undocumented behaviour in 0.19
-:Resolution: None
+:Resolution: accepted (https://sourceforge.net/p/docutils/patches/194/)
 
 
 Abstract
@@ -34,7 +34,7 @@ setting is kept at its default value ``None`` is currently suboptimal
 and underdocumented.
 
 If the source encoding cannot be determined from the source and
-decoding the with UTF-8 fails, the file is decoded with the
+decoding with UTF-8 fails, the source is decoded with the
 locale encoding or 'latin1' (hard-coded 2nd fallback),
 even in `UTF-8 mode`_.
 
@@ -85,6 +85,7 @@ Differences to the default behaviour of Python's `open()`:
 .. _preferred encoding:
    https://docs.python.org/3/library/locale.html#locale.getpreferredencoding
 
+
 Explicit encoding declaration
 -----------------------------
 
@@ -132,31 +133,31 @@ The following incompatible changes are expected:
   This is the behaviour known from the "utf-8-sig" and "utf-16" codecs_.
 
 - Raise UnicodeError (instead of decoding with 'latin1') if decoding the
-  source with UTF-8 fails and the locale encoding is not set or UTF-8.
+  source with UTF-8 fails and the locale encoding is None or "UTF-8".
 
 - Raise UnicodeError (instead of decoding with the locale encoding)
   if Python is started in `UTF-8 mode`_.
+
+- Change the default input encoding from ``None`` (auto-detect) to
+  "utf-8" in Docutils 0.22.
+
+- Remove the input encoding auto-detection code in Docutils 1.0 or later.
+
+Announced in the RELEASE-NOTES_ in [r9326] 2023-02-06.
 
 
 Security Implications
 =====================
 
-No security implications are expeted.
+No security implications are expected.
 
 
 How to Teach This
 =================
 
-* Document the specification_.
+* Document the specification_. ✓
 
-* Document the `special comment`.
-
-* Recommend specifying the source encoding (via `input_encoding`_ or
-  with BOM or special comment), especially if it is not UTF-8.
-
-* "To avoid erroneous application of a locale encoding but keep
-  detection of an `explicit encoding declaration`_ in the source,
-  start Python in `UTF-8 mode`_."
+* Document the `special comment`. ✓
 
 
 Reference Implementation
@@ -172,39 +173,25 @@ Rejected Ideas
 .. Why certain ideas that were brought while discussing this proposal
    were not ultimately pursued.
 
-
-Open Issues
-===========
-
-.. Any points that are still being decided/discussed.
-
-* When shall we implement the incompatible API changes?
-
-  - 2 minor versions after announcing.
-
-  - Faster/immediately, because the current behaviour is a bug.
-
-* Change the default `input_encoding`_ value to "UTF-8"?
-
 * Keep the auto-detection (as opt-in or as default)?
 
   +1  convenient for users with differently encoded sources
+  +1  keep "source code encoding both visible and
+      changeable on a per-source file basis". [:PEP:`263`]
   -1  complicates code
 
-  Adherence to an encoding-specification in the source (BOM or "magic
-  comment") remains the default behaviour for Python source code:
+  → "Outsourced" to the "inspecting_codecs_" package.
 
-    An explicit encoding declaration takes precedence over the default.
+  .. _inspecting_codecs: https://codeberg.org/milde/inspecting-codecs
 
-    -- :PEP:`3120`
 
+Open Issues
+===========
 
 Better feedback
 
 * Warning or Error, when `input_encoding` value differs from the
   encoding declared in the source (BOM or special comment).
-
-* Info or Warning, when using the "locale" fallback encoding.
 
 * More helpful report of UnicodeDecodeError
 
@@ -228,6 +215,8 @@ Patches #194 Deprecate PEP 263 coding slugs support
 
 .. _input_encoding:
     https://docutils.sourceforge.io/docs/user/config.html#input-encoding
+.. _RELEASE-NOTES:
+    https://docutils.sourceforge.io/RELEASE-NOTES.html
 
 .. _UTF-8 mode: https://docs.python.org/3/library/os.html#utf8-mode
 .. _codecs:

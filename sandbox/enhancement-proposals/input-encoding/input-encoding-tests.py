@@ -10,7 +10,6 @@
 #
 # input-encoding-tests.py:
 # ========================
-from __future__ import print_function
 
 import codecs
 import locale
@@ -20,15 +19,15 @@ import sys
 # additional codecs from https://codeberg.org/milde/inspecting-codecs
 import inspecting_codecs
 
-if sys.version_info < (3,):
-    sys.path.append('/usr/lib/python3/dist-packages/')
-
 import docutils
 from docutils.io import FileInput
-if sys.version_info < (3,):
-    from docutils.utils.error_reporting import locale_encoding
-else:
-    from docutils.io import _locale_encoding as locale_encoding
+from docutils.io import _locale_encoding as locale_encoding
+
+
+print('\nDocutils', docutils.__version__,
+      ' Python', sys.version.split()[0])
+print('preferred encoding:', locale.getpreferredencoding())
+print('locale encoding:', locale_encoding)
 
 
 samples = {'utf-8': u'Grüße',
@@ -113,9 +112,7 @@ for encoding in sorted(samples):
         text = f.read()
         # l > 5 points to spurious bytes in the data
         l = len(text)
-        if sys.version_info < (3,):
-            text = text.encode('utf8')
-        print(encoding, text, l)
+        print(encoding, repr(text), l)
     except UnicodeError as err:
         print(encoding, 'fail')
 
@@ -129,10 +126,3 @@ for encoding in sorted(samples):
         print(encoding, repr(text), l)
     except UnicodeError as err:
         print(encoding, 'fail', err)
-
-
-print('\nDocutils', docutils.__version__,
-      ' Python', sys.version.split()[0])
-print('preferred encoding:', locale.getpreferredencoding())
-print('locale encoding:', locale_encoding)
-
