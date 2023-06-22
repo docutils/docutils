@@ -17,7 +17,11 @@
 Changes since 0.20.1
 ====================
 
-None Yet
+* docutils/utils/roman.py
+
+  Update to version `1.4 <https://pypi.org/project/roman/4.1/>`__.
+  Fixes feature-requests:#95 (license is now ZPL 2.1).
+
 
 Release 0.20.1 (2023-05-17)
 ===========================
