@@ -103,40 +103,41 @@ Docutils public APIs are:
 
 * the `reStructuredText specification`_,
 
-* the document type definition (`Docutils Document Tree`_, docutils.dtd_),
+* the `Docutils document structure`_ (`Docutils Document Tree`),
 
-* names, command-line arguments and behaviour of the `front-end tools`_,
+* names, command-line arguments and behaviour of
+  the `"console_scripts" entry points`_ (`Front-end Tools`),
 
-* the interface to custom stylesheets --
-  elements, macros and classes used by writers to represent doctree_ nodes
-  in the output format,
-
-* provided output templates and style sheets (unless marked as
-  provisional_),
-
-  .. template.txt, default.tex, titlepage.tex, xelatex.tex
-  .. html4css1.css, minimal.css, docutils.sty (LaTeX), styles.odt
-
-* the core "docutils" Python package API [#]_:
+* the core ``docutils`` Python package API:
 
   - the `Docutils Publisher`_ interface for programmatic use,
 
   - component interfaces as defined by the base
-    ``docutils.reader.Reader``, ``docutils.writer.Writer``, and
-    ``docutils.transform.Transform`` classes,
+    `docutils.reader.Reader`, `docutils.writer.Writer`, and
+    `docutils.transform.Transform` classes,
 
-* behaviour [#]_ and names of all documented objects.
+* behaviour and names of all *documented Python objects*, [#]_
 
-  Python objects and variables can explicitly "opt-out" of the public API
-  with a docstring noting that the object is provisional_ or internal.
+* *output templates* and *style sheets* provided with the writers,
+
+  .. template.txt, default.tex, titlepage.tex, xelatex.tex
+  .. html4css1.css, minimal.css, docutils.sty (LaTeX), styles.odt
+
+* the interface to custom stylesheets -- elements, macros and classes
+  used by writers to represent doctree_ nodes in the output format.
+
+Exemptions:
+  Python objects, stylesheets and templates can explicitly "opt-out" of
+  the public API with a docstring noting that the object is provisional_
+  or internal.
 
   All undocumented objects should be assumed to be internal. [#]_
 
-.. [#] see also the `API Reference Material for Client-Developers`_
-.. [#] Cf. the `backwards compatibility rules`_ in :PEP:`387`.
-.. [#] Cf. `Public and Internal Interfaces`_ in :PEP:`008`.
-.. _Public and Internal Interfaces:
-    https://peps.python.org/pep-0008/#public-and-internal-interfaces
+See also the `API Reference Material for Client-Developers`_.
+
+.. [#] Cf. `PEP 387: Backwards Compatibility Rules`_
+.. [#] Cf. `PEP 008: Public and Internal Interfaces`_
+
 
 Backwards Compatibility
 =======================
@@ -185,9 +186,10 @@ How to Teach This
      "internal", the name, behaviour, and existence of the object is not
      guaranteed to be stable.
 
-     Code relying on non-public objects should be made robust using public
-     alternatives. If there is a no such alternative or the required change
-     would be a major problem, contact the Docutils developers.
+     Code relying on non-public objects should be made robust using
+     public alternatives. If there is a no such alternative or the
+     required change would be a problem, `contact the Docutils
+     developers`__ or file a `feature request`_.
 
      .. [#] `Attribute docstrings`_ are not shown by pydoc_. To find out
         whether attributes have a docstring, check the source.
@@ -195,6 +197,8 @@ How to Teach This
      .. _attribute docstrings:
          https://peps.python.org/pep-0258/#attribute-docstrings
      .. _pydoc: https://docs.python.org/3/library/pydoc.html
+     __ https://docutils.sourceforge.io/docs/user/mailing-lists.html
+     .. _feature request: https://sourceforge.net/p/docutils/feature-requests/
 
 
 Rejected Ideas
@@ -279,12 +283,13 @@ References
 .. _api/:
 .. _API Reference Material for Client-Developers:
     ../../docutils/docs/index.html
-    #api-api-reference-material-for-client-developers
+    #api-reference-material-for-client-developers
 .. _doctree:
-.. _Docutils Document Tree: ../../docutils/docs/ref/doctree.html
+.. _Docutils document structure: ../../docutils/docs/ref/doctree.html
 .. _docutils.dtd: ../../docutils/docs/ref/docutils.dtd
 .. _Docutils Design Specification: ../../docutils/docs/peps/pep-0258.html
 .. _Docutils Project Policies: ../../docutils/docs/dev/policies.html
+.. _"console_scripts" entry points:
 .. _front-end tools: ../../docutils/docs/user/tools.html
 .. _Docutils Publisher: ../../docutils/docs/api/publisher.html
 .. _Docutils Transforms: ../../docutils/docs/ref/transforms.html
@@ -293,8 +298,10 @@ References
 .. _reStructuredText specification:
     ../../docutils/docs/ref/rst/restructuredtext.html
 
-.. _backwards compatibility rules:
+.. _`PEP 387: backwards compatibility rules`:
     https://peps.python.org/pep-0387/#backwards-compatibility-rules
+.. _`PEP 008: Public and Internal Interfaces`:
+    https://peps.python.org/pep-0008/#public-and-internal-interfaces
 .. _provisional: https://docs.python.org/3/glossary.html#term-provisional-API
 .. _Semantic Versioning: https://semver.org/
 
