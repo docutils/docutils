@@ -131,9 +131,9 @@ The exceptions to the `Public Domain Dedication`_ above are:
 * docutils/utils/roman.py
 
   copyright by Mark Pilgrim, released under the
-  `Python 2.1.1 license`_ (`local copy`__).
+  `Zope Public License Version 2.1`_ (`local copy`__).
 
-  __ licenses/python-2-1-1.txt
+  __ licenses/ZPL-2-1.txt
 
 * tools/editors/emacs/rst.el
 
@@ -150,10 +150,10 @@ licenses_ directory.
 
 .. _sandbox: https://docutils.sourceforge.io/sandbox/README.html
 .. _licenses: licenses/
-.. _Python 2.1.1 license: https://docs.python.org/3/license.html
 .. _GNU General Public License: https://www.gnu.org/copyleft/gpl.html
 .. _BSD 2-Clause License: http://opensource.org/licenses/BSD-2-Clause
 .. _BSD 3-Clause License: https://opensource.org/licenses/BSD-3-Clause
+.. _Zope Public License Version 2.1: https://opensource.org/license/zpl-2-1/
 .. _OSI-approved: http://opensource.org/licenses/
 .. _license-list:
 .. _GPL-compatible: https://www.gnu.org/licenses/license-list.html
