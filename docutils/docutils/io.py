@@ -400,7 +400,7 @@ class FileInput(Input):
             if source_path:
                 try:
                     self.source = open(source_path, mode,
-                                       encoding=self.encoding or 'utf-8-sig',
+                                       encoding=self.encoding,
                                        errors=self.error_handler)
                 except OSError as error:
                     raise InputError(error.errno, error.strerror, source_path)
@@ -421,26 +421,18 @@ class FileInput(Input):
         """
         Read and decode a single file and return the data (Unicode string).
         """
-        try:
-            if self.source is sys.stdin:
-                # read as binary data to circumvent auto-decoding
-                data = self.source.buffer.read()
-            else:
-                data = self.source.read()
-        except (UnicodeError, LookupError):
-            if not self.encoding and self.source_path:
-                # re-read in binary mode and decode with heuristics
-                b_source = open(self.source_path, 'rb')
-                data = b_source.read()
-                b_source.close()
-            else:
-                raise
-        finally:
-            if self.autoclose:
-                self.close()
-        data = self.decode(data)
-        # normalise newlines
-        return '\n'.join(data.splitlines()+[''])
+        if not self.encoding and hasattr(self.source, 'buffer'):
+            # read as binary data
+            data = self.source.buffer.read()
+            # decode with heuristics
+            data = self.decode(data)
+            # normalize newlines
+            data = '\n'.join(data.splitlines()+[''])
+        else:
+            data = self.source.read()
+        if self.autoclose:
+            self.close()
+        return data
 
     def readlines(self):
         """
