@@ -40,7 +40,7 @@ what-you-see-is-what-you-get plaintext markup syntax.""",  # wrap at col 60
     'maintainer_email': 'docutils-develop@lists.sourceforge.net',
     'license': 'public domain, Python, 2-Clause BSD, GPL 3 (see COPYING.txt)',
     'platforms': 'OS-independent',
-    'python_requires': '>=3.7',
+    'python_requires': '>=3.9',
     'include_package_data': True,
     'exclude_package_data': {"": ["docutils.conf"]},
     'package_dir': {
@@ -100,8 +100,6 @@ what-you-see-is-what-you-get plaintext markup syntax.""",  # wrap at col 60
         'License :: OSI Approved :: GNU General Public License (GPL)',
         'Operating System :: OS Independent',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.7',
-        'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
         'Programming Language :: Python :: 3.11',

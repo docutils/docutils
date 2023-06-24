@@ -32,14 +32,6 @@ try:
         _locale_encoding = (locale.getlocale()[1]
                             or locale.getdefaultlocale()[1])
         _locale_encoding = _locale_encoding.lower()
-except ValueError as error:  # OS X may set UTF-8 without language code
-    # See https://bugs.python.org/issue18378 fixed in 3.8
-    # and https://sourceforge.net/p/docutils/bugs/298/.
-    # Drop the special case after requiring Python >= 3.8
-    if "unknown locale: UTF-8" in error.args:
-        _locale_encoding = "utf-8"
-    else:
-        _locale_encoding = None
 except:  # noqa  any other problems determining the locale -> use None
     _locale_encoding = None
 try:
