@@ -125,24 +125,15 @@ class Input(TransformSpec):
         Return Unicode `str` instances unchanged (nothing to decode).
 
         If `self.encoding` is None, determine encoding from data
-        or try UTF-8, locale encoding, and (as last ressort) 'latin-1'.
-        The client application should call ``locale.setlocale`` at the
+        or try UTF-8 and the locale's preferred encoding.
+        The client application should call ``locale.setlocale()`` at the
         beginning of processing::
 
             locale.setlocale(locale.LC_ALL, '')
 
         Raise UnicodeError if unsuccessful.
 
-        Provisional:
-          - Raise UnicodeError (instead of falling back to the locale
-            encoding) if decoding the source with the default encoding (UTF-8)
-            fails and Python is started in `UTF-8 mode`.
-
-            Raise UnicodeError (instead of falling back to "latin1") if both,
-            default and locale encoding, fail.
-
-          - Only remove BOM (U+FEFF ZWNBSP at start of data),
-            no other ZWNBSPs.
+        Provisional: encoding detection will be removed in Docutils 1.0.
         """
         if self.encoding and self.encoding.lower() == 'unicode':
             assert isinstance(data, str), ('input encoding is "unicode" '
@@ -157,21 +148,17 @@ class Input(TransformSpec):
         else:
             data_encoding = self.determine_encoding_from_data(data)
             if data_encoding:
-                # If the data declares its encoding (explicitly or via a BOM),
-                # we believe it.
+                # `data` declares its encoding with  "magic comment" or BOM,
                 encoding_candidates = [data_encoding]
             else:
-                # Apply heuristics only if no encoding is explicitly given and
-                # no BOM found.  Start with UTF-8, because that only matches
+                # Apply heuristics if the encoding is not specified.
+                # Start with UTF-8, because that only matches
                 # data that *IS* UTF-8:
                 encoding_candidates = ['utf-8']
-                # TODO: use `locale.getpreferredlocale(do_setlocale=True)`
-                # to respect UTF-8 mode (API change).
-                # (Check if it is a valid encoding and not UTF-8)
-                if _locale_encoding and _locale_encoding != 'utf-8':
-                    encoding_candidates.append(_locale_encoding)
-                # TODO: don't fall back to 'latin-1' (API change).
-                encoding_candidates.append('latin-1')
+                # If UTF-8 fails, fall back to the locale's preferred encoding:
+                fallback = locale.getpreferredencoding(do_setlocale=False)
+                if fallback and fallback.lower() != 'utf-8':
+                    encoding_candidates.append(fallback)
         for enc in encoding_candidates:
             try:
                 decoded = str(data, enc, self.error_handler)

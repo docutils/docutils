@@ -17,10 +17,23 @@
 Changes since 0.20.1
 ====================
 
+* docutils/io.py
+
+* Simpler and more secure `input encoding`_ default behaviour:
+
+  Do not use the locale encoding as fallback if Python is started in
+  `UTF-8 mode`_. Stop using "latin1" as second fallback.
+
+  Remove BOM (U+FEFF ZWNBSP at start of data) only if the `input_encoding`_
+  configuration setting is None, '', 'utf-8-sig', 'utf-16', or 'utf-32'.
+  Do not remove other ZWNBSPs.
+
+  .. _input encoding: docs/api/publisher.html#encodings
+
 * docutils/utils/roman.py
 
-  Update to version `1.4 <https://pypi.org/project/roman/4.1/>`__.
-  Fixes feature-requests:#95 (license is now ZPL 2.1).
+  - Update to version `1.4 <https://pypi.org/project/roman/4.1/>`__.
+    Fixes feature-requests:#95 (license is now ZPL 2.1).
 
 * docutils/writers/latex2e/__init__.py
 
