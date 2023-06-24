@@ -1062,6 +1062,9 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         return self.dom_stylesheet
 
     def setup_paper(self, root_el):
+        # TODO: only call paperconf, if it is actually used
+        # (i.e. page size removed from "styles.odt" with rst2odt_prepstyles.py
+        # cf. conditional in walk() below)?
         try:
             dimensions = subprocess.check_output(('paperconf', '-s'),
                                                  stderr=subprocess.STDOUT)
