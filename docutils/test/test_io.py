@@ -5,7 +5,7 @@
 # Copyright: This module has been placed in the public domain.
 
 """
-Test module for io.py.
+Test module for `docutils.io`.
 """
 import os.path
 
@@ -91,18 +91,22 @@ class HelperTests(unittest.TestCase):
 
 class InputTests(unittest.TestCase):
 
-    def test_bom(self):
+    def test_bom_handling(self):
         # Provisional:
-        input = du_io.StringInput(source=b'\xef\xbb\xbf foo \xef\xbb\xbf bar')
-        # Assert BOM is gone.
-        # TODO: only remove BOM (ZWNBSP at start of data)
-        self.assertEqual(input.read(), ' foo  bar')
-        # Unicode input is left unchanged:
-        input = du_io.StringInput(source='\ufeff foo \ufeff bar')
-        # Assert ZWNBSPs are still there.
-        self.assertEqual(input.read(), '\ufeff foo \ufeff bar')
+        # default input encoding will change to UTF-8 in Docutils 0.22
+        source = '\ufeffdata\n\ufeff blah\n'
+        expected = 'data\n\ufeff blah\n'  # only leading ZWNBSP removed
+        input = du_io.StringInput(source=source.encode('utf-16-be'))
+        self.assertEqual(input.read(), expected)
+        input = du_io.StringInput(source=source.encode('utf-16-le'))
+        self.assertEqual(input.read(), expected)
+        input = du_io.StringInput(source=source.encode('utf-8'))
+        self.assertEqual(input.read(), expected)
+        # With `str` input all ZWNBSPs are still there.
+        input = du_io.StringInput(source=source)
+        self.assertEqual(input.read(), source)
 
-    def test_coding_slug(self):
+    def test_encoding_declaration(self):
         input = du_io.StringInput(source=b"""\
 .. -*- coding: ascii -*-
 data
@@ -124,16 +128,6 @@ print("hello world")
 print("hello world")
 """)
         self.assertNotEqual(input.successful_encoding, 'ascii')
-
-    def test_bom_detection(self):
-        source = '\ufeffdata\nblah\n'
-        expected = 'data\nblah\n'
-        input = du_io.StringInput(source=source.encode('utf-16-be'))
-        self.assertEqual(input.read(), expected)
-        input = du_io.StringInput(source=source.encode('utf-16-le'))
-        self.assertEqual(input.read(), expected)
-        input = du_io.StringInput(source=source.encode('utf-8'))
-        self.assertEqual(input.read(), expected)
 
     def test_readlines(self):
         input = du_io.FileInput(
@@ -161,7 +155,7 @@ print("hello world")
         uniinput = du_io.Input(encoding='unicode')
         # keep unicode instances as-is
         self.assertEqual(uniinput.decode('ja'), 'ja')
-        # raise AssertionError if data is not an unicode string
+        # raise AssertionError if data is not a `str` instance
         self.assertRaises(AssertionError, uniinput.decode, b'ja')
 
 

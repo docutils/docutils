@@ -176,10 +176,7 @@ class Input(TransformSpec):
             try:
                 decoded = str(data, enc, self.error_handler)
                 self.successful_encoding = enc
-                # Return decoded, removing BOM and other ZWNBSPs.
-                # TODO: only remove BOM (ZWNBSP at start of data)
-                #       and only if 'self.encoding' is None. (API change)
-                return decoded.replace('\ufeff', '')
+                return decoded
             except (UnicodeError, LookupError) as err:
                 # keep exception instance for use outside of the "for" loop.
                 error = err
@@ -191,9 +188,12 @@ class Input(TransformSpec):
     coding_slug = re.compile(br"coding[:=]\s*([-\w.]+)")
     """Encoding declaration pattern."""
 
-    byte_order_marks = ((codecs.BOM_UTF8, 'utf-8'),
-                        (codecs.BOM_UTF16_BE, 'utf-16-be'),
-                        (codecs.BOM_UTF16_LE, 'utf-16-le'),)
+    byte_order_marks = ((codecs.BOM_UTF32_BE, 'utf-32'),
+                        (codecs.BOM_UTF32_LE, 'utf-32'),
+                        (codecs.BOM_UTF8, 'utf-8-sig'),
+                        (codecs.BOM_UTF16_BE, 'utf-16'),
+                        (codecs.BOM_UTF16_LE, 'utf-16'),
+                        )
     """Sequence of (start_bytes, encoding) tuples for encoding detection.
     The first bytes of input data are checked against the start_bytes strings.
     A match indicates the given encoding."""
@@ -384,7 +384,7 @@ class FileInput(Input):
         :Parameters:
             - `source`: either a file-like object (which is read directly), or
               `None` (which implies `sys.stdin` if no `source_path` given).
-            - `source_path`: a path to a file, which is opened and then read.
+            - `source_path`: a path to a file, which is opened for reading.
             - `encoding`: the expected text encoding of the input file.
             - `error_handler`: the encoding error handler to use.
             - `autoclose`: close automatically after read (except when
@@ -419,7 +419,7 @@ class FileInput(Input):
 
     def read(self):
         """
-        Read and decode a single file and return the data (Unicode string).
+        Read and decode a single file, return as `str`.
         """
         if not self.encoding and hasattr(self.source, 'buffer'):
             # read as binary data
@@ -436,7 +436,7 @@ class FileInput(Input):
 
     def readlines(self):
         """
-        Return lines of a single file as list of Unicode strings.
+        Return lines of a single file as list of strings.
         """
         return self.read().splitlines(True)
 
