@@ -17,16 +17,18 @@
 Changes since 0.20.1
 ====================
 
+* Drop support for Python 3.7 and 3.8.
+
 * docutils/io.py
 
-* Simpler and more secure `input encoding`_ default behaviour:
+  - Simpler and more secure `input encoding`_ default behaviour:
 
-  Do not use the locale encoding as fallback if Python is started in
-  `UTF-8 mode`_. Stop using "latin1" as second fallback.
+    Do not use the locale encoding as fallback if Python is started in
+    `UTF-8 mode`_. Stop using "latin1" as second fallback.
 
-  Remove BOM (U+FEFF ZWNBSP at start of data) only if the `input_encoding`_
-  configuration setting is None, '', 'utf-8-sig', 'utf-16', or 'utf-32'.
-  Do not remove other ZWNBSPs.
+    Remove BOM (U+FEFF ZWNBSP at start of data) only if the `input_encoding`_
+    configuration setting is None, '', 'utf-8-sig', 'utf-16', or 'utf-32'.
+    Do not remove other ZWNBSPs.
 
   .. _input encoding: docs/api/publisher.html#encodings
 

@@ -74,8 +74,9 @@ Dependencies
 To run the code, Python_ must be installed.
 (Python is pre-installed with most Linux distributions.)
 
-* Since version 0.19, Docutils requires Python 3.7 or later.
-* Docutils 0.16 to 0.18 require Python 2.7 or 3.5+.
+* Since version 0.21, Docutils requires Python 3.9 or later.
+* Docutils versions 0.19 to 0.20.1 require Python 3.7 or later.
+* Docutils versions 0.16 to 0.18 require Python 2.7 or 3.5+.
 
 .. _Python: https://www.python.org/.
 

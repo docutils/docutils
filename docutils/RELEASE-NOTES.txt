@@ -20,8 +20,6 @@ For a more detailed list of changes, please see the Docutils `HISTORY`_.
 Future changes
 ==============
 
-Drop support for Python 3.7 and 3.8 in Docutils 0.21.
-
 Command line interface
 ----------------------
 
@@ -213,6 +211,8 @@ Misc
 
 Release 0.21b (unpublished)
 ===========================
+
+* Drop support for Python 3.7 and 3.8.
 
 * Simpler and more secure `input encoding`_ default behaviour:
 
