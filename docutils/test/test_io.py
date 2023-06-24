@@ -7,9 +7,11 @@
 """
 Test module for `docutils.io`.
 """
-import os.path
 
+import codecs
+import locale
 from io import StringIO, BytesIO
+import os.path
 from pathlib import Path
 import sys
 import unittest
@@ -23,6 +25,10 @@ from docutils import io as du_io
 
 # DATA_ROOT is ./test/data/ from the docutils root
 DATA_ROOT = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'data')
+
+# normalize the preferred encoding's name:
+preferredencoding = codecs.lookup(
+    locale.getpreferredencoding(do_setlocale=False)).name
 
 
 # Stub: Buffer with 'strict' auto-conversion of input to byte string:
@@ -129,34 +135,14 @@ print("hello world")
 """)
         self.assertNotEqual(input.successful_encoding, 'ascii')
 
-    def test_readlines(self):
-        input = du_io.FileInput(
-            source_path=os.path.join(DATA_ROOT, 'include.txt'))
-        data = input.readlines()
-        self.assertEqual(data, ['Some include text.\n'])
-
-    def test_heuristics_no_utf8(self):
-        # if no encoding is given and decoding with 'utf-8' fails,
-        # use either the locale encoding (if specified) or 'latin-1':
-        # Provisional: the second fallback 'latin-1' will be dropped
-        probed_encodings = (du_io._locale_encoding, 'latin-1')  # noqa
-        input = du_io.FileInput(
-            source_path=os.path.join(DATA_ROOT, 'latin1.txt'))
-        data = input.read()
-        if input.successful_encoding not in probed_encodings:
-            raise AssertionError(
-                "guessed encoding '%s' differs from probed encodings %r"
-                % (input.successful_encoding, probed_encodings))
-        if input.successful_encoding == 'latin-1':
-            self.assertEqual(data, 'Gr\xfc\xdfe\n')
-
     def test_decode_unicode(self):
         # With the special value "unicode" or "Unicode":
         uniinput = du_io.Input(encoding='unicode')
         # keep unicode instances as-is
         self.assertEqual(uniinput.decode('ja'), 'ja')
         # raise AssertionError if data is not a `str` instance
-        self.assertRaises(AssertionError, uniinput.decode, b'ja')
+        with self.assertRaises(AssertionError):
+            uniinput.decode(b'ja')
 
 
 class OutputTests(unittest.TestCase):
@@ -295,21 +281,26 @@ class FileInputTests(unittest.TestCase):
             source_path=os.path.join(DATA_ROOT, 'utf8.txt'))
         self.assertEqual(source.read(), 'Grüße\n')
 
-    @unittest.skipIf(du_io._locale_encoding in (None, 'utf-8', 'utf8'),
+    @unittest.skipIf(preferredencoding in (None, 'ascii', 'utf-8'),
                      'locale encoding not set or UTF-8')
     def test_fallback_no_utf8(self):
-        # if decoding with 'utf-8' fails, use the locale encoding
-        # (if not None) or 'latin-1'.
-        # provisional: behaviour details will change in future
-        # TODO: don't fall back to latin1
-        # TODO: use `locale.getpreferredlocale()` (honour UTF-8 mode)?
-        probed_encodings = (du_io._locale_encoding, 'latin-1')  # noqa
+        # If  no encoding is given and decoding with 'utf-8' fails,
+        # use the locale's preferred encoding (if not None).
+        # Provisional: the default will become 'utf-8'
+        # (without auto-detection and fallback) in Docutils 0.22.
         source = du_io.FileInput(
             source_path=os.path.join(DATA_ROOT, 'latin1.txt'))
         data = source.read()
-        self.assertTrue(source.successful_encoding in probed_encodings)
-        if source.successful_encoding in ('latin-1', 'iso8859-1'):
+        successful_encoding = codecs.lookup(source.successful_encoding).name
+        self.assertEqual(successful_encoding, preferredencoding)
+        if successful_encoding == 'iso8859-1':
             self.assertEqual(data, 'Grüße\n')
+
+    def test_readlines(self):
+        source = du_io.FileInput(
+            source_path=os.path.join(DATA_ROOT, 'include.txt'))
+        data = source.readlines()
+        self.assertEqual(data, ['Some include text.\n'])
 
 
 if __name__ == '__main__':

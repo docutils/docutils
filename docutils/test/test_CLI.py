@@ -57,7 +57,9 @@ class CliTests(unittest.TestCase):
         del os.environ['DOCUTILSCONFIG']
         sys.stdout = self.orig_stdout
         sys.argv = self.orig_argv
-        locale.setlocale(locale.LC_ALL, 'C')  # restore default (C) locale
+        # restore default locale settings:
+        locale.setlocale(locale.LC_MESSAGES, 'C')
+        locale.setlocale(locale.LC_TIME, 'C')
 
     def get_help_text(self, prog, entry_point):
         # call entry_point function and collect help text
