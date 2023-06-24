@@ -2035,6 +2035,8 @@ stylesheet
 ~~~~~~~~~~
 
 Specify a stylesheet URL, used verbatim.
+See section `Styles and Classes`_ in the `Odt Writer for Docutils`_
+document for details.
 
 Default: writers/odf_odt/styles.odt in the installation directory.
 
@@ -2046,7 +2048,8 @@ directory for additional ODF options. In particular, this file may
 contain a section named "Formats" that maps default style names to names
 to be used in the resulting output file allowing for adhering to external
 standards. For more info and the format of the configuration/mapping
-file, see the `Odt Writer for Docutils`_ document.
+file, see section `How to use custom style names`_ in the
+`Odt Writer for Docutils`_ document.
 
 cloak-email-addresses
 ~~~~~~~~~~~~~~~~~~~~~
@@ -2127,7 +2130,7 @@ custom-odt-header
 
 Specify the contents of a custom header line.  For details about
 custom headers and about special field character sequences, see
-section "Custom header/footers: inserting page numbers, date,
+section "`Custom header/footers`_: inserting page numbers, date,
 time, etc" in the `Odt Writer for Docutils`_ document for
 details.
 
@@ -2136,9 +2139,16 @@ custom-odt-footer
 
 Specify the contents of a custom footer line.  For details about
 custom footers and about special field character sequences, see
-section "Custom header/footers: inserting page numbers, date,
+section "`Custom header/footers`_: inserting page numbers, date,
 time, etc" in the `Odt Writer for Docutils`_ document for
 details.
+
+.. _custom header/footers:
+    odt.html#custom-header-footers-inserting-page-numbers-date-time-etc
+.. _how to use custom style names:
+    odt.html#how-to-use-custom-style-names    
+.. _styles and classes:
+    odt.html#styles-and-classes    
 
 
 [pseudoxml writer]
