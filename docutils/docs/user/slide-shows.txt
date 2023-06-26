@@ -18,8 +18,8 @@
    of the s5_html.py writer and the ``rst2s5`` front end.
 
    To view this document as a slide show see
-   https://docutils.sourceforge.io/docs/user/slide-shows.s5.html (or `your
-   local copy <slide-shows.s5.html>`__).
+   https://docutils.sourceforge.io/docs/user/slide-shows.s5.html or `your
+   local copy <slide-shows.s5.html>`__.
 
 .. contents::
    :class: handout
@@ -69,7 +69,7 @@ Introduction
 
 .. class:: handout
 
-   ``rst2s5`` is a Docutils_ front end that outputs HTML for use
+   rst2s5_ is a Docutils_ front end that outputs HTML for use
    with S5_, a "Simple Standards-based Slide Show System" by Eric
    Meyer.
 
@@ -115,11 +115,13 @@ Introduction
 
   A variety of themes are available.  See `Example Themes`_, below.
 
-* ``rst2s5``
+* rst2s5_
 
   .. class:: handout
 
   The console script to generate S5 slide shows.
+  
+  .. _rst2s5: tools.html#rst2s5
 
 .. topic:: Keyboard Controls
    :class: handout
@@ -361,15 +363,20 @@ Generating a Slide Show (1)
 
 2. Run the command::
 
-       rst2s5 slides.txt slides.html
+       rst2s5 slides.txt --output=slides.html
 
-3. Specify an S5 theme with the ``--theme`` option.
+3. Optionally, specify an S5 theme with the ``--theme`` option.
 
    .. class:: handout
 
    Docutils will copy the S5 theme files into a ``ui/<theme>`` folder
-   beside the output HTML file.  A slide show can also link to an
-   existing theme using the ``--theme-url`` option.
+   beside the output HTML file. [#copy-theme]_ A slide show can also link
+   to an existing theme using the ``--theme-url`` option.
+
+   .. [#copy-theme] Theme files can only be copied by Docutils, if the
+      output_ destination path is specified.
+   
+   .. _output: config.html#output
 
 
 Generating a Slide Show (2)

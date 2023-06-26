@@ -234,7 +234,7 @@ are available; see Themes_ below.
 For example, to process a reStructuredText file "``slides.txt``" into
 S5/HTML::
 
-    rst2s5 slides.txt > slides.html
+    rst2s5 slides.txt --output=slides.html
 
 Now open the "``slides.html``" file in your favorite browser, switch
 to full-screen mode, and enjoy the results.
@@ -247,14 +247,15 @@ Themes
 
 Each S5 theme consists of a directory containing several files:
 stylesheets, JavaScript, and graphics.  These are copied into a
-``ui/<theme>`` directory beside the generated HTML.  A theme is chosen
+``ui/<theme>`` directory beside the generated HTML. [#copy-theme]_
+A theme is chosen
 using the "``--theme``" option (for themes that come with Docutils) or
 the "``--theme-url``" option (for themes anywhere).  For example, the
 "medium-black" theme can be specified as follows::
 
-    rst2s5 --theme medium-black slides.txt > slides.html
+    rst2s5 --theme medium-black slides.txt --output=slides.html
 
-The theme will be copied to the ``ui/medium-black`` directory.
+The theme will be copied [#copy-theme]_ to the ``ui/medium-black`` directory.
 
 Several themes are included with Docutils:
 
@@ -324,6 +325,10 @@ is the implicit base of all themes).
 For details, please see `Easy Slide Shows With reStructuredText & S5
 <slide-shows.html>`_.
 
+.. [#copy-theme] Theme files can only be copied by Docutils, if the
+   output_ destination path is specified.
+   
+.. _output: config.html#output
 
 buildhtml.py
 ------------
