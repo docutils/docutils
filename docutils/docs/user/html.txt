@@ -9,7 +9,7 @@ Docutils HTML writers
 html
 ----
 
-:front-end: rst2html.py_
+:front-end: rst2html_
 
 `html` is an alias for the default Docutils HTML writer.
 
@@ -18,7 +18,7 @@ and the web.
 Currently, `html` is mapped to html4css1_, it will become an alias for
 html5_ in Docutils 2.0.
 
-* Use ``get_writer_by_name('html')`` or the rst2html.py_ front end, if you
+* Use ``get_writer_by_name('html')`` or the rst2html_ front end, if you
   want the output to be up-to-date automatically.
 
 * Use a specific writer name or front end, if you depend on stability of the
@@ -30,7 +30,7 @@ html4css1
 ---------
 
 :aliases:    html4, html_
-:front-ends: rst2html4.py, rst2html.py_
+:front-ends: rst2html4_, rst2html_
 :config:     `[html4css1 writer]`_
 
 The HTML Writer module, ``docutils/writers/html4css1.py``, was the first
@@ -53,22 +53,22 @@ formatting hints and are tagged as "text/html" (instead of
 .. [#IE] Conformance to `CSS 2.1`_ has been added in IE 8 (2009), support
    for XHTML in IE 9 (2011).
 
-.. _rst2html.py: tools.html#rst2html-py
+.. _rst2html: tools.html#rst2html
+.. _rst2html4: tools.html#rst2html4
 .. _[html4css1 writer]: config.html#html4css1-writer
 .. _html4css1.css: ../../docutils/writers/html4css1/html4css1.css
 
 pep_html
 ~~~~~~~~
 
-:front-end: rstpep2html.py_
+:front-end: ``docutils  --reader=pep --writer=pep_html``
 :config:    `[pep_html writer]`_
 
 This is a special writer for the generation of `Python Enhancement
 Proposals`_ (PEPs). It inherits from html4css1_ and adds some `PEP-specific
-options`_, a style sheet and template. The front-end uses also a specialised
-reader.
+options`_, a style sheet and template. It works best in combination with
+the specialised "pep_html" reader.
 
-.. _rstpep2html.py: tools.html#rstpep2html-py
 .. _PEP-specific options:
 .. _[pep_html writer]: config.html#pep-html-writer
 .. _Python Enhancement Proposals: https://peps.python.org/
@@ -77,14 +77,14 @@ s5_html
 ~~~~~~~
 
 :alias:     s5
-:front-end: rst2s5.py_
+:front-end: rst2s5_
 :config:    `[s5_html writer]`_
 
 The `s5` writer inherits from html4css1_. It produces XHTML for use with
 S5_, the “Simple Standards-based Slide Show System” by Eric Meyer.  See
 `Easy Slide Shows With reST & S5`_ for details.
 
-.. _rst2s5.py: tools.html#rst2s5-py
+.. _rst2s5: tools.html#rst2s5
 .. _[s5_html writer]: config.html#s5-html-writer
 .. _Easy Slide Shows With reST & S5: slide-shows.html
 .. _S5: http://meyerweb.com/eric/tools/s5/
@@ -95,7 +95,7 @@ html5
 -----
 
 :aliases: _`html5_polyglot`
-:front-end: rst2html5.py_
+:front-end: rst2html5_
 :config: `[html5 writer]`_
 
 The ``html5_polyglot`` writer generates `polyglot HTML`_ [#]_ output, valid
@@ -123,7 +123,7 @@ New in Docutils 0.13
     input/data/html5-features.txt
 .. _html5-text-level-tags.txt: https://docutils.sourceforge.io/test/functional/
     input/data/html5-text-level-tags.txt
-.. _rst2html5.py: tools.html#rst2html5-py
+.. _rst2html5: tools.html#rst2html5
 .. _[html5 writer]: config.html#html5-writer
 .. _minimal.css: ../../docutils/writers/html5_polyglot/minimal.css
 .. _plain.css: ../../docutils/writers/html5_polyglot/plain.css
@@ -139,16 +139,16 @@ Overview
 ================ =========== ============== ================= ===========
 name             aliases     `front-end`_   HTML version      CSS version
 ================ =========== ============== ================= ===========
-html4css1_       html4,      rst2html4.py,  `XHTML 1          `CSS 1`_
-                 html_       rst2html.py    Transitional`_
+html4css1_       html4,      rst2html4,     `XHTML 1          `CSS 1`_
+                 html_       rst2html       Transitional`_
 
-pep_html_        ..          rstpep2html.py `XHTML 1          `CSS 1`_
+pep_html_        ..          rstpep2html    `XHTML 1          `CSS 1`_
                                             Transitional`_
 
-s5_html_         s5          rst2s5.py      `XHTML 1          `CSS 1`_
+s5_html_         s5          rst2s5         `XHTML 1          `CSS 1`_
                                             Transitional`_
 
-html5_polyglot_  html5       rst2html5.py   `HTML5`_          `CSS 3`_
+html5_polyglot_  html5       rst2html5      `HTML5`_          `CSS 3`_
 
 ================ =========== ============== ================= ===========
 

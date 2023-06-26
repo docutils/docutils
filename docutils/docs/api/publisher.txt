@@ -41,19 +41,16 @@ a description of the function arguments.
 publish_cmdline()
 -----------------
 
-Function for command-line front-end tools, like ``rst2html.py`` or
-`"console_scripts" entry points`_ like `core.rst2html()` with file I/O.
+Function for custom `command-line front-end tools`_ 
+(like ``tools/rst2html.py``) or "console_scripts" `entry points`_ 
+(like `core.rst2html()`) with file I/O.
 In addition to writing the output document to a file-like object, also
 returns it as `str` instance (rsp. `bytes` for binary output document
 formats).
 
-There are several examples in the ``tools/`` directory of the Docutils
-repository. A detailed analysis of one such tool is `Inside A Docutils
-Command-Line Front-End Tool`_.
-
-.. _"console_scripts" entry points:
+.. _command-line front-end tools: ../howto/cmdline-tool.html
+.. _entry points:
     https://packaging.python.org/en/latest/specifications/entry-points/
-.. _Inside A Docutils Command-Line Front-End Tool: ../howto/cmdline-tool.html
 
 
 publish_file()
@@ -457,7 +454,7 @@ The default behaviour differs from Python's `open()`:
   the `preferred encoding`_.
 - An optional BOM_ is removed from sources.
 
-The default will change to "utf-8" in Docutils 0.22, 
+The default will change to "utf-8" in Docutils 0.22,
 the input encoding detection will be removed in Docutils 1.0.
 
 

@@ -589,7 +589,7 @@ Other commands are available for other formats:
 
   When crafting documents, it is often convenient to view which data
   structures docutils will parse them into. You can use to run the
-  active region through ``rst2pseudoxml.py`` and have the output
+  active region through ``rst2pseudoxml`` and have the output
   automatically be displayed in a new buffer.
 
 * ``rst-compile-pdf-preview`` (``C-c C-c C-p``)

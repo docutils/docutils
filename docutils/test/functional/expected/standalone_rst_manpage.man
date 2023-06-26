@@ -35,7 +35,7 @@ rst2man \- generate unix manpages from reStructured text
 .SH SYNOPSIS
 .INDENT 0.0
 .INDENT 3.5
-rst2man.py inputfile outputfile
+rst2man inputfile outputfile
 .UNINDENT
 .UNINDENT
 .SH DESCRIPTION

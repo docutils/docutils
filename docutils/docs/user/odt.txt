@@ -21,7 +21,7 @@ ODT Writer for Docutils
 Introduction
 ============
 
-The Docutils front end rst2odt.py_ translates reStructuredText_ into an
+The Docutils front end rst2odt_ translates reStructuredText_ into an
 `OpenDocument Text`_ (.odt) file.
 OpenDocument files `can be opened by most modern office software`__.
 It is the native file format for LibreOffice_ Writer.
@@ -50,18 +50,18 @@ How to Use It
 
 Run it from the command line as follows::
 
-    $ rst2odt.py myinput.txt > myoutput.odt
+    $ rst2odt myinput.txt > myoutput.odt
 
 To see usage information and to learn about command line options
 that you can use, run the following::
 
-    $ rst2odt.py --help
+    $ rst2odt --help
 
 Examples::
 
-    $ rst2odt.py -s -g python_comments.txt > python_comments.odt
+    $ rst2odt -s -g python_comments.txt > python_comments.odt
 
-    $ rst2odt.py --source-url=odtwriter.txt --generator \
+    $ rst2odt --source-url=odtwriter.txt --generator \
         --stylesheet=/myconfigs/styles.odt odtwriter.txt > odtwriter.odt
 
 
@@ -223,7 +223,7 @@ Notice that you can make a copy of file ``styles.odt``, modify it
 using ``oowriter``, and then use your copy with the
 ``--stylesheet=<file>`` command line option.  Example::
 
-    $ rst2odt.py --stylesheet=mystyles.odt test2.txt test2.odt
+    $ rst2odt --stylesheet=mystyles.odt test2.txt > test2.odt
 
 
 Paragraph styles
@@ -647,8 +647,8 @@ You can create your own custom stylesheet.  Here is how:
 2. Open your copy of ``styles.odt`` in ``oowriter``.  Modify styles
    in that document.  Then, save it.
 
-3. When you run ``rst2odt.py``, use the ``--stylesheet`` command
-   line option to use your custom stylesheet.  Run ``rst2odt.py
+3. When you run ``rst2odt``, use the ``--stylesheet`` command
+   line option to use your custom stylesheet.  Run ``rst2odt
    --help`` to learn more about these options.
 
 
@@ -742,7 +742,7 @@ contain them, do the following:
    using the ``--stylesheet`` option in order to include your
    custom style definitions.  For example::
 
-       rst2odt.py --odf-config-file=mymappingfile.ini \
+       rst2odt --odf-config-file=mymappingfile.ini \
          --stylesheet=mystyles.odt mydoc.txt mydoc.odt
 
 
@@ -840,7 +840,7 @@ blocks.  In order to activate this, do all of the following:
 2. Use the command line option ``--add-syntax-highlighting``.
    Example::
 
-       $ rst2odt.py --add-syntax-highlight test.txt test.odt
+       $ rst2odt --add-syntax-highlight test.txt > test.odt
 
 The following styles are defined in styles.odt and are used for
 literal code blocks and syntax highlighting:
@@ -1078,13 +1078,13 @@ the following conditions must be met:
 
 2. The page height and width settings must be absent from the stylesheet
    used to generate the document.
-   
+
    You can use the Python script ``prepstyles.py`` distributed with
    Docutils to remove the page height and width settings from a
    stylesheet file ``STYLES.odt`` with ::
 
        $ python3 -m docutils.writers.odf_odt.prepstyles STYLES.odt
-   
+
    (the command changed in Docutils 0.20.1).
 
 .. warning:: If you edit your stylesheet in ``oowriter`` and then
@@ -1110,7 +1110,7 @@ or "--custom-odt-footer" command line options.  For example, the
 following inserts a footer containing the page number and page
 count::
 
-    $ rst2odt.py --custom-odt-footer="Page %p% of %P%" f1.txt f1.odt
+    $ rst2odt --custom-odt-footer="Page %p% of %P%" f1.txt > f1.odt
 
 
 Field specifiers
@@ -1184,8 +1184,8 @@ pick up the default paper size on platforms where the program
 
 
 
-.. _rst2odt.py:
-    tools.html#rst2odt-py
+.. _rst2odt:
+    tools.html#rst2odt
 .. _reStructuredText:
     ../ref/rst/restructuredtext.html
 .. _`OpenDocument Text`:

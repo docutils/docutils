@@ -65,7 +65,7 @@ Introduction
 
   A variety of themes are available.
 
-* ``rst2s5.py``
+* ``rst2s5``
 
   .. class:: handout
 

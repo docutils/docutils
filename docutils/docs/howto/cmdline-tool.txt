@@ -10,6 +10,12 @@
 :Revision: $Revision$
 :Copyright: This document has been placed in the public domain.
 
+.. note:: This document describes the traditional approach with
+          hand-crafted front-end scripts.
+          Since version 0.21, the package installer installs
+          front-end scripts generated from "console_scripts"
+          `entry point`_ definitions.
+
 `The Docutils Publisher`_ class was set up to make building
 command-line tools easy.  All that's required is to choose components
 and supply settings for variations.  Let's take a look at a typical
@@ -65,4 +71,7 @@ and a description for command-line help is passed in::
 
 That's it!  `The Docutils Publisher`_ takes care of the rest.
 
+
+.. _entry point:
+    https://packaging.python.org/en/latest/specifications/entry-points/
 .. _The Docutils Publisher: ./publisher.html

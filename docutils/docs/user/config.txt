@@ -485,7 +485,7 @@ This option is particularly useful in conjunction with programs like
 ``make`` using ``Makefile`` rules like::
 
   ham.html: ham.txt $(shell cat hamdeps.txt)
-    rst2html.py --record-dependencies=hamdeps.txt ham.txt ham.html
+    rst2html --record-dependencies=hamdeps.txt ham.txt ham.html
 
 If the filesystem encoding differs from UTF-8, replace the ``cat``
 command with a call to a converter, e.g.::

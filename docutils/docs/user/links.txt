@@ -264,7 +264,7 @@ Convert other formats to reStructuredText:
   .. _sxw2rest: https://twb.ath.cx/~twb/darcs/sxw2rest/
 
 * xml2rst_, an XSLT stylesheet written by Stefan Merten, converts XML
-  dumps of the document tree (e.g. created with rst2xml.py) back to
+  dumps of the document tree (e.g. created with ``rst2xml``) back to
   reStructuredText.
 
   .. _xml2rst: http://www.merten-home.de/FreeSoftware/xml2rst/index.html

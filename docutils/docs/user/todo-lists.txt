@@ -95,7 +95,7 @@ Field Lists
 
 .. class:: todo
 
-:|x|: Compile this example with ``rst2html5.py``,
+:|x|: Compile this example with ``rst2html5``,
 :|y|: compare markup variants,
 :|-|: select the best.
 
