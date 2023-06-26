@@ -9,4 +9,5 @@ settings_overrides = {
     # local copy of default stylesheet:
     'stylesheet_path': 'functional/input/data/html4css1.css',
     'current_slide': 1,
+    'report_level': 3,  # suppress "can't copy themes" warning
     }
