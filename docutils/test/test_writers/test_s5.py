@@ -31,6 +31,7 @@ class WriterPublishTestCase(unittest.TestCase):
             'strict_visitor': True,
             'stylesheet_path': '/test.css',
             'embed_stylesheet': False,
+            'report_level': 3,  # suppress "can't copy themes" warning
         }
         for name, cases in totest_1.items():
             for casenum, (case_input, case_expected) in enumerate(cases):
