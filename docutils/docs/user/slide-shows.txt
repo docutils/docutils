@@ -15,7 +15,7 @@
    Docutils_/reStructuredText_ and S5_.
 
    This document serves both as a user manual and as a usage example
-   of the s5_html.py writer and the rst2s5.py front end.
+   of the s5_html.py writer and the ``rst2s5`` front end.
 
    To view this document as a slide show see
    https://docutils.sourceforge.io/docs/user/slide-shows.s5.html (or `your
@@ -69,7 +69,7 @@ Introduction
 
 .. class:: handout
 
-   ``rst2s5.py`` is a Docutils_ front end that outputs HTML for use
+   ``rst2s5`` is a Docutils_ front end that outputs HTML for use
    with S5_, a "Simple Standards-based Slide Show System" by Eric
    Meyer.
 
@@ -115,11 +115,11 @@ Introduction
 
   A variety of themes are available.  See `Example Themes`_, below.
 
-* ``rst2s5.py``
+* ``rst2s5``
 
   .. class:: handout
 
-  The front-end tool to generate S5 slide shows.
+  The console script to generate S5 slide shows.
 
 .. topic:: Keyboard Controls
    :class: handout
@@ -361,7 +361,7 @@ Generating a Slide Show (1)
 
 2. Run the command::
 
-       rst2s5.py slides.txt slides.html
+       rst2s5 slides.txt slides.html
 
 3. Specify an S5 theme with the ``--theme`` option.
 
@@ -646,7 +646,7 @@ Making a Custom Theme
 
 .. class:: incremental
 
-1. Run "``rst2s5.py --theme <base-theme> <doc>.txt <doc>.html``".
+1. Run "``rst2s5 --theme <base-theme> <doc>.txt <doc>.html``".
 
    .. class:: handout
 
@@ -661,7 +661,7 @@ Making a Custom Theme
    Start with ``pretty.css``; edit ``framing.css`` if you need to make
    layout changes.
 
-4. Run "``rst2s5.py --theme-url ui/<new-theme> <doc>.txt <doc>.html``".
+4. Run "``rst2s5 --theme-url ui/<new-theme> <doc>.txt <doc>.html``".
 
    .. class:: handout
 

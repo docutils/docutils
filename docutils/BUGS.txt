@@ -136,7 +136,7 @@ Also see the `SourceForge Bug Tracker`_.
 
 * .. _error reporting:
 
-  Calling rst2s5.py with a non-existent theme (``--theme
+  Calling rst2s5 with a non-existent theme (``--theme
   does_not_exist``)
   causes exceptions.  Such errors should be handled more gracefully.
 
@@ -210,7 +210,7 @@ Also see the `SourceForge Bug Tracker`_.
   over implicit targets.  But if an explicit target comes after an
   implicit target with the same name, the ID of the first (implicit)
   target remains based on the implicit name.  Since HTML fragment
-  identifiers are based on the IDs, the first target keeps the name. 
+  identifiers are based on the IDs, the first target keeps the name.
   For example::
 
       .. contents::
@@ -267,7 +267,7 @@ Also see the `SourceForge Bug Tracker`_.
 * _`Footnote references with hyperlink targets` cause a possibly
   invalid node tree and make the HTML writer crash::
 
-      $ rst2pseudoxml.py
+      $ rst2pseudoxml
       [1]_
 
       .. _1: URI
@@ -283,7 +283,7 @@ Also see the `SourceForge Bug Tracker`_.
 * <reference> elements have a "name" attribute, not "names".  The
   attribute should be "names"; this is an inconsistency.
 
-
+
 ..
    Local Variables:
    mode: indented-text

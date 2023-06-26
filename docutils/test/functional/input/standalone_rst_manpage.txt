@@ -18,7 +18,7 @@ generate unix manpages from reStructured text
 SYNOPSIS
 ========
 
-  rst2man.py inputfile outputfile
+  rst2man inputfile outputfile
 
 DESCRIPTION
 ===========

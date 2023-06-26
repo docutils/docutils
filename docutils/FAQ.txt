@@ -47,7 +47,7 @@ The Docutils distribution consists of:
 
 * a library (the "docutils" package), which `can be used by client
   code`_;
-* several `front-end tools`_ (such as ``rst2html.py``, which converts
+* several `front-end tools`_ (such as ``rst2html``, which converts
   reStructuredText input into HTML output);
 * a `test suite`_; and
 * documentation_.
@@ -781,7 +781,7 @@ transparent implicit solution for HTML:
   http://cben-hacks.sourceforge.net/bidi/rst2html_hibidi.py.
   Put them both in the same directory and make them executable.
 
-* Use ``rst2html_hibidi.py`` instead of ``rst2html.py``.
+* Use ``rst2html_hibidi.py`` instead of ``rst2html``.
 
 * It infers dir attributes in the HTML from the text.  It does it
   hierachically, giving much better results than usual.  You can still
@@ -885,23 +885,23 @@ a borderless `list table`_ can be used. For example::
 
     .. list-table::
        :class: borderless
-     
+
        * - .. image:: rst/images/title-scaling.svg
          - .. image:: rst/images/biohazard.svg
        * - .. image:: rst/images/biohazard.svg
          - .. image:: rst/images/biohazard.svg
-    
+
 Use figures, if you want also captions::
-    
-    .. list-table:: 
+
+    .. list-table::
       :class: borderless
-    
+
       * - .. figure:: rst/images/title-scaling.svg
-    
+
             Figure 1/1
-    
+
         - .. figure:: rst/images/biohazard.svg
-    
+
             Figure 1/2
 
 .. _list table: docs/ref/rst/directives.html#list-table
@@ -938,7 +938,7 @@ are known to give good results.  Reports of experiences with other
 browsers are welcome.
 
 
-Unexpected results from tools/rst2html.py: H1, H1 instead of H1, H2.  Why?
+Unexpected results from ``rst2html``: H1, H1 instead of H1, H2.  Why?
 --------------------------------------------------------------------------
 
 This only regards output from the `html4css1`_ writer.
@@ -967,7 +967,7 @@ details
 
             Yeah, imagine me, I'm stuck at H3!  No?!?
 
-        When I run it through tools/rst2html.py, I get unexpected results
+        When I run it through ``rst2html4``, I get unexpected results
         (below).  I was expecting H1, H2, then H3; instead, I get H1, H1,
         H2::
 
@@ -1051,7 +1051,6 @@ details
           I.e., a top-level <section> is a subsection of <body>.
 
        __ https://www.w3.org/TR/html53/sections.html#headings-and-sections
-
 
 
 How are lists formatted in HTML?
@@ -1309,7 +1308,7 @@ addition fits better in the `extensions and related projects`_.
 .. _bug tracker: https://sourceforge.net/p/docutils/bugs/
 
 
-
+
 ..
    Local Variables:
    mode: indented-text

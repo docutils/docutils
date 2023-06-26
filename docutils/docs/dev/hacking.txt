@@ -36,7 +36,7 @@ Consider the following reStructuredText file::
 
     .. _Python: https://www.python.org/
 
-Using the ``rst2html.py`` front-end tool, you would get an HTML output
+Using the ``rst2html`` front-end tool, you would get an HTML output
 which looks like this::
 
     [uninteresting HTML code removed]
@@ -134,7 +134,7 @@ The Transforms are applied after parsing.  To see how the node tree
 has changed after applying the Transforms, we use the
 rst2pseudoxml_ tool [#]_::
 
-    $ rst2pseudoxml.py test.txt
+    $ rst2pseudoxml test.txt
     <document source="test.txt">
         <paragraph>
             My
@@ -172,9 +172,9 @@ To get an HTML document out of the node tree, we use a **Writer**, the
 HTML writer in this case (``docutils/writers/html4css1.py``).
 
 The writer receives the node tree and returns the output document.
-For HTML output, we can test this using the ``rst2html.py`` tool::
+For HTML output, we can test this using the ``rst2html`` tool::
 
-    $ rst2html.py --link-stylesheet test.txt
+    $ rst2html --link-stylesheet test.txt
     <?xml version="1.0" encoding="utf-8" ?>
     <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
     <html xmlns="https://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
