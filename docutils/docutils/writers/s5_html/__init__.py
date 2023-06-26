@@ -44,8 +44,9 @@ class Writer(html4css1.Writer):
           'destination file (output HTML).  Note that existing theme files '
           'will not be overwritten (unless --overwrite-theme-files is used).',
           ['--theme'],
-          {'default': 'default', 'metavar': '<name>',
-           'overrides': 'theme_url'}),
+          {'metavar': '<name>', 'overrides': 'theme_url'
+           # default is set later as it would override theme-url
+           }),
          ('Specify an S5 theme URL.  The destination file (output HTML) will '
           'link to this theme; nothing will be copied.  Overrides --theme.',
           ['--theme-url'],
@@ -173,13 +174,10 @@ class S5HTMLTranslator(html4css1.HTMLTranslator):
         self.theme_files_copied = None
 
     def setup_theme(self):
-        if self.document.settings.theme:
-            self.copy_theme()
-        elif self.document.settings.theme_url:
+        if self.document.settings.theme_url:
             self.theme_file_path = self.document.settings.theme_url
         else:
-            raise docutils.ApplicationError(
-                'No theme specified for S5/HTML writer.')
+            self.copy_theme()
 
     def copy_theme(self):
         """
@@ -190,6 +188,9 @@ class S5HTMLTranslator(html4css1.HTMLTranslator):
         from the specified theme, any base themes, and 'default'.
         """
         settings = self.document.settings
+        if not settings.theme:
+            # set default here to avoid overriding theme-url.
+            settings.theme = self.default_theme
         path = find_theme(settings.theme)
         theme_paths = [path]
         self.theme_files_copied = {}
