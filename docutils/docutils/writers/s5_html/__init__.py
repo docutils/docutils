@@ -9,7 +9,6 @@ S5/HTML Slideshow Writer.
 
 __docformat__ = 'reStructuredText'
 
-
 import sys
 import os
 import re
@@ -154,7 +153,10 @@ class S5HTMLTranslator(html4css1.HTMLTranslator):
         html4css1.HTMLTranslator.__init__(self, *args)
         # insert S5-specific stylesheet and script stuff:
         self.theme_file_path = None
-        self.setup_theme()
+        try:
+            self.setup_theme()
+        except docutils.ApplicationError as e:
+            self.document.reporter.warning(e)
         view_mode = self.document.settings.view_mode
         control_visibility = ('visible', 'hidden')[self.document.settings
                                                    .hidden_controls]
@@ -193,15 +195,15 @@ class S5HTMLTranslator(html4css1.HTMLTranslator):
         self.theme_files_copied = {}
         required_files_copied = {}
         # This is a link (URL) in HTML, so we use "/", not os.sep:
-        self.theme_file_path = '%s/%s' % ('ui', settings.theme)
-        if settings._destination:
-            dest = os.path.join(
-                os.path.dirname(settings._destination), 'ui', settings.theme)
-            if not os.path.isdir(dest):
-                os.makedirs(dest)
-        else:
-            # no destination, so we can't copy the theme
-            return
+        self.theme_file_path = 'ui/%s' % settings.theme
+        if not settings.output:
+            raise docutils.ApplicationError(
+                'Output path not specified, you may need to copy'
+                ' the S5 theme files "by hand" or set the "--output" option.')
+        dest = os.path.join(
+            os.path.dirname(settings.output), 'ui', settings.theme)
+        if not os.path.isdir(dest):
+            os.makedirs(dest)
         default = False
         while path:
             for f in os.listdir(path):  # copy all files from each theme
@@ -209,7 +211,7 @@ class S5HTMLTranslator(html4css1.HTMLTranslator):
                     continue            # ... except the "__base__" file
                 if (self.copy_file(f, path, dest)
                     and f in self.required_theme_files):
-                    required_files_copied[f] = 1
+                    required_files_copied[f] = True
             if default:
                 break                   # "default" theme has no base theme
             # Find the "__base__" file in theme directory:
@@ -249,14 +251,14 @@ class S5HTMLTranslator(html4css1.HTMLTranslator):
     def copy_file(self, name, source_dir, dest_dir):
         """
         Copy file `name` from `source_dir` to `dest_dir`.
-        Return 1 if the file exists in either `source_dir` or `dest_dir`.
+        Return True if the file exists in either `source_dir` or `dest_dir`.
         """
         source = os.path.join(source_dir, name)
         dest = os.path.join(dest_dir, name)
         if dest in self.theme_files_copied:
-            return 1
+            return True
         else:
-            self.theme_files_copied[dest] = 1
+            self.theme_files_copied[dest] = True
         if os.path.isfile(source):
             if self.files_to_skip_pattern.search(source):
                 return None
@@ -273,9 +275,9 @@ class S5HTMLTranslator(html4css1.HTMLTranslator):
                         dest_dir[dest_dir.rfind('ui/'):].encode(
                             sys.getfilesystemencoding())))
                 settings.record_dependencies.add(source)
-            return 1
+            return True
         if os.path.isfile(dest):
-            return 1
+            return True
 
     def depart_document(self, node):
         self.head_prefix.extend([self.doctype,

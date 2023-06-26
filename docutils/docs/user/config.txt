@@ -424,7 +424,7 @@ Default: English ("en").  Options: ``--language, -l``.
 output
 ------
 
-The name of the output destination. Use ``-`` for stdout.
+The path of the output destination. Use ``-`` for stdout.
 
 Obsoletes the ``<destination>`` positional argument
 (cf. `Future changes`_ in the RELEASE-NOTES).
