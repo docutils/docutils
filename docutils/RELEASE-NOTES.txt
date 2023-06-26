@@ -23,34 +23,6 @@ Future changes
 Command line interface
 ----------------------
 
-* Docutils 0.21 will provide ``rst2*`` "console_scripts" `entry points`_
-  (without the ``.py`` extension) instead of installing the
-  ``rst2*.py`` `front end tools`_ in the binary PATH. [#]_
-
-  You may use the ``docutils`` `generic command line front end tool`_
-  as a future-proof command, for example:
-
-  .. code:: diff
-
-     - rst2latex.py --use-latex-abstract FAQ.txt > FAQ.tex
-     + docutils --writer=latex --use-latex-abstract FAQ.txt > FAQ.tex
-
-  Exceptions:
-    The ``rstpep2html.py`` and ``rst2odt_prepstyles.py`` scripts
-    will be retired.
-
-    Use ``docutils --reader=pep --writer=pep_html`` for a PEP preview. [#]_
-
-    Use ``python -m docutils.writers.odf_odt.prepstyles``
-    to `strip the page size`__ from an ODT writer stylesheet.
-
-    __ docs/user/odt.html#page-size
-
-  .. [#] Some Linux distributions already use the short names.
-  .. [#] The final rendering is done by a Sphinx-based build system
-         (cf. :PEP:`676`).
-
-
 * The _`command-line usage pattern` will change:
 
   .. code:: diff
@@ -209,10 +181,26 @@ Misc
 .. _csv-table: docs/ref/rst/directives.html#csv-table
 
 
-Release 0.21b (unpublished)
-===========================
+Release 0.21 (unpublished)
+==========================
 
 * Drop support for Python 3.7 and 3.8.
+
+* Provide ``rst2*`` "console_scripts" `entry points`_
+  (without the ``.py`` extension) instead of installing the
+  ``rst2*.py`` `front end tools`_ in the binary PATH. [#]_
+
+  Exceptions: ``rstpep2html.py`` and ``rst2odt_prepstyles.py``:
+
+  - Use ``docutils --reader=pep --writer=pep_html`` for a PEP preview. [#]_
+  - Use ``python -m docutils.writers.odf_odt.prepstyles``
+    to `strip the page size`__ from an ODT writer stylesheet.
+
+    __ docs/user/odt.html#page-size
+
+  .. [#] Some Linux distributions already use the short names.
+  .. [#] The final rendering is done by a Sphinx-based build system
+         (cf. :PEP:`676`).
 
 * Simpler and more secure `input encoding`_ default behaviour:
 
@@ -1082,7 +1070,7 @@ Components:
   multi-platform, multi-browser HTML slide shows.
 
   __ docs/user/slide-shows.html
-  __ docs/user/tools.html#rst2s5-py
+  __ docs/user/tools.html#rst2s5
 
 * The newlatex2e writer is nearing completion.
 

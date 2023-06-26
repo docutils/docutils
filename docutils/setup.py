@@ -71,22 +71,20 @@ what-you-see-is-what-you-get plaintext markup syntax.""",  # wrap at col 60
         'docutils.writers.odf_odt',
     ],
     'entry_points': {
-        'console_scripts': ['docutils=docutils.__main__:main']
+        'console_scripts': [
+            'docutils = docutils.__main__:main',
+            'rst2html = docutils.core:rst2html',
+            'rst2html4 = docutils.core:rst2html4',
+            'rst2html5 = docutils.core:rst2html5',
+            'rst2latex = docutils.core:rst2latex',
+            'rst2man = docutils.core:rst2man',
+            'rst2odt = docutils.core:rst2odt',
+            'rst2pseudoxml = docutils.core:rst2pseudoxml',
+            'rst2s5 = docutils.core:rst2s5',
+            'rst2xetex = docutils.core:rst2xetex',
+            'rst2xml = docutils.core:rst2xml',
+        ]
     },
-    'scripts': [
-        'tools/rst2html.py',
-        'tools/rst2html4.py',
-        'tools/rst2html5.py',
-        'tools/rst2s5.py',
-        'tools/rst2latex.py',
-        'tools/rst2xetex.py',
-        'tools/rst2man.py',
-        'tools/rst2xml.py',
-        'tools/rst2pseudoxml.py',
-        'tools/rstpep2html.py',
-        'tools/rst2odt.py',
-        'tools/rst2odt_prepstyles.py',
-    ],
     'classifiers': [
         'Development Status :: 4 - Beta',
         'Environment :: Console',
