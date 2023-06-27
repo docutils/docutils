@@ -27,7 +27,7 @@ directives = {
       'huomautus': 'note',
       'neuvo': 'tip',
       'varoitus': 'warning',
-      'kehotus': 'admonition',
+      'kehotus': 'admonition',  # sic! advice/advisory/remark, not reprimand
       'sivupalkki': 'sidebar',
       'aihe': 'topic',
       'rivi': 'line-block',

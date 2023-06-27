@@ -27,7 +27,8 @@ directives = {
       'opmerking': 'note',
       'tip': 'tip',
       'waarschuwing': 'warning',
-      'aanmaning': 'admonition',  # sic! Not used in this sense in rST.
+      'advies': 'admonition',
+      'aanmaning': 'admonition',  # sic! kept for backwards compatibiltity
       'katern': 'sidebar',
       'onderwerp': 'topic',
       'lijn-blok': 'line-block',

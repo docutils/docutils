@@ -29,7 +29,8 @@ directives = {
       'bemærk': 'note',
       'tips': 'tip',
       'advarsel': 'warning',
-      'formaning': 'admonition',  # sic! Not used in this sense in rST.
+      'varsel': 'admonition',
+      'formaning': 'admonition',  # sic! kept for backwards compatibiltity
       'sidebjælke': 'sidebar',
       'emne': 'topic',
       'linje-blok': 'line-block',

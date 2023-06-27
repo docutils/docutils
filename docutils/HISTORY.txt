@@ -45,6 +45,12 @@ Changes since 0.20.1
   - Move `parsers.rst.directives.Table.process_header_option()` to
     `parsers.rst.directives.CSVTable`.
 
+* docutils/parsers/rst/languages/
+
+  Mark/Fix mistranslated localizations of the "admonition" directive name.
+  In Docutils, "admonition" is used as a generic term for
+  "advice"/"advisory"/"remark", not a reprimand.
+
 * docutils/utils/roman.py
 
   - Update to version `1.4 <https://pypi.org/project/roman/4.1/>`__.
