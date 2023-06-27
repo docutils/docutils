@@ -54,25 +54,6 @@ class Table(Directive):
             messages = []
         return title, messages
 
-    def process_header_option(self):
-        # Provisional
-        # * Will move to CSVTable in Docutils 0.21
-        #   as it calls `self.HeaderDialect()` only defined in CSVTable.
-        # * Will change to use the same CSV dialect as the body to get in line
-        #   with the specification in ref/rst/directives.txt in Docutils 0.21.
-        source = self.state_machine.get_source(self.lineno - 1)
-        table_head = []
-        max_header_cols = 0
-        if 'header' in self.options:   # separate table header in option
-            with warnings.catch_warnings():
-                warnings.simplefilter('ignore')
-                header_dialect = self.HeaderDialect()
-            rows, max_header_cols = self.parse_csv_data_into_rows(
-                self.options['header'].split('\n'), header_dialect,
-                source)
-            table_head.extend(rows)
-        return table_head, max_header_cols
-
     def check_table_dimensions(self, rows, header_rows, stub_columns):
         if len(rows) < header_rows:
             error = self.reporter.error('%s header row(s) specified but '
@@ -248,7 +229,7 @@ class CSVTable(Table):
         # did not mention a rationale (part of the discussion was in private
         # mail).
         # This is in conflict with the documentation, which always said:
-        # ""
+        # "Must use the same CSV format as the main CSV data."
         # and did not change in this aspect.
         #
         # Maybe it was intended to have similar escape rules for rST and CSV,
@@ -277,6 +258,18 @@ class CSVTable(Table):
                       ' is not required with Python 3'
                       ' and will be removed in Docutils 0.22.',
                       DeprecationWarning, stacklevel=2)
+
+    def process_header_option(self):
+        source = self.state_machine.get_source(self.lineno - 1)
+        table_head = []
+        max_header_cols = 0
+        if 'header' in self.options:   # separate table header in option
+            rows, max_header_cols = self.parse_csv_data_into_rows(
+                                        self.options['header'].split('\n'),
+                                        self.DocutilsDialect(self.options),
+                                        source)
+            table_head.extend(rows)
+        return table_head, max_header_cols
 
     def run(self):
         try:

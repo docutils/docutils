@@ -33,6 +33,14 @@ Changes since 0.20.1
   .. _UTF-8 mode: https://docs.python.org/3/library/os.html#utf8-mode
   .. _input encoding: docs/api/publisher.html#encodings
 
+* docutils/parsers/rst/directives/tables.py
+
+  - Use the same CSV format for the ``:header:`` option and the main data
+    of the "csv-table" directive.
+
+  - Move `parsers.rst.directives.Table.process_header_option()` to
+    `parsers.rst.directives.CSVTable`.
+
 * docutils/utils/roman.py
 
   - Update to version `1.4 <https://pypi.org/project/roman/4.1/>`__.
@@ -45,6 +53,7 @@ Changes since 0.20.1
 * docutils/writers/s5_html/__init__.py
 
   - Warn if the S5 writer cannot copy the theme files.
+
   - Programmatic customization of "theme_url__" setting no longer
     overridden by the default for "theme__".
 

@@ -108,17 +108,8 @@ Writers
 Misc
 ----
 
-* "csv-table_" directive:
-
-  - Use the same CSV format for the main CSV data and the :header: option
-    (as specified in the documentation since addition of "csv-table_")
-    in Docutils 0.21.
-
-  - Move `parsers.rst.directives.Table.process_header_option()` to
-    `parsers.rst.directives.CSVTable` in Docutils 0.21.
-
-  - Remove `parsers.rst.directives.CSVTable.HeaderDialect`
-    in Docutils 0.22.
+* Remove `parsers.rst.directives.CSVTable.HeaderDialect`
+  in Docutils 0.22.
 
 * Remove the compatibility hacks `nodes.reprunicode` and `nodes.ensure_str()`
   in Docutils 0.21 or later. They are not required with Python 3.x.
@@ -208,10 +199,12 @@ Release 0.21 (unpublished)
   .. _input encoding: docs/api/publisher.html#encodings
 
 * "html5" writer:
-
   Stop setting the "footnote-reference" class value for footnote references.
-  Use the CSS selector ``[role="doc-noteref"]`` instead of
-  ``.footnote-reference`` (see minimal.css for examples).
+  You can use the CSS selector ``[role="doc-noteref"]``
+  since Docutils 0.18 (see minimal.css for examples).
+
+* Use the same CSV format for the ``:header:`` option and the main data
+  of the "csv-table_" directive.
 
 
 Release 0.20.1 (2023-05-17)
