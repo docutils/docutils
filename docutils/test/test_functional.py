@@ -11,6 +11,7 @@ Please see the documentation on `functional testing`__ for details.
 __ ../../docs/dev/testing.html#functional
 """
 
+import difflib
 from pathlib import Path
 import shutil
 import sys
@@ -40,10 +41,9 @@ is correct, move it to the expected/ dir and check it in:
 """
 
 EXPECTED_OUTPUT_DIFFERS_TEMPLATE = """\
-The expected and actual output differs.
-Please compare the expected and actual output files:
+Expected and actual output differ.
 
-  diff {exp} {out}
+{diff}
 
 If the actual output is correct, please replace the
 expected output and check it in:
@@ -71,7 +71,6 @@ functional_tests_settings_spec.settings_default_overrides = {
 class FunctionalTests(unittest.TestCase):
 
     """Test case for one config file."""
-    maxDiff = None
 
     def setUp(self):
         """Clear output directory."""
@@ -112,10 +111,14 @@ class FunctionalTests(unittest.TestCase):
                         exp=expected_path, out=destination_path)
                     ) from err
 
-                self.assertEqual(output, expected,
-                                 EXPECTED_OUTPUT_DIFFERS_TEMPLATE.format(
-                                     exp=expected_path, out=destination_path)
-                                 )
+                if output != expected:
+                    diff = ''.join(difflib.unified_diff(
+                        expected.splitlines(True), output.splitlines(True),
+                        expected_path.as_posix(), destination_path.as_posix()))
+                    raise AssertionError(
+                        EXPECTED_OUTPUT_DIFFERS_TEMPLATE.format(
+                            diff=diff, exp=expected_path, out=destination_path)
+                        )
 
 
 if __name__ == '__main__':
