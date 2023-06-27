@@ -111,11 +111,6 @@ Misc
 * Remove `parsers.rst.directives.CSVTable.HeaderDialect`
   in Docutils 0.22.
 
-* Remove file ``install.py`` in Docutils 0.21.
-  See README.txt__ for alternatives.
-
-  __ README.html#installation
-
 * Remove the "rawsource" argument from `nodes.Text.__init__()`
   in Docutils 2.0.
 
@@ -160,7 +155,6 @@ Misc
 .. _literal_block_env: docs/user/config.html#literal-block-env
 .. _use_latex_citations: docs/user/config.html#use-latex-citations
 .. _buildhtml.py: docs/user/tools.html#buildhtml-py
-.. _csv-table: docs/ref/rst/directives.html#csv-table
 
 
 Release 0.21 (unpublished)
@@ -204,6 +198,11 @@ Release 0.21 (unpublished)
   of the "csv-table_" directive.
 
 * Remove the compatibility hacks `nodes.reprunicode` and `nodes.ensure_str()`.
+
+* Remove file ``install.py``. See README.txt__ for alternatives.
+
+.. _csv-table: docs/ref/rst/directives.html#csv-table
+__ README.html#installation
 
 
 Release 0.20.1 (2023-05-17)
