@@ -29,6 +29,9 @@ TEST_ROOT = os.path.abspath(os.path.join(__file__, '..', '..', '..', '..'))
 
 
 class ParserTestCase(unittest.TestCase):
+
+    maxDiff = None
+
     def test_parser(self):
         parser = Parser()
         settings = get_default_settings(Parser)
@@ -40,7 +43,7 @@ class ParserTestCase(unittest.TestCase):
                     document = new_document('test data', settings.copy())
                     parser.parse(case_input, document)
                     output = document.pformat()
-                    self.assertEqual(output, case_expected)
+                    self.assertEqual(case_expected, output)
 
 
 mydir = os.path.join(TEST_ROOT, 'test_parsers/test_rst/test_directives')
@@ -555,10 +558,11 @@ totest['csv_table'] = [
 """],
 ["""\
 .. csv-table:: inline with separate header
-   :header: "Treat", Quantity, "Description"
+   :delim: space
+   :header: "Treat" Quantity "Description"
    :widths: 10,20,30
 
-   "Albatross", 2.99, "On a stick!"
+   "Albatross" 2.99 "On a stick!"
 """,
 """\
 <document source="test data">
@@ -1094,7 +1098,7 @@ totest['csv_table'] = [
 ["""\
 .. csv-table:: bad CSV data
 
-   "bad", \"csv, data
+   "bad", "csv, data
 """,
 """\
 <document source="test data">
@@ -1109,7 +1113,7 @@ totest['csv_table'] = [
 """ % csv_eod_error_str],
 ["""\
 .. csv-table:: bad CSV header data
-   :header: "bad", \"csv, data
+   :header: "bad", "csv, data
 
    good, csv, data
 """,

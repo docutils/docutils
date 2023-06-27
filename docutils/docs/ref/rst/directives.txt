@@ -884,7 +884,7 @@ The following options are recognized:
     The character used to separate data fields.
     The special values "tab" and "space" are converted to the respective
     whitespace characters. [#tab-expansion]_
-    Defaults to ``,`` (comma).
+    Defaults to "``,``" (comma).
 
 ``encoding`` : encoding_
     The text encoding of the external CSV data (file or URL).
@@ -909,12 +909,7 @@ The following options are recognized:
 ``header`` : text_ (CSV data)
     Supplemental data for the table header, added independently of and
     before any ``header-rows`` from the main CSV data.  Must use the
-    same CSV format as the main CSV data.
-
-    .. Important:: Currently, the header option uses a hard-coded CSV
-       dialect with the backslash as escape character (interfering with
-       the reStructuredText `escaping mechanism`_). This will change to
-       the documented behaviour in Docutils 0.21.
+    same CSV format as the main CSV data. [#]_
 
 ``header-rows`` : integer_
     The number of rows of CSV data to use in the table header.
@@ -961,6 +956,9 @@ and the common options class_ and name_.
 .. [#tab-expansion] Note, that tabs can be used as separator only in
    external files because hard tabs the directive content are
    `converted to spaces`__ before it reaches the CVS reader.
+
+.. [#] Before Docutils 0.21, the header option used a hard-coded
+   CSV dialect with the backslash as escape character.
 
    __ restructuredtext.html#whitespace
 
