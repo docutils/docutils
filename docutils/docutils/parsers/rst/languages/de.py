@@ -27,8 +27,8 @@ directives = {
       'notiz': 'note',
       'tipp': 'tip',
       'warnung': 'warning',
-      'ermahnung': 'admonition',  # sic! Not used in this sense in rST.
-      # TODO: Rat(schlag), Empfehlung, Warnhinweis, ...?
+      'warnhinweis': 'admonition',
+      'ermahnung': 'admonition',  # sic! kept for backwards compatibiltity
       'kasten': 'sidebar',
       'seitenkasten': 'sidebar',  # kept for backwards compatibiltity
       'seitenleiste': 'sidebar',

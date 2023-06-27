@@ -28,7 +28,8 @@ directives = {
       'noto': 'note',
       'helpeto': 'tip',
       'averto': 'warning',
-      'admono': 'admonition',
+      'sciigo': 'admonition',
+      'admono': 'admonition',  # sic! kept for backwards compatibiltity
       'flankteksto': 'sidebar',
       'temo': 'topic',
       'linea-bloko': 'line-block',
