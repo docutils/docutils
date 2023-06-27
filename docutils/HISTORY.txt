@@ -30,6 +30,7 @@ Changes since 0.20.1
     configuration setting is None, '', 'utf-8-sig', 'utf-16', or 'utf-32'.
     Do not remove other ZWNBSPs.
 
+  .. _UTF-8 mode: https://docs.python.org/3/library/os.html#utf8-mode
   .. _input encoding: docs/api/publisher.html#encodings
 
 * docutils/utils/roman.py
@@ -40,6 +41,20 @@ Changes since 0.20.1
 * docutils/writers/latex2e/__init__.py
 
   - Fix placement of hyperlink target (label) for tables (bug #440).
+
+* docutils/writers/s5_html/__init__.py
+
+  - Warn if the S5 writer cannot copy the theme files.
+  - Programmatic customization of "theme_url__" setting no longer
+    overridden by the default for "theme__".
+
+    __ docs/user/config.html#theme-url
+    __ docs/user/config.html#theme
+
+* docutils/writers/_html_base.py
+
+  - Stop setting the "footnote-reference" class value for footnote references.
+    Since 0.18, you can use the CSS selector ``[role="doc-noteref"]``.
 
 
 Release 0.20.1 (2023-05-17)
