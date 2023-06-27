@@ -73,12 +73,6 @@ Writers
 
 * "html5" writer:
 
-  - Stop setting the "footnote-reference" class value for footnote
-    references in Docutils 0.21.
-    Since 0.18, you can use the CSS selector
-    ``[role="doc-noteref"]`` instead of ``.footnote-reference``
-    (see minimal.css for examples).
-
   - Move attribution behind the blockquote to comply with the `"living
     standard"`__. (HTML5__ allows <cite> elements inside a blockquote.)
 
@@ -212,6 +206,12 @@ Release 0.21 (unpublished)
   Do not remove other ZWNBSPs.
 
   .. _input encoding: docs/api/publisher.html#encodings
+
+* "html5" writer:
+
+  Stop setting the "footnote-reference" class value for footnote references.
+  Use the CSS selector ``[role="doc-noteref"]`` instead of
+  ``.footnote-reference`` (see minimal.css for examples).
 
 
 Release 0.20.1 (2023-05-17)

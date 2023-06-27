@@ -971,7 +971,7 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_footnote_reference(self, node):
         href = '#' + node['refid']
-        classes = ['footnote-reference', self.settings.footnote_references]
+        classes = [self.settings.footnote_references]
         self.body.append(self.starttag(node, 'a', suffix='', classes=classes,
                                        role='doc-noteref', href=href))
         self.body.append('<span class="fn-bracket">[</span>')
