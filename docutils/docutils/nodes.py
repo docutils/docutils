@@ -326,27 +326,6 @@ class Node:
             return None
 
 
-class reprunicode(str):
-    """
-    Deprecated backwards compatibility stub. Use the standard `str` instead.
-    """
-    def __init__(self, s):
-        warnings.warn('nodes.reprunicode() is not required with Python 3'
-                      ' and will be removed in Docutils 0.21 or later.',
-                      DeprecationWarning, stacklevel=2)
-        super().__init__()
-
-
-def ensure_str(s):
-    """
-    Deprecated backwards compatibility stub returning `s`.
-    """
-    warnings.warn('nodes.ensure_str() is not required with Python 3'
-                  ' and will be removed in Docutils 0.21 or later.',
-                  DeprecationWarning, stacklevel=2)
-    return s
-
-
 # definition moved here from `utils` to avoid circular import dependency
 def unescape(text, restore_backslashes=False, respect_whitespace=False):
     """

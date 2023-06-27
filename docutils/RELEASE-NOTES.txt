@@ -111,9 +111,6 @@ Misc
 * Remove `parsers.rst.directives.CSVTable.HeaderDialect`
   in Docutils 0.22.
 
-* Remove the compatibility hacks `nodes.reprunicode` and `nodes.ensure_str()`
-  in Docutils 0.21 or later. They are not required with Python 3.x.
-
 * Remove file ``install.py`` in Docutils 0.21.
   See README.txt__ for alternatives.
 
@@ -205,6 +202,8 @@ Release 0.21 (unpublished)
 
 * Use the same CSV format for the ``:header:`` option and the main data
   of the "csv-table_" directive.
+
+* Remove the compatibility hacks `nodes.reprunicode` and `nodes.ensure_str()`.
 
 
 Release 0.20.1 (2023-05-17)
