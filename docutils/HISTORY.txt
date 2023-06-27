@@ -33,6 +33,10 @@ Changes since 0.20.1
   .. _UTF-8 mode: https://docs.python.org/3/library/os.html#utf8-mode
   .. _input encoding: docs/api/publisher.html#encodings
 
+* docutils/nodes.py
+
+  - Remove compatibility hacks `nodes.reprunicode` and `nodes.ensure_str()`.
+
 * docutils/parsers/rst/directives/tables.py
 
   - Use the same CSV format for the ``:header:`` option and the main data
