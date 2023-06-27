@@ -1,7 +1,6 @@
 include *.txt
 include tox.ini
 include docutils.conf
-include install.py
 recursive-include docutils *
 recursive-include docs *
 recursive-include licenses *
