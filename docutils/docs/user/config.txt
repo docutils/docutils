@@ -2020,135 +2020,143 @@ template__:
 [odf_odt writer]
 ----------------
 
-The `ODF/ODT Writer`__ generates documents in the
+The ODF/`ODT Writer`_ generates documents in the
 OpenDocument_ Text format (.odt).
 
 The output_encoding_ setting is ignored, the output encoding is
 always "UTF-8".
 
-__
-.. _ODT Writer for Docutils: odt.html
+.. _ODT Writer: odt.html
 .. _OpenDocument: https://en.wikipedia.org/wiki/OpenDocument
 
 
-stylesheet
-~~~~~~~~~~
+add-syntax_highlighting
+~~~~~~~~~~~~~~~~~~~~~~~
 
-Specify a stylesheet URL, used verbatim.
-See section `Styles and Classes`_ in the `Odt Writer for Docutils`_
-document for details.
+Add syntax highlighting in literal code blocks.
+See section "`Syntax highlighting`__" in the ODT Writer documentation
+for details.
 
-Default: writers/odf_odt/styles.odt in the installation directory.
+Default: disabled (False).
+Options: ``--add-syntax-highlighting, --no-syntax-highlighting``.
 
-odf-config-file
+__ odt.html#syntax-highlighting
+
+
+create_links
+~~~~~~~~~~~~
+
+Create links.
+
+Default: disabled (False).
+Options: ``--create-links, --no-links``.
+
+
+create_sections
 ~~~~~~~~~~~~~~~
 
-Specify a configuration/mapping file relative to the current working
-directory for additional ODF options. In particular, this file may
-contain a section named "Formats" that maps default style names to names
-to be used in the resulting output file allowing for adhering to external
-standards. For more info and the format of the configuration/mapping
-file, see section `How to use custom style names`_ in the
-`Odt Writer for Docutils`_ document.
+Create sections for headers.
 
-cloak-email-addresses
+Default: enabled (True).
+Options: ``--create-sections, --no-sections``.
+
+
+cloak_email_addresses
 ~~~~~~~~~~~~~~~~~~~~~
 
 Obfuscate email addresses to confuse harvesters while still
 keeping email links usable with standards-compliant browsers.
 
-no-cloak-email-addresses
-~~~~~~~~~~~~~~~~~~~~~~~~
+Default: disabled (False).
+Options: ``--cloak-email-addresses, --no-cloak-email-addresses``.
 
-Do not obfuscate email addresses.
 
-table-border-thickness
-~~~~~~~~~~~~~~~~~~~~~~
+custom_header
+~~~~~~~~~~~~~
 
-Specify the thickness of table borders in thousands of a cm.
-Default is 35.
+Specify the contents of a custom header line.  
+See section "`Custom header/footers`_" in the ODT Writer documentation
+for details.
 
-add-syntax-highlighting
-~~~~~~~~~~~~~~~~~~~~~~~
+Default: none ('').
+Option: ``--custom-odt-header``.
 
-Add syntax highlighting in literal code blocks.
 
-no-syntax-highlighting
-~~~~~~~~~~~~~~~~~~~~~~
+custom_footer
+~~~~~~~~~~~~~
 
-Do not add syntax highlighting in literal code blocks.
-(default)
+Specify the contents of a custom footer line.  
+See section "`Custom header/footers`_" in the ODT Writer documentation
+for details.
 
-create-sections
-~~~~~~~~~~~~~~~
+Default: none ('').
+Option: ``--custom-odt-footer``.
 
-Create sections for headers.  (default)
+.. _custom header/footers:
+    odt.html#custom-header-footers-inserting-page-numbers-date-time-etc
 
-no-sections
-~~~~~~~~~~~
 
-Do not create sections for headers.
-
-create-links
-~~~~~~~~~~~~
-
-Create links.
-
-no-links
-~~~~~~~~
-
-Do not create links.  (default)
-
-endnotes-end-doc
+endnotes_end_doc
 ~~~~~~~~~~~~~~~~
 
 Generate endnotes at end of document, not footnotes at bottom of page.
 
-no-endnotes-end-doc
-~~~~~~~~~~~~~~~~~~~
+Default: disabled (False).
+Options: ``--endnotes-end-doc, --no-endnotes-end-doc``.
 
-Generate footnotes at bottom of page, not endnotes at end of
-document. (default)
 
-generate-list-toc
-~~~~~~~~~~~~~~~~~
-
-Generate a bullet list table of contents, not an
-ODF/``oowriter`` table of contents.
-
-generate-oowriter-toc
+generate_oowriter_toc
 ~~~~~~~~~~~~~~~~~~~~~
 
-Generate an ODF/``oowriter`` table of contents, not a bullet
-list.  (default) **Note:** ``odtwriter`` is not able to
-determine page numbers, so you will need to open the generated
-document in ``oowriter``, then right-click on the table of
-contents and select "Update" to insert page numbers.
+Generate a native ODF table of contents, not a bullet list.
+See section "`Table of contents`__" in the ODT Writer documentation
+for details.
 
-custom-odt-header
-~~~~~~~~~~~~~~~~~
+Default: enabled (True).
+Options: ``--generate-oowriter-toc, --generate-list-toc``.
 
-Specify the contents of a custom header line.  For details about
-custom headers and about special field character sequences, see
-section "`Custom header/footers`_: inserting page numbers, date,
-time, etc" in the `Odt Writer for Docutils`_ document for
-details.
+__ odt.html#table-of-contents
 
-custom-odt-footer
-~~~~~~~~~~~~~~~~~
 
-Specify the contents of a custom footer line.  For details about
-custom footers and about special field character sequences, see
-section "`Custom header/footers`_: inserting page numbers, date,
-time, etc" in the `Odt Writer for Docutils`_ document for
-details.
+odf_config_file
+~~~~~~~~~~~~~~~
 
-.. _custom header/footers:
-    odt.html#custom-header-footers-inserting-page-numbers-date-time-etc
-.. _how to use custom style names:
-    odt.html#how-to-use-custom-style-names    
-.. _styles and classes:
-    odt.html#styles-and-classes    
+Specify a configuration/mapping file relative to the current working
+directory for additional ODF options. 
+In particular, this file may contain a mapping of default style names to
+names used in the resulting output file. 
+See section `How to use custom style names`__ in the
+ODT Writer documentation for details.
+
+Default: None.
+Option: ``--odf-config-file``.
+
+__ odt.html#how-to-use-custom-style-names    
+
+
+stylesheet
+~~~~~~~~~~
+Specify a stylesheet URL, used verbatim.
+See section `Styles and Classes`_ in the ODT Writer documentation
+for details.
+
+Default: writers/odf_odt/styles.odt in the installation directory.
+Option: ``--stylesheet``.
+
+.. _styles and classes: odt.html#styles-and-classes    
+
+
+table_border_thickness
+~~~~~~~~~~~~~~~~~~~~~~
+
+Specify the thickness of table borders in thousands of a centimetre.
+The `Table styles`__ section in the ODT Writer documentation describes
+alternatives for additional customisation of the table style.
+
+Default: 35 (0.35 mm).
+Option: ``--table-border-thickness``.
+
+__ odt.html#table-styles
 
 
 [pseudoxml writer]
