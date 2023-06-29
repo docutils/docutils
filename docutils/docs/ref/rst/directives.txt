@@ -284,7 +284,9 @@ Figure
 ======
 
 :Directive Type: "figure"
-:Doctree Elements: figure_, image_, caption_, legend_
+:Doctree Elements: `figure <../doctree.html#figure>`__, 
+                   `image <../doctree.html#image>`__, 
+                   caption_, legend_
 :Directive Arguments: One, required (image URI_).
 :Directive Options: Possible (see below).
 :Directive Content: Interpreted as the figure caption and an optional
@@ -2116,7 +2118,6 @@ Common Option Value Types
 .. _escaping mechanism: restructuredtext.html#escaping-mechanism
 .. _external hyperlink targets:
     restructuredtext.html#external-hyperlink-targets
-.. _figure: ../doctree.html#figure
 .. _footnote: ../doctree.html#footnote
 .. _footnote_reference: ../doctree.html#footnote-reference
 .. _generated: ../doctree.html#generated
