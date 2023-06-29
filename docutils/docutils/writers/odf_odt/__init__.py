@@ -379,7 +379,7 @@ class Writer(writers.Writer):
         os.path.join(os.path.dirname(__file__), default_template))
 
     settings_spec = (
-        'ODF-Specific Options',
+        'ODF-Specific Options.',
         None,
         (
             ('Specify a stylesheet.  '
@@ -389,21 +389,11 @@ class Writer(writers.Writer):
                     'default': default_stylesheet_path,
                     'dest': 'stylesheet'
                 }),
-            ('Specify a configuration/mapping file relative to the '
-                'current working '
-                'directory for additional ODF options.  '
-                'In particular, this file may contain a section named '
-                '"Formats" that maps default style names to '
-                'names to be used in the resulting output file allowing for '
-                'adhering to external standards. '
-                'For more info and the format of the '
-                'configuration/mapping file, '
-                'see the odtwriter doc.',
+            ('Specify an ODF-specific configuration/mapping file '
+                'relative to the current working directory.',
                 ['--odf-config-file'],
                 {'metavar': '<file>'}),
-            ('Obfuscate email addresses to confuse harvesters while still '
-                'keeping email links usable with '
-                'standards-compliant browsers.',
+            ('Obfuscate email addresses to confuse harvesters.',
                 ['--cloak-email-addresses'],
                 {'default': False,
                     'action': 'store_true',
@@ -415,10 +405,11 @@ class Writer(writers.Writer):
                     'action': 'store_false',
                     'dest': 'cloak_email_addresses',
                     'validator': frontend.validate_boolean}),
-            ('Specify the thickness of table borders in thousands of a cm.  '
+            ('Specify the thickness of table borders in thousands of a cm. '
                 'Default is 35.',
                 ['--table-border-thickness'],
                 {'default': None,
+                    'metavar': '<int>',
                     'validator': frontend.validate_nonnegative_int}),
             ('Add syntax highlighting in literal code blocks.',
                 ['--add-syntax-highlighting'],
@@ -427,7 +418,7 @@ class Writer(writers.Writer):
                     'dest': 'add_syntax_highlighting',
                     'validator': frontend.validate_boolean}),
             ('Do not add syntax highlighting in '
-             'literal code blocks. (default)',
+                'literal code blocks. (default)',
                 ['--no-syntax-highlighting'],
                 {'default': False,
                     'action': 'store_false',
@@ -471,32 +462,32 @@ class Writer(writers.Writer):
                     'action': 'store_false',
                     'dest': 'endnotes_end_doc',
                     'validator': frontend.validate_boolean}),
-            ('Generate a bullet list table of contents, not '
-                'an ODF/oowriter table of contents.',
+            ('Generate a bullet list table of contents, '
+                'not a native ODF table of contents.',
                 ['--generate-list-toc'],
-                {'default': True,
-                    'action': 'store_false',
+                {'action': 'store_false',
                     'dest': 'generate_oowriter_toc',
                     'validator': frontend.validate_boolean}),
-            ('Generate an ODF/oowriter table of contents, not '
-                'a bullet list. (default)',
+            ('Generate a native ODF table of contents, '
+                'not a bullet list. (default)',
                 ['--generate-oowriter-toc'],
                 {'default': True,
                     'action': 'store_true',
                     'dest': 'generate_oowriter_toc',
                     'validator': frontend.validate_boolean}),
             ('Specify the contents of an custom header line.  '
-                'See odf_odt writer documentation for details '
+                'See ODF/ODT writer documentation for details '
                 'about special field character sequences.',
                 ['--custom-odt-header'],
                 {'default': '',
-                    'dest': 'custom_header', }),
+                    'dest': 'custom_header',
+                    'metavar': '<custom header>'}),
             ('Specify the contents of an custom footer line.  '
-                'See odf_odt writer documentation for details '
-                'about special field character sequences.',
+                'See ODF/ODT writer documentation for details.',
                 ['--custom-odt-footer'],
                 {'default': '',
-                    'dest': 'custom_footer', }),
+                    'dest': 'custom_footer',
+                    'metavar': '<custom footer>'}),
         )
     )
 
