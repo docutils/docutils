@@ -44,132 +44,66 @@ class WriterPublishTestCase(unittest.TestCase):
         'legacy_column_widths': True,
         }
 
-    def test_defaults(self):
-        for name, cases in samples_default.items():
+    def run_samples(self, samples, settings):
+        for name, cases in samples.items():
             for casenum, (rst_input, expected) in enumerate(cases):
                 with self.subTest(id=f'samples_default[{name!r}][{casenum}]'):
                     output = publish_string(source=rst_input,
                                             writer_name=self.writer_name,
-                                            settings_overrides=self.settings)
+                                            settings_overrides=settings)
                     output = output.decode()
                     self.assertEqual(output, expected)
+
+    def test_defaults(self):
+        self.run_samples(samples_default, self.settings)
 
     def test_docutils_toc(self):
         settings = self.settings.copy()
         settings['use_latex_toc'] = False
-        for name, cases in samples_docutils_toc.items():
-            for casenum, (rst_input, expected) in enumerate(cases):
-                id = f'samples_docutils_toc[{name!r}][{casenum}]'
-                with self.subTest(id=id):
-                    output = publish_string(source=rst_input,
-                                            writer_name=self.writer_name,
-                                            settings_overrides=settings)
-                    output = output.decode()
-                    self.assertEqual(output, expected)
+        self.run_samples(samples_docutils_toc, settings)
 
     def test_book(self):
         settings = self.settings.copy()
         settings['documentclass'] = 'book'
-        for name, cases in samples_book.items():
-            for casenum, (rst_input, expected) in enumerate(cases):
-                with self.subTest(id=f'samples_book[{name!r}][{casenum}]'):
-                    output = publish_string(source=rst_input,
-                                            writer_name=self.writer_name,
-                                            settings_overrides=settings)
-                    output = output.decode()
-                    self.assertEqual(output, expected)
+        self.run_samples(samples_book, settings)
 
     def test_latex_sectnum(self):
         settings = self.settings.copy()
         settings['use_latex_toc'] = False
         settings['sectnum_xform'] = False
-        for name, cases in samples_latex_sectnum.items():
-            for casenum, (rst_input, expected) in enumerate(cases):
-                with self.subTest(
-                        id=f'samples_latex_sectnum[{name!r}][{casenum}]'):
-                    output = publish_string(source=rst_input,
-                                            writer_name=self.writer_name,
-                                            settings_overrides=settings)
-                    output = output.decode()
-                    self.assertEqual(output, expected)
+        self.run_samples(samples_latex_sectnum, settings)
 
     def test_latex_citations(self):
         settings = self.settings.copy()
         settings['use_latex_citations'] = True
-        for name, cases in samples_latex_citations.items():
-            for casenum, (rst_input, expected) in enumerate(cases):
-                with self.subTest(
-                        id=f'samples_latex_citations[{name!r}][{casenum}]'):
-                    output = publish_string(source=rst_input,
-                                            writer_name=self.writer_name,
-                                            settings_overrides=settings)
-                    output = output.decode()
-                    self.assertEqual(output, expected)
+        self.run_samples(samples_latex_citations, settings)
 
     def test_table_style_auto(self):
         settings = self.settings.copy()
         settings['table_style'] = ['colwidths-auto']
-        for name, cases in samples_table_style_auto.items():
-            for casenum, (rst_input, expected) in enumerate(cases):
-                with self.subTest(
-                        id=f'samples_table_style_auto[{name!r}][{casenum}]'):
-                    output = publish_string(source=rst_input,
-                                            writer_name=self.writer_name,
-                                            settings_overrides=settings)
-                    output = output.decode()
-                    self.assertEqual(output, expected)
+        self.run_samples(samples_table_style_auto, settings)
 
     def test_booktabs(self):
         settings = self.settings.copy()
         settings['table_style'] = ['booktabs']
-        for name, cases in samples_table_style_booktabs.items():
-            for casenum, (rst_input, expected) in enumerate(cases):
-                with self.subTest(id=f'samples_booktabs[{name!r}][{casenum}]'):
-                    output = publish_string(source=rst_input,
-                                            writer_name=self.writer_name,
-                                            settings_overrides=settings)
-                    output = output.decode()
-                    self.assertEqual(output, expected)
+        self.run_samples(samples_table_style_booktabs, settings)
 
     def test_link_stylesheet(self):
         settings = self.settings.copy()
         settings['stylesheet_path'] = f'{spam},{ham}'
-        for name, cases in samples_stylesheet.items():
-            for casenum, (rst_input, expected) in enumerate(cases):
-                id = f'samples_link_stylesheet[{name!r}][{casenum}]'
-                with self.subTest(id=id):
-                    output = publish_string(source=rst_input,
-                                            writer_name=self.writer_name,
-                                            settings_overrides=settings)
-                    output = output.decode()
-                    self.assertEqual(output, expected)
+        self.run_samples(samples_stylesheet, settings)
 
     def test_embed_embed_stylesheet(self):
         settings = self.settings.copy()
         settings['stylesheet_path'] = f'{spam},{ham}'
         settings['embed_stylesheet'] = True
         settings['warning_stream'] = ''
-        for name, cases in samples_stylesheet_embed.items():
-            for casenum, (rst_input, expected) in enumerate(cases):
-                id = f'samples_embed_stylesheet[{name!r}][{casenum}]'
-                with self.subTest(id=id):
-                    output = publish_string(source=rst_input,
-                                            writer_name=self.writer_name,
-                                            settings_overrides=settings)
-                    output = output.decode()
-                    self.assertEqual(output, expected)
+        self.run_samples(samples_stylesheet_embed, settings)
 
     def test_bibtex(self):
         settings = self.settings.copy()
         settings['use_bibtex'] = ['alpha', 'xampl']
-        for name, cases in samples_bibtex.items():
-            for casenum, (rst_input, expected) in enumerate(cases):
-                with self.subTest(id=f'samples_bibtex[{name!r}][{casenum}]'):
-                    output = publish_string(source=rst_input,
-                                            writer_name=self.writer_name,
-                                            settings_overrides=settings)
-                    output = output.decode()
-                    self.assertEqual(output, expected)
+        self.run_samples(samples_bibtex, settings)
 
 
 head_template = string.Template(
@@ -238,6 +172,10 @@ head_booktabs = head_template.substitute(
     dict(parts, requirements=parts['requirements']
          + '\\usepackage{booktabs}\n' + parts['longtable']))
 
+head_image = head_template.substitute(
+    dict(parts, requirements=parts['requirements']
+         + '\\usepackage{graphicx}\n'))
+
 head_textcomp = head_template.substitute(
     dict(parts, requirements=parts['requirements']
          + '\\usepackage{textcomp} % text symbol macros\n'))
@@ -271,6 +209,15 @@ samples_default['textcomp'] = [
 ["2 µm is just 2/1000000 m",
 head_textcomp + r"""
 2 µm is just 2/1000000 m
+
+\end{document}
+"""],
+]
+
+samples_default['image'] = [
+[".. image:: blue%20square.png",
+head_image + r"""
+\includegraphics{blue square.png}
 
 \end{document}
 """],
