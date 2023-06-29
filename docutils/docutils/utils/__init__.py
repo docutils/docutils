@@ -479,15 +479,27 @@ def relative_path(source, target):
     """
     Build and return a path to `target`, relative to `source` (both files).
 
-    Differences to `os.relpath()`:
+    The return value is a `str` suitable to be included in `source`
+    as a reference to `target`.
+
+    :Parameters:
+        `source` : path-like object or None
+            Path of a file in the start directory for the relative path
+            (the file does not need to exist).
+            The value ``None`` is replaced with "<cwd>/dummy_file".
+        `target` : path-like object
+            End point of the returned relative path.
+
+    Differences to `os.path.relpath()`:
 
     * Inverse argument order.
-    * `source` expects path to a FILE (while os.relpath expects a dir)!
-      (Add a "dummy" file name if `source` points to a directory.)
+    * `source` expects path to a FILE
+      while `start` in `os.path.relpath()` expects a DIRECTORY.
+      (You must add a "dummy" file name if the `source` is a directory.)
     * Always use Posix path separator ("/") for the output.
-    * Use `os.sep` for parsing the input (ignored by `os.relpath()`).
+    * Use `os.sep` for parsing the input
+      (changing the value of `os.sep` is ignored by `os.relpath()`).
     * If there is no common prefix, return the absolute path to `target`.
-
     """
     source_parts = os.path.abspath(source or type(target)('dummy_file')
                                    ).split(os.sep)
