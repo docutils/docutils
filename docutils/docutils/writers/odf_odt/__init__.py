@@ -23,7 +23,7 @@ import re
 import subprocess
 import tempfile
 import time
-from urllib.request import urlopen
+from urllib.request import urlopen, url2pathname
 from urllib.error import HTTPError
 import weakref
 from xml.etree import ElementTree as etree
@@ -2117,21 +2117,20 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def visit_image(self, node):
         # Capture the image file.
-        if 'uri' in node.attributes:
-            source = node.attributes['uri']
-            if not (source.startswith('http:') or source.startswith('https:')):
-                if not source.startswith(os.sep):
-                    docsource, line = utils.get_source_line(node)
-                    if docsource:
-                        dirname = os.path.dirname(docsource)
-                        if dirname:
-                            source = '%s%s%s' % (dirname, os.sep, source, )
-                if not self.check_file_exists(source):
-                    self.document.reporter.warning(
-                        'Cannot find image file %s.' % (source, ))
-                    return
-        else:
-            return
+        source = node.attributes['uri']
+        if not (source.startswith('http:') or source.startswith('https:')):
+            source = url2pathname(source)
+            if not os.path.isabs(source):
+                # adapt relative paths
+                docsource, line = utils.get_source_line(node)
+                if docsource:
+                    dirname = os.path.dirname(docsource)
+                    if dirname:
+                        source = os.path.join(dirname, source)
+            if not self.check_file_exists(source):
+                self.document.reporter.warning(
+                    'Cannot find image file %s.' % (source, ))
+                return
         if source in self.image_dict:
             filename, destination = self.image_dict[source]
         else:

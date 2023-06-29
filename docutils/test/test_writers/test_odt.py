@@ -62,9 +62,10 @@ class DocutilsOdtTestCase(unittest.TestCase):
                      save_output_name=None, settings_overrides=None):
         # Test that xmlcharrefreplace is the default output encoding
         # error handler.
-        input_file = open(os.path.join(INPUT_PATH, input_filename), 'rb')
+        input_path = os.path.join(INPUT_PATH, input_filename)
+        input_file = open(input_path, 'rb')
         expected_file = open(os.path.join(EXPECTED_PATH, expected_filename), 'rb')
-        input = input_file.read()
+        source = input_file.read()
         expected = expected_file.read()
         input_file.close()
         expected_file.close()
@@ -74,7 +75,8 @@ class DocutilsOdtTestCase(unittest.TestCase):
             settings_overrides['language_code'] = 'en-US'
 
         result = docutils.core.publish_string(
-            source=input,
+            source=source,
+            source_path=input_path,
             reader_name='standalone',
             writer_name='odf_odt',
             settings_overrides=settings_overrides)
@@ -174,7 +176,10 @@ class DocutilsOdtTestCase(unittest.TestCase):
         self.process_test('odt_raw.txt', 'odt_raw.odt',
                           save_output_name='odt_raw.odt')
 
-    #
+    def test_odt_image(self):
+        self.process_test('odt_image.txt', 'odt_image.odt',
+                          save_output_name='odt_image.odt')
+
     # Template for new tests.
     # Also add functional/input/odt_xxxx.txt and
     #   functional/expected/odt_xxxx.odt
