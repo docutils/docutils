@@ -324,16 +324,22 @@ class HelperFunctionTests(unittest.TestCase):
         source = os.path.join('häm', 'spam', 'fileA')
         target = os.path.join('häm', 'fileB')
         self.assertEqual(utils.relative_path(source, target), '../fileB')
+        source = os.path.join('häm', 'fileA')
+        target = os.path.join('..', 'spam', 'fileB')
+        self.assertEqual(utils.relative_path(source, target),
+                         '../../spam/fileB')
         # if source is None, default to the cwd:
         target = os.path.join('eggs', 'fileB')
         self.assertEqual(utils.relative_path(None, target), 'eggs/fileB')
         # If there is no common prefix, return the absolute path to `target`:
-        # source = '/foo/bar/fileA' # POSIX
-        #   TODO: how to specify an absolute path independent of the OS?
-        # target = os.path.join('eggs', 'fileB')
-        # self.assertEqual(utils.relative_path(source, target),
-        #                  os.path.abspath('fileB'))
-        # Correctly process unicode instances:
+        if os.sep == '/':
+            source = '/foo/bar/fileA'
+        else:
+            source = r'C:\foo\bar\fileA'
+        target = os.path.join('eggs', 'fileB')
+        self.assertEqual(utils.relative_path(source, target),
+                         os.path.abspath('eggs/fileB'))
+        # Correctly process characters outside the ASCII range:
         self.assertEqual(utils.relative_path('spam', 'spam'), '')
         source = os.path.join('häm', 'spam', 'fileA')
         target = os.path.join('häm', 'spam', 'fileB')
