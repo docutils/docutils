@@ -21,7 +21,7 @@ import mimetypes
 import os
 import os.path
 import re
-from urllib.request import unquote as unquote_url
+import urllib
 from urllib.request import url2pathname  # unquote and use local path sep
 import warnings
 
@@ -1008,29 +1008,44 @@ class HTMLTranslator(nodes.NodeVisitor):
     def visit_image(self, node):
         atts = {}
         uri = node['uri']
+        uri_parts = urllib.parse.urlparse(uri)
+        imagepath = ''
         mimetype = mimetypes.guess_type(uri)[0]
+        scaling_problems = []
         # image size
         if 'width' in node:
             atts['width'] = node['width']
         if 'height' in node:
             atts['height'] = node['height']
         if 'scale' in node:
-            if (PIL and ('width' not in node or 'height' not in node)
-                and self.settings.file_insertion_enabled):
-                imagepath = url2pathname(uri)
-                try:
-                    with PIL.Image.open(imagepath) as img:
-                        imgsize = img.size
-                except (OSError, UnicodeEncodeError):
-                    pass  # TODO: warn?
+            if 'width' not in node or 'height' not in node:
+                # try reading size from image file
+                if uri_parts.scheme not in ('', 'file'):
+                    scaling_problems.append('Works only for local images.')
+                if not PIL:
+                    scaling_problems.append('Requires Python Imaging Library.')
+                if not self.settings.file_insertion_enabled:
+                    scaling_problems.append('Reading external files disabled.')
+                if not scaling_problems:
+                    imagepath = url2pathname(uri_parts.path)
+                    try:
+                        with PIL.Image.open(imagepath) as img:
+                            imgsize = img.size
+                    except (OSError, UnicodeEncodeError) as err:
+                        scaling_problems.append(str(err))
+                    else:
+                        self.settings.record_dependencies.add(
+                            imagepath.replace('\\', '/'))
+                if scaling_problems:
+                    self.document.reporter.warning(
+                        '\n  '.join([f'Cannot scale "{imagepath or uri}".']
+                                    + scaling_problems))
                 else:
-                    self.settings.record_dependencies.add(
-                        imagepath.replace('\\', '/'))
                     if 'width' not in atts:
                         atts['width'] = '%dpx' % imgsize[0]
                     if 'height' not in atts:
                         atts['height'] = '%dpx' % imgsize[1]
-                    del img
+            # scale provided/determined size values:
             for att_name in 'width', 'height':
                 if att_name in atts:
                     match = re.match(r'([0-9.]+)(\S*)$', atts[att_name])
@@ -1059,6 +1074,16 @@ class HTMLTranslator(nodes.NodeVisitor):
             atts['class'] = 'align-%s' % node['align']
         # Embed image file (embedded SVG or data URI):
         if self.image_loading == 'embed':
+            if uri_parts.scheme not in ('', 'file'):
+                self.document.reporter.error(
+                    f'Cannot embed remote image "{uri}"')
+                # TODO: read with urllib.request?
+            imagepath = imagepath or url2pathname(uri_parts.path)
+            # TODO: adapt relative imagepath?
+            # if not os.path.isabs(imagepath):
+            #     _src, _ln = utils.get_source_line(node)
+            #     dirname = os.path.dirname(_src or '')
+            #     imagepath = os.path.join(dirname, imagepath)
             try:
                 with open(url2pathname(uri), 'rb') as imagefile:
                     imagedata = imagefile.read()
@@ -1066,7 +1091,8 @@ class HTMLTranslator(nodes.NodeVisitor):
                 self.document.reporter.error('Cannot embed image %r: %s'
                                              % (uri, err.strerror))
             else:
-                self.settings.record_dependencies.add(unquote_url(uri))
+                self.settings.record_dependencies.add(
+                    urllib.parse.unquote(uri))
                 # TODO: insert SVG as-is?
                 # if mimetype == 'image/svg+xml':
                 # read/parse, apply arguments,
