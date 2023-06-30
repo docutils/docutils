@@ -114,7 +114,7 @@ class PublisherTests(unittest.TestCase):
                     '        test → me\n').encode('utf-8')
         output = core.publish_string(source.encode('utf-16'),
                                      settings_overrides=settings)
-        self.assertEqual(output, expected)
+        self.assertEqual(expected, output)
 
         # encoding declaration in source
         source = '.. encoding: latin1\n\nGrüße'
@@ -135,7 +135,7 @@ class PublisherTests(unittest.TestCase):
         # encode output, return `bytes`
         output = bytes(core.publish_string(source,
                                            settings_overrides=settings))
-        self.assertEqual(output, expected.encode('latin1', 'replace'))
+        self.assertEqual(expected.encode('latin1', 'replace'), output)
 
     def test_publish_string_output_encoding_odt(self):
         """The ODT writer generates a zip archive, not a `str`.
@@ -173,7 +173,7 @@ class PublishDoctreeTestCase(unittest.TestCase, docutils.SettingsSpec):
         self.assertTrue(isinstance(doctree[0], nodes.title))
         self.assertTrue(isinstance(doctree[1], nodes.paragraph))
         # Confirm that the Messages transform has not yet been applied:
-        self.assertEqual(len(doctree), 2)
+        self.assertEqual(2, len(doctree))
 
         # The `do_not_expose` attribute may not show up in the
         # pseudoxml output because the expose_internals transform may
@@ -187,7 +187,7 @@ class PublishDoctreeTestCase(unittest.TestCase, docutils.SettingsSpec):
                                 ['refnames', 'do_not_expose'],
                                 'report_level': 1,
                                 'output_encoding': 'unicode'})
-        self.assertEqual(output, exposed_pseudoxml_output)
+        self.assertEqual(exposed_pseudoxml_output, output)
 
         # Test publishing parts using document as the source.
         parts = core.publish_parts(
@@ -231,7 +231,7 @@ class PublishDoctreeTestCase(unittest.TestCase, docutils.SettingsSpec):
         output = core.publish_from_doctree(doctree_zombie,
                                            writer_name='pseudoxml',
                                            settings_spec=self)
-        self.assertEqual(output.decode(), pseudoxml_output)
+        self.assertEqual(pseudoxml_output, output.decode())
 
 
 if __name__ == '__main__':

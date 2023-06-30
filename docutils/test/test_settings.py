@@ -143,7 +143,7 @@ class ConfigFileTests(unittest.TestCase):
         rd_expected = expected.pop('record_dependencies', None)
         if rd_expected is not None:
             self.assertEqual(str(rd_result), str(rd_expected))
-        self.assertEqual(result, expected)
+        self.assertEqual(expected, result)
 
     def test_nofiles(self):
         self.compare_output(self.files_settings(),

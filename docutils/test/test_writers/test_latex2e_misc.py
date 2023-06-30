@@ -81,7 +81,7 @@ class PublishTestCase(unittest.TestCase):
             'version',
             'whole'
             ]
-        self.assertEqual(sorted(parts.keys()), documented_parts)
+        self.assertEqual(documented_parts, sorted(parts.keys()))
 
 
 class WarningsTestCase(unittest.TestCase):

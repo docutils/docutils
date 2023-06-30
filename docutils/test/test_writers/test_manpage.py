@@ -32,7 +32,7 @@ class WriterPublishTestCase(unittest.TestCase):
                             '_disable_config': True,
                             'strict_visitor': True,
                         }).decode()
-                    self.assertEqual(output, case_expected)
+                    self.assertEqual(case_expected, output)
 
 
 indend_macros = r""".

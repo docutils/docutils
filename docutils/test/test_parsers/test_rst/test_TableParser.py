@@ -47,7 +47,7 @@ class GridTableParserTestCase(unittest.TestCase):
                         output = parser.parse(lines_input)
                     except Exception as details:
                         output = f'{details.__class__.__name__}: {details}'
-                    self.assertEqual(output, case_expected)
+                    self.assertEqual(case_expected, output)
 
 
 totest = {}

@@ -46,7 +46,7 @@ class Html4WriterPublishPartsTestCase(unittest.TestCase):
                             **settings_overrides,
                         }
                     )
-                    self.assertEqual(self.format_output(parts), case_expected)
+                    self.assertEqual(case_expected, self.format_output(parts))
 
     standard_content_type_template = ('<meta http-equiv="Content-Type"'
                                       ' content="text/html; charset=%s" />\n')

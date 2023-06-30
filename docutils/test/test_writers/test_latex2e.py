@@ -52,7 +52,7 @@ class WriterPublishTestCase(unittest.TestCase):
                                             writer_name=self.writer_name,
                                             settings_overrides=settings)
                     output = output.decode()
-                    self.assertEqual(output, expected)
+                    self.assertEqual(expected, output)
 
     def test_defaults(self):
         self.run_samples(samples_default, self.settings)

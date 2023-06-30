@@ -36,7 +36,7 @@ class WriterPublishTestCase(unittest.TestCase):
                     )
                     if isinstance(output, bytes):
                         output = output.decode('utf-8')
-                    self.assertEqual(output, case_expected)
+                    self.assertEqual(case_expected, output)
 
 
 totest = {}

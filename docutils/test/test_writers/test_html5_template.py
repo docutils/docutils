@@ -44,7 +44,7 @@ class WriterPublishTestCase(unittest.TestCase):
                             'stylesheet_path': '/test.css',
                             'embed_stylesheet': False,
                         }).decode()
-                    self.assertEqual(output, case_expected)
+                    self.assertEqual(case_expected, output)
 
 
 if platform.system() == "Windows":

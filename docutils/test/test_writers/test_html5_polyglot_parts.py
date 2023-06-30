@@ -46,7 +46,7 @@ class Html5WriterPublishPartsTestCase(unittest.TestCase):
                             **settings_overrides,
                         }
                     )
-                    self.assertEqual(self.format_output(parts), case_expected)
+                    self.assertEqual(case_expected, self.format_output(parts))
 
     standard_content_type_template = '<meta charset="%s" />\n'
     standard_generator_template = '<meta name="generator"' \
