@@ -75,6 +75,10 @@ Changes since 0.20.1
   - Stop setting the "footnote-reference" class value for footnote references.
     Since 0.18, you can use the CSS selector ``[role="doc-noteref"]``.
 
+  - Support reading/embedding images with "file:" URIs.
+
+  - Warn, if image scaling fails because the image file cannot be read.
+
 
 Release 0.20.1 (2023-05-17)
 ===========================

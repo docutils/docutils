@@ -78,7 +78,7 @@ class RecordDependenciesTests(unittest.TestCase):
         expected = [paths[key] for key in keys]
         record, output = self.get_record(writer_name='xml')
         # the order of the files is arbitrary
-        self.assertEqual(sorted(record), sorted(expected))
+        self.assertEqual(sorted(expected), sorted(record))
 
     def test_dependencies_html(self):
         keys = ['include', 'raw']
@@ -86,11 +86,13 @@ class RecordDependenciesTests(unittest.TestCase):
             keys += ['figure-image', 'scaled-image']
         expected = [paths[key] for key in keys]
         # stylesheets are tested separately in test_stylesheet_dependencies():
-        settings = {'stylesheet_path': None, 'stylesheet': None}
+        settings = {'stylesheet_path': None,
+                    'stylesheet': None,
+                    'report_level': 4}  # drop warning if PIL is missing
         record, output = self.get_record(writer_name='html5',
                                          settings_overrides=settings)
         # the order of the files is arbitrary
-        self.assertEqual(sorted(record), sorted(expected),
+        self.assertEqual(sorted(expected), sorted(record),
                          msg='output is:\n'+output)
 
     def test_dependencies_latex(self):
@@ -106,13 +108,13 @@ class RecordDependenciesTests(unittest.TestCase):
                             writer_name='latex',
                             settings_overrides=latex_settings_overwrites)
         # the order of the files is arbitrary
-        self.assertEqual(sorted(record), sorted(expected),
+        self.assertEqual(sorted(expected), sorted(record),
                          msg='output is:\n'+output)
 
     def test_csv_dependencies(self):
         csvsource = str(DATA_ROOT / 'csv_dep.txt')
         record, output = self.get_record(source_path=csvsource)
-        self.assertEqual(record, [relpath(DATA_ROOT / 'csv_data.txt')],
+        self.assertEqual([relpath(DATA_ROOT / 'csv_data.txt')], record,
                          msg='output is:\n'+output)
 
     def test_stylesheet_dependencies(self):
