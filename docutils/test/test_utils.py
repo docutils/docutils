@@ -359,10 +359,10 @@ class HelperFunctionTests(unittest.TestCase):
                 os.path.join(TEST_ROOT, '..'))
         result = utils.find_file_in_dirs('alltests.py', dirs)
         expected = os.path.join(TEST_ROOT, 'alltests.py').replace('\\', '/')
-        self.assertEqual(result, expected)
+        self.assertEqual(expected, result)
         result = utils.find_file_in_dirs('HISTORY.txt', dirs)
         expected = (TEST_ROOT / '..' / 'HISTORY.txt').as_posix()
-        self.assertEqual(result, expected)
+        self.assertEqual(expected, result)
         # normalize for second check
         self.assertTrue(os.path.relpath(result, TEST_ROOT).startswith('..'),
                         'HISTORY.txt not found in "..".')

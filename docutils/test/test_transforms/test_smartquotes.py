@@ -49,7 +49,7 @@ class TransformTestCase(unittest.TestCase):
                     document.transformer.add_transform(TestMessages)
                     document.transformer.apply_transforms()
                     output = document.pformat()
-                    self.assertEqual(output, case_expected)
+                    self.assertEqual(case_expected, output)
 
         settings.language_code = 'de'
         for name, (transforms, cases) in totest_de.items():
@@ -66,7 +66,7 @@ class TransformTestCase(unittest.TestCase):
                     document.transformer.add_transform(FilterMessages, 890)
                     document.transformer.apply_transforms()
                     output = document.pformat()
-                    self.assertEqual(output, case_expected)
+                    self.assertEqual(case_expected, output)
 
         settings.smart_quotes = 'alternative'
         for name, (transforms, cases) in totest_de_alt.items():
@@ -80,7 +80,7 @@ class TransformTestCase(unittest.TestCase):
                     document.transformer.add_transform(TestMessages)
                     document.transformer.apply_transforms()
                     output = document.pformat()
-                    self.assertEqual(output, case_expected)
+                    self.assertEqual(case_expected, output)
 
         settings.smart_quotes = True
         settings.smartquotes_locales = [('de', '«»()'), ('nl', '„”’’')]
@@ -95,7 +95,7 @@ class TransformTestCase(unittest.TestCase):
                     document.transformer.add_transform(TestMessages)
                     document.transformer.apply_transforms()
                     output = document.pformat()
-                    self.assertEqual(output, case_expected)
+                    self.assertEqual(case_expected, output)
 
 
 totest = {}

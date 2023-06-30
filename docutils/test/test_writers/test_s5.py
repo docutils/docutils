@@ -41,7 +41,7 @@ class WriterPublishTestCase(unittest.TestCase):
                         writer_name=writer_name,
                         settings_overrides=settings.copy()
                         ).decode()
-                    self.assertEqual(output, case_expected)
+                    self.assertEqual(case_expected, output)
 
         settings['hidden_controls'] = False
         settings['view_mode'] = 'outline'
@@ -53,7 +53,7 @@ class WriterPublishTestCase(unittest.TestCase):
                         writer_name=writer_name,
                         settings_overrides=settings.copy()
                         ).decode()
-                    self.assertEqual(output, case_expected)
+                    self.assertEqual(case_expected, output)
 
 
 if platform.system() == "Windows":

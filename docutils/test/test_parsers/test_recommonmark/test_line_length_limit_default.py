@@ -40,7 +40,7 @@ class RecommonmarkParserTestCase(unittest.TestCase):
                     document = new_document('test data', settings.copy())
                     parser.parse(case_input, document)
                     output = document.pformat()
-                    self.assertEqual(output, case_expected)
+                    self.assertEqual(case_expected, output)
 
 
 totest = {}

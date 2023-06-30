@@ -49,7 +49,7 @@ class TransformTestCase(unittest.TestCase):
                     document.transformer.add_transform(TestMessages)
                     document.transformer.apply_transforms()
                     output = document.pformat()
-                    self.assertEqual(output, case_expected)
+                    self.assertEqual(case_expected, output)
 
 
 totest = {}

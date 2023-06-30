@@ -155,26 +155,26 @@ class DocutilsXMLTestCase(unittest.TestCase):
                 expected += generatedby
                 expected += bodynormal
                 result = publish_xml(settings, source)
-                self.assertEqual(result, expected.encode('latin1'))
+                self.assertEqual(expected.encode('latin1'), result)
 
     def test_publish_indents(self):
         settings = self.settings.copy()
         settings['indents'] = True
         result = publish_xml(settings, source)
         expected = (generatedby + bodyindents).encode('latin1')
-        self.assertEqual(result, expected)
+        self.assertEqual(expected, result)
 
     def test_publish_newlines(self):
         settings = self.settings.copy()
         result = publish_xml(settings, source)
         expected = (generatedby + bodynewlines).encode('latin1')
-        self.assertEqual(result, expected)
+        self.assertEqual(expected, result)
 
     def test_raw_xml(self):
         result = publish_xml(self.settings, raw_xml_source)
         expected = (generatedby
                     + raw_xml).encode('latin1', 'xmlcharrefreplace')
-        self.assertEqual(result, expected)
+        self.assertEqual(expected, result)
 
     def test_invalid_raw_xml(self):
         warnings = StringIO()
@@ -183,10 +183,9 @@ class DocutilsXMLTestCase(unittest.TestCase):
         result = publish_xml(settings, invalid_raw_xml_source)
         expected = (generatedby
                     + invalid_raw_xml).encode('latin1', 'xmlcharrefreplace')
-        self.assertEqual(result, expected)
+        self.assertEqual(expected, result)
         warnings.seek(0)
         self.assertEqual(
-            warnings.readlines(),
             ['<string>:5: '
              '(WARNING/2) Invalid raw XML in column 2, line offset 3:\n',
              '<root>\n',
@@ -194,7 +193,8 @@ class DocutilsXMLTestCase(unittest.TestCase):
              '</mismatch>\n',
              '<string>:10: '
              '(WARNING/2) Invalid raw XML in column 30, line offset 1:\n',
-             '<test>inline raw XML&lt;/test>\n'])
+             '<test>inline raw XML&lt;/test>\n'],
+            warnings.readlines())
         settings['halt_level'] = 2  # convert info messages to exceptions
         settings['warning_stream'] = ''
         with self.assertRaises(docutils.utils.SystemMessage):

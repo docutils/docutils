@@ -26,11 +26,11 @@ class ApplicationErrorTests(unittest.TestCase):
 
     def test_message(self):
         err = docutils.ApplicationError('the message')
-        self.assertEqual(str(err), 'the message')
+        self.assertEqual('the message', str(err))
 
     def test_non_ASCII_message(self):
         err = docutils.ApplicationError('\u0169')
-        self.assertEqual(str(err), '\u0169')
+        self.assertEqual('\u0169', str(err))
 
 
 class VersionInfoTests(unittest.TestCase):

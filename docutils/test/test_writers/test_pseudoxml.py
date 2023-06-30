@@ -36,7 +36,7 @@ class WriterPublishTestCase(unittest.TestCase):
                             '_disable_config': True,
                             'strict_visitor': True,
                         }).decode()
-                    self.assertEqual(output, case_expected)
+                    self.assertEqual(case_expected, output)
 
         for name, cases in totest_detailed.items():
             for casenum, (case_input, case_expected) in enumerate(cases):
@@ -49,7 +49,7 @@ class WriterPublishTestCase(unittest.TestCase):
                             'strict_visitor': True,
                             'detailed': True,
                         }).decode()
-                    self.assertEqual(output, case_expected)
+                    self.assertEqual(case_expected, output)
 
 
 totest = {}
