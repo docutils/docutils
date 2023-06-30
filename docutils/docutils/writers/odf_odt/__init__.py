@@ -23,8 +23,9 @@ import re
 import subprocess
 import tempfile
 import time
+from urllib.error import URLError
+from urllib.parse import urlparse
 from urllib.request import urlopen, url2pathname
-from urllib.error import HTTPError
 import weakref
 from xml.etree import ElementTree as etree
 from xml.dom import minidom
@@ -2117,9 +2118,10 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def visit_image(self, node):
         # Capture the image file.
-        source = node.attributes['uri']
-        if not (source.startswith('http:') or source.startswith('https:')):
-            source = url2pathname(source)
+        source = node['uri']
+        uri_parts = urlparse(source)
+        if uri_parts.scheme in ('', 'file'):
+            source = url2pathname(uri_parts.path)
             if not os.path.isabs(source):
                 # adapt relative paths
                 docsource, line = utils.get_source_line(node)
@@ -2129,30 +2131,29 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                         source = os.path.join(dirname, source)
             if not self.check_file_exists(source):
                 self.document.reporter.warning(
-                    'Cannot find image file %s.' % (source, ))
+                    f'Cannot find image file "{source}".')
                 return
         if source in self.image_dict:
             filename, destination = self.image_dict[source]
         else:
             self.image_count += 1
             filename = os.path.split(source)[1]
-            destination = 'Pictures/1%08x%s' % (self.image_count, filename, )
-            if source.startswith('http:') or source.startswith('https:'):
-                try:
-                    imgfile = urlopen(source)
-                    content = imgfile.read()
-                    imgfile.close()
-                    imgfile2 = tempfile.NamedTemporaryFile('wb', delete=False)
-                    imgfile2.write(content)
-                    imgfile2.close()
-                    imgfilename = imgfile2.name
-                    source = imgfilename
-                except HTTPError:
-                    self.document.reporter.warning(
-                        "Can't open image url %s." % (source, ))
-                spec = (source, destination,)
-            else:
+            destination = 'Pictures/1%08x%s' % (self.image_count, filename)
+            if uri_parts.scheme in ('', 'file'):
                 spec = (os.path.abspath(source), destination,)
+            else:
+                try:
+                    with urlopen(source) as imgfile:
+                        content = imgfile.read()
+                except URLError as err:
+                    self.document.reporter.warning(
+                        f'Cannot open image URL "{source}". {err}')
+                    return
+                with tempfile.NamedTemporaryFile('wb',
+                                                 delete=False) as imgfile2:
+                    imgfile2.write(content)
+                source = imgfile2.name
+                spec = (source, destination,)
             self.embedded_file_list.append(spec)
             self.image_dict[source] = (source, destination,)
         # Is this a figure (containing an image) or just a plain image?

@@ -60,6 +60,11 @@ Changes since 0.20.1
 
   - Fix placement of hyperlink target (label) for tables (bug #440).
 
+* docutils/writers/odf_odt/__init__.py
+
+  - Use context manager for image reading operations.
+    Catch `URLError` when `urllib.request.urlopen()` fails.
+
 * docutils/writers/s5_html/__init__.py
 
   - Warn if the S5 writer cannot copy the theme files.
