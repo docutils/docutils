@@ -493,13 +493,21 @@ def relative_path(source, target):
     Differences to `os.path.relpath()`:
 
     * Inverse argument order.
-    * `source` expects path to a FILE
-      while `start` in `os.path.relpath()` expects a DIRECTORY.
-      (You must add a "dummy" file name if the `source` is a directory.)
+    * `source` is assumed to be a FILE in the start directory (add a "dummy"
+      file name to obtain the path relative from a directory)
+      while `os.path.relpath()` expects a DIRECTORY as `start` argument.
     * Always use Posix path separator ("/") for the output.
     * Use `os.sep` for parsing the input
       (changing the value of `os.sep` is ignored by `os.relpath()`).
     * If there is no common prefix, return the absolute path to `target`.
+
+    Differences to `pathlib.PurePath.relative_to(other)`:
+
+    * Object oriented interface.
+    * `source` expects path to a FILE while `other` expects a DIRECTORY.
+    * No default value for `other`.
+    * Raise ValueError if relative path cannot be determined.
+    * Fails if target is not a subpath of `other` (no ".." inserted).
     """
     source_parts = os.path.abspath(source or type(target)('dummy_file')
                                    ).split(os.sep)

@@ -141,6 +141,12 @@ def register_directive(name, directive):
     _directives[name] = directive
 
 
+# conversion functions for `Directive.option_spec`
+# ------------------------------------------------
+#
+# see also `parsers.rst.Directive` in ../__init__.py.
+
+
 def flag(argument):
     """
     Check for a valid flag option (no argument) and return ``None``.
