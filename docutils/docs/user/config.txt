@@ -1237,8 +1237,9 @@ stylesheet_path
 
 A comma-separated list of paths to CSS stylesheets. Relative paths are
 expanded if a matching file is found in the stylesheet_dirs__.
-If embed_stylesheet__ is False, paths are rewritten relative to the
-output HTML file.
+If embed_stylesheet__ is False, paths are rewritten relative to
+the output HTML file (if output_ or ``<destination>`` are specified)
+or the current work directory.
 See also `stylesheet_path [latex writers]`_.
 
 Also overrides "stylesheet". [#override]_
@@ -1417,8 +1418,6 @@ Default: "link". Option: ``--image-loading``.
 
 New in Docutils 0.18.
 
-.. _base64: https://en.wikipedia.org/wiki/Base64
-.. _data URI: https://en.wikipedia.org/wiki/Data_URI_scheme
 .. _lazy loading attribute: https://html.spec.whatwg.org/multipage/
     urls-and-fetching.html#lazy-loading-attributes
 
@@ -1841,9 +1840,9 @@ stylesheet_path
 
 A comma-separated list of style files. Relative paths are expanded if a
 matching file is found in the stylesheet_dirs__.
-If embed_stylesheet__ is False, paths are rewritten relative to the
-output file path. Run ``latex`` from the directory containing
-the output file.
+If embed_stylesheet__ is False, paths are rewritten relative to
+the output file (if output_ or ``<destination>`` are specified)
+or the current work directory.
 See also `stylesheet_path [html writers]`_.
 
 For files in the `TeX input path`_, the stylesheet__  option is recommended.
@@ -2074,7 +2073,7 @@ Options: ``--cloak-email-addresses, --no-cloak-email-addresses``.
 custom_header
 ~~~~~~~~~~~~~
 
-Specify the contents of a custom header line.  
+Specify the contents of a custom header line.
 See section "`Custom header/footers`_" in the ODT Writer documentation
 for details.
 
@@ -2085,7 +2084,7 @@ Option: ``--custom-odt-header``.
 custom_footer
 ~~~~~~~~~~~~~
 
-Specify the contents of a custom footer line.  
+Specify the contents of a custom footer line.
 See section "`Custom header/footers`_" in the ODT Writer documentation
 for details.
 
@@ -2122,16 +2121,16 @@ odf_config_file
 ~~~~~~~~~~~~~~~
 
 Specify a configuration/mapping file relative to the current working
-directory for additional ODF options. 
+directory for additional ODF options.
 In particular, this file may contain a mapping of default style names to
-names used in the resulting output file. 
+names used in the resulting output file.
 See section `How to use custom style names`__ in the
 ODT Writer documentation for details.
 
 Default: None.
 Option: ``--odf-config-file``.
 
-__ odt.html#how-to-use-custom-style-names    
+__ odt.html#how-to-use-custom-style-names
 
 
 stylesheet
@@ -2143,7 +2142,7 @@ for details.
 Default: writers/odf_odt/styles.odt in the installation directory.
 Option: ``--stylesheet``.
 
-.. _styles and classes: odt.html#styles-and-classes    
+.. _styles and classes: odt.html#styles-and-classes
 
 
 table_border_thickness
