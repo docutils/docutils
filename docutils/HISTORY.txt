@@ -30,6 +30,8 @@ Changes since 0.20.1
     configuration setting is None, '', 'utf-8-sig', 'utf-16', or 'utf-32'.
     Do not remove other ZWNBSPs.
 
+  - Auto-close `FileInput.source` in case of reading/decoding errors.
+
   .. _UTF-8 mode: https://docs.python.org/3/library/os.html#utf8-mode
   .. _input encoding: docs/api/publisher.html#encodings
 
@@ -64,6 +66,8 @@ Changes since 0.20.1
 
   - Use context manager for image reading operations.
     Catch `URLError` when `urllib.request.urlopen()` fails.
+
+  - Convert image URI to path if accessing a local file. Fixes bug #153.
 
 * docutils/writers/s5_html/__init__.py
 
