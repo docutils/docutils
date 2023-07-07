@@ -400,17 +400,19 @@ class FileInput(Input):
         """
         Read and decode a single file, return as `str`.
         """
-        if not self.encoding and hasattr(self.source, 'buffer'):
-            # read as binary data
-            data = self.source.buffer.read()
-            # decode with heuristics
-            data = self.decode(data)
-            # normalize newlines
-            data = '\n'.join(data.splitlines()+[''])
-        else:
-            data = self.source.read()
-        if self.autoclose:
-            self.close()
+        try:
+            if not self.encoding and hasattr(self.source, 'buffer'):
+                # read as binary data
+                data = self.source.buffer.read()
+                # decode with heuristics
+                data = self.decode(data)
+                # normalize newlines
+                data = '\n'.join(data.splitlines()+[''])
+            else:
+                data = self.source.read()
+        finally:
+            if self.autoclose:
+                self.close()
         return data
 
     def readlines(self):
