@@ -11,14 +11,15 @@ __docformat__ = 'reStructuredText'
 
 import csv
 from pathlib import Path
-import warnings
-
-from docutils import io, nodes, statemachine, utils
-from docutils.utils import SystemMessagePropagation
-from docutils.parsers.rst import Directive
-from docutils.parsers.rst import directives
 from urllib.request import urlopen
 from urllib.error import URLError
+import warnings
+
+from docutils import nodes, statemachine, utils
+from docutils.io import FileInput, StringInput
+from docutils.parsers.rst import Directive
+from docutils.parsers.rst import directives
+from docutils.utils import SystemMessagePropagation
 
 
 def align(argument):
@@ -321,9 +322,9 @@ class CSVTable(Table):
         Get CSV data from the directive content, from an external
         file, or from a URL reference.
         """
-        encoding = self.options.get(
-            'encoding', self.state.document.settings.input_encoding)
-        error_handler = self.state.document.settings.input_encoding_error_handler  # noqa:E501
+        settings = self.state.document.settings
+        encoding = self.options.get('encoding', settings.input_encoding)
+        error_handler = settings.input_encoding_error_handler
         if self.content:
             # CSV data is from directive content.
             if 'file' in self.options or 'url' in self.options:
@@ -348,9 +349,9 @@ class CSVTable(Table):
             _base = Path(self.state.document.current_source).parent
             source = utils.relative_path(None, _base/source)
             try:
-                csv_file = io.FileInput(source_path=source,
-                                        encoding=encoding,
-                                        error_handler=error_handler)
+                csv_file = FileInput(source_path=source,
+                                     encoding=encoding,
+                                     error_handler=error_handler)
                 csv_data = csv_file.read().splitlines()
             except OSError as error:
                 severe = self.reporter.severe(
@@ -360,7 +361,7 @@ class CSVTable(Table):
                     line=self.lineno)
                 raise SystemMessagePropagation(severe)
             else:
-                self.state.document.settings.record_dependencies.add(source)
+                settings.record_dependencies.add(source)
         elif 'url' in self.options:
             source = self.options['url']
             try:
@@ -373,10 +374,9 @@ class CSVTable(Table):
                       nodes.literal_block(self.block_text, self.block_text),
                       line=self.lineno)
                 raise SystemMessagePropagation(severe)
-            csv_file = io.StringInput(
-                source=csv_text, source_path=source, encoding=encoding,
-                error_handler=(self.state.document.settings.
-                               input_encoding_error_handler))
+            csv_file = StringInput(source=csv_text, source_path=source,
+                                   encoding=encoding,
+                                   error_handler=error_handler)
             csv_data = csv_file.read().splitlines()
         else:
             error = self.reporter.warning(
