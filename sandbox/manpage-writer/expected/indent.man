@@ -44,8 +44,7 @@ Line3.
 .INDENT 7.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 Indented line 1.
 Indented line 2.
 Indented line 3.
@@ -53,8 +52,7 @@ Indented line 3.
 Indented line 4.
 Indented line 5.
 Indented line 6.
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp

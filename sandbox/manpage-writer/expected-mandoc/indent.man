@@ -33,8 +33,8 @@ indent \- test indentation blocks
 .SH OPTION BLOCK
 .sp
 an option block, and within it, a part of the text block indented.
-the rest of the text (\(dqMore lines 1\(dq, etc.) isn\(aqt aligned at the same
-level as \(dqLine1\(dq.  Instead, they\(aqre flush left to the screen
+the rest of the text (\(dqMore lines 1\(dq, etc.) aligned at the same
+level as \(dqLine1\(dq.
 .INDENT 0.0
 .TP
 .BI \-l\fP,\fB  \-\-color\-limit \ limit
@@ -44,8 +44,7 @@ Line3.
 .INDENT 7.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 Indented line 1.
 Indented line 2.
 Indented line 3.
@@ -53,8 +52,7 @@ Indented line 3.
 Indented line 4.
 Indented line 5.
 Indented line 6.
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp

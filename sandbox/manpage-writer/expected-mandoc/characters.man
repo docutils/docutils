@@ -36,13 +36,11 @@ In mercurial the following substitutions are in use:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 \&.. |hg(1)| replace:: **hg**\e (1)
 \&.. |hgrc(5)| replace:: **hgrc**\e (5)
 \&.. |hgignore(5)| replace:: **hgignore**\e (5)
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp

@@ -287,11 +287,9 @@ normalerweise in dem durch POSIX 1003.1 definierten Format angegeben:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 <Sprache>[_<Region>[.<Zeichensatz>[,<Version>]]]
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -340,11 +338,9 @@ Zeichenkette muss folgendes Aussehen haben:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 \(aq\e\(dq <Zeichenkette>
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -429,12 +425,10 @@ verwendet wird ist:
 .INDENT 7.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 \e Manual\e page\e \e$MAN_PN\e ?ltline\e %lt?L/%L.:
 byte\e %bB?s/%s..?\e (END):?pB %pB\e\e%..
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp

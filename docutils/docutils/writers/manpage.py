@@ -220,7 +220,7 @@ class Translator(nodes.NodeVisitor):
                 'definition_list_item': ('.TP', ''),  # par. with hanging tag
                 'field_name': ('.TP\n.B ', '\n'),
                 'literal': ('\\fB', '\\fP'),
-                'literal_block': ('.sp\n.nf\n.ft C\n', '\n.ft P\n.fi\n'),
+                'literal_block': ('.sp\n.EX\n', '\n.EE\n'),
 
                 'option_list_item': ('.TP\n', ''),
 
