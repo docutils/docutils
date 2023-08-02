@@ -88,6 +88,10 @@ Changes since 0.20.1
 
   - Warn, if image scaling fails because the image file cannot be read.
 
+* docutils/writers/manpage.py
+
+  - Apply literal block patch #205. Use ``.EE`` and ``.EX`` macros.
+    Thanks to G. Branden Robinson (I assume).
 
 Release 0.20.1 (2023-05-17)
 ===========================

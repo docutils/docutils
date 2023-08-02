@@ -192,14 +192,12 @@ with the colon.
 .UNINDENT
 .SS Doctest Blocks
 .sp
-.nf
-.ft C
+.EX
 >>> print \(aqPython\-specific usage examples; begun with \(dq>>>\(dq\(aq
 Python\-specific usage examples; begun with \(dq>>>\(dq
 >>> print \(aq(cut and pasted from interactive Python sessions)\(aq
 (cut and pasted from interactive Python sessions)
-.ft P
-.fi
+.EE
 .SS Tables
 .TS
 center;
@@ -237,14 +235,12 @@ some literal text
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 here now it starts
 and continues
   indented
 and back
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -254,12 +250,10 @@ some special characters and roff formatting in literal:
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 \&.SS \(dq.\(dq at line start
 backslash \(dq\e\(dq
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .SS Line blocks
