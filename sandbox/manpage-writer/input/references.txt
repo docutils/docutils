@@ -8,7 +8,55 @@ some tests for references in man pages
 See https://docutils.sourceforge.io/docs/user/rst/quickref.html#explicit-markup
 for more 
 
+Only the direct urls as above are supported ... unitl now.
+
 External hyperlinks, like Python_.
 
-.. _Python: http://www.python.org/ 
+Want to learn about `my favorite programming language`_?
 
+.. _my favorite programming language: https://www.python.org
+
+Clicking on this internal hyperlink will take us to the target_
+below.
+
+.. _target:
+
+The hyperlink target above points to this paragraph.
+
+* bullet list
+
+  .. _`second item`:
+
+* second item, with hyperlink target.
+
+See the Python_ home page for info.
+
+`Write to me`_ with your questions.
+
+.. _Python: https://www.python.org
+.. _Write to me: jdoe@example.com
+
+The one-liner_ and starts-on-this-line_ or entirely-below_ point to  https://docutils.sourceforge.io/rst.html and in man are ... ?
+
+.. _one-liner: https://docutils.sourceforge.io/rst.html
+
+.. _starts-on-this-line: https://
+   docutils.sourceforge.net/rst.html
+
+.. _entirely-below:
+   https://docutils.
+   sourceforge.net/rst.html
+
+Escaped whitespace is preserved as intentional spaces, e.g.:
+
+.. _reference: ../local\ path\ with\ spaces.html
+
+some reference_ to a local path.
+
+Anonymous hyperlink references are specified with two underscores instead of one:
+
+See `the web site of my favorite programming language`__.
+
+Anonymous targets begin with ".. __:"; no reference name is required or allowed:
+
+.. __: https://www.python.org
