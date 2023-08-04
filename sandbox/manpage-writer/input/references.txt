@@ -2,13 +2,45 @@
 reference tests
 ===============
 
-some tests for references in man pages
---------------------------------------
+how to markup
+-------------
+
+link adr in .UR .UE or simply in parantheses
+
+* man and mandoc convert UR/UE to ``<`` and ``>``.
+* pandoc transforms ::
+ 
+    See the `Python home page <https://www.python.org>`_ for info.
+
+  to ::
+
+    see See the Python home page (https://www.python.org) for info.
+
+test for references in man pages
+--------------------------------
+
+embedded in a paragraph
+
+- at line start
+- in line
+- at eol
+
+at start of paragraph
+
+- followed by text
+- at eol
+
+at end of paragraph
+
+tests
+-----
 
 See https://docutils.sourceforge.io/docs/user/rst/quickref.html#explicit-markup
 for more 
 
 Only the direct urls as above are supported ... unitl now.
+
+See the `Python home page <https://www.python.org>`_ for info.
 
 External hyperlinks, like Python_.
 
