@@ -214,7 +214,6 @@ class Translator(nodes.NodeVisitor):
         # ``.ft P`` or ``\\fP`` pop from stack.
         # But ``.BI`` seams to fill stack with BIBIBIBIB...
         # ``B`` bold, ``I`` italic, ``R`` roman should be available.
-        # Hopefully ``C`` courier too.
         self.defs = {
                 'indent': ('.INDENT %.1f\n', '.UNINDENT\n'),
                 'definition_list_item': ('.TP', ''),  # par. with hanging tag
