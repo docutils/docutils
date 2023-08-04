@@ -206,7 +206,7 @@ Tip:
   shell script containing the following lines::
 
       # source this file
-      export PYTHONPATH=$PWD:$PWD
+      export PYTHONPATH=$PWD:$PYTHONPATH
       export PATH=$PWD/tools:$PATH
 
   Open a shell for this branch, ``cd`` to the ``docutils`` top-level
