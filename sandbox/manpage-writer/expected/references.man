@@ -29,12 +29,63 @@ level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
 ..
 .TH "REFERENCE TESTS"  "" ""
 .SH NAME
-reference tests \- some tests for references in man pages
+reference tests \- 
+.SH HOW TO MARKUP
+.sp
+link adr in .UR .UE or simply in parantheses
+.INDENT 0.0
+.IP \(bu 2
+man and mandoc convert UR/UE to \fB<\fP and \fB>\fP\&.
+.IP \(bu 2
+pandoc transforms
+.INDENT 2.0
+.INDENT 3.5
+.sp
+.EX
+See the \(gaPython home page <https://www.python.org>\(ga_ for info.
+.EE
+.UNINDENT
+.UNINDENT
+.sp
+to
+.INDENT 2.0
+.INDENT 3.5
+.sp
+.EX
+see See the Python home page (https://www.python.org) for info.
+.EE
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.SH TEST FOR REFERENCES IN MAN PAGES
+.sp
+embedded in a paragraph
+.INDENT 0.0
+.IP \(bu 2
+at line start
+.IP \(bu 2
+in line
+.IP \(bu 2
+at eol
+.UNINDENT
+.sp
+at start of paragraph
+.INDENT 0.0
+.IP \(bu 2
+followed by text
+.IP \(bu 2
+at eol
+.UNINDENT
+.sp
+at end of paragraph
+.SH TESTS
 .sp
 See \fI\%https://docutils.sourceforge.io/docs/user/rst/quickref.html#explicit\-markup\fP
 for more
 .sp
 Only the direct urls as above are supported ... unitl now.
+.sp
+See the \fI\%Python home page\fP for info.
 .sp
 External hyperlinks, like \fI\%Python\fP\&.
 .sp
