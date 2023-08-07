@@ -411,7 +411,11 @@ with character formatting.
 This is a file.
 .SH SEE ALSO
 .sp
-\fI\%docutils\fP
+
+'UR http://docutils.sourceforge.net
+docutils
+'UE
+
 .sp
 \fBrst2xml\fP(dummy)
 .sp
@@ -419,7 +423,10 @@ More information can be found about
 .INDENT 0.0
 .IP \(bu 2
 xml\-schema\-catalog at
-\fI\%http://xml\-schema\-catalog.origo.ethz.ch/\fP
+
+'UR http://xml\-schema\-catalog.origo.ethz.ch/
+'UE
+
 .UNINDENT
 .sp
 And see the stars at the sky!

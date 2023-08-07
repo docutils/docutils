@@ -140,6 +140,8 @@ OPTIONS
 OtHeR SECTION
 =============
 
+link to http://docutils.sourceforge.io
+
 With mixed case.
 
 .. Attention::
@@ -188,6 +190,11 @@ Show this program\(aqs version number and exit.
 Show this help message and exit.
 .UNINDENT
 .SH OTHER SECTION
+.sp
+link to 
+'UR http://docutils.sourceforge.io
+'UE
+
 .sp
 With mixed case.
 .sp
