@@ -46,7 +46,15 @@ In mercurial the following substitutions are in use:
 .sp
 resulting in.
 .sp
-\fI\%\fBhgignore\fP(5)\fP, \fI\%\fBhgrc\fP(5)\fP
+
+'UR hgignore.5.html
+\fBhgignore\fP(5)
+'UE
+, 
+'UR hgrc.5.html
+\fBhgrc\fP(5)
+'UE
+
 .SH DESCRIPTION
 .sp
 encodings are problematic as alway.

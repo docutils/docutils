@@ -38,8 +38,6 @@ tests
 See https://docutils.sourceforge.io/docs/user/rst/quickref.html#explicit-markup
 for more 
 
-Only the direct urls as above are supported ... unitl now.
-
 See the `Python home page <https://www.python.org>`_ for info.
 
 External hyperlinks, like Python_.
