@@ -5,9 +5,9 @@ Use for sanity checks from time to time.
 Find with 
 TODO and then find the source::
 
-  for F in $(zgrep rst2man /usr/share/man/man1/*|cut -d: -f1|uniq) ;  do dpkg -S $F ;  done | cut -d: -f1 |sort|uniq
+  for F in $(zgrep rst2man /usr/share/man/*/*|cut -d: -f1|uniq) ;  do dpkg -S $F ;  done | cut -d: -f1 |sort|uniq
 
-Also search other man-directories::
+::
 
   alsa-utils
   bind9-dnsutils
