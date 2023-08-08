@@ -2,7 +2,8 @@ List of projects using the manpage-writer to generate their man-pages.
 
 Use for sanity checks from time to time.
 
-Find with ::
+Find with 
+TODO and then find the source::
 
   for F in $(zgrep rst2man /usr/share/man/man1/*|cut -d: -f1|uniq) ;  do dpkg -S $F ;  done | cut -d: -f1 |sort|uniq
 
