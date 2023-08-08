@@ -1,0 +1,37 @@
+List of projects using the manpage-writer to generate their man-pages.
+
+Use for sanity checks from time to time.
+
+Find with ::
+
+  for F in $(zgrep rst2man /usr/share/man/man1/*|cut -d: -f1|uniq) ;  do dpkg -S $F ;  done | cut -d: -f1 |sort|uniq
+
+Also search other man-directories::
+
+  alsa-utils
+  bind9-dnsutils
+  bind9-host
+  bluez
+  btrfs-progs
+  ghc
+  init-system-helpers
+  libgdk-pixbuf2.0-bin
+  libgtk-4-bin
+  mpv
+  pdfposter
+  pipewire-bin
+  pipewire-pulse
+  proj-bin
+  python3-minimal
+  python3-mutagen
+  python3-pip
+  sddm
+  snapd
+  texlive-latex-extra
+  texlive-luatex
+
+  manpages: /usr/share/man/man7/bpf-helpers.7.gz
+  
+  
+  
+  
