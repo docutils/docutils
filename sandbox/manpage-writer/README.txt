@@ -2,6 +2,10 @@
  Manpage test area
 ===================
 
+.. note::
+
+  New semantic format mdoc https://mandoc.bsd.lv/
+
 Additionally to standard testing, here we try to include tests that process
 the generated man pages and verify the output.
 
