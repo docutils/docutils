@@ -93,6 +93,11 @@ Changes since 0.20.1
   - Apply literal block patch #205. Use ``.EE`` and ``.EX`` macros.
     Thanks to G. Branden Robinson (I assume).
 
+* Add language support for georgian language (thanks to NorwayFun)
+
+  - docutils/languages/ka.py
+  - docutils/parsers/rst/languages/ka.py
+
 Release 0.20.1 (2023-05-17)
 ===========================
 
