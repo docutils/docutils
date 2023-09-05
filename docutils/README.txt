@@ -133,7 +133,8 @@ The `Python Packaging User Guide`_ gives details how to
 
          pip install -e .  # editable install
          pip install .     # regular install
-         python setup.py   # regular install with setuptools
+
+     or do a `"manual" install`_.
 
   4. Optional steps:
 
@@ -162,6 +163,7 @@ The `Python Packaging User Guide`_ gives details how to
 .. _"editable" install:
     https://pip.pypa.io/en/stable/topics/local-project-installs/
     #editable-installs
+.. _"manual" install: docs/dev/repository.html#manual-install
 
 
 GNU/Linux, BSDs, Unix, Mac OS X, etc.

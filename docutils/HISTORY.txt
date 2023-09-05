@@ -35,6 +35,14 @@ Changes since 0.20.1
   .. _UTF-8 mode: https://docs.python.org/3/library/os.html#utf8-mode
   .. _input encoding: docs/api/publisher.html#encodings
 
+* docutils/languages/, docutils/parsers/rst/languages/
+
+  - Mark/Fix mistranslated localizations of the "admonition" directive
+    name. In Docutils, "admonition" is used as a generic term for
+    "advice"/"advisory"/"remark", not a reprimand.
+
+  - Add support for Georgian language (patch #204 by Temuri Doghonadze).
+
 * docutils/nodes.py
 
   - Remove compatibility hacks `nodes.reprunicode` and `nodes.ensure_str()`.
@@ -47,12 +55,6 @@ Changes since 0.20.1
   - Move `parsers.rst.directives.Table.process_header_option()` to
     `parsers.rst.directives.CSVTable`.
 
-* docutils/parsers/rst/languages/
-
-  Mark/Fix mistranslated localizations of the "admonition" directive name.
-  In Docutils, "admonition" is used as a generic term for
-  "advice"/"advisory"/"remark", not a reprimand.
-
 * docutils/utils/roman.py
 
   - Update to version `1.4 <https://pypi.org/project/roman/4.1/>`__.
@@ -61,6 +63,11 @@ Changes since 0.20.1
 * docutils/writers/latex2e/__init__.py
 
   - Fix placement of hyperlink target (label) for tables (bug #440).
+
+* docutils/writers/manpage.py
+
+  - Apply literal block patch #205. Use ``.EE`` and ``.EX`` macros.
+    Thanks to G. Branden Robinson (I assume).
 
 * docutils/writers/odf_odt/__init__.py
 
@@ -88,15 +95,6 @@ Changes since 0.20.1
 
   - Warn, if image scaling fails because the image file cannot be read.
 
-* docutils/writers/manpage.py
-
-  - Apply literal block patch #205. Use ``.EE`` and ``.EX`` macros.
-    Thanks to G. Branden Robinson (I assume).
-
-* Add language support for georgian language (thanks to Temuri Doghonadze)
-
-  - docutils/languages/ka.py
-  - docutils/parsers/rst/languages/ka.py
 
 Release 0.20.1 (2023-05-17)
 ===========================
@@ -1109,8 +1107,8 @@ Release 0.14 (2017-08-03)
 
 * docutils/writers/odf_odt/__init__.py
 
-  - Command line setting `language`_ now sets the default language
-    of the generated ODF document.
+  - Command line setting `language`_ now sets the default language of the
+  generated ODF document.
   - The use of image directive options :width: (%), :scale:, etc now
     set the width/height/size of images in the generated ODF
     documents.

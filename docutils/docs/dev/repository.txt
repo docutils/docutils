@@ -147,6 +147,8 @@ We'll assume that the Docutils "trunk" is checked out under the
 
    __ https://pip.pypa.io/en/stable/topics/local-project-installs/
       #editable-installs
+      
+   .. _manual install:
 
 2. Install "manually".
 
@@ -189,9 +191,7 @@ We'll assume that the Docutils "trunk" is checked out under the
          ln -s ~/projects/docutils/docutils/tools/docutils-cli.py \
                /usr/local/bin/docutils
 
-3. Do a regular install. Repeat after any change. ::
-
-       ./setup.py install
+3. Do a regular install. Repeat after any change.
 
    .. CAUTION::
 

@@ -51,8 +51,8 @@ Steps to take and watch
 
 * Generate wheel and source-distribution::
 
-    python3 setup.py sdist
-    python3 setup.py bdist_wheel
+    python3 -m pip install build
+    python3 -m build .
 
 * check sdist for html-files in docutils.egg-info.
 * Upload wheel and source to test.pypi::

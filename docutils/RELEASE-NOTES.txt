@@ -102,8 +102,8 @@ Writers
 
     .. _reference-label: docs/user/config.html#reference-label
 
-
 * "null" writer: output will change to the empty string in Docutils 0.22.
+
 
 Misc
 ----
@@ -134,11 +134,12 @@ Misc
 * Remove mistranslated localizations of the "admonition" directive name in
   Docutils 0.22 or later.
 
-  Use the English term (or specific admonitions) instead of
-  "aanmaning" (nl), "admonition" (fr), "ammonizione" (it),
-  "ermahnung" (de), "exhortación" (es), "formaning" (da), "sciigo" (eo),
-  "upomnienie" (pl), "vermaning" (af), to avoid errors in future
-  conversions.
+  Use the English term, matching translations introduced in Docutils 0.21,
+  or specific admonitions instead of "aanmaning" (nl),
+  "admonition" (fr), "ammonizione" (it), "ermahnung" (de),
+  "exhortación" (es), "formaning" (da), "sciigo" (eo),
+  "upomnienie" (pl), "vermaning" (af),
+  to avoid errors in future conversions.
 
 .. _front end tools: docs/user/tools.html
 .. _input_encoding: docs/user/config.html#input-encoding
@@ -197,9 +198,14 @@ Release 0.21 (unpublished)
 * Use the same CSV format for the ``:header:`` option and the main data
   of the "csv-table_" directive.
 
-* Remove the compatibility hacks `nodes.reprunicode` and `nodes.ensure_str()`.
+* Removed objects:
 
-* Remove file ``install.py``. See README.txt__ for alternatives.
+  - `nodes.reprunicode` and `nodes.ensure_str()`
+    (not required with Python 3),
+    `utils.Reporter.set_conditions()` (obsolete)
+    `core.Publisher.setup_option_parser()` (internal, obsolete)
+
+  - File ``install.py``. See README.txt__ for alternatives.
 
 .. _csv-table: docs/ref/rst/directives.html#csv-table
 __ README.html#installation
