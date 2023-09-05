@@ -117,6 +117,7 @@ what-you-see-is-what-you-get plaintext markup syntax.""",  # wrap at col 60
         'Natural Language :: Finnish',
         'Natural Language :: French',
         'Natural Language :: Galician',
+        'Natural Language :: Georgian',
         'Natural Language :: German',
         'Natural Language :: Hebrew',
         'Natural Language :: Italian',
