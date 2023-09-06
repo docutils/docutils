@@ -1,0 +1,153 @@
+From: "G. Milde" <g.milde@web.de>
+To: docutils-users@lists.sourceforge.net
+Cc: 
+Bcc: 
+Subject: Re: [Docutils-users] Re: figure that is not an image
+Reply-To: 
+In-Reply-To: <4326DCE7.4010608@python.org>
+
+On 13.09.05, David Goodger wrote:
+> I suggest the following:
+> 
+> 1. Rename the existing "figure" directive to "old-figure" 
+> 2. Create a new directive "new-figure", with the new syntax
+> 3. Create a new "figure" directive, a wrapper  
+> 4. At some point in the future (0.5 or 0.6 or past a certain date),
+>    remove the wrapper from #3 and alias "figure" to "new-figure".
+>    Leave "old-figure" alone.
+
+I would rather use a new name for a generic "numbered, listable piece of
+document" (with the new syntax). 
+
+Suggestions would be 
+
+  * "sequence" (with the now discussed use as definition of a new counter and
+    prefix renamed to e.g. "new-sequence" or "new-sequence-type")
+    
+  * "inset"
+  
+  * "float"     (for the LaTeX inclined, even if it does not float in html)
+  
+  * "listable"  (as this is one of the main features)
+
+
+
+Examples of use::  
+
+  .. inset:: Gnus and Gnats
+     :type: figure
+     
+     .. image:: gnus.jpg
+     
+     
+  .. inset:: Gnu population
+     :type: table
+     
+     Year   Numbers
+     ----   -------
+     2004      3
+     2005     23
+
+
+  .. inset-type:: examples
+    :prefix: Example :counter:`examples`:
+
+     
+  .. inset:: A classical example
+     :type: example
+     
+     ::
+       
+       print "Hello world!"
+     
+     
+     
+     
+     
+
+ 
+>     .. sequence:: examples
+>        :prefix: Example :counter:`examples`:
+> 
+> I'm using the :prefix: option for text to add before the caption text.
+> We could also have a :suffix: option for text to add after the caption
+> text, but that may be over-engineering at this point.
+> 
+> I wouldn't put the "advance the counter" functionality in the counter
+> role:
+> 
+>     .. sequence:: listings
+>        :prefix: Listing :counter:`chapters`.:counter:`examples`:
+> 
+> The sequence-advancing functionality should be in the formal object
+> itself.  Otherwise, in the example above, the "chapters" sequence
+> would advance every time there was a listing!
+> 
+> The "sequence" directive could be made such that the default
+> interpreted text role **in its context** is :counter:.  Then we'd
+> have:
+> 
+>     .. sequence:: listings
+>        :prefix: Listing `chapters`.`examples`:
+> 
+> >     .. figure::
+> >        :caption: Figure :counter:`figure name`: A biohazard.
+> >
+> >        ... contents ...
+> >
+> >     See figure :counter-reference:`figure name` for details.
+> >
+> >     (Equivalent: See :cref:`figure name` for details.)
+> >
+> > This would make the :counter: role parallel to the :cref: role,
+> > i.e., they have the same syntax.
+> 
+> Since the :counter: role could have a different interpretation inside
+> a "sequence" directive than outside, we could also use :counter:
+> instead of :counter-reference:/:cref:.
+> 
+> > To add new counters, create a new role:
+> >
+> >     .. role:: figure(counter)
+> >     .. role:: table(counter)
+> 
+> I'd rather that new counters be created as a direct result of the
+> "sequence" directive.
+> 
+> > Maybe those two could be built in for convenience.
+> 
+> Yes, those two sequences would be built-in.
+> 
+> > The naming may need improvement (maybe call it "number" instead of
+> > "counter", etc.), but I think that this realization of
+> > auto-numbering has several advantages:
+> >
+> > * Parallel syntax (:counter:`figure name`, :cref:`figure name`).
+> >
+> > * No cluttering of directive code -- the :counter: directive can be
+> >   used anywhere.  That seems more orthogonal.
+> 
+> Hmm.  Is that an argument against using :counter: in both contexts?  I
+> suppose it is possible for a formal object *caption* to contain a
+> counter reference.  But I can't imagine a *sequence definition* (i.e.,
+> :prefix: option) needing a counter reference.
+> 
+> > * No internationalization required.
+> >
+> > The only disadvantage is that the name of the sequence
+> > (e.g. "Figure") has to be spelled out explicitly in the figure
+> > caption.
+> 
+> That's a big disadvantage.  The overhead of having to write
+> 
+>     Figure :counter:`figures`: caption text
+> 
+> is too much.  We'll require the internationalization.
+> 
+> --
+> David Goodger <http://python.net/~goodger>
+
+
+
+-- 
+G.Milde web.de
