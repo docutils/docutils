@@ -20,6 +20,7 @@ Changes since 0.20.1
 * Drop support for Python 3.7 and 3.8.
 
 * Updated build stystem to use Flit_ (cf. patch #186 by Adam Turner).
+  Removed ``setup.py``.
 
   .. _Flit: https://github.com/pypa/flit/
 
