@@ -1,9 +1,10 @@
 # $Id$
-# Author: Ivan Vilata i Balaguer <ivan@selidor.net>
+# Authors: Ivan Vilata i Balaguer <ivan@selidor.net>;
+#          Antoni Bella Pérez <antonibella5@yahoo.com>
 # Copyright: This module has been placed in the public domain.
 
-# New language mappings are welcome.  Before doing a new translation, please
-# read <https://docutils.sourceforge.io/docs/howto/i18n.html>.
+# New language mappings are welcome.  Before doing a new translation,
+# please read <https://docutils.sourceforge.io/docs/howto/i18n.html>.
 # Two files must be translated for each language: one in docutils/languages,
 # the other in docutils/parsers/rst/languages.
 
@@ -17,17 +18,17 @@ labels = {
       # fixed: language-dependent
       'author': 'Autor',
       'authors': 'Autors',
-      'organization': 'Organitzaci\u00F3',
-      'address': 'Adre\u00E7a',
+      'organization': 'Organització',
+      'address': 'Adreça',
       'contact': 'Contacte',
-      'version': 'Versi\u00F3',
-      'revision': 'Revisi\u00F3',
+      'version': 'Versió',
+      'revision': 'Revisió',
       'status': 'Estat',
       'date': 'Data',
       'copyright': 'Copyright',
-      'dedication': 'Dedicat\u00F2ria',
+      'dedication': 'Dedicatòria',
       'abstract': 'Resum',
-      'attention': 'Atenci\u00F3!',
+      'attention': 'Atenció!',
       'caution': 'Compte!',
       'danger': 'PERILL!',
       'error': 'Error',
@@ -35,7 +36,7 @@ labels = {
       'important': 'Important',
       'note': 'Nota',
       'tip': 'Consell',
-      'warning': 'Av\u00EDs',
+      'warning': 'Avís',
       'contents': 'Contingut'}
 """Mapping of node class name to label text."""
 
@@ -43,15 +44,15 @@ bibliographic_fields = {
       # language-dependent: fixed
       'autor': 'author',
       'autors': 'authors',
-      'organitzaci\u00F3': 'organization',
-      'adre\u00E7a': 'address',
+      'organització': 'organization',
+      'adreça': 'address',
       'contacte': 'contact',
-      'versi\u00F3': 'version',
-      'revisi\u00F3': 'revision',
+      'versió': 'version',
+      'revisió': 'revision',
       'estat': 'status',
       'data': 'date',
       'copyright': 'copyright',
-      'dedicat\u00F2ria': 'dedication',
+      'dedicatòria': 'dedication',
       'resum': 'abstract'}
 """Catalan (lowcased) to canonical name mapping for bibliographic fields."""
 
