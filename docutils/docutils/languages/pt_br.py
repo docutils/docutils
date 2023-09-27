@@ -17,41 +17,41 @@ labels = {
       # fixed: language-dependent
       'author': 'Autor',
       'authors': 'Autores',
-      'organization': 'Organiza\u00E7\u00E3o',
-      'address': 'Endere\u00E7o',
+      'organization': 'Organização',
+      'address': 'Endereço',
       'contact': 'Contato',
-      'version': 'Vers\u00E3o',
-      'revision': 'Revis\u00E3o',
+      'version': 'Versão',
+      'revision': 'Revisão',
       'status': 'Estado',
       'date': 'Data',
       'copyright': 'Copyright',
-      'dedication': 'Dedicat\u00F3ria',
+      'dedication': 'Dedicatória',
       'abstract': 'Resumo',
-      'attention': 'Aten\u00E7\u00E3o!',
+      'attention': 'Atenção!',
       'caution': 'Cuidado!',
       'danger': 'PERIGO!',
       'error': 'Erro',
-      'hint': 'Sugest\u00E3o',
+      'hint': 'Sugestão',
       'important': 'Importante',
       'note': 'Nota',
       'tip': 'Dica',
       'warning': 'Aviso',
-      'contents': 'Sum\u00E1rio'}
+      'contents': 'Sumário'}
 """Mapping of node class name to label text."""
 
 bibliographic_fields = {
       # language-dependent: fixed
       'autor': 'author',
       'autores': 'authors',
-      'organiza\u00E7\u00E3o': 'organization',
-      'endere\u00E7o': 'address',
+      'organização': 'organization',
+      'endereço': 'address',
       'contato': 'contact',
-      'vers\u00E3o': 'version',
-      'revis\u00E3o': 'revision',
+      'versão': 'version',
+      'revisão': 'revision',
       'estado': 'status',
       'data': 'date',
       'copyright': 'copyright',
-      'dedicat\u00F3ria': 'dedication',
+      'dedicatória': 'dedication',
       'resumo': 'abstract'}
 """Brazilian Portuguese (lowcased) name mapping for bibliographic fields."""
 

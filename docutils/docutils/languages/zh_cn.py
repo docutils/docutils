@@ -57,10 +57,6 @@ bibliographic_fields = {
       '摘要': 'abstract'}
 """Simplified Chinese to canonical name mapping for bibliographic fields."""
 
-author_separators = [';', ',',
-                     '\uff1b',  # '；'
-                     '\uff0c',  # '，'
-                     '\u3001',  # '、'
-                     ]
+author_separators = [';', ',', '；', '，', '、']
 """List of separator strings for the 'Authors' bibliographic field. Tried in
 order."""
