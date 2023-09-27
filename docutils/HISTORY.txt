@@ -48,6 +48,8 @@ Changes since 0.20.1
 
   - Add support for Georgian language (patch #204 by Temuri Doghonadze).
 
+  - Update/complete Catalan translations (patch #203 by Antoni Bella Pérez).
+
 * docutils/nodes.py
 
   - Remove compatibility hacks `nodes.reprunicode` and `nodes.ensure_str()`.
