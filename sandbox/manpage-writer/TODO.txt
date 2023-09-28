@@ -4,11 +4,12 @@ TODOs
 :Date: $Date$
 
 * input/optionstoo.txt:23: (ERROR/3) Unexpected indentation.
+  is what it is ... leave it so.
 
-
-* URLs in manpage: check linux and macos mans for usage of UR UE and URL
-  then see https://sourceforge.net/p/docutils/feature-requests/72/
+  TODO the curly brace on start of line hides the line 
 
 * doublespace after end of sentence in manpages ? 
 
   see https://sourceforge.net/p/docutils/bugs/427/
+
+  Chicago manual of style ... hard to automate.
