@@ -63,7 +63,7 @@ This means we have
 References
 ''''''''''
 
-man pages from section 7, ``man`` and ``man-pages``.
+man pages from section 7, ``man`` and ``man-pages`` and ``groff_man``.
 
 .. [LMHT] `Linux Man Page Howto <https://tldp.org/HOWTO/Man-Page/>`__.
 
@@ -152,7 +152,6 @@ TODO - Open issues
 ''''''''''''''''''
 
 * How to escape double quotes in macro arguments ?
-* Typeset URLs : ``man 7 man`` on linux says use ``.UR`` and ``.UE``.
 * How to typeset command/manpage names in text.
 * How to write long syntax lines.
 * Line ends around email or web addresses in texts.
