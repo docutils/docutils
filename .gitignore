@@ -12,6 +12,7 @@ __pycache__
 *.toc
 
 docutils/*.html
+docutils/dist/*
 docutils/docs/**/*.html
 docutils/docs/ref/rst/LaTeXML.css
 docutils/tools/**/*.html
