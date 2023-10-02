@@ -8,6 +8,10 @@
 # Two files must be translated for each language: one in docutils/languages,
 # the other in docutils/parsers/rst/languages.
 
+# These translations can be used without changes for
+# Valencian variant of Catalan (use language tag "ca-valencia").
+# Checked by a native speaker of Valentian.
+
 """
 Catalan-language mappings for language-dependent features of Docutils.
 """
