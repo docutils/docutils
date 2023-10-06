@@ -155,7 +155,9 @@ TODO - Open issues
 * How to typeset command/manpage names in text.
 * How to write long syntax lines.
 * Line ends around email or web addresses in texts.
-  How to distinguish something is inline or not ?
+  
+  How to distinguish something is inline or not in the writer 
+  so to maybe put long urls after the current paragraph ?
 
 * Images and equations are discouraged.
 * Lists in admonitions are not intended.
@@ -163,6 +165,8 @@ TODO - Open issues
   in first line.
 
   BUT if UTF-8 is declared tables are no longer processed.
+
+  BUT we have a comment there and the macros following it
 
 * Input and output encoding are problematic at least.
 

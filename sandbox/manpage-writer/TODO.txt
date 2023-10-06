@@ -22,3 +22,121 @@ TODOs
   see https://sourceforge.net/p/docutils/bugs/427/
 
   Chicago manual of style ... hard to automate.
+
+Check ``docs/user/manpage.txt``
+
+* escape double quotes in macro arguments ?
+
+  Use the special character escape sequence ``\(dq``.
+  groff_man_style(7) explains.
+
+       \(dq   Basic Latin quotation mark (double quote).  Use in macro
+              calls to prevent ‘"” from being interpreted as beginning a
+              quoted argument, or simply for readability.
+
+                     .TP
+                     .BI "split \(dq" text \(dq
+
+* How to typeset command/manpage names in text.
+
+  There are conflicting traditions and conventions on these points.
+  groff_man_style(7) has recommendations.
+
+              Use bold for literal portions of syntax synopses, for
+              command‐line options in running text, and for literals
+              that are major topics of the subject under discussion; for
+              example, this page uses bold for macro, string, and
+              register names.  In an .EX/.EE example of interactive I/O
+              (such as a shell session), set only user input in bold.
+
+              Use italics for file and path names, for environment
+              variables, for C data types, for enumeration or
+              preprocessor constants in C, for variant (user‐
+              replaceable) portions of syntax synopses, for the first
+              occurrence (only) of a technical concept being introduced,
+              for names of journals and of literary works longer than an
+              article, and anywhere a parameter requiring replacement by
+              the user is encountered.  An exception involves variant
+              text in a context already typeset in italics, such as file
+              or path names with replaceable components; in such cases,
+              follow the convention of mathematical typography: set the
+              file or path name in italics as usual but use roman for
+              the variant part (see .IR and .RI below), and italics
+              again in running roman text when referring to the variant
+              material.
+
+  Plan 9 from User Space troff and groff 1.23.0 support an ``MR`` macro
+  for the specific purpose of setting man page cross references.  It is
+  reasonable to assume that groff 1.23.0 has not propagated yet to every
+  platform Python docutils would like to support yet.  You can wait
+  until it has, or supply a fallback definition in the man(7) documents
+  you generate. ::
+
+   .\" Define fallback for groff 1.23's MR macro if the system lacks it.
+   .nr df 0 \" do fallback?
+   .if !\n(.f           .nr df 1 \" mandoc
+   .if  \n(.g .if !d MR .nr df 1 \" older groff
+   .if !\n(.g           .nr df 1 \" non-groff *roff
+   .if \n(df \{\
+   .de MR
+   .ie \\n(.$=1 \
+   .I \%\\$1
+   .el \
+   .IR \%\\$1 (\\$2)\\$3
+   ..
+   .\}
+   .rr df
+
+* How to write long syntax lines.
+
+  groff_man_style(7) explains.::
+
+       \newline
+              Join the next input line to the current one.  Except for
+              the update of the input line counter (used for diagnostic
+              messages and related purposes), a series of lines ending
+              in backslash‐newline appears to groff as a single input
+              line.  Use this escape sequence to split excessively long
+              input lines for document maintenance.
+
+* Line ends around email or web addresses in texts.
+
+groff_man_style(7) explains.
+
+       \c     End a text line without inserting space or attempting a
+              break.  Normally, if filling is enabled, the end of a text
+              line is treated like a space; an output line may be broken
+              there (if not, an adjustable space is inserted); if
+              filling is disabled, the line will be broken there, as in
+              .EX/.EE examples.  The next line is interpreted as usual
+              and can include a macro call (contrast with \newline).  \c
+              is useful when three font styles are needed in a single
+              word, as in a command synopsis.
+
+                     .RB [ \-\-stylesheet=\c
+                     .IR name ]
+
+              It also helps when changing font styles in .EX/.EE
+              examples, since they are not filled.
+
+                     .EX
+                     $ \c
+                     .B groff \-T utf8 \-Z \c
+                     .I file \c
+                     .B | grotty \-i
+                     .EE
+
+  Here's an example using groff's ``MR`` and ``ME`` macros.::
+
+   Mail the maintainer (\c
+   .MR maint@example.com
+   Arthur Pewtey
+   .UE )
+   to submit patches.
+
+  How to distinguish something is inline or not in the writer 
+  so to maybe put long urls after the current paragraph ?
+
+    
+* lines starting with a ``{not typeset}  abc``
+
