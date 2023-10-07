@@ -126,12 +126,12 @@ groff_man_style(7) explains.
                      .B | grotty \-i
                      .EE
 
-  Here's an example using groff's ``MR`` and ``ME`` macros.::
+  Here's an example using groff's ``MT`` and ``ME`` macros.::
 
    Mail the maintainer (\c
-   .MR maint@example.com
+   .MT maint@example.com
    Arthur Pewtey
-   .UE )
+   .ME )
    to submit patches.
 
   How to distinguish something is inline or not in the writer 
