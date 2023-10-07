@@ -650,7 +650,7 @@ Release 0.17.1 (2021-04-16)
 
 * docutils/writers/manpage.py
 
-  - Apply patch #160: move macro defs above ``.TH``
+  - Apply patch #166: move macro defs above ``.TH``
     (thanks Willie and sorry for the delay).
 
 
