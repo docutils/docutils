@@ -53,6 +53,7 @@ class BasePseudoSection(Directive):
             messages = []
         text = '\n'.join(self.content)
         node = self.node_class(text, *(titles + messages))
+        node.line = self.content_offset + 1
         node['classes'] += self.options.get('class', [])
         self.add_name(node)
         if text:
@@ -176,6 +177,7 @@ class CodeBlock(Directive):
             tokens = NumberLines(tokens, startline, endline)
 
         node = nodes.literal_block('\n'.join(self.content), classes=classes)
+        node.line = self.content_offset + 1
         self.add_name(node)
         # if called from "include", set the source
         if 'source' in self.options:
@@ -272,6 +274,7 @@ class Compound(Directive):
         self.assert_has_content()
         text = '\n'.join(self.content)
         node = nodes.compound(text)
+        node.line = self.content_offset + 1
         node['classes'] += self.options.get('class', [])
         self.add_name(node)
         self.state.nested_parse(self.content, self.content_offset, node)
@@ -298,6 +301,7 @@ class Container(Directive):
                 'Invalid class attribute value for "%s" directive: "%s".'
                 % (self.name, self.arguments[0]))
         node = nodes.container(text)
+        node.line = self.content_offset + 1
         node['classes'].extend(classes)
         self.add_name(node)
         self.state.nested_parse(self.content, self.content_offset, node)
