@@ -63,9 +63,8 @@ gefolgt vom Typ der dort zu findenden Seiten.
 .INDENT 0.0
 .INDENT 3.5
 .TS
-center;
-|l|l|.
-_
+box center;
+l|l.
 T{
 1
 T}	T{
@@ -143,7 +142,6 @@ o
 T}	T{
 alt [veraltet]
 T}
-_
 .TE
 .UNINDENT
 .UNINDENT

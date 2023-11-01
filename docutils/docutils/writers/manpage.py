@@ -110,7 +110,7 @@ class Writer(writers.Writer):
 class Table:
     def __init__(self):
         self._rows = []
-        self._options = ['center']
+        self._options = ['box', 'center']
         self._tab_char = '\t'
         self._coldefs = []
 
@@ -140,10 +140,9 @@ class Table:
     def as_list(self):
         text = ['.TS\n']
         text.append(' '.join(self._options) + ';\n')
-        text.append('|%s|.\n' % ('|'.join(self._coldefs)))
+        text.append('%s.\n' % ('|'.join(self._coldefs)))
         for row in self._rows:
             # row = array of cells. cell = array of lines.
-            text.append('_\n')       # line above
             text.append('T{\n')
             for i in range(len(row)):
                 cell = row[i]
@@ -155,7 +154,8 @@ class Table:
                     text.append('T}'+self._tab_char+'T{\n')
                 else:
                     text.append('T}\n')
-        text.append('_\n')
+            text.append('_\n')       # line between rows
+        text.pop()     # pop last "line between"
         text.append('.TE\n')
         return text
 

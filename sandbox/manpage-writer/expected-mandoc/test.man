@@ -200,9 +200,8 @@ Python\-specific usage examples; begun with \(dq>>>\(dq
 .EE
 .SS Tables
 .TS
-center;
-|l|l|.
-_
+box center;
+l|l.
 T{
 single
 T}	T{
@@ -214,7 +213,6 @@ no table
 header
 T}	T{
 T}
-_
 .TE
 .SS lineblock
 .nf

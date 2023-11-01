@@ -73,6 +73,7 @@ Changes since 0.20.1
 
 * docutils/writers/manpage.py
 
+  - Change tbl-Tables using box option, see bugs #475.
   - Apply literal block patch #205. Use ``.EE`` and ``.EX`` macros.
     Thanks to G. Branden Robinson (I assume).
 
