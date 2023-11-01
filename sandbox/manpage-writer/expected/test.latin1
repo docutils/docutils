@@ -1,36 +1,34 @@
-RST2MAN(1)                      text processing                     RST2MAN(1)
+[4mRST2MAN[24m(1)                      text processing                     [4mRST2MAN[24m(1)
 
-
-
-NNAAMMEE
+[1mNAME[0m
        rst2man - generate unix manpages from reStructured text
 
-SSYYNNOOPPSSIISS
-       rrsstt22mmaann ----hheellpp
+[1mSYNOPSIS[0m
+       [1mrst2man --help[0m
 
-       rrsstt22mmaann [ OPTIONS ] [ SOURCE [ _d_e_s_t_i_n_a_t_i_o_n ] ]
+       [1mrst2man [22m[ OPTIONS ] [ SOURCE [ [4mdestination[24m ] ]
 
-DDEESSCCRRIIPPTTIIOONN
+[1mDESCRIPTION[0m
        Run it and examine output.
 
-OOPPTTIIOONNSS
-       --oo _x   an option
+[1mOPTIONS[0m
+       [1m-o [4m[22mx[24m   an option
 
-       --bb     another
+       [1m-b     [22manother
 
-       --ff, ----ffoorrccee
+       [1m-f[22m, [1m--force[0m
               really do it
 
-       For all other options see ----hheellpp.
+       For all other options see [1m--help[22m.
 
-EEXXAAMMPPLLEESS
-       rrsstt22mmaann..ppyy xxmmll--sscchheemmaa--ccaattaalloogg..rrsstt xxmmll--sscchheemmaa--ccaattaalloogg..mmaann
+[1mEXAMPLES[0m
+       [1mrst2man.py xml-schema-catalog.rst xml-schema-catalog.man[0m
               create a manpage from xml-schema-catalog.rst
 
-   CChhaarraacctteerr ffoorrmmaattttiinngg
-       _B_U_G The section title should be separated from the title above.
+   [1mCharacter formatting[0m
+       [4mBUG[24m The section title should be separated from the title above.
 
-       Test bboolldd or ssttrroonngg formatting.
+       Test [1mbold [22mor [1mstrong [22mformatting.
 
        Special characters:
 
@@ -44,7 +42,7 @@ EEXXAAMMPPLLEESS
 
        .period ad line start.
 
-   LLiissttss
+   [1mLists[0m
        · bullet list
 
        · and  a  longer  entry,  and a longer entry, and a longer entry, and a
@@ -95,60 +93,60 @@ EEXXAAMMPPLLEESS
 
        13. Problematic: indentation does not match for nonconsecutive entries.
 
-       This  paragraph  must not be indented with the text the last list-item,
+       This paragraph must not be indented with the text the  last  list-item,
        but start at the left margin of the numbers.
 
-       a second paragraph that should be separated from the previous  one  and
+       a  second  paragraph that should be separated from the previous one and
        not flowing into.
 
-   DDeeffiinniittiioonn LLiissttss
-       TTeerrmm   Definition
+   [1mDefinition Lists[0m
+       [1mTerm   [22mDefinition
 
-       TTeerrmm   classifier Definition paragraph 1.
+       [1mTerm   [22mclassifier Definition paragraph 1.
 
               Definition paragraph 2.
 
-       ..iinnii--ffiilleess
+       [1m.ini-files[0m
               Term starting with period.
 
-       TTeerrmm   Definition
+       [1mTerm   [22mDefinition
 
-   FFiieelldd lliissttss
-       ffiirrsstt  a short label and a short text
+   [1mField lists[0m
+       [1mfirst  [22ma short label and a short text
 
-       sseeccoonnddllyy aa lloonnggeerr llaabbeell
-              and  some  more text and some more text and some more text   and
+       [1msecondly a longer label[0m
+              and some more text and some more text and some more  text    and
               some more text
 
-       ddeeffiinniittiioonn lliissttss
+       [1mdefinition lists[0m
               are also a valuable option and simple nonintrusive formatting
 
-       ddeeffiinniittiioonn ttoooo ::
+       [1mdefinition too :[0m
               with the colon.
 
-   DDoocctteesstt BBlloocckkss
+   [1mDoctest Blocks[0m
        >>> print 'Python-specific usage examples; begun with ">>>"'
        Python-specific usage examples; begun with ">>>"
        >>> print '(cut and pasted from interactive Python sessions)'
        (cut and pasted from interactive Python sessions)
 
-   TTaabblleess
-                              +----------------+-------+
-                              |single          | frame |
-                              +----------------+-------+
-                              |no table header |       |
-                              +----------------+-------+
+   [1mTables[0m
+                            +-----------------+-------+
+                            | single          | frame |
+                            +-----------------+-------+
+                            | no table header |       |
+                            +-----------------+-------+
 
-   lliinneebblloocckk
+   [1mlineblock[0m
        paul
        tel. 12345
        LA
 
 
-       A paragraph following the line block.  lorem ipsum  lorem  ipsum  lorem
+       A  paragraph  following  the line block.  lorem ipsum lorem ipsum lorem
        ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
 
-   LLiitteerraall
+   [1mLiteral[0m
        some literal text
 
           here now it starts
@@ -163,7 +161,7 @@ EEXXAAMMPPLLEESS
           .SS "." at line start
           backslash "\"
 
-   LLiinnee bblloocckkss
+   [1mLine blocks[0m
        This is a line block.  It ends with a blank line.
          Each new line begins with a vertical bar ("|").
          Line breaks and initial indents are preserved.
@@ -181,9 +179,9 @@ EEXXAAMMPPLLEESS
           A one, two, a one two three four
 
           Half a bee, philosophically,
-            must, _i_p_s_o _f_a_c_t_o, half not be.
+            must, [4mipso[24m [4mfacto[24m, half not be.
           But half the bee has got to be,
-            _v_i_s _a _v_i_s its entity.  D'you see?
+            [4mvis[24m [4ma[24m [4mvis[24m its entity.  D'you see?
 
           But can a bee be said to be
             or not to be an entire bee,
@@ -193,26 +191,26 @@ EEXXAAMMPPLLEESS
           Singing...
 
 
-   rraaww
+   [1mraw[0m
        raw input to man
 
-   AAddmmoonniittiioonnss
-       AATTTTEENNTTIIOONN!!::
+   [1mAdmonitions[0m
+       [1mATTENTION!:[0m
           Directives at large.
 
-       CCAAUUTTIIOONN!!::
+       [1mCAUTION!:[0m
           Don't take any wooden nickels.
 
-       !!DDAANNGGEERR!!::
+       [1m!DANGER!:[0m
           Mad scientist at work!
 
-       EERRRROORR::
+       [1mERROR:[0m
           Does not compute.
 
-       HHIINNTT::
+       [1mHINT:[0m
           It's bigger than a bread box.
 
-       IIMMPPOORRTTAANNTT::
+       [1mIMPORTANT:[0m
 
           · Wash behind your ears.
 
@@ -222,13 +220,13 @@ EEXXAAMMPPLLEESS
 
           · Back up your data.
 
-       NNOOTTEE::
+       [1mNOTE:[0m
           This is a note.
 
-       TTIIPP::
+       [1mTIP:[0m
           15% if the service is good.
 
-       WWAARRNNIINNGG::
+       [1mWARNING:[0m
           Strong prose may provoke extreme mental exertion.  Reader discretion
           is strongly advised.
 
@@ -240,34 +238,34 @@ EEXXAAMMPPLLEESS
 
        Text after the admonition.
 
-   ootthheerr
-       inline references _r_e_f _s_o_m_e_t_h_i_n_g .  Contained verbose. Nothing special.
+   [1mother[0m
+       inline references [4mref[24m [4msomething[24m .  Contained verbose. Nothing special.
 
-TTOOPP SSEECCTTIIOONN
+[1mTOP SECTION[0m
        With mixed case
 
-TTOOPP SSEECCTTIIOONN BB CC DD EE FF GG
+[1mTOP SECTION B C D E F G[0m
        with character formatting.
 
-FFIILLEESS
+[1mFILES[0m
        This is a file.
 
-SSEEEE AALLSSOO
-       docutils <http://docutils.sourceforge.net>
+[1mSEE ALSO[0m
+       ]8;;http://docutils.sourceforge.net\docutils]8;;\
 
 
-       rrsstt22xxmmll(dummy)
+       [1mrst2xml[22m(dummy)
 
        More information can be found about
 
        · xml-schema-catalog at
 
-         <http://xml-schema-catalog.origo.ethz.ch/>
+         ]8;;http://xml-schema-catalog.origo.ethz.ch/\http://xml-schema-catalog.origo.ethz.ch/]8;;\
 
 
        And see the stars at the sky!
 
-BBUUGGSS
+[1mBUGS[0m
        Numerous mapping problems.
 
        1. Where do we get the manual section number from ? Commandline ?
@@ -278,7 +276,7 @@ BBUUGGSS
 
        4. list items.  bullets and enumerators.
 
-AAUUTTHHOORR
+[1mAUTHOR[0m
        grubert@users.sourceforge.net
 
        Organization: humankind
@@ -288,10 +286,8 @@ AAUUTTHHOORR
           Example, EX  Canada
           A1B 2C3
 
-CCOOPPYYRRIIGGHHTT
+[1mCOPYRIGHT[0m
        public domain Behave responsible.
 
 
-
-
-0.0.1                             2009-06-22                        RST2MAN(1)
+0.0.1                             2009-06-22                        [4mRST2MAN[24m(1)

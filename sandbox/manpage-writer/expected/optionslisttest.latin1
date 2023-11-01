@@ -1,25 +1,23 @@
-OPTIONLISTTEST(1)           General Commands Manual          OPTIONLISTTEST(1)
+[4mOPTIONLISTTEST[24m(1)           General Commands Manual          [4mOPTIONLISTTEST[24m(1)
 
-
-
-NNAAMMEE
+[1mNAME[0m
        OptionlistTest - Test for correct intention/detention of option lists
 
-DDEESSCCRRIIPPTTIIOONN
+[1mDESCRIPTION[0m
        After an option list:
 
        · a paragraph within the same section must be intented
 
-       · a section header directly following the list must _n_o_t be intentend.
+       · a section header directly following the list must [4mnot[24m be intentend.
 
        This file tests this.
 
-OOPPTTIIOONNSS
+[1mOPTIONS[0m
        This line must be in indented.
 
-       --oo _x   an option
+       [1m-o [4m[22mx[24m   an option
 
-       --bb     another
+       [1m-b     [22manother
 
               This option does the following points:
 
@@ -27,10 +25,10 @@ OOPPTTIIOONNSS
 
               · second point
 
-                   ----cccccc  option  lists  may be nested, even if this is rarely
+                   [1m--ccc  [22moption  lists  may be nested, even if this is rarely
                           used.
 
-       --kk     and even another
+       [1m-k     [22mand even another
 
               This option does the following points:
 
@@ -38,17 +36,17 @@ OOPPTTIIOONNSS
 
               · second point
 
-       For all other options see ----hheellpp. This line must be intented.
+       For all other options see [1m--help[22m. This line must be intented.
 
-MMOORREE OOPPTTIIOONNSS
-       --oo _x   an option
+[1mMORE OPTIONS[0m
+       [1m-o [4m[22mx[24m   an option
 
-       --bb     another
+       [1m-b     [22manother
 
-       --mm _M_E_S_S_A_G_E, ----mmeessssaaggee==_M_E_S_S_A_G_E
-              The message to display (beaware of ,,)
+       [1m-m [4m[22mMESSAGE[24m, [1m--message=[4m[22mMESSAGE[0m
+              The message to display (beaware of [1m,[22m)
 
-EEXXAAMMPPLLEESS
+[1mEXAMPLES[0m
        The "Examples" section header must not be intented. But this  paragraph
        is indented, as all text in man-pages. This is level 0.
 
@@ -70,62 +68,60 @@ EEXXAAMMPPLLEESS
 
        This paragraph should be at level 0.
 
-EEMMPPHHAASSIIZZEE
-       ppllaaiinn tteexxtt tteerrmm
+[1mEMPHASIZE[0m
+       [1mplain text term[0m
               definition paragraph 1
 
               definition paragraph 2
 
-       tteerrmm wwiitthh _e_m_p_h_a_s_i_s iinn iitt
+       [1mterm with [4m[22memphasis[24m [1min it[0m
               paragraph 1 should not be preceeded by a blank line
 
               definition paragraph 2
 
-DDEEFFIINNIITTIIOONN LLIISSTT
-       tteerrmm11  Description  of Term 1 Description of Term 1 Description of Term
+[1mDEFINITION LIST[0m
+       [1mterm1  [22mDescription  of Term 1 Description of Term 1 Description of Term
               1 Description of Term 1 Description of Term 1
 
               Description of Term 1 Description of Term 1 Description of  Term
               1 Description of Term 1 Description of Term 1
 
-       tteerrmm11111111111111111111
+       [1mterm1111111111[0m
               Description  of Term 1 Description of Term 1 Description of Term
               1 Description of Term 1 Description of Term 1
 
               Description of Term 1 Description of Term 1 Description of  Term
               1 Description of Term 1 Description of Term 1
 
-       tteerrmm22  Description of Term 2
+       [1mterm2  [22mDescription of Term 2
                  Description  of  Term  2 Description of Term 2 Description of
                  Term 2 Description of Term 2 Description of Term 2
 
                  Description of Term 2 Description of Term  2  Description  of
                  Term 2 Description of Term 2 Description of Term 2
 
-              tteerrmm2222 Defintions lists may be nested, thus this at level 1.
+              [1mterm22 [22mDefintions lists may be nested, thus this at level 1.
 
                      More Description of Term 22. More Description of Term 22.
                      More Description of Term 22. More Description of Term 22.
 
-              tteerrmm2233 Defintions lists may be nested, thus this at level 1.
+              [1mterm23 [22mDefintions lists may be nested, thus this at level 1.
 
               This para is indented to term2, thus should be at level 1.
 
               This para is indented to term2, thus should be at level 1.
 
-       tteerrmm33  Defintions lists are not nested
+       [1mterm3  [22mDefintions lists are not nested
 
               More Description for term3.
 
        This paragraph should be at level 0 again.
 
-AAUUTTHHOORR
+[1mAUTHOR[0m
        h.goebel@goebel-consult.de
 
-CCOOPPYYRRIIGGHHTT
+[1mCOPYRIGHT[0m
        public domain
 
 
-
-
-                                  2008-04-29                 OPTIONLISTTEST(1)
+                                  2008-04-29                 [4mOPTIONLISTTEST[24m(1)
