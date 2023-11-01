@@ -1,11 +1,9 @@
-SPECIAL-CHARACTERS()                                      SPECIAL-CHARACTERS()
+[4mSPECIAL-CHARACTERS[24m()                                      [4mSPECIAL-CHARACTERS[24m()
 
-
-
-NNAAMMEE
+[1mNAME[0m
        special-characters - test special characters
 
-SSEEEE AALLSSOO
+[1mSEE ALSO[0m
        In mercurial the following substitutions are in use:
 
           .. |hg(1)| replace:: **hg**\ (1)
@@ -15,10 +13,10 @@ SSEEEE AALLSSOO
        resulting in.
 
 
-       hhggiiggnnoorree(5) <hgignore.5.html> , hhggrrcc(5) <hgrc.5.html>
+       ]8;;hgignore.5.html\[1mhgignore[22m(5)]8;;\ , ]8;;hgrc.5.html\[1mhgrc[22m(5)]8;;\
 
 
-DDEESSCCRRIIPPTTIIOONN
+[1mDESCRIPTION[0m
        encodings are problematic as alway.
 
        +o accents:
@@ -33,14 +31,12 @@ DDEESSCCRRIIPPTTIIOONN
 
          +o double: "
 
-         +o single: ' '
+         +o single: ` '
 
          +o double: " "
 
        Some  text afterwards, test.txt ended with quotes test.  Unicode breaks
-       the man processing chain. The display ends with ssiinnggllee:: .
+       the man processing chain. The display ends with [1msingle: [22m.
 
 
-
-
-                                                          SPECIAL-CHARACTERS()
+                                                          [4mSPECIAL-CHARACTERS[24m()
