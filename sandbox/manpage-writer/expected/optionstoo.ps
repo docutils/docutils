@@ -1,10 +1,10 @@
 %!PS-Adobe-3.0
-%%Creator: groff version 1.22.4
-%%CreationDate: Mon Mar 23 14:18:46 2020
-%%DocumentNeededResources: font Times-Roman
+%%Creator: groff version 1.23.0
+%%CreationDate: Wed Nov  1 19:44:07 2023
+%%DocumentNeededResources: font Times-Italic
+%%+ font Times-Roman
 %%+ font Times-Bold
-%%+ font Times-Italic
-%%DocumentSuppliedResources: procset grops 1.22 4
+%%DocumentSuppliedResources: procset grops 1.23 0
 %%Pages: 1
 %%PageOrder: Ascend
 %%DocumentMedia: Default 595 842 0 () ()
@@ -14,7 +14,7 @@
 %%PageMedia: Default
 %%EndDefaults
 %%BeginProlog
-%%BeginResource: procset grops 1.22 4
+%%BeginResource: procset grops 1.23 0
 %!PS-Adobe-3.0 Resource-ProcSet
 /setpacking where{
 pop
@@ -22,6 +22,7 @@ currentpacking
 true setpacking
 }if
 /grops 120 dict dup begin
+% The ASCII code of the space character.
 /SC 32 def
 /A/show load def
 /B{0 SC 3 -1 roll widthshow}bind def
@@ -43,16 +44,18 @@ true setpacking
 /R{moveto 0 SC 3 -1 roll widthshow}bind def
 /S{moveto 0 exch ashow}bind def
 /T{moveto 0 exch 0 SC 5 2 roll awidthshow}bind def
+% name size font SF -
 /SF{
 findfont exch
 [exch dup 0 exch 0 exch neg 0 0]makefont
 dup setfont
 [exch/setfont cvx]cvx bind def
 }bind def
+% name a c d font MF -
 /MF{
 findfont
 [5 2 roll
-0 3 1 roll
+0 3 1 roll % b
 neg 0 0]makefont
 dup setfont
 [exch/setfont cvx]cvx bind def
@@ -61,13 +64,19 @@ dup setfont
 /RES 0 def
 /PL 0 def
 /LS 0 def
+% Enable manual feed.
+% MANUAL -
 /MANUAL{
 statusdict begin/manualfeed true store end
 }bind def
+% Guess the page length.
+% This assumes that the imageable area is vertically centered on the page.
+% PLG - length
 /PLG{
 gsave newpath clippath pathbbox grestore
 exch pop add exch pop
 }bind def
+% BP -
 /BP{
 /level0 save def
 1 setlinecap
@@ -85,47 +94,61 @@ LS{
 level0 restore
 showpage
 }def
+% centerx centery radius startangle endangle DA -
 /DA{
 newpath arcn stroke
 }bind def
+% x y SN - x' y'
+% round a position to nearest (pixel + (.25,.25))
 /SN{
 transform
 .25 sub exch .25 sub exch
 round .25 add exch round .25 add exch
 itransform
 }bind def
+% endx endy startx starty DL -
+% we round the endpoints of the line, so that parallel horizontal
+% and vertical lines will appear even
 /DL{
 SN
 moveto
 SN
 lineto stroke
 }bind def
+% centerx centery radius DC -
 /DC{
 newpath 0 360 arc closepath
 }bind def
 /TM matrix def
+%  width height centerx centery DE -
 /DE{
 TM currentmatrix pop
 translate scale newpath 0 0 .5 0 360 arc closepath
 TM setmatrix
 }bind def
+% these are for splines
 /RC/rcurveto load def
 /RL/rlineto load def
 /ST/stroke load def
 /MT/moveto load def
 /CL/closepath load def
+% fill the last path
+% r g b Fr -
 /Fr{
 setrgbcolor fill
 }bind def
+% c m y k Fk -
 /setcmykcolor where{
 pop
 /Fk{
 setcmykcolor fill
 }bind def
 }if
+% g Fg -
 /Fg{
 setgray fill
 }bind def
+% fill with the "current color"
 /FL/fill load def
 /LW/setlinewidth load def
 /Cr/setrgbcolor load def
@@ -134,6 +157,7 @@ pop
 /Ck/setcmykcolor load def
 }if
 /Cg/setgray load def
+% new_font_name encoding_vector old_font_name RE -
 /RE{
 findfont
 dup maxlength 1 index/FontName known not{1 add}if dict begin
@@ -148,6 +172,7 @@ dup/FontName exch def
 currentdict end definefont pop
 }bind def
 /DEFS 0 def
+% hpos vpos EBEGIN -
 /EBEGIN{
 moveto
 DEFS begin
@@ -155,11 +180,13 @@ DEFS begin
 /EEND/end load def
 /CNT 0 def
 /level1 0 def
+% llx lly newwid wid newht ht newllx newlly PBEGIN -
 /PBEGIN{
 /level1 save def
 translate
 div 3 1 roll div exch scale
 neg exch neg exch translate
+% set the graphics state to default values
 0 setgray
 0 setlinecap
 1 setlinewidth
@@ -178,6 +205,10 @@ newpath
 /CNT countdictstack def
 userdict begin
 /showpage{}def
+%
+%  Any included setpagedevice should be ignored.
+%  See: http://www.w-beer.de/doc/ps/.
+%
 /setpagedevice{}def
 mark
 }bind def
@@ -197,9 +228,9 @@ setpacking
 %%BeginFeature: *PageSize Default
 << /PageSize [ 595 842 ] /ImagingBBox null >> setpagedevice
 %%EndFeature
+%%IncludeResource: font Times-Italic
 %%IncludeResource: font Times-Roman
 %%IncludeResource: font Times-Bold
-%%IncludeResource: font Times-Italic
 grops begin/DEFS 1 dict def DEFS begin/u{.001 mul}bind def end/RES 72
 def/PL PLG def/LS false def/ENC0[/asciicircum/asciitilde/Scaron/Zcaron
 /scaron/zcaron/Ydieresis/trademark/quotesingle/Euro/.notdef/.notdef
@@ -228,35 +259,36 @@ def/PL PLG def/LS false def/ENC0[/asciicircum/asciitilde/Scaron/Zcaron
 /egrave/eacute/ecircumflex/edieresis/igrave/iacute/icircumflex/idieresis
 /eth/ntilde/ograve/oacute/ocircumflex/otilde/odieresis/divide/oslash
 /ugrave/uacute/ucircumflex/udieresis/yacute/thorn/ydieresis]def
-/Times-Italic@0 ENC0/Times-Italic RE/Times-Bold@0 ENC0/Times-Bold RE
-/Times-Roman@0 ENC0/Times-Roman RE
+/Times-Bold@0 ENC0/Times-Bold RE/Times-Roman@0 ENC0/Times-Roman RE
+/Times-Italic@0 ENC0/Times-Italic RE
 %%EndSetup
 %%Page: 1 1
 %%BeginPageSetup
 BP
 %%EndPageSetup
-/F0 10/Times-Roman@0 SF 292.18(REGRESSION-380\(\) REGRESSION-380\(\))72
-48 R/F1 10.95/Times-Bold@0 SF -.219(NA)72 84 S(ME).219 E F0(re)108 96 Q
+/F0 10/Times-Italic@0 SF(REGRESSION-380)72.63 48 Q/F1 10/Times-Roman@0
+SF(\(\)).47 E F0(REGRESSION-380)298.69 E F1(\(\)).47 E/F2 10.95
+/Times-Bold@0 SF -.219(NA)72 84 S(ME).219 E F1(re)108 96 Q
 (gression-380 \255 re)-.15 E(gression test for B)-.15 E(UG#380)-.1 E
 (#380 manpage writer does not add space after .B)108 120 Q(... some)108
 144 Q(where in the sphinx pipeline something is ... f)-.25 E(ailing)-.1
-E(Maybe the)108 168 Q/F2 10/Times-Bold@0 SF(install)2.5 E F0
+E(Maybe the)108 168 Q/F3 10/Times-Bold@0 SF(install)2.5 E F1
 (subparser is a problem.)2.5 E(Input e)108 192 Q
 (xtracted with standard ar)-.15 E(gparse \255\255\255)-.18 E
 (usage: tmpmain.p)108 216 Q 2.5(y[)-.1 G
-(\255h] [\255\255general GENERAL] foo bar {install} ...)-2.5 E F2
-(positional ar)108 232.8 Q(guments:)-.1 E F0 45(foo foo)144 244.8 R
+(\255h] [\255\255general GENERAL] foo bar {install} ...)-2.5 E F3
+(positional ar)108 232.8 Q(guments:)-.1 E F1 45(foo foo)144 244.8 R
 (help bar {install})2.5 E(System Message: ERR)108 261.6 Q
 (OR/3 \(input/optionstoo.txt:, line 23\))-.4 E(Une)144 273.6 Q
 (xpected indentation.)-.15 E 30(install install)160.5 285.6 R(help)2.5 E
-F2(optional ar)108 302.4 Q(guments:)-.1 E<ad68>143 319.2 Q F0(,)A F2
-(\255\255help)2.5 E F0(sho)179 331.2 Q 2.5(wt)-.25 G
-(his help message and e)-2.5 E(xit)-.15 E F2(\255\255general)143 348 Q
-/F3 10/Times-Italic@0 SF(GENERAL)2.5 E F0(,)A F2<ad47>2.5 E F3(GENERAL)
-2.5 E F0(General option)179 360 Q F2<ad6f>143 376.8 Q F3(FILE)2.5 E F0
-(,)A F2(\255\255ouput)2.5 E F3(FILE)2.5 E F0(output \214le)179 388.8 Q
-(NO)108 412.8 Q(TE "sho)-.4 E(w" "General" and "output" on same column.)
--.25 E(1)535 768 Q 0 Cg EP
+F3(optional ar)108 302.4 Q(guments:)-.1 E<ad68>143 319.2 Q F1(,)A F3
+(\255\255help)2.5 E F1(sho)179 331.2 Q 2.5(wt)-.25 G
+(his help message and e)-2.5 E(xit)-.15 E F3(\255\255general)143 348 Q
+F0(GENERAL)2.5 E F1(,)A F3<ad47>2.5 E F0(GENERAL)2.5 E F1
+(General option)179 360 Q F3<ad6f>143 376.8 Q F0(FILE)2.5 E F1(,)A F3
+(\255\255ouput)2.5 E F0(FILE)2.5 E F1(output \214le)179 388.8 Q(NO)108
+412.8 Q(TE "sho)-.4 E(w" "General" and "output" on same column.)-.25 E
+(1)535 768 Q 0 Cg EP
 %%Trailer
 end
 %%EOF
