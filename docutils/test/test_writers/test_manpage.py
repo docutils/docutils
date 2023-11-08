@@ -20,6 +20,9 @@ from docutils.core import publish_string
 
 
 class WriterPublishTestCase(unittest.TestCase):
+
+    maxDiff = None
+
     def test_publish(self):
         writer_name = 'manpage'
         for name, cases in totest.items():
@@ -251,9 +254,8 @@ totest['table'] = [
 .INDENT 0.0
 .INDENT 3.5
 .TS
-center;
-|l|l|.
-_
+box center;
+l|l.
 T{
 head
 T}\tT{
@@ -271,7 +273,6 @@ abc
 T}\tT{
 so
 T}
-_
 .TE
 .UNINDENT
 .UNINDENT
