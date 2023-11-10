@@ -1121,7 +1121,7 @@ Release 0.14 (2017-08-03)
 * docutils/writers/odf_odt/__init__.py
 
   - Command line setting `language`_ now sets the default language of the
-  generated ODF document.
+    generated ODF document.
   - The use of image directive options :width: (%), :scale:, etc now
     set the width/height/size of images in the generated ODF
     documents.
