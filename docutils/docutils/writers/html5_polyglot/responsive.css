@@ -313,8 +313,10 @@ h1, h2, h3 {
 }
 
 img.align-left,
+svg.align-left,
 video.align-left,
 figure.align-left,
+div.align-left,
 table.align-left {
   margin-left: 0;
   padding-left: 0;
@@ -323,8 +325,10 @@ table.align-left {
   float: left;
 }
 img.align-right,
+svg.align-right,
 video.align-right,
 figure.align-right,
+div.align-right,
 table.align-right {
   margin-left: 0.5em;
   margin-right: 0;

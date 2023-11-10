@@ -356,7 +356,10 @@ h1, h2, h3, .contents > p.topic-title,
 }
 
 img.align-left,
+svg.align-left,
+video.align-left,
 figure.align-left,
+div.align-left,
 table.align-left {
   margin-left: 0;
   padding-left: 0;
@@ -369,8 +372,10 @@ figure.align-left > img {
   padding-left: 0;
 }
 
-
-img.align-right {
+img.align-right,
+svg.align-right,
+video.align-right,
+div.align-right {
   padding-left: 0.5em;
   clear: right;
   float: right;
