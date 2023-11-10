@@ -956,7 +956,7 @@ and the common options class_ and name_.
    "comma" in its name, the field delimiter_ may be any Unicode character.
 
 .. [#tab-expansion] Note, that tabs can be used as separator only in
-   external files because hard tabs the directive content are
+   external files because hard tabs in the directive content are
    `converted to spaces`__ before it reaches the CVS reader.
 
 .. [#] Before Docutils 0.21, the header option used a hard-coded
