@@ -177,6 +177,7 @@ class HTMLTranslator(_html_base.HTMLTranslator):
 
     def depart_container(self, node):
         self.body.append(f'</{node.html5tagname}>\n')
+        del node.html5tagname
 
     # no standard meta tag name in HTML5, use dcterms.rights
     # see https://wiki.whatwg.org/wiki/MetaExtensions
@@ -282,21 +283,23 @@ class HTMLTranslator(_html_base.HTMLTranslator):
     # Use `supported_inline_tags` if found in class values
     def visit_inline(self, node):
         classes = node['classes']
-        tags = [cls for cls in self.supported_inline_tags
-                if cls in classes]
-        if len(tags):
-            node.html5tagname = tags[0]
-            classes.remove(tags[0])
-        elif (classes == ['ln']
-              and isinstance(node.parent, nodes.literal_block)
-              and 'code' in node.parent.get('classes')):
-            if self.body[-1] == '<code>':
-                del self.body[-1]
-            else:
-                self.body.append('</code>')
-            node.html5tagname = 'small'
+        node.html5tagname = 'span'
+        if (isinstance(node.parent, nodes.literal_block)
+            and 'code' in node.parent.get('classes')
+            or isinstance(node.parent, nodes.literal)
+            and getattr(node.parent, 'html5tagname', None) == 'code'):
+            if classes == ['ln']:
+                if self.body[-1] == '<code>':
+                    del self.body[-1]
+                else:
+                    self.body.append('</code>')
+                node.html5tagname = 'small'
         else:
-            node.html5tagname = 'span'
+            tags = [cls for cls in self.supported_inline_tags
+                    if cls in classes]
+            if len(tags):
+                node.html5tagname = tags[0]
+                classes.remove(node.html5tagname)
         self.body.append(self.starttag(node, node.html5tagname, ''))
 
     def depart_inline(self, node):
@@ -316,21 +319,21 @@ class HTMLTranslator(_html_base.HTMLTranslator):
         self.body.append('</div>\n')
         # <figcaption> closed in visit_figure()
 
-    # use HTML text-level tags if matching class value found
+    # use HTML5 text-level tags if matching class value found
     def visit_literal(self, node):
         classes = node['classes']
+        html5tagname = 'span'
         tags = [cls for cls in self.supported_inline_tags
                 if cls in classes]
         if len(tags):
-            tagname = tags[0]
-            classes.remove(tags[0])
-        else:
-            tagname = 'span'
-        if tagname == 'code':
-            self.body.append(self.starttag(node, 'code', ''))
+            html5tagname = tags[0]
+            classes.remove(html5tagname)
+        if html5tagname == 'code':
+            node.html5tagname = html5tagname
+            self.body.append(self.starttag(node, html5tagname, ''))
             return
         self.body.append(
-            self.starttag(node, tagname, '', CLASS='docutils literal'))
+            self.starttag(node, html5tagname, '', CLASS='docutils literal'))
         text = node.astext()
         # remove hard line breaks (except if in a parsed-literal block)
         if not isinstance(node.parent, nodes.literal_block):
@@ -343,13 +346,13 @@ class HTMLTranslator(_html_base.HTMLTranslator):
                     f'<span class="pre">{self.encode(token)}</span>')
             else:
                 self.body.append(self.encode(token))
-        self.body.append(f'</{tagname}>')
+        self.body.append(f'</{html5tagname}>')
         # Content already processed:
         raise nodes.SkipNode
 
     def depart_literal(self, node):
         # skipped unless literal element is from "code" role:
-        self.body.append('</code>')
+        self.depart_inline(node)
 
     # Meta tags: 'lang' attribute replaced by 'xml:lang' in XHTML 1.1
     # HTML5/polyglot recommends using both
@@ -395,24 +398,24 @@ class HTMLTranslator(_html_base.HTMLTranslator):
     def visit_topic(self, node):
         atts = {'classes': ['topic']}
         if 'contents' in node['classes']:
-            node.html_tagname = 'nav'
+            node.html5tagname = 'nav'
             del atts['classes']
             if isinstance(node.parent, nodes.document):
                 atts['role'] = 'doc-toc'
                 self.body_prefix[0] = '</head>\n<body class="with-toc">\n'
         elif 'abstract' in node['classes']:
-            node.html_tagname = 'div'
+            node.html5tagname = 'div'
             atts['role'] = 'doc-abstract'
         elif 'dedication' in node['classes']:
-            node.html_tagname = 'div'
+            node.html5tagname = 'div'
             atts['role'] = 'doc-dedication'
         else:
-            node.html_tagname = 'aside'
-        self.body.append(self.starttag(node, node.html_tagname, **atts))
+            node.html5tagname = 'aside'
+        self.body.append(self.starttag(node, node.html5tagname, **atts))
 
     def depart_topic(self, node):
-        self.body.append(f'</{node.html_tagname}>\n')
-        del node.html_tagname
+        self.body.append(f'</{node.html5tagname}>\n')
+        del node.html5tagname
 
     # append self-link
     def section_title_tags(self, node):
