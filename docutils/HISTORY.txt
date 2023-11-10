@@ -205,6 +205,11 @@ Release 0.20 (2023-05-09)
 
     __ https://www.w3.org/TR/dpub-aria-1.1/#doc-footnote
 
+* docutils/writers/html5_polyglot/__init__.py
+
+  - Do not use HTML5 text-level tags inside <code> and <code-block>
+    (fixes bug #476).
+
 * docutils/writers/latex2e/__init__.py
 
   - Do not load the `inputenc` package in UTF-8 encoded LaTeX sources.
