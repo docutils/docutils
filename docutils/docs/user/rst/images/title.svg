@@ -5,7 +5,7 @@
    font-family="Times New Roman, Liberation Serif, FreeSerif, serif"
    font-size="32px" font-style="italic" letter-spacing="0px"
    stroke-width="1px" word-spacing="0px"><tspan
-     x="-2.25" y="24">re<tspan
+     x="0" y="24">re<tspan
      font-family="Helvetica, Liberation Sans, FreeSans, sans-serif"
      font-style="normal">Structured</tspan>Text</tspan></text>
 </svg>

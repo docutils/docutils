@@ -3122,7 +3122,7 @@ specific documentation in the `user doc`__ for details.
 .. _length units in CSS2:
    https://www.w3.org/TR/CSS2/syndata.html#length-units
 .. _length units in CSS3:
-   https://www.w3.org/TR/css-values-3/#absolute-lengths
+   https://www.w3.org/TR/css-values-3/#lengths
 .. _How to configure the size of a pixel:
    ../../user/latex.html#size-of-a-pixel
 __ ../../user/
