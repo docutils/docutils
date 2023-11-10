@@ -6,10 +6,50 @@
 .. include:: data/list_table.txt
 .. include:: data/custom_roles.txt
 
-.. HTML Specific
-
 .. include:: data/html5-features.txt
 .. include:: data/html5-text-level-tags.txt
+
+.. include:: data/svg_images.txt
+
+.. raw:: html
+   :file: data/object-with-hyperlink.svg
+   :class: align-left
+
+.. raw:: html
+   :file: data/interactive-button.svg
+   :class: align-right
+
+SVG images can also be included with the ``:file:`` or ``:url:`` options
+of the "raw" directive.
+Then, hyperlinks and script actions work also with the "html5" writer;
+however, scaling must be done directly in the image or with custom CSS
+rules.
+
+.. raw:: html
+
+   <svg
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    version="1.1"
+    style="width: 2.4em; height: 2.4em"
+    class="align-left">
+    <image xlink:href="file:../input/data/object-with-hyperlink.svg"
+     width="2.4em" height="2.4em" />
+   </svg>
+
+   <svg
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    version="1.1"
+    width="4.5em" height="2em"
+    class="align-right">
+    <image xlink:href="file:../input/data/interactive-button.svg"
+     width="4.5em" height="2em" />
+   </svg>
+
+Hyperlinks and script actions fail inside SVG ``<image>`` nodes, so
+``<object>`` or ``<iframe>`` nodes seem to be the only ways to reference
+external image files while keeping interactivity.
 
 .. include:: data/errors.txt
 
