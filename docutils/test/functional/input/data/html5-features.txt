@@ -35,6 +35,8 @@ Changes to the `html4css1` Writer
   is found in `inline`, `literal`, or `container` elements.
   (See `text-level semantics`_ and `indicating edits`_.)
 
+* Use <img> tags for SVG images and <video> for video formats.
+
 Field List Rendering
 --------------------
 

@@ -1,0 +1,15 @@
+<!-- https://www.petercollingridge.co.uk/tutorials/svg/interactive/button/ -->
+<svg viewBox="0 0 50 22"
+   xmlns="http://www.w3.org/2000/svg"
+   height="2em">
+    <script type="text/javascript"><![CDATA[
+        function buttonClick(evt) {
+            alert('Click');
+        }
+    ]]></script>
+    <g onmouseup="buttonClick(evt)">
+        <rect x="0" y="0" rx="5" ry="5" width="50" height="22"
+              style="fill: #85ffdb; cursor: pointer;" />
+        <text x="5" y="16" font-size="12px">Button</text>
+    </g>
+</svg>
