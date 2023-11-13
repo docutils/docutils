@@ -23,6 +23,8 @@ from docutils.utils import new_document
 
 
 class ParserTestCase(unittest.TestCase):
+    maxDiff = None
+
     def test_parser(self):
         parser = Parser()
         settings = get_default_settings(Parser)
@@ -707,7 +709,11 @@ Complex optargs:
                         Option argument containing delimiter ``=``.
 -f <[path]filename>     Send output to file.
 -d <src dest>           Use diff from <src> to <dest>.
---bogus=<x y z>         Bogus 3D coordinates.
+--point=<x y z>         3D coordinates.
+--vector <"x, y, z">    Another option expecting 3 arguments.
+--cvs=<'a[, b[, ...]]]'>
+                        Comma separated arguments.
+-g <a, , c>             Complex arg with empty list element.
 """,
 """\
 <document source="test data">
@@ -777,12 +783,58 @@ Complex optargs:
             <option_group>
                 <option>
                     <option_string>
-                        --bogus
+                        --point
                     <option_argument delimiter="=">
                         <x y z>
             <description>
                 <paragraph>
-                    Bogus 3D coordinates.
+                    3D coordinates.
+        <option_list_item>
+            <option_group>
+                <option>
+                    <option_string>
+                        --vector
+                    <option_argument delimiter=" ">
+                        <"x, y, z">
+            <description>
+                <paragraph>
+                    Another option expecting 3 arguments.
+        <option_list_item>
+            <option_group>
+                <option>
+                    <option_string>
+                        --cvs
+                    <option_argument delimiter="=">
+                        <'a[, b[, ...]]]'>
+            <description>
+                <paragraph>
+                    Comma separated arguments.
+        <option_list_item>
+            <option_group>
+                <option>
+                    <option_string>
+                        -g
+                    <option_argument delimiter=" ">
+                        <a, , c>
+            <description>
+                <paragraph>
+                    Complex arg with empty list element.
+"""],
+["""\
+Incorrect option syntax → no option list.
+
+-f, , --force   Empty synonym.
+-f <a, , b      Unbalanced angle bracket.
+-f a, , b>      Unbalanced angle bracket.
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        Incorrect option syntax → no option list.
+    <paragraph>
+        -f, , --force   Empty synonym.
+        -f <a, , b      Unbalanced angle bracket.
+        -f a, , b>      Unbalanced angle bracket.
 """],
 ]
 

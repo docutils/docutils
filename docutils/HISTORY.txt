@@ -62,6 +62,10 @@ Changes since 0.20.1
   - Move `parsers.rst.directives.Table.process_header_option()` to
     `parsers.rst.directives.CSVTable`.
 
+* docutils/parsers/rst/states.py
+
+  - Don't split inside "< >" when parsing "option groups" (fixes bug #474).
+
 * docutils/utils/roman.py
 
   - Update to version `1.4 <https://pypi.org/project/roman/4.1/>`__.
@@ -207,8 +211,8 @@ Release 0.20 (2023-05-09)
 
 * docutils/writers/html5_polyglot/__init__.py
 
-  - Do not use HTML5 text-level tags inside <code> and <code-block>
-    (fixes bug #476).
+  - Do not convert class values to HTML5 text-level tags inside
+    <code> and <code-block> (fixes bug #476).
 
 * docutils/writers/latex2e/__init__.py
 
