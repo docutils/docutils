@@ -2729,6 +2729,8 @@ class Text(RSTState):
     def indent(self, match, context, next_state):
         """Definition list item."""
         definitionlist = nodes.definition_list()
+        (definitionlist.src,
+         definitionlist.line) = self.state_machine.get_source_and_line()
         definitionlistitem, blank_finish = self.definition_list_item(context)
         definitionlist += definitionlistitem
         self.parent += definitionlist

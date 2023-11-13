@@ -10,3 +10,10 @@ With *inline* element in line 2.
 * second item in line 10
 
 1. enumerated list in line 12
+
+.. admonition:: line 14
+
+   Generic admonition text in line 16
+
+line 18
+   definition list item in line 19

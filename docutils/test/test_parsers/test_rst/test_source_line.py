@@ -43,6 +43,8 @@ TEST_ROOT = os.path.abspath(os.path.join(__file__, '..', '..', '..'))
 
 
 class TransformTestCase(unittest.TestCase):
+    maxDiff = None
+
     def test_transforms(self):
         parser = Parser()
         settings = get_default_settings(Parser)
@@ -167,11 +169,11 @@ Paragraph
         <attribution internal:line="16" internal:source="test data">
             attribution in line 16
 """],
-["""\
+[f"""\
 Paragraph
 
-.. include:: %s
-""" % include14,
+.. include:: {include14}
+""",
 f"""\
 <document source="test data">
     <paragraph internal:line="1" internal:source="test data">
@@ -199,6 +201,18 @@ f"""\
         <list_item internal:source="{include14}">
             <paragraph internal:line="12" internal:source="{include14}">
                 enumerated list in line 12
+    <admonition classes="admonition-line-14" internal:line="14" internal:source="{include14}">
+        <title internal:line="14" internal:source="{include14}">
+            line 14
+        <paragraph internal:line="16" internal:source="{include14}">
+            Generic admonition text in line 16
+    <definition_list internal:line="19" internal:source="{include14}">
+        <definition_list_item internal:line="19" internal:source="{include14}">
+            <term internal:line="19" internal:source="{include14}">
+                line 18
+            <definition>
+                <paragraph internal:line="19" internal:source="{include14}">
+                    definition list item in line 19
 """],
 ["""\
 Paragraph
