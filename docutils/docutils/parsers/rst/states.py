@@ -1552,7 +1552,8 @@ class Body(RSTState):
         :Exception: `MarkupError` for invalid option markers.
         """
         optlist = []
-        optionstrings = match.group().rstrip().split(', ')
+        # split at ", ", except inside < > (complex arguments)
+        optionstrings = re.split(r', (?![^<]*>)', match.group().rstrip())
         for optionstring in optionstrings:
             tokens = optionstring.split()
             delimiter = ' '

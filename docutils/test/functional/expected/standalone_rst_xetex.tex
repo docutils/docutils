@@ -514,10 +514,11 @@ For listing command-line options:
 \item[-b file]  options can have arguments
 and long descriptions
 
-\item[--long]  options can be long also
+\item[--long]  options can be long, too
 
-\item[--input=file]  long options can also have
-arguments
+\item[--input=file]  long options can also have arguments
+
+\item[/V]  DOS/VMS-style option
 
 \item[--very-long-option]  The description can also start on the next line.
 
@@ -530,7 +531,11 @@ regardless of where it starts.
 
 \item[-1 file, --one=file, --two file]  Multiple options with arguments.
 
-\item[/V]  DOS/VMS-style options too
+\item[-f <{[}path{]}file>]  Option argumens must start with a letter
+or be wrapped in angle brackets.
+
+\item[-d <src dest>]  Angle brackets are also required if an
+option expects more than one argument.
 \end{DUoptionlist}
 
 There must be at least two spaces between the option and the
@@ -2168,7 +2173,7 @@ Undefined substitution referenced: \textquotedbl{}problematic\textquotedbl{}.
 \DUtitle{system-message
 \raisebox{1em}{\hypertarget{system-message-2}{}}}
 
-{\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~387
+{\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~390
 
 \hyperlink{footnote-reference-8}{
 Unknown target name: \textquotedbl{}5\textquotedbl{}.
@@ -2180,7 +2185,7 @@ Unknown target name: \textquotedbl{}5\textquotedbl{}.
 \DUtitle{system-message
 \raisebox{1em}{\hypertarget{system-message-3}{}}}
 
-{\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~396
+{\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~399
 
 \hyperlink{citation-reference-3}{
 Unknown target name: \textquotedbl{}nonexistent\textquotedbl{}.
@@ -2192,7 +2197,7 @@ Unknown target name: \textquotedbl{}nonexistent\textquotedbl{}.
 \DUtitle{system-message
 \raisebox{1em}{\hypertarget{system-message-4}{}}}
 
-{\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~423
+{\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~426
 
 \hyperlink{problematic-2}{
 Unknown target name: \textquotedbl{}hyperlink reference without a target\textquotedbl{}.
@@ -2204,7 +2209,7 @@ Unknown target name: \textquotedbl{}hyperlink reference without a target\textquo
 \DUtitle{system-message
 \raisebox{1em}{\hypertarget{system-message-5}{}}}
 
-{\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~436
+{\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~439
 
 \hyperlink{problematic-3}{
 Duplicate target name, cannot be used as a unique reference: \textquotedbl{}duplicate target names\textquotedbl{}.

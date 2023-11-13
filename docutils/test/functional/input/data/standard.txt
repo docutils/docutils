@@ -231,9 +231,9 @@ For listing command-line options:
 -a            command-line option "a"
 -b file       options can have arguments
               and long descriptions
---long        options can be long also
---input=file  long options can also have
-              arguments
+--long        options can be long, too
+--input=file  long options can also have arguments
+/V            DOS/VMS-style option
 
 --very-long-option
               The description can also start on the next line.
@@ -241,11 +241,14 @@ For listing command-line options:
               The description may contain multiple body elements,
               regardless of where it starts.
 
--x, -y, -z    Multiple options are an "option group".
--v, --verbose  Commonly-seen: short & long options.
+-x, -y, -z       Multiple options are an "option group".
+-v, --verbose    Commonly-seen: short & long options.
 -1 file, --one=file, --two file
-              Multiple options with arguments.
-/V            DOS/VMS-style options too
+                 Multiple options with arguments.
+-f <[path]file>  Option argumens must start with a letter
+                 or be wrapped in angle brackets.
+-d <src dest>    Angle brackets are also required if an
+                 option expects more than one argument.
 
 There must be at least two spaces between the option and the
 description.
