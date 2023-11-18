@@ -199,6 +199,7 @@ class Translator(nodes.NodeVisitor):
         self._in_docinfo = None
         self._field_name = None
         self._active_table = None
+        self._has_a_table = False   # is there a table in this document
         self._in_literal = False
         self.header_written = 0
         self._line_block = 0
@@ -1075,6 +1076,11 @@ class Translator(nodes.NodeVisitor):
 
     def visit_table(self, node):
         self._active_table = Table()
+        self._has_a_table = True
+        if self._has_a_table:
+            # the comment to hint that preprocessor tbl should be called
+            self.head.insert(0, "'\\\" t\n") 
+            # single apostrophe, backslash, double apostroph, blank, character-t
 
     def depart_table(self, node):
         self.ensure_eol()
