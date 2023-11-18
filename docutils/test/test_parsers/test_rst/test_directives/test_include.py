@@ -38,6 +38,8 @@ except ImportError:
 
 
 class ParserTestCase(unittest.TestCase):
+    maxDiff = None
+
     def test_parser(self):
         # eventually skip optional parts:
         if not with_pygments:
@@ -1035,7 +1037,7 @@ f"""\
                :end-before: mork of ork
 """],
 [f"""\
-TAB expansion with literal include:
+Default TAB expansion with literal include:
 
 .. include:: {include_literal}
    :literal:
@@ -1043,7 +1045,7 @@ TAB expansion with literal include:
 f"""\
 <document source="test data">
     <paragraph>
-        TAB expansion with literal include:
+        Default TAB expansion with literal include:
     <literal_block source="{include_literal}" xml:space="preserve">
         Literal included this should **not** be *marked* `up`.
                 <- leading raw tab.
@@ -1192,7 +1194,7 @@ f"""\
         .
 """],
 [f"""\
-TAB expansion with included code:
+Default TAB expansion with included code:
 
 .. include:: {include_literal}
    :code: rst
@@ -1200,7 +1202,7 @@ TAB expansion with included code:
 f"""\
 <document source="test data">
     <paragraph>
-        TAB expansion with included code:
+        Default TAB expansion with included code:
     <literal_block classes="code rst" source="{include_literal}" xml:space="preserve">
         Literal included this should \n\
         <inline classes="generic strong">
@@ -1228,7 +1230,7 @@ f"""\
 """ if PYGMENTS_2_14_PLUS else f"""\
 <document source="test data">
     <paragraph>
-        TAB expansion with included code:
+        Default TAB expansion with included code:
     <literal_block classes="code rst" source="{include_literal}" xml:space="preserve">
         Literal included this should \n\
         <inline classes="generic strong">
@@ -1303,7 +1305,7 @@ f"""\
         normalized.
 """],
 [f"""\
-Custom TAB expansion with included code:
+No TAB expansion with included code:
 
 .. include:: {include_literal}
    :code: rst
@@ -1312,7 +1314,7 @@ Custom TAB expansion with included code:
 f"""\
 <document source="test data">
     <paragraph>
-        Custom TAB expansion with included code:
+        No TAB expansion with included code:
     <literal_block classes="code rst" source="{include_literal}" xml:space="preserve">
         Literal included this should \n\
         <inline classes="generic strong">
@@ -1340,7 +1342,7 @@ f"""\
 """ if PYGMENTS_2_14_PLUS else f"""\
 <document source="test data">
     <paragraph>
-        Custom TAB expansion with included code:
+        No TAB expansion with included code:
     <literal_block classes="code rst" source="{include_literal}" xml:space="preserve">
         Literal included this should \n\
         <inline classes="generic strong">
