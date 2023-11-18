@@ -246,6 +246,7 @@ totest['table'] = [
         ====== =====
 """,
 '''\
+\'\\" t
 .\\" Man page generated from reStructuredText.
 .
 ''' + indend_macros + '''.TH ""  "" ""
