@@ -1512,8 +1512,9 @@ The following options are recognized:
 
 ``tab-width`` : integer_
     Number of spaces for hard tab expansion.
-    A negative value prevents expansion of hard tabs. Defaults to the
-    tab_width_ configuration setting.
+    Must be a positive integer, except for literal inclusions and code,
+    where a negative value prevents expansion of hard tabs. 
+    Defaults to the tab_width_ configuration setting.
 
     .. _tab_width: ../../user/config.html#tab-width
 

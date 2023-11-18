@@ -188,8 +188,6 @@ Release 0.21 (unpublished)
   configuration setting is None, '', 'utf-8-sig', 'utf-16', or 'utf-32'.
   Do not remove other ZWNBSPs.
 
-  .. _input encoding: docs/api/publisher.html#encodings
-
 * "html5" writer:
   Stop setting the "footnote-reference" class value for footnote references.
   You can use the CSS selector ``[role="doc-noteref"]``
@@ -207,6 +205,7 @@ Release 0.21 (unpublished)
 
   - File ``install.py``. See README.txt__ for alternatives.
 
+.. _input encoding: docs/api/publisher.html#encodings
 .. _csv-table: docs/ref/rst/directives.html#csv-table
 __ README.html#installation
 
@@ -244,8 +243,6 @@ Release 0.20 (2023-05-04)
     are now ignored by the "xetex" writer.
     Place common settings in section `[latex writers]`_.
 
-    .. _[latex writers]: docs/user/config.html#latex-writers
-
   - New command line setting output_. Obsoletes the ``<destination>``
     positional argument (cf. `future changes`__).
 
@@ -264,15 +261,15 @@ Release 0.20 (2023-05-04)
   - Removed. Use the coverage.py_ project instead,
     ``coverage run test/alltests.py`` and ``coverage report``.
 
-  .. _coverage.py: https://pypi.org/project/coverage/
-
 * tools/
 
   - Moved ``quicktest.py`` to ``tools/dev/``.
 
 * Bugfixes and improvements (see HISTORY_).
 
+.. _[latex writers]: docs/user/config.html#latex-writers
 .. _output: docs/user/config.html#output
+.. _coverage.py: https://pypi.org/project/coverage/
 
 
 Release 0.19 (2022-07-05)
@@ -293,9 +290,6 @@ Release 0.19 (2022-07-05)
 * After package installation, the CLI commands ``python -m docutils`` and
   ``docutils`` start the `generic command line front end tool`_.
 
-  .. _generic command line front end tool:
-      docs/user/tools.html#generic-command-line-front-end
-
 * Support parsing "Markdown" input with 3rd party parsers
   myst_, pycmark_, or recommonmark_.
 
@@ -306,6 +300,8 @@ Release 0.19 (2022-07-05)
 
 * Various bugfixes and improvements (see HISTORY_).
 
+.. _generic command line front end tool:
+    docs/user/tools.html#generic-command-line-front-end
 .. _myst: https://pypi.org/project/myst-docutils
 .. _pycmark: https://pypi.org/project/pycmark/
 .. _recommonmark: https://pypi.org/project/recommonmark/
@@ -358,7 +354,6 @@ Release 0.18 (2021-10-26)
       widths, if the `"widths" option`_ is set and not "auto".
       The table-style__ setting "colwidths-grid" restores the current default.
 
-      .. _"widths" option: __ docs/ref/rst/directives.html#table
       __ docs/user/config.html#table-style
 
     - Items of a definition list with class argument "details" are
@@ -393,6 +388,8 @@ Release 0.18 (2021-10-26)
      admonitions are now environments.
 
 * New standard Docutils doctree node: <meta__>.
+
+  __ docs/ref/doctree.html#meta
 
 * New configuration settings:
 
@@ -429,9 +426,9 @@ Release 0.18 (2021-10-26)
   Fix spelling errors in documentation and docstrings.
   Thanks to Dimitri Papadopoulos.
 
-__ docs/ref/doctree.html#meta
+.. _"widths" option: __ docs/ref/rst/directives.html#table
 .. _identifier normalization:
-   docs/ref/rst/directives.html#identifier-normalization
+    docs/ref/rst/directives.html#identifier-normalization
 .. _id_prefix: docs/user/config.html#id-prefix
 .. _auto_id_prefix: docs/user/config.html#auto-id-prefix
 .. _details disclosure elements:
@@ -545,9 +542,6 @@ without the use of the ``2to3`` tool.
     "html4" or "html5" (deprecated in favour of the `"writer" setting`_
     in Docutils 0.18).
 
-  .. _"writer" setting:
-     docs/user/config.html#writer-buildhtml-application
-
 * docutils/io.py
 
   - Remove the `handle_io_errors` argument from io.FileInput/Output.
@@ -556,9 +550,10 @@ without the use of the ``2to3`` tool.
 
   - If `auto_id_prefix`_ ends with "%", this is replaced with the tag name.
 
-  .. _auto_id_prefix: docs/user/config.html#auto-id-prefix
-
 * Various bugfixes and improvements (see HISTORY_).
+
+.. _"writer" setting: docs/user/config.html#writer-buildhtml-application
+.. _auto_id_prefix: docs/user/config.html#auto-id-prefix
 
 
 Release 0.15 (2019-07-20)
@@ -641,8 +636,6 @@ Release 0.13.1 (2016-12-09)
 
   - New HTML writer generating `HTML 5`_.
 
-  .. _HTML 5: https://www.w3.org/TR/html5/
-
 * tools/
 
   - New front-end ``rst2html5.py``.
@@ -657,6 +650,8 @@ Release 0.13.1 (2016-12-09)
   better tablewidth auto, ...
 
 * rst.el: The problem with ``electric-indent-mode`` has been fixed.
+
+.. _HTML 5: https://www.w3.org/TR/html5/
 
 
 Release 0.12 (2014-07-06)
@@ -695,8 +690,6 @@ Release 0.11 (2013-07-22)
   - Avoid repeated class declarations in html4css1 writer
     (modified version of patch [ 104 ]).
 
-  .. _math-output: docs/user/config.html#math-output
-
 * docutils/writers/latex2e/__init__.py
 
   - Drop the simple algorithm replacing straight double quotes with
@@ -706,12 +699,14 @@ Release 0.11 (2013-07-22)
     where stylesheets are found. Used by `stylesheet_path` when expanding
     relative path arguments.
 
-  .. _SmartQuotes: docs/user/config.html#smart-quotes
-
 * docutils/writers/manpage.py
 
   - Fix [3607063] handle lines starting with a period.
   - Fix option separating comma was bold (thanks to Bill Morris).
+
+.. _math-output: docs/user/config.html#math-output
+.. _SmartQuotes: docs/user/config.html#smart-quotes
+
 
 Release 0.10 (2012-12-16)
 =========================
@@ -909,9 +904,9 @@ Components:
   - Drop the special `output_encoding`__ default ("latin-1").
     The Docutils wide default (usually "UTF-8") is used instead.
 
-__ docs/user/config.html#docutils-footnotes
-__ docs/user/latex.html#hyperlinks
-__ docs/user/latex.html#output-encoding
+  __ docs/user/config.html#docutils-footnotes
+  __ docs/user/latex.html#hyperlinks
+  __ docs/user/latex.html#output-encoding
 
 * manpage writer:
 
@@ -951,9 +946,9 @@ and convertible to 3.1 code.
     (aligning the figure not its contents).
   - Align images with class "align-[right|center|left]"
     (allows setting the alignment of an image in a figure).
-  - Hard tabs in literal inclusions are replaced by spaces. This is
-    configurable via the new "tab-width" option of the "include" directive
-    (a negative tab-width prevents tab expansion).
+  - Hard tabs **in literal inclusions** are replaced by spaces.
+    This is configurable via the new ``:tab-width:`` option of the
+    `"include" directive`_ (a negative tab-width prevents tab expansion).
 
 * HTML writer:
 
@@ -992,6 +987,9 @@ and convertible to 3.1 code.
 * manpage writer:
 
   - moved from sandbox to Doctutils core.
+
+.. _"include" directive:
+    docs/ref/rst/directives.html#including-an-external-document-fragment
 
 
 Release 0.5 (2008-06-25)

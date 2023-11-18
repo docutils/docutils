@@ -284,11 +284,13 @@ class HTMLTranslator(_html_base.HTMLTranslator):
     def visit_inline(self, node):
         classes = node['classes']
         node.html5tagname = 'span'
+        # Special handling for "code" directive content
         if (isinstance(node.parent, nodes.literal_block)
             and 'code' in node.parent.get('classes')
             or isinstance(node.parent, nodes.literal)
             and getattr(node.parent, 'html5tagname', None) == 'code'):
             if classes == ['ln']:
+                # line numbers are not part of the "fragment of computer code"
                 if self.body[-1] == '<code>':
                     del self.body[-1]
                 else:
