@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 # :Id: $Id$
-# :Copyright: © 2010 Günter Milde,
+# :Copyright: © 2010-2023 Günter Milde,
 #             original `SmartyPants`_: © 2003 John Gruber
 #             smartypants.py:          © 2004, 2007 Chad Miller
 # :Maintainer: docutils-develop@lists.sourceforge.net
@@ -149,19 +149,13 @@ ASCII straight quotes, plain dashes, and plain dots, but your published
 posts (and final HTML output) will appear with smart quotes, em-dashes,
 and proper ellipses.
 
-SmartyPants does not modify characters within ``<pre>``, ``<code>``, ``<kbd>``,
-``<math>`` or ``<script>`` tag blocks. Typically, these tags are used to
-display text where smart quotes and other "smart punctuation" would not be
-appropriate, such as source code or example markup.
-
-
 Backslash Escapes
 =================
 
 If you need to use literal straight quotes (or plain hyphens and periods),
 `smartquotes` accepts the following backslash escape sequences to force
-ASCII-punctuation. Mind, that you need two backslashes as Docutils expands it,
-too.
+ASCII-punctuation. Mind, that you need two backslashes in "docstrings", as
+Python expands them, too.
 
 ========  =========
 Escape    Character
@@ -258,6 +252,10 @@ the source::
 
 Version History
 ===============
+
+1.10    2023-11-18
+        - Pre-compile regexps once, not with every call of `educateQuotes()`
+          (patch #206 by Chris Sewell). Simplify regexps.
 
 1.9     2022-03-04
         - Code cleanup. Require Python 3.
@@ -387,10 +385,10 @@ example, ``"1"`` is equivalent to ``"qBde"``.
 class smartchars:
     """Smart quotes and dashes"""
 
-    endash = '–'      # "&#8211;" EN DASH
-    emdash = '—'      # "&#8212;" EM DASH
-    ellipsis = '…'    # "&#8230;" HORIZONTAL ELLIPSIS
-    apostrophe = '’'  # "&#8217;" RIGHT SINGLE QUOTATION MARK
+    endash = '–'      # EN DASH
+    emdash = '—'      # EM DASH
+    ellipsis = '…'    # HORIZONTAL ELLIPSIS
+    apostrophe = '’'  # RIGHT SINGLE QUOTATION MARK
 
     # quote characters (language-specific, set in __init__())
     # https://en.wikipedia.org/wiki/Non-English_usage_of_quotation_marks
@@ -509,9 +507,9 @@ class RegularExpressions:
     # character classes:
     _CH_CLASSES = {'open': '[([{]',    # opening braces
                    'close': r'[^\s]',  # everything except whitespace
-                   'punct': r"""[-!" #\$\%'()*+,.\/:;<=>?\@\[\\\]\^_`{|}~]""",
-                   'dash': r'[-–—]|&[mn]dash;|&\#8211;|&\#8212;|&\#x201[34];',
-                   'sep': '[\\s\u200B\u200C]|&nbsp;',  # Whitespace, ZWSP, ZWNJ
+                   'punct': r"""[-!"  #\$\%'()*+,.\/:;<=>?\@\[\\\]\^_`{|}~]""",
+                   'dash': r'[-–—]',
+                   'sep': '[\\s\u200B\u200C]',  # Whitespace, ZWSP, ZWNJ
                    }
     START_SINGLE = re.compile(r"^'(?=%s\\B)" % _CH_CLASSES['punct'])
     START_DOUBLE = re.compile(r'^"(?=%s\\B)' % _CH_CLASSES['punct'])
@@ -679,7 +677,7 @@ def educateQuotes(text, language='en'):
     Returns:    The `text`, with "educated" curly quote characters.
 
     Example input:  "Isn't this fun?"
-    Example output: “Isn’t this fun?“;
+    Example output: “Isn’t this fun?“
     """
 
     smart = smartchars(language)
@@ -737,7 +735,7 @@ def educateBackticks(text, language='en'):
     Returns:    The `text`, with ``backticks'' -style double quotes
                 translated into HTML curly quote entities.
     Example input:  ``Isn't this fun?''
-    Example output: “Isn't this fun?“;
+    Example output: “Isn't this fun?“
     """
     smart = smartchars(language)
 
@@ -813,7 +811,7 @@ def educateEllipses(text):
                 an ellipsis character.
 
     Example input:  Huh...?
-    Example output: Huh&#8230;?
+    Example output: Huh…?
     """
 
     text = text.replace(r'...', smartchars.ellipsis)

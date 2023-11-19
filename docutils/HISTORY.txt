@@ -71,6 +71,11 @@ Changes since 0.20.1
   - Update to version `1.4 <https://pypi.org/project/roman/4.1/>`__.
     Fixes feature-requests:#95 (license is now ZPL 2.1).
 
+* docutils/utils/smartquotes.py
+
+  - Pre-compile regexps once, not with every call of `educateQuotes()`
+    (patch #206 by Chris Sewell). Simplify regexps.
+
 * docutils/writers/latex2e/__init__.py
 
   - Fix placement of hyperlink target (label) for tables (bug #440).

@@ -32,6 +32,8 @@ from docutils.utils import new_document
 
 
 class TransformTestCase(unittest.TestCase):
+    maxDiff = None
+
     def test_transforms(self):
         parser = Parser()
         settings = get_default_settings(Parser)
@@ -183,7 +185,6 @@ ZWNJ\u200C"a" and\u200C'a',
 escaped space\\ "a" and\\ 'a',
 
 hyphen -"a", -'a'
-&mdash;"a",&mdash;'a'
 en dash –"a"–'a',
 em dash —"a"—'a'.
 
@@ -210,7 +211,6 @@ But not if followed by (optional punctuation and) whitespace:
         escaped space“a” and‘a’,
     <paragraph>
         hyphen -“a”, -‘a’
-        &mdash;“a”,&mdash;‘a’
         en dash –“a”–‘a’,
         em dash —“a”—‘a’.
     <paragraph>
