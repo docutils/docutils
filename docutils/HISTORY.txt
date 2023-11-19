@@ -74,7 +74,8 @@ Changes since 0.20.1
 * docutils/utils/smartquotes.py
 
   - Pre-compile regexps once, not with every call of `educateQuotes()`
-    (patch #206 by Chris Sewell). Simplify regexps.
+    (patch #206 by Chris Sewell); simplify regexps; skip replacement
+    rules if there is nothing to replace.
 
 * docutils/writers/latex2e/__init__.py
 

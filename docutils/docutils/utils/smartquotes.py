@@ -142,7 +142,7 @@ SmartyPants can perform the following transformations:
 - Straight quotes ( " and ' ) into "curly" quote characters
 - Backticks-style quotes (\`\`like this'') into "curly" quote characters
 - Dashes (``--`` and ``---``) into en- and em-dash entities
-- Three consecutive dots (``...`` or ``. . .``) into an ellipsis entity
+- Three consecutive dots (``...`` or ``. . .``) into an ellipsis ``…``.
 
 This means you can write, edit, and save your posts using plain old
 ASCII straight quotes, plain dashes, and plain dots, but your published
@@ -548,6 +548,9 @@ class RegularExpressions:
                     """, re.VERBOSE)
 
 
+regexes = RegularExpressions()
+
+
 default_smartypants_attr = '1'
 
 
@@ -679,9 +682,10 @@ def educateQuotes(text, language='en'):
     Example input:  "Isn't this fun?"
     Example output: “Isn’t this fun?“
     """
-
     smart = smartchars(language)
-    regexes = RegularExpressions()
+
+    if not re.search('[-"\']', text):
+        return text
 
     # Special case if the very first character is a quote
     # followed by punctuation at a non-word-break. Use closing quotes.
