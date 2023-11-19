@@ -505,6 +505,51 @@ class smartchars:
             self.opquote, self.cpquote, self.osquote, self.csquote = '""\'\''
 
 
+class RegularExpressions:
+    # character classes:
+    _CH_CLASSES = {'open': '[([{]',    # opening braces
+                   'close': r'[^\s]',  # everything except whitespace
+                   'punct': r"""[-!" #\$\%'()*+,.\/:;<=>?\@\[\\\]\^_`{|}~]""",
+                   'dash': r'[-–—]|&[mn]dash;|&\#8211;|&\#8212;|&\#x201[34];',
+                   'sep': '[\\s\u200B\u200C]|&nbsp;',  # Whitespace, ZWSP, ZWNJ
+                   }
+    START_SINGLE = re.compile(r"^'(?=%s\\B)" % _CH_CLASSES['punct'])
+    START_DOUBLE = re.compile(r'^"(?=%s\\B)' % _CH_CLASSES['punct'])
+    ADJACENT_1 = re.compile('"\'(?=\\w)')
+    ADJACENT_2 = re.compile('\'"(?=\\w)')
+    OPEN_SINGLE = re.compile(r"(%(open)s|%(dash)s)'(?=%(punct)s? )"
+                             % _CH_CLASSES)
+    OPEN_DOUBLE = re.compile(r'(%(open)s|%(dash)s)"(?=%(punct)s? )'
+                             % _CH_CLASSES)
+    DECADE = re.compile(r"'(?=\d{2}s)")
+    APOSTROPHE = re.compile(r"(?<=(\w|\d))'(?=\w)")
+    OPENING_SECONDARY = re.compile("""
+                    (# ?<=  # look behind fails: requires fixed-width pattern
+                        %(sep)s     |  # a whitespace char, or
+                        %(open)s    |  # opening brace, or
+                        %(dash)s       # em/en-dash
+                    )
+                    '                  # the quote
+                    (?=\\w|%(punct)s)  # word character or punctuation
+                    """ % _CH_CLASSES, re.VERBOSE)
+    CLOSING_SECONDARY = re.compile(r"(?<!\s)'")
+    OPENING_PRIMARY = re.compile("""
+                    (
+                        %(sep)s     |  # a whitespace char, or
+                        %(open)s    |  # zero width separating char, or
+                        %(dash)s       # em/en-dash
+                    )
+                    "                 # the quote, followed by
+                    (?=\\w|%(punct)s) # a word character or punctuation
+                    """ % _CH_CLASSES, re.VERBOSE)
+    CLOSING_PRIMARY = re.compile(r"""
+                    (
+                    (?<!\s)" | # no whitespace before
+                    "(?=\s)    # whitespace behind
+                    )
+                    """, re.VERBOSE)
+
+
 default_smartypants_attr = '1'
 
 
@@ -638,83 +683,47 @@ def educateQuotes(text, language='en'):
     """
 
     smart = smartchars(language)
-    ch_classes = {'open': '[([{]',    # opening braces
-                  'close': r'[^\s]',  # everything except whitespace
-                  'punct': r"""[-!" #\$\%'()*+,.\/:;<=>?\@\[\\\]\^_`{|}~]""",
-                  'dash': '[-–—]'     # hyphen and em/en dashes
-                          r'|&[mn]dash;|&\#8211;|&\#8212;|&\#x201[34];',
-                  'sep': '[\\s\u200B\u200C]|&nbsp;',  # Whitespace, ZWSP, ZWNJ
-                  }
+    regexes = RegularExpressions()
 
     # Special case if the very first character is a quote
     # followed by punctuation at a non-word-break. Use closing quotes.
     # TODO: example (when does this match?)
-    text = re.sub(r"^'(?=%s\\B)" % ch_classes['punct'], smart.csquote, text)
-    text = re.sub(r'^"(?=%s\\B)' % ch_classes['punct'], smart.cpquote, text)
+    text = regexes.START_SINGLE.sub(smart.csquote, text)
+    text = regexes.START_DOUBLE.sub(smart.cpquote, text)
 
     # Special case for adjacent quotes
     # like "'Quoted' words in a larger quote."
-    text = re.sub('"\'(?=\\w)', smart.opquote+smart.osquote, text)
-    text = re.sub('\'"(?=\\w)', smart.osquote+smart.opquote, text)
+    text = regexes.ADJACENT_1.sub(smart.opquote+smart.osquote, text)
+    text = regexes.ADJACENT_2.sub(smart.osquote+smart.opquote, text)
 
     # Special case: "opening character" followed by quote,
     # optional punctuation and space like "[", '(', or '-'.
-    text = re.sub(r"(%(open)s|%(dash)s)'(?=%(punct)s? )" % ch_classes,
-                  r'\1%s'%smart.csquote, text)
-    text = re.sub(r'(%(open)s|%(dash)s)"(?=%(punct)s? )' % ch_classes,
-                  r'\1%s'%smart.cpquote, text)
+    text = regexes.OPEN_SINGLE.sub(r'\1%s'%smart.csquote, text)
+    text = regexes.OPEN_DOUBLE.sub(r'\1%s'%smart.cpquote, text)
 
     # Special case for decade abbreviations (the '80s):
     if language.startswith('en'):  # TODO similar cases in other languages?
-        text = re.sub(r"'(?=\d{2}s)", smart.apostrophe, text)
+        text = regexes.DECADE.sub(smart.apostrophe, text)
 
     # Get most opening secondary quotes:
-    opening_secondary_quotes_regex = re.compile("""
-                    (# ?<=  # look behind fails: requires fixed-width pattern
-                      %(sep)s     |  # a whitespace char, or
-                      %(open)s    |  # opening brace, or
-                      %(dash)s       # em/en-dash
-                    )
-                    '                  # the quote
-                    (?=\\w|%(punct)s)  # word character or punctuation
-                    """ % ch_classes, re.VERBOSE)
-
-    text = opening_secondary_quotes_regex.sub(r'\1'+smart.osquote, text)
+    text = regexes.OPENING_SECONDARY.sub(r'\1'+smart.osquote, text)
 
     # In many locales, secondary closing quotes are different from apostrophe:
     if smart.csquote != smart.apostrophe:
-        apostrophe_regex = re.compile(r"(?<=(\w|\d))'(?=\w)")
-        text = apostrophe_regex.sub(smart.apostrophe, text)
+        text = regexes.APOSTROPHE.sub(smart.apostrophe, text)
     # TODO: keep track of quoting level to recognize apostrophe in, e.g.,
     # "Ich fass' es nicht."
 
-    closing_secondary_quotes_regex = re.compile(r"(?<!\s)'")
-    text = closing_secondary_quotes_regex.sub(smart.csquote, text)
+    text = regexes.CLOSING_SECONDARY.sub(smart.csquote, text)
 
     # Any remaining secondary quotes should be opening ones:
     text = text.replace(r"'", smart.osquote)
 
     # Get most opening primary quotes:
-    opening_primary_quotes_regex = re.compile("""
-                    (
-                      %(sep)s     |  # a whitespace char, or
-                      %(open)s    |  # zero width separating char, or
-                      %(dash)s       # em/en-dash
-                    )
-                    "                 # the quote, followed by
-                    (?=\\w|%(punct)s) # a word character or punctuation
-                    """ % ch_classes, re.VERBOSE)
-
-    text = opening_primary_quotes_regex.sub(r'\1'+smart.opquote, text)
+    text = regexes.OPENING_PRIMARY.sub(r'\1'+smart.opquote, text)
 
     # primary closing quotes:
-    closing_primary_quotes_regex = re.compile(r"""
-                    (
-                    (?<!\s)" | # no whitespace before
-                    "(?=\s)    # whitespace behind
-                    )
-                    """, re.VERBOSE)
-    text = closing_primary_quotes_regex.sub(smart.cpquote, text)
+    text = regexes.CLOSING_PRIMARY.sub(smart.cpquote, text)
 
     # Any remaining quotes should be opening ones.
     text = text.replace(r'"', smart.opquote)
