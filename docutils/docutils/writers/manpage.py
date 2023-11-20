@@ -1076,8 +1076,8 @@ class Translator(nodes.NodeVisitor):
 
     def visit_table(self, node):
         self._active_table = Table()
-        self._has_a_table = True
-        if self._has_a_table:
+        if not self._has_a_table:
+            self._has_a_table = True
             # the comment to hint that preprocessor tbl should be called
             self.head.insert(0, "'\\\" t\n") 
             # single apostrophe, backslash, double apostroph, blank, character-t
