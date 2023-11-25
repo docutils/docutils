@@ -39,7 +39,7 @@ Images wrapped in ``<img>`` are always scaled.
 
 SVG images with `viewBox` keep the aspect ratio unless the
 `preserveAspectRatio` attribute is ``"none"``.
-The following two images are, 40% wide and 1.2 em high:
+The following two images are 40% wide and 1.2 em high:
 
 .. image:: ../../../docs/user/rst/images/title-scaling.svg
    :width: 40 %

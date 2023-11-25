@@ -14,7 +14,6 @@ In future, SVG images may be directly inserted into HTML5.
 
    Embedded image in a figure.
 
-
 Embedded inline image |inline-embedded| scaled to a height of 0.8 em.
 
 .. |inline-embedded| image:: ../docs/user/rst/images/biohazard.png
