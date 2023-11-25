@@ -19,7 +19,7 @@ import re
 
 from docutils import frontend, nodes, writers
 from docutils.writers import _html_base
-from docutils.writers._html_base import PIL, url2pathname
+from docutils.writers._html_base import PIL
 
 
 class Writer(writers._html_base.Writer):
@@ -565,7 +565,7 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
         if 'scale' in node:
             if (PIL and ('width' not in node or 'height' not in node)
                 and self.settings.file_insertion_enabled):
-                imagepath = url2pathname(uri)
+                imagepath = self.uri2imagepath(uri)
                 try:
                     with PIL.Image.open(imagepath) as img:
                         img_size = img.size
