@@ -1742,17 +1742,24 @@ titles
 ------
 
 The titles of admonitions_, sidebar_, and `topic element`_ use
-the ``\DUtitle`` command.
+the ``\DUtitle`` command which can be re-defined in the corresponding
+DUCLASS environment.
+
+* The re-definition is local to the environment, so you don't need to 
+  save/restore the original function.
+
+* In the nested function redefinition, the argument placeholder requires
+  two hashes, ``#1`` → ``##1``!
 
 Example 1:
   a centered and somewhat larger title for topcis::
 
      \newcommand*{\DUCLASStopic}{
-       \renewcommand*{\DUtitle}[1]{\subsection*{\centering #1}
+       \renewcommand*{\DUtitle}[1]{\subsection*{\centering ##1}}
      }
 
 Example 2:
-  a right-pointing hand as title for the "attention" directive::
+  a right-pointing hand as title for the "attention" admonition::
 
     \usepackage{pifont}
     \newcommand*{\DUCLASSattention}{
@@ -1764,7 +1771,7 @@ Example 2:
 
     \usepackage{pifont}
     \newcommand*{\DUCLASSattention}{
-      \newcommand*{\DUtitle}[1]{\ding{43} #1}
+      \renewcommand*{\DUtitle}[1]{\ding{43} ##1}
     }
 
 
