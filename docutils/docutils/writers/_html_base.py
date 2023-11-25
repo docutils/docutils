@@ -1005,13 +1005,15 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.header.extend(header)
         del self.body[start:]
 
+    # MIME types supported by the HTML5 <video> element
+    videotypes = ('video/mp4', 'video/webm', 'video/ogg')
+
     def visit_image(self, node):
         atts = {}
         uri = node['uri']
         uri_parts = urllib.parse.urlparse(uri)
         imagepath = ''
         mimetype = mimetypes.guess_type(uri)[0]
-        scaling_problems = []
         # image size
         if 'width' in node:
             atts['width'] = node['width']
@@ -1020,10 +1022,13 @@ class HTMLTranslator(nodes.NodeVisitor):
         if 'scale' in node:
             if 'width' not in node or 'height' not in node:
                 # try reading size from image file
+                scaling_problems = []
                 if uri_parts.scheme not in ('', 'file'):
-                    scaling_problems.append('Works only for local images.')
+                    scaling_problems.append('Can only read local images.')
                 if not PIL:
                     scaling_problems.append('Requires Python Imaging Library.')
+                if mimetype in self.videotypes:
+                    scaling_problems.append('PIL cannot read video images.')
                 if not self.settings.file_insertion_enabled:
                     scaling_problems.append('Reading external files disabled.')
                 if not scaling_problems:
@@ -1037,9 +1042,10 @@ class HTMLTranslator(nodes.NodeVisitor):
                         self.settings.record_dependencies.add(
                             imagepath.replace('\\', '/'))
                 if scaling_problems:
-                    self.document.reporter.warning(
-                        '\n  '.join([f'Cannot scale "{imagepath or uri}".']
-                                    + scaling_problems))
+                    msg = ['Cannot scale image!',
+                           f'Could not get size from "{imagepath or uri}":',
+                           *scaling_problems]
+                    self.document.reporter.warning('\n  '.join(msg))
                 else:
                     if 'width' not in atts:
                         atts['width'] = '%dpx' % imgsize[0]
@@ -1056,8 +1062,8 @@ class HTMLTranslator(nodes.NodeVisitor):
         style = []
         for att_name in 'width', 'height':
             if att_name in atts:
+                # Interpret unitless values as pixels:
                 if re.match(r'^[0-9.]+$', atts[att_name]):
-                    # Interpret unitless values as pixels.
                     atts[att_name] += 'px'
                 style.append('%s: %s;' % (att_name, atts[att_name]))
                 del atts[att_name]
@@ -1070,8 +1076,22 @@ class HTMLTranslator(nodes.NodeVisitor):
             suffix = ''
         else:
             suffix = '\n'
+
         if 'align' in node:
             atts['class'] = 'align-%s' % node['align']
+
+        # moving image -> use <video>
+        if mimetype in self.videotypes:
+            fallback = node.get('alt', uri)
+            atts['title'] = fallback
+            if 'controls' in node['classes']:
+                node['classes'].remove('controls')
+                atts['controls'] = 'controls'
+            self.body.append(
+                self.starttag(node, "video", suffix, src=uri, **atts)
+                + f'<a href="{uri}">{fallback}</a>{suffix}</video>{suffix}')
+            return
+
         # Embed image file (embedded SVG or data URI):
         if self.image_loading == 'embed':
             if uri_parts.scheme not in ('', 'file'):

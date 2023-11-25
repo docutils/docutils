@@ -81,6 +81,11 @@ Changes since 0.20.1
 
   - Support video inclusion via `<object>` tags.
 
+* docutils/writers/_html_base.py
+
+  - Support for video inclusion via `<video>` tags
+    (moved here from writers/html5_polyglot/__init__.py).
+
 * docutils/writers/latex2e/__init__.py
 
   - Fix placement of hyperlink target (label) for tables (bug #440).

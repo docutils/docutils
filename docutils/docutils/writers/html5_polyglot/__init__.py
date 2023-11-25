@@ -26,7 +26,6 @@ the style sheet "plain.css" improves reading experience.
 """
 __docformat__ = 'reStructuredText'
 
-import mimetypes
 from pathlib import Path
 
 from docutils import frontend, nodes
@@ -237,43 +236,6 @@ class HTMLTranslator(_html_base.HTMLTranslator):
         self.body_prefix.extend(header)
         self.header.extend(header)
         del self.body[start:]
-
-    # MIME types supported by the HTML5 <video> element
-    videotypes = ('video/mp4', 'video/webm', 'video/ogg')
-
-    def visit_image(self, node):
-        atts = {}
-        uri = node['uri']
-        mimetype = mimetypes.guess_type(uri)[0]
-        if mimetype not in self.videotypes:
-            return super().visit_image(node)
-        # image size
-        if 'width' in node:
-            atts['width'] = node['width'].replace('px', '')
-        if 'height' in node:
-            atts['height'] = node['height'].replace('px', '')
-        if 'align' in node:
-            atts['class'] = f"align-{node['align']}"
-        if 'controls' in node['classes']:
-            atts['controls'] = 'controls'
-            node['classes'].remove('controls')
-        atts['title'] = node.get('alt', uri)
-        if getattr(self.settings, 'image_loading', None) == 'lazy':
-            atts['loading'] = 'lazy'
-        # No newline in inline context or if surrounded by <a>...</a>.
-        if (isinstance(node.parent, nodes.TextElement)
-            or (isinstance(node.parent, nodes.reference)
-                and not isinstance(node.parent.parent, nodes.TextElement))):
-            suffix = ''
-        else:
-            suffix = '\n'
-        fallback = node.get('alt', uri)
-        self.body.append(
-            self.starttag(node, "video", suffix, src=uri, **atts)
-            + f'<a href="{uri}">{fallback}</a>{suffix}</video>{suffix}')
-
-    def depart_image(self, node):
-        pass
 
     # use HTML text-level tags if matching class value found
     supported_inline_tags = {'code', 'kbd', 'dfn', 'samp', 'var',
