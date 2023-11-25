@@ -541,7 +541,11 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
     #   (SVG not supported by IE up to version 8,
     #   html4css1 strives for IE6 compatibility.)
     object_image_types = {'.svg': 'image/svg+xml',
-                          '.swf': 'application/x-shockwave-flash'}
+                          '.swf': 'application/x-shockwave-flash',
+                          '.mp4': 'video/mp4',
+                          '.webm': 'video/webm',
+                          '.ogg': 'video/ogg',
+                          }
 
     def visit_image(self, node):
         atts = {}
