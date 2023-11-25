@@ -73,19 +73,14 @@ Docutils defines a `generic admonition`_ as well as a set of
 Specific Admonitions
 ====================
 
+.. class:: field-indent-13em
+
 :Directive Types: "attention", "caution", "danger", "error", "hint",
                   "important", "note", "tip", "warning"
-:Doctree Elements: `attention <../doctree.html#attention>`__,
-                   `caution <../doctree.html#caution>`__                        ,
-                   `danger <../doctree.html#danger>`__,
-                   `error <../doctree.html#error>`__,
-                   `hint <../doctree.html#hint>`__,
-                   `important <../doctree.html#important>`__,
-                   `note <../doctree.html#note>`__,
-                   `tip <../doctree.html#tip>`__,
-                   `warning <../doctree.html#warning>`__
-
-:Directive Arguments: None.
+:Doctree Elements: `\<attention>`_, `\<caution>`_, `\<danger>`_,
+                   `\<error>`_, `\<hint>`_, `\<important>`_,
+                   `\<note>`_, `\<tip>`_, `\<warning>`_
+:Directive Arguments: none
 :Directive Options: class_, name_
 :Directive Content: Interpreted as body elements.
 
@@ -122,17 +117,18 @@ bullet list consisting of two list items::
 Generic Admonition
 ==================
 
+.. class:: field-indent-13em
+
 :Directive Type: "admonition"
-:Doctree Elements: `admonition <../doctree.html#admonition>`__,
-                   `title <../doctree.html#title>`__
-:Directive Arguments: One, required (admonition title)
+:Doctree Elements: `\<admonition>`_, `\<title>`_
+:Directive Arguments: one, required (admonition title)
 :Directive Options: class_, name_
 :Directive Content: Interpreted as body elements.
 
 This is a generic, titled admonition.  The title may be anything the
 author desires.
 
-The author-supplied title is also used as a `"classes"`_ attribute value
+The author-supplied title is also used as a `classes attribute`_ value
 after `identifier normalization`_ and adding the prefix "admonition-".
 For example, this admonition::
 
@@ -149,47 +145,52 @@ becomes the following document tree (pseudo-XML)::
             <paragraph>
                 You can make up your own admonition too.
 
-The class_ option overrides the generated `"classes"`_ attribute value.
+The class_ option overrides the generated `classes attribute`_ value.
 
 
 --------
  Images
 --------
 
-There are two image directives: image_ and figure_.
+There are two directives to include images: image_ and figure_.
 
 .. attention::
 
+  Images are not supported by the `manpage`_ writer.
+
   It is up to the author to ensure compatibility of the image data format
   with the output format or user agent (LaTeX engine, `HTML browser`__).
-  The following, non exhaustive table provides an overview:
+  The following, non exhaustive table provides an overview.
 
-  =========== ====== ====== ===== ===== ===== ===== ===== ===== ===== =====
-  ..          vector image  raster image                  moving image [#]_
-  ----------- ------------- ----------------------------- -----------------
-  ..          SVG    PDF    PNG   JPG   GIF   APNG  AVIF  WebM  MP4   OGG
-  =========== ====== ====== ===== ===== ===== ===== ===== ===== ===== =====
-  HTML4_ [#]_ ✓             ✓     ✓     ✓     (✓)   (✓)   ✓     ✓     ✓
+.. _image formats:
 
-  HTML5_      ✓             ✓     ✓     ✓     ✓     ✓     ✓     ✓     ✓
+=========== ====== ====== ===== ===== ===== ===== ===== ===== ===== =====
+..          SVG    PDF    PNG   JPG   GIF   APNG  AVIF  WebM  MP4   OGG
+=========== ====== ====== ===== ===== ===== ===== ===== ===== ===== =====
+..          vector        raster                        video [#video]_
+----------- ------------- ----------------------------- -----------------
+HTML4_ [#]_ ✓             ✓     ✓     ✓     (✓)   (✓)   (✓)   (✓)   (✓)
 
-  LaTeX_ [#]_        ✓      ✓     ✓
+HTML5_      ✓             ✓     ✓     ✓     ✓     ✓     ✓     ✓     ✓
 
-  ODT_        ✓      ✓      ✓     ✓     ✓
-  =========== ====== ====== ===== ===== ===== ===== ===== ===== ===== =====
+LaTeX_ [#]_        ✓      ✓     ✓
 
-  .. [#] The `html5 writer`_ uses the ``<video>`` tag if the image URI
-         ends with an extension matching one of the listed video formats
-         (since Docutils 0.17).
+ODT_        ✓      ✓      ✓     ✓     ✓
+=========== ====== ====== ===== ===== ===== ===== ===== ===== ===== =====
 
-  .. [#] The html4 writer uses an ``<object>`` tag for SVG images and
-         videos for compatibility with older browsers and for XHTML1.1
-         conformance respectively.
+.. [#video]
+       The `html5 writer`_ uses the ``<video>`` tag if the image URI
+       ends with an extension matching one of the listed video formats
+       (since Docutils 0.17).
 
-  .. [#] When compiling with ``pdflatex``, ``xelatex``, or ``lualatex``.
-         The original ``latex`` engine supports only the EPS image format.
-         Some build systems, e.g. rubber_ support additional formats
-         via on-the-fly image conversion.
+.. [#] The html4 writer uses an ``<object>`` tag for SVG images and
+       videos for compatibility with older browsers and for XHTML1.1
+       conformance respectively.
+
+.. [#] When compiling with ``pdflatex``, ``xelatex``, or ``lualatex``.
+       The original ``latex`` engine supports only the EPS image format.
+       Some build systems, e.g. rubber_ support additional formats
+       via on-the-fly image conversion.
 
 __ https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Image_types
 .. _HTML4:
@@ -198,17 +199,20 @@ __ https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Image_types
 .. _html5 writer: ../../user/html.html#html5-polyglot
 .. _LaTeX: ../../user/latex.html#image-inclusion
 .. _ODT: ../../user/odt.html
+.. _manpage: ../../user/manpage.html
 .. _rubber: https://github.com/petrhosek/rubber
 
 
 Image
 =====
 
+.. class:: field-indent-13em
+
 :Directive Type: "image"
-:Doctree Element: `image <../doctree.html#image>`__
-:Directive Arguments: One, required (image URI_).
-:Directive Options: Possible (see below).
-:Directive Content: None.
+:Doctree Element: `\<image>`_
+:Directive Arguments: one, required (image URI_)
+:Directive Options: `see below <image options_>`__
+:Directive Content: none
 
 An "image" is a simple picture::
 
@@ -226,7 +230,7 @@ block, they are stripped of leading and trailing whitespace and joined
 together.
 
 Optionally, the image link block may contain a flat field list, the
-_`image options`.  For example::
+`image options`_.  For example::
 
     .. image:: picture.jpeg
        :height: 100px
@@ -235,7 +239,9 @@ _`image options`.  For example::
        :alt: alternate text
        :align: right
 
-The following options are recognized:
+.. _image options:
+
+Recognizes the common options class_ and name_ as well as
 
 ``alt`` : text_
     Alternate text: a short description of the image, displayed by
@@ -278,18 +284,17 @@ The following options are recognized:
     option argument may be a URI (relative or absolute), or a
     `reference name`_ with underscore suffix (e.g. ```a name`_``).
 
-and the common options class_ and name_.
-
 
 Figure
 ======
 
+.. class:: field-indent-13em
+
 :Directive Type: "figure"
-:Doctree Elements: `figure <../doctree.html#figure>`__, 
-                   `image <../doctree.html#image>`__, 
-                   caption_, legend_
-:Directive Arguments: One, required (image URI_).
-:Directive Options: Possible (see below).
+:Doctree Elements: `\<figure>`_, `\<image>`_,
+                   `\<caption>`_, `\<legend>`_
+:Directive Arguments: one, required (image URI_)
+:Directive Options: `see below <figure options_>`__
 :Directive Content: Interpreted as the figure caption and an optional
                     legend.
 
@@ -322,6 +327,8 @@ position if this helps the page layout.
 There must be blank lines before the caption paragraph and before the
 legend.  To specify a legend without a caption, use an empty comment
 ("..") in place of the caption.
+
+.. _figure options:
 
 The "figure" directive supports all of the options of the "image"
 directive (see `image options`_ above). These options (except
@@ -363,7 +370,7 @@ In addition, the following options are recognized:
         +---------------------------+
 
 ``figclass`` : space separated list of `class names`_
-    Set a `"classes"`_ attribute value on the figure element.  See the
+    Set a `classes attribute`_ value on the figure element.  See the
     `class directive`_ below.
 
 .. _Python Imaging Library:
@@ -377,9 +384,11 @@ In addition, the following options are recognized:
 Topic
 =====
 
+.. class:: field-indent-13em
+
 :Directive Type: "topic"
-:Doctree Element: topic_
-:Directive Arguments: One, required (topic title).
+:Doctree Element: `\<topic>`_
+:Directive Arguments: one, required (topic title)
 :Directive Options: class_, name_
 :Directive Content: Interpreted as the topic body.
 
@@ -403,10 +412,12 @@ interpreted as body elements.  For example::
 Sidebar
 =======
 
+.. class:: field-indent-13em
+
 :Directive Type: "sidebar"
-:Doctree Element: sidebar_
-:Directive Arguments: One, optional (sidebar title).
-:Directive Options: Possible (see below).
+:Doctree Element: `\<sidebar>`_
+:Directive Arguments: one, optional (sidebar title)
+:Directive Options: `see below <sidebar options_>`__
 :Directive Content: Interpreted as the sidebar body.
 
 Sidebars are like miniature, parallel documents that occur inside
@@ -431,12 +442,12 @@ interpreted as body elements.  For example::
        the body of the sidebar, and are
        interpreted as body elements.
 
-The following options are recognized:
+.. _sidebar options:
+
+Recognizes the common option class_ and
 
 ``subtitle`` : text_
     The sidebar's subtitle.
-
-and the common options class_ and name_.
 
 
 Line Block
@@ -449,9 +460,11 @@ Line Block
 
    .. _line block syntax: restructuredtext.html#line-blocks
 
+.. class:: field-indent-13em
+
 :Directive Type: "line-block"
-:Doctree Element: line_block_
-:Directive Arguments: None.
+:Doctree Element: `\<line_block>`_
+:Directive Arguments: none
 :Directive Options: class_, name_
 :Directive Content: Becomes the body of the line block.
 
@@ -482,9 +495,11 @@ example, here's a classic::
 Parsed Literal Block
 ====================
 
+.. class:: field-indent-13em
+
 :Directive Type: "parsed-literal"
-:Doctree Element: literal_block_
-:Directive Arguments: None.
+:Doctree Element: `\<literal_block>`_
+:Directive Arguments: none
 :Directive Options: class_, name_
 :Directive Content: Becomes the body of the literal block.
 
@@ -515,10 +530,12 @@ For example, all the element names in this content model are links::
 Code
 ====
 
+.. class:: field-indent-13em
+
 :Directive Type: "code"
-:Doctree Element: literal_block_, `inline elements`_
-:Directive Arguments: One, optional (formal language).
-:Directive Options: name, class, number-lines.
+:Doctree Elements: `\<literal_block>`_, `inline elements`_
+:Directive Arguments: one, optional (formal language)
+:Directive Options: `see below <code options_>`__
 :Directive Content: Becomes the body of the literal block.
 :Configuration Setting: syntax_highlight_.
 
@@ -529,6 +546,17 @@ according to their syntactic category. The actual highlighting requires
 a style-sheet (e.g. one `generated by Pygments`__, see the
 `sandbox/stylesheets`__ for examples).
 
+For example, the content of the following directive ::
+
+    .. code:: python
+       :number-lines:
+
+       def my_function():
+           "just a test"
+           print(8/2)
+
+is parsed and marked up as Python source code.
+
 The parsing can be turned off with the syntax_highlight_ configuration
 setting and command line option or by specifying the language as class_
 option instead of directive argument. This also avoids warnings
@@ -536,6 +564,14 @@ when Pygments_ is not installed or the language is not in the
 `supported languages and markup formats`_.
 
 For inline code, use the `"code" role`_.
+
+.. _code options:
+
+Recognizes the common options class_ and name_ as well as
+
+``number-lines`` : integer_ (start line number, optional)
+    Precede every line with a line number.
+    The optional argument is the number of the first line (default 1).
 
 __ https://pygments.org/docs/cmdline/#generating-styles
 __ https://docutils.sourceforge.io/sandbox/stylesheets/
@@ -545,32 +581,14 @@ __ https://docutils.sourceforge.io/sandbox/stylesheets/
 .. _"code" role: roles.html#code
 
 
-The following options are recognized:
-
-``number-lines`` : integer_ (start line number, optional)
-    Precede every line with a line number.
-    The optional argument is the number of the first line (default 1).
-
-and the common options class_ and name_.
-
-Example::
-  The content of the following directive ::
-
-    .. code:: python
-
-      def my_function():
-          "just a test"
-          print 8/2
-
-  is parsed and marked up as Python source code.
-
-
 Math
 ====
 
+.. class:: field-indent-13em
+
 :Directive Type: "math"
-:Doctree Element: math_block_
-:Directive Arguments: None.
+:Doctree Element: `\<math_block>`_
+:Directive Arguments: none
 :Directive Options: class_, name_
 :Directive Content: Becomes the body of the math block.
                     (Content blocks separated by a blank line are put in
@@ -602,11 +620,13 @@ For inline formulas, use the `"math" role`_.
 Rubric
 ======
 
+.. class:: field-indent-13em
+
 :Directive Type: "rubric"
-:Doctree Element: rubric_
-:Directive Arguments: One, required (rubric text).
+:Doctree Element: `\<rubric>`_
+:Directive Arguments: one, required (rubric text)
 :Directive Options: class_, name_
-:Directive Content: None.
+:Directive Content: none
 
 ..
 
@@ -624,10 +644,12 @@ the document's structure.
 Epigraph
 ========
 
+.. class:: field-indent-13em
+
 :Directive Type: "epigraph"
-:Doctree Element: block_quote_
-:Directive Arguments: None.
-:Directive Options: None.
+:Doctree Element: `\<block_quote>`_
+:Directive Arguments: none
+:Directive Options: none
 :Directive Content: Interpreted as the body of the block quote.
 
 An epigraph is an apposite (suitable, apt, or pertinent) short
@@ -655,10 +677,12 @@ becomes this document tree fragment::
 Highlights
 ==========
 
+.. class:: field-indent-13em
+
 :Directive Type: "highlights"
-:Doctree Element: block_quote_
-:Directive Arguments: None.
-:Directive Options: None.
+:Doctree Element: `\<block_quote>`_
+:Directive Arguments: none
+:Directive Options: none
 :Directive Content: Interpreted as the body of the block quote.
 
 Highlights summarize the main points of a document or section, often
@@ -671,10 +695,12 @@ See Epigraph_ above for an analogous example.
 Pull-Quote
 ==========
 
+.. class:: field-indent-13em
+
 :Directive Type: "pull-quote"
-:Doctree Element: block_quote_
-:Directive Arguments: None.
-:Directive Options: None.
+:Doctree Element: `\<block_quote>`_
+:Directive Arguments: none
+:Directive Options: none
 :Directive Content: Interpreted as the body of the block quote.
 
 A pull-quote is a small selection of text "pulled out and quoted",
@@ -690,9 +716,11 @@ See Epigraph_ above for an analogous example.
 Compound Paragraph
 ==================
 
+.. class:: field-indent-13em
+
 :Directive Type: "compound"
-:Doctree Element: `compound <../doctree.html#compound>`__
-:Directive Arguments: None.
+:Doctree Element: `\<compound>`_
+:Directive Arguments: none
 :Directive Options: class_, name_
 :Directive Content: Interpreted as body elements.
 
@@ -738,15 +766,17 @@ unity:
 Container
 =========
 
+.. class:: field-indent-13em
+
 :Directive Type: "container"
-:Doctree Element: `container <container element_>`__
-:Directive Arguments: One or more, optional (class names).
+:Doctree Element: `\<container>`_
+:Directive Arguments: one or more, optional (class names)
 :Directive Options: name_
 :Directive Content: Interpreted as body elements.
 
 The "container" directive surrounds its contents (arbitrary body
 elements) with a generic block-level "container" element.  Combined
-with the optional "classes_" attribute argument(s), this is an
+with the optional `classes attribute`_ argument(s), this is an
 extension mechanism for users & applications.  For example::
 
     .. container:: custom
@@ -780,10 +810,12 @@ directive supports CSV [#CSV]_ data.
 Table
 =====
 
+.. class:: field-indent-13em
+
 :Directive Type: "table"
-:Doctree Element: `table <../doctree.html#table>`__
-:Directive Arguments: One, optional (table title).
-:Directive Options: Possible (see below).
+:Doctree Element: `\<table>`_
+:Directive Arguments: one, optional (table title)
+:Directive Options: `see below <table options_>`__
 :Directive Content: A normal `reStructuredText table`_.
 
 The "table" directive is used to associate a
@@ -799,7 +831,9 @@ title with a table or specify options, e.g.::
        True   False
        =====  =====
 
-The following options are recognized:
+.. _table options:
+
+Recognizes the common options class_ and name_ as well as
 
 ``align`` : "left", "center", or "right"
     The horizontal alignment of the table (new in Docutils 0.13).
@@ -828,8 +862,6 @@ The following options are recognized:
     A *list of integers* is used instead of the input column widths.
     Implies *"grid"*.
 
-Plus the common options class_ and name_.
-
 .. _reStructuredText table: restructuredtext.html#tables
 .. _table_style: ../../user/config.html#table-style
 
@@ -839,12 +871,14 @@ Plus the common options class_ and name_.
 CSV Table
 =========
 
+.. class:: field-indent-13em
+
 :Directive Type: "csv-table"
-:Doctree Element: table_
-:Directive Arguments: One, optional (table title).
-:Directive Options: Possible (see below).
+:Doctree Element: `\<table>`_
+:Directive Arguments: one, optional (table title)
+:Directive Options: `see below <csv-table options_>`__
 :Directive Content: A CSV (comma-separated values) table
-                    or (with the `file`_ or `url`_ options) None
+                    or (with the `file`_ or `url`_ options) none.
 
 .. WARNING::
 
@@ -876,7 +910,9 @@ Example::
        it wouldn't be crunchy, now would it?"
        "Gannet Ripple", 1.99, "On a stick!"
 
-The following options are recognized:
+.. _csv-table options:
+
+Recognizes the common options class_ and name_ as well as
 
 ``align`` : "left", "center", or "right"
     The horizontal alignment of the table. (New in Docutils 0.13)
@@ -950,8 +986,6 @@ The following options are recognized:
     of the line width.  If omitted, the renderer determines the width
     of the table based on its contents or the column ``widths``.
 
-and the common options class_ and name_.
-
 .. [#CSV] CSV (comma separated values) is a common data format generated
    by spreadsheet applications and commercial databases. Despite the
    "comma" in its name, the field delimiter_ may be any Unicode character.
@@ -960,19 +994,21 @@ and the common options class_ and name_.
    external files because hard tabs in the directive content are
    `converted to spaces`__ before it reaches the CVS reader.
 
+   __ restructuredtext.html#whitespace
+
 .. [#] Before Docutils 0.21, the header option used a hard-coded
    CSV dialect with the backslash as escape character.
-
-   __ restructuredtext.html#whitespace
 
 
 List Table
 ==========
 
+.. class:: field-indent-13em
+
 :Directive Type: "list-table"
-:Doctree Element: table_
-:Directive Arguments: One, optional (table title).
-:Directive Options: Possible (see below).
+:Doctree Element: `\<table>`_
+:Directive Arguments: one, optional (table title)
+:Directive Options: `see below <list-table options_>`__
 :Directive Content: A uniform two-level bullet list.
 
 (This is an initial implementation; `further ideas`__ may be implemented
@@ -1004,8 +1040,9 @@ Example::
          - 1.99
          - On a stick!
 
-The following options are recognized:
+.. _list-table options:
 
+Recognizes the common options class_ and name_ as well as
 
 ``align`` : "left", "center", or "right"
     The horizontal alignment of the table.
@@ -1035,8 +1072,6 @@ The following options are recognized:
     "auto" delegates the determination of column widths to the backend
     (LaTeX, the HTML browser, ...).
 
-and the common options class_ and name_.
-
 
 ----------------
  Document Parts
@@ -1047,11 +1082,13 @@ and the common options class_ and name_.
 Table of Contents
 =================
 
+.. class:: field-indent-13em
+
 :Directive Type: "contents"
-:Doctree Elements: pending_, topic_
-:Directive Arguments: One, optional: title.
-:Directive Options: Possible (see below).
-:Directive Content: None.
+:Doctree Elements: `\<pending>`_, `\<topic>`_
+:Directive Arguments: one, optional: title
+:Directive Options: `see below <contents options_>`__
+:Directive Content: none
 
 The "contents" directive generates a table of contents (TOC) in a
 topic_.  Topics, and therefore tables of contents, may occur anywhere
@@ -1084,6 +1121,8 @@ on the same line as the directive marker::
 
     .. contents:: :depth: 2
 
+.. _contents options:
+
 The following options are recognized:
 
 ``depth`` : integer_
@@ -1100,7 +1139,7 @@ The following options are recognized:
     entries, the table of contents itself, or generate no back-links.
 
 ``class`` : text_ (list of `class names`_)
-    Set a `"classes"`_ attribute value on the topic element.  See the
+    Set a `classes attribute`_ value on the topic element.  See the
     `class directive`_ below.
 
 
@@ -1110,11 +1149,13 @@ The following options are recognized:
 Automatic Section Numbering
 ===========================
 
+.. class:: field-indent-13em
+
 :Directive Type: "sectnum" or "section-numbering" (synonyms)
-:Doctree Elements: pending_, generated_
-:Directive Arguments: None.
-:Directive Options: Possible (see below).
-:Directive Content: None.
+:Doctree Elements: `\<pending>`_, `\<generated>`_
+:Directive Arguments: none
+:Directive Options: `see below <sectnum options_>`__
+:Directive Content: none
 :Configuration Setting: sectnum_xform_
 
 The "sectnum" (or "section-numbering") directive automatically numbers
@@ -1133,6 +1174,8 @@ At a later stage in the processing, the "pending" element triggers a
 transform, which adds section numbers to titles.  Section numbers are
 enclosed in a "generated" element, and titles have their "auto"
 attribute set to "1".
+
+.. _sectnum options:
 
 The following options are recognized:
 
@@ -1167,9 +1210,9 @@ Document Header & Footer
 ========================
 
 :Directive Types: "header" and "footer"
-:Doctree Elements: decoration_, header, footer
-:Directive Arguments: None.
-:Directive Options: None.
+:Doctree Elements: `\<decoration>`_, `\<header>`_, `\<footer>`_
+:Directive Arguments: none
+:Directive Options: none
 :Directive Content: Interpreted as body elements.
 
 The "header" and "footer" directives create document decorations,
@@ -1215,12 +1258,13 @@ such as a datestamp, a link to `the Docutils website`_, etc.
 Target Footnotes
 ================
 
+.. class:: field-indent-13em
+
 :Directive Type: "target-notes"
-:Doctree Elements: pending_, footnote_, footnote_reference_
-:Directive Arguments: None.
+:Doctree Elements: `\<pending>`_, `\<footnote>`_, `\<footnote_reference>`_
+:Directive Arguments: none
 :Directive Options: class_, name_
-:Directive Options: Possible (see below).
-:Directive Content: None.
+:Directive Content: none
 
 The "target-notes" directive creates a footnote for each external
 target in the text, and corresponding footnote references after each
@@ -1234,11 +1278,13 @@ Footnotes
 
 **NOT IMPLEMENTED YET**
 
+.. class:: field-indent-13em
+
 :Directive Type: "footnotes"
-:Doctree Elements: pending_, topic_
-:Directive Arguments: None?
+:Doctree Elements: `\<pending>`_, `\<topic>`_
+:Directive Arguments: none?
 :Directive Options: Possible?
-:Directive Content: None.
+:Directive Content: none
 
 @@@
 
@@ -1248,11 +1294,13 @@ Citations
 
 **NOT IMPLEMENTED YET**
 
+.. class:: field-indent-13em
+
 :Directive Type: "citations"
-:Doctree Elements: pending_, topic_
-:Directive Arguments: None?
+:Doctree Elements: `\<pending>`_, `\<topic>`_
+:Directive Arguments: none?
 :Directive Options: Possible?
-:Directive Content: None.
+:Directive Content: none
 
 @@@
 
@@ -1286,10 +1334,12 @@ and in the standalone context.
 Replacement Text
 ================
 
+.. class:: field-indent-13em
+
 :Directive Type: "replace"
 :Doctree Element: Text & `inline elements`_
-:Directive Arguments: None.
-:Directive Options: None.
+:Directive Arguments: none
+:Directive Options: none
 :Directive Content: A single paragraph; may contain inline markup.
 
 The "replace" directive is used to indicate replacement text for a
@@ -1317,12 +1367,14 @@ the "replace" directive::
 Unicode Character Codes
 =======================
 
+.. class:: field-indent-13em
+
 :Directive Type: "unicode"
 :Doctree Element: Text
-:Directive Arguments: One or more, required (Unicode character codes,
-                      optional text, and comments).
-:Directive Options: Possible (see below).
-:Directive Content: None.
+:Directive Arguments: one or more, required (Unicode character codes,
+                      optional text, and comments)
+:Directive Options: `see below <unicode options_>`__
+:Directive Content: none
 
 The "unicode" directive converts Unicode character codes (numerical
 values) to characters, and may be used in `substitution definitions`_
@@ -1368,6 +1420,8 @@ results in:
     .. |---| unicode:: U+02014 .. em dash
        :trim:
 
+.. _unicode options:
+
 The following options are recognized:
 
 ``ltrim`` : flag_
@@ -1384,11 +1438,13 @@ The following options are recognized:
 Date
 ====
 
+.. class:: field-indent-13em
+
 :Directive Type: "date"
 :Doctree Element: Text
-:Directive Arguments: One, optional (date format).
-:Directive Options: None.
-:Directive Content: None.
+:Directive Arguments: one, optional (date format)
+:Directive Options: none
+:Directive Content: none
 
 The "date" directive generates the current local date and inserts it
 into the document as text.  This directive may be used in substitution
@@ -1418,12 +1474,14 @@ __ https://docs.python.org/3/library/time.html#time.strftime
 Including an External Document Fragment
 =======================================
 
+.. class:: field-indent-13em
+
 :Directive Type: "include"
 :Doctree Elements: Depend on data being included
-                   (literal_block_ with ``code`` or ``literal`` option).
-:Directive Arguments: One, required (path_ to the file to include).
-:Directive Options: Possible (see below).
-:Directive Content: None.
+                   (`\<literal_block>`_ with ``code`` or ``literal`` option).
+:Directive Arguments: one, required (path_ to the file to include)
+:Directive Options: `see below <include options_>`__
+:Directive Content: none
 :Configuration Setting: file_insertion_enabled_
 
 .. WARNING::
@@ -1468,6 +1526,8 @@ substitution definitions.  See `reStructuredText Standard Definition
 Files`__ for details.
 
 __ definitions.html
+
+.. _include options:
 
 The following options are recognized:
 
@@ -1514,7 +1574,7 @@ The following options are recognized:
 ``tab-width`` : integer_
     Number of spaces for hard tab expansion.
     Must be a positive integer, except for literal inclusions and code,
-    where a negative value prevents expansion of hard tabs. 
+    where a negative value prevents expansion of hard tabs.
     Defaults to the tab_width_ configuration setting.
 
     .. _tab_width: ../../user/config.html#tab-width
@@ -1532,10 +1592,12 @@ included content).
 Raw Data Pass-Through
 =====================
 
+.. class:: field-indent-13em
+
 :Directive Type: "raw"
-:Doctree Element: `raw <../doctree.html#raw>`__
-:Directive Arguments: One or more, required (output format types).
-:Directive Options: Possible (see below).
+:Doctree Element: `\<raw>`_
+:Directive Arguments: one or more, required (output format types)
+:Directive Options: `see below <raw options_>`__
 :Directive Content: Stored verbatim, uninterpreted.  None (empty) if a
                     "file" or "url" option given.
 :Configuration Setting: raw_enabled_
@@ -1594,7 +1656,9 @@ example::
 Inline equivalents of the "raw" directive can be defined via
 `custom interpreted text roles`_ derived from the `"raw" role`_.
 
-The following options are recognized:
+.. _raw options:
+
+Recognizes the common option class_ and
 
 ``file`` : path_
     The local filesystem path of a raw data file to be included.
@@ -1606,8 +1670,6 @@ The following options are recognized:
     The text encoding of the external raw data (with ``file`` or ``url``).
     Defaults to the main document's `input_encoding`_ (if specified).
 
-and the common option class_.
-
 .. _"raw" role: roles.html#raw
 
 
@@ -1616,15 +1678,17 @@ and the common option class_.
 Class
 =====
 
+.. class:: field-indent-13em
+
 :Directive Type: "class"
-:Doctree Element: pending_
-:Directive Arguments: One or more, required (class names / attribute
-                      values).
-:Directive Options: None.
+:Doctree Element: `\<pending>`_
+:Directive Arguments: one or more, required
+                      (class names / attribute values)
+:Directive Options: none
 :Directive Content: Optional.  If present, it is interpreted as body
                     elements.
 
-The "class" directive sets the `"classes"`_ attribute value on its content
+The "class" directive sets the `classes attribute`_ value on its content
 or on the first immediately following [#]_ non-comment element [#]_.
 The directive argument consists of one or more space-separated class
 names. The names are transformed to conform to the regular expression
@@ -1744,7 +1808,7 @@ For example ``"Rot.Gelb&Grün:+2008"`` becomes ``"rot-gelb-grun-2008"`` and
 
     The CSS1 rule requires underscores ("_"), colons (":"), and
     periods (".") to be escaped [#]_,
-    therefore `"classes"`_ and `"ids"`_ attributes should not
+    therefore `classes`_ and `ids attribute`_\ s should not
     contain these characters.  Combined with HTML4.1 requirements (the
     first character must be a letter; no "unicode", "latin1", or
     "escape" characters), this results in the regular expression
@@ -1768,10 +1832,12 @@ For example ``"Rot.Gelb&Grün:+2008"`` becomes ``"rot-gelb-grun-2008"`` and
 Custom Interpreted Text Roles
 =============================
 
+.. class:: field-indent-13em
+
 :Directive Type: "role"
-:Doctree Element: None; affects subsequent parsing.
-:Directive Arguments: Two; one required (new `role name`_), one optional
-                      (base role name, in parentheses).
+:Doctree Element: none; affects subsequent parsing
+:Directive Arguments: two; one required (new `role name`_), one optional
+                      (base role name, in parentheses)
 :Directive Options: Possible (depends on base role).
 :Directive Content: depends on base role.
 
@@ -1823,7 +1889,7 @@ inline `raw data pass-through`_, e.g.::
 
 If no base role is explicitly specified, a generic custom role is
 automatically used.  Subsequent interpreted text will produce an
-"inline" element with a `"classes"`_ attribute, as in the first example
+"inline" element with a `classes attribute`_, as in the first example
 above.
 
 With most roles, the ":class:" option can be used to set a "classes"
@@ -1846,7 +1912,7 @@ The following option is recognized by the "role" directive for most
 base roles:
 
 ``class`` : space separated list of `class names`_
-    Set the `"classes"`_ attribute value on the element produced
+    Set the `classes attribute`_ value on the element produced
     (``inline``, or element associated with a base class) when the
     custom interpreted text role is used.  If no directive options are
     specified, a "class" option with the directive argument (role
@@ -1864,11 +1930,13 @@ for details.
 Setting the Default Interpreted Text Role
 =========================================
 
+.. class:: field-indent-13em
+
 :Directive Type: "default-role"
-:Doctree Element: None; affects subsequent parsing.
-:Directive Arguments: One, optional (new default role name).
-:Directive Options: None.
-:Directive Content: None.
+:Doctree Element: none; affects subsequent parsing
+:Directive Arguments: one, optional (new default role name)
+:Directive Options: none
+:Directive Content: none
 
 The "default-role" directive sets the default interpreted text role,
 the role that is used for interpreted text without an explicit role.
@@ -1905,11 +1973,13 @@ parser is "title-reference".
 Metadata
 ========
 
+.. class:: field-indent-13em
+
 :Directive Type: "meta"
-:Doctree Element: `meta <../doctree.html#meta>`__
-:Directive Arguments: None.
-:Directive Options: None.
-:Directive Content: Must contain a flat field list.
+:Doctree Element: `\<meta>`_
+:Directive Arguments: none
+:Directive Options: none
+:Directive Content: Must contain a flat `field list`_.
 
 The "meta" directive is used to specify metadata\ [#]_ to be stored
 in, e.g., `HTML meta elements`_ or as `ODT file properties`_. The
@@ -1976,6 +2046,7 @@ HTML equivalent::
    https://en.wikipedia.org/wiki/OpenDocument_technical_specification#Metadata
 .. _hyperref: https://ctan.org/pkg/hyperref
 .. _bibliographic fields: restructuredtext.html#bibliographic-fields
+.. _field list: restructuredtext.html#field-lists
 
 
 .. _title:
@@ -1983,11 +2054,13 @@ HTML equivalent::
 Metadata Document Title
 =======================
 
+.. class:: field-indent-13em
+
 :Directive Type: "title"
-:Doctree Element: Sets the document's `title attribute`_.
-:Directive Arguments: One, required (the title text).
-:Directive Options: None.
-:Directive Content: None.
+:Doctree Element: none (sets the document's `title attribute`_)
+:Directive Arguments: one, required (the title text)
+:Directive Options: none
+:Directive Content: none
 
 The "title" directive specifies the document title as metadata, which
 does not become part of the document body. It overrides the
@@ -2002,10 +2075,12 @@ appears in the title bar of the browser window.
 Restructuredtext-Test-Directive
 ===============================
 
+.. class:: field-indent-13em
+
 :Directive Type: "restructuredtext-test-directive"
-:Doctree Element: system_warning
-:Directive Arguments: None.
-:Directive Options: None.
+:Doctree Element: `\<system_message>`_
+:Directive Arguments: none
+:Directive Options: none
 :Directive Content: Interpreted as a literal block.
 
 This directive is provided for test purposes only.  (Nobody is
@@ -2026,13 +2101,13 @@ options:
 .. _class:
 
 ``class`` : space separated list of `class names`_
-    Set a `"classes"`_ attribute value on the doctree element generated by
+    Set a `classes attribute`_ value on the doctree element generated by
     the directive. See also the `class directive`_.
 
     .. _name:
 
 ``name`` : text_
-    Add `text` to the `"names"`_ attribute of the doctree element generated
+    Add `text` to the `names attribute`_ of the doctree element generated
     by the directive. This allows `hyperlink references`_ to the element
     using `text` as `reference name`_.
 
@@ -2110,39 +2185,60 @@ Common Option Value Types
 .. _Uniform Resource Identifier:
     https://en.wikipedia.org/wiki/Uniform_Resource_Identifier
 
-.. _block_quote: ../doctree.html#block-quote
-.. _caption: ../doctree.html#caption
-.. _class names: ../doctree.html#classname
-.. _"classes":
-.. _classes: ../doctree.html#classes
-.. _container element: ../doctree.html#container
-.. _decoration: ../doctree.html#decoration
 .. _escaping mechanism: restructuredtext.html#escaping-mechanism
 .. _external hyperlink targets:
     restructuredtext.html#external-hyperlink-targets
-.. _footnote: ../doctree.html#footnote
-.. _footnote_reference: ../doctree.html#footnote-reference
-.. _generated: ../doctree.html#generated
 .. _hyperlink references: restructuredtext.html#hyperlink-references
 .. _hyperlink target: restructuredtext.html#hyperlink-targets
-.. _identifier keys: ../doctree.html#ids-type
-.. _"ids": ../doctree.html#ids
-.. _inline elements: ../doctree.html#inline-elements
 .. _interpreted text role: roles.html
-.. _legend: ../doctree.html#legend
 .. _length units: restructuredtext.html#length-units
-.. _line_block: ../doctree.html#line-block
-.. _literal_block: ../doctree.html#literal-block
-.. _math_block: ../doctree.html#math-block
-.. _"names": ../doctree.html#names
-.. _pending: ../doctree.html#pending
 .. _percentage: restructuredtext.html#percentage-units
 .. _reference name:
 .. _reference names: restructuredtext.html#reference-names
-.. _rubric: ../doctree.html#rubric
-.. _sidebar: ../doctree.html#sidebar
+
+.. _identifier keys: ../doctree.html#ids-type
+.. _inline elements: ../doctree.html#inline-elements
+.. _class names: ../doctree.html#classname
+.. _classes:
+.. _classes attribute: ../doctree.html#classes
+.. _ids attribute: ../doctree.html#ids
+.. _names attribute: ../doctree.html#names
 .. _title attribute: ../doctree.html#title-attribute
-.. _topic: ../doctree.html#topic
+.. _<admonition>: ../doctree.html#admonition
+.. _<attention>: ../doctree.html#attention
+.. _<block_quote>: ../doctree.html#block-quote
+.. _<caption>: ../doctree.html#caption
+.. _<caution>: ../doctree.html#caution
+.. _<compound>: ../doctree.html#compound
+.. _<container>: ../doctree.html#container
+.. _<danger>: ../doctree.html#danger
+.. _<decoration>: ../doctree.html#decoration
+.. _<error>: ../doctree.html#error
+.. _<figure>: ../doctree.html#figure
+.. _<footer>: ../doctree.html#footer
+.. _<footnote>: ../doctree.html#footnote
+.. _<footnote_reference>: ../doctree.html#footnote-reference
+.. _<generated>: ../doctree.html#generated
+.. _<header>: ../doctree.html#header
+.. _<hint>: ../doctree.html#hint
+.. _<image>: ../doctree.html#image
+.. _<important>: ../doctree.html#important
+.. _<legend>: ../doctree.html#legend
+.. _<line_block>: ../doctree.html#line-block
+.. _<literal_block>: ../doctree.html#literal-block
+.. _<math_block>: ../doctree.html#math-block
+.. _<meta>: ../doctree.html#meta
+.. _<note>: ../doctree.html#note
+.. _<pending>: ../doctree.html#pending
+.. _<raw>: ../doctree.html#raw
+.. _<rubric>: ../doctree.html#rubric
+.. _<sidebar>: ../doctree.html#sidebar
+.. _<system_message>: ../doctree.html#system-message
+.. _<table>: ../doctree.html#table
+.. _<tip>: ../doctree.html#tip
+.. _<title>: ../doctree.html#title
+.. _<topic>: ../doctree.html#topic
+.. _<warning>: ../doctree.html#warning
 
 
 
