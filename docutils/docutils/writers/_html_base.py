@@ -286,22 +286,17 @@ class HTMLTranslator(nodes.NodeVisitor):
                             settings.language_code, document.reporter)
         self.initial_header_level = int(settings.initial_header_level)
         # image_loading (only defined for HTML5 writer)
-        self.image_loading = getattr(settings, 'image_loading', None)
-        # legacy setting embed_images:
-        if getattr(settings, 'embed_images', None) is True:
-            warnings.warn('The configuration setting "embed_images" '
-                          'will be removed in Docutils 2.0. '
-                          'Use "image_loading: embed".',
+        _image_loading_default = 'link'
+        # convert legacy setting embed_images:
+        if getattr(settings, 'embed_images', None) is not None:
+            if settings.embed_images:
+                _image_loading_default = 'embed'
+            warnings.warn('The configuration setting "embed_images"\n'
+                          '  will be removed in Docutils 2.0. '
+                          f'Use "image_loading: {_image_loading_default}".',
                           FutureWarning, stacklevel=8)
-            if self.image_loading is None:
-                self.image_loading = 'embed'
-        if getattr(settings, 'embed_images', None) is False:
-            warnings.warn('The configuration setting "embed_images" '
-                          'will be removed in Docutils 2.0. '
-                          'Use "image_loading: link".',
-                          FutureWarning, stacklevel=8)
-        if self.image_loading is None:
-            self.image_loading = 'link'  # default
+        self.image_loading = getattr(settings,
+                                     'image_loading', _image_loading_default)
         self.math_output = settings.math_output.split()
         self.math_output_options = self.math_output[1:]
         self.math_output = self.math_output[0].lower()

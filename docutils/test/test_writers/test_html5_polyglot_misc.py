@@ -163,7 +163,7 @@ class SettingsTestCase(unittest.TestCase):
                        'output_encoding': 'unicode',
                        }
         with self.assertWarnsRegex(FutureWarning,
-                                   '"embed_images" will be removed'):
+                                   '"embed_images"\n  will be removed'):
             core.publish_string('warnings test', writer_name='html5',
                                 settings_overrides=my_settings)
 
