@@ -2064,7 +2064,7 @@ The ``field_list`` element contains two-column table-like structures
 resembling database records (label & data pairs).  Field lists are
 often meant for further processing.  In reStructuredText_, field lists
 are used to represent bibliographic fields (contents of the docinfo_
-element) and `directive options`_.
+element) and `directive`_ options.
 
 Details
 -------
@@ -2140,7 +2140,7 @@ Pseudo-XML_ fragment from simple parsing::
                 <paragraph>
                     integer
 
-.. _directive options: rst/restructuredtext.html#directive-options
+.. _directive: rst/restructuredtext.html#directives
 
 
 ``field_name``
@@ -2530,11 +2530,66 @@ Pseudo-XML_ fragment from simple parsing::
 ``image``
 =========
 
+The ``image`` element refers to an image file that should be included in
+the document.
+
+It is up to the author to ensure compatibility of the image data format
+with the output format or user agent (LaTeX engine, HTML browser, ...).
+The `reStructuredText Directives` documentation contains a non exhaustive
+`table of compatible image formats`_.
+
+Details
+-------
+
+:Category:
+    `Simple Body Elements`_, `Inline Elements`_
+
+:Analogues:
+    ``image`` is analogous to the `HTML "img"`_, `Docbook "imagedata"`_,
+    and `SVG "image"`_ elements. 
+
+:Processing:
+    The specified image is included into the output document.
+    Depending on the output format, this is done by refering
+    to the image URI or by embedding the image files content.
+
+:Parents:
+    All elements employing the `%body.elements;`_ or
+    `%structure.model;`_ parameter entities in their content models
+    may contain ``image``.
+
+:Children:
+    None.
+
 :Attributes:
     The ``image`` element contains the `common attributes`_
     plus uri, align_, alt, height_, width_, and scale_.
 
-`To be completed`_.
+:Parameter Entities:
+    The `%body.elements;`_ parameter entity directly includes
+    ``image``.  The `%structure.model;`_ parameter entity
+    indirectly includes ``image``.
+    
+Examples    
+--------
+
+In reStructuredText, the `"image" directive`_ is used to create an
+``image`` element::
+
+    .. image:: picture.jpeg
+       :width: 20 mm
+       :alt: alternate text
+
+Pseudo-XML_ fragment from simple parsing::
+
+    <image alt="alternate text" uri="picture.jpeg" width="20mm">
+
+.. _table of compatible image formats: rst/directives.html#image-formats
+.. _"image" directive: rst/directives.html#image
+.. _HTML "img": https://html.spec.whatwg.org/multipage/embedded-content.html
+                #the-img-element
+.. _Docbook "imagedata": https://tdg.docbook.org/tdg/5.1/imagedata
+.. _SVG "image": https://svgwg.org/svg2-draft/embedded.html#ImageElement
 
 
 ``important``
@@ -2924,7 +2979,6 @@ breaks and whitespace are significant and must be preserved.
 ``literal_block`` elements are commonly used for program listings and
 interactive computer sessions.  See `line_block`_ for an alternative
 useful for verse and addresses.
-
 
 Details
 -------
@@ -3934,7 +3988,12 @@ context.
 ``substitution_definition``
 ===========================
 
+The ``substitution_definition`` element stores a reStructuredText
+`substitution definition`_.
+
 `To be completed`_.
+
+.. _substitution definition: rst/restructuredtext.html#substitution-definitions
 
 
 ``substitution_reference``
@@ -4607,7 +4666,7 @@ _`yesorno`
     Boolean: no if zero ("0"), yes if any other value.
     Resolves to ``NMTOKEN``.
 
-    Used in the `anonymous`_ and `stub`_ attributes.
+    Used in the `anonymous`_, `ltrim`_, `rtrim`_, and `stub`_ attributes.
 
 _`number`
     The attribute value must be a number. Resolves to ``NMTOKEN``.
@@ -4723,6 +4782,16 @@ _`Common Attributes`:
     the following attributes: ids_, names_ or dupnames_, source_, and
     classes_.
 
+
+``alt``
+=======
+
+Attribute type: `CDATA`_.  Default value: none.
+
+The ``alt`` attribute is used to store a text description in the image_
+element.
+
+
 ``align``
 =========
 
@@ -4730,6 +4799,7 @@ Attribute type: `CDATA`_.  Default value: none (inherit).
 
 The ``align`` attribute is used in the figure_, image_, and table_ elements
 (via the `%align-h.att;`_ and `%align-hv.att;`_ parameter entities).
+
 
 ``anonymous``
 =============
@@ -4868,6 +4938,7 @@ elements.
    * Keep additional keys in `ids`
      or in the preceding target elements?
 
+
 ``level``
 =========
 
@@ -4875,12 +4946,22 @@ Attribute type: number_.  Default value: none.
 
 The ``level`` attribute is used in the system_message_ element.
 
+
+``ltrim``
+=========
+
+Attribute type: `yesorno`_.  Default value: none (implies no).
+
+The ``ltrim`` attribute is used in the substitution_definition_ element.
+
+
 ``morecols``
 ============
 
 Attribute type: number_.  Default value: none.
 
 The ``morecols`` attribute is used in the table_ element.
+
 
 ``names``
 =========
@@ -4962,12 +5043,21 @@ citation_reference_ elements (via the `%reference.atts;`_ parameter
 entity).
 
 
+``rtrim``
+=========
+
+Attribute type: `yesorno`_.  Default value: none (implies no).
+
+The ``rtrim`` attribute is used in the substitution_definition_ element.
+
+
 ``scale``
 ==========
 
 Attribute type: number_.  Default value: none.
 
-The ``scale`` attribute is used in the image_ element.
+The ``scale`` attribute is used in the image_ element to store a
+uniform scaling factor (integer percentage value).
 
 
 ``source``
@@ -4996,6 +5086,7 @@ Attribute type: `yesorno`_.  Default value: none.
 The ``stub`` attribute is used in the colspec_ element.
 It marks a table column containing "stubs" (row titles, on the left).
 See also the csv-table_ and list-table_ directives.
+
 
 ``suffix``
 ==========

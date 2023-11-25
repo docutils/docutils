@@ -1404,15 +1404,14 @@ Deprecated. Obsoleted by image_loading_.
 image_loading
 """""""""""""
 
-Suggest at which point images should be loaded.
+Indicate at which point images should be loaded.
+Supported values:
 
-:embed: If the image can be read from the local file system,
-        the image data is embedded into the HTML document.
-
-:link: Link to image in the HTML document (default).
-
-:lazy: Link to image. Specify the `lazy loading attribute`_ to defer
-       fetching the image.
+:embed: Embed images into the HTML document
+        (ignored for videos).
+:link:  Refer to images in the HTML document (default).
+:lazy:  Refer to images. Additionally specify the `lazy loading attribute`_
+        to defer fetching the image.
 
 Default: "link". Option: ``--image-loading``.
 
