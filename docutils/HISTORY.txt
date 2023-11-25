@@ -85,6 +85,9 @@ Changes since 0.20.1
 
   - Support for video inclusion via `<video>` tags
     (moved here from writers/html5_polyglot/__init__.py).
+  - New auxiliary function `HTMLTranslator.uri2imagepath()`
+    ensures the image file can also be read when
+    CWD and output directory differ.
 
 * docutils/writers/latex2e/__init__.py
 

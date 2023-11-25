@@ -22,7 +22,6 @@ import os
 import os.path
 import re
 import urllib
-from urllib.request import url2pathname  # unquote and use local path sep
 import warnings
 
 import docutils
@@ -492,6 +491,29 @@ class HTMLTranslator(nodes.NodeVisitor):
         except IndexError:
             return
         child['classes'].append(class_)
+
+    def uri2imagepath(self, uri):
+        """Get filesystem path corresponding to an URI.
+
+        The image directive expects an image URI. Some writers require the
+        corresponding image path to read the image size from the file or to
+        embed the image in the output.
+
+        In order to work in the output document, relative image URIs relate
+        to the output directory. For access by the writer, the corresponding
+        image path must be relative to the current working directory.
+
+        Provisional: the function's location, interface and behaviour
+        may change without advance warning.
+        """
+        destination = self.settings._destination or ''
+        uri_parts = urllib.parse.urlparse(uri)
+        imagepath = urllib.request.url2pathname(uri_parts.path)
+        if not os.path.isabs(imagepath):
+            destdir = os.path.abspath(os.path.dirname(destination))
+            imagepath = utils.relative_path(None,
+                                            os.path.join(destdir, imagepath))
+        return imagepath
 
     def visit_Text(self, node):
         text = node.astext()
@@ -1004,11 +1026,13 @@ class HTMLTranslator(nodes.NodeVisitor):
     videotypes = ('video/mp4', 'video/webm', 'video/ogg')
 
     def visit_image(self, node):
-        atts = {}
         uri = node['uri']
         uri_parts = urllib.parse.urlparse(uri)
         imagepath = ''
         mimetype = mimetypes.guess_type(uri)[0]
+        atts = {}  # attributes for the HTML tag
+        if 'align' in node:
+            atts['class'] = 'align-%s' % node['align']
         # image size
         if 'width' in node:
             atts['width'] = node['width']
@@ -1027,7 +1051,7 @@ class HTMLTranslator(nodes.NodeVisitor):
                 if not self.settings.file_insertion_enabled:
                     scaling_problems.append('Reading external files disabled.')
                 if not scaling_problems:
-                    imagepath = url2pathname(uri_parts.path)
+                    imagepath = self.uri2imagepath(uri)
                     try:
                         with PIL.Image.open(imagepath) as img:
                             imgsize = img.size
@@ -1054,6 +1078,7 @@ class HTMLTranslator(nodes.NodeVisitor):
                     atts[att_name] = '%s%s' % (
                         float(match.group(1)) * (float(node['scale']) / 100),
                         match.group(2))
+        # set size with "style" attribute (more universal, accepts dimensions)
         style = []
         for att_name in 'width', 'height':
             if att_name in atts:
@@ -1064,16 +1089,13 @@ class HTMLTranslator(nodes.NodeVisitor):
                 del atts[att_name]
         if style:
             atts['style'] = ' '.join(style)
+        # No newlines around inline images or if surrounded by <a>...</a>.
         if (isinstance(node.parent, nodes.TextElement)
             or (isinstance(node.parent, nodes.reference)
                 and not isinstance(node.parent.parent, nodes.TextElement))):
-            # Inline context or surrounded by <a>...</a>.
             suffix = ''
         else:
             suffix = '\n'
-
-        if 'align' in node:
-            atts['class'] = 'align-%s' % node['align']
 
         # moving image -> use <video>
         if mimetype in self.videotypes:
@@ -1093,14 +1115,9 @@ class HTMLTranslator(nodes.NodeVisitor):
                 self.document.reporter.error(
                     f'Cannot embed remote image "{uri}"')
                 # TODO: read with urllib.request?
-            imagepath = imagepath or url2pathname(uri_parts.path)
-            # TODO: adapt relative imagepath?
-            # if not os.path.isabs(imagepath):
-            #     _src, _ln = utils.get_source_line(node)
-            #     dirname = os.path.dirname(_src or '')
-            #     imagepath = os.path.join(dirname, imagepath)
+            imagepath = imagepath or self.uri2imagepath(uri)
             try:
-                with open(url2pathname(uri), 'rb') as imagefile:
+                with open(imagepath, 'rb') as imagefile:
                     imagedata = imagefile.read()
             except OSError as err:
                 self.document.reporter.error('Cannot embed image %r: %s'
@@ -1116,6 +1133,7 @@ class HTMLTranslator(nodes.NodeVisitor):
                 uri = 'data:%s;base64,%s' % (mimetype, data64)
         elif self.image_loading == 'lazy':
             atts['loading'] = 'lazy'
+
         if mimetype == 'application/x-shockwave-flash':
             atts['type'] = mimetype
             # do NOT use an empty tag: incorrect rendering in browsers
