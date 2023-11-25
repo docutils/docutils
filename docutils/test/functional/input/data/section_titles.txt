@@ -41,13 +41,18 @@ Section titles with inline markup
 
 *emphasized*, H\ :sub:`2`\ O, :math:`x^2`, and references_
 ----------------------------------------------------------
+
 Substitutions |fail|
 --------------------
 .. |fail| replace:: work
 
 Note, that the "reference name" for this section is derived from the
-content *before* substitution. This may be exploited to get intelligible
-IDs after `identifier normalization`_ of the section's reference name.
+content *before* substitution. You can link to it with the `phrase
+reference`_ "`substitutions fail`_".
+This behaviour may be exploited to get intelligible IDs after `identifier
+normalization`_ of the section's reference name.
 
 .. _identifier normalization: https://docutils.sourceforge.io/docs/ref/rst/
                               directives.html#identifier-normalization
+.. _phrase reference: https://docutils.sourceforge.io/docs/ref/rst/
+                      restructuredtext.html#hyperlink-references
