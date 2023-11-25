@@ -61,6 +61,24 @@ content <em>before</em> substitution. This may be exploited to get intelligible
 IDs after <a class="reference external" href="https://docutils.sourceforge.io/docs/ref/rst/directives.html#identifier-normalization">identifier normalization</a> of the section's reference name.</p>
 </div>
 </div>
+<div class="section" id="moving-images-video">
+<h1>Moving images (video)</h1>
+<p>If the URL given to <cite>images and figures</cite> hints to a video format
+supported by HTML&nbsp;5 (MIME types 'video/mp4', 'video/webm', or
+'video/ogg'), the HTML5 writer will place it in a <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/video">video element</a>.</p>
+<object class="align-left" data="../../../docs/user/rst/images/pens.mp4" type="video/mp4">left-aligned test video</object>
+<p>A class option value &quot;controls&quot; tells the browser to display controls
+for video playback.</p>
+<p>It is a good idea to include width and height attributes. If
+height and width are not set, the page might flicker while the video
+loads. According to the <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/video">HTML5 spec</a>, hight and width must be
+specified as pixel values.</p>
+<div class="figure align-center">
+<object class="controls" data="../../../docs/user/rst/images/pens.mp4" style="width: 200px;" type="video/mp4">test video in a figure</object>
+<p class="caption">Simple test video in a centered figure</p>
+</div>
+<p>A video like this <object data="../../../docs/user/rst/images/pens.mp4" style="width: 60px;" type="video/mp4">rotating pens video</object> can be included inline via substitution.</p>
+</div>
 </div>
 </body>
 </html>
