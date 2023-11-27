@@ -52,7 +52,7 @@ with whitespace or punctuation.  To use a substitution without
 intervening whitespace, you can use the disappearing-whitespace escape
 sequence, backslash-space::
 
-    .. include:: isonum.txt
+    .. include:: <isonum.txt>
 
     Copyright |copy| 2003, BogusMegaCorp\ |trade|.
 
@@ -123,10 +123,9 @@ xhtml1-symbol.txt_   XHTML Mathematical, Greek and Symbolic Characters
 .. [1] There are ``*-wide.txt`` variants for each of these character
    entity set files, containing characters outside of the Unicode
    basic multilingual plane or BMP (wide-Unicode; code points greater
-   than U+FFFF).  Most pre-built Python distributions are "narrow" and
-   do not support wide-Unicode characters.  Python *can* be built with
-   wide-Unicode support though; consult the Python build instructions
-   for details.
+   than U+FFFF).  Before Python 3.3, some distributions were "narrow"
+   and did not support wide-Unicode characters. This should not be an
+   issue nowadays.
 
 For example, the copyright symbol is defined as the XML character
 entity ``&copy;``.  The equivalent reStructuredText substitution

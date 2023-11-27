@@ -1,4 +1,4 @@
-.. header:: Docutils | Documentation_ | `Project page`_ | Download_ 
+.. header:: Docutils | Documentation_ | `Project page`_ | Download_
 
 ===================================
  Docutils: Documentation Utilities
@@ -26,7 +26,7 @@ All **documentation** can be reached from the `Project Documentation
 Overview`_. If something is unclear or missing, ask at the
 docutils-users_ mailing list.
 
-The |sourceforge| `project page`_ has links to the tracker, mailing
+The SourceForge `project page`_ has links to the tracker, mailing
 lists, and code repository.
 
 All **discussion** about Docutils takes place on the `mailing lists`_.
@@ -49,7 +49,7 @@ list. **Patch** submissions should be filed in the `patch tracker`_
 Download
 ========
 
-`Release packages`_ can be downloaded from PyPI_. 
+`Release packages`_ can be downloaded from PyPI_.
 See the `release notes`_ for a list of changes since the previous
 release.
 
@@ -73,26 +73,36 @@ Powered by |Python|_.
    :trim:
 
 .. _snapshots:
-   https://sourceforge.net/p/docutils/code/HEAD/tree/trunk/docutils/
-.. _trunk directory: https://sourceforge.net/p/docutils/code/HEAD/tree/trunk/
-.. _patch tracker: https://sourceforge.net/p/docutils/patches/
-.. _file a bug report: BUGS.html#how-to-report-a-bug
-.. _mailing lists: docs/user/mailing-lists.html
-.. _docutils-users: docs/user/mailing-lists.html#docutils-users
-.. _docutils-develop: docs/user/mailing-lists.html#docutils-develop
-.. _sandbox: sandbox/README.html
-.. _reStructuredText: rst.html
+    https://sourceforge.net/p/docutils/code/HEAD/tree/trunk/docutils/
+.. _trunk directory:
+    https://sourceforge.net/p/docutils/code/HEAD/tree/trunk/
+.. _patch tracker:
+    https://sourceforge.net/p/docutils/patches/
+.. _file a bug report:
+    https://docutils.sourceforge.io/BUGS.html#how-to-report-a-bug
+.. _mailing lists:
+    https://docutils.sourceforge.io/docs/user/mailing-lists.html
+.. _docutils-users:
+    https://docutils.sourceforge.io/docs/user/mailing-lists.html
+    #docutils-users
+.. _docutils-develop:
+    https://docutils.sourceforge.io/docs/user/mailing-lists.html
+    #docutils-develop
+.. _sandbox: https://docutils.sourceforge.io/sandbox/README.html
+.. _reStructuredText: https://docutils.sourceforge.io/rst.html
 .. _project page: https://sourceforge.net/p/docutils
-.. _To Do list: docs/dev/todo.html
-.. _README: README.html
-.. _Quick-Start: README.html#quick-start
+.. _To Do list: https://docutils.sourceforge.io/docs/dev/todo.html
+.. _README: https://docutils.sourceforge.io/README.html
+.. _Quick-Start: https://docutils.sourceforge.io/README.html#quick-start
 .. _Documentation:
-.. _Project Documentation Overview: docs/index.html
-.. _Docutils' Subversion repository: docs/dev/repository.html
-.. _requirement: README.html#requirements
+.. _Project Documentation Overview:
+    https://docutils.sourceforge.io/docs/index.html
+.. _Docutils' Subversion repository:
+    https://docutils.sourceforge.io/docs/dev/repository.html
+.. _requirement: https://docutils.sourceforge.io/README.html#requirements
 .. _release packages: https://pypi.org/project/docutils/#files
 .. _PyPI: https://pypi.org
-.. _release notes: RELEASE-NOTES.html
+.. _release notes: https://docutils.sourceforge.io/RELEASE-NOTES.html
 
 .. |SourceForge| image::
    https://sourceforge.net/sflogo.php?group_id=38414
@@ -108,7 +118,7 @@ Powered by |Python|_.
 .. _Python: https://www.python.org/
 
 
-
+
 ..
    Local Variables:
    mode: indented-text
