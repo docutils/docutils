@@ -520,7 +520,7 @@ root_prefix
 Base directory, prepended to a filesystem path__ starting with "/" when
 including files with the "include_", "raw_", or "csv-table_" directives.
 
-Also applied when a writer converts an image URI to a local filesystem
+Also applied when a writer converts an image URI__ to a local filesystem
 path in order to determine the image size or embed the image in the output.
 
 Default: "/" (no change).
