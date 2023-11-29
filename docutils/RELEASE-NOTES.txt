@@ -188,6 +188,13 @@ Release 0.21 (unpublished)
   configuration setting is None, '', 'utf-8-sig', 'utf-16', or 'utf-32'.
   Do not remove other ZWNBSPs.
 
+* Configuration changes:
+
+  - New command line setting root-prefix_.
+    Configurable root directory for included files.
+
+    .. _root-prefix: docs/user/config.html#root-prefix
+
 * "html5" writer:
   Stop setting the "footnote-reference" class value for footnote references.
   You can use the CSS selector ``[role="doc-noteref"]``

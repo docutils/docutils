@@ -66,6 +66,12 @@ Changes since 0.20.1
 
   - Don't split inside "< >" when parsing "option groups" (fixes bug #474).
 
+* docutils/parsers/rst/directives/misc.py,
+  docutils/parsers/rst/directives/tables.py
+
+  - Consider the root-prefix_ setting when including files with
+    "include", "raw", or "csv-table" directives.
+
 * docutils/utils/roman.py
 
   - Update to version `1.4 <https://pypi.org/project/roman/4.1/>`__.
@@ -88,6 +94,8 @@ Changes since 0.20.1
   - New auxiliary function `HTMLTranslator.uri2imagepath()`
     ensures the image file can also be read when
     CWD and output directory differ.
+  - Consider the root-prefix_ setting when converting an image URI
+    to a local filesystem path.
 
 * docutils/writers/latex2e/__init__.py
 
@@ -125,6 +133,8 @@ Changes since 0.20.1
   - Support reading/embedding images with "file:" URIs.
 
   - Warn, if image scaling fails because the image file cannot be read.
+
+.. _root-prefix: docs/user/config.html#root-prefix
 
 
 Release 0.20.1 (2023-05-17)
