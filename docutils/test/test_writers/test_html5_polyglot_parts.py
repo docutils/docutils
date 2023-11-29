@@ -25,6 +25,8 @@ import docutils
 import docutils.core
 from docutils.utils.code_analyzer import with_pygments
 
+ROOT_PREFIX = (Path(__file__).parent.parent/'functional'/'input').as_posix()
+
 
 class Html5WriterPublishPartsTestCase(unittest.TestCase):
     """Test case for HTML writer via the publish_parts interface."""
@@ -484,6 +486,26 @@ totest['lazy_loading'] = ({'image_loading': 'lazy',
 <figure>
 <img alt="dummy.png" loading="lazy" src="dummy.png" />
 </figure>\n''',
+}],
+])
+
+
+totest['root_prefix'] = ({'root_prefix': ROOT_PREFIX,
+                          'image_loading': 'embed',
+                          'stylesheet_path': '',
+                          'embed_stylesheet': False}, [
+["""\
+.. image:: /data/blue%20square.png
+   :scale: 100%
+.. figure:: /data/blue%20square.png
+""",
+{'fragment': '''\
+<img alt="/data/blue%20square.png" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8GO2jAAAALElEQVR4nO3NMQEAMAjAsDFjvIhHFCbgSwU0kdXvsn96BwAAAAAAAAAAAIsNnEwBk52VRuMAAAAASUVORK5CYII="\
+ style="width: 32.0px; height: 32.0px;" />
+<figure>
+<img alt="/data/blue%20square.png" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8GO2jAAAALElEQVR4nO3NMQEAMAjAsDFjvIhHFCbgSwU0kdXvsn96BwAAAAAAAAAAAIsNnEwBk52VRuMAAAAASUVORK5CYII=" />
+</figure>
+''',
 }],
 ])
 

@@ -2166,6 +2166,9 @@ Common Option Value Types
 
 *path*
   local filesystem path. Newlines are removed.
+  The `root_prefix`_ configuration setting can be used to tell Docutils
+  to interpret absolute paths (starting with "/") relative to a "project
+  directory".
 
   .. _text:
 
@@ -2195,7 +2198,6 @@ Common Option Value Types
 .. _percentage: restructuredtext.html#percentage-units
 .. _reference name:
 .. _reference names: restructuredtext.html#reference-names
-
 .. _identifier keys: ../doctree.html#ids-type
 .. _inline elements: ../doctree.html#inline-elements
 .. _class names: ../doctree.html#classname
@@ -2203,6 +2205,7 @@ Common Option Value Types
 .. _classes attribute: ../doctree.html#classes
 .. _ids attribute: ../doctree.html#ids
 .. _names attribute: ../doctree.html#names
+.. _root_prefix: ../../user/config.html#root-prefix
 .. _title attribute: ../doctree.html#title-attribute
 .. _<admonition>: ../doctree.html#admonition
 .. _<attention>: ../doctree.html#attention
