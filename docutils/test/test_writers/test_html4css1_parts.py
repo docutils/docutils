@@ -24,6 +24,8 @@ if __name__ == '__main__':
 import docutils
 import docutils.core
 
+ROOT_PREFIX = (Path(__file__).parent.parent/'functional'/'input').as_posix()
+
 
 class Html4WriterPublishPartsTestCase(unittest.TestCase):
     """
@@ -377,6 +379,20 @@ Not a docinfo.
 </tbody>
 </table>\n''',
  }],
+])
+
+totest['root_prefix'] = ({'root_prefix': ROOT_PREFIX,
+                          'stylesheet_path': '',
+                          'embed_stylesheet': False}, [
+
+["""\
+.. image:: /data/blue%20square.png
+   :scale: 100%
+""",
+{'fragment': '''\
+<img alt="/data/blue%20square.png" src="/data/blue%20square.png"\
+ style="width: 32.0px; height: 32.0px;" />\n''',
+}],
 ])
 
 

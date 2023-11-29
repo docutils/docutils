@@ -19,13 +19,12 @@ import itertools
 import locale
 import os
 import os.path
+from pathlib import Path
 import re
 import subprocess
 import tempfile
 import time
-from urllib.error import URLError
-from urllib.parse import urlparse
-from urllib.request import urlopen, url2pathname
+import urllib
 import weakref
 from xml.etree import ElementTree as etree
 from xml.dom import minidom
@@ -2119,10 +2118,13 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def visit_image(self, node):
         # Capture the image file.
         source = node['uri']
-        uri_parts = urlparse(source)
+        uri_parts = urllib.parse.urlparse(source)
         if uri_parts.scheme in ('', 'file'):
-            source = url2pathname(uri_parts.path)
-            if not os.path.isabs(source):
+            source = urllib.parse.unquote(uri_parts.path)
+            if source.startswith('/'):
+                root_prefix = Path(self.settings.root_prefix)
+                source = (root_prefix/source[1:]).as_posix()
+            else:
                 # adapt relative paths
                 docsource, line = utils.get_source_line(node)
                 if docsource:
@@ -2143,9 +2145,9 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                 spec = (os.path.abspath(source), destination,)
             else:
                 try:
-                    with urlopen(source) as imgfile:
+                    with urllib.request.urlopen(source) as imgfile:
                         content = imgfile.read()
-                except URLError as err:
+                except urllib.error.URLError as err:
                     self.document.reporter.warning(
                         f'Cannot open image URL "{source}". {err}')
                     return

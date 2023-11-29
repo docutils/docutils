@@ -514,6 +514,25 @@ See also halt_level_.
 Default: warning (2).
 Options: ``--report, -r, --verbose, -v, --quiet, -q``.
 
+root_prefix
+-----------
+
+Base directory, prepended to a filesystem path__ starting with "/" when
+including files with the "include_", "raw_", or "csv-table_" directives.
+
+Also applied when a writer converts an image URI to a local filesystem
+path in order to determine the image size or embed the image in the output.
+
+Default: "/" (no change).
+Option: ``--root-prefix``
+
+New in Docutils 0.21.
+
+__ ../ref/rst/directives.html#path
+__ ../ref/rst/directives.html#uri
+.. _image: ../ref/rst/directives.html#image
+.. _figure: ../ref/rst/directives.html#figure
+
 sectnum_xform
 -------------
 

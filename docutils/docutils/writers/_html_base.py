@@ -20,6 +20,7 @@ import base64
 import mimetypes
 import os
 import os.path
+from pathlib import Path
 import re
 import urllib
 import warnings
@@ -499,6 +500,8 @@ class HTMLTranslator(nodes.NodeVisitor):
         corresponding image path to read the image size from the file or to
         embed the image in the output.
 
+        Absolute URIs consider the "root_prefix" setting.
+
         In order to work in the output document, relative image URIs relate
         to the output directory. For access by the writer, the corresponding
         image path must be relative to the current working directory.
@@ -509,7 +512,10 @@ class HTMLTranslator(nodes.NodeVisitor):
         destination = self.settings._destination or ''
         uri_parts = urllib.parse.urlparse(uri)
         imagepath = urllib.request.url2pathname(uri_parts.path)
-        if not os.path.isabs(imagepath):
+        if imagepath.startswith('/'):
+            root_prefix = Path(self.settings.root_prefix)
+            imagepath = (root_prefix/imagepath[1:]).as_posix()
+        elif not os.path.isabs(imagepath):  # exclude absolute Windows paths
             destdir = os.path.abspath(os.path.dirname(destination))
             imagepath = utils.relative_path(None,
                                             os.path.join(destdir, imagepath))

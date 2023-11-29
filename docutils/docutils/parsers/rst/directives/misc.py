@@ -19,6 +19,20 @@ from docutils.parsers.rst.directives.body import CodeBlock, NumberLines
 from docutils.transforms import misc
 
 
+def adapt_path(path, source='', root_prefix='/'):
+    # Adapt path to files to include or embed.
+    # `root_prefix` is prepended to absolute paths (cf. root_prefix setting),
+    # `source` is the `current_source` of the including directive (which may
+    # be a file included by the main document).
+    if path.startswith('/'):
+        base = Path(root_prefix)
+        path = path[1:]
+    else:
+        base = Path(source).parent
+    # pepend "base" and convert to relative path for shorter system messages
+    return utils.relative_path(None, base/path)
+
+
 class Include(Directive):
 
     """
@@ -65,11 +79,11 @@ class Include(Directive):
         current_source = self.state.document.current_source
         path = directives.path(self.arguments[0])
         if path.startswith('<') and path.endswith('>'):
-            _base = self.standard_include_path
-            path = path[1:-1]
+            path = '/' + path[1:-1]
+            root_prefix = self.standard_include_path
         else:
-            _base = Path(current_source).parent
-        path = utils.relative_path(None, _base/path)
+            root_prefix = settings.root_prefix
+        path = adapt_path(path, current_source, root_prefix)
         encoding = self.options.get('encoding', settings.input_encoding)
         error_handler = settings.input_encoding_error_handler
         try:
@@ -245,9 +259,9 @@ class Raw(Directive):
                 raise self.error(
                     'The "file" and "url" options may not be simultaneously '
                     'specified for the "%s" directive.' % self.name)
-            path = self.options['file']
-            _base = Path(self.state.document.current_source).parent
-            path = utils.relative_path(None, _base/path)
+            path = adapt_path(self.options['file'],
+                              self.state.document.current_source,
+                              settings.root_prefix)
             try:
                 raw_file = io.FileInput(source_path=path,
                                         encoding=encoding,

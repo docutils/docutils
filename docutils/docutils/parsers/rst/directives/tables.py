@@ -10,15 +10,15 @@ __docformat__ = 'reStructuredText'
 
 
 import csv
-from pathlib import Path
 from urllib.request import urlopen
 from urllib.error import URLError
 import warnings
 
-from docutils import nodes, statemachine, utils
+from docutils import nodes, statemachine
 from docutils.io import FileInput, StringInput
 from docutils.parsers.rst import Directive
 from docutils.parsers.rst import directives
+from docutils.parsers.rst.directives.misc import adapt_path
 from docutils.utils import SystemMessagePropagation
 
 
@@ -344,10 +344,9 @@ class CSVTable(Table):
                     nodes.literal_block(self.block_text, self.block_text),
                     line=self.lineno)
                 raise SystemMessagePropagation(error)
-            source = self.options['file']
-            # resolve path to external file
-            _base = Path(self.state.document.current_source).parent
-            source = utils.relative_path(None, _base/source)
+            source = adapt_path(self.options['file'],
+                                self.state.document.current_source,
+                                settings.root_prefix)
             try:
                 csv_file = FileInput(source_path=source,
                                      encoding=encoding,

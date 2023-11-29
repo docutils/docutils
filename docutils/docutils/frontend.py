@@ -481,6 +481,10 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
          ('Do not include a datestamp of any kind.',
           ['--no-datestamp'], {'action': 'store_const', 'const': None,
                                'dest': 'datestamp'}),
+         ('Base directory for absolute paths when reading '
+          'from the local filesystem. Default "/".',
+          ['--root-prefix'],
+          {'default': '/', 'metavar': '<path>'}),
          ('Include a "View document source" link.',
           ['--source-link', '-s'], {'action': 'store_true',
                                     'validator': validate_boolean}),
