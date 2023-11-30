@@ -84,7 +84,7 @@ Specific Admonitions
 :Directive Options: class_, name_
 :Directive Content: Interpreted as body elements.
 
-Specific admontions are rendered with a title matching the admonition type.
+Specific admonitions are rendered with a title matching the admonition type.
 For example::
 
     .. DANGER::
@@ -276,7 +276,7 @@ Recognizes the common options class_ and name_ as well as
     baseline); they are only useful for inline images (substitutions).
     The values "left", "center", and "right" control an image's
     horizontal alignment, allowing the image to float and have the
-    text flow around it.  The specific behavior depends upon the
+    text flow around it.  The specific behaviour depends upon the
     browser or rendering software used.
 
 ``target`` : URI_ or `reference name`_
@@ -336,7 +336,7 @@ directive (see `image options`_ above). These options (except
 
 ``align`` : "left", "center", or "right"
     The horizontal alignment of the figure, allowing the image to
-    float and have the text flow around it.  The specific behavior
+    float and have the text flow around it.  The specific behaviour
     depends upon the browser or rendering software used.
 
 In addition, the following options are recognized:
@@ -932,7 +932,7 @@ Recognizes the common options class_ and name_ as well as
 ``escape`` : character_
     A character used to escape the delimiter_ or quote_ characters from
     the CSV parser. The default is no escape character -- fields may
-    contain delimiter or newline characers if they are quoted, two quote
+    contain delimiter or newline characters if they are quoted, two quote
     characters stand for a literal one, e.g., ``"He said, ""Hi!"""``.
 
     .. Caution:: Setting ``escape`` to ``\`` (backslash) interferes with

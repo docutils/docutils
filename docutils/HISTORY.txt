@@ -511,6 +511,10 @@ Thanks to Dimitri Papadopoulos.
 Release 0.18b1 (2021-10-05)
 ===========================
 
+* docs/ref/docutils.dtd
+
+  - New document tree element <meta>.
+
 * docutils/frontend.py
 
   - The default value for the `auto_id_prefix`_ setting changed to "%":
@@ -705,6 +709,10 @@ Release 0.17 (2021-04-03)
 
   .. _pip: https://pypi.org/project/pip/
 
+* docs/ref/docutils.dtd
+
+  - The "title" attribute of <sidebar> elements is now optional.
+
 * docutils/MANIFEST.in
 
   - Exclude test outputs.
@@ -897,6 +905,11 @@ Release 0.16 (2020-01-16)
 
   __ https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#escaping-mechanism
 
+* docs/ref/docutils.dtd
+
+  - Use "parameter entities" for `class names`, `reference names`,
+    and `ids`.
+
 * docutils/io.py
 
   - Remove the `handle_io_errors` option from io.FileInput/Output.
@@ -989,6 +1002,10 @@ Release 0.15 (2019-07-20)
 
   - Dropped support for Python 2.4, 2.5, 3.1, and 3.2.
   - Infrastructure automation.
+
+* docs/ref/docutils.dtd
+
+  - The <table> element accepts the new attribute "width".
 
 * docs/ref/rst/restructuredtext.txt
 
@@ -1172,6 +1189,10 @@ Release 0.14 (2017-08-03)
 
 Release 0.13.1 (2016-12-09)
 ===========================
+
+* docs/ref/docutils.dtd
+
+  - Add the document tree elements <math> and <math_block> (already in use).
 
 * docutils/languages/fa.py
   docutils/parsers/rst/languages/fa.py

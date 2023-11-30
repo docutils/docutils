@@ -190,7 +190,7 @@ Release 0.21 (unpublished)
 
 * Configuration changes:
 
-  - New command line setting root-prefix_.
+  - New configuration setting root-prefix_.
     Configurable root directory for included files.
 
     .. _root-prefix: docs/user/config.html#root-prefix

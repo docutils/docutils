@@ -114,7 +114,7 @@ Structural Subelements
 ----------------------
 
 Structural subelements are child elements of structural elements.
-Simple structuctural subelements (title_, subtitle_) contain text
+Simple structural subelements (title_, subtitle_) contain text
 data; the others are compound and do not directly contain text data.
 
 Category members: title_, subtitle_, decoration_, docinfo_, meta_,
@@ -708,7 +708,7 @@ Examples
 
 reStructuredText source::
 
-    As a great paleontologist once said,
+    As a great palaeontologist once said,
 
         This theory, that is mine, is mine.
 
@@ -717,7 +717,7 @@ reStructuredText source::
 Pseudo-XML_ fragment from simple parsing::
 
     <paragraph>
-        As a great paleontologist once said,
+        As a great palaeontologist once said,
     <block_quote>
         <paragraph>
             This theory, that is mine, is mine.
@@ -2247,7 +2247,7 @@ setting has been supplied::
 ``footnote``
 ============
 
-The ``footnote`` element is used for labeled notes_ that provide
+The ``footnote`` element is used for labelled notes_ that provide
 additional context to a passage of text (*footnotes* or *endnotes*).
 The corresponding footnote mark in running text is set by the
 `footnote_reference`_ element.
@@ -2550,7 +2550,7 @@ Details
 
 :Processing:
     The specified image is included into the output document.
-    Depending on the output format, this is done by refering
+    Depending on the output format, this is done by referring
     to the image URI or by embedding the image files content.
 
 :Parents:
@@ -2683,7 +2683,7 @@ Details
     ``inline`` is analogous to the HTML "span" element.
 
 :Processing:
-    Writers typically pass the classes_ attribute to the output document
+    Writers_ typically pass the classes_ attribute to the output document
     and leave styling to the backend or a custom stylesheet_. They may
     also process the classes_ attribute and convert the ``inline``
     element to a specific element or render the content distinctly
@@ -3128,7 +3128,7 @@ bibliographic data, or meta-data (data about the document).
 It corresponds to HTML META tags.
 
 See also the docinfo_ element for displayed meta-data.
-The document's `title attribute`_ stores the metadate document title.
+The document's `title attribute`_ stores the metadata document title.
 
 
 Details
@@ -3845,7 +3845,7 @@ of the page; the document's main text may flow around it.  Sidebars
 can also be likened to super-footnotes; their content is outside of
 the flow of the document's main text.
 
-The ``sidebar`` element is a nonrecursive section_-like construct
+The ``sidebar`` element is a non-recursive section_-like construct
 which may occur at the top level of a section_ wherever a body element
 (list, table, etc.) is allowed.  In other words, ``sidebar`` elements
 cannot nest inside body elements, so you can't have a ``sidebar``
@@ -4363,7 +4363,7 @@ Pseudo-XML_ fragment from simple parsing::
 ``topic``
 =========
 
-The ``topic`` element is a nonrecursive section_-like construct which
+The ``topic`` element is a non-recursive section_-like construct which
 may occur at the top level of a section_ wherever a body element
 (list, table, etc.) is allowed.  In other words, ``topic`` elements
 cannot nest inside body elements, so you can't have a ``topic`` inside
@@ -4849,7 +4849,7 @@ The ``classes`` attribute is a space separated list containing zero or more
 
 The purpose of the attribute is to indicate an "is-a" variant relationship,
 to allow an extensible way of defining sub-classes of existing elements.  It
-can be used to carry context forward between a Docutils Reader and Writer,
+can be used to carry context forward between a Docutils Reader_ and Writer_,
 when a custom structure is reduced to a standardized document tree.  One
 common use is in conjunction with stylesheets, to add selection criteria.
 It should not be used to carry formatting instructions or arbitrary content.
@@ -4862,7 +4862,9 @@ the attribute.
 elements.
 
 .. _"class" directive: rst/directives.html#class
-
+.. _reader: ../peps/pep-0258.html#readers
+.. _writer:
+.. _writers: ../peps/pep-0258.html#writers
 
 ``colwidth``
 ============
