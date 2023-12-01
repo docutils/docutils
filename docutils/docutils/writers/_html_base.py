@@ -1033,6 +1033,7 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_image(self, node):
         uri = node['uri']
+        alt = node.get('alt', uri)
         uri_parts = urllib.parse.urlparse(uri)
         imagepath = ''
         mimetype = mimetypes.guess_type(uri)[0]
@@ -1095,6 +1096,7 @@ class HTMLTranslator(nodes.NodeVisitor):
                 del atts[att_name]
         if style:
             atts['style'] = ' '.join(style)
+
         # No newlines around inline images or if surrounded by <a>...</a>.
         if (isinstance(node.parent, nodes.TextElement)
             or (isinstance(node.parent, nodes.reference)
@@ -1103,20 +1105,16 @@ class HTMLTranslator(nodes.NodeVisitor):
         else:
             suffix = '\n'
 
-        # moving image -> use <video>
+        # ``:loading:`` option (embed, link, lazy)
+        # get default from config setting
+        # exception: only embed videos if told via directive option
         if mimetype in self.videotypes:
-            fallback = node.get('alt', uri)
-            atts['title'] = fallback
-            if 'controls' in node['classes']:
-                node['classes'].remove('controls')
-                atts['controls'] = 'controls'
-            self.body.append(
-                self.starttag(node, "video", suffix, src=uri, **atts)
-                + f'<a href="{uri}">{fallback}</a>{suffix}</video>{suffix}')
-            return
+            loading = 'link'
+        else:
+            loading = getattr(self.settings, 'image_loading', 'link')
+        loading = node.get('loading', loading)
 
-        # Embed image file (embedded SVG or data URI):
-        if self.image_loading == 'embed':
+        if loading == 'embed':
             if uri_parts.scheme not in ('', 'file'):
                 self.document.reporter.error(
                     f'Cannot embed remote image "{uri}"')
@@ -1129,24 +1127,31 @@ class HTMLTranslator(nodes.NodeVisitor):
                 self.document.reporter.error('Cannot embed image %r: %s'
                                              % (uri, err.strerror))
             else:
-                self.settings.record_dependencies.add(
-                    urllib.parse.unquote(uri))
+                self.settings.record_dependencies.add(imagepath)
                 # TODO: insert SVG as-is?
                 # if mimetype == 'image/svg+xml':
                 # read/parse, apply arguments,
                 # insert as <svg ....> ... </svg> # (about 1/3 less data)
                 data64 = base64.b64encode(imagedata).decode()
-                uri = 'data:%s;base64,%s' % (mimetype, data64)
-        elif self.image_loading == 'lazy':
+                uri = f'data:{mimetype};base64,{data64}'
+        elif loading == 'lazy':
             atts['loading'] = 'lazy'
 
-        if mimetype == 'application/x-shockwave-flash':
+        if mimetype in self.videotypes:
+            atts['title'] = alt
+            alt_link = node['uri']  # use original URI also when embedding
+            if 'controls' in node['classes']:
+                node['classes'].remove('controls')
+                atts['controls'] = 'controls'
+            tag = (self.starttag(node, "video", suffix, src=uri, **atts)
+                   + f'<a href="{alt_link}">{alt}</a>{suffix}</video>{suffix}')
+        elif mimetype == 'application/x-shockwave-flash':
             atts['type'] = mimetype
             # do NOT use an empty tag: incorrect rendering in browsers
             tag = (self.starttag(node, 'object', '', data=uri, **atts)
-                   + node.get('alt', uri) + '</object>' + suffix)
+                   + alt + '</object>' + suffix)
         else:
-            atts['alt'] = node.get('alt', node['uri'])
+            atts['alt'] = alt
             tag = self.emptytag(node, 'img', suffix, src=uri, **atts)
         self.body.append(tag)
 

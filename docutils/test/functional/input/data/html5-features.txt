@@ -1,5 +1,5 @@
-Changes to the `html4css1` Writer
-=================================
+Differences to the `html4css1` Writer
+=====================================
 
 * Use only meta_ keywords recognized by HTML 5.
   Add HTML5-compatible meta tags for docinfo items
@@ -37,6 +37,28 @@ Changes to the `html4css1` Writer
 
 * Use <img> tags for SVG images and <video> for video formats.
 
+* .. image:: ../input/data/blue%20square.png
+     :loading: embed
+     :alt: blue square
+     :align: right
+
+  Embed images or defer fetching images with the image-loading_
+  configuration setting or the "loading" option of the "image" directive.
+
+  .. image:: ../../../docs/user/rst/images/biohazard.png
+     :loading: lazy
+     :scale: 100%
+     :align: right
+
+  Especially with "lazy" loading images, it is strongly recommended to
+  specify both width and height of the image to prevent content layout
+  shifts. (Or use the "scale" option to let the writer insert the size
+  determined from the image file.)
+
+.. _image-loading:
+    https://docutils.sourceforge.io/docs/user/config.html#image-loading
+
+
 Field List Rendering
 --------------------
 
@@ -65,7 +87,7 @@ Styling with Class Arguments
 ----------------------------
 
 The ``plain.css`` style sheet comes with some pre-defined style variants
-that can be choosen via a class argument.
+that can be chosen via a class argument.
 
 Description Lists
 `````````````````
@@ -161,7 +183,7 @@ custom *field-indent*
 
   :Feature: Field body indented by custom amount.
   :Use:     class value starting with ``field-indent-`` followed by
-            a valid lenght, e.g. ``field-indent-3em``.
+            a valid length, e.g. ``field-indent-3em``.
   :The writer:
             will convert this class value to a ``style`` attribute setting.
 
@@ -238,5 +260,6 @@ Numbered figures can be achieved with the "numbered" ``:figclass:`` option:
    :alt: reStructuredText, the markup syntax
    :figclass: numbered
    :width: 100%
+   :loading: embed
 
-   SVG image in a numbered figure.
+   Embedded SVG image in a numbered figure.

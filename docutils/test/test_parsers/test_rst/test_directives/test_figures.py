@@ -23,6 +23,8 @@ from docutils.utils import new_document
 
 
 class ParserTestCase(unittest.TestCase):
+    maxDiff = None
+
     def test_parser(self):
         parser = Parser()
         settings = get_default_settings(Parser)
@@ -96,13 +98,14 @@ totest['figures'] = [
    :height: 100
    :width: 200
    :scale: 50
+   :loading: embed
 
    A picture with image options and a caption.
 """,
 """\
 <document source="test data">
     <figure>
-        <image height="100" scale="50" uri="picture.png" width="200">
+        <image height="100" loading="embed" scale="50" uri="picture.png" width="200">
         <caption>
             A picture with image options and a caption.
 """],
@@ -112,6 +115,7 @@ totest['figures'] = [
    :alt: alternate text
    :width: 200
    :scale: 50
+   :loading: lazy
    :figwidth: 300
    :figclass: class1 class2
    :name: fig:pix
@@ -121,7 +125,7 @@ totest['figures'] = [
 """\
 <document source="test data">
     <figure classes="class1 class2" width="300px">
-        <image alt="alternate text" height="100" ids="fig-pix" names="fig:pix" scale="50" uri="picture.png" width="200">
+        <image alt="alternate text" height="100" ids="fig-pix" loading="lazy" names="fig:pix" scale="50" uri="picture.png" width="200">
         <caption>
             A picture with image options on individual lines, and this caption.
 """],

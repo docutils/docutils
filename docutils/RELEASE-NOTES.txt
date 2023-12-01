@@ -188,6 +188,12 @@ Release 0.21 (unpublished)
   configuration setting is None, '', 'utf-8-sig', 'utf-16', or 'utf-32'.
   Do not remove other ZWNBSPs.
 
+* New attribute loading__ for the Docutils doctree node: <image> storing
+  the new "loading" option of the `"image" directive`_.
+
+  __ docs/ref/doctree.html#loading
+  .. _"image" directive: docs/ref/rst/directives.html#image
+
 * Configuration changes:
 
   - New configuration setting root-prefix_.

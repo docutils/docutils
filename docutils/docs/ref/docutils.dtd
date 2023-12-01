@@ -563,7 +563,8 @@ that is typeset as mathematical notation (display formula).
     alt       CDATA     #IMPLIED
     height    %measure; #IMPLIED
     width     %measure; #IMPLIED
-    scale     %number;  #IMPLIED>
+    scale     %number;  #IMPLIED
+    loading   (embed | link | lazy) #IMPLIED>
 
 <!ELEMENT caption %text.model;>
 <!ATTLIST caption %basic.atts;>

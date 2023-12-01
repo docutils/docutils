@@ -2563,7 +2563,7 @@ Details
 
 :Attributes:
     The ``image`` element contains the `common attributes`_
-    plus uri, align_, alt, height_, width_, and scale_.
+    plus uri, alt_, align_, height_, width_, scale_, and loading_.
 
 :Parameter Entities:
     The `%body.elements;`_ parameter entity directly includes
@@ -4957,6 +4957,26 @@ Attribute type: `yesorno`_.  Default value: none (implies no).
 The ``ltrim`` attribute is used in the substitution_definition_ element.
 
 
+``loading``
+===========
+
+Attribute type: EnumeratedType_, one of "embed", "link", or "lazy".
+Default value: none.
+
+The ``loading`` attribute is used in the image_ element to
+indicate the preferred handling by the Docutils writer_. [#]_
+The default depends on the writer and the image_loading_
+configuration setting.
+
+.. [#] Currently only recognized by the HTML5 writer.
+   The ODF/ODT writer always embeds images in the
+   output document, XML and LaTeX writers link to the image.
+   The behaviour may change for the ODT and XML writers
+   (images cannot be embedded in a LaTeX source).
+
+.. _image_loading: ../user/config.html#image-loading
+
+
 ``morecols``
 ============
 
@@ -5507,7 +5527,6 @@ doctest_block_, emphasis_, field_name_, generated_, line_block_,
 literal_block_, organization_, paragraph_, problematic_, raw_,
 reference_, revision_, status_, strong_, substitution_definition_,
 substitution_reference_, subtitle_, target_, term_, title_, version_
-
 
 
 ..

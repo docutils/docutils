@@ -142,7 +142,7 @@ They are transformed from section titles after parsing. -->
 <li><p><a class="reference internal" href="#custom-roles" id="toc-entry-42"><span class="sectnum">2.23 </span>Custom Roles</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#changes-to-the-html4css1-writer" id="toc-entry-43"><span class="sectnum">3 </span>Changes to the <cite>html4css1</cite> Writer</a></p>
+<li><p><a class="reference internal" href="#differences-to-the-html4css1-writer" id="toc-entry-43"><span class="sectnum">3 </span>Differences to the <cite>html4css1</cite> Writer</a></p>
 <ul class="auto-toc">
 <li><p><a class="reference internal" href="#field-list-rendering" id="toc-entry-44"><span class="sectnum">3.1 </span>Field List Rendering</a></p></li>
 <li><p><a class="reference internal" href="#styling-with-class-arguments" id="toc-entry-45"><span class="sectnum">3.2 </span>Styling with Class Arguments</a></p>
@@ -194,7 +194,7 @@ activated with the <span class="docutils literal"><span class="pre">--section-su
 (<a class="reference external" href="http://www.python.org">http://www.python.org</a>), external hyperlinks (<a class="reference external" href="http://www.python.org/">Python</a> <a class="brackets" href="#footnote-7" id="footnote-reference-18" role="doc-noteref"><span class="fn-bracket">[</span>7<span class="fn-bracket">]</span></a>), internal
 cross-references (<a class="reference internal" href="#example">example</a>), external hyperlinks with embedded URIs
 (<a class="reference external" href="http://www.python.org">Python web site</a>), <a class="reference external" href="http://www.python.org/">anonymous hyperlink
-references</a> <a class="brackets" href="#footnote-7" id="footnote-reference-26" role="doc-noteref"><span class="fn-bracket">[</span>7<span class="fn-bracket">]</span></a> (<a class="reference external" href="https://docutils.sourceforge.io/">a second reference</a> <a class="brackets" href="#footnote-13" id="footnote-reference-27" role="doc-noteref"><span class="fn-bracket">[</span>13<span class="fn-bracket">]</span></a>), footnote references (manually
+references</a> <a class="brackets" href="#footnote-7" id="footnote-reference-27" role="doc-noteref"><span class="fn-bracket">[</span>7<span class="fn-bracket">]</span></a> (<a class="reference external" href="https://docutils.sourceforge.io/">a second reference</a> <a class="brackets" href="#footnote-14" id="footnote-reference-28" role="doc-noteref"><span class="fn-bracket">[</span>14<span class="fn-bracket">]</span></a>), footnote references (manually
 numbered <a class="brackets" href="#footnote-1" id="footnote-reference-1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>, anonymous auto-numbered <a class="brackets" href="#footnote-2" id="footnote-reference-2" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a>, labeled auto-numbered
 <a class="brackets" href="#label" id="footnote-reference-3" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>, or symbolic <a class="brackets" href="#footnote-3" id="footnote-reference-4" role="doc-noteref"><span class="fn-bracket">[</span>*<span class="fn-bracket">]</span></a>), citation references (see <a class="citation-reference" href="#cit2002" id="citation-reference-1" role="doc-biblioref">[CIT2002]</a>),
 substitution references (<img alt="EXAMPLE" src="../../../docs/user/rst/images/biohazard.png" /> &amp;
@@ -575,7 +575,7 @@ this: <a href="#system-message-5"><span class="problematic" id="problematic-3">`
 </ul>
 </nav>
 <p>These are just a sample of the many reStructuredText Directives.  For
-others, please see <a class="reference external" href="https://docutils.sourceforge.io/docs/ref/rst/directives.html">reStructuredText Directives</a> <a class="brackets" href="#footnote-14" id="footnote-reference-28" role="doc-noteref"><span class="fn-bracket">[</span>14<span class="fn-bracket">]</span></a>.</p>
+others, please see <a class="reference external" href="https://docutils.sourceforge.io/docs/ref/rst/directives.html">reStructuredText Directives</a> <a class="brackets" href="#footnote-15" id="footnote-reference-29" role="doc-noteref"><span class="fn-bracket">[</span>15<span class="fn-bracket">]</span></a>.</p>
 <section id="document-parts">
 <h4><a class="toc-backref" href="#toc-entry-55" role="doc-backlink"><span class="sectnum">2.14.1 </span>Document Parts</a></h4>
 <p>An example of the &quot;contents&quot; directive can be seen above this section
@@ -836,7 +836,7 @@ allowed (e.g. inside a directive).</p>
 <aside class="footnote-list brackets">
 <aside class="footnote brackets" id="footnote-7" role="doc-footnote">
 <span class="label"><span class="fn-bracket">[</span>7<span class="fn-bracket">]</span></span>
-<span class="backrefs">(<a role="doc-backlink" href="#footnote-reference-18">1</a>,<a role="doc-backlink" href="#footnote-reference-19">2</a>,<a role="doc-backlink" href="#footnote-reference-20">3</a>,<a role="doc-backlink" href="#footnote-reference-26">4</a>)</span>
+<span class="backrefs">(<a role="doc-backlink" href="#footnote-reference-18">1</a>,<a role="doc-backlink" href="#footnote-reference-19">2</a>,<a role="doc-backlink" href="#footnote-reference-20">3</a>,<a role="doc-backlink" href="#footnote-reference-27">4</a>)</span>
 <p><a class="reference external" href="http://www.python.org/">http://www.python.org/</a></p>
 </aside>
 <aside class="footnote brackets" id="footnote-8" role="doc-footnote">
@@ -845,46 +845,50 @@ allowed (e.g. inside a directive).</p>
 </aside>
 <aside class="footnote brackets" id="footnote-9" role="doc-footnote">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-22">9</a><span class="fn-bracket">]</span></span>
-<p><a class="reference external" href="https://www.w3.org/TR/html52/interactive-elements.html#the-details-element">https://www.w3.org/TR/html52/interactive-elements.html#the-details-element</a></p>
+<p><a class="reference external" href="https://docutils.sourceforge.io/docs/user/config.html#image-loading">https://docutils.sourceforge.io/docs/user/config.html#image-loading</a></p>
 </aside>
 <aside class="footnote brackets" id="footnote-10" role="doc-footnote">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-23">10</a><span class="fn-bracket">]</span></span>
-<p><a class="reference external" href="https://docutils.sourceforge.io/docs/user/config.html#table-style">https://docutils.sourceforge.io/docs/user/config.html#table-style</a></p>
+<p><a class="reference external" href="https://www.w3.org/TR/html52/interactive-elements.html#the-details-element">https://www.w3.org/TR/html52/interactive-elements.html#the-details-element</a></p>
 </aside>
 <aside class="footnote brackets" id="footnote-11" role="doc-footnote">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-24">11</a><span class="fn-bracket">]</span></span>
-<p><a class="reference external" href="http://tug.ctan.org/tex-archive/macros/latex/contrib/booktabs/booktabs.pdf">http://tug.ctan.org/tex-archive/macros/latex/contrib/booktabs/booktabs.pdf</a></p>
+<p><a class="reference external" href="https://docutils.sourceforge.io/docs/user/config.html#table-style">https://docutils.sourceforge.io/docs/user/config.html#table-style</a></p>
 </aside>
 <aside class="footnote brackets" id="footnote-12" role="doc-footnote">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-25">12</a><span class="fn-bracket">]</span></span>
-<p><a class="reference external" href="https://docutils.sourceforge.io/docs/dev/todo.html#interpreted-text">https://docutils.sourceforge.io/docs/dev/todo.html#interpreted-text</a></p>
+<p><a class="reference external" href="http://tug.ctan.org/tex-archive/macros/latex/contrib/booktabs/booktabs.pdf">http://tug.ctan.org/tex-archive/macros/latex/contrib/booktabs/booktabs.pdf</a></p>
 </aside>
 <aside class="footnote brackets" id="footnote-13" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-27">13</a><span class="fn-bracket">]</span></span>
-<p><a class="reference external" href="https://docutils.sourceforge.io/">https://docutils.sourceforge.io/</a></p>
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-26">13</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://docutils.sourceforge.io/docs/dev/todo.html#interpreted-text">https://docutils.sourceforge.io/docs/dev/todo.html#interpreted-text</a></p>
 </aside>
 <aside class="footnote brackets" id="footnote-14" role="doc-footnote">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-28">14</a><span class="fn-bracket">]</span></span>
-<p><a class="reference external" href="https://docutils.sourceforge.io/docs/ref/rst/directives.html">https://docutils.sourceforge.io/docs/ref/rst/directives.html</a></p>
+<p><a class="reference external" href="https://docutils.sourceforge.io/">https://docutils.sourceforge.io/</a></p>
 </aside>
 <aside class="footnote brackets" id="footnote-15" role="doc-footnote">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-29">15</a><span class="fn-bracket">]</span></span>
-<p><a class="reference external" href="https://docutils.sourceforge.io/docs/ref/rst/directives.html#metadata">https://docutils.sourceforge.io/docs/ref/rst/directives.html#metadata</a></p>
+<p><a class="reference external" href="https://docutils.sourceforge.io/docs/ref/rst/directives.html">https://docutils.sourceforge.io/docs/ref/rst/directives.html</a></p>
 </aside>
 <aside class="footnote brackets" id="footnote-16" role="doc-footnote">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-30">16</a><span class="fn-bracket">]</span></span>
-<p><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/HTML/Viewport_meta_tag">https://developer.mozilla.org/en-US/docs/Web/HTML/Viewport_meta_tag</a></p>
+<p><a class="reference external" href="https://docutils.sourceforge.io/docs/ref/rst/directives.html#metadata">https://docutils.sourceforge.io/docs/ref/rst/directives.html#metadata</a></p>
 </aside>
 <aside class="footnote brackets" id="footnote-17" role="doc-footnote">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-31">17</a><span class="fn-bracket">]</span></span>
-<p><a class="reference external" href="https://stackoverflow.com/questions/39547412/same-font-size-for-h1-and-h2-in-article">https://stackoverflow.com/questions/39547412/same-font-size-for-h1-and-h2-in-article</a></p>
+<p><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/HTML/Viewport_meta_tag">https://developer.mozilla.org/en-US/docs/Web/HTML/Viewport_meta_tag</a></p>
 </aside>
 <aside class="footnote brackets" id="footnote-18" role="doc-footnote">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-32">18</a><span class="fn-bracket">]</span></span>
-<p><a class="reference external" href="https://html.spec.whatwg.org/#text-level-semantics">https://html.spec.whatwg.org/#text-level-semantics</a></p>
+<p><a class="reference external" href="https://stackoverflow.com/questions/39547412/same-font-size-for-h1-and-h2-in-article">https://stackoverflow.com/questions/39547412/same-font-size-for-h1-and-h2-in-article</a></p>
 </aside>
 <aside class="footnote brackets" id="footnote-19" role="doc-footnote">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-33">19</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://html.spec.whatwg.org/#text-level-semantics">https://html.spec.whatwg.org/#text-level-semantics</a></p>
+</aside>
+<aside class="footnote brackets" id="footnote-20" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-34">20</a><span class="fn-bracket">]</span></span>
 <p><a class="reference external" href="https://html.spec.whatwg.org/multipage/edits.html">https://html.spec.whatwg.org/multipage/edits.html</a></p>
 </aside>
 </aside>
@@ -1036,7 +1040,7 @@ as a code block, here the rst file <span class="docutils literal">header_footer.
 </section>
 <section id="meta">
 <h4><a class="toc-backref" href="#toc-entry-65" role="doc-backlink"><span class="sectnum">2.14.11 </span>Meta</a></h4>
-<p>The <a class="reference external" href="https://docutils.sourceforge.io/docs/ref/rst/directives.html#metadata">“meta” directive</a> <a class="brackets" href="#footnote-15" id="footnote-reference-29" role="doc-noteref"><span class="fn-bracket">[</span>15<span class="fn-bracket">]</span></a> is used to specify metadata to be stored in,
+<p>The <a class="reference external" href="https://docutils.sourceforge.io/docs/ref/rst/directives.html#metadata">“meta” directive</a> <a class="brackets" href="#footnote-16" id="footnote-reference-30" role="doc-noteref"><span class="fn-bracket">[</span>16<span class="fn-bracket">]</span></a> is used to specify metadata to be stored in,
 e.g., HTML META tags or ODT file properties.</p>
 </section>
 </section>
@@ -1251,13 +1255,13 @@ crunchy, now would it?</p></td>
 </ul>
 </section>
 </section>
-<section id="changes-to-the-html4css1-writer">
-<h2><a class="toc-backref" href="#toc-entry-43" role="doc-backlink"><span class="sectnum">3 </span>Changes to the <cite>html4css1</cite> Writer</a></h2>
+<section id="differences-to-the-html4css1-writer">
+<h2><a class="toc-backref" href="#toc-entry-43" role="doc-backlink"><span class="sectnum">3 </span>Differences to the <cite>html4css1</cite> Writer</a></h2>
 <ul>
 <li><p>Use only <a class="reference internal" href="#meta">meta</a> keywords recognized by HTML 5.
 Add HTML5-compatible meta tags for docinfo items
 &quot;authors&quot;, &quot;date&quot;, and &quot;copyright&quot;.</p>
-<p>Add a <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/HTML/Viewport_meta_tag">viewport meta tag</a> <a class="brackets" href="#footnote-16" id="footnote-reference-30" role="doc-noteref"><span class="fn-bracket">[</span>16<span class="fn-bracket">]</span></a> to tell mobile browsers
+<p>Add a <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/HTML/Viewport_meta_tag">viewport meta tag</a> <a class="brackets" href="#footnote-17" id="footnote-reference-31" role="doc-noteref"><span class="fn-bracket">[</span>17<span class="fn-bracket">]</span></a> to tell mobile browsers
 to use the device-width as viewport.</p>
 </li>
 <li><p>Set table column widths with &lt;style=&quot;width: ...&quot;&gt;, not &quot;width&quot; argument.</p></li>
@@ -1269,7 +1273,7 @@ space.</p></li>
 &lt;footer&gt;, &lt;aside&gt;, &lt;figure&gt;, and &lt;figcaption&gt;.
 See <span class="docutils literal">minimal.css</span> and <span class="docutils literal">responsive.css</span> for styling rule examples.</p>
 <p>Change the <cite>initial_header_level</cite> setting default to &quot;2&quot;, as browsers
-use the <a class="reference external" href="https://stackoverflow.com/questions/39547412/same-font-size-for-h1-and-h2-in-article">same style for &lt;h1&gt; and &lt;h2&gt; when nested in a &lt;section&gt;</a> <a class="brackets" href="#footnote-17" id="footnote-reference-31" role="doc-noteref"><span class="fn-bracket">[</span>17<span class="fn-bracket">]</span></a>.</p>
+use the <a class="reference external" href="https://stackoverflow.com/questions/39547412/same-font-size-for-h1-and-h2-in-article">same style for &lt;h1&gt; and &lt;h2&gt; when nested in a &lt;section&gt;</a> <a class="brackets" href="#footnote-18" id="footnote-reference-32" role="doc-noteref"><span class="fn-bracket">[</span>18<span class="fn-bracket">]</span></a>.</p>
 </li>
 <li><p>Use HTML5 tags &lt;small&gt;, &lt;s&gt;, &lt;q&gt;, &lt;dfn&gt;, &lt;var&gt;, &lt;samp&gt;, &lt;kbd&gt;,
 &lt;i&gt;, &lt;b&gt;, &lt;u&gt;, &lt;mark&gt;, and &lt;bdi&gt; if a matching class value
@@ -1278,6 +1282,15 @@ Use &lt;ins&gt; and &lt;del&gt; if a matching class value
 is found in <cite>inline</cite>, <cite>literal</cite>, or <cite>container</cite> elements.
 (See <a class="reference internal" href="#text-level-semantics">text-level semantics</a> and <a class="reference internal" href="#indicating-edits">indicating edits</a>.)</p></li>
 <li><p>Use &lt;img&gt; tags for SVG images and &lt;video&gt; for video formats.</p></li>
+<li><img alt="blue square" class="align-right" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8GO2jAAAALElEQVR4nO3NMQEAMAjAsDFjvIhHFCbgSwU0kdXvsn96BwAAAAAAAAAAAIsNnEwBk52VRuMAAAAASUVORK5CYII=" />
+<p>Embed images or defer fetching images with the <a class="reference external" href="https://docutils.sourceforge.io/docs/user/config.html#image-loading">image-loading</a> <a class="brackets" href="#footnote-9" id="footnote-reference-22" role="doc-noteref"><span class="fn-bracket">[</span>9<span class="fn-bracket">]</span></a>
+configuration setting or the &quot;loading&quot; option of the &quot;image&quot; directive.</p>
+<img alt="../../../docs/user/rst/images/biohazard.png" class="align-right" loading="lazy" src="../../../docs/user/rst/images/biohazard.png" style="width: 16.0px; height: 16.0px;" />
+<p>Especially with &quot;lazy&quot; loading images, it is strongly recommended to
+specify both width and height of the image to prevent content layout
+shifts. (Or use the &quot;scale&quot; option to let the writer insert the size
+determined from the image file.)</p>
+</li>
 </ul>
 <section id="field-list-rendering">
 <h3><a class="toc-backref" href="#toc-entry-44" role="doc-backlink"><span class="sectnum">3.1 </span>Field List Rendering</a></h3>
@@ -1306,7 +1319,7 @@ example:</p>
 <section id="styling-with-class-arguments">
 <h3><a class="toc-backref" href="#toc-entry-45" role="doc-backlink"><span class="sectnum">3.2 </span>Styling with Class Arguments</a></h3>
 <p>The <span class="docutils literal">plain.css</span> style sheet comes with some pre-defined style variants
-that can be choosen via a class argument.</p>
+that can be chosen via a class argument.</p>
 <section id="description-lists">
 <h4><a class="toc-backref" href="#toc-entry-46" role="doc-backlink"><span class="sectnum">3.2.1 </span>Description Lists</a></h4>
 <p>Definition lists with the &quot;description&quot; class argument:</p>
@@ -1349,7 +1362,7 @@ encyclopedias etc. (as well as the LaTeX <cite>description</cite> environment).<
 <section id="details-disclosure-elements">
 <h4><a class="toc-backref" href="#toc-entry-47" role="doc-backlink"><span class="sectnum">3.2.2 </span>Details disclosure elements</a></h4>
 <p>Items of <a class="reference internal" href="#definition-lists">definition lists</a> with class argument &quot;details&quot; are converted
-to <a class="reference external" href="https://www.w3.org/TR/html52/interactive-elements.html#the-details-element">details</a> <a class="brackets" href="#footnote-9" id="footnote-reference-22" role="doc-noteref"><span class="fn-bracket">[</span>9<span class="fn-bracket">]</span></a> disclosure elements with the term becoming the &quot;summary&quot;.</p>
+to <a class="reference external" href="https://www.w3.org/TR/html52/interactive-elements.html#the-details-element">details</a> <a class="brackets" href="#footnote-10" id="footnote-reference-23" role="doc-noteref"><span class="fn-bracket">[</span>10<span class="fn-bracket">]</span></a> disclosure elements with the term becoming the &quot;summary&quot;.</p>
 <div class="details" id="closed-details">
 <details>
 <summary>A summary</summary>
@@ -1418,7 +1431,7 @@ new line (if not combined with <a class="reference internal" href="#run-in">run-
 </dd>
 <dt>Use<span class="colon">:</span></dt>
 <dd><p>class value starting with <span class="docutils literal"><span class="pre">field-indent-</span></span> followed by
-a valid lenght, e.g. <span class="docutils literal"><span class="pre">field-indent-3em</span></span>.</p>
+a valid length, e.g. <span class="docutils literal"><span class="pre">field-indent-3em</span></span>.</p>
 </dd>
 <dt>The writer<span class="colon">:</span></dt>
 <dd><p>will convert this class value to a <span class="docutils literal">style</span> attribute setting.</p>
@@ -1448,7 +1461,7 @@ body is wrapped and aligns with other fields.</p>
 <section id="table-variants">
 <h4><a class="toc-backref" href="#toc-entry-49" role="doc-backlink"><span class="sectnum">3.2.4 </span>Table Variants</a></h4>
 <p>The following styles can be applied to individual tables via a class
-argument or as document wide setting with the <a class="reference external" href="https://docutils.sourceforge.io/docs/user/config.html#table-style">table-style</a> <a class="brackets" href="#footnote-10" id="footnote-reference-23" role="doc-noteref"><span class="fn-bracket">[</span>10<span class="fn-bracket">]</span></a> configuration
+argument or as document wide setting with the <a class="reference external" href="https://docutils.sourceforge.io/docs/user/config.html#table-style">table-style</a> <a class="brackets" href="#footnote-11" id="footnote-reference-24" role="doc-noteref"><span class="fn-bracket">[</span>11<span class="fn-bracket">]</span></a> configuration
 setting (or command line argument).</p>
 <ul>
 <li><p>Numbered tables can be achieved with the &quot;numbered&quot; class option:</p>
@@ -1483,7 +1496,7 @@ setting (or command line argument).</p>
 common request and already on the <cite>TODO list</cite>.</p>
 </li>
 <li><p>A table with &quot;booktabs&quot; class value, is rendered similar to the style
-from the <a class="reference external" href="http://tug.ctan.org/tex-archive/macros/latex/contrib/booktabs/booktabs.pdf">booktabs</a> <a class="brackets" href="#footnote-11" id="footnote-reference-24" role="doc-noteref"><span class="fn-bracket">[</span>11<span class="fn-bracket">]</span></a> LaTeX package.</p>
+from the <a class="reference external" href="http://tug.ctan.org/tex-archive/macros/latex/contrib/booktabs/booktabs.pdf">booktabs</a> <a class="brackets" href="#footnote-12" id="footnote-reference-25" role="doc-noteref"><span class="fn-bracket">[</span>12<span class="fn-bracket">]</span></a> LaTeX package.</p>
 </li>
 </ul>
 <p>&quot;Booktabs&quot; style table, numbered, centre-aligned, with auto-sized columns:</p>
@@ -1524,9 +1537,9 @@ from the <a class="reference external" href="http://tug.ctan.org/tex-archive/mac
 <h4><a class="toc-backref" href="#toc-entry-50" role="doc-backlink"><span class="sectnum">3.2.5 </span>Numbered Figures</a></h4>
 <p>Numbered figures can be achieved with the &quot;numbered&quot; <span class="docutils literal">:figclass:</span> option:</p>
 <figure class="numbered">
-<img alt="reStructuredText, the markup syntax" src="../../../docs/user/rst/images/title.svg" style="width: 100%;" />
+<img alt="reStructuredText, the markup syntax" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMjAzcHQiIGhlaWdodD0iMjRwdCIgdmVyc2lvbj0iMS4xIgogICB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgogPHRleHQgeD0iLTIuMjUiIHk9IjI0IiBmaWxsPSIjMDAwMDAwIgogICBmb250LWZhbWlseT0iVGltZXMgTmV3IFJvbWFuLCBMaWJlcmF0aW9uIFNlcmlmLCBGcmVlU2VyaWYsIHNlcmlmIgogICBmb250LXNpemU9IjMycHgiIGZvbnQtc3R5bGU9Iml0YWxpYyIgbGV0dGVyLXNwYWNpbmc9IjBweCIKICAgc3Ryb2tlLXdpZHRoPSIxcHgiIHdvcmQtc3BhY2luZz0iMHB4Ij48dHNwYW4KICAgICB4PSIwIiB5PSIyNCI+cmU8dHNwYW4KICAgICBmb250LWZhbWlseT0iSGVsdmV0aWNhLCBMaWJlcmF0aW9uIFNhbnMsIEZyZWVTYW5zLCBzYW5zLXNlcmlmIgogICAgIGZvbnQtc3R5bGU9Im5vcm1hbCI+U3RydWN0dXJlZDwvdHNwYW4+VGV4dDwvdHNwYW4+PC90ZXh0Pgo8L3N2Zz4K" style="width: 100%;" />
 <figcaption>
-<p>SVG image in a numbered figure.</p>
+<p>Embedded SVG image in a numbered figure.</p>
 </figcaption>
 </figure>
 </section>
@@ -1534,7 +1547,7 @@ from the <a class="reference external" href="http://tug.ctan.org/tex-archive/mac
 <section id="text-level-semantics">
 <h3><a class="toc-backref" href="#toc-entry-51" role="doc-backlink"><span class="sectnum">3.3 </span>Text-Level Semantics</a></h3>
 <p>This section describes the <a class="reference external" href="https://html.spec.whatwg.org/#text-level-semantics">HTML 5 tags for representation of text-level
-semantics</a> <a class="brackets" href="#footnote-18" id="footnote-reference-32" role="doc-noteref"><span class="fn-bracket">[</span>18<span class="fn-bracket">]</span></a> and their reStructuredText equivalents.</p>
+semantics</a> <a class="brackets" href="#footnote-19" id="footnote-reference-33" role="doc-noteref"><span class="fn-bracket">[</span>19<span class="fn-bracket">]</span></a> and their reStructuredText equivalents.</p>
 <dl class="description">
 <dt>a</dt>
 <dd><p>Hyperlinks</p>
@@ -1733,7 +1746,7 @@ a substitution.</p>
 <span class="label"><span class="fn-bracket">[</span>5<span class="fn-bracket">]</span></span>
 <span class="backrefs">(<a role="doc-backlink" href="#footnote-reference-10">1</a>,<a role="doc-backlink" href="#footnote-reference-14">2</a>,<a role="doc-backlink" href="#footnote-reference-16">3</a>,<a role="doc-backlink" href="#footnote-reference-17">4</a>)</span>
 <p>Would gain from support for attributes/arguments
-to inline roles. See <a class="reference external" href="https://docutils.sourceforge.io/docs/dev/todo.html#interpreted-text">TODO</a> <a class="brackets" href="#footnote-12" id="footnote-reference-25" role="doc-noteref"><span class="fn-bracket">[</span>12<span class="fn-bracket">]</span></a></p>
+to inline roles. See <a class="reference external" href="https://docutils.sourceforge.io/docs/dev/todo.html#interpreted-text">TODO</a> <a class="brackets" href="#footnote-13" id="footnote-reference-26" role="doc-noteref"><span class="fn-bracket">[</span>13<span class="fn-bracket">]</span></a></p>
 </aside>
 <aside class="footnote brackets" id="attribute-required" role="doc-footnote">
 <span class="label"><span class="fn-bracket">[</span>6<span class="fn-bracket">]</span></span>
@@ -1745,7 +1758,7 @@ roles to make sense.</p>
 </section>
 <section id="indicating-edits">
 <h3><a class="toc-backref" href="#toc-entry-52" role="doc-backlink"><span class="sectnum">3.4 </span>Indicating Edits</a></h3>
-<p>The <a class="reference external" href="https://html.spec.whatwg.org/multipage/edits.html">HTML tags for representation of edits to the document</a> <a class="brackets" href="#footnote-19" id="footnote-reference-33" role="doc-noteref"><span class="fn-bracket">[</span>19<span class="fn-bracket">]</span></a> and their
+<p>The <a class="reference external" href="https://html.spec.whatwg.org/multipage/edits.html">HTML tags for representation of edits to the document</a> <a class="brackets" href="#footnote-20" id="footnote-reference-34" role="doc-noteref"><span class="fn-bracket">[</span>20<span class="fn-bracket">]</span></a> and their
 reStructuredText equivalents are:</p>
 <dl class="description">
 <dt>ins</dt>
