@@ -32,12 +32,17 @@ class Image(Directive):
     align_h_values = ('left', 'center', 'right')
     align_v_values = ('top', 'middle', 'bottom')
     align_values = align_v_values + align_h_values
+    loading_values = ('embed', 'link', 'lazy')
 
     def align(argument):
-        # This is not callable as self.align.  We cannot make it a
+        # This is not callable as `self.align()`.  We cannot make it a
         # staticmethod because we're saving an unbound method in
         # option_spec below.
         return directives.choice(argument, Image.align_values)
+
+    def loading(argument):
+        # This is not callable as `self.loading()` (see above).
+        return directives.choice(argument, Image.loading_values)
 
     required_arguments = 1
     optional_arguments = 0
@@ -48,6 +53,7 @@ class Image(Directive):
                    'scale': directives.percentage,
                    'align': align,
                    'target': directives.unchanged_required,
+                   'loading': loading,
                    'class': directives.class_option,
                    'name': directives.unchanged}
 

@@ -1088,7 +1088,7 @@ Default: "brackets".  Option: ``--footnote-references``.
 initial_header_level
 ~~~~~~~~~~~~~~~~~~~~
 
-The initial level for header elements.  This does not affect the
+The initial level for section header elements.  This does not affect the
 document title & subtitle; see doctitle_xform_.
 
 Default: writer dependent (see `[html4css1 writer]`_, `[html5 writer]`_,
@@ -1424,18 +1424,24 @@ image_loading
 """""""""""""
 
 Indicate at which point images should be loaded.
-Supported values:
+Overridden by the `"image" directive`_'s ``:loading:`` option.
 
-:embed: Embed images into the HTML document
-        (ignored for videos).
-:link:  Refer to images in the HTML document (default).
-:lazy:  Refer to images. Additionally specify the `lazy loading attribute`_
-        to defer fetching the image.
+Supported values:
+  embed:
+    Embed images into the HTML document
+    (ignored for videos).
+  link:
+    Refer to images in the HTML document (default).
+  lazy:
+    Refer to images. Additionally specify the
+          `lazy loading attribute`_ to defer fetching the image.
+
 
 Default: "link". Option: ``--image-loading``.
 
 New in Docutils 0.18.
 
+.. _"image" directive: ../ref/rst/directives.html#image
 .. _lazy loading attribute: https://html.spec.whatwg.org/multipage/
     urls-and-fetching.html#lazy-loading-attributes
 

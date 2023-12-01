@@ -17,12 +17,18 @@
 Changes since 0.20.1
 ====================
 
-* Drop support for Python 3.7 and 3.8.
+* General
 
-* Updated build stystem to use Flit_ (cf. patch #186 by Adam Turner).
-  Removed ``setup.py``.
+  - Drop support for Python 3.7 and 3.8.
+
+  - Updated build stystem to use Flit_ (patch #186 by Adam Turner).
+    Removed ``setup.py``.
 
   .. _Flit: https://github.com/pypa/flit/
+
+* docs/ref/docutils.dtd
+
+  - The <image> element accepts the new attribute "loading".
 
 * docutils/io.py
 
@@ -53,6 +59,10 @@ Changes since 0.20.1
 * docutils/nodes.py
 
   - Remove compatibility hacks `nodes.reprunicode` and `nodes.ensure_str()`.
+
+* docutils/parsers/rst/directives/images.py
+
+  - New "image" directive option "loading".
 
 * docutils/parsers/rst/directives/tables.py
 
@@ -96,6 +106,7 @@ Changes since 0.20.1
     CWD and output directory differ.
   - Consider the root-prefix_ setting when converting an image URI
     to a local filesystem path.
+  - New <image> attribute "loading" overrides "image-loading" setting.
 
 * docutils/writers/latex2e/__init__.py
 

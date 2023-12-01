@@ -475,17 +475,22 @@ totest['lazy_loading'] = ({'image_loading': 'lazy',
 
 ["""\
 .. image:: dummy.png
-""",
-{'fragment': '''\
-<img alt="dummy.png" loading="lazy" src="dummy.png" />\n''',
-}],
-["""\
+.. image:: dummy.png
+   :loading: link
 .. figure:: dummy.png
+.. figure:: dummy.png
+   :loading: link
 """,
 {'fragment': '''\
+<img alt="dummy.png" loading="lazy" src="dummy.png" />
+<img alt="dummy.png" src="dummy.png" />
 <figure>
 <img alt="dummy.png" loading="lazy" src="dummy.png" />
-</figure>\n''',
+</figure>
+<figure>
+<img alt="dummy.png" src="dummy.png" />
+</figure>
+''',
 }],
 ])
 

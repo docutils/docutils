@@ -477,6 +477,20 @@ totest['images'] = [
     <reference refuri="path with spaces/target with spaces across lines.html">
         <image uri="path with spaces/name with spaces.png">
 """],
+["""
+.. image:: test.png
+   :loading: embed
+.. image:: test.png
+   :loading: link
+.. image:: test.png
+   :loading: lazy
+""",
+"""\
+<document source="test data">
+    <image loading="embed" uri="test.png">
+    <image loading="link" uri="test.png">
+    <image loading="lazy" uri="test.png">
+"""],
 ]
 
 

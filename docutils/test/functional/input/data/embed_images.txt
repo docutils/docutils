@@ -17,7 +17,18 @@ Embedded inline image |inline-embedded| scaled to a height of 0.8 em.
 .. |inline-embedded| image:: file:../../../docs/user/rst/images/biohazard.png
    :height: 0.8 em
 
+.. image:: ../../../docs/user/rst/images/biohazard.svg
+   :align: left
+   :width: 2em
+   :height: 2em
+   :loading: lazy
+
+The ``:loading:`` option of `image and figure directives`_ overrides the
+image_loading_ setting for the respective image.
+
 .. _image_loading:
     https://docutils.sourceforge.io/docs/user/config.html#image-loading
 .. _base64: https://en.wikipedia.org/wiki/Base64
 .. _data URI: https://en.wikipedia.org/wiki/Data_URI_scheme
+.. _image and figure directives:
+    https://docutils.sourceforge.io/docs/ref/rst/directives.html#images

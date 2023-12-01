@@ -213,6 +213,7 @@ Image
 :Directive Arguments: one, required (image URI_)
 :Directive Options: `see below <image options_>`__
 :Directive Content: none
+:Configuration Setting: image_loading_ (only `HTML5 writer`_)
 
 An "image" is a simple picture::
 
@@ -236,6 +237,7 @@ Optionally, the image link block may contain a flat field list, the
        :height: 100px
        :width: 200 px
        :scale: 50 %
+       :loading: embed
        :alt: alternate text
        :align: right
 
@@ -283,6 +285,29 @@ Recognizes the common options class_ and name_ as well as
     Makes the image into a hyperlink reference ("clickable").  The
     option argument may be a URI (relative or absolute), or a
     `reference name`_ with underscore suffix (e.g. ```a name`_``).
+
+``loading`` : ["embed", "link", "lazy"]
+    Indicate the preferred handling by the Docutils Writer. [#]_
+
+    :embed: Embed the image into the output document.
+    :link:  Refer to the image via its URI.
+    :lazy:  Refer to the image. The HTML5 writer additionally
+            specifies the `lazy loading attribute`_.
+
+    (New in Docutils 0.21.)
+
+.. [#] Currently only recognized by the `HTML5 writer`_
+   (overriding the `image_loading`_ configuration setting).
+   The ODF/ODT writer always embeds images in the
+   ``*.odt`` document, XML and LaTeX writers link to the image.
+   The behaviour may change for the ODT and XML writers but
+   images cannot be embedded in a LaTeX source.
+
+.. _image element: ../doctree.html#image
+.. _"loading" attribute: ../doctree.html#loading
+.. _image_loading: ../../user/config.html#image-loading
+.. _lazy loading attribute: https://html.spec.whatwg.org/multipage/
+    urls-and-fetching.html#lazy-loading-attributes
 
 
 Figure
