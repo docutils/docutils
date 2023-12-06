@@ -111,7 +111,7 @@ class XMLTranslator(nodes.GenericNodeVisitor):
     # generic visit and depart methods
     # --------------------------------
 
-    simple_nodes = (nodes.TextElement,
+    simple_nodes = (nodes.TextElement, nodes.meta,
                     nodes.image, nodes.colspec, nodes.transition)
 
     def default_visit(self, node):

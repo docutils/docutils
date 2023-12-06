@@ -286,9 +286,5 @@ actual output for validity and correctness, copy it to
 ``functional/expected/`` (overwriting the old expected output), and
 commit the change.
 
-.. [#] The validity of `Docutils XML` can be tested with
-   ``xmllint <document-referencing-local-Docutils-DTD>.xml --valid --noout``.
-
-   .. note: the ``--dtdvalid`` and ``--nonet`` options do not help override
-     a reference to the PUBLIC "docutils.dtd" if there is a local version
-     on the system (e.g. /usr/share/xml/docutils/docutils.dtd in Debian).
+.. [#] `Docutils XML` can be validated with
+   ``xmllint --dtdvalid docs/ref/docutils.dtd --noout *.xml``.
