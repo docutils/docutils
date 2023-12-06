@@ -161,17 +161,19 @@ Misc
 Release 0.21 (unpublished)
 ==========================
 
-* Drop support for Python 3.7 and 3.8.
+* General:
 
-* Provide ``rst2*`` "console_scripts" `entry points`_
-  (without the ``.py`` extension) instead of installing the
-  ``rst2*.py`` `front end tools`_ in the binary PATH. [#]_
+  - Drop support for Python 3.7 and 3.8.
 
-  Exceptions: ``rstpep2html.py`` and ``rst2odt_prepstyles.py``:
+  - Provide ``rst2*`` "console_scripts" `entry points`_
+    (without the ``.py`` extension) instead of installing the
+    ``rst2*.py`` `front end tools`_ in the binary PATH. [#]_
 
-  - Use ``docutils --reader=pep --writer=pep_html`` for a PEP preview. [#]_
-  - Use ``python -m docutils.writers.odf_odt.prepstyles``
-    to `strip the page size`__ from an ODT writer stylesheet.
+    Exceptions: ``rstpep2html.py`` and ``rst2odt_prepstyles.py``:
+
+    - Use ``docutils --reader=pep --writer=pep_html`` for a PEP preview. [#]_
+    - Use ``python -m docutils.writers.odf_odt.prepstyles``
+      to `strip the page size`__ from an ODT writer stylesheet.
 
     __ docs/user/odt.html#page-size
 
@@ -179,48 +181,66 @@ Release 0.21 (unpublished)
   .. [#] The final rendering is done by a Sphinx-based build system
          (cf. :PEP:`676`).
 
-* Simpler and more secure `input encoding`_ default behaviour:
+* reStructuredText:
 
-  Do not use the locale encoding as fallback if Python is started in
-  `UTF-8 mode`_. Stop using "latin1" as second fallback.
+  - Use the same CSV format for the ``:header:`` option and the main data
+    of the "csv-table_" directive.
 
-  Remove BOM (U+FEFF ZWNBSP at start of data) only if the `input_encoding`_
-  configuration setting is None, '', 'utf-8-sig', 'utf-16', or 'utf-32'.
-  Do not remove other ZWNBSPs.
-
-* New attribute loading__ for the Docutils doctree node: <image> storing
-  the new "loading" option of the `"image" directive`_.
+  - New option "loading" for the `"image" directive`_.
+    Sets the new attribute loading__ of the <image> doctree element.
 
   __ docs/ref/doctree.html#loading
-  .. _"image" directive: docs/ref/rst/directives.html#image
 
 * Configuration changes:
 
   - New configuration setting root-prefix_.
     Configurable root directory for included files.
 
-    .. _root-prefix: docs/user/config.html#root-prefix
+  - Simpler and more secure `input encoding`_ default behaviour:
 
-* "html5" writer:
-  Stop setting the "footnote-reference" class value for footnote references.
-  You can use the CSS selector ``[role="doc-noteref"]``
-  since Docutils 0.18 (see minimal.css for examples).
+    Do not use the locale encoding as fallback if Python is started in
+    `UTF-8 mode`_. Stop using "latin1" as second fallback.
 
-* Use the same CSV format for the ``:header:`` option and the main data
-  of the "csv-table_" directive.
+    Remove BOM (U+FEFF ZWNBSP at start of data) only if the `input_encoding`_
+    configuration setting is None, '', 'utf-8-sig', 'utf-16', or 'utf-32'.
+    Do not remove other ZWNBSPs.
+
+* Output changes:
+
+  HTML5:
+    Stop setting the "footnote-reference" class value for footnote
+    references. Use the CSS selector ``[role="doc-noteref"]``
+    (works since Docutils 0.18, see minimal.css for examples).
 
 * Removed objects:
 
-  - `nodes.reprunicode` and `nodes.ensure_str()`
-    (not required with Python 3),
-    `utils.Reporter.set_conditions()` (obsolete)
-    `core.Publisher.setup_option_parser()` (internal, obsolete)
+  `docutils.nodes.reprunicode`, `docutils.nodes.ensure_str()`
+    Python 2 compatibility hacks
+  `docutils.utils.Reporter.set_conditions()`
+    obsolete
+  `docutils.core.Publisher.setup_option_parser()`
+    internal, obsolete
 
-  - File ``install.py``. See README.txt__ for alternatives.
+* New files:
+
+  ``docutils/writers/html5_polyglot/italic-field-names.css``
+    Alternative style for Docutils field-lists.
+
+* Removed files:
+
+  ``install.py``, ``setup.py``
+    Metadata is now stored in ``pyproject.toml``,
+    supported by pip_ since version 19.0 (2019-01-22).
+    See README__ for installation alternatives.
+
+  __ README.html#installation
+
+* Bugfixes and improvements (see HISTORY_).
 
 .. _input encoding: docs/api/publisher.html#encodings
 .. _csv-table: docs/ref/rst/directives.html#csv-table
-__ README.html#installation
+.. _"image" directive: docs/ref/rst/directives.html#image
+.. _root-prefix: docs/user/config.html#root-prefix
 
 
 Release 0.20.1 (2023-05-17)

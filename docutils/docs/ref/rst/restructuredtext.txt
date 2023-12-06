@@ -2666,6 +2666,10 @@ above will disappear from the processed document.
    unprocessed document's readability.  Please use this feature
    sparingly and only where absolutely necessary.
 
+Alternatively, you may relax the `inline markup recognition rules`_ with
+the character-level-inline-markup_ setting, however this may in turn lead
+to false positives.
+
 
 Emphasis
 --------

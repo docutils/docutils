@@ -11,7 +11,7 @@ html
 
 :front-end: rst2html_
 
-`html` is an alias for the default Docutils HTML writer.
+The writer name `html` is an alias for the default Docutils HTML writer.
 
 The default may change with the development of HTML, browsers, Docutils,
 and the web.

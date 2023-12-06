@@ -14,7 +14,7 @@ from the ``docs`` directory of the `Docutils distribution`_.
 .. _Docutils distribution: https://docutils.sourceforge.io/#download
 
 .. header::
-   Docutils_ | Overview | About__ | Users__ | Reference__ | Developers__
+  Docutils_ | Overview | About__ | Users__ | Reference__ | API_ | Developers__
 
 .. _Docutils: https://docutils.sourceforge.io/
 __ `project fundamentals`_
@@ -26,68 +26,62 @@ __ howto_
 .. contents::
 
 
+Docutils Stakeholders
+=====================
+
+can be categorized in several groups:
+  .. class:: details
+
+  End-users
+    users of reStructuredText and the Docutils tools.
+    Although some are developers (e.g. Python developers utilizing
+    reStructuredText for docstrings in their source), many are not.
+  Client-developers
+    developers using Docutils as a library,
+    programmers developing *with* Docutils.
+  Component-developers:
+    those who implement application-specific components,
+    directives, and/or roles, separately from Docutils.
+  Core-developers
+    developers of the Docutils codebase and participants
+    in the Docutils project community.
+  Re-implementers
+    developers of alternate implementations of Docutils.
+
+.. class:: details
+
+There's a lot of overlap between these groups.  
+  Most (perhaps all) developers are also end-users.
+  Core-developers are also client-developers, and may also 
+  be component-developers in other projects.  
+  Component-developers are also client-developers.
+
+
 Project Fundamentals
 ====================
 
 These files are for all `Docutils stakeholders`_.  They are kept at the
 top level of the Docutils project directory.
 
-.. class:: narrow run-in
+`README <../README.html>`_:  
+   Project overview: quick-start, requirements,
+   installation, and usage.
 
-:README_:  Project overview: quick-start, requirements,
-           installation, and usage.
-:COPYING_: Conditions for Docutils redistribution, with links to
-           licenses.
-:FAQ_:     Docutils Frequently Asked Questions.  If you have a
-           question or issue, there's a good chance it's already
-           answered here.
-:BUGS_:    A list of known bugs, and how to report a bug.
-:RELEASE-NOTES_: Summary of the major changes in recent releases and
-           notice of future incompatible changes.
-:HISTORY_: Detailed change history log.
-:THANKS_:  Acknowledgements.
-
-.. _README: ../README.html
-.. _BUGS: ../BUGS.html
-.. _COPYING: ../COPYING.html
-.. _Docutils FAQ:
-.. _FAQ: ../FAQ.html
-.. _RELEASE-NOTES: ../RELEASE-NOTES.html
-.. _HISTORY: ../HISTORY.html
-.. _THANKS: ../THANKS.html
-
-
-.. _docutils stakeholders:
-.. class:: details
-
-Docutils Stakeholders …
-    can be categorized in several groups:
-
-    End-users:
-       users of reStructuredText and the Docutils tools.
-       Although some are developers (e.g. Python developers utilizing
-       reStructuredText for docstrings in their source), many are not.
-
-    Client-developers:
-       developers using Docutils as a library,
-       programmers developing *with* Docutils.
-
-    Component-developers:
-       those who implement application-specific components,
-       directives, and/or roles, separately from Docutils.
-
-    Core-developers:
-       developers of the Docutils codebase and participants
-       in the Docutils project community.
-
-    Re-implementers:
-       developers of alternate implementations of Docutils.
-
-    There's a lot of overlap between these groups.  Most (perhaps all)
-    core-developers, component-developers, client-developers, and
-    re-implementers are also end-users.  Core-developers are also
-    client-developers, and may also be component-developers in other
-    projects.  Component-developers are also client-developers.
+`COPYING <../COPYING.html>`_: 
+   Conditions for Docutils redistribution, 
+   with links to licenses.
+`FAQ <../FAQ.html>`_:
+  Docutils Frequently Asked Questions.  If you have a question or issue,
+  there's a good chance it's already answered here.
+`BUGS <../BUGS.html>`_:    
+  A list of known bugs, and how to report a bug.
+`RELEASE-NOTES <../RELEASE-NOTES.html>`_: 
+  Summary of the major changes in recent releases and
+  notice of future incompatible changes.
+`HISTORY <../HISTORY.html>`_: 
+  Detailed change history log.
+`THANKS <../THANKS.html>`_:  
+  Acknowledgements.
 
 
 .. _user:
@@ -201,8 +195,7 @@ Docutils developer.
 Instructions for Developers
 ===========================
 
-:Security: `Deploying Docutils Securely <howto/security.html>`__
-
+* `Deploying Docutils Securely <howto/security.html>`__
 * `Inside A Docutils Command-Line Front-End Tool <howto/cmdline-tool.html>`__
 * `Runtime Settings Processing <dev/runtime-settings-processing.html>`__
 * `Writing HTML (CSS) Stylesheets for Docutils
