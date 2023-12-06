@@ -93,18 +93,20 @@ Length units
 LaTeX supports all `length units`_ defined for Docutils plus the
 following less common units:
 
-:pt: typewriter's (or LaTeX) point (1 pt = 1/72.27 in)
+.. class:: narrow 
+
 :dd: didôt (1 dd = 1238/1157 pt)
 :cc: cîcero (1 cc = 12 dd)
 :sp: scaled point (1sp = 1/65536pt)
+:bp: "big" point (`DTP point`) (1 bp  = 1/72 in)
 
 .. attention:: Different definitions of the unit "pt"!
 
    * In Docutils (as well as CSS) the unit symbol "pt" denotes the
-     `Postscript point` or `DTP point`.
+     `Postscript point` (`DTP point`).
 
-   * LaTeX uses "pt" for the `LaTeX point`, which is unknown to Docutils and
-     0.3 % smaller.
+   * LaTeX uses "pt" for the typewriter's (or LaTeX) point,
+     which is unknown to Docutils and 0.3 % smaller.
 
    * The `DTP point` is available in LaTeX as "bp" (big point):
 
@@ -1128,6 +1130,8 @@ URLs are typeset with the "url" package (loaded implicitly by "hyperref").
 The font of URLs can be defined with the ``\urlstyle`` command. Valid
 arguments are
 
+.. class:: field-indent-4em
+
 :same:  normal text font, Docutils default,
 :tt:    teletype (monospaced), LaTeX default,
 :rm:    roman,
@@ -1795,6 +1799,8 @@ Example:
 
 Note:
   8-bit LaTeX comes with two options for UTF-8 support,
+  
+  .. class:: field-indent-4em
 
   :utf8:  by the standard `inputenc`_ package with only limited coverage
           (mainly accented characters).

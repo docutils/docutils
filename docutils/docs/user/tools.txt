@@ -500,9 +500,9 @@ rst2xml
 The ``rst2xml`` front end produces Docutils-native XML output.
 This can be transformed with standard XML tools such as XSLT
 processors into arbitrary final forms. An example is the xml2rst_ processor
-in the Docutils sandbox.
+by Stefan Merten.
 
-.. _xml2rst: ../../../sandbox/xml2rst
+.. _xml2rst: http://www.merten-home.de/FreeSoftware/xml2rst/index.html
 
 
 Testing/Debugging Tools

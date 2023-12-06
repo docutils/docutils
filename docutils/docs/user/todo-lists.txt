@@ -136,6 +136,7 @@ I recommend a field list with class argument and some CSS styling.
     ul.todo > li > p {padding-left: 1.2em;
                       text-indent: -1.2em;}
 
+    dl.todo > dt {font-style: normal}
     dl.todo > dt > .colon {display: none}
     dl.todo > dd {margin-left: 2.5em;}
 
