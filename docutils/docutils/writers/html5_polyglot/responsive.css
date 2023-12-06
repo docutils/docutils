@@ -131,6 +131,10 @@ hr {
 
 /* Lists */
 
+dl.field-list.narrow, dl.docinfo, dl.option-list {
+  --field-indent: 2.4em;
+}
+
 ul, ol {
   padding-left: 1.1em; /* indent by bullet width (Firefox, DejaVu fonts) */
 }
@@ -388,9 +392,6 @@ mstyle.mathscr, mi.mathscr {
   }
   body {
     --field-indent: 4em;
-  }
-  dl.field-list.narrow, dl.docinfo, dl.option-list {
-    --field-indent: 2.4em;
   }
   pre, pre * {
   font-size: 0.9em;
