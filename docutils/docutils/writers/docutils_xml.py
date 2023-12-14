@@ -120,7 +120,8 @@ class XMLTranslator(nodes.GenericNodeVisitor):
             self.output.append(self.indent*self.level)
         self.output.append(node.starttag(xml.sax.saxutils.quoteattr))
         self.level += 1
-        # @@ make nodes.literal an instance of FixedTextElement?
+        # `nodes.literal` is not an instance of FixedTextElement by design,
+        # see docs/ref/rst/restructuredtext.html#inline-literals
         if isinstance(node, (nodes.FixedTextElement, nodes.literal)):
             self.fixed_text += 1
         if isinstance(node, self.simple_nodes):
