@@ -358,28 +358,6 @@ class HTMLTranslator(nodes.NodeVisitor):
                        + self.body_pre_docinfo + self.docinfo
                        + self.body + self.body_suffix)
 
-    def encode(self, text):
-        """Encode special characters in `text` & return."""
-        # Use only named entities known in both XML and HTML
-        # other characters are automatically encoded "by number" if required.
-        # @@@ A codec to do these and all other HTML entities would be nice.
-        text = str(text)
-        return text.translate(self.special_characters)
-
-    def cloak_mailto(self, uri):
-        """Try to hide a mailto: URL from harvesters."""
-        # Encode "@" using a URL octet reference (see RFC 1738).
-        # Further cloaking with HTML entities will be done in the
-        # `attval` function.
-        return uri.replace('@', '%40')
-
-    def cloak_email(self, addr):
-        """Try to hide the link text of a email link from harversters."""
-        # Surround at-signs and periods with <span> tags.  ("@" has
-        # already been encoded to "&#64;" by the `encode` method.)
-        addr = addr.replace('&#64;', '<span>&#64;</span>')
-        return addr.replace('.', '<span>&#46;</span>')
-
     def attval(self, text,
                whitespace=re.compile('[\n\r\t\v\f]')):
         """Cleanse, HTML encode, and return attribute value text."""
@@ -389,6 +367,81 @@ class HTMLTranslator(nodes.NodeVisitor):
             encoded = encoded.replace('%40', '&#37;&#52;&#48;')
             encoded = encoded.replace('.', '&#46;')
         return encoded
+
+    def cloak_email(self, addr):
+        """Try to hide the link text of a email link from harversters."""
+        # Surround at-signs and periods with <span> tags.  ("@" has
+        # already been encoded to "&#64;" by the `encode` method.)
+        addr = addr.replace('&#64;', '<span>&#64;</span>')
+        return addr.replace('.', '<span>&#46;</span>')
+
+    def cloak_mailto(self, uri):
+        """Try to hide a mailto: URL from harvesters."""
+        # Encode "@" using a URL octet reference (see RFC 1738).
+        # Further cloaking with HTML entities will be done in the
+        # `attval` function.
+        return uri.replace('@', '%40')
+
+    def encode(self, text):
+        """Encode special characters in `text` & return."""
+        # Use only named entities known in both XML and HTML
+        # other characters are automatically encoded "by number" if required.
+        # @@@ A codec to do these and all other HTML entities would be nice.
+        text = str(text)
+        return text.translate(self.special_characters)
+
+    def image_size(self, node):
+        # Determine the image size from the node arguments or the image file.
+        # Return a (hopefully empty) list of system messages
+        # and a string that is suitable as "style" argument value,
+        # e.g., ``([], 'width: 4px; height: 2em;')``.
+        size = [node.get('width', None), node.get('height', None)]
+        messages = []
+        if 'scale' in node:
+            if 'width' not in node or 'height' not in node:
+                # try reading size from image file
+                reading_problems = []
+                uri = node['uri']
+                if not PIL:
+                    reading_problems.append('Requires Python Imaging Library.')
+                if mimetypes.guess_type(uri)[0] in self.videotypes:
+                    reading_problems.append('PIL cannot read video images.')
+                if not self.settings.file_insertion_enabled:
+                    reading_problems.append('Reading external files disabled.')
+                if not reading_problems:
+                    try:
+                        imagepath = self.uri2imagepath(uri)
+                        with PIL.Image.open(imagepath) as img:
+                            imgsize = img.size
+                    except (ValueError, OSError, UnicodeEncodeError) as err:
+                        reading_problems.append(str(err))
+                    else:
+                        self.settings.record_dependencies.add(
+                            imagepath.replace('\\', '/'))
+                if reading_problems:
+                    msg = ['Cannot scale image!',
+                           f'Could not get size from "{uri}":',
+                           *reading_problems]
+                    messages.append(self.document.reporter.warning(
+                        '\n  '.join(msg), base_node=node))
+                else:
+                    for i in range(2):
+                        size[i] = size[i] or '%dpx' % imgsize[i]
+            # scale provided/determined size values:
+            factor = float(node['scale']) / 100
+            for i in range(2):
+                if size[i]:
+                    match = re.match(r'([0-9.]+)(\S*)$', size[i])
+                    size[i] = '%s%s' % (factor * float(match.group(1)),
+                                        match.group(2))
+        style_arg = []
+        for i, _name in enumerate(('width', 'height')):
+            if size[i]:
+                # Interpret unitless values as pixels:
+                if re.match(r'^[0-9.]+$', size[i]):
+                    size[i] += 'px'
+                style_arg.append('%s: %s;' % (_name, size[i]))
+        return messages, ' '.join(style_arg)
 
     def stylesheet_call(self, path, adjust_path=None):
         """Return code to reference or embed stylesheet file `path`"""
@@ -511,6 +564,8 @@ class HTMLTranslator(nodes.NodeVisitor):
         """
         destination = self.settings._destination or ''
         uri_parts = urllib.parse.urlparse(uri)
+        if uri_parts.scheme not in ('', 'file'):
+            raise ValueError('Can only read local images.')
         imagepath = urllib.request.url2pathname(uri_parts.path)
         if imagepath.startswith('/'):
             root_prefix = Path(self.settings.root_prefix)
@@ -1034,98 +1089,32 @@ class HTMLTranslator(nodes.NodeVisitor):
     def visit_image(self, node):
         uri = node['uri']
         alt = node.get('alt', uri)
-        uri_parts = urllib.parse.urlparse(uri)
-        imagepath = ''
         mimetype = mimetypes.guess_type(uri)[0]
         atts = {}  # attributes for the HTML tag
+        messages = []  # system_message nodes
         if 'align' in node:
             atts['class'] = 'align-%s' % node['align']
-        # image size
-        if 'width' in node:
-            atts['width'] = node['width']
-        if 'height' in node:
-            atts['height'] = node['height']
-        if 'scale' in node:
-            if 'width' not in node or 'height' not in node:
-                # try reading size from image file
-                scaling_problems = []
-                if uri_parts.scheme not in ('', 'file'):
-                    scaling_problems.append('Can only read local images.')
-                if not PIL:
-                    scaling_problems.append('Requires Python Imaging Library.')
-                if mimetype in self.videotypes:
-                    scaling_problems.append('PIL cannot read video images.')
-                if not self.settings.file_insertion_enabled:
-                    scaling_problems.append('Reading external files disabled.')
-                if not scaling_problems:
-                    imagepath = self.uri2imagepath(uri)
-                    try:
-                        with PIL.Image.open(imagepath) as img:
-                            imgsize = img.size
-                    except (OSError, UnicodeEncodeError) as err:
-                        scaling_problems.append(str(err))
-                    else:
-                        self.settings.record_dependencies.add(
-                            imagepath.replace('\\', '/'))
-                if scaling_problems:
-                    msg = ['Cannot scale image!',
-                           f'Could not get size from "{imagepath or uri}":',
-                           *scaling_problems]
-                    self.document.reporter.warning('\n  '.join(msg))
-                else:
-                    if 'width' not in atts:
-                        atts['width'] = '%dpx' % imgsize[0]
-                    if 'height' not in atts:
-                        atts['height'] = '%dpx' % imgsize[1]
-            # scale provided/determined size values:
-            for att_name in 'width', 'height':
-                if att_name in atts:
-                    match = re.match(r'([0-9.]+)(\S*)$', atts[att_name])
-                    assert match
-                    atts[att_name] = '%s%s' % (
-                        float(match.group(1)) * (float(node['scale']) / 100),
-                        match.group(2))
         # set size with "style" attribute (more universal, accepts dimensions)
-        style = []
-        for att_name in 'width', 'height':
-            if att_name in atts:
-                # Interpret unitless values as pixels:
-                if re.match(r'^[0-9.]+$', atts[att_name]):
-                    atts[att_name] += 'px'
-                style.append('%s: %s;' % (att_name, atts[att_name]))
-                del atts[att_name]
-        if style:
-            atts['style'] = ' '.join(style)
+        msgs, size = self.image_size(node)
+        messages += msgs
+        if size:
+            atts['style'] = size
 
-        # No newlines around inline images or if surrounded by <a>...</a>.
-        if (isinstance(node.parent, nodes.TextElement)
-            or (isinstance(node.parent, nodes.reference)
-                and not isinstance(node.parent.parent, nodes.TextElement))):
-            suffix = ''
-        else:
-            suffix = '\n'
-
-        # ``:loading:`` option (embed, link, lazy)
-        # get default from config setting
+        # ``:loading:`` option (embed, link, lazy), default from setting,
         # exception: only embed videos if told via directive option
-        if mimetype in self.videotypes:
-            loading = 'link'
-        else:
-            loading = getattr(self.settings, 'image_loading', 'link')
-        loading = node.get('loading', loading)
-
+        loading = node.get('loading',
+                           'link' if mimetype in self.videotypes
+                           else self.image_loading)
         if loading == 'embed':
-            if uri_parts.scheme not in ('', 'file'):
-                self.document.reporter.error(
-                    f'Cannot embed remote image "{uri}"')
-                # TODO: read with urllib.request?
-            imagepath = imagepath or self.uri2imagepath(uri)
             try:
+                imagepath = self.uri2imagepath(uri)
                 with open(imagepath, 'rb') as imagefile:
                     imagedata = imagefile.read()
-            except OSError as err:
-                self.document.reporter.error('Cannot embed image %r: %s'
-                                             % (uri, err.strerror))
+            except (ValueError, OSError) as err:
+                messages.append(self.document.reporter.error(
+                    f'Cannot embed image "{uri}":\n  {err}', base_node=node))
+                # TODO: read external files with urllib.request?
+                #       (cf. odtwriter)
             else:
                 self.settings.record_dependencies.add(imagepath)
                 # TODO: insert SVG as-is?
@@ -1137,6 +1126,13 @@ class HTMLTranslator(nodes.NodeVisitor):
         elif loading == 'lazy':
             atts['loading'] = 'lazy'
 
+        # No newlines around inline images or if surrounded by <a>...</a>.
+        if (isinstance(node.parent, nodes.TextElement)
+            or (isinstance(node.parent, nodes.reference)
+                and not isinstance(node.parent.parent, nodes.TextElement))):
+            suffix = ''
+        else:
+            suffix = '\n'
         if mimetype in self.videotypes:
             atts['title'] = alt
             alt_link = node['uri']  # use original URI also when embedding
@@ -1154,6 +1150,9 @@ class HTMLTranslator(nodes.NodeVisitor):
             atts['alt'] = alt
             tag = self.emptytag(node, 'img', suffix, src=uri, **atts)
         self.body.append(tag)
+        for message in messages:
+            if self.settings.report_level <= message['level']:
+                message.walkabout(self)
 
     def depart_image(self, node):
         pass
@@ -1267,12 +1266,11 @@ class HTMLTranslator(nodes.NodeVisitor):
                 }
 
     def visit_math(self, node, math_env=''):
-        # If the method is called from visit_math_block(), math_env != ''.
-
+        # Also called from `visit_math_block()` (with math_env != '').
         if self.math_output not in self.math_tags:
             self.document.reporter.error(
                 f'math-output format "{self.math_output}" not supported '
-                'falling back to "latex"')
+                'falling back to "latex"', base_node=node)
             self.math_output = 'latex'
         tag = self.math_tags[self.math_output][math_env == '']
         clsarg = self.math_tags[self.math_output][2]
@@ -1303,9 +1301,9 @@ class HTMLTranslator(nodes.NodeVisitor):
             try:
                 self.mathjax_url = self.math_output_options[0]
             except IndexError:
-                self.document.reporter.warning('No MathJax URL specified, '
-                                               'using local fallback '
-                                               '(see config.html)')
+                self.document.reporter.warning(
+                    'No MathJax URL specified, using local fallback '
+                    '(see config.html).', base_node=node)
             # append configuration, if not already present in the URL:
             # input LaTeX with AMS, output common HTML
             if '?' not in self.mathjax_url:
@@ -1350,16 +1348,10 @@ class HTMLTranslator(nodes.NodeVisitor):
             except OSError:
                 raise OSError('is "latexmlmath" in your PATH?')
             except SyntaxError as err:
-                err_node = self.document.reporter.error(err, base_node=node)
-                self.visit_system_message(err_node)
-                self.body.append(self.starttag(node, 'p'))
-                self.body.append(','.join(err.args))
-                self.body.append('</p>\n')
-                self.body.append(self.starttag(node, 'pre',
-                                               CLASS='literal-block'))
-                self.body.append(self.encode(math_code))
-                self.body.append('\n</pre>\n')
-                self.depart_system_message(err_node)
+                message = self.document.reporter.error(err, base_node=node)
+                message.append(nodes.literal_block('', self.encode(math_code)))
+                if self.settings.report_level <= message['level']:
+                    message.walkabout(self)
                 raise nodes.SkipNode
         # append to document body
         if tag:
