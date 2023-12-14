@@ -181,3 +181,5 @@ class Transformer(TransformSpec):
             transform = transform_class(self.document, startnode=pending)
             transform.apply(**kwargs)
             self.applied.append((priority, transform_class, pending, kwargs))
+        self.document.reporter.detach_observer(
+            self.document.note_transform_message)

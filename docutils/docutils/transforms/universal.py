@@ -131,19 +131,13 @@ class Messages(Transform):
             self.document += section
 
 
-# TODO: fix bug #435:
-
-# Messages are filtered at a very late stage
-# This breaks the link from inline error messages to the corresponding
-# system message at the end of document.
-
 class FilterMessages(Transform):
 
     """
     Remove system messages below verbosity threshold.
 
-    Convert <problematic> nodes referencing removed messages to <Text>.
-    Remove "System Messages" section if empty.
+    Also convert <problematic> nodes referencing removed messages
+    to <Text> nodes and remove "System Messages" section if empty.
     """
 
     default_priority = 870
