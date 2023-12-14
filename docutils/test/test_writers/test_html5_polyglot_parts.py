@@ -35,7 +35,7 @@ class Html5WriterPublishPartsTestCase(unittest.TestCase):
 
     def test_publish(self):
         if not with_pygments:
-            del totest['code_parsing']
+            del totest['syntax_highlight']
         writer_name = 'html5'
         for name, (settings_overrides, cases) in totest.items():
             for casenum, (case_input, case_expected) in enumerate(cases):
@@ -471,15 +471,15 @@ No caption nor legend.
 
 totest['lazy_loading'] = ({'image_loading': 'lazy',
                            'stylesheet_path': '',
-                           'embed_stylesheet': False}, [
-
+                           'embed_stylesheet': False,
+                           'report_level': 4}, [
 ["""\
 .. image:: dummy.png
 .. image:: dummy.png
    :loading: link
 .. figure:: dummy.png
 .. figure:: dummy.png
-   :loading: link
+   :loading: embed
 """,
 {'fragment': '''\
 <img alt="dummy.png" loading="lazy" src="dummy.png" />
@@ -583,6 +583,70 @@ EOF</span></code></pre>
 ''',
 }],
 ])
+
+totest['image_messages'] = ({'stylesheet_path': '',
+                           'embed_stylesheet': False,
+                           'warning_stream': '',
+                           }, [
+["""\
+.. image:: dummy.png
+   :scale: 100%
+   :loading: embed
+
+.. image:: dummy.mp4
+   :scale: 100%
+""",
+{'fragment': '''\
+<img alt="dummy.png" src="dummy.png" />
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 \
+(<span class="docutils literal">&lt;string&gt;</span>, line 1)</p>
+<p>Cannot scale image!
+  Could not get size from &quot;dummy.png&quot;:
+  [Errno 2] No such file or directory: 'dummy.png'</p>
+</aside>
+<aside class="system-message">
+<p class="system-message-title">System Message: ERROR/3 \
+(<span class="docutils literal">&lt;string&gt;</span>, line 1)</p>
+<p>Cannot embed image &quot;dummy.png&quot;:
+  [Errno 2] No such file or directory: 'dummy.png'</p>
+</aside>
+<video src="dummy.mp4" title="dummy.mp4">
+<a href="dummy.mp4">dummy.mp4</a>
+</video>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 \
+(<span class="docutils literal">&lt;string&gt;</span>, line 5)</p>
+<p>Cannot scale image!
+  Could not get size from &quot;dummy.mp4&quot;:
+  PIL cannot read video images.</p>
+</aside>
+''',
+}],
+["""\
+.. image:: https://dummy.png
+   :scale: 100%
+   :loading: embed
+""",
+{'fragment': '''\
+<img alt="https://dummy.png" src="https://dummy.png" />
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 \
+(<span class="docutils literal">&lt;string&gt;</span>, line 1)</p>
+<p>Cannot scale image!
+  Could not get size from &quot;https://dummy.png&quot;:
+  Can only read local images.</p>
+</aside>
+<aside class="system-message">
+<p class="system-message-title">System Message: ERROR/3 \
+(<span class="docutils literal">&lt;string&gt;</span>, line 1)</p>
+<p>Cannot embed image &quot;https://dummy.png&quot;:
+  Can only read local images.</p>
+</aside>
+''',
+}],
+])
+
 
 if __name__ == '__main__':
     unittest.main()

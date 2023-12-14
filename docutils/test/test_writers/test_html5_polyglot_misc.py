@@ -175,8 +175,8 @@ math_css = relpath(TEST_ROOT, 'functional/input/data/math.css')
 
 class MathTestCase(unittest.TestCase):
 
-    """Attention: This class tests the current implementation of maths support
-    which is open to change in future Docutils releases. """
+    """Provisional: This class tests the current implementation of maths
+    support which is open to change in future Docutils releases. """
 
     mathjax_script = '<script type="text/javascript" src="%s">'
     default_mathjax_url = ('file:/usr/share/javascript/mathjax/MathJax.js'
