@@ -97,6 +97,8 @@ class Image(Directive):
             del self.options['target']
         set_classes(self.options)
         image_node = nodes.image(self.block_text, **self.options)
+        (image_node.source,
+         image_node.line) = self.state_machine.get_source_and_line(self.lineno)
         self.add_name(image_node)
         if reference_node:
             reference_node += image_node
@@ -130,6 +132,8 @@ class Figure(Image):
         if isinstance(image_node, nodes.system_message):
             return [image_node]
         figure_node = nodes.figure('', image_node)
+        (figure_node.source, figure_node.line
+         ) = self.state_machine.get_source_and_line(self.lineno)
         if figwidth == 'image':
             if PIL and self.state.document.settings.file_insertion_enabled:
                 imagepath = url2pathname(image_node['uri'])

@@ -210,7 +210,8 @@ class MathBlock(Directive):
             if not block:
                 continue
             node = nodes.math_block(self.block_text, block, **self.options)
-            node.line = self.content_offset + 1
+            (node.source,
+             node.line) = self.state_machine.get_source_and_line(self.lineno)
             self.add_name(node)
             _nodes.append(node)
         return _nodes

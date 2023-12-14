@@ -1265,18 +1265,17 @@ class Body(RSTState):
 
     def bullet(self, match, context, next_state):
         """Bullet list item."""
-        bulletlist = nodes.bullet_list()
-        (bulletlist.source,
-         bulletlist.line) = self.state_machine.get_source_and_line()
-        self.parent += bulletlist
-        bulletlist['bullet'] = match.string[0]
+        ul = nodes.bullet_list()
+        ul.source, ul.line = self.state_machine.get_source_and_line()
+        self.parent += ul
+        ul['bullet'] = match.string[0]
         i, blank_finish = self.list_item(match.end())
-        bulletlist += i
+        ul += i
         offset = self.state_machine.line_offset + 1   # next line
         new_line_offset, blank_finish = self.nested_list_parse(
               self.state_machine.input_lines[offset:],
               input_offset=self.state_machine.abs_line_offset() + 1,
-              node=bulletlist, initial_state='BulletList',
+              node=ul, initial_state='BulletList',
               blank_finish=blank_finish)
         self.goto_line(new_line_offset)
         if not blank_finish:
@@ -1284,6 +1283,7 @@ class Body(RSTState):
         return [], next_state, []
 
     def list_item(self, indent):
+        src, srcline = self.state_machine.get_source_and_line()
         if self.state_machine.line[indent:]:
             indented, line_offset, blank_finish = (
                 self.state_machine.get_known_indented(indent))
@@ -1291,6 +1291,7 @@ class Body(RSTState):
             indented, indent, line_offset, blank_finish = (
                 self.state_machine.get_first_known_indented(indent))
         listitem = nodes.list_item('\n'.join(indented))
+        listitem.source, listitem.line = src, srcline
         if indented:
             self.nested_parse(indented, input_offset=line_offset,
                               node=listitem)
@@ -2728,17 +2729,18 @@ class Text(RSTState):
 
     def indent(self, match, context, next_state):
         """Definition list item."""
-        definitionlist = nodes.definition_list()
-        (definitionlist.src,
-         definitionlist.line) = self.state_machine.get_source_and_line()
-        definitionlistitem, blank_finish = self.definition_list_item(context)
-        definitionlist += definitionlistitem
-        self.parent += definitionlist
+        dl = nodes.definition_list()
+        # the definition list starts on the line before the indent:
+        lineno = self.state_machine.abs_line_number() - 1
+        dl.source, dl.line = self.state_machine.get_source_and_line(lineno)
+        dl_item, blank_finish = self.definition_list_item(context)
+        dl += dl_item
+        self.parent += dl
         offset = self.state_machine.line_offset + 1   # next line
         newline_offset, blank_finish = self.nested_list_parse(
               self.state_machine.input_lines[offset:],
               input_offset=self.state_machine.abs_line_offset() + 1,
-              node=definitionlist, initial_state='DefinitionList',
+              node=dl, initial_state='DefinitionList',
               blank_finish=blank_finish, blank_finish_state='Definition')
         self.goto_line(newline_offset)
         if not blank_finish:
@@ -2840,24 +2842,30 @@ class Text(RSTState):
         return parent_node.children
 
     def definition_list_item(self, termline):
+        # the parser is already on the second (indented) line:
+        dd_lineno = self.state_machine.abs_line_number()
+        dt_lineno = dd_lineno - 1
         (indented, indent, line_offset, blank_finish
          ) = self.state_machine.get_indented()
-        itemnode = nodes.definition_list_item(
-            '\n'.join(termline + list(indented)))
-        lineno = self.state_machine.abs_line_number() - 1
-        (itemnode.source,
-         itemnode.line) = self.state_machine.get_source_and_line(lineno)
-        termlist, messages = self.term(termline, lineno)
-        itemnode += termlist
-        definition = nodes.definition('', *messages)
-        itemnode += definition
+        dl_item = nodes.definition_list_item(
+                      '\n'.join(termline + list(indented)))
+        (dl_item.source,
+         dl_item.line) = self.state_machine.get_source_and_line(dt_lineno)
+        dt_nodes, messages = self.term(termline, dt_lineno)
+        dl_item += dt_nodes
+        dd = nodes.definition('', *messages)
+        dd.source, dd.line = self.state_machine.get_source_and_line(dd_lineno)
+        dl_item += dd
         if termline[0][-2:] == '::':
-            definition += self.reporter.info(
+            dd += self.reporter.info(
                   'Blank line missing before literal block (after the "::")? '
                   'Interpreted as a definition list item.',
-                  line=lineno+1)
-        self.nested_parse(indented, input_offset=line_offset, node=definition)
-        return itemnode, blank_finish
+                  line=dd_lineno)
+        # TODO: drop a definition if it is an empty comment to allow
+        #       definition list items with several terms?
+        #       https://sourceforge.net/p/docutils/feature-requests/60/
+        self.nested_parse(indented, input_offset=line_offset, node=dd)
+        return dl_item, blank_finish
 
     classifier_delimiter = re.compile(' +: +')
 
@@ -2865,10 +2873,9 @@ class Text(RSTState):
         """Return a definition_list's term and optional classifiers."""
         assert len(lines) == 1
         text_nodes, messages = self.inline_text(lines[0], lineno)
-        term_node = nodes.term(lines[0])
-        (term_node.source,
-         term_node.line) = self.state_machine.get_source_and_line(lineno)
-        node_list = [term_node]
+        dt = nodes.term(lines[0])
+        dt.source, dt.line = self.state_machine.get_source_and_line(lineno)
+        node_list = [dt]
         for i in range(len(text_nodes)):
             node = text_nodes[i]
             if isinstance(node, nodes.Text):
@@ -2921,8 +2928,8 @@ class Definition(SpecializedText):
 
     def indent(self, match, context, next_state):
         """Definition list item."""
-        itemnode, blank_finish = self.definition_list_item(context)
-        self.parent += itemnode
+        dl_item, blank_finish = self.definition_list_item(context)
+        self.parent += dl_item
         self.blank_finish = blank_finish
         return [], 'DefinitionList', []
 
