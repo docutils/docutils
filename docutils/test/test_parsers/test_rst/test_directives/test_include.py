@@ -772,7 +772,7 @@ f"""\
                 <term>
                     A literal block::
                 <definition>
-                    <system_message level="1" line="57" source="{include10}" type="INFO">
+                    <system_message level="1" line="56" source="{include10}" type="INFO">
                         <paragraph>
                             Blank line missing before literal block (after the "::")? Interpreted as a definition list item.
                     <paragraph>

@@ -15,5 +15,5 @@ With *inline* element in line 2.
 
    Generic admonition text in line 16
 
-line 18
-   definition list item in line 19
+term on line 18
+   definition in line 19
