@@ -278,6 +278,9 @@ class HTMLTranslator(nodes.NodeVisitor):
                           }
     """Character references for characters with a special meaning in HTML."""
 
+    videotypes = ('video/mp4', 'video/webm', 'video/ogg')
+    """MIME types supported by the HTML5 <video> element."""
+
     def __init__(self, document):
         nodes.NodeVisitor.__init__(self, document)
         # process settings
@@ -351,6 +354,10 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.in_mailto = False
         self.author_in_authors = False  # for html4css1
         self.math_header = []
+        self.messages = []
+        """List of system_message nodes with errors, warnings, ...
+        about problems during writing. Clean up in `depart_*()` methods!
+        """
 
     def astext(self):
         return ''.join(self.head_prefix + self.head
@@ -396,7 +403,6 @@ class HTMLTranslator(nodes.NodeVisitor):
         # and a string that is suitable as "style" argument value,
         # e.g., ``([], 'width: 4px; height: 2em;')``.
         size = [node.get('width', None), node.get('height', None)]
-        messages = []
         if 'scale' in node:
             if 'width' not in node or 'height' not in node:
                 # try reading size from image file
@@ -422,7 +428,7 @@ class HTMLTranslator(nodes.NodeVisitor):
                     msg = ['Cannot scale image!',
                            f'Could not get size from "{uri}":',
                            *reading_problems]
-                    messages.append(self.document.reporter.warning(
+                    self.messages.append(self.document.reporter.warning(
                         '\n  '.join(msg), base_node=node))
                 else:
                     for i in range(2):
@@ -441,7 +447,7 @@ class HTMLTranslator(nodes.NodeVisitor):
                 if re.match(r'^[0-9.]+$', size[i]):
                     size[i] += 'px'
                 style_arg.append('%s: %s;' % (_name, size[i]))
-        return messages, ' '.join(style_arg)
+        return ' '.join(style_arg)
 
     def stylesheet_call(self, path, adjust_path=None):
         """Return code to reference or embed stylesheet file `path`"""
@@ -533,6 +539,12 @@ class HTMLTranslator(nodes.NodeVisitor):
     def emptytag(self, node, tagname, suffix='\n', **attributes):
         """Construct and return an XML-compatible empty tag."""
         return self.starttag(node, tagname, suffix, empty=True, **attributes)
+
+    def report_messages(self):
+        while self.messages:
+            message = self.messages.pop(0)
+            if self.settings.report_level <= message['level']:
+                message.walkabout(self)
 
     def set_class_on_child(self, node, class_, index=0):
         """
@@ -1083,35 +1095,31 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.header.extend(header)
         del self.body[start:]
 
-    # MIME types supported by the HTML5 <video> element
-    videotypes = ('video/mp4', 'video/webm', 'video/ogg')
-
     def visit_image(self, node):
         uri = node['uri']
         alt = node.get('alt', uri)
         mimetype = mimetypes.guess_type(uri)[0]
         atts = {}  # attributes for the HTML tag
-        messages = []  # system_message nodes
         if 'align' in node:
             atts['class'] = 'align-%s' % node['align']
         # set size with "style" attribute (more universal, accepts dimensions)
-        msgs, size = self.image_size(node)
-        messages += msgs
+        size = self.image_size(node)
         if size:
             atts['style'] = size
 
         # ``:loading:`` option (embed, link, lazy), default from setting,
         # exception: only embed videos if told via directive option
-        loading = node.get('loading',
-                           'link' if mimetype in self.videotypes
-                           else self.image_loading)
-        if loading == 'embed':
+        loading = 'link' if mimetype in self.videotypes else self.image_loading
+        loading = node.get('loading', loading)
+        if loading == 'lazy':
+            atts['loading'] = 'lazy'
+        elif loading == 'embed':
             try:
                 imagepath = self.uri2imagepath(uri)
                 with open(imagepath, 'rb') as imagefile:
                     imagedata = imagefile.read()
             except (ValueError, OSError) as err:
-                messages.append(self.document.reporter.error(
+                self.messages.append(self.document.reporter.error(
                     f'Cannot embed image "{uri}":\n  {err}', base_node=node))
                 # TODO: read external files with urllib.request?
                 #       (cf. odtwriter)
@@ -1123,8 +1131,6 @@ class HTMLTranslator(nodes.NodeVisitor):
                 # insert as <svg ....> ... </svg> # (about 1/3 less data)
                 data64 = base64.b64encode(imagedata).decode()
                 uri = f'data:{mimetype};base64,{data64}'
-        elif loading == 'lazy':
-            atts['loading'] = 'lazy'
 
         # No newlines around inline images or if surrounded by <a>...</a>.
         if (isinstance(node.parent, nodes.TextElement)
@@ -1150,12 +1156,9 @@ class HTMLTranslator(nodes.NodeVisitor):
             atts['alt'] = alt
             tag = self.emptytag(node, 'img', suffix, src=uri, **atts)
         self.body.append(tag)
-        for message in messages:
-            if self.settings.report_level <= message['level']:
-                message.walkabout(self)
 
     def depart_image(self, node):
-        pass
+        self.report_messages()
 
     def visit_inline(self, node):
         self.body.append(self.starttag(node, 'span', ''))
@@ -1272,8 +1275,6 @@ class HTMLTranslator(nodes.NodeVisitor):
                 f'math-output format "{self.math_output}" not supported '
                 'falling back to "latex"', base_node=node)
             self.math_output = 'latex'
-        tag = self.math_tags[self.math_output][math_env == '']
-        clsarg = self.math_tags[self.math_output][2]
         # LaTeX container
         wrappers = {
                     # math_mode: (inline, block)
@@ -1345,15 +1346,13 @@ class HTMLTranslator(nodes.NodeVisitor):
                 else:
                     self.document.reporter.error('option "%s" not supported '
                                                  'with math-output "MathML"')
-            except OSError:
-                raise OSError('is "latexmlmath" in your PATH?')
-            except SyntaxError as err:
-                message = self.document.reporter.error(err, base_node=node)
-                message.append(nodes.literal_block('', self.encode(math_code)))
-                if self.settings.report_level <= message['level']:
-                    message.walkabout(self)
-                raise nodes.SkipNode
+            except (OSError, SyntaxError) as err:
+                self.messages.append(
+                    self.document.reporter.error(err, base_node=node))
+                math_code = self.encode(math_code)
         # append to document body
+        tag = self.math_tags[self.math_output][math_env == '']
+        clsarg = self.math_tags[self.math_output][2]
         if tag:
             self.body.append(self.starttag(node, tag,
                                            suffix='\n'*bool(math_env),
@@ -1363,20 +1362,19 @@ class HTMLTranslator(nodes.NodeVisitor):
             self.body.append('\n')
         if tag:
             self.body.append('</%s>' % tag)
-        if math_env:
-            self.body.append('\n')
         # Content already processed:
-        raise nodes.SkipNode
+        raise nodes.SkipChildren
 
     def depart_math(self, node):
-        pass  # never reached
+        self.report_messages()
 
     def visit_math_block(self, node):
         math_env = pick_math_environment(node.astext())
         self.visit_math(node, math_env=math_env)
 
     def depart_math_block(self, node):
-        pass  # never reached
+        self.body.append('\n')
+        self.report_messages()
 
     # Meta tags: 'lang' attribute replaced by 'xml:lang' in XHTML 1.1
     # HTML5/polyglot recommends using both

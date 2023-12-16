@@ -256,7 +256,7 @@ Numbered Figures
 
 Numbered figures can be achieved with the "numbered" ``:figclass:`` option:
 
-.. figure:: ../../../docs/user/rst/images/title.svg
+.. figure:: ../../../docs/user/rst/images/title-scaling.svg
    :alt: reStructuredText, the markup syntax
    :figclass: numbered
    :width: 100%

@@ -1441,7 +1441,7 @@ Overridden by the `"image" directive`_'s ``:loading:`` option.
 
 Supported values:
   embed:
-    Embed images into the HTML document
+    Embed still images into the HTML document
     (ignored for videos).
   link:
     Refer to images in the HTML document (default).
