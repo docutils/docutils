@@ -234,13 +234,6 @@ dl.description > dd:after {
 }
 
 /* Images and Figures */
-img {
-  display: block;
-}
-p > img, p > a > img,
-figure > img, figure > a > img {
-  display: inline;
-}
 /* Caption to the left (if there is space) or below: */
 figure {
   display: flex;

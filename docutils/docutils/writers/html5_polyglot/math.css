@@ -58,13 +58,13 @@ span.ignored, span.arraydef {
 }
 
 /* Alignment */
-.align-left, .align-l {
+.align-l {
 	text-align: left;
 }
-.align-right, .align-r {
+.align-r {
 	text-align: right;
 }
-.align-center, .align-c {
+.align-c {
 	text-align: center;
 }
 

@@ -183,14 +183,6 @@ summary { margin-left: -1em; }
 }
 
 /* Images, Figures, and Tables */
-img {
-  display: block;
-}
-p > img, p > a > img,
-figure > img, figure > a > img {
-  display: inline;
-}
-
 figcaption,
 table > caption {
   /*   font-size: small; */
