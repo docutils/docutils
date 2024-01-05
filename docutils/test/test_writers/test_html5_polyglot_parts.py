@@ -13,6 +13,7 @@ standard values, and any entries with empty values.
 """
 
 from pathlib import Path
+import os
 import sys
 import unittest
 
@@ -26,6 +27,7 @@ import docutils.core
 from docutils.utils.code_analyzer import with_pygments
 
 ROOT_PREFIX = (Path(__file__).parent.parent/'functional'/'input').as_posix()
+DATA_ROOT = os.path.abspath(os.path.join(__file__, '..', '..', 'data'))
 
 
 class Html5WriterPublishPartsTestCase(unittest.TestCase):
@@ -103,32 +105,34 @@ totest['standard'] = ({'stylesheet_path': '',
 ["""\
 Simple String
 """,
-{'fragment': '''<p>Simple String</p>\n''',
+{'fragment': '<p>Simple String</p>\n',
 }],
 ["""\
 Simple String with *markup*
 """,
-{'fragment': '''<p>Simple String with <em>markup</em></p>\n''',
+{'fragment': '<p>Simple String with <em>markup</em></p>\n',
 }],
 ["""\
 Simple String with an even simpler ``inline literal``
 """,
-{'fragment': '''<p>Simple String with an even simpler <span class="docutils literal">inline literal</span></p>\n''',
+{'fragment': '<p>Simple String with an even simpler <span class="docutils literal">inline literal</span></p>\n',
 }],
 ["""\
 A simple `anonymous reference`__
 
 __ http://www.test.com/test_url
 """,
-{'fragment': '''<p>A simple <a class="reference external" href="http://www.test.com/test_url">anonymous reference</a></p>\n''',
+{'fragment': '<p>A simple <a class="reference external" href="http://www.test.com/test_url">anonymous reference</a></p>\n',
 }],
 ["""\
 One paragraph.
 
 Two paragraphs.
 """,
-{'fragment': '''<p>One paragraph.</p>
-<p>Two paragraphs.</p>\n''',
+{'fragment': """\
+<p>One paragraph.</p>
+<p>Two paragraphs.</p>
+""",
 }],
 ["""\
 A simple `named reference`_ with stuff in between the
@@ -136,16 +140,22 @@ reference and the target.
 
 .. _`named reference`: http://www.test.com/test_url
 """,
-{'fragment': '''<p>A simple <a class="reference external" href="http://www.test.com/test_url">named reference</a> with stuff in between the
-reference and the target.</p>\n''',
+{'fragment': """\
+<p>A simple <a class="reference external" href="http://www.test.com/test_url">named reference</a> with stuff in between the
+reference and the target.</p>
+""",
 }],
-[""".. [CIT2022] A citation.""",
-{'fragment': '''<div role="list" class="citation-list">
+["""\
+.. [CIT2022] A citation.
+""",
+{'fragment': """\
+<div role="list" class="citation-list">
 <div class="citation" id="cit2022" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>CIT2022<span class="fn-bracket">]</span></span>
 <p>A citation.</p>
 </div>
-</div>\n''',
+</div>
+""",
 }],
 ["""\
 +++++
@@ -167,7 +177,8 @@ Another Section
 
 And even more stuff
 """,
-{'fragment': '''<p>Some stuff</p>
+{'fragment': """\
+<p>Some stuff</p>
 <section id="section">
 <h2>Section<a class="self-link" title="link to this section" href="#section"></a></h2>
 <p>Some more stuff</p>
@@ -175,8 +186,10 @@ And even more stuff
 <h3>Another Section<a class="self-link" title="link to this section" href="#another-section"></a></h3>
 <p>And even more stuff</p>
 </section>
-</section>\n''',
- 'html_body': '''<main id="title">
+</section>
+""",
+ 'html_body': """\
+<main id="title">
 <h1 class="title">Title</h1>
 <p class="subtitle" id="subtitle">Subtitle</p>
 <p>Some stuff</p>
@@ -188,12 +201,13 @@ And even more stuff
 <p>And even more stuff</p>
 </section>
 </section>
-</main>\n''',
- 'html_head': '''...<title>Title</title>\n''',
- 'html_subtitle': '''<p class="subtitle" id="subtitle">Subtitle</p>\n''',
- 'html_title': '''<h1 class="title">Title</h1>\n''',
- 'subtitle': '''Subtitle''',
- 'title': '''Title'''
+</main>
+""",
+ 'html_head': '...<title>Title</title>\n',
+ 'html_subtitle': '<p class="subtitle" id="subtitle">Subtitle</p>\n',
+ 'html_title': '<h1 class="title">Title</h1>\n',
+ 'subtitle': 'Subtitle',
+ 'title': 'Title'
 }],
 ["""\
 +++++
@@ -204,25 +218,31 @@ Title
 
 Some stuff
 """,
-{'docinfo': '''<dl class="docinfo simple">
+{'docinfo': """\
+<dl class="docinfo simple">
 <dt class="author">Author<span class="colon">:</span></dt>
 <dd class="author"><p>me</p></dd>
-</dl>\n''',
- 'fragment': '''<p>Some stuff</p>\n''',
- 'html_body': '''<main id="title">
+</dl>
+""",
+ 'fragment': '<p>Some stuff</p>\n',
+ 'html_body': """\
+<main id="title">
 <h1 class="title">Title</h1>
 <dl class="docinfo simple">
 <dt class="author">Author<span class="colon">:</span></dt>
 <dd class="author"><p>me</p></dd>
 </dl>
 <p>Some stuff</p>
-</main>\n''',
- 'html_head': '''...<meta name="author" content="me" />
-<title>Title</title>\n''',
- 'html_title': '''<h1 class="title">Title</h1>\n''',
- 'meta': '''<meta name="author" content="me" />\n''',
- 'title': '''Title'''
-}]
+</main>
+""",
+ 'html_head': """\
+...<meta name="author" content="me" />
+<title>Title</title>
+""",
+ 'html_title': '<h1 class="title">Title</h1>\n',
+ 'meta': '<meta name="author" content="me" />\n',
+ 'title': 'Title'
+}],
 ])
 
 totest['no_title_promotion'] = ({'doctitle_xform': False,
@@ -231,24 +251,24 @@ totest['no_title_promotion'] = ({'doctitle_xform': False,
 ["""\
 Simple String
 """,
-{'fragment': '''<p>Simple String</p>\n''',
+{'fragment': '<p>Simple String</p>\n',
 }],
 ["""\
 Simple String with *markup*
 """,
-{'fragment': '''<p>Simple String with <em>markup</em></p>\n''',
+{'fragment': '<p>Simple String with <em>markup</em></p>\n',
 }],
 ["""\
 Simple String with an even simpler ``inline literal``
 """,
-{'fragment': '''<p>Simple String with an even simpler <span class="docutils literal">inline literal</span></p>\n''',
+{'fragment': '<p>Simple String with an even simpler <span class="docutils literal">inline literal</span></p>\n',
 }],
 ["""\
 A simple `anonymous reference`__
 
 __ http://www.test.com/test_url
 """,
-{'fragment': '''<p>A simple <a class="reference external" href="http://www.test.com/test_url">anonymous reference</a></p>\n''',
+{'fragment': '<p>A simple <a class="reference external" href="http://www.test.com/test_url">anonymous reference</a></p>\n',
 }],
 ["""\
 A simple `named reference`_ with stuff in between the
@@ -256,8 +276,10 @@ reference and the target.
 
 .. _`named reference`: http://www.test.com/test_url
 """,
-{'fragment': '''<p>A simple <a class="reference external" href="http://www.test.com/test_url">named reference</a> with stuff in between the
-reference and the target.</p>\n''',
+{'fragment': """\
+<p>A simple <a class="reference external" href="http://www.test.com/test_url">named reference</a> with stuff in between the
+reference and the target.</p>
+""",
 }],
 ["""\
 +++++
@@ -279,7 +301,8 @@ Another Section
 
 And even more stuff
 """,
-{'fragment': '''<section id="title">
+{'fragment': """\
+<section id="title">
 <h2>Title<a class="self-link" title="link to this section" href="#title"></a></h2>
 <section id="not-a-subtitle">
 <h3>Not A Subtitle<a class="self-link" title="link to this section" href="#not-a-subtitle"></a></h3>
@@ -293,16 +316,19 @@ And even more stuff
 </section>
 </section>
 </section>
-</section>\n''',
+</section>
+""",
 }],
 ["""\
 * bullet
 * list
 """,
-{'fragment': '''<ul class="simple">
+{'fragment': """\
+<ul class="simple">
 <li><p>bullet</p></li>
 <li><p>list</p></li>
-</ul>\n''',
+</ul>
+""",
 }],
 ["""\
 .. table::
@@ -314,7 +340,8 @@ And even more stuff
    |  3  |  4  |
    +-----+-----+
 """,
-{'fragment': '''<table class="align-right">
+{'fragment': """\
+<table class="align-right">
 <tbody>
 <tr><td><p>1</p></td>
 <td><p>2</p></td>
@@ -323,7 +350,8 @@ And even more stuff
 <td><p>4</p></td>
 </tr>
 </tbody>
-</table>\n''',
+</table>
+""",
 }],
 ["""\
 Not a docinfo.
@@ -335,7 +363,8 @@ Not a docinfo.
 :simple:
 :field: list
 """,
-{'fragment': '''<p>Not a docinfo.</p>
+{'fragment': """\
+<p>Not a docinfo.</p>
 <dl class="field-list simple">
 <dt>This<span class="colon">:</span></dt>
 <dd><p id="target">is</p>
@@ -347,7 +376,8 @@ Not a docinfo.
 <dt>field<span class="colon">:</span></dt>
 <dd><p>list</p>
 </dd>
-</dl>\n''',
+</dl>
+""",
 }],
 ["""\
 Not a docinfo.
@@ -355,7 +385,7 @@ Not a docinfo.
 :This is: a
 :simple field list with loooong field: names
 """,
-{'fragment': '''\
+{'fragment': """\
 <p>Not a docinfo.</p>
 <dl class="field-list simple">
 <dt>This is<span class="colon">:</span></dt>
@@ -364,7 +394,8 @@ Not a docinfo.
 <dt>simple field list with loooong field<span class="colon">:</span></dt>
 <dd><p>names</p>
 </dd>
-</dl>\n''',
+</dl>
+""",
 }],
 ["""\
 Not a docinfo.
@@ -374,7 +405,8 @@ Not a docinfo.
 :This: is a
 :simple: field list with custom indent.
 """,
-{'fragment': '''<p>Not a docinfo.</p>
+{'fragment': """\
+<p>Not a docinfo.</p>
 <dl class="field-list simple" style="--field-indent: 200px;">
 <dt>This<span class="colon">:</span></dt>
 <dd><p>is a</p>
@@ -382,7 +414,8 @@ Not a docinfo.
 <dt>simple<span class="colon">:</span></dt>
 <dd><p>field list with custom indent.</p>
 </dd>
-</dl>\n''',
+</dl>
+""",
 }],
 ["""\
 Not a docinfo.
@@ -393,7 +426,8 @@ Not a docinfo.
 :simple: field list without custom indent,
          because the unit "uf" is invalid.
 """,
-{'fragment': '''<p>Not a docinfo.</p>
+{'fragment': """\
+<p>Not a docinfo.</p>
 <dl class="field-indent-200uf field-list simple">
 <dt>This<span class="colon">:</span></dt>
 <dd><p>is a</p>
@@ -402,7 +436,8 @@ Not a docinfo.
 <dd><p>field list without custom indent,
 because the unit &quot;uf&quot; is invalid.</p>
 </dd>
-</dl>\n''',
+</dl>
+""",
 }],
 ["""\
 .. figure:: dummy.png
@@ -413,7 +448,7 @@ because the unit &quot;uf&quot; is invalid.</p>
 
    The legend's second paragraph.
 """,
-{'fragment': '''\
+{'fragment': """\
 <figure>
 <img alt="dummy.png" src="dummy.png" />
 <figcaption>
@@ -423,20 +458,22 @@ because the unit &quot;uf&quot; is invalid.</p>
 <p>The legend's second paragraph.</p>
 </div>
 </figcaption>
-</figure>\n''',
+</figure>
+""",
 }],
 ["""\
 .. figure:: dummy.png
 
    The figure's caption, no legend.
 """,
-{'fragment': '''\
+{'fragment': """\
 <figure>
 <img alt="dummy.png" src="dummy.png" />
 <figcaption>
 <p>The figure's caption, no legend.</p>
 </figcaption>
-</figure>\n''',
+</figure>
+""",
 }],
 ["""\
 .. figure:: dummy.png
@@ -445,7 +482,7 @@ because the unit &quot;uf&quot; is invalid.</p>
 
    A legend without caption.
 """,
-{'fragment': '''\
+{'fragment': """\
 <figure>
 <img alt="dummy.png" src="dummy.png" />
 <figcaption>
@@ -453,18 +490,20 @@ because the unit &quot;uf&quot; is invalid.</p>
 <p>A legend without caption.</p>
 </div>
 </figcaption>
-</figure>\n''',
+</figure>
+""",
 }],
 ["""\
 .. figure:: dummy.png
 
 No caption nor legend.
 """,
-{'fragment': '''\
+{'fragment': """\
 <figure>
 <img alt="dummy.png" src="dummy.png" />
 </figure>
-<p>No caption nor legend.</p>\n''',
+<p>No caption nor legend.</p>
+""",
 }],
 ])
 
@@ -481,7 +520,7 @@ totest['lazy_loading'] = ({'image_loading': 'lazy',
 .. figure:: dummy.png
    :loading: embed
 """,
-{'fragment': '''\
+{'fragment': """\
 <img alt="dummy.png" loading="lazy" src="dummy.png" />
 <img alt="dummy.png" src="dummy.png" />
 <figure>
@@ -490,7 +529,7 @@ totest['lazy_loading'] = ({'image_loading': 'lazy',
 <figure>
 <img alt="dummy.png" src="dummy.png" />
 </figure>
-''',
+""",
 }],
 ])
 
@@ -504,13 +543,13 @@ totest['root_prefix'] = ({'root_prefix': ROOT_PREFIX,
    :scale: 100%
 .. figure:: /data/blue%20square.png
 """,
-{'fragment': '''\
+{'fragment': """\
 <img alt="/data/blue%20square.png" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8GO2jAAAALElEQVR4nO3NMQEAMAjAsDFjvIhHFCbgSwU0kdXvsn96BwAAAAAAAAAAAIsNnEwBk52VRuMAAAAASUVORK5CYII="\
  style="width: 32.0px; height: 32.0px;" />
 <figure>
 <img alt="/data/blue%20square.png" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8GO2jAAAALElEQVR4nO3NMQEAMAjAsDFjvIhHFCbgSwU0kdXvsn96BwAAAAAAAAAAAIsNnEwBk52VRuMAAAAASUVORK5CYII=" />
 </figure>
-''',
+""",
 }],
 ])
 
@@ -529,7 +568,7 @@ The latter are referenced a second time [#f2]_ [twice]_.
 .. [once] citation referenced once
 .. [twice] citation referenced twice
 """,
-{'fragment': '''\
+{'fragment': """\
 <p>Two footnotes <a class="brackets" href="#f1" id="footnote-reference-1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> <a class="brackets" href="#f2" id="footnote-reference-2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a> and two citations <a class="citation-reference" href="#once" id="citation-reference-1" role="doc-biblioref">[once]</a> <a class="citation-reference" href="#twice" id="citation-reference-2" role="doc-biblioref">[twice]</a>.</p>
 <p>The latter are referenced a second time <a class="brackets" href="#f2" id="footnote-reference-3" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a> <a class="citation-reference" href="#twice" id="citation-reference-3" role="doc-biblioref">[twice]</a>.</p>
 <aside class="footnote-list brackets">
@@ -551,7 +590,8 @@ The latter are referenced a second time [#f2]_ [twice]_.
 <span class="label"><span class="fn-bracket">[</span>twice<span class="fn-bracket">]</span></span>
 <p>citation referenced twice</p>
 </div>
-</div>\n''',
+</div>
+""",
 }],
 ])
 
@@ -566,11 +606,11 @@ totest['syntax_highlight'] = ({'syntax_highlight': 'short',
     Hello World
     EOF
 """,
-{'fragment': '''\
+{'fragment': """\
 <pre class="code shell literal-block"><code>cat <span class="s">&lt;&lt;EOF
 Hello World
 EOF</span></code></pre>
-''',
+""",
 }],
 ["""\
 .. role:: shell(code)
@@ -578,16 +618,17 @@ EOF</span></code></pre>
 
 :shell:`cat <<EOF Hello World EOF`
 """,
-{'fragment': '''\
+{'fragment': """\
 <p><code class="shell">cat <span class="s">&lt;&lt;EOF Hello World EOF</span></code></p>
-''',
+""",
 }],
 ])
 
-totest['image_messages'] = ({'stylesheet_path': '',
-                           'embed_stylesheet': False,
-                           'warning_stream': '',
-                           }, [
+totest['system_messages'] = ({'stylesheet_path': '',
+                              'embed_stylesheet': False,
+                              'math_output': 'mathml',
+                              'warning_stream': '',
+                              }, [
 ["""\
 .. image:: dummy.png
    :scale: 100%
@@ -596,7 +637,7 @@ totest['image_messages'] = ({'stylesheet_path': '',
 .. image:: dummy.mp4
    :scale: 100%
 """,
-{'fragment': '''\
+{'fragment': """\
 <img alt="dummy.png" src="dummy.png" />
 <aside class="system-message">
 <p class="system-message-title">System Message: WARNING/2 \
@@ -621,14 +662,14 @@ totest['image_messages'] = ({'stylesheet_path': '',
   Could not get size from &quot;dummy.mp4&quot;:
   PIL cannot read video images.</p>
 </aside>
-''',
+""",
 }],
 ["""\
 .. image:: https://dummy.png
    :scale: 100%
    :loading: embed
 """,
-{'fragment': '''\
+{'fragment': """\
 <img alt="https://dummy.png" src="https://dummy.png" />
 <aside class="system-message">
 <p class="system-message-title">System Message: WARNING/2 \
@@ -643,7 +684,7 @@ totest['image_messages'] = ({'stylesheet_path': '',
 <p>Cannot embed image &quot;https://dummy.png&quot;:
   Can only read local images.</p>
 </aside>
-''',
+""",
 }],
 ])
 
