@@ -513,6 +513,9 @@ totest['lazy_loading'] = ({'image_loading': 'lazy',
                            'embed_stylesheet': False,
                            'report_level': 4}, [
 ["""\
+Lazy loading by default, overridden by :loading: option
+("cannot embed" warning ignored).
+
 .. image:: dummy.png
 .. image:: dummy.png
    :loading: link
@@ -521,6 +524,8 @@ totest['lazy_loading'] = ({'image_loading': 'lazy',
    :loading: embed
 """,
 {'fragment': """\
+<p>Lazy loading by default, overridden by :loading: option
+(&quot;cannot embed&quot; warning ignored).</p>
 <img alt="dummy.png" loading="lazy" src="dummy.png" />
 <img alt="dummy.png" src="dummy.png" />
 <figure>
@@ -685,6 +690,27 @@ totest['system_messages'] = ({'stylesheet_path': '',
   Can only read local images.</p>
 </aside>
 """,
+}],
+[r"""Broken :math:`\sin \my`.
+""",
+{'fragment': """\
+<p>Broken \\sin \\my.</p>
+<aside class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<span class="docutils literal">&lt;string&gt;</span>, line 1)</p>
+<p>Unknown LaTeX command: \\my</p>
+</aside>
+"""}],
+])
+
+totest['no_system_messages'] = ({'stylesheet_path': '',
+                                 'embed_stylesheet': False,
+                                 'math_output': 'mathml',
+                                 'report_level': 4,
+                                 'warning_stream': '',
+                                 }, [
+[r"""Broken :math:`\sin \my`.
+""",
+{'fragment': '<p>Broken \\sin \\my.</p>\n'
 }],
 ])
 

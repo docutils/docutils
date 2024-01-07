@@ -272,4 +272,4 @@ img, svg, header, footer, main, aside, nav, section, figure, video, details {
 }
 svg { width: auto; height: auto; }  /* enable scaling of SVG images */
 /* inline images */
-p > img, p > svg, p > video { display: inline; }
+p img, p svg, p video { display: inline; }
