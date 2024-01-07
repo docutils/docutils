@@ -331,6 +331,29 @@ class HelperFunctionsTests(unittest.TestCase):
         for v, result in tests:
             self.assertEqual(frontend.validate_comma_separated_list(v), result)
 
+    def test_validate_math_output(self):
+        tests = (('', []),
+                 ('LaTeX ', ['latex', '']),
+                 ('MathML', ['mathml', '']),
+                 ('MathML  PanDoc', ['mathml', 'pandoc']),
+                 ('HTML  math.css, X.css', ['html', 'math.css, X.css']),
+                 ('MathJax  /MathJax.js', ['mathjax', '/MathJax.js']),
+                 )
+        for v, result in tests:
+            self.assertEqual(frontend.validate_math_output(v), result)
+
+    def test_validate_math_output_errors(self):
+        tests = (('XML', 'Unknown math output format: "XML",\n'
+                  "    choose from ('html', 'latex', 'mathml', 'mathjax')."),
+                 ('MathML blame', 'MathML converter "blame" not supported,\n'
+                  "    choose from ('', 'latexml', 'ttm', 'blahtexml', "
+                  "'pandoc')."),
+                 )
+        for value, message in tests:
+            with self.assertRaises(LookupError) as cm:
+                frontend.validate_math_output(value)
+            self.assertEqual(message, str(cm.exception))
+
     def test_validate_url_trailing_slash(self):
         tests = (('', './'),
                  (None, './'),
