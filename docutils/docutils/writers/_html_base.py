@@ -117,7 +117,8 @@ class Writer(writers.Writer):
           'or "LaTeX") and option(s). '
           '(default: "HTML math.css")',
           ['--math-output'],
-          {'default': 'HTML math.css'}),
+          {'default': 'HTML math.css',
+           'validator': frontend.validate_math_output}),
          ('Prepend an XML declaration. ',
           ['--xml-declaration'],
           {'default': False, 'action': 'store_true',
@@ -300,9 +301,12 @@ class HTMLTranslator(nodes.NodeVisitor):
                           FutureWarning, stacklevel=8)
         self.image_loading = getattr(settings,
                                      'image_loading', _image_loading_default)
-        self.math_output = settings.math_output.split()
-        self.math_output_options = self.math_output[1:]
-        self.math_output = self.math_output[0].lower()
+        # backwards compatibiltiy: validate/convert programatically set strings
+        if isinstance(self.settings.math_output, str):
+            self.settings.math_output = frontend.validate_math_output(
+                                            self.settings.math_output)
+        (self.math_output,
+         self.math_options) = self.settings.math_output
 
         # set up "parts" (cf. docs/api/publisher.html#publish-parts-details)
         #
@@ -1276,11 +1280,6 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_math(self, node, math_env=''):
         # Also called from `visit_math_block()` (with math_env != '').
-        if self.math_output not in self.math_tags:
-            self.document.reporter.error(
-                f'math-output format "{self.math_output}" not supported '
-                'falling back to "latex"', base_node=node)
-            self.math_output = 'latex'
         # LaTeX container
         wrappers = {
                     # math_mode: (inline, block)
@@ -1291,8 +1290,8 @@ class HTMLTranslator(nodes.NodeVisitor):
                    }
         wrapper = wrappers[self.math_output][math_env != '']
         if (self.math_output == 'mathml'
-            and (not self.math_output_options
-                 or self.math_output_options[0] == 'blahtexml')):
+            and (not self.math_options
+                 or self.math_options == 'blahtexml')):
             wrapper = None
         # get and wrap content
         math_code = node.astext().translate(unichar2tex.uni2tex_table)
@@ -1305,9 +1304,9 @@ class HTMLTranslator(nodes.NodeVisitor):
         if self.math_output in ('latex', 'mathjax'):
             math_code = self.encode(math_code)
         if self.math_output == 'mathjax' and not self.math_header:
-            try:
-                self.mathjax_url = self.math_output_options[0]
-            except IndexError:
+            if self.math_options:
+                self.mathjax_url = self.math_options
+            else:
                 self.document.reporter.warning(
                     'No MathJax URL specified, using local fallback '
                     '(see config.html).', base_node=node)
@@ -1317,11 +1316,11 @@ class HTMLTranslator(nodes.NodeVisitor):
                 self.mathjax_url += '?config=TeX-AMS_CHTML'
             self.math_header = [self.mathjax_script % self.mathjax_url]
         elif self.math_output == 'html':
-            if self.math_output_options and not self.math_header:
+            if self.math_options and not self.math_header:
                 self.math_header = [self.stylesheet_call(
                     utils.find_file_in_dirs(s, self.settings.stylesheet_dirs),
                     adjust_path=True)
-                    for s in self.math_output_options[0].split(',')]
+                    for s in self.math_options.split(',')]
             # TODO: fix display mode in matrices and fractions
             math2html.DocumentParameters.displaymode = (math_env != '')
             math_code = math2html.math2html(math_code)
@@ -1329,7 +1328,7 @@ class HTMLTranslator(nodes.NodeVisitor):
             if 'XHTML 1' in self.doctype:
                 self.doctype = self.doctype_mathml
                 self.content_type = self.content_type_mathml
-            converter = ' '.join(self.math_output_options).lower()
+            converter = self.math_options
             try:
                 if converter == 'latexml':
                     math_code = tex2mathml_extern.latexml(

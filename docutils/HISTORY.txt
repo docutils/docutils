@@ -34,6 +34,7 @@ Changes since 0.20.1
 
   - Allow `validate_*()` functions to be called with just the "value"
     argument but keep the legacy interface for use with optparse.
+  - New function `frontend.validate_math_output()`.
 
 * docutils/io.py
 

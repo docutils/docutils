@@ -252,6 +252,42 @@ def validate_comma_separated_list(setting, value=None, option_parser=None,
     return value
 
 
+def validate_math_output(setting, value=None, option_parser=None,
+                         config_parser=None, config_section=None):
+    """Check "math-output" setting, return list with "format" and "options".
+
+    See also https://docutils.sourceforge.io/docs/user/config.html#math-output
+
+    Argument list for compatibility with "optparse" module.
+    All arguments except `value` are ignored.
+    If there is only one positional argument, it is interpreted as `value`.
+    """
+    if value is None:
+        value = setting
+
+    formats = ('html', 'latex', 'mathml', 'mathjax')
+    tex2mathml_converters = ('', 'latexml', 'ttm', 'blahtexml', 'pandoc')
+
+    if not value:
+        return []
+    values = value.split(maxsplit=1)
+    format = values[0].lower()
+    try:
+        options = values[1]
+    except IndexError:
+        options = ''
+    if format not in formats:
+        raise LookupError(f'Unknown math output format: "{value}",\n'
+                          f'    choose from {formats}.')
+    if format == 'mathml':
+        converter = options.lower()
+        if converter not in tex2mathml_converters:
+            raise LookupError(f'MathML converter "{options}" not supported,\n'
+                              f'    choose from {tex2mathml_converters}.')
+        options = converter
+    return [format, options]
+
+
 def validate_url_trailing_slash(setting, value=None, option_parser=None,
                                 config_parser=None, config_section=None):
     # All arguments except `value` are ignored
