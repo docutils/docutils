@@ -38,7 +38,7 @@ A1B 2C3
 </pre>
 </td></tr>
 <tr><th class="docinfo-name">Contact:</th>
-<td><a class="first last reference external" href="mailto:goodger&#64;python.org">goodger&#64;python.org</a></td></tr>
+<td><a class="reference external first last" href="mailto:goodger&#64;python.org">goodger&#64;python.org</a></td></tr>
 <tr><th class="docinfo-name">Authors:</th>
 <td>Me
 <br />Myself
@@ -587,7 +587,9 @@ document (a document-wide <a class="reference internal" href="#table-of-contents
 <div class="section" id="images-and-figures">
 <h3><a class="toc-backref" href="#toc-entry-47">2.14.2&nbsp;&nbsp;&nbsp;Images and Figures</a></h3>
 <p>An image directive (also clickable -- a hyperlink reference):</p>
-<a class="reference internal image-reference" href="#directives"><img alt="../../../docs/user/rst/images/title.png" class="class1 class2" src="../../../docs/user/rst/images/title.png" style="width: 70%;" /></a>
+<a class="reference internal image-reference" href="#directives">
+<img alt="../../../docs/user/rst/images/title.png" class="class1 class2" src="../../../docs/user/rst/images/title.png" style="width: 70%;" />
+</a>
 <p>Image with multiple IDs:</p>
 <span id="image-target-2"></span><span id="image-target-1"></span><img alt="../../../docs/user/rst/images/biohazard.png" id="image-target-3" src="../../../docs/user/rst/images/biohazard.png" />
 <p>A centered image:</p>
@@ -1314,7 +1316,9 @@ This image is scaled, in an <tt class="docutils literal">&lt;img&gt;</tt> node
 but clipped in an <tt class="docutils literal">&lt;object&gt;</tt> or SVG <tt class="docutils literal">&lt;image&gt;</tt> node.</p>
 <object class="align-left" data="../../../docs/user/rst/images/biohazard-scaling.svg" style="height: 1.2em;" type="image/svg+xml">../../../docs/user/rst/images/biohazard-scaling.svg</object>
 <p>Image with <cite>viewBox</cite>, 1.2&nbsp;em high, left aligned and <object data="../../../docs/user/rst/images/biohazard-scaling.svg" style="height: 1.2em;" type="image/svg+xml">inline-svg</object> inline.</p>
-<a class="reference internal image-reference" href="#svg-images"><object class="align-left" data="../../../docs/user/rst/images/biohazard-scaling.svg" style="width: 15mm; height: 5mm;" type="image/svg+xml">../../../docs/user/rst/images/biohazard-scaling.svg</object></a>
+<a class="reference internal image-reference" href="#svg-images">
+<object class="align-left" data="../../../docs/user/rst/images/biohazard-scaling.svg" style="width: 15mm; height: 5mm;" type="image/svg+xml">../../../docs/user/rst/images/biohazard-scaling.svg</object>
+</a>
 <p>Image with <cite>viewBox</cite>, 5&nbsp;mm x 15&nbsp;mm, with hyperlink reference set in rST.</p>
 <object class="align-left" data="../../../docs/user/rst/images/biohazard.svg" style="width: 15mm; height: 5mm;" type="image/svg+xml">../../../docs/user/rst/images/biohazard.svg</object>
 <p>Image without <cite>viewBox</cite>, 5&nbsp;mm x 15&nbsp;mm.</p>
@@ -1324,7 +1328,9 @@ but clipped in an <tt class="docutils literal">&lt;object&gt;</tt> or SVG <tt cl
 <p>Image with embedded bitmap and hyperlink, without <cite>viewBox</cite>.
 Does not scale in <tt class="docutils literal">&lt;object&gt;</tt> node.</p>
 <object class="align-left" data="../input/data/object-with-hyperlink.svg" style="width: 2.4em;" type="image/svg+xml">../input/data/object-with-hyperlink.svg</object>
-<a class="reference external image-reference" href="http://oreillymedia.github.io/svg-essentials-examples/ch14/animated_clock_js.svg"><object class="align-right" data="http://oreillymedia.github.io/svg-essentials-examples/ch14/animated_clock_js.svg" style="height: 3em;" type="image/svg+xml">[animated clock]</object></a>
+<a class="reference external image-reference" href="http://oreillymedia.github.io/svg-essentials-examples/ch14/animated_clock_js.svg">
+<object class="align-right" data="http://oreillymedia.github.io/svg-essentials-examples/ch14/animated_clock_js.svg" style="height: 3em;" type="image/svg+xml">[animated clock]</object>
+</a>
 <p>Hyperlinks and script actions attached to SVG elements work in images
 included as <tt class="docutils literal">&lt;object&gt;</tt> but fail in images included as <tt class="docutils literal">&lt;img&gt;</tt>.
 Hyperlinks specified in the rST (<tt class="docutils literal">:target:</tt> directive option) always

@@ -355,8 +355,9 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.author_in_authors = False  # for html4css1
         self.math_header = []
         self.messages = []
-        """List of system_message nodes with errors, warnings, ...
-        about problems during writing. Clean up in `depart_*()` methods!
+        """Queue of system_message nodes (writing issues).
+
+        Call `report_messages()` in `depart_*_block()` methods to clean up!
         """
 
     def astext(self):
@@ -399,9 +400,9 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def image_size(self, node):
         # Determine the image size from the node arguments or the image file.
-        # Return a (hopefully empty) list of system messages
-        # and a string that is suitable as "style" argument value,
-        # e.g., ``([], 'width: 4px; height: 2em;')``.
+        # Return a size declaration suitable as "style" argument value,
+        # e.g., ``'width: 4px; height: 2em;'``.
+        # TODO: consider feature-request #102?
         size = [node.get('width', None), node.get('height', None)]
         if 'scale' in node:
             if 'width' not in node or 'height' not in node:
@@ -440,14 +441,14 @@ class HTMLTranslator(nodes.NodeVisitor):
                     match = re.match(r'([0-9.]+)(\S*)$', size[i])
                     size[i] = '%s%s' % (factor * float(match.group(1)),
                                         match.group(2))
-        style_arg = []
-        for i, _name in enumerate(('width', 'height')):
+        size_declarations = []
+        for i, dimension in enumerate(('width', 'height')):
             if size[i]:
                 # Interpret unitless values as pixels:
                 if re.match(r'^[0-9.]+$', size[i]):
                     size[i] += 'px'
-                style_arg.append('%s: %s;' % (_name, size[i]))
-        return ' '.join(style_arg)
+                size_declarations.append(f'{dimension}: {size[i]};')
+        return ' '.join(size_declarations)
 
     def stylesheet_call(self, path, adjust_path=None):
         """Return code to reference or embed stylesheet file `path`"""
@@ -1099,13 +1100,15 @@ class HTMLTranslator(nodes.NodeVisitor):
         uri = node['uri']
         alt = node.get('alt', uri)
         mimetype = mimetypes.guess_type(uri)[0]
+        element = ''  # the HTML element (including potential children)
         atts = {}  # attributes for the HTML tag
+        # alignment is handled by CSS rules
         if 'align' in node:
             atts['class'] = 'align-%s' % node['align']
         # set size with "style" attribute (more universal, accepts dimensions)
-        size = self.image_size(node)
-        if size:
-            atts['style'] = size
+        size_declaration = self.image_size(node)
+        if size_declaration:
+            atts['style'] = size_declaration
 
         # ``:loading:`` option (embed, link, lazy), default from setting,
         # exception: only embed videos if told via directive option
@@ -1132,33 +1135,36 @@ class HTMLTranslator(nodes.NodeVisitor):
                 data64 = base64.b64encode(imagedata).decode()
                 uri = f'data:{mimetype};base64,{data64}'
 
-        # No newlines around inline images or if surrounded by <a>...</a>.
-        if (isinstance(node.parent, nodes.TextElement)
-            or (isinstance(node.parent, nodes.reference)
-                and not isinstance(node.parent.parent, nodes.TextElement))):
-            suffix = ''
-        else:
+        # No newlines around inline images (but all images may be nested
+        # in a `reference` node which is a `TextElement` instance):
+        if (not isinstance(node.parent, nodes.TextElement)
+            or isinstance(node.parent, nodes.reference)
+            and not isinstance(node.parent.parent, nodes.TextElement)):
             suffix = '\n'
+        else:
+            suffix = ''
+
         if mimetype in self.videotypes:
             atts['title'] = alt
-            alt_link = node['uri']  # use original URI also when embedding
             if 'controls' in node['classes']:
                 node['classes'].remove('controls')
                 atts['controls'] = 'controls'
-            tag = (self.starttag(node, "video", suffix, src=uri, **atts)
-                   + f'<a href="{alt_link}">{alt}</a>{suffix}</video>{suffix}')
+            element = (self.starttag(node, "video", suffix, src=uri, **atts)
+                       + f'<a href="{node["uri"]}">{alt}</a>{suffix}'
+                       + f'</video>{suffix}')
         elif mimetype == 'application/x-shockwave-flash':
             atts['type'] = mimetype
-            # do NOT use an empty tag: incorrect rendering in browsers
-            tag = (self.starttag(node, 'object', '', data=uri, **atts)
-                   + alt + '</object>' + suffix)
+            element = (self.starttag(node, 'object', '', data=uri, **atts)
+                       + alt + '</object>' + suffix)
         else:
             atts['alt'] = alt
-            tag = self.emptytag(node, 'img', suffix, src=uri, **atts)
-        self.body.append(tag)
+            element = self.emptytag(node, 'img', suffix, src=uri, **atts)
+        self.body.append(element)
+        if suffix:  # block-element
+            self.report_messages()
 
     def depart_image(self, node):
-        self.report_messages()
+        pass
 
     def visit_inline(self, node):
         self.body.append(self.starttag(node, 'span', ''))
@@ -1366,7 +1372,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         raise nodes.SkipChildren
 
     def depart_math(self, node):
-        self.report_messages()
+        pass
 
     def visit_math_block(self, node):
         math_env = pick_math_environment(node.astext())
@@ -1456,6 +1462,8 @@ class HTMLTranslator(nodes.NodeVisitor):
         if not (isinstance(node.parent, (nodes.list_item, nodes.entry))
                 and (len(node.parent) == 1)):
             self.body.append('\n')
+        if not isinstance(node.parent, nodes.system_message):
+            self.report_messages()
 
     def visit_problematic(self, node):
         if node.hasattr('refid'):
@@ -1484,25 +1492,25 @@ class HTMLTranslator(nodes.NodeVisitor):
         raise nodes.SkipNode
 
     def visit_reference(self, node):
-        atts = {'class': 'reference'}
+        atts = {'classes': ['reference']}
+        suffix = ''
         if 'refuri' in node:
             atts['href'] = node['refuri']
             if (self.settings.cloak_email_addresses
                 and atts['href'].startswith('mailto:')):
                 atts['href'] = self.cloak_mailto(atts['href'])
                 self.in_mailto = True
-            atts['class'] += ' external'
+            atts['classes'].append('external')
         else:
             assert 'refid' in node, \
                    'References must have "refuri" or "refid" attribute.'
             atts['href'] = '#' + node['refid']
-            atts['class'] += ' internal'
+            atts['classes'].append('internal')
         if len(node) == 1 and isinstance(node[0], nodes.image):
-            atts['class'] += ' image-reference'
+            atts['classes'].append('image-reference')
         if not isinstance(node.parent, nodes.TextElement):
-            assert len(node) == 1 and isinstance(node[0], nodes.image)
-            atts['class'] += ' image-reference'
-        self.body.append(self.starttag(node, 'a', '', **atts))
+            suffix = '\n'
+        self.body.append(self.starttag(node, 'a', suffix, **atts))
 
     def depart_reference(self, node):
         self.body.append('</a>')

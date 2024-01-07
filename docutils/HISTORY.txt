@@ -99,7 +99,11 @@ Changes since 0.20.1
 
 * docutils/writers/_html_base.py
 
-  - Support for video inclusion via `<video>` tags
+  - Stop setting the "footnote-reference" class value for footnote references.
+    Since 0.18, you can use the CSS selector ``[role="doc-noteref"]``.
+  - Support reading/embedding images also with "file:" URI.
+  - Warn, if image scaling fails because the image file cannot be read.
+  - Support video inclusion via `<video>` tags
     (moved here from writers/html5_polyglot/__init__.py).
   - New auxiliary function `HTMLTranslator.uri2imagepath()`
     ensures the image file can also be read when
@@ -107,6 +111,10 @@ Changes since 0.20.1
   - Consider the root-prefix_ setting when converting an image URI
     to a local filesystem path.
   - New <image> attribute "loading" overrides "image-loading" setting.
+  - Write system messages for errors/warnings during the writing stage
+    (image transformations, math content conversion, ...).
+
+  .. _root-prefix: docs/user/config.html#root-prefix
 
 * docutils/writers/latex2e/__init__.py
 
@@ -135,17 +143,6 @@ Changes since 0.20.1
 
     __ docs/user/config.html#theme-url
     __ docs/user/config.html#theme
-
-* docutils/writers/_html_base.py
-
-  - Stop setting the "footnote-reference" class value for footnote references.
-    Since 0.18, you can use the CSS selector ``[role="doc-noteref"]``.
-
-  - Support reading/embedding images with "file:" URIs.
-
-  - Warn, if image scaling fails because the image file cannot be read.
-
-.. _root-prefix: docs/user/config.html#root-prefix
 
 
 Release 0.20.1 (2023-05-17)

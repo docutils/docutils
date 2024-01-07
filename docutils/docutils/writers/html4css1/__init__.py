@@ -595,13 +595,13 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
                 del atts[att_name]
         if style:
             atts['style'] = ' '.join(style)
-        if (isinstance(node.parent, nodes.TextElement)
-            or (isinstance(node.parent, nodes.reference)
-                and not isinstance(node.parent.parent, nodes.TextElement))):
-            # Inline context or surrounded by <a>...</a>.
-            suffix = ''
-        else:
+        # No newlines around inline images.
+        if (not isinstance(node.parent, nodes.TextElement)
+            or isinstance(node.parent, nodes.reference)
+            and not isinstance(node.parent.parent, nodes.TextElement)):
             suffix = '\n'
+        else:
+            suffix = ''
         if 'align' in node:
             atts['class'] = 'align-%s' % node['align']
         if ext in self.object_image_types:
@@ -753,6 +753,8 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
 
     def depart_paragraph(self, node):
         self.body.append(self.context.pop())
+        if not isinstance(node.parent, nodes.system_message):
+            self.report_messages()
 
     # ersatz for first/last pseudo-classes
     def visit_sidebar(self, node):
