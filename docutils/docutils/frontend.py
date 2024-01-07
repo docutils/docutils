@@ -27,10 +27,10 @@ Exports the following classes:
 Also exports the following functions:
 
 Interface function:
-   `get_default_settings()`.  New in 0.19.
+  `get_default_settings()`.  New in 0.19.
 
 Option callbacks:
-   `store_multiple()`, `read_config_file()`. Deprecated.
+  `store_multiple()`, `read_config_file()`. Deprecated.
 
 Setting validators:
   `validate_encoding()`, `validate_encoding_error_handler()`,
@@ -90,8 +90,13 @@ def read_config_file(option, opt, value, parser):
     parser.values.update(new_settings, parser)
 
 
-def validate_encoding(setting, value, option_parser,
+def validate_encoding(setting, value=None, option_parser=None,
                       config_parser=None, config_section=None):
+    # All arguments except `value` are ignored
+    # (kept for compatibility with "optparse" module).
+    # If there is only one positional argument, it is interpreted as `value`.
+    if value is None:
+        value = setting
     if value == '':
         return None  # allow overwriting a config file value
     try:
@@ -102,8 +107,13 @@ def validate_encoding(setting, value, option_parser,
     return value
 
 
-def validate_encoding_error_handler(setting, value, option_parser,
+def validate_encoding_error_handler(setting, value=None, option_parser=None,
                                     config_parser=None, config_section=None):
+    # All arguments except `value` are ignored
+    # (kept for compatibility with "optparse" module).
+    # If there is only one positional argument, it is interpreted as `value`.
+    if value is None:
+        value = setting
     try:
         codecs.lookup_error(value)
     except LookupError:
@@ -119,13 +129,11 @@ def validate_encoding_and_error_handler(
     setting, value, option_parser, config_parser=None, config_section=None):
     """
     Side-effect: if an error handler is included in the value, it is inserted
-    into the appropriate place as if it was a separate setting/option.
+    into the appropriate place as if it were a separate setting/option.
     """
     if ':' in value:
         encoding, handler = value.split(':')
-        validate_encoding_error_handler(
-            setting + '_error_handler', handler, option_parser,
-            config_parser, config_section)
+        validate_encoding_error_handler(handler)
         if config_parser:
             config_parser.set(config_section, setting + '_error_handler',
                               handler)
@@ -133,61 +141,87 @@ def validate_encoding_and_error_handler(
             setattr(option_parser.values, setting + '_error_handler', handler)
     else:
         encoding = value
-    validate_encoding(setting, encoding, option_parser,
-                      config_parser, config_section)
-    return encoding
+    return validate_encoding(encoding)
 
 
-def validate_boolean(setting, value, option_parser,
+def validate_boolean(setting, value=None, option_parser=None,
                      config_parser=None, config_section=None):
     """Check/normalize boolean settings:
          True:  '1', 'on', 'yes', 'true'
          False: '0', 'off', 'no','false', ''
+
+    All arguments except `value` are ignored
+    (kept for compatibility with "optparse" module).
+    If there is only one positional argument, it is interpreted as `value`.
     """
+    if value is None:
+        value = setting
     if isinstance(value, bool):
         return value
     try:
-        return option_parser.booleans[value.strip().lower()]
+        return OptionParser.booleans[value.strip().lower()]
     except KeyError:
         raise LookupError('unknown boolean value: "%s"' % value)
 
 
-def validate_ternary(setting, value, option_parser,
+def validate_ternary(setting, value=None, option_parser=None,
                      config_parser=None, config_section=None):
     """Check/normalize three-value settings:
          True:  '1', 'on', 'yes', 'true'
          False: '0', 'off', 'no','false', ''
          any other value: returned as-is.
+
+    All arguments except `value` are ignored
+    (kept for compatibility with "optparse" module).
+    If there is only one positional argument, it is interpreted as `value`.
     """
+    if value is None:
+        value = setting
     if isinstance(value, bool) or value is None:
         return value
     try:
-        return option_parser.booleans[value.strip().lower()]
+        return OptionParser.booleans[value.strip().lower()]
     except KeyError:
         return value
 
 
-def validate_nonnegative_int(setting, value, option_parser,
+def validate_nonnegative_int(setting, value=None, option_parser=None,
                              config_parser=None, config_section=None):
+    # All arguments except `value` are ignored
+    # (kept for compatibility with "optparse" module).
+    # If there is only one positional argument, it is interpreted as `value`.
+    if value is None:
+        value = setting
     value = int(value)
     if value < 0:
         raise ValueError('negative value; must be positive or zero')
     return value
 
 
-def validate_threshold(setting, value, option_parser,
+def validate_threshold(setting, value=None, option_parser=None,
                        config_parser=None, config_section=None):
+    # All arguments except `value` are ignored
+    # (kept for compatibility with "optparse" module).
+    # If there is only one positional argument, it is interpreted as `value`.
+    if value is None:
+        value = setting
     try:
         return int(value)
     except ValueError:
         try:
-            return option_parser.thresholds[value.lower()]
+            return OptionParser.thresholds[value.lower()]
         except (KeyError, AttributeError):
             raise LookupError('unknown threshold: %r.' % value)
 
 
 def validate_colon_separated_string_list(
-    setting, value, option_parser, config_parser=None, config_section=None):
+        setting, value=None, option_parser=None,
+        config_parser=None, config_section=None):
+    # All arguments except `value` are ignored
+    # (kept for compatibility with "optparse" module).
+    # If there is only one positional argument, it is interpreted as `value`.
+    if value is None:
+        value = setting
     if not isinstance(value, list):
         value = value.split(':')
     else:
@@ -196,10 +230,16 @@ def validate_colon_separated_string_list(
     return value
 
 
-def validate_comma_separated_list(setting, value, option_parser,
+def validate_comma_separated_list(setting, value=None, option_parser=None,
                                   config_parser=None, config_section=None):
     """Check/normalize list arguments (split at "," and strip whitespace).
+
+    All arguments except `value` are ignored
+    (kept for compatibility with "optparse" module).
+    If there is only one positional argument, it is interpreted as `value`.
     """
+    if value is None:
+        value = setting
     # `value` may be ``bytes``, ``str``, or a ``list`` (when  given as
     # command line option and "action" is "append").
     if not isinstance(value, list):
@@ -212,8 +252,13 @@ def validate_comma_separated_list(setting, value, option_parser,
     return value
 
 
-def validate_url_trailing_slash(
-    setting, value, option_parser, config_parser=None, config_section=None):
+def validate_url_trailing_slash(setting, value=None, option_parser=None,
+                                config_parser=None, config_section=None):
+    # All arguments except `value` are ignored
+    # (kept for compatibility with "optparse" module).
+    # If there is only one positional argument, it is interpreted as `value`.
+    if value is None:
+        value = setting
     if not value:
         return './'
     elif value.endswith('/'):
@@ -222,8 +267,13 @@ def validate_url_trailing_slash(
         return value + '/'
 
 
-def validate_dependency_file(setting, value, option_parser,
+def validate_dependency_file(setting, value=None, option_parser=None,
                              config_parser=None, config_section=None):
+    # All arguments except `value` are ignored
+    # (kept for compatibility with "optparse" module).
+    # If there is only one positional argument, it is interpreted as `value`.
+    if value is None:
+        value = setting
     try:
         return utils.DependencyList(value)
     except OSError:
@@ -231,11 +281,15 @@ def validate_dependency_file(setting, value, option_parser,
         return utils.DependencyList(None)
 
 
-def validate_strip_class(setting, value, option_parser,
+def validate_strip_class(setting, value=None, option_parser=None,
                          config_parser=None, config_section=None):
+    # All arguments except `value` are ignored
+    # (kept for compatibility with "optparse" module).
+    # If there is only one positional argument, it is interpreted as `value`.
+    if value is None:
+        value = setting
     # value is a comma separated string list:
-    value = validate_comma_separated_list(setting, value, option_parser,
-                                          config_parser, config_section)
+    value = validate_comma_separated_list(value)
     # validate list elements:
     for cls in value:
         normalized = docutils.nodes.make_id(cls)
@@ -245,15 +299,20 @@ def validate_strip_class(setting, value, option_parser,
     return value
 
 
-def validate_smartquotes_locales(setting, value, option_parser,
+def validate_smartquotes_locales(setting, value=None, option_parser=None,
                                  config_parser=None, config_section=None):
     """Check/normalize a comma separated list of smart quote definitions.
 
-    Return a list of (language-tag, quotes) string tuples."""
+    Return a list of (language-tag, quotes) string tuples.
 
+    All arguments except `value` are ignored
+    (kept for compatibility with "optparse" module).
+    If there is only one positional argument, it is interpreted as `value`.
+    """
+    if value is None:
+        value = setting
     # value is a comma separated string list:
-    value = validate_comma_separated_list(setting, value, option_parser,
-                                          config_parser, config_section)
+    value = validate_comma_separated_list(value)
     # validate list elements
     lc_quotes = []
     for item in value:
