@@ -30,6 +30,11 @@ Changes since 0.20.1
 
   - The <image> element accepts the new attribute "loading".
 
+* docutils/frontend.py
+
+  - Allow `validate_*()` functions to be called with just the "value"
+    argument but keep the legacy interface for use with optparse.
+
 * docutils/io.py
 
   - Simpler and more secure `input encoding`_ default behaviour:
