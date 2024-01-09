@@ -545,7 +545,9 @@ class HTMLTranslator(nodes.NodeVisitor):
         """Construct and return an XML-compatible empty tag."""
         return self.starttag(node, tagname, suffix, empty=True, **attributes)
 
-    def report_messages(self):
+    def report_messages(self, node):
+        if isinstance(node.parent, (nodes.system_message, nodes.entry)):
+            return
         while self.messages:
             message = self.messages.pop(0)
             if self.settings.report_level <= message['level']:
@@ -1165,7 +1167,7 @@ class HTMLTranslator(nodes.NodeVisitor):
             element = self.emptytag(node, 'img', suffix, src=uri, **atts)
         self.body.append(element)
         if suffix:  # block-element
-            self.report_messages()
+            self.report_messages(node)
 
     def depart_image(self, node):
         pass
@@ -1379,7 +1381,7 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def depart_math_block(self, node):
         self.body.append('\n')
-        self.report_messages()
+        self.report_messages(node)
 
     # Meta tags: 'lang' attribute replaced by 'xml:lang' in XHTML 1.1
     # HTML5/polyglot recommends using both
@@ -1461,8 +1463,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         if not (isinstance(node.parent, (nodes.list_item, nodes.entry))
                 and (len(node.parent) == 1)):
             self.body.append('\n')
-        if not isinstance(node.parent, nodes.system_message):
-            self.report_messages()
+            self.report_messages(node)
 
     def visit_problematic(self, node):
         if node.hasattr('refid'):
@@ -1649,6 +1650,7 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def depart_table(self, node):
         self.body.append('</table>\n')
+        self.report_messages(node)
 
     def visit_target(self, node):
         if ('refuri' not in node
