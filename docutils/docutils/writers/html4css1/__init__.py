@@ -753,8 +753,7 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
 
     def depart_paragraph(self, node):
         self.body.append(self.context.pop())
-        if not isinstance(node.parent, nodes.system_message):
-            self.report_messages()
+        self.report_messages(node)
 
     # ersatz for first/last pseudo-classes
     def visit_sidebar(self, node):
