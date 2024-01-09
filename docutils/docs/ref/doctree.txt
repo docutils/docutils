@@ -172,8 +172,8 @@ Category members: `\<admonition>`_, `\<attention>`_, `\<block_quote>`_,
 `\<rubric>`_, `\<substitution_definition>`_, `\<system_message>`_,
 `\<table>`_, `\<target>`_, `\<tip>`_, `\<warning>`_
 
-__ simple body elements
-__ compound body elements
+__ `simple body elements`_
+__ `compound body elements`_
 
 
 Simple Body Elements

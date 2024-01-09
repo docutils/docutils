@@ -1054,41 +1054,47 @@ And in text:
 Test ``\left``, ``\right``, and the  \bigl/\bigr, … size commands
 with all extensible delimiters.
 
+pairing:
+
 .. math::
-   \left.(b\right)\ \bigl(b\Bigr)\ \biggl(b\Biggr)
-   \quad
-   \left.[b\right]\ \bigl[b\Bigr]\ \biggl[b\Biggr]
-   \quad
-   \left.\{b\right \} \ \bigl\{b\Bigr \} \ \biggl\{b\Biggr \}
-   \quad
-   \left.\langle b\right\rangle\ \bigl\langle b\Bigr\rangle\ \biggl\langle b\Biggr\rangle
+   \left.(       b \right)       \ \bigl(       b \Bigr)       \ \biggl(       b \Biggr)
+   \quad                                                                         
+   \left.[       b \right]       \ \bigl[       b \Bigr]       \ \biggl[       b \Biggr]
+   \quad                                                                         
+   \left.\{      b \right\}      \ \bigl\{      b \Bigr\}      \ \biggl\{      b \Biggr\}
+   \quad                                                                         
+   \left.\langle b \right\rangle \ \bigl\langle b \Bigr\rangle \ \biggl\langle b \Biggr\rangle
 
-   \left.\lceil b\right\rceil\ \bigl\lceil b\Bigr\rceil\ \biggl\lceil b\Biggr\rceil
+   \left.\lceil  b \right\rceil  \ \bigl\lceil  b \Bigr\rceil  \ \biggl\lceil  b \Biggr\rceil
+   \quad                                          
+   \left.\lfloor b \right\rfloor \ \bigl\lfloor b \Bigr\rfloor \ \biggl\lfloor b \Biggr\rfloor
    \quad
-   \left.\lfloor b\right\rfloor\ \bigl\lfloor b\Bigr\rfloor\ \biggl\lfloor b\Biggr\rfloor
+   \left.\lvert  b \right\rvert  \ \bigl\lvert  b \Bigr\rvert  \ \biggl\lvert  b \Biggr\rvert
    \quad
-   \left.\lvert b\right\rvert\ \bigl\lvert b\Bigr\rvert\
-   \biggl\lvert b\Biggr\rvert
-   \quad
-   \left.\lVert b\right\rVert\ \bigl\lVert b\Bigr\rVert\
-   \biggl\lVert b\Biggr\rVert
+   \left.\lVert  b \right\rVert  \ \bigl\lVert  b \Bigr\rVert  \ \biggl\lVert  b \Biggr\rVert
 
-   \left.\lgroup b\right\rgroup\ \bigl\lgroup b\Bigr\rgroup\ \biggl\lgroup b\Biggr\rgroup
+   \left.\lgroup b \right\rgroup \ \bigl\lgroup b \Bigr\rgroup \ \biggl\lgroup b \Biggr\rgroup
    \quad
-   \left.\lmoustache b\right\rmoustache\ \bigl\lmoustache b\Bigr\rmoustache\ \biggl\lmoustache b\Biggr\rmoustache
+   \left.\lmoustache b \right\rmoustache \ \bigl\lmoustache b \Bigr\rmoustache \ \biggl\lmoustache b \Biggr\rmoustache
    \quad
-   \left./b\right\backslash\ \bigl/b\Bigr\backslash\ \biggl/b\Biggr\backslash
+   \left./           b \right\backslash  \ \bigl/           b \Bigr\backslash  \ \biggl/           b \Biggr\backslash
 
-   \left.|b\right\|\ \bigl|b\Bigr\|\ \biggl|b\Biggr\|
-   \quad
-   \left.\vert b\right\Vert\ \bigl\vert b\Bigr\Vert\ \biggl\vert b\Biggr\Vert
-   \quad
-   \left.\arrowvert b\right\Arrowvert\ \bigl\arrowvert b\Bigr\Arrowvert\ \biggl\arrowvert b\Biggr\Arrowvert
-   \quad
-   \left.\bracevert b\right\bracevert\ \bigl\bracevert b\Bigr\bracevert\ \biggl\bracevert b\Biggr\bracevert
-   \quad
-   \left.\vert b\right\Vert\ \bigl\vert b\Bigr\Vert\ \biggl\vert b\Biggr\Vert
+non-pairing:
 
+.. math::
+   \left.|          b \right|          \ \bigl|          b \Bigr|          \ \biggl|          b \Biggr|
+   \quad                                                                                      
+   \left.\vert      b \right\vert      \ \bigl\vert      b \Bigr\vert      \ \biggl\vert      b \Biggr\vert
+   \quad                                                                                      
+   \left.\|         b \right\|         \ \bigl\|         b \Bigr\|         \ \biggl\|         b \Biggr\|
+   \quad                                                                                      
+   \left.\Vert      b \right\Vert      \ \bigl\Vert      b \Bigr\Vert      \ \biggl\Vert      b \Biggr\Vert
+
+   \left.\arrowvert b \right\arrowvert \ \bigl\arrowvert b \Bigr\arrowvert \ \biggl\arrowvert b \Biggr\arrowvert
+   \quad
+   \left.\Arrowvert b \right\Arrowvert \ \bigl\Arrowvert b \Bigr\Arrowvert \ \biggl\Arrowvert b \Biggr\Arrowvert
+   \quad
+   \left.\bracevert b \right\bracevert \ \bigl\bracevert b \Bigr\bracevert \ \biggl\bracevert b \Biggr\bracevert
 
 Variable-sized operators:
 
