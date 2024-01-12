@@ -1079,8 +1079,7 @@ class Translator(nodes.NodeVisitor):
         if not self._has_a_table:
             self._has_a_table = True
             # the comment to hint that preprocessor tbl should be called
-            self.head.insert(0, "'\\\" t\n") 
-            # single apostrophe, backslash, double apostroph, blank, character-t
+            self.head.insert(0, "'\\\" t\n")  # ``'\" t`` + newline
 
     def depart_table(self, node):
         self.ensure_eol()
