@@ -936,7 +936,7 @@ MathML), leaving some symbols unchanged:
 Without additional packages, LaTeX supports "blackboard-bold" only for
 capital Latin letters.
 Unicode supports also small Latin letters, some Greek letters, and digits:
-`\mathbb{A \ldots Z a \ldots z} 
+`\mathbb{A \ldots Z a \ldots z}
 \mathbb\Gamma \mathbb{\Pi} \mathbb {\Sigma} \mathbb\gamma \mathbb \pi
 \mathbb{0 \ldots 9}`.
 
@@ -1058,15 +1058,15 @@ pairing:
 
 .. math::
    \left.(       b \right)       \ \bigl(       b \Bigr)       \ \biggl(       b \Biggr)
-   \quad                                                                         
+   \quad
    \left.[       b \right]       \ \bigl[       b \Bigr]       \ \biggl[       b \Biggr]
-   \quad                                                                         
+   \quad
    \left.\{      b \right\}      \ \bigl\{      b \Bigr\}      \ \biggl\{      b \Biggr\}
-   \quad                                                                         
+   \quad
    \left.\langle b \right\rangle \ \bigl\langle b \Bigr\rangle \ \biggl\langle b \Biggr\rangle
 
    \left.\lceil  b \right\rceil  \ \bigl\lceil  b \Bigr\rceil  \ \biggl\lceil  b \Biggr\rceil
-   \quad                                          
+   \quad
    \left.\lfloor b \right\rfloor \ \bigl\lfloor b \Bigr\rfloor \ \biggl\lfloor b \Biggr\rfloor
    \quad
    \left.\lvert  b \right\rvert  \ \bigl\lvert  b \Bigr\rvert  \ \biggl\lvert  b \Biggr\rvert
@@ -1083,11 +1083,11 @@ non-pairing:
 
 .. math::
    \left.|          b \right|          \ \bigl|          b \Bigr|          \ \biggl|          b \Biggr|
-   \quad                                                                                      
+   \quad
    \left.\vert      b \right\vert      \ \bigl\vert      b \Bigr\vert      \ \biggl\vert      b \Biggr\vert
-   \quad                                                                                      
+   \quad
    \left.\|         b \right\|         \ \bigl\|         b \Bigr\|         \ \biggl\|         b \Biggr\|
-   \quad                                                                                      
+   \quad
    \left.\Vert      b \right\Vert      \ \bigl\Vert      b \Bigr\Vert      \ \biggl\Vert      b \Biggr\Vert
 
    \left.\arrowvert b \right\arrowvert \ \bigl\arrowvert b \Bigr\arrowvert \ \biggl\arrowvert b \Biggr\arrowvert

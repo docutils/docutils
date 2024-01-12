@@ -456,3 +456,6 @@ Presentations
   .. _rst2outline: https://docutils.sourceforge.io/sandbox/rst2outline/
 
 * Pandoc_ can also be used to produce slides
+
+.. TODO: update with input from
+   https://stackoverflow.com/questions/2746692/restructuredtext-tool-support
