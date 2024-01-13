@@ -26,7 +26,7 @@ the API is not settled and may change with any minor Docutils version.
 import re
 import unicodedata
 
-from docutils.utils.math import tex2unichar, toplevel_code
+from docutils.utils.math import MathError, tex2unichar, toplevel_code
 
 
 # Character data
@@ -399,7 +399,7 @@ class math:
         `None`.
         """
         if self.full():
-            raise SyntaxError('Node %s already full!' % self)
+            raise MathError(f'Node {self} already full!')
         self.children.append(child)
         child.parent = self
         if self.full():
@@ -620,7 +620,7 @@ class mover(msup): pass
 # munder(mi('lim'), mo('-'), accent=False)
 # >>> mu.append(mi('lim'))
 # Traceback (most recent call last):
-# SyntaxError: Node munder(mi('lim'), mo('-'), accent=False) already full!
+# docutils.utils.math.MathError: Node munder(mi('lim'), mo('-'), accent=False) already full!
 # >>> munder(mo('-'), mi('lim'), accent=False, switch=True).toprettyxml()
 # '<munder accent="false">\n  <mi>lim</mi>\n  <mo>-</mo>\n</munder>'
 
@@ -759,7 +759,7 @@ def tex_group(string):
         if nest_level == 0:
             break
     else:
-        raise SyntaxError('Group without closing bracket')
+        raise MathError('Group without closing bracket!')
     return string[1:split_index-1], string[split_index:]
 
 
@@ -821,17 +821,19 @@ def tex_optarg(string):
     try:
         return m.group('optarg'), m.group('remainder')
     except AttributeError:
-        raise SyntaxError('Could not extract optional argument from %r' % string)
+        raise MathError(f'Could not extract optional argument from "{string}"!')
 
 # Test:
 # >>> tex_optarg(' [optional argument] after whitespace')
 # ('optional argument', ' after whitespace')
 # >>> tex_optarg('[missing right bracket')
 # Traceback (most recent call last):
-# SyntaxError: Could not extract optional argument from '[missing right bracket'
+#     ...
+# docutils.utils.math.MathError: Could not extract optional argument from "[missing right bracket"!
 # >>> tex_optarg('[group with [nested group]]')
 # Traceback (most recent call last):
-# SyntaxError: Could not extract optional argument from '[group with [nested group]]'
+#     ...
+# docutils.utils.math.MathError: Could not extract optional argument from "[group with [nested group]]"!
 
 
 def parse_latex_math(node, string):
@@ -888,7 +890,8 @@ def parse_latex_math(node, string):
         elif c in "+*=<>,.!?`';@":
             node = node.append(mo(c))
         else:
-            raise SyntaxError('Unsupported character: "%s"' % c)
+            raise MathError(f'Unsupported character: "{c}"!')
+            # TODO: append as <mi>?
     return tree
 
 # Test:
@@ -915,6 +918,9 @@ def parse_latex_math(node, string):
 # math(msub(mi('x'), mi('α')))
 # >>> parse_latex_math(math(), 'x_\\text{in}')
 # math(msub(mi('x'), mtext('in')))
+# >>> parse_latex_math(math(), '2⌘')
+# Traceback (most recent call last):
+# docutils.utils.math.MathError: Unsupported character: "⌘"!
 
 
 def handle_cmd(name, node, string):  # noqa: C901 TODO make this less complex
@@ -1053,8 +1059,8 @@ def handle_cmd(name, node, string):  # noqa: C901 TODO make this less complex
             try:
                 delimiter = stretchables[delimiter.lstrip('\\')]
             except KeyError:
-                raise SyntaxError('Unsupported "\\%s" delimiter "%s"!'
-                                  % (name, delimiter))
+                raise MathError(f'Unsupported "\\{name}" delimiter '
+                                f'"{delimiter}"!')
         if size:
             delimiter_attributes['maxsize'] = size
             delimiter_attributes['minsize'] = size
@@ -1070,6 +1076,7 @@ def handle_cmd(name, node, string):  # noqa: C901 TODO make this less complex
         return node, string
 
     if name == 'not':
+        # negation: LaTeX just overlays next symbol with "/".
         arg, string = tex_token(string)
         if arg == '{':
             return node, '{\\not ' + string
@@ -1077,7 +1084,7 @@ def handle_cmd(name, node, string):  # noqa: C901 TODO make this less complex
             try:
                 arg = operators[arg[1:]]
             except KeyError:
-                raise SyntaxError('\\not: Cannot negate: "%s"!'%arg)
+                raise MathError(rf'"\not" cannot negate: "{arg}"!')
         arg = unicodedata.normalize('NFC', arg+'\u0338')
         node = node.append(mo(arg))
         return node, string
@@ -1213,8 +1220,8 @@ def handle_cmd(name, node, string):  # noqa: C901 TODO make this less complex
         elif node.__class__.__name__ == 'math':
             node.append(new_node)
         else:
-            raise SyntaxError('Declaration "\\%s" must be first command '
-                              'in a group.' % name)
+            raise MathError(rf'Declaration "\{name}" must be first command '
+                            'in a group!')
         return new_node, string
 
     if name.endswith('limits'):
@@ -1232,7 +1239,7 @@ def handle_cmd(name, node, string):  # noqa: C901 TODO make this less complex
     if name == 'end':
         return end_environment(node, string)
 
-    raise SyntaxError('Unknown LaTeX command: \\' + name)
+    raise MathError(rf'Unknown LaTeX command "\{name}".')
 
 # >>> handle_cmd('left', math(), '[a\\right]')
 # (mrow(mo('[')), 'a\\right]')
@@ -1268,6 +1275,11 @@ def handle_cmd(name, node, string):  # noqa: C901 TODO make this less complex
 # (munderover(mo('⟵'), mi('α')), '{10}')
 # >>> handle_cmd('xleftarrow', math(), r'[\alpha=5]{10}')
 # (munderover(mo('⟵'), mrow(mi('α'), mo('='), mn('5'))), '{10}')
+# >>> handle_cmd('left', math(), '< a)')
+# Traceback (most recent call last):
+# docutils.utils.math.MathError: Unsupported "\left" delimiter "<"!
+# >>> handle_cmd('not', math(), '{< b} c') #  LaTeX ignores the braces, too.
+# (math(), '{\\not < b} c')
 
 
 def handle_script_or_limit(node, c, limits=''):
@@ -1327,7 +1339,7 @@ def begin_environment(node, string):
         node.append(mtable(mtr(entry), **attributes))
         node = entry
     else:
-        raise SyntaxError('Environment not supported!')
+        raise MathError(f'Environment "{name}" not supported!')
     return node, string
 
 
@@ -1342,7 +1354,7 @@ def end_environment(node, string):
         elif name == 'cases':
             node = node.close()
     else:
-        raise SyntaxError('Environment not supported!')
+        raise MathError(f'Environment "{name}" not supported!')
     return node, string
 
 
@@ -1386,15 +1398,15 @@ def align_attributes(rows):
 # {'class': 'align', 'displaystyle': True, 'columnalign': 'right left right left', 'columnspacing': '0 2em 0'}
 
 
-def tex2mathml(tex_math, inline=True):
+def tex2mathml(tex_math, as_block=False):
     """Return string with MathML code corresponding to `tex_math`.
 
-    Set `inline` to False for displayed math.
+    Set `as_block` to ``True`` for displayed formulas.
     """
     # Set up tree
     math_tree = math(xmlns='http://www.w3.org/1998/Math/MathML')
     node = math_tree
-    if not inline:
+    if as_block:
         math_tree['display'] = 'block'
         rows = toplevel_code(tex_math).split(r'\\')
         if len(rows) > 1:
@@ -1409,11 +1421,11 @@ def tex2mathml(tex_math, inline=True):
 # <math xmlns="http://www.w3.org/1998/Math/MathML">
 #   <mn>3</mn>
 # </math>
-# >>> print(tex2mathml('3', inline=False))
+# >>> print(tex2mathml('3', as_block=True))
 # <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
 #   <mn>3</mn>
 # </math>
-# >>> print(tex2mathml(r'a & b \\ c & d', inline=False))
+# >>> print(tex2mathml(r'a & b \\ c & d', as_block=True))
 # <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
 #   <mtable class="align" displaystyle="true" columnalign="right left" columnspacing="0">
 #     <mtr>
@@ -1434,7 +1446,7 @@ def tex2mathml(tex_math, inline=True):
 #     </mtr>
 #   </mtable>
 # </math>
-# >>> print(tex2mathml(r'a \\ b', inline=False))
+# >>> print(tex2mathml(r'a \\ b', as_block=True))
 # <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
 #   <mtable class="align" displaystyle="true">
 #     <mtr>
@@ -1450,6 +1462,10 @@ def tex2mathml(tex_math, inline=True):
 #   </mtable>
 # </math>
 
+
+# TODO: raise error if <sqrt> doesnot have a base character (missing children)
+# >> '\sqrt[3]'
+# Maybe also other nodes...
 
 # TODO: look up more symbols from tr25, e.g.
 #
