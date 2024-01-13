@@ -37,9 +37,11 @@ from docutils.utils.math import MathError, tex2unichar, toplevel_code
 
 # identifiers -> <mi>
 
-letters = tex2unichar.mathalpha
-letters['hbar'] = '\u210F'  # compatibility mapping to ℏ (\hslash).
-# (ħ LATIN SMALL LETTER H WITH STROKE is upright)
+letters = {'hbar': 'ℏ'}  # Compatibility mapping: \hbar resembles italic ħ
+#                          "unicode-math" unifies \hbar and \hslash to ℏ.
+letters.update(tex2unichar.mathalpha)
+
+ordinary = tex2unichar.mathord  # Miscellaneous symbols
 
 # special case: Capital Greek letters: (upright in TeX style)
 greek_capitals = {
@@ -83,6 +85,8 @@ modulo_functions = {
 
 
 # math font selection -> <mi mathvariant=...> or <mstyle mathvariant=...>
+# TODO: the "mathvariant" attribute is not supported by Chromium and
+# deprecated in the MathML specs (except with value "normal" for single chars).
 math_alphabets = {
     # 'cmdname':  'mathvariant value'        # package
     'boldsymbol': 'bold',
@@ -163,7 +167,6 @@ operators = {
 }
 operators.update(tex2unichar.mathbin)    # Binary symbols
 operators.update(tex2unichar.mathrel)    # Relation symbols, arrow symbols
-operators.update(tex2unichar.mathord)    # Miscellaneous symbols
 operators.update(tex2unichar.mathpunct)  # Punctuation
 operators.update(tex2unichar.mathop)     # Variable-sized symbols
 operators.update(stretchables)
@@ -952,6 +955,13 @@ def handle_cmd(name, node, string):  # noqa: C901 TODO make this less complex
         node = node.append(new_node)
         return node, string
 
+    if name in ordinary:
+        # <mi mathvariant="normal"> well supported by Chromium but
+        # Firefox 115.5.0 puts additional space after the symbol, e.g.
+        # <mi mathvariant="normal">∂</mi><mi>t</mi> looks like <mo>∂</mo>…
+        # return node.append(mi(ordinary[name], mathvariant='normal')), string
+        return node.append(mi(ordinary[name])), string
+
     if name in functions:
         # use <mi> followed by invisible function applicator character
         # (see https://www.w3.org/TR/MathML3/chapter3.html#presm.mi)
@@ -1377,6 +1387,7 @@ def tex_equation_columns(rows):
 
 
 # Return dictionary with attributes to style an <mtable> as align environment:
+# TODO: "columnalign" disregarded by Chromium and webkit
 def align_attributes(rows):
     atts = {'class': 'align',
             'displaystyle': True}
