@@ -69,7 +69,6 @@ mathalpha = {
     'eth': '\xf0',  # ð LATIN SMALL LETTER ETH
     'gamma': '\u03b3',  # γ GREEK SMALL LETTER GAMMA
     'gimel': '\u2137',  # ℷ GIMEL SYMBOL
-    'hslash': '\u210f',  # ℏ PLANCK CONSTANT OVER TWO PI
     'imath': '\u0131',  # ı LATIN SMALL LETTER DOTLESS I
     'iota': '\u03b9',  # ι GREEK SMALL LETTER IOTA
     'jmath': '\u0237',  # ȷ LATIN SMALL LETTER DOTLESS J
@@ -348,6 +347,7 @@ mathord = {
     'gemini': '\u264a',  # ♊ GEMINI
     'girl': '\u2640',  # ♀ FEMALE SIGN
     'heartsuit': '\u2661',  # ♡ WHITE HEART SUIT
+    'hslash': '\u210f',  # ℏ PLANCK CONSTANT OVER TWO PI
     'infty': '\u221e',  # ∞ INFINITY
     'invdiameter': '\u2349',  # ⍉ APL FUNCTIONAL SYMBOL CIRCLE BACKSLASH
     'invneg': '\u2310',  # ⌐ REVERSED NOT SIGN

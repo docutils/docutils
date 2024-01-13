@@ -94,6 +94,9 @@ Changes since 0.20.1
     abusing `SyntaxError` for LaTeX math syntax errors.
   - Unify interface of LaTeX -> MathML conversion functions.
     Improve error reporting.
+  - Elimitate side-effect of importing "latex2mathml" on "tex2unichar".
+  - Sort ℏ (`\hslash`) as "mathord", not "mathalpha".
+  - Use MathML element <mi> instead of <mo> for character class "mathord".
 
 * docutils/utils/roman.py
 
