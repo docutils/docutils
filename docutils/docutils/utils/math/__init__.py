@@ -26,6 +26,17 @@ It contains various modules for conversion between different math formats
 # =================================
 
 
+class MathError(ValueError):
+    """Exception for math syntax and math conversion errors.
+
+    The additional attribute `details` may hold a list of Docutils
+    nodes suitable as children for a ``<system_message>``.
+    """
+    def __init__(self, msg, details=[]):
+        super().__init__(msg)
+        self.details = details
+
+
 def toplevel_code(code):
     """Return string (LaTeX math) `code` with environments stripped out."""
     chunks = code.split(r'\begin{')

@@ -30,8 +30,9 @@ from docutils import frontend, languages, nodes, utils, writers
 from docutils.parsers.rst.directives import length_or_percentage_or_unitless
 from docutils.parsers.rst.directives.images import PIL
 from docutils.transforms import writer_aux
-from docutils.utils.math import (unichar2tex, pick_math_environment,
-                                 math2html, latex2mathml, tex2mathml_extern)
+from docutils.utils.math import (MathError, math2html, latex2mathml,
+                                 pick_math_environment,
+                                 tex2mathml_extern, unichar2tex)
 
 
 class Writer(writers.Writer):
@@ -1271,17 +1272,19 @@ class HTMLTranslator(nodes.NodeVisitor):
     # As there is no native HTML math support, we provide alternatives
     # for the math-output: LaTeX and MathJax simply wrap the content,
     # HTML and MathML also convert the math_code.
-    # HTML container
-    math_tags = {
-                 # math_output: (block, inline, class-arguments)
-                 'html': ('div', 'span', 'formula'),
-                 'latex': ('pre', 'tt', 'math'),
-                 'mathml': ('div', '', ''),
-                 'mathjax': ('div', 'span', 'math'),
-                }
+    # HTML element:
+    math_tags = {  # format: (inline, block, [class arguments])
+                 'html': ('span', 'div', ['formula']),
+                 'latex': ('tt', 'pre', ['math']),
+                 'mathjax': ('span', 'div', ['math']),
+                 'mathml': ('', 'div', []),
+                 'problematic': ('span', 'pre', ['math', 'problematic']),
+                 }
 
     def visit_math(self, node, math_env=''):
         # Also called from `visit_math_block()` (with math_env != '').
+        is_block = isinstance(node, nodes.math_block)
+        format = self.math_output
         # LaTeX container
         wrappers = {
                     # math_mode: (inline, block)
@@ -1289,6 +1292,7 @@ class HTMLTranslator(nodes.NodeVisitor):
                     'latex': (None, None),
                     'mathml': ('$%s$', '\\begin{%s}\n%s\n\\end{%s}'),
                     'mathjax': (r'\(%s\)', '\\begin{%s}\n%s\n\\end{%s}'),
+                    'problematic': (None, None),
                    }
         wrapper = wrappers[self.math_output][math_env != '']
         if (self.math_output == 'mathml'
@@ -1302,73 +1306,65 @@ class HTMLTranslator(nodes.NodeVisitor):
                 math_code = wrapper % (math_env, math_code, math_env)
             except TypeError:  # wrapper with one "%s"
                 math_code = wrapper % math_code
-        # settings and conversion
-        if self.math_output in ('latex', 'mathjax'):
-            math_code = self.encode(math_code)
-        if self.math_output == 'mathjax' and not self.math_header:
-            if self.math_options:
-                self.mathjax_url = self.math_options
-            else:
-                self.document.reporter.warning(
-                    'No MathJax URL specified, using local fallback '
-                    '(see config.html).', base_node=node)
-            # append configuration, if not already present in the URL:
-            # input LaTeX with AMS, output common HTML
-            if '?' not in self.mathjax_url:
-                self.mathjax_url += '?config=TeX-AMS_CHTML'
-            self.math_header = [self.mathjax_script % self.mathjax_url]
-        elif self.math_output == 'html':
+
+        # preamble code and conversion
+        if format == 'html':
             if self.math_options and not self.math_header:
-                self.math_header = [self.stylesheet_call(
-                    utils.find_file_in_dirs(s, self.settings.stylesheet_dirs),
-                    adjust_path=True)
+                self.math_header = [
+                    self.stylesheet_call(utils.find_file_in_dirs(
+                        s, self.settings.stylesheet_dirs), adjust_path=True)
                     for s in self.math_options.split(',')]
             # TODO: fix display mode in matrices and fractions
-            math2html.DocumentParameters.displaymode = (math_env != '')
+            math2html.DocumentParameters.displaymode = is_block
             math_code = math2html.math2html(math_code)
-        elif self.math_output == 'mathml':
+        elif format == 'latex':
+            math_code = self.encode(math_code)
+        elif format == 'mathjax':
+            if not self.math_header:
+                if self.math_options:
+                    self.mathjax_url = self.math_options
+                else:
+                    self.document.reporter.warning(
+                        'No MathJax URL specified, using local fallback '
+                        '(see config.html).', base_node=node)
+                # append MathJax configuration
+                # (input LaTeX with AMS, output common HTML):
+                if '?' not in self.mathjax_url:
+                    self.mathjax_url += '?config=TeX-AMS_CHTML'
+                self.math_header = [self.mathjax_script % self.mathjax_url]
+            math_code = self.encode(math_code)
+        elif format == 'mathml':
             if 'XHTML 1' in self.doctype:
                 self.doctype = self.doctype_mathml
                 self.content_type = self.content_type_mathml
-            converter = self.math_options
+            if self.math_options:
+                converter = getattr(tex2mathml_extern, self.math_options)
+            else:
+                converter = latex2mathml.tex2mathml
             try:
-                if converter == 'latexml':
-                    math_code = tex2mathml_extern.latexml(
-                                    math_code, self.document.reporter)
-                elif converter == 'ttm':
-                    math_code = tex2mathml_extern.ttm(
-                                    math_code, self.document.reporter)
-                elif converter == 'blahtexml':
-                    math_code = tex2mathml_extern.blahtexml(
-                                    math_code,
-                                    inline=(not math_env),
-                                    reporter=self.document.reporter)
-                elif converter == 'pandoc':
-                    math_code = tex2mathml_extern.pandoc(
-                                    math_code,
-                                    reporter=self.document.reporter)
-                elif not converter:
-                    math_code = latex2mathml.tex2mathml(
-                                    math_code, inline=(not math_env))
+                math_code = converter(math_code, as_block=is_block)
+            except (MathError, OSError) as err:
+                details = getattr(err, 'details', [])
+                self.messages.append(self.document.reporter.warning(
+                    err, *details, base_node=node))
+                math_code = self.encode(node.astext())
+                if self.settings.report_level <= 2:
+                    format = 'problematic'
                 else:
-                    self.document.reporter.error('option "%s" not supported '
-                                                 'with math-output "MathML"')
-            except (OSError, SyntaxError) as err:
-                self.messages.append(
-                    self.document.reporter.error(err, base_node=node))
-                math_code = self.encode(math_code)
+                    format = 'latex'
+                if isinstance(err, OSError):
+                    # report missing converter only once
+                    self.math_output = format
+
         # append to document body
-        tag = self.math_tags[self.math_output][math_env == '']
-        clsarg = self.math_tags[self.math_output][2]
+        tag = self.math_tags[format][is_block]
+        suffix = '\n' if is_block else ''
         if tag:
-            self.body.append(self.starttag(node, tag,
-                                           suffix='\n'*bool(math_env),
-                                           CLASS=clsarg))
-        self.body.append(math_code)
-        if math_env:  # block mode (equation, display)
-            self.body.append('\n')
+            self.body.append(self.starttag(node, tag, suffix=suffix,
+                                           classes=self.math_tags[format][2]))
+        self.body.extend([math_code, suffix])
         if tag:
-            self.body.append('</%s>' % tag)
+            self.body.append(f'</{tag}>{suffix}')
         # Content already processed:
         raise nodes.SkipChildren
 
@@ -1380,7 +1376,6 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.visit_math(node, math_env=math_env)
 
     def depart_math_block(self, node):
-        self.body.append('\n')
         self.report_messages(node)
 
     # Meta tags: 'lang' attribute replaced by 'xml:lang' in XHTML 1.1

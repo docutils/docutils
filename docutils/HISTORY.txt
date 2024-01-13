@@ -88,6 +88,13 @@ Changes since 0.20.1
   - Consider the root-prefix_ setting when including files with
     "include", "raw", or "csv-table" directives.
 
+* docutils/utils/math/*
+
+  - Use custom exception `utils.math.MathError` instead of
+    abusing `SyntaxError` for LaTeX math syntax errors.
+  - Unify interface of LaTeX -> MathML conversion functions.
+    Improve error reporting.
+
 * docutils/utils/roman.py
 
   - Update to version `1.4 <https://pypi.org/project/roman/4.1/>`__.

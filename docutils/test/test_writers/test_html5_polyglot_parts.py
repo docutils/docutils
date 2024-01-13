@@ -694,10 +694,10 @@ totest['system_messages'] = ({'stylesheet_path': '',
 [r"""Broken :math:`\sin \my`.
 """,
 {'fragment': """\
-<p>Broken \\sin \\my.</p>
+<p>Broken <span class="math problematic">\\sin \\my</span>.</p>
 <aside class="system-message">
-<p class="system-message-title">System Message: ERROR/3 (<span class="docutils literal">&lt;string&gt;</span>, line 1)</p>
-<p>Unknown LaTeX command: \\my</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">&lt;string&gt;</span>, line 1)</p>
+<p>Unknown LaTeX command &quot;\\my&quot;.</p>
 </aside>
 """}],
 ])
@@ -710,7 +710,7 @@ totest['no_system_messages'] = ({'stylesheet_path': '',
                                  }, [
 [r"""Broken :math:`\sin \my`.
 """,
-{'fragment': '<p>Broken \\sin \\my.</p>\n'
+{'fragment': '<p>Broken <tt class="math">\\sin \\my</tt>.</p>\n'
 }],
 ])
 

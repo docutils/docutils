@@ -1,13 +1,13 @@
 # :Id: $Id$
 # :Copyright: © 2015 Günter Milde.
-# :License: Released under the terms of the `2-Clause BSD license`_, in short:
+# :License: Released under the terms of the `2-Clause BSD license`__, in short:
 #
 #    Copying and distribution of this file, with or without modification,
 #    are permitted in any medium without royalty provided the copyright
 #    notice and this notice are preserved.
 #    This file is offered as-is, without any warranty.
 #
-# .. _2-Clause BSD license: https://opensource.org/licenses/BSD-2-Clause
+# __ https://opensource.org/licenses/BSD-2-Clause
 
 """Wrappers for TeX->MathML conversion by external tools
 
@@ -17,169 +17,217 @@ the API is not settled and may change with any minor Docutils version.
 
 import subprocess
 
+from docutils import nodes
+from docutils.utils.math import MathError, pick_math_environment
+
+# `latexml` expects a complete document:
 document_template = r"""\documentclass{article}
-\usepackage{amsmath}
 \begin{document}
 %s
 \end{document}
 """
 
 
-def latexml(math_code, reporter=None):
-    """Convert LaTeX math code to MathML with LaTeXML_
+def _check_result(result, details=[]):
+    # raise MathError if the conversion went wrong
+    # :details: list of doctree nodes with additional info
+    msg = ''
+    if not details and result.stderr:
+        details = [nodes.paragraph('', result.stderr, classes=['pre-wrap'])]
+    if details:
+        msg = f'TeX to MathML converter `{result.args[0]}` failed:'
+    elif result.returncode:
+        msg = (f'TeX to MathMl converter `{result.args[0]}` '
+               f'exited with Errno {result.returncode}.')
+    elif not result.stdout:
+        msg = f'TeX to MathML converter `{result.args[0]}` returned no MathML.'
+    if msg:
+        raise MathError(msg, details=details)
 
-    .. _LaTeXML: http://dlmf.nist.gov/LaTeXML/
+
+def blahtexml(math_code, as_block=False):
+    """Convert LaTeX math code to MathML with blahtexml__.
+
+    __ http://gva.noekeon.org/blahtexml/
     """
-    p = subprocess.Popen(['latexml',
-                          '-',  # read from stdin
-                          '--preload=amsfonts',
-                          '--preload=amsmath',
-                          '--inputencoding=utf8',
-                          ],
-                         stdin=subprocess.PIPE,
-                         stdout=subprocess.PIPE,
-                         stderr=subprocess.PIPE,
-                         close_fds=True)
-    p.stdin.write((document_template % math_code).encode('utf-8'))
-    p.stdin.close()
-    latexml_code = p.stdout.read()
-    latexml_err = p.stderr.read().decode('utf-8')
-    if reporter and (latexml_err.find('Error') >= 0 or not latexml_code):
-        reporter.error(latexml_err)
+    args = ['blahtexml',
+            '--mathml',
+            '--indented',
+            '--spacing', 'moderate',
+            '--mathml-encoding', 'raw',
+            '--other-encoding', 'raw',
+            '--doctype-xhtml+mathml',
+            '--annotate-TeX',
+            ]
+    mathml_args = ' display="block"' if as_block else ''
 
-    post_p = subprocess.Popen(['latexmlpost',
-                               '-',
-                               '--nonumbersections',
-                               '--format=xhtml',
-                               # '--linelength=78',  # experimental
-                               '--'
-                               ],
-                              stdin=subprocess.PIPE,
-                              stdout=subprocess.PIPE,
-                              stderr=subprocess.PIPE,
-                              close_fds=True)
-    post_p.stdin.write(latexml_code)
-    post_p.stdin.close()
-    result = post_p.stdout.read().decode('utf-8')
-    post_p_err = post_p.stderr.read().decode('utf-8')
-    if reporter and (post_p_err.find('Error') >= 0 or not result):
-        reporter.error(post_p_err)
+    if pick_math_environment(math_code).startswith('align'):
+        math_code = r'\begin{aligned}%s\end{aligned}' % math_code
 
-    # extract MathML code:
-    start, end = result.find('<math'), result.find('</math>')+7
-    result = result[start:end]
-    if 'class="ltx_ERROR' in result:
-        raise SyntaxError(result)
-    return result
+    result = subprocess.run(args, input=math_code,
+                            capture_output=True, text=True)
 
-
-def ttm(math_code, reporter=None):
-    """Convert LaTeX math code to MathML with TtM_
-
-    .. _TtM: http://hutchinson.belmont.ma.us/tth/mml/
-    """
-    p = subprocess.Popen(['ttm',
-                          # '-i',  # italic font for equations. Default roman.
-                          '-u',    # unicode encoding. (Default iso-8859-1).
-                          '-r',    # output raw MathML (no wrapper)
-                          ],
-                         stdin=subprocess.PIPE,
-                         stdout=subprocess.PIPE,
-                         stderr=subprocess.PIPE,
-                         close_fds=True)
-    p.stdin.write((document_template % math_code).encode('utf-8'))
-    p.stdin.close()
-    result = p.stdout.read()
-    err = p.stderr.read().decode('utf-8')
-    if err.find('**** Unknown') >= 0:
-        msg = '\n'.join(line for line in err.splitlines()
-                        if line.startswith('****'))
-        raise SyntaxError('\nMessage from external converter TtM:\n'+msg)
-    if reporter and err.find('**** Error') >= 0 or not result:
-        reporter.error(err)
-    start, end = result.find('<math'), result.find('</math>')+7
-    return result[start:end]
-
-
-def blahtexml(math_code, inline=True, reporter=None):
-    """Convert LaTeX math code to MathML with blahtexml_
-
-    .. _blahtexml: http://gva.noekeon.org/blahtexml/
-    """
-    options = ['--mathml',
-               '--indented',
-               '--spacing', 'moderate',
-               '--mathml-encoding', 'raw',
-               '--other-encoding', 'raw',
-               '--doctype-xhtml+mathml',
-               '--annotate-TeX',
-               ]
-    if inline:
-        mathmode_arg = ''
+    # blahtexml writes <error> messages to stdout
+    if '<error>' in result.stdout:
+        result.stderr = result.stdout[result.stdout.find('<message>')+9:
+                                      result.stdout.find('</message>')]
     else:
-        mathmode_arg = ' display="block"'
-        options.append('--displaymath')
-
-    p = subprocess.Popen(['blahtexml']+options,
-                         stdin=subprocess.PIPE,
-                         stdout=subprocess.PIPE,
-                         stderr=subprocess.PIPE,
-                         close_fds=True)
-    p.stdin.write(math_code.encode('utf-8'))
-    p.stdin.close()
-    result = p.stdout.read().decode('utf-8')
-    err = p.stderr.read().decode('utf-8')
-
-    if result.find('<error>') >= 0:
-        msg = result[result.find('<message>')+9:result.find('</message>')]
-        raise SyntaxError('\nMessage from external converter blahtexml:\n%s'
-                          % msg)
-    if reporter and (err.find('**** Error') >= 0 or not result):
-        reporter.error(err)
-    start, end = result.find('<markup>')+9, result.find('</markup>')
-    result = ('<math xmlns="http://www.w3.org/1998/Math/MathML"%s>\n'
-              '%s</math>\n') % (mathmode_arg, result[start:end])
-    return result
+        result.stdout = result.stdout[result.stdout.find('<markup>')+9:
+                                      result.stdout.find('</markup>')]
+    _check_result(result)
+    return (f'<math xmlns="http://www.w3.org/1998/Math/MathML"{mathml_args}>'
+            f'\n{result.stdout}</math>')
 
 
-def pandoc(math_code, reporter=None):
-    """Convert LaTeX math code to MathML with pandoc_
+def latexml(math_code, as_block=False):
+    """Convert LaTeX math code to MathML with LaTeXML__.
 
-    .. _pandoc: https://pandoc.org/
+    Comprehensive macro support but **very** slow.
+
+    __ http://dlmf.nist.gov/LaTeXML/
     """
-    p = subprocess.Popen(['pandoc',
-                          '--mathml',
-                          '--from=latex',
-                          ],
-                         stdin=subprocess.PIPE,
-                         stdout=subprocess.PIPE,
-                         stderr=subprocess.PIPE,
-                         close_fds=True)
-    p.stdin.write(math_code.encode('utf-8'))
-    p.stdin.close()
-    result = p.stdout.read().decode('utf-8')
-    err = p.stderr.read().decode('utf-8').strip()
-    x = p.wait()
 
-    if err:
-        if reporter:
-            reporter.error(err)
-        raise SyntaxError('\nError message from external converter pandoc:\n%s'
-                          % err)
-    if x != 0:
-        raise SyntaxError('\nError code from external converter pandoc:\n%s'
-                          % x)
+    # LaTeXML works in 2 stages, expects complete documents.
+    #
+    # The `latexmlmath`__ convenience wrapper does not support block-level
+    # (displayed) equations.
+    #
+    # __ https://metacpan.org/dist/LaTeXML/view/bin/latexmlmath
+    args1 = ['latexml',
+             '-',  # read from stdin
+             '--preload=amsmath',
+             '--preload=amssymb',  # also loads amsfonts
+             '--inputencoding=utf8',
+             '--',
+             ]
+    result1 = subprocess.run(args1, input=document_template % math_code,
+                             capture_output=True, text=True)
+    if result1.stdout:
+        result1.stderr = '\n'.join(line for line in result1.stderr.splitlines()
+                                   if line.startswith('Error:')
+                                   or line.startswith('Warning:')
+                                   or line.startswith('Fatal:'))
+    _check_result(result1)
 
-    start, end = result.find('<math'), result.find('</math>')+7
-    return result[start:end]
+    args2 = ['latexmlpost',
+             '-',
+             '--nonumbersections',
+             '--format=html5',  # maths included as MathML
+             '--omitdoctype',   # Make it simple, we only need the maths.
+             '--noscan',        # ...
+             '--nocrossref',
+             '--nographicimages',
+             '--nopictureimages',
+             '--'
+             ]
+    result2 = subprocess.run(args2, input=result1.stdout,
+                             capture_output=True, text=True)
+    # Extract MathML from HTML document:
+    # <table> with <math> in cells for "align", <math> element else.
+    start = result2.stdout.find('<table class="ltx_equationgroup')
+    if start != -1:
+        stop = result2.stdout.find('</table>', start)+8
+        result2.stdout = result2.stdout[start:stop].replace(
+            'ltx_equationgroup', 'borderless align-center')
+    else:
+        result2.stdout = result2.stdout[result2.stdout.find('<math'):
+                                        result2.stdout.find('</math>')+7]
+    # Search for error messages
+    if result2.stdout:
+        _msg_source = result2.stdout  # latexmlpost reports errors in output
+    else:
+        _msg_source = result2.stderr  # just in case
+    result2.stderr = '\n'.join(line for line in _msg_source.splitlines()
+                               if line.startswith('Error:')
+                               or line.startswith('Warning:')
+                               or line.startswith('Fatal:'))
+    _check_result(result2)
+    return result2.stdout
+
+
+def pandoc(math_code, as_block=False):
+    """Convert LaTeX math code to MathML with pandoc__.
+
+    __ https://pandoc.org/
+    """
+    args = ['pandoc',
+            '--mathml',
+            '--from=latex',
+            ]
+    result = subprocess.run(args, input=math_code,
+                            capture_output=True, text=True)
+
+    result.stdout = result.stdout[result.stdout.find('<math'):
+                                  result.stdout.find('</math>')+7]
+    # Pandoc (2.9.2.1) messages are pre-formatted for the terminal:
+    #   1. summary
+    #   2. math source (part)
+    #   3. error spot indicator '^' (works only in a literal block)
+    #   4. assumed problem
+    #   5. assumed solution (may be wrong or confusing)
+    # Construct a "details" list:
+    details = []
+    if result.stderr:
+        lines = result.stderr.splitlines()
+        details.append(nodes.paragraph('', lines[0]))
+        details.append(nodes.literal_block('', '\n'.join(lines[1:3])))
+        details.append(nodes.paragraph('', '\n'.join(lines[3:]),
+                                       classes=['pre-wrap']))
+    _check_result(result, details=details)
+    return result.stdout
+
+
+def ttm(math_code, as_block=False):
+    """Convert LaTeX math code to MathML with TtM__.
+
+    Aged, limited, but fast.
+
+    __ http://silas.psfc.mit.edu/tth/mml/
+    """
+    args = ['ttm',
+            '-L',  # source is LaTeX snippet
+            '-r']  # output MathML snippet
+
+    # Supports only ASCII and "latin extended" characters (Docutils converts
+    # most math characters to LaTeX commands before calling ttm).
+    try:
+        result = subprocess.run(args, input=math_code, capture_output=True,
+                                text=True, encoding='ISO-8859-1')
+    except UnicodeEncodeError as err:
+        raise MathError(err)
+
+    result.stdout = result.stdout[result.stdout.find('<math'):
+                                  result.stdout.find('</math>')+7]
+    if as_block:
+        result.stdout = result.stdout.replace('<math xmlns=',
+                                              '<math display="block" xmlns=')
+    result.stderr = '\n'.join(line[5:] + '.'
+                              for line in result.stderr.splitlines()
+                              if line.startswith('**** '))
+    _check_result(result)
+    return result.stdout
 
 
 # self-test
 
 if __name__ == "__main__":
-    example = ('\\frac{\\partial \\sin^2(\\alpha)}{\\partial \\vec r}'
-               '\\varpi \\mathbb{R} \\, \\text{Grüße}')
+    example = (r'\frac{\partial \sin^2(\alpha)}{\partial \vec r}'
+               r'\varpi \mathbb{R} \, \text{Grüße}')
+    # print(blahtexml(example, as_block=True))
+    # print(blahtexml(example))
     # print(latexml('$'+example+'$'))
-    # print(ttm('$'+example.replace('\\mathbb{R}', '')+'$'))
-    print(blahtexml(example))
-    # print(pandoc('$'+example+'$'))
+    print(pandoc('$'+example+'$'))
+    # print(ttm('$'+example.replace(r'\mathbb', r'\mathbf')+'$'))
+
+    buggy = r'\sinc \phy'
+    # buggy = '\sqrt[e]'
+    try:
+        # print(blahtexml(buggy))
+        # print(latexml(f'${buggy}$'))
+        print(pandoc(f'${buggy}$'))
+        # print(ttm(f'${buggy}$'))
+    except MathError as err:
+        print(err)
+        print(err.details)
+        for node in err.details:
+            print(node.astext())
