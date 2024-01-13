@@ -61,3 +61,12 @@ def pick_math_environment(code, numbered=False):
     if not numbered:
         env += '*'
     return env
+
+
+def wrap_math_code(code, as_block):
+    # Wrap math-code in mode-switching TeX command/environment.
+    # If `as_block` is True, use environment for displayed equation(s).
+    if as_block:
+        env = pick_math_environment(code)
+        return '\\begin{%s}\n%s\n\\end{%s}' % (env, code, env)
+    return '$%s$' % code

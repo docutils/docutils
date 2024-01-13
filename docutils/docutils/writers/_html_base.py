@@ -30,9 +30,8 @@ from docutils import frontend, languages, nodes, utils, writers
 from docutils.parsers.rst.directives import length_or_percentage_or_unitless
 from docutils.parsers.rst.directives.images import PIL
 from docutils.transforms import writer_aux
-from docutils.utils.math import (MathError, math2html, latex2mathml,
-                                 pick_math_environment,
-                                 tex2mathml_extern, unichar2tex)
+from docutils.utils.math import (latex2mathml, math2html, tex2mathml_extern,
+                                 unichar2tex, wrap_math_code, MathError)
 
 
 class Writer(writers.Writer):
@@ -1281,31 +1280,11 @@ class HTMLTranslator(nodes.NodeVisitor):
                  'problematic': ('span', 'pre', ['math', 'problematic']),
                  }
 
-    def visit_math(self, node, math_env=''):
-        # Also called from `visit_math_block()` (with math_env != '').
+    def visit_math(self, node):
+        # Also called from `visit_math_block()`:
         is_block = isinstance(node, nodes.math_block)
         format = self.math_output
-        # LaTeX container
-        wrappers = {
-                    # math_mode: (inline, block)
-                    'html': ('$%s$', '\\begin{%s}\n%s\n\\end{%s}'),
-                    'latex': (None, None),
-                    'mathml': ('$%s$', '\\begin{%s}\n%s\n\\end{%s}'),
-                    'mathjax': (r'\(%s\)', '\\begin{%s}\n%s\n\\end{%s}'),
-                    'problematic': (None, None),
-                   }
-        wrapper = wrappers[self.math_output][math_env != '']
-        if (self.math_output == 'mathml'
-            and (not self.math_options
-                 or self.math_options == 'blahtexml')):
-            wrapper = None
-        # get and wrap content
         math_code = node.astext().translate(unichar2tex.uni2tex_table)
-        if wrapper:
-            try:  # wrapper with three "%s"
-                math_code = wrapper % (math_env, math_code, math_env)
-            except TypeError:  # wrapper with one "%s"
-                math_code = wrapper % math_code
 
         # preamble code and conversion
         if format == 'html':
@@ -1314,8 +1293,9 @@ class HTMLTranslator(nodes.NodeVisitor):
                     self.stylesheet_call(utils.find_file_in_dirs(
                         s, self.settings.stylesheet_dirs), adjust_path=True)
                     for s in self.math_options.split(',')]
-            # TODO: fix display mode in matrices and fractions
             math2html.DocumentParameters.displaymode = is_block
+            # TODO: fix display mode in matrices and fractions
+            math_code = wrap_math_code(math_code, is_block)
             math_code = math2html.math2html(math_code)
         elif format == 'latex':
             math_code = self.encode(math_code)
@@ -1332,6 +1312,10 @@ class HTMLTranslator(nodes.NodeVisitor):
                 if '?' not in self.mathjax_url:
                     self.mathjax_url += '?config=TeX-AMS_CHTML'
                 self.math_header = [self.mathjax_script % self.mathjax_url]
+            if is_block:
+                math_code = wrap_math_code(math_code, is_block)
+            else:
+                math_code = rf'\({math_code}\)'
             math_code = self.encode(math_code)
         elif format == 'mathml':
             if 'XHTML 1' in self.doctype:
@@ -1372,8 +1356,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         pass
 
     def visit_math_block(self, node):
-        math_env = pick_math_environment(node.astext())
-        self.visit_math(node, math_env=math_env)
+        self.visit_math(node)
 
     def depart_math_block(self, node):
         self.report_messages(node)

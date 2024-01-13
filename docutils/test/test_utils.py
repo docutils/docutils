@@ -20,7 +20,8 @@ if __name__ == '__main__':
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 import docutils
-from docutils import utils, nodes
+from docutils import nodes, utils
+import docutils.utils.math
 
 TEST_ROOT = Path(__file__).parent  # ./test/ from the docutils root
 
@@ -415,6 +416,27 @@ class StylesheetFunctionTests(unittest.TestCase):
         self.stylesheet_path = 'man.css, miss2.css'
         with self.assertRaises(AssertionError):
             utils.get_stylesheet_list(self)
+
+
+class MathTests(unittest.TestCase):
+
+    tests = [('a + b = c', 'equation*'),
+             (r'x = \begin{cases} -1&x<0 \\ 1&x>0 \end{cases}', 'equation*'),
+             (r'a + 2b = c \\ 3a + b = 2c', 'align*'),
+             ]
+
+    def test_pick_math_environment(self):
+        for sample, result in self.tests:
+            self.assertEqual(utils.math.pick_math_environment(sample), result)
+
+    def test_wrap_math_code(self):
+        for sample, env in self.tests:
+            self.assertEqual(utils.math.wrap_math_code(sample, as_block=False),
+                             f'${sample}$')
+            self.assertEqual(utils.math.wrap_math_code(sample, as_block=True),
+                             f'\\begin{{{env}}}\n'
+                             f'{sample}\n'
+                             f'\\end{{{env}}}')
 
 
 if __name__ == '__main__':

@@ -18,7 +18,7 @@ the API is not settled and may change with any minor Docutils version.
 import subprocess
 
 from docutils import nodes
-from docutils.utils.math import MathError, pick_math_environment
+from docutils.utils.math import MathError, wrap_math_code
 
 # `latexml` expects a complete document:
 document_template = r"""\documentclass{article}
@@ -59,10 +59,12 @@ def blahtexml(math_code, as_block=False):
             '--doctype-xhtml+mathml',
             '--annotate-TeX',
             ]
+    # "blahtexml" expects LaTeX code without math-mode-switch.
+    # We still need to tell it about displayed equation(s).
     mathml_args = ' display="block"' if as_block else ''
-
-    if pick_math_environment(math_code).startswith('align'):
-        math_code = r'\begin{aligned}%s\end{aligned}' % math_code
+    _wrapped = wrap_math_code(math_code, as_block)
+    if '{align*}' in _wrapped:
+        math_code = _wrapped.replace('{align*}', '{aligned}')
 
     result = subprocess.run(args, input=math_code,
                             capture_output=True, text=True)
@@ -100,7 +102,9 @@ def latexml(math_code, as_block=False):
              '--inputencoding=utf8',
              '--',
              ]
-    result1 = subprocess.run(args1, input=document_template % math_code,
+    math_code = document_template % wrap_math_code(math_code, as_block)
+
+    result1 = subprocess.run(args1, input=math_code,
                              capture_output=True, text=True)
     if result1.stdout:
         result1.stderr = '\n'.join(line for line in result1.stderr.splitlines()
@@ -154,7 +158,7 @@ def pandoc(math_code, as_block=False):
             '--mathml',
             '--from=latex',
             ]
-    result = subprocess.run(args, input=math_code,
+    result = subprocess.run(args, input=wrap_math_code(math_code, as_block),
                             capture_output=True, text=True)
 
     result.stdout = result.stdout[result.stdout.find('<math'):
@@ -187,12 +191,14 @@ def ttm(math_code, as_block=False):
     args = ['ttm',
             '-L',  # source is LaTeX snippet
             '-r']  # output MathML snippet
+    math_code = wrap_math_code(math_code, as_block)
 
-    # Supports only ASCII and "latin extended" characters (Docutils converts
-    # most math characters to LaTeX commands before calling ttm).
+    # "ttm" does not support UTF-8 input. (Docutils converts most math
+    # characters to LaTeX commands before calling this function.)
     try:
-        result = subprocess.run(args, input=math_code, capture_output=True,
-                                text=True, encoding='ISO-8859-1')
+        result = subprocess.run(args, input=math_code,
+                                capture_output=True, text=True,
+                                encoding='ISO-8859-1')
     except UnicodeEncodeError as err:
         raise MathError(err)
 
@@ -213,11 +219,32 @@ def ttm(math_code, as_block=False):
 if __name__ == "__main__":
     example = (r'\frac{\partial \sin^2(\alpha)}{\partial \vec r}'
                r'\varpi \mathbb{R} \, \text{Grüße}')
-    # print(blahtexml(example, as_block=True))
-    # print(blahtexml(example))
-    # print(latexml('$'+example+'$'))
-    print(pandoc('$'+example+'$'))
-    # print(ttm('$'+example.replace(r'\mathbb', r'\mathbf')+'$'))
+
+    print("""<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<title>test external mathml converters</title>
+</head>
+<body>
+<p>Test external converters</p>
+<p>
+""")
+    print(f'latexml: {latexml(example)},')
+    print(f'ttm: {ttm(example.replace("mathbb", "mathbf"))},')
+    print(f'blahtexml: {blahtexml(example)},')
+    print(f'pandoc: {pandoc(example)}.')
+    print('</p>')
+
+    print('<p>latexml:</p>')
+    print(latexml(example, as_block=True))
+    print('<p>ttm:</p>')
+    print(ttm(example.replace('mathbb', 'mathbf'), as_block=True))
+    print('<p>blahtexml:</p>')
+    print(blahtexml(example, as_block=True))
+    print('<p>pandoc:</p>')
+    print(pandoc(example, as_block=True))
+
+    print('</main>\n</body>\n</html>')
 
     buggy = r'\sinc \phy'
     # buggy = '\sqrt[e]'
