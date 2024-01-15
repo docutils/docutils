@@ -1,6 +1,6 @@
 # :Id: $Id$
 # :Copyright: © 2005 Jens Jørgen Mortensen [1]_
-#             © 2010, 2021 Günter Milde.
+#             © 2010, 2021, 2024 Günter Milde.
 #
 # :License: Released under the terms of the `2-Clause BSD license`_, in short:
 #
@@ -26,7 +26,8 @@ the API is not settled and may change with any minor Docutils version.
 import re
 import unicodedata
 
-from docutils.utils.math import MathError, tex2unichar, toplevel_code
+from docutils.utils.math import (MathError, mathalphabet2unichar,
+                                 tex2unichar, toplevel_code)
 
 
 # Character data
@@ -89,19 +90,18 @@ modulo_functions = {
 # deprecated in the MathML specs (except with value "normal" for single chars).
 math_alphabets = {
     # 'cmdname':  'mathvariant value'        # package
-    'boldsymbol': 'bold',
-    'mathbf':     'bold',
-    'mathit':     'italic',
-    'mathtt':     'monospace',
-    'mathrm':     'normal',
-    'mathsf':     'sans-serif',
-    'mathcal':    'script',
-    'mathbfit':   'bold-italic',             # isomath
     'mathbb':     'double-struck',           # amssymb
+    'mathbf':     'bold',
+    'mathbfit':   'bold-italic',             # isomath
+    'mathcal':    'script',
     'mathfrak':   'fraktur',                 # amssymb
-    'mathsfit':   'sans-serif-italic',       # isomath
-    'mathsfbfit': 'sans-serif-bold-italic',  # isomath
+    'mathit':     'italic',
+    'mathrm':     'normal',
     'mathscr':    'script',                  # mathrsfs
+    'mathsf':     'sans-serif',
+    'mathsfbfit': 'sans-serif-bold-italic',  # isomath
+    'mathsfit':   'sans-serif-italic',       # isomath
+    'mathtt':     'monospace',
     # unsupported: bold-fraktur
     #              bold-script
     #              bold-sans-serif
@@ -340,6 +340,24 @@ class math:
         ord('&'): '&amp;',
         0x2061:   '&ApplyFunction;',
     }
+    global_attributes = (
+        'class',  # space-separated list of element classes
+        # 'data-*',  # custom data attributes (see HTML)
+        # 'dir',  # directionality ('ltr', 'rtl')
+        'displaystyle',  # True: normal, False: compact
+        # 'id',  # unique identifier
+        # 'mathbackground',  # color definition, deprecated
+        # 'mathcolor',  # color definition, deprecated
+        # 'mathsize',  # font-size, deprecated
+        # 'nonce',  # cryptographic nonce ("number used once")
+        'scriptlevel',  # math-depth for the element
+        'style',  # CSS styling declarations
+        # 'tabindex',  # indicate if the element takes input focus
+        )
+    """Global MathML attributes
+
+    https://w3c.github.io/mathml-core/#global-attributes
+    """
 
     def __init__(self, *children, **attributes):
         """Set up node with `children` and `attributes`.
@@ -415,6 +433,12 @@ class math:
             parent = parent.parent
         return parent
 
+    def subnodes(self):
+        """Return iterator over all subnodes, including nested ones."""
+        for child in self.children:
+            yield child
+            yield from child.subnodes()
+
     # Conversion to (pretty) XML string
     def toprettyxml(self):
         """Return XML representation of self as string."""
@@ -487,10 +511,12 @@ class math:
 # >>> node = eq3.append(mrow())
 # >>> node.is_block()
 # True
+# >>> nested = math(math(math(CLASS='three'), CLASS='two'), CLASS='one')
+# >>> [node for node in nested.subnodes()]
+# [math(math(class='three'), class='two'), math(class='three')]
 
 
 class mtable(math): pass
-
 
 # >>> mt = mtable(displaystyle=True)
 # >>> mt
@@ -498,8 +524,22 @@ class mtable(math): pass
 # >>> math(mt).toprettyxml()
 # '<math>\n  <mtable displaystyle="true">\n  </mtable>\n</math>'
 
+
 class mrow(math):
     """Group sub-expressions as a horizontal row."""
+
+    def transfer_attributes(self, other):
+        # Update dictionary `other.attributes` with self.attributes.
+        # String attributes (class, style) are appended to existing values,
+        # other attributes (displaystyle, scriptlevel) replace them.
+        for k, v in self.attributes.items():
+            if k in ('class', 'style') and v:
+                try:
+                    other.attributes[k] += ' ' + v
+                    continue
+                except (KeyError, TypeError):
+                    pass
+            other.attributes[k] = v
 
     def close(self):
         """Close element and return first non-full parent or None.
@@ -509,21 +549,31 @@ class mrow(math):
         """
         parent = self.parent
         if isinstance(parent, MathRowSchema) and parent.nchildren == 1:
-            parent.nchildren = len(parent.children)
             parent.children = self.children
+            parent.nchildren = len(parent.children)
             for child in self.children:
                 child.parent = parent
+            self.transfer_attributes(parent)
             return parent.close()
+        # replace `self` with single child
         if len(self) == 1:
+            child = self.children[0]
             try:
-                parent.children[parent.children.index(self)] = self.children[0]
-                self.children[0].parent = parent
+                parent.children[parent.children.index(self)] = child
+                child.parent = parent
             except (AttributeError, ValueError):
-                return self.children[0]
+                return None
+            self.transfer_attributes(child)
         return super().close()
 
-# >>> mrow(displaystyle=False)
-# mrow(displaystyle=False)
+# >>> row = mrow(displaystyle=False, CLASS='mathscr')
+# >>> tree = math(msqrt(row, displaystyle=True))
+# >>> row.close()  # remove mrow and transfer attributes to parent
+# math(msqrt(displaystyle=False, class='mathscr'))
+# >>> row = mrow(mi('i', CLASS='boldmath'), mathvariant='normal', CLASS='test')
+# >>> tree = math(row)
+# >>> row.close()
+# math(mi('i', class='boldmath test', mathvariant='normal'))
 
 
 # The elements <msqrt>, <mstyle>, <merror>, <mpadded>, <mphantom>, <menclose>,
@@ -531,10 +581,19 @@ class mrow(math):
 # formed from all their children.
 class MathRowSchema(math):
     """Base class for elements treating content as a single inferred mrow."""
+    # In MathML Core, this is called "anonymous mrow element".
 
 
-class mtr(MathRowSchema): pass
-class mtd(MathRowSchema): pass
+class mtr(MathRowSchema):
+    """MathML table/matrix row element."""
+
+
+class mtd(MathRowSchema):
+    """MathML table/matrix data cell element."""
+
+
+class merror(MathRowSchema):
+    pass
 
 
 class menclose(MathRowSchema):
@@ -550,13 +609,16 @@ class msqrt(MathRowSchema):
 
 
 class mstyle(MathRowSchema):
-    nchildren = 1  # \mathrm, ... expect one argument or a group
+    """Style Change. Deprecated in MathML Core.
+
+    Use mrow instead.
+    """
 
 
 class MathToken(math):
     """Token Element: contains textual data instead of children.
 
-    Base class for mo, mi, and mn.
+    Base class for mi, mn, mo, and mtext.
     """
     nchildren = 0
 
@@ -568,10 +630,10 @@ class MathToken(math):
         return [str(self.data).translate(self.xml_entities)]
 
 
-class mtext(MathToken): pass
 class mi(MathToken): pass
-class mo(MathToken): pass
 class mn(MathToken): pass
+class mo(MathToken): pass
+class mtext(MathToken): pass
 
 
 # >>> mo('<')
@@ -1016,30 +1078,15 @@ def handle_cmd(name, node, string):  # noqa: C901 TODO make this less complex
             node = node.append(mo(')', stretchy=False))
         return node, string
 
+    # font changes or mathematical alphanumeric characters
+
+    if name in ('boldsymbol', 'pmb'):  # \pmb is "poor mans bold"
+        new_node = mrow(CLASS='boldsymbol')
+        node.append(new_node)
+        return new_node, string
+
     if name in math_alphabets:
-        if name == 'boldsymbol':
-            attributes = {'class': 'boldsymbol'}
-        else:
-            attributes = {'mathvariant': math_alphabets[name]}
-        if name == 'mathscr':
-            attributes['class'] = 'mathscr'
-        # Check for single symbol (letter, name, or ⅀)
-        arg, remainder = tex_token_or_group(string)
-        if arg.startswith('\\'):
-            # convert single letters (so the isalpha() test below works).
-            # TODO: convert all LICRs in a group (\matrm{\mu\Omega})
-            arg = letters.get(arg[1:], arg)
-        if name == 'mathbb':
-            # mathvariant="double-struck" is ignored for Greek letters
-            # (tested in Firefox 78). Use literal Unicode characters.
-            arg = mathbb.get(arg, arg)
-        if arg.isalpha() or arg == '\u2140':
-            node = node.append(mi(arg, **attributes))
-            return node, remainder
-        # Wrap in <style>
-        style = mstyle(**attributes)
-        node.append(style)
-        return style, string
+        return handle_math_alphabet(name, node, string)
 
     # operator, fence, or separator  ->  <mo>
 
@@ -1047,7 +1094,7 @@ def handle_cmd(name, node, string):  # noqa: C901 TODO make this less complex
         node = node.append(mo(':', form='postfix', lspace='0', rspace='0.28em'))
         return node, string
 
-    if name == 'idotsint':
+    if name == 'idotsint':  # AMS shortcut for ∫︀···∫︀
         node = parse_latex_math(node, r'\int\dotsi\int')
         return node, string
 
@@ -1280,10 +1327,6 @@ def handle_cmd(name, node, string):  # noqa: C901 TODO make this less complex
 # (math(mi('sin'), mo('\u2061')), ' \\alpha')
 # >>> handle_cmd('operatorname', math(), '{abs}(x)')
 # (math(mi('abs', mathvariant='normal'), mo('\u2061')), '(x)')
-# >>> handle_cmd('mathrm', math(), '\\alpha')
-# (math(mi('α', mathvariant='normal')), '')
-# >>> handle_cmd('mathrm', math(), '{out} = 3')
-# (math(mi('out', mathvariant='normal')), ' = 3')
 # >>> handle_cmd('overline', math(), '{981}')
 # (mover(mo('_', accent=True), switch=True, accent=False), '{981}')
 # >>> handle_cmd('bar', math(), '{x}')
@@ -1297,6 +1340,41 @@ def handle_cmd(name, node, string):  # noqa: C901 TODO make this less complex
 # docutils.utils.math.MathError: Unsupported "\left" delimiter "<"!
 # >>> handle_cmd('not', math(), '{< b} c') #  LaTeX ignores the braces, too.
 # (math(), '{\\not < b} c')
+
+
+def handle_math_alphabet(name, node, string):
+    attributes = {}
+    if name == 'mathscr':
+        attributes['class'] = 'mathscr'
+    arg, string = tex_token_or_group(string)
+    # Shortcut for text arg like \mathrm{out}
+    # with more than one letter, <mi> defaults to "normal" font
+    if name == 'mathrm' and arg.isalpha() and len(arg) > 1:
+        node = node.append(mi(arg))
+        return node, string
+    # Parse as <style> node children
+    container = mrow(**attributes)
+    node.append(container)
+    parse_latex_math(container, arg)
+    ma2ch = getattr(mathalphabet2unichar,
+                    name.replace('mathscr', 'mathcal'), {})
+    for subnode in container.subnodes():
+        if isinstance(subnode, (mi, mn)):
+            subnode.data = ma2ch.get(subnode.data, subnode.data)
+        if isinstance(subnode, mi) and name == 'mathrm' and subnode.data.isalpha():
+            subnode.attributes['mathvariant'] = 'normal'
+    return container.close(), string
+
+# >>> handle_math_alphabet('mathrm', math(), '\\alpha')
+# (math(mi('α', mathvariant='normal')), '')
+# >>> handle_math_alphabet('mathbb', math(), '{R} = 3')
+# (math(mi('ℝ')), ' = 3')
+# >>> handle_math_alphabet('mathcal', math(), '{F = 3}')
+# (math(mrow(mi('ℱ'), mo('='), mn('3'))), '')
+# >>> handle_math_alphabet('mathrm', math(), '{out} = 3')  # use shortcut
+# (math(mi('out')), ' = 3')
+# >>> handle_math_alphabet('mathrm', math(), '{V = 3}')  # force normal
+# (math(mrow(mi('V', mathvariant='normal'), mo('='), mn('3'))), '')
 
 
 def handle_script_or_limit(node, c, limits=''):
