@@ -283,6 +283,7 @@ matrices = {
     'Bmatrix': ('{', '}'),
     'vmatrix': ('|', '|'),
     'Vmatrix': ('\u2016', '\u2016'),  # ‖
+    'aligned': ('', ''),
     'cases':   ('{', ''),
 }
 
@@ -445,7 +446,8 @@ class math:
         xml.extend(['\n', '  ' * level])
         return xml
 
-    # display mode
+    # auxiliary methods:
+
     def is_block(self):
         """Return true, if `self` or a parent has ``display='block'``."""
         try:
@@ -1340,6 +1342,7 @@ def begin_environment(node, string):
             if name == 'cases':
                 wrapper = mrow(mo(left_delimiter, rspace='0.17em'))
                 attributes['columnalign'] = 'left'
+                attributes['class'] = 'cases'
             node.append(wrapper)
             node = wrapper
         elif name == 'smallmatrix':
@@ -1348,8 +1351,9 @@ def begin_environment(node, string):
             wrapper = mstyle(scriptlevel='1')
             node.append(wrapper)
             node = wrapper
-        # TODO: aligned, alignedat
-        # take an optional [t], [b] or the default [c]
+        elif name == 'aligned':
+            attributes['class'] = 'ams-align'
+        # TODO: array, aligned & alignedat take an optional [t], [b], or [c].
         entry = mtd()
         node.append(mtable(mtr(entry), **attributes))
         node = entry
@@ -1392,13 +1396,12 @@ def tex_equation_columns(rows):
 
 
 # Return dictionary with attributes to style an <mtable> as align environment:
-# TODO: "columnalign" disregarded by Chromium and webkit.
-#       Use style="text-align: (right|left|center)" in the <mtd> elements
-#       or a (complex) CSS rule for "mtable.align"
+# Not used with HTML. Replaced by CSS rule for "mtable.ams-align" in
+# "minimal.css" as "columnalign" is disregarded by Chromium and webkit.
 def align_attributes(rows):
-    atts = {'class': 'align',
+    atts = {'class': 'ams-align',
             'displaystyle': True}
-    # get maximal number of (non-escaped) "next column" markup instances:
+    # get maximal number of non-escaped "next column" markup characters:
     tabs = max(row.count('&') - row.count(r'\&') for row in rows)
     if tabs:
         aligns = ['right', 'left'] * tabs
@@ -1408,17 +1411,17 @@ def align_attributes(rows):
     return atts
 
 # >>> align_attributes(['a = b'])
-# {'class': 'align', 'displaystyle': True}
+# {'class': 'ams-align', 'displaystyle': True}
 # >>> align_attributes(['a &= b'])
-# {'class': 'align', 'displaystyle': True, 'columnalign': 'right left', 'columnspacing': '0'}
+# {'class': 'ams-align', 'displaystyle': True, 'columnalign': 'right left', 'columnspacing': '0'}
 # >>> align_attributes(['a &= b & a \in S'])
-# {'class': 'align', 'displaystyle': True, 'columnalign': 'right left right', 'columnspacing': '0 2em'}
+# {'class': 'ams-align', 'displaystyle': True, 'columnalign': 'right left right', 'columnspacing': '0 2em'}
 # >>> align_attributes(['a &= b & c &= d'])
-# {'class': 'align', 'displaystyle': True, 'columnalign': 'right left right left', 'columnspacing': '0 2em 0'}
+# {'class': 'ams-align', 'displaystyle': True, 'columnalign': 'right left right left', 'columnspacing': '0 2em 0'}
 # >>> align_attributes([r'a &= b & c &= d \& e'])
-# {'class': 'align', 'displaystyle': True, 'columnalign': 'right left right left', 'columnspacing': '0 2em 0'}
+# {'class': 'ams-align', 'displaystyle': True, 'columnalign': 'right left right left', 'columnspacing': '0 2em 0'}
 # >>> align_attributes([r'a &= b & c &= d & e'])
-# {'class': 'align', 'displaystyle': True, 'columnalign': 'right left right left right', 'columnspacing': '0 2em 0 2em'}
+# {'class': 'ams-align', 'displaystyle': True, 'columnalign': 'right left right left right', 'columnspacing': '0 2em 0 2em'}
 
 
 def tex2mathml(tex_math, as_block=False):
@@ -1435,8 +1438,8 @@ def tex2mathml(tex_math, as_block=False):
         if len(rows) > 1:
             # emulate "align*" environment with a math table
             node = mtd()
-            math_tree.append(mtable(mtr(node),
-                                    **align_attributes(rows)))
+            math_tree.append(mtable(mtr(node), CLASS='ams-align',
+                                    displaystyle=True))
     parse_latex_math(node, tex_math)
     return math_tree.toprettyxml()
 
@@ -1450,7 +1453,7 @@ def tex2mathml(tex_math, as_block=False):
 # </math>
 # >>> print(tex2mathml(r'a & b \\ c & d', as_block=True))
 # <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-#   <mtable class="align" displaystyle="true" columnalign="right left" columnspacing="0">
+#   <mtable class="ams-align" displaystyle="true">
 #     <mtr>
 #       <mtd>
 #         <mi>a</mi>
@@ -1471,7 +1474,7 @@ def tex2mathml(tex_math, as_block=False):
 # </math>
 # >>> print(tex2mathml(r'a \\ b', as_block=True))
 # <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-#   <mtable class="align" displaystyle="true">
+#   <mtable class="ams-align" displaystyle="true">
 #     <mtr>
 #       <mtd>
 #         <mi>a</mi>

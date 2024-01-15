@@ -80,8 +80,31 @@ The result is:
 
 .. math::
 
-   a &= (x + y)^2         &  b &= (x - y)^2 \\
-     &= x^2 + 2xy + y^2   &    &= x^2 - 2xy + y^2
+   a & = (x + y)^2         &  b & = (x - y)^2 \\
+     & = x^2 + 2xy + y^2   &    & = x^2 - 2xy + y^2
+
+The ``aligned`` environment can be used as a component in a containing
+expression. E.g., ::
+
+  .. math::
+    \left.
+      \begin{aligned}
+        B' & = -\partial\times E,         \\
+        E' & = \partial\times B - 4\pi j,
+      \end{aligned}
+    \right\}
+    \qquad \text{Maxwell’s equations}
+
+results in
+
+.. math::
+  \left.
+    \begin{aligned}
+      B' & = -\partial\times E         \\
+      E' & =  \partial\times B - 4\pi j
+    \end{aligned}
+  \;\right\}
+  \qquad \text{Maxwell’s equations.}
 
 
 .. [#math-syntax] The supported LaTeX commands include AMS extensions
@@ -925,7 +948,7 @@ Font changes
 
 `Math alphabet`_ macros change the default alphabet, leaving some symbols
 unchanged. In MathML core, the corresponding *Mathematical Alphanumeric
-Symbols* should be used.
+Symbols* are used.
 
 :default: `V_R x \pm \cos(\alpha) \approx 3 \Gamma  \quad \forall x \in \mathbb{R}`
 :mathbb: `\mathbb{V_R x \pm \cos(\alpha) \approx 3 \Gamma  \quad \forall x \in \mathbb{R}}`
@@ -950,7 +973,7 @@ capital Latin letters.
 Unicode supports also small Latin letters, some Greek letters, and digits:
 `\mathbb{A \ldots Z a \ldots z}
 \mathbb\Gamma \mathbb{\Pi} \mathbb {\Sigma} \mathbb\gamma \mathbb \pi
-\mathbb{0 \ldots 9}` but no italic numbers.
+\mathbb{0 \ldots 9}` but no italic digits.
 
 
 Inferred <mrow>s in MathML
