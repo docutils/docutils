@@ -109,7 +109,6 @@ math_alphabets = {
 
 # operator, fence, or separator -> <mo>
 
-
 stretchables = {
     # extensible delimiters allowed in left/right cmds
     'backslash':   '\\',
@@ -221,25 +220,25 @@ spaces = {'qquad':         '2em',        # two \quad
           'negthickspace': '-0.2778em',  # -5mu = -5/18em
           }
 
-# accents -> <mover stretchy="false">
+# accents: -> <mo stretchy="false"> in <mover>
 accents = {
-    # TeX:    (spacing, combining)
-    'acute':    ('´', '\u0301'),
-    'bar':      ('ˉ', '\u0304'),
-    'breve':    ('˘', '\u0306'),
-    'check':    ('ˇ', '\u030C'),
-    'dot':      ('˙', '\u0307'),
-    'ddot':     ('¨', '\u0308'),
-    'dddot':    ('⋯', '\u20DB'),
-    'grave':    ('`', '\u0300'),
-    'hat':      ('ˆ', '\u0302'),
-    'mathring': ('˚', '\u030A'),
-    'tilde':    ('˜', '\u0303'),  # tilde ~ or small tilde ˜?
-    'vec':      ('→', '\u20d7'),  # → too heavy, accents="false"
-    # TODO: ddddot
+    # TeX:      spacing    combining
+    'acute':    '´',     # '\u0301'
+    'bar':      'ˉ',     # '\u0304'
+    'breve':    '˘',     # '\u0306'
+    'check':    'ˇ',     # '\u030C'
+    'dot':      '˙',     # '\u0307'
+    'ddot':     '¨',     # '\u0308'
+    'dddot':    '˙˙˙',   # '\u20DB'  # or … ?
+    'ddddot':   '˙˙˙˙',  # '\u20DC'  # or ¨¨ ?
+    'grave':    '`',     # '\u0300'
+    'hat':      'ˆ',     # '\u0302'
+    'mathring': '˚',     # '\u030A'
+    'tilde':    '~',     # '\u0303'  # tilde ~ or small tilde ˜?
+    'vec':      '→',     # '\u20d7'  # → too heavy, use scriptlevel="+1"
 }
 
-# limits etc. -> <mover> or <munder>
+# limits etc. -> <mo> in <mover> or <munder>
 over = {
     # TeX:                  (char,     offset-correction/em)
     'overbrace':            ('\u23DE', -0.2),  # DejaVu Math -0.6
@@ -340,16 +339,11 @@ class math:
         ord('&'): '&amp;',
         0x2061:   '&ApplyFunction;',
     }
-    _boolstrings = {True: 'true', False: 'false'}
-    """String representation of boolean MathML attribute values."""
-
-    html_tagname = 'span'
-    """Tag name for HTML representation."""
 
     def __init__(self, *children, **attributes):
         """Set up node with `children` and `attributes`.
 
-        Attributes are downcased: Use CLASS to set "class" value.
+        Attributes are downcased to allow using CLASS to set "class" value.
         >>> math(mn(3), CLASS='test')
         math(mn(3), class='test')
         >>> math(CLASS='test').toprettyxml()
@@ -357,8 +351,7 @@ class math:
 
         """
         self.children = []
-        self.extend(children)
-
+        self += children
         self.attributes = {}
         for key in attributes.keys():
             # Use .lower() to allow argument `CLASS` for attribute `class`
@@ -366,14 +359,13 @@ class math:
             self.attributes[key.lower()] = attributes[key]
 
     def __repr__(self):
-        content = [repr(item) for item in getattr(self, 'children', [])]
+        content = [repr(item) for item in self.children]
         if hasattr(self, 'data'):
             content.append(repr(self.data))
-        if isinstance(self, MathSchema) and self.switch:
+        if getattr(self, 'switch', None):
             content.append('switch=True')
         content += ["%s=%r"%(k, v) for k, v in self.attributes.items()
                     if v is not None]
-
         return self.__class__.__name__ + '(%s)' % ', '.join(content)
 
     def __len__(self):
@@ -392,8 +384,7 @@ class math:
 
     def full(self):
         """Return boolean indicating whether children may be appended."""
-        return (self.nchildren is not None
-                and len(self) >= self.nchildren)
+        return self.nchildren is not None and len(self) >= self.nchildren
 
     def append(self, child):
         """Append child and return self or first non-full parent.
@@ -414,6 +405,8 @@ class math:
             self.append(child)
         return self
 
+    __iadd__ = extend  # alias for ``+=`` operator
+
     def close(self):
         """Close element and return first non-full parent or None."""
         parent = self.parent
@@ -421,20 +414,28 @@ class math:
             parent = parent.parent
         return parent
 
+    # Conversion to (pretty) XML string
     def toprettyxml(self):
         """Return XML representation of self as string."""
         return ''.join(self._xml())
 
     def _xml(self, level=0):
-        return ([self.xml_starttag()]
-                + self._xml_body(level)
-                + ['</%s>' % self.__class__.__name__])
+        if self.nchildren is not None and len(self) < self.nchildren:
+            raise MathError(f'Node {self.xml_starttag()} misses children.'
+                            ' Incomplete source?')
+        return [self.xml_starttag(),
+                *self._xml_body(level),
+                '</%s>' % self.__class__.__name__]
 
     def xml_starttag(self):
-        attrs = ('%s="%s"' % (k, str(v).replace('True', 'true').replace('False', 'false'))
-                 for k, v in self.attributes.items()
-                 if v is not None)
+        attrs = (f'{k}="{self.a_str(v)}"'
+                 for k, v in self.attributes.items() if v is not None)
         return '<%s>' % ' '.join((self.__class__.__name__, *attrs))
+
+    @staticmethod
+    def a_str(v):
+        # Return string representation for attribute value `v`.
+        return str(v).replace('True', 'true').replace('False', 'false')
 
     def _xml_body(self, level=0):
         xml = []
@@ -444,6 +445,7 @@ class math:
         xml.extend(['\n', '  ' * level])
         return xml
 
+    # display mode
     def is_block(self):
         """Return true, if `self` or a parent has ``display='block'``."""
         try:
@@ -461,6 +463,9 @@ class math:
 # '<math>\n  <mn>2</mn>\n</math>'
 # >>> len(n2)
 # 1
+# >>> n2 += [mo('!')]
+# >>> n2
+# math(mn(2), mo('!'))
 # >>> eq3 = math(id='eq3', display='block')
 # >>> eq3
 # math(id='eq3', display='block')
@@ -957,8 +962,8 @@ def handle_cmd(name, node, string):  # noqa: C901 TODO make this less complex
 
     if name in ordinary:
         # <mi mathvariant="normal"> well supported by Chromium but
-        # Firefox 115.5.0 puts additional space after the symbol, e.g.
-        # <mi mathvariant="normal">∂</mi><mi>t</mi> looks like <mo>∂</mo>…
+        # Firefox 115.5.0 puts additional space around the symbol, e.g.
+        # <mi mathvariant="normal">∂</mi><mi>t</mi> looks like ∂ t, not ∂t
         # return node.append(mi(ordinary[name], mathvariant='normal')), string
         return node.append(mi(ordinary[name])), string
 
@@ -1174,10 +1179,12 @@ def handle_cmd(name, node, string):  # noqa: C901 TODO make this less complex
         return entry, string
 
     if name in accents:
-        new_node = mover(mo(accents[name][0], stretchy=False), switch=True)
+        accent_node = mo(accents[name], stretchy=False)
+        # mi() would be simpler, but semantically wrong
+        # --- https://w3c.github.io/mathml-core/#operator-fence-separator-or-accent-mo
         if name == 'vec':
-            new_node.children[0]['accent'] = False  # scale down arrow but drop i-dot
-        new_node.tex_cmd = name  # for HTML export
+            accent_node['scriptlevel'] = '+1'  # scale down arrow
+        new_node = mover(accent_node, accent=True, switch=True)
         node.append(new_node)
         return new_node, string
 
@@ -1186,7 +1193,6 @@ def handle_cmd(name, node, string):  # noqa: C901 TODO make this less complex
         # but to True on accent node get "textstyle" (full size) symbols on top
         new_node = mover(mo(over[name][0], accent=True),
                          switch=True, accent=False)
-        new_node.tex_cmd = name  # for HTML export
         node.append(new_node)
         return new_node, string
 
@@ -1197,7 +1203,6 @@ def handle_cmd(name, node, string):  # noqa: C901 TODO make this less complex
 
     if name in under:
         new_node = munder(mo(under[name][0]), switch=True)
-        new_node.tex_cmd = name  # for HTML export
         node.append(new_node)
         return new_node, string
 
@@ -1280,7 +1285,7 @@ def handle_cmd(name, node, string):  # noqa: C901 TODO make this less complex
 # >>> handle_cmd('overline', math(), '{981}')
 # (mover(mo('_', accent=True), switch=True, accent=False), '{981}')
 # >>> handle_cmd('bar', math(), '{x}')
-# (mover(mo('ˉ', stretchy=False), switch=True), '{x}')
+# (mover(mo('ˉ', stretchy=False), switch=True, accent=True), '{x}')
 # >>> handle_cmd('xleftarrow', math(), r'[\alpha]{10}')
 # (munderover(mo('⟵'), mi('α')), '{10}')
 # >>> handle_cmd('xleftarrow', math(), r'[\alpha=5]{10}')
@@ -1387,10 +1392,13 @@ def tex_equation_columns(rows):
 
 
 # Return dictionary with attributes to style an <mtable> as align environment:
-# TODO: "columnalign" disregarded by Chromium and webkit
+# TODO: "columnalign" disregarded by Chromium and webkit.
+#       Use style="text-align: (right|left|center)" in the <mtd> elements
+#       or a (complex) CSS rule for "mtable.align"
 def align_attributes(rows):
     atts = {'class': 'align',
             'displaystyle': True}
+    # get maximal number of (non-escaped) "next column" markup instances:
     tabs = max(row.count('&') - row.count(r'\&') for row in rows)
     if tabs:
         aligns = ['right', 'left'] * tabs
@@ -1407,6 +1415,10 @@ def align_attributes(rows):
 # {'class': 'align', 'displaystyle': True, 'columnalign': 'right left right', 'columnspacing': '0 2em'}
 # >>> align_attributes(['a &= b & c &= d'])
 # {'class': 'align', 'displaystyle': True, 'columnalign': 'right left right left', 'columnspacing': '0 2em 0'}
+# >>> align_attributes([r'a &= b & c &= d \& e'])
+# {'class': 'align', 'displaystyle': True, 'columnalign': 'right left right left', 'columnspacing': '0 2em 0'}
+# >>> align_attributes([r'a &= b & c &= d & e'])
+# {'class': 'align', 'displaystyle': True, 'columnalign': 'right left right left right', 'columnspacing': '0 2em 0 2em'}
 
 
 def tex2mathml(tex_math, as_block=False):
@@ -1421,7 +1433,7 @@ def tex2mathml(tex_math, as_block=False):
         math_tree['display'] = 'block'
         rows = toplevel_code(tex_math).split(r'\\')
         if len(rows) > 1:
-            # emulate align* environment with a math table
+            # emulate "align*" environment with a math table
             node = mtd()
             math_tree.append(mtable(mtr(node),
                                     **align_attributes(rows)))
@@ -1473,10 +1485,6 @@ def tex2mathml(tex_math, as_block=False):
 #   </mtable>
 # </math>
 
-
-# TODO: raise error if <sqrt> doesnot have a base character (missing children)
-# >> '\sqrt[3]'
-# Maybe also other nodes...
 
 # TODO: look up more symbols from tr25, e.g.
 #

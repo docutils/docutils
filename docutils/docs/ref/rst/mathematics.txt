@@ -121,12 +121,12 @@ The "narrow" accents are intended for a single-letter base.
 
 .. class:: colwidths-auto
 
-  =========== =============  =========== =============  ============== ================
-  `\acute{x}` ``\acute{x}``  `\dot{t}`   ``\dot{t}``    `\hat{x}`      ``\hat{x}``
-  `\bar{v}`   ``\bar{v}``    `\ddot{t}`  ``\ddot{t}``   `\mathring{x}` ``\mathring{x}``
-  `\breve{x}` ``\breve{x}``  `\dddot{t}` ``\dddot{t}``  `\tilde{n}`    ``\tilde{n}``
-  `\check{x}` ``\check{x}``  `\grave{x}` ``\grave{x}``  `\vec{x}`      ``\vec{x}``
-  =========== =============  =========== =============  ============== ================
+  =========== =============  ============ ==============  ============== ================  ========= ===========
+  `\acute{x}` ``\acute{x}``  `\dot{t}`    ``\dot{t}``     `\grave{x}`    ``\grave{x}``     `\vec{x}` ``\vec{x}``
+  `\bar{v}`   ``\bar{v}``    `\ddot{t}`   ``\ddot{t}``    `\hat{x}`      ``\hat{x}``
+  `\breve{x}` ``\breve{x}``  `\dddot{t}`  ``\dddot{t}``   `\mathring{x}` ``\mathring{x}``
+  `\check{x}` ``\check{x}``  `\ddddot{t}` ``\ddddot{t}``  `\tilde{n}`    ``\tilde{n}``
+  =========== =============  ============ ==============  ============== ================  ========= ===========
 
 When adding an accent to an i or j in math, dotless variants can be
 obtained with ``\imath`` and ``\jmath``: `\hat \imath`, `\vec{\jmath}`.
@@ -312,6 +312,8 @@ Letterlike symbols
   ============= ===============  ========== ============  ========== ============  =========== =============
 
 
+.. _math alphabet:
+
 Mathematical Alphabets
 ----------------------
 
@@ -374,7 +376,7 @@ the *font weight*. In LaTeX, it can be used to get a bold version of any
 mathematical symbol (for other output formats, results are mixed):
 
 .. math::
-   \boldsymbol{\cos(x)\pm\alpha \approx 3\Gamma \quad \forall x\in\mathbb{R}}
+   \boldsymbol{V_i x \pm \cos(\alpha) \approx 3\Gamma \quad \forall x\in\mathbb{R}}
 
 
 Miscellaneous symbols
@@ -882,9 +884,9 @@ Changing the size of elements in a formula
 
 The declarations [#]_ ``\displaystyle``, ``\textstyle``,
 ``\scriptstyle``, and ``\scriptscriptstyle``, select a symbol size and
-spacing that would be applied in (respectively) display math, inline
-math, first-order subscript, or second-order subscript, even when the
-current context would normally yield some other size.
+spacing that would be applied in display math, inline
+math, first-order subscript, or second-order subscript, respectively
+even when the current context would normally yield some other size.
 
 For example ``:math:`\displaystyle \sum_{n=0}^\infty
 \frac{1}{n}``` is printed as `\displaystyle \sum_{n=0}^\infty \frac{1}{n}`
@@ -921,24 +923,34 @@ Tests
 Font changes
 ~~~~~~~~~~~~
 
-Math alphabet macros change the default alphabet ("mathvariant" in
-MathML), leaving some symbols unchanged:
+`Math alphabet`_ macros change the default alphabet, leaving some symbols
+unchanged. In MathML core, the corresponding *Mathematical Alphanumeric
+Symbols* should be used.
 
-:normal: `abs(x) \pm \alpha \approx 3 \Gamma  \quad \forall x \in R`
-:mathrm: `\mathrm{abs(x) \pm \alpha \approx 3 \Gamma  \quad \forall x \in R}`
-:mathit: `\mathit{abs(x) \pm \alpha \approx 3 \Gamma  \quad \forall x \in R}`
-:mathsf: `\mathsf{abs(x) \pm \alpha \approx 3 \Gamma  \quad \forall x \in R}`
-:mathbb: `\mathbb{abs(x) \pm \alpha \approx 3 \Gamma  \quad \forall x \in R}`
-:mathbf: `\mathbf{abs(x) \pm \alpha \approx 3 \Gamma  \quad \forall x \in R}`
-:mathcal: `\mathcal{abs(x) \pm \alpha \approx 3 \Gamma  \quad \forall x \in R}`
-:mathscr: `\mathscr{abs(x) \pm \alpha \approx 3 \Gamma  \quad \forall x \in R}`
+:default: `V_R x \pm \cos(\alpha) \approx 3 \Gamma  \quad \forall x \in \mathbb{R}`
+:mathbb: `\mathbb{V_R x \pm \cos(\alpha) \approx 3 \Gamma  \quad \forall x \in \mathbb{R}}`
+:mathbf: `\mathbf{V_R x \pm \cos(\alpha) \approx 3 \Gamma  \quad \forall x \in \mathbb{R}}`
+:mathbfit: `\mathbfit{V_R x \pm \cos(\alpha) \approx 3 \Gamma  \quad \forall x \in \mathbb{R}}`
+:mathcal: `\mathcal{V_R x \pm \cos(\alpha) \approx 3 \Gamma  \quad \forall x \in \mathbb{R}}`
+:mathit: `\mathit{V_R x \pm \cos(\alpha) \approx 3 \Gamma  \quad \forall x \in \mathbb{R}}`
+:mathrm: `\mathrm{V_R x \pm \cos(\alpha) \approx 3 \Gamma  \quad \forall x \in \mathbb{R}}`
+:mathscr: `\mathscr{V_R x \pm \cos(\alpha) \approx 3 \Gamma  \quad \forall x \in \mathbb{R}}`
+:mathsf: `\mathsf{V_R x \pm \cos(\alpha) \approx 3 \Gamma  \quad \forall x \in \mathbb{R}}`
+:mathsfbfit: `\mathsfbfit{V_R x \pm \cos(\alpha) \approx 3 \Gamma  \quad \forall x \in \mathbb{R}}`
+:mathsfit: `\mathsfit{V_R x \pm \cos(\alpha) \approx 3 \Gamma  \quad \forall x \in \mathbb{R}}`
+:mathtt: `\mathtt{V_R x \pm \cos(\alpha) \approx 3 \Gamma  \quad \forall x \in \mathbb{R}}`
+
+LaTeX accepts complex functions inside the math alphabet functions:
+
+:mathrm: `\mathrm{\frac{x}{y}}`
+
 
 Without additional packages, LaTeX supports "blackboard-bold" only for
 capital Latin letters.
 Unicode supports also small Latin letters, some Greek letters, and digits:
 `\mathbb{A \ldots Z a \ldots z}
 \mathbb\Gamma \mathbb{\Pi} \mathbb {\Sigma} \mathbb\gamma \mathbb \pi
-\mathbb{0 \ldots 9}`.
+\mathbb{0 \ldots 9}` but no italic numbers.
 
 
 Inferred <mrow>s in MathML
