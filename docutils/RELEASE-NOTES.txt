@@ -212,6 +212,10 @@ Release 0.21 (unpublished)
     references. Use the CSS selector ``[role="doc-noteref"]``
     (works since Docutils 0.18, see minimal.css for examples).
 
+    Fix MathML rendering problems in Chrome/Chromium based browsers.
+
+    Embed SVG images as ``<svg>`` instead of data-URI.
+
 * Removed objects:
 
   `docutils.nodes.reprunicode`, `docutils.nodes.ensure_str()`

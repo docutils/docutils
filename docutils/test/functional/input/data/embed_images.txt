@@ -1,34 +1,55 @@
 Embedded images
 ===============
 
-The image_loading_ setting can be used to tell the "html5" writer to
-embed images in the output document.
-The image is base64_ encoded and included as a `data URI`_.
-In future, SVG images may be directly inserted into HTML5.
+The image_loading_ setting can be used to tell the "html5" writer
+to embed still images in the output document. [#]_ SVG images are
+directly included, other images are base64_ encoded and included
+as a `data URI`_.
 
-.. figure:: ../../../docs/user/rst/images/biohazard.png
+.. figure:: file:../../../docs/user/rst/images/biohazard.png
    :alt: biohazard
-   :align: center
+   :align: left
+   :width: 2em
+   :figwidth: 45%
+   :class: align-center
 
-   Embedded image in a figure.
+   Embedded PNG image in a figure.
 
-Embedded inline image |inline-embedded| scaled to a height of 0.8 em.
+.. figure:: file:../../../docs/user/rst/images/biohazard-scaling.svg
+   :alt: biohazard
+   :align: right
+   :width: 2em
+   :figwidth: 45%
+   :class: align-center
 
-.. |inline-embedded| image:: file:../../../docs/user/rst/images/biohazard.png
+   Embedded SVG image in a figure.
+
+Embedded inline PNG image |inline-embedded| and SVG image
+|inline-embedded-2| scaled to a height of 0.8 em.
+
+.. |inline-embedded| image:: ../../../docs/user/rst/images/biohazard.png
    :height: 0.8 em
+.. |inline-embedded-2| image::
+   ../../../docs/user/rst/images/biohazard-scaling.svg
+   :height: 0.8 em
+
 
 .. image:: ../../../docs/user/rst/images/biohazard.svg
    :align: left
-   :width: 2em
-   :height: 2em
+   :width: 1.5em
+   :height: 1.5em
    :loading: lazy
 
-The ``:loading:`` option of `image and figure directives`_ overrides the
+The ``:loading:`` option of `"image" and "figure" directives`_ overrides the
 image_loading_ setting for the respective image.
+
+.. [#] Videos are only embedded if indicated in the
+       `"image" directive`_'s "loading" option.
 
 .. _image_loading:
     https://docutils.sourceforge.io/docs/user/config.html#image-loading
 .. _base64: https://en.wikipedia.org/wiki/Base64
 .. _data URI: https://en.wikipedia.org/wiki/Data_URI_scheme
-.. _image and figure directives:
-    https://docutils.sourceforge.io/docs/ref/rst/directives.html#images
+.. _"image" directive:
+.. _"image" and "figure" directives:
+    ../../../docs/ref/rst/directives.html#images

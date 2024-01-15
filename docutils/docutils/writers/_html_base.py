@@ -24,6 +24,7 @@ from pathlib import Path
 import re
 import urllib
 import warnings
+import xml.etree.ElementTree as ET  # TODO: lazy import in prepare_svg()?
 
 import docutils
 from docutils import frontend, languages, nodes, utils, writers
@@ -453,6 +454,47 @@ class HTMLTranslator(nodes.NodeVisitor):
                     size[i] += 'px'
                 size_declarations.append(f'{dimension}: {size[i]};')
         return ' '.join(size_declarations)
+
+    def prepare_svg(self, node, imagedata, size_declaration):
+        # Edit `imagedata` for embedding as SVG image.
+        # Use ElementTree to add node attributes.
+        # ET also removes comments and preamble code.
+        #
+        # Provisional:
+        # interface and behaviour may change without notice.
+
+        # SVG namespace
+        svg_ns = {'': 'http://www.w3.org/2000/svg',
+                  'xlink': 'http://www.w3.org/1999/xlink'}
+        # don't add SVG namespace to all elements
+        ET.register_namespace('', svg_ns[''])
+        ET.register_namespace('xlink', svg_ns['xlink'])
+        try:
+            svg = ET.fromstring(imagedata.decode('utf-8'))
+        except ET.ParseError as err:
+            self.messages.append(self.document.reporter.error(
+                f'Cannot parse SVG image "{node["uri"]}":\n  {err}',
+                base_node=node))
+            return imagedata.decode('utf-8')
+        # apply image node attributes:
+        if size_declaration:  # append to style, replacing width & height
+            declarations = [d.strip() for d in svg.get('style', '').split(';')]
+            declarations = [d for d in declarations
+                            if d
+                            and not d.startswith('width')
+                            and not d.startswith('height')]
+            svg.set('style', '; '.join(declarations+[size_declaration]))
+        if node['classes'] or 'align' in node:
+            classes = svg.get('class', '').split()
+            classes += node.get('classes', [])
+            if 'align' in node:
+                classes.append(f'align-{node["align"]}')
+            svg.set('class', ' '.join(classes))
+        if 'alt' in node and svg.find('title', svg_ns) is None:
+            svg_title = ET.Element('title')
+            svg_title.text = node['alt']
+            svg.insert(0, svg_title)
+        return ET.tostring(svg, encoding='unicode')
 
     def stylesheet_call(self, path, adjust_path=None):
         """Return code to reference or embed stylesheet file `path`"""
@@ -1103,6 +1145,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         del self.body[start:]
 
     def visit_image(self, node):
+        # reference/embed images (still images and videos)
         uri = node['uri']
         alt = node.get('alt', uri)
         mimetype = mimetypes.guess_type(uri)[0]
@@ -1130,16 +1173,15 @@ class HTMLTranslator(nodes.NodeVisitor):
             except (ValueError, OSError) as err:
                 self.messages.append(self.document.reporter.error(
                     f'Cannot embed image "{uri}":\n  {err}', base_node=node))
-                # TODO: read external files with urllib.request?
-                #       (cf. odtwriter)
+                # TODO: get external files with urllib.request (cf. odtwriter)?
             else:
                 self.settings.record_dependencies.add(imagepath)
-                # TODO: insert SVG as-is?
-                # if mimetype == 'image/svg+xml':
-                # read/parse, apply arguments,
-                # insert as <svg ....> ... </svg> # (about 1/3 less data)
-                data64 = base64.b64encode(imagedata).decode()
-                uri = f'data:{mimetype};base64,{data64}'
+                if mimetype == 'image/svg+xml':
+                    element = self.prepare_svg(node, imagedata,
+                                               size_declaration)
+                else:
+                    data64 = base64.b64encode(imagedata).decode()
+                    uri = f'data:{mimetype};base64,{data64}'
 
         # No newlines around inline images (but all images may be nested
         # in a `reference` node which is a `TextElement` instance):
@@ -1161,7 +1203,9 @@ class HTMLTranslator(nodes.NodeVisitor):
         elif mimetype == 'application/x-shockwave-flash':
             atts['type'] = mimetype
             element = (self.starttag(node, 'object', '', data=uri, **atts)
-                       + alt + '</object>' + suffix)
+                       + f'{alt}</object>{suffix}')
+        elif element:  # embedded SVG, see above
+            element += suffix
         else:
             atts['alt'] = alt
             element = self.emptytag(node, 'img', suffix, src=uri, **atts)

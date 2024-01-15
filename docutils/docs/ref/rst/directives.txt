@@ -289,7 +289,7 @@ Recognizes the common options class_ and name_ as well as
 ``loading`` : ["embed", "link", "lazy"]
     Indicate the preferred handling by the Docutils Writer. [#]_
 
-    :embed: Embed the image into the output document.
+    :embed: Embed the image into the output document. [#]_
     :link:  Refer to the image via its URI.
     :lazy:  Refer to the image. The HTML5 writer additionally
             specifies the `lazy loading attribute`_.
@@ -303,11 +303,16 @@ Recognizes the common options class_ and name_ as well as
    The behaviour may change for the ODT and XML writers but
    images cannot be embedded in a LaTeX source.
 
+.. [#] SVG images are directly included, other images are base64_ encoded
+   and included as a `data URI`_.
+
 .. _image element: ../doctree.html#image
 .. _"loading" attribute: ../doctree.html#loading
 .. _image_loading: ../../user/config.html#image-loading
 .. _lazy loading attribute: https://html.spec.whatwg.org/multipage/
     urls-and-fetching.html#lazy-loading-attributes
+.. _base64: https://en.wikipedia.org/wiki/Base64
+.. _data URI: https://en.wikipedia.org/wiki/Data_URI_scheme
 
 
 Figure
