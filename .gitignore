@@ -23,3 +23,4 @@ sandbox/**/index.html
 /docutils/test/alltests.out
 /docutils/test/record.txt
 /docutils/test/functional/output/*
+/docutils/test/extra/output/*

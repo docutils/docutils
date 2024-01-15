@@ -100,6 +100,8 @@ Changes since 0.20.1
   - Use CSS rules instead of the deprecated "columnalign" attribute
     to style <mtable> as "align" environment. Fixes rendering in Crome.
   - Support "aligned" environment.
+  - Use Mathematical Alphanumeric Symbols instead of `<mstyle>` with
+    "mathvariant" attribute to fix rendering in Crome/Chromium/Android.
 
 * docutils/utils/roman.py
 
@@ -118,6 +120,8 @@ Changes since 0.20.1
 
 * docutils/writers/html5_polyglot/*.css
 
+  - Embed SVG images as ``<svg>`` instead of data-URI
+    (not used by "html4css1"). Fixes [feature-request:#100].
   - Move MathML styles to "minimal.css" (required for correct rendering).
 
 * docutils/writers/_html_base.py
