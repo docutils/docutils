@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="generator" content="Docutils 0.21b.dev: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>buggy-maths</title>
+<link rel="stylesheet" href="../../../docutils/writers/html5_polyglot/minimal.css" type="text/css" />
+<link rel="stylesheet" href="../../../docutils/writers/html5_polyglot/plain.css" type="text/css" />
+</head>
+<body>
+<main>
+
+
+<p>Test &quot;math-output: mathml pandoc&quot;.</p>
+<p>There is &quot;<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mi>ω</mi><mi>τ</mi><mo>ς</mo></mrow><annotation encoding="application/x-tex">\lambda\omega\tau\varsigma</annotation></semantics></math>&quot; to math.</p>
+<table>
+<tbody>
+<tr><td><p>Das ist nicht lustig.</p></td>
+<td><p>Dafür das</p></td>
+<td><p>hier</p></td>
+</tr>
+<tr><td><pre class="math problematic">
+So \isses
+</pre>
+</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">buggy-maths</span>, line 9)</p>
+<p>TeX to MathML converter `pandoc` failed:</p>
+<p>[WARNING] Could not convert TeX math 'So \isses', rendering as TeX:</p>
+<pre class="literal-block">  So \isses
+           ^</pre>
+<p class="pre-wrap">  unexpected eof
+  expecting &quot;%&quot;, &quot;\\label&quot;, &quot;\\nonumber&quot; or whitespace</p>
+</aside>
+<p>Das ist <span class="math problematic">\ein</span> Fehler.</p>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">buggy-maths</span>, line 13)</p>
+<p>TeX to MathML converter `pandoc` failed:</p>
+<p>[WARNING] Could not convert TeX math '\ein', rendering as TeX:</p>
+<pre class="literal-block">  \ein
+      ^</pre>
+<p class="pre-wrap">  unexpected eof
+  expecting &quot;%&quot;, &quot;\\label&quot;, &quot;\\nonumber&quot; or whitespace</p>
+</aside>
+<pre class="math problematic">
+\int_{-\infty} 3 \sin x} \phy \, d\gamma
+</pre>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">buggy-maths</span>, line 15)</p>
+<p>TeX to MathML converter `pandoc` failed:</p>
+<p>[WARNING] Could not convert TeX math '\int_{-\infty} 3 \sin x} \phy \, d\gamma', rendering as TeX:</p>
+<pre class="literal-block">  _{-\infty} 3 \sin x} \phy \, d\gamma
+                     ^</pre>
+<p class="pre-wrap">  unexpected '}'
+  expecting &quot;\\bangle&quot;, &quot;\\brace&quot;, &quot;\\brack&quot;, &quot;\\choose&quot;, &quot;\\displaystyle&quot;, &quot;{&quot;, letter, digit, &quot;.&quot;, &quot;\\mbox&quot;, &quot;\\text&quot;, &quot;\\textbf&quot;, &quot;\\textit&quot;, &quot;\\textrm&quot;, &quot;\\textsf&quot;, &quot;\\texttt&quot;, &quot;\\bm&quot;, &quot;\\boldsymbol&quot;, &quot;\\mathbb&quot;, &quot;\\mathbf&quot;, &quot;\\mathbfcal&quot;, &quot;\\mathbffrak&quot;, &quot;\\mathbfit&quot;, &quot;\\mathbfscr&quot;, &quot;\\mathbfsfit&quot;, &quot;\\mathbfsfup&quot;, &quot;\\mathbfup&quot;, &quot;\\mathbold&quot;, &quot;\\mathcal&quot;, &quot;\\mathds&quot;, &quot;\\mathfrak&quot;, &quot;\\mathit&quot;, &quot;\\mathrm&quot;, &quot;\\mathscr&quot;, &quot;\\mathsf&quot;, &quot;\\mathsfit&quot;, &quot;\\mathsfup&quot;, &quot;\\mathtt&quot;, &quot;\\mathup&quot;, &quot;\\pmb&quot;, &quot;\\symbf&quot;, &quot;\\texttt&quot;, &quot;\\sqrt&quot;, &quot;\\surd&quot;, &quot;\\mspace&quot;, &quot;\\hspace&quot;, &quot;\\mathop&quot;, &quot;\\mathrel&quot;, &quot;\\mathbin&quot;, &quot;\\mathord&quot;, &quot;\\mathopen&quot;, &quot;\\mathclose&quot;, &quot;\\mathpunct&quot;, &quot;\\phantom&quot;, &quot;\\boxed&quot;, &quot;\\overset&quot;, &quot;\\stackrel&quot;, &quot;\\underset&quot;, &quot;\\frac&quot;, &quot;\\tfrac&quot;, &quot;\\dfrac&quot;, &quot;\\binom&quot;, &quot;\\genfrac&quot;, &quot;\\substack&quot;, &quot;_&quot;, &quot;^&quot;, &quot;\\begin&quot;, &quot;\\ensuremath&quot;, &quot;\\bigg&quot;, &quot;\\Bigg&quot;, &quot;\\big&quot;, &quot;\\Big&quot;, &quot;\\biggr&quot;, &quot;\\Biggr&quot;, &quot;\\bigr&quot;, &quot;\\Bigr&quot;, &quot;\\biggl&quot;, &quot;\\Biggl&quot;, &quot;\\bigl&quot;, &quot;\\&quot;, &quot;\\left&quot;, &quot;\\not&quot;, &quot;!&quot;, &quot;'&quot;, &quot;''&quot;, &quot;'''&quot;, &quot;''''&quot;, &quot;*&quot;, &quot;+&quot;, &quot;,&quot;, &quot;-&quot;, &quot;.&quot;, &quot;/&quot;, &quot;:&quot;, &quot;:=&quot;, &quot;;&quot;, &quot;&lt;&quot;, &quot;=&quot;, &quot;&gt;&quot;, &quot;?&quot;, &quot;&#64;&quot;, &quot;~&quot;, &quot;\\operatorname&quot; or end of input</p>
+</aside>
+<aside class="sidebar">
+<p class="sidebar-title">nebenbemerkung</p>
+<p>noch was <span class="math problematic">\sqrt[2]</span></p>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">buggy-maths</span>, line 19)</p>
+<p>TeX to MathML converter `pandoc` failed:</p>
+<p>[WARNING] Could not convert TeX math '\sqrt[2]', rendering as TeX:</p>
+<pre class="literal-block">  \sqrt[2]
+          ^</pre>
+<p class="pre-wrap">  unexpected eof
+  expecting &quot;%&quot;, &quot;\\label&quot;, &quot;\\nonumber&quot;, whitespace, &quot;\\not&quot;, &quot;!&quot;, &quot;'&quot;, &quot;''&quot;, &quot;'''&quot;, &quot;''''&quot;, &quot;*&quot;, &quot;+&quot;, &quot;,&quot;, &quot;-&quot;, &quot;.&quot;, &quot;/&quot;, &quot;:&quot;, &quot;:=&quot;, &quot;;&quot;, &quot;&lt;&quot;, &quot;=&quot;, &quot;&gt;&quot;, &quot;?&quot;, &quot;&#64;&quot;, &quot;~&quot;, &quot;\\&quot;, &quot;{&quot; or &quot;[&quot;</p>
+</aside>
+</aside>
+<pre class="math problematic">
+\sqrt[2]
+</pre>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">buggy-maths</span>, line 21)</p>
+<p>TeX to MathML converter `pandoc` failed:</p>
+<p>[WARNING] Could not convert TeX math '\sqrt[2]', rendering as TeX:</p>
+<pre class="literal-block">  \sqrt[2]
+          ^</pre>
+<p class="pre-wrap">  unexpected eof
+  expecting &quot;%&quot;, &quot;\\label&quot;, &quot;\\nonumber&quot;, whitespace, &quot;\\not&quot;, &quot;!&quot;, &quot;'&quot;, &quot;''&quot;, &quot;'''&quot;, &quot;''''&quot;, &quot;*&quot;, &quot;+&quot;, &quot;,&quot;, &quot;-&quot;, &quot;.&quot;, &quot;/&quot;, &quot;:&quot;, &quot;:=&quot;, &quot;;&quot;, &quot;&lt;&quot;, &quot;=&quot;, &quot;&gt;&quot;, &quot;?&quot;, &quot;&#64;&quot;, &quot;~&quot;, &quot;\\&quot;, &quot;{&quot; or &quot;[&quot;</p>
+</aside>
+<p>2-zeilig mit align:</p>
+<div>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right"><msub><mi>s</mi><mi>i</mi></msub></mtd><mtd columnalign="left"><mo>=</mo><mn>3</mn></mtd></mtr><mtr><mtd columnalign="right"><msub><mi>s</mi><mi>j</mi></msub><mo>+</mo><mn>3</mn></mtd><mtd columnalign="left"></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{aligned}
+s_i     &amp; = 3 \\
+s_j + 3 &amp;\end{aligned}</annotation></semantics></math>
+</div>
+</main>
+</body>
+</html>

@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="generator" content="Docutils 0.21b.dev: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Math Conversion Tests</title>
+<link rel="stylesheet" href="../../../docutils/writers/html5_polyglot/minimal.css" type="text/css" />
+<link rel="stylesheet" href="../../../docutils/writers/html5_polyglot/plain.css" type="text/css" />
+</head>
+<body>
+<main id="math-conversion-tests">
+<h1 class="title">Math Conversion Tests</h1>
+
+<section id="font-changes">
+<h2>Font changes</h2>
+<p><em>Math alphabet</em> macros change the default alphabet, leaving some symbols
+unchanged. In MathML core, the corresponding <em>Mathematical Alphanumeric
+Symbols</em> are used.</p>
+<dl class="field-list simple">
+<dt>default<span class="colon">:</span></dt>
+<dd><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>V</mi><mi>R</mi></msub><mi>x</mi><mo>±</mo><mo>cos</mo><mo stretchy="false" form="prefix">(</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo><mo>≈</mo><mn>3</mn><mi>Γ</mi><mspace width="1.0em"></mspace><mo>∀</mo><mi>x</mi><mo>∈</mo><mstyle mathvariant="double-struck"><mi>ℝ</mi></mstyle></mrow><annotation encoding="application/x-tex">V_R x \pm \cos(\alpha) \approx 3 \Gamma  \quad \forall x \in \mathbb{R}</annotation></semantics></math></p>
+</dd>
+<dt>mathbb<span class="colon">:</span></dt>
+<dd><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="double-struck"><msub><mi>𝕍</mi><mi>ℝ</mi></msub><mi>𝕩</mi><mo>±</mo><mo>cos</mo><mo stretchy="false" form="prefix">(</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo><mo>≈</mo><mn>3</mn><mi>ℾ</mi><mspace width="1.0em"></mspace><mo>∀</mo><mi>𝕩</mi><mo>∈</mo><mstyle mathvariant="double-struck"><mi>ℝ</mi></mstyle></mstyle><annotation encoding="application/x-tex">\mathbb{V_R x \pm \cos(\alpha) \approx 3 \Gamma  \quad \forall x \in \mathbb{R}}</annotation></semantics></math></p>
+</dd>
+<dt>mathbf<span class="colon">:</span></dt>
+<dd><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="bold"><msub><mi>𝐕</mi><mi>𝐑</mi></msub><mi>𝐱</mi><mo>±</mo><mo>cos</mo><mo stretchy="false" form="prefix">(</mo><mi>𝛂</mi><mo stretchy="false" form="postfix">)</mo><mo>≈</mo><mn>3</mn><mi>𝚪</mi><mspace width="1.0em"></mspace><mo>∀</mo><mi>𝐱</mi><mo>∈</mo><mstyle mathvariant="double-struck"><mi>ℝ</mi></mstyle></mstyle><annotation encoding="application/x-tex">\mathbf{V_R x \pm \cos(\alpha) \approx 3 \Gamma  \quad \forall x \in \mathbb{R}}</annotation></semantics></math></p>
+</dd>
+<dt>mathbfit<span class="colon">:</span></dt>
+<dd><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="bold-italic"><msub><mi>𝑽</mi><mi>𝑹</mi></msub><mi>𝒙</mi><mo>±</mo><mo>cos</mo><mo stretchy="false" form="prefix">(</mo><mi>𝜶</mi><mo stretchy="false" form="postfix">)</mo><mo>≈</mo><mn>3</mn><mi>𝜞</mi><mspace width="1.0em"></mspace><mo>∀</mo><mi>𝒙</mi><mo>∈</mo><mstyle mathvariant="double-struck"><mi>ℝ</mi></mstyle></mstyle><annotation encoding="application/x-tex">\mathbfit{V_R x \pm \cos(\alpha) \approx 3 \Gamma  \quad \forall x \in \mathbb{R}}</annotation></semantics></math></p>
+</dd>
+<dt>mathcal<span class="colon">:</span></dt>
+<dd><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="script"><msub><mi>𝒱</mi><mi>ℛ</mi></msub><mi>𝓍</mi><mo>±</mo><mo>cos</mo><mo stretchy="false" form="prefix">(</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo><mo>≈</mo><mn>3</mn><mi>Γ</mi><mspace width="1.0em"></mspace><mo>∀</mo><mi>𝓍</mi><mo>∈</mo><mstyle mathvariant="double-struck"><mi>ℝ</mi></mstyle></mstyle><annotation encoding="application/x-tex">\mathcal{V_R x \pm \cos(\alpha) \approx 3 \Gamma  \quad \forall x \in \mathbb{R}}</annotation></semantics></math></p>
+</dd>
+<dt>mathit<span class="colon">:</span></dt>
+<dd><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="italic"><msub><mi>𝑉</mi><mi>𝑅</mi></msub><mi>𝑥</mi><mo>±</mo><mo>cos</mo><mo stretchy="false" form="prefix">(</mo><mi>𝛼</mi><mo stretchy="false" form="postfix">)</mo><mo>≈</mo><mn>3</mn><mi>𝛤</mi><mspace width="1.0em"></mspace><mo>∀</mo><mi>𝑥</mi><mo>∈</mo><mstyle mathvariant="double-struck"><mi>ℝ</mi></mstyle></mstyle><annotation encoding="application/x-tex">\mathit{V_R x \pm \cos(\alpha) \approx 3 \Gamma  \quad \forall x \in \mathbb{R}}</annotation></semantics></math></p>
+</dd>
+<dt>mathrm<span class="colon">:</span></dt>
+<dd><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="normal"><msub><mi>V</mi><mi>R</mi></msub><mi>x</mi><mo>±</mo><mo>cos</mo><mo stretchy="false" form="prefix">(</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo><mo>≈</mo><mn>3</mn><mi>Γ</mi><mspace width="1.0em"></mspace><mo>∀</mo><mi>x</mi><mo>∈</mo><mstyle mathvariant="double-struck"><mi>ℝ</mi></mstyle></mstyle><annotation encoding="application/x-tex">\mathrm{V_R x \pm \cos(\alpha) \approx 3 \Gamma  \quad \forall x \in \mathbb{R}}</annotation></semantics></math></p>
+</dd>
+<dt>mathscr<span class="colon">:</span></dt>
+<dd><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="script"><msub><mi>𝒱</mi><mi>ℛ</mi></msub><mi>𝓍</mi><mo>±</mo><mo>cos</mo><mo stretchy="false" form="prefix">(</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo><mo>≈</mo><mn>3</mn><mi>Γ</mi><mspace width="1.0em"></mspace><mo>∀</mo><mi>𝓍</mi><mo>∈</mo><mstyle mathvariant="double-struck"><mi>ℝ</mi></mstyle></mstyle><annotation encoding="application/x-tex">\mathscr{V_R x \pm \cos(\alpha) \approx 3 \Gamma  \quad \forall x \in \mathbb{R}}</annotation></semantics></math></p>
+</dd>
+<dt>mathsf<span class="colon">:</span></dt>
+<dd><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="sans-serif"><msub><mi>𝖵</mi><mi>𝖱</mi></msub><mi>𝗑</mi><mo>±</mo><mo>cos</mo><mo stretchy="false" form="prefix">(</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo><mo>≈</mo><mn>3</mn><mi>Γ</mi><mspace width="1.0em"></mspace><mo>∀</mo><mi>𝗑</mi><mo>∈</mo><mstyle mathvariant="double-struck"><mi>ℝ</mi></mstyle></mstyle><annotation encoding="application/x-tex">\mathsf{V_R x \pm \cos(\alpha) \approx 3 \Gamma  \quad \forall x \in \mathbb{R}}</annotation></semantics></math></p>
+</dd>
+<dt>mathsfbfit<span class="colon">:</span></dt>
+<dd><p><span class="math problematic">\mathsfbfit{V_R x \pm \cos(\alpha) \approx 3 \Gamma  \quad \forall x \in \mathbb{R}}</span></p>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/test/functional/input/data/math_experiments.txt</span>, line 22)</p>
+<p>TeX to MathML converter `pandoc` failed:</p>
+<p>[WARNING] Could not convert TeX math '\mathsfbfit{V_R x \pm \cos(\alpha) \approx 3 \Gamma  \quad \forall x \in \mathbb{R}}', rendering as TeX:</p>
+<pre class="literal-block">  \mathsfbfit{V_R x \pm \cos(\alpha) \appr
+             ^</pre>
+<p class="pre-wrap">  unexpected &quot;{&quot;
+  expecting &quot;%&quot;, &quot;\\label&quot;, &quot;\\nonumber&quot; or whitespace</p>
+</aside>
+</dd>
+<dt>mathsfit<span class="colon">:</span></dt>
+<dd><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="sans-serif-italic"><msub><mi>𝘝</mi><mi>𝘙</mi></msub><mi>𝘹</mi><mo>±</mo><mo>cos</mo><mo stretchy="false" form="prefix">(</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo><mo>≈</mo><mn>3</mn><mi>Γ</mi><mspace width="1.0em"></mspace><mo>∀</mo><mi>𝘹</mi><mo>∈</mo><mstyle mathvariant="double-struck"><mi>ℝ</mi></mstyle></mstyle><annotation encoding="application/x-tex">\mathsfit{V_R x \pm \cos(\alpha) \approx 3 \Gamma  \quad \forall x \in \mathbb{R}}</annotation></semantics></math></p>
+</dd>
+<dt>mathtt<span class="colon">:</span></dt>
+<dd><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="monospace"><msub><mi>𝚅</mi><mi>𝚁</mi></msub><mi>𝚡</mi><mo>±</mo><mo>cos</mo><mo stretchy="false" form="prefix">(</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo><mo>≈</mo><mn>3</mn><mi>Γ</mi><mspace width="1.0em"></mspace><mo>∀</mo><mi>𝚡</mi><mo>∈</mo><mstyle mathvariant="double-struck"><mi>ℝ</mi></mstyle></mstyle><annotation encoding="application/x-tex">\mathtt{V_R x \pm \cos(\alpha) \approx 3 \Gamma  \quad \forall x \in \mathbb{R}}</annotation></semantics></math></p>
+</dd>
+</dl>
+<p>LaTeX accepts complex functions inside the math alphabet functions:</p>
+<dl class="field-list simple">
+<dt>mathrm<span class="colon">:</span></dt>
+<dd><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="normal"><mfrac><mi>x</mi><mi>y</mi></mfrac></mstyle><annotation encoding="application/x-tex">\mathrm{\frac{x}{y}}</annotation></semantics></math></p>
+</dd>
+</dl>
+<p>Without additional packages, LaTeX supports &quot;blackboard-bold&quot; only for
+capital Latin letters.
+Unicode supports also small Latin letters, some Greek letters, and digits:
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle mathvariant="double-struck"><mi>𝔸</mi><mi>…</mi><mi>ℤ</mi><mi>𝕒</mi><mi>…</mi><mi>𝕫</mi></mstyle><mstyle mathvariant="double-struck"><mi>ℾ</mi></mstyle><mstyle mathvariant="double-struck"><mi>ℿ</mi></mstyle><mstyle mathvariant="double-struck"><mi>Σ</mi></mstyle><mstyle mathvariant="double-struck"><mi>ℽ</mi></mstyle><mstyle mathvariant="double-struck"><mi>ℼ</mi></mstyle><mstyle mathvariant="double-struck"><mn>0</mn><mi>…</mi><mn>9</mn></mstyle></mrow><annotation encoding="application/x-tex">\mathbb{A \ldots Z a \ldots z}
+\mathbb\Gamma \mathbb{\Pi} \mathbb {\Sigma} \mathbb\gamma \mathbb \pi
+\mathbb{0 \ldots 9}</annotation></semantics></math> but no italic digits.</p>
+</section>
+<section id="inferred-mrow-s-in-mathml">
+<h2>Inferred &lt;mrow&gt;s in MathML</h2>
+<p>The elements &lt;msqrt&gt;, &lt;mstyle&gt;, &lt;merror&gt;, &lt;mpadded&gt;, &lt;mphantom&gt;, &lt;menclose&gt;,
+&lt;mtd&gt;, &lt;mscarry&gt;, and &lt;math&gt; treat their contents as a single inferred mrow
+formed from all their children.</p>
+<pre class="math problematic">
+a = \sqrt 2 + x,\quad
+b = \sqrt{1+x^2},\quad
+c = \sqrt\frac{\sin(x)}{23},
+</pre>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/test/functional/input/data/math_experiments.txt</span>, line 46)</p>
+<p>TeX to MathML converter `pandoc` failed:</p>
+<p>[WARNING] Could not convert TeX math 'a = \sqrt 2 + x,\quad</p>
+<pre class="literal-block">  b = \sqrt{1+x^2},\quad
+  c = \sqrt\frac{\sin(x)}{23},', rendering as TeX:</pre>
+<p class="pre-wrap">  c = \sqrt\frac{\sin(x)}{23},
+                ^
+  unexpected &quot;{&quot;
+  expecting &quot;%&quot;, &quot;\\label&quot;, &quot;\\nonumber&quot; or whitespace</p>
+</aside>
+<p>inline: <span class="math problematic">a = \sqrt 2 + x, b = \sqrt{1+x^2}, c = \sqrt\frac{\sin(x)}{23}</span>.</p>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/test/functional/input/data/math_experiments.txt</span>, line 50)</p>
+<p>TeX to MathML converter `pandoc` failed:</p>
+<p>[WARNING] Could not convert TeX math 'a = \sqrt 2 + x, b = \sqrt{1+x^2}, c = \sqrt\frac{\sin(x)}{23}', rendering as TeX:</p>
+<pre class="literal-block">  ^2}, c = \sqrt\frac{\sin(x)}{23}
+                     ^</pre>
+<p class="pre-wrap">  unexpected &quot;{&quot;
+  expecting &quot;%&quot;, &quot;\\label&quot;, &quot;\\nonumber&quot; or whitespace</p>
+</aside>
+</section>
+<section id="scripts-and-limits">
+<h2>Scripts and Limits</h2>
+<p>Accents should be nearer to the base:
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>a</mi><mo accent="true">‾</mo></mover><mover><mi>a</mi><mo accent="true">¯</mo></mover><mo>,</mo><mover><mi>l</mi><mo accent="true">‾</mo></mover><mover><mi>l</mi><mo accent="true">¯</mo></mover><mo>,</mo><mover><mi>i</mi><mo accent="true">‾</mo></mover><mover><mi>i</mi><mo accent="true">¯</mo></mover></mrow><annotation encoding="application/x-tex">\bar a \overline a, \bar l \overline l, \bar i \overline i</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>r</mi><mo accent="true">⃗</mo></mover><annotation encoding="application/x-tex">\vec{r}</annotation></semantics></math> <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>r</mi><mo accent="true">⃗</mo></mover><annotation encoding="application/x-tex">\overrightarrow{r}</annotation></semantics></math>.</p>
+<p>Sub- and superscript may be given in any order:
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>x</mi><mi>i</mi><mi>j</mi></msubsup><mo>=</mo><msubsup><mi>x</mi><mi>i</mi><mi>j</mi></msubsup></mrow><annotation encoding="application/x-tex">x_i^j = x^j_i</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mo>∫</mo><mn>0</mn><mn>1</mn></msubsup><mo>=</mo><msubsup><mo>∫</mo><mn>0</mn><mn>1</mn></msubsup></mrow><annotation encoding="application/x-tex">\int_0^1 = \int^1_0</annotation></semantics></math>.</p>
+<p>Double exponent: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>x</mi><msup><mn>10</mn><mn>4</mn></msup></msup><annotation encoding="application/x-tex">x^{10^4}</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>r</mi><msub><mi>T</mi><mstyle mathvariant="normal"><mi>i</mi><mi>n</mi></mstyle></msub></msub><annotation encoding="application/x-tex">r_{T_\mathrm{in}}</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mi>x</mi><mi>i</mi><msup><mi>n</mi><mn>2</mn></msup></msubsup><annotation encoding="application/x-tex">x_i^{n^2}</annotation></semantics></math>.</p>
+</section>
+<section id="nested-groups">
+<h2>Nested groups</h2>
+<p>tex-token returns &quot;{&quot; for nested groups:</p>
+<div>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mtext mathvariant="normal">das ist ein </mtext><mspace width="0.333em"></mspace></mrow><mtext mathvariant="normal">toller</mtext><mrow><mspace width="0.333em"></mspace><mtext mathvariant="normal"> text (unescaped {and }is
+ignored by LaTeX)</mtext></mrow></mrow><annotation encoding="application/x-tex">\text{das ist ein  {toller} text (unescaped \{ and \} is
+ignored by LaTeX)}</annotation></semantics></math>
+</div>
+</section>
+<section id="big-delimiters-and-symbols">
+<h2>Big delimiters and symbols</h2>
+<p>Compare automatic sizing with fixed sizes:</p>
+<!-- math:  \left( \frac{\frac1x}{\frac{1}{n}}\right) &= \Biggl(\text{Bigg}\Biggr)\\ -->
+<pre class="math problematic">
+\left( 3                          \right)
+\left( f(x)                       \right)
+\left( \bar x                     \right)
+\left( \overline x                \right)
+\left( n_i                        \right) &amp;= () \\
+\left( \underline x               \right) &amp;= \bigl(\text{big}\bigr)\\
+\left( 3^2                        \right)
+\left( \sqrt{3}                   \right)
+\left( \sqrt{3^2}                 \right)
+\left( \sum                       \right)
+\left( \bigotimes                 \right)
+\left( \prod                      \right) &amp;= \Bigl(\text{Big}\Bigr)\\
+\left( \frac{3  }{2}              \right)
+\left( \frac{3^2}{2^4}            \right)
+\binom{3  }{2}
+\begin{pmatrix} a &amp; b \\ c &amp; d \end{pmatrix}
+\left( \frac{1}{\sqrt 2}          \right)
+\left( \int                       \right)
+\left( \int_0                     \right)
+\left( \int^1                     \right)
+\left( \int_0^1                   \right) &amp;= \biggl(\text{bigg}\biggr)\\
+\left( \frac{\sqrt 2}{2}          \right)
+\left( \sum_0                     \right)
+\left( \sum^1                     \right)
+\left( \sum_0^1                   \right)
+\left( \frac{\frac1x}{\frac{1}{n}}\right) &amp;= \Biggl(\text{Bigg}\Biggr)\\
+\left( \intop_0                   \right)
+\left( \intop^1                   \right)
+\left( \intop_0^1                 \right)
+</pre>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/test/functional/input/data/math_experiments.txt</span>, line 82)</p>
+<p>TeX to MathML converter `pandoc` failed:</p>
+<p>[WARNING] Could not convert TeX math '\begin{aligned}</p>
+<pre class="literal-block">  \left( 3                          \right)
+  \left( f(x)                       \right)</pre>
+<p class="pre-wrap">  \left( \bar x                     \right)
+  \left( \overline x                \right)
+  \left( n_i                        \right) &amp;= () \\
+  \left( \underline x               \right) &amp;= \bigl(\text{big}\bigr)\\
+  \left( 3^2                        \right)
+  \left( \sqrt{3}                   \right)
+  \left( \sqrt{3^2}                 \right)
+  \left( \sum                       \right)
+  \left( \bigotimes                 \right)
+  \left( \prod                      \right) &amp;= \Bigl(\text{Big}\Bigr)\\
+  \left( \frac{3  }{2}              \right)
+  \left( \frac{3^2}{2^4}            \right)
+  \binom{3  }{2}
+  \begin{pmatrix} a &amp; b \\ c &amp; d \end{pmatrix}
+  \left( \frac{1}{\sqrt 2}          \right)
+  \left( \int                       \right)
+  \left( \int_0                     \right)
+  \left( \int^1                     \right)
+  \left( \int_0^1                   \right) &amp;= \biggl(\text{bigg}\biggr)\\
+  \left( \frac{\sqrt 2}{2}          \right)
+  \left( \sum_0                     \right)
+  \left( \sum^1                     \right)
+  \left( \sum_0^1                   \right)
+  \left( \frac{\frac1x}{\frac{1}{n}}\right) &amp;= \Biggl(\text{Bigg}\Biggr)\\
+  \left( \intop_0                   \right)
+  \left( \intop^1                   \right)
+  \left( \intop_0^1                 \right)\end{aligned}', rendering as TeX:
+          \right) &amp;= \Bigl(\text{Big}\Bigr
+                     ^
+  unexpected &quot;\\&quot;
+  expecting &quot;&amp;&quot;, &quot;\\\\&quot;, white space or &quot;\\end&quot;</p>
+</aside>
+<p>And in text:</p>
+<dl class="field-list simple">
+<dt><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">()</annotation></semantics></math><span class="colon">:</span></dt>
+<dd><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mn>3</mn><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mover><mi>x</mi><mo accent="true">‾</mo></mover><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mover><mi>x</mi><mo accent="true">¯</mo></mover><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>n</mi><mi>i</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mo>∑</mo><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><msub><mo>∑</mo><mn>0</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mo>∏</mo><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\left(3                          \right)
+\left( f(x)                       \right)
+\left( \bar x                     \right)
+\left( \overline x                \right)
+\left( n_i                        \right)
+\left( \sum                       \right)
+\left( \sum_0                     \right)
+\left( \prod                      \right)</annotation></semantics></math></p>
+</dd>
+<dt><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo minsize="1.2" maxsize="1.2" stretchy="false" form="prefix">(</mo><mtext mathvariant="normal">big</mtext><mo minsize="1.2" maxsize="1.2" stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\bigl(\text{big}\bigr)</annotation></semantics></math><span class="colon">:</span></dt>
+<dd><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">(</mo><munder><mi>x</mi><mo accent="true">_</mo></munder><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><msup><mn>3</mn><mn>2</mn></msup><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac linethickness="0"><mn>3</mn><mn>2</mn></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center"><mi>a</mi></mtd><mtd columnalign="center"><mi>b</mi></mtd></mtr><mtr><mtd columnalign="center"><mi>c</mi></mtd><mtd columnalign="center"><mi>d</mi></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mo>⨂</mo><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\left(\underline x               \right)
+\left( 3^2                        \right)
+\binom{3}{2}
+\left(\begin{smallmatrix} a &amp; b \\
+c &amp; d \end{smallmatrix}           \right)
+\left( \bigotimes                 \right)</annotation></semantics></math></p>
+</dd>
+<dt><span class="math problematic">\Bigl(\text{Big}\Bigr)</span><span class="colon">:</span></dt>
+<dd><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">(</mo><msqrt><mn>3</mn></msqrt><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><msqrt><msup><mn>3</mn><mn>2</mn></msup></msqrt><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mn>3</mn><mn>2</mn></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><msup><mn>3</mn><mn>2</mn></msup><msup><mn>2</mn><mn>4</mn></msup></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><msqrt><mn>2</mn></msqrt><mn>2</mn></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mo>∫</mo><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><msub><mo>∫</mo><mn>0</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><msup><mo>∫</mo><mn>1</mn></msup><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><msubsup><mo>∫</mo><mn>0</mn><mn>1</mn></msubsup><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><msup><mo>∑</mo><mn>1</mn></msup><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><msubsup><mo>∑</mo><mn>0</mn><mn>1</mn></msubsup><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mfrac><mn>1</mn><mi>x</mi></mfrac><mfrac><mn>1</mn><mi>n</mi></mfrac></mfrac><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\left(\sqrt{3}                   \right)
+\left( \sqrt{3^2}                 \right)
+\left( \frac{3}{2}                \right)
+\left( \frac{3^2}{2^4}            \right)
+\left( \frac{\sqrt 2}{2}          \right)
+\left( \int                       \right)
+\left( \int_0                     \right)
+\left( \int^1                     \right)
+\left( \int_0^1                   \right)
+\left( \sum^1                     \right)
+\left( \sum_0^1                   \right)
+\left( \frac{\frac1x}{\frac{1}{n}}\right)</annotation></semantics></math></p>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/test/functional/input/data/math_experiments.txt</span>, line 132)</p>
+<p>TeX to MathML converter `pandoc` failed:</p>
+<p>[WARNING] Could not convert TeX math '\Bigl(\text{Big}\Bigr)', rendering as TeX:</p>
+<pre class="literal-block">  \Bigl(\text{Big}\Bigr)
+       ^</pre>
+<p class="pre-wrap">  unexpected &quot;(&quot;
+  expecting &quot;%&quot;, &quot;\\label&quot;, &quot;\\nonumber&quot; or whitespace</p>
+</aside>
+</dd>
+</dl>
+<p>Test <span class="docutils literal">\left</span>, <span class="docutils literal">\right</span>, and the  bigl/bigr, … size commands
+with all extensible delimiters.</p>
+<p>pairing:</p>
+<div>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="false" form="prefix">(</mo><mi>b</mi><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.222em"></mspace><mo minsize="1.2" maxsize="1.2" stretchy="false" form="prefix">(</mo><mi>b</mi><mo minsize="1.8" maxsize="1.8" stretchy="false" form="postfix">)</mo><mspace width="0.222em"></mspace><mo minsize="2.4" maxsize="2.4" stretchy="false" form="prefix">(</mo><mi>b</mi><mo minsize="3.0" maxsize="3.0" stretchy="false" form="postfix">)</mo><mspace width="1.0em"></mspace><mrow><mo stretchy="false" form="prefix">[</mo><mi>b</mi><mo stretchy="true" form="postfix">]</mo></mrow><mspace width="0.222em"></mspace><mo minsize="1.2" maxsize="1.2" stretchy="false" form="prefix">[</mo><mi>b</mi><mo minsize="1.8" maxsize="1.8" stretchy="false" form="postfix">]</mo><mspace width="0.222em"></mspace><mo minsize="2.4" maxsize="2.4" stretchy="false" form="prefix">[</mo><mi>b</mi><mo minsize="3.0" maxsize="3.0" stretchy="false" form="postfix">]</mo><mspace width="1.0em"></mspace><mrow><mo stretchy="false" form="prefix">{</mo><mi>b</mi><mo stretchy="true" form="postfix">}</mo></mrow><mspace width="0.222em"></mspace><mo minsize="1.2" maxsize="1.2" stretchy="false" form="prefix">{</mo><mi>b</mi><mo minsize="1.8" maxsize="1.8" stretchy="false" form="postfix">}</mo><mspace width="0.222em"></mspace><mo minsize="2.4" maxsize="2.4" stretchy="false" form="prefix">{</mo><mi>b</mi><mo minsize="3.0" maxsize="3.0" stretchy="false" form="postfix">}</mo><mspace width="1.0em"></mspace><mrow><mo stretchy="false" form="prefix">⟨</mo><mi>b</mi><mo stretchy="true" form="postfix">⟩</mo></mrow><mspace width="0.222em"></mspace><mo minsize="1.2" maxsize="1.2" stretchy="false" form="prefix">⟨</mo><mi>b</mi><mo minsize="1.8" maxsize="1.8" stretchy="false" form="postfix">⟩</mo><mspace width="0.222em"></mspace><mo minsize="2.4" maxsize="2.4" stretchy="false" form="prefix">⟨</mo><mi>b</mi><mo minsize="3.0" maxsize="3.0" stretchy="false" form="postfix">⟩</mo></mrow><annotation encoding="application/x-tex">\left.(       b \right)       \ \bigl(       b \Bigr)       \ \biggl(       b \Biggr)
+\quad
+\left.[       b \right]       \ \bigl[       b \Bigr]       \ \biggl[       b \Biggr]
+\quad
+\left.\{      b \right\}      \ \bigl\{      b \Bigr\}      \ \biggl\{      b \Biggr\}
+\quad
+\left.\langle b \right\rangle \ \bigl\langle b \Bigr\rangle \ \biggl\langle b \Biggr\rangle</annotation></semantics></math>
+</div>
+<div>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="false" form="prefix">⌈</mo><mi>b</mi><mo stretchy="true" form="postfix">⌉</mo></mrow><mspace width="0.222em"></mspace><mo minsize="1.2" maxsize="1.2" stretchy="false" form="prefix">⌈</mo><mi>b</mi><mo minsize="1.8" maxsize="1.8" stretchy="false" form="postfix">⌉</mo><mspace width="0.222em"></mspace><mo minsize="2.4" maxsize="2.4" stretchy="false" form="prefix">⌈</mo><mi>b</mi><mo minsize="3.0" maxsize="3.0" stretchy="false" form="postfix">⌉</mo><mspace width="1.0em"></mspace><mrow><mo stretchy="false" form="prefix">⌊</mo><mi>b</mi><mo stretchy="true" form="postfix">⌋</mo></mrow><mspace width="0.222em"></mspace><mo minsize="1.2" maxsize="1.2" stretchy="false" form="prefix">⌊</mo><mi>b</mi><mo minsize="1.8" maxsize="1.8" stretchy="false" form="postfix">⌋</mo><mspace width="0.222em"></mspace><mo minsize="2.4" maxsize="2.4" stretchy="false" form="prefix">⌊</mo><mi>b</mi><mo minsize="3.0" maxsize="3.0" stretchy="false" form="postfix">⌋</mo><mspace width="1.0em"></mspace><mrow><mo stretchy="false" form="prefix">|</mo><mi>b</mi><mo stretchy="true" form="postfix">|</mo></mrow><mspace width="0.222em"></mspace><mo minsize="1.2" maxsize="1.2" stretchy="false" form="prefix">|</mo><mi>b</mi><mo minsize="1.8" maxsize="1.8" stretchy="false" form="postfix">|</mo><mspace width="0.222em"></mspace><mo minsize="2.4" maxsize="2.4" stretchy="false" form="prefix">|</mo><mi>b</mi><mo minsize="3.0" maxsize="3.0" stretchy="false" form="postfix">|</mo><mspace width="1.0em"></mspace><mrow><mo stretchy="false" form="prefix">∥</mo><mi>b</mi><mo stretchy="true" form="postfix">∥</mo></mrow><mspace width="0.222em"></mspace><mo minsize="1.2" maxsize="1.2" stretchy="false" form="prefix">∥</mo><mi>b</mi><mo minsize="1.8" maxsize="1.8" stretchy="false" form="postfix">∥</mo><mspace width="0.222em"></mspace><mo minsize="2.4" maxsize="2.4" stretchy="false" form="prefix">∥</mo><mi>b</mi><mo minsize="3.0" maxsize="3.0" stretchy="false" form="postfix">∥</mo></mrow><annotation encoding="application/x-tex">\left.\lceil  b \right\rceil  \ \bigl\lceil  b \Bigr\rceil  \ \biggl\lceil  b \Biggr\rceil
+\quad
+\left.\lfloor b \right\rfloor \ \bigl\lfloor b \Bigr\rfloor \ \biggl\lfloor b \Biggr\rfloor
+\quad
+\left.\lvert  b \right\rvert  \ \bigl\lvert  b \Bigr\rvert  \ \biggl\lvert  b \Biggr\rvert
+\quad
+\left.\lVert  b \right\rVert  \ \bigl\lVert  b \Bigr\rVert  \ \biggl\lVert  b \Biggr\rVert</annotation></semantics></math>
+</div>
+<pre class="math problematic">
+\left.\lgroup b \right\rgroup \ \bigl\lgroup b \Bigr\rgroup \ \biggl\lgroup b \Biggr\rgroup
+\quad
+\left.\lmoustache b \right\rmoustache \ \bigl\lmoustache b \Bigr\rmoustache \ \biggl\lmoustache b \Biggr\rmoustache
+\quad
+\left./           b \right\backslash  \ \bigl/           b \Bigr\backslash  \ \biggl/           b \Biggr\backslash
+</pre>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/test/functional/input/data/math_experiments.txt</span>, line 154)</p>
+<p>TeX to MathML converter `pandoc` failed:</p>
+<p>[WARNING] Could not convert TeX math '\left.\lgroup b \right\rgroup \ \bigl\lgroup b \Bigr\rgroup \ \biggl\lgroup b \Biggr\rgroup</p>
+<pre class="literal-block">  \quad
+  \left.\lmoustache b \right\rmoustache \ \bigl\lmoustache b \Bigr\rmoustache \ \biggl\lmoustache b \Biggr\rmoustache</pre>
+<p class="pre-wrap">  \quad
+  \left./           b \right\backslash  \ \bigl/           b \Bigr\backslash  \ \biggl/           b \Biggr\backslash', rendering as TeX:
+  up b \right\rgroup \ \bigl\lgroup b \Big
+                     ^
+  unexpected &quot;\\&quot;
+  expecting &quot;%&quot;, &quot;\\label&quot;, &quot;\\nonumber&quot; or whitespace</p>
+</aside>
+<p>non-pairing:</p>
+<div>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="false" form="prefix">|</mo><mi>b</mi><mo stretchy="true" form="postfix">|</mo></mrow><mspace width="0.222em"></mspace><mo minsize="1.2" maxsize="1.2" stretchy="false" form="prefix">|</mo><mi>b</mi><mo minsize="1.8" maxsize="1.8" stretchy="false" form="prefix">|</mo><mspace width="0.222em"></mspace><mo minsize="2.4" maxsize="2.4" stretchy="false" form="prefix">|</mo><mi>b</mi><mo minsize="3.0" maxsize="3.0" stretchy="false" form="prefix">|</mo><mspace width="1.0em"></mspace><mrow><mo stretchy="false" form="postfix">|</mo><mi>b</mi><mo stretchy="true" form="postfix">|</mo></mrow><mspace width="0.222em"></mspace><mo minsize="1.2" maxsize="1.2" stretchy="false" form="postfix">|</mo><mi>b</mi><mo minsize="1.8" maxsize="1.8" stretchy="false" form="postfix">|</mo><mspace width="0.222em"></mspace><mo minsize="2.4" maxsize="2.4" stretchy="false" form="postfix">|</mo><mi>b</mi><mo minsize="3.0" maxsize="3.0" stretchy="false" form="postfix">|</mo><mspace width="1.0em"></mspace><mrow><mo stretchy="false" form="postfix">∥</mo><mi>b</mi><mo stretchy="true" form="postfix">∥</mo></mrow><mspace width="0.222em"></mspace><mo minsize="1.2" maxsize="1.2" stretchy="false" form="postfix">∥</mo><mi>b</mi><mo minsize="1.8" maxsize="1.8" stretchy="false" form="postfix">∥</mo><mspace width="0.222em"></mspace><mo minsize="2.4" maxsize="2.4" stretchy="false" form="postfix">∥</mo><mi>b</mi><mo minsize="3.0" maxsize="3.0" stretchy="false" form="postfix">∥</mo><mspace width="1.0em"></mspace><mrow><mo stretchy="false" form="postfix">‖</mo><mi>b</mi><mo stretchy="true" form="postfix">‖</mo></mrow><mspace width="0.222em"></mspace><mo minsize="1.2" maxsize="1.2" stretchy="false" form="postfix">‖</mo><mi>b</mi><mo minsize="1.8" maxsize="1.8" stretchy="false" form="postfix">‖</mo><mspace width="0.222em"></mspace><mo minsize="2.4" maxsize="2.4" stretchy="false" form="postfix">‖</mo><mi>b</mi><mo minsize="3.0" maxsize="3.0" stretchy="false" form="postfix">‖</mo></mrow><annotation encoding="application/x-tex">\left.|          b \right|          \ \bigl|          b \Bigr|          \ \biggl|          b \Biggr|
+\quad
+\left.\vert      b \right\vert      \ \bigl\vert      b \Bigr\vert      \ \biggl\vert      b \Biggr\vert
+\quad
+\left.\|         b \right\|         \ \bigl\|         b \Bigr\|         \ \biggl\|         b \Biggr\|
+\quad
+\left.\Vert      b \right\Vert      \ \bigl\Vert      b \Bigr\Vert      \ \biggl\Vert      b \Biggr\Vert</annotation></semantics></math>
+</div>
+<pre class="math problematic">
+\left.\arrowvert b \right\arrowvert \ \bigl\arrowvert b \Bigr\arrowvert \ \biggl\arrowvert b \Biggr\arrowvert
+\quad
+\left.\Arrowvert b \right\Arrowvert \ \bigl\Arrowvert b \Bigr\Arrowvert \ \biggl\Arrowvert b \Biggr\Arrowvert
+\quad
+\left.\bracevert b \right\bracevert \ \bigl\bracevert b \Bigr\bracevert \ \biggl\bracevert b \Biggr\bracevert
+</pre>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/test/functional/input/data/math_experiments.txt</span>, line 179)</p>
+<p>TeX to MathML converter `pandoc` failed:</p>
+<p>[WARNING] Could not convert TeX math '\left.\arrowvert b \right\arrowvert \ \bigl\arrowvert b \Bigr\arrowvert \ \biggl\arrowvert b \Biggr\arrowvert</p>
+<pre class="literal-block">  \quad
+  \left.\Arrowvert b \right\Arrowvert \ \bigl\Arrowvert b \Bigr\Arrowvert \ \biggl\Arrowvert b \Biggr\Arrowvert</pre>
+<p class="pre-wrap">  \quad
+  \left.\bracevert b \right\bracevert \ \bigl\bracevert b \Bigr\bracevert \ \biggl\bracevert b \Biggr\bracevert', rendering as TeX:
+  \left.\arrowvert b \right\arrowvert \ \b
+                   ^
+  unexpected &quot;b&quot;
+  expecting &quot;%&quot;, &quot;\\label&quot;, &quot;\\nonumber&quot; or whitespace</p>
+</aside>
+<p>Variable-sized operators:</p>
+<p>Inline: <span class="math problematic">\int\ \iint\ \iiint\ \iiiint\ \idotsint \oint\ \smallint\
+\sum\ \prod\ \coprod\ \bigwedge\ \bigvee\ \bigcap\ \bigcup\ \biguplus\
+\bigsqcup\ \bigodot\ \bigoplus\ \bigotimes</span> and Display:</p>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/test/functional/input/data/math_experiments.txt</span>, line 196)</p>
+<p>TeX to MathML converter `pandoc` failed:</p>
+<p>[WARNING] Could not convert TeX math '\int\ \iint\ \iiint\ \iiiint\ \idotsint \oint\ \smallint\</p>
+<pre class="literal-block">  \sum\ \prod\ \coprod\ \bigwedge\ \bigvee\ \bigcap\ \bigcup\ \biguplus\
+  \bigsqcup\ \bigodot\ \bigoplus\ \bigotimes', rendering as TeX:</pre>
+<p class="pre-wrap">  \iiiint\ \idotsint \oint\ \smallint\
+                     ^
+  unexpected &quot;\\&quot;
+  expecting &quot;%&quot;, &quot;\\label&quot;, &quot;\\nonumber&quot; or whitespace</p>
+</aside>
+<pre class="math problematic">
+\int\ \iint\ \iiint\ \iiiint\ \idotsint\ \oint\ \smallint\
+\sum\ \prod\ \coprod\ \bigwedge\ \bigvee\ \bigcap\ \bigcup\
+\biguplus\ \bigsqcup\ \bigodot\ \bigoplus\ \bigotimes
+</pre>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/test/functional/input/data/math_experiments.txt</span>, line 200)</p>
+<p>TeX to MathML converter `pandoc` failed:</p>
+<p>[WARNING] Could not convert TeX math '\int\ \iint\ \iiint\ \iiiint\ \idotsint\ \oint\ \smallint\</p>
+<pre class="literal-block">  \sum\ \prod\ \coprod\ \bigwedge\ \bigvee\ \bigcap\ \bigcup\
+  \biguplus\ \bigsqcup\ \bigodot\ \bigoplus\ \bigotimes', rendering as TeX:</pre>
+<p class="pre-wrap">   \iiiint\ \idotsint\ \oint\ \smallint\
+                     ^
+  unexpected &quot;\\&quot;
+  expecting &quot;%&quot;, &quot;\\label&quot;, &quot;\\nonumber&quot; or whitespace</p>
+</aside>
+<pre class="math problematic">
+\int_1 f\ \intop_1 f\ \iint_1 f\ \smallint_1 f\ \sum_1\
+\prod_1\ \bigwedge_1\ \bigcap_1\ \biguplus_1\ \bigodot_1\ \int^N\
+\intop^N\ \iiiint^N\ \oint^N\ \smallint^N\ \sum^N\ \coprod^N\
+\bigvee^N\ \bigcup^N\ \bigsqcup^N\ \bigotimes^N
+</pre>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/test/functional/input/data/math_experiments.txt</span>, line 204)</p>
+<p>TeX to MathML converter `pandoc` failed:</p>
+<p>[WARNING] Could not convert TeX math '\int_1 f\ \intop_1 f\ \iint_1 f\ \smallint_1 f\ \sum_1\</p>
+<pre class="literal-block">  \prod_1\ \bigwedge_1\ \bigcap_1\ \biguplus_1\ \bigodot_1\ \int^N\
+  \intop^N\ \iiiint^N\ \oint^N\ \smallint^N\ \sum^N\ \coprod^N\</pre>
+<p class="pre-wrap">  \bigvee^N\ \bigcup^N\ \bigsqcup^N\ \bigotimes^N', rendering as TeX:
+  \int_1 f\ \intop_1 f\ \iint_1 f\ \smalli
+                  ^
+  unexpected &quot;_&quot;
+  expecting &quot;%&quot;, &quot;\\label&quot;, &quot;\\nonumber&quot; or whitespace</p>
+</aside>
+<pre class="math problematic">
+\int_1^N\ \intop_1^N\ \iint_1^N\ \iiint_1^N\ \iiiint_1^N\
+\idotsint_1^N\ \oint_1^N\ \smallint_1^N\ \sum_1^N\ \prod_1^N\
+\coprod_1^N\ \bigwedge_1^N\ \bigvee_1^N\ \bigcap_1^N\ \bigcup_1^N
+\ \biguplus_1^N\ \bigsqcup_1^N\ \bigodot_1^N\ \bigoplus_1^N\
+\bigotimes_1^N
+</pre>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/test/functional/input/data/math_experiments.txt</span>, line 209)</p>
+<p>TeX to MathML converter `pandoc` failed:</p>
+<p>[WARNING] Could not convert TeX math '\int_1^N\ \intop_1^N\ \iint_1^N\ \iiint_1^N\ \iiiint_1^N\</p>
+<pre class="literal-block">  \idotsint_1^N\ \oint_1^N\ \smallint_1^N\ \sum_1^N\ \prod_1^N\
+  \coprod_1^N\ \bigwedge_1^N\ \bigvee_1^N\ \bigcap_1^N\ \bigcup_1^N</pre>
+<p class="pre-wrap">  \ \biguplus_1^N\ \bigsqcup_1^N\ \bigodot_1^N\ \bigoplus_1^N\
+  \bigotimes_1^N', rendering as TeX:
+  \int_1^N\ \intop_1^N\ \iint_1^N\ \iiint_
+                  ^
+  unexpected &quot;_&quot;
+  expecting &quot;%&quot;, &quot;\\label&quot;, &quot;\\nonumber&quot; or whitespace</p>
+</aside>
+</section>
+<section id="text">
+<h2>Text</h2>
+<p>The text may contain non-ASCII characters: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>n</mi><mtext mathvariant="normal">Stoß</mtext></msub><annotation encoding="application/x-tex">n_\text{Stoß}</annotation></semantics></math>.</p>
+<p>Some text-mode LaTeX commands are supported with <a class="reference external" href="https://docutils.sourceforge.io/docs/user/config.html#math-output">math_output</a> &quot;html&quot;.
+In other output formats, use literal Unicode: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtext mathvariant="normal">ç é è ë ê ñ ů ž ©</mtext><annotation encoding="application/x-tex">\text{ç é è ë ê ñ ů ž ©}</annotation></semantics></math>
+to get the result of the accent macros
+<span class="math problematic">\text{\c{c} \'e \`e \&quot;e \^e \~n \r{u} \v{z} \textcircled{c}}</span>.</p>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/test/functional/input/data/math_experiments.txt</span>, line 221)</p>
+<p>TeX to MathML converter `pandoc` failed:</p>
+<p>[WARNING] Could not convert TeX math '\text{\c{c} \'e \`e \&quot;e \^e \~n \r{u} \v{z} \textcircled{c}}', rendering as TeX:</p>
+<pre class="literal-block">  'e \`e \&quot;e \^e \~n \r{u} \v{z} \textcirc
+                     ^</pre>
+<p class="pre-wrap">  unexpected &quot;\\&quot;
+  expecting text, &quot;}&quot;, &quot;{&quot;, &quot;$&quot;, &quot;$$&quot;, &quot;\\(&quot; or &quot;\\[&quot;</p>
+</aside>
+</section>
+</main>
+</body>
+</html>

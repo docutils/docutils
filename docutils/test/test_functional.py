@@ -68,6 +68,25 @@ functional_tests_settings_spec.settings_default_overrides = {
     }
 
 
+def compare_output(output, destination_path, expected_path):
+
+    try:
+        expected = expected_path.read_text(encoding='utf-8')
+    except OSError as err:
+        raise OSError(NO_EXPECTED_TEMPLATE.format(exp=expected_path,
+                                                  out=destination_path)
+                      ) from err
+    if output != expected:
+        diff = ''.join(difflib.unified_diff(expected.splitlines(True),
+                                            output.splitlines(True),
+                                            expected_path.as_posix(),
+                                            destination_path.as_posix()))
+        raise AssertionError(
+                  EXPECTED_OUTPUT_DIFFERS_TEMPLATE.format(
+                      diff=diff, exp=expected_path, out=destination_path)
+                  )
+
+
 class FunctionalTests(unittest.TestCase):
 
     """Test case for one config file."""
@@ -102,23 +121,8 @@ class FunctionalTests(unittest.TestCase):
                     destination_path=destination_path.as_posix(),
                     settings_spec=functional_tests_settings_spec,
                 )
-
                 # Get the expected output *after* writing the actual output.
-                try:
-                    expected = expected_path.read_text(encoding='utf-8')
-                except OSError as err:
-                    raise OSError(NO_EXPECTED_TEMPLATE.format(
-                        exp=expected_path, out=destination_path)
-                    ) from err
-
-                if output != expected:
-                    diff = ''.join(difflib.unified_diff(
-                        expected.splitlines(True), output.splitlines(True),
-                        expected_path.as_posix(), destination_path.as_posix()))
-                    raise AssertionError(
-                        EXPECTED_OUTPUT_DIFFERS_TEMPLATE.format(
-                            diff=diff, exp=expected_path, out=destination_path)
-                        )
+                compare_output(output, destination_path, expected_path)
 
 
 if __name__ == '__main__':

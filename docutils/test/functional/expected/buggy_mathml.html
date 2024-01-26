@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="generator" content="Docutils 0.21b.dev: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>buggy-maths</title>
+<link rel="stylesheet" href="../../../docutils/writers/html5_polyglot/minimal.css" type="text/css" />
+<link rel="stylesheet" href="../../../docutils/writers/html5_polyglot/plain.css" type="text/css" />
+</head>
+<body>
+<main>
+
+
+<p>Test &quot;math-output: mathml &quot;.</p>
+<p>There is &quot;<math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>λ</mi>
+  <mi>ω</mi>
+  <mi>τ</mi>
+  <mi>ς</mi>
+</math>&quot; to math.</p>
+<table>
+<tbody>
+<tr><td><p>Das ist nicht lustig.</p></td>
+<td><p>Dafür das</p></td>
+<td><p>hier</p></td>
+</tr>
+<tr><td><pre class="math problematic">
+So \isses
+</pre>
+</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">buggy-maths</span>, line 9)</p>
+<p>Unknown LaTeX command &quot;\isses&quot;.</p>
+</aside>
+<p>Das ist <span class="math problematic">\ein</span> Fehler.</p>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">buggy-maths</span>, line 13)</p>
+<p>Unknown LaTeX command &quot;\ein&quot;.</p>
+</aside>
+<pre class="math problematic">
+\int_{-\infty} 3 \sin x} \phy \, d\gamma
+</pre>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">buggy-maths</span>, line 15)</p>
+<p>Unknown LaTeX command &quot;\phy&quot;.</p>
+</aside>
+<aside class="sidebar">
+<p class="sidebar-title">nebenbemerkung</p>
+<p>noch was <span class="math problematic">\sqrt[2]</span></p>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">buggy-maths</span>, line 19)</p>
+<p>Node &lt;mroot&gt; misses children. Incomplete source?</p>
+</aside>
+</aside>
+<pre class="math problematic">
+\sqrt[2]
+</pre>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">buggy-maths</span>, line 21)</p>
+<p>Node &lt;mroot&gt; misses children. Incomplete source?</p>
+</aside>
+<p>2-zeilig mit align:</p>
+<div>
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mtable class="ams-align" displaystyle="true">
+    <mtr>
+      <mtd>
+        <msub>
+          <mi>s</mi>
+          <mi>i</mi>
+        </msub>
+      </mtd>
+      <mtd>
+        <mo>=</mo>
+        <mn>3</mn>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd>
+        <msub>
+          <mi>s</mi>
+          <mi>j</mi>
+        </msub>
+        <mo>+</mo>
+        <mn>3</mn>
+      </mtd>
+      <mtd>
+      </mtd>
+    </mtr>
+  </mtable>
+</math>
+</div>
+</main>
+</body>
+</html>

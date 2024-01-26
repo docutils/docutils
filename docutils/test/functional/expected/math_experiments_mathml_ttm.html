@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="generator" content="Docutils 0.21b.dev: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Math Conversion Tests</title>
+<link rel="stylesheet" href="../../../docutils/writers/html5_polyglot/minimal.css" type="text/css" />
+<link rel="stylesheet" href="../../../docutils/writers/html5_polyglot/plain.css" type="text/css" />
+</head>
+<body>
+<main id="math-conversion-tests">
+<h1 class="title">Math Conversion Tests</h1>
+
+<section id="font-changes">
+<h2>Font changes</h2>
+<p><em>Math alphabet</em> macros change the default alphabet, leaving some symbols
+unchanged. In MathML core, the corresponding <em>Mathematical Alphanumeric
+Symbols</em> are used.</p>
+<dl class="field-list simple">
+<dt>default<span class="colon">:</span></dt>
+<dd><p><span class="math problematic">V_R x \pm \cos(\alpha) \approx 3 \Gamma  \quad \forall x \in \mathbb{R}</span></p>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/test/functional/input/data/math_experiments.txt</span>, line 13)</p>
+<p>TeX to MathML converter `ttm` failed:</p>
+<p class="pre-wrap">Unknown command \mathbb in equation, Line 1.</p>
+</aside>
+</dd>
+<dt>mathbb<span class="colon">:</span></dt>
+<dd><p><span class="math problematic">\mathbb{V_R x \pm \cos(\alpha) \approx 3 \Gamma  \quad \forall x \in \mathbb{R}}</span></p>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/test/functional/input/data/math_experiments.txt</span>, line 14)</p>
+<p>TeX to MathML converter `ttm` failed:</p>
+<p class="pre-wrap">Unknown command \mathbb in equation, Line 1.
+Unknown command \mathbb in equation, Line 1.</p>
+</aside>
+</dd>
+<dt>mathbf<span class="colon">:</span></dt>
+<dd><p><span class="math problematic">\mathbf{V_R x \pm \cos(\alpha) \approx 3 \Gamma  \quad \forall x \in \mathbb{R}}</span></p>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/test/functional/input/data/math_experiments.txt</span>, line 15)</p>
+<p>TeX to MathML converter `ttm` failed:</p>
+<p class="pre-wrap">Unknown command \mathbb in equation, Line 1.</p>
+</aside>
+</dd>
+<dt>mathbfit<span class="colon">:</span></dt>
+<dd><p><span class="math problematic">\mathbfit{V_R x \pm \cos(\alpha) \approx 3 \Gamma  \quad \forall x \in \mathbb{R}}</span></p>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/test/functional/input/data/math_experiments.txt</span>, line 16)</p>
+<p>TeX to MathML converter `ttm` failed:</p>
+<p class="pre-wrap">Unknown command \mathbfit in equation, Line 1.
+Unknown command \mathbb in equation, Line 1.</p>
+</aside>
+</dd>
+<dt>mathcal<span class="colon">:</span></dt>
+<dd><p><span class="math problematic">\mathcal{V_R x \pm \cos(\alpha) \approx 3 \Gamma  \quad \forall x \in \mathbb{R}}</span></p>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/test/functional/input/data/math_experiments.txt</span>, line 17)</p>
+<p>TeX to MathML converter `ttm` failed:</p>
+<p class="pre-wrap">Unknown command \mathbb in equation, Line 1.</p>
+</aside>
+</dd>
+<dt>mathit<span class="colon">:</span></dt>
+<dd><p><span class="math problematic">\mathit{V_R x \pm \cos(\alpha) \approx 3 \Gamma  \quad \forall x \in \mathbb{R}}</span></p>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/test/functional/input/data/math_experiments.txt</span>, line 18)</p>
+<p>TeX to MathML converter `ttm` failed:</p>
+<p class="pre-wrap">Unknown command \mathbb in equation, Line 1.</p>
+</aside>
+</dd>
+<dt>mathrm<span class="colon">:</span></dt>
+<dd><p><span class="math problematic">\mathrm{V_R x \pm \cos(\alpha) \approx 3 \Gamma  \quad \forall x \in \mathbb{R}}</span></p>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/test/functional/input/data/math_experiments.txt</span>, line 19)</p>
+<p>TeX to MathML converter `ttm` failed:</p>
+<p class="pre-wrap">Unknown command \mathbb in equation, Line 1.</p>
+</aside>
+</dd>
+<dt>mathscr<span class="colon">:</span></dt>
+<dd><p><span class="math problematic">\mathscr{V_R x \pm \cos(\alpha) \approx 3 \Gamma  \quad \forall x \in \mathbb{R}}</span></p>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/test/functional/input/data/math_experiments.txt</span>, line 20)</p>
+<p>TeX to MathML converter `ttm` failed:</p>
+<p class="pre-wrap">Unknown command \mathscr in equation, Line 1.
+Unknown command \mathbb in equation, Line 1.</p>
+</aside>
+</dd>
+<dt>mathsf<span class="colon">:</span></dt>
+<dd><p><span class="math problematic">\mathsf{V_R x \pm \cos(\alpha) \approx 3 \Gamma  \quad \forall x \in \mathbb{R}}</span></p>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/test/functional/input/data/math_experiments.txt</span>, line 21)</p>
+<p>TeX to MathML converter `ttm` failed:</p>
+<p class="pre-wrap">Unknown command \mathbb in equation, Line 1.</p>
+</aside>
+</dd>
+<dt>mathsfbfit<span class="colon">:</span></dt>
+<dd><p><span class="math problematic">\mathsfbfit{V_R x \pm \cos(\alpha) \approx 3 \Gamma  \quad \forall x \in \mathbb{R}}</span></p>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/test/functional/input/data/math_experiments.txt</span>, line 22)</p>
+<p>TeX to MathML converter `ttm` failed:</p>
+<p class="pre-wrap">Unknown command \mathsfbfit in equation, Line 1.
+Unknown command \mathbb in equation, Line 1.</p>
+</aside>
+</dd>
+<dt>mathsfit<span class="colon">:</span></dt>
+<dd><p><span class="math problematic">\mathsfit{V_R x \pm \cos(\alpha) \approx 3 \Gamma  \quad \forall x \in \mathbb{R}}</span></p>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/test/functional/input/data/math_experiments.txt</span>, line 23)</p>
+<p>TeX to MathML converter `ttm` failed:</p>
+<p class="pre-wrap">Unknown command \mathsfit in equation, Line 1.
+Unknown command \mathbb in equation, Line 1.</p>
+</aside>
+</dd>
+<dt>mathtt<span class="colon">:</span></dt>
+<dd><p><span class="math problematic">\mathtt{V_R x \pm \cos(\alpha) \approx 3 \Gamma  \quad \forall x \in \mathbb{R}}</span></p>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/test/functional/input/data/math_experiments.txt</span>, line 24)</p>
+<p>TeX to MathML converter `ttm` failed:</p>
+<p class="pre-wrap">Unknown command \mathbb in equation, Line 1.</p>
+</aside>
+</dd>
+</dl>
+<p>LaTeX accepts complex functions inside the math alphabet functions:</p>
+<dl class="field-list simple">
+<dt>mathrm<span class="colon">:</span></dt>
+<dd><p><math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<mfrac><mrow><mi fontstyle="normal">x</mi></mrow>
+<mrow><mi fontstyle="normal">y</mi></mrow>
+</mfrac>
+</mrow></math></p>
+</dd>
+</dl>
+<p>Without additional packages, LaTeX supports &quot;blackboard-bold&quot; only for
+capital Latin letters.
+Unicode supports also small Latin letters, some Greek letters, and digits:
+<span class="math problematic">\mathbb{A \ldots Z a \ldots z}
+\mathbb\Gamma \mathbb{\Pi} \mathbb {\Sigma} \mathbb\gamma \mathbb \pi
+\mathbb{0 \ldots 9}</span> but no italic digits.</p>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/test/functional/input/data/math_experiments.txt</span>, line 31)</p>
+<p>TeX to MathML converter `ttm` failed:</p>
+<p class="pre-wrap">Unknown command \mathbb in equation, Line 1.
+Unknown command \mathbb in equation, Line 1.
+Unknown command \mathbb in equation, Line 1.
+Unknown command \mathbb in equation, Line 1.
+Unknown command \mathbb in equation, Line 1.
+Unknown command \mathbb in equation, Line 1.
+Unknown command \mathbb in equation, Line 1.</p>
+</aside>
+</section>
+<section id="inferred-mrow-s-in-mathml">
+<h2>Inferred &lt;mrow&gt;s in MathML</h2>
+<p>The elements &lt;msqrt&gt;, &lt;mstyle&gt;, &lt;merror&gt;, &lt;mpadded&gt;, &lt;mphantom&gt;, &lt;menclose&gt;,
+&lt;mtd&gt;, &lt;mscarry&gt;, and &lt;math&gt; treat their contents as a single inferred mrow
+formed from all their children.</p>
+<div>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
+    <mstyle displaystyle="true"><mrow><mi>a</mi><mo>=</mo><msqrt><mrow><mn>2</mn></mrow></msqrt><mo>+</mo><mi>x</mi><mo>,</mo><mi>&emsp;&emsp;&emsp;</mi><mi>b</mi><mo>=</mo><msqrt><mrow><mn>1</mn><mo>+</mo>
+<msup><mrow><mi>x</mi></mrow><mrow><mn>2</mn></mrow>
+</msup>
+</mrow></msqrt><mo>,</mo><mi>&emsp;&emsp;&emsp;</mi><mi>c</mi><mo>=</mo><msqrt><mrow>
+<mfrac><mrow><mi>sin</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow>
+<mrow><mn>23</mn></mrow>
+</mfrac>
+</mrow></msqrt><mo>,</mo></mrow>
+    </mstyle></math>
+</div>
+<p>inline: <math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow><mi>a</mi><mo>=</mo><msqrt><mrow><mn>2</mn></mrow></msqrt><mo>+</mo><mi>x</mi><mo>,</mo><mi>b</mi><mo>=</mo><msqrt><mrow><mn>1</mn><mo>+</mo>
+<msup><mrow><mi>x</mi></mrow><mrow><mn>2</mn></mrow>
+</msup>
+</mrow></msqrt><mo>,</mo><mi>c</mi><mo>=</mo><msqrt><mrow>
+<mfrac><mrow><mi>sin</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow>
+<mrow><mn>23</mn></mrow>
+</mfrac>
+</mrow></msqrt></mrow></math>.</p>
+</section>
+<section id="scripts-and-limits">
+<h2>Scripts and Limits</h2>
+<p>Accents should be nearer to the base:
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<mover><mrow><mi>a</mi></mrow>
+<mo>&OverBar;</mo></mover>
+
+<mover><mrow><mi>a</mi></mrow>
+<mo stretchy="true">&OverBar;</mo></mover>
+<mo>,</mo>
+<mover><mrow><mi>l</mi></mrow>
+<mo>&OverBar;</mo></mover>
+
+<mover><mrow><mi>l</mi></mrow>
+<mo stretchy="true">&OverBar;</mo></mover>
+<mo>,</mo>
+<mover><mrow><mi>i</mi></mrow>
+<mo>&OverBar;</mo></mover>
+
+<mover><mrow><mi>i</mi></mrow>
+<mo stretchy="true">&OverBar;</mo></mover>
+</mrow></math>,
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<mover><mrow><mi>r</mi></mrow>
+<mo>&rarr;</mo></mover>
+</mrow></math> <math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<mover><mrow><mi>r</mi></mrow>
+<mo stretchy="true">&rightarrow;</mo></mover>
+</mrow></math>.</p>
+<p>Sub- and superscript may be given in any order:
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msubsup><mrow><mi>x</mi></mrow><mrow><mi>i</mi> </mrow>
+<mrow><mi>j</mi></mrow></msubsup>
+<mo>=</mo>
+<msubsup><mrow><mi>x</mi></mrow><mrow><mi>i</mi> </mrow>
+<mrow><mi>j</mi></mrow></msubsup>
+</mrow></math> and <math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msubsup><mrow><mo>&int;</mo></mrow><mrow><mn>0</mn> </mrow>
+<mrow><mn>1</mn></mrow></msubsup>
+<mo>=</mo>
+<msubsup><mrow><mo>&int;</mo></mrow><mrow><mn>0</mn> </mrow>
+<mrow><mn>1</mn></mrow></msubsup>
+</mrow></math>.</p>
+<p>Double exponent: <math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup><mrow><mi>x</mi></mrow><mrow>
+<msup><mrow><mn>10</mn></mrow><mrow><mn>4</mn></mrow>
+</msup>
+</mrow>
+</msup>
+</mrow></math>, <math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msub><mrow><mi>r</mi></mrow><mrow>
+<msub><mrow><mi>T</mi></mrow><mrow><mi fontstyle="normal">in</mi></mrow>
+</msub>
+</mrow>
+</msub>
+</mrow></math> and <math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msubsup><mrow><mi>x</mi></mrow><mrow><mi>i</mi> </mrow>
+<mrow>
+<msup><mrow><mi>n</mi></mrow><mrow><mn>2</mn></mrow>
+</msup>
+</mrow></msubsup>
+</mrow></math>.</p>
+</section>
+<section id="nested-groups">
+<h2>Nested groups</h2>
+<p>tex-token returns &quot;{&quot; for nested groups:</p>
+<div>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
+    <mstyle displaystyle="true"><mrow>
+<mtext>das ist ein  tollertext (unescaped { and } is
+ignored by LaTeX)</mtext>
+</mrow>
+    </mstyle></math>
+</div>
+</section>
+<section id="big-delimiters-and-symbols">
+<h2>Big delimiters and symbols</h2>
+<p>Compare automatic sizing with fixed sizes:</p>
+<!-- math:  \left( \frac{\frac1x}{\frac{1}{n}}\right) &= \Biggl(\text{Bigg}\Biggr)\\ -->
+<pre class="math problematic">
+\left( 3                          \right)
+\left( f(x)                       \right)
+\left( \bar x                     \right)
+\left( \overline x                \right)
+\left( n_i                        \right) &amp;= () \\
+\left( \underline x               \right) &amp;= \bigl(\text{big}\bigr)\\
+\left( 3^2                        \right)
+\left( \sqrt{3}                   \right)
+\left( \sqrt{3^2}                 \right)
+\left( \sum                       \right)
+\left( \bigotimes                 \right)
+\left( \prod                      \right) &amp;= \Bigl(\text{Big}\Bigr)\\
+\left( \frac{3  }{2}              \right)
+\left( \frac{3^2}{2^4}            \right)
+\binom{3  }{2}
+\begin{pmatrix} a &amp; b \\ c &amp; d \end{pmatrix}
+\left( \frac{1}{\sqrt 2}          \right)
+\left( \int                       \right)
+\left( \int_0                     \right)
+\left( \int^1                     \right)
+\left( \int_0^1                   \right) &amp;= \biggl(\text{bigg}\biggr)\\
+\left( \frac{\sqrt 2}{2}          \right)
+\left( \sum_0                     \right)
+\left( \sum^1                     \right)
+\left( \sum_0^1                   \right)
+\left( \frac{\frac1x}{\frac{1}{n}}\right) &amp;= \Biggl(\text{Bigg}\Biggr)\\
+\left( \intop_0                   \right)
+\left( \intop^1                   \right)
+\left( \intop_0^1                 \right)
+</pre>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/test/functional/input/data/math_experiments.txt</span>, line 82)</p>
+<p>TeX to MathML converter `ttm` failed:</p>
+<p class="pre-wrap">Unknown or ignored environment: \begin{align*} Line 1.
+Unknown command \left, (0 user-defined) Line 2.
+Unknown command \right, (0 user-defined) Line 2.
+Unknown command \bar, (0 user-defined) Line 4.
+Unknown command \overline, (0 user-defined) Line 5.
+Unknown command \bigl, (0 user-defined) Line 7.
+Unknown command \bigr, (0 user-defined) Line 7.
+Unknown command \sqrt, (0 user-defined) Line 9.
+Unknown command \sum, (0 user-defined) Line 11.
+Unknown command \bigotimes, (0 user-defined) Line 12.
+Unknown command \prod, (0 user-defined) Line 13.
+Unknown command \Bigl, (0 user-defined) Line 13.
+Unknown command \Bigr, (0 user-defined) Line 13.
+Unknown command \binom, (0 user-defined) Line 16.
+Unknown or ignored environment: \begin{pmatrix} Line 17.
+Unknown command \int, (0 user-defined) Line 19.
+Unknown command \biggl, (0 user-defined) Line 22.
+Unknown command \biggr, (0 user-defined) Line 22.
+Unknown command \Biggl, (0 user-defined) Line 27.
+Unknown command \Biggr, (0 user-defined) Line 27.
+Unknown command \intop, (0 user-defined) Line 28.</p>
+</aside>
+<p>And in text:</p>
+<dl class="field-list simple">
+<dt><math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow><mo stretchy="false">(</mo><mo stretchy="false">)</mo></mrow></math><span class="colon">:</span></dt>
+<dd><p><math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow><mrow><mo>(</mo><mn>3</mn><mo>)</mo></mrow><mrow><mo>(</mo><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo>)</mo></mrow><mrow><mo>(</mo>
+<mover><mrow><mi>x</mi></mrow>
+<mo>&OverBar;</mo></mover>
+<mo>)</mo></mrow><mrow><mo>(</mo>
+<mover><mrow><mi>x</mi></mrow>
+<mo stretchy="true">&OverBar;</mo></mover>
+<mo>)</mo></mrow><mrow><mo>(</mo>
+<msub><mrow><mi>n</mi></mrow><mrow><mi>i</mi></mrow>
+</msub>
+<mo>)</mo></mrow><mrow><mo>(</mo><mo>&sum;</mo><mo>)</mo></mrow><mrow><mo>(</mo>
+<munder><mo>&sum;</mo><mrow><mn>0</mn></mrow>
+</munder>
+<mo>)</mo></mrow><mrow><mo>(</mo><mo>&Pi;</mo><mo>)</mo></mrow></mrow></math></p>
+</dd>
+<dt><math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow><mrow><mo> </mo><mo>(</mo></mrow>
+<mtext>big</mtext>
+<mrow><mo> </mo><mo>)</mo></mrow></mrow></math><span class="colon">:</span></dt>
+<dd><p><span class="math problematic">\left(\underline x               \right)
+\left( 3^2                        \right)
+\binom{3}{2}
+\left(\begin{smallmatrix} a &amp; b \\
+c &amp; d \end{smallmatrix}           \right)
+\left( \bigotimes                 \right)</span></p>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/test/functional/input/data/math_experiments.txt</span>, line 125)</p>
+<p>TeX to MathML converter `ttm` failed:</p>
+<p class="pre-wrap">Unknown command \binom in equation, Line 1.
+Unknown or ignored environment: \begin{smallmatrix} Line 1.
+Improper \\ or \cr outside array environment ignored, Line ~1..</p>
+</aside>
+</dd>
+<dt><math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow><mrow><mo> </mo><mo>(</mo></mrow>
+<mtext>Big</mtext>
+<mrow><mo> </mo><mo>)</mo></mrow></mrow></math><span class="colon">:</span></dt>
+<dd><p><math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow><mrow><mo>(</mo><msqrt><mrow><mn>3</mn></mrow></msqrt><mo>)</mo></mrow><mrow><mo>(</mo><msqrt><mrow>
+<msup><mrow><mn>3</mn></mrow><mrow><mn>2</mn></mrow>
+</msup>
+</mrow></msqrt><mo>)</mo></mrow><mrow><mo>(</mo>
+<mfrac><mrow><mn>3</mn></mrow>
+<mrow><mn>2</mn></mrow>
+</mfrac>
+<mo>)</mo></mrow><mrow><mo>(</mo>
+<mfrac><mrow>
+<msup><mrow><mn>3</mn></mrow><mrow><mn>2</mn></mrow>
+</msup>
+</mrow>
+<mrow>
+<msup><mrow><mn>2</mn></mrow><mrow><mn>4</mn></mrow>
+</msup>
+</mrow>
+</mfrac>
+<mo>)</mo></mrow><mrow><mo>(</mo>
+<mfrac><mrow><msqrt><mrow><mn>2</mn></mrow></msqrt></mrow>
+<mrow><mn>2</mn></mrow>
+</mfrac>
+<mo>)</mo></mrow><mrow><mo>(</mo><mo>&int;</mo><mo>)</mo></mrow><mrow><mo>(</mo>
+<msub><mrow><mo>&int;</mo></mrow><mrow><mn>0</mn></mrow>
+</msub>
+<mo>)</mo></mrow><mrow><mo>(</mo>
+<msup><mrow><mo>&int;</mo></mrow><mrow><mn>1</mn></mrow>
+</msup>
+<mo>)</mo></mrow><mrow><mo>(</mo>
+<msubsup><mrow><mo>&int;</mo></mrow><mrow><mn>0</mn> </mrow>
+<mrow><mn>1</mn></mrow></msubsup>
+<mo>)</mo></mrow><mrow><mo>(</mo>
+<mover><mo>&sum;</mo><mrow><mn>1</mn></mrow>
+</mover>
+<mo>)</mo></mrow><mrow><mo>(</mo>
+<munderover><mo>&sum;</mo><mrow><mn>0</mn> </mrow>
+<mrow><mn>1</mn></mrow></munderover><mo>)</mo></mrow><mrow><mo>(</mo>
+<mfrac><mrow>
+<mfrac><mrow><mn>1</mn></mrow>
+<mrow><mi>x</mi></mrow>
+</mfrac>
+</mrow>
+<mrow>
+<mfrac><mrow><mn>1</mn></mrow>
+<mrow><mi>n</mi></mrow>
+</mfrac>
+</mrow>
+</mfrac>
+<mo>)</mo></mrow></mrow></math></p>
+</dd>
+</dl>
+<p>Test <span class="docutils literal">\left</span>, <span class="docutils literal">\right</span>, and the  bigl/bigr, … size commands
+with all extensible delimiters.</p>
+<p>pairing:</p>
+<div>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
+    <mstyle displaystyle="true"><mrow><mrow><mo> </mo><mo stretchy="false">(</mo><mi>b</mi><mo>)</mo></mrow><mi>&ensp;</mi><mrow><mo> </mo><mo>(</mo></mrow><mi>b</mi><mrow><mo> </mo><mo>)</mo></mrow><mi>&ensp;</mi><mrow><mo> </mo><mo>(</mo></mrow><mi>b</mi><mrow><mo> </mo><mo>)</mo></mrow><mi>&emsp;&emsp;&emsp;</mi><mrow><mo> </mo><mo stretchy="false">[</mo><mi>b</mi><mo>]</mo></mrow><mi>&ensp;</mi><mrow><mo> </mo><mo>[</mo></mrow><mi>b</mi><mrow><mo> </mo><mo>]</mo></mrow><mi>&ensp;</mi><mrow><mo> </mo><mo>[</mo></mrow><mi>b</mi><mrow><mo> </mo><mo>]</mo></mrow><mi>&emsp;&emsp;&emsp;</mi><mrow><mo> </mo><mo stretchy="false">{</mo><mi>b</mi><mo>}</mo></mrow><mi>&ensp;</mi><mrow><mo> </mo><mo>{</mo></mrow><mi>b</mi><mrow><mo> </mo><mo>}</mo></mrow><mi>&ensp;</mi><mrow><mo> </mo><mo>{</mo></mrow><mi>b</mi><mrow><mo> </mo><mo>}</mo></mrow><mi>&emsp;&emsp;&emsp;</mi><mrow><mo> </mo><mo stretchy="false">&lang;</mo><mi>b</mi><mo>&rangle;</mo></mrow><mi>&ensp;</mi><mrow><mo> </mo><mo>&langle;</mo></mrow><mi>b</mi><mrow><mo> </mo><mo>&rangle;</mo></mrow><mi>&ensp;</mi><mrow><mo> </mo><mo>&langle;</mo></mrow><mi>b</mi><mrow><mo> </mo><mo>&rangle;</mo></mrow></mrow>
+    </mstyle></math>
+</div>
+<pre class="math problematic">
+\left.\lceil  b \right\rceil  \ \bigl\lceil  b \Bigr\rceil  \ \biggl\lceil  b \Biggr\rceil
+\quad
+\left.\lfloor b \right\rfloor \ \bigl\lfloor b \Bigr\rfloor \ \biggl\lfloor b \Biggr\rfloor
+\quad
+\left.\lvert  b \right\rvert  \ \bigl\lvert  b \Bigr\rvert  \ \biggl\lvert  b \Biggr\rvert
+\quad
+\left.\lVert  b \right\rVert  \ \bigl\lVert  b \Bigr\rVert  \ \biggl\lVert  b \Biggr\rVert
+</pre>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/test/functional/input/data/math_experiments.txt</span>, line 154)</p>
+<p>TeX to MathML converter `ttm` failed:</p>
+<p class="pre-wrap">Unknown command \lvert in equation, Line 1.
+Unknown command \rvert in equation, Line 1.
+Unknown command \lvert in equation, Line 1.
+Unknown command \rvert in equation, Line 1.
+Unknown command \lvert in equation, Line 1.
+Unknown command \rvert in equation, Line 1.
+Unknown command \lVert in equation, Line 2.
+Unknown command \rVert in equation, Line 2.
+Unknown command \lVert in equation, Line 2.
+Unknown command \rVert in equation, Line 2.
+Unknown command \lVert in equation, Line 2.
+Unknown command \rVert in equation, Line 2.</p>
+</aside>
+<pre class="math problematic">
+\left.\lgroup b \right\rgroup \ \bigl\lgroup b \Bigr\rgroup \ \biggl\lgroup b \Biggr\rgroup
+\quad
+\left.\lmoustache b \right\rmoustache \ \bigl\lmoustache b \Bigr\rmoustache \ \biggl\lmoustache b \Biggr\rmoustache
+\quad
+\left./           b \right\backslash  \ \bigl/           b \Bigr\backslash  \ \biggl/           b \Biggr\backslash
+</pre>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/test/functional/input/data/math_experiments.txt</span>, line 154)</p>
+<p>TeX to MathML converter `ttm` failed:</p>
+<p class="pre-wrap">Unknown command \lgroup in equation, Line 1.
+Unknown command \rgroup in equation, Line 1.
+Unknown command \lgroup in equation, Line 1.
+Unknown command \rgroup in equation, Line 1.
+Unknown command \lgroup in equation, Line 1.
+Unknown command \rgroup in equation, Line 1.
+Unknown command \lmoustache in equation, Line 2.
+Unknown command \rmoustache in equation, Line 2.
+Unknown command \lmoustache in equation, Line 2.
+Unknown command \rmoustache in equation, Line 2.
+Unknown command \lmoustache in equation, Line 2.
+Unknown command \rmoustache in equation, Line 2.</p>
+</aside>
+<p>non-pairing:</p>
+<div>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
+    <mstyle displaystyle="true"><mrow><mrow><mo> </mo><mo stretchy="false">&verbar;</mo><mi>b</mi><mo>|</mo></mrow><mi>&ensp;</mi><mrow><mo> </mo><mo>|</mo></mrow><mi>b</mi><mrow><mo> </mo><mo>|</mo></mrow><mi>&ensp;</mi><mrow><mo> </mo><mo>|</mo></mrow><mi>b</mi><mrow><mo> </mo><mo>|</mo></mrow><mi>&emsp;&emsp;&emsp;</mi><mrow><mo> </mo><mo stretchy="false">&verbar;</mo><mi>b</mi><mo>|</mo></mrow><mi>&ensp;</mi><mrow><mo> </mo><mo>|</mo></mrow><mi>b</mi><mrow><mo> </mo><mo>|</mo></mrow><mi>&ensp;</mi><mrow><mo> </mo><mo>|</mo></mrow><mi>b</mi><mrow><mo> </mo><mo>|</mo></mrow><mi>&emsp;&emsp;&emsp;</mi><mrow><mo> </mo><mo stretchy="false">&Verbar;</mo><mi>b</mi></mrow><mo stretchy="false">&Verbar;</mo><mi>&ensp;</mi><mrow><mo> </mo></mrow><mo stretchy="false">&Verbar;</mo><mi>b</mi><mrow><mo> </mo></mrow><mo stretchy="false">&Verbar;</mo><mi>&ensp;</mi><mrow><mo> </mo></mrow><mo stretchy="false">&Verbar;</mo><mi>b</mi><mrow><mo> </mo></mrow><mo stretchy="false">&Verbar;</mo><mi>&emsp;&emsp;&emsp;</mi><mrow><mo> </mo><mo stretchy="false">&Verbar;</mo><mi>b</mi></mrow><mo stretchy="false">&Verbar;</mo><mi>&ensp;</mi><mrow><mo> </mo></mrow><mo stretchy="false">&Verbar;</mo><mi>b</mi><mrow><mo> </mo></mrow><mo stretchy="false">&Verbar;</mo><mi>&ensp;</mi><mrow><mo> </mo></mrow><mo stretchy="false">&Verbar;</mo><mi>b</mi><mrow><mo> </mo></mrow><mo stretchy="false">&Verbar;</mo></mrow>
+    </mstyle></math>
+</div>
+<pre class="math problematic">
+\left.\arrowvert b \right\arrowvert \ \bigl\arrowvert b \Bigr\arrowvert \ \biggl\arrowvert b \Biggr\arrowvert
+\quad
+\left.\Arrowvert b \right\Arrowvert \ \bigl\Arrowvert b \Bigr\Arrowvert \ \biggl\Arrowvert b \Biggr\Arrowvert
+\quad
+\left.\bracevert b \right\bracevert \ \bigl\bracevert b \Bigr\bracevert \ \biggl\bracevert b \Biggr\bracevert
+</pre>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/test/functional/input/data/math_experiments.txt</span>, line 179)</p>
+<p>TeX to MathML converter `ttm` failed:</p>
+<p class="pre-wrap">Unknown command \arrowvert in equation, Line 1.
+Unknown command \arrowvert in equation, Line 1.
+Unknown command \arrowvert in equation, Line 1.
+Unknown command \arrowvert in equation, Line 1.
+Unknown command \arrowvert in equation, Line 1.
+Unknown command \arrowvert in equation, Line 1.
+Unknown command \Arrowvert in equation, Line 2.
+Unknown command \Arrowvert in equation, Line 2.
+Unknown command \Arrowvert in equation, Line 2.
+Unknown command \Arrowvert in equation, Line 2.
+Unknown command \Arrowvert in equation, Line 2.
+Unknown command \Arrowvert in equation, Line 2.
+Unknown command \bracevert in equation, Line 3.
+Unknown command \bracevert in equation, Line 3.
+Unknown command \bracevert in equation, Line 3.
+Unknown command \bracevert in equation, Line 3.
+Unknown command \bracevert in equation, Line 3.
+Unknown command \bracevert in equation, Line 3.</p>
+</aside>
+<p>Variable-sized operators:</p>
+<p>Inline: <span class="math problematic">\int\ \iint\ \iiint\ \iiiint\ \idotsint \oint\ \smallint\
+\sum\ \prod\ \coprod\ \bigwedge\ \bigvee\ \bigcap\ \bigcup\ \biguplus\
+\bigsqcup\ \bigodot\ \bigoplus\ \bigotimes</span> and Display:</p>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/test/functional/input/data/math_experiments.txt</span>, line 196)</p>
+<p>TeX to MathML converter `ttm` failed:</p>
+<p class="pre-wrap">Unknown command \iiiint in equation, Line 1.
+Unknown command \idotsint in equation, Line 1.
+Unknown command \smallint in equation, Line 1.</p>
+</aside>
+<pre class="math problematic">
+\int\ \iint\ \iiint\ \iiiint\ \idotsint\ \oint\ \smallint\
+\sum\ \prod\ \coprod\ \bigwedge\ \bigvee\ \bigcap\ \bigcup\
+\biguplus\ \bigsqcup\ \bigodot\ \bigoplus\ \bigotimes
+</pre>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/test/functional/input/data/math_experiments.txt</span>, line 200)</p>
+<p>TeX to MathML converter `ttm` failed:</p>
+<p class="pre-wrap">Unknown command \iiiint in equation, Line 1.
+Unknown command \idotsint in equation, Line 1.
+Unknown command \smallint in equation, Line 1.</p>
+</aside>
+<pre class="math problematic">
+\int_1 f\ \intop_1 f\ \iint_1 f\ \smallint_1 f\ \sum_1\
+\prod_1\ \bigwedge_1\ \bigcap_1\ \biguplus_1\ \bigodot_1\ \int^N\
+\intop^N\ \iiiint^N\ \oint^N\ \smallint^N\ \sum^N\ \coprod^N\
+\bigvee^N\ \bigcup^N\ \bigsqcup^N\ \bigotimes^N
+</pre>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/test/functional/input/data/math_experiments.txt</span>, line 204)</p>
+<p>TeX to MathML converter `ttm` failed:</p>
+<p class="pre-wrap">Unknown command \intop in equation, Line 1.
+Unknown command \smallint in equation, Line 1.
+Unknown command \intop in equation, Line 3.
+Unknown command \iiiint in equation, Line 3.
+Unknown command \smallint in equation, Line 3.</p>
+</aside>
+<pre class="math problematic">
+\int_1^N\ \intop_1^N\ \iint_1^N\ \iiint_1^N\ \iiiint_1^N\
+\idotsint_1^N\ \oint_1^N\ \smallint_1^N\ \sum_1^N\ \prod_1^N\
+\coprod_1^N\ \bigwedge_1^N\ \bigvee_1^N\ \bigcap_1^N\ \bigcup_1^N
+\ \biguplus_1^N\ \bigsqcup_1^N\ \bigodot_1^N\ \bigoplus_1^N\
+\bigotimes_1^N
+</pre>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/test/functional/input/data/math_experiments.txt</span>, line 209)</p>
+<p>TeX to MathML converter `ttm` failed:</p>
+<p class="pre-wrap">Unknown command \intop in equation, Line 1.
+Unknown command \iiiint in equation, Line 1.
+Unknown command \idotsint in equation, Line 2.
+Unknown command \smallint in equation, Line 2.</p>
+</aside>
+</section>
+<section id="text">
+<h2>Text</h2>
+<p>The text may contain non-ASCII characters: <math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow><mi>n</mi>_
+<mtext>Stoß</mtext>
+</mrow></math>.</p>
+<p>Some text-mode LaTeX commands are supported with <a class="reference external" href="https://docutils.sourceforge.io/docs/user/config.html#math-output">math_output</a> &quot;html&quot;.
+In other output formats, use literal Unicode: <span class="math problematic">\text{ç é è ë ê ñ ů ž ©}</span>
+to get the result of the accent macros
+<span class="math problematic">\text{\c{c} \'e \`e \&quot;e \^e \~n \r{u} \v{z} \textcircled{c}}</span>.</p>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/test/functional/input/data/math_experiments.txt</span>, line 221)</p>
+<p>'latin-1' codec can't encode character '\u016f' in position 19: ordinal not in range(256)</p>
+</aside>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/test/functional/input/data/math_experiments.txt</span>, line 221)</p>
+<p>TeX to MathML converter `ttm` failed:</p>
+<p class="pre-wrap">Unknown command \r, (0 user-defined) Line 1.
+Unknown command \textcircled, (0 user-defined) Line 1.</p>
+</aside>
+</section>
+</main>
+</body>
+</html>
