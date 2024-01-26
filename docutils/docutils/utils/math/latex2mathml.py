@@ -1184,7 +1184,7 @@ def handle_cmd(name, node, string):  # noqa: C901 TODO make this less complex
         return new_node, string
 
     if name == 'boxed':
-        new_node = menclose(notation='box')
+        new_node = menclose(notation='box', CLASS='boxed')
         node.append(new_node)
         return new_node, string
 
