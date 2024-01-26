@@ -122,6 +122,7 @@ def latexml(math_code, as_block=False):
              '--nocrossref',
              '--nographicimages',
              '--nopictureimages',
+             '--nodefaultresources',  # do not copy *.css files to output dir
              '--'
              ]
     result2 = subprocess.run(args2, input=result1.stdout,
