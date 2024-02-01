@@ -103,17 +103,17 @@ class MathMLConverterTestCase(unittest.TestCase):
         source_path = DOCS / 'ref' / 'rst' / 'mathematics.txt'
 
         for math_output in math_options:
+            settings = {'math_output': math_output,
+                        'stylesheet_path': 'minimal.css,responsive.css',
+                        **self.settings}
+            out_file = f'mathematics_{"_".join(math_output).strip("_")}.html'
+            out_path = OUTPUT / out_file
+            expected_path = EXPECTED / out_file
+            output = publish_file(source_path=str(source_path),
+                                  destination_path=out_path.as_posix(),
+                                  writer_name='html5',
+                                  settings_overrides=settings)
             with self.subTest(converter=math_output[1] or 'latex2mathml()'):
-                settings = {'math_output': math_output,
-                            'stylesheet_path': 'minimal.css,responsive.css',
-                            **self.settings}
-                out_file = '_'.join(('mathematics', *math_output)) + '.html'
-                out_path = OUTPUT / out_file
-                expected_path = EXPECTED / out_file
-                output = publish_file(source_path=str(source_path),
-                                      destination_path=out_path.as_posix(),
-                                      writer_name='html5',
-                                      settings_overrides=settings)
                 compare_output(output, out_path, expected_path)
 
     def test_math_experiments(self):
@@ -122,33 +122,33 @@ class MathMLConverterTestCase(unittest.TestCase):
         source_path = INPUT / 'data' / 'math_experiments.txt'
 
         for math_output in math_options:
+            settings = {'math_output': math_output, **self.settings}
+            out_file = f'math_experiments_{"_".join(math_output).strip("_")}.html'  # noqa: E501
+            out_path = OUTPUT / out_file
+            expected_path = EXPECTED / out_file
+            output = publish_file(source_path=str(source_path),
+                                  destination_path=out_path.as_posix(),
+                                  writer_name='html5',
+                                  settings_overrides=settings)
             with self.subTest(converter=math_output[1] or 'latex2mathml()'):
-                settings = {'math_output': math_output, **self.settings}
-                out_file = '_'.join(('math_experiments', *math_output)) + '.html'  # noqa
-                out_path = OUTPUT / out_file
-                expected_path = EXPECTED / out_file
-                output = publish_file(source_path=str(source_path),
-                                      destination_path=out_path.as_posix(),
-                                      writer_name='html5',
-                                      settings_overrides=settings)
                 compare_output(output, out_path, expected_path)
 
     def test_buggy_math(self):
         """Test reporting conversion failure due to TeX-syntax errors."""
 
         for math_output in math_options:
+            settings = {'math_output': math_output, **self.settings}
+            out_file = f'buggy_{"_".join(math_output).strip("_")}.html'
+            out_path = OUTPUT / out_file
+            expected_path = EXPECTED / out_file
+            preface = f'Test "math-output: {" ".join(math_output)}".\n\n'
+            parts = publish_parts(preface + buggy_sample,
+                                  'buggy-maths',
+                                  writer_name='html5',
+                                  settings_overrides=settings)
+            with open(out_path, "w") as fd:
+                fd.write(parts['whole'])
             with self.subTest(converter=math_output[1] or 'latex2mathml()'):
-                settings = {'math_output': math_output, **self.settings}
-                out_file = f'buggy_{"_".join(math_output).strip("_")}.html'
-                out_path = OUTPUT / out_file
-                expected_path = EXPECTED / out_file
-                preface = f'Test "math-output: {" ".join(math_output)}".\n\n'
-                parts = publish_parts(preface + buggy_sample,
-                                      'buggy-maths',
-                                      writer_name='html5',
-                                      settings_overrides=settings)
-                with open(out_path, "w") as fd:
-                    fd.write(parts['whole'])
                 compare_output(parts['whole'], out_path, expected_path)
 
 
