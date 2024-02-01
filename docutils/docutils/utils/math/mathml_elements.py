@@ -114,9 +114,9 @@ class MathElement:
             args = ', '.join(f'{child}' for child in self)
         return f'{self.__class__.__name__}({args})'
 
-# Emulate dictionary access methods for attributes
-# and list-like interface to the child elements
-# (differs from `docutils.nodes.Element` dict/list interface).
+    # Emulate dictionary access methods for attributes
+    # and list-like interface to the child elements
+    # (differs from `docutils.nodes.Element` dict/list interface).
 
     def get(self, key, default=None):
         return self.attrib.get(key, default)
@@ -128,9 +128,9 @@ class MathElement:
         return self.attrib.items()
 
     def iter(self):
-        """Return iterator over all subnodes, including nested ones."""
+        """Return iterator over self and all subnodes, including nested."""
+        yield self
         for child in self.children:
-            yield child
             yield from child.iter()
 
     def __len__(self):
@@ -139,9 +139,15 @@ class MathElement:
     def __getitem__(self, key):
         return self.children.__getitem__(key)
 
-    def __setitem__(self, key, element):
-        element.parent = self
-        self.children.__setitem__(key, element)
+    def __setitem__(self, key, value):
+        if self.nchildren == 0:
+            raise TypeError(f'Element "{self}" does not take children.')
+        if isinstance(value, MathElement):
+            value.parent = self
+        else:  # value may be an iterable
+            for e in value:
+                e.parent = self
+        self.children.__setitem__(key, value)
 
     def __delitem__(self, key):
         self.children.__delitem__(key)
@@ -233,43 +239,11 @@ class MathElement:
             xml.extend(['\n', '  ' * level])
         return xml
 
-# >>> n2 = math(mn(2))
-# >>> n2
-# math(mn('2'))
-# >>> n2.toprettyxml()
-# '<math>\n  <mn>2</mn>\n</math>'
-# >>> len(n2)
-# 1
-# >>> n2.extend([mo('!')])
-# math(mn('2'), mo('!'))
-# >>> eq3 = math(id='eq3', display='block')
-# >>> eq3
-# math(id='eq3', display='block')
-# >>> eq3.toprettyxml()
-# '<math id="eq3" display="block"></math>'
-# >>> len(eq3)
-# 0
-# >>> math(CLASS='bold').xml_starttag()
-# '<math class="bold">'
-# >>> n2.in_block()
-# False
-# >>> node = n2.append(mrow())
-# >>> node.in_block()
-# False
-# >>> eq3.in_block()
-# True
-# >>> node = eq3.append(mrow())
-# >>> node.in_block()
-# True
-# >>> nested = math(math(math(CLASS='three'), CLASS='two'), CLASS='one')
-# >>> [node for node in nested.iter()]
-# [math(math(class='three'), class='two'), math(class='three')]
-
 
 # Group sub-expressions in a horizontal row
 #
 # The elements <msqrt>, <mstyle>, <merror>, <mpadded>, <mphantom>,
-# <menclose>, <mtd>, <mscarry>, and <math> treat their contents
+# <menclose>, <mtd>, [...], and <math> treat their contents
 # as a single inferred mrow formed from all their children.
 # (https://www.w3.org/TR/mathml4/#presm_inferredmrow)
 #
@@ -286,6 +260,7 @@ class MathSchema(MathElement):
 
     The special attribute `switch` indicates that the last two child
     elements are in reversed order and must be switched before XML-export.
+    See `msub` for an example.
     """
     nchildren = 2
 
@@ -300,17 +275,6 @@ class MathSchema(MathElement):
             self[-1], self[-2] = self[-2], self[-1]
             self.switch = False
         return current_node
-
-# >>> MathSchema(switch=True, display=True)
-# MathSchema(switch=True, display='true')
-# >>> MathSchema(MathElement(), switch=True)
-# MathSchema(MathElement(), switch=True)
-# >>> MathSchema(MathElement(id='c1'), MathElement(id='c2'), switch=True)
-# MathSchema(MathElement(id='c2'), MathElement(id='c1'))
-# >>> MathSchema(mrow(), mrow(), mrow())  # doctest: +ELLIPSIS
-# Traceback (most recent call last):
-# ...
-# TypeError: Element "MathSchema(...)" takes only 2 children.
 
 
 # Token elements represent the smallest units of mathematical notation which
@@ -351,34 +315,28 @@ class mtext(MathToken):
 class mi(MathToken):
     """Identifier, such as a function name, variable or symbolic constant."""
 
-# >>> mi(mtext('out'))
-# Traceback (most recent call last):
-# ...
-# ValueError: MathToken element expects `str` or number, not "mtext('out')".
-
 
 class mn(MathToken):
     """Numeric literal.
 
-    Normally a sequence of digits with a possible separator (a dot or a comma).
-    """
+    >>> mn(3.41).toprettyxml()
+    '<mn>3.41</mn>'
 
-# >>> mn(3.41)
-# mn('3.41')
+    Normally a sequence of digits with a possible separator (a dot or a comma).
+    (Values with comma must be specified as `str`.)
+    """
 
 
 class mo(MathToken):
     """Operator, Fence, Separator, or Accent.
 
+    >>> mo('<').toprettyxml()
+    '<mo>&lt;</mo>'
+
     Besides operators in strict mathematical meaning, this element also
     includes "operators" like parentheses, separators like comma and
     semicolon, or "absolute value" bars.
     """
-
-# >>> mo('<')
-# mo('<')
-# >>> mo('<').toprettyxml()
-# '<mo>&lt;</mo>'
 
 
 class mspace(MathElement):
@@ -390,13 +348,6 @@ class mspace(MathElement):
     See also `mphantom`.
     """
     nchildren = 0
-
-# >>> mspace(width='2em').toprettyxml()
-# '<mspace width="2em"></mspace>'
-# >>> mspace(mn(3))
-# Traceback (most recent call last):
-# ...
-# TypeError: Element "mspace()" does not take children.
 
 
 # General Layout Schemata
@@ -438,23 +389,6 @@ class mrow(MathRow):
             self.transfer_attributes(child)
         return super().close()
 
-# Examples:
-#
-# >>> e = mrow(mn('3.5'), mo('<'), mi('x'))
-# >>> e
-# mrow(mn('3.5'), mo('<'), mi('x'))
-# >>> e.toprettyxml()
-# '<mrow>\n  <mn>3.5</mn>\n  <mo>&lt;</mo>\n  <mi>x</mi>\n</mrow>'
-# >>> mo('∫', movablelimits=True).toprettyxml()
-# '<mo movablelimits="true">∫</mo>'
-# >>> mtext('comments or annotations').text
-# 'comments or annotations'
-
-# >>> row = mrow(mi('i', CLASS='boldmath'), mathvariant='normal', CLASS='test')
-# >>> tree = math(row)
-# >>> row.close()
-# math(mi('i', class='boldmath test', mathvariant='normal'))
-
 
 class mfrac(MathSchema):
     """Fractions or fraction-like objects such as binomial coefficients."""
@@ -473,8 +407,8 @@ class mstyle(MathRow):
     """Style Change.
 
     In modern browsers, <mstyle> is equivalent to an <mrow> element.
-    However, <mstyle> may still be relevant for compatibility with MathML
-    implementations outside browsers.
+    However, <mstyle> may still be relevant for compatibility with
+    MathML implementations outside browsers.
     """
 
 
@@ -538,21 +472,6 @@ class munderover(msubsup):
     """Attach accents or limits both under and over an expression."""
 
 
-# >>> munder(mi('lim'), mo('-'), accent='false')
-# munder(mi('lim'), mo('-'), accent='false')
-# >>> mu = munder(mo('-'), accent='false', switch=True)
-# >>> mu
-# munder(mo('-'), switch=True, accent='false')
-# >>> mu.append(mi('lim'))
-# >>> mu
-# munder(mi('lim'), mo('-'), accent='false')
-# >>> mu.append(mi('lim'))
-# Traceback (most recent call last):
-# TypeError: Element "munder(mi('lim'), mo('-'))" takes only 2 children.
-# >>> munder(mo('-'), mi('lim'), accent='false', switch=True).toprettyxml()
-# '<munder accent="false">\n  <mi>lim</mi>\n  <mo>-</mo>\n</munder>'
-
-
 # Tabular Math
 # ~~~~~~~~~~~~
 
@@ -566,7 +485,3 @@ class mtr(MathRow):
 
 class mtd(MathRow):
     """Cell in a table or a matrix"""
-
-# >>> t = mtable(displaystyle=True)
-# >>> math(t).toprettyxml()
-# '<math>\n  <mtable displaystyle="true"></mtable>\n</math>'
