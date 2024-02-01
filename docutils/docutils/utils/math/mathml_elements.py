@@ -79,7 +79,7 @@ class MathElement:
         >>> math(CLASS='test', level=3, split=True)
         math(class='test', level='3', split='true')
         >>> math(CLASS='test', level=3, split=True).toprettyxml()
-        '<math class="test" level="3" split="true">\n</math>'
+        '<math class="test" level="3" split="true"></math>'
 
         """
         self.attrib = {k.lower(): self.a_str(v)
@@ -229,7 +229,8 @@ class MathElement:
         for child in self.children:
             xml.extend(['\n', '  ' * (level+1)])
             xml.extend(child._xml(level+1))
-        xml.extend(['\n', '  ' * level])
+        if self.children:
+            xml.extend(['\n', '  ' * level])
         return xml
 
 # >>> n2 = math(mn(2))
@@ -245,7 +246,7 @@ class MathElement:
 # >>> eq3
 # math(id='eq3', display='block')
 # >>> eq3.toprettyxml()
-# '<math id="eq3" display="block">\n</math>'
+# '<math id="eq3" display="block"></math>'
 # >>> len(eq3)
 # 0
 # >>> math(CLASS='bold').xml_starttag()
@@ -391,7 +392,7 @@ class mspace(MathElement):
     nchildren = 0
 
 # >>> mspace(width='2em').toprettyxml()
-# '<mspace width="2em">\n</mspace>'
+# '<mspace width="2em"></mspace>'
 # >>> mspace(mn(3))
 # Traceback (most recent call last):
 # ...
@@ -568,4 +569,4 @@ class mtd(MathRow):
 
 # >>> t = mtable(displaystyle=True)
 # >>> math(t).toprettyxml()
-# '<math>\n  <mtable displaystyle="true">\n  </mtable>\n</math>'
+# '<math>\n  <mtable displaystyle="true"></mtable>\n</math>'
