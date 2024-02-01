@@ -26,6 +26,25 @@ the API is not settled and may change with any minor Docutils version.
 #
 # >>> from mathml_elements import *
 
+GLOBAL_ATTRIBUTES = (
+    'class',  # space-separated list of element classes
+    # 'data-*',  # custom data attributes (see HTML)
+    'dir',  # directionality ('ltr', 'rtl')
+    'displaystyle',  # True: normal, False: compact
+    'id',  # unique identifier
+    # 'mathbackground',  # color definition, deprecated
+    # 'mathcolor',  # color definition, deprecated
+    # 'mathsize',  # font-size, deprecated
+    'nonce',  # cryptographic nonce ("number used once")
+    'scriptlevel',  # math-depth for the element
+    'style',  # CSS styling declarations
+    'tabindex',  # indicate if the element takes input focus
+    )
+"""Global MathML attributes
+
+https://w3c.github.io/mathml-core/#global-attributes
+"""
+
 
 # MathML element classes
 # ----------------------
@@ -46,24 +65,6 @@ class math:
         ord('&'): '&amp;',
         0x2061: '&ApplyFunction;',
     }
-    global_attributes = (
-        'class',  # space-separated list of element classes
-        # 'data-*',  # custom data attributes (see HTML)
-        # 'dir',  # directionality ('ltr', 'rtl')
-        'displaystyle',  # True: normal, False: compact
-        # 'id',  # unique identifier
-        # 'mathbackground',  # color definition, deprecated
-        # 'mathcolor',  # color definition, deprecated
-        # 'mathsize',  # font-size, deprecated
-        # 'nonce',  # cryptographic nonce ("number used once")
-        'scriptlevel',  # math-depth for the element
-        'style',  # CSS styling declarations
-        # 'tabindex',  # indicate if the element takes input focus
-        )
-    """Global MathML attributes
-
-    https://w3c.github.io/mathml-core/#global-attributes
-    """
 
     def __init__(self, *children, **attributes):
         """Set up node with `children` and `attributes`.
@@ -82,6 +83,11 @@ class math:
             # Use .lower() to allow argument `CLASS` for attribute `class`
             # (Python keyword). MathML uses only lowercase attributes.
             self.attributes[key.lower()] = attributes[key]
+
+    @staticmethod
+    def a_str(v):
+        # Return string representation for attribute value `v`.
+        return str(v).replace('True', 'true').replace('False', 'false')
 
     def __repr__(self):
         content = [repr(item) for item in self.children]
@@ -107,9 +113,22 @@ class math:
     def get(self, *args, **kwargs):
         return self.attributes.get(*args, **kwargs)
 
+    def subnodes(self):
+        """Return iterator over all subnodes, including nested ones."""
+        for child in self.children:
+            yield child
+            yield from child.subnodes()
+
     def full(self):
         """Return boolean indicating whether children may be appended."""
         return self.nchildren is not None and len(self) >= self.nchildren
+
+    def close(self):
+        """Close element and return first non-full parent or None."""
+        parent = self.parent
+        while parent is not None and parent.full():
+            parent = parent.parent
+        return parent
 
     def append(self, child):
         """Append child and return self or first non-full parent.
@@ -132,18 +151,15 @@ class math:
 
     __iadd__ = extend  # alias for ``+=`` operator
 
-    def close(self):
-        """Close element and return first non-full parent or None."""
-        parent = self.parent
-        while parent is not None and parent.full():
-            parent = parent.parent
-        return parent
-
-    def subnodes(self):
-        """Return iterator over all subnodes, including nested ones."""
-        for child in self.children:
-            yield child
-            yield from child.subnodes()
+    def is_block(self):
+        """Return true, if `self` or a parent has ``display='block'``."""
+        try:
+            return self['display'] == 'block'
+        except KeyError:
+            try:
+                return self.parent.is_block()
+            except AttributeError:
+                return False
 
     # Conversion to (pretty) XML string
     def toprettyxml(self):
@@ -163,11 +179,6 @@ class math:
                  for k, v in self.attributes.items() if v is not None)
         return '<%s>' % ' '.join((self.__class__.__name__, *attrs))
 
-    @staticmethod
-    def a_str(v):
-        # Return string representation for attribute value `v`.
-        return str(v).replace('True', 'true').replace('False', 'false')
-
     def _xml_body(self, level=0):
         xml = []
         for child in self.children:
@@ -175,18 +186,6 @@ class math:
             xml.extend(child._xml(level+1))
         xml.extend(['\n', '  ' * level])
         return xml
-
-    # auxiliary methods:
-
-    def is_block(self):
-        """Return true, if `self` or a parent has ``display='block'``."""
-        try:
-            return self['display'] == 'block'
-        except KeyError:
-            try:
-                return self.parent.is_block()
-            except AttributeError:
-                return False
 
 # >>> n2 = math(mn(2))
 # >>> n2
@@ -222,14 +221,75 @@ class math:
 # [math(math(class='three'), class='two'), math(class='three')]
 
 
-class mtable(math):
+# The elements <msqrt>, <mstyle>, <merror>, <mpadded>, <mphantom>, <menclose>,
+# <mtd>, <mscarry>, and <math> treat their contents as a single inferred mrow
+# formed from all their children.
+class MathRowSchema(math):
+    """Base class for elements treating content as a single inferred mrow."""
+    # In MathML Core, this is called "anonymous mrow element".
+
+
+class MathSchema(math):
+    """Base class for schemata expecting 2 or more children.
+
+    The special attribute `switch` indicates that the last two child
+    elements are in reversed order and must be switched before XML-export.
+    """
+
+    nchildren = 2
+
+    def __init__(self, *children, **kwargs):
+        self.switch = kwargs.pop('switch', False)
+        math.__init__(self, *children, **kwargs)
+
+    def append(self, child):
+        current_node = super().append(child)
+        # normalize order if full
+        if self.switch and self.full():
+            self.children[-1], self.children[-2] = \
+                self.children[-2], self.children[-1]
+            self.switch = False
+        return current_node
+
+
+class MathToken(math):
+    """Token Element: contains textual data instead of children.
+
+    Base class for mi, mn, mo, and mtext.
+    """
+    nchildren = 0
+
+    def __init__(self, data, **attributes):
+        self.data = data
+        super().__init__(**attributes)
+
+    def _xml_body(self, level=0):
+        return [str(self.data).translate(self.xml_entities)]
+
+
+class mtext(MathToken):
     pass
 
-# >>> mt = mtable(displaystyle=True)
-# >>> mt
-# mtable(displaystyle=True)
-# >>> math(mt).toprettyxml()
-# '<math>\n  <mtable displaystyle="true">\n  </mtable>\n</math>'
+
+class mi(MathToken):
+    pass
+
+
+class mn(MathToken):
+    pass
+
+
+class mo(MathToken):
+    pass
+
+# >>> mo('<')
+# mo('<')
+# >>> mo('<')._xml()
+# ['<mo>', '&lt;', '</mo>']
+
+
+class mspace(math):
+    nchildren = 0
 
 
 class mrow(math):
@@ -283,20 +343,23 @@ class mrow(math):
 # math(mi('i', class='boldmath test', mathvariant='normal'))
 
 
-# The elements <msqrt>, <mstyle>, <merror>, <mpadded>, <mphantom>, <menclose>,
-# <mtd>, <mscarry>, and <math> treat their contents as a single inferred mrow
-# formed from all their children.
-class MathRowSchema(math):
-    """Base class for elements treating content as a single inferred mrow."""
-    # In MathML Core, this is called "anonymous mrow element".
+class mfrac(math):
+    nchildren = 2
 
 
-class mtr(MathRowSchema):
-    """MathML table/matrix row element."""
+class msqrt(MathRowSchema):
+    nchildren = 1  # \sqrt expects one argument or a group
 
 
-class mtd(MathRowSchema):
-    """MathML table/matrix data cell element."""
+class mroot(MathSchema):
+    nchildren = 2
+
+
+class mstyle(MathRowSchema):
+    """Style Change. Deprecated in MathML Core.
+
+    Use mrow instead.
+    """
 
 
 class merror(MathRowSchema):
@@ -309,76 +372,6 @@ class menclose(MathRowSchema):
 
 class mphantom(MathRowSchema):
     nchildren = 1  # \phantom expects one argument or a group
-
-
-class msqrt(MathRowSchema):
-    nchildren = 1  # \sqrt expects one argument or a group
-
-
-class mstyle(MathRowSchema):
-    """Style Change. Deprecated in MathML Core.
-
-    Use mrow instead.
-    """
-
-
-class MathToken(math):
-    """Token Element: contains textual data instead of children.
-
-    Base class for mi, mn, mo, and mtext.
-    """
-    nchildren = 0
-
-    def __init__(self, data, **attributes):
-        self.data = data
-        super().__init__(**attributes)
-
-    def _xml_body(self, level=0):
-        return [str(self.data).translate(self.xml_entities)]
-
-
-class mi(MathToken):
-    pass
-
-
-class mn(MathToken):
-    pass
-
-
-class mo(MathToken):
-    pass
-
-
-class mtext(MathToken):
-    pass
-
-
-# >>> mo('<')
-# mo('<')
-# >>> mo('<')._xml()
-# ['<mo>', '&lt;', '</mo>']
-
-class MathSchema(math):
-    """Base class for schemata expecting 2 or more children.
-
-    The special attribute `switch` indicates that the last two child
-    elements are in reversed order and must be switched before XML-export.
-    """
-
-    nchildren = 2
-
-    def __init__(self, *children, **kwargs):
-        self.switch = kwargs.pop('switch', False)
-        math.__init__(self, *children, **kwargs)
-
-    def append(self, child):
-        current_node = super().append(child)
-        # normalize order if full
-        if self.switch and self.full():
-            self.children[-1], self.children[-2] = \
-                self.children[-2], self.children[-1]
-            self.switch = False
-        return current_node
 
 
 class msub(MathSchema):
@@ -426,13 +419,19 @@ class munderover(msubsup):
     pass
 
 
-class mroot(MathSchema):
-    nchildren = 2
+class mtable(math):
+    pass
+
+# >>> mt = mtable(displaystyle=True)
+# >>> mt
+# mtable(displaystyle=True)
+# >>> math(mt).toprettyxml()
+# '<math>\n  <mtable displaystyle="true">\n  </mtable>\n</math>'
 
 
-class mfrac(math):
-    nchildren = 2
+class mtr(MathRowSchema):
+    """MathML table/matrix row element."""
 
 
-class mspace(math):
-    nchildren = 0
+class mtd(MathRowSchema):
+    """MathML table/matrix data cell element."""
