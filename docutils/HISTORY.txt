@@ -132,7 +132,7 @@ Changes since 0.20.1
 
   - Support video inclusion via `<object>` tags.
 
-* docutils/writers/html5_polyglot/*.css
+* docutils/writers/html5_polyglot/\*.css
 
   - Embed SVG images as ``<svg>`` instead of data-URI
     (not used by "html4css1"). Fixes [feature-request:#100].
