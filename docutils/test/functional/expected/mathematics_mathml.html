@@ -3411,27 +3411,25 @@ delimiters built in, e.g.</p>
 <math xmlns="http://www.w3.org/1998/Math/MathML">
   <mrow>
     <mo maxsize="1.2em" minsize="1.2em" symmetric="true">(</mo>
-    <mstyle scriptlevel="1">
-      <mtable rowspacing="0.02em" columnspacing="0.333em">
-        <mtr>
-          <mtd>
-            <mi>a</mi>
-          </mtd>
-          <mtd>
-            <mi>b</mi>
-          </mtd>
-        </mtr>
-        <mtr>
-          <mtd>
-            <mi>c</mi>
-          </mtd>
-          <mtd>
-            <mi>d</mi>
-          </mtd>
-        </mtr>
-      </mtable>
-      <mo maxsize="1.2em" minsize="1.2em" symmetric="true">)</mo>
-    </mstyle>
+    <mtable rowspacing="0.02em" columnspacing="0.333em" scriptlevel="1">
+      <mtr>
+        <mtd>
+          <mi>a</mi>
+        </mtd>
+        <mtd>
+          <mi>b</mi>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd>
+          <mi>c</mi>
+        </mtd>
+        <mtd>
+          <mi>d</mi>
+        </mtd>
+      </mtr>
+    </mtable>
+    <mo maxsize="1.2em" minsize="1.2em" symmetric="true">)</mo>
   </mrow>
 </math>
 that comes closer to fitting within a single text line than a normal
@@ -3846,35 +3844,31 @@ force text style and display style respectively.</p>
     </mrow>
   </mfrac>
   <mspace width="1em"></mspace>
-  <mstyle displaystyle="true" scriptlevel="0">
-    <mfrac>
-      <mrow>
-        <mi>x</mi>
-        <mo>+</mo>
-        <mn>1</mn>
-      </mrow>
-      <mrow>
-        <mi>x</mi>
-        <mo>−</mo>
-        <mn>1</mn>
-      </mrow>
-    </mfrac>
-    <mspace width="1em"></mspace>
-    <mstyle displaystyle="false" scriptlevel="0">
-      <mfrac>
-        <mrow>
-          <mi>x</mi>
-          <mo>+</mo>
-          <mn>1</mn>
-        </mrow>
-        <mrow>
-          <mi>x</mi>
-          <mo>−</mo>
-          <mn>1</mn>
-        </mrow>
-      </mfrac>
-    </mstyle>
-  </mstyle>
+  <mfrac displaystyle="true" scriptlevel="0">
+    <mrow>
+      <mi>x</mi>
+      <mo>+</mo>
+      <mn>1</mn>
+    </mrow>
+    <mrow>
+      <mi>x</mi>
+      <mo>−</mo>
+      <mn>1</mn>
+    </mrow>
+  </mfrac>
+  <mspace width="1em"></mspace>
+  <mfrac displaystyle="false" scriptlevel="0">
+    <mrow>
+      <mi>x</mi>
+      <mo>+</mo>
+      <mn>1</mn>
+    </mrow>
+    <mrow>
+      <mi>x</mi>
+      <mo>−</mo>
+      <mn>1</mn>
+    </mrow>
+  </mfrac>
 </math>
 </div>
 <p>and in text: <math xmlns="http://www.w3.org/1998/Math/MathML">
@@ -3891,35 +3885,31 @@ force text style and display style respectively.</p>
     </mrow>
   </mfrac>
 </math>, <math xmlns="http://www.w3.org/1998/Math/MathML">
-  <mstyle displaystyle="true" scriptlevel="0">
-    <mfrac>
-      <mrow>
-        <mi>x</mi>
-        <mo>+</mo>
-        <mn>1</mn>
-      </mrow>
-      <mrow>
-        <mi>x</mi>
-        <mo>−</mo>
-        <mn>1</mn>
-      </mrow>
-    </mfrac>
-  </mstyle>
+  <mfrac displaystyle="true" scriptlevel="0">
+    <mrow>
+      <mi>x</mi>
+      <mo>+</mo>
+      <mn>1</mn>
+    </mrow>
+    <mrow>
+      <mi>x</mi>
+      <mo>−</mo>
+      <mn>1</mn>
+    </mrow>
+  </mfrac>
 </math>, <math xmlns="http://www.w3.org/1998/Math/MathML">
-  <mstyle displaystyle="false" scriptlevel="0">
-    <mfrac>
-      <mrow>
-        <mi>x</mi>
-        <mo>+</mo>
-        <mn>1</mn>
-      </mrow>
-      <mrow>
-        <mi>x</mi>
-        <mo>−</mo>
-        <mn>1</mn>
-      </mrow>
-    </mfrac>
-  </mstyle>
+  <mfrac displaystyle="false" scriptlevel="0">
+    <mrow>
+      <mi>x</mi>
+      <mo>+</mo>
+      <mn>1</mn>
+    </mrow>
+    <mrow>
+      <mi>x</mi>
+      <mo>−</mo>
+      <mn>1</mn>
+    </mrow>
+  </mfrac>
 </math>.</p>
 <p>For binomial expressions such as <math xmlns="http://www.w3.org/1998/Math/MathML">
   <mrow class="binom">
@@ -3987,144 +3977,130 @@ padding for sub-fractions:</p>
   <mo>=</mo>
   <mn>1</mn>
   <mo>+</mo>
-  <mstyle displaystyle="true" scriptlevel="0" class="cfrac">
-    <mfrac>
-      <msup>
-        <mn>1</mn>
-        <mn>2</mn>
-      </msup>
-      <mrow>
-        <mn>2</mn>
-        <mo>+</mo>
-        <mstyle displaystyle="true" scriptlevel="0" class="cfrac">
-          <mfrac>
+  <mfrac displaystyle="true" scriptlevel="0" class="cfrac">
+    <msup>
+      <mn>1</mn>
+      <mn>2</mn>
+    </msup>
+    <mrow>
+      <mn>2</mn>
+      <mo>+</mo>
+      <mfrac displaystyle="true" scriptlevel="0" class="cfrac">
+        <msup>
+          <mn>3</mn>
+          <mn>2</mn>
+        </msup>
+        <mrow>
+          <mn>2</mn>
+          <mo>+</mo>
+          <mfrac displaystyle="true" scriptlevel="0" class="cfrac">
             <msup>
-              <mn>3</mn>
+              <mn>5</mn>
               <mn>2</mn>
             </msup>
             <mrow>
               <mn>2</mn>
               <mo>+</mo>
-              <mstyle displaystyle="true" scriptlevel="0" class="cfrac">
-                <mfrac>
-                  <msup>
-                    <mn>5</mn>
-                    <mn>2</mn>
-                  </msup>
-                  <mrow>
-                    <mn>2</mn>
-                    <mo>+</mo>
-                    <mstyle displaystyle="true" scriptlevel="0" class="cfrac">
-                      <mfrac>
-                        <msup>
-                          <mn>7</mn>
-                          <mn>2</mn>
-                        </msup>
-                        <mrow>
-                          <mn>2</mn>
-                          <mo>+</mo>
-                          <mi>⋯</mi>
-                        </mrow>
-                      </mfrac>
-                    </mstyle>
-                  </mrow>
-                </mfrac>
-              </mstyle>
-              <mspace width="2em"></mspace>
-              <mtext>vs.</mtext>
-              <mspace width="2em"></mspace>
-              <mfrac>
-                <mi>π</mi>
-                <mn>4</mn>
-              </mfrac>
-              <mo>=</mo>
-              <mn>1</mn>
-              <mo>+</mo>
-              <mfrac>
+              <mfrac displaystyle="true" scriptlevel="0" class="cfrac">
                 <msup>
-                  <mn>1</mn>
+                  <mn>7</mn>
                   <mn>2</mn>
                 </msup>
                 <mrow>
                   <mn>2</mn>
                   <mo>+</mo>
-                  <mfrac>
-                    <msup>
-                      <mn>3</mn>
-                      <mn>2</mn>
-                    </msup>
-                    <mrow>
-                      <mn>2</mn>
-                      <mo>+</mo>
-                      <mfrac>
-                        <msup>
-                          <mn>5</mn>
-                          <mn>2</mn>
-                        </msup>
-                        <mrow>
-                          <mn>2</mn>
-                          <mo>+</mo>
-                          <mfrac>
-                            <msup>
-                              <mn>7</mn>
-                              <mn>2</mn>
-                            </msup>
-                            <mrow>
-                              <mn>2</mn>
-                              <mo>+</mo>
-                              <mi>⋯</mi>
-                            </mrow>
-                          </mfrac>
-                        </mrow>
-                      </mfrac>
-                    </mrow>
-                  </mfrac>
+                  <mi>⋯</mi>
                 </mrow>
               </mfrac>
             </mrow>
           </mfrac>
-        </mstyle>
-      </mrow>
-    </mfrac>
-  </mstyle>
+        </mrow>
+      </mfrac>
+    </mrow>
+  </mfrac>
+  <mspace width="2em"></mspace>
+  <mtext>vs.</mtext>
+  <mspace width="2em"></mspace>
+  <mfrac>
+    <mi>π</mi>
+    <mn>4</mn>
+  </mfrac>
+  <mo>=</mo>
+  <mn>1</mn>
+  <mo>+</mo>
+  <mfrac>
+    <msup>
+      <mn>1</mn>
+      <mn>2</mn>
+    </msup>
+    <mrow>
+      <mn>2</mn>
+      <mo>+</mo>
+      <mfrac>
+        <msup>
+          <mn>3</mn>
+          <mn>2</mn>
+        </msup>
+        <mrow>
+          <mn>2</mn>
+          <mo>+</mo>
+          <mfrac>
+            <msup>
+              <mn>5</mn>
+              <mn>2</mn>
+            </msup>
+            <mrow>
+              <mn>2</mn>
+              <mo>+</mo>
+              <mfrac>
+                <msup>
+                  <mn>7</mn>
+                  <mn>2</mn>
+                </msup>
+                <mrow>
+                  <mn>2</mn>
+                  <mo>+</mo>
+                  <mi>⋯</mi>
+                </mrow>
+              </mfrac>
+            </mrow>
+          </mfrac>
+        </mrow>
+      </mfrac>
+    </mrow>
+  </mfrac>
 </math>
 </div>
 <p>The optional argument <span class="docutils literal">[l]</span> or <span class="docutils literal">[r]</span> for left or right placement of
 the numerator is <a class="reference external" href="https://github.com/w3c/mathml/issues/30">not supported by MathML Core</a>:</p>
 <div>
 <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-  <mstyle displaystyle="true" scriptlevel="0" class="cfrac">
-    <mfrac numalign="left" class="numalign-left">
+  <mfrac displaystyle="true" scriptlevel="0" class="cfrac numalign-left" numalign="left">
+    <mi>x</mi>
+    <mrow>
       <mi>x</mi>
-      <mrow>
-        <mi>x</mi>
-        <mo>−</mo>
-        <mn>1</mn>
-      </mrow>
-    </mfrac>
-    <mspace width="1em"></mspace>
-    <mstyle displaystyle="true" scriptlevel="0" class="cfrac">
-      <mfrac>
-        <mi>x</mi>
-        <mrow>
-          <mi>x</mi>
-          <mo>−</mo>
-          <mn>1</mn>
-        </mrow>
-      </mfrac>
-      <mspace width="1em"></mspace>
-      <mstyle displaystyle="true" scriptlevel="0" class="cfrac">
-        <mfrac numalign="right" class="numalign-right">
-          <mi>x</mi>
-          <mrow>
-            <mi>x</mi>
-            <mo>−</mo>
-            <mn>1</mn>
-          </mrow>
-        </mfrac>
-      </mstyle>
-    </mstyle>
-  </mstyle>
+      <mo>−</mo>
+      <mn>1</mn>
+    </mrow>
+  </mfrac>
+  <mspace width="1em"></mspace>
+  <mfrac displaystyle="true" scriptlevel="0" class="cfrac">
+    <mi>x</mi>
+    <mrow>
+      <mi>x</mi>
+      <mo>−</mo>
+      <mn>1</mn>
+    </mrow>
+  </mfrac>
+  <mspace width="1em"></mspace>
+  <mfrac displaystyle="true" scriptlevel="0" class="cfrac numalign-right" numalign="right">
+    <mi>x</mi>
+    <mrow>
+      <mi>x</mi>
+      <mo>−</mo>
+      <mn>1</mn>
+    </mrow>
+  </mfrac>
 </math>
 </div>
 </section>
@@ -4152,103 +4128,91 @@ fixed size:</p>
 <td><p><span class="docutils literal">\Biggr</span></p></td>
 </tr>
 <tr><td><p>Result</p></td>
-<td><p><math xmlns="http://www.w3.org/1998/Math/MathML">
-  <mstyle displaystyle="true" scriptlevel="0">
-    <mo stretchy="false">(</mo>
+<td><p><math xmlns="http://www.w3.org/1998/Math/MathML" displaystyle="true" scriptlevel="0">
+  <mo stretchy="false">(</mo>
+  <mi>b</mi>
+  <mo stretchy="false">)</mo>
+  <mo stretchy="false">(</mo>
+  <mfrac>
+    <mi>c</mi>
+    <mi>d</mi>
+  </mfrac>
+  <mo stretchy="false">)</mo>
+</math></p></td>
+<td><p><math xmlns="http://www.w3.org/1998/Math/MathML" displaystyle="true" scriptlevel="0">
+  <mrow>
+    <mo>(</mo>
     <mi>b</mi>
-    <mo stretchy="false">)</mo>
-    <mo stretchy="false">(</mo>
+    <mo>)</mo>
+  </mrow>
+  <mrow>
+    <mo>(</mo>
     <mfrac>
       <mi>c</mi>
       <mi>d</mi>
     </mfrac>
-    <mo stretchy="false">)</mo>
-  </mstyle>
+    <mo>)</mo>
+  </mrow>
 </math></p></td>
-<td><p><math xmlns="http://www.w3.org/1998/Math/MathML">
-  <mstyle displaystyle="true" scriptlevel="0">
-    <mrow>
-      <mo>(</mo>
-      <mi>b</mi>
-      <mo>)</mo>
-    </mrow>
-    <mrow>
-      <mo>(</mo>
-      <mfrac>
-        <mi>c</mi>
-        <mi>d</mi>
-      </mfrac>
-      <mo>)</mo>
-    </mrow>
-  </mstyle>
+<td><p><math xmlns="http://www.w3.org/1998/Math/MathML" displaystyle="true" scriptlevel="0">
+  <mrow>
+    <mo maxsize="1.2em" minsize="1.2em" symmetric="true">(</mo>
+    <mi>b</mi>
+    <mo maxsize="1.2em" minsize="1.2em" symmetric="true">)</mo>
+  </mrow>
+  <mrow>
+    <mo maxsize="1.2em" minsize="1.2em" symmetric="true">(</mo>
+    <mfrac>
+      <mi>c</mi>
+      <mi>d</mi>
+    </mfrac>
+    <mo maxsize="1.2em" minsize="1.2em" symmetric="true">)</mo>
+  </mrow>
 </math></p></td>
-<td><p><math xmlns="http://www.w3.org/1998/Math/MathML">
-  <mstyle displaystyle="true" scriptlevel="0">
-    <mrow>
-      <mo maxsize="1.2em" minsize="1.2em" symmetric="true">(</mo>
-      <mi>b</mi>
-      <mo maxsize="1.2em" minsize="1.2em" symmetric="true">)</mo>
-    </mrow>
-    <mrow>
-      <mo maxsize="1.2em" minsize="1.2em" symmetric="true">(</mo>
-      <mfrac>
-        <mi>c</mi>
-        <mi>d</mi>
-      </mfrac>
-      <mo maxsize="1.2em" minsize="1.2em" symmetric="true">)</mo>
-    </mrow>
-  </mstyle>
+<td><p><math xmlns="http://www.w3.org/1998/Math/MathML" displaystyle="true" scriptlevel="0">
+  <mrow>
+    <mo maxsize="1.623em" minsize="1.623em" symmetric="true">(</mo>
+    <mi>b</mi>
+    <mo maxsize="1.623em" minsize="1.623em" symmetric="true">)</mo>
+  </mrow>
+  <mrow>
+    <mo maxsize="1.623em" minsize="1.623em" symmetric="true">(</mo>
+    <mfrac>
+      <mi>c</mi>
+      <mi>d</mi>
+    </mfrac>
+    <mo maxsize="1.623em" minsize="1.623em" symmetric="true">)</mo>
+  </mrow>
 </math></p></td>
-<td><p><math xmlns="http://www.w3.org/1998/Math/MathML">
-  <mstyle displaystyle="true" scriptlevel="0">
-    <mrow>
-      <mo maxsize="1.623em" minsize="1.623em" symmetric="true">(</mo>
-      <mi>b</mi>
-      <mo maxsize="1.623em" minsize="1.623em" symmetric="true">)</mo>
-    </mrow>
-    <mrow>
-      <mo maxsize="1.623em" minsize="1.623em" symmetric="true">(</mo>
-      <mfrac>
-        <mi>c</mi>
-        <mi>d</mi>
-      </mfrac>
-      <mo maxsize="1.623em" minsize="1.623em" symmetric="true">)</mo>
-    </mrow>
-  </mstyle>
+<td><p><math xmlns="http://www.w3.org/1998/Math/MathML" displaystyle="true" scriptlevel="0">
+  <mrow>
+    <mo maxsize="2.047em" minsize="2.047em" symmetric="true">(</mo>
+    <mi>b</mi>
+    <mo maxsize="2.047em" minsize="2.047em" symmetric="true">)</mo>
+  </mrow>
+  <mrow>
+    <mo maxsize="2.047em" minsize="2.047em" symmetric="true">(</mo>
+    <mfrac>
+      <mi>c</mi>
+      <mi>d</mi>
+    </mfrac>
+    <mo maxsize="2.047em" minsize="2.047em" symmetric="true">)</mo>
+  </mrow>
 </math></p></td>
-<td><p><math xmlns="http://www.w3.org/1998/Math/MathML">
-  <mstyle displaystyle="true" scriptlevel="0">
-    <mrow>
-      <mo maxsize="2.047em" minsize="2.047em" symmetric="true">(</mo>
-      <mi>b</mi>
-      <mo maxsize="2.047em" minsize="2.047em" symmetric="true">)</mo>
-    </mrow>
-    <mrow>
-      <mo maxsize="2.047em" minsize="2.047em" symmetric="true">(</mo>
-      <mfrac>
-        <mi>c</mi>
-        <mi>d</mi>
-      </mfrac>
-      <mo maxsize="2.047em" minsize="2.047em" symmetric="true">)</mo>
-    </mrow>
-  </mstyle>
-</math></p></td>
-<td><p><math xmlns="http://www.w3.org/1998/Math/MathML">
-  <mstyle displaystyle="true" scriptlevel="0">
-    <mrow>
-      <mo maxsize="2.470em" minsize="2.470em" symmetric="true">(</mo>
-      <mi>b</mi>
-      <mo maxsize="2.470em" minsize="2.470em" symmetric="true">)</mo>
-    </mrow>
-    <mrow>
-      <mo maxsize="2.470em" minsize="2.470em" symmetric="true">(</mo>
-      <mfrac>
-        <mi>c</mi>
-        <mi>d</mi>
-      </mfrac>
-      <mo maxsize="2.470em" minsize="2.470em" symmetric="true">)</mo>
-    </mrow>
-  </mstyle>
+<td><p><math xmlns="http://www.w3.org/1998/Math/MathML" displaystyle="true" scriptlevel="0">
+  <mrow>
+    <mo maxsize="2.470em" minsize="2.470em" symmetric="true">(</mo>
+    <mi>b</mi>
+    <mo maxsize="2.470em" minsize="2.470em" symmetric="true">)</mo>
+  </mrow>
+  <mrow>
+    <mo maxsize="2.470em" minsize="2.470em" symmetric="true">(</mo>
+    <mfrac>
+      <mi>c</mi>
+      <mi>d</mi>
+    </mfrac>
+    <mo maxsize="2.470em" minsize="2.470em" symmetric="true">)</mo>
+  </mrow>
 </math></p></td>
 </tr>
 </tbody>
@@ -4493,53 +4457,49 @@ around a <span class="docutils literal">smallmatrix</span> environment
 <math xmlns="http://www.w3.org/1998/Math/MathML">
   <mrow>
     <mo>(</mo>
-    <mstyle scriptlevel="1">
-      <mtable rowspacing="0.02em" columnspacing="0.333em">
-        <mtr>
-          <mtd>
-            <mi>a</mi>
-          </mtd>
-          <mtd>
-            <mi>b</mi>
-          </mtd>
-        </mtr>
-        <mtr>
-          <mtd>
-            <mi>c</mi>
-          </mtd>
-          <mtd>
-            <mi>d</mi>
-          </mtd>
-        </mtr>
-      </mtable>
-      <mo>)</mo>
-    </mstyle>
+    <mtable rowspacing="0.02em" columnspacing="0.333em" scriptlevel="1">
+      <mtr>
+        <mtd>
+          <mi>a</mi>
+        </mtd>
+        <mtd>
+          <mi>b</mi>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd>
+          <mi>c</mi>
+        </mtd>
+        <mtd>
+          <mi>d</mi>
+        </mtd>
+      </mtr>
+    </mtable>
+    <mo>)</mo>
   </mrow>
 </math>
 vs. <math xmlns="http://www.w3.org/1998/Math/MathML">
   <mrow>
     <mo maxsize="1.623em" minsize="1.623em" symmetric="true">(</mo>
-    <mstyle scriptlevel="1">
-      <mtable rowspacing="0.02em" columnspacing="0.333em">
-        <mtr>
-          <mtd>
-            <mi>a</mi>
-          </mtd>
-          <mtd>
-            <mi>b</mi>
-          </mtd>
-        </mtr>
-        <mtr>
-          <mtd>
-            <mi>c</mi>
-          </mtd>
-          <mtd>
-            <mi>d</mi>
-          </mtd>
-        </mtr>
-      </mtable>
-      <mo maxsize="1.623em" minsize="1.623em" symmetric="true">)</mo>
-    </mstyle>
+    <mtable rowspacing="0.02em" columnspacing="0.333em" scriptlevel="1">
+      <mtr>
+        <mtd>
+          <mi>a</mi>
+        </mtd>
+        <mtd>
+          <mi>b</mi>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd>
+          <mi>c</mi>
+        </mtd>
+        <mtd>
+          <mi>d</mi>
+        </mtd>
+      </mtr>
+    </mtable>
+    <mo maxsize="1.623em" minsize="1.623em" symmetric="true">)</mo>
   </mrow>
 </math>.</p>
 </aside>
@@ -4832,22 +4792,20 @@ the operator to which they apply.</p>
 spacing that would be applied in display math, inline
 math, first-order subscript, or second-order subscript, respectively
 even when the current context would normally yield some other size.</p>
-<p>For example <span class="docutils literal"><span class="pre">:math:`\displaystyle</span> <span class="pre">\sum_{n=0}^\infty</span> <span class="pre">\frac{1}{n}`</span></span> is printed as <math xmlns="http://www.w3.org/1998/Math/MathML">
-  <mstyle displaystyle="true" scriptlevel="0">
-    <munderover>
-      <mo movablelimits="true">∑</mo>
-      <mrow>
-        <mi>n</mi>
-        <mo>=</mo>
-        <mn>0</mn>
-      </mrow>
-      <mi>∞</mi>
-    </munderover>
-    <mfrac>
-      <mn>1</mn>
+<p>For example <span class="docutils literal"><span class="pre">:math:`\displaystyle</span> <span class="pre">\sum_{n=0}^\infty</span> <span class="pre">\frac{1}{n}`</span></span> is printed as <math xmlns="http://www.w3.org/1998/Math/MathML" displaystyle="true" scriptlevel="0">
+  <munderover>
+    <mo movablelimits="true">∑</mo>
+    <mrow>
       <mi>n</mi>
-    </mfrac>
-  </mstyle>
+      <mo>=</mo>
+      <mn>0</mn>
+    </mrow>
+    <mi>∞</mi>
+  </munderover>
+  <mfrac>
+    <mn>1</mn>
+    <mi>n</mi>
+  </mfrac>
 </math>
 rather than <math xmlns="http://www.w3.org/1998/Math/MathML">
   <munderover>
@@ -4870,7 +4828,7 @@ rather than <math xmlns="http://www.w3.org/1998/Math/MathML">
 <div>
 <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
   <mfrac>
-    <mstyle displaystyle="false" scriptlevel="1">
+    <mrow displaystyle="false" scriptlevel="1">
       <munder>
         <mo movablelimits="true">∑</mo>
         <mrow>
@@ -4883,8 +4841,8 @@ rather than <math xmlns="http://www.w3.org/1998/Math/MathML">
         <mi>z</mi>
         <mi>n</mi>
       </msup>
-    </mstyle>
-    <mstyle displaystyle="true" scriptlevel="0">
+    </mrow>
+    <mrow displaystyle="true" scriptlevel="0">
       <munder>
         <mo movablelimits="true">∏</mo>
         <mrow>
@@ -4903,7 +4861,7 @@ rather than <math xmlns="http://www.w3.org/1998/Math/MathML">
         <mi>k</mi>
       </msup>
       <mo stretchy="false">)</mo>
-    </mstyle>
+    </mrow>
   </mfrac>
   <mtext> instead of the default </mtext>
   <mfrac>

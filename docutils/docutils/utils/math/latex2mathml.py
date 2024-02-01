@@ -31,7 +31,7 @@ from docutils.utils.math import (MathError, mathalphabet2unichar,
 from docutils.utils.math.mathml_elements import (
     math, mtable, mrow, mtr, mtd, menclose, mphantom, msqrt, mi, mn, mo,
     mtext, msub, msup, msubsup, munder, mover, munderover, mroot, mfrac,
-    mspace, mstyle, MathRow)
+    mspace, MathRow)
 
 
 # Character data
@@ -89,9 +89,8 @@ modulo_functions = {
     }
 
 
-# math font selection -> <mi mathvariant=...> or <mstyle mathvariant=...>
-# TODO: the "mathvariant" attribute is not supported by Chromium and
-# deprecated in the MathML specs (except with value "normal" for single chars).
+# "mathematical alphabets": map identifiers to the corresponding
+# characters from the "Mathematical Alphanumeric Symbols" block
 math_alphabets = {
     # 'cmdname':  'mathvariant value'        # package
     'mathbb':     'double-struck',           # amssymb
@@ -301,15 +300,15 @@ layout_styles = {
 # See also https://www.w3.org/TR/MathML3/chapter3.html#presm.scriptlevel
 
 fractions = {
-    # name:   style_attrs, frac_attrs
-    'frac':   ({}, {}),
-    'cfrac':  ({'displaystyle': True,  'scriptlevel': 0,
-                'CLASS': 'cfrac'}, {}),  # in LaTeX with padding
-    'dfrac':  (layout_styles['displaystyle'], {}),
-    'tfrac':  (layout_styles['textstyle'], {}),
-    'binom':  ({}, {'linethickness': 0}),
-    'dbinom': (layout_styles['displaystyle'], {'linethickness': 0}),
-    'tbinom': (layout_styles['textstyle'], {'linethickness': 0}),
+    # name:   attributes
+    'frac':   {},
+    'cfrac':  {'displaystyle': True,  'scriptlevel': 0,
+               'class': 'cfrac'},  # in LaTeX with padding
+    'dfrac':  layout_styles['displaystyle'],
+    'tfrac':  layout_styles['textstyle'],
+    'binom':  {'linethickness': 0},
+    'dbinom': layout_styles['displaystyle'] | {'linethickness': 0},
+    'tbinom': layout_styles['textstyle'] | {'linethickness': 0},
 }
 
 delimiter_sizes = ['', '1.2em', '1.623em', '2.047em', '2.470em']
@@ -828,6 +827,8 @@ def handle_cmd(name, node, string):  # noqa: C901 TODO make this less complex
         return new_node, string
 
     if name == 'boxed':
+        # CSS padding is broken in Firefox 115.6.0esr
+        # therefore we still need the deprecated <menclose> element
         new_node = menclose(notation='box', CLASS='boxed')
         node.append(new_node)
         return new_node, string
@@ -848,20 +849,18 @@ def handle_cmd(name, node, string):  # noqa: C901 TODO make this less complex
         return new_node, string
 
     if name in fractions:
-        (style_atts, frac_atts) = fractions[name]
+        attributes = fractions[name]
         if name == 'cfrac':
             optarg, string = tex_optarg(string)
             optargs = {'l': 'left', 'r': 'right'}
             if optarg in optargs:
-                frac_atts = frac_atts.copy()
-                frac_atts['numalign'] = optargs[optarg]  # "numalign" is deprecated
-                frac_atts['class'] = 'numalign-' + optargs[optarg]
-        new_node = frac = mfrac(**frac_atts)
+                attributes = attributes.copy()
+                attributes['numalign'] = optargs[optarg]  # "numalign" is deprecated
+                attributes['class'] += ' numalign-' + optargs[optarg]
+        new_node = frac = mfrac(**attributes)
         if name.endswith('binom'):
             new_node = mrow(mo('('), new_node, mo(')'), CLASS='binom')
             new_node.nchildren = 3
-        if style_atts:
-            new_node = mstyle(new_node, **style_atts)
         node.append(new_node)
         return frac, string
 
@@ -919,18 +918,12 @@ def handle_cmd(name, node, string):  # noqa: C901 TODO make this less complex
         return new_node, string
 
     if name in layout_styles:  # 'displaystyle', 'textstyle', ...
-        new_node = mstyle(**layout_styles[name])
-        new_node.nchildren = None
-        if isinstance(node, mrow) and len(node) == 0:
-            # replace node with new_node
-            node.parent[node.parent.children.index(node)] = new_node
-            new_node.parent = node.parent
-        elif node.__class__.__name__ == 'math':
-            node.append(new_node)
-        else:
+        if len(node) > 0:
             raise MathError(rf'Declaration "\{name}" must be first command '
                             'in a group!')
-        return new_node, string
+        for k, v in layout_styles[name].items():
+            node.set(k, v)
+        return node, string
 
     if name.endswith('limits'):
         arg, remainder = tex_token(string)
@@ -1076,9 +1069,7 @@ def begin_environment(node, string):
         elif name == 'smallmatrix':
             attributes['rowspacing'] = '0.02em'
             attributes['columnspacing'] = '0.333em'
-            wrapper = mstyle(scriptlevel='1')
-            node.append(wrapper)
-            node = wrapper
+            attributes['scriptlevel'] = '1'
         elif name == 'aligned':
             attributes['class'] = 'ams-align'
         # TODO: array, aligned & alignedat take an optional [t], [b], or [c].

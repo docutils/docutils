@@ -35,7 +35,7 @@ mathml_elements = """
     <annotation>      0 Data annotations                      NOT IMPLEMENTED
     <annotation-xml>  * XML annotations                       NOT IMPLEMENTED
     <math>            * Top-level element
-    <menclose>        1 Enclosed contents (non-standard)
+    <menclose>        1 Enclosed contents (non-standard)      deprecated
     <merror>          * Enclosed syntax error messages
     <mfenced>         * Parentheses (non-standard)            DEPRECATED
     <mfrac>           2 Fraction
@@ -44,7 +44,7 @@ mathml_elements = """
     <mn>              0 Number
     <mo>              0 Operator (and similar)
     <mover>           2 Overscript
-    <mpadded>         * Extra padding                         NOT IMPLEMENTED
+    <mpadded>         * Extra padding
     <mphantom>        1 Invisible content reserving space
     <mroot>           2 Radical with specified index
     <mrow>            * Grouped sub-expressions

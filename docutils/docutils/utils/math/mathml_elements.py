@@ -421,9 +421,14 @@ class menclose(MathRow):
 
     ... specified by the notation attribute.
 
-    Non-standard: Do not use on the Web.
+    Non-standard but still required by Firefox for boxed expressions.
     """
     nchildren = 1  # \boxed expects one argument or a group
+
+
+class mpadded(MathRow):
+    """Adjust space around content."""
+    # nchildren = 1  # currently not used by latex2mathml
 
 
 class mphantom(MathRow):
