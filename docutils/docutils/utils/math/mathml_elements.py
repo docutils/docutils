@@ -26,6 +26,9 @@ the API is not settled and may change with any minor Docutils version.
 #
 # >>> from mathml_elements import *
 
+import numbers
+
+
 GLOBAL_ATTRIBUTES = (
     'class',  # space-separated list of element classes
     # 'data-*',  # custom data attributes (see HTML)
@@ -57,7 +60,6 @@ class MathElement:
     # cf. https://www.w3.org/TR/MathML3/chapter3.html#id.3.1.3.2
     parent = None
     """Parent node in MathML element tree."""
-    _level = 0  # indentation level (static class variable)
     xml_entities = {
         # for invalid and invisible characters
         ord('<'): '&lt;',
@@ -93,13 +95,24 @@ class MathElement:
         return str(v)
 
     def __repr__(self):
+        """Return full string representation."""
         args = [repr(child) for child in self]
         if hasattr(self, 'text'):
             args.append(repr(self.text))
+        if self.nchildren != self.__class__.nchildren:
+            args.append(f'nchildren={self.nchildren}')
         if getattr(self, 'switch', None):
             args.append('switch=True')
         args += [f'{k}={v!r}' for k, v in self.items() if v is not None]
-        return self.__class__.__name__ + '(%s)' % ', '.join(args)
+        return f'{self.__class__.__name__}({", ".join(args)})'
+
+    def __str__(self):
+        """Return concise, informal string representation."""
+        if getattr(self, 'text', ''):
+            args = repr(self.text)
+        else:
+            args = ', '.join(f'{child}' for child in self)
+        return f'{self.__class__.__name__}({args})'
 
 # Emulate dictionary access methods for attributes
 # and list-like interface to the child elements
@@ -159,7 +172,11 @@ class MathElement:
         (returns first non-full anchestor or None) else return `self`.
         """
         if self.is_full():
-            raise TypeError(f'Element "{self}" already full!')
+            if self.nchildren:
+                status = f'takes only {self.nchildren} children'
+            else:
+                status = 'does not take children'
+            raise TypeError(f'Element "{self}" {status}.')
         self.children.append(element)
         element.parent = self
         if self.is_full():
@@ -182,14 +199,16 @@ class MathElement:
         return element
 
     def in_block(self):
-        """Return true, if `self` or a parent has ``display='block'``."""
-        try:
-            return self.get('display') == 'block'
-        except KeyError:
+        """Return True, if `self` or an ancestor has ``display='block'``.
+
+        Used to find out whether we are in inline vs. displayed maths.
+        """
+        if self.get('display') is None:
             try:
                 return self.parent.in_block()
             except AttributeError:
                 return False
+        return self.get('display') == 'block'
 
     # Conversion to (pretty) XML string
     def toprettyxml(self):
@@ -197,9 +216,6 @@ class MathElement:
         return ''.join(self._xml())
 
     def _xml(self, level=0):
-        if self.nchildren is not None and len(self) < self.nchildren:
-            raise ValueError(f'Node {self.xml_starttag()} misses children.'
-                             ' Incomplete source?')
         return [self.xml_starttag(),
                 *self._xml_body(level),
                 '</%s>' % self.__class__.__name__]
@@ -218,13 +234,13 @@ class MathElement:
 
 # >>> n2 = math(mn(2))
 # >>> n2
-# math(mn(2))
+# math(mn('2'))
 # >>> n2.toprettyxml()
 # '<math>\n  <mn>2</mn>\n</math>'
 # >>> len(n2)
 # 1
 # >>> n2.extend([mo('!')])
-# math(mn(2), mo('!'))
+# math(mn('2'), mo('!'))
 # >>> eq3 = math(id='eq3', display='block')
 # >>> eq3
 # math(id='eq3', display='block')
@@ -290,10 +306,10 @@ class MathSchema(MathElement):
 # MathSchema(MathElement(), switch=True)
 # >>> MathSchema(MathElement(id='c1'), MathElement(id='c2'), switch=True)
 # MathSchema(MathElement(id='c2'), MathElement(id='c1'))
-# >>> MathSchema(MathElement(), MathElement(), MathElement())
+# >>> MathSchema(mrow(), mrow(), mrow())  # doctest: +ELLIPSIS
 # Traceback (most recent call last):
 # ...
-# TypeError: Element "MathSchema(MathElement(), MathElement())" already full!
+# TypeError: Element "MathSchema(...)" takes only 2 children.
 
 
 # Token elements represent the smallest units of mathematical notation which
@@ -307,8 +323,11 @@ class MathToken(MathElement):
     nchildren = 0
 
     def __init__(self, text, **attributes):
-        self.text = text
         super().__init__(**attributes)
+        if not isinstance(text, (str, numbers.Number)):
+            raise ValueError('MathToken element expects `str` or number,'
+                             f' not "{text}".')
+        self.text = str(text)
 
     def _xml_body(self, level=0):
         return [str(self.text).translate(self.xml_entities)]
@@ -331,12 +350,20 @@ class mtext(MathToken):
 class mi(MathToken):
     """Identifier, such as a function name, variable or symbolic constant."""
 
+# >>> mi(mtext('out'))
+# Traceback (most recent call last):
+# ...
+# ValueError: MathToken element expects `str` or number, not "mtext('out')".
+
 
 class mn(MathToken):
     """Numeric literal.
 
     Normally a sequence of digits with a possible separator (a dot or a comma).
     """
+
+# >>> mn(3.41)
+# mn('3.41')
 
 
 class mo(MathToken):
@@ -349,8 +376,8 @@ class mo(MathToken):
 
 # >>> mo('<')
 # mo('<')
-# >>> mo('<')._xml()
-# ['<mo>', '&lt;', '</mo>']
+# >>> mo('<').toprettyxml()
+# '<mo>&lt;</mo>'
 
 
 class mspace(MathElement):
@@ -363,6 +390,13 @@ class mspace(MathElement):
     """
     nchildren = 0
 
+# >>> mspace(width='2em').toprettyxml()
+# '<mspace width="2em">\n</mspace>'
+# >>> mspace(mn(3))
+# Traceback (most recent call last):
+# ...
+# TypeError: Element "mspace()" does not take children.
+
 
 # General Layout Schemata
 # ~~~~~~~~~~~~~~~~~~~~~~~
@@ -374,20 +408,20 @@ class mrow(MathRow):
     """
 
     def transfer_attributes(self, other):
-        # Update dictionary `other.attrib` with self.attrib.
-        # List values (class, style) are appended to existing values,
-        # other values replace existing values.
+        """Transfer attributes from self to other.
+
+        List values (class, style) are appended to existing values,
+        other values replace existing values.
+        """
+        delimiters = {'class': ' ', 'style': '; '}
         for k, v in self.items():
             if k in ('class', 'style') and v:
-                try:
-                    other.attrib[k] += ' ' + v
-                    continue
-                except (KeyError, TypeError):
-                    pass
-            other.attrib[k] = v
+                if other.get(k):
+                    v = delimiters[k].join((other.get(k), v))
+            other.set(k, v)
 
     def close(self):
-        """Close element and return first non-full parent or None.
+        """Close element and return first non-full anchestor or None.
 
         Remove <mrow> if it has only one child element.
         """
@@ -402,6 +436,18 @@ class mrow(MathRow):
                 return None
             self.transfer_attributes(child)
         return super().close()
+
+# Examples:
+#
+# >>> e = mrow(mn('3.5'), mo('<'), mi('x'))
+# >>> e
+# mrow(mn('3.5'), mo('<'), mi('x'))
+# >>> e.toprettyxml()
+# '<mrow>\n  <mn>3.5</mn>\n  <mo>&lt;</mo>\n  <mi>x</mi>\n</mrow>'
+# >>> mo('∫', movablelimits=True).toprettyxml()
+# '<mo movablelimits="true">∫</mo>'
+# >>> mtext('comments or annotations').text
+# 'comments or annotations'
 
 # >>> row = mrow(mi('i', CLASS='boldmath'), mathvariant='normal', CLASS='test')
 # >>> tree = math(row)
@@ -465,12 +511,18 @@ class msubsup(MathSchema):
     """Attach both a subscript and a superscript to an expression."""
     nchildren = 3
 
-# >>> msub(mi('x'), mo('-'))
-# msub(mi('x'), mo('-'))
-# >>> msubsup(mi('base'), mi('sub'), mi('super'))
-# msubsup(mi('base'), mi('sub'), mi('super'))
-# >>> msubsup(mi('base'), mi('super'), mi('sub'), switch=True)
-# msubsup(mi('base'), mi('sub'), mi('super'))
+# Examples:
+#
+# The `switch` attribute reverses the order of the last two children:
+# >>> msub(mn(1), mn(2)).toprettyxml()
+# '<msub>\n  <mn>1</mn>\n  <mn>2</mn>\n</msub>'
+# >>> msub(mn(1), mn(2), switch=True).toprettyxml()
+# '<msub>\n  <mn>2</mn>\n  <mn>1</mn>\n</msub>'
+#
+# >>> msubsup(mi('base'), mn(1), mn(2)).toprettyxml()
+# '<msubsup>\n  <mi>base</mi>\n  <mn>1</mn>\n  <mn>2</mn>\n</msubsup>'
+# >>> msubsup(mi('base'), mn(1), mn(2), switch=True).toprettyxml()
+# '<msubsup>\n  <mi>base</mi>\n  <mn>2</mn>\n  <mn>1</mn>\n</msubsup>'
 
 
 class munder(msub):
@@ -495,7 +547,7 @@ class munderover(msubsup):
 # munder(mi('lim'), mo('-'), accent='false')
 # >>> mu.append(mi('lim'))
 # Traceback (most recent call last):
-# TypeError: Element "munder(mi('lim'), mo('-'), accent='false')" already full!
+# TypeError: Element "munder(mi('lim'), mo('-'))" takes only 2 children.
 # >>> munder(mo('-'), mi('lim'), accent='false', switch=True).toprettyxml()
 # '<munder accent="false">\n  <mi>lim</mi>\n  <mo>-</mo>\n</munder>'
 

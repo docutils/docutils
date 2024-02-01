@@ -610,9 +610,9 @@ def parse_latex_math(root, source):
 # >>> parse_latex_math(math(), '\\sqrt 2 \\ne 3')
 # math(msqrt(mn('2')), mo('≠'), mn('3'))
 # >>> parse_latex_math(math(), '\\sqrt{2 + 3} < 10')
-# math(msqrt(mn('2'), mo('+'), mn('3')), mo('<'), mn('10'))
+# math(msqrt(mn('2'), mo('+'), mn('3'), nchildren=3), mo('<'), mn('10'))
 # >>> parse_latex_math(math(), '\\sqrt[3]{2 + 3}')
-# math(mroot(mrow(mn('2'), mo('+'), mn('3')), mn('3')))
+# math(mroot(mrow(mn('2'), mo('+'), mn('3'), nchildren=3), mn('3')))
 # >>> parse_latex_math(math(), '\max_x') # function takes limits
 # math(munder(mo('max', movablelimits='true'), mi('x')))
 # >>> parse_latex_math(math(), 'x^j_i') # ensure correct order: base, sub, sup
@@ -1018,11 +1018,13 @@ def handle_math_alphabet(name, node, string):
 # >>> handle_math_alphabet('mathbb', math(), '{R} = 3')
 # (math(mi('ℝ')), ' = 3')
 # >>> handle_math_alphabet('mathcal', math(), '{F = 3}')
-# (math(mrow(mi('ℱ'), mo('='), mn('3'))), '')
-# >>> handle_math_alphabet('mathrm', math(), '{out} = 3')  # use shortcut
+# (math(mrow(mi('ℱ'), mo('='), mn('3'), nchildren=3)), '')
+# >>> handle_math_alphabet('mathrm', math(), '{out} = 3')  # drop <mrow>
 # (math(mi('out')), ' = 3')
-# >>> handle_math_alphabet('mathrm', math(), '{V = 3}')  # force normal
-# (math(mrow(mi('V', mathvariant='normal'), mo('='), mn('3'))), '')
+#
+# Single letters in \mathrm require "mathvariant='normal'":
+# >>> handle_math_alphabet('mathrm', math(), '{V = 3}')  # doctest: +ELLIPSIS
+# (math(mrow(mi('V', mathvariant='normal'), mo('='), mn('3'), ...)), '')
 
 
 def handle_script_or_limit(node, c, limits=''):
