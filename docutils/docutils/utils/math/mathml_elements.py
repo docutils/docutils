@@ -351,17 +351,9 @@ class mrow(MathRow):
     def close(self):
         """Close element and return first non-full parent or None.
 
-        Remove <mrow>, if it is single child and the parent infers an mrow
-        or if it has only one child element.
+        Remove <mrow> if it has only one child element.
         """
         parent = self.parent
-        if isinstance(parent, MathRow) and parent.nchildren == 1:
-            parent.children = self.children
-            parent.nchildren = len(parent.children)
-            for child in self.children:
-                child.parent = parent
-            self.transfer_attributes(parent)
-            return parent.close()
         # replace `self` with single child
         if len(self) == 1:
             child = self.children[0]
@@ -373,10 +365,6 @@ class mrow(MathRow):
             self.transfer_attributes(child)
         return super().close()
 
-# >>> row = mrow(displaystyle=False, CLASS='mathscr')
-# >>> tree = math(msqrt(row, displaystyle=True))
-# >>> row.close()  # remove mrow and transfer attributes to parent
-# math(msqrt(displaystyle=False, class='mathscr'))
 # >>> row = mrow(mi('i', CLASS='boldmath'), mathvariant='normal', CLASS='test')
 # >>> tree = math(row)
 # >>> row.close()

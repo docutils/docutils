@@ -31,7 +31,7 @@ from docutils.utils.math import (MathError, mathalphabet2unichar,
 from docutils.utils.math.mathml_elements import (
     math, mtable, mrow, mtr, mtd, menclose, mphantom, msqrt, mi, mn, mo,
     mtext, msub, msup, msubsup, munder, mover, munderover, mroot, mfrac,
-    mspace, mstyle)
+    mspace, mstyle, MathRow)
 
 
 # Character data
@@ -547,9 +547,13 @@ def parse_latex_math(node, string):
         elif c in "_^":
             node = handle_script_or_limit(node, c)
         elif c == '{':
-            new_node = mrow()
-            node.append(new_node)
-            node = new_node
+            if isinstance(node, MathRow) and node.nchildren == 1:
+                # LaTeX takes one arg, MathML node accepts a group
+                node.nchildren = None  # allow appending until closed by '}'
+            else:  # wrap group in an <mrow>
+                new_node = mrow()
+                node.append(new_node)
+                node = new_node
         elif c == '}':
             node = node.close()
         elif c == '&':
