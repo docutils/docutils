@@ -571,7 +571,7 @@ def parse_latex_math(node, string):
             attributes = {}
             if c == '-' and len(node):
                 previous_node = node[-1]
-                if (getattr(previous_node, 'data', '-') in '([='
+                if (getattr(previous_node, 'text', '-') in '([='
                     or previous_node.get('class') == 'mathopen'):
                     attributes['form'] = 'prefix'
             node = node.append(mo(anomalous_chars[c], **attributes))
@@ -682,7 +682,7 @@ def handle_cmd(name, node, string):  # noqa: C901 TODO make this less complex
             node = node.append(mo('mod', lspace=padding, rspace=padding))
             return node, string
         # left padding
-        if node.is_block():
+        if node.in_block():
             padding = '1em'
         node = node.append(mspace(width=padding))
         if parentheses:
@@ -974,12 +974,12 @@ def handle_math_alphabet(name, node, string):
     container = mrow(**attributes)
     node.append(container)
     parse_latex_math(container, arg)
-    ma2ch = getattr(mathalphabet2unichar,
-                    name.replace('mathscr', 'mathcal'), {})
-    for subnode in container.subnodes():
+    a2ch = getattr(mathalphabet2unichar,
+                   name.replace('mathscr', 'mathcal'), {})
+    for subnode in container.iter():
         if isinstance(subnode, (mi, mn)):
-            subnode.data = ma2ch.get(subnode.data, subnode.data)
-        if isinstance(subnode, mi) and name == 'mathrm' and subnode.data.isalpha():
+            subnode.text = a2ch.get(subnode.text, subnode.text)
+        if isinstance(subnode, mi) and name == 'mathrm' and subnode.text.isalpha():
             subnode.set('mathvariant', 'normal')
     return container.close(), string
 
@@ -1001,7 +1001,7 @@ def handle_script_or_limit(node, c, limits=''):
     if limits == 'limits':
         child.set('movablelimits', 'false')
     elif (limits == 'movablelimits'
-          or getattr(child, 'data', '') in movablelimits):
+          or getattr(child, 'text', '') in movablelimits):
         child.set('movablelimits', 'true')
 
     if c == '_':

@@ -93,13 +93,13 @@ class MathElement:
         return str(v)
 
     def __repr__(self):
-        content = [repr(item) for item in self]
-        if hasattr(self, 'data'):
-            content.append(repr(self.data))
+        args = [repr(child) for child in self]
+        if hasattr(self, 'text'):
+            args.append(repr(self.text))
         if getattr(self, 'switch', None):
-            content.append('switch=True')
-        content += [f'{k}={v!r}' for k, v in self.items() if v is not None]
-        return self.__class__.__name__ + '(%s)' % ', '.join(content)
+            args.append('switch=True')
+        args += [f'{k}={v!r}' for k, v in self.items() if v is not None]
+        return self.__class__.__name__ + '(%s)' % ', '.join(args)
 
 # Emulate dictionary access methods for attributes
 # and list-like interface to the child elements
@@ -114,11 +114,11 @@ class MathElement:
     def items(self):
         return self.attrib.items()
 
-    def subnodes(self):
+    def iter(self):
         """Return iterator over all subnodes, including nested ones."""
         for child in self.children:
             yield child
-            yield from child.subnodes()
+            yield from child.iter()
 
     def __len__(self):
         return len(self.children)
@@ -136,7 +136,7 @@ class MathElement:
     def __iter__(self):
         return self.children.__iter__()
 
-    def full(self):
+    def is_full(self):
         """Return boolean indicating whether children may be appended."""
         return self.nchildren is not None and len(self) >= self.nchildren
 
@@ -144,7 +144,7 @@ class MathElement:
         """Close element and return first non-full anchestor or None."""
         self.nchildren = len(self)  # mark node as full
         parent = self.parent
-        while parent is not None and parent.full():
+        while parent is not None and parent.is_full():
             parent = parent.parent
         return parent
 
@@ -158,11 +158,11 @@ class MathElement:
         If self is full after appending, call `self.close()`
         (returns first non-full anchestor or None) else return `self`.
         """
-        if self.full():
+        if self.is_full():
             raise TypeError(f'Element "{self}" already full!')
         self.children.append(element)
         element.parent = self
-        if self.full():
+        if self.is_full():
             return self.close()
         return self
 
@@ -181,13 +181,13 @@ class MathElement:
         del self[index]
         return element
 
-    def is_block(self):
+    def in_block(self):
         """Return true, if `self` or a parent has ``display='block'``."""
         try:
             return self.get('display') == 'block'
         except KeyError:
             try:
-                return self.parent.is_block()
+                return self.parent.in_block()
             except AttributeError:
                 return False
 
@@ -234,18 +234,18 @@ class MathElement:
 # 0
 # >>> math(CLASS='bold').xml_starttag()
 # '<math class="bold">'
-# >>> n2.is_block()
+# >>> n2.in_block()
 # False
 # >>> node = n2.append(mrow())
-# >>> node.is_block()
+# >>> node.in_block()
 # False
-# >>> eq3.is_block()
+# >>> eq3.in_block()
 # True
 # >>> node = eq3.append(mrow())
-# >>> node.is_block()
+# >>> node.in_block()
 # True
 # >>> nested = math(math(math(CLASS='three'), CLASS='two'), CLASS='one')
-# >>> [node for node in nested.subnodes()]
+# >>> [node for node in nested.iter()]
 # [math(math(class='three'), class='two'), math(class='three')]
 
 
@@ -279,7 +279,7 @@ class MathSchema(MathElement):
     def append(self, element):
         """Append element. Normalize order and close if full."""
         current_node = super().append(element)
-        if self.switch and self.full():
+        if self.switch and self.is_full():
             self[-1], self[-2] = self[-2], self[-1]
             self.switch = False
         return current_node
@@ -306,12 +306,12 @@ class MathToken(MathElement):
     """
     nchildren = 0
 
-    def __init__(self, data, **attributes):
-        self.data = data
+    def __init__(self, text, **attributes):
+        self.text = text
         super().__init__(**attributes)
 
     def _xml_body(self, level=0):
-        return [str(self.data).translate(self.xml_entities)]
+        return [str(self.text).translate(self.xml_entities)]
 
 
 # MathML element classes
