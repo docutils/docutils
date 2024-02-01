@@ -69,25 +69,28 @@ class MathElement:
     def __init__(self, *children, **attributes):
         """Set up node with `children` and `attributes`.
 
-        Attributes are downcased to allow using CLASS to set "class" value.
-        >>> math(mn(3), CLASS='test')
-        math(mn(3), class='test')
-        >>> math(CLASS='test').toprettyxml()
-        '<math class="test">\n</math>'
+        Attribute names are normalised to lowercase.
+        You may use "CLASS" to set a "class" attribute.
+        Attribute values are converted to strings
+        (with True -> "true" and False -> "false").
+
+        >>> math(CLASS='test', level=3, split=True)
+        math(class='test', level='3', split='true')
+        >>> math(CLASS='test', level=3, split=True).toprettyxml()
+        '<math class="test" level="3" split="true">\n</math>'
 
         """
+        self.attrib = {k.lower(): self.a_str(v)
+                       for k, v in attributes.items()}
         self.children = []
         self += children
-        self.attributes = {}
-        for key in attributes.keys():
-            # Use .lower() to allow argument `CLASS` for attribute `class`
-            # (Python keyword). MathML uses only lowercase attributes.
-            self.attributes[key.lower()] = attributes[key]
 
     @staticmethod
     def a_str(v):
         # Return string representation for attribute value `v`.
-        return str(v).replace('True', 'true').replace('False', 'false')
+        if isinstance(v, bool):
+            return str(v).lower()
+        return str(v)
 
     def __repr__(self):
         content = [repr(item) for item in self.children]
@@ -95,23 +98,21 @@ class MathElement:
             content.append(repr(self.data))
         if getattr(self, 'switch', None):
             content.append('switch=True')
-        content += ["%s=%r"%(k, v) for k, v in self.attributes.items()
-                    if v is not None]
+        content += [f'{k}={v!r}' for k, v in self.items() if v is not None]
         return self.__class__.__name__ + '(%s)' % ', '.join(content)
 
     def __len__(self):
         return len(self.children)
 
-    # emulate dictionary-like access to attributes
-    # see `docutils.nodes.Element` for dict/list interface
-    def __getitem__(self, key):
-        return self.attributes[key]
+    # emulate dictionary access methods for attributes
+    def get(self, key, default=None):
+        return self.attrib.get(key, default)
 
-    def __setitem__(self, key, item):
-        self.attributes[key] = item
+    def set(self, key, value):
+        self.attrib[key] = self.a_str(value)
 
-    def get(self, *args, **kwargs):
-        return self.attributes.get(*args, **kwargs)
+    def items(self):
+        return self.attrib.items()
 
     def subnodes(self):
         """Return iterator over all subnodes, including nested ones."""
@@ -154,7 +155,7 @@ class MathElement:
     def is_block(self):
         """Return true, if `self` or a parent has ``display='block'``."""
         try:
-            return self['display'] == 'block'
+            return self.get('display') == 'block'
         except KeyError:
             try:
                 return self.parent.is_block()
@@ -175,8 +176,7 @@ class MathElement:
                 '</%s>' % self.__class__.__name__]
 
     def xml_starttag(self):
-        attrs = (f'{k}="{self.a_str(v)}"'
-                 for k, v in self.attributes.items() if v is not None)
+        attrs = (f'{k}="{v}"' for k, v in self.items() if v is not None)
         return '<%s>' % ' '.join((self.__class__.__name__, *attrs))
 
     def _xml_body(self, level=0):
@@ -336,17 +336,17 @@ class mrow(MathRow):
     """
 
     def transfer_attributes(self, other):
-        # Update dictionary `other.attributes` with self.attributes.
-        # String attributes (class, style) are appended to existing values,
-        # other attributes (displaystyle, scriptlevel) replace them.
-        for k, v in self.attributes.items():
+        # Update dictionary `other.attrib` with self.attrib.
+        # List values (class, style) are appended to existing values,
+        # other values replace existing values.
+        for k, v in self.items():
             if k in ('class', 'style') and v:
                 try:
-                    other.attributes[k] += ' ' + v
+                    other.attrib[k] += ' ' + v
                     continue
                 except (KeyError, TypeError):
                     pass
-            other.attributes[k] = v
+            other.attrib[k] = v
 
     def close(self):
         """Close element and return first non-full parent or None.
@@ -447,18 +447,18 @@ class munderover(msubsup):
     """Attach accents or limits both under and over an expression."""
 
 
-# >>> munder(mi('lim'), mo('-'), accent=False)
-# munder(mi('lim'), mo('-'), accent=False)
-# >>> mu = munder(mo('-'), accent=False, switch=True)
+# >>> munder(mi('lim'), mo('-'), accent='false')
+# munder(mi('lim'), mo('-'), accent='false')
+# >>> mu = munder(mo('-'), accent='false', switch=True)
 # >>> mu
-# munder(mo('-'), switch=True, accent=False)
+# munder(mo('-'), switch=True, accent='false')
 # >>> mu.append(mi('lim'))
 # >>> mu
-# munder(mi('lim'), mo('-'), accent=False)
+# munder(mi('lim'), mo('-'), accent='false')
 # >>> mu.append(mi('lim'))
 # Traceback (most recent call last):
-# TypeError: Element munder(mi('lim'), mo('-'), accent=False) already full!
-# >>> munder(mo('-'), mi('lim'), accent=False, switch=True).toprettyxml()
+# TypeError: Element munder(mi('lim'), mo('-'), accent='false') already full!
+# >>> munder(mo('-'), mi('lim'), accent='false', switch=True).toprettyxml()
 # '<munder accent="false">\n  <mi>lim</mi>\n  <mo>-</mo>\n</munder>'
 
 

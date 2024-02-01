@@ -599,7 +599,7 @@ def parse_latex_math(node, string):
 # >>> parse_latex_math(math(), '\\sqrt[3]{2 + 3}')
 # math(mroot(mrow(mn('2'), mo('+'), mn('3')), mn('3')))
 # >>> parse_latex_math(math(), '\max_x') # function takes limits
-# math(munder(mo('max', movablelimits=True), mi('x')))
+# math(munder(mo('max', movablelimits='true'), mi('x')))
 # >>> parse_latex_math(math(), 'x^j_i') # ensure correct order: base, sub, sup
 # math(msubsup(mi('x'), mi('i'), mi('j')))
 # >>> parse_latex_math(math(), '\int^j_i') # ensure correct order
@@ -638,7 +638,7 @@ def handle_cmd(name, node, string):  # noqa: C901 TODO make this less complex
             # upright in "TeX style" but MathML sets them italic ("ISO style").
             # CSS styling does not change the font style in Firefox 78.
             # Use 'mathvariant="normal"'?
-            new_node['class'] = 'capital-greek'
+            new_node.set('class', 'capital-greek')
         node = node.append(new_node)
         return node, string
 
@@ -850,7 +850,7 @@ def handle_cmd(name, node, string):  # noqa: C901 TODO make this less complex
         # mi() would be simpler, but semantically wrong
         # --- https://w3c.github.io/mathml-core/#operator-fence-separator-or-accent-mo
         if name == 'vec':
-            accent_node['scriptlevel'] = '+1'  # scale down arrow
+            accent_node.set('scriptlevel', '+1')  # scale down arrow
         new_node = mover(accent_node, accent=True, switch=True)
         node.append(new_node)
         return new_node, string
@@ -946,9 +946,9 @@ def handle_cmd(name, node, string):  # noqa: C901 TODO make this less complex
 # >>> handle_cmd('operatorname', math(), '{abs}(x)')
 # (math(mi('abs', mathvariant='normal'), mo('\u2061')), '(x)')
 # >>> handle_cmd('overline', math(), '{981}')
-# (mover(mo('_', accent=True), switch=True, accent=False), '{981}')
+# (mover(mo('_', accent='true'), switch=True, accent='false'), '{981}')
 # >>> handle_cmd('bar', math(), '{x}')
-# (mover(mo('ˉ', stretchy=False), switch=True, accent=True), '{x}')
+# (mover(mo('ˉ', stretchy='false'), switch=True, accent='true'), '{x}')
 # >>> handle_cmd('xleftarrow', math(), r'[\alpha]{10}')
 # (munderover(mo('⟵'), mi('α')), '{10}')
 # >>> handle_cmd('xleftarrow', math(), r'[\alpha=5]{10}')
@@ -980,7 +980,7 @@ def handle_math_alphabet(name, node, string):
         if isinstance(subnode, (mi, mn)):
             subnode.data = ma2ch.get(subnode.data, subnode.data)
         if isinstance(subnode, mi) and name == 'mathrm' and subnode.data.isalpha():
-            subnode.attributes['mathvariant'] = 'normal'
+            subnode.set('mathvariant', 'normal')
     return container.close(), string
 
 # >>> handle_math_alphabet('mathrm', math(), '\\alpha')
@@ -999,10 +999,10 @@ def handle_script_or_limit(node, c, limits=''):
     """Append script or limit element to `node`."""
     child = node.children.pop()
     if limits == 'limits':
-        child['movablelimits'] = False
+        child.set('movablelimits', 'false')
     elif (limits == 'movablelimits'
           or getattr(child, 'data', '') in movablelimits):
-        child['movablelimits'] = True
+        child.set('movablelimits', 'true')
 
     if c == '_':
         if isinstance(child, mover):
@@ -1129,7 +1129,7 @@ def tex2mathml(tex_math, as_block=False):
     math_tree = math(xmlns='http://www.w3.org/1998/Math/MathML')
     node = math_tree
     if as_block:
-        math_tree['display'] = 'block'
+        math_tree.set('display', 'block')
         rows = toplevel_code(tex_math).split(r'\\')
         if len(rows) > 1:
             # emulate "align*" environment with a math table
