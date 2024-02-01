@@ -10,7 +10,7 @@
 #
 # .. _2-Clause BSD license: https://opensource.org/licenses/BSD-2-Clause
 
-"""MathML element classes.
+"""MathML element classes based on `xml.etree`.
 
 The module is intended for programmatic generation of MathML
 and covers the part of `MathML Core`_ that is required by
@@ -27,6 +27,7 @@ the API is not settled and may change with any minor Docutils version.
 # >>> from mathml_elements import *
 
 import numbers
+import xml.etree.ElementTree as ET
 
 
 GLOBAL_ATTRIBUTES = (
@@ -52,7 +53,7 @@ https://w3c.github.io/mathml-core/#global-attributes
 # Base classes
 # ------------
 
-class MathElement:
+class MathElement(ET.Element):
     """Base class for MathML elements."""
 
     nchildren = None
@@ -60,13 +61,6 @@ class MathElement:
     # cf. https://www.w3.org/TR/MathML3/chapter3.html#id.3.1.3.2
     parent = None
     """Parent node in MathML element tree."""
-    xml_entities = {
-        # for invalid and invisible characters
-        ord('<'): '&lt;',
-        ord('>'): '&gt;',
-        ord('&'): '&amp;',
-        0x2061: '&ApplyFunction;',
-    }
 
     def __init__(self, *children, **attributes):
         """Set up node with `children` and `attributes`.
@@ -78,13 +72,12 @@ class MathElement:
 
         >>> math(CLASS='test', level=3, split=True)
         math(class='test', level='3', split='true')
-        >>> math(CLASS='test', level=3, split=True).toprettyxml()
+        >>> math(CLASS='test', level=3, split=True).toxml()
         '<math class="test" level="3" split="true"></math>'
 
         """
-        self.attrib = {k.lower(): self.a_str(v)
-                       for k, v in attributes.items()}
-        self.children = []
+        attrib = {k.lower(): self.a_str(v) for k, v in attributes.items()}
+        super().__init__(self.__class__.__name__, **attrib)
         self.extend(children)
 
     @staticmethod
@@ -97,47 +90,25 @@ class MathElement:
     def __repr__(self):
         """Return full string representation."""
         args = [repr(child) for child in self]
-        if hasattr(self, 'text'):
+        if self.text:
             args.append(repr(self.text))
         if self.nchildren != self.__class__.nchildren:
             args.append(f'nchildren={self.nchildren}')
         if getattr(self, 'switch', None):
             args.append('switch=True')
         args += [f'{k}={v!r}' for k, v in self.items() if v is not None]
-        return f'{self.__class__.__name__}({", ".join(args)})'
+        return f'{self.tag}({", ".join(args)})'
 
     def __str__(self):
         """Return concise, informal string representation."""
-        if getattr(self, 'text', ''):
+        if self.text:
             args = repr(self.text)
         else:
             args = ', '.join(f'{child}' for child in self)
-        return f'{self.__class__.__name__}({args})'
-
-    # Emulate dictionary access methods for attributes
-    # and list-like interface to the child elements
-    # (differs from `docutils.nodes.Element` dict/list interface).
-
-    def get(self, key, default=None):
-        return self.attrib.get(key, default)
+        return f'{self.tag}({args})'
 
     def set(self, key, value):
-        self.attrib[key] = self.a_str(value)
-
-    def items(self):
-        return self.attrib.items()
-
-    def iter(self):
-        """Return iterator over self and all subnodes, including nested."""
-        yield self
-        for child in self.children:
-            yield from child.iter()
-
-    def __len__(self):
-        return len(self.children)
-
-    def __getitem__(self, key):
-        return self.children.__getitem__(key)
+        super().set(key, self.a_str(value))
 
     def __setitem__(self, key, value):
         if self.nchildren == 0:
@@ -147,13 +118,7 @@ class MathElement:
         else:  # value may be an iterable
             for e in value:
                 e.parent = self
-        self.children.__setitem__(key, value)
-
-    def __delitem__(self, key):
-        self.children.__delitem__(key)
-
-    def __iter__(self):
-        return self.children.__iter__()
+        super().__setitem__(key, value)
 
     def is_full(self):
         """Return boolean indicating whether children may be appended."""
@@ -183,7 +148,7 @@ class MathElement:
             else:
                 status = 'does not take children'
             raise TypeError(f'Element "{self}" {status}.')
-        self.children.append(element)
+        super().append(element)
         element.parent = self
         if self.is_full():
             return self.close()
@@ -216,27 +181,47 @@ class MathElement:
                 return False
         return self.get('display') == 'block'
 
-    # Conversion to (pretty) XML string
-    def toprettyxml(self):
-        """Return XML representation of self as string."""
-        return ''.join(self._xml())
+    # XML output:
 
-    def _xml(self, level=0):
-        return [self.xml_starttag(),
-                *self._xml_body(level),
-                '</%s>' % self.__class__.__name__]
+    def indent_xml(self, space='  ', level=0):
+        """Format XML output with indents.
 
-    def xml_starttag(self):
-        attrs = (f'{k}="{v}"' for k, v in self.items() if v is not None)
-        return '<%s>' % ' '.join((self.__class__.__name__, *attrs))
+        Use with care:
+          Formatting whitespace is permanently added to the
+          `text` and `tail` attributes of `self` and anchestors!
+        """
+        ET.indent(self, space, level)
 
-    def _xml_body(self, level=0):
-        xml = []
-        for child in self.children:
-            xml.extend(['\n', '  ' * (level+1)])
-            xml.extend(child._xml(level+1))
-        if self.children:
-            xml.extend(['\n', '  ' * level])
+    def unindent_xml(self):
+        """Strip whitespace at the end of `text` and `tail` attributes...
+
+        to revert changes made by the `indent_xml()` method.
+        Use with care, trailing whitespace from the original may be lost.
+        """
+        for e in self.iter():
+            if not isinstance(e, MathToken) and e.text:
+                e.text = e.text.rstrip()
+            if e.tail:
+                e.tail = e.tail.rstrip()
+
+    def toxml(self, encoding=None):
+        """Return an XML representation of the element.
+
+        By default, the return value is a `str` instance. With an explicit
+        `encoding` argument, the result is a `bytes` instance in the
+        specified encoding. The XML default encoding is UTF-8, any other
+        encoding must be specified in an XML document header.
+
+        Name and encoding handling match `xml.dom.minidom.Node.toxml()`;
+        `etree.Element.tostring()` returns `bytes` by default.
+        """
+        xml = ET.tostring(self, encoding or 'unicode',
+                          short_empty_elements=False)
+        # Visible representation for "Apply Function" character:
+        try:
+            xml = xml.replace('\u2061', '&ApplyFunction;')
+        except TypeError:
+            xml = xml.replace('\u2061'.encode(encoding), b'&ApplyFunction;')
         return xml
 
 
@@ -266,7 +251,7 @@ class MathSchema(MathElement):
 
     def __init__(self, *children, **kwargs):
         self.switch = kwargs.pop('switch', False)
-        math.__init__(self, *children, **kwargs)
+        super().__init__(*children, **kwargs)
 
     def append(self, element):
         """Append element. Normalize order and close if full."""
@@ -294,9 +279,6 @@ class MathToken(MathElement):
                              f' not "{text}".')
         self.text = str(text)
 
-    def _xml_body(self, level=0):
-        return [str(self.text).translate(self.xml_entities)]
-
 
 # MathML element classes
 # ----------------------
@@ -319,7 +301,7 @@ class mi(MathToken):
 class mn(MathToken):
     """Numeric literal.
 
-    >>> mn(3.41).toprettyxml()
+    >>> mn(3.41).toxml()
     '<mn>3.41</mn>'
 
     Normally a sequence of digits with a possible separator (a dot or a comma).
@@ -330,7 +312,7 @@ class mn(MathToken):
 class mo(MathToken):
     """Operator, Fence, Separator, or Accent.
 
-    >>> mo('<').toprettyxml()
+    >>> mo('<').toxml()
     '<mo>&lt;</mo>'
 
     Besides operators in strict mathematical meaning, this element also
@@ -382,7 +364,7 @@ class mrow(MathRow):
         if parent is not None and len(self) == 1:
             child = self[0]
             try:
-                parent[parent.children.index(self)] = child
+                parent[list(parent).index(self)] = child
                 child.parent = parent
             except (AttributeError, ValueError):
                 return None
@@ -454,15 +436,15 @@ class msubsup(MathSchema):
 # Examples:
 #
 # The `switch` attribute reverses the order of the last two children:
-# >>> msub(mn(1), mn(2)).toprettyxml()
-# '<msub>\n  <mn>1</mn>\n  <mn>2</mn>\n</msub>'
-# >>> msub(mn(1), mn(2), switch=True).toprettyxml()
-# '<msub>\n  <mn>2</mn>\n  <mn>1</mn>\n</msub>'
+# >>> msub(mn(1), mn(2)).toxml()
+# '<msub><mn>1</mn><mn>2</mn></msub>'
+# >>> msub(mn(1), mn(2), switch=True).toxml()
+# '<msub><mn>2</mn><mn>1</mn></msub>'
 #
-# >>> msubsup(mi('base'), mn(1), mn(2)).toprettyxml()
-# '<msubsup>\n  <mi>base</mi>\n  <mn>1</mn>\n  <mn>2</mn>\n</msubsup>'
-# >>> msubsup(mi('base'), mn(1), mn(2), switch=True).toprettyxml()
-# '<msubsup>\n  <mi>base</mi>\n  <mn>2</mn>\n  <mn>1</mn>\n</msubsup>'
+# >>> msubsup(mi('base'), mn(1), mn(2)).toxml()
+# '<msubsup><mi>base</mi><mn>1</mn><mn>2</mn></msubsup>'
+# >>> msubsup(mi('base'), mn(1), mn(2), switch=True).toxml()
+# '<msubsup><mi>base</mi><mn>2</mn><mn>1</mn></msubsup>'
 
 
 class munder(msub):

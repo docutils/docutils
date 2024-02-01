@@ -81,6 +81,7 @@ class MathElementTests(unittest.TestCase):
 
         # No arguments required, the class name is used as XML tag:
         e1 = mml.MathElement()
+        self.assertEqual(e1.tag, 'MathElement')
 
         # Positional arguments are stored as children,
         # named arguments are stored as element attributes:
@@ -187,8 +188,7 @@ class MathElementTests(unittest.TestCase):
         result = e1.append(mml.MathElement(id='c1'))
         self.assertEqual(e1[0].parent, e1)
         # ... which is hidden in XML ...
-        self.assertEqual(e1[0].toprettyxml(),
-                         '<MathElement id="c1"></MathElement>')
+        self.assertEqual(e1[0].toxml(), '<MathElement id="c1"></MathElement>')
         # ... and returns the new "insertion point".
         # If more children may be appended, return self
         self.assertEqual(result, e1)
@@ -234,13 +234,40 @@ class MathElementTests(unittest.TestCase):
         self.assertTrue(e2.in_block())
         self.assertTrue(e2[0].in_block())
 
-    def test_toprettyxml(self):
+    def test_indent_xml(self):
+        """Modify `text` and `tail` to get indented XML output."""
+        c1 = mml.math(id='c1')
+        cc1 = mml.math(id='cc1')
+        c2 = mml.math(cc1, id='c2')
+        root = mml.math(c1, c2, id='root')
+        self.assertTrue('\n' not in str(root))
+        root.indent_xml()
+        self.assertEqual(root.toxml(), self.prettyXML)
+        # You can easily remove the indentation (but not the newlines):
+        root.indent_xml(space='')
+        self.assertEqual(c2.toxml(),
+                         '<math id="c2">\n<math id="cc1"></math>\n</math>\n')
+        # Reverting `indent_xml()` requires iterating over all descendants
+        root.unindent_xml()
+        self.assertEqual(c2.toxml(),
+                         '<math id="c2"><math id="cc1"></math></math>')
+
+    def test_unindent_xml(self):
+        # see also last assertion in `test_indent_xml()`
+        e1 = mml.math(mml.mtext('Hallo welt!\n'))
+        e1.indent_xml()
+        self.assertEqual(e1.toxml(),
+                         '<math>\n  <mtext>Hallo welt!\n</mtext>\n</math>')
+        # don't strip whitespace from MathToken's text attributes:
+        e1.unindent_xml()
+        self.assertEqual(e1.toxml(),
+                         '<math><mtext>Hallo welt!\n</mtext></math>')
+
+    def test_toxml(self):
         """XML representation of the element/subtree as `str`."""
         e1 = mml.math(mml.math(level=2), CLASS='root')
-        self.assertEqual(e1.toprettyxml(),
-                         '<math class="root">\n'
-                         '  <math level="2"></math>\n'
-                         '</math>')
+        self.assertEqual(e1.toxml(),
+                         '<math class="root"><math level="2"></math></math>')
 
 
 class MathSchemaTests(unittest.TestCase):
@@ -251,7 +278,7 @@ class MathSchemaTests(unittest.TestCase):
         ms1 = mml.MathSchema(switch=True, id='ms1')
         self.assertEqual(repr(ms1), "MathSchema(switch=True, id='ms1')")
         # internal attributes are not exported to XML.
-        self.assertEqual(ms1.toprettyxml(),
+        self.assertEqual(ms1.toxml(),
                          '<MathSchema id="ms1"></MathSchema>')
         # the default value is dropped from ``repr()``
         ms1.switch = False
@@ -262,9 +289,8 @@ class MathSchemaTests(unittest.TestCase):
         # the children are switched and `switch` is reset:
         ms2 = mml.MathSchema(mml.mn(1), mml.mn(2), switch=True)
         self.assertEqual(repr(ms2), "MathSchema(mn('2'), mn('1'))")
-        self.assertEqual(
-            ms2.toprettyxml(),
-            '<MathSchema>\n  <mn>2</mn>\n  <mn>1</mn>\n</MathSchema>')
+        self.assertEqual(ms2.toxml(),
+                         '<MathSchema><mn>2</mn><mn>1</mn></MathSchema>')
 
     def test_append(self):
         # appending normalizes the order before switching
@@ -296,7 +322,7 @@ class MathTokenTests(unittest.TestCase):
 
         # optional named arguments become XML attributes
         e1 = mml.mo('[', stretchy=False)
-        self.assertEqual(e1.toprettyxml(), '<mo stretchy="false">[</mo>')
+        self.assertEqual(e1.toxml(), '<mo stretchy="false">[</mo>')
 
     def test_append(self):
         # MathTokens don't take child elements.
@@ -343,8 +369,8 @@ class mrowTests(unittest.TestCase):
         root = mml.math(row1)  # provide a parent
         row1.close()  # try again
         self.assertEqual(c1.parent, root)
-        self.assertEqual(root.toprettyxml(),
-                         '<math>\n  <math class="c1 row1"></math>\n</math>')
+        self.assertEqual(root.toxml(),
+                         '<math><math class="c1 row1"></math></math>')
 
 
 class MathMLElementTests(unittest.TestCase):
@@ -359,10 +385,10 @@ class MathMLElementTests(unittest.TestCase):
             cls = getattr(mml, element)
             if issubclass(cls, mml.MathToken):
                 e = cls('x')
-                self.assertEqual(e.toprettyxml(), f'<{element}>x</{element}>')
+                self.assertEqual(e.toxml(), f'<{element}>x</{element}>')
             else:
                 e = cls()
-                self.assertEqual(e.toprettyxml(), f'<{element}></{element}>')
+                self.assertEqual(e.toxml(), f'<{element}></{element}>')
             if nchildren == '*':
                 self.assertTrue(e.nchildren is None,
                                 f'{element}.nchildren == {e.nchildren}')

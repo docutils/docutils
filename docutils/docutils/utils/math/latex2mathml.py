@@ -578,7 +578,7 @@ def parse_latex_math(root, source):
             attributes = {}
             if c == '-' and len(node):
                 previous_node = node[-1]
-                if (getattr(previous_node, 'text', '-') in '([='
+                if (previous_node.text and previous_node.text in '([='
                     or previous_node.get('class') == 'mathopen'):
                     attributes['form'] = 'prefix'
             node = node.append(mo(anomalous_chars[c], **attributes))
@@ -1163,7 +1163,8 @@ def tex2mathml(tex_math, as_block=False):
             math_tree.append(mtable(mtr(node), CLASS='ams-align',
                                     displaystyle=True))
     parse_latex_math(node, tex_math)
-    return math_tree.toprettyxml()
+    math_tree.indent_xml()
+    return math_tree.toxml()
 
 # >>> print(tex2mathml('3'))
 # <math xmlns="http://www.w3.org/1998/Math/MathML">
