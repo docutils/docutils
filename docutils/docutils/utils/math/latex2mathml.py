@@ -988,22 +988,25 @@ def handle_math_alphabet(name, node, string):
     if name == 'mathscr':
         attributes['class'] = 'mathscr'
     arg, string = tex_token_or_group(string)
-    # Shortcut for text arg like \mathrm{out}
-    # with more than one letter, <mi> defaults to "normal" font
+    # Shortcut for text arg like \mathrm{out} with more than one letter:
     if name == 'mathrm' and arg.isalpha() and len(arg) > 1:
-        node = node.append(mi(arg))
+        node = node.append(mi(arg))  # <mi> defaults to "normal" font
         return node, string
-    # Parse as <style> node children
+    # Parse into an <mrow>
     container = mrow(**attributes)
     node.append(container)
     parse_latex_math(container, arg)
     a2ch = getattr(mathalphabet2unichar,
                    name.replace('mathscr', 'mathcal'), {})
     for subnode in container.iter():
-        if isinstance(subnode, (mi, mn)):
+        if isinstance(subnode, mn):
+            # a number may consist of more than one digit
+            subnode.text = ''.join(a2ch.get(ch, ch) for ch in subnode.text)
+        elif isinstance(subnode, mi):
+            # don't convert multi-letter identifiers (functions)
             subnode.text = a2ch.get(subnode.text, subnode.text)
-        if isinstance(subnode, mi) and name == 'mathrm' and subnode.text.isalpha():
-            subnode.set('mathvariant', 'normal')
+            if name == 'mathrm' and subnode.text.isalpha():
+                subnode.set('mathvariant', 'normal')
     return container.close(), string
 
 # >>> handle_math_alphabet('mathrm', math(), '\\alpha')

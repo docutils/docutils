@@ -21,7 +21,7 @@ import unittest
 
 # Testing the conversion with external converters requires additional
 # ressources (latexml, blahtexml, ttm, pandoc) and is SLOW
-# (ca. 27.467s without testing "latexml", much slower with "latexml").
+# (ca. 27s without testing "latexml" and 13 min with "latexml").
 # Therefore, tests are skipped unless run as stand-alone module:
 
 if __name__ != '__main__':
