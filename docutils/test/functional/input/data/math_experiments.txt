@@ -3,37 +3,82 @@ Math Conversion Tests
 
 .. default-role:: math
 
-Font changes
-~~~~~~~~~~~~
+Math alphabet / Mathvariant
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-*Math alphabet* macros change the default alphabet, leaving some symbols
-unchanged. In MathML core, the corresponding *Mathematical Alphanumeric
-Symbols* are used.
+TeX's *math alphabet* macros change font features of (some) letters and
+digits. Non-alphanumerical symbols, function names, and mathematical text
+are left unchanged.
 
-:default: `V_R x \pm \cos(\alpha) \approx 3 \Gamma  \quad \forall x \in \mathbb{R}`
-:mathbb: `\mathbb{V_R x \pm \cos(\alpha) \approx 3 \Gamma  \quad \forall x \in \mathbb{R}}`
-:mathbf: `\mathbf{V_R x \pm \cos(\alpha) \approx 3 \Gamma  \quad \forall x \in \mathbb{R}}`
-:mathbfit: `\mathbfit{V_R x \pm \cos(\alpha) \approx 3 \Gamma  \quad \forall x \in \mathbb{R}}`
-:mathcal: `\mathcal{V_R x \pm \cos(\alpha) \approx 3 \Gamma  \quad \forall x \in \mathbb{R}}`
-:mathit: `\mathit{V_R x \pm \cos(\alpha) \approx 3 \Gamma  \quad \forall x \in \mathbb{R}}`
-:mathrm: `\mathrm{V_R x \pm \cos(\alpha) \approx 3 \Gamma  \quad \forall x \in \mathbb{R}}`
-:mathscr: `\mathscr{V_R x \pm \cos(\alpha) \approx 3 \Gamma  \quad \forall x \in \mathbb{R}}`
-:mathsf: `\mathsf{V_R x \pm \cos(\alpha) \approx 3 \Gamma  \quad \forall x \in \mathbb{R}}`
-:mathsfbfit: `\mathsfbfit{V_R x \pm \cos(\alpha) \approx 3 \Gamma  \quad \forall x \in \mathbb{R}}`
-:mathsfit: `\mathsfit{V_R x \pm \cos(\alpha) \approx 3 \Gamma  \quad \forall x \in \mathbb{R}}`
-:mathtt: `\mathtt{V_R x \pm \cos(\alpha) \approx 3 \Gamma  \quad \forall x \in \mathbb{R}}`
+:default:    `V_R x \pm \cos(\alpha_\text{out}) \approx 3 \Gamma
+             \quad \forall x \in \mathbb{R}`
+:mathrm:     `\mathrm{V_R x \pm \cos(\alpha_\text{out}) \approx 3 \Gamma
+             \quad \forall x \in \mathbb{R}}`
+:mathbf:     `\mathbf{V_R x \pm \cos(\alpha_\text{out}) \approx 3 \Gamma
+             \quad \forall x \in \mathbb{R}}`
+:mathit:     `\mathit{V_R x \pm \cos(\alpha_\text{out}) \approx 3 \Gamma
+             \quad \forall x \in \mathbb{R}}`
+:mathbfit:   `\mathbfit{V_R x \pm \cos(\alpha_\text{out}) \approx 3 \Gamma
+             \quad \forall x \in \mathbb{R}}`
+:mathbb:     `\mathbb{V_R x \pm \cos(\alpha_\text{out}) \approx 3 \Gamma
+             \quad \forall x \in \mathbb{R}}`
+:mathcal:    `\mathcal{V_R x \pm \cos(\alpha_\text{out}) \approx 3 \Gamma
+             \quad \forall x \in \mathbb{R}}`
+:mathscr:    `\mathscr{V_R x \pm \cos(\alpha_\text{out}) \approx 3 \Gamma
+             \quad \forall x \in \mathbb{R}}`
+:mathfrak:   `\mathfrak{V_R x \pm \cos(\alpha_\text{out}) \approx 3 \Gamma
+             \quad \forall x \in \mathbb{R}}`
+:mathsf:     `\mathsf{V_R x \pm \cos(\alpha_\text{out}) \approx 3 \Gamma
+             \quad \forall x \in \mathbb{R}}`
+:mathsfit:   `\mathsfit{V_R x \pm \cos(\alpha_\text{out}) \approx 3 \Gamma
+             \quad \forall x \in \mathbb{R}}`
+:mathsfbfit: `\mathsfbfit{V_R x \pm \cos(\alpha_\text{out}) \approx 3 \Gamma
+             \quad \forall x \in \mathbb{R}}`
+:mathbfsfit: `\mathbfsfit{V_R x \pm \cos(\alpha_\text{out}) \approx 3 \Gamma
+             \quad \forall x \in \mathbb{R}}`
+:mathtt:     `\mathtt{V_R x \pm \cos(\alpha_\text{out}) \approx 3 \Gamma
+             \quad \forall x \in \mathbb{R}}`
 
-LaTeX accepts complex functions inside the math alphabet functions:
+MathML 4 defines the *mathvariant* `style attribute`_, in MathML core,
+characters from the `Mathematical Alphanumeric Symbols`_ Unicode block
+are used.
 
-:mathrm: `\mathrm{\frac{x}{y}}`
+The mathvariants *bold-script*, *bold-fraktur*, and *sans-bold* are
+rarely used. They are currently not supported by Docutils's native MathML
+output. In LaTeX, ``\mathbfscr`` and ``\mathbffrac`` is supported by the
+`mathalpha`_ package.
+
+Bold variants of any symbol can be achieved in combination with the
+``\boldsymbol`` command, e.g.
+
+:bold-fraktur: `\boldsymbol{\mathfrak{V_R x}}`
+
+Note, that ``\boldsymbol`` emboldens also non-alphanumerical symbols.
 
 
-Without additional packages, LaTeX supports "blackboard-bold" only for
-capital Latin letters.
-Unicode supports also small Latin letters, some Greek letters, and digits:
-`\mathbb{A \ldots Z a \ldots z}
-\mathbb\Gamma \mathbb{\Pi} \mathbb {\Sigma} \mathbb\gamma \mathbb \pi
-\mathbb{0 \ldots 9}` but no italic digits.
+Complex Example
+"""""""""""""""
+
+From the baskervaldx_ package documentation:
+
+Simplest form of the *Central Limit Theorem*:
+  Let `X_1, X_2,\cdots` be a sequence of iid random variables with mean `0`
+  and variance `1` on a probability space `(\Omega,\mathcal{F},\mathbb{P})`.
+  Then
+
+  .. math:: \mathbb{P}\left(\frac{X_1+\cdots+X_n}{\sqrt{n}} \le y\right)
+            \to\mathfrak{N}(y)
+            \coloneq \int_{-\infty}^y
+              \frac{\mathrm{e}^{-t^2/2}}{\sqrt{2\mathrm{\pi}}}\, \mathrm{d}t
+            \quad\mbox{as $n\to\infty$,}
+
+  or, equivalently, letting `S_n\coloneq\sum_1^n X_k`,
+
+  .. math:: \mathbb{E} f\left(S_n/\sqrt{n}\right)
+            \to \int_{-\infty}^\infty f(t)
+              \frac{\mathrm{e}^{-t^2/2}}{\sqrt{2\mathrm{\pi}}}\, \mathrm{d}t
+            \quad\mbox{as $n\to\infty$,
+              for every $f\in\mathrm{b} \mathcal{C}(\mathbb{R})$.}
 
 
 Inferred <mrow>s in MathML
@@ -226,3 +271,8 @@ to get the result of the accent macros
 
 .. _math_output:
    https://docutils.sourceforge.io/docs/user/config.html#math-output
+.. _style attribute: https://www.w3.org/TR/mathml4/#presm_commatt
+.. _Mathematical Alphanumeric Symbols:
+    http://www.unicode.org/charts/PDF/U1EE00.pdf
+.. _mathalpha: https://www.ctan.org/pkg/mathalpha
+.. _baskervaldx: https://www.ctan.org/pkg/baskervaldx

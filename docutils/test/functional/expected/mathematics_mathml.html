@@ -43,7 +43,7 @@ Attention: this is not a standalone document. -->
 <li><p><a class="reference internal" href="#functions-named-operators" id="toc-entry-9"><span class="sectnum">2.5 </span>Functions (named operators)</a></p></li>
 <li><p><a class="reference internal" href="#greek-letters" id="toc-entry-10"><span class="sectnum">2.6 </span>Greek letters</a></p></li>
 <li><p><a class="reference internal" href="#letterlike-symbols" id="toc-entry-11"><span class="sectnum">2.7 </span>Letterlike symbols</a></p></li>
-<li><p><a class="reference internal" href="#mathematical-alphabets" id="toc-entry-12"><span class="sectnum">2.8 </span>Mathematical Alphabets</a></p></li>
+<li><p><a class="reference internal" href="#math-alphabets" id="toc-entry-12"><span class="sectnum">2.8 </span>Math alphabets</a></p></li>
 <li><p><a class="reference internal" href="#miscellaneous-symbols" id="toc-entry-13"><span class="sectnum">2.9 </span>Miscellaneous symbols</a></p></li>
 <li><p><a class="reference internal" href="#punctuation" id="toc-entry-14"><span class="sectnum">2.10 </span>Punctuation</a></p></li>
 <li><p><a class="reference internal" href="#relation-symbols" id="toc-entry-15"><span class="sectnum">2.11 </span>Relation symbols</a></p>
@@ -1664,11 +1664,15 @@ letter name with <span class="docutils literal">var</span> like <span class="doc
 </tbody>
 </table>
 </section>
-<section id="mathematical-alphabets">
-<span id="math-alphabet"></span><h3><a class="toc-backref" href="#toc-entry-12" role="doc-backlink"><span class="sectnum">2.8 </span>Mathematical Alphabets</a></h3>
-<p>Mathematical alphabets select a combination of font attributes (shape,
-weight, family) <a class="brackets" href="#footnote-1" id="footnote-reference-3" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>. They are intended for mathematical variables where
-style variations are important semantically.</p>
+<section id="math-alphabets">
+<span id="math-alphabet"></span><h3><a class="toc-backref" href="#toc-entry-12" role="doc-backlink"><span class="sectnum">2.8 </span>Math alphabets</a></h3>
+<p>The TeX <em>math alphabet</em> macros are intended for mathematical variables
+where style variations are important semantically.
+They style letters and numbers with a combination of font attributes
+(shape, weight, family) --- non-alphanumerical symbols, function names,
+and mathematical text are left unchanged.</p>
+<p>MathML uses the <em>mathvariant</em> <a class="reference external" href="https://www.w3.org/TR/mathml4/#presm_commatt">style attribute</a> or pre-styled characters
+from the <a class="reference external" href="https://en.wikipedia.org/wiki/Mathematical_Alphanumeric_Symbols">Mathematical Alphanumeric Symbols</a> Unicode block.</p>
 <table>
 <thead>
 <tr><th class="head"><p>command</p></th>
@@ -1677,8 +1681,17 @@ style variations are important semantically.</p>
 </tr>
 </thead>
 <tbody>
+<tr><td><p><span class="docutils literal">\mathrm</span></p></td>
+<td><p><span class="docutils literal">s_\mathrm{out}</span></p></td>
+<td><p><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>s</mi>
+    <mi>out</mi>
+  </msub>
+</math></p></td>
+</tr>
 <tr><td><p><span class="docutils literal">\mathbf</span></p></td>
-<td><p><span class="docutils literal"><span class="pre">\mathbf{r}^2=x^2+y^2+z^2</span></span></p></td>
+<td><p><span class="docutils literal"><span class="pre">\mathbf{r}^2=x^2+y^2</span></span></p></td>
 <td><p><math xmlns="http://www.w3.org/1998/Math/MathML">
   <msup>
     <mi>𝐫</mi>
@@ -1694,20 +1707,15 @@ style variations are important semantically.</p>
     <mi>y</mi>
     <mn>2</mn>
   </msup>
-  <mo>+</mo>
-  <msup>
-    <mi>z</mi>
-    <mn>2</mn>
-  </msup>
 </math></p></td>
 </tr>
-<tr><td><p><span class="docutils literal">\mathbb</span></p></td>
-<td><p><span class="docutils literal">\mathbb{R \subset C}</span></p></td>
+<tr><td><p><span class="docutils literal">\mathit</span></p></td>
+<td><p><span class="docutils literal"><span class="pre">\mathit{\sin\Gamma}</span></span></p></td>
 <td><p><math xmlns="http://www.w3.org/1998/Math/MathML">
   <mrow>
-    <mi>ℝ</mi>
-    <mo>⊂</mo>
-    <mi>ℂ</mi>
+    <mi>sin</mi>
+    <mo>&ApplyFunction;</mo>
+    <mi class="capital-greek">𝛤</mi>
   </mrow>
 </math></p></td>
 </tr>
@@ -1721,25 +1729,24 @@ style variations are important semantically.</p>
   <mo stretchy="false">)</mo>
 </math></p></td>
 </tr>
+<tr><td><p><span class="docutils literal">\mathbb</span></p></td>
+<td><p><span class="docutils literal">\mathbb{R \subset C}</span></p></td>
+<td><p><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow>
+    <mi>ℝ</mi>
+    <mo>⊂</mo>
+    <mi>ℂ</mi>
+  </mrow>
+</math></p></td>
+</tr>
 <tr><td><p><span class="docutils literal">\mathfrak</span></p></td>
-<td><p><span class="docutils literal">\mathfrak{a}</span></p></td>
+<td><p><span class="docutils literal">\mathfrak{a+b}</span></p></td>
 <td><p><math xmlns="http://www.w3.org/1998/Math/MathML">
-  <mi>𝔞</mi>
-</math></p></td>
-</tr>
-<tr><td><p><span class="docutils literal">\mathit</span></p></td>
-<td><p><span class="docutils literal"><span class="pre">\mathit{\Gamma}</span></span></p></td>
-<td><p><math xmlns="http://www.w3.org/1998/Math/MathML">
-  <mi class="capital-greek">𝛤</mi>
-</math></p></td>
-</tr>
-<tr><td><p><span class="docutils literal">\mathrm</span></p></td>
-<td><p><span class="docutils literal">s_\mathrm{out}</span></p></td>
-<td><p><math xmlns="http://www.w3.org/1998/Math/MathML">
-  <msub>
-    <mi>s</mi>
-    <mi>out</mi>
-  </msub>
+  <mrow>
+    <mi>𝔞</mi>
+    <mo>+</mo>
+    <mi>𝔟</mi>
+  </mrow>
 </math></p></td>
 </tr>
 <tr><td><p><span class="docutils literal">\mathsf</span></p></td>
@@ -1756,89 +1763,1182 @@ style variations are important semantically.</p>
 </tr>
 </tbody>
 </table>
-<aside class="footnote-list brackets">
-<aside class="footnote brackets" id="footnote-1" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-3">2</a><span class="fn-bracket">]</span></span>
-<p>TeX’s <em>math alphabets</em> correspond to the <a class="reference external" href="https://en.wikipedia.org/wiki/Mathematical_Alphanumeric_Symbols">mathematical
-alphanumeric symbols</a> block in Unicode and the &quot;mathvariant&quot; <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/MathML/Attribute">style
-attribute</a> in MathML.</p>
-</aside>
-</aside>
-<p>Additional alphabets are defined in LaTeX packages, e.g.</p>
-<table>
-<thead>
-<tr><th class="head"><p>TeX command</p></th>
-<th class="head"><p>LaTeX package</p></th>
-<th class="head"><p>MathML &quot;mathvariant&quot;</p></th>
-</tr>
-</thead>
-<tbody>
-<tr><td><p>mathbfit</p></td>
-<td><p><a class="reference external" href="https://www.ctan.org/pkg/isomath">isomath</a></p></td>
-<td><p>bold-italic</p></td>
-</tr>
-<tr><td><p>mathsfit</p></td>
-<td><p><a class="reference external" href="https://www.ctan.org/pkg/isomath">isomath</a></p></td>
-<td><p>sans-serif-italic</p></td>
-</tr>
-<tr><td><p>mathsfbfit</p></td>
-<td><p><a class="reference external" href="https://www.ctan.org/pkg/isomath">isomath</a></p></td>
-<td><p>sans-serif-bold-italic</p></td>
-</tr>
-<tr><td><p>mathscr</p></td>
-<td><p><a class="reference external" href="https://www.ctan.org/pkg/mathrsfs">mathrsfs</a></p></td>
-<td><p>script</p></td>
-</tr>
-</tbody>
-</table>
-<p>This can be used to typeset vector symbols in bold italic
-in line with the International Standard [ISO-80000-2].</p>
-<!-- ``\mathbfit{r}^2=x^2+y^2+z^2`` becomes
-
-.. math:: \mathbfit{r}^2=x^2+y^2+z^2. -->
-<p>The package <a class="reference external" href="https://www.ctan.org/pkg/mathrsfs">mathrsfs</a> (and some drop-in replacements) define the <span class="docutils literal">\mathscr</span>
-macro that selects a differently shaped &quot;script&quot; alphabet.
-Compare <math xmlns="http://www.w3.org/1998/Math/MathML">
-  <mrow class="mathscr">
-    <mi>𝒜</mi>
-    <mo>,</mo>
-    <mi>ℬ</mi>
-    <mo>,</mo>
-    <mi>…</mi>
-    <mo>,</mo>
-    <mi>𝒵</mi>
-    <mo>,</mo>
-    <mi>𝒶</mi>
-    <mo>,</mo>
-    <mi>𝒷</mi>
-    <mo>,</mo>
-    <mi>…</mi>
-    <mo>,</mo>
-    <mi>𝓏</mi>
+<p>The set of characters in a given &quot;math alphabet&quot; varies.
+LaTeX may produce garbage for unsupported characters.
+Additional math alphabets are defined in LaTeX packages, e.g.,</p>
+<ul class="simple">
+<li><p><span class="docutils literal">\mathbfit</span> from <a class="reference external" href="https://www.ctan.org/pkg/isomath">isomath</a> allows vector symbols in line with the
+International Standard <a class="citation-reference" href="#iso-80000-2" id="citation-reference-1" role="doc-biblioref">[ISO-80000-2]</a>.
+E.g., <span class="docutils literal"><span class="pre">\mathbfit{r}^2=x^2+y^2</span></span> becomes <math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msup>
+    <mi>𝒓</mi>
+    <mn>2</mn>
+  </msup>
+  <mo>=</mo>
+  <msup>
+    <mi>x</mi>
+    <mn>2</mn>
+  </msup>
+  <mo>+</mo>
+  <msup>
+    <mi>y</mi>
+    <mn>2</mn>
+  </msup>
+</math>.</p></li>
+<li><p>Several packages, e.g. <a class="reference external" href="https://www.ctan.org/pkg/mathrsfs">mathrsfs</a>, define <span class="docutils literal">\mathscr</span> that selects a
+differently shaped &quot;script&quot; alphabet.</p></li>
+</ul>
+<p>The listing below shows the characters supported by Unicode and
+Docutils with <a class="reference external" href="https://docutils.sourceforge.io/docs/user/config.html#math-output">math_output</a> MathML. <a class="brackets" href="#italic-digits" id="footnote-reference-3" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a></p>
+<dl class="simple">
+<dt>default:</dt>
+<dd><p><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow>
+    <mi>A</mi>
+    <mi>B</mi>
+    <mi>C</mi>
+    <mi>D</mi>
+    <mi>E</mi>
+    <mi>F</mi>
+    <mi>G</mi>
+    <mi>H</mi>
+    <mi>I</mi>
+    <mi>J</mi>
+    <mi>K</mi>
+    <mi>L</mi>
+    <mi>M</mi>
+    <mi>N</mi>
+    <mi>O</mi>
+    <mi>P</mi>
+    <mi>Q</mi>
+    <mi>R</mi>
+    <mi>S</mi>
+    <mi>T</mi>
+    <mi>U</mi>
+    <mi>V</mi>
+    <mi>W</mi>
+    <mi>X</mi>
+    <mi>Y</mi>
+    <mi>Z</mi>
+    <mspace width="0.25em"></mspace>
+    <mi>a</mi>
+    <mi>b</mi>
+    <mi>c</mi>
+    <mi>d</mi>
+    <mi>e</mi>
+    <mi>f</mi>
+    <mi>g</mi>
+    <mi>h</mi>
+    <mi>i</mi>
+    <mi>j</mi>
+    <mi>k</mi>
+    <mi>l</mi>
+    <mi>m</mi>
+    <mi>n</mi>
+    <mi>o</mi>
+    <mi>p</mi>
+    <mi>q</mi>
+    <mi>r</mi>
+    <mi>s</mi>
+    <mi>t</mi>
+    <mi>u</mi>
+    <mi>v</mi>
+    <mi>w</mi>
+    <mi>x</mi>
+    <mi>y</mi>
+    <mi>z</mi>
+    <mspace width="0.25em"></mspace>
+    <mi>ı</mi>
+    <mi>ȷ</mi>
   </mrow>
 </math>
-with <math xmlns="http://www.w3.org/1998/Math/MathML">
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow>
+    <mi class="capital-greek">Γ</mi>
+    <mi class="capital-greek">Δ</mi>
+    <mi class="capital-greek">Θ</mi>
+    <mi class="capital-greek">Λ</mi>
+    <mi class="capital-greek">Ξ</mi>
+    <mi class="capital-greek">Π</mi>
+    <mi class="capital-greek">Σ</mi>
+    <mi class="capital-greek">Υ</mi>
+    <mi class="capital-greek">Φ</mi>
+    <mi class="capital-greek">Ψ</mi>
+    <mi class="capital-greek">Ω</mi>
+    <mspace width="0.25em"></mspace>
+    <mi>α</mi>
+    <mi>β</mi>
+    <mi>γ</mi>
+    <mi>δ</mi>
+    <mi>ε</mi>
+    <mi>ζ</mi>
+    <mi>η</mi>
+    <mi>θ</mi>
+    <mi>ι</mi>
+    <mi>κ</mi>
+    <mi>λ</mi>
+    <mi>μ</mi>
+    <mi>ν</mi>
+    <mi>ξ</mi>
+    <mi>π</mi>
+    <mi>ρ</mi>
+    <mi>ς</mi>
+    <mi>σ</mi>
+    <mi>τ</mi>
+    <mi>υ</mi>
+    <mi>φ</mi>
+    <mi>χ</mi>
+    <mi>ψ</mi>
+    <mi>ω</mi>
+    <mspace width="0.25em"></mspace>
+    <mi>ϵ</mi>
+    <mi>ϑ</mi>
+    <mi>ϕ</mi>
+    <mi>ϰ</mi>
+    <mi>ϱ</mi>
+    <mi>ϖ</mi>
+    <mi>Ϝ</mi>
+    <mi>ϝ</mi>
+    <mspace width="0.25em"></mspace>
+    <mi>∂</mi>
+    <mi>∇</mi>
+  </mrow>
+</math>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>0123456789</mn>
+</math></p>
+</dd>
+<dt>mathrm:</dt>
+<dd><p><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow>
+    <mi mathvariant="normal">A</mi>
+    <mi mathvariant="normal">B</mi>
+    <mi mathvariant="normal">C</mi>
+    <mi mathvariant="normal">D</mi>
+    <mi mathvariant="normal">E</mi>
+    <mi mathvariant="normal">F</mi>
+    <mi mathvariant="normal">G</mi>
+    <mi mathvariant="normal">H</mi>
+    <mi mathvariant="normal">I</mi>
+    <mi mathvariant="normal">J</mi>
+    <mi mathvariant="normal">K</mi>
+    <mi mathvariant="normal">L</mi>
+    <mi mathvariant="normal">M</mi>
+    <mi mathvariant="normal">N</mi>
+    <mi mathvariant="normal">O</mi>
+    <mi mathvariant="normal">P</mi>
+    <mi mathvariant="normal">Q</mi>
+    <mi mathvariant="normal">R</mi>
+    <mi mathvariant="normal">S</mi>
+    <mi mathvariant="normal">T</mi>
+    <mi mathvariant="normal">U</mi>
+    <mi mathvariant="normal">V</mi>
+    <mi mathvariant="normal">W</mi>
+    <mi mathvariant="normal">X</mi>
+    <mi mathvariant="normal">Y</mi>
+    <mi mathvariant="normal">Z</mi>
+    <mspace width="0.25em"></mspace>
+    <mi mathvariant="normal">a</mi>
+    <mi mathvariant="normal">b</mi>
+    <mi mathvariant="normal">c</mi>
+    <mi mathvariant="normal">d</mi>
+    <mi mathvariant="normal">e</mi>
+    <mi mathvariant="normal">f</mi>
+    <mi mathvariant="normal">g</mi>
+    <mi mathvariant="normal">h</mi>
+    <mi mathvariant="normal">i</mi>
+    <mi mathvariant="normal">j</mi>
+    <mi mathvariant="normal">k</mi>
+    <mi mathvariant="normal">l</mi>
+    <mi mathvariant="normal">m</mi>
+    <mi mathvariant="normal">n</mi>
+    <mi mathvariant="normal">o</mi>
+    <mi mathvariant="normal">p</mi>
+    <mi mathvariant="normal">q</mi>
+    <mi mathvariant="normal">r</mi>
+    <mi mathvariant="normal">s</mi>
+    <mi mathvariant="normal">t</mi>
+    <mi mathvariant="normal">u</mi>
+    <mi mathvariant="normal">v</mi>
+    <mi mathvariant="normal">w</mi>
+    <mi mathvariant="normal">x</mi>
+    <mi mathvariant="normal">y</mi>
+    <mi mathvariant="normal">z</mi>
+    <mspace width="0.25em"></mspace>
+    <mi mathvariant="normal">ı</mi>
+    <mi mathvariant="normal">ȷ</mi>
+  </mrow>
+</math>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow>
+    <mi class="capital-greek" mathvariant="normal">Γ</mi>
+    <mi class="capital-greek" mathvariant="normal">Δ</mi>
+    <mi class="capital-greek" mathvariant="normal">Θ</mi>
+    <mi class="capital-greek" mathvariant="normal">Λ</mi>
+    <mi class="capital-greek" mathvariant="normal">Ξ</mi>
+    <mi class="capital-greek" mathvariant="normal">Π</mi>
+    <mi class="capital-greek" mathvariant="normal">Σ</mi>
+    <mi class="capital-greek" mathvariant="normal">Υ</mi>
+    <mi class="capital-greek" mathvariant="normal">Φ</mi>
+    <mi class="capital-greek" mathvariant="normal">Ψ</mi>
+    <mi class="capital-greek" mathvariant="normal">Ω</mi>
+    <mspace width="0.25em"></mspace>
+    <mi mathvariant="normal">α</mi>
+    <mi mathvariant="normal">β</mi>
+    <mi mathvariant="normal">γ</mi>
+    <mi mathvariant="normal">δ</mi>
+    <mi mathvariant="normal">ε</mi>
+    <mi mathvariant="normal">ζ</mi>
+    <mi mathvariant="normal">η</mi>
+    <mi mathvariant="normal">θ</mi>
+    <mi mathvariant="normal">ι</mi>
+    <mi mathvariant="normal">κ</mi>
+    <mi mathvariant="normal">λ</mi>
+    <mi mathvariant="normal">μ</mi>
+    <mi mathvariant="normal">ν</mi>
+    <mi mathvariant="normal">ξ</mi>
+    <mi mathvariant="normal">π</mi>
+    <mi mathvariant="normal">ρ</mi>
+    <mi mathvariant="normal">ς</mi>
+    <mi mathvariant="normal">σ</mi>
+    <mi mathvariant="normal">τ</mi>
+    <mi mathvariant="normal">υ</mi>
+    <mi mathvariant="normal">φ</mi>
+    <mi mathvariant="normal">χ</mi>
+    <mi mathvariant="normal">ψ</mi>
+    <mi mathvariant="normal">ω</mi>
+    <mspace width="0.25em"></mspace>
+    <mi mathvariant="normal">ϵ</mi>
+    <mi mathvariant="normal">ϑ</mi>
+    <mi mathvariant="normal">ϕ</mi>
+    <mi mathvariant="normal">ϰ</mi>
+    <mi mathvariant="normal">ϱ</mi>
+    <mi mathvariant="normal">ϖ</mi>
+    <mi mathvariant="normal">Ϝ</mi>
+    <mi mathvariant="normal">ϝ</mi>
+    <mspace width="0.25em"></mspace>
+    <mi>∂</mi>
+    <mi>∇</mi>
+  </mrow>
+</math>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>0123456789</mn>
+</math></p>
+</dd>
+<dt>mathbf:</dt>
+<dd><p><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow>
+    <mi>𝐀</mi>
+    <mi>𝐁</mi>
+    <mi>𝐂</mi>
+    <mi>𝐃</mi>
+    <mi>𝐄</mi>
+    <mi>𝐅</mi>
+    <mi>𝐆</mi>
+    <mi>𝐇</mi>
+    <mi>𝐈</mi>
+    <mi>𝐉</mi>
+    <mi>𝐊</mi>
+    <mi>𝐋</mi>
+    <mi>𝐌</mi>
+    <mi>𝐍</mi>
+    <mi>𝐎</mi>
+    <mi>𝐏</mi>
+    <mi>𝐐</mi>
+    <mi>𝐑</mi>
+    <mi>𝐒</mi>
+    <mi>𝐓</mi>
+    <mi>𝐔</mi>
+    <mi>𝐕</mi>
+    <mi>𝐖</mi>
+    <mi>𝐗</mi>
+    <mi>𝐘</mi>
+    <mi>𝐙</mi>
+    <mspace width="0.25em"></mspace>
+    <mi>𝐚</mi>
+    <mi>𝐛</mi>
+    <mi>𝐜</mi>
+    <mi>𝐝</mi>
+    <mi>𝐞</mi>
+    <mi>𝐟</mi>
+    <mi>𝐠</mi>
+    <mi>𝐡</mi>
+    <mi>𝐢</mi>
+    <mi>𝐣</mi>
+    <mi>𝐤</mi>
+    <mi>𝐥</mi>
+    <mi>𝐦</mi>
+    <mi>𝐧</mi>
+    <mi>𝐨</mi>
+    <mi>𝐩</mi>
+    <mi>𝐪</mi>
+    <mi>𝐫</mi>
+    <mi>𝐬</mi>
+    <mi>𝐭</mi>
+    <mi>𝐮</mi>
+    <mi>𝐯</mi>
+    <mi>𝐰</mi>
+    <mi>𝐱</mi>
+    <mi>𝐲</mi>
+    <mi>𝐳</mi>
+  </mrow>
+</math>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow>
+    <mi class="capital-greek">𝚪</mi>
+    <mi class="capital-greek">𝚫</mi>
+    <mi class="capital-greek">𝚯</mi>
+    <mi class="capital-greek">𝚲</mi>
+    <mi class="capital-greek">𝚵</mi>
+    <mi class="capital-greek">𝚷</mi>
+    <mi class="capital-greek">𝚺</mi>
+    <mi class="capital-greek">𝚼</mi>
+    <mi class="capital-greek">𝚽</mi>
+    <mi class="capital-greek">𝚿</mi>
+    <mi class="capital-greek">𝛀</mi>
+    <mspace width="0.25em"></mspace>
+    <mi>𝛂</mi>
+    <mi>𝛃</mi>
+    <mi>𝛄</mi>
+    <mi>𝛅</mi>
+    <mi>𝛆</mi>
+    <mi>𝛇</mi>
+    <mi>𝛈</mi>
+    <mi>𝛉</mi>
+    <mi>𝛊</mi>
+    <mi>𝛋</mi>
+    <mi>𝛌</mi>
+    <mi>𝛍</mi>
+    <mi>𝛎</mi>
+    <mi>𝛏</mi>
+    <mi>𝛑</mi>
+    <mi>𝛒</mi>
+    <mi>𝛓</mi>
+    <mi>𝛔</mi>
+    <mi>𝛕</mi>
+    <mi>𝛖</mi>
+    <mi>𝛗</mi>
+    <mi>𝛘</mi>
+    <mi>𝛙</mi>
+    <mi>𝛚</mi>
+    <mspace width="0.25em"></mspace>
+    <mi>𝛜</mi>
+    <mi>𝛝</mi>
+    <mi>𝛟</mi>
+    <mi>𝛞</mi>
+    <mi>𝛠</mi>
+    <mi>𝛡</mi>
+    <mi>𝟊</mi>
+    <mi>𝟋</mi>
+    <mspace width="0.25em"></mspace>
+    <mi>𝛛</mi>
+    <mi>𝛁</mi>
+  </mrow>
+</math>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>𝟎𝟏𝟐𝟑𝟒𝟓𝟔𝟕𝟖𝟗</mn>
+</math></p>
+</dd>
+<dt>mathit:</dt>
+<dd><p><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow>
+    <mi>𝐴</mi>
+    <mi>𝐵</mi>
+    <mi>𝐶</mi>
+    <mi>𝐷</mi>
+    <mi>𝐸</mi>
+    <mi>𝐹</mi>
+    <mi>𝐺</mi>
+    <mi>𝐻</mi>
+    <mi>𝐼</mi>
+    <mi>𝐽</mi>
+    <mi>𝐾</mi>
+    <mi>𝐿</mi>
+    <mi>𝑀</mi>
+    <mi>𝑁</mi>
+    <mi>𝑂</mi>
+    <mi>𝑃</mi>
+    <mi>𝑄</mi>
+    <mi>𝑅</mi>
+    <mi>𝑆</mi>
+    <mi>𝑇</mi>
+    <mi>𝑈</mi>
+    <mi>𝑉</mi>
+    <mi>𝑊</mi>
+    <mi>𝑋</mi>
+    <mi>𝑌</mi>
+    <mi>𝑍</mi>
+    <mspace width="0.25em"></mspace>
+    <mi>𝑎</mi>
+    <mi>𝑏</mi>
+    <mi>𝑐</mi>
+    <mi>𝑑</mi>
+    <mi>𝑒</mi>
+    <mi>𝑓</mi>
+    <mi>𝑔</mi>
+    <mi>ℎ</mi>
+    <mi>𝑖</mi>
+    <mi>𝑗</mi>
+    <mi>𝑘</mi>
+    <mi>𝑙</mi>
+    <mi>𝑚</mi>
+    <mi>𝑛</mi>
+    <mi>𝑜</mi>
+    <mi>𝑝</mi>
+    <mi>𝑞</mi>
+    <mi>𝑟</mi>
+    <mi>𝑠</mi>
+    <mi>𝑡</mi>
+    <mi>𝑢</mi>
+    <mi>𝑣</mi>
+    <mi>𝑤</mi>
+    <mi>𝑥</mi>
+    <mi>𝑦</mi>
+    <mi>𝑧</mi>
+    <mspace width="0.25em"></mspace>
+    <mi>𝚤</mi>
+    <mi>𝚥</mi>
+  </mrow>
+</math>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow>
+    <mi class="capital-greek">𝛤</mi>
+    <mi class="capital-greek">𝛥</mi>
+    <mi class="capital-greek">𝛩</mi>
+    <mi class="capital-greek">𝛬</mi>
+    <mi class="capital-greek">𝛯</mi>
+    <mi class="capital-greek">𝛱</mi>
+    <mi class="capital-greek">𝛴</mi>
+    <mi class="capital-greek">𝛶</mi>
+    <mi class="capital-greek">𝛷</mi>
+    <mi class="capital-greek">𝛹</mi>
+    <mi class="capital-greek">𝛺</mi>
+    <mspace width="0.25em"></mspace>
+    <mi>𝛼</mi>
+    <mi>𝛽</mi>
+    <mi>𝛾</mi>
+    <mi>𝛿</mi>
+    <mi>𝜀</mi>
+    <mi>𝜁</mi>
+    <mi>𝜂</mi>
+    <mi>𝜃</mi>
+    <mi>𝜄</mi>
+    <mi>𝜅</mi>
+    <mi>𝜆</mi>
+    <mi>𝜇</mi>
+    <mi>𝜈</mi>
+    <mi>𝜉</mi>
+    <mi>𝜋</mi>
+    <mi>𝜌</mi>
+    <mi>𝜍</mi>
+    <mi>𝜎</mi>
+    <mi>𝜏</mi>
+    <mi>𝜐</mi>
+    <mi>𝜑</mi>
+    <mi>𝜒</mi>
+    <mi>𝜓</mi>
+    <mi>𝜔</mi>
+    <mspace width="0.25em"></mspace>
+    <mi>𝜖</mi>
+    <mi>𝜗</mi>
+    <mi>𝜙</mi>
+    <mi>ϰ</mi>
+    <mi>𝜚</mi>
+    <mi>𝜛</mi>
+    <mspace width="0.25em"></mspace>
+    <mi>𝜕</mi>
+    <mi>𝛻</mi>
+  </mrow>
+</math>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>0123456789</mn>
+</math> <a class="brackets" href="#italic-digits" id="footnote-reference-4" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a></p>
+</dd>
+<dt>mathbfit:</dt>
+<dd><p><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow>
+    <mi>𝑨</mi>
+    <mi>𝑩</mi>
+    <mi>𝑪</mi>
+    <mi>𝑫</mi>
+    <mi>𝑬</mi>
+    <mi>𝑭</mi>
+    <mi>𝑮</mi>
+    <mi>𝑯</mi>
+    <mi>𝑰</mi>
+    <mi>𝑱</mi>
+    <mi>𝑲</mi>
+    <mi>𝑳</mi>
+    <mi>𝑴</mi>
+    <mi>𝑵</mi>
+    <mi>𝑶</mi>
+    <mi>𝑷</mi>
+    <mi>𝑸</mi>
+    <mi>𝑹</mi>
+    <mi>𝑺</mi>
+    <mi>𝑻</mi>
+    <mi>𝑼</mi>
+    <mi>𝑽</mi>
+    <mi>𝑾</mi>
+    <mi>𝑿</mi>
+    <mi>𝒀</mi>
+    <mi>𝒁</mi>
+    <mspace width="0.25em"></mspace>
+    <mi>𝒂</mi>
+    <mi>𝒃</mi>
+    <mi>𝒄</mi>
+    <mi>𝒅</mi>
+    <mi>𝒆</mi>
+    <mi>𝒇</mi>
+    <mi>𝒈</mi>
+    <mi>𝒉</mi>
+    <mi>𝒊</mi>
+    <mi>𝒋</mi>
+    <mi>𝒌</mi>
+    <mi>𝒍</mi>
+    <mi>𝒎</mi>
+    <mi>𝒏</mi>
+    <mi>𝒐</mi>
+    <mi>𝒑</mi>
+    <mi>𝒒</mi>
+    <mi>𝒓</mi>
+    <mi>𝒔</mi>
+    <mi>𝒕</mi>
+    <mi>𝒖</mi>
+    <mi>𝒗</mi>
+    <mi>𝒘</mi>
+    <mi>𝒙</mi>
+    <mi>𝒚</mi>
+    <mi>𝒛</mi>
+  </mrow>
+</math>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow>
+    <mi class="capital-greek">𝜞</mi>
+    <mi class="capital-greek">𝜟</mi>
+    <mi class="capital-greek">𝜣</mi>
+    <mi class="capital-greek">𝜦</mi>
+    <mi class="capital-greek">𝜩</mi>
+    <mi class="capital-greek">𝜫</mi>
+    <mi class="capital-greek">𝜮</mi>
+    <mi class="capital-greek">𝜰</mi>
+    <mi class="capital-greek">𝜱</mi>
+    <mi class="capital-greek">𝜳</mi>
+    <mi class="capital-greek">𝜴</mi>
+    <mspace width="0.25em"></mspace>
+    <mi>𝜶</mi>
+    <mi>𝜷</mi>
+    <mi>𝜸</mi>
+    <mi>𝜹</mi>
+    <mi>𝜺</mi>
+    <mi>𝜻</mi>
+    <mi>𝜼</mi>
+    <mi>𝜽</mi>
+    <mi>𝜾</mi>
+    <mi>𝜿</mi>
+    <mi>𝝀</mi>
+    <mi>𝝁</mi>
+    <mi>𝝂</mi>
+    <mi>𝝃</mi>
+    <mi>𝝅</mi>
+    <mi>𝝆</mi>
+    <mi>𝝇</mi>
+    <mi>𝝈</mi>
+    <mi>𝝉</mi>
+    <mi>𝝊</mi>
+    <mi>𝝋</mi>
+    <mi>𝝌</mi>
+    <mi>𝝍</mi>
+    <mi>𝝎</mi>
+    <mspace width="0.25em"></mspace>
+    <mi>𝝐</mi>
+    <mi>𝝑</mi>
+    <mi>𝝓</mi>
+    <mi>𝝒</mi>
+    <mi>𝝔</mi>
+    <mi>𝝕</mi>
+    <mspace width="0.25em"></mspace>
+    <mi>𝝏</mi>
+    <mi>𝜵</mi>
+  </mrow>
+</math></p>
+</dd>
+<dt>mathcal:</dt>
+<dd><p><math xmlns="http://www.w3.org/1998/Math/MathML">
   <mrow>
     <mi>𝒜</mi>
-    <mo>,</mo>
     <mi>ℬ</mi>
-    <mo>,</mo>
-    <mi>…</mi>
-    <mo>,</mo>
+    <mi>𝒞</mi>
+    <mi>𝒟</mi>
+    <mi>ℰ</mi>
+    <mi>ℱ</mi>
+    <mi>𝒢</mi>
+    <mi>ℋ</mi>
+    <mi>ℐ</mi>
+    <mi>𝒥</mi>
+    <mi>𝒦</mi>
+    <mi>ℒ</mi>
+    <mi>ℳ</mi>
+    <mi>𝒩</mi>
+    <mi>𝒪</mi>
+    <mi>𝒫</mi>
+    <mi>𝒬</mi>
+    <mi>ℛ</mi>
+    <mi>𝒮</mi>
+    <mi>𝒯</mi>
+    <mi>𝒰</mi>
+    <mi>𝒱</mi>
+    <mi>𝒲</mi>
+    <mi>𝒳</mi>
+    <mi>𝒴</mi>
     <mi>𝒵</mi>
-    <mo>,</mo>
+    <mspace width="0.25em"></mspace>
     <mi>𝒶</mi>
-    <mo>,</mo>
     <mi>𝒷</mi>
-    <mo>,</mo>
-    <mi>…</mi>
-    <mo>,</mo>
+    <mi>𝒸</mi>
+    <mi>𝒹</mi>
+    <mi>ℯ</mi>
+    <mi>𝒻</mi>
+    <mi>ℊ</mi>
+    <mi>𝒽</mi>
+    <mi>𝒾</mi>
+    <mi>𝒿</mi>
+    <mi>𝓀</mi>
+    <mi>𝓁</mi>
+    <mi>𝓂</mi>
+    <mi>𝓃</mi>
+    <mi>ℴ</mi>
+    <mi>𝓅</mi>
+    <mi>𝓆</mi>
+    <mi>𝓇</mi>
+    <mi>𝓈</mi>
+    <mi>𝓉</mi>
+    <mi>𝓊</mi>
+    <mi>𝓋</mi>
+    <mi>𝓌</mi>
+    <mi>𝓍</mi>
+    <mi>𝓎</mi>
     <mi>𝓏</mi>
   </mrow>
-</math>.</p>
-<p>In contrast to the math alphabet selectors, <span class="docutils literal">\boldsymbol</span> only changes
-the <em>font weight</em>. In LaTeX, it can be used to get a bold version of any
-mathematical symbol (for other output formats, results are mixed):</p>
+</math></p>
+</dd>
+<dt>mathscr:</dt>
+<dd><p><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow class="mathscr">
+    <mi>𝒜</mi>
+    <mi>ℬ</mi>
+    <mi>𝒞</mi>
+    <mi>𝒟</mi>
+    <mi>ℰ</mi>
+    <mi>ℱ</mi>
+    <mi>𝒢</mi>
+    <mi>ℋ</mi>
+    <mi>ℐ</mi>
+    <mi>𝒥</mi>
+    <mi>𝒦</mi>
+    <mi>ℒ</mi>
+    <mi>ℳ</mi>
+    <mi>𝒩</mi>
+    <mi>𝒪</mi>
+    <mi>𝒫</mi>
+    <mi>𝒬</mi>
+    <mi>ℛ</mi>
+    <mi>𝒮</mi>
+    <mi>𝒯</mi>
+    <mi>𝒰</mi>
+    <mi>𝒱</mi>
+    <mi>𝒲</mi>
+    <mi>𝒳</mi>
+    <mi>𝒴</mi>
+    <mi>𝒵</mi>
+    <mspace width="0.25em"></mspace>
+    <mi>𝒶</mi>
+    <mi>𝒷</mi>
+    <mi>𝒸</mi>
+    <mi>𝒹</mi>
+    <mi>ℯ</mi>
+    <mi>𝒻</mi>
+    <mi>ℊ</mi>
+    <mi>𝒽</mi>
+    <mi>𝒾</mi>
+    <mi>𝒿</mi>
+    <mi>𝓀</mi>
+    <mi>𝓁</mi>
+    <mi>𝓂</mi>
+    <mi>𝓃</mi>
+    <mi>ℴ</mi>
+    <mi>𝓅</mi>
+    <mi>𝓆</mi>
+    <mi>𝓇</mi>
+    <mi>𝓈</mi>
+    <mi>𝓉</mi>
+    <mi>𝓊</mi>
+    <mi>𝓋</mi>
+    <mi>𝓌</mi>
+    <mi>𝓍</mi>
+    <mi>𝓎</mi>
+    <mi>𝓏</mi>
+  </mrow>
+</math></p>
+</dd>
+<dt>mathbb:</dt>
+<dd><p><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow>
+    <mi>𝔸</mi>
+    <mi>𝔹</mi>
+    <mi>ℂ</mi>
+    <mi>𝔻</mi>
+    <mi>𝔼</mi>
+    <mi>𝔽</mi>
+    <mi>𝔾</mi>
+    <mi>ℍ</mi>
+    <mi>𝕀</mi>
+    <mi>𝕁</mi>
+    <mi>𝕂</mi>
+    <mi>𝕃</mi>
+    <mi>𝕄</mi>
+    <mi>ℕ</mi>
+    <mi>𝕆</mi>
+    <mi>ℙ</mi>
+    <mi>ℚ</mi>
+    <mi>ℝ</mi>
+    <mi>𝕊</mi>
+    <mi>𝕋</mi>
+    <mi>𝕌</mi>
+    <mi>𝕍</mi>
+    <mi>𝕎</mi>
+    <mi>𝕏</mi>
+    <mi>𝕐</mi>
+    <mi>ℤ</mi>
+    <mspace width="0.25em"></mspace>
+    <mi>𝕒</mi>
+    <mi>𝕓</mi>
+    <mi>𝕔</mi>
+    <mi>𝕕</mi>
+    <mi>𝕖</mi>
+    <mi>𝕗</mi>
+    <mi>𝕘</mi>
+    <mi>𝕙</mi>
+    <mi>𝕚</mi>
+    <mi>𝕛</mi>
+    <mi>𝕜</mi>
+    <mi>𝕝</mi>
+    <mi>𝕞</mi>
+    <mi>𝕟</mi>
+    <mi>𝕠</mi>
+    <mi>𝕡</mi>
+    <mi>𝕢</mi>
+    <mi>𝕣</mi>
+    <mi>𝕤</mi>
+    <mi>𝕥</mi>
+    <mi>𝕦</mi>
+    <mi>𝕧</mi>
+    <mi>𝕨</mi>
+    <mi>𝕩</mi>
+    <mi>𝕪</mi>
+    <mi>𝕫</mi>
+  </mrow>
+</math>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow>
+    <mi class="capital-greek">ℾ</mi>
+    <mi class="capital-greek">ℿ</mi>
+    <mi class="capital-greek">⅀</mi>
+    <mspace width="0.25em"></mspace>
+    <mi>ℽ</mi>
+    <mi>ℼ</mi>
+  </mrow>
+</math>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>𝟘𝟙𝟚𝟛𝟜𝟝𝟞𝟟𝟠𝟡</mn>
+</math></p>
+</dd>
+<dt>mathfrak:</dt>
+<dd><p><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow>
+    <mi>𝔄</mi>
+    <mi>𝔅</mi>
+    <mi>ℭ</mi>
+    <mi>𝔇</mi>
+    <mi>𝔈</mi>
+    <mi>𝔉</mi>
+    <mi>𝔊</mi>
+    <mi>ℌ</mi>
+    <mi>ℑ</mi>
+    <mi>𝔍</mi>
+    <mi>𝔎</mi>
+    <mi>𝔏</mi>
+    <mi>𝔐</mi>
+    <mi>𝔑</mi>
+    <mi>𝔒</mi>
+    <mi>𝔓</mi>
+    <mi>𝔔</mi>
+    <mi>ℜ</mi>
+    <mi>𝔖</mi>
+    <mi>𝔗</mi>
+    <mi>𝔘</mi>
+    <mi>𝔙</mi>
+    <mi>𝔚</mi>
+    <mi>𝔛</mi>
+    <mi>𝔜</mi>
+    <mi>ℨ</mi>
+    <mspace width="0.25em"></mspace>
+    <mi>𝔞</mi>
+    <mi>𝔟</mi>
+    <mi>𝔠</mi>
+    <mi>𝔡</mi>
+    <mi>𝔢</mi>
+    <mi>𝔣</mi>
+    <mi>𝔤</mi>
+    <mi>𝔥</mi>
+    <mi>𝔦</mi>
+    <mi>𝔧</mi>
+    <mi>𝔨</mi>
+    <mi>𝔩</mi>
+    <mi>𝔪</mi>
+    <mi>𝔫</mi>
+    <mi>𝔬</mi>
+    <mi>𝔭</mi>
+    <mi>𝔮</mi>
+    <mi>𝔯</mi>
+    <mi>𝔰</mi>
+    <mi>𝔱</mi>
+    <mi>𝔲</mi>
+    <mi>𝔳</mi>
+    <mi>𝔴</mi>
+    <mi>𝔵</mi>
+    <mi>𝔶</mi>
+    <mi>𝔷</mi>
+  </mrow>
+</math></p>
+</dd>
+<dt>mathsf:</dt>
+<dd><p><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow>
+    <mi>𝖠</mi>
+    <mi>𝖡</mi>
+    <mi>𝖢</mi>
+    <mi>𝖣</mi>
+    <mi>𝖤</mi>
+    <mi>𝖥</mi>
+    <mi>𝖦</mi>
+    <mi>𝖧</mi>
+    <mi>𝖨</mi>
+    <mi>𝖩</mi>
+    <mi>𝖪</mi>
+    <mi>𝖫</mi>
+    <mi>𝖬</mi>
+    <mi>𝖭</mi>
+    <mi>𝖮</mi>
+    <mi>𝖯</mi>
+    <mi>𝖰</mi>
+    <mi>𝖱</mi>
+    <mi>𝖲</mi>
+    <mi>𝖳</mi>
+    <mi>𝖴</mi>
+    <mi>𝖵</mi>
+    <mi>𝖶</mi>
+    <mi>𝖷</mi>
+    <mi>𝖸</mi>
+    <mi>𝖹</mi>
+    <mspace width="0.25em"></mspace>
+    <mi>𝖺</mi>
+    <mi>𝖻</mi>
+    <mi>𝖼</mi>
+    <mi>𝖽</mi>
+    <mi>𝖾</mi>
+    <mi>𝖿</mi>
+    <mi>𝗀</mi>
+    <mi>𝗁</mi>
+    <mi>𝗂</mi>
+    <mi>𝗃</mi>
+    <mi>𝗄</mi>
+    <mi>𝗅</mi>
+    <mi>𝗆</mi>
+    <mi>𝗇</mi>
+    <mi>𝗈</mi>
+    <mi>𝗉</mi>
+    <mi>𝗊</mi>
+    <mi>𝗋</mi>
+    <mi>𝗌</mi>
+    <mi>𝗍</mi>
+    <mi>𝗎</mi>
+    <mi>𝗏</mi>
+    <mi>𝗐</mi>
+    <mi>𝗑</mi>
+    <mi>𝗒</mi>
+    <mi>𝗓</mi>
+  </mrow>
+</math>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>𝟢𝟣𝟤𝟥𝟦𝟧𝟨𝟩𝟪𝟫</mn>
+</math></p>
+</dd>
+<dt>mathsfit:</dt>
+<dd><p><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow>
+    <mi>𝘈</mi>
+    <mi>𝘉</mi>
+    <mi>𝘊</mi>
+    <mi>𝘋</mi>
+    <mi>𝘌</mi>
+    <mi>𝘍</mi>
+    <mi>𝘎</mi>
+    <mi>𝘏</mi>
+    <mi>𝘐</mi>
+    <mi>𝘑</mi>
+    <mi>𝘒</mi>
+    <mi>𝘓</mi>
+    <mi>𝘔</mi>
+    <mi>𝘕</mi>
+    <mi>𝘖</mi>
+    <mi>𝘗</mi>
+    <mi>𝘘</mi>
+    <mi>𝘙</mi>
+    <mi>𝘚</mi>
+    <mi>𝘛</mi>
+    <mi>𝘜</mi>
+    <mi>𝘝</mi>
+    <mi>𝘞</mi>
+    <mi>𝘟</mi>
+    <mi>𝘠</mi>
+    <mi>𝘡</mi>
+    <mspace width="0.25em"></mspace>
+    <mi>𝘢</mi>
+    <mi>𝘣</mi>
+    <mi>𝘤</mi>
+    <mi>𝘥</mi>
+    <mi>𝘦</mi>
+    <mi>𝘧</mi>
+    <mi>𝘨</mi>
+    <mi>𝘩</mi>
+    <mi>𝘪</mi>
+    <mi>𝘫</mi>
+    <mi>𝘬</mi>
+    <mi>𝘭</mi>
+    <mi>𝘮</mi>
+    <mi>𝘯</mi>
+    <mi>𝘰</mi>
+    <mi>𝘱</mi>
+    <mi>𝘲</mi>
+    <mi>𝘳</mi>
+    <mi>𝘴</mi>
+    <mi>𝘵</mi>
+    <mi>𝘶</mi>
+    <mi>𝘷</mi>
+    <mi>𝘸</mi>
+    <mi>𝘹</mi>
+    <mi>𝘺</mi>
+    <mi>𝘻</mi>
+  </mrow>
+</math></p>
+</dd>
+<dt>mathsfbfit:</dt>
+<dd><p><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow>
+    <mi>𝘼</mi>
+    <mi>𝘽</mi>
+    <mi>𝘾</mi>
+    <mi>𝘿</mi>
+    <mi>𝙀</mi>
+    <mi>𝙁</mi>
+    <mi>𝙂</mi>
+    <mi>𝙃</mi>
+    <mi>𝙄</mi>
+    <mi>𝙅</mi>
+    <mi>𝙆</mi>
+    <mi>𝙇</mi>
+    <mi>𝙈</mi>
+    <mi>𝙉</mi>
+    <mi>𝙊</mi>
+    <mi>𝙋</mi>
+    <mi>𝙌</mi>
+    <mi>𝙍</mi>
+    <mi>𝙎</mi>
+    <mi>𝙏</mi>
+    <mi>𝙐</mi>
+    <mi>𝙑</mi>
+    <mi>𝙒</mi>
+    <mi>𝙓</mi>
+    <mi>𝙔</mi>
+    <mi>𝙕</mi>
+    <mspace width="0.25em"></mspace>
+    <mi>𝙖</mi>
+    <mi>𝙗</mi>
+    <mi>𝙘</mi>
+    <mi>𝙙</mi>
+    <mi>𝙚</mi>
+    <mi>𝙛</mi>
+    <mi>𝙜</mi>
+    <mi>𝙝</mi>
+    <mi>𝙞</mi>
+    <mi>𝙟</mi>
+    <mi>𝙠</mi>
+    <mi>𝙡</mi>
+    <mi>𝙢</mi>
+    <mi>𝙣</mi>
+    <mi>𝙤</mi>
+    <mi>𝙥</mi>
+    <mi>𝙦</mi>
+    <mi>𝙧</mi>
+    <mi>𝙨</mi>
+    <mi>𝙩</mi>
+    <mi>𝙪</mi>
+    <mi>𝙫</mi>
+    <mi>𝙬</mi>
+    <mi>𝙭</mi>
+    <mi>𝙮</mi>
+    <mi>𝙯</mi>
+  </mrow>
+</math>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow>
+    <mi class="capital-greek">𝞒</mi>
+    <mi class="capital-greek">𝞓</mi>
+    <mi class="capital-greek">𝞗</mi>
+    <mi class="capital-greek">𝞚</mi>
+    <mi class="capital-greek">𝞝</mi>
+    <mi class="capital-greek">𝞟</mi>
+    <mi class="capital-greek">𝞢</mi>
+    <mi class="capital-greek">𝞤</mi>
+    <mi class="capital-greek">𝞥</mi>
+    <mi class="capital-greek">𝞧</mi>
+    <mi class="capital-greek">𝞨</mi>
+    <mspace width="0.25em"></mspace>
+    <mi>𝞪</mi>
+    <mi>𝞫</mi>
+    <mi>𝞬</mi>
+    <mi>𝞭</mi>
+    <mi>𝞮</mi>
+    <mi>𝞯</mi>
+    <mi>𝞰</mi>
+    <mi>𝞱</mi>
+    <mi>𝞲</mi>
+    <mi>𝞳</mi>
+    <mi>𝞴</mi>
+    <mi>𝞵</mi>
+    <mi>𝞶</mi>
+    <mi>𝞷</mi>
+    <mi>𝞹</mi>
+    <mi>𝞺</mi>
+    <mi>𝞻</mi>
+    <mi>𝞼</mi>
+    <mi>𝞽</mi>
+    <mi>𝞾</mi>
+    <mi>𝞿</mi>
+    <mi>𝟀</mi>
+    <mi>𝟁</mi>
+    <mi>𝟂</mi>
+    <mspace width="0.25em"></mspace>
+    <mi>𝟄</mi>
+    <mi>𝟅</mi>
+    <mi>𝟇</mi>
+    <mi>𝟆</mi>
+    <mi>𝟈</mi>
+    <mi>𝟉</mi>
+    <mspace width="0.25em"></mspace>
+    <mi>𝟃</mi>
+    <mi>𝞩</mi>
+  </mrow>
+</math></p>
+</dd>
+<dt>mathtt:</dt>
+<dd><p><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow>
+    <mi>𝙰</mi>
+    <mi>𝙱</mi>
+    <mi>𝙲</mi>
+    <mi>𝙳</mi>
+    <mi>𝙴</mi>
+    <mi>𝙵</mi>
+    <mi>𝙶</mi>
+    <mi>𝙷</mi>
+    <mi>𝙸</mi>
+    <mi>𝙹</mi>
+    <mi>𝙺</mi>
+    <mi>𝙻</mi>
+    <mi>𝙼</mi>
+    <mi>𝙽</mi>
+    <mi>𝙾</mi>
+    <mi>𝙿</mi>
+    <mi>𝚀</mi>
+    <mi>𝚁</mi>
+    <mi>𝚂</mi>
+    <mi>𝚃</mi>
+    <mi>𝚄</mi>
+    <mi>𝚅</mi>
+    <mi>𝚆</mi>
+    <mi>𝚇</mi>
+    <mi>𝚈</mi>
+    <mi>𝚉</mi>
+    <mspace width="0.25em"></mspace>
+    <mi>𝚊</mi>
+    <mi>𝚋</mi>
+    <mi>𝚌</mi>
+    <mi>𝚍</mi>
+    <mi>𝚎</mi>
+    <mi>𝚏</mi>
+    <mi>𝚐</mi>
+    <mi>𝚑</mi>
+    <mi>𝚒</mi>
+    <mi>𝚓</mi>
+    <mi>𝚔</mi>
+    <mi>𝚕</mi>
+    <mi>𝚖</mi>
+    <mi>𝚗</mi>
+    <mi>𝚘</mi>
+    <mi>𝚙</mi>
+    <mi>𝚚</mi>
+    <mi>𝚛</mi>
+    <mi>𝚜</mi>
+    <mi>𝚝</mi>
+    <mi>𝚞</mi>
+    <mi>𝚟</mi>
+    <mi>𝚠</mi>
+    <mi>𝚡</mi>
+    <mi>𝚢</mi>
+    <mi>𝚣</mi>
+  </mrow>
+</math>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>𝟶𝟷𝟸𝟹𝟺𝟻𝟼𝟽𝟾𝟿</mn>
+</math></p>
+</dd>
+</dl>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="italic-digits" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#footnote-reference-3">1</a>,<a role="doc-backlink" href="#footnote-reference-4">2</a>)</span>
+<p>Italic digits are not defined in Unicode
+but work in LaTeX.</p>
+</aside>
+</aside>
+<p>In contrast to the <em>math alphabet</em> selectors, <span class="docutils literal">\boldsymbol</span> only
+changes the <em>font weight</em>. It can be used to get a bold version of
+any mathematical symbol:</p>
+<div>
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <msub>
+    <mi>V</mi>
+    <mi>i</mi>
+  </msub>
+  <mi>x</mi>
+  <mo>±</mo>
+  <mi>cos</mi>
+  <mo>&ApplyFunction;</mo>
+  <mo stretchy="false">(</mo>
+  <mi>α</mi>
+  <mo stretchy="false">)</mo>
+  <mo>≈</mo>
+  <mn>3</mn>
+  <mi class="capital-greek">Γ</mi>
+  <mspace width="1em"></mspace>
+  <mi>∀</mi>
+  <mi>x</mi>
+  <mo>∈</mo>
+  <mi>ℝ</mi>
+</math>
+</div>
 <div>
 <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
   <mrow class="boldsymbol">
@@ -1866,6 +2966,8 @@ mathematical symbol (for other output formats, results are mixed):</p>
   </mrow>
 </math>
 </div>
+<p>It is usually ill-advised to apply <span class="docutils literal">\boldsymbol</span> to more than one symbol
+at a time.</p>
 </section>
 <section id="miscellaneous-symbols">
 <h3><a class="toc-backref" href="#toc-entry-13" role="doc-backlink"><span class="sectnum">2.9 </span>Miscellaneous symbols</a></h3>
@@ -2067,7 +3169,7 @@ mathematical symbol (for other output formats, results are mixed):</p>
 <td><p><math xmlns="http://www.w3.org/1998/Math/MathML">
   <mo form="postfix" lspace="0" rspace="0.28em">:</mo>
 </math></p></td>
-<td><p><span class="docutils literal">\colon</span> <a class="brackets" href="#footnote-2" id="footnote-reference-4" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a></p></td>
+<td><p><span class="docutils literal">\colon</span> <a class="brackets" href="#footnote-1" id="footnote-reference-5" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a></p></td>
 <td><p><math xmlns="http://www.w3.org/1998/Math/MathML">
   <mo>…</mo>
 </math></p></td>
@@ -2115,8 +3217,8 @@ mathematical symbol (for other output formats, results are mixed):</p>
 </tbody>
 </table>
 <aside class="footnote-list brackets">
-<aside class="footnote brackets" id="footnote-2" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-4">3</a><span class="fn-bracket">]</span></span>
+<aside class="footnote brackets" id="footnote-1" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-5">3</a><span class="fn-bracket">]</span></span>
 <p>Punctuation (not ratio):
 Compare spacing in <math xmlns="http://www.w3.org/1998/Math/MathML">
   <mi>a</mi>
@@ -2796,8 +3898,8 @@ Compare spacing in <math xmlns="http://www.w3.org/1998/Math/MathML">
 </tr>
 </tbody>
 </table>
-<p>The commands <span class="docutils literal">\lvertneqq</span> and <span class="docutils literal">\gvertneqq</span> are not supported by
-LateX2MathML, as there is no corresponding Unicode character.</p>
+<p>The commands <span class="docutils literal">\lvertneqq</span> and <span class="docutils literal">\gvertneqq</span> are not supported
+with MathML output, as there is no corresponding Unicode character.</p>
 <p>Synonyms: <math xmlns="http://www.w3.org/1998/Math/MathML">
   <mo>≠</mo>
 </math> <span class="docutils literal">\ne</span>, <math xmlns="http://www.w3.org/1998/Math/MathML">
@@ -3124,7 +4226,7 @@ LateX2MathML, as there is no corresponding Unicode character.</p>
   <mo>∌</mo>
 </math> <span class="docutils literal">\not\ni</span>.</p>
 <p>The commands <span class="docutils literal">\varsubsetneq</span>, <span class="docutils literal">\varsubsetneqq</span>, <span class="docutils literal">\varsupsetneq</span>,
-and <span class="docutils literal">\varsupsetneqq</span> are not supported by LateX2MathML, as there is no
+and <span class="docutils literal">\varsupsetneqq</span> are not supported with MathML output as there is no
 corresponding Unicode character.</p>
 </section>
 </section>
@@ -3549,7 +4651,7 @@ commands:</p>
 </math></p></td>
 <td><p><span class="docutils literal">3  4</span></p></td>
 <td></td>
-<td><p>regular space <a class="brackets" href="#footnote-3" id="footnote-reference-5" role="doc-noteref"><span class="fn-bracket">[</span>4<span class="fn-bracket">]</span></a></p></td>
+<td><p>regular space <a class="brackets" href="#footnote-2" id="footnote-reference-6" role="doc-noteref"><span class="fn-bracket">[</span>4<span class="fn-bracket">]</span></a></p></td>
 </tr>
 <tr><td><p><math xmlns="http://www.w3.org/1998/Math/MathML">
   <mn>3</mn>
@@ -3558,7 +4660,7 @@ commands:</p>
 </math></p></td>
 <td><p><span class="docutils literal"><span class="pre">3\!4</span></span></p></td>
 <td><p><span class="docutils literal">3\negthinspace 4</span></p></td>
-<td><p>negative space <a class="brackets" href="#footnote-4" id="footnote-reference-6" role="doc-noteref"><span class="fn-bracket">[</span>5<span class="fn-bracket">]</span></a></p></td>
+<td><p>negative space <a class="brackets" href="#footnote-3" id="footnote-reference-7" role="doc-noteref"><span class="fn-bracket">[</span>5<span class="fn-bracket">]</span></a></p></td>
 </tr>
 <tr><td><p><math xmlns="http://www.w3.org/1998/Math/MathML">
   <mn>3</mn>
@@ -3594,21 +4696,21 @@ commands:</p>
 </math></p></td>
 <td></td>
 <td><p><span class="docutils literal">3\mspace{20mu}4</span></p></td>
-<td><p>custom length <a class="brackets" href="#footnote-5" id="footnote-reference-7" role="doc-noteref"><span class="fn-bracket">[</span>6<span class="fn-bracket">]</span></a></p></td>
+<td><p>custom length <a class="brackets" href="#footnote-4" id="footnote-reference-8" role="doc-noteref"><span class="fn-bracket">[</span>6<span class="fn-bracket">]</span></a></p></td>
 </tr>
 </tbody>
 </table>
 <aside class="footnote-list brackets">
-<aside class="footnote brackets" id="footnote-3" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-5">4</a><span class="fn-bracket">]</span></span>
+<aside class="footnote brackets" id="footnote-2" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-6">4</a><span class="fn-bracket">]</span></span>
 <p>Whitespace characters are ignored in LaTeX math mode.</p>
 </aside>
-<aside class="footnote brackets" id="footnote-4" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-6">5</a><span class="fn-bracket">]</span></span>
-<p>Negative spacing does not work with MathML (last tested in Firefox 102).</p>
+<aside class="footnote brackets" id="footnote-3" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-7">5</a><span class="fn-bracket">]</span></span>
+<p>Negative spacing does not work with MathML (last tested in Firefox 115).</p>
 </aside>
-<aside class="footnote brackets" id="footnote-5" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-7">6</a><span class="fn-bracket">]</span></span>
+<aside class="footnote brackets" id="footnote-4" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-8">6</a><span class="fn-bracket">]</span></span>
 <p>In LaTeX, the unit must be 'mu' (1 mu = 1/18em).</p>
 </aside>
 </aside>
@@ -3644,7 +4746,7 @@ MathML.</p>
 <section id="modular-arithmetic-and-modulo-operation">
 <h3><a class="toc-backref" href="#toc-entry-26" role="doc-backlink"><span class="sectnum">3.6 </span>Modular arithmetic and modulo operation</a></h3>
 <p>The commands <span class="docutils literal">\bmod</span>, <span class="docutils literal">\pmod</span>, <span class="docutils literal">\mod</span>, and <span class="docutils literal">\pod</span> deal with the
-special spacing conventions of the “mod” notation. <a class="brackets" href="#footnote-6" id="footnote-reference-8" role="doc-noteref"><span class="fn-bracket">[</span>7<span class="fn-bracket">]</span></a></p>
+special spacing conventions of the “mod” notation. <a class="brackets" href="#footnote-5" id="footnote-reference-9" role="doc-noteref"><span class="fn-bracket">[</span>7<span class="fn-bracket">]</span></a></p>
 <table>
 <thead>
 <tr><th class="head"><p>command</p></th>
@@ -3721,8 +4823,8 @@ special spacing conventions of the “mod” notation. <a class="brackets" href=
 </tbody>
 </table>
 <aside class="footnote-list brackets">
-<aside class="footnote brackets" id="footnote-6" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-8">7</a><span class="fn-bracket">]</span></span>
+<aside class="footnote brackets" id="footnote-5" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-9">7</a><span class="fn-bracket">]</span></span>
 <p>Currently <a class="reference external" href="https://sourceforge.net/p/docutils/feature-requests/93/">not supported</a> by the &quot;HTML&quot; <a class="reference external" href="https://docutils.sourceforge.io/docs/user/config.html#math-output">math_output</a> option
 of the HTML writer.</p>
 </aside>
@@ -4430,7 +5532,7 @@ text, such as <math xmlns="http://www.w3.org/1998/Math/MathML">
     <mo>|</mo>
   </mrow>
 </math> where the delimiters produced
-by <span class="docutils literal">\left</span> and <span class="docutils literal">\right</span> cause too much line spreading. <a class="brackets" href="#footnote-7" id="footnote-reference-9" role="doc-noteref"><span class="fn-bracket">[</span>8<span class="fn-bracket">]</span></a> In that case
+by <span class="docutils literal">\left</span> and <span class="docutils literal">\right</span> cause too much line spreading. <a class="brackets" href="#footnote-6" id="footnote-reference-10" role="doc-noteref"><span class="fn-bracket">[</span>8<span class="fn-bracket">]</span></a> In that case
 <span class="docutils literal">\bigl</span> and <span class="docutils literal">\bigr</span> can be used to produce delimiters that are larger
 than the base size but still able to fit within the normal line spacing:
 <math xmlns="http://www.w3.org/1998/Math/MathML">
@@ -4450,8 +5552,8 @@ than the base size but still able to fit within the normal line spacing:
   </mrow>
 </math>.</p>
 <aside class="footnote-list brackets">
-<aside class="footnote brackets" id="footnote-7" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-9">8</a><span class="fn-bracket">]</span></span>
+<aside class="footnote brackets" id="footnote-6" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-10">8</a><span class="fn-bracket">]</span></span>
 <p>With MathML, an example would be parentheses
 around a <span class="docutils literal">smallmatrix</span> environment
 <math xmlns="http://www.w3.org/1998/Math/MathML">
@@ -4787,7 +5889,7 @@ the operator to which they apply.</p>
 </section>
 <section id="changing-the-size-of-elements-in-a-formula">
 <h2><a class="toc-backref" href="#toc-entry-34" role="doc-backlink"><span class="sectnum">8 </span>Changing the size of elements in a formula</a></h2>
-<p>The declarations <a class="brackets" href="#footnote-8" id="footnote-reference-10" role="doc-noteref"><span class="fn-bracket">[</span>9<span class="fn-bracket">]</span></a> <span class="docutils literal">\displaystyle</span>, <span class="docutils literal">\textstyle</span>,
+<p>The declarations <a class="brackets" href="#footnote-7" id="footnote-reference-11" role="doc-noteref"><span class="fn-bracket">[</span>9<span class="fn-bracket">]</span></a> <span class="docutils literal">\displaystyle</span>, <span class="docutils literal">\textstyle</span>,
 <span class="docutils literal">\scriptstyle</span>, and <span class="docutils literal">\scriptscriptstyle</span>, select a symbol size and
 spacing that would be applied in display math, inline
 math, first-order subscript, or second-order subscript, respectively
@@ -4904,8 +6006,8 @@ rather than <math xmlns="http://www.w3.org/1998/Math/MathML">
 </math>
 </div>
 <aside class="footnote-list brackets">
-<aside class="footnote brackets" id="footnote-8" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-10">9</a><span class="fn-bracket">]</span></span>
+<aside class="footnote brackets" id="footnote-7" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-11">9</a><span class="fn-bracket">]</span></span>
 <p>&quot;Declarations&quot; are commands that affect processing of the current
 &quot;group&quot;. In particular, notice where the braces fall that delimit the
 effect of the command: Right: <span class="docutils literal">{\displaystyle <span class="pre">...}</span></span> Wrong:
@@ -4914,6 +6016,14 @@ effect of the command: Right: <span class="docutils literal">{\displaystyle <spa
 after the opening bracket.</p>
 </aside>
 </aside>
+<div role="list" class="citation-list">
+<div class="citation" id="iso-80000-2" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#citation-reference-1">ISO-80000-2</a><span class="fn-bracket">]</span></span>
+<p><cite>Quantities and units – Part 2: Mathematical signs
+and symbols to be used in the natural sciences and technology</cite>:
+<a class="reference external" href="http://www.iso.org/iso/iso_catalogue/catalogue_tc/catalogue_detail.htm?csnumber=31887">http://www.iso.org/iso/iso_catalogue/catalogue_tc/catalogue_detail.htm?csnumber=31887</a>.</p>
+</div>
+</div>
 </section>
 </main>
 </body>

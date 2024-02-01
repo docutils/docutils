@@ -43,7 +43,7 @@ Attention: this is not a standalone document. -->
 <li><p><a class="reference internal" href="#functions-named-operators" id="toc-entry-9"><span class="sectnum">2.5 </span>Functions (named operators)</a></p></li>
 <li><p><a class="reference internal" href="#greek-letters" id="toc-entry-10"><span class="sectnum">2.6 </span>Greek letters</a></p></li>
 <li><p><a class="reference internal" href="#letterlike-symbols" id="toc-entry-11"><span class="sectnum">2.7 </span>Letterlike symbols</a></p></li>
-<li><p><a class="reference internal" href="#mathematical-alphabets" id="toc-entry-12"><span class="sectnum">2.8 </span>Mathematical Alphabets</a></p></li>
+<li><p><a class="reference internal" href="#math-alphabets" id="toc-entry-12"><span class="sectnum">2.8 </span>Math alphabets</a></p></li>
 <li><p><a class="reference internal" href="#miscellaneous-symbols" id="toc-entry-13"><span class="sectnum">2.9 </span>Miscellaneous symbols</a></p></li>
 <li><p><a class="reference internal" href="#punctuation" id="toc-entry-14"><span class="sectnum">2.10 </span>Punctuation</a></p></li>
 <li><p><a class="reference internal" href="#relation-symbols" id="toc-entry-15"><span class="sectnum">2.11 </span>Relation symbols</a></p>
@@ -1705,11 +1705,15 @@ letter name with <span class="docutils literal">var</span> like <span class="doc
 </tbody>
 </table>
 </section>
-<section id="mathematical-alphabets">
-<span id="math-alphabet"></span><h3><a class="toc-backref" href="#toc-entry-12" role="doc-backlink"><span class="sectnum">2.8 </span>Mathematical Alphabets</a></h3>
-<p>Mathematical alphabets select a combination of font attributes (shape,
-weight, family) <a class="brackets" href="#footnote-1" id="footnote-reference-3" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>. They are intended for mathematical variables where
-style variations are important semantically.</p>
+<section id="math-alphabets">
+<span id="math-alphabet"></span><h3><a class="toc-backref" href="#toc-entry-12" role="doc-backlink"><span class="sectnum">2.8 </span>Math alphabets</a></h3>
+<p>The TeX <em>math alphabet</em> macros are intended for mathematical variables
+where style variations are important semantically.
+They style letters and numbers with a combination of font attributes
+(shape, weight, family) --- non-alphanumerical symbols, function names,
+and mathematical text are left unchanged.</p>
+<p>MathML uses the <em>mathvariant</em> <a class="reference external" href="https://www.w3.org/TR/mathml4/#presm_commatt">style attribute</a> or pre-styled characters
+from the <a class="reference external" href="https://en.wikipedia.org/wiki/Mathematical_Alphanumeric_Symbols">Mathematical Alphanumeric Symbols</a> Unicode block.</p>
 <table>
 <thead>
 <tr><th class="head"><p>command</p></th>
@@ -1718,8 +1722,17 @@ style variations are important semantically.</p>
 </tr>
 </thead>
 <tbody>
+<tr><td><p><span class="docutils literal">\mathrm</span></p></td>
+<td><p><span class="docutils literal">s_\mathrm{out}</span></p></td>
+<td><p><math xmlns="http://www.w3.org/1998/Math/MathML">
+<msub>
+  <mi>s</mi>
+  <mi>out</mi>
+</msub>
+</math></p></td>
+</tr>
 <tr><td><p><span class="docutils literal">\mathbf</span></p></td>
-<td><p><span class="docutils literal"><span class="pre">\mathbf{r}^2=x^2+y^2+z^2</span></span></p></td>
+<td><p><span class="docutils literal"><span class="pre">\mathbf{r}^2=x^2+y^2</span></span></p></td>
 <td><p><math xmlns="http://www.w3.org/1998/Math/MathML">
 <mrow>
   <msup>
@@ -1736,21 +1749,16 @@ style variations are important semantically.</p>
     <mi>y</mi>
     <mn>2</mn>
   </msup>
-  <mo>+</mo>
-  <msup>
-    <mi>z</mi>
-    <mn>2</mn>
-  </msup>
 </mrow>
 </math></p></td>
 </tr>
-<tr><td><p><span class="docutils literal">\mathbb</span></p></td>
-<td><p><span class="docutils literal">\mathbb{R \subset C}</span></p></td>
+<tr><td><p><span class="docutils literal">\mathit</span></p></td>
+<td><p><span class="docutils literal"><span class="pre">\mathit{\sin\Gamma}</span></span></p></td>
 <td><p><math xmlns="http://www.w3.org/1998/Math/MathML">
 <mrow>
-  <mi mathvariant="double-struck">R</mi>
-  <mo>⊂</mo>
-  <mi mathvariant="double-struck">C</mi>
+  <mi>sin</mi>
+  <mspace width="0.167em"/>
+  <mi>Γ</mi>
 </mrow>
 </math></p></td>
 </tr>
@@ -1766,25 +1774,24 @@ style variations are important semantically.</p>
 </mrow>
 </math></p></td>
 </tr>
+<tr><td><p><span class="docutils literal">\mathbb</span></p></td>
+<td><p><span class="docutils literal">\mathbb{R \subset C}</span></p></td>
+<td><p><math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+  <mi mathvariant="double-struck">R</mi>
+  <mo>⊂</mo>
+  <mi mathvariant="double-struck">C</mi>
+</mrow>
+</math></p></td>
+</tr>
 <tr><td><p><span class="docutils literal">\mathfrak</span></p></td>
-<td><p><span class="docutils literal">\mathfrak{a}</span></p></td>
+<td><p><span class="docutils literal">\mathfrak{a+b}</span></p></td>
 <td><p><math xmlns="http://www.w3.org/1998/Math/MathML">
-<mi mathvariant="fraktur">a</mi>
-</math></p></td>
-</tr>
-<tr><td><p><span class="docutils literal">\mathit</span></p></td>
-<td><p><span class="docutils literal"><span class="pre">\mathit{\Gamma}</span></span></p></td>
-<td><p><math xmlns="http://www.w3.org/1998/Math/MathML">
-<mi>Γ</mi>
-</math></p></td>
-</tr>
-<tr><td><p><span class="docutils literal">\mathrm</span></p></td>
-<td><p><span class="docutils literal">s_\mathrm{out}</span></p></td>
-<td><p><math xmlns="http://www.w3.org/1998/Math/MathML">
-<msub>
-  <mi>s</mi>
-  <mi>out</mi>
-</msub>
+<mrow>
+  <mi mathvariant="fraktur">a</mi>
+  <mo>+</mo>
+  <mi mathvariant="fraktur">b</mi>
+</mrow>
 </math></p></td>
 </tr>
 <tr><td><p><span class="docutils literal">\mathsf</span></p></td>
@@ -1805,63 +1812,589 @@ style variations are important semantically.</p>
 </tr>
 </tbody>
 </table>
-<aside class="footnote-list brackets">
-<aside class="footnote brackets" id="footnote-1" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-3">2</a><span class="fn-bracket">]</span></span>
-<p>TeX’s <em>math alphabets</em> correspond to the <a class="reference external" href="https://en.wikipedia.org/wiki/Mathematical_Alphanumeric_Symbols">mathematical
-alphanumeric symbols</a> block in Unicode and the &quot;mathvariant&quot; <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/MathML/Attribute">style
-attribute</a> in MathML.</p>
-</aside>
-</aside>
-<p>Additional alphabets are defined in LaTeX packages, e.g.</p>
-<table>
-<thead>
-<tr><th class="head"><p>TeX command</p></th>
-<th class="head"><p>LaTeX package</p></th>
-<th class="head"><p>MathML &quot;mathvariant&quot;</p></th>
-</tr>
-</thead>
-<tbody>
-<tr><td><p>mathbfit</p></td>
-<td><p><a class="reference external" href="https://www.ctan.org/pkg/isomath">isomath</a></p></td>
-<td><p>bold-italic</p></td>
-</tr>
-<tr><td><p>mathsfit</p></td>
-<td><p><a class="reference external" href="https://www.ctan.org/pkg/isomath">isomath</a></p></td>
-<td><p>sans-serif-italic</p></td>
-</tr>
-<tr><td><p>mathsfbfit</p></td>
-<td><p><a class="reference external" href="https://www.ctan.org/pkg/isomath">isomath</a></p></td>
-<td><p>sans-serif-bold-italic</p></td>
-</tr>
-<tr><td><p>mathscr</p></td>
-<td><p><a class="reference external" href="https://www.ctan.org/pkg/mathrsfs">mathrsfs</a></p></td>
-<td><p>script</p></td>
-</tr>
-</tbody>
-</table>
-<p>This can be used to typeset vector symbols in bold italic
-in line with the International Standard [ISO-80000-2].</p>
-<!-- ``\mathbfit{r}^2=x^2+y^2+z^2`` becomes
-
-.. math:: \mathbfit{r}^2=x^2+y^2+z^2. -->
-<p>The package <a class="reference external" href="https://www.ctan.org/pkg/mathrsfs">mathrsfs</a> (and some drop-in replacements) define the <span class="docutils literal">\mathscr</span>
-macro that selects a differently shaped &quot;script&quot; alphabet.
-Compare <span class="math problematic m">\mathscr{A, B, …, Z, a, b, …, z}</span>
-with <span class="math problematic m">\mathcal{A, B, …, Z, a, b, …, z}</span>.</p>
+<p>The set of characters in a given &quot;math alphabet&quot; varies.
+LaTeX may produce garbage for unsupported characters.
+Additional math alphabets are defined in LaTeX packages, e.g.,</p>
+<ul class="simple">
+<li><p><span class="docutils literal">\mathbfit</span> from <a class="reference external" href="https://www.ctan.org/pkg/isomath">isomath</a> allows vector symbols in line with the
+International Standard <a class="citation-reference" href="#iso-80000-2" id="citation-reference-1" role="doc-biblioref">[ISO-80000-2]</a>.
+E.g., <span class="docutils literal"><span class="pre">\mathbfit{r}^2=x^2+y^2</span></span> becomes <span class="math problematic m">\mathbfit{r}^2=x^2+y^2</span>.</p></li>
+<li><p>Several packages, e.g. <a class="reference external" href="https://www.ctan.org/pkg/mathrsfs">mathrsfs</a>, define <span class="docutils literal">\mathscr</span> that selects a
+differently shaped &quot;script&quot; alphabet.</p></li>
+</ul>
+<p>The listing below shows the characters supported by Unicode and
+Docutils with <a class="reference external" href="https://docutils.sourceforge.io/docs/user/config.html#math-output">math_output</a> MathML. <a class="brackets" href="#italic-digits" id="footnote-reference-3" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a></p>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 391)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 371)</p>
 <p>TeX to MathML converter `blahtexml` failed:</p>
-<p class="pre-wrap">Unrecognised command &quot;\mathscr&quot;</p>
+<p class="pre-wrap">Unrecognised command &quot;\mathbfit&quot;</p>
+</aside>
+<dl class="simple">
+<dt>default:</dt>
+<dd><p><math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+  <mi>A</mi>
+  <mi>B</mi>
+  <mi>C</mi>
+  <mi>D</mi>
+  <mi>E</mi>
+  <mi>F</mi>
+  <mi>G</mi>
+  <mi>H</mi>
+  <mi>I</mi>
+  <mi>J</mi>
+  <mi>K</mi>
+  <mi>L</mi>
+  <mi>M</mi>
+  <mi>N</mi>
+  <mi>O</mi>
+  <mi>P</mi>
+  <mi>Q</mi>
+  <mi>R</mi>
+  <mi>S</mi>
+  <mi>T</mi>
+  <mi>U</mi>
+  <mi>V</mi>
+  <mi>W</mi>
+  <mi>X</mi>
+  <mi>Y</mi>
+  <mi>Z</mi>
+  <mspace width="0.333em"/>
+  <mi>a</mi>
+  <mi>b</mi>
+  <mi>c</mi>
+  <mi>d</mi>
+  <mi>e</mi>
+  <mi>f</mi>
+  <mi>g</mi>
+  <mi>h</mi>
+  <mi>i</mi>
+  <mi>j</mi>
+  <mi>k</mi>
+  <mi>l</mi>
+  <mi>m</mi>
+  <mi>n</mi>
+  <mi>o</mi>
+  <mi>p</mi>
+  <mi>q</mi>
+  <mi>r</mi>
+  <mi>s</mi>
+  <mi>t</mi>
+  <mi>u</mi>
+  <mi>v</mi>
+  <mi>w</mi>
+  <mi>x</mi>
+  <mi>y</mi>
+  <mi>z</mi>
+  <mspace width="0.333em"/>
+  <mi>ı</mi>
+  <mi>𝚥</mi>
+</mrow>
+</math>
+<span class="math problematic m">{ΓΔΘΛΞΠΣΥΦΨΩ\ αβγδεζηθικλμνξπρςστυφχψω\ ϵϑϕϰϱϖϜϝ\ \partial∇}</span>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mn>0123456789</mn>
+</math></p>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 382)</p>
+<p>TeX to MathML converter `blahtexml` failed:</p>
+<p class="pre-wrap">Non-ASCII characters may only be used in text mode (try enclosing the problem characters in &quot;\text{...}&quot;)</p>
+</aside>
+</dd>
+<dt>mathrm:</dt>
+<dd><p><math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+  <mi>ABCDEFGHIJKLMNOPQRSTUVWXYZ</mi>
+  <mspace width="0.333em"/>
+  <mi>abcdefghijklmnopqrstuvwxyz</mi>
+  <mspace width="0.333em"/>
+  <mi>ı</mi>
+  <mi>𝚥</mi>
+</mrow>
+</math>
+<span class="math problematic m">\mathrm{ΓΔΘΛΞΠΣΥΦΨΩ\ αβγδεζηθικλμνξπρςστυφχψω\ ϵϑϕϰϱϖϜϝ\ \partial∇}</span>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mn>0123456789</mn>
+</math></p>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 386)</p>
+<p>TeX to MathML converter `blahtexml` failed:</p>
+<p class="pre-wrap">Non-ASCII characters may only be used in text mode (try enclosing the problem characters in &quot;\text{...}&quot;)</p>
+</aside>
+</dd>
+<dt>mathbf:</dt>
+<dd><p><math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+  <mi mathvariant="bold">A</mi>
+  <mi mathvariant="bold">B</mi>
+  <mi mathvariant="bold">C</mi>
+  <mi mathvariant="bold">D</mi>
+  <mi mathvariant="bold">E</mi>
+  <mi mathvariant="bold">F</mi>
+  <mi mathvariant="bold">G</mi>
+  <mi mathvariant="bold">H</mi>
+  <mi mathvariant="bold">I</mi>
+  <mi mathvariant="bold">J</mi>
+  <mi mathvariant="bold">K</mi>
+  <mi mathvariant="bold">L</mi>
+  <mi mathvariant="bold">M</mi>
+  <mi mathvariant="bold">N</mi>
+  <mi mathvariant="bold">O</mi>
+  <mi mathvariant="bold">P</mi>
+  <mi mathvariant="bold">Q</mi>
+  <mi mathvariant="bold">R</mi>
+  <mi mathvariant="bold">S</mi>
+  <mi mathvariant="bold">T</mi>
+  <mi mathvariant="bold">U</mi>
+  <mi mathvariant="bold">V</mi>
+  <mi mathvariant="bold">W</mi>
+  <mi mathvariant="bold">X</mi>
+  <mi mathvariant="bold">Y</mi>
+  <mi mathvariant="bold">Z</mi>
+  <mspace width="0.333em"/>
+  <mi mathvariant="bold">a</mi>
+  <mi mathvariant="bold">b</mi>
+  <mi mathvariant="bold">c</mi>
+  <mi mathvariant="bold">d</mi>
+  <mi mathvariant="bold">e</mi>
+  <mi mathvariant="bold">f</mi>
+  <mi mathvariant="bold">g</mi>
+  <mi mathvariant="bold">h</mi>
+  <mi mathvariant="bold">i</mi>
+  <mi mathvariant="bold">j</mi>
+  <mi mathvariant="bold">k</mi>
+  <mi mathvariant="bold">l</mi>
+  <mi mathvariant="bold">m</mi>
+  <mi mathvariant="bold">n</mi>
+  <mi mathvariant="bold">o</mi>
+  <mi mathvariant="bold">p</mi>
+  <mi mathvariant="bold">q</mi>
+  <mi mathvariant="bold">r</mi>
+  <mi mathvariant="bold">s</mi>
+  <mi mathvariant="bold">t</mi>
+  <mi mathvariant="bold">u</mi>
+  <mi mathvariant="bold">v</mi>
+  <mi mathvariant="bold">w</mi>
+  <mi mathvariant="bold">x</mi>
+  <mi mathvariant="bold">y</mi>
+  <mi mathvariant="bold">z</mi>
+</mrow>
+</math>
+<span class="math problematic m">\mathbf{ΓΔΘΛΞΠΣΥΦΨΩ\ αβγδεζηθικλμνξπρςστυφχψω\ ϵϑϕϰϱϖϜϝ\ \partial∇}</span>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mn mathvariant="bold">0123456789</mn>
+</math></p>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 390)</p>
+<p>TeX to MathML converter `blahtexml` failed:</p>
+<p class="pre-wrap">Non-ASCII characters may only be used in text mode (try enclosing the problem characters in &quot;\text{...}&quot;)</p>
+</aside>
+</dd>
+<dt>mathit:</dt>
+<dd><p><math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+  <mi>A</mi>
+  <mi>B</mi>
+  <mi>C</mi>
+  <mi>D</mi>
+  <mi>E</mi>
+  <mi>F</mi>
+  <mi>G</mi>
+  <mi>H</mi>
+  <mi>I</mi>
+  <mi>J</mi>
+  <mi>K</mi>
+  <mi>L</mi>
+  <mi>M</mi>
+  <mi>N</mi>
+  <mi>O</mi>
+  <mi>P</mi>
+  <mi>Q</mi>
+  <mi>R</mi>
+  <mi>S</mi>
+  <mi>T</mi>
+  <mi>U</mi>
+  <mi>V</mi>
+  <mi>W</mi>
+  <mi>X</mi>
+  <mi>Y</mi>
+  <mi>Z</mi>
+  <mspace width="0.333em"/>
+  <mi>a</mi>
+  <mi>b</mi>
+  <mi>c</mi>
+  <mi>d</mi>
+  <mi>e</mi>
+  <mi>f</mi>
+  <mi>g</mi>
+  <mi>h</mi>
+  <mi>i</mi>
+  <mi>j</mi>
+  <mi>k</mi>
+  <mi>l</mi>
+  <mi>m</mi>
+  <mi>n</mi>
+  <mi>o</mi>
+  <mi>p</mi>
+  <mi>q</mi>
+  <mi>r</mi>
+  <mi>s</mi>
+  <mi>t</mi>
+  <mi>u</mi>
+  <mi>v</mi>
+  <mi>w</mi>
+  <mi>x</mi>
+  <mi>y</mi>
+  <mi>z</mi>
+  <mspace width="0.333em"/>
+  <mi>ı</mi>
+  <mi>𝚥</mi>
+</mrow>
+</math>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+  <mi>Γ</mi>
+  <mi>Δ</mi>
+  <mi>Θ</mi>
+  <mi>Λ</mi>
+  <mi>Ξ</mi>
+  <mi>Π</mi>
+  <mi>Σ</mi>
+  <mi>Υ</mi>
+  <mi>Φ</mi>
+  <mi>Ψ</mi>
+  <mi>Ω</mi>
+  <mspace width="0.333em"/>
+  <mi>α</mi>
+  <mi>β</mi>
+  <mi>γ</mi>
+  <mi>δ</mi>
+  <mi>ε</mi>
+  <mi>ζ</mi>
+  <mi>η</mi>
+  <mi>θ</mi>
+  <mi>ι</mi>
+  <mi>κ</mi>
+  <mi>λ</mi>
+  <mi>μ</mi>
+  <mi>ν</mi>
+  <mi>ξ</mi>
+  <mi>π</mi>
+  <mi>ρ</mi>
+  <mi>ς</mi>
+  <mi>σ</mi>
+  <mi>τ</mi>
+  <mi>υ</mi>
+  <mi>φ</mi>
+  <mi>χ</mi>
+  <mi>ψ</mi>
+  <mi>ω</mi>
+  <mspace width="0.333em"/>
+  <mi>ϵ</mi>
+  <mi>ϑ</mi>
+  <mi>ϕ</mi>
+  <mi>ϰ</mi>
+  <mi>ϱ</mi>
+  <mi>ϖ</mi>
+  <mspace width="0.333em"/>
+  <mi mathvariant="normal">∂</mi>
+  <mo>∇</mo>
+</mrow>
+</math>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mn mathvariant="italic">0123456789</mn>
+</math> <a class="brackets" href="#italic-digits" id="footnote-reference-4" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a></p>
+</dd>
+<dt>mathbfit:</dt>
+<dd><p><span class="math problematic m">\mathbfit{ABCDEFGHIJKLMNOPQRSTUVWXYZ\ abcdefghijklmnopqrstuvwxyz}</span>
+<span class="math problematic m">\mathbfit{ΓΔΘΛΞΠΣΥΦΨΩ\ αβγδεζηθικλμνξπρςστυφχψω\ ϵϑϕϰϱϖ\ \partial∇}</span></p>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 398)</p>
+<p>TeX to MathML converter `blahtexml` failed:</p>
+<p class="pre-wrap">Unrecognised command &quot;\mathbfit&quot;</p>
 </aside>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 391)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 398)</p>
+<p>TeX to MathML converter `blahtexml` failed:</p>
+<p class="pre-wrap">Unrecognised command &quot;\mathbfit&quot;</p>
+</aside>
+</dd>
+<dt>mathcal:</dt>
+<dd><p><span class="math problematic m">\mathcal{ABCDEFGHIJKLMNOPQRSTUVWXYZ\ abcdefghijklmnopqrstuvwxyz}</span></p>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 401)</p>
 <p>TeX to MathML converter `blahtexml` failed:</p>
 <p class="pre-wrap">The symbol &quot;a&quot; is not available in the font &quot;cal&quot;</p>
 </aside>
-<p>In contrast to the math alphabet selectors, <span class="docutils literal">\boldsymbol</span> only changes
-the <em>font weight</em>. In LaTeX, it can be used to get a bold version of any
-mathematical symbol (for other output formats, results are mixed):</p>
+</dd>
+<dt>mathscr:</dt>
+<dd><p><span class="math problematic m">\mathscr{ABCDEFGHIJKLMNOPQRSTUVWXYZ\ abcdefghijklmnopqrstuvwxyz}</span></p>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 403)</p>
+<p>TeX to MathML converter `blahtexml` failed:</p>
+<p class="pre-wrap">Unrecognised command &quot;\mathscr&quot;</p>
+</aside>
+</dd>
+<dt>mathbb:</dt>
+<dd><p><span class="math problematic m">\mathbb{ABCDEFGHIJKLMNOPQRSTUVWXYZ\ abcdefghijklmnopqrstuvwxyz}</span>
+<span class="math problematic m">\mathbb{ΓΠΣ\ γπ}</span>
+<span class="math problematic m">\mathbb{0123456789}</span></p>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 405)</p>
+<p>TeX to MathML converter `blahtexml` failed:</p>
+<p class="pre-wrap">The symbol &quot;a&quot; is not available in the font &quot;bb&quot;</p>
+</aside>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 405)</p>
+<p>TeX to MathML converter `blahtexml` failed:</p>
+<p class="pre-wrap">The symbol &quot;\Gamma&quot; is not available in the font &quot;bb&quot;</p>
+</aside>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 405)</p>
+<p>TeX to MathML converter `blahtexml` failed:</p>
+<p class="pre-wrap">The symbol &quot;0&quot; is not available in the font &quot;bb&quot;</p>
+</aside>
+</dd>
+<dt>mathfrak:</dt>
+<dd><p><math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+  <mi mathvariant="fraktur">A</mi>
+  <mi mathvariant="fraktur">B</mi>
+  <mi mathvariant="fraktur">C</mi>
+  <mi mathvariant="fraktur">D</mi>
+  <mi mathvariant="fraktur">E</mi>
+  <mi mathvariant="fraktur">F</mi>
+  <mi mathvariant="fraktur">G</mi>
+  <mi mathvariant="fraktur">H</mi>
+  <mi mathvariant="fraktur">I</mi>
+  <mi mathvariant="fraktur">J</mi>
+  <mi mathvariant="fraktur">K</mi>
+  <mi mathvariant="fraktur">L</mi>
+  <mi mathvariant="fraktur">M</mi>
+  <mi mathvariant="fraktur">N</mi>
+  <mi mathvariant="fraktur">O</mi>
+  <mi mathvariant="fraktur">P</mi>
+  <mi mathvariant="fraktur">Q</mi>
+  <mi mathvariant="fraktur">R</mi>
+  <mi mathvariant="fraktur">S</mi>
+  <mi mathvariant="fraktur">T</mi>
+  <mi mathvariant="fraktur">U</mi>
+  <mi mathvariant="fraktur">V</mi>
+  <mi mathvariant="fraktur">W</mi>
+  <mi mathvariant="fraktur">X</mi>
+  <mi mathvariant="fraktur">Y</mi>
+  <mi mathvariant="fraktur">Z</mi>
+  <mspace width="0.333em"/>
+  <mi mathvariant="fraktur">a</mi>
+  <mi mathvariant="fraktur">b</mi>
+  <mi mathvariant="fraktur">c</mi>
+  <mi mathvariant="fraktur">d</mi>
+  <mi mathvariant="fraktur">e</mi>
+  <mi mathvariant="fraktur">f</mi>
+  <mi mathvariant="fraktur">g</mi>
+  <mi mathvariant="fraktur">h</mi>
+  <mi mathvariant="fraktur">i</mi>
+  <mi mathvariant="fraktur">j</mi>
+  <mi mathvariant="fraktur">k</mi>
+  <mi mathvariant="fraktur">l</mi>
+  <mi mathvariant="fraktur">m</mi>
+  <mi mathvariant="fraktur">n</mi>
+  <mi mathvariant="fraktur">o</mi>
+  <mi mathvariant="fraktur">p</mi>
+  <mi mathvariant="fraktur">q</mi>
+  <mi mathvariant="fraktur">r</mi>
+  <mi mathvariant="fraktur">s</mi>
+  <mi mathvariant="fraktur">t</mi>
+  <mi mathvariant="fraktur">u</mi>
+  <mi mathvariant="fraktur">v</mi>
+  <mi mathvariant="fraktur">w</mi>
+  <mi mathvariant="fraktur">x</mi>
+  <mi mathvariant="fraktur">y</mi>
+  <mi mathvariant="fraktur">z</mi>
+</mrow>
+</math></p>
+</dd>
+<dt>mathsf:</dt>
+<dd><p><math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+  <mi mathvariant="sans-serif">A</mi>
+  <mi mathvariant="sans-serif">B</mi>
+  <mi mathvariant="sans-serif">C</mi>
+  <mi mathvariant="sans-serif">D</mi>
+  <mi mathvariant="sans-serif">E</mi>
+  <mi mathvariant="sans-serif">F</mi>
+  <mi mathvariant="sans-serif">G</mi>
+  <mi mathvariant="sans-serif">H</mi>
+  <mi mathvariant="sans-serif">I</mi>
+  <mi mathvariant="sans-serif">J</mi>
+  <mi mathvariant="sans-serif">K</mi>
+  <mi mathvariant="sans-serif">L</mi>
+  <mi mathvariant="sans-serif">M</mi>
+  <mi mathvariant="sans-serif">N</mi>
+  <mi mathvariant="sans-serif">O</mi>
+  <mi mathvariant="sans-serif">P</mi>
+  <mi mathvariant="sans-serif">Q</mi>
+  <mi mathvariant="sans-serif">R</mi>
+  <mi mathvariant="sans-serif">S</mi>
+  <mi mathvariant="sans-serif">T</mi>
+  <mi mathvariant="sans-serif">U</mi>
+  <mi mathvariant="sans-serif">V</mi>
+  <mi mathvariant="sans-serif">W</mi>
+  <mi mathvariant="sans-serif">X</mi>
+  <mi mathvariant="sans-serif">Y</mi>
+  <mi mathvariant="sans-serif">Z</mi>
+  <mspace width="0.333em"/>
+  <mi mathvariant="sans-serif">a</mi>
+  <mi mathvariant="sans-serif">b</mi>
+  <mi mathvariant="sans-serif">c</mi>
+  <mi mathvariant="sans-serif">d</mi>
+  <mi mathvariant="sans-serif">e</mi>
+  <mi mathvariant="sans-serif">f</mi>
+  <mi mathvariant="sans-serif">g</mi>
+  <mi mathvariant="sans-serif">h</mi>
+  <mi mathvariant="sans-serif">i</mi>
+  <mi mathvariant="sans-serif">j</mi>
+  <mi mathvariant="sans-serif">k</mi>
+  <mi mathvariant="sans-serif">l</mi>
+  <mi mathvariant="sans-serif">m</mi>
+  <mi mathvariant="sans-serif">n</mi>
+  <mi mathvariant="sans-serif">o</mi>
+  <mi mathvariant="sans-serif">p</mi>
+  <mi mathvariant="sans-serif">q</mi>
+  <mi mathvariant="sans-serif">r</mi>
+  <mi mathvariant="sans-serif">s</mi>
+  <mi mathvariant="sans-serif">t</mi>
+  <mi mathvariant="sans-serif">u</mi>
+  <mi mathvariant="sans-serif">v</mi>
+  <mi mathvariant="sans-serif">w</mi>
+  <mi mathvariant="sans-serif">x</mi>
+  <mi mathvariant="sans-serif">y</mi>
+  <mi mathvariant="sans-serif">z</mi>
+</mrow>
+</math>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mn mathvariant="sans-serif">0123456789</mn>
+</math></p>
+</dd>
+<dt>mathsfit:</dt>
+<dd><p><span class="math problematic m">\mathsfit{ABCDEFGHIJKLMNOPQRSTUVWXYZ\ abcdefghijklmnopqrstuvwxyz}</span></p>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 414)</p>
+<p>TeX to MathML converter `blahtexml` failed:</p>
+<p class="pre-wrap">Unrecognised command &quot;\mathsfit&quot;</p>
+</aside>
+</dd>
+<dt>mathsfbfit:</dt>
+<dd><p><span class="math problematic m">\mathsfbfit{ABCDEFGHIJKLMNOPQRSTUVWXYZ\ abcdefghijklmnopqrstuvwxyz}</span>
+<span class="math problematic m">\mathsfbfit{ΓΔΘΛΞΠΣΥΦΨΩ\ αβγδεζηθικλμνξπρςστυφχψω\ ϵϑϕϰϱϖ\ \partial∇}</span></p>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 416)</p>
+<p>TeX to MathML converter `blahtexml` failed:</p>
+<p class="pre-wrap">Unrecognised command &quot;\mathsfbfit&quot;</p>
+</aside>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 416)</p>
+<p>TeX to MathML converter `blahtexml` failed:</p>
+<p class="pre-wrap">Unrecognised command &quot;\mathsfbfit&quot;</p>
+</aside>
+</dd>
+<dt>mathtt:</dt>
+<dd><p><math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+  <mi mathvariant="monospace">A</mi>
+  <mi mathvariant="monospace">B</mi>
+  <mi mathvariant="monospace">C</mi>
+  <mi mathvariant="monospace">D</mi>
+  <mi mathvariant="monospace">E</mi>
+  <mi mathvariant="monospace">F</mi>
+  <mi mathvariant="monospace">G</mi>
+  <mi mathvariant="monospace">H</mi>
+  <mi mathvariant="monospace">I</mi>
+  <mi mathvariant="monospace">J</mi>
+  <mi mathvariant="monospace">K</mi>
+  <mi mathvariant="monospace">L</mi>
+  <mi mathvariant="monospace">M</mi>
+  <mi mathvariant="monospace">N</mi>
+  <mi mathvariant="monospace">O</mi>
+  <mi mathvariant="monospace">P</mi>
+  <mi mathvariant="monospace">Q</mi>
+  <mi mathvariant="monospace">R</mi>
+  <mi mathvariant="monospace">S</mi>
+  <mi mathvariant="monospace">T</mi>
+  <mi mathvariant="monospace">U</mi>
+  <mi mathvariant="monospace">V</mi>
+  <mi mathvariant="monospace">W</mi>
+  <mi mathvariant="monospace">X</mi>
+  <mi mathvariant="monospace">Y</mi>
+  <mi mathvariant="monospace">Z</mi>
+  <mspace width="0.333em"/>
+  <mi mathvariant="monospace">a</mi>
+  <mi mathvariant="monospace">b</mi>
+  <mi mathvariant="monospace">c</mi>
+  <mi mathvariant="monospace">d</mi>
+  <mi mathvariant="monospace">e</mi>
+  <mi mathvariant="monospace">f</mi>
+  <mi mathvariant="monospace">g</mi>
+  <mi mathvariant="monospace">h</mi>
+  <mi mathvariant="monospace">i</mi>
+  <mi mathvariant="monospace">j</mi>
+  <mi mathvariant="monospace">k</mi>
+  <mi mathvariant="monospace">l</mi>
+  <mi mathvariant="monospace">m</mi>
+  <mi mathvariant="monospace">n</mi>
+  <mi mathvariant="monospace">o</mi>
+  <mi mathvariant="monospace">p</mi>
+  <mi mathvariant="monospace">q</mi>
+  <mi mathvariant="monospace">r</mi>
+  <mi mathvariant="monospace">s</mi>
+  <mi mathvariant="monospace">t</mi>
+  <mi mathvariant="monospace">u</mi>
+  <mi mathvariant="monospace">v</mi>
+  <mi mathvariant="monospace">w</mi>
+  <mi mathvariant="monospace">x</mi>
+  <mi mathvariant="monospace">y</mi>
+  <mi mathvariant="monospace">z</mi>
+</mrow>
+</math>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mn mathvariant="monospace">0123456789</mn>
+</math></p>
+</dd>
+</dl>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="italic-digits" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#footnote-reference-3">1</a>,<a role="doc-backlink" href="#footnote-reference-4">2</a>)</span>
+<p>Italic digits are not defined in Unicode
+but work in LaTeX.</p>
+</aside>
+</aside>
+<p>In contrast to the <em>math alphabet</em> selectors, <span class="docutils literal">\boldsymbol</span> only
+changes the <em>font weight</em>. It can be used to get a bold version of
+any mathematical symbol:</p>
+<div>
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+<mrow>
+  <msub>
+    <mi>V</mi>
+    <mi>i</mi>
+  </msub>
+  <mi>x</mi>
+  <mo>±</mo>
+  <mi>cos</mi>
+  <mo stretchy="false">(</mo>
+  <mi>α</mi>
+  <mo stretchy="false">)</mo>
+  <mo>≈</mo>
+  <mn>3</mn>
+  <mi mathvariant="normal">Γ</mi>
+  <mo lspace="1.000em">∀</mo>
+  <mi>x</mi>
+  <mo>∈</mo>
+  <mi mathvariant="double-struck">R</mi>
+</mrow>
+</math>
+</div>
 <div>
 <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
 <mrow>
@@ -1885,6 +2418,8 @@ mathematical symbol (for other output formats, results are mixed):</p>
 </mrow>
 </math>
 </div>
+<p>It is usually ill-advised to apply <span class="docutils literal">\boldsymbol</span> to more than one symbol
+at a time.</p>
 </section>
 <section id="miscellaneous-symbols">
 <h3><a class="toc-backref" href="#toc-entry-13" role="doc-backlink"><span class="sectnum">2.9 </span>Miscellaneous symbols</a></h3>
@@ -2045,12 +2580,12 @@ mathematical symbol (for other output formats, results are mixed):</p>
 </tbody>
 </table>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 420)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 461)</p>
 <p>TeX to MathML converter `blahtexml` failed:</p>
 <p class="pre-wrap">Unrecognised command &quot;\diagdown&quot;</p>
 </aside>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 421)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 462)</p>
 <p>TeX to MathML converter `blahtexml` failed:</p>
 <p class="pre-wrap">Unrecognised command &quot;\diagup&quot;</p>
 </aside>
@@ -2092,7 +2627,7 @@ mathematical symbol (for other output formats, results are mixed):</p>
 <td><p><math xmlns="http://www.w3.org/1998/Math/MathML">
 <mo lspace="0.111em" rspace="0.333em">:</mo>
 </math></p></td>
-<td><p><span class="docutils literal">\colon</span> <a class="brackets" href="#footnote-2" id="footnote-reference-4" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a></p></td>
+<td><p><span class="docutils literal">\colon</span> <a class="brackets" href="#footnote-1" id="footnote-reference-5" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a></p></td>
 <td><p><span class="math problematic m">\dotsc</span></p></td>
 <td><p><span class="docutils literal">\dotsc</span></p></td>
 </tr>
@@ -2135,28 +2670,28 @@ mathematical symbol (for other output formats, results are mixed):</p>
 </tbody>
 </table>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 432)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 473)</p>
 <p>TeX to MathML converter `blahtexml` failed:</p>
 <p class="pre-wrap">Unrecognised command &quot;\dotsc&quot;</p>
 </aside>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 433)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 474)</p>
 <p>TeX to MathML converter `blahtexml` failed:</p>
 <p class="pre-wrap">Unrecognised command &quot;\dotsi&quot;</p>
 </aside>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 434)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 475)</p>
 <p>TeX to MathML converter `blahtexml` failed:</p>
 <p class="pre-wrap">Unrecognised command &quot;\dotsm&quot;</p>
 </aside>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 435)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 476)</p>
 <p>TeX to MathML converter `blahtexml` failed:</p>
 <p class="pre-wrap">Unrecognised command &quot;\dotso&quot;</p>
 </aside>
 <aside class="footnote-list brackets">
-<aside class="footnote brackets" id="footnote-2" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-4">3</a><span class="fn-bracket">]</span></span>
+<aside class="footnote brackets" id="footnote-1" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-5">3</a><span class="fn-bracket">]</span></span>
 <p>Punctuation (not ratio):
 Compare spacing in <math xmlns="http://www.w3.org/1998/Math/MathML">
 <mrow>
@@ -2837,17 +3372,17 @@ Compare spacing in <math xmlns="http://www.w3.org/1998/Math/MathML">
 </tbody>
 </table>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 493)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 534)</p>
 <p>TeX to MathML converter `blahtexml` failed:</p>
 <p class="pre-wrap">Unrecognised command &quot;\lneq&quot;</p>
 </aside>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 496)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 537)</p>
 <p>TeX to MathML converter `blahtexml` failed:</p>
 <p class="pre-wrap">Unrecognised command &quot;\gneq&quot;</p>
 </aside>
-<p>The commands <span class="docutils literal">\lvertneqq</span> and <span class="docutils literal">\gvertneqq</span> are not supported by
-LateX2MathML, as there is no corresponding Unicode character.</p>
+<p>The commands <span class="docutils literal">\lvertneqq</span> and <span class="docutils literal">\gvertneqq</span> are not supported
+with MathML output, as there is no corresponding Unicode character.</p>
 <p>Synonyms: <math xmlns="http://www.w3.org/1998/Math/MathML">
 <mo>≠</mo>
 </math> <span class="docutils literal">\ne</span>, <math xmlns="http://www.w3.org/1998/Math/MathML">
@@ -3178,7 +3713,7 @@ LateX2MathML, as there is no corresponding Unicode character.</p>
 </table>
 <p>Synonyms: <span class="math problematic m">\owns</span> <span class="docutils literal">\owns</span>.</p>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 553)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 594)</p>
 <p>TeX to MathML converter `blahtexml` failed:</p>
 <p class="pre-wrap">Unrecognised command &quot;\owns&quot;</p>
 </aside>
@@ -3189,7 +3724,7 @@ LateX2MathML, as there is no corresponding Unicode character.</p>
 <mo>∌</mo>
 </math> <span class="docutils literal">\not\ni</span>.</p>
 <p>The commands <span class="docutils literal">\varsubsetneq</span>, <span class="docutils literal">\varsubsetneqq</span>, <span class="docutils literal">\varsupsetneq</span>,
-and <span class="docutils literal">\varsupsetneqq</span> are not supported by LateX2MathML, as there is no
+and <span class="docutils literal">\varsupsetneqq</span> are not supported with MathML output as there is no
 corresponding Unicode character.</p>
 </section>
 </section>
@@ -3248,7 +3783,7 @@ corresponding Unicode character.</p>
 </tbody>
 </table>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 571)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 612)</p>
 <p>TeX to MathML converter `blahtexml` failed:</p>
 <p class="pre-wrap">Unrecognised command &quot;\smallint&quot;</p>
 </aside>
@@ -3318,7 +3853,7 @@ take one optional argument (the subscript) and one mandatory argument
 A \xleftarrow{n+\mu-1} B \xrightarrow[T]{n\pm i-1} C
 </pre>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 603)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 644)</p>
 <p>TeX to MathML converter `blahtexml` failed:</p>
 <p class="pre-wrap">Unrecognised command &quot;\xleftarrow&quot;</p>
 </aside>
@@ -3514,7 +4049,7 @@ matrix.</p>
 \end{cases}
 </pre>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 647)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 688)</p>
 <p>TeX to MathML converter `blahtexml` failed:</p>
 <p class="pre-wrap">Unrecognised command &quot;\phantom&quot;</p>
 </aside>
@@ -3601,7 +4136,7 @@ commands:</p>
 </math></p></td>
 <td><p><span class="docutils literal">3  4</span></p></td>
 <td></td>
-<td><p>regular space <a class="brackets" href="#footnote-3" id="footnote-reference-5" role="doc-noteref"><span class="fn-bracket">[</span>4<span class="fn-bracket">]</span></a></p></td>
+<td><p>regular space <a class="brackets" href="#footnote-2" id="footnote-reference-6" role="doc-noteref"><span class="fn-bracket">[</span>4<span class="fn-bracket">]</span></a></p></td>
 </tr>
 <tr><td><p><math xmlns="http://www.w3.org/1998/Math/MathML">
 <mrow>
@@ -3612,7 +4147,7 @@ commands:</p>
 </math></p></td>
 <td><p><span class="docutils literal"><span class="pre">3\!4</span></span></p></td>
 <td><p><span class="docutils literal">3\negthinspace 4</span></p></td>
-<td><p>negative space <a class="brackets" href="#footnote-4" id="footnote-reference-6" role="doc-noteref"><span class="fn-bracket">[</span>5<span class="fn-bracket">]</span></a></p></td>
+<td><p>negative space <a class="brackets" href="#footnote-3" id="footnote-reference-7" role="doc-noteref"><span class="fn-bracket">[</span>5<span class="fn-bracket">]</span></a></p></td>
 </tr>
 <tr><td><p><span class="math problematic m">3\negmedspace 4</span></p></td>
 <td></td>
@@ -3632,46 +4167,46 @@ commands:</p>
 <tr><td><p><span class="math problematic m">3\mspace{20mu}4</span></p></td>
 <td></td>
 <td><p><span class="docutils literal">3\mspace{20mu}4</span></p></td>
-<td><p>custom length <a class="brackets" href="#footnote-5" id="footnote-reference-7" role="doc-noteref"><span class="fn-bracket">[</span>6<span class="fn-bracket">]</span></a></p></td>
+<td><p>custom length <a class="brackets" href="#footnote-4" id="footnote-reference-8" role="doc-noteref"><span class="fn-bracket">[</span>6<span class="fn-bracket">]</span></a></p></td>
 </tr>
 </tbody>
 </table>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 667)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 708)</p>
 <p>TeX to MathML converter `blahtexml` failed:</p>
 <p class="pre-wrap">Unrecognised command &quot;\:&quot;</p>
 </aside>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 671)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 712)</p>
 <p>TeX to MathML converter `blahtexml` failed:</p>
 <p class="pre-wrap">Unrecognised command &quot;\negmedspace&quot;</p>
 </aside>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 672)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 713)</p>
 <p>TeX to MathML converter `blahtexml` failed:</p>
 <p class="pre-wrap">Unrecognised command &quot;\negthickspace&quot;</p>
 </aside>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 673)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 714)</p>
 <p>TeX to MathML converter `blahtexml` failed:</p>
 <p class="pre-wrap">Unrecognised command &quot;\hspace&quot;</p>
 </aside>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 674)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 715)</p>
 <p>TeX to MathML converter `blahtexml` failed:</p>
 <p class="pre-wrap">Unrecognised command &quot;\mspace&quot;</p>
 </aside>
 <aside class="footnote-list brackets">
-<aside class="footnote brackets" id="footnote-3" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-5">4</a><span class="fn-bracket">]</span></span>
+<aside class="footnote brackets" id="footnote-2" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-6">4</a><span class="fn-bracket">]</span></span>
 <p>Whitespace characters are ignored in LaTeX math mode.</p>
 </aside>
-<aside class="footnote brackets" id="footnote-4" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-6">5</a><span class="fn-bracket">]</span></span>
-<p>Negative spacing does not work with MathML (last tested in Firefox 102).</p>
+<aside class="footnote brackets" id="footnote-3" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-7">5</a><span class="fn-bracket">]</span></span>
+<p>Negative spacing does not work with MathML (last tested in Firefox 115).</p>
 </aside>
-<aside class="footnote brackets" id="footnote-5" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-7">6</a><span class="fn-bracket">]</span></span>
+<aside class="footnote brackets" id="footnote-4" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-8">6</a><span class="fn-bracket">]</span></span>
 <p>In LaTeX, the unit must be 'mu' (1 mu = 1/18em).</p>
 </aside>
 </aside>
@@ -3682,7 +4217,7 @@ wide and high as three X’s:</p>
 \frac{\phantom{XXX}+1}{XXX-1}
 </pre>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 685)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 726)</p>
 <p>TeX to MathML converter `blahtexml` failed:</p>
 <p class="pre-wrap">Unrecognised command &quot;\phantom&quot;</p>
 </aside>
@@ -3693,7 +4228,7 @@ MathML.</p>
 <section id="modular-arithmetic-and-modulo-operation">
 <h3><a class="toc-backref" href="#toc-entry-26" role="doc-backlink"><span class="sectnum">3.6 </span>Modular arithmetic and modulo operation</a></h3>
 <p>The commands <span class="docutils literal">\bmod</span>, <span class="docutils literal">\pmod</span>, <span class="docutils literal">\mod</span>, and <span class="docutils literal">\pod</span> deal with the
-special spacing conventions of the “mod” notation. <a class="brackets" href="#footnote-6" id="footnote-reference-8" role="doc-noteref"><span class="fn-bracket">[</span>7<span class="fn-bracket">]</span></a></p>
+special spacing conventions of the “mod” notation. <a class="brackets" href="#footnote-5" id="footnote-reference-9" role="doc-noteref"><span class="fn-bracket">[</span>7<span class="fn-bracket">]</span></a></p>
 <table>
 <thead>
 <tr><th class="head"><p>command</p></th>
@@ -3764,13 +4299,13 @@ special spacing conventions of the “mod” notation. <a class="brackets" href=
 </tbody>
 </table>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 706)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 747)</p>
 <p>TeX to MathML converter `blahtexml` failed:</p>
 <p class="pre-wrap">Unrecognised command &quot;\pod&quot;</p>
 </aside>
 <aside class="footnote-list brackets">
-<aside class="footnote brackets" id="footnote-6" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-8">7</a><span class="fn-bracket">]</span></span>
+<aside class="footnote brackets" id="footnote-5" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-9">7</a><span class="fn-bracket">]</span></span>
 <p>Currently <a class="reference external" href="https://sourceforge.net/p/docutils/feature-requests/93/">not supported</a> by the &quot;HTML&quot; <a class="reference external" href="https://docutils.sourceforge.io/docs/user/config.html#math-output">math_output</a> option
 of the HTML writer.</p>
 </aside>
@@ -3841,7 +4376,7 @@ of the HTML writer.</p>
 \boxed{\eta \leq C(\delta(\eta) +\Lambda_M(0,\delta))}
 </pre>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 735)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 776)</p>
 <p>TeX to MathML converter `blahtexml` failed:</p>
 <p class="pre-wrap">Unrecognised command &quot;\boxed&quot;</p>
 </aside>
@@ -3868,7 +4403,7 @@ force text style and display style respectively.</p>
 \tfrac{x+1}{x-1}
 </pre>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 746)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 787)</p>
 <p>TeX to MathML converter `blahtexml` failed:</p>
 <p class="pre-wrap">Unrecognised command &quot;\dfrac&quot;</p>
 </aside>
@@ -3887,12 +4422,12 @@ force text style and display style respectively.</p>
 </mfrac>
 </math>, <span class="math problematic m">\dfrac{x+1}{x-1}</span>, <span class="math problematic m">\tfrac{x+1}{x-1}</span>.</p>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 750)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 791)</p>
 <p>TeX to MathML converter `blahtexml` failed:</p>
 <p class="pre-wrap">Unrecognised command &quot;\dfrac&quot;</p>
 </aside>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 750)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 791)</p>
 <p>TeX to MathML converter `blahtexml` failed:</p>
 <p class="pre-wrap">Unrecognised command &quot;\tfrac&quot;</p>
 </aside>
@@ -4466,7 +5001,7 @@ text, such as <math xmlns="http://www.w3.org/1998/Math/MathML">
   <mo stretchy="true">|</mo>
 </mrow>
 </math> where the delimiters produced
-by <span class="docutils literal">\left</span> and <span class="docutils literal">\right</span> cause too much line spreading. <a class="brackets" href="#footnote-7" id="footnote-reference-9" role="doc-noteref"><span class="fn-bracket">[</span>8<span class="fn-bracket">]</span></a> In that case
+by <span class="docutils literal">\left</span> and <span class="docutils literal">\right</span> cause too much line spreading. <a class="brackets" href="#footnote-6" id="footnote-reference-10" role="doc-noteref"><span class="fn-bracket">[</span>8<span class="fn-bracket">]</span></a> In that case
 <span class="docutils literal">\bigl</span> and <span class="docutils literal">\bigr</span> can be used to produce delimiters that are larger
 than the base size but still able to fit within the normal line spacing:
 <math xmlns="http://www.w3.org/1998/Math/MathML">
@@ -4486,8 +5021,8 @@ than the base size but still able to fit within the normal line spacing:
 </mrow>
 </math>.</p>
 <aside class="footnote-list brackets">
-<aside class="footnote brackets" id="footnote-7" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-9">8</a><span class="fn-bracket">]</span></span>
+<aside class="footnote brackets" id="footnote-6" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-10">8</a><span class="fn-bracket">]</span></span>
 <p>With MathML, an example would be parentheses
 around a <span class="docutils literal">smallmatrix</span> environment
 <math xmlns="http://www.w3.org/1998/Math/MathML">
@@ -4609,7 +5144,7 @@ automatically produces subscript-size text if used in a subscript,
 \end{cases}
 </pre>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 857)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 898)</p>
 <p>TeX to MathML converter `blahtexml` failed:</p>
 <p class="pre-wrap">The command &quot;$&quot; is illegal in text mode (perhaps you intended to use &quot;\$&quot; instead?)</p>
 </aside>
@@ -4670,12 +5205,12 @@ similar symbols like</p>
 <p>The commands <span class="docutils literal">\intop</span> and <span class="docutils literal">\ointop</span> produce integral signs with
 limits as in sums and similar: <span class="math problematic m">\intop_0^1</span>, <span class="math problematic m">\ointop_c</span> and</p>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 880)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 921)</p>
 <p>TeX to MathML converter `blahtexml` failed:</p>
 <p class="pre-wrap">Unrecognised command &quot;\intop&quot;</p>
 </aside>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 880)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 921)</p>
 <p>TeX to MathML converter `blahtexml` failed:</p>
 <p class="pre-wrap">Unrecognised command &quot;\ointop&quot;</p>
 </aside>
@@ -4685,7 +5220,7 @@ limits as in sums and similar: <span class="math problematic m">\intop_0^1</span
 \int^1_0   \quad \oint_c
 </pre>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 883)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 924)</p>
 <p>TeX to MathML converter `blahtexml` failed:</p>
 <p class="pre-wrap">Unrecognised command &quot;\intop&quot;</p>
 </aside>
@@ -4791,7 +5326,7 @@ the operator to which they apply.</p>
 </section>
 <section id="changing-the-size-of-elements-in-a-formula">
 <h2><a class="toc-backref" href="#toc-entry-34" role="doc-backlink"><span class="sectnum">8 </span>Changing the size of elements in a formula</a></h2>
-<p>The declarations <a class="brackets" href="#footnote-8" id="footnote-reference-10" role="doc-noteref"><span class="fn-bracket">[</span>9<span class="fn-bracket">]</span></a> <span class="docutils literal">\displaystyle</span>, <span class="docutils literal">\textstyle</span>,
+<p>The declarations <a class="brackets" href="#footnote-7" id="footnote-reference-11" role="doc-noteref"><span class="fn-bracket">[</span>9<span class="fn-bracket">]</span></a> <span class="docutils literal">\displaystyle</span>, <span class="docutils literal">\textstyle</span>,
 <span class="docutils literal">\scriptstyle</span>, and <span class="docutils literal">\scriptscriptstyle</span>, select a symbol size and
 spacing that would be applied in display math, inline
 math, first-order subscript, or second-order subscript, respectively
@@ -4914,8 +5449,8 @@ rather than <math xmlns="http://www.w3.org/1998/Math/MathML">
 </math>
 </div>
 <aside class="footnote-list brackets">
-<aside class="footnote brackets" id="footnote-8" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-10">9</a><span class="fn-bracket">]</span></span>
+<aside class="footnote brackets" id="footnote-7" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-11">9</a><span class="fn-bracket">]</span></span>
 <p>&quot;Declarations&quot; are commands that affect processing of the current
 &quot;group&quot;. In particular, notice where the braces fall that delimit the
 effect of the command: Right: <span class="docutils literal">{\displaystyle <span class="pre">...}</span></span> Wrong:
@@ -4924,6 +5459,14 @@ effect of the command: Right: <span class="docutils literal">{\displaystyle <spa
 after the opening bracket.</p>
 </aside>
 </aside>
+<div role="list" class="citation-list">
+<div class="citation" id="iso-80000-2" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#citation-reference-1">ISO-80000-2</a><span class="fn-bracket">]</span></span>
+<p><cite>Quantities and units – Part 2: Mathematical signs
+and symbols to be used in the natural sciences and technology</cite>:
+<a class="reference external" href="http://www.iso.org/iso/iso_catalogue/catalogue_tc/catalogue_detail.htm?csnumber=31887">http://www.iso.org/iso/iso_catalogue/catalogue_tc/catalogue_detail.htm?csnumber=31887</a>.</p>
+</div>
+</div>
 </section>
 </main>
 </body>

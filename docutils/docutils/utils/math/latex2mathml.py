@@ -100,8 +100,9 @@ math_alphabets = {
     'mathfrak':   'fraktur',                 # amssymb
     'mathit':     'italic',
     'mathrm':     'normal',
-    'mathscr':    'script',                  # mathrsfs
+    'mathscr':    'script',                  # mathrsfs et al
     'mathsf':     'sans-serif',
+    'mathbfsfit': 'sans-serif-bold-italic',  # unicode-math
     'mathsfbfit': 'sans-serif-bold-italic',  # isomath
     'mathsfit':   'sans-serif-italic',       # isomath
     'mathtt':     'monospace',
@@ -996,8 +997,8 @@ def handle_math_alphabet(name, node, string):
     container = mrow(**attributes)
     node.append(container)
     parse_latex_math(container, arg)
-    a2ch = getattr(mathalphabet2unichar,
-                   name.replace('mathscr', 'mathcal'), {})
+    key = name.replace('mathscr', 'mathcal').replace('mathbfsfit', 'mathsfbfit')
+    a2ch = getattr(mathalphabet2unichar, key, {})
     for subnode in container.iter():
         if isinstance(subnode, mn):
             # a number may consist of more than one digit

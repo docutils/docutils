@@ -29,6 +29,8 @@ TEST_ROOT = Path(__file__).parent  # ./test/ from the docutils root
 
 # The index of MathML elements
 # on https://developer.mozilla.org/en-US/docs/Web/MathML/Element
+# for Nr. of children see https://www.w3.org/TR/mathml4/#presm_reqarg_table
+# (Elements with 1* show 1 or * depending on the corresponding TeX macro.)
 #   Element     Nr. of children    Description                comment
 mathml_elements = """
     <maction>         * Bound actions to sub-expressions      DEPRECATED
@@ -156,9 +158,15 @@ class MathElementTests(unittest.TestCase):
         self.assertEqual(e1[0].parent, e1)
         self.assertEqual(e1[0].get('id'), '1')
         self.assertEqual(e1[1].get('id'), '2')
-        e1[0] = mml.MathElement()
-        self.assertEqual(e1[0].get('id'), None)
+        e1[0] = mml.MathElement(id=3)
+        self.assertEqual(e1[0].get('id'), '3')
         self.assertEqual(e1[0].parent, e1)
+        e1[2:] = (mml.MathElement(id=4), mml.MathElement(id=5))
+        e1[1:] = []
+        e1.nchildren = 2
+        with self.assertRaises(TypeError) as cm:
+            e1[:] = (mml.MathElement(id=6), mml.MathElement(id=7))
+        self.assertIn('takes only 2 children', str(cm.exception))
 
     def test_is_full(self):
         # A node is "full", if the number of children equals or exceeds
@@ -343,14 +351,14 @@ class mrowTests(unittest.TestCase):
     """Test the `mrow` element class."""
 
     def test_transfer_attributes(self):
-        e1 = mml.mrow(level=1, CLASS='cls1', style='rule1')
+        e1 = mml.mrow(level=1, CLASS='cls1', style='rule1;')
         e2 = mml.mrow(level=2, CLASS='cls2')
         e3 = mml.mrow(level=3, style='rule3')
         # e1.attrib -> e2.attrib
         e1.transfer_attributes(e2)
         self.assertEqual(e2.get('level'), '1')
         self.assertEqual(e2.get('class'), 'cls2 cls1')
-        self.assertEqual(e2.get('style'), 'rule1')
+        self.assertEqual(e2.get('style'), 'rule1;')
         # e3.attrib -> e1.attrib
         e3.transfer_attributes(e1)
         self.assertEqual(e1.get('level'), '3')

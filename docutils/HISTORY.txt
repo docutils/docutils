@@ -96,12 +96,26 @@ Changes since 0.20.1
     Improve error reporting.
   - Elimitate side-effect of importing "latex2mathml" on "tex2unichar".
   - Sort ℏ (`\hslash`) as "mathord", not "mathalpha".
-  - Use MathML element <mi> instead of <mo> for character class "mathord".
-  - Use CSS rules instead of the deprecated "columnalign" attribute
-    to style <mtable> as "align" environment. Fixes rendering in Crome.
+
+* docutils/utils/math/latex2mathml.py
+
+  - Generate "MathML Core" to fix rendering with Chromium/Android.
+
+    Use CSS rules instead of the deprecated "columnalign" attribute
+    to style <mtable> as "align" environment.
+
+    Use Mathematical Alphanumeric Symbols instead of `<mstyle>` with
+    "mathvariant" attribute.
+
+  - Use <mi> instead of <mo> for character class "mathord".
+
   - Support "aligned" environment.
-  - Use Mathematical Alphanumeric Symbols instead of `<mstyle>` with
-    "mathvariant" attribute to fix rendering in Crome/Chromium/Android.
+
+* docutils/utils/math/mathml_elements.py
+
+  - New module defining MathML element classes (outsourced from
+    latex2mathml.py).
+  - Base MathML element classes on `xml.etree.ElementTree`.
 
 * docutils/utils/roman.py
 

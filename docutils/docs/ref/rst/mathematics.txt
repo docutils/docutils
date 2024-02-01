@@ -337,73 +337,114 @@ Letterlike symbols
 
 .. _math alphabet:
 
-Mathematical Alphabets
-----------------------
+Math alphabets
+--------------
 
-Mathematical alphabets select a combination of font attributes (shape,
-weight, family) [#]_. They are intended for mathematical variables where
-style variations are important semantically.
+The TeX *math alphabet* macros are intended for mathematical variables
+where style variations are important semantically.
+They style letters and numbers with a combination of font attributes
+(shape, weight, family) --- non-alphanumerical symbols, function names,
+and mathematical text are left unchanged.
+
+MathML uses the *mathvariant* `style attribute`_ or pre-styled characters
+from the `Mathematical Alphanumeric Symbols`_ Unicode block.
 
 .. class:: colwidths-auto
 
   ===============  ============================  ==========================
   command          example                       result
   ===============  ============================  ==========================
-  ``\mathbf``      ``\mathbf{r}^2=x^2+y^2+z^2``  `\mathbf{r}^2=x^2+y^2+z^2`
-  ``\mathbb``      ``\mathbb{R \subset C}``      `\mathbb{R \subset C}`
-  ``\mathcal``     ``\mathcal{F}f(x)``           `\mathcal{F}f(x)`
-  ``\mathfrak``    ``\mathfrak{a}``              `\mathfrak{a}`
-  ``\mathit``      ``\mathit{\Gamma}``           `\mathit{\Gamma}`
   ``\mathrm``      ``s_\mathrm{out}``            `s_\mathrm{out}`
+  ``\mathbf``      ``\mathbf{r}^2=x^2+y^2``      `\mathbf{r}^2=x^2+y^2`
+  ``\mathit``      ``\mathit{\sin\Gamma}``       `\mathit{\sin\Gamma}`
+  ``\mathcal``     ``\mathcal{F}f(x)``           `\mathcal{F}f(x)`
+  ``\mathbb``      ``\mathbb{R \subset C}``      `\mathbb{R \subset C}`
+  ``\mathfrak``    ``\mathfrak{a+b}``            `\mathfrak{a+b}`
   ``\mathsf``      ``\mathsf x``                 `\mathsf x`
   ``\mathtt``      ``\mathtt{0.12}``             `\mathtt{0.12}`
   ===============  ============================  ==========================
 
-.. [#] TeX’s *math alphabets* correspond to the `mathematical
-   alphanumeric symbols`__ block in Unicode and the "mathvariant" `style
-   attribute`__ in MathML.
+The set of characters in a given "math alphabet" varies.
+LaTeX may produce garbage for unsupported characters.
+Additional math alphabets are defined in LaTeX packages, e.g.,
 
-   __ https://en.wikipedia.org/wiki/Mathematical_Alphanumeric_Symbols
-   __ https://developer.mozilla.org/en-US/docs/Web/MathML/Attribute
+* ``\mathbfit`` from isomath_ allows vector symbols in line with the
+  International Standard [ISO-80000-2]_.
+  E.g., ``\mathbfit{r}^2=x^2+y^2`` becomes `\mathbfit{r}^2=x^2+y^2`.
 
-Additional alphabets are defined in LaTeX packages, e.g.
+* Several packages, e.g. mathrsfs_, define ``\mathscr`` that selects a
+  differently shaped "script" alphabet.
 
-.. class:: colwidths-auto
+The listing below shows the characters supported by Unicode and
+Docutils with math_output_ MathML. [#italic-digits]_
 
-  ===========  =============  ======================
-  TeX command  LaTeX package  MathML "mathvariant"
-  ===========  =============  ======================
-  mathbfit     isomath_       bold-italic
-  mathsfit     isomath_       sans-serif-italic
-  mathsfbfit   isomath_       sans-serif-bold-italic
-  mathscr      mathrsfs_      script
-  ===========  =============  ======================
-.. _isomath: https://www.ctan.org/pkg/isomath
-.. _mathrsfs: https://www.ctan.org/pkg/mathrsfs
+default:
+  `{ABCDEFGHIJKLMNOPQRSTUVWXYZ\ abcdefghijklmnopqrstuvwxyz\ ı\jmath}`
+  `{ΓΔΘΛΞΠΣΥΦΨΩ\ αβγδεζηθικλμνξπρςστυφχψω\ ϵϑϕϰϱϖϜϝ\ \partial∇}`
+  `{0123456789}`
+mathrm:
+  `\mathrm{ABCDEFGHIJKLMNOPQRSTUVWXYZ\ abcdefghijklmnopqrstuvwxyz\ ı\jmath}`
+  `\mathrm{ΓΔΘΛΞΠΣΥΦΨΩ\ αβγδεζηθικλμνξπρςστυφχψω\ ϵϑϕϰϱϖϜϝ\ \partial∇}`
+  `\mathrm{0123456789}`
+mathbf:
+  `\mathbf{ABCDEFGHIJKLMNOPQRSTUVWXYZ\ abcdefghijklmnopqrstuvwxyz}`
+  `\mathbf{ΓΔΘΛΞΠΣΥΦΨΩ\ αβγδεζηθικλμνξπρςστυφχψω\ ϵϑϕϰϱϖϜϝ\ \partial∇}`
+  `\mathbf{0123456789}`
+mathit:
+  `\mathit{ABCDEFGHIJKLMNOPQRSTUVWXYZ\ abcdefghijklmnopqrstuvwxyz\ ı\jmath}`
+  `\mathit{ΓΔΘΛΞΠΣΥΦΨΩ\ αβγδεζηθικλμνξπρςστυφχψω\ ϵϑϕϰϱϖ\ \partial∇}`
+  `\mathit{0123456789}` [#italic-digits]_
+mathbfit:
+  `\mathbfit{ABCDEFGHIJKLMNOPQRSTUVWXYZ\ abcdefghijklmnopqrstuvwxyz}`
+  `\mathbfit{ΓΔΘΛΞΠΣΥΦΨΩ\ αβγδεζηθικλμνξπρςστυφχψω\ ϵϑϕϰϱϖ\ \partial∇}`
+mathcal:
+  `\mathcal{ABCDEFGHIJKLMNOPQRSTUVWXYZ\ abcdefghijklmnopqrstuvwxyz}`
+mathscr:
+  `\mathscr{ABCDEFGHIJKLMNOPQRSTUVWXYZ\ abcdefghijklmnopqrstuvwxyz}`
+mathbb:
+  `\mathbb{ABCDEFGHIJKLMNOPQRSTUVWXYZ\ abcdefghijklmnopqrstuvwxyz}`
+  `\mathbb{ΓΠΣ\ γπ}`
+  `\mathbb{0123456789}`
+mathfrak:
+  `\mathfrak{ABCDEFGHIJKLMNOPQRSTUVWXYZ\ abcdefghijklmnopqrstuvwxyz}`
+mathsf:
+  `\mathsf{ABCDEFGHIJKLMNOPQRSTUVWXYZ\ abcdefghijklmnopqrstuvwxyz}`
+  `\mathsf{0123456789}`
+mathsfit:
+  `\mathsfit{ABCDEFGHIJKLMNOPQRSTUVWXYZ\ abcdefghijklmnopqrstuvwxyz}`
+mathsfbfit:
+  `\mathsfbfit{ABCDEFGHIJKLMNOPQRSTUVWXYZ\ abcdefghijklmnopqrstuvwxyz}`
+  `\mathsfbfit{ΓΔΘΛΞΠΣΥΦΨΩ\ αβγδεζηθικλμνξπρςστυφχψω\ ϵϑϕϰϱϖ\ \partial∇}`
+mathtt:
+  `\mathtt{ABCDEFGHIJKLMNOPQRSTUVWXYZ\ abcdefghijklmnopqrstuvwxyz}`
+  `\mathtt{0123456789}`
 
-This can be used to typeset vector symbols in bold italic
-in line with the International Standard [ISO-80000-2].
+.. [#italic-digits] Italic digits are not defined in Unicode
+   but work in LaTeX.
 
-.. ``\mathbfit{r}^2=x^2+y^2+z^2`` becomes
-
-   .. math:: \mathbfit{r}^2=x^2+y^2+z^2.
-
-The package mathrsfs_ (and some drop-in replacements) define the ``\mathscr``
-macro that selects a differently shaped "script" alphabet.
-Compare `\mathscr{A, B, …, Z, a, b, …, z}`
-with `\mathcal{A, B, …, Z, a, b, …, z}`.
-
-
-In contrast to the math alphabet selectors, ``\boldsymbol`` only changes
-the *font weight*. In LaTeX, it can be used to get a bold version of any
-mathematical symbol (for other output formats, results are mixed):
+In contrast to the *math alphabet* selectors, ``\boldsymbol`` only
+changes the *font weight*. It can be used to get a bold version of
+any mathematical symbol:
 
 .. math::
+   V_i x \pm \cos(\alpha) \approx 3\Gamma \quad \forall x\in\mathbb{R}
+
    \boldsymbol{V_i x \pm \cos(\alpha) \approx 3\Gamma \quad \forall x\in\mathbb{R}}
+
+It is usually ill-advised to apply ``\boldsymbol`` to more than one symbol
+at a time.
+
+.. _style attribute: https://www.w3.org/TR/mathml4/#presm_commatt
+.. _Mathematical Alphanumeric Symbols:
+    https://en.wikipedia.org/wiki/Mathematical_Alphanumeric_Symbols
+.. _isomath: https://www.ctan.org/pkg/isomath
+.. _mathrsfs: https://www.ctan.org/pkg/mathrsfs
+.. _unicode-math: https://www.ctan.org/pkg/unicode-math
 
 
 Miscellaneous symbols
 ---------------------
+
 .. class:: colwidths-auto
 
 ==================== ======================  ================ ==================  ================= ===================
@@ -511,8 +552,8 @@ Comparison
 `\fallingdotseq` ``\fallingdotseq``  `\lesssim`    ``\lesssim``                                    `\triangleq`    ``\triangleq``
 ================ ==================  ============= ===============  ============= ===============  =============== =================
 
-The commands ``\lvertneqq`` and ``\gvertneqq`` are not supported by
-LateX2MathML, as there is no corresponding Unicode character.
+The commands ``\lvertneqq`` and ``\gvertneqq`` are not supported
+with MathML output, as there is no corresponding Unicode character.
 
 Synonyms: `\ne` ``\ne``, `\le` ``\le``, `\ge` ``\ge``,
 `\Doteq` ``\Doteq``, `\llless` ``\llless``, `\gggtr` ``\gggtr``.
@@ -556,7 +597,7 @@ Symbols can be negated prepending ``\not``, e.g.
 `\not\in` ``\not\in``, `\not\ni` ``\not\ni``.
 
 The commands ``\varsubsetneq``, ``\varsubsetneqq``, ``\varsupsetneq``,
-and ``\varsupsetneqq`` are not supported by LateX2MathML, as there is no
+and ``\varsupsetneqq`` are not supported with MathML output as there is no
 corresponding Unicode character.
 
 
@@ -675,7 +716,7 @@ commands:
   ======================  ========  =====================  ===================
 
 .. [#] Whitespace characters are ignored in LaTeX math mode.
-.. [#] Negative spacing does not work with MathML (last tested in Firefox 102).
+.. [#] Negative spacing does not work with MathML (last tested in Firefox 115).
 .. [#] In LaTeX, the unit must be 'mu' (1 mu = 1/18em).
 
 There are also three commands that leave a space equal to the height and
@@ -935,3 +976,8 @@ yields
 
    With math_output_ MathML, the declaration must be the first element
    after the opening bracket.
+
+
+.. [ISO-80000-2] :title:`Quantities and units – Part 2: Mathematical signs
+   and symbols to be used in the natural sciences and technology`:
+   http://www.iso.org/iso/iso_catalogue/catalogue_tc/catalogue_detail.htm?csnumber=31887.

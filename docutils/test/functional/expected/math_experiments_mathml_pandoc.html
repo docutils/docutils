@@ -12,70 +12,121 @@
 <main id="math-conversion-tests">
 <h1 class="title">Math Conversion Tests</h1>
 
-<section id="font-changes">
-<h2>Font changes</h2>
-<p><em>Math alphabet</em> macros change the default alphabet, leaving some symbols
-unchanged. In MathML core, the corresponding <em>Mathematical Alphanumeric
-Symbols</em> are used.</p>
+<section id="math-alphabet-mathvariant">
+<h2>Math alphabet / Mathvariant</h2>
+<p>TeX's <em>math alphabet</em> macros change font features of (some) letters and
+digits. Non-alphanumerical symbols, function names, and mathematical text
+are left unchanged.</p>
 <dl class="field-list simple">
 <dt>default<span class="colon">:</span></dt>
-<dd><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>V</mi><mi>R</mi></msub><mi>x</mi><mo>±</mo><mo>cos</mo><mo stretchy="false" form="prefix">(</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo><mo>≈</mo><mn>3</mn><mi>Γ</mi><mspace width="1.0em"></mspace><mo>∀</mo><mi>x</mi><mo>∈</mo><mstyle mathvariant="double-struck"><mi>ℝ</mi></mstyle></mrow><annotation encoding="application/x-tex">V_R x \pm \cos(\alpha) \approx 3 \Gamma  \quad \forall x \in \mathbb{R}</annotation></semantics></math></p>
-</dd>
-<dt>mathbb<span class="colon">:</span></dt>
-<dd><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="double-struck"><msub><mi>𝕍</mi><mi>ℝ</mi></msub><mi>𝕩</mi><mo>±</mo><mo>cos</mo><mo stretchy="false" form="prefix">(</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo><mo>≈</mo><mn>3</mn><mi>ℾ</mi><mspace width="1.0em"></mspace><mo>∀</mo><mi>𝕩</mi><mo>∈</mo><mstyle mathvariant="double-struck"><mi>ℝ</mi></mstyle></mstyle><annotation encoding="application/x-tex">\mathbb{V_R x \pm \cos(\alpha) \approx 3 \Gamma  \quad \forall x \in \mathbb{R}}</annotation></semantics></math></p>
-</dd>
-<dt>mathbf<span class="colon">:</span></dt>
-<dd><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="bold"><msub><mi>𝐕</mi><mi>𝐑</mi></msub><mi>𝐱</mi><mo>±</mo><mo>cos</mo><mo stretchy="false" form="prefix">(</mo><mi>𝛂</mi><mo stretchy="false" form="postfix">)</mo><mo>≈</mo><mn>3</mn><mi>𝚪</mi><mspace width="1.0em"></mspace><mo>∀</mo><mi>𝐱</mi><mo>∈</mo><mstyle mathvariant="double-struck"><mi>ℝ</mi></mstyle></mstyle><annotation encoding="application/x-tex">\mathbf{V_R x \pm \cos(\alpha) \approx 3 \Gamma  \quad \forall x \in \mathbb{R}}</annotation></semantics></math></p>
-</dd>
-<dt>mathbfit<span class="colon">:</span></dt>
-<dd><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="bold-italic"><msub><mi>𝑽</mi><mi>𝑹</mi></msub><mi>𝒙</mi><mo>±</mo><mo>cos</mo><mo stretchy="false" form="prefix">(</mo><mi>𝜶</mi><mo stretchy="false" form="postfix">)</mo><mo>≈</mo><mn>3</mn><mi>𝜞</mi><mspace width="1.0em"></mspace><mo>∀</mo><mi>𝒙</mi><mo>∈</mo><mstyle mathvariant="double-struck"><mi>ℝ</mi></mstyle></mstyle><annotation encoding="application/x-tex">\mathbfit{V_R x \pm \cos(\alpha) \approx 3 \Gamma  \quad \forall x \in \mathbb{R}}</annotation></semantics></math></p>
-</dd>
-<dt>mathcal<span class="colon">:</span></dt>
-<dd><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="script"><msub><mi>𝒱</mi><mi>ℛ</mi></msub><mi>𝓍</mi><mo>±</mo><mo>cos</mo><mo stretchy="false" form="prefix">(</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo><mo>≈</mo><mn>3</mn><mi>Γ</mi><mspace width="1.0em"></mspace><mo>∀</mo><mi>𝓍</mi><mo>∈</mo><mstyle mathvariant="double-struck"><mi>ℝ</mi></mstyle></mstyle><annotation encoding="application/x-tex">\mathcal{V_R x \pm \cos(\alpha) \approx 3 \Gamma  \quad \forall x \in \mathbb{R}}</annotation></semantics></math></p>
-</dd>
-<dt>mathit<span class="colon">:</span></dt>
-<dd><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="italic"><msub><mi>𝑉</mi><mi>𝑅</mi></msub><mi>𝑥</mi><mo>±</mo><mo>cos</mo><mo stretchy="false" form="prefix">(</mo><mi>𝛼</mi><mo stretchy="false" form="postfix">)</mo><mo>≈</mo><mn>3</mn><mi>𝛤</mi><mspace width="1.0em"></mspace><mo>∀</mo><mi>𝑥</mi><mo>∈</mo><mstyle mathvariant="double-struck"><mi>ℝ</mi></mstyle></mstyle><annotation encoding="application/x-tex">\mathit{V_R x \pm \cos(\alpha) \approx 3 \Gamma  \quad \forall x \in \mathbb{R}}</annotation></semantics></math></p>
+<dd><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>V</mi><mi>R</mi></msub><mi>x</mi><mo>±</mo><mo>cos</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>α</mi><mtext mathvariant="normal">out</mtext></msub><mo stretchy="false" form="postfix">)</mo><mo>≈</mo><mn>3</mn><mi>Γ</mi><mspace width="1.0em"></mspace><mo>∀</mo><mi>x</mi><mo>∈</mo><mstyle mathvariant="double-struck"><mi>ℝ</mi></mstyle></mrow><annotation encoding="application/x-tex">V_R x \pm \cos(\alpha_\text{out}) \approx 3 \Gamma
+\quad \forall x \in \mathbb{R}</annotation></semantics></math></p>
 </dd>
 <dt>mathrm<span class="colon">:</span></dt>
-<dd><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="normal"><msub><mi>V</mi><mi>R</mi></msub><mi>x</mi><mo>±</mo><mo>cos</mo><mo stretchy="false" form="prefix">(</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo><mo>≈</mo><mn>3</mn><mi>Γ</mi><mspace width="1.0em"></mspace><mo>∀</mo><mi>x</mi><mo>∈</mo><mstyle mathvariant="double-struck"><mi>ℝ</mi></mstyle></mstyle><annotation encoding="application/x-tex">\mathrm{V_R x \pm \cos(\alpha) \approx 3 \Gamma  \quad \forall x \in \mathbb{R}}</annotation></semantics></math></p>
+<dd><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="normal"><msub><mi>V</mi><mi>R</mi></msub><mi>x</mi><mo>±</mo><mo>cos</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>α</mi><mtext mathvariant="normal">out</mtext></msub><mo stretchy="false" form="postfix">)</mo><mo>≈</mo><mn>3</mn><mi>Γ</mi><mspace width="1.0em"></mspace><mo>∀</mo><mi>x</mi><mo>∈</mo><mstyle mathvariant="double-struck"><mi>ℝ</mi></mstyle></mstyle><annotation encoding="application/x-tex">\mathrm{V_R x \pm \cos(\alpha_\text{out}) \approx 3 \Gamma
+\quad \forall x \in \mathbb{R}}</annotation></semantics></math></p>
+</dd>
+<dt>mathbf<span class="colon">:</span></dt>
+<dd><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="bold"><msub><mi>𝐕</mi><mi>𝐑</mi></msub><mi>𝐱</mi><mo>±</mo><mo>cos</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>𝛂</mi><mtext mathvariant="normal">out</mtext></msub><mo stretchy="false" form="postfix">)</mo><mo>≈</mo><mn>3</mn><mi>𝚪</mi><mspace width="1.0em"></mspace><mo>∀</mo><mi>𝐱</mi><mo>∈</mo><mstyle mathvariant="double-struck"><mi>ℝ</mi></mstyle></mstyle><annotation encoding="application/x-tex">\mathbf{V_R x \pm \cos(\alpha_\text{out}) \approx 3 \Gamma
+\quad \forall x \in \mathbb{R}}</annotation></semantics></math></p>
+</dd>
+<dt>mathit<span class="colon">:</span></dt>
+<dd><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="italic"><msub><mi>𝑉</mi><mi>𝑅</mi></msub><mi>𝑥</mi><mo>±</mo><mo>cos</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>𝛼</mi><mtext mathvariant="normal">out</mtext></msub><mo stretchy="false" form="postfix">)</mo><mo>≈</mo><mn>3</mn><mi>𝛤</mi><mspace width="1.0em"></mspace><mo>∀</mo><mi>𝑥</mi><mo>∈</mo><mstyle mathvariant="double-struck"><mi>ℝ</mi></mstyle></mstyle><annotation encoding="application/x-tex">\mathit{V_R x \pm \cos(\alpha_\text{out}) \approx 3 \Gamma
+\quad \forall x \in \mathbb{R}}</annotation></semantics></math></p>
+</dd>
+<dt>mathbfit<span class="colon">:</span></dt>
+<dd><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="bold-italic"><msub><mi>𝑽</mi><mi>𝑹</mi></msub><mi>𝒙</mi><mo>±</mo><mo>cos</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>𝜶</mi><mtext mathvariant="normal">out</mtext></msub><mo stretchy="false" form="postfix">)</mo><mo>≈</mo><mn>3</mn><mi>𝜞</mi><mspace width="1.0em"></mspace><mo>∀</mo><mi>𝒙</mi><mo>∈</mo><mstyle mathvariant="double-struck"><mi>ℝ</mi></mstyle></mstyle><annotation encoding="application/x-tex">\mathbfit{V_R x \pm \cos(\alpha_\text{out}) \approx 3 \Gamma
+\quad \forall x \in \mathbb{R}}</annotation></semantics></math></p>
+</dd>
+<dt>mathbb<span class="colon">:</span></dt>
+<dd><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="double-struck"><msub><mi>𝕍</mi><mi>ℝ</mi></msub><mi>𝕩</mi><mo>±</mo><mo>cos</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>α</mi><mtext mathvariant="normal">out</mtext></msub><mo stretchy="false" form="postfix">)</mo><mo>≈</mo><mn>3</mn><mi>ℾ</mi><mspace width="1.0em"></mspace><mo>∀</mo><mi>𝕩</mi><mo>∈</mo><mstyle mathvariant="double-struck"><mi>ℝ</mi></mstyle></mstyle><annotation encoding="application/x-tex">\mathbb{V_R x \pm \cos(\alpha_\text{out}) \approx 3 \Gamma
+\quad \forall x \in \mathbb{R}}</annotation></semantics></math></p>
+</dd>
+<dt>mathcal<span class="colon">:</span></dt>
+<dd><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="script"><msub><mi>𝒱</mi><mi>ℛ</mi></msub><mi>𝓍</mi><mo>±</mo><mo>cos</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>α</mi><mtext mathvariant="normal">out</mtext></msub><mo stretchy="false" form="postfix">)</mo><mo>≈</mo><mn>3</mn><mi>Γ</mi><mspace width="1.0em"></mspace><mo>∀</mo><mi>𝓍</mi><mo>∈</mo><mstyle mathvariant="double-struck"><mi>ℝ</mi></mstyle></mstyle><annotation encoding="application/x-tex">\mathcal{V_R x \pm \cos(\alpha_\text{out}) \approx 3 \Gamma
+\quad \forall x \in \mathbb{R}}</annotation></semantics></math></p>
 </dd>
 <dt>mathscr<span class="colon">:</span></dt>
-<dd><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="script"><msub><mi>𝒱</mi><mi>ℛ</mi></msub><mi>𝓍</mi><mo>±</mo><mo>cos</mo><mo stretchy="false" form="prefix">(</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo><mo>≈</mo><mn>3</mn><mi>Γ</mi><mspace width="1.0em"></mspace><mo>∀</mo><mi>𝓍</mi><mo>∈</mo><mstyle mathvariant="double-struck"><mi>ℝ</mi></mstyle></mstyle><annotation encoding="application/x-tex">\mathscr{V_R x \pm \cos(\alpha) \approx 3 \Gamma  \quad \forall x \in \mathbb{R}}</annotation></semantics></math></p>
+<dd><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="script"><msub><mi>𝒱</mi><mi>ℛ</mi></msub><mi>𝓍</mi><mo>±</mo><mo>cos</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>α</mi><mtext mathvariant="normal">out</mtext></msub><mo stretchy="false" form="postfix">)</mo><mo>≈</mo><mn>3</mn><mi>Γ</mi><mspace width="1.0em"></mspace><mo>∀</mo><mi>𝓍</mi><mo>∈</mo><mstyle mathvariant="double-struck"><mi>ℝ</mi></mstyle></mstyle><annotation encoding="application/x-tex">\mathscr{V_R x \pm \cos(\alpha_\text{out}) \approx 3 \Gamma
+\quad \forall x \in \mathbb{R}}</annotation></semantics></math></p>
+</dd>
+<dt>mathfrak<span class="colon">:</span></dt>
+<dd><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="fraktur"><msub><mi>𝔙</mi><mi>ℜ</mi></msub><mi>𝔵</mi><mo>±</mo><mo>cos</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>α</mi><mtext mathvariant="normal">out</mtext></msub><mo stretchy="false" form="postfix">)</mo><mo>≈</mo><mn>3</mn><mi>Γ</mi><mspace width="1.0em"></mspace><mo>∀</mo><mi>𝔵</mi><mo>∈</mo><mstyle mathvariant="double-struck"><mi>ℝ</mi></mstyle></mstyle><annotation encoding="application/x-tex">\mathfrak{V_R x \pm \cos(\alpha_\text{out}) \approx 3 \Gamma
+\quad \forall x \in \mathbb{R}}</annotation></semantics></math></p>
 </dd>
 <dt>mathsf<span class="colon">:</span></dt>
-<dd><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="sans-serif"><msub><mi>𝖵</mi><mi>𝖱</mi></msub><mi>𝗑</mi><mo>±</mo><mo>cos</mo><mo stretchy="false" form="prefix">(</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo><mo>≈</mo><mn>3</mn><mi>Γ</mi><mspace width="1.0em"></mspace><mo>∀</mo><mi>𝗑</mi><mo>∈</mo><mstyle mathvariant="double-struck"><mi>ℝ</mi></mstyle></mstyle><annotation encoding="application/x-tex">\mathsf{V_R x \pm \cos(\alpha) \approx 3 \Gamma  \quad \forall x \in \mathbb{R}}</annotation></semantics></math></p>
+<dd><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="sans-serif"><msub><mi>𝖵</mi><mi>𝖱</mi></msub><mi>𝗑</mi><mo>±</mo><mo>cos</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>α</mi><mtext mathvariant="normal">out</mtext></msub><mo stretchy="false" form="postfix">)</mo><mo>≈</mo><mn>3</mn><mi>Γ</mi><mspace width="1.0em"></mspace><mo>∀</mo><mi>𝗑</mi><mo>∈</mo><mstyle mathvariant="double-struck"><mi>ℝ</mi></mstyle></mstyle><annotation encoding="application/x-tex">\mathsf{V_R x \pm \cos(\alpha_\text{out}) \approx 3 \Gamma
+\quad \forall x \in \mathbb{R}}</annotation></semantics></math></p>
+</dd>
+<dt>mathsfit<span class="colon">:</span></dt>
+<dd><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="sans-serif-italic"><msub><mi>𝘝</mi><mi>𝘙</mi></msub><mi>𝘹</mi><mo>±</mo><mo>cos</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>α</mi><mtext mathvariant="normal">out</mtext></msub><mo stretchy="false" form="postfix">)</mo><mo>≈</mo><mn>3</mn><mi>Γ</mi><mspace width="1.0em"></mspace><mo>∀</mo><mi>𝘹</mi><mo>∈</mo><mstyle mathvariant="double-struck"><mi>ℝ</mi></mstyle></mstyle><annotation encoding="application/x-tex">\mathsfit{V_R x \pm \cos(\alpha_\text{out}) \approx 3 \Gamma
+\quad \forall x \in \mathbb{R}}</annotation></semantics></math></p>
 </dd>
 <dt>mathsfbfit<span class="colon">:</span></dt>
-<dd><p><span class="math problematic">\mathsfbfit{V_R x \pm \cos(\alpha) \approx 3 \Gamma  \quad \forall x \in \mathbb{R}}</span></p>
+<dd><p><span class="math problematic">\mathsfbfit{V_R x \pm \cos(\alpha_\text{out}) \approx 3 \Gamma
+\quad \forall x \in \mathbb{R}}</span></p>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/test/functional/input/data/math_experiments.txt</span>, line 22)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/test/functional/input/data/math_experiments.txt</span>, line 35)</p>
 <p>TeX to MathML converter `pandoc` failed:</p>
-<p>[WARNING] Could not convert TeX math '\mathsfbfit{V_R x \pm \cos(\alpha) \approx 3 \Gamma  \quad \forall x \in \mathbb{R}}', rendering as TeX:</p>
-<pre class="literal-block">  \mathsfbfit{V_R x \pm \cos(\alpha) \appr
-             ^</pre>
-<p class="pre-wrap">  unexpected &quot;{&quot;
+<p>[WARNING] Could not convert TeX math '\mathsfbfit{V_R x \pm \cos(\alpha_\text{out}) \approx 3 \Gamma</p>
+<pre class="literal-block">  \quad \forall x \in \mathbb{R}}', rendering as TeX:
+  \mathsfbfit{V_R x \pm \cos(\alpha_\text{</pre>
+<p class="pre-wrap">             ^
+  unexpected &quot;{&quot;
   expecting &quot;%&quot;, &quot;\\label&quot;, &quot;\\nonumber&quot; or whitespace</p>
 </aside>
 </dd>
-<dt>mathsfit<span class="colon">:</span></dt>
-<dd><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="sans-serif-italic"><msub><mi>𝘝</mi><mi>𝘙</mi></msub><mi>𝘹</mi><mo>±</mo><mo>cos</mo><mo stretchy="false" form="prefix">(</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo><mo>≈</mo><mn>3</mn><mi>Γ</mi><mspace width="1.0em"></mspace><mo>∀</mo><mi>𝘹</mi><mo>∈</mo><mstyle mathvariant="double-struck"><mi>ℝ</mi></mstyle></mstyle><annotation encoding="application/x-tex">\mathsfit{V_R x \pm \cos(\alpha) \approx 3 \Gamma  \quad \forall x \in \mathbb{R}}</annotation></semantics></math></p>
+<dt>mathbfsfit<span class="colon">:</span></dt>
+<dd><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="sans-serif-bold-italic"><msub><mi>𝙑</mi><mi>𝙍</mi></msub><mi>𝙭</mi><mo>±</mo><mo>cos</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>𝞪</mi><mtext mathvariant="normal">out</mtext></msub><mo stretchy="false" form="postfix">)</mo><mo>≈</mo><mn>3</mn><mi>𝞒</mi><mspace width="1.0em"></mspace><mo>∀</mo><mi>𝙭</mi><mo>∈</mo><mstyle mathvariant="double-struck"><mi>ℝ</mi></mstyle></mstyle><annotation encoding="application/x-tex">\mathbfsfit{V_R x \pm \cos(\alpha_\text{out}) \approx 3 \Gamma
+\quad \forall x \in \mathbb{R}}</annotation></semantics></math></p>
 </dd>
 <dt>mathtt<span class="colon">:</span></dt>
-<dd><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="monospace"><msub><mi>𝚅</mi><mi>𝚁</mi></msub><mi>𝚡</mi><mo>±</mo><mo>cos</mo><mo stretchy="false" form="prefix">(</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo><mo>≈</mo><mn>3</mn><mi>Γ</mi><mspace width="1.0em"></mspace><mo>∀</mo><mi>𝚡</mi><mo>∈</mo><mstyle mathvariant="double-struck"><mi>ℝ</mi></mstyle></mstyle><annotation encoding="application/x-tex">\mathtt{V_R x \pm \cos(\alpha) \approx 3 \Gamma  \quad \forall x \in \mathbb{R}}</annotation></semantics></math></p>
+<dd><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="monospace"><msub><mi>𝚅</mi><mi>𝚁</mi></msub><mi>𝚡</mi><mo>±</mo><mo>cos</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>α</mi><mtext mathvariant="normal">out</mtext></msub><mo stretchy="false" form="postfix">)</mo><mo>≈</mo><mn>3</mn><mi>Γ</mi><mspace width="1.0em"></mspace><mo>∀</mo><mi>𝚡</mi><mo>∈</mo><mstyle mathvariant="double-struck"><mi>ℝ</mi></mstyle></mstyle><annotation encoding="application/x-tex">\mathtt{V_R x \pm \cos(\alpha_\text{out}) \approx 3 \Gamma
+\quad \forall x \in \mathbb{R}}</annotation></semantics></math></p>
 </dd>
 </dl>
-<p>LaTeX accepts complex functions inside the math alphabet functions:</p>
+<p>MathML 4 defines the <em>mathvariant</em> <a class="reference external" href="https://www.w3.org/TR/mathml4/#presm_commatt">style attribute</a>, in MathML core,
+characters from the <a class="reference external" href="http://www.unicode.org/charts/PDF/U1EE00.pdf">Mathematical Alphanumeric Symbols</a> Unicode block
+are used.</p>
+<p>The mathvariants <em>bold-script</em>, <em>bold-fraktur</em>, and <em>sans-bold</em> are
+rarely used. They are currently not supported by Docutils's native MathML
+output. In LaTeX, <span class="docutils literal">\mathbfscr</span> and <span class="docutils literal">\mathbffrac</span> is supported by the
+<a class="reference external" href="https://www.ctan.org/pkg/mathalpha">mathalpha</a> package.</p>
+<p>Bold variants of any symbol can be achieved in combination with the
+<span class="docutils literal">\boldsymbol</span> command, e.g.</p>
 <dl class="field-list simple">
-<dt>mathrm<span class="colon">:</span></dt>
-<dd><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="normal"><mfrac><mi>x</mi><mi>y</mi></mfrac></mstyle><annotation encoding="application/x-tex">\mathrm{\frac{x}{y}}</annotation></semantics></math></p>
+<dt>bold-fraktur<span class="colon">:</span></dt>
+<dd><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="bold"><mstyle mathvariant="fraktur"><msub><mi>𝔙</mi><mi>ℜ</mi></msub><mi>𝔵</mi></mstyle></mstyle><annotation encoding="application/x-tex">\boldsymbol{\mathfrak{V_R x}}</annotation></semantics></math></p>
 </dd>
 </dl>
-<p>Without additional packages, LaTeX supports &quot;blackboard-bold&quot; only for
-capital Latin letters.
-Unicode supports also small Latin letters, some Greek letters, and digits:
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle mathvariant="double-struck"><mi>𝔸</mi><mi>…</mi><mi>ℤ</mi><mi>𝕒</mi><mi>…</mi><mi>𝕫</mi></mstyle><mstyle mathvariant="double-struck"><mi>ℾ</mi></mstyle><mstyle mathvariant="double-struck"><mi>ℿ</mi></mstyle><mstyle mathvariant="double-struck"><mi>Σ</mi></mstyle><mstyle mathvariant="double-struck"><mi>ℽ</mi></mstyle><mstyle mathvariant="double-struck"><mi>ℼ</mi></mstyle><mstyle mathvariant="double-struck"><mn>0</mn><mi>…</mi><mn>9</mn></mstyle></mrow><annotation encoding="application/x-tex">\mathbb{A \ldots Z a \ldots z}
-\mathbb\Gamma \mathbb{\Pi} \mathbb {\Sigma} \mathbb\gamma \mathbb \pi
-\mathbb{0 \ldots 9}</annotation></semantics></math> but no italic digits.</p>
+<p>Note, that <span class="docutils literal">\boldsymbol</span> emboldens also non-alphanumerical symbols.</p>
+<section id="complex-example">
+<h3>Complex Example</h3>
+<p>From the <a class="reference external" href="https://www.ctan.org/pkg/baskervaldx">baskervaldx</a> package documentation:</p>
+<dl>
+<dt>Simplest form of the <em>Central Limit Theorem</em>:</dt>
+<dd><p>Let <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>X</mi><mn>1</mn></msub><mo>,</mo><msub><mi>X</mi><mn>2</mn></msub><mo>,</mo><mi>⋯</mi></mrow><annotation encoding="application/x-tex">X_1, X_2,\cdots</annotation></semantics></math> be a sequence of iid random variables with mean <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0</mn><annotation encoding="application/x-tex">0</annotation></semantics></math>
+and variance <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1</mn><annotation encoding="application/x-tex">1</annotation></semantics></math> on a probability space <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>Ω</mi><mo>,</mo><mstyle mathvariant="script"><mi>ℱ</mi></mstyle><mo>,</mo><mstyle mathvariant="double-struck"><mi>ℙ</mi></mstyle><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(\Omega,\mathcal{F},\mathbb{P})</annotation></semantics></math>.
+Then</p>
+<div>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle mathvariant="double-struck"><mi>ℙ</mi></mstyle><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><msub><mi>X</mi><mn>1</mn></msub><mo>+</mo><mi>⋯</mi><mo>+</mo><msub><mi>X</mi><mi>n</mi></msub></mrow><msqrt><mi>n</mi></msqrt></mfrac><mo>≤</mo><mi>y</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>→</mo><mstyle mathvariant="fraktur"><mi>𝔑</mi></mstyle><mo stretchy="false" form="prefix">(</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mo>≔</mo><msubsup><mo>∫</mo><mrow><mo>−</mo><mi>∞</mi></mrow><mi>y</mi></msubsup><mfrac><msup><mstyle mathvariant="normal"><mi>e</mi></mstyle><mrow><mo>−</mo><msup><mi>t</mi><mn>2</mn></msup><mi>/</mi><mn>2</mn></mrow></msup><msqrt><mrow><mn>2</mn><mstyle mathvariant="normal"><mi>π</mi></mstyle></mrow></msqrt></mfrac><mspace width="0.167em"></mspace><mstyle mathvariant="normal"><mi>d</mi></mstyle><mi>t</mi><mspace width="1.0em"></mspace><mrow><mrow><mtext mathvariant="normal">as </mtext><mspace width="0.333em"></mspace></mrow><mrow><mi>n</mi><mo>→</mo><mi>∞</mi></mrow><mtext mathvariant="normal">,</mtext></mrow></mrow><annotation encoding="application/x-tex">\mathbb{P}\left(\frac{X_1+\cdots+X_n}{\sqrt{n}} \le y\right)
+\to\mathfrak{N}(y)
+\coloneq \int_{-\infty}^y
+  \frac{\mathrm{e}^{-t^2/2}}{\sqrt{2\mathrm{\pi}}}\, \mathrm{d}t
+\quad\mbox{as $n\to\infty$,}</annotation></semantics></math>
+</div>
+<p>or, equivalently, letting <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>S</mi><mi>n</mi></msub><mo>≔</mo><msubsup><mo>∑</mo><mn>1</mn><mi>n</mi></msubsup><msub><mi>X</mi><mi>k</mi></msub></mrow><annotation encoding="application/x-tex">S_n\coloneq\sum_1^n X_k</annotation></semantics></math>,</p>
+<div>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle mathvariant="double-struck"><mi>𝔼</mi></mstyle><mi>f</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>S</mi><mi>n</mi></msub><mi>/</mi><msqrt><mi>n</mi></msqrt><mo stretchy="true" form="postfix">)</mo></mrow><mo>→</mo><msubsup><mo>∫</mo><mrow><mo>−</mo><mi>∞</mi></mrow><mi>∞</mi></msubsup><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mfrac><msup><mstyle mathvariant="normal"><mi>e</mi></mstyle><mrow><mo>−</mo><msup><mi>t</mi><mn>2</mn></msup><mi>/</mi><mn>2</mn></mrow></msup><msqrt><mrow><mn>2</mn><mstyle mathvariant="normal"><mi>π</mi></mstyle></mrow></msqrt></mfrac><mspace width="0.167em"></mspace><mstyle mathvariant="normal"><mi>d</mi></mstyle><mi>t</mi><mspace width="1.0em"></mspace><mrow><mrow><mtext mathvariant="normal">as </mtext><mspace width="0.333em"></mspace></mrow><mrow><mi>n</mi><mo>→</mo><mi>∞</mi></mrow><mrow><mtext mathvariant="normal">,
+ for every </mtext><mspace width="0.333em"></mspace></mrow><mrow><mi>f</mi><mo>∈</mo><mstyle mathvariant="normal"><mi>b</mi></mstyle><mstyle mathvariant="script"><mi>𝒞</mi></mstyle><mo stretchy="false" form="prefix">(</mo><mstyle mathvariant="double-struck"><mi>ℝ</mi></mstyle><mo stretchy="false" form="postfix">)</mo></mrow><mtext mathvariant="normal">.</mtext></mrow></mrow><annotation encoding="application/x-tex">\mathbb{E} f\left(S_n/\sqrt{n}\right)
+\to \int_{-\infty}^\infty f(t)
+  \frac{\mathrm{e}^{-t^2/2}}{\sqrt{2\mathrm{\pi}}}\, \mathrm{d}t
+\quad\mbox{as $n\to\infty$,
+  for every $f\in\mathrm{b} \mathcal{C}(\mathbb{R})$.}</annotation></semantics></math>
+</div>
+</dd>
+</dl>
+</section>
 </section>
 <section id="inferred-mrow-s-in-mathml">
 <h2>Inferred &lt;mrow&gt;s in MathML</h2>
@@ -88,7 +139,7 @@ b = \sqrt{1+x^2},\quad
 c = \sqrt\frac{\sin(x)}{23},
 </pre>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/test/functional/input/data/math_experiments.txt</span>, line 46)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/test/functional/input/data/math_experiments.txt</span>, line 91)</p>
 <p>TeX to MathML converter `pandoc` failed:</p>
 <p>[WARNING] Could not convert TeX math 'a = \sqrt 2 + x,\quad</p>
 <pre class="literal-block">  b = \sqrt{1+x^2},\quad
@@ -100,7 +151,7 @@ c = \sqrt\frac{\sin(x)}{23},
 </aside>
 <p>inline: <span class="math problematic">a = \sqrt 2 + x, b = \sqrt{1+x^2}, c = \sqrt\frac{\sin(x)}{23}</span>.</p>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/test/functional/input/data/math_experiments.txt</span>, line 50)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/test/functional/input/data/math_experiments.txt</span>, line 95)</p>
 <p>TeX to MathML converter `pandoc` failed:</p>
 <p>[WARNING] Could not convert TeX math 'a = \sqrt 2 + x, b = \sqrt{1+x^2}, c = \sqrt\frac{\sin(x)}{23}', rendering as TeX:</p>
 <pre class="literal-block">  ^2}, c = \sqrt\frac{\sin(x)}{23}
@@ -163,7 +214,7 @@ ignored by LaTeX)}</annotation></semantics></math>
 \left( \intop_0^1                 \right)
 </pre>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/test/functional/input/data/math_experiments.txt</span>, line 82)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/test/functional/input/data/math_experiments.txt</span>, line 127)</p>
 <p>TeX to MathML converter `pandoc` failed:</p>
 <p>[WARNING] Could not convert TeX math '\begin{aligned}</p>
 <pre class="literal-block">  \left( 3                          \right)
@@ -234,7 +285,7 @@ c &amp; d \end{smallmatrix}           \right)
 \left( \sum_0^1                   \right)
 \left( \frac{\frac1x}{\frac{1}{n}}\right)</annotation></semantics></math></p>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/test/functional/input/data/math_experiments.txt</span>, line 132)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/test/functional/input/data/math_experiments.txt</span>, line 177)</p>
 <p>TeX to MathML converter `pandoc` failed:</p>
 <p>[WARNING] Could not convert TeX math '\Bigl(\text{Big}\Bigr)', rendering as TeX:</p>
 <pre class="literal-block">  \Bigl(\text{Big}\Bigr)
@@ -273,7 +324,7 @@ with all extensible delimiters.</p>
 \left./           b \right\backslash  \ \bigl/           b \Bigr\backslash  \ \biggl/           b \Biggr\backslash
 </pre>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/test/functional/input/data/math_experiments.txt</span>, line 154)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/test/functional/input/data/math_experiments.txt</span>, line 199)</p>
 <p>TeX to MathML converter `pandoc` failed:</p>
 <p>[WARNING] Could not convert TeX math '\left.\lgroup b \right\rgroup \ \bigl\lgroup b \Bigr\rgroup \ \biggl\lgroup b \Biggr\rgroup</p>
 <pre class="literal-block">  \quad
@@ -303,7 +354,7 @@ with all extensible delimiters.</p>
 \left.\bracevert b \right\bracevert \ \bigl\bracevert b \Bigr\bracevert \ \biggl\bracevert b \Biggr\bracevert
 </pre>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/test/functional/input/data/math_experiments.txt</span>, line 179)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/test/functional/input/data/math_experiments.txt</span>, line 224)</p>
 <p>TeX to MathML converter `pandoc` failed:</p>
 <p>[WARNING] Could not convert TeX math '\left.\arrowvert b \right\arrowvert \ \bigl\arrowvert b \Bigr\arrowvert \ \biggl\arrowvert b \Biggr\arrowvert</p>
 <pre class="literal-block">  \quad
@@ -320,7 +371,7 @@ with all extensible delimiters.</p>
 \sum\ \prod\ \coprod\ \bigwedge\ \bigvee\ \bigcap\ \bigcup\ \biguplus\
 \bigsqcup\ \bigodot\ \bigoplus\ \bigotimes</span> and Display:</p>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/test/functional/input/data/math_experiments.txt</span>, line 196)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/test/functional/input/data/math_experiments.txt</span>, line 241)</p>
 <p>TeX to MathML converter `pandoc` failed:</p>
 <p>[WARNING] Could not convert TeX math '\int\ \iint\ \iiint\ \iiiint\ \idotsint \oint\ \smallint\</p>
 <pre class="literal-block">  \sum\ \prod\ \coprod\ \bigwedge\ \bigvee\ \bigcap\ \bigcup\ \biguplus\
@@ -336,7 +387,7 @@ with all extensible delimiters.</p>
 \biguplus\ \bigsqcup\ \bigodot\ \bigoplus\ \bigotimes
 </pre>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/test/functional/input/data/math_experiments.txt</span>, line 200)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/test/functional/input/data/math_experiments.txt</span>, line 245)</p>
 <p>TeX to MathML converter `pandoc` failed:</p>
 <p>[WARNING] Could not convert TeX math '\int\ \iint\ \iiint\ \iiiint\ \idotsint\ \oint\ \smallint\</p>
 <pre class="literal-block">  \sum\ \prod\ \coprod\ \bigwedge\ \bigvee\ \bigcap\ \bigcup\
@@ -353,7 +404,7 @@ with all extensible delimiters.</p>
 \bigvee^N\ \bigcup^N\ \bigsqcup^N\ \bigotimes^N
 </pre>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/test/functional/input/data/math_experiments.txt</span>, line 204)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/test/functional/input/data/math_experiments.txt</span>, line 249)</p>
 <p>TeX to MathML converter `pandoc` failed:</p>
 <p>[WARNING] Could not convert TeX math '\int_1 f\ \intop_1 f\ \iint_1 f\ \smallint_1 f\ \sum_1\</p>
 <pre class="literal-block">  \prod_1\ \bigwedge_1\ \bigcap_1\ \biguplus_1\ \bigodot_1\ \int^N\
@@ -372,7 +423,7 @@ with all extensible delimiters.</p>
 \bigotimes_1^N
 </pre>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/test/functional/input/data/math_experiments.txt</span>, line 209)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/test/functional/input/data/math_experiments.txt</span>, line 254)</p>
 <p>TeX to MathML converter `pandoc` failed:</p>
 <p>[WARNING] Could not convert TeX math '\int_1^N\ \intop_1^N\ \iint_1^N\ \iiint_1^N\ \iiiint_1^N\</p>
 <pre class="literal-block">  \idotsint_1^N\ \oint_1^N\ \smallint_1^N\ \sum_1^N\ \prod_1^N\
@@ -393,7 +444,7 @@ In other output formats, use literal Unicode: <math display="inline" xmlns="http
 to get the result of the accent macros
 <span class="math problematic">\text{\c{c} \'e \`e \&quot;e \^e \~n \r{u} \v{z} \textcircled{c}}</span>.</p>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/test/functional/input/data/math_experiments.txt</span>, line 221)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/test/functional/input/data/math_experiments.txt</span>, line 266)</p>
 <p>TeX to MathML converter `pandoc` failed:</p>
 <p>[WARNING] Could not convert TeX math '\text{\c{c} \'e \`e \&quot;e \^e \~n \r{u} \v{z} \textcircled{c}}', rendering as TeX:</p>
 <pre class="literal-block">  'e \`e \&quot;e \^e \~n \r{u} \v{z} \textcirc

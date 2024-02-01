@@ -12,11 +12,11 @@
 <main id="math-conversion-tests">
 <h1 class="title">Math Conversion Tests</h1>
 
-<section id="font-changes">
-<h2>Font changes</h2>
-<p><em>Math alphabet</em> macros change the default alphabet, leaving some symbols
-unchanged. In MathML core, the corresponding <em>Mathematical Alphanumeric
-Symbols</em> are used.</p>
+<section id="math-alphabet-mathvariant">
+<h2>Math alphabet / Mathvariant</h2>
+<p>TeX's <em>math alphabet</em> macros change font features of (some) letters and
+digits. Non-alphanumerical symbols, function names, and mathematical text
+are left unchanged.</p>
 <dl class="field-list simple">
 <dt>default<span class="colon">:</span></dt>
 <dd><p><math xmlns="http://www.w3.org/1998/Math/MathML">
@@ -29,7 +29,10 @@ Symbols</em> are used.</p>
   <mi>cos</mi>
   <mo>&ApplyFunction;</mo>
   <mo stretchy="false">(</mo>
-  <mi>α</mi>
+  <msub>
+    <mi>α</mi>
+    <mtext>out</mtext>
+  </msub>
   <mo stretchy="false">)</mo>
   <mo>≈</mo>
   <mn>3</mn>
@@ -41,28 +44,31 @@ Symbols</em> are used.</p>
   <mi>ℝ</mi>
 </math></p>
 </dd>
-<dt>mathbb<span class="colon">:</span></dt>
+<dt>mathrm<span class="colon">:</span></dt>
 <dd><p><math xmlns="http://www.w3.org/1998/Math/MathML">
   <mrow>
     <msub>
-      <mi>𝕍</mi>
-      <mi>ℝ</mi>
+      <mi mathvariant="normal">V</mi>
+      <mi mathvariant="normal">R</mi>
     </msub>
-    <mi>𝕩</mi>
+    <mi mathvariant="normal">x</mi>
     <mo>±</mo>
-    <mi>cos</mi>
+    <mi mathvariant="normal">cos</mi>
     <mo>&ApplyFunction;</mo>
     <mo stretchy="false">(</mo>
-    <mi>α</mi>
+    <msub>
+      <mi mathvariant="normal">α</mi>
+      <mtext>out</mtext>
+    </msub>
     <mo stretchy="false">)</mo>
     <mo>≈</mo>
-    <mn>𝟛</mn>
-    <mi class="capital-greek">ℾ</mi>
+    <mn>3</mn>
+    <mi class="capital-greek" mathvariant="normal">Γ</mi>
     <mspace width="1em"></mspace>
     <mi>∀</mi>
-    <mi>𝕩</mi>
+    <mi mathvariant="normal">x</mi>
     <mo>∈</mo>
-    <mi>ℝ</mi>
+    <mi mathvariant="normal">ℝ</mi>
   </mrow>
 </math></p>
 </dd>
@@ -78,7 +84,10 @@ Symbols</em> are used.</p>
     <mi>cos</mi>
     <mo>&ApplyFunction;</mo>
     <mo stretchy="false">(</mo>
-    <mi>𝛂</mi>
+    <msub>
+      <mi>𝛂</mi>
+      <mtext>out</mtext>
+    </msub>
     <mo stretchy="false">)</mo>
     <mo>≈</mo>
     <mn>𝟑</mn>
@@ -86,56 +95,6 @@ Symbols</em> are used.</p>
     <mspace width="1em"></mspace>
     <mi>∀</mi>
     <mi>𝐱</mi>
-    <mo>∈</mo>
-    <mi>ℝ</mi>
-  </mrow>
-</math></p>
-</dd>
-<dt>mathbfit<span class="colon">:</span></dt>
-<dd><p><math xmlns="http://www.w3.org/1998/Math/MathML">
-  <mrow>
-    <msub>
-      <mi>𝑽</mi>
-      <mi>𝑹</mi>
-    </msub>
-    <mi>𝒙</mi>
-    <mo>±</mo>
-    <mi>cos</mi>
-    <mo>&ApplyFunction;</mo>
-    <mo stretchy="false">(</mo>
-    <mi>𝜶</mi>
-    <mo stretchy="false">)</mo>
-    <mo>≈</mo>
-    <mn>3</mn>
-    <mi class="capital-greek">𝜞</mi>
-    <mspace width="1em"></mspace>
-    <mi>∀</mi>
-    <mi>𝒙</mi>
-    <mo>∈</mo>
-    <mi>ℝ</mi>
-  </mrow>
-</math></p>
-</dd>
-<dt>mathcal<span class="colon">:</span></dt>
-<dd><p><math xmlns="http://www.w3.org/1998/Math/MathML">
-  <mrow>
-    <msub>
-      <mi>𝒱</mi>
-      <mi>ℛ</mi>
-    </msub>
-    <mi>𝓍</mi>
-    <mo>±</mo>
-    <mi>cos</mi>
-    <mo>&ApplyFunction;</mo>
-    <mo stretchy="false">(</mo>
-    <mi>α</mi>
-    <mo stretchy="false">)</mo>
-    <mo>≈</mo>
-    <mn>3</mn>
-    <mi class="capital-greek">Γ</mi>
-    <mspace width="1em"></mspace>
-    <mi>∀</mi>
-    <mi>𝓍</mi>
     <mo>∈</mo>
     <mi>ℝ</mi>
   </mrow>
@@ -153,7 +112,10 @@ Symbols</em> are used.</p>
     <mi>cos</mi>
     <mo>&ApplyFunction;</mo>
     <mo stretchy="false">(</mo>
-    <mi>𝛼</mi>
+    <msub>
+      <mi>𝛼</mi>
+      <mtext>out</mtext>
+    </msub>
     <mo stretchy="false">)</mo>
     <mo>≈</mo>
     <mn>3</mn>
@@ -166,28 +128,87 @@ Symbols</em> are used.</p>
   </mrow>
 </math></p>
 </dd>
-<dt>mathrm<span class="colon">:</span></dt>
+<dt>mathbfit<span class="colon">:</span></dt>
 <dd><p><math xmlns="http://www.w3.org/1998/Math/MathML">
   <mrow>
     <msub>
-      <mi mathvariant="normal">V</mi>
-      <mi mathvariant="normal">R</mi>
+      <mi>𝑽</mi>
+      <mi>𝑹</mi>
     </msub>
-    <mi mathvariant="normal">x</mi>
+    <mi>𝒙</mi>
     <mo>±</mo>
-    <mi mathvariant="normal">cos</mi>
+    <mi>cos</mi>
     <mo>&ApplyFunction;</mo>
     <mo stretchy="false">(</mo>
-    <mi mathvariant="normal">α</mi>
+    <msub>
+      <mi>𝜶</mi>
+      <mtext>out</mtext>
+    </msub>
     <mo stretchy="false">)</mo>
     <mo>≈</mo>
     <mn>3</mn>
-    <mi class="capital-greek" mathvariant="normal">Γ</mi>
+    <mi class="capital-greek">𝜞</mi>
     <mspace width="1em"></mspace>
     <mi>∀</mi>
-    <mi mathvariant="normal">x</mi>
+    <mi>𝒙</mi>
     <mo>∈</mo>
-    <mi mathvariant="normal">ℝ</mi>
+    <mi>ℝ</mi>
+  </mrow>
+</math></p>
+</dd>
+<dt>mathbb<span class="colon">:</span></dt>
+<dd><p><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow>
+    <msub>
+      <mi>𝕍</mi>
+      <mi>ℝ</mi>
+    </msub>
+    <mi>𝕩</mi>
+    <mo>±</mo>
+    <mi>cos</mi>
+    <mo>&ApplyFunction;</mo>
+    <mo stretchy="false">(</mo>
+    <msub>
+      <mi>α</mi>
+      <mtext>out</mtext>
+    </msub>
+    <mo stretchy="false">)</mo>
+    <mo>≈</mo>
+    <mn>𝟛</mn>
+    <mi class="capital-greek">ℾ</mi>
+    <mspace width="1em"></mspace>
+    <mi>∀</mi>
+    <mi>𝕩</mi>
+    <mo>∈</mo>
+    <mi>ℝ</mi>
+  </mrow>
+</math></p>
+</dd>
+<dt>mathcal<span class="colon">:</span></dt>
+<dd><p><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow>
+    <msub>
+      <mi>𝒱</mi>
+      <mi>ℛ</mi>
+    </msub>
+    <mi>𝓍</mi>
+    <mo>±</mo>
+    <mi>cos</mi>
+    <mo>&ApplyFunction;</mo>
+    <mo stretchy="false">(</mo>
+    <msub>
+      <mi>α</mi>
+      <mtext>out</mtext>
+    </msub>
+    <mo stretchy="false">)</mo>
+    <mo>≈</mo>
+    <mn>3</mn>
+    <mi class="capital-greek">Γ</mi>
+    <mspace width="1em"></mspace>
+    <mi>∀</mi>
+    <mi>𝓍</mi>
+    <mo>∈</mo>
+    <mi>ℝ</mi>
   </mrow>
 </math></p>
 </dd>
@@ -203,7 +224,10 @@ Symbols</em> are used.</p>
     <mi>cos</mi>
     <mo>&ApplyFunction;</mo>
     <mo stretchy="false">(</mo>
-    <mi>α</mi>
+    <msub>
+      <mi>α</mi>
+      <mtext>out</mtext>
+    </msub>
     <mo stretchy="false">)</mo>
     <mo>≈</mo>
     <mn>3</mn>
@@ -211,6 +235,34 @@ Symbols</em> are used.</p>
     <mspace width="1em"></mspace>
     <mi>∀</mi>
     <mi>𝓍</mi>
+    <mo>∈</mo>
+    <mi>ℝ</mi>
+  </mrow>
+</math></p>
+</dd>
+<dt>mathfrak<span class="colon">:</span></dt>
+<dd><p><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow>
+    <msub>
+      <mi>𝔙</mi>
+      <mi>ℜ</mi>
+    </msub>
+    <mi>𝔵</mi>
+    <mo>±</mo>
+    <mi>cos</mi>
+    <mo>&ApplyFunction;</mo>
+    <mo stretchy="false">(</mo>
+    <msub>
+      <mi>α</mi>
+      <mtext>out</mtext>
+    </msub>
+    <mo stretchy="false">)</mo>
+    <mo>≈</mo>
+    <mn>3</mn>
+    <mi class="capital-greek">Γ</mi>
+    <mspace width="1em"></mspace>
+    <mi>∀</mi>
+    <mi>𝔵</mi>
     <mo>∈</mo>
     <mi>ℝ</mi>
   </mrow>
@@ -228,7 +280,10 @@ Symbols</em> are used.</p>
     <mi>cos</mi>
     <mo>&ApplyFunction;</mo>
     <mo stretchy="false">(</mo>
-    <mi>α</mi>
+    <msub>
+      <mi>α</mi>
+      <mtext>out</mtext>
+    </msub>
     <mo stretchy="false">)</mo>
     <mo>≈</mo>
     <mn>𝟥</mn>
@@ -236,31 +291,6 @@ Symbols</em> are used.</p>
     <mspace width="1em"></mspace>
     <mi>∀</mi>
     <mi>𝗑</mi>
-    <mo>∈</mo>
-    <mi>ℝ</mi>
-  </mrow>
-</math></p>
-</dd>
-<dt>mathsfbfit<span class="colon">:</span></dt>
-<dd><p><math xmlns="http://www.w3.org/1998/Math/MathML">
-  <mrow>
-    <msub>
-      <mi>𝙑</mi>
-      <mi>𝙍</mi>
-    </msub>
-    <mi>𝙭</mi>
-    <mo>±</mo>
-    <mi>cos</mi>
-    <mo>&ApplyFunction;</mo>
-    <mo stretchy="false">(</mo>
-    <mi>𝞪</mi>
-    <mo stretchy="false">)</mo>
-    <mo>≈</mo>
-    <mn>3</mn>
-    <mi class="capital-greek">𝞒</mi>
-    <mspace width="1em"></mspace>
-    <mi>∀</mi>
-    <mi>𝙭</mi>
     <mo>∈</mo>
     <mi>ℝ</mi>
   </mrow>
@@ -278,7 +308,10 @@ Symbols</em> are used.</p>
     <mi>cos</mi>
     <mo>&ApplyFunction;</mo>
     <mo stretchy="false">(</mo>
-    <mi>α</mi>
+    <msub>
+      <mi>α</mi>
+      <mtext>out</mtext>
+    </msub>
     <mo stretchy="false">)</mo>
     <mo>≈</mo>
     <mn>3</mn>
@@ -286,6 +319,62 @@ Symbols</em> are used.</p>
     <mspace width="1em"></mspace>
     <mi>∀</mi>
     <mi>𝘹</mi>
+    <mo>∈</mo>
+    <mi>ℝ</mi>
+  </mrow>
+</math></p>
+</dd>
+<dt>mathsfbfit<span class="colon">:</span></dt>
+<dd><p><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow>
+    <msub>
+      <mi>𝙑</mi>
+      <mi>𝙍</mi>
+    </msub>
+    <mi>𝙭</mi>
+    <mo>±</mo>
+    <mi>cos</mi>
+    <mo>&ApplyFunction;</mo>
+    <mo stretchy="false">(</mo>
+    <msub>
+      <mi>𝞪</mi>
+      <mtext>out</mtext>
+    </msub>
+    <mo stretchy="false">)</mo>
+    <mo>≈</mo>
+    <mn>3</mn>
+    <mi class="capital-greek">𝞒</mi>
+    <mspace width="1em"></mspace>
+    <mi>∀</mi>
+    <mi>𝙭</mi>
+    <mo>∈</mo>
+    <mi>ℝ</mi>
+  </mrow>
+</math></p>
+</dd>
+<dt>mathbfsfit<span class="colon">:</span></dt>
+<dd><p><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow>
+    <msub>
+      <mi>𝙑</mi>
+      <mi>𝙍</mi>
+    </msub>
+    <mi>𝙭</mi>
+    <mo>±</mo>
+    <mi>cos</mi>
+    <mo>&ApplyFunction;</mo>
+    <mo stretchy="false">(</mo>
+    <msub>
+      <mi>𝞪</mi>
+      <mtext>out</mtext>
+    </msub>
+    <mo stretchy="false">)</mo>
+    <mo>≈</mo>
+    <mn>3</mn>
+    <mi class="capital-greek">𝞒</mi>
+    <mspace width="1em"></mspace>
+    <mi>∀</mi>
+    <mi>𝙭</mi>
     <mo>∈</mo>
     <mi>ℝ</mi>
   </mrow>
@@ -303,7 +392,10 @@ Symbols</em> are used.</p>
     <mi>cos</mi>
     <mo>&ApplyFunction;</mo>
     <mo stretchy="false">(</mo>
-    <mi>α</mi>
+    <msub>
+      <mi>α</mi>
+      <mtext>out</mtext>
+    </msub>
     <mo stretchy="false">)</mo>
     <mo>≈</mo>
     <mn>𝟹</mn>
@@ -317,40 +409,219 @@ Symbols</em> are used.</p>
 </math></p>
 </dd>
 </dl>
-<p>LaTeX accepts complex functions inside the math alphabet functions:</p>
+<p>MathML 4 defines the <em>mathvariant</em> <a class="reference external" href="https://www.w3.org/TR/mathml4/#presm_commatt">style attribute</a>, in MathML core,
+characters from the <a class="reference external" href="http://www.unicode.org/charts/PDF/U1EE00.pdf">Mathematical Alphanumeric Symbols</a> Unicode block
+are used.</p>
+<p>The mathvariants <em>bold-script</em>, <em>bold-fraktur</em>, and <em>sans-bold</em> are
+rarely used. They are currently not supported by Docutils's native MathML
+output. In LaTeX, <span class="docutils literal">\mathbfscr</span> and <span class="docutils literal">\mathbffrac</span> is supported by the
+<a class="reference external" href="https://www.ctan.org/pkg/mathalpha">mathalpha</a> package.</p>
+<p>Bold variants of any symbol can be achieved in combination with the
+<span class="docutils literal">\boldsymbol</span> command, e.g.</p>
 <dl class="field-list simple">
-<dt>mathrm<span class="colon">:</span></dt>
+<dt>bold-fraktur<span class="colon">:</span></dt>
 <dd><p><math xmlns="http://www.w3.org/1998/Math/MathML">
-  <mfrac>
-    <mi mathvariant="normal">x</mi>
-    <mi mathvariant="normal">y</mi>
-  </mfrac>
+  <mrow class="boldsymbol">
+    <mrow>
+      <msub>
+        <mi>𝔙</mi>
+        <mi>ℜ</mi>
+      </msub>
+      <mi>𝔵</mi>
+    </mrow>
+  </mrow>
 </math></p>
 </dd>
 </dl>
-<p>Without additional packages, LaTeX supports &quot;blackboard-bold&quot; only for
-capital Latin letters.
-Unicode supports also small Latin letters, some Greek letters, and digits:
-<math xmlns="http://www.w3.org/1998/Math/MathML">
+<p>Note, that <span class="docutils literal">\boldsymbol</span> emboldens also non-alphanumerical symbols.</p>
+<section id="complex-example">
+<h3>Complex Example</h3>
+<p>From the <a class="reference external" href="https://www.ctan.org/pkg/baskervaldx">baskervaldx</a> package documentation:</p>
+<dl>
+<dt>Simplest form of the <em>Central Limit Theorem</em>:</dt>
+<dd><p>Let <math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>X</mi>
+    <mn>1</mn>
+  </msub>
+  <mo>,</mo>
+  <msub>
+    <mi>X</mi>
+    <mn>2</mn>
+  </msub>
+  <mo>,</mo>
+  <mi>⋯</mi>
+</math> be a sequence of iid random variables with mean <math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>0</mn>
+</math>
+and variance <math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>1</mn>
+</math> on a probability space <math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo stretchy="false">(</mo>
+  <mi class="capital-greek">Ω</mi>
+  <mo>,</mo>
+  <mi>ℱ</mi>
+  <mo>,</mo>
+  <mi>ℙ</mi>
+  <mo stretchy="false">)</mo>
+</math>.
+Then</p>
+<div>
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mi>ℙ</mi>
   <mrow>
-    <mi>𝔸</mi>
-    <mi>…</mi>
-    <mi>ℤ</mi>
-    <mi>𝕒</mi>
-    <mi>…</mi>
-    <mi>𝕫</mi>
+    <mo>(</mo>
+    <mfrac>
+      <mrow>
+        <msub>
+          <mi>X</mi>
+          <mn>1</mn>
+        </msub>
+        <mo>+</mo>
+        <mi>⋯</mi>
+        <mo>+</mo>
+        <msub>
+          <mi>X</mi>
+          <mi>n</mi>
+        </msub>
+      </mrow>
+      <msqrt>
+        <mi>n</mi>
+      </msqrt>
+    </mfrac>
+    <mo>≤</mo>
+    <mi>y</mi>
+    <mo>)</mo>
   </mrow>
-  <mi class="capital-greek">ℾ</mi>
-  <mi class="capital-greek">ℿ</mi>
-  <mi class="capital-greek">⅀</mi>
-  <mi>ℽ</mi>
-  <mi>ℼ</mi>
+  <mo>→</mo>
+  <mi>𝔑</mi>
+  <mo stretchy="false">(</mo>
+  <mi>y</mi>
+  <mo stretchy="false">)</mo>
+  <mo>≔</mo>
+  <msubsup>
+    <mo>∫</mo>
+    <mrow>
+      <mo>−</mo>
+      <mi>∞</mi>
+    </mrow>
+    <mi>y</mi>
+  </msubsup>
+  <mfrac>
+    <msup>
+      <mi mathvariant="normal">e</mi>
+      <mrow>
+        <mo>−</mo>
+        <msup>
+          <mi>t</mi>
+          <mn>2</mn>
+        </msup>
+        <mo stretchy="false">/</mo>
+        <mn>2</mn>
+      </mrow>
+    </msup>
+    <msqrt>
+      <mn>2</mn>
+      <mi mathvariant="normal">π</mi>
+    </msqrt>
+  </mfrac>
+  <mspace width="0.1667em"></mspace>
+  <mi mathvariant="normal">d</mi>
+  <mi>t</mi>
+  <mspace width="1em"></mspace>
+  <mtext>as </mtext>
+  <mi>n</mi>
+  <mo>→</mo>
+  <mi>∞</mi>
+  <mtext>,</mtext>
+</math>
+</div>
+<p>or, equivalently, letting <math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>S</mi>
+    <mi>n</mi>
+  </msub>
+  <mo>≔</mo>
+  <munderover>
+    <mo movablelimits="true">∑</mo>
+    <mn>1</mn>
+    <mi>n</mi>
+  </munderover>
+  <msub>
+    <mi>X</mi>
+    <mi>k</mi>
+  </msub>
+</math>,</p>
+<div>
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mi>𝔼</mi>
+  <mi>f</mi>
   <mrow>
-    <mn>𝟘</mn>
-    <mi>…</mi>
-    <mn>𝟡</mn>
+    <mo>(</mo>
+    <msub>
+      <mi>S</mi>
+      <mi>n</mi>
+    </msub>
+    <mo stretchy="false">/</mo>
+    <msqrt>
+      <mi>n</mi>
+    </msqrt>
+    <mo>)</mo>
   </mrow>
-</math> but no italic digits.</p>
+  <mo>→</mo>
+  <msubsup>
+    <mo>∫</mo>
+    <mrow>
+      <mo>−</mo>
+      <mi>∞</mi>
+    </mrow>
+    <mi>∞</mi>
+  </msubsup>
+  <mi>f</mi>
+  <mo stretchy="false">(</mo>
+  <mi>t</mi>
+  <mo stretchy="false">)</mo>
+  <mfrac>
+    <msup>
+      <mi mathvariant="normal">e</mi>
+      <mrow>
+        <mo>−</mo>
+        <msup>
+          <mi>t</mi>
+          <mn>2</mn>
+        </msup>
+        <mo stretchy="false">/</mo>
+        <mn>2</mn>
+      </mrow>
+    </msup>
+    <msqrt>
+      <mn>2</mn>
+      <mi mathvariant="normal">π</mi>
+    </msqrt>
+  </mfrac>
+  <mspace width="0.1667em"></mspace>
+  <mi mathvariant="normal">d</mi>
+  <mi>t</mi>
+  <mspace width="1em"></mspace>
+  <mtext>as </mtext>
+  <mi>n</mi>
+  <mo>→</mo>
+  <mi>∞</mi>
+  <mtext>,
+  for every </mtext>
+  <mi>f</mi>
+  <mo>∈</mo>
+  <mi mathvariant="normal">b</mi>
+  <mi>𝒞</mi>
+  <mo stretchy="false">(</mo>
+  <mi>ℝ</mi>
+  <mo stretchy="false">)</mo>
+  <mtext>.</mtext>
+</math>
+</div>
+</dd>
+</dl>
+</section>
 </section>
 <section id="inferred-mrow-s-in-mathml">
 <h2>Inferred &lt;mrow&gt;s in MathML</h2>

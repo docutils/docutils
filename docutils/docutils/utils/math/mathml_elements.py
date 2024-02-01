@@ -116,6 +116,9 @@ class MathElement(ET.Element):
         if isinstance(value, MathElement):
             value.parent = self
         else:  # value may be an iterable
+            if self.nchildren and len(self) + len(value) > self.nchildren:
+                raise TypeError(f'Element "{self}" takes only {self.nchildren}'
+                                ' children')
             for e in value:
                 e.parent = self
         super().__setitem__(key, value)
@@ -228,7 +231,7 @@ class MathElement(ET.Element):
 # Group sub-expressions in a horizontal row
 #
 # The elements <msqrt>, <mstyle>, <merror>, <mpadded>, <mphantom>,
-# <menclose>, <mtd>, [...], and <math> treat their contents
+# <menclose>, <mtd>, <mscarry>, and <math> treat their contents
 # as a single inferred mrow formed from all their children.
 # (https://www.w3.org/TR/mathml4/#presm_inferredmrow)
 #
@@ -344,14 +347,15 @@ class mrow(MathRow):
     def transfer_attributes(self, other):
         """Transfer attributes from self to other.
 
-        List values (class, style) are appended to existing values,
+        "List values" (class, style) are appended to existing values,
         other values replace existing values.
         """
         delimiters = {'class': ' ', 'style': '; '}
         for k, v in self.items():
             if k in ('class', 'style') and v:
                 if other.get(k):
-                    v = delimiters[k].join((other.get(k), v))
+                    v = delimiters[k].join(
+                        (other.get(k).rstrip(delimiters[k]), v))
             other.set(k, v)
 
     def close(self):

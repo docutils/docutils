@@ -43,7 +43,7 @@ Attention: this is not a standalone document. -->
 <li><p><a class="reference internal" href="#functions-named-operators" id="toc-entry-9"><span class="sectnum">2.5 </span>Functions (named operators)</a></p></li>
 <li><p><a class="reference internal" href="#greek-letters" id="toc-entry-10"><span class="sectnum">2.6 </span>Greek letters</a></p></li>
 <li><p><a class="reference internal" href="#letterlike-symbols" id="toc-entry-11"><span class="sectnum">2.7 </span>Letterlike symbols</a></p></li>
-<li><p><a class="reference internal" href="#mathematical-alphabets" id="toc-entry-12"><span class="sectnum">2.8 </span>Mathematical Alphabets</a></p></li>
+<li><p><a class="reference internal" href="#math-alphabets" id="toc-entry-12"><span class="sectnum">2.8 </span>Math alphabets</a></p></li>
 <li><p><a class="reference internal" href="#miscellaneous-symbols" id="toc-entry-13"><span class="sectnum">2.9 </span>Miscellaneous symbols</a></p></li>
 <li><p><a class="reference internal" href="#punctuation" id="toc-entry-14"><span class="sectnum">2.10 </span>Punctuation</a></p></li>
 <li><p><a class="reference internal" href="#relation-symbols" id="toc-entry-15"><span class="sectnum">2.11 </span>Relation symbols</a></p>
@@ -887,11 +887,15 @@ letter name with <span class="docutils literal">var</span> like <span class="doc
   expecting &quot;%&quot;, &quot;\\label&quot;, &quot;\\nonumber&quot; or whitespace</p>
 </aside>
 </section>
-<section id="mathematical-alphabets">
-<span id="math-alphabet"></span><h3><a class="toc-backref" href="#toc-entry-12" role="doc-backlink"><span class="sectnum">2.8 </span>Mathematical Alphabets</a></h3>
-<p>Mathematical alphabets select a combination of font attributes (shape,
-weight, family) <a class="brackets" href="#footnote-1" id="footnote-reference-3" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>. They are intended for mathematical variables where
-style variations are important semantically.</p>
+<section id="math-alphabets">
+<span id="math-alphabet"></span><h3><a class="toc-backref" href="#toc-entry-12" role="doc-backlink"><span class="sectnum">2.8 </span>Math alphabets</a></h3>
+<p>The TeX <em>math alphabet</em> macros are intended for mathematical variables
+where style variations are important semantically.
+They style letters and numbers with a combination of font attributes
+(shape, weight, family) --- non-alphanumerical symbols, function names,
+and mathematical text are left unchanged.</p>
+<p>MathML uses the <em>mathvariant</em> <a class="reference external" href="https://www.w3.org/TR/mathml4/#presm_commatt">style attribute</a> or pre-styled characters
+from the <a class="reference external" href="https://en.wikipedia.org/wiki/Mathematical_Alphanumeric_Symbols">Mathematical Alphanumeric Symbols</a> Unicode block.</p>
 <table>
 <thead>
 <tr><th class="head"><p>command</p></th>
@@ -900,29 +904,29 @@ style variations are important semantically.</p>
 </tr>
 </thead>
 <tbody>
-<tr><td><p><span class="docutils literal">\mathbf</span></p></td>
-<td><p><span class="docutils literal"><span class="pre">\mathbf{r}^2=x^2+y^2+z^2</span></span></p></td>
-<td><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mstyle mathvariant="bold"><mi>𝐫</mi></mstyle><mn>2</mn></msup><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>+</mo><msup><mi>z</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">\mathbf{r}^2=x^2+y^2+z^2</annotation></semantics></math></p></td>
+<tr><td><p><span class="docutils literal">\mathrm</span></p></td>
+<td><p><span class="docutils literal">s_\mathrm{out}</span></p></td>
+<td><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>s</mi><mstyle mathvariant="normal"><mi>o</mi><mi>u</mi><mi>t</mi></mstyle></msub><annotation encoding="application/x-tex">s_\mathrm{out}</annotation></semantics></math></p></td>
 </tr>
-<tr><td><p><span class="docutils literal">\mathbb</span></p></td>
-<td><p><span class="docutils literal">\mathbb{R \subset C}</span></p></td>
-<td><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="double-struck"><mi>ℝ</mi><mo>⊂</mo><mi>ℂ</mi></mstyle><annotation encoding="application/x-tex">\mathbb{R \subset C}</annotation></semantics></math></p></td>
+<tr><td><p><span class="docutils literal">\mathbf</span></p></td>
+<td><p><span class="docutils literal"><span class="pre">\mathbf{r}^2=x^2+y^2</span></span></p></td>
+<td><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mstyle mathvariant="bold"><mi>𝐫</mi></mstyle><mn>2</mn></msup><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">\mathbf{r}^2=x^2+y^2</annotation></semantics></math></p></td>
+</tr>
+<tr><td><p><span class="docutils literal">\mathit</span></p></td>
+<td><p><span class="docutils literal"><span class="pre">\mathit{\sin\Gamma}</span></span></p></td>
+<td><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="italic"><mo>sin</mo><mi>𝛤</mi></mstyle><annotation encoding="application/x-tex">\mathit{\sin\Gamma}</annotation></semantics></math></p></td>
 </tr>
 <tr><td><p><span class="docutils literal">\mathcal</span></p></td>
 <td><p><span class="docutils literal">\mathcal{F}f(x)</span></p></td>
 <td><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle mathvariant="script"><mi>ℱ</mi></mstyle><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\mathcal{F}f(x)</annotation></semantics></math></p></td>
 </tr>
+<tr><td><p><span class="docutils literal">\mathbb</span></p></td>
+<td><p><span class="docutils literal">\mathbb{R \subset C}</span></p></td>
+<td><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="double-struck"><mi>ℝ</mi><mo>⊂</mo><mi>ℂ</mi></mstyle><annotation encoding="application/x-tex">\mathbb{R \subset C}</annotation></semantics></math></p></td>
+</tr>
 <tr><td><p><span class="docutils literal">\mathfrak</span></p></td>
-<td><p><span class="docutils literal">\mathfrak{a}</span></p></td>
-<td><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="fraktur"><mi>𝔞</mi></mstyle><annotation encoding="application/x-tex">\mathfrak{a}</annotation></semantics></math></p></td>
-</tr>
-<tr><td><p><span class="docutils literal">\mathit</span></p></td>
-<td><p><span class="docutils literal"><span class="pre">\mathit{\Gamma}</span></span></p></td>
-<td><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="italic"><mi>𝛤</mi></mstyle><annotation encoding="application/x-tex">\mathit{\Gamma}</annotation></semantics></math></p></td>
-</tr>
-<tr><td><p><span class="docutils literal">\mathrm</span></p></td>
-<td><p><span class="docutils literal">s_\mathrm{out}</span></p></td>
-<td><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>s</mi><mstyle mathvariant="normal"><mi>o</mi><mi>u</mi><mi>t</mi></mstyle></msub><annotation encoding="application/x-tex">s_\mathrm{out}</annotation></semantics></math></p></td>
+<td><p><span class="docutils literal">\mathfrak{a+b}</span></p></td>
+<td><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="fraktur"><mi>𝔞</mi><mo>+</mo><mi>𝔟</mi></mstyle><annotation encoding="application/x-tex">\mathfrak{a+b}</annotation></semantics></math></p></td>
 </tr>
 <tr><td><p><span class="docutils literal">\mathsf</span></p></td>
 <td><p><span class="docutils literal">\mathsf x</span></p></td>
@@ -934,56 +938,110 @@ style variations are important semantically.</p>
 </tr>
 </tbody>
 </table>
+<p>The set of characters in a given &quot;math alphabet&quot; varies.
+LaTeX may produce garbage for unsupported characters.
+Additional math alphabets are defined in LaTeX packages, e.g.,</p>
+<ul class="simple">
+<li><p><span class="docutils literal">\mathbfit</span> from <a class="reference external" href="https://www.ctan.org/pkg/isomath">isomath</a> allows vector symbols in line with the
+International Standard <a class="citation-reference" href="#iso-80000-2" id="citation-reference-1" role="doc-biblioref">[ISO-80000-2]</a>.
+E.g., <span class="docutils literal"><span class="pre">\mathbfit{r}^2=x^2+y^2</span></span> becomes <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mstyle mathvariant="bold-italic"><mi>𝒓</mi></mstyle><mn>2</mn></msup><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">\mathbfit{r}^2=x^2+y^2</annotation></semantics></math>.</p></li>
+<li><p>Several packages, e.g. <a class="reference external" href="https://www.ctan.org/pkg/mathrsfs">mathrsfs</a>, define <span class="docutils literal">\mathscr</span> that selects a
+differently shaped &quot;script&quot; alphabet.</p></li>
+</ul>
+<p>The listing below shows the characters supported by Unicode and
+Docutils with <a class="reference external" href="https://docutils.sourceforge.io/docs/user/config.html#math-output">math_output</a> MathML. <a class="brackets" href="#italic-digits" id="footnote-reference-3" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a></p>
+<dl class="simple">
+<dt>default:</dt>
+<dd><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>B</mi><mi>C</mi><mi>D</mi><mi>E</mi><mi>F</mi><mi>G</mi><mi>H</mi><mi>I</mi><mi>J</mi><mi>K</mi><mi>L</mi><mi>M</mi><mi>N</mi><mi>O</mi><mi>P</mi><mi>Q</mi><mi>R</mi><mi>S</mi><mi>T</mi><mi>U</mi><mi>V</mi><mi>W</mi><mi>X</mi><mi>Y</mi><mi>Z</mi><mspace width="0.222em"></mspace><mi>a</mi><mi>b</mi><mi>c</mi><mi>d</mi><mi>e</mi><mi>f</mi><mi>g</mi><mi>h</mi><mi>i</mi><mi>j</mi><mi>k</mi><mi>l</mi><mi>m</mi><mi>n</mi><mi>o</mi><mi>p</mi><mi>q</mi><mi>r</mi><mi>s</mi><mi>t</mi><mi>u</mi><mi>v</mi><mi>w</mi><mi>x</mi><mi>y</mi><mi>z</mi><mspace width="0.222em"></mspace><mo>ı</mo><mo>ȷ</mo></mrow><annotation encoding="application/x-tex">{ABCDEFGHIJKLMNOPQRSTUVWXYZ\ abcdefghijklmnopqrstuvwxyz\ \imath \jmath}</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Γ</mi><mi>Δ</mi><mi>Θ</mi><mi>Λ</mi><mi>Ξ</mi><mi>Π</mi><mi>Σ</mi><mi>Υ</mi><mi>Φ</mi><mi>Ψ</mi><mi>Ω</mi><mspace width="0.222em"></mspace><mi>α</mi><mi>β</mi><mi>γ</mi><mi>δ</mi><mi>ε</mi><mi>ζ</mi><mi>η</mi><mi>θ</mi><mi>ι</mi><mi>κ</mi><mi>λ</mi><mi>μ</mi><mi>ν</mi><mi>ξ</mi><mi>π</mi><mi>ρ</mi><mo>ς</mo><mi>σ</mi><mi>τ</mi><mi>υ</mi><mi>φ</mi><mi>χ</mi><mi>ψ</mi><mi>ω</mi><mspace width="0.222em"></mspace><mi>ϵ</mi><mi>ϑ</mi><mi>ϕ</mi><mo>𝜘</mo><mo>𝜚</mo><mo>ϖ</mo><mi>Ϝ</mi><mo>ϝ</mo><mspace width="0.222em"></mspace><mi>∂</mi><mi>∇</mi></mrow><annotation encoding="application/x-tex">{\Gamma \Delta \Theta \Lambda \Xi \Pi \Sigma \Upsilon \Phi \Psi \Omega \ \alpha \beta \gamma \delta \varepsilon \zeta \eta \theta \iota \kappa \lambda \mu \nu \xi \pi \rho \varsigma \sigma \tau \upsilon \varphi \chi \psi \omega \ \epsilon \vartheta \phi \varkappa \varrho \varpi Ϝ\digamma \ \partial\nabla }</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0123456789</mn><annotation encoding="application/x-tex">{0123456789}</annotation></semantics></math></p>
+</dd>
+<dt>mathrm:</dt>
+<dd><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="normal"><mi>A</mi><mi>B</mi><mi>C</mi><mi>D</mi><mi>E</mi><mi>F</mi><mi>G</mi><mi>H</mi><mi>I</mi><mi>J</mi><mi>K</mi><mi>L</mi><mi>M</mi><mi>N</mi><mi>O</mi><mi>P</mi><mi>Q</mi><mi>R</mi><mi>S</mi><mi>T</mi><mi>U</mi><mi>V</mi><mi>W</mi><mi>X</mi><mi>Y</mi><mi>Z</mi><mspace width="0.222em"></mspace><mi>a</mi><mi>b</mi><mi>c</mi><mi>d</mi><mi>e</mi><mi>f</mi><mi>g</mi><mi>h</mi><mi>i</mi><mi>j</mi><mi>k</mi><mi>l</mi><mi>m</mi><mi>n</mi><mi>o</mi><mi>p</mi><mi>q</mi><mi>r</mi><mi>s</mi><mi>t</mi><mi>u</mi><mi>v</mi><mi>w</mi><mi>x</mi><mi>y</mi><mi>z</mi><mspace width="0.222em"></mspace><mo>ı</mo><mo>ȷ</mo></mstyle><annotation encoding="application/x-tex">\mathrm{ABCDEFGHIJKLMNOPQRSTUVWXYZ\ abcdefghijklmnopqrstuvwxyz\ \imath \jmath}</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="normal"><mi>Γ</mi><mi>Δ</mi><mi>Θ</mi><mi>Λ</mi><mi>Ξ</mi><mi>Π</mi><mi>Σ</mi><mi>Υ</mi><mi>Φ</mi><mi>Ψ</mi><mi>Ω</mi><mspace width="0.222em"></mspace><mi>α</mi><mi>β</mi><mi>γ</mi><mi>δ</mi><mi>ε</mi><mi>ζ</mi><mi>η</mi><mi>θ</mi><mi>ι</mi><mi>κ</mi><mi>λ</mi><mi>μ</mi><mi>ν</mi><mi>ξ</mi><mi>π</mi><mi>ρ</mi><mo>ς</mo><mi>σ</mi><mi>τ</mi><mi>υ</mi><mi>φ</mi><mi>χ</mi><mi>ψ</mi><mi>ω</mi><mspace width="0.222em"></mspace><mi>ϵ</mi><mi>ϑ</mi><mi>ϕ</mi><mo>𝜘</mo><mo>𝜚</mo><mo>ϖ</mo><mi>Ϝ</mi><mo>ϝ</mo><mspace width="0.222em"></mspace><mi>∂</mi><mi>∇</mi></mstyle><annotation encoding="application/x-tex">\mathrm{\Gamma \Delta \Theta \Lambda \Xi \Pi \Sigma \Upsilon \Phi \Psi \Omega \ \alpha \beta \gamma \delta \varepsilon \zeta \eta \theta \iota \kappa \lambda \mu \nu \xi \pi \rho \varsigma \sigma \tau \upsilon \varphi \chi \psi \omega \ \epsilon \vartheta \phi \varkappa \varrho \varpi Ϝ\digamma \ \partial\nabla }</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="normal"><mn>0123456789</mn></mstyle><annotation encoding="application/x-tex">\mathrm{0123456789}</annotation></semantics></math></p>
+</dd>
+<dt>mathbf:</dt>
+<dd><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="bold"><mi>𝐀</mi><mi>𝐁</mi><mi>𝐂</mi><mi>𝐃</mi><mi>𝐄</mi><mi>𝐅</mi><mi>𝐆</mi><mi>𝐇</mi><mi>𝐈</mi><mi>𝐉</mi><mi>𝐊</mi><mi>𝐋</mi><mi>𝐌</mi><mi>𝐍</mi><mi>𝐎</mi><mi>𝐏</mi><mi>𝐐</mi><mi>𝐑</mi><mi>𝐒</mi><mi>𝐓</mi><mi>𝐔</mi><mi>𝐕</mi><mi>𝐖</mi><mi>𝐗</mi><mi>𝐘</mi><mi>𝐙</mi><mspace width="0.222em"></mspace><mi>𝐚</mi><mi>𝐛</mi><mi>𝐜</mi><mi>𝐝</mi><mi>𝐞</mi><mi>𝐟</mi><mi>𝐠</mi><mi>𝐡</mi><mi>𝐢</mi><mi>𝐣</mi><mi>𝐤</mi><mi>𝐥</mi><mi>𝐦</mi><mi>𝐧</mi><mi>𝐨</mi><mi>𝐩</mi><mi>𝐪</mi><mi>𝐫</mi><mi>𝐬</mi><mi>𝐭</mi><mi>𝐮</mi><mi>𝐯</mi><mi>𝐰</mi><mi>𝐱</mi><mi>𝐲</mi><mi>𝐳</mi></mstyle><annotation encoding="application/x-tex">\mathbf{ABCDEFGHIJKLMNOPQRSTUVWXYZ\ abcdefghijklmnopqrstuvwxyz}</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="bold"><mi>𝚪</mi><mi>𝚫</mi><mi>𝚯</mi><mi>𝚲</mi><mi>𝚵</mi><mi>𝚷</mi><mi>𝚺</mi><mi>𝚼</mi><mi>𝚽</mi><mi>𝚿</mi><mi>𝛀</mi><mspace width="0.222em"></mspace><mi>𝛂</mi><mi>𝛃</mi><mi>𝛄</mi><mi>𝛅</mi><mi>𝛆</mi><mi>𝛇</mi><mi>𝛈</mi><mi>𝛉</mi><mi>𝛊</mi><mi>𝛋</mi><mi>𝛌</mi><mi>𝛍</mi><mi>𝛎</mi><mi>𝛏</mi><mi>𝛑</mi><mi>𝛒</mi><mo>ς</mo><mi>𝛔</mi><mi>𝛕</mi><mi>𝛖</mi><mi>𝛗</mi><mi>𝛘</mi><mi>𝛙</mi><mi>𝛚</mi><mspace width="0.222em"></mspace><mi>𝛜</mi><mi>𝛝</mi><mi>𝛟</mi><mo>𝜘</mo><mo>𝜚</mo><mo>ϖ</mo><mi>𝟊</mi><mo>ϝ</mo><mspace width="0.222em"></mspace><mi>∂</mi><mi>∇</mi></mstyle><annotation encoding="application/x-tex">\mathbf{\Gamma \Delta \Theta \Lambda \Xi \Pi \Sigma \Upsilon \Phi \Psi \Omega \ \alpha \beta \gamma \delta \varepsilon \zeta \eta \theta \iota \kappa \lambda \mu \nu \xi \pi \rho \varsigma \sigma \tau \upsilon \varphi \chi \psi \omega \ \epsilon \vartheta \phi \varkappa \varrho \varpi Ϝ\digamma \ \partial\nabla }</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="bold"><mn>0123456789</mn></mstyle><annotation encoding="application/x-tex">\mathbf{0123456789}</annotation></semantics></math></p>
+</dd>
+<dt>mathit:</dt>
+<dd><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="italic"><mi>𝐴</mi><mi>𝐵</mi><mi>𝐶</mi><mi>𝐷</mi><mi>𝐸</mi><mi>𝐹</mi><mi>𝐺</mi><mi>𝐻</mi><mi>𝐼</mi><mi>𝐽</mi><mi>𝐾</mi><mi>𝐿</mi><mi>𝑀</mi><mi>𝑁</mi><mi>𝑂</mi><mi>𝑃</mi><mi>𝑄</mi><mi>𝑅</mi><mi>𝑆</mi><mi>𝑇</mi><mi>𝑈</mi><mi>𝑉</mi><mi>𝑊</mi><mi>𝑋</mi><mi>𝑌</mi><mi>𝑍</mi><mspace width="0.222em"></mspace><mi>𝑎</mi><mi>𝑏</mi><mi>𝑐</mi><mi>𝑑</mi><mi>𝑒</mi><mi>𝑓</mi><mi>𝑔</mi><mi>h</mi><mi>𝑖</mi><mi>𝑗</mi><mi>𝑘</mi><mi>𝑙</mi><mi>𝑚</mi><mi>𝑛</mi><mi>𝑜</mi><mi>𝑝</mi><mi>𝑞</mi><mi>𝑟</mi><mi>𝑠</mi><mi>𝑡</mi><mi>𝑢</mi><mi>𝑣</mi><mi>𝑤</mi><mi>𝑥</mi><mi>𝑦</mi><mi>𝑧</mi><mspace width="0.222em"></mspace><mo>ı</mo><mo>ȷ</mo></mstyle><annotation encoding="application/x-tex">\mathit{ABCDEFGHIJKLMNOPQRSTUVWXYZ\ abcdefghijklmnopqrstuvwxyz\ \imath \jmath}</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="italic"><mi>𝛤</mi><mi>𝛥</mi><mi>𝛩</mi><mi>𝛬</mi><mi>𝛯</mi><mi>𝛱</mi><mi>𝛴</mi><mi>𝛶</mi><mi>𝛷</mi><mi>𝛹</mi><mi>𝛺</mi><mspace width="0.222em"></mspace><mi>𝛼</mi><mi>𝛽</mi><mi>𝛾</mi><mi>𝛿</mi><mi>𝜀</mi><mi>𝜁</mi><mi>𝜂</mi><mi>𝜃</mi><mi>𝜄</mi><mi>𝜅</mi><mi>𝜆</mi><mi>𝜇</mi><mi>𝜈</mi><mi>𝜉</mi><mi>𝜋</mi><mi>𝜌</mi><mo>ς</mo><mi>𝜎</mi><mi>𝜏</mi><mi>𝜐</mi><mi>𝜑</mi><mi>𝜒</mi><mi>𝜓</mi><mi>𝜔</mi><mspace width="0.222em"></mspace><mi>𝜖</mi><mi>𝜗</mi><mi>𝜙</mi><mo>𝜘</mo><mo>𝜚</mo><mo>ϖ</mo><mspace width="0.222em"></mspace><mi>∂</mi><mi>∇</mi></mstyle><annotation encoding="application/x-tex">\mathit{\Gamma \Delta \Theta \Lambda \Xi \Pi \Sigma \Upsilon \Phi \Psi \Omega \ \alpha \beta \gamma \delta \varepsilon \zeta \eta \theta \iota \kappa \lambda \mu \nu \xi \pi \rho \varsigma \sigma \tau \upsilon \varphi \chi \psi \omega \ \epsilon \vartheta \phi \varkappa \varrho \varpi \ \partial\nabla }</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="italic"><mn>0123456789</mn></mstyle><annotation encoding="application/x-tex">\mathit{0123456789}</annotation></semantics></math> <a class="brackets" href="#italic-digits" id="footnote-reference-4" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a></p>
+</dd>
+<dt>mathbfit:</dt>
+<dd><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="bold-italic"><mi>𝑨</mi><mi>𝑩</mi><mi>𝑪</mi><mi>𝑫</mi><mi>𝑬</mi><mi>𝑭</mi><mi>𝑮</mi><mi>𝑯</mi><mi>𝑰</mi><mi>𝑱</mi><mi>𝑲</mi><mi>𝑳</mi><mi>𝑴</mi><mi>𝑵</mi><mi>𝑶</mi><mi>𝑷</mi><mi>𝑸</mi><mi>𝑹</mi><mi>𝑺</mi><mi>𝑻</mi><mi>𝑼</mi><mi>𝑽</mi><mi>𝑾</mi><mi>𝑿</mi><mi>𝒀</mi><mi>𝒁</mi><mspace width="0.222em"></mspace><mi>𝒂</mi><mi>𝒃</mi><mi>𝒄</mi><mi>𝒅</mi><mi>𝒆</mi><mi>𝒇</mi><mi>𝒈</mi><mi>𝒉</mi><mi>𝒊</mi><mi>𝒋</mi><mi>𝒌</mi><mi>𝒍</mi><mi>𝒎</mi><mi>𝒏</mi><mi>𝒐</mi><mi>𝒑</mi><mi>𝒒</mi><mi>𝒓</mi><mi>𝒔</mi><mi>𝒕</mi><mi>𝒖</mi><mi>𝒗</mi><mi>𝒘</mi><mi>𝒙</mi><mi>𝒚</mi><mi>𝒛</mi></mstyle><annotation encoding="application/x-tex">\mathbfit{ABCDEFGHIJKLMNOPQRSTUVWXYZ\ abcdefghijklmnopqrstuvwxyz}</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="bold-italic"><mi>𝜞</mi><mi>𝜟</mi><mi>𝜣</mi><mi>𝜦</mi><mi>𝜩</mi><mi>𝜫</mi><mi>𝜮</mi><mi>𝜰</mi><mi>𝜱</mi><mi>𝜳</mi><mi>𝜴</mi><mspace width="0.222em"></mspace><mi>𝜶</mi><mi>𝜷</mi><mi>𝜸</mi><mi>𝜹</mi><mi>𝜺</mi><mi>𝜻</mi><mi>𝜼</mi><mi>𝜽</mi><mi>𝜾</mi><mi>𝜿</mi><mi>𝝀</mi><mi>𝝁</mi><mi>𝝂</mi><mi>𝝃</mi><mi>𝝅</mi><mi>𝝆</mi><mo>ς</mo><mi>𝝈</mi><mi>𝝉</mi><mi>𝝊</mi><mi>𝝋</mi><mi>𝝌</mi><mi>𝝍</mi><mi>𝝎</mi><mspace width="0.222em"></mspace><mi>𝝐</mi><mi>𝝑</mi><mi>𝝓</mi><mo>𝜘</mo><mo>𝜚</mo><mo>ϖ</mo><mspace width="0.222em"></mspace><mi>∂</mi><mi>∇</mi></mstyle><annotation encoding="application/x-tex">\mathbfit{\Gamma \Delta \Theta \Lambda \Xi \Pi \Sigma \Upsilon \Phi \Psi \Omega \ \alpha \beta \gamma \delta \varepsilon \zeta \eta \theta \iota \kappa \lambda \mu \nu \xi \pi \rho \varsigma \sigma \tau \upsilon \varphi \chi \psi \omega \ \epsilon \vartheta \phi \varkappa \varrho \varpi \ \partial\nabla }</annotation></semantics></math></p>
+</dd>
+<dt>mathcal:</dt>
+<dd><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="script"><mi>𝒜</mi><mi>ℬ</mi><mi>𝒞</mi><mi>𝒟</mi><mi>ℰ</mi><mi>ℱ</mi><mi>𝒢</mi><mi>ℋ</mi><mi>ℐ</mi><mi>𝒥</mi><mi>𝒦</mi><mi>ℒ</mi><mi>ℳ</mi><mi>𝒩</mi><mi>𝒪</mi><mi>𝒫</mi><mi>𝒬</mi><mi>ℛ</mi><mi>𝒮</mi><mi>𝒯</mi><mi>𝒰</mi><mi>𝒱</mi><mi>𝒲</mi><mi>𝒳</mi><mi>𝒴</mi><mi>𝒵</mi><mspace width="0.222em"></mspace><mi>𝒶</mi><mi>𝒷</mi><mi>𝒸</mi><mi>𝒹</mi><mi>ℯ</mi><mi>𝒻</mi><mi>ℊ</mi><mi>𝒽</mi><mi>𝒾</mi><mi>𝒿</mi><mi>𝓀</mi><mi>𝓁</mi><mi>𝓂</mi><mi>𝓃</mi><mi>ℴ</mi><mi>𝓅</mi><mi>𝓆</mi><mi>𝓇</mi><mi>𝓈</mi><mi>𝓉</mi><mi>𝓊</mi><mi>𝓋</mi><mi>𝓌</mi><mi>𝓍</mi><mi>𝓎</mi><mi>𝓏</mi></mstyle><annotation encoding="application/x-tex">\mathcal{ABCDEFGHIJKLMNOPQRSTUVWXYZ\ abcdefghijklmnopqrstuvwxyz}</annotation></semantics></math></p>
+</dd>
+<dt>mathscr:</dt>
+<dd><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="script"><mi>𝒜</mi><mi>ℬ</mi><mi>𝒞</mi><mi>𝒟</mi><mi>ℰ</mi><mi>ℱ</mi><mi>𝒢</mi><mi>ℋ</mi><mi>ℐ</mi><mi>𝒥</mi><mi>𝒦</mi><mi>ℒ</mi><mi>ℳ</mi><mi>𝒩</mi><mi>𝒪</mi><mi>𝒫</mi><mi>𝒬</mi><mi>ℛ</mi><mi>𝒮</mi><mi>𝒯</mi><mi>𝒰</mi><mi>𝒱</mi><mi>𝒲</mi><mi>𝒳</mi><mi>𝒴</mi><mi>𝒵</mi><mspace width="0.222em"></mspace><mi>𝒶</mi><mi>𝒷</mi><mi>𝒸</mi><mi>𝒹</mi><mi>ℯ</mi><mi>𝒻</mi><mi>ℊ</mi><mi>𝒽</mi><mi>𝒾</mi><mi>𝒿</mi><mi>𝓀</mi><mi>𝓁</mi><mi>𝓂</mi><mi>𝓃</mi><mi>ℴ</mi><mi>𝓅</mi><mi>𝓆</mi><mi>𝓇</mi><mi>𝓈</mi><mi>𝓉</mi><mi>𝓊</mi><mi>𝓋</mi><mi>𝓌</mi><mi>𝓍</mi><mi>𝓎</mi><mi>𝓏</mi></mstyle><annotation encoding="application/x-tex">\mathscr{ABCDEFGHIJKLMNOPQRSTUVWXYZ\ abcdefghijklmnopqrstuvwxyz}</annotation></semantics></math></p>
+</dd>
+<dt>mathbb:</dt>
+<dd><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="double-struck"><mi>𝔸</mi><mi>𝔹</mi><mi>ℂ</mi><mi>𝔻</mi><mi>𝔼</mi><mi>𝔽</mi><mi>𝔾</mi><mi>ℍ</mi><mi>𝕀</mi><mi>𝕁</mi><mi>𝕂</mi><mi>𝕃</mi><mi>𝕄</mi><mi>ℕ</mi><mi>𝕆</mi><mi>ℙ</mi><mi>ℚ</mi><mi>ℝ</mi><mi>𝕊</mi><mi>𝕋</mi><mi>𝕌</mi><mi>𝕍</mi><mi>𝕎</mi><mi>𝕏</mi><mi>𝕐</mi><mi>ℤ</mi><mspace width="0.222em"></mspace><mi>𝕒</mi><mi>𝕓</mi><mi>𝕔</mi><mi>𝕕</mi><mi>𝕖</mi><mi>𝕗</mi><mi>𝕘</mi><mi>𝕙</mi><mi>𝕚</mi><mi>𝕛</mi><mi>𝕜</mi><mi>𝕝</mi><mi>𝕞</mi><mi>𝕟</mi><mi>𝕠</mi><mi>𝕡</mi><mi>𝕢</mi><mi>𝕣</mi><mi>𝕤</mi><mi>𝕥</mi><mi>𝕦</mi><mi>𝕧</mi><mi>𝕨</mi><mi>𝕩</mi><mi>𝕪</mi><mi>𝕫</mi></mstyle><annotation encoding="application/x-tex">\mathbb{ABCDEFGHIJKLMNOPQRSTUVWXYZ\ abcdefghijklmnopqrstuvwxyz}</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="double-struck"><mi>ℾ</mi><mi>ℿ</mi><mi>Σ</mi><mspace width="0.222em"></mspace><mi>ℽ</mi><mi>ℼ</mi></mstyle><annotation encoding="application/x-tex">\mathbb{\Gamma \Pi \Sigma \ \gamma \pi }</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="double-struck"><mn>0123456789</mn></mstyle><annotation encoding="application/x-tex">\mathbb{0123456789}</annotation></semantics></math></p>
+</dd>
+<dt>mathfrak:</dt>
+<dd><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="fraktur"><mi>𝔄</mi><mi>𝔅</mi><mi>ℭ</mi><mi>𝔇</mi><mi>𝔈</mi><mi>𝔉</mi><mi>𝔊</mi><mi>ℌ</mi><mi>ℑ</mi><mi>𝔍</mi><mi>𝔎</mi><mi>𝔏</mi><mi>𝔐</mi><mi>𝔑</mi><mi>𝔒</mi><mi>𝔓</mi><mi>𝔔</mi><mi>ℜ</mi><mi>𝔖</mi><mi>𝔗</mi><mi>𝔘</mi><mi>𝔙</mi><mi>𝔚</mi><mi>𝔛</mi><mi>𝔜</mi><mi>ℨ</mi><mspace width="0.222em"></mspace><mi>𝔞</mi><mi>𝔟</mi><mi>𝔠</mi><mi>𝔡</mi><mi>𝔢</mi><mi>𝔣</mi><mi>𝔤</mi><mi>𝔥</mi><mi>𝔦</mi><mi>𝔧</mi><mi>𝔨</mi><mi>𝔩</mi><mi>𝔪</mi><mi>𝔫</mi><mi>𝔬</mi><mi>𝔭</mi><mi>𝔮</mi><mi>𝔯</mi><mi>𝔰</mi><mi>𝔱</mi><mi>𝔲</mi><mi>𝔳</mi><mi>𝔴</mi><mi>𝔵</mi><mi>𝔶</mi><mi>𝔷</mi></mstyle><annotation encoding="application/x-tex">\mathfrak{ABCDEFGHIJKLMNOPQRSTUVWXYZ\ abcdefghijklmnopqrstuvwxyz}</annotation></semantics></math></p>
+</dd>
+<dt>mathsf:</dt>
+<dd><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="sans-serif"><mi>𝖠</mi><mi>𝖡</mi><mi>𝖢</mi><mi>𝖣</mi><mi>𝖤</mi><mi>𝖥</mi><mi>𝖦</mi><mi>𝖧</mi><mi>𝖨</mi><mi>𝖩</mi><mi>𝖪</mi><mi>𝖫</mi><mi>𝖬</mi><mi>𝖭</mi><mi>𝖮</mi><mi>𝖯</mi><mi>𝖰</mi><mi>𝖱</mi><mi>𝖲</mi><mi>𝖳</mi><mi>𝖴</mi><mi>𝖵</mi><mi>𝖶</mi><mi>𝖷</mi><mi>𝖸</mi><mi>𝖹</mi><mspace width="0.222em"></mspace><mi>𝖺</mi><mi>𝖻</mi><mi>𝖼</mi><mi>𝖽</mi><mi>𝖾</mi><mi>𝖿</mi><mi>𝗀</mi><mi>𝗁</mi><mi>𝗂</mi><mi>𝗃</mi><mi>𝗄</mi><mi>𝗅</mi><mi>𝗆</mi><mi>𝗇</mi><mi>𝗈</mi><mi>𝗉</mi><mi>𝗊</mi><mi>𝗋</mi><mi>𝗌</mi><mi>𝗍</mi><mi>𝗎</mi><mi>𝗏</mi><mi>𝗐</mi><mi>𝗑</mi><mi>𝗒</mi><mi>𝗓</mi></mstyle><annotation encoding="application/x-tex">\mathsf{ABCDEFGHIJKLMNOPQRSTUVWXYZ\ abcdefghijklmnopqrstuvwxyz}</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="sans-serif"><mn>0123456789</mn></mstyle><annotation encoding="application/x-tex">\mathsf{0123456789}</annotation></semantics></math></p>
+</dd>
+<dt>mathsfit:</dt>
+<dd><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="sans-serif-italic"><mi>𝘈</mi><mi>𝘉</mi><mi>𝘊</mi><mi>𝘋</mi><mi>𝘌</mi><mi>𝘍</mi><mi>𝘎</mi><mi>𝘏</mi><mi>𝘐</mi><mi>𝘑</mi><mi>𝘒</mi><mi>𝘓</mi><mi>𝘔</mi><mi>𝘕</mi><mi>𝘖</mi><mi>𝘗</mi><mi>𝘘</mi><mi>𝘙</mi><mi>𝘚</mi><mi>𝘛</mi><mi>𝘜</mi><mi>𝘝</mi><mi>𝘞</mi><mi>𝘟</mi><mi>𝘠</mi><mi>𝘡</mi><mspace width="0.222em"></mspace><mi>𝘢</mi><mi>𝘣</mi><mi>𝘤</mi><mi>𝘥</mi><mi>𝘦</mi><mi>𝘧</mi><mi>𝘨</mi><mi>𝘩</mi><mi>𝘪</mi><mi>𝘫</mi><mi>𝘬</mi><mi>𝘭</mi><mi>𝘮</mi><mi>𝘯</mi><mi>𝘰</mi><mi>𝘱</mi><mi>𝘲</mi><mi>𝘳</mi><mi>𝘴</mi><mi>𝘵</mi><mi>𝘶</mi><mi>𝘷</mi><mi>𝘸</mi><mi>𝘹</mi><mi>𝘺</mi><mi>𝘻</mi></mstyle><annotation encoding="application/x-tex">\mathsfit{ABCDEFGHIJKLMNOPQRSTUVWXYZ\ abcdefghijklmnopqrstuvwxyz}</annotation></semantics></math></p>
+</dd>
+<dt>mathsfbfit:</dt>
+<dd><p><span class="math problematic m">\mathsfbfit{ABCDEFGHIJKLMNOPQRSTUVWXYZ\ abcdefghijklmnopqrstuvwxyz}</span>
+<span class="math problematic m">\mathsfbfit{ΓΔΘΛΞΠΣΥΦΨΩ\ αβγδεζηθικλμνξπρςστυφχψω\ ϵϑϕϰϱϖ\ \partial∇}</span></p>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 416)</p>
+<p>TeX to MathML converter `pandoc` failed:</p>
+<p>[WARNING] Could not convert TeX math '\mathsfbfit{ABCDEFGHIJKLMNOPQRSTUVWXYZ\ abcdefghijklmnopqrstuvwxyz}', rendering as TeX:</p>
+<pre class="literal-block">  \mathsfbfit{ABCDEFGHIJKLMNOPQRSTUVWXYZ\
+             ^</pre>
+<p class="pre-wrap">  unexpected &quot;{&quot;
+  expecting &quot;%&quot;, &quot;\\label&quot;, &quot;\\nonumber&quot; or whitespace</p>
+</aside>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 416)</p>
+<p>TeX to MathML converter `pandoc` failed:</p>
+<p>[WARNING] Could not convert TeX math '\mathsfbfit{\Gamma \Delta \Theta \Lambda \Xi \Pi \Sigma \Upsilon \Phi \Psi \Omega \ \alpha \beta \gamma \delta \varepsilon \zeta \eta \theta \iota \kappa \lambda \mu \nu \xi \pi \rho \varsigma \sigma \tau \upsilon \varphi \chi \psi \omega \ \epsilon \vartheta \phi \varkappa \varrho \varpi \ \partial\nabla }', rendering as TeX:</p>
+<pre class="literal-block">  \mathsfbfit{\Gamma \Delta \Theta \Lambda
+             ^</pre>
+<p class="pre-wrap">  unexpected &quot;{&quot;
+  expecting &quot;%&quot;, &quot;\\label&quot;, &quot;\\nonumber&quot; or whitespace</p>
+</aside>
+</dd>
+<dt>mathtt:</dt>
+<dd><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="monospace"><mi>𝙰</mi><mi>𝙱</mi><mi>𝙲</mi><mi>𝙳</mi><mi>𝙴</mi><mi>𝙵</mi><mi>𝙶</mi><mi>𝙷</mi><mi>𝙸</mi><mi>𝙹</mi><mi>𝙺</mi><mi>𝙻</mi><mi>𝙼</mi><mi>𝙽</mi><mi>𝙾</mi><mi>𝙿</mi><mi>𝚀</mi><mi>𝚁</mi><mi>𝚂</mi><mi>𝚃</mi><mi>𝚄</mi><mi>𝚅</mi><mi>𝚆</mi><mi>𝚇</mi><mi>𝚈</mi><mi>𝚉</mi><mspace width="0.222em"></mspace><mi>𝚊</mi><mi>𝚋</mi><mi>𝚌</mi><mi>𝚍</mi><mi>𝚎</mi><mi>𝚏</mi><mi>𝚐</mi><mi>𝚑</mi><mi>𝚒</mi><mi>𝚓</mi><mi>𝚔</mi><mi>𝚕</mi><mi>𝚖</mi><mi>𝚗</mi><mi>𝚘</mi><mi>𝚙</mi><mi>𝚚</mi><mi>𝚛</mi><mi>𝚜</mi><mi>𝚝</mi><mi>𝚞</mi><mi>𝚟</mi><mi>𝚠</mi><mi>𝚡</mi><mi>𝚢</mi><mi>𝚣</mi></mstyle><annotation encoding="application/x-tex">\mathtt{ABCDEFGHIJKLMNOPQRSTUVWXYZ\ abcdefghijklmnopqrstuvwxyz}</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="monospace"><mn>0123456789</mn></mstyle><annotation encoding="application/x-tex">\mathtt{0123456789}</annotation></semantics></math></p>
+</dd>
+</dl>
 <aside class="footnote-list brackets">
-<aside class="footnote brackets" id="footnote-1" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-3">2</a><span class="fn-bracket">]</span></span>
-<p>TeX’s <em>math alphabets</em> correspond to the <a class="reference external" href="https://en.wikipedia.org/wiki/Mathematical_Alphanumeric_Symbols">mathematical
-alphanumeric symbols</a> block in Unicode and the &quot;mathvariant&quot; <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/MathML/Attribute">style
-attribute</a> in MathML.</p>
+<aside class="footnote brackets" id="italic-digits" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#footnote-reference-3">1</a>,<a role="doc-backlink" href="#footnote-reference-4">2</a>)</span>
+<p>Italic digits are not defined in Unicode
+but work in LaTeX.</p>
 </aside>
 </aside>
-<p>Additional alphabets are defined in LaTeX packages, e.g.</p>
-<table>
-<thead>
-<tr><th class="head"><p>TeX command</p></th>
-<th class="head"><p>LaTeX package</p></th>
-<th class="head"><p>MathML &quot;mathvariant&quot;</p></th>
-</tr>
-</thead>
-<tbody>
-<tr><td><p>mathbfit</p></td>
-<td><p><a class="reference external" href="https://www.ctan.org/pkg/isomath">isomath</a></p></td>
-<td><p>bold-italic</p></td>
-</tr>
-<tr><td><p>mathsfit</p></td>
-<td><p><a class="reference external" href="https://www.ctan.org/pkg/isomath">isomath</a></p></td>
-<td><p>sans-serif-italic</p></td>
-</tr>
-<tr><td><p>mathsfbfit</p></td>
-<td><p><a class="reference external" href="https://www.ctan.org/pkg/isomath">isomath</a></p></td>
-<td><p>sans-serif-bold-italic</p></td>
-</tr>
-<tr><td><p>mathscr</p></td>
-<td><p><a class="reference external" href="https://www.ctan.org/pkg/mathrsfs">mathrsfs</a></p></td>
-<td><p>script</p></td>
-</tr>
-</tbody>
-</table>
-<p>This can be used to typeset vector symbols in bold italic
-in line with the International Standard [ISO-80000-2].</p>
-<!-- ``\mathbfit{r}^2=x^2+y^2+z^2`` becomes
-
-.. math:: \mathbfit{r}^2=x^2+y^2+z^2. -->
-<p>The package <a class="reference external" href="https://www.ctan.org/pkg/mathrsfs">mathrsfs</a> (and some drop-in replacements) define the <span class="docutils literal">\mathscr</span>
-macro that selects a differently shaped &quot;script&quot; alphabet.
-Compare <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="script"><mi>𝒜</mi><mo>,</mo><mi>ℬ</mi><mo>,</mo><mi>…</mi><mo>,</mo><mi>𝒵</mi><mo>,</mo><mi>𝒶</mi><mo>,</mo><mi>𝒷</mi><mo>,</mo><mi>…</mi><mo>,</mo><mi>𝓏</mi></mstyle><annotation encoding="application/x-tex">\mathscr{A, B, \ldots , Z, a, b, \ldots , z}</annotation></semantics></math>
-with <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="script"><mi>𝒜</mi><mo>,</mo><mi>ℬ</mi><mo>,</mo><mi>…</mi><mo>,</mo><mi>𝒵</mi><mo>,</mo><mi>𝒶</mi><mo>,</mo><mi>𝒷</mi><mo>,</mo><mi>…</mi><mo>,</mo><mi>𝓏</mi></mstyle><annotation encoding="application/x-tex">\mathcal{A, B, \ldots , Z, a, b, \ldots , z}</annotation></semantics></math>.</p>
-<p>In contrast to the math alphabet selectors, <span class="docutils literal">\boldsymbol</span> only changes
-the <em>font weight</em>. In LaTeX, it can be used to get a bold version of any
-mathematical symbol (for other output formats, results are mixed):</p>
+<p>In contrast to the <em>math alphabet</em> selectors, <span class="docutils literal">\boldsymbol</span> only
+changes the <em>font weight</em>. It can be used to get a bold version of
+any mathematical symbol:</p>
+<div>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>V</mi><mi>i</mi></msub><mi>x</mi><mo>±</mo><mo>cos</mo><mo stretchy="false" form="prefix">(</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo><mo>≈</mo><mn>3</mn><mi>Γ</mi><mspace width="1.0em"></mspace><mo>∀</mo><mi>x</mi><mo>∈</mo><mstyle mathvariant="double-struck"><mi>ℝ</mi></mstyle></mrow><annotation encoding="application/x-tex">V_i x \pm \cos(\alpha) \approx 3\Gamma \quad \forall x\in\mathbb{R}</annotation></semantics></math>
+</div>
 <div>
 <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="bold"><msub><mi>𝐕</mi><mi>𝐢</mi></msub><mi>𝐱</mi><mo>±</mo><mo>cos</mo><mo stretchy="false" form="prefix">(</mo><mi>𝛂</mi><mo stretchy="false" form="postfix">)</mo><mo>≈</mo><mn>3</mn><mi>𝚪</mi><mspace width="1.0em"></mspace><mo>∀</mo><mi>𝐱</mi><mo>∈</mo><mstyle mathvariant="double-struck"><mi>ℝ</mi></mstyle></mstyle><annotation encoding="application/x-tex">\boldsymbol{V_i x \pm \cos(\alpha) \approx 3\Gamma \quad \forall x\in\mathbb{R}}</annotation></semantics></math>
 </div>
+<p>It is usually ill-advised to apply <span class="docutils literal">\boldsymbol</span> to more than one symbol
+at a time.</p>
 </section>
 <section id="miscellaneous-symbols">
 <h3><a class="toc-backref" href="#toc-entry-13" role="doc-backlink"><span class="sectnum">2.9 </span>Miscellaneous symbols</a></h3>
@@ -1076,7 +1134,7 @@ mathematical symbol (for other output formats, results are mixed):</p>
 </tbody>
 </table>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 417)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 458)</p>
 <p>TeX to MathML converter `pandoc` failed:</p>
 <p>[WARNING] Could not convert TeX math '\surd', rendering as TeX:</p>
 <pre class="literal-block">  \surd
@@ -1085,7 +1143,7 @@ mathematical symbol (for other output formats, results are mixed):</p>
   expecting letter, &quot;%&quot;, &quot;\\label&quot;, &quot;\\nonumber&quot;, whitespace, &quot;[&quot;, &quot;\\not&quot;, &quot;!&quot;, &quot;'&quot;, &quot;''&quot;, &quot;'''&quot;, &quot;''''&quot;, &quot;*&quot;, &quot;+&quot;, &quot;,&quot;, &quot;-&quot;, &quot;.&quot;, &quot;/&quot;, &quot;:&quot;, &quot;:=&quot;, &quot;;&quot;, &quot;&lt;&quot;, &quot;=&quot;, &quot;&gt;&quot;, &quot;?&quot;, &quot;&#64;&quot;, &quot;~&quot;, &quot;\\&quot; or &quot;{&quot;</p>
 </aside>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 420)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 461)</p>
 <p>TeX to MathML converter `pandoc` failed:</p>
 <p>[WARNING] Could not convert TeX math '\diagdown', rendering as TeX:</p>
 <pre class="literal-block">  \diagdown
@@ -1094,7 +1152,7 @@ mathematical symbol (for other output formats, results are mixed):</p>
   expecting &quot;%&quot;, &quot;\\label&quot;, &quot;\\nonumber&quot; or whitespace</p>
 </aside>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 421)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 462)</p>
 <p>TeX to MathML converter `pandoc` failed:</p>
 <p>[WARNING] Could not convert TeX math '\diagup', rendering as TeX:</p>
 <pre class="literal-block">  \diagup
@@ -1124,7 +1182,7 @@ mathematical symbol (for other output formats, results are mixed):</p>
 <tr><td><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo stretchy="false" form="prefix">|</mo><annotation encoding="application/x-tex">|</annotation></semantics></math></p></td>
 <td><p><span class="docutils literal">|</span></p></td>
 <td><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>:</mo><annotation encoding="application/x-tex">\colon</annotation></semantics></math></p></td>
-<td><p><span class="docutils literal">\colon</span> <a class="brackets" href="#footnote-2" id="footnote-reference-4" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a></p></td>
+<td><p><span class="docutils literal">\colon</span> <a class="brackets" href="#footnote-1" id="footnote-reference-5" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a></p></td>
 <td><p><span class="math problematic m">\dotsc</span></p></td>
 <td><p><span class="docutils literal">\dotsc</span></p></td>
 </tr>
@@ -1152,7 +1210,7 @@ mathematical symbol (for other output formats, results are mixed):</p>
 </tbody>
 </table>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 431)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 472)</p>
 <p>TeX to MathML converter `pandoc` failed:</p>
 <p>[WARNING] Could not convert TeX math '\dotsb', rendering as TeX:</p>
 <pre class="literal-block">  \dotsb
@@ -1161,7 +1219,7 @@ mathematical symbol (for other output formats, results are mixed):</p>
   expecting &quot;%&quot;, &quot;\\label&quot;, &quot;\\nonumber&quot; or whitespace</p>
 </aside>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 432)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 473)</p>
 <p>TeX to MathML converter `pandoc` failed:</p>
 <p>[WARNING] Could not convert TeX math '\dotsc', rendering as TeX:</p>
 <pre class="literal-block">  \dotsc
@@ -1170,7 +1228,7 @@ mathematical symbol (for other output formats, results are mixed):</p>
   expecting &quot;%&quot;, &quot;\\label&quot;, &quot;\\nonumber&quot; or whitespace</p>
 </aside>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 433)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 474)</p>
 <p>TeX to MathML converter `pandoc` failed:</p>
 <p>[WARNING] Could not convert TeX math '\dotsi', rendering as TeX:</p>
 <pre class="literal-block">  \dotsi
@@ -1179,7 +1237,7 @@ mathematical symbol (for other output formats, results are mixed):</p>
   expecting &quot;%&quot;, &quot;\\label&quot;, &quot;\\nonumber&quot; or whitespace</p>
 </aside>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 434)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 475)</p>
 <p>TeX to MathML converter `pandoc` failed:</p>
 <p>[WARNING] Could not convert TeX math '\dotsm', rendering as TeX:</p>
 <pre class="literal-block">  \dotsm
@@ -1188,7 +1246,7 @@ mathematical symbol (for other output formats, results are mixed):</p>
   expecting &quot;%&quot;, &quot;\\label&quot;, &quot;\\nonumber&quot; or whitespace</p>
 </aside>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 435)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 476)</p>
 <p>TeX to MathML converter `pandoc` failed:</p>
 <p>[WARNING] Could not convert TeX math '\dotso', rendering as TeX:</p>
 <pre class="literal-block">  \dotso
@@ -1197,8 +1255,8 @@ mathematical symbol (for other output formats, results are mixed):</p>
   expecting &quot;%&quot;, &quot;\\label&quot;, &quot;\\nonumber&quot; or whitespace</p>
 </aside>
 <aside class="footnote-list brackets">
-<aside class="footnote brackets" id="footnote-2" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-4">3</a><span class="fn-bracket">]</span></span>
+<aside class="footnote brackets" id="footnote-1" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-5">3</a><span class="fn-bracket">]</span></span>
 <p>Punctuation (not ratio):
 Compare spacing in <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>:</mo><mi>b</mi><mo>→</mo><mi>c</mi></mrow><annotation encoding="application/x-tex">a\colon b\to c</annotation></semantics></math> to <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>:</mo><mi>b</mi><mo>=</mo><mi>c</mi></mrow><annotation encoding="application/x-tex">a:b = c</annotation></semantics></math>.</p>
 </aside>
@@ -1569,7 +1627,7 @@ Compare spacing in <math display="inline" xmlns="http://www.w3.org/1998/Math/Mat
 </tbody>
 </table>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 499)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 540)</p>
 <p>TeX to MathML converter `pandoc` failed:</p>
 <p>[WARNING] Could not convert TeX math '\ngeqq', rendering as TeX:</p>
 <pre class="literal-block">  \ngeqq
@@ -1578,7 +1636,7 @@ Compare spacing in <math display="inline" xmlns="http://www.w3.org/1998/Math/Mat
   expecting &quot;%&quot;, &quot;\\label&quot;, &quot;\\nonumber&quot; or whitespace</p>
 </aside>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 503)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 544)</p>
 <p>TeX to MathML converter `pandoc` failed:</p>
 <p>[WARNING] Could not convert TeX math '\nleqq', rendering as TeX:</p>
 <pre class="literal-block">  \nleqq
@@ -1587,7 +1645,7 @@ Compare spacing in <math display="inline" xmlns="http://www.w3.org/1998/Math/Mat
   expecting &quot;%&quot;, &quot;\\label&quot;, &quot;\\nonumber&quot; or whitespace</p>
 </aside>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 509)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 550)</p>
 <p>TeX to MathML converter `pandoc` failed:</p>
 <p>[WARNING] Could not convert TeX math '\thickapprox', rendering as TeX:</p>
 <pre class="literal-block">  \thickapprox
@@ -1596,7 +1654,7 @@ Compare spacing in <math display="inline" xmlns="http://www.w3.org/1998/Math/Mat
   expecting &quot;%&quot;, &quot;\\label&quot;, &quot;\\nonumber&quot; or whitespace</p>
 </aside>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 510)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 551)</p>
 <p>TeX to MathML converter `pandoc` failed:</p>
 <p>[WARNING] Could not convert TeX math '\thicksim', rendering as TeX:</p>
 <pre class="literal-block">  \thicksim
@@ -1604,12 +1662,12 @@ Compare spacing in <math display="inline" xmlns="http://www.w3.org/1998/Math/Mat
 <p class="pre-wrap">  unexpected eof
   expecting &quot;%&quot;, &quot;\\label&quot;, &quot;\\nonumber&quot; or whitespace</p>
 </aside>
-<p>The commands <span class="docutils literal">\lvertneqq</span> and <span class="docutils literal">\gvertneqq</span> are not supported by
-LateX2MathML, as there is no corresponding Unicode character.</p>
+<p>The commands <span class="docutils literal">\lvertneqq</span> and <span class="docutils literal">\gvertneqq</span> are not supported
+with MathML output, as there is no corresponding Unicode character.</p>
 <p>Synonyms: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>≠</mo><annotation encoding="application/x-tex">\ne</annotation></semantics></math> <span class="docutils literal">\ne</span>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>≤</mo><annotation encoding="application/x-tex">\le</annotation></semantics></math> <span class="docutils literal">\le</span>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>≥</mo><annotation encoding="application/x-tex">\ge</annotation></semantics></math> <span class="docutils literal">\ge</span>,
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>≑</mo><annotation encoding="application/x-tex">\Doteq</annotation></semantics></math> <span class="docutils literal">\Doteq</span>, <span class="math problematic m">\llless</span> <span class="docutils literal">\llless</span>, <span class="math problematic m">\gggtr</span> <span class="docutils literal">\gggtr</span>.</p>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 517)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 558)</p>
 <p>TeX to MathML converter `pandoc` failed:</p>
 <p>[WARNING] Could not convert TeX math '\llless', rendering as TeX:</p>
 <pre class="literal-block">  \llless
@@ -1618,7 +1676,7 @@ LateX2MathML, as there is no corresponding Unicode character.</p>
   expecting &quot;%&quot;, &quot;\\label&quot;, &quot;\\nonumber&quot; or whitespace</p>
 </aside>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 517)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 558)</p>
 <p>TeX to MathML converter `pandoc` failed:</p>
 <p>[WARNING] Could not convert TeX math '\gggtr', rendering as TeX:</p>
 <pre class="literal-block">  \gggtr
@@ -1630,7 +1688,7 @@ LateX2MathML, as there is no corresponding Unicode character.</p>
 <span class="math problematic m">\not=</span> <span class="docutils literal">\not=</span>, <span class="math problematic m">\not\equiv</span> <span class="docutils literal">\not\equiv</span>,
 <span class="math problematic m">\not\gtrless</span> <span class="docutils literal">\not\gtrless</span>, <span class="math problematic m">\not\lessgtr</span> <span class="docutils literal">\not\lessgtr</span>.</p>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 520)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 561)</p>
 <p>TeX to MathML converter `pandoc` failed:</p>
 <p>[WARNING] Could not convert TeX math '\not=', rendering as TeX:</p>
 <pre class="literal-block">  \not=
@@ -1639,7 +1697,7 @@ LateX2MathML, as there is no corresponding Unicode character.</p>
   expecting &quot;%&quot;, &quot;\\label&quot;, &quot;\\nonumber&quot; or whitespace</p>
 </aside>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 520)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 561)</p>
 <p>TeX to MathML converter `pandoc` failed:</p>
 <p>[WARNING] Could not convert TeX math '\not\equiv', rendering as TeX:</p>
 <pre class="literal-block">  \not\equiv
@@ -1648,7 +1706,7 @@ LateX2MathML, as there is no corresponding Unicode character.</p>
   expecting &quot;%&quot;, &quot;\\label&quot;, &quot;\\nonumber&quot; or whitespace</p>
 </aside>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 520)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 561)</p>
 <p>TeX to MathML converter `pandoc` failed:</p>
 <p>[WARNING] Could not convert TeX math '\not\gtrless', rendering as TeX:</p>
 <pre class="literal-block">  \not\gtrless
@@ -1657,7 +1715,7 @@ LateX2MathML, as there is no corresponding Unicode character.</p>
   expecting &quot;%&quot;, &quot;\\label&quot;, &quot;\\nonumber&quot; or whitespace</p>
 </aside>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 520)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 561)</p>
 <p>TeX to MathML converter `pandoc` failed:</p>
 <p>[WARNING] Could not convert TeX math '\not\lessgtr', rendering as TeX:</p>
 <pre class="literal-block">  \not\lessgtr
@@ -1827,7 +1885,7 @@ LateX2MathML, as there is no corresponding Unicode character.</p>
 </tbody>
 </table>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 540)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 581)</p>
 <p>TeX to MathML converter `pandoc` failed:</p>
 <p>[WARNING] Could not convert TeX math '\shortmid', rendering as TeX:</p>
 <pre class="literal-block">  \shortmid
@@ -1836,7 +1894,7 @@ LateX2MathML, as there is no corresponding Unicode character.</p>
   expecting &quot;%&quot;, &quot;\\label&quot;, &quot;\\nonumber&quot; or whitespace</p>
 </aside>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 541)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 582)</p>
 <p>TeX to MathML converter `pandoc` failed:</p>
 <p>[WARNING] Could not convert TeX math '\shortparallel', rendering as TeX:</p>
 <pre class="literal-block">  \shortparallel
@@ -1845,7 +1903,7 @@ LateX2MathML, as there is no corresponding Unicode character.</p>
   expecting &quot;%&quot;, &quot;\\label&quot;, &quot;\\nonumber&quot; or whitespace</p>
 </aside>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 544)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 585)</p>
 <p>TeX to MathML converter `pandoc` failed:</p>
 <p>[WARNING] Could not convert TeX math '\nshortmid', rendering as TeX:</p>
 <pre class="literal-block">  \nshortmid
@@ -1854,7 +1912,7 @@ LateX2MathML, as there is no corresponding Unicode character.</p>
   expecting &quot;%&quot;, &quot;\\label&quot;, &quot;\\nonumber&quot; or whitespace</p>
 </aside>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 545)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 586)</p>
 <p>TeX to MathML converter `pandoc` failed:</p>
 <p>[WARNING] Could not convert TeX math '\nshortparallel', rendering as TeX:</p>
 <pre class="literal-block">  \nshortparallel
@@ -1863,7 +1921,7 @@ LateX2MathML, as there is no corresponding Unicode character.</p>
   expecting &quot;%&quot;, &quot;\\label&quot;, &quot;\\nonumber&quot; or whitespace</p>
 </aside>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 547)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 588)</p>
 <p>TeX to MathML converter `pandoc` failed:</p>
 <p>[WARNING] Could not convert TeX math '\nsubseteqq', rendering as TeX:</p>
 <pre class="literal-block">  \nsubseteqq
@@ -1872,7 +1930,7 @@ LateX2MathML, as there is no corresponding Unicode character.</p>
   expecting &quot;%&quot;, &quot;\\label&quot;, &quot;\\nonumber&quot; or whitespace</p>
 </aside>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 549)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 590)</p>
 <p>TeX to MathML converter `pandoc` failed:</p>
 <p>[WARNING] Could not convert TeX math '\nsupseteqq', rendering as TeX:</p>
 <pre class="literal-block">  \nsupseteqq
@@ -1884,7 +1942,7 @@ LateX2MathML, as there is no corresponding Unicode character.</p>
 <p>Symbols can be negated prepending <span class="docutils literal">\not</span>, e.g.
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>∉</mo><annotation encoding="application/x-tex">\not\in</annotation></semantics></math> <span class="docutils literal">\not\in</span>, <span class="math problematic m">\not\ni</span> <span class="docutils literal">\not\ni</span>.</p>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 555)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 596)</p>
 <p>TeX to MathML converter `pandoc` failed:</p>
 <p>[WARNING] Could not convert TeX math '\not\ni', rendering as TeX:</p>
 <pre class="literal-block">  \not\ni
@@ -1893,7 +1951,7 @@ LateX2MathML, as there is no corresponding Unicode character.</p>
   expecting &quot;%&quot;, &quot;\\label&quot;, &quot;\\nonumber&quot; or whitespace</p>
 </aside>
 <p>The commands <span class="docutils literal">\varsubsetneq</span>, <span class="docutils literal">\varsubsetneqq</span>, <span class="docutils literal">\varsupsetneq</span>,
-and <span class="docutils literal">\varsupsetneqq</span> are not supported by LateX2MathML, as there is no
+and <span class="docutils literal">\varsupsetneqq</span> are not supported with MathML output as there is no
 corresponding Unicode character.</p>
 </section>
 </section>
@@ -1924,7 +1982,7 @@ corresponding Unicode character.</p>
 </tbody>
 </table>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 571)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 612)</p>
 <p>TeX to MathML converter `pandoc` failed:</p>
 <p>[WARNING] Could not convert TeX math '\smallint', rendering as TeX:</p>
 <pre class="literal-block">  \smallint
@@ -1959,7 +2017,7 @@ take one optional argument (the subscript) and one mandatory argument
 A \xleftarrow{n+\mu-1} B \xrightarrow[T]{n\pm i-1} C
 </pre>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 603)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 644)</p>
 <p>TeX to MathML converter `pandoc` failed:</p>
 <p>[WARNING] Could not convert TeX math 'A \xleftarrow{n+\mu-1} B \xrightarrow[T]{n\pm i-1} C', rendering as TeX:</p>
 <pre class="literal-block">  A \xleftarrow{n+\mu-1} B \xrightarrow[T]
@@ -2051,12 +2109,12 @@ commands:</p>
 <tr><td><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>3</mn><mn>4</mn></mrow><annotation encoding="application/x-tex">3  4</annotation></semantics></math></p></td>
 <td><p><span class="docutils literal">3  4</span></p></td>
 <td></td>
-<td><p>regular space <a class="brackets" href="#footnote-3" id="footnote-reference-5" role="doc-noteref"><span class="fn-bracket">[</span>4<span class="fn-bracket">]</span></a></p></td>
+<td><p>regular space <a class="brackets" href="#footnote-2" id="footnote-reference-6" role="doc-noteref"><span class="fn-bracket">[</span>4<span class="fn-bracket">]</span></a></p></td>
 </tr>
 <tr><td><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>3</mn><mspace width="-0.167em"></mspace><mn>4</mn></mrow><annotation encoding="application/x-tex">3\!4</annotation></semantics></math></p></td>
 <td><p><span class="docutils literal"><span class="pre">3\!4</span></span></p></td>
 <td><p><span class="docutils literal">3\negthinspace 4</span></p></td>
-<td><p>negative space <a class="brackets" href="#footnote-4" id="footnote-reference-6" role="doc-noteref"><span class="fn-bracket">[</span>5<span class="fn-bracket">]</span></a></p></td>
+<td><p>negative space <a class="brackets" href="#footnote-3" id="footnote-reference-7" role="doc-noteref"><span class="fn-bracket">[</span>5<span class="fn-bracket">]</span></a></p></td>
 </tr>
 <tr><td><p><span class="math problematic m">3\negmedspace 4</span></p></td>
 <td></td>
@@ -2076,12 +2134,12 @@ commands:</p>
 <tr><td><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>3</mn><mspace width="1.111em"></mspace><mn>4</mn></mrow><annotation encoding="application/x-tex">3\mspace{20mu}4</annotation></semantics></math></p></td>
 <td></td>
 <td><p><span class="docutils literal">3\mspace{20mu}4</span></p></td>
-<td><p>custom length <a class="brackets" href="#footnote-5" id="footnote-reference-7" role="doc-noteref"><span class="fn-bracket">[</span>6<span class="fn-bracket">]</span></a></p></td>
+<td><p>custom length <a class="brackets" href="#footnote-4" id="footnote-reference-8" role="doc-noteref"><span class="fn-bracket">[</span>6<span class="fn-bracket">]</span></a></p></td>
 </tr>
 </tbody>
 </table>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 671)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 712)</p>
 <p>TeX to MathML converter `pandoc` failed:</p>
 <p>[WARNING] Could not convert TeX math '3\negmedspace 4', rendering as TeX:</p>
 <pre class="literal-block">  3\negmedspace 4
@@ -2090,7 +2148,7 @@ commands:</p>
   expecting &quot;%&quot;, &quot;\\label&quot;, &quot;\\nonumber&quot; or whitespace</p>
 </aside>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 672)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 713)</p>
 <p>TeX to MathML converter `pandoc` failed:</p>
 <p>[WARNING] Could not convert TeX math '3\negthickspace 4', rendering as TeX:</p>
 <pre class="literal-block">  3\negthickspace 4
@@ -2099,7 +2157,7 @@ commands:</p>
   expecting &quot;%&quot;, &quot;\\label&quot;, &quot;\\nonumber&quot; or whitespace</p>
 </aside>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 673)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 714)</p>
 <p>TeX to MathML converter `pandoc` failed:</p>
 <p>[WARNING] Could not convert TeX math '3\hspace{1ex}4', rendering as TeX:</p>
 <pre class="literal-block">  3\hspace{1ex}4
@@ -2108,16 +2166,16 @@ commands:</p>
   expecting &quot;em&quot;</p>
 </aside>
 <aside class="footnote-list brackets">
-<aside class="footnote brackets" id="footnote-3" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-5">4</a><span class="fn-bracket">]</span></span>
+<aside class="footnote brackets" id="footnote-2" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-6">4</a><span class="fn-bracket">]</span></span>
 <p>Whitespace characters are ignored in LaTeX math mode.</p>
 </aside>
-<aside class="footnote brackets" id="footnote-4" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-6">5</a><span class="fn-bracket">]</span></span>
-<p>Negative spacing does not work with MathML (last tested in Firefox 102).</p>
+<aside class="footnote brackets" id="footnote-3" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-7">5</a><span class="fn-bracket">]</span></span>
+<p>Negative spacing does not work with MathML (last tested in Firefox 115).</p>
 </aside>
-<aside class="footnote brackets" id="footnote-5" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-7">6</a><span class="fn-bracket">]</span></span>
+<aside class="footnote brackets" id="footnote-4" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-8">6</a><span class="fn-bracket">]</span></span>
 <p>In LaTeX, the unit must be 'mu' (1 mu = 1/18em).</p>
 </aside>
 </aside>
@@ -2134,7 +2192,7 @@ MathML.</p>
 <section id="modular-arithmetic-and-modulo-operation">
 <h3><a class="toc-backref" href="#toc-entry-26" role="doc-backlink"><span class="sectnum">3.6 </span>Modular arithmetic and modulo operation</a></h3>
 <p>The commands <span class="docutils literal">\bmod</span>, <span class="docutils literal">\pmod</span>, <span class="docutils literal">\mod</span>, and <span class="docutils literal">\pod</span> deal with the
-special spacing conventions of the “mod” notation. <a class="brackets" href="#footnote-6" id="footnote-reference-8" role="doc-noteref"><span class="fn-bracket">[</span>7<span class="fn-bracket">]</span></a></p>
+special spacing conventions of the “mod” notation. <a class="brackets" href="#footnote-5" id="footnote-reference-9" role="doc-noteref"><span class="fn-bracket">[</span>7<span class="fn-bracket">]</span></a></p>
 <table>
 <thead>
 <tr><th class="head"><p>command</p></th>
@@ -2167,7 +2225,7 @@ special spacing conventions of the “mod” notation. <a class="brackets" href=
 </tbody>
 </table>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 704)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 745)</p>
 <p>TeX to MathML converter `pandoc` failed:</p>
 <p>[WARNING] Could not convert TeX math 'x\equiv y \pmod b', rendering as TeX:</p>
 <pre class="literal-block">  x\equiv y \pmod b
@@ -2176,7 +2234,7 @@ special spacing conventions of the “mod” notation. <a class="brackets" href=
   expecting &quot;%&quot;, &quot;\\label&quot;, &quot;\\nonumber&quot; or whitespace</p>
 </aside>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 706)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 747)</p>
 <p>TeX to MathML converter `pandoc` failed:</p>
 <p>[WARNING] Could not convert TeX math 'x\equiv y \pod d', rendering as TeX:</p>
 <pre class="literal-block">  x\equiv y \pod d
@@ -2185,8 +2243,8 @@ special spacing conventions of the “mod” notation. <a class="brackets" href=
   expecting &quot;%&quot;, &quot;\\label&quot;, &quot;\\nonumber&quot; or whitespace</p>
 </aside>
 <aside class="footnote-list brackets">
-<aside class="footnote brackets" id="footnote-6" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-8">7</a><span class="fn-bracket">]</span></span>
+<aside class="footnote brackets" id="footnote-5" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-9">7</a><span class="fn-bracket">]</span></span>
 <p>Currently <a class="reference external" href="https://sourceforge.net/p/docutils/feature-requests/93/">not supported</a> by the &quot;HTML&quot; <a class="reference external" href="https://docutils.sourceforge.io/docs/user/config.html#math-output">math_output</a> option
 of the HTML writer.</p>
 </aside>
@@ -2219,7 +2277,7 @@ of the HTML writer.</p>
 </tbody>
 </table>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 726)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 767)</p>
 <p>TeX to MathML converter `pandoc` failed:</p>
 <p>[WARNING] Could not convert TeX math '\sqrt\frac{1}{2}', rendering as TeX:</p>
 <pre class="literal-block">  \sqrt\frac{1}{2}
@@ -2271,7 +2329,7 @@ padding for sub-fractions:</p>
                     }}}
 </pre>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 764)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 805)</p>
 <p>TeX to MathML converter `pandoc` failed:</p>
 <p>[WARNING] Could not convert TeX math '\frac{\pi}{4} = 1 + \cfrac{1^2}{</p>
 <pre class="literal-block">                      2 + \cfrac{3^2}{
@@ -2297,7 +2355,7 @@ the numerator is <a class="reference external" href="https://github.com/w3c/math
 \cfrac[r]{x}{x-1}
 </pre>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 779)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 820)</p>
 <p>TeX to MathML converter `pandoc` failed:</p>
 <p>[WARNING] Could not convert TeX math '\cfrac[l]{x}{x-1} \quad</p>
 <pre class="literal-block">  \cfrac{x}{x-1}    \quad
@@ -2359,7 +2417,7 @@ fixed size:</p>
 </tbody>
 </table>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 799)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 840)</p>
 <p>TeX to MathML converter `pandoc` failed:</p>
 <p>[WARNING] Could not convert TeX math '\displaystyle</p>
 <pre class="literal-block">  \Bigl(b\Bigr)
@@ -2382,7 +2440,7 @@ or <span class="docutils literal">bigg</span> sizes instead gives better results
 \biggl[\sum_i a_i\Bigl\lvert\sum_j x_{ij}\Bigr\rvert^p\biggr]^{1/p}
 </pre>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 813)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 854)</p>
 <p>TeX to MathML converter `pandoc` failed:</p>
 <p>[WARNING] Could not convert TeX math '\left[\sum_i a_i\left\lvert\sum_j x_{ij}\right\rvert^p\right]^{1/p}</p>
 <pre class="literal-block">  \text{ versus }
@@ -2405,19 +2463,19 @@ of the delimiters slightly larger to make the nesting easier to see.</p>
 </div>
 <p>The third kind of situation is a slightly oversize object in running
 text, such as <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">|</mo><mfrac><mrow><mi>b</mi><mi>′</mi></mrow><mrow><mi>d</mi><mi>′</mi></mrow></mfrac><mo stretchy="true" form="postfix">|</mo></mrow><annotation encoding="application/x-tex">\left|\frac{b&#39;}{d&#39;}\right|</annotation></semantics></math> where the delimiters produced
-by <span class="docutils literal">\left</span> and <span class="docutils literal">\right</span> cause too much line spreading. <a class="brackets" href="#footnote-7" id="footnote-reference-9" role="doc-noteref"><span class="fn-bracket">[</span>8<span class="fn-bracket">]</span></a> In that case
+by <span class="docutils literal">\left</span> and <span class="docutils literal">\right</span> cause too much line spreading. <a class="brackets" href="#footnote-6" id="footnote-reference-10" role="doc-noteref"><span class="fn-bracket">[</span>8<span class="fn-bracket">]</span></a> In that case
 <span class="docutils literal">\bigl</span> and <span class="docutils literal">\bigr</span> can be used to produce delimiters that are larger
 than the base size but still able to fit within the normal line spacing:
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo minsize="1.2" maxsize="1.2" stretchy="false" form="prefix">|</mo><mfrac><mrow><mi>b</mi><mi>′</mi></mrow><mrow><mi>d</mi><mi>′</mi></mrow></mfrac><mo minsize="1.2" maxsize="1.2" stretchy="false" form="prefix">|</mo></mrow><annotation encoding="application/x-tex">\bigl|\frac{b&#39;}{d&#39;}\bigr|</annotation></semantics></math>.</p>
 <aside class="footnote-list brackets">
-<aside class="footnote brackets" id="footnote-7" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-9">8</a><span class="fn-bracket">]</span></span>
+<aside class="footnote brackets" id="footnote-6" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-10">8</a><span class="fn-bracket">]</span></span>
 <p>With MathML, an example would be parentheses
 around a <span class="docutils literal">smallmatrix</span> environment
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center"><mi>a</mi></mtd><mtd columnalign="center"><mi>b</mi></mtd></mtr><mtr><mtd columnalign="center"><mi>c</mi></mtd><mtd columnalign="center"><mi>d</mi></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\left(\begin{smallmatrix} a &amp; b \\ c &amp; d \end{smallmatrix}\right)</annotation></semantics></math>
 vs. <span class="math problematic m">\Bigl(\begin{smallmatrix} a &amp; b \\ c &amp; d \end{smallmatrix}\Bigr)</span>.</p>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 836)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 877)</p>
 <p>TeX to MathML converter `pandoc` failed:</p>
 <p>[WARNING] Could not convert TeX math '\Bigl(\begin{smallmatrix} a &amp; b \\ c &amp; d \end{smallmatrix}\Bigr)', rendering as TeX:</p>
 <pre class="literal-block">  \Bigl(\begin{smallmatrix} a &amp; b \\ c &amp; d
@@ -2461,7 +2519,7 @@ similar symbols like</p>
 <p>The commands <span class="docutils literal">\intop</span> and <span class="docutils literal">\ointop</span> produce integral signs with
 limits as in sums and similar: <span class="math problematic m">\intop_0^1</span>, <span class="math problematic m">\ointop_c</span> and</p>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 880)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 921)</p>
 <p>TeX to MathML converter `pandoc` failed:</p>
 <p>[WARNING] Could not convert TeX math '\intop_0^1', rendering as TeX:</p>
 <pre class="literal-block">  \intop_0^1
@@ -2470,7 +2528,7 @@ limits as in sums and similar: <span class="math problematic m">\intop_0^1</span
   expecting &quot;%&quot;, &quot;\\label&quot;, &quot;\\nonumber&quot; or whitespace</p>
 </aside>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 880)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 921)</p>
 <p>TeX to MathML converter `pandoc` failed:</p>
 <p>[WARNING] Could not convert TeX math '\ointop_c', rendering as TeX:</p>
 <pre class="literal-block">  \ointop_c
@@ -2484,7 +2542,7 @@ limits as in sums and similar: <span class="math problematic m">\intop_0^1</span
 \int^1_0   \quad \oint_c
 </pre>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 883)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 924)</p>
 <p>TeX to MathML converter `pandoc` failed:</p>
 <p>[WARNING] Could not convert TeX math '\intop_0^1 \quad \ointop_c</p>
 <pre class="literal-block">     \quad \text{vs.} \quad
@@ -2512,7 +2570,7 @@ the operator to which they apply.</p>
 </section>
 <section id="changing-the-size-of-elements-in-a-formula">
 <h2><a class="toc-backref" href="#toc-entry-34" role="doc-backlink"><span class="sectnum">8 </span>Changing the size of elements in a formula</a></h2>
-<p>The declarations <a class="brackets" href="#footnote-8" id="footnote-reference-10" role="doc-noteref"><span class="fn-bracket">[</span>9<span class="fn-bracket">]</span></a> <span class="docutils literal">\displaystyle</span>, <span class="docutils literal">\textstyle</span>,
+<p>The declarations <a class="brackets" href="#footnote-7" id="footnote-reference-11" role="doc-noteref"><span class="fn-bracket">[</span>9<span class="fn-bracket">]</span></a> <span class="docutils literal">\displaystyle</span>, <span class="docutils literal">\textstyle</span>,
 <span class="docutils literal">\scriptstyle</span>, and <span class="docutils literal">\scriptscriptstyle</span>, select a symbol size and
 spacing that would be applied in display math, inline
 math, first-order subscript, or second-order subscript, respectively
@@ -2530,7 +2588,7 @@ rather than <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><s
 {\prod_{1\leq k\leq n} (1-q^k)}.
 </pre>
 <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 923)</p>
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">/usr/local/src/docutils-git-svn/docutils/docs/ref/rst/mathematics.txt</span>, line 964)</p>
 <p>TeX to MathML converter `pandoc` failed:</p>
 <p>[WARNING] Could not convert TeX math '\frac{\scriptstyle\sum_{n &gt; 0} z^n}</p>
 <pre class="literal-block">  {\displaystyle\prod_{1\leq k\leq n} (1-q^k)}
@@ -2543,8 +2601,8 @@ rather than <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><s
   expecting &quot;%&quot;, &quot;\\label&quot;, &quot;\\nonumber&quot; or whitespace</p>
 </aside>
 <aside class="footnote-list brackets">
-<aside class="footnote brackets" id="footnote-8" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-10">9</a><span class="fn-bracket">]</span></span>
+<aside class="footnote brackets" id="footnote-7" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-11">9</a><span class="fn-bracket">]</span></span>
 <p>&quot;Declarations&quot; are commands that affect processing of the current
 &quot;group&quot;. In particular, notice where the braces fall that delimit the
 effect of the command: Right: <span class="docutils literal">{\displaystyle <span class="pre">...}</span></span> Wrong:
@@ -2553,6 +2611,14 @@ effect of the command: Right: <span class="docutils literal">{\displaystyle <spa
 after the opening bracket.</p>
 </aside>
 </aside>
+<div role="list" class="citation-list">
+<div class="citation" id="iso-80000-2" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#citation-reference-1">ISO-80000-2</a><span class="fn-bracket">]</span></span>
+<p><cite>Quantities and units – Part 2: Mathematical signs
+and symbols to be used in the natural sciences and technology</cite>:
+<a class="reference external" href="http://www.iso.org/iso/iso_catalogue/catalogue_tc/catalogue_detail.htm?csnumber=31887">http://www.iso.org/iso/iso_catalogue/catalogue_tc/catalogue_detail.htm?csnumber=31887</a>.</p>
+</div>
+</div>
 </section>
 </main>
 </body>
