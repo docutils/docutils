@@ -569,8 +569,8 @@ def parse_latex_math(node, string):
             # characters with a special meaning in LaTeX math mode
             # fix spacing before "unary" minus.
             attributes = {}
-            if c == '-' and node.children:
-                previous_node = node.children[-1]
+            if c == '-' and len(node):
+                previous_node = node[-1]
                 if (getattr(previous_node, 'data', '-') in '([='
                     or previous_node.get('class') == 'mathopen'):
                     attributes['form'] = 'prefix'
@@ -885,7 +885,7 @@ def handle_cmd(name, node, string):  # noqa: C901 TODO make this less complex
             new_node = munderover(base)
             sub_node = parse_latex_math(mrow(), subscript)
             if len(sub_node) == 1:
-                sub_node = sub_node.children[0]
+                sub_node = sub_node[0]
             new_node.append(sub_node)
         else:
             new_node = mover(base)
@@ -897,7 +897,7 @@ def handle_cmd(name, node, string):  # noqa: C901 TODO make this less complex
         new_node.nchildren = None
         if isinstance(node, mrow) and len(node) == 0:
             # replace node with new_node
-            node.parent.children[node.parent.children.index(node)] = new_node
+            node.parent[node.parent.children.index(node)] = new_node
             new_node.parent = node.parent
         elif node.__class__.__name__ == 'math':
             node.append(new_node)
@@ -997,7 +997,7 @@ def handle_math_alphabet(name, node, string):
 
 def handle_script_or_limit(node, c, limits=''):
     """Append script or limit element to `node`."""
-    child = node.children.pop()
+    child = node.pop()
     if limits == 'limits':
         child.set('movablelimits', 'false')
     elif (limits == 'movablelimits'
@@ -1006,9 +1006,9 @@ def handle_script_or_limit(node, c, limits=''):
 
     if c == '_':
         if isinstance(child, mover):
-            new_node = munderover(*child.children, switch=True)
+            new_node = munderover(*child, switch=True)
         elif isinstance(child, msup):
-            new_node = msubsup(*child.children, switch=True)
+            new_node = msubsup(*child, switch=True)
         elif (limits in ('limits', 'movablelimits')
               or limits == '' and child.get('movablelimits', None)):
             new_node = munder(child)
@@ -1016,9 +1016,9 @@ def handle_script_or_limit(node, c, limits=''):
             new_node = msub(child)
     elif c == '^':
         if isinstance(child, munder):
-            new_node = munderover(*child.children)
+            new_node = munderover(*child)
         elif isinstance(child, msub):
-            new_node = msubsup(*child.children)
+            new_node = msubsup(*child)
         elif (limits in ('limits', 'movablelimits')
               or limits == '' and child.get('movablelimits', None)):
             new_node = mover(child)

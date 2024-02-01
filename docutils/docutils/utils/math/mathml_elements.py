@@ -83,7 +83,7 @@ class MathElement:
         self.attrib = {k.lower(): self.a_str(v)
                        for k, v in attributes.items()}
         self.children = []
-        self += children
+        self.extend(children)
 
     @staticmethod
     def a_str(v):
@@ -93,7 +93,7 @@ class MathElement:
         return str(v)
 
     def __repr__(self):
-        content = [repr(item) for item in self.children]
+        content = [repr(item) for item in self]
         if hasattr(self, 'data'):
             content.append(repr(self.data))
         if getattr(self, 'switch', None):
@@ -101,10 +101,10 @@ class MathElement:
         content += [f'{k}={v!r}' for k, v in self.items() if v is not None]
         return self.__class__.__name__ + '(%s)' % ', '.join(content)
 
-    def __len__(self):
-        return len(self.children)
+# Emulate dictionary access methods for attributes
+# and list-like interface to the child elements
+# (differs from `docutils.nodes.Element` dict/list interface).
 
-    # emulate dictionary access methods for attributes
     def get(self, key, default=None):
         return self.attrib.get(key, default)
 
@@ -120,37 +120,66 @@ class MathElement:
             yield child
             yield from child.subnodes()
 
+    def __len__(self):
+        return len(self.children)
+
+    def __getitem__(self, key):
+        return self.children.__getitem__(key)
+
+    def __setitem__(self, key, element):
+        element.parent = self
+        self.children.__setitem__(key, element)
+
+    def __delitem__(self, key):
+        self.children.__delitem__(key)
+
+    def __iter__(self):
+        return self.children.__iter__()
+
     def full(self):
         """Return boolean indicating whether children may be appended."""
         return self.nchildren is not None and len(self) >= self.nchildren
 
     def close(self):
-        """Close element and return first non-full parent or None."""
+        """Close element and return first non-full anchestor or None."""
+        self.nchildren = len(self)  # mark node as full
         parent = self.parent
         while parent is not None and parent.full():
             parent = parent.parent
         return parent
 
-    def append(self, child):
-        """Append child and return self or first non-full parent.
+    def append(self, element):
+        """Append `element` and return new "current node" (insertion point).
 
-        If self is full, go up the tree and return first non-full node or
-        `None`.
+        Append as child element and set the internal `parent` attribute.
+
+        If self is already full, raise TypeError.
+
+        If self is full after appending, call `self.close()`
+        (returns first non-full anchestor or None) else return `self`.
         """
         if self.full():
-            raise TypeError(f'Element {self} already full!')
-        self.children.append(child)
-        child.parent = self
+            raise TypeError(f'Element "{self}" already full!')
+        self.children.append(element)
+        element.parent = self
         if self.full():
             return self.close()
         return self
 
-    def extend(self, children):
-        for child in children:
-            self.append(child)
-        return self
+    def extend(self, elements):
+        """Sequentially append `elements`. Return new "current node".
 
-    __iadd__ = extend  # alias for ``+=`` operator
+        Raise TypeError if overfull.
+        """
+        current_node = self
+        for element in elements:
+            current_node = self.append(element)
+        return current_node
+
+    def pop(self, index=-1):
+        element = self[index]
+        del self[index]
+        return element
 
     def is_block(self):
         """Return true, if `self` or a parent has ``display='block'``."""
@@ -194,8 +223,7 @@ class MathElement:
 # '<math>\n  <mn>2</mn>\n</math>'
 # >>> len(n2)
 # 1
-# >>> n2 += [mo('!')]
-# >>> n2
+# >>> n2.extend([mo('!')])
 # math(mn(2), mo('!'))
 # >>> eq3 = math(id='eq3', display='block')
 # >>> eq3
@@ -248,14 +276,24 @@ class MathSchema(MathElement):
         self.switch = kwargs.pop('switch', False)
         math.__init__(self, *children, **kwargs)
 
-    def append(self, child):
-        current_node = super().append(child)
-        # normalize order if full
+    def append(self, element):
+        """Append element. Normalize order and close if full."""
+        current_node = super().append(element)
         if self.switch and self.full():
-            self.children[-1], self.children[-2] = \
-                self.children[-2], self.children[-1]
+            self[-1], self[-2] = self[-2], self[-1]
             self.switch = False
         return current_node
+
+# >>> MathSchema(switch=True, display=True)
+# MathSchema(switch=True, display='true')
+# >>> MathSchema(MathElement(), switch=True)
+# MathSchema(MathElement(), switch=True)
+# >>> MathSchema(MathElement(id='c1'), MathElement(id='c2'), switch=True)
+# MathSchema(MathElement(id='c2'), MathElement(id='c1'))
+# >>> MathSchema(MathElement(), MathElement(), MathElement())
+# Traceback (most recent call last):
+# ...
+# TypeError: Element "MathSchema(MathElement(), MathElement())" already full!
 
 
 # Token elements represent the smallest units of mathematical notation which
@@ -355,10 +393,10 @@ class mrow(MathRow):
         """
         parent = self.parent
         # replace `self` with single child
-        if len(self) == 1:
-            child = self.children[0]
+        if parent is not None and len(self) == 1:
+            child = self[0]
             try:
-                parent.children[parent.children.index(self)] = child
+                parent[parent.children.index(self)] = child
                 child.parent = parent
             except (AttributeError, ValueError):
                 return None
@@ -457,7 +495,7 @@ class munderover(msubsup):
 # munder(mi('lim'), mo('-'), accent='false')
 # >>> mu.append(mi('lim'))
 # Traceback (most recent call last):
-# TypeError: Element munder(mi('lim'), mo('-'), accent='false') already full!
+# TypeError: Element "munder(mi('lim'), mo('-'), accent='false')" already full!
 # >>> munder(mo('-'), mi('lim'), accent='false', switch=True).toprettyxml()
 # '<munder accent="false">\n  <mi>lim</mi>\n  <mo>-</mo>\n</munder>'
 
