@@ -46,17 +46,17 @@ https://w3c.github.io/mathml-core/#global-attributes
 """
 
 
-# MathML element classes
-# ----------------------
+# Base classes
+# ------------
 
-class math:
-    """Base class for MathML elements and root of MathML trees."""
+class MathElement:
+    """Base class for MathML elements."""
 
     nchildren = None
     """Expected number of children or None"""
     # cf. https://www.w3.org/TR/MathML3/chapter3.html#id.3.1.3.2
     parent = None
-    """Parent node in MathML DOM tree."""
+    """Parent node in MathML element tree."""
     _level = 0  # indentation level (static class variable)
     xml_entities = {
         # for invalid and invisible characters
@@ -221,21 +221,27 @@ class math:
 # [math(math(class='three'), class='two'), math(class='three')]
 
 
-# The elements <msqrt>, <mstyle>, <merror>, <mpadded>, <mphantom>, <menclose>,
-# <mtd>, <mscarry>, and <math> treat their contents as a single inferred mrow
-# formed from all their children.
-class MathRowSchema(math):
-    """Base class for elements treating content as a single inferred mrow."""
-    # In MathML Core, this is called "anonymous mrow element".
+# Group sub-expressions in a horizontal row
+#
+# The elements <msqrt>, <mstyle>, <merror>, <mpadded>, <mphantom>,
+# <menclose>, <mtd>, <mscarry>, and <math> treat their contents
+# as a single inferred mrow formed from all their children.
+# (https://www.w3.org/TR/mathml4/#presm_inferredmrow)
+#
+# MathML Core uses the term "anonymous mrow element".
+
+class MathRow(MathElement):
+    """Base class for elements treating content as a single mrow."""
 
 
-class MathSchema(math):
+# 2d Schemata
+
+class MathSchema(MathElement):
     """Base class for schemata expecting 2 or more children.
 
     The special attribute `switch` indicates that the last two child
     elements are in reversed order and must be switched before XML-export.
     """
-
     nchildren = 2
 
     def __init__(self, *children, **kwargs):
@@ -252,10 +258,13 @@ class MathSchema(math):
         return current_node
 
 
-class MathToken(math):
+# Token elements represent the smallest units of mathematical notation which
+# carry meaning.
+
+class MathToken(MathElement):
     """Token Element: contains textual data instead of children.
 
-    Base class for mi, mn, mo, and mtext.
+    Expect text data on initialisation.
     """
     nchildren = 0
 
@@ -267,20 +276,38 @@ class MathToken(math):
         return [str(self.data).translate(self.xml_entities)]
 
 
+# MathML element classes
+# ----------------------
+
+class math(MathRow):
+    """Top-level MathML element, a single mathematical formula."""
+
+
+# Token elements
+# ~~~~~~~~~~~~~~
+
 class mtext(MathToken):
-    pass
+    """Arbitrary text with no notational meaning."""
 
 
 class mi(MathToken):
-    pass
+    """Identifier, such as a function name, variable or symbolic constant."""
 
 
 class mn(MathToken):
-    pass
+    """Numeric literal.
+
+    Normally a sequence of digits with a possible separator (a dot or a comma).
+    """
 
 
 class mo(MathToken):
-    pass
+    """Operator, Fence, Separator, or Accent.
+
+    Besides operators in strict mathematical meaning, this element also
+    includes "operators" like parentheses, separators like comma and
+    semicolon, or "absolute value" bars.
+    """
 
 # >>> mo('<')
 # mo('<')
@@ -288,12 +315,25 @@ class mo(MathToken):
 # ['<mo>', '&lt;', '</mo>']
 
 
-class mspace(math):
+class mspace(MathElement):
+    """Blank space, whose size is set by its attributes.
+
+    Takes additional attributes `depth`, `height`, `width`.
+    Takes no children and no text.
+
+    See also `mphantom`.
+    """
     nchildren = 0
 
 
-class mrow(math):
-    """Group sub-expressions as a horizontal row."""
+# General Layout Schemata
+# ~~~~~~~~~~~~~~~~~~~~~~~
+
+class mrow(MathRow):
+    """Generic element to group children as a horizontal row.
+
+    Removed on closing if not required (see `mrow.close()`).
+    """
 
     def transfer_attributes(self, other):
         # Update dictionary `other.attributes` with self.attributes.
@@ -315,7 +355,7 @@ class mrow(math):
         or if it has only one child element.
         """
         parent = self.parent
-        if isinstance(parent, MathRowSchema) and parent.nchildren == 1:
+        if isinstance(parent, MathRow) and parent.nchildren == 1:
             parent.children = self.children
             parent.nchildren = len(parent.children)
             for child in self.children:
@@ -343,48 +383,61 @@ class mrow(math):
 # math(mi('i', class='boldmath test', mathvariant='normal'))
 
 
-class mfrac(math):
-    nchildren = 2
+class mfrac(MathSchema):
+    """Fractions or fraction-like objects such as binomial coefficients."""
 
 
-class msqrt(MathRowSchema):
+class msqrt(MathRow):
+    """Square root. See also `mroot`."""
     nchildren = 1  # \sqrt expects one argument or a group
 
 
 class mroot(MathSchema):
-    nchildren = 2
+    """Roots with an explicit index. See also `msqrt`."""
 
 
-class mstyle(MathRowSchema):
-    """Style Change. Deprecated in MathML Core.
+class mstyle(MathRow):
+    """Style Change.
 
-    Use mrow instead.
+    In modern browsers, <mstyle> is equivalent to an <mrow> element.
+    However, <mstyle> may still be relevant for compatibility with MathML
+    implementations outside browsers.
     """
 
 
-class merror(MathRowSchema):
-    pass
+class merror(MathRow):
+    """Display contents as error messages."""
 
 
-class menclose(MathRowSchema):
+class menclose(MathRow):
+    """Renders content inside an enclosing notation...
+
+    ... specified by the notation attribute.
+
+    Non-standard: Do not use on the Web.
+    """
     nchildren = 1  # \boxed expects one argument or a group
 
 
-class mphantom(MathRowSchema):
+class mphantom(MathRow):
+    """Placeholder: Rendered invisibly but dimensions are kept."""
     nchildren = 1  # \phantom expects one argument or a group
 
 
+# Script and Limit Schemata
+# ~~~~~~~~~~~~~~~~~~~~~~~~~
+
 class msub(MathSchema):
-    pass
+    """Attach a subscript to an expression."""
 
 
 class msup(MathSchema):
-    pass
+    """Attach a superscript to an expression."""
 
 
 class msubsup(MathSchema):
+    """Attach both a subscript and a superscript to an expression."""
     nchildren = 3
-
 
 # >>> msub(mi('x'), mo('-'))
 # msub(mi('x'), mo('-'))
@@ -393,12 +446,17 @@ class msubsup(MathSchema):
 # >>> msubsup(mi('base'), mi('super'), mi('sub'), switch=True)
 # msubsup(mi('base'), mi('sub'), mi('super'))
 
+
 class munder(msub):
-    pass
+    """Attach an accent or a limit under an expression."""
 
 
 class mover(msup):
-    pass
+    """Attach an accent or a limit over an expression."""
+
+
+class munderover(msubsup):
+    """Attach accents or limits both under and over an expression."""
 
 
 # >>> munder(mi('lim'), mo('-'), accent=False)
@@ -415,23 +473,21 @@ class mover(msup):
 # >>> munder(mo('-'), mi('lim'), accent=False, switch=True).toprettyxml()
 # '<munder accent="false">\n  <mi>lim</mi>\n  <mo>-</mo>\n</munder>'
 
-class munderover(msubsup):
-    pass
+
+# Tabular Math
+# ~~~~~~~~~~~~
+
+class mtable(MathElement):
+    """Table or matrix element."""
 
 
-class mtable(math):
-    pass
+class mtr(MathRow):
+    """Row in a table or a matrix."""
 
-# >>> mt = mtable(displaystyle=True)
-# >>> mt
-# mtable(displaystyle=True)
-# >>> math(mt).toprettyxml()
+
+class mtd(MathRow):
+    """Cell in a table or a matrix"""
+
+# >>> t = mtable(displaystyle=True)
+# >>> math(t).toprettyxml()
 # '<math>\n  <mtable displaystyle="true">\n  </mtable>\n</math>'
-
-
-class mtr(MathRowSchema):
-    """MathML table/matrix row element."""
-
-
-class mtd(MathRowSchema):
-    """MathML table/matrix data cell element."""
