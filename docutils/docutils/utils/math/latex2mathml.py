@@ -214,6 +214,7 @@ spaces = {'qquad':         '2em',        # two \quad
           'thickspace':    '0.2778em',   # 5mu = 5/18em
           ';':             '0.2778em',   # 5mu thickspace
           ' ':             '0.25em',     # inter word space
+          '\n':            '0.25em',     # inter word space
           'medspace':      '0.2222em',   # 4mu = 2/9em
           ':':             '0.2222em',   # 4mu medspace
           'thinspace':     '0.1667em',   # 3mu = 1/6em
@@ -342,20 +343,26 @@ def tex_cmdname(string):
     ('_', '2')
 
     """
-    m = re.match(r'([a-zA-Z]+) *(.*)', string)
+    m = re.match(r'([a-zA-Z]+)[ \n]*(.*)', string, re.DOTALL)
     if m is None:
-        m = re.match(r'(.?)(.*)', string)
+        m = re.match(r'(.?)(.*)', string, re.DOTALL)
     return m.group(1), m.group(2)
 
 
 # Test:
 #
+# >>> tex_cmdname('name\nnext') # strip trailing whitespace, also newlines
+# ('name', 'next')
 # >>> tex_cmdname('name_2') # first non-letter terminates
 # ('name', '_2')
+# >>> tex_cmdname('name_2\nnext line') # line-break allowed
+# ('name', '_2\nnext line')
 # >>> tex_cmdname(' next') # leading whitespace is returned
 # (' ', 'next')
 # >>> tex_cmdname('1 2') # whitespace after non-letter is kept
 # ('1', ' 2')
+# >>> tex_cmdname('1\n2\t3') # whitespace after non-letter is kept
+# ('1', '\n2\t3')
 # >>> tex_cmdname('') # empty string
 # ('', '')
 
@@ -367,7 +374,7 @@ def tex_number(string):
     ('123.4', '')
 
     """
-    m = re.match(r'([0-9.,]*[0-9]+)(.*)', string)
+    m = re.match(r'([0-9.,]*[0-9]+)(.*)', string, re.DOTALL)
     if m is None:
         return '', string
     return m.group(1), m.group(2)
@@ -400,7 +407,7 @@ def tex_token(string):
                       |(?P<chcmd>\\.)          # one-character TeX command
                       |(?P<ch>.?))            # first character (or empty)
                      (?P<remainder>.*$)    # remaining part of string
-                 """, string, re.VERBOSE)
+                 """, string, re.VERBOSE | re.DOTALL)
     cmd, chcmd, ch, remainder = m.group('cmd', 'chcmd', 'ch', 'remainder')
     return cmd or chcmd or ch, remainder
 
@@ -501,7 +508,7 @@ def tex_optarg(string):
     m = re.match(r"""\s*                            # leading whitespace
                  \[(?P<optarg>(\\]|[^\[\]]|\\])*)\] # [group] without nested groups
                  (?P<remainder>.*$)
-                 """, string, re.VERBOSE)
+                 """, string, re.VERBOSE | re.DOTALL)
     if m is None and not string.startswith('['):
         return '', string
     try:
@@ -522,7 +529,7 @@ def tex_optarg(string):
 # docutils.utils.math.MathError: Could not extract optional argument from "[group with [nested group]]"!
 
 
-def parse_latex_math(node, string):
+def parse_latex_math(root, source):
     """Append MathML conversion of `string` to `node` and return it.
 
     >>> parse_latex_math(math(), r'\alpha')
@@ -532,14 +539,15 @@ def parse_latex_math(node, string):
 
     """
     # Normalize white-space:
-    string = ' '.join(string.split())
-    tree = node
+    string = source  # not-yet handled part of source
+    node = root  # the current "insertion point"
 
+    # Loop over `string` while changing it.
     while len(string) > 0:
         # Take off first character:
         c, string = string[0], string[1:]
 
-        if c == ' ':
+        if c in ' \n':
             continue  # whitespace is ignored in LaTeX math mode
         if c == '\\':  # start of a LaTeX macro
             cmdname, string = tex_cmdname(string)
@@ -582,11 +590,18 @@ def parse_latex_math(node, string):
         else:
             raise MathError(f'Unsupported character: "{c}"!')
             # TODO: append as <mi>?
-    return tree
+        if node is None:
+            if not string:
+                return root  # ignore unbalanced braces
+            raise MathError(f'No insertion point for "{string}". '
+                            f'Unbalanced braces in "{source[:-len(string)]}"?')
+    if node.nchildren and len(node) < node.nchildren:
+        raise MathError('Last node missing children. Source incomplete?')
+    return root
 
 # Test:
 
-# >>> print(parse_latex_math(math(), ''))
+# >>> parse_latex_math(math(), '')
 # math()
 # >>> parse_latex_math(math(), ' \\sqrt{ \\alpha}')
 # math(msqrt(mi('α')))
@@ -594,8 +609,8 @@ def parse_latex_math(node, string):
 # math(mn('23.4'), mi('x'))
 # >>> parse_latex_math(math(), '\\sqrt 2 \\ne 3')
 # math(msqrt(mn('2')), mo('≠'), mn('3'))
-# >>> parse_latex_math(math(), '\\sqrt{2 + 3} < 3')
-# math(msqrt(mn('2'), mo('+'), mn('3')), mo('<'), mn('3'))
+# >>> parse_latex_math(math(), '\\sqrt{2 + 3} < 10')
+# math(msqrt(mn('2'), mo('+'), mn('3')), mo('<'), mn('10'))
 # >>> parse_latex_math(math(), '\\sqrt[3]{2 + 3}')
 # math(mroot(mrow(mn('2'), mo('+'), mn('3')), mn('3')))
 # >>> parse_latex_math(math(), '\max_x') # function takes limits
@@ -611,6 +626,14 @@ def parse_latex_math(node, string):
 # >>> parse_latex_math(math(), '2⌘')
 # Traceback (most recent call last):
 # docutils.utils.math.MathError: Unsupported character: "⌘"!
+# >>> parse_latex_math(math(), '23}x')  # doctest: +ELLIPSIS
+# Traceback (most recent call last):
+# ...
+# docutils.utils.math.MathError: ... Unbalanced braces in "23}"?
+# >>> parse_latex_math(math(), '\\frac{2}')
+# Traceback (most recent call last):
+# ...
+# docutils.utils.math.MathError: Last node missing children. Source incomplete?
 
 
 def handle_cmd(name, node, string):  # noqa: C901 TODO make this less complex
@@ -777,7 +800,10 @@ def handle_cmd(name, node, string):  # noqa: C901 TODO make this less complex
         parts = arg.split('$')  # extract inline math
         for i, part in enumerate(parts):
             if i % 2 == 0:  # i is even
-                part = re.sub('(^ | $)', '\u00a0', part)
+                # LaTeX keeps whitespace in, e.g., ``\text{ foo }``,
+                # <mtext> displays only internal whitespace.
+                # → replace marginal whitespace with NBSP
+                part = re.sub('(^[ \n]|[ \n]$)', '\u00a0', part)
                 node = node.append(mtext(part))
             else:
                 parse_latex_math(node, part)
@@ -939,6 +965,10 @@ def handle_cmd(name, node, string):  # noqa: C901 TODO make this less complex
 # (math(mtext('number of apples')), '}')
 # >>> handle_cmd('text', math(), 'i \\sin(x)') # single char
 # (math(mtext('i')), ' \\sin(x)')
+# >>> handle_cmd(' ', math(), '  next') # inter word space
+# (math(mspace(width='0.25em')), '  next')
+# >>> handle_cmd('\n', math(), '\nnext') # inter word space
+# (math(mspace(width='0.25em')), '\nnext')
 # >>> handle_cmd('sin', math(), '(\\alpha)')
 # (math(mi('sin'), mo('\u2061')), '(\\alpha)')
 # >>> handle_cmd('sin', math(), ' \\alpha')
