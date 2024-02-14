@@ -195,7 +195,7 @@ HTML Writer Options
                         "MathJax", or "LaTeX") and option(s). (default: "HTML
                         math.css")
 --xml-declaration       Prepend an XML declaration.
---no-xml-declaration    Omit the XML declaration.
+--no-xml-declaration    Omit the XML declaration (default).
 --cloak-email-addresses
                         Obfuscate email addresses to confuse harvesters while
                         still keeping email links usable with standards-

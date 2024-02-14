@@ -941,8 +941,8 @@ browsers are welcome.
 Unexpected results from ``rst2html``: H1, H1 instead of H1, H2.  Why?
 --------------------------------------------------------------------------
 
-This only regards output from the `html4css1`_ writer.
-The `html5 writer`_ uses H1, H2, ...
+This only regards output from the `html4css1`_ writer and is configurable
+via the initial_header_level_ setting.
 
 .. class:: details
 

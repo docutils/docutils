@@ -26,8 +26,10 @@ to generate a specific data format).
    Docutils front-end tool names, install details and the set of
    auto-installed tools changed in Docutils 0.21 (see the RELEASE-NOTES_).
 
-Most [#]_ front ends have common options and the same command-line usage
-pattern::
+.. _usage pattern:
+
+Most [#]_ front-end tools have common options and the same command-line
+usage pattern::
 
     <toolname> [options] [<source> [<destination>]]
 

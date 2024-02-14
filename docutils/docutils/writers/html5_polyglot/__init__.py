@@ -73,7 +73,7 @@ class Writer(_html_base.Writer):
             {'choices': '1 2 3 4 5 6'.split(), 'default': '2',
              'metavar': '<level>'}),
         no_xml_declaration=(
-            'Omit the XML declaration.',
+            'Omit the XML declaration (default).',
             ['--no-xml-declaration'],
             {'dest': 'xml_declaration', 'action': 'store_false'}),
     )

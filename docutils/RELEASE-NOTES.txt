@@ -82,6 +82,9 @@ Writers
 
   - Change the default value for math_output_ to "MathML" in Docutils 0.22.
 
+  - Change the default value of the initial_header_level_ setting to None
+    (<h2> if there is a document title, else <h1>) in Docutils 1.0.
+
   - Remove option ``--embed-images`` (obsoleted by "image_loading_")
     in Docutils 2.0.
 
