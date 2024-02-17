@@ -503,11 +503,12 @@ def relative_path(source, target):
 
     Differences to `pathlib.PurePath.relative_to(other)`:
 
-    * Object oriented interface.
+    * pathlib offers an object oriented interface.
     * `source` expects path to a FILE while `other` expects a DIRECTORY.
-    * No default value for `other`.
-    * Raise ValueError if relative path cannot be determined.
-    * Fails if target is not a subpath of `other` (no ".." inserted).
+    * `target` defaults to the cwd, no default value for `other`.
+    * `relative_path()` always returns a path (relative or absolute),
+      while `PurePath.relative_to()` raises a ValueError
+      if `target` is not a subpath of `other` (no ".." inserted).
     """
     source_parts = os.path.abspath(source or type(target)('dummy_file')
                                    ).split(os.sep)

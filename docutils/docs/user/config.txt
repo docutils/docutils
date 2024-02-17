@@ -135,7 +135,7 @@ The following conventions apply to Docutils configuration files:
 
 
   *colon-separated*:
-    ignore_, prune_, expose_internals_
+    ignore_, prune_, rst_sources_, expose_internals_
 
     Whitespace around the delimiter is not stripped. Write, e.g., ::
 
@@ -481,7 +481,9 @@ The language of document parts can be specified with a
 output
 ------
 
-The path of the output destination. Use "-" for `stdout`.
+The path of the output destination.
+An existing file will be overwritten without warning.
+Use "-" for `stdout`.
 
 Obsoletes the `\<destination>`_ positional argument
 (cf. `Future changes`_ in the RELEASE-NOTES).
@@ -538,10 +540,10 @@ setting using a colon as delimiter, e.g.
 record_dependencies
 -------------------
 
-Path to a file where Docutils will write a list of files that were
-required to generate the output, e.g. included files or embedded
-stylesheets. [#dependencies]_ [#pwd]_ The format is one path per
-line with forward slashes as separator, the encoding is UTF-8.
+Path to a file where Docutils will write a list of files that
+were required to generate the output, e.g. included files or embedded
+stylesheets. [#dependencies]_  The format is one path per line with
+forward slashes as separator, the encoding is UTF-8.
 
 Set it to "-" in order to write dependencies to stdout.
 
@@ -732,7 +734,7 @@ caught and reported (in a user-friendly way) by Docutils.
 warning_stream
 --------------
 
-Path to a file for the output of system messages (warnings). [#pwd]_
+Path [#pwd]_ to a file for the output of system messages (warnings).
 
 *Default*: None (stderr).  *Option*: ``--warnings``.
 
@@ -1290,7 +1292,7 @@ See also `stylesheet [latex writers]`_.
 stylesheet_dirs
 ~~~~~~~~~~~~~~~
 List of directories where stylesheets can be found (comma-separated_).
-Used by the stylesheet_path_ setting when expanding relative path arguments.
+Used by the stylesheet_path_ setting when resolving relative path arguments.
 
 See also `stylesheet_dirs [latex writers]`_.
 
@@ -2124,7 +2126,7 @@ __ odt.html#table-of-contents
 
 odf_config_file
 ~~~~~~~~~~~~~~~
-Specify a configuration/mapping file path [#pwd]_ for additional ODF options.
+Path [#pwd]_ to a configuration/mapping file for additional ODF options.
 In particular, this file may contain a mapping of default style names to
 names used in the resulting output file.
 See section `How to use custom style names`__ in the
@@ -2137,9 +2139,8 @@ __ odt.html#how-to-use-custom-style-names
 
 stylesheet
 ~~~~~~~~~~
-Specify a stylesheet URL, used verbatim.
-See section `Styles and Classes`_ in the ODT Writer documentation
-for details.
+Path [#pwd]_ to a style file.  See section `Styles and Classes`_
+in the ODT Writer documentation for details.
 
 :Default: "writers/odf_odt/styles.odt" in the installation directory.
 :Option:  ``--stylesheet``.
@@ -2171,13 +2172,21 @@ Pretty-print <#text> nodes.
 [applications]
 ==============
 
-Some Docutils `front-end tools`_ provide additional settings.
+Some `front end tools`_ provide additional settings.
 
 
 .. _buildhtml:
 
 [buildhtml application]
 -----------------------
+
+buildhtml.py_ generates HTML documents from all reStructuredText source
+files in a set of directories and their subdirectories.
+All visited directories are scanned for "docutils.conf" files which are
+parsed after the standard configuration files. Path settings [#pwd]_ in
+these files are resolved relative to the respective directory.
+
+The output_ setting is ignored.
 
 dry_run
 ~~~~~~~
@@ -2187,7 +2196,7 @@ Do not process files, show files that would be processed.
 
 ignore
 ~~~~~~
-List of wildcard (shell globing) patterns (colon-separated_).
+List of glob-style patterns [#globbing]_ (colon-separated_).
 Values are appended. [#append-values]_
 
 Matching files are silently ignored.
@@ -2196,16 +2205,42 @@ Matching files are silently ignored.
 
 prune
 ~~~~~
-List directories to skip (colon-separated_).
+List of glob-style patterns [#globbing]_ (colon-separated_).
 Values are appended. [#append-values]_
 
-*Default*: ['.hg', '.bzr', '.git', '.svn', 'CVS'].  *Option*: ``--prune``.
+Patterns are expanded similar to path settings [#pwd]_ and matched
+against the absolute path of to-be-processed directories. Matching
+directories are skipped. This way, a directory can be marked as
+to-be-pruned by a "./docutils.conf" file containing ::
+
+  [buildhtml application]
+  prune: '.'
+
+The default patterns skip auxiliary directories from Python or
+popular version control tools anywhere. [#]_
+
+:Default: ``['/*/.hg', '/*/.bzr', '/*/.git', '/*/.svn',
+          '/*/.venv', '/*/__pycache__']``.
+:Option: ``--prune``.
+
+.. [#] The leading "/" prevents expansion with pwd and
+       ``fnmatch('/*')`` matches any absolute path.
 
 recurse
 ~~~~~~~
 Recursively scan subdirectories.
 
 *Default*: True (recurse).  *Options*: ``--recurse``, ``--local``.
+
+rst_sources
+~~~~~~~~~~~
+List of glob-style [#globbing]_ patterns specifying files to process as
+reStructuredText source (colon-separated_). Values in configuration files
+overwrite the default and are overwritten by the command line option.
+
+*Default*: ``['*.rst', '*.txt']``.  *Option*: ``--rst-sources``.
+
+New in Docutils 0.21.
 
 silent
 ~~~~~~
@@ -2229,6 +2264,22 @@ New in 0.17. Obsoletes the ``html_writer`` option.
 .. _HTML writer: html.html
 .. _default HTML writer: html.html#html
 
+.. [#globbing] Pattern matching is done with the `fnmatch module`_.
+   It resembles shell-style globbing, but without special treatment
+   of path separators and '.' (in contrast__ to the `glob module`_ and
+   `pathlib.PurePath.match()`_).
+   For example, "``/*.py``" matches "/a/b/c.py".
+
+   Provisional: will use `pathlib.PurePath.match()` once this supports "**".
+
+.. _fnmatch module:
+    https://docs.python.org/3/library/fnmatch.html#module-fnmatch
+.. _glob module:
+    https://docs.python.org/3/library/glob.html#module-glob
+.. _pathlib.PurePath.match():
+    https://docs.python.org/3/library/pathlib.html#pathlib.PurePath.match
+__ https://github.com/python/cpython/issues/106747
+
 
 [docutils application]
 --------------------------
@@ -2236,9 +2287,8 @@ New in 0.17. Obsoletes the ``html_writer`` option.
 Docutils' `generic front end`_ tool allows combining “reader”, “parser”,
 and “writer” components from the Docutils package or 3rd party plug-ins.
 
-| New in 0.17. Config file support added in 0.18.
-  Renamed in 0.19 (the old section name "docutils-cli application"
-  is kept as alias).
+| New in 0.17. Config file support added in 0.18. Renamed in 0.19
+  (the old section name "docutils-cli application" is kept as alias).
 | Support for reader/parser import names added in 0.19.
 
 .. _generic front end: tools.html#generic-command-line-front-end
@@ -2290,14 +2340,16 @@ them in configuration files has no effect.
 
 config
 ~~~~~~
-Path [#pwd]_ to a configuration file to read (if it exists).
-Settings override defaults and earlier settings.  The config
-file is processed immediately.  Multiple ``--config`` options may
-be specified; each will be processed in turn.
+Path to an additional configuration file.
+The file is processed immediately (if it exists) with
+settings overriding defaults and earlier settings.
 
 Filesystem path settings [#pwd]_ contained within the config file will be
 interpreted relative to the config file's location (*not* relative to the
 current working directory).
+
+Multiple ``--config`` options may be specified;
+each will be processed in turn.
 
 *Default*: None.  *Option*: ``--config``.
 
@@ -2407,6 +2459,9 @@ pep_template           [pep_html writer] template
 .. _literal blocks: ../ref/rst/restructuredtext.html#literal-blocks
 .. _option lists: ../ref/rst/restructuredtext.html#option-lists
 .. _tables: ../ref/rst/restructuredtext.html#tables
+
+.. _front end tools: tools.html
+.. _buildhtml.py: tools.html#buildhtml-py
 
 .. _BCP 47: https://www.rfc-editor.org/rfc/bcp/bcp47.txt
 .. _Error Handlers:
