@@ -1119,8 +1119,15 @@ class FixedTextElement(TextElement):
     """An element which directly contains preformatted text."""
 
     def __init__(self, rawsource='', text='', *children, **attributes):
-        TextElement.__init__(self, rawsource, text, *children, **attributes)
+        super().__init__(rawsource, text, *children, **attributes)
         self.attributes['xml:space'] = 'preserve'
+
+
+# TODO: PureTextElement(TextElement):
+#   """An element which only contains text, no children."""
+#   For elements in the DTD that directly employ #PCDATA in their definition:
+#   citation_reference, comment, footnote_reference, label, math, math_block,
+#   option_argument, option_string, raw,
 
 
 # ========

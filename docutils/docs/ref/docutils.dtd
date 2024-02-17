@@ -468,7 +468,9 @@ or " ") or the text between option arguments (typically either "," or
 that is typeset as mathematical notation (display formula).
 -->
 <!ELEMENT math_block (#PCDATA)>
-<!ATTLIST math_block %basic.atts;>
+<!ATTLIST math_block 
+    %basic.atts;
+    %fixedspace.att;>
 
 <!ELEMENT line_block (line | line_block)+>
 <!ATTLIST line_block %basic.atts;>
@@ -594,7 +596,7 @@ Table elements: table, tgroup, colspec, thead, tbody, row, entry.
     type      NMTOKEN   #IMPLIED>
 
 <!-- Used to pass raw data through the system. Also inline. -->
-<!ELEMENT raw %text.model;>
+<!ELEMENT raw (#PCDATA)>
 <!ATTLIST raw
     %basic.atts;
     %fixedspace.att;
