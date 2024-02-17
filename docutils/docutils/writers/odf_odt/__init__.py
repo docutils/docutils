@@ -495,9 +495,7 @@ class Writer(writers.Writer):
         'output_encoding_error_handler': 'xmlcharrefreplace',
     }
 
-    relative_path_settings = (
-        'stylesheet_path',
-    )
+    relative_path_settings = ('odf_config_file', 'stylesheet',)
 
     config_section = 'odf_odt writer'
     config_section_dependencies = ('writers',)

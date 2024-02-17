@@ -49,9 +49,7 @@ class Writer(html4css1.Writer):
 
     settings_default_overrides = {'stylesheet_path': default_stylesheet_path,
                                   'template': default_template_path}
-
     relative_path_settings = ('template',)
-
     config_section = 'pep_html writer'
     config_section_dependencies = ('writers', 'html writers',
                                    'html4css1 writer')

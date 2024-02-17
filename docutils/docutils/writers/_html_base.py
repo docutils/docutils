@@ -136,6 +136,8 @@ class Writer(writers.Writer):
 
     settings_defaults = {'output_encoding_error_handler': 'xmlcharrefreplace'}
 
+    relative_path_settings = ('template',)
+
     config_section = 'html base writer'  # overwrite in subclass
     config_section_dependencies = ('writers', 'html writers')
 
