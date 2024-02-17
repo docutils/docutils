@@ -115,7 +115,7 @@ dl.docinfo > dt {
   float: left;
   margin: 0;
   padding: 0;
-  padding-right: 0.2em;
+  padding-right: 0.25em;
 }
 /* Offset for field content (corresponds to the --field-name-limit option) */
 dl.field-list > dd,
