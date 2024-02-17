@@ -134,8 +134,6 @@ Changes since 0.20.1
 
 * docutils/writers/html5_polyglot/\*.css
 
-  - Embed SVG images as ``<svg>`` instead of data-URI
-    (not used by "html4css1"). Fixes [feature-request:#100].
   - Move MathML styles to "minimal.css" (required for correct rendering).
 
 * docutils/writers/_html_base.py
@@ -152,6 +150,8 @@ Changes since 0.20.1
   - Consider the root-prefix_ setting when converting an image URI
     to a local filesystem path.
   - New <image> attribute "loading" overrides "image-loading" setting.
+  - Embed SVG images as ``<svg>`` instead of data-URI
+    (not used by "html4css1").  Fixes [feature-request:#100].
   - Write system messages for errors/warnings during the writing stage
     (image transformations, math content conversion, ...).
 
@@ -184,6 +184,11 @@ Changes since 0.20.1
 
     __ docs/user/config.html#theme-url
     __ docs/user/config.html#theme
+
+* tools/buildhtml.py
+
+  - New option `rst_sources`_.
+    Match `prune` values with `fnmatch.fnmatch()`.
 
 
 Release 0.20.1 (2023-05-17)
@@ -4374,6 +4379,7 @@ test/test_rst); and all modifications required to make it all work.
 .. _output_encoding: docs/user/config.html#output-encoding
 .. _raw_enabled: docs/user/config.html#raw-enabled
 .. _reference_label: docs/user/config.html#reference-label
+.. _rst_sources: docs/user/config.html#rst-sources
 .. _smart_quotes: docs/user/config.html#smart-quotes
 .. _strip_classes: docs/user/config.html#strip-classes
 .. _strip_elements_with_classes: docs/user/config.html#strip-elements-with-classes

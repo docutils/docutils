@@ -343,9 +343,9 @@ buildhtml.py
 The ``buildhtml.py`` script can be found in the ``/tools`` directory of
 the "docutils" source. It is not included in binary packages. [#]_
 
-Use ``buildhtml.py`` to generate ``*.html`` from all the ``*.txt`` files
-(including PEPs) in each <directory> given, and their subdirectories
-too.  (Use the ``--local`` option to skip subdirectories.)
+Use ``buildhtml.py`` to generate ``*.html`` from all the reStructuredText
+source files (including PEPs) in each <directory> given, and their
+subdirectories too.  (Use the ``--local`` option to skip subdirectories.)
 
 Usage::
 

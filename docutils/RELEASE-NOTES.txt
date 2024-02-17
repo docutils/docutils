@@ -196,8 +196,10 @@ Release 0.21 (unpublished)
 
 * Configuration changes:
 
-  - New configuration setting root-prefix_.
+  - New configuration setting root_prefix_.
     Configurable root directory for included files.
+
+  - New configuration setting rst_sources_ for the "buildhtml.py" application.
 
   - Simpler and more secure `input encoding`_ default behaviour:
 
@@ -247,7 +249,8 @@ Release 0.21 (unpublished)
 .. _input encoding: docs/api/publisher.html#encodings
 .. _csv-table: docs/ref/rst/directives.html#csv-table
 .. _"image" directive: docs/ref/rst/directives.html#image
-.. _root-prefix: docs/user/config.html#root-prefix
+.. _root_prefix: docs/user/config.html#root-prefix
+.. _rst_sources: docs/user/config.html#rst-sources
 
 
 Release 0.20.1 (2023-05-17)

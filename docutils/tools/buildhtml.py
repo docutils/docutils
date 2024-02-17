@@ -5,12 +5,11 @@
 # Copyright: This module has been placed in the public domain.
 
 """
-Generates .html from all the .txt files in a directory.
+Generate .html from all reStructuredText files in a directory.
 
-Ordinary .txt files are understood to be standalone reStructuredText.
-Files named ``pep-*.txt`` are interpreted as reStructuredText PEPs.
+Source files are understood to be standalone reStructuredText documents.
+Files with names starting ``pep-`` are interpreted as reStructuredText PEPs.
 """
-# Once PySource is here, build .html from .py as well.
 
 __docformat__ = 'reStructuredText'
 
@@ -29,16 +28,15 @@ import warnings
 
 import docutils
 import docutils.io
-from docutils import core, frontend, utils, ApplicationError
+from docutils import core, frontend, ApplicationError
 from docutils.parsers import rst
 from docutils.readers import standalone, pep
 from docutils.writers import html4css1, html5_polyglot, pep_html
 
 
 usage = '%prog [options] [<directory> ...]'
-description = ('Generates .html from all the reStructuredText .txt files '
-               '(including PEPs) in each <directory> '
-               '(default is the current directory).')
+description = ('Generate .html from all reStructuredText files '
+               'in each <directory> (default is the current directory).')
 
 
 class SettingsSpec(docutils.SettingsSpec):
@@ -47,7 +45,9 @@ class SettingsSpec(docutils.SettingsSpec):
     Runtime settings & command-line options for the "buildhtml" front end.
     """
 
-    prune_default = ['.hg', '.bzr', '.git', '.svn', 'CVS']
+    prune_default = ['/*/.hg', '/*/.bzr', '/*/.git', '/*/.svn',
+                     '/*/.venv', '/*/__pycache__']
+    rst_sources_default = ['*.rst', '*.txt']
 
     # Can't be included in OptionParser below because we don't want to
     # override the base class.
@@ -61,16 +61,25 @@ class SettingsSpec(docutils.SettingsSpec):
            'validator': frontend.validate_boolean}),
          ('Do not scan subdirectories for files to process.',
           ['--local'], {'dest': 'recurse', 'action': 'store_false'}),
-         ('Do not process files in <directory> (shell globbing patterns, '
+         ('Do not process files in <directory> (glob-style patterns, '
           'separated by colons).  This option may be used '
-          'more than once to specify multiple directories.  Default: "%s".'
+          'more than once to add more patterns.  Default: "%s".'
           % ':'.join(prune_default),
           ['--prune'],
           {'metavar': '<directory>', 'action': 'append',
            'validator': frontend.validate_colon_separated_string_list,
            'default': prune_default}),
+         ('Process all files matching any of the given '
+          'glob-style patterns (separated by colons). '
+          'This option overwrites the default or config-file values. '
+          f'Default: "{":".join(rst_sources_default)}".',
+          ['--rst-sources'],
+          {'metavar': '<patterns>',
+           'default': rst_sources_default,
+           'validator': frontend.validate_colon_separated_string_list}),
          ('Recursively ignore files matching any of the given '
-          'wildcard (shell globbing) patterns (separated by colons).',
+          'glob-style patterns (separated by colons). '
+          'This option may be used more than once to add more patterns.',
           ['--ignore'],
           {'metavar': '<patterns>', 'action': 'append',
            'default': [],
@@ -191,7 +200,11 @@ class Builder:
 
         Copy the setting defaults, overlay the startup config file settings,
         then the local config file settings, then the command-line options.
-        Assumes the current directory has been set.
+
+        If `directory` is not None, it is searched for a file "docutils.conf"
+        which is parsed after standard configuration files.
+        Path settings in this configuration file are resolved relative
+        to `directory`, not the current working directory.
         """
         publisher = self.publishers[publisher_name]
         with warnings.catch_warnings():
@@ -206,9 +219,12 @@ class Builder:
                 directory)
             settings.update(local_config, publisher.option_parser)
         settings.update(self.settings_spec.__dict__, publisher.option_parser)
+        # remove duplicate entries from "appending" settings:
+        settings.ignore = list(set(settings.ignore))
+        settings.prune = list(set(settings.prune))
         return settings
 
-    def run(self, directory=None, recurse=1):
+    def run(self, directory=None, recurse=True):
         recurse = recurse and self.initial_settings.recurse
         if directory:
             self.directories = [directory]
@@ -217,37 +233,37 @@ class Builder:
         else:
             self.directories = [os.getcwd()]
         for directory in self.directories:
-            for root, dirs, files in os.walk(directory):
-                # os.walk by default this recurses down the tree,
-                # influence by modifying dirs.
-                if not recurse:
-                    del dirs[:]
-                self.visit(root, files, dirs)
+            directory = os.path.abspath(directory)
+            for dirpath, dirnames, filenames in os.walk(directory):
+                # `os.walk()` by default recurses down the tree,
+                # we modify `dirnames` in-place to control the behaviour.
+                if recurse:
+                    dirnames.sort()
+                else:
+                    del dirnames[:]
+                self.visit(dirpath, dirnames, filenames)
 
-    def visit(self, directory, names, subdirectories):
-        settings = self.get_settings('', directory)
+    def visit(self, dirpath, dirnames, filenames):
+        settings = self.get_settings('', dirpath)
         errout = docutils.io.ErrorOutput(encoding=settings.error_encoding)
-        if settings.prune and (os.path.abspath(directory) in settings.prune):
-            errout.write('/// ...Skipping directory (pruned): %s\n' %
-                         directory)
+        if match_patterns(dirpath, settings.prune):
+            errout.write('/// ...Skipping directory (pruned): %s\n'
+                         % os.path.relpath(dirpath))
             sys.stderr.flush()
-            del subdirectories[:]
+            del dirnames[:]  # modify in-place to control `os.walk()` run
             return
         if not self.initial_settings.silent:
-            errout.write('/// Processing directory: %s\n' % directory)
+            errout.write('/// Processing directory: %s\n'
+                         % os.path.relpath(dirpath))
             sys.stderr.flush()
-        # settings.ignore grows many duplicate entries as we recurse
-        # if we add patterns in config files or on the command line.
-        for pattern in utils.uniq(settings.ignore):
-            for i in range(len(names) - 1, -1, -1):
-                if fnmatch(names[i], pattern):
-                    # Modify in place!
-                    del names[i]
-        for name in names:
-            if name.endswith('.txt'):
-                self.process_txt(directory, name)
+        for name in sorted(filenames):
+            if match_patterns(name, settings.ignore):
+                continue
+            if match_patterns(name, settings.rst_sources):
+                self.process_txt(dirpath, name)
 
     def process_txt(self, directory, name):
+        # TODO change name to `process_rst_source_file()`?
         if name.startswith('pep-'):
             publisher = 'PEPs'
         else:
@@ -256,7 +272,7 @@ class Builder:
         errout = docutils.io.ErrorOutput(encoding=settings.error_encoding)
         pub_struct = self.publishers[publisher]
         settings._source = os.path.normpath(os.path.join(directory, name))
-        settings._destination = settings._source[:-4] + '.html'
+        settings._destination = os.path.splitext(settings._source)[0] + '.html'
         if not self.initial_settings.silent:
             errout.write('    ::: Processing: %s\n' % name)
             sys.stderr.flush()
@@ -270,6 +286,23 @@ class Builder:
                                   settings=settings)
             except ApplicationError as err:
                 errout.write(f'        {type(err).__name__}: {err}\n')
+
+
+def match_patterns(name, patterns):
+    """Return True, if `name` matches any item of the sequence `patterns`.
+
+    Matching is done with `fnmatch.fnmatch`. It resembles shell-style
+    globbing, but without special treatment of path separators and '.'
+    (in contrast to the `glob module` and `pathlib.PurePath.match()`).
+    For example, "``/*.py``" matches "/a/b/c.py".
+
+    PROVISIONAL.
+    TODO: use `pathlib.PurePath.match()` once this supports "**".
+    """
+    for pattern in patterns:
+        if fnmatch(name, pattern):
+            return True
+    return False
 
 
 if __name__ == "__main__":
