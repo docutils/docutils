@@ -95,7 +95,7 @@ class Writer(_html_base.Writer):
            }),
          ('Append a self-link to section headings.',
           ['--section-self-link'],
-          {'default': 0, 'action': 'store_true'}),
+          {'default': False, 'action': 'store_true'}),
          ('Do not append a self-link to section headings. (default)',
           ['--no-section-self-link'],
           {'dest': 'section_self_link', 'action': 'store_false'}),

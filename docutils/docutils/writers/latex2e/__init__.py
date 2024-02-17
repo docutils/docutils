@@ -1344,7 +1344,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
                            for path in stylesheet_list]
 
         # PDF setup
-        if self.hyperlink_color in ('0', 'false', 'False', ''):
+        if self.hyperlink_color.lower() in ('0', 'false', ''):
             self.hyperref_options = ''
         else:
             self.hyperref_options = ('colorlinks=true,'
