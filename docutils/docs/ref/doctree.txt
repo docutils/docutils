@@ -167,8 +167,8 @@ Category members: `\<admonition>`_, `\<attention>`_, `\<block_quote>`_,
 `\<compound>`_, `\<container>`_, `\<danger>`_, `\<definition_list>`_,
 `\<doctest_block>`_, `\<enumerated_list>`_, `\<error>`_,
 `\<field_list>`_, `\<figure>`_, `\<footnote>`_, `\<hint>`_, `\<image>`_,
-`\<important>`_, `\<line_block>`_, `\<literal_block>`_, `\<note>`_,
-`\<option_list>`_, `\<paragraph>`_, `\<pending>`_, `\<raw>`_,
+`\<important>`_, `\<line_block>`_, `\<literal_block>`_, `\<math_block>`_,
+`\<note>`_, `\<option_list>`_, `\<paragraph>`_, `\<pending>`_, `\<raw>`_,
 `\<rubric>`_, `\<substitution_definition>`_, `\<system_message>`_,
 `\<table>`_, `\<target>`_, `\<tip>`_, `\<warning>`_
 
@@ -321,8 +321,8 @@ Details
 :Analogues:  <abbreviation> is analogous to the HTML <abbr> element.
 :Parents:    All elements employing the `%inline.elements;`_ parameter
              entity in their content models may contain <abbreviation>.
-:Children:   <abbreviation> elements may contain text data plus `inline
-             elements`_ (`%text.model;`_).
+:Children:   <abbreviation> elements may contain text data
+             plus `inline elements`_ (`%text.model;`_).
 :Attributes: The <abbreviation> element contains only the `common attributes`_.
 
 Examples
@@ -1928,7 +1928,7 @@ Details
 :Parents:    All elements employing the `%inline.elements;`_
              parameter entities in their content models may contain
              <footnote-reference>.
-:Children:   <footnote_reference> elements may contain text data.
+:Children:   <footnote_reference> elements contain text data only.
 :Attributes: The <footnote_reference> element contains the
              `common attributes`_ plus auto_, refid_, and refname_.
 
@@ -2075,14 +2075,15 @@ Details
 :Processing: The specified image is included into the output document.
              Depending on the output format, this is done by referring to
              the image URI or by embedding the image files content.
-:Parents:    All elements employing the `%body.elements;`_ or
-             `%structure.model;`_ parameter entities in their content models
-             may contain <image>.
-:Children:   None.
+:Parents:    All elements employing the `%body.elements;`_,
+             `%inline.elements;`_, or `%structure.model;`_ parameter entities
+             in their content models may contain <image>.
+:Children:   The <image> element has no content.
 :Attributes: The <image> element contains the `common attributes`_ plus
              uri_, alt_, align_, height_, width_, scale_, and loading_.
-:Parameter Entities: The `%body.elements;`_ parameter entity
-             directly includes <image>.  The `%structure.model;`_
+:Parameter Entities:
+             The `%body.elements;`_ and `%inline.elements;`_ parameter
+             entities directly include <image>.  The `%structure.model;`_
              parameter entity indirectly includes <image>.
 
 Examples
@@ -2477,7 +2478,7 @@ Details
              the content may be inserted verbatim.
 :Parents:    All elements employing the `%inline.elements;`_
              parameter entities in their content models may contain <math>.
-:Children:   <math> elements may contain text data.
+:Children:   <math> elements contain text data only.
 :Attributes: The <math> element contains only the `common attributes`_.
 
 Example
@@ -2521,8 +2522,9 @@ Details
 :Parents:    All elements employing the `%body.elements;`_ or
              `%structure.model;`_ parameter entities in their content models
              may contain <math_block>.
-:Children:   <math_block> elements contain text data.
-:Attributes: The <math> element contains only the `common attributes`_.
+:Children:   <math_block> elements contain text data only.
+:Attributes: The <math_block> element contains the `common attributes`_
+             plus `xml:space`_.
 
 Example
 -------
@@ -2568,7 +2570,7 @@ Details
              or the `\<document>`_ attributes (title).
 
 :Parents:    Only the `\<document>`_ element contains <meta>.
-:Children:   None.
+:Children:   The <meta> element has no content.
 :Attributes: The <meta> element contains the attributes *name*,
              *content*, *http-equiv*, *lang*, *dir*, *media*, and
              *scheme* that correspond to the respective attributes
@@ -2922,7 +2924,47 @@ Pseudo-XML_ fragment from simple parsing::
 <raw>
 =====
 
-`To be completed`_.
+The <raw> element contains non-reStructuredText data that is to be passed
+untouched to the Writer.
+
+Details
+-------
+
+:Category:   `Simple Body Elements`_, `Inline Elements`_
+:Analogues:  The <raw> element has no direct analogues in common DTDs.
+:Processing: Passed untouched to the Writer_.
+             The interpretation is up to the Writer.
+             A Writer may ignore <raw> elements not matching its format_.
+:Parents:    All elements employing the `%body.elements;`_,
+             `%inline.elements;`_, or `%structure.model;`_ parameter entities
+             in their content models may contain <raw>.
+:Children:   <raw> elements contain text data only.
+:Attributes: The <raw> element contains the `common attributes`_
+             plus format_ and `xml:space`_.
+:Parameter Entities:
+             The `%body.elements;`_ and `%inline.elements;`_ parameter
+             entities directly include <raw>.  The `%structure.model;`_
+             parameter entity indirectly  includes <raw>.
+
+Examples
+--------
+
+The reStructuredText `"raw" directive`_ [#]_ creates a <raw> element::
+
+    .. raw:: html
+
+       <hr width=50 size=10>
+
+Pseudo-XML_ fragment from simple parsing::
+
+    <raw format="html" xml:space="preserve">
+        <hr width=50 size=10>
+
+.. [#] For raw data pass-through in inline context, use `custom
+   interpreted text roles`_ derived from the `"raw" role`_.
+
+.. _"raw" directive: rst/directives.html#raw
+.. _"raw" role: rst/roles.html#raw
 
 
 <reference>
@@ -4041,6 +4083,16 @@ Attribute type: EnumeratedType_, one of "arabic", "loweralpha",
 
 The ``enumtype`` attribute is used in the `\<enumerated_list>`_ element.
 
+``format``
+==========
+
+Attribute type: NMTOKENS_.  Default value: none.
+
+The ``format`` attribute is a space separated list containing one or more
+output format names.
+
+The ``format`` attribute is used in the `\<raw>`_ element.
+
 
 ``height``
 ==========
@@ -4281,12 +4333,12 @@ The ``width`` attribute is used in the `\<figure>`_, `\<image>`_, and `\<table>`
 Default value: "preserve" (fixed).
 
 The ``xml:space`` attribute is a standard XML attribute for
-whitespace-preserving elements.  It is used by the `\<literal_block>`_,
-`\<line_block>`_, `\<doctest_block>`_, `\<comment>`_, and `\<raw>`_
-elements (via the `%fixedspace.att;`_ parameter entity).  It is a fixed
-attribute, meant to communicate to an XML parser that the element
-contains significant whitespace.  The attribute value should not be set
-in a document instance.
+whitespace-preserving elements.  It is used by the `<address>`_,
+`\<comment>`_, `\<doctest_block>`_, `\<literal_block>`_, `\<math_block>`_,
+and `\<raw>`_ elements (via the `%fixedspace.att;`_ parameter entity).
+It is a fixed attribute, meant to communicate to an XML parser that the
+element contains significant whitespace.  The attribute value should not
+be set in a document instance.
 
 
 ----------------------------
@@ -4464,7 +4516,7 @@ Entity definition::
 
 The ``%fixedspace.att;`` parameter entity is directly employed in the
 attribute lists of the following elements: `\<address>`_, `\<comment>`_,
-`\<doctest_block>`_, `\<line_block>`_, `\<literal_block>`_, `\<raw>`_
+`\<doctest_block>`_, `\<literal_block>`_, `\<math_block>`_, `\<raw>`_.
 
 
 ``%inline.elements;``
@@ -4492,12 +4544,11 @@ indirectly employed in the content models of the following elements:
 `\<author>`_, `\<caption>`_, `\<classifier>`_, `\<contact>`_,
 `\<copyright>`_, `\<date>`_, `\<doctest_block>`_, `\<emphasis>`_,
 `\<generated>`_, `\<inline>`_, `\<line_block>`_, `\<literal_block>`_,
-`\<math>`_, `\<math_block>`_, `\<organization>`_, `\<paragraph>`_,
-`\<problematic>`_, `\<raw>`_, `\<reference>`_, `\<revision>`_,
-`\<rubric>`_, `\<status>`_, `\<strong>`_, `\<subscript>`_,
-`\<substitution_definition>`_, `\<substitution_reference>`_,
-`\<subtitle>`_, `\<superscript>`_, `\<target>`_, `\<term>`_, `\<title>`_,
-`\<title_reference>`_, `\<version>`_
+`\<organization>`_, `\<paragraph>`_, `\<problematic>`_,
+`\<reference>`_, `\<revision>`_, `\<rubric>`_,
+`\<status>`_, `\<strong>`_, `\<subscript>`_, `\<substitution_definition>`_,
+`\<substitution_reference>`_, `\<subtitle>`_, `\<superscript>`_,
+`\<target>`_, `\<term>`_, `\<title>`_, `\<title_reference>`_, `\<version>`_
 
 
 ``%reference.atts;``
@@ -4651,15 +4702,16 @@ Entity definition:
     (#PCDATA | `%inline.elements;`_)*
 
 The ``%text.model;`` parameter entity is directly employed in the content
-models of the following elements: `\<abbreviation>`_, `\<acronym>`_,
-`\<address>`_, `\<author>`_, `\<caption>`_, `\<classifier>`_,
-`\<contact>`_, `\<copyright>`_, `\<date>`_, `\<doctest_block>`_,
-`\<emphasis>`_, `\<field_name>`_, `\<generated>`_, `\<line_block>`_,
-`\<literal_block>`_, `\<organization>`_, `\<paragraph>`_,
-`\<problematic>`_, `\<raw>`_, `\<reference>`_, `\<revision>`_,
-`\<status>`_, `\<strong>`_, `\<substitution_definition>`_,
-`\<substitution_reference>`_, `\<subtitle>`_, `\<target>`_, `\<term>`_,
-`\<title>`_, `\<version>`_
+models of the following elements: `\<abbreviation>`_,
+`\<acronym>`_, `\<address>`_, `\<attribution>`_, `\<author>`_,
+`\<caption>`_, `\<classifier>`_, `\<contact>`_, `\<copyright>`_,
+`\<date>`_, `\<doctest_block>`_, `\<emphasis>`_, `\<field_name>`_,
+`\<generated>`_, `\<inline>`_, `\<line>`_, `\<literal>`_,  `\<literal_block>`_,
+`\<organization>`_, `\<paragraph>`_, `\<problematic>`_,
+`\<raw>`_, `\<reference>`_, `\<revision>`_, `\<rubric>`_,
+`\<status>`_, `\<strong>`_, `\<subscript>`_, `\<substitution_definition>`_,
+`\<substitution_reference>`_, `\<subtitle>`_, `\<superscript>`_,
+`\<target>`_, `\<term>`_, `\<title>`_, `\<title_reference>`_, `\<version>`_
 
 .. _transform:
 .. _transforms: ../api/transforms.html
