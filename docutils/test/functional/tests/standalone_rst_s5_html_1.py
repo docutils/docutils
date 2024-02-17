@@ -7,6 +7,8 @@ writer_name = 's5_html'
 settings_overrides = {
     'sectsubtitle_xform': True,
     'theme_url': 'ui/small-black',  # don't attempt to copy theme files
+    'theme': None,  # explicitely reset overriding option
+                    # (cf. ../../../docs/user/config.html#override)
     # local copy of default stylesheet:
     'stylesheet_path': 'functional/input/data/html4css1.css',
     }
