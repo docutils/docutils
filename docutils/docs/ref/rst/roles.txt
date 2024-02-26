@@ -74,33 +74,27 @@ An acronym.
 
 :Aliases:         None
 :Doctree Element: `\<literal>`_
-:Customization_ options: class_, language_
+:Customization_ options: `class <"class" option_>`__,
+                         `language <"language" option_>`__
 
 (New in Docutils 0.9.)
 
 The :code: role marks its content as code in a formal language.
 
-For syntax highlight of inline code, the `"role" directive`_ can be used to
-build `custom roles`_ with the code language specified in the "language_"
-option.
-
+For syntax highlight of inline code, the `"role" directive`_ can
+be used to create `custom roles`_ with the code language specified
+in the `"language" option`_.
 For example, the following creates a LaTeX-specific "latex" role::
 
   .. role:: latex(code)
      :language: latex
 
 Content of the new role is parsed and tagged by the Pygments_ syntax
-highlighter. See the `"code" directive`_ for more info on parsing and display
-of code in reStructuredText.
+highlighter. See the `"code" directive`_ for more info on parsing
+and display of code in reStructuredText.
 
-In addition to "class_", the following option is recognized:
-
-_`language` : text
-    Name of the code's language.
-    See `supported languages and markup formats`_ for recognized values.
-
+.. _customization: `custom roles`_
 .. _Pygments: https://pygments.org/
-.. _supported languages and markup formats: https://pygments.org/languages/
 
 
 ----------
@@ -218,8 +212,6 @@ This is equivalent to::
       It is recommended to use `hyperlink references`_ for
       anything more complex than a single RFC number.
 
-.. _hyperlink references: restructuredtext.html#hyperlink-references
-
 
 --------
 :strong:
@@ -329,9 +321,6 @@ default role, in which case the explicit :title-reference: role
 must be used to obtain a ``title_reference`` element.
 
 
-.. _pseudo-XML: ../doctree.html#pseudo-xml
-
-
 Specialized Roles
 =================
 
@@ -343,7 +332,8 @@ Specialized Roles
 
 :Aliases:         None
 :Doctree Element: `\<raw>`_
-:Customization_ options: class_, format_
+:Customization_ options: `class <"class" option_>`__,
+                         `format <"format" option_>`__
 
 The "raw" role indicates non-reStructuredText data that is to be
 passed untouched to the Writer.  It is the inline equivalent of the
@@ -351,8 +341,8 @@ passed untouched to the Writer.  It is the inline equivalent of the
 semantics.
 
 **The "raw" role cannot be used directly.**  The `"role" directive`_ must
-first be used to build `custom roles`_ based on the "raw" role.  One or
-more formats (Writer names) must be provided in a "format" option.
+first be used to create `custom roles`_ based on the "raw" role.  One or
+more formats (Writer names) must be provided in a `"format" option`_.
 
 .. WARNING::
    The "raw" role is a stop-gap measure allowing the author to bypass
@@ -385,41 +375,43 @@ Writer.  For example::
    they are not mistaken for reStructuredText markup.  Using a "raw-"
    prefix for role names is recommended.
 
-In addition to "class_", the following option is recognized:
-
-_`format` : text
-    One or more space-separated output format names (Writer names).
-
-
-.. _customization:
 
 Custom Roles
 ============
 
 Custom interpreted text roles can be defined in a document with the
 `"role" directive`_. The new role may be based on an existing role.
-
-The "class_" option is recognized by the "role" directive for
-all interpreted text roles.
-Specific base roles may support additional options and/or directive
-content. Details are listed with the respective roles.
+The "role" directive may be called with options_ to customize the
+generated roles.
 
 
 .. References
 
 .. _reStructuredText Markup Specification: restructuredtext.html
 .. _Interpreted Text: restructuredtext.html#interpreted-text
+.. _hyperlink references: restructuredtext.html#hyperlink-references
+
 .. _The Docutils Document Tree: ../doctree.html
+.. _class names: ../doctree.html#classname
+.. _classes attribute: ../doctree.html#classes
+.. _format attribute: ../doctree.html#format
+.. _pseudo-XML: ../doctree.html#pseudo-xml
+
 .. _Docutils Generic DTD: ../docutils.dtd
 .. _Creating reStructuredText Interpreted Text Roles:
     ../../howto/rst-roles.html
+.. _writer names: ../../user/config.html#writer-docutils-application
 
+.. _"class" directive:        directives.html#role-class
 .. _"code" directive:         directives.html#code
 .. _"default-role" directive: directives.html#default-role
 .. _"role" directive:         directives.html#role
 .. _"math" directive:         directives.html#math
-.. _"raw" directive:          directives.html#raw-directive
-.. _class:                    directives.html#role-class
+.. _"raw" directive:          directives.html#raw
+.. _options:                  directives.html#role-options
+.. _"class" option:           directives.html#class-option-role-directive
+.. _"format" option:          directives.html#format
+.. _"language" option:        directives.html#language
 
 .. _<abbreviation>:    ../doctree.html#abbreviation
 .. _<acronym>:         ../doctree.html#acronym
