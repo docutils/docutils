@@ -80,7 +80,8 @@ Writers
     __ https://www.w3.org/TR/2014/REC-html5-20141028/grouping-content.html
        #the-blockquote-element
 
-  - Change the default value for math_output_ to "MathML" in Docutils 0.22.
+  - Change the default value for math_output_ to "MathML"
+    in Docutils 0.22.
 
   - Change the default value of the initial_header_level_ setting to None
     (<h2> if there is a document title, else <h1>) in Docutils 1.0.
@@ -105,11 +106,19 @@ Writers
 
     .. _reference-label: docs/user/config.html#reference-label
 
-* "null" writer: output will change to the empty string in Docutils 0.22.
+* "null" writer: output will change to the empty string
+  in Docutils 0.22.
 
 
 Misc
 ----
+
+* Document tree:
+  Allow multiple <term> elements in a <definition_list_item>
+  in Docutils 0.22 (cf. `feature-requests:60`__).
+  Third-party writers may need adaption.
+
+  __ https://sourceforge.net/p/docutils/feature-requests/60/
 
 * Remove `parsers.rst.directives.CSVTable.HeaderDialect`
   in Docutils 0.22.
@@ -135,7 +144,7 @@ Misc
   __ docs/ref/transforms.html
 
 * Remove mistranslated localizations of the "admonition" directive name in
-  Docutils 0.22 or later.
+  Docutils 0.22.
 
   Use the English term, matching translations introduced in Docutils 0.21,
   or specific admonitions instead of "aanmaning" (nl),

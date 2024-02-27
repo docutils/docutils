@@ -145,7 +145,7 @@ Changes since 0.20.1
     Since 0.18, you can use the CSS selector ``[role="doc-noteref"]``.
   - Support reading/embedding images also with "file:" URI.
   - Warn, if image scaling fails because the image file cannot be read.
-  - Support video inclusion via `<video>` tags
+  - Support video inclusion via ``<video>`` tags
     (moved here from writers/html5_polyglot/__init__.py).
   - New auxiliary function `HTMLTranslator.uri2imagepath()`
     ensures the image file can also be read when
@@ -154,9 +154,11 @@ Changes since 0.20.1
     to a local filesystem path.
   - New <image> attribute "loading" overrides "image-loading" setting.
   - Embed SVG images as ``<svg>`` instead of data-URI
-    (not used by "html4css1").  Fixes [feature-request:#100].
+    (not used by "html4css1").  Fixes [feature-requests:#100].
   - Write system messages for errors/warnings during the writing stage
     (image transformations, math content conversion, ...).
+  - Close ``<dt>`` element in `depart_term()` to allow a `definition_list_item`
+    with multiple `term`\ s (cf. [feature-requests:60]).
 
   .. _root-prefix: docs/user/config.html#root-prefix
 

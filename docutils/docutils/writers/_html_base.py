@@ -804,15 +804,12 @@ class HTMLTranslator(nodes.NodeVisitor):
     def depart_citation_reference(self, node):
         self.body.append(']</a>')
 
-    # classifier
-    # ----------
-    # don't insert classifier-delimiter here (done by CSS)
-
     def visit_classifier(self, node):
         self.body.append(self.starttag(node, 'span', '', CLASS='classifier'))
 
     def depart_classifier(self, node):
         self.body.append('</span>')
+        self.depart_term(node)  # close the term element after last classifier
 
     def visit_colspec(self, node):
         self.colspecs.append(node)
@@ -881,10 +878,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         pass
 
     def visit_definition(self, node):
-        if 'details' in node.parent.parent['classes']:
-            self.body.append('</summary>\n')
-        else:
-            self.body.append('</dt>\n')
+        if 'details' not in node.parent.parent['classes']:
             self.body.append(self.starttag(node, 'dd', ''))
 
     def depart_definition(self, node):
@@ -1705,9 +1699,14 @@ class HTMLTranslator(nodes.NodeVisitor):
                                            ids=node.parent['ids']))
 
     def depart_term(self, node):
-        # Leave the end tag to `self.visit_definition()`,
-        # in case there's a classifier.
-        pass
+        # Nest (optional) classifier(s) in the <dt> element
+        if isinstance(node.next_node(descend=False, siblings=True),
+                      nodes.classifier):
+            return  # depart_classifier() calls this function again
+        if 'details' in node.parent.parent['classes']:
+            self.body.append('</summary>\n')
+        else:
+            self.body.append('</dt>\n')
 
     def visit_tgroup(self, node):
         self.colspecs = []

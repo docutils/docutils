@@ -278,6 +278,7 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
 
     def depart_classifier(self, node):
         self.body.append('</span>')
+        self.depart_term(node)  # close the <dt> after last classifier
 
     # ersatz for first/last pseudo-classes
     def visit_compound(self, node):
@@ -293,7 +294,6 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
 
     # ersatz for first/last pseudo-classes, no special handling of "details"
     def visit_definition(self, node):
-        self.body.append('</dt>\n')
         self.body.append(self.starttag(node, 'dd', ''))
         self.set_first_last(node)
 
@@ -881,7 +881,11 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
                                        ids=node.parent['ids']))
 
     def depart_term(self, node):
-        pass
+        # Nest (optional) classifier(s) in the <dt> element
+        if isinstance(node.next_node(descend=False, siblings=True),
+                      nodes.classifier):
+            return  # depart_classifier() calls this function again
+        self.body.append('</dt>\n')
 
     # hard-coded vertical alignment
     def visit_thead(self, node):
