@@ -138,6 +138,7 @@ Changes since 0.20.1
 * docutils/writers/html5_polyglot/\*.css
 
   - Move MathML styles to "minimal.css" (required for correct rendering).
+  - Highlight heading of target section also with explicit hyperlink target.
 
 * docutils/writers/_html_base.py
 

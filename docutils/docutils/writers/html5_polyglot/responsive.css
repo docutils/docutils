@@ -286,9 +286,11 @@ a:hover {
   font-size: smaller;
   margin-left: 0.2em;
 }
-/* highlight the target of the current URL */
+/* highlight specific targets of the current URL */
 section:target > h2, section:target > h3, section:target > h4,
 section:target > h5, section:target > h6,
+span:target + h2, span:target + h3, span:target + h4,
+span:target + h5, span:target + h6,
 .contents :target,
 .contents:target > .topic-title,
 [role="doc-biblioentry"]:target > .label,
