@@ -216,9 +216,6 @@ An "image" is a simple picture::
 
     .. image:: picture.png
 
-Inline images can be defined with an "image" directive in a `substitution
-definition`_
-
 The URI for the image source file is specified in the directive
 argument.  As with hyperlink targets, the image URI may begin on the
 same line as the explicit markup start and target name, or it may
@@ -237,6 +234,17 @@ Optionally, the image link block may contain a flat field list, the
        :loading: embed
        :alt: alternate text
        :align: right
+
+
+*Inline images* can be defined with an "image" directive in a `substitution
+definition`_, e.g. ::
+
+    |Red light| means stop, |green light| means go.
+
+    .. |red light|    image:: red_light.png
+       :align: top
+    .. |green light|  image:: green_light.png
+       :align: bottom
 
 .. _image options:
 
@@ -380,7 +388,7 @@ In addition, the following options are recognized:
     Sets the "width" attribute of the "figure" doctree element.
 
     This option does not scale the included image; use the ``width``
-    `image option <image options_>`_ for that. ::
+    `image option <image options_>`__ for that. ::
 
         +---------------------------+
         |        figure             |
@@ -1393,6 +1401,8 @@ abbreviations::
     Yes, |reST| is a long word, so I can't blame anyone for wanting to
     abbreviate it.
 
+.. _hyperlink workaround:
+
 As reStructuredText doesn't support nested inline markup, the only way
 to create a reference with styled text is to use substitutions with
 the "replace" directive::
@@ -1460,6 +1470,9 @@ results in:
        .. with trademark sign
     .. |---| unicode:: U+02014 .. em dash
        :trim:
+
+Docutils comes with a set of character substitution
+definitions in the `reStructuredText Standard Definition Files`_.
 
 .. _unicode options:
 
@@ -1563,8 +1576,8 @@ directory.  To access these files, use the special syntax for standard
     .. include:: <isonum.txt>
 
 The current set of standard "include" data files consists of sets of
-substitution definitions.  See `reStructuredText Standard Definition Files
-<definitions.html>`__ for details.
+substitution definitions.  See `reStructuredText Standard Definition
+Files`_ for details.
 
 .. _include options:
 
@@ -2252,6 +2265,8 @@ Common Option Value Types
 .. _"raw" role: roles.html#raw
 
 .. _The Docutils Document Tree: ../doctree.html
+.. _reStructuredText Standard Definition Files: definitions.html
+
 .. _identifier keys: ../doctree.html#ids-type
 .. _inline elements: ../doctree.html#inline-elements
 .. _class names: ../doctree.html#classname
