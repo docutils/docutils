@@ -681,7 +681,7 @@ Matching elements are removed from the document tree.
 .. WARNING:: Potentially dangerous: may lead to an invalid document tree
    and subsequent writer errors.  Use with caution.
 
-*Default*: ``[]``.  *Option*: ``--strip-element-with-class``.
+*Default*: ``[]``.  *Option*: ``--strip-elements-with-class``.
 
 
 title
@@ -1904,7 +1904,7 @@ See `Generating LaTeX with Docutils`__ for details.
 
 *Default*: "standard".  *Option*: ``--table-style``.
 
-__ latex.html#tables
+__ latex.html#table-style
 
 
 .. _template [latex writers]:

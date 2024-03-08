@@ -24,14 +24,19 @@ Changes since 0.20.1
   - Updated build stystem to use Flit_ (patch #186 by Adam Turner).
     Removed ``setup.py``.
 
+  - Provide ``rst2*`` "console_scripts" `entry points`_
+    (without the ``.py`` extension) instead of installing the
+    ``rst2*.py`` front end tools in the binary PATH.
+
   .. _Flit: https://github.com/pypa/flit/
 
 * docs/ref/docutils.dtd
 
-  - The <image> element accepts the new attribute "loading".
-  - The <math_block> element uses the attribute "xml:space"
-    (actually since Docutils 0.8).
-  - The <raw> element may contain text only (no inline elements).
+  - The <image> element accepts a new attribute "loading".
+  - Fix definitions (no change to actual behaviour):
+
+    * The <math_block> element uses the attribute "xml:space".
+    * The <raw> element may contain text only (no inline elements).
 
 * docutils/frontend.py
 

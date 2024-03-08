@@ -4146,6 +4146,8 @@ indicate the preferred handling by the Docutils writer_. [#]_
 The default depends on the writer and the image_loading_
 configuration setting.
 
+New in Docutils 0.21
+
 .. [#] Currently only recognized by the HTML5 writer.
    The ODF/ODT writer always embeds images in the
    output document, XML and LaTeX writers link to the image.
@@ -4304,9 +4306,14 @@ The ``suffix`` attribute is used in the `\<enumerated_list>`_ element.
 
 Attribute type: `CDATA`_.  Default value: none.
 
-The ``title`` attribute stores the title metadata of a `\<document>`_.
-This title is typically not part of the rendered document.  It may for
-example be used in HTML's ``title`` element.
+The ``title`` attribute stores the *metadata title* of a `\<document>`_.
+It is set by the `"title" directive`_ or the `DocTitle transform`_.
+This title is typically not part of the rendered document.  
+It may for example be used in HTML's ``title`` element and shown in a
+browser's title bar or a page's tab.
+
+.. _"title" directive: rst/directives.html#title
+.. _DocTitle transform: ../api/transforms.html#frontmatter-doctitle
 
 
 ``uri``
@@ -4329,8 +4336,8 @@ The ``width`` attribute is used in the `\<figure>`_, `\<image>`_, and `\<table>`
 ``xml:space``
 =============
 
-`Attribute type`: `EnumeratedType`_, one of "default" or "preserve".
-Default value: "preserve" (fixed).
+| Attribute type: `EnumeratedType`_, one of "default" or "preserve".
+| Default value: "preserve" (fixed).
 
 The ``xml:space`` attribute is a standard XML attribute for
 whitespace-preserving elements.  It is used by the `<address>`_,
@@ -4712,6 +4719,7 @@ models of the following elements: `\<abbreviation>`_,
 `\<status>`_, `\<strong>`_, `\<subscript>`_, `\<substitution_definition>`_,
 `\<substitution_reference>`_, `\<subtitle>`_, `\<superscript>`_,
 `\<target>`_, `\<term>`_, `\<title>`_, `\<title_reference>`_, `\<version>`_
+
 
 .. _transform:
 .. _transforms: ../api/transforms.html

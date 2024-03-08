@@ -409,7 +409,7 @@ generated roles.
 .. _"math" directive:         directives.html#math
 .. _"raw" directive:          directives.html#raw
 .. _options:                  directives.html#role-options
-.. _"class" option:           directives.html#class-option-role-directive
+.. _"class" option:           directives.html#role-directive-class-option
 .. _"format" option:          directives.html#format
 .. _"language" option:        directives.html#language
 
