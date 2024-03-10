@@ -203,6 +203,7 @@ class Translator(nodes.NodeVisitor):
         self._in_literal = False
         self.header_written = 0
         self._line_block = 0
+        self._second_term = False   # multiple term in definition list
         self.authors = []
         self.section_level = 0
         self._indent = [0]
@@ -231,7 +232,6 @@ class Translator(nodes.NodeVisitor):
                 'reference': (r'\fI\%', r'\fP'),
                 'emphasis': ('\\fI', '\\fP'),
                 'strong': ('\\fB', '\\fP'),
-                'term': ('\n.B ', '\n'),
                 'title_reference': ('\\fI', '\\fP'),
 
                 'topic-title': ('.SS ',),
@@ -1097,10 +1097,20 @@ class Translator(nodes.NodeVisitor):
         pass
 
     def visit_term(self, node):
-        self.body.append(self.defs['term'][0])
+        if self._second_term:
+            self._second_term = False
+        else:
+            self.body.append('\n.B ')
 
     def depart_term(self, node):
-        self.body.append(self.defs['term'][1])
+        _next = None
+        if isinstance(node.parent, nodes.definition_list_item):
+            _next = next(node.findall(condition=None, include_self=False,
+                                     descend=False, siblings=True, ascend=False))
+        if _next and isinstance(_next, nodes.term):
+            self.body.append('\\fR,\\fB \\')
+            self._second_term = True
+        self.body.append('\n')
 
     def visit_tgroup(self, node):
         pass
