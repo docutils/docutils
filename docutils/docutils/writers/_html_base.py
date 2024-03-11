@@ -1700,9 +1700,8 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def depart_term(self, node):
         # Nest (optional) classifier(s) in the <dt> element
-        if isinstance(node.next_node(descend=False, siblings=True),
-                      nodes.classifier):
-            return  # depart_classifier() calls this function again
+        if node.next_node(nodes.classifier, descend=False, siblings=True):
+            return  # skip (depart_classifier() calls this function again)
         if 'details' in node.parent.parent['classes']:
             self.body.append('</summary>\n')
         else:

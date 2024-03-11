@@ -882,9 +882,8 @@ class HTMLTranslator(writers._html_base.HTMLTranslator):
 
     def depart_term(self, node):
         # Nest (optional) classifier(s) in the <dt> element
-        if isinstance(node.next_node(descend=False, siblings=True),
-                      nodes.classifier):
-            return  # depart_classifier() calls this function again
+        if node.next_node(nodes.classifier, descend=False, siblings=True):
+            return  # skip (depart_classifier() calls this function again)
         self.body.append('</dt>\n')
 
     # hard-coded vertical alignment
