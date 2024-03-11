@@ -1850,6 +1850,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def depart_classifier(self, node):
         self.out.append('})')
+        if node.next_node(nodes.term, descend=False, siblings=True):
+            self.out.append('\n')
 
     def visit_colspec(self, node):
         self.active_table.visit_colspec(node)
@@ -3070,7 +3072,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # Do we need a \leavevmode (line break if the field body begins
         # with a list or environment)?
         next_node = node.next_node(descend=False, siblings=True)
-        if not isinstance(next_node, nodes.classifier):
+        if isinstance(next_node, nodes.term):
+            self.out.append('\n')
+        elif not isinstance(next_node, nodes.classifier):
             self.out.append(self.term_postfix(next_node))
 
     def visit_tgroup(self, node):
