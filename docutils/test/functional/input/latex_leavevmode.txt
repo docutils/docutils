@@ -42,7 +42,7 @@ Option List
     -h   Show help
     -v   Be verbose
     --rare  a) This description starts with an enumeration
-            c) but does not need ``\leavevmode``.
+            b) but does not need ``\leavevmode``.
 
 Literal Block
     ::
@@ -109,9 +109,9 @@ Math Block
     paragraph automatically, with or without ``\leavevmode``, so
     ``\leavevmode`` isn't needed.
 
-Term with Classifier: classifier
-    - After a *classifier*, ``\leavevmode`` is not required.
-    - This holds for all elements that normally need ``\leavevmode``.
+Term with Classifier : classifier
+    - After a *classifier*, ``\leavevmode`` is not required
+    - because the classifier is added (in parentheses) after the term.
 
 Ambiguous cases
 ***************

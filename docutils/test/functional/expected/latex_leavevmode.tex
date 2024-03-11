@@ -232,11 +232,14 @@ Independent of the nesting level.
 \item[{Option List}] \leavevmode
 \begin{DUoptionlist}
 \item[-h]  Show help
-
 \item[-v]  Be verbose
+\item[-{}-rare]  
+\begin{enumerate}
+\renewcommand{\labelenumi}{\alph{enumi})}
+\item This description starts with an enumeration
 
-\item[-{}-rare]  a) This description starts with an enumeration
-c) but does not need \texttt{\textbackslash{}leavevmode}.
+\item but does not need \texttt{\textbackslash{}leavevmode}.
+\end{enumerate}
 \end{DUoptionlist}
 
 \item[{Literal Block}] \leavevmode
@@ -335,11 +338,11 @@ LaTeX starts math blocks (both single-line and multiline) in a new
 paragraph automatically, with or without \texttt{\textbackslash{}leavevmode}, so
 \texttt{\textbackslash{}leavevmode} isn’t needed.
 
-\item[{Term with Classifier: classifier}] \leavevmode
+\item[{Term with Classifier}] (\textbf{classifier})
 \begin{itemize}
-\item After a \emph{classifier}, \texttt{\textbackslash{}leavevmode} is not required.
+\item After a \emph{classifier}, \texttt{\textbackslash{}leavevmode} is not required
 
-\item This holds for all elements that normally need \texttt{\textbackslash{}leavevmode}.
+\item because the classifier is added (in parentheses) after the term.
 \end{itemize}
 \end{description}
 

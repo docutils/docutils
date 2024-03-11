@@ -2707,7 +2707,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         pass
 
     def visit_option_group(self, node):
-        self.out.append('\n\\item[')
+        self.out.append('\\item[')
         # flag for first option
         self.context.append(0)
 
@@ -2720,7 +2720,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.fallbacks['_providelength'] = PreambleCmds.providelength
             self.fallbacks['optionlist'] = PreambleCmds.optionlist
         self.duclass_open(node)
-        self.out.append('\\begin{DUoptionlist}')
+        self.out.append('\\begin{DUoptionlist}\n')
 
     def depart_option_list(self, node):
         self.out.append('\\end{DUoptionlist}\n')
