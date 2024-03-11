@@ -1911,7 +1911,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         pass
 
     def depart_definition(self, node):
-        self.out.append('\n')                # TODO: just pass?
+        pass
 
     def visit_definition_list(self, node):
         self.duclass_open(node)
@@ -1925,7 +1925,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
         pass
 
     def depart_definition_list_item(self, node):
-        pass
+        if node.next_node(descend=False, siblings=True) is not None:
+            self.out.append('\n')                # TODO: just pass?
 
     def visit_description(self, node):
         self.out.append(' ')

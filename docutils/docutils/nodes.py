@@ -316,7 +316,7 @@ class Node:
         Return the first node in the iterator returned by findall(),
         or None if the iterable is empty.
 
-        Parameter list is the same as of traverse.  Note that `include_self`
+        Parameter list is the same as of `findall()`.  Note that `include_self`
         defaults to False, though.
         """
         try:

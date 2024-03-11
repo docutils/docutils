@@ -171,6 +171,7 @@ Changes since 0.20.1
 * docutils/writers/latex2e/__init__.py
 
   - Fix placement of hyperlink target (label) for tables (bug #440).
+  - More compact option-list and description-list.
 
 * docutils/writers/manpage.py
 
