@@ -203,7 +203,6 @@ class Translator(nodes.NodeVisitor):
         self._in_literal = False
         self.header_written = 0
         self._line_block = 0
-        self._second_term = False   # multiple term in definition list
         self.authors = []
         self.section_level = 0
         self._indent = [0]
@@ -1097,10 +1096,7 @@ class Translator(nodes.NodeVisitor):
         pass
 
     def visit_term(self, node):
-        if self._second_term:
-            self._second_term = False
-        else:
-            self.body.append('\n.B ')
+        self.body.append('\n.B ')
 
     def depart_term(self, node):
         _next = None
@@ -1108,8 +1104,7 @@ class Translator(nodes.NodeVisitor):
             _next = next(node.findall(condition=None, include_self=False,
                                      descend=False, siblings=True, ascend=False))
         if _next and isinstance(_next, nodes.term):
-            self.body.append('\\fR,\\fB \\')
-            self._second_term = True
+            self.body.append('\n.TQ')
         self.body.append('\n')
 
     def visit_tgroup(self, node):
