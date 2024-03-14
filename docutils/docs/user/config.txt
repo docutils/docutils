@@ -112,10 +112,8 @@ The following conventions apply to Docutils configuration files:
 * For **boolean** settings (switches), the following values are
   recognized (case-independent):
 
-  .. class:: narrow
-
-  :on: "true", "yes", "on", "1"
-  :off: "false", "no", "off", "0", "" (no value)
+  :True: "true", "yes", "on", "1"
+  :False: "false", "no", "off", "0", "" (no value)
 
 .. _comma-separated:
 
@@ -135,7 +133,7 @@ The following conventions apply to Docutils configuration files:
 
 
   *colon-separated*:
-    ignore_, prune_, rst_sources_, expose_internals_
+    ignore_, prune_, sources_, expose_internals_
 
     Whitespace around the delimiter is not stripped. Write, e.g., ::
 
@@ -872,8 +870,6 @@ Supported values:
 
 *Default*: None (disabled). *Option*: ``--smart-quotes``.
 
-New in Docutils 0.10.
-
 .. _SmartQuotes: smartquotes.html
 .. _pre-defined quote sets: smartquotes.html#localization
 .. _quote characters:
@@ -917,8 +913,6 @@ Supported values:
         found" warning when Pygments is not installed.
 
 *Default*: "long".  *Option*: ``--syntax-highlight``.
-
-New in Docutils 0.9.
 
 .. _Pygments: https://pygments.org/
 .. _code: ../ref/rst/directives.html#code
@@ -1261,8 +1255,6 @@ LaTeX:
 :Default: "HTML math.css". The default for the HTML5 writer will change
           to "MathML" in Docutils 0.22.
 :Option:  ``--math-output``.
-
-New in Docutils 0.8.
 
 .. _math directive: ../ref/rst/directives.html#math
 .. _MathJax: http://www.mathjax.org/
@@ -1719,7 +1711,7 @@ latex_preamble
 ~~~~~~~~~~~~~~
 LaTeX code that will be inserted in the document preamble.
 Can be used to load packages with options or (re-) define LaTeX
-macros without writing a custom style file (new in Docutils 0.7).
+macros without writing a custom style file.
 
 :Default: writer dependent (see `[latex2e writer]`_, `[xetex writer]`_).
 :Option:  ``--latex-preamble``.
@@ -2180,7 +2172,7 @@ Some `front end tools`_ provide additional settings.
 [buildhtml application]
 -----------------------
 
-buildhtml.py_ generates HTML documents from all reStructuredText source
+buildhtml.py_ generates HTML documents from reStructuredText source
 files in a set of directories and their subdirectories.
 All visited directories are scanned for "docutils.conf" files which are
 parsed after the standard configuration files. Path settings [#pwd]_ in
@@ -2197,46 +2189,46 @@ Do not process files, show files that would be processed.
 ignore
 ~~~~~~
 List of glob-style patterns [#globbing]_ (colon-separated_).
+Source files with matching filename are silently ignored.
 Values are appended. [#append-values]_
-
-Matching files are silently ignored.
 
 *Default*: ``[]``.  *Option*: ``--ignore``.
 
 prune
 ~~~~~
 List of glob-style patterns [#globbing]_ (colon-separated_).
-Values are appended. [#append-values]_
+Matching directories are skipped. Values are appended. [#append-values]_
 
 Patterns are expanded similar to path settings [#pwd]_ and matched
-against the absolute path of to-be-processed directories. Matching
-directories are skipped. This way, a directory can be marked as
-to-be-pruned by a "./docutils.conf" file containing ::
+against the absolute path of to-be-processed directories.
+Example: a directory is pruned if it contains a "docutils.conf" file
+with the lines ::
 
   [buildhtml application]
   prune: '.'
 
 The default patterns skip auxiliary directories from Python or
-popular version control tools anywhere. [#]_
+popular version control tools anywhere [#]_.
 
 :Default: ``['/*/.hg', '/*/.bzr', '/*/.git', '/*/.svn',
           '/*/.venv', '/*/__pycache__']``.
-:Option: ``--prune``.
+:Option:  ``--prune``.
 
-.. [#] The leading "/" prevents expansion with pwd and
+.. [#] The leading "/" prevents expansion with `pwd`;
        ``fnmatch('/*')`` matches any absolute path.
 
 recurse
 ~~~~~~~
 Recursively scan subdirectories.
 
-*Default*: True (recurse).  *Options*: ``--recurse``, ``--local``.
+*Default*: True.  *Options*: ``--recurse``, ``--local``.
 
-rst_sources
-~~~~~~~~~~~
-List of glob-style [#globbing]_ patterns specifying files to process as
-reStructuredText source (colon-separated_). Values in configuration files
-overwrite the default and are overwritten by the command line option.
+sources
+~~~~~~~
+List of glob-style [#globbing]_ patterns (colon-separated_).
+Files with matching filename are treated as source documents.
+Values in configuration files overwrite the default and are
+overwritten by the command line option.
 
 *Default*: ``['*.rst', '*.txt']``.  *Option*: ``--rst-sources``.
 
@@ -2270,7 +2262,7 @@ New in 0.17. Obsoletes the ``html_writer`` option.
    `pathlib.PurePath.match()`_).
    For example, "``/*.py``" matches "/a/b/c.py".
 
-   Provisional: will use `pathlib.PurePath.match()` once this supports "**".
+   Provisional: may use `pathlib.PurePath.match()` once this supports "**".
 
 .. _fnmatch module:
     https://docs.python.org/3/library/fnmatch.html#module-fnmatch
@@ -2296,8 +2288,7 @@ and “writer” components from the Docutils package or 3rd party plug-ins.
 reader
 ~~~~~~
 Reader component name.
-One of "standalone", "pep",
-or the import name of a plug-in reader module.
+One of "standalone", "pep", or the import name of a plug-in reader module.
 
 *Default*: "standalone".
 *Option*: ``--reader``

@@ -47,35 +47,20 @@ class SettingsSpec(docutils.SettingsSpec):
 
     prune_default = ['/*/.hg', '/*/.bzr', '/*/.git', '/*/.svn',
                      '/*/.venv', '/*/__pycache__']
-    rst_sources_default = ['*.rst', '*.txt']
+    sources_default = ['*.rst', '*.txt']
 
     # Can't be included in OptionParser below because we don't want to
     # override the base class.
     settings_spec = (
         'Build-HTML Options',
         None,
-        (('Recursively scan subdirectories for files to process.  This is '
-          'the default.',
-          ['--recurse'],
-          {'action': 'store_true', 'default': 1,
-           'validator': frontend.validate_boolean}),
-         ('Do not scan subdirectories for files to process.',
-          ['--local'], {'dest': 'recurse', 'action': 'store_false'}),
-         ('Do not process files in <directory> (glob-style patterns, '
-          'separated by colons).  This option may be used '
-          'more than once to add more patterns.  Default: "%s".'
-          % ':'.join(prune_default),
-          ['--prune'],
-          {'metavar': '<directory>', 'action': 'append',
-           'validator': frontend.validate_colon_separated_string_list,
-           'default': prune_default}),
-         ('Process all files matching any of the given '
+        (('Process all files matching any of the given '
           'glob-style patterns (separated by colons). '
           'This option overwrites the default or config-file values. '
-          f'Default: "{":".join(rst_sources_default)}".',
-          ['--rst-sources'],
+          f'Default: "{":".join(sources_default)}".',
+          ['--sources'],
           {'metavar': '<patterns>',
-           'default': rst_sources_default,
+           'default': sources_default,
            'validator': frontend.validate_colon_separated_string_list}),
          ('Recursively ignore files matching any of the given '
           'glob-style patterns (separated by colons). '
@@ -84,6 +69,21 @@ class SettingsSpec(docutils.SettingsSpec):
           {'metavar': '<patterns>', 'action': 'append',
            'default': [],
            'validator': frontend.validate_colon_separated_string_list}),
+         ('Do not scan subdirectories for files to process.',
+          ['--local'], {'dest': 'recurse', 'action': 'store_false'}),
+         ('Recursively scan subdirectories for files to process.  This is '
+          'the default.',
+          ['--recurse'],
+          {'action': 'store_true', 'default': 1,
+           'validator': frontend.validate_boolean}),
+         ('Do not process files in <directory> (glob-style patterns, '
+          'separated by colons).  This option may be used '
+          'more than once to add more patterns.  Default: "%s".'
+          % ':'.join(prune_default),
+          ['--prune'],
+          {'metavar': '<directory>', 'action': 'append',
+           'validator': frontend.validate_colon_separated_string_list,
+           'default': prune_default}),
          ('Docutils writer, one of "html", "html4", "html5". '
           'Default: "html" (use Docutils\' default HTML writer).',
           ['--writer'],
@@ -259,7 +259,7 @@ class Builder:
         for name in sorted(filenames):
             if match_patterns(name, settings.ignore):
                 continue
-            if match_patterns(name, settings.rst_sources):
+            if match_patterns(name, settings.sources):
                 self.process_txt(dirpath, name)
 
     def process_txt(self, directory, name):

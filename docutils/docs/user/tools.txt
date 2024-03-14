@@ -169,7 +169,7 @@ HTML::
 
     rst2html test.txt > test.html
 
-Now open the "``test.html``" file in your favorite browser to see the
+Now open the "``test.html``" file in your favourite browser to see the
 results.  To get a footer with a link to the source file, date & time
 of processing, and links to the Docutils project, add some options::
 
@@ -238,7 +238,7 @@ S5/HTML::
 
     rst2s5 slides.txt --output=slides.html
 
-Now open the "``slides.html``" file in your favorite browser, switch
+Now open the "``slides.html``" file in your favourite browser, switch
 to full-screen mode, and enjoy the results.
 
 .. _S5: http://meyerweb.com/eric/tools/s5/
@@ -329,7 +329,7 @@ For details, please see `Easy Slide Shows With reStructuredText & S5
 
 .. [#copy-theme] Theme files can only be copied by Docutils, if the
    output_ destination path is specified.
-   
+
 .. _output: config.html#output
 
 buildhtml.py
@@ -343,16 +343,16 @@ buildhtml.py
 The ``buildhtml.py`` script can be found in the ``/tools`` directory of
 the "docutils" source. It is not included in binary packages. [#]_
 
-Use ``buildhtml.py`` to generate ``*.html`` from all the reStructuredText
-source files (including PEPs) in each <directory> given, and their
-subdirectories too.  (Use the ``--local`` option to skip subdirectories.)
-
 Usage::
 
     buildhtml.py [options] [<directory> ...]
 
-The current directory (including all subdirectories) is chosen by default if
-no directory is specified.
+Use ``buildhtml.py`` to generate ``*.html`` from reStructuredText
+source files in each <directory> given, and their subdirectories too.
+The current directory is chosen by default if no directory is specified.
+Use the ``--local`` option to skip all subdirectories.
+See `[buildhtml application]`_ in `Docutils Configuration`_
+for more specific selection options.
 
 After unpacking the Docutils source package, you can ``cd`` into its root
 directory (``docutils-X.Y/`` where "X.Y" is the release version, for
@@ -361,16 +361,11 @@ files with::
 
     tools/buildhtml.py
 
-Some files may generate system messages
-(docs/user/rst/demo.txt contains intentional errors); use the
-``--quiet`` option to suppress all warnings.  The ``--config`` option
-ensures that the correct settings are in place (a ``docutils.conf``
-`configuration file`_ in the current directory is picked up
-automatically).  Command-line options may be used to override config
-file settings or replace them altogether.
+Some files may generate system messages (docs/user/rst/demo.txt contains
+intentional errors); use the ``--quiet`` option to suppress all warnings.
 
 .. [#] The Debian package "python3-docutils" includes the script
-   under the name ``rst-builthtml``.
+   under the name ``rst-buildhtml``.
 
 .. _[buildhtml application]: config.html#buildhtml-application
 .. _configuration file: `configuration files`_
