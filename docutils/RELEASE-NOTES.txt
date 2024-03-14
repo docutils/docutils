@@ -170,8 +170,8 @@ Misc
 .. _buildhtml.py: docs/user/tools.html#buildhtml-py
 
 
-Release 0.21 (unpublished)
-==========================
+Release 0.21.rc1 (unpublished)
+==============================
 
 * General:
 

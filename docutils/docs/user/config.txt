@@ -366,7 +366,7 @@ List of internal attributes (colon-separated_) to expose
 as external attributes (with "internal:" namespace prefix).
 Values are appended. [#append-values]_
 
-*Default*: ``[]``.
+*Default*: empty list.
 *Option*: ``--expose-internal-attribute`` (hidden, for development use only).
 
 
@@ -584,7 +584,8 @@ root_prefix
 -----------
 
 Base directory, prepended to a filesystem path__ starting with "/" when
-including files with the "include_", "raw_", or "csv-table_" directives.
+including files with the `"include"`_, `"raw"`_, or `"csv-table"`_
+directives.
 
 Also applied when a writer converts an image URI__ to a local filesystem
 path in order to determine the image size or embed the image in the output.
@@ -603,15 +604,13 @@ sectnum_xform
 
 Enable automatic section numbering by Docutils
 (`docutils.transforms.parts.SectNum`) associated
-with the `sectnum directive`_.
+with the `"sectnum" directive`_.
 
 If disabled, section numbers might be added to the output by the
 renderer (e.g. by LaTeX or via a CSS style definition).
 
 :Default: True.
 :Options: ``--section-numbering``, ``--no-section-numbering``.
-
-.. _sectnum directive: ../ref/rst/directives.html#sectnum
 
 
 source_link
@@ -657,7 +656,7 @@ party tools/frameworks.
 .. WARNING:: Some standard class values are required in order to achieve
              the expected output rendering; use with caution.
 
-*Default*: ``[]``.  *Option*: ``--strip-class``.
+*Default*: empty list.  *Option*: ``--strip-class``.
 
 
 strip_comments
@@ -679,7 +678,7 @@ Matching elements are removed from the document tree.
 .. WARNING:: Potentially dangerous: may lead to an invalid document tree
    and subsequent writer errors.  Use with caution.
 
-*Default*: ``[]``.  *Option*: ``--strip-elements-with-class``.
+*Default*: empty list.  *Option*: ``--strip-elements-with-class``.
 
 
 title
@@ -697,15 +696,13 @@ is overridden by a `"title" directive`_.
 :Option:  ``--title``.
 
 .. _title attribute: ../ref/doctree.html#title-attribute
-.. _document title: ../ref/rst/restructuredtext.html#document-title
-.. _"title" directive: ../ref/rst/directives.html#metadata-document-title
 
 
 toc_backlinks
 -------------
 
 Enable backlinks from section titles to table of contents entries
-("entry"), to the top of the ToC ("top"), or disable ("none").
+("entry"), to the top of the ToC ("top"), or disable (False).
 
 :Default: "entry".
 :Options: ``--toc-entry-backlinks``, ``--toc-top-backlinks``,
@@ -745,24 +742,20 @@ Generic parser options:
 file_insertion_enabled
 ----------------------
 
-Enable directives inserting the contents of
-external files, such as "include_" directive
-or the "raw_" and "csv-table_" directives with option "url" or "file".
+Enable directives inserting the contents of external files,
+such as `"include"`_ directive or the `"raw"`_ and `"csv-table"`_
+directives with option "url" or "file".
 A "warning" system message (including the directive text) is inserted
 instead.  (See also raw_enabled_ for another security-relevant setting.)
 
 :Default: True.
 :Options: ``--file-insertion-enabled``, ``--no-file-insertion``.
 
-.. _include: ../ref/rst/directives.html#include
-.. _raw: ../ref/rst/directives.html#raw
-.. _csv-table: ../ref/rst/directives.html#csv-table
-
 
 line_length_limit
 -----------------
 
-Maximal number of characters in an input line or `substitution`_
+Maximal number of characters in an input line or `"substitution"`_
 definition. To prevent extraordinary high processing times or memory
 usage for certain input constructs, a "warning" system message is
 inserted instead.
@@ -772,13 +765,11 @@ inserted instead.
 
 New in Docutils 0.17.
 
-.. _substitution: ../ref/rst/directives.html#substitution
-
 
 raw_enabled
 -----------
 
-Enable the "raw_" directive.  A "warning" system message
+Enable the `"raw" directive`_.  A "warning" system message
 (including the directive text) is inserted instead.  See also
 file_insertion_enabled_ for another security-relevant setting.
 
@@ -901,7 +892,7 @@ New in Docutils 0.14.
 
 syntax_highlight
 ~~~~~~~~~~~~~~~~
-Token type names used by Pygments_ when parsing contents of the code_
+Token type names used by Pygments_ when parsing contents of the `"code"`_
 directive and role.
 
 Supported values:
@@ -915,7 +906,6 @@ Supported values:
 *Default*: "long".  *Option*: ``--syntax-highlight``.
 
 .. _Pygments: https://pygments.org/
-.. _code: ../ref/rst/directives.html#code
 .. _Pygments-generated stylesheets:
    https://pygments.org/docs/cmdline/#generating-styles
 
@@ -1107,7 +1097,6 @@ lists using the `"class" directive`_ (values "compact" and "open").
 :Default: True.
 :Options: ``--compact-lists``, ``--no-compact-lists``.
 
-.. _"class" directive: ../ref/rst/directives.html#class
 
 compact_field_lists
 ~~~~~~~~~~~~~~~~~~~
@@ -1158,7 +1147,7 @@ document title & subtitle; see doctitle_xform_.
 
 math_output
 ~~~~~~~~~~~
-The format of mathematical content (`math directive`_ and role) in
+The format of mathematical content (`"math" directive`_ and role) in
 the output document. Supported values are (case insensitive):
 
 HTML:
@@ -1256,7 +1245,6 @@ LaTeX:
           to "MathML" in Docutils 0.22.
 :Option:  ``--math-output``.
 
-.. _math directive: ../ref/rst/directives.html#math
 .. _MathJax: http://www.mathjax.org/
 .. _MathML: https://www.w3.org/TR/MathML/
 .. _blahtexml: http://gva.noekeon.org/blahtexml/
@@ -1275,7 +1263,7 @@ List of CSS stylesheet URLs  (comma-separated_). Used verbatim.
 Overrides also stylesheet_path_. [#override]_
 See also `stylesheet [latex writers]`_.
 
-*Default*: ``[]``.  *Option*: ``--stylesheet``.
+*Default*: empty list.  *Option*: ``--stylesheet``.
 
 
 .. _stylesheet_dirs:
@@ -1347,14 +1335,12 @@ In addition, the HTML writers process:
 :colwidths-auto:
     Delegate the determination of table column widths to the back-end
     (leave out the ``<colgroup>`` column specification).
-    Overridden by the "widths" option of the `table directive`_.
+    Overridden by the "widths" option of the `"table" directive`_.
 :colwidths-grid:
     Write column widths determined from the source to the HTML file.
-    Overridden by the "widths" option of the `table directive`_.
+    Overridden by the "widths" option of the `"table" directive`_.
 
 *Default*: "".  *Option*: ``--table-style``.
-
-.. _table directive: ../ref/rst/directives.html#table
 
 
 .. _template [html writers]:
@@ -1469,7 +1455,6 @@ Supported values:
 
 New in Docutils 0.18.
 
-.. _"image" directive: ../ref/rst/directives.html#image
 .. _lazy loading attribute: https://html.spec.whatwg.org/multipage/
     urls-and-fetching.html#lazy-loading-attributes
 
@@ -1741,7 +1726,7 @@ The new algorithm limits the table width to the text width or specified
 table width and keeps the ratio of specified column widths.
 
 Custom table and/or column widths can be set with the respective options
-of the `table directive`_. See also `Generating LaTeX with Docutils`__.
+of the `"table" directive`_. See also `Generating LaTeX with Docutils`__.
 
 :Default: True (will change to False in Docutils 1.0).
 :Options: ``--legacy-column-widths``, ``--new-column-widths``.
@@ -1763,11 +1748,9 @@ automatically loaded.
 :Default: "" (use "alltt" with quoting of whitespace and special chars).
 :Option:  ``--literal-block-env``.
 
-.. [#] A <literal-block> element originating from a `parsed literal`_ or
-   code_ directive may contain inline elements. LaTeX' verbatim-like
+.. [#] A <literal-block> element originating from a `"parsed-literal"`_ or
+   `"code"`_ directive may contain inline elements. LaTeX' verbatim-like
    environments cannot be used in this case.
-
-.. _parsed literal: ../ref/rst/directives.html#parsed-literal
 
 
 reference_label
@@ -1836,7 +1819,7 @@ referenced with ``\usepackage`` (values with extension ``.sty`` or no
 extension) or ``\input`` (any other extension).
 LaTeX will search the specified files in the `TeX input path`_.
 
-*Default*: ``[]``.  *Option*: ``--stylesheet``.
+*Default*: empty list.  *Option*: ``--stylesheet``.
 
 __ `stylesheet_path [latex writers]`_
 __ `embed_stylesheet [latex writers]`_
@@ -1875,7 +1858,7 @@ See also `stylesheet_path [html writers]`_.
 
 For files in the `TeX input path`_, the stylesheet__  option is recommended.
 
-*Default*: ``[]``.  *Option*: ``--stylesheet-path``.
+*Default*: empty list.  *Option*: ``--stylesheet-path``.
 
 .. _<destination>: tools.html#usage-pattern
 __ `stylesheet_dirs [latex writers]`_
@@ -1922,7 +1905,7 @@ List of style and database(s) for the experimental `BibTeX` support
    Name, values, and behaviour may change in future versions or the
    option may be removed.
 
-*Default*: ``[]`` (don't use BibTeX).  *Option* ``--use-bibtex``.
+*Default*: empty list (don't use BibTeX).  *Option* ``--use-bibtex``.
 
 use_latex_abstract
 ~~~~~~~~~~~~~~~~~~
@@ -2192,7 +2175,7 @@ List of glob-style patterns [#globbing]_ (colon-separated_).
 Source files with matching filename are silently ignored.
 Values are appended. [#append-values]_
 
-*Default*: ``[]``.  *Option*: ``--ignore``.
+*Default*: empty list.  *Option*: ``--ignore``.
 
 prune
 ~~~~~
@@ -2210,8 +2193,7 @@ with the lines ::
 The default patterns skip auxiliary directories from Python or
 popular version control tools anywhere [#]_.
 
-:Default: ``['/*/.hg', '/*/.bzr', '/*/.git', '/*/.svn',
-          '/*/.venv', '/*/__pycache__']``.
+:Default: ``/*/.hg:/*/.bzr:/*/.git:/*/.svn:/*/.venv:/*/__pycache__``.
 :Option:  ``--prune``.
 
 .. [#] The leading "/" prevents expansion with `pwd`;
@@ -2230,7 +2212,7 @@ Files with matching filename are treated as source documents.
 Values in configuration files overwrite the default and are
 overwritten by the command line option.
 
-*Default*: ``['*.rst', '*.txt']``.  *Option*: ``--rst-sources``.
+*Default*: ``*.rst:*.txt``.  *Option*: ``--rst-sources``.
 
 New in Docutils 0.21.
 
@@ -2363,7 +2345,7 @@ _directories
 (``buildhtml.py`` front end.)  List of paths to source
 directories, set from positional arguments.
 
-*Default* current working directory (None).  No command-line options.
+*Default*: None (current working directory).  No command-line options.
 
 _disable_config
 ~~~~~~~~~~~~~~~
@@ -2428,11 +2410,26 @@ pep_template           [pep_html writer] template
 
 .. References
 
-.. _runtime settings:
-.. _Docutils Runtime Settings: ../api/runtime-settings.html
+.. _Docutils Runtime Settings:
+.. _runtime settings: ../api/runtime-settings.html
 
-.. _table of contents: ../ref/rst/directives.html#contents
+.. RestructuredText Directives
+.. _"class" directive: ../ref/rst/directives.html#class
+.. _"code": ../ref/rst/directives.html#code
+.. _"csv-table": ../ref/rst/directives.html#csv-table
+.. _"image" directive: ../ref/rst/directives.html#image
+.. _"include": ../ref/rst/directives.html#include
+.. _"math" directive: ../ref/rst/directives.html#math
+.. _"parsed-literal": ../ref/rst/directives.html#parsed-literal
+.. _"raw":
+.. _"raw" directive: ../ref/rst/directives.html#raw
+.. _"sectnum" directive: ../ref/rst/directives.html#sectnum
+.. _"substitution": ../ref/rst/directives.html#substitution
+.. _"table" directive: ../ref/rst/directives.html#table
+.. _"title" directive: ../ref/rst/directives.html#metadata-document-title
+.. _table of contents: ../ref/rst/directives.html#table-of-contents
 
+.. RestructuredText Markup Specification
 .. _abstract:
 .. _bibliographic field list:
 .. _bibliographic fields:
@@ -2440,6 +2437,7 @@ pep_template           [pep_html writer] template
 .. _block quote: ../ref/rst/restructuredtext.html#block-quotes
 .. _bullet lists: ../ref/rst/restructuredtext.html#bullet-lists
 .. _citations: ../ref/rst/restructuredtext.html#citations
+.. _document title: ../ref/rst/restructuredtext.html#document-title
 .. _enumerated lists: ../ref/rst/restructuredtext.html#enumerated-lists
 .. _field lists: ../ref/rst/restructuredtext.html#field-lists
 .. _field names: ../ref/rst/restructuredtext.html#field-names

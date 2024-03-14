@@ -215,8 +215,8 @@ class MathElement(ET.Element):
         specified encoding. The XML default encoding is UTF-8, any other
         encoding must be specified in an XML document header.
 
-        Name and encoding handling match `xml.dom.minidom.Node.toxml()`;
-        `etree.Element.tostring()` returns `bytes` by default.
+        Name and encoding handling match `xml.dom.minidom.Node.toxml()`
+        while `etree.Element.tostring()` returns `bytes` by default.
         """
         xml = ET.tostring(self, encoding or 'unicode',
                           short_empty_elements=False)

@@ -25,7 +25,7 @@ reStructuredText_ is plaintext that uses simple and intuitive
 constructs to indicate the structure of a document.  These constructs
 are equally easy to read in raw and processed forms.  This document is
 itself an example of reStructuredText (raw, if you are reading the
-text file, or processed, if you are reading an HTML document, for
+`text file`__, or processed, if you are reading an HTML document, for
 example).  The reStructuredText parser is a component of Docutils_.
 
 Simple, implicit markup is used to indicate special constructs, such
@@ -45,6 +45,7 @@ in the `Syntax Details`_ section.
 `Literal blocks`_ (in which no markup processing is done) are used for
 examples throughout this document, to illustrate the plaintext markup.
 
+__ restructuredtext.txt
 
 .. contents::
 

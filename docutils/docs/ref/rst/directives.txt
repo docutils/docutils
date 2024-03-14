@@ -314,7 +314,6 @@ as well as
 .. [#] SVG images are directly included, other images are base64_ encoded
    and included as a `data URI`_.
 
-.. _image_loading: ../../user/config.html#image-loading
 .. _lazy loading attribute: https://html.spec.whatwg.org/multipage/
     urls-and-fetching.html#lazy-loading-attributes
 .. _base64: https://en.wikipedia.org/wiki/Base64
@@ -573,7 +572,7 @@ Code
 :Directive Arguments: one, optional (formal language)
 :Directive Options: `see below <code options_>`__
 :Directive Content: Becomes the body of the literal block.
-:Configuration Setting: syntax_highlight_.
+:Configuration Setting: syntax_highlight_
 
 The "code" directive constructs a literal block. If the code language is
 specified, the content is parsed by the Pygments_ syntax highlighter and
@@ -611,7 +610,6 @@ Recognizes the common options class_ and name_ as well as
 
 .. _sandbox/stylesheets: https://docutils.sourceforge.io/sandbox/stylesheets/
 .. _Pygments: https://pygments.org/
-.. _syntax_highlight: ../../user/config.html#syntax-highlight
 .. _supported languages and markup formats: https://pygments.org/languages/
 
 
@@ -647,7 +645,6 @@ support math typesetting, the content is inserted verbatim.
 For inline formulas, use the `"math" role`_.
 
 .. _LaTeX math syntax: ../../ref/rst/mathematics.html
-.. _math_output: ../../user/config.html#math-output
 
 
 Rubric
@@ -850,6 +847,7 @@ Table
 :Directive Arguments: one, optional (table title)
 :Directive Options: `see below <table options_>`__
 :Directive Content: A normal `reStructuredText table`_.
+:Configuration Setting: table_style_
 
 The "table" directive is used to associate a
 title with a table or specify options, e.g.::
@@ -902,10 +900,6 @@ Recognizes the common options class_ and name_ as well as
        values "colwidths-auto"/"colwidths-grid").
 
 
-.. _reStructuredText table: restructuredtext.html#tables
-.. _table_style: ../../user/config.html#table-style
-
-
 .. _csv-table:
 
 CSV Table
@@ -919,6 +913,7 @@ CSV Table
 :Directive Options: `see below <csv-table options_>`__
 :Directive Content: A CSV (comma-separated values) table
                     or (with the `file`_ or `url`_ options) none.
+:Configuration Settings: table_style_, file_insertion_enabled_
 
 .. WARNING::
 
@@ -1052,6 +1047,7 @@ List Table
 :Directive Arguments: one, optional (table title)
 :Directive Options: `see below <list-table options_>`__
 :Directive Content: A uniform two-level bullet list.
+:Configuration Setting: table_style_
 
 (This is an initial implementation; `further ideas`__ may be implemented
 in the future.)
@@ -1135,6 +1131,7 @@ Table of Contents
 :Directive Arguments: one, optional: title
 :Directive Options: `see below <contents options_>`__
 :Directive Content: none
+:Configuration Settings: toc_backlinks_, use_latex_toc_, generate_oowriter_toc_
 
 The "contents" directive generates a table of contents (TOC) in
 a `\<topic>`_ element.  Topics, and therefore tables of contents,
@@ -1241,8 +1238,6 @@ The "sectnum" directive recognizes the following options:
     Combined with ``prefix``, this may be used to force the right
     numbering for a document split over several source files.  The
     default is 1.
-
-.. _sectnum_xform: ../../user/config.html#sectnum-xform
 
 
 .. _header:
@@ -1543,8 +1538,6 @@ Including an External Document Fragment
    The "include" directive represents a potential security hole.  It
    can be disabled with the "file_insertion_enabled_" runtime setting.
 
-   .. _file_insertion_enabled: ../../user/config.html#file-insertion-enabled
-
 The "include" directive reads a text file. The directive argument is
 the path to the file to be included, relative to the document containing
 the directive. Unless the options ``literal``, ``code``, or ``parser``
@@ -1591,8 +1584,6 @@ The "include" directive recognizes the following options:
     The text encoding of the external file.
     Defaults to the document's input_encoding_.
 
-    .. _input_encoding: ../../user/config.html#input-encoding
-
 ``end-before`` : text_
     Only the content before the first occurrence of the specified *text*
     in the external data file (but after any ``start-after`` text)
@@ -1629,8 +1620,6 @@ The "include" directive recognizes the following options:
     where a negative value prevents expansion of hard tabs.
     Defaults to the tab_width_ configuration setting.
 
-    .. _tab_width: ../../user/config.html#tab-width
-
 With ``code`` or ``literal`` the common options class_ and name_
 are recognized as well.
 
@@ -1652,7 +1641,7 @@ Raw Data Pass-Through
 :Directive Options: `see below <raw options_>`__
 :Directive Content: Stored verbatim, uninterpreted.
                     None (empty) if a ``file`` or ``url`` option given.
-:Configuration Setting: raw_enabled_
+:Configuration Settings: raw_enabled_, file_insertion_enabled_
 
 .. WARNING::
 
@@ -1660,8 +1649,6 @@ Raw Data Pass-Through
    be disabled with the "raw_enabled_" runtime setting.
    Insertion of external files can be disabled with the
    "file_insertion_enabled_" runtime setting.
-
-   .. _raw_enabled: ../../user/config.html#raw-enabled
 
 .. Caution::
 
@@ -2114,19 +2101,17 @@ Metadata Document Title
 .. class:: field-indent-13em
 
 :Directive Type: "title"
-:Doctree Element: none (sets the document's `title attribute`_)
+:Doctree Element: sets the `\<document>`_ element's `title attribute`_)
 :Directive Arguments: one, required (the title text)
 :Directive Options: none
 :Directive Content: none
+:Configuration Setting: `title <"title" configuration setting_>`__
 
 The "title" directive specifies the document title as metadata, which
 does not become part of the document body. It overrides the
 document-supplied `document title`_ and the `"title" configuration
 setting`_. For example, in HTML output the metadata document title
 appears in the title bar of the browser window.
-
-.. _document title: restructuredtext.html#document-title
-.. _"title" configuration setting: ../../user/config.html#title
 
 
 Restructuredtext-Test-Directive
@@ -2248,6 +2233,7 @@ Common Option Value Types
 
 .. _reStructuredText Markup Specification: restructuredtext.html
 .. _Directives: restructuredtext.html#directives
+.. _document title: restructuredtext.html#document-title
 .. _escaping mechanism: restructuredtext.html#escaping-mechanism
 .. _external hyperlink targets:
     restructuredtext.html#external-hyperlink-targets
@@ -2257,6 +2243,7 @@ Common Option Value Types
 .. _percentage: restructuredtext.html#percentage-units
 .. _reference name:
 .. _reference names: restructuredtext.html#reference-names
+.. _reStructuredText table: restructuredtext.html#tables
 
 .. _reStructuredText Interpreted Text Roles:
 .. _interpreted text role: roles.html
@@ -2264,9 +2251,24 @@ Common Option Value Types
 .. _"math" role: roles.html#math
 .. _"raw" role: roles.html#raw
 
-.. _The Docutils Document Tree: ../doctree.html
+.. Docutils Configuration
+.. _file_insertion_enabled: ../../user/config.html#file-insertion-enabled
+.. _generate_oowriter_toc: ../../user/config.html#generate-oowriter-toc
+.. _image_loading: ../../user/config.html#image-loading
+.. _input_encoding: ../../user/config.html#input-encoding
+.. _math_output: ../../user/config.html#math-output
+.. _raw_enabled: ../../user/config.html#raw-enabled
+.. _sectnum_xform: ../../user/config.html#sectnum-xform
+.. _syntax_highlight: ../../user/config.html#syntax-highlight
+.. _tab_width: ../../user/config.html#tab-width
+.. _table_style: ../../user/config.html#table-style
+.. _"title" configuration setting: ../../user/config.html#title
+.. _toc_backlinks: ../../user/config.html#toc-backlinks
+.. _use_latex_toc: ../../user/config.html#use-latex-toc
+
 .. _reStructuredText Standard Definition Files: definitions.html
 
+.. _The Docutils Document Tree: ../doctree.html
 .. _identifier keys: ../doctree.html#ids-type
 .. _inline elements: ../doctree.html#inline-elements
 .. _class names: ../doctree.html#classname
@@ -2286,6 +2288,7 @@ Common Option Value Types
 .. _<container>: ../doctree.html#container
 .. _<danger>: ../doctree.html#danger
 .. _<decoration>: ../doctree.html#decoration
+.. _<document>: ../doctree.html#document
 .. _<error>: ../doctree.html#error
 .. _<figure>: ../doctree.html#figure
 .. _<footer>: ../doctree.html#footer

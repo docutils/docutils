@@ -324,7 +324,7 @@ Caveats
    .. container:: handout
 
       The ``--no-toc-backlinks`` option is the default for the S5/HTML
-      writer (``toc_backlinks=0`` setting).  Other values for this
+      writer (``toc_backlinks=False`` setting).  Other values for this
       setting will change the CSS class of headings such that they
       won't show up correctly in the slide show.
 
