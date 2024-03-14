@@ -162,6 +162,8 @@ Release 0.21.rc1
     (image transformations, math content conversion, ...).
   - Close ``<dt>`` element in `depart_term()` to allow a
     "definition_list_item" with multiple "terms" (cf. feature-request #60).
+  - Link to the document "#top" from the ToC heading
+    (unless toc_backlinks_ is False).
 
 * docutils/writers/latex2e/__init__.py
 
@@ -4391,6 +4393,7 @@ test/test_rst); and all modifications required to make it all work.
 .. _table_style: docs/user/config.html#table-style
 .. _theme: docs/user/config.html#theme
 .. _theme_url: docs/user/config.html#theme-url
+.. _toc_backlinks: docs/user/config.html#toc-backlinks
 .. _traceback: docs/user/config.html#traceback
 .. _use_bibtex: docs/user/config.html#use-bibtex
 .. _use_latex_abstract: docs/user/config.html#use-latex-abstract

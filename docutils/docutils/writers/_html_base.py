@@ -1745,6 +1745,10 @@ class HTMLTranslator(nodes.NodeVisitor):
             # TODO: use role="heading" or <h1>? (HTML5 only)
             self.body.append(
                 self.starttag(node, 'p', '', CLASS='topic-title'))
+            if (self.settings.toc_backlinks
+                and 'contents' in node.parent['classes']):
+                self.body.append('<a class="reference internal" href="#top">')
+                close_tag = '</a></p>\n'
         elif isinstance(node.parent, nodes.sidebar):
             # TODO: use role="heading" or <h1>? (HTML5 only)
             self.body.append(
@@ -1753,8 +1757,7 @@ class HTMLTranslator(nodes.NodeVisitor):
             self.body.append(
                   self.starttag(node, 'p', '', CLASS='admonition-title'))
         elif isinstance(node.parent, nodes.table):
-            self.body.append(
-                  self.starttag(node, 'caption', ''))
+            self.body.append(self.starttag(node, 'caption', ''))
             close_tag = '</caption>\n'
         elif isinstance(node.parent, nodes.document):
             self.body.append(self.starttag(node, 'h1', '', CLASS='title'))
