@@ -495,10 +495,11 @@ class Translator(nodes.NodeVisitor):
         raise nodes.SkipNode
 
     def visit_classifier(self, node):
-        pass
+        self.body.append('(')
 
     def depart_classifier(self, node):
-        pass
+        self.body.append(')')
+        self.depart_term(node)  # close the term element after last classifier
 
     def visit_colspec(self, node):
         self.colspecs.append(node)
@@ -1099,13 +1100,15 @@ class Translator(nodes.NodeVisitor):
         self.body.append('\n.B ')
 
     def depart_term(self, node):
-        _next = None
-        if isinstance(node.parent, nodes.definition_list_item):
-            _next = next(node.findall(condition=None, include_self=False,
-                                     descend=False, siblings=True, ascend=False))
-        if _next and isinstance(_next, nodes.term):
+        _next = node.next_node(None, descend=False, siblings=True)
+        # Nest (optional) classifier(s) in the <dt> element
+        if isinstance(_next, nodes.classifier):
+            self.body.append(' ')
+            return  # skip (depart_classifier() calls this function again)
+        if isinstance(_next, nodes.term):
             self.body.append('\n.TQ')
-        self.body.append('\n')
+        else:
+            self.body.append('\n')
 
     def visit_tgroup(self, node):
         pass
