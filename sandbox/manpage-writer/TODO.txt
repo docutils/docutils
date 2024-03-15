@@ -3,15 +3,6 @@ TODOs
 
 :Date: $Date$
 
-* UR-UE revisited . groff_man says ::
-
-   Hyperlink and email macros
-       Email addresses are bracketed with .MT/.ME and URL hyperlinks with .UR/.UE.
-
-       These macros are not defined on legacy Unix systems running classic troff.   To
-       be  certain your page will be portable to those systems, copy their definitions
-       from the an-ext.tmac file of a groff installation.
-
 * input/optionstoo.txt:23: (ERROR/3) Unexpected indentation.
   is what it is ... leave it so.
 
