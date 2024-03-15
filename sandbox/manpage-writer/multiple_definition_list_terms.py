@@ -34,6 +34,9 @@
 # document tree programatically and exports it with the writers defined in
 # Docutils to temporary files.
 
+import difflib
+import os.path
+
 from docutils.core import publish_doctree, publish_from_doctree
 from docutils.nodes import term, classifier
 
@@ -110,7 +113,7 @@ extensions = {'html': 'html',
               'html5': 'html',
               'latex': 'tex',
               'xetex': 'tex',
-              'manpage': 'troff',
+              'manpage': 'man',
               'odt': 'odt',
               'xml': 'xml',
               'pseudoxml': 'txt',
@@ -120,11 +123,17 @@ for format in extensions.keys():
     output = publish_from_doctree(doctree, writer_name=format,
                                   settings_overrides=settings)
 
-    # print(output.decode())
-    filename = f'/tmp/termtest-{format}.{extensions[format]}'
-    with open(filename, 'bw') as outfile:
+    filename = f'termtest-{format}.{extensions[format]}'
+    outf = f'output/{filename}'
+    with open(outf, 'bw') as outfile:
         outfile.write(output)
-        print(f'output written to /tmp/{filename}')
+        print(f'output written to {outf}')
+    expf = f'expected/{filename}'
+    if os.path.exists(expf):
+        d = difflib.unified_diff(open(expf).readlines(), 
+                                 open(outf).readlines(),
+                                 fromfile=expf, tofile=outf)
+        print("".join(list(d)))
 
 
 # output = publish_from_doctree(doctree, writer_name='odf')

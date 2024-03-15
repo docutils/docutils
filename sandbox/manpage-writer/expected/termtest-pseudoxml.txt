@@ -1,0 +1,30 @@
+<document source="<string>">
+    <definition_list>
+        <definition_list_item>
+            <term>
+                term 1
+            <definition>
+                <paragraph classes="first last first last">
+                    definition 1
+        <definition_list_item>
+            <term>
+                term 2a
+            <term>
+                term 2b
+            <definition>
+                <paragraph classes="first last first last">
+                    definition 2
+        <definition_list_item>
+            <term>
+                term 3a
+            <classifier>
+                classifier 3a
+            <classifier>
+                classifier 3aa
+            <term>
+                term 3b
+            <classifier>
+                classifier 3b
+            <definition>
+                <paragraph classes="first last first last">
+                    definition 3
