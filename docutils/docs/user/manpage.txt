@@ -12,7 +12,10 @@
 
 This writer explores the possibilities to generate man-pages from
 reStructuredText. Man pages are the way for Unix systems to provide
-help to the user. GNU does this with (TeX)info-pages.
+help to the user. GNU does this with (TeX)info-pages. 
+
+BSD uses mandoc. But mandoc supports a subset of man syntax and the
+manpage-writer tries to support this too.
 
 .. contents::
 
@@ -60,10 +63,24 @@ This means we have
 * a date "14 May 2001"
 * a version "2.3.19"
 
+
+One should try to comply with the `troff line break rules`__ after punctuation
+signs in the rST source.  Use a new line or two spaces to start a new sentence.
+
+Avoid linebreaks after punctuation signs that do not end a sentence.
+A linebreak can be escaped with a backslash.  In rST, escaped whitespace
+is removed, so precede the backslash by a space::
+
+  We recommend the works of E. T. A. \
+  Hoffman.
+
+__ https://www.gnu.org/software/groff/manual/groff.html#Sentences
+
 References
 ''''''''''
 
-man pages from section 7, ``man`` and ``man-pages`` and ``groff_man``.
+man pages from section 7, ``man`` and ``man-pages`` and ``groff_man`` and
+``groff_man_style``.
 
 .. [LMHT] `Linux Man Page Howto <https://tldp.org/HOWTO/Man-Page/>`__.
 
