@@ -1,462 +1,1023 @@
 %!PS-Adobe-3.0
-%%Creator: groff version 1.23.0
-%%CreationDate: Sat Nov 18 21:18:07 2023
-%%DocumentNeededResources: font Times-Italic
-%%+ font Times-Roman
-%%+ font Times-Bold
-%%+ font Courier
-%%+ font Symbol
-%%DocumentSuppliedResources: procset grops 1.23 0
-%%Pages: 5
-%%PageOrder: Ascend
-%%DocumentMedia: Default 595 842 0 () ()
+%%DocumentData: Clean7Bit
 %%Orientation: Portrait
+%%Pages: (atend)
+%%PageOrder: Ascend
+%%DocumentMedia: man-Letter 612 790 0 () ()
+%%DocumentNeededResources: font Times-Roman Times-Bold Times-Italic Times-BoldItalic
+%%DocumentSuppliedResources: procset MandocProcs 1.0 0
 %%EndComments
-%%BeginDefaults
-%%PageMedia: Default
-%%EndDefaults
 %%BeginProlog
-%%BeginResource: procset grops 1.23 0
-%!PS-Adobe-3.0 Resource-ProcSet
-/setpacking where{
-pop
-currentpacking
-true setpacking
-}if
-/grops 120 dict dup begin
-% The ASCII code of the space character.
-/SC 32 def
-/A/show load def
-/B{0 SC 3 -1 roll widthshow}bind def
-/C{0 exch ashow}bind def
-/D{0 exch 0 SC 5 2 roll awidthshow}bind def
-/E{0 rmoveto show}bind def
-/F{0 rmoveto 0 SC 3 -1 roll widthshow}bind def
-/G{0 rmoveto 0 exch ashow}bind def
-/H{0 rmoveto 0 exch 0 SC 5 2 roll awidthshow}bind def
-/I{0 exch rmoveto show}bind def
-/J{0 exch rmoveto 0 SC 3 -1 roll widthshow}bind def
-/K{0 exch rmoveto 0 exch ashow}bind def
-/L{0 exch rmoveto 0 exch 0 SC 5 2 roll awidthshow}bind def
-/M{rmoveto show}bind def
-/N{rmoveto 0 SC 3 -1 roll widthshow}bind def
-/O{rmoveto 0 exch ashow}bind def
-/P{rmoveto 0 exch 0 SC 5 2 roll awidthshow}bind def
-/Q{moveto show}bind def
-/R{moveto 0 SC 3 -1 roll widthshow}bind def
-/S{moveto 0 exch ashow}bind def
-/T{moveto 0 exch 0 SC 5 2 roll awidthshow}bind def
-% name size font SF -
-/SF{
-findfont exch
-[exch dup 0 exch 0 exch neg 0 0]makefont
-dup setfont
-[exch/setfont cvx]cvx bind def
-}bind def
-% name a c d font MF -
-/MF{
-findfont
-[5 2 roll
-0 3 1 roll % b
-neg 0 0]makefont
-dup setfont
-[exch/setfont cvx]cvx bind def
-}bind def
-/level0 0 def
-/RES 0 def
-/PL 0 def
-/LS 0 def
-% Enable manual feed.
-% MANUAL -
-/MANUAL{
-statusdict begin/manualfeed true store end
-}bind def
-% Guess the page length.
-% This assumes that the imageable area is vertically centered on the page.
-% PLG - length
-/PLG{
-gsave newpath clippath pathbbox grestore
-exch pop add exch pop
-}bind def
-% BP -
-/BP{
-/level0 save def
-1 setlinecap
-1 setlinejoin
-DEFS/BPhook known{DEFS begin BPhook end}if
-72 RES div dup scale
-LS{
-90 rotate
-}{
-0 PL translate
-}ifelse
-1 -1 scale
-}bind def
-/EP{
-level0 restore
-showpage
-}def
-% centerx centery radius startangle endangle DA -
-/DA{
-newpath arcn stroke
-}bind def
-% x y SN - x' y'
-% round a position to nearest (pixel + (.25,.25))
-/SN{
-transform
-.25 sub exch .25 sub exch
-round .25 add exch round .25 add exch
-itransform
-}bind def
-% endx endy startx starty DL -
-% we round the endpoints of the line, so that parallel horizontal
-% and vertical lines will appear even
-/DL{
-SN
-moveto
-SN
-lineto stroke
-}bind def
-% centerx centery radius DC -
-/DC{
-newpath 0 360 arc closepath
-}bind def
-/TM matrix def
-%  width height centerx centery DE -
-/DE{
-TM currentmatrix pop
-translate scale newpath 0 0 .5 0 360 arc closepath
-TM setmatrix
-}bind def
-% these are for splines
-/RC/rcurveto load def
-/RL/rlineto load def
-/ST/stroke load def
-/MT/moveto load def
-/CL/closepath load def
-% fill the last path
-% r g b Fr -
-/Fr{
-setrgbcolor fill
-}bind def
-% c m y k Fk -
-/setcmykcolor where{
-pop
-/Fk{
-setcmykcolor fill
-}bind def
-}if
-% g Fg -
-/Fg{
-setgray fill
-}bind def
-% fill with the "current color"
-/FL/fill load def
-/LW/setlinewidth load def
-/Cr/setrgbcolor load def
-/setcmykcolor where{
-pop
-/Ck/setcmykcolor load def
-}if
-/Cg/setgray load def
-% new_font_name encoding_vector old_font_name RE -
-/RE{
-findfont
-dup maxlength 1 index/FontName known not{1 add}if dict begin
-{
-1 index/FID ne
-2 index/UniqueID ne
-and
-{def}{pop pop}ifelse
-}forall
-/Encoding exch def
-dup/FontName exch def
-currentdict end definefont pop
-}bind def
-/DEFS 0 def
-% hpos vpos EBEGIN -
-/EBEGIN{
-moveto
-DEFS begin
-}bind def
-/EEND/end load def
-/CNT 0 def
-/level1 0 def
-% llx lly newwid wid newht ht newllx newlly PBEGIN -
-/PBEGIN{
-/level1 save def
-translate
-div 3 1 roll div exch scale
-neg exch neg exch translate
-% set the graphics state to default values
-0 setgray
-0 setlinecap
-1 setlinewidth
-0 setlinejoin
-10 setmiterlimit
-[]0 setdash
-/setstrokeadjust where{
-pop
-false setstrokeadjust
-}if
-/setoverprint where{
-pop
-false setoverprint
-}if
-newpath
-/CNT countdictstack def
-userdict begin
-/showpage{}def
-%
-%  Any included setpagedevice should be ignored.
-%  See: http://www.w-beer.de/doc/ps/.
-%
-/setpagedevice{}def
-mark
-}bind def
-/PEND{
-cleartomark
-countdictstack CNT sub{end}repeat
-level1 restore
-}bind def
-end def
-/setpacking where{
-pop
-setpacking
-}if
+%%BeginResource: procset MandocProcs 10170 10170
+/fs 11 def
+/f0 { /Times-Roman fs selectfont } def
+/f1 { /Times-Bold fs selectfont } def
+/f2 { /Times-Italic fs selectfont } def
+/f3 { /Times-BoldItalic fs selectfont } def
+/s { 3 1 roll moveto show } bind def
+/c { exch currentpoint exch pop moveto show } bind def
 %%EndResource
 %%EndProlog
 %%BeginSetup
-%%BeginFeature: *PageSize Default
-<< /PageSize [ 595 842 ] /ImagingBBox null >> setpagedevice
+%%BeginFeature: *PageSize Letter
+<</PageSize [612 790]>>setpagedevice
 %%EndFeature
-%%IncludeResource: font Times-Italic
-%%IncludeResource: font Times-Roman
-%%IncludeResource: font Times-Bold
-%%IncludeResource: font Courier
-%%IncludeResource: font Symbol
-grops begin/DEFS 1 dict def DEFS begin/u{.001 mul}bind def end/RES 72
-def/PL PLG def/LS false def/ENC0[/asciicircum/asciitilde/Scaron/Zcaron
-/scaron/zcaron/Ydieresis/trademark/quotesingle/Euro/.notdef/.notdef
-/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef
-/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef
-/.notdef/.notdef/space/exclam/quotedbl/numbersign/dollar/percent
-/ampersand/quoteright/parenleft/parenright/asterisk/plus/comma/hyphen
-/period/slash/zero/one/two/three/four/five/six/seven/eight/nine/colon
-/semicolon/less/equal/greater/question/at/A/B/C/D/E/F/G/H/I/J/K/L/M/N/O
-/P/Q/R/S/T/U/V/W/X/Y/Z/bracketleft/backslash/bracketright/circumflex
-/underscore/quoteleft/a/b/c/d/e/f/g/h/i/j/k/l/m/n/o/p/q/r/s/t/u/v/w/x/y
-/z/braceleft/bar/braceright/tilde/.notdef/quotesinglbase/guillemotleft
-/guillemotright/bullet/florin/fraction/perthousand/dagger/daggerdbl
-/endash/emdash/ff/fi/fl/ffi/ffl/dotlessi/dotlessj/grave/hungarumlaut
-/dotaccent/breve/caron/ring/ogonek/quotedblleft/quotedblright/oe/lslash
-/quotedblbase/OE/Lslash/.notdef/exclamdown/cent/sterling/currency/yen
-/brokenbar/section/dieresis/copyright/ordfeminine/guilsinglleft
-/logicalnot/minus/registered/macron/degree/plusminus/twosuperior
-/threesuperior/acute/mu/paragraph/periodcentered/cedilla/onesuperior
-/ordmasculine/guilsinglright/onequarter/onehalf/threequarters
-/questiondown/Agrave/Aacute/Acircumflex/Atilde/Adieresis/Aring/AE
-/Ccedilla/Egrave/Eacute/Ecircumflex/Edieresis/Igrave/Iacute/Icircumflex
-/Idieresis/Eth/Ntilde/Ograve/Oacute/Ocircumflex/Otilde/Odieresis
-/multiply/Oslash/Ugrave/Uacute/Ucircumflex/Udieresis/Yacute/Thorn
-/germandbls/agrave/aacute/acircumflex/atilde/adieresis/aring/ae/ccedilla
-/egrave/eacute/ecircumflex/edieresis/igrave/iacute/icircumflex/idieresis
-/eth/ntilde/ograve/oacute/ocircumflex/otilde/odieresis/divide/oslash
-/ugrave/uacute/ucircumflex/udieresis/yacute/thorn/ydieresis]def
-/Courier@0 ENC0/Courier RE/Times-Bold@0 ENC0/Times-Bold RE/Times-Roman@0
-ENC0/Times-Roman RE/Times-Italic@0 ENC0/Times-Italic RE
 %%EndSetup
 %%Page: 1 1
-%%BeginPageSetup
-BP
-%%EndPageSetup
-/F0 10/Times-Italic@0 SF(RST2MAN)72.63 48 Q/F1 10/Times-Roman@0 SF
-145.27(\(1\) te)1.1 F(xt processing)-.15 E F0(RST2MAN)148.4 E F1(\(1\))
-1.1 E/F2 10.95/Times-Bold@0 SF -.219(NA)72 84 S(ME).219 E F1
-(rst2man \255 generate unix manpages from reStructured te)108 96 Q(xt)
--.15 E F2(SYNOPSIS)72 112.8 Q/F3 10/Times-Bold@0 SF
-(rst2man \255\255help)108 124.8 Q(rst2man)108 148.8 Q F1 2.5([O)2.5 G
-(PTIONS ] [ SOURCE [)-2.5 E F0(destination)2.5 E F1 2.5(]])2.5 G F2
-(DESCRIPTION)72 165.6 Q F1(Run it and e)108 177.6 Q(xamine output.)-.15
-E F2(OPTIONS)72 194.4 Q F3<ad6f>108 206.4 Q F0(x)2.5 E F1(an option)144
-206.4 Q F3<ad62>108 223.2 Q F1(another)144 223.2 Q F3<ad66>108 240 Q F1
-(,)A F3<adad66>2.5 E(or)-.25 E(ce)-.18 E F1(really do it)144 252 Q -.15
-(Fo)108 276 S 2.5(ra).15 G(ll other options see)-2.5 E F3(\255\255help)
-2.5 E F1(.)A F2(EXAMPLES)72 292.8 Q F3
-(rst2man.py xml\255schema\255catalog)108 304.8 Q
-(.rst xml\255schema\255catalog)-.15 E(.man)-.15 E F1
-(create a manpage from xml\255schema\255catalog.rst)144 316.8 Q F3
-(Character f)87 333.6 Q(ormatting)-.25 E F0 -.1(BU)108 345.6 S(G).1 E F1
-(The section title should be separated from the title abo)2.5 E -.15(ve)
--.15 G(.).15 E -.7(Te)108 369.6 S(st).7 E F3(bold)2.5 E F1(or)2.5 E F3
-(str)2.5 E(ong)-.18 E F1(formatting.)2.5 E(Special characters:)108 393.6
-Q<83>108 410.4 Q(backslash: \\)118 410.4 Q<83>108 427.2 Q -.05(hy)118
-427.2 S(phen: \255).05 E<83>108 444 Q(accents: \264 \222)118 444 Q<83>
-108 460.8 Q(quotes: \010 ")118 460.8 Q(.period ad line start.)108 484.8
-Q F3(Lists)87 501.6 Q F1<83>108 513.6 Q -.2(bu)118 513.6 S(llet list).2
-E<83>108 530.4 Q .785(and a longer entry)118 530.4 R 3.285(,a)-.65 G
-.785(nd a longer entry)-3.285 F 3.284(,a)-.65 G .784(nd a longer entry)
--3.284 F 3.284(,a)-.65 G .784(nd a longer entry)-3.284 F 3.284(,a)-.65 G
-.784(nd a longer entry)-3.284 F 3.284(,a)-.65 G .784(nd a)-3.284 F
-(longer entry)118 542.4 Q 2.5(,a)-.65 G(nd a longer entry)-2.5 E 2.5(,a)
--.65 G(nd a longer entry)-2.5 E(,)-.65 E(1.)118 559.2 Q(and a nested)138
-559.2 Q(2.)118 576 Q(enumeration)138 576 Q<83>128 592.8 Q(some line)138
-592.8 Q<83>128 609.6 Q -.2(bu)138 609.6 S(llets).2 E(3.)118 626.4 Q 2.5
-(at)138 626.4 S(hird)-2.5 E(4.)118 643.2 Q 2.5(at)138 643.2 S(hird)-2.5
-E(5.)118 660 Q 2.5(at)138 660 S(hird)-2.5 E(a.)128 676.8 Q
-(alphabetically list)143 676.8 Q -.4(b.)128 693.6 S(betacarotin)143
-693.6 Q 188.17(0.0.1 2009-06-22)72 768 R(1)205.67 E 0 Cg EP
+f1
+68.024 702.988(NAME)s
+f0
+87.274 687.599(rst2man)s
+125.466(-)c
+131.879(generate)c
+171.886(unix)c
+194.194(manpages)c
+240.933(from)c
+265.067(reStructured)c
+322.190(text)c
+f1
+68.024 656.821(SYNOPSIS)s
+87.274 641.432(rst2man)s
+129.129(--help)c
+87.274 610.654(rst2man)s
+f0
+129.129([)c
+135.542(OPTIONS)c
+184.734(])c
+191.147([)c
+197.560(SOURCE)c
+243.705([)c
+f2
+250.118(destination)c
+f0
+301.763(])c
+308.176(])c
+f1
+68.024 579.876(DESCRIPTION)s
+f0
+87.274 564.487(Run)s
+108.361(it)c
+117.227(and)c
+135.861(examine)c
+175.879(output.)c
+f1
+68.024 533.709(OPTIONS)s
+87.274 502.931(-o)s
+f2
+99.187(x)c
+f0
+106.524 487.542(an)s
+119.658(option)c
+f1
+87.274 456.764(-b)s
+f0
+107.140(another)c
+f1
+87.274 425.986(-f)s
+f0
+94.600(,)c
+f1
+100.100(--force)c
+f0
+106.524 410.597(really)s
+134.321(do)c
+148.071(it)c
+118.415 379.819(For)s
+136.444(all)c
+150.194(other)c
+175.549(options)c
+210.694(see)c
+f1
+227.491(--help)c
+f0
+254.991(.)c
+f1
+68.024 349.041(EXAMPLES)s
+87.274 318.263(rst2man.py)s
+143.495(xml-schema-catalog.rst)c
+255.299(xml-schema-catalog.man)c
+f0
+106.524 302.874(create)s
+135.531(a)c
+143.165(manpage)c
+185.625(from)c
+209.759(xml-schema-catalog.rst)c
+f1
+76.274 272.096(Character)s
+127.281(formatting)c
+f2
+87.274 256.707(BUG)s
+f0
+112.629(The)c
+132.484(section)c
+166.397(title)c
+186.263(should)c
+218.350(be)c
+231.484(separated)c
+275.770(from)c
+299.904(the)c
+316.096(title)c
+335.962(above.)c
+87.274 225.929(Test)s
+f1
+108.966(bold)c
+f0
+132.506(or)c
+f1
+144.419(strong)c
+f0
+177.111(formatting.)c
+87.274 195.151(Special)s
+122.408(characters:)c
+87.274 164.373(+)s
+87.626(o)c
+98.978(backslash:)c
+147.554(\\)c
+87.274 133.595(+)s
+87.626(o)c
+98.978(hyphen:)c
+137.170(-)c
+87.274 102.817(+)s
+87.626(o)c
+98.978(accents:)c
+137.159(')c
+143.572(`)c
+f0
+68.024 739.233(RST2MAN\(1\))s
+274.362(text)c
+293.612(processing)c
+480.095(RST2MAN\(1\))c
+68.024 36.245(0.0.1)s
+281.853(2009-06-22)c
+480.095(RST2MAN\(1\))c
+showpage
 %%Page: 2 2
-%%BeginPageSetup
-BP
-%%EndPageSetup
-/F0 10/Times-Italic@0 SF(RST2MAN)72.63 48 Q/F1 10/Times-Roman@0 SF
-145.27(\(1\) te)1.1 F(xt processing)-.15 E F0(RST2MAN)148.4 E F1(\(1\))
-1.1 E(c.)128 84 Q(grammar)143 84 Q(6.)118 100.8 Q 2.5(at)138 100.8 S
-(hird)-2.5 E -1.29(Y.)128 117.6 S(the end)143 117.6 Q(Z.)128 134.4 Q
-(yello)143 134.4 Q(w)-.25 E(7.)118 151.2 Q 2.5(at)138 151.2 S(hird)-2.5
-E(8.)118 168 Q 2.5(at)138 168 S(hird)-2.5 E(9.)118 184.8 Q 2.5(at)138
-184.8 S(hird)-2.5 E(10.)118 201.6 Q(bigger indentation if there are mor\
-e than nine enumerated items \(or there are lar)138 201.6 Q
-(ger numbers\))-.18 E 2.5(as)138 225.6 S
-(econd paragraph that should be separated from the pre)-2.5 E
-(vious one and not \215o)-.25 E(wing into.)-.25 E(7.)108 242.4 Q
-(dont start with 1)123 242.4 Q(9.)108 259.2 Q(dont increment by 1)123
-259.2 Q(13.)108 276 Q
-(Problematic: indentation does not match for nonconsecuti)128 276 Q .3
--.15(ve e)-.25 H(ntries.).15 E .332
-(This paragraph must not be indented with the te)108 300 R .332
-(xt the last list\255item, b)-.15 F .332(ut start at the left mar)-.2 F
-.332(gin of the num-)-.18 F(bers.)108 312 Q 2.5(as)108 336 S
-(econd paragraph that should be separated from the pre)-2.5 E
-(vious one and not \215o)-.25 E(wing into.)-.25 E/F2 10/Times-Bold@0 SF
-(De\214nition Lists)87 352.8 Q -.92(Te)108 364.8 S(rm).92 E F1
-(De\214nition)144 364.8 Q F2 -.92(Te)108 381.6 S(rm).92 E F1
-(classi\214er De\214nition paragraph 1.)144 381.6 Q
-(De\214nition paragraph 2.)144 405.6 Q F2(.ini\255\214les)108 422.4 Q F1
--.7(Te)144 434.4 S(rm starting with period.).7 E F2 -.92(Te)108 451.2 S
-(rm).92 E F1(De\214nition)144 451.2 Q F2(Field lists)87 468 Q(\214rst)
-108 480 Q F1 2.5(as)144 480 S(hort label and a short te)-2.5 E(xt)-.15 E
-F2(secondly a longer label)108 496.8 Q F1(and some more te)144 508.8 Q
-(xt and some more te)-.15 E(xt and some more te)-.15 E 5(xt and)-.15 F
-(some more te)2.5 E(xt)-.15 E F2(de\214nition lists)108 525.6 Q F1
-(are also a v)144 537.6 Q(aluable option and simple nonintrusi)-.25 E .3
--.15(ve f)-.25 H(ormatting).15 E F2(de\214nition too :)108 554.4 Q F1
-(with the colon.)144 566.4 Q F2(Doctest Blocks)87 583.2 Q/F3 10
-/Courier@0 SF
-(>>> print \010Python\255specific usage examples; begun with ">>>"\010)
-108 595.2 Q(Python\255specific usage examples; begun with ">>>")108
-607.2 Q
-(>>> print \010\(cut and pasted from interactive Python sessions\)\010)
-108 619.2 Q(\(cut and pasted from interactive Python sessions\))108
-631.2 Q F2 -.92(Ta)87 648 S(bles).92 E .4 LW 378.705 652.5 269.295 652.5
-DL F1(single)274.295 662 Q(frame)350.385 662 Q 378.705 666.5 269.295
-666.5 DL(no table header)274.295 676 Q 378.705 680.5 269.295 680.5 DL
-342.885 652.5 342.885 680.5 DL 378.705 652.5 378.705 680.5 DL 269.295
-652.5 269.295 680.5 DL F2(lineblock)87 692.8 Q F1(paul)108 704.8 Q
-(tel. 12345)108 716.8 Q(LA)108 728.8 Q 188.17(0.0.1 2009-06-22)72 768 R
-(2)205.67 E 0 Cg EP
+f0
+87.274 702.988(+)s
+87.626(o)c
+98.978(quotes:)c
+133.507(')c
+139.920(")c
+118.415 672.210(.period)s
+152.020(ad)c
+165.154(line)c
+184.404(start.)c
+f1
+76.274 641.432(Lists)s
+f0
+87.274 610.654(+)s
+87.626(o)c
+98.978(bullet)c
+126.786(list)c
+87.274 579.876(+)s
+87.626(o)c
+98.978(and)c
+117.612(a)c
+125.246(longer)c
+156.101(entry,)c
+184.206(and)c
+202.840(a)c
+210.474(longer)c
+241.329(entry,)c
+269.434(and)c
+288.068(a)c
+295.702(longer)c
+326.557(entry,)c
+354.662(and)c
+373.296(a)c
+380.930(longer)c
+411.785(entry,)c
+439.890(and)c
+458.524(a)c
+466.158(longer)c
+497.013(entry,)c
+525.118(and)c
+98.274 564.487(a)s
+105.908(longer)c
+136.763(entry,)c
+164.868(and)c
+183.502(a)c
+191.136(longer)c
+221.991(entry,)c
+250.096(and)c
+268.730(a)c
+276.364(longer)c
+307.219(entry,)c
+98.274 533.709(1.)s
+120.274(and)c
+138.908(a)c
+146.542(nested)c
+98.274 502.931(2.)s
+120.274(enumeration)c
+109.274 472.153(+)s
+109.626(o)c
+120.978(some)c
+146.949(line)c
+109.274 441.375(+)s
+109.626(o)c
+120.978(bullets)c
+98.274 410.597(3.)s
+120.274(a)c
+127.908(third)c
+98.274 379.819(4.)s
+120.274(a)c
+127.908(third)c
+98.274 349.041(5.)s
+120.274(a)c
+127.908(third)c
+109.274 318.263(a.)s
+125.774(alphabetically)c
+190.234(list)c
+109.274 287.485(b.)s
+125.774(betacarotin)c
+109.274 256.707(c.)s
+125.774(grammar)c
+98.274 225.929(6.)s
+120.274(a)c
+127.908(third)c
+109.274 195.151(Y.)s
+125.774(the)c
+141.966(end)c
+109.274 164.373(Z.)s
+125.774(yellow)c
+98.274 133.595(7.)s
+120.274(a)c
+127.908(third)c
+98.274 102.817(8.)s
+120.274(a)c
+127.908(third)c
+f0
+68.024 739.233(RST2MAN\(1\))s
+274.362(text)c
+293.612(processing)c
+480.095(RST2MAN\(1\))c
+68.024 36.245(0.0.1)s
+281.853(2009-06-22)c
+480.095(RST2MAN\(1\))c
+showpage
 %%Page: 3 3
-%%BeginPageSetup
-BP
-%%EndPageSetup
-/F0 10/Times-Italic@0 SF(RST2MAN)72.63 48 Q/F1 10/Times-Roman@0 SF
-145.27(\(1\) te)1.1 F(xt processing)-.15 E F0(RST2MAN)148.4 E F1(\(1\))
-1.1 E 3.522(Ap)108 84 S 1.022(aragraph follo)-3.522 F 1.022
-(wing the line block.)-.25 F 1.021
-(lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum)6.021 F
-(lorem ipsum lorem ipsum lorem ipsum)108 96 Q/F2 10/Times-Bold@0 SF
-(Literal)87 112.8 Q F1(some literal te)108 124.8 Q(xt)-.15 E/F3 10
-/Courier@0 SF(here now it starts)125.5 148.8 Q(and continues)125.5 160.8
-Q(indented)137.5 172.8 Q(and back)125.5 184.8 Q F1
-(and a paragraph after the literal.)108 208.8 Q
-(some special characters and rof)108 232.8 Q 2.5(ff)-.25 G
-(ormatting in literal:)-2.5 E F3(.SS "." at line start)125.5 256.8 Q
-(backslash "\\")125.5 268.8 Q F2(Line blocks)87 285.6 Q F1
-(This is a line block.)108 297.6 Q(It ends with a blank line.)5 E
-(Each ne)128 309.6 Q 2.5(wl)-.25 G(ine be)-2.5 E(gins with a v)-.15 E
-(ertical bar \("|"\).)-.15 E
-(Line breaks and initial indents are preserv)128 321.6 Q(ed.)-.15 E
-(Continuation lines are wrapped portions of long lines;)108 333.6 Q(the)
-108 345.6 Q 2.5(yb)-.15 G -.15(eg)-2.5 G
-(in with a space in place of the v).15 E(ertical bar)-.15 E(.)-.55 E
-(The left edge of a continuation line need not be aligned with)128 357.6
-Q(the left edge of the te)128 369.6 Q(xt abo)-.15 E .3 -.15(ve i)-.15 H
-(t.).15 E(This is a second line block.)108 393.6 Q
-(Blank lines are permitted internally)108 417.6 Q 2.5(,b)-.65 G(ut the)
--2.7 E 2.5(ym)-.15 G(ust be)-2.5 E(gin with a "|".)-.15 E -.8(Ta)108
-453.6 S .2 -.1(ke i).8 H 2.5(ta).1 G -.1(wa)-2.65 G 1.3 -.65(y, E).1 H
-(ric the Orchestra Leader!).65 E 2.5(Ao)125.5 465.6 S(ne, tw)-2.5 E
-(o, a one tw)-.1 E 2.5(ot)-.1 G(hree four)-2.5 E
-(Half a bee, philosophically)125.5 489.6 Q(,)-.65 E(must,)145.5 501.6 Q
-F0(ipso facto)2.5 E F1 2.5(,h)C(alf not be.)-2.5 E
-(But half the bee has got to be,)125.5 513.6 Q F0(vis a vis)145.5 525.6
-Q F1(its entity)2.5 E 5(.D)-.65 G(\010you see?)-5 E
-(But can a bee be said to be)125.5 549.6 Q(or not to be an entire bee,)
-145.5 561.6 Q(when half the bee is not a bee,)165.5 573.6 Q
-(due to some ancient injury?)185.5 585.6 Q(Singing...)125.5 609.6 Q F2
-(raw)87 638.4 Q F1(ra)108 650.4 Q 2.5(wi)-.15 G(nput to man)-2.5 E F2
-(Admonitions)87 667.2 Q -.95(AT)108 679.2 S(TENTION!:).95 E F1(Directi)
-125.5 691.2 Q -.15(ve)-.25 G 2.5(sa).15 G 2.5(tl)-2.5 G(ar)-2.5 E(ge.)
--.18 E F2(CA)108 715.2 Q(UTION!:)-.5 E F1(Don\010t tak)125.5 727.2 Q 2.5
-(ea)-.1 G .3 -.15(ny w)-2.5 H(ooden nick).05 E(els.)-.1 E 188.17
-(0.0.1 2009-06-22)72 768 R(3)205.67 E 0 Cg EP
+f0
+98.274 702.988(9.)s
+120.274(a)c
+127.908(third)c
+98.274 672.210(10.)s
+120.274(bigger)c
+151.129(indentation)c
+203.379(if)c
+212.850(there)c
+237.589(are)c
+253.770(more)c
+279.125(than)c
+300.817(nine)c
+322.509(enumerated)c
+376.574(items)c
+403.161(\(or)c
+418.737(there)c
+443.476(are)c
+459.657(larger)c
+488.059(numbers\))c
+120.274 641.432(a)s
+127.908(second)c
+161.205(paragraph)c
+207.933(that)c
+227.183(should)c
+259.270(be)c
+272.404(separated)c
+316.690(from)c
+340.824(the)c
+357.016(previous)c
+397.650(one)c
+416.284(and)c
+434.918(not)c
+451.726(flowing)c
+488.697(into.)c
+87.274 610.654(7.)s
+103.774(dont)c
+126.082(start)c
+147.774(with)c
+170.082(1)c
+87.274 579.876(9.)s
+103.774(dont)c
+126.082(increment)c
+172.821(by)c
+186.571(1)c
+87.274 549.098(13.)s
+109.274(Problematic:)c
+168.245(indentation)c
+220.495(does)c
+243.408(not)c
+260.216(match)c
+289.850(for)c
+305.426(nonconsecutive)c
+376.607(entries.)c
+118.415 518.320(This)s
+140.723(paragraph)c
+187.451(must)c
+211.596(not)c
+228.404(be)c
+241.538(indented)c
+282.172(with)c
+304.480(the)c
+320.672(text)c
+339.922(the)c
+356.114(last)c
+374.143(list-item,)c
+416.317(but)c
+433.125(start)c
+454.817(at)c
+465.509(the)c
+481.701(left)c
+499.114(margin)c
+533.027(of)c
+118.415 502.931(the)s
+134.607(numbers.)c
+118.415 472.153(a)s
+126.049(second)c
+159.346(paragraph)c
+206.074(that)c
+225.324(should)c
+257.411(be)c
+270.545(separated)c
+314.831(from)c
+338.965(the)c
+355.157(previous)c
+395.791(one)c
+414.425(and)c
+433.059(not)c
+449.867(flowing)c
+486.838(into.)c
+f1
+76.274 441.375(Definition)s
+126.082(Lists)c
+87.274 410.597(Term)s
+f0
+106.524 395.208(Definition)s
+f1
+87.274 364.430(Term)s
+116.292(\(classifier\))c
+f0
+106.524 349.041(Definition)s
+154.495(paragraph)c
+201.223(1.)c
+106.524 318.263(Definition)s
+154.495(paragraph)c
+201.223(2.)c
+f1
+87.274 287.485(.ini-files)s
+f0
+106.524 272.096(Term)s
+133.100(starting)c
+168.850(with)c
+191.158(period.)c
+f1
+87.274 241.318(Term)s
+f0
+106.524 225.929(Definition)s
+f1
+76.274 195.151(Field)s
+102.861(lists)c
+87.274 164.373(first)s
+f0
+106.524 148.984(a)s
+114.158(short)c
+138.908(label)c
+163.042(and)c
+181.676(a)c
+189.310(short)c
+214.060(text)c
+f1
+87.274 118.206(secondly)s
+130.361(a)c
+138.611(longer)c
+171.303(label)c
+f0
+106.524 102.817(and)s
+125.158(some)c
+151.129(more)c
+176.484(text)c
+195.734(and)c
+214.368(some)c
+240.339(more)c
+265.694(text)c
+284.944(and)c
+303.578(some)c
+329.549(more)c
+354.904(text)c
+379.654(and)c
+398.288(some)c
+424.259(more)c
+449.614(text)c
+f0
+68.024 739.233(RST2MAN\(1\))s
+274.362(text)c
+293.612(processing)c
+480.095(RST2MAN\(1\))c
+68.024 36.245(0.0.1)s
+281.853(2009-06-22)c
+480.095(RST2MAN\(1\))c
+showpage
 %%Page: 4 4
-%%BeginPageSetup
-BP
-%%EndPageSetup
-/F0 10/Times-Italic@0 SF(RST2MAN)72.63 48 Q/F1 10/Times-Roman@0 SF
-145.27(\(1\) te)1.1 F(xt processing)-.15 E F0(RST2MAN)148.4 E F1(\(1\))
-1.1 E/F2 10/Times-Bold@0 SF(!D)108 84 Q(ANGER!:)-.35 E F1
-(Mad scientist at w)125.5 96 Q(ork!)-.1 E F2(ERR)108 120 Q(OR:)-.3 E F1
-(Does not compute.)125.5 132 Q F2(HINT)108 156 Q(:)-.74 E F1
-(It\010s bigger than a bread box.)125.5 168 Q F2(IMPOR)108 192 Q -.9(TA)
--.4 G(NT).9 E(:)-.74 E F1<83>125.5 208.8 Q -.8(Wa)135.5 208.8 S
-(sh behind your ears.).8 E<83>125.5 225.6 Q(Clean up your room.)135.5
-225.6 Q<83>125.5 242.4 Q(Call your mother)135.5 242.4 Q(.)-.55 E<83>
-125.5 259.2 Q(Back up your data.)135.5 259.2 Q F2(NO)108 283.2 Q(TE:)-.4
-E F1(This is a note.)125.5 295.2 Q F2(TIP:)108 319.2 Q F1
-(15% if the service is good.)125.5 331.2 Q F2 -1.2(WA)108 355.2 S
-(RNING:)1.2 E F1(Strong prose may pro)125.5 367.2 Q -.2(vo)-.15 G .2 -.1
-(ke e).2 H(xtreme mental e)-.05 E -.15(xe)-.15 G 2.5(rtion. Reader).15 F
-(discretion is strongly advised.)2.5 E(And, by the w)125.5 384 Q(ay)-.1
-E(...)-.65 E -1.1(Yo)161.5 408 S 2.5(uc)1.1 G(an mak)-2.5 E 2.5(eu)-.1 G
-2.5(py)-2.5 G(our o)-2.5 E(wn admonition too.)-.25 E -.4(Wi)161.5 432 S
-(th more than one paragraph.).4 E -1.25 -.7(Te x)108 456 T 2.5(ta).7 G
-(fter the admonition.)-2.5 E F2(other)87 472.8 Q F1(inline references)
-108 484.8 Q F0 -.37(re)2.5 G 2.5(fs).37 G(omething)-2.5 E F1 5(.C)2.5 G
-(ontained v)-5 E(erbose. Nothing special.)-.15 E/F3 10.95/Times-Bold@0
-SF -.197(TO)72 501.6 S 2.738(PS).197 G(ECTION)-2.738 E F1 -.4(Wi)108
-513.6 S(th mix).4 E(ed case)-.15 E F3 -.197(TO)72 530.4 S 2.738(PS).197
-G(ECTION B C D E F G)-2.738 E F1(with character formatting.)108 542.4 Q
-F3(FILES)72 559.2 Q F1(This is a \214le.)108 571.2 Q F3(SEE ALSO)72 588
-Q F1(docutils)108 600 Q/F4 10/Symbol SF<e1>2.5 E F1
-(http://docutils.sourcefor)A(ge.net)-.18 E F4<f1>A F2(rst2xml)108 636 Q
-F1(\(dummy\))A(More information can be found about)108 660 Q<83>108
-676.8 Q(xml\255schema\255catalog at)118 676.8 Q F4<e1>118 700.8 Q F1
-(http://xml\255schema\255catalog.origo.ethz.ch/)A F4<f1>A F1 188.17
-(0.0.1 2009-06-22)72 768 R(4)205.67 E 0 Cg EP
+f1
+87.274 702.988(definition)s
+135.256(lists)c
+f0
+106.524 687.599(are)s
+122.705(also)c
+143.176(a)c
+150.810(valuable)c
+190.828(option)c
+221.694(and)c
+240.328(simple)c
+272.415(nonintrusive)c
+330.165(formatting)c
+f1
+87.274 656.821(definition)s
+135.256(too)c
+152.669(:)c
+f0
+106.524 641.432(with)s
+128.832(the)c
+145.024(colon.)c
+f1
+76.274 610.654(Doctest)s
+113.839(Blocks)c
+f0
+87.274 595.265(>>>)s
+108.636(print)c
+132.165('Python-specific)c
+207.625(usage)c
+235.422(examples;)c
+282.777(begun)c
+312.411(with)c
+334.719(">>>"')c
+87.274 579.876(Python-specific)s
+159.071(usage)c
+186.868(examples;)c
+234.223(begun)c
+263.857(with)c
+286.165(">>>")c
+87.274 564.487(>>>)s
+108.636(print)c
+132.165('\(cut)c
+155.683(and)c
+174.317(pasted)c
+205.172(from)c
+229.306(interactive)c
+278.487(Python)c
+312.411(sessions\)')c
+87.274 549.098(\(cut)s
+107.129(and)c
+125.763(pasted)c
+156.618(from)c
+180.752(interactive)c
+229.933(Python)c
+263.857(sessions\))c
+f1
+76.274 518.320(Tables)s
+f0
+272.052 487.542(+-----------------+---------+)s
+272.052 472.153(|single)s
+333.784( |frame |)c
+272.052 456.764(+-----------------+---------+)s
+272.052 441.375(|no)s
+288.002(table)c
+333.784( |        |)c
+272.052 425.986(|header)s
+333.784( |        |)c
+272.052 410.597(+-----------------+---------+)s
+f1
+76.274 395.208(lineblock)s
+f0
+87.274 379.819(paul)s
+87.274 364.430(tel.)s
+103.774(12345)c
+87.274 349.041(LA)s
+87.274 302.874(A)s
+97.966(paragraph)c
+144.694(following)c
+190.223(the)c
+206.415(line)c
+225.665(block.)c
+258.357(lorem)c
+286.770(ipsum)c
+316.415(lorem)c
+344.828(ipsum)c
+374.473(lorem)c
+402.886(ipsum)c
+432.531(lorem)c
+460.944(ipsum)c
+490.589(lorem)c
+87.274 287.485(ipsum)s
+116.919(lorem)c
+145.332(ipsum)c
+174.977(lorem)c
+203.390(ipsum)c
+233.035(lorem)c
+261.448(ipsum)c
+f1
+76.274 256.707(Literal)s
+f0
+87.274 241.318(some)s
+113.245(literal)c
+141.658(text)c
+106.524 210.540(here)s
+128.205(now)c
+149.897(it)c
+158.763(starts)c
+106.524 195.151(and)s
+125.158(continues)c
+112.024 179.762(indented)s
+106.524 164.373(and)s
+125.158(back)c
+118.415 133.595(and)s
+137.049(a)c
+144.683(paragraph)c
+191.411(after)c
+214.313(the)c
+230.505(literal.)c
+118.415 102.817(some)s
+144.386(special)c
+177.683(characters)c
+225.016(and)c
+243.650(roff)c
+262.889(formatting)c
+312.081(in)c
+323.389(literal:)c
+f0
+68.024 739.233(RST2MAN\(1\))s
+274.362(text)c
+293.612(processing)c
+480.095(RST2MAN\(1\))c
+68.024 36.245(0.0.1)s
+281.853(2009-06-22)c
+480.095(RST2MAN\(1\))c
+showpage
 %%Page: 5 5
-%%BeginPageSetup
-BP
-%%EndPageSetup
-/F0 10/Times-Italic@0 SF(RST2MAN)72.63 48 Q/F1 10/Times-Roman@0 SF
-145.27(\(1\) te)1.1 F(xt processing)-.15 E F0(RST2MAN)148.4 E F1(\(1\))
-1.1 E(And see the stars at the sk)108 84 Q(y!)-.15 E/F2 10.95
-/Times-Bold@0 SF -.11(BU)72 100.8 S(GS).11 E F1
-(Numerous mapping problems.)108 112.8 Q(1.)108 129.6 Q
-(Where do we get the manual section number from ? Commandline ?)123
-129.6 Q(2.)108 146.4 Q
-(docutils authors should be \214lled into section "A)123 146.4 Q
-(UTHORS".)-.55 E(3.)108 163.2 Q
-(be carefull with linebreaks in generated code.)123 163.2 Q(4.)108 180 Q
-(list items.)123 180 Q -.2(bu)5 G(llets and enumerators.).2 E F2 -.548
-(AU)72 196.8 S(THOR).548 E F1(grubert@users.sourcefor)108 208.8 Q
-(ge.net)-.18 E(Or)108 232.8 Q -.05(ga)-.18 G(nization: humankind).05 E
-(Address:)108 256.8 Q(123 Example Street)125.5 268.8 Q(Example, EX)125.5
-280.8 Q(Canada)5 E(A1B 2C3)125.5 292.8 Q F2(COPYRIGHT)72 309.6 Q F1
-(public domain Beha)108 321.6 Q .3 -.15(ve r)-.2 H(esponsible.).15 E
-188.17(0.0.1 2009-06-22)72 768 R(5)205.67 E 0 Cg EP
+f0
+106.524 702.988(.SS)s
+124.256(".")c
+138.732(at)c
+149.424(line)c
+168.674(start)c
+106.524 687.599(backslash)s
+152.042("\\")c
+f1
+76.274 656.821(Line)s
+100.419(blocks)c
+f0
+87.274 641.432(This)s
+109.582(is)c
+119.669(a)c
+127.303(line)c
+146.553(block.)c
+179.245(It)c
+188.716(ends)c
+211.629(with)c
+233.937(a)c
+241.571(blank)c
+268.763(line.)c
+98.274 626.043(Each)s
+123.013(new)c
+144.089(line)c
+163.339(begins)c
+194.810(with)c
+217.118(a)c
+224.752(vertical)c
+260.491(bar)c
+277.288(\("|"\).)c
+98.274 610.654(Line)s
+121.187(breaks)c
+152.647(and)c
+171.281(initial)c
+199.705(indents)c
+234.234(are)c
+250.415(preserved.)c
+87.274 595.265(Continuation)s
+147.477(lines)c
+171.006(are)c
+187.187(wrapped)c
+227.810(portions)c
+266.618(of)c
+278.531(long)c
+300.839(lines;)c
+87.274 579.876(they)s
+108.966(begin)c
+136.158(with)c
+158.466(a)c
+166.100(space)c
+193.281(in)c
+204.589(place)c
+230.549(of)c
+242.462(the)c
+258.654(vertical)c
+294.393(bar.)c
+98.274 564.487(The)s
+118.129(left)c
+135.542(edge)c
+159.060(of)c
+170.973(a)c
+178.607(continuation)c
+236.357(line)c
+255.607(need)c
+279.125(not)c
+295.933(be)c
+309.067(aligned)c
+344.201(with)c
+98.274 549.098(the)s
+114.466(left)c
+131.879(edge)c
+155.397(of)c
+167.310(the)c
+183.502(text)c
+202.752(above)c
+231.770(it.)c
+87.274 518.320(This)s
+109.582(is)c
+119.669(a)c
+127.303(second)c
+160.600(line)c
+179.850(block.)c
+87.274 487.542(Blank)s
+116.303(lines)c
+139.832(are)c
+156.013(permitted)c
+200.926(internally,)c
+248.589(but)c
+265.397(they)c
+287.089(must)c
+311.234(begin)c
+338.426(with)c
+360.734(a)c
+368.368("|".)c
+87.274 441.375(Take)s
+112.013(it)c
+120.879(away,)c
+149.589(Eric)c
+170.665(the)c
+186.857(Orchestra)c
+232.364(Leader!)c
+106.524 425.986(A)s
+117.216(one,)c
+138.600(two,)c
+160.600(a)c
+168.234(one)c
+186.868(two)c
+206.118(three)c
+230.857(four)c
+106.524 395.208(Half)s
+128.821(a)c
+136.455(bee,)c
+157.223(philosophically,)c
+117.524 379.819(must,)s
+f2
+144.419(ipso)c
+165.506(facto)c
+f0
+187.506(,)c
+193.006(half)c
+212.861(not)c
+229.669(be.)c
+106.524 364.430(But)s
+125.169(half)c
+145.024(the)c
+161.216(bee)c
+179.234(has)c
+196.647(got)c
+213.455(to)c
+224.763(be,)c
+f2
+117.524 349.041(vis)s
+132.495(a)c
+140.745(vis)c
+f0
+155.716(its)c
+168.861(entity.)c
+202.169(D'you)c
+233.024(see?)c
+106.524 318.263(But)s
+125.169(can)c
+143.187(a)c
+150.821(bee)c
+168.839(be)c
+181.973(said)c
+202.444(to)c
+213.752(be)c
+117.524 302.874(or)s
+129.437(not)c
+146.245(to)c
+157.553(be)c
+170.687(an)c
+183.821(entire)c
+211.618(bee,)c
+128.524 287.485(when)s
+155.100(half)c
+174.955(the)c
+191.147(bee)c
+209.165(is)c
+219.252(not)c
+236.060(a)c
+243.694(bee,)c
+139.524 272.096(due)s
+158.158(to)c
+169.466(some)c
+195.437(ancient)c
+229.955(injury?)c
+106.524 241.318(Singing...)s
+f1
+76.274 195.151(raw)s
+f0
+87.274 179.762(raw)s
+106.513(input)c
+131.879(to)c
+143.187(man)c
+f1
+76.274 148.984(Admonitions)s
+87.274 133.595(ATTENTION!:)s
+f0
+106.524 118.206(Directives)s
+154.484(at)c
+165.176(large.)c
+f0
+68.024 739.233(RST2MAN\(1\))s
+274.362(text)c
+293.612(processing)c
+480.095(RST2MAN\(1\))c
+68.024 36.245(0.0.1)s
+281.853(2009-06-22)c
+480.095(RST2MAN\(1\))c
+showpage
+%%Page: 6 6
+f1
+118.415 702.988(CAUTION!:)s
+f0
+106.524 687.599(Don't)s
+134.937(take)c
+156.013(any)c
+174.647(wooden)c
+212.223(nickels.)c
+f1
+118.415 656.821(!DANGER!:)s
+f0
+106.524 641.432(Mad)s
+129.437(scientist)c
+168.245(at)c
+178.937(work!)c
+f1
+118.415 610.654(ERROR:)s
+f0
+106.524 595.265(Does)s
+131.879(not)c
+148.687(compute.)c
+f1
+118.415 564.487(HINT:)s
+f0
+106.524 549.098(It's)s
+123.937(bigger)c
+154.792(than)c
+176.484(a)c
+184.118(bread)c
+211.299(box.)c
+f1
+118.415 518.320(IMPORTANT:)s
+f0
+106.524 487.542(+)s
+106.876(o)c
+118.228(Wash)c
+146.025(behind)c
+178.717(your)c
+201.630(ears.)c
+106.524 456.764(+)s
+106.876(o)c
+118.228(Clean)c
+146.641(up)c
+160.391(your)c
+183.304(room.)c
+106.524 425.986(+)s
+106.876(o)c
+118.228(Call)c
+139.315(your)c
+162.228(mother.)c
+106.524 395.208(+)s
+106.876(o)c
+118.228(Back)c
+143.583(up)c
+157.333(your)c
+180.246(data.)c
+f1
+118.415 364.430(NOTE:)s
+f0
+106.524 349.041(This)s
+128.832(is)c
+138.919(a)c
+146.553(note.)c
+f1
+118.415 318.263(TIP:)s
+f0
+106.524 302.874(15%)s
+129.437(if)c
+138.908(the)c
+155.100(service)c
+189.002(is)c
+199.089(good.)c
+f1
+118.415 272.096(WARNING:)s
+f0
+106.524 256.707(Strong)s
+138.611(prose)c
+165.187(may)c
+186.879(provoke)c
+225.676(extreme)c
+263.857(mental)c
+296.549(exertion.)c
+340.846(Reader)c
+374.748(discretion)c
+420.882(is)c
+430.969(strongly)c
+469.777(advised.)c
+106.524 225.929(And,)s
+130.966(by)c
+144.716(the)c
+160.908(way...)c
+125.774 195.151(You)s
+147.466(can)c
+165.484(make)c
+192.060(up)c
+205.810(your)c
+228.723(own)c
+250.415(admonition)c
+303.281(too.)c
+125.774 164.373(With)s
+150.524(more)c
+175.879(than)c
+197.571(one)c
+216.205(paragraph.)c
+118.415 133.595(Text)s
+141.328(after)c
+164.230(the)c
+180.422(admonition.)c
+f1
+76.274 102.817(other)s
+f0
+68.024 739.233(RST2MAN\(1\))s
+274.362(text)c
+293.612(processing)c
+480.095(RST2MAN\(1\))c
+68.024 36.245(0.0.1)s
+281.853(2009-06-22)c
+480.095(RST2MAN\(1\))c
+showpage
+%%Page: 7 7
+f0
+87.274 702.988(inline)s
+115.082(references)c
+f2
+163.020(ref)c
+177.991(something)c
+f0
+225.962(.)c
+234.212(Contained)c
+282.183(verbose.)c
+321.893(Nothing)c
+360.701(special.)c
+f1
+68.024 672.210(TOP)s
+93.390(SECTION)c
+f0
+87.274 656.821(With)s
+112.024(mixed)c
+142.274(case)c
+f1
+68.024 626.043(TOP)s
+93.390(SECTION)c
+145.651(B)c
+155.738(C)c
+166.430(D)c
+177.122(E)c
+187.209(F)c
+196.680(G)c
+f0
+87.274 610.654(with)s
+109.582(character)c
+152.636(formatting.)c
+f1
+68.024 579.876(FILES)s
+f0
+87.274 564.487(This)s
+109.582(is)c
+119.669(a)c
+127.303(file.)c
+f1
+68.024 533.709(SEE)s
+91.564(ALSO)c
+f0
+87.274 502.931(docutils)s
+124.861(<http://docutils.sourceforge.net>)c
+f1
+87.274 456.764(rst2xml)s
+f0
+123.321(\(dummy\))c
+87.274 425.986(More)s
+113.850(information)c
+168.542(can)c
+186.560(be)c
+199.694(found)c
+228.107(about)c
+87.274 395.208(+)s
+87.626(o)c
+98.978(xml-schema-catalog)c
+190.927(at)c
+98.274 364.430(<http://xml-schema-catalog.origo.ethz.ch/>)s
+118.415 318.263(And)s
+140.107(see)c
+156.904(the)c
+173.096(stars)c
+196.009(at)c
+206.701(the)c
+222.893(sky!)c
+f1
+68.024 287.485(BUGS)s
+f0
+87.274 272.096(Numerous)s
+135.850(mapping)c
+177.100(problems.)c
+87.274 241.318(1.)s
+103.774(Where)c
+135.839(do)c
+149.589(we)c
+165.165(get)c
+181.357(the)c
+197.549(manual)c
+232.683(section)c
+266.596(number)c
+302.951(from)c
+327.085(?)c
+334.719(Commandline)c
+399.806(?)c
+87.274 210.540(2.)s
+103.774(docutils)c
+141.361(authors)c
+176.495(should)c
+208.582(be)c
+221.716(filled)c
+247.687(into)c
+267.553(section)c
+301.466("AUTHORS".)c
+87.274 179.762(3.)s
+103.774(be)c
+116.908(carefull)c
+153.252(with)c
+175.560(linebreaks)c
+223.520(in)c
+234.828(generated)c
+280.335(code.)c
+87.274 148.984(4.)s
+103.774(list)c
+119.977(items.)c
+152.064(bullets)c
+184.151(and)c
+202.785(enumerators.)c
+f1
+68.024 118.206(AUTHOR)s
+f0
+87.274 102.817(grubert@users.sourceforge.net)s
+f0
+68.024 739.233(RST2MAN\(1\))s
+274.362(text)c
+293.612(processing)c
+480.095(RST2MAN\(1\))c
+68.024 36.245(0.0.1)s
+281.853(2009-06-22)c
+480.095(RST2MAN\(1\))c
+showpage
+%%Page: 8 8
+f0
+87.274 702.988(Organization:)s
+150.513(humankind)c
+87.274 672.210(Address:)s
+106.524 656.821(123)s
+125.774(Example)c
+167.629(Street)c
+106.524 641.432(Example,)s
+151.129(EX)c
+171.292(Canada)c
+106.524 626.043(A1B)s
+130.053(2C3)c
+f1
+68.024 595.265(COPYRIGHT)s
+f0
+87.274 579.876(public)s
+117.524(domain)c
+153.274(Behave)c
+189.013(responsible.)c
+f0
+68.024 739.233(RST2MAN\(1\))s
+274.362(text)c
+293.612(processing)c
+480.095(RST2MAN\(1\))c
+68.024 36.245(0.0.1)s
+281.853(2009-06-22)c
+480.095(RST2MAN\(1\))c
+showpage
 %%Trailer
-end
+%%Pages: 8
 %%EOF

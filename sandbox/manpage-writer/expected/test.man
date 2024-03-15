@@ -161,8 +161,7 @@ one and not flowing into.
 .B Term
 Definition
 .TP
-.B Term
-classifier
+.B Term (classifier)
 Definition paragraph 1.
 .sp
 Definition paragraph 2.
