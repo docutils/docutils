@@ -19,7 +19,7 @@ systems. The pages are grouped in numbered sections:
 
 Man pages are written *troff*, a text file formatting system.
 
-See http://www.tldp.org/HOWTO/Man-Page for a start.
+See https://www.tldp.org/HOWTO/Man-Page for a start.
 
 Man pages have no subsection only parts.
 Standard parts
@@ -1101,7 +1101,7 @@ class Translator(nodes.NodeVisitor):
 
     def depart_term(self, node):
         _next = node.next_node(None, descend=False, siblings=True)
-        # Nest (optional) classifier(s) in the <dt> element
+        # Nest (optional) classifier(s) in the <term> element
         if isinstance(_next, nodes.classifier):
             self.body.append(' ')
             return  # skip (depart_classifier() calls this function again)
