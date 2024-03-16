@@ -173,6 +173,7 @@ Release 0.21.rc1
 
 * docutils/writers/manpage.py
 
+  - Skip footer to avoid the link to document source in the manpage.
   - Add multiple definition list term support, see feature #60.
   - Add preprocessor hinting tbl first line, see bug #477.
   - Change tbl-Tables using box option, see bug #475.

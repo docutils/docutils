@@ -698,6 +698,8 @@ class Translator(nodes.NodeVisitor):
     def visit_footer(self, node):
         self.document.reporter.warning('"footer" not supported',
                                        base_node=node)
+        # avoid output the link to document source
+        raise nodes.SkipNode
 
     def depart_footer(self, node):
         pass
