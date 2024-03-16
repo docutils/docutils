@@ -68,6 +68,8 @@ Then the rST input should be
   an interface to the on-line reference manuals
   ---------------------------------------------
 
+  :Version: 2.3.19
+  :Date: 14 May 2001
   :Manual section: 1
   :Manual group: Man Pager Utils
 
@@ -85,19 +87,7 @@ This means we have
 * a date "14 May 2001"
 * a version "2.3.19"
 
-
-
-One should try to comply with the `troff line break rules`__ after punctuation
-signs in the rST source.  Use a new line or two spaces to start a new sentence.
-
-Avoid linebreaks after punctuation signs that do not end a sentence.
-A linebreak can be escaped with a backslash.  In rST, escaped whitespace
-is removed, so precede the backslash by a space::
-
-  We recommend the works of E. T. A. \
-  Hoffman.
-
-__ https://www.gnu.org/software/groff/manual/groff.html#Sentences
+Version and Date will be put in the last line/footer of the generated man page.
 
 References
 ''''''''''
@@ -149,32 +139,21 @@ Conventions
 
 * new lines in general.
 
+  One should try to comply with the `troff line break rules`__ after punctuation
+  signs in the rST source.  Use a new line or two spaces to start a new sentence.
+  
+  Avoid linebreaks after punctuation signs that do not end a sentence.
+  A linebreak can be escaped with a backslash.  In rST, escaped whitespace
+  is removed, so precede the backslash by a space::
+  
+    We recommend the works of E. T. A. \
+    Hoffman.
+  
+  __ https://www.gnu.org/software/groff/manual/groff.html#Sentences
+
   Consecutive blank lines are merged by the viewer but not on printouts.
   So one has to be cautious. This is most disturbing when printing
   postscript.
-
-  .. NOTE::
-
-    1. Roff requests only work when at line start.
-    2. But consecutive blank lines are merged by the viewer but not on
-       printouts.
-
-    So try the rule start new lines in ``visit_``-functions, but only if
-    necessary. E.g. ``field-names`` are already on a new line because of
-    docutils structure.
-
-* Indentation, left margin:
-
-  - The writer includes two macros ``.INDENT`` and ``.UNINDENT`` that
-    keep track of the indentation in roff-code, for line-blocks python
-    keeps track of it. WHAT should be the preferred way ?
-
-    But standard macros like ``.PP`` might reset it.
-
-  - Why do ``.RE`` and ``.RS`` not work?
-
-  .. Note::
-     Current indent is in register ``.i``.
 
 * [LMHT]_ Filenames are always in italics, except in the SYNOPSIS section,
   use::
@@ -184,9 +163,6 @@ Conventions
   and::
 
     .B #include <stdio.h>
-
-* Tables are possible, via the external processor tbl, although one should
-  avoid them.
 
 TODO - Open issues
 ''''''''''''''''''
