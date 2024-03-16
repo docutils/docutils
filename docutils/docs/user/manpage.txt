@@ -43,7 +43,9 @@ man pages look like::
    SYNOPSIS
        man [-c|-w|-tZT device] [-adhu7V] [-m system[,...]] [-L locale]
 
-in roff formatting::
+in roff formatting
+
+.. code:: man
 
      .TH man 1 "14 May 2001" "2.3.19" "Manual pager utils"
      .SH NAME
@@ -54,6 +56,26 @@ in roff formatting::
      .RB [\| \-c \||\| \-w \||\| \-tZT
      .IR device \|]
 
+Then the rST input should be 
+
+.. code:: rst
+
+  =====
+   man
+  =====
+
+  ---------------------------------------------
+  an interface to the on-line reference manuals
+  ---------------------------------------------
+
+  :Manual section: 1
+  :Manual group: Man Pager Utils
+
+  SYNOPSIS
+  ========
+
+  ``man`` ``[-c|-w|-tZT device] [-adhu7V] [-m system[,...]] [-L locale]``
+
 This means we have
 
 * a title "man"
@@ -62,6 +84,7 @@ This means we have
 * a manual group "Manual pager utils"
 * a date "14 May 2001"
 * a version "2.3.19"
+
 
 
 One should try to comply with the `troff line break rules`__ after punctuation
@@ -79,8 +102,8 @@ __ https://www.gnu.org/software/groff/manual/groff.html#Sentences
 References
 ''''''''''
 
-man pages from section 7, ``man`` and ``man-pages`` and ``groff_man`` and
-``groff_man_style``.
+man pages from section 7: *man* , *man-pages*, *groff_man* and
+*groff_man_style*.
 
 .. [LMHT] `Linux Man Page Howto <https://tldp.org/HOWTO/Man-Page/>`__.
 
