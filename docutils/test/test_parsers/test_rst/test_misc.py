@@ -12,9 +12,8 @@ import sys
 import unittest
 
 if __name__ == '__main__':
-    # prepend the "docutils root" to the Python library path
-    # so we import the local `docutils` package.
-    sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+    # prepend the local "docutils root" to the Python library path
+    sys.path.insert(0, Path(__file__).resolve().parents[2].as_posix())
 
 from docutils import parsers, utils, frontend
 
@@ -22,12 +21,13 @@ from docutils import parsers, utils, frontend
 class RstParserTests(unittest.TestCase):
 
     def test_inputrestrictions(self):
+        # input must be unicode at all times, check for meaningful Exception
         parser_class = parsers.get_parser_class('rst')
         parser = parser_class()
         document = utils.new_document('test data',
                                       frontend.get_default_settings(parser))
-        # input must be unicode at all times
-        self.assertRaises(TypeError, parser.parse, b'hol', document)
+        with self.assertRaises(TypeError):
+            parser.parse(b'hol', document)
 
 
 if __name__ == '__main__':
