@@ -2194,11 +2194,9 @@ Common Option Value Types
   no value.
 
   .. _integer:
-  .. _list of integers:
 
 *integer*
-  integer number.
-  A *list of integers* may be comma- or whitespace-separated.
+  A _`list of integers` may be comma- or whitespace-separated.
 
   .. _length:
 

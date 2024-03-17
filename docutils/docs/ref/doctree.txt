@@ -3936,11 +3936,13 @@ _`Common Attributes`:
     the following attributes: ids_, names_ or dupnames_, source_, and
     classes_.
 
+In addition to the XML attribute type, the Python datatype of attribute
+values in Docutils `node` objects is stated (in parentheses).
 
 ``alt``
 =======
 
-Attribute type: `CDATA`_.  Default value: none.
+Attribute type: `CDATA`_ (str).  Default value: none.
 
 The ``alt`` attribute is used to store a text description in the
 `\<image>`_ element.
@@ -3949,7 +3951,7 @@ The ``alt`` attribute is used to store a text description in the
 ``align``
 =========
 
-Attribute type: `CDATA`_.  Default value: none (inherit).
+Attribute type: `CDATA`_ (str).  Default value: none (inherit).
 
 The ``align`` attribute is used in the `\<figure>`_, `\<image>`_, and
 `\<table>`_ elements (via the `%align-h.att;`_ and `%align-hv.att;`_
@@ -3959,7 +3961,7 @@ parameter entities).
 ``anonymous``
 =============
 
-Attribute type: `yesorno`_.  Default value: none (implies no).
+Attribute type: `yesorno`_ (int).  Default value: none (implies no).
 
 The ``anonymous`` attribute is used for unnamed hyperlinks in the
 `\<target>`_ and `\<reference>`_ elements (via the `%anonymous.att;`_
@@ -3969,7 +3971,7 @@ parameter entity).
 ``auto``
 ========
 
-Attribute type: `CDATA`_.  Default value: none.
+Attribute type: `CDATA`_ (str).  Default value: none.
 
 The ``auto`` attribute is used to indicate automatically-numbered
 `\<footnote>`_, `\<footnote_reference>`_ and `\<title>`_ elements
@@ -3979,7 +3981,7 @@ The ``auto`` attribute is used to indicate automatically-numbered
 ``backrefs``
 ============
 
-Attribute type: `idrefs.type`_.  Default value: none.
+Attribute type: `idrefs.type`_ (list[str]).  Default value: none.
 
 The ``backrefs`` attribute contains a space-separated list of identifier_
 references, used for backlinks from `\<footnote>`_, `\<citation>`_, and
@@ -3989,7 +3991,7 @@ references, used for backlinks from `\<footnote>`_, `\<citation>`_, and
 ``bullet``
 ==========
 
-Attribute type: `CDATA`_.  Default value: none.
+Attribute type: `CDATA`_ (str).  Default value: none.
 
 The ``bullet`` attribute is used in the `\<bullet_list>`_ element to
 record the style of bullet from the input data.  In documents processed
@@ -4000,10 +4002,10 @@ It may be ignored in processing.
 ``classes``
 ===========
 
-Attribute type: `classnames.type`_.  Default value: none.
+Attribute type: `classnames.type`_ (list[str]).  Default value: none.
 
-The ``classes`` attribute is a space separated list containing zero or more
-`class names`_.
+The ``classes`` attribute is a space separated list containing zero or
+more `class names`_.
 
 The purpose of the attribute is to indicate an "is-a" variant relationship,
 to allow an extensible way of defining sub-classes of existing elements.
@@ -4029,7 +4031,7 @@ Docutils elements.
 ``colwidth``
 ============
 
-Attribute type: `CDATA`_. Default value: "1*"
+Attribute type: `CDATA`_ (int).  Default value: "1*" (`sic!`__)
 
 Column width specification used in the `\<colspec>`_ element.
 Defined in the exchange-table-model_.
@@ -4044,20 +4046,17 @@ unit values is “pt” (points), “cm” (centimeters), “mm” (millimeters)
 interpreted as “pt” if neither a proportion nor a fixed unit is
 specified.
 
-.. important:: Docutils uses "CSS units" as indicated in the
-   `reStructuredText specification`__: The pica is abbreviated "pc"
-   and there is support for the additional units "px", "em", and "ex".
+__ 
 
-   Currently, Docutils interprets unitless numbers in the ``colwidth``
-   attribute as proportions.
-
-   __ rst/restructuredtext.html#units
+.. important::
+   Currently, Docutils only allows unitless integers in the ``colwidth``
+   attribute and interprets them as proportions.
 
 
 ``delimiter``
 =============
 
-Attribute type: `CDATA`_.  Default value: none.
+Attribute type: `CDATA`_ (str).  Default value: none.
 
 The ``delimiter`` attribute is used in the `\<option_argument>`_ element
 and contains the text preceding the <option_argument>: either the text
@@ -4068,7 +4067,7 @@ or the text between option arguments (typically either "," or " ").
 ``dupnames``
 ============
 
-Attribute type: `refnames.type`_.  Default value: none.
+Attribute type: `refnames.type`_ (list[str]).  Default value: none.
 
 ``dupnames`` is one of the `common attributes`_, shared by all
 Docutils elements. It replaces the `names`_ attribute when there
@@ -4086,10 +4085,10 @@ The ``enumtype`` attribute is used in the `\<enumerated_list>`_ element.
 ``format``
 ==========
 
-Attribute type: NMTOKENS_.  Default value: none.
+Attribute type: NMTOKENS_ (str).  Default value: none.
 
-The ``format`` attribute is a space separated list containing one or more
-output format names.
+The ``format`` attribute is a string containing one or more space
+separated output format names.
 
 The ``format`` attribute is used in the `\<raw>`_ element.
 
@@ -4097,7 +4096,7 @@ The ``format`` attribute is used in the `\<raw>`_ element.
 ``height``
 ==========
 
-Attribute type: measure_.  Default value: none.
+Attribute type: measure_ (str).  Default value: none.
 
 The ``height`` attribute is used in the `\<image>`_ element.
 
@@ -4105,7 +4104,7 @@ The ``height`` attribute is used in the `\<image>`_ element.
 ``ids``
 =======
 
-Attribute type: `ids.type`_.  Default value: none.
+Attribute type: `ids.type`_ (list[str]).  Default value: none.
 
 The ``ids`` attribute is a space separated list containing one or more
 unique `identifier keys`_, typically assigned by the system.
@@ -4122,7 +4121,7 @@ elements.
 ``level``
 =========
 
-Attribute type: number_.  Default value: none.
+Attribute type: number_ (int).  Default value: none.
 
 The ``level`` attribute is used in the `\<system_message>`_ element.
 
@@ -4130,7 +4129,7 @@ The ``level`` attribute is used in the `\<system_message>`_ element.
 ``ltrim``
 =========
 
-Attribute type: `yesorno`_.  Default value: none (implies no).
+Attribute type: `yesorno`_ (int).  Default value: none (implies no).
 
 The ``ltrim`` attribute is used in the `\<substitution_definition>`_ element.
 
@@ -4160,15 +4159,15 @@ New in Docutils 0.21
 ``morecols``
 ============
 
-Attribute type: number_.  Default value: none.
+Attribute type: number_ (int).  Default value: none.
 
-The ``morecols`` attribute is used in the `\<table>`_ element.
+The ``morecols`` attribute is used in the `\<entry>`_ element.
 
 
 ``names``
 =========
 
-Attribute type: `refnames.type`_.  Default value: none.
+Attribute type: `refnames.type`_ (list[str]).  Default value: none.
 
 The ``names`` attribute is a space-separated list containing
 `normalized`_ `reference names`_ of an element. Whitespace inside a
@@ -4197,7 +4196,7 @@ Docutils elements.
 ``prefix``
 ==========
 
-Attribute type: `CDATA`_.  Default value: none.
+Attribute type: `CDATA`_ (str).  Default value: none.
 
 The ``prefix`` attribute is used in the `\<enumerated_list>`_ element.
 
@@ -4238,7 +4237,7 @@ pointing to the same element.
 ``refuri``
 ==========
 
-Attribute type: `CDATA`_.  Default value: none.
+Attribute type: `CDATA`_ (str).  Default value: none.
 
 The ``refuri`` attribute contains an external reference to a URI/URL.
 It is used by the `\<target>`_, `\<reference>`_,
@@ -4249,7 +4248,7 @@ It is used by the `\<target>`_, `\<reference>`_,
 ``rtrim``
 =========
 
-Attribute type: `yesorno`_.  Default value: none (implies no).
+Attribute type: `yesorno`_ (int).  Default value: none (implies no).
 
 The ``rtrim`` attribute is used in the `\<substitution_definition>`_ element.
 
@@ -4257,7 +4256,7 @@ The ``rtrim`` attribute is used in the `\<substitution_definition>`_ element.
 ``scale``
 ==========
 
-Attribute type: number_.  Default value: none.
+Attribute type: number_ (int).  Default value: none.
 
 The ``scale`` attribute is used in the `\<image>`_ element to store
 a uniform scaling factor (integer percentage value).
@@ -4266,7 +4265,7 @@ a uniform scaling factor (integer percentage value).
 ``source``
 ==========
 
-Attribute type: `CDATA`_.  Default value: none.
+Attribute type: `CDATA`_ (str).  Default value: none.
 
 The ``source`` attribute is used to store the path or URL to the
 source text that was used to produce the document tree.  It is one of
@@ -4284,7 +4283,7 @@ The ``start`` attribute is used in the `\<enumerated_list>`_ element.
 ``stub``
 =========
 
-Attribute type: `yesorno`_.  Default value: none.
+Attribute type: `yesorno`_ (int).  Default value: none.
 
 The ``stub`` attribute is used in the `\<colspec>`_ element.
 It marks a table column containing *stubs* (row titles, on the left).
@@ -4294,7 +4293,7 @@ See also the csv-table_ and list-table_ directives.
 ``suffix``
 ==========
 
-Attribute type: `CDATA`_.  Default value: none.
+Attribute type: `CDATA`_ (str).  Default value: none.
 
 The ``suffix`` attribute is used in the `\<enumerated_list>`_ element.
 
@@ -4304,11 +4303,11 @@ The ``suffix`` attribute is used in the `\<enumerated_list>`_ element.
 ``title``
 =========
 
-Attribute type: `CDATA`_.  Default value: none.
+Attribute type: `CDATA`_ (str).  Default value: none.
 
 The ``title`` attribute stores the *metadata title* of a `\<document>`_.
 It is set by the `"title" directive`_ or the `DocTitle transform`_.
-This title is typically not part of the rendered document.  
+This title is typically not part of the rendered document.
 It may for example be used in HTML's ``title`` element and shown in a
 browser's title bar or a page's tab.
 
@@ -4319,7 +4318,7 @@ browser's title bar or a page's tab.
 ``uri``
 =======
 
-Attribute type: `CDATA`_.  Default value: none.
+Attribute type: `CDATA`_ (str).  Default value: none.
 
 The ``uri`` attribute is used in the `\<image>`_ and `\<figure>`_ elements
 to refer to the image via its Universal Resource Indicator.
@@ -4328,7 +4327,7 @@ to refer to the image via its Universal Resource Indicator.
 ``width``
 ==========
 
-Attribute type: measure_.  Default value: none.
+Attribute type: measure_ (str).  Default value: none.
 
 The ``width`` attribute is used in the `\<figure>`_, `\<image>`_, and `\<table>`_ element.
 
@@ -4340,7 +4339,7 @@ The ``width`` attribute is used in the `\<figure>`_, `\<image>`_, and `\<table>`
 | Default value: "preserve" (fixed).
 
 The ``xml:space`` attribute is a standard XML attribute for
-whitespace-preserving elements.  It is used by the `<address>`_,
+whitespace-preserving elements.  It is used by the `\<address>`_,
 `\<comment>`_, `\<doctest_block>`_, `\<literal_block>`_, `\<math_block>`_,
 and `\<raw>`_ elements (via the `%fixedspace.att;`_ parameter entity).
 It is a fixed attribute, meant to communicate to an XML parser that the

@@ -274,7 +274,7 @@ class Writer(writers.Writer):
         # get template string from file
         templatepath = Path(self.document.settings.template)
         if not templatepath.exists():
-            templatepath = self.default_template_path / templatepath
+            templatepath = self.default_template_path / templatepath.name
         template = templatepath.read_text(encoding='utf-8')
         # fill template
         self.assemble_parts()  # create dictionary of parts
