@@ -995,7 +995,7 @@ class Translator(nodes.NodeVisitor):
         self.body.append(self.defs['problematic'][1])
 
     def visit_raw(self, node):
-        if node.get('format') == 'manpage':
+        if 'manpage' in node.get('format', '').split():
             self.body.append(node.astext() + "\n")
         # Keep non-manpage raw text out of output:
         raise nodes.SkipNode
