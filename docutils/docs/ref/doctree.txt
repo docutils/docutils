@@ -837,7 +837,7 @@ Details
 :Parents:    Only the `\<tgroup>`_ element contains <colspec>.
 :Children:   <colspec> is an empty element and has no children.
 :Attributes: The <colspec> element contains the optional "colnum", "colname",
-             "colwidth", "colsep", "rowsep", "align", "char", and
+             "colwidth", colsep_, rowsep_, align_, "char", and
              "charoff" attributes defined in the exchange-table-model_
              plus the `common attributes`_ and `stub`_.
 
@@ -3365,8 +3365,8 @@ Details
                (title?, tgroup+)
 
 :Attributes: The <table> element contains the `common attributes`_ plus
-             align_, and width_ as well as the attributes frame, colsep,
-             rowsep, and pgwide defined in the exchange-table-model_.
+             align_, and width_ as well as the attributes "frame", colsep_,
+             rowsep_, and "pgwide" defined in the exchange-table-model_.
 
 :Parameter Entities: The `%body.elements;`_ parameter entity
              directly includes <table>.  The `%structure.model;`_
@@ -3842,7 +3842,7 @@ _`refname.type`
     A normalized_ `reference name`_. Resolves to CDATA (in contrast to
     NMTOKENS, `reference names`_ may consist of any text).
 
-    ``%refname.type;`` is used in the `refname`_ attribute.
+    ``%refname.type;`` is used in the `name`_ and `refname`_ attributes.
 
 _`refnames.type`
     A space-separated list of `reference names`_. Resolves to CDATA.
@@ -3953,9 +3953,9 @@ The ``alt`` attribute is used to store a text description in the
 
 Attribute type: `CDATA`_ (str).  Default value: none (inherit).
 
-The ``align`` attribute is used in the `\<figure>`_, `\<image>`_, and
-`\<table>`_ elements (via the `%align-h.att;`_ and `%align-hv.att;`_
-parameter entities).
+The ``align`` attribute is used in the `\<figure>`_, 
+`\<image>`_, `\<table>`_, and `\<tgroup>`_ elements 
+(via the `%align-h.att;`_ and `%align-hv.att;`_ parameter entities).
 
 
 ``anonymous``
@@ -4026,6 +4026,22 @@ Docutils elements.
 .. _reader: ../peps/pep-0258.html#readers
 .. _writer:
 .. _writers: ../peps/pep-0258.html#writers
+
+
+``cols``
+=========
+
+Attribute type: NMTOKEN_ (str).  Default value: none.
+
+The ``cols`` attribute is used in the `\<tgroup>`_ element.
+
+``colsep``
+==========
+
+Attribute type: `yesorno`_ (int).  Default value: none (implies no).
+
+The ``colsep`` attribute is used in the `\<table>`_ and `\<tgroup>`_
+elements.
 
 
 ``colwidth``
@@ -4126,6 +4142,14 @@ Attribute type: number_ (int).  Default value: none.
 The ``level`` attribute is used in the `\<system_message>`_ element.
 
 
+``line``
+=========
+
+Attribute type: number_ (int).  Default value: none.
+
+The ``line`` attribute is used in the `\<system_message>`_ element.
+
+
 ``ltrim``
 =========
 
@@ -4162,6 +4186,25 @@ New in Docutils 0.21
 Attribute type: number_ (int).  Default value: none.
 
 The ``morecols`` attribute is used in the `\<entry>`_ element.
+
+
+``morerows``
+============
+
+Attribute type: number_ (int).  Default value: none.
+
+The ``morerows`` attribute is used in the `\<entry>`_ element.
+
+
+``name``
+=========
+
+Attribute type: `refname.type`_ (str).  Default value: none.
+
+The ``name`` attribute is used in the `\<reference>`_ element.
+
+The equally named attribute of the `\<meta>`_ element contains a
+"metadata name".
 
 
 ``names``
@@ -4208,9 +4251,8 @@ Attribute type: `idref.type`_.  Default value: none.
 
 The ``refid`` attribute contains a reference to an `identifier key`_
 
-``refid`` is used by the `\<target>`_, `\<reference>`_,
-`\<footnote_reference>`_, `\<citation_reference>`_,
-`\<title>`_  and `\<problematic>`_ elements
+``refid`` is used by the `\<citation_reference>`_, `\<footnote_reference>`_, 
+`\<problematic>`_, `\<reference>`_, `\<target>`_, and `\<title>`_ elements
 (via the `%refid.att;`_ and `%reference.atts;`_ parameter entities).
 
 
@@ -4226,9 +4268,8 @@ which may resolve to either an internal or external reference.
 Docutils transforms_ replace the ``refname`` attribute with a refid_
 pointing to the same element.
 
-``refname`` is used by the `\<target>`_, `\<reference>`_,
-`\<footnote_reference>`_, `\<citation_reference>`_, and
-`\<substitution_reference>`_ elements
+``refname`` is used by the `\<citation_reference>`_, `\<footnote_reference>`_,
+`\<reference>`_, `\<substitution_reference>`_, and `\<target>`_ elements
 (via the `%refname.att;`_ and `%reference.atts;`_ parameter entities).
 
 .. _indirect target: rst/restructuredtext.html#indirect-hyperlink-targets
@@ -4243,6 +4284,15 @@ The ``refuri`` attribute contains an external reference to a URI/URL.
 It is used by the `\<target>`_, `\<reference>`_,
 `\<footnote_reference>`_, and `\<citation_reference>`_ elements
 (via the `%reference.atts;`_ parameter entity).
+
+
+``rowsep``
+==========
+
+Attribute type: `yesorno`_ (int).  Default value: none (implies no).
+
+The ``rowsep`` attribute is used in the `\<table>`_ and `\<tgroup>`_
+elements.
 
 
 ``rtrim``
@@ -4313,6 +4363,14 @@ browser's title bar or a page's tab.
 
 .. _"title" directive: rst/directives.html#title
 .. _DocTitle transform: ../api/transforms.html#frontmatter-doctitle
+
+
+``type``
+=========
+
+Attribute type: NMTOKEN_ (str).  Default value: none.
+
+The ``type`` attribute is used in the `\<system_message>`_ element.
 
 
 ``uri``
