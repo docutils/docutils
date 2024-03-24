@@ -195,8 +195,8 @@ Show this help message and exit.
 .SH OTHER SECTION
 .sp
 link to 
-'UR http://docutils.sourceforge.io
-'UE
+.UR http://docutils.sourceforge.io
+.UE
 
 .sp
 With mixed case.

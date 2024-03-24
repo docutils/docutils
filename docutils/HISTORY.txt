@@ -175,7 +175,7 @@ Release 0.21.rc1
 
   - Skip footer to avoid the link to document source in the manpage.
   - Add multiple definition list term support, see feature #60.
-  - Use ``'UR`` and ``'UE`` macros for reference markup.
+  - Use ``.UR`` and ``.UE`` macros for reference markup.
   - Add preprocessor hinting tbl first line, see bug #477.
   - Change tbl-Tables using box option, see bug #475.
   - Apply literal block patch #205. Use ``.EE`` and ``.EX`` macros.
