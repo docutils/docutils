@@ -1,0 +1,87 @@
+REFERENCE TESTS()                                            REFERENCE TESTS()
+
+NNAAMMEE
+       reference tests -
+
+HHOOWW TTOO MMAARRKKUUPP
+       link adr in .UR .UE or simply in parantheses
+
+       • man and mandoc convert UR/UE to << and >>.
+
+       • pandoc transforms
+
+            See the `Python home page <https://www.python.org>`_ for info.
+
+         to
+
+            see See the Python home page (https://www.python.org) for info.
+
+TTEESSTT FFOORR RREEFFEERREENNCCEESS IINN MMAANN PPAAGGEESS
+       embedded in a paragraph
+
+       • at line start
+
+       • in line
+
+       • at eol
+
+       at start of paragraph
+
+       • followed by text
+
+       • at eol
+
+       at end of paragraph
+
+TTEESSTTSS
+       See
+       <https://docutils.sourceforge.io/docs/user/rst/quickref.html#explicit-markup>
+
+       for more
+
+       See the Python home page <https://www.python.org>
+        for info.
+
+       External hyperlinks, like Python <https://www.python.org> .
+
+       Want to learn about my favorite programming language
+       <https://www.python.org> ?
+
+       Clicking on this internal hyperlink will take us to the <target>
+
+       below.
+
+       The hyperlink target above points to this paragraph.
+
+       • bullet list
+
+       • second item, with hyperlink target.
+
+       See the Python <https://www.python.org>
+        home page for info.
+
+
+       Write to me <mailto:jdoe@example.com>
+        with your questions.
+
+       The one-liner <https://docutils.sourceforge.io/rst.html>
+        and starts-on-this-line <https://docutils.sourceforge.net/rst.html>
+        or entirely-below <https://docutils.sourceforge.net/rst.html>
+        point to <https://docutils.sourceforge.io/rst.html>
+        and in man are ... ?
+
+       Escaped whitespace is preserved as intentional spaces, e.g.:
+
+       some reference <../local>
+        to a local path.
+
+       Anonymous hyperlink references are specified with two underscores
+       instead of one:
+
+       See the web site of my favorite programming language
+       <https://www.python.org> .
+
+       Anonymous targets begin with ".. __:"; no reference name is required or
+       allowed:
+
+                                                             REFERENCE TESTS()

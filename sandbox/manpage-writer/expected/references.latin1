@@ -1,0 +1,86 @@
+[4mREFERENCE[24m [4mTESTS[24m()                                            [4mREFERENCE[24m [4mTESTS[24m()
+
+[1mNAME[0m
+       reference tests -
+
+[1mHOW TO MARKUP[0m
+       link adr in .UR .UE or simply in parantheses
+
+       · man and mandoc convert UR/UE to [1m< [22mand [1m>[22m.
+
+       · pandoc transforms
+
+            See the `Python home page <https://www.python.org>`_ for info.
+
+         to
+
+            see See the Python home page (https://www.python.org) for info.
+
+[1mTEST FOR REFERENCES IN MAN PAGES[0m
+       embedded in a paragraph
+
+       · at line start
+
+       · in line
+
+       · at eol
+
+       at start of paragraph
+
+       · followed by text
+
+       · at eol
+
+       at end of paragraph
+
+[1mTESTS[0m
+       See     ]8;;https://docutils.sourceforge.io/docs/user/rst/quickref.html#explicit-markup\https://docutils.sourceforge.io/docs/user/rst/quickref.html#ex-
+       plicit-markup]8;;\
+
+       for more
+
+       See the ]8;;https://www.python.org\Python home page]8;;\
+        for info.
+
+       External hyperlinks, like ]8;;https://www.python.org\Python]8;;\ .
+
+       Want to learn about ]8;;https://www.python.org\my favorite programming language]8;;\ ?
+
+       Clicking on this internal hyperlink will take us to the ]8;;target\target]8;;\
+
+       below.
+
+       The hyperlink target above points to this paragraph.
+
+       · bullet list
+
+       · second item, with hyperlink target.
+
+       See the ]8;;https://www.python.org\Python]8;;\
+        home page for info.
+
+
+       ]8;;mailto:jdoe@example.com\Write to me]8;;\
+        with your questions.
+
+       The ]8;;https://docutils.sourceforge.io/rst.html\one-liner]8;;\
+        and ]8;;https://docutils.sourceforge.net/rst.html\starts-on-this-line]8;;\
+        or ]8;;https://docutils.sourceforge.net/rst.html\entirely-below]8;;\
+        point to ]8;;https://docutils.sourceforge.io/rst.html\https://docutils.sourceforge.io/rst.html]8;;\
+        and in man are ... ?
+
+       Escaped whitespace is preserved as intentional spaces, e.g.:
+
+       some ]8;;../local\reference]8;;\
+        to a local path.
+
+       Anonymous hyperlink references are specified with two  underscores  in-
+       stead of one:
+
+       See ]8;;https://www.python.org\the web site of my favorite programming language]8;;\ .
+
+       Anonymous targets begin with ".. __:"; no reference name is required or
+       allowed:
+
+
+                                                             [4mREFERENCE[24m [4mTESTS[24m()
