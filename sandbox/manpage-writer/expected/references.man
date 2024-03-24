@@ -81,32 +81,32 @@ at end of paragraph
 .SH TESTS
 .sp
 See 
-'UR https://docutils.sourceforge.io/docs/user/rst/quickref.html#explicit\-markup
-'UE
+.UR https://docutils.sourceforge.io/docs/user/rst/quickref.html#explicit\-markup
+.UE
 
 for more
 .sp
 See the 
-'UR https://www.python.org
+.UR https://www.python.org
 Python home page
-'UE
+.UE
  for info.
 .sp
 External hyperlinks, like 
-'UR https://www.python.org
+.UR https://www.python.org
 Python
-'UE
+.UE
 \&.
 .sp
 Want to learn about 
-'UR https://www.python.org
+.UR https://www.python.org
 my favorite programming language
-'UE
+.UE
 ?
 .sp
 Clicking on this internal hyperlink will take us to the 
-'UR target
-'UE
+.UR target
+.UE
 
 below.
 .sp
@@ -119,48 +119,48 @@ second item, with hyperlink target.
 .UNINDENT
 .sp
 See the 
-'UR https://www.python.org
+.UR https://www.python.org
 Python
-'UE
+.UE
  home page for info.
 .sp
 
-'UR mailto:jdoe@example.com
+.UR mailto:jdoe@example.com
 Write to me
-'UE
+.UE
  with your questions.
 .sp
 The 
-'UR https://docutils.sourceforge.io/rst.html
+.UR https://docutils.sourceforge.io/rst.html
 one\-liner
-'UE
+.UE
  and 
-'UR https://docutils.sourceforge.net/rst.html
+.UR https://docutils.sourceforge.net/rst.html
 starts\-on\-this\-line
-'UE
+.UE
  or 
-'UR https://docutils.sourceforge.net/rst.html
+.UR https://docutils.sourceforge.net/rst.html
 entirely\-below
-'UE
+.UE
  point to  
-'UR https://docutils.sourceforge.io/rst.html
-'UE
+.UR https://docutils.sourceforge.io/rst.html
+.UE
  and in man are ... ?
 .sp
 Escaped whitespace is preserved as intentional spaces, e.g.:
 .sp
 some 
-'UR ../local path with spaces.html
+.UR ../local path with spaces.html
 reference
-'UE
+.UE
  to a local path.
 .sp
 Anonymous hyperlink references are specified with two underscores instead of one:
 .sp
 See 
-'UR https://www.python.org
+.UR https://www.python.org
 the web site of my favorite programming language
-'UE
+.UE
 \&.
 .sp
 Anonymous targets begin with \(dq.. __:\(dq; no reference name is required or allowed:

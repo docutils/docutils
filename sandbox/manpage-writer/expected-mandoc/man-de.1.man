@@ -635,34 +635,34 @@ werden diese Seiten als fehlerhaft zurueckgewiesen.
 .sp
 1990, 1991 \- Originale geschrieben von John W. Eaton
 (
-'UR jwe@che.utexas.edu
-'UE
+.UR jwe@che.utexas.edu
+.UE
 ).
 .sp
 23. Dez. 1992: Fehlerbereinigung  durch Rik Faith (
-'UR faith@cs.unc.edu
-'UE
+.UR faith@cs.unc.edu
+.UE
 )
 unterstützt durch Willem Kasdorp (
-'UR wkasdo@nikhefk.nikef.nl
-'UE
+.UR wkasdo@nikhefk.nikef.nl
+.UE
 ).
 .sp
 Zwischen dem 30. April 1994 und dem 23. Februar 2000 hat Wilf
 (
-'UR G.Wilford@ee.surrey.ac.uk
-'UE
+.UR G.Wilford@ee.surrey.ac.uk
+.UE
 ) unter Mithilfe von einigen wenigen
 engagierten Menschen dieses Paket entwickelt und weitergeführt.
 .sp
 Die deutsche Übersetzung wurde von Anke Steuernagel
 (
-'UR a_steuer@informatik.uni\-kl.de
-'UE
+.UR a_steuer@informatik.uni\-kl.de
+.UE
 ) und Nils Magnus
 (
-'UR magnus@informatik.uni\-kl.de
-'UE
+.UR magnus@informatik.uni\-kl.de
+.UE
 ) angefertigt.
 .sp
 Für persönliche Würdigungen und Zusätze siehe Quelltexte.

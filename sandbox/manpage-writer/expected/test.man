@@ -410,9 +410,9 @@ This is a file.
 .SH SEE ALSO
 .sp
 
-'UR http://docutils.sourceforge.net
+.UR http://docutils.sourceforge.net
 docutils
-'UE
+.UE
 
 .sp
 \fBrst2xml\fP(dummy)
@@ -422,8 +422,8 @@ More information can be found about
 .IP \(bu 2
 xml\-schema\-catalog at
 
-'UR http://xml\-schema\-catalog.origo.ethz.ch/
-'UE
+.UR http://xml\-schema\-catalog.origo.ethz.ch/
+.UE
 
 .UNINDENT
 .sp
