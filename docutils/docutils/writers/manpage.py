@@ -1002,13 +1002,15 @@ class Translator(nodes.NodeVisitor):
 
     def visit_reference(self, node):
         """E.g. link or email address."""
-        self.body.append("\n.UR ")
+        self.ensure_eol()
+        self.body.append(".UR ")
         if 'refuri' in node:
             if not node['refuri'].endswith(node.astext()):
                 self.body.append("%s\n" % node['refuri'])
 
     def depart_reference(self, node):
-        self.body.append("\n.UE\n")
+        self.ensure_eol()
+        self.body.append(".UE\n")
 
     def visit_revision(self, node):
         self.visit_docinfo_item(node, 'revision')
