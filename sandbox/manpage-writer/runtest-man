@@ -1,0 +1,75 @@
+#!/bin/sh
+
+# manpage tests using man/roff
+#
+# Contact: grubert@users.sourceforge.net
+# Revision: $Revision: 9570 $
+# Date: $Date: 2024-03-15 16:42:21 +0100 (Fr, 15. Mär 2024) $
+# Copyright: This script has been placed in the public domain.
+
+IN_DIR=input
+OUT_DIR=output
+EXP_DIR=expected
+
+if [ -z "`man -?|grep -- '^ *-T'`" ] ; then
+    echo 'WARNING: your man does not support "-T Format" to specify encoding'
+    echo 'SKIPPING encoding tests'
+    ENCS=""
+    GROFF="ps"
+else
+    ENCS="latin1 utf8 ascii ps html"
+    GROFF=""
+fi
+
+if [ -z "$1" ] ; then
+  FILES=*.man
+else
+  FILES=$1
+fi
+
+ERROR_CNT=0
+
+inc_ERROR_CNT () {
+    ERROR_CNT=$(( ERROR_CNT + 1 ))
+}
+
+report_ERROR_CNT () {
+	echo "$ERROR_CNT errors"
+}
+
+for CMD in man mandoc ; do
+  if [ "mandoc" = $CMD ] ; then
+    OUT_DIR=output-mandoc
+    EXP_DIR=expected-mandoc
+  else 
+    OUT_DIR=output
+    EXP_DIR=expected
+  fi
+  for IN_F in $IN_DIR/$FILES ; do
+    BASE=`basename $IN_F`
+    F_BASE=${BASE%.man}
+
+    for ENC in $ENCS ; do
+      if [ -e $EXP_DIR/$F_BASE.$ENC ] ; then
+        $CMD -T$ENC $IN_F > $OUT_DIR/$F_BASE.$ENC
+        diff -s -u $EXP_DIR/$F_BASE.$ENC $OUT_DIR/$F_BASE.$ENC
+        if [ $? -ne 0 ] ; then
+          inc_ERROR_CNT
+        fi
+      fi
+    done
+    for ENC in $GROFF ; do
+      if [ -e $EXP_DIR/$F_BASE.groff.$ENC ] ; then
+        # macosx -t means troff means gross -Tps
+        $CMD -t  IN_Fn > $OUT_DIR/$F_BASE.groff.$ENC
+        diff -s -u $EXP_DIR/$F_BASE.groff.$ENC $OUT_DIR/$F_BASE.groff.$ENC
+        if [ $? -ne 0 ] ; then
+          inc_ERROR_CNT
+        fi
+      fi
+    done
+  done
+done
+
+report_ERROR_CNT
+

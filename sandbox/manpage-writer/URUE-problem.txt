@@ -23,6 +23,19 @@ tells on   *Hypertext link macros*
               hyperlinked to the URL; if there is no link text, the URL is printed as 
               its own link text.
 
+man 1 man states ::
+
+       -t, --troff
+              Use  groff  -mandoc  to format the manual page to stdout.  This option is
+              not required in conjunction with -H, -T, or -Z.
+
+       -T[device], --troff-device[=device]
+              This option is used to change groff (or possibly troff’s)  output  to  be
+              suitable  for  a device other than the default.  It implies -t.  Examples
+              (provided with Groff‐1.17) include dvi, latin1, ps, utf8, X75 and X100.
+
+
+
 examples
 ========
 
@@ -47,7 +60,8 @@ man
 
   or read
 
-html and ps also do not contain an url.
+Specifying the device with ``man -Thtml ./URUE.man``
+html, utf8 and ps also do not contain an url.
 
 mandoc
 ------

@@ -1,0 +1,9 @@
+go to the
+.UR http://www.python.org
+python home page
+.UE
+to read
+
+or read
+.UR http://www.python.org
+.UE
