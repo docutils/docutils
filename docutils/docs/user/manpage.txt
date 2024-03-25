@@ -10,12 +10,24 @@
 :Date: $Date$
 :Copyright: This document has been placed in the public domain.
 
-This writer explores the possibilities to generate man-pages from
-reStructuredText. Man pages are the way for Unix systems to provide
-help to the user. GNU does this with (TeX)info-pages. 
+This writer generates man pages from reStructuredText.  Man pages (short
+for "manual pages") are the way Unix systems have provided reference
+material to the user on demand, at the shell prompt or in printed and
+bound manuals, since 1971.  Some GNU projects offer a similar resource
+with the Texinfo system.
 
-BSD uses mandoc. But mandoc supports a subset of man syntax and the
-manpage-writer tries to support this too.
+Man pages are usually formatted with a typesetting language and program
+called ``troff``.  *man* is a macro package for ``troff``.  OpenBSD,
+NetBSD, and some GNU/Linux distributions use an alternative program,
+``mandoc``, that does not support any typesetting features that cannot
+be exercised in a terminal emulator, but supports enough *man* and
+``troff`` syntax that it can meet many users' needs.  This writer
+produces a dialect that is supported by both programs.
+
+Historically, the program for formatting on terminals is called
+``nroff``.  When details of the output device are not important, we can
+refer to the language and its system as *roff*.
+
 
 .. contents::
 
@@ -23,40 +35,53 @@ manpage-writer tries to support this too.
 Module information
 ''''''''''''''''''
 
-Unix man page belong into a numbered section, 1 is user commands, 8 contains
-administrator commands, the headlines of all manpages are collected into a
-database, queryable with the program ``apropos``, therefore the headline
-should contain a short text describing into which group this command belongs.
+Man pages are organized into numbered sections.  A system's *intro*\(1)
+or *man*\(1) page lists them.  For example, section 1 documents
+user commands, and section 3 presents programming library functions.
+You will find a "printf" page in both sections; the notations
+*printf*\(1) and *printf*\(3) distinguish them.
 
-That information is collected from the title, subtitle and docinfo.
+A man page can discuss several topics; for example, the *gzip*\(1) page
+documents the ``gzip``, ``gunzip``, and ``zcat`` commands.  A man page's
+topic list is followed by a summary description containing key words
+that enable the page to located quickly with the ``apropos`` command.
 
-Also man pages have a defined set of sections, that are more or less
-mandatory, see References_.
+A rST document's title becomes the man page's identifier, and the
+subtitle its summary description.  The title and docinfo populate the
+the man page's header and footer.
 
-man pages look like::
+Each man page is organized by a standardized set of section headings;
+see References_.  Use additional section headings at your discretion
+only if the standard set does not serve.  Man pages support one level of
+subsection headings to further organize a section heading's material.
 
-   man(1)     Man Pager Utils     man(1)
+The beginning of a formatted man page might look like this::
 
-   NAME
-       man - an interface to the on-line reference manuals
+    man(1)                   Manual pager utils                   man(1)
 
-   SYNOPSIS
-       man [-c|-w|-tZT device] [-adhu7V] [-m system[,...]] [-L locale]
+    NAME
+         man - an interface to the system reference manuals
 
-in roff formatting
+    SYNOPSIS
+         man [-c|-w|-tZT device] [-adhu7V] [-m system[,...]] [-L locale]
+
+It would have a page footer with further information::
+
+    noman 1.2.3                  2021‐02‐08                       man(1)
+
+It could be produced by the following *roff* input.
 
 .. code:: man
 
-     .TH man 1 "14 May 2001" "2.3.19" "Manual pager utils"
+     .TH man 1 2021-02-08 "noman 1.2.3" "Manual pager utils"
      .SH NAME
-     man \- an interface to the on-line reference manuals
+     man \- an interface to the system reference manuals
      .SH SYNOPSIS
-     .\" The general command line
      .B man
-     .RB [\| \-c \||\| \-w \||\| \-tZT
-     .IR device \|]
+     .RB [ \-c | \-w | \-tZT
+     .IR device ]
 
-Then the rST input should be 
+We can write rST to produce the foregoing.
 
 .. code:: rst
 
@@ -64,35 +89,28 @@ Then the rST input should be
    man
   =====
 
-  ---------------------------------------------
-  an interface to the on-line reference manuals
-  ---------------------------------------------
+  --------------------------------------------
+  an interface to the system reference manuals
+  --------------------------------------------
 
-  :Version: 2.3.19
-  :Date: 14 May 2001
+  :Version: noman 1.2.3
+  :Date: 2021-02-08
   :Manual section: 1
-  :Manual group: Man Pager Utils
+  :Manual group: Manual pager utils
 
   SYNOPSIS
   ========
 
   ``man`` ``[-c|-w|-tZT device] [-adhu7V] [-m system[,...]] [-L locale]``
 
-This means we have
-
-* a title "man"
-* a subtitle "an interface to the on-line reference manuals"
-* a manual section "1"
-* a manual group "Manual pager utils"
-* a date "14 May 2001"
-* a version "2.3.19"
-
-Version and Date will be put in the last line/footer of the generated man page.
+The *man-db* project's own *man* page, which may be installed as
+*man*\(1) or *gman*\(1), explains the sectional organization of the
+manuals (in both senses).
 
 References
 ''''''''''
 
-man pages from section 7: *man* , *man-pages*, *groff_man* and
+Consult man pages from section 7: *man*, *man-pages*, *groff_man* and
 *groff_man_style*.
 
 .. [LMHT] `Linux Man Page Howto <https://tldp.org/HOWTO/Man-Page/>`__.
@@ -100,63 +118,27 @@ man pages from section 7: *man* , *man-pages*, *groff_man* and
 Conventions
 '''''''''''
 
-* man pages have a special structure and organization. From the manpage
-  to *man*::
+* Newlines, line breaks, and sentences
 
-    The table below shows the section numbers of the manual followed  by  the
-    types of pages they contain.
+  One should try to comply with the `troff line break rules`__ after
+  ``.``, ``?``, and ``!`` punctuation signs in the rST source.  Use a
+  new line or two spaces to start a new sentence.
 
-    1   Executable programs or shell commands
-    2   System calls (functions provided by the kernel)
-    3   Library calls (functions within program libraries)
-    4   Special files (usually found in /dev)
-    5   File formats and conventions eg /etc/passwd
-    6   Games
-    7   Miscellaneous  (including  macro  packages and conven-
-        tions), e.g. man(7), groff(7)
-    8   System administration commands (usually only for root)
-    9   Kernel routines [Non standard]
+  Avoid line breaks after ``.``, ``?``, and ``!`` signs that do not end
+  a sentence.  You can escape a line break with a backslash.  In rST,
+  escaped whitespace is removed, so precede the backslash by a space::
 
-    A manual page consists of several parts.
-
-    They  may  be  labelled  NAME,  SYNOPSIS,  DESCRIPTION,  OPTIONS,  FILES,
-    SEE ALSO, BUGS, and AUTHOR.
-
-    The  following  conventions apply to the SYNOPSIS section and can be used
-    as a guide in other sections.
-
-    bold text          type exactly as shown.
-    italic text        replace with appropriate argument.
-    [-abc]             any or all arguments within [ ] are optional.
-    -a|-b              options delimited by | cannot be used together.
-    argument ...       argument is repeatable.
-    [expression] ...   entire expression within [ ] is repeatable.
-
-    The command or function illustration is a pattern that should  match  all
-    possible  invocations.   In some cases it is advisable to illustrate sev-
-    eral exclusive invocations as is shown in the SYNOPSIS  section  of  this
-    manual page.
-
-* new lines in general.
-
-  One should try to comply with the `troff line break rules`__ after punctuation
-  signs in the rST source.  Use a new line or two spaces to start a new sentence.
-  
-  Avoid linebreaks after punctuation signs that do not end a sentence.
-  A linebreak can be escaped with a backslash.  In rST, escaped whitespace
-  is removed, so precede the backslash by a space::
-  
     We recommend the works of E. T. A. \
     Hoffman.
-  
+
   __ https://www.gnu.org/software/groff/manual/groff.html#Sentences
 
-  Consecutive blank lines are merged by the viewer but not on printouts.
-  So one has to be cautious. This is most disturbing when printing
-  postscript.
+  A man page viewer on a terminal might merge consecutive blank lines,
+  but this is not done on typesetting devices like printers.  Check your
+  output with a PostScript or PDF viewer before printing it.
 
-* [LMHT]_ Filenames are always in italics, except in the SYNOPSIS section,
-  use::
+* [LMHT]_ Filenames are always in italics, except in C language
+  preprocessor inclusions in the SYNOPSIS section.  Use::
 
     .I /usr/include/stdio.h
 
@@ -164,25 +146,50 @@ Conventions
 
     .B #include <stdio.h>
 
+Questions and Answers
+'''''''''''''''''''''
+
+* How to typeset command/man page names in text.
+
+  Subsection "Font style macros" of *groff_man_style*\(7) has advice.
+
+* Line ends around email or web addresses in texts.
+
+  The ``UE`` and ``ME`` macros accept an argument, which is appended to
+  the link text without intervening space.
+
 TODO - Open issues
 ''''''''''''''''''
 
-* How to escape double quotes in macro arguments ?
-* How to typeset command/manpage names in text.
-* How to write long syntax lines.
-* Line ends around email or web addresses in texts.
-  
-  How to distinguish something is inline or not in the writer 
+* How to escape double quotes in macro arguments?
+
+  Use the escape sequence ``\[dq]``.  ``rst2man`` has to generate this
+  when populating a macro's argument list.
+
+* How to distinguish something is inline or not in the writer
   so to maybe put long urls after the current paragraph ?
+
+* How to write long syntax lines.
+
+  In *roff*, a backslash followed by a newline will continue the input
+  line.  Will ``rst2man`` pass that through or require its doubling?
 
 * Images and equations are discouraged.
 * Lists in admonitions are not intended.
 * Encoding declaration ``'\" t -*- coding: ISO-8859-1 -*-``
   in first line.
 
-  BUT if UTF-8 is declared tables are no longer processed.
+  The part after ``t`` is a GNU Emacs convention.  A *groff* program
+  called *preconv*\(1) understands it, but GNU *troff*\(1) itself does
+  not.
 
-  BUT we have a comment there and the macros following it
+  The ``t`` is part of a *man*\(1) convention; GNU *troff*\(1) doesn't
+  understand it, either (but since *tbl*\(1) is a *roff* preprocessor,
+  it's too late by the time ``troff`` sees the input anyway).
+
+* BUT if UTF-8 is declared tables are no longer processed.
+
+* BUT we have a comment there and the macros following it
 
 * Input and output encoding are problematic at least.
 
