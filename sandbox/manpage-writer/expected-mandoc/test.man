@@ -409,7 +409,6 @@ with character formatting.
 This is a file.
 .SH SEE ALSO
 .sp
-
 .UR http://docutils.sourceforge.net
 docutils
 .UE
@@ -421,7 +420,6 @@ More information can be found about
 .INDENT 0.0
 .IP \(bu 2
 xml\-schema\-catalog at
-
 .UR http://xml\-schema\-catalog.origo.ethz.ch/
 .UE
 

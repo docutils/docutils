@@ -1,0 +1,74 @@
+================
+ UR UE problems
+================
+
+:Date: $Date$
+
+man 7 man 
+=========
+
+tells on   *Hypertext link macros*
+
+       .UR url
+              Insert a hypertext link to the URI (URL) url, with all  text  up  to  the
+              following .UE macro as the link text.
+
+       .UE    [trailer]  Terminate  the  link text of the preceding .UR macro, with the
+              optional trailer (if present, usually a closing parenthesis  and/or  
+              end‐of‐sentence  punctuation) immediately following.  For non‐HTML output
+              devices (e.g., man -Tutf8), the link text is followed by the URL in angle
+              brackets;  if  there  is no link text, the URL is printed as its own link
+              text, surrounded by angle brackets.  (Angle brackets may not be available
+              on all output devices.)  For the HTML output device, the link text is 
+              hyperlinked to the URL; if there is no link text, the URL is printed as 
+              its own link text.
+
+examples
+========
+
+URUE.man ::
+
+  go to the
+  .UR http://www.python.org
+  python home page
+  .UE
+  to read
+
+  or read
+  .UR http://www.python.org
+  .UE
+
+man
+---
+
+``man ./URUE.man`` renders::
+
+  go to the python home page to read
+
+  or read
+
+html and ps also do not contain an url.
+
+mandoc
+------
+
+txt and html work, ps looses the second url if it is the last thing in the file.
+
+``mandoc ./URUE.man`` renders::
+
+  ()                                                                        ()
+
+  go to the python home page <http://www.python.org> to read
+
+  or read <http://www.python.org>
+
+                                                                            ()
+``mandoc -Tps ./URUE.man | ps2txt`` produces::
+
+  ()                                         ()
+  go to the python home page <http://www.python.org> to read
+                                             ()
+
+
+
+

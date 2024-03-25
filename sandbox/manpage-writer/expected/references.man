@@ -124,7 +124,6 @@ Python
 .UE
  home page for info.
 .sp
-
 .UR mailto:jdoe@example.com
 Write to me
 .UE
