@@ -17,7 +17,7 @@ if [ -z "`man -?|grep -- '^ *-T'`" ] ; then
     ENCS=""
     GROFF="ps"
 else
-    ENCS="latin1 utf8 ascii ps html"
+    ENCS="latin1 utf8 ascii ps html nroff"
     GROFF=""
 fi
 
@@ -51,7 +51,11 @@ for CMD in man mandoc ; do
 
     for ENC in $ENCS ; do
       if [ -e $EXP_DIR/$F_BASE.$ENC ] ; then
-        $CMD -T$ENC $IN_F > $OUT_DIR/$F_BASE.$ENC
+        if [ "nroff" != $ENC ] ; then
+          $CMD -T$ENC $IN_F > $OUT_DIR/$F_BASE.$ENC
+	else
+          nroff -man $IN_F > $OUT_DIR/$F_BASE.$ENC
+	fi
         diff -s -u $EXP_DIR/$F_BASE.$ENC $OUT_DIR/$F_BASE.$ENC
         if [ $? -ne 0 ] ; then
           inc_ERROR_CNT
