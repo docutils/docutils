@@ -51,10 +51,10 @@ for CMD in man mandoc ; do
 
     for ENC in $ENCS ; do
       if [ -e $EXP_DIR/$F_BASE.$ENC ] ; then
-        if [ "nroff" != $ENC ] ; then
-          $CMD -T$ENC $IN_F > $OUT_DIR/$F_BASE.$ENC
-	else
+        if [ "nroff" = $ENC ] ; then
           nroff -man $IN_F > $OUT_DIR/$F_BASE.$ENC
+	else
+          $CMD -T$ENC $IN_F > $OUT_DIR/$F_BASE.$ENC
 	fi
         diff -s -u $EXP_DIR/$F_BASE.$ENC $OUT_DIR/$F_BASE.$ENC
         if [ $? -ne 0 ] ; then
