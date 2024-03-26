@@ -80,13 +80,9 @@ And a lot more standard docutils options.
 None yet.
 .SH SEE ALSO
 .sp
-.UR https://docutils.sourceforge.io
-docutils
-.UE
+docutils <https://docutils.sourceforge.io>
 
-.UR http://tldp.org/HOWTO/Man-Page/
-linux man page howto
-.UE
+linux man page howto <http://tldp.org/HOWTO/Man-Page/>
 
 .sp
 and \fBman man\fP also \fBman 7 man\fP
