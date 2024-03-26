@@ -170,8 +170,8 @@ Misc
 .. _buildhtml.py: docs/user/tools.html#buildhtml-py
 
 
-Release 0.21.rc1 (unpublished)
-==============================
+Release 0.21.rc1 (2024-03-26)
+=============================
 
 * General:
 
@@ -229,6 +229,15 @@ Release 0.21.rc1 (unpublished)
     Fix MathML rendering problems in Chrome/Chromium based browsers.
 
     Embed SVG images as ``<svg>`` instead of data-URI.
+
+    Support video inclusion via ``<video>``.
+
+  manpage:
+    Use .EE/.EX macros for literal blocks.
+
+    Render URI references (do not use .UR/.UE).
+
+    Use box option for tables.
 
 * Removed objects:
 

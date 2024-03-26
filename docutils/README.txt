@@ -1,8 +1,8 @@
 .. include:: docs/header0.txt
 
-===============================
- README: Docutils 0.21b.dev
-===============================
+===========================
+ README: Docutils 0.21.rc1
+===========================
 
 :Author: David Goodger
 :Contact: goodger@python.org
