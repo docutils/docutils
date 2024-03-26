@@ -46,13 +46,8 @@ In mercurial the following substitutions are in use:
 .sp
 resulting in.
 .sp
-.UR hgignore.5.html
-\fBhgignore\fP(5)
-.UE
-, 
-.UR hgrc.5.html
-\fBhgrc\fP(5)
-.UE
+\fBhgignore\fP(5) <hgignore.5.html>
+, \fBhgrc\fP(5) <hgrc.5.html>
 
 .SH DESCRIPTION
 .sp

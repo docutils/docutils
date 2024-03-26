@@ -80,34 +80,19 @@ at eol
 at end of paragraph
 .SH TESTS
 .sp
-See 
-.UR https://docutils.sourceforge.io/docs/user/rst/quickref.html#explicit\-markup
-.UE
-
+See  <https://docutils.sourceforge.io/docs/user/rst/quickref.html#explicit\-markup> 
 for more
 .sp
-See the 
-.UR https://www.python.org
-Python home page
-.UE
+See the Python home page <https://www.python.org>
  for info.
 .sp
-External hyperlinks, like 
-.UR https://www.python.org
-Python
-.UE
+External hyperlinks, like Python <https://www.python.org>
 \&.
 .sp
-Want to learn about 
-.UR https://www.python.org
-my favorite programming language
-.UE
+Want to learn about my favorite programming language <https://www.python.org>
 ?
 .sp
-Clicking on this internal hyperlink will take us to the 
-.UR target
-.UE
-
+Clicking on this internal hyperlink will take us to the  <target> 
 below.
 .sp
 The hyperlink target above points to this paragraph.
@@ -118,48 +103,25 @@ bullet list
 second item, with hyperlink target.
 .UNINDENT
 .sp
-See the 
-.UR https://www.python.org
-Python
-.UE
+See the Python <https://www.python.org>
  home page for info.
 .sp
-.UR mailto:jdoe@example.com
-Write to me
-.UE
+Write to me <mailto:jdoe@example.com>
  with your questions.
 .sp
-The 
-.UR https://docutils.sourceforge.io/rst.html
-one\-liner
-.UE
- and 
-.UR https://docutils.sourceforge.net/rst.html
-starts\-on\-this\-line
-.UE
- or 
-.UR https://docutils.sourceforge.net/rst.html
-entirely\-below
-.UE
- point to  
-.UR https://docutils.sourceforge.io/rst.html
-.UE
- and in man are ... ?
+The one\-liner <https://docutils.sourceforge.io/rst.html>
+ and starts\-on\-this\-line <https://docutils.sourceforge.net/rst.html>
+ or entirely\-below <https://docutils.sourceforge.net/rst.html>
+ point to   <https://docutils.sourceforge.io/rst.html>  and in man are ... ?
 .sp
 Escaped whitespace is preserved as intentional spaces, e.g.:
 .sp
-some 
-.UR ../local path with spaces.html
-reference
-.UE
+some reference <../local path with spaces.html>
  to a local path.
 .sp
 Anonymous hyperlink references are specified with two underscores instead of one:
 .sp
-See 
-.UR https://www.python.org
-the web site of my favorite programming language
-.UE
+See the web site of my favorite programming language <https://www.python.org>
 \&.
 .sp
 Anonymous targets begin with \(dq.. __:\(dq; no reference name is required or allowed:

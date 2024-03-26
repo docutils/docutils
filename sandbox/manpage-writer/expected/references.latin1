@@ -34,21 +34,19 @@
        at end of paragraph
 
 [1mTESTS[0m
-       See     ]8;;https://docutils.sourceforge.io/docs/user/rst/quickref.html#explicit-markup\https://docutils.sourceforge.io/docs/user/rst/quickref.html#ex-
-       plicit-markup]8;;\
+       See    <https://docutils.sourceforge.io/docs/user/rst/quickref.html#ex-
+       plicit-markup> for more
 
-       for more
-
-       See the ]8;;https://www.python.org\Python home page]8;;\
+       See the Python home page <https://www.python.org>
         for info.
 
-       External hyperlinks, like ]8;;https://www.python.org\Python]8;;\ .
+       External hyperlinks, like Python <https://www.python.org> .
 
-       Want to learn about ]8;;https://www.python.org\my favorite programming language]8;;\ ?
+       Want   to   learn    about    my    favorite    programming    language
+       <https://www.python.org> ?
 
-       Clicking on this internal hyperlink will take us to the ]8;;target\target]8;;\
-
-       below.
+       Clicking  on  this internal hyperlink will take us to the  <target> be-
+       low.
 
        The hyperlink target above points to this paragraph.
 
@@ -56,27 +54,28 @@
 
        · second item, with hyperlink target.
 
-       See the ]8;;https://www.python.org\Python]8;;\
+       See the Python <https://www.python.org>
         home page for info.
 
-       ]8;;mailto:jdoe@example.com\Write to me]8;;\
+       Write to me <mailto:jdoe@example.com>
         with your questions.
 
-       The ]8;;https://docutils.sourceforge.io/rst.html\one-liner]8;;\
-        and ]8;;https://docutils.sourceforge.net/rst.html\starts-on-this-line]8;;\
-        or ]8;;https://docutils.sourceforge.net/rst.html\entirely-below]8;;\
-        point to ]8;;https://docutils.sourceforge.io/rst.html\https://docutils.sourceforge.io/rst.html]8;;\
-        and in man are ... ?
+       The one-liner <https://docutils.sourceforge.io/rst.html>
+        and starts-on-this-line <https://docutils.sourceforge.net/rst.html>
+        or entirely-below <https://docutils.sourceforge.net/rst.html>
+        point to   <https://docutils.sourceforge.io/rst.html>  and in man  are
+       ... ?
 
        Escaped whitespace is preserved as intentional spaces, e.g.:
 
-       some ]8;;../local\reference]8;;\
+       some reference <../local path with spaces.html>
         to a local path.
 
-       Anonymous hyperlink references are specified with two  underscores  in-
+       Anonymous  hyperlink  references are specified with two underscores in-
        stead of one:
 
-       See ]8;;https://www.python.org\the web site of my favorite programming language]8;;\ .
+       See   the   web   site   of   my    favorite    programming    language
+       <https://www.python.org> .
 
        Anonymous targets begin with ".. __:"; no reference name is required or
        allowed:

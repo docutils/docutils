@@ -252,15 +252,15 @@
        This is a file.
 
 [1mSEE ALSO[0m
-       ]8;;http://docutils.sourceforge.net\docutils]8;;\
+       docutils <http://docutils.sourceforge.net>
 
 
        [1mrst2xml[22m(dummy)
 
        More information can be found about
 
-       · xml-schema-catalog at ]8;;http://xml-schema-catalog.origo.ethz.ch/\http://xml-schema-catalog.origo.ethz.ch/]8;;\
-
+       · xml-schema-catalog at
+          <http://xml-schema-catalog.origo.ethz.ch/>
 
        And see the stars at the sky!
 

@@ -36,7 +36,6 @@ TTEESSTT FFOORR RREEFFEERREENNCCEESS IINN MMAANN PPAAGG
 TTEESSTTSS
        See
        <https://docutils.sourceforge.io/docs/user/rst/quickref.html#explicit-markup>
-
        for more
 
        See the Python home page <https://www.python.org>
@@ -47,8 +46,7 @@ TTEESSTTSS
        Want to learn about my favorite programming language
        <https://www.python.org> ?
 
-       Clicking on this internal hyperlink will take us to the <target>
-
+       Clicking on this internal hyperlink will take us to the  <target>
        below.
 
        The hyperlink target above points to this paragraph.
@@ -66,12 +64,12 @@ TTEESSTTSS
        The one-liner <https://docutils.sourceforge.io/rst.html>
         and starts-on-this-line <https://docutils.sourceforge.net/rst.html>
         or entirely-below <https://docutils.sourceforge.net/rst.html>
-        point to <https://docutils.sourceforge.io/rst.html>
-        and in man are ... ?
+        point to   <https://docutils.sourceforge.io/rst.html>  and in man are
+       ... ?
 
        Escaped whitespace is preserved as intentional spaces, e.g.:
 
-       some reference <../local>
+       some reference <../local path with spaces.html>
         to a local path.
 
        Anonymous hyperlink references are specified with two underscores
