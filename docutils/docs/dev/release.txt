@@ -39,6 +39,18 @@ Steps to take and watch
 
   Check what was changed by ``set_version.sh``.
 
+  Change acchordingly docutils/__init__.py ::
+
+    __version_info__ = VersionInfo(
+        major=0,
+        minor=21,
+        micro=0,
+        releaselevel='candidate',  # one of 'alpha', 'beta', 'candidate', 'final'
+        serial=1,  # pre-release number (0 for final releases and snapshots)
+        release=False  # True for official releases and pre-releases
+        ) 
+
+
   Run tests ::
 
     export PYTHONWARNINGS=default
