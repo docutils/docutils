@@ -1002,15 +1002,25 @@ class Translator(nodes.NodeVisitor):
 
     def visit_reference(self, node):
         """E.g. link or email address."""
-        self.ensure_eol()
-        self.body.append(".UR ")
+        # .UR and .UE macros in roff use OSC8 escape sequences
+        # which are not supported everywhere yet
+        # therefore make the markup ourself
         if 'refuri' in node:
-            if not node['refuri'].endswith(node.astext()):
-                self.body.append("%s\n" % node['refuri'])
+            # if content has the "email" do not output "mailto:email"
+            if node['refuri'].endswith(node.astext()):
+                self.body.append(" <")
+        elif 'refid' in node:
+            self.body.append(" <")
 
     def depart_reference(self, node):
-        self.ensure_eol()
-        self.body.append(".UE\n")
+        if 'refuri' in node:
+            # if content has the "email" do not output "mailto:email"
+            if node['refuri'].endswith(node.astext()):
+                self.body.append("> ")
+            else:
+                self.body.append(" <%s>\n" % node['refuri'])
+        elif 'refid' in node:
+            self.body.append("> ")
 
     def visit_revision(self, node):
         self.visit_docinfo_item(node, 'revision')

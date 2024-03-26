@@ -194,10 +194,7 @@ Show this help message and exit.
 .UNINDENT
 .SH OTHER SECTION
 .sp
-link to 
-.UR http://docutils.sourceforge.io
-.UE
-
+link to  <http://docutils.sourceforge.io> 
 .sp
 With mixed case.
 .sp
