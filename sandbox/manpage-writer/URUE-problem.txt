@@ -101,70 +101,9 @@ nroff
 
   or read ]8;;http://www.python.org\http://www.python.org]8;;\
 
-the string following the first escape sequence is overwritten by the second ...
-might be the implementation of *bold*.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+in fact it is OSC8 (Operating System Command 8 ) terminal hyperlinks via
+escape sequences. Should work like html ``<a href="url">text</a>``, but does not.
+It is more like the string following the first escape sequence is overwritten
+by the second ... like making text *bold* on a typewriter.
 
