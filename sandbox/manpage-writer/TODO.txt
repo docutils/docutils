@@ -3,6 +3,8 @@ TODOs
 
 :Date: $Date$
 
+* #481 no uppercasing
+* #482 no default formatting
 * Images and equations are discouraged.
 * Lists in admonitions are not intended.
 * Encoding declaration ``'\" t -*- coding: ISO-8859-1 -*-``
