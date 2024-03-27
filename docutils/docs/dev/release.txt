@@ -63,13 +63,21 @@ Steps to take and watch
 
 * Generate wheel and source-distribution::
 
+    python3 -m pip install flit
+    python3 -m flit build 
+
+  or ::
+
     python3 -m pip install build
     python3 -m build .
 
 * check sdist for html-files in docutils.egg-info.
-* Upload wheel and source to test.pypi::
+* Upload wheel and source to test.pypi.
+  
+  Set repository and key in ~/.pypirc with a <server-name> and
+  password token::
 
-    python3 -m twine upload --repository-url https://test.pypi.org/legacy/ dist/*
+    python3 -m twine upload --repository <server-name> dist/*
 
   Test in venv. NOTE use --pre for prereleases::
 
@@ -81,12 +89,14 @@ Steps to take and watch
     cp -Lr ../docutils-code/docutils/test .
     python test/alltests.py
 
+  Ignore ``test_find_file_in_dirs`` fails because HISTORY.txt is missing.
+
     python -m pip uninstall docutils
     deactivate ; cd .. ; rm -r du3
 
 * Commit changes ... the changed version number.
 
-* tag #.# (Note: only directory docutils is copied)::
+* If final release tag #.# (Note: only directory docutils is copied)::
 
     svn copy svn+ssh://grubert@svn.code.sf.net/p/docutils/code/trunk/docutils \
              svn+ssh://grubert@svn.code.sf.net/p/docutils/code/tags/docutils-#.# \
@@ -100,7 +110,7 @@ Steps to take and watch
 
 * Now upload to pypi::
 
-    python3 -m twine upload  dist/docutils-#.#*
+    python3 -m twine upload --repository <server-name> dist/docutils-#.#*
 
 * Remove previous package from local cache::
 
@@ -118,6 +128,10 @@ Steps to take and watch
     deactivate ; cd .. ; rm -r du3
 
 * Notify to docutils-developer and user.
+
+For candidate releases change version to rc#+1dev.
+
+For final releases continue
 
 * upload source and generated html to sf-htdocs/#.# ::
 
@@ -139,7 +153,6 @@ Steps to take and watch
   - Select docutils-#.#.tar.gz as default for all OS.
 
 * set_version #.{#+1}b.dev
-* test with py3
 * docutils/HISTORY.txt: add title "Changes Since #.#"
 * run sandbox/infrastructure/docutils-update.local
 
