@@ -92,7 +92,7 @@ External hyperlinks, like Python <https://www.python.org>
 Want to learn about my favorite programming language <https://www.python.org>
 ?
 .sp
-Clicking on this internal hyperlink will take us to the  <target> 
+Clicking on this internal hyperlink will take us to the target
 below.
 .sp
 The hyperlink target above points to this paragraph.
