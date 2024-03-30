@@ -5,49 +5,6 @@ TODOs
 
 * #481 no uppercasing
 * #482 no default formatting
-* Images and equations are discouraged.
-* Lists in admonitions are not intended.
-* Encoding declaration ``'\" t -*- coding: ISO-8859-1 -*-``
-  in first line.
-
-  The part after ``t`` is a GNU Emacs convention.  A *groff* program
-  called *preconv*\(1) understands it, but GNU *troff*\(1) itself does
-  not.
-
-  The ``t`` is part of a *man*\(1) convention; GNU *troff*\(1) doesn't
-  understand it, either (but since *tbl*\(1) is a *roff* preprocessor,
-  it's too late by the time ``troff`` sees the input anyway).
-
-* BUT if UTF-8 is declared tables are no longer processed.
-
-* BUT we have a comment there and the macros following it
-
-* Input and output encoding are problematic at least.
-
-* input/optionstoo.txt:23: (ERROR/3) Unexpected indentation.
-  is what it is ... leave it so.
-
-  TODO the curly brace on start of line hides the line 
-
-* doublespace after end of sentence in manpages ? 
-
-  see https://sourceforge.net/p/docutils/bugs/427/
-
-  Chicago manual of style ... hard to automate.
-
-Check ``docs/user/manpage.txt``
-
-* escape double quotes in macro arguments ?
-
-  Use the special character escape sequence ``\(dq``.
-  groff_man_style(7) explains.
-
-       \(dq   Basic Latin quotation mark (double quote).  Use in macro
-              calls to prevent ‘"” from being interpreted as beginning a
-              quoted argument, or simply for readability.
-
-                     .TP
-                     .BI "split \(dq" text \(dq
 
 * How to typeset command/manpage names in text.
 
@@ -98,6 +55,58 @@ Check ``docs/user/manpage.txt``
    ..
    .\}
    .rr df
+
+Notes
+-----
+
+* Images and equations are discouraged.
+
+* Lists in admonitions are not intended.
+
+Discussions
+-----------
+
+* Encoding declaration ``'\" t -*- coding: ISO-8859-1 -*-``
+  in first line.
+
+  The part after ``t`` is a GNU Emacs convention.  A *groff* program
+  called *preconv*\(1) understands it, but GNU *troff*\(1) itself does
+  not.
+
+  The ``t`` is part of a *man*\(1) convention; GNU *troff*\(1) doesn't
+  understand it, either (but since *tbl*\(1) is a *roff* preprocessor,
+  it's too late by the time ``troff`` sees the input anyway).
+
+* BUT if UTF-8 is declared tables are no longer processed.
+
+* BUT we have a comment there and the macros following it
+
+* Input and output encoding are problematic at least.
+
+* input/optionstoo.txt:23: (ERROR/3) Unexpected indentation.
+  is what it is ... leave it so.
+
+  TODO the curly brace on start of line hides the line 
+
+* doublespace after end of sentence in manpages ? 
+
+  see https://sourceforge.net/p/docutils/bugs/427/
+
+  Chicago manual of style ... hard to automate.
+
+Check ``docs/user/manpage.txt``
+
+* escape double quotes in macro arguments ?
+
+  Use the special character escape sequence ``\(dq``.
+  groff_man_style(7) explains.
+
+       \(dq   Basic Latin quotation mark (double quote).  Use in macro
+              calls to prevent ‘"” from being interpreted as beginning a
+              quoted argument, or simply for readability.
+
+                     .TP
+                     .BI "split \(dq" text \(dq
 
 * How to write long syntax lines.
 
@@ -151,7 +160,6 @@ Check ``docs/user/manpage.txt``
 
   How to distinguish something is inline or not in the writer 
   so to maybe put long urls after the current paragraph ?
-
     
 * lines starting with a ``{not typeset}  abc``
 
