@@ -166,6 +166,7 @@ class Translator(nodes.NodeVisitor):
     words_and_spaces = re.compile(r'\S+| +|\n')
     possibly_a_roff_command = re.compile(r'\.\w')
     document_start = """Man page generated from reStructuredText."""
+    # TODO add "from docutils 0.21rc1."
 
     def __init__(self, document):
         nodes.NodeVisitor.__init__(self, document)
@@ -1009,8 +1010,7 @@ class Translator(nodes.NodeVisitor):
             # if content has the "email" do not output "mailto:email"
             if node['refuri'].endswith(node.astext()):
                 self.body.append(" <")
-        elif 'refid' in node:
-            self.body.append(" <")
+        #TODO elif 'refid' in node:
 
     def depart_reference(self, node):
         if 'refuri' in node:
@@ -1019,8 +1019,7 @@ class Translator(nodes.NodeVisitor):
                 self.body.append("> ")
             else:
                 self.body.append(" <%s>\n" % node['refuri'])
-        elif 'refid' in node:
-            self.body.append("> ")
+        #TODO elif 'refid' in node:
 
     def visit_revision(self, node):
         self.visit_docinfo_item(node, 'revision')
