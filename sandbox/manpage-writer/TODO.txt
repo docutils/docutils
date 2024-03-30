@@ -3,8 +3,13 @@ TODOs
 
 :Date: $Date$
 
-* #481 no uppercasing
-* #482 no default formatting
+* lines starting with a ``{not typeset}  abc``
+
+# #480 document information comment with docutils version
+
+* #481 no uppercasing of titles (config option)
+
+* #482 no default formatting ... use macros or leave to writer
 
 * How to typeset command/manpage names in text.
 
@@ -161,5 +166,4 @@ Check ``docs/user/manpage.txt``
   How to distinguish something is inline or not in the writer 
   so to maybe put long urls after the current paragraph ?
     
-* lines starting with a ``{not typeset}  abc``
 
