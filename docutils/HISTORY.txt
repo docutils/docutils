@@ -177,6 +177,7 @@ Release 0.21.rc1 (2024-03-26)
 
 * docutils/writers/manpage.py
 
+  - Put manual section in .TH in quotes.
   - Skip footer to avoid the link to document source in the manpage.
   - Add multiple definition list term support, see feature #60.
   - Render reference, refid and refuri.

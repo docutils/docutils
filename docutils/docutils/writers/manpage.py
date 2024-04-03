@@ -379,7 +379,7 @@ class Translator(nodes.NodeVisitor):
         self._list_char.pop()
 
     def header(self):
-        th = (".TH \"%(title_upper)s\" %(manual_section)s"
+        th = (".TH \"%(title_upper)s\" \"%(manual_section)s\""
               " \"%(date)s\" \"%(version)s\"") % self._docinfo
         if self._docinfo["manual_group"]:
             th += " \"%(manual_group)s\"" % self._docinfo
