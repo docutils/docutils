@@ -27,7 +27,7 @@ level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .in \\n[rst2man-indent\\n[rst2man-indent-level]]u
 ..
-.TH "REFERENCE TESTS"  "" ""
+.TH "REFERENCE TESTS" "" "" ""
 .SH NAME
 reference tests \- 
 .SH HOW TO MARKUP

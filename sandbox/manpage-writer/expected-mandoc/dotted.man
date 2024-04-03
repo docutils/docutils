@@ -27,7 +27,7 @@ level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .in \\n[rst2man-indent\\n[rst2man-indent-level]]u
 ..
-.TH "DOTLINE"  "" ""
+.TH "DOTLINE" "" "" ""
 .SH NAME
 dotline \- test lines starting with a dot
 .sp

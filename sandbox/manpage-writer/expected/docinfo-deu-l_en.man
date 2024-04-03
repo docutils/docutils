@@ -27,7 +27,7 @@ level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .in \\n[rst2man-indent\\n[rst2man-indent-level]]u
 ..
-.TH "DEUTSCHES_MANPAGE_BEISPIEL" 1 "" "0.5" "Beispielmanpages"
+.TH "DEUTSCHES_MANPAGE_BEISPIEL" "1" "" "0.5" "Beispielmanpages"
 .SH NAME
 deutsches_manpage_beispiel \- manpage beschreibung
 .sp
