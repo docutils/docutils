@@ -1056,7 +1056,7 @@ class Element(Node):
     def note_referenced_by(self, name=None, id=None):
         """Note that this Element has been referenced by its name
         `name` or id `id`."""
-        self.referenced = 1
+        self.referenced = True
         # Element.expect_referenced_by_* dictionaries map names or ids
         # to nodes whose ``referenced`` attribute is set to true as
         # soon as this node is referenced by the given name or id.
@@ -1065,10 +1065,10 @@ class Element(Node):
         by_id = getattr(self, 'expect_referenced_by_id', {}).get(id)
         if by_name:
             assert name is not None
-            by_name.referenced = 1
+            by_name.referenced = True
         if by_id:
             assert id is not None
-            by_id.referenced = 1
+            by_id.referenced = True
 
     @classmethod
     def is_not_list_attribute(cls, attr):
@@ -2276,9 +2276,9 @@ _non_id_translate_digraphs = {
 def dupname(node, name):
     node['dupnames'].append(name)
     node['names'].remove(name)
-    # Assume that this method is referenced, even though it isn't; we
-    # don't want to throw unnecessary system_messages.
-    node.referenced = 1
+    # Assume that `node` is referenced, even though it isn't;
+    # we don't want to throw unnecessary system_messages.
+    node.referenced = True
 
 
 def fully_normalize_name(name):
