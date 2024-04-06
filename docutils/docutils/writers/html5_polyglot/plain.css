@@ -72,7 +72,6 @@ hr.docutils {
 
 /* vertical space (parskip) */
 p, ol, ul, dl, li,
-div.line-block,
 .footnote, .citation,
 div > math,
 table {

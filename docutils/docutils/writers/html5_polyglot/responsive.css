@@ -51,7 +51,6 @@ sup, sub { /* avoid additional inter-line space for lines with sup/sub */
 
 /* Vertical Space (Parskip) */
 p, ol, ul, dl, li,
-div.line-block,
 .topic,
 .footnote, .citation,
 div > math,

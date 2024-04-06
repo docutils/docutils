@@ -30,6 +30,10 @@ Changes since 0.21.rc1
     to the respective <field_name> child element to allow cross-references
     to field-list items.
 
+* docutils/writers/html5_polyglot/\*.css
+
+  - No additional margins for line-blocks.
+
 
 Release 0.21.rc1 (2024-03-26)
 =============================
