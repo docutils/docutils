@@ -1040,7 +1040,11 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('</dl>\n')
 
     def visit_field(self, node):
-        pass
+        # Insert children (<field_name> and <field_body>) directly.
+        # Transfer "id" attribute to the <field_name> child node.
+        for child in node:
+            if isinstance(child, nodes.field_name):
+                child['ids'].extend(node['ids'])
 
     def depart_field(self, node):
         pass

@@ -24,6 +24,12 @@ Changes since 0.21.rc1
     "contents" directive options when used as placeholder for a generated
     table of contents (LaTeX writers with `use_latex_toc`_ setting).
 
+* docutils/writers/_html_base.py
+
+  - <field> elements are skipped in HTML output. Transfer `id` attribute
+    to the respective <field_name> child element to allow cross-references
+    to field-list items.
+
 
 Release 0.21.rc1 (2024-03-26)
 =============================
