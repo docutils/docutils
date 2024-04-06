@@ -16,7 +16,14 @@
 Changes since 0.21.rc1
 ======================
 
-...
+* docs/ref/docutils.dtd
+
+  - Reference names (``%refname.type`` and ``%refnames.type``)
+    are whitespace-normalized but **not** always downcased.
+  - The <topic> element uses the "depth" and "local" attributes to store
+    "contents" directive options when used as placeholder for a generated
+    table of contents (LaTeX writers with `use_latex_toc`_ setting).
+
 
 Release 0.21.rc1 (2024-03-26)
 =============================

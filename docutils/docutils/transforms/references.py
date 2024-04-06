@@ -25,7 +25,7 @@ class PropagateTargets(Transform):
         <paragraph>
             This is a test.
 
-    PropagateTargets propagates the ids and names of the internal
+    `PropagateTargets` propagates the ids and names of the internal
     targets preceding the paragraph to the paragraph itself::
 
         <target refid="internal1">

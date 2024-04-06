@@ -57,8 +57,9 @@ requirements, i.e. the regular expression ``[a-z](-?[a-z0-9]+)*``, via an
 
 The CDATA type is used because a `reference name` may consist of any text.
 
-`Normalization` implies downcasing and replacing runs of whitespace with
-single space characters. -->
+"Normalization" implies replacing runs of whitespace with single space
+characters. Matching substitution references to definitions is case-sensitive
+but forgiving. Resolving other cross references ignores case. -->
 <!ENTITY % refname.type  "CDATA">
 
 <!-- A space-separated list of `reference names`.
@@ -77,7 +78,7 @@ do not include a list of IDs.
 <!-- A reference to an `identifier key` in another element's `ids` attribute.
 
 The NMTOKEN type is used, because Docutils `identifier keys` do not use the
-``ID`` attribute type, as required by the `IDREF Validity constraint`_ -->
+``ID`` attribute type, as required by the `IDREF Validity constraint`_. -->
 <!ENTITY % idref.type  "NMTOKEN">
 
 <!-- A list of references to `identifier keys` in other elements. -->
@@ -360,7 +361,10 @@ Eventual replacement for docinfo? -->
 <!ATTLIST section %basic.atts;>
 
 <!ELEMENT topic (title?, (%body.elements;)+)>
-<!ATTLIST topic %basic.atts;>
+<!ATTLIST topic
+    %basic.atts;
+    depth %number;  #IMPLIED
+    local %yesorno; #IMPLIED>
 
 <!ELEMENT sidebar (title?, subtitle?, (%body.elements; | topic)+)>
 <!ATTLIST sidebar %basic.atts;>
@@ -468,7 +472,7 @@ or " ") or the text between option arguments (typically either "," or
 that is typeset as mathematical notation (display formula).
 -->
 <!ELEMENT math_block (#PCDATA)>
-<!ATTLIST math_block 
+<!ATTLIST math_block
     %basic.atts;
     %fixedspace.att;>
 
