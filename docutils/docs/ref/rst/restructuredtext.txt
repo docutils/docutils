@@ -430,8 +430,8 @@ Simple reference names may also optionally use backquotes.
 
 .. _normalized reference names:
 
-Reference names are whitespace-neutral and case-insensitive.  When
-resolving reference names internally:
+Reference names are whitespace-neutral and case-insensitive. [#case-forgiving]_
+When resolving reference names internally:
 
 - whitespace is normalized (one or more spaces, horizontal or vertical
   tabs, newlines, carriage returns, or form feeds, are interpreted as
@@ -461,7 +461,7 @@ care should be taken to avoid reference name conflicts.
 different namespace.
 
 .. [#case-forgiving] Matching `substitution references`_ to
-   `substitution definitions`_ is case-sensitive but forgiving.
+   `substitution definitions`_ is `case-sensitive but forgiving`_.
 
 
 Document Structure
@@ -2227,7 +2227,7 @@ indirectly contain a circular substitution reference.
 
 `Substitution references`_ are replaced in-line by the processed
 contents of the corresponding definition (linked by matching
-substitution text).  Matches are case-sensitive but forgiving; if no
+substitution text).  Matches are _`case-sensitive but forgiving`; if no
 exact match is found, a case-insensitive comparison is attempted.
 
 Substitution definitions allow the power and flexibility of
@@ -3245,7 +3245,7 @@ Markup errors are handled according to the specification in
 .. _`<transition>`: ../doctree.html#transition
 .. _`<version>`: ../doctree.html#version
 .. _"classes" attribute:  ../doctree.html#classes
-.. _identifier key: ../doctree.html#identifier-keys
+.. _identifier key: ../doctree.html#identifiers
 .. _metadata title: ../doctree.html#title-attribute
 
 .. _Docutils Generic DTD: ../docutils.dtd

@@ -546,7 +546,7 @@ is parsed and transformed to::
 .. _directive:
 .. _directives: ../ref/rst/directives.html
 .. _"class": ../ref/rst/directives.html#class
-.. _"contents": ../ref/rst/directives.html#contents
+.. _"contents": ../ref/rst/directives.html#table-of-contents
 .. _"default-role": ../ref/rst/directives.html#default-role
 .. _"footer": ../ref/rst/directives.html#footer
 .. _"header": ../ref/rst/directives.html#header

@@ -16,37 +16,37 @@ A Guide to the Docutils DTD
 
 .. contents:: :depth: 1
 
-
 This document describes the XML data structure of Docutils_ documents:
-the relationships and semantics of elements and attributes.  The
-Docutils document structure is formally defined by the `Docutils
-Generic DTD`_ XML document type definition, docutils.dtd_, which is
-the definitive source for details of element structural relationships.
+the relationships and semantics of elements and attributes.
+The Docutils document structure is formally defined by the
+`Docutils Generic DTD`_ XML document type definition, `docutils.dtd`_,
+which is the definitive source for details of element structural
+relationships.
 
-This document does not discuss implementation details.  Those can be
-found in internal documentation (docstrings) for the
-``docutils.nodes`` module, where the document tree data structure is
-implemented in a class library.
+The reader is assumed to have some familiarity with XML_ or SGML,
+and an understanding of the data structure meaning of "tree".
+For a list of introductory articles, see `Introducing the Extensible
+Markup Language (XML)`_.
 
-The reader is assumed to have some familiarity with XML or SGML, and
-an understanding of the data structure meaning of "tree".  For a list
-of introductory articles, see `Introducing the Extensible Markup
-Language (XML)`_.
+Docutils implements the Document tree data structure as a Python class
+library.  Details can be found in the API documentation ("docstrings")
+of the docutils.nodes_ module.
 
-The reStructuredText_ markup is used for illustrative examples
+The reStructuredText_ markup language is used for illustrative examples
 throughout this document.  For a gentle introduction, see `A
 ReStructuredText Primer`_.  For complete technical details, see the
 `reStructuredText Markup Specification`_.
 
+.. _XML: https://en.wikipedia.org/wiki/XML
 .. _Docutils: https://docutils.sourceforge.io/
 .. _Docutils Generic DTD:
 .. _Docutils DTD:
 .. _docutils.dtd: docutils.dtd
 .. _Introducing the Extensible Markup Language (XML):
-   http://xml.coverpages.org/xmlIntro.html
+    http://xml.coverpages.org/xmlIntro.html
+.. _docutils.nodes: https://docutils.sourceforge.io/docutils/nodes.py
 .. _reStructuredText: https://docutils.sourceforge.io/rst.html
 .. _A ReStructuredText Primer: ../user/rst/quickstart.html
-.. _reStructuredText Markup Specification: rst/restructuredtext.html
 
 
 -------------------
@@ -252,27 +252,28 @@ following subsections:
 
 * Details (of element relationships and semantics):
 
-  - Category: One or more references to the element categories in
+  :Category: One or more references to the element categories in
     `Element Hierarchy`_ above.  Some elements belong to more than one
     category.
 
-  - Analogues: Describes analogous elements in well-known document
+  :Analogues: Describes analogous elements in well-known document
     models such as HTML_ or DocBook_.  Lists similarities and
     differences.
 
-  - Processing: Lists formatting or rendering recommendations for the
+  :Processing: Lists formatting or rendering recommendations for the
     element.
 
-  - Parents: A list of elements which may contain the element.
+  :Parents: A list of elements which may contain the element.
 
-  - Children: A list of elements which may occur within the element
+  :Children: A list of elements which may occur within the element
     followed by the formal XML content model from the `Docutils DTD`_.
 
-  - Attributes: Describes (or refers to descriptions of) the possible
+  :Attributes: Describes (or refers to descriptions of) the possible
     values and semantics of each attribute.
 
-  - Parameter Entities: Lists the parameter entities which directly or
-    indirectly include the element.
+  :Parameter Entities:
+    Lists the `parameter entities <parameter entity reference_>`__
+    which directly or indirectly include the element.
 
 * Examples: reStructuredText_ examples are shown along with
   fragments of the document trees resulting from parsing.
@@ -282,7 +283,7 @@ following subsections:
   real XML is given up in exchange for easier readability.  For
   example, the following are equivalent:
 
-  - Real XML::
+  Real XML::
 
         <document>
         <section ids="a-title" names="a title">
@@ -291,7 +292,7 @@ following subsections:
         </section>
         </document>
 
-  - Pseudo-XML::
+  Pseudo-XML::
 
         <document>
             <section ids="a-title" names="a title">
@@ -455,8 +456,6 @@ Pseudo-XML_ fragment from simple parsing::
         <paragraph>
             You can make up your own admonition too.
 
-.. _"admonition" directive: rst/directives.html#admonition
-
 
 <attention>
 ===========
@@ -496,8 +495,6 @@ Pseudo-XML_ fragment from simple parsing::
     <attention>
         <paragraph>
             All your base are belong to us.
-
-.. _"attention" directive: rst/directives.html#attention
 
 
 <attribution>
@@ -649,7 +646,6 @@ Pseudo-XML_ fragment from simple parsing::
         <attribution>
             Anne Elk (Miss)
 
-.. _block quote: rst/restructuredtext.html#block-quotes
 
 
 <bullet_list>
@@ -709,8 +705,6 @@ Pseudo-XML_ fragment from simple parsing::
 
 See `\<list_item>`_ for another example.
 
-.. _bullet list: rst/restructuredtext.html#bullet-lists
-
 
 <caption>
 =========
@@ -755,8 +749,6 @@ Pseudo-XML_ fragment from simple parsing::
     <caution>
         <paragraph>
             Don't take any wooden nickels.
-
-.. _"caution" directive: rst/directives.html#caution
 
 
 <citation>
@@ -1007,8 +999,6 @@ Pseudo-XML_ fragment from simple parsing::
         <paragraph>
             Mad scientist at work!
 
-.. _"danger" directive: rst/directives.html#danger
-
 
 <date>
 ======
@@ -1162,8 +1152,6 @@ Pseudo-XML_ fragment from simple parsing::
 
 See `\<definition_list_item>`_ and `\<classifier>`_ for further examples.
 
-.. _definition list: rst/restructuredtext.html#definition-lists
-
 
 <definition_list_item>
 ======================
@@ -1297,16 +1285,15 @@ Details
 
 :Attributes: The <docinfo> element contains only the `common attributes`_.
 
-.. _RCS Keywords: rst/restructuredtext.html#rcs-keywords
 
 Examples
 --------
 
-`Bibliographic data`_ is represented in reStructuredText by a 
+`Bibliographic data`_ is represented in reStructuredText by a
 `field list <rST field list_>`__ as the first visible element of a
-`document <rST document>`__ (after optional document title and subtitle).
+`document <rST document_>`__ (after optional document title and subtitle).
 The field list is transformed into a <docinfo> element and its children
-by the `frontmatter.DocInfo`_ transform. [#abstract-dedication]_
+by the `DocInfo transform`_. [#abstract-dedication]_
 
 Source::
 
@@ -1358,10 +1345,6 @@ see the individual examples for the various `bibliographic elements`_.
    "dedication" that are transformed to `\<topic>`_ elements adjacent to
    the <docinfo>.
 
-.. _bibliographic data:
-.. _bibliographic fields: rst/restructuredtext.html#bibliographic-fields
-.. _rST document: rst/restructuredtext.html#document
-.. _rST field list: rst/restructuredtext.html#field-lists
 
 <doctest_block>
 ===============
@@ -1416,8 +1399,6 @@ Pseudo-XML_ fragment from simple parsing::
     <doctest_block xml:space="preserve">
         >>> print('this is a Doctest block')
         this is a Doctest block
-
-.. _doctest block: rst/restructuredtext.html#doctest-blocks
 
 
 <document>
@@ -1598,7 +1579,6 @@ Pseudo-XML_ fragment from simple parsing::
 
 See `\<list_item>`_ for another example.
 
-.. _enumerated list: rst/restructuredtext.html#enumerated-lists
 
 <error>
 =======
@@ -1638,8 +1618,6 @@ Pseudo-XML_ fragment from simple parsing::
     <error>
         <paragraph>
             Does not compute.
-
-.. _"error" directive: rst/directives.html#error
 
 
 <field>
@@ -1756,8 +1734,6 @@ Pseudo-XML_ fragment from simple parsing::
                 <paragraph>
                     integer
 
-.. _directive: rst/restructuredtext.html#directives
-
 
 <field_name>
 ============
@@ -1829,9 +1805,6 @@ setting has been supplied::
                     Generated on: 2002-08-20.
         <paragraph>
             A paragraph.
-
-.. _"footer" directive: rst/directives.html#footer
-.. _datestamp: ../user/config.html#datestamp
 
 
 <footnote>
@@ -1909,10 +1882,6 @@ Pseudo-XML_ fragment from simple parsing::
         <paragraph>
             This is a footnote.
 
-.. _explicit markup blocks: rst/restructuredtext.html#explicit-markup-blocks
-.. _footnotes:
-.. _footnote: rst/restructuredtext.html#footnotes
-
 
 <footnote_reference>
 ====================
@@ -1970,8 +1939,6 @@ The ``references.Footnotes`` Docutils transform_ resolves this to::
         <paragraph>
             Auto-numbered footnote 1.
 
-.. _footnote reference: rst/restructuredtext.html#footnote-references
-
 
 <generated>
 ===========
@@ -2018,8 +1985,6 @@ Pseudo-XML_ fragment from simple parsing::
                 <paragraph>
                     This space for rent.
 
-.. _"header" directive: rst/directives.html#header
-
 
 <hint>
 ======
@@ -2059,8 +2024,6 @@ Pseudo-XML_ fragment from simple parsing::
     <hint>
         <paragraph>
             It's bigger than a bread box.
-
-.. _"hint" directive: rst/directives.html#hint
 
 
 <image>
@@ -2107,8 +2070,6 @@ Pseudo-XML_ fragment from simple parsing::
 
     <image alt="alternate text" uri="picture.jpeg" width="20mm">
 
-.. _table of compatible image formats: rst/directives.html#image-formats
-.. _"image" directive: rst/directives.html#image
 .. _HTML <img>: https://html.spec.whatwg.org/multipage/embedded-content.html
                 #the-img-element
 .. _SVG <image>: https://svgwg.org/svg2-draft/embedded.html#ImageElement
@@ -2164,7 +2125,6 @@ Pseudo-XML_ fragment from simple parsing::
                 <paragraph>
                     Back up your data.
 
-.. _"important" directive: rst/directives.html#important
 
 <inline>
 ========
@@ -2207,11 +2167,6 @@ Pseudo-XML_ fragment from simple parsing::
         An example of using
         <inline classes="custom">
             interpreted text
-
-.. _stylesheet: ../user/config.html#stylesheet
-.. _custom interpreted text roles:
-   rst/directives.html#custom-interpreted-text-roles
-.. _standard role: rst/roles.html
 
 
 <label>
@@ -2348,8 +2303,6 @@ Pseudo-XML_ fragment from simple parsing::
         <line>
             Singing...
 
-.. _line block: rst/restructuredtext.html#line-blocks
-
 
 <list_item>
 ===========
@@ -2464,10 +2417,6 @@ Pseudo-XML_ fragment from simple parsing::
 <literal-block> elements are also generated by a `literal block`_ and
 the `"code" directive`_.
 
-.. _literal block: rst/restructuredtext.html#literal-blocks
-.. _"parsed-literal" directive: rst/directives.html#parsed-literal
-.. _"code" directive: rst/directives.html#code
-
 
 <math>
 ======
@@ -2506,8 +2455,6 @@ Pseudo-XML_ fragment from simple parsing::
 
 .. [#latex-math] For details of the supported mathematical language, see
    the `"math" directive`_
-
-.. _"math" directive: rst/directives.html#math
 
 
 <math_block>
@@ -2600,7 +2547,6 @@ Pseudo-XML_ fragment from simple parsing::
 
 .. _HTML <meta> element:
     https://html.spec.whatwg.org/multipage/semantics.html#the-meta-element
-.. _"meta" directive: rst/directives.html#meta
 
 
 <note>
@@ -2642,8 +2588,6 @@ Pseudo-XML_ fragment from simple parsing::
         <paragraph>
             Admonitions can be handy to break up a
             long boring technical document.
-
-.. _"note" directive: rst/directives.html#note
 
 
 <option>
@@ -2784,8 +2728,6 @@ Pseudo-XML_ fragment from simple parsing::
             <description>
                 <paragraph>
                     Multiple options with arguments.
-
-.. _option list: rst/restructuredtext.html#option-lists
 
 
 <option_list_item>
@@ -2971,9 +2913,6 @@ Pseudo-XML_ fragment from simple parsing::
 .. [#] For raw data pass-through in inline context, use `custom
    interpreted text roles`_ derived from the `"raw" role`_.
 
-.. _"raw" directive: rst/directives.html#raw
-.. _"raw" role: rst/roles.html#raw
-
 
 <reference>
 ===========
@@ -3133,7 +3072,6 @@ Complete pseudo-XML_ result after parsing::
                 <paragraph>
                     Paragraph 4.
 
-.. _section: rst/restructuredtext.html#sections
 
 <sidebar>
 =========
@@ -3201,8 +3139,6 @@ Pseudo-XML_ fragment from simple parsing::
         <paragraph>
             Body.
 
-.. _"sidebar" directive: rst/directives.html#sidebar
-
 
 <status>
 ========
@@ -3266,8 +3202,6 @@ The <substitution_definition> element stores a
 reStructuredText `substitution definition`_.
 
 `To be completed`_.
-
-.. _substitution definition: rst/restructuredtext.html#substitution-definitions
 
 
 <substitution_reference>
@@ -3384,8 +3318,8 @@ Examples
 --------
 
 In reStructuredText, tables can be specified via the
-table__, csv-table_, or list-table_ directives or directly as
-`grid table`_ or `simple table`_, e.g. ::
+`"table" <"table" directive_>`__, `"csv-table"`_, or `"list-table"`_
+directives or directly as `grid table`_ or `simple table`_, e.g. ::
 
     ======== ====
      bread   £2
@@ -3413,12 +3347,6 @@ Pseudo-XML_ fragment from simple parsing::
                     <entry>
                         <paragraph>
                             £30
-
-__ rst/directives.html#table
-.. _csv-table: rst/directives.html#csv-table
-.. _list-table: rst/directives.html#list-table
-.. _grid table: rst/restructuredtext.html#grid-tables
-.. _simple table: rst/restructuredtext.html#simple-tables
 
 .. [exchange-table-model] `XML Exchange Table Model DTD`, OASIS Technical
    Memorandum 9901:1999, http://www.oasis-open.org/html/tm9901.html.
@@ -3512,8 +3440,6 @@ Pseudo-XML_ fragment from simple parsing::
     <tip>
         <paragraph>
             15% if the service is good.
-
-.. _"tip" directive: rst/directives.html#tip
 
 
 <title>
@@ -3633,10 +3559,6 @@ Pseudo-XML_ fragment from simple parsing::
         <paragraph>
             Body.
 
-.. _"topic" directive: rst/directives.html#topic
-.. _"contents" directive:
-.. _table of contents: rst/directives.html#table-of-contents
-
 
 <transition>
 ============
@@ -3696,8 +3618,6 @@ Complete pseudo-XML_ result after parsing::
         <transition>
         <paragraph>
             Paragraph 2.
-
-.. _transition: rst/restructuredtext.html#transitions
 
 
 <version>
@@ -3783,24 +3703,13 @@ Pseudo-XML_ fragment from simple parsing::
         <paragraph>
             Reader discretion is strongly advised.
 
-.. _"warning" directive: rst/directives.html#admonition
-
-
-.. _attribute type:
 
 ---------------
-Attribute types
+Attribute Types
 ---------------
 
-.. contents:: :local:
-              :depth: 1
-
-
-Standard attribute types
-========================
-
-Attribute types defined in the `attribute types`__ section of the
-`XML 1.0 specification`_:
+*Standard attribute types* are defined in the `attribute types
+<XML attribute types_>`__ section of the `XML 1.0 specification`_.
 
 _`CDATA`
     Character data.  CDATA attributes may contain arbitrary text.
@@ -3810,132 +3719,149 @@ _`NMTOKEN`
     "_".
 
 _`NMTOKENS`
-    One or more space-separated NMTOKEN values.
+    One or more space-separated NMTOKEN_ values.
 
 _`EnumeratedType`
     The attribute value may be one of a specified list of values.
 
-Docutils uses `custom attribute types`_ instead of the ID, IDREF, and IDREFS
-standard types, because it does not adhere to the `One ID per Element Type`_
-validity constraint.
+.. _custom attribute types:
 
-__ `XML attribute types`_
+The Docutils DTD defines *custom attribute types* via `parameter entities
+<parameter entity reference_>`__ that resolve to standard attribute types
+to highlight specific attribute value constraints.
+In the docutils.nodes_ reference implementation, values are stored using
+the specified Python data types.
 
+_`%classnames.type;`
+  | Space-separated list of `class names`_.  Resolves to NMTOKEN_.
+  | Used in the `classes`_ attribute.  Python data type: ``list[str]``.
 
-Custom attribute types
-======================
+_`%idref.type;`
+  | A reference to another element by its identifier_.
+    Resolves to NMTOKEN_. [#id-vc]_
+  | Used in the `refid`_ attribute.  Python data type: ``str``.
 
-The Docutils DTD defines `parameter entities`_ that resolve to standard
-attribute types to highlight specific attribute value constraints.
+  .. _identifier: identifiers_
 
-_`yesorno`
-    Boolean: no if zero ("0"), yes if any other value.
-    Resolves to ``NMTOKEN``.
+_`%idrefs.type;`
+  | Space separated list of references to other elements by their identifiers_.
+    Resolves to NMTOKENS_. [#id-vc]_
+  | Used in the `backrefs`_ attribute.  Python data type: ``list[str]``.
 
-    ``%yesorno;`` is used in the `anonymous`_, `ltrim`_, `rtrim`_, and
-    `stub`_ attributes.
+_`%ids.type;`
+  | A space-separated list of unique `identifiers`_.
+    Resolves to NMTOKENS_. [#id-vc]_
+  | Used in the `ids`_ attribute.  Python data type: ``list[str]``.
 
-_`number`
-    The attribute value must be a number. Resolves to ``NMTOKEN``.
+_`%measure;`
+  | A number which may be immediately followed by a unit or percent sign.
+    Resolves to CDATA_.
+  | Used in the `height`_ and `width`_ attributes.  Python data type: ``str``.
 
-    ``%number;`` is used in the `level`_, `morecols`_, `scale`_, and
-    `start`_ attributes.
+_`%number;`
+  | The attribute value must be a positive interger.  Resolves to NMTOKEN_.
+  | Used in the `level`_, `morecols`_, `scale`_, and `start`_ attributes.
+    Python data type: ``int``.
 
-_`measure`
-    A number which may be immediately followed by a unit or percent sign.
-    Resolves to CDATA.
+_`%refname.type;`
+  | A `reference name`_.  Resolves to CDATA_.
+  | Used in the `refname`_ attribute.  Python data type: ``str``.
 
-    ``%measure;`` is used in the `height`_ and `width`_ attributes.
+_`%refnames.type;`
+  | Space-separated list of `reference names`_.  Resolves to CDATA_.
+  | Used in the `names`_ and `dupnames`_ attributes.
+    Python data type: ``list[str]``.
 
-_`classnames.type`
-    A space-separated list of `class names` [#classname]_. Resolves to NMTOKEN.
+  Backslash escaping is used for space characters inside a `reference
+  name`.
 
-    ``%classnames.type;`` is used in the `classes`_ attribute.
-
-_`refname.type`
-    A `reference name`_. Resolves to CDATA (in contrast to
-    NMTOKENS, `reference names`_ may consist of any text).
-
-    ``%refname.type;`` is used in the `name`_ and `refname`_ attributes.
-
-_`refnames.type`
-    A space-separated list of `reference names`_. Resolves to CDATA.
-
-    `Backslash escaping`_ is used for space characters inside a `reference
-    name`.
-
-    ``%refnames.type;`` is used in the `names`_ and `dupnames`_ attributes.
-
-_`ids.type`
-    A space-separated list of unique `identifier keys` [#identifier]_.
-    Resolves to NMTOKENS (the XML `standard attribute types`_ do not provide
-    for a list of IDs).
-
-    ``%ids.type;`` is used in the `ids`_ attribute.
-
-_`idref.type`
-    A reference to an `identifier key`_.
-    Resolves to NMTOKEN (Docutils identifier keys do not use the ID standard
-    type as required by the `IDREF Validity constraint`_).
-
-    ``%idref.type;`` is used in the `refid`_ attribute.
-
-_`idrefs.type`
-    A list of references to element identifiers.
-    Resolves to NMTOKENS.
-
-    ``%idrefs.type;`` is used in the `backrefs`_ attribute.
-
-.. _`class names`:
-
-.. [#classname] `Class names` define sub-classes of existing elements.
-
-   In reStructuredText, custom `class names` can be specified using
-   the `"class" directive`_, a directive's `:class: option`_, or
-   `custom interpreted text roles`_.
-   Docutils normalizes them to conform to both, HTML4.1 and CSS1.0 `name`
-   requirements (the regular expression ``[a-z](-?[a-z0-9]+)*``) via the
-   `identifier normalization`_.
-
-.. _identifiers:
-.. _identifier key:
-.. _identifier keys:
-
-.. [#identifier] `Identifier keys` are used for cross references in
-   generated documents. Therefore, they must comply with restrictions in the
-   respective output formats (HTML4.1__, HTML5__, `polyglot HTML`__,
-   LaTeX__, ODT__, troff (manpage), XML__).
-
-   Identifier keys cannot be specified directly in reStructuredText.
-   Docutils generates them by applying the `identifier normalization`_ to
-   `reference names`_ or from the auto_id_prefix_, prepending the id_prefix_
-   and potentially appending numbers for disambiguation.
-
-   __ https://www.w3.org/TR/html401/types.html#type-name
-   __ https://www.w3.org/TR/html50/dom.html#the-id-attribute
-   __ https://www.w3.org/TR/html-polyglot/#id-attribute
-   __ https://tex.stackexchange.com/questions/18311/what-are-the-valid-names-as-labels
-   __ https://help.libreoffice.org/6.3/en-US/text/swriter/01/04040000.html?DbPAR=WRITER#bm_id4974211
-   __ https://www.w3.org/TR/REC-xml/#id
-
+_`%yesorno;`
+  | Boolean: False if zero ("0"), true for any other value.
+    Resolves to NMTOKEN_.
+  | Used in the `anonymous`_, `ltrim`_, `rtrim`_, and `stub`_ attributes.
+    Python data type: ``int``.
 
 .. _XML 1.0 specification: https://www.w3.org/TR/REC-xml
 .. _XML attribute types: https://www.w3.org/TR/REC-xml/#sec-attribute-types
 .. _One ID per Element Type: https://www.w3.org/TR/REC-xml/#one-id-per-el
-.. .. _ID attribute type: https://www.w3.org/TR/REC-xml/#id
-.. _parameter entities: https://www.w3.org/TR/REC-xml/#dt-PE
-.. _IDREF Validity constraint: https://www.w3.org/TR/REC-xml/#idref
 
-.. _reference names:
-.. _reference name: rst/restructuredtext.html#reference-names
-.. _backslash escaping: rst/restructuredtext.html#escaping-mechanism
-.. _id_prefix: ../user/config.html#id-prefix
-.. _auto_id_prefix: ../user/config.html#auto-id-prefix
-.. _identifier normalization:
-    rst/directives.html#identifier-normalization
-.. _`:class: option`: rst/directives.html#class-option
-.. _custom interpreted text roles:
-    rst/directives.html#custom-interpreted-text-roles
+
+Names and identifiers
+=====================
+
+.. class:: description
+
+_`Class names`
+  define sub-classes of existing elements.
+
+  Docutils employs the `identifier normalization`_ to ensure class names
+  conform to both, HTML4.1 and CSS1.0 `name` requirements (the regular
+  expression ``[a-z](-?[a-z0-9]+)*``).
+
+  In reStructuredText, custom class names can be specified using the
+  `"class" directive`_, a directive's `class option`_, or `custom
+  interpreted text roles`_.
+
+  Class names are used in the classes_ attribute (`%classnames.type;`_).
+
+  .. _reference name:
+
+_`Reference names`
+  are identifiers assigned in the markup.
+
+  Reference names may consist of any text.  Whitespace is normalized (adjacent
+  spaces, horizontal or vertical tabs, newlines, carriage returns, or
+  form feeds, are replaced by a single space).
+
+  In reStructuredText, `reference names <rST reference names_>`__
+  originate from `internal hyperlink targets`_, a directive's `name
+  option`_, or the element's title or content and are used for internal
+  cross-references.
+
+  Hyperlinks_, footnotes_, and citations_ all share the same namespace
+  for reference names. Comparison ignores case.
+
+  Substitutions_ use a distinct namespace.  Comparison is case-sensitive
+  but forgiving.
+
+  Reference names are used in the name_, names_, refname_, and dupnames_
+  attributes (`%refname.type;`_ or `%refnames.type;`_).
+
+_`Identifiers`
+  are used for cross references in generated documents.
+
+  Docutils employs the `identifier normalization`_ to comply with
+  restrictions in the supported output formats (HTML4.1__, HTML5__,
+  `polyglot HTML`__, LaTeX__, ODT__, manpage, XML__).
+
+  Identifiers cannot be specified directly in reStructuredText.
+  Docutils generates them from `reference names`_ or from the
+  auto_id_prefix_, prepending the id_prefix_ and appending numbers
+  for disambiguation if required.
+
+  Identifiers are used in the ids_, refid_, and backrefs_ attributes
+  (`%ids.type;`_, `%idref.type;`_, or `%idrefs.type;`_) [#id-vc]_.
+
+.. [#id-vc] Docutils cannot use the ID, IDREF, and IDREFS standard types
+   because it does not adhere to the `One ID per Element Type`_ validity
+   constraint.
+
+__ https://www.w3.org/TR/html401/types.html#type-name
+__ https://www.w3.org/TR/html50/dom.html#the-id-attribute
+__ https://www.w3.org/TR/html-polyglot/#id-attribute
+__ https://tex.stackexchange.com/questions/18311/
+   what-are-the-valid-names-as-labels
+__ https://help.libreoffice.org/6.3/en-US/text/swriter/01/04040000.html
+   ?DbPAR=WRITER#bm_id4974211
+__ `XML attribute types`_
+
+
+-----------------
+Common Attributes
+-----------------
+
+Through the `%basic.atts;`_ parameter entity, all elements support the
+following attributes: ids_, names_ or dupnames_, source_, and classes_.
 
 
 ---------------------
@@ -3945,18 +3871,10 @@ _`idrefs.type`
 .. contents:: :local:
               :depth: 1
 
-_`Common Attributes`:
-    Through the `%basic.atts;`_ parameter entity, all elements support
-    the following attributes: ids_, names_ or dupnames_, source_, and
-    classes_.
-
-In addition to the XML attribute type, the Python datatype of attribute
-values in Docutils `node` objects is stated (in parentheses).
-
 ``alt``
 =======
 
-Attribute type: `CDATA`_ (str).  Default value: none.
+Attribute type: `CDATA`_.  Default value: none.
 
 The ``alt`` attribute is used to store a text description in the
 `\<image>`_ element.
@@ -3965,7 +3883,7 @@ The ``alt`` attribute is used to store a text description in the
 ``align``
 =========
 
-Attribute type: `CDATA`_ (str).  Default value: none (inherit).
+Attribute type: `CDATA`_.  Default value: none (inherit).
 
 The ``align`` attribute is used in the `\<figure>`_,
 `\<image>`_, `\<table>`_, and `\<tgroup>`_ elements
@@ -3975,7 +3893,7 @@ The ``align`` attribute is used in the `\<figure>`_,
 ``anonymous``
 =============
 
-Attribute type: `yesorno`_ (int).  Default value: none (implies no).
+Attribute type: `%yesorno;`_.  Default value: none (implies no).
 
 The ``anonymous`` attribute is used for unnamed hyperlinks in the
 `\<target>`_ and `\<reference>`_ elements (via the `%anonymous.att;`_
@@ -3985,7 +3903,7 @@ parameter entity).
 ``auto``
 ========
 
-Attribute type: `CDATA`_ (str).  Default value: none.
+Attribute type: `CDATA`_.  Default value: none.
 
 The ``auto`` attribute is used to indicate automatically-numbered
 `\<footnote>`_, `\<footnote_reference>`_ and `\<title>`_ elements
@@ -3995,7 +3913,7 @@ The ``auto`` attribute is used to indicate automatically-numbered
 ``backrefs``
 ============
 
-Attribute type: `idrefs.type`_ (list[str]).  Default value: none.
+Attribute type: `%idrefs.type;`_.  Default value: none.
 
 The ``backrefs`` attribute contains a space-separated list of identifier_
 references, used for backlinks from `\<footnote>`_, `\<citation>`_, and
@@ -4005,7 +3923,7 @@ references, used for backlinks from `\<footnote>`_, `\<citation>`_, and
 ``bullet``
 ==========
 
-Attribute type: `CDATA`_ (str).  Default value: none.
+Attribute type: `CDATA`_.  Default value: none.
 
 The ``bullet`` attribute is used in the `\<bullet_list>`_ element to
 record the style of bullet from the input data.  In documents processed
@@ -4016,7 +3934,7 @@ It may be ignored in processing.
 ``classes``
 ===========
 
-Attribute type: `classnames.type`_ (list[str]).  Default value: none.
+Attribute type: `%classnames.type;`_.  Default value: none.
 
 The ``classes`` attribute is a space separated list containing zero or
 more `class names`_.
@@ -4036,7 +3954,6 @@ the attribute.
 ``classes`` is one of the `common attributes`_, shared by all
 Docutils elements.
 
-.. _"class" directive: rst/directives.html#class
 .. _reader: ../peps/pep-0258.html#readers
 .. _writer:
 .. _writers: ../peps/pep-0258.html#writers
@@ -4045,14 +3962,14 @@ Docutils elements.
 ``cols``
 =========
 
-Attribute type: NMTOKEN_ (str).  Default value: none.
+Attribute type: NMTOKEN_.  Default value: none.
 
 The ``cols`` attribute is used in the `\<tgroup>`_ element.
 
 ``colsep``
 ==========
 
-Attribute type: `yesorno`_ (int).  Default value: none (implies no).
+Attribute type: `%yesorno;`_.  Default value: none (implies no).
 
 The ``colsep`` attribute is used in the `\<table>`_ and `\<tgroup>`_
 elements.
@@ -4061,7 +3978,7 @@ elements.
 ``colwidth``
 ============
 
-Attribute type: `CDATA`_ (int).  Default value: "1*" (`sic!`__)
+Attribute type: CDATA_.  Default value: "1*" (`sic!`__)
 
 Column width specification used in the `\<colspec>`_ element.
 Defined in the exchange-table-model_.
@@ -4077,7 +3994,6 @@ interpreted as “pt” if neither a proportion nor a fixed unit is
 specified.
 
 __
-
 .. important::
    Currently, Docutils only allows unitless integers in the ``colwidth``
    attribute and interprets them as proportions.
@@ -4086,7 +4002,7 @@ __
 ``delimiter``
 =============
 
-Attribute type: `CDATA`_ (str).  Default value: none.
+Attribute type: `CDATA`_.  Default value: none.
 
 The ``delimiter`` attribute is used in the `\<option_argument>`_ element
 and contains the text preceding the <option_argument>: either the text
@@ -4096,7 +4012,7 @@ or the text between option arguments (typically either "," or " ").
 ``depth``
 =========
 
-Attribute type: number_ (int). Default value: none.
+Attribute type: `%number;`_. Default value: none.
 
 The ``depth`` attribute may be used in a `\<topic>`_ element generated by
 the `"contents" directive`_ to hold the value of the "depth" option.
@@ -4104,7 +4020,7 @@ the `"contents" directive`_ to hold the value of the "depth" option.
 ``dupnames``
 ============
 
-Attribute type: `refnames.type`_ (list[str]).  Default value: none.
+Attribute type: `%refnames.type;`_.  Default value: none.
 
 ``dupnames`` is one of the `common attributes`_, shared by all
 Docutils elements. It replaces the `names`_ attribute when there
@@ -4122,7 +4038,7 @@ The ``enumtype`` attribute is used in the `\<enumerated_list>`_ element.
 ``format``
 ==========
 
-Attribute type: NMTOKENS_ (str).  Default value: none.
+Attribute type: NMTOKENS_.  Default value: none.
 
 The ``format`` attribute is a string containing one or more space
 separated output format names.
@@ -4133,7 +4049,7 @@ The ``format`` attribute is used in the `\<raw>`_ element.
 ``height``
 ==========
 
-Attribute type: measure_ (str).  Default value: none.
+Attribute type: `%measure;`_.  Default value: none.
 
 The ``height`` attribute is used in the `\<image>`_ element.
 
@@ -4141,10 +4057,10 @@ The ``height`` attribute is used in the `\<image>`_ element.
 ``ids``
 =======
 
-Attribute type: `ids.type`_ (list[str]).  Default value: none.
+Attribute type: `%ids.type;`_.  Default value: none.
 
 The ``ids`` attribute is a space separated list containing one or more
-unique `identifier keys`_, typically assigned by the system.
+unique `identifiers`_, typically assigned by the system.
 
 ``ids`` is one of the `common attributes`_, shared by all Docutils
 elements.
@@ -4158,7 +4074,7 @@ elements.
 ``level``
 =========
 
-Attribute type: number_ (int).  Default value: none.
+Attribute type: `%number;`_.  Default value: none.
 
 The ``level`` attribute is used in the `\<system_message>`_ element.
 
@@ -4166,7 +4082,7 @@ The ``level`` attribute is used in the `\<system_message>`_ element.
 ``line``
 =========
 
-Attribute type: number_ (int).  Default value: none.
+Attribute type: `%number;`_.  Default value: none.
 
 The ``line`` attribute is used in the `\<system_message>`_ element.
 
@@ -4174,7 +4090,7 @@ The ``line`` attribute is used in the `\<system_message>`_ element.
 ``local``
 =========
 
-Attribute type: yesorno_ (int). Default value: none.
+Attribute type: `%yesorno;`_. Default value: none.
 
 The ``local`` attribute may be used in a `\<topic>` element generated by
 the `"contents" directive`_ to hold the value of the "local" option.
@@ -4183,7 +4099,7 @@ the `"contents" directive`_ to hold the value of the "local" option.
 ``ltrim``
 =========
 
-Attribute type: `yesorno`_ (int).  Default value: none (implies no).
+Attribute type: `%yesorno;`_.  Default value: none (implies no).
 
 The ``ltrim`` attribute is used in the `\<substitution_definition>`_ element.
 
@@ -4207,13 +4123,11 @@ New in Docutils 0.21
    The behaviour may change for the ODT and XML writers
    (images cannot be embedded in a LaTeX source).
 
-.. _image_loading: ../user/config.html#image-loading
-
 
 ``morecols``
 ============
 
-Attribute type: number_ (int).  Default value: none.
+Attribute type: `%number;`_.  Default value: none.
 
 The ``morecols`` attribute is used in the `\<entry>`_ element.
 
@@ -4221,7 +4135,7 @@ The ``morecols`` attribute is used in the `\<entry>`_ element.
 ``morerows``
 ============
 
-Attribute type: number_ (int).  Default value: none.
+Attribute type: `%number;`_.  Default value: none.
 
 The ``morerows`` attribute is used in the `\<entry>`_ element.
 
@@ -4229,11 +4143,11 @@ The ``morerows`` attribute is used in the `\<entry>`_ element.
 ``name``
 =========
 
-Attribute type: `refname.type`_ or `NMTOKEN`_ (str).
+Attribute type: `%refname.type;`_ or `NMTOKEN`_.
 Default value: none.
 
 The ``name`` attribute in the `\<reference>`_ element accepts
-`refname.type`_ values.
+`%refname.type;`_ values.
 Case is preserved (but ignored when resolving reference names).
 
 The ``name`` attribute in the `\<meta>`_ element accepts `NMTOKEN`_ values.
@@ -4244,34 +4158,25 @@ The output format may limit valid values to a set of keywords
 ``names``
 =========
 
-Attribute type: `refnames.type`_ (list[str]).  Default value: none.
+Attribute type: `%refnames.type;`_.  Default value: none.
 
 The ``names`` attribute is a space-separated list containing
-`reference names`_ of an element. 
-Whitespace inside a name is backslash escaped.
-Each name in the list must be unique; if there are name conflicts
-(two or more elements want to the same name), the contents will be
-transferred to the `dupnames`_ attribute on the duplicate elements.
-An element may have at most one of the ``names`` or ``dupnames``
-attributes, but not both.
+`reference names`_ of an element.
+Spaces inside a name are backslash-escaped.
 
-`Reference names`_ are identifiers assigned in the markup. They
-originate from `internal hyperlink targets`_, a directive's `name
-option`_, or the element's title or content and are used for
-internal cross-references (cf. refname_).
+Each name in the list must be unique; if there are name conflicts (two or
+more elements want to the same name), the contents will be transferred to
+the `dupnames`_ attribute on the duplicate elements. An element may have
+at most one of the ``names`` or ``dupnames`` attributes, but not both.
 
 ``names`` is one of the `common attributes`_, shared by all
 Docutils elements.
-
-.. _internal hyperlink targets:
-   rst/restructuredtext.html#internal-hyperlink-targets
-.. _name option: rst/directives.html#name
 
 
 ``prefix``
 ==========
 
-Attribute type: `CDATA`_ (str).  Default value: none.
+Attribute type: `CDATA`_.  Default value: none.
 
 The ``prefix`` attribute is used in the `\<enumerated_list>`_ element.
 
@@ -4279,9 +4184,10 @@ The ``prefix`` attribute is used in the `\<enumerated_list>`_ element.
 ``refid``
 =========
 
-Attribute type: `idref.type`_.  Default value: none.
+Attribute type: `%idref.type;`_.  Default value: none.
 
-The ``refid`` attribute contains a reference to an `identifier key`_
+The ``refid`` attribute contains a reference to another element via its
+`identifier`_.
 
 ``refid`` is used by the `\<citation_reference>`_, `\<footnote_reference>`_,
 `\<problematic>`_, `\<reference>`_, `\<target>`_, and `\<title>`_ elements
@@ -4291,26 +4197,26 @@ The ``refid`` attribute contains a reference to an `identifier key`_
 ``refname``
 ===========
 
-Attribute type: `refname.type`_.  Default value: none.
+Attribute type: `%refname.type;`_.  Default value: none.
 
-The ``refname`` attribute contains a reference to one of the
-`reference names`_ in the `names`_ attribute of another element.
+The ``refname`` attribute contains a reference to one of the `names`_ of
+another element.
+
+``refname`` is used by the `\<citation_reference>`_, `\<footnote_reference>`_,
+`\<reference>`_, `\<substitution_reference>`_, and `\<target>`_ elements. [#]_
+
 On a `\<target>`_ element, ``refname`` indicates an `indirect target`_
 which may resolve to either an internal or external reference.
 Docutils transforms_ replace the ``refname`` attribute with a refid_
 pointing to the same element.
 
-``refname`` is used by the `\<citation_reference>`_, `\<footnote_reference>`_,
-`\<reference>`_, `\<substitution_reference>`_, and `\<target>`_ elements
-(via the `%refname.att;`_ and `%reference.atts;`_ parameter entities).
-
-.. _indirect target: rst/restructuredtext.html#indirect-hyperlink-targets
+.. [#] Via the `%refname.att;`_ and `%reference.atts;`_ parameter entities.
 
 
 ``refuri``
 ==========
 
-Attribute type: `CDATA`_ (str).  Default value: none.
+Attribute type: `CDATA`_.  Default value: none.
 
 The ``refuri`` attribute contains an external reference to a URI/URL.
 It is used by the `\<target>`_, `\<reference>`_,
@@ -4321,7 +4227,7 @@ It is used by the `\<target>`_, `\<reference>`_,
 ``rowsep``
 ==========
 
-Attribute type: `yesorno`_ (int).  Default value: none (implies no).
+Attribute type: `%yesorno;`_.  Default value: none (implies no).
 
 The ``rowsep`` attribute is used in the `\<table>`_ and `\<tgroup>`_
 elements.
@@ -4330,7 +4236,7 @@ elements.
 ``rtrim``
 =========
 
-Attribute type: `yesorno`_ (int).  Default value: none (implies no).
+Attribute type: `%yesorno;`_.  Default value: none (implies no).
 
 The ``rtrim`` attribute is used in the `\<substitution_definition>`_ element.
 
@@ -4338,7 +4244,7 @@ The ``rtrim`` attribute is used in the `\<substitution_definition>`_ element.
 ``scale``
 ==========
 
-Attribute type: number_ (int).  Default value: none.
+Attribute type: `%number;`_.  Default value: none.
 
 The ``scale`` attribute is used in the `\<image>`_ element to store
 a uniform scaling factor (integer percentage value).
@@ -4347,7 +4253,7 @@ a uniform scaling factor (integer percentage value).
 ``source``
 ==========
 
-Attribute type: `CDATA`_ (str).  Default value: none.
+Attribute type: `CDATA`_.  Default value: none.
 
 The ``source`` attribute is used to store the path or URL to the
 source text that was used to produce the document tree.  It is one of
@@ -4357,7 +4263,7 @@ the `common attributes`_, declared for all Docutils elements.
 ``start``
 =========
 
-Attribute type: `number`_.  Default value: none.
+Attribute type: `%number;`_.  Default value: none.
 
 The ``start`` attribute is used in the `\<enumerated_list>`_ element.
 
@@ -4365,17 +4271,17 @@ The ``start`` attribute is used in the `\<enumerated_list>`_ element.
 ``stub``
 =========
 
-Attribute type: `yesorno`_ (int).  Default value: none.
+Attribute type: `%yesorno;`_.  Default value: none.
 
 The ``stub`` attribute is used in the `\<colspec>`_ element.
 It marks a table column containing *stubs* (row titles, on the left).
-See also the csv-table_ and list-table_ directives.
+See also the `"csv-table"`_ and `"list-table"`_ directives.
 
 
 ``suffix``
 ==========
 
-Attribute type: `CDATA`_ (str).  Default value: none.
+Attribute type: `CDATA`_.  Default value: none.
 
 The ``suffix`` attribute is used in the `\<enumerated_list>`_ element.
 
@@ -4385,22 +4291,21 @@ The ``suffix`` attribute is used in the `\<enumerated_list>`_ element.
 ``title``
 =========
 
-Attribute type: `CDATA`_ (str).  Default value: none.
+Attribute type: `CDATA`_.  Default value: none.
 
 The ``title`` attribute stores the *metadata title* of a `\<document>`_.
 It is set by the `"title" directive`_ or the `DocTitle transform`_.
 This title is typically not part of the rendered document.
-It may for example be used in HTML's ``title`` element and shown in a
-browser's title bar or a page's tab.
+It is, for example, used as `HTML <title> element`_ and shown in a
+browser's title bar, in a user's history or bookmarks, or in search results.
 
-.. _"title" directive: rst/directives.html#title
-.. _DocTitle transform: ../api/transforms.html#frontmatter-doctitle
-
+.. _HTML <title> element:
+    https://html.spec.whatwg.org/multipage/semantics.html#the-title-element
 
 ``type``
 =========
 
-Attribute type: NMTOKEN_ (str).  Default value: none.
+Attribute type: NMTOKEN_.  Default value: none.
 
 The ``type`` attribute is used in the `\<system_message>`_ element.
 
@@ -4408,7 +4313,7 @@ The ``type`` attribute is used in the `\<system_message>`_ element.
 ``uri``
 =======
 
-Attribute type: `CDATA`_ (str).  Default value: none.
+Attribute type: `CDATA`_.  Default value: none.
 
 The ``uri`` attribute is used in the `\<image>`_ and `\<figure>`_ elements
 to refer to the image via its Universal Resource Indicator.
@@ -4417,9 +4322,10 @@ to refer to the image via its Universal Resource Indicator.
 ``width``
 ==========
 
-Attribute type: measure_ (str).  Default value: none.
+Attribute type: `%measure;`_.  Default value: none.
 
-The ``width`` attribute is used in the `\<figure>`_, `\<image>`_, and `\<table>`_ element.
+The ``width`` attribute is used in the `\<figure>`_, `\<image>`_,
+and `\<table>`_ elements.
 
 
 ``xml:space``
@@ -4436,7 +4342,6 @@ It is a fixed attribute, meant to communicate to an XML parser that the
 element contains significant whitespace.  The attribute value should not
 be set in a document instance.
 
-
 ----------------------------
  Parameter Entity Reference
 ----------------------------
@@ -4445,12 +4350,17 @@ be set in a document instance.
 and reduce duplication) and to allow the DTD to be customized by
 wrapper DTDs (external client DTDs that use or import the Docutils
 DTD).  Parameter entities may be overridden by wrapper DTDs, replacing
-the definitions below with custom definitions.  Parameter entities
-whose names begin with "additional" are meant to allow easy extension
+the definitions below with custom definitions.  Empty placeholder entities
+whose names begin with "additional" are provided to allow easy extension
 by wrapper DTDs.
+
+.. _parameter entities: https://www.w3.org/TR/REC-xml/#dt-PE
 
 .. contents:: :local:
               :depth: 1
+
+In addition, the Docutils DTD defines parameter entities for
+`custom attribute types`_.
 
 
 ``%align-h.att;``
@@ -4466,6 +4376,7 @@ Entity definition::
 The `\<figure>`_ and `\<table>`_ elements directly employ the
 ``%align-h.att;`` parameter entity in their attribute lists.
 
+
 ``%align-hv.att;``
 ==================
 
@@ -4476,8 +4387,8 @@ Entity definition::
 
     align (top | middle | bottom | left | center | right) #IMPLIED
 
-The `\<image>`_ element directly employs the ``%align-hv.att;`` parameter
-entity in its attribute list.
+The `\<image>`_ element directly employs the ``%align-hv.att;``
+parameter entity in its attribute list.
 
 ``%anonymous.att;``
 ===================
@@ -4810,9 +4721,89 @@ models of the following elements: `\<abbreviation>`_,
 `\<target>`_, `\<term>`_, `\<title>`_, `\<title_reference>`_, `\<version>`_
 
 
+.. References
+   ==========
+
+.. _auto_id_prefix: ../user/config.html#auto-id-prefix
+.. _datestamp:      ../user/config.html#datestamp
+.. _id_prefix:      ../user/config.html#id-prefix
+.. _image_loading:  ../user/config.html#image-loading
+.. _stylesheet:     ../user/config.html#stylesheet
+
 .. _transform:
-.. _transforms: ../api/transforms.html
-.. _frontmatter.DocInfo: ../api/transforms.html#docinfo
+.. _transforms:         ../api/transforms.html
+.. _DocInfo transform:  ../api/transforms.html#docinfo
+.. _DocTitle transform: ../api/transforms.html#frontmatter-doctitle
+
+.. _reStructuredText Markup Specification: rst/restructuredtext.html
+.. _bibliographic data:
+.. _bibliographic fields:   rst/restructuredtext.html#bibliographic-fields
+.. _block quote:            rst/restructuredtext.html#block-quotes
+.. _bullet list:            rst/restructuredtext.html#bullet-lists
+.. _citations:              rst/restructuredtext.html#citations
+.. _definition list:        rst/restructuredtext.html#definition-lists
+.. _directive:              rst/restructuredtext.html#directives
+.. _doctest block:          rst/restructuredtext.html#doctest-blocks
+.. _enumerated list:        rst/restructuredtext.html#enumerated-lists
+.. _explicit markup blocks: rst/restructuredtext.html#explicit-markup-blocks
+.. _footnote reference:     rst/restructuredtext.html#footnote-references
+.. _grid table:             rst/restructuredtext.html#grid-tables
+.. _indirect target:      rst/restructuredtext.html#indirect-hyperlink-targets
+.. _internal hyperlink targets:
+                          rst/restructuredtext.html#internal-hyperlink-targets
+.. _line block:             rst/restructuredtext.html#line-blocks
+.. _literal block:          rst/restructuredtext.html#literal-blocks
+.. _footnotes:
+.. _footnote:               rst/restructuredtext.html#footnotes
+.. _hyperlinks:             rst/restructuredtext.html#hyperlinks
+.. _option list:            rst/restructuredtext.html#option-lists
+.. _RCS Keywords:           rst/restructuredtext.html#rcs-keywords
+.. _rST document:           rst/restructuredtext.html#document
+.. _rST field list:         rst/restructuredtext.html#field-lists
+.. _rST reference names:    rst/restructuredtext.html#reference-names
+.. _section:                rst/restructuredtext.html#sections
+.. _simple table:           rst/restructuredtext.html#simple-tables
+.. _substitution definition:
+.. _substitutions:          rst/restructuredtext.html#substitution-definitions
+.. _transition:             rst/restructuredtext.html#transitions
+
+.. _standard role:          rst/roles.html
+.. _"raw" role:             rst/roles.html#raw
+
+.. _"admonition" directive:     rst/directives.html#admonition
+.. _"attention" directive:      rst/directives.html#attention
+.. _"caution" directive:        rst/directives.html#caution
+.. _"class" directive:          rst/directives.html#class
+.. _class option:               rst/directives.html#class-option
+.. _"code" directive:           rst/directives.html#code
+.. _"contents" directive:
+.. _table of contents:          rst/directives.html#table-of-contents
+.. _"csv-table":                rst/directives.html#csv-table
+.. _"danger" directive:         rst/directives.html#danger
+.. _"error" directive:          rst/directives.html#error
+.. _"footer" directive:         rst/directives.html#footer
+.. _"header" directive:         rst/directives.html#header
+.. _"hint" directive:           rst/directives.html#hint
+.. _identifier normalization:   rst/directives.html#identifier-normalization
+.. _"image" directive:          rst/directives.html#image
+.. _"important" directive:      rst/directives.html#important
+.. _"list-table":               rst/directives.html#list-table
+.. _"math" directive:           rst/directives.html#math
+.. _"meta" directive:           rst/directives.html#meta
+.. _name option:                rst/directives.html#name
+.. _"note" directive:           rst/directives.html#note
+.. _"parsed-literal" directive: rst/directives.html#parsed-literal
+.. _"raw" directive:            rst/directives.html#raw
+.. _"sidebar" directive:        rst/directives.html#sidebar
+.. _"table" directive:          rst/directives.html#table
+.. _"tip" directive:            rst/directives.html#tip
+.. _"topic" directive:          rst/directives.html#topic
+.. _"title" directive:          rst/directives.html#title
+.. _"warning" directive:        rst/directives.html#admonition
+.. _custom interpreted text roles:
+    rst/directives.html#custom-interpreted-text-roles
+.. _table of compatible image formats: rst/directives.html#image-formats
+
 
 
 ..

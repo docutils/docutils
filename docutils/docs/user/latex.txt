@@ -1714,7 +1714,7 @@ With use-latex-toc (default since release 0.6):
    require local ToCs at lower level, turn off the use-latex-toc_ option.
 
 .. _use-latex-toc: config.html#use-latex-toc
-.. _contents directive: ../ref/rst/directives.html#contents
+.. _contents directive: ../ref/rst/directives.html#table-of-contents
 .. _minitoc: https://ctan.org/pkg/minitoc
 .. _minitoc documentation:
    https://mirrors.ctan.org/macros/latex/contrib/minitoc/minitoc.pdf

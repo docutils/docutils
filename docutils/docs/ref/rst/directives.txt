@@ -275,22 +275,22 @@ as well as
     200px and a scale of 50 is equivalent to a height of 100px with no scale.
 
 ``loading`` : "embed", "link", or "lazy"
-    Indicate the preferred handling by the Docutils Writer. [#]_
+    Set the `loading attribute`_ to indicate the
+    preferred handling by the Docutils Writer. [#]_
 
     :embed: Embed the image into the output document. [#]_
     :link:  Refer to the image via its URI.
-    :lazy:  Refer to the image. The HTML5 writer additionally
-            specifies the `lazy loading attribute`_.
+    :lazy:  Refer to the image.  The HTML5 writer additionally
+            specifies the "`lazy loading attribute`_".
 
     (New in Docutils 0.21.)
 
 ``scale`` : integer percentage (the "%" symbol is optional)
-    The uniform scaling factor of the image.  The default is "100 %", i.e.
-    no scaling.
-
-    If no ``height`` or ``width`` options are specified, the `Python
-    Imaging Library` (PIL/Pillow_) may be used to determine them, if
-    it is installed and the image file is available.
+    The uniform scaling factor of the image.  The default is "100 %",
+    i.e. no scaling.
+    Docutils tries to determine dimensions from the image file
+    if no ``height`` or ``width`` options are specified
+    (requires the `Python Imaging Library`_).
 
     .. _target:
 
@@ -384,7 +384,7 @@ In addition, the following options are recognized:
     Library`_). If the image file is not found or the required software is
     unavailable, this option is ignored.
 
-    Sets the "width" attribute of the "figure" doctree element.
+    Sets the `width attribute`_ of the <figure> doctree element.
 
     This option does not scale the included image; use the ``width``
     `image option <image options_>`__ for that. ::
@@ -874,8 +874,6 @@ Recognizes the common options class_ and name_ as well as
     of the line width.  If omitted, the renderer determines the width
     of the table based on its contents or the column ``widths``.
 
-    .. _column-widths:
-
 ``widths`` : "auto", "grid", or a `list of integers`_
     Explicitly set column widths.
     Specifies relative widths if used with the ``width`` option.
@@ -1101,8 +1099,6 @@ Recognizes the common options class_ and name_ as well as
     of the line width.  If omitted, the renderer determines the width
     of the table based on its contents or the column ``widths``.
 
-    .. _column widths:
-
 ``widths`` : `list of integers`_ or "auto"
     A list of relative column widths.
     The default is equal-width columns (100%/#columns).
@@ -1119,7 +1115,8 @@ Recognizes the common options class_ and name_ as well as
  Document Parts
 ----------------
 
-.. _contents:
+.. A ``_contents:`` hyperlink here became id "contents-1"
+   (name clash with the generated ToC)
 
 Table of Contents
 =================
@@ -1183,7 +1180,6 @@ The "contents" directive recognizes the common option class_ as well as
 
 
 .. _sectnum:
-.. _section-numbering:
 
 Automatic Section Numbering
 ===========================
@@ -1207,12 +1203,12 @@ level has a number, separated by periods.  For example, the title of section
 1, subsection 2, subsubsection 3 would have "1.2.3" prefixed.
 
 The directive does its work in two passes: the initial parse
-and a transform.  During the initial parse, a "pending" element is
+and a transform.  During the initial parse, a <pending> element is
 generated which acts as a placeholder, storing any options internally.
-At a later stage in the processing, the "pending" element triggers a
+At a later stage in the processing, the <pending> element triggers a
 transform, which adds section numbers to titles.  Section numbers are
-enclosed in a "generated" element, and titles have their "auto"
-attribute set to "1".
+enclosed in a <generated> element, and titles have their `auto attribute`_
+set to "1".
 
 .. _sectnum options:
 
@@ -1785,7 +1781,7 @@ The text above is parsed and transformed into this doctree fragment::
 
        * second item, with class argument
 
-.. [#] To set a "classes" attribute value on a block quote, the
+.. [#] To set a `classes attribute`_ value on a block quote, the
    "class" directive must be followed by an empty comment::
 
        .. class:: highlights
@@ -1802,7 +1798,7 @@ The text above is parsed and transformed into this doctree fragment::
 Identifier Normalization
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-Docutils `class names`_ and `identifier keys`_ are normalized to conform
+Docutils normalizes `class names`_ and `identifiers`_ to conform
 to the regular expression "``[a-z](-?[a-z0-9]+)*``" by converting
 
 * alphabetic characters to lowercase,
@@ -1835,13 +1831,12 @@ For example ``"Rot.Gelb&Grün:+2008"`` becomes ``"rot-gelb-grun-2008"`` and
           -- https://www.w3.org/TR/html401/types.html#type-name
 
     - The `CSS1 spec`_ defines identifiers based on the "name" token
-      ("flex" tokenizer notation below; "latin1" and "escape" 8-bit
-      characters have been replaced with XML entities)::
+      ("flex" tokenizer notation below)::
 
           unicode     \\[0-9a-f]{1,4}
-          latin1      [&iexcl;-&yuml;]
-          escape      {unicode}|\\[ -~&iexcl;-&yuml;]
-          nmchar      [-A-Za-z0-9]|{latin1}|{escape}
+          latin1      [¡-ÿ]
+          escape      {unicode}|\\[ -~¡-ÿ]
+          nmchar      [-a-z0-9]|{latin1}|{escape}
           name        {nmchar}+
 
     The CSS1 rule requires underscores ("_"), colons (":"), and
@@ -2110,8 +2105,7 @@ Metadata Document Title
 The "title" directive specifies the document title as metadata, which
 does not become part of the document body. It overrides the
 document-supplied `document title`_ and the `"title" configuration
-setting`_. For example, in HTML output the metadata document title
-appears in the title bar of the browser window.
+setting`_.
 
 
 Restructuredtext-Test-Directive
@@ -2140,7 +2134,6 @@ Most of the directives that generate doctree elements support the following
 options:
 
 .. _class option:
-.. _class:
 
 ``class`` : text_ (space separated list of `class names`_)
     Set a `classes attribute`_ value on the doctree element generated by
@@ -2220,7 +2213,8 @@ Common Option Value Types
 
 *URI*
   `Uniform Resource Identifier`__.
-  Whitespace is removed, cf. `External hyperlink targets`_.
+  Whitespace is removed, cf. `external hyperlink targets`_ in the
+  reStructuredText specification..
 
   __ https://en.wikipedia.org/wiki/Uniform_Resource_Identifier
 
@@ -2256,6 +2250,7 @@ Common Option Value Types
 .. _input_encoding: ../../user/config.html#input-encoding
 .. _math_output: ../../user/config.html#math-output
 .. _raw_enabled: ../../user/config.html#raw-enabled
+.. _root_prefix: ../../user/config.html#root-prefix
 .. _sectnum_xform: ../../user/config.html#sectnum-xform
 .. _syntax_highlight: ../../user/config.html#syntax-highlight
 .. _tab_width: ../../user/config.html#tab-width
@@ -2267,16 +2262,18 @@ Common Option Value Types
 .. _reStructuredText Standard Definition Files: definitions.html
 
 .. _The Docutils Document Tree: ../doctree.html
-.. _identifier keys: ../doctree.html#ids-type
+.. _identifiers: ../doctree.html#identifiers
 .. _inline elements: ../doctree.html#inline-elements
-.. _class names: ../doctree.html#classname
+.. _class names: ../doctree.html#class-names
+.. _auto attribute: ../doctree.html#auto
 .. _classes:
 .. _classes attribute: ../doctree.html#classes
 .. _format attribute: ../doctree.html#format
 .. _ids attribute: ../doctree.html#ids
+.. _loading attribute: ../doctree.html#loading
 .. _names attribute: ../doctree.html#names
-.. _root_prefix: ../../user/config.html#root-prefix
 .. _title attribute: ../doctree.html#title-attribute
+.. _width attribute: ../doctree.html#width
 .. _<admonition>: ../doctree.html#admonition
 .. _<attention>: ../doctree.html#attention
 .. _<block_quote>: ../doctree.html#block-quote
@@ -2315,7 +2312,6 @@ Common Option Value Types
 .. _<title>: ../doctree.html#title
 .. _<topic>: ../doctree.html#topic
 .. _<warning>: ../doctree.html#warning
-.. _"loading" attribute: ../doctree.html#loading
 
 
 
