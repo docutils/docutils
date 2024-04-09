@@ -8,6 +8,68 @@ Releasing
 
 Notes on what happend while releasing.
 
+Release 0.21 (2024-04-09)
+=========================
+
+(follow docs/dev/release.txt)
+
+everything fine till ... 
+------------------------
+
+preparing docs upload
+
+  For final releases continue
+
+  * upload source and generated html to sf-htdocs/#.# ::
+ 
+      mkdir tmp1
+      cd tmp1
+      tar xzvf ../dist/docutils-0.21.tar.gz
+      cd docutils-#.#/
+      python3 tools/buildhtml.py .
+
+the sdist only contains ::
+
+  COPYING.txt  docutils  PKG-INFO  pyproject.toml
+
+on 20.1 it was ::
+
+  BUGS.txt     docutils.conf      install.py   README.txt         test
+  COPYING.txt  docutils.egg-info  licenses     RELEASE-NOTES.txt  THANKS.txt
+  docs         FAQ.txt            MANIFEST.in  setup.cfg          tools
+  docutils     HISTORY.txt        PKG-INFO     setup.py           tox.ini
+
+HACK for the release, check flit later.
+Copy following files and directories from source directory::
+
+  BUGS.txt docutils.conf FAQ.txt HISTORY.txt licenses README.txt RELEASE-NOTES.txt
+  THANKS.txt
+  docs
+  tools
+
+Stop release process before uploading source tarball to sourceforge.
+
+"flit"'s ``--use-vcs`` only works for "git" and "hg", therefore not for us.
+
+* fix: pyproject.toml
+* build new distribution: ``python -m flit build``
+* check sdist
+* copy the sdist to docutils-0.21.post1.tar.gz
+* and upload to pypi 
+
+  Error : only one sdist per release allowed.
+
+* Deleting the sdist in pypi-web-interface.
+* upload again ... worked.
+
+* Upload to sourceforge.net
+
+* commit changes: pyproject.toml, docs/dev/release.txt
+
+* set version 0.22b.dev
+
+
+
 Release 0.20.1 (2023-05-17)
 ===========================
 
