@@ -123,6 +123,10 @@ Writers
 * "null" writer: output will change to the empty string
   in Docutils 0.22.
 
+* "manpage" writer:
+
+  - No more changing case in to uppercase, leave it to the source.
+
 
 Misc
 ----
