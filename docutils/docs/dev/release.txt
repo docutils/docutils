@@ -105,8 +105,7 @@ Steps to take and watch
 * Update your source directory.
 * Rebuild wheel and source-distribution ::
 
-    python3 setup.py sdist
-    python3 setup.py bdist_wheel
+    python3 -m flit build 
 
 * Now upload to pypi::
 
@@ -142,7 +141,6 @@ For final releases continue
     python3 tools/buildhtml.py .
     find . -name \*.pyc -exec rm -v {} \;
     find . -name __pycache__ -exec rmdir -v {} \;
-    rm -r docutils.egg-info
     rsync -e ssh -r -t ./ web.sourceforge.net:/home/project-web/docutils/htdocs/#.#
 
 * Check web/index.txt for necessary corrections.
