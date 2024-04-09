@@ -635,7 +635,8 @@ following caveats:
 <!ELEMENT math (#PCDATA)>
 <!ATTLIST math %basic.atts;>
 
-<!-- Can also be a body element, when it contains an "image" element. -->
+<!-- Can also be a body element, when it contains an "image" element.
+     "name" will be removed from the ATTLIST in Docutils 1.0 -->
 <!ELEMENT reference %text.model;>
 <!ATTLIST reference
     name      CDATA     #IMPLIED

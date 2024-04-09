@@ -4143,16 +4143,17 @@ The ``morerows`` attribute is used in the `\<entry>`_ element.
 ``name``
 =========
 
-Attribute type: `%refname.type;`_ or `NMTOKEN`_.
+Attribute type: `NMTOKEN`_ or `CDATA`_.
 Default value: none.
-
-The ``name`` attribute in the `\<reference>`_ element accepts
-`%refname.type;`_ values.
-Case is preserved (but ignored when resolving reference names).
 
 The ``name`` attribute in the `\<meta>`_ element accepts `NMTOKEN`_ values.
 The output format may limit valid values to a set of keywords
 (EnumeratedType_).
+
+The ``name`` attribute in the `\<reference>`_ element holds the
+`reference name`_ of the referenced element.  Whitespace is normalized
+but case is preserved.  The attribute will no longer be used with
+<reference> elements in Docutils 1.0.
 
 
 ``names``

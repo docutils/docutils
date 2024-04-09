@@ -46,6 +46,16 @@ Command line interface
     https://packaging.python.org/en/latest/specifications/entry-points/
 
 
+Document Tree / Docutils DTD
+----------------------------
+
+* Do not lowercase reference names in the `refname attribute`_
+  (matching hyperlinks, footnotes, and citations remains case insensitive),
+  and drop the ``name`` attribute from <reference> nodes
+  in Docutils 1.0.
+
+.. _refname attribute: docs/ref/doctree.html#refname
+
 `Input encoding`_
 -----------------
 
