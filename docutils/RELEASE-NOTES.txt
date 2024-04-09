@@ -198,8 +198,8 @@ Misc
 .. _buildhtml.py: docs/user/tools.html#buildhtml-py
 
 
-Release 0.21.rc1 (2024-03-26)
-=============================
+Release 0.21 (2024-04-09)
+=========================
 
 * General:
 
