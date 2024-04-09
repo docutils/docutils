@@ -13,30 +13,9 @@
 
 .. contents::
 
-Changes since 0.21.rc1
-======================
 
-* docs/ref/docutils.dtd
-
-  - Reference names (``%refname.type`` and ``%refnames.type``)
-    are whitespace-normalized but **not** always downcased.
-  - The <topic> element uses the "depth" and "local" attributes to store
-    "contents" directive options when used as placeholder for a generated
-    table of contents (LaTeX writers with `use_latex_toc`_ setting).
-
-* docutils/writers/_html_base.py
-
-  - <field> elements are skipped in HTML output. Transfer `id` attribute
-    to the respective <field_name> child element to allow cross-references
-    to field-list items.
-
-* docutils/writers/html5_polyglot/\*.css
-
-  - No additional margins for line-blocks.
-
-
-Release 0.21.rc1 (2024-03-26)
-=============================
+Release 0.21 (unpublished)
+==========================
 
 * General
 
@@ -57,6 +36,14 @@ Release 0.21.rc1 (2024-03-26)
 
     * The <math_block> element uses the attribute "xml:space".
     * The <raw> element may contain text only (no inline elements).
+    * The <topic> element uses the "depth" and "local" attributes to
+      store "contents" directive options when used as placeholder for a
+      generated table of contents (LaTeX writers with `use_latex_toc`_
+      setting).
+
+  - Documentation fix:
+    Reference names (``%refname.type`` and ``%refnames.type``)
+    are whitespace-normalized but **not** always downcased.
 
 * docutils/frontend.py
 
@@ -163,6 +150,7 @@ Release 0.21.rc1 (2024-03-26)
 
   - Move MathML styles to "minimal.css" (required for correct rendering).
   - Highlight heading of target section also with explicit hyperlink target.
+  - No additional margins for line-blocks.
 
 * docutils/writers/_html_base.py
 
@@ -185,6 +173,9 @@ Release 0.21.rc1 (2024-03-26)
     "definition_list_item" with multiple "terms" (cf. feature-request #60).
   - Link to the document "#top" from the ToC heading
     (unless toc_backlinks_ is False).
+  - Transfer `id` attribute from <field> elements to the respective
+    <field_name> child element to allow cross-references to field-list items
+    (<field>s are skipped in HTML output).
 
 * docutils/writers/latex2e/__init__.py
 
