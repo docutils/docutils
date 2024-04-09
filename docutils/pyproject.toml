@@ -103,16 +103,16 @@ rst2xml = "docutils.core:rst2xml"
 # Sdist (*.tar.gz) generation
 [tool.flit.sdist]
 
-# not required with ``flit --use-vcs`` (current default)
+# required as ``flit --use-vcs`` only works for git and hg (current default)
 # TODO: include generated HTML ?
-# include = [
-    # "*.txt",
-    # "docutils/",
-    # "docs/",
-    # "licenses/",
-    # "test/",
-    # "tools/",
-# ]
+include = [
+    "*.txt",
+    "docutils/",
+    "docs/",
+    "licenses/",
+    "test/",
+    "tools/",
+ ]
 
 # TODO: Recursive globbing (**) is not supported yet (in exclude pattern '**/*~')
 exclude = [
