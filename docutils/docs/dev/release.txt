@@ -71,7 +71,6 @@ Steps to take and watch
     python3 -m pip install build
     python3 -m build .
 
-* check sdist for html-files in docutils.egg-info.
 * Upload wheel and source to test.pypi.
   
   Set repository and key in ~/.pypirc with a <server-name> and
@@ -85,6 +84,16 @@ Steps to take and watch
     export PYTHONPATH= ; . bin/activate
 
     python -m pip install --index-url https://test.pypi.org/simple/ --no-deps docutils
+
+    cp -Lr ../docutils-code/docutils/test .
+    python test/alltests.py
+
+  Test the sdist::
+
+    python3 -m venv du3s ; cd du3s
+    export PYTHONPATH= ; . bin/activate
+
+    python -m pip install --index-url https://test.pypi.org/simple/ --no-deps --no-binary all docutils
 
     cp -Lr ../docutils-code/docutils/test .
     python test/alltests.py
