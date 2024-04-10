@@ -83,7 +83,7 @@ Steps to take and watch
     python3 -m venv du3 ; cd du3
     export PYTHONPATH= ; . bin/activate
 
-    python -m pip install --index-url https://test.pypi.org/simple/ --no-deps docutils
+    pip install --index-url https://test.pypi.org/simple/ --no-deps docutils
 
     cp -Lr ../docutils-code/docutils/test .
     python test/alltests.py
@@ -93,14 +93,14 @@ Steps to take and watch
     python3 -m venv du3s ; cd du3s
     export PYTHONPATH= ; . bin/activate
 
-    python -m pip install --index-url https://test.pypi.org/simple/ --no-deps --no-binary all docutils
+    pip install --index-url https://test.pypi.org/simple/ --no-deps --no-binary all docutils
 
     cp -Lr ../docutils-code/docutils/test .
     python test/alltests.py
 
   Ignore ``test_find_file_in_dirs`` fails because HISTORY.txt is missing.
 
-    python -m pip uninstall docutils
+    pip uninstall docutils
     deactivate ; cd .. ; rm -r du3
 
 * Commit changes ... the changed version number.
