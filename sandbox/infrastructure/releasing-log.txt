@@ -68,7 +68,44 @@ Stop release process before uploading source tarball to sourceforge.
 
 * set version 0.22b.dev
 
+pip does not like the post1
+---------------------------
 
+installing from source breaks ::
+
+  pip install  --no-binary docutils docutils
+
+  Discarding ... docutils-0.21.post1.tar.gz has inconsistent version: 
+    expected '0.21.post1', but metadata has '0.21'
+
+* patch VersionInfo to use serial for post# when releaselevel is "fimal".
+* flit build::
+
+    591K  docutils-0.21.post2-py3-none-any.whl
+    2,2M  docutils-0.21.post2.tar.gz
+
+* upload to testpypi
+* test ::
+
+    python3 -m venv du3 ; cd du3
+    export PYTHONPATH= ; . bin/activate
+
+    python -m pip install --index-url https://test.pypi.org/simple/ --no-deps docutils
+
+    cp -Lr ../docutils-code/docutils/test .
+    python test/alltests.py
+
+* test nobinary ::
+
+    python3 -m venv du3p ; cd du3p
+    export PYTHONPATH= ; . bin/activate
+
+    python -m pip install --index-url https://test.pypi.org/simple/ --no-binary all docutils
+
+    cp -Lr ../docutils-code/docutils/test .
+    python test/alltests.py
+
+  passes except the missing pil and pngs ... as usual.
 
 Release 0.20.1 (2023-05-17)
 ===========================
