@@ -197,6 +197,11 @@ Misc
 .. _use_latex_citations: docs/user/config.html#use-latex-citations
 .. _buildhtml.py: docs/user/tools.html#buildhtml-py
 
+Release 0.21.2b.dev (unpublished)
+=================================
+
+Post-release waiting.
+
 
 Release 0.21.1 (2024-04-10)
 ===========================
