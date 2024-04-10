@@ -8,6 +8,116 @@ Releasing
 
 Notes on what happend while releasing.
 
+Release 0.21.1 (2024-04-10)
+===========================
+
+Because adding post-release numbers in a rush is not considered good
+and on pypi it 0.21.post2 would be a new release anyway.
+
+follow docs/dev/release.txt
+
+everything fine till ... install sdist
+--------------------------------------
+
+The error ::
+
+  pip install --index-url https://test.pypi.org/simple/ --no-deps --no-binary docutils -U docutils
+  Looking in indexes: https://test.pypi.org/simple/
+  Requirement already satisfied: docutils in ./lib/python3.12/site-packages (0.21)
+  Collecting docutils
+    Using cached https://test-files.pythonhosted.org/packages/14/1c/642f839d386b7e88da5ed5d15ad9ae100bac9e86b4cb0781ebfebdc9c42f/docutils-0.21.1.tar.gz (2.2 MB)
+  Installing build dependencies ... error
+  error: subprocess-exited-with-error
+  
+  × pip subprocess to install build dependencies did not run successfully.
+  │ exit code: 1
+  ╰─> [3 lines of output]
+      Looking in indexes: https://test.pypi.org/simple/
+      ERROR: Could not find a version that satisfies the requirement flit_core<4,>=3.4 (from versions: none)
+      ERROR: No matching distribution found for flit_core<4,>=3.4
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+  error: subprocess-exited-with-error
+
+  × pip subprocess to install build dependencies did not run successfully.
+  │ exit code: 1
+  ╰─> See above for output.
+
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+
+there is no "flit_core" on testpypi only "flit 0.5".
+Preinstalling "flit_core 3.9" in the "venv" does not help either.
+
+Even with preinstalled flit_core 3.9 ::
+
+  Using cached https://test-files.pythonhosted.org/docutils-0.21.1.tar.gz (2.2 MB)
+  Installing build dependencies ... error
+  error: subprocess-exited-with-error
+  
+  × pip subprocess to install build dependencies did not run successfully.
+  │ exit code: 1
+  ╰─> [3 lines of output]
+      Looking in indexes: https://test.pypi.org/simple/
+      ERROR: Could not find a version that satisfies the requirement flit_core<4,>=3.4 (from versions: none)
+      ERROR: No matching distribution found for flit_core<4,>=3.4
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+
+  (du3s) engelbert@ooney:~/projects/du3s$ pip list
+  Package   Version
+  --------- -------
+  docutils  0.21.1
+  flit      3.2.0
+  flit_core 3.9.0
+  pip       24.0
+
+Postbone to pypi. 
+
+* retest wheel from test.pypi.
+
+Continue release.txt
+
+* Commit changes ... the changed version number.
+
+* If final release tag #.# (Note: only directory docutils is copied)::
+
+    svn copy svn+ssh://grubert@svn.code.sf.net/p/docutils/code/trunk/docutils \
+             svn+ssh://grubert@svn.code.sf.net/p/docutils/code/tags/docutils-#.# \
+             -m "tagging release #.#"
+
+* Rebuild wheel and source-distribution ::
+
+    rm dist/*
+    python3 -m flit build 
+
+* Now upload to pypi::
+
+    python3 -m twine upload --repository <server-name> dist/docutils-#.#*
+
+* Remove previous package from local cache::
+
+    find .cache/pip/wheels -name docutils\*whl -exec rm -v -i {} \;
+
+* test sdist::
+
+    pip install --no-binary docutils docutils
+
+    cp -Lr ../docutils-code/docutils/test .
+    python test/alltests.py
+
+  Ignore missing pil.
+
+  Note:
+
+    ``--no-binary all`` did install docutils wheel.
+
+* test the binary: ok
+
+Continue to end.
+
+
 Release 0.21 (2024-04-09)
 =========================
 
@@ -106,6 +216,9 @@ installing from source breaks ::
     python test/alltests.py
 
   passes except the missing pil and pngs ... as usual.
+
+But consensus is 0.21.1
+
 
 Release 0.20.1 (2023-05-17)
 ===========================
