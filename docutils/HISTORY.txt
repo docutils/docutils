@@ -14,10 +14,18 @@
 .. contents::
 
 
-Changes since 0.21
-==================
+Release 0.21.1 (2024-04-10)
+===========================
 
-In post release waiting time.
+The sdist in 0.21 was incomplete
+
+- pypi allows no file replacing
+- adding a postrelease suffix "post1": docutils-0.21.post1.tar.gz
+  works on pypi, but fails with pip because the metadata differs.
+
+  But if the metadata is 0.21.post1 pypi makes it a new release.
+
+  0.21.1 is the same code except for the version number.
 
 Release 0.21 (2024-04-09)
 =========================
