@@ -14,6 +14,7 @@ standard values, and any entries with empty values.
 
 from pathlib import Path
 import os
+import re
 import sys
 import unittest
 
@@ -25,6 +26,12 @@ if __name__ == '__main__':
 import docutils
 import docutils.core
 from docutils.utils.code_analyzer import with_pygments
+if with_pygments:
+    import pygments
+    _pv = re.match(r'^([0-9]+)\.([0-9]*)', pygments.__version__)
+    if (int(_pv[1]), int(_pv[2])) >= (2, 14):
+        # pygments output changed in version 2.14
+        with_pygments = False
 
 ROOT_PREFIX = (Path(__file__).parent.parent/'functional'/'input').as_posix()
 DATA_ROOT = os.path.abspath(os.path.join(__file__, '..', '..', 'data'))
