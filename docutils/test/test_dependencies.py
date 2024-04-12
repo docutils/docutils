@@ -73,7 +73,7 @@ class RecordDependenciesTests(unittest.TestCase):
         # parsing even if not used in the chosen output format.
         # This should change (see parsers/rst/directives/misc.py).
         keys = ['include', 'raw']
-        if PIL and TEST_ROOT == CWD:
+        if PIL and os.path.exists('../docs/user/rst/images/'):
             keys += ['figure-image']
         expected = [paths[key] for key in keys]
         record, output = self.get_record(writer_name='xml')
@@ -82,7 +82,7 @@ class RecordDependenciesTests(unittest.TestCase):
 
     def test_dependencies_html(self):
         keys = ['include', 'raw']
-        if PIL and (TEST_ROOT == CWD):
+        if PIL and os.path.exists('../docs/user/rst/images/'):
             keys += ['figure-image', 'scaled-image']
         expected = [paths[key] for key in keys]
         # stylesheets are tested separately in test_stylesheet_dependencies():
@@ -101,7 +101,7 @@ class RecordDependenciesTests(unittest.TestCase):
         # parsing even if not used in the chosen output format.
         # This should change (see parsers/rst/directives/misc.py).
         keys = ['include', 'raw']
-        if PIL and TEST_ROOT == CWD:
+        if PIL and os.path.exists('../docs/user/rst/images/'):
             keys += ['figure-image']
         expected = [paths[key] for key in keys]
         record, output = self.get_record(
