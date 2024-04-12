@@ -120,9 +120,10 @@ exclude = [
     "*/*~",
     "*.DS_Store",
     "*/*.DS_Store",
+    "*/.pytest_cache",
     "test/alltests.out",
+    "test/functional/output/[a-z]*",
     "test/record.txt",
-    "test/functional/output",
 ]
 
 # Codespell configuration (see https://pypi.org/project/codespell/)
