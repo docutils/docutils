@@ -23,8 +23,14 @@ if __name__ == '__main__':
 
 import docutils
 import docutils.core
+from docutils.parsers.rst.directives.images import PIL
+
 
 ROOT_PREFIX = (Path(__file__).parent.parent/'functional'/'input').as_posix()
+if PIL:
+    SCALING_OUTPUT = 'style="width: 32.0px; height: 32.0px;" '
+else:
+    SCALING_OUTPUT = ''
 
 
 class Html4WriterPublishPartsTestCase(unittest.TestCase):
@@ -411,9 +417,8 @@ totest['root_prefix'] = ({'root_prefix': ROOT_PREFIX,
 .. image:: /data/blue%20square.png
    :scale: 100%
 """,
-{'fragment': """\
-<img alt="/data/blue%20square.png" src="/data/blue%20square.png" style="width: 32.0px; height: 32.0px;" />
-""",
+{'fragment': '<img alt="/data/blue%20square.png"'
+             f' src="/data/blue%20square.png" {SCALING_OUTPUT}/>\n',
 }],
 ])
 

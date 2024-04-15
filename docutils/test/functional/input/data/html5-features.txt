@@ -47,13 +47,14 @@ Differences to the `html4css1` Writer
 
   .. image:: ../../../docs/user/rst/images/biohazard.png
      :loading: lazy
-     :scale: 100%
+     :width: 16
+     :height: 16
      :align: right
 
-  Especially with "lazy" loading images, it is strongly recommended to
+  Especially with "lazy" loading, it is strongly recommended to
   specify both width and height of the image to prevent content layout
-  shifts. (Or use the "scale" option to let the writer insert the size
-  determined from the image file.)
+  shifts or use the "scale" option to let the writer insert the size
+  determined from the image file.
 
 .. _image-loading:
     https://docutils.sourceforge.io/docs/user/config.html#image-loading

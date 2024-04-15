@@ -38,13 +38,31 @@ if with_pygments:
 ROOT_PREFIX = (Path(__file__).parent.parent/'functional'/'input').as_posix()
 DATA_ROOT = os.path.abspath(os.path.join(__file__, '..', '..', 'data'))
 
-# Pillow reports the absolute path since version 10.3.0 (cf. [bugs: 485])
-PIL_NOT_FOUND_PATH = 'dummy.png'
-try:
-    if PIL and (tuple(int(i) for i in PIL.__version__.split('.')) >= (10, 3)):
-        PIL_NOT_FOUND_PATH = Path('dummy.png').resolve()
-except:                                                           # noqa: E722
-    PIL = None
+# Pillow/PIL is optional:
+if PIL:
+    REQUIRES_PIL = ''
+    ONLY_LOCAL = 'Can only read local images.'
+    DUMMY_PNG_NOT_FOUND = "[Errno 2] No such file or directory: 'dummy.png'"
+    # Pillow reports the absolute path since version 10.3.0 (cf. [bugs: 485])
+    if (tuple(int(i) for i in PIL.__version__.split('.')) >= (10, 3)):
+        DUMMY_PNG_NOT_FOUND = ("[Errno 2] No such file or directory: '%s'"
+                               % Path('dummy.png').resolve())
+    SCALING_OUTPUT = 'style="width: 32.0px; height: 32.0px;" '
+    NO_PIL_SYSTEM_MESSAGE = ''
+else:
+    REQUIRES_PIL = '\n  Requires Python Imaging Library.'
+    ONLY_LOCAL = 'Requires Python Imaging Library.'
+    DUMMY_PNG_NOT_FOUND = 'Requires Python Imaging Library.'
+    SCALING_OUTPUT = ''
+    NO_PIL_SYSTEM_MESSAGE = (
+        '<aside class="system-message">\n'
+        '<p class="system-message-title">System Message:'
+        ' WARNING/2 (<span class="docutils literal">'
+        '&lt;string&gt;</span>, line 1)</p>\n'
+        '<p>Cannot scale image!\n'
+        '  Could not get size from &quot;/data/blue%20square.png&quot;:\n'
+        '  Requires Python Imaging Library.</p>\n'
+        '</aside>\n')
 
 
 class Html5WriterPublishPartsTestCase(unittest.TestCase):
@@ -559,19 +577,25 @@ Lazy loading by default, overridden by :loading: option
 totest['root_prefix'] = ({'root_prefix': ROOT_PREFIX,
                           'image_loading': 'embed',
                           'stylesheet_path': '',
-                          'embed_stylesheet': False}, [
+                          'warning_stream': '',
+                          'embed_stylesheet': False
+                          }, [
 ["""\
 .. image:: /data/blue%20square.png
    :scale: 100%
 .. figure:: /data/blue%20square.png
 """,
-{'fragment': """\
-<img alt="/data/blue%20square.png" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8GO2jAAAALElEQVR4nO3NMQEAMAjAsDFjvIhHFCbgSwU0kdXvsn96BwAAAAAAAAAAAIsNnEwBk52VRuMAAAAASUVORK5CYII="\
- style="width: 32.0px; height: 32.0px;" />
-<figure>
-<img alt="/data/blue%20square.png" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8GO2jAAAALElEQVR4nO3NMQEAMAjAsDFjvIhHFCbgSwU0kdXvsn96BwAAAAAAAAAAAIsNnEwBk52VRuMAAAAASUVORK5CYII=" />
-</figure>
-""",
+{'fragment': '<img alt="/data/blue%20square.png" src="data:image/png;base64,'
+             'iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8GO2jAAAALElEQVR4nO3NMQ'
+             'EAMAjAsDFjvIhHFCbgSwU0kdXvsn96BwAAAAAAAAAAAIsNnEwBk52VRuMAAAAA'
+             'SUVORK5CYII="'
+             f' {SCALING_OUTPUT}/>\n{NO_PIL_SYSTEM_MESSAGE}'
+             '<figure>\n'
+             '<img alt="/data/blue%20square.png" src="data:image/png;base64,'
+             'iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8GO2jAAAALElEQVR4nO3NMQ'
+             'EAMAjAsDFjvIhHFCbgSwU0kdXvsn96BwAAAAAAAAAAAIsNnEwBk52VRuMAAAAA'
+             'SUVORK5CYII=" />\n'
+             '</figure>\n',
 }],
 ])
 
@@ -694,12 +718,11 @@ totest['system_messages'] = ({'stylesheet_path': '',
 """}],
 ])
 
-if PIL:
-    totest['system_messages-PIL'] = ({'stylesheet_path': '',
-                                      'embed_stylesheet': False,
-                                      'math_output': 'mathml',
-                                      'warning_stream': '',
-                                      }, [
+totest['system_messages-PIL'] = ({'stylesheet_path': '',
+                                  'embed_stylesheet': False,
+                                  'math_output': 'mathml',
+                                  'warning_stream': '',
+                                  }, [
 ["""\
 .. image:: dummy.png
    :scale: 100%
@@ -712,7 +735,7 @@ if PIL:
 (<span class="docutils literal">&lt;string&gt;</span>, line 1)</p>
 <p>Cannot scale image!
   Could not get size from &quot;dummy.png&quot;:
-  [Errno 2] No such file or directory: '{PIL_NOT_FOUND_PATH}'</p>
+  {DUMMY_PNG_NOT_FOUND}</p>
 </aside>
 <aside class="system-message">
 <p class="system-message-title">System Message: ERROR/3 \
@@ -726,7 +749,7 @@ if PIL:
 .. image:: dummy.mp4
    :scale: 100%
 """,
-{'fragment': """\
+{'fragment': f"""\
 <video src="dummy.mp4" title="dummy.mp4">
 <a href="dummy.mp4">dummy.mp4</a>
 </video>
@@ -734,7 +757,7 @@ if PIL:
 <p class="system-message-title">System Message: WARNING/2 \
 (<span class="docutils literal">&lt;string&gt;</span>, line 1)</p>
 <p>Cannot scale image!
-  Could not get size from &quot;dummy.mp4&quot;:
+  Could not get size from &quot;dummy.mp4&quot;:{REQUIRES_PIL}
   PIL cannot read video images.</p>
 </aside>
 """,
@@ -744,14 +767,14 @@ if PIL:
    :scale: 100%
    :loading: embed
 """,
-{'fragment': """\
+{'fragment': f"""\
 <img alt="https://dummy.png" src="https://dummy.png" />
 <aside class="system-message">
 <p class="system-message-title">System Message: WARNING/2 \
 (<span class="docutils literal">&lt;string&gt;</span>, line 1)</p>
 <p>Cannot scale image!
   Could not get size from &quot;https://dummy.png&quot;:
-  Can only read local images.</p>
+  {ONLY_LOCAL}</p>
 </aside>
 <aside class="system-message">
 <p class="system-message-title">System Message: ERROR/3 \
