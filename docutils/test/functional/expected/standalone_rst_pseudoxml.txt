@@ -1387,8 +1387,8 @@
                     The specific behavior depends upon the style sheet and the browser or
                     rendering software used.
                 <paragraph>
-                    A centered figure:
-                <figure align="center">
+                    A centred figure, 40% wide:
+                <figure align="center" width="40%">
                     <image uri="../../../docs/user/rst/images/biohazard.png" width="40px">
                     <caption>
                         This is the caption.
@@ -2425,15 +2425,15 @@
         <system_message level="1" line="476" source="functional/input/data/standard.txt" type="INFO">
             <paragraph>
                 Hyperlink target "image-target-3" is not referenced.
-        <system_message level="1" line="639" source="functional/input/data/standard.txt" type="INFO">
-            <paragraph>
-                Hyperlink target "target1" is not referenced.
         <system_message level="1" line="640" source="functional/input/data/standard.txt" type="INFO">
             <paragraph>
+                Hyperlink target "target1" is not referenced.
+        <system_message level="1" line="641" source="functional/input/data/standard.txt" type="INFO">
+            <paragraph>
                 Hyperlink target "target2" is not referenced.
-        <system_message level="1" line="685" source="functional/input/data/standard.txt" type="INFO">
+        <system_message level="1" line="686" source="functional/input/data/standard.txt" type="INFO">
             <paragraph>
                 Hyperlink target "docutils" is not referenced.
-        <system_message level="1" line="851" source="functional/input/data/standard.txt" type="INFO">
+        <system_message level="1" line="852" source="functional/input/data/standard.txt" type="INFO">
             <paragraph>
                 Hyperlink target "hyperlink targets" is not referenced.
