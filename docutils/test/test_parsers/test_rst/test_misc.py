@@ -15,15 +15,15 @@ if __name__ == '__main__':
     # prepend the local "docutils root" to the Python library path
     sys.path.insert(0, Path(__file__).resolve().parents[2].as_posix())
 
-from docutils import parsers, utils, frontend
+from docutils import frontend, utils
+import docutils.parsers.rst
 
 
 class RstParserTests(unittest.TestCase):
 
     def test_inputrestrictions(self):
         # input must be unicode at all times, check for meaningful Exception
-        parser_class = parsers.get_parser_class('rst')
-        parser = parser_class()
+        parser = docutils.parsers.rst.Parser()
         document = utils.new_document('test data',
                                       frontend.get_default_settings(parser))
         with self.assertRaises(TypeError):
