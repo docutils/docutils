@@ -1,7 +1,7 @@
 [4mMAN[24m(1)                       Manual Hilfsprogramme                      [4mMAN[24m(1)
 
 [1mNAME[0m
-       man - Programm zum Einsehen der Online‐Manuale
+       man - Programm zum Einsehen der Online-Manuale
 
 [1mSYNTAX[0m
           man   [-acdhwutZV]  [-m  System[,...]] [-L locale] [-p Zeichenkette]
@@ -522,4 +522,4 @@
        Für persönliche Würdigungen und Zusätze siehe Quelltexte.
 
 
-2.5.1                             2008‐01‐28                            [4mMAN[24m(1)
+2.5.1                             2008-01-28                            [4mMAN[24m(1)
