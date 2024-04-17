@@ -29,7 +29,8 @@ jobs:
           - "3.9"
           - "3.10"
           - "3.11"
-          - "3.12-dev"
+          - "3.12"
+          - "3.13"
         lang:
           # -["full lang code", "code for locale-gen"]
           - ["C.UTF-8", "--help"]  # for the default locale we skip locale-gen
@@ -49,6 +50,7 @@ jobs:
         python-version: ${{ matrix.python }}
         cache: pip
         cache-dependency-path: .github/workflows/test.yml
+        allow-prereleases: true
       env:
         PYTHONWARNINGS: ""
 
