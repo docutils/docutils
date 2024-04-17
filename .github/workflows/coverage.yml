@@ -24,9 +24,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Set up Python 3
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: "3"
         cache: pip
@@ -52,7 +52,7 @@ jobs:
         coverage run --parallel-mode -m pytest ./docutils/test -vv
 
     - name: Upload coverage data
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: coverage_data
         path: .coverage.*
@@ -62,9 +62,9 @@ jobs:
     needs: with-deps
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Set up Python 3
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: "3"
         cache: pip
@@ -78,7 +78,7 @@ jobs:
         PYTHONWARNINGS: ""
 
     - name: Download coverage data
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: coverage_data
 
@@ -90,7 +90,7 @@ jobs:
         python -m coverage xml
 
     - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v3
+      uses: codecov/codecov-action@v4
       with:
         files: ./coverage.xml
         verbose: true
