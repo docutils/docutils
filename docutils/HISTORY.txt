@@ -17,7 +17,14 @@
 Release 0.21.2b.dev (unpublished)
 =================================
 
-Post-release waiting.
+* Declare support for languages Georgian and Catalan (Valencian).
+
+* docs/ref/docutils.dtd
+
+  - Remove declaration of element <info>.
+  - Remove <decoration> from content declaration of <section> elements.
+
+* Fix test failures.
 
 
 Release 0.21.1 (2024-04-10)

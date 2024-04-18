@@ -286,11 +286,6 @@ http://www.oasis-open.org/html/tm9901.htm).
 <!ELEMENT docinfo (%bibliographic.elements;)+>
 <!ATTLIST docinfo %basic.atts;>
 
-<!-- Container for bibliographic elements. May not be empty.
-Eventual replacement for docinfo? -->
-<!ELEMENT info (%bibliographic.elements;)+>
-<!ATTLIST info %basic.atts;>
-
 <!ELEMENT author %text.model;>
 <!ATTLIST author %basic.atts;>
 
@@ -357,7 +352,7 @@ Eventual replacement for docinfo? -->
 -->
 
 <!ELEMENT section
-    (title, subtitle?, info?, decoration?, %structure.model;)>
+    (title, subtitle?, %structure.model;)>
 <!ATTLIST section %basic.atts;>
 
 <!ELEMENT topic (title?, (%body.elements;)+)>
@@ -366,7 +361,7 @@ Eventual replacement for docinfo? -->
     depth %number;  #IMPLIED
     local %yesorno; #IMPLIED>
 
-<!ELEMENT sidebar (title?, subtitle?, (%body.elements; | topic)+)>
+<!ELEMENT sidebar ((title, subtitle?)?, (%body.elements; | topic)+)>
 <!ATTLIST sidebar %basic.atts;>
 
 <!ELEMENT transition EMPTY>

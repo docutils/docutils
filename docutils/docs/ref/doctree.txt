@@ -3010,11 +3010,11 @@ Details
 :Parents:    The following elements may contain <section>:
              `\<document>`_, `\<section>`_
 
-:Children:   <section> elements begin with a `\<title>`_, and may contain
-             `body elements`_ as well as `\<transition>`_, `\<topic>`_,
-             and `\<sidebar>`_ elements::
+:Children:   <section> elements begin with a `\<title>`_, and optional
+             `\<subtitle>`_. They may contain `body elements`_ as well as
+             `\<transition>`_, `\<topic>`_, and `\<sidebar>`_ elements::
 
-                (title, %structure.model;)
+                (title, subtitle?, %structure.model;)
 
              See the `%structure.model;`_ parameter entity for details of
              the body of a <section>.
@@ -3106,11 +3106,12 @@ Details
 :Parents:    The following elements may contain <sidebar>:
              `\<document>`_, `\<section>`_.
 
-:Children:   <sidebar> elements begin with optional `\<title>`_ and
-             `\<subtitle>`_ and contain `body elements`_ and
-             `\<topic>`_ elements::
+:Children:   <sidebar> elements begin with optional 
+             `\<title>`_ and `\<subtitle>`_ and contain
+             `body elements`_ and `\<topic>`_ elements. 
+             There must not be a <subtitle> without title. ::
 
-               (title, subtitle?,
+               ((title, subtitle?)?,
                 (%body.elements; | topic)+)
 
 :Attributes: The <sidebar> element contains only the `common attributes`_.
@@ -3213,7 +3214,8 @@ reStructuredText `substitution definition`_.
 <subtitle>
 ==========
 
-The <subtitle> element stores the subtitle of a `\<document>`_.
+The <subtitle> element stores the subtitle of a `\<document>`_,
+`\<section>`, or `\<sidebar>`.
 
 Details
 -------
@@ -3224,8 +3226,8 @@ Details
              a <hgroup_> element.
 :Processing: A document's subtitle is usually rendered smaller
              than its `\<title>`_.
-:Parents:    The `\<document>`_ and `\<sidebar>`_ elements may contain
-             <subtitle>.
+:Parents:    The `\<document>`_, `\<section>`, and `\<sidebar>`_ elements
+             may contain <subtitle>.
 :Children:   <subtitle> elements may contain text data
              plus `inline elements`_ (`%text.model;`_).
 :Attributes: The <subtitle> element contains only the `common attributes`_.
@@ -3245,7 +3247,8 @@ the “document title” can become the document subtitle::
 
     A paragraph.
 
-Complete pseudo-XML_ result after parsing and applying transforms_::
+Complete pseudo-XML_ result after parsing and applying the 
+`DocTitle transform`_::
 
     <document ids="title" names="title">
         <title>
@@ -4693,7 +4696,7 @@ The following restrictions are imposed by this model:
 
    * A transition may not occur at the end of a document or section.
 
-The `%structure.model;`_ parameter entity is directly employed in the
+The ``%structure.model;`` parameter entity is directly employed in the
 content models of the `\<document>`_ and `\<section>`_ elements.
 
 

@@ -45,9 +45,14 @@ Command line interface
 .. _entry points:
     https://packaging.python.org/en/latest/specifications/entry-points/
 
-
 Document Tree / Docutils DTD
 ----------------------------
+
+* Allow multiple <term> elements in a <definition_list_item>
+  in Docutils 0.22 (cf. `feature-requests:60`__).
+  Third-party writers may need adaption.
+
+  __ https://sourceforge.net/p/docutils/feature-requests/60/
 
 * Do not lowercase reference names in the `refname attribute`_
   (matching hyperlinks, footnotes, and citations remains case insensitive),
@@ -137,16 +142,8 @@ Writers
 
   - No more changing case in to uppercase, leave it to the source.
 
-
 Misc
 ----
-
-* Document tree:
-  Allow multiple <term> elements in a <definition_list_item>
-  in Docutils 0.22 (cf. `feature-requests:60`__).
-  Third-party writers may need adaption.
-
-  __ https://sourceforge.net/p/docutils/feature-requests/60/
 
 * Remove `parsers.rst.directives.CSVTable.HeaderDialect`
   in Docutils 0.22.
@@ -197,10 +194,14 @@ Misc
 .. _use_latex_citations: docs/user/config.html#use-latex-citations
 .. _buildhtml.py: docs/user/tools.html#buildhtml-py
 
+
 Release 0.21.2b.dev (unpublished)
 =================================
 
-Post-release waiting.
+* Document Tree / Docutils DTD
+
+  - Remove declaration of unsupported element <info>.
+  - Remove <decoration> from content declaration of <section> elements.
 
 
 Release 0.21.1 (2024-04-10)
