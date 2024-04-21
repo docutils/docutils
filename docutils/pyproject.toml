@@ -50,7 +50,7 @@ classifiers = [
         'Natural Language :: Afrikaans',
         'Natural Language :: Arabic',
         'Natural Language :: Catalan',
-        'Natural Language :: Catalan (Valencian)', # currently not listed in trove-classifiers
+        'Natural Language :: Catalan (Valencian)',
         'Natural Language :: Chinese (Simplified)',
         'Natural Language :: Chinese (Traditional)',
         'Natural Language :: Czech',
@@ -60,7 +60,7 @@ classifiers = [
         'Natural Language :: Finnish',
         'Natural Language :: French',
         'Natural Language :: Galician',
-        'Natural Language :: Georgian', # currently not listed in trove-classifiers
+        'Natural Language :: Georgian',
         'Natural Language :: German',
         'Natural Language :: Hebrew',
         'Natural Language :: Italian',
