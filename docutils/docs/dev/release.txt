@@ -71,6 +71,8 @@ Steps to take and watch
     python3 -m pip install build
     python3 -m build .
 
+  check file sizes: the 0.21.2 wheel was 574K the sdist 2,2M.
+
 * Upload wheel and source to test.pypi.
   
   Set repository and key in ~/.pypirc with a <server-name> and
@@ -78,7 +80,8 @@ Steps to take and watch
 
     python3 -m twine upload --repository <server-name> dist/*
 
-  Test in venv. NOTE use --pre for prereleases::
+  Change directory outside of checkout and test in venv. 
+  NOTE use --pre for prereleases::
 
     python3 -m venv du3 ; cd du3
     export PYTHONPATH= ; . bin/activate
@@ -88,6 +91,7 @@ Steps to take and watch
     cp -Lr ../docutils-code/docutils/test .
     python test/alltests.py
 
+  Ignore missing HISTORY.txt it is not in the wheel file.
   if ok ::
 
     deactivate ; cd .. ; rm -r du3

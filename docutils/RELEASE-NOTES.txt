@@ -204,6 +204,14 @@ Release 0.21.2b.dev (unpublished)
   - Remove <decoration> from content declaration of <section> elements.
 
 
+Release 0.21.2 (2024-04-23)
+===========================
+
+* Declare support for languages Georgian and Catalan (Valencian).
+
+* Fix test failures.
+
+
 Release 0.21.1 (2024-04-10)
 ===========================
 
