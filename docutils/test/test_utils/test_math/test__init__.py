@@ -1,9 +1,6 @@
 #!/usr/bin/env python3
 # :Copyright: © 2024 Günter Milde.
-
-#             Released without warranty under the terms of the
-#             GNU General Public License (v. 2 or later)
-
+#
 # :License: Released under the terms of the `2-Clause BSD license`_, in short:
 #
 #    Copying and distribution of this file, with or without modification,
