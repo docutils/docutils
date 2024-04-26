@@ -167,8 +167,8 @@ resolve to either an internal or external reference.
 
 <!ENTITY % additional.bibliographic.elements "">
 <!ENTITY % bibliographic.elements
-  " author | authors | organization | address | contact
-    | version | revision | status | date | copyright | field
+  " address | author | authors | contact | copyright | date | field
+    | organization | revision | status | version
     %additional.bibliographic.elements; ">
 
 <!ENTITY % additional.section.elements "">
@@ -178,25 +178,23 @@ resolve to either an internal or external reference.
 
 <!ENTITY % additional.body.elements "">
 <!ENTITY % body.elements
-  " paragraph | compound | container | literal_block | doctest_block
-    | math_block | line_block | block_quote
-    | table | figure | image | footnote | citation | rubric
-    | bullet_list | enumerated_list | definition_list | field_list
-    | option_list
-    | attention | caution | danger | error | hint | important | note
-    | tip | warning | admonition
-    | reference | target | substitution_definition | comment | pending
-    | system_message | raw
+  " admonition | attention | block_quote | bullet_list
+    | caution | citation | comment | compound | container
+    | danger | definition_list | doctest_block | enumerated_list | error
+    | field_list | figure | footnote | hint | image | important
+    | line_block | literal_block | math_block | note | option_list
+    | paragraph | pending | raw | reference | rubric
+    | substitution_definition | system_message
+    | table | target | tip | warning
     %additional.body.elements; ">
 
 <!ENTITY % additional.inline.elements "">
 <!ENTITY % inline.elements
-  " emphasis | strong | literal | math
-    | reference | footnote_reference | citation_reference
-    | substitution_reference | title_reference
-    | abbreviation | acronym | subscript | superscript
-    | inline | problematic | generated
-    | target | image | raw
+  " abbreviation | acronym | citation_reference| emphasis
+    | footnote_reference | generated | image | inline | literal
+    | math | problematic | raw | reference
+    | strong | subscript | substitution_reference | superscript
+    | target | title_reference
     %additional.inline.elements; ">
 
 
