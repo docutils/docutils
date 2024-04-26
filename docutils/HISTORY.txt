@@ -17,6 +17,7 @@
 Release 0.22b.dev (unpublished)
 ===============================
 
+* Add tox.ini to pyproject.toml to be in sdist (bug #486).
 * Fix license issue (bug #487).
 
 Release 0.21.2 (2024-04-23)

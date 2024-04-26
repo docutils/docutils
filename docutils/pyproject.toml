@@ -107,6 +107,7 @@ rst2xml = "docutils.core:rst2xml"
 # TODO: include generated HTML ?
 include = [
     "*.txt",
+    "tox.ini",
     "docutils/",
     "docs/",
     "licenses/",
