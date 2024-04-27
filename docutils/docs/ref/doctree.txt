@@ -145,6 +145,7 @@ Category members: `\<address>`_, `\<author>`_, `\<authors>`_,
 `\<contact>`_, `\<copyright>`_, `\<date>`_, `\<field>`_,
 `\<organization>`_, `\<revision>`_, `\<status>`_, `\<version>`_
 
+Parameter entitry: `%bibliographic.elements;`_
 
 Decorative Elements
 ```````````````````
@@ -162,15 +163,7 @@ Body elements are contained within structural elements and compound
 body elements.  There are two subcategories of body elements: simple__
 and compound__.
 
-Category members: `\<admonition>`_, `\<attention>`_, `\<block_quote>`_,
-`\<bullet_list>`_, `\<caution>`_, `\<citation>`_, `\<comment>`_,
-`\<compound>`_, `\<container>`_, `\<danger>`_, `\<definition_list>`_,
-`\<doctest_block>`_, `\<enumerated_list>`_, `\<error>`_,
-`\<field_list>`_, `\<figure>`_, `\<footnote>`_, `\<hint>`_, `\<image>`_,
-`\<important>`_, `\<line_block>`_, `\<literal_block>`_, `\<math_block>`_,
-`\<note>`_, `\<option_list>`_, `\<paragraph>`_, `\<pending>`_, `\<raw>`_,
-`\<rubric>`_, `\<substitution_definition>`_, `\<system_message>`_,
-`\<table>`_, `\<target>`_, `\<tip>`_, `\<warning>`_
+Parameter entitry: `%body.elements;`_
 
 __ `simple body elements`_
 __ `compound body elements`_
@@ -180,18 +173,19 @@ Simple Body Elements
 --------------------
 
 Simple body elements are empty or directly contain text data.  Those
-that contain text data may also contain inline elements.  Such
+that contain text data may also contain `inline elements`_.  Such
 elements therefore have a "mixed content model".
 
 Category members: `\<comment>`_, `\<doctest_block>`_, `\<image>`_,
 `\<literal_block>`_, `\<math_block>`_, `\<paragraph>`_, `\<pending>`_,
-`\<raw>`_, `\<rubric>`_, `\<substitution_definition>`_, `\<target>`_
+`\<raw>`_, `\<reference>`_, `\<rubric>`_, `\<substitution_definition>`_,
+`\<target>`_
 
 
 Compound Body Elements
 ----------------------
 
-Compound body elements contain local substructure (body subelements)
+Compound body elements contain local substructure (`body subelements`_)
 and further body elements.  They do not directly contain text data.
 
 Category members: `\<admonition>`_, `\<attention>`_, `\<block_quote>`_,
@@ -209,7 +203,7 @@ Body Subelements
 Compound body elements contain specific subelements (e.g. `\<bullet_list>`_
 contains `\<list_item>`_).  Subelements may themselves be compound elements
 (containing further child elements, like `\<field>`_) or simple data
-elements (containing text data, like `\<field_name>`_).  These subelements
+elements (containing text data, like `\<field_name>`_).  Body subelements
 always occur within specific parent elements, never at the body
 element level (beside paragraphs, etc.).
 
@@ -237,6 +231,8 @@ Category members: `\<abbreviation>`_, `\<acronym>`_,
 `\<math>`_, `\<problematic>`_, `\<raw>`_, `\<reference>`_,
 `\<strong>`_, `\<subscript>`_, `\<substitution_reference>`_,
 `\<superscript>`_, `\<target>`_, `\<title_reference>`_
+
+Parameter entitry: `%inline.elements;`_
 
 
 -------------------
@@ -3106,9 +3102,9 @@ Details
 :Parents:    The following elements may contain <sidebar>:
              `\<document>`_, `\<section>`_.
 
-:Children:   <sidebar> elements begin with optional 
+:Children:   <sidebar> elements begin with optional
              `\<title>`_ and `\<subtitle>`_ and contain
-             `body elements`_ and `\<topic>`_ elements. 
+             `body elements`_ and `\<topic>`_ elements.
              There must not be a <subtitle> without title. ::
 
                ((title, subtitle?)?,
@@ -3247,7 +3243,7 @@ the “document title” can become the document subtitle::
 
     A paragraph.
 
-Complete pseudo-XML_ result after parsing and applying the 
+Complete pseudo-XML_ result after parsing and applying the
 `DocTitle transform`_::
 
     <document ids="title" names="title">
@@ -3812,9 +3808,8 @@ _`Class names`
 _`Reference names`
   are identifiers assigned in the markup.
 
-  Reference names may consist of any text.  Whitespace is normalized (adjacent
-  spaces, horizontal or vertical tabs, newlines, carriage returns, or
-  form feeds, are replaced by a single space).
+  Reference names may consist of any text.
+  Whitespace is normalized. [#whitespace-normalization]_
 
   In reStructuredText, `reference names <rST reference names_>`__
   originate from `internal hyperlink targets`_, a directive's `name
@@ -3844,6 +3839,10 @@ _`Identifiers`
 
   Identifiers are used in the ids_, refid_, and backrefs_ attributes
   (`%ids.type;`_, `%idref.type;`_, or `%idrefs.type;`_) [#id-vc]_.
+
+.. [#whitespace-normalization] Adjacent spaces, horizontal or vertical
+   tabs, newlines, carriage returns, or form feeds, are replaced by a
+   single space.  Leading and trailing whitespace is removed.
 
 .. [#id-vc] Docutils cannot use the ID, IDREF, and IDREFS standard types
    because it does not adhere to the `One ID per Element Type`_ validity
@@ -4361,14 +4360,15 @@ by wrapper DTDs.
 .. _parameter entities: https://www.w3.org/TR/REC-xml/#dt-PE
 
 .. contents:: :local:
-              :depth: 1
 
 In addition, the Docutils DTD defines parameter entities for
 `custom attribute types`_.
 
+Attribute Entities
+==================
 
 ``%align-h.att;``
-=================
+-----------------
 
 The ``%align-h.att;`` parameter entity contains the align_
 attribute for horizontal alignment.
@@ -4382,7 +4382,7 @@ The `\<figure>`_ and `\<table>`_ elements directly employ the
 
 
 ``%align-hv.att;``
-==================
+------------------
 
 The ``%align-hv.att;`` parameter entity contains the align_
 attribute for horizontal and vertical alignment.
@@ -4395,7 +4395,7 @@ The `\<image>`_ element directly employs the ``%align-hv.att;``
 parameter entity in its attribute list.
 
 ``%anonymous.att;``
-===================
+-------------------
 
 The ``%anonymous.att;`` parameter entity contains the anonymous_
 attribute, used for unnamed hyperlinks.
@@ -4409,7 +4409,7 @@ The `\<reference>`_ and `\<target>`_ elements directly employ the
 
 
 ``%auto.att;``
-==============
+--------------
 
 The ``%auto.att;`` parameter entity contains the auto_ attribute, used
 to indicate an automatically-numbered footnote or title.
@@ -4424,7 +4424,7 @@ lists.
 
 
 ``%backrefs.att;``
-==================
+------------------
 
 The ``%backrefs.att;`` parameter entity contains the backrefs_
 attribute, a space-separated list of id references, for backlinks.
@@ -4439,7 +4439,7 @@ attribute lists.
 
 
 ``%basic.atts;``
-================
+----------------
 
 The ``%basic.atts;`` parameter entity lists the `common attributes`_.
 
@@ -4458,64 +4458,8 @@ The ``%additional.basic.atts;`` parameter entity can be used by
 wrapper DTDs to extend ``%basic.atts;``.
 
 
-``%bibliographic.elements;``
-============================
-
-The ``%bibliographic.elements;`` parameter entity contains an OR-list of all
-`bibliographic elements`_.
-
-Entity definition::
-
-    author | authors | organization | contact | address
-    | version | revision | status | date | copyright | field
-    %additional.bibliographic.elements;
-
-The ``%additional.bibliographic.elements;`` parameter entity can be used by
-wrapper DTDs to extend ``%bibliographic.elements;``.
-
-Only the `\<docinfo>`_ element directly employs the
-``%bibliographic.elements;`` parameter entity in its content model.
-
-
-``%body.elements;``
-===================
-
-The ``%body.elements;`` parameter entity contains an OR-list of all
-`body elements`_.  ``%body.elements;`` is itself contained within the
-`%structure.model;`_ parameter entity.
-
-Entity definition::
-
-    paragraph | compound | container | literal_block | doctest_block
-    | math_block | line_block | block_quote
-    | table | figure | image | footnote | citation | rubric
-    | bullet_list | enumerated_list | definition_list | field_list
-    | option_list
-    | attention | caution | danger | error | hint | important | note
-    | tip | warning | admonition
-    | reference | target | substitution_definition | comment | pending
-    | system_message | raw
-    %additional.body.elements;
-
-The ``%additional.body.elements;`` parameter entity can be used by
-wrapper DTDs to extend ``%body.elements;``.
-
-The ``%body.elements;`` parameter entity is directly employed in the
-content models of the following elements: `\<admonition>`_,
-`\<attention>`_, `\<block_quote>`_, `\<caution>`_, `\<citation>`_,
-`\<compound>`_, `\<danger>`_, `\<definition>`_, `\<description>`_,
-`\<entry>`_, `\<error>`_, `\<field_body>`_, `\<footer>`_, `\<footnote>`_,
-`\<header>`_, `\<hint>`_, `\<important>`_, `\<legend>`_, `\<list_item>`_,
-`\<note>`_, `\<sidebar>`_, `\<system_message>`_, `\<tip>`_, `\<topic>`_,
-and `\<warning>`_
-
-Via `%structure.model;`_, the ``%body.elements;`` parameter entity is
-indirectly employed in the content models of the `\<document>`_ and
-`\<section>`_ elements.
-
-
 ``%fixedspace.att;``
-====================
+--------------------
 
 The ``%fixedspace.att;`` parameter entity contains the `xml:space`_
 attribute, a standard XML attribute for whitespace-preserving
@@ -4530,40 +4474,8 @@ attribute lists of the following elements: `\<address>`_, `\<comment>`_,
 `\<doctest_block>`_, `\<literal_block>`_, `\<math_block>`_, `\<raw>`_.
 
 
-``%inline.elements;``
-=====================
-
-The ``%inline.elements;`` parameter entity contains an OR-list of all
-`inline elements`_.
-
-Entity definition::
-
-    emphasis | strong | literal | math
-    | reference | footnote_reference | citation_reference
-    | substitution_reference | title_reference
-    | abbreviation | acronym | subscript | superscript
-    | inline | problematic | generated
-    | target | image | raw
-    %additional.inline.elements;
-
-The ``%additional.inline.elements;`` parameter entity can be used by
-wrapper DTDs to extend ``%inline.elements;``.
-
-Via `%text.model;`_, the ``%inline.elements;`` parameter entity is
-indirectly employed in the content models of the following elements:
-`\<abbreviation>`_, `\<acronym>`_, `\<address>`_, `\<attribution>`_,
-`\<author>`_, `\<caption>`_, `\<classifier>`_, `\<contact>`_,
-`\<copyright>`_, `\<date>`_, `\<doctest_block>`_, `\<emphasis>`_,
-`\<generated>`_, `\<inline>`_, `\<line_block>`_, `\<literal_block>`_,
-`\<organization>`_, `\<paragraph>`_, `\<problematic>`_,
-`\<reference>`_, `\<revision>`_, `\<rubric>`_,
-`\<status>`_, `\<strong>`_, `\<subscript>`_, `\<substitution_definition>`_,
-`\<substitution_reference>`_, `\<subtitle>`_, `\<superscript>`_,
-`\<target>`_, `\<term>`_, `\<title>`_, `\<title_reference>`_, `\<version>`_
-
-
 ``%reference.atts;``
-====================
+--------------------
 
 The ``%reference.atts;`` parameter entity groups together the refuri_,
 refid_, and refname_ attributes.
@@ -4586,7 +4498,7 @@ parameter entity in their attribute lists.
 
 
 ``%refid.att;``
-================
+---------------
 
 The ``%refid.att;`` parameter entity contains the refid_ attribute, an
 internal reference to the `ids`_ attribute of another element.
@@ -4604,7 +4516,7 @@ indirectly employed in the attribute lists of the `\<citation_reference>`_,
 
 
 ``%refname.att;``
-=================
+-----------------
 
 The ``%refname.att;`` parameter entity contains the refname_
 attribute, an internal reference to the `names`_ attribute of another
@@ -4625,7 +4537,7 @@ indirectly employed in the attribute lists of the `\<citation_reference>`_,
 
 
 ``%refuri.att;``
-================
+----------------
 
 The ``%refuri.att;`` parameter entity contains the refuri_ attribute,
 an external reference to a URI/URL.
@@ -4639,8 +4551,70 @@ indirectly employed in the attribute lists of the `\<citation_reference>`_,
 `\<footnote_reference>`_, `\<reference>`_, and `\<target>`_ elements.
 
 
+Element Category Entities
+=========================
+
+
+``%bibliographic.elements;``
+----------------------------
+
+The ``%bibliographic.elements;`` parameter entity contains an OR-list of all
+`Bibliographic Elements`_.
+
+The ``%additional.bibliographic.elements;`` parameter entity can be used by
+wrapper DTDs to extend ``%bibliographic.elements;``.
+
+Only the `\<docinfo>`_ element directly employs the
+``%bibliographic.elements;`` parameter entity in its content model.
+
+
+``%body.elements;``
+-------------------
+
+The ``%body.elements;`` parameter entity contains an OR-list of all
+`Body Elements`_.
+
+The ``%additional.body.elements;`` parameter entity can be used by
+wrapper DTDs to extend ``%body.elements;``.
+
+The ``%body.elements;`` parameter entity is directly employed in the
+content models of the following elements: `\<admonition>`_,
+`\<attention>`_, `\<block_quote>`_, `\<caution>`_, `\<citation>`_,
+`\<compound>`_, `\<danger>`_, `\<definition>`_, `\<description>`_,
+`\<entry>`_, `\<error>`_, `\<field_body>`_, `\<footer>`_, `\<footnote>`_,
+`\<header>`_, `\<hint>`_, `\<important>`_, `\<legend>`_, `\<list_item>`_,
+`\<note>`_, `\<sidebar>`_, `\<system_message>`_, `\<tip>`_, `\<topic>`_,
+and `\<warning>`_
+
+Via `%structure.model;`_, the ``%body.elements;`` parameter entity is
+indirectly employed in the content models of the `\<document>`_ and
+`\<section>`_ elements.
+
+
+``%inline.elements;``
+---------------------
+
+The ``%inline.elements;`` parameter entity contains an OR-list of all
+`Inline Elements`_.
+
+The ``%additional.inline.elements;`` parameter entity can be used by
+wrapper DTDs to extend ``%inline.elements;``.
+
+Via `%text.model;`_, the ``%inline.elements;`` parameter entity is
+indirectly employed in the content models of the following elements:
+`\<abbreviation>`_, `\<acronym>`_, `\<address>`_, `\<attribution>`_,
+`\<author>`_, `\<caption>`_, `\<classifier>`_, `\<contact>`_,
+`\<copyright>`_, `\<date>`_, `\<doctest_block>`_, `\<emphasis>`_,
+`\<generated>`_, `\<inline>`_, `\<line_block>`_, `\<literal_block>`_,
+`\<organization>`_, `\<paragraph>`_, `\<problematic>`_,
+`\<reference>`_, `\<revision>`_, `\<rubric>`_,
+`\<status>`_, `\<strong>`_, `\<subscript>`_, `\<substitution_definition>`_,
+`\<substitution_reference>`_, `\<subtitle>`_, `\<superscript>`_,
+`\<target>`_, `\<term>`_, `\<title>`_, `\<title_reference>`_, `\<version>`_
+
+
 ``%section.elements;``
-======================
+----------------------
 
 The ``%section.elements;`` parameter entity contains an OR-list of all
 `\<section>`_-equivalent elements.  ``%section.elements;`` is itself
@@ -4659,8 +4633,11 @@ is indirectly employed in the content models of the `\<document>`_ and
 `\<section>`_ elements.
 
 
+Content Model Entities
+======================
+
 ``%structure.model;``
-=====================
+---------------------
 
 The ``%structure.model;`` parameter entity encapsulates the
 hierarchical structure of a document and of its constituent parts.
@@ -4701,7 +4678,7 @@ content models of the `\<document>`_ and `\<section>`_ elements.
 
 
 ``%text.model;``
-================
+----------------
 
 The ``%text.model;`` parameter entity is used by many elements to
 represent text data mixed with `inline elements`_.
