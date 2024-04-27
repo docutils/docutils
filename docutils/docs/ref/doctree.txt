@@ -154,6 +154,7 @@ specific `structural elements`_.  [#]_  Their content model varies
 
 .. [#] `\<title>`_ is also a valid child of the generic `\<admonition>`_.
 
+
 Decorative Elements
 -------------------
 
@@ -180,8 +181,8 @@ the others are `simple elements`_ containing text and `inline elements`_.
                    `\<contact>`_, `\<copyright>`_, `\<date>`_,
                    `\<field>`_, `\<organization>`_, `\<revision>`_,
                    `\<status>`_, `\<version>`_
-:Parameter entity: `%bibliographic.elements`_
 :Docutils class:   ``nodes.Bibliographic``
+:Parameter entity: `%bibliographic.elements`_
 
 
 .. _simple body elements:
@@ -213,9 +214,9 @@ subelements`_ or further body elements.
     `\<important>`_, `\<line_block>`_, `\<note>`_, `\<option_list>`_,
     `\<system_message>`_, `\<table>`_, `\<tip>`_, `\<warning>`_
 
-:Parameter entity: `%body.elements`_
-
 :Docutils class: ``nodes.Body``
+
+:Parameter entity: `%body.elements`_
 
 
 Body Subelements
@@ -263,9 +264,9 @@ text data, most inline elements may also contain further inline elements.
   `\<literal>`_, `\<math>`_, `\<problematic>`_, `\<raw>`_, `\<reference>`_,
   `\<strong>`_, `\<subscript>`_, `\<substitution_reference>`_,
   `\<superscript>`_, `\<target>`_, `\<title_reference>`_
+:Docutils class: ``nodes.Inline``
 
 :Parameter entity: `%inline.elements`_
-:Docutils class: ``nodes.Inline``
 
 
 -------------------
@@ -3569,7 +3570,7 @@ Details
 :Parents:    The following elements may contain <topic>:
              `\<document>`_, `\<section>`_, `\<sidebar>`_
 
-:Children:   <topic> elements begin with a `\<title>`_ and may contain
+:Children:   <topic> elements may begin with a `\<title>`_ and contain
              `body elements`_::
 
                  (title?, (%body.elements;)+)
