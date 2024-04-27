@@ -91,7 +91,7 @@ _`Compound elements`
 
 _`Simple elements`
   | may contain text data.
-  | Most simple elements have a mixed content model (`%text.model;`_).
+  | Most simple elements have a mixed content model (`%text.model`_).
     However, only `inline elements`_ may be intermixed with text. [#]_
   | Examples: `\<paragraph>`_ (mixed), `\<literal_block>`_ (text-only)
 
@@ -180,7 +180,7 @@ the others are `simple elements`_ containing text and `inline elements`_.
                    `\<contact>`_, `\<copyright>`_, `\<date>`_,
                    `\<field>`_, `\<organization>`_, `\<revision>`_,
                    `\<status>`_, `\<version>`_
-:Parameter entity: `%bibliographic.elements;`_
+:Parameter entity: `%bibliographic.elements`_
 :Docutils class:   ``nodes.Bibliographic``
 
 
@@ -213,7 +213,7 @@ subelements`_ or further body elements.
     `\<important>`_, `\<line_block>`_, `\<note>`_, `\<option_list>`_,
     `\<system_message>`_, `\<table>`_, `\<tip>`_, `\<warning>`_
 
-:Parameter entity: `%body.elements;`_
+:Parameter entity: `%body.elements`_
 
 :Docutils class: ``nodes.Body``
 
@@ -264,7 +264,7 @@ text data, most inline elements may also contain further inline elements.
   `\<strong>`_, `\<subscript>`_, `\<substitution_reference>`_,
   `\<superscript>`_, `\<target>`_, `\<title_reference>`_
 
-:Parameter entity: `%inline.elements;`_
+:Parameter entity: `%inline.elements`_
 :Docutils class: ``nodes.Inline``
 
 
@@ -349,10 +349,10 @@ Details
 
 :Category:   `Inline Elements`_
 :Analogues:  <abbreviation> is analogous to the HTML <abbr> element.
-:Parents:    All elements employing the `%inline.elements;`_ parameter
+:Parents:    All elements employing the `%inline.elements`_ parameter
              entity in their content models may contain <abbreviation>.
 :Children:   <abbreviation> elements may contain text data
-             plus `inline elements`_ (`%text.model;`_).
+             plus `inline elements`_ (`%text.model`_).
 :Attributes: The <abbreviation> element contains only the `common attributes`_.
 
 Examples
@@ -399,10 +399,10 @@ Details
 :Parents:    The following elements may contain <address>:
              `\<docinfo>`_, `\<authors>`_.
 :Children:   <address> elements contain text data plus `inline elements`_
-             (`%text.model;`_).
+             (`%text.model`_).
 :Attributes: The <address> element contains the `common attributes`_
              plus `xml:space`_.
-:Parameter Entities: The `%bibliographic.elements;`_ parameter entity
+:Parameter Entities: The `%bibliographic.elements`_ parameter entity
              directly includes <address>.
 
 Examples
@@ -454,8 +454,8 @@ Details
 
 :Processing: Rendered distinctly (inset and/or in a box, etc.).
 
-:Parents:    All elements employing the `%body.elements;`_
-             or `%structure.model;`_ parameter entities in
+:Parents:    All elements employing the `%body.elements`_
+             or `%structure.model`_ parameter entities in
              their content models may contain <admonition>.
 
 :Children:   <admonition> elements begin with a `\<title>`_ and may contain
@@ -463,8 +463,8 @@ Details
 
 :Attributes: The <admonition> element contains only the `common attributes`_.
 
-:Parameter Entities: The `%body.elements;`_ parameter entity directly
-             includes <admonition>.  The `%structure.model;`_
+:Parameter Entities: The `%body.elements`_ parameter entity directly
+             includes <admonition>.  The `%structure.model`_
              parameter entity indirectly includes <admonition>.
 
 Examples
@@ -503,13 +503,13 @@ Details
              It can be emulated with primitives and type effects.
 :Processing: Rendered distinctly (inset and/or in a box, etc.),
              with the generated title "Attention!" (or similar).
-:Parents:    All elements employing the `%body.elements;`_ or
-             `%structure.model;`_ parameter entities in their
+:Parents:    All elements employing the `%body.elements`_ or
+             `%structure.model`_ parameter entities in their
              content models may contain <attention>.
 :Children:   <attention> elements contain one or more `body elements`_.
 :Attributes: The <attention> element contains only the `common attributes`_.
-:Parameter Entities: The `%body.elements;`_ parameter entity
-             directly includes <attention>.  The `%structure.model;`_
+:Parameter Entities: The `%body.elements`_ parameter entity
+             directly includes <attention>.  The `%structure.model`_
              parameter entity indirectly includes <attention>.
 
 Examples
@@ -547,9 +547,9 @@ Details
 :Parents:    The following elements may contain <author>:
              `\<docinfo>`_, `\<authors>`_.
 :Children:   <author> elements may contain text data plus `inline elements`_
-             (`%text.model;`_).
+             (`%text.model`_).
 :Attributes: The <author> element contains only the `common attributes`_.
-:Parameter Entities: The `%bibliographic.elements;`_ parameter entity
+:Parameter Entities: The `%bibliographic.elements`_ parameter entity
              directly includes <author>.
 
 Examples
@@ -594,7 +594,7 @@ Details
 
                ((author, organization?, address?, contact?)+)
 :Attributes: The <authors> element contains only the `common attributes`_.
-:Parameter Entities: The `%bibliographic.elements;`_ parameter entity
+:Parameter Entities: The `%bibliographic.elements`_ parameter entity
              directly includes <authors>.
 
 Examples
@@ -643,14 +643,14 @@ Details
              in both HTML and DocBook_.
 :Processing: <block_quote> elements serve to set their contents off from the
              main text, typically with indentation and/or other decoration.
-:Parents:    All elements employing the `%body.elements;`_
-             or `%structure.model;`_ parameter entities in their
+:Parents:    All elements employing the `%body.elements`_
+             or `%structure.model`_ parameter entities in their
              content models may contain <block_quote>.
 :Children:   <block_quote> elements contain `body elements`_
              followed by an optional `\<attribution>`_ element.
 :Attributes: The <block_quote> element contains only the `common attributes`_.
-:Parameter Entities: The `%body.elements;`_ parameter entity
-             directly includes <block_quote>.  The `%structure.model;`_
+:Parameter Entities: The `%body.elements`_ parameter entity
+             directly includes <block_quote>.  The `%structure.model`_
              parameter entity indirectly includes <block_quote>.
 
 Examples
@@ -692,15 +692,15 @@ Details
              and to the DocBook_ <itemizedlist> element.
 :Processing: Each list item should begin a new vertical block,
              prefaced by a bullet/dingbat.
-:Parents:    All elements employing the `%body.elements;`_ or
-             `%structure.model;`_ parameter entities in their content models
+:Parents:    All elements employing the `%body.elements`_ or
+             `%structure.model`_ parameter entities in their content models
              may contain <bullet_list>.
 :Children:   <bullet_list> elements contain one or more
              `\<list_item>`_ elements.
 :Attributes: The <bullet_list> element contains the `common attributes`_
              plus bullet_.
-:Parameter Entities: The `%body.elements;`_ parameter entity directly includes
-             <bullet_list>.  The `%structure.model;`_ parameter entity
+:Parameter Entities: The `%body.elements`_ parameter entity directly includes
+             <bullet_list>.  The `%structure.model`_ parameter entity
              indirectly includes <bullet_list>.
 
 .. [#] HTML's <ul> is short for "unordered list", which we consider to be
@@ -757,13 +757,13 @@ Details
 :Analogues:  <caution> is analogous to the `DocBook \<caution>`_ element.
 :Processing: Rendered distinctly (inset and/or in a box, etc.), with the
              generated title "Caution" (or similar).
-:Parents:    All elements employing the `%body.elements;`_ or
-             `%structure.model;`_ parameter entities in their
+:Parents:    All elements employing the `%body.elements`_ or
+             `%structure.model`_ parameter entities in their
              content models may contain <caution>.
 :Children:   <caution> elements contain one or more `body elements`_.
 :Attributes: The <caution> element contains only the `common attributes`_.
-:Parameter Entities: The `%body.elements;`_ parameter entity
-             directly includes <caution>. The `%structure.model;`_
+:Parameter Entities: The `%body.elements`_ parameter entity
+             directly includes <caution>. The `%structure.model`_
              parameter entity indirectly includes <caution>.
 
 Examples
@@ -808,7 +808,7 @@ Details
 :Processing: See `\<definition_list_item>`_.
 :Parents:    Only the `\<definition_list_item>`_ element contains <classifier>.
 :Children:   <classifier> elements may contain text data plus
-             `inline elements`_ (`%text.model;`_).
+             `inline elements`_ (`%text.model`_).
 :Attributes: The <classifier> element contains only the `common attributes`_.
 
 Examples
@@ -910,9 +910,9 @@ Details
 :Parents:    The following elements may contain <contact>:
              `\<docinfo>`_, `\<authors>`_.
 :Children:   <contact> elements may contain text data
-             plus `inline elements`_ (`%text.model;`_).
+             plus `inline elements`_ (`%text.model`_).
 :Attributes: The <contact> element contains only the `common attributes`_.
-:Parameter Entities: The `%bibliographic.elements;`_ parameter entity
+:Parameter Entities: The `%bibliographic.elements`_ parameter entity
              directly includes <contact>.
 
 Examples
@@ -960,9 +960,9 @@ Details
 :Processing: See `\<docinfo>`_.
 :Parents:    Only the `\<docinfo>`_ element contains <copyright>.
 :Children:   <copyright> elements may contain text data plus
-             `inline elements`_ (`%text.model;`_).
+             `inline elements`_ (`%text.model`_).
 :Attributes: The <copyright> element contains only the `common attributes`_.
-:Parameter Entities: The `%bibliographic.elements;`_ parameter entity
+:Parameter Entities: The `%bibliographic.elements`_ parameter entity
              directly includes <copyright>.
 
 Examples
@@ -1006,13 +1006,13 @@ Details
              It can be emulated with primitives and type effects.
 :Processing: Rendered distinctly (inset and/or in a box, etc.),
              with the generated title "!DANGER!" (or similar).
-:Parents:    All elements employing the `%body.elements;`_
-             or `%structure.model;`_ parameter entities
+:Parents:    All elements employing the `%body.elements`_
+             or `%structure.model`_ parameter entities
              in their content models may contain <danger>.
 :Children:   <danger> elements contain one or more `body elements`_.
 :Attributes: The <danger> element contains only the `common attributes`_.
-:Parameter Entities: The `%body.elements;`_ parameter entity
-             directly includes <danger>.  The `%structure.model;`_
+:Parameter Entities: The `%body.elements`_ parameter entity
+             directly includes <danger>.  The `%structure.model`_
              parameter entity indirectly includes <danger>.
 
 Examples
@@ -1043,9 +1043,9 @@ Details
 :Processing: Often used with the RCS/CVS keyword "Date".  See `\<docinfo>`_.
 :Parents:    Only the `\<docinfo>`_ element contains <date>.
 :Children:   <date> elements may contain text data plus `inline elements`_
-             (`%text.model;`_).
+             (`%text.model`_).
 :Attributes: The <date> element contains only the `common attributes`_.
-:Parameter Entities: The `%bibliographic.elements;`_ parameter entity
+:Parameter Entities: The `%bibliographic.elements`_ parameter entity
              directly includes <date>.
 
 Examples
@@ -1137,15 +1137,15 @@ Details
 :Analogues:  <definition_list> is analogous to the HTML <dl> element
              and to the DocBook_ <variablelist> element.
 :Processing: See `\<definition_list_item>`_.
-:Parents:    All elements employing the `%body.elements;`_
-             or `%structure.model;`_ parameter entities in their
+:Parents:    All elements employing the `%body.elements`_
+             or `%structure.model`_ parameter entities in their
              content models may contain <definition_list>.
 :Children:   <definition_list> elements contain one or more
              `\<definition_list_item>`_ elements.
 :Attributes: The <definition_list> element contains only the
              `common attributes`_.
-:Parameter Entities: The `%body.elements;`_ parameter entity
-             directly includes <definition_list>. The `%structure.model;`_
+:Parameter Entities: The `%body.elements`_ parameter entity
+             directly includes <definition_list>. The `%structure.model`_
              parameter entity indirectly includes <definition_list>.
 
 Examples
@@ -1400,15 +1400,15 @@ Details
              typically rendered in a monospaced typeface.  It is crucial
              that all whitespace and line breaks are preserved in the
              rendered form.
-:Parents:    All elements employing the `%body.elements;`_ or
-             `%structure.model;`_ parameter entities in their content models
+:Parents:    All elements employing the `%body.elements`_ or
+             `%structure.model`_ parameter entities in their content models
              may contain <doctest_block>.
 :Children:   <doctest_block> elements may contain text data
-             plus `inline elements`_ (`%text.model;`_):
+             plus `inline elements`_ (`%text.model`_):
 :Attributes: The <doctest_block> element contains the `common attributes`_
              plus `xml:space`_.
-:Parameter Entities: The `%body.elements;`_ parameter entity
-             directly includes <doctest_block>.  The `%structure.model;`_
+:Parameter Entities: The `%body.elements`_ parameter entity
+             directly includes <doctest_block>.  The `%structure.model`_
              parameter entity indirectly includes <doctest_block>.
 
 Examples
@@ -1457,7 +1457,7 @@ Details
                  meta*,
                  decoration?,
                  (docinfo, transition?)?,
-                 `%structure.model;`_ )
+                 `%structure.model`_; )
 
              Depending on the source of the data and the stage of
              processing, the "document" may not initially contain a
@@ -1472,7 +1472,7 @@ Details
              The "`\<docinfo>`_" may be transformed from an initial
              `\<field_list>`_.
 
-             See the `%structure.model;`_ parameter entity for details of
+             See the `%structure.model`_ parameter entity for details of
              the body of a <document>.
 
 :Attributes: The <document> element contains the `common attributes`_
@@ -1537,8 +1537,8 @@ Details
 :Processing: Each list item should begin a new vertical block, prefaced
              by a enumeration marker (such as "1.").
 
-:Parents:    All elements employing the `%body.elements;`_ or
-             `%structure.model;`_ parameter entities in their content models
+:Parents:    All elements employing the `%body.elements`_ or
+             `%structure.model`_ parameter entities in their content models
              may contain <enumerated_list>.
 
 :Children:   <enumerated_list> elements contain one or more
@@ -1570,8 +1570,8 @@ Details
              the list, in decimal.  For lists beginning at value 1
              ("1", "a", "A", "i", or "I"), this attribute may be omitted.
 
-:Parameter Entities: The `%body.elements;`_ parameter entity directly includes
-             <enumerated_list>.  The `%structure.model;`_ parameter entity
+:Parameter Entities: The `%body.elements`_ parameter entity directly includes
+             <enumerated_list>.  The `%structure.model`_ parameter entity
              indirectly includes <enumerated_list>.
 
 Examples
@@ -1627,13 +1627,13 @@ Details
              It can be emulated with primitives and type effects.
 :Processing: Rendered distinctly (inset and/or in a box, etc.),
              with the generated title "Error" (or similar).
-:Parents:    All elements employing the `%body.elements;`_ or
-             `%structure.model;`_ parameter entities in their content models
+:Parents:    All elements employing the `%body.elements`_ or
+             `%structure.model`_ parameter entities in their content models
              may contain <error>.
 :Children:   <error> elements contain one or more `body elements`_.
 :Attributes: The <error> element contains only the `common attributes`_.
-:Parameter Entities: The `%body.elements;`_ parameter entity directly includes
-             <error>.  The `%structure.model;`_ parameter entity indirectly
+:Parameter Entities: The `%body.elements`_ parameter entity directly includes
+             <error>.  The `%structure.model`_ parameter entity indirectly
              includes <error>.
 
 Examples
@@ -1669,7 +1669,7 @@ Details
 :Children:   Each <field> element contains one `\<field_name>`_ and one
              `\<field_body>`_ element.
 :Attributes: The <field> element contains only the `common attributes`_.
-:Parameter Entities: The `%bibliographic.elements;`_ parameter entity
+:Parameter Entities: The `%bibliographic.elements`_ parameter entity
              directly includes <field>.
 
 Examples
@@ -1717,13 +1717,13 @@ Details
              colon suffix). However, field lists are often used for
              extension syntax or special processing.  Such structures do
              not survive as field lists to be rendered.
-:Parents:    All elements employing the `%body.elements;`_ or
-             `%structure.model;`_ parameter entities in their
+:Parents:    All elements employing the `%body.elements`_ or
+             `%structure.model`_ parameter entities in their
              content models may contain <field_list>.
 :Children:   <field_list> elements contain one or more `\<field>`_ elements.
 :Attributes: The <field_list> element contains only the `common attributes`_.
-:Parameter Entities: The `%body.elements;`_ parameter entity
-             directly includes <field_list>.  The `%structure.model;`_
+:Parameter Entities: The `%body.elements`_ parameter entity
+             directly includes <field_list>.  The `%structure.model`_
              parameter entity indirectly includes <field_list>.
 
 Examples
@@ -1779,7 +1779,7 @@ Details
 :Processing: See `\<field_list>`_.
 :Parents:    Only the `\<field>`_ element contains <field_name>.
 :Children:   <field_name> elements may contain text data
-             plus `inline elements`_ (`%text.model;`_).
+             plus `inline elements`_ (`%text.model`_).
 :Attributes: The <field_name> element contains only the `common attributes`_.
 
 Examples
@@ -1881,8 +1881,8 @@ Details
              Footnotes may "float" to the bottom or margin of a page or a
              dedicated section.
 
-:Parents:    All elements employing the `%body.elements;`_ or
-             `%structure.model;`_ parameter entities in their content models
+:Parents:    All elements employing the `%body.elements`_ or
+             `%structure.model`_ parameter entities in their content models
              may contain <footnote>.
 
 :Children:   <footnote> elements begin with an optional `\<label>`_
@@ -1893,8 +1893,8 @@ Details
 :Attributes: The <footnote> element contains the `common attributes`_
              plus auto_ and backrefs_.
 
-:Parameter Entities: The `%body.elements;`_ parameter entity
-             directly includes <footnote>.  The `%structure.model;`_
+:Parameter Entities: The `%body.elements`_ parameter entity
+             directly includes <footnote>.  The `%structure.model`_
              parameter entity indirectly includes <footnote>.
 
 Examples
@@ -1932,7 +1932,7 @@ Details
              `\<label>`_ of the referenced footnote. The mark is
              typically formatted as superscript or enclosed i square
              brackets.
-:Parents:    All elements employing the `%inline.elements;`_
+:Parents:    All elements employing the `%inline.elements`_
              parameter entities in their content models may contain
              <footnote-reference>.
 :Children:   <footnote_reference> elements contain text data only.
@@ -2033,13 +2033,13 @@ Details
              It can be emulated with primitives and type effects.
 :Processing: Rendered distinctly (inset and/or in a box, etc.),
              with the generated title "Hint" (or similar).
-:Parents:    All elements employing the `%body.elements;`_ or
-             `%structure.model;`_ parameter entities in their
+:Parents:    All elements employing the `%body.elements`_ or
+             `%structure.model`_ parameter entities in their
              content models may contain <hint>.
 :Children:   <hint> elements contain one or more `body elements`_.
 :Attributes: The <hint> element contains only the `common attributes`_.
-:Parameter Entities: The `%body.elements;`_ parameter entity
-             directly includes <hint>.  The `%structure.model;`_
+:Parameter Entities: The `%body.elements`_ parameter entity
+             directly includes <hint>.  The `%structure.model`_
              parameter entity indirectly includes <hint>.
 
 Examples
@@ -2076,15 +2076,15 @@ Details
 :Processing: The specified image is included into the output document.
              Depending on the output format, this is done by referring to
              the image URI or by embedding the image files content.
-:Parents:    All elements employing the `%body.elements;`_,
-             `%inline.elements;`_, or `%structure.model;`_ parameter entities
+:Parents:    All elements employing the `%body.elements`_,
+             `%inline.elements`_, or `%structure.model`_ parameter entities
              in their content models may contain <image>.
 :Children:   The <image> element has no content.
 :Attributes: The <image> element contains the `common attributes`_ plus
              uri_, alt_, align_, height_, width_, scale_, and loading_.
 :Parameter Entities:
-             The `%body.elements;`_ and `%inline.elements;`_ parameter
-             entities directly include <image>.  The `%structure.model;`_
+             The `%body.elements`_ and `%inline.elements`_ parameter
+             entities directly include <image>.  The `%structure.model`_
              parameter entity indirectly includes <image>.
 
 Examples
@@ -2121,13 +2121,13 @@ Details
 :Analogues:  <important> is analogous to the `DocBook \<important>`_ element.
 :Processing: Rendered distinctly (inset and/or in a box, etc.),
              with the generated title "Important" (or similar).
-:Parents:    All elements employing the `%body.elements;`_ or
-             `%structure.model;`_ parameter entities in their
+:Parents:    All elements employing the `%body.elements`_ or
+             `%structure.model`_ parameter entities in their
              content models may contain <important>.
 :Children:   <important> elements contain one or more `body elements`_.
 :Attributes: The <important> element contains only the `common attributes`_.
-:Parameter Entities: The `%body.elements;`_ parameter entity
-             directly includes <important>.  The `%structure.model;`_
+:Parameter Entities: The `%body.elements`_ parameter entity
+             directly includes <important>.  The `%structure.model`_
              parameter entity indirectly includes <important>.
 
 Examples
@@ -2173,10 +2173,10 @@ Details
              render the content distinctly for specific class values.
              Moreover, writers may ignore the classes attribute and
              render the content as ordinary text.
-:Parents:    All elements employing the `%inline.elements;`_ parameter
+:Parents:    All elements employing the `%inline.elements`_ parameter
              entities in their content models may contain <inline>.
 :Children:   <inline> elements may contain text data
-             plus `inline elements`_ (`%text.model;`_).
+             plus `inline elements`_ (`%text.model`_).
 :Attributes: The <inline> element contains only the `common attributes`_.
 
 Examples
@@ -2258,8 +2258,8 @@ Details
              It is crucial that leading whitespace and line breaks
              are preserved in the rendered form.
 
-:Parents:    All elements employing the `%body.elements;`_ or
-             `%structure.model;`_ parameter entities in their content models
+:Parents:    All elements employing the `%body.elements`_ or
+             `%structure.model`_ parameter entities in their content models
              may contain <line_block>.
 
 :Children:   <line_block> elements may contain `\<line>`_ elements and
@@ -2269,8 +2269,8 @@ Details
 
 :Attributes: The <line_block> element contains only the `common attributes`_.
 
-:Parameter Entities: The `%body.elements;`_ parameter entity
-             directly includes <line_block>.  The `%structure.model;`_
+:Parameter Entities: The `%body.elements`_ parameter entity
+             directly includes <line_block>.  The `%structure.model`_
              parameter entity indirectly includes <line_block>.
 
 Examples
@@ -2408,15 +2408,15 @@ Details
 :Processing: <literal_block> elements are typically rendered in a
              monospaced typeface.  It is crucial that all whitespace and
              line breaks are preserved in the rendered form.
-:Parents:    All elements employing the `%body.elements;`_ or
-             `%structure.model;`_ parameter entities in their content models
+:Parents:    All elements employing the `%body.elements`_ or
+             `%structure.model`_ parameter entities in their content models
              may contain <literal_block>.
 :Children:   <literal_block> elements may contain text data
-             plus `inline elements`_ (`%text.model;`_).
+             plus `inline elements`_ (`%text.model`_).
 :Attributes: The <literal_block> element contains the `common attributes`_
              plus `xml:space`_.
-:Parameter Entities: The `%body.elements;`_ parameter entity
-             directly includes <literal_block>.  The `%structure.model;`_
+:Parameter Entities: The `%body.elements`_ parameter entity
+             directly includes <literal_block>.  The `%structure.model`_
              parameter entity indirectly includes <literal_block>.
 
 Examples
@@ -2463,7 +2463,7 @@ Details
 :Processing: Rendered as mathematical notation.
              If the output format does not support math typesetting,
              the content may be inserted verbatim.
-:Parents:    All elements employing the `%inline.elements;`_
+:Parents:    All elements employing the `%inline.elements`_
              parameter entities in their content models may contain <math>.
 :Children:   <math> elements contain text data only.
 :Attributes: The <math> element contains only the `common attributes`_.
@@ -2504,8 +2504,8 @@ Details
              centered or with indentation
              If the output format does not support math typesetting,
              the content may be inserted verbatim.
-:Parents:    All elements employing the `%body.elements;`_ or
-             `%structure.model;`_ parameter entities in their content models
+:Parents:    All elements employing the `%body.elements`_ or
+             `%structure.model`_ parameter entities in their content models
              may contain <math_block>.
 :Children:   <math_block> elements contain text data only.
 :Attributes: The <math_block> element contains the `common attributes`_
@@ -2595,13 +2595,13 @@ Details
 :Analogues:  <note> is analogous to the `DocBook \<note>`_ element.
 :Processing: Rendered distinctly (inset and/or in a box, etc.),
              with the generated title "Note" (or similar).
-:Parents:    All elements employing the `%body.elements;`_ or
-             `%structure.model;`_ parameter entities in their content models
+:Parents:    All elements employing the `%body.elements`_ or
+             `%structure.model`_ parameter entities in their content models
              may contain <note>.
 :Children:   <note> elements contain one or more `body elements`_.
 :Attributes: The <note> element contains only the `common attributes`_.
-:Parameter Entities: The `%body.elements;`_ parameter entity
-             directly includes <note>.  The `%structure.model;`_
+:Parameter Entities: The `%body.elements`_ parameter entity
+             directly includes <note>.  The `%structure.model`_
              parameter entity indirectly includes <note>.
 
 Examples
@@ -2708,14 +2708,14 @@ Details
 :Processing: An <option_list> is typically rendered as a two-column list,
              where the first column contains option strings and
              arguments, and the second column contains descriptions.
-:Parents:    All elements employing the `%body.elements;`_ or
-             `%structure.model;`_ parameter entities in their
+:Parents:    All elements employing the `%body.elements`_ or
+             `%structure.model`_ parameter entities in their
              content models may contain <option_list>.
 :Children:   <option_list> elements contain one or more `\<option_list_item>`_
              elements.
 :Attributes: The <option_list> element contains only the `common attributes`_.
-:Parameter Entities: The `%body.elements;`_ parameter entity
-             directly includes <option_list>.  The `%structure.model;`_
+:Parameter Entities: The `%body.elements`_ parameter entity
+             directly includes <option_list>.  The `%structure.model`_
              parameter entity indirectly includes <option_list>.
 
 Examples
@@ -2821,10 +2821,10 @@ Details
 :Processing: See `\<docinfo>`_.
 :Parents:    Only the `\<docinfo>`_ element contains <organization>.
 :Children:   <organization> elements may contain text data
-             plus `inline elements`_ (`%text.model;`_).
+             plus `inline elements`_ (`%text.model`_).
 :Attributes: The <organization> element contains only the
              `common attributes`_.
-:Parameter Entities: The `%bibliographic.elements;`_ parameter entity
+:Parameter Entities: The `%bibliographic.elements`_ parameter entity
              directly includes <organization>.
 
 Examples
@@ -2863,14 +2863,14 @@ Details
 :Category:   `Simple Body Elements`_
 :Analogues:  <paragraph> is analogous to the HTML <p> element
              and to the DocBook_ <para> elements.
-:Parents:    All elements employing the `%body.elements;`_ or
-             `%structure.model;`_ parameter entities in their content models
+:Parents:    All elements employing the `%body.elements`_ or
+             `%structure.model`_ parameter entities in their content models
              may contain <paragraph>.
 :Children:   <paragraph> elements may contain text data
-             plus `inline elements`_ (`%text.model;`_).
+             plus `inline elements`_ (`%text.model`_).
 :Attributes: The <paragraph> element contains only the `common attributes`_.
-:Parameter Entities: The `%body.elements;`_ parameter entity
-             directly includes <paragraph>.  The `%structure.model;`_
+:Parameter Entities: The `%body.elements`_ parameter entity
+             directly includes <paragraph>.  The `%structure.model`_
              parameter entity indirectly includes <paragraph>.
 
 Examples
@@ -2915,15 +2915,15 @@ Details
 :Processing: Passed untouched to the Writer_.
              The interpretation is up to the Writer.
              A Writer may ignore <raw> elements not matching its format_.
-:Parents:    All elements employing the `%body.elements;`_,
-             `%inline.elements;`_, or `%structure.model;`_ parameter entities
+:Parents:    All elements employing the `%body.elements`_,
+             `%inline.elements`_, or `%structure.model`_ parameter entities
              in their content models may contain <raw>.
 :Children:   <raw> elements contain text data only.
 :Attributes: The <raw> element contains the `common attributes`_
              plus format_ and `xml:space`_.
 :Parameter Entities:
-             The `%body.elements;`_ and `%inline.elements;`_ parameter
-             entities directly include <raw>.  The `%structure.model;`_
+             The `%body.elements`_ and `%inline.elements`_ parameter
+             entities directly include <raw>.  The `%structure.model`_
              parameter entity indirectly  includes <raw>.
 
 Examples
@@ -2967,9 +2967,9 @@ Details
              See `\<docinfo>`_.
 :Parents:    Only the `\<docinfo>`_ element contains <revision>.
 :Children:   <revision> elements may contain text data
-             plus `inline elements`_ (`%text.model;`_).
+             plus `inline elements`_ (`%text.model`_).
 :Attributes: The <revision> element contains only the `common attributes`_.
-:Parameter Entities: The `%bibliographic.elements;`_ parameter entity
+:Parameter Entities: The `%bibliographic.elements`_ parameter entity
              directly includes <revision>.
 
 Examples
@@ -3053,12 +3053,12 @@ Details
 
              .. parsed-literal::
 
-                (title, subtitle?, `%structure.model;`_)
+                (title, subtitle?, `%structure.model`_;)
 
 :Attributes: The <section> element contains only the `common attributes`_.
 
-:Parameter Entities: The `%section.elements;`_ parameter entity
-             directly includes <section>.  The `%structure.model;`_
+:Parameter Entities: The `%section.elements`_ parameter entity
+             directly includes <section>.  The `%structure.model`_
              parameter entity indirectly includes <section>.
 
 Examples
@@ -3152,7 +3152,7 @@ Details
 
 :Attributes: The <sidebar> element contains only the `common attributes`_.
 
-:Parameter Entities: The `%structure.model;`_ parameter entity
+:Parameter Entities: The `%structure.model`_ parameter entity
              directly includes <sidebar>.
 
 
@@ -3191,9 +3191,9 @@ Details
 :Processing: See `\<docinfo>`_.
 :Parents:    Only the `\<docinfo>`_ element contains <status>.
 :Children:   <status> elements may contain text data
-             plus `inline elements`_ (`%text.model;`_).
+             plus `inline elements`_ (`%text.model`_).
 :Attributes: The <status> element contains only the `common attributes`_.
-:Parameter Entities: The `%bibliographic.elements;`_ parameter entity
+:Parameter Entities: The `%bibliographic.elements`_ parameter entity
              directly includes <status>.
 
 Examples
@@ -3265,7 +3265,7 @@ Details
 :Parents:    The `\<document>`_, `\<section>`, and `\<sidebar>`_ elements
              may contain <subtitle>.
 :Children:   <subtitle> elements may contain text data
-             plus `inline elements`_ (`%text.model;`_).
+             plus `inline elements`_ (`%text.model`_).
 :Attributes: The <subtitle> element contains only the `common attributes`_.
 
 Examples
@@ -3336,8 +3336,8 @@ Details
 
 :Processing: Content is rendered in rows and columns.
 
-:Parents:    All elements employing the `%body.elements;`_ or
-             `%structure.model;`_ parameter entities in their
+:Parents:    All elements employing the `%body.elements`_ or
+             `%structure.model`_ parameter entities in their
              content models may contain <table>.
 
 :Children:   <table> elements begin with an optional `\<title>`_ (caption)
@@ -3349,8 +3349,8 @@ Details
              align_, and width_ as well as the attributes "frame", colsep_,
              rowsep_, and "pgwide" defined in the exchange-table-model_.
 
-:Parameter Entities: The `%body.elements;`_ parameter entity
-             directly includes <table>.  The `%structure.model;`_
+:Parameter Entities: The `%body.elements`_ parameter entity
+             directly includes <table>.  The `%structure.model`_
              parameter entity indirectly includes <table>.
 
 Examples
@@ -3418,7 +3418,7 @@ Details
 :Processing: See `\<definition_list_item>`_.
 :Parents:    Only the `\<definition_list_item>`_ element contains <term>.
 :Children:   <term> elements may contain text data
-             plus `inline elements`_ (`%text.model;`_).
+             plus `inline elements`_ (`%text.model`_).
 :Attributes: The <term> element contains only the `common attributes`_.
 
 Examples
@@ -3458,13 +3458,13 @@ Details
 :Analogues:  <tip> is analogous to the `DocBook \<tip>`_ element.
 :Processing: Rendered distinctly (inset and/or in a box, etc.),
              with the generated title "Tip" (or similar).
-:Parents:    All elements employing the `%body.elements;`_ or
-             `%structure.model;`_ parameter entities in their content models
+:Parents:    All elements employing the `%body.elements`_ or
+             `%structure.model`_ parameter entities in their content models
              may contain <tip>.
 :Children:   <tip> elements contain one or more `body elements`_.
 :Attributes: The <tip> element contains only the `common attributes`_.
-:Parameter Entities: The `%body.elements;`_ parameter entity
-             directly includes <tip>. The `%structure.model;`_
+:Parameter Entities: The `%body.elements`_ parameter entity
+             directly includes <tip>. The `%structure.model`_
              parameter entity indirectly includes <tip>.
 
 Examples
@@ -3502,7 +3502,7 @@ Details
              `\<admonition>`_, `\<document>`_, `\<section>`_,
              `\<sidebar>`_, `\<table>`_, `\<topic>`_.
 :Children:   <title> elements may contain text data
-             plus `inline elements`_ (`%text.model;`_).
+             plus `inline elements`_ (`%text.model`_).
 :Attributes: The <title> element contains the `common attributes`_
              plus refid_ (used as a backlink to a table of contents entry)
              and auto_.
@@ -3577,7 +3577,7 @@ Details
 :Attributes: The <topic> element contains the `common attributes`_ plus
              depth_ and local_.
 
-:Parameter Entities: The `%structure.model;`_ parameter entity
+:Parameter Entities: The `%structure.model`_ parameter entity
              directly includes <topic>.
 
 Examples
@@ -3634,7 +3634,7 @@ Details
              `\<document>`_, `\<section>`_
 :Children:   The <transition> element has no content.
 :Attributes: The <transition> element contains only the `common attributes`_.
-:Parameter Entities: The `%structure.model;`_ parameter entity
+:Parameter Entities: The `%structure.model`_ parameter entity
              directly includes <transition>.
 
 Examples
@@ -3674,9 +3674,9 @@ Details
              See `\<docinfo>`_ and `\<revision>`_.
 :Parents:    Only the `\<docinfo>`_ element contains <version>.
 :Children:   <version> elements may contain text data
-             plus `inline elements`_ (`%text.model;`_).
+             plus `inline elements`_ (`%text.model`_).
 :Attributes: The <version> element contains only the `common attributes`_.
-:Parameter Entities: The `%bibliographic.elements;`_ parameter entity
+:Parameter Entities: The `%bibliographic.elements`_ parameter entity
              directly includes <version>.
 
 Examples
@@ -3719,13 +3719,13 @@ Details
 :Analogues:  <warning> is analogous to the `DocBook \<warning>`_ element.
 :Processing: Rendered distinctly (inset and/or in a box, etc.),
              with the generated title "Warning" (or similar).
-:Parents:    All elements employing the `%body.elements;`_ or
-             `%structure.model;`_ parameter entities in their content models
+:Parents:    All elements employing the `%body.elements`_ or
+             `%structure.model`_ parameter entities in their content models
              may contain <warning>.
 :Children:   <warning> elements contain one or more `body elements`_.
 :Attributes: The <warning> element contains only the `common attributes`_.
-:Parameter Entities: The `%body.elements;`_ parameter entity
-             directly includes <warning>.  The `%structure.model;`_
+:Parameter Entities: The `%body.elements`_ parameter entity
+             directly includes <warning>.  The `%structure.model`_
              parameter entity indirectly includes <warning>.
 
 Examples
@@ -3770,42 +3770,42 @@ to highlight specific attribute value constraints.
 In the docutils.nodes_ reference implementation, values are stored using
 the specified Python data types.
 
-_`%classnames.type;`
+_`%classnames.type`
   | Space-separated list of `class names`_.  Resolves to NMTOKEN_.
   | Used in the `classes`_ attribute.  Python data type: ``list[str]``.
 
-_`%idref.type;`
+_`%idref.type`
   | A reference to another element by its identifier_.
     Resolves to NMTOKEN_. [#id-vc]_
   | Used in the `refid`_ attribute.  Python data type: ``str``.
 
   .. _identifier: identifiers_
 
-_`%idrefs.type;`
+_`%idrefs.type`
   | Space separated list of references to other elements by their identifiers_.
     Resolves to NMTOKENS_. [#id-vc]_
   | Used in the `backrefs`_ attribute.  Python data type: ``list[str]``.
 
-_`%ids.type;`
+_`%ids.type`
   | A space-separated list of unique `identifiers`_.
     Resolves to NMTOKENS_. [#id-vc]_
   | Used in the `ids`_ attribute.  Python data type: ``list[str]``.
 
-_`%measure;`
+_`%measure`
   | A number which may be immediately followed by a unit or percent sign.
     Resolves to CDATA_.
   | Used in the `height`_ and `width`_ attributes.  Python data type: ``str``.
 
-_`%number;`
+_`%number`
   | The attribute value must be a positive interger.  Resolves to NMTOKEN_.
   | Used in the `level`_, `morecols`_, `scale`_, and `start`_ attributes.
     Python data type: ``int``.
 
-_`%refname.type;`
+_`%refname.type`
   | A `reference name`_.  Resolves to CDATA_.
   | Used in the `refname`_ attribute.  Python data type: ``str``.
 
-_`%refnames.type;`
+_`%refnames.type`
   | Space-separated list of `reference names`_.  Resolves to CDATA_.
   | Used in the `names`_ and `dupnames`_ attributes.
     Python data type: ``list[str]``.
@@ -3813,7 +3813,7 @@ _`%refnames.type;`
   Backslash escaping is used for space characters inside a `reference
   name`.
 
-_`%yesorno;`
+_`%yesorno`
   | Boolean: False if zero ("0"), true for any other value.
     Resolves to NMTOKEN_.
   | Used in the `anonymous`_, `ltrim`_, `rtrim`_, and `stub`_ attributes.
@@ -3840,7 +3840,7 @@ _`Class names`
   `"class" directive`_, a directive's `class option`_, or `custom
   interpreted text roles`_.
 
-  Class names are used in the classes_ attribute (`%classnames.type;`_).
+  Class names are used in the classes_ attribute (`%classnames.type`_).
 
   .. _reference name:
 
@@ -3862,7 +3862,7 @@ _`Reference names`
   but forgiving.
 
   Reference names are used in the name_, names_, refname_, and dupnames_
-  attributes (`%refname.type;`_ or `%refnames.type;`_).
+  attributes (`%refname.type`_ or `%refnames.type`_).
 
 _`Identifiers`
   are used for cross references in generated documents.
@@ -3877,7 +3877,7 @@ _`Identifiers`
   for disambiguation if required.
 
   Identifiers are used in the ids_, refid_, and backrefs_ attributes
-  (`%ids.type;`_, `%idref.type;`_, or `%idrefs.type;`_) [#id-vc]_.
+  (`%ids.type`_, `%idref.type`_, or `%idrefs.type`_) [#id-vc]_.
 
 .. [#whitespace-normalization] Adjacent spaces, horizontal or vertical
    tabs, newlines, carriage returns, or form feeds, are replaced by a
@@ -3901,7 +3901,7 @@ __ `XML attribute types`_
 Common Attributes
 -----------------
 
-Through the `%basic.atts;`_ parameter entity, all elements support the
+Through the `%basic.atts`_ parameter entity, all elements support the
 following attributes: ids_, names_ or dupnames_, source_, and classes_.
 
 
@@ -3928,16 +3928,16 @@ Attribute type: `CDATA`_.  Default value: none (inherit).
 
 The ``align`` attribute is used in the `\<figure>`_,
 `\<image>`_, `\<table>`_, and `\<tgroup>`_ elements
-(via the `%align-h.att;`_ and `%align-hv.att;`_ parameter entities).
+(via the `%align-h.att`_ and `%align-hv.att`_ parameter entities).
 
 
 ``anonymous``
 =============
 
-Attribute type: `%yesorno;`_.  Default value: none (implies no).
+Attribute type: `%yesorno`_.  Default value: none (implies no).
 
 The ``anonymous`` attribute is used for unnamed hyperlinks in the
-`\<target>`_ and `\<reference>`_ elements (via the `%anonymous.att;`_
+`\<target>`_ and `\<reference>`_ elements (via the `%anonymous.att`_
 parameter entity).
 
 
@@ -3948,17 +3948,17 @@ Attribute type: `CDATA`_.  Default value: none.
 
 The ``auto`` attribute is used to indicate automatically-numbered
 `\<footnote>`_, `\<footnote_reference>`_ and `\<title>`_ elements
-(via the `%auto.att;`_ parameter entity).
+(via the `%auto.att`_ parameter entity).
 
 
 ``backrefs``
 ============
 
-Attribute type: `%idrefs.type;`_.  Default value: none.
+Attribute type: `%idrefs.type`_.  Default value: none.
 
 The ``backrefs`` attribute contains a space-separated list of identifier_
 references, used for backlinks from `\<footnote>`_, `\<citation>`_, and
-`\<system_message>`_ elements (via the `%backrefs.att;`_ parameter entity).
+`\<system_message>`_ elements (via the `%backrefs.att`_ parameter entity).
 
 
 ``bullet``
@@ -3975,7 +3975,7 @@ It may be ignored in processing.
 ``classes``
 ===========
 
-Attribute type: `%classnames.type;`_.  Default value: none.
+Attribute type: `%classnames.type`_.  Default value: none.
 
 The ``classes`` attribute is a space separated list containing zero or
 more `class names`_.
@@ -4010,7 +4010,7 @@ The ``cols`` attribute is used in the `\<tgroup>`_ element.
 ``colsep``
 ==========
 
-Attribute type: `%yesorno;`_.  Default value: none (implies no).
+Attribute type: `%yesorno`_.  Default value: none (implies no).
 
 The ``colsep`` attribute is used in the `\<table>`_ and `\<tgroup>`_
 elements.
@@ -4053,7 +4053,7 @@ or the text between option arguments (typically either "," or " ").
 ``depth``
 =========
 
-Attribute type: `%number;`_. Default value: none.
+Attribute type: `%number`_. Default value: none.
 
 The ``depth`` attribute may be used in a `\<topic>`_ element generated by
 the `"contents" directive`_ to hold the value of the "depth" option.
@@ -4061,7 +4061,7 @@ the `"contents" directive`_ to hold the value of the "depth" option.
 ``dupnames``
 ============
 
-Attribute type: `%refnames.type;`_.  Default value: none.
+Attribute type: `%refnames.type`_.  Default value: none.
 
 ``dupnames`` is one of the `common attributes`_, shared by all
 Docutils elements. It replaces the `names`_ attribute when there
@@ -4090,7 +4090,7 @@ The ``format`` attribute is used in the `\<raw>`_ element.
 ``height``
 ==========
 
-Attribute type: `%measure;`_.  Default value: none.
+Attribute type: `%measure`_.  Default value: none.
 
 The ``height`` attribute is used in the `\<image>`_ element.
 
@@ -4098,7 +4098,7 @@ The ``height`` attribute is used in the `\<image>`_ element.
 ``ids``
 =======
 
-Attribute type: `%ids.type;`_.  Default value: none.
+Attribute type: `%ids.type`_.  Default value: none.
 
 The ``ids`` attribute is a space separated list containing one or more
 unique `identifiers`_, typically assigned by the system.
@@ -4115,7 +4115,7 @@ elements.
 ``level``
 =========
 
-Attribute type: `%number;`_.  Default value: none.
+Attribute type: `%number`_.  Default value: none.
 
 The ``level`` attribute is used in the `\<system_message>`_ element.
 
@@ -4123,7 +4123,7 @@ The ``level`` attribute is used in the `\<system_message>`_ element.
 ``line``
 =========
 
-Attribute type: `%number;`_.  Default value: none.
+Attribute type: `%number`_.  Default value: none.
 
 The ``line`` attribute is used in the `\<system_message>`_ element.
 
@@ -4131,7 +4131,7 @@ The ``line`` attribute is used in the `\<system_message>`_ element.
 ``local``
 =========
 
-Attribute type: `%yesorno;`_. Default value: none.
+Attribute type: `%yesorno`_. Default value: none.
 
 The ``local`` attribute may be used in a `\<topic>` element generated by
 the `"contents" directive`_ to hold the value of the "local" option.
@@ -4140,7 +4140,7 @@ the `"contents" directive`_ to hold the value of the "local" option.
 ``ltrim``
 =========
 
-Attribute type: `%yesorno;`_.  Default value: none (implies no).
+Attribute type: `%yesorno`_.  Default value: none (implies no).
 
 The ``ltrim`` attribute is used in the `\<substitution_definition>`_ element.
 
@@ -4168,7 +4168,7 @@ New in Docutils 0.21
 ``morecols``
 ============
 
-Attribute type: `%number;`_.  Default value: none.
+Attribute type: `%number`_.  Default value: none.
 
 The ``morecols`` attribute is used in the `\<entry>`_ element.
 
@@ -4176,7 +4176,7 @@ The ``morecols`` attribute is used in the `\<entry>`_ element.
 ``morerows``
 ============
 
-Attribute type: `%number;`_.  Default value: none.
+Attribute type: `%number`_.  Default value: none.
 
 The ``morerows`` attribute is used in the `\<entry>`_ element.
 
@@ -4200,7 +4200,7 @@ but case is preserved.  The attribute will no longer be used with
 ``names``
 =========
 
-Attribute type: `%refnames.type;`_.  Default value: none.
+Attribute type: `%refnames.type`_.  Default value: none.
 
 The ``names`` attribute is a space-separated list containing
 `reference names`_ of an element.
@@ -4226,20 +4226,20 @@ The ``prefix`` attribute is used in the `\<enumerated_list>`_ element.
 ``refid``
 =========
 
-Attribute type: `%idref.type;`_.  Default value: none.
+Attribute type: `%idref.type`_.  Default value: none.
 
 The ``refid`` attribute contains a reference to another element via its
 `identifier`_.
 
 ``refid`` is used by the `\<citation_reference>`_, `\<footnote_reference>`_,
 `\<problematic>`_, `\<reference>`_, `\<target>`_, and `\<title>`_ elements
-(via the `%refid.att;`_ and `%reference.atts;`_ parameter entities).
+(via the `%refid.att`_ and `%reference.atts`_ parameter entities).
 
 
 ``refname``
 ===========
 
-Attribute type: `%refname.type;`_.  Default value: none.
+Attribute type: `%refname.type`_.  Default value: none.
 
 The ``refname`` attribute contains a reference to one of the `names`_ of
 another element.
@@ -4252,7 +4252,7 @@ which may resolve to either an internal or external reference.
 Docutils transforms_ replace the ``refname`` attribute with a refid_
 pointing to the same element.
 
-.. [#] Via the `%refname.att;`_ and `%reference.atts;`_ parameter entities.
+.. [#] Via the `%refname.att`_ and `%reference.atts`_ parameter entities.
 
 
 ``refuri``
@@ -4263,13 +4263,13 @@ Attribute type: `CDATA`_.  Default value: none.
 The ``refuri`` attribute contains an external reference to a URI/URL.
 It is used by the `\<target>`_, `\<reference>`_,
 `\<footnote_reference>`_, and `\<citation_reference>`_ elements
-(via the `%reference.atts;`_ parameter entity).
+(via the `%reference.atts`_ parameter entity).
 
 
 ``rowsep``
 ==========
 
-Attribute type: `%yesorno;`_.  Default value: none (implies no).
+Attribute type: `%yesorno`_.  Default value: none (implies no).
 
 The ``rowsep`` attribute is used in the `\<table>`_ and `\<tgroup>`_
 elements.
@@ -4278,7 +4278,7 @@ elements.
 ``rtrim``
 =========
 
-Attribute type: `%yesorno;`_.  Default value: none (implies no).
+Attribute type: `%yesorno`_.  Default value: none (implies no).
 
 The ``rtrim`` attribute is used in the `\<substitution_definition>`_ element.
 
@@ -4286,7 +4286,7 @@ The ``rtrim`` attribute is used in the `\<substitution_definition>`_ element.
 ``scale``
 ==========
 
-Attribute type: `%number;`_.  Default value: none.
+Attribute type: `%number`_.  Default value: none.
 
 The ``scale`` attribute is used in the `\<image>`_ element to store
 a uniform scaling factor (integer percentage value).
@@ -4305,7 +4305,7 @@ the `common attributes`_, declared for all Docutils elements.
 ``start``
 =========
 
-Attribute type: `%number;`_.  Default value: none.
+Attribute type: `%number`_.  Default value: none.
 
 The ``start`` attribute is used in the `\<enumerated_list>`_ element.
 
@@ -4313,7 +4313,7 @@ The ``start`` attribute is used in the `\<enumerated_list>`_ element.
 ``stub``
 =========
 
-Attribute type: `%yesorno;`_.  Default value: none.
+Attribute type: `%yesorno`_.  Default value: none.
 
 The ``stub`` attribute is used in the `\<colspec>`_ element.
 It marks a table column containing *stubs* (row titles, on the left).
@@ -4364,7 +4364,7 @@ to refer to the image via its Universal Resource Indicator.
 ``width``
 ==========
 
-Attribute type: `%measure;`_.  Default value: none.
+Attribute type: `%measure`_.  Default value: none.
 
 The ``width`` attribute is used in the `\<figure>`_, `\<image>`_,
 and `\<table>`_ elements.
@@ -4379,7 +4379,7 @@ and `\<table>`_ elements.
 The ``xml:space`` attribute is a standard XML attribute for
 whitespace-preserving elements.  It is used by the `\<address>`_,
 `\<comment>`_, `\<doctest_block>`_, `\<literal_block>`_, `\<math_block>`_,
-and `\<raw>`_ elements (via the `%fixedspace.att;`_ parameter entity).
+and `\<raw>`_ elements (via the `%fixedspace.att`_ parameter entity).
 It is a fixed attribute, meant to communicate to an XML parser that the
 element contains significant whitespace.  The attribute value should not
 be set in a document instance.
@@ -4406,10 +4406,10 @@ In addition, the Docutils DTD defines parameter entities for
 Attribute Entities
 ==================
 
-``%align-h.att;``
------------------
+``%align-h.att``
+----------------
 
-The ``%align-h.att;`` parameter entity contains the align_
+The ``%align-h.att`` parameter entity contains the align_
 attribute for horizontal alignment.
 
 Entity definition::
@@ -4417,26 +4417,26 @@ Entity definition::
     align (left | center | right) #IMPLIED
 
 The `\<figure>`_ and `\<table>`_ elements directly employ the
-``%align-h.att;`` parameter entity in their attribute lists.
+``%align-h.att`` parameter entity in their attribute lists.
 
 
-``%align-hv.att;``
-------------------
+``%align-hv.att``
+-----------------
 
-The ``%align-hv.att;`` parameter entity contains the align_
+The ``%align-hv.att`` parameter entity contains the align_
 attribute for horizontal and vertical alignment.
 
 Entity definition::
 
     align (top | middle | bottom | left | center | right) #IMPLIED
 
-The `\<image>`_ element directly employs the ``%align-hv.att;``
+The `\<image>`_ element directly employs the ``%align-hv.att``
 parameter entity in its attribute list.
 
-``%anonymous.att;``
--------------------
+``%anonymous.att``
+------------------
 
-The ``%anonymous.att;`` parameter entity contains the anonymous_
+The ``%anonymous.att`` parameter entity contains the anonymous_
 attribute, used for unnamed hyperlinks.
 
 Entity definition::
@@ -4444,13 +4444,13 @@ Entity definition::
     anonymous %yesorno; #IMPLIED
 
 The `\<reference>`_ and `\<target>`_ elements directly employ the
-``%anonymous.att;`` parameter entity in their attribute lists.
+``%anonymous.att`` parameter entity in their attribute lists.
 
 
-``%auto.att;``
---------------
+``%auto.att``
+-------------
 
-The ``%auto.att;`` parameter entity contains the auto_ attribute, used
+The ``%auto.att`` parameter entity contains the auto_ attribute, used
 to indicate an automatically-numbered footnote or title.
 
 Entity definition::
@@ -4458,14 +4458,14 @@ Entity definition::
     auto CDATA #IMPLIED
 
 The `\<footnote>`_, `\<footnote_reference>`_, and `\<title>`_ elements
-directly employ the ``%auto.att;`` parameter entity in their attribute
+directly employ the ``%auto.att`` parameter entity in their attribute
 lists.
 
 
-``%backrefs.att;``
-------------------
+``%backrefs.att``
+-----------------
 
-The ``%backrefs.att;`` parameter entity contains the backrefs_
+The ``%backrefs.att`` parameter entity contains the backrefs_
 attribute, a space-separated list of id references, for backlinks.
 
 Entity definition::
@@ -4473,14 +4473,14 @@ Entity definition::
     backrefs %idrefs.type; #IMPLIED
 
 The `\<citation>`_, `\<footnote>`_, and `\<system_message>`_ elements
-directly employ the ``%backrefs.att;`` parameter entity in their
+directly employ the ``%backrefs.att`` parameter entity in their
 attribute lists.
 
 
-``%basic.atts;``
-----------------
+``%basic.atts``
+---------------
 
-The ``%basic.atts;`` parameter entity lists the `common attributes`_.
+The ``%basic.atts`` parameter entity lists the `common attributes`_.
 
 Entity definition:
 
@@ -4493,14 +4493,14 @@ Entity definition:
     classes_  NMTOKENS  #IMPLIED
     %additional.basic.atts;
 
-The ``%additional.basic.atts;`` parameter entity can be used by
-wrapper DTDs to extend ``%basic.atts;``.
+The ``%additional.basic.atts`` parameter entity can be used by
+wrapper DTDs to extend ``%basic.atts``.
 
 
-``%fixedspace.att;``
---------------------
+``%fixedspace.att``
+-------------------
 
-The ``%fixedspace.att;`` parameter entity contains the `xml:space`_
+The ``%fixedspace.att`` parameter entity contains the `xml:space`_
 attribute, a standard XML attribute for whitespace-preserving
 elements.
 
@@ -4508,38 +4508,38 @@ Entity definition::
 
     xml:space (default | preserve) #FIXED 'preserve'
 
-The ``%fixedspace.att;`` parameter entity is directly employed in the
+The ``%fixedspace.att`` parameter entity is directly employed in the
 attribute lists of the following elements: `\<address>`_, `\<comment>`_,
 `\<doctest_block>`_, `\<literal_block>`_, `\<math_block>`_, `\<raw>`_.
 
 
-``%reference.atts;``
---------------------
+``%reference.atts``
+-------------------
 
-The ``%reference.atts;`` parameter entity groups together the refuri_,
+The ``%reference.atts`` parameter entity groups together the refuri_,
 refid_, and refname_ attributes.
 
 Entity definition:
 
 .. parsed-literal::
 
-    `%refuri.att;`_
-    `%refid.att;`_
-    `%refname.att;`_
+    `%refuri.att`_;
+    `%refid.att`_;
+    `%refname.att`_;
     %additional.reference.atts;
 
-The ``%additional.reference.atts;`` parameter entity can be used by
-wrapper DTDs to extend ``%additional.reference.atts;``.
+The ``%additional.reference.atts`` parameter entity can be used by
+wrapper DTDs to extend ``%additional.reference.atts``.
 
 The `\<citation_reference>`_, `\<footnote_reference>`_, `\<reference>`_,
-and `\<target>`_ elements directly employ the ``%reference.att;``
+and `\<target>`_ elements directly employ the ``%reference.att``
 parameter entity in their attribute lists.
 
 
-``%refid.att;``
----------------
+``%refid.att``
+--------------
 
-The ``%refid.att;`` parameter entity contains the refid_ attribute, an
+The ``%refid.att`` parameter entity contains the refid_ attribute, an
 internal reference to the `ids`_ attribute of another element.
 
 Entity definition::
@@ -4547,17 +4547,17 @@ Entity definition::
     refid %idref.type; #IMPLIED
 
 The `\<title>`_ and `\<problematic>`_ elements directly employ the
-``%refid.att;`` parameter entity in their attribute lists.
+``%refid.att`` parameter entity in their attribute lists.
 
-Via `%reference.atts;`_, the ``%refid.att;`` parameter entity is
+Via `%reference.atts`_, the ``%refid.att`` parameter entity is
 indirectly employed in the attribute lists of the `\<citation_reference>`_,
 `\<footnote_reference>`_, `\<reference>`_, and `\<target>`_ elements.
 
 
-``%refname.att;``
------------------
+``%refname.att``
+----------------
 
-The ``%refname.att;`` parameter entity contains the refname_
+The ``%refname.att`` parameter entity contains the refname_
 attribute, an internal reference to the `names`_ attribute of another
 element.  On a `\<target>`_ element, ``refname`` indicates an indirect
 target which may resolve to either an internal or external
@@ -4568,24 +4568,24 @@ Entity definition::
     refname %refname.type; #IMPLIED
 
 The `\<substitution_reference>`_ element directly employs the
-``%refname.att;`` parameter entity in its attribute list.
+``%refname.att`` parameter entity in its attribute list.
 
-Via `%reference.atts;`_, the ``%refname.att;`` parameter entity is
+Via `%reference.atts`_, the ``%refname.att`` parameter entity is
 indirectly employed in the attribute lists of the `\<citation_reference>`_,
 `\<footnote_reference>`_, `\<reference>`_, and `\<target>`_ elements.
 
 
-``%refuri.att;``
-----------------
+``%refuri.att``
+---------------
 
-The ``%refuri.att;`` parameter entity contains the refuri_ attribute,
+The ``%refuri.att`` parameter entity contains the refuri_ attribute,
 an external reference to a URI/URL.
 
 Entity definition::
 
     refuri CDATA #IMPLIED
 
-Via `%reference.atts;`_, the ``%refuri.att;`` parameter entity is
+Via `%reference.atts`_, the ``%refuri.att`` parameter entity is
 indirectly employed in the attribute lists of the `\<citation_reference>`_,
 `\<footnote_reference>`_, `\<reference>`_, and `\<target>`_ elements.
 
@@ -4594,29 +4594,29 @@ Element Category Entities
 =========================
 
 
-``%bibliographic.elements;``
-----------------------------
+``%bibliographic.elements``
+---------------------------
 
-The ``%bibliographic.elements;`` parameter entity contains an OR-list of all
+The ``%bibliographic.elements`` parameter entity contains an OR-list of all
 `Bibliographic Elements`_.
 
-The ``%additional.bibliographic.elements;`` parameter entity can be used by
-wrapper DTDs to extend ``%bibliographic.elements;``.
+The ``%additional.bibliographic.elements`` parameter entity can be used by
+wrapper DTDs to extend ``%bibliographic.elements``.
 
 Only the `\<docinfo>`_ element directly employs the
-``%bibliographic.elements;`` parameter entity in its content model.
+``%bibliographic.elements`` parameter entity in its content model.
 
 
-``%body.elements;``
--------------------
+``%body.elements``
+------------------
 
-The ``%body.elements;`` parameter entity contains an OR-list of all
+The ``%body.elements`` parameter entity contains an OR-list of all
 `Body Elements`_.
 
-The ``%additional.body.elements;`` parameter entity can be used by
-wrapper DTDs to extend ``%body.elements;``.
+The ``%additional.body.elements`` parameter entity can be used by
+wrapper DTDs to extend ``%body.elements``.
 
-The ``%body.elements;`` parameter entity is directly employed in the
+The ``%body.elements`` parameter entity is directly employed in the
 content models of the following elements: `\<admonition>`_,
 `\<attention>`_, `\<block_quote>`_, `\<caution>`_, `\<citation>`_,
 `\<compound>`_, `\<danger>`_, `\<definition>`_, `\<description>`_,
@@ -4625,21 +4625,21 @@ content models of the following elements: `\<admonition>`_,
 `\<note>`_, `\<sidebar>`_, `\<system_message>`_, `\<tip>`_, `\<topic>`_,
 and `\<warning>`_
 
-Via `%structure.model;`_, the ``%body.elements;`` parameter entity is
+Via `%structure.model`_, the ``%body.elements`` parameter entity is
 indirectly employed in the content models of the `\<document>`_ and
 `\<section>`_ elements.
 
 
-``%inline.elements;``
----------------------
+``%inline.elements``
+--------------------
 
-The ``%inline.elements;`` parameter entity contains an OR-list of all
+The ``%inline.elements`` parameter entity contains an OR-list of all
 `Inline Elements`_.
 
-The ``%additional.inline.elements;`` parameter entity can be used by
-wrapper DTDs to extend ``%inline.elements;``.
+The ``%additional.inline.elements`` parameter entity can be used by
+wrapper DTDs to extend ``%inline.elements``.
 
-Via `%text.model;`_, the ``%inline.elements;`` parameter entity is
+Via `%text.model`_, the ``%inline.elements`` parameter entity is
 indirectly employed in the content models of the following elements:
 `\<abbreviation>`_, `\<acronym>`_, `\<address>`_, `\<attribution>`_,
 `\<author>`_, `\<caption>`_, `\<classifier>`_, `\<contact>`_,
@@ -4652,22 +4652,22 @@ indirectly employed in the content models of the following elements:
 `\<target>`_, `\<term>`_, `\<title>`_, `\<title_reference>`_, `\<version>`_
 
 
-``%section.elements;``
-----------------------
+``%section.elements``
+---------------------
 
-The ``%section.elements;`` parameter entity contains an OR-list of all
-`\<section>`_-equivalent elements.  ``%section.elements;`` is itself
-contained within the `%structure.model;`_ parameter entity.
+The ``%section.elements`` parameter entity contains an OR-list of all
+`\<section>`_-equivalent elements.  ``%section.elements`` is itself
+contained within the `%structure.model`_ parameter entity.
 
 Entity definition::
 
     section
     %additional.section.elements;
 
-The ``%additional.section.elements;`` parameter entity can be used
-by wrapper DTDs to extend ``%section.elements;``.
+The ``%additional.section.elements`` parameter entity can be used
+by wrapper DTDs to extend ``%section.elements``.
 
-Via `%structure.model;`_, the ``%section.elements;`` parameter entity
+Via `%structure.model`_, the ``%section.elements`` parameter entity
 is indirectly employed in the content models of the `\<document>`_ and
 `\<section>`_ elements.
 
@@ -4675,10 +4675,10 @@ is indirectly employed in the content models of the `\<document>`_ and
 Content Model Entities
 ======================
 
-``%structure.model;``
----------------------
+``%structure.model``
+--------------------
 
-The ``%structure.model;`` parameter entity encapsulates the
+The ``%structure.model`` parameter entity encapsulates the
 hierarchical structure of a document and of its constituent parts.
 See the discussion of the `element hierarchy`_ above.
 
@@ -4686,8 +4686,8 @@ Entity definition:
 
 .. parsed-literal::
 
-   ( ( (`%body.elements;`_ | topic | sidebar)+, transition? )*,
-     ( (`%section.elements;`_), (transition?, (`%section.elements;`_) )* )? )
+   ( ( (`%body.elements`_; | topic | sidebar)+, transition? )*,
+     ( (`%section.elements`_;), (transition?, (`%section.elements`_;) )* )? )
 
 Each `\<document>`_ or `\<section>`_ contains zero or more body elements,
 topics, and/or sidebars, optionally interspersed with single
@@ -4712,23 +4712,23 @@ The following restrictions are imposed by this model:
 
    * A transition may not occur at the end of a document or section.
 
-The ``%structure.model;`` parameter entity is directly employed in the
+The ``%structure.model`` parameter entity is directly employed in the
 content models of the `\<document>`_ and `\<section>`_ elements.
 
 
-``%text.model;``
-----------------
+``%text.model``
+---------------
 
-The ``%text.model;`` parameter entity is used by `simple elements`_ to
+The ``%text.model`` parameter entity is used by `simple elements`_ to
 represent text data mixed with `inline elements`_.
 
 Entity definition:
 
 .. parsed-literal::
 
-    (#PCDATA | `%inline.elements;`_)*
+    (#PCDATA | `%inline.elements`_;)*
 
-The ``%text.model;`` parameter entity is directly employed in the content
+The ``%text.model`` parameter entity is directly employed in the content
 models of the following elements: `\<abbreviation>`_,
 `\<acronym>`_, `\<address>`_, `\<attribution>`_, `\<author>`_,
 `\<caption>`_, `\<classifier>`_, `\<contact>`_, `\<copyright>`_,
