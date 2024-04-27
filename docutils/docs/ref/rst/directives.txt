@@ -805,8 +805,8 @@ Container
 :Directive Content: Interpreted as body elements.
 
 The "container" directive surrounds its contents (arbitrary body
-elements) with a generic block-level "container" element.  Combined
-with the optional `classes attribute`_ argument(s), this is an
+elements) with a generic block-level "container" element.  
+Combined with the optional argument, this is an
 extension mechanism for users & applications.  For example::
 
     .. container:: custom

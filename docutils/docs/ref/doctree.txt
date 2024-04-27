@@ -891,7 +891,64 @@ See `\<table>`_.
 <compound>
 ==========
 
-`To be completed`_.
+The <compound> element combines multiple `body elements`_
+to a single logical paragraph.
+
+Details
+-------
+
+:Category:   `Body Elements`_
+
+:Analogues:  The <compound> element has no direct analogues in common DTDs.
+             In HTML, it can be emulated with <div> and CSS styling. [#]_
+
+:Processing: Typically rendered as multiple distinct text blocks, with
+             the possibility of variations to emphasize their logical
+             unity (cf. the `"compound" directive`_).
+
+:Parents:    All elements employing the `%body.elements`_
+             or `%structure.model`_ parameter entities in
+             their content models may contain <compound>.
+
+:Children:   <compound> elements contain one or more `body elements`_.
+
+:Attributes: The <compound> element contains only the `common attributes`_.
+
+:Parameter Entities: The `%body.elements`_ parameter entity directly
+             includes <compound>.  The `%structure.model`_
+             parameter entity indirectly includes <compound>.
+
+
+.. [#] The Docutils counterpart to HTML’s <div> is the `\<container>`_ element.
+
+Examples
+--------
+
+The reStructuredText `"compound" directive`_ creates a
+<compound> element::
+
+    .. compound::
+
+       The 'rm' command is very dangerous.  If you are logged
+       in as root and enter ::
+
+           cd /
+           rm -rf *
+
+       you will erase the entire contents of your file system.
+
+
+Pseudo-XML_ fragment from simple parsing::
+
+    <compound>
+        <paragraph>
+            The 'rm' command is very dangerous.  If you are logged
+            in as root and enter
+        <literal_block xml:space="preserve">
+            cd /
+            rm -rf *
+        <paragraph>
+            you will erase the entire contents of your file system.
 
 
 <contact>
@@ -944,7 +1001,58 @@ context.
 <container>
 ===========
 
-`To be completed`_.
+The <container> element groups multiple `body elements`_ for user- or
+application-specific purposes.
+
+Details
+-------
+
+:Category:   `Body Elements`_
+
+:Analogues:  The <container> element is analogous to the HTML <div>
+             element or the SVG <g> element.
+
+:Processing: A possible use case is a custom style (e.g. a frame or
+             background colour) based on the value of the classes_
+             attribute.
+
+:Parents:    All elements employing the `%body.elements`_
+             or `%structure.model`_ parameter entities in
+             their content models may contain <container>.
+
+:Children:   <container> elements contain one or more `body elements`_.
+
+:Attributes: The <container> element contains only the `common attributes`_.
+
+:Parameter Entities:
+             The `%body.elements`_ parameter entity directly
+             includes <container>.  The `%structure.model`_
+             parameter entity indirectly includes <container>.
+
+Examples
+--------
+
+The reStructuredText `"container" directive`_ creates a
+<container> element::
+
+    .. container:: green boxed-equation
+
+       .. math:: -1^2 = 1
+
+       This paragraph is in the box, too.
+
+Pseudo-XML_ fragment from simple parsing::
+
+    <container classes="framed square">
+        <math_block xml:space="preserve">
+            -1^2 = 1
+        <paragraph>
+            This paragraph is in the box, too.
+
+The HTML output can be placed in a common box with the custom CSS rule ::
+
+    div.framed {border: solid;
+             padding: 1em;}
 
 
 <copyright>
@@ -4828,6 +4936,7 @@ models of the following elements: `\<abbreviation>`_,
 .. _class option:               rst/directives.html#class-option
 .. _"code" directive:           rst/directives.html#code
 .. _"compound" directive:       rst/directives.html#compound-paragraph
+.. _"container" directive:      rst/directives.html#container
 .. _"contents" directive:
 .. _table of contents:          rst/directives.html#table-of-contents
 .. _"csv-table":                rst/directives.html#csv-table
