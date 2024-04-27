@@ -25,214 +25,247 @@ relationships.
 
 The reader is assumed to have some familiarity with XML_ or SGML,
 and an understanding of the data structure meaning of "tree".
-For a list of introductory articles, see `Introducing the Extensible
-Markup Language (XML)`_.
+For a list of introductory articles, see, e.g.,
+`Introducing the Extensible Markup Language (XML)`_.
 
-Docutils implements the Document tree data structure as a Python class
-library.  Details can be found in the API documentation ("docstrings")
-of the docutils.nodes_ module.
+Docutils implements the Document tree data structure in the Python_
+module docutils.nodes_.  For details, see its internal API documentation
+("docstrings").
 
 The reStructuredText_ markup language is used for illustrative examples
 throughout this document.  For a gentle introduction, see `A
 ReStructuredText Primer`_.  For complete technical details, see the
 `reStructuredText Markup Specification`_.
 
-.. _XML: https://en.wikipedia.org/wiki/XML
-.. _Docutils: https://docutils.sourceforge.io/
-.. _Docutils Generic DTD:
-.. _Docutils DTD:
-.. _docutils.dtd: docutils.dtd
-.. _Introducing the Extensible Markup Language (XML):
-    http://xml.coverpages.org/xmlIntro.html
-.. _docutils.nodes: https://docutils.sourceforge.io/docutils/nodes.py
-.. _reStructuredText: https://docutils.sourceforge.io/rst.html
-.. _A ReStructuredText Primer: ../user/rst/quickstart.html
-
 
 -------------------
  Element Hierarchy
 -------------------
 
+The Docutils document model uses strict element content models.
+
+Below is a *simplified* diagram of the hierarchy of elements in the
+Docutils document tree structure.  An element may contain any other
+elements immediately below it in the diagram (ignoring empty blocks).
+Element types in square brackets indicate recursive or one-to-many
+relationships: structural elements (sections) may contain sub-sections,
+some body elements may contain other body elements, etc.
+The `element reference`_ details valid parents and children
+for each element.
+
+.. table::
+   :width: 65%
+   :widths: 1 2 1 1
+   :align: center
+
+   +------------------------------------------+
+   | `root element`_ (`\<document>`_)         |
+   +---+------------------------------+---+---+
+   | [`structural elements`_]         |   |   |
+   +---+------------------------------+---+   +
+   |   | [`structural subelements`_]      |   |
+   +---+----------------------------------+---+
+   | [`body elements`_]                       |
+   +---+------------------------------+---+---+
+   | [`body subelements`_]            |   |   |
+   +---+------------------------------+---+   +
+   |   | [`inline elements`_]             |   |
+   +---+----------------------------------+---+
+   | text                                     |
+   +------------------------------------------+
+
+Every element has a unique structure and semantics, but elements may be
+classified into general categories according to their place and role in
+the document. Some elements belong to more than one category.
+
 .. contents:: :local:
 
-Below is a simplified diagram of the hierarchy of elements in the
-Docutils document tree structure.  An element may contain any other
-elements immediately below it in the diagram.  Notes are written in
-square brackets.  Element types in parentheses indicate recursive or
-one-to-many relationships; sections may contain (sub)sections, tables
-contain further body elements, etc. ::
 
-  +--------------------------------------------------------------------+
-  | document  [may begin with a title, subtitle, decoration, docinfo]  |
-  |                             +--------------------------------------+
-  |                             | sections  [each begins with a title] |
-  +-----------------------------+-------------------------+------------+
-  | [body elements:]                                      | (sections) |
-  |         | - literal | - lists  |       | - hyperlink  +------------+
-  |         |   blocks  | - tables |       |   targets    |
-  | para-   | - doctest | - block  | foot- | - sub. defs  |
-  | graphs  |   blocks  |   quotes | notes | - comments   |
-  +---------+-----------+----------+-------+--------------+
-  | [text]+ | [text]    | (body elements)  | [text]       |
-  | (inline +-----------+------------------+--------------+
-  | markup) |
-  +---------+
+Alternatively, we may classify elements by their valid content:
 
-The Docutils document model uses a simple, recursive model for section
-structure.  A `\<document>`_ node may contain body elements and
-`\<section>`_ elements.
-Sections in turn may contain body elements and sections.
-The level (depth) of a section element is determined from its physical
-nesting level; unlike other document models (``<h1>`` in HTML_,
-``<sect1>`` in DocBook_, ``<div1>`` in XMLSpec_) the level is not
-incorporated into the element name.
+.. class:: description
 
-The Docutils document model uses strict element content models.  Every
-element has a unique structure and semantics, but elements may be
-classified into general categories (below).  Only elements which are
-meant to directly contain text data have a mixed content model, where
-text data and inline elements may be intermixed.  This is unlike the
-much looser HTML_ document model, where paragraphs and text data may
-occur at the same level.
+_`Compound elements`
+  | may contain child elements but no text data.
+  | Examples: `\<bullet_list>`_, `\<footnote>`_, `\<table>`_
 
-.. _HTML: https://www.w3.org/TR/html52/
-.. _XMLSpec: https://www.w3.org/XML/1998/06/xmlspec-report.htm
-.. _DocBook: https://tdg.docbook.org/tdg/5.1/
-.. _DocBook <caution>: https://tdg.docbook.org/tdg/5.1/caution.html
-.. _DocBook <footnote>: https://tdg.docbook.org/tdg/5.1/footnote.html
-.. _DocBook <footnoteref>: https://tdg.docbook.org/tdg/5.1/footnoteref.html
-.. _DocBook <imagedata>: https://tdg.docbook.org/tdg/5.1/imagedata
-.. _DocBook <important>: https://tdg.docbook.org/tdg/5.1/important.html
-.. _DocBook <note>: https://tdg.docbook.org/tdg/5.1/note.html
-.. _DocBook <tip>: https://tdg.docbook.org/tdg/5.1/tip.html
-.. _DocBook <warning>: https://tdg.docbook.org/tdg/5.1/warning.html
+_`Simple elements`
+  | may contain text data.
+  | Most simple elements have a mixed content model (`%text.model;`_).
+    However, only `inline elements`_ may be intermixed with text. [#]_
+  | Examples: `\<paragraph>`_ (mixed), `\<literal_block>`_ (text-only)
+
+_`Empty elements`
+  | contain neither child elements nor text.
+  | Examples: `\<image>`_, `\<transition>`_, `\<pending>`_
+
+.. [#] This is unlike the much looser HTML_ document model,
+   where paragraphs and text data may occur at the same level.
+
+
+Element Categories
+==================
+
+Root Element
+------------
+
+Every Docutils document contains exactly one root element.
+The root element has no parent. It may contain `structural elements`_,
+all `structural subelements`_, and `body elements`_.
+It does not directly contain text.
+
+.. class:: field-indent-11em
+
+:Category members: `\<document>`_
+:Docutils class:   ``nodes.Root``
 
 
 Structural Elements
-===================
+-------------------
 
-Structural elements may only contain child elements; they do not
-directly contain text data.  Structural elements may contain body
-elements or further structural elements.  Structural elements can only
-be child elements of other structural elements.
+Structural elements group other elements to provide a document structure.
+They are child elements of the `root element`_ or other structural
+elements. Structural elements may contain specific structural elements,
+`structural subelements`_, or `body elements`_.
 
-Category members: `\<document>`_, `\<section>`_, `\<topic>`_, `\<sidebar>`_
+.. class:: field-indent-11em
+
+:Category members: `\<section>`_, `\<sidebar>`_, `\<topic>`_
+:Docutils class:   ``nodes.Structural``
 
 
 Structural Subelements
 ----------------------
 
-Structural subelements are child elements of structural elements.
-Simple structural subelements (`\<title>`_, `\<subtitle>`_) contain text
-data; the others are compound elements and do not directly contain text
-data.
+Structural subelements are child elements of the `root element`_ or
+specific `structural elements`_.  [#]_  Their content model varies
+(see the respective element reference section for details).
 
-Category members: `\<title>`_, `\<subtitle>`_, `\<decoration>`_,
-`\<docinfo>`_, `\<meta>`_, `\<transition>`_
+.. class:: narrow run-in
+
+:Category members:
+  .. class:: narrow run-in
+
+  :empty: `\<meta>`_, `\<transition>`_
+  :simple: `\<title>`_, `\<subtitle>`_
+  :compound: `\<decoration>`_, `\<docinfo>`_
+
+:Docutils classes: ``nodes.SubStructural``, ``nodes.SubRoot``
+
+.. [#] `\<title>`_ is also a valid child of the generic `\<admonition>`_.
+
+Decorative Elements
+-------------------
+
+Decorative elements are used to generate page headers and footers. They
+are child elements of `\<decoration>`_ and contain `body elements`_.
+
+.. class:: field-indent-11em
+
+:Category members: `\<footer>`_, `\<header>`_
+:Docutils class:   ``nodes.Decorative``
 
 
 Bibliographic Elements
-``````````````````````
-
-The `\<docinfo>`_ element is an optional child of `\<document>`_.
-It groups bibliographic elements together.  All bibliographic elements
-except `\<authors>`_ and `\<field>`_ contain text data.  `\<authors>`_
-contains further bibliographic elements (most notably `\<author>`_).
-`\<field>`_ contains `\<field_name>`_ and `\<field_body>`_ body
-subelements.
-
-Category members: `\<address>`_, `\<author>`_, `\<authors>`_,
-`\<contact>`_, `\<copyright>`_, `\<date>`_, `\<field>`_,
-`\<organization>`_, `\<revision>`_, `\<status>`_, `\<version>`_
-
-Parameter entitry: `%bibliographic.elements;`_
-
-Decorative Elements
-```````````````````
-
-The `\<decoration>`_ element is also an optional child of `\<document>`_.
-It groups together elements used to generate page headers and footers.
-
-Category members: `\<footer>`_, `\<header>`_
-
-
-Body Elements
-=============
-
-Body elements are contained within structural elements and compound
-body elements.  There are two subcategories of body elements: simple__
-and compound__.
-
-Parameter entitry: `%body.elements;`_
-
-__ `simple body elements`_
-__ `compound body elements`_
-
-
-Simple Body Elements
---------------------
-
-Simple body elements are empty or directly contain text data.  Those
-that contain text data may also contain `inline elements`_.  Such
-elements therefore have a "mixed content model".
-
-Category members: `\<comment>`_, `\<doctest_block>`_, `\<image>`_,
-`\<literal_block>`_, `\<math_block>`_, `\<paragraph>`_, `\<pending>`_,
-`\<raw>`_, `\<reference>`_, `\<rubric>`_, `\<substitution_definition>`_,
-`\<target>`_
-
-
-Compound Body Elements
 ----------------------
 
-Compound body elements contain local substructure (`body subelements`_)
-and further body elements.  They do not directly contain text data.
+Bibliographic elements store document meta-data like title or author.
+They are child elements of `\<docinfo>`_.
+The elements `\<authors>`_ and `\<field>`_ are `compound elements`_,
+the others are `simple elements`_ containing text and `inline elements`_.
 
-Category members: `\<admonition>`_, `\<attention>`_, `\<block_quote>`_,
-`\<bullet_list>`_, `\<caution>`_, `\<citation>`_, `\<compound>`_,
-`\<container>`_, `\<danger>`_, `\<definition_list>`_,
-`\<enumerated_list>`_, `\<error>`_, `\<field_list>`_, `\<figure>`_,
-`\<footnote>`_, `\<hint>`_, `\<important>`_, `\<line_block>`_,
-`\<note>`_, `\<option_list>`_, `\<system_message>`_, `\<table>`_,
-`\<tip>`_, `\<warning>`_
+.. class:: field-indent-11em
+
+:Category members: `\<address>`_, `\<author>`_, `\<authors>`_,
+                   `\<contact>`_, `\<copyright>`_, `\<date>`_,
+                   `\<field>`_, `\<organization>`_, `\<revision>`_,
+                   `\<status>`_, `\<version>`_
+:Parameter entity: `%bibliographic.elements;`_
+:Docutils class:   ``nodes.Bibliographic``
+
+
+.. _simple body elements:
+.. _compound body elements:
+
+Body Elements
+-------------
+
+Body elements are children of the `root element`, `structural elements`_,
+or compound body elements. Compound body elements may contain `body
+subelements`_ or further body elements.
+
+.. class:: narrow run-in
+
+:Category members:
+  .. class:: narrow run-in
+
+  :empty:
+    `\<image>`_ , `\<pending>`_
+  :simple:
+    `\<comment>`_, `\<doctest_block>`_, `\<literal_block>`_, `\<math_block>`_,
+    `\<paragraph>`_, `\<raw>`_, `\<reference>`_, `\<rubric>`_,
+    `\<substitution_definition>`_, `\<target>`_
+  :compound:
+    `\<admonition>`_, `\<attention>`_, `\<block_quote>`_, `\<bullet_list>`_,
+    `\<caution>`_, `\<citation>`_, `\<compound>`_, `\<container>`_,
+    `\<danger>`_, `\<definition_list>`_, `\<enumerated_list>`_, `\<error>`_,
+    `\<field_list>`_, `\<figure>`_, `\<footnote>`_, `\<hint>`_,
+    `\<important>`_, `\<line_block>`_, `\<note>`_, `\<option_list>`_,
+    `\<system_message>`_, `\<table>`_, `\<tip>`_, `\<warning>`_
+
+:Parameter entity: `%body.elements;`_
+
+:Docutils class: ``nodes.Body``
 
 
 Body Subelements
-````````````````
+----------------
 
-Compound body elements contain specific subelements (e.g. `\<bullet_list>`_
-contains `\<list_item>`_).  Subelements may themselves be compound elements
-(containing further child elements, like `\<field>`_) or simple data
-elements (containing text data, like `\<field_name>`_).  Body subelements
-always occur within specific parent elements, never at the body
-element level (beside paragraphs, etc.).
+Body subelements always occur within specific parent elements
+(e.g. `\<bullet_list>`_ contains `\<list_item>`_), never at the
+body element level (beside paragraphs, etc.).
+Body subelements may be `compound elements`_ (containing `body elements`_ or
+further body subelements) or `simple elements`_.
 
-Category members (simple): `\<attribution>`_, `\<caption>`_,
-`\<classifier>`_, `\<colspec>`_, `\<field_name>`_, `\<label>`_,
-`\<line>`_, `\<option_argument>`_, `\<option_string>`_, `\<term>`_
+.. class:: narrow run-in
 
-Category members (compound): `\<definition>`_,
-`\<definition_list_item>`_, `\<description>`_, `\<entry>`_, `\<field>`_,
-`\<field_body>`_, `\<legend>`_, `\<list_item>`_, `\<option>`_,
-`\<option_group>`_, `\<option_list_item>`_, `\<row>`_, `\<tbody>`_,
-`\<tgroup>`_, `\<thead>`_
+:Category members:
+  .. class:: narrow run-in
+
+  :simple:
+    `\<attribution>`_, `\<caption>`_, `\<classifier>`_, `\<colspec>`_,
+    `\<field_name>`_, `\<label>`_, `\<line>`_,
+    `\<option_argument>`_, `\<option_string>`_, `\<term>`_
+  :compound:
+    `\<definition>`_, `\<definition_list_item>`_, `\<description>`_,
+    `\<entry>`_, `\<field>`_, `\<field_body>`_,
+    `\<legend>`_, `\<list_item>`_,
+    `\<option>`_, `\<option_group>`_, `\<option_list_item>`_,
+    `\<row>`_, `\<tbody>`_, `\<tgroup>`_, `\<thead>`_
+
+:Docutils class: ``nodes.Part``
+
 
 
 Inline Elements
-===============
+---------------
 
-Inline elements directly contain text data, and may also contain
-further inline elements.  Inline elements are contained within simple
-body elements.  Most inline elements have a "mixed content model".
+Inline elements are contained within simple `body elements`_ or other
+inline elements.
+Inline elements are `simple elements`_: All inline elements may contain
+text data, most inline elements may also contain further inline elements.
 
-Category members: `\<abbreviation>`_, `\<acronym>`_,
-`\<citation_reference>`_, `\<emphasis>`_, `\<footnote_reference>`_,
-`\<generated>`_, `\<image>`_, `\<inline>`_, `\<literal>`_,
-`\<math>`_, `\<problematic>`_, `\<raw>`_, `\<reference>`_,
-`\<strong>`_, `\<subscript>`_, `\<substitution_reference>`_,
-`\<superscript>`_, `\<target>`_, `\<title_reference>`_
+.. class:: narrow run-in
 
-Parameter entitry: `%inline.elements;`_
+:Category members:
+  `\<abbreviation>`_, `\<acronym>`_, `\<citation_reference>`_, `\<emphasis>`_,
+  `\<footnote_reference>`_, `\<generated>`_, `\<image>`_, `\<inline>`_,
+  `\<literal>`_, `\<math>`_, `\<problematic>`_, `\<raw>`_, `\<reference>`_,
+  `\<strong>`_, `\<subscript>`_, `\<substitution_reference>`_,
+  `\<superscript>`_, `\<target>`_, `\<title_reference>`_
+
+:Parameter entity: `%inline.elements;`_
+:Docutils class: ``nodes.Inline``
 
 
 -------------------
@@ -553,7 +586,7 @@ Details
 -------
 
 :Category:   `Bibliographic Elements`_
-:Analogues:  <authors> is analogous to the DocBook_ <authors> element.
+:Analogues:  <authors> is analogous to the DocBook_ <authorgroup> element.
 :Processing: See `\<docinfo>`_.
 :Parents:    Only the `\<docinfo>`_ element contains <authors>.
 :Children:   <authors> elements may contain the following elements:
@@ -1408,19 +1441,20 @@ tree.  It is the starting point for a document.
 Details
 -------
 
-:Category:   `Structural Elements`_
+:Category:   `Root Element`_
 
 :Analogues:  <document> is analogous to the HTML <html> element and to
              several DocBook_ elements such as <book>.
 
 :Parents:    The <document> element has no parents.
 
-:Children:   <document> elements may contain `structural subelements`_,
-             `structural elements`_, and `body elements`_
+:Children:   <document> elements may contain `structural elements`_,
+             `structural subelements`_, and `body elements`_
 
              .. parsed-literal::
 
                ( (title, subtitle?)?,
+                 meta*,
                  decoration?,
                  (docinfo, transition?)?,
                  `%structure.model;`_ )
@@ -2989,9 +3023,14 @@ document's structure.
 <section>
 =========
 
-The <section> element is the main unit of hierarchy for Docutils
-documents.  Docutils <section> elements are a recursive structure;
-a <section> may contain other <section> elements, without limit.
+The <section> element is the main unit of hierarchy for Docutils documents.
+
+The Docutils document model uses a simple, recursive model for section
+structure.  A `\<document>`_ node may contain <section> elements.
+Sections in turn may contain other <section> elements, without limit.
+The level (depth) of a section element is determined from its physical
+nesting level.
+
 Paragraphs and other body elements may occur before a <section>,
 but not after it.
 
@@ -3000,20 +3039,21 @@ Details
 
 :Category:   `Structural Elements`_
 
-:Analogues:  <section> is analogous to the recursive <section> elements
-             in DocBook_ and HTML.
+:Analogues:  <section> is analogous to the section elements in DocBook and
+             HTML. Unlike ``<h1>`` … ``<h6>`` in HTML_, ``<sect1>`` …
+             ``<sect5>`` in DocBook_, or ``<div1>`` … in XMLSpec_, the
+             level is not incorporated into the element name.
 
 :Parents:    The following elements may contain <section>:
              `\<document>`_, `\<section>`_
 
 :Children:   <section> elements begin with a `\<title>`_, and optional
              `\<subtitle>`_. They may contain `body elements`_ as well as
-             `\<transition>`_, `\<topic>`_, and `\<sidebar>`_ elements::
+             `\<transition>`_, `\<topic>`_, and `\<sidebar>`_ elements:
 
-                (title, subtitle?, %structure.model;)
+             .. parsed-literal::
 
-             See the `%structure.model;`_ parameter entity for details of
-             the body of a <section>.
+                (title, subtitle?, `%structure.model;`_)
 
 :Attributes: The <section> element contains only the `common attributes`_.
 
@@ -3444,12 +3484,11 @@ Pseudo-XML_ fragment from simple parsing::
 <title>
 =======
 
-The <title> element stores the title of a `\<document>`_ [#]_,
-`\<section>`_, `\<sidebar>`_, `\<topic>`_, or generic
-`\<admonition>`_.
+The <title> element stores the title of a `\<document>`_, `structural
+elements`_, or a generic `\<admonition>`_.
 
-.. [#] The title of a <document> may differ from its *metadata title*
-   stored in the `title attribute`_.
+The title of a <document> may differ from its *metadata title*
+stored in the `title attribute`_.
 
 Details
 -------
@@ -3507,7 +3546,7 @@ and `\<topic>`_.
 <topic>
 =======
 
-The <topic> element is a non-recursive <section>-like construct which may
+The <topic> element is a non-recursive section-like construct which may
 occur at the top level of a `\<document>`_, `\<section>`_, or `\<sidebar>`_
 wherever a body element (list, table, etc.) is allowed.  In other words,
 <topic> elements cannot nest inside body elements. You may use a
@@ -4680,7 +4719,7 @@ content models of the `\<document>`_ and `\<section>`_ elements.
 ``%text.model;``
 ----------------
 
-The ``%text.model;`` parameter entity is used by many elements to
+The ``%text.model;`` parameter entity is used by `simple elements`_ to
 represent text data mixed with `inline elements`_.
 
 Entity definition:
@@ -4696,7 +4735,7 @@ models of the following elements: `\<abbreviation>`_,
 `\<date>`_, `\<doctest_block>`_, `\<emphasis>`_, `\<field_name>`_,
 `\<generated>`_, `\<inline>`_, `\<line>`_, `\<literal>`_,  `\<literal_block>`_,
 `\<organization>`_, `\<paragraph>`_, `\<problematic>`_,
-`\<raw>`_, `\<reference>`_, `\<revision>`_, `\<rubric>`_,
+`\<reference>`_, `\<revision>`_, `\<rubric>`_,
 `\<status>`_, `\<strong>`_, `\<subscript>`_, `\<substitution_definition>`_,
 `\<substitution_reference>`_, `\<subtitle>`_, `\<superscript>`_,
 `\<target>`_, `\<term>`_, `\<title>`_, `\<title_reference>`_, `\<version>`_
@@ -4704,6 +4743,35 @@ models of the following elements: `\<abbreviation>`_,
 
 .. References
    ==========
+
+.. _DocBook: https://tdg.docbook.org/tdg/5.1/.
+.. _DocBook <caution>: https://tdg.docbook.org/tdg/5.1/caution.html
+.. _DocBook <footnote>: https://tdg.docbook.org/tdg/5.1/footnote.html
+.. _DocBook <footnoteref>: https://tdg.docbook.org/tdg/5.1/footnoteref.html
+.. _DocBook <imagedata>: https://tdg.docbook.org/tdg/5.1/imagedata
+.. _DocBook <important>: https://tdg.docbook.org/tdg/5.1/important.html
+.. _DocBook <note>: https://tdg.docbook.org/tdg/5.1/note.html
+.. _DocBook <tip>: https://tdg.docbook.org/tdg/5.1/tip.html
+.. _DocBook <warning>: https://tdg.docbook.org/tdg/5.1/warning.html
+
+.. _HTML: https://html.spec.whatwg.org/multipage/.
+
+.. _Python: https://www.python.org/
+
+.. _XML: https://developer.mozilla.org/en-US/docs/Web/XML/XML_introduction
+.. _Introducing the Extensible Markup Language (XML):
+    http://xml.coverpages.org/xmlIntro.html
+.. _XMLSpec: https://www.w3.org/XML/1998/06/xmlspec-report.htm
+
+
+.. _Docutils: https://docutils.sourceforge.io/.
+.. _reStructuredText: https://docutils.sourceforge.io/rst.html
+
+.. _docutils.nodes: https://docutils.sourceforge.io/docutils/nodes.py
+
+.. _Docutils Generic DTD:
+.. _Docutils DTD:
+.. _docutils.dtd: docutils.dtd
 
 .. _auto_id_prefix: ../user/config.html#auto-id-prefix
 .. _datestamp:      ../user/config.html#datestamp
@@ -4716,6 +4784,7 @@ models of the following elements: `\<abbreviation>`_,
 .. _DocInfo transform:  ../api/transforms.html#docinfo
 .. _DocTitle transform: ../api/transforms.html#frontmatter-doctitle
 
+.. _A ReStructuredText Primer: ../user/rst/quickstart.html
 .. _reStructuredText Markup Specification: rst/restructuredtext.html
 .. _bibliographic data:
 .. _bibliographic fields:   rst/restructuredtext.html#bibliographic-fields
@@ -4757,6 +4826,7 @@ models of the following elements: `\<abbreviation>`_,
 .. _"class" directive:          rst/directives.html#class
 .. _class option:               rst/directives.html#class-option
 .. _"code" directive:           rst/directives.html#code
+.. _"compound" directive:       rst/directives.html#compound-paragraph
 .. _"contents" directive:
 .. _table of contents:          rst/directives.html#table-of-contents
 .. _"csv-table":                rst/directives.html#csv-table
