@@ -341,15 +341,20 @@ its writing.
 <abbreviation>
 ==============
 
-The <abbreviation> element is an inline element used to represent an
-abbreviation being used in the document.
-An example of an abbreviation is 'St' being used instead of 'Street'.
+The <abbreviation> element is an inline element representing an
+*abbreviation*, a shortened or contracted form of a word or phrase
+used to represent the whole.
 
 Details
 -------
 
 :Category:   `Inline Elements`_
-:Analogues:  <abbreviation> is analogous to the HTML <abbr> element.
+:Analogues:  <abbreviation> is analogous to the DocBook_ <abbrev> element
+             and similar to the HTML_ <abbr> element.
+             (In HTML 5, the <abbr> element is also used for acronyms.)
+:Processing: May be used to semantically mark the presence of an
+             abbreviation in the text for styling or scripting purposes.
+             Writers may ignore the element and just render its contents.
 :Parents:    All elements employing the `%inline.elements`_ parameter
              entity in their content models may contain <abbreviation>.
 :Children:   <abbreviation> elements may contain text data
@@ -359,7 +364,7 @@ Details
 Examples
 --------
 
-The reStructuredText `abbreviation role`_ creates an <abbreviation> element::
+The reStructuredText `"abbreviation" role`_ creates an <abbreviation> element::
 
     :abbreviation:`St` is a common abbreviation for "street".
 
@@ -370,13 +375,42 @@ Pseudo-XML_ fragment from simple parsing::
             St
         is a common abbreviation for "street".
 
-.. _abbreviation role: rst/roles.html#abbreviation
-
 
 <acronym>
 =========
 
-`To be completed`_.
+The <acronym> element is an inline element used to represent an
+*acronym* (abbreviation formed by the initial letters of other words).
+
+Details
+-------
+
+:Category:   `Inline Elements`_
+:Analogues:  <acronym> is analogous to the DocBook_ <acronym> element.
+             In HTML_, the <abbr> element is used for both,
+             abbreviations and acronyms.
+:Processing: May be used to semantically mark the presence of an
+             acronym in the text for styling or scripting purposes.
+             Writers may ignore the element and just render its contents.
+:Parents:    All elements employing the `%inline.elements`_ parameter
+             entity in their content models may contain <acronym>.
+:Children:   <acronym> elements may contain text data
+             plus `inline elements`_ (`%text.model`_).
+:Attributes: The <acronym> element contains only the `common attributes`_.
+
+Examples
+--------
+
+The reStructuredText `"acronym" role`_ creates an <acronym> element::
+
+    `WWW`:acronym: is the acronym for the world wide web.
+
+Pseudo-XML_ fragment from simple parsing::
+
+    <paragraph>
+        <acronym>
+            WWW
+        is the acronym for the world wide web.
 
 
 <address>
@@ -1012,9 +1046,9 @@ Details
 :Analogues:  The <container> element is analogous to the HTML <div>
              element or the SVG <g> element.
 
-:Processing: A possible use case is a custom style (e.g. a frame or
-             background colour) based on the value of the classes_
-             attribute.
+:Processing: Can be used for styling or scripting purposes.
+             An example is a frame or background colour) based
+             on the value of the classes_ attribute.
 
 :Parents:    All elements employing the `%body.elements`_
              or `%structure.model`_ parameter entities in
@@ -1620,7 +1654,39 @@ document title::
 <emphasis>
 ==========
 
-`To be completed`_.
+The <emphasis> element is an inline element representing
+text that has *stress emphasis*.
+
+Details
+-------
+
+:Category:   `Inline Elements`_
+:Analogues:  <emphasis> is analogous to the HTML_ <em> element
+             and the DocBook_ <emphasis> element.
+:Processing: Typically displayed in italic type.
+:Parents:    All elements employing the `%inline.elements`_ parameter
+             entity in their content models may contain <emphasis>.
+:Children:   <emphasis> elements may contain text data
+             plus `inline elements`_ (`%text.model`_).
+:Attributes: The <emphasis> element contains only the `common attributes`_.
+
+Examples
+--------
+
+The reStructuredText there are two `emphasis markup`_ alternatives::
+
+    There are :emphasis:`two` ways to *emphasize* text.
+
+Pseudo-XML_ fragment from simple parsing::
+
+    <paragraph>
+        There are
+        <emphasis>
+            two
+         ways to
+        <emphasis>
+            emphasize
+         text.
 
 
 <entry>
@@ -2039,7 +2105,7 @@ Details
              to provide a link to the corresponding footnote.
 :Processing: A <footnote_reference> should generate a mark matching the
              `\<label>`_ of the referenced footnote. The mark is
-             typically formatted as superscript or enclosed i square
+             typically formatted as superscript or enclosed in square
              brackets.
 :Parents:    All elements employing the `%inline.elements`_
              parameter entities in their content models may contain
@@ -2280,8 +2346,8 @@ Details
              stylesheet_. They may also process the classes_ attribute
              and convert the <inline> element to a specific element or
              render the content distinctly for specific class values.
-             Moreover, writers may ignore the classes attribute and
-             render the content as ordinary text.
+             Moreover, writers may ignore the element and just render
+             the content.
 :Parents:    All elements employing the `%inline.elements`_ parameter
              entities in their content models may contain <inline>.
 :Children:   <inline> elements may contain text data
@@ -3332,13 +3398,74 @@ context.
 <strong>
 ========
 
-`To be completed`_.
+The <strong> element is an inline element representing
+text that has strong importance, seriousness, or urgency.
+
+Details
+-------
+
+:Category:   `Inline Elements`_
+:Analogues:  <strong> is analogous to the HTML_ <strong> element.
+:Processing: Typically displayed in boldface.
+:Parents:    All elements employing the `%inline.elements`_ parameter
+             entity in their content models may contain <strong>.
+:Children:   <strong> elements may contain text data
+             plus `inline elements`_ (`%text.model`_).
+:Attributes: The <strong> element contains only the `common attributes`_.
+
+Examples
+--------
+
+The reStructuredText there are two alternatives to mark text with
+`strong emphasis`_::
+
+    There are :strong:`two` ways to **strongly emphasize** text.
+
+Pseudo-XML_ fragment from simple parsing::
+
+    <paragraph>
+        There are
+        <strong>
+            two
+         ways to
+        <strong>
+            strongly emphasize
+         text.
 
 
 <subscript>
 ===========
 
-`To be completed`_.
+The <subscript> element is an inline element representing text which
+should be displayed as subscript.
+
+Details
+-------
+
+:Category:   `Inline Elements`_
+:Analogues:  <subscript> is analogous to the HTML_ <sub> element
+             and the DocBook_ <subscript> element.
+:Processing: Typically rendered with a lowered baseline using smaller text.
+:Parents:    All elements employing the `%inline.elements`_ parameter
+             entity in their content models may contain <subscript>.
+:Children:   <subscript> elements may contain text data
+             plus `inline elements`_ (`%text.model`_).
+:Attributes: The <subscript> element contains only the `common attributes`_.
+
+Examples
+--------
+
+The reStructuredText `"subscript" role`_ creates a <subscript> element::
+
+    The chemical formula for water is H\ :sub:`2`\ O.
+
+Pseudo-XML_ fragment from simple parsing::
+
+    <paragraph>
+        The chemical formula for water is H
+        <subscript>
+            2
+        O.
 
 
 <substitution_definition>
@@ -3415,7 +3542,36 @@ attributes are stored in the <subtitle> element.
 <superscript>
 =============
 
-`To be completed`_.
+The <superscript> element is an inline element representing text which
+should be displayed as superscript.
+
+Details
+-------
+
+:Category:   `Inline Elements`_
+:Analogues:  <superscript> is analogous to the HTML_ <sup> element
+             and the DocBook_ <superscript> element.
+:Processing: Typically rendered with a raised baseline using smaller text.
+:Parents:    All elements employing the `%inline.elements`_ parameter
+             entity in their content models may contain <superscript>.
+:Children:   <superscript> elements may contain text data
+             plus `inline elements`_ (`%text.model`_).
+:Attributes: The <superscript> element contains only the `common attributes`_.
+
+Examples
+--------
+
+The reStructuredText `"superscript" role`_ creates a <superscript> element::
+
+    Key events of the 20\ :sup:`th` century.
+
+Pseudo-XML_ fragment from simple parsing::
+
+    <paragraph>
+        Key events of the 20
+        <superscript>
+            th
+         century.
 
 
 <system_message>
@@ -3649,7 +3805,38 @@ and `\<topic>`_.
 <title_reference>
 =================
 
-`To be completed`_.
+The <title_reference> element is an inline element representing
+the titles of a cited creative work.
+
+Details
+-------
+
+:Category:   `Inline Elements`_
+:Analogues:  <title_reference> is analogous to the HTML_ <cite> element
+             and the DocBook_ <citetitle> element.
+:Processing: Typically displayed in italic type.
+:Parents:    All elements employing the `%inline.elements`_ parameter
+             entity in their content models may contain <title_reference>.
+:Children:   <title_reference> elements may contain text data
+             plus `inline elements`_ (`%text.model`_).
+:Attributes: The <title_reference> element contains only the `common attributes`_.
+
+Examples
+--------
+
+The reStructuredText `"title-reference" role`_ creates a <title_reference>
+element::
+
+    The term "spam" is derived from the 1970 :title:`Spam` sketch.
+
+
+Pseudo-XML_ fragment from simple parsing::
+
+    <paragraph>
+        The term “spam” is derived from the 1970
+        <title_reference>
+            Spam
+         sketch.
 
 
 <topic>
@@ -4903,6 +5090,7 @@ models of the following elements: `\<abbreviation>`_,
 .. _definition list:        rst/restructuredtext.html#definition-lists
 .. _directive:              rst/restructuredtext.html#directives
 .. _doctest block:          rst/restructuredtext.html#doctest-blocks
+.. _emphasis markup:        rst/restructuredtext.html#emphasis
 .. _enumerated list:        rst/restructuredtext.html#enumerated-lists
 .. _explicit markup blocks: rst/restructuredtext.html#explicit-markup-blocks
 .. _footnote reference:     rst/restructuredtext.html#footnote-references
@@ -4922,12 +5110,18 @@ models of the following elements: `\<abbreviation>`_,
 .. _rST reference names:    rst/restructuredtext.html#reference-names
 .. _section:                rst/restructuredtext.html#sections
 .. _simple table:           rst/restructuredtext.html#simple-tables
+.. _strong emphasis:        rst/restructuredtext.html#strong-emphasis
 .. _substitution definition:
 .. _substitutions:          rst/restructuredtext.html#substitution-definitions
 .. _transition:             rst/restructuredtext.html#transitions
 
-.. _standard role:          rst/roles.html
-.. _"raw" role:             rst/roles.html#raw
+.. _standard role:              rst/roles.html
+.. _"abbreviation" role:        rst/roles.html#abbreviation
+.. _"acronym" role:             rst/roles.html#acronym
+.. _"raw" role:                 rst/roles.html#raw
+.. _"subscript" role:           rst/roles.html#subscript
+.. _"superscript" role:         rst/roles.html#superscript
+.. _"title-reference" role:     rst/roles.html#title-reference
 
 .. _"admonition" directive:     rst/directives.html#admonition
 .. _"attention" directive:      rst/directives.html#attention
