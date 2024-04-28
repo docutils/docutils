@@ -49,7 +49,7 @@ from docutils import nodes, writers, languages
 try:
     import roman
 except ImportError:
-    import docutils.utils.roman as roman
+    from docutils.utils import roman
 
 FIELD_LIST_INDENT = 7
 DEFINITION_LIST_INDENT = 7
