@@ -59,7 +59,7 @@ LITERAL_BLOCK_INDENT = 3.5
 
 # Define two macros so man/roff can calculate the
 # indent/unindent margins by itself
-MACRO_DEF = (r""".
+MACRO_DEF = r""".
 .nr rst2man-indent-level 0
 .
 .de1 rstReportMargin
@@ -86,7 +86,7 @@ level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .in \\n[rst2man-indent\\n[rst2man-indent-level]]u
 ..
-""")
+"""
 
 
 class Writer(writers.Writer):
