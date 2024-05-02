@@ -880,27 +880,28 @@ Pseudo-XML_ fragment from simple parsing::
 <colspec>
 =========
 
-Specifications for a column in a `\<table>`_.
+The <colspec> element contains specifications for a column in a `\<table>`_.
 
 Details
 -------
 
 :Category:   `Body Subelements`_
-:Analogues:  <colspec> is based on the [exchange-table-model]_
-             and analogous to the DocBook_ <colspec> element.
-:Processing: The <colspec> element contains layout information
-             for the parent `\<table>`_.
+:Analogues:  <colspec> is  defined in the `XML Exchange Table Model DTD`_.
+             [#extblx]_  It is analogous to the DocBook_ <colspec> element.
+             The HTML_ <col> element is related but has different semantics.
+:Processing: See the `Exchange Table Model`_.
 :Parents:    Only the `\<tgroup>`_ element contains <colspec>.
-:Children:   <colspec> is an empty element and has no children.
-:Attributes: The <colspec> element contains the optional "colnum", "colname",
-             "colwidth", colsep_, rowsep_, align_, "char", and
-             "charoff" attributes defined in the exchange-table-model_
-             plus the `common attributes`_ and `stub`_.
-
-             Docutils uses only colwidth_ and stub_.
+:Children:   The <colspec> element has no content.
+:Attributes: <colspec> elements accept the colnum_, colname_,
+             colwidth_, colsep_, rowsep_, align_, char_, and charoff_
+             attributes.  However, of these only colwidth_ is used by
+             Docutils -- currently with a different interpretation
+             (see below).
+             Via the `%tbl.colspec.att`_ parameter entity, <colspec>
+             supports also the `common attributes`_ and `stub`_.
 
              .. attention::
-                In contrast to the definition in the exchange-table-model_,
+                In contrast to the definition in the `Exchange Table Model`_,
                 unitless values of the "colwidth" are interpreted as
                 proportional values, not fixed values with unit "pt".
 
@@ -1692,7 +1693,32 @@ Pseudo-XML_ fragment from simple parsing::
 <entry>
 =======
 
-`To be completed`_.
+The <entry> element represents one cell of a `\<table>`_.
+
+Details
+-------
+
+:Category:   `Body Subelements`_
+:Analogues:  <entry> is defined in the `XML Exchange Table Model DTD`_.
+             [#extblx]_  It is analogous to the DocBook_ <entry> element.
+             HTML_ differentiates between header entries <td>
+             and data entries <td>.
+:Processing: Render content in a table cell.  The morecols_ and morerows_
+             attributes may be used to define an entry spanning several
+             table cells.  See the `Exchange Table Model`_ for details.
+:Parents:    The `\<thead>`_ and `\<tbody>`_ elements contain <entry> elements.
+:Children:   <entry> elements may contain `body elements`_
+             (via the `%tbl.entry.mdl`_ parameter entity).
+:Attributes: The <entry> element accepts the colname_, namest_,
+             nameend_, morerows_, colsep_, rowsep_, align_, char_,
+             charoff_, and valign_ attributes (ignored by Docutils) and
+             (via the `%tbl.entry.att`_ parameter entity)
+             the `common attributes`_ and morecols_.
+
+Examples
+--------
+
+See `\<table>`_.
 
 
 <enumerated_list>
@@ -2245,7 +2271,7 @@ The `reStructuredText Directives` documentation contains a non exhaustive
 Details
 -------
 
-:Category:   `Body Elements`_, `Inline Elements`_
+:Categories: `Body Elements`_, `Inline Elements`_
 :Analogues:  <image> is analogous to the `HTML \<img>`_,
              `DocBook \<imagedata>`_, and `SVG \<image>`_ elements.
 :Processing: The specified image is included into the output document.
@@ -3180,7 +3206,27 @@ context.
 <row>
 =====
 
-`To be completed`_.
+The <row> element represents one row of a `\<table>`_.
+
+Details
+-------
+
+:Category:   `Body Subelements`_
+:Analogues:  <row> is defined in the `XML Exchange Table Model DTD`_.
+             [#extblx]_  It is analogous to the HTML_ <tr> element
+             and the DocBook_ <row> element.
+:Processing: Render content as a table row.
+             See the `Exchange Table Model`_ for details.
+:Parents:    The `\<thead>`_ and `\<tbody>`_ elements contain <row> elements.
+:Children:   A <row> element contains one or more `\<entry>`_ elements.
+:Attributes: The <row> element may contain the rowsep_ and valign_
+             attributes (ignored by Docutils) and (via the
+             `%tbl.row.att`_ parameter entity) the `common attributes`_.
+
+Examples
+--------
+
+See `\<table>`_.
 
 
 <rubric>
@@ -3587,38 +3633,41 @@ Pseudo-XML_ fragment from simple parsing::
 <table>
 =======
 
-The <table> element identifies a data arrangement with rows and columns.
-It is defined in the `XML Exchange Table Model DTD` [tm9901]_. [#]_
-
-.. [#] The interpretation of column widths in `\<colspec>`_ differs from the
-   specification.
+The <table> element represents a data arrangement with rows and columns.
 
 Details
 -------
 
-:Category:   `Compound Body Elements`_
+:Category:   `Body Elements`_
 
-:Analogues:  <table> is analogous to the HTML <table> element and the
-             DocBook_ <table> and <informaltable> elements.
+:Analogues:  <table> is defined in the `XML Exchange Table Model DTD`_.
+             [#extblx]_  It is analogous to the HTML_ and DocBook_
+             <table> elements.
 
-:Processing: Content is rendered in rows and columns.
+:Processing: Content is arranged in rows and columns forming a grid.
+             See the `Exchange Table Model`_ for details.
 
-:Parents:    All elements employing the `%body.elements`_ or
-             `%structure.model`_ parameter entities in their
-             content models may contain <table>.
+:Parents:    `\<document>`_, `\<section>`_ and all `body elements`_
+             may contain <table>.
 
 :Children:   <table> elements begin with an optional `\<title>`_ (caption)
-             and may contain one or more `\<tgroup>`_ elements. ::
+             and may contain one or more `\<tgroup>`_ elements::
 
                (title?, tgroup+)
 
-:Attributes: The <table> element contains the `common attributes`_ plus
-             align_, and width_ as well as the attributes "frame", colsep_,
-             rowsep_, and "pgwide" defined in the exchange-table-model_.
+:Attributes: The <table> element may contain the frame_, colsep_,
+             rowsep_, and pgwide_ attributes (ignored by Docutils)
+             and (via the `%bodyatt`_ parameter entity)
+             the `common attributes`_, align_, and width_.
 
 :Parameter Entities: The `%body.elements`_ parameter entity
              directly includes <table>.  The `%structure.model`_
              parameter entity indirectly includes <table>.
+
+.. [#extblx] The `Docutils Document Model` includes, via the `%calstblx`_
+   parameter entity, the `XML Exchange Table Model DTD`_ to define the
+   table elements `\<colspec>`_, `\<entry>`_, `\<row>`_, `\<table>`_,
+   `\<tbody>`_, `\<tgroup>`_, and `\<thead>`_.
 
 Examples
 --------
@@ -3664,7 +3713,27 @@ Pseudo-XML_ fragment from simple parsing::
 <tbody>
 =======
 
-`To be completed`_.
+The <tbody> element identifies the rows that form the *body*
+of a `\<table>`_ (as distinct from the header rows).
+
+Details
+-------
+
+:Category:   `Body Subelements`_
+:Analogues:  <tbody> is defined in the `XML Exchange Table Model DTD`_.
+             [#extblx]_  It is analogous to the HTML_ <tbody> and
+             the DocBook_ <tbody> (db.cals.tbody) elements.
+:Processing: Render content as table body.
+:Parents:    Only the `\<tgroup>`_ element contains <tbody>.
+:Children:   A <tbody> element contains one or more `\<row>`_ elements.
+:Attributes: The <tbody> element may contain valign_ (ignored by Docutils)
+             and (via the `%tbl.tbody.att`_ parameter entity)
+             the `common attributes`_.
+
+Examples
+--------
+
+See `\<table>`_.
 
 
 <term>
@@ -3694,17 +3763,68 @@ See the examples for the `\<definition_list>`_,
 <tgroup>
 ========
 
-See [exchange-table-model]_. ::
+The <tgroup> element identifies a logically complete portion of a
+`\<table>`_. [#]_
 
-    (colspec*, thead?, tbody)
+Details
+-------
 
-`To be completed`_.
+:Category:   `Body Subelements`_
+:Analogues:  <tgroup> is defined in the `XML Exchange Table Model DTD`_.
+             [#extblx]_  It is analogous to the DocBook_ <tgroup> element.
+             There is no corresponding HTML element, the <colgroup>
+             element has a different semantics.
+:Processing: See the `Exchange Table Model`_.
+:Parents:    Only the `\<table>`_ element contains <tgroup>.
+:Children:   <tgroup> elements contain one or more `\<colspec>`_
+             elements, followed by an optional `\<thead>`_ and a
+             `\<tbody>`_ (cf. the `%tbl.tgroup.mdl`_ parameter entity).
+             The number of <colspec>s, must not exceed the value of the cols_
+             attribute.  Docutils expects one <colspec> per column.
+:Attributes: The <tgroup> element must contain a cols_ attribute and may
+             contain colsep_, rowsep_, and align_ (ignored by Docutils).
+             Via the `%tbl.tgroup.att`_ parameter entity, <tgroup>
+             supports the `common attributes`_.
+
+Examples
+--------
+
+See `\<table>`_.
+
+.. [#] Tables usually consist of a single <tgroup>. Complex tables with
+   widely varying column specifications may be easier to code using
+   multiple <tgroup>s. However, this is not supported by `table markup in
+   reStructuredText <rST tables_>`__ and Docutils table handling routines.
 
 
 <thead>
 =======
 
-`To be completed`_.
+The <thead> element identifies the row(s) that form the head of
+a `\<table>`_ (as distinct from the body rows).
+
+Details
+-------
+
+:Category:   `Body Subelements`_
+:Analogues:  <thead> is defined in the `XML Exchange Table Model DTD`_.
+             [#extblx]_ It is analogous to the HTML_ and DocBook_
+             <thead> elements.
+:Processing: Header rows are always rendered at the beginning of the
+             table and often presented in an alternate typographic style,
+             such as boldface.
+             In paged media, if a table spans across multiple pages,
+             header rows are printed at the top of each new page.
+:Parents:    Only the `\<tgroup>`_ element contains <thead>.
+:Children:   A <thead> element contains one or more `\<row>`_ elements.
+:Attributes: The <thead> element contains the valign_ attribute
+             (ignored by Docutils) and (via the `%tbl.thead.att`_
+             parameter entity) the `common attributes`_.
+
+Examples
+--------
+
+See `\<table>`_.
 
 
 <tip>
@@ -3749,19 +3869,19 @@ Pseudo-XML_ fragment from simple parsing::
 =======
 
 The <title> element stores the title of a `\<document>`_, `structural
-elements`_, or a generic `\<admonition>`_.
+elements`_, or a generic `\<admonition>`_.  It is also used for the
+caption of a `\<table>`_.
 
-The title of a <document> may differ from its *metadata title*
+The <title> of a <document> may differ from its *metadata title*
 stored in the `title attribute`_.
 
 Details
 -------
 
 :Category:   `Structural Subelements`_, `Body Subelements`_
-:Analogues:  <title> is analogous to HTML_ header elements (<h1> etc.)
-             and to the DocBook_ <title> element.
-             In contrast, the HTML <title> element corresponds to a
-             <document>'s `title attribute`_.
+:Analogues:  <title> is analogous to the DocBook_ <title> element and
+             the HTML_ header elements (<h1> etc.) while the HTML <title>
+             element corresponds to a <document>'s `title attribute`_.
              As child of a `\<table>`_, <title> corresponds to
              the HTML <caption> element.
 :Parents:    The following elements may contain <title>:
@@ -4095,7 +4215,7 @@ _`%measure`
 
 _`%number`
   | The attribute value must be a positive interger.  Resolves to NMTOKEN_.
-  | Used in the `level`_, `morecols`_, `scale`_, and `start`_ attributes.
+  | Used in the level_, morecols_, morerows_, scale_, and start_ attributes.
     Python data type: ``int``.
 
 _`%refname.type`
@@ -4113,7 +4233,8 @@ _`%refnames.type`
 _`%yesorno`
   | Boolean: False if zero ("0"), true for any other value.
     Resolves to NMTOKEN_.
-  | Used in the `anonymous`_, `ltrim`_, `rtrim`_, and `stub`_ attributes.
+  | Used in the anonymous_, colsep_, ltrim_, rtrim_, rowsep_,
+    and `stub`_ attributes.
     Python data type: ``int``.
 
 .. _XML 1.0 specification: https://www.w3.org/TR/REC-xml
@@ -4221,11 +4342,18 @@ The ``alt`` attribute is used to store a text description in the
 ``align``
 =========
 
-Attribute type: `CDATA`_.  Default value: none (inherit).
+Attribute type: EnumeratedType_.  Default value: none (inherit).
 
-The ``align`` attribute is used in the `\<figure>`_,
-`\<image>`_, `\<table>`_, and `\<tgroup>`_ elements
-(via the `%align-h.att`_ and `%align-hv.att`_ parameter entities).
+The ``align`` attribute is used in the `\<figure>`_ and `\<table>`_
+elements via the `%align-h.att`_ parameter entity
+and in `\<image>`_ via the `%align-hv.att`_ parameter entity
+to specify the alignment of the element within its parent element.
+
+The `Exchange Table Model`_ uses ``align`` in the `\<colspec>`_,
+`\<entry>`_, end `\<tgroup>`_ elements to specify the text alignment in
+table cells.  It cannot be specified in reStructuredText and is ignored
+by Docutils writers.
+
 
 
 ``anonymous``
@@ -4297,20 +4425,82 @@ Docutils elements.
 .. _writers: ../peps/pep-0258.html#writers
 
 
+``char``
+========
+
+Attribute type: CDATA_.  Default value: "" (no aligning character).
+
+The ``char`` attribute is used in the `\<colspec>`_ and `\<entry>`_
+elements to specify an alignment character.
+
+The attribute is defined in the `Exchange Table Model`_ (which see
+for details). It cannot be specified in reStructuredText and is
+ignored by Docutils.
+
+
+``charoff``
+===========
+
+Attribute type: NMTOKEN_.  Default value: "50" (i.e. 50%).
+
+The ``charoff`` attribute is used in `\<colspec>`_ and `\<entry>`_
+elements to specify the horizontal offset of the alignment character
+when align_ is "char".
+
+The attribute is defined in the `Exchange Table Model`_ (which see
+for details). It cannot be specified in reStructuredText and is
+ignored by Docutils.
+
+
+``colname``
+===========
+
+Attribute type: NMTOKEN_.  Default value: none.
+
+Name (identifier) of a table column.
+
+The ``colname`` attribute is used in the `\<colspec>`_ element name a
+table column and in the `\<entry>`_ element to reference a named column.
+
+The attribute is defined in the `Exchange Table Model`_ (which see
+for details). It cannot be specified in reStructuredText and is
+ignored by Docutils.
+
+
+``colnum``
+===========
+
+Attribute type: NMTOKEN_.  Default value: none.
+
+The ``colnum`` attribute is used in the `\<colspec>`_ element.
+The attribute is defined in the `Exchange Table Model`_ (which see for
+details). It serves no functional purpose other than a consistency check.
+
+
 ``cols``
 =========
 
 Attribute type: NMTOKEN_.  Default value: none.
 
 The ``cols`` attribute is used in the `\<tgroup>`_ element.
+It stores the number of columns in a table group.
+
+The attribute is defined in the `Exchange Table Model`_ (which see
+for details).
+
 
 ``colsep``
 ==========
 
-Attribute type: `%yesorno`_.  Default value: none (implies no).
+Attribute type: `%yesorno`_.  Default value: none.
 
-The ``colsep`` attribute is used in the `\<table>`_ and `\<tgroup>`_
-elements.
+The ``colsep`` attribute is used in the `\<colspec>`_, `\<entry>`_,
+`\<table>`_, and `\<tgroup>`_ elements to specify the presence or absence
+of a column separator (vertical ruling).
+
+The attribute is defined in the `Exchange Table Model`_ (which see
+for details). It cannot be specified in reStructuredText and is
+ignored by Docutils.
 
 
 ``colwidth``
@@ -4319,7 +4509,6 @@ elements.
 Attribute type: CDATA_.  Default value: "1*" (`sic!`__)
 
 Column width specification used in the `\<colspec>`_ element.
-Defined in the exchange-table-model_.
 
 Either proportional measure of the form number*, e.g., “5*” for 5 times
 the proportion, or “*” (which is equivalent to “1*”); fixed measure,
@@ -4330,6 +4519,8 @@ unit values is “pt” (points), “cm” (centimeters), “mm” (millimeters)
 “pi” (picas), and “in” (inches). The default fixed unit should be
 interpreted as “pt” if neither a proportion nor a fixed unit is
 specified.
+
+Defined in the `Exchange Table Model`_.
 
 __
 .. important::
@@ -4384,6 +4575,20 @@ The ``format`` attribute is a string containing one or more space
 separated output format names.
 
 The ``format`` attribute is used in the `\<raw>`_ element.
+
+
+``frame``
+=========
+
+| Attribute type: EnumeratedType_ (top|bottom|topbot|all|sides|none).
+| Default value: none (implied).
+
+The ``frame`` attribute may be used in the `\<table>`_ element to
+specify the table's outer frame.
+
+The attribute is defined in the `Exchange Table Model`_ (which see
+for details). It cannot be specified in reStructuredText and is
+ignored by Docutils.
 
 
 ``height``
@@ -4469,7 +4674,13 @@ New in Docutils 0.21
 
 Attribute type: `%number`_.  Default value: none.
 
-The ``morecols`` attribute is used in the `\<entry>`_ element.
+The ``morecols`` attribute is used in the `\<entry>`_ element
+to specify an entry that spans several physical table columns.
+It is similar to the ``colspan`` attribute of HTML table cells
+(<th> and <td>).
+
+The ``morecols`` attribute is defined in the `%tbl.entry.att`_ parameter
+entity extending the `Exchange Table Model`_.
 
 
 ``morerows``
@@ -4477,7 +4688,13 @@ The ``morecols`` attribute is used in the `\<entry>`_ element.
 
 Attribute type: `%number`_.  Default value: none.
 
-The ``morerows`` attribute is used in the `\<entry>`_ element.
+The ``morerows`` attribute is used in the `\<entry>`_ element
+to specify an entry that spans several physical table rows.
+It is similar to the ``rowspan`` attribute of HTML table cells
+(<th> and <td>).
+
+The attribute is defined in the `Exchange Table Model`_ (which see
+for details).
 
 
 ``name``
@@ -4512,6 +4729,46 @@ at most one of the ``names`` or ``dupnames`` attributes, but not both.
 
 ``names`` is one of the `common attributes`_, shared by all
 Docutils elements.
+
+
+``namest``
+==========
+
+Attribute type: NMTOKEN_.  Default value: none.
+
+
+The ``namest`` attribute is used in the `\<entry>`_ element to specify the
+leftmost column of a span.
+
+The attribute is defined in the `Exchange Table Model`_ (which see
+for details). It is ignored by Docutils which uses the morecols_
+attribute instead.
+
+
+``nameend``
+===========
+
+Attribute type: NMTOKEN_.  Default value: none.
+
+The ``nameend`` attribute is used in the `\<entry>`_ element to specify the
+rightmost column of a span.
+
+The attribute is defined in the `Exchange Table Model`_ (which see
+for details). It is ignored by Docutils which uses the morecols_
+attribute instead.
+
+
+``pgwide``
+==========
+
+Attribute type: `%yesorno`_.  Default value: none (implies no).
+
+The ``pgwide`` attribute is used in the `\<table>`_ element to make the
+table span the full page width.
+
+The attribute is defined in the `Exchange Table Model`_ (which see
+for details). It cannot be specified in reStructuredText and is
+ignored by Docutils.
 
 
 ``prefix``
@@ -4570,8 +4827,13 @@ It is used by the `\<target>`_, `\<reference>`_,
 
 Attribute type: `%yesorno`_.  Default value: none (implies no).
 
-The ``rowsep`` attribute is used in the `\<table>`_ and `\<tgroup>`_
-elements.
+The ``rowsep`` attribute may be used in the `\<colspec>`_, `\<entry>`_,
+`\<row>`_, `\<table>`_, and `\<tgroup>`_ elements to specify the presence
+or absence of row separators (horizontal ruling).
+
+The attribute is defined in the `Exchange Table Model`_ (which see
+for details). It cannot be specified in reStructuredText and is
+ignored by Docutils.
 
 
 ``rtrim``
@@ -4614,9 +4876,12 @@ The ``start`` attribute is used in the `\<enumerated_list>`_ element.
 
 Attribute type: `%yesorno`_.  Default value: none.
 
-The ``stub`` attribute is used in the `\<colspec>`_ element.
-It marks a table column containing *stubs* (row titles, on the left).
+The ``stub`` attribute is used in the `\<colspec>`_ element to
+mark a table column as containing *stubs* (row titles, on the left).
 See also the `"csv-table"`_ and `"list-table"`_ directives.
+
+The attribute is defined in the `%tbl.colspec.att`_ parameter
+entity extending the `Exchange Table Model`_.
 
 
 ``suffix``
@@ -4658,6 +4923,21 @@ Attribute type: `CDATA`_.  Default value: none.
 
 The ``uri`` attribute is used in the `\<image>`_ and `\<figure>`_ elements
 to refer to the image via its Universal Resource Indicator.
+
+
+``valign``
+==========
+
+| Attribute type: `EnumeratedType`_ (top|middle|bottom).
+| Default value: none (inherit).
+
+The ``valign`` attribute is used in the `\<entry>`_, `\<row>`_,
+`\<tbody>`_, and `\<thead>`_ elements to specify the vertical text
+alignment within entries.
+
+The attribute is defined in the `Exchange Table Model`_ (which see
+for details). It cannot be specified in reStructuredText and is
+ignored by Docutils.
 
 
 ``width``
@@ -4796,6 +5076,20 @@ The ``%additional.basic.atts`` parameter entity can be used by
 wrapper DTDs to extend ``%basic.atts``.
 
 
+``%bodyatt``
+------------
+
+The ``%bodyatt`` parameter entity is defined in the `Exchange Table Model`_
+to allow customization of the `\<table>`_ element's attribute list.
+
+The Docutils DTD redefines it to add align_, width_, and the `common
+attributes`_.
+
+.. note:: This parameter entity is only used for backward compatibility.
+          Docutils versions >= 1.0 will use the ``%tbl.table.att``
+          parameter entity instead.
+
+
 ``%fixedspace.att``
 -------------------
 
@@ -4888,6 +5182,65 @@ Via `%reference.atts`_, the ``%refuri.att`` parameter entity is
 indirectly employed in the attribute lists of the `\<citation_reference>`_,
 `\<footnote_reference>`_, `\<reference>`_, and `\<target>`_ elements.
 
+``%tbl.colspec.att``
+--------------------
+
+The ``%tbl.colspec.att`` parameter entity is defined in the
+`Exchange Table Model`_ to allow customization of the `\<colspec>`_
+element's attribute list.
+
+The Docutils DTD redefines it to add stub_ and the `common attributes`_.
+
+
+``%tbl.entry.att``
+------------------
+
+The ``%tbl.entry.att`` parameter entity is defined in the
+`Exchange Table Model`_ to allow customization of the `\<entry>`_
+element's attribute list.
+
+The Docutils DTD redefines it to add morecols_ and the `common attributes`_.
+
+
+``%tbl.row.att``
+----------------
+
+The ``%tbl.row.att`` parameter entity is defined in the
+`Exchange Table Model`_ to allow customization of the `\<row>`_
+element's attribute list.
+
+The Docutils DTD redefines it to add the `common attributes`_.
+
+
+``%tbl.tbody.att``
+------------------
+
+The ``%tbl.tbody.att`` parameter entity is defined in the
+`Exchange Table Model`_ to allow customization of the `\<tbody>`_
+element's attribute list.
+
+The Docutils DTD redefines it to add the `common attributes`_.
+
+
+``%tbl.tgroup.att``
+-------------------
+
+The ``%tbl.tgroup.att`` parameter entity is defined in the
+`Exchange Table Model`_ to allow customization of the `\<tgroup>`_
+element's attribute list.
+
+The Docutils DTD redefines it to add the `common attributes`_.
+
+
+``%tbl.thead.att``
+------------------
+
+The ``%tbl.thead.att`` parameter entity is defined in the
+`Exchange Table Model`_ to allow customization of the `\<thead>`_
+element's attribute list.
+
+The Docutils DTD redefines it to add the `common attributes`_.
+
 
 Element Category Entities
 =========================
@@ -4970,8 +5323,24 @@ is indirectly employed in the content models of the `\<document>`_ and
 `\<section>`_ elements.
 
 
-Content Model Entities
-======================
+Model Entities
+==============
+
+%calstblx
+---------
+
+The ``%calstblx`` parameter entity is used to include the `XML Exchange
+Table Model DTD` [tm9901]_ as `external DTD subset`_ defining the table
+elements `\<colspec>`_, `\<entry>`_, `\<row>`_, `\<table>`_, `\<tbody>`_,
+`\<tgroup>`_, and `\<thead>`_.
+
+Entity definition::
+
+    <!ENTITY % calstblx PUBLIC
+        "-//OASIS//DTD XML Exchange Table Model 19990315//EN"
+        "soextblx.dtd">
+
+
 
 ``%structure.model``
 --------------------
@@ -5014,6 +5383,31 @@ The ``%structure.model`` parameter entity is directly employed in the
 content models of the `\<document>`_ and `\<section>`_ elements.
 
 
+``%tbl.entry.mdl``
+-------------------
+
+The ``%tbl.entry.mdl`` parameter entity is defined in
+the `Exchange Table Model`_ to allow customization of
+the `\<entry>`_ element's content model.
+
+The Docutils DTD changes it to allow all `body elements`_
+(including nested tables)::
+
+    (%body.elements;)*
+
+
+``%tbl.tgroup.mdl``
+-------------------
+
+The ``%tbl.tgroup.mdl`` parameter entity is defined in the
+`Exchange Table Model`_ to allow customization of the `\<tgroup>`_
+element's content model.
+
+The Docutils DTD changes it to require at least one <colspec> element::
+
+    colspec+,thead?,tbody
+
+
 ``%text.model``
 ---------------
 
@@ -5043,24 +5437,26 @@ models of the following elements: `\<abbreviation>`_,
 Bibliography
 ------------
 
-.. _exchange-table-model:
+.. _Exchange Table Model:
+.. _XML Exchange Table Model DTD:
+
 .. [tm9901]     `XML Exchange Table Model DTD`,
                 OASIS Technical Memorandum 9901:1999,
                 http://www.oasis-open.org/html/tm9901.html.
-.. [xml1.0]    `Extensible Markup Language (XML) 1.0`,
-                W3C Recommendation,
-                https://www.w3.org/TR/xml/.
+
 .. [DocBook5.1] `DocBook 5.1: The Definitive Guide`,
                 Norman Walsh,
                 https://tdg.docbook.org/tdg/5.1/.
+
+
 .. [html.spec]  `HTML Living Standard`,
                 WHATWG (Apple, Google, Mozilla, Microsoft),
                 https://html.spec.whatwg.org.
 
-.. _XML: https://developer.mozilla.org/en-US/docs/Web/XML/XML_introduction
-.. _Introducing the Extensible Markup Language (XML):
-    http://xml.coverpages.org/xmlIntro.html
-.. _XMLSpec: https://www.w3.org/XML/1998/06/xmlspec-report.htm
+.. [xml1.0]    `Extensible Markup Language (XML) 1.0`,
+                W3C Recommendation,
+                https://www.w3.org/TR/xml/.
+
 
 .. _DocBook: https://tdg.docbook.org/tdg/5.1/.
 .. _DocBook <caution>: https://tdg.docbook.org/tdg/5.1/caution.html
@@ -5076,6 +5472,11 @@ Bibliography
 
 .. _Python: https://www.python.org/
 
+.. _XML: https://developer.mozilla.org/en-US/docs/Web/XML/XML_introduction
+.. _Introducing the Extensible Markup Language (XML):
+    http://xml.coverpages.org/xmlIntro.html
+.. _XMLSpec: https://www.w3.org/XML/1998/06/xmlspec-report.htm
+.. _external DTD subset: https://www.w3.org/TR/xml11/#dt-doctype
 
 .. _Docutils: https://docutils.sourceforge.io/.
 .. _reStructuredText: https://docutils.sourceforge.io/rst.html
@@ -5125,6 +5526,7 @@ Bibliography
 .. _rST document:           rst/restructuredtext.html#document
 .. _rST field list:         rst/restructuredtext.html#field-lists
 .. _rST reference names:    rst/restructuredtext.html#reference-names
+.. _rST tables:             rst/restructuredtext.html#tables
 .. _section:                rst/restructuredtext.html#sections
 .. _simple table:           rst/restructuredtext.html#simple-tables
 .. _strong emphasis:        rst/restructuredtext.html#strong-emphasis
