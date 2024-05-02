@@ -223,7 +223,11 @@ http://www.oasis-open.org/html/tm9901.htm).
     "soextblx.dtd">
 
 <!-- These parameter entities customize the table model DTD. -->
-<!ENTITY % bodyatt              " %basic.atts; ">  <!-- table elt -->
+<!-- table element TODO: use %tbl.table.att.  Keep or drop pgwide? -->
+<!ENTITY % bodyatt  
+  " %basic.atts;
+    %align-h.att;
+    width     %measure;  #IMPLIED ">
 <!-- 1 colspec element is expected per table column: -->
 <!ENTITY % tbl.tgroup.mdl       "colspec+,thead?,tbody">
 <!ENTITY % tbl.tgroup.att       " %basic.atts; ">
@@ -233,14 +237,11 @@ http://www.oasis-open.org/html/tm9901.htm).
   " %basic.atts;
     stub      %yesorno; #IMPLIED ">
 <!ENTITY % tbl.row.att          " %basic.atts; ">
-<!-- ``(...)*``: nested tables are supported -->
+<!-- all body elements (including nested tables) are supported -->
 <!ENTITY % tbl.entry.mdl        " (%body.elements;)* ">
 <!ENTITY % tbl.entry.att
   " %basic.atts;
     morecols  %number;  #IMPLIED ">
-<!ATTLIST table
-    %align-h.att;
-    width     %measure;  #IMPLIED>
 
 <!--
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

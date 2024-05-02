@@ -59,6 +59,9 @@ Document Tree / Docutils DTD
   and drop the ``name`` attribute from <reference> nodes
   in Docutils 1.0.
 
+* Use the ``%tbl.table.att`` parameter entity instead of ``%bodyatt``
+  to customize the <table> element's attribute list in Docutils 1.0.
+
 .. _refname attribute: docs/ref/doctree.html#refname
 
 `Input encoding`_
