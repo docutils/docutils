@@ -805,7 +805,7 @@ Container
 :Directive Content: Interpreted as body elements.
 
 The "container" directive surrounds its contents (arbitrary body
-elements) with a generic block-level "container" element.  
+elements) with a generic block-level "container" element.
 Combined with the optional argument, this is an
 extension mechanism for users & applications.  For example::
 
@@ -844,13 +844,13 @@ Table
 
 :Directive Type: "table"
 :Doctree Element: `\<table>`_
-:Directive Arguments: one, optional (table title)
+:Directive Arguments: one, optional (table caption)
 :Directive Options: `see below <table options_>`__
 :Directive Content: A normal `reStructuredText table`_.
 :Configuration Setting: table_style_
 
-The "table" directive is used to associate a
-title with a table or specify options, e.g.::
+The "table" directive is used to provide a table caption
+or specify options, e.g.::
 
     .. table:: Truth table for "not"
        :widths: auto
@@ -907,7 +907,7 @@ CSV Table
 
 :Directive Type: "csv-table"
 :Doctree Element: `\<table>`_
-:Directive Arguments: one, optional (table title)
+:Directive Arguments: one, optional (table caption)
 :Directive Options: `see below <csv-table options_>`__
 :Directive Content: A CSV (comma-separated values) table
                     or (with the `file`_ or `url`_ options) none.
@@ -1042,7 +1042,7 @@ List Table
 
 :Directive Type: "list-table"
 :Doctree Element: `\<table>`_
-:Directive Arguments: one, optional (table title)
+:Directive Arguments: one, optional (table caption)
 :Directive Options: `see below <list-table options_>`__
 :Directive Content: A uniform two-level bullet list.
 :Configuration Setting: table_style_
