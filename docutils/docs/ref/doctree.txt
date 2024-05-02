@@ -16,14 +16,14 @@ A Guide to the Docutils DTD
 
 .. contents:: :depth: 1
 
-This document describes the XML data structure of Docutils_ documents:
+This document describes the XML_ data structure of Docutils_ documents:
 the relationships and semantics of elements and attributes.
 The Docutils document structure is formally defined by the
 `Docutils Generic DTD`_ XML document type definition, `docutils.dtd`_,
 which is the definitive source for details of element structural
 relationships.
 
-The reader is assumed to have some familiarity with XML_ or SGML,
+The reader is assumed to have some familiarity with XML or SGML,
 and an understanding of the data structure meaning of "tree".
 For a list of introductory articles, see, e.g.,
 `Introducing the Extensible Markup Language (XML)`_.
@@ -138,7 +138,7 @@ Structural Subelements
 ----------------------
 
 Structural subelements are child elements of the `root element`_ or
-specific `structural elements`_.  [#]_  Their content model varies
+specific `structural elements`_.  Their content model varies
 (see the respective element reference section for details).
 
 .. class:: narrow run-in
@@ -151,8 +151,6 @@ specific `structural elements`_.  [#]_  Their content model varies
   :compound: `\<decoration>`_, `\<docinfo>`_
 
 :Docutils classes: ``nodes.SubStructural``, ``nodes.SubRoot``
-
-.. [#] `\<title>`_ is also a valid child of the generic `\<admonition>`_.
 
 
 Decorative Elements
@@ -233,10 +231,12 @@ further body subelements) or `simple elements`_.
 :Category members:
   .. class:: narrow run-in
 
+  :empty:
+    `\<colspec>`_
   :simple:
-    `\<attribution>`_, `\<caption>`_, `\<classifier>`_, `\<colspec>`_,
+    `\<attribution>`_, `\<caption>`_, `\<classifier>`_,
     `\<field_name>`_, `\<label>`_, `\<line>`_,
-    `\<option_argument>`_, `\<option_string>`_, `\<term>`_
+    `\<option_argument>`_, `\<option_string>`_, `\<term>`_, `\<title>`_
   :compound:
     `\<definition>`_, `\<definition_list_item>`_, `\<description>`_,
     `\<entry>`_, `\<field>`_, `\<field_body>`_,
@@ -885,7 +885,7 @@ Specifications for a column in a `\<table>`_.
 Details
 -------
 
-:Category:   `Body Subelements`_ (simple)
+:Category:   `Body Subelements`_
 :Analogues:  <colspec> is based on the [exchange-table-model]_
              and analogous to the DocBook_ <colspec> element.
 :Processing: The <colspec> element contains layout information
@@ -2245,7 +2245,7 @@ The `reStructuredText Directives` documentation contains a non exhaustive
 Details
 -------
 
-:Category:   `Simple Body Elements`_, `Inline Elements`_
+:Category:   `Body Elements`_, `Inline Elements`_
 :Analogues:  <image> is analogous to the `HTML \<img>`_,
              `DocBook \<imagedata>`_, and `SVG \<image>`_ elements.
 :Processing: The specified image is included into the output document.
@@ -2809,8 +2809,11 @@ Details
 :Analogues:  <option> has no direct analogues in common DTDs.
 :Processing: See `\<option_list>`_.
 :Parents:    Only the `\<option_group>`_ element contains <option>.
-:Children:   Each <option> element contains one `\<option_string>`_ and
-             zero or more `\<option_argument>`_ elements.
+:Children:   <option> elements start with an `\<option_string>`_ and
+             may contain `\<option_argument>`_ elements::
+
+                 (option_string, option_argument*)
+
 :Attributes: The <option> element contains only the `common attributes`_.
 
 Examples
@@ -3222,8 +3225,9 @@ Details
 :Parents:    The following elements may contain <section>:
              `\<document>`_, `\<section>`_
 
-:Children:   <section> elements begin with a `\<title>`_, and optional
-             `\<subtitle>`_. They may contain `body elements`_ as well as
+:Children:   <section> elements begin with a `\<title>`_,
+             followed by an optional `\<subtitle>`_.
+             They may contain `body elements`_ as well as
              `\<transition>`_, `\<topic>`_, and `\<sidebar>`_ elements:
 
              .. parsed-literal::
@@ -3584,9 +3588,7 @@ Pseudo-XML_ fragment from simple parsing::
 =======
 
 The <table> element identifies a data arrangement with rows and columns.
-
-Docutils tables are based on the `Exchange subset of the CALS-table
-model` [exchange-table-model]_. [#]_
+It is defined in the `XML Exchange Table Model DTD` [tm9901]_. [#]_
 
 .. [#] The interpretation of column widths in `\<colspec>`_ differs from the
    specification.
@@ -3651,9 +3653,6 @@ Pseudo-XML_ fragment from simple parsing::
                     <entry>
                         <paragraph>
                             £30
-
-.. [exchange-table-model] `XML Exchange Table Model DTD`, OASIS Technical
-   Memorandum 9901:1999, http://www.oasis-open.org/html/tm9901.html.
 
 
 <target>
@@ -3758,11 +3757,13 @@ stored in the `title attribute`_.
 Details
 -------
 
-:Category:   `Structural Subelements`_
-:Analogues:  <title> is analogous to HTML header elements (<h1> etc.)
+:Category:   `Structural Subelements`_, `Body Subelements`_
+:Analogues:  <title> is analogous to HTML_ header elements (<h1> etc.)
              and to the DocBook_ <title> element.
              In contrast, the HTML <title> element corresponds to a
              <document>'s `title attribute`_.
+             As child of a `\<table>`_, <title> corresponds to
+             the HTML <caption> element.
 :Parents:    The following elements may contain <title>:
              `\<admonition>`_, `\<document>`_, `\<section>`_,
              `\<sidebar>`_, `\<table>`_, `\<topic>`_.
@@ -4354,6 +4355,7 @@ Attribute type: `%number`_. Default value: none.
 The ``depth`` attribute may be used in a `\<topic>`_ element generated by
 the `"contents" directive`_ to hold the value of the "depth" option.
 
+
 ``dupnames``
 ============
 
@@ -4371,6 +4373,7 @@ Attribute type: EnumeratedType_, one of "arabic", "loweralpha",
 "upperalpha", "lowerroman", or "upperroman".  Default value: none.
 
 The ``enumtype`` attribute is used in the `\<enumerated_list>`_ element.
+
 
 ``format``
 ==========
@@ -4889,7 +4892,6 @@ indirectly employed in the attribute lists of the `\<citation_reference>`_,
 Element Category Entities
 =========================
 
-
 ``%bibliographic.elements``
 ---------------------------
 
@@ -5037,8 +5039,28 @@ models of the following elements: `\<abbreviation>`_,
 `\<target>`_, `\<term>`_, `\<title>`_, `\<title_reference>`_, `\<version>`_
 
 
-.. References
-   ==========
+------------
+Bibliography
+------------
+
+.. _exchange-table-model:
+.. [tm9901]     `XML Exchange Table Model DTD`,
+                OASIS Technical Memorandum 9901:1999,
+                http://www.oasis-open.org/html/tm9901.html.
+.. [xml1.0]    `Extensible Markup Language (XML) 1.0`,
+                W3C Recommendation,
+                https://www.w3.org/TR/xml/.
+.. [DocBook5.1] `DocBook 5.1: The Definitive Guide`,
+                Norman Walsh,
+                https://tdg.docbook.org/tdg/5.1/.
+.. [html.spec]  `HTML Living Standard`,
+                WHATWG (Apple, Google, Mozilla, Microsoft),
+                https://html.spec.whatwg.org.
+
+.. _XML: https://developer.mozilla.org/en-US/docs/Web/XML/XML_introduction
+.. _Introducing the Extensible Markup Language (XML):
+    http://xml.coverpages.org/xmlIntro.html
+.. _XMLSpec: https://www.w3.org/XML/1998/06/xmlspec-report.htm
 
 .. _DocBook: https://tdg.docbook.org/tdg/5.1/.
 .. _DocBook <caution>: https://tdg.docbook.org/tdg/5.1/caution.html
@@ -5053,11 +5075,6 @@ models of the following elements: `\<abbreviation>`_,
 .. _HTML: https://html.spec.whatwg.org/multipage/.
 
 .. _Python: https://www.python.org/
-
-.. _XML: https://developer.mozilla.org/en-US/docs/Web/XML/XML_introduction
-.. _Introducing the Extensible Markup Language (XML):
-    http://xml.coverpages.org/xmlIntro.html
-.. _XMLSpec: https://www.w3.org/XML/1998/06/xmlspec-report.htm
 
 
 .. _Docutils: https://docutils.sourceforge.io/.
