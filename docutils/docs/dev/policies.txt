@@ -674,10 +674,11 @@ the Docutils-develop_ mailing list.
 .. _link list: https://docutils.sourceforge.io/docs/user/links.html
 .. _docutils-develop: docs/user/mailing-lists.html#docutils-develop
 
-
-..
+.. Emacs settings
+
    Local Variables:
    mode: indented-text
+   mode: rst
    indent-tabs-mode: nil
    sentence-end-double-space: t
    fill-column: 70

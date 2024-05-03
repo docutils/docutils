@@ -2314,10 +2314,11 @@ Common Option Value Types
 .. _<warning>: ../doctree.html#warning
 
 
-
-..
+.. Emacs settings
+
    Local Variables:
    mode: indented-text
+   mode: rst
    indent-tabs-mode: nil
    sentence-end-double-space: t
    fill-column: 70

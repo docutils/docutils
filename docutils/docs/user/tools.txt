@@ -555,10 +555,11 @@ names are listed in the `Docutils Configuration`_ document.
 .. _configuration file sections:
    config.html#configuration-file-sections-entries
 
-
-..
+.. Emacs settings
+
    Local Variables:
    mode: indented-text
+   mode: rst
    indent-tabs-mode: nil
    sentence-end-double-space: t
    fill-column: 70

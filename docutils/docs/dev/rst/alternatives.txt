@@ -3062,7 +3062,7 @@ Page Or Line Breaks
   be useful as a shorthand for the directive.
 
   It's common practice to use ^L before Emacs "Local Variables"
-  lists::
+  lists (to prevent misinterpretation of unrelated text)::
 
       ^L
       ..
@@ -3203,10 +3203,11 @@ We need syntax for `object references`_.
 .. _object references:
    ../todo.html#object-numbering-and-object-references
 
-
-..
+.. Emacs settings
+
    Local Variables:
    mode: indented-text
+   mode: rst
    indent-tabs-mode: nil
    sentence-end-double-space: t
    fill-column: 70

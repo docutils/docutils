@@ -48,7 +48,7 @@ Steps to take and watch
         releaselevel='candidate',  # one of 'alpha', 'beta', 'candidate', 'final'
         serial=1,  # pre-release number (0 for final releases and snapshots)
         release=False  # True for official releases and pre-releases
-        ) 
+        )
 
 
   Run tests ::
@@ -64,7 +64,7 @@ Steps to take and watch
 * Generate wheel and source-distribution::
 
     python3 -m pip install flit
-    python3 -m flit build 
+    python3 -m flit build
 
   or ::
 
@@ -74,13 +74,13 @@ Steps to take and watch
   check file sizes: the 0.21.2 wheel was 574K the sdist 2,2M.
 
 * Upload wheel and source to test.pypi.
-  
+
   Set repository and key in ~/.pypirc with a <server-name> and
   password token::
 
     python3 -m twine upload --repository <server-name> dist/*
 
-  Change directory outside of checkout and test in venv. 
+  Change directory outside of checkout and test in venv.
   NOTE use --pre for prereleases::
 
     python3 -m venv du3 ; cd du3
@@ -95,7 +95,7 @@ Steps to take and watch
   if ok ::
 
     deactivate ; cd .. ; rm -r du3
-  
+
   Test the sdist::
 
     python3 -m venv du3s ; cd du3s
@@ -106,7 +106,7 @@ Steps to take and watch
   sdist installation fails with subprocess not finding flit_core .
   test.pypi has flit 3.5.1 but installs 0.5 preinstalling flit_core did not work
   either ... why.
-  
+
   postbone sdist test to pypi::
 
     cp -Lr ../docutils-code/docutils/test .
@@ -128,7 +128,7 @@ Steps to take and watch
 * Update your source directory.
 * Rebuild wheel and source-distribution ::
 
-    python3 -m flit build 
+    python3 -m flit build
 
 * Now upload to pypi::
 
@@ -191,10 +191,11 @@ For final releases continue
 * docutils/HISTORY.txt: add title "Changes Since #.#"
 * run sandbox/infrastructure/docutils-update.local
 
-
-..
+.. Emacs settings
+
    Local Variables:
    mode: indented-text
+   mode: rst
    indent-tabs-mode: nil
    sentence-end-double-space: t
    fill-column: 70

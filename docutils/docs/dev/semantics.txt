@@ -111,10 +111,11 @@ Other Ideas
 .. _iPhrase Python documentation conventions:
    https://mail.python.org/pipermail/doc-sig/2001-May/001840.html
 
-
-..
+.. Emacs settings
+
    Local Variables:
    mode: indented-text
+   mode: rst
    indent-tabs-mode: nil
    sentence-end-double-space: t
    fill-column: 70

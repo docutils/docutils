@@ -50,10 +50,10 @@ can be categorized in several groups:
 
 .. class:: details
 
-There's a lot of overlap between these groups.  
+There's a lot of overlap between these groups.
   Most (perhaps all) developers are also end-users.
-  Core-developers are also client-developers, and may also 
-  be component-developers in other projects.  
+  Core-developers are also client-developers, and may also
+  be component-developers in other projects.
   Component-developers are also client-developers.
 
 
@@ -63,24 +63,24 @@ Project Fundamentals
 These files are for all `Docutils stakeholders`_.  They are kept at the
 top level of the Docutils project directory.
 
-`README <../README.html>`_:  
+`README <../README.html>`_:
    Project overview: quick-start, requirements,
    installation, and usage.
 
-`COPYING <../COPYING.html>`_: 
-   Conditions for Docutils redistribution, 
+`COPYING <../COPYING.html>`_:
+   Conditions for Docutils redistribution,
    with links to licenses.
 `FAQ <../FAQ.html>`_:
   Docutils Frequently Asked Questions.  If you have a question or issue,
   there's a good chance it's already answered here.
-`BUGS <../BUGS.html>`_:    
+`BUGS <../BUGS.html>`_:
   A list of known bugs, and how to report a bug.
-`RELEASE-NOTES <../RELEASE-NOTES.html>`_: 
+`RELEASE-NOTES <../RELEASE-NOTES.html>`_:
   Summary of the major changes in recent releases and
   notice of future incompatible changes.
-`HISTORY <../HISTORY.html>`_: 
+`HISTORY <../HISTORY.html>`_:
   Detailed change history log.
-`THANKS <../THANKS.html>`_:  
+`THANKS <../THANKS.html>`_:
   Acknowledgements.
 
 
@@ -231,10 +231,11 @@ reStructuredText_:
     <dev/rst/alternatives.html>`__
   * `Problems With StructuredText <dev/rst/problems.html>`__
 
-
-..
+.. Emacs settings
+
    Local Variables:
    mode: indented-text
+   mode: rst
    indent-tabs-mode: nil
    sentence-end-double-space: t
    fill-column: 70

@@ -124,10 +124,11 @@ roles may be defined.
 .. _docutils.dtd: ../ref/docutils.dtd
 
 
-
-..
+.. Emacs settings
+
    Local Variables:
    mode: indented-text
+   mode: rst
    indent-tabs-mode: nil
    fill-column: 70
    End:

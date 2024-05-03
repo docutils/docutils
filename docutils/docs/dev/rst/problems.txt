@@ -863,10 +863,11 @@ cleanly readable text.
 .. _reStructuredText Markup Specification:
    ../../ref/rst/restructuredtext.html
 
-
-..
+.. Emacs settings
+
    Local Variables:
    mode: indented-text
+   mode: rst
    indent-tabs-mode: nil
    sentence-end-double-space: t
    fill-column: 70

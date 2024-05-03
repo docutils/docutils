@@ -945,16 +945,15 @@ Merten who also is the current maintainer of ``rst.el``.
 .. _reStructuredText: https://docutils.sourceforge.io/rst.html
 .. _Docutils: https://docutils.sourceforge.io/
 
-
+.. Emacs settings
 
-..  LocalWords:  reST utf Merten Blais rst el docutils modeline emacs
-..  LocalWords:  Init mEmacs sInit alist setq txt overlines RET nd py
-..  LocalWords:  dwim conf toolset pseudoxml pdf Imenu imenu menubar
-..  LocalWords:  func toc xmlunicode unichars eacute charset fontset
-..  LocalWords:  kTextEncodingISOLatin charsets monaco ascii latin
-..  LocalWords:  iso unicode Choi's Goodger Guo
+   LocalWords:  reST utf Merten Blais rst el docutils modeline emacs
+   LocalWords:  Init mEmacs sInit alist setq txt overlines RET nd py
+   LocalWords:  dwim conf toolset pseudoxml pdf Imenu imenu menubar
+   LocalWords:  func toc xmlunicode unichars eacute charset fontset
+   LocalWords:  kTextEncodingISOLatin charsets monaco ascii latin
+   LocalWords:  iso unicode Choi's Goodger Guo
 
-..
    Local Variables:
    mode: rst
    indent-tabs-mode: nil

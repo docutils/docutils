@@ -1309,9 +1309,11 @@ addition fits better in the `extensions and related projects`_.
 
 
 
-..
+.. Emacs settings
+
    Local Variables:
    mode: indented-text
+   mode: rst
    indent-tabs-mode: nil
    sentence-end-double-space: t
    fill-column: 70

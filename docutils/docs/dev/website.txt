@@ -99,10 +99,11 @@ Removing Files & Directories
    from the web site.  Files and directories must be manually removed from
    sourceforge.net (under ``/home/project-web/docutils/htdocs/``).
 
-
-..
+.. Emacs settings
+
    Local Variables:
    mode: indented-text
+   mode: rst
    indent-tabs-mode: nil
    sentence-end-double-space: t
    fill-column: 70

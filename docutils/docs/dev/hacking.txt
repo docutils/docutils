@@ -268,10 +268,11 @@ on the Docutils-develop_ mailing list.
 .. |---| unicode:: 8212 .. em-dash
    :trim:
 
-
-..
+.. Emacs settings
+
    Local Variables:
    mode: indented-text
+   mode: rst
    indent-tabs-mode: nil
    sentence-end-double-space: t
    fill-column: 70

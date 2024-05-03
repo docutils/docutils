@@ -284,9 +284,11 @@ Also see the `SourceForge Bug Tracker`_.
   attribute should be "names"; this is an inconsistency.
 
 
-..
+.. Emacs settings
+
    Local Variables:
    mode: indented-text
+   mode: rst
    indent-tabs-mode: nil
    sentence-end-double-space: t
    fill-column: 70

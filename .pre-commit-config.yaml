@@ -7,9 +7,9 @@ repos:
     hooks:
     -   id: check-added-large-files
     -   id: trailing-whitespace
-        exclude: ^(sandbox|docutils/docs)|(.el|.svg|.tex|pseudoxml.txt|test_manpage.py)$
+        exclude: ^sandbox|(.el|.svg|.tex|pseudoxml.txt)$
     -   id: end-of-file-fixer
-        exclude: ^sandbox|(.svg)|docutils/test/data/utf-16-le-sig.txt$
+        exclude: ^sandbox|(.svg|docutils/test/data/utf-16-le-sig.txt)$
 
 -   repo: https://github.com/pycqa/flake8
     rev: 5.0.4  # Docutils' ``.flake8`` configuration files do not work with Flake8 >=6

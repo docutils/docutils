@@ -805,10 +805,11 @@ Moshe Zadka.
 Special thanks to all members past & present of the Python Doc-SIG_.
 
 
-
-..
+.. Emacs settings
+
    Local Variables:
    mode: indented-text
+   mode: rst
    indent-tabs-mode: nil
    sentence-end-double-space: t
    fill-column: 70

@@ -171,10 +171,11 @@ roles (classes) and other definitions for documents destined to become
 .. _s5defs.txt: ../../../docutils/parsers/rst/include/s5defs.txt
 .. _S5/HTML slide shows: ../../user/slide-shows.html
 
-
-..
+.. Emacs settings
+
    Local Variables:
    mode: indented-text
+   mode: rst
    indent-tabs-mode: nil
    sentence-end-double-space: t
    fill-column: 70

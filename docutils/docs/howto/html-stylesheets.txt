@@ -86,10 +86,11 @@ Docutils' HTML code in a separate stylesheet.
 .. _stylesheet collection: ../../../sandbox/stylesheets/
 
 
-
-..
+.. Emacs settings
+
    Local Variables:
    mode: indented-text
+   mode: rst
    indent-tabs-mode: nil
    sentence-end-double-space: t
    fill-column: 70

@@ -303,10 +303,11 @@ followed.
 .. _Docstring Processing System: http://docstring.sourceforge.net/
 .. _master PEP repository: https://peps.python.org/
 
-
-..
+.. Emacs settings
+
    Local Variables:
    mode: indented-text
+   mode: rst
    indent-tabs-mode: nil
    sentence-end-double-space: t
    fill-column: 70

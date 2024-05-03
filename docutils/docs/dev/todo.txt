@@ -2344,23 +2344,23 @@ HTML Writer
 
 * Set HTML "width" and "height" attributes with the original size (read
   from the image) to prevent *layout shifts*:
-  
+
     Layout shifts are very disrupting to the user, especially if you have
     already started reading the article and suddenly you are thrown off
     by a jolt of movement, and you have to find your place again.
-    
+
     -- `Setting Height And Width On Images Is Important Again`__
-  
+
   - If there are no size options (``:widht:``, ``:height:``, ``:scale:``)
-    in the "image" directive and    
+    in the "image" directive and
     the image is *local* and can be read and interpreted by PIM.
     (if not, silently skip).
-  
+
   - Alternatively, if the only size option is ``:scale: 100%`` and the
     image can be read with urllib (*opt-in* for the "costly" variant).
 
 __ https://www.smashingmagazine.com/2020/03/setting-height-width-images-important-again/.
-  
+
 
 PEP/HTML Writer
 ===============
@@ -2857,10 +2857,11 @@ Front-End Tools
 .. _transforms: ../api/transforms.html
 
 
-
-..
+.. Emacs settings
+
    Local Variables:
    mode: indented-text
+   mode: rst
    indent-tabs-mode: nil
    sentence-end-double-space: t
    fill-column: 70

@@ -5562,8 +5562,8 @@ Bibliography
 .. _table of compatible image formats: rst/directives.html#image-formats
 
 
-
-..
+.. Emacs settings
+
    Local Variables:
    mode: indented-text
    indent-tabs-mode: nil

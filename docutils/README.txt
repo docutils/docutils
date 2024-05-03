@@ -393,9 +393,11 @@ list.
 .. _Docutils-users: docs/user/mailing-lists.html#docutils-users
 
 
-..
+.. Emacs settings
+
    Local Variables:
    mode: indented-text
+   mode: rst
    indent-tabs-mode: nil
    sentence-end-double-space: t
    fill-column: 70

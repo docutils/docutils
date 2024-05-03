@@ -318,10 +318,11 @@ This document borrows ideas from the archives of the Python Doc-SIG_.
 Thanks to all members past and present.
 
 
-
-..
+.. Emacs settings
+
    Local Variables:
    mode: indented-text
+   mode: rst
    indent-tabs-mode: nil
    fill-column: 70
    sentence-end-double-space: t
