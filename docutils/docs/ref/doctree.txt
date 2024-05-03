@@ -97,7 +97,8 @@ _`Simple elements`
 
 _`Empty elements`
   | contain neither child elements nor text.
-  | Examples: `\<image>`_, `\<transition>`_, `\<pending>`_
+  | Category members: `\<colspec>`_, `\<image>`_, `\<meta>`_,
+    `\<pending>`_, `\<transition>`_
 
 .. [#] This is unlike the much looser HTML_ document model,
    where paragraphs and text data may occur at the same level.
@@ -355,7 +356,7 @@ used to represent the whole.
 :Processing: May be used to semantically mark the presence of an
              abbreviation in the text for styling or scripting purposes.
              Writers may ignore the element and just render its contents.
-:Parents:    All elements employing the `%inline.elements`_ parameter
+:Parents:    All elements employing the `%text.model`_ parameter
              entity in their content models may contain <abbreviation>.
 :Children:   <abbreviation> elements may contain text data
              plus `inline elements`_ (`%text.model`_).
@@ -389,7 +390,7 @@ The <acronym> element is an inline element used to represent an
 :Processing: May be used to semantically mark the presence of an
              acronym in the text for styling or scripting purposes.
              Writers may ignore the element and just render its contents.
-:Parents:    All elements employing the `%inline.elements`_ parameter
+:Parents:    All elements employing the `%text.model`_ parameter
              entity in their content models may contain <acronym>.
 :Children:   <acronym> elements may contain text data
              plus `inline elements`_ (`%text.model`_).
@@ -1586,7 +1587,7 @@ text that has *stress emphasis*.
 :Analogues:  <emphasis> is analogous to the HTML_ <em> element
              and the DocBook_ <emphasis> element.
 :Processing: Typically displayed in italic type.
-:Parents:    All elements employing the `%inline.elements`_ parameter
+:Parents:    All elements employing the `%text.model`_ parameter
              entity in their content models may contain <emphasis>.
 :Children:   <emphasis> elements may contain text data
              plus `inline elements`_ (`%text.model`_).
@@ -2002,9 +2003,8 @@ cross reference to a `\<footnote>`_ (a footnote mark).
              `\<label>`_ of the referenced footnote. The mark is
              typically formatted as superscript or enclosed in square
              brackets.
-:Parents:    All elements employing the `%inline.elements`_
-             parameter entities in their content models may contain
-             <footnote-reference>.
+:Parents:    All elements employing the `%text.model`_ parameter entity
+             in their content models may contain <footnote-reference>.
 :Children:   <footnote_reference> elements contain text data only.
 :Attributes: The <footnote_reference> element contains the
              `common attributes`_ plus auto_, refid_, and refname_.
@@ -2132,7 +2132,7 @@ in the document.
              Depending on the output format, this is done by referring to
              the image URI or by embedding the image data.
 :Parents:    All elements employing the `%body.elements`_,
-             `%inline.elements`_, or `%structure.model`_ parameter entities
+             `%text.model`_, or `%structure.model`_ parameter entities
              in their content models may contain <image>.
 :Children:   The <image> element has no content.
 :Attributes: The <image> element contains the `common attributes`_ plus
@@ -2140,7 +2140,7 @@ in the document.
 :Parameter Entities:
              The `%body.elements`_ and `%inline.elements`_ parameter
              entities directly include <image>.  The `%structure.model`_
-             parameter entity indirectly includes <image>.
+             and `%text.model`_ parameter entities indirectly include <image>.
 
 It is up to the author to ensure compatibility of the image data format
 with the output format or user agent (LaTeX engine, HTML browser, ...).
@@ -2227,8 +2227,8 @@ The <inline> element is a generic inline container.
              render the content distinctly for specific class values.
              Moreover, writers may ignore the element and just render
              the content.
-:Parents:    All elements employing the `%inline.elements`_ parameter
-             entities in their content models may contain <inline>.
+:Parents:    All elements employing the `%text.model`_ parameter
+             entity in their content models may contain <inline>.
 :Children:   <inline> elements may contain text data
              plus `inline elements`_ (`%text.model`_).
 :Attributes: The <inline> element contains only the `common attributes`_.
@@ -2505,8 +2505,8 @@ that is typeset as mathematical notation (inline formula).
 :Processing: Rendered as mathematical notation.
              If the output format does not support math typesetting,
              the content may be inserted verbatim.
-:Parents:    All elements employing the `%inline.elements`_
-             parameter entities in their content models may contain <math>.
+:Parents:    All elements employing the `%text.model`_
+             parameter entitiy in their content models may contain <math>.
 :Children:   <math> elements contain text data only.
 :Attributes: The <math> element contains only the `common attributes`_.
 
@@ -2924,7 +2924,7 @@ untouched to the Writer.
              The interpretation is up to the Writer.
              A Writer may ignore <raw> elements not matching its format_.
 :Parents:    All elements employing the `%body.elements`_,
-             `%inline.elements`_, or `%structure.model`_ parameter entities
+             `%structure.model`_, or `%text.model`_ parameter entities
              in their content models may contain <raw>.
 :Children:   <raw> elements contain text data only.
 :Attributes: The <raw> element contains the `common attributes`_
@@ -2932,7 +2932,7 @@ untouched to the Writer.
 :Parameter Entities:
              The `%body.elements`_ and `%inline.elements`_ parameter
              entities directly include <raw>.  The `%structure.model`_
-             parameter entity indirectly  includes <raw>.
+             and `%text.model`_ parameter entities indirectly include <raw>.
 
 Examples
 --------
@@ -3239,7 +3239,7 @@ text that has **strong importance**, **seriousness**, or **urgency**.
 :Category:   `Inline Elements`_
 :Analogues:  <strong> is analogous to the HTML_ <strong> element.
 :Processing: Typically displayed in boldface.
-:Parents:    All elements employing the `%inline.elements`_ parameter
+:Parents:    All elements employing the `%text.model`_ parameter
              entity in their content models may contain <strong>.
 :Children:   <strong> elements may contain text data
              plus `inline elements`_ (`%text.model`_).
@@ -3275,7 +3275,7 @@ should be displayed as subscript.
 :Analogues:  <subscript> is analogous to the HTML_ <sub> element
              and the DocBook_ <subscript> element.
 :Processing: Typically rendered with a lowered baseline using smaller text.
-:Parents:    All elements employing the `%inline.elements`_ parameter
+:Parents:    All elements employing the `%text.model`_ parameter
              entity in their content models may contain <subscript>.
 :Children:   <subscript> elements may contain text data
              plus `inline elements`_ (`%text.model`_).
@@ -3375,7 +3375,7 @@ should be displayed as superscript.
 :Analogues:  <superscript> is analogous to the HTML_ <sup> element
              and the DocBook_ <superscript> element.
 :Processing: Typically rendered with a raised baseline using smaller text.
-:Parents:    All elements employing the `%inline.elements`_ parameter
+:Parents:    All elements employing the `%text.model`_ parameter
              entity in their content models may contain <superscript>.
 :Children:   <superscript> elements may contain text data
              plus `inline elements`_ (`%text.model`_).
@@ -3643,7 +3643,7 @@ caption of a `\<table>`_.
              plus refid_ (used as a backlink to a table of contents entry)
              and auto_.
 
-The <title> of a <document> may differ from its *metadata title*
+The <title> of a document may differ from its *metadata title*
 stored in the `title attribute`_.
 
 Examples
@@ -3657,8 +3657,8 @@ underlines and matching overlines)::
 
     A paragraph.
 
-    The next section's title
-    ========================
+    Next section's title
+    ====================
 
 Pseudo-XML_ fragment from simple parsing::
 
@@ -3667,9 +3667,9 @@ Pseudo-XML_ fragment from simple parsing::
             A Title
         <paragraph>
             A paragraph.
-    <section ids="the-next-section-s-title" names="the\ next\ section's\ title">
+    <section ids="next-section-s-title" names="next\ section's\ title">
         <title>
-            The next section’s title
+            Next section’s title
 
 See also the examples for `\<admonition>`_, `\<document>`_,
 `\<section>`_, `\<sidebar>`_, `\<subtitle>`_, `\<table>`_,
@@ -3686,11 +3686,12 @@ the titles of a cited creative work.
 :Analogues:  <title_reference> is analogous to the HTML_ <cite> element
              and the DocBook_ <citetitle> element.
 :Processing: Typically displayed in italic type.
-:Parents:    All elements employing the `%inline.elements`_ parameter
+:Parents:    All elements employing the `%text.model`_ parameter
              entity in their content models may contain <title_reference>.
 :Children:   <title_reference> elements may contain text data
              plus `inline elements`_ (`%text.model`_).
-:Attributes: The <title_reference> element contains only the `common attributes`_.
+:Attributes: The <title_reference> element contains only the
+             `common attributes`_.
 
 Examples
 --------
@@ -5070,17 +5071,8 @@ The ``%inline.elements`` parameter entity contains an OR-list of all
 The ``%additional.inline.elements`` parameter entity can be used by
 wrapper DTDs to extend ``%inline.elements``.
 
-Via `%text.model`_, the ``%inline.elements`` parameter entity is
-indirectly employed in the content models of the following elements:
-`\<abbreviation>`_, `\<acronym>`_, `\<address>`_, `\<attribution>`_,
-`\<author>`_, `\<caption>`_, `\<classifier>`_, `\<contact>`_,
-`\<copyright>`_, `\<date>`_, `\<doctest_block>`_, `\<emphasis>`_,
-`\<generated>`_, `\<inline>`_, `\<line_block>`_, `\<literal_block>`_,
-`\<organization>`_, `\<paragraph>`_, `\<problematic>`_,
-`\<reference>`_, `\<revision>`_, `\<rubric>`_,
-`\<status>`_, `\<strong>`_, `\<subscript>`_, `\<substitution_definition>`_,
-`\<substitution_reference>`_, `\<subtitle>`_, `\<superscript>`_,
-`\<target>`_, `\<term>`_, `\<title>`_, `\<title_reference>`_, `\<version>`_
+The ``%inline.elements`` parameter entity is employed in the
+`%text.model`_ parameter entity.
 
 
 ``%section.elements``
