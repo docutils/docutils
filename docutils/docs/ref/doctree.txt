@@ -3049,8 +3049,8 @@ The <section> element is the main unit of hierarchy for Docutils documents.
 
 :Category:   `Structural Elements`_
 
-:Analogues:  <section> is analogous to the section elements in DocBook and
-             HTML. However, unlike ``<h1>`` … ``<h6>`` in HTML_ and
+:Analogues:  <section> is analogous to the section elements in DocBook_ and
+             HTML_. However, unlike ``<h1>`` … ``<h6>`` in HTML_ and
              ``<sect1>`` … ``<sect5>`` in DocBook_, the level is not
              incorporated into the element name.
 
@@ -3059,8 +3059,8 @@ The <section> element is the main unit of hierarchy for Docutils documents.
 
 :Children:   <section> elements begin with a `\<title>`_,
              followed by an optional `\<subtitle>`_.
-             They may contain `body elements`_ as well as
-             `\<transition>`_, `\<topic>`_, and `\<sidebar>`_ elements:
+             They may contain `structural elements`_, `body elements`_,
+             and `\<transition>`_ elements:
 
              .. parsed-literal::
 
