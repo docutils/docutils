@@ -472,7 +472,7 @@ context.
 The <admonition> element is a generic, titled *admonition*,
 a distinctive and self-contained notice.
 
-See also the specific admonition elements
+See also the _`specific admonition elements`
 `\<attention>`_ `\<caution>`_, `\<danger>`_, `\<error>`_, `\<hint>`_,
 `\<important>`_, `\<note>`_, `\<tip>`_, and `\<warning>`_.
 
@@ -526,9 +526,7 @@ Pseudo-XML_ fragment from simple parsing::
 
 The <attention> element is an *admonition*, a distinctive and
 self-contained notice. See also the generic `\<admonition>`_
-and the other specific admonition elements `\<caution>`_,
-`\<danger>`_, `\<error>`_, `\<hint>`_, `\<important>`_, `\<note>`_,
-`\<tip>`_, and `\<warning>`_.
+and the other `specific admonition elements`_.
 
 Details
 -------
@@ -781,9 +779,7 @@ See `\<list_item>`_ for another example.
 
 The <caution> element is an *admonition*, a distinctive and
 self-contained notice. See also the generic `\<admonition>`_ and the
-other specific admonition elements `\<attention>`_, `\<danger>`_,
-`\<error>`_, `\<hint>`_, `\<important>`_, `\<note>`_, `\<tip>`_, and
-`\<warning>`_.
+other `specific admonition elements`_.
 
 Details
 -------
@@ -1138,9 +1134,7 @@ including processing context.
 
 The <danger> element is an *admonition*, a distinctive and
 self-contained notice. See also the generic `\<admonition>`_
-and the other specific admonition elements `\<attention>`_,
-`\<caution>`_, `\<error>`_, `\<hint>`_, `\<important>`_,
-`\<note>`_, `\<tip>`_, and `\<warning>`_.
+and the other `specific admonition elements`_.
 
 Details
 -------
@@ -1816,9 +1810,7 @@ See `\<list_item>`_ for another example.
 
 The <error> element is an *admonition*, a distinctive and
 self-contained notice. See also the generic `\<admonition>`_
-and the other specific admonition elements `\<attention>`_,
-`\<caution>`_, `\<danger>`_, `\<hint>`_, `\<important>`_,
-`\<note>`_, `\<tip>`_, and `\<warning>`_.
+and the other `specific admonition elements`_.
 
 Details
 -------
@@ -2222,9 +2214,7 @@ Pseudo-XML_ fragment from simple parsing::
 
 The <hint> element is an *admonition*, a distinctive and
 self-contained notice. See also the generic `\<admonition>`_
-and the other specific admonition elements `\<attention>`_,
-`\<caution>`_, `\<danger>`_, `\<error>`_, `\<important>`_,
-`\<note>`_, `\<tip>`_, and `\<warning>`_.
+and the other `specific admonition elements`_.
 
 Details
 -------
@@ -2311,9 +2301,7 @@ Pseudo-XML_ fragment from simple parsing::
 
 The <important> element is an *admonition*, a distinctive and
 self-contained notice. See also the generic `\<admonition>`_
-and the other specific admonition elements `\<attention>`_,
-`\<caution>`_, `\<danger>`_, `\<error>`_, `\<hint>`_,
-`\<note>`_, `\<tip>`_, and `\<warning>`_.
+and the other `specific admonition elements`_.
 
 Details
 -------
@@ -2785,9 +2773,7 @@ Pseudo-XML_ fragment from simple parsing::
 
 The <note> element is an *admonition*, a distinctive and
 self-contained notice. See also the generic `\<admonition>`_
-and the other specific admonition elements `\<attention>`_,
-`\<caution>`_, `\<danger>`_, `\<error>`_, `\<hint>`_,
-`\<important>`_, `\<tip>`_, and `\<warning>`_.
+and the other `specific admonition elements`_.
 
 Details
 -------
@@ -3830,10 +3816,9 @@ See `\<table>`_.
 <tip>
 =====
 
-The <tip> element is an *admonition*, a distinctive and self-contained notice.
-See also the generic `\<admonition>`_ and the other specific admonition
-elements `\<attention>`_, `\<caution>`_, `\<danger>`_,
-`\<error>`_, `\<hint>`_, `\<note>`_, and `\<warning>`_.
+The <tip> element is an *admonition*, a distinctive and self-contained
+notice. See also the generic `\<admonition>`_ and the other
+`specific admonition elements`_.
 
 Details
 -------
@@ -4125,9 +4110,7 @@ context.
 
 The <warning> element is an *admonition*, a distinctive and
 self-contained notice.  See also the generic `\<admonition>`_
-and the other specific admonition elements `\<attention>`_,
-`\<caution>`_, `\<danger>`_, `\<error>`_, `\<hint>`_,
-`\<important>`_, `\<note>`_, and `\<tip>`_.
+and the other `specific admonition elements`_.
 
 Details
 -------
