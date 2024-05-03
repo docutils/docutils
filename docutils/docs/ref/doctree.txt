@@ -3928,6 +3928,11 @@ Pseudo-XML_ fragment from simple parsing::
 Attribute Types
 ---------------
 
+.. contents:: :local:
+
+Standard Attribute Types
+========================
+
 *Standard attribute types* are defined in the `attribute types
 <XML attribute types_>`__ section of the `XML 1.0 specification`_.
 
@@ -3944,7 +3949,9 @@ _`NMTOKENS`
 _`EnumeratedType`
     The attribute value may be one of a specified list of values.
 
-.. _custom attribute types:
+
+Custom Attribute Types
+======================
 
 The Docutils DTD defines *custom attribute types* via `parameter entities
 <parameter entity reference_>`__ that resolve to standard attribute types
@@ -4009,6 +4016,9 @@ _`%yesorno`
 
 Names and identifiers
 =====================
+
+The following names and identifiers are used in the
+`custom attribute types`_.
 
 .. class:: description
 
@@ -4080,9 +4090,8 @@ __ https://help.libreoffice.org/6.3/en-US/text/swriter/01/04040000.html
 __ `XML attribute types`_
 
 
------------------
 Common Attributes
------------------
+=================
 
 Through the `%basic.atts`_ parameter entity, all elements support the
 following attributes: ids_, names_ or dupnames_, source_, and classes_.
