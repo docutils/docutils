@@ -1663,30 +1663,8 @@ uniformly marked with enumerator labels.
 :Attributes: The <enumerated_list> element contains the `common attributes`_
              plus enumtype_, prefix_, suffix_, and start_.
 
-             ``enumtype`` is used to record the intended
-             enumeration sequence, one of
-             "arabic" (1, 2, 3, ...),
-             "loweralpha" (a, b, c, ..., z),
-             "upperalpha" (A, B, C, ..., Z),
-             "lowerroman" (i, ii, iii, iv, ..., mmmmcmxcix [4999]),
-             or "upperroman" (I, II, III, IV, ..., MMMMCMXCIX [4999]).
-
-             ``prefix`` stores the formatting characters used before the
-             enumerator.  In documents originating from reStructuredText_
-             data, it will contain either "" (empty string) or "(" (left
-             parenthesis).  It may or may not affect processing.
-
-             ``suffix`` stores the formatting characters used after the
-             enumerator.  In documents originating from reStructuredText_
-             data, it will contain either "." (period) or ")" (right
-             parenthesis). Depending on the capabilities of the output
-             format, this attribute may or may not affect processing.
-
-             ``start`` contains the ordinal value of the first item in
-             the list, in decimal.  For lists beginning at value 1
-             ("1", "a", "A", "i", or "I"), this attribute may be omitted.
-
-:Parameter Entities: The `%body.elements`_ parameter entity directly includes
+:Parameter Entities:
+             The `%body.elements`_ parameter entity directly includes
              <enumerated_list>.  The `%structure.model`_ parameter entity
              indirectly includes <enumerated_list>.
 
@@ -4334,7 +4312,17 @@ has been a naming conflict.
 Attribute type: EnumeratedType_, one of "arabic", "loweralpha",
 "upperalpha", "lowerroman", or "upperroman".  Default value: none.
 
-The ``enumtype`` attribute is used in the `\<enumerated_list>`_ element.
+The ``enumtype`` attribute is used in the `\<enumerated_list>`_ element
+to record the intended enumeration sequence.
+
+Supported values:
+    .. class:: field-indent-8em
+
+    :arabic:     1, 2, 3, ...
+    :loweralpha: a, b, c, ..., z
+    :upperalpha: A, B, C, ..., Z
+    :lowerroman: i, ii, iii, iv, ..., mmmmcmxcix [4999]
+    :upperroman: I, II, III, IV, ..., MMMMCMXCIX [4999]
 
 
 ``format``
@@ -4547,7 +4535,12 @@ ignored by Docutils.
 
 Attribute type: `CDATA`_.  Default value: none.
 
-The ``prefix`` attribute is used in the `\<enumerated_list>`_ element.
+The ``prefix`` attribute is used in the `\<enumerated_list>`_ element
+to store the formatting characters used before the enumerator.
+
+In documents originating from reStructuredText_ data, it will contain
+either "" (empty string) or "(" (left parenthesis).
+Writers may ignore this attribute.
 
 
 ``refid``
@@ -4630,16 +4623,26 @@ a uniform scaling factor (integer percentage value).
 Attribute type: `CDATA`_.  Default value: none.
 
 The ``source`` attribute is used to store the path or URL to the
-source text that was used to produce the document tree.  It is one of
-the `common attributes`_, declared for all Docutils elements.
+source text that was used to produce the document tree.
+
+It is one of the `common attributes`_, declared for all Docutils
+elements but typically only used on the `root element`_.
+
+.. note:: All ``docutils.nodes.Node`` instances also support an
+   **internal** ``source`` attribute that is used when reporting
+   processing problems.
 
 
 ``start``
 =========
 
-Attribute type: `%number`_.  Default value: none.
+Attribute type: `%number`_.  Default value: none (implies 1).
 
-The ``start`` attribute is used in the `\<enumerated_list>`_ element.
+The ``start`` attribute is used in the `\<enumerated_list>`_ element to
+store the ordinal value of the first item in the list, in decimal.
+
+For lists beginning at value 1 ("1", "a", "A", "i", or "I"),
+this attribute may be omitted.
 
 
 ``stub``
@@ -4660,7 +4663,13 @@ entity extending the `Exchange Table Model`_.
 
 Attribute type: `CDATA`_.  Default value: none.
 
-The ``suffix`` attribute is used in the `\<enumerated_list>`_ element.
+The ``suffix`` attribute is used in the `\<enumerated_list>`_ element
+to store the formatting characters used after the enumerator.
+
+In documents originating from reStructuredText_ data, it will contain
+either "." (period) or ")" (right parenthesis). Depending on the
+capabilities of the output format, this attribute may or may not affect
+processing.
 
 
 .. _title attribute:
