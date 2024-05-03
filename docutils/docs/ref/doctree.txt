@@ -3933,8 +3933,9 @@ Attribute Types
 Standard Attribute Types
 ========================
 
-*Standard attribute types* are defined in the `attribute types
-<XML attribute types_>`__ section of the `XML 1.0 specification`_.
+*Standard attribute types* are defined in the
+`attribute types <XML attribute types_>`__ section
+of the `XML 1.0 specification` [xml1.0]_.
 
 _`CDATA`
     Character data.  CDATA attributes may contain arbitrary text.
@@ -4008,10 +4009,6 @@ _`%yesorno`
   | Used in the anonymous_, colsep_, ltrim_, rtrim_, rowsep_,
     and `stub`_ attributes.
     Python data type: ``int``.
-
-.. _XML 1.0 specification: https://www.w3.org/TR/REC-xml
-.. _XML attribute types: https://www.w3.org/TR/REC-xml/#sec-attribute-types
-.. _One ID per Element Type: https://www.w3.org/TR/REC-xml/#one-id-per-el
 
 
 Names and identifiers
@@ -5211,10 +5208,10 @@ models of the following elements: `\<abbreviation>`_,
 Bibliography
 ------------
 
-.. _Exchange Table Model:
-.. _XML Exchange Table Model DTD:
+.. [tm9901]     .. _XML Exchange Table Model DTD:
+                .. _Exchange Table Model:
 
-.. [tm9901]     `XML Exchange Table Model DTD`,
+                `XML Exchange Table Model DTD`,
                 OASIS Technical Memorandum 9901:1999,
                 http://www.oasis-open.org/html/tm9901.html.
 
@@ -5230,7 +5227,6 @@ Bibliography
 .. [xml1.0]    `Extensible Markup Language (XML) 1.0`,
                 W3C Recommendation,
                 https://www.w3.org/TR/xml/.
-
 
 .. _DocBook: https://tdg.docbook.org/tdg/5.1/.
 .. _DocBook <caution>: https://tdg.docbook.org/tdg/5.1/caution.html
@@ -5251,6 +5247,9 @@ Bibliography
     http://xml.coverpages.org/xmlIntro.html
 .. _XMLSpec: https://www.w3.org/XML/1998/06/xmlspec-report.htm
 .. _external DTD subset: https://www.w3.org/TR/xml11/#dt-doctype
+.. _XML attribute types: https://www.w3.org/TR/REC-xml/#sec-attribute-types
+.. _One ID per Element Type: https://www.w3.org/TR/REC-xml/#one-id-per-el
+
 
 .. _Docutils: https://docutils.sourceforge.io/.
 .. _reStructuredText: https://docutils.sourceforge.io/rst.html
@@ -5270,7 +5269,7 @@ Bibliography
 .. _transform:
 .. _transforms:         ../api/transforms.html
 .. _DocInfo transform:  ../api/transforms.html#docinfo
-.. _DocTitle transform: ../api/transforms.html#frontmatter-doctitle
+.. _DocTitle transform: ../api/transforms.html#doctitle
 
 .. _A ReStructuredText Primer: ../user/rst/quickstart.html
 .. _reStructuredText Markup Specification: rst/restructuredtext.html
