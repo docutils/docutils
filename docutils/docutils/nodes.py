@@ -215,18 +215,6 @@ class Node:
         for child in self.children:
             yield from child._superfast_findall()
 
-    def traverse(self, condition=None, include_self=True, descend=True,
-                 siblings=False, ascend=False):
-        """Return list of nodes following `self`.
-
-        For looping, Node.findall() is faster and more memory efficient.
-        """
-        # traverse() may be eventually removed:
-        warnings.warn('nodes.Node.traverse() is obsoleted by Node.findall().',
-                      PendingDeprecationWarning, stacklevel=2)
-        return list(self.findall(condition, include_self, descend,
-                                 siblings, ascend))
-
     def findall(self, condition=None, include_self=True, descend=True,
                 siblings=False, ascend=False):
         """
@@ -310,6 +298,18 @@ class Node:
                 else:
                     node = node.parent
 
+    def traverse(self, condition=None, include_self=True, descend=True,
+                 siblings=False, ascend=False):
+        """Return list of nodes following `self`.
+
+        For looping, Node.findall() is faster and more memory efficient.
+        """
+        # traverse() may be eventually removed:
+        warnings.warn('nodes.Node.traverse() is obsoleted by Node.findall().',
+                      PendingDeprecationWarning, stacklevel=2)
+        return list(self.findall(condition, include_self, descend,
+                                 siblings, ascend))
+
     def next_node(self, condition=None, include_self=False, descend=True,
                   siblings=False, ascend=False):
         """
@@ -324,21 +324,6 @@ class Node:
                                      descend, siblings, ascend))
         except StopIteration:
             return None
-
-
-# definition moved here from `utils` to avoid circular import dependency
-def unescape(text, restore_backslashes=False, respect_whitespace=False):
-    """
-    Return a string with nulls removed or restored to backslashes.
-    Backslash-escaped spaces are also removed.
-    """
-    # `respect_whitespace` is ignored (since introduction 2016-12-16)
-    if restore_backslashes:
-        return text.replace('\x00', '\\')
-    else:
-        for sep in ['\x00 ', '\x00\n', '\x00']:
-            text = ''.join(text.split(sep))
-        return text
 
 
 class Text(Node, str):
@@ -377,11 +362,11 @@ class Text(Node, str):
     def __repr__(self):
         return self.shortrepr(maxlen=68)
 
-    def _dom_node(self, domroot):
-        return domroot.createTextNode(str(self))
-
     def astext(self):
         return str(unescape(self))
+
+    def _dom_node(self, domroot):
+        return domroot.createTextNode(str(self))
 
     def copy(self):
         return self.__class__(str(self))
@@ -1087,6 +1072,97 @@ class Element(Node):
         return attr not in cls.known_attributes
 
 
+# ========
+#  Mixins
+# ========
+
+class Resolvable:
+
+    resolved = 0
+
+
+class BackLinkable:
+
+    def add_backref(self, refid):
+        self['backrefs'].append(refid)
+
+
+# ====================
+#  Element Categories
+# ====================
+
+class Root:
+    pass
+
+
+class Titular:
+    pass
+
+
+class PreBibliographic:
+    """Category of Node which may occur before Bibliographic Nodes."""
+
+
+class Invisible(PreBibliographic):
+    """Internal elements that don't appear in output."""
+
+
+class Bibliographic:
+    pass
+
+
+class Decorative(PreBibliographic):
+    pass
+
+
+class Structural:
+    pass
+
+
+class Body:
+    pass
+
+
+class General(Body):
+    pass
+
+
+class Sequential(Body):
+    """List-like elements."""
+
+
+class Admonition(Body): pass
+
+
+class Special(Body):
+    """Special internal body elements."""
+
+
+class Part:
+    pass
+
+
+class Inline:
+    pass
+
+
+class Referential(Resolvable):
+    pass
+
+
+class Targetable(Resolvable):
+
+    referenced = 0
+
+    indirect_reference_name = None
+    """Holds the whitespace_normalized_name (contains mixed case) of a target.
+    Required for MoinMoin/reST compatibility."""
+
+
+class Labeled:
+    """Contains a `label` as its first element."""
+
+
 class TextElement(Element):
 
     """
@@ -1128,97 +1204,6 @@ class FixedTextElement(TextElement):
 #   For elements in the DTD that directly employ #PCDATA in their definition:
 #   citation_reference, comment, footnote_reference, label, math, math_block,
 #   option_argument, option_string, raw,
-
-
-# ========
-#  Mixins
-# ========
-
-class Resolvable:
-
-    resolved = 0
-
-
-class BackLinkable:
-
-    def add_backref(self, refid):
-        self['backrefs'].append(refid)
-
-
-# ====================
-#  Element Categories
-# ====================
-
-class Root:
-    pass
-
-
-class Titular:
-    pass
-
-
-class PreBibliographic:
-    """Category of Node which may occur before Bibliographic Nodes."""
-
-
-class Bibliographic:
-    pass
-
-
-class Decorative(PreBibliographic):
-    pass
-
-
-class Structural:
-    pass
-
-
-class Body:
-    pass
-
-
-class General(Body):
-    pass
-
-
-class Sequential(Body):
-    """List-like elements."""
-
-
-class Admonition(Body): pass
-
-
-class Special(Body):
-    """Special internal body elements."""
-
-
-class Invisible(PreBibliographic):
-    """Internal elements that don't appear in output."""
-
-
-class Part:
-    pass
-
-
-class Inline:
-    pass
-
-
-class Referential(Resolvable):
-    pass
-
-
-class Targetable(Resolvable):
-
-    referenced = 0
-
-    indirect_reference_name = None
-    """Holds the whitespace_normalized_name (contains mixed case) of a target.
-    Required for MoinMoin/reST compatibility."""
-
-
-class Labeled:
-    """Contains a `label` as its first element."""
 
 
 # ==============
@@ -2177,6 +2162,21 @@ class StopTraversal(TreePruningException):
     NodeFound that does not cause exception handling to trickle up to the
     caller.
     """
+
+
+# definition moved here from `utils` to avoid circular import dependency
+def unescape(text, restore_backslashes=False, respect_whitespace=False):
+    """
+    Return a string with nulls removed or restored to backslashes.
+    Backslash-escaped spaces are also removed.
+    """
+    # `respect_whitespace` is ignored (since introduction 2016-12-16)
+    if restore_backslashes:
+        return text.replace('\x00', '\\')
+    else:
+        for sep in ['\x00 ', '\x00\n', '\x00']:
+            text = ''.join(text.split(sep))
+        return text
 
 
 def make_id(string):

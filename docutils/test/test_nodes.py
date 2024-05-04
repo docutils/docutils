@@ -21,22 +21,123 @@ from docutils import nodes, utils
 debug = False
 
 
+class NodeTests(unittest.TestCase):
+
+    def not_in_testlist(self, x):
+        # function to use in `condition` argument in findall() and next_node()
+        return x not in self.testlist
+
+    def test_findall(self):
+        # `findall()` is defined in class Node,
+        # we test with a tree of Element instances (simpler setup)
+        e = nodes.Element()
+        e += nodes.Element()
+        e[0] += nodes.Element()
+        e[0] += nodes.TextElement()
+        e[0][1] += nodes.Text('some text')
+        e += nodes.Element()
+        e += nodes.Element()
+        self.assertEqual(list(e.findall()),
+                         [e, e[0], e[0][0], e[0][1], e[0][1][0], e[1], e[2]])
+        self.assertEqual(list(e.findall(include_self=False)),
+                         [e[0], e[0][0], e[0][1], e[0][1][0], e[1], e[2]])
+        self.assertEqual(list(e.findall(descend=False)),
+                         [e])
+        self.assertEqual(list(e[0].findall(descend=False, ascend=True)),
+                         [e[0], e[1], e[2]])
+        self.assertEqual(list(e[0][0].findall(descend=False, ascend=True)),
+                         [e[0][0], e[0][1], e[1], e[2]])
+        self.assertEqual(list(e[0][0].findall(descend=False, siblings=True)),
+                         [e[0][0], e[0][1]])
+        self.testlist = e[0:2]
+        self.assertEqual(list(e.findall(condition=self.not_in_testlist)),
+                         [e, e[0][0], e[0][1], e[0][1][0], e[2]])
+        # Return siblings despite siblings=False because ascend is true.
+        self.assertEqual(list(e[1].findall(ascend=True, siblings=False)),
+                         [e[1], e[2]])
+        self.assertEqual(list(e[0].findall()),
+                         [e[0], e[0][0], e[0][1], e[0][1][0]])
+        self.testlist = [e[0][0], e[0][1]]
+        self.assertEqual(list(e[0].findall(condition=self.not_in_testlist)),
+                         [e[0], e[0][1][0]])
+        self.testlist.append(e[0][1][0])
+        self.assertEqual(list(e[0].findall(condition=self.not_in_testlist)),
+                         [e[0]])
+        self.assertEqual(list(e.findall(nodes.TextElement)), [e[0][1]])
+
+    def test_findall_duplicate_texts(self):
+        e = nodes.Element()
+        e += nodes.TextElement()
+        e[0] += nodes.Text('one')  # e[0][0]
+        e[0] += nodes.Text('two')  # e[0][1]
+        e[0] += nodes.Text('three')  # e[0][2]
+        e[0] += nodes.Text('two')  # e[0][3]    same value as e[0][1]
+        e[0] += nodes.Text('five')  # e[0][4]
+        full_list = list(e[0][0].findall(siblings=True))
+        self.assertEqual(len(full_list), 5)
+        for i in range(5):
+            self.assertIs(full_list[i], e[0][i])
+
+        partial_list = list(e[0][3].findall(siblings=True))
+        self.assertEqual(len(partial_list), 2)
+        self.assertIs(partial_list[0], e[0][3])
+        self.assertIs(partial_list[1], e[0][4])
+
+    def test_next_node(self):
+        e = nodes.Element()
+        e += nodes.Element()
+        e[0] += nodes.Element()
+        e[0] += nodes.TextElement()
+        e[0][1] += nodes.Text('some text')
+        e += nodes.Element()
+        e += nodes.Element()
+        self.testlist = [e[0], e[0][1], e[1]]
+        compare = [(e, e[0][0]),
+                   (e[0], e[0][0]),
+                   (e[0][0], e[0][1][0]),
+                   (e[0][1], e[0][1][0]),
+                   (e[0][1][0], e[2]),
+                   (e[1], e[2]),
+                   (e[2], None)]
+        for node, next_node in compare:
+            self.assertEqual(node.next_node(self.not_in_testlist, ascend=True),
+                             next_node)
+        self.assertEqual(e[0][0].next_node(ascend=True), e[0][1])
+        self.assertEqual(e[2].next_node(), None)
+
+
 class TextTests(unittest.TestCase):
 
-    def setUp(self):
-        self.text = nodes.Text('Line 1.\n\x00rad två.')
-        self.longtext = nodes.Text('Mary had a little lamb whose '
-                                   'fleece was white as snow and '
-                                   'everwhere that Mary went the '
-                                   'lamb was sure to go.')
+    text = nodes.Text('Line 1.\n\x00rad två.')
+    longtext = nodes.Text('Mary had a little lamb '
+                          'whose fleece was white as snow '
+                          'and everwhere that Mary went '
+                          'the lamb was sure to go.')
+
+    def test_value_type_check(self):
+        # data must by `str` instance, no `bytes` allowed
+        with self.assertRaises(TypeError):
+            nodes.Text(b'hol')
+
+    def test_Text_rawsource_deprection_warning(self):
+        with self.assertWarnsRegex(DeprecationWarning,
+                                   '"rawsource" is ignored'):
+            nodes.Text('content', rawsource='content')
+
+    def test_str(self):
+        self.assertEqual(str(self.text), 'Line 1.\n\x00rad två.')
 
     def test_repr(self):
         self.assertEqual(repr(self.text), r"<#text: 'Line 1.\n\x00rad två.'>")
         self.assertEqual(self.text.shortrepr(),
                          r"<#text: 'Line 1.\n\x00rad två.'>")
 
-    def test_str(self):
-        self.assertEqual(str(self.text), 'Line 1.\n\x00rad två.')
+    def test_repr_long_text(self):
+        self.assertEqual(repr(self.longtext), r"<#text: 'Mary had a "
+                         r"little lamb whose fleece was white as snow "
+                         r"and everwh ...'>")
+        self.assertEqual(self.longtext.shortrepr(),
+                         r"<#text: 'Mary had a lit ...'>")
 
     def test_astext(self):
         self.assertEqual(self.text.astext(), 'Line 1.\nrad två.')
@@ -52,25 +153,9 @@ class TextTests(unittest.TestCase):
         self.assertEqual(stripped, 'was noch')
         self.assertEqual(stripped2, 's noc')
 
-    def test_asciirestriction(self):
-        # no bytes at all allowed
-        self.assertRaises(TypeError, nodes.Text, b'hol')
-
-    def test_longrepr(self):
-        self.assertEqual(repr(self.longtext), r"<#text: 'Mary had a "
-                         r"little lamb whose fleece was white as snow "
-                         r"and everwh ...'>")
-        self.assertEqual(self.longtext.shortrepr(),
-                         r"<#text: 'Mary had a lit ...'>")
-
     def test_comparison(self):
         # Text nodes are compared by value
         self.assertEqual(self.text, nodes.Text('Line 1.\n\x00rad två.'))
-
-    def test_Text_rawsource_deprection_warning(self):
-        with self.assertWarnsRegex(DeprecationWarning,
-                                   '"rawsource" is ignored'):
-            nodes.Text('content', rawsource='content')
 
 
 class ElementTests(unittest.TestCase):
@@ -296,6 +381,46 @@ class ElementTests(unittest.TestCase):
         # 'll' is extended
         self.assertEqual(element1['ll'], ['A', 'B'])
 
+    def test_copy(self):
+        # Shallow copy:
+        grandchild = nodes.Text('grandchild text')
+        child = nodes.emphasis('childtext', grandchild, att='child')
+        e = nodes.Element('raw text', child, att='e')
+        e_copy = e.copy()
+        self.assertTrue(e is not e_copy)
+        # Internal attributes (like `rawsource`) are also copied.
+        self.assertEqual(e.rawsource, 'raw text')
+        self.assertEqual(e_copy.rawsource, e.rawsource)
+        self.assertEqual(e_copy['att'], 'e')
+        self.assertEqual(e_copy.document, e.document)
+        self.assertEqual(e_copy.source, e.source)
+        self.assertEqual(e_copy.line, e.line)
+        # Children are not copied.
+        self.assertEqual(len(e_copy), 0)
+
+    def test_deepcopy(self):
+        # Deep copy:
+        grandchild = nodes.Text('grandchild text')
+        child = nodes.emphasis('childtext', grandchild, att='child')
+        e = nodes.Element('raw text', child, att='e')
+        e_deepcopy = e.deepcopy()
+        self.assertEqual(e_deepcopy.rawsource, e.rawsource)
+        self.assertEqual(e_deepcopy['att'], 'e')
+        # Children are copied recursively.
+        self.assertEqual(e_deepcopy[0][0], grandchild)
+        self.assertTrue(e_deepcopy[0][0] is not grandchild)
+        self.assertEqual(e_deepcopy[0]['att'], 'child')
+
+    def test_system_message_copy(self):
+        e = nodes.system_message('mytext', att='e', rawsource='raw text')
+        # Shallow copy:
+        e_copy = e.copy()
+        self.assertTrue(e is not e_copy)
+        # Internal attributes (like `rawsource`) are also copied.
+        self.assertEqual(e.rawsource, 'raw text')
+        self.assertEqual(e_copy.rawsource, e.rawsource)
+        self.assertEqual(e_copy['att'], 'e')
+
     def test_replace_self(self):
         parent = nodes.Element(ids=['parent'])
         child1 = nodes.Element(ids=['child1'])
@@ -359,11 +484,124 @@ class MiscTests(unittest.TestCase):
         nodes.node_class_names.sort()
         self.assertEqual(node_class_names, nodes.node_class_names)
 
+
+class TreeCopyVisitorTests(unittest.TestCase):
+
+    def setUp(self):
+        document = utils.new_document('test data')
+        document += nodes.paragraph('', 'Paragraph 1.')
+        blist = nodes.bullet_list()
+        for i in range(1, 6):
+            item = nodes.list_item()
+            for j in range(1, 4):
+                item += nodes.paragraph('', 'Item %s, paragraph %s.' % (i, j))
+            blist += item
+        document += blist
+        self.document = document
+
+    def compare_trees(self, one, two):
+        self.assertEqual(one.__class__, two.__class__)
+        self.assertNotEqual(id(one), id(two))
+        self.assertEqual(len(one.children), len(two.children))
+        for i in range(len(one.children)):
+            self.compare_trees(one.children[i], two.children[i])
+
+    def test_copy_whole(self):
+        visitor = nodes.TreeCopyVisitor(self.document)
+        self.document.walkabout(visitor)
+        newtree = visitor.get_tree_copy()
+        self.assertEqual(self.document.pformat(), newtree.pformat())
+        self.compare_trees(self.document, newtree)
+
+
+class SetIdTests(unittest.TestCase):
+
+    def setUp(self):
+        self.document = utils.new_document('test')
+        self.elements = [nodes.Element(names=['test']),
+                         nodes.section(),  # Name empty
+                         nodes.section(names=['Test']),  # duplicate id
+                         nodes.footnote(names=['2019-10-30']),  # id empty
+                         ]
+
+    def test_set_id_default(self):
+        # Default prefixes.
+        for element in self.elements:
+            self.document.set_id(element)
+        ids = [element['ids'] for element in self.elements]
+        self.assertEqual(ids, [['test'], ['section-1'],
+                               ['test-1'], ['footnote-1']])
+
+    def test_set_id_custom(self):
+        # Custom prefixes.
+
+        # Change settings.
+        self.document.settings.id_prefix = 'P-'
+        self.document.settings.auto_id_prefix = 'auto'
+
+        for element in self.elements:
+            self.document.set_id(element)
+        ids = [element['ids'] for element in self.elements]
+        self.assertEqual(ids, [['P-test'],
+                               ['P-auto1'],
+                               ['P-auto2'],
+                               ['P-2019-10-30']])
+
+    def test_set_id_descriptive_auto_id(self):
+        # Use name or tag-name for auto-id.
+
+        # Change setting.
+        self.document.settings.auto_id_prefix = '%'
+
+        for element in self.elements:
+            self.document.set_id(element)
+        ids = [element['ids'] for element in self.elements]
+        self.assertEqual(ids, [['test'],
+                               ['section-1'],
+                               ['test-1'],
+                               ['footnote-1']])
+
+    def test_set_id_custom_descriptive_auto_id(self):
+        # Custom prefixes and name or tag-name for auto-id.
+
+        # Change settings.
+        self.document.settings.id_prefix = 'P:'
+        self.document.settings.auto_id_prefix = 'a-%'
+
+        for element in self.elements:
+            self.document.set_id(element)
+        ids = [element['ids'] for element in self.elements]
+        self.assertEqual(ids, [['P:test'],
+                               ['P:a-section-1'],
+                               ['P:test-1'],
+                               ['P:2019-10-30']])
+
+
+class NodeVisitorTests(unittest.TestCase):
+    def setUp(self):
+        self.document = utils.new_document('test')
+        self.element = nodes.Element()
+        self.visitor = nodes.NodeVisitor(self.document)
+
+    def test_dispatch_visit_unknown(self):
+        # raise exception if no visit/depart methods are defined for node class
+        with self.assertRaises(NotImplementedError):
+            self.visitor.dispatch_visit(self.element)
+
+    def test_dispatch_visit_optional(self):
+        # silently skip nodes of a calss in tuple nodes.NodeVisitor.optional
+        rv = self.visitor.dispatch_visit(nodes.meta())
+        self.assertIsNone(rv)
+
+
+class MiscFunctionTests(unittest.TestCase):
+
     ids = [('a', 'a'), ('A', 'a'), ('', ''), ('a b \n c', 'a-b-c'),
            ('a.b.c', 'a-b-c'), (' - a - b - c - ', 'a-b-c'), (' - ', ''),
            ('\u2020\u2066', ''), ('a \xa7 b \u2020 c', 'a-b-c'),
            ('1', ''), ('1abc', 'abc'),
            ]
+
     ids_unicode_all = [
             ('\u00f8 o with stroke', 'o-o-with-stroke'),
             ('\u0111 d with stroke', 'd-d-with-stroke'),
@@ -538,232 +776,6 @@ class MiscTests(unittest.TestCase):
         if failures:
             self.fail(f'{len(failures)} failures in {len(self.ids)} ids\n'
                       + "\n".join(failures))
-
-    def test_findall(self):
-        e = nodes.Element()
-        e += nodes.Element()
-        e[0] += nodes.Element()
-        e[0] += nodes.TextElement()
-        e[0][1] += nodes.Text('some text')
-        e += nodes.Element()
-        e += nodes.Element()
-        self.assertEqual(list(e.findall()),
-                         [e, e[0], e[0][0], e[0][1], e[0][1][0], e[1], e[2]])
-        self.assertEqual(list(e.findall(include_self=False)),
-                         [e[0], e[0][0], e[0][1], e[0][1][0], e[1], e[2]])
-        self.assertEqual(list(e.findall(descend=False)),
-                         [e])
-        self.assertEqual(list(e[0].findall(descend=False, ascend=True)),
-                         [e[0], e[1], e[2]])
-        self.assertEqual(list(e[0][0].findall(descend=False, ascend=True)),
-                         [e[0][0], e[0][1], e[1], e[2]])
-        self.assertEqual(list(e[0][0].findall(descend=False, siblings=True)),
-                         [e[0][0], e[0][1]])
-        self.testlist = e[0:2]
-        self.assertEqual(list(e.findall(condition=self.not_in_testlist)),
-                         [e, e[0][0], e[0][1], e[0][1][0], e[2]])
-        # Return siblings despite siblings=False because ascend is true.
-        self.assertEqual(list(e[1].findall(ascend=True, siblings=False)),
-                         [e[1], e[2]])
-        self.assertEqual(list(e[0].findall()),
-                         [e[0], e[0][0], e[0][1], e[0][1][0]])
-        self.testlist = [e[0][0], e[0][1]]
-        self.assertEqual(list(e[0].findall(condition=self.not_in_testlist)),
-                         [e[0], e[0][1][0]])
-        self.testlist.append(e[0][1][0])
-        self.assertEqual(list(e[0].findall(condition=self.not_in_testlist)),
-                         [e[0]])
-        self.assertEqual(list(e.findall(nodes.TextElement)), [e[0][1]])
-
-    def test_findall_duplicate_texts(self):
-        e = nodes.Element()
-        e += nodes.TextElement()
-        e[0] += nodes.Text('one')
-        e[0] += nodes.Text('two')
-        e[0] += nodes.Text('three')
-        e[0] += nodes.Text('two')
-        e[0] += nodes.Text('five')
-        full_list = list(e[0][0].findall(siblings=True))
-        self.assertEqual(len(full_list), 5)
-        for i in range(5):
-            self.assertIs(full_list[i], e[0][i])
-
-        partial_list = list(e[0][3].findall(siblings=True))
-        self.assertEqual(len(partial_list), 2)
-        self.assertIs(partial_list[0], e[0][3])
-        self.assertIs(partial_list[1], e[0][4])
-
-    def test_next_node(self):
-        e = nodes.Element()
-        e += nodes.Element()
-        e[0] += nodes.Element()
-        e[0] += nodes.TextElement()
-        e[0][1] += nodes.Text('some text')
-        e += nodes.Element()
-        e += nodes.Element()
-        self.testlist = [e[0], e[0][1], e[1]]
-        compare = [(e, e[0][0]),
-                   (e[0], e[0][0]),
-                   (e[0][0], e[0][1][0]),
-                   (e[0][1], e[0][1][0]),
-                   (e[0][1][0], e[2]),
-                   (e[1], e[2]),
-                   (e[2], None)]
-        for node, next_node in compare:
-            self.assertEqual(node.next_node(self.not_in_testlist, ascend=True),
-                             next_node)
-        self.assertEqual(e[0][0].next_node(ascend=True), e[0][1])
-        self.assertEqual(e[2].next_node(), None)
-
-    def not_in_testlist(self, x):
-        return x not in self.testlist
-
-    def test_copy(self):
-        grandchild = nodes.Text('grandchild text')
-        child = nodes.emphasis('childtext', grandchild, att='child')
-        e = nodes.Element('raw text', child, att='e')
-        # Shallow copy:
-        e_copy = e.copy()
-        self.assertTrue(e is not e_copy)
-        # Internal attributes (like `rawsource`) are also copied.
-        self.assertEqual(e.rawsource, 'raw text')
-        self.assertEqual(e_copy.rawsource, e.rawsource)
-        self.assertEqual(e_copy['att'], 'e')
-        self.assertEqual(e_copy.document, e.document)
-        self.assertEqual(e_copy.source, e.source)
-        self.assertEqual(e_copy.line, e.line)
-        # Children are not copied.
-        self.assertEqual(len(e_copy), 0)
-        # Deep copy:
-        e_deepcopy = e.deepcopy()
-        self.assertEqual(e_deepcopy.rawsource, e.rawsource)
-        self.assertEqual(e_deepcopy['att'], 'e')
-        # Children are copied recursively.
-        self.assertEqual(e_deepcopy[0][0], grandchild)
-        self.assertTrue(e_deepcopy[0][0] is not grandchild)
-        self.assertEqual(e_deepcopy[0]['att'], 'child')
-
-    def test_system_message_copy(self):
-        e = nodes.system_message('mytext', att='e', rawsource='raw text')
-        # Shallow copy:
-        e_copy = e.copy()
-        self.assertTrue(e is not e_copy)
-        # Internal attributes (like `rawsource`) are also copied.
-        self.assertEqual(e.rawsource, 'raw text')
-        self.assertEqual(e_copy.rawsource, e.rawsource)
-        self.assertEqual(e_copy['att'], 'e')
-
-
-class TreeCopyVisitorTests(unittest.TestCase):
-
-    def setUp(self):
-        document = utils.new_document('test data')
-        document += nodes.paragraph('', 'Paragraph 1.')
-        blist = nodes.bullet_list()
-        for i in range(1, 6):
-            item = nodes.list_item()
-            for j in range(1, 4):
-                item += nodes.paragraph('', 'Item %s, paragraph %s.' % (i, j))
-            blist += item
-        document += blist
-        self.document = document
-
-    def compare_trees(self, one, two):
-        self.assertEqual(one.__class__, two.__class__)
-        self.assertNotEqual(id(one), id(two))
-        self.assertEqual(len(one.children), len(two.children))
-        for i in range(len(one.children)):
-            self.compare_trees(one.children[i], two.children[i])
-
-    def test_copy_whole(self):
-        visitor = nodes.TreeCopyVisitor(self.document)
-        self.document.walkabout(visitor)
-        newtree = visitor.get_tree_copy()
-        self.assertEqual(self.document.pformat(), newtree.pformat())
-        self.compare_trees(self.document, newtree)
-
-
-class SetIdTests(unittest.TestCase):
-
-    def setUp(self):
-        self.document = utils.new_document('test')
-        self.elements = [nodes.Element(names=['test']),
-                         nodes.section(),  # Name empty
-                         nodes.section(names=['Test']),  # duplicate id
-                         nodes.footnote(names=['2019-10-30']),  # id empty
-                         ]
-
-    def test_set_id_default(self):
-        # Default prefixes.
-        for element in self.elements:
-            self.document.set_id(element)
-        ids = [element['ids'] for element in self.elements]
-        self.assertEqual(ids, [['test'], ['section-1'],
-                               ['test-1'], ['footnote-1']])
-
-    def test_set_id_custom(self):
-        # Custom prefixes.
-
-        # Change settings.
-        self.document.settings.id_prefix = 'P-'
-        self.document.settings.auto_id_prefix = 'auto'
-
-        for element in self.elements:
-            self.document.set_id(element)
-        ids = [element['ids'] for element in self.elements]
-        self.assertEqual(ids, [['P-test'],
-                               ['P-auto1'],
-                               ['P-auto2'],
-                               ['P-2019-10-30']])
-
-    def test_set_id_descriptive_auto_id(self):
-        # Use name or tag-name for auto-id.
-
-        # Change setting.
-        self.document.settings.auto_id_prefix = '%'
-
-        for element in self.elements:
-            self.document.set_id(element)
-        ids = [element['ids'] for element in self.elements]
-        self.assertEqual(ids, [['test'],
-                               ['section-1'],
-                               ['test-1'],
-                               ['footnote-1']])
-
-    def test_set_id_custom_descriptive_auto_id(self):
-        # Custom prefixes and name or tag-name for auto-id.
-
-        # Change settings.
-        self.document.settings.id_prefix = 'P:'
-        self.document.settings.auto_id_prefix = 'a-%'
-
-        for element in self.elements:
-            self.document.set_id(element)
-        ids = [element['ids'] for element in self.elements]
-        self.assertEqual(ids, [['P:test'],
-                               ['P:a-section-1'],
-                               ['P:test-1'],
-                               ['P:2019-10-30']])
-
-
-class NodeVisitorTests(unittest.TestCase):
-    def setUp(self):
-        self.document = utils.new_document('test')
-        self.element = nodes.Element()
-        self.visitor = nodes.NodeVisitor(self.document)
-
-    def test_dispatch_visit_unknown(self):
-        # raise exception if no visit/depart methods are defined for node class
-        with self.assertRaises(NotImplementedError):
-            self.visitor.dispatch_visit(self.element)
-
-    def test_dispatch_visit_optional(self):
-        # silently skip nodes of a calss in tuple nodes.NodeVisitor.optional
-        rv = self.visitor.dispatch_visit(nodes.meta())
-        self.assertIsNone(rv)
-
-
-class MiscFunctionTests(unittest.TestCase):
 
     names = [  # sample, whitespace_normalized, fully_normalized
              ('a', 'a', 'a'),
