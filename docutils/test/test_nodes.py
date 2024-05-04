@@ -24,34 +24,26 @@ debug = False
 class TextTests(unittest.TestCase):
 
     def setUp(self):
-        self.text = nodes.Text('Line 1.\nLine 2.')
-        self.unicode_text = nodes.Text('Möhren')
+        self.text = nodes.Text('Line 1.\n\x00rad två.')
         self.longtext = nodes.Text('Mary had a little lamb whose '
                                    'fleece was white as snow and '
                                    'everwhere that Mary went the '
                                    'lamb was sure to go.')
 
     def test_repr(self):
-        self.assertEqual(repr(self.text), r"<#text: 'Line 1.\nLine 2.'>")
+        self.assertEqual(repr(self.text), r"<#text: 'Line 1.\n\x00rad två.'>")
         self.assertEqual(self.text.shortrepr(),
-                         r"<#text: 'Line 1.\nLine 2.'>")
-        self.assertEqual(repr(self.unicode_text), "<#text: 'Möhren'>")
+                         r"<#text: 'Line 1.\n\x00rad två.'>")
 
     def test_str(self):
-        self.assertEqual(str(self.text), 'Line 1.\nLine 2.')
-
-    def test_unicode(self):
-        self.assertEqual(str(self.unicode_text), 'Möhren')
-        self.assertEqual(str(self.unicode_text), 'M\xf6hren')
+        self.assertEqual(str(self.text), 'Line 1.\n\x00rad två.')
 
     def test_astext(self):
-        self.assertTrue(isinstance(self.text.astext(), str))
-        self.assertEqual(self.text.astext(), 'Line 1.\nLine 2.')
-        self.assertEqual(self.unicode_text.astext(), 'Möhren')
+        self.assertEqual(self.text.astext(), 'Line 1.\nrad två.')
 
     def test_pformat(self):
         self.assertTrue(isinstance(self.text.pformat(), str))
-        self.assertEqual(self.text.pformat(), 'Line 1.\nLine 2.\n')
+        self.assertEqual(self.text.pformat(), 'Line 1.\nrad två.\n')
 
     def test_strip(self):
         text = nodes.Text(' was noch ')
@@ -73,8 +65,7 @@ class TextTests(unittest.TestCase):
 
     def test_comparison(self):
         # Text nodes are compared by value
-        self.assertEqual(self.text, 'Line 1.\nLine 2.')
-        self.assertEqual(self.text, nodes.Text('Line 1.\nLine 2.'))
+        self.assertEqual(self.text, nodes.Text('Line 1.\n\x00rad två.'))
 
     def test_Text_rawsource_deprection_warning(self):
         with self.assertWarnsRegex(DeprecationWarning,
@@ -347,10 +338,6 @@ class ElementTests(unittest.TestCase):
         # Make sure the 'child4' ID hasn't been duplicated.
         self.assertEqual(child4['ids'], ['child4'])
         self.assertEqual(len(parent), 5)
-
-    def test_unicode(self):
-        node = nodes.Element('Möhren', nodes.Text('Möhren'))
-        self.assertEqual(str(node), '<Element>Möhren</Element>')
 
     def test_set_class_deprecation_warning(self):
         node = nodes.Element('test node')
@@ -778,14 +765,23 @@ class NodeVisitorTests(unittest.TestCase):
 
 class MiscFunctionTests(unittest.TestCase):
 
-    names = [('a', 'a'), ('A', 'a'), ('A a A', 'a a a'),
-             ('A  a  A  a', 'a a a a'),
-             ('  AaA\n\r\naAa\tAaA\t\t', 'aaa aaa aaa')]
+    names = [  # sample, whitespace_normalized, fully_normalized
+             ('a', 'a', 'a'),
+             ('A', 'A', 'a'),
+             ('A a A ', 'A a A', 'a a a'),
+             ('A  a  A  a', 'A a A a', 'a a a a'),
+             ('  AaA\n\r\naAa\tAaA\t\t', 'AaA aAa AaA', 'aaa aaa aaa')
+             ]
 
-    def test_normalize_name(self):
-        for input, output in self.names:
-            normed = nodes.fully_normalize_name(input)
-            self.assertEqual(normed, output)
+    def test_whitespace_normalize_name(self):
+        for (sample, ws, full) in self.names:
+            result = nodes.whitespace_normalize_name(sample)
+            self.assertEqual(result, ws)
+
+    def test_fully_normalize_name(self):
+        for (sample, ws, fully) in self.names:
+            result = nodes.fully_normalize_name(sample)
+            self.assertEqual(result, fully)
 
 
 if __name__ == '__main__':
