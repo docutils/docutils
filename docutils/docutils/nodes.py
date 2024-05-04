@@ -25,8 +25,8 @@ __docformat__ = 'reStructuredText'
 from collections import Counter
 import re
 import sys
-import warnings
 import unicodedata
+import warnings
 # import xml.dom.minidom as dom # -> conditional import in Node.asdom()
 #                                    and document.asdom()
 
@@ -327,7 +327,6 @@ class Node:
 
 
 class Text(Node, str):
-
     """
     Instances are terminal nodes (leaves) containing text only; no child
     nodes or attributes.  Initialize by passing a string to the constructor.
@@ -401,7 +400,6 @@ class Text(Node, str):
 
 
 class Element(Node):
-
     """
     `Element` is the superclass to all specific elements.
 
@@ -468,8 +466,10 @@ class Element(Node):
     """Tuple of attributes that are known to the Element base class."""
 
     tagname = None
-    """The element generic identifier. If None, it is set as an instance
-    attribute to the name of the class."""
+    """The element generic identifier.
+
+    If None, it is set as an instance attribute to the name of the class.
+    """
 
     child_text_separator = '\n\n'
     """Separator for child nodes, used by `astext()` method."""
@@ -494,9 +494,9 @@ class Element(Node):
             self.attributes[att] = []
 
         for att, value in attributes.items():
-            att = att.lower()
+            att = att.lower()  # normalize attribute name
             if att in self.list_attributes:
-                # mutable list; make a copy for this node
+                # lists are mutable; make a copy for this node
                 self.attributes[att] = value[:]
             else:
                 self.attributes[att] = value
@@ -1077,11 +1077,11 @@ class Element(Node):
 # ========
 
 class Resolvable:
-
-    resolved = 0
+    resolved = False
 
 
 class BackLinkable:
+    """Mixin for Elements that accept a "backrefs" attribute."""
 
     def add_backref(self, refid):
         self['backrefs'].append(refid)
@@ -1092,15 +1092,15 @@ class BackLinkable:
 # ====================
 
 class Root:
-    pass
+    """Element at the root of a document tree."""
 
 
 class Titular:
-    pass
+    """Headings (title, subtitle, rubric)."""
 
 
 class PreBibliographic:
-    """Category of Node which may occur before Bibliographic Nodes."""
+    """Elements which may occur before Bibliographic Elements."""
 
 
 class Invisible(PreBibliographic):
@@ -1108,30 +1108,42 @@ class Invisible(PreBibliographic):
 
 
 class Bibliographic:
-    pass
+    """Bibliographic Elements (visible document metadata)."""
 
 
 class Decorative(PreBibliographic):
-    pass
+    """`Decorative elements`__ (`header` and `footer`).
+
+    __ https://docutils.sourceforge.io/docs/ref/doctree.html
+       #decorative-elements
+    """
 
 
 class Structural:
-    pass
+    """`Structural Elements`__ that do not directly contain text data.
+
+    __ https://docutils.sourceforge.io/docs/ref/doctree.html
+       #structural-elements
+    """
 
 
 class Body:
-    pass
+    """`Body elements`__.
+
+    __ https://docutils.sourceforge.io/docs/ref/doctree.html#body-elements
+    """
 
 
 class General(Body):
-    pass
+    """Miscellaneous body elements."""
 
 
 class Sequential(Body):
-    """List-like elements."""
+    """List-like body elements."""
 
 
-class Admonition(Body): pass
+class Admonition(Body):
+    """Admonitions (distinctive and self-contained notices)."""
 
 
 class Special(Body):
@@ -1139,19 +1151,22 @@ class Special(Body):
 
 
 class Part:
-    pass
+    """`Body Subelements`__.
+
+    __ https://docutils.sourceforge.io/docs/ref/doctree.html#body-subelements
+    """
 
 
 class Inline:
-    pass
+    """Inline elements."""
 
 
 class Referential(Resolvable):
-    pass
+    """Elements holding a cross-reference (outgoing hyperlink)."""
 
 
 class Targetable(Resolvable):
-
+    """Cross-reference targets (incoming hyperlink)."""
     referenced = 0
 
     indirect_reference_name = None
@@ -1164,7 +1179,6 @@ class Labeled:
 
 
 class TextElement(Element):
-
     """
     An element which directly contains text.
 
@@ -1191,7 +1205,6 @@ class TextElement(Element):
 
 
 class FixedTextElement(TextElement):
-
     """An element which directly contains preformatted text."""
 
     def __init__(self, rawsource='', text='', *children, **attributes):
@@ -1211,7 +1224,6 @@ class FixedTextElement(TextElement):
 # ==============
 
 class document(Root, Structural, Element):
-
     """
     The document root element.
 
@@ -1590,7 +1602,6 @@ class meta(PreBibliographic, Element):
 
 class docinfo(Bibliographic, Element): pass
 class author(Bibliographic, TextElement): pass
-class authors(Bibliographic, Element): pass
 class organization(Bibliographic, TextElement): pass
 class address(Bibliographic, FixedTextElement): pass
 class contact(Bibliographic, TextElement): pass
@@ -1601,11 +1612,16 @@ class date(Bibliographic, TextElement): pass
 class copyright(Bibliographic, TextElement): pass
 
 
+class authors(Bibliographic, Element):
+    """Container for author information for documents with multiple authors."""
+
+
 # =====================
 #  Decorative Elements
 # =====================
 
 class decoration(Decorative, Element):
+    """Container for header and footer."""
 
     def get_header(self):
         if not len(self.children) or not isinstance(self.children[0], header):
@@ -1626,15 +1642,16 @@ class footer(Decorative, Element): pass
 #  Structural Elements
 # =====================
 
-class section(Structural, Element): pass
+class section(Structural, Element):
+    """Document section. The main unit of hierarchy."""
 
 
 class topic(Structural, Element):
-
     """
     Topics are terminal, "leaf" mini-sections, like block quotes with titles,
-    or textual figures.  A topic is just like a section, except that it has no
-    subsections, and it doesn't have to conform to section placement rules.
+    or textual figures.  A topic is just like a section, except that
+    it has no subsections, it does not get listed in the ToC,
+    and it doesn't have to conform to section placement rules.
 
     Topics are allowed wherever body elements (list, table, etc.) are allowed,
     but only at the top level of a section or document.  Topics cannot nest
@@ -1644,7 +1661,6 @@ class topic(Structural, Element):
 
 
 class sidebar(Structural, Element):
-
     """
     Sidebars are like miniature, parallel documents that occur inside other
     documents, providing related or reference material.  A sidebar is
@@ -1660,7 +1676,12 @@ class sidebar(Structural, Element):
     """
 
 
-class transition(Structural, Element): pass
+class transition(Structural, Element):
+    """Transitions are breaks between untitled text parts.
+
+    A transition may not begin or end a section or document, nor may two
+    transitions be immediately adjacent.
+    """
 
 
 # ===============
@@ -1685,26 +1706,30 @@ class field_body(Part, Element): pass
 
 
 class option(Part, Element):
+    """Option element in an `option_list_item`.
 
+    Groups an option string with zero or more option argument placeholders.
+    """
     child_text_separator = ''
 
 
 class option_argument(Part, TextElement):
-
+    """Placeholder text for option arguments."""
     def astext(self):
         return self.get('delimiter', ' ') + TextElement.astext(self)
 
 
 class option_group(Part, Element):
-
+    """Groups together one or more <option> elements, all synonyms."""
     child_text_separator = ', '
 
 
-class option_list(Sequential, Element): pass
+class option_list(Sequential, Element):
+    """Two-column list of command-line options and descriptions."""
 
 
 class option_list_item(Part, Element):
-
+    """Container for a pair of `option_group` and `description` elements."""
     child_text_separator = '  '
 
 
@@ -1717,7 +1742,7 @@ class line_block(General, Element): pass
 
 
 class line(Part, TextElement):
-
+    """Single line of text in a `line_block`."""
     indent = None
 
 
@@ -1752,7 +1777,6 @@ class entry(Part, Element): pass
 
 
 class system_message(Special, BackLinkable, PreBibliographic, Element):
-
     """
     System message element.
 
@@ -1778,8 +1802,9 @@ class system_message(Special, BackLinkable, PreBibliographic, Element):
 
 
 class pending(Special, Invisible, Element):
-
     """
+    Placeholder for pending operations.
+
     The "pending" element is used to encapsulate a pending operation: the
     operation (transform), the point at which to apply it, and any data it
     requires.  Only the pending operation's location within the document is
@@ -1850,10 +1875,7 @@ class pending(Special, Invisible, Element):
 
 
 class raw(Special, Inline, PreBibliographic, FixedTextElement):
-
-    """
-    Raw data that is to be passed untouched to the Writer.
-    """
+    """Raw data that is to be passed untouched to the Writer."""
 
 
 # =================
@@ -1876,7 +1898,7 @@ class math(Inline, TextElement): pass
 
 
 class image(General, Inline, Element):
-
+    """Reference to an image resource."""
     def astext(self):
         return self.get('alt', '')
 
@@ -1922,7 +1944,6 @@ node_class_names = """
 
 
 class NodeVisitor:
-
     """
     "Visitor" pattern [GoF95]_ abstract superclass implementation for
     document tree traversals.
@@ -2015,7 +2036,6 @@ class NodeVisitor:
 
 
 class SparseNodeVisitor(NodeVisitor):
-
     """
     Base class for sparse traversals, where only certain node types are of
     interest.  When ``visit_...`` & ``depart_...`` methods should be
@@ -2025,7 +2045,6 @@ class SparseNodeVisitor(NodeVisitor):
 
 
 class GenericNodeVisitor(NodeVisitor):
-
     """
     Generic "Visitor" abstract superclass, for simple traversals.
 
@@ -2076,7 +2095,6 @@ _add_node_class_names(node_class_names)
 
 
 class TreeCopyVisitor(GenericNodeVisitor):
-
     """
     Make a complete copy of a tree or branch, including element attributes.
     """
@@ -2102,7 +2120,6 @@ class TreeCopyVisitor(GenericNodeVisitor):
 
 
 class TreePruningException(Exception):
-
     """
     Base class for `NodeVisitor`-related tree pruning exceptions.
 
@@ -2113,7 +2130,6 @@ class TreePruningException(Exception):
 
 
 class SkipChildren(TreePruningException):
-
     """
     Do not visit any children of the current node.  The current node's
     siblings and ``depart_...`` method are not affected.
@@ -2121,7 +2137,6 @@ class SkipChildren(TreePruningException):
 
 
 class SkipSiblings(TreePruningException):
-
     """
     Do not visit any more siblings (to the right) of the current node.  The
     current node's children and its ``depart_...`` method are not affected.
@@ -2129,7 +2144,6 @@ class SkipSiblings(TreePruningException):
 
 
 class SkipNode(TreePruningException):
-
     """
     Do not visit the current node's children, and do not call the current
     node's ``depart_...`` method.
@@ -2137,7 +2151,6 @@ class SkipNode(TreePruningException):
 
 
 class SkipDeparture(TreePruningException):
-
     """
     Do not call the current node's ``depart_...`` method.  The current node's
     children and siblings are not affected.
@@ -2145,7 +2158,6 @@ class SkipDeparture(TreePruningException):
 
 
 class NodeFound(TreePruningException):
-
     """
     Raise to indicate that the target of a search has been found.  This
     exception must be caught by the client; it is not caught by the traversal
@@ -2154,7 +2166,6 @@ class NodeFound(TreePruningException):
 
 
 class StopTraversal(TreePruningException):
-
     """
     Stop the traversal altogether.  The current node's ``depart_...`` method
     is not affected.  The parent nodes ``depart_...`` methods are also called
