@@ -1127,6 +1127,14 @@ class Structural:
     """
 
 
+class SubStructural:
+    """`Structural Subelements`__ are valid children of Structural Elements.
+
+    __ https://docutils.sourceforge.io/docs/ref/doctree.html
+       #structural-subelements
+    """
+
+
 class Body:
     """`Body elements`__.
 
@@ -1583,8 +1591,8 @@ class document(Root, Structural, Element):
 #  Title Elements
 # ================
 
-class title(Titular, PreBibliographic, TextElement): pass
-class subtitle(Titular, PreBibliographic, TextElement): pass
+class title(Titular, PreBibliographic, SubStructural, TextElement): pass
+class subtitle(Titular, PreBibliographic, SubStructural, TextElement): pass
 class rubric(Titular, General, TextElement): pass
 
 
@@ -1592,7 +1600,7 @@ class rubric(Titular, General, TextElement): pass
 #  Meta-Data Element
 # ==================
 
-class meta(PreBibliographic, Element):
+class meta(PreBibliographic, SubStructural, Element):
     """Container for "invisible" bibliographic data, or meta-data."""
 
 
@@ -1600,7 +1608,7 @@ class meta(PreBibliographic, Element):
 #  Bibliographic Elements
 # ========================
 
-class docinfo(Bibliographic, Element): pass
+class docinfo(SubStructural, Element): pass
 class author(Bibliographic, TextElement): pass
 class organization(Bibliographic, TextElement): pass
 class address(Bibliographic, FixedTextElement): pass
@@ -1620,7 +1628,7 @@ class authors(Bibliographic, Element):
 #  Decorative Elements
 # =====================
 
-class decoration(PreBibliographic, Element):
+class decoration(PreBibliographic, SubStructural, Element):
     """Container for header and footer."""
 
     def get_header(self):
@@ -1676,7 +1684,7 @@ class sidebar(Structural, Element):
     """
 
 
-class transition(Structural, Element):
+class transition(SubStructural, Element):
     """Transitions are breaks between untitled text parts.
 
     A transition may not begin or end a section or document, nor may two

@@ -17,8 +17,21 @@
 Release 0.22b.dev (unpublished)
 ===============================
 
-* Add tox.ini to pyproject.toml to be in sdist (bug #486).
-* Fix license issue (bug #487).
+* General
+
+  - Add tox.ini to pyproject.toml to be in sdist (bug #486).
+  - Fix license issue (bug #487).
+
+* docutils/nodes.py
+
+  - New `SubStructural` element category class.
+  - Fix element categories.
+
+* docutils/transforms/frontmatter.py
+
+  - Adapt `DocInfo` to fixed element categories.
+
+
 
 Release 0.21.2 (2024-04-23)
 ===========================
