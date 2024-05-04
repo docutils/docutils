@@ -1108,7 +1108,7 @@ class Invisible(PreBibliographic):
 
 
 class Bibliographic:
-    """Bibliographic Elements (visible document metadata)."""
+    """Bibliographic Elements (`docinfo` children)."""
 
 
 class Decorative(PreBibliographic):
@@ -1585,7 +1585,7 @@ class document(Root, Structural, Element):
 
 class title(Titular, PreBibliographic, TextElement): pass
 class subtitle(Titular, PreBibliographic, TextElement): pass
-class rubric(Titular, TextElement): pass
+class rubric(Titular, General, TextElement): pass
 
 
 # ==================
@@ -1620,7 +1620,7 @@ class authors(Bibliographic, Element):
 #  Decorative Elements
 # =====================
 
-class decoration(Decorative, Element):
+class decoration(PreBibliographic, Element):
     """Container for header and footer."""
 
     def get_header(self):
@@ -1700,7 +1700,7 @@ class term(Part, TextElement): pass
 class classifier(Part, TextElement): pass
 class definition(Part, Element): pass
 class field_list(Sequential, Element): pass
-class field(Part, Element): pass
+class field(Part, Bibliographic, Element): pass
 class field_name(Part, TextElement): pass
 class field_body(Part, Element): pass
 
