@@ -154,6 +154,10 @@ Misc
 * Remove the "rawsource" argument from `nodes.Text.__init__()`
   in Docutils 2.0.
 
+* Remove the deprecated attributes `nodes.Element.known_attributes`,
+  `nodes.Element.basic_attributes`, and `nodes.Element.local_attributes`,
+  in Docutils 2.0.
+
 * Drop support for `old-format configuration files`_ in Docutils 2.0.
 
 * Remove the ``--html-writer`` option of the `buildhtml.py`_ application

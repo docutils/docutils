@@ -398,6 +398,9 @@ class Text(Node, str):
     def lstrip(self, chars=None):
         return self.__class__(str.lstrip(self, chars))
 
+    def validate(self):
+        pass  # Text nodes have no attributes and no children.
+
 
 class Element(Node):
     """
@@ -447,23 +450,34 @@ class Element(Node):
     This is equivalent to ``element.extend([node1, node2])``.
     """
 
-    basic_attributes = ('ids', 'classes', 'names', 'dupnames')
-    """Tuple of attributes which are defined for every Element-derived class
-    instance and can be safely transferred to a different node."""
+    list_attributes = ('ids', 'classes', 'names', 'dupnames')
+    """Tuple of attributes that are initialized to empty lists.
+
+    NOTE: Derived classes should update this value when supporting
+          additional list attributes.
+    """
+
+    valid_attributes = list_attributes + ('source',)
+    """Tuple of attributes that are valid for elements of this class.
+
+    NOTE: Derived classes should update this value when supporting
+          additional attributes.
+    """
+
+    common_attributes = valid_attributes
+    """Tuple of `common attributes`__  known to all Doctree Element classes.
+
+    __ https://docutils.sourceforge.io/docs/ref/doctree.html#common-attributes
+    """
+
+    known_attributes = common_attributes
+    """Alias for `common_attributes`. Will be removed in Docutils 2.0."""
+
+    basic_attributes = list_attributes
+    """Common list attributes. Deprecated. Will be removed in Docutils 2.0."""
 
     local_attributes = ('backrefs',)
-    """Tuple of class-specific attributes that should not be copied with the
-    standard attributes when replacing a node.
-
-    NOTE: Derived classes should override this value to prevent any of its
-    attributes being copied by adding to the value in its parent class."""
-
-    list_attributes = basic_attributes + local_attributes
-    """Tuple of attributes that are automatically initialized to empty lists
-    for all nodes."""
-
-    known_attributes = list_attributes + ('source',)
-    """Tuple of attributes that are known to the Element base class."""
+    """Obsolete. Will be removed in Docutils 2.0."""
 
     tagname = None
     """The element generic identifier.
@@ -477,6 +491,8 @@ class Element(Node):
     def __init__(self, rawsource='', *children, **attributes):
         self.rawsource = rawsource
         """The raw text from which this element was constructed.
+
+        For informative and debugging purposes. Don't rely on its value!
 
         NOTE: some elements do not set this value (default '').
         """
@@ -715,6 +731,8 @@ class Element(Node):
         """
         Update basic attributes ('ids', 'names', 'classes',
         'dupnames', but not 'source') from node or dictionary `dict_`.
+
+        Provisional.
         """
         if isinstance(dict_, Node):
             dict_ = dict_.attributes
@@ -953,6 +971,8 @@ class Element(Node):
         """
         Replace `self` node with `new`, where `new` is a node or a
         list of nodes.
+
+        Provisional: the handling of node attributes will be revised.
         """
         update = new
         if not isinstance(new, Node):
@@ -1066,10 +1086,29 @@ class Element(Node):
     @classmethod
     def is_not_known_attribute(cls, attr):
         """
-        Returns True if and only if the given attribute is NOT recognized by
-        this class.
+        Return True if `attr` is NOT defined for all Element instances.
+
+        Provisional. May be removed in Docutils 2.0.
         """
-        return attr not in cls.known_attributes
+        return attr not in cls.common_attributes
+
+    def validate_attributes(self):
+        # check for undeclared attributes
+        # TODO: check attribute values
+        for key, value in self.attributes.items():
+            if key.startswith('internal:'):
+                continue  # see docs/user/config.html#expose-internals
+            if key not in self.valid_attributes:
+                raise ValueError(
+                    f'Element <{self.tagname}> has invalid attribute "{key}".')
+
+    def validate(self):
+        # print(f'validating', self.tagname)
+        self.validate_attributes()
+        # TODO: check number of children
+        for child in self.children:
+            # TODO: check whether child has allowed type
+            child.validate()
 
 
 # ========
@@ -1082,6 +1121,9 @@ class Resolvable:
 
 class BackLinkable:
     """Mixin for Elements that accept a "backrefs" attribute."""
+
+    list_attributes = Element.list_attributes + ('backrefs',)
+    valid_attributes = Element.valid_attributes + ('backrefs',)
 
     def add_backref(self, refid):
         self['backrefs'].append(refid)
@@ -1215,6 +1257,8 @@ class TextElement(Element):
 class FixedTextElement(TextElement):
     """An element which directly contains preformatted text."""
 
+    valid_attributes = Element.valid_attributes + ('xml:space',)
+
     def __init__(self, rawsource='', text='', *children, **attributes):
         super().__init__(rawsource, text, *children, **attributes)
         self.attributes['xml:space'] = 'preserve'
@@ -1238,6 +1282,7 @@ class document(Root, Structural, Element):
     Do not instantiate this class directly; use
     `docutils.utils.new_document()` instead.
     """
+    valid_attributes = Element.valid_attributes + ('title',)
 
     def __init__(self, settings, reporter, *args, **kwargs):
         Element.__init__(self, *args, **kwargs)
@@ -1591,7 +1636,10 @@ class document(Root, Structural, Element):
 #  Title Elements
 # ================
 
-class title(Titular, PreBibliographic, SubStructural, TextElement): pass
+class title(Titular, PreBibliographic, SubStructural, TextElement):
+    valid_attributes = Element.valid_attributes + ('auto', 'refid')
+
+
 class subtitle(Titular, PreBibliographic, SubStructural, TextElement): pass
 class rubric(Titular, General, TextElement): pass
 
@@ -1602,6 +1650,8 @@ class rubric(Titular, General, TextElement): pass
 
 class meta(PreBibliographic, SubStructural, Element):
     """Container for "invisible" bibliographic data, or meta-data."""
+    valid_attributes = Element.valid_attributes + (
+        'content', 'dir', 'http-equiv', 'lang', 'media', 'name', 'scheme')
 
 
 # ========================
@@ -1666,6 +1716,8 @@ class topic(Structural, Element):
     inside topics, sidebars, or body elements; you can't have a topic inside a
     table, list, block quote, etc.
     """
+    # "depth" and "local" attributes may be added by the "Contents" transform:
+    valid_attributes = Element.valid_attributes + ('depth', 'local')
 
 
 class sidebar(Structural, Element):
@@ -1699,8 +1751,17 @@ class transition(SubStructural, Element):
 class paragraph(General, TextElement): pass
 class compound(General, Element): pass
 class container(General, Element): pass
-class bullet_list(Sequential, Element): pass
-class enumerated_list(Sequential, Element): pass
+
+
+class bullet_list(Sequential, Element):
+    valid_attributes = Element.valid_attributes + ('bullet',)
+
+
+class enumerated_list(Sequential, Element):
+    valid_attributes = Element.valid_attributes + (
+        'enumtype', 'prefix', 'suffix', 'start')
+
+
 class list_item(Part, Element): pass
 class definition_list(Sequential, Element): pass
 class definition_list_item(Part, Element): pass
@@ -1723,12 +1784,14 @@ class option(Part, Element):
 
 class option_argument(Part, TextElement):
     """Placeholder text for option arguments."""
+    valid_attributes = Element.valid_attributes + ('delimiter',)
+
     def astext(self):
         return self.get('delimiter', ' ') + TextElement.astext(self)
 
 
 class option_group(Part, Element):
-    """Groups together one or more <option> elements, all synonyms."""
+    """Groups together one or more `option` elements, all synonyms."""
     child_text_separator = ', '
 
 
@@ -1737,7 +1800,8 @@ class option_list(Sequential, Element):
 
 
 class option_list_item(Part, Element):
-    """Container for a pair of `option_group` and `description` elements."""
+    """Container for a pair of `option_group` and `description` elements.
+    """
     child_text_separator = '  '
 
 
@@ -1767,21 +1831,56 @@ class hint(Admonition, Element): pass
 class warning(Admonition, Element): pass
 class admonition(Admonition, Element): pass
 class comment(Special, Invisible, FixedTextElement): pass
-class substitution_definition(Special, Invisible, TextElement): pass
-class target(Special, Invisible, Inline, TextElement, Targetable): pass
-class footnote(General, BackLinkable, Element, Labeled, Targetable): pass
+
+
+class substitution_definition(Special, Invisible, TextElement):
+    valid_attributes = Element.valid_attributes + ('ltrim', 'rtrim')
+
+
+class target(Special, Invisible, Inline, TextElement, Targetable):
+    valid_attributes = Element.valid_attributes + (
+        'anonymous', 'refid', 'refname', 'refuri')
+
+
+class footnote(General, BackLinkable, Element, Labeled, Targetable):
+    valid_attributes = Element.valid_attributes + ('auto', 'backrefs')
+
+
 class citation(General, BackLinkable, Element, Labeled, Targetable): pass
 class label(Part, TextElement): pass
-class figure(General, Element): pass
+
+
+class figure(General, Element):
+    valid_attributes = Element.valid_attributes + ('align', 'width')
+
+
 class caption(Part, TextElement): pass
 class legend(Part, Element): pass
-class table(General, Element): pass
-class tgroup(Part, Element): pass
-class colspec(Part, Element): pass
+
+
+class table(General, Element):
+    valid_attributes = Element.valid_attributes + (
+        'align', 'colsep', 'frame', 'pgwide', 'rowsep', 'width')
+
+
+class tgroup(Part, Element):
+    valid_attributes = Element.valid_attributes + (
+        'align', 'cols', 'colsep', 'rowsep')
+
+
+class colspec(Part, Element):
+    valid_attributes = Element.valid_attributes + (
+        'align', 'char', 'charoff', 'colname', 'colnum',
+        'colsep', 'colwidth', 'rowsep', 'stub')
+
+
 class thead(Part, Element): pass
 class tbody(Part, Element): pass
 class row(Part, Element): pass
-class entry(Part, Element): pass
+
+
+class entry(Part, Element):
+    valid_attributes = Element.valid_attributes + ('morecols', 'morerows')
 
 
 class system_message(Special, BackLinkable, PreBibliographic, Element):
@@ -1791,6 +1890,8 @@ class system_message(Special, BackLinkable, PreBibliographic, Element):
     Do not instantiate this class directly; use
     ``document.reporter.info/warning/error/severe()`` instead.
     """
+    valid_attributes = BackLinkable.valid_attributes + (
+                           'level', 'line', 'type')
 
     def __init__(self, message=None, *children, **attributes):
         rawsource = attributes.pop('rawsource', '')
@@ -1883,7 +1984,9 @@ class pending(Special, Invisible, Element):
 
 
 class raw(Special, Inline, PreBibliographic, FixedTextElement):
-    """Raw data that is to be passed untouched to the Writer."""
+    """Raw data that is to be passed untouched to the Writer.
+    """
+    valid_attributes = Element.valid_attributes + ('format', 'xml:space')
 
 
 # =================
@@ -1893,10 +1996,25 @@ class raw(Special, Inline, PreBibliographic, FixedTextElement):
 class emphasis(Inline, TextElement): pass
 class strong(Inline, TextElement): pass
 class literal(Inline, TextElement): pass
-class reference(General, Inline, Referential, TextElement): pass
-class footnote_reference(Inline, Referential, TextElement): pass
-class citation_reference(Inline, Referential, TextElement): pass
-class substitution_reference(Inline, TextElement): pass
+
+
+class reference(General, Inline, Referential, TextElement):
+    valid_attributes = Element.valid_attributes + (
+        'anonymous', 'name', 'refid', 'refname', 'refuri')
+
+
+class footnote_reference(Inline, Referential, TextElement):
+    valid_attributes = Element.valid_attributes + ('auto', 'refid', 'refname')
+
+
+class citation_reference(Inline, Referential, TextElement):
+    valid_attributes = Element.valid_attributes + ('refid', 'refname')
+
+
+class substitution_reference(Inline, TextElement):
+    valid_attributes = Element.valid_attributes + ('refname',)
+
+
 class title_reference(Inline, TextElement): pass
 class abbreviation(Inline, TextElement): pass
 class acronym(Inline, TextElement): pass
@@ -1907,12 +2025,22 @@ class math(Inline, TextElement): pass
 
 class image(General, Inline, Element):
     """Reference to an image resource."""
+
+    valid_attributes = Element.valid_attributes + (
+        'uri', 'alt', 'align', 'height', 'width', 'scale', 'loading')
+
     def astext(self):
         return self.get('alt', '')
 
 
 class inline(Inline, TextElement): pass
-class problematic(Inline, TextElement): pass
+
+
+class problematic(Inline, TextElement):
+    valid_attributes = Element.valid_attributes + (
+                           'refid', 'refname', 'refuri')
+
+
 class generated(Inline, TextElement): pass
 
 

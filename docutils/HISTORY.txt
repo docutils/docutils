@@ -26,6 +26,7 @@ Release 0.22b.dev (unpublished)
 
   - New `SubStructural` element category class.
   - Fix element categories.
+  - New method `Element.validate()` (work in progress).
 
 * docutils/transforms/frontmatter.py
 

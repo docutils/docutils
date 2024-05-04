@@ -469,6 +469,18 @@ class ElementTests(unittest.TestCase):
         with self.assertWarns(DeprecationWarning):
             node.set_class('parrot')
 
+    def test_validate(self):
+        node = nodes.paragraph('', 'plain text', classes='my test classes')
+        node.append(nodes.emphasis('', 'emphasised text', ids='emphtext'))
+        node.validate()
+
+    def test_validate_wrong_attribute(self):
+        node = nodes.paragraph('', 'text', id='test-paragraph')
+        with self.assertRaisesRegexp(ValueError,
+                                     'Element <paragraph> '
+                                     'has invalid attribute "id".'):
+            node.validate()
+
 
 class MiscTests(unittest.TestCase):
 
