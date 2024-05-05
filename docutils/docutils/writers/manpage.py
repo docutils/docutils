@@ -315,7 +315,6 @@ class Translator(nodes.NodeVisitor):
         class EnumChar:
             enum_style = {
                     'bullet': '\\(bu',
-                    'emdash': '\\(em',
                      }
 
             def __init__(self, style):
@@ -342,8 +341,6 @@ class Translator(nodes.NodeVisitor):
             def __next__(self):
                 if self._style == 'bullet':
                     return self.enum_style[self._style]
-                elif self._style == 'emdash':
-                    return self.enum_style[self._style]
                 self._cnt += 1
                 # TODO add prefix postfix
                 if self._style == 'arabic':
@@ -367,6 +364,8 @@ class Translator(nodes.NodeVisitor):
         if 'enumtype' in node:
             self._list_char.append(EnumChar(node['enumtype']))
         else:
+            # INFO node['bullet'] contains the bullet style "*+-"
+            # BUT man pages only use "*".
             self._list_char.append(EnumChar('bullet'))
         if len(self._list_char) > 1:
             # indent nested lists
