@@ -44,6 +44,11 @@ Final paragraph.
 @unittest.skipIf(Parser is None, 'Optional "recommonmark" module not found.')
 class RecommonmarkParserTests(unittest.TestCase):
 
+    mysettings = {'output_encoding': 'unicode',
+                  'warning_stream': '',
+                  'raw_enabled': False,
+                  }
+
     def test_parser_name(self):
         # cf. ../test_rst/test_directives/test__init__.py
         # this is used in the "include" directive's :parser: option.
@@ -51,22 +56,18 @@ class RecommonmarkParserTests(unittest.TestCase):
 
     def test_raw_disabled(self):
         output = publish_string(sample_with_html, parser=Parser(),
-                                settings_overrides={
-                                    'warning_stream': '',
-                                    'raw_enabled': False,
-                                    })
-        self.assertNotIn(b'<raw>', output)
-        self.assertIn(b'<system_message', output)
-        self.assertIn(b'Raw content disabled.', output)
+                                settings_overrides=self.mysettings)
+        self.assertNotIn('<raw>', output)
+        self.assertIn('<system_message', output)
+        self.assertIn('Raw content disabled.', output)
 
     def test_raw_disabled_inline(self):
         output = publish_string('foo <a href="uri">', parser=Parser(),
-                                settings_overrides={'warning_stream': '',
-                                                    'raw_enabled': False,
-                                                    })
-        self.assertNotIn(b'<raw>', output)
-        self.assertIn(b'<system_message', output)
-        self.assertIn(b'Raw content disabled.', output)
+                                settings_overrides=self.mysettings)
+        self.assertNotIn('<raw>', output)
+        self.assertIn('<problematic', output)
+        self.assertIn('<system_message', output)
+        self.assertIn('Raw content disabled.', output)
 
 
 if __name__ == '__main__':

@@ -123,8 +123,17 @@ class Parser(CommonMarkParser):
         # replace raw nodes if raw is not allowed
         if not document.settings.raw_enabled:
             for node in document.findall(nodes.raw):
-                warning = document.reporter.warning('Raw content disabled.')
-                node.parent.replace(node, warning)
+                message = document.reporter.warning('Raw content disabled.')
+                if isinstance(node.parent, nodes.TextElement):
+                    msgid = document.set_id(message)
+                    problematic = nodes.problematic('', node.astext(),
+                                                    refid=msgid)
+                    node.parent.replace(node, problematic)
+                    prbid = document.set_id(problematic)
+                    message.add_backref(prbid)
+                    document.append(message)
+                else:
+                    node.parent.replace(node, message)
 
         # drop pending_xref (Sphinx cross reference extension)
         for node in document.findall(addnodes.pending_xref):
