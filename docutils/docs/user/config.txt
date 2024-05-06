@@ -635,7 +635,7 @@ An explicit URL for a "View document source" link, used verbatim.
 strict_visitor
 --------------
 
-When processing a document tree with the Visitor pattern, raise an
+When processing a `document tree`_ with the Visitor pattern, raise an
 error if a writer does not support a node type listed as optional.
 For transitional development use.
 
@@ -647,7 +647,7 @@ strip_classes
 -------------
 
 List of "classes" attribute values (comma-separated_) that will be
-removed from all elements in the document tree.
+removed from all elements in the `document tree`_.
 Values are appended. [#append-values]_
 
 Allows eliding class values that interfere with, e.g, CSS rules from 3rd
@@ -662,7 +662,7 @@ party tools/frameworks.
 strip_comments
 --------------
 
-Enable or disable the removal of comment elements from the document tree.
+Enable or disable the removal of comment elements from the `document tree`_.
 
 :Default: None (disabled).
 :Options: ``--strip-comments``, ``--leave-comments``.
@@ -673,7 +673,7 @@ strip_elements_with_classes
 
 List of "classes" attribute values (comma-separated_).
 Values are appended. [#append-values]_
-Matching elements are removed from the document tree.
+Matching elements are removed from the `document tree`_.
 
 .. WARNING:: Potentially dangerous: may lead to an invalid document tree
    and subsequent writer errors.  Use with caution.
@@ -722,8 +722,6 @@ caught and reported (in a user-friendly way) by Docutils.
 
 .. [#] unless Docutils is run programmatically
        using the `Publisher Interface`_
-
-.. _Publisher Interface: ../api/publisher.html
 
 
 warning_stream
@@ -774,6 +772,14 @@ Enable the `"raw" directive`_.  A "warning" system message
 file_insertion_enabled_ for another security-relevant setting.
 
 *Default*: True.  *Options*: ``--raw-enabled``, ``--no-raw``.
+
+
+validate
+--------
+
+Validate the parsing result.
+
+*Default*: False.  *Options*: ``--validate``, ``--no-validation``.
 
 
 [restructuredtext parser]
@@ -2410,8 +2416,12 @@ pep_template           [pep_html writer] template
 
 .. References
 
+.. _Document Tree: ../ref/doctree.html
+
 .. _Docutils Runtime Settings:
 .. _runtime settings: ../api/runtime-settings.html
+
+.. _Publisher Interface: ../api/publisher.html
 
 .. RestructuredText Directives
 .. _"class" directive: ../ref/rst/directives.html#class

@@ -39,6 +39,13 @@ class Parser(Component):
           ['--line-length-limit'],
           {'metavar': '<length>', 'type': 'int', 'default': 10000,
            'validator': frontend.validate_nonnegative_int}),
+         ('Validate the document tree after parsing.',
+          ['--validate'],
+          {'action': 'store_true',
+           'validator': frontend.validate_boolean}),
+         ('Do not validate the document tree. (default)',
+          ['--no-validation'],
+          {'action': 'store_false', 'dest': 'validate'}),
          )
         )
     component_type = 'parser'
@@ -62,6 +69,8 @@ class Parser(Component):
         """Finalize parse details.  Call at end of `self.parse()`."""
         self.document.reporter.detach_observer(
             self.document.note_parse_message)
+        if self.document.settings.validate:
+            self.document.validate()
 
 
 _parser_aliases = {  # short names for known parsers

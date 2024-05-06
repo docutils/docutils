@@ -99,6 +99,8 @@ Generic Parser Options
 --line-length-limit=<length>
                         Maximal number of characters in an input line. Default
                         10 000.
+--validate              Validate the document tree after parsing.
+--no-validation         Do not validate the document tree. (default)
 
 reStructuredText Parser Options
 -------------------------------
