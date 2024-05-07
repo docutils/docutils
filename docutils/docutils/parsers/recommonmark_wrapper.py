@@ -75,7 +75,9 @@ class Parser(CommonMarkParser):
         return Component.get_transforms(self)  # + [AutoStructify]
 
     def parse(self, inputstring, document):
-        """Use the upstream parser and clean up afterwards.
+        """Wrapper of upstream method.
+
+        Ensure "line-length-limt". Report errors with `document.reporter`.
         """
         # check for exorbitantly long lines
         for i, line in enumerate(inputstring.split('\n')):
@@ -95,8 +97,13 @@ class Parser(CommonMarkParser):
                                             'returned the error:\n%s'%err)
             document.append(error)
 
-        # Post-Processing
-        # ---------------
+    # Post-Processing
+    # ---------------
+
+    def finish_parse(self):
+        """Finalize parse details.  Call at end of `self.parse()`."""
+
+        document = self.document
 
         # merge adjoining Text nodes:
         for node in document.findall(nodes.TextElement):
@@ -142,6 +149,8 @@ class Parser(CommonMarkParser):
                 reference['name'] = nodes.fully_normalize_name(
                                                     reference.astext())
             node.parent.replace(node, reference)
+        # now we are ready to call the upstream function:
+        super().finish_parse()
 
     def visit_document(self, node):
         """Dummy function to prevent spurious warnings.

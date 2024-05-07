@@ -2587,10 +2587,10 @@ bibliographic data, or meta-data (data about the document).
 
 :Parents:    Only the `\<document>`_ element contains <meta>.
 :Children:   The <meta> element has no content.
-:Attributes: The <meta> element contains the attributes *name*,
-             *content*, *http-equiv*, *lang*, *dir*, *media*, and
-             *scheme* that correspond to the respective attributes
-             of the `HTML <meta> element`_.
+:Attributes: The <meta> element contains the attributes
+             *content*, *dir*, *http-equiv*, *lang*, *media*, *name*, and
+             *scheme* that correspond to the respective attributes of the
+             `HTML <meta> element`_.
 
 See also the `\<docinfo>`_ element for displayed meta-data.
 The document's `title attribute`_ stores the metadata document title.
@@ -4630,7 +4630,7 @@ It is one of the `common attributes`_, declared for all Docutils
 elements but typically only used on the `root element`_.
 
 .. note:: All ``docutils.nodes.Node`` instances also support an
-   **internal** ``source`` attribute that is used when reporting
+   *internal* ``source`` attribute that is used when reporting
    processing problems.
 
 

@@ -27,14 +27,23 @@ Release 0.22b.dev (unpublished)
   - New `SubStructural` element category class.
   - Fix element categories.
   - New method `Element.validate()` (work in progress).
+  - New "attribute validating functions"
+    convert string representations to correct data type,
+    normalize values,
+    raise ValueError for invalid attribute names or values.
+
+* docutils/parsers/recommonmark_wrapper.py
+
+  - New method `Parser.finish_parse()` to clean up (before validating).
 
 * docutils/transforms/frontmatter.py
 
-  - Adapt `DocInfo` to fixed element categories.
+  - Update `DocInfo` to work with corrected element categories.
 
 * docutils/writers/manpage.py
 
   - Remove code for unused emdash bullets.
+
 
 Release 0.21.2 (2024-04-23)
 ===========================

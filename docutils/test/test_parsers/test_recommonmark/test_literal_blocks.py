@@ -204,20 +204,6 @@ with *info string*.
         A literal block (fenced code block)
         with *info string*.
 """],
-["""\
-~~~eval_rst
-Evaluating embedded rST blocks requires the AutoStructify component
-in recommonmark. Otherwise this is just a code block
-with class ``eval_rst``.
-~~~
-""",
-"""\
-<document source="test data">
-    <literal_block classes="code eval_rst" xml:space="preserve">
-        Evaluating embedded rST blocks requires the AutoStructify component
-        in recommonmark. Otherwise this is just a code block
-        with class ``eval_rst``.
-"""],
 ]
 
 

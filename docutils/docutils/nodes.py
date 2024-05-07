@@ -567,6 +567,8 @@ class Element(Node):
             if value is None:           # boolean attribute
                 parts.append('%s="True"' % name)
                 continue
+            if isinstance(value, bool):
+                value = str(int(value))
             if isinstance(value, list):
                 values = [serial_escape('%s' % (v,)) for v in value]
                 value = ' '.join(values)
@@ -1093,22 +1095,48 @@ class Element(Node):
         return attr not in cls.common_attributes
 
     def validate_attributes(self):
-        # check for undeclared attributes
-        # TODO: check attribute values
+        """Normalize and validate element attributes.
+
+        Convert string values to expected datatype.
+        Normalize values.
+
+        Raise `ValueError` for invalid attributes or attribute values.
+
+        Provisional.
+        """
+        messages = []
         for key, value in self.attributes.items():
             if key.startswith('internal:'):
                 continue  # see docs/user/config.html#expose-internals
             if key not in self.valid_attributes:
-                raise ValueError(
-                    f'Element <{self.tagname}> has invalid attribute "{key}".')
+                va = ' '.join(self.valid_attributes)
+                messages.append(f'Attribute "{key}" not one of "{va}".')
+                continue
+            try:
+                self.attributes[key] = ATTRIBUTE_VALIDATORS[key](value)
+            except (ValueError, TypeError, KeyError) as e:
+                messages.append(
+                    f'Attribute "{key}" has invalid value "{value}".\n'
+                    + e.args[0])  # message argument
+        if messages:
+            raise ValueError('\n'.join(messages))
 
     def validate(self):
-        # print(f'validating', self.tagname)
-        self.validate_attributes()
+        messages = []
+        try:
+            self.validate_attributes()
+        except ValueError as e:
+            messages.append(e.args[0])  # the message argument
         # TODO: check number of children
         for child in self.children:
             # TODO: check whether child has allowed type
             child.validate()
+        if messages:
+            msg = f'Element <{self.tagname}> invalid:\n' + '\n'.join(messages)
+            try:
+                self.document.reporter.warning(msg)
+            except AttributeError:
+                raise ValueError(msg)
 
 
 # ========
@@ -2443,6 +2471,229 @@ def serial_escape(value):
     return value.replace('\\', r'\\').replace(' ', r'\ ')
 
 
+def split_name_list(s):
+    r"""Split a string at non-escaped whitespace.
+
+    Backslashes escape internal whitespace (cf. `serial_escape()`).
+    Return list of "names" (after removing escaping backslashes).
+
+    >>> split_name_list(r'a\ n\ame two\\ n\\ames'),
+    ['a name', 'two\\', r'n\ames']
+
+    Provisional.
+    """
+    s = s.replace('\\', '\x00')         # escape with NULL char
+    s = s.replace('\x00\x00', '\\')     # unescape backslashes
+    s = s.replace('\x00 ', '\x00\x00')  # escaped spaces -> NULL NULL
+    names = s.split(' ')
+    # restore internal spaces, drop other escaping characters
+    return [name.replace('\x00\x00', ' ').replace('\x00', '')
+            for name in names]
+
+
 def pseudo_quoteattr(value):
     """Quote attributes for pseudo-xml"""
     return '"%s"' % value
+
+
+# Methods to validate `Element attribute`__ values.
+
+# Ensure the expected Python `data type`__, normalize, and check for
+# restrictions.
+#
+# The methods can be used to convert `str` values (eg. from an XML
+# representation) or to validate an existing document tree or node.
+#
+# Cf. `Element.validate_attributes()`, `docutils.parsers.docutils_xml`,
+# and the `attribute_validating_functions` mapping below.
+#
+# __ https://docutils.sourceforge.io/docs/ref/doctree.html#attribute-reference
+# __ https://docutils.sourceforge.io/docs/ref/doctree.html#attribute-types
+
+def validate_enumerated_type(*keywords):
+    """
+    Return a function that validates a `str` against given `keywords`.
+
+    Provisional.
+    """
+    def validate_keywords(value):
+        if value not in keywords:
+            allowed = '", \"'.join(keywords)
+            raise ValueError(f'"{value}" is not one of "{allowed}".')
+        return value
+    return validate_keywords
+
+
+def validate_identifier(value):
+    """
+    Validate identifier key or class name.
+
+    Used in `idref.type`__ and for the tokens in `validate_identifier_list()`.
+
+    __ https://docutils.sourceforge.io/docs/ref/doctree.html#idref-type
+
+    Provisional.
+    """
+    if value != make_id(value):
+        raise ValueError(f'"{value}" is no valid id or class name.')
+    return value
+
+
+def validate_identifier_list(value):
+    """
+    A (space-separated) list of ids or class names.
+
+    `value` may be a `list` or a `str` with space separated
+    ids or class names (cf. `validate_identifier()`).
+
+    Used in `classnames.type`__, `ids.type`__, and `idrefs.type`__.
+
+    __ https://docutils.sourceforge.io/docs/ref/doctree.html#classnames-type
+    __ https://docutils.sourceforge.io/docs/ref/doctree.html#ids-type
+    __ https://docutils.sourceforge.io/docs/ref/doctree.html#idrefs-type
+
+    Provisional.
+    """
+    if isinstance(value, str):
+        value = value.split()
+    for token in value:
+        validate_identifier(token)
+    return value
+
+
+def validate_measure(value):
+    """
+    Validate a length measure__ (number + recognized unit).
+
+    __ https://docutils.sourceforge.io/docs/ref/doctree.html#measure
+
+    Provisional.
+    """
+    units = 'em|ex|px|in|cm|mm|pt|pc|%'
+    if not re.fullmatch(f'[-0-9.]+ *({units}?)', value):
+        raise ValueError(f'"{value}" is no valid measure. '
+                         f'Valid units: {units.replace("|", " ")}.')
+    return value.replace(' ', '').strip()
+
+
+def validate_NMTOKEN(value):
+    """
+    Validate a "name token": a `str` of letters, digits, and [-._].
+
+    Provisional.
+    """
+    if not re.fullmatch('[-._A-Za-z0-9]+', value):
+        raise ValueError(f'"{value}" is no NMTOKEN.')
+    return value
+
+
+def validate_NMTOKENS(value):
+    """
+    Validate a list of "name tokens".
+
+    Provisional.
+    """
+    if isinstance(value, str):
+        value = value.split()
+    for token in value:
+        validate_NMTOKEN(token)
+    return value
+
+
+def validate_refname_list(value):
+    """
+    Validate a list of `reference names`__.
+
+    Reference names may contain all characters;
+    whitespace is normalized (cf, `whitespace_normalize_name()`).
+
+    `value` may be either a `list` of names or a `str` with
+    space separated names (with internal spaces backslash escaped
+    and literal backslashes doubled cf. `serial_escape()`).
+
+    Return a list of whitespace-normalized, unescaped reference names.
+
+    Provisional.
+
+    __ https://docutils.sourceforge.io/docs/ref/doctree.html#reference-name
+    """
+    if isinstance(value, str):
+        value = split_name_list(value)
+    return [whitespace_normalize_name(name) for name in value]
+
+
+def validate_yesorno(value):
+    if value == "0":
+        return False
+    return bool(value)
+
+
+ATTRIBUTE_VALIDATORS = {
+    'alt': str,  # CDATA
+    'align': str,
+    'anonymous': validate_yesorno,
+    'auto': str,  # CDATA (only '1' or '*' are used in rST)
+    'backrefs': validate_identifier_list,
+    'bullet': str,  # CDATA (only '-', '+', or '*' are used in rST)
+    'classes': validate_identifier_list,
+    'char': str,  # from Exchange Table Model (CALS), currently ignored
+    'charoff': validate_NMTOKEN,  # from CALS, currently ignored
+    'colname': validate_NMTOKEN,  # from CALS, currently ignored
+    'colnum': int,  # from CALS, currently ignored
+    'cols': int,  # from CALS: "NMTOKEN, […] must be an integer > 0".
+    'colsep': validate_yesorno,
+    'colwidth': int,  # sic! CALS: CDATA (measure or number+'*')
+    'content': str,  # <meta>
+    'delimiter': str,
+    'depth': int,
+    'dir': validate_enumerated_type('ltr', 'rtl', 'auto'),  # <meta>
+    'dupnames': validate_refname_list,
+    'enumtype': validate_enumerated_type('arabic', 'loweralpha', 'lowerroman',
+                                         'upperalpha', 'upperroman'),
+    'format': str,  # CDATA (space separated format names)
+    'frame': validate_enumerated_type('top', 'bottom', 'topbot', 'all',
+                                      'sides', 'none'),  # from CALS, ignored
+    'height': validate_measure,
+    'http-equiv': str,  # <meta>
+    'ids': validate_identifier_list,
+    'lang': str,  # <meta>
+    'level': int,
+    'line': int,
+    'local': validate_yesorno,
+    'ltrim': validate_yesorno,
+    'loading': validate_enumerated_type('embed', 'link', 'lazy'),
+    'media': str,  # <meta>
+    'morecols': int,
+    'morerows': int,
+    'name': whitespace_normalize_name,  # in <reference> (deprecated)
+    # 'name': node_attributes.validate_NMTOKEN,  # in <meta>
+    'names': validate_refname_list,
+    'namest': validate_NMTOKEN,  # start of span, from CALS, currently ignored
+    'nameend': validate_NMTOKEN,  # end of span, from CALS, currently ignored
+    'pgwide': validate_yesorno,  # from CALS, currently ignored
+    'prefix': str,
+    'refid': validate_identifier,
+    'refname': whitespace_normalize_name,
+    'refuri': str,
+    'rowsep': validate_yesorno,
+    'rtrim': validate_yesorno,
+    'scale': int,
+    'scheme': str,
+    'source': str,
+    'start': int,
+    'stub': validate_yesorno,
+    'suffix': str,
+    'title': str,
+    'type': validate_NMTOKEN,
+    'uri': str,
+    'valign': validate_enumerated_type('top', 'middle', 'bottom'),  # from CALS
+    'width': validate_measure,
+    'xml:space': validate_enumerated_type('default', 'preserve'),
+    }
+"""
+Mapping of `attribute names`__ to validating functions.
+
+Provisional.
+
+__ https://docutils.sourceforge.io/docs/ref/doctree.html#attribute-reference
+"""

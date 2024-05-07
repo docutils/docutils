@@ -474,11 +474,30 @@ class ElementTests(unittest.TestCase):
         node.append(nodes.emphasis('', 'emphasised text', ids='emphtext'))
         node.validate()
 
+    def test_validate_attributes(self):
+        # Convert to expected data-type, normalize values,
+        # cf. AttributeTypeTests below for attribute validating function tests.
+        node = nodes.image(classes='my  test-classes',
+                           names='My teST\n\\ \xA0classes',
+                           width='30 mm')
+        node.validate_attributes()
+        self.assertEqual(node['classes'], ['my', 'test-classes'])
+        self.assertEqual(node['names'], ['My', 'teST classes'])
+        self.assertEqual(node['width'], '30mm')
+
     def test_validate_wrong_attribute(self):
         node = nodes.paragraph('', 'text', id='test-paragraph')
         with self.assertRaisesRegex(ValueError,
-                                     'Element <paragraph> '
-                                     'has invalid attribute "id".'):
+                                    'Element <paragraph> invalid:\n'
+                                    'Attribute "id" not one of "ids '):
+            node.validate()
+
+    def test_validate_wrong_attribute_value(self):
+        node = nodes.image(uri='test.png', width='20 inch')  # invalid unit
+        with self.assertRaisesRegex(ValueError,
+                                    'Element <image> invalid:\n'
+                                    '.*"width" has invalid value "20 inch".\n'
+                                    '.*Valid units: em ex '):
             node.validate()
 
 
@@ -806,6 +825,102 @@ class MiscFunctionTests(unittest.TestCase):
         for (sample, ws, fully) in self.names:
             result = nodes.fully_normalize_name(sample)
             self.assertEqual(result, fully)
+
+    def test_split_name_list(self):
+        self.assertEqual(nodes.split_name_list(r'a\ n\ame two\\ n\\ames'),
+                         ['a name', 'two\\', r'n\ames'])
+
+
+class AttributeTypeTests(unittest.TestCase):
+
+    def test_validate_enumerated_type(self):
+        # function factory for "choice validators"
+        food = nodes.validate_enumerated_type('ham', 'spam')
+        self.assertEqual(food('ham'), 'ham')
+        with self.assertRaisesRegex(ValueError,
+                                    '"bacon" is not one of "ham", "spam".'):
+            food('bacon')
+
+    def test_validate_identifier(self):
+        # Identifiers must start with an ASCII letter and may contain
+        # letters, digits and the hyphen
+        # https://docutils.sourceforge.io/docs/ref/doctree.html#idref-type
+        self.assertEqual(nodes.validate_identifier('mo-8b'), 'mo-8b')
+        with self.assertRaisesRegex(ValueError, '"8b-mo" is no valid id'):
+            nodes.validate_identifier('8b-mo')
+
+    def test_validate_identifier_list(self):
+        # list of identifiers (cf. above)
+        # or a `str` of space-separated identifiers.
+        l1 = ['m8-b', 'm8-c']
+        s1 = 'm8-b m8-c'
+        self.assertEqual(nodes.validate_identifier_list(l1), l1)
+        self.assertEqual(nodes.validate_identifier_list(s1), l1)
+        l2 = ['m8-b', 'm8_c']
+        s2 = 'm8-b #8c'
+        with self.assertRaises(ValueError):
+            nodes.validate_identifier_list(l2)
+        with self.assertRaises(ValueError):
+            nodes.validate_identifier_list(s2)
+
+    def test_validate_measure(self):
+        # number (may be decimal fraction) + optional CSS2 length unit
+        self.assertEqual(nodes.validate_measure('8ex'), '8ex')
+        self.assertEqual(nodes.validate_measure('3.5 %'), '3.5%')
+        self.assertEqual(nodes.validate_measure('2'), '2')
+        with self.assertRaisesRegex(ValueError, '"2km" is no valid measure. '
+                                    'Valid units: em ex '):
+            nodes.validate_measure('2km')
+        # negative numbers are currently not supported
+        # TODO: allow? the spec doesnot mention negative numbers.
+        # but a negative width or height of an image is odd.
+        # nodes.validate_measure('-2')
+
+    def test_validate_NMTOKEN(self):
+        # str with ASCII-letters, digits, hyphen, underscore, and full-stop.
+        self.assertEqual(nodes.validate_NMTOKEN('-8x_.'), '-8x_.')
+        with self.assertRaises(ValueError):
+            nodes.validate_NMTOKEN('why me')
+
+    def test_validate_NMTOKENS(self):
+        # list of NMTOKENS or string with space-separated NMTOKENS
+        l1 = ['8_b', '8.c']
+        s1 = '8_b 8.c'
+        l2 = ['8_b', '8/c']
+        s2 = '8_b #8'
+        self.assertEqual(nodes.validate_NMTOKENS(l1), l1)
+        self.assertEqual(nodes.validate_NMTOKENS(s1), l1)
+        with self.assertRaises(ValueError):
+            nodes.validate_NMTOKENS(l2)
+        with self.assertRaises(ValueError):
+            nodes.validate_NMTOKENS(s2)
+
+    def test_validate_refname_list(self):
+        # list or string of "reference names".
+        l1 = ['*:@', r'"more"\ & \x!']
+        s1 = r'*:@ \"more"\\\ &\ \\x!'  # unescaped backslash is ignored
+        self.assertEqual(nodes.validate_refname_list(l1), l1)
+        self.assertEqual(nodes.validate_refname_list(s1), l1)
+        # whitspace is normalized, case is not normalized
+        l2 = ['LARGE', 'a\t \tc']
+        s2 = r'LARGE a\ \ \c'
+        normalized = ['LARGE', 'a c']
+
+        self.assertEqual(nodes.validate_refname_list(l2), normalized)
+        self.assertEqual(nodes.validate_refname_list(s2), normalized)
+
+    def test_validate_yesorno(self):
+        # False if '0', else bool
+        # TODO: The docs say '0' is false:
+        # * Also return `True` for values that evaluate to `False`?
+        #   Even for `False` and `None`?
+        # * Also return `False` for 'false', 'off', 'no'
+        #   like boolean config settings?
+        self.assertFalse(nodes.validate_yesorno('0'))
+        self.assertFalse(nodes.validate_yesorno(0))
+        self.assertTrue(nodes.validate_yesorno('*'))
+        self.assertTrue(nodes.validate_yesorno(1))
+        # self.assertFalse(nodes.validate_yesorno('no'))
 
 
 if __name__ == '__main__':
