@@ -967,9 +967,10 @@ __ https://pypi.org/project/pycmark/
 [recommonmark parser]
 ---------------------
 
-.. admonition:: Provisional
+.. admonition:: Deprecated
 
    Depends on deprecated 3rd-party package recommonmark__.
+   Support will be removed in Docutils 1.0.
 
 Currently no configuration settings.
 

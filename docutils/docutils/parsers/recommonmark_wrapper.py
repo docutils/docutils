@@ -16,10 +16,10 @@ A parser for CommonMark Markdown text using `recommonmark`__.
 
 __ https://pypi.org/project/recommonmark/
 
-.. important:: This module is provisional
+.. important:: This module is deprecated.
 
    * The "recommonmark" package is unmaintained and deprecated.
-     This wrapper module will be removed in a future Docutils version.
+     This wrapper module will be removed in Docutils 1.0.
 
    * The API is not settled and may change with any minor Docutils version.
 """
@@ -116,6 +116,11 @@ class Parser(CommonMarkParser):
                     children[i].parent = node
                 else:
                     i += 1
+
+        # remove empty Text nodes:
+        for node in document.findall(nodes.Text):
+            if not len(node):
+                node.parent.remove(node)
 
         # add "code" class argument to literal elements (inline and block)
         for node in document.findall(is_literal):

@@ -151,6 +151,13 @@ Misc
 * Remove `parsers.rst.directives.CSVTable.HeaderDialect`
   in Docutils 0.22.
 
+* Remove support for the `recommonmark parser`_ in Docutils 1.0.
+  Recommonmark is unmaintained since 2021 and deprecated in favour
+  of the `MyST parser`_.
+
+  .. _recommonmark parser: docs/user/config.html#recommonmark-parser
+  .. _MyST parser: docs/user/config.html#myst-parser
+
 * Remove the "rawsource" argument from `nodes.Text.__init__()`
   in Docutils 2.0.
 
