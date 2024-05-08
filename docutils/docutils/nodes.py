@@ -479,6 +479,24 @@ class Element(Node):
     local_attributes = ('backrefs',)
     """Obsolete. Will be removed in Docutils 2.0."""
 
+    valid_children = tuple()
+    """Valid class or tuple of valid classes for child elements.
+
+    NOTE: Derived classes should update this value
+    when supporting child elements.
+    """
+
+    valid_len = (1, None)
+    """Tuple of minimal and maximal number of child elements.
+
+    A maximal value of None stands for "no upper limit".
+
+    Default: one or more child elements.
+
+    NOTE: Derived classes should update this value when there are different
+    restrictions to the number of child elements.
+    """
+
     tagname = None
     """The element generic identifier.
 
@@ -1269,7 +1287,8 @@ class TextElement(Element):
     If passing children to `__init__()`, make sure to set `text` to
     ``''`` or some other suitable value.
     """
-
+    valid_children = (Text, Inline)  # (#PCDATA | %inline.elements;)*
+    valid_len = (0, None)
     child_text_separator = ''
     """Separator for child nodes, used by `astext()` method."""
 
@@ -1680,13 +1699,18 @@ class meta(PreBibliographic, SubStructural, Element):
     """Container for "invisible" bibliographic data, or meta-data."""
     valid_attributes = Element.valid_attributes + (
         'content', 'dir', 'http-equiv', 'lang', 'media', 'name', 'scheme')
+    valid_len = (0, 0)  # The <meta> element has no content.
 
 
 # ========================
 #  Bibliographic Elements
 # ========================
 
-class docinfo(SubStructural, Element): pass
+class docinfo(SubStructural, Element):
+    """Container for displayed document meta-data."""
+    valid_children = Bibliographic  # (%bibliographic.elements;)+
+
+
 class author(Bibliographic, TextElement): pass
 class organization(Bibliographic, TextElement): pass
 class address(Bibliographic, FixedTextElement): pass
@@ -1699,7 +1723,10 @@ class copyright(Bibliographic, TextElement): pass
 
 
 class authors(Bibliographic, Element):
-    """Container for author information for documents with multiple authors."""
+    """Container for author information for documents with multiple authors.
+    """
+    # content model: (author, organization?, address?, contact?)+
+    valid_children = (author, organization, address, contact)
 
 
 # =====================
@@ -1746,6 +1773,7 @@ class topic(Structural, Element):
     """
     # "depth" and "local" attributes may be added by the "Contents" transform:
     valid_attributes = Element.valid_attributes + ('depth', 'local')
+    valid_children = (title, Body)  # (title?, (%body.elements;)+)
 
 
 class sidebar(Structural, Element):
@@ -1762,6 +1790,8 @@ class sidebar(Structural, Element):
     cannot nest inside sidebars, topics, or body elements; you can't have a
     sidebar inside a table, list, block quote, etc.
     """
+    # content model: ((title, subtitle?)?, (%body.elements; | topic)+)
+    valid_children = (title, subtitle, topic, Body)
 
 
 class transition(SubStructural, Element):
@@ -1770,6 +1800,7 @@ class transition(SubStructural, Element):
     A transition may not begin or end a section or document, nor may two
     transitions be immediately adjacent.
     """
+    valid_len = (0, 0)  # empty element
 
 
 # ===============
@@ -1920,6 +1951,7 @@ class system_message(Special, BackLinkable, PreBibliographic, Element):
     """
     valid_attributes = BackLinkable.valid_attributes + (
                            'level', 'line', 'type')
+    valid_children = Body  # (%body.elements;)+
 
     def __init__(self, message=None, *children, **attributes):
         rawsource = attributes.pop('rawsource', '')
@@ -1966,6 +1998,7 @@ class pending(Special, Invisible, Element):
     `docutils.transforms.Transformer` stage of processing can run all pending
     transforms.
     """
+    valid_len = (0, 0)  # empty element
 
     def __init__(self, transform, details=None,
                  rawsource='', *children, **attributes):
