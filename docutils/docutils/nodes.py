@@ -1183,43 +1183,33 @@ class Root:
     """Element at the root of a document tree."""
 
 
-class Titular:
-    """Headings (title, subtitle, rubric)."""
-
-
-class PreBibliographic:
-    """Elements which may occur before Bibliographic Elements."""
-
-
-class Invisible(PreBibliographic):
-    """Internal elements that don't appear in output."""
-
-
-class Bibliographic:
-    """Bibliographic Elements (`docinfo` children)."""
-
-
-class Decorative(PreBibliographic):
-    """`Decorative elements`__ (`header` and `footer`).
-
-    __ https://docutils.sourceforge.io/docs/ref/doctree.html
-       #decorative-elements
-    """
-
-
 class Structural:
-    """`Structural Elements`__ that do not directly contain text data.
+    """`Structural elements`__.
 
     __ https://docutils.sourceforge.io/docs/ref/doctree.html
        #structural-elements
     """
 
 
-class SubStructural:
-    """`Structural Subelements`__ are valid children of Structural Elements.
+class SubRoot:
+    """Elements that may only be children of the root element."""
+
+
+class SubStructural(SubRoot):
+    """`Structural subelements`__ are children of structural elements.
+
+    Most Structural elements accept only some of the SubStructural elements.
 
     __ https://docutils.sourceforge.io/docs/ref/doctree.html
        #structural-subelements
+    """
+
+
+class Bibliographic:
+    """`Bibliographic Elements`__ (displayed document meta-data).
+
+    __ https://docutils.sourceforge.io/docs/ref/doctree.html
+       #bibliographic-elements
     """
 
 
@@ -1230,16 +1220,16 @@ class Body:
     """
 
 
-class General(Body):
-    """Miscellaneous body elements."""
+class Admonition(Body):
+    """Admonitions (distinctive and self-contained notices)."""
 
 
 class Sequential(Body):
     """List-like body elements."""
 
 
-class Admonition(Body):
-    """Admonitions (distinctive and self-contained notices)."""
+class General(Body):
+    """Miscellaneous body elements."""
 
 
 class Special(Body):
@@ -1247,14 +1237,36 @@ class Special(Body):
 
 
 class Part:
-    """`Body Subelements`__.
+    """`Body Subelements`__ always occur within specific parent elements.
 
     __ https://docutils.sourceforge.io/docs/ref/doctree.html#body-subelements
     """
 
 
+class Decorative:
+    """Decorative elements (`header` and `footer`).
+
+    Children of `decoration`.
+    """
+
+
 class Inline:
-    """Inline elements."""
+    """Inline elements contain text data and possibly other inline elements.
+    """
+
+
+# Orthogonal categories
+
+class PreBibliographic:
+    """Elements which may occur before Bibliographic Elements."""
+
+
+class Invisible(Special, PreBibliographic):
+    """Internal elements that don't appear in output."""
+
+
+class Labeled:
+    """Contains a `label` as its first element."""
 
 
 class Referential(Resolvable):
@@ -1267,11 +1279,14 @@ class Targetable(Resolvable):
 
     indirect_reference_name = None
     """Holds the whitespace_normalized_name (contains mixed case) of a target.
-    Required for MoinMoin/reST compatibility."""
+    Required for MoinMoin/reST compatibility.
+
+    Provisional.
+    """
 
 
-class Labeled:
-    """Contains a `label` as its first element."""
+class Titular:
+    """Title, sub-title, or informal heading (rubric)."""
 
 
 class TextElement(Element):
@@ -1322,7 +1337,7 @@ class FixedTextElement(TextElement):
 #  Root Element
 # ==============
 
-class document(Root, Structural, Element):
+class document(Root, Element):
     """
     The document root element.
 
@@ -1695,7 +1710,7 @@ class rubric(Titular, General, TextElement): pass
 #  Meta-Data Element
 # ==================
 
-class meta(PreBibliographic, SubStructural, Element):
+class meta(PreBibliographic, SubRoot, Element):
     """Container for "invisible" bibliographic data, or meta-data."""
     valid_attributes = Element.valid_attributes + (
         'content', 'dir', 'http-equiv', 'lang', 'media', 'name', 'scheme')
@@ -1706,7 +1721,7 @@ class meta(PreBibliographic, SubStructural, Element):
 #  Bibliographic Elements
 # ========================
 
-class docinfo(SubStructural, Element):
+class docinfo(SubRoot, Element):
     """Container for displayed document meta-data."""
     valid_children = Bibliographic  # (%bibliographic.elements;)+
 
@@ -1733,7 +1748,7 @@ class authors(Bibliographic, Element):
 #  Decorative Elements
 # =====================
 
-class decoration(PreBibliographic, SubStructural, Element):
+class decoration(PreBibliographic, SubRoot, Element):
     """Container for header and footer."""
 
     def get_header(self):
@@ -1889,14 +1904,14 @@ class tip(Admonition, Element): pass
 class hint(Admonition, Element): pass
 class warning(Admonition, Element): pass
 class admonition(Admonition, Element): pass
-class comment(Special, Invisible, FixedTextElement): pass
+class comment(Invisible, FixedTextElement): pass
 
 
-class substitution_definition(Special, Invisible, TextElement):
+class substitution_definition(Invisible, TextElement):
     valid_attributes = Element.valid_attributes + ('ltrim', 'rtrim')
 
 
-class target(Special, Invisible, Inline, TextElement, Targetable):
+class target(Invisible, Inline, TextElement, Targetable):
     valid_attributes = Element.valid_attributes + (
         'anonymous', 'refid', 'refname', 'refuri')
 
@@ -1970,7 +1985,7 @@ class system_message(Special, BackLinkable, PreBibliographic, Element):
                                       self['level'], Element.astext(self))
 
 
-class pending(Special, Invisible, Element):
+class pending(Invisible, Element):
     """
     Placeholder for pending operations.
 
