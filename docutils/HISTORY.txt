@@ -24,7 +24,7 @@ Release 0.22b.dev (unpublished)
 
 * docutils/nodes.py
 
-  - New `SubStructural` element category class.
+  - New element category classes `SubStructural` and `PureTextElement`.
   - Fix element categories.
   - New method `Element.validate()` (work in progress).
   - New "attribute validating functions"
