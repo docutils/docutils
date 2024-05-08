@@ -34,6 +34,7 @@ class WriterPublishTestCase(unittest.TestCase):
                         settings_overrides={
                             '_disable_config': True,
                             'strict_visitor': True,
+                            'validate': False,  # allow testing invalid doctree
                         }).decode()
                     self.assertEqual(case_expected, output)
 

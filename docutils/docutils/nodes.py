@@ -1146,8 +1146,16 @@ class Element(Node):
         except ValueError as e:
             messages.append(e.args[0])  # the message argument
         # TODO: check number of children
+        n_min, n_max = self.valid_len
+        if len(self.children) < n_min:
+            messages.append(f'Expects at least {n_min} children, '
+                            f'not {len(self.children)}.')
+        if n_max is not None and len(self.children) > n_max:
+            messages.append(f'Expects at most {n_max} children, '
+                            f'not {len(self.children)}.')
         for child in self.children:
-            # TODO: check whether child has allowed type
+            if not isinstance(child, self.valid_children):
+                messages.append(f'May not contain "{child.tagname}" elements.')
             child.validate()
         if messages:
             msg = f'Element <{self.tagname}> invalid:\n' + '\n'.join(messages)
