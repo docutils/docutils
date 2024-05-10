@@ -77,14 +77,12 @@ Maintainer
    once to create the directories in the filesystem before preparing for
    HTML processing.
 
-#. Run the sandbox/infrastructure/update-htmlfiles shell script to generate
-   .html files::
+#. Any .html document with a corresponding .txt file is regenerated 
+   if the .txt has changed, but no new .html files will be generated.
 
-      cd <DOCUTILS-ROOT>/docutils/
-      sandbox/infrastructure/update-htmlfiles \
-      sandbox/infrastructure/htmlfiles.lst
+   Therefore *touch* the .html-file and then the .txt.
 
-   (Maybe this should become part of docutils-update.local.)
+#. ``docutils-update.local -u``    Regenerate .html unconditionally.
 
 
 Removing Files & Directories
