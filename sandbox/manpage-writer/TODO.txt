@@ -61,6 +61,65 @@ TODOs
    .\}
    .rr df
 
+see groff_man_style ::
+
+  .SH "See also"
+  .
+  .MR \%tbl 1 ,
+  .MR \%eqn 1 ,
+  and
+  .MR \%refer 1
+  are preprocessors used with man pages.
+  .
+  .MR man 1
+  describes the man page librarian on your system.
+
+but the rST source would be more like this ::
+
+  See also
+  ========
+
+  tbl(1), eqn(1), and refer(1) are preprocessors used with man pages.
+  man(1) describes the man page ...
+
+so the MR things need to be found with regexp or marked with a role/directive ?
+
+
+groff_man_style on 
+
+   Hyperlink macros
+       Man  page  cross references like ls(1) are best presented with .MR.  Text may be
+       hyperlinked to email addresses with .MT/.ME or other URIs with .UR/.UE.   Hyper‐
+       linked  text  is  supported  on  HTML and terminal output devices; terminals and
+       pager programs must support ECMA-48 OSC  8  escape  sequences  (see  grotty(1)).
+       When  device support is unavailable or disabled with the U register (see section
+       “Options” below), .MT and .UR URIs are rendered between angle brackets after the
+       linked text.
+
+       .MT, .ME, .UR, and .UE are GNU extensions not defined on systems  running  AT&T,
+       Plan 9, or Solaris troff; see an-ext.tmac in section “Files” below.  Plan 9 from
+       User Space's troff implements .MR.
+
+       The arguments to .MR, .MT, and .UR should be prepared for typesetting since they
+       can appear in the output.  Use special character escape sequences to encode Uni‐
+       code  basic  Latin  characters  where  necessary, particularly the hyphen-minus.
+       (See section “Portability” below.)  URIs can be lengthy; rendering them can  re‐
+       sult  in jarring adjustment or variations in line length, or troff warnings when
+       a hyperlink is longer than an output  line.   The  application  of  non-printing
+       break point escape sequences \: after each slash (or series thereof), and before
+       each  dot  (or  series  thereof)  is recommended as a rule of thumb.  The former
+       practice avoids forcing a trailing slash in a URI onto a separate  output  line,
+       and  the  latter  helps the reader to avoid mistakenly interpreting a dot at the
+       end of a line as a period (or multiple dots as an ellipsis).  Thus,
+              .UR http://\:example\:.com/\:fb8afcfbaebc74e\:.cc
+       has several potential break points in the  URI  shown.   Consider  adding  break
+       points  before  or after at signs in email addresses, and question marks, amper‐
+       sands, and number signs in HTTP(S) URIs.  The formatter removes  \:  escape  se‐
+       quences  from  hyperlinks  when supplying device control commands to output dri‐
+       vers.
+
+
+
 Notes
 -----
 
