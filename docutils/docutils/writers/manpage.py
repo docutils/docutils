@@ -1118,6 +1118,7 @@ class Translator(nodes.NodeVisitor):
             self.body.append(' ')
             return  # skip (depart_classifier() calls this function again)
         if isinstance(_next, nodes.term):
+            # .TQ  Additional paragraph tag   
             self.body.append('\n.TQ')
         else:
             self.body.append('\n')
