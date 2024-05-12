@@ -83,6 +83,13 @@ but the rST source would be more like this ::
   man(1) describes the man page ...
 
 so the MR things need to be found with regexp or marked with a role/directive ?
+or a reference type man:tbl(1) 
+
+The ``\%`` is :
+
+  a  word  may be broken at hyphens, at ``\%`` or ``\:`` escape sequences
+
+whatfore at the word start ?
 
 
 groff_man_style on 
