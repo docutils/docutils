@@ -40,6 +40,12 @@ Release 0.22b.dev (unpublished)
 
   - Update `DocInfo` to work with corrected element categories.
 
+* docutils/transforms/misc.py:
+
+  - Fix for `misc.Transitions`: report an error if a <transition> element
+    follows a <meta> or <decoration> element as this is invalid
+    according to ``docutils.dtd``.
+
 * docutils/writers/manpage.py
 
   - Remove code for unused emdash bullets.

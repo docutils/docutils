@@ -71,8 +71,8 @@ class Transitions(Transform):
 
     """
     Move transitions at the end of sections up the tree.  Complain
-    on transitions after a title, at the beginning or end of the
-    document, and after another transition.
+    on transitions after a title, subtitle, meta, or decoration element,
+    at the beginning or end of the document, and after another transition.
 
     For example, transform this::
 
@@ -99,24 +99,20 @@ class Transitions(Transform):
 
     def visit_transition(self, node):
         index = node.parent.index(node)
-        error = None
-        if (index == 0
-            or isinstance(node.parent[0], nodes.title)
-            and (index == 1
-                 or isinstance(node.parent[1], nodes.subtitle)
-                 and index == 2)):
-            assert (isinstance(node.parent, nodes.document)
-                    or isinstance(node.parent, nodes.section))
-            error = self.document.reporter.error(
-                'Document or section may not begin with a transition.',
-                source=node.source, line=node.line)
-        elif isinstance(node.parent[index - 1], nodes.transition):
-            error = self.document.reporter.error(
-                'At least one body element must separate transitions; '
-                'adjacent transitions are not allowed.',
-                source=node.source, line=node.line)
-        if error:
+        previous_sibling = node.previous_sibling()
+        msg = ''
+        assert isinstance(node.parent, (nodes.document, nodes.section))
+        if index == 0 or isinstance(previous_sibling, (nodes.title,
+                                                       nodes.subtitle,
+                                                       nodes.meta,
+                                                       nodes.decoration)):
+            msg = 'Document or section may not begin with a transition.'
+        elif isinstance(previous_sibling, nodes.transition):
+            msg = ('At least one body element must separate transitions; '
+                   'adjacent transitions are not allowed.')
+        if msg:
             # Insert before node and update index.
+            error = self.document.reporter.error(msg, base_node=node)
             node.parent.insert(index, error)
             index += 1
         assert index < len(node.parent)

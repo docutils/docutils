@@ -245,6 +245,43 @@ Document beginning with a transition.
         Document beginning with a transition.
 """],
 ["""\
+.. meta:: :keywords: transition test
+
+----------
+
+Document beginning with a transition (meta elements don't count).
+""",
+"""\
+<document source="test data">
+    <meta content="transition test" name="keywords">
+    <system_message level="3" line="3" source="test data" type="ERROR">
+        <paragraph>
+            Document or section may not begin with a transition.
+    <transition>
+    <paragraph>
+        Document beginning with a transition (meta elements don't count).
+"""],
+["""\
+.. header:: a header
+
+----------
+
+Document beginning with a transition (decoration elements don't count).
+""",
+"""\
+<document source="test data">
+    <decoration>
+        <header>
+            <paragraph>
+                a header
+    <system_message level="3" line="3" source="test data" type="ERROR">
+        <paragraph>
+            Document or section may not begin with a transition.
+    <transition>
+    <paragraph>
+        Document beginning with a transition (decoration elements don't count).
+"""],
+["""\
 Section 1
 =========
 
