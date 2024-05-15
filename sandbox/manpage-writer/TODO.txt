@@ -91,6 +91,10 @@ The ``\%`` is :
 
 whatfore at the word start ?
 
+Branden writes:
+
+  You will not need to generate the arguments to the MR macro with a leading
+  \% escape sequence. ... see feature request #107
 
 groff_man_style on 
 
