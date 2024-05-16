@@ -161,7 +161,9 @@ class Table:
 
 
 class Translator(nodes.NodeVisitor):
-    """"""
+    """
+    Generate unixlike manual pages using the man macro package from a Docutils document tree.
+    """
 
     words_and_spaces = re.compile(r'\S+| +|\n')
     possibly_a_roff_command = re.compile(r'\.\w')
@@ -1118,7 +1120,7 @@ class Translator(nodes.NodeVisitor):
             self.body.append(' ')
             return  # skip (depart_classifier() calls this function again)
         if isinstance(_next, nodes.term):
-            # .TQ  Additional paragraph tag   
+            # .TQ  Additional paragraph tag
             self.body.append('\n.TQ')
         else:
             self.body.append('\n')
