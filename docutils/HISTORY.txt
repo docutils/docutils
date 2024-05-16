@@ -49,6 +49,8 @@ Release 0.22b.dev (unpublished)
 * docutils/writers/manpage.py
 
   - Remove code for unused emdash bullets.
+  - Feature-request #105 more informative document comments.
+    docutils version in header
 
 
 Release 0.21.2 (2024-04-23)
