@@ -355,17 +355,15 @@ class Translator(nodes.NodeVisitor):
                     return self.enum_style[self._style]
                 self._cnt += 1
                 # TODO add prefix postfix
-                if self._style == 'arabic':
-                    return "%d." % self._cnt
-                elif self._style in ('loweralpha', 'upperalpha'):
+                if self._style in ('loweralpha', 'upperalpha'):
                     return "%c." % self._cnt
-                elif self._style.endswith('roman'):
+                if self._style.endswith('roman'):
                     res = roman.toRoman(self._cnt) + '.'
                     if self._style.startswith('upper'):
                         return res.upper()
                     return res.lower()
-                else:
-                    return "%d." % self._cnt
+                # else 'arabic', ...
+                return "%d." % self._cnt
 
             def get_width(self):
                 return self._indent
@@ -693,8 +691,7 @@ class Translator(nodes.NodeVisitor):
         if self._in_docinfo:
             self._field_name = node.astext()
             raise nodes.SkipNode
-        else:
-            self.body.append(self.defs['field_name'][0])
+        self.body.append(self.defs['field_name'][0])
 
     def depart_field_name(self, node):
         self.body.append(self.defs['field_name'][1])
