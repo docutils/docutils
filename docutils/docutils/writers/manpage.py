@@ -91,9 +91,14 @@ level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
 
 
 class Writer(writers.Writer):
+    """
+    manpage writer class
+    """
 
     supported = ('manpage',)
     """Formats this writer supports."""
+
+    # manpage writer specfic settings. not yet
 
     output = None
     """Final translated form of `document`."""
@@ -109,6 +114,9 @@ class Writer(writers.Writer):
 
 
 class Table:
+    """
+    man package table handling. 
+    """
     def __init__(self):
         self._rows = []
         self._options = ['box', 'center']
@@ -316,6 +324,7 @@ class Translator(nodes.NodeVisitor):
 
     def list_start(self, node):
         class EnumChar:
+            """list item numbering/markup handling"""
             enum_style = {
                     'bullet': '\\(bu',
                      }
