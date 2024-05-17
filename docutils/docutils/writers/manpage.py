@@ -791,7 +791,7 @@ class Translator(nodes.NodeVisitor):
 
     def visit_label(self, node):
         # footnote and citation labels are written in their visit_ functions.
-        if (isinstance(node.parent, (nodes.footnote, nodes.citation))):
+        if isinstance(node.parent, (nodes.footnote, nodes.citation)):
             raise nodes.SkipNode
         self.document.reporter.warning('"unsupported "label"',
                                        base_node=node)
