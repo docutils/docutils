@@ -45,15 +45,44 @@ ReStructuredText Primer`_.  For complete technical details, see the
 The Docutils document model uses strict element content models.
 
 Below is a *simplified* diagram of the hierarchy of elements in the
-Docutils document tree structure.  An element may contain any other
-elements immediately below it in the diagram (ignoring empty blocks).
+Docutils document tree structure.
+An element may contain elements immediately below it in the diagram.
 Element types in square brackets indicate recursive or one-to-many
 relationships: structural elements (sections) may contain sub-sections,
 some body elements may contain other body elements, etc.
 The `element reference`_ details valid parents and children
 for each element.
 
+.. raw:: html
+
+   <style type="text/css"><!--
+     table.e-hierarchy {border: 1px solid}
+     table.e-hierarchy td {border: 0px; padding: 0.5em}
+     table.e-hierarchy a {color: black; text-decoration: underline}
+     /* root element */
+     table.e-hierarchy tr:first-child  {background: tomato}
+     table.e-hierarchy td:nth-child(2) {background: tomato}
+     table.e-hierarchy td:nth-child(3) {background: tomato}
+     /* structural elements */
+     table.e-hierarchy tr:nth-child(2) {background: limegreen}
+     table.e-hierarchy tr:nth-child(3) td:first-child {background: limegreen}
+     /* structural subelements */
+     table.e-hierarchy tr:nth-child(3) td:nth-child(2) {background: mediumseagreen}
+     /* body elements */
+     table.e-hierarchy tr:nth-child(4) > td {background: orchid}
+     table.e-hierarchy tr:nth-child(5) td:nth-child(2){background: orchid}
+     table.e-hierarchy tr:nth-child(5) td:nth-child(3){background: orchid}
+     /* body subelements */
+     table.e-hierarchy tr:nth-child(5) > td {background: thistle}
+     table.e-hierarchy tr:nth-child(6) td:first-child {background: thistle}
+     /* inline elements */
+     table.e-hierarchy tr:nth-child(6) td:nth-child(2){background: gold}
+     /* text */
+     table.e-hierarchy tr:last-child  {background: khaki}
+   --></style>
+
 .. table::
+   :class: e-hierarchy
    :width: 65%
    :widths: 1 2 1 1
    :align: center
