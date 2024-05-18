@@ -1142,12 +1142,20 @@ class Element(Node):
             raise ValueError('\n'.join(messages))
 
     def validate(self):
+        """Validate element and its children.
+
+        Test conformance to the Docutils Document Model ("doctree").
+        Report violations as warning or raise ValueError if there is
+        no reporter attached to the root node.
+
+        Provisional (work in progress).
+        """
         messages = []
         try:
             self.validate_attributes()
         except ValueError as e:
             messages.append(e.args[0])  # the message argument
-        # TODO: check number of children
+        # test number of children
         n_min, n_max = self.valid_len
         if len(self.children) < n_min:
             messages.append(f'Expects at least {n_min} children, '
@@ -1160,7 +1168,8 @@ class Element(Node):
                 messages.append(f'May not contain "{child.tagname}" elements.')
             child.validate()
         if messages:
-            msg = f'Element <{self.tagname}> invalid:\n' + '\n'.join(messages)
+            msg = (f'Element <{self.tagname}> invalid:\n  '
+                   + '\n  '.join(messages))
             try:
                 self.document.reporter.warning(msg)
             except AttributeError:
@@ -2053,6 +2062,8 @@ class footnote(General, BackLinkable, Element, Labeled, Targetable):
 class citation(General, BackLinkable, Element, Labeled, Targetable):
     valid_children = (label, Body)  # (label, (%body.elements;)+)
     valid_len = (2, None)
+    # TODO: DTD requires both label and content but rST allows empty citation
+    #       (see test_rst/test_citations.py).  Is this sensible?
 
 
 # Graphical elements

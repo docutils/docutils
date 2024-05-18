@@ -489,7 +489,7 @@ class ElementTests(unittest.TestCase):
         node = nodes.paragraph('', 'text', id='test-paragraph')
         with self.assertRaisesRegex(ValueError,
                                     'Element <paragraph> invalid:\n'
-                                    'Attribute "id" not one of "ids '):
+                                    '  Attribute "id" not one of "ids '):
             node.validate()
 
     def test_validate_wrong_attribute_value(self):
