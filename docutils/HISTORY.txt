@@ -24,6 +24,9 @@ Release 0.22b.dev (unpublished)
 
 * docutils/nodes.py
 
+  - Raise ValueError if the "rawsource" argument in `Element.__init__()`
+    is an `Element` instance.
+    Catches errors like ``nodes.hint(nodes.paragraph())``.
   - New element category classes `SubStructural` and `PureTextElement`.
   - Fix element categories.
   - New method `Element.validate()` (work in progress).

@@ -514,6 +514,8 @@ class Element(Node):
 
         NOTE: some elements do not set this value (default '').
         """
+        if isinstance(rawsource, Element):
+            raise ValueError('First argument "rawsource" must be a string.')
 
         self.children = []
         """List of child nodes (elements and/or `Text`)."""
@@ -1318,7 +1320,7 @@ class TextElement(Element):
     """Separator for child nodes, used by `astext()` method."""
 
     def __init__(self, rawsource='', text='', *children, **attributes):
-        if text != '':
+        if text:
             textnode = Text(text)
             Element.__init__(self, rawsource, textnode, *children,
                              **attributes)
