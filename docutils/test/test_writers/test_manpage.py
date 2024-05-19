@@ -77,7 +77,7 @@ totest = {}
 totest['blank'] = [
         ["",
          document_start + indend_macros + """.TH "" "" "" ""
-.SH NAME
+.SH Name
  \\- \n\
 .\\" End of generated man page.
 """],
@@ -89,11 +89,11 @@ totest['blank'] = [
 
 """,
          document_start + indend_macros +
-""".TH "HELLO, WORLD." "" "" ""
-.SH NAME
+""".TH "Hello, world." "" "" ""
+.SH Name
 Hello, world. \\- \n\
 .sp
-\\fBWARNING:\\fP
+\\fBWarning:\\fP
 .INDENT 0.0
 .INDENT 3.5
 This broke docutils\\-sphinx.
@@ -165,8 +165,8 @@ and . in a line and at line start
 """,
          document_start + indend_macros +
 """\
-.TH "SIMPLE" "1" "2009-08-05" "0.1" "text processing"
-.SH NAME
+.TH "simple" "1" "2009-08-05" "0.1" "text processing"
+.SH Name
 simple \\- The way to go
 .SH SYNOPSIS
 .INDENT 0.0
@@ -192,13 +192,13 @@ Show this program\\(aqs version number and exit.
 .B  \\-\\-help\\fP,\\fB  \\-h
 Show this help message and exit.
 .UNINDENT
-.SH OTHER SECTION
+.SH OtHeR SECTION
 .sp
 link to  <http://docutils.sourceforge.io> \n\
 .sp
 With mixed case.
 .sp
-\\fBATTENTION!:\\fP
+\\fBAttention!:\\fP
 .INDENT 0.0
 .INDENT 3.5
 Admonition with title
@@ -222,11 +222,11 @@ something important
 .sp
 and . in a line and at line start
 \\&.in a paragraph
-.SH AUTHOR
+.SH Author
 someone@somewhere.net
 
 Arbitrary field: some text
-.SH COPYRIGHT
+.SH Copyright
 public domain
 .\\" End of generated man page.
 """],
@@ -244,7 +244,7 @@ totest['table'] = [
 '''\
 \'\\" t
 ''' + document_start + indend_macros + '''.TH "" "" "" ""
-.SH NAME
+.SH Name
  \\- \n\
 .INDENT 0.0
 .INDENT 3.5
@@ -295,7 +295,7 @@ $
    bla bla bla
 """,
 document_start + indend_macros + """.TH "" "" "" ""
-.SH NAME
+.SH Name
  \\- \n\
 optin group with dot as group item
 .INDENT 0.0
@@ -347,13 +347,13 @@ Section
     Description of Term 1 Description of Term 1
 
 """,
-document_start + indend_macros + '''.TH "DEFINITION LIST TEST" "" "" ""
-.SH NAME
+document_start + indend_macros + '''.TH "Definition List Test" "" "" ""
+.SH Name
 Definition List Test \\- \n\
 ''' + '''.SS Abstract
 .sp
 Docinfo is required.
-.SH SECTION
+.SH Section
 .INDENT 0.0
 .TP
 .B term1
@@ -374,7 +374,7 @@ totest['cmdlineoptions'] = [
   -i DEVICE, --input DEVICE  input device
 """,
 document_start + indend_macros + """.TH "" "" "" ""
-.SH NAME
+.SH Name
  \\- \n\
 .INDENT 0.0
 .TP
@@ -400,7 +400,7 @@ totest['citation'] = [
 .. [empty_citation]
 """,
 document_start + indend_macros + """.TH "" "" "" ""
-.SH NAME
+.SH Name
  \\- \n\
 .IP [docutils] 5
 blah blah blah
@@ -416,7 +416,7 @@ totest['rubric'] = [
 - a list
 """,
 document_start + indend_macros + """.TH "" "" "" ""
-.SH NAME
+.SH Name
  \\- \n\
 some rubric
 .INDENT 0.0
@@ -436,7 +436,7 @@ totest['double_quote'] = [
 They are "escaped" anywhere.
 """,
 document_start + indend_macros + """.TH "" "" "" ""
-.SH NAME
+.SH Name
  \\- \n\
 .INDENT 0.0
 .TP
@@ -465,8 +465,8 @@ in short
 
 Test title, docinfo to man page header.
 """,
-document_start + indend_macros + r""".TH "PAGE TITLE" "3" "3/Nov/2022" "0.0" "the books"
-.SH NAME
+document_start + indend_macros + r""".TH "page title" "3" "3/Nov/2022" "0.0" "the books"
+.SH Name
 page title \- in short
 .sp
 Test title, docinfo to man page header.

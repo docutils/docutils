@@ -54,7 +54,7 @@ Release 0.22b.dev (unpublished)
   - Remove code for unused emdash bullets.
   - Feature-request #105 more informative document comments.
     docutils version in header
-
+  - Stop converting text to full capitals (bug #481).
 
 Release 0.21.2 (2024-04-23)
 ===========================

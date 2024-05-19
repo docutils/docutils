@@ -28,8 +28,8 @@ level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .in \\n[rst2man-indent\\n[rst2man-indent-level]]u
 ..
-.TH "RST2MAN" "1" "2006-10-22" "0.1" "text processing"
-.SH NAME
+.TH "rst2man" "1" "2006-10-22" "0.1" "text processing"
+.SH Name
 rst2man \- generate unix manpages from reStructured text
 .\" TODO: authors and author with name <email>
 .
@@ -100,8 +100,8 @@ math: The LaTeX source is shown, e.g. \fBn! + \esin(x_n^2)\fP\&.
 .UNINDENT
 .sp
 Discussion is still open.
-.SH AUTHOR
+.SH Author
 grubert@users.sourceforge.net
-.SH COPYRIGHT
+.SH Copyright
 public domain
 .\" End of generated man page.

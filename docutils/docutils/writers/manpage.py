@@ -24,19 +24,19 @@ See https://www.tldp.org/HOWTO/Man-Page for a start.
 Man pages have no subsection only parts.
 Standard parts
 
-  NAME ,
-  SYNOPSIS ,
-  DESCRIPTION ,
-  OPTIONS ,
-  FILES ,
-  SEE ALSO ,
-  BUGS ,
+  Name ,
+  Synopsis ,
+  Description ,
+  Options ,
+  Files ,
+  See also ,
+  Bugs ,
 
 and
 
-  AUTHOR .
+  AUthor .
 
-A unix-like system keeps an index of the DESCRIPTIONs, which is accessible
+A unix-like system keeps an index of the Descriptions, which is accessible
 by the command whatis or apropos.
 
 """
@@ -195,10 +195,10 @@ class Translator(nodes.NodeVisitor):
         self.compact_simple = None
         # the list style "*" bullet or "#" numbered
         self._list_char = []
-        # writing the header .TH and .SH NAME is postboned after
+        # writing the header .TH and .SH Name is postboned after
         # docinfo.
         self._docinfo = {
-                "title": "", "title_upper": "",
+                "title": "", 
                 "subtitle": "",
                 "manual_section": "", "manual_group": "",
                 "author": [],
@@ -388,19 +388,19 @@ class Translator(nodes.NodeVisitor):
         self._list_char.pop()
 
     def header(self):
-        th = (".TH \"%(title_upper)s\" \"%(manual_section)s\""
+        th = (".TH \"%(title)s\" \"%(manual_section)s\""
               " \"%(date)s\" \"%(version)s\"") % self._docinfo
         if self._docinfo["manual_group"]:
             th += " \"%(manual_group)s\"" % self._docinfo
         th += "\n"
-        sh_tmpl = (".SH NAME\n"
+        sh_tmpl = (".SH Name\n"
                    "%(title)s \\- %(subtitle)s\n")
         return th + sh_tmpl % self._docinfo
 
     def append_header(self):
-        """append header with .TH and .SH NAME"""
+        """append header with .TH and .SH Name"""
         # NOTE before everything
-        # .TH title_upper section date source manual
+        # .TH title section date source manual
         # BUT macros before .TH for whatis database generators.
         if self.header_written:
             return
@@ -428,7 +428,7 @@ class Translator(nodes.NodeVisitor):
             self.body.append('.sp\n')
             name = '%s%s:%s\n' % (
                 self.defs['strong'][0],
-                self.language.labels.get(name, name).upper(),
+                self.language.labels.get(name, name),
                 self.defs['strong'][1],
                 )
             self.body.append(name)
@@ -607,12 +607,12 @@ class Translator(nodes.NodeVisitor):
 
     def depart_document(self, node):
         if self._docinfo['author']:
-            self.body.append('.SH AUTHOR\n%s\n'
+            self.body.append('.SH Author\n%s\n'
                              % ', '.join(self._docinfo['author']))
         skip = ('author', 'copyright', 'date',
                 'manual_group', 'manual_section',
                 'subtitle',
-                'title', 'title_upper', 'version')
+                'title', 'version')
         for name in self._docinfo_keys:
             if name == 'address':
                 self.body.append("\n%s:\n%s%s.nf\n%s\n.fi\n%s%s" % (
@@ -629,7 +629,7 @@ class Translator(nodes.NodeVisitor):
                     label = self.language.labels.get(name, name)
                 self.body.append("\n%s: %s\n" % (label, self._docinfo[name]))
         if self._docinfo['copyright']:
-            self.body.append('.SH COPYRIGHT\n%s\n'
+            self.body.append('.SH Copyright\n%s\n'
                              % self._docinfo['copyright'])
         self.body.append(self.comment_begin('End of generated man page.'))
 
@@ -1159,11 +1159,9 @@ class Translator(nodes.NodeVisitor):
             self.body.append('.IP "')
         elif self.section_level == 0:
             self._docinfo['title'] = node.astext()
-            # document title for .TH
-            self._docinfo['title_upper'] = node.astext().upper()
             raise nodes.SkipNode
         elif self.section_level == 1:
-            self.body.append('.SH %s\n'%self.deunicode(node.astext().upper()))
+            self.body.append('.SH %s\n'%self.deunicode(node.astext()))
             raise nodes.SkipNode
         else:
             self.body.append('.SS ')
