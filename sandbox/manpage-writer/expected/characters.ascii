@@ -1,6 +1,6 @@
-[4mSPECIAL-CHARACTERS[24m()                                      [4mSPECIAL-CHARACTERS[24m()
+[4mspecial-characters[24m()                                      [4mspecial-characters[24m()
 
-[1mNAME[0m
+[1mName[0m
        special-characters - test special characters
 
 [1mSEE ALSO[0m
@@ -37,4 +37,4 @@
        Some  text afterwards, test.txt ended with quotes test.  Unicode breaks
        the man processing chain. The display ends with [1msingle: [22m.
 
-                                                          [4mSPECIAL-CHARACTERS[24m()
+                                                          [4mspecial-characters[24m()

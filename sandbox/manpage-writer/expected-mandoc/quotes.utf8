@@ -1,6 +1,6 @@
 ()                                                                          ()
 
-NNAAMMEE
+NNaammee
         - a problem with double quotes not being rendered in the term of an
        rst definition list in the mpv documentation:
 

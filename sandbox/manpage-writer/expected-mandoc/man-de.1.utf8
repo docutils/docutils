@@ -1,6 +1,6 @@
-MAN(1)                       Manual Hilfsprogramme                      MAN(1)
+man(1)                       Manual Hilfsprogramme                      man(1)
 
-NNAAMMEE
+NNaammee
        man - Programm zum Einsehen der Online-Manuale
 
 SSYYNNTTAAXX
@@ -529,4 +529,4 @@ GGEESSCCHHIICCHHTTEE
 
        Für persönliche Würdigungen und Zusätze siehe Quelltexte.
 
-2.5.1                             2008-01-28                            MAN(1)
+2.5.1                             2008-01-28                            man(1)

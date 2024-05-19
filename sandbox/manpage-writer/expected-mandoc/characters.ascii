@@ -1,6 +1,6 @@
-SPECIAL-CHARACTERS()                                      SPECIAL-CHARACTERS()
+special-characters()                                      special-characters()
 
-NNAAMMEE
+NNaammee
        special-characters - test special characters
 
 SSEEEE AALLSSOO
@@ -37,4 +37,4 @@ DDEESSCCRRIIPPTTIIOONN
        Some text afterwards, test.txt ended with quotes test.  Unicode breaks
        the man processing chain. The display ends with ssiinnggllee:: .
 
-                                                          SPECIAL-CHARACTERS()
+                                                          special-characters()

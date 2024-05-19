@@ -1,6 +1,6 @@
-[4mRST2MAN[24m(1)                      text processing                     [4mRST2MAN[24m(1)
+[4mrst2man[24m(1)                      text processing                     [4mrst2man[24m(1)
 
-[1mNAME[0m
+[1mName[0m
        rst2man - generate unix manpages from reStructured text
 
 [1mSYNOPSIS[0m
@@ -196,22 +196,22 @@
        raw input to man
 
    [1mAdmonitions[0m
-       [1mATTENTION!:[0m
+       [1mAttention!:[0m
           Directives at large.
 
-       [1mCAUTION!:[0m
+       [1mCaution!:[0m
           Don't take any wooden nickels.
 
        [1m!DANGER!:[0m
           Mad scientist at work!
 
-       [1mERROR:[0m
+       [1mError:[0m
           Does not compute.
 
-       [1mHINT:[0m
+       [1mHint:[0m
           It's bigger than a bread box.
 
-       [1mIMPORTANT:[0m
+       [1mImportant:[0m
 
           · Wash behind your ears.
 
@@ -221,13 +221,13 @@
 
           · Back up your data.
 
-       [1mNOTE:[0m
+       [1mNote:[0m
           This is a note.
 
-       [1mTIP:[0m
+       [1mTip:[0m
           15% if the service is good.
 
-       [1mWARNING:[0m
+       [1mWarning:[0m
           Strong prose may provoke extreme mental exertion.  Reader discretion
           is strongly advised.
 
@@ -242,10 +242,10 @@
    [1mother[0m
        inline references [4mref[24m [4msomething[24m .  Contained verbose. Nothing special.
 
-[1mTOP SECTION[0m
+[1mTop Section[0m
        With mixed case
 
-[1mTOP SECTION B C D E F G[0m
+[1mTop section b c d e f g[0m
        with character formatting.
 
 [1mFILES[0m
@@ -275,7 +275,7 @@
 
        4. list items.  bullets and enumerators.
 
-[1mAUTHOR[0m
+[1mAuthor[0m
        grubert@users.sourceforge.net
 
        Organization: humankind
@@ -285,7 +285,7 @@
           Example, EX  Canada
           A1B 2C3
 
-[1mCOPYRIGHT[0m
+[1mCopyright[0m
        public domain Behave responsible.
 
-0.0.1                             2009-06-22                        [4mRST2MAN[24m(1)
+0.0.1                             2009-06-22                        [4mrst2man[24m(1)

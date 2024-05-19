@@ -1,6 +1,6 @@
-[4mOPTIONLISTTEST[24m(1)           General Commands Manual          [4mOPTIONLISTTEST[24m(1)
+[4mOptionlistTest[24m(1)           General Commands Manual          [4mOptionlistTest[24m(1)
 
-[1mNAME[0m
+[1mName[0m
        OptionlistTest - Test for correct intention/detention of option lists
 
 [1mDESCRIPTION[0m
@@ -68,7 +68,7 @@
 
        This paragraph should be at level 0.
 
-[1mEMPHASIZE[0m
+[1memphasize[0m
        [1mplain text term[0m
               definition paragraph 1
 
@@ -117,10 +117,10 @@
 
        This paragraph should be at level 0 again.
 
-[1mAUTHOR[0m
+[1mAuthor[0m
        h.goebel@goebel-consult.de
 
-[1mCOPYRIGHT[0m
+[1mCopyright[0m
        public domain
 
-                                  2008-04-29                 [4mOPTIONLISTTEST[24m(1)
+                                  2008-04-29                 [4mOptionlistTest[24m(1)

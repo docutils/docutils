@@ -29,8 +29,8 @@ level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .in \\n[rst2man-indent\\n[rst2man-indent-level]]u
 ..
-.TH "RST2MAN" "1" "2009-06-22" "0.0.1" "text processing"
-.SH NAME
+.TH "rst2man" "1" "2009-06-22" "0.0.1" "text processing"
+.SH Name
 rst2man \- generate unix manpages from reStructured text
 .\" TODO: authors and author with name <email>
 .
@@ -312,14 +312,14 @@ Singing...
 raw input to man
 .SS Admonitions
 .sp
-\fBATTENTION!:\fP
+\fBAttention!:\fP
 .INDENT 0.0
 .INDENT 3.5
 Directives at large.
 .UNINDENT
 .UNINDENT
 .sp
-\fBCAUTION!:\fP
+\fBCaution!:\fP
 .INDENT 0.0
 .INDENT 3.5
 Don\(aqt take any wooden nickels.
@@ -333,21 +333,21 @@ Mad scientist at work!
 .UNINDENT
 .UNINDENT
 .sp
-\fBERROR:\fP
+\fBError:\fP
 .INDENT 0.0
 .INDENT 3.5
 Does not compute.
 .UNINDENT
 .UNINDENT
 .sp
-\fBHINT:\fP
+\fBHint:\fP
 .INDENT 0.0
 .INDENT 3.5
 It\(aqs bigger than a bread box.
 .UNINDENT
 .UNINDENT
 .sp
-\fBIMPORTANT:\fP
+\fBImportant:\fP
 .INDENT 0.0
 .INDENT 3.5
 .INDENT 0.0
@@ -363,21 +363,21 @@ Back up your data.
 .UNINDENT
 .UNINDENT
 .sp
-\fBNOTE:\fP
+\fBNote:\fP
 .INDENT 0.0
 .INDENT 3.5
 This is a note.
 .UNINDENT
 .UNINDENT
 .sp
-\fBTIP:\fP
+\fBTip:\fP
 .INDENT 0.0
 .INDENT 3.5
 15% if the service is good.
 .UNINDENT
 .UNINDENT
 .sp
-\fBWARNING:\fP
+\fBWarning:\fP
 .INDENT 0.0
 .INDENT 3.5
 Strong prose may provoke extreme mental exertion.
@@ -399,10 +399,10 @@ Text after the admonition.
 .sp
 inline references \fIref something\fP .
 Contained verbose. Nothing special.
-.SH TOP SECTION
+.SH Top Section
 .sp
 With mixed case
-.SH TOP SECTION B C D E F G
+.SH Top section b c d e f g
 .sp
 with character formatting.
 .SH FILES
@@ -437,7 +437,7 @@ be carefull with linebreaks in generated code.
 list items.
 bullets and enumerators.
 .UNINDENT
-.SH AUTHOR
+.SH Author
 grubert@users.sourceforge.net
 
 Organization: humankind
@@ -452,7 +452,7 @@ A1B 2C3
 .fi
 .UNINDENT
 .UNINDENT
-.SH COPYRIGHT
+.SH Copyright
 public domain
 Behave responsible.
 .\" End of generated man page.

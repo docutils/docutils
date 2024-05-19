@@ -28,10 +28,10 @@ level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .in \\n[rst2man-indent\\n[rst2man-indent-level]]u
 ..
-.TH "INDENT" "" "" ""
-.SH NAME
+.TH "indent" "" "" ""
+.SH Name
 indent \- test indentation blocks
-.SH OPTION BLOCK
+.SH option block
 .sp
 an option block, and within it, a part of the text block indented.
 the rest of the text (\(dqMore lines 1\(dq, etc.) aligned at the same
@@ -61,7 +61,7 @@ More lines 1.
 More lines 2.
 More lines 3.
 .UNINDENT
-.SH RUBRIC STARTING WITH A LIST
+.SH rubric starting with a list
 empty rubric
 .INDENT 0.0
 .IP \(bu 2

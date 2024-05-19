@@ -28,8 +28,8 @@ level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .in \\n[rst2man-indent\\n[rst2man-indent-level]]u
 ..
-.TH "REGRESSION-380" "" "" ""
-.SH NAME
+.TH "regression-380" "" "" ""
+.SH Name
 regression-380 \- regression test for BUG#380
 .sp
 #380 manpage writer does not add space after .B

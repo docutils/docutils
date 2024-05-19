@@ -29,8 +29,8 @@ level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .in \\n[rst2man-indent\\n[rst2man-indent-level]]u
 ..
-.TH "MAN" "1" "2008-01-28" "2.5.1" "Manual Hilfsprogramme"
-.SH NAME
+.TH "man" "1" "2008-01-28" "2.5.1" "Manual Hilfsprogramme"
+.SH Name
 man \- Programm zum Einsehen der Online-Manuale
 .SH SYNTAX
 .INDENT 0.0

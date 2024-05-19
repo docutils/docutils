@@ -1,9 +1,9 @@
-[4mREFERENCE[24m [4mTESTS[24m()                                            [4mREFERENCE[24m [4mTESTS[24m()
+[4mreference[24m [4mtests[24m()                                            [4mreference[24m [4mtests[24m()
 
-[1mNAME[0m
+[1mName[0m
        reference tests -
 
-[1mHOW TO MARKUP[0m
+[1mhow to markup[0m
        link adr in .UR .UE or simply in parantheses
 
        · man and mandoc convert UR/UE to [1m< [22mand [1m>[22m.
@@ -16,7 +16,7 @@
 
             see See the Python home page (https://www.python.org) for info.
 
-[1mTEST FOR REFERENCES IN MAN PAGES[0m
+[1mtest for references in man pages[0m
        embedded in a paragraph
 
        · at line start
@@ -33,7 +33,7 @@
 
        at end of paragraph
 
-[1mTESTS[0m
+[1mtests[0m
        See    <https://docutils.sourceforge.io/docs/user/rst/quickref.html#ex-
        plicit-markup> for more
 
@@ -79,4 +79,4 @@
        Anonymous targets begin with ".. __:"; no reference name is required or
        allowed:
 
-                                                             [4mREFERENCE[24m [4mTESTS[24m()
+                                                             [4mreference[24m [4mtests[24m()

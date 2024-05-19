@@ -1,6 +1,6 @@
 ()                                                                          ()
 
-[1mNAME[0m
+[1mName[0m
         -  a  problem  with double quotes not being rendered in the term of an
        rst definition list in the mpv documentation:
 

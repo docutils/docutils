@@ -28,8 +28,8 @@ level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .in \\n[rst2man-indent\\n[rst2man-indent-level]]u
 ..
-.TH "OPTIONLISTTEST" "1" "2008-04-29" ""
-.SH NAME
+.TH "OptionlistTest" "1" "2008-04-29" ""
+.SH Name
 OptionlistTest \- Test for correct intention/detention of option lists
 .\" -*- mode: rst -*-
 .
@@ -125,7 +125,7 @@ Paragraph at level 1. Same level as Line indented once.
 .UNINDENT
 .sp
 This paragraph should be at level 0.
-.SH EMPHASIZE
+.SH emphasize
 .INDENT 0.0
 .TP
 .B plain text term
@@ -189,8 +189,8 @@ More Description for term3.
 .UNINDENT
 .sp
 This paragraph should be at level 0 again.
-.SH AUTHOR
+.SH Author
 h.goebel@goebel-consult.de
-.SH COPYRIGHT
+.SH Copyright
 public domain
 .\" End of generated man page.

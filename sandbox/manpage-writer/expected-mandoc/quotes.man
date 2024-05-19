@@ -29,7 +29,7 @@ level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .in \\n[rst2man-indent\\n[rst2man-indent-level]]u
 ..
 .TH "" "" "" ""
-.SH NAME
+.SH Name
  \- 
 a problem with double quotes not being rendered in the
 term of an rst definition list in the mpv documentation:

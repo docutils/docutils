@@ -28,10 +28,10 @@ level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .in \\n[rst2man-indent\\n[rst2man-indent-level]]u
 ..
-.TH "REFERENCE TESTS" "" "" ""
-.SH NAME
+.TH "reference tests" "" "" ""
+.SH Name
 reference tests \- 
-.SH HOW TO MARKUP
+.SH how to markup
 .sp
 link adr in .UR .UE or simply in parantheses
 .INDENT 0.0
@@ -58,7 +58,7 @@ see See the Python home page (https://www.python.org) for info.
 .UNINDENT
 .UNINDENT
 .UNINDENT
-.SH TEST FOR REFERENCES IN MAN PAGES
+.SH test for references in man pages
 .sp
 embedded in a paragraph
 .INDENT 0.0
@@ -79,7 +79,7 @@ at eol
 .UNINDENT
 .sp
 at end of paragraph
-.SH TESTS
+.SH tests
 .sp
 See  <https://docutils.sourceforge.io/docs/user/rst/quickref.html#explicit\-markup> 
 for more

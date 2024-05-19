@@ -1,9 +1,9 @@
-REFERENCE TESTS()                                            REFERENCE TESTS()
+reference tests()                                            reference tests()
 
-NNAAMMEE
+NNaammee
        reference tests -
 
-HHOOWW TTOO MMAARRKKUUPP
+hhooww ttoo mmaarrkkuupp
        link adr in .UR .UE or simply in parantheses
 
        • man and mandoc convert UR/UE to << and >>.
@@ -16,7 +16,7 @@ HHOOWW TTOO MMAARRKKUUPP
 
             see See the Python home page (https://www.python.org) for info.
 
-TTEESSTT FFOORR RREEFFEERREENNCCEESS IINN MMAANN PPAAGGEESS
+tteesstt ffoorr rreeffeerreenncceess iinn mmaann ppaaggeess
        embedded in a paragraph
 
        • at line start
@@ -33,7 +33,7 @@ TTEESSTT FFOORR RREEFFEERREENNCCEESS IINN MMAANN PPAAGG
 
        at end of paragraph
 
-TTEESSTTSS
+tteessttss
        See
        <https://docutils.sourceforge.io/docs/user/rst/quickref.html#explicit-markup>
        for more
@@ -80,4 +80,4 @@ TTEESSTTSS
        Anonymous targets begin with ".. __:"; no reference name is required or
        allowed:
 
-                                                             REFERENCE TESTS()
+                                                             reference tests()
