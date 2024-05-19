@@ -1010,7 +1010,7 @@ class Translator(nodes.NodeVisitor):
 
     def visit_reference(self, node):
         """E.g. link or email address."""
-        # .UR and .UE macros in roff use OSC8 escape sequences
+        # For .UR/.UE and .MT/.ME macros groff might use OSC8 escape sequences
         # which are not supported everywhere yet
         # therefore make the markup ourself
         if 'refuri' in node:
