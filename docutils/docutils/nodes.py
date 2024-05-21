@@ -1817,8 +1817,6 @@ class topic(Structural, Element):
     Topics cannot nest inside topics, or body elements; you can't have
     a topic inside a table, list, block quote, etc.
     """
-    # "depth" and "local" attributes may be added by the "Contents" transform:
-    valid_attributes = Element.valid_attributes + ('depth', 'local')
     valid_children = (title, Body)  # (title?, (%body.elements;)+)
 
 
@@ -2886,7 +2884,6 @@ ATTRIBUTE_VALIDATORS = {
     'colwidth': int,  # sic! CALS: CDATA (measure or number+'*')
     'content': str,  # <meta>
     'delimiter': str,
-    'depth': int,
     'dir': validate_enumerated_type('ltr', 'rtl', 'auto'),  # <meta>
     'dupnames': validate_refname_list,
     'enumtype': validate_enumerated_type('arabic', 'loweralpha', 'lowerroman',
@@ -2900,7 +2897,6 @@ ATTRIBUTE_VALIDATORS = {
     'lang': str,  # <meta>
     'level': int,
     'line': int,
-    'local': validate_yesorno,
     'ltrim': validate_yesorno,
     'loading': validate_enumerated_type('embed', 'link', 'lazy'),
     'media': str,  # <meta>

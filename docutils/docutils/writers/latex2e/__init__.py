@@ -3224,7 +3224,13 @@ class LaTeXTranslator(nodes.NodeVisitor):
             return
 
         # ToC by LaTeX
-        depth = node.get('depth', 0)
+        try:
+            details = node.next_node(nodes.pending).details
+        except AttributeError:
+            self.warn('Setting "use_latex_toc" is True but "contents" details '
+                      'are missing. Directive option values may be lost.')
+            details = {}
+        depth = details.get('depth', 0)
         maxdepth = len(self.d_class.sections)
         if isinstance(node.next_node(), nodes.title):
             title = self.encode(node[0].astext())

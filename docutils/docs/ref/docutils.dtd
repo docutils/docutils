@@ -224,7 +224,7 @@ http://www.oasis-open.org/html/tm9901.htm).
 
 <!-- These parameter entities customize the table model DTD. -->
 <!-- table element TODO: use %tbl.table.att.  Keep or drop pgwide? -->
-<!ENTITY % bodyatt  
+<!ENTITY % bodyatt
   " %basic.atts;
     %align-h.att;
     width     %measure;  #IMPLIED ">
@@ -355,10 +355,7 @@ http://www.oasis-open.org/html/tm9901.htm).
 <!ATTLIST section %basic.atts;>
 
 <!ELEMENT topic (title?, (%body.elements;)+)>
-<!ATTLIST topic
-    %basic.atts;
-    depth %number;  #IMPLIED
-    local %yesorno; #IMPLIED>
+<!ATTLIST topic %basic.atts;>
 
 <!ELEMENT sidebar ((title, subtitle?)?, (%body.elements; | topic)+)>
 <!ATTLIST sidebar %basic.atts;>

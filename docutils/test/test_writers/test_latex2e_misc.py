@@ -47,13 +47,14 @@ class PublishTestCase(unittest.TestCase):
         """
         settings = self.settings.copy()
         settings['output_encoding'] = 'unicode'
+        settings['warning_stream'] = ''  # don't warn for missing ToC details
         doctree = core.publish_doctree(contents_test_input,
                                        settings_overrides=settings)
         result = core.publish_from_doctree(doctree,
                                            writer_name='latex',
                                            settings_overrides=settings)
         self.assertNotIn(r'\item \hyperref[foo]{foo}', result)
-        # self.assertIn(r'\tableofcontents', result)
+        self.assertIn(r'\tableofcontents', result)
 
     def test_publish_parts(self):
         """Check for the presence of documented parts.
