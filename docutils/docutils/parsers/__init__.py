@@ -10,7 +10,7 @@ __docformat__ = 'reStructuredText'
 
 from importlib import import_module
 
-from docutils import Component, frontend
+from docutils import Component, frontend, transforms
 
 
 class Parser(Component):
@@ -51,6 +51,9 @@ class Parser(Component):
     component_type = 'parser'
     config_section = 'parsers'
 
+    def get_transforms(self):
+        return super().get_transforms() + [transforms.universal.Validate]
+
     def parse(self, inputstring, document):
         """Override to parse `inputstring` into document tree `document`."""
         raise NotImplementedError('subclass must override this method')
@@ -69,8 +72,6 @@ class Parser(Component):
         """Finalize parse details.  Call at end of `self.parse()`."""
         self.document.reporter.detach_observer(
             self.document.note_parse_message)
-        if self.document.settings.validate:
-            self.document.validate()
 
 
 _parser_aliases = {  # short names for known parsers

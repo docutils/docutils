@@ -27,7 +27,7 @@ There are `transforms added by components`_, others (e.g.
 found in the document.
 
 To add a transform, components (objects inheriting from
-Docutils.Component like Readers, Parsers, Writers, Input, Output) overwrite
+`docutils.Component` like Readers, Parsers, Writers, Input, Output) overwrite
 the ``get_transforms()`` method of their base class. After the Reader has
 finished processing, the Publisher calls
 ``Transformer.populate_from_components()`` with a list of components and all
@@ -103,6 +103,8 @@ universal_.Decorations              Reader (r)                    820
 
 misc_.Transitions                   standalone (r), pep (r)       830
 
+universal_.Validate                 Parser                        835
+
 universal_.ExposeInternals          Reader (r)                    840
 
 references_.DanglingReferences      standalone (r), pep (r)       850
@@ -129,7 +131,7 @@ Key:
 * (w): Writer
 * (d): Directive
 * (t): Transform
-* (/p): Via a "pending" node
+* (/p): Via a `\<pending>`_ element
 
 
 Transform Priority Range Categories
@@ -587,17 +589,10 @@ is parsed and transformed to::
     ../ref/rst/restructuredtext.html#substitution-definitions
 
 .. transform class sources
-.. _frontmatter:
-    https://docutils.sourceforge.io/docutils/transforms/frontmatter.py
-.. _misc:
-    https://docutils.sourceforge.io/docutils/transforms/misc.py
-.. _parts:
-    https://docutils.sourceforge.io/docutils/transforms/parts.py
-.. _peps:
-    https://docutils.sourceforge.io/docutils/transforms/peps.py
-.. _references:
-    https://docutils.sourceforge.io/docutils/transforms/references.py
-.. _universal:
-    https://docutils.sourceforge.io/docutils/transforms/universal.py
-.. _writer_aux:
-    https://docutils.sourceforge.io/docutils/transforms/writer_aux.py
+.. _frontmatter: ../../docutils/transforms/frontmatter.py
+.. _misc:        ../../docutils/transforms/misc.py
+.. _parts:       ../../docutils/transforms/parts.py
+.. _peps:        ../../docutils/transforms/peps.py
+.. _references:  ../../docutils/transforms/references.py
+.. _universal:   ../../docutils/transforms/universal.py
+.. _writer_aux:  ../../docutils/transforms/writer_aux.py

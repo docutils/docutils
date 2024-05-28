@@ -16,6 +16,7 @@ Transforms needed by most or all documents:
   in `self.document.settings.strip_elements_with_classes`
   and class values in `self.document.settings.strip_classes`.
 - `SmartQuotes`: Replace ASCII quotation marks with typographic form.
+- `Validate`: Validate the document tree, report violations as warning.
 """
 
 __docformat__ = 'reStructuredText'
@@ -333,3 +334,21 @@ class SmartQuotes(Transform):
                 txtnode.parent.replace(txtnode, nodes.Text(newtext))
 
         self.unsupported_languages.clear()
+
+
+class Validate(Transform):
+
+    """
+    Validate the document tree, report violations as warning.
+    """
+
+    default_priority = 835  # between misc.Transitions and  universal.Messages
+
+    def apply(self):
+        if not getattr(self.document.settings, 'validate', False):
+            return
+        for node in self.document.findall():
+            try:
+                node.validate()
+            except ValueError as e:
+                self.document.reporter.warning(e.args[0], base_node=node)

@@ -1142,11 +1142,9 @@ class Element(Node):
             raise ValueError('\n'.join(messages))
 
     def validate(self):
-        """Validate element and its children.
+        """Validate element against the Docutils Document Model ("doctree").
 
-        Test conformance to the Docutils Document Model ("doctree").
-        Report violations as warning or raise ValueError if there is
-        no reporter attached to the root node.
+        Raise ValueError if there are violations.
 
         Provisional (work in progress).
         """
@@ -1168,12 +1166,8 @@ class Element(Node):
                 messages.append(f'May not contain "{child.tagname}" elements.')
             child.validate()
         if messages:
-            msg = (f'Element <{self.tagname}> invalid:\n  '
-                   + '\n  '.join(messages))
-            try:
-                self.document.reporter.warning(msg)
-            except AttributeError:
-                raise ValueError(msg)
+            raise ValueError(f'Element <{self.tagname}> invalid:\n  '
+                             + '\n  '.join(messages))
 
 
 # ========
@@ -1197,6 +1191,8 @@ class BackLinkable:
 # ====================
 #  Element Categories
 # ====================
+#
+# See https://docutils.sourceforge.io/docs/ref/doctree.html#element-hierarchy.
 
 class Root:
     """Element at the root of a document tree."""
@@ -1277,6 +1273,7 @@ class Inline:
 
 
 # Orthogonal categories
+# =====================
 
 class PreBibliographic:
     """Elements which may occur before Bibliographic Elements."""
