@@ -1136,8 +1136,7 @@ class Element(Node):
                 self.attributes[key] = ATTRIBUTE_VALIDATORS[key](value)
             except (ValueError, TypeError, KeyError) as e:
                 messages.append(
-                    f'Attribute "{key}" has invalid value "{value}".\n'
-                    + e.args[0])  # message argument
+                    f'Attribute "{key}" has invalid value "{value}".\n{e}')
         if messages:
             raise ValueError('\n'.join(messages))
 
@@ -1152,7 +1151,7 @@ class Element(Node):
         try:
             self.validate_attributes()
         except ValueError as e:
-            messages.append(e.args[0])  # the message argument
+            messages.append(str(e))
         # test number of children
         n_min, n_max = self.valid_len
         if len(self.children) < n_min:
