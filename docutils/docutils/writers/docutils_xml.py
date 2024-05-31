@@ -119,7 +119,8 @@ class XMLTranslator(nodes.GenericNodeVisitor):
         if not self.in_simple:
             self.output.append(self.indent*self.level)
         self.output.append(node.starttag(xml.sax.saxutils.quoteattr))
-        self.level += 1
+        if not isinstance(node, nodes.Inline):
+            self.level += 1
         # `nodes.literal` is not an instance of FixedTextElement by design,
         # see docs/ref/rst/restructuredtext.html#inline-literals
         if isinstance(node, (nodes.FixedTextElement, nodes.literal)):
@@ -131,7 +132,8 @@ class XMLTranslator(nodes.GenericNodeVisitor):
 
     def default_departure(self, node):
         """Default node depart method."""
-        self.level -= 1
+        if not isinstance(node, nodes.Inline):
+            self.level -= 1
         if not self.in_simple:
             self.output.append(self.indent*self.level)
         self.output.append(node.endtag())

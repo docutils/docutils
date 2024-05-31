@@ -241,7 +241,7 @@ They are transformed from section titles after parsing.</comment>
                     (<reference refuri="http://www.python.org">http://www.python.org</reference>), external hyperlinks (<reference name="Python" refuri="http://www.python.org/">Python</reference> <footnote_reference auto="1" ids="footnote-reference-10" refid="footnote-6">5</footnote_reference>), internal
                     cross-references (<reference name="example" refid="example">example</reference>), external hyperlinks with embedded URIs
                     (<reference name="Python web site" refuri="http://www.python.org">Python web site</reference>), <reference anonymous="1" name="anonymous hyperlink references" refuri="http://www.python.org/">anonymous hyperlink
-                        references</reference> <footnote_reference auto="1" ids="footnote-reference-14" refid="footnote-6">5</footnote_reference> (<reference anonymous="1" name="a second reference" refuri="https://docutils.sourceforge.io/">a second reference</reference> <footnote_reference auto="1" ids="footnote-reference-15" refid="footnote-8">7</footnote_reference>), footnote references (manually
+                    references</reference> <footnote_reference auto="1" ids="footnote-reference-14" refid="footnote-6">5</footnote_reference> (<reference anonymous="1" name="a second reference" refuri="https://docutils.sourceforge.io/">a second reference</reference> <footnote_reference auto="1" ids="footnote-reference-15" refid="footnote-8">7</footnote_reference>), footnote references (manually
                     numbered <footnote_reference ids="footnote-reference-1" refid="footnote-1">1</footnote_reference>, anonymous auto-numbered <footnote_reference auto="1" ids="footnote-reference-2" refid="footnote-2">3</footnote_reference>, labeled auto-numbered
                     <footnote_reference auto="1" ids="footnote-reference-3" refid="label">2</footnote_reference>, or symbolic <footnote_reference auto="*" ids="footnote-reference-4" refid="footnote-3">*</footnote_reference>), citation references (see <citation_reference ids="citation-reference-1" refid="cit2002">CIT2002</citation_reference>),
                     substitution references (<image alt="EXAMPLE" uri="../../../docs/user/rst/images/biohazard.png"></image> &amp;
@@ -751,7 +751,7 @@ Python-specific usage examples; begun with "&gt;&gt;&gt;"
             <target refid="example"></target>
             <paragraph ids="example" names="example">This paragraph is pointed to by the explicit "example" target. A
                 reference can be found under <reference name="Inline Markup" refid="inline-markup">Inline Markup</reference>, above. <reference name="Inline hyperlink targets" refid="inline-hyperlink-targets">Inline
-                    hyperlink targets</reference> are also possible.</paragraph>
+                hyperlink targets</reference> are also possible.</paragraph>
             <paragraph>Section headers are implicit targets, referred to by name. See
                 <reference name="Targets" refid="targets">Targets</reference>, which is a subsection of <reference name="Body Elements" refid="body-elements">Body Elements</reference>.</paragraph>
             <paragraph>Explicit external targets are interpolated into references such as
