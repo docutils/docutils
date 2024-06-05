@@ -55,7 +55,9 @@ class WriterPublishTestCase(unittest.TestCase):
                     self.assertEqual(expected, output)
 
     def test_defaults(self):
-        self.run_samples(samples_default, self.settings)
+        settings = self.settings.copy()
+        settings['validate'] = False  # we test an invalid footnote
+        self.run_samples(samples_default, settings)
 
     def test_docutils_toc(self):
         settings = self.settings.copy()

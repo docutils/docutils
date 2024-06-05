@@ -514,6 +514,261 @@ class ElementValidationTests(unittest.TestCase):
                                     '.*Valid units: em ex '):
             node.validate()
 
+    def test_validate_spurious_element(self):
+        label = nodes.label('', '*')
+        label.append(nodes.strong())
+        with self.assertRaisesRegex(nodes.ValidationError,
+                                    'Element <label> invalid:\n'
+                                    '  Child element <strong> not allowed '):
+            label.validate()
+
+    def test_validate_content(self):
+        """Check, whether an element's children fit into its content model.
+
+        Return empty lists for valid elements,
+        lists with warnings and spurious children if children don't match.
+        """
+        # sample elements
+        inline = nodes.inline()  # inline element
+        text = nodes.Text('explanation')  # <#text>
+        hint = nodes.hint()  # body element
+
+        # empty element: (EMPTY)
+        image = nodes.image('')
+        self.assertEqual(image.validate_content(), [])
+        image.append(text)
+        self.assertEqual(image.validate_content(), [text])
+        #     ValueError, "Spurious Element <#text: 'explanation'>"):
+
+        # TextElement: (#PCDATA | %inline.elements;)*
+        paragraph = nodes.paragraph()  # empty element
+        self.assertEqual(paragraph.validate_content(), [])
+        paragraph = nodes.paragraph('', 'text')  # just text
+        self.assertEqual(paragraph.validate_content(), [])
+        paragraph.extend([inline, nodes.Text('text 2'), nodes.math()])
+        self.assertEqual(paragraph.validate_content(), [])
+        paragraph.append(hint)  # body element (sic!)
+        paragraph.append(text)
+        self.assertEqual(paragraph.validate_content(), [hint, text])
+        # validate() reports "relics" as ValueError:
+        with self.assertRaisesRegex(nodes.ValidationError,
+                                    '<paragraph> invalid:\n'
+                                    '  Child element <hint> not allowed '):
+            paragraph.validate()
+
+        # PureTextElement: (#PCDATA)
+        label = nodes.label()  # empty element
+        self.assertEqual(label.validate_content(), [])
+        label = nodes.label('', '†')
+        self.assertEqual(label.validate_content(), [])
+        label.append(inline)  # sic!
+        self.assertEqual(label.validate_content(), [inline])
+
+        # docinfo: (%bibliographic.elements;)+
+        docinfo = nodes.docinfo()  # empty element (sic!)
+        with self.assertRaisesRegex(nodes.ValidationError,
+                                    'Missing child of type <Bibliographic>.'):
+            docinfo.validate_content()
+        docinfo.append(nodes.paragraph())
+        with self.assertRaisesRegex(nodes.ValidationError,
+                                    'Expecting .* <Bibliographic>, not '):
+            docinfo.validate_content()
+        docinfo = nodes.docinfo('', nodes.authors(), nodes.contact())
+        self.assertEqual(docinfo.validate_content(), [])
+        docinfo.append(hint)  # sic!
+        self.assertEqual(docinfo.validate_content(), [hint])
+
+        # decoration: (header?, footer?)
+        decoration = nodes.decoration()  # empty element
+        self.assertEqual(decoration.validate_content(), [])
+        decoration = nodes.decoration('', nodes.header(), nodes.footer())
+        self.assertEqual(decoration.validate_content(), [])
+        header = nodes.header()
+        decoration.append(header)  # 3rd element (sic!)
+        self.assertEqual(decoration.validate_content(), [header])
+        decoration = nodes.decoration('', nodes.footer())
+        self.assertEqual(decoration.validate_content(), [])
+        decoration.append(header)  # wrong order!
+        self.assertEqual(decoration.validate_content(), [header])
+
+        # Body elements have a range of different content models.
+
+        # container: (%body.elements;)+
+        container = nodes.container()  # empty (sic!)
+        with self.assertRaisesRegex(nodes.ValidationError,
+                                    'Missing child of type <Body>.'):
+            container.validate_content()
+        container.append(inline)  # sic!
+        with self.assertRaisesRegex(nodes.ValidationError,
+                                    'Expecting child of type <Body>, not <in'):
+            container.validate_content()
+        container = nodes.container('', nodes.paragraph())  # one body element
+        self.assertEqual(container.validate_content(), [])  # valid
+        container.append(nodes.tip())  # more body elements
+        self.assertEqual(container.validate_content(), [])  # valid
+        container.append(inline)  # sic!
+        self.assertEqual(container.validate_content(), [inline])
+
+        # block_quote: ((%body.elements;)+, attribution?)
+        block_quote = nodes.block_quote('', hint, nodes.table())
+        self.assertEqual(block_quote.validate_content(), [])
+        block_quote.append(nodes.attribution())
+        self.assertEqual(block_quote.validate_content(), [])
+        block_quote.append(hint)  # element after attribution (sic!)
+        self.assertEqual(block_quote.validate_content(), [hint])
+
+        # list item (%body.elements;)*
+        list_item = nodes.list_item()  # empty list item is valid
+        self.assertEqual(list_item.validate_content(), [])
+        list_item.append(nodes.bullet_list())  # lists may be nested
+        list_item.append(paragraph)
+        self.assertEqual(list_item.validate_content(), [])
+        list_item.append(inline)  # sic!
+        self.assertEqual(list_item.validate_content(), [inline])
+
+        # bullet_list, enumerated_list: (list_item+)
+        bullet_list = nodes.bullet_list()  # empty (sic!)
+        with self.assertRaisesRegex(nodes.ValidationError,
+                                    'Missing child of type <list_item>.'):
+            bullet_list.validate_content()
+        bullet_list.extend([list_item, list_item, list_item])
+        self.assertEqual(bullet_list.validate_content(), [])
+        bullet_list.append(hint)  # must nest in <list_item>
+        self.assertEqual(bullet_list.validate_content(), [hint])
+
+        # definition_list_item: (term, classifier*, definition)
+        definition_list_item = nodes.definition_list_item()
+        with self.assertRaisesRegex(nodes.ValidationError,
+                                    'Element <definition_list_item> invalid:\n'
+                                    '  Missing child of type <term>.'):
+            definition_list_item.validate_content(),
+        definition_list_item.append(nodes.term())
+        definition_list_item.append(nodes.definition())
+        self.assertEqual(definition_list_item.validate_content(), [])
+        definition_list_item.children.insert(1, nodes.classifier())
+        definition_list_item.children.insert(1, nodes.classifier())
+        self.assertEqual(definition_list_item.validate_content(), [])
+
+        # field: (field_name, field_body)
+        field = nodes.field()
+        with self.assertRaisesRegex(nodes.ValidationError,
+                                    'Missing child of type <field_name>.'):
+            field.validate_content()
+        field.extend([nodes.field_name(), nodes.field_body()])
+        self.assertEqual(field.validate_content(), [])
+        field = nodes.field('', nodes.field_body(), nodes.field_name())
+        # wrong order!
+        with self.assertRaisesRegex(nodes.ValidationError,
+                                    'Expecting child of type <field_name>,'
+                                    ' not <field_body>.'):
+            field.validate_content()
+
+        # option: (option_string, option_argument*)
+        option = nodes.option()
+        with self.assertRaisesRegex(nodes.ValidationError,
+                                    'Missing child of type <option_string>.'):
+            option.validate_content()
+        option.append(nodes.paragraph())  # sic!
+        with self.assertRaisesRegex(nodes.ValidationError,
+                                    'Expecting child of type <option_string>,'
+                                    ' not <paragraph>.'):
+            option.validate_content()
+        option = nodes.option('', nodes.option_string())
+        self.assertEqual(option.validate_content(), [])
+        option.append(nodes.option_argument())
+        self.assertEqual(option.validate_content(), [])
+
+        # line_block: (line | line_block)+
+        line_block = nodes.line_block()  # sic!
+        with self.assertRaisesRegex(nodes.ValidationError,
+                                    ' child of type <line> or <line_block>.'):
+            line_block.validate_content()
+        line_block.append(nodes.line_block())
+        self.assertEqual(line_block.validate_content(), [])
+        line_block = nodes.line_block('', nodes.paragraph(), nodes.line())
+        with self.assertRaisesRegex(nodes.ValidationError,
+                                    'Expecting child of type <line> or '
+                                    '<line_block>, not <paragraph>.'):
+            line_block.validate_content()
+
+        # admonition: (title, (%body.elements;)+)
+        admonition = nodes.admonition('', nodes.paragraph())
+        with self.assertRaisesRegex(nodes.ValidationError,
+                                    'Expecting child of type <title>,'
+                                    ' not <paragraph>.'):
+            admonition.validate_content()
+        admonition = nodes.admonition('', nodes.title(), nodes.paragraph())
+        self.assertEqual(admonition.validate_content(), [])
+
+        # specific admonitions: (%body.elements;)+
+        note = nodes.note()
+        with self.assertRaisesRegex(nodes.ValidationError,
+                                    'Missing child of type <Body>.'):
+            note.validate_content()
+        note.append(nodes.enumerated_list())
+        self.assertEqual(note.validate_content(), [])
+
+        # footnote: (label?, (%body.elements;)+)
+        # TODO: use case for footnote without label (make it required?)
+        #       rST parser can generate footnotes without body elements!
+        footnote = nodes.footnote('', hint)
+        self.assertEqual(footnote.validate_content(), [])
+
+        # citation: (label, (%body.elements;)+)
+        # TODO: rST parser allows empty citation
+        #       (see test_rst/test_citations.py). Is this sensible?
+        citation = nodes.citation('', hint)
+        with self.assertRaisesRegex(nodes.ValidationError,
+                                    'Expecting child of type <label>,'
+                                    ' not <hint>.'):
+            citation.validate_content()
+
+        # Table group: (colspec*, thead?, tbody)
+        tgroup = nodes.tgroup()  # empty (sic!)
+        with self.assertRaisesRegex(nodes.ValidationError,
+                                    'Missing child of type <tbody>.'):
+            tgroup.validate_content()
+        tgroup = nodes.tgroup('', nodes.colspec(), nodes.colspec(),
+                              nodes.thead(), nodes.tbody())
+        self.assertEqual(tgroup.validate_content(), [])
+        thead = nodes.thead()
+        tgroup = nodes.tgroup('', nodes.tbody(), thead)  # wrong order!
+        self.assertEqual(tgroup.validate_content(), [thead])
+
+    def test_validate_content_authors(self):
+        """Return empty list for valid elements, raise ValidationError else.
+
+        Specific method for `authors` instances: complex content model
+        requires repeated application of `authors.content_model`.
+        """
+        authors = nodes.authors()
+        with self.assertRaisesRegex(nodes.ValidationError,
+                                    'Missing child of type <author>.'):
+            authors.validate_content()
+        authors.extend([nodes.author(), nodes.address(), nodes.contact()])
+        self.assertEqual(authors.validate_content(), [])
+        # TODO: check content model again, with next set of elements
+
+    def test_validate_content_subtitle(self):
+        """<subtitle> must follow a <title>.
+        """
+        subtitle = nodes.subtitle()
+        paragraph = nodes.paragraph()
+        sidebar = nodes.sidebar('', subtitle, paragraph)
+        # TODO additional restriction "only after title"
+        sidebar.validate_content()
+
+    def test_validate_content_transition(self):
+        """Test additional constraints on <transition> placement:
+           Not at begin or end of a section or document,
+           not after another transition.
+        """
+        transition = nodes.transition()
+        paragraph = nodes.paragraph()
+        section = nodes.section('', nodes.title(), transition, paragraph)
+        # TODO: additional restrictions on transition placement.
+        section.validate_content()
+
 
 class MiscTests(unittest.TestCase):
 

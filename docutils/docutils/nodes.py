@@ -1142,6 +1142,58 @@ class Element(Node):
                                   + '\n  '.join(messages),
                                   problematic_element=self)
 
+    def validate_content(self, model=None, elements=None):
+        """Test compliance of `elements` with `model`.
+
+        :model: content model description, default `self.content_model`,
+        :elements: list of doctree elements, default `self.children`.
+
+        Return list of children that do not fit in the model or raise
+        `ValidationError` if the content does not comply with the `model`.
+
+        Provisional.
+        """
+        if model is None:
+            model = self.content_model
+        if elements is None:
+            elements = self.children
+        ichildren = iter(elements)
+        child = next(ichildren, None)
+        for category, quantifier in model:
+            if not isinstance(child, category):
+                if quantifier in ('.', '+'):
+                    raise ValidationError(self._report_child(child, category),
+                                          problematic_element=child)
+                else:  # quantifier in ('?', '*') -> optional child
+                    continue  # try same child with next part of content model
+            # TODO: check additional placement constraints (if applicable)
+            # child.check_position()
+            # advance:
+            if quantifier in ('.', '?'):  # go to next element
+                child = next(ichildren, None)
+            else:  # if quantifier in ('*', '+'):  # pass all matching elements
+                for child in ichildren:
+                    if not isinstance(child, category):
+                        break
+                else:
+                    child = None
+        return [] if child is None else [child, *ichildren]
+
+    def _report_child(self, child, category):
+        # Return a str reporting a missing child or child of wrong category.
+        try:
+            type = category.__name__
+        except AttributeError:
+            type = '> or <'.join(c.__name__ for c in category)
+        msg = f'Element {self.starttag()} invalid:\n'
+        if child is None:
+            return f'{msg}  Missing child of type <{type}>.'
+        if isinstance(child, Text):
+            return (f'{msg}  Expecting child of type <{type}>, '
+                    f'not text data "{child.astext()}".')
+        return (f'{msg}  Expecting child of type <{type}>, '
+                f'not {child.starttag()}.')
+
     def validate(self, recursive=True):
         """Validate Docutils Document Tree element ("doctree").
 
@@ -1156,8 +1208,18 @@ class Element(Node):
         Provisional (work in progress).
         """
         self.validate_attributes()
-        
-        # TODO: validate content
+
+        leftover_childs = self.validate_content()
+        for child in leftover_childs:
+            if isinstance(child, Text):
+                raise ValidationError(f'Element {self.starttag()} invalid:\n'
+                                      f'  Spurious text: "{child.astext()}".',
+                                      problematic_element=self)
+            else:
+                raise ValidationError(f'Element {self.starttag()} invalid:\n'
+                                      f'  Child element {child.starttag()} '
+                                      'not allowed at this position.',
+                                      problematic_element=child)
 
         if recursive:
             for child in self:
