@@ -1901,6 +1901,16 @@ class authors(Bibliographic, Element):
                      (address, '?'),
                      (contact, '?'))
 
+    def validate_content(self):
+        """Repeatedly test for children matching the content model.
+
+        Provisional.
+        """
+        relics = super().validate_content()
+        while relics:
+            relics = super().validate_content(elements=relics)
+        return relics
+
 
 # Body Elements
 # =============

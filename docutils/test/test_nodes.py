@@ -747,7 +747,14 @@ class ElementValidationTests(unittest.TestCase):
             authors.validate_content()
         authors.extend([nodes.author(), nodes.address(), nodes.contact()])
         self.assertEqual(authors.validate_content(), [])
-        # TODO: check content model again, with next set of elements
+        authors.append(nodes.hint())
+        with self.assertRaisesRegex(nodes.ValidationError,
+                                    ' child of type <author>, not <hint>.'):
+            authors.validate_content()
+        authors.extend([nodes.author(), nodes.tip(), nodes.contact()])
+        with self.assertRaisesRegex(nodes.ValidationError,
+                                    ' child of type <author>, not <hint>.'):
+            authors.validate_content()
 
     def test_validate_content_subtitle(self):
         """<subtitle> must follow a <title>.
