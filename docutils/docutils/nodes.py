@@ -1344,6 +1344,147 @@ class PureTextElement(TextElement):
     content_model = ((Text, '?'),)  # (#PCDATA)
 
 
+# ================
+#  Title Elements
+# ================
+
+class title(Titular, PreBibliographic, SubStructural, TextElement):
+    valid_attributes = Element.valid_attributes + ('auto', 'refid')
+
+
+class subtitle(Titular, PreBibliographic, SubStructural, TextElement): pass
+class rubric(Titular, General, TextElement): pass
+
+
+# ==================
+#  Meta-Data Element
+# ==================
+
+class meta(PreBibliographic, SubRoot, Element):
+    """Container for "invisible" bibliographic data, or meta-data."""
+    valid_attributes = Element.valid_attributes + (
+        'content', 'dir', 'http-equiv', 'lang', 'media', 'name', 'scheme')
+
+
+# ========================
+#  Bibliographic Elements
+# ========================
+
+class docinfo(SubRoot, Element):
+    """Container for displayed document meta-data."""
+    content_model = (  # (%bibliographic.elements;)+
+                     (Bibliographic, '+'),)
+
+
+class author(Bibliographic, TextElement): pass
+class organization(Bibliographic, TextElement): pass
+class address(Bibliographic, FixedTextElement): pass
+class contact(Bibliographic, TextElement): pass
+class version(Bibliographic, TextElement): pass
+class revision(Bibliographic, TextElement): pass
+class status(Bibliographic, TextElement): pass
+class date(Bibliographic, TextElement): pass
+class copyright(Bibliographic, TextElement): pass
+
+
+class authors(Bibliographic, Element):
+    """Container for author information for documents with multiple authors.
+    """
+    content_model = (  # (author, organization?, address?, contact?)+
+                     (author, '+'),
+                     (organization, '?'),
+                     (address, '?'),
+                     (contact, '?'))
+
+
+# =====================
+#  Decorative Elements
+# =====================
+
+
+class header(Decorative, Element): pass
+class footer(Decorative, Element): pass
+
+
+class decoration(PreBibliographic, SubRoot, Element):
+    """Container for `header` and `footer`."""
+    content_model = (  # (header?, footer?)
+                     (header, '?'),
+                     (footer, '?'))  # TODO: empty element does not make sense.
+
+    def get_header(self):
+        if not len(self.children) or not isinstance(self.children[0], header):
+            self.insert(0, header())
+        return self.children[0]
+
+    def get_footer(self):
+        if not len(self.children) or not isinstance(self.children[-1], footer):
+            self.append(footer())
+        return self.children[-1]
+
+
+# =====================
+#  Structural Elements
+# =====================
+
+class topic(Structural, Element):
+    """
+    Topics are terminal, "leaf" mini-sections, like block quotes with titles,
+    or textual figures.  A topic is just like a section, except that
+    it has no subsections, it does not get listed in the ToC,
+    and it doesn't have to conform to section placement rules.
+
+    Topics are allowed wherever body elements (list, table, etc.) are allowed,
+    but only at the top level of a sideber, section or document.
+    Topics cannot nest inside topics, or body elements; you can't have
+    a topic inside a table, list, block quote, etc.
+    """
+    content_model = (  # (title?, (%body.elements;)+)
+                     (title, '?'),
+                     (Body, '+'))
+
+
+class sidebar(Structural, Element):
+    """
+    Sidebars are like miniature, parallel documents that occur inside other
+    documents, providing related or reference material.  A sidebar is
+    typically offset by a border and "floats" to the side of the page; the
+    document's main text may flow around it.  Sidebars can also be likened to
+    super-footnotes; their content is outside of the flow of the document's
+    main text.
+
+    Sidebars are allowed wherever body elements (list, table, etc.) are
+    allowed, but only at the top level of a section or document.  Sidebars
+    cannot nest inside sidebars, topics, or body elements; you can't have a
+    sidebar inside a table, list, block quote, etc.
+    """
+    content_model = (  # ((title, subtitle?)?, (%body.elements; | topic)+)
+                     (title, '?'),
+                     (subtitle, '?'),
+                     ((topic, Body), '+'))  # TODO complex model
+
+
+class transition(SubStructural, Element):
+    """Transitions are breaks between untitled text parts.
+
+    A transition may not begin or end a section or document, nor may two
+    transitions be immediately adjacent.
+    """
+
+
+class section(Structural, Element):
+    """Document section. The main unit of hierarchy."""
+    # recursive content model, see below
+
+
+section.content_model = (  # (title, subtitle?, %structure.model;)
+                         (title, '.'),
+                         (subtitle, '?'),
+                         ((Body, topic, sidebar, transition), '*'),
+                         ((section, transition), '*'),
+                         )  # TODO complex model
+
+
 # ==============
 #  Root Element
 # ==============
@@ -1361,8 +1502,17 @@ class document(Root, Element):
                        #    decoration?,
                        #    (docinfo, transition?)?,
                        #    %structure.model; )
-                     ((Structural, SubRoot, Body), '*'),
-                     )  # TODO complex model
+                      (title, '?'),
+                      (subtitle, '?'),
+                      (meta, '*'),
+                      (decoration, '?'),
+                      (docinfo, '?'),
+                      (transition, '?'),
+                      ((Body, topic, sidebar, transition), '*'),
+                      ((section, transition), '*'),
+                     )
+    # additional restrictions for `subtitle` and `transition` will be tested
+    # with the respective `check_position()` methods.
 
     def __init__(self, settings, reporter, *args, **kwargs):
         Element.__init__(self, *args, **kwargs)
@@ -1710,147 +1860,6 @@ class document(Root, Element):
             else:
                 self.insert(index, self.decoration)
         return self.decoration
-
-
-# ================
-#  Title Elements
-# ================
-
-class title(Titular, PreBibliographic, SubStructural, TextElement):
-    valid_attributes = Element.valid_attributes + ('auto', 'refid')
-
-
-class subtitle(Titular, PreBibliographic, SubStructural, TextElement): pass
-class rubric(Titular, General, TextElement): pass
-
-
-# ==================
-#  Meta-Data Element
-# ==================
-
-class meta(PreBibliographic, SubRoot, Element):
-    """Container for "invisible" bibliographic data, or meta-data."""
-    valid_attributes = Element.valid_attributes + (
-        'content', 'dir', 'http-equiv', 'lang', 'media', 'name', 'scheme')
-
-
-# ========================
-#  Bibliographic Elements
-# ========================
-
-class docinfo(SubRoot, Element):
-    """Container for displayed document meta-data."""
-    content_model = (  # (%bibliographic.elements;)+
-                     (Bibliographic, '+'),)
-
-
-class author(Bibliographic, TextElement): pass
-class organization(Bibliographic, TextElement): pass
-class address(Bibliographic, FixedTextElement): pass
-class contact(Bibliographic, TextElement): pass
-class version(Bibliographic, TextElement): pass
-class revision(Bibliographic, TextElement): pass
-class status(Bibliographic, TextElement): pass
-class date(Bibliographic, TextElement): pass
-class copyright(Bibliographic, TextElement): pass
-
-
-class authors(Bibliographic, Element):
-    """Container for author information for documents with multiple authors.
-    """
-    content_model = (  # (author, organization?, address?, contact?)+
-                     (author, '+'),
-                     (organization, '?'),
-                     (address, '?'),
-                     (contact, '?'))
-
-
-# =====================
-#  Decorative Elements
-# =====================
-
-
-class header(Decorative, Element): pass
-class footer(Decorative, Element): pass
-
-
-class decoration(PreBibliographic, SubRoot, Element):
-    """Container for `header` and `footer`."""
-    content_model = (  # (header?, footer?)
-                     (header, '?'),
-                     (footer, '?'))  # TODO: empty element does not make sense.
-
-    def get_header(self):
-        if not len(self.children) or not isinstance(self.children[0], header):
-            self.insert(0, header())
-        return self.children[0]
-
-    def get_footer(self):
-        if not len(self.children) or not isinstance(self.children[-1], footer):
-            self.append(footer())
-        return self.children[-1]
-
-
-# =====================
-#  Structural Elements
-# =====================
-
-class topic(Structural, Element):
-    """
-    Topics are terminal, "leaf" mini-sections, like block quotes with titles,
-    or textual figures.  A topic is just like a section, except that
-    it has no subsections, it does not get listed in the ToC,
-    and it doesn't have to conform to section placement rules.
-
-    Topics are allowed wherever body elements (list, table, etc.) are allowed,
-    but only at the top level of a sideber, section or document.
-    Topics cannot nest inside topics, or body elements; you can't have
-    a topic inside a table, list, block quote, etc.
-    """
-    content_model = (  # (title?, (%body.elements;)+)
-                     (title, '?'),
-                     (Body, '+'))
-
-
-class sidebar(Structural, Element):
-    """
-    Sidebars are like miniature, parallel documents that occur inside other
-    documents, providing related or reference material.  A sidebar is
-    typically offset by a border and "floats" to the side of the page; the
-    document's main text may flow around it.  Sidebars can also be likened to
-    super-footnotes; their content is outside of the flow of the document's
-    main text.
-
-    Sidebars are allowed wherever body elements (list, table, etc.) are
-    allowed, but only at the top level of a section or document.  Sidebars
-    cannot nest inside sidebars, topics, or body elements; you can't have a
-    sidebar inside a table, list, block quote, etc.
-    """
-    content_model = (  # ((title, subtitle?)?, (%body.elements; | topic)+)
-                     (title, '?'),
-                     (subtitle, '?'),
-                     ((topic, Body), '+'))  # TODO complex model
-
-
-class transition(SubStructural, Element):
-    """Transitions are breaks between untitled text parts.
-
-    A transition may not begin or end a section or document, nor may two
-    transitions be immediately adjacent.
-    """
-
-
-class section(Structural, Element):
-    """Document section. The main unit of hierarchy."""
-    # recursive content model, see below
-
-
-section.content_model = (  # (title, subtitle?, %structure.model;)
-                         (title, '.'),
-                         (subtitle, '?'),
-                         ((Body, topic, sidebar, transition), '*'),
-                         ((section, transition), '*'),
-                         )  # TODO complex model
 
 
 # ===============
