@@ -469,7 +469,11 @@ class ElementTests(unittest.TestCase):
         with self.assertWarns(DeprecationWarning):
             node.set_class('parrot')
 
+
+class ElementValidationTests(unittest.TestCase):
+
     def test_validate(self):
+        """Valid node: validation should simply pass."""
         node = nodes.paragraph('', 'plain text', classes='my test classes')
         node.append(nodes.emphasis('', 'emphasised text', ids='emphtext'))
         node.validate()
@@ -487,15 +491,15 @@ class ElementTests(unittest.TestCase):
 
     def test_validate_wrong_attribute(self):
         node = nodes.paragraph('', 'text', id='test-paragraph')
-        with self.assertRaisesRegex(ValueError,
-                                    'Element <paragraph> invalid:\n'
-                                    '  Attribute "id" not one of "ids '):
+        with self.assertRaisesRegex(nodes.ValidationError,
+                                    'Element <paragraph id=.*> invalid:\n'
+                                    '  Attribute "id" not one of "ids", '):
             node.validate()
 
     def test_validate_wrong_attribute_value(self):
         node = nodes.image(uri='test.png', width='20 inch')  # invalid unit
-        with self.assertRaisesRegex(ValueError,
-                                    'Element <image> invalid:\n'
+        with self.assertRaisesRegex(nodes.ValidationError,
+                                    'Element <image.*> invalid:\n'
                                     '.*"width" has invalid value "20 inch".\n'
                                     '.*Valid units: em ex '):
             node.validate()

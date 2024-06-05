@@ -515,7 +515,7 @@ class Element(Node):
         NOTE: some elements do not set this value (default '').
         """
         if isinstance(rawsource, Element):
-            raise ValueError('First argument "rawsource" must be a string.')
+            raise TypeError('First argument "rawsource" must be a string.')
 
         self.children = []
         """List of child nodes (elements and/or `Text`)."""
@@ -1120,7 +1120,7 @@ class Element(Node):
         Convert string values to expected datatype.
         Normalize values.
 
-        Raise `ValueError` for invalid attributes or attribute values.
+        Raise `ValidationError` for invalid attributes or attribute values.
 
         Provisional.
         """
@@ -1129,30 +1129,35 @@ class Element(Node):
             if key.startswith('internal:'):
                 continue  # see docs/user/config.html#expose-internals
             if key not in self.valid_attributes:
-                va = ' '.join(self.valid_attributes)
+                va = '", "'.join(self.valid_attributes)
                 messages.append(f'Attribute "{key}" not one of "{va}".')
                 continue
             try:
                 self.attributes[key] = ATTRIBUTE_VALIDATORS[key](value)
             except (ValueError, TypeError, KeyError) as e:
                 messages.append(
-                    f'Attribute "{key}" has invalid value "{value}".\n{e}')
+                    f'Attribute "{key}" has invalid value "{value}".\n  {e}')
         if messages:
-            raise ValueError('\n'.join(messages))
+            raise ValidationError(f'Element {self.starttag()} invalid:\n  '
+                                  + '\n  '.join(messages),
+                                  problematic_element=self)
 
     def validate(self):
-        """Validate element against the Docutils Document Model ("doctree").
+        """Validate Docutils Document Tree element ("doctree").
 
-        Raise ValueError if there are violations.
+        Raise ValidationError if there are violations.
+
+        See `The Docutils Document Tree`__ for details of the
+        Docutils Document Model.
+
+        __ https://docutils.sourceforge.io/docs/ref/doctree.html
 
         Provisional (work in progress).
         """
-        messages = []
-        try:
-            self.validate_attributes()
-        except ValueError as e:
-            messages.append(str(e))
+        self.validate_attributes()
+
         # test number of children
+        messages = []
         n_min, n_max = self.valid_len
         if len(self.children) < n_min:
             messages.append(f'Expects at least {n_min} children, '
@@ -1212,7 +1217,7 @@ class SubRoot:
 class SubStructural(SubRoot):
     """`Structural subelements`__ are children of structural elements.
 
-    Most Structural elements accept only some of the SubStructural elements.
+    Most Structural elements accept only specific `SubStructural` elements.
 
     __ https://docutils.sourceforge.io/docs/ref/doctree.html
        #structural-subelements
@@ -2516,6 +2521,16 @@ class TreeCopyVisitor(GenericNodeVisitor):
     def default_departure(self, node):
         """Restore the previous acting parent."""
         self.parent = self.parent_stack.pop()
+
+
+# Custom Exceptions
+# =================
+
+class ValidationError(ValueError):
+    """Invalid Docutils Document Tree Element."""
+    def __init__(self, msg, problematic_element=None):
+        super().__init__(msg)
+        self.problematic_element = problematic_element
 
 
 class TreePruningException(Exception):

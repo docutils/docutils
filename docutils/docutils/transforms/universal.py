@@ -350,5 +350,11 @@ class Validate(Transform):
         for node in self.document.findall():
             try:
                 node.validate()
-            except ValueError as e:
-                self.document.reporter.warning(e.args[0], base_node=node)
+            except nodes.ValidationError as e:
+                self.document.reporter.warning(
+                    str(e), base_node=e.problematic_element or node)
+        # TODO: append a link to the Document Tree documentation?
+        # nodes.paragraph('', 'See ',
+        # nodes.reference('', 'doctree.html#document',
+        #                 refuri='https://docutils.sourceforge.io/'
+        #                 'docs/ref/doctree.html#document'),
