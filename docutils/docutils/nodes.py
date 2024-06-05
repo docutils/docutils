@@ -1200,11 +1200,7 @@ class Structural:
     """
 
 
-class SubRoot:
-    """Elements that may only be children of the root element."""
-
-
-class SubStructural(SubRoot):
+class SubStructural:
     """`Structural subelements`__ are children of `Structural` elements.
 
     Most Structural elements accept only specific `SubStructural` elements.
@@ -1360,7 +1356,7 @@ class rubric(Titular, General, TextElement): pass
 #  Meta-Data Element
 # ==================
 
-class meta(PreBibliographic, SubRoot, Element):
+class meta(PreBibliographic, SubStructural, Element):
     """Container for "invisible" bibliographic data, or meta-data."""
     valid_attributes = Element.valid_attributes + (
         'content', 'dir', 'http-equiv', 'lang', 'media', 'name', 'scheme')
@@ -1370,7 +1366,7 @@ class meta(PreBibliographic, SubRoot, Element):
 #  Bibliographic Elements
 # ========================
 
-class docinfo(SubRoot, Element):
+class docinfo(SubStructural, Element):
     """Container for displayed document meta-data."""
     content_model = (  # (%bibliographic.elements;)+
                      (Bibliographic, '+'),)
@@ -1406,7 +1402,7 @@ class header(Decorative, Element): pass
 class footer(Decorative, Element): pass
 
 
-class decoration(PreBibliographic, SubRoot, Element):
+class decoration(PreBibliographic, SubStructural, Element):
     """Container for `header` and `footer`."""
     content_model = (  # (header?, footer?)
                      (header, '?'),

@@ -180,7 +180,7 @@ specific `structural elements`_.  Their content model varies
   :simple: `\<title>`_, `\<subtitle>`_
   :compound: `\<decoration>`_, `\<docinfo>`_
 
-:Docutils classes: ``nodes.SubStructural``, ``nodes.SubRoot``
+:Docutils class: ``nodes.SubStructural``
 
 
 Decorative Elements
