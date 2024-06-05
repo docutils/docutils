@@ -762,8 +762,9 @@ class ElementValidationTests(unittest.TestCase):
         subtitle = nodes.subtitle()
         paragraph = nodes.paragraph()
         sidebar = nodes.sidebar('', subtitle, paragraph)
-        # TODO additional restriction "only after title"
-        sidebar.validate_content()
+        with self.assertRaisesRegex(nodes.ValidationError,
+                                    '<subtitle> only allowed after <title>.'):
+            sidebar.validate_content()
 
     def test_validate_content_transition(self):
         """Test additional constraints on <transition> placement:
@@ -773,8 +774,20 @@ class ElementValidationTests(unittest.TestCase):
         transition = nodes.transition()
         paragraph = nodes.paragraph()
         section = nodes.section('', nodes.title(), transition, paragraph)
-        # TODO: additional restrictions on transition placement.
-        section.validate_content()
+        with self.assertRaisesRegex(nodes.ValidationError,
+                                    '<transition> may not begin a section '):
+            section.validate_content()
+        section = nodes.section('', nodes.title(), paragraph, transition)
+        with self.assertRaisesRegex(nodes.ValidationError,
+                                    '<transition> may not end a section '):
+            section.validate_content()
+        section = nodes.section('', nodes.title(), paragraph,
+                                nodes.transition(), transition)
+        with self.assertRaisesRegex(nodes.ValidationError,
+                                    'Element <section> invalid:\n'
+                                    '  <transition> may not end .*\n'
+                                    '  <transition> may not directly '):
+            section.validate_content()
 
 
 class MiscTests(unittest.TestCase):

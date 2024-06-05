@@ -30,8 +30,8 @@ Release 0.22b.dev (unpublished)
   - New element category classes `SubStructural` and `PureTextElement`.
   - Fix element categories.
   - New method `Element.validate()`: raise `nodes.ValidationError` if
-    the element does not comply with the "Docutils Document Model"
-    (work in progress).
+    the element does not comply with the "Docutils Document Model".
+    Provisional.
   - New "attribute validating functions"
     convert string representations to correct data type,
     normalize values,

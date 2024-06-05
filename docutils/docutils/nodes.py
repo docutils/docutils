@@ -399,7 +399,12 @@ class Text(Node, str):
         return self.__class__(str.lstrip(self, chars))
 
     def validate(self, recursive=True):
-        pass  # Text nodes have no attributes and no children.
+        """Validate Docutils Document Tree element ("doctree")."""
+        # Text nodes have no attributes and no children.
+
+    def check_position(self):
+        """Hook for additional checks of the parent's content model."""
+        # no special placement requirements for Text nodes
 
 
 class Element(Node):
@@ -1166,8 +1171,9 @@ class Element(Node):
                                           problematic_element=child)
                 else:  # quantifier in ('?', '*') -> optional child
                     continue  # try same child with next part of content model
-            # TODO: check additional placement constraints (if applicable)
-            # child.check_position()
+            else:
+                # Check additional placement constraints (if applicable):
+                child.check_position()
             # advance:
             if quantifier in ('.', '?'):  # go to next element
                 child = next(ichildren, None)
@@ -1175,6 +1181,7 @@ class Element(Node):
                 for child in ichildren:
                     if not isinstance(child, category):
                         break
+                    child.check_position()
                 else:
                     child = None
         return [] if child is None else [child, *ichildren]
@@ -1193,6 +1200,13 @@ class Element(Node):
                     f'not text data "{child.astext()}".')
         return (f'{msg}  Expecting child of type <{type}>, '
                 f'not {child.starttag()}.')
+
+    def check_position(self):
+        """Hook for additional checks of the parent's content model.
+
+        Raise ValidationError, if `self` is at an invalid position.
+        See `subtitle.check_position()` and `transition.check_position()`.
+        """
 
     def validate(self, recursive=True):
         """Validate Docutils Document Tree element ("doctree").
@@ -1420,7 +1434,15 @@ class title(Titular, PreBibliographic, SubStructural, TextElement):
     valid_attributes = Element.valid_attributes + ('auto', 'refid')
 
 
-class subtitle(Titular, PreBibliographic, SubStructural, TextElement): pass
+class subtitle(Titular, PreBibliographic, SubStructural, TextElement):
+    """Sub-title of `document`, `section` and `sidebar`."""
+
+    def check_position(self):
+        """Check position of subtitle: must follow a title."""
+        if self.parent and self.parent.index(self) == 0:
+            raise ValidationError(f'Element {self.parent.starttag()} invalid:'
+                                  '\n  <subtitle> only allowed after <title>.',
+                                  problematic_element=self)
 
 
 class meta(PreBibliographic, SubStructural, Element):
@@ -1453,11 +1475,34 @@ class decoration(PreBibliographic, SubStructural, Element):
 
 
 class transition(SubStructural, Element):
-    """Transitions are breaks between untitled text parts.
+    """Transitions__ are breaks between untitled text parts.
 
-    A transition may not begin or end a section or document, nor may two
-    transitions be immediately adjacent.
+    __ https://docutils.sourceforge.io/docs/ref/doctree.html#transition
     """
+
+    def check_position(self):
+        """Check additional constraints on `transition` placement.
+
+        A transition may not begin or end a section or document,
+        nor may two transitions be immediately adjacent.
+        """
+        messages = [f'Element {self.parent.starttag()} invalid:']
+        predecessor = self.previous_sibling()
+        if (predecessor is None  # index == 0
+            or isinstance(predecessor, (title, subtitle, meta, decoration))
+            # A transition following these elements still counts as
+            # "at the beginning of a document or section".
+            ):
+            messages.append(
+                '<transition> may not begin a section or document.')
+        if self.parent.index(self) == len(self.parent) - 1:
+            messages.append('<transition> may not end a section or document.')
+        if isinstance(predecessor, transition):
+            messages.append(
+                '<transition> may not directly follow another transition.')
+        if len(messages) > 1:
+            raise ValidationError('\n  '.join(messages),
+                                  problematic_element=self)
 
 
 # Structural Elements
@@ -1486,11 +1531,15 @@ class sidebar(Structural, Element):
     content_model = (  # ((title, subtitle?)?, (%body.elements; | topic)+)
                      (title, '?'),
                      (subtitle, '?'),
-                     ((topic, Body), '+'))  # TODO complex model
+                     ((topic, Body), '+'))
+    # "subtitle only after title" is ensured in `subtitle.check_position()`.
 
 
 class section(Structural, Element):
-    """Document section. The main unit of hierarchy."""
+    """Document section__. The main unit of hierarchy.
+
+    __ https://docutils.sourceforge.io/docs/ref/doctree.html#section
+    """
     # recursive content model, see below
 
 
@@ -1499,7 +1548,8 @@ section.content_model = (  # (title, subtitle?, %structure.model;)
                          (subtitle, '?'),
                          ((Body, topic, sidebar, transition), '*'),
                          ((section, transition), '*'),
-                         )  # TODO complex model
+                         )
+# Correct transition placement is ensured in `transition.check_position()`.
 
 
 # Root Element
@@ -1527,7 +1577,7 @@ class document(Root, Element):
                       ((Body, topic, sidebar, transition), '*'),
                       ((section, transition), '*'),
                      )
-    # additional restrictions for `subtitle` and `transition` will be tested
+    # Additional restrictions for `subtitle` and `transition` are tested
     # with the respective `check_position()` methods.
 
     def __init__(self, settings, reporter, *args, **kwargs):
