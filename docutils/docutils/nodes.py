@@ -1164,24 +1164,6 @@ class Element(Node):
                 child.validate()
 
 
-# ========
-#  Mixins
-# ========
-
-class Resolvable:
-    resolved = False
-
-
-class BackLinkable:
-    """Mixin for Elements that accept a "backrefs" attribute."""
-
-    list_attributes = Element.list_attributes + ('backrefs',)
-    valid_attributes = Element.valid_attributes + ('backrefs',)
-
-    def add_backref(self, refid):
-        self['backrefs'].append(refid)
-
-
 # ====================
 #  Element Categories
 # ====================
@@ -1262,8 +1244,8 @@ class Inline:
     """
 
 
-# Orthogonal categories
-# =====================
+# Orthogonal categories and Mixins
+# ================================
 
 class PreBibliographic:
     """Elements which may occur before Bibliographic Elements."""
@@ -1275,6 +1257,20 @@ class Invisible(Special, PreBibliographic):
 
 class Labeled:
     """Contains a `label` as its first element."""
+
+
+class Resolvable:
+    resolved = False
+
+
+class BackLinkable:
+    """Mixin for Elements that accept a "backrefs" attribute."""
+
+    list_attributes = Element.list_attributes + ('backrefs',)
+    valid_attributes = Element.valid_attributes + ('backrefs',)
+
+    def add_backref(self, refid):
+        self['backrefs'].append(refid)
 
 
 class Referential(Resolvable):
@@ -1340,21 +1336,30 @@ class PureTextElement(TextElement):
     content_model = ((Text, '?'),)  # (#PCDATA)
 
 
-# ================
-#  Title Elements
-# ================
+# =================================
+#  Concrete Document Tree Elements
+# =================================
+#
+# See https://docutils.sourceforge.io/docs/ref/doctree.html#element-reference
+
+# Decorative Elements
+# ===================
+
+class header(Decorative, Element): pass
+class footer(Decorative, Element): pass
+
+
+# Structural Subelements
+# ======================
 
 class title(Titular, PreBibliographic, SubStructural, TextElement):
+    """Title of `document`, `section`, `topic` and generic `admonition`.
+    """
     valid_attributes = Element.valid_attributes + ('auto', 'refid')
 
 
 class subtitle(Titular, PreBibliographic, SubStructural, TextElement): pass
-class rubric(Titular, General, TextElement): pass
 
-
-# ==================
-#  Meta-Data Element
-# ==================
 
 class meta(PreBibliographic, SubStructural, Element):
     """Container for "invisible" bibliographic data, or meta-data."""
@@ -1362,44 +1367,10 @@ class meta(PreBibliographic, SubStructural, Element):
         'content', 'dir', 'http-equiv', 'lang', 'media', 'name', 'scheme')
 
 
-# ========================
-#  Bibliographic Elements
-# ========================
-
 class docinfo(SubStructural, Element):
     """Container for displayed document meta-data."""
     content_model = (  # (%bibliographic.elements;)+
                      (Bibliographic, '+'),)
-
-
-class author(Bibliographic, TextElement): pass
-class organization(Bibliographic, TextElement): pass
-class address(Bibliographic, FixedTextElement): pass
-class contact(Bibliographic, TextElement): pass
-class version(Bibliographic, TextElement): pass
-class revision(Bibliographic, TextElement): pass
-class status(Bibliographic, TextElement): pass
-class date(Bibliographic, TextElement): pass
-class copyright(Bibliographic, TextElement): pass
-
-
-class authors(Bibliographic, Element):
-    """Container for author information for documents with multiple authors.
-    """
-    content_model = (  # (author, organization?, address?, contact?)+
-                     (author, '+'),
-                     (organization, '?'),
-                     (address, '?'),
-                     (contact, '?'))
-
-
-# =====================
-#  Decorative Elements
-# =====================
-
-
-class header(Decorative, Element): pass
-class footer(Decorative, Element): pass
 
 
 class decoration(PreBibliographic, SubStructural, Element):
@@ -1419,21 +1390,22 @@ class decoration(PreBibliographic, SubStructural, Element):
         return self.children[-1]
 
 
-# =====================
-#  Structural Elements
-# =====================
+class transition(SubStructural, Element):
+    """Transitions are breaks between untitled text parts.
+
+    A transition may not begin or end a section or document, nor may two
+    transitions be immediately adjacent.
+    """
+
+
+# Structural Elements
+# ===================
 
 class topic(Structural, Element):
     """
-    Topics are terminal, "leaf" mini-sections, like block quotes with titles,
-    or textual figures.  A topic is just like a section, except that
-    it has no subsections, it does not get listed in the ToC,
-    and it doesn't have to conform to section placement rules.
+    Topics__ are non-recursive, mini-sections.
 
-    Topics are allowed wherever body elements (list, table, etc.) are allowed,
-    but only at the top level of a sideber, section or document.
-    Topics cannot nest inside topics, or body elements; you can't have
-    a topic inside a table, list, block quote, etc.
+    __ https://docutils.sourceforge.io/docs/ref/doctree.html#topic
     """
     content_model = (  # (title?, (%body.elements;)+)
                      (title, '?'),
@@ -1442,30 +1414,17 @@ class topic(Structural, Element):
 
 class sidebar(Structural, Element):
     """
-    Sidebars are like miniature, parallel documents that occur inside other
-    documents, providing related or reference material.  A sidebar is
-    typically offset by a border and "floats" to the side of the page; the
-    document's main text may flow around it.  Sidebars can also be likened to
-    super-footnotes; their content is outside of the flow of the document's
-    main text.
+    Sidebars__ are like parallel documents providing related material.
 
-    Sidebars are allowed wherever body elements (list, table, etc.) are
-    allowed, but only at the top level of a section or document.  Sidebars
-    cannot nest inside sidebars, topics, or body elements; you can't have a
-    sidebar inside a table, list, block quote, etc.
+    A sidebar is typically offset by a border and "floats" to the side
+    of the page
+
+    __ https://docutils.sourceforge.io/docs/ref/doctree.html#sidebar
     """
     content_model = (  # ((title, subtitle?)?, (%body.elements; | topic)+)
                      (title, '?'),
                      (subtitle, '?'),
                      ((topic, Body), '+'))  # TODO complex model
-
-
-class transition(SubStructural, Element):
-    """Transitions are breaks between untitled text parts.
-
-    A transition may not begin or end a section or document, nor may two
-    transitions be immediately adjacent.
-    """
 
 
 class section(Structural, Element):
@@ -1481,9 +1440,8 @@ section.content_model = (  # (title, subtitle?, %structure.model;)
                          )  # TODO complex model
 
 
-# ==============
-#  Root Element
-# ==============
+# Root Element
+# ============
 
 class document(Root, Element):
     """
@@ -1858,11 +1816,40 @@ class document(Root, Element):
         return self.decoration
 
 
-# ===============
-#  Body Elements
-# ===============
+# Bibliographic Elements
+# ======================
+
+class author(Bibliographic, TextElement): pass
+class organization(Bibliographic, TextElement): pass
+class address(Bibliographic, FixedTextElement): pass
+class contact(Bibliographic, TextElement): pass
+class version(Bibliographic, TextElement): pass
+class revision(Bibliographic, TextElement): pass
+class status(Bibliographic, TextElement): pass
+class date(Bibliographic, TextElement): pass
+class copyright(Bibliographic, TextElement): pass
+
+
+class authors(Bibliographic, Element):
+    """Container for author information for documents with multiple authors.
+    """
+    content_model = (  # (author, organization?, address?, contact?)+
+                     (author, '+'),
+                     (organization, '?'),
+                     (address, '?'),
+                     (contact, '?'))
+
+
+# Body Elements
+# =============
+#
+# General
+# -------
+#
+# Miscellaneous Body Elements and related Body Subelements (Part)
 
 class paragraph(General, TextElement): pass
+class rubric(Titular, General, TextElement): pass
 
 
 class compound(General, Element):
@@ -1885,7 +1872,7 @@ class block_quote(General, Element):
 
 
 # Lists
-# =====
+# -----
 #
 # Lists (Sequential) and related Body Subelements (Part)
 
@@ -2000,7 +1987,7 @@ class option_list(Sequential, Element):
 
 
 # Pre-formatted text blocks
-# =========================
+# -------------------------
 
 class literal_block(General, FixedTextElement): pass
 class doctest_block(General, FixedTextElement): pass
@@ -2025,7 +2012,7 @@ line_block.content_model = (((line, line_block), '+'),)
 
 
 # Admonitions
-# ===========
+# -----------
 # distinctive and self-contained notices
 
 class attention(Admonition, Element): pass
@@ -2045,24 +2032,8 @@ class admonition(Admonition, Element):
                      (Body, '+'))
 
 
-# Invisible elements
-# ==================
-
-class comment(Invisible, FixedTextElement, PureTextElement):
-    """Author notes, hidden from the output."""
-
-
-class substitution_definition(Invisible, TextElement):
-    valid_attributes = Element.valid_attributes + ('ltrim', 'rtrim')
-
-
-class target(Invisible, Inline, TextElement, Targetable):
-    valid_attributes = Element.valid_attributes + (
-        'anonymous', 'refid', 'refname', 'refuri')
-
-
 # Footnote and citation
-# =====================
+# ---------------------
 
 class label(Part, PureTextElement):
     """Visible identifier for footnotes and citations."""
@@ -2074,18 +2045,33 @@ class footnote(General, BackLinkable, Element, Labeled, Targetable):
     content_model = (  # (label?, (%body.elements;)+)
                      (label, '?'),
                      (Body, '+'))
+    # TODO: Why is the label optional and content required?
+    # The rST specification says: "Each footnote consists of an
+    # explicit markup start (".. "), a left square bracket,
+    # the footnote label, a right square bracket, and whitespace,
+    # followed by indented body elements."
+    #
+    # The `Labeled` parent class' docstring says:
+    # "Contains a `label` as its first element."
+    #
+    # docutils.dtd requires both label and content but the rST parser
+    # allows empty footnotes (see test_writers/test_latex2e.py).
+    # Should the rST parser complain (info, warning or error)?
 
 
 class citation(General, BackLinkable, Element, Labeled, Targetable):
     content_model = (  # (label, (%body.elements;)+)
                      (label, '.'),
                      (Body, '+'))
-    # TODO: DTD requires both label and content but rST allows empty citation
-    #       (see test_rst/test_citations.py).  Is this sensible?
+    # TODO: docutils.dtd requires both label and content but the rST parser
+    # allows empty citation (see test_rst/test_citations.py).
+    # Is this sensible?
+    # The rST specification says: "Citations are identical to footnotes
+    # except that they use only non-numeric labels such as [note] …"
 
 
 # Graphical elements
-# ==================
+# ------------------
 
 class image(General, Inline, Element):
     """Reference to an image resource.
@@ -2120,7 +2106,7 @@ class figure(General, Element):
 
 
 # Tables
-# ======
+# ------
 
 class entry(Part, Element):
     """An entry in a `row` (a table cell)."""
@@ -2175,7 +2161,21 @@ class table(General, Element):
 
 
 # Special purpose elements
-# ========================
+# ------------------------
+# Body elements for internal use or special requests.
+
+class comment(Invisible, FixedTextElement, PureTextElement):
+    """Author notes, hidden from the output."""
+
+
+class substitution_definition(Invisible, TextElement):
+    valid_attributes = Element.valid_attributes + ('ltrim', 'rtrim')
+
+
+class target(Invisible, Inline, TextElement, Targetable):
+    valid_attributes = Element.valid_attributes + (
+        'anonymous', 'refid', 'refname', 'refuri')
+
 
 class system_message(Special, BackLinkable, PreBibliographic, Element):
     """
@@ -2281,17 +2281,25 @@ class pending(Invisible, Element):
 class raw(Special, Inline, PreBibliographic,
           FixedTextElement, PureTextElement):
     """Raw data that is to be passed untouched to the Writer.
+
+    Can be used as Body element or Inline element.
     """
     valid_attributes = Element.valid_attributes + ('format', 'xml:space')
 
 
-# =================
-#  Inline Elements
-# =================
+# Inline Elements
+# ===============
 
+class abbreviation(Inline, TextElement): pass
+class acronym(Inline, TextElement): pass
 class emphasis(Inline, TextElement): pass
-class strong(Inline, TextElement): pass
+class generated(Inline, TextElement): pass
+class inline(Inline, TextElement): pass
 class literal(Inline, TextElement): pass
+class strong(Inline, TextElement): pass
+class subscript(Inline, TextElement): pass
+class superscript(Inline, TextElement): pass
+class title_reference(Inline, TextElement): pass
 
 
 class reference(General, Inline, Referential, TextElement):
@@ -2311,26 +2319,13 @@ class substitution_reference(Inline, TextElement):
     valid_attributes = Element.valid_attributes + ('refname',)
 
 
-class title_reference(Inline, TextElement): pass
-class abbreviation(Inline, TextElement): pass
-class acronym(Inline, TextElement): pass
-class superscript(Inline, TextElement): pass
-class subscript(Inline, TextElement): pass
-
-
 class math(Inline, PureTextElement):
     """Mathematical notation in running text."""
-
-
-class inline(Inline, TextElement): pass
 
 
 class problematic(Inline, TextElement):
     valid_attributes = Element.valid_attributes + (
                            'refid', 'refname', 'refuri')
-
-
-class generated(Inline, TextElement): pass
 
 
 # ========================================
