@@ -349,7 +349,7 @@ class Validate(Transform):
             return
         for node in self.document.findall():
             try:
-                node.validate()
+                node.validate(recursive=False)
             except nodes.ValidationError as e:
                 self.document.reporter.warning(
                     str(e), base_node=e.problematic_element or node)

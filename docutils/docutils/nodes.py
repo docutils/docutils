@@ -1142,10 +1142,11 @@ class Element(Node):
                                   + '\n  '.join(messages),
                                   problematic_element=self)
 
-    def validate(self):
+    def validate(self, recursive=True):
         """Validate Docutils Document Tree element ("doctree").
 
         Raise ValidationError if there are violations.
+        If `recursive` is True, validate also the element's descendants.
 
         See `The Docutils Document Tree`__ for details of the
         Docutils Document Model.
@@ -1172,6 +1173,10 @@ class Element(Node):
         if messages:
             raise ValueError(f'Element <{self.tagname}> invalid:\n  '
                              + '\n  '.join(messages))
+
+        if recursive:
+            for child in self:
+                child.validate()
 
 
 # ========
