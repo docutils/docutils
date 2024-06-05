@@ -398,7 +398,7 @@ class Text(Node, str):
     def lstrip(self, chars=None):
         return self.__class__(str.lstrip(self, chars))
 
-    def validate(self):
+    def validate(self, recursive=True):
         pass  # Text nodes have no attributes and no children.
 
 
@@ -1161,7 +1161,7 @@ class Element(Node):
 
         if recursive:
             for child in self:
-                child.validate()
+                child.validate(recursive=recursive)
 
 
 # ====================

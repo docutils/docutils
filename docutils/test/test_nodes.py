@@ -478,6 +478,16 @@ class ElementValidationTests(unittest.TestCase):
         node.append(nodes.emphasis('', 'emphasised text', ids='emphtext'))
         node.validate()
 
+    def test_validate_invalid_descendent(self):
+        paragraph = nodes.paragraph('', 'plain text')
+        tip = nodes.tip('', paragraph)
+        paragraph.append(nodes.strong('doll', id='missing-es'))
+        tip.validate(recursive=False)
+        with self.assertRaisesRegex(nodes.ValidationError,
+                                    'Element <strong id=.*> invalid:\n'
+                                    '  Attribute "id" not one of "ids", '):
+            tip.validate()
+
     def test_validate_attributes(self):
         # Convert to expected data-type, normalize values,
         # cf. AttributeTypeTests below for attribute validating function tests.
