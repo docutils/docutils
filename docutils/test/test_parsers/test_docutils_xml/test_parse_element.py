@@ -27,6 +27,7 @@ from docutils.parsers import docutils_xml
 
 class ParseElementTestCase(unittest.TestCase):
     """Test the `docutils.xml.parse_element()` function."""
+    maxDiff = None
 
     # supress warnings when passing `document` to `parse_element()`
     settings = frontend.get_default_settings(docutils_xml.Parser)

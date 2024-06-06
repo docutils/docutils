@@ -28,13 +28,13 @@ parser = docutils_xml.Parser()
 
 
 class XmlParserTestCase(unittest.TestCase):
-    def test_parser(self):
-        settings = get_default_settings(docutils_xml.Parser)
-        # settings.warning_stream = ''
+    def test_parse(self):
+        settings = get_default_settings(parser)
+        settings.warning_stream = ''
         for name, cases in totest.items():
             for casenum, (case_input, case_expected) in enumerate(cases):
                 with self.subTest(id=f'totest[{name!r}][{casenum}]'):
-                    document = new_document('test data', settings.copy())
+                    document = new_document('test data', settings)
                     parser.parse(case_input, document)
                     output = document.pformat()
                     self.assertEqual(case_expected, output)
