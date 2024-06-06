@@ -135,11 +135,13 @@ class AnonymousHyperlinks(Transform):
                 ref.replace_self(prb)
             return
         for ref, target in zip(anonymous_refs, anonymous_targets):
-            target.referenced = 1
+            if ref.hasattr('refid') or ref.hasattr('refuri'):
+                continue
+            target.referenced = True
             while True:
                 if target.hasattr('refuri'):
                     ref['refuri'] = target['refuri']
-                    ref.resolved = 1
+                    ref.resolved = True
                     break
                 else:
                     if not target['ids']:
