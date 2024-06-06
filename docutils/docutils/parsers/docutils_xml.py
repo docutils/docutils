@@ -73,7 +73,15 @@ def parse_element(inputstring, document=None):
 
     Provisional.
     """
-    return element2node(ET.fromstring(inputstring), document)
+    root = None
+    parser = ET.XMLPullParser(events=('start',))
+    for i, line in enumerate(inputstring.splitlines(keepends=True)):
+        parser.feed(line)
+        for event, element in parser.read_events():
+            if root is None:
+                root = element
+            element.attrib['source line'] = str(i+1)
+    return element2node(root, document)
 
 
 def element2node(element, document=None):
@@ -95,9 +103,11 @@ def element2node(element, document=None):
     else:
         node = nodeclass()
 
+    node.line = int(element.get('source line'))
+
     # Attributes: convert and add to `node.attributes`.
     for key, value in element.items():
-        if key.startswith('{'):
+        if key.startswith('{') or key == 'source line':
             continue  # skip duplicate attributes with namespace URL
         node.attributes[key] = nodes.ATTRIBUTE_VALIDATORS[key](value)
 
