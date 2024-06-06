@@ -21,21 +21,80 @@ if __name__ == '__main__':
     # so we import the local `docutils` package.
     sys.path.insert(0, str(Path(__file__).resolve().parents[3]))
 
+from docutils import frontend, utils
 from docutils.parsers import docutils_xml
 
 
 class ParseElementTestCase(unittest.TestCase):
+    """Test the `docutils.xml.parse_element()` function."""
+
+    # supress warnings when passing `document` to `parse_element()`
+    settings = frontend.get_default_settings(docutils_xml.Parser)
+    settings.warning_stream = ''  # comment out to see warnings
+    document = utils.new_document('xml input', settings)
 
     def test_element_with_child_with_text(self):
         xml = '<tip><paragraph>some text</paragraph></tip>'
         node = docutils_xml.parse_element(xml)
         self.assertEqual(xml, str(node))
 
-    def test_tailing_text(self):
-        xml = '<strong>text</strong>trailing text'
-        with self.assertRaisesRegex(ET.ParseError,
-                                    'junk after document element'):
+    def test_tailing_text_after_root(self):
+        """etree.ElementTree does not accept tailing text in the input.
+        """
+        xml = '<strong>text</strong>tailing text'
+        with self.assertRaisesRegex(ET.ParseError, 'junk after document '):
             docutils_xml.parse_element(xml)
+        # If a document is provided, report via a "loose" error system message
+        # comment out ``settings.warning_stream = ''`` above to see it).
+        node = docutils_xml.parse_element(xml, self.document)
+        self.assertEqual('<strong>text</strong>', str(node))
+
+    def test_nonexistent_element_type(self):
+        xml = '<tip><p>some text</p></tip>'
+        node = docutils_xml.parse_element(xml, self.document)
+        self.assertEqual(xml, str(node))
+        # see test_misc.py for the warning
+
+    def test_junk_text(self):
+        # insert text also in nodes that are not TextElement instances
+        xml = '<tip>some text</tip>'
+        node = docutils_xml.parse_element(xml)
+        self.assertEqual(xml, str(node))
+        with self.assertRaisesRegex(ValueError,
+                                    'Expecting child of type <Body>,'
+                                    ' not text data "some text"'):
+            node.validate()
+
+    def test_tailing_junk_text(self):
+        # insert text also in nodes that are not TextElement instances
+        xml = '<tip><paragraph>some text</paragraph>tailing text</tip>'
+        node = docutils_xml.parse_element(xml)
+        self.assertEqual(xml, str(node))
+        with self.assertRaisesRegex(
+            ValueError, 'Spurious text: "tailing text"'):
+            node.validate()
+
+    def test_element_with_attributes(self):
+        xml = ('<image align="left" alt="a barking dog" height="3ex"'
+               ' loading="embed" scale="3" uri="dog.jpg" width="4cm"/>')
+        node = docutils_xml.parse_element(xml)
+        self.assertEqual(xml, str(node))
+
+    def test_element_with_invalid_attributes(self):
+        """Silently accept invalid attribute names and values.
+
+        Validation reports problems.
+        """
+        xml = ('<image breadth="3 cm" height="3 inch"/>')
+        node = docutils_xml.parse_element(xml)
+        self.assertEqual(xml, str(node))
+        with self.assertRaisesRegex(ValueError,
+                                    'Element <image breadth="3 cm".*invalid:\n'
+                                    '.*"breadth" not one of "ids",.*\n'
+                                    '.*"height" has invalid value "3 inch".\n'
+                                    '.*Valid units: em ex px in cm mm pt '
+                                    ):
+            node.validate()
 
 
 class XmlAttributesTestCase(unittest.TestCase):

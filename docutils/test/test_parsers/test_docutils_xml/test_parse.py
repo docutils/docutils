@@ -131,6 +131,63 @@ r"""<document source="test data">
 """],
 ]
 
+totest['invalid'] = [
+["""\
+<document>
+    <tip>
+        spurious text
+        <paragraph>A paragraph.</paragraph>
+    </tip>
+</document>
+""",
+"""\
+<document source="test data">
+    <tip>
+        spurious text
+        <paragraph>
+            A paragraph.
+"""],
+["""\
+<document>
+    spurious text
+    <paragraph>A paragraph.</paragraph>
+</document>
+""",
+"""\
+<document source="test data">
+    spurious text
+    <paragraph>
+        A paragraph.
+"""],
+["""\
+<document>
+    <tip>
+        <paragraph>A paragraph.</paragraph>
+        spurious tailing text
+    </tip>
+</document>
+""",
+"""\
+<document source="test data">
+    <tip>
+        <paragraph>
+            A paragraph.
+        spurious tailing text
+"""],
+["""\
+<document>
+    <paragraph>A paragraph.</paragraph>
+    spurious tailing text
+</document>
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        A paragraph.
+    spurious tailing text
+"""],
+]
+
 
 if __name__ == '__main__':
     unittest.main()
