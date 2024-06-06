@@ -90,9 +90,10 @@ include15 = mydir('includes/include15.txt')
 include16 = mydir('includes/include16.txt')
 include_literal = mydir('include_literal.txt')
 include_md = mydir('include.md')
-include = os.path.join(TEST_ROOT, 'data/include.txt')
-latin2 = os.path.join(TEST_ROOT, 'data/latin2.txt')
-utf_16_file = os.path.join(TEST_ROOT, 'data/utf-16-le-sig.txt')
+include_xml = TEST_ROOT/'data/duplicate-id.xml'
+include = TEST_ROOT/'data/include.txt'
+latin2 = TEST_ROOT/'data/latin2.txt'
+utf_16_file = TEST_ROOT/'data/utf-16-le-sig.txt'
 utf_16_error_str = ("UnicodeDecodeError: 'ascii' codec can't decode byte 0xff "
                     "in position 0: ordinal not in range(128)")
 rst_states_dir = os.path.dirname(parsers.rst.states.__file__)
@@ -1489,6 +1490,32 @@ f"""\
         No loop when clipping before the "include" directive:
     <paragraph>
         File "include15.txt": example of rekursive inclusion.
+"""],
+[f"""\
+Include Docutils XML file:
+
+.. include:: {include_xml}
+   :parser: xml
+
+The duplicate id is reported and would be appended
+by the "universal.Messages" transform.
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        Include Docutils XML file:
+    <section>
+        <title ids="s4">
+            nice heading
+        <paragraph>
+            Text with \n\
+            <strong ids="s4">
+                strong
+                statement
+             and more text.
+    <paragraph>
+        The duplicate id is reported and would be appended
+        by the "universal.Messages" transform.
 """],
 [f"""\
 No circular inclusion.

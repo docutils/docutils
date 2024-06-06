@@ -45,6 +45,12 @@ Release 0.22b.dev (unpublished)
 
   - New method `Parser.finish_parse()` to clean up (before validating).
 
+* docutils/parsers/rst/directives/misc.py
+
+  - Pass the included file's path to the parser when the
+    "include" directive is used with :parser: option.
+    Enables system messages with correct source/line indication.
+
 * docutils/transforms/frontmatter.py
 
   - Update `DocInfo` to work with corrected element categories.
