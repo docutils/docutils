@@ -146,15 +146,15 @@ class FilterMessages(Transform):
     default_priority = 870
 
     def apply(self):
+        removed_ids = []  # IDs of removed system messages
         for node in tuple(self.document.findall(nodes.system_message)):
             if node['level'] < self.document.reporter.report_level:
                 node.parent.remove(node)
-                try:  # also remove id-entry
-                    del self.document.ids[node['ids'][0]]
-                except (IndexError):
-                    pass
+                for _id in node['ids']:
+                    self.document.ids.pop(_id, None)  # remove ID registration
+                    removed_ids.append(_id)
         for node in tuple(self.document.findall(nodes.problematic)):
-            if 'refid' in node and node['refid'] not in self.document.ids:
+            if 'refid' in node and node['refid'] in removed_ids:
                 node.parent.replace(node, nodes.Text(node.astext()))
         for node in self.document.findall(nodes.section):
             if "system-messages" in node['classes'] and len(node) == 1:
