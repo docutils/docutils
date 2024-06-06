@@ -195,8 +195,14 @@ class XmlAttributesTestCase(unittest.TestCase):
     # 'suffix': CDATA (str) → test_enumtype
 
     def test_title(self):  # CDATA (str)
-        ...
-        # TODO: <document> does not work with parse_element()
+        xml = (r'<document ids="test-document" names="test\ document"'
+               r'          source="/tmp/foo.rst" title="Test Document" />')
+        expected = {'ids': ['test-document'],
+                    'names': ['test document'],
+                    'source': '/tmp/foo.rst',
+                    'title': 'Test Document'}
+        node = docutils_xml.parse_element(xml)
+        self.assertEqual(node.attributes, self.common_attributes | expected)
 
     # 'uri': CDATA (str)                → test_alt
     # 'width' measure (str)             → test_alt

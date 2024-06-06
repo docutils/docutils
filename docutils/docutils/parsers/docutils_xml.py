@@ -21,7 +21,7 @@
 
 import xml.etree.ElementTree as ET
 
-from docutils import nodes, parsers
+from docutils import frontend, nodes, parsers, utils
 
 
 class Parser(parsers.Parser):
@@ -45,24 +45,22 @@ class Parser(parsers.Parser):
         """
         self.setup_parse(inputstring, document)
 
-        # get ElementTree
-        root = ET.fromstring(inputstring)
-        # convert ElementTree to Docutils Document Tree
-        if root.tag == 'document':
-            convert_attribs(document, root.attrib)
-            for element in root:
-                document.append(element2node(element))
-        else:
-            document.append(element2node(root))
+        node = parse_element(inputstring, document)
+        if not isinstance(node, nodes.document):
+            document.append(node)
 
         self.finish_parse()
 
 
-def parse_element(inputstring):
+def parse_element(inputstring, document=None):
     """
     Parse `inputstring` as "Docutils XML", return `nodes.Element` instance.
 
     :inputstring: XML source.
+    :document: `nodes.document` instance (default: a new dummy instance).
+               Provides settings and reporter.
+               Populated and returned, if the inputstring's root element
+               is <document>.
 
     Caution:
       The function does not detect invalid XML.
@@ -75,10 +73,10 @@ def parse_element(inputstring):
 
     Provisional.
     """
-    return element2node(ET.fromstring(inputstring))
+    return element2node(ET.fromstring(inputstring), document)
 
 
-def element2node(element):
+def element2node(element, document=None):
     """
     Convert an `etree` element and its children to Docutils doctree nodes.
 
@@ -86,31 +84,33 @@ def element2node(element):
 
     Internal.
     """
+    if document is None:
+        document = utils.new_document('xml input',
+                                      frontend.get_default_settings(Parser))
+
     # Get the corresponding `nodes.Element` instance:
     nodeclass = getattr(nodes, element.tag)
-    node = nodeclass()
+    if nodeclass == nodes.document:
+        node = document
+    else:
+        node = nodeclass()
 
     # Attributes: convert and add to `node.attributes`.
-    convert_attribs(node, element.attrib)
+    for key, value in element.items():
+        if key.startswith('{'):
+            continue  # skip duplicate attributes with namespace URL
+        node.attributes[key] = nodes.ATTRIBUTE_VALIDATORS[key](value)
 
     # Append text (wrapped in a `nodes.Text` instance)
     append_text(node, element.text)
 
     # Append children and their tailing text
     for child in element:
-        node.append(element2node(child))
+        node.append(element2node(child, document))
         # Text after a child node
         append_text(node, child.tail)
 
     return node
-
-
-def convert_attribs(node, a):
-    # Convert doctree element attribute values from string to their datatype,
-    for key, value in a.items():
-        if key.startswith('{'):
-            continue  # skip duplicate attributes with namespace URL
-        node.attributes[key] = nodes.ATTRIBUTE_VALIDATORS[key](value)
 
 
 def append_text(node, text):
