@@ -49,9 +49,28 @@ class XMLParserTests(unittest.TestCase):
 
 totest = {}
 
-totest['hyperlinks'] = ({},
+totest['decoration'] = ({'datestamp': 'pi-day'},  # generate footer
 [
-# resolve anonymous hyperlinks
+["""\
+<decoration>
+    <footer>
+        <paragraph>myfooter</paragraph>
+    </footer>
+</decoration>
+""",
+"""\
+<document source="<string>">
+    <decoration>
+        <footer>
+            <paragraph>
+                myfooter
+            <paragraph>
+                Generated on: pi-day.
+"""],
+])
+
+totest['hyperlinks'] = ({},  # resolve hyperlinks
+[
 ["""\
 <document source="test data">
     <paragraph>A <reference anonymous="1" name="link">link</reference> to Docutils.</paragraph>
@@ -86,6 +105,7 @@ totest['hyperlinks'] = ({},
                 Duplicate ID: "i2" used by <tip ids="i1 i2"> and <strong ids="i2 i3">
 """],
 ])
+
 
 if __name__ == '__main__':
     unittest.main()

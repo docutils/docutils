@@ -131,7 +131,9 @@ def element2node(element, document=None, unindent=True):
         node = nodeclass()
 
     node.line = int(element.get('source line'))
-    if isinstance(node, Unknown):
+    if isinstance(node, nodes.decoration):
+        document.decoration = node
+    elif isinstance(node, Unknown):
         node.tagname = element.tag
         document.reporter.warning(
             f'Unknown element type <{element.tag}>.',
