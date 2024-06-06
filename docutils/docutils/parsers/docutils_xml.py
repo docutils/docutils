@@ -58,6 +58,26 @@ class Parser(parsers.Parser):
         self.finish_parse()
 
 
+def parse_element(inputstring):
+    """
+    Parse `inputstring` as "Docutils XML", return `nodes.Element` instance.
+
+    :inputstring: XML source.
+
+    Caution:
+      The function does not detect invalid XML.
+
+      To check the validity of the returned node,
+      you may use its `validate()` method::
+
+        node = parse_element('<tip><hint>text</hint></tip>')
+        node.validate()
+
+    Provisional.
+    """
+    return element2node(ET.fromstring(inputstring))
+
+
 def element2node(element):
     """
     Convert an `etree` element and its children to Docutils doctree nodes.

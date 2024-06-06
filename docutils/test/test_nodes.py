@@ -1121,6 +1121,12 @@ class MiscFunctionTests(unittest.TestCase):
 
 
 class AttributeTypeTests(unittest.TestCase):
+    """Test validator functions for the supported `attribute data types`__
+
+    See also test_parsers/test_docutils_xml/test_parse_element.py.
+
+    __ https://docutils.sourceforge.io/docs/ref/doctree.html#attribute-types
+    """
 
     def test_validate_enumerated_type(self):
         # function factory for "choice validators"
