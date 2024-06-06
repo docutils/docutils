@@ -935,12 +935,11 @@ Remove spaces before `footnote references`_?
        and it is left if the reference style is "brackets".
 
 
-.. _myst:
-
 [myst parser]
 -------------
 
-Provided by the 3rd party package `myst-docutils`_.
+Parser for Markdown (CommonMark_) with rST-compatibility extensions
+provided by the 3rd party package `myst-docutils`_.
 See `MyST with Docutils`_ and MyST's `Sphinx configuration options`_
 (some settings are not applicable with Docutils).
 
@@ -951,30 +950,47 @@ See `MyST with Docutils`_ and MyST's `Sphinx configuration options`_
    https://myst-parser.readthedocs.io/en/latest/sphinx/reference.html#sphinx-config-options
 
 
-.. _pycmark:
-
 [pycmark parser]
 ----------------
 
-Provided by the 3rd party package `pycmark`__.
+Parser for Markdown (CommonMark_)
+provided by the 3rd party package `pycmark`_.
 Currently no configuration settings.
 
-__ https://pypi.org/project/pycmark/
+.. _pycmark: https://pypi.org/project/pycmark/
 
-
-.. _recommonmark:
 
 [recommonmark parser]
 ---------------------
 
+Parser for Markdown (CommonMark_)
+provided by the 3rd party package recommonmark_.
+
 .. admonition:: Deprecated
 
-   Depends on deprecated 3rd-party package recommonmark__.
+   Depends on deprecated 3rd-party package recommonmark_.
    Support will be removed in Docutils 1.0.
 
 Currently no configuration settings.
 
-__ https://pypi.org/project/recommonmark/
+.. _recommonmark: https://pypi.org/project/recommonmark/
+
+
+[xml parser]
+------------
+
+The `Docutils XML parser` processes an XML representation of a
+`Docutils Document Tree`_
+(e.g. the output of the `Docutils XML writer <[docutils_xml writer]_>`__).
+
+New in Docutils 0.22
+
+Parser Specific Defaults
+~~~~~~~~~~~~~~~~~~~~~~~~
+.. class:: run-in narrow
+
+:doctitle_xform_:  False.
+:validate_:        True.
 
 
 [readers]
@@ -2285,15 +2301,17 @@ One of "standalone", "pep", or the import name of a plug-in reader module.
 parser
 ~~~~~~
 Parser component name.
-Either "rst" (default) or the import name of a plug-in parser module.
+Either "`rst <[restructuredtext parser]_>`__" (default),
+"`xml <[xml parser]_>`__", or the import name of a plug-in parser module.
 
-Parsers for CommonMark_ known to work with Docutils include "pycmark_",
-"myst_", and "recommonmark_".
+Parsers for CommonMark_ known to work with Docutils include
+"`pycmark <[pycmark parser]_>`__", "`myst <[myst parser]_>`__",
+and "`recommonmark <[recommonmark parser]_>`__".
 
 *Default*: "rst".
 *Option*: ``--parser``
 
-.. _CommonMark: https://spec.commonmark.org/0.30/
+.. _CommonMark: https://spec.commonmark.org/current/
 
 
 .. _writer [docutils application]:
@@ -2417,6 +2435,7 @@ pep_template           [pep_html writer] template
 
 .. References
 
+.. _Docutils Document Tree:
 .. _Document Tree: ../ref/doctree.html
 
 .. _Docutils Runtime Settings:

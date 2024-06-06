@@ -29,8 +29,15 @@ except ImportError:
 
 class GetParserClassTestCase(unittest.TestCase):
 
-    def test_registered_parser(self):
+    def test_registered_parsers(self):
+        get_parser_class('null')
         get_parser_class('rst')
+        get_parser_class('docutils_xml')
+        # raises ImportError on failure
+
+    def test_registered_parsers_case_folding(self):
+        get_parser_class('reStructuredText')
+        get_parser_class('XML')
         # raises ImportError on failure
 
     def test_bogus_parser(self):

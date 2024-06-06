@@ -82,6 +82,9 @@ _parser_aliases = {  # short names for known parsers
                    'rest': 'docutils.parsers.rst',
                    'restx': 'docutils.parsers.rst',
                    'rtxt': 'docutils.parsers.rst',
+                   # Docutils XML
+                   'docutils_xml': 'docutils.parsers.docutils_xml',
+                   'xml': 'docutils.parsers.docutils_xml',
                    # 3rd-party Markdown parsers
                    'recommonmark': 'docutils.parsers.recommonmark_wrapper',
                    'myst': 'myst_parser.docutils_',

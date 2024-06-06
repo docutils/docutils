@@ -1599,6 +1599,8 @@ The "include" directive recognizes the following options:
 
 ``parser`` : text_ (parser name)
     Parse the included content with the specified parser.
+    See the `"parser" configuration setting`_ for available parsers.
+
     (New in Docutils 0.17)
 
 ``start-after`` : text_
@@ -2249,6 +2251,7 @@ Common Option Value Types
 .. _image_loading: ../../user/config.html#image-loading
 .. _input_encoding: ../../user/config.html#input-encoding
 .. _math_output: ../../user/config.html#math-output
+.. _"parser" configuration setting: ../../user/config.html#parser
 .. _raw_enabled: ../../user/config.html#raw-enabled
 .. _root_prefix: ../../user/config.html#root-prefix
 .. _sectnum_xform: ../../user/config.html#sectnum-xform

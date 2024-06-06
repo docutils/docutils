@@ -37,6 +37,10 @@ Release 0.22b.dev (unpublished)
     normalize values,
     raise ValueError for invalid attribute names or values.
 
+* docutils/parsers/docutils_xml.py
+
+  - New parser for Docutils XML sources. Provisional.
+
 * docutils/parsers/recommonmark_wrapper.py
 
   - New method `Parser.finish_parse()` to clean up (before validating).
@@ -1019,7 +1023,9 @@ Release 0.17 (2021-04-03)
 
 * docutils/writers/pseudoxml.py
 
-  - New option `detailled`_.
+  - New option `detailled`__.
+
+    __ detailed_
 
 * test/DocutilsTestSupport.py
 
