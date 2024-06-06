@@ -19,6 +19,7 @@
    without prior notice.
 """
 
+import re
 import xml.etree.ElementTree as ET
 
 from docutils import frontend, nodes, parsers, utils
@@ -97,9 +98,15 @@ def parse_element(inputstring, document=None):
     return element2node(root, document)
 
 
-def element2node(element, document=None):
+def element2node(element, document=None, unindent=True):
     """
     Convert an `etree` element and its children to Docutils doctree nodes.
+
+    :element:  `xml.etree` element
+    :document: see `parse_element()`
+    :unindent: Remove formatting indentation of follow-up text lines?
+               Cf. `append_text()`.
+               TODO: do we need an "unindent" configuration setting?
 
     Return a `docutils.nodes.Element` instance.
 
@@ -141,21 +148,28 @@ def element2node(element, document=None):
                 value = value.split()
             node.attributes[key] = value  # node becomes invalid!
 
-    # Append text (wrapped in a `nodes.Text` instance)
-    append_text(node, element.text)
-
-    # Append children and their tailing text
+    # Append content:
+    # update "unindent" flag: change line indentation?
+    unindent = unindent and not isinstance(
+                   node, (nodes.FixedTextElement, nodes.literal, Unknown))
+    # (leading) text
+    append_text(node, element.text, unindent)
+    # children and their tailing text
     for child in element:
-        node.append(element2node(child, document))
+        node.append(element2node(child, document, unindent))
         # Text after a child node
-        append_text(node, child.tail)
+        append_text(node, child.tail, unindent)
 
     return node
 
 
-def append_text(node, text):
+def append_text(node, text, unindent):
+    # Format `text`, wrap in a TextElement and append to `node`.
+    # Skip if `text` is empty or just formatting whitespace.
     if not text:
         return
+    if unindent:
+        text = re.sub('\n +', '\n', text)
     if isinstance(node, nodes.TextElement):
         node.append(nodes.Text(text))
     elif text.strip():

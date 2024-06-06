@@ -59,12 +59,11 @@ totest['simple'] = [
         with two lines.</paragraph>
 </document>
 """,
-# TODO: unindent second line
 """\
 <document source="test sample">
     <paragraph>
         A paragraph
-                with two lines.
+        with two lines.
 """],
 ["""\
 <document>
@@ -110,6 +109,25 @@ totest['inline'] = [
         <strong>
             strong
          week
+"""],
+["""\
+<document source="test data">
+    <literal_block xml:space="preserve">  Inline element
+with <strong>  space at start,
+    in the middle</strong>
+  and after end.</literal_block>
+</document>
+""",
+"""\
+<document source="test data">
+    <literal_block xml:space="preserve">
+          Inline element
+        with \n\
+        <strong>
+              space at start,
+                in the middle
+        \n\
+          and after end.
 """],
 ]
 
