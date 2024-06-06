@@ -349,9 +349,6 @@ should    be grouped    in pairs).</literal></paragraph>
                             <paragraph>Four</paragraph>
                         </list_item>
                     </enumerated_list>
-                    <system_message level="1" line="8" source="functional/input/data/standard.txt" type="INFO">
-                        <paragraph>Enumerated list start value not ordinal-1: "3" (ordinal 3)</paragraph>
-                    </system_message>
                     <enumerated_list enumtype="upperalpha" prefix="" start="3" suffix=".">
                         <list_item>
                             <paragraph>C</paragraph>
@@ -360,9 +357,6 @@ should    be grouped    in pairs).</literal></paragraph>
                             <paragraph>D</paragraph>
                         </list_item>
                     </enumerated_list>
-                    <system_message level="1" line="8" source="functional/input/data/standard.txt" type="INFO">
-                        <paragraph>Enumerated list start value not ordinal-1: "C" (ordinal 3)</paragraph>
-                    </system_message>
                     <enumerated_list enumtype="lowerroman" prefix="" start="3" suffix=".">
                         <list_item>
                             <paragraph>iii</paragraph>
@@ -371,9 +365,6 @@ should    be grouped    in pairs).</literal></paragraph>
                             <paragraph>iv</paragraph>
                         </list_item>
                     </enumerated_list>
-                    <system_message level="1" line="8" source="functional/input/data/standard.txt" type="INFO">
-                        <paragraph>Enumerated list start value not ordinal-1: "iii" (ordinal 3)</paragraph>
-                    </system_message>
                 </list_item>
             </enumerated_list>
         </section>
@@ -770,9 +761,6 @@ Python-specific usage examples; begun with "&gt;&gt;&gt;"
             </section>
             <section dupnames="duplicate\ target\ names" ids="duplicate-target-names-1">
                 <title auto="1" refid="toc-entry-21"><generated classes="sectnum">2.13.2   </generated>Duplicate Target Names</title>
-                <system_message backrefs="duplicate-target-names-1" level="1" line="437" source="functional/input/data/standard.txt" type="INFO">
-                    <paragraph>Duplicate implicit target name: "duplicate target names".</paragraph>
-                </system_message>
                 <paragraph>Since there are two "Duplicate Target Names" section headers, we
                     cannot uniquely refer to either of them by name.  If we try to (like
                     this: <problematic ids="problematic-3" refid="system-message-5">`Duplicate Target Names`_</problematic>), an error is generated.</paragraph>
@@ -1776,33 +1764,6 @@ Comments may contain non-ASCII characters: ä ö ü æ ø å</comment>
         </system_message>
         <system_message backrefs="problematic-3" ids="system-message-5" level="3" line="439" source="functional/input/data/standard.txt" type="ERROR">
             <paragraph>Duplicate target name, cannot be used as a unique reference: "duplicate target names".</paragraph>
-        </system_message>
-        <system_message level="1" line="159" source="functional/input/data/standard.txt" type="INFO">
-            <paragraph>Hyperlink target "target" is not referenced.</paragraph>
-        </system_message>
-        <system_message level="1" line="404" source="functional/input/data/standard.txt" type="INFO">
-            <paragraph>Hyperlink target "another-target" is not referenced.</paragraph>
-        </system_message>
-        <system_message level="1" line="474" source="functional/input/data/standard.txt" type="INFO">
-            <paragraph>Hyperlink target "image-target-1" is not referenced.</paragraph>
-        </system_message>
-        <system_message level="1" line="475" source="functional/input/data/standard.txt" type="INFO">
-            <paragraph>Hyperlink target "image-target-2" is not referenced.</paragraph>
-        </system_message>
-        <system_message level="1" line="476" source="functional/input/data/standard.txt" type="INFO">
-            <paragraph>Hyperlink target "image-target-3" is not referenced.</paragraph>
-        </system_message>
-        <system_message level="1" line="640" source="functional/input/data/standard.txt" type="INFO">
-            <paragraph>Hyperlink target "target1" is not referenced.</paragraph>
-        </system_message>
-        <system_message level="1" line="641" source="functional/input/data/standard.txt" type="INFO">
-            <paragraph>Hyperlink target "target2" is not referenced.</paragraph>
-        </system_message>
-        <system_message level="1" line="686" source="functional/input/data/standard.txt" type="INFO">
-            <paragraph>Hyperlink target "docutils" is not referenced.</paragraph>
-        </system_message>
-        <system_message level="1" line="852" source="functional/input/data/standard.txt" type="INFO">
-            <paragraph>Hyperlink target "hyperlink targets" is not referenced.</paragraph>
         </system_message>
     </section>
 </document>

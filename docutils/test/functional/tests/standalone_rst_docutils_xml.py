@@ -6,8 +6,6 @@ test_destination = "standalone_rst_docutils_xml.xml"
 writer_name = "docutils_xml"
 settings_overrides = {
     'sectsubtitle_xform': True,
-    # enable INFO-level system messages in this test:
-    'report_level': 1,
     # format output with indents and newlines
     'indents': True,
     }
