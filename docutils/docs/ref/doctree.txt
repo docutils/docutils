@@ -1296,15 +1296,15 @@ See `\<definition_list_item>`_ and `\<classifier>`_ for further examples.
 <definition_list_item>
 ======================
 
-The <definition_list_item> element contains a single
-`\<term>`_/`\<definition>`_ pair (with optional `\<classifier>`_).
+A wrapper for a set of terms (with optional classifiers) and the
+associated definition in a `\<definition_list>`_.
 
 :Category:   `Body Subelements`_ (compound)
 
 :Analogues:  <definition_list_item> is analogous to the
              DocBook_ <variablelistentry> element.
 
-:Processing: The optional `\<classifier>`_ can be rendered differently
+:Processing: The optional `\<classifier>`_\ s can be rendered differently
              from the `\<term>`_.  They should be separated visually,
              typically by spaces plus a colon or dash.
 
@@ -1312,10 +1312,13 @@ The <definition_list_item> element contains a single
              <definition_list_item>.
 
 :Children:   <definition_list_item> elements each contain
-             a single `\<term>`_, an optional `\<classifier>`_,
+             one or more `\<term>`_ elements,
+             zero or more `\<classifier>`_ elements,
              and a `\<definition>`_::
 
-               (term, classifier?, definition)
+               ((term, classifier*)+, definition)
+
+             Changed in Docutils 0.22: allow multiple terms.
 
 :Attributes: The <definition_list_item> element contains only the
              `common attributes`_.

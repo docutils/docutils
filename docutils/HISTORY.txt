@@ -22,6 +22,11 @@ Release 0.22b.dev (unpublished)
   - Add tox.ini to pyproject.toml to be in sdist (bug #486).
   - Fix license issue (bug #487).
 
+* docs/ref/docutils.dtd
+
+  - Allow multiple <term> elements in a <definition_list_item>.
+    Fixes feature-request #60
+
 * docutils/nodes.py
 
   - Raise TypeError if the "rawsource" argument in `Element.__init__()`

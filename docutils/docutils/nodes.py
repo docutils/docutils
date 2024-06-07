@@ -2023,9 +2023,9 @@ class definition(Part, Element):
 
 
 class definition_list_item(Part, Element):
-    content_model = (  # (term, classifier*, definition)
+    content_model = (  # ((term, classifier*)+, definition)
                      (term, '.'),
-                     (classifier, '*'),
+                     ((classifier, term), '*'),
                      (definition, '.'))
 
 

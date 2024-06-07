@@ -16,11 +16,23 @@
 Miscellaneous LaTeX writer tests.
 """
 
+from pathlib import Path
+import sys
 import unittest
+
+
+if __name__ == '__main__':
+    # prepend the "docutils root" to the Python library path
+    # so we import the local `docutils` package.
+    sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from docutils import core
 
-contents_test_input = """\
+# TEST_ROOT is ./test/ from the docutils root
+TEST_ROOT = Path(__file__).parents[1]
+DATA_ROOT = TEST_ROOT / 'data'
+
+sample_toc = """\
 .. contents:: TOC
 
 foo
@@ -31,13 +43,38 @@ bar
 
 """
 
+sample_multiterm = f"""\
+.. include:: {DATA_ROOT}/multiple-term-definition.xml
+   :parser: xml
+"""
+expected_multiterm = """
+\\begin{description}
+\\item[{New in Docutils 0.22}] \n\
+A definition list item may contain several
+terms with optional classifier(s).
+
+However, there is currently no corresponding
+reStructuredText syntax.
+
+\\item[{term 2a}] \n\
+\\item[{term 2b}] \n\
+definition 2
+
+\\item[{term 3a}] (\\textbf{classifier 3a})
+(\\textbf{classifier 3aa})
+\\item[{term 3b}] (\\textbf{classifier 3b})
+definition 3
+\\end{description}
+"""
+
 
 class PublishTestCase(unittest.TestCase):
+    maxDiff = None
 
     settings = {'_disable_config': True,
                 # avoid latex writer future warnings:
                 'use_latex_citations': False,
-                'legacy_column_widths': True,
+                'legacy_column_widths': False,
                 }
 
     def test_publish_from_doctree(self):
@@ -48,7 +85,7 @@ class PublishTestCase(unittest.TestCase):
         settings = self.settings.copy()
         settings['output_encoding'] = 'unicode'
         settings['warning_stream'] = ''  # don't warn for missing ToC details
-        doctree = core.publish_doctree(contents_test_input,
+        doctree = core.publish_doctree(sample_toc,
                                        settings_overrides=settings)
         result = core.publish_from_doctree(doctree,
                                            writer_name='latex',
@@ -59,7 +96,7 @@ class PublishTestCase(unittest.TestCase):
     def test_publish_parts(self):
         """Check for the presence of documented parts.
         """
-        parts = core.publish_parts(contents_test_input,
+        parts = core.publish_parts(sample_multiterm,
                                    writer_name='latex',
                                    settings_overrides=self.settings)
         documented_parts = [
@@ -83,6 +120,7 @@ class PublishTestCase(unittest.TestCase):
             'whole'
             ]
         self.assertEqual(documented_parts, sorted(parts.keys()))
+        self.assertEqual(expected_multiterm, parts['body'])
 
 
 class WarningsTestCase(unittest.TestCase):

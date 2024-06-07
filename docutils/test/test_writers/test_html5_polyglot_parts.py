@@ -13,7 +13,6 @@ standard values, and any entries with empty values.
 """
 
 from pathlib import Path
-import os
 import re
 import sys
 import unittest
@@ -35,8 +34,10 @@ if with_pygments:
         # pygments output changed in version 2.14
         with_pygments = False
 
-ROOT_PREFIX = (Path(__file__).parent.parent/'functional'/'input').as_posix()
-DATA_ROOT = os.path.abspath(os.path.join(__file__, '..', '..', 'data'))
+# TEST_ROOT is ./test/ from the docutils root
+TEST_ROOT = Path(__file__).parents[1]
+DATA_ROOT = TEST_ROOT / 'data'
+ROOT_PREFIX = (TEST_ROOT / 'functional/input').as_posix()
 
 # Pillow/PIL is optional:
 if PIL:
@@ -538,6 +539,28 @@ No caption nor legend.
 <img alt="dummy.png" src="dummy.png" />
 </figure>
 <p>No caption nor legend.</p>
+""",
+}],
+[f"""\
+.. include:: {DATA_ROOT}/multiple-term-definition.xml
+   :parser: xml
+""",
+{'fragment': """\
+<dl>
+<dt>New in Docutils 0.22</dt>
+<dd><p>A definition list item may contain several
+terms with optional classifier(s).</p>
+<p>However, there is currently no corresponding
+reStructuredText syntax.</p>
+</dd>
+<dt>term 2a</dt>
+<dt>term 2b</dt>
+<dd><p>definition 2</p>
+</dd>
+<dt>term 3a<span class="classifier">classifier 3a</span><span class="classifier">classifier 3aa</span><dt>term 3b<span class="classifier">classifier 3b</span></dt>
+<dd><p>definition 3</p>
+</dd>
+</dl>
 """,
 }],
 ])

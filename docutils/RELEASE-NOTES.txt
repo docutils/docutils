@@ -48,12 +48,6 @@ Command line interface
 Document Tree / Docutils DTD
 ----------------------------
 
-* Allow multiple <term> elements in a <definition_list_item>
-  in Docutils 0.22 (cf. `feature-requests:60`__).
-  Third-party writers may need adaption.
-
-  __ https://sourceforge.net/p/docutils/feature-requests/60/
-
 * Do not lowercase reference names in the `refname attribute`_
   (matching hyperlinks, footnotes, and citations remains case insensitive),
   and drop the ``name`` attribute from <reference> nodes
@@ -212,7 +206,29 @@ Misc
 Release 0.22b.dev (unpublished)
 ===============================
 
-.
+* Document Tree / Docutils DTD
+
+  - Allow multiple <term> elements in a <definition_list_item__>.
+    (Third-party writers may need adaption.)
+
+  - New method `Element.validate()`: Raise `nodes.ValidationError` if the
+    element does not comply with the `Docutils Document Model`_.
+    Provisional.
+
+  __ docs/ref/doctree.html#definition-list-item
+
+* New parser for `Docutils XML`_ (e.g., the output of the "xml" writer).
+  Provisional.
+
+  Try ``docutils --parser=xml test/data/multiple-term-definition.xml``
+  or use the :parser: option of the `"include" directive`_ to include
+  an XML file in a rST document.
+
+* Bugfixes and improvements (see HISTORY_).
+
+.. _Docutils Document Model:
+.. _Docutils XML: docs/ref/doctree.html
+
 
 Release 0.21.2 (2024-04-23)
 ===========================
@@ -986,7 +1002,7 @@ Release 0.8 (2011-07-07)
 
 Internationalization:
 
-* Added lithuanian mappings.
+* Added Lithuanian mappings.
 
 Components:
 

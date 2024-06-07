@@ -1,0 +1,31 @@
+<!DOCTYPE document PUBLIC "+//IDN docutils.sourceforge.net//DTD Docutils Generic//EN//XML" "http://docutils.sourceforge.net/docs/ref/docutils.dtd">
+<document source="test data">
+    <definition_list>
+        <definition_list_item>
+            <term>New in Docutils 0.22</term>
+            <definition>
+                <paragraph>A definition list item may contain several
+                    terms with optional classifier(s).</paragraph>
+                <paragraph>However, there is currently no corresponding
+                    reStructuredText syntax.</paragraph>
+            </definition>
+        </definition_list_item>
+        <definition_list_item>
+            <term>term 2a</term>
+            <term>term 2b</term>
+            <definition>
+                <paragraph>definition 2</paragraph>
+            </definition>
+        </definition_list_item>
+        <definition_list_item>
+            <term>term 3a</term>
+            <classifier>classifier 3a</classifier>
+            <classifier>classifier 3aa</classifier>
+            <term>term 3b</term>
+            <classifier>classifier 3b</classifier>
+            <definition>
+                <paragraph>definition 3</paragraph>
+            </definition>
+        </definition_list_item>
+    </definition_list>
+</document>
