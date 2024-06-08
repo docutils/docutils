@@ -38,6 +38,7 @@ class WriterPublishTestCase(unittest.TestCase):
                         }).decode()
                     self.assertEqual(case_expected, output)
 
+
 document_start = r""".\" Man page generated from reStructuredText by manpage writer
 .\" from docutils 0.22b.dev.
 .

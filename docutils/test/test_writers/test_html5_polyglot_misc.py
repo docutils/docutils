@@ -21,13 +21,12 @@ if __name__ == '__main__':
 from docutils import core
 
 # TEST_ROOT is ./test/ from the docutils root
-TEST_ROOT = os.path.abspath(os.path.join(__file__, '..', '..'))
-# DATA_ROOT is ./test/data/ from the docutils root
-DATA_ROOT = os.path.join(TEST_ROOT, 'data')
+TEST_ROOT = Path(__file__).parents[1]
+DATA_ROOT = TEST_ROOT / 'data'
 
 
-def relpath(*parts):
-    return os.path.relpath(os.path.join(*parts), os.getcwd()).replace('\\', '/')
+def relpath(path):
+    return os.path.relpath(path, os.getcwd()).replace('\\', '/')
 
 
 class EncodingTestCase(unittest.TestCase):
@@ -89,7 +88,7 @@ second term:
                       result)
 
 
-ham_css = relpath(DATA_ROOT, 'ham.css')
+ham_css = relpath(DATA_ROOT / 'ham.css')
 
 
 class SettingsTestCase(unittest.TestCase):
@@ -136,12 +135,12 @@ class SettingsTestCase(unittest.TestCase):
         mys = {'_disable_config': True,
                'embed_stylesheet': False,
                'stylesheet_dirs': (
-                   os.path.join(TEST_ROOT, '../docutils/writers/html5_polyglot/'),
+                   TEST_ROOT / '../docutils/writers/html5_polyglot/',
                    DATA_ROOT),
                'stylesheet_path': 'minimal.css, ham.css'}
         styles = core.publish_parts(self.data, writer_name='html5_polyglot',
                                     settings_overrides=mys)['stylesheet']
-        if os.path.isdir(os.path.join(TEST_ROOT, '../docutils/writers/html5_polyglot/')):
+        if (TEST_ROOT / '../docutils/writers/html5_polyglot/').is_dir():
             self.assertIn('docutils/writers/html5_polyglot/minimal.css', styles)
         self.assertIn(f'href="{ham_css}"', styles)
 
@@ -149,7 +148,7 @@ class SettingsTestCase(unittest.TestCase):
         mys = {'_disable_config': True,
                'embed_stylesheet': True,
                'stylesheet_dirs': (
-                   os.path.join(TEST_ROOT, '../docutils/writers/html5_polyglot/'),
+                   TEST_ROOT / '../docutils/writers/html5_polyglot/',
                    DATA_ROOT),
                'stylesheet_path': 'ham.css'}
         styles = core.publish_parts(self.data, writer_name='html5_polyglot',
@@ -168,9 +167,9 @@ class SettingsTestCase(unittest.TestCase):
                                 settings_overrides=my_settings)
 
 
-minimal_css = relpath(TEST_ROOT, 'functional/input/data/minimal.css')
-plain_css = relpath(TEST_ROOT, 'functional/input/data/plain.css')
-math_css = relpath(TEST_ROOT, 'functional/input/data/math.css')
+minimal_css = relpath(TEST_ROOT / 'functional/input/data/minimal.css')
+plain_css = relpath(TEST_ROOT / 'functional/input/data/plain.css')
+math_css = relpath(TEST_ROOT / 'functional/input/data/math.css')
 
 
 class MathTestCase(unittest.TestCase):
@@ -223,7 +222,7 @@ class MathTestCase(unittest.TestCase):
                'math_output': 'HTML math.css,custom/style.css',
                'stylesheet_dirs': (
                    TEST_ROOT,
-                   os.path.join(TEST_ROOT, 'functional/input/data')),
+                   TEST_ROOT / 'functional/input/data'),
                'embed_stylesheet': False}
         styles = core.publish_parts(self.data, writer_name='html5_polyglot',
                                     settings_overrides=mys)['stylesheet']

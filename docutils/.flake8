@@ -64,8 +64,8 @@ per-file-ignores =
   test/test_readers/test_pep/*:E122,E128,E501
   test/test_transforms/*:E122,E124,E128,E501
   test/test_writers/*:E122,E124,E128,E501
-  # test output contains trailing whitespace
-  test/test_writers/test_manpage.py:E128,W291
+  # test output contains trailing whitespace, long lines, operator at end
+  test/test_writers/test_manpage.py:E128,W291,E501,W504
 
   # ignore long line in string templates
   tools/dev/generate_punctuation_chars.py:E501

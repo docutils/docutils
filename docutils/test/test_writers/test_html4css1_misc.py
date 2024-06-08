@@ -9,18 +9,24 @@ Miscellaneous HTML writer tests.
 """
 
 import os
+from pathlib import Path
+import sys
 import unittest
+
+if __name__ == '__main__':
+    # prepend the "docutils root" to the Python library path
+    # so we import the local `docutils` package.
+    sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from docutils import core
 
 # TEST_ROOT is ./test/ from the docutils root
-TEST_ROOT = os.path.abspath(os.path.join(__file__, '..', '..'))
-# DATA_ROOT is ./test/data/ from the docutils root
-DATA_ROOT = os.path.join(TEST_ROOT, 'data')
+TEST_ROOT = Path(__file__).parents[1]
+DATA_ROOT = TEST_ROOT / 'data'
 
 
-def relpath(*parts):
-    return os.path.relpath(os.path.join(*parts), os.getcwd()).replace('\\', '/')
+def relpath(path):
+    return os.path.relpath(path, os.getcwd()).replace('\\', '/')
 
 
 class EncodingTestCase(unittest.TestCase):
@@ -83,7 +89,7 @@ second term:
                       result)
 
 
-ham_css = relpath(DATA_ROOT, 'ham.css')
+ham_css = relpath(DATA_ROOT/'ham.css')
 
 
 class SettingsTestCase(unittest.TestCase):
@@ -130,12 +136,12 @@ class SettingsTestCase(unittest.TestCase):
         mys = {'_disable_config': True,
                'embed_stylesheet': False,
                'stylesheet_dirs': (
-                   os.path.join(TEST_ROOT, '../docutils/writers/html4css1/'),
+                   TEST_ROOT / '../docutils/writers/html4css1/',
                    DATA_ROOT),
                'stylesheet_path': 'html4css1.css, ham.css'}
         styles = core.publish_parts(self.data, writer_name='html4css1',
                                     settings_overrides=mys)['stylesheet']
-        if os.path.isdir(os.path.join(TEST_ROOT, '../docutils/writers/html4css1/')):
+        if (TEST_ROOT / '../docutils/writers/html4css1/').is_dir():
             self.assertIn('docutils/writers/html4css1/html4css1.css', styles)
         self.assertIn(f'href="{ham_css}"', styles)
 
@@ -143,7 +149,7 @@ class SettingsTestCase(unittest.TestCase):
         mys = {'_disable_config': True,
                'embed_stylesheet': True,
                'stylesheet_dirs': (
-                   os.path.join(TEST_ROOT, '../docutils/writers/html4css1/'),
+                   TEST_ROOT / '../docutils/writers/html4css1/',
                    DATA_ROOT),
                'stylesheet_path': 'ham.css'}
         styles = core.publish_parts(self.data, writer_name='html4css1',
@@ -151,8 +157,8 @@ class SettingsTestCase(unittest.TestCase):
         self.assertIn('dl.docutils dd {\n  margin-bottom: 0.5em }', styles)
 
 
-html4css1_css = relpath(TEST_ROOT, 'functional/input/data/html4css1.css')
-math_css = relpath(TEST_ROOT, 'functional/input/data/math.css')
+html4css1_css = relpath(TEST_ROOT/'functional/input/data/html4css1.css')
+math_css = relpath(TEST_ROOT/'functional/input/data/math.css')
 
 
 class MathTestCase(unittest.TestCase):
