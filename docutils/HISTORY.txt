@@ -27,6 +27,12 @@ Release 0.22b.dev (unpublished)
   - Allow multiple <term> elements in a <definition_list_item>.
     Fixes feature-request #60
 
+* docutils/frontend.py
+
+  - Drop short options ``-i`` and ``-o`` for ``--input-encoding``
+    and ``--output-encoding``.
+  - Change the default input encoding from ``None`` (auto-detect) to "utf-8".
+
 * docutils/nodes.py
 
   - Raise TypeError if the "rawsource" argument in `Element.__init__()`

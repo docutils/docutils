@@ -126,19 +126,6 @@ f"""\
         Grüße
 """],
 [f"""\
-Default encoding: auto-determine (here via BOM).
-
-.. raw:: html
-   :file: {utf_16_file}
-""",
-f"""\
-<document source="test data">
-    <paragraph>
-        Default encoding: auto-determine (here via BOM).
-    <raw format="html" source="{utf_16_file}" xml:space="preserve">
-        Grüße
-"""],
-[f"""\
 Raw input file is UTF-16-encoded, and is not valid ASCII.
 
 .. raw:: html

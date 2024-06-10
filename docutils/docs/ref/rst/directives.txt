@@ -1700,7 +1700,7 @@ The "raw" directive recognizes the common option class_ and
 
 ``encoding`` : encoding_
     The text encoding of the external raw data (with ``file`` or ``url``).
-    Defaults to the main document's `input_encoding`_ (if specified).
+    Defaults to the main document's `input_encoding`_.
 
 ``file`` : path_
     The local filesystem path of a raw data file to be included.

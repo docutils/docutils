@@ -105,22 +105,23 @@ class PublisherTests(unittest.TestCase):
     def test_publish_string_input_encoding(self):
         """Test handling of encoded input."""
         # Transparently decode `bytes` source (with "input_encoding" setting)
-        # default: auto-detect, fallback utf-8
+        # default: utf-8
         # Output is encoded according to "output_encoding" setting.
-        settings = dict(self.settings)
+        settings = self.settings | {'input_encoding': 'utf-16',
+                                    'output_encoding': 'unicode'}
         source = 'test → me'
         expected = ('<document source="<string>">\n'
                     '    <paragraph>\n'
-                    '        test → me\n').encode('utf-8')
+                    '        test → me\n')
         output = core.publish_string(source.encode('utf-16'),
                                      settings_overrides=settings)
         self.assertEqual(expected, output)
 
-        # encoding declaration in source
+        # encoding declaration in source (used if input_encoding is None)
+        # input encoding detection will be removed in Docutils 1.0
         source = '.. encoding: latin1\n\nGrüße'
-        # don't encode output (return `str`)
-        settings['output_encoding'] = 'unicode'
-        output = core.publish_string(source.encode('utf-16'),
+        settings['input_encoding'] = None
+        output = core.publish_string(source.encode('latin1'),
                                      settings_overrides=settings)
         self.assertTrue(output.endswith('Grüße\n'))
 

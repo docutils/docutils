@@ -99,12 +99,14 @@ def validate_encoding(setting, value=None, option_parser=None,
     if value is None:
         value = setting
     if value == '':
-        return None  # allow overwriting a config file value
+        warnings.warn('Input encoding detection will be removed '
+                      'in Docutils 1.0.', DeprecationWarning, stacklevel=2)
+        return None
     try:
         codecs.lookup(value)
     except LookupError:
-        raise LookupError('setting "%s": unknown encoding: "%s"'
-                          % (setting, value))
+        prefix = f'setting "{setting}":' if setting else ''
+        raise LookupError(f'{prefix} unknown encoding: "{value}"')
     return value
 
 
@@ -674,17 +676,17 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
          ('Disable Python tracebacks.  (default)',
           ['--no-traceback'], {'dest': 'traceback', 'action': 'store_false'}),
          ('Specify the encoding and optionally the '
-          'error handler of input text.  Default: <auto-detect>:strict.',
-          ['--input-encoding', '-i'],
-          {'metavar': '<name[:handler]>',
+          'error handler of input text.  Default: utf-8.',
+          ['--input-encoding'],
+          {'metavar': '<name[:handler]>', 'default': 'utf-8',
            'validator': validate_encoding_and_error_handler}),
          ('Specify the error handler for undecodable characters.  '
           'Choices: "strict" (default), "ignore", and "replace".',
           ['--input-encoding-error-handler'],
           {'default': 'strict', 'validator': validate_encoding_error_handler}),
          ('Specify the text encoding and optionally the error handler for '
-          'output.  Default: utf-8:strict.',
-          ['--output-encoding', '-o'],
+          'output.  Default: utf-8.',
+          ['--output-encoding'],
           {'metavar': '<name[:handler]>', 'default': 'utf-8',
            'validator': validate_encoding_and_error_handler}),
          ('Specify error handler for unencodable output characters; '

@@ -549,32 +549,6 @@ Encoding:
         Grüße
 """],
 [f"""\
-Default encoding: auto-determine (here via BOM).
-
-.. include:: {utf_16_file}
-""",
-"""\
-<document source="test data">
-    <paragraph>
-        Default encoding: auto-determine (here via BOM).
-    <paragraph>
-        Grüße
-"""],
-[f"""\
-Default encoding: auto-determine (via encoding declaration).
-
-.. include:: {latin2}
-""",
-"""\
-<document source="test data">
-    <paragraph>
-        Default encoding: auto-determine (via encoding declaration).
-    <comment xml:space="preserve">
-        -*- encoding: latin2 -*-
-    <paragraph>
-        škoda
-"""],
-[f"""\
 Include file is UTF-16-encoded, and is not valid ASCII.
 
 .. include:: {utf_16_file}

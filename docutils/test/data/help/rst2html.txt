@@ -58,15 +58,15 @@ General Docutils Options
 --warnings=<file>       Send the output of system messages to <file>.
 --traceback             Enable Python tracebacks when Docutils is halted.
 --no-traceback          Disable Python tracebacks.  (default)
---input-encoding=<name[:handler]>, -i <name[:handler]>
+--input-encoding=<name[:handler]>
                         Specify the encoding and optionally the error handler
-                        of input text.  Default: <auto-detect>:strict.
+                        of input text.  Default: utf-8.
 --input-encoding-error-handler=INPUT_ENCODING_ERROR_HANDLER
                         Specify the error handler for undecodable characters.
                         Choices: "strict" (default), "ignore", and "replace".
---output-encoding=<name[:handler]>, -o <name[:handler]>
+--output-encoding=<name[:handler]>
                         Specify the text encoding and optionally the error
-                        handler for output.  Default: utf-8:strict.
+                        handler for output.  Default: utf-8.
 --output-encoding-error-handler=OUTPUT_ENCODING_ERROR_HANDLER
                         Specify error handler for unencodable output
                         characters; "strict" (default), "ignore", "replace",

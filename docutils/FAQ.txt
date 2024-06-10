@@ -1139,11 +1139,8 @@ for more info:
   <http://www.reportlab.com/i18n/python_unicode_tutorial.html>`_
 
 The common case is with the default output encoding (UTF-8), when
-either numbered sections are used (via the "sectnum_" directive) or
-symbol-footnotes.  Three non-breaking spaces are inserted in each numbered
-section title, between the generated number and the title text.  Most
-footnote symbols are not available in ASCII, nor are non-breaking
-spaces.  When encoded with UTF-8 and viewed with ordinary ASCII tools,
+using symbol-footnotes.  Most footnote symbols are not available in ASCII.
+When encoded with UTF-8 and viewed with ordinary ASCII tools,
 these characters will appear to be multi-character garbage.
 
 You may have an decoding problem in your browser (or editor, etc.).

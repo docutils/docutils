@@ -41,8 +41,8 @@ a description of the function arguments.
 publish_cmdline()
 -----------------
 
-Function for custom `command-line front-end tools`_ 
-(like ``tools/rst2html.py``) or "console_scripts" `entry points`_ 
+Function for custom `command-line front-end tools`_
+(like ``tools/rst2html.py``) or "console_scripts" `entry points`_
 (like `core.rst2html()`) with file I/O.
 In addition to writing the output document to a file-like object, also
 returns it as `str` instance (rsp. `bytes` for binary output document
@@ -71,10 +71,15 @@ Input
   `bytes` are decoded with input_encoding_.
 
 Output
-  * is a `bytes` instance, if output_encoding_ is set to an encoding
+  is handled similar to `xml.etree.ElementTree.tostring()`__:
+
+  * return a `bytes` instance, if output_encoding_ is set to an encoding
     registered with Python's "codecs_" module (default: "utf-8"),
-  * a `str` instance, if output_encoding_ is set to the special value
+  * return `str` instance, if output_encoding_ is set to the special value
     ``"unicode"``.
+
+__ https://docs.python.org/3/library/xml.etree.elementtree.html
+   #xml.etree.ElementTree.tostring
 
 .. Caution::
    The "output_encoding" and "output_encoding_error_handler" `runtime
@@ -439,32 +444,37 @@ arguments`_ of the Publisher convenience functions.
 Encodings
 =========
 
-.. important:: Details will change over the next Docutils versions.
-   See RELEASE-NOTES_
+Docutils supports all `standard encodings`_ and encodings registered__
+with the codecs_ module.
+The special value "unicode" can be used with `publish_string()`_ to skip
+encoding and return a `str` instance instead of `bytes`.
+
+__ https://docs.python.org/3/library/codecs.html#codecs.register
+
 
 The **input encoding** can be specified with the `input_encoding`_ setting.
-
-By default, the input encoding is detected from a
-`Unicode byte order mark` (BOM_) or a "magic comment" [#magic-comment]_
-similar to :PEP:`263`. The fallback is "utf-8".
-The default behaviour differs from Python's `open()`:
-
-- An `explicit encoding declaration` ((BOM_) or a "magic comment"
-  [#magic-comment]_) in the source takes precedence over
-  the `preferred encoding`_.
-- An optional BOM_ is removed from sources.
-
-The default will change to "utf-8" in Docutils 0.22,
-the input encoding detection will be removed in Docutils 1.0.
-
-
-The default **output encoding** is UTF-8.
-A different encoding can be specified with the `output_encoding`_ setting.
+The default is "utf-8".
+The **output encoding** can be specified with the `output_encoding`_ setting.
+The default is "utf-8", too.
 
 .. Caution:: Docutils may introduce non-ASCII text if you use
-   `auto-symbol footnotes`_ or the `"contents" directive`_.
+   `auto-symbol footnotes`_.
    In non-English documents, also auto-generated labels
    may contain non-ASCII characters.
+
+auto-detection
+--------------
+
+Up to Docutils 0.21, the input encoding was detected from a `Unicode byte
+order mark` (BOM_) or an *encoding declaration* [#magic-comment]_ in the
+source unless an input_encoding_ was specified.
+
+The default input encoding changed to "utf-8" in Docutils 0.22.
+Currently, auto-detection can be selected with an input_encoding_ value
+``None`` (rsp. an empty string in a configuration file).
+However, input encoding "auto-detection_" is deprecated and **will be
+removed** in Docutils 1.0. See the `inspecting_codecs`_ package for a
+possible replacement.
 
 .. [#magic-comment] A comment like ::
 
@@ -490,23 +500,18 @@ A different encoding can be specified with the `output_encoding`_ setting.
    The first group of this expression is then interpreted as encoding name.
    If the first line matches the second line is ignored.
 
-   This feature is scheduled to be removed in Docutils 1.0.
-   See the `inspecting_codecs`_ package for a possible replacement.
 
 
-.. _Inside A Docutils Command-Line Front-End Tool: ../howto/cmdline-tool.html
-.. _RELEASE-NOTES: ../../RELEASE-NOTES.html#future-changes
+.. _codecs: https://docs.python.org/3/library/codecs.html
+.. _standard encodings:
+    https://docs.python.org/3/library/codecs.html#standard-encodings
 .. _input_encoding: ../user/config.html#input-encoding
-.. _preferred encoding:
-   https://docs.python.org/3/library/locale.html#locale.getpreferredencoding
 .. _BOM: https://docs.python.org/3/library/codecs.html#codecs.BOM
 .. _output_encoding: ../user/config.html#output-encoding
 .. _output_encoding_error_handler:
    ../user/config.html#output-encoding-error-handler
 .. _auto-symbol footnotes:
    ../ref/rst/restructuredtext.html#auto-symbol-footnotes
-.. _"contents" directive:
-   ../ref/rst/directives.html#table-of-contents
 .. _document tree:
 .. _Docutils document tree: ../ref/doctree.html
 .. _Docutils Runtime Settings: ./runtime-settings.html

@@ -1812,7 +1812,7 @@ reused, doubled and then tripled, and so on ("**" etc.).
 
 .. Note:: When using auto-symbol footnotes, the choice of output
    encoding is important.  Many of the symbols used are not encodable
-   in certain common text encodings such as Latin-1 (ISO 8859-1).  The
+   in 8-bit text encodings such as Latin-1 (ISO 8859-1).  The
    use of UTF-8 for the output encoding is recommended.  An
    alternative for HTML and XML output is to use the
    "xmlcharrefreplace" `output encoding error handler`_.

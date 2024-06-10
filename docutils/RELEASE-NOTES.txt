@@ -30,9 +30,6 @@ Command line interface
        - COMMAND [OPTIONS] [SOURCE [DESTINATION]]
        + COMMAND [OPTIONS] [SOURCE [SOURCE2 [...]]] [>DESTINATION]
 
-  * Remove short options ``-i`` and ``-o`` in Docutils 0.22.
-    Use the long equivalents ``--input-encoding`` and ``--output-encoding``.
-
   * Stop accepting the DESTINATION positional argument in Docutils 1.0.
     Use output redirection or the option ``--output=DESTINATION``
     (available since Docutils 0.20).
@@ -57,14 +54,6 @@ Document Tree / Docutils DTD
   to customize the <table> element's attribute list in Docutils 1.0.
 
 .. _refname attribute: docs/ref/doctree.html#refname
-
-`Input encoding`_
------------------
-
-* Change the default input encoding from ``None`` (auto-detect) to
-  "utf-8" in Docutils 0.22.
-
-* Remove the input encoding auto-detection code in Docutils 1.0 or later.
 
 Writers
 -------
@@ -152,6 +141,8 @@ Misc
   .. _recommonmark parser: docs/user/config.html#recommonmark-parser
   .. _MyST parser: docs/user/config.html#myst-parser
 
+* Remove the input encoding auto-detection code in Docutils 1.0.
+
 * Remove the "rawsource" argument from `nodes.Text.__init__()`
   in Docutils 2.0.
 
@@ -216,6 +207,12 @@ Release 0.22b.dev (unpublished)
     Provisional.
 
   __ docs/ref/doctree.html#definition-list-item
+
+* Drop short options ``-i`` and ``-o``.
+  Use the long equivalents ``--input-encoding`` and ``--output-encoding``.
+  (See `command line interface`_ for the rationale.)
+
+* Change the default input encoding from ``None`` (auto-detect) to "utf-8".
 
 * New parser for `Docutils XML`_ (e.g., the output of the "xml" writer).
   Provisional.

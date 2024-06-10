@@ -415,17 +415,17 @@ See also auto_id_prefix_.
 input_encoding
 --------------
 
-The text encoding for input (use the empty string to restore the default).
+The text encoding for input.
 
-*Default*: None (auto-detect_). [#]_
-*Options*: ``--input-encoding``, ``-i``. [#i-o-options]_
+*Default*: utf-8. [#]_
+*Option*: ``--input-encoding`` [#i-o-options]_
 
-.. [#] The default will change to "utf-8" in Docutils 0.22.
-.. [#i-o-options] The short options ``-i`` and ``-o`` `will be removed`__
+.. [#] The default changed from None (auto-detect_) to "utf-8" in
+       Docutils 0.22.
+.. [#i-o-options] The short options ``-i`` and ``-o`` were removed
                   in Docutils 0.22.
 
 .. _auto-detect: ../api/publisher.html#encodings
-__ ../../RELEASE-NOTES.html#command-line-interface
 
 
 input_encoding_error_handler
@@ -504,7 +504,7 @@ characters as LaTeX macro vs. literal character).
 
 This setting is ignored by the `ODF/ODT Writer`_ which always usues UTF-8.
 
-*Default*: "utf-8".  *Options*: ``--output-encoding``, ``-o``. [#i-o-options]_
+*Default*: "utf-8".  *Option*: ``--output-encoding``. [#i-o-options]_
 
 
 output_encoding_error_handler

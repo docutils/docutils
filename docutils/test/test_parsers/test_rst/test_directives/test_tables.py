@@ -1198,64 +1198,6 @@ bad_encoding_result
                             \u00bfOn a \u03c3\u03c4\u03b9\u03ba?
 """],
 ["""\
-.. csv-table:: auto encoding
-   :file: %s
-   :header-rows: 1
-""" % utf_16_csv,
-"""\
-<document source="test data">
-    <table>
-        <title>
-            auto encoding
-        <tgroup cols="3">
-            <colspec colwidth="33">
-            <colspec colwidth="33">
-            <colspec colwidth="33">
-            <thead>
-                <row>
-                    <entry>
-                        <paragraph>
-                            Treat
-                    <entry>
-                        <paragraph>
-                            Quantity
-                    <entry>
-                        <paragraph>
-                            Description
-            <tbody>
-                <row>
-                    <entry>
-                        <paragraph>
-                            Albatr\u00b0\u00df
-                    <entry>
-                        <paragraph>
-                            2.99
-                    <entry>
-                        <paragraph>
-                            \u00a1On a \u03c3\u03c4\u03b9\u03ba!
-                <row>
-                    <entry>
-                        <paragraph>
-                            Crunchy Frog
-                    <entry>
-                        <paragraph>
-                            1.49
-                    <entry>
-                        <paragraph>
-                            If we took the b\u00f6nes out, it wouldn\u2019t be
-                            crunchy, now would it?
-                <row>
-                    <entry>
-                        <paragraph>
-                            Gannet Ripple
-                    <entry>
-                        <paragraph>
-                            1.99
-                    <entry>
-                        <paragraph>
-                            \u00bfOn a \u03c3\u03c4\u03b9\u03ba?
-"""],
-["""\
 .. csv-table:: no CSV data
    :file: %s
 """ % empty_txt,

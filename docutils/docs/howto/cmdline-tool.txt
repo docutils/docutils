@@ -44,7 +44,7 @@ The module docstring describes the purpose of the tool::
     """
 
 This next block attempts to invoke locale support for
-internationalization services, specifically text encoding.  It's not
+internationalization services.  It's not
 supported on all platforms though, so it's forgiving::
 
     try:
