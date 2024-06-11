@@ -81,9 +81,6 @@ Writers
     __ https://www.w3.org/TR/2014/REC-html5-20141028/grouping-content.html
        #the-blockquote-element
 
-  - Change the default value for math_output_ to "MathML"
-    in Docutils 0.22.
-
   - Unitless image_ :width: and :hight: values and dimensions
     read from the image due to a :scale: option will be written as
     "width" and "hight" attributes instead of "style" rules to allow
@@ -199,20 +196,20 @@ Release 0.22b.dev (unpublished)
 
 * Document Tree / Docutils DTD
 
-  - Allow multiple <term> elements in a <definition_list_item__>.
-    (Third-party writers may need adaption.)
-
-  - New method `Element.validate()`: Raise `nodes.ValidationError` if the
-    element does not comply with the `Docutils Document Model`_.
-    Provisional.
+  - Allow multiple <term> elements in a `\<definition_list_item>`__
+    (third-party writers may need adaption).
 
   __ docs/ref/doctree.html#definition-list-item
 
-* Drop short options ``-i`` and ``-o``.
-  Use the long equivalents ``--input-encoding`` and ``--output-encoding``.
-  (See `command line interface`_ for the rationale.)
+* Configuration changes:
 
-* Change the default input encoding from ``None`` (auto-detect) to "utf-8".
+  - Make MathML the default math_output_ for the "html5" writer.
+
+  - Change the default input encoding from ``None`` (auto-detect) to "utf-8".
+
+  - Drop short options ``-i`` and ``-o``.
+    Use the long equivalents ``--input-encoding`` and ``--output-encoding``.
+    (See `command line interface`_ for the rationale.)
 
 * New parser for `Docutils XML`_ (e.g., the output of the "xml" writer).
   Provisional.
@@ -220,6 +217,10 @@ Release 0.22b.dev (unpublished)
   Try ``docutils --parser=xml test/data/multiple-term-definition.xml``
   or use the :parser: option of the `"include" directive`_ to include
   an XML file in a rST document.
+
+* New method `Element.validate()`: Raise `nodes.ValidationError` if the
+  element does not comply with the `Docutils Document Model`_.
+  Provisional.
 
 * Bugfixes and improvements (see HISTORY_).
 
@@ -243,15 +244,8 @@ Release 0.21.2 (2024-04-23)
 Release 0.21.1 (2024-04-10)
 ===========================
 
-The sdist in 0.21 was incomplete
-
-- pypi allows no file replacing
-- adding a postrelease suffix "post1": docutils-0.21.post1.tar.gz
-  works on pypi, but fails with pip because the metadata differs.
-
-  But if the metadata is 0.21.post1 pypi makes it a new release.
-
-  0.21.1 is the same code except for the version number.
+Add missing metadata files to sdist.
+No changes to the code.
 
 
 Release 0.21 (2024-04-09)

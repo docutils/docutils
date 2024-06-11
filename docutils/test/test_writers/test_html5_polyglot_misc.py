@@ -184,11 +184,11 @@ class MathTestCase(unittest.TestCase):
     data = ':math:`42`'
 
     def test_math_output_default(self):
-        # HTML with math.css stylesheet (since 0.11)
+        # default math output is MathML (since 0.22)
         mys = {'_disable_config': True}
-        styles = core.publish_parts(self.data, writer_name='html5_polyglot',
-                                    settings_overrides=mys)['stylesheet']
-        self.assertIn('convert LaTeX equations to HTML output.', styles)
+        fragment = core.publish_parts(self.data, writer_name='html5_polyglot',
+                                      settings_overrides=mys)['fragment']
+        self.assertIn('<mn>42</mn>', fragment)
 
     def test_math_output_mathjax(self):
         # Explicitly specifying math_output=MathJax, case insensitively

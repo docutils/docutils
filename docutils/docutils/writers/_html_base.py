@@ -115,10 +115,9 @@ class Writer(writers.Writer):
           ['--table-style'],
           {'default': ''}),
          ('Math output format (one of "MathML", "HTML", "MathJax", '
-          'or "LaTeX") and option(s). '
-          '(default: "HTML math.css")',
+          'or "LaTeX") and option(s). (default: "MathML")',
           ['--math-output'],
-          {'default': 'HTML math.css',
+          {'default': 'MathML',
            'validator': frontend.validate_math_output}),
          ('Prepend an XML declaration. ',
           ['--xml-declaration'],
@@ -238,7 +237,6 @@ class HTMLTranslator(nodes.NodeVisitor):
     """
 
     doctype = '<!DOCTYPE html>\n'
-    doctype_mathml = doctype
 
     head_prefix_template = ('<html xmlns="http://www.w3.org/1999/xhtml"'
                             ' xml:lang="%(lang)s" lang="%(lang)s">\n<head>\n')
@@ -1363,7 +1361,6 @@ class HTMLTranslator(nodes.NodeVisitor):
             math_code = self.encode(math_code)
         elif format == 'mathml':
             if 'XHTML 1' in self.doctype:
-                self.doctype = self.doctype_mathml
                 self.content_type = self.content_type_mathml
             if self.math_options:
                 converter = getattr(tex2mathml_extern, self.math_options)

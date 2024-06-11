@@ -98,7 +98,7 @@ html5
 :front-end: rst2html5_
 :config: `[html5 writer]`_
 
-The ``html5_polyglot`` writer generates `polyglot HTML`_ [#]_ output, valid
+The ``html5`` writer generates `polyglot HTML`_ output, valid
 XML [#safetext]_ that is compatible with `HTML5`_. New features and elements
 are used if they are widely supported.
 See the `HTML5 test page`_ (and the sources `html5-features.txt`_ and
@@ -114,7 +114,6 @@ sheets`_. [#safetext]_
 
 New in Docutils 0.13
 
-.. [#] see also `Benefits of polyglot XHTML5`_
 .. [#safetext] The validity of raw HTML and custom stylesheets must be
    ensured by the author.
 .. _HTML5 test page: https://docutils.sourceforge.io/test/functional/

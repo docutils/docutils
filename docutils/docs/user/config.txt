@@ -1264,8 +1264,7 @@ LaTeX:
 
   The failsafe fallback.
 
-:Default: "HTML math.css". The default for the HTML5 writer will change
-          to "MathML" in Docutils 0.22.
+:Default: writer dependent (see `[html4css1 writer]`_, `[html5 writer]`_).
 :Option:  ``--math-output``.
 
 .. _MathJax: http://www.mathjax.org/
@@ -1406,6 +1405,7 @@ Writer Specific Defaults
 .. class:: run-in narrow
 
 :`initial_header_level`_:                               1 (for "<h1>").
+:`math_output`_:                                        "HTML math.css".
 :`stylesheet_path <stylesheet_path [html writers]_>`__: "html4css1.css".
 :`xml_declaration <xml_declaration [html writers]_>`__: True.
 
@@ -1449,6 +1449,7 @@ Writer Specific Defaults
 .. class:: run-in narrow
 
 :initial_header_level_:  2 (reserve <h1> for the `document title`_). [#]_
+:`math_output`_:         "MathML" (changed in Docutils 0.22).
 :`stylesheet_path <stylesheet_path [html writers]_>`__:
   "minimal.css, plain.css".
 :`xml_declaration <xml_declaration [html writers]_>`__:  False.

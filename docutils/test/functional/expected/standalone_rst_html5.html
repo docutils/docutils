@@ -16,7 +16,6 @@
 <link rel="schema.dcterms" href="http://purl.org/dc/terms/"/>
 <link rel="stylesheet" href="../input/data/minimal.css" type="text/css" />
 <link rel="stylesheet" href="../input/data/plain.css" type="text/css" />
-<link rel="stylesheet" href="../input/data/math.css" type="text/css" />
 </head>
 <body class="with-toc">
 <header>
@@ -1012,7 +1011,16 @@ by</p>
 
 Inline markup is supported, e.g. <em>emphasis</em>, <strong>strong</strong>, <span class="docutils literal">literal
 text</span>, <sub>sub-</sub> and <sup>super</sup>scripts,
-inline formulas: <span class="formula"><i>A</i> = 2<i>π</i><i>r</i><sup>2</sup></span>,
+inline formulas: <math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>A</mi>
+  <mo>=</mo>
+  <mn>2</mn>
+  <mi>π</mi>
+  <msup>
+    <mi>r</mi>
+    <mn>2</mn>
+  </msup>
+</math>,
 footnotes <a class="brackets" href="#footnote-1" id="footnote-reference-9" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>, <span class="target" id="hyperlink-targets">hyperlink targets</span>, and <a class="reference external" href="http://www.python.org/">references</a>.</pre>
 </section>
 <section id="code">
@@ -1034,7 +1042,14 @@ directly (the code will not be parsed/tagged, as the language is not known)
 or as base for special code roles, e.g. the LaTeX code in the next
 paragraph.</p>
 <p>Docutils uses LaTeX syntax for math directives and roles:
-<code class="tex">\alpha = f(x)</code> prints <span class="formula"><i>α</i> = <i>f</i>(<i>x</i>)</span>.</p>
+<code class="tex">\alpha = f(x)</code> prints <math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>α</mi>
+  <mo>=</mo>
+  <mi>f</mi>
+  <mo stretchy="false">(</mo>
+  <mi>x</mi>
+  <mo stretchy="false">)</mo>
+</math>.</p>
 <p>The <span class="docutils literal">:code:</span> option of the <cite>include</cite> directive sets the included content
 as a code block, here the rst file <span class="docutils literal">header_footer.txt</span> with line numbers:</p>
 <pre class="code rst literal-block"><small class="ln">1 </small><code data-lineno="1 ">.. header:: Document header

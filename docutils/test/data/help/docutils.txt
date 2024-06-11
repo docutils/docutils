@@ -194,8 +194,8 @@ HTML Writer Options
                         right, colwidths-auto, colwidths-grid.
 --math-output=MATH_OUTPUT
                         Math output format (one of "MathML", "HTML",
-                        "MathJax", or "LaTeX") and option(s). (default: "HTML
-                        math.css")
+                        "MathJax", or "LaTeX") and option(s). (default:
+                        "MathML")
 --xml-declaration       Prepend an XML declaration.
 --no-xml-declaration    Omit the XML declaration (default).
 --cloak-email-addresses

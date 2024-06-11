@@ -68,6 +68,12 @@ class Writer(writers._html_base.Writer):
             ['--initial-header-level'],
             {'choices': '1 2 3 4 5 6'.split(), 'default': '1',
              'metavar': '<level>'}),
+        math_output=(
+            'Math output format (one of "MathML", "HTML", "MathJax", or '
+            '"LaTeX") and option(s). (default: "HTML math.css")',
+            ['--math-output'],
+            {'default': 'HTML math.css',
+             'validator': frontend.validate_math_output}),
         xml_declaration=(
             'Prepend an XML declaration (default). ',
             ['--xml-declaration'],

@@ -1498,79 +1498,38 @@ See http://www.math.uiuc.edu/~hildebr/tex/displays.html.
 HTML output
 ```````````
 
-There is no native math support in HTML.
+There is no native math support in HTML4. HTML5 has built-in support for
+MathML. MathML is supported by all major browsers since 2023.
+
 For supported math output variants see the `math-output setting`_.
-Add more/better alternatives?
 
 MathML_
-  Converters from LaTeX to MathML include
+  Additional converters from LaTeX to MathML
 
-  * TtM_ (C), ``--math-output=MathML ttm``, undocumented, may be removed.
-
-    No "matrix", "align" and  "cases" environments.
-
-  * MathToWeb_ (Java)
   * TeX4ht_ (TeX based)
-  * itex_ (also `used in Abiword`__)
-  * `Steve’s LATEX-to-MathML translator`_
-    ('mini-language', javascript, Python)
   * `MathJax for Node`_
 
-  * Write a new converter? E.g. based on:
-
-    * a generic tokenizer (see e.g. a `latex-codec recipe`_,
-      `updated latex-codec`_, )
-    * the Unicode-Char <-> LaTeX mappings database unimathsymbols_
-
-  __ http://msevior.livejournal.com/26377.html
   .. _MathML: https://www.w3.org/TR/MathML2/
-  .. _ttm: http://hutchinson.belmont.ma.us/tth/mml/
   .. _TeX4ht: http://www.tug.org/applications/tex4ht/mn.html
-  .. _MathToWeb:  http://www.mathtoweb.com/
-  .. _itex: http://golem.ph.utexas.edu/~distler/blog/itex2MMLcommands.html
-  .. _Steve’s LATEX-to-MathML translator:
-     http://www.gold-saucer.org/mathml/greasemonkey/dist/display-latex
-  .. _latex-codec recipe:
-     http://code.activestate.com/recipes/252124-latex-codec/
-  .. _updated latex-codec:
-     http://mirror.ctan.org/biblio/bibtex/utils/mab2bib/latex.py
-  .. _unimathsymbols: http://milde.users.sourceforge.net/LUCR/Math/
   .. _MathJax for Node: https://github.com/mathjax/MathJax-node
-
-.. URL seems down:
-   .. _itex: http://pear.math.pitt.edu/mathzilla/itex2mmlItex.html
 
 
 HTML/CSS
   format math in standard HTML enhanced by CSS rules
-  (Overview__, `Examples and experiments`__).
+  (`Examples and experiments`__).
   The ``math-output=html`` option uses the converter from eLyXer_
   (included with Docutils).
 
   Alternatives: LaTeX-math to HTML/CSS converters include
 
-  * TtH_ (C)
   * Hevea_ (Objective Caml)
   * `MathJax for Node`_
   * KaTeX_
 
-  __ http://www.cs.tut.fi/~jkorpela/math/
   __ http://www.zipcon.net/~swhite/docs/math/math.html
   .. _elyxer: http://elyxer.nongnu.org/
-  .. _TtH: ttp://hutchinson.belmont.ma.us/tth/index.html
   .. _Hevea: http://para.inria.fr/~maranget/hevea/
   .. _KaTeX: https://katex.org
-
-images
-  (PNG or SVG) like e.g. Wikipedia.
-
-  * dvisvgm_
-  * the pure-python MathML->SVG converter SVGMath_)
-  * `MathJax for Node`_
-
-  .. _dvisvgm: http://dvisvgm.sourceforge.net/
-  .. _SVGMath: http://www.grigoriev.ru/svgmath/
-
 
 client side JavaScript conversion
   Use TeX notation in the web page and JavaScript in the displaying browser.
