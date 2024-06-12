@@ -127,13 +127,20 @@ for format in extensions.keys():
     outf = f'output/{filename}'
     with open(outf, 'bw') as outfile:
         outfile.write(output)
-        print(f'output written to {outf}')
+        print(f'output written to {outf}', end=": ")
     expf = f'expected/{filename}'
     if os.path.exists(expf):
         d = difflib.unified_diff(open(expf).readlines(), 
                                  open(outf).readlines(),
                                  fromfile=expf, tofile=outf)
-        print("".join(list(d)))
+        dl = list(d)
+        if dl:
+            print("ERROR")
+            print("".join(dl))
+        else:
+            print("OK")
+    else:
+        print(" UNCHECKED")
 
 
 # output = publish_from_doctree(doctree, writer_name='odf')
