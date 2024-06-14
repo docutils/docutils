@@ -2377,15 +2377,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.requirements['~header'] = ''.join(self.out)
         self.pop_output_collector()
 
-    def to_latex_length(self, length_str, pxunit=None):
+    def to_latex_length(self, length_str):
         """Convert `length_str` with rst length to LaTeX length
         """
-        if pxunit is not None:
-            warnings.warn(
-                'The optional argument `pxunit` '
-                'of LaTeXTranslator.to_latex_length() is ignored '
-                'and will be removed in Docutils 0.21 or later',
-                DeprecationWarning, stacklevel=2)
         match = re.match(r'(\d*\.?\d*)\s*(\S*)', length_str)
         if not match:
             return length_str

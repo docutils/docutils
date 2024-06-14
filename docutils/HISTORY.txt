@@ -108,6 +108,11 @@ Release 0.22b.dev (unpublished)
 
   - Removed. Obsolete in Python 3.
 
+* docutils/writers/latex2e/__init__.py
+
+  - Remove optional argument `pxunit` of `LaTeXTranslator.to_latex_length()`
+    (ignored since at least 2012).
+
 * docutils/writers/_html_base.py
 
   - Make MathML the default math_output_.
