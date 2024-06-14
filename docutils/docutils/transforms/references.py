@@ -159,23 +159,23 @@ class IndirectHyperlinks(Transform):
     a) Indirect external references::
 
            <paragraph>
-               <reference refname="indirect external">
+               <reference refname="indirect-external">
                    indirect external
-           <target id="id1" name="direct external"
+           <target ids="id1" names="direct-external"
                refuri="http://indirect">
-           <target id="id2" name="indirect external"
-               refname="direct external">
+           <target ids="id2" names="indirect-external"
+               refname="direct-external">
 
        The "refuri" attribute is migrated back to all indirect targets
        from the final direct target (i.e. a target not referring to
        another indirect target)::
 
            <paragraph>
-               <reference refname="indirect external">
+               <reference refname="indirect-external">
                    indirect external
-           <target id="id1" name="direct external"
+           <target ids="id1" names="direct-external"
                refuri="http://indirect">
-           <target id="id2" name="indirect external"
+           <target ids="id2" names="indirect-external"
                refuri="http://indirect">
 
        Once the attribute is migrated, the preexisting "refname" attribute
@@ -183,26 +183,26 @@ class IndirectHyperlinks(Transform):
 
     b) Indirect internal references::
 
-           <target id="id1" name="final target">
+           <target ids="id1" names="final-target">
            <paragraph>
-               <reference refname="indirect internal">
+               <reference refname="indirect-internal">
                    indirect internal
-           <target id="id2" name="indirect internal 2"
+           <target ids="id2" names="indirect-internal-2"
                refname="final target">
-           <target id="id3" name="indirect internal"
-               refname="indirect internal 2">
+           <target ids="id3" names="indirect-internal"
+               refname="indirect-internal-2">
 
        Targets which indirectly refer to an internal target become one-hop
        indirect (their "refid" attributes are directly set to the internal
        target's "id"). References which indirectly refer to an internal
        target become direct internal references::
 
-           <target id="id1" name="final target">
+           <target ids="id1" names="final-target">
            <paragraph>
                <reference refid="id1">
                    indirect internal
-           <target id="id2" name="indirect internal 2" refid="id1">
-           <target id="id3" name="indirect internal" refid="id1">
+           <target ids="id2" names="indirect-internal-2" refid="id1">
+           <target ids="id3" names="indirect-internal" refid="id1">
     """
 
     default_priority = 460
@@ -336,16 +336,16 @@ class ExternalTargets(Transform):
     Given::
 
         <paragraph>
-            <reference refname="direct external">
+            <reference refname="direct-external">
                 direct external
-        <target id="id1" name="direct external" refuri="http://direct">
+        <target ids="id1" names="direct-external" refuri="http://direct">
 
     The "refname" attribute is replaced by the direct "refuri" attribute::
 
         <paragraph>
             <reference refuri="http://direct">
                 direct external
-        <target id="id1" name="direct external" refuri="http://direct">
+        <target ids="id1" names="direct-external" refuri="http://direct">
     """
 
     default_priority = 640
@@ -380,9 +380,9 @@ class InternalTargets(Transform):
         Given::
 
             <paragraph>
-                <reference refname="direct internal">
+                <reference refname="direct-internal">
                     direct internal
-            <target id="id1" name="direct internal">
+            <target ids="id1" names="direct-internal">
 
         The "refname" attribute is replaced by "refid" linking to the target's
         "id"::
@@ -390,7 +390,7 @@ class InternalTargets(Transform):
             <paragraph>
                 <reference refid="id1">
                     direct internal
-            <target id="id1" name="direct internal">
+            <target ids="id1" names="direct-internal">
         """
         for name in target['names']:
             refid = self.document.nameids.get(name)
@@ -417,14 +417,14 @@ class Footnotes(Transform):
         <document>
             <paragraph>
                 A labeled autonumbered footnote reference:
-                <footnote_reference auto="1" id="id1" refname="footnote">
+                <footnote_reference auto="1" ids="id1" refname="footnote">
             <paragraph>
                 An unlabeled autonumbered footnote reference:
-                <footnote_reference auto="1" id="id2">
-            <footnote auto="1" id="id3">
+                <footnote_reference auto="1" ids="id2">
+            <footnote auto="1" ids="id3">
                 <paragraph>
                     Unlabeled autonumbered footnote.
-            <footnote auto="1" id="footnote" name="footnote">
+            <footnote auto="1" ids="footnote" names="footnote">
                 <paragraph>
                     Labeled autonumbered footnote.
 
@@ -439,18 +439,18 @@ class Footnotes(Transform):
         <document>
             <paragraph>
                 A labeled autonumbered footnote reference:
-                <footnote_reference auto="1" id="id1" refid="footnote">
+                <footnote_reference auto="1" ids="id1" refid="footnote">
                     2
             <paragraph>
                 An unlabeled autonumbered footnote reference:
-                <footnote_reference auto="1" id="id2" refid="id3">
+                <footnote_reference auto="1" ids="id2" refid="id3">
                     1
-            <footnote auto="1" id="id3" backrefs="id2">
+            <footnote auto="1" ids="id3" backrefs="id2">
                 <label>
                     1
                 <paragraph>
                     Unlabeled autonumbered footnote.
-            <footnote auto="1" id="footnote" name="footnote" backrefs="id1">
+            <footnote auto="1" ids="footnote" names="footnote" backrefs="id1">
                 <label>
                     2
                 <paragraph>
@@ -641,7 +641,7 @@ class Substitutions(Transform):
                 <substitution_reference refname="biohazard">
                     biohazard
                  symbol is deservedly scary-looking.
-            <substitution_definition name="biohazard">
+            <substitution_definition names="biohazard">
                 <image alt="biohazard" uri="biohazard.png">
 
     The ``substitution_reference`` will simply be replaced by the
@@ -654,7 +654,7 @@ class Substitutions(Transform):
                 The
                 <image alt="biohazard" uri="biohazard.png">
                  symbol is deservedly scary-looking.
-            <substitution_definition name="biohazard">
+            <substitution_definition names="biohazard">
                 <image alt="biohazard" uri="biohazard.png">
     """
 
