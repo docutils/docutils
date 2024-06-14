@@ -118,13 +118,6 @@ Writers
 
     .. _reference-label: docs/user/config.html#reference-label
 
-* "null" writer: output will change to the empty string
-  in Docutils 0.22.
-
-* "manpage" writer:
-
-  - No more changing case in to uppercase, leave it to the source.
-
 Misc
 ----
 
@@ -211,6 +204,16 @@ Configuration changes
   - Drop short options ``-i`` and ``-o``.
     Use the long equivalents ``--input-encoding`` and ``--output-encoding``.
     (See `command line interface`_ for the rationale.)
+
+Output changes
+  "manpage" writer:
+     Don't UPPERCASE section headings.
+
+  "null" writer:
+     output changed from None to the empty string.
+
+     `publish_string()` now returns a `bytes` or `str` instance
+     for all writers (as documented).
 
 New objects
   `parsers.docutils_xml`

@@ -108,10 +108,10 @@ Release 0.22b.dev (unpublished)
 
   - Removed. Obsolete in Python 3.
 
-* docutils/writers/latex2e/__init__.py
+* docutils/writers/docutils-xml.py
 
-  - Remove optional argument `pxunit` of `LaTeXTranslator.to_latex_length()`
-    (ignored since at least 2012).
+  - Do not increase indentation of follow-up lines inside inline elements.
+    when formatting with `indents`_.
 
 * docutils/writers/_html_base.py
 
@@ -121,6 +121,11 @@ Release 0.22b.dev (unpublished)
 
   - Keep default math_output_ value "HTML math.css".
 
+* docutils/writers/latex2e/__init__.py
+
+  - Remove optional argument `pxunit` of `LaTeXTranslator.to_latex_length()`
+    (ignored since at least 2012).
+
 * docutils/writers/manpage.py
 
   - Remove code for unused emdash bullets.
@@ -128,10 +133,9 @@ Release 0.22b.dev (unpublished)
     docutils version in header
   - Stop converting text to full capitals (bug #481).
 
-* docutils/writers/docutils-xml.py
+* docutils/writers/null.py
 
-  - Do not increase indentation of follow-up lines inside inline elements.
-    when formatting with `indents`_.
+  - `null.Writer.translate()` sets `self.output` to the empty string.
 
 * tools/rst2odt_prepstyles.py
 
