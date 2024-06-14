@@ -249,8 +249,8 @@ class CSVTable(Table):
 
         def __init__(self):
             warnings.warn('CSVTable.HeaderDialect will be removed '
-                          'in Docutils 0.22.',
-                          PendingDeprecationWarning, stacklevel=2)
+                          'in Docutils 1.0',
+                          DeprecationWarning, stacklevel=2)
             super().__init__()
 
     @staticmethod

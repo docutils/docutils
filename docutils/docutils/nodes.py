@@ -306,7 +306,7 @@ class Node:
         """
         # traverse() may be eventually removed:
         warnings.warn('nodes.Node.traverse() is obsoleted by Node.findall().',
-                      PendingDeprecationWarning, stacklevel=2)
+                      DeprecationWarning, stacklevel=2)
         return list(self.findall(condition, include_self, descend,
                                  siblings, ascend))
 
