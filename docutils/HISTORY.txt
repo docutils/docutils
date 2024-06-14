@@ -87,6 +87,10 @@ Release 0.22b.dev (unpublished)
     follows a <meta> or <decoration> element as this is invalid
     according to ``docutils.dtd``.
 
+* docutils/transforms/writer_aux.py
+
+  - Removed `Compound` class.
+
 * docutils/transforms/references.py
 
   - Make `AnonymousHyperlinks` transform idempotent.

@@ -228,17 +228,19 @@ Release 0.22b.dev (unpublished)
 * Removed objects:
 
   `docutils.core.Publisher.setup_option_parser()`
-    internal, obsolete
+     internal, obsolete
   `docutils.nodes.Element.set_class()`
      Obsolete. Append to Element['classes'] directly.
-  `docutils.utils.error_reporting`
-     Obsolete in Python 3
-  `docutils.utils.Reporter.set_conditions()`
-     Obsolete. Set attributes via configuration settings or directly.
   `docutils.parsers.rst.directives.tables.CSVTable.decode_from_csv()`
      not required with Python 3
   `docutils.parsers.rst.directives.tables.CSVTable.encode_from_csv()`
      not required with Python 3
+  `docutils.transforms.writer_aux.Compound`
+     not used since Dec 2010
+  `docutils.utils.error_reporting`
+     obsolete in Python 3
+  `docutils.utils.Reporter.set_conditions()`
+     Obsolete. Set attributes via configuration settings or directly.
 
 * Removed files:
 

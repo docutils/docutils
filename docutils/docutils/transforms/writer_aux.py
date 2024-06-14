@@ -14,51 +14,8 @@ conflicting imports like this one::
 
 __docformat__ = 'reStructuredText'
 
-import warnings
-
 from docutils import nodes, languages
 from docutils.transforms import Transform
-
-
-class Compound(Transform):
-
-    """
-    .. warning:: This transform is not used by Docutils since Dec 2010
-                 and will be removed in Docutils 0.21 or later.
-
-    Flatten all compound paragraphs.  For example, transform ::
-
-        <compound>
-            <paragraph>
-            <literal_block>
-            <paragraph>
-
-    into ::
-
-        <paragraph>
-        <literal_block classes="continued">
-        <paragraph classes="continued">
-    """
-
-    default_priority = 910
-
-    def __init__(self, document, startnode=None):
-        warnings.warn('docutils.transforms.writer_aux.Compound is deprecated'
-                      ' and will be removed in Docutils 0.21 or later.',
-                      DeprecationWarning, stacklevel=2)
-        super().__init__(document, startnode)
-
-    def apply(self):
-        for compound in self.document.findall(nodes.compound):
-            first_child = True
-            for child in compound:
-                if first_child:
-                    if not isinstance(child, nodes.Invisible):
-                        first_child = False
-                else:
-                    child['classes'].append('continued')
-            # Substitute children for compound.
-            compound.replace_self(compound[:])
 
 
 class Admonitions(Transform):
