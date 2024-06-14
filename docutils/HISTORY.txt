@@ -67,6 +67,11 @@ Release 0.22b.dev (unpublished)
     "include" directive is used with :parser: option.
     Enables system messages with correct source/line indication.
 
+* docutils/parsers/rst/directives/tables.py
+
+  - Removed `CSVTable.decode_from_csv()` and `CSVTable.encode_from_csv()`.
+    Not required with Python 3.
+
 * docutils/transforms/frontmatter.py
 
   - Update `DocInfo` to work with corrected element categories.
