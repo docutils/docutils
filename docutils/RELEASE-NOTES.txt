@@ -228,6 +228,8 @@ Release 0.22b.dev (unpublished)
      Obsolete. Append to Element['classes'] directly.
   `docutils.utils.error_reporting`
      Obsolete in Python 3
+  `docutils.utils.Reporter.set_conditions()`
+     Obsolete. Set attributes via configuration settings or directly.
 
 * Removed files:
 

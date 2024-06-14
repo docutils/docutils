@@ -126,19 +126,6 @@ class Reporter:
         self.max_level = -1
         """The highest level system message generated so far."""
 
-    def set_conditions(self, category, report_level, halt_level,
-                       stream=None, debug=False):
-        warnings.warn('docutils.utils.Reporter.set_conditions() deprecated; '
-                      'Will be removed in Docutils 0.21 or later. '
-                      'Set attributes via configuration settings or directly.',
-                      DeprecationWarning, stacklevel=2)
-        self.report_level = report_level
-        self.halt_level = halt_level
-        if not isinstance(stream, io.ErrorOutput):
-            stream = io.ErrorOutput(stream, self.encoding, self.error_handler)
-        self.stream = stream
-        self.debug_flag = debug
-
     def attach_observer(self, observer):
         """
         The `observer` parameter is a function or bound method which takes one

@@ -373,12 +373,6 @@ class HelperFunctionsTests(unittest.TestCase):
         for v, result in tests:
             self.assertEqual(frontend.validate_smartquotes_locales(v), result)
 
-    def test_set_conditions_deprecation_warning(self):
-        reporter = utils.Reporter('test', 1, 4)
-        with self.assertWarnsRegex(DeprecationWarning,
-                                   'Set attributes via configuration '):
-            reporter.set_conditions('foo', 1, 4)  # trigger warning
-
 
 if __name__ == '__main__':
     unittest.main()
