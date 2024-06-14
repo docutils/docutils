@@ -103,32 +103,27 @@ class Publisher:
         if self.writer is None:
             self.set_writer(writer_name)
 
-    def setup_option_parser(self, usage=None, description=None,
-                            settings_spec=None, config_section=None,
-                            **defaults):
-        warnings.warn('Publisher.setup_option_parser is deprecated, '
-                      'and will be removed in Docutils 0.21.',
-                      DeprecationWarning, stacklevel=2)
-        if config_section:
-            if not settings_spec:
-                settings_spec = SettingsSpec()
-            settings_spec.config_section = config_section
-            parts = config_section.split()
-            if len(parts) > 1 and parts[-1] == 'application':
-                settings_spec.config_section_dependencies = ['applications']
-        # @@@ Add self.source & self.destination to components in future?
-        return OptionParser(
-            components=(self.parser, self.reader, self.writer, settings_spec),
-            defaults=defaults, read_config_files=True,
-            usage=usage, description=description)
-
-    def _setup_settings_parser(self, *args, **kwargs):
+    def _setup_settings_parser(self, usage=None, description=None,
+                               settings_spec=None, config_section=None,
+                               **defaults):
         # Provisional: will change (docutils.frontend.OptionParser will
         # be replaced by a parser based on arparse.ArgumentParser)
         # and may be removed later.
         with warnings.catch_warnings():
             warnings.filterwarnings('ignore', category=DeprecationWarning)
-            return self.setup_option_parser(*args, **kwargs)
+            if config_section:
+                if not settings_spec:
+                    settings_spec = SettingsSpec()
+                settings_spec.config_section = config_section
+                parts = config_section.split()
+                if len(parts) > 1 and parts[-1] == 'application':
+                    settings_spec.config_section_dependencies = ['applications']  # noqa: E501
+            # @@@ Add self.source & self.destination to components in future?
+            return OptionParser(
+                components=(self.parser, self.reader, self.writer,
+                            settings_spec),
+                defaults=defaults, read_config_files=True,
+                usage=usage, description=description)
 
     def get_settings(self, usage=None, description=None,
                      settings_spec=None, config_section=None, **defaults):

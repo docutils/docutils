@@ -27,6 +27,10 @@ Release 0.22b.dev (unpublished)
   - Allow multiple <term> elements in a <definition_list_item>.
     Fixes feature-request #60
 
+* docutils/core.py
+
+  - Removed `Publisher.setup_option_parser()` (internal, obsolete).
+
 * docutils/frontend.py
 
   - Drop short options ``-i`` and ``-o`` for ``--input-encoding``

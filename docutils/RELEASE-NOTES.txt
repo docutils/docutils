@@ -224,6 +224,8 @@ Release 0.22b.dev (unpublished)
 
 * Removed objects:
 
+  `docutils.core.Publisher.setup_option_parser()`
+    internal, obsolete
   `docutils.nodes.Element.set_class()`
      Obsolete. Append to Element['classes'] directly.
   `docutils.utils.error_reporting`
@@ -335,8 +337,6 @@ Release 0.21 (2024-04-09)
     Python 2 compatibility hacks
   `docutils.utils.Reporter.set_conditions()`
     obsolete
-  `docutils.core.Publisher.setup_option_parser()`
-    internal, obsolete
 
 * New files:
 
