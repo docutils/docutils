@@ -50,6 +50,11 @@ class ParseElementTestCase(unittest.TestCase):
         node = docutils_xml.parse_element(xml, self.document)
         self.assertEqual('<strong>text</strong>', str(node))
 
+    def test_nothing_but_junk_text(self):
+        xml = 'just text'
+        node = docutils_xml.parse_element(xml, self.document)
+        self.assertEqual(node.astext(), 'No XML element found.')
+
     def test_nonexistent_element_type(self):
         xml = '<tip><p>some text</p></tip>'
         node = docutils_xml.parse_element(xml, self.document)

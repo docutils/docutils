@@ -204,6 +204,15 @@ totest['invalid'] = [
         A paragraph.
     spurious tailing text
 """],
+["""\
+just spurious text
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        <problematic>
+            No XML element found.
+"""],
 ]
 
 

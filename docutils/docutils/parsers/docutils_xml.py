@@ -116,7 +116,9 @@ def element2node(element, document=None, unindent=True):
         document = utils.new_document('xml input',
                                       frontend.get_default_settings(Parser))
         document.source == 'xml input'
-
+    if element is None:
+        problem = nodes.problematic('', 'No XML element found.')
+        return nodes.paragraph('', '', problem)
     # Get the corresponding `nodes.Element` instance:
     try:
         nodeclass = getattr(nodes, element.tag)
