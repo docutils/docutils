@@ -143,12 +143,12 @@ class PublisherTests(unittest.TestCase):
 
         TODO: return `str` with document as "flat XML" (.fodt).
         """
-        settings = dict(self.settings)
-        settings['output_encoding'] = 'unicode'
-        with self.assertRaises(AssertionError) as cm:
+        settings = self.settings | {'output_encoding': 'unicode',
+                                    'warning_stream': ''}
+        with self.assertRaisesRegex(docutils.utils.SystemMessage,
+                                    'The ODT writer returns `bytes` '):
             core.publish_string('test', writer_name='odt',
                                 settings_overrides=settings)
-        self.assertIn('`data` is no `str` instance', str(cm.exception))
 
 
 class PublishDoctreeTestCase(unittest.TestCase, docutils.SettingsSpec):

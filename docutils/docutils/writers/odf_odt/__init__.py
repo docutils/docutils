@@ -837,6 +837,10 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         # nodes.SparseNodeVisitor.__init__(self, document)
         nodes.GenericNodeVisitor.__init__(self, document)
         self.settings = document.settings
+        if self.settings.output_encoding == 'unicode':
+            self.document.reporter.severe('The ODT writer returns `bytes` '
+                                          'that cannot be decoded to `str`')
+            # TODO: return document as "flat" XML?
         self.language_code = self.settings.language_code
         self.language = languages.get_language(
             self.language_code,
