@@ -222,6 +222,11 @@ Release 0.22b.dev (unpublished)
   element does not comply with the `Docutils Document Model`_.
   Provisional.
 
+* Removed objects:
+
+  `docutils.nodes.Element.set_class()`
+     Obsolete. Append to Element['classes'] directly.
+
 * Bugfixes and improvements (see HISTORY_).
 
 .. _Docutils Document Model:

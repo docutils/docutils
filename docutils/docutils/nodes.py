@@ -1076,15 +1076,6 @@ class Element(Node):
         copy.extend([child.deepcopy() for child in self.children])
         return copy
 
-    def set_class(self, name):
-        """Add a new class to the "classes" attribute."""
-        warnings.warn('docutils.nodes.Element.set_class() is deprecated; '
-                      ' and will be removed in Docutils 0.21 or later.'
-                      "Append to Element['classes'] list attribute directly",
-                      DeprecationWarning, stacklevel=2)
-        assert ' ' not in name
-        self['classes'].append(name.lower())
-
     def note_referenced_by(self, name=None, id=None):
         """Note that this Element has been referenced by its name
         `name` or id `id`."""
@@ -1460,8 +1451,8 @@ class docinfo(SubStructural, Element):
 class decoration(PreBibliographic, SubStructural, Element):
     """Container for `header` and `footer`."""
     content_model = (  # (header?, footer?)
-                     (header, '?'),
-                     (footer, '?'))  # TODO: empty element does not make sense.
+                     (header, '?'),  # Empty element does not make sense,
+                     (footer, '?'))  # but is simpler to define.
 
     def get_header(self):
         if not len(self.children) or not isinstance(self.children[0], header):

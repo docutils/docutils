@@ -464,11 +464,6 @@ class ElementTests(unittest.TestCase):
         self.assertEqual(child4['ids'], ['child4'])
         self.assertEqual(len(parent), 5)
 
-    def test_set_class_deprecation_warning(self):
-        node = nodes.Element('test node')
-        with self.assertWarns(DeprecationWarning):
-            node.set_class('parrot')
-
 
 class ElementValidationTests(unittest.TestCase):
 
