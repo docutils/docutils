@@ -72,6 +72,11 @@ Release 0.22b.dev (unpublished)
   - Removed `CSVTable.decode_from_csv()` and `CSVTable.encode_from_csv()`.
     Not required with Python 3.
 
+* docutils/parsers/rst/roles.py
+
+  - Renamed `normalized_role_options()` to `normalized_role_options()`
+    (it is now also used for directive options).
+
 * docutils/transforms/frontmatter.py
 
   - Update `DocInfo` to work with corrected element categories.
@@ -3639,11 +3644,11 @@ Specific:
 * docutils/languages/sk.py: Added to project; Slovak mappings by
   Miroslav Vasko.
 
-* docutils/parser/__init__.py:
+* docutils/parsers/__init__.py:
 
   - Added ``Parser.finish_parse()`` method.
 
-* docutils/parser/rst/__init__.py:
+* docutils/parsers/rst/__init__.py:
 
   - Added options: ``--pep-references``, ``--rfc-references``,
     ``--tab-width``, ``--trim-footnote-reference-space``.

@@ -140,6 +140,9 @@ Misc
 
 * Remove the input encoding auto-detection code in Docutils 1.0.
 
+* Remove `parsers.rst.roles.set_classes()` and
+  `parsers.rst.roles.normalized_role_options()` in Docutils 1.0.
+
 * Remove the "rawsource" argument from `nodes.Text.__init__()`
   in Docutils 2.0.
 

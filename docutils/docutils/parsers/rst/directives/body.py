@@ -14,7 +14,7 @@ __docformat__ = 'reStructuredText'
 from docutils import nodes
 from docutils.parsers.rst import Directive
 from docutils.parsers.rst import directives
-from docutils.parsers.rst.roles import set_classes
+from docutils.parsers.rst.roles import normalize_options
 from docutils.utils.code_analyzer import Lexer, LexerError, NumberLines
 
 
@@ -116,11 +116,11 @@ class ParsedLiteral(Directive):
     has_content = True
 
     def run(self):
-        set_classes(self.options)
+        options = normalize_options(self.options)
         self.assert_has_content()
         text = '\n'.join(self.content)
         text_nodes, messages = self.state.inline_text(text, self.lineno)
-        node = nodes.literal_block(text, '', *text_nodes, **self.options)
+        node = nodes.literal_block(text, '', *text_nodes, **options)
         node.line = self.content_offset + 1
         self.add_name(node)
         return [node] + messages
@@ -147,12 +147,12 @@ class CodeBlock(Directive):
             language = self.arguments[0]
         else:
             language = ''
-        set_classes(self.options)
+        options = normalize_options(self.options)
         classes = ['code']
         if language:
             classes.append(language)
-        if 'classes' in self.options:
-            classes.extend(self.options['classes'])
+        if 'classes' in options:
+            classes.extend(options['classes'])
 
         # set up lexical analyzer
         try:
@@ -165,10 +165,10 @@ class CodeBlock(Directive):
             else:
                 raise self.warning(error)
 
-        if 'number-lines' in self.options:
+        if 'number-lines' in options:
             # optional argument `startline`, defaults to 1
             try:
-                startline = int(self.options['number-lines'] or 1)
+                startline = int(options['number-lines'] or 1)
             except ValueError:
                 raise self.error(':number-lines: with non-integer start value')
             endline = startline + len(self.content)
@@ -178,8 +178,8 @@ class CodeBlock(Directive):
         node = nodes.literal_block('\n'.join(self.content), classes=classes)
         self.add_name(node)
         # if called from "include", set the source
-        if 'source' in self.options:
-            node.attributes['source'] = self.options['source']
+        if 'source' in options:
+            node.attributes['source'] = options['source']
         # analyze content and add nodes for every token
         for classes, value in tokens:
             if classes:
@@ -201,7 +201,7 @@ class MathBlock(Directive):
     has_content = True
 
     def run(self):
-        set_classes(self.options)
+        options = normalize_options(self.options)
         self.assert_has_content()
         # join lines, separate blocks
         content = '\n'.join(self.content).split('\n\n')
@@ -209,7 +209,7 @@ class MathBlock(Directive):
         for block in content:
             if not block:
                 continue
-            node = nodes.math_block(self.block_text, block, **self.options)
+            node = nodes.math_block(self.block_text, block, **options)
             (node.source,
              node.line) = self.state_machine.get_source_and_line(self.lineno)
             self.add_name(node)
@@ -226,10 +226,10 @@ class Rubric(Directive):
                    'name': directives.unchanged}
 
     def run(self):
-        set_classes(self.options)
+        options = normalize_options(self.options)
         rubric_text = self.arguments[0]
         textnodes, messages = self.state.inline_text(rubric_text, self.lineno)
-        rubric = nodes.rubric(rubric_text, '', *textnodes, **self.options)
+        rubric = nodes.rubric(rubric_text, '', *textnodes, **options)
         self.add_name(rubric)
         return [rubric] + messages
 

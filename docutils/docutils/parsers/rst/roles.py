@@ -76,6 +76,7 @@ Interpreted role functions return a tuple of two values:
 
 __docformat__ = 'reStructuredText'
 
+import warnings
 
 from docutils import nodes
 from docutils.parsers.rst import directives
@@ -207,7 +208,7 @@ class GenericRole:
 
     def __call__(self, role, rawtext, text, lineno, inliner,
                  options=None, content=None):
-        options = normalized_role_options(options)
+        options = normalize_options(options)
         return [self.node_class(rawtext, text, **options)], []
 
 
@@ -224,7 +225,7 @@ class CustomRole:
 
     def __call__(self, role, rawtext, text, lineno, inliner,
                  options=None, content=None):
-        opts = normalized_role_options(self.supplied_options)
+        opts = normalize_options(self.supplied_options)
         try:
             opts.update(options)
         except TypeError:  # options may be ``None``
@@ -243,7 +244,7 @@ def generic_custom_role(role, rawtext, text, lineno, inliner,
     """Base for custom roles if no other base role is specified."""
     # Once nested inline markup is implemented, this and other methods should
     # recursively call inliner.nested_parse().
-    options = normalized_role_options(options)
+    options = normalize_options(options)
     return [nodes.inline(rawtext, text, **options)], []
 
 
@@ -266,7 +267,7 @@ register_generic_role('title-reference', nodes.title_reference)
 
 def pep_reference_role(role, rawtext, text, lineno, inliner,
                        options=None, content=None):
-    options = normalized_role_options(options)
+    options = normalize_options(options)
     try:
         pepnum = int(nodes.unescape(text))
         if pepnum < 0 or pepnum > 9999:
@@ -288,7 +289,7 @@ register_canonical_role('pep-reference', pep_reference_role)
 
 def rfc_reference_role(role, rawtext, text, lineno, inliner,
                        options=None, content=None):
-    options = normalized_role_options(options)
+    options = normalize_options(options)
     if "#" in text:
         rfcnum, section = nodes.unescape(text).split("#", 1)
     else:
@@ -315,7 +316,7 @@ register_canonical_role('rfc-reference', rfc_reference_role)
 
 
 def raw_role(role, rawtext, text, lineno, inliner, options=None, content=None):
-    options = normalized_role_options(options)
+    options = normalize_options(options)
     if not inliner.document.settings.raw_enabled:
         msg = inliner.reporter.warning('raw (and derived) roles disabled')
         prb = inliner.problematic(rawtext, rawtext, msg)
@@ -340,7 +341,7 @@ register_canonical_role('raw', raw_role)
 
 def code_role(role, rawtext, text, lineno, inliner,
               options=None, content=None):
-    options = normalized_role_options(options)
+    options = normalize_options(options)
     language = options.get('language', '')
     classes = ['code']
     if 'classes' in options:
@@ -375,7 +376,7 @@ register_canonical_role('code', code_role)
 
 def math_role(role, rawtext, text, lineno, inliner,
               options=None, content=None):
-    options = normalized_role_options(options)
+    options = normalize_options(options)
     text = nodes.unescape(text, True)  # raw text without inline role markup
     node = nodes.math(rawtext, text, **options)
     return [node], []
@@ -411,11 +412,10 @@ register_canonical_role('restructuredtext-unimplemented-role',
 
 
 def set_classes(options):
-    """Deprecated. Obsoleted by ``normalized_role_options()``."""
-    # TODO: Change use in directives.py and uncomment.
-    # warnings.warn('The auxiliary function roles.set_classes() is obsoleted'
-    #     ' by roles.normalized_role_options() and will be removed'
-    #     ' in Docutils 0.21 or later', DeprecationWarning, stacklevel=2)
+    """Deprecated. Obsoleted by ``normalize_options()``."""
+    warnings.warn('The auxiliary function roles.set_classes() is obsoleted'
+                  ' by roles.normalize_options() and will be removed'
+                  ' in Docutils 1.0', DeprecationWarning, stacklevel=2)
     if options and 'class' in options:
         assert 'classes' not in options
         options['classes'] = options['class']
@@ -423,17 +423,24 @@ def set_classes(options):
 
 
 def normalized_role_options(options):
+    warnings.warn('The auxiliary function roles.normalized_role_options() is '
+                  'obsoleted by roles.normalize_options() and will be removed'
+                  ' in Docutils 1.0', DeprecationWarning, stacklevel=2)
+    return normalize_options(options)
+
+
+def normalize_options(options):
     """
-    Return normalized dictionary of role options.
+    Return normalized dictionary of role/directive options.
 
     * ``None`` is replaced by an empty dictionary.
     * The key 'class' is renamed to 'classes'.
     """
     if options is None:
         return {}
-    result = options.copy()
-    if 'class' in result:
-        assert 'classes' not in result
-        result['classes'] = result['class']
-        del result['class']
-    return result
+    n_options = options.copy()
+    if 'class' in n_options:
+        assert 'classes' not in n_options
+        n_options['classes'] = n_options['class']
+        del n_options['class']
+    return n_options

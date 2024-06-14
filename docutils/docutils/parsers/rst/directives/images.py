@@ -24,7 +24,7 @@ from docutils import nodes
 from docutils.nodes import fully_normalize_name, whitespace_normalize_name
 from docutils.parsers.rst import Directive
 from docutils.parsers.rst import directives, states
-from docutils.parsers.rst.roles import set_classes
+from docutils.parsers.rst.roles import normalize_options
 
 
 class Image(Directive):
@@ -95,8 +95,8 @@ class Image(Directive):
             else:                           # malformed target
                 messages.append(data)       # data is a system message
             del self.options['target']
-        set_classes(self.options)
-        image_node = nodes.image(self.block_text, **self.options)
+        options = normalize_options(self.options)
+        image_node = nodes.image(self.block_text, **options)
         (image_node.source,
          image_node.line) = self.state_machine.get_source_and_line(self.lineno)
         self.add_name(image_node)
