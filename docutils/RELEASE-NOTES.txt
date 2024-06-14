@@ -197,15 +197,13 @@ Misc
 Release 0.22b.dev (unpublished)
 ===============================
 
-* Document Tree / Docutils DTD
-
+Document Tree / Docutils DTD
   - Allow multiple <term> elements in a `\<definition_list_item>`__
     (third-party writers may need adaption).
 
   __ docs/ref/doctree.html#definition-list-item
 
-* Configuration changes:
-
+Configuration changes
   - Make MathML the default math_output_ for the "html5" writer.
 
   - Change the default input encoding from ``None`` (auto-detect) to "utf-8".
@@ -214,19 +212,21 @@ Release 0.22b.dev (unpublished)
     Use the long equivalents ``--input-encoding`` and ``--output-encoding``.
     (See `command line interface`_ for the rationale.)
 
-* New parser for `Docutils XML`_ (e.g., the output of the "xml" writer).
-  Provisional.
+New objects
+  `parsers.docutils_xml`
+     parser for `Docutils XML`_ (e.g., the output of the "xml" writer).
+     Provisional.
 
-  Try ``docutils --parser=xml test/data/multiple-term-definition.xml``
-  or use the :parser: option of the `"include" directive`_ to include
-  an XML file in a rST document.
+     Try ``docutils --parser=xml test/data/multiple-term-definitions.xml``
+     or use the :parser: option of the `"include" directive`_ to include
+     an XML file in a rST document.
 
-* New method `Element.validate()`: Raise `nodes.ValidationError` if the
-  element does not comply with the `Docutils Document Model`_.
-  Provisional.
+  `nodes.Element.validate()`
+     Raise `nodes.ValidationError` if the element does not comply with
+     the `Docutils Document Model`_.
+     Provisional.
 
-* Removed objects:
-
+Removed objects
   `docutils.core.Publisher.setup_option_parser()`
      internal, obsolete
   `docutils.nodes.Element.set_class()`
@@ -242,12 +242,11 @@ Release 0.22b.dev (unpublished)
   `docutils.utils.Reporter.set_conditions()`
      Obsolete. Set attributes via configuration settings or directly.
 
-* Removed files:
-
+Removed files
   ``tools/rst2odt_prepstyles.py``
      Obsoleted by `docutils.writers.odf_odt.prepstyles`.
 
-* Bugfixes and improvements (see HISTORY_).
+Bugfixes and improvements (see HISTORY_).
 
 .. _Docutils Document Model:
 .. _Docutils XML: docs/ref/doctree.html
