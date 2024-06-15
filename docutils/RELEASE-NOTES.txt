@@ -121,6 +121,9 @@ Writers
 Misc
 ----
 
+* Remove `io.BinaryFileOutput` and `core.publish_cmdline_to_binary()`
+  in Docutils 0.24.
+
 * Remove `parsers.rst.directives.CSVTable.HeaderDialect`
   in Docutils 1.0.
 

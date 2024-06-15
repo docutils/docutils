@@ -595,7 +595,13 @@ def publish_cmdline_to_binary(reader=None, reader_name='standalone',
       line.
     - `description`: Program description, output for the "--help" option
       (along with command-line option descriptions).
+
+    Deprecated. Use `publish_cmdline()` (works with `bytes` since
+    Docutils 0.20). Will be removed in Docutils 0.24.
     """
+    warnings.warn('"publish_cmdline_to_binary()" is obsoleted'
+                  ' by "publish_cmdline()" and will be removed'
+                  ' in Docutils 0.24.', DeprecationWarning, stacklevel=2)
     publisher = Publisher(reader, parser, writer, settings=settings,
                           destination_class=destination_class)
     publisher.set_components(reader_name, parser_name, writer_name)

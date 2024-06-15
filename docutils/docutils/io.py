@@ -554,10 +554,18 @@ class FileOutput(Output):
 class BinaryFileOutput(FileOutput):
     """
     A version of docutils.io.FileOutput which writes to a binary file.
+
+    Deprecated. Use `FileOutput` (works with `bytes` since Docutils 0.20).
+    Will be removed in Docutils 0.24.
     """
-    # Used by core.publish_cmdline_to_binary() which in turn is used by
-    # tools/rst2odt.py but not by core.rst2odt().
+    # Used by core.publish_cmdline_to_binary() which is also deprecated.
     mode = 'wb'
+
+    def __init__(self, *args, **kwargs):
+        warnings.warn('"BinaryFileOutput" is obsoleted by "FileOutput"'
+                      ' and will be removed in Docutils 0.24.',
+                      DeprecationWarning, stacklevel=2)
+        super().__init__(*args, **kwargs)
 
 
 class StringInput(Input):

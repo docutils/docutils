@@ -139,6 +139,10 @@ Release 0.22b.dev (unpublished)
 
 * tools/rst2odt_prepstyles.py
 
+  - Use `core.publish_file()` instead of `core.publish_file_to_binary()`.
+
+* tools/rst2odt_prepstyles.py
+
   - Removed. Use `docutils.writers.odf_odt.prepstyles`.
 
 
