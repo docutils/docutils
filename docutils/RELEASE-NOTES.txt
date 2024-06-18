@@ -152,6 +152,11 @@ Misc
   (obsoleted by the `"writer" setting`_ since Docutils 0.18)
   in Docutils 2.0.
 
+* Remove the "reader_name", "parser_name", and "writer_name" arguments of
+  `core.Publisher.__init__()` and the `core.publish_*()` convenience
+  functions in Docutils 2.0.  Since Docutils 0.22, you may use "reader",
+  "parser", and "writer" arguments for component names as well as instances.
+
 * Revise the `String I/O`__ interface used by the `publish_string()`
   and `publish_from_doctree()` publisher convenience functions.
   (In Python 3, name and behaviour no longer match.)

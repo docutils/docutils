@@ -30,6 +30,9 @@ Release 0.22b.dev (unpublished)
 * docutils/core.py
 
   - Removed `Publisher.setup_option_parser()` (internal, obsolete).
+  - Allow a string value (component name or alias) in the
+    "reader", "parser", and "writer" arguments of `Publisher.__init__()`
+    and the `publish_*()` convenience functions.
 
 * docutils/frontend.py
 

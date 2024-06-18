@@ -22,7 +22,7 @@ import sys
 import warnings
 
 from docutils import (__version__, __version_details__, SettingsSpec,
-                      io, utils, readers, writers)
+                      io, utils, readers, parsers, writers)
 from docutils.frontend import OptionParser
 from docutils.readers import doctree
 
@@ -38,11 +38,23 @@ class Publisher:
                  destination=None, destination_class=io.FileOutput,
                  settings=None):
         """
-        Initial setup.  If any of `reader`, `parser`, or `writer` are not
-        specified, ``set_components()`` or the corresponding ``set_...()``
-        method should be called with component names
-        (`set_reader` sets the parser as well).
+        Initial setup.
+
+        The components `reader`, `parser`, or `writer` should all be
+        specified, either as instances or via their names.
         """
+        # get component instances from their names:
+        if isinstance(reader, str):
+            reader = readers.get_reader_class(reader)(parser)
+        if isinstance(parser, str):
+            if isinstance(reader, readers.Reader):
+                if reader.parser is None:
+                    reader.set_parser(parser)
+                parser = reader.parser
+            else:
+                parser = parsers.get_parser_class(parser)()
+        if isinstance(writer, str):
+            writer = writers.get_writer_class(writer)()
 
         self.document = None
         """The document tree (`docutils.nodes` objects)."""
@@ -55,13 +67,6 @@ class Publisher:
 
         self.writer = writer
         """A `docutils.writers.Writer` instance."""
-
-        for component in 'reader', 'parser', 'writer':
-            assert not isinstance(getattr(self, component), str), (
-                'passed string "%s" as "%s" parameter; pass an instance, '
-                'or use the "%s_name" parameter instead (in '
-                'docutils.core.publish_* convenience functions).'
-                % (getattr(self, component), component, component))
 
         self.source = source
         """The source of input data, a `docutils.io.Input` instance."""
@@ -82,11 +87,18 @@ class Publisher:
 
         self._stderr = io.ErrorOutput()
 
-    def set_reader(self, reader_name, parser, parser_name):
-        """Set `self.reader` by name."""
-        reader_class = readers.get_reader_class(reader_name)
+    def set_reader(self, reader, parser=None, parser_name=None):
+        """Set `self.reader` by name.
+
+        The "paser_name" argument is deprecated,
+        use "parser" with parser name or instance.
+        """
+        reader_class = readers.get_reader_class(reader)
         self.reader = reader_class(parser, parser_name)
-        self.parser = self.reader.parser
+        if self.reader.parser is not None:
+            self.parser = self.reader.parser
+        elif self.parser is not None:
+            self.reader.parser = self.parser
 
     def set_writer(self, writer_name):
         """Set `self.writer` by name."""
@@ -94,6 +106,10 @@ class Publisher:
         self.writer = writer_class()
 
     def set_components(self, reader_name, parser_name, writer_name):
+        warnings.warn('`Publisher.set_components()` will be removed in '
+                      'Docutils 2.0.  Specify component names '
+                      'at instantiation.',
+                      PendingDeprecationWarning, stacklevel=2)
         if self.reader is None:
             self.set_reader(reader_name, self.parser, parser_name)
         if self.parser is None:
@@ -371,9 +387,9 @@ default_description = (
 # Chain several args as input and use --output or redirection for output:
 #   argparser.add_argument('source', nargs='+')
 #
-def publish_cmdline(reader=None, reader_name='standalone',
-                    parser=None, parser_name='restructuredtext',
-                    writer=None, writer_name='pseudoxml',
+def publish_cmdline(reader=None, reader_name=None,
+                    parser=None, parser_name=None,
+                    writer=None, writer_name=None,
                     settings=None, settings_spec=None,
                     settings_overrides=None, config_section=None,
                     enable_exit_status=True, argv=None,
@@ -392,8 +408,13 @@ def publish_cmdline(reader=None, reader_name='standalone',
     - `description`: Program description, output for the "--help" option
       (along with command-line option descriptions).
     """
+    # The "*_name" arguments are deprecated.
+    _name_arg_warning(reader_name, parser_name, writer_name)
+    # The default is only used if both arguments are empty
+    reader = reader or reader_name or 'standalone'
+    parser = parser or parser_name or 'restructuredtext'
+    writer = writer or writer_name or 'pseudoxml'
     publisher = Publisher(reader, parser, writer, settings=settings)
-    publisher.set_components(reader_name, parser_name, writer_name)
     output = publisher.publish(
         argv, usage, description, settings_spec, settings_overrides,
         config_section=config_section, enable_exit_status=enable_exit_status)
@@ -402,9 +423,9 @@ def publish_cmdline(reader=None, reader_name='standalone',
 
 def publish_file(source=None, source_path=None,
                  destination=None, destination_path=None,
-                 reader=None, reader_name='standalone',
-                 parser=None, parser_name='restructuredtext',
-                 writer=None, writer_name='pseudoxml',
+                 reader=None, reader_name=None,
+                 parser=None, parser_name=None,
+                 writer=None, writer_name=None,
                  settings=None, settings_spec=None, settings_overrides=None,
                  config_section=None, enable_exit_status=False):
     """
@@ -414,6 +435,9 @@ def publish_file(source=None, source_path=None,
 
     Parameters: see `publish_programmatically()`.
     """
+    # The "*_name" arguments are deprecated.
+    _name_arg_warning(reader_name, parser_name, writer_name)
+    # The default is set in publish_programmatically().
     output, publisher = publish_programmatically(
         source_class=io.FileInput, source=source, source_path=source_path,
         destination_class=io.FileOutput,
@@ -429,9 +453,9 @@ def publish_file(source=None, source_path=None,
 
 
 def publish_string(source, source_path=None, destination_path=None,
-                   reader=None, reader_name='standalone',
-                   parser=None, parser_name='restructuredtext',
-                   writer=None, writer_name='pseudoxml',
+                   reader=None, reader_name=None,
+                   parser=None, parser_name=None,
+                   writer=None, writer_name=None,
                    settings=None, settings_spec=None,
                    settings_overrides=None, config_section=None,
                    enable_exit_status=False):
@@ -444,7 +468,8 @@ def publish_string(source, source_path=None, destination_path=None,
     the return value is a `bytes` instance (unless `output_encoding`_ is
     "unicode", cf. `docutils.io.StringOutput.write()`).
 
-    Parameters: see `publish_programmatically()`.
+    Parameters: see `publish_programmatically()` or
+    https://docutils.sourceforge.io/docs/api/publisher.html#publish-string
 
     This function is provisional because in Python 3 name and behaviour
     no longer match.
@@ -452,6 +477,9 @@ def publish_string(source, source_path=None, destination_path=None,
     .. _output_encoding:
         https://docutils.sourceforge.io/docs/user/config.html#output-encoding
     """
+    # The "*_name" arguments are deprecated.
+    _name_arg_warning(reader_name, parser_name, writer_name)
+    # The default is set in publish_programmatically().
     output, publisher = publish_programmatically(
         source_class=io.StringInput, source=source, source_path=source_path,
         destination_class=io.StringOutput,
@@ -468,9 +496,9 @@ def publish_string(source, source_path=None, destination_path=None,
 
 def publish_parts(source, source_path=None, source_class=io.StringInput,
                   destination_path=None,
-                  reader=None, reader_name='standalone',
-                  parser=None, parser_name='restructuredtext',
-                  writer=None, writer_name='pseudoxml',
+                  reader=None, reader_name=None,
+                  parser=None, parser_name=None,
+                  writer=None, writer_name=None,
                   settings=None, settings_spec=None,
                   settings_overrides=None, config_section=None,
                   enable_exit_status=False):
@@ -490,6 +518,9 @@ def publish_parts(source, source_path=None, source_class=io.StringInput,
 
     __ https://docutils.sourceforge.io/docs/api/publisher.html#publish-parts
     """
+    # The "*_name" arguments are deprecated.
+    _name_arg_warning(reader_name, parser_name, writer_name)
+    # The default is set in publish_programmatically().
     output, publisher = publish_programmatically(
         source=source, source_path=source_path, source_class=source_class,
         destination_class=io.StringOutput,
@@ -506,8 +537,8 @@ def publish_parts(source, source_path=None, source_class=io.StringInput,
 
 def publish_doctree(source, source_path=None,
                     source_class=io.StringInput,
-                    reader=None, reader_name='standalone',
-                    parser=None, parser_name='restructuredtext',
+                    reader=None, reader_name=None,
+                    parser=None, parser_name=None,
                     settings=None, settings_spec=None,
                     settings_overrides=None, config_section=None,
                     enable_exit_status=False):
@@ -516,6 +547,9 @@ def publish_doctree(source, source_path=None,
 
     Parameters: see `publish_programmatically()`.
     """
+    # The "*_name" arguments are deprecated.
+    _name_arg_warning(reader_name, parser_name, None)
+    # The default is set in publish_programmatically().
     _output, publisher = publish_programmatically(
         source=source, source_path=source_path,
         source_class=source_class,
@@ -523,7 +557,7 @@ def publish_doctree(source, source_path=None,
         destination_class=io.NullOutput,
         reader=reader, reader_name=reader_name,
         parser=parser, parser_name=parser_name,
-        writer=None, writer_name='null',
+        writer='null', writer_name=None,
         settings=settings, settings_spec=settings_spec,
         settings_overrides=settings_overrides, config_section=config_section,
         enable_exit_status=enable_exit_status)
@@ -531,7 +565,7 @@ def publish_doctree(source, source_path=None,
 
 
 def publish_from_doctree(document, destination_path=None,
-                         writer=None, writer_name='pseudoxml',
+                         writer=None, writer_name=None,
                          settings=None, settings_spec=None,
                          settings_overrides=None, config_section=None,
                          enable_exit_status=False):
@@ -554,13 +588,13 @@ def publish_from_doctree(document, destination_path=None,
     This function is provisional because in Python 3 name and behaviour
     of the `io.StringOutput` class no longer match.
     """
-    reader = doctree.Reader(parser_name='null')
-    publisher = Publisher(reader, None, writer,
+    # The "writer_name" argument is deprecated.
+    _name_arg_warning(None, None, writer_name)
+    publisher = Publisher(reader=doctree.Reader(),
+                          writer=writer or writer_name or 'pseudoxml',
                           source=io.DocTreeInput(document),
                           destination_class=io.StringOutput,
                           settings=settings)
-    if not writer and writer_name:
-        publisher.set_writer(writer_name)
     publisher.process_programmatic_settings(
         settings_spec, settings_overrides, config_section)
     publisher.set_destination(None, destination_path)
@@ -611,6 +645,15 @@ def publish_cmdline_to_binary(reader=None, reader_name='standalone',
     return output
 
 
+def _name_arg_warning(*name_args):
+    for component, name_arg in zip(('reader', 'parser', 'writer'), name_args):
+        if name_arg is not None:
+            warnings.warn(f'Argument "{component}_name" will be removed in '
+                          f'Docutils 2.0.  Specify {component} name '
+                          f'in the "{component}" argument.',
+                          PendingDeprecationWarning, stacklevel=3)
+
+
 def publish_programmatically(source_class, source, source_path,
                              destination_class, destination, destination_path,
                              reader, reader_name,
@@ -625,7 +668,8 @@ def publish_programmatically(source_class, source, source_path,
     Return the output (as `str` or `bytes`, depending on `destination_class`,
     writer, and the "output_encoding" setting) and the Publisher object.
 
-    Applications should not need to call this function directly.  If it does
+    Internal:
+    Applications should not call this function directly.  If it does
     seem to be necessary to call this function directly, please write to the
     Docutils-develop mailing list
     <https://docutils.sourceforge.io/docs/user/mailing-lists.html#docutils-develop>.
@@ -675,20 +719,20 @@ def publish_programmatically(source_class, source, source_path,
         output; optional.  Used for determining relative paths (stylesheets,
         source links, etc.).
 
-    * `reader`: A `docutils.readers.Reader` object.
+    * `reader`: A `docutils.readers.Reader` instance, name, or alias.
+      Default: "standalone".
 
-    * `reader_name`: Name or alias of the Reader class to be instantiated if
-      no `reader` supplied.
+    * `reader_name`: Deprecated. Use `reader`.
 
-    * `parser`: A `docutils.parsers.Parser` object.
+    * `parser`: A `docutils.parsers.Parser` instance, name, or alias.
+      Default: "restructuredtext".
 
-    * `parser_name`: Name or alias of the Parser class to be instantiated if
-      no `parser` supplied.
+    * `parser_name`: Deprecated. Use `parser`.
 
-    * `writer`: A `docutils.writers.Writer` object.
+    * `writer`: A `docutils.writers.Writer` instance, name, or alias.
+      Default: "pseudoxml".
 
-    * `writer_name`: Name or alias of the Writer class to be instantiated if
-      no `writer` supplied.
+    * `writer_name`: Deprecated. Use `writer`.
 
     * `settings`: A runtime settings (`docutils.frontend.Values`) object, for
       dotted-attribute access to runtime settings.  It's the end result of the
@@ -712,10 +756,13 @@ def publish_programmatically(source_class, source, source_path,
 
     * `enable_exit_status`: Boolean; enable exit status at end of processing?
     """
+    reader = reader or reader_name or 'standalone'
+    parser = parser or parser_name or 'restructuredtext'
+    writer = writer or writer_name or 'pseudoxml'
+
     publisher = Publisher(reader, parser, writer, settings=settings,
                           source_class=source_class,
                           destination_class=destination_class)
-    publisher.set_components(reader_name, parser_name, writer_name)
     publisher.process_programmatic_settings(
         settings_spec, settings_overrides, config_section)
     publisher.set_source(source, source_path)
@@ -728,7 +775,7 @@ def publish_programmatically(source_class, source, source_path,
 # cf. https://packaging.python.org/en/latest/specifications/entry-points/
 
 def rst2something(writer, documenttype, doc_path=''):
-    # Helper function for the common parts of rst2...
+    # Helper function for the common parts of `rst2*()`
     #   writer:       writer name
     #   documenttype: output document type
     #   doc_path:     documentation path (relative to the documentation root)
@@ -738,7 +785,7 @@ def rst2something(writer, documenttype, doc_path=''):
         f'<https://docutils.sourceforge.io/docs/{doc_path}>.  '
         + default_description)
     locale.setlocale(locale.LC_ALL, '')
-    publish_cmdline(writer_name=writer, description=description)
+    publish_cmdline(writer=writer, description=description)
 
 
 def rst2html():
