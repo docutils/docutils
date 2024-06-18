@@ -77,8 +77,8 @@ class DocutilsOdtTestCase(unittest.TestCase):
         result = docutils.core.publish_string(
             source=source,
             source_path=input_path,
-            reader_name='standalone',
-            writer_name='odf_odt',
+            reader='standalone',
+            writer='odf_odt',
             settings_overrides=settings_overrides)
         # msg = 'file length not equal: expected length: %d  actual length: %d' % (
         #           len(expected), len(result), )

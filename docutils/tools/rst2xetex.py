@@ -24,4 +24,4 @@ description = ('Generates LaTeX documents from standalone reStructuredText '
                '<https://docutils.sourceforge.io/docs/user/latex.html> for '
                'the full reference.')
 
-publish_cmdline(writer_name='xetex', description=description)
+publish_cmdline(writer='xetex', description=description)

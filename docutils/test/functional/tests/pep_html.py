@@ -3,8 +3,8 @@ test_source = "pep_html.txt"
 test_destination = "pep_html.html"
 
 # Keyword parameters passed to publish_file()
-reader_name = "pep"
-writer_name = "pep_html"
+reader = "pep"
+writer = "pep_html"
 settings_overrides = {
     'python_home': "http://www.python.org",
     'pep_home': "http://www.python.org/peps",

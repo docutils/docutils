@@ -30,4 +30,4 @@ description = ('Generates HTML5 documents from standalone '
                'reStructuredText sources.\n'
                + default_description)
 
-publish_cmdline(writer_name='html5', description=description)
+publish_cmdline(writer='html5', description=description)

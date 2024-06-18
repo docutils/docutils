@@ -3,7 +3,7 @@ test_source = "latex_literal_block.txt"
 test_destination = "latex_literal_block_verbatim.tex"
 
 # Keyword parameters passed to publish_file()
-writer_name = "latex"
+writer = "latex"
 settings_overrides = {
     'stylesheet': 'docutils',
     'legacy_column_widths': True,

@@ -20,4 +20,4 @@ from docutils.core import publish_cmdline, default_description
 description = ('Generates Docutils-native XML from standalone '
                'reStructuredText sources.  ' + default_description)
 
-publish_cmdline(writer_name='xml', description=description)
+publish_cmdline(writer='xml', description=description)

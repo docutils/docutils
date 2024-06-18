@@ -24,14 +24,14 @@ class WriterPublishTestCase(unittest.TestCase):
     maxDiff = None
 
     def test_publish(self):
-        writer_name = 'pseudoxml'
+        writer = 'pseudoxml'
 
         for name, cases in totest.items():
             for casenum, (case_input, case_expected) in enumerate(cases):
                 with self.subTest(id=f'totest[{name!r}][{casenum}]'):
                     output = publish_string(
                         source=case_input,
-                        writer_name=writer_name,
+                        writer=writer,
                         settings_overrides={
                             '_disable_config': True,
                             'strict_visitor': True,
@@ -43,7 +43,7 @@ class WriterPublishTestCase(unittest.TestCase):
                 with self.subTest(id=f'totest_detailed[{name!r}][{casenum}]'):
                     output = publish_string(
                         source=case_input,
-                        writer_name=writer_name,
+                        writer=writer,
                         settings_overrides={
                             '_disable_config': True,
                             'strict_visitor': True,

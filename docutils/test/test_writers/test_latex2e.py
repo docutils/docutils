@@ -35,7 +35,7 @@ else:
 class WriterPublishTestCase(unittest.TestCase):
 
     maxDiff = None
-    writer_name = 'latex'
+    writer = 'latex'
     settings = {
         '_disable_config': True,
         'strict_visitor': True,
@@ -49,7 +49,7 @@ class WriterPublishTestCase(unittest.TestCase):
             for casenum, (rst_input, expected) in enumerate(cases):
                 with self.subTest(id=f'samples_default[{name!r}][{casenum}]'):
                     output = publish_string(source=rst_input,
-                                            writer_name=self.writer_name,
+                                            writer=self.writer,
                                             settings_overrides=settings)
                     output = output.decode()
                     self.assertEqual(expected, output)

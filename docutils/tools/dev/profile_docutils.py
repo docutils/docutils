@@ -16,7 +16,7 @@ print('Profiling...')
 
 prof = hotshot.Profile('docutils.prof')
 prof.runcall(docutils.core.publish_file, source_path='HISTORY.txt',
-             destination_path='prof.HISTORY.html', writer_name='html')
+             destination_path='prof.HISTORY.html', writer='html')
 prof.close()
 
 print('Loading statistics...')

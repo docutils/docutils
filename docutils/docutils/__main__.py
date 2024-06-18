@@ -75,9 +75,9 @@ def main():
     CliSettingsSpec.settings_default_overrides = args.__dict__
 
     try:
-        publish_cmdline(reader_name=args.reader,
-                        parser_name=args.parser,
-                        writer_name=args.writer,
+        publish_cmdline(reader=args.reader,
+                        parser=args.parser,
+                        writer=args.writer,
                         settings_spec=CliSettingsSpec,
                         description=description,
                         argv=remainder)

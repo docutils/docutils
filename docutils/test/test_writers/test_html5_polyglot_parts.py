@@ -74,13 +74,13 @@ class Html5WriterPublishPartsTestCase(unittest.TestCase):
     def test_publish(self):
         if not with_pygments:
             del totest['syntax_highlight']
-        writer_name = 'html5'
+        writer = 'html5'
         for name, (settings_overrides, cases) in totest.items():
             for casenum, (case_input, case_expected) in enumerate(cases):
                 with self.subTest(id=f'totest[{name!r}][{casenum}]'):
                     parts = docutils.core.publish_parts(
                         source=case_input,
-                        writer_name=writer_name,
+                        writer=writer,
                         settings_overrides={
                             '_disable_config': True,
                             'strict_visitor': True,

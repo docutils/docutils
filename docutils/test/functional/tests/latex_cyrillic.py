@@ -3,7 +3,7 @@ test_source = "cyrillic.txt"
 test_destination = "cyrillic.tex"
 
 # Keyword parameters passed to publish_file()
-writer_name = "latex"
+writer = "latex"
 settings_overrides = {
     'font_encoding': 'T1,T2A',
     'stylesheet': 'cmlgc',

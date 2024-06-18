@@ -3,7 +3,7 @@ test_source = "standalone_rst_latex.txt"
 test_destination = "standalone_rst_latex.tex"
 
 # Keyword parameters passed to publish_file()
-writer_name = "latex"
+writer = "latex"
 settings_overrides = {
     'sectsubtitle_xform': True,
     # use "smartquotes" transition:

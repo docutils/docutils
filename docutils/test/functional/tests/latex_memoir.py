@@ -3,7 +3,7 @@ test_source = "standalone_rst_latex.txt"
 test_destination = "latex_memoir.tex"
 
 # Keyword parameters passed to publish_file()
-writer_name = "latex"
+writer = "latex"
 settings_overrides = {
     'use_latex_docinfo': 1,
     'documentclass': "memoir",

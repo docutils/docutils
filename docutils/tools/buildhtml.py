@@ -140,16 +140,16 @@ class Builder:
                                    SettingsSpec)),
             'html4': Struct(components=(rst.Parser, standalone.Reader,
                                         html4css1.Writer, SettingsSpec),
-                            reader_name='standalone',
-                            writer_name='html4'),
+                            reader='standalone',
+                            writer='html4'),
             'html5': Struct(components=(rst.Parser, standalone.Reader,
                                         html5_polyglot.Writer, SettingsSpec),
-                            reader_name='standalone',
-                            writer_name='html5'),
+                            reader='standalone',
+                            writer='html5'),
             'PEPs': Struct(components=(rst.Parser, pep.Reader,
                                        pep_html.Writer, SettingsSpec),
-                           reader_name='pep',
-                           writer_name='pep_html')}
+                           reader='pep',
+                           writer='pep_html')}
         """Publisher-specific settings.  Key '' is for the front-end script
         itself.  ``self.publishers[''].components`` must contain a superset of
         all components used by individual publishers."""
@@ -280,9 +280,9 @@ class Builder:
             try:
                 core.publish_file(source_path=settings._source,
                                   destination_path=settings._destination,
-                                  reader_name=pub_struct.reader_name,
-                                  parser_name='restructuredtext',
-                                  writer_name=pub_struct.writer_name,
+                                  reader=pub_struct.reader,
+                                  parser='restructuredtext',
+                                  writer=pub_struct.writer,
                                   settings=settings)
             except ApplicationError as err:
                 errout.write(f'        {type(err).__name__}: {err}\n')

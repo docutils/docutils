@@ -122,8 +122,8 @@ invalid_raw_xml = """\
 
 def publish_xml(settings, source):
     return docutils.core.publish_string(source=source,
-                                       reader_name='standalone',
-                                       writer_name='docutils_xml',
+                                       reader='standalone',
+                                       writer='docutils_xml',
                                        settings_overrides=settings)
 
 

@@ -21,5 +21,5 @@ from docutils.core import publish_cmdline, default_description
 description = ('Generates (X)HTML from reStructuredText-format PEP files.  '
                + default_description)
 
-publish_cmdline(reader_name='pep', writer_name='pep_html',
+publish_cmdline(reader='pep', writer='pep_html',
                 description=description)

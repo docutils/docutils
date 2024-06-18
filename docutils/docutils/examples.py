@@ -46,7 +46,7 @@ def html_parts(input_string, source_path=None, destination_path=None,
     parts = core.publish_parts(
         source=input_string, source_path=source_path,
         destination_path=destination_path,
-        writer_name='html', settings_overrides=overrides)
+        writer='html', settings_overrides=overrides)
     return parts
 
 
@@ -74,26 +74,27 @@ def html_body(input_string, source_path=None, destination_path=None,
     return fragment
 
 
-def internals(input_string, source_path=None, destination_path=None,
+def internals(source, source_path=None, destination_path=None,
               input_encoding='unicode', settings_overrides=None):
     """
     Return the document tree and publisher, for exploring Docutils internals.
 
     Parameters: see `html_parts()`.
     """
-    if settings_overrides:
-        overrides = settings_overrides.copy()
-    else:
-        overrides = {}
-    overrides['input_encoding'] = input_encoding
-    output, pub = core.publish_programmatically(
-        source_class=io.StringInput, source=input_string,
-        source_path=source_path,
-        destination_class=io.NullOutput, destination=None,
-        destination_path=destination_path,
-        reader=None, reader_name='standalone',
-        parser=None, parser_name='restructuredtext',
-        writer=None, writer_name='null',
-        settings=None, settings_spec=None, settings_overrides=overrides,
-        config_section=None, enable_exit_status=None)
-    return pub.writer.document, pub
+    if settings_overrides is None:
+        settings_overrides = {}
+    overrides = settings_overrides | {'input_encoding': input_encoding}
+
+    publisher = core.Publisher('standalone', 'rst', 'null',
+                               source_class=io.StringInput,
+                               destination_class=io.NullOutput)
+    publisher.process_programmatic_settings(settings_spec=None,
+                                            settings_overrides=overrides,
+                                            config_section=None)
+    publisher.set_source(source, source_path)
+    publisher.publish()
+    return publisher.document, publisher
+
+
+if __name__ == '__main__':
+    print(internals('test')[0])

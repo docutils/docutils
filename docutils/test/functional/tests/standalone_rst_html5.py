@@ -3,7 +3,7 @@ test_source = "standalone_rst_html5.txt"
 test_destination = "standalone_rst_html5.html"
 
 # Keyword parameters passed to publish_file()
-writer_name = "html5"
+writer = "html5"
 settings_overrides = {
     'sectsubtitle_xform': True,
     # "smart" quotes:

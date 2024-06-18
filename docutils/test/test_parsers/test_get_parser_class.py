@@ -58,7 +58,7 @@ class RecommonmarkMissingTests(unittest.TestCase):
         # match multiline message (?s) = re.DOTALL "." also matches newline
         with self.assertRaisesRegex(ImportError,
                                     '(?s)requires the.*package .*recommonmark'):
-            publish_string('test data', parser_name='recommonmark')
+            publish_string('test data', parser='recommonmark')
 
 
 if __name__ == '__main__':

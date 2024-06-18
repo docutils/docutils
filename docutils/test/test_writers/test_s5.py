@@ -25,7 +25,7 @@ from docutils.core import publish_string
 
 class WriterPublishTestCase(unittest.TestCase):
     def test_publish(self):
-        writer_name = 's5'
+        writer = 's5'
         settings = {
             '_disable_config': True,
             'strict_visitor': True,
@@ -38,7 +38,7 @@ class WriterPublishTestCase(unittest.TestCase):
                 with self.subTest(id=f'totest_1[{name!r}][{casenum}]'):
                     output = publish_string(
                         source=case_input,
-                        writer_name=writer_name,
+                        writer=writer,
                         settings_overrides=settings.copy()
                         ).decode()
                     self.assertEqual(case_expected, output)
@@ -50,7 +50,7 @@ class WriterPublishTestCase(unittest.TestCase):
                 with self.subTest(id=f'totest_2[{name!r}][{casenum}]'):
                     output = publish_string(
                         source=case_input,
-                        writer_name=writer_name,
+                        writer=writer,
                         settings_overrides=settings.copy()
                         ).decode()
                     self.assertEqual(case_expected, output)

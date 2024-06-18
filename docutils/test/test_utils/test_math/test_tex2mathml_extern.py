@@ -111,7 +111,7 @@ class MathMLConverterTestCase(unittest.TestCase):
             expected_path = EXPECTED / out_file
             output = publish_file(source_path=str(source_path),
                                   destination_path=out_path.as_posix(),
-                                  writer_name='html5',
+                                  writer='html5',
                                   settings_overrides=settings)
             with self.subTest(converter=math_output[1] or 'latex2mathml()'):
                 compare_output(output, out_path, expected_path)
@@ -128,7 +128,7 @@ class MathMLConverterTestCase(unittest.TestCase):
             expected_path = EXPECTED / out_file
             output = publish_file(source_path=str(source_path),
                                   destination_path=out_path.as_posix(),
-                                  writer_name='html5',
+                                  writer='html5',
                                   settings_overrides=settings)
             with self.subTest(converter=math_output[1] or 'latex2mathml()'):
                 compare_output(output, out_path, expected_path)
@@ -144,7 +144,7 @@ class MathMLConverterTestCase(unittest.TestCase):
             preface = f'Test "math-output: {" ".join(math_output)}".\n\n'
             parts = publish_parts(preface + buggy_sample,
                                   'buggy-maths',
-                                  writer_name='html5',
+                                  writer='html5',
                                   settings_overrides=settings)
             with open(out_path, "w") as fd:
                 fd.write(parts['whole'])

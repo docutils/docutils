@@ -3,7 +3,7 @@ test_source = "dangerous.txt"
 test_destination = "dangerous.html"
 
 # Keyword parameters passed to publish_file()
-writer_name = "html4"
+writer = "html4"
 settings_overrides = {
     'file_insertion_enabled': False,
     'raw_enabled': False,

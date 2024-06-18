@@ -76,7 +76,7 @@ class RecordDependenciesTests(unittest.TestCase):
         if PIL and os.path.exists('../docs/user/rst/images/'):
             keys += ['figure-image']
         expected = [paths[key] for key in keys]
-        record, output = self.get_record(writer_name='xml')
+        record, output = self.get_record(writer='xml')
         # the order of the files is arbitrary
         self.assertEqual(sorted(expected), sorted(record))
 
@@ -89,7 +89,7 @@ class RecordDependenciesTests(unittest.TestCase):
         settings = {'stylesheet_path': None,
                     'stylesheet': None,
                     'report_level': 4}  # drop warning if PIL is missing
-        record, output = self.get_record(writer_name='html5',
+        record, output = self.get_record(writer='html5',
                                          settings_overrides=settings)
         # the order of the files is arbitrary
         self.assertEqual(sorted(expected), sorted(record),
@@ -105,7 +105,7 @@ class RecordDependenciesTests(unittest.TestCase):
             keys += ['figure-image']
         expected = [paths[key] for key in keys]
         record, output = self.get_record(
-                            writer_name='latex',
+                            writer='latex',
                             settings_overrides=latex_settings_overwrites)
         # the order of the files is arbitrary
         self.assertEqual(sorted(expected), sorted(record),
@@ -123,22 +123,22 @@ class RecordDependenciesTests(unittest.TestCase):
                     'stylesheet': None}
         settings.update(latex_settings_overwrites)
         settings['embed_stylesheet'] = False
-        record, output = self.get_record(writer_name='html',
+        record, output = self.get_record(writer='html',
                                          settings_overrides=settings)
         self.assertTrue(stylesheet not in record,
                         f'{stylesheet!r} should not be in {record!r}')
-        record, output = self.get_record(writer_name='latex',
+        record, output = self.get_record(writer='latex',
                                          settings_overrides=settings)
         self.assertTrue(stylesheet not in record,
                         f'{stylesheet!r} should not be in {record!r}')
 
         settings['embed_stylesheet'] = True
-        record, output = self.get_record(writer_name='html',
+        record, output = self.get_record(writer='html',
                                          settings_overrides=settings)
         self.assertTrue(stylesheet in record,
                         f'{stylesheet!r} should be in {record!r}')
         settings['embed_stylesheet'] = True
-        record, output = self.get_record(writer_name='latex',
+        record, output = self.get_record(writer='latex',
                                          settings_overrides=settings)
         self.assertTrue(stylesheet in record,
                         f'{stylesheet!r} should be in {record!r}')

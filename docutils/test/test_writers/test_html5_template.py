@@ -29,14 +29,14 @@ TEST_ROOT = Path(__file__).parents[1]
 class WriterPublishTestCase(unittest.TestCase):
     # maxDiff = None
     def test_publish(self):
-        writer_name = 'html5'
+        writer = 'html5'
         template_path = TEST_ROOT / 'data/full-template.txt'
         for name, cases in totest.items():
             for casenum, (case_input, case_expected) in enumerate(cases):
                 with self.subTest(id=f'totest[{name!r}][{casenum}]'):
                     output = publish_string(
                         source=case_input,
-                        writer_name=writer_name,
+                        writer=writer,
                         settings_overrides={
                             '_disable_config': True,
                             'strict_visitor': True,

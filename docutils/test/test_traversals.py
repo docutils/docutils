@@ -68,13 +68,13 @@ class StopTraversalTests(unittest.TestCase, docutils.SettingsSpec):
         # Load some document tree in memory.
         doctree = core.publish_doctree(
             source=stop_traversal_input,
-            reader_name='standalone',
-            parser_name='restructuredtext',
+            reader='standalone',
+            parser='restructuredtext',
             settings_spec=self)
         self.assertTrue(isinstance(doctree, nodes.document))
 
         core.publish_parts(
-            reader_name='doctree', source_class=docutils.io.DocTreeInput,
+            reader='doctree', source_class=docutils.io.DocTreeInput,
             source=doctree, source_path='test',
             writer=AttentiveWriter())
 

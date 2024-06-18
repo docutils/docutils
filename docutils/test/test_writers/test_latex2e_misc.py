@@ -88,7 +88,7 @@ class PublishTestCase(unittest.TestCase):
         doctree = core.publish_doctree(sample_toc,
                                        settings_overrides=settings)
         result = core.publish_from_doctree(doctree,
-                                           writer_name='latex',
+                                           writer='latex',
                                            settings_overrides=settings)
         self.assertNotIn(r'\item \hyperref[foo]{foo}', result)
         self.assertIn(r'\tableofcontents', result)
@@ -97,7 +97,7 @@ class PublishTestCase(unittest.TestCase):
         """Check for the presence of documented parts.
         """
         parts = core.publish_parts(sample_multiterm,
-                                   writer_name='latex',
+                                   writer='latex',
                                    settings_overrides=self.settings)
         documented_parts = [
             'abstract',
@@ -135,11 +135,11 @@ class WarningsTestCase(unittest.TestCase):
                     }
         with self.assertWarnsRegex(FutureWarning,
                                    '"legacy_column_widths" will change'):
-            core.publish_string('warnings test', writer_name='latex',
+            core.publish_string('warnings test', writer='latex',
                                 settings_overrides=settings)
         with self.assertWarnsRegex(FutureWarning,
                                    '"use_latex_citations" will change'):
-            core.publish_string('warnings test', writer_name='latex',
+            core.publish_string('warnings test', writer='latex',
                                 settings_overrides=settings)
 
 
