@@ -8,7 +8,6 @@ Python Enhancement Proposal (PEP) Reader.
 
 __docformat__ = 'reStructuredText'
 
-
 from docutils.readers import standalone
 from docutils.transforms import peps, frontmatter
 from docutils.parsers import rst
@@ -37,12 +36,18 @@ class Reader(standalone.Reader):
         transforms.extend([peps.Headers, peps.Contents, peps.TargetNotes])
         return transforms
 
-    settings_default_overrides = {'pep_references': 1, 'rfc_references': 1}
+    settings_default_overrides = {'pep_references': True,
+                                  'rfc_references': True}
 
     inliner_class = rst.states.Inliner
 
     def __init__(self, parser=None, parser_name=None):
-        """`parser` should be ``None``."""
-        if parser is None:
+        """`parser` should be ``None``, `parser_name` is ignored.
+
+        The default parser is "rst" with PEP-specific settings
+        (since Docutils 0.3). Since Docutils 0.22, `parser` is ignored,
+        if it is a `str` instance.
+        """
+        if parser is None or isinstance(parser, str):
             parser = rst.Parser(rfc2822=True, inliner=self.inliner_class())
-        standalone.Reader.__init__(self, parser, '')
+        super().__init__(parser)

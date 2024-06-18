@@ -9,6 +9,7 @@ This package contains Docutils Reader modules.
 __docformat__ = 'reStructuredText'
 
 from importlib import import_module
+import warnings
 
 from docutils import utils, parsers, Component
 from docutils.transforms import universal
@@ -38,6 +39,9 @@ class Reader(Component):
         """
         Initialize the Reader instance.
 
+        :parser: A parser instance or name (an instance will be created).
+        :parser_name: deprecated, use "parser".
+
         Several instance attributes are defined with dummy initial values.
         Subclasses may use these attributes as they wish.
         """
@@ -46,8 +50,15 @@ class Reader(Component):
         """A `parsers.Parser` instance shared by all doctrees.  May be left
         unspecified if the document source determines the parser."""
 
-        if parser is None and parser_name:
-            self.set_parser(parser_name)
+        if isinstance(parser, str):
+            self.set_parser(parser)
+        if parser_name is not None:
+            warnings.warn('Argument "parser_name" will be removed '
+                          'in Docutils 2.0.\n'
+                          '  Specify parser name in the "parser" argument.',
+                          DeprecationWarning, stacklevel=2)
+            if self.parser is None:
+                self.set_parser(parser_name)
 
         self.source = None
         """`docutils.io` IO object, source of input data."""
