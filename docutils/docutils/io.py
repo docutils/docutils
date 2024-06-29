@@ -82,7 +82,7 @@ class Input(TransformSpec):
 
     default_source_path = None
 
-    def __init__(self, source=None, source_path=None, encoding=None,
+    def __init__(self, source=None, source_path=None, encoding='utf-8',
                  error_handler='strict'):
         self.encoding = encoding
         """Text encoding for the input source."""
@@ -357,7 +357,7 @@ class FileInput(Input):
     Input for single, simple file-like objects.
     """
     def __init__(self, source=None, source_path=None,
-                 encoding=None, error_handler='strict',
+                 encoding='utf-8', error_handler='strict',
                  autoclose=True, mode='r'):
         """
         :Parameters:

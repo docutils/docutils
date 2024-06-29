@@ -40,6 +40,10 @@ Release 0.22b.dev (unpublished)
     and ``--output-encoding``.
   - Change the default input encoding from ``None`` (auto-detect) to "utf-8".
 
+* docutils/io.py
+
+  - Change the default input encoding from ``None`` (auto-detect) to "utf-8".
+
 * docutils/nodes.py
 
   - Raise TypeError if the "rawsource" argument in `Element.__init__()`

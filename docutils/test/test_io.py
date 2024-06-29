@@ -74,7 +74,8 @@ class HelperTests(unittest.TestCase):
         """Cases where the comparison fails."""
         # stream.encoding is None:
         self.assertEqual(None,
-                         du_io.check_encoding(du_io.FileInput(), 'ascii'))
+                         du_io.check_encoding(du_io.FileInput(encoding=None),
+                                              'ascii'))
         # stream.encoding does not exist:
         self.assertEqual(None, du_io.check_encoding(BBuf, 'ascii'))
         # encoding is None or empty string:
@@ -102,11 +103,14 @@ class InputTests(unittest.TestCase):
         # default input encoding will change to UTF-8 in Docutils 0.22
         source = '\ufeffdata\n\ufeff blah\n'
         expected = 'data\n\ufeff blah\n'  # only leading ZWNBSP removed
-        input = du_io.StringInput(source=source.encode('utf-16-be'))
+        input = du_io.StringInput(source=source.encode('utf-16-be'),
+                                  encoding=None)
         self.assertEqual(expected, input.read())
-        input = du_io.StringInput(source=source.encode('utf-16-le'))
+        input = du_io.StringInput(source=source.encode('utf-16-le'),
+                                  encoding=None)
         self.assertEqual(expected, input.read())
-        input = du_io.StringInput(source=source.encode('utf-8'))
+        input = du_io.StringInput(source=source.encode('utf-8'),
+                                  encoding=None)
         self.assertEqual(expected, input.read())
         # With `str` input all ZWNBSPs are still there.
         input = du_io.StringInput(source=source)
@@ -117,14 +121,14 @@ class InputTests(unittest.TestCase):
 .. -*- coding: ascii -*-
 data
 blah
-""")
+""", encoding=None)
         data = input.read()  # noqa: F841
         self.assertEqual('ascii', input.successful_encoding)
         input = du_io.StringInput(source=b"""\
 #! python
 # -*- coding: ascii -*-
 print("hello world")
-""")
+""", encoding=None)
         data = input.read()  # noqa: F841
         self.assertEqual('ascii', input.successful_encoding)
         input = du_io.StringInput(source=b"""\
@@ -257,7 +261,8 @@ class FileInputTests(unittest.TestCase):
         """Drop optional BOM from utf-8 encoded files.
         """
         source = du_io.FileInput(
-            source_path=os.path.join(DATA_ROOT, 'utf-8-sig.txt'))
+            source_path=os.path.join(DATA_ROOT, 'utf-8-sig.txt'),
+            encoding=None)
         self.assertTrue(source.read().startswith('Grüße'))
 
     def test_bom_utf_16(self):
@@ -265,14 +270,16 @@ class FileInputTests(unittest.TestCase):
         """
         # Assert correct decoding, BOM is gone.
         source = du_io.FileInput(
-            source_path=os.path.join(DATA_ROOT, 'utf-16-le-sig.txt'))
+            source_path=os.path.join(DATA_ROOT, 'utf-16-le-sig.txt'),
+            encoding=None)
         self.assertTrue(source.read().startswith('Grüße'))
 
     def test_coding_slug(self):
         """Use self-declared encoding.
         """
         source = du_io.FileInput(
-            source_path=os.path.join(DATA_ROOT, 'latin2.txt'))
+            source_path=os.path.join(DATA_ROOT, 'latin2.txt'),
+            encoding=None)
         self.assertTrue(source.read().endswith('škoda\n'))
 
     def test_fallback_utf8(self):
