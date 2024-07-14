@@ -1,0 +1,118 @@
+from quickref.html
+
+Explicit Markup
+===============
+
+Footnotes
+---------
+
+Footnote references, like [5]_.
+Note that footnotes may get
+rearranged, e.g., to the bottom of
+the "page".
+
+.. [5] A numerical footnote. Note
+   there's no colon after the ``]``. 
+
+----
+
+Autonumbered footnotes are
+possible, like using [#]_ and [#]_.
+
+.. [#] This is the first one.
+.. [#] This is the second one.
+
+They may be assigned 'autonumber
+labels' - for instance,
+[#fourth]_ and [#third]_.
+
+.. [#third] a.k.a. third_
+
+.. [#fourth] a.k.a. fourth_ 
+
+----
+
+Auto-symbol footnotes are also
+possible, like this: [*]_ and [*]_.
+
+.. [*] This is the first one.
+.. [*] This is the second one. 
+
+Citations
+---------
+
+Citation references, like [CIT2002]_.
+Note that citations may get
+rearranged, e.g., to the bottom of
+the "page".
+
+.. [CIT2002] A citation
+   (as often used in journals).
+
+Citation labels contain alphanumerics,
+underlines, hyphens and fullstops.
+Case is not significant.
+
+Given a citation like [this]_, one
+can also refer to it like this_.
+
+.. [this] here. 
+
+External Hyperlink Targets
+--------------------------
+
+External hyperlinks, like Python_.
+
+.. _Python: https://www.python.org/ 
+
+embedded External hyperlinks, like `Python
+<https://www.python.org/>`_.
+
+Internal Hyperlink Targets
+--------------------------
+
+Internal cross-references, like example_.
+
+.. _example:
+
+This is an example cross-reference target. 
+
+Indirect Hyperlink Targets
+--------------------------
+
+Python_ is `my favourite
+programming language`__.
+
+.. _Python: https://www.python.org/
+
+__ Python_ 
+
+Titles are targets, too
+=======================
+
+Implicit references, like `Titles are
+targets, too`_.
+
+and
+===
+
+See the Python_ home page for info.
+
+`Write to me`_ with your questions.
+
+.. deduplicate _Python: https://www.python.org
+.. _Write to me: jdoe@example.com
+
+URIs with known schemes
+-----------------------
+
+tel:+48-816-555-1212
+urn:isbn:0-486-27557-4
+news:comp.infosystems.www.servers.unix
+https://john.doe@www.example.com:123/forum/questions/?tag=networking&order=newest#top
+
+Standalone email addresses
+--------------------------
+
+like someone@somewhere.com
+

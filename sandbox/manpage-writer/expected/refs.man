@@ -1,0 +1,139 @@
+.\" Man page generated from reStructuredText by manpage writer
+.\" from docutils 0.22b.dev.
+.
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.TH "" "" "" ""
+.SH Name
+ \- 
+from quickref.html
+.SH Explicit Markup
+.SS Footnotes
+.sp
+Footnote references, like [5]\&.
+Note that footnotes may get
+rearranged, e.g., to the bottom of
+the \(dqpage\(dq.
+.IP [5] 5
+A numerical footnote. Note
+there\(aqs no colon after the \fB]\fP\&.
+
+.sp
+.ce
+----
+
+.ce 0
+.sp
+.sp
+Autonumbered footnotes are
+possible, like using [1] and [2]\&.
+.IP [1] 5
+This is the first one.
+.IP [2] 5
+This is the second one.
+.sp
+They may be assigned \(aqautonumber
+labels\(aq \- for instance,
+[4] and [3]\&.
+.IP [3] 5
+a.k.a. third
+.IP [4] 5
+a.k.a. fourth
+
+.sp
+.ce
+----
+
+.ce 0
+.sp
+.sp
+Auto\-symbol footnotes are also
+possible, like this: [*] and [\(dg]\&.
+.IP [*] 5
+This is the first one.
+.IP [\(dg] 5
+This is the second one.
+.SS Citations
+.sp
+Citation references, like [CIT2002]\&.
+Note that citations may get
+rearranged, e.g., to the bottom of
+the \(dqpage\(dq.
+.IP [CIT2002] 5
+A citation
+(as often used in journals).
+.sp
+Citation labels contain alphanumerics,
+underlines, hyphens and fullstops.
+Case is not significant.
+.sp
+Given a citation like [this], one
+can also refer to it like this\&.
+.IP [this] 5
+here.
+.SS External Hyperlink Targets
+.sp
+External hyperlinks, like Python <https://www.python.org/>
+\&.
+.sp
+embedded External hyperlinks, like Python <https://www.python.org/>
+\&.
+.SS Internal Hyperlink Targets
+.sp
+Internal cross\-references, like example\&.
+.sp
+This is an example cross\-reference target.
+.SS Indirect Hyperlink Targets
+.sp
+Python <https://www.python.org/>
+ is my favourite
+programming language <https://www.python.org/>
+\&.
+.SH Titles are targets, too
+.sp
+Implicit references, like Titles are
+targets, too\&.
+.SH and
+.sp
+See the Python <https://www.python.org/>
+ home page for info.
+.sp
+Write to me <mailto:jdoe@example.com>
+ with your questions.
+.\" deduplicate _Python: https://www.python.org
+.
+.SS URIs with known schemes
+.sp
+ <tel:+48\-816\-555\-1212> 
+ <urn:isbn:0\-486\-27557\-4> 
+ <news:comp.infosystems.www.servers.unix> 
+ <https://john.doe@www.example.com:123/forum/questions/?tag=networking&order=newest#top> 
+.SS Standalone email addresses
+.sp
+like  <someone@somewhere.com> 
+.\" End of generated man page.
