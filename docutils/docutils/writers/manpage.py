@@ -218,19 +218,32 @@ class Translator(nodes.NodeVisitor):
         self.authors = []
         self.section_level = 0
         self._indent = [0]
-        # central definition of simple processing rules
-        # what to output on : visit, depart
         # Do not use paragraph requests ``.PP`` because these set indentation.
         # use ``.sp``. Remove superfluous ``.sp`` in ``astext``.
-        #
+
         # Fonts are put on a stack, the top one is used.
         # ``.ft P`` or ``\\fP`` pop from stack.
         # But ``.BI`` seams to fill stack with BIBIBIBIB...
         # ``B`` bold, ``I`` italic, ``R`` roman should be available.
+
+        # from groff_man_style(7)
         #
+        # \c   End a text line without inserting space or attempting a
+        #      break. ...
+        #      The next line is interpreted as usual and can include a 
+        #      macro call (contrast with \newline). ...
+        #      useful when three font styles are needed in a single
+        #      word, as in a command synopsis.
+        #
+        #             .RB [ \-\-stylesheet=\c
+        #             .IR name ]
+
         # Requests start wit a dot ``.`` or the no-break control character,
         # a neutral apostrophe ``'`` suppresses the break implied by some
-        # requests.
+        # requests. 
+
+        # central definition of simple processing rules
+        # what to output on : visit, depart
         self.defs = {
                 'indent': ('.INDENT %.1f\n', '.UNINDENT\n'),
                 'definition_list_item': ('.TP', ''),  # par. with hanging tag
@@ -240,7 +253,6 @@ class Translator(nodes.NodeVisitor):
 
                 'option_list_item': ('.TP\n', ''),
 
-                'reference': (r'\fI\%', r'\fP'),
                 'emphasis': ('\\fI', '\\fP'),
                 'strong': ('\\fB', '\\fP'),
                 'title_reference': ('\\fI', '\\fP'),
