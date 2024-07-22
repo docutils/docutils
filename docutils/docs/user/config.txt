@@ -228,7 +228,6 @@ Some knowledge of Python_ is assumed for some attributes.
 .. _Python: https://www.python.org/
 .. _RFC 822: https://www.rfc-editor.org/rfc/rfc822.txt
 .. _front-end tool:
-.. _front-end tools:
 .. _application: tools.html
 __ ../api/runtime-settings.html#active-sections
 
@@ -249,7 +248,7 @@ the `identifier normalization`_.
 
 A trailing "%" is replaced with the tag name (new in Docutils 0.16).
 
-:Default: "%" (changed in 0.18 from "id").
+:Default: "%" (changed from "id" in Docutils 0.18).
 :Option:  ``--auto-id-prefix`` (hidden, intended mainly for programmatic use).
 
 .. _identifier normalization:
@@ -331,7 +330,7 @@ to the document to stderr.
 error_encoding
 --------------
 
-The text encoding for error output.
+The text encoding [#encodings]_ for error output.
 
 :Default: The encoding reported by ``sys.stderr``, locale encoding, or "ascii".
 :Options: ``--error-encoding``, ``-e``.
@@ -415,17 +414,10 @@ See also auto_id_prefix_.
 input_encoding
 --------------
 
-The text encoding for input.
+The text encoding [#encodings]_ for input.
 
-*Default*: utf-8. [#]_
-*Option*: ``--input-encoding`` [#i-o-options]_
-
-.. [#] The default changed from None (auto-detect_) to "utf-8" in
-       Docutils 0.22.
-.. [#i-o-options] The short options ``-i`` and ``-o`` were removed
-                  in Docutils 0.22.
-
-.. _auto-detect: ../api/publisher.html#encodings
+:Default: utf-8 (changed from None (auto-detect_) in Docutils 0.22).
+:Option: ``--input-encoding`` (shortcut ``-i`` removed in Docutils 0.22).
 
 
 input_encoding_error_handler
@@ -496,15 +488,25 @@ New in Docutils 0.20.
 output_encoding
 ---------------
 
-The text encoding for output.
+The text encoding [#encodings]_ for output.
+The special value "unicode" can be used with
+the Publisher convenience functions `publish_string()`_ and
+`publish_from_doctree()`_ to skip encoding and return a `str` instance
+instead of `bytes`.
 
-The "output_encoding" setting may also affect the content of the output
-(e.g. an encoding declaration in HTML or XML or the representation of
-characters as LaTeX macro vs. literal character).
+.. Note::
+   * The "output_encoding" setting may affect the content of the output
+     (e.g. an encoding declaration in HTML or XML or the representation
+     of characters as LaTeX macro vs. literal character).
+   * Docutils may introduce non-ASCII text if you use
+     `auto-symbol footnotes`_.
+     In non-English documents, also auto-generated labels
+     may contain non-ASCII characters.
 
 This setting is ignored by the `ODF/ODT Writer`_ which always usues UTF-8.
 
-*Default*: "utf-8".  *Option*: ``--output-encoding``. [#i-o-options]_
+:Default: "utf-8".
+:Option: ``--output-encoding`` (shortcut ``-o`` removed in Docutils 0.22).
 
 
 output_encoding_error_handler
@@ -1449,7 +1451,7 @@ Writer Specific Defaults
 .. class:: run-in narrow
 
 :initial_header_level_:  2 (reserve <h1> for the `document title`_). [#]_
-:`math_output`_:         "MathML" (changed in Docutils 0.22).
+:`math_output`_:  "MathML" (changed from "HTML math.css"in Docutils 0.22).
 :`stylesheet_path <stylesheet_path [html writers]_>`__:
   "minimal.css, plain.css".
 :`xml_declaration <xml_declaration [html writers]_>`__:  False.
@@ -2302,8 +2304,8 @@ One of "standalone", "pep", or the import name of a plug-in reader module.
 parser
 ~~~~~~
 Parser component name.
-Either "`rst <[restructuredtext parser]_>`__" (default),
-"`xml <[xml parser]_>`__", or the import name of a plug-in parser module.
+Either "`rst <[restructuredtext parser]_>`__", "`xml <[xml parser]_>`__",
+or the import name of a plug-in parser module.
 
 Parsers for CommonMark_ known to work with Docutils include
 "`pycmark <[pycmark parser]_>`__", "`myst <[myst parser]_>`__",
@@ -2404,12 +2406,17 @@ Path to input source, set from positional arguments.
    sources to a list instead of overriding previous values.
    The corresponding command line options may be used more than once.
 
+.. [#encodings] Docutils supports all `standard encodings`_ and encodings
+   registered__ with the codecs_ module.
+
 .. [#pwd] Filesystem path relative to the working directory of the
    process at launch.
    Exception: Path settings in configuration files specified by the
    config_ command line option or in directories visited by the
    buildhtml_ application are resolved relative to the directory of
    the respective configuration file.
+
+__ https://docs.python.org/3/library/codecs.html#codecs.register
 
 
 Old-Format Configuration Files
@@ -2434,6 +2441,53 @@ pep_stylesheet_path    [pep_html writer] stylesheet_path
 pep_template           [pep_html writer] template
 =====================  =====================================
 
+
+.. _auto-detect:
+
+Input Encoding Auto-Detection
+=============================
+
+Up to Docutils 0.21, the input_encoding_ default value was ``None`` and
+the actual input encoding detected from a `Unicode byte order mark` (BOM_)
+or an `encoding declaration`_ in the source.
+
+The default input encoding changed to "utf-8" in Docutils 0.22.
+Currently, auto-detection can be selected with an input_encoding_ value
+``None`` (rsp. an empty string in a configuration file).
+However, **this feature** is deprecated and **will be removed** in
+Docutils 1.0.  See the `inspecting_codecs`_ package for a replacement.
+
+Encoding Declaration
+--------------------
+
+Input encoding auto-detection scans the source for an
+*encoding declaration* inspired by :PEP:`263`:
+
+A comment like ::
+
+  .. text encoding: <encoding name>
+
+on the first or second line defines `<encoding name>`
+as the source's input encoding.
+
+Examples: (using formats recognized by popular editors) ::
+
+    .. -*- mode: rst -*-
+       -*- coding: latin1 -*-
+
+or::
+
+    .. vim: set fileencoding=cp737 :
+
+More precisely, the first and second line are searched for the following
+regular expression::
+
+    coding[:=]\s*([-\w.]+)
+
+The first group of this expression is then interpreted as encoding name.
+If the first line matches the second line is ignored.
+
+
 .. References
 
 .. _Docutils Document Tree:
@@ -2443,6 +2497,8 @@ pep_template           [pep_html writer] template
 .. _runtime settings: ../api/runtime-settings.html
 
 .. _Publisher Interface: ../api/publisher.html
+.. _publish_string(): ../api/publisher.html#publish-string
+.. _publish_from_doctree(): ../api/publisher.html#publish-from-doctree
 
 .. RestructuredText Directives
 .. _"class" directive: ../ref/rst/directives.html#class
@@ -2461,6 +2517,8 @@ pep_template           [pep_html writer] template
 .. _table of contents: ../ref/rst/directives.html#table-of-contents
 
 .. RestructuredText Markup Specification
+.. _auto-symbol footnotes:
+    ../ref/rst/restructuredtext.html#auto-symbol-footnotes
 .. _abstract:
 .. _bibliographic field list:
 .. _bibliographic fields:
@@ -2490,3 +2548,9 @@ pep_template           [pep_html writer] template
 .. _ISO 3166: http://www.iso.ch/iso/en/prods-services/iso3166ma/
     02iso-3166-code-lists/index.html
 .. _language tag: https://www.w3.org/International/articles/language-tags/
+
+.. _codecs: https://docs.python.org/3/library/codecs.html
+.. _standard encodings:
+    https://docs.python.org/3/library/codecs.html#standard-encodings
+.. _BOM: https://docs.python.org/3/library/codecs.html#codecs.BOM
+.. _inspecting_codecs: https://codeberg.org/milde/inspecting-codecs

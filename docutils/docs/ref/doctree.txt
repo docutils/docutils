@@ -1472,12 +1472,13 @@ Note that "Filename" is a non-standard <docinfo> field, so becomes a
 generic ``field`` element.  Also note that the "RCSfile" keyword
 syntax has been stripped from the "Filename" data.
 
-See `\<field_list>`_ for an example in a non-bibliographic context.  Also
-see the individual examples for the various `bibliographic elements`_.
+See `\<field_list>`_ for a `reStructuredText field list`_ example
+in a non-bibliographic context.  Also see the individual examples
+for the various `bibliographic elements`_.
 
 .. [#abstract-dedication] Exceptions are the fields "abstract" and
-   "dedication" that are transformed to `\<topic>`_ elements adjacent to
-   the <docinfo>.
+   "dedication" that are transformed to `\<topic>`_ elements
+   adjacent to the <docinfo>.
 
 
 <doctest_block>
@@ -4646,7 +4647,8 @@ The ``source`` attribute is used to store the path or URL to the
 source text that was used to produce the document tree.
 
 It is one of the `common attributes`_, declared for all Docutils
-elements but typically only used on the `root element`_.
+elements but typically only used with the `\<document>`_ and
+`\<system_message>`_ elements.
 
 .. note:: All ``docutils.nodes.Node`` instances also support an
    *internal* ``source`` attribute that is used when reporting
@@ -5317,6 +5319,7 @@ Bibliography
 .. _option list:            rst/restructuredtext.html#option-lists
 .. _RCS Keywords:           rst/restructuredtext.html#rcs-keywords
 .. _rST document:           rst/restructuredtext.html#document
+.. _reStructuredText field list:
 .. _rST field list:         rst/restructuredtext.html#field-lists
 .. _rST reference names:    rst/restructuredtext.html#reference-names
 .. _rST tables:             rst/restructuredtext.html#tables

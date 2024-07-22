@@ -235,7 +235,7 @@ DocInfo
 Given a document starting [#pre-docinfo]_ with a field list, the DocInfo
 transform converts fields with registered `bibliographic field`_ names to
 the corresponding document tree elements becoming child elements of the
-`\<docinfo>`_ element (except for a "dedication" and "abstract", which
+`\<docinfo>`_ element (except for "dedication" and "abstract", which
 become `\<topic>`_ elements after <docinfo>).
 
 .. [#pre-docinfo] A document title and subtitle, header and footer,

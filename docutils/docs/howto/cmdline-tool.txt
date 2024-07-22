@@ -67,7 +67,7 @@ Most of its defaults are used ("standalone" Reader,
 "reStructuredText" Parser, etc.).  The HTML Writer is chosen by name,
 and a description for command-line help is passed in::
 
-    publish_cmdline(writer_name='html', description=description)
+    publish_cmdline(writer='html', description=description)
 
 That's it!  `The Docutils Publisher`_ takes care of the rest.
 

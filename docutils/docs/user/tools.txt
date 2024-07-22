@@ -16,11 +16,11 @@
  Introduction
 --------------
 
-In addition to the `generic command line front end`_, Docutils installs
-a set of small front ends, each specialized for a specific "Reader" (which
-knows how to interpret a file in context), a "Parser" (which
-understands the syntax of the text), and a "Writer" (which knows how
-to generate a specific data format).
+In addition to the generic "docutils_" application, Docutils installs
+a set of small front ends, each specialized for a specific
+"Reader" (which knows how to interpret a file in context),
+"Parser" (which understands the syntax of the text), and
+"Writer" (which knows how to generate a specific data format).
 
 .. note::
    Docutils front-end tool names, install details and the set of
@@ -77,6 +77,9 @@ list.
 
 Generic Command Line Front End
 ==============================
+
+docutils
+--------
 
 :CLI name: ``docutils``
 :Readers:  Standalone (default), PEP

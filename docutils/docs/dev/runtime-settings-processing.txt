@@ -56,9 +56,9 @@ overwrite earlier ones):
    __ ../api/runtime-settings.html#settingsspec-settings-default-overrides
    __ component.settings_default_overrides_
 
-3. Settings specified in the `settings_overrides parameter`_ of the
-   `convenience functions`_ rsp. the `settings_overrides` attribute of
-   a `core.Publisher` instance.
+3. Settings specified in the `"settings_overrides" argument`_ of the
+   `Publisher convenience functions`_ rsp. the `settings_overrides`
+   attribute of a `core.Publisher` instance.
    (details__)
 
    __ OptionParser.defaults_
@@ -76,7 +76,7 @@ overwrite earlier ones):
    __ `Publisher.process_command_line()`_
 
 
-Settings assigned to the `settings parameter`_ of the
+Settings assigned to the `"settings" argument`_ of the
 `convenience functions`_ or the ``Publisher.settings`` attribute
 are used **instead of** the above sources
 (see below for details for `command-line tools`__ and
@@ -91,7 +91,7 @@ Runtime settings processing for command-line tools
 ==================================================
 
 The command-line `front-end tools`_ usually import and call
-the `convenience function`_ ``docutils.core.publish_cmdline()``.
+the Publisher convenience function `publish_cmdline()`_.
 
 1. ``docutils.core.publish_cmdline()`` creates a `Publisher`_ instance::
 
@@ -122,7 +122,7 @@ the `convenience function`_ ``docutils.core.publish_cmdline()``.
 
 4. ``publisher.setup_option_parser()``
 
-   - merges the value of the `config_section parameter`_ into
+   - merges the value of the `"config_section" argument`_ into
      `settings_spec` and
 
    - creates an `OptionParser` instance ::
@@ -277,26 +277,19 @@ command line for settings.
 
 .. _Docutils Runtime Settings:
    ../api/runtime-settings.html
-.. _active sections:
-   ../api/runtime-settings.html#active-sections
-.. _SettingsSpec:
-   ../api/runtime-settings.html#settingsspec
+.. _active sections: ../api/runtime-settings.html#active-sections
+.. _SettingsSpec: ../api/runtime-settings.html#settingsspec
 .. _component:
-.. _components:
-    ../api/runtime-settings.html#components
-.. _application settings specifications:
-.. _convenience function:
-.. _convenience functions:
-    ../api/runtime-settings.html#convenience-functions
-.. _settings_overrides parameter:
-    ../api/runtime-settings.html#settings-overrides-parameter
-.. _settings parameter:
-   ../api/runtime-settings.html#settings-parameter
-.. _config_section parameter:
-   ../api/runtime-settings.html#config-section-parameter
+.. _components: ../api/runtime-settings.html#components
 
+.. _convenience functions:
 .. _Publisher convenience functions:
     ../api/publisher.html#publisher-convenience-functions
+.. _publish_cmdline(): ../api/publisher.html#publish-cmdline
+.. _"settings" argument: ../api/publisher.html#settings
+.. _"settings_overrides" argument: ../api/publisher.html#settings-overrides
+.. _"config_section" argument: ../api/publisher.html#config-section
+
 .. _front-end tools: ../user/tools.html
 .. _configuration file:
 .. _configuration files:

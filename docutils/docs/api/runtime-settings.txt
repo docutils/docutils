@@ -22,15 +22,13 @@ Docutils runtime settings are assembled from several sources:
 * `configuration files`_ (if enabled), and
 * command-line options (if enabled).
 
-Docutils overlays default and explicitly specified values from these
-sources such that settings behave the way we want and expect them to
-behave.
+The individual settings are described in `Docutils Configuration`_.
 
 
 Settings priority
 =================
 
-The sources are overlaid in the following order (later sources
+Docutils overlays settings in the following order (later sources
 overwrite earlier ones):
 
 1. Defaults specified in the `settings_spec`__ and
@@ -44,17 +42,19 @@ overwrite earlier ones):
 
    __ SettingsSpec.settings_default_overrides_
 
-3. Settings specified in the `settings_overrides`__ parameter of the
-   `convenience functions`_ resp. the `settings_overrides` attribute of
-   a `Publisher`_ instance.
+3. Application defaults specified in the `settings_overrides`__ argument
+   of the `Publisher convenience functions`_.
 
-   __ `settings_overrides parameter`_
+   __ publisher.html#settings-overrides
 
 4. Settings specified in `active sections`_ of the `configuration files`_
    in the order described in `Configuration File Sections & Entries`_
    (if enabled).
 
 5. Command line options (if enabled).
+
+Applications may opt-out of the standard settings processing providing
+their own set of settings.
 
 For details see the ``docutils/__init__.py``, ``docutils/core.py``, and
 ``docutils.frontend.py`` modules and the implementation description in
@@ -71,8 +71,10 @@ SettingsSpec base class
    deprecated optparse_ module with argparse_.
 
 The `docutils.SettingsSpec` base class is inherited by Docutils
-components_ and `frontend.OptionParser`.
-It defines the following six **attributes**:
+components_ and `frontend.OptionParser`.  It defines six attributes:
+
+attributes
+----------
 
 .. _SettingsSpec.settings_spec:
 
@@ -109,8 +111,6 @@ It defines the following six **attributes**:
 `relative_path_settings`
    listing settings containing filesystem paths.
 
-   .. _active sections:
-
 `config_section`
    the configuration file section specific to this
    component.
@@ -119,8 +119,11 @@ It defines the following six **attributes**:
    lists configuration files sections
    that should also be read (before the `config_section`).
 
-The last two attributes define which configuration file sections are
-"active". See also `Configuration File Sections & Entries`_.
+.. _active sections:
+
+The last two attributes define which configuration file sections are "active".
+See also `Configuration File Sections & Entries`_ in the `Docutils
+Configuration`_ guide.
 
 
 Glossary
@@ -131,61 +134,17 @@ Glossary
 components
 ----------
 
-Docutils front-ends and applications combine a selection of
-*components* of the `Docutils Project Model`_.
+Docutils front-ends and applications combine a selection of *components*
+of the `Docutils Project Model`_ (reader, parser, writer).
 
 All components inherit the `SettingsSpec`_ base class.
 This means that all instances of ``readers.Reader``, ``parsers.Parser``, and
 ``writers.Writer`` are also instances of ``docutils.SettingsSpec``.
 
 For the determination of runtime settings, ``frontend.OptionParser`` and
-the `settings_spec parameter`_ in application settings specifications
+applications providing a `SettingsSpec`_ instance via the `settings
+specification arguments`_ of the `Publisher convenience functions`_
 are treated as components as well.
-
-
-.. _convenience function:
-
-convenience functions
----------------------
-
-Applications usually deploy Docutils by one of the
-`Publisher convenience functions`_.
-
-All convenience functions accept the following optional parameters:
-
-.. _settings parameter:
-
-`settings`
-  a ``frontend.Values`` instance.
-  If present, it must be complete.
-
-  No further runtime settings processing is done and the
-  following parameters have no effect.
-
-  .. _settings_spec parameter:
-
-`settings_spec`
-  a `SettingsSpec`_ subclass or instance containing the settings
-  specification for the "Application" itself.
-  The instance is added to the components_ (after the generic
-  settings, parser, reader, and writer).
-
-  .. _settings_overrides parameter:
-
-`settings_overrides`
-  a dictionary which is used to update the
-  defaults of the components' settings specifications.
-
-  .. _config_section parameter:
-
-`config_section`
-  the name of an application-specific
-  `configuration file section`_ for this application.
-
-  Can be specified instead of a `settings_spec` (a new SettingsSpec_
-  instance that just defines a configuration section will be created)
-  or in addition to a `settings_spec`
-  (overriding its `config_section` attribute).
 
 
 settings_spec
@@ -193,16 +152,19 @@ settings_spec
 
 The name ``settings_spec`` may refer to
 
-a) an instance of the SettingsSpec_ class, or
+a) an instance of the SettingsSpec_ class,
 b) the data structure `SettingsSpec.settings_spec`_ which is used to
-   store settings details.
+   store settings details, or
+c) the `"settings_spec" argument`_ of the Publisher convenience functions.
 
 
 .. References:
 
-.. _Publisher: publisher.html
+.. _Publisher: publisher.html#publisher
 .. _Publisher convenience functions:
     publisher.html#publisher-convenience-functions
+.. _settings specification arguments: publisher.html#settings-specification
+.. _"settings_spec" argument: publisher.html#settings-spec
 .. _front-end tools: ../user/tools.html
 .. _configuration files:
 .. _Docutils Configuration: ../user/config.html#configuration-files
