@@ -17,6 +17,25 @@ if __name__ == '__main__':
     sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from docutils.core import publish_string
+from docutils.writers.manpage import insert_URI_breakpoints
+
+URI_tests = (
+        ("///abc.de", r"///\:abc.de"),
+        ("/abc.de/", r"/\:abc.de/"),
+        ("http://abc.de", r"http://\:abc.de"),
+        ("http://abc.de/fg", r"http://\:abc.de/\:fg"),
+        ("http://abc.de/fg?q=abc", r"http://\:abc.de/\:fg?\:q=abc"),
+        ("http://abc.de/fg/?q=abc", r"http://\:abc.de/\:fg/?\:q=abc"),
+        ("http://abc.de/fg/?q=abc&me#", r"http://\:abc.de/\:fg/?\:q=abc&\:me#"),
+        ("me@home.here", r"me@\:home.here"),
+        )
+
+class URIBreakpointsTestCase(unittest.TestCase):
+
+    def test_insert(self):
+        for t in URI_tests:
+            got = insert_URI_breakpoints(t[0])
+            self.assertEqual(t[1], got)
 
 
 class WriterPublishTestCase(unittest.TestCase):

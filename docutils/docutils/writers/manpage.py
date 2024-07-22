@@ -89,6 +89,23 @@ level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
 ..
 """
 
+# see groff_man_style recommends aplying non-printing break points
+# in long URIs.
+NONPRINTING_BREAKPOINT = r'\:'
+
+# after a slash series of
+# after?before at sign
+# after question marks
+# after question ampersands
+# after question number signs
+# (?=.) avoids matching the of string
+# TODO before each dot or a series of
+NONBREAKING_INSERT_RE = re.compile(r'([/@?&#]+)(?=.)')
+
+def insert_URI_breakpoints(s):
+    # TODO only for long URIs ?
+    return NONBREAKING_INSERT_RE.sub( r'\1'+NONPRINTING_BREAKPOINT, s)
+
 
 class Writer(writers.Writer):
     """

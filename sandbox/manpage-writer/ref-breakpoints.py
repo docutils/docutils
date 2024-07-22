@@ -1,3 +1,6 @@
+# MOVED to writers.manpage and test.writers.manpage
+# LEFT for reference.
+
 # see groff_man_style on
 
 #  Hyperlink macros
@@ -32,6 +35,8 @@
 #      vers.
 #      
 
+from docutils.writers.manpage import insert_URI_breakpoints
+
 tests = (
         ("///abc.de", r"///\:abc.de"),
         ("/abc.de/", r"/\:abc.de/"),
@@ -43,27 +48,20 @@ tests = (
         ("me@home.here", r"me@\:home.here"),
         )
 
-import re
-
-BREAKPOINT = r'\:'
-
-# after series of slash
+# after a slash series of
 # after?before at sign
 # after question marks
 # after question ampersands
 # after question number signs
 # (?=.) avoids matching the of string
-MATCH = re.compile(r'([/@?&#]+)(?=.)')
-
-def insert_breakpoints(s):
-    return MATCH.sub( r'\1'+BREAKPOINT, s)
+# TODO before each dot or a series of
 
 err = 0
 cnt = 0
 
 for t in tests:
     cnt += 1
-    got = insert_breakpoints(t[0])
+    got = insert_URI_breakpoints(t[0])
     if t[1] != got:
         print( "FAIL {0} got {1} expected {2}".format(t[0], got, t[1]) )
         err += 1

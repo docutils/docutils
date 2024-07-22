@@ -143,6 +143,7 @@ Release 0.22b.dev (unpublished)
   - Feature-request #105 more informative document comments.
     docutils version in header
   - Stop converting text to full capitals (bug #481).
+  - Add module function insert_URI_breakpoints.
 
 * docutils/writers/null.py
 
