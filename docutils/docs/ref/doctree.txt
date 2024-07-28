@@ -1992,7 +1992,7 @@ The corresponding footnote mark in running text is set by the
              `%structure.model`_ parameter entities in their content models
              may contain <footnote>.
 
-:Children:   <footnote> elements begin with an optional `\<label>`_
+:Children:   <footnote> elements begin with an optional [#]_ `\<label>`_
              and contain `body elements`_. ::
 
                  (label?, (%body.elements;)+)
@@ -2003,6 +2003,8 @@ The corresponding footnote mark in running text is set by the
 :Parameter Entities: The `%body.elements`_ parameter entity
              directly includes <footnote>.  The `%structure.model`_
              parameter entity indirectly includes <footnote>.
+
+.. [#] The footnote label will become mandatory in Docutils 1.0.
 
 Examples
 --------

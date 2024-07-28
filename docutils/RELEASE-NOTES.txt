@@ -51,7 +51,10 @@ Document Tree / Docutils DTD
   in Docutils 1.0.
 
 * Use the ``%tbl.table.att`` parameter entity instead of ``%bodyatt``
-  to customize the <table> element's attribute list in Docutils 1.0.
+  to customize the <table> element's attribute list in Docutils 1.0.
+
+* The <footnote> element's first child (<label>) will become mandatory
+  in Docutils 1.0.
 
 .. _refname attribute: docs/ref/doctree.html#refname
 
