@@ -30,6 +30,7 @@ URI_tests = (
         ("me@home.here", r"me@\:home.here"),
         )
 
+
 class URIBreakpointsTestCase(unittest.TestCase):
 
     def test_insert(self):
@@ -53,7 +54,6 @@ class WriterPublishTestCase(unittest.TestCase):
                         settings_overrides={
                             '_disable_config': True,
                             'strict_visitor': True,
-                            'validate': False,  # allow testing invalid doctree
                         }).decode()
                     self.assertEqual(case_expected, output)
 
@@ -417,14 +417,15 @@ input device
 
 totest['citation'] = [
         [""".. [docutils] blah blah blah
-.. [empty_citation]
+.. [citation2] Another Source
 """,
 document_start + indend_macros + """.TH "" "" "" ""
 .SH Name
  \\- \n\
 .IP [docutils] 5
 blah blah blah
-.IP [empty_citation] 5
+.IP [citation2] 5
+Another Source
 .\\" End of generated man page.
 """],
 ]

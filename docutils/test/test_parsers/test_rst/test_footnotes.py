@@ -100,20 +100,24 @@ totest['footnotes'] = [
             whose block starts on line 2.
 """],
 ["""\
+An empty footnote raises a warning:
+
 .. [1]
 
-That was an empty footnote.
 """,
 """\
 <document source="test data">
+    <paragraph>
+        An empty footnote raises a warning:
     <footnote ids="footnote-1" names="1">
         <label>
             1
-    <paragraph>
-        That was an empty footnote.
+        <system_message level="2" line="4" source="test data" type="WARNING">
+            <paragraph>
+                Footnote content expected.
 """],
 ["""\
-.. [1]
+.. [1] spamalot
 No blank line.
 """,
 """\
@@ -121,6 +125,8 @@ No blank line.
     <footnote ids="footnote-1" names="1">
         <label>
             1
+        <paragraph>
+            spamalot
     <system_message level="2" line="2" source="test data" type="WARNING">
         <paragraph>
             Explicit markup ends without a blank line; unexpected unindent.

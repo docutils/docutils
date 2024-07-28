@@ -56,7 +56,6 @@ class WriterPublishTestCase(unittest.TestCase):
 
     def test_defaults(self):
         settings = self.settings.copy()
-        settings['validate'] = False  # we test an invalid footnote
         self.run_samples(samples_default, settings)
 
     def test_docutils_toc(self):
@@ -328,9 +327,7 @@ samples_default['footnote_text'] = [
 ["""\
 .. [1] paragraph
 
-.. [2]
-
-.. [3] 1. enumeration
+.. [2] 1. enumeration
 """,
 # expected output
 head_template.substitute(dict(parts,
@@ -353,9 +350,7 @@ head_template.substitute(dict(parts,
 paragraph
 }
 %
-\DUfootnotetext{footnote-2}{footnote-2}{2}{}
-%
-\DUfootnotetext{footnote-3}{footnote-3}{3}{
+\DUfootnotetext{footnote-2}{footnote-2}{2}{
 \begin{enumerate}
 \item enumeration
 \end{enumerate}

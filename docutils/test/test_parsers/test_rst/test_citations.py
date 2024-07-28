@@ -120,11 +120,14 @@ That was an empty citation.
     <citation ids="citation" names="citation">
         <label>
             citation
+        <system_message level="2" line="2" source="test data" type="WARNING">
+            <paragraph>
+                Citation content expected.
     <paragraph>
         That was an empty citation.
 """],
 ["""\
-.. [citation]
+.. [citation] The Source
 No blank line.
 """,
 """\
@@ -132,6 +135,8 @@ No blank line.
     <citation ids="citation" names="citation">
         <label>
             citation
+        <paragraph>
+            The Source
     <system_message level="2" line="2" source="test data" type="WARNING">
         <paragraph>
             Explicit markup ends without a blank line; unexpected unindent.

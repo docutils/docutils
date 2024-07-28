@@ -84,6 +84,10 @@ Release 0.22b.dev (unpublished)
   - Renamed `normalized_role_options()` to `normalized_role_options()`
     (it is now also used for directive options).
 
+* docutils/parsers/rst/states.py
+
+  - Raise warning for empty footnotes and citations.
+
 * docutils/readers/__init__.py:
 
   - Deprecate "parser_name" argument of `Reader.__init__()`.

@@ -1913,6 +1913,8 @@ class Body(RSTState):
             self.document.set_id(footnote, footnote)
         if indented:
             self.nested_parse(indented, input_offset=offset, node=footnote)
+        else:
+            footnote += self.reporter.warning('Footnote content expected.')
         return [footnote], blank_finish
 
     def citation(self, match):
@@ -1930,6 +1932,8 @@ class Body(RSTState):
         self.document.note_explicit_target(citation, citation)
         if indented:
             self.nested_parse(indented, input_offset=offset, node=citation)
+        else:
+            citation += self.reporter.warning('Citation content expected.')
         return [citation], blank_finish
 
     def hyperlink_target(self, match):
