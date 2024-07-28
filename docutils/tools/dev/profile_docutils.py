@@ -1,4 +1,4 @@
-#!/usr/bin/python3 -i
+#!/usr/bin/env -S python3 -i
 
 # $Id$
 # Author: Lea Wiemann <LeWiemann@gmail.com>
