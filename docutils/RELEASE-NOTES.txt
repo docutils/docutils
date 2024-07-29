@@ -77,8 +77,9 @@ Writers
 
 * "html5" writer:
 
-  - Move attribution behind the blockquote to comply with the `"living
-    standard"`__. (HTML5__ allows <cite> elements inside a blockquote.)
+  - Move attribution behind the blockquote to comply with the
+    `"HTML living standard"`__.  (The now retired HTML5__ W3C recommendation
+    allows <cite> elements inside a blockquote.)
 
     __ https://html.spec.whatwg.org/#the-blockquote-element
     __ https://www.w3.org/TR/2014/REC-html5-20141028/grouping-content.html
@@ -114,12 +115,6 @@ Writers
 
   - Remove ``use_verbatim_when_possible`` setting
     (use literal_block_env_: verbatim) in Docutils 2.0.
-
-  - Don't wrap references with custom reference-label_ in
-    a ``\hyperref`` command in Docutils 0.22.
-    Specify, e.g., "ref" instead of "ref*" to keep generating hyperlinks.
-
-    .. _reference-label: docs/user/config.html#reference-label
 
 Misc
 ----
@@ -215,6 +210,13 @@ Output changes
 
      `publish_string()` now returns a `bytes` or `str` instance
      for all writers (as documented).
+
+  "latex" writer:
+     Don't wrap references with custom reference-label_ in a ``\hyperref``
+     command. The "hyperref" package generates hyperlinks for labels by
+     default, so there is no change in the PDF (except for "ref*").
+
+     .. _reference-label: docs/user/config.html#reference-label
 
 New objects
   `parsers.docutils_xml`

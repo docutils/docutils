@@ -64,7 +64,7 @@ Release 0.22b.dev (unpublished)
 
   - New parser for Docutils XML sources. Provisional.
 
-* docutils/parsers/rst/languages/*.py
+* docutils/parsers/rst/languages/
 
   - Removed mistranslations of the "admonition" directive name.
 
@@ -144,6 +144,10 @@ Release 0.22b.dev (unpublished)
 
   - Remove optional argument `pxunit` of `LaTeXTranslator.to_latex_length()`
     (ignored since at least 2012).
+  - Don't wrap references with custom reference-label_ in
+    a ``\hyperref`` command.
+
+  .. _reference-label: docs/user/config.html#reference-label
 
 * docutils/writers/manpage.py
 
@@ -931,7 +935,7 @@ Release 0.17.1 (2021-04-16)
   - Open ``docutils.sty`` with encoding set to "utf-8".
     Fixes bug #414: error with Py3k when locale encoding is "ascii".
 
-* docutils/parsers/*.py, docutils/transforms/*.py
+* docutils/parsers/ docutils/transforms/
 
   - Provide fallbacks for parser config settings
     to facilitate programmatic use.

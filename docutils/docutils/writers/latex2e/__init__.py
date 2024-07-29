@@ -2838,12 +2838,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
             raise AssertionError('Unknown reference.')
         if not self.is_inline(node):
             self.out.append('\n')
-        self.out.append('\\hyperref[%s]{' % href)
         if self.reference_label:
-            # TODO: don't use \hyperref if self.reference_label is True
-            self.out.append('\\%s{%s}}' %
+            self.out.append('\\%s{%s}' %
                             (self.reference_label, href.replace('#', '')))
             raise nodes.SkipNode
+        self.out.append('\\hyperref[%s]{' % href)
 
     def depart_reference(self, node):
         self.out.append('}')
