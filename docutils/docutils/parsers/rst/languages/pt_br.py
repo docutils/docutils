@@ -28,7 +28,6 @@ directives = {
       'dica': 'tip',
       'aviso': 'warning',
       'advertência': 'admonition',
-      'exortação': 'admonition',  # sic! advice/advisory/remark, not reprimand
       'barra-lateral': 'sidebar',
       'tópico': 'topic',
       'bloco-de-linhas': 'line-block',

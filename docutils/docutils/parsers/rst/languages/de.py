@@ -18,7 +18,6 @@ __docformat__ = 'reStructuredText'
 
 directives = {
       'warnhinweis': 'admonition',  # or, more generally, 'anmerkung'?
-      'ermahnung': 'admonition',  # sic! kept for backwards compatibiltity
       'achtung': 'attention',
       'vorsicht': 'caution',
       'code': 'code',

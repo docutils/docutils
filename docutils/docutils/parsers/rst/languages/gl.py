@@ -19,6 +19,7 @@ __docformat__ = 'reStructuredText'
 
 directives = {
       # language-dependent: fixed
+      'admonition (translation required)': 'admonition',
       'atención': 'attention',
       'advertencia': 'caution',
       'code (translation required)': 'code',
@@ -29,7 +30,6 @@ directives = {
       'nota': 'note',
       'consello': 'tip',
       'aviso': 'warning',
-      'admonición': 'admonition',  # sic! advice/advisory/remark, not reprimand
       'barra lateral': 'sidebar',
       'tópico': 'topic',
       'bloque-liña': 'line-block',

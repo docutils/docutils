@@ -28,7 +28,6 @@ directives = {
       'tip': 'tip',
       'waarschuwing': 'warning',
       'advies': 'admonition',
-      'aanmaning': 'admonition',  # sic! kept for backwards compatibiltity
       'katern': 'sidebar',
       'onderwerp': 'topic',
       'lijn-blok': 'line-block',

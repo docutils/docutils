@@ -64,6 +64,10 @@ Release 0.22b.dev (unpublished)
 
   - New parser for Docutils XML sources. Provisional.
 
+* docutils/parsers/rst/languages/*.py
+
+  - Removed mistranslations of the "admonition" directive name.
+
 * docutils/parsers/recommonmark_wrapper.py
 
   - New method `Parser.finish_parse()` to clean up (before validating).

@@ -17,6 +17,7 @@ __docformat__ = 'reStructuredText'
 
 directives = {
       # language-dependent: fixed
+      'admonition (translation required)': 'admonition',
       'huomio': 'attention',
       'varo': 'caution',
       'code (translation required)': 'code',
@@ -27,7 +28,6 @@ directives = {
       'huomautus': 'note',
       'neuvo': 'tip',
       'varoitus': 'warning',
-      'kehotus': 'admonition',  # sic! advice/advisory/remark, not reprimand
       'sivupalkki': 'sidebar',
       'aihe': 'topic',
       'rivi': 'line-block',

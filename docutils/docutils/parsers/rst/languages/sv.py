@@ -24,7 +24,7 @@ directives = {
       'notera': 'note',
       'tips': 'tip',
       'varning': 'warning',
-      'anmärkning': 'admonition',  # literal 'tillrättavisning', 'förmaning'
+      'anmärkning': 'admonition',
       'sidorad': 'sidebar',
       'ämne': 'topic',
       'tema': 'topic',

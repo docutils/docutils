@@ -90,7 +90,7 @@ Writers
     specification of the aspect ratio to `prevent jank when loading
     images`__ without overwriting an image size set in a CSS stylesheet
     in Docutils 0.22 (cf.  `feature-requests:102`__).
-    The current behaviour is kept for dimensions with value, so
+    The current behaviour is kept for dimensions with units, so
     users may specify, e.g. ``:width: 50px`` instead of ``:width: 50``
     to override CSS stylesheet rules.
 
@@ -171,16 +171,6 @@ Misc
 
   __ docs/ref/transforms.html
 
-* Remove mistranslated localizations of the "admonition" directive name in
-  Docutils 0.22.
-
-  Use the English term, matching translations introduced in Docutils 0.21,
-  or specific admonitions instead of "aanmaning" (nl),
-  "admonition" (fr), "ammonizione" (it), "ermahnung" (de),
-  "exhortación" (es), "formaning" (da), "sciigo" (eo),
-  "upomnienie" (pl), "vermaning" (af),
-  to avoid errors in future conversions.
-
 .. _front end tools: docs/user/tools.html
 .. _input_encoding: docs/user/config.html#input-encoding
 .. _math_output: docs/user/config.html#math-output
@@ -242,19 +232,26 @@ New objects
 
 Removed objects
   `docutils.core.Publisher.setup_option_parser()`
-     internal, obsolete
+     internal, obsolete,
   `docutils.nodes.Element.set_class()`
-     Obsolete. Append to Element['classes'] directly.
+     obsolete, append to Element['classes'] directly,
   `docutils.parsers.rst.directives.tables.CSVTable.decode_from_csv()`
-     not required with Python 3
+     not required with Python 3,
   `docutils.parsers.rst.directives.tables.CSVTable.encode_from_csv()`
-     not required with Python 3
+     not required with Python 3,
   `docutils.transforms.writer_aux.Compound`
-     not used since Dec 2010
+     not used since Dec 2010,
   `docutils.utils.error_reporting`
-     obsolete in Python 3
+     obsolete in Python 3,
   `docutils.utils.Reporter.set_conditions()`
-     Obsolete. Set attributes via configuration settings or directly.
+     obsolete, set attributes via configuration settings or directly.
+
+Removed localisations:
+  Mistranslations of the "admonition" directive name:
+     Use "advies" (af), "varsel" (da), "warnhinweis" (de), "aviso" (es),
+     "sciigo" (eo), "annonce" (fr), "avviso" (it), "advies" (nl),
+     "zauważenie" (pl) (introduced in Docutils 0.21)
+     or the English name "admonition".
 
 Removed files
   ``tools/rst2odt_prepstyles.py``

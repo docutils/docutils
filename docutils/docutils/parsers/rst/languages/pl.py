@@ -28,7 +28,6 @@ directives = {
     'rada': 'tip',
     'ostrzeżenie': 'warning',
     'zauważenie': 'admonition',  # remark
-    'upomnienie': 'admonition',  # sic! kept for backwards compatibiltity
     'ramka': 'sidebar',
     'temat': 'topic',
     'blok-linii': 'line-block',

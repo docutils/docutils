@@ -30,7 +30,6 @@ directives = {
       'tips': 'tip',
       'advarsel': 'warning',
       'varsel': 'admonition',
-      'formaning': 'admonition',  # sic! kept for backwards compatibiltity
       'sidebjælke': 'sidebar',
       'emne': 'topic',
       'linje-blok': 'line-block',

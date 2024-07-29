@@ -29,7 +29,6 @@ directives = {
     'helpeto': 'tip',
     'averto': 'warning',
     'sciigo': 'admonition',
-    'admono': 'admonition',  # sic! kept for backwards compatibiltity
     'flankteksto': 'sidebar',
     'temo': 'topic',
     'linea-bloko': 'line-block',

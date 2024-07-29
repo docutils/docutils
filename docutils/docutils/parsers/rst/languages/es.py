@@ -28,8 +28,6 @@ directives = {
     'consejo': 'tip',
     'advertencia': 'warning',
     'aviso': 'admonition',
-    'exhortacion': 'admonition',  # sic! kept for backwards compatibiltity
-    'exhortación': 'admonition',  # sic! kept for backwards compatibiltity
     'nota-al-margen': 'sidebar',
     'tema': 'topic',
     'bloque-de-lineas': 'line-block',

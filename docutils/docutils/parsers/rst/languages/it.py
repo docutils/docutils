@@ -28,7 +28,6 @@ directives = {
       'consiglio': 'tip',
       'avvertenza': 'warning',
       'avviso': 'admonition',
-      'ammonizione': 'admonition',  # sic! kept for backards compatibility
       'riquadro': 'sidebar',
       'argomento': 'topic',
       'blocco-di-righe': 'line-block',

@@ -26,7 +26,6 @@ directives = {
       'astuce': 'tip',
       'avertissement': 'warning',
       'annonce': 'admonition',
-      'admonition': 'admonition',  # sic! kept for backwards compatibiltity
       # suggestions: annonce, avis, indication, remarque, renseignement
       # see also https://sourceforge.net/p/docutils/bugs/453/
       'encadré': 'sidebar',

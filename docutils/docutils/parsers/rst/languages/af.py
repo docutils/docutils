@@ -27,7 +27,6 @@ directives = {
       'tip': 'tip',  # hint and tip both have the same translation: wenk
       'waarskuwing': 'warning',
       'advies': 'admonition',
-      'vermaning': 'admonition',  # sic! kept for backwards compatibiltity
       'kantstreep': 'sidebar',
       'onderwerp': 'topic',
       'lynblok': 'line-block',
