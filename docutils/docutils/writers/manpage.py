@@ -102,9 +102,10 @@ NONPRINTING_BREAKPOINT = r'\:'
 # TODO before each dot or a series of
 NONBREAKING_INSERT_RE = re.compile(r'([/@?&#]+)(?=.)')
 
+
 def insert_URI_breakpoints(s):
     # TODO only for long URIs ?
-    return NONBREAKING_INSERT_RE.sub( r'\1'+NONPRINTING_BREAKPOINT, s)
+    return NONBREAKING_INSERT_RE.sub(r'\1' + NONPRINTING_BREAKPOINT, s)
 
 
 class Writer(writers.Writer):
@@ -132,7 +133,7 @@ class Writer(writers.Writer):
 
 class Table:
     """
-    man package table handling. 
+    man package table handling.
     """
     def __init__(self):
         self._rows = []
@@ -188,13 +189,16 @@ class Table:
 
 class Translator(nodes.NodeVisitor):
     """
-    Generate unixlike manual pages using the man macro package from a Docutils document tree.
+    Generate unix-like manual pages using the man macro package
+    from a Docutils document tree.
     """
 
     words_and_spaces = re.compile(r'\S+| +|\n')
     possibly_a_roff_command = re.compile(r'\.\w')
-    document_start = ( 'Man page generated from reStructuredText by manpage writer\n'
-                      f'from docutils {docutils.__version__}.' )
+    document_start = (
+        'Man page generated from reStructuredText by manpage writer\n'
+        f'from docutils {docutils.__version__}.'
+    )
 
     def __init__(self, document):
         nodes.NodeVisitor.__init__(self, document)
@@ -215,7 +219,7 @@ class Translator(nodes.NodeVisitor):
         # writing the header .TH and .SH Name is postboned after
         # docinfo.
         self._docinfo = {
-                "title": "", 
+                "title": "",
                 "subtitle": "",
                 "manual_section": "", "manual_group": "",
                 "author": [],
@@ -247,7 +251,7 @@ class Translator(nodes.NodeVisitor):
         #
         # \c   End a text line without inserting space or attempting a
         #      break. ...
-        #      The next line is interpreted as usual and can include a 
+        #      The next line is interpreted as usual and can include a
         #      macro call (contrast with \newline). ...
         #      useful when three font styles are needed in a single
         #      word, as in a command synopsis.
@@ -257,7 +261,7 @@ class Translator(nodes.NodeVisitor):
 
         # Requests start wit a dot ``.`` or the no-break control character,
         # a neutral apostrophe ``'`` suppresses the break implied by some
-        # requests. 
+        # requests.
 
         # central definition of simple processing rules
         # what to output on : visit, depart
@@ -1046,7 +1050,7 @@ class Translator(nodes.NodeVisitor):
             # if content has the "email" do not output "mailto:email"
             if node['refuri'].endswith(node.astext()):
                 self.body.append(" <")
-        #TODO elif 'refid' in node:
+        # TODO elif 'refid' in node:
 
     def depart_reference(self, node):
         if 'refuri' in node:
@@ -1055,7 +1059,7 @@ class Translator(nodes.NodeVisitor):
                 self.body.append("> ")
             else:
                 self.body.append(" <%s>\n" % node['refuri'])
-        #TODO elif 'refid' in node:
+        # TODO elif 'refid' in node:
 
     def visit_revision(self, node):
         self.visit_docinfo_item(node, 'revision')

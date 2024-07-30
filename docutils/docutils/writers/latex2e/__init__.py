@@ -1815,7 +1815,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 self.out.append(r'\cite{')
                 self.inside_citation_reference_label = True
             else:
-                assert self.out[-1] in (' ', '\n'),\
+                assert self.out[-1] in (' ', '\n'), \
                         'unexpected non-whitespace while in reference label'
                 del self.out[-1]
         else:

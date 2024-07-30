@@ -1,27 +1,34 @@
 [flake8]
 # Problems that are either not fixed yet or allowed by PEP8:
 ignore =
-  E123, # closing bracket does not match indentation of opening bracket's line
+  E123,
+  # E123: "closing bracket does not match indentation of opening bracket's line"
   # PEP8 "may either line up under the first […] character of the last line …"
 
-  E125, # continuation line with same indent as next logical line
+  E125,
+  # E125: "continuation line with same indent as next logical line"
   # allowed by PEP8 cf. https://github.com/PyCQA/pycodestyle/issues/126
 
-  E126, # continuation line over-indented for hanging indent
+  E126,
+  # E126: "continuation line over-indented for hanging indent"
   # some cases are mandated by PEP8 to distinguish hanging indent from nesting.
   # Other cases improve readability.
 
-  E129, # visually indented line with same indent as next logical line
+  E129,
+  # E129: "visually indented line with same indent as next logical line"
   # allowed by PEP8
 
-  E226, # missing whitespace around arithmetic operator
-  E228, # missing whitespace around modulo operator
+  E226,
+  E228,
+  # E226: "missing whitespace around arithmetic operator"
+  # E228: "missing whitespace around modulo operator"
   # not generally frowned on by PEP8:
   # "If operators with different priorities are used, consider adding
   # whitespace around the operators with the lowest priority(ies).
   # Use your own judgment; …"
 
-  W503, # line break before binary operator
+  W503,
+  # W503: "line break before binary operator"
   # this is the recommended style (changed on April 16th, 2016)
 
 # Allow exceptions for specific files (requires flake8 >= 3.7.0)
