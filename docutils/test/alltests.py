@@ -14,25 +14,19 @@ subdirectories (packages) called 'test_*', are loaded and test suites within
 are run.
 """
 
+import atexit
+import platform
 import time
-# Start point for actual elapsed time, including imports
-# and setup outside of unittest.
-start = time.time()
-
-import atexit               # noqa: E402
-import os                   # noqa: E402
-from pathlib import Path    # noqa: E402
-import platform             # noqa: E402
-import sys                  # noqa: E402
-from typing import TYPE_CHECKING  # noqa: E402
-
+import sys
+from pathlib import Path
+from typing import TYPE_CHECKING
 
 # Prepend the "docutils root" to the Python library path
 # so we import the local `docutils` package.
 DOCUTILS_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(DOCUTILS_ROOT))
 
-import docutils             # noqa: E402
+import docutils  # NoQA: E402
 
 if TYPE_CHECKING:
     import types
@@ -98,14 +92,16 @@ class NumbersTestResult(unittest.TextTestResult):
 
 
 if __name__ == '__main__':
+    # Start point for elapsed time, except suite setup.
+    start = time.time()
     suite = unittest.defaultTestLoader.discover(str(DOCUTILS_ROOT / 'test'))
     print(f'Testing Docutils {docutils.__version__} '
           f'with Python {sys.version.split()[0]} '
           f'on {time.strftime("%Y-%m-%d at %H:%M:%S")}')
     print(f'OS: {platform.system()} {platform.release()} {platform.version()} '
           f'({sys.platform}, {platform.platform()})')
-    print(f'Working directory: {os.getcwd()}')
-    print(f'Docutils package: {os.path.dirname(docutils.__file__)}')
+    print(f'Working directory: {Path.cwd()}')
+    print(f'Docutils package: {Path(docutils.__file__).parent}')
     sys.stdout.flush()
     result = unittest.TextTestRunner(resultclass=NumbersTestResult).run(suite)
     finish = time.time()
