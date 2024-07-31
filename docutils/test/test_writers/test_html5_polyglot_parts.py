@@ -66,6 +66,10 @@ else:
         '</aside>\n')
 
 
+def relpath(path: Path) -> str:
+    return path.relative_to(Path.cwd()).as_posix()
+
+
 class Html5WriterPublishPartsTestCase(unittest.TestCase):
     """Test case for HTML writer via the publish_parts interface."""
 
@@ -542,7 +546,7 @@ No caption nor legend.
 """,
 }],
 [f"""\
-.. include:: {DATA_ROOT}/multiple-term-definition.xml
+.. include:: {relpath(DATA_ROOT / 'multiple-term-definition.xml')}
    :parser: xml
 """,
 {'fragment': """\
@@ -714,7 +718,7 @@ totest['system_messages'] = ({'stylesheet_path': '',
 """,
 }],
 [f"""\
-.. image:: {DATA_ROOT}/circle-broken.svg
+.. image:: {relpath(DATA_ROOT / 'circle-broken.svg')}
    :loading: embed
 """,
 {'fragment': f"""\
@@ -725,7 +729,7 @@ totest['system_messages'] = ({'stylesheet_path': '',
 
 <aside class="system-message">
 <p class="system-message-title">System Message: ERROR/3 (<span class="docutils literal">&lt;string&gt;</span>, line 1)</p>
-<p>Cannot parse SVG image &quot;{DATA_ROOT}/circle-broken.svg&quot;:
+<p>Cannot parse SVG image &quot;{relpath(DATA_ROOT / 'circle-broken.svg')}&quot;:
   not well-formed (invalid token): line 3, column 48</p>
 </aside>
 """
@@ -831,7 +835,7 @@ totest['no_system_messages'] = ({'stylesheet_path': '',
 """,
 }],
 [f"""\
-.. image:: {DATA_ROOT}/circle-broken.svg
+.. image:: {relpath(DATA_ROOT / 'circle-broken.svg')}
    :loading: embed
 """,
 {'fragment': """\

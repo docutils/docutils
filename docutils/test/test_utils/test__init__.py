@@ -339,7 +339,7 @@ class HelperFunctionTests(unittest.TestCase):
             source = r'C:\foo\bar\fileA'
         target = os.path.join('eggs', 'fileB')
         self.assertEqual(utils.relative_path(source, target),
-                         os.path.abspath('eggs/fileB'))
+                         os.path.abspath('eggs/fileB').replace('\\', '/'))
         # Correctly process characters outside the ASCII range:
         self.assertEqual(utils.relative_path('spam', 'spam'), '')
         source = os.path.join('häm', 'spam', 'fileA')
