@@ -45,7 +45,6 @@ def process_and_return_filelist(options: list[str]) -> tuple[list[str], list[str
         encoding='utf-8',
         errors='replace',
     )
-    print(ret.stdout)
     for line in ret.stdout.splitlines():
         # BUG no colon in filename/path allowed
         item = line.split(": ")[-1].strip()
