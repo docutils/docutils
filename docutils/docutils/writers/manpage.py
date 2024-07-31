@@ -46,7 +46,7 @@ __docformat__ = 'reStructuredText'
 import re
 
 import docutils
-from docutils import nodes, writers, languages
+from docutils import frontend, nodes, writers, languages
 try:
     import roman
 except ImportError:
@@ -116,7 +116,16 @@ class Writer(writers.Writer):
     supported = ('manpage',)
     """Formats this writer supports."""
 
-    # manpage writer specfic settings. not yet
+    settings_spec = (
+        'Manpage-Specific Options',
+        None,
+        (('Use man macros .UR/.UE and .MT/.ME for references '
+          'or put references in plain text form.',
+          ['--use-reference-macros'],
+          {'default': False, 'action': 'store_true',
+           'validator': frontend.validate_boolean}),
+         ),
+        )
 
     output = None
     """Final translated form of `document`."""
@@ -203,10 +212,12 @@ class Translator(nodes.NodeVisitor):
     def __init__(self, document):
         nodes.NodeVisitor.__init__(self, document)
         self.settings = settings = document.settings
-        self.visit_reference = self._visit_reference_no_macro
-        self.depart_reference = self._depart_reference_no_macro
-        self.visit_reference = self._visit_reference_with_macro
-        self.depart_reference = self._depart_reference_with_macro
+        if settings.use_reference_macros:
+            self.visit_reference = self._visit_reference_with_macro
+            self.depart_reference = self._depart_reference_with_macro
+        else:
+            self.visit_reference = self._visit_reference_no_macro
+            self.depart_reference = self._depart_reference_no_macro
         lcode = settings.language_code
         self.language = languages.get_language(lcode, document.reporter)
         self.head = []
